@@ -1,6 +1,2 @@
 markdown: redcarpet
 pygments: true
-
-# If you do not wish to specify the URL of your github repository via
-# GithubWWW in your PackageInfo.g, you can also set it here:
-#github: https://github.com/fingolfin/GitHubPagesForGAP
