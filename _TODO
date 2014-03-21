@@ -1,0 +1,7 @@
+Expand documentation:
+- tell people to copy HTML & PDF documentation into
+  the doc/ dir in their gh-pages branch
+- explain how to update things after making a release
+- in general, try to make the instructions safe for
+  people who are not git experts.
+
