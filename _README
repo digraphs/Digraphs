@@ -42,6 +42,11 @@ in the git repository of your GitHub hosted GAP package), do this:
   
 
 
-## Updating the site
+## Updating after you made a release
 
 TODO
+
+## Updating to a newer version of GitHubPagesForGAP
+
+TODO: explain about "git pull --merge gh-gap gh-pages"
+
