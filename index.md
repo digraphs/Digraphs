@@ -7,9 +7,7 @@ layout: default
 {{site.data.package.abstract}}
 
 The current version of this package is version {{site.data.package.version}}.
-The manual containing 
-Installation instructions can be found in [the package manual]({{site.data.package.doc-html}})
-(also available in [PDF-format]({{site.data.package.doc-pdf}}).
+For more information, please refer to [the package manual]({{site.data.package.doc-html}}).
 There is also a [README](README) file.
 
 ## Dependencies
