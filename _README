@@ -2,6 +2,8 @@ This repository can be used to quickly set up GitHub pages for
 GAP packages.
 
 
+## Initial setup
+
 To use it (under the assumption that you have no gh-pages branch
 in the git repository of your GitHub hosted GAP package), do this:
 
@@ -34,12 +36,12 @@ in the git repository of your GitHub hosted GAP package), do this:
 
 7)  Commit and push
 
-  git add PackageInfo.g README
+  git add PackageInfo.g README _data/package.yml
   git commit -m "Setup gh-pages based on GitHubPagesForGAP"
   git push --set-upstream origin gh-pages
   
 
-TODO: make sure the final state is such that the commits are
-pushed to the right repository
 
+## Updating the site
 
+TODO
