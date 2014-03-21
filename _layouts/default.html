@@ -23,7 +23,9 @@
           {% for item in site.data.package.downloads %}
           <li class="download"><a class="buttons" href="{{ item.url }}">Download {{ item.name }}</a></li>
           {% endfor %}
-          {% if site.data.package.github %}
+          {% if site.github %}
+          <li><a class="buttons github" href="{{ site.github }}">View On GitHub</a></li>
+          {% elsif site.data.package.github %}
           <li><a class="buttons github" href="{{ site.data.package.github }}">View On GitHub</a></li>
           {% endif %}
         </ul>
