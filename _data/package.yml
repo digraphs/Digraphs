@@ -1,0 +1,43 @@
+name: GitHubPagesForGAP
+version: 0.1
+date: 21/03/2014
+description: A GitHubPages generator for GAP packages
+
+authors:
+    - name: Max Horn
+      url: http://www.quendi.de/math
+    - name: A. U. Thor
+
+maintainers:
+    - name: Max Horn
+      url: http://www.quendi.de/math
+    - name: Jan Itor
+
+GAP: ">=4.5.5"
+
+needed-pkgs:
+    - name: "GAPDoc"
+      version: ">= 1.2"
+    - name: "IO"
+      version: ">= 4.1"
+
+suggested-pkgs:
+    - name: "orb"
+      version: ">= 4.2"
+
+www: http://fingolfin.github.io/GitHubPagesForGAP/
+readme: http://fingolfin.github.io/GitHubPagesForGAP/README
+packageinfo: http://fingolfin.github.io/GitHubPagesForGAP/PackageInfo.g
+github: https://github.com/fingolfin/GitHubPagesForGAP
+
+downloads:
+    - name: .tar.gz
+      url: https://github.com/fingolfin/GitHubPagesForGAP/releases/download/v0.1/GitHubPagesForGAP-0.1.tar.gz
+    - name: .tar.bz2
+      url: https://github.com/fingolfin/GitHubPagesForGAP/releases/download/v0.1/GitHubPagesForGAP-0.1.tar.bz2
+
+abstract: This is a pseudo package that contains no actual  <span class="pkgname">GAP</span> code. Instead, it is a template for other  GAP packages that allows to quickly setup GitHub pages.
+
+status: other
+doc-html: doc/chap0.html
+doc-pdf: doc/manual.pdf
