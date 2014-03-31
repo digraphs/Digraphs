@@ -18,12 +18,15 @@ GAP: ">=4.5.5"
 needed-pkgs:
     - name: "GAPDoc"
       version: ">= 1.2"
+      url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
     - name: "IO"
       version: ">= 4.1"
+      url: "http://neunhoef.github.io/io/"
 
 suggested-pkgs:
     - name: "orb"
       version: ">= 4.2"
+      url: "http://neunhoef.github.io/orb/"
 
 www: http://fingolfin.github.io/GitHubPagesForGAP/
 readme: http://fingolfin.github.io/GitHubPagesForGAP/README

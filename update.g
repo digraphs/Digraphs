@@ -14,10 +14,14 @@ PrintPeopleList := function(stream, people)
 end;
 
 PrintPackageList := function(stream, pkgs)
-    local p;
+    local p, pkginfo;
     for p in pkgs do
         AppendTo(stream, "    - name: \"", p[1], "\"\n");
         AppendTo(stream, "      version: \"", p[2], "\"\n");
+        pkginfo := PackageInfo(p[1]);
+        if Length(pkginfo) > 0 and IsBound(pkginfo[1].PackageWWWHome) then
+            AppendTo(stream, "      url: \"", pkginfo[1].PackageWWWHome, "\"\n");
+        fi;
     od;
     AppendTo(stream, "\n");
 end;
