@@ -32,9 +32,10 @@ in the git repository of your GitHub hosted GAP package), do this:
   rm -rf tmp
 
 6) Regenerate stuff:
+
   gap update.g
 
-7)  Commit and push
+7) Commit and push
 
   git add PackageInfo.g README _data/package.yml
   git commit -m "Setup gh-pages based on GitHubPagesForGAP"

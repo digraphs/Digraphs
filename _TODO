@@ -5,3 +5,5 @@ Expand documentation:
 - in general, try to make the instructions safe for
   people who are not git experts.
 
+Add more info to default template?
+E.g. links to github issue tracker, wiki, ...
