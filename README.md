@@ -9,8 +9,8 @@ contains data generated from the `PackageInfo.g` file of your package.
 
 ## Initial setup
 
-The following instructions assume you do not already have a gh-pages
-branch in your repository. If you do, you should delete it before
+The following instructions assume you do not already have a `gh-pages`
+branch in your repository. If you do have one, you should delete it before
 following these instructions.
 
 1. Go into your clone of your package repository.
@@ -51,13 +51,17 @@ following these instructions.
    gap update.g
    ```
 
-7. Commit and push the work we have just done.
+7. Commit and push everything.
 
    ```
    git add PackageInfo.g README doc/ _data/package.yml
    git commit -m "Setup gh-pages based on GitHubPagesForGAP"
    git push --set-upstream origin gh-pages
    ```
+
+That't it. You can now see your new package website under
+http://USERNAME.github.io/REPOSITORY/ (of course after
+adjusting USERNAME and REPOSITORY suitably).
 
 
 ## Adjusting the content and layout
@@ -123,6 +127,10 @@ are quite similar to the above:
    git commit -m "Update web pages"
    git push  gh-pages
    ```
+
+A few seconds after you have done this, your changes will be online
+under http://USERNAME.github.io/REPOSITORY/ .
+
 
 
 ## Updating to a newer version of GitHubPagesForGAP
