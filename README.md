@@ -6,7 +6,6 @@ Specifically, this uses [GitHub pages](https://pages.github.com/)
 by adding a `gh-pages` branch to your package repository which
 contains data generated from the `PackageInfo.g` file of your package.
 
-
 ## Initial setup
 
 The following instructions assume you do not already have a `gh-pages`
@@ -131,6 +130,10 @@ are quite similar to the above:
 A few seconds after you have done this, your changes will be online
 under http://USERNAME.github.io/REPOSITORY/ .
 
+Note that if you are using the [ReleaseTools for GAP
+packages](https://github.com/fingolfin/ReleaseTools), then its 
+`make-dist` script will automatically perform these steps for you
+(except for the final commit, which is always left to the user).
 
 
 ## Updating to a newer version of GitHubPagesForGAP
