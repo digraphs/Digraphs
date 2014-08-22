@@ -139,3 +139,13 @@ packages](https://github.com/fingolfin/ReleaseTools), then its
 ## Updating to a newer version of GitHubPagesForGAP
 
 TODO: explain about "git pull --merge gh-gap gh-pages"
+
+
+# Contact
+
+Please submit bug reports, suggestions for improvements and patches via
+the [issue tracker](https://github.com/fingolfin/GitHubPagesForGAP/issues).
+
+You can also contact me directly via [email](max@quendi.de).
+
+Copyright (c) 2013-2014 Max Horn
