@@ -141,6 +141,22 @@ packages](https://github.com/fingolfin/ReleaseTools), then its
 TODO: explain about "git pull --merge gh-gap gh-pages"
 
 
+
+# Packages using GitHubPagesForGAP
+Packages using GitHubPagesForGAP include the following:
+
+* https://neunhoef.github.io/cvec
+* https://neunhoef.github.io/io
+* https://neunhoef.github.io/genss
+* https://neunhoef.github.io/orb
+* https://neunhoef.github.io/recog
+* https://neunhoef.github.io/recogbase
+* https://gap-system.github.io/libsing/
+* https://gap-system.github.io/nq/
+* https://gap-system.github.io/polenta/
+* https://fingolfin.github.io/NormalizInterface/
+
+
 # Contact
 
 Please submit bug reports, suggestions for improvements and patches via
