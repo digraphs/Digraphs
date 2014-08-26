@@ -124,7 +124,7 @@ are quite similar to the above:
    ```
    git add PackageInfo.g README doc/ _data/package.yml
    git commit -m "Update web pages"
-   git push  gh-pages
+   git push
    ```
 
 A few seconds after you have done this, your changes will be online
