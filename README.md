@@ -138,7 +138,38 @@ packages](https://github.com/fingolfin/ReleaseTools), then its
 
 ## Updating to a newer version of GitHubPagesForGAP
 
-TODO: explain about "git pull --merge gh-gap gh-pages"
+Normally you should not have to every do this. However, if you really want to,
+you can attempt to update to the most recent version of GitHubPagesForGAP via
+the following instructions. The difficulty of such an update depends on how
+much you tweaked the site after initially cloning GitHubPagesForGAP.
+
+1. Go to the `gh-pages` directory we created above.
+   Make sure that there are no uncommitted changes, as they will be lost
+   when following these instructions.
+
+2. Fetch changes made to GitHubPagesForGAP.
+   ```
+   git fetch gh-gap
+   ```
+
+3. Attempt to merge these changes. This may produce multiple merge conflicts,
+   so ideally, you should be familiar with dealing with such merge conflicts.
+   ```
+   git pull gh-gap gh-pages
+   ```
+   If at any point you don't know how to continue, you can abort the merge
+   process and revert to the original state by issuing this command:
+   ```
+   git merge --abort
+   ```
+
+4. This may produce merge conflicts. Most likely you will have conflicts in
+   the file `_data/package.yml`, but these are easy to resolve as follows:
+   ```
+   gap update.g
+   git add _data/package.yml
+   ```
+   If you are lucky, this is the only conflict (check with `git status`).
 
 
 
