@@ -34,6 +34,7 @@
     <#Include Label="RangeSourceDigraph"> 
     <#Include Label="Adjacencies"> 
     <#Include Label="StronglyConnectedComponents"> 
+    <#Include Label="AdjacencyMatrix"> 
   </Section>
 
   <Section><Heading>Properties of directed graphs</Heading> 
@@ -42,7 +43,7 @@
     <#Include Label="IsAcyclicDirectedGraph"> 
   </Section>
 
-  <Section><Heading>Operations  on directed graphs</Heading> 
+  <Section><Heading>Operations on directed graphs</Heading> 
     <#Include Label="DirectedGraphRelabel"> 
     <#Include Label="DirectedGraphRemoveLoops"> 
     <#Include Label="DirectedGraphRemoveEdges"> 

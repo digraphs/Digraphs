@@ -8,7 +8,7 @@
 #############################################################################
 ##
 
-# operations for directed graphs . . .
+# operations, attributes, properties for directed graphs . . .
 
 DeclareAttribute("AdjacencyMatrix", IsDirectedGraph);
 
