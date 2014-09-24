@@ -184,6 +184,25 @@ function(adj)
   return record;
 end);
 
+#
+
+InstallMethod(DirectedGraphByAdjacencyMatrix, "for a rectangular table",
+[IsRectangularTable],
+function(mat)
+  local n, record, i, j, k;
+  n := Length(mat);
+  record := rec( vertices := [ 1 .. n ], source := [], range := [] );
+  for i in [1..n] do
+    for j in [1..n] do
+      for k in [1..mat[i][j]] do
+        Add(record.source, i);
+        Add(record.range, j);
+      od;
+    od;
+  od;
+  return DirectedGraph(record);
+end);
+
 # basic attributes
 
 DIGRAPHS_RangeSourceVertices:=function(graph)
