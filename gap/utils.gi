@@ -154,7 +154,7 @@ end);
 
 InstallGlobalFunction(WriteDirectedGraph,
 function(arg)
-  local file; 
+  local file;
 
   if not (Length(arg)=3 or Length(arg)=2) then
     Error("usage: there should be 2 or 3 arguments,");
@@ -227,7 +227,7 @@ function(s)
     start := 2;
   else
     if list[2] = 63 then
-      n := 0; 
+      n := 0;
       for i in [0..5] do
         n := n + 2^(6*i)*list[8-i];
       od;
@@ -241,7 +241,7 @@ function(s)
     fi;
   fi;
 
-  range := []; 
+  range := [];
   source := [];
 
   # Obtaining the adjecancy vector
@@ -267,7 +267,7 @@ function(s)
     pos := pos + 6;
   od;
 
-  return DirectedGraphNC(rec(vertices := [ 1 .. n ], range := range + 1, 
+  return DirectedGraphNC(rec(vertices := [ 1 .. n ], range := range + 1,
     source := source + 1 ));
 end);
 
@@ -348,4 +348,12 @@ function(arg)
   fi;
   return List(line, x-> ReadGraph6Line(Chomp(x)));
 end);
+
+#
+
+InstallGlobalFunction(DigraphsDir,
+function()
+  return PackageInfo("digraphs")[1]!.InstallationPath;
+end);
+
 #EOF
