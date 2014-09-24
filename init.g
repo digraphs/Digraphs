@@ -20,6 +20,7 @@ if (not IsBound(DIGRAPHS_C)) and
 fi;
 
 ReadPackage("digraphs/gap/digraph.gd");
+ReadPackage("digraphs/gap/opers.gd");
 ReadPackage("digraphs/gap/utils.gd");
 
 DeclareInfoClass("InfoDigraphs");;
