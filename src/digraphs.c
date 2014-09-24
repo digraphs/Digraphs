@@ -160,15 +160,14 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
 static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) { 
   UInt  nr, i, j, k, level;
   Obj   nbs;
-  UInt  *stack, *ptr1, *ptr2, *ptr3;
+  UInt  *stack, *ptr1, *ptr2;
   
   nr = LEN_PLIST(adj);
 
   //init the buf
-  ptr1 = calloc( 2 * nr + 2, sizeof(UInt) );
-  ptr2 = ptr1 + nr + 1;
-  ptr3 =  malloc( (2 * nr + 2) * sizeof(UInt) );
-  stack = ptr3;
+  ptr1 = calloc( nr + 1, sizeof(UInt) );
+  ptr2 =  malloc( (2 * nr + 2) * sizeof(UInt) );
+  stack = ptr2;
   
   for (i = 1; i <= nr; i++) {
     nbs = ELM_PLIST(adj, i);
@@ -181,9 +180,9 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
       while (1) {
         j = stack[0];
         k = stack[1];
-        if (ptr2[j] == 1) { 
+        if (ptr1[j] == 2) {
           free(ptr1);
-          free(ptr3);
+          free(ptr2);
           return False;  // We have just travelled around a cycle
         }
         // Check whether:
@@ -198,10 +197,10 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
           }
           // Backtrack and choose next available branch
           stack -= 2;
-          ptr2[stack[0]] = 0;
+          ptr1[stack[0]] = 0; 
           stack[1]++;
         } else { //Otherwise move onto the next available branch
-          ptr2[j]=1;
+          ptr1[j] = 2; 
           level++;
           nbs = ELM_PLIST(adj, j);
           stack += 2;
@@ -212,7 +211,7 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
     }
   }
   free(ptr1);
-  free(ptr3);
+  free(ptr2);
   return True;
 }
 
@@ -276,17 +275,16 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   UInt  nr, i, j, k, count;
   UInt  level;
   Obj   buf, nbs, out;
-  UInt  *stack, *ptr1, *ptr2, *ptr3;
+  UInt  *stack, *ptr1, *ptr2;
   
   nr = LEN_PLIST(adj);
   out = NEW_PLIST(T_PLIST_CYC, nr);
   SET_LEN_PLIST(out, nr);
 
   //init the buf
-  ptr1 = calloc( 2 * nr + 2, sizeof(UInt) );
-  ptr2 = ptr1 + nr + 1;
-  ptr3 =  malloc( (2 * nr + 2) * sizeof(UInt) );
-  stack = ptr3;
+  ptr1 = calloc( nr + 1, sizeof(UInt) );
+  ptr2 =  malloc( (2 * nr + 2) * sizeof(UInt) );
+  stack = ptr2;
 
   count = 0;
 
@@ -301,9 +299,9 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
       while (1) {
         j = stack[0];
         k = stack[1];
-        if (ptr2[j] == 1) {
+        if (ptr1[j] == 2) {
           free(ptr1);
-          free(ptr3);
+          free(ptr2);
           ErrorQuit("the graph is not acyclic,", 0L, 0L);
         }
         nbs = ELM_PLIST(adj, j);
@@ -320,10 +318,10 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
           }
           // Backtrack and choose next available branch
           stack -= 2;
-          ptr2[stack[0]] = 0;
+          ptr1[stack[0]] = 0;
           stack[1]++;
         } else { //Otherwise move onto the next available branch
-          ptr2[j]=1;
+          ptr1[j] = 2;
           level++;
           nbs = ELM_PLIST(adj, j);
           stack += 2;
@@ -334,7 +332,7 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
     } 
   }
   free(ptr1);
-  free(ptr3);
+  free(ptr2);
   return out;
 }
 
