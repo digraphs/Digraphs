@@ -416,11 +416,15 @@ static Obj FuncIS_SIMPLE_DIGRAPH(Obj self, Obj digraph) {
     }
     return (nr == LEN_PLIST(range) ? True : False);
   }
+  
+  len = LEN_PLIST(range);
+  if (len == 0) {
+    return True;
+  }
 
   source = ElmPRec(digraph, RNamName("source"));
   PLAIN_LIST(source);
 
-  len = LEN_PLIST(range);
   n = GET_LEN_RANGE(ElmPRec(digraph, RNamName("vertices"))); 
 
   current = INT_INTOBJ(ELM_PLIST(source, 1));
