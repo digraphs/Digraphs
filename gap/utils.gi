@@ -213,7 +213,7 @@ function(s)
         i := i + 1;
         sum := sum + i;
       od;
-    return [pos - sum + i - 1, i ];
+    return [ pos - sum + i - 1, i ];
   end;
 
   # Convert ASCII chars to integers
@@ -242,7 +242,8 @@ function(s)
     fi;
   fi;
 
-  record := rec( vertices := [0..n-1], range := [], source := []);
+  range := []; 
+  source := [];
 
   # Obtaining the adjecancy vector
   pos := 1;
@@ -252,21 +253,22 @@ function(s)
       if i mod 2 = 0 then
         i := i/2;
       else
-  temp := FindCoord(pos + 6 - bpos, 0);
+        temp := FindCoord(pos + 6 - bpos, 0);
         pos_x := temp[1];
         pos_y := temp[2];
         Add(record.range, pos_x);
         Add(record.source, pos_y);
         Add(record.range, pos_y);
         Add(record.source, pos_x);
-  i := (i-1)/2;
+        i := (i - 1) / 2;
       fi;
       bpos := bpos + 1;
     od;
     pos := pos + 6;
   od;
 
-  return DirectedGraph(record);#JDM should be DirectedGraphNC, left like this for further testing
+  return DirectedGraphNC(rec(vertices := [ 1 .. n ], range := range + 1, 
+    source := source + 1 ));
 end);
 
 #
