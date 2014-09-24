@@ -1,0 +1,53 @@
+<Chapter Label="DirectedGraphs"><Heading>Directed graphs</Heading> 
+
+  In this chapter we describe some functionality for directed graphs.<P/>
+
+  A <E>directed graph</E> <M>E=(E^0,E^1,r,s)</M> consists of a set of vertices
+  <M>E^0</M> and a set of edges <M>E^1</M> together with functions <M>s, r: E^1
+    \to E^0</M>, called the <E>source</E> and <E>range</E>, respectively. 
+
+  <Section><Heading>Creating directed graphs</Heading> 
+    <#Include Label="IsDirectedGraph"> 
+    <#Include Label="DirectedGraph"> 
+    <#Include Label="RandomSimpleDirectedGraph"> 
+  </Section>
+  
+  <Section><Heading>Operators for directed graphs</Heading> 
+    <List>
+     <Mark><C><A>digraph1</A> = <A>digraph2</A></C></Mark>
+     <Item>
+       <Index Key="="><C>=</C> (for directed graphs)</Index>
+       returns <K>true</K> if <A>digraph1</A> and <A>digraph2</A> have the same
+       vertices, range, and source, and <K>false</K> if they do not. 
+     </Item>
+   </List>
+
+  </Section>
+  
+  <Section><Heading>Changing the representation of a directed graph</Heading> 
+    <#Include Label="GrapeGraph"> 
+  </Section>
+  
+  <Section><Heading>Attributes of directed graphs</Heading> 
+    <#Include Label="Vertices"> 
+    <#Include Label="Edges"> 
+    <#Include Label="RangeSourceDigraph"> 
+    <#Include Label="Adjacencies"> 
+    <#Include Label="StronglyConnectedComponents"> 
+  </Section>
+
+  <Section><Heading>Properties of directed graphs</Heading> 
+    <#Include Label="IsSimpleDirectedGraph"> 
+    <#Include Label="IsStronglyConnectedDirectedGraph"> 
+    <#Include Label="IsAcyclicDirectedGraph"> 
+  </Section>
+
+  <Section><Heading>Operations  on directed graphs</Heading> 
+    <#Include Label="DirectedGraphRelabel"> 
+    <#Include Label="DirectedGraphRemoveLoops"> 
+    <#Include Label="DirectedGraphRemoveEdges"> 
+    <#Include Label="DirectedGraphTopologicalSort"> 
+    <#Include Label="DirectedGraphReflexiveTransitiveClosure"> 
+  </Section>
+
+</Chapter>

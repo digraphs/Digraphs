@@ -1,0 +1,25 @@
+<!DOCTYPE Book SYSTEM "gapdoc.dtd"
+   [ <!ENTITY Digraphs "<Package>Digraphs</Package>">
+     <!ENTITY Grape "<Alt Not='Text'><URL
+   Text='Grape'>http://www.maths.qmul.ac.uk/~leonard/grape/</URL></Alt><Alt
+   Only='Text'><Package>Grape</Package></Alt>">
+     <!ENTITY IO "<Alt Not='Text'><URL Text='IO'>
+     http://www-groups.mcs.st-and.ac.uk/~neunhoef/Computer/Software/Gap/io.html
+</URL></Alt><Alt Only='Text'><Package>IO</Package></Alt>">
+     <#Include Label="PKGVERSIONDATA">
+   ]>
+
+<Book Name="digraphs">
+<#Include SYSTEM="title.xml">
+
+<TableOfContents/>
+
+<Body>
+  <#Include SYSTEM="chap1.xml">
+</Body>
+
+<Bibliography Databases="digraphs" />
+<TheIndex/>
+
+</Book>
+  

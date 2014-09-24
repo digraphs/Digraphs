@@ -1,0 +1,30 @@
+<TitlePage>
+  <Title>&Digraphs;</Title>
+  <Subtitle>Method for directed graphs</Subtitle>
+  <Version>Version &VERSION;</Version>
+
+  <Author>J. D. Mitchell
+    <Email>jdm3@st-and.ac.uk</Email>
+    <Homepage>http://tinyurl.com/jdmitchell</Homepage>
+  </Author>
+  
+  <Author>Julius Jonu&#353;as</Author>
+  <Author>Markus Pfeiffer</Author>
+  <Author>Michael Torpey</Author>
+  <Author>Wilf Wilson</Author>
+
+  <Copyright>&copyright; &COPYRIGHTYEARS; by J. D. Mitchell.<P/>
+    &Digraphs; is free software; you can redistribute it and/or modify it
+    under the terms of the <URL Text="GNU General Public License">
+    http://www.fsf.org/licenses/gpl.html</URL> as published by the Free Software
+    Foundation; either version 2 of the License, or (at your option) any later
+    version.
+  </Copyright>
+
+  <Abstract>
+  </Abstract>
+
+  <Acknowledgements>
+  </Acknowledgements>
+
+</TitlePage>
