@@ -206,7 +206,6 @@ function(s)
   # knowing a lower bound for pos_y
   FindCoord := function(pos, bound)
     local i, sum;
-
       i := bound;
       sum := Sum([1..i]);
       while sum < pos do
@@ -251,7 +250,7 @@ function(s)
     bpos := 1;
     while i > 0 do
       if i mod 2 = 0 then
-        i := i/2;
+        i := i / 2;
       else
         temp := FindCoord(pos + 6 - bpos, 0);
         pos_x := temp[1];
