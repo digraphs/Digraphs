@@ -96,4 +96,10 @@ gap> Adjacencies(gr);;
 gap> DigraphsStopTest();
 
 #
+gap> d := DirectedGraph(rec(vertices := [1..5], range := [], source := []));
+<directed graph with 5 vertices, 0 edges>
+gap> IsSimpleDirectedGraph(d);
+true
+
+#
 gap> STOP_TEST( "Digraphs package: testinstall.tst", 0);
