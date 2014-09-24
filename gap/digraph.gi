@@ -27,7 +27,7 @@ function(graph)
     return j in Adjacencies(graph)[i];
   end;
 
-  return Graph(Group(()), Vertices(graph), OnPoints, adj, true);
+  return Graph(Group(()), ShallowCopy(Vertices(graph)), OnPoints, adj, true);
 end);
 
 InstallMethod(RandomSimpleDirectedGraph, "for a pos int",

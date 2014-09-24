@@ -13,9 +13,6 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
-# Load the library of graphs
-gap> ReadGapRoot("pkg/digraphs/tst/graphlib.g");
-
 # IsAcyclicDigraph
 gap> loop:=DirectedGraph([ [1] ]);
 <directed graph with 1 vertices, 1 edges>
