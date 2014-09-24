@@ -9,7 +9,7 @@
 ##
 
 # vertices should always be a range (to save space, and improve membership
-# checking performance), adjacencies should be a plist of plist. 
+# checking performance), adjacencies should be a plist of plist.
 
 # constructors
 
@@ -17,8 +17,8 @@ InstallMethod(Graph, "for a directed graph",
 [IsDirectedGraph],
 function(graph)
   local adj;
-  
-  if not IsSimpleDirectedGraph(graph) then 
+
+  if not IsSimpleDirectedGraph(graph) then
     Info(InfoWarning, 1, "Grape does not support multiple edges, so ",
     "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
@@ -105,7 +105,7 @@ function(record)
     record.names := record.vertices;
   fi;
 
-  if not IsRangeRep(record.vertices) then 
+  if not IsRangeRep(record.vertices) then
     ConvertToRangeRep(record.vertices);
   fi;
 
@@ -135,10 +135,10 @@ function(record)
   MakeImmutable(record.range);
   MakeImmutable(record.source);
   MakeImmutable(record.vertices);
-  
-  if not IsBound(record.names) then 
+
+  if not IsBound(record.names) then
     record.names := record.vertices;
-  else 
+  else
     MakeImmutable(record.names);
   fi;
 
@@ -155,9 +155,9 @@ function(adj)
   len := Length(adj);
   adj := StructuralCopy(adj);
 
-  for x in adj do 
-    if IsDuplicateFreeList(x) then 
-      for i in x do 
+  for x in adj do
+    if IsDuplicateFreeList(x) then
+      for i in x do
         if not (IsPosInt(i) and i <= len) then
           Error("usage: the argument must be a list of duplicate free lists of positive",
           " integers not exceeding the length of the argument,");
@@ -170,7 +170,7 @@ function(adj)
       return;
     fi;
   od;
-  
+
   record:=rec( adj := adj );
   ObjectifyWithAttributes(record, DirectedGraphType, Adjacencies, adj);
   return record;
@@ -189,14 +189,14 @@ end);
 DIGRAPHS_RangeSourceVertices:=function(graph)
   local adj, nr, source, range, vertices, names, j, i;
 
-  if IsBound(graph!.range) then 
+  if IsBound(graph!.range) then
     return;
   fi;
-  
+
   adj := Adjacencies(graph);
   nr := 0;
 
-  for j in adj do 
+  for j in adj do
     nr := nr + Length(j);
   od;
 
@@ -208,7 +208,7 @@ DIGRAPHS_RangeSourceVertices:=function(graph)
 
   for i in [1..Length(adj)] do
     for j in adj[i] do
-      nr := nr + 1; 
+      nr := nr + 1;
       source[nr] := i;
       range[nr] := j;
     od;
@@ -257,7 +257,7 @@ function(graph)
   return Set(out);
 end);
 
-if IsBound(DIGRAPH_ADJACENCY) then 
+if IsBound(DIGRAPH_ADJACENCY) then
   InstallMethod(Adjacencies, "for a directed graph",
   [IsDirectedGraph], DIGRAPH_ADJACENCY);
 else
@@ -275,7 +275,7 @@ else
     od;
 
     MakeImmutable(out);
-    graph!.adj := out; 
+    graph!.adj := out;
     return out;
   end);
 fi;
@@ -290,10 +290,10 @@ function(graph1, graph2)
 end);
 
 # simple means no multiple edges (loops are allowed)
-if IsBound(IS_SIMPLE_DIGRAPH) then 
+if IsBound(IS_SIMPLE_DIGRAPH) then
   InstallMethod(IsSimpleDirectedGraph, "for a directed graph",
   [IsDirectedGraph], IS_SIMPLE_DIGRAPH);
-else 
+else
   InstallMethod(IsSimpleDirectedGraph, "for a directed graph",
   [IsDirectedGraph],
   function(graph)
@@ -313,7 +313,7 @@ else
       source := Source(graph);
       len := Length(range);
       n := Length(Vertices(graph));
-      current := 0; 
+      current := 0;
       marked := [ 1 .. n ] * 0;
 
       for i in [ 1 .. len ] do
@@ -541,8 +541,7 @@ function(graph)
   local dist, i, j, k, n, m;
 
   # Firstly assuming no multiple edges or loops. Will be easy to include.
-  # Also not yet dealing with graph weightings.
-  # Algorithm used from Wikipedia.
+  # Also not dealing with graph weightings.
   # Need discussions on suitability of data structures, etc
 
   n:=Length(Vertices(graph));
@@ -574,24 +573,24 @@ end);
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
-if IsBound(DIGRAPH_TOPO_SORT) then 
-  InstallMethod(DirectedGraphTopologicalSort, "for a digraph", 
+if IsBound(DIGRAPH_TOPO_SORT) then
+  InstallMethod(DirectedGraphTopologicalSort, "for a digraph",
   [IsDirectedGraph], function(graph)
     return DIGRAPH_TOPO_SORT(Adjacencies(graph));
   end);
 else
-  InstallMethod(DirectedGraphTopologicalSort, "for a digraph", 
+  InstallMethod(DirectedGraphTopologicalSort, "for a digraph",
   [IsDirectedGraph],
   function(graph)
     local adj, nr, vertex_complete, vertex_in_path, stack, out, level, j, k, i;
-    
+
     adj := Adjacencies(graph);
     nr := Length(adj);
     vertex_complete := BlistList([1..nr], []);
     vertex_in_path := BlistList([1..nr], []);
     stack := EmptyPlist(2 * nr + 2);
     out := EmptyPlist(nr);
-    
+
     for i in [1..nr] do
       if Length(adj[i]) = 0 then
         vertex_complete[i] := true;
@@ -618,7 +617,7 @@ else
             fi;
               stack[2 * level] := stack[2 * level] + 1;
               vertex_in_path[stack[2 * level - 1]] := false;
-          else 
+          else
             vertex_in_path[j] := true;
             level := level + 1;
             stack[2 * level - 1] := adj[j][k];
@@ -699,16 +698,16 @@ function(graph)
   return DirectedGraphNC(out);
 end);
 
-if IsBound(IS_STRONGLY_CONNECTED_DIGRAPH) then 
-  InstallMethod(IsStronglyConnectedDirectedGraph, "for a digraph", 
-  [IsDirectedGraph], 
+if IsBound(IS_STRONGLY_CONNECTED_DIGRAPH) then
+  InstallMethod(IsStronglyConnectedDirectedGraph, "for a digraph",
+  [IsDirectedGraph],
   function(graph)
     return IS_STRONGLY_CONNECTED_DIGRAPH(Adjacencies(graph));
   end);
-else 
-  InstallMethod(IsStronglyConnectedDirectedGraph, "for a digraph", 
-  [IsDirectedGraph], 
-  function(graph)   
+else
+  InstallMethod(IsStronglyConnectedDirectedGraph, "for a digraph",
+  [IsDirectedGraph],
+  function(graph)
     local adj, n, stack1, len1, stack2, len2, id, count, fptr, level, l, w, v;
 
     adj := Adjacencies(graph);
@@ -904,78 +903,41 @@ function(graph)
   return IsConnectedGraph( Graph(graph) );
 end);
 
+
 #
 
-InstallMethod(ReadGraph6, "for a string",
-[IsString],
-function(s)
-  local list, n, i, record, pos, pos_x, pos_y, temp, FindCoord, bpos;
-
-  # find a position in the adj matrix from the vector
-  # knowing a lower bound for pos_y
-  FindCoord := function(pos, bound)
-    local i, sum;
-
-      i := bound;
-      sum := Sum([1..i]);
-      while sum < pos do
-        i := i + 1;
-        sum := sum + i;
-      od;
-    return [pos - sum + i - 1, i ];
-  end;
-
-  # Convert ASCII chars to integers
+InstallMethod(WriteGraph6, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  local list, adj, n;
   list := [];
-  for i in s do
-    Add(list, IntChar(i) - 63);
-  od;
-
-  # Get n the number of vertices of the graph
-  if list[1] <> 63 then
-    n := list[1];
-    list := list{[2..Length(list)]};
+  adj := Adjacencies(graph);
+  n := Length(Vertices(graph));
+  
+  # First write the number of vertices
+  if n < 63 then
+    Add(list, n);
+  elif n < 258248 then
+    Add(list, 63);
+    Add(list, Int(n / 64^2));
+    Add(list, Int(n / 64) mod 64);
+    Add(list, n mod 64);
+  elif n < 68719476736 then
+    Add(list, 63);
+    Add(list, 63);
+    Add(list, Int(n / 64^5));
+    Add(list, Int(n / 64^4) mod 64);
+    Add(list, Int(n / 64^3) mod 64);
+    Add(list, Int(n / 64^2) mod 64);
+    Add(list, Int(n / 64^1) mod 64);
+    Add(list, n mod 64);
   else
-    if list[2] = 63 then
-      n := 0;
-      for i in [0..5] do
-        n := n + 2^(6*i)*list[8-i];
-      od;
-      list := list{[9..Length(list)]};
-    else
-      n := 0;
-      for i in [0..2] do
-        n := n + 2^(6*i)*list[4-i];
-      od;
-      list := list{[5..Length(list)]};
-    fi;
+    Error("<graph> must have no more than 68719476736 vertices,");
+    return;
   fi;
-
-  record := rec( vertices := [0..n-1], range := [], source := []);
-
-  # Obtaining the adjecancy vector
-  pos := 1;
-  for i in list do # Every integer corresponds to 6 bits
-    bpos := 1;
-    while i > 0 do
-      if i mod 2 = 0 then
-        i := i/2;
-      else
-	temp := FindCoord(pos + 6 - bpos, 0);
-        pos_x := temp[1];
-        pos_y := temp[2];
-        Add(record.range, pos_x);
-        Add(record.source, pos_y);
-        Add(record.range, pos_y);
-        Add(record.source, pos_x);
-	i := (i-1)/2;
-      fi;
-      bpos := bpos + 1;
-    od;
-    pos := pos + 6;
-  od;
-
-  return DirectedGraph(record);#JDM should be DirectedGraphNC, left like this for further testing
+  
+  # Create string to return
+  return List(list, i -> CharInt(i + 63));
 end);
 
 #EOF
