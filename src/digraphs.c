@@ -160,47 +160,47 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
 static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) { 
   UInt  nr, i, j, k, level;
   Obj   nbs;
-  UInt  *stack, *ptr1, *ptr2;
+  UInt  *stack, *ptr;
   
   nr = LEN_PLIST(adj);
 
   //init the buf
-  ptr1 = calloc( nr + 1, sizeof(UInt) );
-  ptr2 =  malloc( (2 * nr + 2) * sizeof(UInt) );
-  stack = ptr2;
+  ptr = calloc( nr + 1, sizeof(UInt) );
+  stack =  malloc( (2 * nr + 2) * sizeof(UInt) );
   
   for (i = 1; i <= nr; i++) {
     nbs = ELM_PLIST(adj, i);
-    if (LEN_PLIST(nbs) == 0) {
-      ptr1[i] = 1;
-    } else if (ptr1[i] == 0) {
+    if (LEN_LIST(nbs) == 0) {
+      ptr[i] = 1;
+    } else if (ptr[i] == 0) {
       level = 1;
       stack[0] = i;
       stack[1] = 1;
       while (1) {
         j = stack[0];
         k = stack[1];
-        if (ptr1[j] == 2) {
-          free(ptr1);
-          free(ptr2);
+        if (ptr[j] == 2) {
+          free(ptr);
+          stack -= (2 * level) - 2; // put the stack back to the start
+          free(stack);
           return False;  // We have just travelled around a cycle
         }
         // Check whether:
         // 1. We've previously finished with this vertex, OR 
-        // 2. Whether we've now investigated all branches descending from it
+        // 2. Whether we've now investigated all descendant branches
         nbs = ELM_PLIST(adj, j);
-        if( ptr1[j] == 1 || k > LEN_PLIST(nbs)) {
-          ptr1[j] = 1;
+        if( ptr[j] == 1 || k > LEN_LIST(nbs)) {
+          ptr[j] = 1;
           level--;
           if (level == 0) { 
             break;
           }
           // Backtrack and choose next available branch
           stack -= 2;
-          ptr1[stack[0]] = 0; 
+          ptr[stack[0]] = 0; 
           stack[1]++;
         } else { //Otherwise move onto the next available branch
-          ptr1[j] = 2; 
+          ptr[j] = 2; 
           level++;
           nbs = ELM_PLIST(adj, j);
           stack += 2;
@@ -210,8 +210,8 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
       }
     }
   }
-  free(ptr1);
-  free(ptr2);
+  free(ptr);
+  free(stack);
   return True;
 }
 
@@ -275,53 +275,52 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   UInt  nr, i, j, k, count;
   UInt  level;
   Obj   buf, nbs, out;
-  UInt  *stack, *ptr1, *ptr2;
+  UInt  *stack, *ptr;
   
   nr = LEN_PLIST(adj);
   out = NEW_PLIST(T_PLIST_CYC, nr);
   SET_LEN_PLIST(out, nr);
 
   //init the buf
-  ptr1 = calloc( nr + 1, sizeof(UInt) );
-  ptr2 =  malloc( (2 * nr + 2) * sizeof(UInt) );
-  stack = ptr2;
-
+  ptr = calloc( nr + 1, sizeof(UInt) );
+  stack =  malloc( (2 * nr + 2) * sizeof(UInt) );
   count = 0;
 
   for (i = 1; i <= nr; i++) {
     nbs = ELM_PLIST(adj, i);
     if (LEN_LIST(nbs) == 0) {
-      ptr1[i] = 1;
-    } else if (ptr1[i] == 0) {
+      ptr[i] = 1;
+    } else if (ptr[i] == 0) {
       level = 1;
       stack[0] = i;
       stack[1] = 1;
       while (1) {
         j = stack[0];
         k = stack[1];
-        if (ptr1[j] == 2) {
-          free(ptr1);
-          free(ptr2);
+        if (ptr[j] == 2) {
+          free(ptr);
+          stack -= (2 * level) - 2; 
+          free(stack);
           ErrorQuit("the graph is not acyclic,", 0L, 0L);
         }
         nbs = ELM_PLIST(adj, j);
-        if( ptr1[j] == 1 || k > LEN_LIST(nbs)) {
-          if ( ptr1[j] == 0 ) {
+        if( ptr[j] == 1 || k > LEN_LIST(nbs)) {
+          if ( ptr[j] == 0 ) {
             // ADD J TO THE END OF OUR LIST
             count++;
             SET_ELM_PLIST(out, count, INTOBJ_INT(j));
           }
-          ptr1[j] = 1;
+          ptr[j] = 1;
           level--;
           if (level==0) {
             break;
           }
           // Backtrack and choose next available branch
           stack -= 2;
-          ptr1[stack[0]] = 0;
+          ptr[stack[0]] = 0;
           stack[1]++;
         } else { //Otherwise move onto the next available branch
-          ptr1[j] = 2;
+          ptr[j] = 2;
           level++;
           nbs = ELM_PLIST(adj, j);
           stack += 2;
@@ -331,8 +330,8 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
       }
     } 
   }
-  free(ptr1);
-  free(ptr2);
+  free(ptr);
+  free(stack);
   return out;
 }
 
