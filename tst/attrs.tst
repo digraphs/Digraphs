@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#W  opers.tst
+#W  attrs.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
@@ -8,7 +8,7 @@
 #############################################################################
 ##
 
-gap> START_TEST("Digraphs package: opers.tst");
+gap> START_TEST("Digraphs package: attrs.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -29,4 +29,4 @@ gap> AdjacencyMatrix(gr);
 gap> DigraphsStopTest();
 
 #
-gap> STOP_TEST( "Digraphs package: opers.tst", 0);
+gap> STOP_TEST( "Digraphs package: attrs.tst", 0);

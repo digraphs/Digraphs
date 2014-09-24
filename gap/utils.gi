@@ -9,7 +9,7 @@
 ##
 ## this file contains utilies for use with the Digraphs package.
 
-BindGlobal("DigraphsDocXMLFiles", ["digraph.xml", "opers.xml", "../PackageInfo.g"]);
+BindGlobal("DigraphsDocXMLFiles", ["digraph.xml", "attrs.xml", "../PackageInfo.g"]);
 
 BindGlobal("DigraphsTestRec", rec());
 MakeReadWriteGlobal("DigraphsTestRec");

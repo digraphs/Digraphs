@@ -9,5 +9,5 @@
 ##
 
 ReadPackage("digraphs/gap/digraph.gi");
-ReadPackage("digraphs/gap/opers.gi");
+ReadPackage("digraphs/gap/attrs.gi");
 ReadPackage("digraphs/gap/utils.gi");
