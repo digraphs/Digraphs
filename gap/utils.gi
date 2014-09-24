@@ -244,7 +244,7 @@ function(s)
   range := [];
   source := [];
 
-  # Obtaining the adjecancy vector
+  # Obtaining the adjacency vector
   pos := 1;
   len := 1;
   for j in [start .. Length(list)] do # Every integer corresponds to 6 bits
@@ -267,7 +267,7 @@ function(s)
     pos := pos + 6;
   od;
 
-  return DirectedGraphNC(rec(vertices := [ 1 .. n ], range := range + 1,
+  return DirectedGraph(rec(vertices := [ 1 .. n ], range := range + 1,
     source := source + 1 ));
 end);
 
