@@ -154,7 +154,7 @@ end);
 
 InstallGlobalFunction(WriteDirectedGraph,
 function(arg)
-  local file;
+  local file; 
 
   if not (Length(arg)=3 or Length(arg)=2) then
     Error("usage: there should be 2 or 3 arguments,");
@@ -200,7 +200,7 @@ end);
 InstallMethod(ReadGraph6Line, "for a string",
 [IsString],
 function(s)
-  local list, n, i, record, pos, pos_x, pos_y, temp, FindCoord, bpos;
+  local FindCoord, list, n, start, range, source, pos, len, i, bpos, temp, j;
 
   # find a position in the adj matrix from the vector
   # knowing a lower bound for pos_y
@@ -224,20 +224,20 @@ function(s)
   # Get n the number of vertices of the graph
   if list[1] <> 63 then
     n := list[1];
-    list := list{[2..Length(list)]};
+    start := 2;
   else
     if list[2] = 63 then
-      n := 0;
+      n := 0; 
       for i in [0..5] do
         n := n + 2^(6*i)*list[8-i];
       od;
-      list := list{[9..Length(list)]};
+      start := 9;
     else
       n := 0;
       for i in [0..2] do
         n := n + 2^(6*i)*list[4-i];
       od;
-      list := list{[5..Length(list)]};
+      start := 5;
     fi;
   fi;
 
@@ -246,19 +246,20 @@ function(s)
 
   # Obtaining the adjecancy vector
   pos := 1;
-  for i in list do # Every integer corresponds to 6 bits
+  len := 1;
+  for j in [start .. Length(list)] do # Every integer corresponds to 6 bits
+    i := list[j];
     bpos := 1;
     while i > 0 do
-      if i mod 2 = 0 then
+      if i mod 2  = 0 then
         i := i / 2;
       else
         temp := FindCoord(pos + 6 - bpos, 0);
-        pos_x := temp[1];
-        pos_y := temp[2];
-        Add(record.range, pos_x);
-        Add(record.source, pos_y);
-        Add(record.range, pos_y);
-        Add(record.source, pos_x);
+	range[len] := temp[1];
+	source[len] := temp[2];
+	range[len + 1] := temp[2];
+	source[len + 1] := temp[1];
+	len := len + 2;
         i := (i - 1) / 2;
       fi;
       bpos := bpos + 1;
