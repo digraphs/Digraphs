@@ -9,7 +9,7 @@
 ##
 ## this file contains utilies for use with the Digraphs package.
 
-BindGlobal("DigraphsDocXMLFiles", ["digraph.xml", "opers.xml", "../PackageInfo.g"]);
+BindGlobal("DigraphsDocXMLFiles", ["digraph.xml", "attrs.xml", "../PackageInfo.g"]);
 
 BindGlobal("DigraphsTestRec", rec());
 MakeReadWriteGlobal("DigraphsTestRec");
@@ -244,7 +244,7 @@ function(s)
   range := [];
   source := [];
 
-  # Obtaining the adjecancy vector
+  # Obtaining the adjacency vector
   pos := 1;
   len := 1;
   for j in [start .. Length(list)] do # Every integer corresponds to 6 bits
@@ -267,7 +267,7 @@ function(s)
     pos := pos + 6;
   od;
 
-  return DirectedGraphNC(rec(vertices := [ 1 .. n ], range := range + 1,
+  return DirectedGraph(rec(vertices := [ 1 .. n ], range := range + 1,
     source := source + 1 ));
 end);
 

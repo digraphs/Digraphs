@@ -939,7 +939,7 @@ end);
 InstallMethod(WriteGraph6, "for a directed graph",
 [IsDirectedGraph],
 function(graph)
-  local list, adj, n;
+  local list, adj, n, tablen, blist, i, j, pos, block;
   list := [];
   adj := Adjacencies(graph);
   n := Length(Vertices(graph));
@@ -965,6 +965,29 @@ function(graph)
     Error("<graph> must have no more than 68719476736 vertices,");
     return;
   fi;
+  
+  # Find adjacencies (non-directed)
+  tablen := n * (n-1) / 2;
+  blist := BlistList([1..tablen+6], []);
+  for i in Vertices(graph) do
+    for j in adj[i] do
+      blist[i + j*(j+1)/2] := true;
+     od;
+  od;
+#  return [tablen, blist];
+  
+  # Read these into list, 6 bits at a time
+  pos := 0;
+  while pos < tablen do
+    block := 0;
+    for i in [1..6] do
+      if blist[pos+i] then
+        block := block + 2^(6-i);
+      fi;
+    od;
+    Add(list, block);
+    pos := pos + 6;
+  od;
   
   # Create string to return
   return List(list, i -> CharInt(i + 63));
