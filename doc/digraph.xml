@@ -122,6 +122,30 @@ rec(
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DirectedGraphByAdjacencyMatrix">
+<ManSection>
+  <Oper Name="DirectedGraphByAdjacencyMatrix" Arg="adj"/>
+  <Returns>A directed graph.</Returns>
+  <Description>
+    If <A>adj</A> is the adjacency matrix of a directed graph, in the sense of
+    <Ref Attr="AdjacencyMatrix"/>, then this function returns the directed 
+    graph which is defined by <A>adj</A>.
+    <Log><![CDATA[
+gap> adj := [
+> [ 0, 1, 0, 2, 0 ],
+> [ 1, 1, 1, 0, 1 ],
+> [ 0, 3, 2, 1, 1 ],
+> [ 0, 0, 1, 0, 1 ],
+> [ 2, 0, 0, 0, 0 ] ];
+[ [ 0, 1, 0, 2, 0 ], [ 1, 1, 1, 0, 1 ], [ 0, 3, 2, 1, 1 ], [ 0, 0, 1, 0, 1 ], 
+  [ 2, 0, 0, 0, 0 ] ]
+gap> DirectedGraphByAdjacencyMatrix(adj);
+<directed graph with 5 vertices, 18 edges>
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="RandomSimpleDirectedGraph">
 <ManSection>
   <Oper Name="RandomSimpleDirectedGraph" Arg="n"/>

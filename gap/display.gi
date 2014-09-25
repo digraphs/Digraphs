@@ -10,7 +10,7 @@
 
 # Returns: a string.
 
-# AN's code
+# AN's code, adapted by WW
 
 InstallMethod(DotDigraph, "for a directed graph",
 [IsDirectedGraph],
@@ -33,28 +33,6 @@ function(graph)
 end);
 
 # AN's code
-
-#InstallMethod(DotDigraph, "for a list of lists of pos ints",
-#[IsList],
-#function(adj)
-#  local str, str_i, i, j;
-#
-#  str:="//dot\n";
-#
-#  Append(str,"digraph hgn{\n");
-#  Append(str,"node [shape=circle]\n");
-#
-#  for i in [1..Length(adj)] do
-#    str_i:=String(i);
-#    for j in [1..Length(adj[i])] do
-#      Append(str, Concatenation(str_i, " -> ", String(j) , "\n"));
-#    od;
-#  od;
-#  Append(str,"}\n");
-#  return str;
-#end);
-
-#
 
 if not IsBound(Splash) then #This function is written by A. Egri-Nagy
   if ARCH_IS_MAC_OS_X( ) then

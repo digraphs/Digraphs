@@ -9,4 +9,3 @@
 ##
 
 DeclareAttribute("DotDigraph", IsDirectedGraph, "mutable");
-#DeclareOperation("DotDigraph", [IsList]);

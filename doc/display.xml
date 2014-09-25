@@ -1,0 +1,112 @@
+#############################################################################
+##
+#W  display.xml
+#Y  Copyright (C) 2011-14                                James D. Mitchell
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
+
+<#GAPDoc Label="Splash">
+  <ManSection>
+    <Func Name="Splash" Arg="str, [opts]"/>
+    <Returns>Nothing.</Returns>
+    <Description>
+      This function attempts to convert the string <A>str</A> into a pdf
+      document and open this document, i.e. to splash it all over your monitor.<P/>
+
+      The string <A>str</A> must correspond to a valid <C>dot</C> or
+      <C>LaTeX</C> text file and you must have have <C>GraphViz</C> and
+      <C>pdflatex</C> installed on your computer.  For details about these file
+      formats, see <URL>http://www.latex-project.org</URL> and 
+      <URL>http://www.graphviz.org</URL>.<P/>
+      
+      This function is provided to allow convenient, immediate viewing of the
+      pictures produced by the function <Ref Attr="DotDigraph"/>.<P/>
+
+      The optional second argument <A>opts</A> should be a record with
+      components corresponding to various options, given below. 
+
+      <List>
+        <Mark>path</Mark>
+        <Item>
+          this should be a string representing the path to the directory where
+          you want <C>Splash</C> to do its work. The default value of this
+          option is <C>"~/"</C>.
+        </Item>
+
+        <Mark>directory</Mark>
+        <Item>
+          this should be a string representing the name of the directory in
+          <C>path</C> where you want <C>Splash</C> to do its work. This function
+          will create this directory if does not already exist. <P/>
+    
+          The default value of this option is <C>"tmp.viz"</C> if the option
+          <C>path</C> is present, and the result of 
+          <Ref Func="DirectoryTemporary" BookName="ref"/> is used otherwise.
+        </Item>
+          
+        <Mark>filename</Mark>
+        <Item>
+          this should be a string representing the name of the file where
+          <A>str</A> will be written.  The default value of this option is
+          <C>"vizpicture"</C>.
+        </Item>
+
+        <Mark>viewer</Mark>
+        <Item>
+          this should be a string representing the name of the program which
+          should open the files produced by <C>GraphViz</C> or <C>pdflatex</C>.
+        </Item>
+
+        <Mark>type</Mark>
+        <Item>
+          this option can be used to specify that the string <A>str</A> contains
+          a &LaTeX; or <C>dot</C> document. You can specify this option in
+          <A>str</A> directly by making the first line <C>"%latex"</C> or
+          <C>"//dot"</C>.  There is no default value for this option, this
+          option must be specified in <A>str</A> or in <A>opt.type</A>. 
+        </Item>
+
+        <Mark>filetype</Mark>
+        <Item>
+          this should be a string representing the type of file which
+          <C>Splash</C> should produce. For &LaTeX; files, this option is
+          ignored and the default value <C>"pdf"</C> is used. 
+        </Item>
+      </List>
+
+      This function was written by Attila Egri-Nagy and Manuel Delgado with some
+      minor changes by J. D. Mitchell.<P/>
+
+      <Log><![CDATA[
+gap> Splash(DotDigraph(RandomSimpleDirectedGraph(4)));]]></Log>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DotDigraph">
+  <ManSection>
+    <Attr Name="DotDigraph" Arg="digraph"/>
+    <Returns>A string.</Returns>
+    <Description>
+      This function produces a graphical representation of the directed graph
+      <A>digraph</A>. Vertices are displayed as circles, numbered consistently
+      with <A>digraph</A>. Edges are displayed as arrowed lines between
+      vertices, with the arrowhead of each line pointing towards the range 
+      of the edge.<P/> 
+     
+      The output is in <C>dot</C> format (also known as <C>GraphViz</C>) 
+      format. For details about this file format, and information about how to 
+      display or edit this format see <URL>http://www.graphviz.org</URL>. <P/>
+
+      The string returned by <C>DotDigraph</C> can be written to a file using
+      the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
+
+      <Log><![CDATA[
+gap> FileString("t3.dot", DotDClasses(S));
+966]]></Log>
+    </Description>
+  </ManSection>
+<#/GAPDoc>

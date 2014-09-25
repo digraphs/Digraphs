@@ -9,6 +9,7 @@
   <Section><Heading>Creating directed graphs</Heading> 
     <#Include Label="IsDirectedGraph"> 
     <#Include Label="DirectedGraph"> 
+    <#Include Label="DirectedGraphByAdjacencyMatrix"> 
     <#Include Label="RandomSimpleDirectedGraph"> 
   </Section>
   
@@ -49,6 +50,11 @@
     <#Include Label="DirectedGraphRemoveEdges"> 
     <#Include Label="DirectedGraphTopologicalSort"> 
     <#Include Label="DirectedGraphReflexiveTransitiveClosure"> 
+  </Section>
+
+  <Section><Heading>Visualising the structure of a directed graph</Heading>
+    <#Include Label="Splash">
+    <#Include Label="DotDigraph">
   </Section>
 
 </Chapter>
