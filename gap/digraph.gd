@@ -58,5 +58,5 @@ DeclareProperty("IsConnectedDigraph", IsDirectedGraph);
 
 DeclareAttribute("DirectedGraphFloydWarshall", IsDirectedGraph);
 
-DeclareOperation("ReadGraph6", [IsString]);
 DeclareOperation("WriteGraph6", [IsDirectedGraph]);
+DeclareOperation("WriteDigraph6", [IsDirectedGraph]);
