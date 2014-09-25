@@ -22,8 +22,8 @@ function(graph)
   if HasIsSimpleDirectedGraph(graph) and HasAdjacencies(graph) then 
     adj := Adjacencies(graph);
     for i in verts do 
-      out[i]:=[];
-      out[i]{adj[i]}:=[1..Length(adj[i])] * 1;
+      out[i]:=[ 1 .. n ] * 0;
+      out[i]{adj[i]}:=[1 .. Length(adj[i])] * 0 + 1;
     od;
     return out;
   fi;

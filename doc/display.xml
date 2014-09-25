@@ -105,8 +105,16 @@ gap> Splash(DotDigraph(RandomSimpleDirectedGraph(4)));]]></Log>
       the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
       <Log><![CDATA[
-gap> FileString("t3.dot", DotDClasses(S));
-966]]></Log>
+gap> adj := List( [ 1 .. 4 ], x -> List( [ 1 .. 4 ], y -> 1 ));
+[ [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ] ]
+gap> adj[1][1] := 1;   
+2
+gap> adj[1][3] := 0;
+0
+gap> gr := DirectedGraphByAdjacencyMatrix(adj);
+<directed graph with 4 vertices, 16 edges>
+gap> FileString("k4.dot", DotDigraph(gr));
+146]]></Log>
     </Description>
   </ManSection>
 <#/GAPDoc>
