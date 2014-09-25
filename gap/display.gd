@@ -9,3 +9,4 @@
 ##
 
 DeclareAttribute("DotDigraph", IsDirectedGraph, "mutable");
+DeclareAttribute("DotGraph", IsDirectedGraph, "mutable");

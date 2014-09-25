@@ -327,6 +327,50 @@ false
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsUndirectedGraph">
+<ManSection>
+  <Prop Name="IsUndirectedGraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    An <E>undirected directed graph</E> is one where for each non-loop edge,
+    having source <M>u</M> and range <M>v</M>, there is a corresponding edge
+    with source v and range u. If there are <M>n</M> edges with source <M>u</M>
+    and range <M>v</M>, then there must be precisely <M>n</M> edges with source
+    <M>v</M> and range <M>u</M>.
+    In other words, an undirected directed graph has a symmetric adjacency 
+    matrix <Ref Attr="AdjacencyMatrix"/>.<P/>
+
+    This function returns true if and only if the directed graph <A>digraph</A> 
+    is undirected.
+    <Example><![CDATA[
+gap> gr1 := DirectedGraph( [ [ 2 ], [ 1, 3 ], [ 2, 3 ] ] );
+<directed graph with 3 vertices, 5 edges>
+gap> IsUndirectedGraph(gr1);
+true
+gap> adj1 := AdjacencyMatrix(gr1);;
+gap> Display(adj1);
+[ [  0,  1,  0 ],
+  [  1,  0,  1 ],
+  [  0,  1,  1 ] ]
+gap> adj1 = TransposedMat(adj1);
+true
+gap> gr2 := DirectedGraph( [ [ 2, 3 ], [ 1, 3 ], [ 2, 3 ] ] );
+<directed graph with 3 vertices, 6 edges>
+gap> IsUndirectedGraph(gr2);
+false
+gap> adj2 := AdjacencyMatrix(gr2);;
+gap> Display(adj2);
+[ [  0,  1,  1 ],
+  [  1,  0,  1 ],
+  [  0,  1,  1 ] ]
+gap> adj2 = TransposedMat(adj2);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="IsStronglyConnectedDirectedGraph">
 <ManSection>
   <Prop Name="IsStronglyConnectedDirectedGraph" Arg="digraph"/>

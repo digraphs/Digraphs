@@ -8,8 +8,6 @@
 #############################################################################
 ##
 
-# Returns: a string.
-
 # AN's code, adapted by WW
 
 InstallMethod(DotDigraph, "for a directed graph",
@@ -27,6 +25,35 @@ function(graph)
 
   for i in [1..n] do
     Append(str, Concatenation( String(source[i]), " -> ", String(range[i]) , "\n"));
+  od;
+  Append(str,"}\n");
+  return str;
+end);
+
+#
+
+InstallMethod(DotGraph, "for an 'undirected' directed graph",
+[IsDirectedGraph],
+function(graph)
+  local source, range, n, str, i;
+
+  if not IsUndirectedGraph(graph) then
+    Error("the argument must satisfy IsUndirectedGraph, ");
+    return fail;
+  fi;
+
+  source := Source(graph);
+  range := Range(graph);
+  n := Length(source);
+  str:="//dot\n";
+
+  Append(str,"graph hgn{\n");
+  Append(str,"node [shape=circle]\n");
+
+  for i in [1..n] do
+    if range[i] >= source[i] then
+      Append(str, Concatenation( String(source[i]), " -- ", String(range[i]) , "\n"));
+    fi;
   od;
   Append(str,"}\n");
   return str;

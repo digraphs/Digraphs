@@ -362,6 +362,19 @@ else
   end);
 fi;
 
+# Undirected means every (non-loop) edge has a complement edge
+InstallMethod(IsUndirectedGraph, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  local adj;
+  adj := AdjacencyMatrix(graph);
+  if adj = TransposedMat(adj) then
+    return true;
+  fi;
+  return false;
+end);
+
+
 InstallMethod(ViewString, "for a directed graph",
 [IsDirectedGraph],
 function(graph)
