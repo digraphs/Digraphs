@@ -19,7 +19,7 @@ function(graph)
   out := EmptyPlist(n);
   verts := [ 1 .. n ];
 
-  if HasIsSimpleDirectedGraph(graph) and HasAdjacencies(graph) then 
+  if HasIsSimpleDirectedGraph(graph) and IsSimpleDirectedGraph(graph) and HasAdjacencies(graph) then 
     adj := Adjacencies(graph);
     for i in verts do 
       out[i] := verts * 0;
