@@ -984,8 +984,13 @@ function(graph)
   blist := BlistList([1..tablen+6], []);
   for i in Vertices(graph) do
     for j in adj[i] do
-      blist[i + j*(j+1)/2] := true;
-     od;
+      # Loops not allowed
+      if j > i then
+        blist[i + (j-2)*(j-1)/2] := true;
+      elif i > j then
+        blist[j + (i-2)*(i-1)/2] := true;
+      fi;
+    od;
   od;
 #  return [tablen, blist];
   
