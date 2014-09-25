@@ -372,6 +372,34 @@ false
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsFunctionalDirectedGraph">
+<ManSection>
+  <Prop Name="IsFunctionalDirectedGraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A <E>functional directed graph</E> is one where for each vertex <M>v</M>,
+    there is precisely one edge with source <M>v</M>.<P/>
+
+    This function returns true if and only if the directed graph <A>digraph</A> 
+    is a functional directed graph.
+    <Example><![CDATA[
+gap> gr1 := DirectedGraph( [ [ 3 ], [ 2 ], [ 2 ], [ 1 ], [ 6 ], [ 5 ] ] );
+<directed graph with 6 vertices, 6 edges>
+gap> IsFunctionalDirectedGraph(gr1);
+true
+gap> gr2 := DirectedGraph( [ [ 1, 2 ], [ 1 ] ] );
+<directed graph with 2 vertices, 3 edges>
+gap> IsFunctionalDirectedGraph(gr2);
+false
+gap> gr3 := DirectedGraph(
+> rec( vertices := [ 1 .. 3 ], source := [ 1, 2, 3 ], range := [ 2, 3, 1 ] ) );
+<directed graph with 3 vertices, 3 edges>
+gap> IsFunctionalDirectedGraph(gr3);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
 
 <#GAPDoc Label="IsStronglyConnectedDirectedGraph">
 <ManSection>

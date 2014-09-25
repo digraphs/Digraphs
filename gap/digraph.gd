@@ -38,6 +38,7 @@ DeclareOperation("StronglyConnectedComponents", [IsDirectedGraph]);
 # properties
 DeclareProperty("IsSimpleDirectedGraph", IsDirectedGraph);
 DeclareProperty("IsUndirectedGraph", IsDirectedGraph);
+DeclareProperty("IsFunctionalDirectedGraph", IsDirectedGraph);
 DeclareProperty("IsStronglyConnectedDirectedGraph", IsDirectedGraph);
 DeclareProperty("IsAcyclicDirectedGraph", IsDirectedGraph);
 

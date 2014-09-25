@@ -41,6 +41,7 @@
   <Section><Heading>Properties of directed graphs</Heading> 
     <#Include Label="IsSimpleDirectedGraph">
     <#Include Label="IsUndirectedGraph">
+    <#Include Label="IsFunctionalDirectedGraph">
     <#Include Label="IsStronglyConnectedDirectedGraph"> 
     <#Include Label="IsAcyclicDirectedGraph"> 
   </Section>
