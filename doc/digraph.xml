@@ -377,11 +377,11 @@ false
   <Prop Name="IsFunctionalDirectedGraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    A <E>functional directed graph</E> is one where for each vertex <M>v</M>,
-    there is precisely one edge with source <M>v</M>.<P/>
-
-    This function returns true if and only if the directed graph <A>digraph</A> 
-    is a functional directed graph.
+    This function returns <K>true</K> if the directed graph <A>digraph</A> is
+    functional. <P/>
+    
+    A directed graph is <E>functional</E> if every vertex is the source of a
+    unique edge. 
     <Example><![CDATA[
 gap> gr1 := DirectedGraph( [ [ 3 ], [ 2 ], [ 2 ], [ 1 ], [ 6 ], [ 5 ] ] );
 <directed graph with 6 vertices, 6 edges>
