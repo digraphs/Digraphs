@@ -141,6 +141,8 @@ gap> adj := [
   [ 2, 0, 0, 0, 0 ] ]
 gap> DirectedGraphByAdjacencyMatrix(adj);
 <directed graph with 5 vertices, 18 edges>
+gap> AdjacencyMatrix(last) = adj;
+true
 ]]></Log>
   </Description>
 </ManSection>

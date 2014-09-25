@@ -41,6 +41,31 @@ gap> DotDigraph(gr){[11..79]};
 gap> DotGraph(gr);
 "//dot\ngraph hgn{\nnode [shape=circle]\n1 -- 2\n2 -- 3\n3 -- 3\n3 -- 4\n}\n"
 
+# DotDigraph & DotGraph for a bigger undirected not simple graph
+gap> r := rec ( vertices := [ 1 .. 8 ], source := [], range := [] );;
+gap> for j in [1..2] do
+> for i in [1..7] do
+>   Add(r.source, i);
+>   Add(r.source, i+1);
+>   Add(r.range, i+1);
+>   Add(r.range, i);
+> od;
+> Add(r.source, 8);
+> Add(r.range, 1);
+> Add(r.source, 1);
+> Add(r.range, 8);
+> od;
+gap> g := DirectedGraph(r);
+<directed graph with 8 vertices, 32 edges>
+gap> IsUndirectedGraph(g);
+true
+gap> dot1 := DotDigraph(g);;
+gap> dot1{[20..60]};
+"node [shape=circle]\n1 -> 2\n1 -> 8\n1 -> 2\n"
+gap> dot2 := DotGraph(g);;
+gap> dot2{[100..150]};
+"\n4 -- 5\n5 -- 6\n5 -- 6\n6 -- 7\n6 -- 7\n7 -- 8\n7 -- 8\n}"
+
 #
 gap> DigraphsStopTest();
 
