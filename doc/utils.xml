@@ -33,19 +33,57 @@ gap> ReadGraph6Line("H?AAEM{");
   <Oper Name="ReadDirectedGraphs" Arg="filename[, nr]"/>
   <Returns>A list of directed graphs.</Returns>
   <Description>
-    If <A>filename</A> is a name of a file where each line contains
-    a valid graph6 string, then <C>ReadDirectedGraphs</C> returns
-    a list of directed graphs.
-
+    If <A>filename</A> is the name of a file containing directed graphs, then 
+    <C>ReadDirectedGraphs</C> returns these directed graphs as a list.<P/>
+    
     If the optional argument <A>nr</A> is specified, the function
     return the graph encoded in the <A>nr</A>th line of the file
     <A>filename</A>.
+
+    The currently supported file formats are:
+    <List>
+      <Mark>graph6</Mark>
+      <Item>
+        Say something.
+      </Item>
+      <Mark>digraph6</Mark>
+      <Item>
+        Say something.
+      </Item>
+      <Mark>plain text</Mark>
+      <Item>
+        <A>filename</A> should be a plain text file containing lines of the form 
+        <C>0 7  0 8  1 7  2 8  3 8  4 8  5 8  6 8</C> i.e. pairs of vertices
+        describing edges in a graph. More specifically, the vertices making up
+        one edge must be separated by a single space, and pairs of vertices must
+        be separated by two spaces. <P/>
+
+        See <Ref Func="ReadPlainTextDigraph"/> for a more flexible way to read
+        digraphs in a plain text file. 
+      </Item>
+    <List>
+
+    
     <Example><![CDATA[
 gap> ReadDirectedGraphs(Concatenation(DigraphsDir(), "/data/graph5.g6"), 10);
 <directed graph with 5 vertices, 8 edges>
 gap> ReadDirectedGraphs(Concatenation(DigraphsDir(), "/data/graph5.g6"), 17);
 <directed graph with 5 vertices, 12 edges>
-]]></Example>
+gap> ReadDirectedGraphs("pkg/digraphs/data/tree9.4.txt");
+[ <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges>, 
+  <directed graph with 9 vertices, 8 edges> ]]]></Example>
     </Description>
 </ManSection>
 <#/GAPDoc>
