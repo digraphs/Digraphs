@@ -163,6 +163,26 @@ Error, usage: the argument <edges> must be a list of pairs of pos ints,
 gap> DirectedGraphByEdges([["nonsense"]]);
 Error, usage: the argument <edges> must be a list of pairs,
 
+# AsDirectedGraph
+gap> f := Transformation([]);
+IdentityTransformation
+gap> gr := AsDirectedGraph(f);
+<directed graph with 0 vertices, 0 edges>
+gap> gr = DirectedGraph( [] );
+true
+gap> AsDirectedGraph(f, 10);
+<directed graph with 10 vertices, 10 edges>
+gap> g := Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] );
+Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] )
+gap> AsDirectedGraph(g);
+<directed graph with 8 vertices, 8 edges>
+gap> AsDirectedGraph(g, 10);
+<directed graph with 10 vertices, 10 edges>
+gap> h := Transformation( [ 2, 4, 1, 3, 5 ] );
+Transformation( [ 2, 4, 1, 3 ] )
+gap> AsDirectedGraph(h);
+<directed graph with 4 vertices, 4 edges>
+
 #
 gap> DigraphsStopTest();
 

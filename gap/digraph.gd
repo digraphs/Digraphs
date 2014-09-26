@@ -50,3 +50,5 @@ DeclareOperation("Diameter", [IsDirectedGraph]);
 DeclareProperty("IsConnectedDigraph", IsDirectedGraph);
 
 DeclareAttribute("DirectedGraphFloydWarshall", IsDirectedGraph);
+DeclareOperation("AsDirectedGraph", [IsTransformation]);
+DeclareOperation("AsDirectedGraph", [IsTransformation, IsInt]);

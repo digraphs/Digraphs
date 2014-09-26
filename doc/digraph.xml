@@ -162,6 +162,33 @@ gap> DirectedGraphByEdges(
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="AsDirectedGraph">
+<ManSection>
+  <Oper Name="AsDirectedGraph" Arg="trans[, n]"/>
+  <Returns>A directed graph.</Returns>
+  <Description>
+    If <A>trans</A> is transformation and <A>n</A> is a non-negative integer,
+    then this function returns a functional directed graph with <A>n</A> 
+    vertices, corresponding to <A>trans</A>. Specifically, the graph has 
+    <A>n</A> edges, and for each vertex <M>x</M>, there is a unique edge with
+    source <M>x</M> and range <M>x</M>^<A>trans</A>.
+    <P/>
+
+    If the optional second argument <A>n</A> is not supplied, then the degree
+    of the transformation <A>trans</A> is used by default.
+    
+    <Example><![CDATA[
+gap> f := Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] );
+Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] )
+gap> AsDirectedGraph(f); 
+<directed graph with 10 vertices, 10 edges>
+gap> AsDirectedGraph(f, 4); 
+<directed graph with 4 vertices, 4 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="RandomSimpleDirectedGraph">
 <ManSection>
   <Oper Name="RandomSimpleDirectedGraph" Arg="n"/>

@@ -906,4 +906,33 @@ function(graph)
   return IsConnectedGraph( Graph(graph) );
 end);
 
+#
+
+InstallMethod(AsDirectedGraph, "for a transformation",
+[IsTransformation],
+function(trans);
+  return AsDirectedGraph(trans, DegreeOfTransformation(trans));
+end);
+
+#
+
+InstallMethod(AsDirectedGraph, "for a transformation and an integer",
+[IsTransformation, IsInt],
+function(trans, int)
+  local deg, ran, r, gr;
+  
+  if int < 0 then
+    return fail;
+  fi;
+
+  ran := ListTransformation(trans, int);
+  r := rec( vertices := [ 1 .. int ], source := [ 1 .. int ], range := ran );
+  gr := DirectedGraphNC(r);
+  
+  SetIsSimpleDirectedGraph(gr, true);
+  SetIsFunctionalDirectedGraph(gr, true);
+  
+  return gr;
+end);
+
 #EOF
