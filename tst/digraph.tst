@@ -185,6 +185,30 @@ Transformation( [ 2, 4, 1, 3 ] )
 gap> AsDirectedGraph(h);
 <directed graph with 4 vertices, 4 edges>
 
+# IsSimpleDirectedGraph
+gap> gr1 := DirectedGraph( [ ] );
+<directed graph with 0 vertices, 0 edges>
+gap> IsSimpleDirectedGraph(gr);
+true
+gap> gr2 := DirectedGraph( [ [] ] );
+<directed graph with 1 vertices, 0 edges>
+gap> IsSimpleDirectedGraph(gr);
+true
+gap> source := [1..10000];;
+gap> range := List( source, x->Random(source) );;
+gap> r := rec(vertices := [ 1 .. 10000 ], source := source, range := range);;
+gap> gr3 := DirectedGraph(r);
+<directed graph with 10000 vertices, 10000 edges>
+gap> IsSimpleDirectedGraph(g3);
+true
+gap> Add(source, 10000);;
+gap> Add(range, range[10000]);;
+gap> r := rec(vertices := [ 1 .. 10000 ], source := source, range := range);;
+gap> gr4 := DirectedGraph(r);
+<directed graph with 10000 vertices, 10001 edges>
+gap> IsSimpleDirectedGraph(gr4);
+false
+
 #
 gap> DigraphsStopTest();
 
