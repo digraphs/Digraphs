@@ -1,0 +1,51 @@
+#############################################################################
+##
+#W  digraph.xml
+#Y  Copyright (C) 2014                                  James D. Mitchell
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
+
+<#GAPDoc Label="ReadGraph6Line">
+<ManSection>
+  <Oper Name="ReadGraph6Line" Arg="str"/>
+  <Returns>A directed graph.</Returns>
+  <Description>
+    If <A>str</A> is a string encoding a simple graph in graph6, then
+    this function returns a directed graph such that for every edge, the
+    edge going in the opposite direction is also present.
+    <Example><![CDATA[
+gap> ReadGraph6Line("?");
+<directed graph with 0 vertices, 0 edges>
+gap> ReadGraph6Line("C]");
+<directed graph with 4 vertices, 8 edges>
+gap> ReadGraph6Line("H?AAEM{");
+<directed graph with 9 vertices, 22 edges>
+]]></Example>
+    </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ReadDirectedGraphs">
+<ManSection>
+  <Oper Name="ReadDirectedGraphs" Arg="filename[, nr]"/>
+  <Returns>A list of directed graphs.</Returns>
+  <Description>
+    If <A>filename</A> is a name of a file where each line contains
+    a valid graph6 string, then <C>ReadDirectedGraphs</C> returns
+    a list of directed graphs.
+
+    If the optional argument <A>nr</A> is specified, the function
+    return the graph encoded in the <A>nr</A>th line of the file
+    <A>filename</A>.
+    <Example><![CDATA[
+gap> ReadDirectedGraphs(Concatenation(DigraphsDir(), "/data/graph5.g6"), 10);
+<directed graph with 5 vertices, 8 edges>
+gap> ReadDirectedGraphs(Concatenation(DigraphsDir(), "/data/graph5.g6"), 17);
+<directed graph with 5 vertices, 12 edges>
+]]></Example>
+    </Description>
+</ManSection>
+<#/GAPDoc>

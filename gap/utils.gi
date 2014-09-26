@@ -9,7 +9,7 @@
 ##
 ## this file contains utilies for use with the Digraphs package.
 
-BindGlobal("DigraphsDocXMLFiles", ["digraph.xml", "attrs.xml", "display.xml", "../PackageInfo.g"]);
+BindGlobal("DigraphsDocXMLFiles", ["digraph.xml", "attrs.xml", "display.xml", "utils.xml", "../PackageInfo.g"]);
 
 BindGlobal("DigraphsTestRec", rec());
 MakeReadWriteGlobal("DigraphsTestRec");
@@ -215,7 +215,7 @@ function(s)
     return [ pos - sum + i - 1, i ];
   end;
 
-  
+
   if Length(s) = 0 then
     Error("the input string has to be non empty");
     return;
@@ -450,7 +450,7 @@ function(graph)
   list := [];
   adj := Adjacencies(graph);
   n := Length(Vertices(graph));
-  
+
   # First write the number of vertices
   if n < 63 then
     Add(list, n);
@@ -472,7 +472,7 @@ function(graph)
     Error("<graph> must have no more than 68719476736 vertices,");
     return;
   fi;
-  
+
   # Find adjacencies (non-directed)
   tablen := n * (n-1) / 2;
   blist := BlistList([1..tablen+6], []);
@@ -486,7 +486,7 @@ function(graph)
       fi;
     od;
   od;
-  
+
   # Read these into list, 6 bits at a time
   pos := 0;
   while pos < tablen do
@@ -499,7 +499,7 @@ function(graph)
     Add(list, block);
     pos := pos + 6;
   od;
-  
+
   # Create string to return
   return List(list, i -> CharInt(i + 63));
 end);
@@ -513,10 +513,10 @@ function(graph)
   list := [];
   adj := Adjacencies(graph);
   n := Length(Vertices(graph));
-  
+
   # First write the special character ','
   Add(list,-19);
-  
+
   # Now write the number of vertices
   if n < 63 then
     Add(list, n);
@@ -538,7 +538,7 @@ function(graph)
     Error("<graph> must have no more than 68719476736 vertices,");
     return;
   fi;
-  
+
   # Find adjacencies (non-directed)
   tablen := n ^ 2;
   blist := BlistList([1..tablen+6], []);
@@ -547,7 +547,7 @@ function(graph)
       blist[i + n*(j-1)] := true;
     od;
   od;
-  
+
   # Read these into list, 6 bits at a time
   pos := 0;
   while pos < tablen do
@@ -560,7 +560,7 @@ function(graph)
     Add(list, block);
     pos := pos + 6;
   od;
-  
+
   # Create string to return
   return List(list, i -> CharInt(i + 63));
 end);

@@ -60,4 +60,8 @@
     <#Include Label="DotUndirectedGraph">
   </Section>
 
+  <Section><Heading>Reading and writing graphs to a file</Heading> 
+    <#Include Label="ReadGraph6Line"> 
+    <#Include Label="ReadDirectedGraphs"> 
+  </Section>
 </Chapter>
