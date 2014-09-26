@@ -10,11 +10,16 @@
 
 # attributes for directed graphs . . .
 
-DeclareOperation("Vertices", [IsDirectedGraph]);
+DeclareAttribute("AdjacencyMatrix", IsDirectedGraph);
+DeclareAttribute("GrapeGraph", IsDirectedGraph);
 DeclareAttribute("Range", IsDirectedGraph);
 DeclareAttribute("Source", IsDirectedGraph);
 DeclareAttribute("Edges", IsDirectedGraph);
 DeclareAttribute("Adjacencies", IsDirectedGraph);
+
+# these are really attributes but are declared elsewhere as operations and so we
+# must declare them as operations too
+DeclareOperation("Vertices", [IsDirectedGraph]);
 DeclareOperation("StronglyConnectedComponents", [IsDirectedGraph]);
-DeclareAttribute("AdjacencyMatrix", IsDirectedGraph);
+
 
