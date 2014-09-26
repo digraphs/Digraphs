@@ -267,6 +267,7 @@ else
 fi;
 
 # Undirected means every (non-loop) edge has a complement edge
+# JDM: improve!
 InstallMethod(IsUndirectedGraph, "for a directed graph",
 [IsDirectedGraph],
 function(graph)
@@ -278,22 +279,25 @@ function(graph)
   return false;
 end);
 
-#
 # Functional means: for every vertex v there is exactly one edge with source v
+
 InstallMethod(IsFunctionalDirectedGraph, "for a directed graph",
 [IsDirectedGraph],
 function(graph)
   local n, adj, source;
   
   n := Length(Vertices(graph));
-  if not HasSource(graph) and HasAdjacencies(graph) then
+  
+  if (not HasSource(graph)) and HasAdjacencies(graph) then
     adj := Adjacencies(graph);
     return ForAll(adj, x -> Length(x) = 1);
   fi;
+  
   source := Source(graph);
   if Length(source) <> n then
     return false;
   fi;
+
   return Source(graph) = [ 1 .. n ];
 end);
 
