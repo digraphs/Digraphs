@@ -61,13 +61,14 @@ gap> ReadGraph6Line("H?AAEM{");
         See <Ref Func="ReadPlainTextDigraph"/> for a more flexible way to read
         digraphs in a plain text file. 
       </Item>
-    <List>
-
+    </List>
     
     <Example><![CDATA[
-gap> ReadDirectedGraphs(Concatenation(DigraphsDir(), "/data/graph5.g6"), 10);
+gap> ReadDirectedGraphs(
+Concatenation(DigraphsDir(), "/data/graph5.g6"), 10);
 <directed graph with 5 vertices, 8 edges>
-gap> ReadDirectedGraphs(Concatenation(DigraphsDir(), "/data/graph5.g6"), 17);
+gap> ReadDirectedGraphs(
+> Concatenation(DigraphsDir(), "/data/graph5.g6"), 17);
 <directed graph with 5 vertices, 12 edges>
 gap> ReadDirectedGraphs("pkg/digraphs/data/tree9.4.txt");
 [ <directed graph with 9 vertices, 8 edges>, 
