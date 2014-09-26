@@ -162,6 +162,8 @@ gap> DirectedGraphByEdges([["nonsense", "more"]]);
 Error, usage: the argument <edges> must be a list of pairs of pos ints,
 gap> DirectedGraphByEdges([["nonsense"]]);
 Error, usage: the argument <edges> must be a list of pairs,
+gap> gr := DirectedGraphByEdges(Edges(gr), 10);
+<directed graph with 10 vertices, 17 edges>
 
 #
 gap> DigraphsStopTest();

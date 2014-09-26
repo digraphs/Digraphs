@@ -23,6 +23,7 @@ DeclareOperation("DirectedGraphNC", [IsRecord]);
 DeclareOperation("DirectedGraphNC", [IsList]);
 DeclareOperation("DirectedGraphByAdjacencyMatrix", [IsRectangularTable]);
 DeclareOperation("DirectedGraphByEdges", [IsRectangularTable]);
+DeclareOperation("DirectedGraphByEdges", [IsRectangularTable, IsPosInt]);
 DeclareOperation("Graph", [IsDirectedGraph]);
 DeclareOperation("RandomSimpleDirectedGraph", [IsPosInt]);
 
