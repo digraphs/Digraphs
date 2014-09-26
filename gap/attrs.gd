@@ -8,7 +8,13 @@
 #############################################################################
 ##
 
-# operations, attributes, properties for directed graphs . . .
+# attributes for directed graphs . . .
 
+DeclareOperation("Vertices", [IsDirectedGraph]);
+DeclareAttribute("Range", IsDirectedGraph);
+DeclareAttribute("Source", IsDirectedGraph);
+DeclareAttribute("Edges", IsDirectedGraph);
+DeclareAttribute("Adjacencies", IsDirectedGraph);
+DeclareOperation("StronglyConnectedComponents", [IsDirectedGraph]);
 DeclareAttribute("AdjacencyMatrix", IsDirectedGraph);
 

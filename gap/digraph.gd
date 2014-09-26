@@ -8,8 +8,6 @@
 #############################################################################
 ##
 
-# in case we want to make a more elaborate data structure in the future
-
 DeclareCategory("IsDirectedGraph", IsObject);
 
 BindGlobal("DirectedGraphFamily", NewFamily("DirectedGraphFamily",
@@ -26,14 +24,6 @@ DeclareOperation("DirectedGraphNC", [IsList]);
 DeclareOperation("DirectedGraphByAdjacencyMatrix", [IsRectangularTable]);
 DeclareOperation("Graph", [IsDirectedGraph]);
 DeclareOperation("RandomSimpleDirectedGraph", [IsPosInt]);
-
-# basic attributes
-DeclareOperation("Vertices", [IsDirectedGraph]);
-DeclareAttribute("Range", IsDirectedGraph);
-DeclareAttribute("Source", IsDirectedGraph);
-DeclareAttribute("Edges", IsDirectedGraph);
-DeclareAttribute("Adjacencies", IsDirectedGraph);
-DeclareOperation("StronglyConnectedComponents", [IsDirectedGraph]);
 
 # properties
 DeclareProperty("IsSimpleDirectedGraph", IsDirectedGraph);
