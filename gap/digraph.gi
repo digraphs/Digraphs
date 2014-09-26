@@ -219,7 +219,7 @@ end);
 InstallMethod(DirectedGraphByEdges, "for a rectangular table",
 [IsRectangularTable],
 function(edges)
-  local adj, gr, edge;
+  local adj, gr, edge, i;
   
   if not Length(edges[1]) = 2 then 
     Error("usage: the argument <edges> must be a list of pairs,");
@@ -238,6 +238,12 @@ function(edges)
       adj[edge[1]] := [edge[2]];
     else
       Add(adj[edge[1]], edge[2]);
+    fi;
+  od;
+
+  for i in [1..Length(adj)] do 
+    if not IsBound(adj[i]) then 
+      adj[i] := [];
     fi;
   od;
 

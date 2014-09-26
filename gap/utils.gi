@@ -342,9 +342,52 @@ function(s)
 end);
 
 
+ReadDigraphPlainTextEdge:=function(line)
+
+  line:=SplitString(line, '\t');
+  
+  if Length(line) = 2 then 
+    Apply(line, Int);
+    line := line + 1;
+  fi;
+
+  return line;
+end;
+
 # every line of the file must defines an edge, ignore lines starting #
 
-ReadDigraphPlainText:=function(file)
+ReadDigraphPlainTextFile:=function(arg)
+  local file, lines, edges, nr, line;
+  
+  if IsString(arg[1]) then
+    file:=DigraphReadFile(arg[1]);
+  elif IsFile(arg[1]) then
+    file:=arg[1];
+  else
+    Error("usage: the 1st argument must be a string or a file,");
+    return;
+  fi;
+
+  if file=fail then
+    return fail;
+  fi;
+
+  lines:=IO_ReadLines(file);
+  if IsString(arg[1]) then
+    IO_Close(file);
+  fi;
+
+  edges := EmptyPlist(Length(lines));
+  nr := 0;
+
+  for line in lines do 
+    if Length(line) > 0 and line[1] <> '#' then 
+      nr := nr + 1;
+      edges[nr] := ReadDigraphPlainTextEdge(Chomp(line));
+    fi;
+  od;
+
+  return DirectedGraphByEdges(edges);
 end;
 
 #
