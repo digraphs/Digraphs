@@ -11,7 +11,8 @@
 # attributes for directed graphs . . .
 
 DeclareAttribute("AdjacencyMatrix", IsDirectedGraph);
-DeclareAttribute("GrapeGraph", IsDirectedGraph);
+# GrapeGraph must be mutable for grape to function properly
+DeclareAttribute("GrapeGraph", IsDirectedGraph, "mutable");
 DeclareAttribute("Range", IsDirectedGraph);
 DeclareAttribute("Source", IsDirectedGraph);
 DeclareAttribute("Edges", IsDirectedGraph);

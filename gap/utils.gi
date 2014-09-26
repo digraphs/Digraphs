@@ -98,75 +98,42 @@ function()
   return;
 end);
 
-InstallGlobalFunction(DirectedGraphWriteFile,
-function(arg)
-  local mode, file;
+InstallGlobalFunction(DigraphsDir,
+function()
+  return PackageInfo("digraphs")[1]!.InstallationPath;
+end);
 
-  if IsString(arg[1]) then
-    if IsExistingFile(arg[1]) then
-      if not IsWritableFile(arg[1]) then
-        Error(arg[1], " exists and is not a writable file,");
-        return;
-      fi;
-    else
-      if not (IsExistingFile(Concatenation(arg[1], ".gz")) or
-        IsExistingFile(Concatenation(arg[1], ".xz"))) then
-        Exec("touch ", arg[1]);
-      fi;
-    fi;
-  else
-    Error("usage: the 1st argument must be a string,");
+#
+
+InstallGlobalFunction(DigraphReadFile,
+function(str)
+  local file;
+
+  if not IsString(str) then
+    Error("usage: the argument must be a string,");
     return;
   fi;
 
-  if Length(arg)=2 and not (IsString(arg[2]) and (arg[2]="a" or arg[2]="w"))
-   then
-    Error("usage: the 2nd argument must be \"a\" or \"w\",");
-    return;
-  fi;
-
-  if Length(arg)>2 then
-    Error("usage: there must be at most 2 arguments,");
-    return;
-  fi;
-
-  if Length(arg)=1 then
-    mode:="a";
-  else
-    mode:=arg[2];
-  fi;
-
-  file:=SplitString(arg[1], ".");
+  file:=SplitString(str, ".");
   if file[Length(file)] = "gz" then
-    file:=IO_FilteredFile([["gzip", ["-9q"]]], arg[1], mode);
+    file:=IO_FilteredFile([["gzip", ["-dq"]]], str, "r");
   elif file[Length(file)] = "xz" then
-    file:=IO_FilteredFile([["xz", ["-9q"]]], arg[1], mode);
+    file:=IO_FilteredFile([["xz", ["-dq"]]], str, "r");
   else
-    file:=IO_File(arg[1], mode);
+    file:=IO_File(str);
   fi;
+
   return file;
 end);
 
-# this is just temporary, until a better method is given, only works for single
-# graphs
+#
 
-#JDM: should check arg[3]!
-
-InstallGlobalFunction(WriteDirectedGraph,
+InstallGlobalFunction(ReadDirectedGraphs,
 function(arg)
-  local file;
-
-  if not (Length(arg)=3 or Length(arg)=2) then
-    Error("usage: there should be 2 or 3 arguments,");
-    return;
-  fi;
+  local file, i, line;
 
   if IsString(arg[1]) then
-    if IsBound(arg[3]) then
-      file:=DirectedGraphWriteFile(arg[1], arg[3]);
-    else
-      file:=DirectedGraphWriteFile(arg[1]);
-    fi;
+    file:=DigraphReadFile(arg[1]);
   elif IsFile(arg[1]) then
     file:=arg[1];
   else
@@ -175,27 +142,48 @@ function(arg)
   fi;
 
   if file=fail then
-    Error("couldn't open the file ", file, ",");
+    return fail;
+  fi;
+
+  if Length(arg)=2 then
+    if IsFile(arg[1]) then
+      Error("usage: the argument must be a file, or a string, or a string and a",
+      " positive integer,");
+      return;
+    fi;
+    if IsPosInt(arg[2]) then
+      i:=0;
+      repeat
+        i:=i+1; line:=IO_ReadLine(file);
+      until i=arg[2] or line="";
+      if IsString(arg[1]) then
+        IO_Close(file);
+      fi;
+      if line="" then
+        Error(arg[1], " only has ", i-1, " lines,");
+        return;
+      elif line[1]=',' then
+        return ReadDigraph6Line(Chomp(line));
+      else
+        return ReadGraph6Line(Chomp(line));
+      fi;
+    else
+      Error("usage: the 2nd argument must be a positive integer,");
+      return;
+    fi;
+  elif Length(arg)>2 then
+    Error("usage: there should be at most 2 arguments,");
     return;
   fi;
 
-  if not IsDirectedGraph(arg[2]) then
-    Error("usage: the 2nd argument must be directed graph,");
-    return;
-  fi;
-
-  if not IsSimpleDirectedGraph(arg[2]) then
-    Error("not yet implemented,");
-    return;
-  fi;
-
-  IO_WriteLine(file, String(arg[2]));
-
+  line:=IO_ReadLines(file);
   if IsString(arg[1]) then
     IO_Close(file);
   fi;
-  return true;
+  return List(line, x-> ReadGraph6Line(Chomp(x)));
 end);
+
+#
 
 InstallMethod(ReadGraph6Line, "for a string",
 [IsString],
@@ -215,7 +203,6 @@ function(s)
     return [ pos - sum + i - 1, i ];
   end;
 
-  
   if Length(s) = 0 then
     Error("the input string has to be non empty");
     return;
@@ -354,37 +341,83 @@ function(s)
     source := source ) );
 end);
 
+
+# every line of the file must defines an edge, ignore lines starting #
+
+ReadDigraphPlainText:=function(file)
+end;
+
 #
 
-InstallGlobalFunction(DigraphReadFile,
-function(str)
-  local file;
+InstallGlobalFunction(DirectedGraphWriteFile,
+function(arg)
+  local mode, file;
 
-  if not IsString(str) then
-    Error("usage: the argument must be a string,");
+  if IsString(arg[1]) then
+    if IsExistingFile(arg[1]) then
+      if not IsWritableFile(arg[1]) then
+        Error(arg[1], " exists and is not a writable file,");
+        return;
+      fi;
+    else
+      if not (IsExistingFile(Concatenation(arg[1], ".gz")) or
+        IsExistingFile(Concatenation(arg[1], ".xz"))) then
+        Exec("touch ", arg[1]);
+      fi;
+    fi;
+  else
+    Error("usage: the 1st argument must be a string,");
     return;
   fi;
 
-  file:=SplitString(str, ".");
-  if file[Length(file)] = "gz" then
-    file:=IO_FilteredFile([["gzip", ["-dq"]]], str, "r");
-  elif file[Length(file)] = "xz" then
-    file:=IO_FilteredFile([["xz", ["-dq"]]], str, "r");
-  else
-    file:=IO_File(str);
+  if Length(arg)=2 and not (IsString(arg[2]) and (arg[2]="a" or arg[2]="w"))
+   then
+    Error("usage: the 2nd argument must be \"a\" or \"w\",");
+    return;
   fi;
 
+  if Length(arg)>2 then
+    Error("usage: there must be at most 2 arguments,");
+    return;
+  fi;
+
+  if Length(arg)=1 then
+    mode:="a";
+  else
+    mode:=arg[2];
+  fi;
+
+  file:=SplitString(arg[1], ".");
+  if file[Length(file)] = "gz" then
+    file:=IO_FilteredFile([["gzip", ["-9q"]]], arg[1], mode);
+  elif file[Length(file)] = "xz" then
+    file:=IO_FilteredFile([["xz", ["-9q"]]], arg[1], mode);
+  else
+    file:=IO_File(arg[1], mode);
+  fi;
   return file;
 end);
 
-#
+# this is just temporary, until a better method is given, only works for single
+# graphs
 
-InstallGlobalFunction(ReadDirectedGraphs,
+#JDM: should check arg[3]!
+
+InstallGlobalFunction(WriteDirectedGraph,
 function(arg)
-  local file, i, line;
+  local file;
+
+  if not (Length(arg)=3 or Length(arg)=2) then
+    Error("usage: there should be 2 or 3 arguments,");
+    return;
+  fi;
 
   if IsString(arg[1]) then
-    file:=DigraphReadFile(arg[1]);
+    if IsBound(arg[3]) then
+      file:=DirectedGraphWriteFile(arg[1], arg[3]);
+    else
+      file:=DirectedGraphWriteFile(arg[1]);
+    fi;
   elif IsFile(arg[1]) then
     file:=arg[1];
   else
@@ -393,52 +426,26 @@ function(arg)
   fi;
 
   if file=fail then
-    return fail;
-  fi;
-
-  if Length(arg)=2 then
-    if IsFile(arg[1]) then
-      Error("usage: the argument must be a file, or a string, or a string and a",
-      " positive integer,");
-      return;
-    fi;
-    if IsPosInt(arg[2]) then
-      i:=0;
-      repeat
-        i:=i+1; line:=IO_ReadLine(file);
-      until i=arg[2] or line="";
-      if IsString(arg[1]) then
-        IO_Close(file);
-      fi;
-      if line="" then
-        Error(arg[1], " only has ", i-1, " lines,");
-        return;
-      elif line[1]=',' then
-        return ReadDigraph6Line(Chomp(line));
-      else
-        return ReadGraph6Line(Chomp(line));
-      fi;
-    else
-      Error("usage: the 2nd argument must be a positive integer,");
-      return;
-    fi;
-  elif Length(arg)>2 then
-    Error("usage: there should be at most 2 arguments,");
+    Error("couldn't open the file ", file, ",");
     return;
   fi;
 
-  line:=IO_ReadLines(file);
+  if not IsDirectedGraph(arg[2]) then
+    Error("usage: the 2nd argument must be directed graph,");
+    return;
+  fi;
+
+  if not IsSimpleDirectedGraph(arg[2]) then
+    Error("not yet implemented,");
+    return;
+  fi;
+
+  IO_WriteLine(file, String(arg[2]));
+
   if IsString(arg[1]) then
     IO_Close(file);
   fi;
-  return List(line, x-> ReadGraph6Line(Chomp(x)));
-end);
-
-#
-
-InstallGlobalFunction(DigraphsDir,
-function()
-  return PackageInfo("digraphs")[1]!.InstallationPath;
+  return true;
 end);
 
 #
