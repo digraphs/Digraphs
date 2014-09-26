@@ -184,101 +184,35 @@ function(adj)
   return record;
 end);
 
-# basic attributes
+#
 
-DIGRAPHS_RangeSourceVertices:=function(graph)
-  local adj, nr, source, range, vertices, names, j, i;
+InstallMethod(DirectedGraphByAdjacencyMatrix, "for a rectangular table",
+[IsRectangularTable],
+function(mat)
+  local n, record, i, j, k;
+  n := Length(mat);
 
-  if IsBound(graph!.range) then
+  if Length(mat[1]) <> n then
+    Error("the given matrix is not square, so not an adjacency matrix, ");
     return;
   fi;
 
-  adj := Adjacencies(graph);
-  nr := 0;
-
-  for j in adj do
-    nr := nr + Length(j);
-  od;
-
-  source := EmptyPlist(nr);
-  range := EmptyPlist(nr);
-  vertices := [1..Length(adj)];
-  names := vertices;
-  nr := 0;
-
-  for i in [1..Length(adj)] do
-    for j in adj[i] do
-      nr := nr + 1;
-      source[nr] := i;
-      range[nr] := j;
+  record := rec( vertices := [ 1 .. n ], source := [], range := [] );
+  for i in [1..n] do
+    for j in [1..n] do
+      if IsPosInt(mat[i][j]) or mat[i][j] = 0 then 
+        for k in [1..mat[i][j]] do
+          Add(record.source, i);
+          Add(record.range, j);
+        od;
+      else
+        Error("the given matrix is not solely non-negative integers, ");
+        return;
+      fi;
     od;
   od;
-
-  graph!.range := MakeImmutable(range);
-  graph!.source := MakeImmutable(source);
-  graph!.vertices := MakeImmutable(vertices);
-  graph!.names := MakeImmutable(names);
-
-  return;
-end;
-
-InstallMethod(Vertices, "for a directed graph",
-[IsDirectedGraph],
-function(graph)
-  DIGRAPHS_RangeSourceVertices(graph);
-  return graph!.vertices;
+  return DirectedGraph(record);
 end);
-
-InstallMethod(Range, "for a directed graph",
-[IsDirectedGraph],
-function(graph)
-  DIGRAPHS_RangeSourceVertices(graph);
-  return graph!.range;
-end);
-
-InstallMethod(Source, "for a directed graph",
-[IsDirectedGraph],
-function(graph)
-  DIGRAPHS_RangeSourceVertices(graph);
-  return graph!.source;
-end);
-
-InstallMethod(Edges, "for a directed graph",
-[IsDirectedGraph],
-function(graph)
-  local out, range, source, i;
-
-  out:=EmptyPlist(Length(Range(graph)));
-  range:=Range(graph);
-  source:=Source(graph);
-  for i in [1..Length(source)] do
-    out[i]:=[source[i], range[i]];
-  od;
-  return Set(out);
-end);
-
-if IsBound(DIGRAPH_ADJACENCY) then
-  InstallMethod(Adjacencies, "for a directed graph",
-  [IsDirectedGraph], DIGRAPH_ADJACENCY);
-else
-  InstallMethod(Adjacencies, "for a directed graph",
-  [IsDirectedGraph],
-  function(graph)
-    local range, source, out, i;
-
-    range:=Range(graph);
-    source:=Source(graph);
-    out:=List(Vertices(graph), x-> []);
-
-    for i in [1..Length(source)] do
-      AddSet(out[source[i]], range[i]);
-    od;
-
-    MakeImmutable(out);
-    graph!.adj := out;
-    return out;
-  end);
-fi;
 
 # operators
 
@@ -331,6 +265,43 @@ else
 
   end);
 fi;
+
+# Undirected means every (non-loop) edge has a complement edge
+# JDM: improve!
+InstallMethod(IsUndirectedGraph, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  local adj;
+  adj := AdjacencyMatrix(graph);
+  if adj = TransposedMat(adj) then
+    return true;
+  fi;
+  return false;
+end);
+
+# Functional means: for every vertex v there is exactly one edge with source v
+
+InstallMethod(IsFunctionalDirectedGraph, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  local n, adj, source;
+  
+  n := Length(Vertices(graph));
+  
+  if (not HasSource(graph)) and HasAdjacencies(graph) then
+    adj := Adjacencies(graph);
+    return ForAll(adj, x -> Length(x) = 1);
+  fi;
+  
+  source := Source(graph);
+  if Length(source) <> n then
+    return false;
+  fi;
+
+  return Source(graph) = [ 1 .. n ];
+end);
+
+#
 
 InstallMethod(ViewString, "for a directed graph",
 [IsDirectedGraph],
@@ -901,43 +872,6 @@ InstallMethod(IsConnectedDigraph, "for a digraph",
 [IsDirectedGraph],
 function(graph)
   return IsConnectedGraph( Graph(graph) );
-end);
-
-
-#
-
-InstallMethod(WriteGraph6, "for a directed graph",
-[IsDirectedGraph],
-function(graph)
-  local list, adj, n;
-  list := [];
-  adj := Adjacencies(graph);
-  n := Length(Vertices(graph));
-  
-  # First write the number of vertices
-  if n < 63 then
-    Add(list, n);
-  elif n < 258248 then
-    Add(list, 63);
-    Add(list, Int(n / 64^2));
-    Add(list, Int(n / 64) mod 64);
-    Add(list, n mod 64);
-  elif n < 68719476736 then
-    Add(list, 63);
-    Add(list, 63);
-    Add(list, Int(n / 64^5));
-    Add(list, Int(n / 64^4) mod 64);
-    Add(list, Int(n / 64^3) mod 64);
-    Add(list, Int(n / 64^2) mod 64);
-    Add(list, Int(n / 64^1) mod 64);
-    Add(list, n mod 64);
-  else
-    Error("<graph> must have no more than 68719476736 vertices,");
-    return;
-  fi;
-  
-  # Create string to return
-  return List(list, i -> CharInt(i + 63));
 end);
 
 #EOF

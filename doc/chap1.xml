@@ -9,6 +9,7 @@
   <Section><Heading>Creating directed graphs</Heading> 
     <#Include Label="IsDirectedGraph"> 
     <#Include Label="DirectedGraph"> 
+    <#Include Label="DirectedGraphByAdjacencyMatrix"> 
     <#Include Label="RandomSimpleDirectedGraph"> 
   </Section>
   
@@ -34,20 +35,29 @@
     <#Include Label="RangeSourceDigraph"> 
     <#Include Label="Adjacencies"> 
     <#Include Label="StronglyConnectedComponents"> 
+    <#Include Label="AdjacencyMatrix"> 
   </Section>
 
   <Section><Heading>Properties of directed graphs</Heading> 
-    <#Include Label="IsSimpleDirectedGraph"> 
+    <#Include Label="IsSimpleDirectedGraph">
+    <#Include Label="IsUndirectedGraph">
+    <#Include Label="IsFunctionalDirectedGraph">
     <#Include Label="IsStronglyConnectedDirectedGraph"> 
     <#Include Label="IsAcyclicDirectedGraph"> 
   </Section>
 
-  <Section><Heading>Operations  on directed graphs</Heading> 
+  <Section><Heading>Operations on directed graphs</Heading> 
     <#Include Label="DirectedGraphRelabel"> 
     <#Include Label="DirectedGraphRemoveLoops"> 
     <#Include Label="DirectedGraphRemoveEdges"> 
     <#Include Label="DirectedGraphTopologicalSort"> 
     <#Include Label="DirectedGraphReflexiveTransitiveClosure"> 
+  </Section>
+
+  <Section><Heading>Visualising the structure of a directed graph</Heading>
+    <#Include Label="Splash">
+    <#Include Label="DotDirectedGraph">
+    <#Include Label="DotUndirectedGraph">
   </Section>
 
 </Chapter>

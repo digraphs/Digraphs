@@ -1,0 +1,157 @@
+#############################################################################
+##
+#W  display.xml
+#Y  Copyright (C) 2011-14                                James D. Mitchell
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
+
+<#GAPDoc Label="Splash">
+  <ManSection>
+    <Func Name="Splash" Arg="str, [opts]"/>
+    <Returns>Nothing.</Returns>
+    <Description>
+      This function attempts to convert the string <A>str</A> into a pdf
+      document and open this document, i.e. to splash it all over your monitor.<P/>
+
+      The string <A>str</A> must correspond to a valid <C>dot</C> or
+      <C>LaTeX</C> text file and you must have have <C>GraphViz</C> and
+      <C>pdflatex</C> installed on your computer.  For details about these file
+      formats, see <URL>http://www.latex-project.org</URL> and 
+      <URL>http://www.graphviz.org</URL>.<P/>
+      
+      This function is provided to allow convenient, immediate viewing of the
+      pictures produced by the function <Ref Attr="DotDirectedGraph"/>.<P/>
+
+      The optional second argument <A>opts</A> should be a record with
+      components corresponding to various options, given below. 
+
+      <List>
+        <Mark>path</Mark>
+        <Item>
+          this should be a string representing the path to the directory where
+          you want <C>Splash</C> to do its work. The default value of this
+          option is <C>"~/"</C>.
+        </Item>
+
+        <Mark>directory</Mark>
+        <Item>
+          this should be a string representing the name of the directory in
+          <C>path</C> where you want <C>Splash</C> to do its work. This function
+          will create this directory if does not already exist. <P/>
+    
+          The default value of this option is <C>"tmp.viz"</C> if the option
+          <C>path</C> is present, and the result of 
+          <Ref Func="DirectoryTemporary" BookName="ref"/> is used otherwise.
+        </Item>
+          
+        <Mark>filename</Mark>
+        <Item>
+          this should be a string representing the name of the file where
+          <A>str</A> will be written.  The default value of this option is
+          <C>"vizpicture"</C>.
+        </Item>
+
+        <Mark>viewer</Mark>
+        <Item>
+          this should be a string representing the name of the program which
+          should open the files produced by <C>GraphViz</C> or <C>pdflatex</C>.
+        </Item>
+
+        <Mark>type</Mark>
+        <Item>
+          this option can be used to specify that the string <A>str</A> contains
+          a &LaTeX; or <C>dot</C> document. You can specify this option in
+          <A>str</A> directly by making the first line <C>"%latex"</C> or
+          <C>"//dot"</C>.  There is no default value for this option, this
+          option must be specified in <A>str</A> or in <A>opt.type</A>. 
+        </Item>
+
+        <Mark>filetype</Mark>
+        <Item>
+          this should be a string representing the type of file which
+          <C>Splash</C> should produce. For &LaTeX; files, this option is
+          ignored and the default value <C>"pdf"</C> is used. 
+        </Item>
+      </List>
+
+      This function was written by Attila Egri-Nagy and Manuel Delgado with some
+      minor changes by J. D. Mitchell.<P/>
+
+      <Log><![CDATA[
+gap> Splash(DotDirectedGraph(RandomSimpleDirectedGraph(4)));]]></Log>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DotDirectedGraph">
+  <ManSection>
+    <Attr Name="DotDirectedGraph" Arg="digraph"/>
+    <Returns>A string.</Returns>
+    <Description>
+      This function produces a graphical representation of the directed graph
+      <A>digraph</A>. Vertices are displayed as circles, numbered consistently
+      with <A>digraph</A>. Edges are displayed as arrowed lines between
+      vertices, with the arrowhead of each line pointing towards the range 
+      of the edge.<P/> 
+     
+      The output is in <C>dot</C> format (also known as <C>GraphViz</C>) 
+      format. For details about this file format, and information about how to 
+      display or edit this format see <URL>http://www.graphviz.org</URL>. <P/>
+
+      The string returned by <C>DotDirectedGraph</C> can be written to a file using
+      the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
+
+      <Log><![CDATA[
+gap> adj := List( [ 1 .. 4 ], x -> List( [ 1 .. 4 ], y -> 1 ));
+[ [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ] ]
+gap> adj[1][1] := 1;   
+2
+gap> adj[1][3] := 0;
+0
+gap> gr := DirectedGraphByAdjacencyMatrix(adj);
+<directed graph with 4 vertices, 16 edges>
+gap> FileString("dot/k4.dot", DotDirectedGraph(gr));
+146]]></Log>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DotUndirectedGraph">
+  <ManSection>
+    <Attr Name="DotUndirectedGraph" Arg="digraph"/>
+    <Returns>A string.</Returns>
+    <Description>
+      This function produces a graphical representation of the undirected 
+      directed graph <A>digraph</A>. <C>DotUndirectedGraph</C> will return an error if
+      <A>digraph</A> is not an undirected graph. See 
+      <Ref Prop="IsUndirectedGraph"/>.<P/>
+      
+      Vertices are displayed as circles, numbered consistently with
+      <A>digraph</A>. Since <A>digraph</A> is undirected, for every non-loop
+      edge there is a complementary edge with opposite source and range.
+      <C>DotUndirectedGraph</C> displays each pair of complementary edges as a single
+      line between the relevant vertices, with no arrowhead.<P/>
+
+      The output is in <C>dot</C> format (also known as <C>GraphViz</C>) 
+      format. For details about this file format, and information about how to 
+      display or edit this format see <URL>http://www.graphviz.org</URL>. <P/>
+
+      The string returned by <C>DotUndirectedGraph</C> can be written to a file using
+      the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
+
+      <Log><![CDATA[
+gap> r := rec ( vertices := [ 1 .. 4 ],
+> source := [ 1, 1, 1, 1, 2, 2, 3, 4, 4 ],
+> range := [ 2, 2, 3, 4, 1, 1, 1, 1, 4 ] );;
+gap> star := DirectedGraph(r);
+<directed graph with 4 vertices, 9 edges>
+gap> IsUndirectedGraph(star);
+true
+gap> FileString("dot/star.dot", DotUndirectedGraph(star));;
+]]></Log>
+    </Description>
+  </ManSection>
+<#/GAPDoc>

@@ -9,7 +9,7 @@
 ##
 ## this file contains utilies for use with the Digraphs package.
 
-BindGlobal("DigraphsDocXMLFiles", ["digraph.xml", "../PackageInfo.g"]);
+BindGlobal("DigraphsDocXMLFiles", ["digraph.xml", "attrs.xml", "display.xml", "../PackageInfo.g"]);
 
 BindGlobal("DigraphsTestRec", rec());
 MakeReadWriteGlobal("DigraphsTestRec");
@@ -260,7 +260,7 @@ function(s)
   range := [];
   source := [];
 
-  # Obtaining the adjecancy vector
+  # Obtaining the adjacency vector
   pos := 1;
   len := 1;
   for j in [start .. Length(list)] do # Every integer corresponds to 6 bits
@@ -283,8 +283,75 @@ function(s)
     pos := pos + 6;
   od;
 
-  return DirectedGraphNC(rec(vertices := [ 1 .. n ], range := range + 1,
+  return DirectedGraph(rec(vertices := [ 1 .. n ], range := range + 1,
     source := source + 1 ));
+end);
+
+#
+
+InstallMethod(ReadDigraph6Line, "for a string",
+[IsString],
+function(s)
+  local list, i, n, start, range, source, pos, len, j, bpos, tabpos;
+
+  # Check for the special ',' character
+  if s[1] <> ',' then
+    Error("<s> must be a string in Digraph6 format,");
+    return;
+  fi;
+
+  # Convert ASCII chars to integers
+  list := [];
+  for i in [2..Length(s)] do
+    Add(list, IntChar(s[i]) - 63);
+  od;
+
+  # Get n the number of vertices of the graph
+  if list[1] <> 63 then
+    n := list[1];
+    start := 2;
+  else
+    if list[2] = 63 then
+      n := 0;
+      for i in [0..5] do
+        n := n + 2^(6*i)*list[8-i];
+      od;
+      start := 9;
+    else
+      n := 0;
+      for i in [0..2] do
+        n := n + 2^(6*i)*list[4-i];
+      od;
+      start := 5;
+    fi;
+  fi;
+
+  range := [];
+  source := [];
+
+  # Obtaining the adjacency vector
+  pos := 1;
+  len := 1;
+  for j in [start .. Length(list)] do # Every integer corresponds to 6 bits
+    i := list[j];
+    bpos := 1;
+    while i > 0 do
+      if i mod 2  = 0 then
+        i := i / 2;
+      else
+        tabpos := pos + 6 - bpos;
+        source[len] := (tabpos-1) mod n + 1;
+	range[len] := (tabpos - source[len]) / n + 1;
+	len := len + 1;
+        i := (i - 1) / 2;
+      fi;
+      bpos := bpos + 1;
+    od;
+    pos := pos + 6;
+  od;
+
+  return DirectedGraph( rec( vertices := [ 1 .. n ], range := range,
+    source := source ) );
 end);
 
 #
@@ -346,6 +413,8 @@ function(arg)
       if line="" then
         Error(arg[1], " only has ", i-1, " lines,");
         return;
+      elif line[1]=',' then
+        return ReadDigraph6Line(Chomp(line));
       else
         return ReadGraph6Line(Chomp(line));
       fi;
@@ -370,6 +439,130 @@ end);
 InstallGlobalFunction(DigraphsDir,
 function()
   return PackageInfo("digraphs")[1]!.InstallationPath;
+end);
+
+#
+
+InstallMethod(WriteGraph6, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  local list, adj, n, tablen, blist, i, j, pos, block;
+  list := [];
+  adj := Adjacencies(graph);
+  n := Length(Vertices(graph));
+  
+  # First write the number of vertices
+  if n < 63 then
+    Add(list, n);
+  elif n < 258248 then
+    Add(list, 63);
+    Add(list, Int(n / 64^2));
+    Add(list, Int(n / 64) mod 64);
+    Add(list, n mod 64);
+  elif n < 68719476736 then
+    Add(list, 63);
+    Add(list, 63);
+    Add(list, Int(n / 64^5));
+    Add(list, Int(n / 64^4) mod 64);
+    Add(list, Int(n / 64^3) mod 64);
+    Add(list, Int(n / 64^2) mod 64);
+    Add(list, Int(n / 64^1) mod 64);
+    Add(list, n mod 64);
+  else
+    Error("<graph> must have no more than 68719476736 vertices,");
+    return;
+  fi;
+  
+  # Find adjacencies (non-directed)
+  tablen := n * (n-1) / 2;
+  blist := BlistList([1..tablen+6], []);
+  for i in Vertices(graph) do
+    for j in adj[i] do
+      # Loops not allowed
+      if j > i then
+        blist[i + (j-2)*(j-1)/2] := true;
+      elif i > j then
+        blist[j + (i-2)*(i-1)/2] := true;
+      fi;
+    od;
+  od;
+  
+  # Read these into list, 6 bits at a time
+  pos := 0;
+  while pos < tablen do
+    block := 0;
+    for i in [1..6] do
+      if blist[pos+i] then
+        block := block + 2^(6-i);
+      fi;
+    od;
+    Add(list, block);
+    pos := pos + 6;
+  od;
+  
+  # Create string to return
+  return List(list, i -> CharInt(i + 63));
+end);
+
+#
+
+InstallMethod(WriteDigraph6, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  local list, adj, n, tablen, blist, i, j, pos, block;
+  list := [];
+  adj := Adjacencies(graph);
+  n := Length(Vertices(graph));
+  
+  # First write the special character ','
+  Add(list,-19);
+  
+  # Now write the number of vertices
+  if n < 63 then
+    Add(list, n);
+  elif n < 258248 then
+    Add(list, 63);
+    Add(list, Int(n / 64^2));
+    Add(list, Int(n / 64) mod 64);
+    Add(list, n mod 64);
+  elif n < 68719476736 then
+    Add(list, 63);
+    Add(list, 63);
+    Add(list, Int(n / 64^5));
+    Add(list, Int(n / 64^4) mod 64);
+    Add(list, Int(n / 64^3) mod 64);
+    Add(list, Int(n / 64^2) mod 64);
+    Add(list, Int(n / 64^1) mod 64);
+    Add(list, n mod 64);
+  else
+    Error("<graph> must have no more than 68719476736 vertices,");
+    return;
+  fi;
+  
+  # Find adjacencies (non-directed)
+  tablen := n ^ 2;
+  blist := BlistList([1..tablen+6], []);
+  for i in Vertices(graph) do
+    for j in adj[i] do
+      blist[i + n*(j-1)] := true;
+    od;
+  od;
+  
+  # Read these into list, 6 bits at a time
+  pos := 0;
+  while pos < tablen do
+    block := 0;
+    for i in [1..6] do
+      if blist[pos+i] then
+        block := block + 2^(6-i);
+      fi;
+    od;
+    Add(list, block);
+    pos := pos + 6;
+  od;
+  
+  # Create string to return
+  return List(list, i -> CharInt(i + 63));
 end);
 
 #EOF
