@@ -10,6 +10,9 @@
 
 # attributes for directed graphs . . .
 
+InstallMethod(GrapeGraph, "for a directed graph", 
+[IsDirectedGraph], Graph);
+
 BindGlobal("DIGRAPHS_RangeSourceVertices",
 function(graph)
   local adj, nr, source, range, vertices, names, j, i;
