@@ -33,7 +33,7 @@ end);
 InstallMethod(RandomSimpleDirectedGraph, "for a pos int",
 [IsPosInt],
 function(n)
-  local verts, adj, nr, i, j;
+  local verts, adj, nr, i, j, gr;
 
   verts := [1..n];
   adj := [];
@@ -46,7 +46,9 @@ function(n)
     od;
   od;
 
-  return DirectedGraphNC(adj);
+  gr := DirectedGraphNC(adj);
+  SetIsSimpleDirectedGraph(gr, true);
+  return gr;
 end);
 
 #
