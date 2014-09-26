@@ -23,5 +23,7 @@ DeclareOperation("ReadGraph6Line", [IsString]);
 DeclareOperation("ReadDigraph6Line", [IsString]);
 DeclareGlobalFunction("DigraphReadFile");
 DeclareGlobalFunction("ReadDirectedGraphs");
+DeclareOperation("WriteGraph6", [IsDirectedGraph]);
+DeclareOperation("WriteDigraph6", [IsDirectedGraph]);
 
 DeclareGlobalFunction("DigraphsDir");

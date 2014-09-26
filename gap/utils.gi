@@ -425,4 +425,128 @@ function()
   return PackageInfo("digraphs")[1]!.InstallationPath;
 end);
 
+#
+
+InstallMethod(WriteGraph6, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  local list, adj, n, tablen, blist, i, j, pos, block;
+  list := [];
+  adj := Adjacencies(graph);
+  n := Length(Vertices(graph));
+  
+  # First write the number of vertices
+  if n < 63 then
+    Add(list, n);
+  elif n < 258248 then
+    Add(list, 63);
+    Add(list, Int(n / 64^2));
+    Add(list, Int(n / 64) mod 64);
+    Add(list, n mod 64);
+  elif n < 68719476736 then
+    Add(list, 63);
+    Add(list, 63);
+    Add(list, Int(n / 64^5));
+    Add(list, Int(n / 64^4) mod 64);
+    Add(list, Int(n / 64^3) mod 64);
+    Add(list, Int(n / 64^2) mod 64);
+    Add(list, Int(n / 64^1) mod 64);
+    Add(list, n mod 64);
+  else
+    Error("<graph> must have no more than 68719476736 vertices,");
+    return;
+  fi;
+  
+  # Find adjacencies (non-directed)
+  tablen := n * (n-1) / 2;
+  blist := BlistList([1..tablen+6], []);
+  for i in Vertices(graph) do
+    for j in adj[i] do
+      # Loops not allowed
+      if j > i then
+        blist[i + (j-2)*(j-1)/2] := true;
+      elif i > j then
+        blist[j + (i-2)*(i-1)/2] := true;
+      fi;
+    od;
+  od;
+  
+  # Read these into list, 6 bits at a time
+  pos := 0;
+  while pos < tablen do
+    block := 0;
+    for i in [1..6] do
+      if blist[pos+i] then
+        block := block + 2^(6-i);
+      fi;
+    od;
+    Add(list, block);
+    pos := pos + 6;
+  od;
+  
+  # Create string to return
+  return List(list, i -> CharInt(i + 63));
+end);
+
+#
+
+InstallMethod(WriteDigraph6, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  local list, adj, n, tablen, blist, i, j, pos, block;
+  list := [];
+  adj := Adjacencies(graph);
+  n := Length(Vertices(graph));
+  
+  # First write the special character ','
+  Add(list,-19);
+  
+  # Now write the number of vertices
+  if n < 63 then
+    Add(list, n);
+  elif n < 258248 then
+    Add(list, 63);
+    Add(list, Int(n / 64^2));
+    Add(list, Int(n / 64) mod 64);
+    Add(list, n mod 64);
+  elif n < 68719476736 then
+    Add(list, 63);
+    Add(list, 63);
+    Add(list, Int(n / 64^5));
+    Add(list, Int(n / 64^4) mod 64);
+    Add(list, Int(n / 64^3) mod 64);
+    Add(list, Int(n / 64^2) mod 64);
+    Add(list, Int(n / 64^1) mod 64);
+    Add(list, n mod 64);
+  else
+    Error("<graph> must have no more than 68719476736 vertices,");
+    return;
+  fi;
+  
+  # Find adjacencies (non-directed)
+  tablen := n ^ 2;
+  blist := BlistList([1..tablen+6], []);
+  for i in Vertices(graph) do
+    for j in adj[i] do
+      blist[i + n*(j-1)] := true;
+    od;
+  od;
+  
+  # Read these into list, 6 bits at a time
+  pos := 0;
+  while pos < tablen do
+    block := 0;
+    for i in [1..6] do
+      if blist[pos+i] then
+        block := block + 2^(6-i);
+      fi;
+    od;
+    Add(list, block);
+    pos := pos + 6;
+  od;
+  
+  # Create string to return
+  return List(list, i -> CharInt(i + 63));
+end);
+
 #EOF
