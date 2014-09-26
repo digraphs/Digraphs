@@ -200,7 +200,7 @@ end);
 InstallMethod(ReadGraph6Line, "for a string",
 [IsString],
 function(s)
-  local FindCoord, list, n, start, range, source, pos, len, i, bpos, temp, j;
+  local FindCoord, list, n, start, maxedges, range, source, pos, len, i, bpos, temp, j;
 
   # find a position in the adj matrix from the vector
   # knowing a lower bound for pos_y
@@ -215,6 +215,12 @@ function(s)
     return [ pos - sum + i - 1, i ];
   end;
 
+  
+  if Length(s) = 0 then
+    Error("the input string has to be non empty");
+    return;
+  fi;
+
   # Convert ASCII chars to integers
   list := [];
   for i in s do
@@ -225,8 +231,8 @@ function(s)
   if list[1] <> 63 then
     n := list[1];
     start := 2;
-  else
-    if list[2] = 63 then
+  elif Length(list) > 300 then
+    if list[2] = 63 and Length(list) <= 8 then
       n := 0;
       for i in [0..5] do
         n := n + 2^(6*i)*list[8-i];
@@ -237,8 +243,18 @@ function(s)
       for i in [0..2] do
         n := n + 2^(6*i)*list[4-i];
       od;
-      start := 5;
+      start :=  5;
     fi;
+  else
+     Error(s, " is not a valid graph6 input");
+     return;
+  fi;
+
+  maxedges := n*(n-1)/2;
+  if list <> [0] and not (Int((maxedges-1)/6) +  start = Length(list) and
+     list[Length(list)] mod 2^((0 - maxedges) mod 6) = 0) then
+       Error(s, " is not a valid graph6 input");
+       return;
   fi;
 
   range := [];
