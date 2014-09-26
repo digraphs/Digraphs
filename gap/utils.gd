@@ -15,15 +15,15 @@ DeclareGlobalFunction("DigraphsTestAll");
 DeclareGlobalFunction("DigraphsTestInstall");
 DeclareGlobalFunction("DigraphsTestManualExamples");
 DeclareGlobalFunction("DigraphsManualExamples");
+DeclareGlobalFunction("DigraphsDir");
 
-DeclareGlobalFunction("WriteDirectedGraph");
-DeclareGlobalFunction("DirectedGraphWriteFile");
-
+DeclareGlobalFunction("ReadDirectedGraphs");
 DeclareOperation("ReadGraph6Line", [IsString]);
 DeclareOperation("ReadDigraph6Line", [IsString]);
-DeclareGlobalFunction("DigraphReadFile");
-DeclareGlobalFunction("ReadDirectedGraphs");
+DeclareGlobalFunction("ReadPlainTextDigraph");
+DeclareGlobalFunction("DigraphPlainTextLineDecoder");
+
+DeclareGlobalFunction("WriteDirectedGraph");
 DeclareOperation("WriteGraph6", [IsDirectedGraph]);
 DeclareOperation("WriteDigraph6", [IsDirectedGraph]);
 
-DeclareGlobalFunction("DigraphsDir");

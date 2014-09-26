@@ -105,82 +105,84 @@ end);
 
 #
 
-InstallGlobalFunction(DigraphReadFile,
-function(str)
-  local file;
-
-  if not IsString(str) then
-    Error("usage: the argument must be a string,");
-    return;
-  fi;
-
-  file:=SplitString(str, ".");
-  if file[Length(file)] = "gz" then
-    file:=IO_FilteredFile([["gzip", ["-dq"]]], str, "r");
-  elif file[Length(file)] = "xz" then
-    file:=IO_FilteredFile([["xz", ["-dq"]]], str, "r");
-  else
-    file:=IO_File(str);
-  fi;
-
-  return file;
-end);
-
-#
-
 InstallGlobalFunction(ReadDirectedGraphs,
 function(arg)
-  local file, i, line;
+  local name, decoder, nr, file, splitname, extension, i, line, lines;
 
-  if IsString(arg[1]) then
-    file:=DigraphReadFile(arg[1]);
-  elif IsFile(arg[1]) then
-    file:=arg[1];
-  else
-    Error("usage: the 1st argument must be a string or a file,");
+  if Length(arg) = 1 then 
+    name := arg[1];
+    decoder := fail;
+    nr := infinity;
+  elif Length(arg) = 2 then 
+    name := arg[1];
+    if IsFunction(arg[2]) then 
+      decoder := arg[2];
+      nr := infinity;
+    else 
+      decoder := fail;
+      nr := arg[2];
+    fi;
+  elif Length(arg) = 3 then 
+    name := arg[1];
+    decoder := arg[2];
+    nr := arg[3];
+  else 
+    Error("Digraphs: usage: ReadDirectedGraphs( filename [,decoder][,pos] )\n");
     return;
   fi;
 
-  if file=fail then
-    return fail;
+  if (not IsString(name)) or (not (IsFunction(decoder) or decoder = fail)) 
+    or (not (IsPosInt(nr) or nr = infinity)) then 
+    Error("Digraphs: usage: ReadDirectedGraphs( filename [,decoder][,pos] )\n");
+    return;
   fi;
 
-  if Length(arg)=2 then
-    if IsFile(arg[1]) then
-      Error("usage: the argument must be a file, or a string, or a string and a",
-      " positive integer,");
-      return;
-    fi;
-    if IsPosInt(arg[2]) then
-      i:=0;
-      repeat
-        i:=i+1; line:=IO_ReadLine(file);
-      until i=arg[2] or line="";
-      if IsString(arg[1]) then
-        IO_Close(file);
-      fi;
-      if line="" then
-        Error(arg[1], " only has ", i-1, " lines,");
+  file := IO_CompressedFile(name, "r");
+  
+  if file = fail then 
+    Error("Digraphs: ReadDirectedGraphs: can't open file ", name, "\n");
+    return;
+  fi;
+
+  if decoder = fail then 
+    splitname := SplitString(name, ".");
+    extension := splitname[Length(splitname)];
+    
+    if extension in [ "gz", "bzip2", "xz"] then 
+      if Length(splitname) = 2 then 
+        Error("Digraphs: ReadDirectedGraphs: can't determine the file format\n");
         return;
-      elif line[1]=',' then
-        return ReadDigraph6Line(Chomp(line));
-      else
-        return ReadGraph6Line(Chomp(line));
       fi;
-    else
-      Error("usage: the 2nd argument must be a positive integer,");
+      extension := splitname[Length(splitname)-1];
+    fi;
+   
+    if extension = "txt" then 
+      decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
+    elif extension = "g6" then 
+      decoder := ReadGraph6Line;
+    elif extension = "d6" then 
+      decoder := ReadDigraph6Line;
+    else 
+      Error("Digraphs: ReadDirectedGraphs: can't determine the file format,");
       return;
     fi;
-  elif Length(arg)>2 then
-    Error("usage: there should be at most 2 arguments,");
-    return;
+    # JDM: could also try to determine the type of the file by looking into it 
   fi;
 
-  line:=IO_ReadLines(file);
-  if IsString(arg[1]) then
+  if nr < infinity then 
+    i:=0;
+    repeat
+      i:=i+1; 
+      line:=IO_ReadLine(file);
+    until i=nr or line="";
     IO_Close(file);
+    return decoder(Chomp(line));
   fi;
-  return List(line, x-> ReadGraph6Line(Chomp(x)));
+
+  lines:=IO_ReadLines(file);
+  IO_Close(file);
+  Apply(lines, x-> decoder(Chomp(x)));
+  return lines;
 end);
 
 #
@@ -341,104 +343,112 @@ function(s)
     source := source ) );
 end);
 
-
-ReadDigraphPlainTextEdge:=function(line)
-
-  line:=SplitString(line, '\t');
+SplitStringBySubstring:=function(string, substring)
+  local m, n, i, j, out, nr;
   
-  if Length(line) = 2 then 
-    Apply(line, Int);
-    line := line + 1;
+  if Length(substring) = 1 then 
+    return SplitString(string, substring);
   fi;
 
-  return line;
+  m := Length(string);
+  n := Length(substring);
+  i := 1;
+  j := 1;
+  out := [];
+  nr := 0;
+
+  while m - i >= n do 
+    if string{ [ i .. i + n - 1 ]} = substring then 
+      if i <> 1 then 
+        nr := nr + 1;
+        out[nr] := string{ [ j .. i - 1 ] };
+        j := i + n;
+        i := i + n;
+      fi;
+    else 
+      i := i + 1;
+    fi;
+  od;
+  nr := nr + 1;
+  out[nr] := string{ [ j .. Length(string) ] };
+  return out;
 end;
 
-# every line of the file must defines an edge, ignore lines starting #
+# one graph per line
 
-ReadDigraphPlainTextFile:=function(arg)
-  local file, lines, edges, nr, line;
+InstallGlobalFunction(DigraphPlainTextLineDecoder,
+function(arg)
+  local delimiter, offset, delimiter1, delimiter2;
+
+  if Length(arg) = 2 then 
+    delimiter := arg[1]; # what delineates the range of an edge from its source
+    offset := arg[2];    # indexing starts at 0 or 1? or what? 
+    return 
+      function(string) 
+        string := SplitString(string, delimiter);
+        Apply(string, Int);  
+        return string + offset;
+      end;
+  elif Length(arg) = 3 then 
+    delimiter1 := arg[1]; # what delineates one edge from the next
+    delimiter2 := arg[2]; # what delineates the range of an edge from its source
+    offset := arg[3];     # indexing starts at 0 or 1? or what? 
+    return 
+      function(string) 
+        local edges, x;
+        string:=SplitStringBySubstring(string, delimiter1);
+        Apply(string, x-> SplitStringBySubstring(x, delimiter2));  
+        edges := EmptyPlist(Length(string)); 
+        for x in string do 
+          Apply(x, Int);
+          x := x + offset;
+          Add(edges, x);
+        od;
+        return DirectedGraphByEdges(edges);
+      end;
+  else 
+    Error("usage: DigraphPlainTestLineDecoder(delimiter, [,delimiter], offset)");
+    return;
+  fi;
+end);
+
+# one edge per line, one graph per file 
+
+InstallGlobalFunction(ReadPlainTextDigraph,
+function(name, delimiter, offset, ignore)
+  local file, lines, edges, nr, decoder, line;
+
+  if (not IsString(name)) or (not IsString(delimiter))
+    or (not (IsInt(offset) and offset >= 0)) 
+    or (not (IsString(ignore) or IsChar(ignore))) then 
+    Error("Digraphs: usage: ReadPlainTextDigraph( filename, delimiter, offset, ignore )\n");
+    return;
+  fi;
   
-  if IsString(arg[1]) then
-    file:=DigraphReadFile(arg[1]);
-  elif IsFile(arg[1]) then
-    file:=arg[1];
-  else
-    Error("usage: the 1st argument must be a string or a file,");
+  if IsChar(ignore) then
+    ignore := [ignore];
+  fi;
+
+  file := IO_CompressedFile(name, "r");
+  
+  if file = fail then 
+    Error("Digraphs: ReadPlainTextDigraph: can't open file ", name, "\n");
     return;
   fi;
 
-  if file=fail then
-    return fail;
-  fi;
-
-  lines:=IO_ReadLines(file);
-  if IsString(arg[1]) then
-    IO_Close(file);
-  fi;
-
+  lines := IO_ReadLines(file);
   edges := EmptyPlist(Length(lines));
   nr := 0;
-
+  decoder := DigraphPlainTextLineDecoder(delimiter, offset);
+  
   for line in lines do 
-    if Length(line) > 0 and line[1] <> '#' then 
+    if Length(line) > 0 and not (line[1] in ignore) then 
       nr := nr + 1;
-      edges[nr] := ReadDigraphPlainTextEdge(Chomp(line));
+      edges[nr] := decoder(Chomp(line));
     fi;
   od;
 
   return DirectedGraphByEdges(edges);
-end;
-
-#
-
-InstallGlobalFunction(DirectedGraphWriteFile,
-function(arg)
-  local mode, file;
-
-  if IsString(arg[1]) then
-    if IsExistingFile(arg[1]) then
-      if not IsWritableFile(arg[1]) then
-        Error(arg[1], " exists and is not a writable file,");
-        return;
-      fi;
-    else
-      if not (IsExistingFile(Concatenation(arg[1], ".gz")) or
-        IsExistingFile(Concatenation(arg[1], ".xz"))) then
-        Exec("touch ", arg[1]);
-      fi;
-    fi;
-  else
-    Error("usage: the 1st argument must be a string,");
-    return;
-  fi;
-
-  if Length(arg)=2 and not (IsString(arg[2]) and (arg[2]="a" or arg[2]="w"))
-   then
-    Error("usage: the 2nd argument must be \"a\" or \"w\",");
-    return;
-  fi;
-
-  if Length(arg)>2 then
-    Error("usage: there must be at most 2 arguments,");
-    return;
-  fi;
-
-  if Length(arg)=1 then
-    mode:="a";
-  else
-    mode:=arg[2];
-  fi;
-
-  file:=SplitString(arg[1], ".");
-  if file[Length(file)] = "gz" then
-    file:=IO_FilteredFile([["gzip", ["-9q"]]], arg[1], mode);
-  elif file[Length(file)] = "xz" then
-    file:=IO_FilteredFile([["xz", ["-9q"]]], arg[1], mode);
-  else
-    file:=IO_File(arg[1], mode);
-  fi;
-  return file;
 end);
 
 # this is just temporary, until a better method is given, only works for single
@@ -456,10 +466,10 @@ function(arg)
   fi;
 
   if IsString(arg[1]) then
-    if IsBound(arg[3]) then
-      file:=DirectedGraphWriteFile(arg[1], arg[3]);
+    if IsBound(arg[3]) then # arg[3] is the mode 
+      file:=IO_CompressedFile(arg[1], arg[3]);
     else
-      file:=DirectedGraphWriteFile(arg[1]);
+      file:=IO_CompressedFile(arg[1], "a");
     fi;
   elif IsFile(arg[1]) then
     file:=arg[1];
