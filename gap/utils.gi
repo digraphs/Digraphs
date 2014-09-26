@@ -273,6 +273,73 @@ end);
 
 #
 
+InstallMethod(ReadDigraph6Line, "for a string",
+[IsString],
+function(s)
+  local list, i, n, start, range, source, pos, len, j, bpos, tabpos;
+
+  # Check for the special ',' character
+  if s[1] <> ',' then
+    Error("<s> must be a string in Digraph6 format,");
+    return;
+  fi;
+
+  # Convert ASCII chars to integers
+  list := [];
+  for i in [2..Length(s)] do
+    Add(list, IntChar(s[i]) - 63);
+  od;
+
+  # Get n the number of vertices of the graph
+  if list[1] <> 63 then
+    n := list[1];
+    start := 2;
+  else
+    if list[2] = 63 then
+      n := 0;
+      for i in [0..5] do
+        n := n + 2^(6*i)*list[8-i];
+      od;
+      start := 9;
+    else
+      n := 0;
+      for i in [0..2] do
+        n := n + 2^(6*i)*list[4-i];
+      od;
+      start := 5;
+    fi;
+  fi;
+
+  range := [];
+  source := [];
+
+  # Obtaining the adjacency vector
+  pos := 1;
+  len := 1;
+  for j in [start .. Length(list)] do # Every integer corresponds to 6 bits
+    i := list[j];
+    bpos := 1;
+    while i > 0 do
+      if i mod 2  = 0 then
+        i := i / 2;
+      else
+        tabpos := pos + 6 - bpos;
+        source[len] := (tabpos-1) mod n + 1;
+	range[len] := (tabpos - source[len]) / n + 1;
+	len := len + 1;
+        i := (i - 1) / 2;
+      fi;
+      bpos := bpos + 1;
+    od;
+    pos := pos + 6;
+  od;
+
+  return DirectedGraph( rec( vertices := [ 1 .. n ], range := range,
+    source := source ) );
+end);
+
+#
+
 InstallGlobalFunction(DigraphReadFile,
 function(str)
   local file;
@@ -330,6 +397,8 @@ function(arg)
       if line="" then
         Error(arg[1], " only has ", i-1, " lines,");
         return;
+      elif line[1]=',' then
+        return ReadDigraph6Line(Chomp(line));
       else
         return ReadGraph6Line(Chomp(line));
       fi;
