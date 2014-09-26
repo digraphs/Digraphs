@@ -214,6 +214,38 @@ function(mat)
   return DirectedGraph(record);
 end);
 
+#
+
+InstallMethod(DirectedGraphByEdges, "for a rectangular table",
+[IsRectangularTable],
+function(edges)
+  local adj, gr, edge;
+  
+  if not Length(edges[1]) = 2 then 
+    Error("usage: the argument <edges> must be a list of pairs,");
+    return;
+  fi;
+
+  if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then 
+    Error("usage: the argument <edges> must be a list of pairs of pos ints,");
+    return;
+  fi;
+
+  adj := [];
+
+  for edge in edges do 
+    if not IsBound(adj[edge[1]]) then 
+      adj[edge[1]] := [edge[2]];
+    else
+      Add(adj[edge[1]], edge[2]);
+    fi;
+  od;
+
+  gr:=DirectedGraphNC(adj);
+  SetEdges(gr, edges);
+  return gr;
+end);
+
 # operators
 
 InstallMethod(\=, "for directed graphs",

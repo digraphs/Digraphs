@@ -152,6 +152,17 @@ gap> g6 := DirectedGraph( [ [ 1, 2, 4 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3, 1 ] ] );
 gap> IsUndirectedGraph(g6);
 true
 
+# DirectedGraphByEdges
+gap> gr := DirectedGraph( [ [ 1, 2, 3, 5 ], [ 1, 5 ], [ 2, 3, 6 ], [ 1, 3, 4 ], 
+> [ 1, 4, 6 ], [ 3, 4 ] ] );
+<directed graph with 6 vertices, 17 edges>
+gap> gr = DirectedGraphByEdges(Edges(gr));
+true
+gap> DirectedGraphByEdges([["nonsense", "more"]]);
+Error, usage: the argument <edges> must be a list of pairs of pos ints,
+gap> DirectedGraphByEdges([["nonsense"]]);
+Error, usage: the argument <edges> must be a list of pairs,
+
 #
 gap> DigraphsStopTest();
 
