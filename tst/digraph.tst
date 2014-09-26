@@ -164,6 +164,12 @@ gap> DirectedGraphByEdges([["nonsense"]]);
 Error, usage: the argument <edges> must be a list of pairs,
 gap> gr := DirectedGraphByEdges(Edges(gr), 10);
 <directed graph with 10 vertices, 17 edges>
+gap> gr := DirectedGraphByEdges( [ [ 1, 2 ] ] );
+<directed graph with 2 vertices, 1 edges>
+gap> gr := DirectedGraphByEdges( [ [ 2, 1 ] ] );
+<directed graph with 2 vertices, 1 edges>
+gap> gr := DirectedGraphByEdges( [ [ 1, 2 ] ], 1 ); 
+Error, more vertices are required than have been allowed,
 
 # AsDirectedGraph
 gap> f := Transformation([]);

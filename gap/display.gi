@@ -13,8 +13,9 @@
 InstallMethod(DotDirectedGraph, "for a directed graph",
 [IsDirectedGraph],
 function(graph)
-  local source, range, n, str, i;
+  local verts, source, range, n, str, i;
 
+  verts := Vertices(graph);
   source := Source(graph);
   range := Range(graph);
   n := Length(source);
@@ -22,6 +23,10 @@ function(graph)
 
   Append(str,"digraph hgn{\n");
   Append(str,"node [shape=circle]\n");
+
+  for i in verts do
+    Append(str, Concatenation( String(i), "\n"));
+  od;
 
   for i in [1..n] do
     Append(str, Concatenation( String(source[i]), " -> ", String(range[i]) , "\n"));
@@ -35,20 +40,25 @@ end);
 InstallMethod(DotUndirectedGraph, "for an 'undirected' directed graph",
 [IsDirectedGraph],
 function(graph)
-  local source, range, n, str, i;
+  local verts, source, range, n, str, i;
 
   if not IsUndirectedGraph(graph) then
     Error("the argument must satisfy IsUndirectedGraph, ");
     return fail;
   fi;
 
+  verts := Vertices(graph);
   source := Source(graph);
   range := Range(graph);
   n := Length(source);
   str:="//dot\n";
 
   Append(str,"graph hgn{\n");
-  Append(str,"node [shape=circle]\n");
+  Append(str,"node [shape=circle]\n\n");
+
+  for i in verts do
+    Append(str, Concatenation( String(i), "\n"));
+  od;
 
   for i in [1..n] do
     if range[i] >= source[i] then
