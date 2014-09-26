@@ -22,6 +22,8 @@ DeclareOperation("DirectedGraph", [IsList]);
 DeclareOperation("DirectedGraphNC", [IsRecord]);
 DeclareOperation("DirectedGraphNC", [IsList]);
 DeclareOperation("DirectedGraphByAdjacencyMatrix", [IsRectangularTable]);
+DeclareOperation("DirectedGraphByEdges", [IsRectangularTable]);
+DeclareOperation("DirectedGraphByEdges", [IsRectangularTable, IsPosInt]);
 DeclareOperation("Graph", [IsDirectedGraph]);
 DeclareOperation("RandomSimpleDirectedGraph", [IsPosInt]);
 
@@ -40,12 +42,6 @@ DeclareOperation("DirectedGraphTopologicalSort", [IsDirectedGraph]);
 DeclareOperation("DirectedGraphReflexiveTransitiveClosure", [IsDirectedGraph]);
 DeclareOperation("DirectedGraphTransitiveClosure", [IsDirectedGraph]);
 
-# calls to GRAPE functions
-DeclareOperation("IsIsomorphicDirectedGraph", [IsDirectedGraph, IsDirectedGraph]);
-DeclareAttribute("AutomorphismGroup", IsDirectedGraph);
-DeclareOperation("DirectedGraphIsomorphism", [IsDirectedGraph, IsDirectedGraph]);
-#DeclareOperation("Girth", [IsDirectedGraph]);
-DeclareOperation("Diameter", [IsDirectedGraph]);
-DeclareProperty("IsConnectedDigraph", IsDirectedGraph);
-
 DeclareAttribute("DirectedGraphFloydWarshall", IsDirectedGraph);
+DeclareOperation("AsDirectedGraph", [IsTransformation]);
+DeclareOperation("AsDirectedGraph", [IsTransformation, IsInt]);

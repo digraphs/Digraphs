@@ -214,6 +214,72 @@ function(mat)
   return DirectedGraph(record);
 end);
 
+#
+
+InstallMethod(DirectedGraphByEdges, "for a rectangular table",
+[IsRectangularTable],
+function(edges)
+  local adj, gr, edge, i;
+  
+  if not Length(edges[1]) = 2 then 
+    Error("usage: the argument <edges> must be a list of pairs,");
+    return;
+  fi;
+
+  if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then 
+    Error("usage: the argument <edges> must be a list of pairs of pos ints,");
+    return;
+  fi;
+
+  adj := [];
+
+  for edge in edges do 
+    if not IsBound(adj[edge[1]]) then 
+      adj[edge[1]] := [edge[2]];
+    else
+      Add(adj[edge[1]], edge[2]);
+    fi;
+  od;
+
+  for i in [1..Length(adj)] do 
+    if not IsBound(adj[i]) then 
+      adj[i] := [];
+    fi;
+  od;
+
+  gr:=DirectedGraphNC(adj);
+  SetEdges(gr, edges);
+  return gr;
+end);
+
+# <n> is the number of arguments
+
+InstallMethod(DirectedGraphByEdges, "for a rectangular table, and a pos int",
+[IsRectangularTable, IsPosInt],
+function(edges, n)
+  local adj, gr, edge;
+  
+  if not Length(edges[1]) = 2 then 
+    Error("usage: the argument <edges> must be a list of pairs,");
+    return;
+  fi;
+
+  if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then 
+    Error("usage: the argument <edges> must be a list of pairs of pos ints,");
+    return;
+  fi;
+
+  adj := List([1..n], x-> []);
+
+  for edge in edges do 
+    Add(adj[edge[1]], edge[2]);
+  od;
+
+  gr:=DirectedGraphNC(adj);
+  SetEdges(gr, edges);
+  return gr;
+end);
+
 # operators
 
 InstallMethod(\=, "for directed graphs",
@@ -826,52 +892,31 @@ fi;
 
 #
 
-# A few methods which call GRAPE functions
-InstallMethod(IsIsomorphicDirectedGraph, "for two digraphs",
-[IsDirectedGraph, IsDirectedGraph],
-function(g1, g2)
-  return IsIsomorphicGraph( Graph(g1), Graph(g2) );
+InstallMethod(AsDirectedGraph, "for a transformation",
+[IsTransformation],
+function(trans);
+  return AsDirectedGraph(trans, DegreeOfTransformation(trans));
 end);
 
 #
 
-InstallMethod(AutomorphismGroup, "for a digraph",
-[IsDirectedGraph],
-function(graph)
-  return AutomorphismGroup(Graph(graph));
-end);
+InstallMethod(AsDirectedGraph, "for a transformation and an integer",
+[IsTransformation, IsInt],
+function(trans, int)
+  local deg, ran, r, gr;
+  
+  if int < 0 then
+    return fail;
+  fi;
 
-#
-
-InstallMethod(DirectedGraphIsomorphism, "for two digraphs",
-[IsDirectedGraph, IsDirectedGraph],
-function(g1, g2)
-  # TODO: convert back to directed graphs
-  return GraphIsomorphism( Graph(g1), Graph(g2) );
-end);
-
-#
-
-#InstallMethod(Girth, "for a digraph",
-#[IsDirectedGraph],
-#function(graph)
-#  return Girth( Graph(graph) );
-#end);
-
-#
-
-InstallMethod(Diameter, "for a digraph",
-[IsDirectedGraph],
-function(graph)
-  return Diameter( Graph(graph) );
-end);
-
-#
-
-InstallMethod(IsConnectedDigraph, "for a digraph",
-[IsDirectedGraph],
-function(graph)
-  return IsConnectedGraph( Graph(graph) );
+  ran := ListTransformation(trans, int);
+  r := rec( vertices := [ 1 .. int ], source := [ 1 .. int ], range := ran );
+  gr := DirectedGraphNC(r);
+  
+  SetIsSimpleDirectedGraph(gr, true);
+  SetIsFunctionalDirectedGraph(gr, true);
+  
+  return gr;
 end);
 
 #EOF

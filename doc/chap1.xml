@@ -10,6 +10,8 @@
     <#Include Label="IsDirectedGraph"> 
     <#Include Label="DirectedGraph"> 
     <#Include Label="DirectedGraphByAdjacencyMatrix"> 
+    <#Include Label="DirectedGraphByEdges"> 
+    <#Include Label="AsDirectedGraph">
     <#Include Label="RandomSimpleDirectedGraph"> 
   </Section>
   
