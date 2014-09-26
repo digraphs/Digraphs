@@ -13,35 +13,35 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
-# DotDigraph for a very basic not simple digraph
+# DotDirectedGraph for a very basic not simple digraph
 gap> r := rec( vertices := [ 1 .. 3 ], source := [ 1, 1, 1, 1 ], 
 > range := [ 1, 2, 2, 3 ] );;
 gap> gr := DirectedGraph(r);
 <directed graph with 3 vertices, 4 edges>
-gap> DotDigraph(gr);
+gap> DotDirectedGraph(gr);
 "//dot\ndigraph hgn{\nnode [shape=circle]\n1 -> 1\n1 -> 2\n1 -> 2\n1 -> 3\n}\n\
 "
 
-# DotDigraph for a more complex not simple digraph
+# DotDirectedGraph for a more complex not simple digraph
 gap> r := rec( vertices := [ 1 ..8 ], 
 > source := [ 1, 1, 2, 2, 3, 4, 4, 4, 5, 5, 5, 5, 5, 6, 7, 7, 7, 7, 7, 8, 8 ],
 > range :=  [ 6, 7, 1, 6, 5, 1, 4, 8, 1, 3, 6, 6, 7, 7, 1, 4, 4, 5, 7, 5, 6 ]);;
 gap> gr := DirectedGraph(r);
 <directed graph with 8 vertices, 21 edges>
-gap> DotDigraph(gr){[1..69]};
+gap> DotDirectedGraph(gr){[1..69]};
 "//dot\ndigraph hgn{\nnode [shape=circle]\n1 -> 6\n1 -> 7\n2 -> 1\n2 -> 6\n3 "
 
-# DotDigraph & DotGraph for a small undirected simple graph
+# DotDirectedGraph & DotUndirectedGraph for a small undirected simple graph
 gap> adj := [ [ 2 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3 ] ];
 [ [ 2 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3 ] ]
 gap> gr := DirectedGraph(adj);
 <directed graph with 4 vertices, 7 edges>
-gap> DotDigraph(gr){[11..79]};
+gap> DotDirectedGraph(gr){[11..79]};
 "aph hgn{\nnode [shape=circle]\n1 -> 2\n2 -> 1\n2 -> 3\n3 -> 2\n3 -> 3\n3 -> "
-gap> DotGraph(gr);
+gap> DotUndirectedGraph(gr);
 "//dot\ngraph hgn{\nnode [shape=circle]\n1 -- 2\n2 -- 3\n3 -- 3\n3 -- 4\n}\n"
 
-# DotDigraph & DotGraph for a bigger undirected not simple graph
+# DotDirectedGraph & DotUndirectedGraph for a bigger undirected not simple graph
 gap> r := rec ( vertices := [ 1 .. 8 ], source := [], range := [] );;
 gap> for j in [1..2] do
 > for i in [1..7] do
@@ -59,10 +59,10 @@ gap> g := DirectedGraph(r);
 <directed graph with 8 vertices, 32 edges>
 gap> IsUndirectedGraph(g);
 true
-gap> dot1 := DotDigraph(g);;
+gap> dot1 := DotDirectedGraph(g);;
 gap> dot1{[20..60]};
 "node [shape=circle]\n1 -> 2\n1 -> 8\n1 -> 2\n"
-gap> dot2 := DotGraph(g);;
+gap> dot2 := DotUndirectedGraph(g);;
 gap> dot2{[100..150]};
 "\n4 -- 5\n5 -- 6\n5 -- 6\n6 -- 7\n6 -- 7\n7 -- 8\n7 -- 8\n}"
 

@@ -56,8 +56,8 @@
 
   <Section><Heading>Visualising the structure of a directed graph</Heading>
     <#Include Label="Splash">
-    <#Include Label="DotDigraph">
-    <#Include Label="DotGraph">
+    <#Include Label="DotDirectedGraph">
+    <#Include Label="DotUndirectedGraph">
   </Section>
 
 </Chapter>

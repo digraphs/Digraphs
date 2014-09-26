@@ -23,7 +23,7 @@
       <URL>http://www.graphviz.org</URL>.<P/>
       
       This function is provided to allow convenient, immediate viewing of the
-      pictures produced by the function <Ref Attr="DotDigraph"/>.<P/>
+      pictures produced by the function <Ref Attr="DotDirectedGraph"/>.<P/>
 
       The optional second argument <A>opts</A> should be a record with
       components corresponding to various options, given below. 
@@ -81,14 +81,14 @@
       minor changes by J. D. Mitchell.<P/>
 
       <Log><![CDATA[
-gap> Splash(DotDigraph(RandomSimpleDirectedGraph(4)));]]></Log>
+gap> Splash(DotDirectedGraph(RandomSimpleDirectedGraph(4)));]]></Log>
     </Description>
   </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DotDigraph">
+<#GAPDoc Label="DotDirectedGraph">
   <ManSection>
-    <Attr Name="DotDigraph" Arg="digraph"/>
+    <Attr Name="DotDirectedGraph" Arg="digraph"/>
     <Returns>A string.</Returns>
     <Description>
       This function produces a graphical representation of the directed graph
@@ -101,7 +101,7 @@ gap> Splash(DotDigraph(RandomSimpleDirectedGraph(4)));]]></Log>
       format. For details about this file format, and information about how to 
       display or edit this format see <URL>http://www.graphviz.org</URL>. <P/>
 
-      The string returned by <C>DotDigraph</C> can be written to a file using
+      The string returned by <C>DotDirectedGraph</C> can be written to a file using
       the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
       <Log><![CDATA[
@@ -113,33 +113,33 @@ gap> adj[1][3] := 0;
 0
 gap> gr := DirectedGraphByAdjacencyMatrix(adj);
 <directed graph with 4 vertices, 16 edges>
-gap> FileString("dot/k4.dot", DotDigraph(gr));
+gap> FileString("dot/k4.dot", DotDirectedGraph(gr));
 146]]></Log>
     </Description>
   </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DotGraph">
+<#GAPDoc Label="DotUndirectedGraph">
   <ManSection>
-    <Attr Name="DotGraph" Arg="digraph"/>
+    <Attr Name="DotUndirectedGraph" Arg="digraph"/>
     <Returns>A string.</Returns>
     <Description>
       This function produces a graphical representation of the undirected 
-      directed graph <A>digraph</A>. <C>DotGraph</C> will return an error if
-      <A>digraph</A> is not an undirected directed graph. See 
+      directed graph <A>digraph</A>. <C>DotUndirectedGraph</C> will return an error if
+      <A>digraph</A> is not an undirected graph. See 
       <Ref Prop="IsUndirectedGraph"/>.<P/>
       
       Vertices are displayed as circles, numbered consistently with
       <A>digraph</A>. Since <A>digraph</A> is undirected, for every non-loop
       edge there is a complementary edge with opposite source and range.
-      <C>DotGraph</C> displays each pair of complementary edges as a single
+      <C>DotUndirectedGraph</C> displays each pair of complementary edges as a single
       line between the relevant vertices, with no arrowhead.<P/>
 
       The output is in <C>dot</C> format (also known as <C>GraphViz</C>) 
       format. For details about this file format, and information about how to 
       display or edit this format see <URL>http://www.graphviz.org</URL>. <P/>
 
-      The string returned by <C>DotGraph</C> can be written to a file using
+      The string returned by <C>DotUndirectedGraph</C> can be written to a file using
       the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
       <Log><![CDATA[
@@ -150,7 +150,7 @@ gap> star := DirectedGraph(r);
 <directed graph with 4 vertices, 9 edges>
 gap> IsUndirectedGraph(star);
 true
-gap> FileString("dot/star.dot", DotDigraph(star));;
+gap> FileString("dot/star.dot", DotUndirectedGraph(star));;
 ]]></Log>
     </Description>
   </ManSection>

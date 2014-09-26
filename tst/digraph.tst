@@ -123,7 +123,7 @@ gap> IsFunctionalDirectedGraph(g3);
 true
 gap> g4 := DirectedGraph( rec( vertices := [ 1 .. 3 ] ,
 > source := [ 3, 2, 1 ], range := [ 2 , 1, 3 ] ) );
-<directed graph with 3 vertices, 3Digraph edges>
+<directed graph with 3 vertices, 3 edges>
 gap> IsFunctionalDirectedGraph(g4);
 true
 gap> g5 := DirectedGraph( rec( vertices := [ 1 .. 3 ] ,
