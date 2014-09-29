@@ -11,11 +11,14 @@
 <#GAPDoc Label="ReadGraph6Line">
 <ManSection>
   <Oper Name="ReadGraph6Line" Arg="str"/>
+  <Oper Name="ReadDigraph6Line" Arg="str"/>
   <Returns>A directed graph.</Returns>
   <Description>
-    If <A>str</A> is a string encoding a simple graph in graph6, then
-    this function returns a directed graph such that for every edge, the
-    edge going in the opposite direction is also present.
+    If <A>str</A> is a string encoding a graph in Graph6 or Digraph6, then
+    this function returns a directed graph.  In the case of Graph6, a format
+    which does not support directed edges, this will be a directed grap such
+    that for every edge, the edge going in the opposite direction is also
+    present.
     <Example><![CDATA[
 gap> ReadGraph6Line("?");
 <directed graph with 0 vertices, 0 edges>
@@ -23,6 +26,12 @@ gap> ReadGraph6Line("C]");
 <directed graph with 4 vertices, 8 edges>
 gap> ReadGraph6Line("H?AAEM{");
 <directed graph with 9 vertices, 22 edges>
+gap> ReadDigraph6Line(",?");
+<directed graph with 0 vertices, 0 edges>
+gap> ReadDigraph6Line(",CQFG");
+<directed graph with 4 vertices, 6 edges>
+gap> ReadDigraph6Line(",IM[SrKLc~lhesbU[F_");
+<directed graph with 10 vertices, 51 edges>
 ]]></Example>
     </Description>
 </ManSection>
@@ -89,5 +98,41 @@ gap> ReadDirectedGraphs("pkg/digraphs/data/tree9.4.txt");
   <directed graph with 9 vertices, 8 edges>, 
   <directed graph with 9 vertices, 8 edges> ]]]></Example>
     </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WriteGraph6">
+<ManSection>
+  <Oper Name="WriteGraph6" Arg="digraph"/>
+  <Oper Name="WriteDigraph6" Arg="digraph"/>
+  <Returns>A string.</Returns>
+  <Description>
+    These two functions return a highly compressed string describing the
+    adjacencies of <A>digraph</A>, in either the Graph6 or Digraph6 format.<P/>
+
+    <E>Graph6</E> is a widely used format for storing <E>undirected</E> graphs.
+    The upper triangle of an adjacency matrix for <A>digraph</A> is recorded,
+    six bits at a time, into a string of printable characters in the ASCII range
+    63-126.  Single-vertex loops are removed, directions are forgotten, and
+    multiple edges are reduced to single edges.<P/>
+
+    <E>Digraph6</E> is a new format based on Graph6, but designed for directed
+    graphs.  The entire adjacency matrix is stored, and therefore there is
+    support for directed edges and single-vertex loops.  However, multiple edges
+    are still reduced to single edges.<P/>
+
+    These two formats are best used on small, dense graphs.  For larger, sparse
+    graphs use <E>Sparse6</E> and <E>Disparse6</E> (this latter also preserves
+    multiple edges).
+
+    <Example><![CDATA[
+gap> gr := DirectedGraph([[1,2,4], [1], [2,4], [3,4]]);
+<directed graph with 4 vertices, 8 edges>
+gap> WriteGraph6(gr);
+"Cl"
+gap> WriteDigraph6(gr);
+",Cq`k"
+]]></Example>
+  </Description>
 </ManSection>
 <#/GAPDoc>

@@ -65,5 +65,6 @@
   <Section><Heading>Reading and writing graphs to a file</Heading> 
     <#Include Label="ReadGraph6Line"> 
     <#Include Label="ReadDirectedGraphs"> 
+    <#Include Label="WriteGraph6">
   </Section>
 </Chapter>
