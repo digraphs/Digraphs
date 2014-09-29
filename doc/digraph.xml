@@ -598,11 +598,13 @@ gap> gr:=DirectedGraphRemoveEdges(gr, [10]);
 <#GAPDoc Label="DirectedGraphTopologicalSort">
 <ManSection>
   <Oper Name="DirectedGraphTopologicalSort" Arg="digraph"/>
-  <Returns>A list of positive integers.</Returns>
+  <Returns>A list of positive integers, or <K>fail</K>.</Returns>
   <Description>
-    If <A>digraph</A> is an acyclic directed graph, then this operation returns
-    the vertices of <A>digraph</A> ordered so that every vertex adjacent to
-    <C>i</C> occurs before <C>i</C>. <P/>
+    If <A>digraph</A> is an acyclic directed graph, then this operation 
+    returns the vertices of <A>digraph</A> ordered so that every vertex
+    adjacent to <C>i</C> occurs before <C>i</C>. If the directed graph 
+    <A>digraph</A> is not acyclic, then this operation returns <K>fail</K>.
+    <P/>
 
     The method used in this operation has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
@@ -623,14 +625,14 @@ gap> DirectedGraphTopologicalSort(gr);
   <Oper Name="DirectedGraphTransitiveClosure" Arg="digraph"/>
   <Returns>A directed graph.</Returns>
   <Description>
-    The first of these functions returns the (reflexive) transitive closure of the simple 
-    directed graph <A>digraph</A>. <P/>
+    The first of these functions returns the (reflexive) transitive closure
+    of the simple directed graph <A>digraph</A>. <P/>
 
-    A directed graph is <E>reflexive</E> if there is a loop at every vertex, and
-    it is <E>transitive</E> if whenever <C>[ i, j ]</C> and <C>[ j, k ]</C> are
-    edges, <C>[ i, k ]</C> is also an edge. The <E>transitive closure</E> of a
-    directed graph <A>digraph</A> is the least transitive directed graph
-    containing <A>digraph</A>. 
+    A directed graph is <E>reflexive</E> if there is a loop at every
+    vertex, and it is <E>transitive</E> if whenever <C>[ i, j ]</C> and 
+    <C>[ j, k ]</C> are edges, <C>[ i, k ]</C> is also an edge. The 
+    <E>transitive closure</E> of a directed graph <A>digraph</A> is the 
+    least transitive directed graph containing <A>digraph</A>. 
 
     <Example><![CDATA[
 gap> gr:=DirectedGraph( [ [ 4, 6 ], [ 1, 3 ], [ ], [ 5 ], [ ], [ 7, 8, 9 ], 

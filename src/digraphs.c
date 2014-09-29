@@ -301,7 +301,8 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
           free(ptr);
           stack -= (2 * level) - 2; 
           free(stack);
-          ErrorQuit("the graph is not acyclic,", 0L, 0L);
+          return Fail;
+          // ErrorQuit("the graph is not acyclic,", 0L, 0L);
         }
         nbs = ELM_PLIST(adj, j);
         if( ptr[j] == 1 || k > LEN_LIST(nbs)) {

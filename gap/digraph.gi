@@ -191,7 +191,8 @@ end);
 InstallMethod(DirectedGraphByAdjacencyMatrix, "for a rectangular table",
 [IsRectangularTable],
 function(mat)
-  local n, record, i, j, k;
+  local n, record, i, j, k, out;
+
   n := Length(mat);
 
   if Length(mat[1]) <> n then
@@ -213,7 +214,9 @@ function(mat)
       fi;
     od;
   od;
-  return DirectedGraph(record);
+  out := DirectedGraph(record);
+  SetAdjacencyMatrix(out, mat);
+  return out;
 end);
 
 #
@@ -648,8 +651,8 @@ else
           k := stack[2 * level];
           if vertex_in_path[j] then
             SetIsAcyclicDirectedGraph(graph, false);
-            Error("the digraph has a cycle of length >1, ");
-            return;
+            #Error("the digraph has a cycle of length >1, ");
+            return fail;
           fi;
           if vertex_complete[j] or k > Length(adj[j]) then
             if not vertex_complete[j] then
@@ -680,29 +683,69 @@ fi;
 InstallMethod(DirectedGraphReflexiveTransitiveClosure,
 "for a digraph", [IsDirectedGraph],
 function(graph)
-  local sorted, vertices, out, trans, adj, v, u;
+  local sorted, vertices, n, adj, out, trans, mat, flip, v, u, w;
 
   if not IsSimpleDirectedGraph(graph) then
     Error("usage: the argument should be a simple directed graph,");
     return;
   fi;
 
-  sorted := DirectedGraphTopologicalSort(graph); # ignore loops
-
   vertices := Vertices(graph);
-  out := EmptyPlist(Length(vertices));
-  trans := EmptyPlist(Length(vertices));
+  n := Length(vertices);
   adj := Adjacencies(graph);
+  sorted := DirectedGraphTopologicalSort(graph);
 
-  for v in sorted do
-    trans[v] := BlistList(vertices, [v]);
-    for u in adj[v] do
-      trans[v] := UnionBlist(trans[v], trans[u]);
+  if sorted <> fail then # Easier method for acyclic graphs (loops allowed)
+    out := EmptyPlist(n);
+    trans := EmptyPlist(n);
+
+    for v in sorted do
+      trans[v] := BlistList(vertices, [v]);
+      for u in adj[v] do
+        trans[v] := UnionBlist(trans[v], trans[u]);
+      od;
+      out[v] := ListBlist(vertices, trans[v]);
     od;
-    out[v] := ListBlist(vertices, trans[v]);
-  od;
 
-  return DirectedGraphNC(out);
+    out := DirectedGraphNC(out);
+    SetIsSimpleDirectedGraph(out, true);
+    return out;
+  else # Non-acyclic method
+    mat := List( vertices, x -> List( vertices, y -> infinity ) ); 
+
+    for v in [ 1 .. n ] do # Make graph reflexive
+      mat[v][v] := 1;
+    od;
+
+    for v in vertices do # Record edges
+      for u in adj[v] do
+        mat[v][u] := 1;
+      od;
+    od;
+
+    for w in vertices do # Variation of Floyd Warshall
+      for u in vertices do
+        for v in vertices do
+          if mat[u][w] <> infinity and mat[w][v] <> infinity then
+            mat[u][v] := 1;
+          fi;
+        od;
+      od;
+    od;
+
+    flip:=function(x)
+      if x = infinity then
+        return 0;
+      else
+        return 1;
+      fi;
+    end;
+
+    mat := List( mat, x -> List( x, flip ) ); # Create adjacency matrix
+    out := DirectedGraphByAdjacencyMatrix(mat);
+    SetIsSimpleDirectedGraph(out, true);
+    return out;
+  fi;
 end);
 
 # JDM: requires a method for non-acyclic graphs
@@ -710,37 +753,85 @@ end);
 InstallMethod(DirectedGraphTransitiveClosure, "for a digraph",
 [IsDirectedGraph],
 function(graph)
-  local sorted, vertices, out, trans, adj, reflex, v, u;
+  local sorted, vertices, n, adj, out, trans, reflex, mat, flip, v, u, w;
 
   if not IsSimpleDirectedGraph(graph) then
     Error("usage: the argument should be a simple directed graph,");
     return;
   fi;
 
-  sorted := DirectedGraphTopologicalSort(graph); # ignore loops
-
   vertices := Vertices(graph);
-  out := EmptyPlist(Length(vertices));
-  trans := EmptyPlist(Length(vertices));
+  n := Length(vertices);
   adj := Adjacencies(graph);
+  sorted := DirectedGraphTopologicalSort(graph);
 
-  for v in sorted do
-    trans[v] := BlistList(vertices, [v]);
-    reflex := false;
-    for u in adj[v] do
-      trans[v] := UnionBlist(trans[v], trans[u]);
-      if u = v then
-        reflex := true;
+  if sorted <> fail then # Easier method for acyclic graphs (loops allowed)
+    out := EmptyPlist(n);
+    trans := EmptyPlist(n);
+
+    for v in sorted do
+      trans[v] := BlistList( vertices, [v]);
+      reflex := false;
+      for u in adj[v] do
+        trans[v] := UnionBlist(trans[v], trans[u]);
+        if u = v then
+          reflex := true;
+        fi;
+      od;
+      if not reflex then
+        trans[v][v] := false;
       fi;
+      out[v] := ListBlist(vertices, trans[v]);
+      trans[v][v] := true;
     od;
-    if not reflex then
-      trans[v][v] := false;
-    fi;
-    out[v] := ListBlist(vertices, trans[v]);
-    trans[v][v] := true;
-  od;
 
-  return DirectedGraphNC(out);
+    out := DirectedGraphNC(out);
+    SetIsSimpleDirectedGraph(out, true);
+    return out;
+  else # Non-acyclic method
+
+    mat := List( vertices, x -> List( vertices, y -> infinity ) ); 
+    reflex := [ 1 .. n ] * 0;
+    
+    for v in vertices do # Assume graph reflexive for now
+      mat[v][v] := 1;
+    od;
+
+    for v in vertices do # Record edges and remember loops
+      for u in adj[v] do
+        mat[v][u] := 1;
+        if u = v then
+          reflex[v] := 1;
+        fi;
+      od;
+    od;
+
+    for w in vertices do # Variation of Floyd Warshall
+      for u in vertices do
+        for v in vertices do
+          if mat[u][w] <> infinity and mat[w][v] <> infinity then
+            mat[u][v] := 1;
+          fi;
+        od;
+      od;
+    od;
+
+    flip:=function(x)
+      if x = infinity then
+        return 0;
+      else
+        return 1;
+      fi;
+    end;
+
+    mat := List( mat, x -> List( x, flip ) ); # Create adjacency matrix
+    for v in vertices do # Only include original loops
+      mat[v][v] := reflex[v]; 
+    od;
+    out := DirectedGraphByAdjacencyMatrix(mat);
+    SetIsSimpleDirectedGraph(out, true);
+    return out;
+  fi;
 end);
 
 if IsBound(IS_STRONGLY_CONNECTED_DIGRAPH) then
