@@ -26,11 +26,11 @@ gap> ReadGraph6Line("C]");
 <directed graph with 4 vertices, 8 edges>
 gap> ReadGraph6Line("H?AAEM{");
 <directed graph with 9 vertices, 22 edges>
-gap> ReadDigraph6Line(",?");
+gap> ReadDigraph6Line("+?");
 <directed graph with 0 vertices, 0 edges>
-gap> ReadDigraph6Line(",CQFG");
+gap> ReadDigraph6Line("+CQFG");
 <directed graph with 4 vertices, 6 edges>
-gap> ReadDigraph6Line(",IM[SrKLc~lhesbU[F_");
+gap> ReadDigraph6Line("+IM[SrKLc~lhesbU[F_");
 <directed graph with 10 vertices, 51 edges>
 ]]></Example>
     </Description>
@@ -131,7 +131,7 @@ gap> gr := DirectedGraph([[1,2,4], [1], [2,4], [3,4]]);
 gap> WriteGraph6(gr);
 "Cl"
 gap> WriteDigraph6(gr);
-",Cq`k"
+"+Cq`k"
 ]]></Example>
   </Description>
 </ManSection>

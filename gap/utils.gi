@@ -283,8 +283,8 @@ InstallMethod(ReadDigraph6Line, "for a string",
 function(s)
   local list, i, n, start, range, source, pos, len, j, bpos, tabpos;
 
-  # Check for the special ',' character
-  if s[1] <> ',' then
+  # Check for the special '+' character
+  if s[1] <> '+' then
     Error("<s> must be a string in Digraph6 format,");
     return;
   fi;
@@ -574,8 +574,8 @@ function(graph)
   adj := Adjacencies(graph);
   n := Length(Vertices(graph));
 
-  # First write the special character ','
-  Add(list,-19);
+  # First write the special character '+'
+  Add(list,-20);
 
   # Now write the number of vertices
   if n < 63 then
