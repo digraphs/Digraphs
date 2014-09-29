@@ -756,17 +756,17 @@ else
     local adj, n, stack1, len1, stack2, len2, id, count, fptr, level, l, w, v;
 
     adj := Adjacencies(graph);
-    n:=Length(adj);
+    n := Length(adj);
 
-    if n=0 then
+    if n = 0 then
       return true;
     fi;
 
-    stack1:=EmptyPlist(n); len1:=1;
-    stack2:=EmptyPlist(n); len2:=1;
-    id:=[1..n]*0;
+    stack1 := EmptyPlist(n); len1 := 1;
+    stack2 := EmptyPlist(n); len2 := 1;
+    id:=[ 1 .. n ] * 0;
     level := 1;
-    fptr:=[];
+    fptr := [];
 
     fptr[1] := 1; # vertex
     fptr[2] := 1; # adjacency index
@@ -775,32 +775,32 @@ else
     id[1] := len1;
 
     while true do # we always return before level = 0
-      if fptr[2*level] > Length(adj[fptr[2*level-1]]) then
-        if stack2[len2] = id[fptr[2*level-1]] then
+      if fptr[2 * level] > Length(adj[fptr[2 * level - 1]]) then
+        if stack2[len2] = id[fptr[2 * level - 1]] then
           repeat
             n := n - 1;
             w := stack1[len1];
             len1 := len1 - 1;
-          until w = fptr[2*level-1];
+          until w = fptr[2 * level - 1];
           return (n = 0);
         fi;
         level := level - 1;
       else
-        w:=adj[fptr[2*level-1]][fptr[2*level]];
-        fptr[2*level]:=fptr[2*level]+1;
+        w := adj[fptr[2 * level - 1]][fptr[2 * level]];
+        fptr[2 * level] := fptr[2 * level] + 1;
 
-        if id[w]=0 then
-          level:=level+1;
-          fptr[2*level-1]:=w; #fptr[0], vertex
-          fptr[2*level]:=1;   #fptr[2], index
-          len1:=len1+1;
-          stack1[len1]:=w;
-          len2:=len2+1;
-          stack2[len2]:=len1;
-          id[w]:=len1;
+        if id[ w ] = 0 then
+          level := level + 1;
+          fptr[2 * level - 1] := w; #fptr[0], vertex
+          fptr[2 * level ] := 1;   #fptr[2], index
+          len1 := len1 + 1;
+          stack1[ len1 ] := w;
+          len2 := len2 + 1;
+          stack2[ len2 ] := len1;
+          id[ w ] := len1;
         else # we saw <w> earlier in this run
-          while stack2[len2] > id[w] do
-            len2:=len2-1; # pop from stack2
+          while stack2[ len2 ] > id[ w ] do
+            len2 := len2 - 1; # pop from stack2
           od;
         fi;
       fi;
@@ -823,67 +823,67 @@ else
   function(digraph)
     local n, stack1, len1, stack2, len2, id, count, comps, fptr, level, l, comp, w, v;
 
-    digraph:=Adjacencies(digraph);
-    n:=Length(digraph);
+    digraph := Adjacencies(digraph);
+    n := Length(digraph);
 
-    if n=0 then
-      return rec( comps:=[], id:=[]);
+    if n = 0 then
+      return rec( comps := [], id := []);
     fi;
 
-    stack1:=EmptyPlist(n); len1:=0;
-    stack2:=EmptyPlist(n); len2:=0;
-    id:=[1..n]*0;
-    count:=Length(digraph);
-    comps:=[];
-    fptr:=[];
+    stack1 := EmptyPlist(n); len1 := 0;
+    stack2 := EmptyPlist(n); len2 := 0;
+    id := [ 1 .. n ] * 0;
+    count := Length(digraph);
+    comps := [];
+    fptr := [];
 
-    for v in [1..Length(digraph)] do
-      if id[v]=0 then
-        level:=1;
+    for v in [ 1 .. Length(digraph) ] do
+      if id[v] = 0 then
+        level := 1;
         fptr[1] := v; #fptr[0], vertex
         fptr[2] := 1; #fptr[2], index
-        len1:=len1+1;
-        stack1[len1]:=v;
-        len2:=len2+1;
-        stack2[len2]:=len1;
-        id[v]:=len1;
+        len1 := len1 + 1;
+        stack1[len1] := v;
+        len2 := len2 + 1;
+        stack2[len2] := len1;
+        id[v] := len1;
 
-        while level>0 do
-          if fptr[2*level] > Length(digraph[fptr[2*level-1]]) then
-            if stack2[len2]=id[fptr[2*level-1]] then
-              len2:=len2-1;
-              count:=count+1;
-              l:=0;
-              comp:=[];
+        while level > 0 do
+          if fptr[ 2 * level] > Length(digraph[fptr[2 * level - 1]]) then
+            if stack2[len2]=id[fptr[2 * level - 1]] then
+              len2 := len2 - 1;
+              count := count + 1;
+              l := 0;
+              comp := [];
               repeat
-                w:=stack1[len1];
-                id[w]:=count;
-                len1:=len1-1; #pop from stack1
-                l:=l+1;
-                comp[l]:=w;
-              until w=fptr[2*level-1];
+                w := stack1[len1];
+                id[w] := count;
+                len1 := len1 - 1; #pop from stack1
+                l := l + 1;
+                comp[l] := w;
+              until w = fptr[2 * level - 1];
               ShrinkAllocationPlist(comp);
               MakeImmutable(comp);
               Add(comps, comp);
             fi;
-            level:=level-1;
+            level := level - 1;
           else
-            w:=digraph[fptr[2*level-1]][fptr[2*level]];
-            fptr[2*level]:=fptr[2*level]+1;
+            w := digraph[fptr[2 * level - 1]][fptr[2 * level]];
+            fptr[2 * level] := fptr[2 * level] + 1;
 
-            if id[w]=0 then
-              level:=level+1;
-              fptr[2*level-1]:=w; #fptr[0], vertex
-              fptr[2*level]:=1;   #fptr[2], index
-              len1:=len1+1;
-              stack1[len1]:=w;
-              len2:=len2+1;
-              stack2[len2]:=len1;
-              id[w]:=len1;
+            if id[w] = 0 then
+              level := level + 1;
+              fptr[2 * level - 1 ] := w; #fptr[0], vertex
+              fptr[2 * level] := 1;   #fptr[2], index
+              len1 := len1 + 1;
+              stack1[len1] := w;
+              len2 := len2 + 1;
+              stack2[len2] := len1;
+              id[w] := len1;
 
             else # we saw <w> earlier in this run
               while stack2[len2] > id[w] do
-                len2:=len2-1; # pop from stack2
+                len2 := len2 - 1; # pop from stack2
               od;
             fi;
           fi;
@@ -894,7 +894,7 @@ else
     MakeImmutable(id);
     ShrinkAllocationPlist(comps);
     MakeImmutable(comps);
-    return rec(id:=id-Length(digraph), comps:=comps);
+    return rec(id := id - Length(digraph), comps := comps);
   end);
 fi;
 
