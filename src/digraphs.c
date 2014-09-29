@@ -337,7 +337,7 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
 }
 
 static Obj FuncDIGRAPH_ADJACENCY(Obj self, Obj digraph) { 
-  Obj   range, source, adj, adjj, k;
+  Obj   range, source, adj, adjj, k, vertices;
   UInt  n, i, j, pos, len;
   
   range = ElmPRec(digraph, RNamName("range")); 
@@ -345,7 +345,11 @@ static Obj FuncDIGRAPH_ADJACENCY(Obj self, Obj digraph) {
   source = ElmPRec(digraph, RNamName("source"));
   PLAIN_LIST(source);
   
-  n = GET_LEN_RANGE(ElmPRec(digraph, RNamName("vertices"))); 
+  //n = GET_LEN_RANGE(ElmPRec(digraph, RNamName("vertices"))); 
+  vertices = ElmPRec(digraph, RNamName("vertices"));
+  PLAIN_LIST(vertices);
+  n = LEN_PLIST(vertices);
+
   if (n == 0) {
     return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
   }
