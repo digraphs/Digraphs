@@ -12,13 +12,14 @@
 <ManSection>
   <Oper Name="ReadGraph6Line" Arg="str"/>
   <Oper Name="ReadDigraph6Line" Arg="str"/>
+  <Oper Name="ReadSparse6Line" Arg="str"/>
   <Returns>A directed graph.</Returns>
   <Description>
-    If <A>str</A> is a string encoding a graph in Graph6 or Digraph6, then
-    this function returns a directed graph.  In the case of Graph6, a format
-    which does not support directed edges, this will be a directed grap such
-    that for every edge, the edge going in the opposite direction is also
-    present.
+    If <A>str</A> is a string encoding a graph in Graph6, Digraph6 or
+    Sparse6, then this function returns a directed graph. In the case of
+    either Graph6 or Sparse6, formats which do not support directed edges,
+    this will be a directed graph such that for every edge, the edge going
+    in the opposite direction is also present.
     <Example><![CDATA[
 gap> ReadGraph6Line("?");
 <directed graph with 0 vertices, 0 edges>

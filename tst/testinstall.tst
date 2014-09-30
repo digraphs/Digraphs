@@ -87,4 +87,8 @@ gap> IsSimpleDirectedGraph(d);
 true
 
 #
+gap> ReadSparse6Line(":Fa@x^");
+<directed graph with 7 vertices, 8 edges>
+
+#
 gap> STOP_TEST( "Digraphs package: testinstall.tst", 0);
