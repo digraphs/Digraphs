@@ -420,7 +420,7 @@ function(s)
   len := 1;
   v := 0;
   i := 1;
-  while i <=  Length(blist) - k - 1 do
+  while i <= Length(blist) - k do
     if blist[i] then
       v := v + 1;
     fi;
