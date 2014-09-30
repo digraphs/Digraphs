@@ -742,6 +742,11 @@ InstallMethod(WriteSparse6, "for a directed graph",
 function(graph)
   local list, n, lenlist, source, range, k, blist, v, nextbit, AddBinary, i, 
         bitstopad, pos, block;
+  if not IsUndirectedGraph(graph) then
+    Error("<graph> must be a symmetric directed graph,");
+    return;
+  fi;
+  
   list := [];
   n := Length(Vertices(graph));
   
@@ -755,11 +760,10 @@ function(graph)
     return;
   fi;
   Append(list, lenlist);
-  
-  # Get the source and range - include the converse of each edge
-  source := Concatenation(Source(graph), Range(graph)) - 1;
-  range := Concatenation(Range(graph), Source(graph)) - 1;
-  range := Permuted(range, Sortex(source));
+
+  # Get the source and range - half these edges will be discarded
+  source := Source(graph) - 1;
+  range := Range(graph) - 1;
 
   # k is the number of bits in a vertex label
   if n > 1 then
