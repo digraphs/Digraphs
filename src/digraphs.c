@@ -307,12 +307,11 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
         k = stack[1];
         if (ptr[j] == 2) {
           //SetIsAcyclicDirectedGraph(graph, false);
-          // ErrorQuit("the graph is not acyclic,", 0L, 0L);
           stack -= 2;
           level--;
           if ( stack[0] != j ) { //Cycle is not just a loop
             free(ptr);
-            stack -= (2 * level) - 4; 
+            stack -= (2 * level) - 2; 
             free(stack);
             return Fail;
           }

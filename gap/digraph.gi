@@ -621,7 +621,7 @@ end);
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
-if IsBound(DIGRAPH_TOPO_SORT) and false then
+if IsBound(DIGRAPH_TOPO_SORT) then
   InstallMethod(DirectedGraphTopologicalSort, "for a digraph",
   [IsDirectedGraph], function(graph)
     return DIGRAPH_TOPO_SORT(Adjacencies(graph));
