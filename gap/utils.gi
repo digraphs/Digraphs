@@ -343,6 +343,114 @@ function(s)
     source := source ) );
 end);
 
+# 
+
+InstallMethod(ReadSparse6Line, "for a string",
+[IsString],
+function(s)
+  local LogCeiling, list, n, start, blist, pos, num, bpos, k, range, source, len, v, x, i, j;
+
+  LogCeiling := function(n, k)
+    local pow;
+    pow := LogInt(n,k);
+    if k^pow < n then
+      pow := pow + 1;
+    fi;
+    return pow;
+  end;
+
+  # Check for the special ':' character
+  if s[1] <> ':' then
+    Error("<s> must be a string in Sparse6 format,");
+    return;
+  fi;
+
+  # Convert ASCII chars to integers
+  list := [];
+  for i in s do
+    Add(list, IntChar(i) - 63);
+  od;
+
+  # Get n the number of vertices of the graph
+  if list[2] <> 63 then
+    n := list[2];
+    start := 3;
+  else 
+    if list[3] = 63 and Length(list) <= 8 then
+      n := 0;
+      for i in [1..6] do
+        n := n + 2^(6*i)*list[10 - i];
+      od;
+      start := 10;
+    elif Length(list) <= 4 then
+      n := 0;
+      for i in [1..3] do
+        n := n + 2^(6*i)*list[6 - i];
+      od;
+      start :=  6;
+    else
+       Error(s, " is not a valid sparse6 input");
+       return;
+    fi;
+  fi;
+  
+  # convert list into a list of bits;
+  blist := BlistList([1 .. (Length(list) - start + 1) * 6], []);
+  pos := 1;
+  for i in [start .. Length(list)] do
+    num := list[i];
+    bpos := 1;
+    while num > 0 do
+      if num mod 2 = 0 then
+	num := num / 2;
+      else
+        num := (num - 1) / 2; 
+	blist[pos + 6 - bpos] := true;
+      fi;
+      bpos := bpos + 1;
+    od;
+    pos := pos + 6;
+  od;
+
+  k := LogCeiling(n, 2);
+
+  range := [];
+  source := [];
+
+  len := 1;
+  v := 0;
+  i := 1;
+  while i <=  Length(blist) - k - 1 do
+    if blist[i] then
+      v := v + 1;
+    fi;
+    x := 0;
+    for j in [1 .. k] do
+      if blist[i + j] then
+        x := x + 2^(k - j);
+      fi;
+    od;
+    if x > v then
+      v := x;
+    else
+      range[len] := x;
+      source[len] := v;
+      range[len + 1] := v;
+      source[len + 1] := x;
+      len  := len + 2; 
+    fi;
+    i := i + k + 1;
+  od;
+
+  range := range + 1;
+  source := source + 1;
+ 
+  return DirectedGraph( rec( vertices := [ 1 .. n ], range := range,
+  source := source  ) );
+end);
+
+#
+
 SplitStringBySubstring:=function(string, substring)
   local m, n, i, j, out, nr;
   
