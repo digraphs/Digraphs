@@ -278,8 +278,16 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   UInt  *stack, *ptr;
   
   nr = LEN_PLIST(adj);
+  
+  if (nr == 0) {
+    return adj;
+  }
   out = NEW_PLIST(T_PLIST_CYC, nr);
   SET_LEN_PLIST(out, nr);
+  if (nr == 1) {
+    SET_ELM_PLIST(out, 1, INTOBJ_INT(1));
+    return out;
+  }
 
   //init the buf
   ptr = calloc( nr + 1, sizeof(UInt) );
@@ -298,11 +306,19 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
         j = stack[0];
         k = stack[1];
         if (ptr[j] == 2) {
-          free(ptr);
-          stack -= (2 * level) - 2; 
-          free(stack);
-          return Fail;
+          //SetIsAcyclicDirectedGraph(graph, false);
           // ErrorQuit("the graph is not acyclic,", 0L, 0L);
+          stack -= 2;
+          level--;
+          if ( stack[0] != j ) { //Cycle is not just a loop
+            free(ptr);
+            stack -= (2 * level) - 4; 
+            free(stack);
+            return Fail;
+          }
+          stack[1]++;
+          ptr[j] = 0;
+          continue;
         }
         nbs = ELM_PLIST(adj, j);
         if( ptr[j] == 1 || k > LEN_LIST(nbs)) {
