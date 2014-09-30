@@ -84,6 +84,10 @@ gap> topo[20000]=10001;
 true
 gap> topo[12345];
 17656
+gap> gr := DirectedGraph( [ [ 2 ], [ 1 ] ] );
+<directed graph with 2 vertices, 2 edges>
+gap> DirectedGraphTopologicalSort(gr);
+fail
 
 #
 gap> DirectedGraphTopologicalSort(multiple);
@@ -214,6 +218,31 @@ gap> gr4 := DirectedGraph(r);
 <directed graph with 10000 vertices, 10001 edges>
 gap> IsSimpleDirectedGraph(gr4);
 false
+
+# DirectedGraphTransitiveClosure & DirectedGraphReflexiveTransitiveClosure
+gap> r := rec( vertices:=[ 1 .. 4 ], source := [ 1, 1, 2, 3, 4 ], 
+> range := [ 1, 2, 3, 4, 1 ] );
+rec( range := [ 1, 2, 3, 4, 1 ], source := [ 1, 1, 2, 3, 4 ], 
+  vertices := [ 1 .. 4 ] )
+gap> gr := DirectedGraph(r);
+<directed graph with 4 vertices, 5 edges>
+gap> IsAcyclicDirectedGraph(gr);
+false
+gap> DirectedGraphTopologicalSort(gr);
+fail
+gap> gr1 := DirectedGraphTransitiveClosure(gr);
+<directed graph with 4 vertices, 13 edges>
+gap> gr2 := DirectedGraphReflexiveTransitiveClosure(gr);
+<directed graph with 4 vertices, 16 edges>
+gap> adj := [ [ 2, 6 ], [ 3 ], [ 7 ], [ 3 ], [  ], [ 2, 7 ], [ 5 ] ];;
+gap> gr := DirectedGraph(adj);
+<directed graph with 7 vertices, 8 edges>
+gap> IsAcyclicDirectedGraph(gr);
+true
+gap> gr1 := DirectedGraphTransitiveClosure(gr);
+<directed graph with 7 vertices, 18 edges>
+gap> gr2 := DirectedGraphReflexiveTransitiveClosure(gr);
+<directed graph with 7 vertices, 25 edges>
 
 #
 gap> DigraphsStopTest();
