@@ -37,8 +37,16 @@ gap> Size(list);
 34
 
 #
-gap> ReadSparse6Line(":Fa@x^");
-<directed graph with 7 vertices, 8 edges>
+gap> ReadSparse6Line(":[___dCfEcdFjCIideLhIfJkLgkQge`RSbPTaOTbMNaS`QY");
+<directed graph with 28 vertices, 82 edges>
+gap> ReadSparse6Line(":I`ACWqHKhhccTF");
+<directed graph with 10 vertices, 30 edges>
+gap> ReadSparse6Line(":U___gFecGdHcEdFcFdE`GHbILaJKbNaM`RS");
+<directed graph with 22 vertices, 64 edges>
+gap> ReadSparse6Line(":U___fEcdcdIeHfGcFdE`GHbILaJKbNaM`RS");
+<directed graph with 22 vertices, 64 edges>
+gap> ReadSparse6Line(":U___fEcdGcdeJfIcFdEbLNaKM`H`GbIRaJQ");
+<directed graph with 22 vertices, 64 edges>
 
 #
-gap> STOP_TEST( "Digraphs package: digraph.tst", 0);
+gap> STOP_TEST( "Digraphs package: utils.tst", 0);
