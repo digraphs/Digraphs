@@ -611,16 +611,13 @@ end);
 
 #
 
-InstallMethod(WriteGraph6, "for a directed graph",
-[IsDirectedGraph],
-function(graph)
-  local list, adj, n, tablen, blist, i, j, pos, block;
+BindGlobal("Graph6Length",
+function(n)
+  local list;
   list := [];
-  adj := Adjacencies(graph);
-  n := Length(Vertices(graph));
-
-  # First write the number of vertices
-  if n < 63 then
+  if n < 0 then
+    return fail;
+  elif n < 63 then
     Add(list, n);
   elif n < 258248 then
     Add(list, 63);
@@ -637,9 +634,28 @@ function(graph)
     Add(list, Int(n / 64^1) mod 64);
     Add(list, n mod 64);
   else
-    Error("<graph> must have no more than 68719476736 vertices,");
+    return fail;
+  fi;
+  return list;
+end);
+  
+
+
+InstallMethod(WriteGraph6, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
+  list := [];
+  adj := Adjacencies(graph);
+  n := Length(Vertices(graph));
+  
+  # First write the number of vertices
+  lenlist := Graph6Length(n);
+  if lenlist = fail then
+    Error("<graph> must have between 0 and 68719476736 vertices,");
     return;
   fi;
+  Append(list, lenlist);
 
   # Find adjacencies (non-directed)
   tablen := n * (n-1) / 2;
@@ -677,7 +693,7 @@ end);
 InstallMethod(WriteDigraph6, "for a directed graph",
 [IsDirectedGraph],
 function(graph)
-  local list, adj, n, tablen, blist, i, j, pos, block;
+  local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   list := [];
   adj := Adjacencies(graph);
   n := Length(Vertices(graph));
@@ -686,26 +702,12 @@ function(graph)
   Add(list,-20);
 
   # Now write the number of vertices
-  if n < 63 then
-    Add(list, n);
-  elif n < 258248 then
-    Add(list, 63);
-    Add(list, Int(n / 64^2));
-    Add(list, Int(n / 64) mod 64);
-    Add(list, n mod 64);
-  elif n < 68719476736 then
-    Add(list, 63);
-    Add(list, 63);
-    Add(list, Int(n / 64^5));
-    Add(list, Int(n / 64^4) mod 64);
-    Add(list, Int(n / 64^3) mod 64);
-    Add(list, Int(n / 64^2) mod 64);
-    Add(list, Int(n / 64^1) mod 64);
-    Add(list, n mod 64);
-  else
-    Error("<graph> must have no more than 68719476736 vertices,");
+  lenlist := Graph6Length(n);
+  if lenlist = fail then
+    Error("<graph> must have between 0 and 68719476736 vertices,");
     return;
   fi;
+  Append(list, lenlist);
 
   # Find adjacencies (non-directed)
   tablen := n ^ 2;
@@ -729,6 +731,114 @@ function(graph)
     pos := pos + 6;
   od;
 
+  # Create string to return
+  return List(list, i -> CharInt(i + 63));
+end);
+
+#
+
+InstallMethod(WriteSparse6, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  local list, n, lenlist, source, range, k, blist, v, nextbit, AddBinary, i, 
+        bitstopad, pos, block;
+  list := [];
+  n := Length(Vertices(graph));
+  
+  # First write the special character ':'
+  Add(list,-5);
+
+  # Now write the number of vertices
+  lenlist := Graph6Length(n);
+  if lenlist = fail then
+    Error("<graph> must have between 0 and 68719476736 vertices,");
+    return;
+  fi;
+  Append(list, lenlist);
+  
+  # Get the source and range - include the converse of each edge
+  source := Concatenation(Source(graph), Range(graph)) - 1;
+  range := Concatenation(Range(graph), Source(graph)) - 1;
+  range := Permuted(range, Sortex(source));
+
+  # k is the number of bits in a vertex label
+  if n > 1 then
+    k := Log2Int(n-1) + 1;
+  else
+    k := 1;
+  fi;
+  
+  # Add the edges one by one
+  blist := BlistList([1..Length(source)*(k+1)/2],[]);
+  v := 0;
+  nextbit := 1;
+  AddBinary := function(blist, i)
+    local b;
+    for b in [1..k] do
+      blist[nextbit] := Int((i mod (2^(k-b+1))) / (2^(k-b))) = 1;
+      nextbit := nextbit + 1;
+    od;
+  end;
+  for i in [1..Length(source)] do
+    if source[i] < range[i] then
+      continue;
+    elif source[i] = v then
+      blist[nextbit] := false;
+      nextbit := nextbit + 1;
+    elif source[i] = v+1 then
+      blist[nextbit] := true;
+      nextbit := nextbit + 1;
+      v := v + 1;
+    elif source[i] > v+1 then
+      blist[nextbit] := true;
+      nextbit := nextbit + 1;
+      AddBinary(blist, source[i]);
+      v := source[i];
+      blist[nextbit] := false;
+      nextbit := nextbit + 1;
+    fi;
+    AddBinary(blist, range[i]);
+  od;
+  
+  # Add padding bits:
+  #  1. If (n,k) = (2,1), (4,2), (8,3) or (16,4), and vertex
+  #     n-2 has an edge but n-1 doesn't have an edge, and
+  #     there are k+1 or more bits to pad, then pad with one
+  #     0-bit and enough 1-bits to complete the multiple of 6.
+  #  2. Otherwise, pad with enough 1-bits to complete the
+  #     multiple of 6.
+  
+  bitstopad := 5 - ((nextbit-2) mod 6);
+  if ((n=2 and k=1) or
+      (n=4 and k=2) or
+      (n=8 and k=3) or
+      (n=16 and k=4)) and
+     (v = n-2) and
+     (bitstopad > k) then
+    blist[nextbit] := false;
+    bitstopad := bitstopad - 1;
+  fi;
+  for i in [1..bitstopad] do
+    Add(blist, true);
+  od;
+  if Length(blist) mod 6 <> 0 then
+    Error("Padding problem,");
+    return;
+  fi;
+  
+  # Read blist into list, 6 bits at a time
+  pos := 0;
+  while pos < Length(blist) do
+    block := 0;
+    for i in [1..6] do
+      if blist[pos+i] then
+        block := block + 2^(6-i);
+      fi;
+    od;
+    Add(list, block);
+    pos := pos + 6;
+  od;
+  
   # Create string to return
   return List(list, i -> CharInt(i + 63));
 end);
