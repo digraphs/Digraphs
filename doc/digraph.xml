@@ -600,10 +600,11 @@ gap> gr:=DirectedGraphRemoveEdges(gr, [10]);
   <Oper Name="DirectedGraphTopologicalSort" Arg="digraph"/>
   <Returns>A list of positive integers, or <K>fail</K>.</Returns>
   <Description>
-    If <A>digraph</A> is an acyclic directed graph, then this operation 
-    returns the vertices of <A>digraph</A> ordered so that every vertex
-    adjacent to <C>i</C> occurs before <C>i</C>. If the directed graph 
-    <A>digraph</A> is not acyclic, then this operation returns <K>fail</K>.
+    If <A>digraph</A> is a directed graph with no cycles of length greater than
+    <M>1</M>, then this operation returns the vertices of <A>digraph</A> 
+    ordered so  that every vertex adjacent to <C>i</C> occurs before <C>i</C>. 
+    If the directed graph <A>digraph</A> contains cycles of length greater than 
+    <M>1</M>, then this operation returns <K>fail</K>.
     <P/>
 
     The method used in this operation has complexity <M>O(m+n)</M> where

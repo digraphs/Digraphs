@@ -92,6 +92,29 @@ fail
 #
 gap> DirectedGraphTopologicalSort(multiple);
 [ 2, 1 ]
+gap> gr := DirectedGraph([]);
+<directed graph with 0 vertices, 0 edges>
+gap> DirectedGraphTopologicalSort(gr);
+[  ]
+gap> gr := DirectedGraph([ [ ] ]);
+<directed graph with 1 vertices, 0 edges>
+gap> DirectedGraphTopologicalSort(gr);
+[ 1 ]
+gap> gr := DirectedGraph([ [ 1 ] ]);
+<directed graph with 1 vertices, 1 edges>
+gap> DirectedGraphTopologicalSort(gr);
+[ 1 ]
+gap> gr := DirectedGraph([ [ 2 ], [ 1 ] ]);
+<directed graph with 2 vertices, 2 edges>
+gap> DirectedGraphTopologicalSort(gr);
+fail
+gap> adj := [ [ 3 ], [ ], [ 2, 3, 4 ], [ ] ];;
+gap> gr := DirectedGraph(adj);
+<directed graph with 4 vertices, 4 edges>
+gap> IsAcyclicDirectedGraph(gr);
+false
+gap> DirectedGraphTopologicalSort(gr);
+[ 2, 4, 3, 1 ]
 
 #
 gap> DirectedGraphTopologicalSort(grid);
