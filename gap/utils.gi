@@ -360,7 +360,7 @@ end);
 InstallMethod(ReadSparse6Line, "for a string",
 [IsString],
 function(s)
-  local LogCeiling, list, n, start, blist, pos, num, bpos, k, range, source, len, v, x, i, j;
+  local list, n, start, blist, pos, num, bpos, k, range, source, len, v, x, i, j;
 
 
   # Check for the special ':' character
@@ -424,7 +424,7 @@ function(s)
   len := 1;
   v := 0;
   i := 1;
-  while i <= Length(blist) - k do
+  while i <= Length(blist) - k - 1 do # should it be - k?
     if blist[i] then
       v := v + 1;
     fi;
