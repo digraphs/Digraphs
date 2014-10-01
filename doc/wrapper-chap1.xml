@@ -33,7 +33,9 @@
 
   <Section><Heading>Attributes of directed graphs</Heading>
     <#Include Label="Vertices">
+    <#Include Label="NrVertices">
     <#Include Label="Edges">
+    <#Include Label="NrEdges">
     <#Include Label="RangeSourceDigraph">
     <#Include Label="Adjacencies">
     <#Include Label="StronglyConnectedComponents">

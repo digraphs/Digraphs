@@ -9,8 +9,9 @@
 ##
 ## this file contains utilies for use with the Digraphs package.
 
-BindGlobal("DigraphsDocXMLFiles", ["digraph.xml", "attrs.xml", "display.xml",
-"utils.xml", "../PackageInfo.g"]);
+BindGlobal("DigraphsDocXMLFiles", [ "attr.xml", "digraph.xml", 
+"display.xml", "grape.xml", "io.xml", "oper.xml", "prop.xml", 
+"util.xml", "../PackageInfo.g"]);
 
 BindGlobal("DigraphsTestRec", rec());
 MakeReadWriteGlobal("DigraphsTestRec");
@@ -108,6 +109,9 @@ end);
 InstallGlobalFunction(DigraphsTestEverything, 
 function()
 
+  DigraphsMakeDoc();
+
+  DigraphsStartTest();
   if not DigraphsTestInstall() then 
     Print("Abort: testinstall.tst failed . . . \n");
     return false;
@@ -118,6 +122,7 @@ function()
     Print("Abort: DigraphsTestAll failed . . . \n");
     return false;
   fi;
+  DigraphsStopTest();
 
   DigraphsTestManualExamples();
   return;

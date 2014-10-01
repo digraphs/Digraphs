@@ -10,12 +10,12 @@
    ]>
 
 <Book Name="digraphs">
-<#Include SYSTEM="title.xml">
+<#Include SYSTEM="wrapper-title.xml">
 
 <TableOfContents/>
 
 <Body>
-  <#Include SYSTEM="chap1.xml">
+  <#Include SYSTEM="wrapper-chap1.xml">
 </Body>
 
 <Bibliography Databases="digraphs" />
