@@ -154,6 +154,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
   AssPRec(out, RNamName("id"), id);
   AssPRec(out, RNamName("comps"), comps);
   CHANGED_BAG(out);
+  free(stack2);
   return out;
 }
 
