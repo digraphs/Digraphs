@@ -11,6 +11,7 @@
 ReadPackage("digraphs/gap/digraph.gi");
 
 ReadPackage("digraphs/gap/attrs.gi");
+ReadPackage("digraphs/gap/props.gi");
 ReadPackage("digraphs/gap/display.gi");
 ReadPackage("digraphs/gap/grape.gi");
 ReadPackage("digraphs/gap/utils.gi");
