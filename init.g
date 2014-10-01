@@ -21,11 +21,12 @@ fi;
 
 ReadPackage("digraphs/gap/digraph.gd");
 
-ReadPackage("digraphs/gap/attrs.gd");
-ReadPackage("digraphs/gap/props.gd");
+ReadPackage("digraphs/gap/attr.gd");
+ReadPackage("digraphs/gap/prop.gd");
+ReadPackage("digraphs/gap/oper.gd");
 ReadPackage("digraphs/gap/display.gd");
 ReadPackage("digraphs/gap/grape.gd");
-ReadPackage("digraphs/gap/utils.gd");
+ReadPackage("digraphs/gap/util.gd");
 ReadPackage("digraphs/gap/io.gd");
 
 DeclareInfoClass("InfoDigraphs");;

@@ -8,6 +8,8 @@
 #############################################################################
 ##
 
+# category, family, type . . .
+
 DeclareCategory("IsDirectedGraph", IsObject);
 
 BindGlobal("DirectedGraphFamily", NewFamily("DirectedGraphFamily",
@@ -16,7 +18,8 @@ BindGlobal("DirectedGraphFamily", NewFamily("DirectedGraphFamily",
 BindGlobal("DirectedGraphType", NewType(DirectedGraphFamily,
  IsDirectedGraph and IsComponentObjectRep and IsAttributeStoringRep));
 
-# constructors
+# constructors . . . 
+
 DeclareOperation("DirectedGraph", [IsRecord]);
 DeclareOperation("DirectedGraph", [IsList]);
 DeclareOperation("DirectedGraphNC", [IsRecord]);
@@ -26,16 +29,6 @@ DeclareOperation("DirectedGraphByEdges", [IsRectangularTable]);
 DeclareOperation("DirectedGraphByEdges", [IsRectangularTable, IsPosInt]);
 DeclareOperation("Graph", [IsDirectedGraph]);
 DeclareOperation("RandomSimpleDirectedGraph", [IsPosInt]);
-
-
-# operations
-DeclareOperation("DirectedGraphRelabel", [IsDirectedGraph, IsPerm]);
-DeclareOperation("DirectedGraphRemoveLoops", [IsDirectedGraph]);
-DeclareOperation("DirectedGraphRemoveEdges", [IsDirectedGraph, IsList]);
-DeclareOperation("DirectedGraphTopologicalSort", [IsDirectedGraph]);
-DeclareOperation("DirectedGraphReflexiveTransitiveClosure", [IsDirectedGraph]);
-DeclareOperation("DirectedGraphTransitiveClosure", [IsDirectedGraph]);
-
-DeclareAttribute("DirectedGraphFloydWarshall", IsDirectedGraph);
 DeclareOperation("AsDirectedGraph", [IsTransformation]);
 DeclareOperation("AsDirectedGraph", [IsTransformation, IsInt]);
+
