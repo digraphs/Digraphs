@@ -140,7 +140,7 @@ function(record)
       return;
     fi;
 
-    if not ForAll(record.range, x-> x <= record.vertices) then
+    if not ForAll(record.range, x-> x <= record.nrvertices) then
       Error("usage: every element of the record components 'range'",
       " must be at most 'nrvertices',");
       return;

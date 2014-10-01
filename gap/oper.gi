@@ -10,6 +10,33 @@
 
 # graph algorithms
 
+InstallMethod(DirectedGraphReverse, "for a digraph",
+[IsDirectedGraph],
+function(graph)
+  local source, range, old, new, nr, i, j;
+
+  if HasSource(graph) then 
+    source := ShallowCopy(Range(graph));
+    range := Permuted(Source(graph), Sortex(source));
+
+    return DirectedGraphNC(rec( source:=source, 
+                                range:=range,
+                                nrvertices:=NrVertices(graph)));
+  fi;
+
+  old := Adjacencies(graph);
+  new := List(Vertices(graph), x -> []);
+  nr := 0;
+
+  for i in Vertices(graph) do 
+    for j in old[i] do 
+      Add(new[j], i);
+    od;
+  od;
+
+  return DirectedGraphNC(new);
+end);
+
 InstallMethod(DirectedGraphRemoveLoops, "for a digraph",
 [IsDirectedGraph],
 function(graph)

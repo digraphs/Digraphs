@@ -15,3 +15,7 @@ DeclareOperation("DirectedGraphTopologicalSort", [IsDirectedGraph]);
 DeclareOperation("DirectedGraphReflexiveTransitiveClosure", [IsDirectedGraph]);
 DeclareOperation("DirectedGraphTransitiveClosure", [IsDirectedGraph]);
 DeclareAttribute("DirectedGraphFloydWarshall", IsDirectedGraph);
+
+DeclareOperation("DirectedGraphReverse", [IsDirectedGraph]);
+
+
