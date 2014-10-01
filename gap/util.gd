@@ -15,4 +15,5 @@ DeclareGlobalFunction("DigraphsTestAll");
 DeclareGlobalFunction("DigraphsTestInstall");
 DeclareGlobalFunction("DigraphsTestManualExamples");
 DeclareGlobalFunction("DigraphsManualExamples");
+DeclareGlobalFunction("DigraphsTestEverything");
 DeclareGlobalFunction("DigraphsDir");

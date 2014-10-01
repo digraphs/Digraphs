@@ -52,12 +52,14 @@ end);
 
 InstallGlobalFunction(DigraphsTestAll,
 function()
-  local dir_str, tst, dir, filesplit, test, stringfile, filename;
+  local dir_str, tst, dir, passed, filesplit, test, stringfile, filename;
 
   Print("Reading all .tst files in the directory digraphs/tst/...\n\n");
   dir_str:=Concatenation(PackageInfo("digraphs")[1]!.InstallationPath,"/tst");
   tst:=DirectoryContents(dir_str);
   dir:=Directory(dir_str);
+  
+  passed := true;
 
   for filename in tst do
     filesplit:=SplitString(filename, ".");
@@ -66,19 +68,18 @@ function()
       stringfile:=StringFile(Concatenation(dir_str, "/", filename));
       if test then
         Print("reading ", dir_str,"/", filename, " . . .\n");
-        Test(Filename(dir, filename));
+        passed := passed and Test(Filename(dir, filename));
         Print("\n");
       fi;
     fi;
   od;
-  return;
+  return passed;
 end);
 
 InstallGlobalFunction(DigraphsTestInstall,
 function()
-  Test(Filename(DirectoriesPackageLibrary("digraphs","tst"),
+  return Test(Filename(DirectoriesPackageLibrary("digraphs","tst"),
    "testinstall.tst"));;
-  return;
 end);
 
 InstallGlobalFunction(DigraphsManualExamples,
@@ -102,6 +103,24 @@ end);
 InstallGlobalFunction(DigraphsDir,
 function()
   return PackageInfo("digraphs")[1]!.InstallationPath;
+end);
+
+InstallGlobalFunction(DigraphsTestEverything, 
+function()
+
+  if not DigraphsTestInstall() then 
+    Print("Abort: testinstall.tst failed . . . \n");
+    return false;
+  fi;
+  Print("\n");
+
+  if not DigraphsTestAll() then 
+    Print("Abort: DigraphsTestAll failed . . . \n");
+    return false;
+  fi;
+
+  DigraphsTestManualExamples();
+  return;
 end);
 
 #EOF
