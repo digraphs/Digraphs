@@ -93,31 +93,28 @@ end);
 InstallMethod(ReadGraph6Line, "for a string",
 [IsString],
 function(s)
-  local FindCoord, list, n, start, maxedges, range, source, pos, len, i, bpos, temp, j;
+  local FindCoord, list, n, start, maxedges, range, source, pos, len, i, bpos, edge, graph, j;
 
   # find a position in the adj matrix from the vector
   # knowing a lower bound for pos_y
   FindCoord := function(pos, bound)
     local i, sum;
       i := bound;
-      sum := Sum([1..i]);
+      sum := i * (i + 1) / 2;
       while sum < pos do
         i := i + 1;
         sum := sum + i;
       od;
-    return [ pos - sum + i - 1, i ];
+    return [ pos - sum + i, i + 1 ];
   end;
 
   if Length(s) = 0 then
-    Error("the input string has to be non empty");
+    Error("Digraphs: ReadGraph6Line: usage: the input string has to be non-empty,");
     return;
   fi;
 
   # Convert ASCII chars to integers
-  list := [];
-  for i in s do
-    Add(list, IntChar(i) - 63);
-  od;
+  list := List(s, i -> IntChar(i) - 63);
 
   # Get n the number of vertices of the graph
   if list[1] <> 63 then
@@ -126,14 +123,14 @@ function(s)
   elif Length(list) > 300 then
     if list[2] = 63 and Length(list) <= 8 then
       n := 0;
-      for i in [0..5] do
-        n := n + 2^(6*i)*list[8-i];
+      for i in [ 0 .. 5 ] do
+        n := n + 2 ^ (6 * i) * list[8 - i];
       od;
       start := 9;
     else
       n := 0;
-      for i in [0..2] do
-        n := n + 2^(6*i)*list[4-i];
+      for i in [ 0 .. 2 ] do
+        n := n + 2 ^ (6 * i) * list[4 - i];
       od;
       start :=  5;
     fi;
@@ -142,9 +139,9 @@ function(s)
      return;
   fi;
 
-  maxedges := n*(n-1)/2;
-  if list <> [0] and not (Int((maxedges-1)/6) +  start = Length(list) and
-     list[Length(list)] mod 2^((0 - maxedges) mod 6) = 0) then
+  maxedges := n * ( n - 1 ) / 2;
+  if list <> [0] and not (Int((maxedges - 1) / 6) +  start = Length(list) and
+     list[Length(list)] mod 2 ^ ((0 - maxedges) mod 6) = 0) then
        Error(s, " is not a valid graph6 input");
        return;
   fi;
@@ -162,11 +159,11 @@ function(s)
       if i mod 2  = 0 then
         i := i / 2;
       else
-        temp := FindCoord(pos + 6 - bpos, 0);
-	range[len] := temp[1];
-	source[len] := temp[2];
-	range[len + 1] := temp[2];
-	source[len + 1] := temp[1];
+        edge := FindCoord(pos + 6 - bpos, 0);
+	range[len] := edge[1];
+	source[len] := edge[2];
+	range[len + 1] := edge[2];
+	source[len + 1] := edge[1];
 	len := len + 2;
         i := (i - 1) / 2;
       fi;
@@ -175,8 +172,10 @@ function(s)
     pos := pos + 6;
   od;
 
-  return DirectedGraph(rec(vertices := [ 1 .. n ], range := range + 1,
-    source := source + 1 ));
+  graph := DirectedGraph(rec(nrvertices := n, range := range,
+    source := source ));
+  SetIsUndirectedGraph(graph, true);
+  return graph;
 end);
 
 #

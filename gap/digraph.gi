@@ -128,9 +128,9 @@ function(record)
     fi;
 
   elif IsBound(record.nrvertices) then 
-    if not IsPosInt(record.nrvertices) then 
-      Error("usage: the record components 'nrvertices'",
-      "should be a positive integer,");
+    if not IsInt(record.nrvertices) and record.nrvertices >= 0 then 
+      Error("usage: the record components 'nrvertices' ",
+      "should be a non-negative integer,");
       return;
     fi;
     

@@ -14,3 +14,5 @@ DeclareProperty("IsFunctionalDirectedGraph", IsDirectedGraph);
 DeclareProperty("IsStronglyConnectedDirectedGraph", IsDirectedGraph);
 DeclareProperty("IsAcyclicDirectedGraph", IsDirectedGraph);
 DeclareProperty("IsTournament", IsDirectedGraph);
+
+InstallTrueMethod(IsSimpleDirectedGraph, IsUndirectedGraph);
