@@ -154,6 +154,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
   AssPRec(out, RNamName("id"), id);
   AssPRec(out, RNamName("comps"), comps);
   CHANGED_BAG(out);
+  free(stack2);
   return out;
 }
 
@@ -337,7 +338,7 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
 }
 
 static Obj FuncDIGRAPH_ADJACENCY(Obj self, Obj digraph) { 
-  Obj   range, source, adj, adjj, k, vertices;
+  Obj   range, source, adj, adjj, k;
   UInt  n, i, j, pos, len;
   
   range = ElmPRec(digraph, RNamName("range")); 
@@ -345,10 +346,7 @@ static Obj FuncDIGRAPH_ADJACENCY(Obj self, Obj digraph) {
   source = ElmPRec(digraph, RNamName("source"));
   PLAIN_LIST(source);
   
-  //n = GET_LEN_RANGE(ElmPRec(digraph, RNamName("vertices"))); 
-  vertices = ElmPRec(digraph, RNamName("vertices"));
-  PLAIN_LIST(vertices);
-  n = LEN_PLIST(vertices);
+  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
 
   if (n == 0) {
     return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
@@ -427,7 +425,7 @@ static Obj FuncIS_SIMPLE_DIGRAPH(Obj self, Obj digraph) {
   source = ElmPRec(digraph, RNamName("source"));
   PLAIN_LIST(source);
 
-  n = GET_LEN_RANGE(ElmPRec(digraph, RNamName("vertices"))); 
+  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
 
   current = INT_INTOBJ(ELM_PLIST(source, 1));
   marked = calloc(n + 1, sizeof(UInt));

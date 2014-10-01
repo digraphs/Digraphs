@@ -17,6 +17,8 @@ DeclareAttribute("Range", IsDirectedGraph);
 DeclareAttribute("Source", IsDirectedGraph);
 DeclareAttribute("Edges", IsDirectedGraph);
 DeclareAttribute("Adjacencies", IsDirectedGraph);
+DeclareAttribute("NrVertices", IsDirectedGraph);
+DeclareAttribute("NrEdges", IsDirectedGraph);
 
 # these are really attributes but are declared elsewhere as operations and so we
 # must declare them as operations too

@@ -8,14 +8,35 @@
 #############################################################################
 ##
 
+#
+
+InstallMethod(NrVertices, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  return graph!.nrvertices;
+end);
+
+#
+
+InstallMethod(NrEdges, "for a directed graph",
+[IsDirectedGraph],
+function(graph)
+  if not HasSource(graph) 
+    and (HasAdjacencies(graph) and IsSimpleDirectedGraph(graph)) then 
+    return Sum(List(Adjacencies(graph), Length));
+  fi;
+
+  return Length(Source(graph));
+end);
+
 # attributes for directed graphs . . .
 
 InstallMethod(GrapeGraph, "for a directed graph", 
 [IsDirectedGraph], Graph);
 
-BindGlobal("DIGRAPHS_RangeSourceVertices",
+BindGlobal("DIGRAPHS_RangeSource",
 function(graph)
-  local adj, nr, source, range, vertices, names, j, i;
+  local adj, nr, source, range, j, i;
 
   if IsBound(graph!.range) then
     return;
@@ -30,8 +51,6 @@ function(graph)
 
   source := EmptyPlist(nr);
   range := EmptyPlist(nr);
-  vertices := [1..Length(adj)];
-  names := vertices;
   nr := 0;
 
   for i in [1..Length(adj)] do
@@ -42,34 +61,32 @@ function(graph)
     od;
   od;
 
-  graph!.range := MakeImmutable(range);
-  graph!.source := MakeImmutable(source);
-  graph!.vertices := MakeImmutable(vertices);
-  graph!.names := MakeImmutable(names);
+  graph!.range := range;
+  graph!.source := source;
 
   return;
 end);
+
 
 #
 
 InstallMethod(Vertices, "for a directed graph",
 [IsDirectedGraph],
 function(graph)
-  DIGRAPHS_RangeSourceVertices(graph);
-  return graph!.vertices;
+  return [ 1 .. NrVertices(graph) ];
 end);
 
 InstallMethod(Range, "for a directed graph",
 [IsDirectedGraph],
 function(graph)
-  DIGRAPHS_RangeSourceVertices(graph);
+  DIGRAPHS_RangeSource(graph);
   return graph!.range;
 end);
 
 InstallMethod(Source, "for a directed graph",
 [IsDirectedGraph],
 function(graph)
-  DIGRAPHS_RangeSourceVertices(graph);
+  DIGRAPHS_RangeSource(graph);
   return graph!.source;
 end);
 

@@ -30,6 +30,8 @@ function(graph)
   return Graph(Group(()), ShallowCopy(Vertices(graph)), OnPoints, adj, true);
 end);
 
+#
+
 InstallMethod(RandomSimpleDirectedGraph, "for a pos int",
 [IsPosInt],
 function(n)
@@ -62,62 +64,78 @@ function(record)
   fi;
 
   if not (IsBound(record.source) and IsBound(record.range) and
-    IsBound(record.vertices)) then
+    (IsBound(record.vertices) or IsBound(record.nrvertices))) then
     Error("usage: the argument must be a record with components `source',",
-    " `range', and `vertices'");
+    " `range', and `vertices' or 'nrvertices'");
     return;
   fi;
 
-  if not (IsList(record.vertices) and IsList(record.source) and
-    IsList(record.range)) then
-    Error("usage: the record components 'vertices', 'source'",
+  if not (IsList(record.source) and IsList(record.range)) then
+    Error("usage: the record components 'source'",
     " and 'range' should be lists,");
     return;
   fi;
-
+  
   if Length(record.source)<>Length(record.range) then
     Error("usage: the record components 'source'",
     " and 'range' should be of equal length,");
     return;
   fi;
 
-  if not ForAll(record.source, x-> x in record.vertices) then
-    Error("usage: every element of the record components 'source'",
-    " must belong to the component 'vertices',");
-    return;
-  fi;
+  if IsBound(record.vertices) then 
+    if not IsList(record.vertices) then
+      Error("usage: the record components 'vertices'",
+      "should be a list,");
+      return;
+    fi;
+    
+    if not ForAll(record.source, x-> x in record.vertices) then
+      Error("usage: every element of the record components 'source'",
+      " must belong to the component 'vertices',");
+      return;
+    fi;
 
-  if not ForAll(record.range, x-> x in record.vertices) then
-    Error("usage: every element of the record components 'range'",
-    " must belong to the component 'vertices',");
-    return;
+    if not ForAll(record.range, x-> x in record.vertices) then
+      Error("usage: every element of the record components 'range'",
+      " must belong to the component 'vertices',");
+      return;
+    fi;
+
+  elif IsBound(record.nrvertices) then 
+    if not IsPosInt(record.nrvertices) then 
+      Error("usage: the record components 'nrvertices'",
+      "should be a positive integer,");
+      return;
+    fi;
+    
+    if not ForAll(record.source, x-> x <= record.nrvertices) then
+      Error("usage: every element of the record components 'source'",
+      " must be at most 'nrvertices',");
+      return;
+    fi;
+
+    if not ForAll(record.range, x-> x <= record.vertices) then
+      Error("usage: every element of the record components 'range'",
+      " must be at most 'nrvertices',");
+      return;
+    fi;
   fi;
 
   record:=StructuralCopy(record);
 
   # rewrite the vertices to numbers
-  if record.vertices<>[1..Length(record.vertices)] then
-    record.names:=record.vertices;
-    record.vertices:=[1..Length(record.names)];
+  if IsBound(record.vertices) then
+    record.nrvertices := Length(record.vertices);
     for i in [1..Length(record.range)] do
-      record.range[i]:=Position(record.names, record.range[i]);
-      record.source[i]:=Position(record.names, record.source[i]);
+      record.range[i]:=Position(record.vertices, record.range[i]);
+      record.source[i]:=Position(record.vertices, record.source[i]);
     od;
-  else
-    record.names := record.vertices;
   fi;
 
-  if not IsRangeRep(record.vertices) then
-    ConvertToRangeRep(record.vertices);
-  fi;
-
-  # make sure that the record.source is sorted
+  # make sure that the record.source is sorted, and range is too
   record.range:=Permuted(record.range, Sortex(record.source));
 
-  MakeImmutable(record.range);
-  MakeImmutable(record.source);
-  MakeImmutable(record.vertices);
-  MakeImmutable(record.names);
+  MakeImmutable(record);
 
   return Objectify(DirectedGraphType, record);
 end);
@@ -126,23 +144,13 @@ end);
 
 InstallMethod(DirectedGraphNC, "for a record", [IsRecord],
 function(record)
-  local i;
 
   if IsGraph(record) then
     return DirectedGraphNC(List(Vertices(record), x-> Adjacency(record, x)));
   fi;
 
   record:=StructuralCopy(record);
-
-  MakeImmutable(record.range);
-  MakeImmutable(record.source);
-  MakeImmutable(record.vertices);
-
-  if not IsBound(record.names) then
-    record.names := record.vertices;
-  else
-    MakeImmutable(record.names);
-  fi;
+  MakeImmutable(record);
 
   return Objectify(DirectedGraphType, record);
 end);
@@ -152,37 +160,35 @@ end);
 InstallMethod(DirectedGraph, "for a list of lists of pos ints",
 [IsList],
 function(adj)
-  local len, x, record, i;
+  local len, record, x, y;
 
   len := Length(adj);
   adj := StructuralCopy(adj);
 
   for x in adj do
-    if IsDuplicateFreeList(x) then
-      for i in x do
-        if not (IsPosInt(i) and i <= len) then
-          Error("usage: the argument must be a list of duplicate free lists of positive",
-          " integers not exceeding the length of the argument,");
-          return;
-        fi;
-      od;
-      x := x * 1; # make sure that lists in <adj> are plists
-    else
-      Error("usage: the argument must be a list of duplicate free lists,");
-      return;
-    fi;
+    for y in x do
+      if not (IsPosInt(y) and y <= len) then
+        Error("usage: the argument must be a list of lists of positive",
+        " integers not exceeding the length of the argument,");
+        return;
+      fi;
+    od;
   od;
 
-  record:=rec( adj := adj );
-  ObjectifyWithAttributes(record, DirectedGraphType, Adjacencies, adj);
+  record:=rec( adj := adj, nrvertices := Length(adj) );
+  # ObjectifyWithAttributes doesn't work on an immutable record
+  ObjectifyWithAttributes(record, DirectedGraphType, Adjacencies, adj,
+   NrVertices, Length(adj));
   return record;
 end);
 
 InstallMethod(DirectedGraphNC, "for a list of lists of pos ints", [IsList],
 function(adj)
   local record;
-  record := rec( adj := StructuralCopy(adj) );
-  ObjectifyWithAttributes(record, DirectedGraphType, Adjacencies, record.adj);
+  record := rec( adj := StructuralCopy(adj), nrvertices := Length(adj));
+  # ObjectifyWithAttributes doesn't work on an immutable record
+  ObjectifyWithAttributes(record, DirectedGraphType, Adjacencies, record.adj, 
+    NrVertices, Length(adj));
   return record;
 end);
 
@@ -191,7 +197,7 @@ end);
 InstallMethod(DirectedGraphByAdjacencyMatrix, "for a rectangular table",
 [IsRectangularTable],
 function(mat)
-  local n, record, i, j, k, out;
+  local n, record, out, i, j, k;
 
   n := Length(mat);
 
@@ -200,21 +206,22 @@ function(mat)
     return;
   fi;
 
-  record := rec( vertices := [ 1 .. n ], source := [], range := [] );
-  for i in [1..n] do
-    for j in [1..n] do
-      if IsPosInt(mat[i][j]) or mat[i][j] = 0 then 
-        for k in [1..mat[i][j]] do
+  record := rec( nrvertices := n, source := [], range := [] );
+  for i in [ 1 .. n ] do
+    for j in [ 1 .. n ] do
+      if IsInt(mat[i][j]) and mat[i][j] >= 0 then 
+        for k in [ 1 .. mat[i][j] ] do
           Add(record.source, i);
           Add(record.range, j);
         od;
       else
-        Error("the given matrix is not solely non-negative integers, ");
+        Error("DirectedGraphByAdjacencyMatrix: usage, the argument must", 
+        " be a matrix of non-negative integers,");
         return;
       fi;
     od;
   od;
-  out := DirectedGraph(record);
+  out := DirectedGraphNC(record);
   SetAdjacencyMatrix(out, mat);
   return out;
 end);
@@ -267,12 +274,13 @@ function(edges, n)
   local adj, gr, edge;
   
   if not Length(edges[1]) = 2 then 
-    Error("usage: the argument <edges> must be a list of pairs,");
+    Error("DirectedGraphByEdges: usage, the argument <edges> must be a list of pairs,");
     return;
   fi;
 
   if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then 
-    Error("usage: the argument <edges> must be a list of pairs of pos ints,");
+    Error("DirectedGraphByEdges: usage, the argument <edges> must be a list of", 
+    " pairs of pos ints,");
     return;
   fi;
 
@@ -280,7 +288,8 @@ function(edges, n)
 
   for edge in edges do
     if edge[1] > n or edge[2] > n then
-      Error("more vertices are required than have been allowed,");
+      Error("DirectedGraphByEdges: usage, the specified edges must not contain", 
+      " values greater than ", n );
       return;
     fi;
     Add(adj[edge[1]], edge[2]);
@@ -323,7 +332,7 @@ else
       range := Range(graph);
       source := Source(graph);
       len := Length(range);
-      n := Length(Vertices(graph));
+      n := NrVertices(graph);
       current := 0;
       marked := [ 1 .. n ] * 0;
 
@@ -363,7 +372,7 @@ InstallMethod(IsFunctionalDirectedGraph, "for a directed graph",
 function(graph)
   local n, adj, source;
   
-  n := Length(Vertices(graph));
+  n := NrVertices(graph);
   
   if (not HasSource(graph)) and HasAdjacencies(graph) then
     adj := Adjacencies(graph);
@@ -386,9 +395,9 @@ function(graph)
   local str;
 
   str:="<directed graph with ";
-  Append(str, String(Length(Vertices(graph))));
+  Append(str, String(NrVertices(graph)));
   Append(str, " vertices, ");
-  Append(str, String(Length(Range(graph))));
+  Append(str, String(NrEdges(graph)));
   Append(str, " edges>");
   return str;
 end);
@@ -407,7 +416,7 @@ function(graph)
   Append(str, "\>\>rec(\n\>\>");
   com := false;
   i := 1;
-  for nam in ["range", "source", "vertices"] do
+  for nam in ["range", "source", "nrvertices"] do
     if com then
       Append(str, "\<\<,\n\>\>");
     else
@@ -437,7 +446,7 @@ function(graph)
   Append(str, "rec( ");
   com := false;
   i := 1;
-  for nam in ["range", "source", "vertices"] do
+  for nam in ["range", "source", "nrvertices"] do
     if com then
       Append(str, ", ");
     else
@@ -474,7 +483,7 @@ function(graph)
   od;
 
   return DirectedGraphNC(rec( source:=newsource, range:=newrange,
-                              vertices:=ShallowCopy(Vertices(graph))));
+                              nrvertices:=NrVertices(graph)));
 end);
 
 InstallMethod(DirectedGraphRemoveEdges, "for a digraph and a list",
@@ -488,7 +497,7 @@ function(graph, edges)
     return DirectedGraphNC(rec(
       source := Source(graph){edges},
       range := Range(graph){edges},
-      vertices := ShallowCopy(Vertices(graph))));
+      nrvertices := NrVertices(graph)));
   else
     if not IsSimpleDirectedGraph(graph) then
       Error("usage: to remove edges given as pairs of vertices,",
@@ -508,7 +517,7 @@ function(graph, edges)
     od;
 
     return DirectedGraphNC(rec( source:=newsource, range:=newrange,
-                                vertices:=ShallowCopy(Vertices(graph))));
+                                nrvertices:=NrVertices(graph)));
   fi;
 end);
 
@@ -516,7 +525,7 @@ InstallMethod(DirectedGraphRelabel, "for a digraph and perm",
 [IsDirectedGraph, IsPerm],
 function(graph, perm)
 
-  if OnSets(ShallowCopy(Vertices(graph)), perm) <> Vertices(graph) then
+  if ForAny(Vertices(graph), i-> i^perm > NrVertices(graph)) then
     Error("usage: the 2nd argument <perm> must permute ",
     "the vertices of the 1st argument <graph>,");
     return;
@@ -525,7 +534,7 @@ function(graph, perm)
   return DirectedGraphNC(rec(
     source := ShallowCopy(OnTuples(Source(graph), perm)),
     range:= ShallowCopy(OnTuples(Range(graph), perm)),
-    vertices:=ShallowCopy(Vertices(graph))));
+    nrvertices:=NrVertices(graph)));
 end);
 
 if IsBound(IS_ACYCLIC_DIGRAPH) then
@@ -592,7 +601,7 @@ function(graph)
   # Also not dealing with graph weightings.
   # Need discussions on suitability of data structures, etc
 
-  n:=Length(Vertices(graph));
+  n:=NrVertices(graph);
   m:=Length(Edges(graph));
   dist:=List([1..n],x->List([1..n],x->infinity));
 
@@ -1009,13 +1018,38 @@ function(trans, int)
   fi;
 
   ran := ListTransformation(trans, int);
-  r := rec( vertices := [ 1 .. int ], source := [ 1 .. int ], range := ran );
+  r := rec( nrvertices := int, source := [ 1 .. int ], range := ran );
   gr := DirectedGraphNC(r);
   
   SetIsSimpleDirectedGraph(gr, true);
   SetIsFunctionalDirectedGraph(gr, true);
   
   return gr;
+end);
+
+#
+
+InstallMethod(IsTournament, "for a directed graph",
+[IsDirectedGraph], 
+function(graph)
+  local n;
+  
+  if not IsSimpleDirectedGraph(graph) then 
+    return false;
+  fi;
+
+  n := NrVertices(graph);
+
+  if NrEdges(graph) <> n * (n - 1) / 2 then 
+    return false;
+  fi;
+ 
+  if HasIsAcyclicDirectedGraph(graph) and IsAcyclicDirectedGraph(graph) then 
+    return true;
+  fi;
+
+  Error("not yet implemented,"); 
+
 end);
 
 #EOF

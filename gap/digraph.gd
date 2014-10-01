@@ -33,6 +33,7 @@ DeclareProperty("IsUndirectedGraph", IsDirectedGraph);
 DeclareProperty("IsFunctionalDirectedGraph", IsDirectedGraph);
 DeclareProperty("IsStronglyConnectedDirectedGraph", IsDirectedGraph);
 DeclareProperty("IsAcyclicDirectedGraph", IsDirectedGraph);
+DeclareProperty("IsTournament", IsDirectedGraph);
 
 # operations
 DeclareOperation("DirectedGraphRelabel", [IsDirectedGraph, IsPerm]);

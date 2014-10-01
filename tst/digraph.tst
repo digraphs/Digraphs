@@ -57,7 +57,7 @@ gap> for i in [1..9999] do
 >   Add(r.source, i);
 >   Add(r.range, i+1);
 > od;
-gap> circuit:=DirectedGraphNC(r);
+gap> circuit:=DirectedGraph(r);
 <directed graph with 20000 vertices, 20000 edges>
 gap> IsSimpleDirectedGraph(circuit);
 true
@@ -173,7 +173,8 @@ gap> gr := DirectedGraphByEdges( [ [ 1, 2 ] ] );
 gap> gr := DirectedGraphByEdges( [ [ 2, 1 ] ] );
 <directed graph with 2 vertices, 1 edges>
 gap> gr := DirectedGraphByEdges( [ [ 1, 2 ] ], 1 ); 
-Error, more vertices are required than have been allowed,
+Error, DirectedGraphByEdges: usage, the specified edges must not contain value\
+s greater than 1
 
 # AsDirectedGraph
 gap> f := Transformation([]);
