@@ -88,7 +88,7 @@ gap> Edges(gr);
     Returns the number of edges of the directed graph <A>digraph</A>.
     <Example><![CDATA[
 gap> gr:= DirectedGraph( [ [ 1, 3, 4, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
-> [ 2, 4, 5 ], [ 1 ] ] );
+> [ 2, 4, 5 ], [ 1 ] ] );;
 gap> NrEdges(gr);
 15
 gap> gr:=DirectedGraph(rec(vertices:=["a", "b", "c"],
@@ -114,7 +114,7 @@ gap> NrEdges(gr);
 
     <Example><![CDATA[
 gap> gr:=DirectedGraph(rec(vertices:=["a", "b", "c"],
-> source:=["a", "b", "b"], range:=["b", "a", "a"]));
+> source:=["a", "b", "b"], range:=["b", "a", "c"]));
 <directed graph with 3 vertices, 3 edges>
 gap> Adjacencies(gr);
 [ [ 2 ], [ 1, 3 ], [  ] ]
@@ -162,7 +162,7 @@ gap> Vertices(RandomSimpleDirectedGraph(100));
 
 <#GAPDoc Label="NrVertices">
 <ManSection>
-  <Oper Name="Vertices" Arg="digraph"/>
+  <Oper Name="NrVertices" Arg="digraph"/>
   <Returns>The number of vertices of a directed graph.</Returns>
   <Description>
     Returns the number of vertices of the directed graph <A>digraph</A>. <P/>
@@ -177,7 +177,7 @@ gap> gr:=DirectedGraph(rec(vertices:=[1,2,3,4,5,7],
 > source:=[1,2,2,4,4], range:=[2,3,5,3,5]));
 <directed graph with 6 vertices, 5 edges>
 gap> NrVertices(gr);
-6 
+6
 gap> NrVertices(RandomSimpleDirectedGraph(100));
 100]]></Example>
   </Description>

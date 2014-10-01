@@ -110,6 +110,7 @@ InstallGlobalFunction(DigraphsTestEverything,
 function()
 
   DigraphsMakeDoc();
+  Print("\n");
 
   DigraphsStartTest();
   if not DigraphsTestInstall() then 
