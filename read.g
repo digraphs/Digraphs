@@ -14,3 +14,4 @@ ReadPackage("digraphs/gap/attrs.gi");
 ReadPackage("digraphs/gap/display.gi");
 ReadPackage("digraphs/gap/grape.gi");
 ReadPackage("digraphs/gap/utils.gi");
+ReadPackage("digraphs/gap/io.gi");
