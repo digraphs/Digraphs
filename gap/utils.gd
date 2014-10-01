@@ -28,3 +28,6 @@ DeclareGlobalFunction("WriteDirectedGraph");
 DeclareOperation("WriteGraph6", [IsDirectedGraph]);
 DeclareOperation("WriteDigraph6", [IsDirectedGraph]);
 DeclareOperation("WriteSparse6", [IsDirectedGraph]);
+DeclareOperation("WriteDiSparse6", [IsDirectedGraph]);
+
+DeclareGlobalFunction("LogCeiling");
