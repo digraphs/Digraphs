@@ -17,9 +17,8 @@ gap> ReadGraph6Line("E?A?");
 <directed graph with 6 vertices, 2 edges>
 
 #
-gap>  l := ["BW", "C]", "DQw", "ECO_", "FCZUo", "GCZenS",
-> "HCQTndn", "H?qcyxf"];
-[ "BW", "C]", "DQw", "ECO_", "FCZUo", "GCZenS", "HCQTndn", "H?qcyxf" ]
+gap>  l :=  ["BW", "C]", "DQw", "ECO_", "FCZUo", "GCZenS", "HCQTndn", 
+> "H?qcyxf"];;
 gap> List(l, x -> ReadGraph6Line(x));
 [ <directed graph with 3 vertices, 4 edges>, 
   <directed graph with 4 vertices, 8 edges>, 
