@@ -10,21 +10,21 @@
 
 # attributes for directed graphs . . .
 
-DeclareAttribute("AdjacencyMatrix", IsDirectedGraph);
+DeclareAttribute("AdjacencyMatrix", IsDigraph);
 # GrapeGraph must be mutable for grape to function properly
-DeclareAttribute("GrapeGraph", IsDirectedGraph, "mutable");
-DeclareAttribute("Range", IsDirectedGraph);
-DeclareAttribute("Source", IsDirectedGraph);
-DeclareAttribute("Edges", IsDirectedGraph);
-DeclareAttribute("Adjacencies", IsDirectedGraph);
-DeclareAttribute("NrVertices", IsDirectedGraph);
-DeclareAttribute("NrEdges", IsDirectedGraph);
-DeclareAttribute("DirectedGraphTopologicalSort", IsDirectedGraph);
-DeclareAttribute("DigraphDual", IsDirectedGraph);
+DeclareAttribute("GrapeGraph", IsDigraph, "mutable");
+DeclareAttribute("Range", IsDigraph);
+DeclareAttribute("Source", IsDigraph);
+DeclareAttribute("Edges", IsDigraph);
+DeclareAttribute("Adjacencies", IsDigraph);
+DeclareAttribute("NrVertices", IsDigraph);
+DeclareAttribute("NrEdges", IsDigraph);
+DeclareAttribute("DigraphTopologicalSort", IsDigraph);
+DeclareAttribute("DigraphDual", IsDigraph);
 
 # these are really attributes but are declared elsewhere as operations and so we
 # must declare them as operations too
-DeclareOperation("Vertices", [IsDirectedGraph]);
-DeclareOperation("StronglyConnectedComponents", [IsDirectedGraph]);
+DeclareOperation("Vertices", [IsDigraph]);
+DeclareOperation("StronglyConnectedComponents", [IsDigraph]);
 
 

@@ -10,15 +10,15 @@
 
 # graph algorithms
 
-InstallMethod(DirectedGraphReverse, "for a digraph with source",
-[IsDirectedGraph and HasSource],
+InstallMethod(DigraphReverse, "for a digraph with source",
+[IsDigraph and HasSource],
 function(graph)
   local source, range;
 
     source := ShallowCopy(Range(graph));
     range := Permuted(Source(graph), Sortex(source));
 
-    return DirectedGraphNC(rec( source:=source, 
+    return DigraphNC(rec( source:=source, 
                                 range:=range,
                                 nrvertices:=NrVertices(graph)));
 end);
@@ -26,7 +26,7 @@ end);
 # the following doesn't apply to non-simple digraphs, and so we use
 # IsDigraphByAdjacency
 
-InstallMethod(DirectedGraphReverse, "for a digraph by adjacency",
+InstallMethod(DigraphReverse, "for a digraph by adjacency",
 [IsDigraphByAdjacency],
 function(graph)
   local old, new, i, j;
@@ -40,11 +40,11 @@ function(graph)
     od;
   od;
 
-  return DirectedGraphNC(new);
+  return DigraphNC(new);
 end);
 
-InstallMethod(DirectedGraphRemoveLoops, "for a digraph with source",
-[IsDirectedGraph and HasSource],
+InstallMethod(DigraphRemoveLoops, "for a digraph with source",
+[IsDigraph and HasSource],
 function(graph)
   local source, range, newsource, newrange, nr, i;
 
@@ -63,11 +63,11 @@ function(graph)
     fi;
   od;
 
-  return DirectedGraphNC(rec( source:=newsource, range:=newrange,
+  return DigraphNC(rec( source:=newsource, range:=newrange,
                               nrvertices:=NrVertices(graph)));
 end);
 
-InstallMethod(DirectedGraphRemoveLoops, "for a digraph by adjacency",
+InstallMethod(DigraphRemoveLoops, "for a digraph by adjacency",
 [IsDigraphByAdjacency],
 function(graph)
   local old, new, nr, i, j;
@@ -86,23 +86,23 @@ function(graph)
     od;
   od;
 
-  return DirectedGraphNC(new);
+  return DigraphNC(new);
 end);
 
-InstallMethod(DirectedGraphRemoveEdges, "for a digraph and a list",
-[IsDirectedGraph, IsList],
+InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
+[IsDigraph, IsList],
 function(graph, edges)
   local range, vertices, source, newsource, newrange, i;
 
   if Length(edges) > 0 and IsPosInt(edges[1]) then # remove edges by index
     edges := Difference( [ 1 .. Length(Source(graph)) ], edges );
 
-    return DirectedGraphNC(rec(
+    return DigraphNC(rec(
       source := Source(graph){edges},
       range := Range(graph){edges},
       nrvertices := NrVertices(graph)));
   else
-    if not IsSimpleDirectedGraph(graph) then
+    if not IsSimpleDigraph(graph) then
       Error("usage: to remove edges given as pairs of vertices,",
       " the graph must be simple,");
       return;
@@ -119,12 +119,12 @@ function(graph, edges)
       fi;
     od;
 
-    return DirectedGraphNC(rec( source:=newsource, range:=newrange,
+    return DigraphNC(rec( source:=newsource, range:=newrange,
                                 nrvertices:=NrVertices(graph)));
   fi;
 end);
 
-InstallMethod(DirectedGraphRelabel, "for a digraph by adjacency and perm",
+InstallMethod(DigraphRelabel, "for a digraph by adjacency and perm",
 [IsDigraphByAdjacency, IsPerm],
 function(graph, perm)
   local adj;
@@ -138,11 +138,11 @@ function(graph, perm)
   adj := Permuted(Adjacencies(graph), perm);
   Apply(adj, x-> OnTuples(x, perm));
 
-  return DirectedGraphNC(adj);
+  return DigraphNC(adj);
 end);
 
-InstallMethod(DirectedGraphRelabel, "for a digraph by adjacency and perm",
-[IsDirectedGraph, IsPerm],
+InstallMethod(DigraphRelabel, "for a digraph by adjacency and perm",
+[IsDigraph, IsPerm],
 function(graph, perm)
 
   if ForAny(Vertices(graph), i-> i^perm > NrVertices(graph)) then
@@ -150,14 +150,14 @@ function(graph, perm)
     "the vertices of the 1st argument <graph>,");
     return;
   fi;
-  return DirectedGraphNC(rec(
+  return DigraphNC(rec(
     source := ShallowCopy(OnTuples(Source(graph), perm)),
     range:= ShallowCopy(OnTuples(Range(graph), perm)),
     nrvertices:=NrVertices(graph)));
 end);
 
-InstallMethod(DirectedGraphFloydWarshall, "for a digraph",
-[IsDirectedGraph],
+InstallMethod(DigraphFloydWarshall, "for a digraph",
+[IsDigraph],
 function(graph)
   local dist, i, j, k, n, m;
 
@@ -197,12 +197,12 @@ end);
 
 # JDM: requires a method for non-acyclic graphs
 
-InstallMethod(DirectedGraphReflexiveTransitiveClosure,
-"for a digraph", [IsDirectedGraph],
+InstallMethod(DigraphReflexiveTransitiveClosure,
+"for a digraph", [IsDigraph],
 function(graph)
   local sorted, vertices, n, adj, out, trans, mat, flip, v, u, w;
 
-  if not IsSimpleDirectedGraph(graph) then
+  if not IsSimpleDigraph(graph) then
     Error("usage: the argument should be a simple directed graph,");
     return;
   fi;
@@ -210,7 +210,7 @@ function(graph)
   vertices := Vertices(graph);
   n := Length(vertices);
   adj := Adjacencies(graph);
-  sorted := DirectedGraphTopologicalSort(graph);
+  sorted := DigraphTopologicalSort(graph);
 
   if sorted <> fail then # Easier method for acyclic graphs (loops allowed)
     out := EmptyPlist(n);
@@ -224,8 +224,8 @@ function(graph)
       out[v] := ListBlist(vertices, trans[v]);
     od;
 
-    out := DirectedGraphNC(out);
-    SetIsSimpleDirectedGraph(out, true);
+    out := DigraphNC(out);
+    SetIsSimpleDigraph(out, true);
     return out;
   else # Non-acyclic method
     mat := List( vertices, x -> List( vertices, y -> infinity ) ); 
@@ -259,20 +259,20 @@ function(graph)
     end;
 
     mat := List( mat, x -> List( x, flip ) ); # Create adjacency matrix
-    out := DirectedGraphByAdjacencyMatrix(mat);
-    SetIsSimpleDirectedGraph(out, true);
+    out := DigraphByAdjacencyMatrix(mat);
+    SetIsSimpleDigraph(out, true);
     return out;
   fi;
 end);
 
 # JDM: requires a method for non-acyclic graphs
 
-InstallMethod(DirectedGraphTransitiveClosure, "for a digraph",
-[IsDirectedGraph],
+InstallMethod(DigraphTransitiveClosure, "for a digraph",
+[IsDigraph],
 function(graph)
   local sorted, vertices, n, adj, out, trans, reflex, mat, flip, v, u, w;
 
-  if not IsSimpleDirectedGraph(graph) then
+  if not IsSimpleDigraph(graph) then
     Error("usage: the argument should be a simple directed graph,");
     return;
   fi;
@@ -280,7 +280,7 @@ function(graph)
   vertices := Vertices(graph);
   n := Length(vertices);
   adj := Adjacencies(graph);
-  sorted := DirectedGraphTopologicalSort(graph);
+  sorted := DigraphTopologicalSort(graph);
 
   if sorted <> fail then # Easier method for acyclic graphs (loops allowed)
     out := EmptyPlist(n);
@@ -302,8 +302,8 @@ function(graph)
       trans[v][v] := true;
     od;
 
-    out := DirectedGraphNC(out);
-    SetIsSimpleDirectedGraph(out, true);
+    out := DigraphNC(out);
+    SetIsSimpleDigraph(out, true);
     return out;
   else # Non-acyclic method
 
@@ -345,8 +345,8 @@ function(graph)
     for v in vertices do # Only include original loops
       mat[v][v] := reflex[v]; 
     od;
-    out := DirectedGraphByAdjacencyMatrix(mat);
-    SetIsSimpleDirectedGraph(out, true);
+    out := DigraphByAdjacencyMatrix(mat);
+    SetIsSimpleDigraph(out, true);
     return out;
   fi;
 end);
@@ -356,13 +356,13 @@ end);
 
 if IsBound(GABOW_SCC) then
   InstallMethod(StronglyConnectedComponents, "for a directed graph",
-  [IsDirectedGraph],
+  [IsDigraph],
   function(digraph)
     return GABOW_SCC(Adjacencies(digraph));
   end);
 else
   InstallMethod(StronglyConnectedComponents, "for a directed graph",
-  [IsDirectedGraph],
+  [IsDigraph],
   function(digraph)
     local n, stack1, len1, stack2, len2, id, count, comps, fptr, level, l, comp, w, v;
 

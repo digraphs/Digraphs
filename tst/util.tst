@@ -31,7 +31,7 @@ gap> List(l, x -> ReadGraph6Line(x));
 
 #
 gap> str := Concatenation(DigraphsDir(), "/data/graph5.g6");;
-gap> list := ReadDirectedGraphs(str);;
+gap> list := ReadDigraphs(str);;
 gap> Size(list);
 34
 

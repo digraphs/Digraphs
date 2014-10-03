@@ -8,16 +8,16 @@
 #############################################################################
 ##
 
-DeclareGlobalFunction("ReadDirectedGraphs");
+DeclareGlobalFunction("ReadDigraphs");
 DeclareOperation("ReadGraph6Line", [IsString]);
 DeclareOperation("ReadDigraph6Line", [IsString]);
 DeclareOperation("ReadSparse6Line", [IsString]);
 DeclareGlobalFunction("ReadPlainTextDigraph");
 DeclareGlobalFunction("DigraphPlainTextLineDecoder");
 
-DeclareGlobalFunction("WriteDirectedGraph");
-DeclareOperation("WriteGraph6", [IsDirectedGraph]);
-DeclareOperation("WriteDigraph6", [IsDirectedGraph]);
-DeclareOperation("WriteSparse6", [IsDirectedGraph]);
-DeclareOperation("WriteDiSparse6", [IsDirectedGraph]);
+DeclareGlobalFunction("WriteDigraph");
+DeclareOperation("WriteGraph6", [IsDigraph]);
+DeclareOperation("WriteDigraph6", [IsDigraph]);
+DeclareOperation("WriteSparse6", [IsDigraph]);
+DeclareOperation("WriteDiSparse6", [IsDigraph]);
 

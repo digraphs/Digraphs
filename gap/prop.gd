@@ -8,11 +8,11 @@
 #############################################################################
 ##
 
-DeclareProperty("IsSimpleDirectedGraph", IsDirectedGraph);
-DeclareProperty("IsUndirectedGraph", IsDirectedGraph);
-DeclareProperty("IsFunctionalDirectedGraph", IsDirectedGraph);
-DeclareProperty("IsStronglyConnectedDirectedGraph", IsDirectedGraph);
-DeclareProperty("IsAcyclicDirectedGraph", IsDirectedGraph);
-DeclareProperty("IsTournament", IsDirectedGraph);
+DeclareProperty("IsSimpleDigraph", IsDigraph);
+DeclareProperty("IsUndirectedGraph", IsDigraph);
+DeclareProperty("IsFunctionalDigraph", IsDigraph);
+DeclareProperty("IsStronglyConnectedDigraph", IsDigraph);
+DeclareProperty("IsAcyclicDigraph", IsDigraph);
+DeclareProperty("IsTournament", IsDigraph);
 
-InstallTrueMethod(IsSimpleDirectedGraph, IsUndirectedGraph);
+InstallTrueMethod(IsSimpleDigraph, IsUndirectedGraph);

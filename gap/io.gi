@@ -8,7 +8,7 @@
 #############################################################################
 ##
 
-InstallGlobalFunction(ReadDirectedGraphs,
+InstallGlobalFunction(ReadDigraphs,
 function(arg)
   local name, decoder, nr, file, splitname, extension, i, line, lines;
 
@@ -30,20 +30,20 @@ function(arg)
     decoder := arg[2];
     nr := arg[3];
   else
-    Error("Digraphs: usage: ReadDirectedGraphs( filename [,decoder][,pos] )\n");
+    Error("Digraphs: usage: ReadDigraphs( filename [,decoder][,pos] )\n");
     return;
   fi;
 
   if (not IsString(name)) or (not (IsFunction(decoder) or decoder = fail))
     or (not (IsPosInt(nr) or nr = infinity)) then
-    Error("Digraphs: usage: ReadDirectedGraphs( filename [,decoder][,pos] )\n");
+    Error("Digraphs: usage: ReadDigraphs( filename [,decoder][,pos] )\n");
     return;
   fi;
 
   file := IO_CompressedFile(name, "r");
 
   if file = fail then
-    Error("Digraphs: ReadDirectedGraphs: can't open file ", name, "\n");
+    Error("Digraphs: ReadDigraphs: can't open file ", name, "\n");
     return;
   fi;
 
@@ -53,7 +53,7 @@ function(arg)
 
     if extension in [ "gz", "bzip2", "xz"] then
       if Length(splitname) = 2 then
-        Error("Digraphs: ReadDirectedGraphs: can't determine the file format\n");
+        Error("Digraphs: ReadDigraphs: can't determine the file format\n");
         return;
       fi;
       extension := splitname[Length(splitname)-1];
@@ -66,7 +66,7 @@ function(arg)
     elif extension = "d6" then
       decoder := ReadDigraph6Line;
     else
-      Error("Digraphs: ReadDirectedGraphs: can't determine the file format,");
+      Error("Digraphs: ReadDigraphs: can't determine the file format,");
       return;
     fi;
     # JDM: could also try to determine the type of the file by looking into it
@@ -172,7 +172,7 @@ function(s)
     pos := pos + 6;
   od;
 
-  graph := DirectedGraph(rec(nrvertices := n, range := range,
+  graph := Digraph(rec(nrvertices := n, range := range,
     source := source ));
   SetIsUndirectedGraph(graph, true);
   return graph;
@@ -241,7 +241,7 @@ function(s)
     pos := pos + 6;
   od;
 
-  return DirectedGraph( rec( vertices := [ 1 .. n ], range := range,
+  return Digraph( rec( vertices := [ 1 .. n ], range := range,
     source := source ) );
 end);
 
@@ -351,7 +351,7 @@ function(s)
   range := range + 1;
   source := source + 1;
 
-  return DirectedGraph( rec( vertices := [ 1 .. n ], range := range,
+  return Digraph( rec( vertices := [ 1 .. n ], range := range,
   source := source  ) );
 end);
 
@@ -418,7 +418,7 @@ function(arg)
           x := x + offset;
           Add(edges, x);
         od;
-        return DirectedGraphByEdges(edges);
+        return DigraphByEdges(edges);
       end;
   else
     Error("usage: DigraphPlainTestLineDecoder(delimiter, [,delimiter], offset)");
@@ -462,7 +462,7 @@ function(name, delimiter, offset, ignore)
     fi;
   od;
 
-  return DirectedGraphByEdges(edges);
+  return DigraphByEdges(edges);
 end);
 
 # this is just temporary, until a better method is given, only works for single
@@ -470,7 +470,7 @@ end);
 
 #JDM: should check arg[3]!
 
-InstallGlobalFunction(WriteDirectedGraph,
+InstallGlobalFunction(WriteDigraph,
 function(arg)
   local file;
 
@@ -497,12 +497,12 @@ function(arg)
     return;
   fi;
 
-  if not IsDirectedGraph(arg[2]) then
+  if not IsDigraph(arg[2]) then
     Error("usage: the 2nd argument must be directed graph,");
     return;
   fi;
 
-  if not IsSimpleDirectedGraph(arg[2]) then
+  if not IsSimpleDigraph(arg[2]) then
     Error("not yet implemented,");
     return;
   fi;
@@ -548,7 +548,7 @@ end);
 
 
 InstallMethod(WriteGraph6, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   list := [];
@@ -597,7 +597,7 @@ end);
 #
 
 InstallMethod(WriteDigraph6, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   list := [];
@@ -644,7 +644,7 @@ end);
 #
 
 InstallMethod(WriteSparse6, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   local list, n, lenlist, source, range, k, blist, v, nextbit, AddBinary, i,
         bitstopad, pos, block;
@@ -756,7 +756,7 @@ end);
 #
 
 InstallMethod(WriteDiSparse6, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   local list, n, lenlist, source, range, source_i, range_i, source_d, range_d, len1, len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad, pos, block, i;
 

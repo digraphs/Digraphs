@@ -10,32 +10,32 @@
 
 # category, family, type, representations . . .
 
-DeclareCategory("IsDirectedGraph", IsObject);
+DeclareCategory("IsDigraph", IsObject);
 # created by adjacencies
-DeclareCategory("IsDigraphByAdjacency", IsDirectedGraph);      
+DeclareCategory("IsDigraphByAdjacency", IsDigraph);      
 # created by source and range
-DeclareCategory("IsDigraphBySourceAndRange", IsDirectedGraph); 
+DeclareCategory("IsDigraphBySourceAndRange", IsDigraph); 
 
-BindGlobal("DirectedGraphFamily", NewFamily("DirectedGraphFamily",
- IsDirectedGraph));
+BindGlobal("DigraphFamily", NewFamily("DigraphFamily",
+ IsDigraph));
 
-BindGlobal("DigraphByAdjacencyType", NewType(DirectedGraphFamily,
+BindGlobal("DigraphByAdjacencyType", NewType(DigraphFamily,
  IsDigraphByAdjacency and IsComponentObjectRep and IsAttributeStoringRep));
 
-BindGlobal("DigraphBySourceAndRangeType", NewType(DirectedGraphFamily,
+BindGlobal("DigraphBySourceAndRangeType", NewType(DigraphFamily,
  IsDigraphBySourceAndRange and IsComponentObjectRep and IsAttributeStoringRep));
 
 # constructors . . . 
 
-DeclareOperation("DirectedGraph", [IsRecord]);
-DeclareOperation("DirectedGraph", [IsList]);
-DeclareOperation("DirectedGraphNC", [IsRecord]);
-DeclareOperation("DirectedGraphNC", [IsList]);
-DeclareOperation("DirectedGraphByAdjacencyMatrix", [IsRectangularTable]);
-DeclareOperation("DirectedGraphByEdges", [IsRectangularTable]);
-DeclareOperation("DirectedGraphByEdges", [IsRectangularTable, IsPosInt]);
-DeclareOperation("Graph", [IsDirectedGraph]);
-DeclareOperation("RandomSimpleDirectedGraph", [IsPosInt]);
-DeclareOperation("AsDirectedGraph", [IsTransformation]);
-DeclareOperation("AsDirectedGraph", [IsTransformation, IsInt]);
+DeclareOperation("Digraph", [IsRecord]);
+DeclareOperation("Digraph", [IsList]);
+DeclareOperation("DigraphNC", [IsRecord]);
+DeclareOperation("DigraphNC", [IsList]);
+DeclareOperation("DigraphByAdjacencyMatrix", [IsRectangularTable]);
+DeclareOperation("DigraphByEdges", [IsRectangularTable]);
+DeclareOperation("DigraphByEdges", [IsRectangularTable, IsPosInt]);
+DeclareOperation("Graph", [IsDigraph]);
+DeclareOperation("RandomSimpleDigraph", [IsPosInt]);
+DeclareOperation("AsDigraph", [IsTransformation]);
+DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
 

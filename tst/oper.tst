@@ -14,15 +14,15 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
-# DirectedGraphReverse
-gap> gr:=DirectedGraph(
+# DigraphReverse
+gap> gr:=Digraph(
 > [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], [ 2, 3, 5 ] ]);
 <directed graph with 5 vertices, 11 edges>
-gap> rgr:=DirectedGraphReverse(gr);
+gap> rgr:=DigraphReverse(gr);
 <directed graph with 5 vertices, 11 edges>
 gap> Adjacencies(rgr);
 [ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ]
-gap> gr=DirectedGraphReverse(rgr);
+gap> gr=DigraphReverse(rgr);
 true
 
 #

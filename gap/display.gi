@@ -10,8 +10,8 @@
 
 # AN's code, adapted by WW
 
-InstallMethod(DotDirectedGraph, "for a directed graph",
-[IsDirectedGraph],
+InstallMethod(DotDigraph, "for a directed graph",
+[IsDigraph],
 function(graph)
   local verts, source, range, n, str, i;
 
@@ -38,7 +38,7 @@ end);
 #
 
 InstallMethod(DotUndirectedGraph, "for an 'undirected' directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   local verts, source, range, n, str, i;
 

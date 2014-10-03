@@ -9,11 +9,11 @@
 ##
 
 InstallMethod(DigraphDual, "for a directed graph", 
-[IsDirectedGraph], 
+[IsDigraph], 
 function(graph)
   local verts, old, new, i;
 
-  if not IsSimpleDirectedGraph(graph) then 
+  if not IsSimpleDigraph(graph) then 
     Error("Digraphs: DigraphDual: usage, the argument must be a simple",
     " digraph,");
     return;
@@ -26,13 +26,13 @@ function(graph)
   for i in verts do 
     new[i]:=DifferenceLists(verts, old[i]);
   od;
-  return DirectedGraphNC(new);
+  return DigraphNC(new);
 end);
 
 #
 
 InstallMethod(NrVertices, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   return graph!.nrvertices;
 end);
@@ -46,7 +46,7 @@ function(graph)
 end);
 
 InstallMethod(NrEdges, "for a digraph",
-[IsDirectedGraph], 
+[IsDigraph], 
 function(graph)
   return Length(Source(graph));
 end);
@@ -72,7 +72,7 @@ function(graph)
 end);
   
 InstallMethod(Edges, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   local out, range, source, i;
 
@@ -89,7 +89,7 @@ end);
 # attributes for directed graphs . . .
 
 InstallMethod(GrapeGraph, "for a directed graph", 
-[IsDirectedGraph], Graph);
+[IsDigraph], Graph);
 
 BindGlobal("DIGRAPHS_RangeSource",
 function(graph)
@@ -126,7 +126,7 @@ end);
 #
 
 InstallMethod(Vertices, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   return [ 1 .. NrVertices(graph) ];
 end);
@@ -208,13 +208,13 @@ function(graph)
 end);
 
 if IsBound(DIGRAPH_TOPO_SORT) then
-  InstallMethod(DirectedGraphTopologicalSort, "for a digraph",
-  [IsDirectedGraph], function(graph)
+  InstallMethod(DigraphTopologicalSort, "for a digraph",
+  [IsDigraph], function(graph)
     return DIGRAPH_TOPO_SORT(Adjacencies(graph));
   end);
 else
-  InstallMethod(DirectedGraphTopologicalSort, "for a digraph",
-  [IsDirectedGraph],
+  InstallMethod(DigraphTopologicalSort, "for a digraph",
+  [IsDigraph],
   function(graph)
     local adj, nr, vertex_complete, vertex_in_path, stack, out, level, j, k, i;
 
@@ -240,7 +240,7 @@ else
           k := stack[2 * level];
           if vertex_in_path[j] then
             # Note: can't enter this if level <= 1
-            SetIsAcyclicDirectedGraph(graph, false);
+            SetIsAcyclicDigraph(graph, false);
             level := level - 1;
             if stack[2 * level - 1] <> j then # Cycle is not just a loop 
               return fail;

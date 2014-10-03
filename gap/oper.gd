@@ -8,13 +8,13 @@
 #############################################################################
 ##
 
-DeclareOperation("DirectedGraphRelabel", [IsDirectedGraph, IsPerm]);
-DeclareOperation("DirectedGraphRemoveLoops", [IsDirectedGraph]);
-DeclareOperation("DirectedGraphRemoveEdges", [IsDirectedGraph, IsList]);
-DeclareOperation("DirectedGraphReflexiveTransitiveClosure", [IsDirectedGraph]);
-DeclareOperation("DirectedGraphTransitiveClosure", [IsDirectedGraph]);
-DeclareAttribute("DirectedGraphFloydWarshall", IsDirectedGraph);
+DeclareOperation("DigraphRelabel", [IsDigraph, IsPerm]);
+DeclareOperation("DigraphRemoveLoops", [IsDigraph]);
+DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
+DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
+DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
+DeclareAttribute("DigraphFloydWarshall", IsDigraph);
 
-DeclareOperation("DirectedGraphReverse", [IsDirectedGraph]);
+DeclareOperation("DigraphReverse", [IsDigraph]);
 
 

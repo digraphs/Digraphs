@@ -10,10 +10,10 @@
 
 # methods using Grape . . . 
 
-InstallMethod(IsIsomorphicDirectedGraph, "for digraphs",
-[IsDirectedGraph, IsDirectedGraph],
+InstallMethod(IsIsomorphicDigraph, "for digraphs",
+[IsDigraph, IsDigraph],
 function(g1, g2)
-  if IsSimpleDirectedGraph(g1) and IsSimpleDirectedGraph(g2) then 
+  if IsSimpleDigraph(g1) and IsSimpleDigraph(g2) then 
     return IsIsomorphicGraph( GrapeGraph(g1), GrapeGraph(g2) );
   fi;
   Error("not yet implemented,");
@@ -23,9 +23,9 @@ end);
 #
 
 InstallMethod(AutomorphismGroup, "for a digraph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
-  if IsSimpleDirectedGraph(graph) then 
+  if IsSimpleDigraph(graph) then 
     # TODO: convert back to directed graphs
     return AutomorphismGroup(GrapeGraph(graph));
   fi;
@@ -34,10 +34,10 @@ end);
 
 #
 
-InstallMethod(DirectedGraphIsomorphism, "for two digraphs",
-[IsDirectedGraph, IsDirectedGraph],
+InstallMethod(DigraphIsomorphism, "for two digraphs",
+[IsDigraph, IsDigraph],
 function(g1, g2)
-  if IsSimpleDirectedGraph(g1) and IsSimpleDirectedGraph(g2) then   
+  if IsSimpleDigraph(g1) and IsSimpleDigraph(g2) then   
     # TODO: convert back to directed graphs
     return GraphIsomorphism( GrapeGraph(g1), GrapeGraph(g2) );
   fi;
@@ -46,7 +46,7 @@ end);
 #
 
 InstallMethod(Girth, "for a digraph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   return Girth( GrapeGraph(graph) );
 end);
@@ -54,7 +54,7 @@ end);
 #
 
 InstallMethod(Diameter, "for a digraph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   return Diameter( GrapeGraph(graph) );
 end);
@@ -62,7 +62,7 @@ end);
 #
 
 InstallMethod(IsConnectedDigraph, "for a digraph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   return IsConnectedGraph( GrapeGraph(graph) );
 end);

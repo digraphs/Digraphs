@@ -10,15 +10,15 @@
 
 # constructors . . .
 
-InstallMethod(AsDirectedGraph, "for a transformation",
+InstallMethod(AsDigraph, "for a transformation",
 [IsTransformation],
 function(trans);
-  return AsDirectedGraph(trans, DegreeOfTransformation(trans));
+  return AsDigraph(trans, DegreeOfTransformation(trans));
 end);
 
 #
 
-InstallMethod(AsDirectedGraph, "for a transformation and an integer",
+InstallMethod(AsDigraph, "for a transformation and an integer",
 [IsTransformation, IsInt],
 function(trans, int)
   local deg, ran, r, gr;
@@ -29,10 +29,10 @@ function(trans, int)
 
   ran := ListTransformation(trans, int);
   r := rec( nrvertices := int, source := [ 1 .. int ], range := ran );
-  gr := DirectedGraphNC(r);
+  gr := DigraphNC(r);
   
-  SetIsSimpleDirectedGraph(gr, true);
-  SetIsFunctionalDirectedGraph(gr, true);
+  SetIsSimpleDigraph(gr, true);
+  SetIsFunctionalDigraph(gr, true);
   
   return gr;
 end);
@@ -40,11 +40,11 @@ end);
 #
 
 InstallMethod(Graph, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   local adj;
 
-  if not IsSimpleDirectedGraph(graph) then
+  if not IsSimpleDigraph(graph) then
     Info(InfoWarning, 1, "Grape does not support multiple edges, so ",
     "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
@@ -58,7 +58,7 @@ end);
 
 #
 
-InstallMethod(RandomSimpleDirectedGraph, "for a pos int",
+InstallMethod(RandomSimpleDigraph, "for a pos int",
 [IsPosInt],
 function(n)
   local verts, adj, nr, i, j, gr;
@@ -74,19 +74,19 @@ function(n)
     od;
   od;
 
-  gr := DirectedGraphNC(adj);
-  SetIsSimpleDirectedGraph(gr, true);
+  gr := DigraphNC(adj);
+  SetIsSimpleDigraph(gr, true);
   return gr;
 end);
 
 #
 
-InstallMethod(DirectedGraph, "for a record", [IsRecord],
+InstallMethod(Digraph, "for a record", [IsRecord],
 function(graph)
   local cmp, obj, i;
 
   if IsGraph(graph) then
-    return DirectedGraphNC(List(Vertices(graph), x-> Adjacency(graph, x)));
+    return DigraphNC(List(Vertices(graph), x-> Adjacency(graph, x)));
   fi;
 
   if not (IsBound(graph.source) and IsBound(graph.range) and
@@ -152,12 +152,12 @@ function(graph)
   # make sure that the graph.source is sorted, and range is too
   graph.range:=Permuted(graph.range, Sortex(graph.source));
 
-  return DirectedGraphNC(graph);
+  return DigraphNC(graph);
 end);
 
 #
 
-InstallMethod(DirectedGraphNC, "for a record", [IsRecord],
+InstallMethod(DigraphNC, "for a record", [IsRecord],
 function(graph)
   ObjectifyWithAttributes(graph, DigraphBySourceAndRangeType, Range,
    graph.range, Source, graph.source);
@@ -166,7 +166,7 @@ end);
 
 #
 
-InstallMethod(DirectedGraph, "for a list of lists of pos ints",
+InstallMethod(Digraph, "for a list of lists of pos ints",
 [IsList],
 function(adj)
   local len, record, x, y;
@@ -183,23 +183,23 @@ function(adj)
     od;
   od;
 
-  return DirectedGraphNC(adj);
+  return DigraphNC(adj);
 end);
 
 #
 
-InstallMethod(DirectedGraphNC, "for a list", [IsList],
+InstallMethod(DigraphNC, "for a list", [IsList],
 function(adj)
   local graph;
   graph := rec( adj := StructuralCopy(adj), nrvertices := Length(adj) );
   ObjectifyWithAttributes(graph, DigraphByAdjacencyType, Adjacencies, adj,
-   NrVertices, graph.nrvertices, IsSimpleDirectedGraph, true);
+   NrVertices, graph.nrvertices, IsSimpleDigraph, true);
   return graph;
 end);
 
 #
 
-InstallMethod(DirectedGraphByAdjacencyMatrix, "for a rectangular table",
+InstallMethod(DigraphByAdjacencyMatrix, "for a rectangular table",
 [IsRectangularTable],
 function(mat)
   local n, record, out, i, j, k;
@@ -220,20 +220,20 @@ function(mat)
           Add(record.range, j);
         od;
       else
-        Error("DirectedGraphByAdjacencyMatrix: usage, the argument must", 
+        Error("DigraphByAdjacencyMatrix: usage, the argument must", 
         " be a matrix of non-negative integers,");
         return;
       fi;
     od;
   od;
-  out := DirectedGraphNC(record);
+  out := DigraphNC(record);
   SetAdjacencyMatrix(out, mat);
   return out;
 end);
 
 #
 
-InstallMethod(DirectedGraphByEdges, "for a rectangular table",
+InstallMethod(DigraphByEdges, "for a rectangular table",
 [IsRectangularTable],
 function(edges)
   local adj, max_range, gr, edge, i;
@@ -266,25 +266,25 @@ function(edges)
     fi;
   od;
 
-  gr:=DirectedGraphNC(adj);
+  gr:=DigraphNC(adj);
   SetEdges(gr, edges);
   return gr;
 end);
 
 # <n> is the number of vertices
 
-InstallMethod(DirectedGraphByEdges, "for a rectangular table, and a pos int",
+InstallMethod(DigraphByEdges, "for a rectangular table, and a pos int",
 [IsRectangularTable, IsPosInt],
 function(edges, n)
   local adj, gr, edge;
   
   if not Length(edges[1]) = 2 then 
-    Error("DirectedGraphByEdges: usage, the argument <edges> must be a list of pairs,");
+    Error("DigraphByEdges: usage, the argument <edges> must be a list of pairs,");
     return;
   fi;
 
   if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then 
-    Error("DirectedGraphByEdges: usage, the argument <edges> must be a list of", 
+    Error("DigraphByEdges: usage, the argument <edges> must be a list of", 
     " pairs of pos ints,");
     return;
   fi;
@@ -293,14 +293,14 @@ function(edges, n)
 
   for edge in edges do
     if edge[1] > n or edge[2] > n then
-      Error("DirectedGraphByEdges: usage, the specified edges must not contain", 
+      Error("DigraphByEdges: usage, the specified edges must not contain", 
       " values greater than ", n );
       return;
     fi;
     Add(adj[edge[1]], edge[2]);
   od;
 
-  gr:=DirectedGraphNC(adj);
+  gr:=DigraphNC(adj);
   SetEdges(gr, edges);
   return gr;
 end);
@@ -308,7 +308,7 @@ end);
 # operators . . .
 
 InstallMethod(\=, "for directed graphs",
-[IsDirectedGraph, IsDirectedGraph],
+[IsDigraph, IsDigraph],
 function(graph1, graph2)
   return Vertices(graph1)=Vertices(graph2) and Range(graph1)=Range(graph2)
    and Source(graph1)=Source(graph2);
@@ -317,7 +317,7 @@ end);
 # printing, and viewing . . .
 
 InstallMethod(ViewString, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   local str;
 
@@ -330,13 +330,13 @@ function(graph)
 end);
 
 InstallMethod(PrintString, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   local str, com, i, nam;
 
-  str:="DirectedGraph( ";
+  str:="Digraph( ";
 
-  if IsSimpleDirectedGraph(graph) then
+  if IsSimpleDigraph(graph) then
     return Concatenation(str, PrintString(Adjacencies(graph)), " )");
   fi;
 
@@ -360,13 +360,13 @@ function(graph)
 end);
 
 InstallMethod(String, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   local str, com, i, nam;
 
-  str:="DirectedGraph( ";
+  str:="Digraph( ";
 
-  if IsSimpleDirectedGraph(graph) then
+  if IsSimpleDigraph(graph) then
     return Concatenation(str, PrintString(Adjacencies(graph)), " )");
   fi;
 

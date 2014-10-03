@@ -8,5 +8,5 @@
 #############################################################################
 ##
 
-DeclareAttribute("DotDirectedGraph", IsDirectedGraph, "mutable");
-DeclareAttribute("DotUndirectedGraph", IsDirectedGraph, "mutable");
+DeclareAttribute("DotDigraph", IsDigraph, "mutable");
+DeclareAttribute("DotUndirectedGraph", IsDigraph, "mutable");

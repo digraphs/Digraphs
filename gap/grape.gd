@@ -8,9 +8,9 @@
 #############################################################################
 ##
 
-DeclareOperation("IsIsomorphicDirectedGraph", [IsDirectedGraph, IsDirectedGraph]);
-DeclareAttribute("AutomorphismGroup", IsDirectedGraph);
-DeclareOperation("DirectedGraphIsomorphism", [IsDirectedGraph, IsDirectedGraph]);
-DeclareOperation("Girth", [IsDirectedGraph]);
-DeclareOperation("Diameter", [IsDirectedGraph]);
-DeclareProperty("IsConnectedDigraph", IsDirectedGraph);
+DeclareOperation("IsIsomorphicDigraph", [IsDigraph, IsDigraph]);
+DeclareAttribute("AutomorphismGroup", IsDigraph);
+DeclareOperation("DigraphIsomorphism", [IsDigraph, IsDigraph]);
+DeclareOperation("Girth", [IsDigraph]);
+DeclareOperation("Diameter", [IsDigraph]);
+DeclareProperty("IsConnectedDigraph", IsDigraph);

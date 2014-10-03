@@ -8,22 +8,22 @@
 #############################################################################
 ##
 
-<#GAPDoc Label="IsDirectedGraph">
+<#GAPDoc Label="IsDigraph">
 <ManSection>
-  <Filt Name="IsDirectedGraph" Type='Category'/>
+  <Filt Name="IsDigraph" Type='Category'/>
   <Description>
-    Every  directed graph in  &Digraphs;  belongs  to  the  category
-    <C>IsDirectedGraph</C>.  Basic attributes and operations for directed graphs
+    Every  digraph in  &Digraphs;  belongs  to  the  category
+    <C>IsDigraph</C>.  Basic attributes and operations for digraphs
     are: <Ref Oper="Vertices"/>, <Ref Attr="Range"/>, <Ref Attr="Source"/>, <Ref
       Attr="Adjacencies"/>, and <Ref Attr="Edges"/>. 
     </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DirectedGraph">
+<#GAPDoc Label="Digraph">
 <ManSection>
-  <Oper Name="DirectedGraph" Arg="obj[, func]"/>
-  <Returns>A directed graph.</Returns>
+  <Oper Name="Digraph" Arg="obj[, func]"/>
+  <Returns>A digraph.</Returns>
   <Description>
     <List>
       
@@ -43,7 +43,7 @@
       <Item>
         if <A>obj</A> is a list of duplicate free lists of positive integers in
         the range from <C>1</C> to <C>Length(<A>obj</A>)</C>, then this function
-        returns the directed graph with vertices
+        returns the digraph with vertices
         <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>, and edges corresponding to
         the entries of <A>obj</A>. More precisely, there is an edge from vertex
         <C>i</C> to <C>j</C> if <C>j</C> is in <C><A>obj</A>[i]</C>; the source of this
@@ -54,22 +54,22 @@
       <Item>
         if <A>obj</A> is a &Grape; package graph (i.e. a record for which the
         function <C>IsGraph</C> returns <K>true</K>), then this function returns
-        a directed graph isomorphic to <A>obj</A>.
+        a digraph isomorphic to <A>obj</A>.
       </Item>
 
     </List>
   
     <Example><![CDATA[
-gap> gr:=DirectedGraph(rec(vertices:=["a", "b", "c"],
+gap> gr:=Digraph(rec(vertices:=["a", "b", "c"],
 > source:=["a"], range:=["b"]));
-<directed graph with 3 vertices, 1 edges>
-gap> gr:=DirectedGraph(rec(vertices:=[1,2,3,4,5], 
+<digraph with 3 vertices, 1 edges>
+gap> gr:=Digraph(rec(vertices:=[1,2,3,4,5], 
 > source:=[1,2,2,4,4,1,1], range:=[2,3,5,3,5,1,1]));
-<directed graph with 5 vertices, 7 edges>
-gap> gr:= DirectedGraph( [ [ 2, 5, 8, 10 ], [ 2, 3, 4, 5, 6, 8, 9, 10 ], 
+<digraph with 5 vertices, 7 edges>
+gap> gr:= Digraph( [ [ 2, 5, 8, 10 ], [ 2, 3, 4, 5, 6, 8, 9, 10 ], 
 > [ 1 ], [ 3, 5, 7, 8, 10 ], [ 2, 5, 7 ], [ 3, 6, 7, 9, 10 ], [ 1, 4 ], 
 > [ 1, 5, 9 ], [ 1, 2, 7, 8 ], [ 3, 5 ] ] );
-<directed graph with 10 vertices, 37 edges>
+<digraph with 10 vertices, 37 edges>
 gap> cycle:=function(n)
 >  local record, i;
 >  record:=rec(vertices:=[1..n], source:=[], range:=[]);
@@ -77,14 +77,14 @@ gap> cycle:=function(n)
 >    Add(record.source, i mod Length(record.vertices) + 1);
 >    Add(record.range, (i + 1) mod Length(record.vertices) +1);
 >  od;
->  return DirectedGraph(record);
+>  return Digraph(record);
 > end;;
 gap> gr:=cycle(10000);
-<directed graph with 10000 vertices, 10000 edges>
+<digraph with 10000 vertices, 10000 edges>
 gap> Petersen := Graph( SymmetricGroup(5), [[1,2]], OnSets,
 > function(x,y) return Intersection(x,y)=[]; end );;
-gap> DirectedGraph(Petersen);
-<directed graph with 10 vertices, 30 edges>
+gap> Digraph(Petersen);
+<digraph with 10 vertices, 30 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -95,7 +95,7 @@ gap> DirectedGraph(Petersen);
   <Oper Name="Graph" Arg="digraph"/>
   <Returns>A <Package>Grape</Package> package graph.</Returns>
   <Description>
-    If <A>digraph</A> is a directed graph, then this method returns a &Grape;
+    If <A>digraph</A> is a digraph, then this method returns a &Grape;
     package graph, that is isomorphic to <A>digraph</A>.
     
     <Example><![CDATA[
@@ -107,8 +107,8 @@ rec( adjacencies := [ [ 3, 5, 8 ] ], group := Group([ (1,2,3,5,7)
       [ 2, 4 ], [ 1, 5 ], [ 3, 5 ], [ 1, 4 ], [ 2, 5 ] ], 
   order := 10, representatives := [ 1 ], 
   schreierVector := [ -1, 1, 1, 2, 1, 1, 1, 1, 2, 2 ] )
-gap> DirectedGraph(Petersen);
-<directed graph with 10 vertices, 30 edges>
+gap> Digraph(Petersen);
+<digraph with 10 vertices, 30 edges>
 gap> Graph(last);
 rec( 
   adjacencies := [ [ 3, 5, 8 ], [ 5, 7, 9 ], [ 1, 7, 10 ], 
@@ -122,61 +122,61 @@ rec(
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DirectedGraphByAdjacencyMatrix">
+<#GAPDoc Label="DigraphByAdjacencyMatrix">
 <ManSection>
-  <Oper Name="DirectedGraphByAdjacencyMatrix" Arg="adj"/>
-  <Returns>A directed graph.</Returns>
+  <Oper Name="DigraphByAdjacencyMatrix" Arg="adj"/>
+  <Returns>A digraph.</Returns>
   <Description>
-    If <A>adj</A> is the adjacency matrix of a directed graph, in the sense of
+    If <A>adj</A> is the adjacency matrix of a digraph, in the sense of
     <Ref Attr="AdjacencyMatrix"/>, then this function returns the directed 
     graph which is defined by <A>adj</A>.
     <Example><![CDATA[
-gap> DirectedGraphByAdjacencyMatrix( [
+gap> DigraphByAdjacencyMatrix( [
 > [ 0, 1, 0, 2, 0 ],
 > [ 1, 1, 1, 0, 1 ],
 > [ 0, 3, 2, 1, 1 ],
 > [ 0, 0, 1, 0, 1 ],
 > [ 2, 0, 0, 0, 0 ] ]);
-<directed graph with 5 vertices, 18 edges>
+<digraph with 5 vertices, 18 edges>
 ]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DirectedGraphByEdges">
+<#GAPDoc Label="DigraphByEdges">
 <ManSection>
-  <Oper Name="DirectedGraphByEdges" Arg="edges[, n]"/>
-  <Returns>A directed graph.</Returns>
+  <Oper Name="DigraphByEdges" Arg="edges[, n]"/>
+  <Returns>A digraph.</Returns>
   <Description>
     If <A>edges</A> is list of pairs of positive integers, then this function
-    returns the directed graph with the minimum number of vertices such that its
+    returns the digraph with the minimum number of vertices such that its
     edges equal <A>edges</A>.<P/>
 
     If the optional second argument <A>n</A> is a positive integer, then this
-    function returns the directed graph with <A>n</A> vertices and edges
+    function returns the digraph with <A>n</A> vertices and edges
     <A>edges</A>. 
     
     <Example><![CDATA[
-gap> DirectedGraphByEdges( 
+gap> DigraphByEdges( 
 > [ [ 1, 3 ], [ 2, 1 ], [ 2, 3 ], [ 2, 5 ], [ 3, 6 ], 
 >   [ 4, 6 ], [ 5, 2 ], [ 5, 4 ], [ 5, 6 ], [ 6, 6 ] ]);
-<directed graph with 6 vertices, 10 edges>
-gap> DirectedGraphByEdges( 
+<digraph with 6 vertices, 10 edges>
+gap> DigraphByEdges( 
 > [ [ 1, 3 ], [ 2, 1 ], [ 2, 3 ], [ 2, 5 ], [ 3, 6 ], 
 >   [ 4, 6 ], [ 5, 2 ], [ 5, 4 ], [ 5, 6 ], [ 6, 6 ] ], 10);
-<directed graph with 10 vertices, 10 edges>
+<digraph with 10 vertices, 10 edges>
 ]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="AsDirectedGraph">
+<#GAPDoc Label="AsDigraph">
 <ManSection>
-  <Oper Name="AsDirectedGraph" Arg="trans[, n]"/>
-  <Returns>A directed graph.</Returns>
+  <Oper Name="AsDigraph" Arg="trans[, n]"/>
+  <Returns>A digraph.</Returns>
   <Description>
     If <A>trans</A> is transformation and <A>n</A> is a non-negative integer,
-    then this function returns a functional directed graph with <A>n</A> 
+    then this function returns a functional digraph with <A>n</A> 
     vertices, corresponding to <A>trans</A>. Specifically, the graph has 
     <A>n</A> edges, and for each vertex <M>x</M>, there is a unique edge with
     source <M>x</M> and range <M>x</M>^<A>trans</A>.
@@ -188,24 +188,24 @@ gap> DirectedGraphByEdges(
     <Example><![CDATA[
 gap> f := Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] );
 Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] )
-gap> AsDirectedGraph(f); 
-<directed graph with 10 vertices, 10 edges>
-gap> AsDirectedGraph(f, 4); 
-<directed graph with 4 vertices, 4 edges>
+gap> AsDigraph(f); 
+<digraph with 10 vertices, 10 edges>
+gap> AsDigraph(f, 4); 
+<digraph with 4 vertices, 4 edges>
 ]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="RandomSimpleDirectedGraph">
+<#GAPDoc Label="RandomSimpleDigraph">
 <ManSection>
-  <Oper Name="RandomSimpleDirectedGraph" Arg="n"/>
-  <Returns>A directed graph.</Returns>
+  <Oper Name="RandomSimpleDigraph" Arg="n"/>
+  <Returns>A digraph.</Returns>
   <Description>
-    Returns a random simple directed graph with <A>n</A> vertices.
+    Returns a random simple digraph with <A>n</A> vertices.
     <Log><![CDATA[
-gap> RandomSimpleDirectedGraph(1000);
-<directed graph with 1000 vertices, 364444 edges>
+gap> RandomSimpleDigraph(1000);
+<digraph with 1000 vertices, 364444 edges>
 ]]></Log>
   </Description>
 </ManSection>

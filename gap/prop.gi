@@ -9,14 +9,14 @@
 ##
 
 if IsBound(IS_STRONGLY_CONNECTED_DIGRAPH) then
-  InstallMethod(IsStronglyConnectedDirectedGraph, "for a digraph",
-  [IsDirectedGraph],
+  InstallMethod(IsStronglyConnectedDigraph, "for a digraph",
+  [IsDigraph],
   function(graph)
     return IS_STRONGLY_CONNECTED_DIGRAPH(Adjacencies(graph));
   end);
 else
-  InstallMethod(IsStronglyConnectedDirectedGraph, "for a digraph",
-  [IsDirectedGraph],
+  InstallMethod(IsStronglyConnectedDigraph, "for a digraph",
+  [IsDigraph],
   function(graph)
     local adj, n, stack1, len1, stack2, len2, id, count, fptr, level, l, w, v;
 
@@ -74,13 +74,13 @@ else
 fi;
 
 if IsBound(IS_ACYCLIC_DIGRAPH) then
-  InstallMethod(IsAcyclicDirectedGraph, "for a digraph",
-  [IsDirectedGraph], function(graph)
+  InstallMethod(IsAcyclicDigraph, "for a digraph",
+  [IsDigraph], function(graph)
     return IS_ACYCLIC_DIGRAPH(Adjacencies(graph));
   end);
 else
-  InstallMethod(IsAcyclicDirectedGraph, "for a digraph",
-  [IsDirectedGraph],
+  InstallMethod(IsAcyclicDigraph, "for a digraph",
+  [IsDigraph],
   function(graph)
     local adj, nr, vertex_complete, vertex_in_path, stack, level, j, k, i;
 
@@ -130,11 +130,11 @@ fi;
 
 # simple means no multiple edges (loops are allowed)
 if IsBound(IS_SIMPLE_DIGRAPH) then
-  InstallMethod(IsSimpleDirectedGraph, "for a directed graph",
-  [IsDirectedGraph], IS_SIMPLE_DIGRAPH);
+  InstallMethod(IsSimpleDigraph, "for a directed graph",
+  [IsDigraph], IS_SIMPLE_DIGRAPH);
 else
-  InstallMethod(IsSimpleDirectedGraph, "for a directed graph",
-  [IsDirectedGraph],
+  InstallMethod(IsSimpleDigraph, "for a directed graph",
+  [IsDigraph],
   function(graph)
     local adj, nr, range, source, len, n, current, marked, x, i;
 
@@ -174,7 +174,7 @@ fi;
 # Undirected means every (non-loop) edge has a complement edge
 # JDM: improve!
 InstallMethod(IsUndirectedGraph, "for a directed graph",
-[IsDirectedGraph],
+[IsDigraph],
 function(graph)
   local adj;
   adj := AdjacencyMatrix(graph);
@@ -186,13 +186,13 @@ end);
 
 # Functional means: for every vertex v there is exactly one edge with source v
 
-InstallMethod(IsFunctionalDirectedGraph, "for a directed graph by adjacency",
+InstallMethod(IsFunctionalDigraph, "for a directed graph by adjacency",
 [IsDigraphByAdjacency],
 function(graph)
   return ForAll(Adjacencies(graph), x -> Length(x) = 1);
 end);
 
-InstallMethod(IsFunctionalDirectedGraph, "for a directed graph",
+InstallMethod(IsFunctionalDigraph, "for a directed graph",
 [IsDigraphBySourceAndRange],
 function(graph)
   return Source(graph) = Vertices(graph);
@@ -201,11 +201,11 @@ end);
 #
 
 InstallMethod(IsTournament, "for a directed graph",
-[IsDirectedGraph], 
+[IsDigraph], 
 function(graph)
   local n;
   
-  if not IsSimpleDirectedGraph(graph) then 
+  if not IsSimpleDigraph(graph) then 
     return false;
   fi;
 
@@ -215,7 +215,7 @@ function(graph)
     return false;
   fi;
  
-  if HasIsAcyclicDirectedGraph(graph) and IsAcyclicDirectedGraph(graph) then 
+  if HasIsAcyclicDigraph(graph) and IsAcyclicDigraph(graph) then 
     return true;
   fi;
 
