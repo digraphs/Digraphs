@@ -110,15 +110,15 @@ function(graph)
 
   if IsBound(graph.nrvertices) then 
     if not (IsInt(graph.nrvertices) and graph.nrvertices >= 0) then 
-      Error("usage: the record components 'nrvertices' ",
+      Error("usage: the record component 'nrvertices' ",
       "should be a non-negative integer,");
       return;
     fi;
-    cmp := LT;
+    cmp := function(x,y) return x <= y; end;
     obj := graph.nrvertices;
   elif IsBound(graph.vertices) then 
     if not IsList(graph.vertices) then
-      Error("usage: the record components 'vertices'",
+      Error("usage: the record component 'vertices'",
       "should be a list,");
       return;
     fi;
@@ -128,12 +128,12 @@ function(graph)
 
   
   if not ForAll(graph.source, x-> cmp(x, obj)) then
-    Error("usage: the record components 'source' is invalid,");
+    Error("usage: the record component 'source' is invalid,");
     return;
   fi;
 
   if not ForAll(graph.range, x-> cmp(x, obj)) then
-    Error("usage: the record components 'range' is invalid,");
+    Error("usage: the record component 'range' is invalid,");
     return;
   fi;
 
@@ -142,7 +142,7 @@ function(graph)
   # rewrite the vertices to numbers
   if IsBound(graph.vertices) then
     graph.nrvertices := Length(graph.vertices);
-    if not graph.vertices <> [ 1 .. graph.nrvertices ] then  
+    if graph.vertices <> [ 1 .. graph.nrvertices ] then  
       for i in [1..Length(graph.range)] do
         graph.range[i]:=Position(graph.vertices, graph.range[i]);
         graph.source[i]:=Position(graph.vertices, graph.source[i]);
@@ -160,9 +160,8 @@ end);
 
 InstallMethod(DirectedGraphNC, "for a record", [IsRecord],
 function(graph)
-  ObjectifyWithAttributes(graph, DirectedGraphType, Range,
+  ObjectifyWithAttributes(graph, DigraphBySourceAndRangeType, Range,
    graph.range, Source, graph.source);
-  SetFilterObj(graph, IsDigraphByRangeAndSource);
   return graph;
 end);
 
@@ -193,11 +192,9 @@ end);
 InstallMethod(DirectedGraphNC, "for a list", [IsList],
 function(adj)
   local graph;
-
   graph := rec( adj := StructuralCopy(adj), nrvertices := Length(adj) );
-  ObjectifyWithAttributes(graph, DirectedGraphType, Adjacencies, adj,
-   NrVertices, graph.nrvertices);
-  SetFilterObj(graph, IsDigraphByAdjacency);
+  ObjectifyWithAttributes(graph, DigraphByAdjacencyType, Adjacencies, adj,
+   NrVertices, graph.nrvertices, IsSimpleDirectedGraph, true);
   return graph;
 end);
 

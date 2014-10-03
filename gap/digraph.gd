@@ -11,14 +11,19 @@
 # category, family, type, representations . . .
 
 DeclareCategory("IsDirectedGraph", IsObject);
-DeclareFilter("IsDigraphByAdjacency");
-DeclareFilter("IsDigraphByRangeAndSource");
+# created by adjacencies
+DeclareCategory("IsDigraphByAdjacency", IsDirectedGraph);      
+# created by source and range
+DeclareCategory("IsDigraphBySourceAndRange", IsDirectedGraph); 
 
 BindGlobal("DirectedGraphFamily", NewFamily("DirectedGraphFamily",
  IsDirectedGraph));
 
-BindGlobal("DirectedGraphType", NewType(DirectedGraphFamily,
- IsDirectedGraph and IsComponentObjectRep and IsAttributeStoringRep));
+BindGlobal("DigraphByAdjacencyType", NewType(DirectedGraphFamily,
+ IsDigraphByAdjacency and IsComponentObjectRep and IsAttributeStoringRep));
+
+BindGlobal("DigraphBySourceAndRangeType", NewType(DirectedGraphFamily,
+ IsDigraphBySourceAndRange and IsComponentObjectRep and IsAttributeStoringRep));
 
 # constructors . . . 
 
