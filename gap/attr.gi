@@ -8,6 +8,27 @@
 #############################################################################
 ##
 
+InstallMethod(DigraphDual, "for a directed graph", 
+[IsDirectedGraph], 
+function(graph)
+  local verts, old, new, i;
+
+  if not IsSimpleDirectedGraph(graph) then 
+    Error("Digraphs: DigraphDual: usage, the argument must be a simple",
+    " digraph,");
+    return;
+  fi;
+
+  verts := Vertices(graph);
+  old := Adjacencies(graph);
+  new := [];
+
+  for i in verts do 
+    new[i]:=DifferenceLists(verts, old[i]);
+  od;
+  return DirectedGraphNC(new);
+end);
+
 #
 
 InstallMethod(NrVertices, "for a directed graph",

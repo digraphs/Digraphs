@@ -82,103 +82,88 @@ end);
 #
 
 InstallMethod(DirectedGraph, "for a record", [IsRecord],
-function(record)
-  local i;
+function(graph)
+  local cmp, obj, i;
 
-  if IsGraph(record) then
-    return DirectedGraphNC(List(Vertices(record), x-> Adjacency(record, x)));
+  if IsGraph(graph) then
+    return DirectedGraphNC(List(Vertices(graph), x-> Adjacency(graph, x)));
   fi;
 
-  if not (IsBound(record.source) and IsBound(record.range) and
-    (IsBound(record.vertices) or IsBound(record.nrvertices))) then
-    Error("usage: the argument must be a record with components `source',",
-    " `range', and `vertices' or 'nrvertices'");
+  if not (IsBound(graph.source) and IsBound(graph.range) and
+    (IsBound(graph.vertices) or IsBound(graph.nrvertices))) then
+    Error("usage: the argument must be a record with components 'source',",
+    " 'range', and 'vertices' or 'nrvertices'");
     return;
   fi;
 
-  if not (IsList(record.source) and IsList(record.range)) then
-    Error("usage: the record components 'source'",
+  if not (IsList(graph.source) and IsList(graph.range)) then
+    Error("usage: the graph components 'source'",
     " and 'range' should be lists,");
     return;
   fi;
   
-  if Length(record.source)<>Length(record.range) then
+  if Length(graph.source)<>Length(graph.range) then
     Error("usage: the record components 'source'",
     " and 'range' should be of equal length,");
     return;
   fi;
 
-  if IsBound(record.vertices) then 
-    if not IsList(record.vertices) then
-      Error("usage: the record components 'vertices'",
-      "should be a list,");
-      return;
-    fi;
-    
-    if not ForAll(record.source, x-> x in record.vertices) then
-      Error("usage: every element of the record components 'source'",
-      " must belong to the component 'vertices',");
-      return;
-    fi;
-
-    if not ForAll(record.range, x-> x in record.vertices) then
-      Error("usage: every element of the record components 'range'",
-      " must belong to the component 'vertices',");
-      return;
-    fi;
-
-  elif IsBound(record.nrvertices) then 
-    if not IsInt(record.nrvertices) and record.nrvertices >= 0 then 
+  if IsBound(graph.nrvertices) then 
+    if not (IsInt(graph.nrvertices) and graph.nrvertices >= 0) then 
       Error("usage: the record components 'nrvertices' ",
       "should be a non-negative integer,");
       return;
     fi;
-    
-    if not ForAll(record.source, x-> x <= record.nrvertices) then
-      Error("usage: every element of the record components 'source'",
-      " must be at most 'nrvertices',");
+    cmp := LT;
+    obj := graph.nrvertices;
+  elif IsBound(graph.vertices) then 
+    if not IsList(graph.vertices) then
+      Error("usage: the record components 'vertices'",
+      "should be a list,");
       return;
     fi;
-
-    if not ForAll(record.range, x-> x <= record.nrvertices) then
-      Error("usage: every element of the record components 'range'",
-      " must be at most 'nrvertices',");
-      return;
-    fi;
+    cmp := \in;
+    obj := graph.vertices;
   fi;
 
-  record:=StructuralCopy(record);
+  
+  if not ForAll(graph.source, x-> cmp(x, obj)) then
+    Error("usage: the record components 'source' is invalid,");
+    return;
+  fi;
+
+  if not ForAll(graph.range, x-> cmp(x, obj)) then
+    Error("usage: the record components 'range' is invalid,");
+    return;
+  fi;
+
+  graph:=StructuralCopy(graph);
 
   # rewrite the vertices to numbers
-  if IsBound(record.vertices) then
-    record.nrvertices := Length(record.vertices);
-    for i in [1..Length(record.range)] do
-      record.range[i]:=Position(record.vertices, record.range[i]);
-      record.source[i]:=Position(record.vertices, record.source[i]);
-    od;
+  if IsBound(graph.vertices) then
+    graph.nrvertices := Length(graph.vertices);
+    if not graph.vertices <> [ 1 .. graph.nrvertices ] then  
+      for i in [1..Length(graph.range)] do
+        graph.range[i]:=Position(graph.vertices, graph.range[i]);
+        graph.source[i]:=Position(graph.vertices, graph.source[i]);
+      od;
+    fi;
   fi;
 
-  # make sure that the record.source is sorted, and range is too
-  record.range:=Permuted(record.range, Sortex(record.source));
+  # make sure that the graph.source is sorted, and range is too
+  graph.range:=Permuted(graph.range, Sortex(graph.source));
 
-  MakeImmutable(record);
-
-  return Objectify(DirectedGraphType, record);
+  return DirectedGraphNC(graph);
 end);
 
 #
 
 InstallMethod(DirectedGraphNC, "for a record", [IsRecord],
-function(record)
-
-  if IsGraph(record) then
-    return DirectedGraphNC(List(Vertices(record), x-> Adjacency(record, x)));
-  fi;
-
-  record:=StructuralCopy(record);
-  MakeImmutable(record);
-
-  return Objectify(DirectedGraphType, record);
+function(graph)
+  ObjectifyWithAttributes(graph, DirectedGraphType, Range,
+   graph.range, Source, graph.source);
+  SetFilterObj(graph, IsDigraphByRangeAndSource);
+  return graph;
 end);
 
 #
@@ -189,7 +174,6 @@ function(adj)
   local len, record, x, y;
 
   len := Length(adj);
-  adj := StructuralCopy(adj);
 
   for x in adj do
     for y in x do
@@ -201,21 +185,20 @@ function(adj)
     od;
   od;
 
-  record:=rec( adj := adj, nrvertices := Length(adj) );
-  # ObjectifyWithAttributes doesn't work on an immutable record
-  ObjectifyWithAttributes(record, DirectedGraphType, Adjacencies, adj,
-   NrVertices, Length(adj));
-  return record;
+  return DirectedGraphNC(adj);
 end);
 
-InstallMethod(DirectedGraphNC, "for a list of lists of pos ints", [IsList],
+#
+
+InstallMethod(DirectedGraphNC, "for a list", [IsList],
 function(adj)
-  local record;
-  record := rec( adj := StructuralCopy(adj), nrvertices := Length(adj));
-  # ObjectifyWithAttributes doesn't work on an immutable record
-  ObjectifyWithAttributes(record, DirectedGraphType, Adjacencies, record.adj, 
-    NrVertices, Length(adj));
-  return record;
+  local graph;
+
+  graph := rec( adj := StructuralCopy(adj), nrvertices := Length(adj) );
+  ObjectifyWithAttributes(graph, DirectedGraphType, Adjacencies, adj,
+   NrVertices, graph.nrvertices);
+  SetFilterObj(graph, IsDigraphByAdjacency);
+  return graph;
 end);
 
 #
@@ -292,7 +275,7 @@ function(edges)
   return gr;
 end);
 
-# <n> is the number of arguments
+# <n> is the number of vertices
 
 InstallMethod(DirectedGraphByEdges, "for a rectangular table, and a pos int",
 [IsRectangularTable, IsPosInt],

@@ -8,9 +8,11 @@
 #############################################################################
 ##
 
-# category, family, type . . .
+# category, family, type, representations . . .
 
 DeclareCategory("IsDirectedGraph", IsObject);
+DeclareFilter("IsDigraphByAdjacency");
+DeclareFilter("IsDigraphByRangeAndSource");
 
 BindGlobal("DirectedGraphFamily", NewFamily("DirectedGraphFamily",
  IsDirectedGraph));
