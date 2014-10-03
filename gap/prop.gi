@@ -186,24 +186,16 @@ end);
 
 # Functional means: for every vertex v there is exactly one edge with source v
 
-InstallMethod(IsFunctionalDirectedGraph, "for a directed graph",
-[IsDirectedGraph],
+InstallMethod(IsFunctionalDirectedGraph, "for a directed graph by adjacency",
+[IsDigraphByAdjacency],
 function(graph)
-  local n, adj, source;
-  
-  n := NrVertices(graph);
-  
-  if (not HasSource(graph)) and HasAdjacencies(graph) then
-    adj := Adjacencies(graph);
-    return ForAll(adj, x -> Length(x) = 1);
-  fi;
-  
-  source := Source(graph);
-  if Length(source) <> n then
-    return false;
-  fi;
+  return ForAll(Adjacencies(graph), x -> Length(x) = 1);
+end);
 
-  return Source(graph) = [ 1 .. n ];
+InstallMethod(IsFunctionalDirectedGraph, "for a directed graph",
+[IsDigraphBySourceAndRange],
+function(graph)
+  return Source(graph) = Vertices(graph);
 end);
 
 #
