@@ -15,7 +15,7 @@ gap> DigraphsStartTest();
 
 # IsAcyclicDigraph
 gap> loop:=Digraph([ [1] ]);
-<directed graph with 1 vertices, 1 edges>
+<digraph with 1 vertices, 1 edges>
 gap> IsSimpleDigraph(loop);
 true
 gap> IsAcyclicDigraph(loop);
@@ -24,7 +24,7 @@ false
 #
 gap> r:=rec(vertices:=[1,2],source:=[1,1],range:=[2,2]);;
 gap> multiple:=Digraph(r);
-<directed graph with 2 vertices, 2 edges>
+<digraph with 2 vertices, 2 edges>
 gap> IsSimpleDigraph(multiple);
 false
 gap> IsAcyclicDigraph(multiple);
@@ -39,7 +39,7 @@ gap> for i in [1..100] do
 >   od;
 > od;
 gap> complete:=Digraph(r);
-<directed graph with 100 vertices, 10000 edges>
+<digraph with 100 vertices, 10000 edges>
 gap> IsSimpleDigraph(complete);
 true
 gap> IsAcyclicDigraph(complete);
@@ -58,7 +58,7 @@ gap> for i in [1..9999] do
 >   Add(r.range, i+1);
 > od;
 gap> circuit:=Digraph(r);
-<directed graph with 20000 vertices, 20000 edges>
+<digraph with 20000 vertices, 20000 edges>
 gap> IsSimpleDigraph(circuit);
 true
 gap> IsAcyclicDigraph(circuit);
@@ -68,7 +68,7 @@ true
 gap> r:=rec(
 > vertices:=[1..8],source:=[1,1,1,2,3,4,4,5,7,7],range:=[4,3,4,8,2,2,6,7,4,8]);;
 gap> grid:=Digraph(r);
-<directed graph with 8 vertices, 10 edges>
+<digraph with 8 vertices, 10 edges>
 gap> IsSimpleDigraph(grid);
 false
 gap> IsAcyclicDigraph(grid);
@@ -85,7 +85,7 @@ true
 gap> topo[12345];
 17656
 gap> gr := Digraph( [ [ 2 ], [ 1 ] ] );
-<directed graph with 2 vertices, 2 edges>
+<digraph with 2 vertices, 2 edges>
 gap> DigraphTopologicalSort(gr);
 fail
 
@@ -93,24 +93,24 @@ fail
 gap> DigraphTopologicalSort(multiple);
 [ 2, 1 ]
 gap> gr := Digraph([]);
-<directed graph with 0 vertices, 0 edges>
+<digraph with 0 vertices, 0 edges>
 gap> DigraphTopologicalSort(gr);
 [  ]
 gap> gr := Digraph([ [ ] ]);
-<directed graph with 1 vertices, 0 edges>
+<digraph with 1 vertices, 0 edges>
 gap> DigraphTopologicalSort(gr);
 [ 1 ]
 gap> gr := Digraph([ [ 1 ] ]);
-<directed graph with 1 vertices, 1 edges>
+<digraph with 1 vertices, 1 edges>
 gap> DigraphTopologicalSort(gr);
 [ 1 ]
 gap> gr := Digraph([ [ 2 ], [ 1 ] ]);
-<directed graph with 2 vertices, 2 edges>
+<digraph with 2 vertices, 2 edges>
 gap> DigraphTopologicalSort(gr);
 fail
 gap> adj := [ [ 3 ], [ ], [ 2, 3, 4 ], [ ] ];;
 gap> gr := Digraph(adj);
-<directed graph with 4 vertices, 4 edges>
+<digraph with 4 vertices, 4 edges>
 gap> IsAcyclicDigraph(gr);
 false
 gap> DigraphTopologicalSort(gr);
@@ -137,25 +137,25 @@ gap> r := rec( vertices := [ 1 .. 10 ],
 > 10, 2, 4, 5, 9, 10, 3, 4, 5, 6, 7, 8, 9, 10, 1, 3, 5, 7, 8, 9, 1, 2, 5, 1, 2,
 > 4, 6, 7, 8 ] );;
 gap> g1 := Digraph(r);
-<directed graph with 10 vertices, 51 edges>
+<digraph with 10 vertices, 51 edges>
 gap> IsFunctionalDigraph(g1);
 false
 gap> g2 := Digraph(Adjacencies(g1));
-<directed graph with 10 vertices, 51 edges>
+<digraph with 10 vertices, 51 edges>
 gap> IsFunctionalDigraph(g2);
 false
 gap> g3 := Digraph( [ [1], [3], [2], [2] ] );
-<directed graph with 4 vertices, 4 edges>
+<digraph with 4 vertices, 4 edges>
 gap> IsFunctionalDigraph(g3);
 true
 gap> g4 := Digraph( rec( vertices := [ 1 .. 3 ] ,
 > source := [ 3, 2, 1 ], range := [ 2 , 1, 3 ] ) );
-<directed graph with 3 vertices, 3 edges>
+<digraph with 3 vertices, 3 edges>
 gap> IsFunctionalDigraph(g4);
 true
 gap> g5 := Digraph( rec( vertices := [ 1 .. 3 ] ,
 > source := [ 3, 2, 2 ], range := [ 2 , 1, 3 ] ) );
-<directed graph with 3 vertices, 3 edges>
+<digraph with 3 vertices, 3 edges>
 gap> IsFunctionalDigraph(g5);
 false
 
@@ -175,14 +175,14 @@ true
 gap> IsUndirectedGraph(multiple);
 false
 gap> g6 := Digraph( [ [ 1, 2, 4 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3, 1 ] ] );
-<directed graph with 4 vertices, 10 edges>
+<digraph with 4 vertices, 10 edges>
 gap> IsUndirectedGraph(g6);
 true
 
 # DigraphByEdges
 gap> gr := Digraph( [ [ 1, 2, 3, 5 ], [ 1, 5 ], [ 2, 3, 6 ], [ 1, 3, 4 ], 
 > [ 1, 4, 6 ], [ 3, 4 ] ] );
-<directed graph with 6 vertices, 17 edges>
+<digraph with 6 vertices, 17 edges>
 gap> gr = DigraphByEdges(Edges(gr));
 true
 gap> DigraphByEdges([["nonsense", "more"]]);
@@ -190,11 +190,11 @@ Error, usage: the argument <edges> must be a list of pairs of pos ints,
 gap> DigraphByEdges([["nonsense"]]);
 Error, usage: the argument <edges> must be a list of pairs,
 gap> gr := DigraphByEdges(Edges(gr), 10);
-<directed graph with 10 vertices, 17 edges>
+<digraph with 10 vertices, 17 edges>
 gap> gr := DigraphByEdges( [ [ 1, 2 ] ] );
-<directed graph with 2 vertices, 1 edges>
+<digraph with 2 vertices, 1 edges>
 gap> gr := DigraphByEdges( [ [ 2, 1 ] ] );
-<directed graph with 2 vertices, 1 edges>
+<digraph with 2 vertices, 1 edges>
 gap> gr := DigraphByEdges( [ [ 1, 2 ] ], 1 ); 
 Error, DigraphByEdges: usage, the specified edges must not contain values grea\
 ter than 1
@@ -203,43 +203,43 @@ ter than 1
 gap> f := Transformation([]);
 IdentityTransformation
 gap> gr := AsDigraph(f);
-<directed graph with 0 vertices, 0 edges>
+<digraph with 0 vertices, 0 edges>
 gap> gr = Digraph( [] );
 true
 gap> AsDigraph(f, 10);
-<directed graph with 10 vertices, 10 edges>
+<digraph with 10 vertices, 10 edges>
 gap> g := Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] );
 Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] )
 gap> AsDigraph(g);
-<directed graph with 8 vertices, 8 edges>
+<digraph with 8 vertices, 8 edges>
 gap> AsDigraph(g, 10);
-<directed graph with 10 vertices, 10 edges>
+<digraph with 10 vertices, 10 edges>
 gap> h := Transformation( [ 2, 4, 1, 3, 5 ] );
 Transformation( [ 2, 4, 1, 3 ] )
 gap> AsDigraph(h);
-<directed graph with 4 vertices, 4 edges>
+<digraph with 4 vertices, 4 edges>
 
 # IsSimpleDigraph
 gap> gr1 := Digraph( [ ] );
-<directed graph with 0 vertices, 0 edges>
+<digraph with 0 vertices, 0 edges>
 gap> IsSimpleDigraph(gr);
 true
 gap> gr2 := Digraph( [ [] ] );
-<directed graph with 1 vertices, 0 edges>
+<digraph with 1 vertices, 0 edges>
 gap> IsSimpleDigraph(gr);
 true
 gap> source := [1..10000];;
 gap> range := List( source, x->Random(source) );;
 gap> r := rec(vertices := [ 1 .. 10000 ], source := source, range := range);;
 gap> gr3 := Digraph(r);
-<directed graph with 10000 vertices, 10000 edges>
+<digraph with 10000 vertices, 10000 edges>
 gap> IsSimpleDigraph(g3);
 true
 gap> Add(source, 10000);;
 gap> Add(range, range[10000]);;
 gap> r := rec(vertices := [ 1 .. 10000 ], source := source, range := range);;
 gap> gr4 := Digraph(r);
-<directed graph with 10000 vertices, 10001 edges>
+<digraph with 10000 vertices, 10001 edges>
 gap> IsSimpleDigraph(gr4);
 false
 
@@ -249,24 +249,24 @@ gap> r := rec( vertices:=[ 1 .. 4 ], source := [ 1, 1, 2, 3, 4 ],
 rec( range := [ 1, 2, 3, 4, 1 ], source := [ 1, 1, 2, 3, 4 ], 
   vertices := [ 1 .. 4 ] )
 gap> gr := Digraph(r);
-<directed graph with 4 vertices, 5 edges>
+<digraph with 4 vertices, 5 edges>
 gap> IsAcyclicDigraph(gr);
 false
 gap> DigraphTopologicalSort(gr);
 fail
 gap> gr1 := DigraphTransitiveClosure(gr);
-<directed graph with 4 vertices, 13 edges>
+<digraph with 4 vertices, 13 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
-<directed graph with 4 vertices, 16 edges>
+<digraph with 4 vertices, 16 edges>
 gap> adj := [ [ 2, 6 ], [ 3 ], [ 7 ], [ 3 ], [  ], [ 2, 7 ], [ 5 ] ];;
 gap> gr := Digraph(adj);
-<directed graph with 7 vertices, 8 edges>
+<digraph with 7 vertices, 8 edges>
 gap> IsAcyclicDigraph(gr);
 true
 gap> gr1 := DigraphTransitiveClosure(gr);
-<directed graph with 7 vertices, 18 edges>
+<digraph with 7 vertices, 18 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
-<directed graph with 7 vertices, 25 edges>
+<digraph with 7 vertices, 25 edges>
 
 #
 gap> DigraphsStopTest();

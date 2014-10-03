@@ -203,7 +203,7 @@ function(graph)
   local sorted, vertices, n, adj, out, trans, mat, flip, v, u, w;
 
   if not IsSimpleDigraph(graph) then
-    Error("usage: the argument should be a simple directed graph,");
+    Error("usage: the argument should be a simple digraph,");
     return;
   fi;
 
@@ -273,7 +273,7 @@ function(graph)
   local sorted, vertices, n, adj, out, trans, reflex, mat, flip, v, u, w;
 
   if not IsSimpleDigraph(graph) then
-    Error("usage: the argument should be a simple directed graph,");
+    Error("usage: the argument should be a simple digraph,");
     return;
   fi;
 
@@ -355,13 +355,13 @@ end);
 # our case...
 
 if IsBound(GABOW_SCC) then
-  InstallMethod(StronglyConnectedComponents, "for a directed graph",
+  InstallMethod(StronglyConnectedComponents, "for a digraph",
   [IsDigraph],
   function(digraph)
     return GABOW_SCC(Adjacencies(digraph));
   end);
 else
-  InstallMethod(StronglyConnectedComponents, "for a directed graph",
+  InstallMethod(StronglyConnectedComponents, "for a digraph",
   [IsDigraph],
   function(digraph)
     local n, stack1, len1, stack2, len2, id, count, comps, fptr, level, l, comp, w, v;

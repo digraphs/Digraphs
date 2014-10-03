@@ -18,7 +18,7 @@ gap> gr:=Digraph(
 > [ [ 8 ], [ 4, 5, 6, 8, 9 ], [ 2, 4, 5, 7, 10 ], [ 9 ], 
 > [ 1, 4, 6, 7, 9 ], [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], 
 > [ 3, 4, 9, 10 ], [ 1, 2, 3, 5, 6, 9, 10 ], [ 2, 4, 5, 6, 9 ] ] );
-<directed graph with 10 vertices, 43 edges>
+<digraph with 10 vertices, 43 edges>
 gap> Adjacencies(gr);
 [ [ 8 ], [ 4, 5, 6, 8, 9 ], [ 2, 4, 5, 7, 10 ], [ 9 ], [ 1, 4, 6, 7, 9 ], 
   [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], [ 3, 4, 9, 10 ], 
@@ -37,7 +37,7 @@ gap> r := rec(adjacencies := [
 >   schreierVector := [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,
 >                      -11,-12,-13,-14,-15,-16,-17,-18,-19,-20] );;
 gap> Digraph(r);
-<directed graph with 20 vertices, 64 edges>
+<digraph with 20 vertices, 64 edges>
 
 # IsAcyclicDigraph
 gap> gr:=Digraph([
@@ -47,7 +47,7 @@ gap> gr:=Digraph([
 >  [ 2, 3, 10, 11, 14 ], [ 3, 5, 14, 15 ], [ 7, 9, 10, 14, 15 ], 
 >  [ 1, 4, 7, 8, 10, 14, 15 ], [ 1, 2, 4, 7, 13, 14, 15 ], 
 >  [ 1, 2, 3, 9, 10, 11, 12, 13, 14, 15 ] ]);
-<directed graph with 15 vertices, 89 edges>
+<digraph with 15 vertices, 89 edges>
 gap> IsSimpleDigraph(gr);
 true
 gap> IsAcyclicDigraph(gr);
@@ -59,15 +59,15 @@ gap> for i in [1..9999] do
 >  od;
 gap> Add(r.source, 10000);; Add(r.range, 1);;
 gap> gr:=Digraph(r);
-<directed graph with 10000 vertices, 10000 edges>
+<digraph with 10000 vertices, 10000 edges>
 gap> IsAcyclicDigraph(gr);
 false
 gap> gr:=DigraphRemoveEdges(gr, [10000]);
-<directed graph with 10000 vertices, 9999 edges>
+<digraph with 10000 vertices, 9999 edges>
 gap> IsAcyclicDigraph(gr);
 true
 gap> gr:=Digraph( [ [ 2, 3 ], [ 4, 5 ], [ 5, 6 ], [], [], [], [ 3 ] ] );
-<directed graph with 7 vertices, 7 edges>
+<digraph with 7 vertices, 7 edges>
 gap> IsDigraph(gr);
 true
 
@@ -82,13 +82,13 @@ gap> DigraphsStopTest();
 
 #
 gap> d := Digraph(rec(vertices := [1..5], range := [], source := []));
-<directed graph with 5 vertices, 0 edges>
+<digraph with 5 vertices, 0 edges>
 gap> IsSimpleDigraph(d);
 true
 
 #
 gap> ReadSparse6Line(":Fa@x^");
-<directed graph with 7 vertices, 8 edges>
+<digraph with 7 vertices, 8 edges>
 
 #
 gap> STOP_TEST( "Digraphs package: testinstall.tst", 0);

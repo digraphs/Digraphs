@@ -8,7 +8,7 @@
 #############################################################################
 ##
 
-InstallMethod(DigraphDual, "for a directed graph", 
+InstallMethod(DigraphDual, "for a digraph", 
 [IsDigraph], 
 function(graph)
   local verts, old, new, i;
@@ -31,7 +31,7 @@ end);
 
 #
 
-InstallMethod(NrVertices, "for a directed graph",
+InstallMethod(NrVertices, "for a digraph",
 [IsDigraph],
 function(graph)
   return graph!.nrvertices;
@@ -39,7 +39,7 @@ end);
 
 # IsDigraphByAdjacency implies IsSimpleDigraph
 
-InstallMethod(NrEdges, "for a directed graph by adjacency",
+InstallMethod(NrEdges, "for a digraph by adjacency",
 [IsDigraphByAdjacency],
 function(graph)
   return Sum(List(Adjacencies(graph), Length));
@@ -53,7 +53,7 @@ end);
 
 # IsDigraphByAdjacency implies IsSimpleDigraph
 
-InstallMethod(Edges, "for a directed graph by adjacency",
+InstallMethod(Edges, "for a digraph by adjacency",
 [IsDigraphByAdjacency],
 function(graph)
   local adj, nr, out, i, j;
@@ -71,7 +71,7 @@ function(graph)
   return out;
 end);
   
-InstallMethod(Edges, "for a directed graph",
+InstallMethod(Edges, "for a digraph",
 [IsDigraph],
 function(graph)
   local out, range, source, i;
@@ -86,9 +86,9 @@ function(graph)
   return out;
 end);
 
-# attributes for directed graphs . . .
+# attributes for digraphs . . .
 
-InstallMethod(GrapeGraph, "for a directed graph", 
+InstallMethod(GrapeGraph, "for a digraph", 
 [IsDigraph], Graph);
 
 BindGlobal("DIGRAPHS_RangeSource",
@@ -125,20 +125,20 @@ end);
 
 #
 
-InstallMethod(Vertices, "for a directed graph",
+InstallMethod(Vertices, "for a digraph",
 [IsDigraph],
 function(graph)
   return [ 1 .. NrVertices(graph) ];
 end);
 
-InstallMethod(Range, "for a directed graph by adjacency",
+InstallMethod(Range, "for a digraph by adjacency",
 [IsDigraphByAdjacency],
 function(graph)
   DIGRAPHS_RangeSource(graph);
   return graph!.range;
 end);
 
-InstallMethod(Source, "for a directed graph by adjacency",
+InstallMethod(Source, "for a digraph by adjacency",
 [IsDigraphByAdjacency],
 function(graph)
   DIGRAPHS_RangeSource(graph);
@@ -146,10 +146,10 @@ function(graph)
 end);
 
 if IsBound(DIGRAPH_ADJACENCY) then
-  InstallMethod(Adjacencies, "for a directed graph",
+  InstallMethod(Adjacencies, "for a digraph",
   [IsDigraphBySourceAndRange], DIGRAPH_ADJACENCY);
 else
-  InstallMethod(Adjacencies, "for a directed graph by source and range",
+  InstallMethod(Adjacencies, "for a digraph by source and range",
   [IsDigraphBySourceAndRange],
   function(graph)
     local range, source, out, i;
@@ -168,7 +168,7 @@ else
   end);
 fi;
 
-InstallMethod(AdjacencyMatrix, "for a directed graph by adjacency",
+InstallMethod(AdjacencyMatrix, "for a digraph by adjacency",
 [IsDigraphByAdjacency], 
 function(graph)
   local verts, adj, out, i;
@@ -185,7 +185,7 @@ function(graph)
   return out;
 end);
 
-InstallMethod(AdjacencyMatrix, "for a directed graph by source and range",
+InstallMethod(AdjacencyMatrix, "for a digraph by source and range",
 [IsDigraphBySourceAndRange], 
 function(graph)
   local verts, source, range, out, i;

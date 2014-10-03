@@ -39,7 +39,7 @@ end);
 
 #
 
-InstallMethod(Graph, "for a directed graph",
+InstallMethod(Graph, "for a digraph",
 [IsDigraph],
 function(graph)
   local adj;
@@ -307,7 +307,7 @@ end);
 
 # operators . . .
 
-InstallMethod(\=, "for directed graphs",
+InstallMethod(\=, "for digraphs",
 [IsDigraph, IsDigraph],
 function(graph1, graph2)
   return Vertices(graph1)=Vertices(graph2) and Range(graph1)=Range(graph2)
@@ -316,12 +316,12 @@ end);
 
 # printing, and viewing . . .
 
-InstallMethod(ViewString, "for a directed graph",
+InstallMethod(ViewString, "for a digraph",
 [IsDigraph],
 function(graph)
   local str;
 
-  str:="<directed graph with ";
+  str:="<digraph with ";
   Append(str, String(NrVertices(graph)));
   Append(str, " vertices, ");
   Append(str, String(NrEdges(graph)));
@@ -329,7 +329,7 @@ function(graph)
   return str;
 end);
 
-InstallMethod(PrintString, "for a directed graph",
+InstallMethod(PrintString, "for a digraph",
 [IsDigraph],
 function(graph)
   local str, com, i, nam;
@@ -359,7 +359,7 @@ function(graph)
   return str;
 end);
 
-InstallMethod(String, "for a directed graph",
+InstallMethod(String, "for a digraph",
 [IsDigraph],
 function(graph)
   local str, com, i, nam;

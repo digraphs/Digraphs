@@ -8,7 +8,7 @@
 #############################################################################
 ##
 
-# attributes for directed graphs . . .
+# attributes for digraphs . . .
 
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 # GrapeGraph must be mutable for grape to function properly

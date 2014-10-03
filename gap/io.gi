@@ -498,7 +498,7 @@ function(arg)
   fi;
 
   if not IsDigraph(arg[2]) then
-    Error("usage: the 2nd argument must be directed graph,");
+    Error("usage: the 2nd argument must be digraph,");
     return;
   fi;
 
@@ -547,7 +547,7 @@ end);
 
 
 
-InstallMethod(WriteGraph6, "for a directed graph",
+InstallMethod(WriteGraph6, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
@@ -596,7 +596,7 @@ end);
 
 #
 
-InstallMethod(WriteDigraph6, "for a directed graph",
+InstallMethod(WriteDigraph6, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
@@ -643,13 +643,13 @@ end);
 
 #
 
-InstallMethod(WriteSparse6, "for a directed graph",
+InstallMethod(WriteSparse6, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, n, lenlist, source, range, k, blist, v, nextbit, AddBinary, i,
         bitstopad, pos, block;
   if not IsUndirectedGraph(graph) then
-    Error("<graph> must be a symmetric directed graph,");
+    Error("<graph> must be a symmetric digraph,");
     return;
   fi;
 
@@ -755,7 +755,7 @@ end);
 
 #
 
-InstallMethod(WriteDiSparse6, "for a directed graph",
+InstallMethod(WriteDiSparse6, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, n, lenlist, source, range, source_i, range_i, source_d, range_d, len1, len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad, pos, block, i;

@@ -130,10 +130,10 @@ fi;
 
 # simple means no multiple edges (loops are allowed)
 if IsBound(IS_SIMPLE_DIGRAPH) then
-  InstallMethod(IsSimpleDigraph, "for a directed graph",
+  InstallMethod(IsSimpleDigraph, "for a digraph",
   [IsDigraph], IS_SIMPLE_DIGRAPH);
 else
-  InstallMethod(IsSimpleDigraph, "for a directed graph",
+  InstallMethod(IsSimpleDigraph, "for a digraph",
   [IsDigraph],
   function(graph)
     local adj, nr, range, source, len, n, current, marked, x, i;
@@ -173,7 +173,7 @@ fi;
 
 # Undirected means every (non-loop) edge has a complement edge
 # JDM: improve!
-InstallMethod(IsUndirectedGraph, "for a directed graph",
+InstallMethod(IsUndirectedGraph, "for a digraph",
 [IsDigraph],
 function(graph)
   local adj;
@@ -186,13 +186,13 @@ end);
 
 # Functional means: for every vertex v there is exactly one edge with source v
 
-InstallMethod(IsFunctionalDigraph, "for a directed graph by adjacency",
+InstallMethod(IsFunctionalDigraph, "for a digraph by adjacency",
 [IsDigraphByAdjacency],
 function(graph)
   return ForAll(Adjacencies(graph), x -> Length(x) = 1);
 end);
 
-InstallMethod(IsFunctionalDigraph, "for a directed graph",
+InstallMethod(IsFunctionalDigraph, "for a digraph",
 [IsDigraphBySourceAndRange],
 function(graph)
   return Source(graph) = Vertices(graph);
@@ -200,7 +200,7 @@ end);
 
 #
 
-InstallMethod(IsTournament, "for a directed graph",
+InstallMethod(IsTournament, "for a digraph",
 [IsDigraph], 
 function(graph)
   local n;

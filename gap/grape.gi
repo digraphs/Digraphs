@@ -26,7 +26,7 @@ InstallMethod(AutomorphismGroup, "for a digraph",
 [IsDigraph],
 function(graph)
   if IsSimpleDigraph(graph) then 
-    # TODO: convert back to directed graphs
+    # TODO: convert back to digraphs
     return AutomorphismGroup(GrapeGraph(graph));
   fi;
   Error("not yet implemented,");
@@ -38,7 +38,7 @@ InstallMethod(DigraphIsomorphism, "for two digraphs",
 [IsDigraph, IsDigraph],
 function(g1, g2)
   if IsSimpleDigraph(g1) and IsSimpleDigraph(g2) then   
-    # TODO: convert back to directed graphs
+    # TODO: convert back to digraphs
     return GraphIsomorphism( GrapeGraph(g1), GrapeGraph(g2) );
   fi;
 end);
