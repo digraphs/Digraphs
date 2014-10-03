@@ -40,7 +40,7 @@ end);
 # IsDigraphByAdjacency implies IsSimpleDigraph
 
 InstallMethod(NrEdges, "for a directed graph by adjacency",
-[IsDirectedGraph and IsDigraphByAdjacency],
+[IsDigraphByAdjacency],
 function(graph)
   return Sum(List(Adjacencies(graph), Length));
 end);
@@ -54,7 +54,7 @@ end);
 # IsDigraphByAdjacency implies IsSimpleDigraph
 
 InstallMethod(Edges, "for a directed graph by adjacency",
-[IsDirectedGraph and IsDigraphByAdjacency],
+[IsDigraphByAdjacency],
 function(graph)
   local adj, nr, out, i, j;
 
@@ -132,14 +132,14 @@ function(graph)
 end);
 
 InstallMethod(Range, "for a directed graph by adjacency",
-[IsDirectedGraph and IsDigraphByAdjacency],
+[IsDigraphByAdjacency],
 function(graph)
   DIGRAPHS_RangeSource(graph);
   return graph!.range;
 end);
 
 InstallMethod(Source, "for a directed graph by adjacency",
-[IsDirectedGraph and IsDigraphByAdjacency],
+[IsDigraphByAdjacency],
 function(graph)
   DIGRAPHS_RangeSource(graph);
   return graph!.source;
@@ -147,10 +147,10 @@ end);
 
 if IsBound(DIGRAPH_ADJACENCY) then
   InstallMethod(Adjacencies, "for a directed graph",
-  [IsDirectedGraph and IsDigraphBySourceAndRange], DIGRAPH_ADJACENCY);
+  [IsDigraphBySourceAndRange], DIGRAPH_ADJACENCY);
 else
   InstallMethod(Adjacencies, "for a directed graph by source and range",
-  [IsDirectedGraph and IsDigraphBySourceAndRange],
+  [IsDigraphBySourceAndRange],
   function(graph)
     local range, source, out, i;
 
@@ -169,7 +169,7 @@ else
 fi;
 
 InstallMethod(AdjacencyMatrix, "for a directed graph by adjacency",
-[IsDirectedGraph and IsDigraphByAdjacency], 
+[IsDigraphByAdjacency], 
 function(graph)
   local verts, adj, out, i;
   
@@ -186,7 +186,7 @@ function(graph)
 end);
 
 InstallMethod(AdjacencyMatrix, "for a directed graph by source and range",
-[IsDirectedGraph and IsDigraphBySourceAndRange], 
+[IsDigraphBySourceAndRange], 
 function(graph)
   local verts, source, range, out, i;
   

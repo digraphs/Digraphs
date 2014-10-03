@@ -125,7 +125,6 @@ function(graph)
     cmp := \in;
     obj := graph.vertices;
   fi;
-
   
   if not ForAll(graph.source, x-> cmp(x, obj)) then
     Error("usage: the record component 'source' is invalid,");

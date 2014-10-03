@@ -10,19 +10,26 @@
 
 # graph algorithms
 
-InstallMethod(DirectedGraphReverse, "for a digraph",
-[IsDirectedGraph],
+InstallMethod(DirectedGraphReverse, "for a digraph with source",
+[IsDirectedGraph and HasSource],
 function(graph)
-  local source, range, old, new, i, j;
+  local source, range;
 
-  if HasSource(graph) then 
     source := ShallowCopy(Range(graph));
     range := Permuted(Source(graph), Sortex(source));
 
     return DirectedGraphNC(rec( source:=source, 
                                 range:=range,
                                 nrvertices:=NrVertices(graph)));
-  fi;
+end);
+
+# the following doesn't apply to non-simple digraphs, and so we use
+# IsDigraphByAdjacency
+
+InstallMethod(DirectedGraphReverse, "for a digraph by adjacency",
+[IsDigraphByAdjacency],
+function(graph)
+  local old, new, i, j;
 
   old := Adjacencies(graph);
   new := List(Vertices(graph), x -> []);
@@ -36,26 +43,50 @@ function(graph)
   return DirectedGraphNC(new);
 end);
 
-InstallMethod(DirectedGraphRemoveLoops, "for a digraph",
-[IsDirectedGraph],
+InstallMethod(DirectedGraphRemoveLoops, "for a digraph with source",
+[IsDirectedGraph and HasSource],
 function(graph)
-  local source, range, newsource, newrange, i;
+  local source, range, newsource, newrange, nr, i;
 
   source := Source(graph);
   range := Range(graph);
 
   newsource := [];
   newrange := [];
+  nr := 0;
 
   for i in [ 1 .. Length(source) ] do
     if range[i] <> source[i] then
-      Add(newrange, range[i]);
-      Add(newsource, source[i]);
+      nr := nr + 1;
+      newrange[nr] := range[i];
+      newsource[nr] := source[i];
     fi;
   od;
 
   return DirectedGraphNC(rec( source:=newsource, range:=newrange,
                               nrvertices:=NrVertices(graph)));
+end);
+
+InstallMethod(DirectedGraphRemoveLoops, "for a digraph by adjacency",
+[IsDigraphByAdjacency],
+function(graph)
+  local old, new, nr, i, j;
+  
+  old := Adjacencies(graph);
+  new := [];
+
+  for i in Vertices(graph) do 
+    new[i] := []; 
+    nr := 0;
+    for j in old[i] do 
+      if i <> j then 
+        nr := nr + 1;
+        new[i][nr]:= j;
+      fi;
+    od;
+  od;
+
+  return DirectedGraphNC(new);
 end);
 
 InstallMethod(DirectedGraphRemoveEdges, "for a digraph and a list",
@@ -93,7 +124,24 @@ function(graph, edges)
   fi;
 end);
 
-InstallMethod(DirectedGraphRelabel, "for a digraph and perm",
+InstallMethod(DirectedGraphRelabel, "for a digraph by adjacency and perm",
+[IsDigraphByAdjacency, IsPerm],
+function(graph, perm)
+  local adj;
+
+  if ForAny(Vertices(graph), i-> i^perm > NrVertices(graph)) then
+    Error("usage: the 2nd argument <perm> must permute ",
+    "the vertices of the 1st argument <graph>,");
+    return;
+  fi;
+  
+  adj := Permuted(Adjacencies(graph), perm);
+  Apply(adj, x-> OnTuples(x, perm));
+
+  return DirectedGraphNC(adj);
+end);
+
+InstallMethod(DirectedGraphRelabel, "for a digraph by adjacency and perm",
 [IsDirectedGraph, IsPerm],
 function(graph, perm)
 
@@ -102,13 +150,11 @@ function(graph, perm)
     "the vertices of the 1st argument <graph>,");
     return;
   fi;
-
   return DirectedGraphNC(rec(
     source := ShallowCopy(OnTuples(Source(graph), perm)),
     range:= ShallowCopy(OnTuples(Range(graph), perm)),
     nrvertices:=NrVertices(graph)));
 end);
-
 
 InstallMethod(DirectedGraphFloydWarshall, "for a digraph",
 [IsDirectedGraph],
