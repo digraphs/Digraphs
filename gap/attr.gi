@@ -8,16 +8,10 @@
 #############################################################################
 ##
 
-InstallMethod(DigraphDual, "for a digraph", 
-[IsDigraph], 
+InstallMethod(DigraphDual, "for a digraph by adjacency", 
+[IsDigraphByAdjacency], 
 function(graph)
   local verts, old, new, i;
-
-  if not IsSimpleDigraph(graph) then 
-    Error("Digraphs: DigraphDual: usage, the argument must be a simple",
-    " digraph,");
-    return;
-  fi;
 
   verts := Vertices(graph);
   old := Adjacencies(graph);

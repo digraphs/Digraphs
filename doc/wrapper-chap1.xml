@@ -43,14 +43,17 @@
   </Section>
 
   <Section><Heading>Properties of digraphs</Heading>
-    <#Include Label="IsSimpleDigraph">
-    <#Include Label="IsUndirectedGraph">
-    <#Include Label="IsFunctionalDigraph">
-    <#Include Label="IsStronglyConnectedDigraph">
+    <!-- alphabetical order please!-->
     <#Include Label="IsAcyclicDigraph">
+    <#Include Label="IsFunctionalDigraph">
+    <#Include Label="IsSimpleDigraph">
+    <#Include Label="IsStronglyConnectedDigraph">
+    <#Include Label="IsUndirectedGraph">
   </Section>
 
   <Section><Heading>Operations on digraphs</Heading>
+    <!-- alphabetical order please!-->
+    <#Include Label="DigraphDual">
     <#Include Label="DigraphReflexiveTransitiveClosure">
     <#Include Label="DigraphRelabel">
     <#Include Label="DigraphRemoveLoops">

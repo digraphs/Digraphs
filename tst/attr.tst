@@ -14,6 +14,26 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
+# DigraphDual
+gap> gr:= Digraph( [ [ 6, 7 ], [ 6, 9 ], [ 1, 3, 4, 5, 8, 9 ], 
+> [ 1, 2, 3, 4, 5, 6, 7, 10 ], [ 1, 5, 6, 7, 10 ], [ 2, 4, 5, 9, 10 ], 
+> [ 3, 4, 5, 6, 7, 8, 9, 10 ], [ 1, 3, 5, 7, 8, 9 ], [ 1, 2, 5 ], 
+> [ 1, 2, 4, 6, 7, 8 ] ] );;
+gap> Adjacencies(DigraphDual(gr));
+[ [ 1, 2, 3, 4, 5, 8, 9, 10 ], [ 1, 2, 3, 4, 5, 7, 8, 10 ], [ 2, 6, 7, 10 ], 
+  [ 8, 9 ], [ 2, 3, 4, 8, 9 ], [ 1, 3, 6, 7, 8 ], [ 1, 2 ], [ 2, 4, 6, 10 ], 
+  [ 3, 4, 6, 7, 8, 9, 10 ], [ 3, 5, 9, 10 ] ]
+gap> gr:=Digraph(rec(vertices:=["a", "b"], 
+> source:=["b", "b"], range:=["a", "a"]));    
+<digraph with 2 vertices, 2 edges>
+gap> DigraphDual(gr);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `DigraphDual' on 1 arguments
+gap> gr:=Digraph([]);                  
+<digraph with 0 vertices, 0 edges>
+gap> DigraphDual(gr);
+<digraph with 0 vertices, 0 edges>
+
 # AdjacencyMatrix
 gap> gr:=Digraph(rec(vertices:=[1..10], 
 > source:=[1,1,1,1,1,1,1,1], range:=[2,2,3,3,4,4,5,5]));

@@ -8,6 +8,26 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="DigraphDual">
+<ManSection>
+  <Attr Name="DigraphDual" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a simple digraph, then this method returns the
+    dual of <A>digraph</A>. <P/> 
+    
+    The <E>dual</E> of a digraph <A>digraph</A> has the same vertices as
+    <A>digraph</A> and there is an edge in the dual from <C>i</C> to <C>j</C>
+    whenever there is no edge from <C>i</C> to <C>j</C> in <A>digraph</A>.
+    <Example><![CDATA[
+gap> gr:=Digraph([[2,3], [],[4,6], [5], [], [7,8,9], [],[],[]]);
+<digraph with 9 vertices, 8 edges>
+gap> DigraphDual(gr);
+<digraph with 9 vertices, 73 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphTopologicalSort">
 <ManSection>
   <Attr Name="DigraphTopologicalSort" Arg="digraph"/>
