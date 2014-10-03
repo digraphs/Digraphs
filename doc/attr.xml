@@ -231,7 +231,7 @@ gap> gr:=DirectedGraph(rec(vertices:=["a", "b", "c"],
 > source:=["a", "b", "b"], range:=["b", "c", "a"]));
 <directed graph with 3 vertices, 3 edges>
 gap> StronglyConnectedComponents(gr);
-rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
+rec( comps := [ [ 3 ], [ 2, 1 ] ], id := [ 2, 2, 1 ] )
 ]]></Example>
   </Description>
 </ManSection>

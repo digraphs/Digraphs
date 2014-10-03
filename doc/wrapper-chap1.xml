@@ -51,11 +51,12 @@
   </Section>
 
   <Section><Heading>Operations on directed graphs</Heading>
+    <#Include Label="DirectedGraphReflexiveTransitiveClosure">
     <#Include Label="DirectedGraphRelabel">
     <#Include Label="DirectedGraphRemoveLoops">
     <#Include Label="DirectedGraphRemoveEdges">
+    <#Include Label="DirectedGraphReverse">
     <#Include Label="DirectedGraphTopologicalSort">
-    <#Include Label="DirectedGraphReflexiveTransitiveClosure">
   </Section>
 
   <Section><Heading>Visualising the structure of a directed graph</Heading>
