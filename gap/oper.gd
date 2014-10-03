@@ -11,7 +11,6 @@
 DeclareOperation("DirectedGraphRelabel", [IsDirectedGraph, IsPerm]);
 DeclareOperation("DirectedGraphRemoveLoops", [IsDirectedGraph]);
 DeclareOperation("DirectedGraphRemoveEdges", [IsDirectedGraph, IsList]);
-DeclareOperation("DirectedGraphTopologicalSort", [IsDirectedGraph]);
 DeclareOperation("DirectedGraphReflexiveTransitiveClosure", [IsDirectedGraph]);
 DeclareOperation("DirectedGraphTransitiveClosure", [IsDirectedGraph]);
 DeclareAttribute("DirectedGraphFloydWarshall", IsDirectedGraph);

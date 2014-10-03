@@ -149,69 +149,6 @@ end);
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
-if IsBound(DIGRAPH_TOPO_SORT) then
-  InstallMethod(DirectedGraphTopologicalSort, "for a digraph",
-  [IsDirectedGraph], function(graph)
-    return DIGRAPH_TOPO_SORT(Adjacencies(graph));
-  end);
-else
-  InstallMethod(DirectedGraphTopologicalSort, "for a digraph",
-  [IsDirectedGraph],
-  function(graph)
-    local adj, nr, vertex_complete, vertex_in_path, stack, out, level, j, k, i;
-
-    adj := Adjacencies(graph);
-    nr := Length(adj);
-    if nr <= 1 then
-      return Vertices(graph);
-    fi;
-    vertex_complete := BlistList([1..nr], []);
-    vertex_in_path := BlistList([1..nr], []);
-    stack := EmptyPlist(2 * nr + 2);
-    out := EmptyPlist(nr);
-
-    for i in [1..nr] do
-      if Length(adj[i]) = 0 then
-        vertex_complete[i] := true;
-      elif not vertex_complete[i] then
-        level := 1;
-        stack[1] := i;
-        stack[2] := 1;
-        while true do
-          j := stack[2 * level - 1];
-          k := stack[2 * level];
-          if vertex_in_path[j] then
-            # Note: can't enter this if level <= 1
-            SetIsAcyclicDirectedGraph(graph, false);
-            level := level - 1;
-            if stack[2 * level - 1] <> j then # Cycle is not just a loop 
-              return fail;
-            fi;
-            stack[2 * level] := stack[2 * level] + 1;
-            vertex_in_path[j] := false;
-          elif vertex_complete[j] or k > Length(adj[j]) then
-            if not vertex_complete[j] then
-              Add(out, j);
-            fi;
-            vertex_complete[j] := true;
-            level := level - 1;
-            if level = 0 then
-              break;
-            fi;
-            stack[2 * level] := stack[2 * level] + 1;
-            vertex_in_path[stack[2 * level - 1]] := false;
-          else
-            vertex_in_path[j] := true;
-            level := level + 1;
-            stack[2 * level - 1] := adj[j][k];
-            stack[2 * level] := 1;
-          fi;
-        od;
-      fi;
-    od;
-    return out;
-  end);
-fi;
 
 # JDM: requires a method for non-acyclic graphs
 

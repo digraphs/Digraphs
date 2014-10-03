@@ -109,31 +109,6 @@ gap> gr:=DirectedGraphRemoveEdges(gr, [10]);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DirectedGraphTopologicalSort">
-<ManSection>
-  <Oper Name="DirectedGraphTopologicalSort" Arg="digraph"/>
-  <Returns>A list of positive integers, or <K>fail</K>.</Returns>
-  <Description>
-    If <A>digraph</A> is a directed graph with no cycles of length greater than
-    <M>1</M>, then this operation returns the vertices of <A>digraph</A> 
-    ordered so  that every vertex adjacent to <C>i</C> occurs before <C>i</C>. 
-    If the directed graph <A>digraph</A> contains cycles of length greater than 
-    <M>1</M>, then this operation returns <K>fail</K>.
-    <P/>
-
-    The method used in this operation has complexity <M>O(m+n)</M> where
-    <M>m</M> is the number of edges (counting multiple edges as one) and
-    <M>n</M> is the number of vertices in the directed graph. 
-    <Example><![CDATA[
-gap> gr:=DirectedGraph([[2,3], [],[4,6], [5], [], [7,8,9], [],[],[]]);
-<directed graph with 9 vertices, 8 edges>
-gap> DirectedGraphTopologicalSort(gr);
-[ 2, 5, 4, 7, 8, 9, 6, 3, 1 ]
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
 <#GAPDoc Label="DirectedGraphReflexiveTransitiveClosure">
 <ManSection>
   <Oper Name="DirectedGraphReflexiveTransitiveClosure" Arg="digraph"/>
