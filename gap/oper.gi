@@ -13,7 +13,7 @@
 InstallMethod(DirectedGraphReverse, "for a digraph",
 [IsDirectedGraph],
 function(graph)
-  local source, range, old, new, nr, i, j;
+  local source, range, old, new, i, j;
 
   if HasSource(graph) then 
     source := ShallowCopy(Range(graph));
@@ -26,7 +26,6 @@ function(graph)
 
   old := Adjacencies(graph);
   new := List(Vertices(graph), x -> []);
-  nr := 0;
 
   for i in Vertices(graph) do 
     for j in old[i] do 
