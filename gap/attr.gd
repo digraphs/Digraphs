@@ -20,6 +20,7 @@ DeclareAttribute("Adjacencies", IsDirectedGraph);
 DeclareAttribute("NrVertices", IsDirectedGraph);
 DeclareAttribute("NrEdges", IsDirectedGraph);
 DeclareAttribute("DirectedGraphTopologicalSort", IsDirectedGraph);
+DeclareAttribute("DigraphDual", IsDirectedGraph);
 
 # these are really attributes but are declared elsewhere as operations and so we
 # must declare them as operations too
