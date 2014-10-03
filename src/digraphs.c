@@ -217,19 +217,19 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
 }
 
 static Obj FuncIS_STRONGLY_CONNECTED_DIGRAPH(Obj self, Obj digraph) { 
-  UInt n = LEN_PLIST(digraph);
+  UInt n, nextid, *bag, *ptr1, *ptr2, *fptr, *id, w;
+
+  n = LEN_PLIST(digraph);
   if (n == 0){
     return True;
   }
 
-  UInt nextid = 1;
-  UInt *bag = malloc(n * 4 * sizeof(UInt));
-  UInt *ptr1 = bag;
-  UInt *ptr2 = bag + n;
-  UInt *fptr = bag + n*2;
-  UInt *id = calloc(n + 1, sizeof(UInt));
-
-  UInt w;
+  nextid = 1;
+  bag = malloc(n * 4 * sizeof(UInt));
+  ptr1 = bag;
+  ptr2 = bag + n;
+  fptr = bag + n*2;
+  id = calloc(n + 1, sizeof(UInt));
 
   // first vertex v=1
   PLAIN_LIST(ELM_PLIST(digraph, 1));
