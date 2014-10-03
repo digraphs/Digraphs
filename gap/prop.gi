@@ -171,17 +171,26 @@ else
   end);
 fi;
 
-# Undirected means every (non-loop) edge has a complement edge
-# JDM: improve!
-InstallMethod(IsUndirectedGraph, "for a digraph",
-[IsDigraph],
+# Complexity O(number of edges)
+
+InstallMethod(IsSymmetricDigraph, "for a digraph",
+[IsDigraphByAdjacency],
 function(graph)
-  local adj;
-  adj := AdjacencyMatrix(graph);
-  if adj = TransposedMat(adj) then
-    return true;
-  fi;
-  return false;
+  local adj, rev, i, j;
+
+  #if not IsSimpleDigraph(graph) then 
+  #  Error("Digraphs: IsSymmetricDigraph: usage, the argument must be a simple digraph,");
+  #  return;
+  #fi;
+  adj := Adjacencies(graph);
+  rev := List(Vertices(graph), x-> []);
+  for i in Vertices(graph) do 
+    for j in adj[i] do 
+      Add(rev[j], i);
+    od;
+  od;
+
+  return rev = adj;
 end);
 
 # Functional means: for every vertex v there is exactly one edge with source v

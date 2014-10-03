@@ -9,10 +9,9 @@
 ##
 
 DeclareProperty("IsSimpleDigraph", IsDigraph);
-DeclareProperty("IsUndirectedGraph", IsDigraph);
+DeclareProperty("IsSymmetricDigraph", IsDigraph);
 DeclareProperty("IsFunctionalDigraph", IsDigraph);
 DeclareProperty("IsStronglyConnectedDigraph", IsDigraph);
 DeclareProperty("IsAcyclicDigraph", IsDigraph);
 DeclareProperty("IsTournament", IsDigraph);
 
-InstallTrueMethod(IsSimpleDigraph, IsUndirectedGraph);

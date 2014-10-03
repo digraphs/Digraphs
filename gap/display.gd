@@ -9,4 +9,4 @@
 ##
 
 DeclareAttribute("DotDigraph", IsDigraph, "mutable");
-DeclareAttribute("DotUndirectedGraph", IsDigraph, "mutable");
+DeclareAttribute("DotSymmetricDigraph", IsDigraph, "mutable");

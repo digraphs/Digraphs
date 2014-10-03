@@ -37,14 +37,14 @@ end);
 
 #
 
-InstallMethod(DotUndirectedGraph, "for an 'undirected' digraph",
+InstallMethod(DotSymmetricDigraph, "for an 'undirected' digraph",
 [IsDigraph],
 function(graph)
   local verts, source, range, n, str, i;
 
-  if not IsUndirectedGraph(graph) then
-    Error("the argument must satisfy IsUndirectedGraph, ");
-    return fail;
+  if not IsSymmetricDigraph(graph) then
+    Error("Digraphs: DotSymmetricDigraph: usage, the argument be symmetric,");
+    return;
   fi;
 
   verts := Vertices(graph);

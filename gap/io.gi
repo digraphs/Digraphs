@@ -174,7 +174,7 @@ function(s)
 
   graph := Digraph(rec(nrvertices := n, range := range,
     source := source ));
-  SetIsUndirectedGraph(graph, true);
+  SetIsSymmetricDigraph(graph, true);
   return graph;
 end);
 
@@ -648,8 +648,8 @@ InstallMethod(WriteSparse6, "for a digraph",
 function(graph)
   local list, n, lenlist, source, range, k, blist, v, nextbit, AddBinary, i,
         bitstopad, pos, block;
-  if not IsUndirectedGraph(graph) then
-    Error("<graph> must be a symmetric digraph,");
+  if not IsSymmetricDigraph(graph) then
+    Error("Digraphs: WriteSparse6: usage: the argument <graph> must be a symmetric digraph,");
     return;
   fi;
 

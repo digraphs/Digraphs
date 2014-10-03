@@ -141,7 +141,7 @@ function(graph, perm)
   return DigraphNC(adj);
 end);
 
-InstallMethod(DigraphRelabel, "for a digraph by adjacency and perm",
+InstallMethod(DigraphRelabel, "for a digraph and perm",
 [IsDigraph, IsPerm],
 function(graph, perm)
 
