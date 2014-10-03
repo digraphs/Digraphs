@@ -159,24 +159,27 @@ gap> g5 := Digraph( rec( vertices := [ 1 .. 3 ] ,
 gap> IsFunctionalDigraph(g5);
 false
 
-# IsUndirectedGraph
-gap> IsUndirectedGraph(g1);
+# IsSymmetricDigraph
+gap> IsSymmetricDigraph(g1);
 false
-gap> IsUndirectedGraph(g2);
+gap> IsSymmetricDigraph(g2);
 false
-gap> IsUndirectedGraph(g3);
+gap> IsSymmetricDigraph(g3);
 false
-gap> IsUndirectedGraph(g4);
+gap> IsSymmetricDigraph(g4);
 false
-gap> IsUndirectedGraph(g5);
+gap> IsSymmetricDigraph(g5);
 false
-gap> IsUndirectedGraph(loop);
+gap> IsSymmetricDigraph(loop);
 true
-gap> IsUndirectedGraph(multiple);
+gap> IsSymmetricDigraph(multiple);
 false
 gap> g6 := Digraph( [ [ 1, 2, 4 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3, 1 ] ] );
 <digraph with 4 vertices, 10 edges>
-gap> IsUndirectedGraph(g6);
+gap> IsSymmetricDigraph(g6);
+true
+gap> gr:=Digraph(CayleyGraph(SymmetricGroup(6)));;
+gap> IsSymmetricDigraph(gr);
 true
 
 # DigraphByEdges

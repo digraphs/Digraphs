@@ -33,17 +33,17 @@ gap> gr := Digraph(r);
 gap> DotDigraph(gr){[50..109]};
 "6\n7\n8\n1 -> 6\n1 -> 7\n2 -> 1\n2 -> 6\n3 -> 5\n4 -> 1\n4 -> 4\n4 -> "
 
-# DotDigraph & DotUndirectedGraph for a small undirected simple graph
+# DotDigraph & DotSymmetricDigraph for a small undirected simple graph
 gap> adj := [ [ 2 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3 ] ];
 [ [ 2 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3 ] ]
 gap> gr := Digraph(adj);
 <digraph with 4 vertices, 7 edges>
 gap> DotDigraph(gr){[11..75]};
 "aph hgn{\nnode [shape=circle]\n1\n2\n3\n4\n1 -> 2\n2 -> 1\n2 -> 3\n3 -> 2\n"
-gap> DotUndirectedGraph(gr){[12..70]};
+gap> DotSymmetricDigraph(gr){[12..70]};
 " hgn{\nnode [shape=circle]\n\n1\n2\n3\n4\n1 -- 2\n2 -- 3\n3 -- 3\n3 -"
 
-# DotDigraph & DotUndirectedGraph for a bigger undirected not simple graph
+# DotDigraph & DotSymmetricDigraph for a bigger undirected not simple graph
 gap> r := rec ( vertices := [ 1 .. 8 ], source := [], range := [] );;
 gap> for j in [1..2] do
 > for i in [1..7] do
@@ -59,12 +59,12 @@ gap> for j in [1..2] do
 > od;
 gap> g := Digraph(r);
 <digraph with 8 vertices, 32 edges>
-gap> IsUndirectedGraph(g);
+gap> IsSymmetricDigraph(g);
 true
 gap> dot1 := DotDigraph(g);;
 gap> dot1{[40..80]};
 "1\n2\n3\n4\n5\n6\n7\n8\n1 -> 2\n1 -> 8\n1 -> 2\n1 ->"
-gap> dot2 := DotUndirectedGraph(g);;
+gap> dot2 := DotSymmetricDigraph(g);;
 gap> dot2{[117..167]};
 "\n4 -- 5\n5 -- 6\n5 -- 6\n6 -- 7\n6 -- 7\n7 -- 8\n7 -- 8\n}"
 

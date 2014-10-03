@@ -172,25 +172,36 @@ else
 fi;
 
 # Complexity O(number of edges)
+# this could probably be improved further ! JDM
 
 InstallMethod(IsSymmetricDigraph, "for a digraph",
-[IsDigraphByAdjacency],
+[IsDigraph],
 function(graph)
-  local adj, rev, i, j;
-
-  #if not IsSimpleDigraph(graph) then 
-  #  Error("Digraphs: IsSymmetricDigraph: usage, the argument must be a simple digraph,");
-  #  return;
-  #fi;
-  adj := Adjacencies(graph);
-  rev := List(Vertices(graph), x-> []);
+  local old, rev, new, i, j;
+  
+  old := Adjacencies(graph);
+  rev := EmptyPlist(Length(old));
   for i in Vertices(graph) do 
-    for j in adj[i] do 
-      Add(rev[j], i);
-    od;
+    rev[i] := [];
   od;
-
-  return rev = adj;
+  
+  if ForAll(old, IsSSortedList) then 
+    for i in Vertices(graph) do
+      for j in old[i] do 
+        rev[j][LEN_LIST(rev[j])+1]:=i;
+      od;
+    od;
+    return rev = old;
+  else
+    new := EmptyPlist(Length(old));
+    for i in Vertices(graph) do
+      new[i]:=AsSSortedList(ShallowCopy(old[i]));
+      for j in new[i] do 
+        rev[j][LEN_LIST(rev[j])+1]:=i;
+      od;
+    od;
+    return rev = new;
+  fi;
 end);
 
 # Functional means: for every vertex v there is exactly one edge with source v

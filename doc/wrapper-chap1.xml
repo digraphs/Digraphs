@@ -48,7 +48,7 @@
     <#Include Label="IsFunctionalDigraph">
     <#Include Label="IsSimpleDigraph">
     <#Include Label="IsStronglyConnectedDigraph">
-    <#Include Label="IsUndirectedGraph">
+    <#Include Label="IsSymmetricDigraph">
   </Section>
 
   <Section><Heading>Operations on digraphs</Heading>
