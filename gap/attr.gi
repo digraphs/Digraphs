@@ -37,17 +37,53 @@ function(graph)
   return graph!.nrvertices;
 end);
 
-#
+# IsDigraphByAdjacency implies IsSimpleDigraph
 
-InstallMethod(NrEdges, "for a directed graph",
+InstallMethod(NrEdges, "for a directed graph by adjacency",
+[IsDirectedGraph and IsDigraphByAdjacency],
+function(graph)
+  return Sum(List(Adjacencies(graph), Length));
+end);
+
+InstallMethod(NrEdges, "for a digraph",
+[IsDirectedGraph], 
+function(graph)
+  return Length(Source(graph));
+end);
+
+# IsDigraphByAdjacency implies IsSimpleDigraph
+
+InstallMethod(Edges, "for a directed graph by adjacency",
+[IsDirectedGraph and IsDigraphByAdjacency],
+function(graph)
+  local adj, nr, out, i, j;
+
+  adj := Adjacencies(graph);
+  nr := 0;
+  out := [];
+
+  for i in Vertices(graph) do 
+    for j in adj[i] do 
+      nr := nr + 1;
+      out[nr] := [i, j];
+    od;
+  od;
+  return out;
+end);
+  
+InstallMethod(Edges, "for a directed graph",
 [IsDirectedGraph],
 function(graph)
-  if not HasSource(graph) 
-    and (HasAdjacencies(graph) and IsSimpleDirectedGraph(graph)) then 
-    return Sum(List(Adjacencies(graph), Length));
-  fi;
+  local out, range, source, i;
 
-  return Length(Source(graph));
+  out:=EmptyPlist(Length(Range(graph)));
+  range:=Range(graph);
+  source:=Source(graph);
+
+  for i in [1..Length(source)] do
+    out[i]:=[source[i], range[i]];
+  od;
+  return out;
 end);
 
 # attributes for directed graphs . . .
@@ -84,10 +120,8 @@ function(graph)
 
   graph!.range := range;
   graph!.source := source;
-
   return;
 end);
-
 
 #
 
@@ -97,40 +131,26 @@ function(graph)
   return [ 1 .. NrVertices(graph) ];
 end);
 
-InstallMethod(Range, "for a directed graph",
-[IsDirectedGraph],
+InstallMethod(Range, "for a directed graph by adjacency",
+[IsDirectedGraph and IsDigraphByAdjacency],
 function(graph)
   DIGRAPHS_RangeSource(graph);
   return graph!.range;
 end);
 
-InstallMethod(Source, "for a directed graph",
-[IsDirectedGraph],
+InstallMethod(Source, "for a directed graph by adjacency",
+[IsDirectedGraph and IsDigraphByAdjacency],
 function(graph)
   DIGRAPHS_RangeSource(graph);
   return graph!.source;
 end);
 
-InstallMethod(Edges, "for a directed graph",
-[IsDirectedGraph],
-function(graph)
-  local out, range, source, i;
-
-  out:=EmptyPlist(Length(Range(graph)));
-  range:=Range(graph);
-  source:=Source(graph);
-  for i in [1..Length(source)] do
-    out[i]:=[source[i], range[i]];
-  od;
-  return Set(out);
-end);
-
 if IsBound(DIGRAPH_ADJACENCY) then
   InstallMethod(Adjacencies, "for a directed graph",
-  [IsDirectedGraph], DIGRAPH_ADJACENCY);
+  [IsDirectedGraph and IsDigraphBySourceAndRange], DIGRAPH_ADJACENCY);
 else
-  InstallMethod(Adjacencies, "for a directed graph",
-  [IsDirectedGraph],
+  InstallMethod(Adjacencies, "for a directed graph by source and range",
+  [IsDirectedGraph and IsDigraphBySourceAndRange],
   function(graph)
     local range, source, out, i;
 
@@ -148,28 +168,33 @@ else
   end);
 fi;
 
-InstallMethod(AdjacencyMatrix, "for a directed graph",
-[IsDirectedGraph], 
+InstallMethod(AdjacencyMatrix, "for a directed graph by adjacency",
+[IsDirectedGraph and IsDigraphByAdjacency], 
 function(graph)
-  local n, out, verts, adj, source, range, i;
+  local verts, adj, out, i;
   
-  n := Length(Vertices(graph));
-  out := EmptyPlist(n);
-  verts := [ 1 .. n ];
+  verts := Vertices(graph);
+  adj := Adjacencies(graph);
+  
+  out := EmptyPlist(NrVertices(graph));
+  
+  for i in verts do 
+    out[i] := verts * 0;
+    out[i]{adj[i]} := ( [1 .. Length(adj[i])] * 0 ) + 1;
+  od;
+  return out;
+end);
 
-  if HasIsSimpleDirectedGraph(graph) and IsSimpleDirectedGraph(graph) and HasAdjacencies(graph) then 
-    adj := Adjacencies(graph);
-    for i in verts do 
-      out[i] := verts * 0;
-      out[i]{adj[i]} := ( [1 .. Length(adj[i])] * 0 ) + 1;
-    od;
-    return out;
-  fi;
+InstallMethod(AdjacencyMatrix, "for a directed graph by source and range",
+[IsDirectedGraph and IsDigraphBySourceAndRange], 
+function(graph)
+  local verts, source, range, out, i;
   
+  verts := Vertices(graph);
   source := Source(graph);
   range := Range(graph);
 
-  out := EmptyPlist(n);
+  out := EmptyPlist(NrVertices(graph));
   
   for i in verts do 
     out[i] := verts * 0;
