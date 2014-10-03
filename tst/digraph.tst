@@ -196,8 +196,8 @@ gap> gr := DigraphByEdges( [ [ 1, 2 ] ] );
 gap> gr := DigraphByEdges( [ [ 2, 1 ] ] );
 <directed graph with 2 vertices, 1 edges>
 gap> gr := DigraphByEdges( [ [ 1, 2 ] ], 1 ); 
-Error, DigraphByEdges: usage, the specified edges must not contain value\
-s greater than 1
+Error, DigraphByEdges: usage, the specified edges must not contain values grea\
+ter than 1
 
 # AsDigraph
 gap> f := Transformation([]);
