@@ -215,25 +215,26 @@ end);
 InstallMethod(DigraphByAdjacencyMatrix, "for a rectangular table",
 [IsRectangularTable],
 function(mat)
-  local n, record, out, i, j, k;
+  local n, record, verts, out, i, j, k;
 
   n := Length(mat);
 
   if Length(mat[1]) <> n then
-    Error("the given matrix is not square, so not an adjacency matrix, ");
+    Error("Digraphs: DigraphByAdjacencyMatrix: usage,\nthe matrix is not square,");
     return;
   fi;
 
   record := rec( nrvertices := n, source := [], range := [] );
-  for i in [ 1 .. n ] do
-    for j in [ 1 .. n ] do
+  verts := [ 1 .. n ];
+  for i in verts do
+    for j in verts do
       if IsInt(mat[i][j]) and mat[i][j] >= 0 then 
         for k in [ 1 .. mat[i][j] ] do
           Add(record.source, i);
           Add(record.range, j);
         od;
       else
-        Error("DigraphByAdjacencyMatrix: usage, the argument must", 
+        Error("Digraphs: DigraphByAdjacencyMatrix: usage,\nthe argument must", 
         " be a matrix of non-negative integers,");
         return;
       fi;
@@ -249,12 +250,13 @@ end);
 InstallMethod(DigraphByAdjacencyMatrixNC, "for a rectangular table",
 [IsRectangularTable],
 function(mat)
-  local n, record, out, i, j, k;
+  local n, record, verts, out, i, j, k;
 
   n := Length(mat);
   record := rec( nrvertices := n, source := [], range := [] );
-  for i in [ 1 .. n ] do
-    for j in [ 1 .. n ] do
+  verts := [ 1 .. n ];
+  for i in verts do
+    for j in verts do
       for k in [ 1 .. mat[i][j] ] do
         Add(record.source, i);
         Add(record.range, j);
