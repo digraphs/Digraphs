@@ -62,9 +62,9 @@ function(arg)
     if extension = "txt" then
       decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
     elif extension = "g6" then
-      decoder := ReadGraph6Line;
+      decoder := DigraphFromGraph6String;
     elif extension = "d6" then
-      decoder := ReadDigraph6Line;
+      decoder := DigraphFromDigraph6String;
     else
       Error("Digraphs: ReadDigraphs: can't determine the file format,");
       return;
@@ -90,7 +90,7 @@ end);
 
 #
 
-InstallMethod(ReadGraph6Line, "for a string",
+InstallMethod(DigraphFromGraph6String, "for a string",
 [IsString],
 function(s)
   local FindCoord, list, n, start, maxedges, range, source, pos, len, i, bpos, edge, graph, j;
@@ -109,7 +109,7 @@ function(s)
   end;
 
   if Length(s) = 0 then
-    Error("Digraphs: ReadGraph6Line: usage: the input string has to be non-empty,");
+    Error("Digraphs: DigraphFromGraph6String: usage: the input string has to be non-empty,");
     return;
   fi;
 
@@ -180,7 +180,7 @@ end);
 
 #
 
-InstallMethod(ReadDigraph6Line, "for a string",
+InstallMethod(DigraphFromDigraph6String, "for a string",
 [IsString],
 function(s)
   local list, i, n, start, range, source, pos, len, j, bpos, tabpos;
@@ -259,10 +259,11 @@ end);
 
 #
 
-InstallMethod(ReadSparse6Line, "for a string",
+InstallMethod(DigraphFromSparse6String, "for a string",
 [IsString],
 function(s)
-  local list, n, start, blist, pos, num, bpos, k, range, source, len, v, x, i, j;
+  local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i,
+  finish, x, j;
 
 
   # Check for the special ':' character
@@ -284,16 +285,16 @@ function(s)
   else
     if list[3] = 63 and Length(list) <= 8 then
       n := 0;
-      for i in [1..6] do
-        n := n + 2^(6*i)*list[10 - i];
+      for i in [ 1 .. 6 ] do
+        n := n + 2^(6 * i) * list[10 - i];
       od;
       start := 10;
     elif Length(list) <= 4 then
-      n := 0;
-      for i in [1..3] do
-        n := n + 2^(6*i)*list[6 - i];
+      n := 0; 
+      for i in [ 1 .. 3 ] do
+        n := n + 2^(6 * i) * list[6 - i];
       od;
-      start :=  6;
+      start := 6;
     else
        Error(s, " is not a valid sparse6 input");
        return;
@@ -313,12 +314,16 @@ function(s)
         num := (num - 1) / 2;
 	blist[pos + 6 - bpos] := true;
       fi;
-      bpos := bpos + 1;
+      bpos :=  bpos + 1;
     od;
     pos := pos + 6;
   od;
 
-  k := DIGRAPHS_LogCeiling(n, 2);
+  if n > 1 then
+    k := LogInt(n - 1, 2) + 1;
+  else
+    k := 1;
+  fi;
 
   range := [];
   source := [];
@@ -326,20 +331,24 @@ function(s)
   len := 1;
   v := 0;
   i := 1;
-  while i <= Length(blist) - k - 1 do # should it be - k?
+  # remove some of the padding 
+  finish := Length(blist) - (Length(blist) mod (k + 1));
+  while i <= finish - k do
     if blist[i] then
       v := v + 1;
     fi;
     x := 0;
-    for j in [1 .. k] do
+    for j in [ 1 .. k ] do
       if blist[i + j] then
         x := x + 2^(k - j);
       fi;
     od;
-    if x > v then
+    if x = n then # We have reached the end
+      break;
+    elif x > v then
       v := x;
     else
-      range[len] := x;
+      range[len] := x; 
       source[len] := v;
       range[len + 1] := v;
       source[len + 1] := x;
@@ -758,7 +767,9 @@ end);
 InstallMethod(WriteDiSparse6, "for a digraph",
 [IsDigraph],
 function(graph)
-  local list, n, lenlist, source, range, source_i, range_i, source_d, range_d, len1, len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad, pos, block, i;
+  local list, n, lenlist, source, range, source_i, range_i, source_d, range_d,
+  len1, len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad,
+  pos, block, i;
 
   list := [];
   n := Length(Vertices(graph));
@@ -777,7 +788,6 @@ function(graph)
   source := Source(graph) - 1;
   range := Range(graph) - 1;
 
-
   # Separate edges into increasing and decreasing
   source_i := [];
   range_i := [];
@@ -785,7 +795,7 @@ function(graph)
   range_d := [];
   len1 := 1;
   len2 := 1;
-  for i in [1 .. Length(source)] do
+  for i in [ 1 .. Length(source) ] do
     if source[i] <= range[i] then
       source_i[len1] := source[i];
       range_i[len1] := range[i];
@@ -807,7 +817,7 @@ function(graph)
      fi;
   end;
 
-  perm := Sortex([1 .. Length(source_d)], sort_d);
+  perm := Sortex([ 1 .. Length(source_d) ], sort_d);
   Permuted(source_d, perm);
   Permuted(range_d, perm);
 
@@ -821,16 +831,14 @@ function(graph)
      fi;
   end;
 
-  perm := Sortex([1 .. Length(source_i)], sort_i);
+  perm := Sortex([ 1 .. Length(source_i) ], sort_i);
   Permuted(source_i, perm);
   Permuted(range_i, perm);
 
-  # k is the number of bits in a vertex label
-  # we also want to be able to encode n as a
-  # separation symbol between increasing and
-  # decreasing edges
+  # k is the number of bits in a vertex label we also want to be able to encode
+  # n as a separation symbol between increasing and decreasing edges
   if n > 1 then
-    k := DIGRAPHS_LogCeiling(n, 2);
+    k := LogInt(n, 2) + 1;
   else
     k := 1;
   fi;
@@ -842,11 +850,11 @@ function(graph)
   AddBinary := function(blist, i)
     local b;
     for b in [1..k] do
-      blist[nextbit] := Int((i mod (2^(k-b+1))) / (2^(k-b))) = 1;
+      blist[nextbit] := Int((i mod (2^(k - b + 1))) / (2^(k - b))) = 1;
       nextbit := nextbit + 1;
     od;
   end;
-  for i in [1..Length(source_d)] do
+  for i in [ 1 .. Length(source_d) ] do
     if source_d[i] = v then
       blist[nextbit] := false;
       nextbit := nextbit + 1;
@@ -857,20 +865,22 @@ function(graph)
     elif source_d[i] > v + 1 then # is this check necessary
       blist[nextbit] := true;
       nextbit := nextbit + 1;
-      AddBinary(blist, source[i]);
-      v := source[i];
+      AddBinary(blist, source_d[i]);
+      v := source_d[i];
       blist[nextbit] := false;
       nextbit := nextbit + 1;
     fi;
-    AddBinary(blist, range[i]);
+    AddBinary(blist, range_d[i]);
   od;
 
   # Add a separation symbol (1 n).
   blist[nextbit] := true;
+  nextbit := nextbit + 1;
   AddBinary(blist, n);
 
   # Repeat everything for increasing edges
-  for i in [1..Length(range_i)] do
+  v := 0;
+  for i in [ 1 .. Length(range_i) ] do
     if range_i[i] = v then
       blist[nextbit] := false;
       nextbit := nextbit + 1;
@@ -881,12 +891,12 @@ function(graph)
     elif range_i[i] > v + 1 then # is this check necessary
       blist[nextbit] := true;
       nextbit := nextbit + 1;
-      AddBinary(blist, range[i]);
-      v := range[i];
+      AddBinary(blist, range_i[i]);
+      v := range_i[i];
       blist[nextbit] := false;
       nextbit := nextbit + 1;
     fi;
-    AddBinary(blist, source[i]);
+    AddBinary(blist, source_i[i]);
   od;
 
   # Add padding bits:
@@ -897,17 +907,17 @@ function(graph)
   #  2. Otherwise, pad with enough 1-bits to complete the
   #     multiple of 6.
 
-  bitstopad := 5 - ((nextbit-2) mod 6);
-  if ((n=2 and k=1) or
-      (n=4 and k=2) or
-      (n=8 and k=3) or
-      (n=16 and k=4)) and
-     (v = n-2) and
+  bitstopad := 5 - ((nextbit - 2) mod 6);
+  if ((n = 2 and k = 1) or
+     (n = 4 and k = 2) or
+     (n = 8 and k = 3) or
+     (n = 16 and k = 4)) and
+     (v = n - 2) and
      (bitstopad > k) then
     blist[nextbit] := false;
     bitstopad := bitstopad - 1;
   fi;
-  for i in [1..bitstopad] do
+  for i in [ 1 .. bitstopad ] do
     Add(blist, true);
   od;
   if Length(blist) mod 6 <> 0 then
@@ -919,9 +929,9 @@ function(graph)
   pos := 0;
   while pos < Length(blist) do
     block := 0;
-    for i in [1..6] do
-      if blist[pos+i] then
-        block := block + 2^(6-i);
+    for i in [1 .. 6] do
+      if blist[pos + i] then
+        block := block + 2^(6 - i);
       fi;
     od;
     Add(list, block);
@@ -930,6 +940,136 @@ function(graph)
 
   # Create string to return
   return List(list, i -> CharInt(i + 63));
+end);
+  
+#
+
+InstallMethod(DigraphFromDiSparse6String, "for a directed graph",
+[IsString],
+function(s)
+  local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i, x,
+  finish, j;
+
+  # Check for the special ':' character
+  if s[1] <> '.' then
+    Error("<s> must be a string in DiSparse6 format,");
+    return;
+  fi;
+
+  # Convert ASCII chars to integers
+  list := [];
+  for i in s do
+    Add(list, IntChar(i) - 63);
+  od;
+
+  # Get n the number of vertices of the graph
+  if list[2] <> 63 then
+    n := list[2];
+    start := 3;
+  else
+    if list[3] = 63 and Length(list) <= 8 then
+      n := 0;
+      for i in [1 .. 6] do
+        n := n + 2^(6 * i) * list[10 - i];
+      od;
+      start := 10;
+    elif Length(list) <= 4 then
+      n := 0;
+      for i in [1 .. 3] do
+        n := n + 2^(6 * i) * list[6 - i];
+      od;
+      start :=  6;
+    else
+       Error(s, " is not a valid sparse6 input");
+       return;
+    fi;
+  fi;
+
+  # convert list into a list of bits;
+  blist := BlistList([ 1 .. (Length(list) - start + 1) * 6 ], []);
+  pos := 1;
+  for i in [ start .. Length(list) ] do
+    num := list[i];
+    bpos := 1;
+    while num > 0 do
+      if num mod 2 = 0 then
+	num := num / 2;
+      else
+        num := (num - 1) / 2;
+	blist[pos + 6 - bpos] := true;
+      fi;
+      bpos := bpos + 1;
+    od;
+    pos := pos + 6;
+  od;
+
+  if n > 1 then
+    k := LogInt(n, 2) + 1;
+  else 
+    k := 1;
+  fi;
+
+  range := [];
+  source := [];
+
+  # Get the decreasing edges first
+  len := 1;
+  v := 0;
+  i := 1;
+  while true do
+    if blist[i] then
+      v := v + 1;
+    fi;
+    x := 0;
+    for j in [ 1 .. k ] do
+      if blist[i + j] then
+        x := x + 2^(k - j);
+      fi;
+    od;
+    if x >= n then
+      break;
+    elif x > v then
+      v := x;
+    else
+      range[len] := x;
+      source[len] := v;
+      len  := len + 1;
+    fi;
+    i := i + k + 1;
+  od;
+  
+  i := i + k + 1;
+
+  # Get the increasing edges
+  finish := Length(blist) - (Length(blist) mod (k + 1));
+  v := 0;
+  while i <= finish - k do
+    if blist[i] then
+      v := v + 1;
+    fi;
+    x := 0;
+    for j in [ 1 .. k ] do
+      if blist[i + j] then
+        x := x + 2^(k - j);
+      fi;
+    od;
+    if x >= n then
+      break;
+    elif x > v then
+      v := x;
+    else
+      range[len] := v;
+      source[len] := x;
+      len  := len + 1;
+    fi;
+    i := i + k + 1;
+  od;
+
+  range := range + 1;
+  source := source + 1;
+
+  return Digraph( rec( vertices := [ 1 .. n ], range := range,
+  source := source  ) );
 end);
 
 #EOF

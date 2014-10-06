@@ -11,15 +11,15 @@ gap> START_TEST("Digraphs package: utils.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
-gap> ReadGraph6Line("?");
+gap> DigraphFromGraph6String("?");
 <digraph with 0 vertices, 0 edges>
-gap> ReadGraph6Line("E?A?");
+gap> DigraphFromGraph6String("E?A?");
 <digraph with 6 vertices, 2 edges>
 
 #
 gap>  l :=  ["BW", "C]", "DQw", "ECO_", "FCZUo", "GCZenS", "HCQTndn", 
 > "H?qcyxf"];;
-gap> List(l, x -> ReadGraph6Line(x));
+gap> List(l, x -> DigraphFromGraph6String(x));
 [ <digraph with 3 vertices, 4 edges>, <digraph with 4 vertices, 8 edges>, 
   <digraph with 5 vertices, 10 edges>, <digraph with 6 vertices, 6 edges>, 
   <digraph with 7 vertices, 20 edges>, <digraph with 8 vertices, 30 edges>, 
@@ -32,16 +32,16 @@ gap> Size(list);
 34
 
 #
-gap> ReadSparse6Line(":[___dCfEcdFjCIideLhIfJkLgkQge`RSbPTaOTbMNaS`QY");
-<digraph with 28 vertices, 82 edges>
-gap> ReadSparse6Line(":I`ACWqHKhhccTF");
+gap> DigraphFromSparse6String(":[___dCfEcdFjCIideLhIfJkLgkQge`RSbPTaOTbMNaS`QY");
+<digraph with 28 vertices, 84 edges>
+gap> DigraphFromSparse6String(":I`ACWqHKhhccTF");
 <digraph with 10 vertices, 30 edges>
-gap> ReadSparse6Line(":U___gFecGdHcEdFcFdE`GHbILaJKbNaM`RS");
-<digraph with 22 vertices, 64 edges>
-gap> ReadSparse6Line(":U___fEcdcdIeHfGcFdE`GHbILaJKbNaM`RS");
-<digraph with 22 vertices, 64 edges>
-gap> ReadSparse6Line(":U___fEcdGcdeJfIcFdEbLNaKM`H`GbIRaJQ");
-<digraph with 22 vertices, 64 edges>
+gap> DigraphFromSparse6String(":U___gFecGdHcEdFcFdE`GHbILaJKbNaM`RS");
+<digraph with 22 vertices, 66 edges>
+gap> DigraphFromSparse6String(":U___fEcdcdIeHfGcFdE`GHbILaJKbNaM`RS");
+<digraph with 22 vertices, 66 edges>
+gap> DigraphFromSparse6String(":U___fEcdGcdeJfIcFdEbLNaKM`H`GbIRaJQ");
+<digraph with 22 vertices, 66 edges>
 
 #
 gap> STOP_TEST( "Digraphs package: utils.tst", 0);
