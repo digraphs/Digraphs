@@ -33,15 +33,15 @@ gap> Size(list);
 
 #
 gap> ReadSparse6Line(":[___dCfEcdFjCIideLhIfJkLgkQge`RSbPTaOTbMNaS`QY");
-<digraph with 28 vertices, 82 edges>
+<digraph with 28 vertices, 84 edges>
 gap> ReadSparse6Line(":I`ACWqHKhhccTF");
 <digraph with 10 vertices, 30 edges>
 gap> ReadSparse6Line(":U___gFecGdHcEdFcFdE`GHbILaJKbNaM`RS");
-<digraph with 22 vertices, 64 edges>
+<digraph with 22 vertices, 66 edges>
 gap> ReadSparse6Line(":U___fEcdcdIeHfGcFdE`GHbILaJKbNaM`RS");
-<digraph with 22 vertices, 64 edges>
+<digraph with 22 vertices, 66 edges>
 gap> ReadSparse6Line(":U___fEcdGcdeJfIcFdEbLNaKM`H`GbIRaJQ");
-<digraph with 22 vertices, 64 edges>
+<digraph with 22 vertices, 66 edges>
 
 #
 gap> STOP_TEST( "Digraphs package: utils.tst", 0);

@@ -12,6 +12,7 @@ DeclareGlobalFunction("ReadDigraphs");
 DeclareOperation("ReadGraph6Line", [IsString]);
 DeclareOperation("ReadDigraph6Line", [IsString]);
 DeclareOperation("ReadSparse6Line", [IsString]);
+DeclareOperation("ReadDiSparse6Line", [IsString]);
 DeclareGlobalFunction("ReadPlainTextDigraph");
 DeclareGlobalFunction("DigraphPlainTextLineDecoder");
 
