@@ -24,7 +24,8 @@ function(trans, int)
   local deg, ran, r, gr;
   
   if int < 0 then
-    return fail;
+    Error("usage: the second argument should be a non-negative integer,");
+    return;
   fi;
 
   ran := ListTransformation(trans, int);
@@ -83,7 +84,7 @@ end);
 
 InstallMethod(Digraph, "for a record", [IsRecord],
 function(graph)
-  local cmp, obj, i;
+  local check_source, cmp, obj, i;
 
   if IsGraph(graph) then
     return DigraphNC(List(Vertices(graph), x-> Adjacency(graph, x)));
@@ -107,6 +108,8 @@ function(graph)
     " and 'range' should be of equal length,");
     return;
   fi;
+  
+  check_source := true;
 
   if IsBound(graph.nrvertices) then 
     if not (IsInt(graph.nrvertices) and graph.nrvertices >= 0) then 
@@ -114,19 +117,30 @@ function(graph)
       "should be a non-negative integer,");
       return;
     fi;
-    cmp := function(x,y) return x <= y; end;
-    obj := graph.nrvertices;
+    cmp := LT;
+    obj := graph.nrvertices + 1;
+    
+    if IsRange(graph.source) then 
+      if not IsEmpty(graph.source) and (graph.source[1] < 1 or
+         graph.source[Length(graph.source)] > graph.nrvertices) then 
+        Error("usage: the record component 'source' is invalid,");
+        return;
+      fi;
+      check_source := false;
+    fi;
+
   elif IsBound(graph.vertices) then 
     if not IsList(graph.vertices) then
-      Error("usage: the record component 'vertices'",
+      Error("usage: the record component 'vertices' ",
       "should be a list,");
       return;
     fi;
     cmp := \in;
     obj := graph.vertices;
+    graph.nrvertices := Length(graph.vertices);
   fi;
-  
-  if not ForAll(graph.source, x-> cmp(x, obj)) then
+ 
+  if check_source and not ForAll(graph.source, x-> cmp(x, obj)) then
     Error("usage: the record component 'source' is invalid,");
     return;
   fi;
@@ -140,7 +154,6 @@ function(graph)
 
   # rewrite the vertices to numbers
   if IsBound(graph.vertices) then
-    graph.nrvertices := Length(graph.vertices);
     if graph.vertices <> [ 1 .. graph.nrvertices ] then  
       for i in [1..Length(graph.range)] do
         graph.range[i]:=Position(graph.vertices, graph.range[i]);
@@ -202,28 +215,52 @@ end);
 InstallMethod(DigraphByAdjacencyMatrix, "for a rectangular table",
 [IsRectangularTable],
 function(mat)
-  local n, record, out, i, j, k;
+  local n, record, verts, out, i, j, k;
 
   n := Length(mat);
 
   if Length(mat[1]) <> n then
-    Error("the given matrix is not square, so not an adjacency matrix, ");
+    Error("Digraphs: DigraphByAdjacencyMatrix: usage,\nthe matrix is not square,");
     return;
   fi;
 
   record := rec( nrvertices := n, source := [], range := [] );
-  for i in [ 1 .. n ] do
-    for j in [ 1 .. n ] do
+  verts := [ 1 .. n ];
+  for i in verts do
+    for j in verts do
       if IsInt(mat[i][j]) and mat[i][j] >= 0 then 
         for k in [ 1 .. mat[i][j] ] do
           Add(record.source, i);
           Add(record.range, j);
         od;
       else
-        Error("DigraphByAdjacencyMatrix: usage, the argument must", 
+        Error("Digraphs: DigraphByAdjacencyMatrix: usage,\nthe argument must", 
         " be a matrix of non-negative integers,");
         return;
       fi;
+    od;
+  od;
+  out := DigraphNC(record);
+  SetAdjacencyMatrix(out, mat);
+  return out;
+end);
+
+#
+
+InstallMethod(DigraphByAdjacencyMatrixNC, "for a rectangular table",
+[IsRectangularTable],
+function(mat)
+  local n, record, verts, out, i, j, k;
+
+  n := Length(mat);
+  record := rec( nrvertices := n, source := [], range := [] );
+  verts := [ 1 .. n ];
+  for i in verts do
+    for j in verts do
+      for k in [ 1 .. mat[i][j] ] do
+        Add(record.source, i);
+        Add(record.range, j);
+      od;
     od;
   od;
   out := DigraphNC(record);
