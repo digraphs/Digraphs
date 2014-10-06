@@ -119,20 +119,20 @@ gap> FileString("dot/k4.dot", DotDigraph(gr));
   </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DotUndirectedGraph">
+<#GAPDoc Label="DotSymmetricDigraph">
   <ManSection>
-    <Attr Name="DotUndirectedGraph" Arg="digraph"/>
+    <Attr Name="DotSymmetricDigraph" Arg="digraph"/>
     <Returns>A string.</Returns>
     <Description>
       This function produces a graphical representation of the symmetric 
-      digraph <A>digraph</A>. <C>DotUndirectedGraph</C> will return an 
+      digraph <A>digraph</A>. <C>DotSymmetricDigraph</C> will return an 
       error if <A>digraph</A> is not a symmetric digraph. See 
       <Ref Prop="IsSymmetricDigraph"/>.<P/>
       
       Vertices are displayed as circles, numbered consistently with
-      <A>digraph</A>. Since <A>digraph</A> is symmetric, for every non-loop
+      <A>digraph</A>. Since <A>digraph</A> is symmetrie, for every non-loop
       edge there is a complementary edge with opposite source and range.
-      <C>DotUndirectedGraph</C> displays each pair of complementary edges 
+      <C>DotSymmetricDigraph</C> displays each pair of complementary edges 
       as a single line between the relevant vertices, with no arrowhead.<P/>
 
       The output is in <C>dot</C> format (also known as <C>GraphViz</C>) 
@@ -140,7 +140,7 @@ gap> FileString("dot/k4.dot", DotDigraph(gr));
       to display or edit this format see 
       <URL>http://www.graphviz.org</URL>. <P/>
 
-      The string returned by <C>DotUndirectedGraph</C> can be written to a 
+      The string returned by <C>DotSymmetricDiraph</C> can be written to a 
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
       <Log><![CDATA[
@@ -151,6 +151,7 @@ gap> star := Digraph(r);
 <digraph with 4 vertices, 9 edges>
 gap> IsSymmetricDigraph(star);
 true
+gap> FileString("dot/star.dot", DotSymmetricDigraph(gr));;
 ]]></Log>
     </Description>
   </ManSection>

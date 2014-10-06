@@ -65,7 +65,7 @@
   <Section><Heading>Visualising the structure of a digraph</Heading>
     <#Include Label="Splash">
     <#Include Label="DotDigraph">
-    <#Include Label="DotUndirectedGraph">
+    <#Include Label="DotSymmetricDigraph">
   </Section>
 
   <Section><Heading>Reading and writing graphs to a file</Heading>
