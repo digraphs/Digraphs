@@ -115,8 +115,8 @@ function(graph)
       "should be a non-negative integer,");
       return;
     fi;
-    cmp := function(x,y) return x <= y; end;
-    obj := graph.nrvertices;
+    cmp := LT;
+    obj := graph.nrvertices + 1;
   elif IsBound(graph.vertices) then 
     if not IsList(graph.vertices) then
       Error("usage: the record component 'vertices' ",
@@ -125,9 +125,15 @@ function(graph)
     fi;
     cmp := \in;
     obj := graph.vertices;
+    graph.nrvertices := Length(graph.vertices);
   fi;
-  
-  if not ForAll(graph.source, x-> cmp(x, obj)) then
+ 
+  if IsRange(graph.source) then 
+    if graph.source[1] < 1 or graph.source[Length(graph.source)] > graph.nrvertices then 
+      Error("usage: the record component 'source' is invalid,");
+      return;
+    fi;
+  elif not ForAll(graph.source, x-> cmp(x, obj)) then
     Error("usage: the record component 'source' is invalid,");
     return;
   fi;
@@ -141,7 +147,6 @@ function(graph)
 
   # rewrite the vertices to numbers
   if IsBound(graph.vertices) then
-    graph.nrvertices := Length(graph.vertices);
     if graph.vertices <> [ 1 .. graph.nrvertices ] then  
       for i in [1..Length(graph.range)] do
         graph.range[i]:=Position(graph.vertices, graph.range[i]);
