@@ -32,6 +32,7 @@ DeclareOperation("Digraph", [IsList]);
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsList]);
 DeclareOperation("DigraphByAdjacencyMatrix", [IsRectangularTable]);
+DeclareOperation("DigraphByAdjacencyMatrixNC", [IsRectangularTable]);
 DeclareOperation("DigraphByEdges", [IsRectangularTable]);
 DeclareOperation("DigraphByEdges", [IsRectangularTable, IsPosInt]);
 DeclareOperation("Graph", [IsDigraph]);

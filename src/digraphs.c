@@ -228,7 +228,7 @@ static Obj FuncIS_STRONGLY_CONNECTED_DIGRAPH(Obj self, Obj digraph) {
   bag = malloc(n * 4 * sizeof(UInt));
   ptr1 = bag;
   ptr2 = bag + n;
-  fptr = bag + n*2;
+  fptr = bag + n * 2;
   id = calloc(n + 1, sizeof(UInt));
 
   // first vertex v=1

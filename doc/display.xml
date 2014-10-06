@@ -124,23 +124,24 @@ gap> FileString("dot/k4.dot", DotDigraph(gr));
     <Attr Name="DotUndirectedGraph" Arg="digraph"/>
     <Returns>A string.</Returns>
     <Description>
-      This function produces a graphical representation of the undirected 
-      digraph <A>digraph</A>. <C>DotUndirectedGraph</C> will return an error if
-      <A>digraph</A> is not an undigraph. See 
-      <Ref Prop="IsUndirectedGraph"/>.<P/>
+      This function produces a graphical representation of the symmetric 
+      digraph <A>digraph</A>. <C>DotUndirectedGraph</C> will return an 
+      error if <A>digraph</A> is not a symmetric digraph. See 
+      <Ref Prop="IsSymmetricDigraph"/>.<P/>
       
       Vertices are displayed as circles, numbered consistently with
-      <A>digraph</A>. Since <A>digraph</A> is undirected, for every non-loop
+      <A>digraph</A>. Since <A>digraph</A> is symmetric, for every non-loop
       edge there is a complementary edge with opposite source and range.
-      <C>DotUndirectedGraph</C> displays each pair of complementary edges as a single
-      line between the relevant vertices, with no arrowhead.<P/>
+      <C>DotUndirectedGraph</C> displays each pair of complementary edges 
+      as a single line between the relevant vertices, with no arrowhead.<P/>
 
       The output is in <C>dot</C> format (also known as <C>GraphViz</C>) 
-      format. For details about this file format, and information about how to 
-      display or edit this format see <URL>http://www.graphviz.org</URL>. <P/>
+      format. For details about this file format, and information about how 
+      to display or edit this format see 
+      <URL>http://www.graphviz.org</URL>. <P/>
 
-      The string returned by <C>DotUndirectedGraph</C> can be written to a file using
-      the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
+      The string returned by <C>DotUndirectedGraph</C> can be written to a 
+      file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
       <Log><![CDATA[
 gap> r := rec ( vertices := [ 1 .. 4 ],
@@ -148,9 +149,8 @@ gap> r := rec ( vertices := [ 1 .. 4 ],
 > range := [ 2, 2, 3, 4, 1, 1, 1, 1, 4 ] );;
 gap> star := Digraph(r);
 <digraph with 4 vertices, 9 edges>
-gap> IsUndirectedGraph(star);
+gap> IsSymmetricDigraph(star);
 true
-gap> FileString("dot/star.dot", DotUndirectedGraph(star));;
 ]]></Log>
     </Description>
   </ManSection>

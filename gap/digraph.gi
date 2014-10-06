@@ -24,7 +24,8 @@ function(trans, int)
   local deg, ran, r, gr;
   
   if int < 0 then
-    return fail;
+    Error("usage: the second argument should be a non-negative integer,");
+    return;
   fi;
 
   ran := ListTransformation(trans, int);
@@ -118,7 +119,7 @@ function(graph)
     obj := graph.nrvertices;
   elif IsBound(graph.vertices) then 
     if not IsList(graph.vertices) then
-      Error("usage: the record component 'vertices'",
+      Error("usage: the record component 'vertices' ",
       "should be a list,");
       return;
     fi;
@@ -224,6 +225,28 @@ function(mat)
         " be a matrix of non-negative integers,");
         return;
       fi;
+    od;
+  od;
+  out := DigraphNC(record);
+  SetAdjacencyMatrix(out, mat);
+  return out;
+end);
+
+#
+
+InstallMethod(DigraphByAdjacencyMatrixNC, "for a rectangular table",
+[IsRectangularTable],
+function(mat)
+  local n, record, out, i, j, k;
+
+  n := Length(mat);
+  record := rec( nrvertices := n, source := [], range := [] );
+  for i in [ 1 .. n ] do
+    for j in [ 1 .. n ] do
+      for k in [ 1 .. mat[i][j] ] do
+        Add(record.source, i);
+        Add(record.range, j);
+      od;
     od;
   od;
   out := DigraphNC(record);
