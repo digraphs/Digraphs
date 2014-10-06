@@ -8,11 +8,11 @@
 #############################################################################
 ##
 
-<#GAPDoc Label="ReadGraph6Line">
+<#GAPDoc Label="DigraphFromGraph6String">
 <ManSection>
-  <Oper Name="ReadGraph6Line" Arg="str"/>
-  <Oper Name="ReadDigraph6Line" Arg="str"/>
-  <Oper Name="ReadSparse6Line" Arg="str"/>
+  <Oper Name="DigraphFromGraph6String" Arg="str"/>
+  <Oper Name="DigraphFromDigraph6String" Arg="str"/>
+  <Oper Name="DigraphFromSparse6String" Arg="str"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>str</A> is a string encoding a graph in Graph6, Digraph6 or
@@ -21,17 +21,17 @@
     this will be a digraph such that for every edge, the edge going
     in the opposite direction is also present.
     <Example><![CDATA[
-gap> ReadGraph6Line("?");
+gap> DigraphFromGraph6String("?");
 <digraph with 0 vertices, 0 edges>
-gap> ReadGraph6Line("C]");
+gap> DigraphFromGraph6String("C]");
 <digraph with 4 vertices, 8 edges>
-gap> ReadGraph6Line("H?AAEM{");
+gap> DigraphFromGraph6String("H?AAEM{");
 <digraph with 9 vertices, 22 edges>
-gap> ReadDigraph6Line("+?");
+gap> DigraphFromDigraph6String("+?");
 <digraph with 0 vertices, 0 edges>
-gap> ReadDigraph6Line("+CQFG");
+gap> DigraphFromDigraph6String("+CQFG");
 <digraph with 4 vertices, 6 edges>
-gap> ReadDigraph6Line("+IM[SrKLc~lhesbU[F_");
+gap> DigraphFromDigraph6String("+IM[SrKLc~lhesbU[F_");
 <digraph with 10 vertices, 51 edges>
 ]]></Example>
     </Description>
