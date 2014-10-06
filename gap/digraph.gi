@@ -84,7 +84,7 @@ end);
 
 InstallMethod(Digraph, "for a record", [IsRecord],
 function(graph)
-  local cmp, obj, i;
+  local check_source, cmp, obj, i;
 
   if IsGraph(graph) then
     return DigraphNC(List(Vertices(graph), x-> Adjacency(graph, x)));
@@ -108,6 +108,8 @@ function(graph)
     " and 'range' should be of equal length,");
     return;
   fi;
+  
+  check_source := true;
 
   if IsBound(graph.nrvertices) then 
     if not (IsInt(graph.nrvertices) and graph.nrvertices >= 0) then 
@@ -117,6 +119,16 @@ function(graph)
     fi;
     cmp := LT;
     obj := graph.nrvertices + 1;
+    
+    if IsRange(graph.source) then 
+      if not IsEmpty(graph.source) and (graph.source[1] < 1 or
+         graph.source[Length(graph.source)] > graph.nrvertices) then 
+        Error("usage: the record component 'source' is invalid,");
+        return;
+      fi;
+      check_source := false;
+    fi;
+
   elif IsBound(graph.vertices) then 
     if not IsList(graph.vertices) then
       Error("usage: the record component 'vertices' ",
@@ -128,12 +140,7 @@ function(graph)
     graph.nrvertices := Length(graph.vertices);
   fi;
  
-  if IsRange(graph.source) then 
-    if graph.source[1] < 1 or graph.source[Length(graph.source)] > graph.nrvertices then 
-      Error("usage: the record component 'source' is invalid,");
-      return;
-    fi;
-  elif not ForAll(graph.source, x-> cmp(x, obj)) then
+  if check_source and not ForAll(graph.source, x-> cmp(x, obj)) then
     Error("usage: the record component 'source' is invalid,");
     return;
   fi;
