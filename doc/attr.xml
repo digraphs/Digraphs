@@ -229,9 +229,9 @@ gap> NrVertices(RandomSimpleDigraph(100));
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="StronglyConnectedComponents">
+<#GAPDoc Label="DigraphStronglyConnectedComponents">
 <ManSection>
-  <Oper Name="StronglyConnectedComponents" Arg="digraph"/>
+  <Oper Name="DigraphStronglyConnectedComponents" Arg="digraph"/>
   <Returns>A record.</Returns>
   <Description>
     Returns the record <C>scc</C> corresponding to the strongly connected
@@ -250,8 +250,8 @@ gap> NrVertices(RandomSimpleDigraph(100));
 gap> gr:=Digraph(rec(vertices:=["a", "b", "c"],
 > source:=["a", "b", "b"], range:=["b", "c", "a"]));
 <digraph with 3 vertices, 3 edges>
-gap> StronglyConnectedComponents(gr);
-rec( comps := [ [ 3 ], [ 2, 1 ] ], id := [ 2, 2, 1 ] )
+gap> DigraphStronglyConnectedComponents(gr);
+rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
 ]]></Example>
   </Description>
 </ManSection>

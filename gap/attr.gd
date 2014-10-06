@@ -21,10 +21,10 @@ DeclareAttribute("NrVertices", IsDigraph);
 DeclareAttribute("NrEdges", IsDigraph);
 DeclareAttribute("DigraphTopologicalSort", IsDigraph);
 DeclareAttribute("DigraphDual", IsDigraph);
+DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
 
 # these are really attributes but are declared elsewhere as operations and so we
 # must declare them as operations too
 DeclareOperation("Vertices", [IsDigraph]);
-DeclareOperation("StronglyConnectedComponents", [IsDigraph]);
 
 
