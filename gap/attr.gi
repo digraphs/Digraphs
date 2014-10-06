@@ -40,7 +40,7 @@ function(graph)
 end);
 
 InstallMethod(NrEdges, "for a digraph",
-[IsDigraph], 
+[IsDigraph and HasSource], 
 function(graph)
   return Length(Source(graph));
 end);
