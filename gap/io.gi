@@ -62,9 +62,9 @@ function(arg)
     if extension = "txt" then
       decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
     elif extension = "g6" then
-      decoder := ReadGraph6Line;
+      decoder := DigraphFromGraph6String;
     elif extension = "d6" then
-      decoder := ReadDigraph6Line;
+      decoder := DigraphFromDigraph6String;
     else
       Error("Digraphs: ReadDigraphs: can't determine the file format,");
       return;
@@ -90,7 +90,7 @@ end);
 
 #
 
-InstallMethod(ReadGraph6Line, "for a string",
+InstallMethod(DigraphFromGraph6String, "for a string",
 [IsString],
 function(s)
   local FindCoord, list, n, start, maxedges, range, source, pos, len, i, bpos, edge, graph, j;
@@ -109,7 +109,7 @@ function(s)
   end;
 
   if Length(s) = 0 then
-    Error("Digraphs: ReadGraph6Line: usage: the input string has to be non-empty,");
+    Error("Digraphs: DigraphFromGraph6String: usage: the input string has to be non-empty,");
     return;
   fi;
 
@@ -180,7 +180,7 @@ end);
 
 #
 
-InstallMethod(ReadDigraph6Line, "for a string",
+InstallMethod(DigraphFromDigraph6String, "for a string",
 [IsString],
 function(s)
   local list, i, n, start, range, source, pos, len, j, bpos, tabpos;
@@ -259,7 +259,7 @@ end);
 
 #
 
-InstallMethod(ReadSparse6Line, "for a string",
+InstallMethod(DigraphFromSparse6String, "for a string",
 [IsString],
 function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i,
@@ -944,7 +944,7 @@ end);
   
 #
 
-InstallMethod(ReadDiSparse6Line, "for a directed graph",
+InstallMethod(DigraphFromDiSparse6String, "for a directed graph",
 [IsString],
 function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i, x,

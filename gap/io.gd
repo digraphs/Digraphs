@@ -9,10 +9,10 @@
 ##
 
 DeclareGlobalFunction("ReadDigraphs");
-DeclareOperation("ReadGraph6Line", [IsString]);
-DeclareOperation("ReadDigraph6Line", [IsString]);
-DeclareOperation("ReadSparse6Line", [IsString]);
-DeclareOperation("ReadDiSparse6Line", [IsString]);
+DeclareOperation("DigraphFromGraph6String", [IsString]);
+DeclareOperation("DigraphFromDigraph6String", [IsString]);
+DeclareOperation("DigraphFromSparse6String", [IsString]);
+DeclareOperation("DigraphFromDiSparse6String", [IsString]);
 DeclareGlobalFunction("ReadPlainTextDigraph");
 DeclareGlobalFunction("DigraphPlainTextLineDecoder");
 
