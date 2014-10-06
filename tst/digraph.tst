@@ -271,6 +271,51 @@ gap> gr1 := DigraphTransitiveClosure(gr);
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
 <digraph with 7 vertices, 25 edges>
 
+# DigraphByAdjacencyMatrix
+gap> mat := [
+> [ 0, 2, 0, 0, 1 ],
+> [ 0, 2, 1, 0, 1 ],
+> [ 0, 0, 0, 0, 1 ],
+> [ 1, 0, 1, 1, 0 ],
+> [ 0, 0, 3, 0, 0 ] ];;
+gap> gr := DigraphByAdjacencyMatrix(mat);
+<digraph with 5 vertices, 14 edges>
+gap> IsStronglyConnectedDigraph(gr);
+false
+gap> IsSimpleDigraph(gr);
+false
+gap> Adjacencies(gr);
+[ [ 2, 5 ], [ 2, 3, 5 ], [ 5 ], [ 1, 3, 4 ], [ 3 ] ]
+gap> mat := [
+> [ 0, 0, 0, 10, 1, 0, 0, 1, 0, 0 ],
+> [ 0, 1, 0, 1, 1, 1, 0, 1, 1, 0 ],
+> [ 0, 1, 0, 1, 2, 0, 1, 0, 0, 3 ],
+> [ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 ],
+> [ 1, 0, 0, 1, 0, 1, 1, 0, 1, 0 ],
+> [ 0, 1, 1, 0, 0, 5, 1, 0, 0, 1 ],
+> [ 0, 0, 1, 2, 1, 0, 0, 1, 1, 0 ],
+> [ 0, 0, 1, 1, 0, 0, 0, 2, 1, 1 ],
+> [ 1, 2, 3, 0, 1, 1, 0, 0, 1, 1 ],
+> [ 0, 1, 3, 4, 1, 1, 0, 0, 1, 0 ] ];;
+gap> gr := DigraphByAdjacencyMatrix(mat);
+<digraph with 10 vertices, 74 edges>
+gap> IsStronglyConnectedDigraph(gr);
+true
+gap> IsSimpleDigraph(gr);
+false
+gap> Adjacencies(gr);
+[ [ 4, 5, 8 ], [ 2, 4, 5, 6, 8, 9 ], [ 2, 4, 5, 7, 10 ], [ 9 ], 
+  [ 1, 4, 6, 7, 9 ], [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], 
+  [ 3, 4, 8, 9, 10 ], [ 1, 2, 3, 5, 6, 9, 10 ], [ 2, 3, 4, 5, 6, 9 ] ]
+gap> r := rec( nrvertices:= 10, source := ShallowCopy(Source(gr)),
+> range := ShallowCopy(Range(gr)) );;
+gap> gr2 := Digraph(r);
+<digraph with 10 vertices, 74 edges>
+gap> HasAdjacencyMatrix(gr2);
+false
+gap> AdjacencyMatrix(gr2) = mat;
+true
+
 #
 gap> DigraphsStopTest();
 
