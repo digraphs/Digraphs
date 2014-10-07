@@ -243,4 +243,28 @@ function(graph)
 
 end);
 
+#
+
+InstallMethod(IsEmptyDigraph, "for a digraph",
+[IsDigraphBySourceAndRange],
+function(digraph)
+  return Source(digraph) = [];
+end);
+
+#
+
+InstallMethod(IsEmptyDigraph, "for a digraph",
+[IsDigraphByAdjacency],
+function(digraph)
+  local adj, i;
+
+  adj := Adjacencies(digraph);
+  for i in adj do
+    if adj <> [] then
+      return false;
+    fi;
+  od;
+  return true;
+end);
+
 #EOF
