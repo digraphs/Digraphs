@@ -16,5 +16,5 @@ DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
 DeclareAttribute("DigraphFloydWarshall", IsDigraph);
 
 DeclareOperation("DigraphReverse", [IsDigraph]);
-
+DeclareOperation("QuotientDigraph", [IsDigraph, IsList]);
 
