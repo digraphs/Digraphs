@@ -14,15 +14,33 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
-# DigraphReverse
-gap> gr:=Digraph(
+# DigraphReverse (for a digraph by adjacency)
+gap> gr := Digraph(
 > [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], [ 2, 3, 5 ] ]);
 <digraph with 5 vertices, 11 edges>
-gap> rgr:=DigraphReverse(gr);
+gap> rgr := DigraphReverse(gr);
 <digraph with 5 vertices, 11 edges>
 gap> Adjacencies(rgr);
 [ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ]
-gap> gr=DigraphReverse(rgr);
+gap> gr = DigraphReverse(rgr);
+true
+
+# DigraphReverse (for a digraph with source)
+gap> gr := Digraph( rec ( nrvertices := 5,
+> source := [ 1, 1, 2, 2, 2, 2, 2, 3, 4, 4, 4, 5, 5, 5 ],
+> range  := [ 1, 3, 1, 2, 2, 4, 5, 4, 1, 3, 5, 1, 1, 3 ] ) );
+<digraph with 5 vertices, 14 edges>
+gap> e := Edges(gr);
+[ [ 1, 1 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 2 ], [ 2, 4 ], [ 2, 5 ], 
+  [ 3, 4 ], [ 4, 1 ], [ 4, 3 ], [ 4, 5 ], [ 5, 1 ], [ 5, 1 ], [ 5, 3 ] ]
+gap> rev := DigraphReverse(gr);
+<digraph with 5 vertices, 14 edges>
+gap> erev := Edges(rev);
+[ [ 1, 1 ], [ 1, 2 ], [ 1, 5 ], [ 1, 4 ], [ 1, 5 ], [ 2, 2 ], [ 2, 2 ], 
+  [ 3, 1 ], [ 3, 4 ], [ 3, 5 ], [ 4, 3 ], [ 4, 2 ], [ 5, 2 ], [ 5, 4 ] ]
+gap> temp := List( erev, x -> [ x[2], x[1] ] );;
+gap> Sort(temp);
+gap> e = temp;
 true
 
 # DigraphTransitiveClosure & DigraphReflexiveTransitiveClosure
@@ -49,6 +67,24 @@ gap> gr1 := DigraphTransitiveClosure(gr);
 <digraph with 7 vertices, 18 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
 <digraph with 7 vertices, 25 edges>
+
+# DigraphRemoveLoops (for a digraph by adjacency)
+gap> adj := [ [ 1, 2 ], [ 3, 2 ], [ 1, 2 ], [ 4 ], [ ], [ 1, 2, 3, 6 ] ];
+[ [ 1, 2 ], [ 3, 2 ], [ 1, 2 ], [ 4 ], [  ], [ 1, 2, 3, 6 ] ]
+gap> gr := Digraph(adj);
+<digraph with 6 vertices, 11 edges>
+gap> DigraphRemoveLoops(gr);
+<digraph with 6 vertices, 7 edges>
+
+# DigraphRemoveLoops (for a digraph by source and range)
+gap> source := [ 1, 1, 2, 2, 3, 3, 4, 6, 6, 6, 6 ];;
+gap> range  := [ 1, 2, 3, 2, 1, 2, 4, 1, 2, 3, 6 ];;
+gap> gr := Digraph( 
+> rec ( nrvertices := 6, source := source, range := range ) );
+<digraph with 6 vertices, 11 edges>
+gap> DigraphRemoveLoops(gr);
+<digraph with 6 vertices, 7 edges>
+gap> 
 
 #
 gap> DigraphsStopTest();

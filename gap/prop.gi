@@ -82,15 +82,17 @@ else
   InstallMethod(IsAcyclicDigraph, "for a digraph",
   [IsDigraph],
   function(graph)
-    local adj, nr, vertex_complete, vertex_in_path, stack, level, j, k, i;
+    local adj, nr, verts, vertex_complete, vertex_in_path, stack, level, j, 
+    k, i;
 
     adj := Adjacencies(graph);
-    nr:=Length(adj);
-    vertex_complete := BlistList([1..nr], []);
-    vertex_in_path := BlistList([1..nr], []);
+    nr := NrVertices(graph);
+    verts := Vertices(graph);
+    vertex_complete := BlistList( verts, [ ] );
+    vertex_in_path := BlistList( verts, [ ] );
     stack:=EmptyPlist(2 * nr + 2);
 
-    for i in [1..nr] do
+    for i in verts do
       if Length(adj[i]) = 0 then
         vertex_complete[i] := true;
       elif not vertex_complete[i] then
@@ -105,7 +107,7 @@ else
           fi;
           # Check whether:
           # 1. We've previously finished with this vertex, OR
-          # 2. Whether we've now investigated all branches descending from it
+          # 2. Whether we've investigated all branches descending from it
           if vertex_complete[j] or k > Length(adj[j]) then
             vertex_complete[j] := true;
             level := level - 1 ;
@@ -139,6 +141,8 @@ else
     local adj, nr, range, source, len, n, current, marked, x, i;
 
     if not HasRange(graph) then
+      # Currently this is never entered: if we don't have range, graph was
+      # created by adjacencies, so IsSimpleDigraph was set true at creation
       return true;
     elif HasAdjacencies(graph) then
       adj := Adjacencies(graph);

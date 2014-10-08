@@ -208,6 +208,29 @@ gap> gr6 := DigraphByEdges( [ [ 3, 5 ], [ 1, 1 ], [ 2, 3 ], [ 5, 4 ] ] );
 gap> IsEmptyDigraph(gr6);
 false
 
+# IsTournament
+gap> gr := Digraph( rec ( 
+> nrvertices := 2, source := [ 1, 1 ], range := [ 2, 2 ] ) );
+<digraph with 2 vertices, 2 edges>
+gap> IsTournament(gr);
+false
+gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 1, 2 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> IsTournament(gr);
+false
+gap> gr := Digraph( [ [ 2, 3 ], [ 3 ], [ ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> IsAcyclicDigraph(gr);
+true
+gap> IsTournament(gr);
+true
+
+# IsStronglyConnectedDigraph
+gap> gr := Digraph( [ ] );
+<digraph with 0 vertices, 0 edges>
+gap> IsStronglyConnectedDigraph(gr);
+true
+
 #
 gap> DigraphsStopTest();
 
