@@ -47,6 +47,7 @@
     <#Include Label="IsAcyclicDigraph">
     <#Include Label="IsEmptyDigraph">
     <#Include Label="IsFunctionalDigraph">
+    <#Include Label="IsReflexiveDigraph">
     <#Include Label="IsSimpleDigraph">
     <#Include Label="IsStronglyConnectedDigraph">
     <#Include Label="IsSymmetricDigraph">

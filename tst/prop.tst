@@ -257,6 +257,53 @@ gap> gr := Digraph(r);
 gap> IsStronglyConnectedDigraph(gr);
 false
 
+# IsReflexiveDigraph: using source and range
+gap> r := rec( vertices := [ 1 .. 5 ],
+> source := [ 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
+> range  := [ 1, 2, 3, 1, 2, 5, 1, 3, 5, 2, 3, 4, 1, 2, 2 ]);;
+gap> gr := Digraph(r);
+<digraph with 5 vertices, 15 edges>
+gap> IsReflexiveDigraph(gr);
+false
+gap> r := rec( nrvertices := 4,
+> source := [ 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4 ],
+> range  := [ 1, 2, 3, 1, 2, 2, 1, 2, 4, 1, 1, 4 ]);;
+gap> gr := Digraph(r);
+<digraph with 4 vertices, 12 edges>
+gap> IsReflexiveDigraph(gr);
+false
+gap> r := rec( nrvertices := 5,
+> source := [ 1, 1, 1, 2, 2, 3, 3, 3, 4, 5, 5, 5 ],
+> range  := [ 1, 1, 3, 2, 5, 1, 3, 5, 4, 1, 5, 2 ]);;
+gap> gr := Digraph(r);
+<digraph with 5 vertices, 12 edges>
+gap> IsReflexiveDigraph(gr);
+true
+
+# IsReflexiveDigraph: using adjacencies
+gap> adj := [ [ 2, 1 ], [ 1, 3 ], [ ] ];;
+gap> gr := Digraph(adj);
+<digraph with 3 vertices, 4 edges>
+gap> IsReflexiveDigraph(gr);
+false
+gap> adj := [ [ 4, 2, 3, 1 ], [ 2, 3 ], [ 1, 3 ], [ 4 ] ];;
+gap> gr := Digraph(adj);
+<digraph with 4 vertices, 9 edges>
+gap> IsReflexiveDigraph(gr);
+true
+
+# IsReflexiveDigraph: using adjacency matrix
+gap> mat := [ [ 2, 1, 0 ], [ 0, 1, 0 ], [ 0, 0, 0 ] ];;
+gap> gr := DigraphByAdjacencyMatrix(mat);
+<digraph with 3 vertices, 4 edges>
+gap> IsReflexiveDigraph(gr);
+false
+gap> mat := [ [ 2, 0, 3, 1 ], [ 1, 1, 0, 2 ], [ 3, 0, 4, 0 ], [ 9, 1, 2, 1 ] ];;
+gap> gr := DigraphByAdjacencyMatrix(mat);
+<digraph with 4 vertices, 30 edges>
+gap> IsReflexiveDigraph(gr);
+true
+
 #
 gap> DigraphsStopTest();
 

@@ -279,4 +279,55 @@ function(digraph)
   return NrEdges(digraph) = 0;
 end);
 
+#
+
+InstallMethod(IsReflexiveDigraph, "for a digraph with adjacency matrix",
+[IsDigraph and HasAdjacencyMatrix], 3,
+function(digraph)
+  local verts, mat, i;
+  
+  verts := Vertices(digraph);
+  mat := AdjacencyMatrix(digraph);
+
+  for i in verts do
+    if mat[i][i] = 0 then
+      return false;
+    fi;
+  od;
+  return true;
+end);
+
+#
+
+InstallMethod(IsReflexiveDigraph, "for a digraph with adjacencies",
+[IsDigraph and HasAdjacencies],
+function(digraph)
+  local adj;
+  
+  adj := Adjacencies(digraph);
+  return ForAll( Vertices(digraph), x -> x in adj[x] );
+end);
+
+InstallMethod(IsReflexiveDigraph, "for a digraph (with only source and range)",
+[IsDigraph],
+function(digraph)
+  local source, range, id, lastloop, i;
+  
+  source := Source(digraph);
+  range := Range(digraph);
+  id := BlistList(Vertices(digraph), []);
+  lastloop := 0;
+
+  for i in [ 1 .. Length(source) ] do
+    if source[i] = range[i] then
+      if source[i] > lastloop + 1 then
+        return false;
+      fi;
+      lastloop := source[i];
+      id [ source[i] ] := true;
+    fi;
+  od;
+  return ForAll(id, x -> x = true);
+end);
+
 #EOF

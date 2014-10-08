@@ -17,3 +17,4 @@ DeclareProperty("IsTournament", IsDigraph);
 DeclareProperty("IsEmptyDigraph", IsDigraphBySourceAndRange);
 DeclareProperty("IsEmptyDigraph", IsDigraphByAdjacency);
 DeclareProperty("IsEmptyDigraph", IsDigraph and HasNrEdges);
+DeclareProperty("IsReflexiveDigraph", IsDigraph);
