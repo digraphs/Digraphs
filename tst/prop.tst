@@ -116,6 +116,10 @@ gap> IsFunctionalDigraph(circuit);
 false
 gap> IsFunctionalDigraph(loop);
 true
+gap> gr := Digraph( [ ] );
+<digraph with 0 vertices, 0 edges>
+gap> IsFunctionalDigraph(gr);
+true
 
 #
 gap> r := rec( vertices := [ 1 .. 10 ], 
@@ -230,6 +234,28 @@ gap> gr := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> IsStronglyConnectedDigraph(gr);
 true
+gap> adj := [ [ 3, 4, 5, 7, 10 ], [ 4, 5, 10 ], [ 1, 2, 4, 7 ], [ 2, 9 ],
+> [ 4, 5, 8, 9 ], [ 1, 3, 4, 5, 6 ], [ 1, 2, 4, 6 ],
+> [ 1, 2, 3, 4, 5, 6, 7, 9 ], [ 2, 4, 8 ], [ 4, 5, 6, 8, 11 ], [ 10 ] ];;
+gap> gr := Digraph(adj);
+<digraph with 11 vertices, 44 edges>
+gap> IsStronglyConnectedDigraph(gr);
+true
+gap> IsStronglyConnectedDigraph(multiple);
+false
+gap> IsStronglyConnectedDigraph(grid);
+false
+gap> IsStronglyConnectedDigraph(circuit);
+false
+gap> IsStronglyConnectedDigraph(loop);
+true
+gap> r := rec( nrvertices := 9, 
+> range := [ 1, 7, 6, 9, 4, 8, 2, 5, 8, 9, 3, 9, 4, 8, 1, 1, 3 ], 
+> source := [ 1, 1, 2, 2, 4, 4, 5, 6, 6, 6, 7, 7, 8, 8, 9, 9, 9 ] );;
+gap> gr := Digraph(r);
+<digraph with 9 vertices, 17 edges>
+gap> IsStronglyConnectedDigraph(gr);
+false
 
 #
 gap> DigraphsStopTest();

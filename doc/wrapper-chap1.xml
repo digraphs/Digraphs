@@ -45,6 +45,7 @@
   <Section><Heading>Properties of digraphs</Heading>
     <!-- alphabetical order please!-->
     <#Include Label="IsAcyclicDigraph">
+    <#Include Label="IsEmptyDigraph">
     <#Include Label="IsFunctionalDigraph">
     <#Include Label="IsSimpleDigraph">
     <#Include Label="IsStronglyConnectedDigraph">
