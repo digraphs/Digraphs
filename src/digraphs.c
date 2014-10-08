@@ -471,7 +471,7 @@ static Obj FuncIS_SIMPLE_DIGRAPH(Obj self, Obj digraph) {
 void hook_function(void *user_param,
 	      unsigned int N,
 	      const unsigned int *aut)
- {
+{
      UInt4* pt;
      Obj prod;
      
@@ -483,38 +483,62 @@ void hook_function(void *user_param,
      
      AssPlist(user_param, LEN_PLIST(user_param)+1, prod);
      CHANGED_BAG(user_param);
- }
+}
+
+BlissGraph* buildGraph(Obj digraph) {
+    UInt n, nam, i, j, nr, len;
+    Obj adji, adj;
+    BlissGraph *graph;
+  
+    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  
+    graph = bliss_new(n);
+  
+    nam = RNamName("adj");
+    adj = ElmPRec(digraph, nam);
+    len = LEN_PLIST(adj);
+    nr = 0;
+    for (i = 1; i <= len; i++) {
+        nr = LEN_PLIST(ELM_PLIST(adj, i));
+        adji = ELM_PLIST(adj, i);
+        for(j = 1; j <= nr; j++) {
+            bliss_add_edge(graph, i-1, INT_INTOBJ(ELM_PLIST(adji, j))-1);
+        }
+    }
+    
+    return graph;
+}
 
 static Obj FuncGRAPH_AUTOMORPHISM(Obj self, Obj digraph) {
-  Obj   range, adj, adji, source, automorphs;
-  UInt  nam, len, nr, current, i, j, n;
-  int   k, *marked;
+  Obj   automorphs;
   BlissGraph *graph;
   
-  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
-  
-  graph = bliss_new(n);
-  
-  nam = RNamName("adj");
-  adj = ElmPRec(digraph, nam);
-  len = LEN_PLIST(adj);
-  nr = 0;
-  for (i = 1; i <= len; i++) {
-      nr = LEN_PLIST(ELM_PLIST(adj, i));
-      adji = ELM_PLIST(adj, i);
-      for(j = 1; j <= nr; j++) {
-          bliss_add_edge(graph, i-1, INT_INTOBJ(ELM_PLIST(adji, j))-1);
-      }
-  }
-  
+  graph = buildGraph(digraph);
+ 
   automorphs = NEW_PLIST(T_PLIST, 0);
   SET_LEN_PLIST(automorphs, 0);
-  bliss_find_automorphisms(graph,hook_function,automorphs,0);
   
+  bliss_find_automorphisms(graph,hook_function,automorphs,0); 
   bliss_release(graph);
   
   return automorphs;
 } 
+
+static Obj FuncGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
+  Obj   automorphs;
+  BlissGraph *graph;
+     
+  graph = buildGraph(digraph);
+  
+  automorphs = NEW_PLIST(T_PLIST, 0);
+  SET_LEN_PLIST(automorphs, 0);
+  
+  bliss_find_canonical_labeling(graph,hook_function,automorphs,0); 
+  bliss_release(graph);
+
+  return automorphs;
+} 
+
 
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
 
@@ -548,10 +572,14 @@ static StructGVarFunc GVarFuncs [] = {
     FuncIS_SIMPLE_DIGRAPH, 
     "src/digraphs.c:FuncIS_SIMPLE_DIGRAPH" },
  
-    { "GRAPH_AUTOMORPHISM", 1, "digraph",
-      FuncGRAPH_AUTOMORPHISM, 
-      "src/digraphs.c:FuncGRAPH_AUTOMORPHISM" },
-      
+  { "GRAPH_AUTOMORPHISM", 1, "digraph",
+    FuncGRAPH_AUTOMORPHISM, 
+    "src/digraphs.c:FuncGRAPH_AUTOMORPHISM" },
+
+  { "GRAPH_CANONICAL_LABELING", 1, "digraph",
+    FuncGRAPH_CANONICAL_LABELING, 
+    "src/digraphs.c:FuncGRAPH_CANONICAL_LABELING" },
+              
   { 0 }
 
 };
