@@ -466,6 +466,56 @@ static Obj FuncIS_SIMPLE_DIGRAPH(Obj self, Obj digraph) {
   return True;
 } 
 
+#include "bliss-0.72/bliss_C.h"
+
+void hook_function(void *user_param,
+	      unsigned int N,
+	      const unsigned int *aut)
+ {
+     UInt4* pt;
+     Obj prod;
+     
+     prod = NEW_PERM4(N);
+     pt = ADDR_PERM4(prod);
+     
+     for(UInt i = 0; i < N; ++i)
+         pt[i] = aut[i];
+     
+     AssPlist(user_param, LEN_PLIST(user_param)+1, prod);
+     CHANGED_BAG(user_param);
+ }
+
+static Obj FuncGRAPH_AUTOMORPHISM(Obj self, Obj digraph) {
+  Obj   range, adj, adji, source, automorphs;
+  UInt  nam, len, nr, current, i, j, n;
+  int   k, *marked;
+  BlissGraph *graph;
+  
+  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  
+  graph = bliss_new(n);
+  
+  nam = RNamName("adj");
+  adj = ElmPRec(digraph, nam);
+  len = LEN_PLIST(adj);
+  nr = 0;
+  for (i = 1; i <= len; i++) {
+      nr = LEN_PLIST(ELM_PLIST(adj, i));
+      adji = ELM_PLIST(adj, i);
+      for(j = 1; j <= nr; j++) {
+          bliss_add_edge(graph, i-1, INT_INTOBJ(ELM_PLIST(adji, j))-1);
+      }
+  }
+  
+  automorphs = NEW_PLIST(T_PLIST, 0);
+  SET_LEN_PLIST(automorphs, 0);
+  bliss_find_automorphisms(graph,hook_function,automorphs,0);
+  
+  bliss_release(graph);
+  
+  return automorphs;
+} 
+
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
 
 /******************************************************************************
@@ -498,6 +548,10 @@ static StructGVarFunc GVarFuncs [] = {
     FuncIS_SIMPLE_DIGRAPH, 
     "src/digraphs.c:FuncIS_SIMPLE_DIGRAPH" },
  
+    { "GRAPH_AUTOMORPHISM", 1, "digraph",
+      FuncGRAPH_AUTOMORPHISM, 
+      "src/digraphs.c:FuncGRAPH_AUTOMORPHISM" },
+      
   { 0 }
 
 };
