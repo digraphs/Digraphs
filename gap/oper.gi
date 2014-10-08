@@ -158,14 +158,10 @@ function(graph, perm)
     nrvertices:=NrVertices(graph)));
 end);
 
-InstallMethod(DigraphFloydWarshall, "for a digraph",
+InstallMethod(DigraphShortestDistances, "for a digraph",
 [IsDigraph],
 function(graph)
   local vertices, n, m, dist, i, k, j;
-
-  # Firstly assuming no multiple edges or loops. Will be easy to include.
-  # Also not dealing with graph weightings.
-  # Need discussions on suitability of data structures, etc
 
   vertices := Vertices(graph);
   n := NrVertices(graph);
@@ -205,7 +201,8 @@ function(graph)
   local sorted, vertices, n, adj, out, trans, mat, flip, v, u, w;
 
   if not IsSimpleDigraph(graph) then
-    Error("usage: the argument should be a simple digraph,");
+    Error("Digraphs: DigraphTransitiveClosure: usage,\n",
+    "the argument <graph> should be a simple digraph,");
     return;
   fi;
 
@@ -276,7 +273,8 @@ function(graph)
   local sorted, vertices, n, adj, out, trans, reflex, mat, flip, v, u, w;
 
   if not IsSimpleDigraph(graph) then
-    Error("usage: the argument should be a simple digraph,");
+    Error("Digraphs: DigraphTransitiveClosure: usage,\n",
+    "the argument <graph> should be a simple digraph,");
     return;
   fi;
 

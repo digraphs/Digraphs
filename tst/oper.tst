@@ -44,6 +44,15 @@ gap> e = temp;
 true
 
 # DigraphTransitiveClosure & DigraphReflexiveTransitiveClosure
+gap> gr := Digraph( 
+> rec( nrvertices := 2, source := [ 1, 1 ], range := [ 2, 2 ] ) );
+<digraph with 2 vertices, 2 edges>
+gap> DigraphReflexiveTransitiveClosure(gr);
+Error, Digraphs: DigraphTransitiveClosure: usage,
+the argument <graph> should be a simple digraph,
+gap> DigraphTransitiveClosure(gr);
+Error, Digraphs: DigraphTransitiveClosure: usage,
+the argument <graph> should be a simple digraph,
 gap> r := rec( vertices:=[ 1 .. 4 ], source := [ 1, 1, 2, 3, 4 ], 
 > range := [ 1, 2, 3, 4, 1 ] );
 rec( range := [ 1, 2, 3, 4, 1 ], source := [ 1, 1, 2, 3, 4 ], 
@@ -85,6 +94,20 @@ gap> gr := Digraph(
 gap> DigraphRemoveLoops(gr);
 <digraph with 6 vertices, 7 edges>
 gap> 
+
+# DigraphRelabel (for a digraph by adjacency and perm)
+gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> Edges(gr);
+[ [ 1, 2 ], [ 2, 1 ], [ 3, 3 ] ]
+gap> g := (1, 2, 3);
+(1,2,3)
+gap> DigraphRelabel(gr, g);
+<digraph with 3 vertices, 3 edges>
+gap> Edges(last);
+[ [ 1, 1 ], [ 2, 3 ], [ 3, 2 ] ]
+gap> h := (1, 2, 3, 4);
+(1,2,3,4)
 
 #
 gap> DigraphsStopTest();
