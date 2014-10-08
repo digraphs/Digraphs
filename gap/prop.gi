@@ -245,7 +245,7 @@ end);
 
 #
 
-InstallMethod(IsEmptyDigraph, "for a digraph",
+InstallMethod(IsEmptyDigraph, "for a digraph by source and range",
 [IsDigraphBySourceAndRange],
 function(digraph)
   return Source(digraph) = [];
@@ -253,18 +253,26 @@ end);
 
 #
 
-InstallMethod(IsEmptyDigraph, "for a digraph",
+InstallMethod(IsEmptyDigraph, "for a digraph by adjacencies",
 [IsDigraphByAdjacency],
 function(digraph)
   local adj, i;
 
   adj := Adjacencies(digraph);
   for i in adj do
-    if adj <> [] then
+    if i <> [ ] then
       return false;
     fi;
   od;
   return true;
+end);
+
+#
+
+InstallMethod(IsEmptyDigraph, "for a digraph with known number of edges",
+[IsDigraph and HasNrEdges], 3,
+function(digraph)
+  return NrEdges(digraph) = 0;
 end);
 
 #EOF
