@@ -97,4 +97,12 @@ gap> DigraphFromDigraph6String(str);
 <digraph with 231 vertices, 100 edges>
 
 #
+gap> gr := Digraph([[1,4],[2,3,4],[2,4],[2]]);
+<digraph with 4 vertices, 8 edges>
+gap> str := WriteDiSparse6(gr);
+".CgXoHe@J"
+gap> DigraphFromDiSparse6String(str) = gr;
+true
+
+#
 gap> STOP_TEST( "Digraphs package: utils.tst", 0);

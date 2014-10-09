@@ -820,8 +820,8 @@ function(graph)
   end;
 
   perm := Sortex([ 1 .. Length(source_d) ], sort_d);
-  Permuted(source_d, perm);
-  Permuted(range_d, perm);
+  source_d := Permuted(source_d, perm);
+  range_d := Permuted(range_d, perm);
 
   # Sort increasing edges according to range and then source 
   sort_i := function(i, j)
@@ -833,9 +833,9 @@ function(graph)
      fi;
   end;
 
-  perm := Sortex([ 1 .. Length(source_i) ], sort_i);
-  Permuted(source_i, perm);
-  Permuted(range_i, perm);
+  perm := Sortex([ 1 .. Length(range_i) ], sort_i);
+  source_i := Permuted(source_i, perm);
+  range_i := Permuted(range_i, perm);
 
   # k is the number of bits in a vertex label we also want to be able to encode
   # n as a separation symbol between increasing and decreasing edges
@@ -1013,7 +1013,6 @@ function(s)
 
   range := [];
   source := [];
-  Error();
   # Get the decreasing edges first
   len := 1;
   v := 0;
