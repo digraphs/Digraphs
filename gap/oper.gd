@@ -14,3 +14,4 @@ DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphReverse", [IsDigraph]);
+DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);

@@ -318,3 +318,33 @@ function(graph)
   fi;
 end);
 
+#
+
+# This function will apply in the future to all "digraphs"
+# A different method may be needed for multigraphs
+InstallMethod(InducedSubdigraph, "for a digraph and a list",
+[IsDigraph, IsList],
+function( digraph, subverts )
+  local verts, nr, adj, lookup, new, i;
+
+  verts := Vertices(digraph);
+  if not ForAll( subverts, x -> x in verts ) then
+    Error("Digraphs: InducedSubdigraph: usage,\n",
+    "the second argument <subvertices> such be a subset of the vertices of\n",
+    "the first argument <digraph>,");
+    return;
+  fi;
+  adj := Adjacencies(digraph);
+  nr := Length(subverts);
+  lookup := EmptyPlist(nr);
+  for i in [ 1 .. nr ] do
+    lookup[ subverts[i] ] := i;
+  od;
+  new := List( [ 1 .. nr ], x -> [ ] );
+
+  for i in [ 1 .. nr ] do
+    new[i] := List( Filtered( adj[ subverts[i] ], x -> x in subverts), y -> lookup[y] );
+  od;
+
+  return DigraphNC(new);
+end);
