@@ -409,34 +409,18 @@ static Obj FuncDIGRAPH_ADJACENCY(Obj self, Obj digraph) {
   return adj;
 }
 
-static Obj FuncIS_SIMPLE_DIGRAPH(Obj self, Obj digraph) {
+static Obj FuncIS_DIGRAPH_REC(Obj self, Obj digraph) {
   Obj   range, adj, source;
   UInt  nam, len, nr, current, i, j, n;
   int   k, *marked;
   
-  nam = RNamName("range");
-  if (!IsbPRec(digraph, nam)) {
-    return True;
-  }
-  range = ElmPRec(digraph, nam);
+  range = ElmPRec(digraph, RNamName("range"));
   PLAIN_LIST(range);
   
-  nam = RNamName("adj");
-  if (IsbPRec(digraph, nam)) {
-    adj = ElmPRec(digraph, nam);
-    len = LEN_PLIST(adj);
-    nr = 0;
-    for (i = 1; i <= len; i++) {
-      nr += LEN_PLIST(ELM_PLIST(adj, i));
-    }
-    return (nr == LEN_PLIST(range) ? True : False);
-  }
-  
-  len = LEN_PLIST(range);
-  if (len == 0) {
+  if (LEN_PLIST(range) == 0) {
     return True;
   }
-
+  
   source = ElmPRec(digraph, RNamName("source"));
   PLAIN_LIST(source);
 
@@ -494,10 +478,14 @@ static StructGVarFunc GVarFuncs [] = {
     FuncDIGRAPH_ADJACENCY, 
     "src/digraphs.c:FuncDIGRAPH_ADJACENCY" },
 
-  { "IS_SIMPLE_DIGRAPH", 1, "digraph",
-    FuncIS_SIMPLE_DIGRAPH, 
-    "src/digraphs.c:FuncIS_SIMPLE_DIGRAPH" },
+  { "IS_DIGRAPH_REC", 1, "digraph",
+    FuncIS_DIGRAPH_REC, 
+    "src/digraphs.c:FuncIS_DIGRAPH_REC" },
  
+/*  { "IS_DIGRAPH_LIST", 1, "digraph",
+    FuncIS_DIGRAPH_LIST, 
+    "src/digraphs.c:FuncIS_DIGRAPH_LIST" },*/
+
   { 0 }
 
 };

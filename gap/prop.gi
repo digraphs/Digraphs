@@ -128,49 +128,6 @@ else
   end);
 fi;
 
-# simple means no multiple edges (loops are allowed)
-if IsBound(IS_SIMPLE_DIGRAPH) then
-  InstallMethod(IsSimpleDigraph, "for a digraph",
-  [IsDigraph], IS_SIMPLE_DIGRAPH);
-else
-  InstallMethod(IsSimpleDigraph, "for a digraph",
-  [IsDigraph],
-  function(graph)
-    local adj, nr, range, source, len, n, current, marked, x, i;
-
-    if not HasRange(graph) then
-      return true;
-    elif HasAdjacencies(graph) then
-      adj := Adjacencies(graph);
-      nr := 0;
-      for x in adj do
-        nr := nr + Length(x);
-      od;
-      return nr = Length(Range(graph));
-    else
-      range := Range(graph);
-      source := Source(graph);
-      len := Length(range);
-      n := NrVertices(graph);
-      current := 0;
-      marked := [ 1 .. n ] * 0;
-
-      for i in [ 1 .. len ] do
-        if source[i] <> current then
-          current := source[i];
-          marked[range[i]] := current;
-        elif marked[range[i]] = current then
-          return false;
-        else
-          marked[range[i]] := current;
-        fi;
-      od;
-      return true;
-    fi;
-
-  end);
-fi;
-
 # Complexity O(number of edges)
 # this could probably be improved further ! JDM
 
@@ -206,14 +163,14 @@ end);
 
 # Functional means: for every vertex v there is exactly one edge with source v
 
-InstallMethod(IsFunctionalDigraph, "for a digraph by adjacency",
-[IsDigraphByAdjacency],
+InstallMethod(IsFunctionalDigraph, "for a multidigraph with adjacencies",
+[IsMultiDigraph and HasAdjcacencies],
 function(graph)
   return ForAll(Adjacencies(graph), x -> Length(x) = 1);
 end);
 
-InstallMethod(IsFunctionalDigraph, "for a digraph",
-[IsDigraphBySourceAndRange],
+InstallMethod(IsFunctionalDigraph, "for a multidigraph with source",
+[IsMultiDigraph and HasSource],
 function(graph)
   return Source(graph) = Vertices(graph);
 end);
@@ -245,16 +202,16 @@ end);
 
 #
 
-InstallMethod(IsEmptyDigraph, "for a digraph",
-[IsDigraphBySourceAndRange],
+InstallMethod(IsEmptyDigraph, "for a multidigraph with source",
+[IsMultiDigraph and HasSource],
 function(digraph)
   return Source(digraph) = [];
 end);
 
 #
 
-InstallMethod(IsEmptyDigraph, "for a digraph",
-[IsDigraphByAdjacency],
+InstallMethod(IsEmptyDigraph, "for a multidigraph with adjacencies",
+[IsMultiDigraph and HasAdjacencies],
 function(digraph)
   local adj, i;
 

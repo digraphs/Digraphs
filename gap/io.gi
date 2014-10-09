@@ -506,13 +506,13 @@ function(arg)
     return;
   fi;
 
-  if not IsDigraph(arg[2]) then
-    Error("usage: the 2nd argument must be digraph,");
+  if IsMultiDigraph(arg[2]) then
+    Error("not yet implemented,");
     return;
   fi;
-
-  if not IsSimpleDigraph(arg[2]) then
-    Error("not yet implemented,");
+  
+  if not IsDigraph(arg[2]) then
+    Error("usage: the 2nd argument must be digraph,");
     return;
   fi;
 

@@ -10,33 +10,56 @@
 
 # category, family, type, representations . . .
 
-DeclareCategory("IsDigraph", IsObject);
-# created by adjacencies
-DeclareCategory("IsDigraphByAdjacency", IsDigraph);      
-# created by source and range
-DeclareCategory("IsDigraphBySourceAndRange", IsDigraph); 
+DeclareCategory("IsMultiDigraph", IsObject);
+DeclareCategory("IsDigraph", IsMultiDigraph);
 
-BindGlobal("DigraphFamily", NewFamily("DigraphFamily",
- IsDigraph));
+BindGlobal("MultiDigraphFamily", NewFamily("MultiDigraphFamily",
+ IsMultiDigraph));
 
-BindGlobal("DigraphByAdjacencyType", NewType(DigraphFamily,
- IsDigraphByAdjacency and IsComponentObjectRep and IsAttributeStoringRep));
+BindGlobal("DigraphType", NewType(MultiDigraphFamily,
+ IsDigraph and IsComponentObjectRep and IsAttributeStoringRep));
 
-BindGlobal("DigraphBySourceAndRangeType", NewType(DigraphFamily,
- IsDigraphBySourceAndRange and IsComponentObjectRep and IsAttributeStoringRep));
+BindGlobal("MultiDigraphType", NewType(MultiDigraphFamily,
+ IsMultiDigraph and IsComponentObjectRep and IsAttributeStoringRep));
 
 # constructors . . . 
 
-DeclareOperation("Digraph", [IsRecord]);
-DeclareOperation("Digraph", [IsList]);
-DeclareOperation("DigraphNC", [IsRecord]);
-DeclareOperation("DigraphNC", [IsList]);
-DeclareOperation("DigraphByAdjacencyMatrix", [IsRectangularTable]);
-DeclareOperation("DigraphByAdjacencyMatrixNC", [IsRectangularTable]);
-DeclareOperation("DigraphByEdges", [IsRectangularTable]);
-DeclareOperation("DigraphByEdges", [IsRectangularTable, IsPosInt]);
-DeclareOperation("Graph", [IsDigraph]);
-DeclareOperation("RandomSimpleDigraph", [IsPosInt]);
+opers := [ ["Digraph", [IsRecord]],   ["Digraph", [IsList]], 
+           ["DigraphNC", [IsRecord]], ["DigraphNC", [IsList]] ];
+
+for arg in opers do 
+  CallFuncList(DeclareOperation, arg);
+  arg[1]:=Concatenation("Multi", arg[1]);
+  CallFuncList(DeclareOperation, arg);
+od;
+
+DeclareOperation("MultiDigraphByAdjacencyMatrix", [IsRectangularTable]);
+DeclareOperation("MultiDigraphByAdjacencyMatrixNC", [IsRectangularTable]);
+DeclareOperation("MultiDigraphByEdges", [IsRectangularTable]);
+DeclareOperation("MultiDigraphByEdges", [IsRectangularTable, IsPosInt]);
+
+DeclareOperation("Graph", [IsMultiDigraph]);
+DeclareOperation("RandomDigraph", [IsPosInt]);
+
+DeclareOperation("AsDigraph", [IsMultiDigraph]);
+DeclareOperation("AsMultiDigraph", [IsDigraph]);
+
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
+
+if not IsBound(IS_DIGRAPH) then 
+  DeclareGlobalFunction("IS_DIGRAPH");
+fi;
+
+BindGlobal("InstallDigraphMethod",
+  function(name, str, filts, method)
+    InstallMethod(name, str, filts, 
+    function(graph)
+      local out;
+      out:=method(graph);
+      SetFilterObj(out, IsDigraph);
+      return out;
+    end);
+  end
+);
 
