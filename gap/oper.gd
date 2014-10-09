@@ -13,5 +13,4 @@ DeclareOperation("DigraphRemoveLoops", [IsDigraph]);
 DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
-DeclareAttribute("DigraphShortestDistances", IsDigraph);
 DeclareOperation("DigraphReverse", [IsDigraph]);

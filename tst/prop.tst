@@ -69,11 +69,11 @@ gap> for i in [1..100] do
 >     Add(r.range, j);
 >   od;
 > od;
-gap> complete := Digraph(r);
+gap> complete100 := Digraph(r);
 <digraph with 100 vertices, 10000 edges>
-gap> IsSimpleDigraph(complete);
+gap> IsSimpleDigraph(complete100);
 true
-gap> IsAcyclicDigraph(complete);
+gap> IsAcyclicDigraph(complete100);
 false
 
 #

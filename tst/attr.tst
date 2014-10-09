@@ -202,6 +202,66 @@ gap> Length(scc.comps);
 gap> Length(scc.comps) = NrVertices(circuit);
 true
 
+# DigraphShortestDistances
+gap> adj := Concatenation(List( [ 1 .. 11 ], x -> [ x + 1 ] ), [ [ 1 ] ]);;
+gap> cycle12 := Digraph(adj);
+<digraph with 12 vertices, 12 edges>
+gap> mat := DigraphShortestDistances(cycle12);;
+gap> Display(mat);
+[ [   0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11 ],
+  [  11,   0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10 ],
+  [  10,  11,   0,   1,   2,   3,   4,   5,   6,   7,   8,   9 ],
+  [   9,  10,  11,   0,   1,   2,   3,   4,   5,   6,   7,   8 ],
+  [   8,   9,  10,  11,   0,   1,   2,   3,   4,   5,   6,   7 ],
+  [   7,   8,   9,  10,  11,   0,   1,   2,   3,   4,   5,   6 ],
+  [   6,   7,   8,   9,  10,  11,   0,   1,   2,   3,   4,   5 ],
+  [   5,   6,   7,   8,   9,  10,  11,   0,   1,   2,   3,   4 ],
+  [   4,   5,   6,   7,   8,   9,  10,  11,   0,   1,   2,   3 ],
+  [   3,   4,   5,   6,   7,   8,   9,  10,  11,   0,   1,   2 ],
+  [   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,   0,   1 ],
+  [   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,   0 ] ]
+gap> DigraphShortestDistances( Digraph( [ ] ) );
+[  ]
+gap> mat := DigraphShortestDistances( Digraph( [ [ ], [ ] ] ) );
+[ [ 0, infinity ], [ infinity, 0 ] ]
+gap> r:=rec( vertices := [ 1 .. 15 ], source := [ ], range := [ ] );;
+gap> for i in [ 1 .. 15 ] do
+>   for j in [ 1 .. 15 ] do
+>     Add(r.source, i);
+>     Add(r.range, j);
+>   od;
+> od;
+gap> complete15 := Digraph(r);
+<digraph with 15 vertices, 225 edges>
+gap> Display(DigraphShortestDistances(complete15));
+[ [  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0 ] ]
+gap> r := rec( nrvertices := 7, range := [ 3, 5, 5, 4, 6, 2, 5, 3, 3, 7, 2 ], 
+>  source := [ 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 7 ] );
+rec( nrvertices := 7, range := [ 3, 5, 5, 4, 6, 2, 5, 3, 3, 7, 2 ], 
+  source := [ 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 7 ] )
+gap> gr := Digraph(r);
+<digraph with 7 vertices, 11 edges>
+gap> DigraphShortestDistances(gr);         
+[ [ 0, 2, 1, 3, 1, 3, 2 ], [ infinity, 0, 2, 1, 3, 1, 4 ], 
+  [ infinity, 1, 0, 2, 1, 2, 2 ], [ infinity, 2, 1, 0, 2, 3, 3 ], 
+  [ infinity, 2, 1, 3, 0, 3, 1 ], 
+  [ infinity, infinity, infinity, infinity, infinity, 0, infinity ], 
+  [ infinity, 1, 3, 2, 4, 2, 0 ] ]
+
 #
 gap> DigraphsStopTest();
 

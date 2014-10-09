@@ -158,40 +158,6 @@ function(graph, perm)
     nrvertices:=NrVertices(graph)));
 end);
 
-InstallMethod(DigraphShortestDistances, "for a digraph",
-[IsDigraph],
-function(graph)
-  local vertices, n, m, dist, i, k, j;
-
-  vertices := Vertices(graph);
-  n := NrVertices(graph);
-  m := Length(Edges(graph));
-  dist := List( vertices, x -> List( vertices, x -> infinity ) );
-
-  for i in vertices do
-    dist[i][i] := 0;
-  od;
-
-  for i in [ 1 .. m ] do
-    dist[Source(graph)[i]][Range(graph)[i]] := 1;
-  od;
-
-  for k in vertices do
-    for i in vertices do
-      for j in vertices do
-        if dist[i][k] <> infinity and 
-        dist[k][j] <> infinity and 
-        dist[i][j] > dist[i][k] + dist[k][j] then
-          dist[i][j] := dist[i][k] + dist[k][j];
-        fi;
-      od;
-    od;
-  od;
-
-  return dist;
-
-end);
-
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
