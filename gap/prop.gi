@@ -82,15 +82,17 @@ else
   InstallMethod(IsAcyclicDigraph, "for a digraph",
   [IsDigraph],
   function(graph)
-    local adj, nr, vertex_complete, vertex_in_path, stack, level, j, k, i;
+    local adj, nr, verts, vertex_complete, vertex_in_path, stack, level, j, 
+    k, i;
 
     adj := Adjacencies(graph);
-    nr:=Length(adj);
-    vertex_complete := BlistList([1..nr], []);
-    vertex_in_path := BlistList([1..nr], []);
+    nr := NrVertices(graph);
+    verts := Vertices(graph);
+    vertex_complete := BlistList( verts, [ ] );
+    vertex_in_path := BlistList( verts, [ ] );
     stack:=EmptyPlist(2 * nr + 2);
 
-    for i in [1..nr] do
+    for i in verts do
       if Length(adj[i]) = 0 then
         vertex_complete[i] := true;
       elif not vertex_complete[i] then
@@ -105,7 +107,7 @@ else
           fi;
           # Check whether:
           # 1. We've previously finished with this vertex, OR
-          # 2. Whether we've now investigated all branches descending from it
+          # 2. Whether we've investigated all branches descending from it
           if vertex_complete[j] or k > Length(adj[j]) then
             vertex_complete[j] := true;
             level := level - 1 ;
@@ -139,6 +141,8 @@ else
     local adj, nr, range, source, len, n, current, marked, x, i;
 
     if not HasRange(graph) then
+      # Currently this is never entered: if we don't have range, graph was
+      # created by adjacencies, so IsSimpleDigraph was set true at creation
       return true;
     elif HasAdjacencies(graph) then
       adj := Adjacencies(graph);
@@ -273,6 +277,57 @@ InstallMethod(IsEmptyDigraph, "for a digraph with known number of edges",
 [IsDigraph and HasNrEdges], 3,
 function(digraph)
   return NrEdges(digraph) = 0;
+end);
+
+#
+
+InstallMethod(IsReflexiveDigraph, "for a digraph with adjacency matrix",
+[IsDigraph and HasAdjacencyMatrix], 3,
+function(digraph)
+  local verts, mat, i;
+  
+  verts := Vertices(digraph);
+  mat := AdjacencyMatrix(digraph);
+
+  for i in verts do
+    if mat[i][i] = 0 then
+      return false;
+    fi;
+  od;
+  return true;
+end);
+
+#
+
+InstallMethod(IsReflexiveDigraph, "for a digraph with adjacencies",
+[IsDigraph and HasAdjacencies],
+function(digraph)
+  local adj;
+  
+  adj := Adjacencies(digraph);
+  return ForAll( Vertices(digraph), x -> x in adj[x] );
+end);
+
+InstallMethod(IsReflexiveDigraph, "for a digraph (with only source and range)",
+[IsDigraph],
+function(digraph)
+  local source, range, id, lastloop, i;
+  
+  source := Source(digraph);
+  range := Range(digraph);
+  id := BlistList(Vertices(digraph), []);
+  lastloop := 0;
+
+  for i in [ 1 .. Length(source) ] do
+    if source[i] = range[i] then
+      if source[i] > lastloop + 1 then
+        return false;
+      fi;
+      lastloop := source[i];
+      id [ source[i] ] := true;
+    fi;
+  od;
+  return ForAll(id, x -> x = true);
 end);
 
 #EOF

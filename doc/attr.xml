@@ -207,7 +207,7 @@ gap> Vertices(RandomSimpleDigraph(100));
 
 <#GAPDoc Label="NrVertices">
 <ManSection>
-  <Oper Name="NrVertices" Arg="digraph"/>
+  <Attr Name="NrVertices" Arg="digraph"/>
   <Returns>The number of vertices of a digraph.</Returns>
   <Description>
     Returns the number of vertices of the digraph <A>digraph</A>. <P/>
@@ -231,7 +231,7 @@ gap> NrVertices(RandomSimpleDigraph(100));
 
 <#GAPDoc Label="DigraphStronglyConnectedComponents">
 <ManSection>
-  <Oper Name="DigraphStronglyConnectedComponents" Arg="digraph"/>
+  <Attr Name="DigraphStronglyConnectedComponents" Arg="digraph"/>
   <Returns>A record.</Returns>
   <Description>
     Returns the record <C>scc</C> corresponding to the strongly connected
