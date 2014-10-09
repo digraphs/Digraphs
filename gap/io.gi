@@ -954,7 +954,7 @@ function(s)
 
   # Check for the special ':' character
   if s[1] <> '.' then
-    Error("<s> must be a string in DiSparse6 format,");
+    Error("<s> must be a string in disparse6 format,");
     return;
   fi;
 
@@ -968,23 +968,25 @@ function(s)
   if list[2] <> 63 then
     n := list[2];
     start := 3;
-  else
-    if list[3] = 63 and Length(list) <= 8 then
-      n := 0;
-      for i in [1 .. 6] do
-        n := n + 2^(6 * i) * list[10 - i];
-      od;
-      start := 10;
-    elif Length(list) <= 4 then
-      n := 0;
-      for i in [1 .. 3] do
-        n := n + 2^(6 * i) * list[6 - i];
-      od;
-      start :=  6;
-    else
-       Error(s, " is not a valid sparse6 input");
-       return;
+  elif list[3] = 63 then
+    if Length(list) <= 8 then
+      Error(s, " is not a valid disparse6 input");
+      return;
     fi;
+    n := 0;
+    for i in [ 0 .. 5 ] do
+      n := n + 2^(6 * i) * list[9 - i];
+    od;
+    start := 10;
+  elif Length(list) > 4 then
+      n := 0; 
+      for i in [ 0 .. 2 ] do
+        n := n + 2^(6 * i) * list[5 - i];
+      od;
+      start := 6;
+  else
+    Error(s, " is not a valid disparse6 input");
+    return;
   fi;
 
   # convert list into a list of bits;
