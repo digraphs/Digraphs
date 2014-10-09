@@ -308,6 +308,8 @@ function(digraph)
   return ForAll( Vertices(digraph), x -> x in adj[x] );
 end);
 
+#
+
 InstallMethod(IsReflexiveDigraph, "for a digraph (with only source and range)",
 [IsDigraph],
 function(digraph)
