@@ -121,7 +121,7 @@ function(s)
     n := list[1];
     start := 2;
   elif Length(list) > 300 then
-    if list[2] = 63 and Length(list) <= 8 then
+    if list[2] = 63 then
       n := 0;
       for i in [ 0 .. 5 ] do
         n := n + 2 ^ (6 * i) * list[8 - i];
@@ -192,29 +192,29 @@ function(s)
   fi;
 
   # Convert ASCII chars to integers
-  list := [];
-  for i in [2..Length(s)] do
-    Add(list, IntChar(s[i]) - 63);
-  od;
+  list := List(s, i -> IntChar(i) - 63);
 
   # Get n the number of vertices of the graph
-  if list[1] <> 63 then
-    n := list[1];
-    start := 2;
-  else
-    if list[2] = 63 then
+  if list[2] <> 63 then
+    n := list[2];
+    start := 3;
+  elif Length(list) > 300 then
+    if list[3] = 63 then
       n := 0;
       for i in [0..5] do
-        n := n + 2^(6*i)*list[8-i];
+        n := n + 2^(6*i)*list[9-i];
       od;
-      start := 9;
+      start := 10;
     else
       n := 0;
       for i in [0..2] do
-        n := n + 2^(6*i)*list[4-i];
+        n := n + 2^(6*i)*list[5-i];
       od;
-      start := 5;
+      start := 6;
     fi;
+  else
+    Error(s, " is not in a valid digrpah6 format");
+    return;
   fi;
 
   range := [];
@@ -282,23 +282,25 @@ function(s)
   if list[2] <> 63 then
     n := list[2];
     start := 3;
-  else
-    if list[3] = 63 and Length(list) <= 8 then
-      n := 0;
-      for i in [ 1 .. 6 ] do
-        n := n + 2^(6 * i) * list[10 - i];
-      od;
-      start := 10;
-    elif Length(list) <= 4 then
+  elif list[3] = 63 then
+    if Length(list) <= 8 then
+      Error(s, " is not a valid sparse6 input");
+      return;
+    fi;
+    n := 0;
+    for i in [ 0 .. 5 ] do
+      n := n + 2^(6 * i) * list[9 - i];
+    od;
+    start := 10;
+  elif Length(list) > 4 then
       n := 0; 
-      for i in [ 1 .. 3 ] do
-        n := n + 2^(6 * i) * list[6 - i];
+      for i in [ 0 .. 2 ] do
+        n := n + 2^(6 * i) * list[5 - i];
       od;
       start := 6;
-    else
+  else
        Error(s, " is not a valid sparse6 input");
        return;
-    fi;
   fi;
 
   # convert list into a list of bits;
@@ -1011,7 +1013,7 @@ function(s)
 
   range := [];
   source := [];
-
+  Error();
   # Get the decreasing edges first
   len := 1;
   v := 0;
