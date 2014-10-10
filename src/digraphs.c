@@ -7,6 +7,8 @@
 **  
 */
 
+#include "bliss-0.72/bliss_C.h"
+
 #include <stdlib.h>
 
 #include "src/compiled.h"          /* GAP headers                */
@@ -451,6 +453,63 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   }
 } 
 
+// bliss 
+
+void hook_function(void *user_param,
+	      unsigned int N,
+	      const unsigned int *aut) {
+   UInt4* pt;
+   Obj prod;
+   
+   prod = NEW_PERM4(N);
+   pt = ADDR_PERM4(prod);
+   
+   for(UInt i = 0; i < N; ++i)
+       pt[i] = aut[i];
+   
+   AssPlist(user_param, LEN_PLIST(user_param)+1, prod);
+   CHANGED_BAG(user_param);
+ }
+
+BlissGraph* buildGraph(Obj digraph) {
+    UInt n, nam, i, j, nr, len;
+    Obj adji, adj;
+    BlissGraph *graph;
+  
+    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  
+    graph = bliss_new(n);
+  
+    nam = RNamName("adj");
+    adj = ElmPRec(digraph, nam);
+    len = LEN_PLIST(adj);
+    nr = 0;
+    for (i = 1; i <= len; i++) {
+        nr = LEN_PLIST(ELM_PLIST(adj, i));
+        adji = ELM_PLIST(adj, i);
+        for(j = 1; j <= nr; j++) {
+            bliss_add_edge(graph, i-1, INT_INTOBJ(ELM_PLIST(adji, j))-1);
+        }
+    }
+    
+    return graph;
+}
+
+static Obj FuncGRAPH_AUTOMORPHISM(Obj self, Obj digraph) {
+  Obj   automorphs;
+  BlissGraph *graph;
+  
+  graph = buildGraph(digraph);
+  
+  automorphs = NEW_PLIST(T_PLIST, 0);
+  SET_LEN_PLIST(automorphs, 0);
+  
+  bliss_find_automorphisms(graph,hook_function,automorphs,0);
+  bliss_release(graph);
+  
+  return automorphs;
+} 
+
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
 
 /******************************************************************************
@@ -482,6 +541,11 @@ static StructGVarFunc GVarFuncs [] = {
   { "IS_MULTI_DIGRAPH", 1, "digraph",
     FuncIS_MULTI_DIGRAPH, 
     "src/digraphs.c:FuncIS_MULTI_DIGRAPH" },
+  
+  { "GRAPH_AUTOMORPHISM", 1, "digraph",
+    FuncGRAPH_AUTOMORPHISM, 
+    "src/digraphs.c:FuncGRAPH_AUTOMORPHISM" },
+      
  
   { 0 }
 
