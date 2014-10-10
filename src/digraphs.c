@@ -394,7 +394,7 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph) {
 }
 
 static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
-  Obj   range, adj, source;
+  Obj   range, adj, source, adji;
   UInt  nam, i, n;
   int   k, *marked, current, j, jj;
  
@@ -413,7 +413,7 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
 
     current = INT_INTOBJ(ELM_PLIST(source, 1));
     marked = calloc(n + 1, sizeof(UInt));
-    marked[INT_INTOBJ(ELM_PLIST(range, 1))] = 1;
+    marked[INT_INTOBJ(ELM_PLIST(range, 1))] = current;
     
     for (i = 2; i <= LEN_PLIST(source); i++) {
       j = INT_INTOBJ(ELM_PLIST(source, i));
@@ -436,11 +436,12 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   } else {
     adj = ElmPRec(digraph, RNamName("adj"));
     n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
-    for (i = 0; i < n; i++) {
-      for (j = 2; j <= LEN_PLIST(adj); j++) {
-        jj = INT_INTOBJ(ELM_PLIST(adj, j));
+    for (i = 1; i <= n; i++) {
+      adji = ELM_PLIST(adj, i);
+      for (j = 2; j <= LEN_PLIST(adji); j++) {
+        jj = INT_INTOBJ(ELM_PLIST(adji, j));
         for (k = 1; k < j; k++) {
-          if (INT_INTOBJ(ELM_PLIST(adj, k)) == jj) {
+          if (INT_INTOBJ(ELM_PLIST(adji, k)) == jj) {
             return True;
           }
         }
