@@ -91,3 +91,6 @@ src/stamp-h1
 pkgconfig.h.in~
 autom4te.*
 configure
+*.lo
+*.Plo
+*.o
