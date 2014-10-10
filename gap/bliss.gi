@@ -8,13 +8,35 @@
 #############################################################################
 ##
 
-# methods using Grape . . . 
+# methods using bliss . . . 
+
+# none of these methods applies to multigraphs
+
+InstallMethod(DigraphCanonicalLabelling, "for a digraph",
+[IsDigraph], 
+function(graph)
+
+  if IsMultiDigraph(graph) then 
+    Error("not yet implemented,");
+  fi;
+  # ensure out neighbours are known . . .
+  OutNeighbours(graph); 
+  return GRAPH_CANONICAL_LABELING(graph);
+end);
+
+#
 
 InstallMethod(IsIsomorphicDigraph, "for digraphs",
 [IsDigraph, IsDigraph],
 function(g1, g2)
-  Error("not yet implemented,");
-  return;
+  # check some invariants
+  if DigraphNrVertices(g1) <> DigraphNrVertices(g2) or 
+    DigraphNrEdges(g1) <> DigraphNrEdges(g2) then 
+    return false;
+  fi; #JDM more!
+
+  return DigraphRelabel(g1, DigraphCanonicalLabelling(g1)) 
+    = DigraphRelabel(g2, DigraphCanonicalLabelling(g2));
 end);
 
 #
@@ -22,7 +44,7 @@ end);
 InstallMethod(AutomorphismGroup, "for a digraph",
 [IsDigraph],
 function(graph)
-  Error("not yet implemented,");
+  return Group(GRAPH_AUTOMORPHISM(graph));
 end);
 
 #
@@ -30,27 +52,12 @@ end);
 InstallMethod(DigraphIsomorphism, "for two digraphs",
 [IsDigraph, IsDigraph],
 function(g1, g2)
-  Error("not yet implemented,");
+  
+  if not IsIsomorphicDigraph(g1, g2) then 
+    return fail;
+  fi;
+  
+  return DigraphCanonicalLabelling(g1)/DigraphCanonicalLabelling(g2);
 end);
 
-#
-
-InstallMethod(Girth, "for a digraph",
-[IsDigraph],
-function(graph)
-end);
-
-#
-
-InstallMethod(Diameter, "for a digraph",
-[IsDigraph],
-function(graph)
-end);
-
-#
-
-InstallMethod(IsConnectedDigraph, "for a digraph",
-[IsDigraph],
-function(graph)
-end);
-
+#EOF

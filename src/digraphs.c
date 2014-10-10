@@ -458,21 +458,23 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
 void hook_function(void *user_param,
 	      unsigned int N,
 	      const unsigned int *aut) {
-   UInt4* pt;
-   Obj prod;
+   UInt4* ptr;
+   Obj p;
+   UInt i;
    
-   prod = NEW_PERM4(N);
-   pt = ADDR_PERM4(prod);
+   p   = NEW_PERM4(N);
+   ptr = ADDR_PERM4(p);
    
-   for(UInt i = 0; i < N; ++i)
-       pt[i] = aut[i];
+   for(i = 0; i < N; ++i){
+       ptr[i] = aut[i];
+   }
    
-   AssPlist(user_param, LEN_PLIST(user_param)+1, prod);
+   AssPlist(user_param, LEN_PLIST(user_param)+1, p);
    CHANGED_BAG(user_param);
  }
 
 BlissGraph* buildGraph(Obj digraph) {
-    UInt n, nam, i, j, nr, len;
+    UInt n, i, j, nr, len;
     Obj adji, adj;
     BlissGraph *graph;
   
@@ -480,13 +482,12 @@ BlissGraph* buildGraph(Obj digraph) {
   
     graph = bliss_new(n);
   
-    nam = RNamName("adj");
-    adj = ElmPRec(digraph, nam);
+    adj = ElmPRec(digraph, RNamName("adj"));
     len = LEN_PLIST(adj);
     nr = 0;
     for (i = 1; i <= len; i++) {
-        nr = LEN_PLIST(ELM_PLIST(adj, i));
         adji = ELM_PLIST(adj, i);
+        nr = LEN_PLIST(adji);
         for(j = 1; j <= nr; j++) {
             bliss_add_edge(graph, i-1, INT_INTOBJ(ELM_PLIST(adji, j))-1);
         }
@@ -511,18 +512,26 @@ static Obj FuncGRAPH_AUTOMORPHISM(Obj self, Obj digraph) {
 }
 
 static Obj FuncGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
-  Obj   automorphs;
+  Obj   p;
+  UInt4 *ptr;
   BlissGraph *graph;
+  Int   n, i; 
+  const unsigned int *canon;
      
   graph = buildGraph(digraph);
   
-  automorphs = NEW_PLIST(T_PLIST, 0);
-  SET_LEN_PLIST(automorphs, 0);
+  canon = bliss_find_canonical_labeling(graph,0,0,0); 
+  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
   
-  bliss_find_canonical_labeling(graph,hook_function,automorphs,0); 
+  p   = NEW_PERM4(n);
+  ptr = ADDR_PERM4(p);
+ 
+  for(i = 0; i < n; ++i){
+      ptr[i] = canon[i];
+  }
   bliss_release(graph);
 
-  return automorphs;
+  return p;
 } 
 
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
