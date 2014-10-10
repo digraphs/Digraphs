@@ -51,7 +51,7 @@ function(graph)
   return Length(DigraphSource(graph));
 end);
 
-# IsDigraph and HasOutNeighbours implies IsSimpleDigraph
+#
 
 InstallMethod(DigraphEdges, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours],

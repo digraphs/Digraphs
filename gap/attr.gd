@@ -10,7 +10,7 @@
 
 # attributes for digraphs . . .
 
-DeclareAttribute("DigraphVertices", [IsDigraph]);
+DeclareAttribute("DigraphVertices", IsDigraph);
 DeclareAttribute("DigraphEdges", IsDigraph);
 DeclareAttribute("DigraphNrVertices", IsDigraph);
 DeclareAttribute("DigraphNrEdges", IsDigraph);

@@ -513,7 +513,7 @@ function(arg)
     return;
   fi;
 
-  if not IsSimpleDigraph(arg[2]) then
+  if IsMultiDigraph(arg[2]) then
     Error("not yet implemented,");
     return;
   fi;

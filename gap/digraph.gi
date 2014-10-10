@@ -8,6 +8,50 @@
 #############################################################################
 ##
 
+# multi means it has at least one multiple edges
+
+if IsBound(IS_MULTI_DIGRAPH) then
+  InstallMethod(IsMultiDigraph, "for a digraph",
+  [IsDigraph], IS_MULTI_DIGRAPH);
+else 
+  InstallMethod(IsMultiDigraph, "for a digraph",
+  [IsDigraph],
+  function(graph)
+    local range, source, nredges, current, marked, out, nbs, i, j;
+
+    if HasDigraphSource(graph) then
+      range := DigraphRange(graph);
+      source := DigraphSource(graph);
+      nredges := Length(range);
+      current := 0;
+      marked := DigraphVertices(graph) * 0;
+
+      for i in [ 1 .. nredges ] do
+        if source[i] <> current then
+          current := source[i];
+          marked[range[i]] := current;
+        elif marked[range[i]] = current then
+          return true;
+        else
+          marked[range[i]] := current;
+        fi;
+      od;
+      return false;
+    else
+      out := OutNeighbours(graph);
+      for i in DigraphVertices(graph) do
+        nbs := out[i];
+        for j in [ 1 .. Length(nbs) ] do 
+          if Position( nbs, nbs[j], 0 ) < j  then
+            return true;
+          fi;
+        od;
+      od;
+      return false;
+    fi;
+  end);
+fi;
+
 # constructors . . .
 
 InstallMethod(AsDigraph, "for a transformation",
@@ -120,7 +164,7 @@ function(graph)
     cmp := LT;
     obj := graph.nrvertices + 1;
     
-    if IsDigraphRange(graph.source) then 
+    if IsRange(graph.source) then 
       if not IsEmpty(graph.source) and (graph.source[1] < 1 or
          graph.source[Length(graph.source)] > graph.nrvertices) then 
         Error("usage: the record component 'source' is invalid,");
@@ -172,7 +216,7 @@ end);
 
 InstallMethod(DigraphNC, "for a record", [IsRecord],
 function(graph)
-  ObjectifyWithAttributes(graph, DigraphByDigraphSourceAndDigraphRangeType, DigraphRange,
+  ObjectifyWithAttributes(graph, DigraphType, DigraphRange,
    graph.range, DigraphSource, graph.source);
   return graph;
 end);
@@ -208,7 +252,7 @@ function(adj)
   graph := rec( adj        := StructuralCopy(adj), 
                 nrvertices := Length(adj)         );
 
-  ObjectifyWithAttributes(graph, DigraphByAdjacencyType, 
+  ObjectifyWithAttributes(graph, DigraphType, 
     OutNeighbours, adj, DigraphNrVertices, graph.nrvertices);
   return graph;
 end);

@@ -17,7 +17,7 @@ function(graph, verts)
   
   nr := DigraphNrVertices(graph);
 
-  if (IsDigraphRange(verts) and not (IsPosInt(verts[1]) and verts[1] <= nr and
+  if (IsRange(verts) and not (IsPosInt(verts[1]) and verts[1] <= nr and
     verts[Length(verts)] <= nr)) 
     or ForAny(verts, x-> not IsPosInt(x) or x > nr) then 
     Error("Digraphs: QuotientDigraph: usage,\n ", 
@@ -117,38 +117,36 @@ function(graph)
   return DigraphNC(new);
 end);
 
-InstallMethod(DigraphRemoveDigraphEdges, "for a digraph and a list",
+InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
 [IsDigraph, IsList],
 function(graph, edges)
-  local range, nrvertices, source, newsource, newrange, i;
+  local range, nrvertices, source, newsource, newrange, pos, i;
 
   if Length(edges) > 0 and IsPosInt(edges[1]) then # remove edges by index
     edges := Difference( [ 1 .. Length(DigraphSource(graph)) ], edges );
 
     return DigraphNC(rec(
-      source := DigraphSource(graph){edges},
-      range := DigraphRange(graph){edges},
+      source     := DigraphSource(graph){edges},
+      range      := DigraphRange(graph){edges},
       nrvertices := DigraphNrVertices(graph)));
   else
-    if not IsSimpleDigraph(graph) then
-      Error("usage: to remove edges given as pairs of vertices,",
-      " the graph must be simple,");
-      return;
-    fi;
     source := DigraphSource(graph);;
     range := DigraphRange(graph);;
     newsource := [ ];
     newrange := [ ];
 
     for i in [ 1 .. Length(source) ] do
-      if not [ source[i], range[i] ] in edges then
+      pos := Position(edges, [ source[i], range[i] ]); 
+      if pos = fail then
         Add(newrange, range[i]);
         Add(newsource, source[i]);
+      else 
+        Remove(edges, pos);
       fi;
     od;
 
     return DigraphNC(rec( source := newsource, range := newrange,
-                                nrvertices := DigraphNrVertices(graph) ) );
+                          nrvertices := DigraphNrVertices(graph) ) );
   fi;
 end);
 
@@ -171,7 +169,7 @@ function(graph, perm)
 end);
 
 InstallMethod(DigraphRelabel, "for a digraph and perm",
-[IsDigraph, IsPerm],
+[IsDigraph and HasDigraphSource, IsPerm],
 function(graph, perm)
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
@@ -194,9 +192,9 @@ InstallMethod(DigraphReflexiveTransitiveClosure,
 function(graph)
   local sorted, vertices, n, adj, out, trans, mat, flip, v, u, w;
 
-  if not IsSimpleDigraph(graph) then
+  if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphTransitiveClosure: usage,\n",
-    "the argument <graph> should be a simple digraph,");
+    "the argument <graph> cannot have multiple edges,");
     return;
   fi;
 
@@ -218,7 +216,7 @@ function(graph)
     od;
 
     out := DigraphNC(out);
-    SetIsSimpleDigraph(out, true);
+    SetIsMultiDigraph(out, false);
     return out;
 
   else # Non-acyclic method
@@ -254,7 +252,7 @@ function(graph)
 
     mat := List( mat, x -> List( x, flip ) ); # Create adjacency matrix
     out := DigraphByAdjacencyMatrix(mat);
-    SetIsSimpleDigraph(out, true);
+    SetIsMultiDigraph(out, false);
     return out;
   fi;
 end);
@@ -266,9 +264,9 @@ InstallMethod(DigraphTransitiveClosure, "for a digraph",
 function(graph)
   local sorted, vertices, n, adj, out, trans, reflex, mat, flip, v, u, w;
 
-  if not IsSimpleDigraph(graph) then
+  if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphTransitiveClosure: usage,\n",
-    "the argument <graph> should be a simple digraph,");
+    "the argument <graph> cannot have multiple edges,");
     return;
   fi;
 
@@ -298,7 +296,7 @@ function(graph)
     od;
 
     out := DigraphNC(out);
-    SetIsSimpleDigraph(out, true);
+    SetIsMultiDigraph(out, false);
     return out;
   else # Non-acyclic method
 
@@ -341,7 +339,7 @@ function(graph)
       mat[v][v] := reflex[v]; 
     od;
     out := DigraphByAdjacencyMatrix(mat);
-    SetIsSimpleDigraph(out, true);
+    SetIsMultiDigraph(out, false);
     return out;
   fi;
 end);

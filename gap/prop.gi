@@ -131,35 +131,23 @@ else
 fi;
 
 # simple means no multiple edges (loops are allowed)
-if IsBound(IS_SIMPLE_DIGRAPH) then
-  InstallMethod(IsSimpleDigraph, "for a digraph",
-  [IsDigraph], IS_SIMPLE_DIGRAPH);
-else
-  InstallMethod(IsSimpleDigraph, "for a digraph",
+if IsBound(IS_MULTI_DIGRAPH) then
+  InstallMethod(IsMultiDigraph, "for a digraph",
+  [IsDigraph], IS_MULTI_DIGRAPH);
+else 
+  InstallMethod(IsMultiDigraph, "for a digraph",
   [IsDigraph],
   function(graph)
-    local adj, nr, range, source, len, n, current, marked, x, i;
+    local range, source, nredges, current, marked, out, nbs, i, j;
 
-    if not HasDigraphRange(graph) then
-      # Currently this is never entered: if we don't have range, graph was
-      # created by adjacencies, so IsSimpleDigraph was set true at creation
-      return true;
-    elif HasOutNeighbours(graph) then
-      adj := OutNeighbours(graph);
-      nr := 0;
-      for x in adj do
-        nr := nr + Length(x);
-      od;
-      return nr = Length(DigraphRange(graph));
-    else
+    if HasDigraphSource(graph) then
       range := DigraphRange(graph);
       source := DigraphSource(graph);
-      len := Length(range);
-      n := DigraphNrVertices(graph);
+      nredges := Length(range);
       current := 0;
-      marked := [ 1 .. n ] * 0;
+      marked := DigraphVertices(graph) * 0;
 
-      for i in [ 1 .. len ] do
+      for i in [ 1 .. nredges ] do
         if source[i] <> current then
           current := source[i];
           marked[range[i]] := current;
@@ -170,6 +158,17 @@ else
         fi;
       od;
       return true;
+    else
+      out := OutNeighbours(graph);
+      for i in DigraphVertices(graph) do
+        nbs := out[i];
+        for j in [ 1 .. Length(nbs) ] do 
+          if Position( nbs, nbs[j], 0 ) < j  then
+            return false;
+          fi;
+        od;
+      od;
+      return true;
     fi;
 
   end);
@@ -178,11 +177,16 @@ fi;
 # Complexity O(number of edges)
 # this could probably be improved further ! JDM
 
-InstallMethod(IsSymmetricDigraph, "for a digraph",
-[IsDigraph],
+InstallMethod(IsSymmetricDigraph, "for a digraph", [IsDigraph],
 function(graph)
   local old, rev, new, i, j;
-  
+ 
+  if IsMultiDigraph(graph) then
+    Error("Digraphs: IsSymmetricDigraph: usage,\n",
+    "the argument <graph> cannot have multiple edges,");
+    return;
+  fi; # TODO write a method that also works for multidigraphs
+
   old := OutNeighbours(graph);
   rev := EmptyPlist(Length(old));
   for i in DigraphVertices(graph) do 
@@ -229,7 +233,7 @@ InstallMethod(IsTournament, "for a digraph",
 function(graph)
   local n;
   
-  if not IsSimpleDigraph(graph) then 
+  if IsMultiDigraph(graph) then 
     return false;
   fi;
 

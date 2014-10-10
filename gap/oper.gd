@@ -10,9 +10,14 @@
 
 DeclareOperation("DigraphRelabel", [IsDigraph, IsPerm]);
 DeclareOperation("DigraphRemoveLoops", [IsDigraph]);
-DeclareOperation("DigraphRemoveDigraphEdges", [IsDigraph, IsList]);
+DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
+DeclareOperation("DigraphRemoveVertices", [IsDigraph, IsList]);
+DeclareOperation("DigraphAddEdges", [IsDigraph, IsList]);
+DeclareOperation("DigraphAddVertices", [IsDigraph, IsList]);
+
 DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
+DeclareOperation("DigraphSymmetricClosure", [IsDigraph]);
 DeclareOperation("DigraphReverse", [IsDigraph]);
 DeclareOperation("QuotientDigraph", [IsDigraph, IsList]);
 DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);
