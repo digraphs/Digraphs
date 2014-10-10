@@ -10,12 +10,9 @@
 
 # graph algorithms
 
-#JDM this is incomplete
-
 InstallMethod(QuotientDigraph, "for a digraph and a list", 
-[IsMultiDigraph and HasAdjacencies, IsHomogeneousList],
+[IsDigraphByAdjacency, IsHomogeneousList],
 function(graph, verts)
-  local nr, new_nr, adj, i, j;
   
   nr := NrVertices(graph);
 
@@ -38,25 +35,26 @@ function(graph, verts)
 
   return fail;
 end)
+;
 
-InstallDigraphMethod(DigraphReverse, "for a digraph with source",
-[IsDigraph and HasSource], MultiDigraphReverse);
-
-InstallMethod(MultiDigraphReverse, "for a multidigraph with source",
-[IsMultiDigraph and HasSource],
+InstallMethod(DigraphReverse, "for a digraph with source",
+[IsDigraph and HasSource],
 function(graph)
   local source, range;
 
     source := ShallowCopy(Range(graph));
     range := Permuted(Source(graph), Sortex(source));
-  
-    return MultiDigraphNC(rec( source:=source, 
-                               range:=range,
-                               nrvertices:=NrVertices(graph)));
+
+    return DigraphNC(rec( source:=source, 
+                                range:=range,
+                                nrvertices:=NrVertices(graph)));
 end);
 
-InstallMethod(MultiDigraphReverse, "for a multidigraph with adjacencies",
-[IsMultiDigraph and HasAdjacencies],
+# the following doesn't apply to non-simple digraphs, and so we use
+# IsDigraphByAdjacency
+
+InstallMethod(DigraphReverse, "for a digraph by adjacency",
+[IsDigraphByAdjacency],
 function(graph)
   local old, new, i, j;
 
@@ -69,11 +67,11 @@ function(graph)
     od;
   od;
 
-  return MultiDigraphNC(new);
+  return DigraphNC(new);
 end);
 
-InstallMethod(MultiDigraphRemoveLoops, "for a multidigraph with source",
-[IsMultiDigraph and HasSource],
+InstallMethod(DigraphRemoveLoops, "for a digraph with source",
+[IsDigraph and HasSource],
 function(graph)
   local source, range, newsource, newrange, nr, i;
 
@@ -92,13 +90,12 @@ function(graph)
     fi;
   od;
 
-  return MultiDigraphNC(rec(source:=newsource, 
-                            range:=newrange,
-                            nrvertices:=NrVertices(graph)));
+  return DigraphNC(rec( source:=newsource, range:=newrange,
+                              nrvertices:=NrVertices(graph)));
 end);
 
-InstallMethod(MultiDigraphRemoveLoops, "for a multigraph with adjacencies",
-[IsMultiDigraph and HasAdjacencies],
+InstallMethod(DigraphRemoveLoops, "for a digraph by adjacency",
+[IsDigraphByAdjacency],
 function(graph)
   local old, new, nr, i, j;
   
@@ -116,21 +113,27 @@ function(graph)
     od;
   od;
 
-  return MultiDigraphNC(new);
+  return DigraphNC(new);
 end);
 
-InstallMethod(MultiDigraphRemoveEdges, "for a multidigraph and a list",
-[IsMultiDigraph, IsList],
+InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
+[IsDigraph, IsList],
 function(graph, edges)
   local range, vertices, source, newsource, newrange, i;
 
   if Length(edges) > 0 and IsPosInt(edges[1]) then # remove edges by index
     edges := Difference( [ 1 .. Length(Source(graph)) ], edges );
 
-    return MultiDigraphNC(rec(source := Source(graph){edges},
-                              range := Range(graph){edges},
-                              nrvertices := NrVertices(graph)));
+    return DigraphNC(rec(
+      source := Source(graph){edges},
+      range := Range(graph){edges},
+      nrvertices := NrVertices(graph)));
   else
+    if not IsSimpleDigraph(graph) then
+      Error("usage: to remove edges given as pairs of vertices,",
+      " the graph must be simple,");
+      return;
+    fi;
     source := Source(graph);;
     range := Range(graph);;
     newsource := [ ];
@@ -143,14 +146,13 @@ function(graph, edges)
       fi;
     od;
 
-    return MultiDigraphNC(rec(source:=newsource, 
-                              range:=newrange,
-                              nrvertices:=NrVertices(graph)));
+    return DigraphNC(rec( source:=newsource, range:=newrange,
+                                nrvertices:=NrVertices(graph)));
   fi;
 end);
 
-InstallMethod(MultiDigraphRelabel, "for a multidigraph with adjacencies and perm",
-[IsMultiDigraph and HasAdjacencies, IsPerm],
+InstallMethod(DigraphRelabel, "for a digraph by adjacency and perm",
+[IsDigraphByAdjacency, IsPerm],
 function(graph, perm)
   local adj;
 
@@ -163,11 +165,11 @@ function(graph, perm)
   adj := Permuted(Adjacencies(graph), perm);
   Apply(adj, x-> OnTuples(x, perm));
 
-  return MultiDigraphNC(adj);
+  return DigraphNC(adj);
 end);
 
-InstallMethod(MultiDigraphRelabel, "for a multidigraph and perm",
-[IsMultiDigraph, IsPerm],
+InstallMethod(DigraphRelabel, "for a digraph and perm",
+[IsDigraph, IsPerm],
 function(graph, perm)
 
   if ForAny(Vertices(graph), i-> i^perm > NrVertices(graph)) then
@@ -175,13 +177,14 @@ function(graph, perm)
     "the vertices of the 1st argument <graph>,");
     return;
   fi;
-  return MultiDigraphNC(rec(source := ShallowCopy(OnTuples(Source(graph), perm)),
-                            range:= ShallowCopy(OnTuples(Range(graph), perm)),
-                            nrvertices:=NrVertices(graph)));
+  return DigraphNC(rec(
+    source := ShallowCopy(OnTuples(Source(graph), perm)),
+    range:= ShallowCopy(OnTuples(Range(graph), perm)),
+    nrvertices:=NrVertices(graph)));
 end);
 
-InstallMethod(DigraphFloydWarshall, "for a multidigraph",
-[IsMultiDigraph],
+InstallMethod(DigraphFloydWarshall, "for a digraph",
+[IsDigraph],
 function(graph)
   local dist, i, j, k, n, m;
 
@@ -204,8 +207,7 @@ function(graph)
   for k in [1..n] do
     for i in [1..n] do
       for j in [1..n] do
-        if dist[i][k] <> infinity and dist[k][j] <> infinity 
-         and dist[i][j] > dist[i][k] + dist[k][j] then
+        if dist[i][k] <> infinity and dist[k][j] <> infinity and dist[i][j] > dist[i][k] + dist[k][j] then
           dist[i][j]:= dist[i][k] + dist[k][j];
         fi;
       od;
@@ -213,14 +215,24 @@ function(graph)
   od;
 
   return dist;
+
 end);
 
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
-InstallMethod(DigraphReflexiveTransitiveClosure, "for a digraph", [IsDigraph],
+
+# JDM: requires a method for non-acyclic graphs
+
+InstallMethod(DigraphReflexiveTransitiveClosure,
+"for a digraph", [IsDigraph],
 function(graph)
   local sorted, vertices, n, adj, out, trans, mat, flip, v, u, w;
+
+  if not IsSimpleDigraph(graph) then
+    Error("usage: the argument should be a simple digraph,");
+    return;
+  fi;
 
   vertices := Vertices(graph);
   n := Length(vertices);
@@ -240,6 +252,7 @@ function(graph)
     od;
 
     out := DigraphNC(out);
+    SetIsSimpleDigraph(out, true);
     return out;
   else # Non-acyclic method
     mat := List( vertices, x -> List( vertices, y -> infinity ) ); 
@@ -274,7 +287,7 @@ function(graph)
 
     mat := List( mat, x -> List( x, flip ) ); # Create adjacency matrix
     out := DigraphByAdjacencyMatrix(mat);
-
+    SetIsSimpleDigraph(out, true);
     return out;
   fi;
 end);
@@ -285,6 +298,11 @@ InstallMethod(DigraphTransitiveClosure, "for a digraph",
 [IsDigraph],
 function(graph)
   local sorted, vertices, n, adj, out, trans, reflex, mat, flip, v, u, w;
+
+  if not IsSimpleDigraph(graph) then
+    Error("usage: the argument should be a simple digraph,");
+    return;
+  fi;
 
   vertices := Vertices(graph);
   n := Length(vertices);
@@ -312,7 +330,7 @@ function(graph)
     od;
 
     out := DigraphNC(out);
-    SetIsDigraph(out, true);
+    SetIsSimpleDigraph(out, true);
     return out;
   else # Non-acyclic method
 
@@ -355,7 +373,7 @@ function(graph)
       mat[v][v] := reflex[v]; 
     od;
     out := DigraphByAdjacencyMatrix(mat);
-    SetIsDigraph(out, true);
+    SetIsSimpleDigraph(out, true);
     return out;
   fi;
 end);
