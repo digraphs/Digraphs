@@ -14,7 +14,7 @@ InstallMethod(IsIsomorphicDigraph, "for digraphs",
 [IsDigraph, IsDigraph],
 function(g1, g2)
   if IsSimpleDigraph(g1) and IsSimpleDigraph(g2) then 
-    return IsIsomorphicGraph( GrapeGraph(g1), GrapeGraph(g2) );
+    return IsIsomorphicGraph( AsGraph(g1), AsGraph(g2) );
   fi;
   Error("not yet implemented,");
   return;
@@ -27,7 +27,7 @@ InstallMethod(AutomorphismGroup, "for a digraph",
 function(graph)
   if IsSimpleDigraph(graph) then 
     # TODO: convert back to digraphs
-    return AutomorphismGroup(GrapeGraph(graph));
+    return AutomorphismGroup(AsGraph(graph));
   fi;
   Error("not yet implemented,");
 end);
@@ -39,7 +39,7 @@ InstallMethod(DigraphIsomorphism, "for two digraphs",
 function(g1, g2)
   if IsSimpleDigraph(g1) and IsSimpleDigraph(g2) then   
     # TODO: convert back to digraphs
-    return GraphIsomorphism( GrapeGraph(g1), GrapeGraph(g2) );
+    return GraphIsomorphism( AsGraph(g1), AsGraph(g2) );
   fi;
 end);
 
@@ -48,7 +48,7 @@ end);
 InstallMethod(Girth, "for a digraph",
 [IsDigraph],
 function(graph)
-  return Girth( GrapeGraph(graph) );
+  return Girth( AsGraph(graph) );
 end);
 
 #
@@ -56,7 +56,7 @@ end);
 InstallMethod(Diameter, "for a digraph",
 [IsDigraph],
 function(graph)
-  return Diameter( GrapeGraph(graph) );
+  return Diameter( AsGraph(graph) );
 end);
 
 #
@@ -64,6 +64,6 @@ end);
 InstallMethod(IsConnectedDigraph, "for a digraph",
 [IsDigraph],
 function(graph)
-  return IsConnectedGraph( GrapeGraph(graph) );
+  return IsConnectedGraph( AsGraph(graph) );
 end);
 

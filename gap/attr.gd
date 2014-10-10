@@ -10,11 +10,8 @@
 
 # attributes for digraphs . . .
 
-
 DeclareAttribute("DigraphVertices", [IsDigraph]);
 DeclareAttribute("DigraphEdges", IsDigraph);
-DeclareAttribute("OutNeighbours", IsDigraph);
-DeclareAttribute("InNeighbours", IsDigraph);
 DeclareAttribute("DigraphNrVertices", IsDigraph);
 DeclareAttribute("DigraphNrEdges", IsDigraph);
 
@@ -25,12 +22,10 @@ DeclareAttribute("DigraphDual", IsDigraph);
 DeclareAttribute("DigraphShortestDistances", IsDigraph);
 DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
 
+DeclareAttribute("OutNeighbours", IsDigraph);
+DeclareAttribute("InNeighbours", IsDigraph);
+
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
-# GrapeGraph must be mutable for grape to function properly
-DeclareAttribute("GrapeGraph", IsDigraph, "mutable");
 
-# these are really attributes but are declared elsewhere as operations and so we
-# must declare them as operations too
-
-
-
+# AsGraph must be mutable for grape to function properly
+DeclareAttribute("AsGraph", IsDigraph, "mutable");

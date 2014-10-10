@@ -217,7 +217,7 @@ function(graph)
 end);
 
 InstallMethod(IsFunctionalDigraph, "for a digraph",
-[IsDigraphByDigraphSourceAndDigraphRange],
+[IsDigraph and HasDigraphSource],
 function(graph)
   return DigraphSource(graph) = DigraphVertices(graph);
 end);
@@ -250,7 +250,7 @@ end);
 #
 
 InstallMethod(IsEmptyDigraph, "for a digraph",
-[IsDigraphByDigraphSourceAndDigraphRange],
+[IsDigraph and HasDigraphSource],
 function(digraph)
   return DigraphSource(digraph) = [];
 end);

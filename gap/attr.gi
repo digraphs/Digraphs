@@ -8,11 +8,17 @@
 #############################################################################
 ##
 
-InstallMethod(DigraphDual, "for a digraph by adjacency", 
+InstallMethod(DigraphDual, "for a digraph with out-neighbours", 
 [IsDigraph and HasOutNeighbours], 
 function(graph)
   local verts, old, new, i;
-
+  
+  if IsMultiDigraph(graph) then 
+    Error("Digraphs: DigraphDual: usage,\n", 
+      "the argument <graph> must not have multiple edges,");
+    return;
+  fi;
+  
   verts := DigraphVertices(graph);
   old := OutNeighbours(graph);
   new := [];
@@ -33,7 +39,7 @@ end);
 
 #
 
-InstallMethod(DigraphNrEdges, "for a digraph by adjacency",
+InstallMethod(DigraphNrEdges, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours],
 function(graph)
   return Sum(List(OutNeighbours(graph), Length));
@@ -47,7 +53,7 @@ end);
 
 # IsDigraph and HasOutNeighbours implies IsSimpleDigraph
 
-InstallMethod(DigraphEdges, "for a digraph by adjacency",
+InstallMethod(DigraphEdges, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours],
 function(graph)
   local adj, nr, out, i, j;
@@ -66,7 +72,7 @@ function(graph)
 end);
   
 InstallMethod(DigraphEdges, "for a digraph",
-[IsDigraph],
+[IsDigraph and HasDigraphSource],
 function(graph)
   local out, range, source, i;
 
@@ -80,12 +86,17 @@ function(graph)
   return out;
 end);
 
+InstallMethod(DigraphEdges, "for a digraph",
+[IsDigraph and HasOutNeighbours],
+function(graph)
+  Error("not yet implemented");
+end);
+
 # attributes for digraphs . . .
 
-InstallMethod(GrapeGraph, "for a digraph", 
-[IsDigraph], Graph);
+InstallMethod(AsGraph, "for a digraph", [IsDigraph], Graph);
 
-BindGlobal("DIGRAPHS_DigraphRangeDigraphSource",
+BindGlobal("DIGRAPHS_SourceRange",
 function(graph)
   local adj, nr, source, range, j, i;
 
@@ -125,26 +136,26 @@ function(graph)
   return [ 1 .. DigraphNrVertices(graph) ];
 end);
 
-InstallMethod(DigraphRange, "for a digraph by adjacency",
+InstallMethod(DigraphRange, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours],
 function(graph)
-  DIGRAPHS_DigraphRangeDigraphSource(graph);
+  DIGRAPHS_SourceRange(graph);
   return graph!.range;
 end);
 
-InstallMethod(DigraphSource, "for a digraph by adjacency",
+InstallMethod(DigraphSource, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours],
 function(graph)
-  DIGRAPHS_DigraphRangeDigraphSource(graph);
+  DIGRAPHS_SourceRange(graph);
   return graph!.source;
 end);
 
-if IsBound(DIGRAPH_ADJACENCY) then
+if IsBound(DIGRAPH_OUT_NBS) then
   InstallMethod(OutNeighbours, "for a digraph",
-  [IsDigraphByDigraphSourceAndDigraphRange], DIGRAPH_ADJACENCY);
+  [IsDigraph and HasDigraphSource], DIGRAPH_OUT_NBS);
 else
-  InstallMethod(OutNeighbours, "for a digraph by source and range",
-  [IsDigraphByDigraphSourceAndDigraphRange],
+  InstallMethod(OutNeighbours, "for a digraph with source and range",
+  [IsDigraph and HasDigraphSource],
   function(graph)
     local range, source, out, i;
 
@@ -153,7 +164,7 @@ else
     out:=List(DigraphVertices(graph), x-> []);
 
     for i in [1..Length(source)] do
-      AddSet(out[source[i]], range[i]);
+      Add(out[source[i]], range[i]);
     od;
 
     MakeImmutable(out);
@@ -162,7 +173,7 @@ else
   end);
 fi;
 
-InstallMethod(AdjacencyMatrix, "for a digraph by adjacency",
+InstallMethod(AdjacencyMatrix, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours], 
 function(graph)
   local verts, adj, out, i;
@@ -179,8 +190,8 @@ function(graph)
   return out;
 end);
 
-InstallMethod(AdjacencyMatrix, "for a digraph by source and range",
-[IsDigraphByDigraphSourceAndDigraphRange], 
+InstallMethod(AdjacencyMatrix, "for a digraph with source and range",
+[IsDigraph and HasDigraphSource], 
 function(graph)
   local verts, source, range, out, i;
   
