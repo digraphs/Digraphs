@@ -397,8 +397,8 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph) {
 
 static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   Obj   range, adj, source, adji;
-  UInt  nam, i, n;
-  int   k, *marked, current, j, jj;
+  UInt  nam;
+  int   n, i, k, *marked, current, j, jj;
  
   nam = RNamName("source");
   if (IsbPRec(digraph, nam)) {
