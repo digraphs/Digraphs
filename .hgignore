@@ -92,3 +92,5 @@ pkgconfig.h.in~
 autom4te.*
 configure
 *.lo
+*.Plo
+*.o
