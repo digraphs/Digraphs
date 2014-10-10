@@ -89,7 +89,19 @@ end);
 InstallMethod(DigraphEdges, "for a digraph",
 [IsDigraph and HasOutNeighbours],
 function(graph)
-  Error("not yet implemented");
+  local out, adj, nr, i, j;
+
+  out := EmptyPlist(DigraphNrEdges(graph));
+  adj := OutNeighbours(graph);
+  nr := 0;
+  
+  for i in [ 1 .. Length(adj) ] do 
+    for j in adj[i] do 
+      nr := nr + 1;
+      out[nr] :=[i, j];
+    od;
+  od;
+  return out;   
 end);
 
 # attributes for digraphs . . .
@@ -178,7 +190,7 @@ InstallMethod(AdjacencyMatrix, "for a digraph with out-neighbours",
 function(graph)
   local verts, adj, out, i;
   
-  verts := DigraphVertices(graph);
+  verts := [ 1 .. DigraphNrVertices(graph) ];
   adj := OutNeighbours(graph);
   
   out := EmptyPlist(DigraphNrVertices(graph));
@@ -195,7 +207,7 @@ InstallMethod(AdjacencyMatrix, "for a digraph with source and range",
 function(graph)
   local verts, source, range, out, i;
   
-  verts := DigraphVertices(graph);
+  verts := [ 1 .. DigraphNrVertices(graph) ];
   source := DigraphSource(graph);
   range := DigraphRange(graph);
 
