@@ -241,7 +241,7 @@ function(s)
     pos := pos + 6;
   od;
 
-  return Digraph( rec( vertices := [ 1 .. n ], range := range,
+  return Digraph( rec( nrvertices := n, range := range,
     source := source ) );
 end);
 
@@ -359,11 +359,11 @@ function(s)
     i := i + k + 1;
   od;
 
+  # JDM bad!
   range := range + 1;
   source := source + 1;
-
-  return Digraph( rec( vertices := [ 1 .. n ], range := range,
-  source := source  ) );
+  return Digraph( rec( nrvertices := n, range := range,
+   source := source  ) );
 end);
 
 #
@@ -1069,8 +1069,8 @@ function(s)
   range := range + 1;
   source := source + 1;
 
-  return Digraph( rec( vertices := [ 1 .. n ], range := range,
-  source := source  ) );
+  return Digraph( rec( nrvertices := n, range := range,
+    source := source  ) );
 end);
 
 #EOF
