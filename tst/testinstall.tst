@@ -19,7 +19,7 @@ gap> gr:=Digraph(
 > [ 1, 4, 6, 7, 9 ], [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], 
 > [ 3, 4, 9, 10 ], [ 1, 2, 3, 5, 6, 9, 10 ], [ 2, 4, 5, 6, 9 ] ] );
 <digraph with 10 vertices, 43 edges>
-gap> Adjacencies(gr);
+gap> OutNeighbours(gr);
 [ [ 8 ], [ 4, 5, 6, 8, 9 ], [ 2, 4, 5, 7, 10 ], [ 9 ], [ 1, 4, 6, 7, 9 ], 
   [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], [ 3, 4, 9, 10 ], 
   [ 1, 2, 3, 5, 6, 9, 10 ], [ 2, 4, 5, 6, 9 ] ]
@@ -48,8 +48,8 @@ gap> gr:=Digraph([
 >  [ 1, 4, 7, 8, 10, 14, 15 ], [ 1, 2, 4, 7, 13, 14, 15 ], 
 >  [ 1, 2, 3, 9, 10, 11, 12, 13, 14, 15 ] ]);
 <digraph with 15 vertices, 89 edges>
-gap> IsSimpleDigraph(gr);
-true
+gap> IsMultiDigraph(gr);
+false
 gap> IsAcyclicDigraph(gr);
 false
 gap> r:=rec(vertices:=[1..10000],source:=[],range:=[]);;
@@ -71,24 +71,24 @@ gap> gr:=Digraph( [ [ 2, 3 ], [ 4, 5 ], [ 5, 6 ], [], [], [], [ 3 ] ] );
 gap> IsDigraph(gr);
 true
 
-# check if Adjacencies can handle non-plists in source, range.
-gap> gr:=Digraph(rec( vertices:=[1..1000],
->                           source:=[1..1000],
->                           range:=Concatenation([2..1000],[1])));;
-gap> Adjacencies(gr);;
-
-#
-gap> DigraphsStopTest();
+# check if OutNeighbours can handle non-plists in source, range.
+gap> gr:=Digraph(rec( nrvertices:=1000,
+>                     source:=[1..1000],
+>                     range:=Concatenation([2..1000],[1])));;
+gap> OutNeighbours(gr);;
 
 #
 gap> d := Digraph(rec(vertices := [1..5], range := [], source := []));
 <digraph with 5 vertices, 0 edges>
-gap> IsSimpleDigraph(d);
-true
+gap> IsMultiDigraph(d);
+false
 
 #
 gap> DigraphFromSparse6String(":Fa@x^");
 <digraph with 7 vertices, 8 edges>
+
+#
+gap> DigraphsStopTest();
 
 #
 gap> STOP_TEST( "Digraphs package: testinstall.tst", 0);

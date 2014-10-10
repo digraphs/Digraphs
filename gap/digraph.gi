@@ -24,7 +24,7 @@ else
       source := DigraphSource(graph);
       nredges := Length(range);
       current := 0;
-      marked := DigraphVertices(graph) * 0;
+      marked := [ 1 .. DigraphNrVertices(graph)] * 0;
 
       for i in [ 1 .. nredges ] do
         if source[i] <> current then
@@ -131,7 +131,7 @@ function(graph)
   local check_source, cmp, obj, i;
 
   if IsGraph(graph) then
-    return DigraphNC(List(DigraphVertices(graph), x-> Adjacency(graph, x)));
+    return DigraphNC(List(Vertices(graph), x-> Adjacency(graph, x)));
   fi;
 
   if not (IsBound(graph.source) and IsBound(graph.range) and

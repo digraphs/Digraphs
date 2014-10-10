@@ -130,49 +130,6 @@ else
   end);
 fi;
 
-# simple means no multiple edges (loops are allowed)
-if IsBound(IS_MULTI_DIGRAPH) then
-  InstallMethod(IsMultiDigraph, "for a digraph",
-  [IsDigraph], IS_MULTI_DIGRAPH);
-else 
-  InstallMethod(IsMultiDigraph, "for a digraph",
-  [IsDigraph],
-  function(graph)
-    local range, source, nredges, current, marked, out, nbs, i, j;
-
-    if HasDigraphSource(graph) then
-      range := DigraphRange(graph);
-      source := DigraphSource(graph);
-      nredges := Length(range);
-      current := 0;
-      marked := DigraphVertices(graph) * 0;
-
-      for i in [ 1 .. nredges ] do
-        if source[i] <> current then
-          current := source[i];
-          marked[range[i]] := current;
-        elif marked[range[i]] = current then
-          return false;
-        else
-          marked[range[i]] := current;
-        fi;
-      od;
-      return true;
-    else
-      out := OutNeighbours(graph);
-      for i in DigraphVertices(graph) do
-        nbs := out[i];
-        for j in [ 1 .. Length(nbs) ] do 
-          if Position( nbs, nbs[j], 0 ) < j  then
-            return false;
-          fi;
-        od;
-      od;
-      return true;
-    fi;
-
-  end);
-fi;
 
 # Complexity O(number of edges)
 # this could probably be improved further ! JDM
