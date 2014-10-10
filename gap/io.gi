@@ -429,7 +429,7 @@ function(arg)
           x := x + offset;
           Add(edges, x);
         od;
-        return DigraphByDigraphEdges(edges);
+        return DigraphByEdges(edges);
       end;
   else
     Error("usage: DigraphPlainTestLineDecoder(delimiter, [,delimiter], offset)");
@@ -473,7 +473,7 @@ function(name, delimiter, offset, ignore)
     fi;
   od;
 
-  return DigraphByDigraphEdges(edges);
+  return DigraphByEdges(edges);
 end);
 
 # this is just temporary, until a better method is given, only works for single

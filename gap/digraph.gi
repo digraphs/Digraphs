@@ -333,7 +333,7 @@ end);
 
 #
 
-InstallMethod(DigraphByDigraphEdges, "for a rectangular table",
+InstallMethod(DigraphByEdges, "for a rectangular table",
 [IsRectangularTable],
 function(edges)
   local adj, max_range, gr, edge, i;
@@ -373,18 +373,18 @@ end);
 
 # <n> is the number of vertices
 
-InstallMethod(DigraphByDigraphEdges, "for a rectangular table, and a pos int",
+InstallMethod(DigraphByEdges, "for a rectangular table, and a pos int",
 [IsRectangularTable, IsPosInt],
 function(edges, n)
   local adj, gr, edge;
   
   if not Length(edges[1]) = 2 then 
-    Error("DigraphByDigraphEdges: usage, the argument <edges> must be a list of pairs,");
+    Error("DigraphByEdges: usage, the argument <edges> must be a list of pairs,");
     return;
   fi;
 
   if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then 
-    Error("DigraphByDigraphEdges: usage, the argument <edges> must be a list of", 
+    Error("DigraphByEdges: usage, the argument <edges> must be a list of", 
     " pairs of pos ints,");
     return;
   fi;
@@ -393,7 +393,7 @@ function(edges, n)
 
   for edge in edges do
     if edge[1] > n or edge[2] > n then
-      Error("DigraphByDigraphEdges: usage, the specified edges must not contain", 
+      Error("DigraphByEdges: usage, the specified edges must not contain", 
       " values greater than ", n );
       return;
     fi;

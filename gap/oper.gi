@@ -193,7 +193,7 @@ function(graph)
   local sorted, vertices, n, adj, out, trans, mat, flip, v, u, w;
 
   if IsMultiDigraph(graph) then
-    Error("Digraphs: DigraphTransitiveClosure: usage,\n",
+    Error("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
     "the argument <graph> cannot have multiple edges,");
     return;
   fi;
@@ -270,8 +270,8 @@ function(graph)
     return;
   fi;
 
-  vertices := DigraphVertices(graph);
   n := DigraphNrVertices(graph);
+  vertices := [ 1 .. n ];
   adj := OutNeighbours(graph);
   sorted := DigraphTopologicalSort(graph);
 
