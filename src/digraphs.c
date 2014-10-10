@@ -508,6 +508,21 @@ static Obj FuncGRAPH_AUTOMORPHISM(Obj self, Obj digraph) {
   bliss_release(graph);
   
   return automorphs;
+}
+
+static Obj FuncGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
+  Obj   automorphs;
+  BlissGraph *graph;
+     
+  graph = buildGraph(digraph);
+  
+  automorphs = NEW_PLIST(T_PLIST, 0);
+  SET_LEN_PLIST(automorphs, 0);
+  
+  bliss_find_canonical_labeling(graph,hook_function,automorphs,0); 
+  bliss_release(graph);
+
+  return automorphs;
 } 
 
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
@@ -545,8 +560,11 @@ static StructGVarFunc GVarFuncs [] = {
   { "GRAPH_AUTOMORPHISM", 1, "digraph",
     FuncGRAPH_AUTOMORPHISM, 
     "src/digraphs.c:FuncGRAPH_AUTOMORPHISM" },
+
+  { "GRAPH_CANONICAL_LABELING", 1, "digraph",
+    FuncGRAPH_CANONICAL_LABELING, 
+    "src/digraphs.c:FuncGRAPH_CANONICAL_LABELING" },
       
- 
   { 0 }
 
 };
