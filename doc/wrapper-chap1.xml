@@ -12,7 +12,7 @@
     <#Include Label="DigraphByAdjacencyMatrix">
     <#Include Label="DigraphByEdges">
     <#Include Label="AsDigraph">
-    <#Include Label="RandomSimpleDigraph">
+    <#Include Label="RandomDigraph">
   </Section>
 
   <Section><Heading>Operators for digraphs</Heading>
@@ -32,12 +32,12 @@
   </Section>
 
   <Section><Heading>Attributes of digraphs</Heading>
-    <#Include Label="Vertices">
-    <#Include Label="NrVertices">
-    <#Include Label="Edges">
-    <#Include Label="NrEdges">
+    <#Include Label="DigraphVertices">
+    <#Include Label="DigraphNrVertices">
+    <#Include Label="DigraphEdges">
+    <#Include Label="DigraphNrEdges">
     <#Include Label="RangeSourceDigraph">
-    <#Include Label="Adjacencies">
+    <#Include Label="OutNeighbours">
     <#Include Label="AdjacencyMatrix">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphStronglyConnectedComponents">
@@ -49,7 +49,7 @@
     <#Include Label="IsEmptyDigraph">
     <#Include Label="IsFunctionalDigraph">
     <#Include Label="IsReflexiveDigraph">
-    <#Include Label="IsSimpleDigraph">
+    <#Include Label="IsMultiDigraph">
     <#Include Label="IsStronglyConnectedDigraph">
     <#Include Label="IsSymmetricDigraph">
   </Section>

@@ -7,7 +7,6 @@
 ##
 #############################################################################
 ##
-
 gap> START_TEST("Digraphs package: oper.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -20,7 +19,7 @@ gap> gr := Digraph(
 <digraph with 5 vertices, 11 edges>
 gap> rgr := DigraphReverse(gr);
 <digraph with 5 vertices, 11 edges>
-gap> Adjacencies(rgr);
+gap> OutNeighbours(rgr);
 [ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ]
 gap> gr = DigraphReverse(rgr);
 true
@@ -29,13 +28,13 @@ true
 gap> gr := Digraph( rec ( nrvertices := 5,
 > source := [ 1, 1, 2, 2, 2, 2, 2, 3, 4, 4, 4, 5, 5, 5 ],
 > range  := [ 1, 3, 1, 2, 2, 4, 5, 4, 1, 3, 5, 1, 1, 3 ] ) );
-<digraph with 5 vertices, 14 edges>
-gap> e := Edges(gr);
+<multidigraph with 5 vertices, 14 edges>
+gap> e := DigraphEdges(gr);
 [ [ 1, 1 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 2 ], [ 2, 4 ], [ 2, 5 ], 
   [ 3, 4 ], [ 4, 1 ], [ 4, 3 ], [ 4, 5 ], [ 5, 1 ], [ 5, 1 ], [ 5, 3 ] ]
 gap> rev := DigraphReverse(gr);
-<digraph with 5 vertices, 14 edges>
-gap> erev := Edges(rev);
+<multidigraph with 5 vertices, 14 edges>
+gap> erev := DigraphEdges(rev);
 [ [ 1, 1 ], [ 1, 2 ], [ 1, 5 ], [ 1, 4 ], [ 1, 5 ], [ 2, 2 ], [ 2, 2 ], 
   [ 3, 1 ], [ 3, 4 ], [ 3, 5 ], [ 4, 3 ], [ 4, 2 ], [ 5, 2 ], [ 5, 4 ] ]
 gap> temp := List( erev, x -> [ x[2], x[1] ] );;
@@ -46,13 +45,13 @@ true
 # DigraphTransitiveClosure & DigraphReflexiveTransitiveClosure
 gap> gr := Digraph( 
 > rec( nrvertices := 2, source := [ 1, 1 ], range := [ 2, 2 ] ) );
-<digraph with 2 vertices, 2 edges>
+<multidigraph with 2 vertices, 2 edges>
 gap> DigraphReflexiveTransitiveClosure(gr);
-Error, Digraphs: DigraphTransitiveClosure: usage,
-the argument <graph> should be a simple digraph,
+Error, Digraphs: DigraphReflexiveTransitiveClosure: usage,
+the argument <graph> cannot have multiple edges,
 gap> DigraphTransitiveClosure(gr);
 Error, Digraphs: DigraphTransitiveClosure: usage,
-the argument <graph> should be a simple digraph,
+the argument <graph> cannot have multiple edges,
 gap> r := rec( vertices:=[ 1 .. 4 ], source := [ 1, 1, 2, 3, 4 ], 
 > range := [ 1, 2, 3, 4, 1 ] );
 rec( range := [ 1, 2, 3, 4, 1 ], source := [ 1, 1, 2, 3, 4 ], 
@@ -98,13 +97,13 @@ gap>
 # DigraphRelabel (for a digraph by adjacency and perm)
 gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );
 <digraph with 3 vertices, 3 edges>
-gap> Edges(gr);
+gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 2, 1 ], [ 3, 3 ] ]
 gap> g := (1, 2, 3);
 (1,2,3)
 gap> DigraphRelabel(gr, g);
 <digraph with 3 vertices, 3 edges>
-gap> Edges(last);
+gap> DigraphEdges(last);
 [ [ 1, 1 ], [ 2, 3 ], [ 3, 2 ] ]
 gap> h := (1, 2, 3, 4);
 (1,2,3,4)

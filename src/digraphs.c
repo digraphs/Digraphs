@@ -7,6 +7,8 @@
 **  
 */
 
+#include "bliss-0.72/bliss_C.h"
+
 #include <stdlib.h>
 
 #include "src/compiled.h"          /* GAP headers                */
@@ -91,8 +93,8 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
       SET_ELM_PLIST(id, v, INTOBJ_INT(end1)); 
       
       while (1) {
-        if (frames[1] > LEN_PLIST(frames[2])) {
-          if (stack2[end2] == INT_INTOBJ(ELM_PLIST(id, frames[0]))) {
+        if (frames[1] > (UInt) LEN_PLIST(frames[2])) {
+          if (stack2[end2] == (UInt) INT_INTOBJ(ELM_PLIST(id, frames[0]))) {
             end2--;
             count++;
             nr = 0;
@@ -190,7 +192,7 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
         // 1. We've previously finished with this vertex, OR 
         // 2. Whether we've now investigated all descendant branches
         nbs = ELM_PLIST(adj, j);
-        if( ptr[j] == 1 || k > LEN_LIST(nbs)) {
+        if( ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
           ptr[j] = 1;
           level--;
           if (level == 0) { 
@@ -240,7 +242,7 @@ static Obj FuncIS_STRONGLY_CONNECTED_DIGRAPH(Obj self, Obj digraph) {
   id[1] = nextid;
   
   while (1) { // we always return before level = 0
-    if (fptr[1] > LEN_PLIST(ELM_PLIST(digraph, fptr[0]))) {
+    if (fptr[1] > (UInt) LEN_PLIST(ELM_PLIST(digraph, fptr[0]))) {
       if (*ptr2 == id[fptr[0]]) {
 	do {
 	  n--;
@@ -321,7 +323,7 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
           continue;
         }
         nbs = ELM_PLIST(adj, j);
-        if( ptr[j] == 1 || k > LEN_LIST(nbs)) {
+        if( ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
           if ( ptr[j] == 0 ) {
             // ADD J TO THE END OF OUR LIST
             count++;
@@ -352,20 +354,21 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   return out;
 }
 
-static Obj FuncDIGRAPH_ADJACENCY(Obj self, Obj digraph) { 
-  Obj   range, source, adj, adjj, k;
-  UInt  n, i, j, pos, len;
+static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph) { 
+  Obj   range, source, adj, adjj;
+  UInt  n, i, j, len;
   
-  range = ElmPRec(digraph, RNamName("range")); 
-  PLAIN_LIST(range);
-  source = ElmPRec(digraph, RNamName("source"));
-  PLAIN_LIST(source);
   
   n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
 
   if (n == 0) {
     return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
   }
+  
+  range = ElmPRec(digraph, RNamName("range")); 
+  PLAIN_LIST(range);
+  source = ElmPRec(digraph, RNamName("source"));
+  PLAIN_LIST(source);
 
   adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
   SET_LEN_PLIST(adj, n);
@@ -383,87 +386,143 @@ static Obj FuncDIGRAPH_ADJACENCY(Obj self, Obj digraph) {
     adjj = ELM_PLIST(adj, j);
     len = LEN_PLIST(adjj); 
     if(len == 0){
-      RetypeBag(adjj, T_PLIST_CYC_SSORT+IMMUTABLE);
+      RetypeBag(adjj, T_PLIST_CYC+IMMUTABLE);
       CHANGED_BAG(adj);
     }
-    k = ELM_PLIST(range, i);
-    
-    // perform the binary search to find the position
-    pos = PositionSortedDensePlist( adjj, k );
-
-    // add the element to the set if it is not already there
-    if ( len < pos || INT_INTOBJ(ELM_PLIST(adjj, pos)) != INT_INTOBJ(k) )  {
-      GROW_PLIST( adjj, len+1 );
-      SET_LEN_PLIST( adjj, len+1 );
-      {
-        Obj *ptr;
-        ptr = PTR_BAG(adjj);
-        memmove((void *)(ptr + pos+1),(void*)(ptr+pos),(size_t)(sizeof(Obj)*(len+1-pos)));
-      }
-      SET_ELM_PLIST( adjj, pos, k );
-      CHANGED_BAG( adj );
-    }
-
+    AssPlist(adjj, len + 1,  ELM_PLIST(range, i));
   }
   AssPRec(digraph, RNamName("adj"), adj);
   return adj;
 }
 
-static Obj FuncIS_SIMPLE_DIGRAPH(Obj self, Obj digraph) {
-  Obj   range, adj, source;
-  UInt  nam, len, nr, current, i, j, n;
-  int   k, *marked;
-  
-  nam = RNamName("range");
-  if (!IsbPRec(digraph, nam)) {
-    return True;
-  }
-  range = ElmPRec(digraph, nam);
-  PLAIN_LIST(range);
-  
-  nam = RNamName("adj");
+static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
+  Obj   range, adj, source, adji;
+  UInt  nam;
+  int   n, i, k, *marked, current, j, jj;
+ 
+  nam = RNamName("source");
   if (IsbPRec(digraph, nam)) {
+    source = ElmPRec(digraph, nam);
+    PLAIN_LIST(source);
+  
+    if (LEN_PLIST(source) == 0) {
+      return False;
+    }
+    
+    range = ElmPRec(digraph, RNamName("range"));
+    PLAIN_LIST(range);
+    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
+
+    current = INT_INTOBJ(ELM_PLIST(source, 1));
+    marked = calloc(n + 1, sizeof(UInt));
+    marked[INT_INTOBJ(ELM_PLIST(range, 1))] = current;
+    
+    for (i = 2; i <= LEN_PLIST(source); i++) {
+      j = INT_INTOBJ(ELM_PLIST(source, i));
+      if (j != current) {
+        current = j;
+        marked[INT_INTOBJ(ELM_PLIST(range, i))] = j;
+      } else {
+        k = INT_INTOBJ(ELM_PLIST(range, i));
+        if(marked[k] == current){
+          free(marked);
+          return True;
+        } else {
+          marked[k] = j;
+        }
+      }
+    }
+     
+    free(marked);
+    return False;
+  } else {
+    adj = ElmPRec(digraph, RNamName("adj"));
+    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
+    for (i = 1; i <= n; i++) {
+      adji = ELM_PLIST(adj, i);
+      for (j = 2; j <= LEN_PLIST(adji); j++) {
+        jj = INT_INTOBJ(ELM_PLIST(adji, j));
+        for (k = 1; k < j; k++) {
+          if (INT_INTOBJ(ELM_PLIST(adji, k)) == jj) {
+            return True;
+          }
+        }
+      }
+    }
+    return False;
+  }
+} 
+
+// bliss 
+
+void hook_function(void *user_param,
+	      unsigned int N,
+	      const unsigned int *aut) {
+   UInt4* pt;
+   Obj prod;
+   
+   prod = NEW_PERM4(N);
+   pt = ADDR_PERM4(prod);
+   
+   for(UInt i = 0; i < N; ++i)
+       pt[i] = aut[i];
+   
+   AssPlist(user_param, LEN_PLIST(user_param)+1, prod);
+   CHANGED_BAG(user_param);
+ }
+
+BlissGraph* buildGraph(Obj digraph) {
+    UInt n, nam, i, j, nr, len;
+    Obj adji, adj;
+    BlissGraph *graph;
+  
+    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  
+    graph = bliss_new(n);
+  
+    nam = RNamName("adj");
     adj = ElmPRec(digraph, nam);
     len = LEN_PLIST(adj);
     nr = 0;
     for (i = 1; i <= len; i++) {
-      nr += LEN_PLIST(ELM_PLIST(adj, i));
+        nr = LEN_PLIST(ELM_PLIST(adj, i));
+        adji = ELM_PLIST(adj, i);
+        for(j = 1; j <= nr; j++) {
+            bliss_add_edge(graph, i-1, INT_INTOBJ(ELM_PLIST(adji, j))-1);
+        }
     }
-    return (nr == LEN_PLIST(range) ? True : False);
-  }
+    
+    return graph;
+}
+
+static Obj FuncGRAPH_AUTOMORPHISM(Obj self, Obj digraph) {
+  Obj   automorphs;
+  BlissGraph *graph;
   
-  len = LEN_PLIST(range);
-  if (len == 0) {
-    return True;
-  }
-
-  source = ElmPRec(digraph, RNamName("source"));
-  PLAIN_LIST(source);
-
-  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
-
-  current = INT_INTOBJ(ELM_PLIST(source, 1));
-  marked = calloc(n + 1, sizeof(UInt));
-  marked[INT_INTOBJ(ELM_PLIST(range, 1))] = 1;
+  graph = buildGraph(digraph);
   
-  for (i = 2; i <= len; i++) {
-    j = INT_INTOBJ(ELM_PLIST(source, i));
-    if (j != current) {
-      current = j;
-      marked[INT_INTOBJ(ELM_PLIST(range, i))] = j;
-    } else {
-      k = INT_INTOBJ(ELM_PLIST(range, i));
-      if(marked[k] == current){
-        free(marked);
-        return False;
-      } else {
-        marked[k] = j;
-      }
-    }
-  }
-   
-  free(marked);
-  return True;
+  automorphs = NEW_PLIST(T_PLIST, 0);
+  SET_LEN_PLIST(automorphs, 0);
+  
+  bliss_find_automorphisms(graph,hook_function,automorphs,0);
+  bliss_release(graph);
+  
+  return automorphs;
+}
+
+static Obj FuncGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
+  Obj   automorphs;
+  BlissGraph *graph;
+     
+  graph = buildGraph(digraph);
+  
+  automorphs = NEW_PLIST(T_PLIST, 0);
+  SET_LEN_PLIST(automorphs, 0);
+  
+  bliss_find_canonical_labeling(graph,hook_function,automorphs,0); 
+  bliss_release(graph);
+
+  return automorphs;
 } 
 
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
@@ -490,14 +549,22 @@ static StructGVarFunc GVarFuncs [] = {
     FuncDIGRAPH_TOPO_SORT, 
     "src/digraphs.c:FuncDIGRAPH_TOPO_SORT" },
 
-  { "DIGRAPH_ADJACENCY", 1, "digraph",
-    FuncDIGRAPH_ADJACENCY, 
-    "src/digraphs.c:FuncDIGRAPH_ADJACENCY" },
+  { "DIGRAPH_OUT_NBS", 1, "digraph",
+    FuncDIGRAPH_OUT_NBS, 
+    "src/digraphs.c:FuncDIGRAPH_OUT_NBS" },
 
-  { "IS_SIMPLE_DIGRAPH", 1, "digraph",
-    FuncIS_SIMPLE_DIGRAPH, 
-    "src/digraphs.c:FuncIS_SIMPLE_DIGRAPH" },
- 
+  { "IS_MULTI_DIGRAPH", 1, "digraph",
+    FuncIS_MULTI_DIGRAPH, 
+    "src/digraphs.c:FuncIS_MULTI_DIGRAPH" },
+  
+  { "GRAPH_AUTOMORPHISM", 1, "digraph",
+    FuncGRAPH_AUTOMORPHISM, 
+    "src/digraphs.c:FuncGRAPH_AUTOMORPHISM" },
+
+  { "GRAPH_CANONICAL_LABELING", 1, "digraph",
+    FuncGRAPH_CANONICAL_LABELING, 
+    "src/digraphs.c:FuncGRAPH_CANONICAL_LABELING" },
+      
   { 0 }
 
 };

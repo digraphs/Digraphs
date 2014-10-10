@@ -11,10 +11,11 @@
 # graph algorithms
 
 InstallMethod(QuotientDigraph, "for a digraph and a list", 
-[IsDigraphByAdjacency, IsHomogeneousList],
+[IsDigraph and HasOutNeighbours, IsHomogeneousList],
 function(graph, verts)
+  local nr, new_nr, adj, i, j;
   
-  nr := NrVertices(graph);
+  nr := DigraphNrVertices(graph);
 
   if (IsRange(verts) and not (IsPosInt(verts[1]) and verts[1] <= nr and
     verts[Length(verts)] <= nr)) 
@@ -26,9 +27,9 @@ function(graph, verts)
   
   
   new_nr := Length(verts);
-  adj := Adjacencies(graph);
+  adj := OutNeighbours(graph);
 
-  for i in Vertices(graph) do 
+  for i in DigraphVertices(graph) do 
     for j in adj[i] do 
     od;
   od;
@@ -38,30 +39,30 @@ end)
 ;
 
 InstallMethod(DigraphReverse, "for a digraph with source",
-[IsDigraph and HasSource],
+[IsDigraph and HasDigraphSource],
 function(graph)
   local source, range;
 
-    source := ShallowCopy(Range(graph));
-    range := Permuted(Source(graph), Sortex(source));
+    source := ShallowCopy(DigraphRange(graph));
+    range := Permuted(DigraphSource(graph), Sortex(source));
 
     return DigraphNC(rec( source:=source, 
                                 range:=range,
-                                nrvertices:=NrVertices(graph)));
+                                nrvertices:=DigraphNrVertices(graph)));
 end);
 
 # the following doesn't apply to non-simple digraphs, and so we use
-# IsDigraphByAdjacency
+# IsDigraph and HasOutNeighbours
 
 InstallMethod(DigraphReverse, "for a digraph by adjacency",
-[IsDigraphByAdjacency],
+[IsDigraph and HasOutNeighbours],
 function(graph)
   local old, new, i, j;
 
-  old := Adjacencies(graph);
-  new := List(Vertices(graph), x -> []);
+  old := OutNeighbours(graph);
+  new := List(DigraphVertices(graph), x -> []);
 
-  for i in Vertices(graph) do 
+  for i in DigraphVertices(graph) do 
     for j in old[i] do 
       Add(new[j], i);
     od;
@@ -71,12 +72,12 @@ function(graph)
 end);
 
 InstallMethod(DigraphRemoveLoops, "for a digraph with source",
-[IsDigraph and HasSource],
+[IsDigraph and HasDigraphSource],
 function(graph)
   local source, range, newsource, newrange, nr, i;
 
-  source := Source(graph);
-  range := Range(graph);
+  source := DigraphSource(graph);
+  range := DigraphRange(graph);
 
   newsource := [];
   newrange := [];
@@ -91,18 +92,18 @@ function(graph)
   od;
 
   return DigraphNC(rec( source := newsource, range := newrange,
-                              nrvertices := NrVertices(graph) ) );
+                              nrvertices := DigraphNrVertices(graph) ) );
 end);
 
 InstallMethod(DigraphRemoveLoops, "for a digraph by adjacency",
-[IsDigraphByAdjacency],
+[IsDigraph and HasOutNeighbours],
 function(graph)
   local old, new, nr, i, j;
   
-  old := Adjacencies(graph);
+  old := OutNeighbours(graph);
   new := [];
 
-  for i in Vertices(graph) do 
+  for i in DigraphVertices(graph) do 
     new[i] := []; 
     nr := 0;
     for j in old[i] do 
@@ -119,70 +120,68 @@ end);
 InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
 [IsDigraph, IsList],
 function(graph, edges)
-  local range, nrvertices, source, newsource, newrange, i;
+  local range, nrvertices, source, newsource, newrange, pos, i;
 
   if Length(edges) > 0 and IsPosInt(edges[1]) then # remove edges by index
-    edges := Difference( [ 1 .. Length(Source(graph)) ], edges );
+    edges := Difference( [ 1 .. Length(DigraphSource(graph)) ], edges );
 
     return DigraphNC(rec(
-      source := Source(graph){edges},
-      range := Range(graph){edges},
-      nrvertices := NrVertices(graph)));
+      source     := DigraphSource(graph){edges},
+      range      := DigraphRange(graph){edges},
+      nrvertices := DigraphNrVertices(graph)));
   else
-    if not IsSimpleDigraph(graph) then
-      Error("usage: to remove edges given as pairs of vertices,",
-      " the graph must be simple,");
-      return;
-    fi;
-    source := Source(graph);;
-    range := Range(graph);;
+    source := DigraphSource(graph);;
+    range := DigraphRange(graph);;
     newsource := [ ];
     newrange := [ ];
 
     for i in [ 1 .. Length(source) ] do
-      if not [ source[i], range[i] ] in edges then
+      pos := Position(edges, [ source[i], range[i] ]); 
+      if pos = fail then
         Add(newrange, range[i]);
         Add(newsource, source[i]);
+      else 
+        Remove(edges, pos);
       fi;
     od;
 
     return DigraphNC(rec( source := newsource, range := newrange,
-                                nrvertices := NrVertices(graph) ) );
+                          nrvertices := DigraphNrVertices(graph) ) );
   fi;
 end);
 
 InstallMethod(DigraphRelabel, "for a digraph by adjacency and perm",
-[IsDigraphByAdjacency, IsPerm],
+[IsDigraph and HasOutNeighbours, IsPerm],
 function(graph, perm)
   local adj;
 
-  if ForAny(Vertices(graph), i-> i^perm > NrVertices(graph)) then
+  if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: DigraphRelabel: usage,\n",
     "the 2nd argument <perm> must permute the vertices ",
     "of the 1st argument <graph>,\n");
     return;
   fi;
   
-  adj := Permuted(Adjacencies(graph), perm);
+  adj := Permuted(OutNeighbours(graph), perm);
   Apply(adj, x-> OnTuples(x, perm));
 
   return DigraphNC(adj);
 end);
 
 InstallMethod(DigraphRelabel, "for a digraph and perm",
-[IsDigraph, IsPerm],
+[IsDigraph and HasDigraphSource, IsPerm],
 function(graph, perm)
 
-  if ForAny(Vertices(graph), i-> i^perm > NrVertices(graph)) then
+  if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: DigraphRelabel: usage,\n",
     "the 2nd argument <perm> must permute the vertices ",
     "of the 1st argument <graph>,\n");
     return;
   fi;
   return DigraphNC(rec(
-    source := ShallowCopy(OnTuples(Source(graph), perm)),
-    range:= ShallowCopy(OnTuples(Range(graph), perm)),
-    nrvertices:=NrVertices(graph)));
+    source := ShallowCopy(OnTuples(DigraphSource(graph), perm)),
+    range:= ShallowCopy(OnTuples(DigraphRange(graph), perm)),
+    nrvertices:=DigraphNrVertices(graph)));
 end);
 
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
@@ -193,15 +192,15 @@ InstallMethod(DigraphReflexiveTransitiveClosure,
 function(graph)
   local sorted, vertices, n, adj, out, trans, mat, flip, v, u, w;
 
-  if not IsSimpleDigraph(graph) then
-    Error("Digraphs: DigraphTransitiveClosure: usage,\n",
-    "the argument <graph> should be a simple digraph,");
+  if IsMultiDigraph(graph) then
+    Error("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
+    "the argument <graph> cannot have multiple edges,");
     return;
   fi;
 
-  vertices := Vertices(graph);
-  n := NrVertices(graph);
-  adj := Adjacencies(graph);
+  vertices := DigraphVertices(graph);
+  n := DigraphNrVertices(graph);
+  adj := OutNeighbours(graph);
   sorted := DigraphTopologicalSort(graph);
 
   if sorted <> fail then # Easier method for acyclic graphs (loops allowed)
@@ -217,7 +216,7 @@ function(graph)
     od;
 
     out := DigraphNC(out);
-    SetIsSimpleDigraph(out, true);
+    SetIsMultiDigraph(out, false);
     return out;
 
   else # Non-acyclic method
@@ -253,7 +252,7 @@ function(graph)
 
     mat := List( mat, x -> List( x, flip ) ); # Create adjacency matrix
     out := DigraphByAdjacencyMatrix(mat);
-    SetIsSimpleDigraph(out, true);
+    SetIsMultiDigraph(out, false);
     return out;
   fi;
 end);
@@ -265,15 +264,15 @@ InstallMethod(DigraphTransitiveClosure, "for a digraph",
 function(graph)
   local sorted, vertices, n, adj, out, trans, reflex, mat, flip, v, u, w;
 
-  if not IsSimpleDigraph(graph) then
+  if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphTransitiveClosure: usage,\n",
-    "the argument <graph> should be a simple digraph,");
+    "the argument <graph> cannot have multiple edges,");
     return;
   fi;
 
-  vertices := Vertices(graph);
-  n := NrVertices(graph);
-  adj := Adjacencies(graph);
+  n := DigraphNrVertices(graph);
+  vertices := [ 1 .. n ];
+  adj := OutNeighbours(graph);
   sorted := DigraphTopologicalSort(graph);
 
   if sorted <> fail then # Easier method for acyclic graphs (loops allowed)
@@ -297,7 +296,7 @@ function(graph)
     od;
 
     out := DigraphNC(out);
-    SetIsSimpleDigraph(out, true);
+    SetIsMultiDigraph(out, false);
     return out;
   else # Non-acyclic method
 
@@ -340,7 +339,7 @@ function(graph)
       mat[v][v] := reflex[v]; 
     od;
     out := DigraphByAdjacencyMatrix(mat);
-    SetIsSimpleDigraph(out, true);
+    SetIsMultiDigraph(out, false);
     return out;
   fi;
 end);
@@ -354,14 +353,14 @@ InstallMethod(InducedSubdigraph, "for a digraph and a list",
 function( digraph, subverts )
   local verts, nr, adj, lookup, new, i;
 
-  verts := Vertices(digraph);
+  verts := DigraphVertices(digraph);
   if not ForAll( subverts, x -> x in verts ) then
     Error("Digraphs: InducedSubdigraph: usage,\n",
     "the second argument <subvertices> such be a subset of the vertices of\n",
     "the first argument <digraph>,");
     return;
   fi;
-  adj := Adjacencies(digraph);
+  adj := OutNeighbours(digraph);
   nr := Length(subverts);
   lookup := EmptyPlist(nr);
   for i in [ 1 .. nr ] do

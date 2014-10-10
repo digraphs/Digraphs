@@ -15,9 +15,9 @@ InstallMethod(DotDigraph, "for a digraph",
 function(graph)
   local verts, source, range, n, str, i;
 
-  verts := Vertices(graph);
-  source := Source(graph);
-  range := Range(graph);
+  verts := DigraphVertices(graph);
+  source := DigraphSource(graph);
+  range := DigraphRange(graph);
   n := Length(source);
   str:="//dot\n";
 
@@ -47,9 +47,9 @@ function(graph)
     return;
   fi;
 
-  verts := Vertices(graph);
-  source := Source(graph);
-  range := Range(graph);
+  verts := DigraphVertices(graph);
+  source := DigraphSource(graph);
+  range := DigraphRange(graph);
   n := Length(source);
   str:="//dot\n";
 
