@@ -280,14 +280,20 @@ gap> mat := [
 > [ 0, 0, 3, 0, 0 ] ];;
 gap> gr := DigraphByAdjacencyMatrix(mat);
 <digraph with 5 vertices, 14 edges>
+gap> grnc := DigraphByAdjacencyMatrixNC(mat);
+<digraph with 5 vertices, 14 edges>
+gap> gr = grnc;
+true
 gap> IsStronglyConnectedDigraph(gr);
 false
 gap> IsSimpleDigraph(gr);
 false
 gap> Adjacencies(gr);
 [ [ 2, 5 ], [ 2, 3, 5 ], [ 5 ], [ 1, 3, 4 ], [ 3 ] ]
+gap> Adjacencies(grnc) = last;
+true
 gap> mat := [
-> [ 0, 0, 0, 10, 1, 0, 0, 1, 0, 0 ],
+> [ 0, 0, 0, 9, 1, 0, 0, 1, 0, 0 ],
 > [ 0, 1, 0, 1, 1, 1, 0, 1, 1, 0 ],
 > [ 0, 1, 0, 1, 2, 0, 1, 0, 0, 3 ],
 > [ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 ],
@@ -298,9 +304,7 @@ gap> mat := [
 > [ 1, 2, 3, 0, 1, 1, 0, 0, 1, 1 ],
 > [ 0, 1, 3, 4, 1, 1, 0, 0, 1, 0 ] ];;
 gap> gr := DigraphByAdjacencyMatrix(mat);
-<digraph with 10 vertices, 74 edges>
-gap> IsStronglyConnectedDigraph(gr);
-true
+<digraph with 10 vertices, 73 edges>
 gap> IsSimpleDigraph(gr);
 false
 gap> Adjacencies(gr);
@@ -310,11 +314,21 @@ gap> Adjacencies(gr);
 gap> r := rec( nrvertices:= 10, source := ShallowCopy(Source(gr)),
 > range := ShallowCopy(Range(gr)) );;
 gap> gr2 := Digraph(r);
-<digraph with 10 vertices, 74 edges>
+<digraph with 10 vertices, 73 edges>
 gap> HasAdjacencyMatrix(gr2);
 false
 gap> AdjacencyMatrix(gr2) = mat;
 true
+gap> DigraphByAdjacencyMatrix( [ ] );
+<digraph with 0 vertices, 0 edges>
+
+# Display
+gap> gr := Digraph( [ [ 1, 2 ], [ 2 ], [ ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> PrintString(gr);
+"Digraph( [ [ 1, 2 ], [ 2 ], [ ] ] )"
+gap> String(gr);
+"Digraph( [ [ 1, 2 ], [ 2 ], [ ] ] )"
 
 #
 gap> DigraphsStopTest();

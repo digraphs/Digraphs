@@ -247,6 +247,14 @@ end);
 
 #
 
+InstallMethod(DigraphByAdjacencyMatrix, "for an empty list",
+[IsList and IsEmpty],
+function(mat)
+  return DigraphByAdjacencyMatrixNC( mat );
+end);
+
+#
+
 InstallMethod(DigraphByAdjacencyMatrixNC, "for a rectangular table",
 [IsRectangularTable],
 function(mat)
@@ -266,6 +274,14 @@ function(mat)
   out := DigraphNC(record);
   SetAdjacencyMatrix(out, mat);
   return out;
+end);
+
+#
+
+InstallMethod(DigraphByAdjacencyMatrixNC, "for an empty list",
+[IsList and IsEmpty],
+function(mat)
+  return DigraphNC( [ ] );
 end);
 
 #

@@ -21,6 +21,7 @@ DeclareAttribute("NrVertices", IsDigraph);
 DeclareAttribute("NrEdges", IsDigraph);
 DeclareAttribute("DigraphTopologicalSort", IsDigraph);
 DeclareAttribute("DigraphDual", IsDigraph);
+DeclareAttribute("DigraphShortestDistances", IsDigraph);
 DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
 
 # these are really attributes but are declared elsewhere as operations and so we

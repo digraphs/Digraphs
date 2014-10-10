@@ -38,14 +38,17 @@
     <#Include Label="NrEdges">
     <#Include Label="RangeSourceDigraph">
     <#Include Label="Adjacencies">
-    <#Include Label="DigraphStronglyConnectedComponents">
     <#Include Label="AdjacencyMatrix">
+    <#Include Label="DigraphShortestDistances">
+    <#Include Label="DigraphStronglyConnectedComponents">
   </Section>
 
   <Section><Heading>Properties of digraphs</Heading>
     <!-- alphabetical order please!-->
     <#Include Label="IsAcyclicDigraph">
+    <#Include Label="IsEmptyDigraph">
     <#Include Label="IsFunctionalDigraph">
+    <#Include Label="IsReflexiveDigraph">
     <#Include Label="IsSimpleDigraph">
     <#Include Label="IsStronglyConnectedDigraph">
     <#Include Label="IsSymmetricDigraph">

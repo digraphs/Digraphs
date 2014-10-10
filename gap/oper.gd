@@ -13,8 +13,6 @@ DeclareOperation("DigraphRemoveLoops", [IsDigraph]);
 DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
-DeclareAttribute("DigraphFloydWarshall", IsDigraph);
-
 DeclareOperation("DigraphReverse", [IsDigraph]);
 DeclareOperation("QuotientDigraph", [IsDigraph, IsList]);
-
+DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);

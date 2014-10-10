@@ -201,6 +201,44 @@ function(graph)
   return out;  
 end);
 
+#
+
+InstallMethod(DigraphShortestDistances, "for a digraph",
+[IsDigraph],
+function(graph)
+  local vertices, n, m, dist, i, k, j;
+
+  vertices := Vertices(graph);
+  n := NrVertices(graph);
+  m := Length(Edges(graph));
+  dist := List( vertices, x -> List( vertices, x -> infinity ) );
+
+  for i in [ 1 .. m ] do
+    dist[ Source(graph)[i] ][ Range(graph)[i] ] := 1;
+  od;
+
+  for i in vertices do
+    dist[i][i] := 0;
+  od;
+
+  for k in vertices do
+    for i in vertices do
+      for j in vertices do
+        if dist[i][k] <> infinity and 
+        dist[k][j] <> infinity and 
+        dist[i][j] > dist[i][k] + dist[k][j] then
+          dist[i][j] := dist[i][k] + dist[k][j];
+        fi;
+      od;
+    od;
+  od;
+
+  return dist;
+
+end);
+
+#
+
 if IsBound(DIGRAPH_TOPO_SORT) then
   InstallMethod(DigraphTopologicalSort, "for a digraph",
   [IsDigraph], function(graph)
@@ -210,19 +248,21 @@ else
   InstallMethod(DigraphTopologicalSort, "for a digraph",
   [IsDigraph],
   function(graph)
-    local adj, nr, vertex_complete, vertex_in_path, stack, out, level, j, k, i;
+    local n, verts, adj, vertex_complete, vertex_in_path, stack, out, level, j, 
+    k, i;
 
-    adj := Adjacencies(graph);
-    nr := Length(adj);
-    if nr <= 1 then
-      return Vertices(graph);
+    n := NrVertices(graph);
+    verts := Vertices(graph);
+    if n <= 1 then
+      return verts;
     fi;
-    vertex_complete := BlistList([1..nr], []);
-    vertex_in_path := BlistList([1..nr], []);
-    stack := EmptyPlist(2 * nr + 2);
-    out := EmptyPlist(nr);
+    adj := Adjacencies(graph);
+    vertex_complete := BlistList( verts, [ ] );
+    vertex_in_path := BlistList( verts, [ ] );
+    stack := EmptyPlist(2 * n + 2);
+    out := EmptyPlist(n);
 
-    for i in [1..nr] do
+    for i in verts do
       if Length(adj[i]) = 0 then
         vertex_complete[i] := true;
       elif not vertex_complete[i] then
@@ -278,23 +318,22 @@ else
   InstallMethod(DigraphStronglyConnectedComponents, "for a digraph",
   [IsDigraph],
   function(digraph)
-    local n, stack1, len1, stack2, len2, id, count, comps, fptr, level, nr, w, comp, v;
+    local n, verts, stack1, len1, stack2, len2, id, count, comps, fptr, level, nr, w, comp, v;
 
-    digraph := Adjacencies(digraph);
-    n := Length(digraph);
-
+    n := NrVertices(digraph);
     if n = 0 then
       return rec( comps := [], id := []);
     fi;
-
+    verts := Vertices(digraph);
+    digraph := Adjacencies(digraph);
     stack1 := EmptyPlist(n); len1 := 0;
     stack2 := EmptyPlist(n); len2 := 0;
-    id := [ 1 .. n ] * 0;
+    id := verts * 0;
     count := Length(digraph);
     comps := [];
     fptr := [];
 
-    for v in [ 1 .. Length(digraph) ] do
+    for v in verts do
       if id[v] = 0 then
         level := 1;
         fptr[1] := v; #fptr[0], vertex
@@ -307,7 +346,7 @@ else
 
         while level > 0 do
           if fptr[ 2 * level] > Length(digraph[fptr[2 * level - 1]]) then
-            if stack2[len2]=id[fptr[2 * level - 1]] then
+            if stack2[len2] = id[fptr[2 * level - 1]] then
               len2 := len2 - 1;
               count := count + 1;
               nr := 0;

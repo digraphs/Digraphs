@@ -207,7 +207,7 @@ gap> Vertices(RandomSimpleDigraph(100));
 
 <#GAPDoc Label="NrVertices">
 <ManSection>
-  <Oper Name="NrVertices" Arg="digraph"/>
+  <Attr Name="NrVertices" Arg="digraph"/>
   <Returns>The number of vertices of a digraph.</Returns>
   <Description>
     Returns the number of vertices of the digraph <A>digraph</A>. <P/>
@@ -231,7 +231,7 @@ gap> NrVertices(RandomSimpleDigraph(100));
 
 <#GAPDoc Label="DigraphStronglyConnectedComponents">
 <ManSection>
-  <Oper Name="DigraphStronglyConnectedComponents" Arg="digraph"/>
+  <Attr Name="DigraphStronglyConnectedComponents" Arg="digraph"/>
   <Returns>A record.</Returns>
   <Description>
     Returns the record <C>scc</C> corresponding to the strongly connected
@@ -256,3 +256,35 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+#
+
+<#GAPDoc Label="DigraphShortestDistances">
+<ManSection>
+  <Attr Name="DigraphShortestDistances" Arg="digraph"/>
+  <Returns>A matrix.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph with <M>n</M> vertices, then this function 
+    returns an <M>n \times n</M> matrix <C>mat</C>. If a directed path from 
+    vertex <C>i</C> to vertex <C>j</C> exists, then the value of 
+    <C>mat[i][j]</C> is the length of the shortest such path (allowing paths of 
+    length zero). If no such path exists, then the value of <C>mat[i][j]</C> is 
+    <C>infinity</C>. If <M>n = 0</M>, then an empty list is returned. <P/>
+
+    The method used in this function is a version of the Floyd-Warshall 
+    algorithm, and has complexity <M>O(n^3)</M>.
+    
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 1, 2 ], [ 4 ] ] );
+<digraph with 4 vertices, 6 edges>
+gap> mat := DigraphShortestDistances(gr);;
+gap> Display(mat);
+[ [         0,         1,         2,  infinity ],
+  [         2,         0,         1,  infinity ],
+  [         1,         1,         0,  infinity ],
+  [  infinity,  infinity,  infinity,         0 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
