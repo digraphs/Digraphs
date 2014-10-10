@@ -480,7 +480,7 @@ void hook_function(void *user_param,
      
      for(UInt i = 0; i < N; ++i)
          pt[i] = aut[i];
-     
+     Pr("here!\n", 0L, 0L); 
      AssPlist(user_param, LEN_PLIST(user_param)+1, prod);
      CHANGED_BAG(user_param);
 }
@@ -489,7 +489,7 @@ BlissGraph* buildGraph(Obj digraph) {
     UInt n, nam, i, j, nr, len;
     Obj adji, adj;
     BlissGraph *graph;
-  
+    Pr("buildGraph\n", 0L, 0L); 
     n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
   
     graph = bliss_new(n);
