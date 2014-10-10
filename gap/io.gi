@@ -429,7 +429,7 @@ function(arg)
           x := x + offset;
           Add(edges, x);
         od;
-        return DigraphByEdges(edges);
+        return DigraphByDigraphEdges(edges);
       end;
   else
     Error("usage: DigraphPlainTestLineDecoder(delimiter, [,delimiter], offset)");
@@ -473,7 +473,7 @@ function(name, delimiter, offset, ignore)
     fi;
   od;
 
-  return DigraphByEdges(edges);
+  return DigraphByDigraphEdges(edges);
 end);
 
 # this is just temporary, until a better method is given, only works for single
@@ -563,8 +563,8 @@ InstallMethod(WriteGraph6, "for a digraph",
 function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   list := [];
-  adj := Adjacencies(graph);
-  n := Length(Vertices(graph));
+  adj := OutNeighbours(graph);
+  n := Length(DigraphVertices(graph));
 
   # First write the number of vertices
   lenlist := Graph6Length(n);
@@ -577,7 +577,7 @@ function(graph)
   # Find adjacencies (non-directed)
   tablen := n * (n-1) / 2;
   blist := BlistList([1..tablen+6], []);
-  for i in Vertices(graph) do
+  for i in DigraphVertices(graph) do
     for j in adj[i] do
       # Loops not allowed
       if j > i then
@@ -612,8 +612,8 @@ InstallMethod(WriteDigraph6, "for a digraph",
 function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   list := [];
-  adj := Adjacencies(graph);
-  n := Length(Vertices(graph));
+  adj := OutNeighbours(graph);
+  n := Length(DigraphVertices(graph));
 
   # First write the special character '+'
   Add(list,-20);
@@ -629,7 +629,7 @@ function(graph)
   # Find adjacencies (non-directed)
   tablen := n ^ 2;
   blist := BlistList([1..tablen+6], []);
-  for i in Vertices(graph) do
+  for i in DigraphVertices(graph) do
     for j in adj[i] do
       blist[i + n*(j-1)] := true;
     od;
@@ -665,7 +665,7 @@ function(graph)
   fi;
 
   list := [];
-  n := Length(Vertices(graph));
+  n := Length(DigraphVertices(graph));
 
   # First write the special character ':'
   Add(list,-5);
@@ -679,8 +679,8 @@ function(graph)
   Append(list, lenlist);
 
   # Get the source and range - half these edges will be discarded
-  source := Source(graph) - 1;
-  range := Range(graph) - 1;
+  source := DigraphSource(graph) - 1;
+  range := DigraphRange(graph) - 1;
 
   # k is the number of bits in a vertex label
   if n > 1 then
@@ -774,7 +774,7 @@ function(graph)
   pos, block, i;
 
   list := [];
-  n := Length(Vertices(graph));
+  n := Length(DigraphVertices(graph));
 
   # First write the special character '.'
   list[1] := -17;
@@ -787,8 +787,8 @@ function(graph)
   fi;
   Append(list, lenlist);
 
-  source := Source(graph) - 1;
-  range := Range(graph) - 1;
+  source := DigraphSource(graph) - 1;
+  range := DigraphRange(graph) - 1;
 
   # Separate edges into increasing and decreasing
   source_i := [];

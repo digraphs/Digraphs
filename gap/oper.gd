@@ -10,7 +10,7 @@
 
 DeclareOperation("DigraphRelabel", [IsDigraph, IsPerm]);
 DeclareOperation("DigraphRemoveLoops", [IsDigraph]);
-DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
+DeclareOperation("DigraphRemoveDigraphEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphReverse", [IsDigraph]);

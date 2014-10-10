@@ -10,22 +10,27 @@
 
 # attributes for digraphs . . .
 
-DeclareAttribute("AdjacencyMatrix", IsDigraph);
-# GrapeGraph must be mutable for grape to function properly
-DeclareAttribute("GrapeGraph", IsDigraph, "mutable");
-DeclareAttribute("Range", IsDigraph);
-DeclareAttribute("Source", IsDigraph);
-DeclareAttribute("Edges", IsDigraph);
-DeclareAttribute("Adjacencies", IsDigraph);
-DeclareAttribute("NrVertices", IsDigraph);
-DeclareAttribute("NrEdges", IsDigraph);
+
+DeclareAttribute("DigraphVertices", [IsDigraph]);
+DeclareAttribute("DigraphEdges", IsDigraph);
+DeclareAttribute("OutNeighbours", IsDigraph);
+DeclareAttribute("InNeighbours", IsDigraph);
+DeclareAttribute("DigraphNrVertices", IsDigraph);
+DeclareAttribute("DigraphNrEdges", IsDigraph);
+
+DeclareAttribute("DigraphRange", IsDigraph);
+DeclareAttribute("DigraphSource", IsDigraph);
 DeclareAttribute("DigraphTopologicalSort", IsDigraph);
 DeclareAttribute("DigraphDual", IsDigraph);
 DeclareAttribute("DigraphShortestDistances", IsDigraph);
 DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
 
+DeclareAttribute("AdjacencyMatrix", IsDigraph);
+# GrapeGraph must be mutable for grape to function properly
+DeclareAttribute("GrapeGraph", IsDigraph, "mutable");
+
 # these are really attributes but are declared elsewhere as operations and so we
 # must declare them as operations too
-DeclareOperation("Vertices", [IsDigraph]);
+
 
 

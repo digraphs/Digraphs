@@ -32,7 +32,7 @@ function(trans, int)
   r := rec( nrvertices := int, source := [ 1 .. int ], range := ran );
   gr := DigraphNC(r);
   
-  SetIsSimpleDigraph(gr, true);
+  SetIsMultiDigraph(gr, false);
   SetIsFunctionalDigraph(gr, true);
   
   return gr;
@@ -45,21 +45,21 @@ InstallMethod(Graph, "for a digraph",
 function(graph)
   local adj;
 
-  if not IsSimpleDigraph(graph) then
+  if IsMultiDigraph(graph) then
     Info(InfoWarning, 1, "Grape does not support multiple edges, so ",
     "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
 
   adj:=function(i, j)
-    return j in Adjacencies(graph)[i];
+    return j in OutNeighbours(graph)[i];
   end;
 
-  return Graph(Group(()), ShallowCopy(Vertices(graph)), OnPoints, adj, true);
+  return Graph(Group(()), ShallowCopy(DigraphVertices(graph)), OnPoints, adj, true);
 end);
 
-#
+# JDM improve this!
 
-InstallMethod(RandomSimpleDigraph, "for a pos int",
+InstallMethod(RandomDigraph, "for a pos int",
 [IsPosInt],
 function(n)
   local verts, adj, nr, i, j, gr;
@@ -76,7 +76,7 @@ function(n)
   od;
 
   gr := DigraphNC(adj);
-  SetIsSimpleDigraph(gr, true);
+  SetIsMultiDigraph(gr, false);
   return gr;
 end);
 
@@ -87,7 +87,7 @@ function(graph)
   local check_source, cmp, obj, i;
 
   if IsGraph(graph) then
-    return DigraphNC(List(Vertices(graph), x-> Adjacency(graph, x)));
+    return DigraphNC(List(DigraphVertices(graph), x-> Adjacency(graph, x)));
   fi;
 
   if not (IsBound(graph.source) and IsBound(graph.range) and
@@ -120,7 +120,7 @@ function(graph)
     cmp := LT;
     obj := graph.nrvertices + 1;
     
-    if IsRange(graph.source) then 
+    if IsDigraphRange(graph.source) then 
       if not IsEmpty(graph.source) and (graph.source[1] < 1 or
          graph.source[Length(graph.source)] > graph.nrvertices) then 
         Error("usage: the record component 'source' is invalid,");
@@ -172,8 +172,8 @@ end);
 
 InstallMethod(DigraphNC, "for a record", [IsRecord],
 function(graph)
-  ObjectifyWithAttributes(graph, DigraphBySourceAndRangeType, Range,
-   graph.range, Source, graph.source);
+  ObjectifyWithAttributes(graph, DigraphByDigraphSourceAndDigraphRangeType, DigraphRange,
+   graph.range, DigraphSource, graph.source);
   return graph;
 end);
 
@@ -182,13 +182,13 @@ end);
 InstallMethod(Digraph, "for a list of lists of pos ints",
 [IsList],
 function(adj)
-  local len, record, x, y;
+  local nr, record, x, y;
 
-  len := Length(adj);
+  nr := Length(adj);
 
   for x in adj do
     for y in x do
-      if not (IsPosInt(y) and y <= len) then
+      if not (IsPosInt(y) and y <= nr) then
         Error("usage: the argument must be a list of lists of positive",
         " integers not exceeding the length of the argument,");
         return;
@@ -204,13 +204,16 @@ end);
 InstallMethod(DigraphNC, "for a list", [IsList],
 function(adj)
   local graph;
-  graph := rec( adj := StructuralCopy(adj), nrvertices := Length(adj) );
-  ObjectifyWithAttributes(graph, DigraphByAdjacencyType, Adjacencies, adj,
-   NrVertices, graph.nrvertices, IsSimpleDigraph, true);
+  
+  graph := rec( adj        := StructuralCopy(adj), 
+                nrvertices := Length(adj)         );
+
+  ObjectifyWithAttributes(graph, DigraphByAdjacencyType, 
+    OutNeighbours, adj, DigraphNrVertices, graph.nrvertices);
   return graph;
 end);
 
-#
+# JDM: could set IsMultigraph here if we check if mat[i][j] > 1 in line 234 
 
 InstallMethod(DigraphByAdjacencyMatrix, "for a rectangular table",
 [IsRectangularTable],
@@ -286,7 +289,7 @@ end);
 
 #
 
-InstallMethod(DigraphByEdges, "for a rectangular table",
+InstallMethod(DigraphByDigraphEdges, "for a rectangular table",
 [IsRectangularTable],
 function(edges)
   local adj, max_range, gr, edge, i;
@@ -320,24 +323,24 @@ function(edges)
   od;
 
   gr:=DigraphNC(adj);
-  SetEdges(gr, edges);
+  SetDigraphEdges(gr, edges);
   return gr;
 end);
 
 # <n> is the number of vertices
 
-InstallMethod(DigraphByEdges, "for a rectangular table, and a pos int",
+InstallMethod(DigraphByDigraphEdges, "for a rectangular table, and a pos int",
 [IsRectangularTable, IsPosInt],
 function(edges, n)
   local adj, gr, edge;
   
   if not Length(edges[1]) = 2 then 
-    Error("DigraphByEdges: usage, the argument <edges> must be a list of pairs,");
+    Error("DigraphByDigraphEdges: usage, the argument <edges> must be a list of pairs,");
     return;
   fi;
 
   if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then 
-    Error("DigraphByEdges: usage, the argument <edges> must be a list of", 
+    Error("DigraphByDigraphEdges: usage, the argument <edges> must be a list of", 
     " pairs of pos ints,");
     return;
   fi;
@@ -346,7 +349,7 @@ function(edges, n)
 
   for edge in edges do
     if edge[1] > n or edge[2] > n then
-      Error("DigraphByEdges: usage, the specified edges must not contain", 
+      Error("DigraphByDigraphEdges: usage, the specified edges must not contain", 
       " values greater than ", n );
       return;
     fi;
@@ -354,7 +357,7 @@ function(edges, n)
   od;
 
   gr:=DigraphNC(adj);
-  SetEdges(gr, edges);
+  SetDigraphEdges(gr, edges);
   return gr;
 end);
 
@@ -363,8 +366,8 @@ end);
 InstallMethod(\=, "for digraphs",
 [IsDigraph, IsDigraph],
 function(graph1, graph2)
-  return Vertices(graph1)=Vertices(graph2) and Range(graph1)=Range(graph2)
-   and Source(graph1)=Source(graph2);
+  return DigraphVertices(graph1)=DigraphVertices(graph2) and DigraphRange(graph1)=DigraphRange(graph2)
+   and DigraphSource(graph1)=DigraphSource(graph2);
 end);
 
 # printing, and viewing . . .
@@ -373,11 +376,16 @@ InstallMethod(ViewString, "for a digraph",
 [IsDigraph],
 function(graph)
   local str;
+  str := "<";
+  
+  if IsMultiDigraph(graph) then 
+    Append(str, "multi");
+  fi;
 
-  str:="<digraph with ";
-  Append(str, String(NrVertices(graph)));
+  Append(str, "digraph with ");
+  Append(str, String(DigraphNrVertices(graph)));
   Append(str, " vertices, ");
-  Append(str, String(NrEdges(graph)));
+  Append(str, String(DigraphNrEdges(graph)));
   Append(str, " edges>");
   return str;
 end);
@@ -389,27 +397,27 @@ function(graph)
 
   str:="Digraph( ";
 
-  if IsSimpleDigraph(graph) then
-    return Concatenation(str, PrintString(Adjacencies(graph)), " )");
+  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
+    return Concatenation(str, PrintString(OutNeighbours(graph)), " )");
+  else 
+    Append(str, "\>\>rec(\n\>\>");
+    com := false;
+    i := 1;
+    for nam in ["range", "source", "nrvertices"] do
+      if com then
+        Append(str, "\<\<,\n\>\>");
+      else
+        com := true;
+      fi;
+      SET_PRINT_OBJ_INDEX(i);
+      i := i+1;
+      Append(str, nam);
+      Append(str, "\< := \>");
+      Append(str, PrintString(graph!.(nam)));
+    od;
+    Append(str, " \<\<\<\<)");
+    return str;
   fi;
-
-  Append(str, "\>\>rec(\n\>\>");
-  com := false;
-  i := 1;
-  for nam in ["range", "source", "nrvertices"] do
-    if com then
-      Append(str, "\<\<,\n\>\>");
-    else
-      com := true;
-    fi;
-    SET_PRINT_OBJ_INDEX(i);
-    i := i+1;
-    Append(str, nam);
-    Append(str, "\< := \>");
-    Append(str, PrintString(graph!.(nam)));
-  od;
-  Append(str, " \<\<\<\<)");
-  return str;
 end);
 
 InstallMethod(String, "for a digraph",
@@ -419,27 +427,27 @@ function(graph)
 
   str:="Digraph( ";
 
-  if IsSimpleDigraph(graph) then
-    return Concatenation(str, PrintString(Adjacencies(graph)), " )");
+  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
+    return Concatenation(str, String(OutNeighbours(graph)), " )");
+  else
+    Append(str, "rec( ");
+    com := false;
+    i := 1;
+    for nam in ["range", "source", "nrvertices"] do
+      if com then
+        Append(str, ", ");
+      else
+        com := true;
+      fi;
+      SET_PRINT_OBJ_INDEX(i);
+      i := i+1;
+      Append(str, nam);
+      Append(str, " := ");
+      Append(str, PrintString(graph!.(nam)));
+    od;
+    Append(str, " )");
+    return str;
   fi;
-
-  Append(str, "rec( ");
-  com := false;
-  i := 1;
-  for nam in ["range", "source", "nrvertices"] do
-    if com then
-      Append(str, ", ");
-    else
-      com := true;
-    fi;
-    SET_PRINT_OBJ_INDEX(i);
-    i := i+1;
-    Append(str, nam);
-    Append(str, " := ");
-    Append(str, PrintString(graph!.(nam)));
-  od;
-  Append(str, " )");
-  return str;
 end);
 
 #EOF

@@ -12,7 +12,7 @@ if IsBound(IS_STRONGLY_CONNECTED_DIGRAPH) then
   InstallMethod(IsStronglyConnectedDigraph, "for a digraph",
   [IsDigraph],
   function(graph)
-    return IS_STRONGLY_CONNECTED_DIGRAPH(Adjacencies(graph));
+    return IS_STRONGLY_CONNECTED_DIGRAPH(OutNeighbours(graph));
   end);
 else
   InstallMethod(IsStronglyConnectedDigraph, "for a digraph",
@@ -20,7 +20,7 @@ else
   function(graph)
     local adj, n, stack1, len1, stack2, len2, id, count, fptr, level, l, w, v;
 
-    adj := Adjacencies(graph);
+    adj := OutNeighbours(graph);
     n := Length(adj);
 
     if n = 0 then
@@ -76,7 +76,7 @@ fi;
 if IsBound(IS_ACYCLIC_DIGRAPH) then
   InstallMethod(IsAcyclicDigraph, "for a digraph",
   [IsDigraph], function(graph)
-    return IS_ACYCLIC_DIGRAPH(Adjacencies(graph));
+    return IS_ACYCLIC_DIGRAPH(OutNeighbours(graph));
   end);
 else
   InstallMethod(IsAcyclicDigraph, "for a digraph",
@@ -85,9 +85,9 @@ else
     local adj, nr, verts, vertex_complete, vertex_in_path, stack, level, j, 
     k, i;
 
-    adj := Adjacencies(graph);
-    nr := NrVertices(graph);
-    verts := Vertices(graph);
+    adj := OutNeighbours(graph);
+    nr := DigraphNrVertices(graph);
+    verts := DigraphVertices(graph);
     vertex_complete := BlistList( verts, [ ] );
     vertex_in_path := BlistList( verts, [ ] );
     stack:=EmptyPlist(2 * nr + 2);
@@ -140,22 +140,22 @@ else
   function(graph)
     local adj, nr, range, source, len, n, current, marked, x, i;
 
-    if not HasRange(graph) then
+    if not HasDigraphRange(graph) then
       # Currently this is never entered: if we don't have range, graph was
       # created by adjacencies, so IsSimpleDigraph was set true at creation
       return true;
-    elif HasAdjacencies(graph) then
-      adj := Adjacencies(graph);
+    elif HasOutNeighbours(graph) then
+      adj := OutNeighbours(graph);
       nr := 0;
       for x in adj do
         nr := nr + Length(x);
       od;
-      return nr = Length(Range(graph));
+      return nr = Length(DigraphRange(graph));
     else
-      range := Range(graph);
-      source := Source(graph);
+      range := DigraphRange(graph);
+      source := DigraphSource(graph);
       len := Length(range);
-      n := NrVertices(graph);
+      n := DigraphNrVertices(graph);
       current := 0;
       marked := [ 1 .. n ] * 0;
 
@@ -183,14 +183,14 @@ InstallMethod(IsSymmetricDigraph, "for a digraph",
 function(graph)
   local old, rev, new, i, j;
   
-  old := Adjacencies(graph);
+  old := OutNeighbours(graph);
   rev := EmptyPlist(Length(old));
-  for i in Vertices(graph) do 
+  for i in DigraphVertices(graph) do 
     rev[i] := [];
   od;
   
   if ForAll(old, IsSSortedList) then 
-    for i in Vertices(graph) do
+    for i in DigraphVertices(graph) do
       for j in old[i] do 
         rev[j][LEN_LIST(rev[j])+1]:=i;
       od;
@@ -198,7 +198,7 @@ function(graph)
     return rev = old;
   else
     new := EmptyPlist(Length(old));
-    for i in Vertices(graph) do
+    for i in DigraphVertices(graph) do
       new[i]:=AsSSortedList(ShallowCopy(old[i]));
       for j in new[i] do 
         rev[j][LEN_LIST(rev[j])+1]:=i;
@@ -211,15 +211,15 @@ end);
 # Functional means: for every vertex v there is exactly one edge with source v
 
 InstallMethod(IsFunctionalDigraph, "for a digraph by adjacency",
-[IsDigraphByAdjacency],
+[IsDigraph and HasOutNeighbours],
 function(graph)
-  return ForAll(Adjacencies(graph), x -> Length(x) = 1);
+  return ForAll(OutNeighbours(graph), x -> Length(x) = 1);
 end);
 
 InstallMethod(IsFunctionalDigraph, "for a digraph",
-[IsDigraphBySourceAndRange],
+[IsDigraphByDigraphSourceAndDigraphRange],
 function(graph)
-  return Source(graph) = Vertices(graph);
+  return DigraphSource(graph) = DigraphVertices(graph);
 end);
 
 #
@@ -233,9 +233,9 @@ function(graph)
     return false;
   fi;
 
-  n := NrVertices(graph);
+  n := DigraphNrVertices(graph);
 
-  if NrEdges(graph) <> n * (n - 1) / 2 then 
+  if DigraphNrEdges(graph) <> n * (n - 1) / 2 then 
     return false;
   fi;
  
@@ -250,19 +250,19 @@ end);
 #
 
 InstallMethod(IsEmptyDigraph, "for a digraph",
-[IsDigraphBySourceAndRange],
+[IsDigraphByDigraphSourceAndDigraphRange],
 function(digraph)
-  return Source(digraph) = [];
+  return DigraphSource(digraph) = [];
 end);
 
 #
 
 InstallMethod(IsEmptyDigraph, "for a digraph",
-[IsDigraphByAdjacency],
+[IsDigraph and HasOutNeighbours],
 function(digraph)
   local adj, e;
 
-  adj := Adjacencies(digraph);
+  adj := OutNeighbours(digraph);
   for e in adj do
     if not IsEmpty(e) then
       return false;
@@ -274,9 +274,9 @@ end);
 #
 
 InstallMethod(IsEmptyDigraph, "for a digraph with known number of edges",
-[IsDigraph and HasNrEdges], 3,
+[IsDigraph and HasDigraphNrEdges], 3,
 function(digraph)
-  return NrEdges(digraph) = 0;
+  return DigraphNrEdges(digraph) = 0;
 end);
 
 #
@@ -286,7 +286,7 @@ InstallMethod(IsReflexiveDigraph, "for a digraph with adjacency matrix",
 function(digraph)
   local verts, mat, i;
   
-  verts := Vertices(digraph);
+  verts := DigraphVertices(digraph);
   mat := AdjacencyMatrix(digraph);
 
   for i in verts do
@@ -300,12 +300,12 @@ end);
 #
 
 InstallMethod(IsReflexiveDigraph, "for a digraph with adjacencies",
-[IsDigraph and HasAdjacencies],
+[IsDigraph and HasOutNeighbours],
 function(digraph)
   local adj;
   
-  adj := Adjacencies(digraph);
-  return ForAll( Vertices(digraph), x -> x in adj[x] );
+  adj := OutNeighbours(digraph);
+  return ForAll( DigraphVertices(digraph), x -> x in adj[x] );
 end);
 
 #
@@ -315,9 +315,9 @@ InstallMethod(IsReflexiveDigraph, "for a digraph (with only source and range)",
 function(digraph)
   local source, range, id, lastloop, current, i;
   
-  source := Source(digraph);
-  range := Range(digraph);
-  id := BlistList(Vertices(digraph), []);
+  source := DigraphSource(digraph);
+  range := DigraphRange(digraph);
+  id := BlistList(DigraphVertices(digraph), []);
   lastloop := 0;
   current := 1;
 
