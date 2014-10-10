@@ -10,6 +10,33 @@
 
 # graph algorithms
 
+InstallMethod(QuotientDigraph, "for a digraph and a list", 
+[IsDigraphByAdjacency, IsHomogeneousList],
+function(graph, verts)
+  
+  nr := NrVertices(graph);
+
+  if (IsRange(verts) and not (IsPosInt(verts[1]) and verts[1] <= nr and
+    verts[Length(verts)] <= nr)) 
+    or ForAny(verts, x-> not IsPosInt(x) or x > nr) then 
+    Error("Digraphs: QuotientDigraph: usage,\n ", 
+      "the 2nd argument <verts> must consist of vertices of the 1st", 
+      "argument <graph>,\n");
+  fi;
+  
+  
+  new_nr := Length(verts);
+  adj := Adjacencies(graph);
+
+  for i in Vertices(graph) do 
+    for j in adj[i] do 
+    od;
+  od;
+
+  return fail;
+end)
+;
+
 InstallMethod(DigraphReverse, "for a digraph with source",
 [IsDigraph and HasSource],
 function(graph)
