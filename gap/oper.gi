@@ -13,6 +13,7 @@
 InstallMethod(QuotientDigraph, "for a digraph and a list", 
 [IsDigraphByAdjacency, IsHomogeneousList],
 function(graph, verts)
+  local nr, new_nr, adj, i, j;
   
   nr := NrVertices(graph);
 

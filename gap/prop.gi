@@ -260,11 +260,11 @@ end);
 InstallMethod(IsEmptyDigraph, "for a digraph",
 [IsDigraphByAdjacency],
 function(digraph)
-  local adj, i;
+  local adj, e;
 
   adj := Adjacencies(digraph);
-  for i in adj do
-    if adj <> [] then
+  for e in adj do
+    if not IsEmpty(e) then
       return false;
     fi;
   od;
