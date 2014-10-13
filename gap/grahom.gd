@@ -1,0 +1,2 @@
+DeclareGlobalFunction("GraphEndomorphismsTrivial");
+DeclareGlobalFunction("GraphEndomorphisms");
