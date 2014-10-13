@@ -106,6 +106,18 @@ gap> str := WriteDiSparse6(gr);
 ".CgXoHe@J"
 gap> DigraphFromDiSparse6String(str) = gr;
 true
+gap> gr := Digraph(rec( nrvertices := 1617, source := [1..100],
+> range := Concatenation( [1..50], [1..50]*0 + 51 )));
+<digraph with 1617 vertices, 100 edges>
+gap> str := WriteDiSparse6(gr);;
+gap> DigraphFromDiSparse6String(str) = gr;
+true
+gap> gr := Digraph(rec( nrvertices := 2^17, source := [1..100],
+> range := Concatenation( [50..98], [-1050.. - 1000]*-1 )));
+<digraph with 131072 vertices, 100 edges>
+gap> str := WriteDiSparse6(gr);;
+gap> DigraphFromDiSparse6String(str) = gr;
+true
 
 #
 gap> DigraphsStopTest();
