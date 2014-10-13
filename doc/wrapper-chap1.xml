@@ -38,6 +38,7 @@
     <#Include Label="DigraphNrEdges">
     <#Include Label="RangeSourceDigraph">
     <#Include Label="OutNeighbours">
+    <#Include Label="InNeighbours">
     <#Include Label="AdjacencyMatrix">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphStronglyConnectedComponents">

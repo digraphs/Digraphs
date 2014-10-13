@@ -35,8 +35,7 @@ function(graph, verts)
   od;
 
   return fail;
-end)
-;
+end);
 
 InstallMethod(DigraphReverse, "for a digraph with source",
 [IsDigraph and HasDigraphSource],
@@ -374,3 +373,58 @@ function( digraph, subverts )
 
   return DigraphNC(new);
 end);
+
+
+InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
+[IsDigraph and HasOutNeighbours, IsPosInt],
+function(graph, v)
+  local vertices, inn, pos, out, i, j;
+
+  vertices := DigraphVertices(graph);
+  if not v in vertices then
+    Error(v, " is not a vertex of the given digraph");
+    return;
+  elif HasInNeighbours(graph) then
+    return InNeighbours[v];
+  else
+    inn := [];
+    pos := 1;
+    out := OutNeighbours(graph);
+    for i in [ 1 .. Length(out) ] do
+      for j in [ 1 .. Length(out[i]) ] do
+        if out[i][j] = v then
+          inn[pos] := i;
+          pos := pos + 1;
+        fi;
+      od;
+    od;
+    return inn;
+  fi;
+end);
+
+InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
+[IsDigraph and HasDigraphSource, IsPosInt], 1,
+function(graph, v)
+  local vertices, inn, pos, source, range, i;
+
+  vertices := DigraphVertices(graph);
+  if not v in vertices then
+    Error(v, " is not a vertex of the given digraph");
+    return;
+  elif HasInNeighbours(graph) then
+    return InNeighbours[v];
+  else
+    inn := [];
+    pos := 1;
+    source := DigraphSource(graph);
+    range := DigraphRange(graph);
+    for i in [ 1 .. Length(range) ] do
+      if range[i] = v then
+        inn[pos] := source[i];
+        pos := pos + 1;
+      fi;
+    od;
+    return inn;
+  fi;
+end);
+

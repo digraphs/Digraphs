@@ -120,6 +120,20 @@ gap> DigraphFromDiSparse6String(str) = gr;
 true
 
 #
+gap> gr := Digraph([[1,1,4],[2,3,4],[2,4],[2]]);
+<multidigraph with 4 vertices, 9 edges>
+gap> str := WriteDiSparse6(gr);
+".CgXo?eWCn"
+gap> gr = DigraphFromDiSparse6String(str);
+true
+gap> gr := Digraph(rec( nrvertices := 7890, source := [1..100]*0 + 1000,
+> range := [1..100]*0 + 2000));
+<multidigraph with 7890 vertices, 100 edges>
+gap> str := WriteDiSparse6(gr);;
+gap> gr = DigraphFromDiSparse6String(str);
+true
+
+#
 gap> DigraphsStopTest();
 
 #

@@ -109,6 +109,17 @@ gap> h := (1, 2, 3, 4);
 (1,2,3,4)
 
 #
+gap> gr := Digraph(rec(nrvertices := 10, source := [1,1,5,5,7,10],
+> range := [3,3, 1, 10, 7, 1]));
+<multidigraph with 10 vertices, 6 edges>
+gap> InNeighboursOfVertex(gr, 7);
+[ 7 ]
+gap> gr := Digraph([[1,1,4],[2,3,4],[2,4,4,4],[2]]);
+<multidigraph with 4 vertices, 11 edges>
+gap> InNeighboursOfVertex(gr, 3);
+[ 2 ]
+
+#
 gap> DigraphsStopTest();
 
 #
