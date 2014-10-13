@@ -185,6 +185,9 @@ else
   end);
 fi;
 
+InstallMethod(OutNeighbors, "for a digraph",
+[IsDigraph], OutNeighbours);
+
 InstallMethod(InNeighbours, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours],
 function(graph)
@@ -192,7 +195,7 @@ function(graph)
 
   out := OutNeighbours(graph);
   inn := List(DigraphVertices(graph), x -> []);
-  for i in [ 1 .. Length(out) ] do
+  for i in DigraphVertices(graph) do
     for j in [ 1 .. Length(out[i]) ] do
       Add(inn[out[i][j]], i); 
     od;
@@ -215,6 +218,9 @@ function(graph)
   
   return inn;
 end);
+
+InstallMethod(InNeighbors, "for a digraph",
+[IsDigraph], InNeighbours);
 
 InstallMethod(AdjacencyMatrix, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours], 

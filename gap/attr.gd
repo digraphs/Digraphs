@@ -24,7 +24,9 @@ DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
 DeclareAttribute("DigraphConnectedComponents", IsDigraph);
 
 DeclareAttribute("OutNeighbours", IsDigraph);
+DeclareAttribute("OutNeighbors", IsDigraph);
 DeclareAttribute("InNeighbours", IsDigraph);
+DeclareAttribute("InNeighbors", IsDigraph);
 
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 
