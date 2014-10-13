@@ -185,6 +185,9 @@ else
   end);
 fi;
 
+InstallMethod(OutNeighbors, "for a digraph",
+[IsDigraph], OutNeighbours);
+
 InstallMethod(InNeighbours, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours],
 function(graph)
@@ -215,6 +218,9 @@ function(graph)
   
   return inn;
 end);
+
+InstallMethod(InNeighbors, "for a digraph",
+[IsDigraph], InNeighbours);
 
 InstallMethod(AdjacencyMatrix, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours], 

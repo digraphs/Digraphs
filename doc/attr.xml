@@ -148,6 +148,7 @@ gap> DigraphNrEdges(gr);
 <#GAPDoc Label="OutNeighbours">
 <ManSection>
   <Attr Name="OutNeighbours" Arg="digraph"/>
+  <Attr Name="OutNeighbors" Arg="digraph"/>
   <Returns>The adjacencies of a digraph.</Returns>
   <Description>
     Returns the list <C>out</C> of out-neighbours of the digraph
@@ -178,13 +179,14 @@ gap> OutNeighbours(gr);
 <#GAPDoc Label="InNeighbours">
 <ManSection>
   <Attr Name="InNeighbours" Arg="digraph"/>
+  <Attr Name="InNeighbors" Arg="digraph"/>
   <Returns>A list of in-neighbours of a digraph.</Returns>
   <Description>
     Returns the list <C>in</C> of in-neighbours of the digraph
     <A>digraph</A>. More specifically, <C>j</C> belongs to <C>in[i]</C>
     whenever there is an edge from <C>j</C> to <C>i</C> in <A>digraph</A>. <P/>
 
-    Note that each entry of <C>in</C> will be sorted into ascending order.
+    Note that each entry of <C>in</C> is sorted into ascending order.
 <P/>
 
     <Example><![CDATA[
