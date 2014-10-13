@@ -21,6 +21,7 @@ DeclareAttribute("DigraphTopologicalSort", IsDigraph);
 DeclareAttribute("DigraphDual", IsDigraph);
 DeclareAttribute("DigraphShortestDistances", IsDigraph);
 DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
+DeclareAttribute("DigraphConnectedComponents", IsDigraph);
 
 DeclareAttribute("OutNeighbours", IsDigraph);
 DeclareAttribute("InNeighbours", IsDigraph);
