@@ -25,8 +25,10 @@ extern "C" {
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// Edited by CAJ to switch from 'Graph' to 'Digraph'
+
 struct bliss_graph_struct {
-  bliss::Graph* g;
+  bliss::Digraph* g;
 };
 
 extern "C"
@@ -34,11 +36,11 @@ BlissGraph *bliss_new(const unsigned int n)
 {
   BlissGraph *graph = new bliss_graph_struct;
   assert(graph);
-  graph->g = new bliss::Graph(n);
+  graph->g = new bliss::Digraph(n);
   assert(graph->g);
   return graph;
 }
-
+/*
 extern "C"
 BlissGraph *bliss_read_dimacs(FILE *fp)
 {
@@ -58,7 +60,7 @@ void bliss_write_dimacs(BlissGraph *graph, FILE *fp)
   assert(graph->g);
   graph->g->write_dimacs(fp);
 }
-
+*/
 extern "C"
 void bliss_release(BlissGraph *graph)
 {
