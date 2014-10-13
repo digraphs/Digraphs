@@ -446,3 +446,70 @@ else
     return rec(id := id - Length(digraph), comps := comps);
   end);
 fi;
+
+#
+
+InstallMethod(DigraphConnectedComponents, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local tab, find, union, source, range, n, adj, i, j, normalise, comps;
+  tab := ShallowCopy(DigraphVertices(digraph));
+  
+  find := function(i)
+    while i <> tab[i] do
+      i := tab[i];
+    od;
+    return i;
+  end;
+  
+  union := function(i,j)
+    i := find(i);
+    j := find(j);
+    if i < j then
+      tab[j] := i;
+    elif j < i then
+      tab[i] := j;
+    fi;
+  end;
+  
+  if DigraphNrVertices(digraph) = 0 then
+    return rec(comps:=[], id:=[]);
+  elif HasDigraphSource(digraph) then
+    source := DigraphSource(digraph);
+    range := DigraphRange(digraph);
+    for n in [1..Size(source)] do
+      union(source[n], range[n]);
+    od;
+  elif HasOutNeighbours(digraph) then
+    adj := OutNeighbours(digraph);
+    for i in DigraphVertices(digraph) do
+      for j in adj[i] do
+        union(i,j);
+      od;
+    od;
+  fi;
+  
+  normalise := function(table)
+    local ht, next, i, ii;
+    ht := [];
+    next := 1;
+    for i in [1..Length(table)] do
+      ii := find(i);
+      if IsBound(ht[ii]) then
+        table[i] := ht[ii];
+      else
+        table[i] := next;
+        ht[ii] := next;
+        next := next + 1;
+      fi;
+    od;
+    return table;
+  end;
+  
+  normalise(tab);
+  comps := List([1..Maximum(tab)], x->[]);
+  for i in [1..Length(tab)] do
+    Add(comps[tab[i]], i);
+  od;
+  return rec(comps:=comps, id:=tab);
+end);
