@@ -192,7 +192,7 @@ function(graph)
 
   out := OutNeighbours(graph);
   inn := List(DigraphVertices(graph), x -> []);
-  for i in [ 1 .. Length(out) ] do
+  for i in DigraphVertices(graph) do
     for j in [ 1 .. Length(out[i]) ] do
       Add(inn[out[i][j]], i); 
     od;
