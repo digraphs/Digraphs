@@ -13,7 +13,7 @@
   <Attr Name="DigraphDual" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a simple digraph, then this method returns the
+    If <A>digraph</A> does not have multiple edges, then this method returns the
     dual of <A>digraph</A>. <P/> 
     
     The <E>dual</E> of a digraph <A>digraph</A> has the same vertices as
@@ -79,24 +79,24 @@ gap> AdjacencyMatrix(gr);
 
 <#GAPDoc Label="RangeSourceDigraph">
 <ManSection>
-  <Attr Name="Range" Arg="digraph"/>
-  <Attr Name="Source" Arg="digraph"/>
+  <Attr Name="DigraphRange" Arg="digraph"/>
+  <Attr Name="DigraphSource" Arg="digraph"/>
   <Returns>A list of positive integers.</Returns>
   <Description>
-    <C>Range</C> and <C>Source</C> return the range and source of the directed
-    graph <A>digraph</A>. More precisely, position <C>i</C> in
-    <C>Range(<A>digraph</A>)</C> is the range of the <C>i</C>th edge of
+    <C>DigraphRange</C> and <C>DigraphSource</C> return the range and source of
+    the directed graph <A>digraph</A>. More precisely, position <C>i</C> in
+    <C>DigraphRange(<A>digraph</A>)</C> is the range of the <C>i</C>th edge of
     <A>digraph</A>. 
 
     <Example><![CDATA[
 gap> gr:=Digraph( [ [ 1, 2, 3, 5 ], [ 1, 3, 4 ], [ 2, 3 ], 
 > [ 2 ], [ 1, 2, 3, 4 ] ] );
 <digraph with 5 vertices, 14 edges>
-gap> Range(gr);
+gap> DigraphRange(gr);
 [ 1, 2, 3, 5, 1, 3, 4, 2, 3, 2, 1, 2, 3, 4 ]
-gap> Source(gr);
+gap> DigraphSource(gr);
 [ 1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 5, 5, 5 ]
-gap> Edges(gr);
+gap> DigraphEdges(gr);
 [ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], 
   [ 2, 4 ], [ 3, 2 ], [ 3, 3 ], [ 4, 2 ], [ 5, 1 ], [ 5, 2 ], 
   [ 5, 3 ], [ 5, 4 ] ]
@@ -105,18 +105,18 @@ gap> Edges(gr);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="Edges">
+<#GAPDoc Label="DigraphEdges">
 <ManSection>
-  <Attr Name="Edges" Arg="digraph"/>
+  <Attr Name="DigraphEdges" Arg="digraph"/>
   <Returns>The edges of a digraph.</Returns>
   <Description>
     Returns the set of edges of the digraph <A>digraph</A>, that is, a set of
-    pairs of elements of <Ref Oper="Vertices"/>.
+    pairs of elements of <Ref Oper="DigraphVertices"/>.
     <Example><![CDATA[
 gap> gr:= Digraph( [ [ 1, 3, 4, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
 > [ 2, 4, 5 ], [ 1 ] ] );
 <digraph with 5 vertices, 15 edges>
-gap> Edges(gr);
+gap> DigraphEdges(gr);
 [ [ 1, 1 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 2, 1 ], [ 2, 2 ], 
   [ 2, 3 ], [ 2, 5 ], [ 3, 2 ], [ 3, 4 ], [ 3, 5 ], [ 4, 2 ], 
   [ 4, 4 ], [ 4, 5 ], [ 5, 1 ] ]
@@ -125,62 +125,59 @@ gap> Edges(gr);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="NrEdges">
+<#GAPDoc Label="DigraphNrEdges">
 <ManSection>
-  <Attr Name="NrEdges" Arg="digraph"/>
+  <Attr Name="DigraphNrEdges" Arg="digraph"/>
   <Returns>The number of edges of a digraph.</Returns>
   <Description>
     Returns the number of edges of the digraph <A>digraph</A>.
     <Example><![CDATA[
 gap> gr:= Digraph( [ [ 1, 3, 4, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
 > [ 2, 4, 5 ], [ 1 ] ] );;
-gap> NrEdges(gr);
+gap> DigraphNrEdges(gr);
 15
 gap> gr:=Digraph(rec(vertices:=["a", "b", "c"],
 > source:=["a", "b", "b"], range:=["b", "a", "a"]));
-<digraph with 3 vertices, 3 edges>
-gap> NrEdges(gr);
+<multidigraph with 3 vertices, 3 edges>
+gap> DigraphNrEdges(gr);
 3]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="Adjacencies">
+<#GAPDoc Label="OutNeighbours">
 <ManSection>
-  <Attr Name="Adjacencies" Arg="digraph"/>
+  <Attr Name="OutNeighbours" Arg="digraph"/>
   <Returns>The adjacencies of a digraph.</Returns>
   <Description>
-    Returns the list <C>adj</C> of adjacencies of the digraph
-    <A>digraph</A>. More specifically, <C>j</C> belongs to <C>adj[i]</C>
+    Returns the list <C>out</C> of out-neighbours of the digraph
+    <A>digraph</A>. More specifically, <C>j</C> belongs to <C>out[i]</C>
     whenever there is an edge from <C>i</C> to <C>j</C> in <A>digraph</A>. <P/>
-
-    A <A>digraph</A> is a simple digraph if and only if it is defined by
-    its adjacencies. 
 
     <Example><![CDATA[
 gap> gr:=Digraph(rec(vertices:=["a", "b", "c"],
 > source:=["a", "b", "b"], range:=["b", "a", "c"]));
 <digraph with 3 vertices, 3 edges>
-gap> Adjacencies(gr);
+gap> OutNeighbours(gr);
 [ [ 2 ], [ 1, 3 ], [  ] ]
 gap> gr:=Digraph(rec(vertices:=[1..3], 
 > source:=[1,2,3,1,1,2], range:=[1,2,3,2,3,1]));
 <digraph with 3 vertices, 6 edges>
-gap> Adjacencies(gr);
-[ [ 1, 2, 3 ], [ 1, 2 ], [ 3 ] ]
+gap> OutNeighbours(gr);
+[ [ 1, 2, 3 ], [ 2, 1 ], [ 3 ] ]
 gap> gr:=Digraph(rec(vertices:=[1..3],
 > source:=[1,2,3,1,1,2,1], range:=[1,2,3,2,3,1,2]));
-<digraph with 3 vertices, 7 edges>
-gap> Adjacencies(gr);
-[ [ 1, 2, 3 ], [ 1, 2 ], [ 3 ] ]
+<multidigraph with 3 vertices, 7 edges>
+gap> OutNeighbours(gr);
+[ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ]
 ]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="Vertices">
+<#GAPDoc Label="DigraphVertices">
 <ManSection>
-  <Oper Name="Vertices" Arg="digraph"/>
+  <Oper Name="DigraphVertices" Arg="digraph"/>
   <Returns>The vertices of a digraph.</Returns>
   <Description>
     Returns the vertices of the digraph <A>digraph</A>. <P/>
@@ -191,23 +188,23 @@ gap> Adjacencies(gr);
 gap> gr:=Digraph(rec(vertices:=["a", "b", "c"],
 > source:=["a", "b", "b"], range:=["b", "c", "a"]));
 <digraph with 3 vertices, 3 edges>
-gap> Vertices(gr);
+gap> DigraphVertices(gr);
 [ 1 .. 3 ]
 gap> gr:=Digraph(rec(vertices:=[1,2,3,4,5,7],
 > source:=[1,2,2,4,4], range:=[2,3,5,3,5]));
 <digraph with 6 vertices, 5 edges>
-gap> Vertices(gr);
+gap> DigraphVertices(gr);
 [ 1 .. 6 ]
-gap> Vertices(RandomSimpleDigraph(100));
+gap> DigraphVertices(RandomDigraph(100));
 [ 1 .. 100 ]
 ]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="NrVertices">
+<#GAPDoc Label="DigraphNrVertices">
 <ManSection>
-  <Attr Name="NrVertices" Arg="digraph"/>
+  <Attr Name="DigraphNrVertices" Arg="digraph"/>
   <Returns>The number of vertices of a digraph.</Returns>
   <Description>
     Returns the number of vertices of the digraph <A>digraph</A>. <P/>
@@ -216,14 +213,14 @@ gap> Vertices(RandomSimpleDigraph(100));
 gap> gr:=Digraph(rec(vertices:=["a", "b", "c"],
 > source:=["a", "b", "b"], range:=["b", "c", "a"]));
 <digraph with 3 vertices, 3 edges>
-gap> NrVertices(gr);
+gap> DigraphNrVertices(gr);
 3
 gap> gr:=Digraph(rec(vertices:=[1,2,3,4,5,7],
 > source:=[1,2,2,4,4], range:=[2,3,5,3,5]));
 <digraph with 6 vertices, 5 edges>
-gap> NrVertices(gr);
+gap> DigraphNrVertices(gr);
 6
-gap> NrVertices(RandomSimpleDigraph(100));
+gap> DigraphNrVertices(RandomDigraph(100));
 100]]></Example>
   </Description>
 </ManSection>
@@ -256,3 +253,35 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+#
+
+<#GAPDoc Label="DigraphShortestDistances">
+<ManSection>
+  <Attr Name="DigraphShortestDistances" Arg="digraph"/>
+  <Returns>A matrix.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph with <M>n</M> vertices, then this function 
+    returns an <M>n \times n</M> matrix <C>mat</C>. If a directed path from 
+    vertex <C>i</C> to vertex <C>j</C> exists, then the value of 
+    <C>mat[i][j]</C> is the length of the shortest such path (allowing paths of 
+    length zero). If no such path exists, then the value of <C>mat[i][j]</C> is 
+    <C>infinity</C>. If <M>n = 0</M>, then an empty list is returned. <P/>
+
+    The method used in this function is a version of the Floyd-Warshall 
+    algorithm, and has complexity <M>O(n^3)</M>.
+    
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 1, 2 ], [ 4 ] ] );
+<digraph with 4 vertices, 6 edges>
+gap> mat := DigraphShortestDistances(gr);;
+gap> Display(mat);
+[ [         0,         1,         2,  infinity ],
+  [         2,         0,         1,  infinity ],
+  [         1,         1,         0,  infinity ],
+  [  infinity,  infinity,  infinity,         0 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+

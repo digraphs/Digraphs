@@ -8,13 +8,10 @@
 #############################################################################
 ##
 
-DeclareProperty("IsSimpleDigraph", IsDigraph);
 DeclareProperty("IsSymmetricDigraph", IsDigraph);
 DeclareProperty("IsFunctionalDigraph", IsDigraph);
 DeclareProperty("IsStronglyConnectedDigraph", IsDigraph);
 DeclareProperty("IsAcyclicDigraph", IsDigraph);
 DeclareProperty("IsTournament", IsDigraph);
-DeclareProperty("IsEmptyDigraph", IsDigraphBySourceAndRange);
-DeclareProperty("IsEmptyDigraph", IsDigraphByAdjacency);
-DeclareProperty("IsEmptyDigraph", IsDigraph and HasNrEdges);
+DeclareProperty("IsEmptyDigraph", IsDigraph);
 DeclareProperty("IsReflexiveDigraph", IsDigraph);

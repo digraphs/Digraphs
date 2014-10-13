@@ -7,8 +7,11 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: utils.tst");
+gap> START_TEST("Digraphs package: io.tst");
 gap> LoadPackage("digraphs", false);;
+
+#
+gap> DigraphsStartTest();
 
 #
 gap> DigraphFromGraph6String("?");
@@ -117,4 +120,7 @@ gap> DigraphFromDiSparse6String(str) = gr;
 true
 
 #
-gap> STOP_TEST( "Digraphs package: utils.tst", 0);
+gap> DigraphsStopTest();
+
+#
+gap> STOP_TEST( "Digraphs package: io.tst", 0);

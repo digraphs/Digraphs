@@ -91,3 +91,8 @@ src/stamp-h1
 pkgconfig.h.in~
 autom4te.*
 configure
+*.lo
+*.Plo
+*.o
+src/bliss-0.72/.dirstamp
+src/bliss-0.72/.deps/.dirstamp

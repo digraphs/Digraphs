@@ -14,8 +14,9 @@
   <Description>
     Every  digraph in  &Digraphs;  belongs  to  the  category
     <C>IsDigraph</C>.  Basic attributes and operations for digraphs
-    are: <Ref Oper="Vertices"/>, <Ref Attr="Range"/>, <Ref Attr="Source"/>, <Ref
-      Attr="Adjacencies"/>, and <Ref Attr="Edges"/>. 
+    are: <Ref Oper="DigraphVertices"/>, <Ref Attr="DigraphRange"/>, <Ref
+      Attr="DigraphSource"/>, <Ref Attr="OutNeighbours"/>, and <Ref
+      Attr="DigraphEdges"/>. 
     </Description>
 </ManSection>
 <#/GAPDoc>
@@ -41,13 +42,15 @@
       
       <Mark>for a list</Mark> 
       <Item>
-        if <A>obj</A> is a list of duplicate free lists of positive integers in
+        if <A>obj</A> is a list of lists of positive integers in
         the range from <C>1</C> to <C>Length(<A>obj</A>)</C>, then this function
         returns the digraph with vertices
         <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>, and edges corresponding to
         the entries of <A>obj</A>. More precisely, there is an edge from vertex
         <C>i</C> to <C>j</C> if <C>j</C> is in <C><A>obj</A>[i]</C>; the source of this
-        edge is <C>i</C> and the range is <C>j</C>.
+        edge is <C>i</C> and the range is <C>j</C>. If <C>j</C> occurs multiple
+        times in <C><A>obj</A>[i]</C>, then there are multiple edges from
+        <C>i</C> to <C>j</C>.
       </Item>
 
       <Mark>for a Grape package graph</Mark>
@@ -65,7 +68,7 @@ gap> gr:=Digraph(rec(vertices:=["a", "b", "c"],
 <digraph with 3 vertices, 1 edges>
 gap> gr:=Digraph(rec(vertices:=[1,2,3,4,5], 
 > source:=[1,2,2,4,4,1,1], range:=[2,3,5,3,5,1,1]));
-<digraph with 5 vertices, 7 edges>
+<multidigraph with 5 vertices, 7 edges>
 gap> gr:= Digraph( [ [ 2, 5, 8, 10 ], [ 2, 3, 4, 5, 6, 8, 9, 10 ], 
 > [ 1 ], [ 3, 5, 7, 8, 10 ], [ 2, 5, 7 ], [ 3, 6, 7, 9, 10 ], [ 1, 4 ], 
 > [ 1, 5, 9 ], [ 1, 2, 7, 8 ], [ 3, 5 ] ] );
@@ -137,7 +140,7 @@ gap> DigraphByAdjacencyMatrix( [
 > [ 0, 3, 2, 1, 1 ],
 > [ 0, 0, 1, 0, 1 ],
 > [ 2, 0, 0, 0, 0 ] ]);
-<digraph with 5 vertices, 18 edges>
+<multidigraph with 5 vertices, 18 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -197,14 +200,14 @@ gap> AsDigraph(f, 4);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="RandomSimpleDigraph">
+<#GAPDoc Label="RandomDigraph">
 <ManSection>
-  <Oper Name="RandomSimpleDigraph" Arg="n"/>
+  <Oper Name="RandomDigraph" Arg="n"/>
   <Returns>A digraph.</Returns>
   <Description>
-    Returns a random simple digraph with <A>n</A> vertices.
+    Returns a random digraph with <A>n</A> vertices and without multiple edges.
     <Log><![CDATA[
-gap> RandomSimpleDigraph(1000);
+gap> RandomDigraph(1000);
 <digraph with 1000 vertices, 364444 edges>
 ]]></Log>
   </Description>

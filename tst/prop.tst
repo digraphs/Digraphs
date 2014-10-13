@@ -7,24 +7,23 @@
 ##
 #############################################################################
 ##
-
 gap> START_TEST("Digraphs package: prop.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
 gap> DigraphsStartTest();
 
-# IsSimpleDigraph
+# IsMultiDigraph
 gap> gr1 := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
-gap> IsSimpleDigraph(gr);
-true
+gap> IsMultiDigraph(gr1);
+false
 
 #
 gap> gr2 := Digraph( [ [ ] ] );
 <digraph with 1 vertices, 0 edges>
-gap> IsSimpleDigraph(gr2);
-true
+gap> IsMultiDigraph(gr2);
+false
 
 #
 gap> source := [1..10000];;
@@ -32,32 +31,32 @@ gap> range := List( source, x->Random(source) );;
 gap> r := rec (vertices := [ 1 .. 10000 ], source := source, range := range);;
 gap> gr3 := Digraph(r);
 <digraph with 10000 vertices, 10000 edges>
-gap> IsSimpleDigraph(gr3);
-true
+gap> IsMultiDigraph(gr3);
+false
 
 #
 gap> Add(source, 10000);;
 gap> Add(range, range[10000]);;
 gap> r := rec(vertices := [ 1 .. 10000 ], source := source, range := range);;
 gap> gr4 := Digraph(r);
-<digraph with 10000 vertices, 10001 edges>
-gap> IsSimpleDigraph(gr4);
-false
+<multidigraph with 10000 vertices, 10001 edges>
+gap> IsMultiDigraph(gr4);
+true
 
-# IsAcyclicDigraph (& checking IsSimpleDigraph too)
+# IsAcyclicDigraph (& checking IsMultiDigraph too)
 gap> loop := Digraph([ [1] ]);
 <digraph with 1 vertices, 1 edges>
-gap> IsSimpleDigraph(loop);
-true
+gap> IsMultiDigraph(loop);
+false
 gap> IsAcyclicDigraph(loop);
 false
 
 #
 gap> r := rec( vertices := [ 1, 2 ], source := [ 1, 1 ], range := [ 2, 2 ] );;
 gap> multiple := Digraph(r);
-<digraph with 2 vertices, 2 edges>
-gap> IsSimpleDigraph(multiple);
-false
+<multidigraph with 2 vertices, 2 edges>
+gap> IsMultiDigraph(multiple);
+true
 gap> IsAcyclicDigraph(multiple);
 true
 
@@ -69,11 +68,11 @@ gap> for i in [1..100] do
 >     Add(r.range, j);
 >   od;
 > od;
-gap> complete := Digraph(r);
+gap> complete100 := Digraph(r);
 <digraph with 100 vertices, 10000 edges>
-gap> IsSimpleDigraph(complete);
-true
-gap> IsAcyclicDigraph(complete);
+gap> IsMultiDigraph(complete100);
+false
+gap> IsAcyclicDigraph(complete100);
 false
 
 #
@@ -91,8 +90,8 @@ gap> for i in [1..9999] do
 > od;
 gap> circuit := Digraph(r);
 <digraph with 20000 vertices, 20001 edges>
-gap> IsSimpleDigraph(circuit);
-true
+gap> IsMultiDigraph(circuit);
+false
 gap> IsAcyclicDigraph(circuit);
 true
 
@@ -101,9 +100,9 @@ gap> r:=rec( nrvertices := 8,
 > source := [ 1, 1, 1, 2, 3, 4, 4, 5, 7, 7 ], 
 > range := [ 4, 3, 4, 8, 2, 2, 6, 7, 4, 8 ] );;
 gap> grid := Digraph(r);
-<digraph with 8 vertices, 10 edges>
-gap> IsSimpleDigraph(grid);
-false
+<multidigraph with 8 vertices, 10 edges>
+gap> IsMultiDigraph(grid);
+true
 gap> IsAcyclicDigraph(grid);
 true
 
@@ -137,7 +136,7 @@ gap> IsFunctionalDigraph(g1);
 false
 
 #
-gap> g2 := Digraph(Adjacencies(g1));
+gap> g2 := Digraph(OutNeighbours(g1));
 <digraph with 10 vertices, 51 edges>
 gap> IsFunctionalDigraph(g2);
 false
@@ -176,7 +175,8 @@ false
 gap> IsSymmetricDigraph(loop);
 true
 gap> IsSymmetricDigraph(multiple);
-false
+Error, Digraphs: IsSymmetricDigraph: usage,
+the argument <graph> cannot have multiple edges,
 gap> g6 := Digraph( [ [ 1, 2, 4 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3, 1 ] ] );
 <digraph with 4 vertices, 10 edges>
 gap> IsSymmetricDigraph(g6);
@@ -187,7 +187,8 @@ true
 gap> gr := Digraph( rec ( nrvertices := 3, source := [ 1, 1, 2, 2, 2, 2, 3, 3 ],
 > range := [ 2, 2, 1, 1, 3, 3, 2, 2 ] ) );;
 gap> IsSymmetricDigraph(gr);
-true
+Error, Digraphs: IsSymmetricDigraph: usage,
+the argument <graph> cannot have multiple edges,
 
 # IsEmptyDigraph
 gap> gr1 := Digraph( rec( nrvertices := 5, source := [ ], range := [ ] ) );;
@@ -215,7 +216,7 @@ false
 # IsTournament
 gap> gr := Digraph( rec ( 
 > nrvertices := 2, source := [ 1, 1 ], range := [ 2, 2 ] ) );
-<digraph with 2 vertices, 2 edges>
+<multidigraph with 2 vertices, 2 edges>
 gap> IsTournament(gr);
 false
 gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 1, 2 ] ] );
@@ -253,7 +254,7 @@ gap> r := rec( nrvertices := 9,
 > range := [ 1, 7, 6, 9, 4, 8, 2, 5, 8, 9, 3, 9, 4, 8, 1, 1, 3 ], 
 > source := [ 1, 1, 2, 2, 4, 4, 5, 6, 6, 6, 7, 7, 8, 8, 9, 9, 9 ] );;
 gap> gr := Digraph(r);
-<digraph with 9 vertices, 17 edges>
+<multidigraph with 9 vertices, 17 edges>
 gap> IsStronglyConnectedDigraph(gr);
 false
 
@@ -262,25 +263,25 @@ gap> r := rec( vertices := [ 1 .. 5 ],
 > source := [ 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
 > range  := [ 1, 2, 3, 1, 2, 5, 1, 3, 5, 2, 3, 4, 1, 2, 2 ]);;
 gap> gr := Digraph(r);
-<digraph with 5 vertices, 15 edges>
+<multidigraph with 5 vertices, 15 edges>
 gap> IsReflexiveDigraph(gr);
 false
 gap> r := rec( nrvertices := 4,
 > source := [ 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4 ],
 > range  := [ 1, 2, 3, 1, 2, 2, 1, 2, 4, 1, 1, 4 ]);;
 gap> gr := Digraph(r);
-<digraph with 4 vertices, 12 edges>
+<multidigraph with 4 vertices, 12 edges>
 gap> IsReflexiveDigraph(gr);
 false
 gap> r := rec( nrvertices := 5,
 > source := [ 1, 1, 1, 2, 2, 3, 3, 3, 4, 5, 5, 5 ],
 > range  := [ 1, 1, 3, 2, 5, 1, 3, 5, 4, 1, 5, 2 ]);;
 gap> gr := Digraph(r);
-<digraph with 5 vertices, 12 edges>
+<multidigraph with 5 vertices, 12 edges>
 gap> IsReflexiveDigraph(gr);
 true
 
-# IsReflexiveDigraph: using adjacencies
+# IsReflexiveDigraph: using OutNeighbours
 gap> adj := [ [ 2, 1 ], [ 1, 3 ], [ ] ];;
 gap> gr := Digraph(adj);
 <digraph with 3 vertices, 4 edges>
@@ -295,12 +296,12 @@ true
 # IsReflexiveDigraph: using adjacency matrix
 gap> mat := [ [ 2, 1, 0 ], [ 0, 1, 0 ], [ 0, 0, 0 ] ];;
 gap> gr := DigraphByAdjacencyMatrix(mat);
-<digraph with 3 vertices, 4 edges>
+<multidigraph with 3 vertices, 4 edges>
 gap> IsReflexiveDigraph(gr);
 false
 gap> mat := [ [ 2, 0, 3, 1 ], [ 1, 1, 0, 2 ], [ 3, 0, 4, 0 ], [ 9, 1, 2, 1 ] ];;
 gap> gr := DigraphByAdjacencyMatrix(mat);
-<digraph with 4 vertices, 30 edges>
+<multidigraph with 4 vertices, 30 edges>
 gap> IsReflexiveDigraph(gr);
 true
 
@@ -309,4 +310,3 @@ gap> DigraphsStopTest();
 
 #
 gap> STOP_TEST( "Digraphs package: prop.tst", 0);
-
