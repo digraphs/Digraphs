@@ -597,74 +597,100 @@ static Obj FuncDIGRAPH_SHORTEST_DIST(Obj self, Obj digraph){
 
 // bliss 
 
-void hook_function(void *user_param,
-	      unsigned int N,
-	      const unsigned int *aut) {
-   UInt4* ptr;
-   Obj p;
-   UInt i;
-   
-   p   = NEW_PERM4(N);
-   ptr = ADDR_PERM4(p);
-   
-   for(i = 0; i < N; ++i){
-       ptr[i] = aut[i];
-   }
-   
-   AssPlist(user_param, LEN_PLIST(user_param)+1, p);
-   CHANGED_BAG(user_param);
- }
-
-BlissGraph* buildGraph(Obj digraph) {
-    UInt n, i, j, nr, len;
-    Obj adji, adj;
-    BlissGraph *graph;
+void hook_function(void               *user_param,
+	           unsigned           int N,
+	           const unsigned int *aut        ) {
+  UInt4* ptr;
+  Obj p;
+  UInt i;
   
-    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  p   = NEW_PERM4(N);
+  ptr = ADDR_PERM4(p);
   
-    graph = bliss_new(n);
+  for(i = 0; i < N; ++i){
+    ptr[i] = aut[i];
+  }
   
-    adj = ElmPRec(digraph, RNamName("adj"));
-    len = LEN_PLIST(adj);
-    nr = 0;
-    for (i = 1; i <= len; i++) {
-        adji = ELM_PLIST(adj, i);
-        nr = LEN_PLIST(adji);
-        for(j = 1; j <= nr; j++) {
-            bliss_add_edge(graph, i-1, INT_INTOBJ(ELM_PLIST(adji, j))-1);
-        }
-    }
-    
-    return graph;
+  AssPlist(user_param, LEN_PLIST(user_param)+1, p);
+  CHANGED_BAG(user_param);
 }
 
-static Obj FuncGRAPH_AUTOMORPHISM(Obj self, Obj digraph) {
-  Obj   automorphs;
-  BlissGraph *graph;
+BlissGraph* buildBlissDigraph(Obj digraph) {
+  UInt        n, i, j, nr, len;
+  Obj         adji, adj, source, range;
+  BlissGraph  *graph;
+
+  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  graph = bliss_new(n);
+
+  if (IsbPRec(digraph, RNamName("adj"))) { 
+    adj = ElmPRec(digraph, RNamName("adj"));
+    for (i = 1; i <= n; i++) {
+      adji = ELM_PLIST(adj, i);
+      nr = LEN_PLIST(adji);
+      for(j = 1; j <= nr; j++) {
+        bliss_add_edge(graph, i-1, INT_INTOBJ(ELM_PLIST(adji, j))-1);
+      }
+    }
+  } else {
+    source = ElmPRec(digraph, RNamName("source"));
+    PLAIN_LIST(source);
+    range = ElmPRec(digraph, RNamName("range"));
+    PLAIN_LIST(range);
+    n = LEN_PLIST(source);
+    for (i = 1; i <= n; i++) {
+      bliss_add_edge(graph, INT_INTOBJ(ELM_PLIST(source, i)) - 1,
+                            INT_INTOBJ(ELM_PLIST(range,  i)) - 1);
+    }
+  }
+
+  return graph;
+}
+
+static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
+  Obj                 autos, p, out;
+  BlissGraph          *graph;
+  UInt4               *ptr;
+  const unsigned int  *canon;
+  Int                 i, n;
   
-  graph = buildGraph(digraph);
+  graph = buildBlissDigraph(digraph);
   
-  automorphs = NEW_PLIST(T_PLIST, 0);
-  SET_LEN_PLIST(automorphs, 0);
+  autos = NEW_PLIST(T_PLIST, 0);
+  SET_LEN_PLIST(autos, 0);
+  canon = bliss_find_canonical_labeling(graph, hook_function, autos, 0);
   
-  bliss_find_automorphisms(graph,hook_function,automorphs,0);
+  n   = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  p   = NEW_PERM4(n);
+  ptr = ADDR_PERM4(p);
+ 
+  for(i = 0; i < n; ++i){
+    ptr[i] = canon[i];
+  }
+
+  out = NEW_PLIST(T_PLIST, 2);
+  SET_ELM_PLIST(out, 1, p);
+  SET_ELM_PLIST(out, 2, autos);
+  SET_LEN_PLIST(out, 2);
+  CHANGED_BAG(out);
+
   bliss_release(graph);
   
-  return automorphs;
+  return out;
 }
 
-static Obj FuncGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
+static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   Obj   p;
   UInt4 *ptr;
   BlissGraph *graph;
   Int   n, i; 
   const unsigned int *canon;
      
-  graph = buildGraph(digraph);
+  graph = buildBlissDigraph(digraph);
   
-  canon = bliss_find_canonical_labeling(graph,0,0,0); 
-  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  canon = bliss_find_canonical_labeling(graph, 0, 0, 0); 
   
+  n   = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
   p   = NEW_PERM4(n);
   ptr = ADDR_PERM4(p);
  
@@ -712,13 +738,13 @@ static StructGVarFunc GVarFuncs [] = {
     FuncIS_MULTI_DIGRAPH, 
     "src/digraphs.c:FuncIS_MULTI_DIGRAPH" },
   
-  { "GRAPH_AUTOMORPHISM", 1, "digraph",
-    FuncGRAPH_AUTOMORPHISM, 
-    "src/digraphs.c:FuncGRAPH_AUTOMORPHISM" },
+  { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
+    FuncDIGRAPH_AUTOMORPHISMS, 
+    "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS" },
 
-  { "GRAPH_CANONICAL_LABELING", 1, "digraph",
-    FuncGRAPH_CANONICAL_LABELING, 
-    "src/digraphs.c:FuncGRAPH_CANONICAL_LABELING" },
+  { "DIGRAPH_CANONICAL_LABELING", 1, "digraph",
+    FuncDIGRAPH_CANONICAL_LABELING, 
+    "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELING" },
   
   { "DIGRAPH_SHORTEST_DIST", 1, "digraph",
     FuncDIGRAPH_SHORTEST_DIST, 

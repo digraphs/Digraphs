@@ -58,29 +58,43 @@ end);
 InstallMethod(QuotientDigraph, "for a digraph and a list", 
 [IsDigraph and HasOutNeighbours, IsHomogeneousList],
 function(graph, verts)
-  local nr, new_nr, adj, i, j;
+  local nr, lookup, old, new, adj, j, l, i, k;
   
   nr := DigraphNrVertices(graph);
 
   if (IsRange(verts) and not (IsPosInt(verts[1]) and verts[1] <= nr and
     verts[Length(verts)] <= nr)) 
-    or ForAny(verts, x-> not IsPosInt(x) or x > nr) then 
+    or ForAny(verts, x-> not IsPosInt(x) or x > nr) 
+    or not IsDuplicateFree(verts) then 
     Error("Digraphs: QuotientDigraph: usage,\n ", 
-      "the 2nd argument <verts> must consist of vertices of the 1st", 
+      "the 2nd argument <verts> must consist of vertices of the 1st ", 
       "argument <graph>,\n");
   fi;
   
-  
-  new_nr := Length(verts);
-  adj := OutNeighbours(graph);
+  lookup := [ 1 .. nr ] * 0;
+  nr := Length(verts); 
+  lookup{verts} := [ 1 .. nr ];
 
-  for i in DigraphVertices(graph) do 
-    for j in adj[i] do 
+  old := OutNeighbours(graph);
+  new := EmptyPlist(nr);
+
+  for i in [ 1 .. nr ] do 
+    adj := [];
+    j := 0;
+    for k in old[verts[i]] do
+      l := lookup[k];
+      if l <> 0 then 
+        j := j + 1;
+        adj[j] := l;
+      fi;
     od;
+    new[i]:=adj;
   od;
 
-  return fail;
+  return DigraphNC(new);
 end);
+
+#
 
 InstallMethod(DigraphReverse, "for a digraph with source",
 [IsDigraph and HasDigraphSource],
