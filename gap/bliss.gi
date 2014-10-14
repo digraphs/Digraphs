@@ -20,9 +20,7 @@ function(graph)
     Error("Digraphs: DigraphCanonicalLabelling: usage,\n",
           "not yet implemented,\n");
   fi;
-  # ensure out neighbours are known . . .
-  OutNeighbours(graph); 
-  return GRAPH_CANONICAL_LABELING(graph);
+  return DIGRAPH_CANONICAL_LABELING(graph);
 end);
 
 #
@@ -30,12 +28,19 @@ end);
 InstallMethod(IsIsomorphicDigraph, "for digraphs",
 [IsDigraph, IsDigraph],
 function(g1, g2)
+  
   # check some invariants
-  if DigraphNrVertices(g1) <> DigraphNrVertices(g2) or 
-    DigraphNrEdges(g1) <> DigraphNrEdges(g2) then 
+  if DigraphNrVertices(g1) <> DigraphNrVertices(g2) 
+    or DigraphNrEdges(g1)  <> DigraphNrEdges(g2) 
+    or IsMultiDigraph(g1)  <> IsMultiDigraph(g2)    then 
     return false;
   fi; #JDM more!
 
+  if IsMultiDigraph(g1) then 
+    Error("Digraphs: DigraphCanonicalLabelling: usage,\n",
+          "not yet implemented,\n");
+  fi;
+  
   return DigraphRelabel(g1, DigraphCanonicalLabelling(g1)) 
     = DigraphRelabel(g2, DigraphCanonicalLabelling(g2));
 end);
@@ -45,7 +50,21 @@ end);
 InstallMethod(AutomorphismGroup, "for a digraph",
 [IsDigraph],
 function(graph)
-  return Group(GRAPH_AUTOMORPHISM(graph));
+  local x;
+  
+  if IsMultiDigraph(graph) then 
+    Error("Digraphs: DigraphCanonicalLabelling: usage,\n",
+          "not yet implemented,\n");
+  fi;
+  
+  x := DIGRAPH_AUTOMORPHISMS(graph);
+  SetDigraphCanonicalLabelling(graph, x[1]);
+  
+  if IsEmpty(x[2]) then 
+    return Group(());
+  else 
+    return Group(x[2]);
+  fi;
 end);
 
 #
