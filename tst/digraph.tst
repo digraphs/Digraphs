@@ -30,9 +30,9 @@ the argument <edges> must be a list of pairs,
 gap> gr := DigraphByEdges(DigraphEdges(gr), 10);
 <digraph with 10 vertices, 17 edges>
 gap> gr := DigraphByEdges( [ [ 1, 2 ] ] );
-<digraph with 2 vertices, 1 edges>
+<digraph with 2 vertices, 1 edge>
 gap> gr := DigraphByEdges( [ [ 2, 1 ] ] );
-<digraph with 2 vertices, 1 edges>
+<digraph with 2 vertices, 1 edge>
 gap> gr := DigraphByEdges( [ [ 1, 2 ] ], 1 ); 
 Error, Digraphs: DigraphByEdges: usage,
 the specified edges must not contain values greater than 1,

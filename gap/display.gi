@@ -13,18 +13,30 @@
 InstallMethod(ViewString, "for a digraph",
 [IsDigraph],
 function(graph)
-  local str;
+  local str, n, m;
+  
   str := "<";
   
   if IsMultiDigraph(graph) then 
     Append(str, "multi");
   fi;
 
+  n := DigraphNrVertices(graph);
+  m := DigraphNrEdges(graph);
+
   Append(str, "digraph with ");
-  Append(str, String(DigraphNrVertices(graph)));
-  Append(str, " vertices, ");
+  Append(str, String(n));
+  if n = 1 then
+    Append(str, " vertex, ");
+  else
+    Append(str, " vertices, ");
+  fi;
   Append(str, String(DigraphNrEdges(graph)));
-  Append(str, " edges>");
+  if m = 1 then
+    Append(str, " edge>");
+  else
+    Append(str, " edges>");
+  fi;
   return str;
 end);
 

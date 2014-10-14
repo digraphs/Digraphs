@@ -65,7 +65,7 @@
     <Example><![CDATA[
 gap> gr:=Digraph(rec(vertices:=["a", "b", "c"],
 > source:=["a"], range:=["b"]));
-<digraph with 3 vertices, 1 edges>
+<digraph with 3 vertices, 1 edge>
 gap> gr:=Digraph(rec(vertices:=[1,2,3,4,5], 
 > source:=[1,2,2,4,4,1,1], range:=[2,3,5,3,5,1,1]));
 <multidigraph with 5 vertices, 7 edges>

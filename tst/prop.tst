@@ -21,7 +21,7 @@ false
 
 #
 gap> gr2 := Digraph( [ [ ] ] );
-<digraph with 1 vertices, 0 edges>
+<digraph with 1 vertex, 0 edges>
 gap> IsMultiDigraph(gr2);
 false
 
@@ -45,7 +45,7 @@ true
 
 # IsAcyclicDigraph (& checking IsMultiDigraph too)
 gap> loop := Digraph([ [1] ]);
-<digraph with 1 vertices, 1 edges>
+<digraph with 1 vertex, 1 edge>
 gap> IsMultiDigraph(loop);
 false
 gap> IsAcyclicDigraph(loop);

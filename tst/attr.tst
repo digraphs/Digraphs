@@ -87,11 +87,11 @@ true
 gap> r:=rec(vertices:=[1..1], source:=[1,1], range:=[1,1]);
 rec( range := [ 1, 1 ], source := [ 1, 1 ], vertices := [ 1 ] )
 gap> gr := Digraph(r);
-<multidigraph with 1 vertices, 2 edges>
+<multidigraph with 1 vertex, 2 edges>
 gap> adj1 := AdjacencyMatrix(gr);
 [ [ 2 ] ]
 gap> gr := Digraph(r);
-<multidigraph with 1 vertices, 2 edges>
+<multidigraph with 1 vertex, 2 edges>
 gap> IsMultiDigraph(gr);
 true
 gap> adj2 := AdjacencyMatrix(gr);
@@ -137,11 +137,11 @@ gap> gr := Digraph( [] );
 gap> DigraphTopologicalSort(gr);
 [  ]
 gap> gr := Digraph([ [ ] ]);
-<digraph with 1 vertices, 0 edges>
+<digraph with 1 vertex, 0 edges>
 gap> DigraphTopologicalSort(gr);
 [ 1 ]
 gap> gr := Digraph([ [ 1 ] ]);
-<digraph with 1 vertices, 1 edges>
+<digraph with 1 vertex, 1 edge>
 gap> DigraphTopologicalSort(gr);
 [ 1 ]
 gap> gr := Digraph([ [ 2 ], [ 1 ] ]);

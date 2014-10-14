@@ -166,7 +166,7 @@ gap> InducedSubdigraph( gr, [ ] );
 gap> InducedSubdigraph( gr, [ 2 .. 6 ] );
 <multidigraph with 5 vertices, 7 edges>
 gap> InducedSubdigraph( gr, [ 8 ] );
-<digraph with 1 vertices, 0 edges>
+<digraph with 1 vertex, 0 edges>
 gap> i1 := InducedSubdigraph( gr, [ 1, 3, 4 ] );
 <multidigraph with 3 vertices, 6 edges>
 gap> OutNeighbours(i1);
@@ -216,7 +216,7 @@ true
 gap> InducedSubdigraph( gr, [ 2 .. 8 ] );
 <multidigraph with 7 vertices, 15 edges>
 gap> InducedSubdigraph( gr, [ 8 ] );
-<digraph with 1 vertices, 0 edges>
+<digraph with 1 vertex, 0 edges>
 gap> InducedSubdigraph( gr, [ 7, 8 ] );
 <digraph with 2 vertices, 0 edges>
 

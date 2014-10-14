@@ -56,7 +56,7 @@ gap> gr := Digraph( [ [ ], [ ] ] );
 gap> IsEmptyDigraph(gr);
 true
 gap> gr := Digraph( [ [ ], [ 1 ] ] );
-<digraph with 2 vertices, 1 edges>
+<digraph with 2 vertices, 1 edge>
 gap> IsEmptyDigraph(gr);
 false
 ]]></Example>
