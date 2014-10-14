@@ -142,6 +142,84 @@ gap> OutNeighboursOfVertex(gr, 2);
 gap> OutNeighboursOfVertex(gr, 5);
 [ 1, 2, 3, 1, 2, 3 ]
 
+# InducedSubdigraph (source and range version)
+gap> r := rec( nrvertices := 8,
+> source := [ 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 5, 5, 5, 5, 5, 5 ],
+> range  := [ 1, 1, 2, 3, 3, 4, 1, 1, 3, 4, 5, 1, 3, 4, 4, 5, 7 ] );
+rec( nrvertices := 8, 
+  range := [ 1, 1, 2, 3, 3, 4, 1, 1, 3, 4, 5, 1, 3, 4, 4, 5, 7 ], 
+  source := [ 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 5, 5, 5, 5, 5, 5 ] )
+gap> gr := Digraph(r);
+<multidigraph with 8 vertices, 17 edges>
+gap> InducedSubdigraph( gr, [ -1 ] );
+Error, Digraphs: InducedSubdigraph: usage,
+the second argument <subvertices> such be a subset of the vertices of
+the first argument <digraph>,
+
+gap> InducedSubdigraph( gr, [ 1 .. 9 ] );
+Error, Digraphs: InducedSubdigraph: usage,
+the second argument <subvertices> such be a subset of the vertices of
+the first argument <digraph>,
+
+gap> InducedSubdigraph( gr, [ ] );
+<digraph with 0 vertices, 0 edges>
+gap> InducedSubdigraph( gr, [ 2 .. 6 ] );
+<multidigraph with 5 vertices, 7 edges>
+gap> InducedSubdigraph( gr, [ 8 ] );
+<digraph with 1 vertices, 0 edges>
+gap> i1 := InducedSubdigraph( gr, [ 1, 3, 4 ] );
+<multidigraph with 3 vertices, 6 edges>
+gap> OutNeighbours(i1);
+[ [ 1, 1, 2, 2, 3 ], [ 3 ], [  ] ]
+gap> i2 := InducedSubdigraph( gr, [ 3, 4, 3, 1 ] );
+<multidigraph with 3 vertices, 6 edges>
+gap> i1 = i2;
+true
+
+# InducedSubdigraph (OutNeighbours version)
+gap> adj := [
+> [ 2, 3, 4, 5, 6, 6, 7 ],
+> [ 1, 1, 1, 3, 4, 5 ],
+> [ 4 ],
+> [ 3, 5 ],
+> [ 1, 2, 2, 3, 4, 4, 6, 5, 6, 7 ],
+> [ ],
+> [ 1 ],
+> [ ] ];;
+gap> gr := Digraph(adj);
+<multidigraph with 8 vertices, 27 edges>
+gap> InducedSubdigraph( gr, [ "a" ] );
+Error, Digraphs: InducedSubdigraph: usage,
+the second argument <subvertices> such be a subset of the vertices of
+the first argument <digraph>,
+
+gap> InducedSubdigraph( gr, [ 0 ] );
+Error, Digraphs: InducedSubdigraph: usage,
+the second argument <subvertices> such be a subset of the vertices of
+the first argument <digraph>,
+
+gap> InducedSubdigraph( gr, [ 2 .. 9 ] );
+Error, Digraphs: InducedSubdigraph: usage,
+the second argument <subvertices> such be a subset of the vertices of
+the first argument <digraph>,
+
+gap> InducedSubdigraph( gr, [ ] );
+<digraph with 0 vertices, 0 edges>
+gap> i1 := InducedSubdigraph( gr, [ 1, 3, 5, 7 ] );
+<digraph with 4 vertices, 8 edges>
+gap> OutNeighbours(i1);
+[ [ 2, 3, 4 ], [  ], [ 1, 2, 3, 4 ], [ 1 ] ]
+gap> i2 := InducedSubdigraph( gr, [ 7, 5, 3, 1, 1 ] );
+<digraph with 4 vertices, 8 edges>
+gap> i1 = i2;
+true
+gap> InducedSubdigraph( gr, [ 2 .. 8 ] );
+<multidigraph with 7 vertices, 15 edges>
+gap> InducedSubdigraph( gr, [ 8 ] );
+<digraph with 1 vertices, 0 edges>
+gap> InducedSubdigraph( gr, [ 7, 8 ] );
+<digraph with 2 vertices, 0 edges>
+
 #
 gap> DigraphsStopTest();
 

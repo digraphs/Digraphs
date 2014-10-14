@@ -66,6 +66,7 @@
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphTopologicalSort">
+    <#Include Label="InducedSubdigraph">
   </Section>
 
   <Section><Heading>Visualising the structure of a digraph</Heading>

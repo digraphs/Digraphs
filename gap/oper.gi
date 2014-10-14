@@ -332,36 +332,100 @@ function(graph, reflexive)
   fi;
 end);
 
-# This function will apply in the future to all "digraphs"
-# A different method may be needed for multigraph
+#
 
-InstallMethod(InducedSubdigraph, "for a digraph and a list",
-[IsDigraph, IsList],
+InstallMethod(InducedSubdigraph, "for a digraph with out neighbours and a list",
+[IsDigraph and HasOutNeighbours, IsList],
 function( digraph, subverts )
-  local verts, nr, adj, lookup, new, i;
+  local n, adj, nr, lookup, newverts, newadj, i;
 
-  verts := DigraphVertices(digraph);
-  if not ForAll( subverts, x -> x in verts ) then
+  n := DigraphNrVertices(digraph);
+  if not ForAll( subverts, x -> IsPosInt(x) and x < (n + 1)) then
     Error("Digraphs: InducedSubdigraph: usage,\n",
     "the second argument <subvertices> such be a subset of the vertices of\n",
     "the first argument <digraph>,\n");
     return;
   fi;
+  
+  if IsEmpty(subverts) then
+    return DigraphNC( [ ] );
+  fi;
+
   adj := OutNeighbours(digraph);
+  subverts := Set(subverts); # Sorting for consistency with Source/Range version
+                             # Set to remove repeats
   nr := Length(subverts);
-  lookup := EmptyPlist(nr);
+  lookup := EmptyPlist( n );
+  newverts := [ 1 .. nr ];
+  for i in newverts do
+    lookup[ subverts[i] ] := i;
+  od;
+  newadj := List( newverts, x -> [ ] );
+
+  for i in newverts do
+    newadj[i] := List( 
+                  Filtered( adj[ subverts[i] ], x -> x in subverts ), 
+                  y -> lookup[y]);
+  od;
+
+  return DigraphNC(newadj);
+end);
+
+#
+
+InstallMethod(InducedSubdigraph, "for a digraph with digraph source and a list",
+[IsDigraph and HasDigraphSource, IsList], 1,
+function( digraph, subverts )
+  local n, lookup, nr, source, range, m, news, newr, current, count, source_in, 
+  allowed, i;
+
+  n := DigraphNrVertices(digraph);
+  if not ForAll( subverts, x -> IsPosInt(x) and x < (n + 1)) then
+    Error("Digraphs: InducedSubdigraph: usage,\n",
+    "the second argument <subvertices> such be a subset of the vertices of\n",
+    "the first argument <digraph>,\n");
+    return;
+  fi;
+  
+  if IsEmpty(subverts) then
+    return DigraphNC( [ ] );
+  fi;
+
+  subverts := Set(subverts); # Sorting to ensure new source will be sorted
+                             # Set to remove repeats
+  lookup := EmptyPlist( n );
+  nr := Length(subverts);
   for i in [ 1 .. nr ] do
     lookup[ subverts[i] ] := i;
   od;
-  new := List( [ 1 .. nr ], x -> [ ] );
 
-  for i in [ 1 .. nr ] do
-    new[i] := List( Filtered( adj[ subverts[i] ], x -> x in subverts), y -> lookup[y] );
+  source  := DigraphSource(digraph);
+  range   := DigraphRange(digraph);
+  m       := Length(source);
+  news      := [ ];
+  newr      := [ ];
+  current   := 0;
+  count     := 0;
+  source_in := false;
+  allowed   := BlistList( DigraphVertices(digraph), subverts );
+
+  for i in [ 1 .. m ] do
+    if source[i] <> current then
+      current   := source[i];
+      source_in := allowed[current];
+    fi;
+    if source_in and allowed[range[i]] then
+      count        := count + 1;
+      news[count]  := lookup[current];
+      newr[count]  := lookup[range[i]];
+    fi;
   od;
 
-  return DigraphNC(new);
+  return DigraphNC( rec ( nrvertices := nr, source := news, range := newr ) );
+
 end);
 
+#
 
 InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
@@ -370,7 +434,8 @@ function(graph, v)
 
   vertices := DigraphVertices(graph);
   if not v in vertices then
-    Error(v, " is not a vertex of the digraph");
+    Error("Digraphs: OutNeighboursOfVertex: usage,\n",
+          v, " is not a vertex of the digraph,\n");
     return;
   elif HasInNeighbours(graph) then
     return InNeighbours[v];
@@ -390,6 +455,8 @@ function(graph, v)
   fi;
 end);
 
+#
+
 InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph and HasDigraphSource, IsPosInt], 1,
 function(graph, v)
@@ -397,7 +464,8 @@ function(graph, v)
 
   vertices := DigraphVertices(graph);
   if not v in vertices then
-    Error(v, " is not a vertex of the digraph");
+    Error("Digraphs: OutNeighboursOfVertex: usage,\n",
+          v, " is not a vertex of the digraph,\n");
     return;
   elif HasInNeighbours(graph) then
     return InNeighbours[v];
@@ -416,17 +484,22 @@ function(graph, v)
   fi;
 end);
 
+#
+
 InstallMethod(OutNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt], 1,
 function(graph, v)
 
   if not v in DigraphVertices(graph) then
-    Error(v, " is not a vertex of the digraph");
+    Error("Digraphs: OutNeighboursOfVertex: usage,\n",
+          v, " is not a vertex of the digraph,\n");
     return;
   else
     return OutNeighbours(graph)[v];
   fi;
 end);
+
+#
 
 InstallMethod(OutNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph and HasDigraphSource, IsPosInt],
@@ -452,3 +525,5 @@ function(graph, v)
     return out;
   fi;
 end);
+
+#EOF
