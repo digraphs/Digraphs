@@ -10,6 +10,51 @@
 
 # graph algorithms
 
+#
+
+InstallMethod(DigraphFloydWarshall, "for a digraph",
+[IsDigraph, IsFunction, IsObject, IsObject],
+function(graph, func, nopath, edge)
+  local vertices, n, m, dist, out, i, j, k;
+
+  vertices := DigraphVertices(graph);
+  n := DigraphNrVertices(graph);
+  dist := EmptyPlist(n);
+
+  for i in vertices do
+    dist[i] := EmptyPlist(n);
+    for j in vertices do 
+      dist[i][j]:=nopath;
+    od;
+  od;
+  
+  if HasDigraphSource(graph) then 
+    m := Length(DigraphSource(graph));
+    for i in [ 1 .. m ] do
+      dist[ DigraphSource(graph)[i] ][ DigraphRange(graph)[i] ] := edge;
+    od;
+  else
+    out := OutNeighbours(graph);
+    for i in vertices do 
+      for j in out[i] do 
+        dist[i][j] := edge;
+      od;
+    od;
+  fi;
+  
+  for k in vertices do
+    for i in vertices do
+      for j in vertices do
+        func(dist, i, j, k);
+      od;
+    od;
+  od;
+
+  return dist;
+end);
+
+#
+
 InstallMethod(QuotientDigraph, "for a digraph and a list", 
 [IsDigraph and HasOutNeighbours, IsHomogeneousList],
 function(graph, verts)
@@ -193,7 +238,7 @@ function(graph)
 
   if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
-    "the argument <graph> cannot have multiple edges,");
+    "the argument <graph> cannot have multiple edges,\n");
     return;
   fi;
 
@@ -261,11 +306,11 @@ end);
 InstallMethod(DigraphTransitiveClosure, "for a digraph",
 [IsDigraph],
 function(graph)
-  local sorted, vertices, n, adj, out, trans, reflex, mat, flip, v, u, w;
+  local n, vertices, adj, sorted, out, trans, reflex, func, v, u;
 
   if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphTransitiveClosure: usage,\n",
-    "the argument <graph> cannot have multiple edges,");
+    "the argument <graph> cannot have multiple edges,\n");
     return;
   fi;
 
@@ -298,46 +343,16 @@ function(graph)
     SetIsMultiDigraph(out, false);
     return out;
   else # Non-acyclic method
-
-    mat := List( vertices, x -> List( vertices, y -> infinity ) ); 
-    reflex := vertices * 0;
-    
-    for v in vertices do # Assume graph reflexive for now
-      mat[v][v] := 1;
-    od;
-
-    for v in vertices do # Record edges and remember loops
-      for u in adj[v] do
-        mat[v][u] := 1;
-        if u = v then
-          reflex[v] := 1;
-        fi;
-      od;
-    od;
-
-    for w in vertices do # Variation of Floyd Warshall
-      for u in vertices do
-        for v in vertices do
-          if mat[u][w] <> infinity and mat[w][v] <> infinity then
-            mat[u][v] := 1;
-          fi;
-        od;
-      od;
-    od;
-
-    flip:=function(x)
-      if x = infinity then
-        return 0;
-      else
+  
+    func := function(dist, i, j, k)
+      if dist[i][k] > 0 and dist[k][j] > 0 then 
         return 1;
+      else
+        return 0;
       fi;
     end;
 
-    mat := List( mat, x -> List( x, flip ) ); # Create adjacency matrix
-    for v in vertices do # Only include original loops
-      mat[v][v] := reflex[v]; 
-    od;
-    out := DigraphByAdjacencyMatrix(mat);
+    out := DigraphByAdjacencyMatrix(DigraphFloydWarshall(graph, func, 0, 1));
     SetIsMultiDigraph(out, false);
     return out;
   fi;
@@ -356,7 +371,7 @@ function( digraph, subverts )
   if not ForAll( subverts, x -> x in verts ) then
     Error("Digraphs: InducedSubdigraph: usage,\n",
     "the second argument <subvertices> such be a subset of the vertices of\n",
-    "the first argument <digraph>,");
+    "the first argument <digraph>,\n");
     return;
   fi;
   adj := OutNeighbours(digraph);
@@ -447,7 +462,8 @@ function(graph, v)
 
   vertices := DigraphVertices(graph);
   if not v in vertices then
-    Error(v, " is not a vertex of the digraph");
+    Error("Digraphs: OutNeighboursOfVertex: usage,\n",
+          v, " is not a vertex of the digraph,\n");
     return;
   else
     out := [];

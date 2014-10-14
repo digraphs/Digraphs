@@ -395,6 +395,66 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph) {
   return adj;
 }
 
+static Obj FuncDIGRAPH_IN_NBS(Obj self, Obj digraph) { 
+  Obj   range, source, inn, innk, innj, adj, adji;
+  UInt  n, m, i, j, k, len, len2, nam;
+  
+  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+
+  if (n == 0) {
+    return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
+  }
+
+  inn = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+  SET_LEN_PLIST(inn, n);
+
+  // fill adj with empty plists 
+  for (i = 1; i <= n; i++) {
+    SET_ELM_PLIST(inn, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+    SET_LEN_PLIST(ELM_PLIST(inn, i), 0);
+    CHANGED_BAG(inn);
+  }
+
+  nam = RNamName("source");
+  if (IsbPRec(digraph, nam)) {
+    source = ElmPRec(digraph, nam);
+    PLAIN_LIST(source);
+    range = ElmPRec(digraph, RNamName("range")); 
+    PLAIN_LIST(range);
+
+  
+    m = LEN_PLIST(range);
+    for (i = 1; i <= m; i++) {
+      j = INT_INTOBJ(ELM_PLIST(range, i));
+      innj = ELM_PLIST(inn, j);
+      len = LEN_PLIST(innj); 
+      if(len == 0){
+        RetypeBag(innj, T_PLIST_CYC+IMMUTABLE);
+        CHANGED_BAG(inn);
+      }
+      AssPlist(innj, len + 1,  ELM_PLIST(source, i));
+    }
+  } else {
+    adj = ElmPRec(digraph, RNamName("adj"));
+    for (i = 1; i <= n; i++){
+      adji = ELM_PLIST(adj, i);
+      len = LEN_PLIST(adji);
+      for (j = 1; j <= len; j++){
+        k = INT_INTOBJ(ELM_PLIST(adji, j));
+        innk = ELM_PLIST(inn, k);
+        len2 = LEN_PLIST(innk); 
+        if(len2 == 0){
+          RetypeBag(innk, T_PLIST_CYC+IMMUTABLE);
+          CHANGED_BAG(inn);
+        }
+        AssPlist(innk, len2 + 1, INTOBJ_INT(i));
+      }
+    } 
+  }
+  AssPRec(digraph, RNamName("inn"), inn);
+  return inn;
+}
+
 static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   Obj   range, adj, source, adji;
   UInt  nam;
@@ -452,6 +512,84 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
     return False;
   }
 } 
+
+static Obj FLOYD_WARSHALL(Obj digraph, 
+                          void (*func)(Int** dist,
+                                       Int   i,
+                                       Int   j,
+                                       Int   k, 
+                                       Int   n),
+                          Int val1, 
+                          Int val2) {
+  Int   n, i, j, k, *dist;
+  Obj   next, source, range, out, outi, val;
+
+  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
+  dist = malloc( n * n * sizeof(Int) );
+  
+  for (i = 0; i < n * n; i++) {
+    dist[i] = val1;
+  }
+    
+  if (IsbPRec(digraph, RNamName("source"))) {
+    source = ElmPRec(digraph, RNamName("source"));
+    PLAIN_LIST(source);
+    range = ElmPRec(digraph, RNamName("range"));
+    PLAIN_LIST(range);
+    for (i = 1; i <= LEN_PLIST(source); i++) {
+      j = (INT_INTOBJ(ELM_PLIST(source, i)) - 1) * n + INT_INTOBJ(ELM_PLIST(range, i) - 1);
+      dist[j] = val2;
+    }
+  } else { 
+    out = ElmPRec(digraph, RNamName("adj"));
+    for (i = 1; i <= n; i++) {
+      outi = ELM_PLIST(out, i);
+      PLAIN_LIST(outi);
+      for (j = 1; j <= LEN_PLIST(outi); j++) {
+        k = (i - 1) * n + INT_INTOBJ(ELM_PLIST(outi, j)) - 1;
+        dist[k] = val2;
+      } 
+    }
+  }
+  
+  for (k = 0; k < n; k++) {
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+        func(&dist, i, j, k, n);
+      }
+    }
+  }
+  
+  out = NEW_PLIST(T_PLIST_TAB, n);
+  SET_LEN_PLIST(out, n);
+
+  for (i = 1; i <= n; i++) {
+    next = NEW_PLIST(T_PLIST_CYC, n);
+    SET_LEN_PLIST(next, n);
+    for (j = 1; j <= n; j++) {
+      val = INTOBJ_INT(dist[ (i - 1) * n + j - 1 ]);
+      SET_ELM_PLIST(next, j, val);
+    }
+    SET_ELM_PLIST(out, i, next);
+    CHANGED_BAG(out);
+  } 
+
+  free(dist);
+  return out;
+}
+
+void FW_FUNC_SHORTEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
+  if((*dist)[i * n + k] != -1 && (*dist)[k * n + j] != -1){
+    if ((*dist)[i * n + j] == -1 || 
+        (*dist)[i * n + j] > (*dist)[i * n + k] + (*dist)[k * n + j]) {
+      (*dist)[i * n + j] = (*dist)[i * n + k] + (*dist)[k * n + j];
+    }
+  }
+}
+ 
+static Obj FuncDIGRAPH_SHORTEST_DIST(Obj self, Obj digraph){
+  return FLOYD_WARSHALL(digraph, FW_FUNC_SHORTEST_DIST, -1, 1);
+}
 
 // bliss 
 
@@ -562,6 +700,10 @@ static StructGVarFunc GVarFuncs [] = {
     FuncDIGRAPH_OUT_NBS, 
     "src/digraphs.c:FuncDIGRAPH_OUT_NBS" },
 
+  { "DIGRAPH_IN_NBS", 1, "digraph",
+    FuncDIGRAPH_IN_NBS, 
+    "src/digraphs.c:FuncDIGRAPH_IN_NBS" },
+
   { "IS_MULTI_DIGRAPH", 1, "digraph",
     FuncIS_MULTI_DIGRAPH, 
     "src/digraphs.c:FuncIS_MULTI_DIGRAPH" },
@@ -573,6 +715,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "GRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncGRAPH_CANONICAL_LABELING, 
     "src/digraphs.c:FuncGRAPH_CANONICAL_LABELING" },
+  
+  { "DIGRAPH_SHORTEST_DIST", 1, "digraph",
+    FuncDIGRAPH_SHORTEST_DIST, 
+    "src/digraphs.c:FuncDIGRAPH_SHORTEST_DIST" },
       
   { 0 }
 

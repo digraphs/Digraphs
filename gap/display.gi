@@ -43,7 +43,8 @@ function(graph)
   local verts, source, range, n, str, i;
 
   if not IsSymmetricDigraph(graph) then
-    Error("Digraphs: DotSymmetricDigraph: usage, the argument be symmetric,");
+    Error("Digraphs: DotSymmetricDigraph: usage,\n",
+          "the argument <graph> should be symmetric,\n");
     return;
   fi;
 
@@ -85,13 +86,15 @@ if not IsBound(Splash) then #This function is written by A. Egri-Nagy
     local opt, path, dir, tdir, file, viewer, type, filetype;
 
     if not IsString(arg[1]) then 
-      Error("usage: the first argument must be a string,");
+      Error("Digraphs: Splash: usage,\n",
+            "<arg>[1] must be a string,\n");
       return;
     fi;
 
     if IsBound(arg[2]) then
       if not IsRecord(arg[2]) then 
-        Error("usage: the second argument must be a record,");
+        Error("Digraphs: Splash: usage,\n",
+              "<arg>[2] must be a record,\n");
         return;
       else
         opt:=arg[2];
@@ -146,7 +149,8 @@ if not IsBound(Splash) then #This function is written by A. Egri-Nagy
     elif arg[1]{[1..5]}="//dot" then 
       type:="dot";
     else 
-      Error("usage: the option <type> must be \"dot\" or \"latex\",");
+      Error("Digraphs: Splash: usage,\n",
+            "the option <type> must be \"dot\" or \"latex\",\n");
       return;
     fi;
     

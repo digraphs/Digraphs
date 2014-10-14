@@ -15,7 +15,7 @@ function(graph)
   
   if IsMultiDigraph(graph) then 
     Error("Digraphs: DigraphDual: usage,\n", 
-      "the argument <graph> must not have multiple edges,");
+      "the argument <graph> must not have multiple edges,\n");
     return;
   fi;
   
@@ -233,37 +233,42 @@ fi;
 InstallMethod(OutNeighbors, "for a digraph",
 [IsDigraph], OutNeighbours);
 
-InstallMethod(InNeighbours, "for a digraph with out-neighbours",
-[IsDigraph and HasOutNeighbours],
-function(graph)
-  local out, inn, i, j;
 
-  out := OutNeighbours(graph);
-  inn := List(DigraphVertices(graph), x -> []);
-  for i in DigraphVertices(graph) do
-    for j in [ 1 .. Length(out[i]) ] do
-      Add(inn[out[i][j]], i); 
+if IsBound(DIGRAPH_IN_NBS) then
+  InstallMethod(InNeighbours, "for a digraph",
+  [IsDigraph], DIGRAPH_IN_NBS);
+else
+  InstallMethod(InNeighbours, "for a digraph with out-neighbours",
+  [IsDigraph and HasOutNeighbours],
+  function(graph)
+    local out, inn, i, j;
+  
+    out := OutNeighbours(graph);
+    inn := List(DigraphVertices(graph), x -> []);
+    for i in DigraphVertices(graph) do
+      for j in [ 1 .. Length(out[i]) ] do
+        Add(inn[out[i][j]], i); 
+      od;
     od;
-  od;
-  return inn;
-end);
-
-InstallMethod(InNeighbours, "for a digraph with source and range",
-[IsDigraph and HasDigraphSource], 1,
-function(graph)
-  local range, source, inn, i;
+    return inn;
+  end);
   
-  range := DigraphRange(graph);
-  source := DigraphSource(graph);
-  inn := List(DigraphVertices(graph), x -> [] );
-  
-  for i in [ 1 .. Length(source) ] do
-    Add(inn[range[i]], source[i]);
-  od;
-  
-  return inn;
-end);
-
+  InstallMethod(InNeighbours, "for a digraph with source and range",
+  [IsDigraph and HasDigraphSource], 1,
+  function(graph)
+    local range, source, inn, i;
+    
+    range := DigraphRange(graph);
+    source := DigraphSource(graph);
+    inn := List(DigraphVertices(graph), x -> [] );
+    
+    for i in [ 1 .. Length(source) ] do
+      Add(inn[range[i]], source[i]);
+    od;
+    
+    return inn;
+  end);
+fi;
 InstallMethod(InNeighbors, "for a digraph",
 [IsDigraph], InNeighbours);
 
@@ -309,38 +314,20 @@ end);
 #
 
 InstallMethod(DigraphShortestDistances, "for a digraph",
-[IsDigraph],
-function(graph)
-  local vertices, n, m, dist, i, k, j;
+[IsDigraph], DIGRAPH_SHORTEST_DIST);
 
-  vertices := DigraphVertices(graph);
-  n := DigraphNrVertices(graph);
-  m := Length(DigraphEdges(graph));
-  dist := List( vertices, x -> List( vertices, x -> infinity ) );
-
-  for i in [ 1 .. m ] do
-    dist[ DigraphSource(graph)[i] ][ DigraphRange(graph)[i] ] := 1;
-  od;
-
-  for i in vertices do
-    dist[i][i] := 0;
-  od;
-
-  for k in vertices do
-    for i in vertices do
-      for j in vertices do
-        if dist[i][k] <> infinity and 
-        dist[k][j] <> infinity and 
-        dist[i][j] > dist[i][k] + dist[k][j] then
-          dist[i][j] := dist[i][k] + dist[k][j];
-        fi;
-      od;
-    od;
-  od;
-
-  return dist;
-
-end);
+#function(graph)
+#  local func;
+#
+#  func := function(dist, i, j, k)
+#    if dist[i][k] <> -1 and dist[k][j] <> -1 then  
+#      if dist[i][j] = -1 or dist[i][j] > dist[i][k] + dist[k][j] then 
+#        dist[i][j] := dist[i][k] + dist[k][j];
+#      fi;
+#    fi;
+#  end;
+#  return DigraphFloydWarshall(graph, func, -1, 1);
+#end);
 
 #
 
