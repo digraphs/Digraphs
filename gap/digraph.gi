@@ -122,7 +122,6 @@ function(n)
 
   gr := DigraphNC(adj);
   SetIsMultiDigraph(gr, false);
-  SetIsSymmetricDigraph(gr, true);
   return gr;
 end);
 
@@ -140,6 +139,7 @@ function(n)
   od;
   gr := DigraphNC(adj);
   SetIsMultiDigraph(gr, false);
+  SetIsSymmetricDigraph(gr, true);
   return gr;
 end);
 
