@@ -31,7 +31,7 @@ function(graph)
   else
     Append(str, " vertices, ");
   fi;
-  Append(str, String(DigraphNrEdges(graph)));
+  Append(str, String(m));
   if m = 1 then
     Append(str, " edge>");
   else
