@@ -83,11 +83,20 @@ gap> DigraphRemoveLoops(gr);
   <Oper Name="DigraphRemoveEdges" Arg="digraph, edges"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph and <A>edges</A> is a list of either:
-    pairs of vertices of the non-multidigraph <A>digraph</A> or indices of
-    edges of <A>digraph</A>, then this operation returns a digraph
-    constructed from <A>digraph</A> by removing all of the edges specified by
-    <A>edges</A>.
+    If:
+    <List>
+      <Item>
+        <A>digraph</A> is a digraph with no multiple edges, and <A>edges</A> is 
+        a list of pairs of vertices of <A>digraph</A>, or
+      </Item>
+      <Item>
+        <A>digraph</A> is any digraph and <A>edges</A> is a list of indices of 
+        edges of <A>digraph</A>,
+      </Item>
+    </List>
+    
+    then this operation returns a digraph constructed from <A>digraph</A> by 
+    removing all of the edges specified by <A>edges</A>. <P/>
 
     <Example><![CDATA[
 gap> cycle:=function(n)
@@ -115,9 +124,10 @@ gap> gr:=DigraphRemoveEdges(gr, [10]);
   <Oper Name="DigraphTransitiveClosure" Arg="digraph"/>
   <Returns>A digraph, or <K>fail</K>.</Returns>
   <Description>
-    These functions return the (reflexive) transitive closure of the 
-    non-multidigraph <A>digraph</A>. If <A>digraph</A> is a multidigraph, then 
-    this function returns <K>fail</K>. <P/>
+    If <A>digraph</A> is a digraph with no multiple edges, these functions 
+    return the (reflexive) transitive closure of the <A>digraph</A>. If 
+    <A>digraph</A> is a multidigraph, then this function returns <K>fail</K>. 
+<P/>
 
     A digraph is <E>reflexive</E> if there is a loop at every vertex, and it is 
     <E>transitive</E> if whenever <C>[ i, j ]</C> and <C>[ j, k ]</C> are edges,
