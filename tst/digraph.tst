@@ -190,9 +190,13 @@ gap> gr := Digraph( [ [ 1, 2, 3, 5 ], [ 1, 5 ], [ 2, 3, 6 ], [ 1, 3, 4 ],
 gap> gr = DigraphByEdges(DigraphEdges(gr));
 true
 gap> DigraphByEdges([["nonsense", "more"]]);
-Error, usage: the argument <edges> must be a list of pairs of pos ints,
+Error, Digraphs: DigraphByEdges: usage,
+the argument <edges> must be a list of pairs of pos ints,
+
 gap> DigraphByEdges([["nonsense"]]);
-Error, usage: the argument <edges> must be a list of pairs,
+Error, Digraphs: DigraphByEdges: usage,
+the argument <edges> must be a list of pairs,
+
 gap> gr := DigraphByEdges(DigraphEdges(gr), 10);
 <digraph with 10 vertices, 17 edges>
 gap> gr := DigraphByEdges( [ [ 1, 2 ] ] );
@@ -200,8 +204,9 @@ gap> gr := DigraphByEdges( [ [ 1, 2 ] ] );
 gap> gr := DigraphByEdges( [ [ 2, 1 ] ] );
 <digraph with 2 vertices, 1 edges>
 gap> gr := DigraphByEdges( [ [ 1, 2 ] ], 1 ); 
-Error, DigraphByEdges: usage, the specified edges must not contain values grea\
-ter than 1
+Error, Digraphs: DigraphByEdges: usage,
+the specified edges must not contain values greater than 1,
+
 
 # AsDigraph
 gap> f := Transformation([]);
