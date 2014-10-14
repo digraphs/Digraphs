@@ -264,18 +264,20 @@ end);
 #
 
 InstallMethod(DigraphShortestDistances, "for a digraph",
-[IsDigraph],
-function(graph)
-  local func;
+[IsDigraph], DIGRAPH_SHORTEST_DIST);
 
-  func := function(dist, i, j, k)
-    if dist[i][k] <> infinity and dist[k][j] <> infinity 
-     and dist[i][j] > dist[i][k] + dist[k][j] then 
-      dist[i][j] := dist[i][k] + dist[k][j];
-    fi;
-  end;
-  return DigraphFloydWarshall(graph, func, infinity, 1);
-end);
+#function(graph)
+#  local func;
+#
+#  func := function(dist, i, j, k)
+#    if dist[i][k] <> -1 and dist[k][j] <> -1 then  
+#      if dist[i][j] = -1 or dist[i][j] > dist[i][k] + dist[k][j] then 
+#        dist[i][j] := dist[i][k] + dist[k][j];
+#      fi;
+#    fi;
+#  end;
+#  return DigraphFloydWarshall(graph, func, -1, 1);
+#end);
 
 #
 

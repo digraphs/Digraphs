@@ -453,68 +453,84 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   }
 } 
 
-static Obj FLOYD_WARSHALL(Obj self, 
-                          Obj digraph, 
-                          void (*func) (Int*  dist,                       
-                                        Int   i,
-                                        Int   j,
-                                        Int   k),
+static Obj FLOYD_WARSHALL(Obj digraph, 
+                          void (*func)(Int** dist,
+                                       Int   i,
+                                       Int   j,
+                                       Int   k, 
+                                       Int   n),
                           Int val1, 
                           Int val2) {
-  Int   n, i, j, k;
-  Obj   dist, next, source, range, out, outi, ii, kk;
+  Int   n, i, j, k, *dist;
+  Obj   next, source, range, out, outi, val;
 
   n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
+  dist = malloc( n * n * sizeof(Int) );
   
-  dist = NEW_PLIST(T_PLIST_TAB, n);
-  SET_LEN_PLIST(dist, n);
-
-  for (i = 1; i <= n; i++) {
-    next = NEW_PLIST(T_PLIST, n);
-    SET_LEN_PLIST(next, n);
-    for (j = 1; j <= n; j++) {
-      SET_ELM_PLIST(next, j, val1);
-    }
-    SET_ELM_PLIST(dist, i, next);
-    CHANGED_BAG(dist);
-  } 
-  
+  for (i = 0; i < n * n; i++) {
+    dist[i] = val1;
+  }
+    
   if (IsbPRec(digraph, RNamName("source"))) {
     source = ElmPRec(digraph, RNamName("source"));
     PLAIN_LIST(source);
     range = ElmPRec(digraph, RNamName("range"));
     PLAIN_LIST(range);
     for (i = 1; i <= LEN_PLIST(source); i++) {
-      next = ELM_PLIST(dist, INT_INTOBJ(ELM_PLIST(source, i)));
-      SET_ELM_PLIST(next, INT_INTOBJ(ELM_PLIST(range, i)), val2);
+      j = (INT_INTOBJ(ELM_PLIST(source, i)) - 1) * n + INT_INTOBJ(ELM_PLIST(range, i) - 1);
+      dist[j] = val2;
     }
-    CHANGED_BAG(dist);
   } else { 
     out = ElmPRec(digraph, RNamName("adj"));
     for (i = 1; i <= n; i++) {
       outi = ELM_PLIST(out, i);
       PLAIN_LIST(outi);
-      next = ELM_PLIST(dist, i);
       for (j = 1; j <= LEN_PLIST(outi); j++) {
-        SET_ELM_PLIST(next, INT_INTOBJ(ELM_PLIST(outi, j)), val2);
+        k = (i - 1) * n + INT_INTOBJ(ELM_PLIST(outi, j)) - 1;
+        dist[k] = val2;
       } 
-      CHANGED_BAG(dist);
     }
   }
   
-  for (k = 1; k <= n; k++) {
-    kk = INTOBJ_INT(k);
-    for (i = 1; i <= n; i++) {
-      ii = INTOBJ_INT(i);
-      for (j = 1; j <= n; j++) {
-        CALL_4ARGS(func, dist, ii, INTOBJ_INT(j), kk);
+  for (k = 0; k < n; k++) {
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+        func(&dist, i, j, k, n);
       }
     }
   }
-
-  return dist;
-}
   
+  out = NEW_PLIST(T_PLIST_TAB, n);
+  SET_LEN_PLIST(out, n);
+
+  for (i = 1; i <= n; i++) {
+    next = NEW_PLIST(T_PLIST_CYC, n);
+    SET_LEN_PLIST(next, n);
+    for (j = 1; j <= n; j++) {
+      val = INTOBJ_INT(dist[ (i - 1) * n + j - 1 ]);
+      SET_ELM_PLIST(next, j, val);
+    }
+    SET_ELM_PLIST(out, i, next);
+    CHANGED_BAG(out);
+  } 
+
+  free(dist);
+  return out;
+}
+
+void FW_FUNC_SHORTEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
+  if((*dist)[i * n + k] != -1 && (*dist)[k * n + j] != -1){
+    if ((*dist)[i * n + j] == -1 || 
+        (*dist)[i * n + j] > (*dist)[i * n + k] + (*dist)[k * n + j]) {
+      (*dist)[i * n + j] = (*dist)[i * n + k] + (*dist)[k * n + j];
+    }
+  }
+}
+ 
+static Obj FuncDIGRAPH_SHORTEST_DIST(Obj self, Obj digraph){
+  return FLOYD_WARSHALL(digraph, FW_FUNC_SHORTEST_DIST, -1, 1);
+}
+
 // bliss 
 
 void hook_function(void *user_param,
@@ -628,10 +644,6 @@ static StructGVarFunc GVarFuncs [] = {
     FuncIS_MULTI_DIGRAPH, 
     "src/digraphs.c:FuncIS_MULTI_DIGRAPH" },
   
-  { "FLOYD_WARSHALL", 4, "digraph, func, val1, val2",
-    FuncFLOYD_WARSHALL, 
-    "src/digraphs.c:FuncFLOYD_WARSHALL" },
-  
   { "GRAPH_AUTOMORPHISM", 1, "digraph",
     FuncGRAPH_AUTOMORPHISM, 
     "src/digraphs.c:FuncGRAPH_AUTOMORPHISM" },
@@ -639,6 +651,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "GRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncGRAPH_CANONICAL_LABELING, 
     "src/digraphs.c:FuncGRAPH_CANONICAL_LABELING" },
+  
+  { "DIGRAPH_SHORTEST_DIST", 1, "digraph",
+    FuncDIGRAPH_SHORTEST_DIST, 
+    "src/digraphs.c:FuncDIGRAPH_SHORTEST_DIST" },
       
   { 0 }
 

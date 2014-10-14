@@ -41,7 +41,7 @@ function(graph, func, nopath, edge)
       od;
     od;
   fi;
-
+  
   for k in vertices do
     for i in vertices do
       for j in vertices do
