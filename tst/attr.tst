@@ -230,7 +230,7 @@ gap> Display(mat);
 gap> DigraphShortestDistances( Digraph( [ ] ) );
 [  ]
 gap> mat := DigraphShortestDistances( Digraph( [ [ ], [ ] ] ) );
-[ [ 0, -1 ], [ -1, 0 ] ]
+[ [ -1, -1 ], [ -1, -1 ] ]
 gap> r:=rec( vertices := [ 1 .. 15 ], source := [ ], range := [ ] );;
 gap> for i in [ 1 .. 15 ] do
 >   for j in [ 1 .. 15 ] do
@@ -267,7 +267,7 @@ gap> Display(DigraphShortestDistances(gr));
   [  -1,   3,   2,   1,   3,   1,   4 ],
   [  -1,   1,   2,   2,   1,   2,   2 ],
   [  -1,   2,   1,   3,   2,   3,   3 ],
-  [  -1,   2,   1,   3,   5,   3,   1 ],
+  [  -1,   2,   1,   3,   2,   3,   1 ],
   [  -1,  -1,  -1,  -1,  -1,  -1,  -1 ],
   [  -1,   1,   3,   2,   4,   2,   5 ] ]
 

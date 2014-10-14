@@ -530,18 +530,18 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
   }
   dist = malloc( n * n * sizeof(Int) );
-  
+
   for (i = 0; i < n * n; i++) {
     dist[i] = val1;
   }
-    
+
   if (IsbPRec(digraph, RNamName("source"))) {
     source = ElmPRec(digraph, RNamName("source"));
     PLAIN_LIST(source);
     range = ElmPRec(digraph, RNamName("range"));
     PLAIN_LIST(range);
     for (i = 1; i <= LEN_PLIST(source); i++) {
-      j = (INT_INTOBJ(ELM_PLIST(source, i)) - 1) * n + INT_INTOBJ(ELM_PLIST(range, i) - 1);
+      j = (INT_INTOBJ(ELM_PLIST(source, i)) - 1) * n + INT_INTOBJ(ELM_PLIST(range, i)) - 1;
       dist[j] = val2;
     }
   } else { 
