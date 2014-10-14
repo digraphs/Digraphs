@@ -524,7 +524,11 @@ static Obj FLOYD_WARSHALL(Obj digraph,
   Int   n, i, j, k, *dist;
   Obj   next, source, range, out, outi, val;
 
-  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
+  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+
+  if (n == 0) {
+    return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
+  }
   dist = malloc( n * n * sizeof(Int) );
   
   for (i = 0; i < n * n; i++) {
