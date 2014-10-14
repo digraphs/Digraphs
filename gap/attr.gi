@@ -188,37 +188,42 @@ fi;
 InstallMethod(OutNeighbors, "for a digraph",
 [IsDigraph], OutNeighbours);
 
-InstallMethod(InNeighbours, "for a digraph with out-neighbours",
-[IsDigraph and HasOutNeighbours],
-function(graph)
-  local out, inn, i, j;
 
-  out := OutNeighbours(graph);
-  inn := List(DigraphVertices(graph), x -> []);
-  for i in DigraphVertices(graph) do
-    for j in [ 1 .. Length(out[i]) ] do
-      Add(inn[out[i][j]], i); 
+if IsBound(DIGRAPH_IN_NBS) then
+  InstallMethod(InNeighbours, "for a digraph",
+  [IsDigraph], DIGRAPH_IN_NBS);
+else
+  InstallMethod(InNeighbours, "for a digraph with out-neighbours",
+  [IsDigraph and HasOutNeighbours],
+  function(graph)
+    local out, inn, i, j;
+  
+    out := OutNeighbours(graph);
+    inn := List(DigraphVertices(graph), x -> []);
+    for i in DigraphVertices(graph) do
+      for j in [ 1 .. Length(out[i]) ] do
+        Add(inn[out[i][j]], i); 
+      od;
     od;
-  od;
-  return inn;
-end);
-
-InstallMethod(InNeighbours, "for a digraph with source and range",
-[IsDigraph and HasDigraphSource], 1,
-function(graph)
-  local range, source, inn, i;
+    return inn;
+  end);
   
-  range := DigraphRange(graph);
-  source := DigraphSource(graph);
-  inn := List(DigraphVertices(graph), x -> [] );
-  
-  for i in [ 1 .. Length(source) ] do
-    Add(inn[range[i]], source[i]);
-  od;
-  
-  return inn;
-end);
-
+  InstallMethod(InNeighbours, "for a digraph with source and range",
+  [IsDigraph and HasDigraphSource], 1,
+  function(graph)
+    local range, source, inn, i;
+    
+    range := DigraphRange(graph);
+    source := DigraphSource(graph);
+    inn := List(DigraphVertices(graph), x -> [] );
+    
+    for i in [ 1 .. Length(source) ] do
+      Add(inn[range[i]], source[i]);
+    od;
+    
+    return inn;
+  end);
+fi;
 InstallMethod(InNeighbors, "for a digraph",
 [IsDigraph], InNeighbours);
 
