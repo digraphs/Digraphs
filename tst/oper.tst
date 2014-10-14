@@ -49,9 +49,11 @@ gap> gr := Digraph(
 gap> DigraphReflexiveTransitiveClosure(gr);
 Error, Digraphs: DigraphReflexiveTransitiveClosure: usage,
 the argument <graph> cannot have multiple edges,
+
 gap> DigraphTransitiveClosure(gr);
 Error, Digraphs: DigraphTransitiveClosure: usage,
 the argument <graph> cannot have multiple edges,
+
 gap> r := rec( vertices:=[ 1 .. 4 ], source := [ 1, 1, 2, 3, 4 ], 
 > range := [ 1, 2, 3, 4, 1 ] );
 rec( range := [ 1, 2, 3, 4, 1 ], source := [ 1, 1, 2, 3, 4 ], 

@@ -204,7 +204,7 @@ function(graph)
     return true;
   fi;
 
-  Error("not yet implemented,"); 
+  Error("Digraphs: IsTournament: not yet implemented,\n");
 
 end);
 

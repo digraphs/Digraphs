@@ -17,7 +17,8 @@ InstallMethod(DigraphCanonicalLabelling, "for a digraph",
 function(graph)
 
   if IsMultiDigraph(graph) then 
-    Error("not yet implemented,");
+    Error("Digraphs: DigraphCanonicalLabelling: usage,\n",
+          "not yet implemented,\n");
   fi;
   # ensure out neighbours are known . . .
   OutNeighbours(graph); 
