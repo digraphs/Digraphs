@@ -15,6 +15,8 @@ DeclareOperation("DigraphRemoveVertices", [IsDigraph, IsList]);
 DeclareOperation("DigraphAddEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphAddVertices", [IsDigraph, IsList]);
 
+DeclareOperation("DigraphFloydWarshall", [IsDigraph, IsFunction,
+ IsObject, IsObject]);
 DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphSymmetricClosure", [IsDigraph]);

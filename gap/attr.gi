@@ -266,35 +266,15 @@ end);
 InstallMethod(DigraphShortestDistances, "for a digraph",
 [IsDigraph],
 function(graph)
-  local vertices, n, m, dist, i, k, j;
+  local func;
 
-  vertices := DigraphVertices(graph);
-  n := DigraphNrVertices(graph);
-  m := Length(DigraphEdges(graph));
-  dist := List( vertices, x -> List( vertices, x -> infinity ) );
-
-  for i in [ 1 .. m ] do
-    dist[ DigraphSource(graph)[i] ][ DigraphRange(graph)[i] ] := 1;
-  od;
-
-  for i in vertices do
-    dist[i][i] := 0;
-  od;
-
-  for k in vertices do
-    for i in vertices do
-      for j in vertices do
-        if dist[i][k] <> infinity and 
-        dist[k][j] <> infinity and 
-        dist[i][j] > dist[i][k] + dist[k][j] then
-          dist[i][j] := dist[i][k] + dist[k][j];
-        fi;
-      od;
-    od;
-  od;
-
-  return dist;
-
+  func := function(dist, i, j, k)
+    if dist[i][k] <> infinity and dist[k][j] <> infinity 
+     and dist[i][j] > dist[i][k] + dist[k][j] then 
+      dist[i][j] := dist[i][k] + dist[k][j];
+    fi;
+  end;
+  return DigraphFloydWarshall(graph, func, infinity, 1);
 end);
 
 #

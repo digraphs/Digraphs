@@ -453,6 +453,68 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   }
 } 
 
+static Obj FLOYD_WARSHALL(Obj self, 
+                          Obj digraph, 
+                          void (*func) (Int*  dist,                       
+                                        Int   i,
+                                        Int   j,
+                                        Int   k),
+                          Int val1, 
+                          Int val2) {
+  Int   n, i, j, k;
+  Obj   dist, next, source, range, out, outi, ii, kk;
+
+  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
+  
+  dist = NEW_PLIST(T_PLIST_TAB, n);
+  SET_LEN_PLIST(dist, n);
+
+  for (i = 1; i <= n; i++) {
+    next = NEW_PLIST(T_PLIST, n);
+    SET_LEN_PLIST(next, n);
+    for (j = 1; j <= n; j++) {
+      SET_ELM_PLIST(next, j, val1);
+    }
+    SET_ELM_PLIST(dist, i, next);
+    CHANGED_BAG(dist);
+  } 
+  
+  if (IsbPRec(digraph, RNamName("source"))) {
+    source = ElmPRec(digraph, RNamName("source"));
+    PLAIN_LIST(source);
+    range = ElmPRec(digraph, RNamName("range"));
+    PLAIN_LIST(range);
+    for (i = 1; i <= LEN_PLIST(source); i++) {
+      next = ELM_PLIST(dist, INT_INTOBJ(ELM_PLIST(source, i)));
+      SET_ELM_PLIST(next, INT_INTOBJ(ELM_PLIST(range, i)), val2);
+    }
+    CHANGED_BAG(dist);
+  } else { 
+    out = ElmPRec(digraph, RNamName("adj"));
+    for (i = 1; i <= n; i++) {
+      outi = ELM_PLIST(out, i);
+      PLAIN_LIST(outi);
+      next = ELM_PLIST(dist, i);
+      for (j = 1; j <= LEN_PLIST(outi); j++) {
+        SET_ELM_PLIST(next, INT_INTOBJ(ELM_PLIST(outi, j)), val2);
+      } 
+      CHANGED_BAG(dist);
+    }
+  }
+  
+  for (k = 1; k <= n; k++) {
+    kk = INTOBJ_INT(k);
+    for (i = 1; i <= n; i++) {
+      ii = INTOBJ_INT(i);
+      for (j = 1; j <= n; j++) {
+        CALL_4ARGS(func, dist, ii, INTOBJ_INT(j), kk);
+      }
+    }
+  }
+
+  return dist;
+}
+  
 // bliss 
 
 void hook_function(void *user_param,
@@ -565,6 +627,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "IS_MULTI_DIGRAPH", 1, "digraph",
     FuncIS_MULTI_DIGRAPH, 
     "src/digraphs.c:FuncIS_MULTI_DIGRAPH" },
+  
+  { "FLOYD_WARSHALL", 4, "digraph, func, val1, val2",
+    FuncFLOYD_WARSHALL, 
+    "src/digraphs.c:FuncFLOYD_WARSHALL" },
   
   { "GRAPH_AUTOMORPHISM", 1, "digraph",
     FuncGRAPH_AUTOMORPHISM, 
