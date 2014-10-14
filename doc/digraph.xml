@@ -221,8 +221,7 @@ gap> RandomDigraph(1000);
   <Description>
     Returns the complete digraph with <A>n</A> vertices. Specifically, for each
     pair of vertices <C>i</C> and <C>j</C>, there is precisely one edge with 
-    source <C>i</C> and range <C>j</C>, and one edge with source <C>j</C> and 
-    range <C>i</C>.
+    source <C>i</C> and range <C>j</C>.
     <P/>
     <Log><![CDATA[
 gap> CompleteDigraph(20);

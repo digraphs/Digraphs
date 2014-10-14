@@ -168,7 +168,8 @@ function(graph)
   fi;
   
   if Length(graph.source)<>Length(graph.range) then
-    Error("Digraphs: Digraph: usage,\nthe record components ",
+    Error("Digraphs: Digraph: usage,\n",
+          "the record components ",
           "'source' and 'range' should have equal length,\n");
     return;
   fi;
@@ -307,8 +308,8 @@ function(mat)
           Add(record.range, j);
         od;
       else
-        Error("Digraphs: DigraphByAdjacencyMatrix: usage,\nthe argument must", 
-              " be a matrix of non-negative integers,\n");
+        Error("Digraphs: DigraphByAdjacencyMatrix: usage,\n",
+              "the argument must be a matrix of non-negative integers,\n");
         return;
       fi;
     od;
@@ -422,8 +423,9 @@ function(edges, n)
 
   for edge in edges do
     if edge[1] > n or edge[2] > n then
-      Error("Digraphs: DigraphByEdges: usage,\nthe specified edges ",
-            "must not contain values greater than ", n, ",\n");
+      Error("Digraphs: DigraphByEdges: usage,\n",
+            "the specified edges must not contain values greater than ",
+            n, ",\n");
       return;
     fi;
     Add(adj[edge[1]], edge[2]);

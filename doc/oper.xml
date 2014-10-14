@@ -135,10 +135,8 @@ gap> gr:=DigraphRemoveEdges(gr, [10]);
     of a digraph <A>digraph</A> is the least (reflexive and) transitive digraph 
     containing <A>digraph</A>. <P/>
 
-    For graphs which are not topologically sortable (see 
-    <Ref Attr="DigraphTopologicalSort"/>), the method used in this operation
-    has complexity <M>O(n^3)</M>, where <M>n</M> is the number of vertices of 
-    the digraph.
+    The methods used in this operation have complexity <M>O(n^3)</M>, where 
+    <M>n</M> is the number of vertices of the digraph. <P/>
 
     <Example><![CDATA[
 gap> gr:=Digraph( [ [ 4, 6 ], [ 1, 3 ], [ ], [ 5 ], [ ], [ 7, 8, 9 ], 
