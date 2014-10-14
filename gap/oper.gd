@@ -24,3 +24,4 @@ DeclareOperation("QuotientDigraph", [IsDigraph, IsList]);
 DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);
 
 DeclareOperation("InNeighboursOfVertex", [IsDigraph, IsPosInt]);
+DeclareOperation("OutNeighboursOfVertex", [IsDigraph, IsPosInt]);

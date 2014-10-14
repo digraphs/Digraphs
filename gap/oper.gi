@@ -382,7 +382,7 @@ function(graph, v)
 
   vertices := DigraphVertices(graph);
   if not v in vertices then
-    Error(v, " is not a vertex of the given digraph");
+    Error(v, " is not a vertex of the digraph");
     return;
   elif HasInNeighbours(graph) then
     return InNeighbours[v];
@@ -409,7 +409,7 @@ function(graph, v)
 
   vertices := DigraphVertices(graph);
   if not v in vertices then
-    Error(v, " is not a vertex of the given digraph");
+    Error(v, " is not a vertex of the digraph");
     return;
   elif HasInNeighbours(graph) then
     return InNeighbours[v];
@@ -428,3 +428,38 @@ function(graph, v)
   fi;
 end);
 
+InstallMethod(OutNeighboursOfVertex, "for a digraph and a vertex",
+[IsDigraph and HasOutNeighbours, IsPosInt], 1,
+function(graph, v)
+
+  if not v in DigraphVertices(graph) then
+    Error(v, " is not a vertex of the digraph");
+    return;
+  else
+    return OutNeighbours(graph)[v];
+  fi;
+end);
+
+InstallMethod(OutNeighboursOfVertex, "for a digraph and a vertex",
+[IsDigraph and HasDigraphSource, IsPosInt],
+function(graph, v)
+  local vertices, out, pos, source, range, i;
+
+  vertices := DigraphVertices(graph);
+  if not v in vertices then
+    Error(v, " is not a vertex of the digraph");
+    return;
+  else
+    out := [];
+    pos := 1;
+    source := DigraphSource(graph);
+    range := DigraphRange(graph);
+    for i in [ 1 .. Length(range) ] do
+      if source[i] = v then
+        out[pos] := range[i];
+        pos := pos + 1;
+      fi;
+    od;
+    return out;
+  fi;
+end);
