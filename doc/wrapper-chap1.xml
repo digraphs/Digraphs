@@ -12,6 +12,7 @@
     <#Include Label="DigraphByAdjacencyMatrix">
     <#Include Label="DigraphByEdges">
     <#Include Label="AsDigraph">
+    <#Include Label="CompleteDigraph">
     <#Include Label="RandomDigraph">
   </Section>
 

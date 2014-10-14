@@ -26,12 +26,20 @@ gap> gr := Digraph( rec( vertices := [ "a", "b" ],
 > source := ["b", "b"], range := ["a", "a"] ) );    
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphDual(gr);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `DigraphDual' on 1 arguments
+Error, Digraphs: DigraphDual: usage,
+the argument <graph> must not have multiple edges,
 gap> gr := Digraph( [ ] );                  
 <digraph with 0 vertices, 0 edges>
 gap> DigraphDual(gr);
 <digraph with 0 vertices, 0 edges>
+gap> gr := Digraph( [ [ ], [ ] ] );
+<digraph with 2 vertices, 0 edges>
+gap> DigraphDual(gr);
+<digraph with 2 vertices, 4 edges>
+gap> gr := Digraph( rec ( nrvertices := 2, source := [ ], range := [ ] ) );
+<digraph with 2 vertices, 0 edges>
+gap> DigraphDual(gr);
+<digraph with 2 vertices, 4 edges>
 
 # AdjacencyMatrix
 gap> gr:=Digraph(rec(vertices:=[1..10], 

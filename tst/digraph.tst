@@ -332,6 +332,10 @@ gap> PrintString(gr);
 gap> String(gr);
 "Digraph( [ [ 1, 2 ], [ 2 ], [ ] ] )"
 
+# CompleteDigraph
+gap> gr := CompleteDigraph(5);
+<digraph with 5 vertices, 25 edges>
+
 #
 gap> DigraphsStopTest();
 

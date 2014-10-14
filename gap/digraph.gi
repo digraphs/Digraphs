@@ -121,6 +121,24 @@ function(n)
 
   gr := DigraphNC(adj);
   SetIsMultiDigraph(gr, false);
+  SetIsSymmetricDigraph(gr, true);
+  return gr;
+end);
+
+# WW - do we want loops on a complete digraph, or not?
+
+InstallMethod(CompleteDigraph, "for a pos int",
+[IsPosInt],
+function(n)
+  local verts, adj, gr, i;
+  
+  verts := [ 1 .. n ];
+  adj := EmptyPlist(n);
+  for i in verts do
+    adj[i] := verts;
+  od;
+  gr := DigraphNC(adj);
+  SetIsMultiDigraph(gr, false);
   return gr;
 end);
 

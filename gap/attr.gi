@@ -31,6 +31,51 @@ end);
 
 #
 
+InstallMethod(DigraphDual, "for a digraph (without out-neighbours)", 
+[IsDigraph], 
+function(graph)
+  local source, range, verts, m, new, current, seen, count, i, j;
+  
+  if IsMultiDigraph(graph) then 
+    Error("Digraphs: DigraphDual: usage,\n", 
+      "the argument <graph> must not have multiple edges,");
+    return;
+  fi;
+  
+  source := DigraphSource(graph);
+  range := DigraphRange(graph);
+  verts := DigraphVertices(graph);
+  m := DigraphNrEdges(graph);
+  if m = 0 then
+    return CompleteDigraph(DigraphNrVertices(graph));
+  fi;
+  new := List( verts, x -> [ ] );
+  current := source[ 1 ];
+  seen := [ ];
+  count := 0;
+
+  for i in [ 1 .. m ] do
+    if source[i] > current then
+      new[current] := DifferenceLists(verts, seen);
+      
+      for j in [ (current + 1) .. (source[i] - 1) ] do
+        new[j] := verts;
+      od;
+      
+      current := source[i];
+      seen := [ ];
+      count := 0;
+    fi;
+    count := count + 1;
+    seen[count] := range[i];
+  od;
+  new[ source[m] ] := DifferenceLists(verts, seen);
+ 
+  return DigraphNC(new);
+end);
+
+#
+
 InstallMethod(DigraphNrVertices, "for a digraph",
 [IsDigraph],
 function(graph)

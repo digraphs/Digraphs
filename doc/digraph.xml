@@ -214,3 +214,21 @@ gap> RandomDigraph(1000);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="CompleteDigraph">
+<ManSection>
+  <Oper Name="CompleteDigraph" Arg="n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Returns the complete digraph with <A>n</A> vertices. Specifically, for each
+    pair of vertices <C>i</C> and <C>j</C>, there is precisely one edge with 
+    source <C>i</C> and range <C>j</C>, and one edge with source <C>j</C> and 
+    range <C>i</C>.
+    <P/>
+    <Log><![CDATA[
+gap> CompleteDigraph(20);
+<digraph with 20 vertices, 400 edges>
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
