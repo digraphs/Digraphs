@@ -68,7 +68,8 @@ function(trans, int)
   local deg, ran, r, gr;
   
   if int < 0 then
-    Error("usage: the second argument should be a non-negative integer,");
+    Error("Digraphs: AsDigraph: usage,\n",
+          "the second argument should be a non-negative integer,\n");
     return;
   fi;
 
@@ -136,20 +137,21 @@ function(graph)
 
   if not (IsBound(graph.source) and IsBound(graph.range) and
     (IsBound(graph.vertices) or IsBound(graph.nrvertices))) then
-    Error("usage: the argument must be a record with components 'source',",
-    " 'range', and 'vertices' or 'nrvertices'");
+    Error("Digraphs: Digraph: usage,\n",
+          "the argument must be a record with components 'source',",
+          " 'range', and either 'vertices' or 'nrvertices',\n");
     return;
   fi;
 
   if not (IsList(graph.source) and IsList(graph.range)) then
-    Error("usage: the graph components 'source'",
-    " and 'range' should be lists,");
+    Error("Digraphs: Digraph: usage,\n",
+          "the graph components 'source' and 'range' should be lists,\n");
     return;
   fi;
   
   if Length(graph.source)<>Length(graph.range) then
-    Error("usage: the record components 'source'",
-    " and 'range' should be of equal length,");
+    Error("Digraphs: Digraph: usage,\nthe record components ",
+          "'source' and 'range' should have equal length,\n");
     return;
   fi;
   
@@ -157,8 +159,9 @@ function(graph)
 
   if IsBound(graph.nrvertices) then 
     if not (IsInt(graph.nrvertices) and graph.nrvertices >= 0) then 
-      Error("usage: the record component 'nrvertices' ",
-      "should be a non-negative integer,");
+      Error("Digraphs: Digraph: usage,\n",
+            "the record component 'nrvertices' ",
+            "should be a non-negative integer,\n");
       return;
     fi;
     cmp := LT;
@@ -167,7 +170,8 @@ function(graph)
     if IsRange(graph.source) then 
       if not IsEmpty(graph.source) and (graph.source[1] < 1 or
          graph.source[Length(graph.source)] > graph.nrvertices) then 
-        Error("usage: the record component 'source' is invalid,");
+        Error("Digraphs: Digraph: usage,\n",
+              "the record component 'source' is invalid,\n");
         return;
       fi;
       check_source := false;
@@ -175,8 +179,8 @@ function(graph)
 
   elif IsBound(graph.vertices) then 
     if not IsList(graph.vertices) then
-      Error("usage: the record component 'vertices' ",
-      "should be a list,");
+      Error("Digraphs: Digraph: usage,\n",
+            "the record component 'vertices' should be a list,\n");
       return;
     fi;
     cmp := \in;
@@ -185,12 +189,14 @@ function(graph)
   fi;
  
   if check_source and not ForAll(graph.source, x-> cmp(x, obj)) then
-    Error("usage: the record component 'source' is invalid,");
+    Error("Digraphs: Digraph: usage,\n",
+          "the record component 'source' is invalid,\n");
     return;
   fi;
 
   if not ForAll(graph.range, x-> cmp(x, obj)) then
-    Error("usage: the record component 'range' is invalid,");
+    Error("Digraphs: Digraph: usage,\n",
+          "the record component 'range' is invalid,\n");
     return;
   fi;
 
@@ -233,8 +239,9 @@ function(adj)
   for x in adj do
     for y in x do
       if not (IsPosInt(y) and y <= nr) then
-        Error("usage: the argument must be a list of lists of positive",
-        " integers not exceeding the length of the argument,");
+        Error("Digraphs: Digraph: usage,\n",
+              "the argument must be a list of lists of positive",
+              " integers not exceeding the length of the argument,\n");
         return;
       fi;
     od;
@@ -267,7 +274,8 @@ function(mat)
   n := Length(mat);
 
   if Length(mat[1]) <> n then
-    Error("Digraphs: DigraphByAdjacencyMatrix: usage,\nthe matrix is not square,");
+    Error("Digraphs: DigraphByAdjacencyMatrix: usage,\n",
+          "the matrix is not square,\n");
     return;
   fi;
 
@@ -282,7 +290,7 @@ function(mat)
         od;
       else
         Error("Digraphs: DigraphByAdjacencyMatrix: usage,\nthe argument must", 
-        " be a matrix of non-negative integers,");
+              " be a matrix of non-negative integers,\n");
         return;
       fi;
     od;
@@ -339,12 +347,14 @@ function(edges)
   local adj, max_range, gr, edge, i;
   
   if not Length(edges[1]) = 2 then 
-    Error("usage: the argument <edges> must be a list of pairs,");
+    Error("Digraphs: DigraphByEdges: usage,\n",
+          "the argument <edges> must be a list of pairs,\n");
     return;
   fi;
 
   if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then 
-    Error("usage: the argument <edges> must be a list of pairs of pos ints,");
+    Error("Digraphs: DigraphByEdges: usage,\n",
+          "the argument <edges> must be a list of pairs of pos ints,\n");
     return;
   fi;
 
@@ -379,13 +389,14 @@ function(edges, n)
   local adj, gr, edge;
   
   if not Length(edges[1]) = 2 then 
-    Error("DigraphByEdges: usage, the argument <edges> must be a list of pairs,");
+    Error("Digraphs: DigraphByEdges: usage,\n",
+          "the argument <edges> must be a list of pairs,\n");
     return;
   fi;
 
   if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then 
-    Error("DigraphByEdges: usage, the argument <edges> must be a list of", 
-    " pairs of pos ints,");
+    Error("Digraphs: DigraphByEdges: usage,\n",
+          "the argument <edges> must be a list of pairs of pos ints,\n");
     return;
   fi;
 
@@ -393,8 +404,8 @@ function(edges, n)
 
   for edge in edges do
     if edge[1] > n or edge[2] > n then
-      Error("DigraphByEdges: usage, the specified edges must not contain", 
-      " values greater than ", n );
+      Error("Digraphs: DigraphByEdges: usage,\nthe specified edges ",
+            "must not contain values greater than ", n, ",\n");
       return;
     fi;
     Add(adj[edge[1]], edge[2]);

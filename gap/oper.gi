@@ -193,7 +193,7 @@ function(graph)
 
   if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
-    "the argument <graph> cannot have multiple edges,");
+    "the argument <graph> cannot have multiple edges,\n");
     return;
   fi;
 
@@ -265,7 +265,7 @@ function(graph)
 
   if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphTransitiveClosure: usage,\n",
-    "the argument <graph> cannot have multiple edges,");
+    "the argument <graph> cannot have multiple edges,\n");
     return;
   fi;
 
@@ -356,7 +356,7 @@ function( digraph, subverts )
   if not ForAll( subverts, x -> x in verts ) then
     Error("Digraphs: InducedSubdigraph: usage,\n",
     "the second argument <subvertices> such be a subset of the vertices of\n",
-    "the first argument <digraph>,");
+    "the first argument <digraph>,\n");
     return;
   fi;
   adj := OutNeighbours(digraph);
@@ -447,7 +447,8 @@ function(graph, v)
 
   vertices := DigraphVertices(graph);
   if not v in vertices then
-    Error(v, " is not a vertex of the digraph");
+    Error("Digraphs: OutNeighboursOfVertex: usage,\n",
+          v, " is not a vertex of the digraph,\n");
     return;
   else
     out := [];
