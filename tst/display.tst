@@ -13,6 +13,14 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
+# Display / PrintString / String
+gap> gr := Digraph( [ [ 1, 2 ], [ 2 ], [ ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> PrintString(gr);
+"Digraph( [ [ 1, 2 ], [ 2 ], [ ] ] )"
+gap> String(gr);
+"Digraph( [ [ 1, 2 ], [ 2 ], [ ] ] )"
+
 # DotDigraph for a very basic not simple digraph
 gap> r := rec( vertices := [ 1 .. 3 ], source := [ 1, 1, 1, 1 ], 
 > range := [ 1, 2, 2, 3 ] );;

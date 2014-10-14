@@ -245,10 +245,26 @@ end);
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
-InstallMethod(DigraphReflexiveTransitiveClosure,
-"for a digraph", [IsDigraph],
+#
+
+InstallMethod(DigraphTransitiveClosure, "for a digraph",
+[IsDigraph],
 function(graph)
-  local sorted, vertices, n, adj, out, trans, mat, flip, v, u, w;
+  
+  if IsMultiDigraph(graph) then
+    Error("Digraphs: DigraphTransitiveClosure: usage,\n",
+    "the argument <graph> cannot have multiple edges,\n");
+    return;
+  fi;
+
+  return DigraphTransitiveClosure(graph, false);
+end);
+
+#
+
+InstallMethod(DigraphReflexiveTransitiveClosure, "for a digraph",
+[IsDigraph],
+function(graph)
 
   if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
@@ -256,80 +272,18 @@ function(graph)
     return;
   fi;
 
-  vertices := DigraphVertices(graph);
-  n := DigraphNrVertices(graph);
-  adj := OutNeighbours(graph);
-  sorted := DigraphTopologicalSort(graph);
-
-  if sorted <> fail then # Easier method for acyclic graphs (loops allowed)
-    out := EmptyPlist(n);
-    trans := EmptyPlist(n);
-
-    for v in sorted do
-      trans[v] := BlistList(vertices, [v]);
-      for u in adj[v] do
-        trans[v] := UnionBlist(trans[v], trans[u]);
-      od;
-      out[v] := ListBlist(vertices, trans[v]);
-    od;
-
-    out := DigraphNC(out);
-    SetIsMultiDigraph(out, false);
-    return out;
-
-  else # Non-acyclic method
-    mat := List( vertices, x -> List( vertices, y -> infinity ) ); 
-
-    for v in vertices do # Make graph reflexive
-      mat[v][v] := 1;
-    od;
-
-    for v in vertices do # Record edges
-      for u in adj[v] do
-        mat[v][u] := 1;
-      od;
-    od;
-
-    for w in vertices do # Variation of Floyd Warshall
-      for u in vertices do
-        for v in vertices do
-          if mat[u][w] <> infinity and mat[w][v] <> infinity then
-            mat[u][v] := 1;
-          fi;
-        od;
-      od;
-    od;
-
-    flip:=function(x)
-      if x = infinity then
-        return 0;
-      else
-        return 1;
-      fi;
-    end;
-
-    mat := List( mat, x -> List( x, flip ) ); # Create adjacency matrix
-    out := DigraphByAdjacencyMatrix(mat);
-    SetIsMultiDigraph(out, false);
-    return out;
-  fi;
+  return DigraphTransitiveClosure(graph, true); 
 end);
 
-# JDM: requires a method for non-acyclic graphs
+#
 
-InstallMethod(DigraphTransitiveClosure, "for a digraph",
-[IsDigraph],
-function(graph)
+InstallMethod(DigraphTransitiveClosure, "for a digraph and a record", 
+[IsDigraph, IsBool],
+function(graph, reflexive)
   local n, vertices, adj, sorted, out, trans, reflex, func, v, u;
 
-  if IsMultiDigraph(graph) then
-    Error("Digraphs: DigraphTransitiveClosure: usage,\n",
-    "the argument <graph> cannot have multiple edges,\n");
-    return;
-  fi;
-
   n := DigraphNrVertices(graph);
-  vertices := [ 1 .. n ];
+  vertices := DigraphVertices(graph);
   adj := OutNeighbours(graph);
   sorted := DigraphTopologicalSort(graph);
 
@@ -346,7 +300,7 @@ function(graph)
           reflex := true;
         fi;
       od;
-      if not reflex then
+      if (not reflexive) and (not reflex) then
         trans[v][v] := false;
       fi;
       out[v] := ListBlist(vertices, trans[v]);
@@ -357,14 +311,20 @@ function(graph)
     SetIsMultiDigraph(out, false);
     return out;
   else # Non-acyclic method
-  
-    func := function(dist, i, j, k)
-      if dist[i][k] > 0 and dist[k][j] > 0 then 
-        return 1;
-      else
-        return 0;
-      fi;
-    end;
+ 
+    if reflexive then
+      func := function(dist, i, j, k)
+        if (i = j) or (dist[i][k] > 0 and dist[k][j] > 0) then 
+          dist[i][j] := 1;
+        fi;
+      end;
+    else
+      func := function(dist, i, j, k)
+        if dist[i][k] > 0 and dist[k][j] > 0 then 
+          dist[i][j] := 1;
+        fi;
+      end;
+    fi;
 
     out := DigraphByAdjacencyMatrix(DigraphFloydWarshall(graph, func, 0, 1));
     SetIsMultiDigraph(out, false);
@@ -372,10 +332,9 @@ function(graph)
   fi;
 end);
 
-#
-
 # This function will apply in the future to all "digraphs"
-# A different method may be needed for multigraphs
+# A different method may be needed for multigraph
+
 InstallMethod(InducedSubdigraph, "for a digraph and a list",
 [IsDigraph, IsList],
 function( digraph, subverts )

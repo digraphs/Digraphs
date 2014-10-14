@@ -8,6 +8,90 @@
 #############################################################################
 ##
 
+# Printing, and viewing . . .
+
+InstallMethod(ViewString, "for a digraph",
+[IsDigraph],
+function(graph)
+  local str;
+  str := "<";
+  
+  if IsMultiDigraph(graph) then 
+    Append(str, "multi");
+  fi;
+
+  Append(str, "digraph with ");
+  Append(str, String(DigraphNrVertices(graph)));
+  Append(str, " vertices, ");
+  Append(str, String(DigraphNrEdges(graph)));
+  Append(str, " edges>");
+  return str;
+end);
+
+#
+
+InstallMethod(PrintString, "for a digraph",
+[IsDigraph],
+function(graph)
+  local str, com, i, nam;
+
+  str:="Digraph( ";
+
+  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
+    return Concatenation(str, PrintString(OutNeighbours(graph)), " )");
+  else 
+    Append(str, "\>\>rec(\n\>\>");
+    com := false;
+    i := 1;
+    for nam in ["range", "source", "nrvertices"] do
+      if com then
+        Append(str, "\<\<,\n\>\>");
+      else
+        com := true;
+      fi;
+      SET_PRINT_OBJ_INDEX(i);
+      i := i+1;
+      Append(str, nam);
+      Append(str, "\< := \>");
+      Append(str, PrintString(graph!.(nam)));
+    od;
+    Append(str, " \<\<\<\<)");
+    return str;
+  fi;
+end);
+
+#
+
+InstallMethod(String, "for a digraph",
+[IsDigraph],
+function(graph)
+  local str, com, i, nam;
+
+  str:="Digraph( ";
+
+  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
+    return Concatenation(str, String(OutNeighbours(graph)), " )");
+  else
+    Append(str, "rec( ");
+    com := false;
+    i := 1;
+    for nam in ["range", "source", "nrvertices"] do
+      if com then
+        Append(str, ", ");
+      else
+        com := true;
+      fi;
+      SET_PRINT_OBJ_INDEX(i);
+      i := i+1;
+      Append(str, nam);
+      Append(str, " := ");
+      Append(str, PrintString(graph!.(nam)));
+    od;
+    Append(str, " )");
+    return str;
+  fi;
+end);
+
 # AN's code, adapted by WW
 
 InstallMethod(DotDigraph, "for a digraph",

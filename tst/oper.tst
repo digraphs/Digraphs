@@ -65,9 +65,11 @@ false
 gap> DigraphTopologicalSort(gr);
 fail
 gap> gr1 := DigraphTransitiveClosure(gr);
-<digraph with 4 vertices, 13 edges>
+<digraph with 4 vertices, 16 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
 <digraph with 4 vertices, 16 edges>
+gap> gr1 = gr2;
+true
 gap> adj := [ [ 2, 6 ], [ 3 ], [ 7 ], [ 3 ], [  ], [ 2, 7 ], [ 5 ] ];;
 gap> gr := Digraph(adj);
 <digraph with 7 vertices, 8 edges>
@@ -77,6 +79,12 @@ gap> gr1 := DigraphTransitiveClosure(gr);
 <digraph with 7 vertices, 18 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
 <digraph with 7 vertices, 25 edges>
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 4 ], [ 3 ] ] );
+<digraph with 4 vertices, 4 edges>
+gap> gr1 := DigraphTransitiveClosure(gr);
+<digraph with 4 vertices, 9 edges>
+gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
+<digraph with 4 vertices, 11 edges>
 
 # DigraphRemoveLoops (for a digraph by adjacency)
 gap> adj := [ [ 1, 2 ], [ 3, 2 ], [ 1, 2 ], [ 4 ], [ ], [ 1, 2, 3, 6 ] ];

@@ -8,6 +8,8 @@
 #############################################################################
 ##
 
+#
+
 if IsBound(IS_STRONGLY_CONNECTED_DIGRAPH) then
   InstallMethod(IsStronglyConnectedDigraph, "for a digraph",
   [IsDigraph],
