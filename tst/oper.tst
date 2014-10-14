@@ -120,6 +120,19 @@ gap> InNeighboursOfVertex(gr, 3);
 [ 2 ]
 
 #
+gap> gr := Digraph([[2,2,2,2], [2,2]]);
+<multidigraph with 2 vertices, 6 edges>
+gap> OutNeighboursOfVertex(gr, 2);
+[ 2, 2 ]
+gap> gr := Digraph(rec(nrvertices := 10, source := [5,5,5,5,5,5],
+> range := [1,2,3,1,2,3]));
+<multidigraph with 10 vertices, 6 edges>
+gap> OutNeighboursOfVertex(gr, 2);
+[  ]
+gap> OutNeighboursOfVertex(gr, 5);
+[ 1, 2, 3, 1, 2, 3 ]
+
+#
 gap> DigraphsStopTest();
 
 #
