@@ -541,7 +541,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     range = ElmPRec(digraph, RNamName("range"));
     PLAIN_LIST(range);
     for (i = 1; i <= LEN_PLIST(source); i++) {
-      j = (INT_INTOBJ(ELM_PLIST(source, i)) - 1) * n + INT_INTOBJ(ELM_PLIST(range, i) - 1);
+      j = (INT_INTOBJ(ELM_PLIST(source, i)) - 1 * n + INT_INTOBJ(ELM_PLIST(range, i)) - 1);
       dist[j] = val2;
     }
   } else { 

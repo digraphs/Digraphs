@@ -66,10 +66,9 @@ function(graph, verts)
     verts[Length(verts)] <= nr)) 
     or ForAny(verts, x-> not IsPosInt(x) or x > nr) then 
     Error("Digraphs: QuotientDigraph: usage,\n ", 
-      "the 2nd argument <verts> must consist of vertices of the 1st", 
+      "the 2nd argument <verts> must consist of vertices of the 1st ", 
       "argument <graph>,\n");
   fi;
-  
   
   new_nr := Length(verts);
   adj := OutNeighbours(graph);
