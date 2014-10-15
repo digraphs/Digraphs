@@ -55,47 +55,6 @@ end);
 
 #
 
-InstallMethod(QuotientDigraph, "for a digraph and a list", 
-[IsDigraph and HasOutNeighbours, IsHomogeneousList],
-function(graph, verts)
-  local nr, lookup, old, new, adj, j, l, i, k;
-  
-  nr := DigraphNrVertices(graph);
-
-  if (IsRange(verts) and not (IsPosInt(verts[1]) and verts[1] <= nr and
-    verts[Length(verts)] <= nr)) 
-    or ForAny(verts, x-> not IsPosInt(x) or x > nr) 
-    or not IsDuplicateFree(verts) then 
-    Error("Digraphs: QuotientDigraph: usage,\n ", 
-      "the 2nd argument <verts> must consist of vertices of the 1st ", 
-      "argument <graph>,\n");
-  fi;
-  
-  lookup := [ 1 .. nr ] * 0;
-  nr := Length(verts); 
-  lookup{verts} := [ 1 .. nr ];
-
-  old := OutNeighbours(graph);
-  new := EmptyPlist(nr);
-
-  for i in [ 1 .. nr ] do 
-    adj := [];
-    j := 0;
-    for k in old[verts[i]] do
-      l := lookup[k];
-      if l <> 0 then 
-        j := j + 1;
-        adj[j] := l;
-      fi;
-    od;
-    new[i]:=adj;
-  od;
-
-  return DigraphNC(new);
-end);
-
-#
-
 InstallMethod(DigraphReverse, "for a digraph with source",
 [IsDigraph and HasDigraphSource],
 function(graph)
@@ -324,64 +283,72 @@ end);
 #
 
 InstallMethod(InducedSubdigraph, "for a digraph with out neighbours and a list",
-[IsDigraph and HasOutNeighbours, IsList],
+[IsDigraph and HasOutNeighbours, IsHomogeneousList],
 function( digraph, subverts )
-  local n, adj, nr, lookup, newverts, newadj, i;
+  local n, old, nr, lookup, adj, j, l, i, k, new;
 
-  n := DigraphNrVertices(digraph);
-  if not ForAll( subverts, x -> IsPosInt(x) and x < (n + 1)) then
-    Error("Digraphs: InducedSubdigraph: usage,\n",
-    "the second argument <subvertices> such be a subset of the vertices of\n",
-    "the first argument <digraph>,\n");
-    return;
-  fi;
-  
   if IsEmpty(subverts) then
     return DigraphNC( [ ] );
   fi;
 
-  adj := OutNeighbours(digraph);
-  subverts := Set(subverts); # Sorting for consistency with Source/Range version
-                             # Set to remove repeats
+  n := DigraphNrVertices(digraph);
+  if (IsRange(subverts) and not (IsPosInt(subverts[1]) and subverts[1] <= n and
+    subverts[Length(subverts)] <= n))
+    or not IsDuplicateFree(subverts)
+    or not ForAll( subverts, x -> IsPosInt(x) and x < (n + 1)) then
+    Error("Digraphs: InducedSubdigraph: usage,\n",
+    "the second argument <subverts> must be a duplicate-free subset\n",
+    "of the vertices of the first argument <digraph>,\n");
+    return;
+  fi;
+  
+  Sort(subverts);              # Sorting for consistency with Source/Range version
   nr := Length(subverts);
-  lookup := EmptyPlist( n );
-  newverts := [ 1 .. nr ];
-  for i in newverts do
-    lookup[ subverts[i] ] := i;
-  od;
-  newadj := List( newverts, x -> [ ] );
+  old := OutNeighbours(digraph);
+  new := EmptyPlist(nr);
+  lookup := [ 1 .. n ] * 0;
+  lookup{subverts} := [ 1 .. nr ];
 
-  for i in newverts do
-    newadj[i] := List( 
-                  Filtered( adj[ subverts[i] ], x -> x in subverts ), 
-                  y -> lookup[y]);
+  for i in [ 1 .. nr ] do 
+    adj := [ ];
+    j := 0;
+    for k in old[ subverts[i] ] do
+      l := lookup[k];
+      if l <> 0 then
+        j := j + 1;
+        adj[j] := l;
+      fi;
+    od;
+    new[i] := adj;
   od;
 
-  return DigraphNC(newadj);
+  return DigraphNC(new);
 end);
 
 #
 
 InstallMethod(InducedSubdigraph, "for a digraph with digraph source and a list",
-[IsDigraph and HasDigraphSource, IsList], 1,
+[IsDigraph and HasDigraphSource, IsHomogeneousList], 1,
 function( digraph, subverts )
   local n, lookup, nr, source, range, m, news, newr, current, count, source_in, 
   allowed, i;
 
-  n := DigraphNrVertices(digraph);
-  if not ForAll( subverts, x -> IsPosInt(x) and x < (n + 1)) then
-    Error("Digraphs: InducedSubdigraph: usage,\n",
-    "the second argument <subvertices> such be a subset of the vertices of\n",
-    "the first argument <digraph>,\n");
-    return;
-  fi;
-  
   if IsEmpty(subverts) then
     return DigraphNC( [ ] );
   fi;
 
-  subverts := Set(subverts); # Sorting to ensure new source will be sorted
-                             # Set to remove repeats
+  n := DigraphNrVertices(digraph);
+  if (IsRange(subverts) and not (IsPosInt(subverts[1]) and subverts[1] <= n and
+    subverts[Length(subverts)] <= n))
+    or not IsDuplicateFree(subverts)
+    or not ForAll( subverts, x -> IsPosInt(x) and x < (n + 1)) then
+    Error("Digraphs: InducedSubdigraph: usage,\n",
+    "the second argument <subverts> must be a duplicate-free subset\n",
+    "of the vertices of the first argument <digraph>,\n");
+    return;
+  fi;
+
+  Sort(subverts); # Sorting to ensure new source will be sorted
   lookup := EmptyPlist( n );
   nr := Length(subverts);
   for i in [ 1 .. nr ] do
