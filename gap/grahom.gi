@@ -1,4 +1,12 @@
-
+#############################################################################
+##
+#W  grahom.gi
+#Y  Copyright (C) 2014                                   James D. Mitchell
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
 
 #MakeReadWriteGlobal("ListPerm");
 
@@ -65,22 +73,22 @@ function(g)
     # the points occurring in try and thus can be used to break symmetry.
     # All resulting generators are appended to the plain list result.
     local ad,d,i,o,s,todo;
-    if depth > g.order then
+    if depth > DigraphNrVertices(g) then
         Add(result,ShallowCopy(try));
         return;
     fi;
     ad := g.adjacencies;
     if Size(auts) = 1 then
-        GRAPH_HOMOMORPHISMS(ad, ad, try, g.order, fail, fail, result, false);
+        GRAPH_HOMOMORPHISMS(ad, ad, try, DigraphNrVertices(g), fail, fail, result, false);
         return;
     fi;
 
     s := Set(try);
-    d := Difference([1..g.order],s);
+    d := Difference([1..DigraphNrVertices(g)],s);
     o := List(Orbits(auts,d,OnPoints),x->x[1]);
     todo := Intersection(ad[depth],[1..depth-1]);
     if Length(todo) = 0 then
-        todo := [1..g.order];
+        todo := [1..DigraphNrVertices(g)];
     else
         todo := Intersection(List(todo,x->ad[try[x]]));
     fi;
@@ -97,7 +105,7 @@ function(g)
   end;
 
 	
-  n := g.order;
+  n := DigraphNrVertices(g);
   aut := AutomorphismGroup(g);
   result := EmptyPlist(100000);
   Append(result,List(GeneratorsOfGroup(aut),x->ListPerm(x,n)));
