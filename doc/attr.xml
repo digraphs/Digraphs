@@ -297,11 +297,17 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
   <Returns>A record.</Returns>
   <Description>
     Returns the record <C>wcc</C> corresponding to the weakly connected
-    components of the digraph <A>digraph</A>. The record <C>wcc</C> has 2
-    components <C>comps</C> and <C>id</C>. The component <C>comps</C> is a list
-    of the weakly connected components of <A>digraph</A> (as a list of
-    vertices) and <C>id</C> is a list such that the vertex <C>i</C> is an
-    element of <C>comps[id[i]]</C>.<P/>
+    components of the digraph <A>digraph</A>. 
+    The record <C>wcc</C> has 2 components, <C>comps</C> and <C>id</C>.
+    The component <C>comps</C> is a list of the weakly connected components of 
+    <A>digraph</A> (each of which is a list of vertices).
+    The component <C>id</C> is a list such that the vertex <C>i</C> is an element 
+    of <C>comps[id[i]]</C>. <P/>
+
+    The weakly connected components of a digraph partition the set of 
+    vertices of a digraph. Two vertices are in the same weakly connected 
+    component whenever (ignoring the orientation of edges) there is a path from
+    one vertex to the other. <P/>
 
     The method used in this operation has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and

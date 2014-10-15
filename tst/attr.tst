@@ -201,6 +201,9 @@ gap> gr := Digraph(r);
 gap> scc := DigraphStronglyConnectedComponents(gr);
 rec( comps := [ [ 3 ], [ 1, 7, 9 ], [ 8, 4 ], [ 2, 6, 5 ] ], 
   id := [ 2, 4, 1, 3, 4, 4, 2, 3, 2 ] )
+gap> wcc := DigraphConnectedComponents(gr);
+rec( comps := [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ] ], 
+  id := [ 1, 1, 1, 1, 1, 1, 1, 1, 1 ] )
 
 # DigraphStronglyConnectedComponents: weakly conn., 20000 singletonstrong comps
 gap> scc := DigraphStronglyConnectedComponents(circuit);;
@@ -208,6 +211,12 @@ gap> Length(scc.comps);
 20000
 gap> Length(scc.comps) = DigraphNrVertices(circuit);
 true
+
+# DigraphConnectedComponents
+gap> gr := Digraph( [ [ 1, 2 ], [ 1 ], [ 2 ], [ 5 ], [ ] ] );
+<digraph with 5 vertices, 5 edges>
+gap> wcc := DigraphConnectedComponents(gr);
+rec( comps := [ [ 1, 2, 3 ], [ 4, 5 ] ], id := [ 1, 1, 1, 2, 2 ] )
 
 # DigraphShortestDistances
 gap> adj := Concatenation(List( [ 1 .. 11 ], x -> [ x + 1 ] ), [ [ 1 ] ]);;

@@ -42,8 +42,8 @@
     <#Include Label="InNeighbours">
     <#Include Label="AdjacencyMatrix">
     <#Include Label="DigraphShortestDistances">
-    <#Include Label="DigraphStronglyConnectedComponents">
     <#Include Label="DigraphConnectedComponents">
+    <#Include Label="DigraphStronglyConnectedComponents">
   </Section>
 
   <Section><Heading>Properties of digraphs</Heading>
