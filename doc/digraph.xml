@@ -219,10 +219,8 @@ gap> RandomDigraph(1000);
   <Oper Name="CompleteDigraph" Arg="n"/>
   <Returns>A digraph.</Returns>
   <Description>
-    Returns the complete digraph with <A>n</A> vertices. Specifically, for each
-    pair of vertices <C>i</C> and <C>j</C>, there is precisely one edge with 
-    source <C>i</C> and range <C>j</C>.
-    <P/>
+    If <A>n</A> is a non-negative integer, this function returns the complete 
+    digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/> <P/>
     <Log><![CDATA[
 gap> CompleteDigraph(20);
 <digraph with 20 vertices, 400 edges>

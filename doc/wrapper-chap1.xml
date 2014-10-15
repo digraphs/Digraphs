@@ -40,6 +40,8 @@
     <#Include Label="RangeSourceDigraph">
     <#Include Label="OutNeighbours">
     <#Include Label="InNeighbours">
+    <#Include Label="OutDegrees">
+    <#Include Label="InDegrees">
     <#Include Label="AdjacencyMatrix">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphConnectedComponents">
@@ -49,6 +51,7 @@
   <Section><Heading>Properties of digraphs</Heading>
     <!-- alphabetical order please!-->
     <#Include Label="IsAcyclicDigraph">
+    <#Include Label="IsCompleteDigraph">
     <#Include Label="IsEmptyDigraph">
     <#Include Label="IsFunctionalDigraph">
     <#Include Label="IsMultiDigraph">
@@ -67,6 +70,8 @@
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphTopologicalSort">
     <#Include Label="InducedSubdigraph">
+    <#Include Label="OutNeighboursOfVertex">
+    <#Include Label="InNeighboursOfVertex">
   </Section>
 
   <Section><Heading>Visualising the structure of a digraph</Heading>
@@ -77,16 +82,51 @@
 
   <Section><Heading>Reading and writing graphs to a file</Heading>
     This section describes different ways to store and read graphs
-    form a file in the &Digraphs;.
+    form a file in the &Digraphs;. 
+    <List>
+      <Mark> Graph6 </Mark>
+      <Item>
+	<E> Graph6 </E> is a graph data format for storing undirected graphs
+	with no multiple edges nor loops of size up to <M> 2^36 - 1 </M> in
+	printable chracters. The format consists of two parts. The first part
+	uses one to eight bytes to store the number of vertices. And the second
+	part is the upper half of the adjacency matrix converted into ASCII
+	characters. For a more detail description see <URL Text='Graph6'>
+	http://cs.anu.edu.au/~bdm/data/formats.txt</URL>.
+      </Item>
 
-    Graph6 is a graph data format used to store graphs undigraphs
-    of size up to <M> 2^36 - 1 </M> in printable chracters. The format
-    consists of two parts. The first part uses one to eight bytes to
-    store the number of vertices. And the second part is the
-    adjacency matrix converted into ASCII characters. For a more
-    detail description see <URL Text='Graph6'>
-    http://cs.anu.edu.au/~bdm/data/formats.txt</URL>.
+      <Mark> Sparse6 </Mark>
+      <Item>
+	<E> Sparse6 </E> is a graph data format for storing undirected graphs
+	with possibly multiple edges or loops. The maximal number of vertices
+	allowed is <M> 2^36 - 1 </M>. The format consists of two parts. The
+	first part uses one to eight bytes to store the number of vertices.
+	And the second part only stores information about the edges.
+	Therefore, the <E> Sparse6 </E> format return a more compact encoding
+	then <E> Graph6 </E> for sparse graph, i.e.  graphs where the number
+	of edges is much less than the number of vertices squared.  For a more
+	detail description see <URL Text='Sparse6'>
+        http://cs.anu.edu.au/~bdm/data/formats.txt</URL>.
+      </Item>
 
+      <Mark> Digraph6 </Mark>
+      <Item>
+	<E>Digraph6</E> is a new format based on <E> Graph6 </E>, but designed
+	for directed graphs. The entire adjacency matrix is stored, and
+	therefore there is support for directed edges and single-vertex loops.
+	However, multiple edges are not supported.
+      </Item>
+
+      <Mark> DiSparse6 </Mark>
+      <Item>
+	<E>DiSparse6</E> is a new format based on <E> Sparse6 </E>, but
+	designed for directed graphs. In this format the list of edges is
+	partitioned into inceasing and decreasing edges, depending whether the
+	edge has it's source bigger than the range. Then both sets of edges are
+	written separetly in <E> Sparse6 </E> format with a separation symbol
+	in between.
+      </Item>
+    </List>
     <#Include Label="DigraphFromGraph6String">
     <#Include Label="WriteGraph6">
   </Section>

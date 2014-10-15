@@ -538,7 +538,7 @@ function(digraph)
     table := EmptyPlist(n);
     ht := [];
     next := 1;
-    for i in [ 1 .. n ] do
+    for i in verts do
       ii := find(i);
       if IsBound(ht[ii]) then
         table[i] := ht[ii];
@@ -557,6 +557,119 @@ function(digraph)
     Add(comps[ tab[i] ], i);
   od;
   return rec( comps := comps, id := tab );
+end);
+
+#
+
+InstallMethod(OutDegrees, "for a digraph with out neighbours",
+[IsDigraph and HasOutNeighbours],
+function(digraph)
+  local adj, degs, i;
+  
+  adj := OutNeighbours(digraph);
+  degs := EmptyPlist(  DigraphNrVertices(digraph) );
+  for i in DigraphVertices(digraph) do
+    degs[i] := Length(adj[i]);
+  od;
+  return degs;
+end);
+
+#
+
+InstallMethod(OutDegrees, "for a digraph with source and range",
+[IsDigraph and HasDigraphSource],
+function(digraph)
+  local n, source, degs, current, count, i;
+
+  n := DigraphNrVertices(digraph);
+  if n = 0 then
+    return [ ];
+  fi;
+  source := DigraphSource(digraph);
+  degs := [ 1 .. n ] * 0;
+  current := source[1];
+  count := 0;
+  for i in source do
+    if i <> current then
+      degs[current] := count;
+      count := 0;
+      current := i;
+    fi;
+    count := count + 1;
+  od;
+  degs[current] := count;
+  return degs;
+end);
+
+#
+
+InstallMethod(InDegrees, "for a digraph with in neighbours",
+[IsDigraph and HasInNeighbours], 3,
+function(digraph)
+  local inn, degs, i;
+  
+  inn := InNeighbours(digraph);
+  degs := EmptyPlist(  DigraphNrVertices(digraph) );
+  for i in DigraphVertices(digraph) do
+    degs[i] := Length(inn[i]);
+  od;
+  return degs;
+end);
+
+#
+
+InstallMethod(InDegrees, "for a digraph with out neighbours",
+[IsDigraph and HasOutNeighbours],
+function(digraph)
+  local adj, degs, x, i;
+  
+  adj := OutNeighbours(digraph);
+  degs := [ 1 .. DigraphNrVertices(digraph)] * 0;
+  for x in adj do
+    for i in x do
+      degs[i] := degs[i] + 1;
+    od;
+  od;
+  return degs;
+end);
+
+#
+
+InstallMethod(InDegrees, "for a digraph with source and range",
+[IsDigraph and HasDigraphSource],
+function(digraph)
+  local range, degs, i;
+
+  range := DigraphRange(digraph);
+  degs := [ 1 .. DigraphNrVertices(digraph)] * 0;
+  for i in range do
+    degs[i] := degs[i] + 1;
+  od;
+  return degs;
+end);
+
+#
+
+InstallMethod(OutDegreeSequence, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out;
+
+  out := ShallowCopy(OutDegrees(digraph));
+  Sort(out, function(a,b) return b < a; end);
+  return out;
+end);
+
+#
+
+InstallMethod(InDegreeSequence, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out;
+
+  out := ShallowCopy(InDegrees(digraph));
+  Sort(out, function(a,b) return b < a; end);
+  return out;
 end);
 
 #EOF

@@ -77,8 +77,27 @@ fi;
 
 #
 
-InstallMethod(IsConnectedDigraph,
-"for a digraph",
+InstallMethod(IsCompleteDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local n;
+
+  n := DigraphNrVertices(digraph);
+  if n = 0 then
+    return true;
+  elif IsMultiDigraph(digraph) then
+    return false;
+  elif DigraphNrEdges(digraph) <> (n * n) then
+    return false;
+  fi;
+ 
+  SetIsSymmetricDigraph(digraph, true);
+  return true;
+end);
+
+#
+
+InstallMethod(IsConnectedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
   # Check for easy answers
@@ -156,37 +175,20 @@ fi;
 
 InstallMethod(IsSymmetricDigraph, "for a digraph", [IsDigraph],
 function(graph)
-  local old, rev, new, i, j;
+  local out, inn, new, i;
  
-  if IsMultiDigraph(graph) then
-    Error("Digraphs: IsSymmetricDigraph: usage,\n",
-    "the argument <graph> cannot have multiple edges,");
-    return;
-  fi; # TODO write a method that also works for multidigraphs
+  out := OutNeighbours(graph);
+  inn := InNeighbours(graph);
 
-  old := OutNeighbours(graph);
-  rev := EmptyPlist(Length(old));
-  for i in DigraphVertices(graph) do 
-    rev[i] := [];
-  od;
-  
-  if ForAll(old, IsSSortedList) then 
+  if not ForAll(out, IsSortedList) then 
+    new := EmptyPlist(Length(out));
     for i in DigraphVertices(graph) do
-      for j in old[i] do 
-        rev[j][LEN_LIST(rev[j])+1]:=i;
-      od;
+      new[i]:=AsSortedList(ShallowCopy(out[i]));
     od;
-    return rev = old;
-  else
-    new := EmptyPlist(Length(old));
-    for i in DigraphVertices(graph) do
-      new[i]:=AsSSortedList(ShallowCopy(old[i]));
-      for j in new[i] do 
-        rev[j][LEN_LIST(rev[j])+1]:=i;
-      od;
-    od;
-    return rev = new;
+    return inn = new;
   fi;
+
+  return inn = out;
 end);
 
 # Functional means: for every vertex v there is exactly one edge with source v

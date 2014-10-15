@@ -175,8 +175,7 @@ false
 gap> IsSymmetricDigraph(loop);
 true
 gap> IsSymmetricDigraph(multiple);
-Error, Digraphs: IsSymmetricDigraph: usage,
-the argument <graph> cannot have multiple edges,
+false
 gap> g6 := Digraph( [ [ 1, 2, 4 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3, 1 ] ] );
 <digraph with 4 vertices, 10 edges>
 gap> IsSymmetricDigraph(g6);
@@ -187,8 +186,7 @@ true
 gap> gr := Digraph( rec ( nrvertices := 3, source := [ 1, 1, 2, 2, 2, 2, 3, 3 ],
 > range := [ 2, 2, 1, 1, 3, 3, 2, 2 ] ) );;
 gap> IsSymmetricDigraph(gr);
-Error, Digraphs: IsSymmetricDigraph: usage,
-the argument <graph> cannot have multiple edges,
+true
 
 # IsEmptyDigraph
 gap> gr1 := Digraph( rec( nrvertices := 5, source := [ ], range := [ ] ) );;
@@ -304,6 +302,20 @@ gap> gr := DigraphByAdjacencyMatrix(mat);
 <multidigraph with 4 vertices, 30 edges>
 gap> IsReflexiveDigraph(gr);
 true
+
+# IsCompleteDigraph
+gap> gr := Digraph( [ ] );
+<digraph with 0 vertices, 0 edges>
+gap> IsCompleteDigraph(gr);
+true
+gap> gr := Digraph( [ [ 1, 2 ], [ 2, 1 ] ] );
+<digraph with 2 vertices, 4 edges>
+gap> IsCompleteDigraph(gr);
+true
+gap> gr := Digraph( [ [ 1, 2 ], [ 2, 2 ] ] );
+<multidigraph with 2 vertices, 4 edges>
+gap> IsCompleteDigraph(gr);
+false
 
 #
 gap> DigraphsStopTest();

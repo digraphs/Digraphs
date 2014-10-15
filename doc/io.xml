@@ -13,13 +13,14 @@
   <Oper Name="DigraphFromGraph6String" Arg="str"/>
   <Oper Name="DigraphFromDigraph6String" Arg="str"/>
   <Oper Name="DigraphFromSparse6String" Arg="str"/>
+  <Oper Name="DigraphFromDiSparse6String" Arg="str"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>str</A> is a string encoding a graph in Graph6, Digraph6 or
-    Sparse6, then this function returns a digraph. In the case of
-    either Graph6 or Sparse6, formats which do not support directed edges,
-    this will be a digraph such that for every edge, the edge going
-    in the opposite direction is also present.
+    If <A>str</A> is a string encoding a graph in Graph6, Digraph6, Sparse6 or
+    DiSparse6 format, then the corresponging function returns a digraph. In the
+    case of either Graph6 or Sparse6, formats which do not support directed
+    edges, this will be a digraph such that for every edge, the edge going in
+    the opposite direction is also present.
     <Example><![CDATA[
 gap> DigraphFromGraph6String("?");
 <digraph with 0 vertices, 0 edges>
@@ -33,6 +34,8 @@ gap> DigraphFromDigraph6String("+CQFG");
 <digraph with 4 vertices, 6 edges>
 gap> DigraphFromDigraph6String("+IM[SrKLc~lhesbU[F_");
 <digraph with 10 vertices, 51 edges>
+gap> DigraphFromDiSparse6String(".CaWBGA?b");
+<multidigraph with 4 vertices, 9 edges>
 ]]></Example>
     </Description>
 </ManSection>
@@ -106,33 +109,23 @@ gap> ReadDigraphs("pkg/digraphs/data/tree9.4.txt");
 <ManSection>
   <Oper Name="WriteGraph6" Arg="digraph"/>
   <Oper Name="WriteDigraph6" Arg="digraph"/>
+  <Oper Name="WriteSparse6" Arg="digraph"/>
+  <Oper Name="WriteDiSparse6" Arg="digraph"/>
   <Returns>A string.</Returns>
   <Description>
-    These two functions return a highly compressed string describing the
-    adjacencies of <A>digraph</A>, in either the Graph6 or Digraph6 format.<P/>
+    These four functions return a highly compressed string fully describing the
+    <A> digraph </A>. <P/>
 
-    <E>Graph6</E> is a widely used format for storing <E>undirected</E> graphs.
-    The upper triangle of an adjacency matrix for <A>digraph</A> is recorded,
-    six bits at a time, into a string of printable characters in the ASCII range
-    63-126.  Single-vertex loops are removed, directions are forgotten, and
-    multiple edges are reduced to single edges.<P/>
-
-    <E>Digraph6</E> is a new format based on Graph6, but designed for directed
-    graphs.  The entire adjacency matrix is stored, and therefore there is
-    support for directed edges and single-vertex loops.  However, multiple edges
-    are still reduced to single edges.<P/>
-
-    These two formats are best used on small, dense graphs.  For larger, sparse
-    graphs use <E>Sparse6</E> and <E>Disparse6</E> (this latter also preserves
-    multiple edges).
-
+    Graph6 and Digraph6 are formats best used on small, dense graphs, if
+    applicable. For larger, sparse graphs use <E>Sparse6</E> and
+    <E>Disparse6</E> (this latter also preserves multiple edges).
     <Example><![CDATA[
-gap> gr := Digraph([[1,2,4], [1], [2,4], [3,4]]);
-<digraph with 4 vertices, 8 edges>
-gap> WriteGraph6(gr);
-"Cl"
-gap> WriteDigraph6(gr);
-"+Cq`k"
+gap> gr := Digraph([[2,3], [1], [1]]);
+<digraph with 3 vertices, 4 edges>
+gap> WriteSparse6(gr);
+":Bc"
+gap> WriteDiSparse6(gr);
+".Bc{f"
 ]]></Example>
   </Description>
 </ManSection>

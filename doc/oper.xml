@@ -179,3 +179,41 @@ gap> DigraphVertices(last);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="InNeighboursOfVertex">
+<ManSection>
+  <Oper Name="InNeighboursOfVertex" Arg="digraph, vertex"/>
+  <Returns>A list of in-neighbours of a given vertex</Returns>
+  <Description>
+    Returns the list <C>inn</C> such that a vertex <C>i</C> is in <C>inn</C>
+    whenever there is an edge from <C>i</C> to <A>vertex</A> in <A>digraph</A>.
+    <Example><![CDATA[
+gap> gr := Digraph([[2,2,3], [1,3,4], [2,2,3], [1,1,2,2,1,2,2]]);
+<multidigraph with 4 vertices, 16 edges>
+gap> InNeighboursOfVertex(gr, 1);
+[ 2, 4, 4, 4 ]
+gap> InNeighboursOfVertex(gr, 2);
+[ 1, 1, 3, 3, 4, 4, 4, 4 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="OutNeighboursOfVertex">
+<ManSection>
+  <Oper Name="OutNeighboursOfVertex" Arg="digraph, vertex"/>
+  <Returns>A list of out-neighbours of a given vertex</Returns>
+  <Description>
+    Returns the list <C>out</C> such that a vertex <C>i</C> is in <C>out</C>
+    whenever there is an edge from <A>vertex</A> to <C>i</C> in <A>digraph</A>.
+    <Example><![CDATA[
+gap> gr := Digraph([[2,2,3], [1,3,4], [2,2,3], [1,1,2,2,1,2,2]]);
+<multidigraph with 4 vertices, 16 edges>
+gap> OutNeighboursOfVertex(gr,1);
+[ 2, 2, 3 ]
+gap> OutNeighboursOfVertex(gr,3);
+[ 2, 2, 3 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

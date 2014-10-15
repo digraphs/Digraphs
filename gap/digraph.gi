@@ -109,13 +109,13 @@ InstallMethod(RandomDigraph, "for a pos int",
 function(n)
   local verts, adj, nr, i, j, gr;
 
-  verts := [1..n];
-  adj := [];
+  verts := [ 1 .. n ];
+  adj := [ ];
 
   for i in verts do
     nr := Random(verts);
-    adj[i] := [];
-    for j in [1..nr] do
+    adj[i] := [ ];
+    for j in [ 1 .. nr ] do
       AddSet(adj[i], Random(verts));
     od;
   od;
@@ -125,21 +125,29 @@ function(n)
   return gr;
 end);
 
-# WW - do we want loops on a complete digraph, or not?
+#
 
-InstallMethod(CompleteDigraph, "for a pos int",
-[IsPosInt],
+InstallMethod(CompleteDigraph, "for an integer",
+[IsInt],
 function(n)
   local verts, adj, gr, i;
   
-  verts := [ 1 .. n ];
-  adj := EmptyPlist(n);
-  for i in verts do
-    adj[i] := verts;
-  od;
-  gr := DigraphNC(adj);
+  if n < 0 then
+    Error("Digraphs: CompleteDigraph: usage,\n",
+      "the argument must be a non-negative integer,\n");
+  elif n = 0 then
+    gr := DigraphNC( [ ] );
+  else
+    verts := [ 1 .. n ];
+    adj := EmptyPlist(n);
+    for i in verts do
+      adj[i] := verts;
+    od;
+    gr := DigraphNC(adj);
+  fi;
   SetIsMultiDigraph(gr, false);
   SetIsSymmetricDigraph(gr, true);
+  SetIsCompleteDigraph(gr, true);
   return gr;
 end);
 

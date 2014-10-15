@@ -88,6 +88,25 @@ gap> DigraphFromSparse6String(":Fa@x^");
 <digraph with 7 vertices, 8 edges>
 
 #
+gap> gr := Digraph([[4],[2,2],[2,3,1,4],[1]]);
+<multidigraph with 4 vertices, 8 edges>
+gap> InNeighboursOfVertex(gr, 2);
+[ 2, 2, 3 ]
+gap> InNeighbours(gr);
+[ [ 3, 4 ], [ 2, 2, 3 ], [ 3 ], [ 1, 3 ] ]
+gap> gr := Digraph(rec(nrvertices := 10, source := [1,1,2,3,3,3],
+> range := [3,1,1,4,4,1] ));
+<multidigraph with 10 vertices, 6 edges>
+gap> InNeighboursOfVertex(gr, 5);
+[  ]
+gap> InNeighbours(gr);
+[ [ 1, 2, 3 ], [  ], [ 1 ], [ 3, 3 ], [  ], [  ], [  ], [  ], [  ], [  ] ]
+gap> OutNeighboursOfVertex(gr, 3);
+[ 4, 4, 1 ]
+gap> OutNeighbours(gr);
+[ [ 3, 1 ], [ 1 ], [ 4, 4, 1 ], [  ], [  ], [  ], [  ], [  ], [  ], [  ] ]
+
+#
 gap> DigraphsStopTest();
 
 #
