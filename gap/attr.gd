@@ -27,6 +27,11 @@ DeclareAttribute("OutNeighbours", IsDigraph);
 DeclareAttribute("OutNeighbors", IsDigraph);
 DeclareAttribute("InNeighbours", IsDigraph);
 DeclareAttribute("InNeighbors", IsDigraph);
+DeclareAttribute("OutDegrees", IsDigraph);
+DeclareAttribute("OutDegreeSequence", IsDigraph);
+DeclareAttribute("InDegrees", IsDigraph);
+DeclareAttribute("InDegreeSequence", IsDigraph);
+
 
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 
