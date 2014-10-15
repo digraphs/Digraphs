@@ -491,9 +491,11 @@ fi;
 InstallMethod(DigraphConnectedComponents, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local tab, find, union, source, range, adj, normalise, comps, i, j;
+  local n, verts, tab, find, union, source, range, adj, normalise, comps, i, j;
 
-  if DigraphNrVertices(digraph) = 0 then
+  n := DigraphNrVertices(digraph);
+  verts := DigraphVertices(digraph);
+  if n = 0 then
     return rec( comps := [  ], id := [  ] );
   fi;
 
@@ -524,18 +526,19 @@ function(digraph)
     od;
   elif HasOutNeighbours(digraph) then
     adj := OutNeighbours(digraph);
-    for i in DigraphVertices(digraph) do
+    for i in verts do
       for j in adj[i] do
         union(i, j);
       od;
     od;
   fi;
 
-  normalise := function(table)
-    local ht, next, i, ii;
+  normalise := function()
+    local ht, next, i, ii, table;
+    table := EmptyPlist(n);
     ht := [];
     next := 1;
-    for i in [ 1 .. Length(table)] do
+    for i in [ 1 .. n ] do
       ii := find(i);
       if IsBound(ht[ii]) then
         table[i] := ht[ii];
@@ -548,9 +551,9 @@ function(digraph)
     return table;
   end;
  
-  normalise(tab);
+  tab := normalise();
   comps := List([ 1 .. Maximum(tab) ], x -> [ ]);
-  for i in [ 1 .. Length(tab) ] do
+  for i in verts do
     Add(comps[ tab[i] ], i);
   od;
   return rec( comps := comps, id := tab );
