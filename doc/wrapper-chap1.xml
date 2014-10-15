@@ -70,6 +70,8 @@
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphTopologicalSort">
     <#Include Label="InducedSubdigraph">
+    <#Include Label="OutNeighboursOfVertex">
+    <#Include Label="InNeighboursOfVertex">
   </Section>
 
   <Section><Heading>Visualising the structure of a digraph</Heading>
