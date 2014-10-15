@@ -257,18 +257,6 @@ end);
 
 #
 
-BindGlobal("DIGRAPHS_LogCeiling",
-function(n, k)
-  local pow;
-  pow := LogInt(n,k);
-  if k^pow < n then
-    pow := pow + 1;
-  fi;
-  return pow;
-end);
-
-#
-
 InstallMethod(DigraphFromSparse6String, "for a string",
 [IsString],
 function(s)
