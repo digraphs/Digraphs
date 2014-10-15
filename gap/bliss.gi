@@ -53,17 +53,26 @@ function(graph)
   local x;
   
   if IsMultiDigraph(graph) then 
-    Error("Digraphs: DigraphCanonicalLabelling: usage,\n",
-          "not yet implemented,\n");
-  fi;
-  
-  x := DIGRAPH_AUTOMORPHISMS(graph);
-  SetDigraphCanonicalLabelling(graph, x[1]);
-  
-  if IsEmpty(x[2]) then 
-    return Group(());
-  else 
-    return Group(x[2]);
+    x := MULTIDIGRAPH_AUTOMORPHISMS(graph);
+    SetDigraphCanonicalLabelling(graph, x[5]);
+     
+    if IsEmpty(x[3]) then 
+      x[3]:=[()];
+    fi;
+    if IsEmpty(x[4]) then 
+      x[4]:=[()];
+    fi;
+    return DirectProduct(Group(x[3]), Group(x[4]));
+  else
+    x := DIGRAPH_AUTOMORPHISMS(graph);
+    SetDigraphCanonicalLabelling(graph, x[1]);
+   
+    x := x[2]{[2..Length(x[2])]};
+    if IsEmpty(x) then 
+      return Group(());
+    else 
+      return Group(x);
+    fi;
   fi;
 end);
 

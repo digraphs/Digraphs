@@ -26,12 +26,12 @@
 
 InstallGlobalFunction(GraphEndomorphismsTrivial,
 function(g)
-  # g a graph with g.adjacencies information
+  # g a graph with OutNeighbours information
   local number,result;
   result := [];
-  number := GRAPH_HOMOMORPHISMS(g.adjacencies, g.adjacencies,
+  number := GRAPH_HOMOMORPHISMS(OutNeighbours(g), OutNeighbours(g),
                                 [],    # this is the initial try
-                                Length(g.adjacencies),   # maxdepth
+                                Length(OutNeighbours(g)),   # maxdepth
                                 fail,  # no further known constraints
                                 fail,  # no limit on maxanswers
                                 result,   # this is modified
@@ -41,7 +41,7 @@ end);
 
 ReorderVertices := function(g)
   local ad,l,max,n,new,p,pos,s,val;
-  ad := g.adjacencies;
+  ad := OutNeighbours(g);
   val := List(ad,Length);
   max := Maximum(val);
   pos := Position(val,max);  # this is the first vertex
@@ -77,7 +77,7 @@ function(g)
         Add(result,ShallowCopy(try));
         return;
     fi;
-    ad := g.adjacencies;
+    ad := OutNeighbours(g);
     if Size(auts) = 1 then
         GRAPH_HOMOMORPHISMS(ad, ad, try, DigraphNrVertices(g), fail, fail, result, false);
         return;

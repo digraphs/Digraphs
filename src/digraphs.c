@@ -21,34 +21,6 @@
 #undef PACKAGE_URL
 #undef PACKAGE_VERSION
 
-// for graph homomorphisms . . .  
-
-#ifdef SYS_IS_64_BIT
-#define MAXVERT 64
-typedef UInt8 num;
-#define SMALLINTLIMIT 1152921504606846976
-#else
-#define MAXVERT 32
-typedef UInt4 num;
-#define SMALLINTLIMIT 268435456
-#endif
-
-static num gra1[MAXVERT];
-static num nrvert1;
-static num gra2[MAXVERT];
-static num nrvert2;
-static num constraints[MAXVERT];
-static num maxdepth;
-static Obj results;
-
-static num tablesinitialised = 0;
-static num oneone[MAXVERT];
-static num ones[MAXVERT];
-static num count;
-static num maxresults;
-static num overflow;
-
-static jmp_buf outofhere;
 
 //#include "pkgconfig.h"             /* our own configure results */
 
@@ -647,26 +619,29 @@ static Obj FuncDIGRAPH_REFLEX_TRANS_CLOSURE(Obj self, Obj digraph){
 
 // bliss 
 
-void hook_function(void               *user_param,
-	           unsigned           int N,
-	           const unsigned int *aut        ) {
-  UInt4* ptr;
-  Obj p;
-  UInt i;
-  
-  p   = NEW_PERM4(N);
-  ptr = ADDR_PERM4(p);
-  
-  for(i = 0; i < N; ++i){
-    ptr[i] = aut[i];
+UInt DigraphNrEdges(Obj digraph) {
+  Obj   adj;
+  UInt  nr, i, n;
+  if (IsbPRec(digraph, RNamName("nredges"))) {
+    return INT_INTOBJ(ElmPRec(digraph, RNamName("nredges")));
   }
-  
-  AssPlist(user_param, LEN_PLIST(user_param)+1, p);
-  CHANGED_BAG(user_param);
+  if (IsbPRec(digraph, RNamName("source"))) { 
+    return LEN_LIST(ElmPRec(digraph, RNamName("source")));
+  } else {
+    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+    adj = ElmPRec(digraph, RNamName("adj"));
+    nr = 0;
+    for (i = 1; i <= n; i++) {
+      nr+= LEN_PLIST(ELM_PLIST(adj, i));
+    }
+  }
+  AssPRec(digraph, RNamName("nredges"), INTOBJ_INT(nr));
+  return nr;
 }
 
-BlissGraph* buildBlissDigraph(Obj digraph) {
-  UInt        n, i, j, nr, len;
+
+BlissGraph* buildBlissMultiDigraph(Obj digraph) {
+  UInt        n, i, j, k, l, nr, len;
   Obj         adji, adj, source, range;
   BlissGraph  *graph;
 
@@ -679,7 +654,11 @@ BlissGraph* buildBlissDigraph(Obj digraph) {
       adji = ELM_PLIST(adj, i);
       nr = LEN_PLIST(adji);
       for(j = 1; j <= nr; j++) {
-        bliss_add_edge(graph, i-1, INT_INTOBJ(ELM_PLIST(adji, j))-1);
+        k = bliss_add_vertex(graph, 1);
+        l = bliss_add_vertex(graph, 2);
+        bliss_add_edge(graph, i-1, k);
+        bliss_add_edge(graph, k, l);
+        bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j))-1);
       }
     }
   } else {
@@ -689,12 +668,34 @@ BlissGraph* buildBlissDigraph(Obj digraph) {
     PLAIN_LIST(range);
     n = LEN_PLIST(source);
     for (i = 1; i <= n; i++) {
-      bliss_add_edge(graph, INT_INTOBJ(ELM_PLIST(source, i)) - 1,
-                            INT_INTOBJ(ELM_PLIST(range,  i)) - 1);
+      k = bliss_add_vertex(graph, 1);
+      l = bliss_add_vertex(graph, 2);
+      bliss_add_edge(graph, INT_INTOBJ(ELM_PLIST(source, i)) - 1, k);
+      bliss_add_edge(graph, k, l);
+      bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(range,  i)) - 1);
     }
   }
 
   return graph;
+}
+
+void digraph_hook_function(void               *user_param,
+	                   unsigned           int N,
+	                   const unsigned int *aut        ) {
+  UInt4* ptr;
+  Obj p;
+  UInt i, n;
+  
+  n   = INT_INTOBJ(ELM_PLIST(user_param, 1));  //the degree
+  p   = NEW_PERM4(n);
+  ptr = ADDR_PERM4(p);
+  
+  for(i = 0; i < n; ++i){
+    ptr[i] = aut[i];
+  }
+  
+  AssPlist(user_param, LEN_PLIST(user_param)+1, p);
+  CHANGED_BAG(user_param);
 }
 
 static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
@@ -704,11 +705,12 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   const unsigned int  *canon;
   Int                 i, n;
   
-  graph = buildBlissDigraph(digraph);
+  graph = buildBlissMultiDigraph(digraph);
   
-  autos = NEW_PLIST(T_PLIST, 0);
-  SET_LEN_PLIST(autos, 0);
-  canon = bliss_find_canonical_labeling(graph, hook_function, autos, 0);
+  autos = NEW_PLIST(T_PLIST, 1);
+  SET_ELM_PLIST(autos, 1, ElmPRec(digraph, RNamName("nrvertices")));
+  SET_LEN_PLIST(autos, 1);
+  canon = bliss_find_canonical_labeling(graph, digraph_hook_function, autos, 0);
   
   n   = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
   p   = NEW_PERM4(n);
@@ -729,6 +731,70 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   return out;
 }
 
+void multidigraph_hook_function(void               *user_param,
+	                        unsigned           int N,
+	                        const unsigned int *aut        ) {
+  UInt4   *ptr, *qtr;
+  Obj     p, q, list;
+  UInt    i, n, m;
+  
+  m   = INT_INTOBJ(ELM_PLIST(user_param, 1));  //the nr of vertices
+  n   = INT_INTOBJ(ELM_PLIST(user_param, 2));  //the nr of edges
+  p   = NEW_PERM4(m);
+  q   = NEW_PERM4(n);
+  ptr = ADDR_PERM4(p);
+  qtr = ADDR_PERM4(q);
+  
+  for (i = 0; i < m; i++) {
+    ptr[i] = aut[i];
+  }
+  for (i = 0 ; i < n; i ++ ) {
+    qtr[i] = (aut[2 * i + m] - m) / 2;
+  }
+  list = ELM_PLIST(user_param, 3);
+  AssPlist(list, LEN_PLIST(list)+1, p);
+  CHANGED_BAG(user_param);
+  list = ELM_PLIST(user_param, 4);
+  AssPlist(list, LEN_PLIST(list)+1, q);
+  CHANGED_BAG(user_param);
+}
+
+static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
+  Obj                 autos, p, out;
+  BlissGraph          *graph;
+  UInt4               *ptr;
+  const unsigned int  *canon;
+  Int                 i, n;
+  
+  graph = buildBlissMultiDigraph(digraph);
+  
+  autos = NEW_PLIST(T_PLIST, 5);
+  SET_ELM_PLIST(autos, 1, ElmPRec(digraph, RNamName("nrvertices")));
+  CHANGED_BAG(autos);
+  SET_ELM_PLIST(autos, 2, INTOBJ_INT(DigraphNrEdges(digraph)));
+  SET_ELM_PLIST(autos, 3, NEW_PLIST(T_PLIST, 0));
+  CHANGED_BAG(autos);
+  SET_ELM_PLIST(autos, 4, NEW_PLIST(T_PLIST, 0));
+  CHANGED_BAG(autos);
+  SET_LEN_PLIST(autos, 5);
+
+  canon = bliss_find_canonical_labeling(graph, multidigraph_hook_function, autos, 0);
+  
+  n   = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  p   = NEW_PERM4(n);
+  ptr = ADDR_PERM4(p);
+ 
+  for(i = 0; i < n; ++i){
+    ptr[i] = canon[i];
+  }
+  
+  SET_ELM_PLIST(autos, 5, p);
+  CHANGED_BAG(autos);
+  bliss_release(graph);
+  
+  return autos;
+}
+
 static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   Obj   p;
   UInt4 *ptr;
@@ -736,7 +802,7 @@ static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   Int   n, i; 
   const unsigned int *canon;
      
-  graph = buildBlissDigraph(digraph);
+  graph = buildBlissMultiDigraph(digraph);
   
   canon = bliss_find_canonical_labeling(graph, 0, 0, 0); 
   
@@ -752,8 +818,34 @@ static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   return p;
 } 
 
-// graph homomorphisms . . . by 
+// graph homomorphisms . . . by Max Neunhoeffer
 
+#ifdef SYS_IS_64_BIT
+#define MAXVERT 64
+typedef UInt8 num;
+#define SMALLINTLIMIT 1152921504606846976
+#else
+#define MAXVERT 32
+typedef UInt4 num;
+#define SMALLINTLIMIT 268435456
+#endif
+
+static num gra1[MAXVERT];
+static num nrvert1;
+static num gra2[MAXVERT];
+static num nrvert2;
+static num constraints[MAXVERT];
+static num maxdepth;
+static Obj results;
+
+static num tablesinitialised = 0;
+static num oneone[MAXVERT];
+static num ones[MAXVERT];
+static num count;
+static num maxresults;
+static num overflow;
+
+static jmp_buf outofhere;
 static void inittabs(void)
 {
     num i;
@@ -794,7 +886,7 @@ static void dowork(num *try, num depth)
     todo = constraints[depth];
     for (i = 0;i < depth;i++) {
         if (gra1[i] & oneone[depth]) {   /* if depth adjacent to try[i] */
-            todo &= gra2[try[i]];    /* Only these images are possible */
+            todo &= gra2[try[i]];        /* Only these images are possible */
             if (todo == 0) return;
         }
     }
@@ -959,6 +1051,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncDIGRAPH_AUTOMORPHISMS, 
     "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS" },
+  
+  { "MULTIDIGRAPH_AUTOMORPHISMS", 1, "digraph",
+    FuncMULTIDIGRAPH_AUTOMORPHISMS, 
+    "src/digraphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS" },
 
   { "DIGRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncDIGRAPH_CANONICAL_LABELING, 
