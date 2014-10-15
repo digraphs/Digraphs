@@ -113,6 +113,12 @@ gap> DigraphByAdjacencyMatrix( [ ] );
 # CompleteDigraph
 gap> gr := CompleteDigraph(5);
 <digraph with 5 vertices, 25 edges>
+gap> CompleteDigraph(0);
+<digraph with 0 vertices, 0 edges>
+gap> CompleteDigraph(-1);
+Error, Digraphs: CompleteDigraph: usage,
+the argument must be a non-negative integer,
+
 
 #
 gap> DigraphsStopTest();

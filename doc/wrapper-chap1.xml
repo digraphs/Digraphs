@@ -49,6 +49,7 @@
   <Section><Heading>Properties of digraphs</Heading>
     <!-- alphabetical order please!-->
     <#Include Label="IsAcyclicDigraph">
+    <#Include Label="IsCompleteDigraph">
     <#Include Label="IsEmptyDigraph">
     <#Include Label="IsFunctionalDigraph">
     <#Include Label="IsMultiDigraph">
