@@ -24,7 +24,7 @@ function(graph, func, nopath, edge)
   for i in vertices do
     dist[i] := EmptyPlist(n);
     for j in vertices do 
-      dist[i][j]:=nopath;
+      dist[i][j] := nopath;
     od;
   od;
   
@@ -128,6 +128,8 @@ function(graph)
 
   return DigraphNC(new);
 end);
+
+#
 
 InstallMethod(DigraphRemoveLoops, "for a digraph with source",
 [IsDigraph and HasDigraphSource],
@@ -241,9 +243,6 @@ function(graph, perm)
     range:= ShallowCopy(OnTuples(DigraphRange(graph), perm)),
     nrvertices:=DigraphNrVertices(graph)));
 end);
-
-# returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
-# edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
 #
 

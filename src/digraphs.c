@@ -595,6 +595,26 @@ static Obj FuncDIGRAPH_SHORTEST_DIST(Obj self, Obj digraph){
   return FLOYD_WARSHALL(digraph, FW_FUNC_SHORTEST_DIST, -1, 1);
 }
 
+void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
+  if ((*dist)[i * n + k] > 0 && (*dist)[k * n + j] > 0) {
+    (*dist)[i * n + j] = 1;
+  }
+}
+
+static Obj FuncDIGRAPH_TRANS_CLOSURE(Obj self, Obj digraph){
+  return FLOYD_WARSHALL(digraph, FW_FUNC_TRANS_CLOSURE, 0, 1);
+}
+
+void FW_FUNC_REFLEX_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
+  if ((i == j) || ((*dist)[i * n + k] > 0 && (*dist)[k * n + j] > 0)) {
+    (*dist)[i * n + j] = 1;
+  }
+}
+
+static Obj FuncDIGRAPH_REFLEX_TRANS_CLOSURE(Obj self, Obj digraph){
+  return FLOYD_WARSHALL(digraph, FW_FUNC_REFLEX_TRANS_CLOSURE, 0, 1);
+}
+
 // bliss 
 
 void hook_function(void               *user_param,
@@ -749,7 +769,15 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_SHORTEST_DIST", 1, "digraph",
     FuncDIGRAPH_SHORTEST_DIST, 
     "src/digraphs.c:FuncDIGRAPH_SHORTEST_DIST" },
-      
+
+  { "DIGRAPH_TRANS_CLOSURE", 1, "digraph",
+    FuncDIGRAPH_TRANS_CLOSURE,
+    "src/digraphs.c:FuncDIGRAPH_TRANS_CLOSURE" },
+
+  { "DIGRAPH_REFLEX_TRANS_CLOSURE", 1, "digraph",
+    FuncDIGRAPH_TRANS_CLOSURE,
+    "src/digraphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE" },
+
   { 0 }
 
 };

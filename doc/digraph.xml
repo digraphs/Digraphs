@@ -23,7 +23,7 @@
 
 <#GAPDoc Label="Digraph">
 <ManSection>
-  <Oper Name="Digraph" Arg="obj[, func]"/>
+  <Oper Name="Digraph" Arg="obj"/>
   <Returns>A digraph.</Returns>
   <Description>
     <List>

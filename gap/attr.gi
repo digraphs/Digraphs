@@ -329,7 +329,8 @@ InstallMethod(DigraphShortestDistances, "for a digraph",
 #  return DigraphFloydWarshall(graph, func, -1, 1);
 #end);
 
-#
+# returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
+# edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
 if IsBound(DIGRAPH_TOPO_SORT) then
   InstallMethod(DigraphTopologicalSort, "for a digraph",

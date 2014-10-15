@@ -51,8 +51,8 @@
     <#Include Label="IsAcyclicDigraph">
     <#Include Label="IsEmptyDigraph">
     <#Include Label="IsFunctionalDigraph">
-    <#Include Label="IsReflexiveDigraph">
     <#Include Label="IsMultiDigraph">
+    <#Include Label="IsReflexiveDigraph">
     <#Include Label="IsStronglyConnectedDigraph">
     <#Include Label="IsSymmetricDigraph">
   </Section>
