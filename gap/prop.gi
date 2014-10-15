@@ -77,8 +77,27 @@ fi;
 
 #
 
-InstallMethod(IsConnectedDigraph,
-"for a digraph",
+InstallMethod(IsCompleteDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local n;
+
+  n := DigraphNrVertices(digraph);
+  if n = 0 then
+    return true;
+  elif IsMultiDigraph(digraph) then
+    return false;
+  elif DigraphNrEdges(digraph) <> (n * n) then
+    return false;
+  fi;
+ 
+  SetIsSymmetricDigraph(digraph, true);
+  return true;
+end);
+
+#
+
+InstallMethod(IsConnectedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
   # Check for easy answers

@@ -305,6 +305,20 @@ gap> gr := DigraphByAdjacencyMatrix(mat);
 gap> IsReflexiveDigraph(gr);
 true
 
+# IsCompleteDigraph
+gap> gr := Digraph( [ ] );
+<digraph with 0 vertices, 0 edges>
+gap> IsCompleteDigraph(gr);
+true
+gap> gr := Digraph( [ [ 1, 2 ], [ 2, 1 ] ] );
+<digraph with 2 vertices, 4 edges>
+gap> IsCompleteDigraph(gr);
+true
+gap> gr := Digraph( [ [ 1, 2 ], [ 2, 2 ] ] );
+<multidigraph with 2 vertices, 4 edges>
+gap> IsCompleteDigraph(gr);
+false
+
 #
 gap> DigraphsStopTest();
 

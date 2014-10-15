@@ -8,11 +8,12 @@
 #############################################################################
 ##
 
-DeclareProperty("IsSymmetricDigraph", IsDigraph);
-DeclareProperty("IsFunctionalDigraph", IsDigraph);
-DeclareProperty("IsStronglyConnectedDigraph", IsDigraph);
-DeclareProperty("IsConnectedDigraph", IsDigraph);
 DeclareProperty("IsAcyclicDigraph", IsDigraph);
-DeclareProperty("IsTournament", IsDigraph);
+DeclareProperty("IsCompleteDigraph", IsDigraph);
+DeclareProperty("IsConnectedDigraph", IsDigraph);
 DeclareProperty("IsEmptyDigraph", IsDigraph);
+DeclareProperty("IsFunctionalDigraph", IsDigraph);
 DeclareProperty("IsReflexiveDigraph", IsDigraph);
+DeclareProperty("IsStronglyConnectedDigraph", IsDigraph);
+DeclareProperty("IsSymmetricDigraph", IsDigraph);
+DeclareProperty("IsTournament", IsDigraph);

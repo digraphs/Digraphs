@@ -42,6 +42,34 @@ true
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsCompleteDigraph">
+<ManSection>
+  <Prop Name="IsCompleteDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    Returns <K>true</K> if the digraph <A>digraph</A> is complete, and 
+    <K>false</K> if it is not. <P/>
+    
+    A digraph is <E>complete</E> if, for all vertices <C>i</C> and <C>j</C> 
+    (including <C>i = j</C>), there is exactly one directed edge with source
+    <C>i</C> and range <C>j</C>. 
+    Equivalently, a digraph with <M>n</M> vertices is complete precisely when it 
+    has <M>n^2</M> edges and no multiple edges.
+
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 1 ] ] );
+<digraph with 1 vertex, 1 edge>
+gap> IsCompleteDigraph(gr);
+true
+gap> gr := Digraph( [ [ 1, 2, 2 ], [ 1, 2 ] ] );
+<multidigraph with 2 vertices, 5 edges>
+gap> IsCompleteDigraph(gr);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsEmptyDigraph">
 <ManSection>
   <Prop Name="IsEmptyDigraph" Arg="digraph"/>
@@ -94,30 +122,6 @@ true
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsReflexiveDigraph">
-<ManSection>
-  <Prop Name="IsReflexiveDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    Returns <K>true</K> if the digraph <A>digraph</A> is reflexive, and
-    <K>false</K> if it is not. A digraph is <E>reflexive</E> if it has a loop
-    at every vertex.
-
-    <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 2 ], [ 2 ] ] );
-<digraph with 2 vertices, 3 edges>
-gap> IsReflexiveDigraph(gr);
-true
-gap> gr := Digraph( rec ( nrvertices := 4,
-> source := [ 1, 1, 2, 2, 3, 4, 4 ], range := [ 3, 1, 4, 2, 3, 2, 1 ] )  );
-<digraph with 4 vertices, 7 edges>
-gap> IsReflexiveDigraph(gr);
-false
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
 <#GAPDoc Label="IsMultiDigraph">
 <ManSection>
   <Prop Name="IsMultiDigraph" Arg="digraph"/>
@@ -142,6 +146,30 @@ gap> gr:=Digraph(rec(nrvertices:=3,
 <multidigraph with 3 vertices, 7 edges>
 gap> IsMultiDigraph(gr);
 true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsReflexiveDigraph">
+<ManSection>
+  <Prop Name="IsReflexiveDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    Returns <K>true</K> if the digraph <A>digraph</A> is reflexive, and
+    <K>false</K> if it is not. A digraph is <E>reflexive</E> if it has a loop
+    at every vertex.
+
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 1, 2 ], [ 2 ] ] );
+<digraph with 2 vertices, 3 edges>
+gap> IsReflexiveDigraph(gr);
+true
+gap> gr := Digraph( rec ( nrvertices := 4,
+> source := [ 1, 1, 2, 2, 3, 4, 4 ], range := [ 3, 1, 4, 2, 3, 2, 1 ] )  );
+<digraph with 4 vertices, 7 edges>
+gap> IsReflexiveDigraph(gr);
+false
 ]]></Example>
   </Description>
 </ManSection>

@@ -36,4 +36,4 @@ DeclareOperation("Graph", [IsDigraph]);
 DeclareOperation("RandomDigraph", [IsPosInt]);
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
-DeclareOperation("CompleteDigraph", [IsPosInt]);
+DeclareOperation("CompleteDigraph", [IsInt]);
