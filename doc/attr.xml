@@ -210,6 +210,62 @@ gap> InNeighbours(gr);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="OutDegrees">
+<ManSection>
+  <Attr Name="OutDegrees" Arg="digraph"/>
+  <Attr Name="OutDegreeSequence" Arg="digraph"/>
+  <Returns>A list of out-degrees of vertices of a digraph.</Returns>
+  <Description>
+
+    Given a digraph <A>digraph</A> with <M>n</M> vertices, <C>OutDegrees</C> 
+    returns a list <C>out</C> of length <M>n</M>, such that for a vertex <C>i</C>,
+    the value of <C>out[i]</C> is the out-degree of vertex <C>i</C>.
+    The out-degree of a vertex <C>i</C> in <A>digraph</A> is the number of edges
+    in <A>digraph</A> which have source <C>i</C>. <P/>
+
+    The function <C>OutDegreeSequence</C> returns the same list, after it has been
+    sorted into non-increasing order.
+
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 1, 3, 2, 2 ], [ ], [ 2, 1 ] ] );
+<multidigraph with 3 vertices, 6 edges>
+gap> OutDegrees(gr);
+[ 4, 0, 2 ]
+gap> OutDegreeSequence(gr);
+[ 4, 2, 0 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="InDegrees">
+<ManSection>
+  <Attr Name="InDegrees" Arg="digraph"/>
+  <Attr Name="InDegreeSequence" Arg="digraph"/>
+  <Returns>A list of in-degrees of vertices of a digraph.</Returns>
+  <Description>
+
+    Given a digraph <A>digraph</A> with <M>n</M> vertices, <C>InDegrees</C> 
+    returns a list <C>deg</C> of length <M>n</M>, such that for a vertex <C>i</C>,
+    the value of <C>out[i]</C> is the in-degree of vertex <C>i</C>.
+    The in-degree of a vertex <C>i</C> in <A>digraph</A> is the number of edges
+    in <A>digraph</A> which have range <C>i</C>. <P/>
+
+    The function <C>InDegreeSequence</C> returns the same list, after it has been
+    sorted into non-increasing order.
+
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 1, 3, 2, 2 ], [ ], [ 2, 1 ] ] );
+<multidigraph with 3 vertices, 6 edges>
+gap> InDegrees(gr);
+[ 2, 3, 1 ]
+gap> InDegreeSequence(gr);
+[ 3, 2, 1 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphVertices">
 <ManSection>
   <Oper Name="DigraphVertices" Arg="digraph"/>

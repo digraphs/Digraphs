@@ -40,6 +40,8 @@
     <#Include Label="RangeSourceDigraph">
     <#Include Label="OutNeighbours">
     <#Include Label="InNeighbours">
+    <#Include Label="OutDegrees">
+    <#Include Label="InDegrees">
     <#Include Label="AdjacencyMatrix">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphConnectedComponents">

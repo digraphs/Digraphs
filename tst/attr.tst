@@ -295,6 +295,78 @@ gap> InNeighbours(gr);
 gap> OutNeighbours(gr);
 [ [ 1, 1, 4 ], [ 2, 3, 4 ], [ 2, 4, 4, 4 ], [ 2 ] ]
 
+# OutDegrees & OutDegreeSequence; InDegrees & InDegreeSequence (Trivial cases)
+gap> r := rec( nrvertices := 0, source := [ ], range := [ ] );;
+gap> gr1 := Digraph(r);
+<digraph with 0 vertices, 0 edges>
+gap> OutDegrees(gr1);
+[  ]
+gap> OutDegreeSequence(gr1);
+[  ]
+gap> InDegrees(gr1);
+[  ]
+gap> InDegreeSequence(gr1);
+[  ]
+gap> gr2 := Digraph( [ ] );
+<digraph with 0 vertices, 0 edges>
+gap> OutDegrees(gr2);
+[  ]
+gap> OutDegreeSequence(gr2);
+[  ]
+gap> InDegrees(gr2);
+[  ]
+gap> InDegreeSequence(gr2);
+[  ]
+gap> gr3 := Digraph( [ ] );
+<digraph with 0 vertices, 0 edges>
+gap> InNeighbours(gr3);
+[  ]
+gap> OutDegrees(gr3);
+[  ]
+gap> OutDegreeSequence(gr3);
+[  ]
+gap> InDegrees(gr3);
+[  ]
+gap> InDegreeSequence(gr3);
+[  ]
+
+# OutDegrees & OutDegreeSequence; InDegrees & InDegreeSequence
+gap> adj :=  [
+> [ 6, 7, 1 ], [ 1, 3, 3, 6 ], [ 5 ], [ 1, 4, 4, 4, 8 ], [ 1, 3, 4, 6, 7 ],
+> [ 7, 7 ], [ 1, 4, 5, 6, 5, 7 ], [ 5, 6 ] ];;
+gap> gr1 := Digraph(adj);
+<multidigraph with 8 vertices, 28 edges>
+gap> OutDegrees(gr1);
+[ 3, 4, 1, 5, 5, 2, 6, 2 ]
+gap> OutDegreeSequence(gr1);
+[ 6, 5, 5, 4, 3, 2, 2, 1 ]
+gap> InDegrees(gr1);
+[ 5, 0, 3, 5, 4, 5, 5, 1 ]
+gap> InDegreeSequence(gr1);
+[ 5, 5, 5, 5, 4, 3, 1, 0 ]
+gap> gr2 := Digraph(adj);
+<multidigraph with 8 vertices, 28 edges>
+gap> InNeighbours(gr2);;
+gap> InDegrees(gr2);
+[ 5, 0, 3, 5, 4, 5, 5, 1 ]
+gap> InDegreeSequence(gr2);
+[ 5, 5, 5, 5, 4, 3, 1, 0 ]
+gap> r := rec ( nrvertices := 8,
+> source := [ 1, 1, 1, 2, 2, 2, 2, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 7, 7,
+>             7, 7, 7, 7, 8, 8 ],
+> range := [ 6, 7, 1, 1, 3, 3, 6, 5, 1, 4, 4, 4, 8, 1, 3, 4, 6, 7, 7, 7, 1, 4, 
+>            5, 6, 5, 7, 5, 6 ] );;
+gap> gr3 := Digraph(r);
+<multidigraph with 8 vertices, 28 edges>
+gap> OutDegrees(gr3);
+[ 3, 4, 1, 5, 5, 2, 6, 2 ]
+gap> OutDegreeSequence(gr3);
+[ 6, 5, 5, 4, 3, 2, 2, 1 ]
+gap> InDegrees(gr3);
+[ 5, 0, 3, 5, 4, 5, 5, 1 ]
+gap> InDegreeSequence(gr3);
+[ 5, 5, 5, 5, 4, 3, 1, 0 ]
+
 #
 gap> DigraphsStopTest();
 
