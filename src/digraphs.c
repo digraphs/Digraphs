@@ -571,12 +571,13 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     next = NEW_PLIST(T_PLIST_CYC, n);
     SET_LEN_PLIST(next, n);
     for (j = 1; j <= n; j++) {
-      val = INTOBJ_INT(dist[ (i - 1) * n + j - 1 ]);
+      val = INTOBJ_INT(dist[ (i - 1) * n + (j - 1) ]);
       SET_ELM_PLIST(next, j, val);
     }
     SET_ELM_PLIST(out, i, next);
     CHANGED_BAG(out);
-  } 
+  }
+  SET_FILT_LIST(out, FN_IS_RECT);
 
   free(dist);
   return out;
@@ -596,7 +597,7 @@ static Obj FuncDIGRAPH_SHORTEST_DIST(Obj self, Obj digraph){
 }
 
 void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
-  if ((*dist)[i * n + k] > 0 && (*dist)[k * n + j] > 0) {
+  if ((*dist)[i * n + k] != 0 && (*dist)[k * n + j] != 0) {
     (*dist)[i * n + j] = 1;
   }
 }
@@ -606,7 +607,7 @@ static Obj FuncDIGRAPH_TRANS_CLOSURE(Obj self, Obj digraph){
 }
 
 void FW_FUNC_REFLEX_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
-  if ((i == j) || ((*dist)[i * n + k] > 0 && (*dist)[k * n + j] > 0)) {
+  if ((i == j) || ((*dist)[i * n + k] != 0 && (*dist)[k * n + j] != 0)) {
     (*dist)[i * n + j] = 1;
   }
 }
@@ -775,7 +776,7 @@ static StructGVarFunc GVarFuncs [] = {
     "src/digraphs.c:FuncDIGRAPH_TRANS_CLOSURE" },
 
   { "DIGRAPH_REFLEX_TRANS_CLOSURE", 1, "digraph",
-    FuncDIGRAPH_TRANS_CLOSURE,
+    FuncDIGRAPH_REFLEX_TRANS_CLOSURE,
     "src/digraphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE" },
 
   { 0 }

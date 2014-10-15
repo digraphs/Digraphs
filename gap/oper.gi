@@ -279,7 +279,7 @@ end);
 InstallMethod(DigraphTransitiveClosure, "for a digraph and a record", 
 [IsDigraph, IsBool],
 function(graph, reflexive)
-  local n, vertices, adj, sorted, out, trans, reflex, func, v, u;
+  local n, vertices, adj, sorted, out, trans, reflex, mat, v, u;
 
   n := DigraphNrVertices(graph);
   vertices := DigraphVertices(graph);
@@ -309,23 +309,13 @@ function(graph, reflexive)
     out := DigraphNC(out);
     SetIsMultiDigraph(out, false);
     return out;
-  else # Non-acyclic method
- 
+  else # Non-acyclic: C method
     if reflexive then
-      func := function(dist, i, j, k)
-        if (i = j) or (dist[i][k] > 0 and dist[k][j] > 0) then 
-          dist[i][j] := 1;
-        fi;
-      end;
+      mat := DIGRAPH_REFLEX_TRANS_CLOSURE(graph);
     else
-      func := function(dist, i, j, k)
-        if dist[i][k] > 0 and dist[k][j] > 0 then 
-          dist[i][j] := 1;
-        fi;
-      end;
+      mat := DIGRAPH_TRANS_CLOSURE(graph);
     fi;
-
-    out := DigraphByAdjacencyMatrix(DigraphFloydWarshall(graph, func, 0, 1));
+    out := DigraphByAdjacencyMatrixNC(mat);
     SetIsMultiDigraph(out, false);
     return out;
   fi;
