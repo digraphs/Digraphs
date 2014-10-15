@@ -75,6 +75,24 @@ else
   end);
 fi;
 
+#
+
+InstallMethod(IsConnectedDigraph,
+"for a digraph",
+[IsDigraph],
+function(digraph)
+  # Check for easy answers
+  if DigraphNrVertices(digraph) < 2 then
+    return true;
+  elif HasSource(digraph) and (Length(Source(digraph)) < DigraphNrVertices(digraph) - 1) then
+    return false;
+  fi;
+  # DigraphSymmetricClosure is not yet implemented!
+  return IsStronglyConnectedDigraph( DigraphSymmetricClosure(digraph) );
+end);
+
+#
+
 if IsBound(IS_ACYCLIC_DIGRAPH) then
   InstallMethod(IsAcyclicDigraph, "for a digraph",
   [IsDigraph], function(graph)

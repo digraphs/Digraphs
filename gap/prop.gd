@@ -11,6 +11,7 @@
 DeclareProperty("IsSymmetricDigraph", IsDigraph);
 DeclareProperty("IsFunctionalDigraph", IsDigraph);
 DeclareProperty("IsStronglyConnectedDigraph", IsDigraph);
+DeclareProperty("IsConnectedDigraph", IsDigraph);
 DeclareProperty("IsAcyclicDigraph", IsDigraph);
 DeclareProperty("IsTournament", IsDigraph);
 DeclareProperty("IsEmptyDigraph", IsDigraph);
