@@ -357,6 +357,70 @@ gap> gr := Digraph( [ [ 2 ], [ 3 ], [  ], [  ] ] );
 gap> IsConnectedDigraph(gr);
 false
 
+# DigraphHasLoops (out neighbours)
+gap> gr := Digraph( [ ] );
+<digraph with 0 vertices, 0 edges>
+gap> DigraphHasLoops(gr);
+false
+gap> gr := Digraph( [ [ ] ] );
+<digraph with 1 vertex, 0 edges>
+gap> DigraphHasLoops(gr);
+false
+gap> gr := Digraph( [ [ 1 ] ] );
+<digraph with 1 vertex, 1 edge>
+gap> DigraphHasLoops(gr);
+true
+gap> gr := Digraph( [ [ 6, 7 ], [ 6, 9 ], [ 1, 2, 4, 5, 8, 9 ],
+> [ 1, 2, 3, 4, 5, 6, 7, 10 ], [ 1, 5, 6, 7, 10 ], [ 2, 4, 5, 9, 10 ],
+> [ 3, 4, 5, 6, 7, 8, 9, 10 ], [ 1, 3, 5, 7, 8, 9 ], [ 1, 2, 5 ],
+> [ 1, 2, 4, 6, 7, 8 ] ] );
+<digraph with 10 vertices, 51 edges>
+gap> DigraphHasLoops(gr);
+true
+gap> gr := Digraph( [ [ 6, 7 ], [ 6, 9 ], [ 1, 2, 4, 5, 8, 9 ],
+> [ 1, 2, 3, 7, 5, 6, 7, 10 ], [ 1, 2, 2, 6, 7, 10 ], [ 2, 4, 5, 9, 10 ],
+> [ 3, 4, 5, 6, 8, 8, 9, 10 ], [ 1, 1, 3, 5, 7, 6, 9 ], [ 1, 1, 1, 2, 5 ],
+> [ 1, 2, 4, 6, 7, 8 ] ] );
+<multidigraph with 10 vertices, 55 edges>
+gap> DigraphHasLoops(gr);
+false
+
+# DigraphHasLoops (source and range)
+gap> gr := Digraph( rec( nrvertices := 0, source := [  ], range := [  ] ) );
+<digraph with 0 vertices, 0 edges>
+gap> DigraphHasLoops(gr);
+false
+gap> gr := Digraph( rec( nrvertices := 1, source := [  ], range := [  ] ) );
+<digraph with 1 vertex, 0 edges>
+gap> DigraphHasLoops(gr);
+false
+gap> gr := Digraph( rec( nrvertices := 1, source := [ 1 ], range := [ 1 ] ) );
+<digraph with 1 vertex, 1 edge>
+gap> DigraphHasLoops(gr);
+true
+gap> r := rec( nrvertices := 10,
+> source := [ 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6,
+>             6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 10, 10, 10, 10,
+>             10, 10 ],
+> range  := [ 6, 7, 6, 9, 1, 2, 4, 5, 8, 9, 1, 2, 3, 4, 5, 6, 7, 10, 1, 5, 6, 7, 10, 2,
+>             4, 5, 9, 10, 3, 4, 5, 6, 7, 8, 9, 10, 1, 3, 5, 7, 8, 9, 1, 2, 5, 1, 2, 4,
+>             6, 7, 8 ] );;
+gap> gr := Digraph(r);
+<digraph with 10 vertices, 51 edges>
+gap> DigraphHasLoops(gr);
+true
+gap> r := rec( nrvertices := 10,
+> source := [ 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6,
+>             6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10,
+>             10, 10, 10, 10, 10 ],
+> range  := [ 6, 7, 6, 9, 1, 2, 4, 5, 8, 9, 1, 2, 3, 7, 5, 6, 7, 10, 1, 2, 2, 6, 7, 10,
+>             2, 4, 5, 9, 10, 3, 4, 5, 6, 8, 8, 9, 10, 1, 1, 3, 5, 7, 6, 9, 1, 1, 1, 2,
+>             5, 1, 2, 4, 6, 7, 8 ] );;
+gap> gr := Digraph( r );
+<multidigraph with 10 vertices, 55 edges>
+gap> DigraphHasLoops(gr);
+false
+
 #
 gap> DigraphsStopTest();
 

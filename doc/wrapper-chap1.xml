@@ -50,6 +50,7 @@
 
   <Section><Heading>Properties of digraphs</Heading>
     <!-- alphabetical order please!-->
+    <#Include Label="DigraphHasLoops">
     <#Include Label="IsAcyclicDigraph">
     <#Include Label="IsCompleteDigraph">
     <#Include Label="IsEmptyDigraph">
