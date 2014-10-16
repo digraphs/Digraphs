@@ -323,4 +323,35 @@ function(digraph)
   return ForAll(id, x -> x = true);
 end);
 
+#
+
+InstallMethod(DigraphHasLoops, "for a digraph with out-neighbours",
+[IsDigraph and HasOutNeighbours],
+function(digraph)
+  local on, i;
+  on := OutNeighbours(digraph);
+  for i in DigraphVertices(digraph) do
+    if i in on[i] then
+      return true;
+    fi;
+  od;
+  return false;
+end);
+
+#
+
+InstallMethod(DigraphHasLoops, "for a digraph (with only range and source)",
+[IsDigraph],
+function(digraph)
+  local src, rng, i;
+  src := Source(digraph);
+  rng := Range(digraph);
+  for i in [1..Length(src)] do
+    if src[i] = rng[i] then
+      return true;
+    fi;
+  od;
+  return false;
+end);
+
 #EOF
