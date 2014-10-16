@@ -119,24 +119,28 @@ gap> h := (1, 2, 3, 4);
 (1,2,3,4)
 
 #
-gap> gr := Digraph(rec(nrvertices := 10, source := [1,1,5,5,7,10],
-> range := [3,3, 1, 10, 7, 1]));
+gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 1, 5, 5, 7, 10 ],
+> range := [ 3, 3, 1, 10, 7, 1 ] ) );
 <multidigraph with 10 vertices, 6 edges>
 gap> InNeighboursOfVertex(gr, 7);
 [ 7 ]
-gap> gr := Digraph([[1,1,4],[2,3,4],[2,4,4,4],[2]]);
+gap> gr := Digraph( [ [ 1, 1, 4 ], [ 2, 3, 4 ], [ 2, 4, 4, 4 ], [ 2 ] ] );
 <multidigraph with 4 vertices, 11 edges>
 gap> InNeighboursOfVertex(gr, 3);
 [ 2 ]
+gap> InNeighbours(gr);
+[ [ 1, 1 ], [ 2, 3, 4 ], [ 2 ], [ 1, 2, 3, 3, 3 ] ]
+gap> InNeighboursOfVertex(gr, 4);
+[ 1, 2, 3, 3, 3 ]
 
 #
-gap> gr := Digraph([[2,2,2,2], [2,2]]);
+gap> gr := Digraph( [ [ 2, 2, 2, 2 ], [ 2, 2 ] ] );
 <multidigraph with 2 vertices, 6 edges>
 gap> OutNeighboursOfVertex(gr, 2);
 [ 2, 2 ]
-gap> gr := Digraph(rec(nrvertices := 10, source := [5,5,5,5,5,5],
-> range := [1,2,3,1,2,3]));
-<multidigraph with 10 vertices, 6 edges>
+gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 5, 5, 5, 5, 5, 5, 6 ],
+> range := [ 1, 1, 2, 3, 1, 2, 3, 6 ] ) );
+<multidigraph with 10 vertices, 8 edges>
 gap> OutNeighboursOfVertex(gr, 2);
 [  ]
 gap> OutNeighboursOfVertex(gr, 5);

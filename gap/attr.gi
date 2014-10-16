@@ -207,6 +207,8 @@ function(graph)
   return graph!.source;
 end);
 
+#
+
 if IsBound(DIGRAPH_OUT_NBS) then
   InstallMethod(OutNeighbours, "for a digraph",
   [IsDigraph and HasDigraphSource], DIGRAPH_OUT_NBS);
@@ -233,6 +235,7 @@ fi;
 InstallMethod(OutNeighbors, "for a digraph",
 [IsDigraph], OutNeighbours);
 
+#
 
 if IsBound(DIGRAPH_IN_NBS) then
   InstallMethod(InNeighbours, "for a digraph",
@@ -269,8 +272,11 @@ else
     return inn;
   end);
 fi;
+
 InstallMethod(InNeighbors, "for a digraph",
 [IsDigraph], InNeighbours);
+
+#
 
 InstallMethod(AdjacencyMatrix, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours], 

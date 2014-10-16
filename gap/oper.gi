@@ -384,102 +384,97 @@ end);
 #
 
 InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
-[IsDigraph and HasOutNeighbours, IsPosInt],
+[IsDigraph, IsPosInt],
 function(graph, v)
-  local vertices, inn, pos, out, i, j;
-
-  vertices := DigraphVertices(graph);
-  if not v in vertices then
-    Error("Digraphs: OutNeighboursOfVertex: usage,\n",
+  if not v in DigraphVertices(graph) then
+    Error("Digraphs: InNeighboursOfVertex: usage,\n",
           v, " is not a vertex of the digraph,\n");
     return;
-  elif HasInNeighbours(graph) then
-    return InNeighbours[v];
-  else
-    inn := [];
-    pos := 1;
-    out := OutNeighbours(graph);
-    for i in [ 1 .. Length(out) ] do
-      for j in [ 1 .. Length(out[i]) ] do
-        if out[i][j] = v then
-          inn[pos] := i;
-          pos := pos + 1;
-        fi;
-      od;
-    od;
-    return inn;
   fi;
+  return InNeighboursOfVertexNC(graph, v);
 end);
 
-#
-
-InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
-[IsDigraph and HasDigraphSource, IsPosInt], 1,
+InstallMethod(InNeighboursOfVertexNC, "for a digraph and a vertex",
+[IsDigraph and HasInNeighbours, IsPosInt], 3,
 function(graph, v)
-  local vertices, inn, pos, source, range, i;
+  return InNeighbours(graph)[v];
+end);
 
-  vertices := DigraphVertices(graph);
-  if not v in vertices then
-    Error("Digraphs: OutNeighboursOfVertex: usage,\n",
-          v, " is not a vertex of the digraph,\n");
-    return;
-  elif HasInNeighbours(graph) then
-    return InNeighbours[v];
-  else
-    inn := [];
-    pos := 1;
-    source := DigraphSource(graph);
-    range := DigraphRange(graph);
-    for i in [ 1 .. Length(range) ] do
-      if range[i] = v then
-        inn[pos] := source[i];
+InstallMethod(InNeighboursOfVertexNC, "for a digraph and a vertex",
+[IsDigraph and HasOutNeighbours, IsPosInt],
+function(graph, v)
+  local inn, pos, out, i, j;
+
+  inn := [];
+  pos := 1;
+  out := OutNeighbours(graph);
+  for i in [ 1 .. Length(out) ] do
+    for j in [ 1 .. Length(out[i]) ] do
+      if out[i][j] = v then
+        inn[pos] := i;
         pos := pos + 1;
       fi;
     od;
-    return inn;
-  fi;
+  od;
+  return inn;
+end);
+
+InstallMethod(InNeighboursOfVertexNC, "for a digraph and a vertex",
+[IsDigraph and HasDigraphSource, IsPosInt], 1,
+function(graph, v)
+  local inn, pos, source, range, i;
+
+  inn := [];
+  pos := 1;
+  source := DigraphSource(graph);
+  range := DigraphRange(graph);
+  for i in [ 1 .. Length(range) ] do
+    if range[i] = v then
+      inn[pos] := source[i];
+      pos := pos + 1;
+    fi;
+  od;
+  return inn;
 end);
 
 #
 
 InstallMethod(OutNeighboursOfVertex, "for a digraph and a vertex",
-[IsDigraph and HasOutNeighbours, IsPosInt], 1,
+[IsDigraph, IsPosInt],
 function(graph, v)
-
   if not v in DigraphVertices(graph) then
     Error("Digraphs: OutNeighboursOfVertex: usage,\n",
           v, " is not a vertex of the digraph,\n");
     return;
-  else
-    return OutNeighbours(graph)[v];
   fi;
+  return OutNeighboursOfVertexNC(graph, v);
 end);
 
-#
-
-InstallMethod(OutNeighboursOfVertex, "for a digraph and a vertex",
-[IsDigraph and HasDigraphSource, IsPosInt],
+InstallMethod(OutNeighboursOfVertexNC, "for a digraph and a vertex",
+[IsDigraph and HasOutNeighbours, IsPosInt],
 function(graph, v)
-  local vertices, out, pos, source, range, i;
+  return OutNeighbours(graph)[v];
+end);
 
-  vertices := DigraphVertices(graph);
-  if not v in vertices then
-    Error("Digraphs: OutNeighboursOfVertex: usage,\n",
-          v, " is not a vertex of the digraph,\n");
-    return;
-  else
-    out := [];
-    pos := 1;
-    source := DigraphSource(graph);
-    range := DigraphRange(graph);
-    for i in [ 1 .. Length(range) ] do
-      if source[i] = v then
-        out[pos] := range[i];
-        pos := pos + 1;
-      fi;
+InstallMethod(OutNeighboursOfVertexNC, "for a digraph and a vertex",
+[IsDigraph and HasDigraphSource, IsPosInt], 1,
+function(graph, v)
+  local out, pos, source, range, m, i;
+
+  out := [];
+  pos := 1;
+  source := DigraphSource(graph);
+  range := DigraphRange(graph);
+  m := Length(source);
+  i := Position(source, v);
+  if i <> fail then
+    while i <= m and source[i] = v do
+      out[pos] := range[i];
+      pos := pos + 1;
+      i := i + 1;
     od;
-    return out;
   fi;
+  return out;
 end);
 
 #EOF
