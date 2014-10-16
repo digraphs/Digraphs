@@ -28,6 +28,7 @@ gap> gr := Digraph( rec( vertices := [ "a", "b" ],
 gap> DigraphDual(gr);
 Error, Digraphs: DigraphDual: usage,
 the argument <graph> must not have multiple edges,
+
 gap> gr := Digraph( [ ] );                  
 <digraph with 0 vertices, 0 edges>
 gap> DigraphDual(gr);
@@ -40,6 +41,24 @@ gap> gr := Digraph( rec ( nrvertices := 2, source := [ ], range := [ ] ) );
 <digraph with 2 vertices, 0 edges>
 gap> DigraphDual(gr);
 <digraph with 2 vertices, 4 edges>
+gap> gr := Digraph( [ [ 2, 2 ], [  ] ] );
+<multidigraph with 2 vertices, 2 edges>
+gap> DigraphDual(gr);
+Error, Digraphs: DigraphDual: usage,
+the argument <graph> must not have multiple edges,
+
+gap> r := rec( nrvertices := 6,
+> source := [ 2, 2, 2, 2, 2, 2, 4, 4, 4 ],
+> range  := [ 1, 2, 3, 4, 5, 6, 3, 4, 5 ] );;
+gap> gr := Digraph(r);
+<digraph with 6 vertices, 9 edges>
+gap> DigraphDual(gr);
+<digraph with 6 vertices, 27 edges>
+gap> r := rec( nrvertices := 4, source := [  ], range := [  ] );;
+gap> gr := Digraph(r);
+<digraph with 4 vertices, 0 edges>
+gap> DigraphDual(gr);
+<digraph with 4 vertices, 16 edges>
 
 # AdjacencyMatrix
 gap> gr:=Digraph(rec(vertices:=[1..10], 
@@ -221,6 +240,21 @@ gap> gr := Digraph( [  ] );
 <digraph with 0 vertices, 0 edges>
 gap> DigraphConnectedComponents(gr);
 rec( comps := [  ], id := [  ] )
+gap> gr := Digraph( [ [ ] ] );
+<digraph with 1 vertex, 0 edges>
+gap> DigraphConnectedComponents(gr);
+rec( comps := [ [ 1 ] ], id := [ 1 ] )
+gap> gr := Digraph( [ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ] );
+<digraph with 4 vertices, 4 edges>
+gap> DigraphConnectedComponents(gr);
+rec( comps := [ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ], id := [ 1, 2, 3, 4 ] )
+gap> gr := Digraph( [ [ 3, 4, 5, 7, 8, 9 ], [ 1, 4, 5, 8, 9, 5, 10 ],
+> [ 2, 4, 5, 6, 7, 10 ], [ 6 ], [ 1, 1, 1, 7, 8, 9 ], [ 2, 2, 6, 8 ], [ 1, 5, 6, 9, 10 ],
+> [ 3, 4, 6, 7 ], [ 1, 2, 3, 5 ], [ 5, 7 ] ] );
+<multidigraph with 10 vertices, 45 edges>
+gap> DigraphConnectedComponents(gr);
+rec( comps := [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ], 
+  id := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ] )
 
 # DigraphShortestDistances
 gap> adj := Concatenation(List( [ 1 .. 11 ], x -> [ x + 1 ] ), [ [ 1 ] ]);;
@@ -387,6 +421,15 @@ gap> gr := Digraph( [ [ 4 ], [ 2, 3, 1, 3 ], [ 3, 3 ], [  ], [ 1, 4, 5 ] ] );
 gap> DigraphEdges(gr);
 [ [ 1, 4 ], [ 2, 2 ], [ 2, 3 ], [ 2, 1 ], [ 2, 3 ], [ 3, 3 ], [ 3, 3 ], 
   [ 5, 1 ], [ 5, 4 ], [ 5, 5 ] ]
+gap> gr := Digraph( [ [ 1, 2, 3, 5, 6, 8 ], [ 6, 6, 7, 8 ], [ 1, 2, 3, 4, 6, 7 ], 
+> [ 2, 3, 5, 6, 2, 7 ], [ 5, 6, 5, 5 ], [ 3, 2, 8 ], [ 1, 5, 7 ], [ 6, 7 ] ] );
+<multidigraph with 8 vertices, 34 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 5 ], [ 1, 6 ], [ 1, 8 ], [ 2, 6 ], 
+  [ 2, 6 ], [ 2, 7 ], [ 2, 8 ], [ 3, 1 ], [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], 
+  [ 3, 6 ], [ 3, 7 ], [ 4, 2 ], [ 4, 3 ], [ 4, 5 ], [ 4, 6 ], [ 4, 2 ], 
+  [ 4, 7 ], [ 5, 5 ], [ 5, 6 ], [ 5, 5 ], [ 5, 5 ], [ 6, 3 ], [ 6, 2 ], 
+  [ 6, 8 ], [ 7, 1 ], [ 7, 5 ], [ 7, 7 ], [ 8, 6 ], [ 8, 7 ] ]
 
 #
 gap> DigraphsStopTest();
