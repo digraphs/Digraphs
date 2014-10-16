@@ -139,6 +139,23 @@ gap> gr := Digraph( [ [ 2 ], [  ] ] );
 <digraph with 2 vertices, 1 edge>
 gap> DigraphRemoveEdges( gr, [ [ 1, 2 ] ] );
 <digraph with 2 vertices, 0 edges>
+gap> gr := Digraph( [ [ 1, 2, 4 ], [ 1, 4 ], [ 3, 4 ], [ 1, 4, 5 ], [ 1, 5 ] ] );
+<digraph with 5 vertices, 12 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 1 ], [ 1, 2 ], [ 1, 4 ], [ 2, 1 ], [ 2, 4 ], [ 3, 3 ], [ 3, 4 ], 
+  [ 4, 1 ], [ 4, 4 ], [ 4, 5 ], [ 5, 1 ], [ 5, 5 ] ]
+gap> gr1 := DigraphRemoveEdges( gr, [ [ 1, 4 ], [ 4, 5 ], [ 5, 5 ] ] );
+<digraph with 5 vertices, 9 edges>
+gap> DigraphEdges(gr1);
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 4 ], [ 3, 3 ], [ 3, 4 ], [ 4, 1 ], 
+  [ 4, 4 ], [ 5, 1 ] ]
+gap> gr := Digraph( [ [ 2, 2 ], [  ] ] );
+<multidigraph with 2 vertices, 2 edges>
+gap> DigraphRemoveEdges(gr, [ [ 1, 2 ] ] );
+Error, Digraphs: DigraphRemoveEdges: usage,
+the first argument <graph> must not have multiple edges
+when the second argument <edges> is a list of edges,
+
 
 # OnDigraphs (for a digraph by adjacency and perm)
 gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );

@@ -153,6 +153,12 @@ function(graph, edges)
       range      := DigraphRange(graph){edges},
       nrvertices := DigraphNrVertices(graph)));
   else
+    if IsMultiDigraph(graph) then
+      Error("Digraphs: DigraphRemoveEdges: usage,\n",
+      "the first argument <graph> must not have multiple edges\n",
+      "when the second argument <edges> is a list of edges,\n");
+      return;
+    fi;
     source := DigraphSource(graph);;
     range := DigraphRange(graph);;
     newsource := [ ];
