@@ -56,7 +56,7 @@ fi;
 
 InstallMethod(AsDigraph, "for a transformation",
 [IsTransformation],
-function(trans);
+function(trans)
   return AsDigraph(trans, DegreeOfTransformation(trans));
 end);
 
@@ -232,15 +232,15 @@ function(graph)
   # rewrite the vertices to numbers
   if IsBound(graph.vertices) then
     if graph.vertices <> [ 1 .. graph.nrvertices ] then  
-      for i in [1..Length(graph.range)] do
-        graph.range[i]:=Position(graph.vertices, graph.range[i]);
-        graph.source[i]:=Position(graph.vertices, graph.source[i]);
+      for i in [ 1 .. Length(graph.range) ] do
+        graph.range[i] := Position(graph.vertices, graph.range[i]);
+        graph.source[i] := Position(graph.vertices, graph.source[i]);
       od;
     fi;
   fi;
 
   # make sure that the graph.source is sorted, and range is too
-  graph.range:=Permuted(graph.range, Sortex(graph.source));
+  graph.range := Permuted(graph.range, Sortex(graph.source));
 
   return DigraphNC(graph);
 end);
@@ -265,10 +265,11 @@ function(adj)
 
   for x in adj do
     for y in x do
-      if not (IsPosInt(y) and y <= nr) then
+      if not IsPosInt(y)
+         or y > nr then
         Error("Digraphs: Digraph: usage,\n",
-              "the argument must be a list of lists of positive",
-              " integers not exceeding the length of the argument,\n");
+              "the argument must be a list of lists of positive integers\n",
+              "not exceeding the length of the argument,\n");
         return;
       fi;
     od;
@@ -397,7 +398,7 @@ function(edges)
     max_range := Maximum(max_range, edge[2]);
   od;
 
-  for i in [1..Maximum(Length(adj), max_range)] do 
+  for i in [1 .. Maximum(Length(adj), max_range)] do 
     if not IsBound(adj[i]) then 
       adj[i] := [];
     fi;
@@ -427,7 +428,7 @@ function(edges, n)
     return;
   fi;
 
-  adj := List([1..n], x-> []);
+  adj := List( [ 1.. n ], x-> [  ]);
 
   for edge in edges do
     if edge[1] > n or edge[2] > n then
@@ -449,8 +450,9 @@ end);
 InstallMethod(\=, "for digraphs",
 [IsDigraph, IsDigraph],
 function(graph1, graph2)
-  return DigraphVertices(graph1)=DigraphVertices(graph2) and DigraphRange(graph1)=DigraphRange(graph2)
-   and DigraphSource(graph1)=DigraphSource(graph2);
+  return DigraphVertices(graph1) = DigraphVertices(graph2)
+          and DigraphRange(graph1) = DigraphRange(graph2)
+          and DigraphSource(graph1) = DigraphSource(graph2);
 end);
 
 #EOF

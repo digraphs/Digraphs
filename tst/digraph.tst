@@ -13,17 +13,53 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
+# Graph
+gap> gr := Digraph( [ [ 2, 2 ], [ ] ] );
+<multidigraph with 2 vertices, 2 edges>
+gap> Graph(gr);
+rec( adjacencies := [ [ 2 ], [  ] ], group := Group(()), isGraph := true, 
+  names := [ 1, 2 ], order := 2, representatives := [ 1, 2 ], 
+  schreierVector := [ -1, -2 ] )
+
+# Digraph (by list of OutNeighbours)
+gap> Digraph( [ [ 0, 1 ] ] );
+Error, Digraphs: Digraph: usage,
+the argument must be a list of lists of positive integers
+not exceeding the length of the argument,
+
+gap> Digraph( [ [ 2 ], [ 3 ] ] );
+Error, Digraphs: Digraph: usage,
+the argument must be a list of lists of positive integers
+not exceeding the length of the argument,
+
+
+# Digraph (by record)
+gap> 10;
+10
+
+# RandomDigraph
+gap> DigraphNrVertices(RandomDigraph(10));
+10
+
 # DigraphByEdges
 gap> gr := Digraph( [ [ 1, 2, 3, 5 ], [ 1, 5 ], [ 2, 3, 6 ], [ 1, 3, 4 ], 
 > [ 1, 4, 6 ], [ 3, 4 ] ] );
 <digraph with 6 vertices, 17 edges>
 gap> gr = DigraphByEdges(DigraphEdges(gr));
 true
-gap> DigraphByEdges([["nonsense", "more"]]);
+gap> DigraphByEdges( [ [ "nonsense", "more" ] ] );
 Error, Digraphs: DigraphByEdges: usage,
 the argument <edges> must be a list of pairs of pos ints,
 
-gap> DigraphByEdges([["nonsense"]]);
+gap> DigraphByEdges( [ [ "nonsense" ] ] );
+Error, Digraphs: DigraphByEdges: usage,
+the argument <edges> must be a list of pairs,
+
+gap> DigraphByEdges( [[  "a", "b" ] ], 2 );
+Error, Digraphs: DigraphByEdges: usage,
+the argument <edges> must be a list of pairs of pos ints,
+
+gap> DigraphByEdges( [ [ 1, 2, 3 ] ], 3 );
 Error, Digraphs: DigraphByEdges: usage,
 the argument <edges> must be a list of pairs,
 
@@ -51,6 +87,10 @@ gap> g := Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] );
 Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] )
 gap> AsDigraph(g);
 <digraph with 8 vertices, 8 edges>
+gap> AsDigraph(g, -1);
+Error, Digraphs: AsDigraph: usage,
+the second argument should be a non-negative integer,
+
 gap> AsDigraph(g, 10);
 <digraph with 10 vertices, 10 edges>
 gap> h := Transformation( [ 2, 4, 1, 3, 5 ] );
@@ -59,6 +99,26 @@ gap> AsDigraph(h);
 <digraph with 4 vertices, 4 edges>
 
 # DigraphByAdjacencyMatrix
+gap> mat := [
+> [ 1, 2, 3 ],
+> [ 1, 2, 3 ] ];;
+gap> DigraphByAdjacencyMatrix(mat);
+Error, Digraphs: DigraphByAdjacencyMatrix: usage,
+the matrix is not square,
+
+gap> mat := [
+> [ 11, 2, 3 ],
+> [ 11, 2, 3 ],
+> [ -1, 2, 2 ] ];;
+gap> DigraphByAdjacencyMatrix(mat);
+Error, Digraphs: DigraphByAdjacencyMatrix: usage,
+the argument must be a matrix of non-negative integers,
+
+gap> mat := [ [ "a" ] ];;
+gap> DigraphByAdjacencyMatrix(mat);
+Error, Digraphs: DigraphByAdjacencyMatrix: usage,
+the argument must be a matrix of non-negative integers,
+
 gap> mat := [
 > [ 0, 2, 0, 0, 1 ],
 > [ 0, 2, 1, 0, 1 ],

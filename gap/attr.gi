@@ -24,7 +24,7 @@ function(graph)
   new := [];
 
   for i in verts do 
-    new[i]:=DifferenceLists(verts, old[i]);
+    new[i] := DifferenceLists(verts, old[i]);
   od;
   return DigraphNC(new);
 end);
@@ -51,13 +51,13 @@ function(graph)
   fi;
   new := List( verts, x -> [ ] );
   current := source[ 1 ];
-  seen := [ ];
+  seen := [  ];
   count := 0;
 
   for i in [ 1 .. m ] do
     if source[i] > current then
       new[current] := DifferenceLists(verts, seen);
-      
+
       for j in [ (current + 1) .. (source[i] - 1) ] do
         new[j] := verts;
       od;
@@ -222,7 +222,7 @@ else
     source:=DigraphSource(graph);
     out:=List(DigraphVertices(graph), x-> []);
 
-    for i in [1..Length(source)] do
+    for i in [ 1 .. Length(source)] do
       Add(out[source[i]], range[i]);
     od;
 

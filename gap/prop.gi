@@ -103,7 +103,10 @@ function(digraph)
   # Check for easy answers
   if DigraphNrVertices(digraph) < 2 then
     return true;
-  elif HasSource(digraph) and (Length(Source(digraph)) < DigraphNrVertices(digraph) - 1) then
+  elif HasIsStronglyConnectedDigraph(digraph)
+   and IsStronglyConnectedDigraph(digraph) then
+    return true;
+  elif DigraphNrEdges(digraph) < DigraphNrVertices(digraph) - 1 then
     return false;
   fi;
   # DigraphSymmetricClosure is not yet implemented!
@@ -173,7 +176,8 @@ fi;
 # Complexity O(number of edges)
 # this could probably be improved further ! JDM
 
-InstallMethod(IsSymmetricDigraph, "for a digraph", [IsDigraph],
+InstallMethod(IsSymmetricDigraph, "for a digraph",
+[IsDigraph],
 function(graph)
   local out, inn, new, i;
  
@@ -183,7 +187,7 @@ function(graph)
   if not ForAll(out, IsSortedList) then 
     new := EmptyPlist(Length(out));
     for i in DigraphVertices(graph) do
-      new[i]:=AsSortedList(ShallowCopy(out[i]));
+      new[i] := AsSortedList(ShallowCopy(out[i]));
     od;
     return inn = new;
   fi;

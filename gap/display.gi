@@ -49,20 +49,21 @@ function(graph)
 
   str:="Digraph( ";
 
-  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
+  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) or
+    not IsBound(graph!.range) then
     return Concatenation(str, PrintString(OutNeighbours(graph)), " )");
   else 
     Append(str, "\>\>rec(\n\>\>");
     com := false;
     i := 1;
-    for nam in ["range", "source", "nrvertices"] do
+    for nam in [ "nrvertices", "source", "range" ] do
       if com then
         Append(str, "\<\<,\n\>\>");
       else
         com := true;
       fi;
       SET_PRINT_OBJ_INDEX(i);
-      i := i+1;
+      i := i + 1;
       Append(str, nam);
       Append(str, "\< := \>");
       Append(str, PrintString(graph!.(nam)));
@@ -81,20 +82,21 @@ function(graph)
 
   str:="Digraph( ";
 
-  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
+  if DigraphNrEdges(graph) >= DigraphNrVertices(graph)
+    or not IsBound(graph!.range) then
     return Concatenation(str, String(OutNeighbours(graph)), " )");
   else
     Append(str, "rec( ");
     com := false;
     i := 1;
-    for nam in ["range", "source", "nrvertices"] do
+    for nam in [ "nrvertices", "source", "range" ] do
       if com then
         Append(str, ", ");
       else
         com := true;
       fi;
       SET_PRINT_OBJ_INDEX(i);
-      i := i+1;
+      i := i + 1;
       Append(str, nam);
       Append(str, " := ");
       Append(str, PrintString(graph!.(nam)));
@@ -109,12 +111,12 @@ end);
 InstallMethod(DotDigraph, "for a digraph",
 [IsDigraph],
 function(graph)
-  local verts, source, range, n, str, i;
+  local verts, source, range, m, str, i;
 
   verts := DigraphVertices(graph);
   source := DigraphSource(graph);
   range := DigraphRange(graph);
-  n := Length(source);
+  m := Length(source);
   str:="//dot\n";
 
   Append(str,"digraph hgn{\n");
@@ -124,7 +126,7 @@ function(graph)
     Append(str, Concatenation( String(i), "\n"));
   od;
 
-  for i in [1..n] do
+  for i in [ 1 .. m ] do
     Append(str, Concatenation( String(source[i]), " -> ", String(range[i]) , "\n"));
   od;
   Append(str,"}\n");
@@ -136,7 +138,7 @@ end);
 InstallMethod(DotSymmetricDigraph, "for an 'undirected' digraph",
 [IsDigraph],
 function(graph)
-  local verts, source, range, n, str, i;
+  local verts, source, range, m, str, i;
 
   if not IsSymmetricDigraph(graph) then
     Error("Digraphs: DotSymmetricDigraph: usage,\n",
@@ -147,7 +149,7 @@ function(graph)
   verts := DigraphVertices(graph);
   source := DigraphSource(graph);
   range := DigraphRange(graph);
-  n := Length(source);
+  m := Length(source);
   str:="//dot\n";
 
   Append(str,"graph hgn{\n");
@@ -157,7 +159,7 @@ function(graph)
     Append(str, Concatenation( String(i), "\n"));
   od;
 
-  for i in [1..n] do
+  for i in [ 1 .. m ] do
     if range[i] >= source[i] then
       Append(str, Concatenation( String(source[i]), " -- ", String(range[i]) , "\n"));
     fi;
@@ -240,9 +242,9 @@ if not IsBound(Splash) then #This function is written by A. Egri-Nagy
     # type
     if IsBound(opt.type) and (opt.type="latex" or opt.type="dot") then
       type := opt.type;
-    elif arg[1]{[1..6]}="%latex" then 
+    elif arg[1]{[ 1 .. 6 ]}="%latex" then 
       type:="latex";
-    elif arg[1]{[1..5]}="//dot" then 
+    elif arg[1]{[ 1 .. 5 ]}="//dot" then 
       type:="dot";
     else 
       Error("Digraphs: Splash: usage,\n",

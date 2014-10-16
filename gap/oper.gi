@@ -205,6 +205,14 @@ end);
 
 #
 
+InstallMethod(DigraphSymmetricClosure, "for a digraph",
+[IsDigraph],
+function(graph)
+  Error("Digraphs: DigraphSymmetricClosure, not yet implemented,\n");
+end);
+
+#
+
 InstallMethod(DigraphTransitiveClosure, "for a digraph",
 [IsDigraph],
 function(graph)

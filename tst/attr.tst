@@ -217,6 +217,10 @@ gap> gr := Digraph( [ [ 1, 2 ], [ 1 ], [ 2 ], [ 5 ], [ ] ] );
 <digraph with 5 vertices, 5 edges>
 gap> wcc := DigraphConnectedComponents(gr);
 rec( comps := [ [ 1, 2, 3 ], [ 4, 5 ] ], id := [ 1, 1, 1, 2, 2 ] )
+gap> gr := Digraph( [  ] );
+<digraph with 0 vertices, 0 edges>
+gap> DigraphConnectedComponents(gr);
+rec( comps := [  ], id := [  ] )
 
 # DigraphShortestDistances
 gap> adj := Concatenation(List( [ 1 .. 11 ], x -> [ x + 1 ] ), [ [ 1 ] ]);;
@@ -366,6 +370,23 @@ gap> InDegrees(gr3);
 [ 5, 0, 3, 5, 4, 5, 5, 1 ]
 gap> InDegreeSequence(gr3);
 [ 5, 5, 5, 5, 4, 3, 1, 0 ]
+
+# DigraphEdges
+gap> r := rec ( 
+> nrvertices := 5,
+> source := [ 1, 1, 2, 3, 5, 5 ],
+> range := [ 1, 4, 3, 5, 2, 2 ] );
+rec( nrvertices := 5, range := [ 1, 4, 3, 5, 2, 2 ], 
+  source := [ 1, 1, 2, 3, 5, 5 ] )
+gap> gr := Digraph(r);
+<multidigraph with 5 vertices, 6 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 1 ], [ 1, 4 ], [ 2, 3 ], [ 3, 5 ], [ 5, 2 ], [ 5, 2 ] ]
+gap> gr := Digraph( [ [ 4 ], [ 2, 3, 1, 3 ], [ 3, 3 ], [  ], [ 1, 4, 5 ] ] );
+<multidigraph with 5 vertices, 10 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 4 ], [ 2, 2 ], [ 2, 3 ], [ 2, 1 ], [ 2, 3 ], [ 3, 3 ], [ 3, 3 ], 
+  [ 5, 1 ], [ 5, 4 ], [ 5, 5 ] ]
 
 #
 gap> DigraphsStopTest();
