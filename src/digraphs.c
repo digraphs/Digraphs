@@ -860,22 +860,24 @@ static void inittabs(void)
     }
 }
 
-static void dowork(num *try, num depth)
-{
-    num i, todo;
-    Obj tmp;
+static void dowork(num *try, num depth){
+    num   i, todo;
+    Obj   t;
+    UInt2 *pt;
+    //Pr("C: at depth %d\n", (Int) depth, 0L);
     if (depth == maxdepth) {
         if (results != Fail) {
-            tmp = NEW_PLIST(T_PLIST_CYC,depth);
-            SET_LEN_PLIST(tmp,depth);
+            t  = NEW_TRANS2(depth);
+            pt = ADDR_TRANS2(t);
             for (i = 0; i < depth; i++) {
-                SET_ELM_PLIST(tmp,i+1,INTOBJ_INT((Int) (try[i]+1)));
+              pt[i] = (UInt2) try[i];
             }
+            Pr("found endomorphism of rank %d\n", (Int) RANK_TRANS2(t), 0L); 
             if (IS_PLIST(results)) {
-                ASS_LIST(results,LEN_PLIST(results)+1,tmp);
-            } else {
+                ASS_LIST(results,LEN_PLIST(results)+1, t);
+            } /*else {
                 CALL_1ARGS(results,tmp);
-            }
+            }*/
         }
         count++;
         if (count >= maxresults) {

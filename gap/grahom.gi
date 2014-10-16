@@ -73,8 +73,9 @@ function(g)
     # the points occurring in try and thus can be used to break symmetry.
     # All resulting generators are appended to the plain list result.
     local ad,d,i,o,s,todo;
+    Print("GAP: at depth ", depth, "\n");
     if depth > DigraphNrVertices(g) then
-        Add(result,ShallowCopy(try));
+        Add(result,TransformationNC(try));
         return;
     fi;
     ad := OutNeighbours(g);
@@ -108,7 +109,7 @@ function(g)
   n := DigraphNrVertices(g);
   aut := AutomorphismGroup(g);
   result := EmptyPlist(100000);
-  Append(result,List(GeneratorsOfGroup(aut),x->ListPerm(x,n)));
+  Append(result,List(GeneratorsOfGroup(aut),AsTransformation));
   try := EmptyPlist(n);
   Dowork(g,try,1,aut,result);
   return result;
