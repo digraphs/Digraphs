@@ -846,6 +846,7 @@ static num maxresults;
 static num overflow;
 
 static jmp_buf outofhere;
+
 static void inittabs(void)
 {
     num i;
@@ -968,7 +969,7 @@ Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
         for (j = 0; j < (num) LEN_PLIST(tmp); j++) {
             k = (num) INT_INTOBJ(ELM_PLIST(tmp,(Int) j + 1)) - 1;
             gra1[i] |= oneone[k];
-            gra1[k] |= oneone[i];
+            //gra1[k] |= oneone[i];
         }
     }
     up = (num) LEN_PLIST(gra2obj);
@@ -977,7 +978,7 @@ Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
         for (j = 0; j < (num) LEN_PLIST(tmp); j++) {
             k = (num) INT_INTOBJ(ELM_PLIST(tmp,(Int) j + 1)) - 1;
             gra2[i] |= oneone[k];
-            gra2[k] |= oneone[i];
+            //gra2[k] |= oneone[i];
         }
     }
     if (constraintsobj != Fail) {
