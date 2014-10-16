@@ -18,7 +18,7 @@ function(graph)
 
   if IsMultiDigraph(graph) then 
     Error("Digraphs: DigraphCanonicalLabelling: usage,\n",
-          "not yet implemented,\n");
+          "not yet implemented for multidigraphs,\n");
   fi;
   return DIGRAPH_CANONICAL_LABELING(graph);
 end);
@@ -38,7 +38,7 @@ function(g1, g2)
 
   if IsMultiDigraph(g1) then 
     Error("Digraphs: DigraphCanonicalLabelling: usage,\n",
-          "not yet implemented,\n");
+          "not yet implemented for multidigraphs,\n");
   fi;
   
   return OnDigraphs(g1, DigraphCanonicalLabelling(g1)) 

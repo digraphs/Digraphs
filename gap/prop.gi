@@ -344,9 +344,9 @@ InstallMethod(DigraphHasLoops, "for a digraph (with only range and source)",
 [IsDigraph],
 function(digraph)
   local src, rng, i;
-  src := Source(digraph);
-  rng := Range(digraph);
-  for i in [1..Length(src)] do
+  src := DigraphSource(digraph);
+  rng := DigraphRange(digraph);
+  for i in [ 1 .. Length(src) ] do
     if src[i] = rng[i] then
       return true;
     fi;

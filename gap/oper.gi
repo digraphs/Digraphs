@@ -93,7 +93,7 @@ end);
 InstallMethod(DigraphRemoveLoops, "for a digraph with source",
 [IsDigraph and HasDigraphSource],
 function(graph)
-  local source, range, newsource, newrange, nr, i;
+  local source, range, newsource, newrange, nr, out, i;
 
   source := DigraphSource(graph);
   range := DigraphRange(graph);
@@ -110,14 +110,16 @@ function(graph)
     fi;
   od;
 
-  return DigraphNC(rec( source := newsource, range := newrange,
-                              nrvertices := DigraphNrVertices(graph) ) );
+  out := DigraphNC(rec( source := newsource, range := newrange,
+                        nrvertices := DigraphNrVertices(graph) ) );
+  SetDigraphHasLoops(out, false);
+  return out;
 end);
 
 InstallMethod(DigraphRemoveLoops, "for a digraph by adjacency",
 [IsDigraph and HasOutNeighbours],
 function(graph)
-  local old, new, nr, i, j;
+  local old, new, nr, out, i, j;
   
   old := OutNeighbours(graph);
   new := [];
@@ -133,7 +135,9 @@ function(graph)
     od;
   od;
 
-  return DigraphNC(new);
+  out := DigraphNC(new);
+  SetDigraphHasLoops(out, false);
+  return out;
 end);
 
 InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
@@ -188,7 +192,7 @@ function(graph, perm)
 end);
 
 InstallMethod(OnDigraphs, "for a digraph and perm",
-[IsDigraph and HasDigraphSource, IsPerm],
+[IsDigraph and HasDigraphRange, IsPerm],
 function(graph, perm)
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then

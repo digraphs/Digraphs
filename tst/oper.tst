@@ -106,9 +106,39 @@ gap> range  := [ 1, 2, 3, 2, 1, 2, 4, 1, 2, 3, 6 ];;
 gap> gr := Digraph( 
 > rec ( nrvertices := 6, source := source, range := range ) );
 <digraph with 6 vertices, 11 edges>
-gap> DigraphRemoveLoops(gr);
+gap> HasDigraphHasLoops(gr);
+false
+gap> DigraphHasLoops(gr);
+true
+gap> gr1 := DigraphRemoveLoops(gr);
 <digraph with 6 vertices, 7 edges>
-gap> 
+gap> HasDigraphHasLoops(gr1);
+true
+gap> DigraphHasLoops(gr1);
+false
+
+# DigraphRemoveEdges (by index)
+gap> gr := Digraph( [ [ 2 ], [  ] ] );
+<digraph with 2 vertices, 1 edge>
+gap> DigraphRemoveEdges( gr, [ 1 ] );
+<digraph with 2 vertices, 0 edges>
+gap> r := rec( nrvertices := 5,
+> source := [ 1, 1, 1, 2, 2, 3, 4, 5, 5, 5 ],
+> range  := [ 1, 2, 2, 1, 3, 5, 3, 5, 5, 3 ] );;
+gap> gr := Digraph(r);
+<multidigraph with 5 vertices, 10 edges>
+gap> gr1 := DigraphRemoveEdges(gr, [ 2, 4, 5, 6 ] );
+<multidigraph with 5 vertices, 6 edges>
+gap> DigraphSource(gr1);
+[ 1, 1, 4, 5, 5, 5 ]
+gap> DigraphRange(gr1);
+[ 1, 2, 3, 5, 5, 3 ]
+
+# DigraphRemoveEdges (by list of edges)
+gap> gr := Digraph( [ [ 2 ], [  ] ] );
+<digraph with 2 vertices, 1 edge>
+gap> DigraphRemoveEdges( gr, [ [ 1, 2 ] ] );
+<digraph with 2 vertices, 0 edges>
 
 # OnDigraphs (for a digraph by adjacency and perm)
 gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );
@@ -123,6 +153,49 @@ gap> DigraphEdges(last);
 [ [ 1, 1 ], [ 2, 3 ], [ 3, 2 ] ]
 gap> h := (1, 2, 3, 4);
 (1,2,3,4)
+gap> OnDigraphs(gr, h);
+Error, Digraphs: OnDigraphs: usage,
+the 2nd argument <perm> must permute the vertices of the 1st argument <graph>,
+
+gap> gr := Digraph( [ [ 1, 1, 1, 3, 5 ], [ ], [ 3, 2, 4, 5 ], [ 2, 5 ], [ 1, 2, 1 ] ] );
+<multidigraph with 5 vertices, 14 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 1 ], [ 1, 1 ], [ 1, 1 ], [ 1, 3 ], [ 1, 5 ], [ 3, 3 ], [ 3, 2 ], 
+  [ 3, 4 ], [ 3, 5 ], [ 4, 2 ], [ 4, 5 ], [ 5, 1 ], [ 5, 2 ], [ 5, 1 ] ]
+gap> p1 := (2,4)(3,6,5);
+(2,4)(3,6,5)
+gap> OnDigraphs(gr, p1);
+Error, Digraphs: OnDigraphs: usage,
+the 2nd argument <perm> must permute the vertices of the 1st argument <graph>,
+
+gap> p2 := (1,3,4,2);
+(1,3,4,2)
+gap> OnDigraphs(gr, p2);
+<multidigraph with 5 vertices, 14 edges>
+gap> DigraphEdges(last);
+[ [ 2, 1 ], [ 2, 5 ], [ 3, 3 ], [ 3, 3 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], 
+  [ 4, 4 ], [ 4, 1 ], [ 4, 2 ], [ 4, 5 ], [ 5, 3 ], [ 5, 1 ], [ 5, 3 ] ]
+gap> r := rec ( nrvertices := 4,
+> source := [ 1, 1, 2, 2, 2, 3, 4, 4 ],
+> range  := [ 2, 3, 1, 4, 4, 3, 3, 1 ] );;
+gap> gr := Digraph(r);
+<multidigraph with 4 vertices, 8 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 4 ], [ 2, 4 ], [ 3, 3 ], [ 4, 3 ], 
+  [ 4, 1 ] ]
+gap> p1 := (1,5,4,2,3);
+(1,5,4,2,3)
+gap> OnDigraphs(gr, p1);
+Error, Digraphs: OnDigraphs: usage,
+the 2nd argument <perm> must permute the vertices of the 1st argument <graph>,
+
+gap> p2 := (1,4)(2,3);
+(1,4)(2,3)
+gap> OnDigraphs(gr, p2);
+<multidigraph with 4 vertices, 8 edges>
+gap> DigraphEdges(last);
+[ [ 4, 3 ], [ 4, 2 ], [ 3, 4 ], [ 3, 1 ], [ 3, 1 ], [ 2, 2 ], [ 1, 2 ], 
+  [ 1, 4 ] ]
 
 # InNeighboursOfVeretx, InDegreeOfVertex
 gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 1, 5, 5, 7, 10 ],

@@ -102,26 +102,8 @@ end);
 
 #
 
-InstallMethod(DigraphEdges, "for a digraph with out-neighbours",
-[IsDigraph and HasOutNeighbours],
-function(graph)
-  local adj, nr, out, i, j;
-
-  adj := OutNeighbours(graph);
-  nr := 0;
-  out := [];
-
-  for i in DigraphVertices(graph) do 
-    for j in adj[i] do 
-      nr := nr + 1;
-      out[nr] := [i, j];
-    od;
-  od;
-  return out;
-end);
-  
-InstallMethod(DigraphEdges, "for a digraph",
-[IsDigraph and HasDigraphSource],
+InstallMethod(DigraphEdges, "for a digraph with range",
+[IsDigraph and HasDigraphRange],
 function(graph)
   local out, range, source, i;
 
