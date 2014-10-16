@@ -480,59 +480,96 @@ function(name, delimiter, offset, ignore)
   return DigraphByEdges(edges);
 end);
 
-# this is just temporary, until a better method is given, only works for single
-# graphs
+#
 
-#JDM: should check arg[3]!
-
-InstallGlobalFunction(WriteDigraph,
+InstallGlobalFunction(WriteDigraphs,
 function(arg)
-  local file;
-
-  if not (Length(arg)=3 or Length(arg)=2) then
-    Error("Digraphs: WriteDigraph: usage,\n",
-          "there should be 2 or 3 arguments,\n");
-    return;
-  fi;
-
-  if IsString(arg[1]) then
-    if IsBound(arg[3]) then # arg[3] is the mode
-      file:=IO_CompressedFile(arg[1], arg[3]);
+  local digraphs, filename, encoder, file, g6sum, s6sum, digraph, v, e, dg6sum, 
+        ds6sum;
+  if Length(arg) = 2 then
+    digraphs := arg[1];
+    filename := arg[2];
+    encoder := fail;
+  elif Length(arg) = 3 then
+    digraphs := arg[1];
+    filename := arg[2];
+    if IsFunction(arg[3]) then
+      encoder := arg[3];
     else
-      file:=IO_CompressedFile(arg[1], "a");
+      encoder := fail;
     fi;
-  elif IsFile(arg[1]) then
-    file:=arg[1];
   else
-    Error("Digraphs: WriteDigraph: usage,\n",
-          "the 1st argument must be a string or a file,\n");
+    Error("Digraphs: WriteDigraphs: usage,\n",
+          "WriteDigraphs( digraphs, filename [,encoder] ),\n");
     return;
   fi;
 
-  if file=fail then
-    Error("Digraphs: WriteDigraph: usage,\n",
-          "couldn't open the file ", file, ",\n");
+  if (not IsString(filename)) or
+     (not IsList(digraphs)) or
+     (not (IsFunction(encoder) or encoder = fail)) then
+    Error("Digraphs: WriteDigraphs: usage,\n",
+          "WriteDigraphs( digraphs, filename [,encoder] ),\n");
     return;
   fi;
 
-  if not IsDigraph(arg[2]) then
-    Error("Digraphs: WriteDigraph: usage,\n",
-          "the 2nd argument must be a digraph,\n");
+  file := IO_CompressedFile(filename, "w");
+
+  if file = fail then
+    Error("Digraphs: WriteDigraphs: usage,\n",
+          "can't open file ", filename, ",\n");
     return;
   fi;
 
-  if IsMultiDigraph(arg[2]) then
-    Error("Digraphs: WriteDigraph: usage,\n",
-          "not yet implemented,\n");
-    return;
+  if encoder = fail then
+    # CHOOSE A GOOD ENCODER:
+    
+    # Do we know all the graphs to be symmetric?
+    if ForAll(digraphs, g-> HasIsSymmetricDigraph(g) and IsSymmetricDigraph(g)) then
+      if ForAll(digraphs, IsMultiDigraph) then
+        encoder := WriteDiSparse6;
+      else
+        # Find the sum of length estimates using Graph6 and Sparse6
+        g6sum := 0;
+        s6sum := 0;
+        for digraph in digraphs do
+          v := DigraphNrVertices(digraph);
+          e := DigraphNrEdges(digraph);
+          g6sum := g6sum + (v * (v-1) / 2);
+          s6sum := s6sum + (e/2 * (Log2Int(v-1) + 2) * 3/2);
+        od;
+        if g6sum < s6sum and not ForAny(digraphs, DigraphHasLoops) then
+          encoder := WriteGraph6;
+        else
+          encoder := WriteSparse6;
+        fi;
+      fi;
+    else
+      if ForAny(digraphs, IsMultiDigraph) then
+        encoder := WriteDiSparse6;
+      else
+        # Find the sum of length estimates using Digraph6 and DiSparse6
+        dg6sum := 0;
+        ds6sum := 0;
+        for digraph in digraphs do
+          v := DigraphNrVertices(digraph);
+          e := DigraphNrEdges(digraph);
+          dg6sum := dg6sum + v^2;
+          ds6sum := ds6sum + (e * (Log2Int(v) + 2) * 3/2);
+        od;
+        if dg6sum < ds6sum then
+          encoder := WriteDigraph6;
+        else
+          encoder := WriteDiSparse6;
+        fi;
+      fi;
+    fi;
   fi;
 
-  IO_WriteLine(file, String(arg[2]));
-
-  if IsString(arg[1]) then
-    IO_Close(file);
-  fi;
-  return true;
+  for digraph in digraphs do
+    IO_WriteLine(file, encoder(digraph));
+  od;
+  
+  IO_Close(file);
 end);
 
 #
