@@ -253,7 +253,7 @@ end);
 
 #
 
-InstallMethod(DigraphTransitiveClosure, "for a digraph and a record", 
+InstallMethod(DigraphTransitiveClosure, "for a digraph and a boolean", 
 [IsDigraph, IsBool],
 function(graph, reflexive)
   local n, vertices, adj, sorted, out, trans, reflex, mat, v, u;
@@ -300,7 +300,8 @@ end);
 
 #
 
-InstallMethod(InducedSubdigraph, "for a digraph with out neighbours and a list",
+InstallMethod(InducedSubdigraph, 
+"for a digraph with out neighbours and a homogeneous list",
 [IsDigraph and HasOutNeighbours, IsHomogeneousList],
 function( digraph, subverts )
   local n, old, nr, lookup, adj, j, l, i, k, new;
@@ -436,7 +437,7 @@ function(graph, v)
   return inn;
 end);
 
-InstallMethod(InNeighboursOfVertexNC, "for a digraph with only range/source and a vertex",
+InstallMethod(InNeighboursOfVertexNC, "for a digraph with range/source and a vertex",
 [IsDigraph and HasDigraphRange, IsPosInt], 1,
 function(graph, v)
   local inn, pos, source, range, i;
@@ -576,7 +577,7 @@ function(graph, v)
   return Length(OutNeighbours(graph)[v]);
 end);
 
-InstallMethod(OutDegreeOfVertexNC, "for a digraph (with only source/range) and a vertex",
+InstallMethod(OutDegreeOfVertexNC, "for a digraph with source/range and a vertex",
 [IsDigraph and HasDigraphSource, IsPosInt], 1,
 function(graph, v)
   local count, source, m, i;

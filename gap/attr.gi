@@ -308,19 +308,6 @@ end);
 InstallMethod(DigraphShortestDistances, "for a digraph",
 [IsDigraph], DIGRAPH_SHORTEST_DIST);
 
-#function(graph)
-#  local func;
-#
-#  func := function(dist, i, j, k)
-#    if dist[i][k] <> -1 and dist[k][j] <> -1 then  
-#      if dist[i][j] = -1 or dist[i][j] > dist[i][k] + dist[k][j] then 
-#        dist[i][j] := dist[i][k] + dist[k][j];
-#      fi;
-#    fi;
-#  end;
-#  return DigraphFloydWarshall(graph, func, -1, 1);
-#end);
-
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
@@ -601,7 +588,7 @@ function(digraph)
   local inn, degs, i;
   
   inn := InNeighbours(digraph);
-  degs := EmptyPlist(  DigraphNrVertices(digraph) );
+  degs := EmptyPlist( DigraphNrVertices(digraph) );
   for i in DigraphVertices(digraph) do
     degs[i] := Length(inn[i]);
   od;

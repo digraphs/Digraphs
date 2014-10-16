@@ -76,11 +76,10 @@ true
     Returns <K>true</K> if the digraph <A>digraph</A> is complete, and 
     <K>false</K> if it is not. <P/>
     
-    A digraph is <E>complete</E> if, for all vertices <C>i</C> and <C>j</C> 
-    (including <C>i = j</C>), there is exactly one directed edge with source
-    <C>i</C> and range <C>j</C>. 
-    Equivalently, a digraph with <M>n</M> vertices is complete precisely when it 
-    has <M>n^2</M> edges and no multiple edges.
+    A digraph is <E>complete</E> if, for all vertices <C>i</C> and <C>j</C> (not
+    necessaryily distinct), there is exactly one edge with source <C>i</C> and
+    range <C>j</C>.  Equivalently, a digraph with <M>n</M> vertices is complete
+    precisely when it has <M>n^2</M> edges and no multiple edges.
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1 ] ] );
