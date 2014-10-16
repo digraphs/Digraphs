@@ -164,8 +164,8 @@ function(graph)
   if not (IsBound(graph.source) and IsBound(graph.range) and
     (IsBound(graph.vertices) or IsBound(graph.nrvertices))) then
     Error("Digraphs: Digraph: usage,\n",
-          "the argument must be a record with components 'source',",
-          " 'range', and either 'vertices' or 'nrvertices',\n");
+          "the argument must be a record with components:\n",
+          "'source', 'range', and either 'vertices' or 'nrvertices',\n");
     return;
   fi;
 
@@ -175,7 +175,7 @@ function(graph)
     return;
   fi;
   
-  if Length(graph.source)<>Length(graph.range) then
+  if Length(graph.source) <> Length(graph.range) then
     Error("Digraphs: Digraph: usage,\n",
           "the record components ",
           "'source' and 'range' should have equal length,\n");
@@ -189,6 +189,12 @@ function(graph)
       Error("Digraphs: Digraph: usage,\n",
             "the record component 'nrvertices' ",
             "should be a non-negative integer,\n");
+      return;
+    fi;
+    if IsBound(graph.vertices) and
+     not (IsList(graph.vertices) and Length(graph.vertices) = graph.nrvertices) then
+      Error("Digraphs: Digraph: usage,\n",
+            "the record components 'nrvertices' and 'vertices' are inconsistent,\n");
       return;
     fi;
     cmp := LT;
@@ -214,7 +220,7 @@ function(graph)
     obj := graph.vertices;
     graph.nrvertices := Length(graph.vertices);
   fi;
- 
+
   if check_source and not ForAll(graph.source, x-> cmp(x, obj)) then
     Error("Digraphs: Digraph: usage,\n",
           "the record component 'source' is invalid,\n");

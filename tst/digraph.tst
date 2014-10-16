@@ -34,8 +34,90 @@ not exceeding the length of the argument,
 
 
 # Digraph (by record)
-gap> 10;
-10
+gap> n := 3;;
+gap> v := [ 1 .. 3 ];;
+gap> s := [ 1, 2, 3 ];;
+gap> r := [ 3, 1, 2 ];;
+gap> Digraph( rec( nrvertices := n, source := s ) );
+Error, Digraphs: Digraph: usage,
+the argument must be a record with components:
+'source', 'range', and either 'vertices' or 'nrvertices',
+
+gap> Digraph( rec( nrvertices := n, range := r ) );
+Error, Digraphs: Digraph: usage,
+the argument must be a record with components:
+'source', 'range', and either 'vertices' or 'nrvertices',
+
+gap> Digraph( rec( nrvertices := n, source := s, vertices := v ) );
+Error, Digraphs: Digraph: usage,
+the argument must be a record with components:
+'source', 'range', and either 'vertices' or 'nrvertices',
+
+gap> Digraph( rec( nrvertices := n, range := r, vertices := v ) );
+Error, Digraphs: Digraph: usage,
+the argument must be a record with components:
+'source', 'range', and either 'vertices' or 'nrvertices',
+
+gap> Digraph( rec( source := s, range := r ) );
+Error, Digraphs: Digraph: usage,
+the argument must be a record with components:
+'source', 'range', and either 'vertices' or 'nrvertices',
+
+gap> Digraph( rec( nrvertices := n, source := s, range := 4 ) );
+Error, Digraphs: Digraph: usage,
+the graph components 'source' and 'range' should be lists,
+
+gap> Digraph( rec( nrvertices := n, source := 1, range := r ) );
+Error, Digraphs: Digraph: usage,
+the graph components 'source' and 'range' should be lists,
+
+gap> Digraph( rec( nrvertices := n, source := [ 1, 2 ], range := r ) );
+Error, Digraphs: Digraph: usage,
+the record components 'source' and 'range' should have equal length,
+
+gap> Digraph( rec( nrvertices := "a", source := s, range := r ) );
+Error, Digraphs: Digraph: usage,
+the record component 'nrvertices' should be a non-negative integer,
+
+gap> Digraph( rec( nrvertices := -3, source := s, range := r ) );
+Error, Digraphs: Digraph: usage,
+the record component 'nrvertices' should be a non-negative integer,
+
+gap> Digraph(
+> rec( nrvertices := 2, vertices := [ 1 .. 3 ], source := [ 2 ], range := [ 2 ] ) );
+Error, Digraphs: Digraph: usage,
+the record components 'nrvertices' and 'vertices' are inconsistent,
+
+gap> Digraph( rec( nrvertices := n, source := [ 0 .. 2 ], range := r ) );
+Error, Digraphs: Digraph: usage,
+the record component 'source' is invalid,
+
+gap> Digraph( rec( nrvertices := n, source := [ 2 .. 4 ], range := r ) );
+Error, Digraphs: Digraph: usage,
+the record component 'source' is invalid,
+
+gap> Digraph( rec( vertices := 2, source := s, range := r ) );
+Error, Digraphs: Digraph: usage,
+the record component 'vertices' should be a list,
+
+gap> Digraph( rec( nrvertices := n, source := [ 1, 2, 4 ], range := r ) );
+Error, Digraphs: Digraph: usage,
+the record component 'source' is invalid,
+
+gap> Digraph( rec( vertices := v, source := [ 1, 2, 4 ], range := r ) );
+Error, Digraphs: Digraph: usage,
+the record component 'source' is invalid,
+
+gap> Digraph( rec( nrvertices := n, source := s, range := [ 1, 4, 2 ] ) );
+Error, Digraphs: Digraph: usage,
+the record component 'range' is invalid,
+
+gap> Digraph( rec( vertices := v, source := s, range := [ 1, 4, 2 ] ) );
+Error, Digraphs: Digraph: usage,
+the record component 'range' is invalid,
+
+gap> Digraph( rec( vertices := "abc", source := "acbab", range := "cbabb" ) );
+<digraph with 3 vertices, 5 edges>
 
 # RandomDigraph
 gap> DigraphNrVertices(RandomDigraph(10));
