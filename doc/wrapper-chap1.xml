@@ -70,7 +70,9 @@
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphTopologicalSort">
     <#Include Label="InducedSubdigraph">
+    <#Include Label="OutDegreeOfVertex">
     <#Include Label="OutNeighboursOfVertex">
+    <#Include Label="InDegreeOfVertex">
     <#Include Label="InNeighboursOfVertex">
   </Section>
 

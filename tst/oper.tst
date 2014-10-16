@@ -54,7 +54,7 @@ gap> DigraphTransitiveClosure(gr);
 Error, Digraphs: DigraphTransitiveClosure: usage,
 the argument <graph> cannot have multiple edges,
 
-gap> r := rec( vertices:=[ 1 .. 4 ], source := [ 1, 1, 2, 3, 4 ], 
+gap> r := rec( vertices := [ 1 .. 4 ], source := [ 1, 1, 2, 3, 4 ], 
 > range := [ 1, 2, 3, 4, 1 ] );
 rec( range := [ 1, 2, 3, 4, 1 ], source := [ 1, 1, 2, 3, 4 ], 
   vertices := [ 1 .. 4 ] )
@@ -85,9 +85,15 @@ gap> gr1 := DigraphTransitiveClosure(gr);
 <digraph with 4 vertices, 9 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
 <digraph with 4 vertices, 11 edges>
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 4, 5 ], [  ], [ 5 ] ] ); 
+<digraph with 5 vertices, 5 edges>
+gap> gr1 := DigraphTransitiveClosure(gr);
+<digraph with 5 vertices, 10 edges>
+gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
+<digraph with 5 vertices, 14 edges>
 
 # DigraphRemoveLoops (for a digraph by adjacency)
-gap> adj := [ [ 1, 2 ], [ 3, 2 ], [ 1, 2 ], [ 4 ], [ ], [ 1, 2, 3, 6 ] ];
+gap> adj := [ [ 1, 2 ], [ 3, 2 ], [ 1, 2 ], [ 4 ],  [ ], [ 1, 2, 3, 6 ] ];
 [ [ 1, 2 ], [ 3, 2 ], [ 1, 2 ], [ 4 ], [  ], [ 1, 2, 3, 6 ] ]
 gap> gr := Digraph(adj);
 <digraph with 6 vertices, 11 edges>
@@ -118,33 +124,69 @@ gap> DigraphEdges(last);
 gap> h := (1, 2, 3, 4);
 (1,2,3,4)
 
-#
+# InNeighboursOfVeretx, InDegreeOfVertex
 gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 1, 5, 5, 7, 10 ],
 > range := [ 3, 3, 1, 10, 7, 1 ] ) );
 <multidigraph with 10 vertices, 6 edges>
 gap> InNeighboursOfVertex(gr, 7);
 [ 7 ]
+gap> InDegreeOfVertex(gr, 7);
+1
+gap> InNeighboursOfVertex(gr, 11);
+Error, Digraphs: InNeighboursOfVertex: usage,
+11 is not a vertex of the digraph,
+
+gap> InDegreeOfVertex(gr, 11);
+Error, Digraphs: InDegreeOfVertex: usage,
+11 is not a vertex of the digraph,
+
 gap> gr := Digraph( [ [ 1, 1, 4 ], [ 2, 3, 4 ], [ 2, 4, 4, 4 ], [ 2 ] ] );
 <multidigraph with 4 vertices, 11 edges>
 gap> InNeighboursOfVertex(gr, 3);
 [ 2 ]
+gap> InDegreeOfVertex(gr, 3);
+1
 gap> InNeighbours(gr);
 [ [ 1, 1 ], [ 2, 3, 4 ], [ 2 ], [ 1, 2, 3, 3, 3 ] ]
 gap> InNeighboursOfVertex(gr, 4);
 [ 1, 2, 3, 3, 3 ]
+gap> InDegreeOfVertex(gr, 4);
+5
+gap> InDegrees(gr);
+[ 2, 3, 1, 5 ]
+gap> InDegreeOfVertex(gr, 2);
+3
 
-#
-gap> gr := Digraph( [ [ 2, 2, 2, 2 ], [ 2, 2 ] ] );
-<multidigraph with 2 vertices, 6 edges>
-gap> OutNeighboursOfVertex(gr, 2);
-[ 2, 2 ]
+# OutNeighboursOfVeretx, OutDegreeOfVertex
 gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 5, 5, 5, 5, 5, 5, 6 ],
 > range := [ 1, 1, 2, 3, 1, 2, 3, 6 ] ) );
 <multidigraph with 10 vertices, 8 edges>
 gap> OutNeighboursOfVertex(gr, 2);
 [  ]
+gap> OutDegreeOfVertex(gr, 2);
+0
 gap> OutNeighboursOfVertex(gr, 5);
 [ 1, 2, 3, 1, 2, 3 ]
+gap> OutDegreeOfVertex(gr, 5);
+6
+gap> OutNeighboursOfVertex(gr, 12);
+Error, Digraphs: OutNeighboursOfVertex: usage,
+12 is not a vertex of the digraph,
+
+gap> OutDegreeOfVertex(gr, 12);
+Error, Digraphs: OutDegreeOfVertex: usage,
+12 is not a vertex of the digraph,
+
+gap> gr := Digraph( [ [ 2, 2, 2, 2 ], [ 2, 2 ] ] );
+<multidigraph with 2 vertices, 6 edges>
+gap> OutNeighboursOfVertex(gr, 2);
+[ 2, 2 ]
+gap> OutDegreeOfVertex(gr, 2);
+2
+gap> OutDegrees(gr);
+[ 4, 2 ]
+gap> OutDegreeOfVertex(gr, 1);
+4
 
 # InducedSubdigraph (source and range version)
 gap> r := rec( nrvertices := 8,

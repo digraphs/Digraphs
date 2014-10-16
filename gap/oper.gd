@@ -26,7 +26,11 @@ DeclareOperation("DigraphReverse", [IsDigraph]);
 DeclareOperation("QuotientDigraph", [IsDigraph, IsList]);
 DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);
 
+DeclareOperation("InDegreeOfVertex", [IsDigraph, IsPosInt]);
+DeclareOperation("InDegreeOfVertexNC", [IsDigraph, IsPosInt]);
 DeclareOperation("InNeighboursOfVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("InNeighboursOfVertexNC", [IsDigraph, IsPosInt]);
+DeclareOperation("OutDegreeOfVertex", [IsDigraph, IsPosInt]);
+DeclareOperation("OutDegreeOfVertexNC", [IsDigraph, IsPosInt]);
 DeclareOperation("OutNeighboursOfVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("OutNeighboursOfVertexNC", [IsDigraph, IsPosInt]);
