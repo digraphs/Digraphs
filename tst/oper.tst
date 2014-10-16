@@ -110,14 +110,14 @@ gap> DigraphRemoveLoops(gr);
 <digraph with 6 vertices, 7 edges>
 gap> 
 
-# DigraphRelabel (for a digraph by adjacency and perm)
+# OnDigraphs (for a digraph by adjacency and perm)
 gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );
 <digraph with 3 vertices, 3 edges>
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 2, 1 ], [ 3, 3 ] ]
 gap> g := (1, 2, 3);
 (1,2,3)
-gap> DigraphRelabel(gr, g);
+gap> OnDigraphs(gr, g);
 <digraph with 3 vertices, 3 edges>
 gap> DigraphEdges(last);
 [ [ 1, 1 ], [ 2, 3 ], [ 3, 2 ] ]

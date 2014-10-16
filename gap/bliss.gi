@@ -41,8 +41,8 @@ function(g1, g2)
           "not yet implemented,\n");
   fi;
   
-  return DigraphRelabel(g1, DigraphCanonicalLabelling(g1)) 
-    = DigraphRelabel(g2, DigraphCanonicalLabelling(g2));
+  return OnDigraphs(g1, DigraphCanonicalLabelling(g1)) 
+    = OnDigraphs(g2, DigraphCanonicalLabelling(g2));
 end);
 
 #

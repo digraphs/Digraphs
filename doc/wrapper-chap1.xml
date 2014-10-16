@@ -64,7 +64,7 @@
     <!-- alphabetical order please!-->
     <#Include Label="DigraphDual">
     <#Include Label="DigraphReflexiveTransitiveClosure">
-    <#Include Label="DigraphRelabel">
+    <#Include Label="OnDigraphs">
     <#Include Label="DigraphRemoveLoops">
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphReverse">

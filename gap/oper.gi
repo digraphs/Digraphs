@@ -169,13 +169,13 @@ function(graph, edges)
   fi;
 end);
 
-InstallMethod(DigraphRelabel, "for a digraph by adjacency and perm",
+InstallMethod(OnDigraphs, "for a digraph by adjacency and perm",
 [IsDigraph and HasOutNeighbours, IsPerm],
 function(graph, perm)
   local adj;
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
-    Error("Digraphs: DigraphRelabel: usage,\n",
+    Error("Digraphs: OnDigraphs: usage,\n",
     "the 2nd argument <perm> must permute the vertices ",
     "of the 1st argument <graph>,\n");
     return;
@@ -187,12 +187,12 @@ function(graph, perm)
   return DigraphNC(adj);
 end);
 
-InstallMethod(DigraphRelabel, "for a digraph and perm",
+InstallMethod(OnDigraphs, "for a digraph and perm",
 [IsDigraph and HasDigraphSource, IsPerm],
 function(graph, perm)
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
-    Error("Digraphs: DigraphRelabel: usage,\n",
+    Error("Digraphs: OnDigraphs: usage,\n",
     "the 2nd argument <perm> must permute the vertices ",
     "of the 1st argument <graph>,\n");
     return;
@@ -401,13 +401,13 @@ function(graph, v)
   return InNeighboursOfVertexNC(graph, v);
 end);
 
-InstallMethod(InNeighboursOfVertexNC, "for a digraph and a vertex",
+InstallMethod(InNeighboursOfVertexNC, "for a digraph with in-neighbours and a vertex",
 [IsDigraph and HasInNeighbours, IsPosInt], 3,
 function(graph, v)
   return InNeighbours(graph)[v];
 end);
 
-InstallMethod(InNeighboursOfVertexNC, "for a digraph and a vertex",
+InstallMethod(InNeighboursOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
 function(graph, v)
   local inn, pos, out, i, j;
@@ -426,8 +426,8 @@ function(graph, v)
   return inn;
 end);
 
-InstallMethod(InNeighboursOfVertexNC, "for a digraph and a vertex",
-[IsDigraph and HasDigraphSource, IsPosInt], 1,
+InstallMethod(InNeighboursOfVertexNC, "for a digraph with only range/source and a vertex",
+[IsDigraph and HasDigraphRange, IsPosInt], 1,
 function(graph, v)
   local inn, pos, source, range, i;
 
@@ -457,14 +457,14 @@ function(graph, v)
   return OutNeighboursOfVertexNC(graph, v);
 end);
 
-InstallMethod(OutNeighboursOfVertexNC, "for a digraph and a vertex",
+InstallMethod(OutNeighboursOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
 function(graph, v)
   return OutNeighbours(graph)[v];
 end);
 
-InstallMethod(OutNeighboursOfVertexNC, "for a digraph and a vertex",
-[IsDigraph and HasDigraphSource, IsPosInt], 1,
+InstallMethod(OutNeighboursOfVertexNC, "for a digraph with only source/range and a vertex",
+[IsDigraph and HasDigraphRange, IsPosInt], 1,
 function(graph, v)
   local out, pos, source, range, m, i;
 
@@ -497,28 +497,28 @@ function(graph, v)
   return InDegreeOfVertexNC(graph, v);
 end);
 
-InstallMethod(InDegreeOfVertexNC, "for a digraph and a vertex",
+InstallMethod(InDegreeOfVertexNC, "for a digraph with in-degrees and a vertex",
 [IsDigraph and HasInDegrees, IsPosInt], 4,
 function(graph, v)
   return InDegrees(graph)[v];
 end);
 
-InstallMethod(InDegreeOfVertexNC, "for a digraph and a vertex",
+InstallMethod(InDegreeOfVertexNC, "for a digraph with in-neighbours and a vertex",
 [IsDigraph and HasInNeighbours, IsPosInt], 3,
 function(graph, v)
   return Length(InNeighbours(graph)[v]);
 end);
 
-InstallMethod(InDegreeOfVertexNC, "for a digraph and a vertex",
+InstallMethod(InDegreeOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
 function(graph, v)
-  local count, out, i, j;
+  local count, out, x, i;
 
   count := 0;
   out := OutNeighbours(graph);
-  for i in [ 1 .. Length(out) ] do
-    for j in [ 1 .. Length(out[i]) ] do
-      if out[i][j] = v then
+  for x in out do
+    for i in x do
+      if i = v then
         count := count + 1;
       fi;
     od;
@@ -526,8 +526,8 @@ function(graph, v)
   return count;
 end);
 
-InstallMethod(InDegreeOfVertexNC, "for a digraph and a vertex",
-[IsDigraph and HasDigraphSource, IsPosInt],
+InstallMethod(InDegreeOfVertexNC, "for a digraph (with only source/range) and a vertex",
+[IsDigraph and HasDigraphRange, IsPosInt],
 function(graph, v)
   local range, count, i;
 
@@ -554,19 +554,19 @@ function(graph, v)
   return OutDegreeOfVertexNC(graph, v);
 end);
 
-InstallMethod(OutDegreeOfVertexNC, "for a digraph and a vertex",
+InstallMethod(OutDegreeOfVertexNC, "for a digraph with out-degrees and a vertex",
 [IsDigraph and HasOutDegrees, IsPosInt], 3,
 function(graph, v)
   return OutDegrees(graph)[v];
 end);
 
-InstallMethod(OutDegreeOfVertexNC, "for a digraph and a vertex",
+InstallMethod(OutDegreeOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
 function(graph, v)
   return Length(OutNeighbours(graph)[v]);
 end);
 
-InstallMethod(OutDegreeOfVertexNC, "for a digraph and a vertex",
+InstallMethod(OutDegreeOfVertexNC, "for a digraph (with only source/range) and a vertex",
 [IsDigraph and HasDigraphSource, IsPosInt], 1,
 function(graph, v)
   local count, source, m, i;

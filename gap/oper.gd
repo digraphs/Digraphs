@@ -8,7 +8,7 @@
 #############################################################################
 ##
 
-DeclareOperation("DigraphRelabel", [IsDigraph, IsPerm]);
+DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);
 DeclareOperation("DigraphRemoveLoops", [IsDigraph]);
 DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveVertices", [IsDigraph, IsList]);
