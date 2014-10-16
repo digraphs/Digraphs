@@ -421,7 +421,7 @@ end);
 InstallMethod(InNeighboursOfVertexNC, "for a digraph and a vertex",
 [IsDigraph and HasDigraphSource, IsPosInt], 1,
 function(graph, v)
-  local inn, pos, source, range,, i;
+  local inn, pos, source, range, i;
 
   inn := [];
   pos := 1;
