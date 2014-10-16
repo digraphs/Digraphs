@@ -286,7 +286,7 @@ end);
 
 #
 
-InstallMethod(IsReflexiveDigraph, "for a digraph with adjacencies",
+InstallMethod(IsReflexiveDigraph, "for a digraph with out neighbours",
 [IsDigraph and HasOutNeighbours],
 function(digraph)
   local adj;
@@ -297,7 +297,7 @@ end);
 
 #
 
-InstallMethod(IsReflexiveDigraph, "for a digraph (with only source and range)",
+InstallMethod(IsReflexiveDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
   local source, range, id, lastloop, current, i;
