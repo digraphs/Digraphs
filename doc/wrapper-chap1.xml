@@ -67,7 +67,6 @@
     <!-- alphabetical order please!-->
     <#Include Label="DigraphDual">
     <#Include Label="DigraphReflexiveTransitiveClosure">
-    <#Include Label="OnDigraphs">
     <#Include Label="DigraphRemoveLoops">
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphReverse">
@@ -77,6 +76,9 @@
     <#Include Label="OutNeighboursOfVertex">
     <#Include Label="InDegreeOfVertex">
     <#Include Label="InNeighboursOfVertex">
+    <#Include Label="OnDigraphs">
+    <#Include Label="DigraphVertexName">
+    <#Include Label="DigraphVertexNames">
   </Section>
 
   <Section><Heading>Visualising the structure of a digraph</Heading>

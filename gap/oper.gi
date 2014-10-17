@@ -340,8 +340,10 @@ function( digraph, subverts )
     od;
     new[i] := adj;
   od;
-
-  return DigraphNC(new);
+  
+  new := DigraphNC(new);
+  SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
+  return new;
 end);
 
 #
@@ -349,8 +351,8 @@ end);
 InstallMethod(InducedSubdigraph, "for a digraph with digraph source and a list",
 [IsDigraph and HasDigraphSource, IsHomogeneousList], 1,
 function( digraph, subverts )
-  local n, lookup, nr, source, range, news, newr, current, count, source_in, 
-  allowed, i;
+  local n, lookup, nr, source, range, news, newr, current, count, source_in,
+  allowed, new, i;
 
   if IsEmpty(subverts) then
     return DigraphNC( [ ] );
@@ -395,7 +397,9 @@ function( digraph, subverts )
     fi;
   od;
 
-  return DigraphNC( rec ( nrvertices := nr, source := news, range := newr ) );
+  new := DigraphNC( rec ( nrvertices := nr, source := news, range := newr ) );
+  SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
+  return new;
 
 end);
 
