@@ -1,0 +1,13 @@
+<Chapter Label="Operators and hashing"><Heading>Operators and hashing</Heading>
+
+  <Section><Heading>Operators for digraphs</Heading>
+    <List>
+     <Mark><C><A>digraph1</A> = <A>digraph2</A></C></Mark>
+     <Item>
+       <Index Key="="><C>=</C> (for digraphs)</Index>
+       returns <K>true</K> if <A>digraph1</A> and <A>digraph2</A> have the same
+       vertices, range, and source, and <K>false</K> if they do not.
+     </Item>
+   </List>
+  </Section>
+</Chapter>

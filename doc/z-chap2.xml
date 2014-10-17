@@ -1,0 +1,34 @@
+<Chapter Label="Creating digraphs"><Heading>Creating digraphs</Heading>
+
+  In this chapter we describe how to create digraphs.<P/>
+
+  <Section><Heading>Creating digraphs</Heading>
+    <#Include Label="IsDigraph">
+    <#Include Label="Digraph">
+    <#Include Label="DigraphByAdjacencyMatrix">
+    <#Include Label="DigraphByEdges">
+  </Section>
+
+  <Section><Heading>Changing representations</Heading>
+    <#Include Label="AsDigraph">
+    <#Include Label="GrapeGraph">
+  </Section>
+
+  <Section><Heading>New digraphs from old</Heading>
+    <#Include Label="InducedSubdigraph">
+    <#Include Label="DigraphReverse">
+    <#Include Label="DigraphDual">
+    <#Include Label="DigraphReflexiveTransitiveClosure">
+    <#Include Label="DigraphRemoveLoops">
+    <#Include Label="DigraphRemoveEdges">
+  </Section>
+
+  <Section><Heading>Random digraphs</Heading>
+    <#Include Label="RandomDigraph">
+  </Section>
+
+  <Section><Heading>Standard examples</Heading>
+    <#Include Label="CompleteDigraph">
+  </Section>
+
+</Chapter>

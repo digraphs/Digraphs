@@ -13,6 +13,39 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
+# Names
+gap> gr:=RandomDigraph(10);;
+gap> DigraphVertexNames(gr);
+[ 1 .. 10 ]
+gap> SetDigraphVertexNames(gr, ["a", "b", 10]);
+Error, Digraphs: SetDigraphVertexNames: usage,
+the 2nd arument <names> must be a list with length equal to the number of
+vertices of the digraph,
+
+gap> gr:=RandomDigraph(3);;
+gap> SetDigraphVertexNames(gr, ["a", "b", 10]);
+gap> DigraphVertexNames(gr);
+[ "a", "b", 10 ]
+gap> DigraphVertexName(gr, 1);
+"a"
+gap> DigraphVertexName(gr, 2);
+"b"
+gap> DigraphVertexName(gr, 10);
+Error, Digraphs: DigraphVertexName: usage,
+10 is nameless or not a vertex,
+
+gap> DigraphVertexName(gr, 3);
+10
+gap> SetDigraphVertexName(gr, 3, 3);
+gap> DigraphVertexName(gr, 3);
+3
+gap> gr:=RandomDigraph(10);;
+gap> gr:=InducedSubdigraph(gr, [1,2,3,5,7]);;
+gap> DigraphVertexNames(gr);
+[ 1, 2, 3, 5, 7 ]
+gap> DigraphVertices(gr);
+[ 1 .. 5 ]
+
 # Graph
 gap> gr := Digraph( [ [ 2, 2 ], [ ] ] );
 <multidigraph with 2 vertices, 2 edges>

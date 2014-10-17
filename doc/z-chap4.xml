@@ -1,0 +1,32 @@
+<Chapter Label="Attributes and operations"><Heading>Attributes and operations</Heading>
+  <Section><Heading>Vertices and edges</Heading>
+    <#Include Label="DigraphVertices">
+    <#Include Label="DigraphNrVertices">
+    <#Include Label="DigraphEdges">
+    <#Include Label="DigraphNrEdges">
+    <#Include Label="DigraphSinks">
+    <#Include Label="DigraphSources">
+    <#Include Label="DigraphTopologicalSort">
+    <#Include Label="DigraphVertexName">
+    <#Include Label="DigraphVertexNames">
+  </Section>
+
+  <Section><Heading>Neighbours and degree</Heading>
+    <#Include Label="RangeSourceDigraph">
+    <#Include Label="OutNeighbours">
+    <#Include Label="InNeighbours">
+    <#Include Label="OutDegrees">
+    <#Include Label="InDegrees">
+    <#Include Label="AdjacencyMatrix">
+    <#Include Label="OutDegreeOfVertex">
+    <#Include Label="OutNeighboursOfVertex">
+    <#Include Label="InDegreeOfVertex">
+    <#Include Label="InNeighboursOfVertex">
+  </Section>
+
+  <Section><Heading>Reachability and connectivity</Heading>
+    <#Include Label="DigraphShortestDistances">
+    <#Include Label="DigraphConnectedComponents">
+    <#Include Label="DigraphStronglyConnectedComponents">
+  </Section>
+</Chapter>

@@ -8,6 +8,64 @@
 #############################################################################
 ##
 
+InstallMethod(SetDigraphVertexName, "for a digraph, pos int, object",
+[IsDigraph, IsPosInt, IsObject], 
+function(graph, i, name)
+
+  if not IsBound(graph!.vertexnames) then 
+    graph!.vertexnames := [1 .. DigraphNrVertices(graph)];
+  fi;
+
+  if i > DigraphNrVertices(graph) then 
+    Error("Digraphs: SetDigraphVertexName: usage,\n",
+    "there are only ",  DigraphNrVertices(graph), " vertices,\n");
+    return;
+  fi;
+  graph!.vertexnames[i]:=name;
+  return;
+end);
+
+InstallMethod(DigraphVertexName, "for a digraph and pos int",
+[IsDigraph, IsPosInt], 
+function(graph, i)
+
+  if not IsBound(graph!.vertexnames) then 
+    graph!.vertexnames := [1 .. DigraphNrVertices(graph)];
+  fi;
+
+  if IsBound(graph!.vertexnames[i]) then 
+    return graph!.vertexnames[i];
+  fi;
+  Error("Digraphs: DigraphVertexName: usage,\n",
+   i, " is nameless or not a vertex,\n");
+  return;
+end);
+
+InstallMethod(SetDigraphVertexNames, "for a digraph and list",
+[IsDigraph, IsList], 
+function(graph, names)
+  
+  if Length(names) = DigraphNrVertices(graph) then 
+    graph!.vertexnames := names;
+  else 
+    Error("Digraphs: SetDigraphVertexNames: usage,\n",
+    "the 2nd arument <names> must be a list with length equal",
+    " to the number of\nvertices of the digraph,\n");
+    return;
+  fi;
+  return;
+end);
+
+InstallMethod(DigraphVertexNames, "for a digraph and pos int",
+[IsDigraph], 
+function(graph)
+
+  if not IsBound(graph!.vertexnames) then 
+    graph!.vertexnames := [1 .. DigraphNrVertices(graph)];
+  fi;
+  return graph!.vertexnames;
+end);
+
 # multi means it has at least one multiple edges
 
 if IsBound(IS_MULTI_DIGRAPH) then
@@ -242,6 +300,8 @@ function(graph)
         graph.range[i] := Position(graph.vertices, graph.range[i]);
         graph.source[i] := Position(graph.vertices, graph.source[i]);
       od;
+      graph.vertexnames := graph.vertices;
+      Unbind(graph.vertices);
     fi;
   fi;
 

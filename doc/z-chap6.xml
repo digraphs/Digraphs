@@ -1,0 +1,5 @@
+<Chapter Label="Homomorphisms"><Heading>Homomorphisms</Heading>
+  <Section><Heading>Acting on digraphs</Heading>
+    <#Include Label="OnDigraphs">
+  </Section>
+</Chapter>
