@@ -77,7 +77,7 @@ true
     <K>false</K> if it is not. <P/>
     
     A digraph is <E>complete</E> if, for all vertices <C>i</C> and <C>j</C> (not
-    necessaryily distinct), there is exactly one edge with source <C>i</C> and
+    necessarily distinct), there is exactly one edge with source <C>i</C> and
     range <C>j</C>.  Equivalently, a digraph with <M>n</M> vertices is complete
     precisely when it has <M>n^2</M> edges and no multiple edges.
 

@@ -595,4 +595,76 @@ function(graph, v)
   return count;
 end);
 
+#
+
+InstallMethod(QuotientDigraph, "for a digraph and a homogeneous list",
+[IsDigraph, IsHomogeneousList],
+function(digraph, partition)
+  local n, nr, check, lookup, out, new, source, range, m, newsource, newrange, x, i, j;
+
+  # What to do if n = 0?
+  n := DigraphNrVertices(digraph);
+  if n = 0 then
+    Error("Digraphs: QuotientDigraph: not yet implemented n = 0 case,\n");
+    return;
+  fi;
+  nr := Length(partition);
+  if nr = 0 or IsEmpty(partition[1]) or not IsPosInt(partition[1][1]) then
+    Error("Digraphs: QuotientDigraph: usage,\n",
+          "the second argument <partition> is not a valid partition\n",
+          "of [ 1 .. ", n, " ] (the vertices of the first argument, <digraph>),\n");
+    return;
+  fi;
+
+  check := BlistList( DigraphVertices(digraph), [  ] );
+  lookup := EmptyPlist(n);
+  
+  for x in [ 1 .. Length(partition) ] do
+    for i in partition[x] do
+      if i < 1 or i > n or check[i]  then
+        Error("Digraphs: QuotientDigraph: usage,\n",
+          "the second argument <partition> is not a valid partition\n",
+          "of the vertices of the first argument, <digraph>,\n");
+        return;
+      fi;
+      check[i] := true;
+      lookup[i] := x;
+    od;
+  od;
+  
+  if ForAny( check, x -> not x ) then
+    Error("Digraphs: QuotientDigraph: usage,\n",
+          "the second argument <partition> does not partition\n",
+          "all vertices of the first argument, <digraph>,\n");
+    return;
+  fi;
+
+  if HasOutNeighbours(digraph) then
+
+    out := OutNeighbours(digraph);
+    new := List( [ 1 .. nr ], x -> [ ] );
+    for i in DigraphVertices(digraph) do
+      for j in out[i] do
+        Add(new[lookup[i]], lookup[j]);
+      od;
+    od;
+
+    return DigraphNC(new);
+  elif HasDigraphRange(digraph) then
+
+    source := DigraphSource(digraph);
+    range := DigraphRange(digraph);
+    m := Length(source);
+    newsource := EmptyPlist(m);
+    newrange := EmptyPlist(m);
+    for i in [ 1 .. m ] do
+      newsource[i] := lookup[source[i]];
+      newrange[i] := lookup[range[i]];
+    od;
+    newrange := Permuted(newrange, Sortex(newsource));
+    
+    return DigraphNC( rec( nrvertices := nr, source := newsource, range := newrange ) );
+  fi;
+end);
+
 #EOF
