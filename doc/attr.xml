@@ -428,7 +428,7 @@ gap> Display(mat);
 <#GAPDoc Label="DigraphSinks">
 <ManSection>
   <Attr Name="DigraphSinks" Arg="digraph"/>
-  <Returns>A list of positive integers.</Returns>
+  <Returns>A list of vertices.</Returns>
   <Description>
     Returns a list of the sinks of the digraph <A>digraph</A>. A sink is a vertex with 
     out-degree zero. See <Ref Oper="OutDegreeOfVertex"/>.
@@ -445,7 +445,7 @@ gap> DigraphSinks(gr);
 <#GAPDoc Label="DigraphSources">
 <ManSection>
   <Attr Name="DigraphSources" Arg="digraph"/>
-  <Returns>A list of positive integers.</Returns>
+  <Returns>A list of vertices.</Returns>
   <Description>
     Returns a list of the sources of the digraph <A>digraph</A>. A source is a vertex with 
     in-degree zero. See <Ref Oper="InDegreeOfVertex"/>.
