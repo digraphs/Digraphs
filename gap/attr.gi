@@ -651,4 +651,106 @@ function(digraph)
   return out;
 end);
 
+#
+
+InstallMethod(DigraphSources, "for a digraph with in-degrees",
+[IsDigraph and HasInDegrees], 4,
+function(digraph)
+  local degs;
+
+  degs := InDegrees(digraph);
+  return Filtered( DigraphVertices(digraph), x -> degs[x] = 0 );
+end);
+
+InstallMethod(DigraphSources, "for a digraph with in-neighbours",
+[IsDigraph and HasInNeighbours], 3,
+function(digraph)
+  local inn, sources, count, i;
+
+  inn := InNeighbours(digraph);
+  sources := EmptyPlist( DigraphNrVertices(digraph) );
+  count := 0;
+  for i in DigraphVertices(digraph) do
+    if IsEmpty(inn[i]) then
+      count := count + 1;
+      sources[count] := i;
+    fi;
+  od;
+  ShrinkAllocationPlist(sources);
+  return sources;
+end);
+
+InstallMethod(DigraphSources, "for a digraph with digraph range",
+[IsDigraph and HasDigraphRange],
+function(digraph)
+  local verts, range, seen, i;
+  
+  verts := DigraphVertices(digraph);
+  range := DigraphRange(digraph);
+  seen := BlistList( verts, [  ] );
+  for i in range do
+    seen[i] := true;
+  od;
+  return Filtered( verts, x -> not seen[x] );
+end);
+
+InstallMethod(DigraphSources, "for a digraph with out-neighbours",
+[IsDigraph and HasOutNeighbours],
+function(digraph)
+  local verts, out, seen, v, i;
+
+  verts := DigraphVertices(digraph);
+  out := OutNeighbours(digraph);
+  seen := BlistList( verts, [  ] );
+  for v in out do
+    for i in v do
+      seen[i] := true;
+    od;
+  od;
+  return Filtered( verts, x -> not seen[x] );
+end);
+
+#
+
+InstallMethod(DigraphSinks, "for a digraph with out-degrees",
+[IsDigraph and HasOutDegrees], 3,
+function(digraph)
+  local degs;
+
+  degs := OutDegrees(digraph);
+  return Filtered( DigraphVertices(digraph), x -> degs[x] = 0 );
+end);
+
+InstallMethod(DigraphSinks, "for a digraph with out-neighbours",
+[IsDigraph and HasOutNeighbours],
+function(digraph)
+  local out, sinks, count, i;
+
+  out   := OutNeighbours(digraph);
+  sinks := EmptyPlist( DigraphNrVertices(digraph) );
+  count := 0;
+  for i in DigraphVertices(digraph) do
+    if IsEmpty(out[i]) then
+      count := count + 1;
+      sinks[count] := i;
+    fi;
+  od;
+  ShrinkAllocationPlist(sinks);
+  return sinks;
+end);
+
+InstallMethod(DigraphSinks, "for a digraph with digraph source",
+[IsDigraph and HasDigraphSource], 1,
+function(digraph)
+  local verts, source, seen, i;
+  
+  verts := DigraphVertices(digraph);
+  source := DigraphSource(digraph);
+  seen := BlistList( verts, [  ] );
+  for i in source do
+    seen[i] := true;
+  od;
+  return Filtered( verts, x -> not seen[x] );
+end);
+
 #EOF

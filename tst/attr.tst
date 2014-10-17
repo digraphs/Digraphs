@@ -431,6 +431,39 @@ gap> DigraphEdges(gr);
   [ 4, 7 ], [ 5, 5 ], [ 5, 6 ], [ 5, 5 ], [ 5, 5 ], [ 6, 3 ], [ 6, 2 ], 
   [ 6, 8 ], [ 7, 1 ], [ 7, 5 ], [ 7, 7 ], [ 8, 6 ], [ 8, 7 ] ]
 
+# DigraphSources and DigraphSinks
+gap> r := rec( nrvertices := 10,
+> source := [ 2, 2, 3, 3, 3, 5, 7, 7, 7, 7, 9, 9, 9, 9, 9 ],
+> range  := [ 2, 2, 6, 8, 2, 4, 2, 6, 8, 6, 8, 5, 8, 2, 4 ] );;
+gap> gr := Digraph(r);
+<multidigraph with 10 vertices, 15 edges>
+gap> DigraphSinks(gr);
+[ 1, 4, 6, 8, 10 ]
+gap> DigraphSources(gr);
+[ 1, 3, 7, 9, 10 ]
+gap> gr := Digraph( OutNeighbours(gr) );;
+gap> DigraphSinks(gr);
+[ 1, 4, 6, 8, 10 ]
+gap> DigraphSources(gr);
+[ 1, 3, 7, 9, 10 ]
+gap> gr := Digraph(r);;
+gap> InNeighbours(gr);
+[ [  ], [ 2, 2, 3, 7, 9 ], [  ], [ 5, 9 ], [ 9 ], [ 3, 7, 7 ], [  ], 
+  [ 3, 7, 9, 9 ], [  ], [  ] ]
+gap> DigraphSinks(gr);
+[ 1, 4, 6, 8, 10 ]
+gap> DigraphSources(gr);
+[ 1, 3, 7, 9, 10 ]
+gap> gr := Digraph(r);;
+gap> OutDegrees(gr);
+[ 0, 2, 3, 0, 1, 0, 4, 0, 5, 0 ]
+gap> InDegrees(gr);
+[ 0, 5, 0, 2, 1, 3, 0, 4, 0, 0 ]
+gap> DigraphSinks(gr);
+[ 1, 4, 6, 8, 10 ]
+gap> DigraphSources(gr);
+[ 1, 3, 7, 9, 10 ]
+
 #
 gap> DigraphsStopTest();
 

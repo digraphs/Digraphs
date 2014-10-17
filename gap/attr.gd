@@ -31,7 +31,8 @@ DeclareAttribute("OutDegrees", IsDigraph);
 DeclareAttribute("OutDegreeSequence", IsDigraph);
 DeclareAttribute("InDegrees", IsDigraph);
 DeclareAttribute("InDegreeSequence", IsDigraph);
-
+DeclareAttribute("DigraphSources", IsDigraph);
+DeclareAttribute("DigraphSinks", IsDigraph);
 
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 

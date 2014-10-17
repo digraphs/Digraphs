@@ -42,10 +42,12 @@
     <#Include Label="InNeighbours">
     <#Include Label="OutDegrees">
     <#Include Label="InDegrees">
-    <#Include Label="AdjacencyMatrix">
+    <#Include Label="DigraphSinks">
+    <#Include Label="DigraphSources">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphConnectedComponents">
     <#Include Label="DigraphStronglyConnectedComponents">
+    <#Include Label="AdjacencyMatrix">
   </Section>
 
   <Section><Heading>Properties of digraphs</Heading>

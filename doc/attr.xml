@@ -425,3 +425,36 @@ gap> Display(mat);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphSinks">
+<ManSection>
+  <Attr Name="DigraphSinks" Arg="digraph"/>
+  <Returns>A list of positive integers.</Returns>
+  <Description>
+    Returns a list of the sinks of the digraph <A>digraph</A>. A sink is a vertex with 
+    out-degree zero. See <Ref Oper="OutDegreeOfVertex"/>.
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 3, 5, 2, 2 ], [ 3 ], [  ], [ 5, 2, 5, 3 ], [  ] ] );
+<multidigraph with 5 vertices, 9 edges>
+gap> DigraphSinks(gr);
+[ 3, 5 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphSources">
+<ManSection>
+  <Attr Name="DigraphSources" Arg="digraph"/>
+  <Returns>A list of positive integers.</Returns>
+  <Description>
+    Returns a list of the sources of the digraph <A>digraph</A>. A source is a vertex with 
+    in-degree zero. See <Ref Oper="InDegreeOfVertex"/>.
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 3, 5, 2, 2 ], [ 3 ], [  ], [ 5, 2, 5, 3 ], [  ] ] );
+<multidigraph with 5 vertices, 9 edges>
+gap> DigraphSources(gr);
+[ 1, 4 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
