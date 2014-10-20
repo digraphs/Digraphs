@@ -406,3 +406,24 @@ gap> DigraphStronglyConnectedComponent(gr, 4);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="QuotientDigraph">
+<ManSection>
+  <Oper Name="QuotientDigraph" Arg="digraph, p"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>p</A> is a partition of the vertices of <A>digraph</A>, then this
+    operation returns a digraph formed by amalgamating all vertices which
+    lie in the same part of <A>p</A>.
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 1, 1, 2, 3, 4, 4 ], [ 1, 3, 4 ], [ 3, 1 ], 
+> [ 1, 1 ] ] ); 
+<multidigraph with 4 vertices, 13 edges>
+gap> InducedSubdigraph( gr, [ 1, 3, 4 ] );                 
+<multidigraph with 3 vertices, 9 edges>
+gap> DigraphVertices(last);
+[ 1 .. 3 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

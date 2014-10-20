@@ -211,8 +211,8 @@ gap> p2 := (1,4)(2,3);
 gap> OnDigraphs(gr, p2);
 <multidigraph with 4 vertices, 8 edges>
 gap> DigraphEdges(last);
-[ [ 4, 3 ], [ 4, 2 ], [ 3, 4 ], [ 3, 1 ], [ 3, 1 ], [ 2, 2 ], [ 1, 2 ], 
-  [ 1, 4 ] ]
+[ [ 1, 2 ], [ 1, 4 ], [ 2, 2 ], [ 3, 4 ], [ 3, 1 ], [ 3, 1 ], [ 4, 3 ], 
+  [ 4, 2 ] ]
 
 # InNeighboursOfVeretx, InDegreeOfVertex
 gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 1, 5, 5, 7, 10 ],

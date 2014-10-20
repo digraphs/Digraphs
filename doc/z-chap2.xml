@@ -16,6 +16,7 @@
 
   <Section><Heading>New digraphs from old</Heading>
     <#Include Label="InducedSubdigraph">
+    <#Include Label="QuotientDigraph">
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">
     <#Include Label="DigraphReflexiveTransitiveClosure">

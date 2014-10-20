@@ -200,6 +200,7 @@ end);
 InstallMethod(OnDigraphs, "for a digraph and perm",
 [IsDigraph and HasDigraphRange, IsPerm],
 function(graph, perm)
+  local source, range;
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: OnDigraphs: usage,\n",
@@ -207,9 +208,12 @@ function(graph, perm)
     "of the 1st argument <graph>,\n");
     return;
   fi;
+  source := ShallowCopy(OnTuples(DigraphSource(graph), perm));
+  range := ShallowCopy(OnTuples(DigraphRange(graph), perm));
+  range := Permuted(range, Sortex(source));
   return DigraphNC(rec(
-    source := ShallowCopy(OnTuples(DigraphSource(graph), perm)),
-    range:= ShallowCopy(OnTuples(DigraphRange(graph), perm)),
+    source := source,
+    range := range,
     nrvertices:=DigraphNrVertices(graph)));
 end);
 
