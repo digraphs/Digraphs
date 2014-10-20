@@ -357,10 +357,10 @@ gap> InNeighboursOfVertex(gr, 2);
   <Oper Name="DigraphInEdges" Arg="digraph, vertex"/>
   <Returns>A list of edges.</Returns>
   <Description>
-    <C> DigraphInEdges </C> returns the list of all edges which have
-    <A>vertex</A> as their range. 
+    <C> DigraphInEdges</C> returns the list of all edges of <A>digraph</A>
+    which have <A>vertex</A> as their range. 
     <Example><![CDATA[
-gap> gr := Digraph([[2,2], [3,3], [4,4], [1,1]]);
+gap> gr := Digraph( [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 1, 1 ] ] );
 <multidigraph with 4 vertices, 8 edges>
 gap> DigraphInEdges(gr, 2);
 [ [ 1, 2 ], [ 1, 2 ] ]
@@ -374,10 +374,10 @@ gap> DigraphInEdges(gr, 2);
   <Oper Name="DigraphOutEdges" Arg="digraph, vertex"/>
   <Returns>A list of edges.</Returns>
   <Description>
-    <C> DigraphOutEdges </C> returns the list of all edges which have <A>
-    vertex</A> as their source.
+    <C> DigraphOutEdges</C> returns the list of all edges of <A>digraph</A>
+    which have <A>vertex</A> as their source.
     <Example><![CDATA[
-gap> gr := Digraph([[2,2], [3,3], [4,4], [1,1]]);
+gap> gr := Digraph( [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 1, 1 ] ] );
 <multidigraph with 4 vertices, 8 edges>
 gap> DigraphOutEdges(gr, 2);
 [ [ 2, 3 ], [ 2, 3 ] ]

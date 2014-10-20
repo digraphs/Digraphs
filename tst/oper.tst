@@ -361,18 +361,15 @@ gap> InducedSubdigraph( gr, [ 7, 8 ] );
 gap> QuotientDigraph( CompleteDigraph(2), [ [ 1, 2 ] ] );
 <multidigraph with 1 vertex, 4 edges>
 
-#
-gap> DigraphsStopTest();
-
-#
-gap> gr := Digraph([[2,2,2,2,2], [1,1,1,1], [1], [3,2]]);
+# DigraphInEdges / DigraphOutEdges
+gap> gr := Digraph( [ [ 2, 2, 2, 2, 2 ], [ 1, 1, 1, 1 ], [ 1 ], [ 3, 2 ] ] );
 <multidigraph with 4 vertices, 12 edges>
 gap> DigraphInEdges(gr, 1);
 [ [ 2, 1 ], [ 2, 1 ], [ 2, 1 ], [ 2, 1 ], [ 3, 1 ] ]
 gap> DigraphOutEdges(gr, 3);
 [ [ 3, 1 ] ]
-gap> gr := Digraph(rec(vertices := ["a", "b", "c"], source :=["a", "a","b"],
-> range := ["b", "b", "c"]));
+gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ], source := [ "a", "a", "b" ],
+> range := [ "b", "b", "c" ] ) );
 <multidigraph with 3 vertices, 3 edges>
 gap> DigraphInEdges(gr, 1);
 [  ]
@@ -380,6 +377,9 @@ gap> DigraphInEdges(gr, 2);
 [ [ 1, 2 ], [ 1, 2 ] ]
 gap> DigraphOutEdges(gr, 1);
 [ [ 1, 2 ], [ 1, 2 ] ]
+
+#
+gap> DigraphsStopTest();
 
 #
 gap> STOP_TEST( "Digraphs package: attrs.tst", 0);

@@ -679,7 +679,7 @@ function(digraph, v)
   local out, output, pos, i;
 
   if not v in DigraphVertices(digraph) then
-    Error("Digraphs: OutEdges: usage,\n",
+    Error("Digraphs: DigraphOutEdges: usage,\n",
           v, " is not a vertex of the digraph,\n");
     return;
   fi;
@@ -695,7 +695,7 @@ function(digraph, v)
   local out, output, pos, i;
 
   if not v in DigraphVertices(digraph) then
-    Error("Digraphs: OutEdges: usage,\n",
+    Error("Digraphs: DigraphInEdges: usage,\n",
           v, " is not a vertex of the digraph,\n");
     return;
   fi;
