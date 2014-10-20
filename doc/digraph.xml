@@ -229,3 +229,18 @@ gap> CompleteDigraph(20);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="EmptyDigraph">
+<ManSection>
+  <Oper Name="EmptyDigraph" Arg="n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a non-negative integer, this function returns the empty 
+    digraph with <A>n</A> vertices. See <Ref Prop="IsEmptyDigraph"/> <P/>
+    <Log><![CDATA[
+gap> EmptyDigraph(20);
+<digraph with 20 vertices, 0 edges>
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+

@@ -292,7 +292,17 @@ gap> CompleteDigraph(0);
 <digraph with 0 vertices, 0 edges>
 gap> CompleteDigraph(-1);
 Error, Digraphs: CompleteDigraph: usage,
-the argument must be a non-negative integer,
+the argument <n> must be a non-negative integer,
+
+
+# EmptyDigraph
+gap> gr := EmptyDigraph(5);
+<digraph with 5 vertices, 0 edges>
+gap> EmptyDigraph(0);
+<digraph with 0 vertices, 0 edges>
+gap> EmptyDigraph(-1);
+Error, Digraphs: EmptyDigraph: usage,
+the argument <n> must be a non-negative integer,
 
 
 #

@@ -29,6 +29,7 @@
 
   <Section><Heading>Standard examples</Heading>
     <#Include Label="CompleteDigraph">
+    <#Include Label="EmptyDigraph">
   </Section>
 
 </Chapter>
