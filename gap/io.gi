@@ -487,12 +487,12 @@ function(arg)
   local digraphs, filename, encoder, file, g6sum, s6sum, digraph, v, e, dg6sum, 
         ds6sum;
   if Length(arg) = 2 then
-    digraphs := arg[1];
-    filename := arg[2];
+    filename := arg[1];
+    digraphs := arg[2];
     encoder := fail;
   elif Length(arg) = 3 then
-    digraphs := arg[1];
-    filename := arg[2];
+    filename := arg[1];
+    digraphs := arg[2];
     if IsFunction(arg[3]) then
       encoder := arg[3];
     else
