@@ -20,8 +20,8 @@
     objects <A>list</A>. <P/>
 
     The name of vertex can be changed an arbitrary number of times. If no name
-    has be set for the vertex <A>i</A>, then <C>DigraphVertexName</C> just
-    returns <C>i</C>. <P/>
+    has be set for the vertex <A>i</A>, then <C>DigraphVertexNames</C> just
+    assumses that the name is <C>i</C>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
     <C>vertices</C>, then the names of the vertices are set to the value of this
