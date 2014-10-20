@@ -676,8 +676,6 @@ end);
 InstallMethod(DigraphOutEdges, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
-  local out, output, pos, i;
-
   if not v in DigraphVertices(digraph) then
     Error("Digraphs: DigraphOutEdges: usage,\n",
           v, " is not a vertex of the digraph,\n");
@@ -692,8 +690,6 @@ end);
 InstallMethod(DigraphInEdges, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
-  local out, output, pos, i;
-
   if not v in DigraphVertices(digraph) then
     Error("Digraphs: DigraphInEdges: usage,\n",
           v, " is not a vertex of the digraph,\n");
@@ -702,4 +698,22 @@ function(digraph, v)
 
   return List(InNeighboursOfVertex(digraph, v), x -> [x, v]);
 end);
+
+#
+
+InstallMethod(DigraphStronglyConnectedComponent, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  local scc;
+
+  if not v in DigraphVertices(digraph) then
+    Error("Digraphs: DigraphStronglyConnectedComponent: usage,\n",
+          v, " is not a vertex of the digraph,\n");
+    return;
+  fi;
+
+  scc := DigraphStronglyConnectedComponents(digraph);
+  return scc.comps[scc.id[v]];
+end);
+
 #EOF

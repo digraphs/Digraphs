@@ -30,5 +30,6 @@
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphConnectedComponents">
     <#Include Label="DigraphStronglyConnectedComponents">
+    <#Include Label="DigraphStronglyConnectedComponent">
   </Section>
 </Chapter>
