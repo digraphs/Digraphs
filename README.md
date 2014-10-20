@@ -14,7 +14,7 @@ following these instructions.
 
 1. Go into your clone of your package repository.
 
-2. In there, create a fresh clone in a subdirectory `gh-pages`:
+2. In there, create a fresh clone of your package in a subdirectory `gh-pages`:
 
    ```
    git clone https://github.com/USERNAME/REPOSITORY gh-pages
@@ -24,6 +24,7 @@ following these instructions.
    [GitHubPagesForGAP repository](https://github.com/fingolfin/GitHubPagesForGAP):
 
    ```
+   cd gh-pages
    git remote add gh-gap https://github.com/fingolfin/GitHubPagesForGAP
    git fetch gh-gap
    ```
