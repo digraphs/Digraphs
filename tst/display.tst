@@ -31,17 +31,19 @@ gap> String(gr);
 gap> gr := Digraph( [ [ 2 ], [ 1 ], [  ], [ 3 ] ] );
 <digraph with 4 vertices, 3 edges>
 gap> PrintString(gr);
-"Digraph( [ [ 2 ], [ 1 ], [ ], [ 3 ] ] )"
+"Digraph( \>\>rec(\n\>\>\<nrvertices := \>4\<\<,\n\>\>\<source := \>[ 1, 2, 4 \
+]\<\<,\n\>\>\<range := \>[ 2, 1, 3 ]\<\<,\n\>\> \<\<) \<\<)"
 gap> String(gr);
-"Digraph( [ [ 2 ], [ 1 ], [ ], [ 3 ] ] )"
+"Digraph( rec( nrvertices := 4, source := [ 1, 2, 4 ], range := [ 2, 1, 3 ] ) \
+)"
 gap> r := rec( vertices := [ 1, 2, 3 ], source := [ 1, 2 ], range := [ 2, 3 ] );;
 gap> gr := Digraph(r);
 <digraph with 3 vertices, 2 edges>
 gap> PrintString(gr);
-"Digraph( \>\>rec(\n\>\>nrvertices\< := \>3\<\<,\n\>\>source\< := \>[ 1, 2 ]\<\
-\<,\n\>\>range\< := \>[ 2, 3 ] \<\<\<\<)"
+"Digraph( \>\>rec(\n\>\>\<nrvertices := \>3\<\<,\n\>\>\<source := \>[ 1, 2 ]\<\
+\<,\n\>\>\<range := \>[ 2, 3 ]\<\<,\n\>\> \<\<) \<\<)"
 gap> String(gr);
-"Digraph( rec( nrvertices := 3, source := [ 1, 2 ], range := [ 2, 3 ] )"
+"Digraph( rec( nrvertices := 3, source := [ 1, 2 ], range := [ 2, 3 ] ) )"
 
 # DotDigraph for a very basic multi-digraph
 gap> r := rec( vertices := [ 1 .. 3 ], source := [ 1, 1, 1, 1 ], 

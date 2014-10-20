@@ -45,30 +45,24 @@ end);
 InstallMethod(PrintString, "for a digraph",
 [IsDigraph],
 function(graph)
-  local str, com, i, nam;
+  local str;
 
   str:="Digraph( ";
 
-  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) or
-    not IsBound(graph!.range) then
+  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
     return Concatenation(str, PrintString(OutNeighbours(graph)), " )");
   else 
     Append(str, "\>\>rec(\n\>\>");
-    com := false;
-    i := 1;
-    for nam in [ "nrvertices", "source", "range" ] do
-      if com then
-        Append(str, "\<\<,\n\>\>");
-      else
-        com := true;
-      fi;
-      SET_PRINT_OBJ_INDEX(i);
-      i := i + 1;
-      Append(str, nam);
-      Append(str, "\< := \>");
-      Append(str, PrintString(graph!.(nam)));
-    od;
-    Append(str, " \<\<\<\<)");
+    SET_PRINT_OBJ_INDEX(1);
+    str := Concatenation(str, "\<nrvertices := \>",
+                          PrintString(DigraphNrVertices(graph)), "\<\<,\n\>\>");
+    SET_PRINT_OBJ_INDEX(2);
+    str := Concatenation(str, "\<source := \>",
+                          PrintString(DigraphSource(graph)), "\<\<,\n\>\>");
+    SET_PRINT_OBJ_INDEX(3);
+    str := Concatenation(str, "\<range := \>",
+                          PrintString(DigraphRange(graph)), "\<\<,\n\>\>");
+    Append(str, " \<\<) \<\<)");
     return str;
   fi;
 end);
@@ -78,30 +72,25 @@ end);
 InstallMethod(String, "for a digraph",
 [IsDigraph],
 function(graph)
-  local str, com, i, nam;
+  local str;
 
   str:="Digraph( ";
 
-  if DigraphNrEdges(graph) >= DigraphNrVertices(graph)
-    or not IsBound(graph!.range) then
+  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
     return Concatenation(str, String(OutNeighbours(graph)), " )");
   else
     Append(str, "rec( ");
-    com := false;
-    i := 1;
-    for nam in [ "nrvertices", "source", "range" ] do
-      if com then
-        Append(str, ", ");
-      else
-        com := true;
-      fi;
-      SET_PRINT_OBJ_INDEX(i);
-      i := i + 1;
-      Append(str, nam);
-      Append(str, " := ");
-      Append(str, PrintString(graph!.(nam)));
-    od;
-    Append(str, " )");
+    
+    SET_PRINT_OBJ_INDEX(1);
+    str := Concatenation(str,
+                          "nrvertices := ", PrintString(DigraphNrVertices(graph)), ", ");
+    SET_PRINT_OBJ_INDEX(2);
+    str := Concatenation(str,
+                          "source := ", PrintString(DigraphSource(graph)), ", ");
+    SET_PRINT_OBJ_INDEX(3);
+    str := Concatenation(str,
+                          "range := ", PrintString(DigraphRange(graph)));
+    Append(str, " ) )");
     return str;
   fi;
 end);
