@@ -566,7 +566,7 @@ function(graph, v)
           v, " is not a vertex of the digraph,\n");
     return;
   fi;
-  return OutDegreeOfVertexNC(graph, v);
+   return OutDegreeOfVertexNC(graph, v);
 end);
 
 InstallMethod(OutDegreeOfVertexNC, "for a digraph with out-degrees and a vertex",
@@ -671,4 +671,35 @@ function(digraph, partition)
   fi;
 end);
 
+#
+
+InstallMethod(DigraphOutEdges, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  local out, output, pos, i;
+
+  if not v in DigraphVertices(digraph) then
+    Error("Digraphs: OutEdges: usage,\n",
+          v, " is not a vertex of the digraph,\n");
+    return;
+  fi;
+
+  return List(OutNeighboursOfVertex(digraph, v), x -> [v, x]);
+end);
+
+#
+
+InstallMethod(DigraphInEdges, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  local out, output, pos, i;
+
+  if not v in DigraphVertices(digraph) then
+    Error("Digraphs: OutEdges: usage,\n",
+          v, " is not a vertex of the digraph,\n");
+    return;
+  fi;
+
+  return List(InNeighboursOfVertex(digraph, v), x -> [x, v]);
+end);
 #EOF

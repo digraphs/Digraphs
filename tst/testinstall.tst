@@ -116,6 +116,16 @@ gap> OutNeighbours(gr);
 [ [ 3, 1 ], [ 1 ], [ 4, 4, 1 ], [  ], [  ], [  ], [  ], [  ], [  ], [  ] ]
 
 #
+gap> gr := Digraph([[5,5,1,5], [], [], [2,3,1], [4]]);
+<multidigraph with 5 vertices, 8 edges>
+gap> DigraphInEdges(gr, 5);
+[ [ 1, 5 ], [ 1, 5 ], [ 1, 5 ] ]
+gap> DigraphOutEdges(gr, 2);
+[  ]
+gap> DigraphOutEdges(gr, 4);
+[ [ 4, 2 ], [ 4, 3 ], [ 4, 1 ] ]
+
+#
 gap> DigraphsStopTest();
 
 #

@@ -34,3 +34,5 @@ DeclareOperation("OutDegreeOfVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("OutDegreeOfVertexNC", [IsDigraph, IsPosInt]);
 DeclareOperation("OutNeighboursOfVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("OutNeighboursOfVertexNC", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphInEdges", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphOutEdges", [IsDigraph, IsPosInt]);

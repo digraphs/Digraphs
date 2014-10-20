@@ -9,6 +9,8 @@
     <#Include Label="DigraphTopologicalSort">
     <#Include Label="DigraphVertexName">
     <#Include Label="DigraphVertexNames">
+    <#Include Label="DigraphInEdges">
+    <#Include Label="DigraphOutEdges">
   </Section>
 
   <Section><Heading>Neighbours and degree</Heading>
