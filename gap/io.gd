@@ -16,7 +16,6 @@ DeclareOperation("DigraphFromDiSparse6String", [IsString]);
 DeclareGlobalFunction("ReadPlainTextDigraph");
 DeclareGlobalFunction("DigraphPlainTextLineDecoder");
 
-DeclareGlobalFunction("WriteDigraph");
 DeclareGlobalFunction("WriteDigraphs");
 DeclareOperation("WriteGraph6", [IsDigraph]);
 DeclareOperation("WriteDigraph6", [IsDigraph]);
