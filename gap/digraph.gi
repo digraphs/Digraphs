@@ -192,9 +192,11 @@ function(n)
   
   if n < 0 then
     Error("Digraphs: CompleteDigraph: usage,\n",
-      "the argument must be a non-negative integer,\n");
+      "the argument <n> must be a non-negative integer,\n");
+    return;
   elif n = 0 then
     gr := DigraphNC( [ ] );
+    SetIsEmptyDigraph(gr, true);
   else
     verts := [ 1 .. n ];
     adj := EmptyPlist(n);
@@ -206,6 +208,24 @@ function(n)
   SetIsMultiDigraph(gr, false);
   SetIsSymmetricDigraph(gr, true);
   SetIsCompleteDigraph(gr, true);
+  return gr;
+end);
+
+#
+
+InstallMethod(EmptyDigraph, "for an integer",
+[IsInt],
+function(n)
+  local gr;
+
+  if n < 0 then
+    Error("Digraphs: EmptyDigraph: usage,\n",
+      "the argument <n> must be a non-negative integer,\n");
+    return;
+  fi;
+  gr := DigraphNC( rec( nrvertices := n, source := [ ], range := [ ] ) );
+  SetIsEmptyDigraph(gr, true);
+  SetIsMultiDigraph(gr, false);
   return gr;
 end);
 

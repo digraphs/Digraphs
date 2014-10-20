@@ -357,6 +357,10 @@ gap> InducedSubdigraph( gr, [ 8 ] );
 gap> InducedSubdigraph( gr, [ 7, 8 ] );
 <digraph with 2 vertices, 0 edges>
 
+# QuotientDigraph
+gap> QuotientDigraph( CompleteDigraph(2), [ [ 1, 2 ] ] );
+<multidigraph with 1 vertex, 4 edges>
+
 #
 gap> DigraphsStopTest();
 

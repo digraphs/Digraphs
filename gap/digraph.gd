@@ -37,6 +37,7 @@ DeclareOperation("RandomDigraph", [IsPosInt]);
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
 DeclareOperation("CompleteDigraph", [IsInt]);
+DeclareOperation("EmptyDigraph", [IsInt]);
 
 DeclareOperation("DigraphVertexName", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphVertexNames", [IsDigraph]);
