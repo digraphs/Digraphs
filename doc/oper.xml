@@ -444,17 +444,41 @@ gap> DigraphStronglyConnectedComponent(gr, 4);
   <Oper Name="QuotientDigraph" Arg="digraph, p"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>p</A> is a partition of the vertices of <A>digraph</A>, then this
-    operation returns a digraph formed by amalgamating all vertices which
-    lie in the same part of <A>p</A>.
+    If <A>digraph</A> is a digraph with at least one vertex, and <A>p</A> is a 
+    partition of the vertices of <A>digraph</A>, then this operation returns a
+    new digraph constructed by amalgamating all vertices of <A>digraph</A> 
+    which lie in the same part of <A>p</A>. <P/>
+
+    A partition of the vertices of <A>digraph</A> is a list of non-empty 
+    disjoint lists, such that the concatenation of all the sub-lists is
+    equal to the vertex set of <A>digraph</A>. In particular, each vertex
+    must appear in precisely one sub-list. <P/>
+
+    The vertices of <A>digraph</A> in part <C>i</C> of <A>p</A> will become 
+    vertex <C>i</C> in the quotient, and an edge of <A>digraph</A> with 
+    source (range) vertex in part <C>i</C> will have source (range) <C>i</C> in 
+    the quotient. <P/>
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 1, 2, 3, 4, 4 ], [ 1, 3, 4 ], [ 3, 1 ], 
-> [ 1, 1 ] ] ); 
-<multidigraph with 4 vertices, 13 edges>
-gap> InducedSubdigraph( gr, [ 1, 3, 4 ] );                 
-<multidigraph with 3 vertices, 9 edges>
-gap> DigraphVertices(last);
+gap> gr := Digraph( [ [ 2, 1 ], [ 4 ], [ 1 ], [ 1, 3, 4 ] ] );
+<digraph with 4 vertices, 7 edges>
+gap> DigraphVertices(gr);
+[ 1 .. 4 ]
+gap> DigraphEdges(gr);
+[ [ 1, 2 ], [ 1, 1 ], [ 2, 4 ], [ 3, 1 ], [ 4, 1 ], [ 4, 3 ], 
+  [ 4, 4 ] ]
+gap> p := [ [ 1 ], [ 2, 4 ], [ 3 ] ];
+[ [ 1 ], [ 2, 4 ], [ 3 ] ]
+gap> qr := QuotientDigraph( gr, p );
+<multidigraph with 3 vertices, 7 edges>
+gap> DigraphVertices(qr);
 [ 1 .. 3 ]
+gap> DigraphEdges(qr);
+[ [ 1, 2 ], [ 1, 1 ], [ 2, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], 
+  [ 3, 1 ] ]
+gap> p2 := [ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ];
+[ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ]
+gap> QuotientDigraph(gr, p2) = gr;
+true
 ]]></Example>
   </Description>
 </ManSection>

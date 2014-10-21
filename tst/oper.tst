@@ -358,8 +358,63 @@ gap> InducedSubdigraph( gr, [ 7, 8 ] );
 <digraph with 2 vertices, 0 edges>
 
 # QuotientDigraph
-gap> QuotientDigraph( CompleteDigraph(2), [ [ 1, 2 ] ] );
+gap> gr := CompleteDigraph(2);
+<digraph with 2 vertices, 4 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ] ]
+gap> qr := QuotientDigraph( gr, [ [ 1, 2 ] ] );
 <multidigraph with 1 vertex, 4 edges>
+gap> DigraphEdges(qr);
+[ [ 1, 1 ], [ 1, 1 ], [ 1, 1 ], [ 1, 1 ] ]
+gap> QuotientDigraph( EmptyDigraph(0), [ ] );
+Error, Digraphs: QuotientDigraph: usage,
+the first argument <digraph> must have at least one vertex,
+
+gap> gr := Digraph( [ [ 1, 2, 3, 2 ], [ 1, 3, 2 ], [ 1, 2 ] ] );
+<multidigraph with 3 vertices, 9 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], 
+  [ 3, 1 ], [ 3, 2 ] ]
+gap> qr := QuotientDigraph( gr, [ [ 1, 3 ], [ 2 ] ] );
+<multidigraph with 2 vertices, 9 edges>
+gap> DigraphEdges(qr);
+[ [ 1, 1 ], [ 1, 2 ], [ 1, 1 ], [ 1, 2 ], [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], 
+  [ 2, 1 ], [ 2, 2 ] ]
+gap> QuotientDigraph( gr, [ ] );
+Error, Digraphs: QuotientDigraph: usage,
+the second argument <partition> is not a valid partition
+of the vertices of <digraph>, [ 1 .. 3 ],
+
+gap> QuotientDigraph( gr, [ [ ], [ ] ] );
+Error, Digraphs: QuotientDigraph: usage,
+the second argument <partition> is not a valid partition
+of the vertices of <digraph>, [ 1 .. 3 ],
+
+gap> QuotientDigraph( gr, [ [ 0 ], [ 1 ] ] );
+Error, Digraphs: QuotientDigraph: usage,
+the second argument <partition> is not a valid partition
+of the vertices of <digraph>, [ 1 .. 3 ],
+
+gap> QuotientDigraph( gr, [ [ 1 ], [ 2 ], [ 0 ] ] );
+Error, Digraphs: QuotientDigraph: usage,
+the second argument <partition> is not a valid partition
+of the vertices of <digraph>, [ 1 .. 3 ],
+
+gap> QuotientDigraph( gr, [ [ 1 ], [ 2, 4 ] ] );
+Error, Digraphs: QuotientDigraph: usage,
+the second argument <partition> is not a valid partition
+of the vertices of <digraph>, [ 1 .. 3 ],
+
+gap> QuotientDigraph( gr, [ [ 1, 2 ], [ 2 ] ] );
+Error, Digraphs: QuotientDigraph: usage,
+the second argument <partition> is not a valid partition
+of the vertices of <digraph>, [ 1 .. 3 ],
+
+gap> QuotientDigraph( gr, [ [ 1 ], [ 2 ] ] );
+Error, Digraphs: QuotientDigraph: usage,
+the second argument <partition> does not partition
+every vertex of the first argument, <digraph>,
+
 
 # DigraphInEdges / DigraphOutEdges
 gap> gr := Digraph( [ [ 2, 2, 2, 2, 2 ], [ 1, 1, 1, 1 ], [ 1 ], [ 3, 2 ] ] );
