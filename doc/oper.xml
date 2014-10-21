@@ -161,6 +161,38 @@ gap> DigraphRemoveLoops(gr);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphAddEdges">
+<ManSection>
+  <Oper Name="DigraphAddEdges" Arg="digraph, edges"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>edges</A> is a list of pairs of vertices of <A>digraph</A>,
+    then this operation returns a new digraph constructed from <A>digraph</A> 
+    by adding the edges specified by <A>edges</A>. <P/>
+  
+    If an edge is included multiple times in <A>edges</A>, then it will be
+    added multiple times. If the list <A>edges</A> is empty, then the object
+    <A>digraph</A> will be returned. <P/>
+
+    <Example><![CDATA[
+gap> func := function(n)
+>  local record, i;
+>  record := rec( vertices := [ 1 .. n ], source := [  ], range := [  ] );
+>  for i in [ 1 .. n - 2 ] do 
+>    Add(record.source, i);
+>    Add(record.range, i + 1);
+>  od;
+>  return Digraph(record);
+> end;;
+gap> gr := func(1024);
+<digraph with 1024 vertices, 1022 edges>
+gap> gr := DigraphAddEdges(gr,
+> [ [ 1023, 1024 ], [ 1, 1024 ], [ 1023, 1024 ], [ 1024, 1 ] ] );
+<multidigraph with 1024 vertices, 1026 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphRemoveEdges">
 <ManSection>
   <Oper Name="DigraphRemoveEdges" Arg="digraph, edges"/>

@@ -244,3 +244,44 @@ gap> EmptyDigraph(20);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="CycleDigraph">
+<ManSection>
+  <Oper Name="CycleDigraph" Arg="n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer, this function returns a cycle
+    digraph with <A>n</A> vertices and <A>n</A> edges. Specifically,
+    for each vertex <C>i</C> (with <M>i &lt; n</M>), there is a directed 
+    edge with source <C>i</C> and range <C>i + 1</C>. In addition, there is
+    an edge with source <C>n</C> and range <C>1</C>. <P/>
+    <Log><![CDATA[
+gap> CycleDigraph(1);
+<digraph with 1 vertex, 1 edge>
+gap> CycleDigraph(123);
+<digraph with 123 vertices, 123 edges>
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="CompleteBipartiteDigraph">
+<ManSection>
+  <Oper Name="CompleteBipartiteDigraph" Arg="m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    A complete bipartite digraph is a digraph whose vertices
+    can be partitioned into two non-empty vertex sets, such there exist
+    a unique edge with source <C>i</C> and range <C>j</C> whenever
+    <C>i</C> and <C>j</C> lie in different vertex sets. <P/>
+
+    If <A>m</A> and <A>n</A> are positive integers, this function 
+    returns the complete bipartite digraph with vertex sets of size
+    <A>m</A> (containing the vertices <C>[ 1 .. m ]</C>) and size
+    <A>n</A> (containing the vertices <C>[ (m + 1) .. n ]</C>). 
+    <Log><![CDATA[
+gap> CompleteBipartiteDigraph(2, 3);
+<digraph with 5 vertices, 12 edges>
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>

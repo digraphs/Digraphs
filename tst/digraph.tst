@@ -305,6 +305,35 @@ Error, Digraphs: EmptyDigraph: usage,
 the argument <n> must be a non-negative integer,
 
 
+# CycleDigraph
+gap> gr := CycleDigraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `CycleDigraph' on 1 arguments
+gap> gr := CycleDigraph(1);
+<digraph with 1 vertex, 1 edge>
+gap> gr := CycleDigraph(6);;
+gap> DigraphEdges(gr);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 4, 5 ], [ 5, 6 ], [ 6, 1 ] ]
+gap> gr := CycleDigraph(1000);
+<digraph with 1000 vertices, 1000 edges>
+
+# CompleteBipartiteDigraph
+gap> gr := CompleteBipartiteDigraph(2, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `CompleteBipartiteDigraph' on 2 argument\
+s
+gap> gr := CompleteBipartiteDigraph(0, 2);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `CompleteBipartiteDigraph' on 2 argument\
+s
+gap> gr := CompleteBipartiteDigraph(4, 3);
+<digraph with 7 vertices, 24 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 5 ], [ 1, 6 ], [ 1, 7 ], [ 2, 5 ], [ 2, 6 ], [ 2, 7 ], [ 3, 5 ], 
+  [ 3, 6 ], [ 3, 7 ], [ 4, 5 ], [ 4, 6 ], [ 4, 7 ], [ 5, 1 ], [ 5, 2 ], 
+  [ 5, 3 ], [ 5, 4 ], [ 6, 1 ], [ 6, 2 ], [ 6, 3 ], [ 6, 4 ], [ 7, 1 ], 
+  [ 7, 2 ], [ 7, 3 ], [ 7, 4 ] ]
+
 # Equals (= \=)
 gap> r1 := rec( nrvertices := 2, source := [ 1, 1, 2 ], range := [ 1, 2, 2 ] );
 rec( nrvertices := 2, range := [ 1, 2, 2 ], source := [ 1, 1, 2 ] )

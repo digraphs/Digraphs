@@ -400,6 +400,57 @@ Error, Digraphs: DigraphStronglyConnectedComponent: usage,
 7 is not a vertex of the digraph,
 
 
+# DigraphAddEdges
+gap> gr := RandomDigraph(100);;
+gap> DigraphAddEdges(gr, [ ]);;
+gap> gr = last;
+true
+gap> DigraphAddEdges(gr, [ 12 ] );
+Error, Digraphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of edges of <graph>,
+i.e. a list of pairs of vertices of <graph>,
+
+gap> DigraphAddEdges(gr, [ [ 12 ] ] );
+Error, Digraphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of edges of <graph>,
+i.e. a list of pairs of vertices of <graph>,
+
+gap> DigraphAddEdges(gr, [ [ 12, 13, 14 ], [ 11, 10 ] ] );
+Error, Digraphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of edges of <graph>,
+i.e. a list of pairs of vertices of <graph>,
+
+gap> DigraphAddEdges(gr, [ [ -2, 3 ], [ "a" ] ] );
+Error, Digraphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of edges of <graph>,
+i.e. a list of pairs of vertices of <graph>,
+
+gap> DigraphAddEdges(gr, [ [ 11, 10 ], [ 12, 13, 14 ] ] );
+Error, Digraphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of edges of <graph>,
+i.e. a list of pairs of vertices of <graph>,
+
+gap> DigraphAddEdges(gr, [ [ 4, 5 ], [ 1, 120 ], [ 1, 1 ] ] );
+Error, Digraphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of edges with
+source and range amongst the vertices of <graph>,
+
+gap> DigraphAddEdges(gr, [ [ 4, 5 ], [ 120, 1 ], [ 1, 1 ] ] );
+Error, Digraphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of edges with
+source and range amongst the vertices of <graph>,
+
+gap> gr := Digraph( [ [ 2, 2 ], [ 1, 3, 2 ], [ 2, 1 ], [ 1 ] ] );
+<multidigraph with 4 vertices, 8 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 2 ], [ 1, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], [ 3, 2 ], [ 3, 1 ], 
+  [ 4, 1 ] ]
+gap> gr2 := DigraphAddEdges( gr, [ [ 2, 1 ], [ 3, 3 ], [ 2, 4 ], [ 3, 3 ] ] );
+<multidigraph with 4 vertices, 12 edges>
+gap> DigraphEdges(gr2);
+[ [ 1, 2 ], [ 1, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], [ 2, 1 ], [ 2, 4 ], 
+  [ 3, 2 ], [ 3, 1 ], [ 3, 3 ], [ 3, 3 ], [ 4, 1 ] ]
+
 #
 gap> DigraphsStopTest();
 
