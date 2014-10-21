@@ -188,6 +188,26 @@ gap> gr := Digraph( rec ( nrvertices := 3, source := [ 1, 1, 2, 2, 2, 2, 3, 3 ],
 gap> IsSymmetricDigraph(gr);
 true
 
+# IsAntisymmetricDigraph
+gap> gr := Digraph( rec(
+> nrvertices := 10,
+> source := [ 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 5, 5, 6,
+>  6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10 ],
+> range := [ 2, 4, 6, 10, 3, 5, 7, 4, 7, 1, 9, 10, 4, 6, 9, 8, 4, 3, 7, 1, 6,
+>  8, 2, 3, 9, 7, 10, 9, 4, 1, 8, 9, 3, 1, 4, 2, 5, 2, 1, 10, 5, 6, 2, 4, 8 ]
+> ) );
+<digraph with 10 vertices, 45 edges>
+gap> IsAntisymmetricDigraph(gr);
+true
+gap> gr := Digraph( [ [ 1, 1, 1, 2, 2 ], [ 2, 3 ], [ 3, 3, 4 ], [ 4, 2 ] ] );
+<multidigraph with 4 vertices, 12 edges>
+gap> IsAntisymmetricDigraph(gr);
+true
+gap> gr := Digraph( [ [ 1, 1, 1, 2, 2 ], [ 2, 3 ], [ 3, 3, 4 ], [ 4, 3 ] ] );
+<multidigraph with 4 vertices, 12 edges>
+gap> IsAntisymmetricDigraph(gr);
+false
+
 # IsEmptyDigraph
 gap> gr1 := Digraph( rec( nrvertices := 5, source := [ ], range := [ ] ) );;
 gap> IsEmptyDigraph(gr1);

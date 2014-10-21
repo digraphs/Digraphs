@@ -8,6 +8,7 @@
     <#Include Label="IsMultiDigraph">
     <#Include Label="IsReflexiveDigraph">
     <#Include Label="IsSymmetricDigraph">
+    <#Include Label="IsAntisymmetricDigraph">
     <#Include Label="IsTournament">
   </Section>
   
