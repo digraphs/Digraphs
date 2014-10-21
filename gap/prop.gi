@@ -376,23 +376,23 @@ function(digraph)
     depth := EmptyPlist(Length(DigraphVertices(digraph)));
     depth[current] := 1;
     while len <> 0 do
+      current := stack[len];
       if nrvisited[current] = deg[current] then
 	len := len - 1;
       else
-	olddepth := depth[current];
 	nrvisited[current] := nrvisited[current] + 1;
-	current := out[current][nrvisited[current]];
 	len := len + 1;
-	stack[len] := current;
-	if IsBound(depth[current]) then
-	  period := GcdInt(period, depth[current] - olddepth - 1); 
+	stack[len] := out[current][nrvisited[current]];
+	olddepth := depth[current];
+	if IsBound(depth[stack[len]]) then
+	  period := GcdInt(period, depth[stack[len]] - olddepth - 1); 
 	else
-	  depth[current] := olddepth + 1;
+	  depth[stack[len]] := olddepth + 1;
 	fi;
       fi;
     od;
   od;
 
-  return period <= 1;
+  return period = 1;
 end);
 #EOF

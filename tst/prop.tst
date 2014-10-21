@@ -437,7 +437,7 @@ true
 gap> gr := Digraph([[2,2],[3,3],[4],[]]);
 <multidigraph with 4 vertices, 5 edges>
 gap> IsAperiodicDigraph(gr);
-true
+false
 
 #
 gap> DigraphsStopTest();
