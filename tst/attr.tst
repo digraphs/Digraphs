@@ -465,6 +465,20 @@ gap> DigraphSources(gr);
 [ 1, 3, 7, 9, 10 ]
 
 #
+gap> gr := EmptyDigraph(100);
+<digraph with 100 vertices, 0 edges>
+gap> DigraphPeriod(gr);
+0
+gap> gr := CompleteDigraph(100);
+<digraph with 100 vertices, 10000 edges>
+gap> DigraphPeriod(gr);
+1
+gap> gr := Digraph([[2,2],[3],[4],[1]]);
+<multidigraph with 4 vertices, 5 edges>
+gap> DigraphPeriod(gr);
+4
+
+#
 gap> DigraphsStopTest();
 
 #

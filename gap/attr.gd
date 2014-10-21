@@ -33,6 +33,7 @@ DeclareAttribute("InDegrees", IsDigraph);
 DeclareAttribute("InDegreeSequence", IsDigraph);
 DeclareAttribute("DigraphSources", IsDigraph);
 DeclareAttribute("DigraphSinks", IsDigraph);
+DeclareAttribute("DigraphPeriod", IsDigraph);
 
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 

@@ -128,10 +128,14 @@ gap> DigraphOutEdges(gr, 4);
 #
 gap> gr := Digraph([[2],[3],[4],[5],[1],[7],[6]]);
 <digraph with 7 vertices, 7 edges>
+gap> DigraphPeriod(gr);
+1
 gap> IsAperiodicDigraph(gr);
 true
 gap> gr := Digraph([[2],[3],[4],[5],[6],[1]]);
 <digraph with 6 vertices, 6 edges>
+gap> DigraphPeriod(gr);
+6
 gap> IsAperiodicDigraph(gr);
 false
 

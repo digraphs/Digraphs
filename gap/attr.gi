@@ -566,17 +566,19 @@ function(digraph)
   fi;
   source := DigraphSource(digraph);
   degs := [ 1 .. n ] * 0;
-  current := source[1];
-  count := 0;
-  for i in source do
-    if i <> current then
-      degs[current] := count;
-      count := 0;
-      current := i;
-    fi;
-    count := count + 1;
-  od;
-  degs[current] := count;
+  if Length(source) <> 0 then
+    current := source[1];
+    count := 0;
+    for i in source do
+      if i <> current then
+        degs[current] := count;
+        count := 0;
+        current := i;
+      fi;
+      count := count + 1;
+    od;
+    degs[current] := count;
+  fi;
   return degs;
 end);
 
@@ -753,4 +755,44 @@ function(digraph)
   return Filtered( verts, x -> not seen[x] );
 end);
 
+#
+
+InstallMethod(DigraphPeriod, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local comps, out, deg, nrvisited, period, current, stack, len, depth,
+  olddepth, i;
+
+  comps := DigraphStronglyConnectedComponents(digraph)!.comps;
+  out := OutNeighbours(digraph);
+  deg := OutDegrees(digraph);
+
+  nrvisited := [ 1 .. Length(DigraphVertices(digraph)) ] * 0;
+  period := 0;
+
+  for i in [ 1 .. Length(comps) ] do
+    stack := [comps[i][1]];
+    len := 1;
+    depth := EmptyPlist(Length(DigraphVertices(digraph)));
+    depth[comps[i][1]] := 1;
+    while len <> 0 do
+      current := stack[len];
+      if nrvisited[current] = deg[current] then
+        len := len - 1;
+      else
+        nrvisited[current] := nrvisited[current] + 1;
+        len := len + 1;
+        stack[len] := out[current][nrvisited[current]];
+        olddepth := depth[current];
+        if IsBound(depth[stack[len]]) then
+          period := GcdInt(period, depth[stack[len]] - olddepth - 1);
+        else
+          depth[stack[len]] := olddepth + 1;
+        fi;
+      fi;
+    od;
+  od;
+
+  return period;
+end);
 #EOF
