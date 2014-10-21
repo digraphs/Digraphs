@@ -36,8 +36,11 @@ DeclareOperation("Graph", [IsDigraph]);
 DeclareOperation("RandomDigraph", [IsPosInt]);
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
+
+DeclareOperation("CompleteBipartiteDigraph", [IsPosInt, IsPosInt]);
 DeclareOperation("CompleteDigraph", [IsInt]);
 DeclareOperation("EmptyDigraph", [IsInt]);
+DeclareOperation("CycleDigraph", [IsPosInt]);
 
 DeclareOperation("DigraphVertexName", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphVertexNames", [IsDigraph]);

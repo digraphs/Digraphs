@@ -231,6 +231,57 @@ end);
 
 #
 
+InstallMethod(CycleDigraph, "for a positive integer",
+[IsPosInt],
+function(n)
+  local gr, source, range, i;
+
+  source := EmptyPlist(n);
+  range := EmptyPlist(n);
+  for i in [ 1 .. (n - 1) ] do
+    source[i] := i;
+    range[i] := i + 1;
+  od;
+  source[n] := n;
+  range[n] := 1;
+  gr := DigraphNC( rec( nrvertices := n, source := source, range := range ) );
+  SetIsAcyclicDigraph(gr, false);
+  SetIsEmptyDigraph(gr, false);
+  SetIsMultiDigraph(gr, false);
+  SetDigraphNrEdges(gr, n);
+  SetIsFunctionalDigraph(gr, true);
+  return gr;
+end);
+
+#
+
+InstallMethod(CompleteBipartiteDigraph, "for two positive integers",
+[IsPosInt, IsPosInt],
+function(m, n)
+  local source, range, count, k, r, gr, i, j;
+
+  source := EmptyPlist(2 * m * n);
+  range := EmptyPlist(2 * m * n);
+  count := 0;
+  for i in [ 1 .. m ] do
+    for j in [ 1 .. n ] do
+      count := count + 1;
+      source[count] := i;
+      range[count] := m + j;
+      k := (m * n) + ( (j - 1) * m ) + i; # This ensures that source is sorted
+      source[k] := m + j;
+      range[k] := i;
+    od;
+  od;
+  r := rec( nrvertices := m + n, source := source, range := range );
+  gr := DigraphNC(r);
+  SetIsSymmetricDigraph(gr, true);
+  SetDigraphNrEdges(gr, 2 * m * n);
+  return gr;
+end);
+
+#
+
 InstallMethod(Digraph, "for a record", [IsRecord],
 function(graph)
   local check_source, cmp, obj, i;
