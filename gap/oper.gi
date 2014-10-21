@@ -140,6 +140,8 @@ function(graph)
   return out;
 end);
 
+#
+
 InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
 [IsDigraph, IsList],
 function(graph, edges)
@@ -178,6 +180,48 @@ function(graph, edges)
                           nrvertices := DigraphNrVertices(graph) ) );
   fi;
 end);
+
+#
+
+InstallMethod(DigraphAddEdges, "for a digraph and a list",
+[IsDigraph, IsList],
+function(graph, edges)
+  local vertices, newsource, newrange, m, edge;
+
+  if IsEmpty(edges) then
+    return graph;
+  elif not IsList(edges[1])
+   or not Length(edges[1]) = 2 
+   or not IsPosInt(edges[1][1]) 
+   or not IsRectangularTable(edges) then
+    Error("Digraphs: DigraphAddEdges: usage,\n",
+          "the second argument <edges> must be a list of edges of <graph>,\n",
+          "i.e. a list of pairs of vertices of <graph>,\n");
+    return;
+  fi;
+
+  vertices := DigraphVertices(graph);
+  newsource := ShallowCopy(DigraphSource(graph));
+  newrange := ShallowCopy(DigraphRange(graph));
+  m := Length(newsource);
+  for edge in edges do
+    if not (edge[1] in vertices and edge[2] in vertices) then
+      Error("Digraphs: DigraphAddEdges: usage,\n",
+          "the second argument <edges> must be a list of edges with\n",
+          "source and range amongst the vertices of <graph>,\n");
+      return;
+    fi;
+    m := m + 1;
+    newsource[m] := edge[1];
+    newrange[m] := edge[2];
+  od;
+
+  newrange := Permuted(newrange, Sortex(newsource));
+  return DigraphNC(rec( source := newsource, range := newrange,
+                          nrvertices := DigraphNrVertices(graph) ) );
+end);
+
+#
 
 InstallMethod(OnDigraphs, "for a digraph by adjacency and perm",
 [IsDigraph and HasOutNeighbours, IsPerm],

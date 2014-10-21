@@ -20,8 +20,9 @@
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">
     <#Include Label="DigraphReflexiveTransitiveClosure">
-    <#Include Label="DigraphRemoveLoops">
+    <#Include Label="DigraphAddEdges">
     <#Include Label="DigraphRemoveEdges">
+    <#Include Label="DigraphRemoveLoops">
   </Section>
 
   <Section><Heading>Random digraphs</Heading>
