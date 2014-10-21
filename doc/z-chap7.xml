@@ -57,5 +57,6 @@
     <#Include Label="WriteGraph6">
     <#Include Label="ReadDigraphs">
     <#Include Label="WriteDigraphs">
+    <#Include Label="ReadPlainTextDigraph">
   </Section>
 </Chapter>

@@ -191,3 +191,18 @@ gap> WriteDiSparse6(gr);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="ReadPlainTextDigraph">
+<ManSection>
+  <Func Name="ReadPlainTextDigraph" Arg="?"/>
+  <Returns>?.</Returns>
+  <Description>
+  ?
+  <Example><![CDATA[
+gap> 5 + 1;
+6
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+

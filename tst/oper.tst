@@ -415,6 +415,15 @@ Error, Digraphs: QuotientDigraph: usage,
 the second argument <partition> does not partition
 every vertex of the first argument, <digraph>,
 
+gap> gr := Digraph( rec( nrvertices := 8,
+> source := [ 1, 1, 2, 2, 3, 4, 4, 4, 5, 5, 5, 5, 5, 6, 7, 7, 7, 7, 7, 8, 8 ],
+> range := [ 6, 7, 1, 6, 5, 1, 4, 8, 1, 3, 4, 6, 7, 7, 1, 4, 5, 6, 7, 5, 6 ]
+> ) );
+<digraph with 8 vertices, 21 edges>
+gap> qr := QuotientDigraph( gr, [ [ 1 ], [ 2, 3, 5, 7 ], [ 4, 6, 8 ] ] );
+<multidigraph with 3 vertices, 21 edges>
+gap> OutNeighbours(qr);
+[ [ 3, 2 ], [ 1, 3, 2, 2, 3, 3, 1, 3, 1, 3, 2, 2, 2 ], [ 1, 3, 2, 3, 2, 3 ] ]
 
 # DigraphInEdges / DigraphOutEdges
 gap> gr := Digraph( [ [ 2, 2, 2, 2, 2 ], [ 1, 1, 1, 1 ], [ 1 ], [ 3, 2 ] ] );
