@@ -422,6 +422,24 @@ gap> DigraphHasLoops(gr);
 false
 
 #
+gap> gr := Digraph([[2],[3],[4],[5],[6],[1],[8],[7]]);
+<digraph with 8 vertices, 8 edges>
+gap> IsAperiodicDigraph(gr);
+false
+gap> gr := Digraph([[1]]);
+<digraph with 1 vertex, 1 edge>
+gap> IsAperiodicDigraph(gr);
+true
+gap> gr := Digraph([[2,2],[3,3],[1],[5],[4,4,4]]);
+<multidigraph with 5 vertices, 9 edges>
+gap> IsAperiodicDigraph(gr);
+true
+gap> gr := Digraph([[2,2],[3,3],[4],[]]);
+<multidigraph with 4 vertices, 5 edges>
+gap> IsAperiodicDigraph(gr);
+true
+
+#
 gap> DigraphsStopTest();
 
 #

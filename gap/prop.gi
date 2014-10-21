@@ -354,4 +354,45 @@ function(digraph)
   return false;
 end);
 
+#
+
+InstallMethod(IsAperiodicDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local comps, out, deg, nrvisited, period, current, stack, len, depth,
+  olddepth, i;
+
+  comps := DigraphStronglyConnectedComponents(digraph)!.comps; 
+  out := OutNeighbours(digraph);
+  deg := OutDegrees(digraph);
+
+  nrvisited := [ 1 .. Length(DigraphVertices(digraph)) ] * 0;
+  period := 0;
+
+  for i in [ 1 .. Length(comps) ] do
+    current := comps[i][1];
+    stack := [current];
+    len := 1; 
+    depth := EmptyPlist(Length(DigraphVertices(digraph)));
+    depth[current] := 1;
+    while len <> 0 do
+      if nrvisited[current] = deg[current] then
+	len := len - 1;
+      else
+	olddepth := depth[current];
+	nrvisited[current] := nrvisited[current] + 1;
+	current := out[current][nrvisited[current]];
+	len := len + 1;
+	stack[len] := current;
+	if IsBound(depth[current]) then
+	  period := GcdInt(period, depth[current] - olddepth - 1); 
+	else
+	  depth[current] := olddepth + 1;
+	fi;
+      fi;
+    od;
+  od;
+
+  return period <= 1;
+end);
 #EOF
