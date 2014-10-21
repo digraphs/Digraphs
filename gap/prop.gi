@@ -369,4 +369,26 @@ InstallMethod(IsAperiodicDigraph, "for a digraph",
 function(digraph)
   return DigraphPeriod(digraph) = 1;
 end);
+
+#
+
+InstallMethod(IsAntisymmetricDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out, inn, verts, i, x;
+  
+  out := OutNeighbours(digraph);
+  inn := InNeighbours(digraph);
+  verts := DigraphVertices(digraph);
+
+  for i in verts do
+    for x in out[i] do
+      if x <> i and x in inn[i] then
+        return false;
+      fi;
+    od;
+  od;
+  return true;
+end);
+
 #EOF

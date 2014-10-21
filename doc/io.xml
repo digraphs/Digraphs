@@ -86,7 +86,8 @@ gap> ReadDigraphs(
 gap> ReadDigraphs(
 > Concatenation(DigraphsDir(), "/data/graph5.g6"), 17);
 <digraph with 5 vertices, 12 edges>
-gap> ReadDigraphs("pkg/digraphs/data/tree9.4.txt");
+gap> ReadDigraphs(
+> Concatenation(DigraphsDir(), "/data/tree9.4.txt"));
 [ <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, 
@@ -101,6 +102,67 @@ gap> ReadDigraphs("pkg/digraphs/data/tree9.4.txt");
   <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges> ]]]></Example>
+    </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WriteDigraphs">
+<ManSection>
+  <Oper Name="WriteDigraphs" Arg="filename, digraphs [,encoder]"/>
+  <Description>
+    If <A>digraphs</A> is a list of digraphs, then <C>WriteDigraphs</C> writes
+    its contents to a file in a compressed format.  If the optional function
+    argument <A>encoder</A> is specified, this is the function which will be
+    used to encode the graphs.
+
+    The currently supported file formats are:
+    <List>
+      <Mark>graph6 (WriteGraph6)</Mark>
+      <Item>
+	A standard and widely-used format for undirected graphs, with no support
+	for loops or multiple edges.  Only symmetric graphs are allowed -- each
+	edge is combined with its converse edge to produce a single undirected
+	edge.  This format is best used for "dense" graphs -- those with many
+	edges per vertex.
+      </Item>
+      <Mark>sparse6 (WriteSparse6)</Mark>
+      <Item>
+	Unlike graph6, sparse6 has support for loops and multiple edges.
+	However, its use is still limited to symmetric graphs.  This format is
+	better-suited to "sparse" graphs -- those with few edges per vertex.
+      </Item>
+      <Mark>digraph6 (WriteDigraph6)</Mark>
+      <Item>
+	This format is based on graph6, but stores direction information -
+	therefore is not limited to symmetric graphs.  Loops are allowed, but
+	multiple edges are not.  Best compression with "dense" graphs.
+      </Item>
+      <Mark>disparse6 (WriteDiSparse6)</Mark>
+      <Item>
+	Any type of digraph can be encoded in disparse6: directions, loops, and
+	multiple edges are all allowed.  Similar to sparse6, this has the best
+	compression rate with "sparse" graphs.
+      </Item>
+<!--
+      <Mark>plain text</Mark>
+      <Item>
+        <A>filename</A> should be a plain text file containing lines of the form
+        <C>0 7  0 8  1 7  2 8  3 8  4 8  5 8  6 8</C> i.e. pairs of vertices
+        describing edges in a graph. More specifically, the vertices making up
+        one edge must be separated by a single space, and pairs of vertices must
+        be separated by two spaces. <P/>
+
+        See <Ref Func="ReadPlainTextDigraph"/> for a more flexible way to read
+        digraphs in a plain text file. <P/>
+
+        Just so I remember:
+        <C>ReadPlainTextDigraph("data-local/soc-Epinions1.txt.gz", "\t", 1, '#');</C>
+      </Item>
+-->
+    </List>
+    
+    <Example><![CDATA[
+    ]]></Example>
     </Description>
 </ManSection>
 <#/GAPDoc>
@@ -130,3 +192,18 @@ gap> WriteDiSparse6(gr);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="ReadPlainTextDigraph">
+<ManSection>
+  <Func Name="ReadPlainTextDigraph" Arg="?"/>
+  <Returns>?.</Returns>
+  <Description>
+  ?
+  <Example><![CDATA[
+gap> 5 + 1;
+6
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
