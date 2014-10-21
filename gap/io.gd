@@ -21,4 +21,3 @@ DeclareOperation("WriteGraph6", [IsDigraph]);
 DeclareOperation("WriteDigraph6", [IsDigraph]);
 DeclareOperation("WriteSparse6", [IsDigraph]);
 DeclareOperation("WriteDiSparse6", [IsDigraph]);
-
