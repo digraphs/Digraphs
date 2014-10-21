@@ -357,10 +357,10 @@ gap> InNeighboursOfVertex(gr, 2);
   <Oper Name="DigraphInEdges" Arg="digraph, vertex"/>
   <Returns>A list of edges.</Returns>
   <Description>
-    <C> DigraphInEdges </C> returns the list of all edges which have
-    <A>vertex</A> as their range. 
+    <C>DigraphInEdges</C> returns the list of all edges of <A>digraph</A>
+    which have <A>vertex</A> as their range. 
     <Example><![CDATA[
-gap> gr := Digraph([[2,2], [3,3], [4,4], [1,1]]);
+gap> gr := Digraph( [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 1, 1 ] ] );
 <multidigraph with 4 vertices, 8 edges>
 gap> DigraphInEdges(gr, 2);
 [ [ 1, 2 ], [ 1, 2 ] ]
@@ -374,13 +374,55 @@ gap> DigraphInEdges(gr, 2);
   <Oper Name="DigraphOutEdges" Arg="digraph, vertex"/>
   <Returns>A list of edges.</Returns>
   <Description>
-    <C> DigraphOutEdges </C> returns the list of all edges which have <A>
-    vertex</A> as their source.
+    <C>DigraphOutEdges</C> returns the list of all edges of <A>digraph</A>
+    which have <A>vertex</A> as their source.
     <Example><![CDATA[
-gap> gr := Digraph([[2,2], [3,3], [4,4], [1,1]]);
+gap> gr := Digraph( [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 1, 1 ] ] );
 <multidigraph with 4 vertices, 8 edges>
 gap> DigraphOutEdges(gr, 2);
 [ [ 2, 3 ], [ 2, 3 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphStronglyConnectedComponent">
+<ManSection>
+  <Oper Name="DigraphStronglyConnectedComponent" Arg="digraph, vertex"/>
+  <Returns>A list of vertices.</Returns>
+  <Description>
+    <C>DigraphStronglyConnectedComponent</C> returns the strongly connected
+    component of <A>vertex</A> in <A>digraph</A>.
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 3 ], [ 2 ], [ 1, 2 ], [ 3 ] ] );
+<digraph with 4 vertices, 5 edges>
+gap> DigraphStronglyConnectedComponent(gr, 3);
+[ 1, 3 ]
+gap> DigraphStronglyConnectedComponent(gr, 2);
+[ 2 ]
+gap> DigraphStronglyConnectedComponent(gr, 4);
+[ 4 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="QuotientDigraph">
+<ManSection>
+  <Oper Name="QuotientDigraph" Arg="digraph, p"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>p</A> is a partition of the vertices of <A>digraph</A>, then this
+    operation returns a digraph formed by amalgamating all vertices which
+    lie in the same part of <A>p</A>.
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 1, 1, 2, 3, 4, 4 ], [ 1, 3, 4 ], [ 3, 1 ], 
+> [ 1, 1 ] ] ); 
+<multidigraph with 4 vertices, 13 edges>
+gap> InducedSubdigraph( gr, [ 1, 3, 4 ] );                 
+<multidigraph with 3 vertices, 9 edges>
+gap> DigraphVertices(last);
+[ 1 .. 3 ]
 ]]></Example>
   </Description>
 </ManSection>

@@ -211,8 +211,8 @@ gap> p2 := (1,4)(2,3);
 gap> OnDigraphs(gr, p2);
 <multidigraph with 4 vertices, 8 edges>
 gap> DigraphEdges(last);
-[ [ 4, 3 ], [ 4, 2 ], [ 3, 4 ], [ 3, 1 ], [ 3, 1 ], [ 2, 2 ], [ 1, 2 ], 
-  [ 1, 4 ] ]
+[ [ 1, 2 ], [ 1, 4 ], [ 2, 2 ], [ 3, 4 ], [ 3, 1 ], [ 3, 1 ], [ 4, 3 ], 
+  [ 4, 2 ] ]
 
 # InNeighboursOfVeretx, InDegreeOfVertex
 gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 1, 5, 5, 7, 10 ],
@@ -361,18 +361,23 @@ gap> InducedSubdigraph( gr, [ 7, 8 ] );
 gap> QuotientDigraph( CompleteDigraph(2), [ [ 1, 2 ] ] );
 <multidigraph with 1 vertex, 4 edges>
 
-#
-gap> DigraphsStopTest();
-
-#
-gap> gr := Digraph([[2,2,2,2,2], [1,1,1,1], [1], [3,2]]);
+# DigraphInEdges / DigraphOutEdges
+gap> gr := Digraph( [ [ 2, 2, 2, 2, 2 ], [ 1, 1, 1, 1 ], [ 1 ], [ 3, 2 ] ] );
 <multidigraph with 4 vertices, 12 edges>
 gap> DigraphInEdges(gr, 1);
 [ [ 2, 1 ], [ 2, 1 ], [ 2, 1 ], [ 2, 1 ], [ 3, 1 ] ]
 gap> DigraphOutEdges(gr, 3);
 [ [ 3, 1 ] ]
-gap> gr := Digraph(rec(vertices := ["a", "b", "c"], source :=["a", "a","b"],
-> range := ["b", "b", "c"]));
+gap> DigraphOutEdges(gr, 5);
+Error, Digraphs: DigraphOutEdges: usage,
+5 is not a vertex of the digraph,
+
+gap> DigraphInEdges(gr, 1000);
+Error, Digraphs: DigraphInEdges: usage,
+1000 is not a vertex of the digraph,
+
+gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ], source := [ "a", "a", "b" ],
+> range := [ "b", "b", "c" ] ) );
 <multidigraph with 3 vertices, 3 edges>
 gap> DigraphInEdges(gr, 1);
 [  ]
@@ -380,6 +385,23 @@ gap> DigraphInEdges(gr, 2);
 [ [ 1, 2 ], [ 1, 2 ] ]
 gap> DigraphOutEdges(gr, 1);
 [ [ 1, 2 ], [ 1, 2 ] ]
+
+# DigraphStronglyConnectedComponent
+gap> gr := Digraph( [ [ 2, 4 ], [ ], [ 2, 6 ], [ 1, 3 ], [ 2, 3 ], [ 5 ] ] );
+<digraph with 6 vertices, 9 edges>
+gap> DigraphStronglyConnectedComponent(gr, 1);
+[ 1, 4 ]
+gap> DigraphStronglyConnectedComponent(gr, 2);
+[ 2 ]
+gap> DigraphStronglyConnectedComponent(gr, 3);
+[ 3, 6, 5 ]
+gap> DigraphStronglyConnectedComponent(gr, 7);
+Error, Digraphs: DigraphStronglyConnectedComponent: usage,
+7 is not a vertex of the digraph,
+
+
+#
+gap> DigraphsStopTest();
 
 #
 gap> STOP_TEST( "Digraphs package: attrs.tst", 0);

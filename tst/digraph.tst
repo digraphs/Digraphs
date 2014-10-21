@@ -305,6 +305,96 @@ Error, Digraphs: EmptyDigraph: usage,
 the argument <n> must be a non-negative integer,
 
 
+# Equals (= \=)
+gap> r1 := rec( nrvertices := 2, source := [ 1, 1, 2 ], range := [ 1, 2, 2 ] );
+rec( nrvertices := 2, range := [ 1, 2, 2 ], source := [ 1, 1, 2 ] )
+gap> r2 := rec( nrvertices := 2, source := [ 1, 1, 2 ], range := [ 2, 1, 2 ] );
+rec( nrvertices := 2, range := [ 2, 1, 2 ], source := [ 1, 1, 2 ] )
+gap> gr1 := Digraph(r1);
+<digraph with 2 vertices, 3 edges>
+gap> gr2 := Digraph(r2);
+<digraph with 2 vertices, 3 edges>
+gap> DigraphRange(gr1);
+[ 1, 2, 2 ]
+gap> DigraphRange(gr2);
+[ 2, 1, 2 ]
+gap> gr1 = gr2;
+true
+gap> gr1 := Digraph( [ [ 2 ], [ 1 ] ] );
+<digraph with 2 vertices, 2 edges>
+gap> gr2 := Digraph( [ [ 1 ] ] );
+<digraph with 1 vertex, 1 edge>
+gap> gr1 = gr2;
+false
+gap> gr1 := Digraph( [ [ 1, 2 ], [ ] ] );
+<digraph with 2 vertices, 2 edges>
+gap> gr2 := Digraph( [ [ 1 ] , [ 2 ] ] );
+<digraph with 2 vertices, 2 edges>
+gap> gr1 = gr2;
+false
+gap> gr1 := Digraph( [ [ ], [ ], [ ] ] );
+<digraph with 3 vertices, 0 edges>
+gap> gr2 := Digraph( rec ( nrvertices := 3, source := [ ], range := [ ] ) );
+<digraph with 3 vertices, 0 edges>
+gap> gr1 = gr2;
+true
+gap> gr1 := Digraph( [ [ 1 ], [ ] ] );
+<digraph with 2 vertices, 1 edge>
+gap> gr2 := Digraph( [ [ 2 ], [ ] ] );
+<digraph with 2 vertices, 1 edge>
+gap> gr1 = gr2;
+false
+gap> gr1 := Digraph( [ [ 1 ], [ 2 ] ] );
+<digraph with 2 vertices, 2 edges>
+gap> gr2 := Digraph( [ [ 2 ], [ 1 ] ] );
+<digraph with 2 vertices, 2 edges>
+gap> gr1 = gr2;
+false
+gap> gr1 := Digraph( [ [ 1, 3, 1 ], [ 3, 2 ], [ 1, 3, 2 ] ] );
+<multidigraph with 3 vertices, 8 edges>
+gap> gr2 := Digraph( rec( nrvertices := 3,
+> source := [ 1, 1, 1, 2, 2, 3, 3, 3 ],
+> range := [ 1, 1, 2, 3, 2, 1, 3, 2 ] ) );
+<multidigraph with 3 vertices, 8 edges>
+gap> gr3 := Digraph( rec( nrvertices := 3,
+> source := [ 1, 1, 1, 2, 2, 3, 3, 3 ],
+> range := [ 1, 3, 1, 3, 3, 1, 3, 2 ] ) );
+<multidigraph with 3 vertices, 8 edges>
+gap> gr4 := Digraph( rec( nrvertices := 3,
+> source := [ 1, 1, 1, 2, 2, 3, 3, 3 ],
+> range := [ 1, 3, 1, 3, 2, 1, 2, 2 ] ) );
+<multidigraph with 3 vertices, 8 edges>
+gap> gr5 := Digraph( rec( nrvertices := 3,
+> source := [ 1, 1, 1, 2, 2, 3, 3, 3 ],
+> range := [ 1, 1, 3, 2, 3, 2, 1, 3 ] ) );
+<multidigraph with 3 vertices, 8 edges>
+gap> gr1 = gr1;
+true
+gap> gr1 = gr2;
+false
+gap> gr1 = gr3;
+false
+gap> gr1 = gr4;
+false
+gap> gr1 = gr5;
+true
+
+# Issue #2
+gap> gr1 := Digraph( [ [ 2 ], [ 1 ], [ 1, 2 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> gr2 := Digraph( [ [ 2 ], [ 1 ] , [ 2, 1 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> gr1 = gr2;
+true
+gap> im := OnDigraphs( gr1, (1,2) );    
+<digraph with 3 vertices, 4 edges>
+gap> DigraphSource(im);
+[ 1, 2, 3, 3 ]
+gap> gr1 = im;
+true
+gap> gr2 = im;
+true
+
 #
 gap> DigraphsStopTest();
 

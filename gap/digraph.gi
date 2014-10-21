@@ -536,9 +536,44 @@ end);
 InstallMethod(\=, "for digraphs",
 [IsDigraph, IsDigraph],
 function(graph1, graph2)
-  return DigraphVertices(graph1) = DigraphVertices(graph2)
-          and DigraphRange(graph1) = DigraphRange(graph2)
-          and DigraphSource(graph1) = DigraphSource(graph2);
+  local sources, source, range1, range2, m, n, stop, start, a, b, i;
+  
+  if DigraphVertices(graph1) <> DigraphVertices(graph2) or
+     DigraphSource(graph1) <> DigraphSource(graph2) then
+    return false;
+  elif IsEmpty(DigraphRange(graph1)) and IsEmpty(DigraphRange(graph2)) then
+    return true;
+  fi;
+
+  sources := Set(DigraphSource(graph1));
+  source := DigraphSource(graph1);
+  range1 := DigraphRange(graph1);
+  range2 := DigraphRange(graph2);
+  m := Length(source);
+  n := Length(sources);
+
+  stop := 1;
+  for i in [ 2 .. n ] do
+    start := stop;
+    stop := Position(source, sources[i]);
+    a := range1{ [ start .. (stop - 1) ] };
+    b := range2{ [ start .. (stop - 1) ] };
+    Sort(a);
+    Sort(b);
+    if a <> b then
+      return false;
+    fi;
+  od;
+  a := range1{ [ stop .. m ] };
+  b := range2{ [ stop .. m ] };
+  Sort(a);
+  Sort(b);
+  if a <> b then
+    return false;
+  fi;
+
+  return true;
+
 end);
 
 #EOF

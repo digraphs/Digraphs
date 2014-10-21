@@ -200,6 +200,7 @@ end);
 InstallMethod(OnDigraphs, "for a digraph and perm",
 [IsDigraph and HasDigraphRange, IsPerm],
 function(graph, perm)
+  local source, range;
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: OnDigraphs: usage,\n",
@@ -207,9 +208,12 @@ function(graph, perm)
     "of the 1st argument <graph>,\n");
     return;
   fi;
+  source := ShallowCopy(OnTuples(DigraphSource(graph), perm));
+  range := ShallowCopy(OnTuples(DigraphRange(graph), perm));
+  range := Permuted(range, Sortex(source));
   return DigraphNC(rec(
-    source := ShallowCopy(OnTuples(DigraphSource(graph), perm)),
-    range:= ShallowCopy(OnTuples(DigraphRange(graph), perm)),
+    source := source,
+    range := range,
     nrvertices:=DigraphNrVertices(graph)));
 end);
 
@@ -676,10 +680,8 @@ end);
 InstallMethod(DigraphOutEdges, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
-  local out, output, pos, i;
-
   if not v in DigraphVertices(digraph) then
-    Error("Digraphs: OutEdges: usage,\n",
+    Error("Digraphs: DigraphOutEdges: usage,\n",
           v, " is not a vertex of the digraph,\n");
     return;
   fi;
@@ -692,14 +694,30 @@ end);
 InstallMethod(DigraphInEdges, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
-  local out, output, pos, i;
-
   if not v in DigraphVertices(digraph) then
-    Error("Digraphs: OutEdges: usage,\n",
+    Error("Digraphs: DigraphInEdges: usage,\n",
           v, " is not a vertex of the digraph,\n");
     return;
   fi;
 
   return List(InNeighboursOfVertex(digraph, v), x -> [x, v]);
 end);
+
+#
+
+InstallMethod(DigraphStronglyConnectedComponent, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  local scc;
+
+  if not v in DigraphVertices(digraph) then
+    Error("Digraphs: DigraphStronglyConnectedComponent: usage,\n",
+          v, " is not a vertex of the digraph,\n");
+    return;
+  fi;
+
+  scc := DigraphStronglyConnectedComponents(digraph);
+  return scc.comps[scc.id[v]];
+end);
+
 #EOF
