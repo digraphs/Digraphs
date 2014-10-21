@@ -404,6 +404,16 @@ gap> InDegrees(gr3);
 [ 5, 0, 3, 5, 4, 5, 5, 1 ]
 gap> InDegreeSequence(gr3);
 [ 5, 5, 5, 5, 4, 3, 1, 0 ]
+gap> OutDegrees(EmptyDigraph(5));
+[ 0, 0, 0, 0, 0 ]
+gap> InDegrees(EmptyDigraph(5));
+[ 0, 0, 0, 0, 0 ]
+gap> gr := EmptyDigraph(5);; OutNeighbours(gr);;
+gap> OutDegrees(gr);
+[ 0, 0, 0, 0, 0 ]
+gap> gr := EmptyDigraph(5);; OutNeighbours(gr);;
+gap> InDegrees(gr);
+[ 0, 0, 0, 0, 0 ]
 
 # DigraphEdges
 gap> r := rec ( 
