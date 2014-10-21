@@ -293,7 +293,6 @@ false
     Specifically, a tournament is a digraph which has a unique directed edge
     (of some orientation) between any pair of distinct vertices, and no loops.
     <P/>
-
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ] );
 <digraph with 4 vertices, 6 edges>
@@ -304,6 +303,31 @@ gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );
 <digraph with 3 vertices, 3 edges>
 gap> IsTournament(gr);
 false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsAperiodicDigraph">
+<ManSection>
+  <Prop Name="IsAperiodicDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    The period of a directed graph <A> digraph </A> is the smallest positive
+    integeri <M> p </M> such that <M> p </M> divides the lengths of every cycle
+    of <A> digraph </A>. If <M> k = 1 </M>, the directed graph <A> digraph </A>
+    is called aperiodic.<P/>
+
+    This function returns true if and only if <A> digraph </A> is aperiodic.
+    <Example><![CDATA[
+gap> gr := Digraph([[6],[1],[2],[3],[4,4],[5]]);
+<multidigraph with 6 vertices, 7 edges>
+gap> IsAperiodicDigraph(gr);
+false
+gap> gr := Digraph([[2],[3,5],[4],[5],[1,2]]);
+<digraph with 5 vertices, 7 edges>
+gap> IsAperiodicDigraph(gr);
+true
 ]]></Example>
   </Description>
 </ManSection>
