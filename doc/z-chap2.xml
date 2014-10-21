@@ -27,6 +27,7 @@
 
   <Section><Heading>Random digraphs</Heading>
     <#Include Label="RandomDigraph">
+    <#Include Label="RandomTournament">
   </Section>
 
   <Section><Heading>Standard examples</Heading>

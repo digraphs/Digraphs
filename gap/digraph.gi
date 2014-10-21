@@ -185,6 +185,49 @@ end);
 
 #
 
+InstallMethod(RandomTournament, "for an integer",
+[IsInt],
+function(n)
+  local verts, choice, nr, source, range, count, gr, i, j;
+  
+  if n < 0 then
+    Error("Digraphs: RandomTournament: usage,\n",
+    "the argument <n> must be a non-negative integer,\n");
+    return;
+  elif n = 0 then
+    gr := EmptyDigraph(0);
+  else
+    verts := [ 1 .. n ];
+    choice := [ true, false ];
+    nr := n * (n - 1) / 2;
+    source := EmptyPlist( nr );
+    range := EmptyPlist( nr );
+    count := 0;
+    for i in verts do
+      for j in [ (i + 1) .. n ] do
+        count := count + 1;
+        if Random(choice) then
+          source[count] := i;
+          range[count] := j;
+        else
+          source[count] := j;
+          range[count] := i;
+        fi;
+      od;
+    od;
+    range := Permuted(range, Sortex(source));
+    gr := DigraphNC(rec( nrvertices := n, source := source, range := range )); 
+    SetDigraphNrEdges(gr, nr);
+  fi;
+  SetIsAntisymmetricDigraph(gr, true);
+  # Commented out for now to allow testing of IsTournament
+  # SetIsTournament(gr, true);
+  return gr;
+
+end);
+
+#
+
 InstallMethod(CompleteDigraph, "for an integer",
 [IsInt],
 function(n)

@@ -156,6 +156,16 @@ gap> Digraph( rec( vertices := "abc", source := "acbab", range := "cbabb" ) );
 gap> DigraphNrVertices(RandomDigraph(10));
 10
 
+# RandomTournament
+gap> RandomTournament(25);
+<digraph with 25 vertices, 300 edges>
+gap> RandomTournament(0);
+<digraph with 0 vertices, 0 edges>
+gap> RandomTournament(-1);
+Error, Digraphs: RandomTournament: usage,
+the argument <n> must be a non-negative integer,
+
+
 # DigraphByEdges
 gap> gr := Digraph( [ [ 1, 2, 3, 5 ], [ 1, 5 ], [ 2, 3, 6 ], [ 1, 3, 4 ], 
 > [ 1, 4, 6 ], [ 3, 4 ] ] );

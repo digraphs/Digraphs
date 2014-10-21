@@ -280,3 +280,31 @@ false
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsTournament">
+<ManSection>
+  <Prop Name="IsTournament" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    Returns <K>true</K> if the digraph <A>digraph</A> is a tournament,
+    and <K>false</K> if it is not. <P/>
+    
+    A tournament is an orientation of a complete (undirected) graph.
+    Specifically, a tournament is a digraph which has a unique directed edge
+    (of some orientation) between any pair of distinct vertices, and no loops.
+    <P/>
+
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ] );
+<digraph with 4 vertices, 6 edges>
+gap> IsAcyclicDigraph(gr);;
+gap> IsTournament(gr);
+true
+gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> IsTournament(gr);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

@@ -222,10 +222,18 @@ function(graph)
 
   n := DigraphNrVertices(graph);
 
+  if n = 0 then
+    return true;
+  fi;
+
   if DigraphNrEdges(graph) <> n * (n - 1) / 2 then 
     return false;
   fi;
- 
+
+  if DigraphHasLoops(graph) then
+    return false;
+  fi;
+
   if HasIsAcyclicDigraph(graph) and IsAcyclicDigraph(graph) then 
     return true;
   fi;

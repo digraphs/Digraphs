@@ -214,16 +214,53 @@ gap> RandomDigraph(1000);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="RandomTournament">
+<ManSection>
+  <Oper Name="RandomTournament" Arg="n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a non-negative integer, this function returns a random
+    tournament with <A>n</A> vertices. See <Ref Prop="IsTournament"/>. <P/>
+    <Log><![CDATA[
+gap> RandomTournament(10);
+<digraph with 10 vertices, 45 edges>
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="CompleteDigraph">
 <ManSection>
   <Oper Name="CompleteDigraph" Arg="n"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> is a non-negative integer, this function returns the complete 
-    digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/> <P/>
+    digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/>. <P/>
     <Log><![CDATA[
 gap> CompleteDigraph(20);
 <digraph with 20 vertices, 400 edges>
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="CompleteBipartiteDigraph">
+<ManSection>
+  <Oper Name="CompleteBipartiteDigraph" Arg="m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    A complete bipartite digraph is a digraph whose vertices
+    can be partitioned into two non-empty vertex sets, such there exist
+    a unique edge with source <C>i</C> and range <C>j</C> whenever
+    <C>i</C> and <C>j</C> lie in different vertex sets. <P/>
+
+    If <A>m</A> and <A>n</A> are positive integers, this function 
+    returns the complete bipartite digraph with vertex sets of size
+    <A>m</A> (containing the vertices <C>[ 1 .. m ]</C>) and size
+    <A>n</A> (containing the vertices <C>[ (m + 1) .. n ]</C>). 
+    <Log><![CDATA[
+gap> CompleteBipartiteDigraph(2, 3);
+<digraph with 5 vertices, 12 edges>
 ]]></Log>
   </Description>
 </ManSection>
@@ -259,28 +296,6 @@ gap> CycleDigraph(1);
 <digraph with 1 vertex, 1 edge>
 gap> CycleDigraph(123);
 <digraph with 123 vertices, 123 edges>
-]]></Log>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="CompleteBipartiteDigraph">
-<ManSection>
-  <Oper Name="CompleteBipartiteDigraph" Arg="m, n"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    A complete bipartite digraph is a digraph whose vertices
-    can be partitioned into two non-empty vertex sets, such there exist
-    a unique edge with source <C>i</C> and range <C>j</C> whenever
-    <C>i</C> and <C>j</C> lie in different vertex sets. <P/>
-
-    If <A>m</A> and <A>n</A> are positive integers, this function 
-    returns the complete bipartite digraph with vertex sets of size
-    <A>m</A> (containing the vertices <C>[ 1 .. m ]</C>) and size
-    <A>n</A> (containing the vertices <C>[ (m + 1) .. n ]</C>). 
-    <Log><![CDATA[
-gap> CompleteBipartiteDigraph(2, 3);
-<digraph with 5 vertices, 12 edges>
 ]]></Log>
   </Description>
 </ManSection>

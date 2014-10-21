@@ -33,9 +33,11 @@ DeclareOperation("DigraphByAdjacencyMatrixNC", [IsList and IsEmpty]);
 DeclareOperation("DigraphByEdges", [IsRectangularTable]);
 DeclareOperation("DigraphByEdges", [IsRectangularTable, IsPosInt]);
 DeclareOperation("Graph", [IsDigraph]);
-DeclareOperation("RandomDigraph", [IsPosInt]);
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
+
+DeclareOperation("RandomDigraph", [IsPosInt]);
+DeclareOperation("RandomTournament", [IsInt]);
 
 DeclareOperation("CompleteBipartiteDigraph", [IsPosInt, IsPosInt]);
 DeclareOperation("CompleteDigraph", [IsInt]);

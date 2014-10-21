@@ -227,6 +227,13 @@ gap> IsAcyclicDigraph(gr);
 true
 gap> IsTournament(gr);
 true
+gap> gr := EmptyDigraph(0);;
+gap> IsTournament(gr);
+true
+gap> gr := Digraph( [ [ 1 ], [ ] ] );
+<digraph with 2 vertices, 1 edge>
+gap> IsTournament(gr);
+false
 gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 1 ] ] );
 <digraph with 3 vertices, 3 edges>
 gap> IsTournament(gr);

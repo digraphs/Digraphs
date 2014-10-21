@@ -5,9 +5,10 @@
     <#Include Label="IsCompleteDigraph">
     <#Include Label="IsEmptyDigraph">
     <#Include Label="IsFunctionalDigraph">
+    <#Include Label="IsMultiDigraph">
     <#Include Label="IsReflexiveDigraph">
     <#Include Label="IsSymmetricDigraph">
-    <#Include Label="IsMultiDigraph">
+    <#Include Label="IsTournament">
   </Section>
   
   <Section><Heading>Connectivity and cycles</Heading>
