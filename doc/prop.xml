@@ -343,13 +343,8 @@ false
   <Prop Name="IsAperiodicDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    The period of a directed graph <A> digraph </A> is the smallest positive
-    integeri <M> p </M> such that <M> p </M> divides the lengths of every cycle
-    of <A> digraph </A>. If <M> k = 1 </M>, the directed graph <A> digraph </A>
-    is called aperiodic.<P/>
-
     This function returns <K> true </K> if <A> digraph </A>
-    is aperiodic, and <K> false </K> if it is not.
+    is aperiodic, i.e. it's <Ref Attr = "DigraphPeriod"/> is equal to 1. 
     <Example><![CDATA[
 gap> gr := Digraph([[6],[1],[2],[3],[4,4],[5]]);
 <multidigraph with 6 vertices, 7 edges>

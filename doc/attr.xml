@@ -458,3 +458,25 @@ gap> DigraphSources(gr);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphPeriod">
+<ManSection>
+  <Prop Name="DigraphPeriod" Arg="digraph"/>
+  <Returns>An integer.</Returns>
+  <Description>
+    The period of a directed graph <A> digraph </A> is the smallest positive
+    integeri <M> p </M> such that <M> p </M> divides the lengths of every cycle
+    of <A> digraph </A>. If <M> p = 1 </M>, the directed graph <A> digraph </A>
+    <Example><![CDATA[
+gap> gr := Digraph([[6],[1],[2],[3],[4,4],[5]]);
+<multidigraph with 6 vertices, 7 edges>
+gap> DigraphPeriod(gr);
+6
+gap> gr := Digraph([[2],[3,5],[4],[5],[1,2]]);
+<digraph with 5 vertices, 7 edges>
+gap> DigraphPeriod(gr);
+1
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
