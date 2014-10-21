@@ -55,5 +55,7 @@
     </List>
     <#Include Label="DigraphFromGraph6String">
     <#Include Label="WriteGraph6">
+    <#Include Label="ReadDigraphs">
+    <#Include Label="WriteDigraphs">
   </Section>
 </Chapter>
