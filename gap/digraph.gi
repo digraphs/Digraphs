@@ -545,8 +545,8 @@ function(graph1, graph2)
     return true;
   fi;
 
-  sources := Set(DigraphSource(graph1));
   source := DigraphSource(graph1);
+  sources := Set(source);
   range1 := DigraphRange(graph1);
   range2 := DigraphRange(graph2);
   m := Length(source);
