@@ -140,6 +140,15 @@ gap> IsAperiodicDigraph(gr);
 false
 
 #
+gap> gr := Digraph(rec(nrvertices := 5, source := [1,2,3,4,5],
+> range := [2,3,4,5,1]));
+<digraph with 5 vertices, 5 edges>
+gap> IsDigraphEdge(gr, [1,2]);
+true
+gap> IsDigraphEdge(gr, [2,2]);
+false
+
+#
 gap> gr := Digraph([[2],[3,5],[4],[5],[1,2]]);
 <digraph with 5 vertices, 7 edges>
 gap> DigraphEdges(gr);

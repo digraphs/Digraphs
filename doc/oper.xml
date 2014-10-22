@@ -483,3 +483,24 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsDigraphEdge">
+<ManSection>
+  <Oper Name="IsDigraphEdge" Arg="digraph, list"/>
+  <Returns> <K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    Returns true if and only if <A>list</A> is a list of size 2 such that
+    <A>list[1]</A> is a source and <A>list[2]</A> is a range of an edge
+    in <A>digraph</A>.
+<Example><![CDATA[
+gap> gr := Digraph(rec(nrvertices := 6, source := [1,1,2,4,6],
+> range:=[2,2,6,3,1]));
+<multidigraph with 6 vertices, 5 edges>
+gap> IsDigraphEdge(gr, [1,1]);
+false
+gap> IsDigraphEdge(gr, [1,2]);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

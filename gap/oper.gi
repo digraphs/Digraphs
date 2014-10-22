@@ -101,11 +101,11 @@ function(digraph, edge)
     return;
   fi;
 
-#  if not IsDigraphEdge(digraph, edge) then
-#    Error("Digraphs: DigraphReverseEdge: usage,\n",
-#    "the second argument <edge> must be an edge of <digraph> \n");
-#    return;
-#  fi;
+  if not IsDigraphEdge(digraph, edge) then
+    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    "the second argument <edge> must be an edge of <digraph> \n");
+    return;
+  fi;
  
   edge_src := edge[1];
   edge_rng := edge[2];
@@ -141,11 +141,11 @@ function(digraph, edge)
     return;
   fi;
 
-#  if not IsDigraphEdge(digraph, edge) then
-#    Error("Digraphs: DigraphReverseEdge: usage,\n",
-#    "the second argument <edge> must be an edge of <digraph> \n");
-#    return;
-#  fi;
+  if not IsDigraphEdge(digraph, edge) then
+    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    "the second argument <edge> must be an edge of <digraph> \n");
+    return;
+  fi;
  
   edge_src := edge[1];
   edge_rng := edge[2];
@@ -842,6 +842,43 @@ function(digraph, v)
 
   scc := DigraphStronglyConnectedComponents(digraph);
   return scc.comps[scc.id[v]];
+end);
+
+#
+
+InstallMethod(IsDigraphEdge, "for a digraph and a list",
+[IsDigraph and HasOutNeighbours, IsList], 1,
+function(digraph, edge)
+  if Length(edge) <> 2 then
+    return false;
+  elif edge[2] in OutNeighboursOfVertex(digraph, edge[1]) then
+    return true;
+  fi;
+  return false;
+end);
+
+#
+
+InstallMethod(IsDigraphEdge, "for a digraph and a list",
+[IsDigraph and HasDigraphSource, IsList],
+function(digraph, edge)
+  local source, range, edge_src, edge_rng, i;
+
+  if Length(edge) <> 2 then
+    return false;
+  fi;
+  source := DigraphSource(digraph);
+  range := DigraphRange(digraph);
+  edge_src := edge[1];
+  edge_rng := edge[2];
+  for i in [ 1 .. Length(source) ] do
+    if source[i] = edge_src and range[i] = edge_rng then
+      return true;
+    elif source[i] > edge_src then
+      break;
+    fi;
+  od;
+  return false;
 end);
 
 #EOF

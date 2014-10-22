@@ -11,6 +11,7 @@
     <#Include Label="DigraphVertexNames">
     <#Include Label="DigraphInEdges">
     <#Include Label="DigraphOutEdges">
+    <#Include Label="IsDigraphEdge">
   </Section>
 
   <Section><Heading>Neighbours and degree</Heading>
