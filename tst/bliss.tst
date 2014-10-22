@@ -14,7 +14,7 @@ gap> LoadPackage("digraphs", false);;
 gap> DigraphsStartTest();
 
 # AutomorphismGroup: all graphs of 5 vertices, compare with grape
-gap> graph5:=ReadDigraphs("pkg/digraphs/data/graph5.g6");
+gap> graph5:=ReadDigraphs(Concatenation(DigraphsDir(), "/data/graph5.g6"));
 [ <digraph with 5 vertices, 0 edges>, <digraph with 5 vertices, 2 edges>, 
   <digraph with 5 vertices, 4 edges>, <digraph with 5 vertices, 6 edges>, 
   <digraph with 5 vertices, 8 edges>, <digraph with 5 vertices, 4 edges>, 
@@ -35,7 +35,7 @@ gap> graph5:=ReadDigraphs("pkg/digraphs/data/graph5.g6");
 gap> List(graph5, AutomorphismGroup)                                           
 > = List(graph5, gr-> AutomorphismGroup(Graph(gr)));
 true
-gap> trees:=ReadDigraphs("pkg/digraphs/data/tree9.4.txt");
+gap> trees:=ReadDigraphs(Concatenation(DigraphsDir(), "/data/tree9.4.txt"));
 [ <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 

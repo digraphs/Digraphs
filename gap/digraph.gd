@@ -25,6 +25,7 @@ BindGlobal("DigraphType", NewType(DigraphFamily,
 DeclareOperation("Digraph", [IsRecord]);
 DeclareOperation("Digraph", [IsList]);
 DeclareOperation("Digraph", [IsPosInt, IsFunction]);
+DeclareOperation("Digraph", [IsBinaryRelation]);
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsList]);
 DeclareOperation("DigraphByAdjacencyMatrix", [IsRectangularTable]);

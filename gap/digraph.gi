@@ -27,6 +27,28 @@ function(n, func)
   return DigraphNC(out);
 end);
 
+InstallMethod(Digraph, "for a binary relation",
+[IsBinaryRelation],
+function(rel)
+  local d, out, gr, i;
+  
+  d := GeneratorsOfDomain(UnderlyingDomainOfBinaryRelation(rel));
+  if not IsRange(d) or d[1] <> 1 then
+    Error("Digraphs: Digraph: usage,\n",
+          "the argument <rel> must be a binary relation\n",
+          "on the domain [ 1 .. n ] for some positive integer n,");
+    return;
+  fi;
+  out := EmptyPlist(Length(d));
+  for i in d do
+    out[i] := ImagesElm( rel, i );
+  od;
+  gr := DigraphNC(out);
+  # Can translate known attributes of <rel> to <gr>; e.g. symmetric, transitive
+  SetIsMultiDigraph(gr, false);
+  return gr;
+end);
+
 InstallMethod(SetDigraphVertexName, "for a digraph, pos int, object",
 [IsDigraph, IsPosInt, IsObject], 
 function(graph, i, name)

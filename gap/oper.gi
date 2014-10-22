@@ -68,8 +68,7 @@ function(graph)
                                 nrvertices:=DigraphNrVertices(graph)));
 end);
 
-# the following doesn't apply to non-simple digraphs, and so we use
-# IsDigraph and HasOutNeighbours
+#
 
 InstallMethod(DigraphReverse, "for a digraph by adjacency",
 [IsDigraph and HasOutNeighbours],
@@ -879,6 +878,24 @@ function(digraph, edge)
     fi;
   od;
   return false;
+end);
+
+#
+
+InstallMethod(AsBinaryRelation, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if DigraphNrVertices(digraph) = 0 then
+    Error("Digraphs: AsBinaryRelation: usage,\n",
+          "the argument <digraph> must have at least one vertex,");
+    return;
+  elif IsMultiDigraph(digraph) then
+    Error("Digraphs: AsBinaryRelation: usage,\n",
+          "this function does not apply to digraphs with multiple edges,");
+    return;
+  fi;
+  # Can translate known attributes of <digraph> to the relation, e.g. symmetry
+  return BinaryRelationOnPointsNC(OutNeighbours(digraph));
 end);
 
 #EOF

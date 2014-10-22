@@ -8,6 +8,7 @@
 #############################################################################
 ##
 
+DeclareOperation("AsBinaryRelation", [IsDigraph]);
 DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);
 DeclareOperation("DigraphRemoveLoops", [IsDigraph]);
 DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
