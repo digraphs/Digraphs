@@ -69,6 +69,10 @@ function(arg)
       decoder := DigraphFromGraph6String;
     elif extension = "d6" then
       decoder := DigraphFromDigraph6String;
+    elif extension = "s6" then
+      decoder := DigraphFromSparse6String;
+    elif extension = "ds6" then
+      decoder := DigraphFromDiSparse6String;
     else
       Error("Digraphs: ReadDigraphs: usage,\n",
             "can't determine the file format,\n");
