@@ -9,8 +9,8 @@
 ##
 ## this file contains utilies for use with the Digraphs package.
 
-BindGlobal("DigraphsDocXMLFiles", [ "attr.xml", "digraph.xml", 
-"display.xml", "grape.xml", "io.xml", "oper.xml", "prop.xml", 
+BindGlobal("DigraphsDocXMLFiles", [ "attr.xml", "bliss.xml",
+"digraph.xml", "display.xml", "grape.xml", "io.xml", "oper.xml", "prop.xml", 
 "util.xml", "../PackageInfo.g"]);
 
 BindGlobal("DigraphsTestRec", rec());
