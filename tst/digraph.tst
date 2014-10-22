@@ -417,6 +417,13 @@ gap> gr1 = gr4;
 false
 gap> gr1 = gr5;
 true
+gap> graph1 := Digraph( [ [ 2 ], [ 1 ], [ ] ] );
+<digraph with 3 vertices, 2 edges>
+gap> graph2 := Digraph(
+> rec( nrvertices := 3, source := [ 1, 2 ], range := [ 2, 1 ] ) );
+<digraph with 3 vertices, 2 edges>
+gap> graph1 = graph2;                     
+true
 
 # Issue #2
 gap> gr1 := Digraph( [ [ 2 ], [ 1 ], [ 1, 2 ] ] );
