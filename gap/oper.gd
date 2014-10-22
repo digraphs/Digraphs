@@ -22,6 +22,7 @@ DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphTransitiveClosure", [IsDigraph, IsBool]);
 DeclareOperation("DigraphSymmetricClosure", [IsDigraph]);
 DeclareOperation("DigraphReverse", [IsDigraph]);
+DeclareOperation("DigraphReverseEdge", [IsDigraph, IsList]);
 
 DeclareOperation("QuotientDigraph", [IsDigraph, IsList]);
 DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);
