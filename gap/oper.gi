@@ -90,6 +90,83 @@ end);
 
 #
 
+InstallMethod(DigraphReverseEdge, "for a digraph and an edge",
+[IsDigraph and HasDigraphSource, IsList],
+function(digraph, edge)
+  local edge_src, edge_rng, source, range, i;
+
+  if IsMultiDigraph(digraph) then
+    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    "the first argument <digraph> must not be a multigraph \n");
+    return;
+  fi;
+
+  if not IsDigraphEdge(digraph, edge) then
+    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    "the second argument <edge> must be an edge of <digraph> \n");
+    return;
+  fi;
+ 
+  edge_src := edge[1];
+  edge_rng := edge[2];
+  source := ShallowCopy(DigraphSource(digraph));
+  range := ShallowCopy(DigraphRange(digraph));
+  
+  for i in [ 1 .. Length(source) ] do
+    if source[i] = edge_src and range[i] = edge_rng then
+      # swap source[i] and range[i]
+      source[i] := range[i] + source[i]; 
+      range[i] := source[i] - range[i];
+      source[i] := source[i] - range[i];
+      break;
+    fi;
+  od;
+
+  range := Permuted(range, Sortex(source));
+  return DigraphNC(rec( source:=source, 
+                        range:=range,
+                        nrvertices:=DigraphNrVertices(digraph)));
+end);
+
+#
+
+InstallMethod(DigraphReverseEdge, "for a digraph and an edge",
+[IsDigraph and HasOutNeighbours, IsList],
+function(digraph, edge)
+  local edge_src, edge_rng, out, new, i;
+
+  if IsMultiDigraph(digraph) then
+    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    "the first argument <digraph> must not be a multigraph \n");
+    return;
+  fi;
+
+  if not IsDigraphEdge(digraph, edge) then
+    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    "the second argument <edge> must be an edge of <digraph> \n");
+    return;
+  fi;
+ 
+  edge_src := edge[1];
+  edge_rng := edge[2];
+
+  out := OutNeighbours(digraph);
+  new := [];
+  for i in [ 1 .. Length(DigraphVertices(digraph)) ] do
+    if i = edge_src then
+      new[i] := ShallowCopy(out[i]);
+      Remove(new[i], Position(new[i], edge_rng));
+    else
+      new[i] := ShallowCopy(out[i]);
+    fi;
+  od;
+  Add(new[edge_rng], edge_src);
+
+  return DigraphNC(new);
+end);
+
+#
+
 InstallMethod(DigraphRemoveLoops, "for a digraph with source",
 [IsDigraph and HasDigraphSource],
 function(graph)
@@ -765,6 +842,43 @@ function(digraph, v)
 
   scc := DigraphStronglyConnectedComponents(digraph);
   return scc.comps[scc.id[v]];
+end);
+
+#
+
+InstallMethod(IsDigraphEdge, "for a digraph and a list",
+[IsDigraph and HasOutNeighbours, IsList], 1,
+function(digraph, edge)
+  if Length(edge) <> 2 then
+    return false;
+  elif edge[2] in OutNeighboursOfVertex(digraph, edge[1]) then
+    return true;
+  fi;
+  return false;
+end);
+
+#
+
+InstallMethod(IsDigraphEdge, "for a digraph and a list",
+[IsDigraph and HasDigraphSource, IsList],
+function(digraph, edge)
+  local source, range, edge_src, edge_rng, i;
+
+  if Length(edge) <> 2 then
+    return false;
+  fi;
+  source := DigraphSource(digraph);
+  range := DigraphRange(digraph);
+  edge_src := edge[1];
+  edge_rng := edge[2];
+  for i in [ 1 .. Length(source) ] do
+    if source[i] = edge_src and range[i] = edge_rng then
+      return true;
+    elif source[i] > edge_src then
+      break;
+    fi;
+  od;
+  return false;
 end);
 
 #EOF

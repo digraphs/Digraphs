@@ -8,6 +8,25 @@
 #############################################################################
 ##
 
+InstallMethod(Digraph, "for a positive integer and a function",
+[IsPosInt, IsFunction],
+function(n, func)
+  local out, V, i, j;
+
+  out:=List( [ 1 .. n ], x -> [] );
+  
+  V:= [ 1 .. n ];
+
+  for i in V do 
+    for j in V do 
+      if func(i, j) then 
+        Add(out[i], j);
+      fi;
+    od;
+  od;
+  return DigraphNC(out);
+end);
+
 InstallMethod(SetDigraphVertexName, "for a digraph, pos int, object",
 [IsDigraph, IsPosInt, IsObject], 
 function(graph, i, name)

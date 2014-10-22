@@ -22,6 +22,7 @@ DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphTransitiveClosure", [IsDigraph, IsBool]);
 DeclareOperation("DigraphSymmetricClosure", [IsDigraph]);
 DeclareOperation("DigraphReverse", [IsDigraph]);
+DeclareOperation("DigraphReverseEdge", [IsDigraph, IsList]);
 
 DeclareOperation("QuotientDigraph", [IsDigraph, IsList]);
 DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);
@@ -36,5 +37,6 @@ DeclareOperation("OutNeighboursOfVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("OutNeighboursOfVertexNC", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphInEdges", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphOutEdges", [IsDigraph, IsPosInt]);
+DeclareOperation("IsDigraphEdge", [IsDigraph, IsList]);
 
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);

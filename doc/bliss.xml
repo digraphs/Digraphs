@@ -1,0 +1,87 @@
+#############################################################################
+##
+#W  bliss.xml
+#Y  Copyright (C) 2014                                  James D. Mitchell
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
+
+<#GAPDoc Label="AutomorphismGroupDigraph">
+<ManSection>
+  <Attr Name="AutomorphismGroup" Label="for a digraph" Arg="digraph"/>
+  <Description>
+
+  <Example>
+  </Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AutomorphismGroupMultiDigraph">
+<ManSection>
+  <Attr Name="AutomorphismGroup" Label="for a multidigraph" Arg="digraph"/>
+  <Description>
+
+  <Example>
+  </Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphEndomorphisms">
+<ManSection>
+  <Attr Name="DigraphEndomorphisms" Label="for a digraph" Arg="digraph"/>
+  <Description>
+
+  <Example>
+  </Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphCanonicalLabelling">
+<ManSection>
+  <Attr Name="DigraphCanonicalLabelling" Label="for a digraph" Arg="digraph"/>
+  <Description>
+
+  <Example>
+  </Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsIsomorphicDigraph">
+<ManSection>
+  <Oper Name="IsIsomorphicDigraph" Label="for a digraph" Arg="digraph"/>
+  <Description>
+
+  <Example>
+  </Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsomorphismDigraphs">
+<ManSection>
+  <Oper Name="IsomorphismDigraphs" Label="for a digraph" Arg="digraph"/>
+  <Description>
+
+  <Example>
+  </Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="EndomorphismMonoid">
+<ManSection>
+  <Attr Name="EndomorphismMonoid" Label="for a digraph" Arg="digraph"/>
+  <Description>
+
+  <Example>
+  </Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+

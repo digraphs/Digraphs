@@ -516,6 +516,26 @@ gap> DigraphEdges(gr2);
   [ 3, 2 ], [ 3, 1 ], [ 3, 3 ], [ 3, 3 ], [ 4, 1 ] ]
 
 #
+gap> gr := CycleDigraph(1000);
+<digraph with 1000 vertices, 1000 edges>
+gap> IsDigraphEdge(gr, [100,101]);
+true
+gap> IsDigraphEdge(gr, [1000,1]);
+true
+gap> IsDigraphEdge(gr, [1000,600]);
+false
+gap> gr := CompleteDigraph(10000);
+<digraph with 10000 vertices, 100000000 edges>
+gap> IsDigraphEdge(gr, [10000,9999]);
+true
+gap> IsDigraphEdge(gr, [9999, 9999]);
+true
+gap> gr := EmptyDigraph(1000000);
+<digraph with 1000000 vertices, 0 edges>
+gap> IsDigraphEdge(gr, [9999, 9999]);
+false
+
+#
 gap> DigraphsStopTest();
 
 #
