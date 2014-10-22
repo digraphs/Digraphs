@@ -10,6 +10,5 @@
 
 DeclareAttribute("AutomorphismGroup", IsDigraph);
 DeclareAttribute("DigraphCanonicalLabelling", IsDigraph);
-
 DeclareOperation("IsIsomorphicDigraph", [IsDigraph, IsDigraph]);
-DeclareOperation("DigraphIsomorphism", [IsDigraph, IsDigraph]);
+DeclareOperation("IsomorphismDigraphs", [IsDigraph, IsDigraph]);
