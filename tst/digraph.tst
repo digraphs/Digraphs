@@ -568,6 +568,44 @@ gap> gr2 := Digraph( [ [ 1 ], [ 2, 1 ] ] );;
 gap> gr1 = gr2; # out[2] sorted differently
 true
 
+# \= for 2 digraphs with source and range
+gap> gr1 := Digraph( rec( nrvertices := 0, source := [ ], range := [ ] ) );;
+gap> gr1 = gr1; # IsIdenticalObj
+true
+gap> gr2 := Digraph( rec( nrvertices := 1, source := [ ], range := [ ] ) );;
+gap> gr1 = gr2; # Different number of vertices
+false
+gap> gr1 := Digraph( rec( nrvertices := 1, source := [ 1 ], range := [ 1 ] ) );;
+gap> gr1 = gr2; # Different sources
+false
+gap> gr2 := Digraph( rec( nrvertices := 1, source := [ 1 ], range := [ 1 ] ) );;
+gap> gr1 = gr2; # Equal range
+true
+gap> gr1 := Digraph(
+> rec( nrvertices := 3,
+>      source := [ 1, 2, 2, 3, 3 ], range := [ 1, 1, 2, 2, 3 ] ) );;
+gap> gr2 := Digraph(
+> rec( nrvertices := 3,
+>      source := [ 1, 2, 2, 3, 3 ], range := [ 1, 2, 2, 3, 2 ] ) );;
+gap> gr1 = gr2; # Different contents of out[2]
+false
+gap> gr1 := Digraph(
+> rec( nrvertices := 3,
+>      source := [ 1, 2, 2, 3, 3 ], range := [ 1, 1, 2, 2, 3 ] ) );;
+gap> gr2 := Digraph(
+> rec( nrvertices := 3,
+>      source := [ 1, 2, 2, 3, 3 ], range := [ 1, 2, 1, 3, 3 ] ) );;
+gap> gr1 = gr2; # Different contents of out[3]
+false
+gap> gr1 := Digraph(
+> rec( nrvertices := 3,
+>      source := [ 1, 2, 2, 3, 3 ], range := [ 1, 1, 2, 2, 3 ] ) );;
+gap> gr2 := Digraph(
+> rec( nrvertices := 3,
+>      source := [ 1, 2, 2, 3, 3 ], range := [ 1, 2, 1, 3, 2 ] ) );;
+gap> gr1 = gr2; # out[2] and out[3] sorted differently
+true
+
 #
 gap> DigraphsStopTest();
 

@@ -668,15 +668,6 @@ end);
 
 # operators . . .
 
-InstallMethod(\=, "for a digraph and a digraph",
-[IsDigraph, IsDigraph], 5,
-function(graph1, graph2)
-  if IsIdenticalObj(graph1, graph2) then
-    return true;
-  fi;
-  TryNextMethod();
-end);
-
 InstallMethod(\=, "for a digraph with range and a digraph with out-neighbours",
 [IsDigraph and HasDigraphRange, IsDigraph and HasOutNeighbours], 1,
 function(graph1, graph2)
@@ -775,8 +766,9 @@ InstallMethod(\=, "for two digraphs with range",
 function(graph1, graph2)
   local sources, source, range1, range2, m, n, stop, start, a, b, i;
   
-  if DigraphNrVertices(graph1) <> DigraphNrVertices(graph2) or
-     DigraphSource(graph1) <> DigraphSource(graph2) then
+  if DigraphNrVertices(graph1) <> DigraphNrVertices(graph2) then
+    return false;
+  elif DigraphSource(graph1) <> DigraphSource(graph2) then # Checks nr edges too
     return false;
   elif DigraphRange(graph1) = DigraphRange(graph2) then
     return true;
