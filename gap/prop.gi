@@ -238,7 +238,7 @@ function(graph)
     return true;
   fi;
 
-  Error("Digraphs: IsTournament: not yet implemented,\n");
+  Error("Digraphs: IsTournament: not yet implemented,");
 
 end);
 
@@ -389,6 +389,15 @@ function(digraph)
     od;
   od;
   return true;
+end);
+
+#
+
+InstallMethod(IsTransitiveDigraph, "for a digrpah",
+[IsDigraph],
+function(digraph)
+  Error("Digraphs: IsTransitiveDigraph: not yet implemented,");
+  return;
 end);
 
 #EOF

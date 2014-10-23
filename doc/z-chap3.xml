@@ -6,8 +6,9 @@
      <Item>
        <Index Key="="><C>=</C> (for digraphs)</Index>
        returns <K>true</K> if <A>digraph1</A> and <A>digraph2</A> have the same
-       vertices, range, and source (up to re-ordering of edges), and 
-       <K>false</K> if they do not.
+       vertices, and
+       <C>DigraphEdges(<A>digraph1</A>) = DigraphEdges(<A>digraph2</A>)</C>,
+       up to some re-ordering of the edge lists.
      </Item>
    </List>
   </Section>

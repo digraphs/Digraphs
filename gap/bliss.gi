@@ -17,8 +17,8 @@ InstallMethod(DigraphCanonicalLabelling, "for a digraph",
 function(graph)
 
   if IsMultiDigraph(graph) then 
-    Error("Digraphs: DigraphCanonicalLabelling: usage,\n",
-          "not yet implemented for multidigraphs,\n");
+    Error("Digraphs: DigraphCanonicalLabelling:\n",
+          "not yet implemented for multidigraphs,");
   fi;
   return DIGRAPH_CANONICAL_LABELING(graph);
 end);
@@ -38,7 +38,7 @@ function(g1, g2)
 
   if IsMultiDigraph(g1) then 
     Error("Digraphs: DigraphCanonicalLabelling: usage,\n",
-          "not yet implemented for multidigraphs,\n");
+          "not yet implemented for multidigraphs,");
   fi;
   
   return OnDigraphs(g1, DigraphCanonicalLabelling(g1)) 
@@ -62,7 +62,7 @@ function(graph)
     if IsEmpty(x[4]) then 
       x[4]:=[()];
     fi;
-    return DirectProduct(Group(x[3]), Group(x[4]));
+    return DirectProduct(Group(Set(x[3])), Group(Set(x[4])));
   else
     x := DIGRAPH_AUTOMORPHISMS(graph);
     SetDigraphCanonicalLabelling(graph, x[1]);
@@ -71,14 +71,14 @@ function(graph)
     if IsEmpty(x) then 
       return Group(());
     else 
-      return Group(x);
+      return Group(Set(x));
     fi;
   fi;
 end);
 
 #
 
-InstallMethod(DigraphIsomorphism, "for two digraphs",
+InstallMethod(IsomorphismDigraphs, "for digraphs",
 [IsDigraph, IsDigraph],
 function(g1, g2)
   

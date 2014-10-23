@@ -68,7 +68,6 @@ gap> DotSymmetricDigraph(gr);
 Error, Digraphs: DotSymmetricDigraph: usage,
 the argument <graph> should be symmetric,
 
-
 # DotDigraph & DotSymmetricDigraph for a small undirected simple graph
 gap> adj := [ [ 2 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3 ] ];
 [ [ 2 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3 ] ]

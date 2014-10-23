@@ -68,8 +68,7 @@ function(graph)
                                 nrvertices:=DigraphNrVertices(graph)));
 end);
 
-# the following doesn't apply to non-simple digraphs, and so we use
-# IsDigraph and HasOutNeighbours
+#
 
 InstallMethod(DigraphReverse, "for a digraph by adjacency",
 [IsDigraph and HasOutNeighbours],
@@ -84,6 +83,83 @@ function(graph)
       Add(new[j], i);
     od;
   od;
+
+  return DigraphNC(new);
+end);
+
+#
+
+InstallMethod(DigraphReverseEdge, "for a digraph and an edge",
+[IsDigraph and HasDigraphSource, IsList],
+function(digraph, edge)
+  local edge_src, edge_rng, source, range, i;
+
+  if IsMultiDigraph(digraph) then
+    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    "the first argument <digraph> must not be a multigraph,");
+    return;
+  fi;
+
+  if not IsDigraphEdge(digraph, edge) then
+    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    "the second argument <edge> must be an edge of <digraph>,");
+    return;
+  fi;
+ 
+  edge_src := edge[1];
+  edge_rng := edge[2];
+  source := ShallowCopy(DigraphSource(digraph));
+  range := ShallowCopy(DigraphRange(digraph));
+  
+  for i in [ 1 .. Length(source) ] do
+    if source[i] = edge_src and range[i] = edge_rng then
+      # swap source[i] and range[i]
+      source[i] := range[i] + source[i]; 
+      range[i] := source[i] - range[i];
+      source[i] := source[i] - range[i];
+      break;
+    fi;
+  od;
+
+  range := Permuted(range, Sortex(source));
+  return DigraphNC(rec( source:=source, 
+                        range:=range,
+                        nrvertices:=DigraphNrVertices(digraph)));
+end);
+
+#
+
+InstallMethod(DigraphReverseEdge, "for a digraph and an edge",
+[IsDigraph and HasOutNeighbours, IsList],
+function(digraph, edge)
+  local edge_src, edge_rng, out, new, i;
+
+  if IsMultiDigraph(digraph) then
+    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    "the first argument <digraph> must not be a multigraph,");
+    return;
+  fi;
+
+  if not IsDigraphEdge(digraph, edge) then
+    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    "the second argument <edge> must be an edge of <digraph>,");
+    return;
+  fi;
+ 
+  edge_src := edge[1];
+  edge_rng := edge[2];
+
+  out := OutNeighbours(digraph);
+  new := [];
+  for i in [ 1 .. Length(DigraphVertices(digraph)) ] do
+    if i = edge_src then
+      new[i] := ShallowCopy(out[i]);
+      Remove(new[i], Position(new[i], edge_rng));
+    else
+      new[i] := ShallowCopy(out[i]);
+    fi;
+  od;
+  Add(new[edge_rng], edge_src);
 
   return DigraphNC(new);
 end);
@@ -158,7 +234,7 @@ function(graph, edges)
     if IsMultiDigraph(graph) then
       Error("Digraphs: DigraphRemoveEdges: usage,\n",
       "the first argument <graph> must not have multiple edges\n",
-      "when the second argument <edges> is a list of edges,\n");
+      "when the second argument <edges> is a list of edges,");
       return;
     fi;
     source := DigraphSource(graph);;
@@ -183,42 +259,73 @@ end);
 
 #
 
-InstallMethod(DigraphAddEdges, "for a digraph and a list",
+InstallMethod(DigraphAddEdge, "for a digraph and an edge",
 [IsDigraph, IsList],
-function(graph, edges)
-  local vertices, newsource, newrange, m, edge;
+function(digraph, edge)
+  local verts;
 
-  if IsEmpty(edges) then
-    return graph;
-  elif not IsList(edges[1])
-   or not Length(edges[1]) = 2 
-   or not IsPosInt(edges[1][1]) 
-   or not IsRectangularTable(edges) then
-    Error("Digraphs: DigraphAddEdges: usage,\n",
-          "the second argument <edges> must be a list of edges of <graph>,\n",
-          "i.e. a list of pairs of vertices of <graph>,\n");
+  verts := DigraphVertices(digraph);
+  if Length(edge) <> 2
+    or not IsPosInt(edge[1])
+    or not IsPosInt(edge[2])
+    or not edge[1] in verts
+    or not edge[2] in verts then
+    Error("Digraphs: DigraphAddEdge: usage,\n",
+          "the second argument <edge> must be a pair of vertices of ",
+          "<digraph>,");
     return;
   fi;
 
-  vertices := DigraphVertices(graph);
-  newsource := ShallowCopy(DigraphSource(graph));
-  newrange := ShallowCopy(DigraphRange(graph));
-  m := Length(newsource);
+  return DigraphAddEdgesNC(digraph, [ edge ]);
+end);
+
+InstallMethod(DigraphAddEdges, "for a digraph and a list",
+[IsDigraph, IsList],
+function(digraph, edges)
+  local vertices, newsource, newrange, m, edge;
+
+  if not IsEmpty(edges) and
+   (not IsList(edges[1])
+    or not Length(edges[1]) = 2 
+    or not IsPosInt(edges[1][1]) 
+    or not IsRectangularTable(edges)) then
+    Error("Digraphs: DigraphAddEdges: usage,\n",
+          "the second argument <edges> must be a list of pairs of vertices\n",
+          "of the first argument <digraph>,");
+    return;
+  fi;
+
+  vertices := DigraphVertices(digraph);
   for edge in edges do
     if not (edge[1] in vertices and edge[2] in vertices) then
       Error("Digraphs: DigraphAddEdges: usage,\n",
-          "the second argument <edges> must be a list of edges with\n",
-          "source and range amongst the vertices of <graph>,\n");
+          "the second argument <edges> must be a list of pairs of vertices\n",
+          "of the first argument <digraph>,");
       return;
     fi;
+  od;
+
+  return DigraphAddEdgesNC(digraph, edges);
+end);
+
+InstallMethod(DigraphAddEdgesNC, "for a digraph and a list",
+[IsDigraph, IsList],
+function(digraph, edges)
+  local newsource, newrange, m, edge;
+
+  newsource := ShallowCopy(DigraphSource(digraph));
+  newrange  := ShallowCopy(DigraphRange(digraph));
+  m := Length(newsource);
+  for edge in edges do
     m := m + 1;
     newsource[m] := edge[1];
     newrange[m] := edge[2];
   od;
 
   newrange := Permuted(newrange, Sortex(newsource));
-  return DigraphNC(rec( source := newsource, range := newrange,
-                          nrvertices := DigraphNrVertices(graph) ) );
+  return DigraphNC(rec( source     := newsource,
+                        range      := newrange,
+                        nrvertices := DigraphNrVertices(digraph) ) );
 end);
 
 #
@@ -231,7 +338,7 @@ function(graph, perm)
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: OnDigraphs: usage,\n",
     "the 2nd argument <perm> must permute the vertices ",
-    "of the 1st argument <graph>,\n");
+    "of the 1st argument <graph>,");
     return;
   fi;
   
@@ -249,7 +356,7 @@ function(graph, perm)
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: OnDigraphs: usage,\n",
     "the 2nd argument <perm> must permute the vertices ",
-    "of the 1st argument <graph>,\n");
+    "of the 1st argument <graph>,");
     return;
   fi;
   source := ShallowCopy(OnTuples(DigraphSource(graph), perm));
@@ -266,7 +373,7 @@ end);
 InstallMethod(DigraphSymmetricClosure, "for a digraph",
 [IsDigraph],
 function(graph)
-  Error("Digraphs: DigraphSymmetricClosure, not yet implemented,\n");
+  Error("Digraphs: DigraphSymmetricClosure, not yet implemented,");
 end);
 
 #
@@ -277,7 +384,7 @@ function(graph)
   
   if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphTransitiveClosure: usage,\n",
-    "the argument <graph> cannot have multiple edges,\n");
+    "the argument <graph> cannot have multiple edges,");
     return;
   fi;
 
@@ -292,7 +399,7 @@ function(graph)
 
   if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
-    "the argument <graph> cannot have multiple edges,\n");
+    "the argument <graph> cannot have multiple edges,");
     return;
   fi;
 
@@ -332,8 +439,6 @@ function(graph, reflexive)
     od;
 
     out := DigraphNC(out);
-    SetIsMultiDigraph(out, false);
-    return out;
   else # Non-acyclic: C method
     if reflexive then
       mat := DIGRAPH_REFLEX_TRANS_CLOSURE(graph);
@@ -341,9 +446,10 @@ function(graph, reflexive)
       mat := DIGRAPH_TRANS_CLOSURE(graph);
     fi;
     out := DigraphByAdjacencyMatrixNC(mat);
-    SetIsMultiDigraph(out, false);
-    return out;
   fi;
+  SetIsMultiDigraph(out, false);
+  SetIsTransitiveDigraph(out, true);
+  return out;
 end);
 
 #
@@ -365,11 +471,11 @@ function( digraph, subverts )
     or not ForAll( subverts, x -> IsPosInt(x) and x < (n + 1)) then
     Error("Digraphs: InducedSubdigraph: usage,\n",
     "the second argument <subverts> must be a duplicate-free subset\n",
-    "of the vertices of the first argument <digraph>,\n");
+    "of the vertices of the first argument <digraph>,");
     return;
   fi;
   
-  Sort(subverts);              # Sorting for consistency with Source/Range version
+  Sort(subverts); # Sorting for consistency with Source/Range version
   nr := Length(subverts);
   old := OutNeighbours(digraph);
   new := EmptyPlist(nr);
@@ -413,7 +519,7 @@ function( digraph, subverts )
     or not ForAll( subverts, x -> IsPosInt(x) and x < (n + 1)) then
     Error("Digraphs: InducedSubdigraph: usage,\n",
     "the second argument <subverts> must be a duplicate-free subset\n",
-    "of the vertices of the first argument <digraph>,\n");
+    "of the vertices of the first argument <digraph>,");
     return;
   fi;
 
@@ -453,31 +559,37 @@ end);
 
 #
 
+InstallMethod(InNeighborsOfVertex, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  return InNeighboursOfVertex(digraph, v);
+end);
+
 InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-function(graph, v)
-  if not v in DigraphVertices(graph) then
+function(digraph, v)
+  if not v in DigraphVertices(digraph) then
     Error("Digraphs: InNeighboursOfVertex: usage,\n",
-          v, " is not a vertex of the digraph,\n");
+          "the second argument <v> is not a vertex of the first, <digraph>,");
     return;
   fi;
-  return InNeighboursOfVertexNC(graph, v);
+  return InNeighboursOfVertexNC(digraph, v);
 end);
 
 InstallMethod(InNeighboursOfVertexNC, "for a digraph with in-neighbours and a vertex",
 [IsDigraph and HasInNeighbours, IsPosInt], 3,
-function(graph, v)
-  return InNeighbours(graph)[v];
+function(digraph, v)
+  return InNeighbours(digraph)[v];
 end);
 
 InstallMethod(InNeighboursOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
-function(graph, v)
+function(digraph, v)
   local inn, pos, out, i, j;
 
   inn := [];
   pos := 1;
-  out := OutNeighbours(graph);
+  out := OutNeighbours(digraph);
   for i in [ 1 .. Length(out) ] do
     for j in [ 1 .. Length(out[i]) ] do
       if out[i][j] = v then
@@ -491,13 +603,13 @@ end);
 
 InstallMethod(InNeighboursOfVertexNC, "for a digraph with range/source and a vertex",
 [IsDigraph and HasDigraphRange, IsPosInt], 1,
-function(graph, v)
+function(digraph, v)
   local inn, pos, source, range, i;
 
   inn := [];
   pos := 1;
-  source := DigraphSource(graph);
-  range := DigraphRange(graph);
+  source := DigraphSource(digraph);
+  range := DigraphRange(digraph);
   for i in [ 1 .. Length(range) ] do
     if range[i] = v then
       inn[pos] := source[i];
@@ -509,34 +621,40 @@ end);
 
 #
 
+InstallMethod(OutNeighborsOfVertex, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  return OutNeighboursOfVertex(digraph, v);
+end);
+
 InstallMethod(OutNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-function(graph, v)
-  if not v in DigraphVertices(graph) then
+function(digraph, v)
+  if not v in DigraphVertices(digraph) then
     Error("Digraphs: OutNeighboursOfVertex: usage,\n",
-          v, " is not a vertex of the digraph,\n");
+          "the second argument <v> is not a vertex of the first, <digraph>,");
     return;
   fi;
-  return OutNeighboursOfVertexNC(graph, v);
+  return OutNeighboursOfVertexNC(digraph, v);
 end);
 
 InstallMethod(OutNeighboursOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
-function(graph, v)
-  return OutNeighbours(graph)[v];
+function(digraph, v)
+  return OutNeighbours(digraph)[v];
 end);
 
 InstallMethod(OutNeighboursOfVertexNC, "for a digraph with only source/range and a vertex",
 [IsDigraph and HasDigraphRange, IsPosInt], 1,
-function(graph, v)
+function(digraph, v)
   local out, pos, source, range, m, i;
 
   out := [];
   pos := 1;
-  source := DigraphSource(graph);
-  range := DigraphRange(graph);
+  source := DigraphSource(digraph);
+  range := DigraphRange(digraph);
   m := Length(source);
-  i := Position(source, v);
+  i := PositionSorted(source, v);
   if i <> fail then
     while i <= m and source[i] = v do
       out[pos] := range[i];
@@ -551,34 +669,34 @@ end);
 
 InstallMethod(InDegreeOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-function(graph, v)
-  if not v in DigraphVertices(graph) then
+function(digraph, v)
+  if not v in DigraphVertices(digraph) then
     Error("Digraphs: InDegreeOfVertex: usage,\n",
-          v, " is not a vertex of the digraph,\n");
+          "the second argument <v> is not a vertex of the first, <digraph>,");
     return;
   fi;
-  return InDegreeOfVertexNC(graph, v);
+  return InDegreeOfVertexNC(digraph, v);
 end);
 
 InstallMethod(InDegreeOfVertexNC, "for a digraph with in-degrees and a vertex",
 [IsDigraph and HasInDegrees, IsPosInt], 4,
-function(graph, v)
-  return InDegrees(graph)[v];
+function(digraph, v)
+  return InDegrees(digraph)[v];
 end);
 
 InstallMethod(InDegreeOfVertexNC, "for a digraph with in-neighbours and a vertex",
 [IsDigraph and HasInNeighbours, IsPosInt], 3,
-function(graph, v)
-  return Length(InNeighbours(graph)[v]);
+function(digraph, v)
+  return Length(InNeighbours(digraph)[v]);
 end);
 
 InstallMethod(InDegreeOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
-function(graph, v)
+function(digraph, v)
   local count, out, x, i;
 
   count := 0;
-  out := OutNeighbours(graph);
+  out := OutNeighbours(digraph);
   for x in out do
     for i in x do
       if i = v then
@@ -591,10 +709,10 @@ end);
 
 InstallMethod(InDegreeOfVertexNC, "for a digraph (with only source/range) and a vertex",
 [IsDigraph and HasDigraphRange, IsPosInt],
-function(graph, v)
+function(digraph, v)
   local range, count, i;
 
-  range := DigraphRange(graph);
+  range := DigraphRange(digraph);
   count := 0;
   for i in [ 1 .. Length(range) ] do
     if range[i] = v then
@@ -608,35 +726,35 @@ end);
 
 InstallMethod(OutDegreeOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-function(graph, v)
-  if not v in DigraphVertices(graph) then
+function(digraph, v)
+  if not v in DigraphVertices(digraph) then
     Error("Digraphs: OutDegreeOfVertex: usage,\n",
-          v, " is not a vertex of the digraph,\n");
+          "the second argument <v> is not a vertex of the first, <digraph>,");
     return;
   fi;
-   return OutDegreeOfVertexNC(graph, v);
+   return OutDegreeOfVertexNC(digraph, v);
 end);
 
 InstallMethod(OutDegreeOfVertexNC, "for a digraph with out-degrees and a vertex",
 [IsDigraph and HasOutDegrees, IsPosInt], 3,
-function(graph, v)
-  return OutDegrees(graph)[v];
+function(digraph, v)
+  return OutDegrees(digraph)[v];
 end);
 
 InstallMethod(OutDegreeOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
-function(graph, v)
-  return Length(OutNeighbours(graph)[v]);
+function(digraph, v)
+  return Length(OutNeighbours(digraph)[v]);
 end);
 
 InstallMethod(OutDegreeOfVertexNC, "for a digraph with source/range and a vertex",
 [IsDigraph and HasDigraphSource, IsPosInt], 1,
-function(graph, v)
+function(digraph, v)
   local count, source, m, i;
 
-  source := DigraphSource(graph);
+  source := DigraphSource(digraph);
   m := Length(source);
-  i := Position(source, v);
+  i := PositionSorted(source, v);
   count := 0;
   if i <> fail then
     while i <= m and source[i] = v do
@@ -655,18 +773,25 @@ function(digraph, partition)
   local n, nr, check, lookup, out, new, gr, source, range, m, newsource,
   newrange, x, i, j;
 
-  # What to do if n = 0?
   n := DigraphNrVertices(digraph);
-  if n = 0 then
+  if n = 0 and IsEmpty(partition) then
+    return EmptyDigraph(0);
+  elif n = 0 then
     Error("Digraphs: QuotientDigraph: usage,\n",
-          "the first argument <digraph> must have at least one vertex,\n");
+          "the second argument <partition> is not a valid partition of the\n",
+          "vertices of the null digraph <digraph>. The only valid partition\n",
+          "of <digraph> is the empty list,");
     return;
   fi;
   nr := Length(partition);
-  if nr = 0 or IsEmpty(partition[1]) or not IsPosInt(partition[1][1]) then
+  if n = 0 or
+   nr = 0 or
+   not IsList(partition[1]) or
+   IsEmpty(partition[1]) or
+   not IsPosInt(partition[1][1]) then
     Error("Digraphs: QuotientDigraph: usage,\n",
           "the second argument <partition> is not a valid partition\n",
-          "of the vertices of <digraph>, [ 1 .. ", n, " ],\n");
+          "of the vertices of <digraph>, [ 1 .. ", n, " ],");
     return;
   fi;
 
@@ -678,7 +803,7 @@ function(digraph, partition)
       if i < 1 or i > n or check[i]  then
         Error("Digraphs: QuotientDigraph: usage,\n",
           "the second argument <partition> is not a valid partition\n",
-          "of the vertices of <digraph>, [ 1 .. ", n, " ],\n");
+          "of the vertices of <digraph>, [ 1 .. ", n, " ],");
         return;
       fi;
       check[i] := true;
@@ -689,7 +814,7 @@ function(digraph, partition)
   if ForAny( check, x -> not x ) then
     Error("Digraphs: QuotientDigraph: usage,\n",
           "the second argument <partition> does not partition\n",
-          "every vertex of the first argument, <digraph>,\n");
+          "every vertex of the first argument, <digraph>,");
     return;
   fi;
 
@@ -729,7 +854,7 @@ InstallMethod(DigraphOutEdges, "for a digraph and a vertex",
 function(digraph, v)
   if not v in DigraphVertices(digraph) then
     Error("Digraphs: DigraphOutEdges: usage,\n",
-          v, " is not a vertex of the digraph,\n");
+          v, " is not a vertex of the digraph,");
     return;
   fi;
 
@@ -743,7 +868,7 @@ InstallMethod(DigraphInEdges, "for a digraph and a vertex",
 function(digraph, v)
   if not v in DigraphVertices(digraph) then
     Error("Digraphs: DigraphInEdges: usage,\n",
-          v, " is not a vertex of the digraph,\n");
+          v, " is not a vertex of the digraph,");
     return;
   fi;
 
@@ -759,12 +884,102 @@ function(digraph, v)
 
   if not v in DigraphVertices(digraph) then
     Error("Digraphs: DigraphStronglyConnectedComponent: usage,\n",
-          v, " is not a vertex of the digraph,\n");
+          v, " is not a vertex of the digraph,");
     return;
   fi;
 
   scc := DigraphStronglyConnectedComponents(digraph);
   return scc.comps[scc.id[v]];
+end);
+
+#
+
+InstallMethod(IsDigraphEdge, "for a digraph with out-neighbours and a list",
+[IsDigraph and HasOutNeighbours, IsList], 1,
+function(digraph, edge)
+  local n;
+
+  n := DigraphNrVertices(digraph);
+  if Length(edge) <> 2 or
+   not IsPosInt(edge[1]) or
+   not IsPosInt(edge[2]) or
+   n < edge[1] or
+   n < edge[2] then
+    return false;
+  elif edge[2] in OutNeighboursOfVertex(digraph, edge[1]) then
+    return true;
+  fi;
+  return false;
+end);
+
+#
+
+InstallMethod(IsDigraphEdge, "for a digraph and a list",
+[IsDigraph and HasDigraphRange, IsList],
+function(digraph, edge)
+  local edge_src, edge_rng, n, source, range, pos, i;
+
+  if Length(edge) <> 2 then
+    return false;
+  fi;
+
+  edge_src := edge[1];
+  edge_rng := edge[2];
+  n := DigraphNrVertices(digraph);
+
+  if not IsPosInt(edge_src) or
+   not IsPosInt(edge_rng) or
+   n < edge_src or
+   n < edge_rng then
+    return false;
+  fi;
+
+  source := DigraphSource(digraph);
+  range := DigraphRange(digraph);
+  pos := PositionSorted(source, edge_src);
+  if pos <> fail then
+    for i in [ pos .. Length(source) ] do
+      if source[i] = edge_src and range[i] = edge_rng then
+        return true;
+      elif source[i] > edge_src then
+        return false;
+      fi;
+    od;
+  fi;
+  return false;
+end);
+
+#
+
+InstallMethod(AsBinaryRelation, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local rel;
+  
+  if DigraphNrVertices(digraph) = 0 then
+    Error("Digraphs: AsBinaryRelation: usage,\n",
+          "the argument <digraph> must have at least one vertex,");
+    return;
+  elif IsMultiDigraph(digraph) then
+    Error("Digraphs: AsBinaryRelation: usage,\n",
+          "this function does not apply to digraphs with multiple edges,");
+    return;
+  fi;
+  # Can translate known attributes of <digraph> to the relation, e.g. symmetry
+  rel := BinaryRelationOnPointsNC(OutNeighbours(digraph));
+  if HasIsReflexiveDigraph(digraph) then
+    SetIsReflexiveBinaryRelation(rel, IsReflexiveDigraph(digraph));
+  fi;
+  if HasIsSymmetricDigraph(digraph) then
+    SetIsSymmetricBinaryRelation(rel, IsSymmetricDigraph(digraph));
+  fi;
+  if HasIsTransitiveDigraph(digraph) then
+    SetIsTransitiveBinaryRelation(rel, IsTransitiveDigraph(digraph));
+  fi;
+  if HasIsAntisymmetricDigraph(digraph) then
+    SetIsAntisymmetricBinaryRelation(rel, IsAntisymmetricDigraph(digraph));
+  fi;
+  return rel;
 end);
 
 #EOF

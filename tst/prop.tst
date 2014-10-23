@@ -259,7 +259,6 @@ gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 1 ] ] );
 gap> IsTournament(gr);
 Error, Digraphs: IsTournament: not yet implemented,
 
-
 # IsStronglyConnectedDigraph
 gap> gr := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
@@ -372,7 +371,6 @@ gap> IsStronglyConnectedDigraph(gr);
 false
 gap> IsConnectedDigraph(gr);
 Error, Digraphs: DigraphSymmetricClosure, not yet implemented,
-
 gap> gr := Digraph( [ [ 2 ], [ 1 ] ] );
 <digraph with 2 vertices, 2 edges>
 gap> IsStronglyConnectedDigraph(gr);

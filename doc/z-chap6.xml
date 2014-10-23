@@ -1,5 +1,20 @@
 <Chapter Label="Homomorphisms"><Heading>Homomorphisms</Heading>
+  
   <Section><Heading>Acting on digraphs</Heading>
     <#Include Label="OnDigraphs">
   </Section>
+
+  <Section><Heading>Isomorphisms, and Canonical labellings</Heading>
+    <#Include Label="AutomorphismGroupDigraph">
+    <#Include Label="AutomorphismGroupMultiDigraph">
+    <#Include Label="DigraphCanonicalLabelling">
+    <#Include Label="IsIsomorphicDigraph">
+    <#Include Label="IsomorphismDigraphs">
+  </Section>
+  
+  <Section><Heading>Homomorphisms</Heading>
+    <#Include Label="DigraphEndomorphisms">
+    <#Include Label="EndomorphismMonoid">
+  </Section>
+
 </Chapter>
