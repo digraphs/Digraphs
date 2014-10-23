@@ -259,7 +259,6 @@ gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 1 ] ] );
 gap> IsTournament(gr);
 Error, Digraphs: IsTournament: not yet implemented,
 
-
 # IsStronglyConnectedDigraph
 gap> gr := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>

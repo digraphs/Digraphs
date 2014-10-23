@@ -38,7 +38,7 @@ function(g1, g2)
 
   if IsMultiDigraph(g1) then 
     Error("Digraphs: DigraphCanonicalLabelling: usage,\n",
-          "not yet implemented for multidigraphs,\n");
+          "not yet implemented for multidigraphs,");
   fi;
   
   return OnDigraphs(g1, DigraphCanonicalLabelling(g1)) 

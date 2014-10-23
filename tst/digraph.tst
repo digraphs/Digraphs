@@ -67,12 +67,10 @@ gap> Digraph( [ [ 0, 1 ] ] );
 Error, Digraphs: Digraph: usage,
 the argument must be a list of lists of positive integers
 not exceeding the length of the argument,
-
 gap> Digraph( [ [ 2 ], [ 3 ] ] );
 Error, Digraphs: Digraph: usage,
 the argument must be a list of lists of positive integers
 not exceeding the length of the argument,
-
 
 # Digraph (by record)
 gap> n := 3;;
@@ -83,80 +81,62 @@ gap> Digraph( rec( nrvertices := n, source := s ) );
 Error, Digraphs: Digraph: usage,
 the argument must be a record with components:
 'source', 'range', and either 'vertices' or 'nrvertices',
-
 gap> Digraph( rec( nrvertices := n, range := r ) );
 Error, Digraphs: Digraph: usage,
 the argument must be a record with components:
 'source', 'range', and either 'vertices' or 'nrvertices',
-
 gap> Digraph( rec( nrvertices := n, source := s, vertices := v ) );
 Error, Digraphs: Digraph: usage,
 the argument must be a record with components:
 'source', 'range', and either 'vertices' or 'nrvertices',
-
 gap> Digraph( rec( nrvertices := n, range := r, vertices := v ) );
 Error, Digraphs: Digraph: usage,
 the argument must be a record with components:
 'source', 'range', and either 'vertices' or 'nrvertices',
-
 gap> Digraph( rec( source := s, range := r ) );
 Error, Digraphs: Digraph: usage,
 the argument must be a record with components:
 'source', 'range', and either 'vertices' or 'nrvertices',
-
 gap> Digraph( rec( nrvertices := n, source := s, range := 4 ) );
 Error, Digraphs: Digraph: usage,
 the graph components 'source' and 'range' should be lists,
-
 gap> Digraph( rec( nrvertices := n, source := 1, range := r ) );
 Error, Digraphs: Digraph: usage,
 the graph components 'source' and 'range' should be lists,
-
 gap> Digraph( rec( nrvertices := n, source := [ 1, 2 ], range := r ) );
 Error, Digraphs: Digraph: usage,
 the record components 'source' and 'range' should have equal length,
-
 gap> Digraph( rec( nrvertices := "a", source := s, range := r ) );
 Error, Digraphs: Digraph: usage,
 the record component 'nrvertices' should be a non-negative integer,
-
 gap> Digraph( rec( nrvertices := -3, source := s, range := r ) );
 Error, Digraphs: Digraph: usage,
 the record component 'nrvertices' should be a non-negative integer,
-
 gap> Digraph(
 > rec( nrvertices := 2, vertices := [ 1 .. 3 ], source := [ 2 ], range := [ 2 ] ) );
 Error, Digraphs: Digraph: usage,
 the record components 'nrvertices' and 'vertices' are inconsistent,
-
 gap> Digraph( rec( nrvertices := n, source := [ 0 .. 2 ], range := r ) );
 Error, Digraphs: Digraph: usage,
 the record component 'source' is invalid,
-
 gap> Digraph( rec( nrvertices := n, source := [ 2 .. 4 ], range := r ) );
 Error, Digraphs: Digraph: usage,
 the record component 'source' is invalid,
-
 gap> Digraph( rec( vertices := 2, source := s, range := r ) );
 Error, Digraphs: Digraph: usage,
 the record component 'vertices' should be a list,
-
 gap> Digraph( rec( nrvertices := n, source := [ 1, 2, 4 ], range := r ) );
 Error, Digraphs: Digraph: usage,
 the record component 'source' is invalid,
-
 gap> Digraph( rec( vertices := v, source := [ 1, 2, 4 ], range := r ) );
 Error, Digraphs: Digraph: usage,
 the record component 'source' is invalid,
-
 gap> Digraph( rec( nrvertices := n, source := s, range := [ 1, 4, 2 ] ) );
 Error, Digraphs: Digraph: usage,
 the record component 'range' is invalid,
-
 gap> Digraph( rec( vertices := v, source := s, range := [ 1, 4, 2 ] ) );
 Error, Digraphs: Digraph: usage,
 the record component 'range' is invalid,
-
 gap> Digraph( rec( vertices := "abc", source := "acbab", range := "cbabb" ) );
 <digraph with 3 vertices, 5 edges>
 
@@ -226,7 +206,6 @@ gap> RandomTournament(-1);
 Error, Digraphs: RandomTournament: usage,
 the argument <n> must be a non-negative integer,
 
-
 # DigraphByEdges
 gap> gr := Digraph( [ [ 1, 2, 3, 5 ], [ 1, 5 ], [ 2, 3, 6 ], [ 1, 3, 4 ], 
 > [ 1, 4, 6 ], [ 3, 4 ] ] );
@@ -236,19 +215,15 @@ true
 gap> DigraphByEdges( [ [ "nonsense", "more" ] ] );
 Error, Digraphs: DigraphByEdges: usage,
 the argument <edges> must be a list of pairs of pos ints,
-
 gap> DigraphByEdges( [ [ "nonsense" ] ] );
 Error, Digraphs: DigraphByEdges: usage,
 the argument <edges> must be a list of pairs,
-
 gap> DigraphByEdges( [[  "a", "b" ] ], 2 );
 Error, Digraphs: DigraphByEdges: usage,
 the argument <edges> must be a list of pairs of pos ints,
-
 gap> DigraphByEdges( [ [ 1, 2, 3 ] ], 3 );
 Error, Digraphs: DigraphByEdges: usage,
 the argument <edges> must be a list of pairs,
-
 gap> gr := DigraphByEdges(DigraphEdges(gr), 10);
 <digraph with 10 vertices, 17 edges>
 gap> gr := DigraphByEdges( [ [ 1, 2 ] ] );
@@ -258,7 +233,6 @@ gap> gr := DigraphByEdges( [ [ 2, 1 ] ] );
 gap> gr := DigraphByEdges( [ [ 1, 2 ] ], 1 ); 
 Error, Digraphs: DigraphByEdges: usage,
 the specified edges must not contain values greater than 1,
-
 
 # AsDigraph
 gap> f := Transformation([]);
@@ -276,7 +250,6 @@ gap> AsDigraph(g);
 gap> AsDigraph(g, -1);
 Error, Digraphs: AsDigraph: usage,
 the second argument should be a non-negative integer,
-
 gap> AsDigraph(g, 10);
 <digraph with 10 vertices, 10 edges>
 gap> h := Transformation( [ 2, 4, 1, 3, 5 ] );
@@ -291,7 +264,6 @@ gap> mat := [
 gap> DigraphByAdjacencyMatrix(mat);
 Error, Digraphs: DigraphByAdjacencyMatrix: usage,
 the matrix is not square,
-
 gap> mat := [
 > [ 11, 2, 3 ],
 > [ 11, 2, 3 ],
@@ -299,12 +271,10 @@ gap> mat := [
 gap> DigraphByAdjacencyMatrix(mat);
 Error, Digraphs: DigraphByAdjacencyMatrix: usage,
 the argument must be a matrix of non-negative integers,
-
 gap> mat := [ [ "a" ] ];;
 gap> DigraphByAdjacencyMatrix(mat);
 Error, Digraphs: DigraphByAdjacencyMatrix: usage,
 the argument must be a matrix of non-negative integers,
-
 gap> mat := [
 > [ 0, 2, 0, 0, 1 ],
 > [ 0, 2, 1, 0, 1 ],
@@ -365,7 +335,6 @@ gap> CompleteDigraph(-1);
 Error, Digraphs: CompleteDigraph: usage,
 the argument <n> must be a non-negative integer,
 
-
 # EmptyDigraph
 gap> gr := EmptyDigraph(5);
 <digraph with 5 vertices, 0 edges>
@@ -374,7 +343,6 @@ gap> EmptyDigraph(0);
 gap> EmptyDigraph(-1);
 Error, Digraphs: EmptyDigraph: usage,
 the argument <n> must be a non-negative integer,
-
 
 # CycleDigraph
 gap> gr := CycleDigraph(0);

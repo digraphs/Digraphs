@@ -28,7 +28,6 @@ gap> gr := Digraph( rec( vertices := [ "a", "b" ],
 gap> DigraphDual(gr);
 Error, Digraphs: DigraphDual: usage,
 the argument <graph> must not have multiple edges,
-
 gap> gr := Digraph( [ ] );                  
 <digraph with 0 vertices, 0 edges>
 gap> DigraphDual(gr);
@@ -46,7 +45,6 @@ gap> gr := Digraph( [ [ 2, 2 ], [  ] ] );
 gap> DigraphDual(gr);
 Error, Digraphs: DigraphDual: usage,
 the argument <graph> must not have multiple edges,
-
 gap> r := rec( nrvertices := 6,
 > source := [ 2, 2, 2, 2, 2, 2, 4, 4, 4 ],
 > range  := [ 1, 2, 3, 4, 5, 6, 3, 4, 5 ] );;

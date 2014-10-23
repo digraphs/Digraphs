@@ -15,7 +15,7 @@ function(graph)
   
   if IsMultiDigraph(graph) then 
     Error("Digraphs: DigraphDual: usage,\n", 
-      "the argument <graph> must not have multiple edges,\n");
+      "the argument <graph> must not have multiple edges,");
     return;
   fi;
   
@@ -38,7 +38,7 @@ function(graph)
   
   if IsMultiDigraph(graph) then 
     Error("Digraphs: DigraphDual: usage,\n", 
-      "the argument <graph> must not have multiple edges,\n");
+      "the argument <graph> must not have multiple edges,");
     return;
   fi;
   
