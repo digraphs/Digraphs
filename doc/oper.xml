@@ -563,8 +563,8 @@ true
   <Description>
     If <A>digraph</A> is a digraph with a positive number of vertices <M>n</M>,
     and no multiple edges, then this function returns a binary relation on
-    the points <C>[ 1 .. n ]</C>. In the binary relation, <C>i</C> is related 
-    to <C>j</C> if and only if <C>[ i, j ]</C> is an edge in <A>digraph</A>. 
+    the points <C>[ 1 .. n ]</C>. The pair <C>[ i, j ]</C> is in the binary
+    relation if and only if <C>[ i, j ]</C> is an edge in <A>digraph</A>. 
     <P/>
 <Example><![CDATA[
 gap> gr := Digraph( [ [ 3, 2 ], [ 1, 2 ], [ 2 ], [ 3, 4 ] ] );

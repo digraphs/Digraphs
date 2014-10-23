@@ -654,7 +654,7 @@ function(digraph, v)
   source := DigraphSource(digraph);
   range := DigraphRange(digraph);
   m := Length(source);
-  i := Position(source, v);
+  i := PositionSorted(source, v);
   if i <> fail then
     while i <= m and source[i] = v do
       out[pos] := range[i];
@@ -754,7 +754,7 @@ function(digraph, v)
 
   source := DigraphSource(digraph);
   m := Length(source);
-  i := Position(source, v);
+  i := PositionSorted(source, v);
   count := 0;
   if i <> fail then
     while i <= m and source[i] = v do
@@ -954,6 +954,8 @@ end);
 InstallMethod(AsBinaryRelation, "for a digraph",
 [IsDigraph],
 function(digraph)
+  local rel;
+  
   if DigraphNrVertices(digraph) = 0 then
     Error("Digraphs: AsBinaryRelation: usage,\n",
           "the argument <digraph> must have at least one vertex,");
@@ -964,7 +966,20 @@ function(digraph)
     return;
   fi;
   # Can translate known attributes of <digraph> to the relation, e.g. symmetry
-  return BinaryRelationOnPointsNC(OutNeighbours(digraph));
+  rel := BinaryRelationOnPointsNC(OutNeighbours(digraph));
+  if HasIsReflexiveDigraph(digraph) then
+    SetIsReflexiveBinaryRelation(rel, IsReflexiveDigraph(digraph));
+  fi;
+  if HasIsSymmetricDigraph(digraph) then
+    SetIsSymmetricBinaryRelation(rel, IsSymmetricDigraph(digraph));
+  fi;
+  if HasIsTransitiveDigraph(digraph) then
+    SetIsTransitiveBinaryRelation(rel, IsTransitiveDigraph(digraph));
+  fi;
+  if HasIsAntisymmetricDigraph(digraph) then
+    SetIsAntisymmetricBinaryRelation(rel, IsAntisymmetricDigraph(digraph));
+  fi;
+  return rel;
 end);
 
 #EOF

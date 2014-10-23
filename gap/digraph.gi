@@ -44,8 +44,19 @@ function(rel)
     out[i] := ImagesElm( rel, i );
   od;
   gr := DigraphNC(out);
-  # Can translate known attributes of <rel> to <gr>; e.g. symmetric, transitive
   SetIsMultiDigraph(gr, false);
+  if HasIsReflexiveBinaryRelation(rel) then
+    SetIsReflexiveDigraph(gr, IsReflexiveBinaryRelation(rel));
+  fi;
+  if HasIsSymmetricBinaryRelation(rel) then
+    SetIsSymmetricDigraph(gr, IsSymmetricBinaryRelation(rel));
+  fi;
+  if HasIsTransitiveBinaryRelation(rel) then
+    SetIsTransitiveDigraph(gr, IsTransitiveBinaryRelation(rel));
+  fi;
+  if HasIsAntisymmetricBinaryRelation(rel) then
+    SetIsAntisymmetricDigraph(gr, IsAntisymmetricBinaryRelation(rel));
+  fi;
   return gr;
 end);
 

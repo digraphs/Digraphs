@@ -629,22 +629,30 @@ this function does not apply to digraphs with multiple edges,
 gap> gr := Digraph(
 > [ [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3 ], [ 4, 5 ], [ 4, 5 ] ] );
 <digraph with 5 vertices, 13 edges>
-gap> rel := AsBinaryRelation(gr);
+gap> rel1 := AsBinaryRelation(gr);
 Binary Relation on 5 points
-gap> Digraph(rel) = gr;
+gap> Digraph(rel1) = gr;
 true
-gap> IsReflexiveBinaryRelation(rel);
+gap> IsReflexiveBinaryRelation(rel1);
 true
-gap> IsSymmetricBinaryRelation(rel);
+gap> IsSymmetricBinaryRelation(rel1);
 true
-gap> IsTransitiveBinaryRelation(rel);
+gap> IsTransitiveBinaryRelation(rel1);
 true
-gap> IsEquivalenceRelation(rel);
+gap> IsAntisymmetricBinaryRelation(rel1);
+false
+gap> IsEquivalenceRelation(rel1);
 true
-gap> List(EquivalenceClasses(rel), Elements);
+gap> List(EquivalenceClasses(rel1), Elements);
 [ [ 1, 2, 3 ], [ 4, 5 ] ]
 gap> DigraphStronglyConnectedComponents(gr).comps;
 [ [ 1, 2, 3 ], [ 4, 5 ] ]
+gap> last = last2;
+true
+gap> Successors(rel1);
+[ [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3 ], [ 4, 5 ], [ 4, 5 ] ]
+gap> OutNeighbours(gr);
+[ [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3 ], [ 4, 5 ], [ 4, 5 ] ]
 gap> last = last2;
 true
 gap> IsReflexiveDigraph(gr);
@@ -653,6 +661,28 @@ gap> IsSymmetricDigraph(gr);
 true
 gap> IsTransitiveDigraph(gr);
 Error, Digraphs: IsTransitiveDigraph: not yet implemented,
+gap> IsAntisymmetricDigraph(gr);
+false
+gap> rel2 := AsBinaryRelation(gr);
+Binary Relation on 5 points
+gap> HasIsReflexiveBinaryRelation(rel2);
+true
+gap> HasIsSymmetricBinaryRelation(rel2);
+true
+gap> HasIsTransitiveBinaryRelation(rel2);
+false
+gap> HasIsAntisymmetricBinaryRelation(rel2);
+true
+gap> rel3 := AsBinaryRelation(Digraph(rel1));
+<equivalence relation on <object> >
+gap> HasIsReflexiveBinaryRelation(rel3);
+true
+gap> HasIsSymmetricBinaryRelation(rel3);
+true
+gap> HasIsTransitiveBinaryRelation(rel3);
+true
+gap> HasIsAntisymmetricBinaryRelation(rel3);
+true
 
 #
 gap> DigraphsStopTest();
