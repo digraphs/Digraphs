@@ -67,8 +67,12 @@ function(arg)
       decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
     elif extension = "g6" then
       decoder := DigraphFromGraph6String;
+    elif extension = "s6" then
+      decoder := DigraphFromSparse6String;
     elif extension = "d6" then
       decoder := DigraphFromDigraph6String;
+    elif extension = "ds6" then
+      decoder := DigraphFromDiSparse6String;
     else
       Error("Digraphs: ReadDigraphs: usage,\n",
             "can't determine the file format,\n");
@@ -484,8 +488,8 @@ end);
 
 InstallGlobalFunction(WriteDigraphs,
 function(arg)
-  local digraphs, filename, encoder, file, g6sum, s6sum, digraph, v, e, dg6sum, 
-        ds6sum;
+  local filename, digraphs, encoder, ext, g6sum, s6sum, digraph, v, e, dg6sum, 
+        ds6sum, file;
   if Length(arg) = 2 then
     filename := arg[1];
     digraphs := arg[2];
@@ -512,13 +516,6 @@ function(arg)
     return;
   fi;
 
-  file := IO_CompressedFile(filename, "w");
-
-  if file = fail then
-    Error("Digraphs: WriteDigraphs: usage,\n",
-          "can't open file ", filename, ",\n");
-    return;
-  fi;
 
   if encoder = fail then
     # CHOOSE A GOOD ENCODER:
@@ -563,6 +560,28 @@ function(arg)
         fi;
       fi;
     fi;
+  fi;
+
+  if encoder = WriteGraph6 then
+    ext := "g6";
+  elif encoder = WriteSparse6 then
+    ext := "s6";
+  elif encoder = WriteDigraph6 then
+    ext := "d6";
+  elif encoder = WriteDiSparse6 then
+    ext := "ds6";
+  else
+    Error("Digraphs: WriteDigraphs: usage,\n",
+          "invalid encoder specified,");
+    return;
+  fi;
+
+  file := IO_CompressedFile(Concatenation(filename,".",ext), "w");
+
+  if file = fail then
+    Error("Digraphs: WriteDigraphs: usage,\n",
+          "can't open file ", filename, ",\n");
+    return;
   fi;
 
   for digraph in digraphs do
