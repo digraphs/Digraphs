@@ -18,5 +18,6 @@ DeclareProperty("IsStronglyConnectedDigraph", IsDigraph);
 DeclareProperty("IsSymmetricDigraph", IsDigraph);
 DeclareProperty("IsAntisymmetricDigraph", IsDigraph);
 DeclareProperty("IsTournament", IsDigraph);
+DeclareProperty("IsTransitiveDigraph", IsDigraph);
 DeclareProperty("DigraphHasLoops", IsDigraph);
 DeclareProperty("IsAperiodicDigraph", IsDigraph);

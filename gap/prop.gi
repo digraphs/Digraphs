@@ -391,4 +391,13 @@ function(digraph)
   return true;
 end);
 
+#
+
+InstallMethod(IsTransitiveDigraph, "for a digrpah",
+[IsDigraph],
+function(digraph)
+  Error("Digraphs: IsTransitiveDigraph: not yet implemented,");
+  return;
+end);
+
 #EOF

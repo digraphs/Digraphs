@@ -271,7 +271,7 @@ function(digraph, edge)
     or not edge[1] in verts
     or not edge[2] in verts then
     Error("Digraphs: DigraphAddEdge: usage,\n",
-          "the second argument <edge> must be a pair of vertices of",
+          "the second argument <edge> must be a pair of vertices of ",
           "<digraph>,");
     return;
   fi;
@@ -439,8 +439,6 @@ function(graph, reflexive)
     od;
 
     out := DigraphNC(out);
-    SetIsMultiDigraph(out, false);
-    return out;
   else # Non-acyclic: C method
     if reflexive then
       mat := DIGRAPH_REFLEX_TRANS_CLOSURE(graph);
@@ -448,9 +446,10 @@ function(graph, reflexive)
       mat := DIGRAPH_TRANS_CLOSURE(graph);
     fi;
     out := DigraphByAdjacencyMatrixNC(mat);
-    SetIsMultiDigraph(out, false);
-    return out;
   fi;
+  SetIsMultiDigraph(out, false);
+  SetIsTransitiveDigraph(out, true);
+  return out;
 end);
 
 #
@@ -476,7 +475,7 @@ function( digraph, subverts )
     return;
   fi;
   
-  Sort(subverts);              # Sorting for consistency with Source/Range version
+  Sort(subverts); # Sorting for consistency with Source/Range version
   nr := Length(subverts);
   old := OutNeighbours(digraph);
   new := EmptyPlist(nr);
@@ -920,12 +919,15 @@ InstallMethod(IsDigraphEdge, "for a digraph and a list",
 function(digraph, edge)
   local edge_src, edge_rng, n, source, range, pos, i;
 
+  if Length(edge) <> 2 then
+    return false;
+  fi;
+
   edge_src := edge[1];
   edge_rng := edge[2];
   n := DigraphNrVertices(digraph);
 
-  if Length(edge) <> 2 or
-   not IsPosInt(edge_src) or
+  if not IsPosInt(edge_src) or
    not IsPosInt(edge_rng) or
    n < edge_src or
    n < edge_rng then
