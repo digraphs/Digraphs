@@ -60,34 +60,50 @@
         a digraph isomorphic to <A>obj</A>.
       </Item>
 
+      <Mark>for a binary relation</Mark>
+      <Item>
+        if <A>obj</A> is a binary relation on the points <C>[ 1 .. n ]</C> for
+        some posititve integer <M>n</M>, then this function returns the digraph
+        defined by <A>obj</A>. Specifically, this function returns a digraph
+        which has <M>n</M> vertices, and which has an edge with source <C>i</C>
+        and range <C>j</C> if and only if <C>i</C> is related to <C>j</C> in
+        the binary relation <A>obj</A>.
+      </Item>
+
     </List>
   
     <Example><![CDATA[
-gap> gr:=Digraph(rec(vertices:=["a", "b", "c"],
-> source:=["a"], range:=["b"]));
+gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
+> source := [ "a" ], range := [ "b" ] ) );
 <digraph with 3 vertices, 1 edge>
-gap> gr:=Digraph(rec(vertices:=[1,2,3,4,5], 
-> source:=[1,2,2,4,4,1,1], range:=[2,3,5,3,5,1,1]));
+gap> gr := Digraph( rec( vertices := [ 1, 2, 3, 4, 5 ], 
+> source := [ 1, 2, 2, 4, 4, 1, 1 ],
+> range := [ 2, 3, 5, 3, 5, 1, 1 ] ) );
 <multidigraph with 5 vertices, 7 edges>
 gap> gr:= Digraph( [ [ 2, 5, 8, 10 ], [ 2, 3, 4, 5, 6, 8, 9, 10 ], 
 > [ 1 ], [ 3, 5, 7, 8, 10 ], [ 2, 5, 7 ], [ 3, 6, 7, 9, 10 ], [ 1, 4 ], 
 > [ 1, 5, 9 ], [ 1, 2, 7, 8 ], [ 3, 5 ] ] );
 <digraph with 10 vertices, 37 edges>
-gap> cycle:=function(n)
+gap> cycle := function(n)
 >  local record, i;
->  record:=rec(vertices:=[1..n], source:=[], range:=[]);
->  for i in [0..n-1] do 
+>  record := rec( vertices := [ 1 .. n ], source := [ ], range := [ ]);
+>  for i in [ 0 .. n - 1 ] do
 >    Add(record.source, i mod Length(record.vertices) + 1);
 >    Add(record.range, (i + 1) mod Length(record.vertices) +1);
 >  od;
 >  return Digraph(record);
 > end;;
-gap> gr:=cycle(10000);
+gap> gr := cycle(10000);
 <digraph with 10000 vertices, 10000 edges>
-gap> Petersen := Graph( SymmetricGroup(5), [[1,2]], OnSets,
-> function(x,y) return Intersection(x,y)=[]; end );;
+gap> Petersen := Graph( SymmetricGroup(5), [ [1,2] ], OnSets,
+> function(x, y) return Intersection(x, y) = [ ]; end );;
 gap> Digraph(Petersen);
 <digraph with 10 vertices, 30 edges>
+gap> b := BinaryRelationOnPoints(
+> [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], [ 2, 3, 5 ] ] );
+Binary Relation on 5 points
+gap> gr := Digraph(b);
+<digraph with 5 vertices, 11 edges>
 ]]></Example>
   </Description>
 </ManSection>

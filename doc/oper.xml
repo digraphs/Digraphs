@@ -161,6 +161,35 @@ gap> DigraphRemoveLoops(gr);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphAddEdge">
+<ManSection>
+  <Oper Name="DigraphAddEdge" Arg="digraph, edge"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>edge</A> is a pairs of vertices of <A>digraph</A>,
+    then this operation returns a new digraph constructed from <A>digraph</A> 
+    by adding a new edge with source <A>edge</A><C>[1]</C> and range 
+    <A>edge</A><C>[2]</C>.
+    <P/>
+
+    <Example><![CDATA[
+gap> gr1 := Digraph( [ [ 2 ], [ 3 ], [ ] ] );
+<digraph with 3 vertices, 2 edges>
+gap> DigraphEdges(gr1);
+[ [ 1, 2 ], [ 2, 3 ] ]
+gap> gr2 := DigraphAddEdge(gr1, [ 3, 1 ]);
+<digraph with 3 vertices, 3 edges>
+gap> DigraphEdges(gr2);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 1 ] ]
+gap> gr3 := DigraphAddEdge(gr2, [ 2, 3 ] );
+<multidigraph with 3 vertices, 4 edges>
+gap> DigraphEdges(gr3);
+[ [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 1 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphAddEdges">
 <ManSection>
   <Oper Name="DigraphAddEdges" Arg="digraph, edges"/>
@@ -168,16 +197,18 @@ gap> DigraphRemoveLoops(gr);
   <Description>
     If <A>edges</A> is a list of pairs of vertices of <A>digraph</A>,
     then this operation returns a new digraph constructed from <A>digraph</A> 
-    by adding the edges specified by <A>edges</A>. <P/>
-  
+    by adding the edges specified by <A>edges</A>. More precisely, for each
+    <C>i</C>, a new edge will be added with source <A>edges</A><C>[i][1]</C>
+    and range <A>edges</A><C>[i][2]</C>.
+    <P/>
+    
     If an edge is included multiple times in <A>edges</A>, then it will be
-    added multiple times. If the list <A>edges</A> is empty, then the object
-    <A>digraph</A> will be returned. <P/>
+    added multiple times. <P/> 
 
     <Example><![CDATA[
 gap> func := function(n)
 >  local record, i;
->  record := rec( vertices := [ 1 .. n ], source := [  ], range := [  ] );
+>  record := rec( nrvertices := n, source := [  ], range := [  ] );
 >  for i in [ 1 .. n - 2 ] do 
 >    Add(record.source, i);
 >    Add(record.range, i + 1);
@@ -216,16 +247,16 @@ gap> gr := DigraphAddEdges(gr,
     <Example><![CDATA[
 gap> cycle := function(n)
 >  local record, i;
->  record := rec( vertices := [ 1 .. n ], source := [  ], range := [  ] );
+>  record := rec( nrvertices := n, source := [  ], range := [  ] );
 >  for i in [ 0 .. n - 1 ] do 
->    Add(record.source, i mod Length(record.vertices) + 1);
->    Add(record.range, (i + 1) mod Length(record.vertices) +1);
+>    Add(record.source, i mod n + 1);
+>    Add(record.range, (i + 1) mod n + 1);
 >  od;
 >  return Digraph(record);
 > end;;
 gap> gr := cycle(250000);
 <digraph with 250000 vertices, 250000 edges>
-gap> gr := DigraphRemoveEdges(gr, [ [250000, 1] ]);
+gap> gr := DigraphRemoveEdges(gr, [ [ 250000, 1 ] ]);
 <digraph with 250000 vertices, 249999 edges>
 gap> gr := DigraphRemoveEdges(gr, [ 10 ]);
 <digraph with 250000 vertices, 249998 edges>]]></Example>
@@ -444,7 +475,7 @@ gap> DigraphStronglyConnectedComponent(gr, 4);
   <Oper Name="QuotientDigraph" Arg="digraph, p"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph with at least one vertex, and <A>p</A> is a 
+    If <A>digraph</A> is a digraph, and <A>p</A> is a 
     partition of the vertices of <A>digraph</A>, then this operation returns a
     new digraph constructed by amalgamating all vertices of <A>digraph</A> 
     which lie in the same part of <A>p</A>. <P/>
@@ -475,10 +506,8 @@ gap> DigraphVertices(qr);
 gap> DigraphEdges(qr);
 [ [ 1, 2 ], [ 1, 1 ], [ 2, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], 
   [ 3, 1 ] ]
-gap> p2 := [ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ];
-[ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ]
-gap> QuotientDigraph(gr, p2) = gr;
-true
+gap> QuotientDigraph( EmptyDigraph(0), [ ] );
+<digraph with 0 vertices, 0 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -487,19 +516,56 @@ true
 <#GAPDoc Label="IsDigraphEdge">
 <ManSection>
   <Oper Name="IsDigraphEdge" Arg="digraph, list"/>
-  <Returns> <K>true</K> or <K>false</K>.</Returns>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns true if and only if <A>list</A> is a list of size 2 such that
-    <A>list[1]</A> is a source and <A>list[2]</A> is a range of an edge
-    in <A>digraph</A>.
+    Returns true if and only if <A>list</A> is a pair of positive integers
+    where <A>list[1]</A> is the source, and <A>list[2]</A> is the range, 
+    of an edge in <A>digraph</A>.
 <Example><![CDATA[
-gap> gr := Digraph(rec(nrvertices := 6, source := [1,1,2,4,6],
-> range:=[2,2,6,3,1]));
+gap> gr := Digraph( rec( nrvertices := 6,
+> source := [ 1, 1, 2, 4, 6 ],
+> range  := [ 2, 2, 6, 3, 1 ] ) );
 <multidigraph with 6 vertices, 5 edges>
-gap> IsDigraphEdge(gr, [1,1]);
+gap> IsDigraphEdge( gr, [ 1, 1 ] );
 false
-gap> IsDigraphEdge(gr, [1,2]);
+gap> IsDigraphEdge( gr, [ 1, 2 ] );
 true
+gap> IsDigraphEdge( gr, [ 1, 8 ] );
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphFloydWarshall">
+<ManSection>
+  <Oper Name="DigraphFloydWarshall" Arg="digraph, list"/>
+  <Returns>A matrix.</Returns>
+  <Description>
+    Stub.
+<Example><![CDATA[
+gap> true;
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AsBinaryRelation">
+<ManSection>
+  <Oper Name="AsBinaryRelation" Arg="digraph"/>
+  <Returns>A binary relation.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph with a positive number of vertices <M>n</M>,
+    and no multiple edges, then this function returns a binary relation on
+    the points <C>[ 1 .. n ]</C>. In the binary relation, <C>i</C> is related 
+    to <C>j</C> if and only if <C>[ i, j ]</C> is an edge in <A>digraph</A>. 
+    <P/>
+<Example><![CDATA[
+gap> gr := Digraph( [ [ 3, 2 ], [ 1, 2 ], [ 2 ], [ 3, 4 ] ] );
+<digraph with 4 vertices, 7 edges>
+gap> AsBinaryRelation(gr);
+Binary Relation on 4 points
 ]]></Example>
   </Description>
 </ManSection>

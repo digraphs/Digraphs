@@ -10,6 +10,7 @@
   </Section>
 
   <Section><Heading>Changing representations</Heading>
+    <#Include Label="AsBinaryRelation">
     <#Include Label="AsDigraph">
     <#Include Label="GrapeGraph">
   </Section>
@@ -20,6 +21,7 @@
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">
     <#Include Label="DigraphReflexiveTransitiveClosure">
+    <#Include Label="DigraphAddEdge">
     <#Include Label="DigraphAddEdges">
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphRemoveLoops">

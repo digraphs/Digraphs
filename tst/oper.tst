@@ -49,11 +49,9 @@ gap> gr := Digraph(
 gap> DigraphReflexiveTransitiveClosure(gr);
 Error, Digraphs: DigraphReflexiveTransitiveClosure: usage,
 the argument <graph> cannot have multiple edges,
-
 gap> DigraphTransitiveClosure(gr);
 Error, Digraphs: DigraphTransitiveClosure: usage,
 the argument <graph> cannot have multiple edges,
-
 gap> r := rec( vertices := [ 1 .. 4 ], source := [ 1, 1, 2, 3, 4 ], 
 > range := [ 1, 2, 3, 4, 1 ] );
 rec( range := [ 1, 2, 3, 4, 1 ], source := [ 1, 1, 2, 3, 4 ], 
@@ -156,7 +154,6 @@ Error, Digraphs: DigraphRemoveEdges: usage,
 the first argument <graph> must not have multiple edges
 when the second argument <edges> is a list of edges,
 
-
 # OnDigraphs (for a digraph by adjacency and perm)
 gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );
 <digraph with 3 vertices, 3 edges>
@@ -173,7 +170,6 @@ gap> h := (1, 2, 3, 4);
 gap> OnDigraphs(gr, h);
 Error, Digraphs: OnDigraphs: usage,
 the 2nd argument <perm> must permute the vertices of the 1st argument <graph>,
-
 gap> gr := Digraph( [ [ 1, 1, 1, 3, 5 ], [ ], [ 3, 2, 4, 5 ], [ 2, 5 ], [ 1, 2, 1 ] ] );
 <multidigraph with 5 vertices, 14 edges>
 gap> DigraphEdges(gr);
@@ -184,7 +180,6 @@ gap> p1 := (2,4)(3,6,5);
 gap> OnDigraphs(gr, p1);
 Error, Digraphs: OnDigraphs: usage,
 the 2nd argument <perm> must permute the vertices of the 1st argument <graph>,
-
 gap> p2 := (1,3,4,2);
 (1,3,4,2)
 gap> OnDigraphs(gr, p2);
@@ -205,7 +200,6 @@ gap> p1 := (1,5,4,2,3);
 gap> OnDigraphs(gr, p1);
 Error, Digraphs: OnDigraphs: usage,
 the 2nd argument <perm> must permute the vertices of the 1st argument <graph>,
-
 gap> p2 := (1,4)(2,3);
 (1,4)(2,3)
 gap> OnDigraphs(gr, p2);
@@ -225,11 +219,9 @@ gap> InDegreeOfVertex(gr, 7);
 gap> InNeighboursOfVertex(gr, 11);
 Error, Digraphs: InNeighboursOfVertex: usage,
 11 is not a vertex of the digraph,
-
 gap> InDegreeOfVertex(gr, 11);
 Error, Digraphs: InDegreeOfVertex: usage,
 11 is not a vertex of the digraph,
-
 gap> gr := Digraph( [ [ 1, 1, 4 ], [ 2, 3, 4 ], [ 2, 4, 4, 4 ], [ 2 ] ] );
 <multidigraph with 4 vertices, 11 edges>
 gap> InNeighboursOfVertex(gr, 3);
@@ -262,11 +254,9 @@ gap> OutDegreeOfVertex(gr, 5);
 gap> OutNeighboursOfVertex(gr, 12);
 Error, Digraphs: OutNeighboursOfVertex: usage,
 12 is not a vertex of the digraph,
-
 gap> OutDegreeOfVertex(gr, 12);
 Error, Digraphs: OutDegreeOfVertex: usage,
 12 is not a vertex of the digraph,
-
 gap> gr := Digraph( [ [ 2, 2, 2, 2 ], [ 2, 2 ] ] );
 <multidigraph with 2 vertices, 6 edges>
 gap> OutNeighboursOfVertex(gr, 2);
@@ -291,12 +281,10 @@ gap> InducedSubdigraph( gr, [ -1 ] );
 Error, Digraphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
-
 gap> InducedSubdigraph( gr, [ 1 .. 9 ] );
 Error, Digraphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
-
 gap> InducedSubdigraph( gr, [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> InducedSubdigraph( gr, [ 2 .. 6 ] );
@@ -311,7 +299,6 @@ gap> i2 := InducedSubdigraph( gr, [ 3, 4, 3, 1 ] );
 Error, Digraphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
-
 
 # InducedSubdigraph (OutNeighbours version)
 gap> adj := [
@@ -329,17 +316,14 @@ gap> InducedSubdigraph( gr, [ "a" ] );
 Error, Digraphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
-
 gap> InducedSubdigraph( gr, [ 0 ] );
 Error, Digraphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
-
 gap> InducedSubdigraph( gr, [ 2 .. 9 ] );
 Error, Digraphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
-
 gap> InducedSubdigraph( gr, [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> i1 := InducedSubdigraph( gr, [ 1, 3, 5, 7 ] );
@@ -367,9 +351,12 @@ gap> qr := QuotientDigraph( gr, [ [ 1, 2 ] ] );
 gap> DigraphEdges(qr);
 [ [ 1, 1 ], [ 1, 1 ], [ 1, 1 ], [ 1, 1 ] ]
 gap> QuotientDigraph( EmptyDigraph(0), [ ] );
+<digraph with 0 vertices, 0 edges>
+gap> QuotientDigraph( EmptyDigraph(0), [ [ 1 ] ] );
 Error, Digraphs: QuotientDigraph: usage,
-the first argument <digraph> must have at least one vertex,
-
+the second argument <partition> is not a valid partition of the
+vertices of the null digraph <digraph>. The only valid partition
+of <digraph> is the empty list,
 gap> gr := Digraph( [ [ 1, 2, 3, 2 ], [ 1, 3, 2 ], [ 1, 2 ] ] );
 <multidigraph with 3 vertices, 9 edges>
 gap> DigraphEdges(gr);
@@ -380,41 +367,38 @@ gap> qr := QuotientDigraph( gr, [ [ 1, 3 ], [ 2 ] ] );
 gap> DigraphEdges(qr);
 [ [ 1, 1 ], [ 1, 2 ], [ 1, 1 ], [ 1, 2 ], [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], 
   [ 2, 1 ], [ 2, 2 ] ]
+gap> QuotientDigraph( gr, [ 3 ] );
+Error, Digraphs: QuotientDigraph: usage,
+the second argument <partition> is not a valid partition
+of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph( gr, [ ] );
 Error, Digraphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
-
 gap> QuotientDigraph( gr, [ [ ], [ ] ] );
 Error, Digraphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
-
 gap> QuotientDigraph( gr, [ [ 0 ], [ 1 ] ] );
 Error, Digraphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
-
 gap> QuotientDigraph( gr, [ [ 1 ], [ 2 ], [ 0 ] ] );
 Error, Digraphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
-
 gap> QuotientDigraph( gr, [ [ 1 ], [ 2, 4 ] ] );
 Error, Digraphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
-
 gap> QuotientDigraph( gr, [ [ 1, 2 ], [ 2 ] ] );
 Error, Digraphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
-
 gap> QuotientDigraph( gr, [ [ 1 ], [ 2 ] ] );
 Error, Digraphs: QuotientDigraph: usage,
 the second argument <partition> does not partition
 every vertex of the first argument, <digraph>,
-
 gap> gr := Digraph( rec( nrvertices := 8,
 > source := [ 1, 1, 2, 2, 3, 4, 4, 4, 5, 5, 5, 5, 5, 6, 7, 7, 7, 7, 7, 8, 8 ],
 > range := [ 6, 7, 1, 6, 5, 1, 4, 8, 1, 3, 4, 6, 7, 7, 1, 4, 5, 6, 7, 5, 6 ]
@@ -435,11 +419,9 @@ gap> DigraphOutEdges(gr, 3);
 gap> DigraphOutEdges(gr, 5);
 Error, Digraphs: DigraphOutEdges: usage,
 5 is not a vertex of the digraph,
-
 gap> DigraphInEdges(gr, 1000);
 Error, Digraphs: DigraphInEdges: usage,
 1000 is not a vertex of the digraph,
-
 gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ], source := [ "a", "a", "b" ],
 > range := [ "b", "b", "c" ] ) );
 <multidigraph with 3 vertices, 3 edges>
@@ -463,7 +445,6 @@ gap> DigraphStronglyConnectedComponent(gr, 7);
 Error, Digraphs: DigraphStronglyConnectedComponent: usage,
 7 is not a vertex of the digraph,
 
-
 # DigraphAddEdges
 gap> gr := RandomDigraph(100);;
 gap> DigraphAddEdges(gr, [ ]);;
@@ -471,39 +452,32 @@ gap> gr = last;
 true
 gap> DigraphAddEdges(gr, [ 12 ] );
 Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of edges of <graph>,
-i.e. a list of pairs of vertices of <graph>,
-
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
 gap> DigraphAddEdges(gr, [ [ 12 ] ] );
 Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of edges of <graph>,
-i.e. a list of pairs of vertices of <graph>,
-
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
 gap> DigraphAddEdges(gr, [ [ 12, 13, 14 ], [ 11, 10 ] ] );
 Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of edges of <graph>,
-i.e. a list of pairs of vertices of <graph>,
-
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
 gap> DigraphAddEdges(gr, [ [ -2, 3 ], [ "a" ] ] );
 Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of edges of <graph>,
-i.e. a list of pairs of vertices of <graph>,
-
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
 gap> DigraphAddEdges(gr, [ [ 11, 10 ], [ 12, 13, 14 ] ] );
 Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of edges of <graph>,
-i.e. a list of pairs of vertices of <graph>,
-
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
 gap> DigraphAddEdges(gr, [ [ 4, 5 ], [ 1, 120 ], [ 1, 1 ] ] );
 Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of edges with
-source and range amongst the vertices of <graph>,
-
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
 gap> DigraphAddEdges(gr, [ [ 4, 5 ], [ 120, 1 ], [ 1, 1 ] ] );
 Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of edges with
-source and range amongst the vertices of <graph>,
-
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
 gap> gr := Digraph( [ [ 2, 2 ], [ 1, 3, 2 ], [ 2, 1 ], [ 1 ] ] );
 <multidigraph with 4 vertices, 8 edges>
 gap> DigraphEdges(gr);

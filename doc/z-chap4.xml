@@ -33,5 +33,6 @@
     <#Include Label="DigraphStronglyConnectedComponents">
     <#Include Label="DigraphStronglyConnectedComponent">
     <#Include Label="DigraphPeriod">
+    <#Include Label="DigraphFloydWarshall">
   </Section>
 </Chapter>

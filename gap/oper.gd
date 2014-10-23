@@ -13,7 +13,9 @@ DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);
 DeclareOperation("DigraphRemoveLoops", [IsDigraph]);
 DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveVertices", [IsDigraph, IsList]);
+DeclareOperation("DigraphAddEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphAddEdges", [IsDigraph, IsList]);
+DeclareOperation("DigraphAddEdgesNC", [IsDigraph, IsList]);
 DeclareOperation("DigraphAddVertices", [IsDigraph, IsList]);
 
 DeclareOperation("DigraphFloydWarshall", [IsDigraph, IsFunction,
