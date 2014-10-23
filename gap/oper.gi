@@ -560,31 +560,37 @@ end);
 
 #
 
+InstallMethod(InNeighborsOfVertex, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  return InNeighboursOfVertex(digraph, v);
+end);
+
 InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-function(graph, v)
-  if not v in DigraphVertices(graph) then
+function(digraph, v)
+  if not v in DigraphVertices(digraph) then
     Error("Digraphs: InNeighboursOfVertex: usage,\n",
-          v, " is not a vertex of the digraph,");
+          "the second argument <v> is not a vertex of the first, <digraph>,");
     return;
   fi;
-  return InNeighboursOfVertexNC(graph, v);
+  return InNeighboursOfVertexNC(digraph, v);
 end);
 
 InstallMethod(InNeighboursOfVertexNC, "for a digraph with in-neighbours and a vertex",
 [IsDigraph and HasInNeighbours, IsPosInt], 3,
-function(graph, v)
-  return InNeighbours(graph)[v];
+function(digraph, v)
+  return InNeighbours(digraph)[v];
 end);
 
 InstallMethod(InNeighboursOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
-function(graph, v)
+function(digraph, v)
   local inn, pos, out, i, j;
 
   inn := [];
   pos := 1;
-  out := OutNeighbours(graph);
+  out := OutNeighbours(digraph);
   for i in [ 1 .. Length(out) ] do
     for j in [ 1 .. Length(out[i]) ] do
       if out[i][j] = v then
@@ -598,13 +604,13 @@ end);
 
 InstallMethod(InNeighboursOfVertexNC, "for a digraph with range/source and a vertex",
 [IsDigraph and HasDigraphRange, IsPosInt], 1,
-function(graph, v)
+function(digraph, v)
   local inn, pos, source, range, i;
 
   inn := [];
   pos := 1;
-  source := DigraphSource(graph);
-  range := DigraphRange(graph);
+  source := DigraphSource(digraph);
+  range := DigraphRange(digraph);
   for i in [ 1 .. Length(range) ] do
     if range[i] = v then
       inn[pos] := source[i];
@@ -616,32 +622,38 @@ end);
 
 #
 
+InstallMethod(OutNeighborsOfVertex, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  return OutNeighboursOfVertex(digraph, v);
+end);
+
 InstallMethod(OutNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-function(graph, v)
-  if not v in DigraphVertices(graph) then
+function(digraph, v)
+  if not v in DigraphVertices(digraph) then
     Error("Digraphs: OutNeighboursOfVertex: usage,\n",
-          v, " is not a vertex of the digraph,");
+          "the second argument <v> is not a vertex of the first, <digraph>,");
     return;
   fi;
-  return OutNeighboursOfVertexNC(graph, v);
+  return OutNeighboursOfVertexNC(digraph, v);
 end);
 
 InstallMethod(OutNeighboursOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
-function(graph, v)
-  return OutNeighbours(graph)[v];
+function(digraph, v)
+  return OutNeighbours(digraph)[v];
 end);
 
 InstallMethod(OutNeighboursOfVertexNC, "for a digraph with only source/range and a vertex",
 [IsDigraph and HasDigraphRange, IsPosInt], 1,
-function(graph, v)
+function(digraph, v)
   local out, pos, source, range, m, i;
 
   out := [];
   pos := 1;
-  source := DigraphSource(graph);
-  range := DigraphRange(graph);
+  source := DigraphSource(digraph);
+  range := DigraphRange(digraph);
   m := Length(source);
   i := Position(source, v);
   if i <> fail then
@@ -658,34 +670,34 @@ end);
 
 InstallMethod(InDegreeOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-function(graph, v)
-  if not v in DigraphVertices(graph) then
+function(digraph, v)
+  if not v in DigraphVertices(digraph) then
     Error("Digraphs: InDegreeOfVertex: usage,\n",
-          v, " is not a vertex of the digraph,");
+          "the second argument <v> is not a vertex of the first, <digraph>,");
     return;
   fi;
-  return InDegreeOfVertexNC(graph, v);
+  return InDegreeOfVertexNC(digraph, v);
 end);
 
 InstallMethod(InDegreeOfVertexNC, "for a digraph with in-degrees and a vertex",
 [IsDigraph and HasInDegrees, IsPosInt], 4,
-function(graph, v)
-  return InDegrees(graph)[v];
+function(digraph, v)
+  return InDegrees(digraph)[v];
 end);
 
 InstallMethod(InDegreeOfVertexNC, "for a digraph with in-neighbours and a vertex",
 [IsDigraph and HasInNeighbours, IsPosInt], 3,
-function(graph, v)
-  return Length(InNeighbours(graph)[v]);
+function(digraph, v)
+  return Length(InNeighbours(digraph)[v]);
 end);
 
 InstallMethod(InDegreeOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
-function(graph, v)
+function(digraph, v)
   local count, out, x, i;
 
   count := 0;
-  out := OutNeighbours(graph);
+  out := OutNeighbours(digraph);
   for x in out do
     for i in x do
       if i = v then
@@ -698,10 +710,10 @@ end);
 
 InstallMethod(InDegreeOfVertexNC, "for a digraph (with only source/range) and a vertex",
 [IsDigraph and HasDigraphRange, IsPosInt],
-function(graph, v)
+function(digraph, v)
   local range, count, i;
 
-  range := DigraphRange(graph);
+  range := DigraphRange(digraph);
   count := 0;
   for i in [ 1 .. Length(range) ] do
     if range[i] = v then
@@ -715,33 +727,33 @@ end);
 
 InstallMethod(OutDegreeOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-function(graph, v)
-  if not v in DigraphVertices(graph) then
+function(digraph, v)
+  if not v in DigraphVertices(digraph) then
     Error("Digraphs: OutDegreeOfVertex: usage,\n",
-          v, " is not a vertex of the digraph,");
+          "the second argument <v> is not a vertex of the first, <digraph>,");
     return;
   fi;
-   return OutDegreeOfVertexNC(graph, v);
+   return OutDegreeOfVertexNC(digraph, v);
 end);
 
 InstallMethod(OutDegreeOfVertexNC, "for a digraph with out-degrees and a vertex",
 [IsDigraph and HasOutDegrees, IsPosInt], 3,
-function(graph, v)
-  return OutDegrees(graph)[v];
+function(digraph, v)
+  return OutDegrees(digraph)[v];
 end);
 
 InstallMethod(OutDegreeOfVertexNC, "for a digraph with out-neighbours and a vertex",
 [IsDigraph and HasOutNeighbours, IsPosInt],
-function(graph, v)
-  return Length(OutNeighbours(graph)[v]);
+function(digraph, v)
+  return Length(OutNeighbours(digraph)[v]);
 end);
 
 InstallMethod(OutDegreeOfVertexNC, "for a digraph with source/range and a vertex",
 [IsDigraph and HasDigraphSource, IsPosInt], 1,
-function(graph, v)
+function(digraph, v)
   local count, source, m, i;
 
-  source := DigraphSource(graph);
+  source := DigraphSource(digraph);
   m := Length(source);
   i := Position(source, v);
   count := 0;

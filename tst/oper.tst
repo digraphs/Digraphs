@@ -218,10 +218,10 @@ gap> InDegreeOfVertex(gr, 7);
 1
 gap> InNeighboursOfVertex(gr, 11);
 Error, Digraphs: InNeighboursOfVertex: usage,
-11 is not a vertex of the digraph,
+the second argument <v> is not a vertex of the first, <digraph>,
 gap> InDegreeOfVertex(gr, 11);
 Error, Digraphs: InDegreeOfVertex: usage,
-11 is not a vertex of the digraph,
+the second argument <v> is not a vertex of the first, <digraph>,
 gap> gr := Digraph( [ [ 1, 1, 4 ], [ 2, 3, 4 ], [ 2, 4, 4, 4 ], [ 2 ] ] );
 <multidigraph with 4 vertices, 11 edges>
 gap> InNeighboursOfVertex(gr, 3);
@@ -253,10 +253,10 @@ gap> OutDegreeOfVertex(gr, 5);
 6
 gap> OutNeighboursOfVertex(gr, 12);
 Error, Digraphs: OutNeighboursOfVertex: usage,
-12 is not a vertex of the digraph,
+the second argument <v> is not a vertex of the first, <digraph>,
 gap> OutDegreeOfVertex(gr, 12);
 Error, Digraphs: OutDegreeOfVertex: usage,
-12 is not a vertex of the digraph,
+the second argument <v> is not a vertex of the first, <digraph>,
 gap> gr := Digraph( [ [ 2, 2, 2, 2 ], [ 2, 2 ] ] );
 <multidigraph with 2 vertices, 6 edges>
 gap> OutNeighboursOfVertex(gr, 2);

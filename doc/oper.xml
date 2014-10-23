@@ -518,9 +518,12 @@ gap> QuotientDigraph( EmptyDigraph(0), [ ] );
   <Oper Name="IsDigraphEdge" Arg="digraph, list"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns true if and only if <A>list</A> is a pair of positive integers
-    where <A>list[1]</A> is the source, and <A>list[2]</A> is the range, 
-    of an edge in <A>digraph</A>.
+    Returns true if and only if the list <A>list</A> specifies an edge in
+    the digraph <A>digraph</A>.
+    Specifically, this operation returns true if <A>list</A> is a pair of 
+    positive integers where <A>list</A><C>[1]</C> is the source and 
+    <A>list</A><C>[2]</C> is the range of an edge in <A>digraph</A>, and false 
+    otherwise. <P/>
 <Example><![CDATA[
 gap> gr := Digraph( rec( nrvertices := 6,
 > source := [ 1, 1, 2, 4, 6 ],

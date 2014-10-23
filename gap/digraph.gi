@@ -749,7 +749,9 @@ function(graph1, graph2)
   
   out1 := OutNeighbours(graph1);
   out2 := OutNeighbours(graph2);
-  if out1 = out2 then  # Not sure if this is worth doing?
+  if DigraphNrEdges(graph1) <> DigraphNrEdges(graph2) then
+    return false;
+  elif out1 = out2 then
     return true;
   fi;
 
