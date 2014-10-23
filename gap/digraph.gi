@@ -13,7 +13,7 @@ InstallMethod(Digraph, "for a positive integer and a function",
 function(n, func)
   local out, V, i, j;
 
-  out:=List( [ 1 .. n ], x -> [] );
+  out := List( [ 1 .. n ], x -> [ ] );
   
   V:= [ 1 .. n ];
 
@@ -54,15 +54,15 @@ InstallMethod(SetDigraphVertexName, "for a digraph, pos int, object",
 function(graph, i, name)
 
   if not IsBound(graph!.vertexnames) then 
-    graph!.vertexnames := [1 .. DigraphNrVertices(graph)];
+    graph!.vertexnames := [ 1 .. DigraphNrVertices(graph) ];
   fi;
 
   if i > DigraphNrVertices(graph) then 
     Error("Digraphs: SetDigraphVertexName: usage,\n",
-    "there are only ",  DigraphNrVertices(graph), " vertices,\n");
+    "there are only ",  DigraphNrVertices(graph), " vertices,");
     return;
   fi;
-  graph!.vertexnames[i]:=name;
+  graph!.vertexnames[i] := name;
   return;
 end);
 
@@ -78,7 +78,7 @@ function(graph, i)
     return graph!.vertexnames[i];
   fi;
   Error("Digraphs: DigraphVertexName: usage,\n",
-   i, " is nameless or not a vertex,\n");
+   i, " is nameless or not a vertex,");
   return;
 end);
 
@@ -91,7 +91,7 @@ function(graph, names)
   else 
     Error("Digraphs: SetDigraphVertexNames: usage,\n",
     "the 2nd arument <names> must be a list with length equal",
-    " to the number of\nvertices of the digraph,\n");
+    " to the number of\nvertices of the digraph,");
     return;
   fi;
   return;
@@ -102,7 +102,7 @@ InstallMethod(DigraphVertexNames, "for a digraph and pos int",
 function(graph)
 
   if not IsBound(graph!.vertexnames) then 
-    graph!.vertexnames := [1 .. DigraphNrVertices(graph)];
+    graph!.vertexnames := [ 1 .. DigraphNrVertices(graph) ];
   fi;
   return graph!.vertexnames;
 end);
@@ -669,7 +669,7 @@ end);
 # operators . . .
 
 InstallMethod(\=, "for a digraph and a digraph",
-[IsDigraph, IsDigraph], 3,
+[IsDigraph, IsDigraph], 5,
 function(graph1, graph2)
   if IsIdenticalObj(graph1, graph2) then
     return true;
@@ -704,7 +704,9 @@ function(graph1, graph2)
   verts := DigraphVertices(graph1);
   start := 1;
   stop := 0;
-  for i in verts do
+  i := 0;
+  while true do
+    i := i + 1;
     len := Length(out[i]);
     stop := start + len - 1;
     if len = 0 and source[start] = i then
@@ -731,11 +733,6 @@ function(graph1, graph2)
       return true;
     fi;
   od;
-  if stop = Length(source) then
-    return true;
-  else
-    return false;
-  fi;
 end);
 
 InstallMethod(\=, "for two digraphs with out-neighbours",

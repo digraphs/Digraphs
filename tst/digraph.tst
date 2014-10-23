@@ -14,16 +14,15 @@ gap> LoadPackage("digraphs", false);;
 gap> DigraphsStartTest();
 
 # Names
-gap> gr:=RandomDigraph(10);;
+gap> gr := RandomDigraph(10);;
 gap> DigraphVertexNames(gr);
 [ 1 .. 10 ]
-gap> SetDigraphVertexNames(gr, ["a", "b", 10]);
+gap> SetDigraphVertexNames( gr, [ "a", "b", 10 ] );
 Error, Digraphs: SetDigraphVertexNames: usage,
 the 2nd arument <names> must be a list with length equal to the number of
 vertices of the digraph,
-
-gap> gr:=RandomDigraph(3);;
-gap> SetDigraphVertexNames(gr, ["a", "b", 10]);
+gap> gr := RandomDigraph(3);;
+gap> SetDigraphVertexNames( gr, [ "a", "b", 10 ] );
 gap> DigraphVertexNames(gr);
 [ "a", "b", 10 ]
 gap> DigraphVertexName(gr, 1);
@@ -33,14 +32,23 @@ gap> DigraphVertexName(gr, 2);
 gap> DigraphVertexName(gr, 10);
 Error, Digraphs: DigraphVertexName: usage,
 10 is nameless or not a vertex,
-
 gap> DigraphVertexName(gr, 3);
 10
 gap> SetDigraphVertexName(gr, 3, 3);
 gap> DigraphVertexName(gr, 3);
 3
-gap> gr:=RandomDigraph(10);;
-gap> gr:=InducedSubdigraph(gr, [1,2,3,5,7]);;
+gap> gr := RandomDigraph(5);;
+gap> SetDigraphVertexName(gr, 6, (1,3,2,5,4));
+Error, Digraphs: SetDigraphVertexName: usage,
+there are only 5 vertices,
+gap> SetDigraphVertexName(gr, 2, (1,3,2,5,4));
+gap> DigraphVertexName(gr, 2);
+(1,3,2,5,4)
+gap> gr := RandomDigraph(3);;
+gap> DigraphVertexName(gr, 2);
+2
+gap> gr := RandomDigraph(10);;
+gap> gr := InducedSubdigraph( gr, [ 1, 2, 3, 5, 7 ] );;
 gap> DigraphVertexNames(gr);
 [ 1, 2, 3, 5, 7 ]
 gap> DigraphVertices(gr);
@@ -151,6 +159,59 @@ the record component 'range' is invalid,
 
 gap> Digraph( rec( vertices := "abc", source := "acbab", range := "cbabb" ) );
 <digraph with 3 vertices, 5 edges>
+
+# Digraph (for an integer and a function)
+gap> divides := function(a, b)
+>   if b mod a = 0 then
+>     return true;
+>   fi;
+>   return false;
+> end;;
+gap> gr := Digraph( 12, divides );
+<digraph with 12 vertices, 35 edges>
+
+# Digraph (for a binary relation)
+gap> g := Group( (1,2,3) );
+Group([ (1,2,3) ])
+gap> elms := [
+>  DirectProductElement( [ (1,2,3), (1,3,2) ] ),
+>  DirectProductElement( [ (1,3,2), (1,2,3) ] ),
+>  DirectProductElement( [ (), () ] )
+> ];;
+gap> bin := BinaryRelationByElements(g, elms);
+<general mapping: Group( [ (1,2,3) ] ) -> Group( [ (1,2,3) ] ) >
+gap> Digraph(bin);
+Error, Digraphs: Digraph: usage,
+the argument <rel> must be a binary relation
+on the domain [ 1 .. n ] for some positive integer n,
+gap> d := Domain( [ 2 .. 10 ] );;
+gap> bin := BinaryRelationByElements(d, [
+>  DirectProductElement([ 2, 5 ]),
+>  DirectProductElement([ 6, 3 ]),
+>  DirectProductElement([ 4, 5 ])
+> ] );
+<general mapping: <object> -> <object> >
+gap> gr := Digraph(bin);
+Error, Digraphs: Digraph: usage,
+the argument <rel> must be a binary relation
+on the domain [ 1 .. n ] for some positive integer n,
+gap> d := Domain( [ 1 .. 10 ] );;
+gap> bin := BinaryRelationByElements(d, [
+>  DirectProductElement([ 2, 5 ]),
+>  DirectProductElement([ 6, 3 ]),
+>  DirectProductElement([ 4, 5 ])
+> ] );
+<general mapping: <object> -> <object> >
+gap> gr := Digraph(bin);
+<digraph with 10 vertices, 3 edges>
+gap> DigraphEdges(gr);
+[ [ 2, 5 ], [ 4, 5 ], [ 6, 3 ] ]
+gap> bin := BinaryRelationOnPoints( [ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 4 ] ] );
+Binary Relation on 5 points
+gap> gr := Digraph(bin);
+<digraph with 5 vertices, 5 edges>
+gap> OutNeighbours(gr);
+[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 4 ] ]
 
 # RandomDigraph
 gap> DigraphNrVertices(RandomDigraph(10));
@@ -424,8 +485,6 @@ gap> graph2 := Digraph(
 <digraph with 3 vertices, 2 edges>
 gap> graph1 = graph2;                     
 true
-
-# Issue #2
 gap> gr1 := Digraph( [ [ 2 ], [ 1 ], [ 1, 2 ] ] );
 <digraph with 3 vertices, 4 edges>
 gap> gr2 := Digraph( [ [ 2 ], [ 1 ] , [ 2, 1 ] ] );
@@ -439,6 +498,74 @@ gap> DigraphSource(im);
 gap> gr1 = im;
 true
 gap> gr2 = im;
+true
+gap> gr1 = gr1;
+true
+
+# \= for digraph with out-neighbours, and digraph with range 
+gap> gr1 := Digraph( [ [ 2 ], [ ] ] );;
+gap> gr2 := Digraph( rec( nrvertices := 1, source := [ ], range := [ ] ) );;
+gap> gr1 = gr2; # Different number of vertices
+false
+gap> gr2 := Digraph( rec(
+> nrvertices := 2, source := [ 1, 2 ], range := [ 1, 2 ] ) );;
+gap> gr1 = gr2; # Different number of edges
+false
+gap> EmptyDigraph(2) =
+> Digraph( rec( nrvertices := 2, source := [ ], range := [ ] ) ); # Both empty
+true
+gap> gr1 := Digraph( [ [ ], [ 1, 2 ] ] );;
+gap> gr1 = gr2; # |out1[1]| = 0, |out2[1]| <> =
+false
+gap> gr1 := Digraph( [ [ 1, 1 ], [ 2, 2 ] ] );;
+gap> gr2 := Digraph( rec(
+> nrvertices := 2, source := [ 1, 2, 2, 2 ], range := [ 1, 2, 2, 2 ] ) );;
+gap> gr1 = gr2; # |out1[1]| = 2, |out2[1]| = 1
+false
+gap> gr2 := Digraph( rec(
+> nrvertices := 2, source := [ 1, 1, 1, 2 ], range := [ 1, 1, 1, 2 ] ) );;
+gap> gr1 = gr2; # |out1[1]| = 2, |out2[1]| = 3
+false
+gap> gr1 := Digraph( [ [ 1, 2 ], [ 2, 1 ] ] );;
+gap> gr2 := Digraph( rec(
+> nrvertices := 2, source := [ 1, 1, 2, 2 ], range := [ 1, 2, 2, 2 ] ) );;
+gap> gr1 = gr2; # Different contents of out[2]
+false
+gap> gr2 := Digraph( rec(
+> nrvertices := 2, source := [ 1, 1, 2, 2 ], range := [ 1, 2, 1, 2 ] ) );;
+gap> gr1 = gr2; # out[2] sorted differently
+true
+
+# \= for 2 digraphs with out-neighbours
+gap> gr1 := Digraph( [ [ 2 ], [ ] ] );;
+gap> gr2 := Digraph( [ [ 1 ] ] );;
+gap> gr1 = gr2; # Different number of vertices
+false
+gap> gr2 := Digraph( [ [ 1 ], [ 2 ] ] );;
+gap> gr1 = gr2; # Different number of edges
+false
+gap> EmptyDigraph(2) = Digraph( [ [ ], [ ] ] ); # Both empty digraphs
+true
+gap> gr1 := Digraph(
+> rec( nrvertices := 2, source := [ 1, 2 ], range := [ 1, 2 ] ) );;
+gap> OutNeighbours(gr1);;
+gap> gr1 = gr2; # Equal outneighbours
+true
+gap> gr1 := Digraph( [ [ ], [ 1, 2 ] ] );;
+gap> gr1 = gr2; # Different lengths of out[1]
+false
+gap> gr1 := Digraph( [ [ 1, 1 ], [ ] ] );;
+gap> gr1 = gr2; # Different lengths of out[1]
+false
+gap> gr1 := Digraph( [ [ 1 ], [ 1 ] ] );;
+gap> gr1 = gr2; # Different contents of out[2]
+false
+gap> gr1 := Digraph( [ [ 1 ], [ 1, 2 ] ] );;
+gap> gr2 := Digraph( [ [ 1 ], [ 1, 1 ] ] );;
+gap> gr1 = gr2; # Different contents of out[2]
+false
+gap> gr2 := Digraph( [ [ 1 ], [ 2, 1 ] ] );;
+gap> gr1 = gr2; # out[2] sorted differently
 true
 
 #

@@ -354,6 +354,7 @@ gap> OutDegreeOfVertex(gr, 4);
 <#GAPDoc Label="OutNeighboursOfVertex">
 <ManSection>
   <Oper Name="OutNeighboursOfVertex" Arg="digraph, vertex"/>
+  <Oper Name="OutNeighborsOfVertex" Arg="digraph, vertex"/>
   <Returns>A list of positive integers.</Returns>
   <Description>
     Returns the list <C>out</C> such that a vertex <C>i</C> is in <C>out</C>
@@ -398,6 +399,7 @@ gap> InDegreeOfVertex(gr, 4);
 <#GAPDoc Label="InNeighboursOfVertex">
 <ManSection>
   <Oper Name="InNeighboursOfVertex" Arg="digraph, vertex"/>
+  <Oper Name="InNeighborsOfVertex" Arg="digraph, vertex"/>
   <Returns>A list of postitive integers.</Returns>
   <Description>
     Returns the list <C>inn</C> such that a vertex <C>i</C> is in <C>inn</C>
