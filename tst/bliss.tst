@@ -76,6 +76,20 @@ gap> AutomorphismGroup(gr);
 gap> Size(last);
 1000
 
+# AutomorphismGroup: multigraph
+gap> gr:=MultidigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
+<multidigraph with 3 vertices, 6 edges>
+gap> AutomorphismGroup(gr);
+Group([ (1,2,3), (8,9), (6,7), (4,5) ])
+gap> Size(last);
+24
+gap> gr:=MultidigraphEdgeUnion(CycleDigraph(50), CycleDigraph(50));  
+<multidigraph with 50 vertices, 100 edges>
+gap> AutomorphismGroup(gr);
+<permutation group with 51 generators>
+gap> Size(last);
+56294995342131200
+
 #
 gap> DigraphsStopTest();
 
