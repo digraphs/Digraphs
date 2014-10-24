@@ -8,6 +8,8 @@
 #############################################################################
 ##
 
-DeclareGlobalFunction("GraphEndomorphismsTrivial");
-DeclareGlobalFunction("GraphEndomorphisms");
+DeclareAttribute("DigraphEndomorphisms", IsDigraph);
+DeclareOperation("HomomorphismDigraphs", [IsDigraph, IsDigraph]);
+DeclareAttribute("EndomorphismMonoid", IsDigraph);
+DeclareOperation("DigraphColoring", [IsDigraph, IsPosInt]);
 

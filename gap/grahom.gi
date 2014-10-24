@@ -1,35 +1,27 @@
 #############################################################################
 ##
 #W  grahom.gi
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014                                     Max Nuenhoeffer
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
 
-#MakeReadWriteGlobal("ListPerm");
+InstallMethod(DigraphColoring, "for a digraph and pos int",
+[IsDigraph, IsPosInt],
+function(g, n)
+  return HomomorphismDigraphs(g, DigraphRemoveLoops(CompleteDigraph(n)));
+end);
 
-#BIND_GLOBAL( "ListPerm", function( arg )
-#    local n;
-#    if Length(arg)=2 then
-#        n := arg[2];
-#    else
-#        n := LargestMovedPoint(arg[1]);
-#    fi;
-#    if IsOne(arg[1]) then
-#        return [1..n];
-#    else
-#        return OnTuples( [1..n], arg[1] );
-#    fi;
-#end );
-
-InstallGlobalFunction(GraphEndomorphismsTrivial,
-function(g)
+# formerly GraphEndomorphismsTrivial
+InstallMethod(HomomorphismDigraphs, "for digraphs",
+[IsDigraph, IsDigraph],
+function(g, h)
   # g a graph with OutNeighbours information
   local number,result;
   result := [];
-  number := GRAPH_HOMOMORPHISMS(OutNeighbours(g), OutNeighbours(g),
+  number := GRAPH_HOMOMORPHISMS(OutNeighbours(g), OutNeighbours(h),
                                 [],    # this is the initial try
                                 Length(OutNeighbours(g)),   # maxdepth
                                 fail,  # no further known constraints
@@ -39,33 +31,15 @@ function(g)
   return result;
 end);
 
-ReorderVertices := function(g)
-  local ad,l,max,n,new,p,pos,s,val;
-  ad := OutNeighbours(g);
-  val := List(ad,Length);
-  max := Maximum(val);
-  pos := Position(val,max);  # this is the first vertex
-  n := Length(ad);
-  l := [pos];
-  s := [pos];
-  new := [fail];
-  while Length(l) < n do
-    if Length(new) = 0 then
-      new := Difference([1..n],s){[1]};
-    else
-      new := Difference(Union(ad{l}),s);
-    fi;
-    Append(l,new);
-    UniteSet(s,new);
-  od;
-  p := PermList(l);
-  return rec( perm := p, verts := l, g := g, 
-              newadj := List(ad{l},v->OnTuples(v,p)) );
-end;
-
-InstallGlobalFunction(GraphEndomorphisms,
+InstallMethod(DigraphEndomorphisms, "for a digraph",
+[IsDigraph],
 function(g)
   local Dowork,aut,n,result,try;
+
+  if IsMultiDigraph(g) then 
+    return fail;
+  fi;
+
   Dowork := function(g,try,depth,auts,result)
     # This computes generators for the semigroup of all graph endomorphisms
     # of g which map the first depth-1 points according to the vector try
