@@ -54,25 +54,12 @@ function(graph)
   
   if IsMultiDigraph(graph) then 
     x := MULTIDIGRAPH_AUTOMORPHISMS(graph);
-    SetDigraphCanonicalLabelling(graph, x[5]);
-     
-    if IsEmpty(x[3]) then 
-      x[3]:=[()];
-    fi;
-    if IsEmpty(x[4]) then 
-      x[4]:=[()];
-    fi;
-    return DirectProduct(Group(Set(x[3])), Group(Set(x[4])));
+    SetDigraphCanonicalLabelling(graph, x[1]);
+    return DirectProduct(Group(x[2]), Group(x[3]));
   else
     x := DIGRAPH_AUTOMORPHISMS(graph);
     SetDigraphCanonicalLabelling(graph, x[1]);
-   
-    x := x[2]{[2..Length(x[2])]};
-    if IsEmpty(x) then 
-      return Group(());
-    else 
-      return Group(Set(x));
-    fi;
+    return Group(x[2]);
   fi;
 end);
 

@@ -10,6 +10,7 @@
 #include "bliss-0.72/bliss_C.h"
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "src/compiled.h"          /* GAP headers                */
 
@@ -699,25 +700,41 @@ void digraph_hook_function(void               *user_param,
 }
 
 static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
-  Obj                 autos, p, out;
+  Obj                 autos, p, out, n;
   BlissGraph          *graph;
   UInt4               *ptr;
   const unsigned int  *canon;
-  Int                 i, n;
+  Int                 i, nr;
   
   graph = buildBlissMultiDigraph(digraph);
   
   autos = NEW_PLIST(T_PLIST, 1);
-  SET_ELM_PLIST(autos, 1, ElmPRec(digraph, RNamName("nrvertices")));
+  n = ElmPRec(digraph, RNamName("nrvertices"));
+
+  SET_ELM_PLIST(autos, 1, n);
   SET_LEN_PLIST(autos, 1);
   canon = bliss_find_canonical_labeling(graph, digraph_hook_function, autos, 0);
   
-  n   = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
-  p   = NEW_PERM4(n);
+  p   = NEW_PERM4(INT_INTOBJ(n));
   ptr = ADDR_PERM4(p);
  
-  for(i = 0; i < n; ++i){
+  for(i = 0; i < INT_INTOBJ(n); ++i){
     ptr[i] = canon[i];
+  }
+  
+  bliss_release(graph);
+  
+  nr = LEN_PLIST(autos) - 1;
+  if (nr == 0) {
+    SET_ELM_PLIST(autos, 1, IdentityPerm);
+  } else {
+    memmove((void *) (ADDR_OBJ(autos) + 1), //destination
+            (void *) (ADDR_OBJ(autos) + 2), //source
+            (size_t) nr * sizeof(Obj));
+    SET_LEN_PLIST(autos, nr);
+    CHANGED_BAG(autos);
+    SortDensePlist(autos);
+    RemoveDupsDensePlist(autos);
   }
 
   out = NEW_PLIST(T_PLIST, 2);
@@ -725,8 +742,6 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   SET_ELM_PLIST(out, 2, autos);
   SET_LEN_PLIST(out, 2);
   CHANGED_BAG(out);
-
-  bliss_release(graph);
   
   return out;
 }
@@ -734,28 +749,37 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
 void multidigraph_hook_function(void               *user_param,
 	                        unsigned           int N,
 	                        const unsigned int *aut        ) {
-  UInt4   *ptr, *qtr;
-  Obj     p, q, list;
+  UInt4   *ptr;
+  Obj     p, gens;
   UInt    i, n, m;
-  
+  bool    stab;
+ 
   m   = INT_INTOBJ(ELM_PLIST(user_param, 1));  //the nr of vertices
-  n   = INT_INTOBJ(ELM_PLIST(user_param, 2));  //the nr of edges
-  p   = NEW_PERM4(m);
-  q   = NEW_PERM4(n);
-  ptr = ADDR_PERM4(p);
-  qtr = ADDR_PERM4(q);
-  
+
+  stab = true;
   for (i = 0; i < m; i++) {
-    ptr[i] = aut[i];
+    if (aut[i] != i) {
+      stab = false;
+    }
   }
-  for (i = 0 ; i < n; i ++ ) {
-    qtr[i] = (aut[2 * i + m] - m) / 2;
+  if (stab) { // permutation of the edges
+    n   = INT_INTOBJ(ELM_PLIST(user_param, 2));  //the nr of edges
+    p   = NEW_PERM4(n);
+    ptr = ADDR_PERM4(p);
+    for (i = 0 ; i < n; i ++ ) {
+      ptr[i] = (aut[2 * i + m] - m) / 2;
+    }
+    gens = ELM_PLIST(user_param, 4);
+  } else { // permutation of the vertices
+    p   = NEW_PERM4(m);
+    ptr = ADDR_PERM4(p);
+    for (i = 0 ; i < m; i ++ ) {
+      ptr[i] = aut[i];
+    }
+    gens = ELM_PLIST(user_param, 3);
   }
-  list = ELM_PLIST(user_param, 3);
-  AssPlist(list, LEN_PLIST(list)+1, p);
-  CHANGED_BAG(user_param);
-  list = ELM_PLIST(user_param, 4);
-  AssPlist(list, LEN_PLIST(list)+1, q);
+
+  AssPlist(gens, LEN_PLIST(gens)+1, p);
   CHANGED_BAG(user_param);
 }
 
@@ -768,15 +792,14 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   
   graph = buildBlissMultiDigraph(digraph);
   
-  autos = NEW_PLIST(T_PLIST, 5);
+  autos = NEW_PLIST(T_PLIST, 4);
   SET_ELM_PLIST(autos, 1, ElmPRec(digraph, RNamName("nrvertices")));
   CHANGED_BAG(autos);
   SET_ELM_PLIST(autos, 2, INTOBJ_INT(DigraphNrEdges(digraph)));
-  SET_ELM_PLIST(autos, 3, NEW_PLIST(T_PLIST, 0));
+  SET_ELM_PLIST(autos, 3, NEW_PLIST(T_PLIST, 0)); // perms of the vertices
   CHANGED_BAG(autos);
-  SET_ELM_PLIST(autos, 4, NEW_PLIST(T_PLIST, 0));
+  SET_ELM_PLIST(autos, 4, NEW_PLIST(T_PLIST, 0)); // perms of the edges
   CHANGED_BAG(autos);
-  SET_LEN_PLIST(autos, 5);
 
   canon = bliss_find_canonical_labeling(graph, multidigraph_hook_function, autos, 0);
   
@@ -788,10 +811,31 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
     ptr[i] = canon[i];
   }
   
-  SET_ELM_PLIST(autos, 5, p);
-  CHANGED_BAG(autos);
   bliss_release(graph);
+
+  SET_ELM_PLIST(autos, 1, p); 
   
+  // remove 2nd entry of autos . . .
+  memmove((void *) (ADDR_OBJ(autos) + 2), //destination
+          (void *) (ADDR_OBJ(autos) + 3), //source
+          (size_t) 2 * sizeof(Obj));
+  SET_LEN_PLIST(autos, 3);
+  CHANGED_BAG(autos);
+
+  if (LEN_PLIST(ELM_PLIST(autos, 2)) == 0) {
+    SET_ELM_PLIST(ELM_PLIST(autos, 2), 1, IdentityPerm);
+  } else {
+    SortDensePlist(ELM_PLIST(autos, 2));
+    RemoveDupsDensePlist(ELM_PLIST(autos, 2));
+  }
+  if (LEN_PLIST(ELM_PLIST(autos, 3)) == 0) {
+    SET_ELM_PLIST(ELM_PLIST(autos, 3), 1, IdentityPerm);
+  } else {
+    SortDensePlist(ELM_PLIST(autos, 3));
+    RemoveDupsDensePlist(ELM_PLIST(autos, 3));
+  }
+  CHANGED_BAG(autos);
+
   return autos;
 }
 
