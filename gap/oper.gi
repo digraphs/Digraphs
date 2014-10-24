@@ -12,6 +12,38 @@
 
 #
 
+InstallMethod(MultidigraphEdgeUnion, "for digraphs",
+[IsDigraph, IsDigraph],
+function(graph1, graph2)
+  local m, n, outm, outn, out, i;
+
+  if DigraphNrVertices(graph1) > DigraphNrVertices(graph2) then 
+    m := DigraphNrVertices(graph2); # smaller graph
+    n := DigraphNrVertices(graph1);        
+    outm := OutNeighbours(graph2);  # out neighbours of smaller graph
+    outn := OutNeighbours(graph1);
+  else
+    m := DigraphNrVertices(graph1);
+    n := DigraphNrVertices(graph2);
+    outm := OutNeighbours(graph1);
+    outn := OutNeighbours(graph2);
+  fi;
+
+  out := EmptyPlist(n);
+
+  for i in [ 1 .. m] do 
+    out[i] := Concatenation(outm[i], outn[i]);
+  od;
+
+  for i in [ m + 1 .. n ] do 
+    out[i] := ShallowCopy(outn[i]);
+  od;
+
+  return DigraphNC(out);
+end);
+
+#
+
 InstallMethod(DigraphFloydWarshall, "for a digraph",
 [IsDigraph, IsFunction, IsObject, IsObject],
 function(graph, func, nopath, edge)
