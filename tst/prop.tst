@@ -446,7 +446,7 @@ gap> gr := Digraph( r );
 gap> DigraphHasLoops(gr);
 false
 
-#
+# IsAperiodicDigraph
 gap> gr := Digraph([[2],[3],[4],[5],[6],[1],[8],[7]]);
 <digraph with 8 vertices, 8 edges>
 gap> IsAperiodicDigraph(gr);
@@ -463,6 +463,21 @@ gap> gr := Digraph([[2,2],[3,3],[4],[]]);
 <multidigraph with 4 vertices, 5 edges>
 gap> IsAperiodicDigraph(gr);
 false
+
+# IsTransitiveDigraph
+gap> gr := Digraph( [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [ 4 ] ] );
+<digraph with 4 vertices, 7 edges>
+gap> IsTransitiveDigraph(gr);
+true
+gap> gr := Digraph( [ [ 2, 3, 4 ], [ 3, 4, 1 ], [ 4 ], [ 4 ] ] );
+<digraph with 4 vertices, 8 edges>
+gap> IsTransitiveDigraph(gr);
+false
+gap> gr := Digraph( [ [ 1, 1 ] ] );
+<multidigraph with 1 vertex, 2 edges>
+gap> IsTransitiveDigraph(gr);
+Error, Digraphs: IsTransitiveDigraph: usage,
+this function does not work for digraphs with multiple edges,
 
 #
 gap> DigraphsStopTest();

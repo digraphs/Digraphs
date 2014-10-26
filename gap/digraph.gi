@@ -299,9 +299,12 @@ function(n)
       adj[i] := verts;
     od;
     gr := DigraphNC(adj);
+    SetIsEmptyDigraph(gr, false);
   fi;
   SetIsMultiDigraph(gr, false);
+  SetIsReflexiveDigraph(gr, true);
   SetIsSymmetricDigraph(gr, true);
+  SetIsTransitiveDigraph(gr, true);
   SetIsCompleteDigraph(gr, true);
   return gr;
 end);
@@ -340,6 +343,13 @@ function(n)
   source[n] := n;
   range[n] := 1;
   gr := DigraphNC( rec( nrvertices := n, source := source, range := range ) );
+  if n = 1 then
+    SetIsTransitiveDigraph(gr, true);
+    SetDigraphHasLoops(gr, true);
+  else
+    SetIsTransitiveDigraph(gr, false);
+    SetDigraphHasLoops(gr, false);
+  fi;
   SetIsAcyclicDigraph(gr, false);
   SetIsEmptyDigraph(gr, false);
   SetIsMultiDigraph(gr, false);

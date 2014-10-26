@@ -615,6 +615,143 @@ gap> DigraphEdges(last);
 gap> DigraphEdges(gr);
 [ [ 1, 1 ], [ 1, 2 ], [ 3, 1 ] ]
 
+# DigraphAddVertex
+gap> gr := CompleteDigraph(1);
+<digraph with 1 vertex, 1 edge>
+gap> DigraphVertices(gr);
+[ 1 ]
+gap> gr2 := DigraphAddVertex(gr);
+<digraph with 2 vertices, 1 edge>
+gap> DigraphVertices(gr2);
+[ 1, 2 ]
+gap> DigraphEdges(gr) = DigraphEdges(gr2);
+true
+gap> gr2 := DigraphAddVertex(gr, SymmetricGroup(2));
+<digraph with 2 vertices, 1 edge>
+gap> DigraphVertices(gr2);
+[ 1, 2 ]
+gap> DigraphEdges(gr) = DigraphEdges(gr2);
+true
+gap> DigraphVertexNames(gr);
+[ 1 ]
+gap> DigraphVertexNames(gr2);
+[ 1, Sym( [ 1 .. 2 ] ) ]
+
+# DigraphAddVertices
+gap> gr := CompleteDigraph(1);;
+gap> gr2 := DigraphAddVertices(gr, 3);
+<digraph with 4 vertices, 1 edge>
+gap> DigraphVertices(gr2);
+[ 1 .. 4 ]
+gap> DigraphEdges(gr) = DigraphEdges(gr2);
+true
+gap> gr2 := DigraphAddVertices(gr, 3, [ SymmetricGroup(2), Group(()) ] );
+Error, Digraphs: DigraphAddVertices: usage,
+the number of new vertex names (the length of the third arg <names>)
+must match the number of new vertices (the value of the second arg <m>),
+gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
+<digraph with 3 vertices, 1 edge>
+gap> DigraphVertices(gr2);
+[ 1 .. 3 ]
+gap> DigraphEdges(gr) = DigraphEdges(gr2);
+true
+gap> DigraphVertexNames(gr2);
+[ 1, Sym( [ 1 .. 2 ] ), Group(()) ]
+gap> gr := CompleteDigraph(1);;
+gap> SetDigraphVertexNames(gr, [ AlternatingGroup(5) ]);
+gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
+<digraph with 3 vertices, 1 edge>
+gap> DigraphVertexNames(gr2);
+[ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
+gap> gr := Digraph( rec( nrvertices := 1, source := [ 1 ], range := [ 1 ] ) );
+<digraph with 1 vertex, 1 edge>
+gap> gr2 := DigraphAddVertices(gr, 2);
+<digraph with 3 vertices, 1 edge>
+gap> DigraphVertexNames(gr2);
+[ 1, 2, 3 ]
+gap> SetDigraphVertexNames(gr, [ true ]);
+gap> gr2 := DigraphAddVertices(gr, 2);
+<digraph with 3 vertices, 1 edge>
+gap> DigraphVertexNames(gr2);
+[ true, 2, 3 ]
+gap> gr := Digraph( rec( nrvertices := 1, source := [ 1 ], range := [ 1 ] ) );;
+gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
+<digraph with 3 vertices, 1 edge>
+gap> DigraphVertexNames(gr2);
+[ 1, Sym( [ 1 .. 2 ] ), Group(()) ]
+gap> gr := Digraph( rec( nrvertices := 1, source := [ 1 ], range := [ 1 ] ) );;
+gap> SetDigraphVertexNames(gr, [ AlternatingGroup(5) ]);
+gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
+<digraph with 3 vertices, 1 edge>
+gap> DigraphVertexNames(gr2);
+[ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
+
+# DigraphRemoveVertex
+gap> gr := RandomDigraph(14);;
+gap> DigraphRemoveVertex(gr, "a");
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `DigraphRemoveVertex' on 2 arguments
+gap> DigraphRemoveVertex(gr, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `DigraphRemoveVertex' on 2 arguments
+gap> DigraphRemoveVertex(gr, 15);
+Error, Digraphs: DigraphRemoveVertices: usage,
+the second arg <m> is not a vertex of the first arg <digraph>,
+gap> gr2 := DigraphRemoveVertex(gr, 10);;
+gap> DigraphNrVertices(gr2);
+13
+gap> DigraphNrEdges(gr2) =
+> DigraphNrEdges(gr) - OutDegreeOfVertex(gr, 10) - InDegreeOfVertex(gr, 10);
+true
+
+# DigraphRemoveVertices
+gap> gr := CompleteDigraph(4);
+<digraph with 4 vertices, 16 edges>
+gap> gr2 := DigraphRemoveVertices( gr, [  ] );
+Error, Digraphs: DigraphRemoveVertices: usage,
+the second arg <verts> is empty; no vertices are specified for removal,
+gap> gr2 := DigraphRemoveVertices(gr, [ 0 ] );
+Error, Digraphs: DigraphRemoveVertices: usage,
+the second arg <verts> should be a duplicate free list of vertices of
+the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+gap> gr2 := DigraphRemoveVertices( gr, [ 1, "a" ]);
+Error, Digraphs: DigraphRemoveVertices: usage,
+the second arg <verts> should be a duplicate free list of vertices of
+the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+gap> gr2 := DigraphRemoveVertices( gr, [ 1, 1 ] );
+Error, Digraphs: DigraphRemoveVertices: usage,
+the second arg <verts> should be a duplicate free list of vertices of
+the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+gap> gr2 := DigraphRemoveVertices( gr, [ 1, 0 ] );
+Error, Digraphs: DigraphRemoveVertices: usage,
+the second arg <verts> should be a duplicate free list of vertices of
+the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+gap> gr2 := DigraphRemoveVertices( gr, [ 1, 5 ] );
+Error, Digraphs: DigraphRemoveVertices: usage,
+the second arg <verts> should be a duplicate free list of vertices of
+the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+gap> gr2 := DigraphRemoveVertices( gr, [ 1, 3 ] );
+<digraph with 2 vertices, 4 edges>
+gap> IsCompleteDigraph(gr2);
+true
+gap> DigraphVertexNames(gr2);
+[ 2, 4 ]
+gap> gr3 := DigraphRemoveVertices( gr, [ 1 .. 4 ] );
+<digraph with 0 vertices, 0 edges>
+gap> gr := Digraph( rec( nrvertices := 4,
+> source := [ 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4 ],
+> range  := [ 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4 ] ) );
+<digraph with 4 vertices, 16 edges>
+gap> IsCompleteDigraph(gr);
+true
+gap> SetDigraphVertexNames( gr, [ (), (1,2), (1,2,3), (1,2,3,4) ] );
+gap> gr2 := DigraphRemoveVertices( gr, [ 1 .. 4 ] );
+<digraph with 0 vertices, 0 edges>
+gap> gr3 := DigraphRemoveVertices( gr, [ 2, 3 ] );
+<digraph with 2 vertices, 4 edges>
+gap> DigraphVertexNames(gr3);
+[ (), (1,2,3,4) ]
+
 # AsBinaryRelation
 gap> gr := EmptyDigraph(0);
 <digraph with 0 vertices, 0 edges>
@@ -659,8 +796,6 @@ gap> IsReflexiveDigraph(gr);
 true
 gap> IsSymmetricDigraph(gr);
 true
-gap> IsTransitiveDigraph(gr);
-Error, Digraphs: IsTransitiveDigraph: not yet implemented,
 gap> IsAntisymmetricDigraph(gr);
 false
 gap> rel2 := AsBinaryRelation(gr);

@@ -393,11 +393,23 @@ end);
 
 #
 
-InstallMethod(IsTransitiveDigraph, "for a digrpah",
+InstallMethod(IsTransitiveDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
-  Error("Digraphs: IsTransitiveDigraph: not yet implemented,");
-  return;
+  local closure, adj;
+
+  if IsMultiDigraph(digraph) then
+    Error("Digraphs: IsTransitiveDigraph: usage,\n",
+          "this function does not work for digraphs with multiple edges,");
+    return;
+  fi;
+  closure := DIGRAPH_TRANS_CLOSURE(digraph);
+  adj := AdjacencyMatrix(digraph);
+  if closure = adj then
+    return true;
+  else
+    return false;
+  fi;
 end);
 
 #EOF
