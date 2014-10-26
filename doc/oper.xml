@@ -199,11 +199,18 @@ gap> DigraphVertexNames(new);
     constructed from <A>digraph</A> by adding <A>m</A> new vertices. If the
     optional third argument <A>names</A> is a list of length <A>m</A> consisting
     of arbitrary &GAP; objects, then the new vertices will be named according 
-    to this list.
-    <P/>
+    to this list. <P/>
     <Example><![CDATA[
-gap> true;
-true
+gap> gr := CompleteDigraph(3);
+<digraph with 3 vertices, 9 edges>
+gap> new := DigraphAddVertices(gr, 3);
+<digraph with 6 vertices, 9 edges>
+gap> DigraphVertices(new);
+[ 1 .. 6 ]
+gap> new := DigraphAddVertices(gr, 2, [ Group( [(1,2)] ), "d" ] );
+<digraph with 5 vertices, 9 edges>
+gap> DigraphVertexNames(new);
+[ 1, 2, 3, Group([ (1,2) ]), "d" ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -223,8 +230,18 @@ true
     accessed via <Ref Oper="DigraphVertexNames"/>.
 
     <Example><![CDATA[
-gap> true;
-true
+gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
+> source := [ "a", "a", "b", "c", "c" ],
+> range  := [ "b", "c", "a", "a", "c" ] ) );
+<digraph with 3 vertices, 5 edges>
+gap> DigraphVertexNames(gr);
+[ "a", "b", "c" ]
+gap> DigraphEdges(gr);
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 3, 1 ], [ 3, 3 ] ]
+gap> new := DigraphRemoveVertex(gr, 2);
+<digraph with 2 vertices, 3 edges>
+gap> DigraphVertexNames(new);
+[ "a", "c" ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -235,11 +252,24 @@ true
   <Oper Name="DigraphRemoveVertices " Arg="digraph, verts"/>
   <Returns>A digraph.</Returns>
   <Description>
-    Stub.
+    If <A>verts</A> is a duplicate-free list of vertices of <A>digraph</A>,
+    then this operation returns a new digraph constructed from <A>digraph</A>
+    by removing every vertex in <A>verts</A>, along with any edges which have 
+    source or range is an element of <A>verts</A>. <P/>
+
+    If <A>digraph</A> has <C>n</C> vertices, then the vertices of the new
+    digraph are <C>[ 1 .. n - Length(</C><A> verts </A><C>) ]</C>, but the 
+    original names can be accessed via <Ref Oper="DigraphVertexNames"/>. <P/>
 
     <Example><![CDATA[
-gap> true;
-true
+gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ],
+> [ 2, 3, 5 ] ] );
+<digraph with 5 vertices, 11 edges>
+gap> SetDigraphVertexNames( gr, [ "a", "b", "c", "d", "e" ] );
+gap> new := DigraphRemoveVertices(gr, [ 2, 4 ] );
+<digraph with 3 vertices, 4 edges>
+gap> DigraphVertexNames(new);
+[ "a", "c", "e" ]
 ]]></Example>
   </Description>
 </ManSection>
