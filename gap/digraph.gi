@@ -290,22 +290,26 @@ function(n)
       "the argument <n> must be a non-negative integer,");
     return;
   elif n = 0 then
-    gr := DigraphNC( [ ] );
-    SetIsEmptyDigraph(gr, true);
-  else
-    verts := [ 1 .. n ];
-    adj := EmptyPlist(n);
-    for i in verts do
-      adj[i] := verts;
-    od;
-    gr := DigraphNC(adj);
-    SetIsEmptyDigraph(gr, false);
+    gr := EmptyDigraph(0);
+    SetIsCompleteDigraph(gr, true);
+    return gr;
   fi;
+  verts := [ 1 .. n ];
+  adj := EmptyPlist(n);
+  for i in verts do
+    adj[i] := verts;
+  od;
+  gr := DigraphNC(adj);
+  SetIsEmptyDigraph(gr, false);
+  SetIsAcyclicDigraph(gr, false);
   SetIsMultiDigraph(gr, false);
   SetIsReflexiveDigraph(gr, true);
   SetIsSymmetricDigraph(gr, true);
   SetIsTransitiveDigraph(gr, true);
   SetIsCompleteDigraph(gr, true);
+  if n > 1 then
+    SetIsAntisymmetricDigraph(gr, true);
+  fi;
   return gr;
 end);
 

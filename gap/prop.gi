@@ -234,6 +234,10 @@ function(graph)
     return false;
   fi;
 
+  if n = 1 then
+    return true;
+  fi;
+
   if HasIsAcyclicDigraph(graph) and IsAcyclicDigraph(graph) then 
     return true;
   fi;
@@ -372,24 +376,30 @@ end);
 
 #
 
-InstallMethod(IsAntisymmetricDigraph, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local out, inn, verts, i, x;
-  
-  out := OutNeighbours(digraph);
-  inn := InNeighbours(digraph);
-  verts := DigraphVertices(digraph);
+if IsBound(IS_ANTISYMMETRIC_DIGRAPH) then
+  InstallMethod(IsAntisymmetricDigraph, "for a digraph",
+  [IsDigraph], function(digraph)
+    return IS_ANTISYMMETRIC_DIGRAPH(OutNeighbours(digraph));
+  end);
+else 
+  InstallMethod(IsAntisymmetricDigraph, "for a digraph",
+  [IsDigraph],
+  function(digraph)
+    local out, verts, i, x;
+    
+    out := OutNeighbours(digraph);
+    verts := DigraphVertices(digraph);
 
-  for i in verts do
-    for x in out[i] do
-      if x <> i and x in inn[i] then
-        return false;
-      fi;
+    for i in verts do
+      for x in InNeighboursOfVertex(digraph, i) do
+        if x <> i and x in out[i] then
+          return false;
+        fi;
+      od;
     od;
-  od;
-  return true;
-end);
+    return true;
+  end);
+fi;
 
 #
 

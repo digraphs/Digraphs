@@ -23,3 +23,5 @@ DeclareProperty("DigraphHasLoops", IsDigraph);
 DeclareProperty("IsAperiodicDigraph", IsDigraph);
 
 InstallTrueMethod( IsAntisymmetricDigraph, IsAcyclicDigraph );
+InstallTrueMethod( IsTransitiveDigraph, IsTournament and IsAcyclicDigraph );
+InstallTrueMethod( IsAcyclicDigraph, IsTournament and IsTransitiveDigraph );

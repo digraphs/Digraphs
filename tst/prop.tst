@@ -207,6 +207,22 @@ gap> gr := Digraph( [ [ 1, 1, 1, 2, 2 ], [ 2, 3 ], [ 3, 3, 4 ], [ 4, 3 ] ] );
 <multidigraph with 4 vertices, 12 edges>
 gap> IsAntisymmetricDigraph(gr);
 false
+gap> gr := Digraph( [ [ 2, 3 ], [ 3 ], [ 1 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> IsAntisymmetricDigraph(gr);
+false
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 1, 2 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> IsAntisymmetricDigraph(gr);
+false
+gap> gr := Digraph( [ [ 1, 1, 1, 1, 2 ], [ 2, 2 ] ] );
+<multidigraph with 2 vertices, 7 edges>
+gap> IsAntisymmetricDigraph(gr);
+true
+gap> gr := Digraph( [ [ 1, 1, 1, 1, 2 ], [ 2, 2, 2, 1 ] ] );
+<multidigraph with 2 vertices, 9 edges>
+gap> IsAntisymmetricDigraph(gr);
+false
 
 # IsEmptyDigraph
 gap> gr1 := Digraph( rec( nrvertices := 5, source := [ ], range := [ ] ) );;

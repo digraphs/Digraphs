@@ -220,6 +220,83 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
   return True;
 }
 
+static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
+  UInt  nr, i, j, k, l, level, last1, last2;
+  Obj   nbs;
+  UInt  *stack, *ptr;
+  
+  nr = LEN_PLIST(adj);
+  if (nr <= 1) {
+    return True;
+  }
+
+  //init the buf (is this correct length?)
+  ptr = calloc( nr + 1, sizeof(UInt) );
+  stack =  malloc( (4 * nr + 4) * sizeof(UInt) );
+  
+  for (i = 1; i <= nr; i++) {
+    nbs = ELM_PLIST(adj, i);
+    if (LEN_LIST(nbs) == 0) {
+      ptr[i] = 1;
+    } else if (ptr[i] == 0) {
+      level = 1;
+      stack[0] = i;
+      stack[1] = 1;
+      stack[2] = 0;
+      stack[3] = 0;
+      while (1) {
+        j = stack[0];
+        k = stack[1];
+        last1 = stack[2];
+        last2 = stack[3];
+        if (j == last2 && j != last1) {
+          free(ptr);
+          stack -= (4 * level) - 4; // put the stack back to the start
+          free(stack);
+          return False;  // Found a non-loop cycle of length 2 
+        }
+        // Check whether:
+        // 1. We've previously finished with this vertex, OR 
+        // 2. Whether we've now investigated all descendant branches
+        nbs = ELM_PLIST(adj, j);
+        if( ptr[j] == 2 ) {
+          PLAIN_LIST(nbs);
+          for ( l = 1; l <= LEN_LIST(nbs); l++ ) {
+            if ( last1 != j && INT_INTOBJ(ADDR_OBJ(nbs)[l]) == last1 ) {
+              return False;
+            }
+          }
+        }
+        if ( k > (UInt) LEN_LIST(nbs) ) {
+          ptr[j] = 1;
+        }
+        if( ptr[j] >= 1 ) {
+          level--;
+          if (level == 0) { 
+            break;
+          }
+          // Backtrack and choose next available branch
+          stack -= 4;
+          ptr[stack[0]] = 0; 
+          stack[1]++;
+        } else { //Otherwise move onto the next available branch
+          ptr[j] = 2;
+          level++;
+          nbs = ELM_PLIST(adj, j);
+          stack += 4;
+          stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          stack[1] = 1;
+          stack[2] = j; // I am wasting memory here, duplicating info
+          stack[3] = last1;
+        }
+      }
+    }
+  }
+  free(ptr);
+  free(stack);
+  return True;
+}
+
 static Obj FuncIS_STRONGLY_CONNECTED_DIGRAPH(Obj self, Obj digraph) { 
   UInt n, nextid, *bag, *ptr1, *ptr2, *fptr, *id, w;
 
@@ -1075,6 +1152,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "IS_ACYCLIC_DIGRAPH", 1, "adj",
     FuncIS_ACYCLIC_DIGRAPH, 
     "src/digraphs.c:FuncIS_ACYCLIC_DIGRAPH" },
+  
+  { "IS_ANTISYMMETRIC_DIGRAPH", 1, "adj",
+    FuncIS_ANTISYMMETRIC_DIGRAPH, 
+    "src/digraphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH" },
   
   { "IS_STRONGLY_CONNECTED_DIGRAPH", 1, "adj",
     FuncIS_STRONGLY_CONNECTED_DIGRAPH, 
