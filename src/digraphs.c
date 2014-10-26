@@ -502,6 +502,7 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
     n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
     for (i = 1; i <= n; i++) {
       adji = ELM_PLIST(adj, i);
+      PLAIN_LIST(adji);
       for (j = 2; j <= LEN_PLIST(adji); j++) {
         jj = INT_INTOBJ(ELM_PLIST(adji, j));
         for (k = 1; k < j; k++) {

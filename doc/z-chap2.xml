@@ -21,8 +21,12 @@
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">
     <#Include Label="DigraphReflexiveTransitiveClosure">
+    <#Include Label="DigraphAddVertex">
+    <#Include Label="DigraphAddVertices">
     <#Include Label="DigraphAddEdge">
     <#Include Label="DigraphAddEdges">
+    <#Include Label="DigraphRemoveVertex">
+    <#Include Label="DigraphRemoveVertices">
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphRemoveLoops">
   </Section>
