@@ -1,4 +1,4 @@
-#############################################################################
+/#############################################################################
 ##
 #W  digraph.xml
 #Y  Copyright (C) 2014                                  James D. Mitchell
@@ -218,13 +218,49 @@ gap> AsDigraph(f, 4);
 
 <#GAPDoc Label="RandomDigraph">
 <ManSection>
-  <Oper Name="RandomDigraph" Arg="n"/>
+  <Oper Name="RandomDigraph" Arg="n[, p]"/>
   <Returns>A digraph.</Returns>
   <Description>
-    Returns a random digraph with <A>n</A> vertices and without multiple edges.
+    If <A>n</A> is a positive integer, then this function returns a random 
+    digraph with <A>n</A> vertices and without multiple edges. <P/>
+
+    If the optional second argument <A>p</A> is a float with value 
+    <M>0 \leq <A> p </A> \leq 1</M>, then an edge will exist between each 
+    pair of vertices with probability approximately <A>p</A>.
+    If <A>p</A> is not specified, then a probability of <C>0.5</C> will be
+    assumed.
     <Log><![CDATA[
 gap> RandomDigraph(1000);
 <digraph with 1000 vertices, 364444 edges>
+gap> RandomDigraph(10000, 0.023);
+<digraph with 10000 vertices, 2300438 edges>
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="RandomMultiDigraph">
+<ManSection>
+  <Oper Name="RandomMultiDigraph" Arg="n[, m]"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer, then this function returns a random 
+    digraph with <A>n</A> vertices. If the optional second argument 
+    <A>m</A> is a positive integer, then the digraph will have <A>m</A>
+    edges. If <A>m</A> is not specified, then the number of edges will be
+    chosen randomly from the range 
+    <C>[ 1 .. </C><M>{n \choose 2}</M><C> ]</C>.
+    <P/>
+
+    The method used by this function chooses each edge from the set of 
+    all possible edges with uniform probability. No effort is made to avoid
+    creating multiple edges, so it is likely (but not guaranteed) that the
+    result will have multiple edges. <P/>
+    <Log><![CDATA[
+gap> RandomMultiDigraph(1000);
+<multidigraph with 1000 vertices, 216659 edges>
+gap> RandomMultiDigraph(1000, 950);
+<multidigraph with 1000 vertices, 950 edges>
 ]]></Log>
   </Description>
 </ManSection>

@@ -1138,12 +1138,11 @@ Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
 }
 
 static Obj FuncRANDOM_DIGRAPH(Obj self, Obj m) {
-  UInt n, i, j, k, len, lim, count;
-  Obj  adj, adjj;
+  UInt n, i, j, k, len, lim;
+  Obj  adj, adji;
 
   n   = INT_INTOBJ(ELM_PLIST(m, 1));
   lim = INT_INTOBJ(ELM_PLIST(m, 2));
-  //count = 0;
   adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
   SET_LEN_PLIST(adj, n);
   
@@ -1155,22 +1154,47 @@ static Obj FuncRANDOM_DIGRAPH(Obj self, Obj m) {
   
   for (i = 1; i <= n; i++) {
     for (j = 1; j <= n; j++) {
-      k = rand() % 100;
+      k = rand() % 10000;
       if (k < lim) {
-        //count++;
-        adjj  = ELM_PLIST(adj, i);
-        len   = LEN_PLIST(adjj);
+        adji  = ELM_PLIST(adj, i);
+        len   = LEN_PLIST(adji);
         if (len == 0) {
-          RetypeBag(adjj, T_PLIST_CYC+IMMUTABLE);
+          RetypeBag(adji, T_PLIST_CYC+IMMUTABLE);
           CHANGED_BAG(adj);
         }
-        AssPlist(adjj, len + 1,  INTOBJ_INT(j));
+        AssPlist(adji, len + 1,  INTOBJ_INT(j));
       }
     }
   }
-  // DigraphNrEdges = INTOBJ_INT(count)
-  // DigraphNrVertices = n
-  // IsMultiDigraph = false
+  return adj;
+}
+
+static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj arg) {
+  UInt n, m, i, j, k, len;
+  Obj  adj, adjj;
+
+  n = INT_INTOBJ(ELM_PLIST(arg, 1));
+  m = INT_INTOBJ(ELM_PLIST(arg, 2));
+  adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+  SET_LEN_PLIST(adj, n);
+  
+  for (i = 1; i <= n; i++) {
+    SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+    SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
+    CHANGED_BAG(adj);
+  }
+
+  for (i = 1; i <= m; i++) {
+    j = (rand() % n) + 1;
+    k = (rand() % n) + 1;
+    adjj  = ELM_PLIST(adj, j);
+    len   = LEN_PLIST(adjj);
+    if (len == 0) {
+      RetypeBag(adjj, T_PLIST_CYC+IMMUTABLE);
+      CHANGED_BAG(adj);
+    }
+    AssPlist(adjj, len + 1,  INTOBJ_INT(k));
+  }
   return adj;
 }
 
@@ -1246,6 +1270,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "RANDOM_DIGRAPH", 1, "m",
     FuncRANDOM_DIGRAPH,
     "src/digraphs.c:FuncRANDOM_DIGRAPH" },
+  
+  { "RANDOM_MULTI_DIGRAPH", 1, "arg",
+    FuncRANDOM_MULTI_DIGRAPH,
+    "src/digraphs.c:FuncRANDOM_MULTI_DIGRAPH" },
 
   { 0 }
 

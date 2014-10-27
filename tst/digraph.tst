@@ -196,6 +196,43 @@ gap> OutNeighbours(gr);
 # RandomDigraph
 gap> DigraphNrVertices(RandomDigraph(10));
 10
+gap> DigraphNrVertices(RandomDigraph(200, 0.854));
+200
+gap> IsMultiDigraph(RandomDigraph(1000));
+false
+gap> RandomDigraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomDigraph' on 1 arguments
+gap> RandomDigraph("a");
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomDigraph' on 1 arguments
+gap> RandomDigraph(4, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomDigraph' on 2 arguments
+gap> RandomDigraph(10, 1.01);
+Error, Digraphs: RandomDigraph: usage,
+the second argument <p> must be a float between 0 and 1,
+gap> RandomDigraph(10, -0.01);
+Error, Digraphs: RandomDigraph: usage,
+the second argument <p> must be a float between 0 and 1,
+
+# RandomMultiDigraph
+gap> DigraphNrVertices(RandomMultiDigraph(100));
+100
+gap> gr := RandomMultiDigraph(100, 1000);;
+gap> DigraphNrVertices(gr);
+100
+gap> DigraphNrEdges(gr);
+1000
+gap> RandomMultiDigraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomMultiDigraph' on 1 arguments
+gap> RandomMultiDigraph(0, 1);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomMultiDigraph' on 2 arguments
+gap> RandomMultiDigraph(1, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomMultiDigraph' on 2 arguments
 
 # RandomTournament
 gap> RandomTournament(25);

@@ -40,6 +40,8 @@ DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
 
 DeclareOperation("RandomDigraph", [IsPosInt]);
 DeclareOperation("RandomDigraph", [IsPosInt, IsFloat]);
+DeclareOperation("RandomMultiDigraph", [IsPosInt]);
+DeclareOperation("RandomMultiDigraph", [IsPosInt, IsPosInt]);
 DeclareOperation("RandomTournament", [IsInt]);
 
 DeclareOperation("CompleteBipartiteDigraph", [IsPosInt, IsPosInt]);
