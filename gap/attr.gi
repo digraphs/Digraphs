@@ -384,6 +384,16 @@ if IsBound(GABOW_SCC) then
   InstallMethod(DigraphStronglyConnectedComponents, "for a digraph",
   [IsDigraph],
   function(digraph)
+    local verts;
+    
+    if HasIsAcyclicDigraph(digraph) and IsAcyclicDigraph(digraph) then
+      verts := DigraphVertices(digraph);
+      return rec( comps := List( verts, x -> [ x ] ), id := verts * 1 );
+    elif HasIsStronglyConnectedDigraph(digraph)
+     and IsStronglyConnectedDigraph(digraph) then
+      verts := DigraphVertices(digraph);
+      return rec( comps := [ verts * 1 ], id := verts * 0 + 1 );
+    fi;
     return GABOW_SCC(OutNeighbours(digraph));
   end);
 else
