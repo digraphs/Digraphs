@@ -591,7 +591,7 @@ end);
 InstallMethod(DigraphSymmetricClosure, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local n, verts, mat, m, source, range, s, r, x, i, j, k;
+  local n, verts, mat, m, source, range, s, r, x, out, i, j, k;
   
   if HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph) then
     Error("already known to be symmetric");
@@ -604,7 +604,7 @@ function(digraph)
   fi;
   verts := ShallowCopy(DigraphVertices(digraph));
   mat := List( verts, x -> verts * 0 );
-  m := DigraphNrVertices(digraph);
+  m := DigraphNrEdges(digraph);
   source := ShallowCopy(DigraphSource(digraph));
   range  := ShallowCopy(DigraphRange(digraph));
   for i in [ 1 .. m ] do
@@ -635,8 +635,9 @@ function(digraph)
     od;
   od;
   range := Permuted(range, Sortex(source)); 
-  return DigraphNC( rec( nrvertices := n, source := source, range := range ) );
-  Error("Digraphs: DigraphSymmetricClosure, not yet implemented,");
+  out := DigraphNC( rec( nrvertices := n, source := source, range := range ) );
+  #SetIsSymmetricDigraph(out, true);
+  return out;
 end);
 
 #
