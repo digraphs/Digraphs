@@ -221,7 +221,7 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
 }
 
 static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
-  UInt  nr, i, j, k, l, level, last1, last2;
+  Int  nr, i, j, k, l, level, last1, last2;
   Obj   nbs;
   UInt  *stack, *ptr;
   
@@ -261,13 +261,13 @@ static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
         nbs = ELM_PLIST(adj, j);
         if( ptr[j] == 2 ) {
           PLAIN_LIST(nbs);
-          for ( l = 1; l <= LEN_LIST(nbs); l++ ) {
+          for ( l = 1; l <= LEN_PLIST(nbs); l++ ) {
             if ( last1 != j && INT_INTOBJ(ADDR_OBJ(nbs)[l]) == last1 ) {
               return False;
             }
           }
         }
-        if ( k > (UInt) LEN_LIST(nbs) ) {
+        if ( k > LEN_LIST(nbs) ) {
           ptr[j] = 1;
         }
         if( ptr[j] >= 1 ) {
