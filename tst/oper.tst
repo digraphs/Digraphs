@@ -687,7 +687,12 @@ gap> DigraphVertexNames(gr2);
 [ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
 
 # DigraphRemoveVertex
-gap> gr := RandomDigraph(14);;
+gap> gr := Digraph( [
+> [ 2, 4, 5 ], [ 1, 9, 11 ], [ 1, 10, 12 ], [ 4, 6, 10 ], 
+> [ 2, 3, 4, 6, 8, 11, 12, 14 ], [ 2, 5, 6, 9, 14 ], [  ], [ 5, 8, 10 ], 
+> [ 8, 11, 12, 14 ], [ 2, 3, 8, 13, 14 ], [ 3, 6, 7, 8, 11, 12, 13, 14 ], 
+> [ 6, 8, 12, 13 ], [ 4, 8 ], [ 6, 8, 9 ] ] );
+<digraph with 14 vertices, 54 edges>
 gap> DigraphRemoveVertex(gr, "a");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphRemoveVertex' on 2 arguments

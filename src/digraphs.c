@@ -1137,6 +1137,43 @@ Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
     else return INTOBJ_INT(count);
 }
 
+static Obj FuncRANDOM_DIGRAPH(Obj self, Obj m) {
+  UInt n, i, j, k, len, lim, count;
+  Obj  adj, adjj;
+
+  n   = INT_INTOBJ(ELM_PLIST(m, 1));
+  lim = INT_INTOBJ(ELM_PLIST(m, 2));
+  //count = 0;
+  adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+  SET_LEN_PLIST(adj, n);
+  
+  for (i = 1; i <= n; i++) {
+    SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+    SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
+    CHANGED_BAG(adj);
+  }
+  
+  for (i = 1; i <= n; i++) {
+    for (j = 1; j <= n; j++) {
+      k = rand() % 100;
+      if (k < lim) {
+        //count++;
+        adjj  = ELM_PLIST(adj, i);
+        len   = LEN_PLIST(adjj);
+        if (len == 0) {
+          RetypeBag(adjj, T_PLIST_CYC+IMMUTABLE);
+          CHANGED_BAG(adj);
+        }
+        AssPlist(adjj, len + 1,  INTOBJ_INT(j));
+      }
+    }
+  }
+  // DigraphNrEdges = INTOBJ_INT(count)
+  // DigraphNrVertices = n
+  // IsMultiDigraph = false
+  return adj;
+}
+
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
 
 /******************************************************************************
@@ -1205,6 +1242,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_REFLEX_TRANS_CLOSURE", 1, "digraph",
     FuncDIGRAPH_REFLEX_TRANS_CLOSURE,
     "src/digraphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE" },
+  
+  { "RANDOM_DIGRAPH", 1, "m",
+    FuncRANDOM_DIGRAPH,
+    "src/digraphs.c:FuncRANDOM_DIGRAPH" },
 
   { 0 }
 
