@@ -31,7 +31,7 @@ function(graph1, graph2)
 
   out := EmptyPlist(n);
 
-  for i in [ 1 .. m] do 
+  for i in [ 1 .. m ] do 
     out[i] := Concatenation(outm[i], outn[i]);
   od;
 
@@ -590,7 +590,52 @@ end);
 
 InstallMethod(DigraphSymmetricClosure, "for a digraph",
 [IsDigraph],
-function(graph)
+function(digraph)
+  local n, verts, mat, m, source, range, s, r, x, i, j, k;
+  
+  if HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph) then
+    Error("already known to be symmetric");
+    return;
+  fi;
+  n := DigraphNrVertices(digraph);
+  if n <= 1 then
+    Error("less than 2 vertices so automatically symmetric"); 
+    return;
+  fi;
+  verts := ShallowCopy(DigraphVertices(digraph));
+  mat := List( verts, x -> verts * 0 );
+  m := DigraphNrVertices(digraph);
+  source := ShallowCopy(DigraphSource(digraph));
+  range  := ShallowCopy(DigraphRange(digraph));
+  for i in [ 1 .. m ] do
+    s := source[i];
+    r := range[i];
+    if r < s then
+      mat[r][s] := mat[r][s] - 1;
+    else
+      mat[s][r] := mat[s][r] + 1;
+    fi;
+  od;
+  for i in verts do
+    for j in [ i + 1 .. n ] do
+      x := mat[i][j];
+      if x > 0 then
+        for k in [ 1 .. x ] do
+          m := m + 1;
+          source[m] := j;
+          range[m] := i;
+        od;
+      elif x < 0 then
+        for k in [ 1 .. -x ] do
+          m := m + 1;
+          source[m] := i;
+          range[m] := j;
+        od;
+      fi;
+    od;
+  od;
+  range := Permuted(range, Sortex(source)); 
+  return DigraphNC( rec( nrvertices := n, source := source, range := range ) );
   Error("Digraphs: DigraphSymmetricClosure, not yet implemented,");
 end);
 

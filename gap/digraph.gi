@@ -223,15 +223,13 @@ end);
 InstallMethod(RandomDigraph, "for a pos int and a float",
 [IsPosInt, IsFloat],
 function(n, p)
-  local adj, out, lim;
+  local out, lim;
   
   if p < 0.0 or 1.0 < p then
     Error("Digraphs: RandomDigraph: usage,\n",
     "the second argument <p> must be a float between 0 and 1,");
   fi;
-  lim := Int( p * 10000 );
-  adj := RANDOM_DIGRAPH([ n, lim ]);
-  out := DigraphNC(adj);
+  out := DigraphNC( RANDOM_DIGRAPH( n, Int( p * 10000 ) ) );
   SetIsMultiDigraph(out, false);
   return out;
 end);
@@ -266,11 +264,7 @@ end);
 InstallMethod(RandomMultiDigraph, "for two pos ints",
 [IsPosInt, IsPosInt],
 function(n, m)
-  local gr;
-
-  gr := DigraphNC( RANDOM_MULTI_DIGRAPH( [ n, m ] ) );
-  # SetIsMultiDigraph(gr, true);
-  return gr;
+  return DigraphNC( RANDOM_MULTI_DIGRAPH( n, m ) );
 end);
 
 #
