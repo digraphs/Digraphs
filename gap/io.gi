@@ -643,6 +643,14 @@ InstallMethod(WriteGraph6, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
+  if ( IsMultiDigraph(graph)
+       or not IsSymmetricDigraph(graph)
+       or HasLoops(graph) ) then
+    Error("Digraphs: WriteGraph6: usage,\n",
+          "<graph> must be symmetric and have no loops or multiple edges,");
+    return;
+  fi;
+  
   list := [];
   adj := OutNeighbours(graph);
   n := Length(DigraphVertices(graph));
