@@ -497,10 +497,26 @@ gap> gr := CompleteDigraph(100);
 <digraph with 100 vertices, 10000 edges>
 gap> DigraphPeriod(gr);
 1
-gap> gr := Digraph([[2,2],[3],[4],[1]]);
+gap> gr := Digraph( [ [ 2, 2 ], [ 3 ], [ 4 ], [ 1 ] ] );
 <multidigraph with 4 vertices, 5 edges>
 gap> DigraphPeriod(gr);
 4
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 4 ], [ ] ] );
+<digraph with 4 vertices, 3 edges>
+gap> HasIsAcyclicDigraph(gr);
+false
+gap> DigraphPeriod(gr);
+0
+gap> HasIsAcyclicDigraph(gr);
+true
+gap> IsAcyclicDigraph(gr);
+true
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 4 ], [ ] ] );
+<digraph with 4 vertices, 3 edges>
+gap> IsAcyclicDigraph(gr);
+true
+gap> DigraphPeriod(gr);
+0
 
 #
 gap> DigraphsStopTest();
