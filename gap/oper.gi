@@ -219,6 +219,10 @@ function(digraph, edges)
     return;
   fi;
  
+  if Length(edges) = 0 then
+    return digraph;
+  fi;
+
   source := ShallowCopy(DigraphSource(digraph));
   range := ShallowCopy(DigraphRange(digraph));
   
@@ -1355,4 +1359,50 @@ function(digraph)
   return rel;
 end);
 
+#
+
+InstallMethod(DigraphDisjointUnion, "for two digraphs",
+[IsDigraph and HasDigraphSource, IsDigraph and HasDigraphSource], 1,
+function(digraph1, digraph2)
+  local nrvertices1, range, source;
+
+  nrvertices1 := DigraphNrVertices(digraph1); 
+  range := Concatenation(DigraphRange(digraph1), DigraphRange(digraph2) +
+	   nrvertices1);
+  source := Concatenation(DigraphSource(digraph1), DigraphSource(digraph2) +
+	   nrvertices1);
+  return DigraphNC(rec(nrvertices := nrvertices1 + DigraphNrVertices(digraph2),
+                       source := source, range := range));
+end);
+
+#
+
+InstallMethod(DigraphDisjointUnion, "for two digraphs",
+[IsDigraph and HasOutNeighbours, IsDigraph and HasOutNeighbours], 1,
+function(digraph1, digraph2)
+  local nrvertices1, out2;
+
+  nrvertices1 := DigraphNrVertices(digraph1);
+  out2 := List(OutNeighbours(digraph2), x -> x + nrvertices1);
+
+  return DigraphNC(Concatenation(OutNeighbours(digraph1), out2));
+end);
+
+#
+
+InstallMethod(DigraphDisjointUnion, "for two digraphs",
+[IsDigraph and HasDigraphSource, IsDigraph and HasOutNeighbours],
+function(digraph1, digraph2)
+  DigraphSource(digraph2);
+  return DigraphDisjointUnion(digraph1, digraph2); 
+end);
+
+#
+
+InstallMethod(DigraphDisjointUnion, "for two digraphs",
+[IsDigraph and HasOutNeighbours, IsDigraph and HasDigraphSource],
+function(digraph1, digraph2)
+  DigraphSource(digraph1);
+  return DigraphDisjointUnion(digraph1, digraph2); 
+end);
 #EOF
