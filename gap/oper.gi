@@ -1364,7 +1364,7 @@ end);
 #
 
 InstallMethod(DigraphDisjointUnion, "for two digraphs",
-[IsDigraph and HasDigraphSource, IsDigraph and HasDigraphSource],
+[IsDigraph and HasDigraphSource, IsDigraph and HasDigraphSource], 1,
 function(digraph1, digraph2)
   local nrvertices1, range, source;
 
@@ -1379,9 +1379,8 @@ end);
 
 #
 
-
 InstallMethod(DigraphDisjointUnion, "for two digraphs",
-[IsDigraph and HasOutNeighbours, IsDigraph and HasOutNeighbours],
+[IsDigraph and HasOutNeighbours, IsDigraph and HasOutNeighbours], 1,
 function(digraph1, digraph2)
   local nrvertices1, out2;
 
@@ -1391,4 +1390,21 @@ function(digraph1, digraph2)
   return DigraphNC(Concatenation(OutNeighbours(digraph1), out2));
 end);
 
+#
+
+InstallMethod(DigraphDisjointUnion, "for two digraphs",
+[IsDigraph and HasDigraphSource, IsDigraph and HasOutNeighbours],
+function(digraph1, digraph2)
+  DigraphSource(digraph2);
+  return DigraphDisjointUnion(digraph1, digraph2); 
+end);
+
+#
+
+InstallMethod(DigraphDisjointUnion, "for two digraphs",
+[IsDigraph and HasOutNeighbours, IsDigraph and HasDigraphSource],
+function(digraph1, digraph2)
+  DigraphSource(digraph1);
+  return DigraphDisjointUnion(digraph1, digraph2); 
+end);
 #EOF
