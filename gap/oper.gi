@@ -121,35 +121,33 @@ end);
 
 #
 
-InstallMethod(DigraphReverseEdge, "for a digraph and an edge",
-[IsDigraph and HasDigraphSource, IsList],
-function(digraph, edge)
-  local edge_src, edge_rng, source, range, i;
+InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
+[IsDigraph and HasDigraphSource, IsTable],
+function(digraph, edges)
+  local source, range, i;
 
   if IsMultiDigraph(digraph) then
-    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    Error("Digraphs: DigraphReverseEdges: usage,\n",
     "the first argument <digraph> must not be a multigraph,");
     return;
   fi;
 
-  if not IsDigraphEdge(digraph, edge) then
-    Error("Digraphs: DigraphReverseEdge: usage,\n",
-    "the second argument <edge> must be an edge of <digraph>,");
+  if not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
+    Error("Digraphs: DigraphReverseEdges: usage,\n",
+    "the second argument <edges> must be a list of edge of <digraph>,");
     return;
   fi;
  
-  edge_src := edge[1];
-  edge_rng := edge[2];
   source := ShallowCopy(DigraphSource(digraph));
   range := ShallowCopy(DigraphRange(digraph));
-  
+
+  Sort(edges); 
   for i in [ 1 .. Length(source) ] do
-    if source[i] = edge_src and range[i] = edge_rng then
-      # swap source[i] and range[i]
+    if [source[i], range[i]] in edges then 
+      # swap source[ i] and range[i]
       source[i] := range[i] + source[i]; 
       range[i] := source[i] - range[i];
       source[i] := source[i] - range[i];
-      break;
     fi;
   od;
 
@@ -161,39 +159,152 @@ end);
 
 #
 
-InstallMethod(DigraphReverseEdge, "for a digraph and an edge",
-[IsDigraph and HasOutNeighbours, IsList],
-function(digraph, edge)
-  local edge_src, edge_rng, out, new, i;
+InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
+[IsDigraph and HasOutNeighbours, IsTable],
+function(digraph, edges)
+  local current, nredges, out, new, i;
 
   if IsMultiDigraph(digraph) then
-    Error("Digraphs: DigraphReverseEdge: usage,\n",
+    Error("Digraphs: DigraphReverseEdges: usage,\n",
     "the first argument <digraph> must not be a multigraph,");
     return;
   fi;
 
-  if not IsDigraphEdge(digraph, edge) then
-    Error("Digraphs: DigraphReverseEdge: usage,\n",
-    "the second argument <edge> must be an edge of <digraph>,");
+  if not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
+    Error("Digraphs: DigraphReverseEdges: usage,\n",
+    "the second argument <edges> must be a list of edge of <digraph>,");
     return;
   fi;
  
-  edge_src := edge[1];
-  edge_rng := edge[2];
+  Sort(edges);
+  current := 1;
 
+
+  nredges := Length(edges); 
   out := OutNeighbours(digraph);
   new := [];
   for i in [ 1 .. Length(DigraphVertices(digraph)) ] do
-    if i = edge_src then
-      new[i] := ShallowCopy(out[i]);
-      Remove(new[i], Position(new[i], edge_rng));
-    else
-      new[i] := ShallowCopy(out[i]);
-    fi;
+    new[i] := ShallowCopy(out[i]);
+    while current <= nredges and  edges[current][1]  = i do
+      Remove(new[i], Position(new[i], edges[current][2]));
+      current := current + 1;
+    od;
   od;
-  Add(new[edge_rng], edge_src);
+
+  for i in [ 1 .. nredges ]  do
+    Add(new[edges[i][2]], edges[i][1]);
+  od;
 
   return DigraphNC(new);
+end);
+
+#
+
+# can we use IsListOf...
+InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
+[IsDigraph and HasDigraphSource, IsHomogeneousList], 1,
+function(digraph, edges)
+  local nredges, source, range, i;
+
+  if IsMultiDigraph(digraph) then
+    Error("Digraphs: DigraphReverseEdges: usage,\n",
+    "the first argument <digraph> must not be a multigraph,");
+    return;
+  fi;
+  
+  nredges := DigraphNrEdges(digraph);
+  if not ForAll( edges, x -> x <= nredges) then
+    Error("Digraphs: DigraphReverseEdges: usage,\n",
+    "the second argument <edges> must be a list of edge of <digraph>,");
+    return;
+  fi;
+ 
+  source := ShallowCopy(DigraphSource(digraph));
+  range := ShallowCopy(DigraphRange(digraph));
+  
+  for i in edges do
+    # swap source[i] and range[i]
+    source[i] := range[i] + source[i]; 
+    range[i] := source[i] - range[i];
+    source[i] := source[i] - range[i];
+  od;
+
+  range := Permuted(range, Sortex(source));
+  return DigraphNC(rec( source:=source, 
+                        range:=range,
+                        nrvertices:=DigraphNrVertices(digraph)));
+end);
+
+#
+InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
+[IsDigraph and HasOutNeighbours, IsHomogeneousList],
+function(digraph, edges)
+  local nredges, current, out, new, pos_l, pos_h, toadd, pos, temp, i, edge;
+
+  if IsMultiDigraph(digraph) then
+    Error("Digraphs: DigraphReverseEdges: usage,\n",
+    "the first argument <digraph> must not be a multigraph,");
+    return;
+  fi;
+  
+  nredges := DigraphNrEdges(digraph);
+  if not ForAll(edges, x -> x <= nredges) then 
+    Error("Digraphs: DigraphReverseEdges: usage,\n",
+    "the second argument <edge> must be a list of edge of <digraph>,");
+    return;
+  fi;
+  
+  if Length(edges) = 0 then
+    return digraph;
+  fi;
+
+  Sort(edges); 
+  current := edges[1];
+  out := OutNeighbours(digraph);  
+  new := [];
+  pos_l := 0; 
+  pos_h := 0;
+
+  toadd := [];
+  pos := 1;
+  for i in [ 1 .. Length(DigraphVertices(digraph)) ] do
+    pos_h := pos_h + Length(out[i]);
+    new[i] := ShallowCopy(out[i]);
+    while pos_l < current and current <= pos_h do
+      temp := current - pos_l;
+      toadd[pos] := [ i, new[i][temp]];
+      pos := pos + 1;
+      Remove(new[i], temp); 
+      if IsBound(edges[pos]) then
+	current := edges[pos];
+      else
+	break;
+      fi;
+    od;
+    pos_l := pos_l + Length(out[i]);
+  od;
+
+  for edge in toadd do
+    Add(new[edge[2]], edge[1]);
+  od;
+
+  return DigraphNC(new);
+end);
+
+#
+
+InstallMethod(DigraphReverseEdge, "for a digraph and an edge",
+[IsDigraph, IsList],
+function(digraph, edge)
+  return DigraphReverseEdges(digraph, [edge]);
+end);
+
+#
+
+InstallMethod(DigraphReverseEdge, "for a digraph and an edge",
+[IsDigraph, IsPosInt],
+function(digraph, edge)
+  return DigraphReverseEdges(digraph, [edge]);
 end);
 
 #

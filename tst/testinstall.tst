@@ -159,6 +159,16 @@ gap> DigraphEdges(gr2);
 [ [ 1, 2 ], [ 2, 5 ], [ 3, 4 ], [ 3, 2 ], [ 4, 5 ], [ 5, 1 ], [ 5, 2 ] ]
 
 #
+gap> gr := Digraph([[1,2,3],[3,5],[4],[5],[1,2], [5,7],[6]]);
+<digraph with 7 vertices, 12 edges>
+gap> gr2 := DigraphReverseEdge(gr, [1,1]);
+<digraph with 7 vertices, 12 edges>
+gap> gr = gr2;
+true
+gap> gr2 := DigraphReverseEdge(gr, 2);
+<digraph with 7 vertices, 12 edges>
+
+#
 gap> DigraphsStopTest();
 
 #
