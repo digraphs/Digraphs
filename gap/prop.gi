@@ -348,27 +348,26 @@ end);
 InstallMethod(IsReflexiveDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local source, range, id, lastloop, current, i;
+  local source, range, current, bool, i;
   
   source := DigraphSource(digraph);
   range := DigraphRange(digraph);
-  id := BlistList(DigraphVertices(digraph), []);
-  lastloop := 0;
   current := 1;
 
+  bool := false;
   for i in [ 1 .. Length(source) ] do
     if source[i] <> current then
       current := current + 1;
-      if source[i] > lastloop + 1 then
+      if bool or source[i] > current then
         return false;
       fi;
+      bool := false;
     fi;
     if source[i] = range[i] then
-      lastloop := source[i];
-      id [ source[i] ] := true;
+      bool := true;
     fi;
   od;
-  return ForAll(id, x -> x = true);
+  return true;
 end);
 
 #
