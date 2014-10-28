@@ -134,6 +134,63 @@ gap> gr = DigraphFromDiSparse6String(str);
 true
 
 #
+gap> gr := [];;
+gap> gr[1] := Digraph(rec(nrvertices := 2^16, source := [1,1,3,4,7,10,100],
+> range := [3,4,1,1,3,100,10]));
+<digraph with 65536 vertices, 7 edges>
+gap> gr[2] := Digraph(rec(vertices:=[1..1000],
+> source:=[1..1000],
+> range:=Concatenation([2..1000],[1])));
+<digraph with 1000 vertices, 1000 edges>
+gap> gr[3] := Digraph([[1,1,4],[2,3,4],[2,4],[2],[1,3,3,5]]);
+<multidigraph with 5 vertices, 13 edges>
+gap> filename := Concatenation(DigraphsDir(), "/tst/out/test.ds6");;
+gap> WriteDigraphs(filename, gr);
+gap> ReadDigraphs(filename);
+[ <digraph with 65536 vertices, 7 edges>, 
+  <digraph with 1000 vertices, 1000 edges>, 
+  <multidigraph with 5 vertices, 13 edges> ]
+
+#
+gap> gr[1] := Digraph([[5], [1,2,5], [1], [2],[4]]);
+<digraph with 5 vertices, 7 edges>
+gap> gr[2] := Digraph(rec(nrvertices := 105, source := [1..100],
+> range := [1..100]*0+52));
+<digraph with 105 vertices, 100 edges>
+gap> gr[3] := Digraph([ ]);
+<digraph with 0 vertices, 0 edges>
+gap> gr[4] := Digraph( [ [ 6, 7 ], [ 6, 9 ], [ 1, 3, 4, 5, 8, 9 ],
+> [ 1, 2, 3, 4, 5, 6, 7, 10 ], [ 1, 5, 6, 7, 10 ], [ 2, 4, 5, 9, 10 ],
+> [ 3, 4, 5, 6, 7, 8, 9, 10 ], [ 1, 3, 5, 7, 8, 9 ], [ 1, 2, 5 ], [ 1, 2, ] ] );
+<digraph with 10 vertices, 47 edges>
+gap> filename := Concatenation(DigraphsDir(), "/tst/out/test.d6");;
+gap> WriteDigraphs(filename, gr);
+gap> ReadDigraphs(filename);
+[ <digraph with 5 vertices, 7 edges>, <digraph with 105 vertices, 100 edges>, 
+  <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
+
+#
+gap> gr := [];;
+gap> gr[1] := Digraph(rec( nrvertices := 30, source := [1..2], range := [2,1]));
+<digraph with 30 vertices, 2 edges>
+gap> gr[2] := Digraph([[2], [1,4], [5], [2], [3]]);
+<digraph with 5 vertices, 6 edges>
+gap> gr[3] := Digraph([[2],[1]]);
+<digraph with 2 vertices, 2 edges>
+gap> filename := Concatenation(DigraphsDir(), "/tst/out/test.g6");;
+gap> WriteDigraphs(filename, gr);
+gap> rdgr := ReadDigraphs(filename);;
+gap> gr = rdgr;
+true
+gap> gr[3] := Digraph([[1,2],[1,2]]);
+<digraph with 2 vertices, 4 edges>
+gap> filename := Concatenation(DigraphsDir(), "/tst/out/test.s6");;
+gap> WriteDigraphs(filename, gr);
+gap> rdgr := ReadDigraphs(filename);;
+gap> gr = rdgr;
+true
+
+#
 gap> DigraphsStopTest();
 
 #
