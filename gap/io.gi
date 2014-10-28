@@ -645,7 +645,7 @@ function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   if ( IsMultiDigraph(graph)
        or not IsSymmetricDigraph(graph)
-       or HasLoops(graph) ) then
+       or DigraphHasLoops(graph) ) then
     Error("Digraphs: WriteGraph6: usage,\n",
           "<graph> must be symmetric and have no loops or multiple edges,");
     return;
