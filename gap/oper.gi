@@ -122,7 +122,7 @@ end);
 #
 
 InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
-[IsDigraph and HasDigraphSource, IsTable],
+[IsDigraph and HasDigraphSource, IsRectangularTable],
 function(digraph, edges)
   local source, range, i;
 
@@ -132,7 +132,8 @@ function(digraph, edges)
     return;
   fi;
 
-  if not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
+  if not IsPosInt(edges[1][1]) or 
+    not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
     "the second argument <edges> must be a list of edge of <digraph>,");
     return;
@@ -160,7 +161,7 @@ end);
 #
 
 InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
-[IsDigraph and HasOutNeighbours, IsTable],
+[IsDigraph and HasOutNeighbours, IsRectangularTable],
 function(digraph, edges)
   local current, nredges, out, new, i;
 
@@ -170,7 +171,8 @@ function(digraph, edges)
     return;
   fi;
 
-  if not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
+  if not IsPosInt(edges[1][1]) or 
+    not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
     "the second argument <edges> must be a list of edge of <digraph>,");
     return;
@@ -202,9 +204,9 @@ end);
 
 # can we use IsListOf...
 InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
-[IsDigraph and HasDigraphSource, IsHomogeneousList], 1,
+[IsDigraph and HasDigraphSource, IsList], 1,
 function(digraph, edges)
-  local nredges, source, range, i;
+  local nredges, source, range, i; 
 
   if IsMultiDigraph(digraph) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
@@ -212,17 +214,19 @@ function(digraph, edges)
     return;
   fi;
   
+  if Length(edges) = 0 then
+    return digraph;
+  fi;
+
   nredges := DigraphNrEdges(digraph);
-  if not ForAll( edges, x -> x <= nredges) then
+  if not IsPosInt(edges[1]) or 
+    not IsHomogeneousList(edges) or
+    not ForAll( edges, x -> x <= nredges) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
     "the second argument <edges> must be a list of edge of <digraph>,");
     return;
   fi;
  
-  if Length(edges) = 0 then
-    return digraph;
-  fi;
-
   source := ShallowCopy(DigraphSource(digraph));
   range := ShallowCopy(DigraphRange(digraph));
   
@@ -241,7 +245,7 @@ end);
 
 #
 InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
-[IsDigraph and HasOutNeighbours, IsHomogeneousList],
+[IsDigraph and HasOutNeighbours, IsList],
 function(digraph, edges)
   local nredges, current, out, new, pos_l, pos_h, toadd, pos, temp, i, edge;
 
@@ -250,16 +254,18 @@ function(digraph, edges)
     "the first argument <digraph> must not be a multigraph,");
     return;
   fi;
+
+  if Length(edges) = 0 then
+    return digraph;
+  fi;
   
   nredges := DigraphNrEdges(digraph);
-  if not ForAll(edges, x -> x <= nredges) then 
+  if not IsPosInt(edges[1]) or 
+    not IsHomogeneousList(edges) or
+    not ForAll(edges, x -> x <= nredges) then 
     Error("Digraphs: DigraphReverseEdges: usage,\n",
     "the second argument <edge> must be a list of edge of <digraph>,");
     return;
-  fi;
-  
-  if Length(edges) = 0 then
-    return digraph;
   fi;
 
   Sort(edges); 
@@ -278,13 +284,14 @@ function(digraph, edges)
       temp := current - pos_l;
       toadd[pos] := [ i, new[i][temp]];
       pos := pos + 1;
-      Remove(new[i], temp); 
+      Unbind(new[i][temp]); 
       if IsBound(edges[pos]) then
 	current := edges[pos];
       else
 	break;
       fi;
     od;
+    new[i] := Flat(new[i]);
     pos_l := pos_l + Length(out[i]);
   od;
 

@@ -863,6 +863,51 @@ gap> gr2 = gr3;
 true
 
 #
+gap> gr := CompleteDigraph(100);
+<digraph with 100 vertices, 10000 edges>
+gap> edges := ShallowCopy(DigraphEdges(gr));;
+gap> gr = DigraphReverseEdges(gr, edges);
+true
+gap> gr = DigraphReverseEdges(gr, [1 .. DigraphNrEdges(gr) ]);
+true
+gap> DigraphReverseEdge(gr, 2) = DigraphReverseEdge(gr, [1,2]);
+true
+gap> gr = DigraphReverseEdges(gr, []);
+true
+gap> gr := CycleDigraph(100);
+<digraph with 100 vertices, 100 edges>
+gap> edges := ShallowCopy(DigraphEdges(gr));;
+gap>  gr = DigraphReverseEdges(gr, edges);
+false
+gap> gr2 := DigraphReverseEdges(gr, edges);
+<digraph with 100 vertices, 100 edges>
+gap> gr = gr2;
+false
+gap> edges2 := ShallowCopy(DigraphEdges(gr2));;
+gap> gr = DigraphReverseEdges(gr2, edges2);
+true
+gap> gr = DigraphReverseEdges(gr, [1 .. DigraphNrEdges(gr) ]);
+false
+gap> DigraphReverseEdge(gr, 1) = DigraphReverseEdge(gr, [1,2]);
+true
+gap> gr = DigraphReverseEdges(gr, []);
+true
+
+#
+gap> gr := CycleDigraph(1000);
+<digraph with 1000 vertices, 1000 edges>
+gap> gr2 := CompleteDigraph(100);
+<digraph with 100 vertices, 10000 edges>
+gap> DigraphDisjointUnion(gr, gr);
+<digraph with 2000 vertices, 2000 edges>
+gap> DigraphDisjointUnion(gr2, gr2);
+<digraph with 200 vertices, 20000 edges>
+gap> DigraphDisjointUnion(gr, gr2);
+<digraph with 1100 vertices, 11000 edges>
+gap> DigraphDisjointUnion(gr2, gr);
+<digraph with 1100 vertices, 11000 edges>
+
+#
 gap> DigraphsStopTest();
 
 #
