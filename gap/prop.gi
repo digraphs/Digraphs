@@ -14,12 +14,17 @@ if IsBound(IS_STRONGLY_CONNECTED_DIGRAPH) then
   InstallMethod(IsStronglyConnectedDigraph, "for a digraph",
   [IsDigraph],
   function(digraph)
+    local conn;
     if HasIsAcyclicDigraph(digraph)
      and IsAcyclicDigraph(digraph)
      and DigraphNrVertices(digraph) > 1 then
       return false;
     fi;
-    return IS_STRONGLY_CONNECTED_DIGRAPH(OutNeighbours(digraph));
+    conn := IS_STRONGLY_CONNECTED_DIGRAPH(OutNeighbours(digraph));
+    if conn and DigraphNrVertices(digraph) > 1 then
+      SetIsAcyclicDigraph(digraph, false);
+    fi;
+    return conn;
   end);
 else
   InstallMethod(IsStronglyConnectedDigraph, "for a digraph",
@@ -127,13 +132,16 @@ if IsBound(IS_ACYCLIC_DIGRAPH) then
     local n, scc, acyclic;
 
     n := DigraphNrVertices(digraph);
+
+    # WW: I think condition can't be met w/o IsAcyclic already being set false
+    # if HasIsStronglyConnectedDigraph(digraph) and 
+    #  IsStronglyConnectedDigraph(digraph) and n > 1 then
+    #   return false; 
+    # fi;
     if HasDigraphHasLoops(digraph) and DigraphHasLoops(digraph) then
       return false;
-    elif HasIsStronglyConnectedDigraph(digraph) and 
-     IsStronglyConnectedDigraph(digraph) and n > 1 then
-      return false; 
     elif HasDigraphStronglyConnectedComponents(digraph) then
-      scc := StronglyConnectedComponents(digraph);
+      scc := DigraphStronglyConnectedComponents(digraph);
       if not Length(scc.comps) = n then
         SetIsStronglyConnectedDigraph(digraph, false);
         return false;
@@ -262,7 +270,7 @@ function(graph)
     return false;
   fi;
 
-  if n = 1 then
+  if n <= 2 then
     return true;
   fi;
 
@@ -434,16 +442,14 @@ fi;
 InstallMethod(IsTransitiveDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local closure, adj;
+  local closure, adjmat;
 
-  if IsMultiDigraph(digraph) then
-    Error("Digraphs: IsTransitiveDigraph: usage,\n",
-          "this function does not work for digraphs with multiple edges,");
-    return;
-  fi;
+  # I want to be able to do this whole thing in C, so that there is
+  # no need to pass things back to GAP, and no need to duplicate work
+  # calculating the adjacency matrix
   closure := DIGRAPH_TRANS_CLOSURE(digraph);
-  adj := AdjacencyMatrix(digraph);
-  if closure = adj then
+  adjmat := AdjacencyMatrix(digraph);
+  if closure = adjmat then
     return true;
   else
     return false;

@@ -229,6 +229,22 @@ gap> Length(scc.comps);
 gap> Length(scc.comps) = DigraphNrVertices(circuit);
 true
 
+# DigraphStronglyConnectedComponents: other cases
+gap> gr := CycleDigraph(10);
+<digraph with 10 vertices, 10 edges>
+gap> gr2 := DigraphRemoveEdges( gr, [ 10 ] );
+<digraph with 10 vertices, 9 edges>
+gap> IsStronglyConnectedDigraph(gr);
+true
+gap> DigraphStronglyConnectedComponents(gr);
+rec( comps := [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ], 
+  id := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ] )
+gap> IsAcyclicDigraph(gr2);
+true
+gap> DigraphStronglyConnectedComponents(gr2);
+rec( comps := [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], 
+      [ 9 ], [ 10 ] ], id := [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] )
+
 # DigraphConnectedComponents
 gap> gr := Digraph( [ [ 1, 2 ], [ 1 ], [ 2 ], [ 5 ], [ ] ] );
 <digraph with 5 vertices, 5 edges>
@@ -481,10 +497,26 @@ gap> gr := CompleteDigraph(100);
 <digraph with 100 vertices, 10000 edges>
 gap> DigraphPeriod(gr);
 1
-gap> gr := Digraph([[2,2],[3],[4],[1]]);
+gap> gr := Digraph( [ [ 2, 2 ], [ 3 ], [ 4 ], [ 1 ] ] );
 <multidigraph with 4 vertices, 5 edges>
 gap> DigraphPeriod(gr);
 4
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 4 ], [ ] ] );
+<digraph with 4 vertices, 3 edges>
+gap> HasIsAcyclicDigraph(gr);
+false
+gap> DigraphPeriod(gr);
+0
+gap> HasIsAcyclicDigraph(gr);
+true
+gap> IsAcyclicDigraph(gr);
+true
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 4 ], [ ] ] );
+<digraph with 4 vertices, 3 edges>
+gap> IsAcyclicDigraph(gr);
+true
+gap> DigraphPeriod(gr);
+0
 
 #
 gap> DigraphsStopTest();

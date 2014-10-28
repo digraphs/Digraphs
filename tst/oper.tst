@@ -824,6 +824,44 @@ true
 gap> HasIsAntisymmetricBinaryRelation(rel3);
 true
 
+# DigraphSymmetricClosure
+gap> gr1 := Digraph( [ [ 2 ], [ 1 ] ] );
+<digraph with 2 vertices, 2 edges>
+gap> IsSymmetricDigraph(gr);
+true
+gap> gr2 := DigraphSymmetricClosure(gr1);
+<digraph with 2 vertices, 2 edges>
+gap> IsIdenticalObj(gr1, gr2);
+false
+gap> gr1 = gr2;
+true
+gap> gr1 := Digraph( [ [ 1, 1, 1, 1 ] ] );
+<multidigraph with 1 vertex, 4 edges>
+gap> gr2 := DigraphSymmetricClosure(gr1);
+<multidigraph with 1 vertex, 4 edges>
+gap> IsIdenticalObj(gr1, gr2);
+false
+gap> gr1 = gr2;
+true
+gap> gr1 := Digraph(
+> [ [  ], [ 4, 5 ], [ 12 ], [ 3 ], [ 2, 10, 11, 12 ], [ 2, 8, 10, 12 ], [ 5 ],
+> [ 11, 12 ], [ 12 ], [ 12 ], [ 2, 6, 7, 8 ], [ 3, 8, 10 ] ] );
+<digraph with 12 vertices, 24 edges>
+gap> IsSymmetricDigraph(gr1);
+false
+gap> gr2 := DigraphSymmetricClosure(gr1);
+<digraph with 12 vertices, 38 edges>
+gap> HasIsSymmetricDigraph(gr2);
+true
+gap> IsSymmetricDigraph(gr2);
+true
+gap> gr3 := Digraph(
+> [ [  ], [ 4, 5, 11, 6 ], [ 4, 12 ], [ 2, 3 ], [ 2, 10, 11, 12, 7 ], 
+> [ 8, 10, 12, 2, 11 ], [ 5, 11 ], [ 11, 12, 6 ], [ 12 ], [ 5, 6, 12 ], 
+> [ 7, 6, 2, 5, 8 ], [ 10, 5, 3, 8, 6, 9 ] ] );;
+gap> gr2 = gr3;
+true
+
 #
 gap> gr := CompleteDigraph(100);
 <digraph with 100 vertices, 10000 edges>

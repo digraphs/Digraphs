@@ -489,7 +489,7 @@ end);
 InstallGlobalFunction(WriteDigraphs,
 function(name, digraphs)
   local splitpath, splitname, compext, ext, encoder, g6sum, s6sum, digraph, v, 
-        e, dg6sum, ds6sum, filepath, file;
+        e, dg6sum, ds6sum, filepath, file, s;
   if not ForAll(digraphs, IsDigraph) then
     Error("Digraphs: WriteDigraphs: usage,\n",
           "<digraphs> must be a list of digraphs,");
@@ -585,7 +585,7 @@ function(name, digraphs)
     Add(splitname, compext);
   fi;
   Add(splitpath, JoinStringsWithSeparator(splitname, "."));
-  filepath := JoinStringsWithSeparator(splitpath);
+  filepath := JoinStringsWithSeparator(splitpath, "/");
   
   if filepath <> name then
     Info(InfoWarning, 1, "Writing to ", filepath);
@@ -599,7 +599,9 @@ function(name, digraphs)
   fi;
 
   for digraph in digraphs do
-    IO_WriteLine(file, encoder(digraph));
+    s := encoder(digraph);
+    ConvertToStringRep(s);
+    IO_WriteLine(file, s);
   od;
   
   IO_Close(file);
@@ -641,6 +643,14 @@ InstallMethod(WriteGraph6, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
+  if ( IsMultiDigraph(graph)
+       or not IsSymmetricDigraph(graph)
+       or DigraphHasLoops(graph) ) then
+    Error("Digraphs: WriteGraph6: usage,\n",
+          "<graph> must be symmetric and have no loops or multiple edges,");
+    return;
+  fi;
+  
   list := [];
   adj := OutNeighbours(graph);
   n := Length(DigraphVertices(graph));
