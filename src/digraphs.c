@@ -696,6 +696,69 @@ static Obj FuncDIGRAPH_REFLEX_TRANS_CLOSURE(Obj self, Obj digraph){
   return FLOYD_WARSHALL(digraph, FW_FUNC_REFLEX_TRANS_CLOSURE, 0, 1);
 }
 
+static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj limm) {
+  UInt n, i, j, k, lim;
+  Int  len;
+  Obj  adj, adji;
+
+  n   = INT_INTOBJ(nn);
+  lim = INT_INTOBJ(limm);
+  adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+  SET_LEN_PLIST(adj, n);
+  
+  for (i = 1; i <= n; i++) {
+    SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+    SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
+    CHANGED_BAG(adj);
+  }
+  
+  for (i = 1; i <= n; i++) {
+    for (j = 1; j <= n; j++) {
+      k = rand() % 10000;
+      if (k < lim) {
+        adji  = ELM_PLIST(adj, i);
+        len   = LEN_PLIST(adji);
+        if (len == 0) {
+          RetypeBag(adji, T_PLIST_CYC+IMMUTABLE);
+          CHANGED_BAG(adj);
+        }
+        AssPlist(adji, len + 1,  INTOBJ_INT(j));
+      }
+    }
+  }
+  return adj;
+}
+
+static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
+  UInt n, m, i, j, k;
+  Int  len;
+  Obj  adj, adjj;
+
+  n = INT_INTOBJ(nn);
+  m = INT_INTOBJ(mm);
+  adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+  SET_LEN_PLIST(adj, n);
+  
+  for (i = 1; i <= n; i++) {
+    SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+    SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
+    CHANGED_BAG(adj);
+  }
+
+  for (i = 1; i <= m; i++) {
+    j = (rand() % n) + 1;
+    k = (rand() % n) + 1;
+    adjj  = ELM_PLIST(adj, j);
+    len   = LEN_PLIST(adjj);
+    if (len == 0) {
+      RetypeBag(adjj, T_PLIST_CYC+IMMUTABLE);
+      CHANGED_BAG(adj);
+    }
+    AssPlist(adjj, len + 1,  INTOBJ_INT(k));
+  }
+  return adj;
+}
+
 // bliss 
 
 UInt DigraphNrEdges(Obj digraph) {
@@ -1137,43 +1200,6 @@ Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
     else return INTOBJ_INT(count);
 }
 
-static Obj FuncRANDOM_DIGRAPH(Obj self, Obj m) {
-  UInt n, i, j, k, len, lim, count;
-  Obj  adj, adjj;
-
-  n   = INT_INTOBJ(ELM_PLIST(m, 1));
-  lim = INT_INTOBJ(ELM_PLIST(m, 2));
-  //count = 0;
-  adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
-  SET_LEN_PLIST(adj, n);
-  
-  for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
-    SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
-    CHANGED_BAG(adj);
-  }
-  
-  for (i = 1; i <= n; i++) {
-    for (j = 1; j <= n; j++) {
-      k = rand() % 100;
-      if (k < lim) {
-        //count++;
-        adjj  = ELM_PLIST(adj, i);
-        len   = LEN_PLIST(adjj);
-        if (len == 0) {
-          RetypeBag(adjj, T_PLIST_CYC+IMMUTABLE);
-          CHANGED_BAG(adj);
-        }
-        AssPlist(adjj, len + 1,  INTOBJ_INT(j));
-      }
-    }
-  }
-  // DigraphNrEdges = INTOBJ_INT(count)
-  // DigraphNrVertices = n
-  // IsMultiDigraph = false
-  return adj;
-}
-
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
 
 /******************************************************************************
@@ -1189,11 +1215,11 @@ static StructGVarFunc GVarFuncs [] = {
   { "IS_ACYCLIC_DIGRAPH", 1, "adj",
     FuncIS_ACYCLIC_DIGRAPH, 
     "src/digraphs.c:FuncIS_ACYCLIC_DIGRAPH" },
-  
+ 
   { "IS_ANTISYMMETRIC_DIGRAPH", 1, "adj",
     FuncIS_ANTISYMMETRIC_DIGRAPH, 
     "src/digraphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH" },
-  
+ 
   { "IS_STRONGLY_CONNECTED_DIGRAPH", 1, "adj",
     FuncIS_STRONGLY_CONNECTED_DIGRAPH, 
     "src/digraphs.c:FuncIS_STRONGLY_CONNECTED_DIGRAPH" },
@@ -1213,28 +1239,11 @@ static StructGVarFunc GVarFuncs [] = {
   { "IS_MULTI_DIGRAPH", 1, "digraph",
     FuncIS_MULTI_DIGRAPH, 
     "src/digraphs.c:FuncIS_MULTI_DIGRAPH" },
-  
-  { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
-    FuncDIGRAPH_AUTOMORPHISMS, 
-    "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS" },
-  
-  { "MULTIDIGRAPH_AUTOMORPHISMS", 1, "digraph",
-    FuncMULTIDIGRAPH_AUTOMORPHISMS, 
-    "src/digraphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS" },
 
-  { "DIGRAPH_CANONICAL_LABELING", 1, "digraph",
-    FuncDIGRAPH_CANONICAL_LABELING, 
-    "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELING" },
-  
   { "DIGRAPH_SHORTEST_DIST", 1, "digraph",
     FuncDIGRAPH_SHORTEST_DIST, 
     "src/digraphs.c:FuncDIGRAPH_SHORTEST_DIST" },
-  
-  { "GRAPH_HOMOMORPHISMS", 8, 
-    "gra1obj, gra2obj, tryinit, maxdepth, constraintsobj, maxanswers, result, onlyinjective",
-    FuncGRAPH_HOMOMORPHISMS,
-    "grahom.c:FuncGRAPH_HOMOMORPHISMS" },
-      
+
   { "DIGRAPH_TRANS_CLOSURE", 1, "digraph",
     FuncDIGRAPH_TRANS_CLOSURE,
     "src/digraphs.c:FuncDIGRAPH_TRANS_CLOSURE" },
@@ -1242,10 +1251,31 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_REFLEX_TRANS_CLOSURE", 1, "digraph",
     FuncDIGRAPH_REFLEX_TRANS_CLOSURE,
     "src/digraphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE" },
-  
-  { "RANDOM_DIGRAPH", 1, "m",
+
+  { "RANDOM_DIGRAPH", 2, "nn, limm",
     FuncRANDOM_DIGRAPH,
     "src/digraphs.c:FuncRANDOM_DIGRAPH" },
+ 
+  { "RANDOM_MULTI_DIGRAPH", 2, "nn, mm",
+    FuncRANDOM_MULTI_DIGRAPH,
+    "src/digraphs.c:FuncRANDOM_MULTI_DIGRAPH" },  
+ 
+  { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
+    FuncDIGRAPH_AUTOMORPHISMS, 
+    "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS" },
+ 
+  { "MULTIDIGRAPH_AUTOMORPHISMS", 1, "digraph",
+    FuncMULTIDIGRAPH_AUTOMORPHISMS, 
+    "src/digraphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS" },
+
+  { "DIGRAPH_CANONICAL_LABELING", 1, "digraph",
+    FuncDIGRAPH_CANONICAL_LABELING, 
+    "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELING" },
+
+  { "GRAPH_HOMOMORPHISMS", 8, 
+    "gra1obj, gra2obj, tryinit, maxdepth, constraintsobj, maxanswers, result, onlyinjective",
+    FuncGRAPH_HOMOMORPHISMS,
+    "grahom.c:FuncGRAPH_HOMOMORPHISMS" },
 
   { 0 }
 

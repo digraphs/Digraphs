@@ -33,6 +33,7 @@
 
   <Section><Heading>Random digraphs</Heading>
     <#Include Label="RandomDigraph">
+    <#Include Label="RandomMultiDigraph">
     <#Include Label="RandomTournament">
   </Section>
 

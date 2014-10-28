@@ -487,42 +487,56 @@ end);
 #
 
 InstallGlobalFunction(WriteDigraphs,
-function(arg)
-  local filename, digraphs, encoder, ext, g6sum, s6sum, digraph, v, e, dg6sum, 
-        ds6sum, file;
-  if Length(arg) = 2 then
-    filename := arg[1];
-    digraphs := arg[2];
-    encoder := fail;
-  elif Length(arg) = 3 then
-    filename := arg[1];
-    digraphs := arg[2];
-    if IsFunction(arg[3]) then
-      encoder := arg[3];
+function(name, digraphs)
+  local splitpath, splitname, compext, ext, encoder, g6sum, s6sum, digraph, v, 
+        e, dg6sum, ds6sum, filepath, file;
+  if not ForAll(digraphs, IsDigraph) then
+    Error("Digraphs: WriteDigraphs: usage,\n",
+          "<digraphs> must be a list of digraphs,");
+    return;
+  fi;
+  
+  # Look for extension
+  splitpath := SplitString(name, "/");
+  splitname := SplitString(Remove(splitpath), ".");
+  compext := fail;
+  
+  if Length(splitname) >= 2 then
+    ext := splitname[Length(splitname)];
+    # Compression extensions
+    if ext in [ "gz", "bzip2", "xz"] then
+      compext := Remove(splitname);
+      if Length(splitname) >= 2 then
+        ext := splitname[Length(splitname)];
+      fi;
+    else
+      compext := fail;
+    fi;
+    # Format extensions
+    if ext = "g6" then
+      encoder := WriteGraph6;
+    elif ext = "s6" then
+      encoder := WriteSparse6;
+    elif ext = "d6" then
+      encoder := WriteDigraph6;
+    elif ext = "ds6" then
+      encoder := WriteDiSparse6;
+#   elif ext = "txt" then
+#     encoder := DigraphPlainTextLineEncoder("  ", " ", 1);
     else
       encoder := fail;
     fi;
   else
-    Error("Digraphs: WriteDigraphs: usage,\n",
-          "WriteDigraphs( digraphs, filename [,encoder] ),");
-    return;
-  fi;
-
-  if (not IsString(filename)) or
-     (not IsList(digraphs)) or
-     (not (IsFunction(encoder) or encoder = fail)) then
-    Error("Digraphs: WriteDigraphs: usage,\n",
-          "WriteDigraphs( digraphs, filename [,encoder] ),");
-    return;
-  fi;
-
+    encoder := fail;
+  fi;  
+  
   if encoder = fail then
     # CHOOSE A GOOD ENCODER:
-    
     # Do we know all the graphs to be symmetric?
     if ForAll(digraphs, g-> HasIsSymmetricDigraph(g) and IsSymmetricDigraph(g)) then
       if ForAll(digraphs, IsMultiDigraph) then
         encoder := WriteDiSparse6;
+        Add(splitname, "ds6");
       else
         # Find the sum of length estimates using Graph6 and Sparse6
         g6sum := 0;
@@ -535,13 +549,16 @@ function(arg)
         od;
         if g6sum < s6sum and not ForAny(digraphs, DigraphHasLoops) then
           encoder := WriteGraph6;
+          Add(splitname, "g6");
         else
           encoder := WriteSparse6;
+          Add(splitname, "s6");
         fi;
       fi;
     else
       if ForAny(digraphs, IsMultiDigraph) then
         encoder := WriteDiSparse6;
+        Add(splitname, "ds6");
       else
         # Find the sum of length estimates using Digraph6 and DiSparse6
         dg6sum := 0;
@@ -554,32 +571,30 @@ function(arg)
         od;
         if dg6sum < ds6sum then
           encoder := WriteDigraph6;
+          Add(splitname, "d6");
         else
           encoder := WriteDiSparse6;
+          Add(splitname, "ds6");
         fi;
       fi;
     fi;
   fi;
-
-  if encoder = WriteGraph6 then
-    ext := "g6";
-  elif encoder = WriteSparse6 then
-    ext := "s6";
-  elif encoder = WriteDigraph6 then
-    ext := "d6";
-  elif encoder = WriteDiSparse6 then
-    ext := "ds6";
-  else
-    Error("Digraphs: WriteDigraphs: usage,\n",
-          "invalid encoder specified,");
-    return;
+  
+  # Rebuild the filename
+  if compext <> fail then
+    Add(splitname, compext);
   fi;
-
-  file := IO_CompressedFile(Concatenation(filename,".",ext), "w");
+  Add(splitpath, JoinStringsWithSeparator(splitname, "."));
+  filepath := JoinStringsWithSeparator(splitpath);
+  
+  if filepath <> name then
+    Info(InfoWarning, 1, "Writing to ", filepath);
+  fi;
+  file := IO_CompressedFile(filepath, "w");
 
   if file = fail then
     Error("Digraphs: WriteDigraphs: usage,\n",
-          "can't open file ", filename, ",\n");
+          "can't open file ", filepath, ",\n");
     return;
   fi;
 

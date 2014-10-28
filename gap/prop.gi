@@ -13,8 +13,13 @@
 if IsBound(IS_STRONGLY_CONNECTED_DIGRAPH) then
   InstallMethod(IsStronglyConnectedDigraph, "for a digraph",
   [IsDigraph],
-  function(graph)
-    return IS_STRONGLY_CONNECTED_DIGRAPH(OutNeighbours(graph));
+  function(digraph)
+    if HasIsAcyclicDigraph(digraph)
+     and IsAcyclicDigraph(digraph)
+     and DigraphNrVertices(digraph) > 1 then
+      return false;
+    fi;
+    return IS_STRONGLY_CONNECTED_DIGRAPH(OutNeighbours(digraph));
   end);
 else
   InstallMethod(IsStronglyConnectedDigraph, "for a digraph",
@@ -117,8 +122,31 @@ end);
 
 if IsBound(IS_ACYCLIC_DIGRAPH) then
   InstallMethod(IsAcyclicDigraph, "for a digraph",
-  [IsDigraph], function(graph)
-    return IS_ACYCLIC_DIGRAPH(OutNeighbours(graph));
+  [IsDigraph],
+  function(digraph)
+    local n, scc, acyclic;
+
+    n := DigraphNrVertices(digraph);
+    if HasDigraphHasLoops(digraph) and DigraphHasLoops(digraph) then
+      return false;
+    elif HasIsStronglyConnectedDigraph(digraph) and 
+     IsStronglyConnectedDigraph(digraph) and n > 1 then
+      return false; 
+    elif HasDigraphStronglyConnectedComponents(digraph) then
+      scc := StronglyConnectedComponents(digraph);
+      if not Length(scc[1]) = n then
+        SetIsStronglyConnectedDigraph(digraph, false);
+        return false;
+      else
+        SetIsStronglyConnectedDigraph(digraph, false);
+        return not DigraphHasLoops(digraph);
+      fi;
+    fi;
+    acyclic := IS_ACYCLIC_DIGRAPH(OutNeighbours(digraph));
+    if acyclic and n > 1 then
+      SetIsStronglyConnectedDigraph(digraph, false);
+    fi;
+    return acyclic;
   end);
 else
   InstallMethod(IsAcyclicDigraph, "for a digraph",
