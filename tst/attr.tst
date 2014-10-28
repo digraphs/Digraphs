@@ -229,6 +229,22 @@ gap> Length(scc.comps);
 gap> Length(scc.comps) = DigraphNrVertices(circuit);
 true
 
+# DigraphStronglyConnectedComponents: other cases
+gap> gr := CycleDigraph(10);
+<digraph with 10 vertices, 10 edges>
+gap> gr2 := DigraphRemoveEdges( gr, [ 10 ] );
+<digraph with 10 vertices, 9 edges>
+gap> IsStronglyConnectedDigraph(gr);
+true
+gap> DigraphStronglyConnectedComponents(gr);
+rec( comps := [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ], 
+  id := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ] )
+gap> IsAcyclicDigraph(gr2);
+true
+gap> DigraphStronglyConnectedComponents(gr2);
+rec( comps := [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], 
+      [ 9 ], [ 10 ] ], id := [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] )
+
 # DigraphConnectedComponents
 gap> gr := Digraph( [ [ 1, 2 ], [ 1 ], [ 2 ], [ 5 ], [ ] ] );
 <digraph with 5 vertices, 5 edges>

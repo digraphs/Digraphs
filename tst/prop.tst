@@ -43,15 +43,13 @@ gap> gr4 := Digraph(r);
 gap> IsMultiDigraph(gr4);
 true
 
-# IsAcyclicDigraph (& checking IsMultiDigraph too)
+# IsAcyclicDigraph 
 gap> loop := Digraph([ [1] ]);
 <digraph with 1 vertex, 1 edge>
 gap> IsMultiDigraph(loop);
 false
 gap> IsAcyclicDigraph(loop);
 false
-
-#
 gap> r := rec( vertices := [ 1, 2 ], source := [ 1, 1 ], range := [ 2, 2 ] );;
 gap> multiple := Digraph(r);
 <multidigraph with 2 vertices, 2 edges>
@@ -59,8 +57,6 @@ gap> IsMultiDigraph(multiple);
 true
 gap> IsAcyclicDigraph(multiple);
 true
-
-#
 gap> r:=rec( vertices := [ 1..100 ], source := [], range := []);;
 gap> for i in [1..100] do
 >   for j in [1..100] do
@@ -74,8 +70,6 @@ gap> IsMultiDigraph(complete100);
 false
 gap> IsAcyclicDigraph(complete100);
 false
-
-#
 gap> r := rec( vertices := [1..20000], source := [], range := [] );;
 gap> for i in [1..9999] do
 >   Add(r.source, i);
@@ -94,8 +88,6 @@ gap> IsMultiDigraph(circuit);
 false
 gap> IsAcyclicDigraph(circuit);
 true
-
-#
 gap> r:=rec( nrvertices := 8,
 > source := [ 1, 1, 1, 2, 3, 4, 4, 5, 7, 7 ], 
 > range := [ 4, 3, 4, 8, 2, 2, 6, 7, 4, 8 ] );;
@@ -105,6 +97,41 @@ gap> IsMultiDigraph(grid);
 true
 gap> IsAcyclicDigraph(grid);
 true
+gap> gr := Digraph( [ [ 1 ] ] );;
+gap> DigraphHasLoops(gr);
+true
+gap> HasIsAcyclicDigraph(gr);
+false
+gap> IsAcyclicDigraph(gr);
+false
+gap> gr := Digraph( [ [ 2 ], [  ] ] );
+<digraph with 2 vertices, 1 edge>
+gap> IsTournament(gr);
+true
+gap> IsTransitiveDigraph(gr);
+true
+gap> HasIsAcyclicDigraph(gr);
+true
+gap> IsAcyclicDigraph(gr);
+true
+gap> gr := Digraph( [ [ 2 ], [ ] ] );
+<digraph with 2 vertices, 1 edge>
+gap> DigraphStronglyConnectedComponents(gr);
+rec( comps := [ [ 2 ], [ 1 ] ], id := [ 2, 1 ] )
+gap> IsAcyclicDigraph(gr);
+true
+gap> gr := Digraph( [ [ 1, 2 ], [ ] ] );
+<digraph with 2 vertices, 2 edges>
+gap> DigraphStronglyConnectedComponents(gr);
+rec( comps := [ [ 2 ], [ 1 ] ], id := [ 2, 1 ] )
+gap> IsAcyclicDigraph(gr);
+false
+gap> gr := Digraph( [ [ 2 ], [ 1 ] ] );
+<digraph with 2 vertices, 2 edges>
+gap> DigraphStronglyConnectedComponents(gr);
+rec( comps := [ [ 1, 2 ] ], id := [ 1, 1 ] )
+gap> IsAcyclicDigraph(gr);
+false
 
 # IsFunctionalDigraph
 gap> IsFunctionalDigraph(multiple);
@@ -270,6 +297,12 @@ gap> gr := Digraph( [ [ 1 ], [ ] ] );
 <digraph with 2 vertices, 1 edge>
 gap> IsTournament(gr);
 false
+gap> gr := EmptyDigraph(1);
+<digraph with 1 vertex, 0 edges>
+gap> HasIsTournament(gr);
+false
+gap> IsTournament(gr);
+true
 gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 1 ] ] );
 <digraph with 3 vertices, 3 edges>
 gap> IsTournament(gr);
@@ -300,6 +333,35 @@ gap> r := rec( nrvertices := 9,
 > source := [ 1, 1, 2, 2, 4, 4, 5, 6, 6, 6, 7, 7, 8, 8, 9, 9, 9 ] );;
 gap> gr := Digraph(r);
 <multidigraph with 9 vertices, 17 edges>
+gap> IsStronglyConnectedDigraph(gr);
+false
+gap> gr := CycleDigraph(10000);;
+gap> gr2 := DigraphRemoveEdges(gr, [ 10000 ]);
+<digraph with 10000 vertices, 9999 edges>
+gap> IsStronglyConnectedDigraph(gr2);
+false
+gap> gr2 := DigraphRemoveEdges(gr, [ 10000 ]);
+<digraph with 10000 vertices, 9999 edges>
+gap> IsAcyclicDigraph(gr2);
+true
+gap> IsStronglyConnectedDigraph(gr2);
+false
+gap> gr := Digraph( [ [ 2 ], [  ] ] );
+<digraph with 2 vertices, 1 edge>
+gap> HasIsAcyclicDigraph(gr);
+false
+gap> IsTournament(gr);
+true
+gap> HasIsAcyclicDigraph(gr);
+false
+gap> IsTransitiveDigraph(gr);
+true
+gap> HasIsAcyclicDigraph(gr);
+true
+gap> IsAcyclicDigraph(gr);
+true
+gap> HasIsStronglyConnectedDigraph(gr);
+false
 gap> IsStronglyConnectedDigraph(gr);
 false
 
@@ -492,8 +554,7 @@ false
 gap> gr := Digraph( [ [ 1, 1 ] ] );
 <multidigraph with 1 vertex, 2 edges>
 gap> IsTransitiveDigraph(gr);
-Error, Digraphs: IsTransitiveDigraph: usage,
-this function does not work for digraphs with multiple edges,
+true
 
 #
 gap> DigraphsStopTest();

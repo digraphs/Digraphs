@@ -35,6 +35,7 @@ DeclareOperation("DigraphReverseEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphReverseEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphReverseEdges", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphDisjointUnion", [IsDigraph, IsDigraph]);
 
 DeclareOperation("QuotientDigraph", [IsDigraph, IsList]);
 DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);

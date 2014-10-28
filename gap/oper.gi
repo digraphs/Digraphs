@@ -219,6 +219,10 @@ function(digraph, edges)
     return;
   fi;
  
+  if Length(edges) = 0 then
+    return digraph;
+  fi;
+
   source := ShallowCopy(DigraphSource(digraph));
   range := ShallowCopy(DigraphRange(digraph));
   
@@ -704,50 +708,48 @@ InstallMethod(DigraphSymmetricClosure, "for a digraph",
 function(digraph)
   local n, verts, mat, m, source, range, s, r, x, out, i, j, k;
   
-  if HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph) then
-    Error("already known to be symmetric");
-    return;
-  fi;
-  n := DigraphNrVertices(digraph);
-  if n <= 1 then
-    Error("less than 2 vertices so automatically symmetric"); 
-    return;
-  fi;
-  verts := ShallowCopy(DigraphVertices(digraph));
-  mat := List( verts, x -> verts * 0 );
-  m := DigraphNrEdges(digraph);
   source := ShallowCopy(DigraphSource(digraph));
   range  := ShallowCopy(DigraphRange(digraph));
-  for i in [ 1 .. m ] do
-    s := source[i];
-    r := range[i];
-    if r < s then
-      mat[r][s] := mat[r][s] - 1;
-    else
-      mat[s][r] := mat[s][r] + 1;
-    fi;
-  od;
-  for i in verts do
-    for j in [ i + 1 .. n ] do
-      x := mat[i][j];
-      if x > 0 then
-        for k in [ 1 .. x ] do
-          m := m + 1;
-          source[m] := j;
-          range[m] := i;
-        od;
-      elif x < 0 then
-        for k in [ 1 .. -x ] do
-          m := m + 1;
-          source[m] := i;
-          range[m] := j;
-        od;
+  n := DigraphNrVertices(digraph);
+  
+  if not (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph))
+   and n > 1 then
+    verts := ShallowCopy(DigraphVertices(digraph));
+    mat := List( verts, x -> verts * 0 );
+    m := DigraphNrEdges(digraph);
+    source := ShallowCopy(DigraphSource(digraph));
+    range  := ShallowCopy(DigraphRange(digraph));
+    for i in [ 1 .. m ] do
+      s := source[i];
+      r := range[i];
+      if r < s then
+        mat[r][s] := mat[r][s] - 1;
+      else
+        mat[s][r] := mat[s][r] + 1;
       fi;
     od;
-  od;
-  range := Permuted(range, Sortex(source)); 
+    for i in verts do
+      for j in [ i + 1 .. n ] do
+        x := mat[i][j];
+        if x > 0 then
+          for k in [ 1 .. x ] do
+            m := m + 1;
+            source[m] := j;
+            range[m] := i;
+          od;
+        elif x < 0 then
+          for k in [ 1 .. -x ] do
+            m := m + 1;
+            source[m] := i;
+            range[m] := j;
+          od;
+        fi;
+      od;
+    od;
+    range := Permuted(range, Sortex(source)); 
+  fi;
   out := DigraphNC( rec( nrvertices := n, source := source, range := range ) );
-  #SetIsSymmetricDigraph(out, true);
+  SetIsSymmetricDigraph(out, true);
   return out;
 end);
 
@@ -1357,4 +1359,50 @@ function(digraph)
   return rel;
 end);
 
+#
+
+InstallMethod(DigraphDisjointUnion, "for two digraphs",
+[IsDigraph and HasDigraphSource, IsDigraph and HasDigraphSource], 1,
+function(digraph1, digraph2)
+  local nrvertices1, range, source;
+
+  nrvertices1 := DigraphNrVertices(digraph1); 
+  range := Concatenation(DigraphRange(digraph1), DigraphRange(digraph2) +
+	   nrvertices1);
+  source := Concatenation(DigraphSource(digraph1), DigraphSource(digraph2) +
+	   nrvertices1);
+  return DigraphNC(rec(nrvertices := nrvertices1 + DigraphNrVertices(digraph2),
+                       source := source, range := range));
+end);
+
+#
+
+InstallMethod(DigraphDisjointUnion, "for two digraphs",
+[IsDigraph and HasOutNeighbours, IsDigraph and HasOutNeighbours], 1,
+function(digraph1, digraph2)
+  local nrvertices1, out2;
+
+  nrvertices1 := DigraphNrVertices(digraph1);
+  out2 := List(OutNeighbours(digraph2), x -> x + nrvertices1);
+
+  return DigraphNC(Concatenation(OutNeighbours(digraph1), out2));
+end);
+
+#
+
+InstallMethod(DigraphDisjointUnion, "for two digraphs",
+[IsDigraph and HasDigraphSource, IsDigraph and HasOutNeighbours],
+function(digraph1, digraph2)
+  DigraphSource(digraph2);
+  return DigraphDisjointUnion(digraph1, digraph2); 
+end);
+
+#
+
+InstallMethod(DigraphDisjointUnion, "for two digraphs",
+[IsDigraph and HasOutNeighbours, IsDigraph and HasDigraphSource],
+function(digraph1, digraph2)
+  DigraphSource(digraph1);
+  return DigraphDisjointUnion(digraph1, digraph2); 
+end);
 #EOF
