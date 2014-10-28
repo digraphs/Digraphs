@@ -96,4 +96,5 @@ configure
 *.o
 src/bliss-0.72/.dirstamp
 src/bliss-0.72/.deps/.dirstamp
+tst/out/*
 tags
