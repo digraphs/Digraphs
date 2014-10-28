@@ -773,6 +773,10 @@ function(digraph)
   local comps, out, deg, nrvisited, period, current, stack, len, depth,
   olddepth, i;
 
+  if HasIsAcyclicDigraph(digraph) and IsAcyclicDigraph(digraph) then
+    return 0;
+  fi;
+
   comps := DigraphStronglyConnectedComponents(digraph)!.comps;
   out := OutNeighbours(digraph);
   deg := OutDegrees(digraph);
@@ -796,12 +800,19 @@ function(digraph)
         olddepth := depth[current];
         if IsBound(depth[stack[len]]) then
           period := GcdInt(period, depth[stack[len]] - olddepth - 1);
+          if period = 1 then
+            return period;
+          fi;
         else
           depth[stack[len]] := olddepth + 1;
         fi;
       fi;
     od;
   od;
+
+  if period = 0 then
+    SetIsAcyclicDigraph(digraph, true);
+  fi;
 
   return period;
 end);

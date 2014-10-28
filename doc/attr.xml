@@ -464,18 +464,30 @@ gap> DigraphSources(gr);
   <Prop Name="DigraphPeriod" Arg="digraph"/>
   <Returns>An integer.</Returns>
   <Description>
-    The period of a directed graph <A> digraph </A> is the smallest positive
-    integeri <M> p </M> such that <M> p </M> divides the lengths of every cycle
-    of <A> digraph </A>. If <M> p = 1 </M>, the directed graph <A> digraph </A>
+    This function returns the period of <A>digraph</A>.<P/>
+
+    If a directed graph <A>digraph</A> has at least one cycle, then the
+    period is the greatest positive integer which 
+    divides the lengths of every cycle of <A>digraph</A>. If <A>digraph</A>
+    has no cycles, this function returns <M>0</M>.<P/>
+    
+    A digraph with a period of <M>1</M> is said to be <E>aperiodic</E>. See
+    <Ref Prop="IsAperiodicDigraph"/>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[6],[1],[2],[3],[4,4],[5]]);
+gap> gr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );
 <multidigraph with 6 vertices, 7 edges>
 gap> DigraphPeriod(gr);
 6
-gap> gr := Digraph([[2],[3,5],[4],[5],[1,2]]);
+gap> gr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );
 <digraph with 5 vertices, 7 edges>
 gap> DigraphPeriod(gr);
 1
+gap> gr := Digraph( [ [ 2 ], [ ] ] );
+<digraph with 2 vertices, 1 edge>
+gap> DigraphPeriod(gr);
+0
+gap> IsAcyclicDigraph(gr);
+true
 ]]></Example>
   </Description>
 </ManSection>

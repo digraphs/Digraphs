@@ -346,7 +346,7 @@ true
   <Prop Name="IsTournament" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns <K>true</K> if the digraph <A>digraph</A> is a tournament,
+    Returns <K>true</K> if the directed graph <A>digraph</A> is a tournament,
     and <K>false</K> if it is not. <P/>
     
     A tournament is an orientation of a complete (undirected) graph.
@@ -373,14 +373,14 @@ false
   <Prop Name="IsAperiodicDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K> true </K> if <A> digraph </A>
-    is aperiodic, i.e. it's <Ref Attr = "DigraphPeriod"/> is equal to 1. 
+    This function returns <K>true</K> if the directed graph <A>digraph</A>
+    is aperiodic, i.e. if its <Ref Attr = "DigraphPeriod"/> is equal to 1. 
     <Example><![CDATA[
-gap> gr := Digraph([[6],[1],[2],[3],[4,4],[5]]);
+gap> gr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );
 <multidigraph with 6 vertices, 7 edges>
 gap> IsAperiodicDigraph(gr);
 false
-gap> gr := Digraph([[2],[3,5],[4],[5],[1,2]]);
+gap> gr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );
 <digraph with 5 vertices, 7 edges>
 gap> IsAperiodicDigraph(gr);
 true
