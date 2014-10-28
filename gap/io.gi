@@ -585,7 +585,7 @@ function(name, digraphs)
     Add(splitname, compext);
   fi;
   Add(splitpath, JoinStringsWithSeparator(splitname, "."));
-  filepath := JoinStringsWithSeparator(splitpath);
+  filepath := JoinStringsWithSeparator(splitpath, "/");
   
   if filepath <> name then
     Info(InfoWarning, 1, "Writing to ", filepath);
