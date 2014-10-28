@@ -29,6 +29,7 @@
     <#Include Label="DigraphRemoveVertices">
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphRemoveLoops">
+    <#Include Label="DigraphDisjointUnion">
   </Section>
 
   <Section><Heading>Random digraphs</Heading>

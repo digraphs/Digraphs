@@ -124,6 +124,45 @@ gap> DigraphSource(gr);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphReverseEdges">
+<ManSection>
+  <Oper Name="DigraphReverseEdges" Arg="digraph, edges"/>
+  <Oper Name="DigraphReverseEdge" Arg="digraph, edge"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> does not have any multiple edges and <A>edges</A>
+    is a list of edges given either as list of size two (the first entry
+    corresponding to the source and the second to the range of the
+    vertex) or as an index in the list <Ref Oper = "DigraphEdges"/>, then
+    <C>DigraphReverseEdges</C> return a digraph with the
+    direction of <A>edges</A> reversed. <P/>
+
+    Note that, even though <A>digraph</A> can not have multiple edges the
+    outputmight. Also if the argument <A>edges</A> is an empty list, the
+    digraph itself is returned.<P/>
+    <Example><![CDATA[
+gap> gr := Digraph(rec(nrvertices := 21, source := [1,1,1,5,7,9,11,21],
+> range := [7,2,8,21,19,1,2,1]));
+gap> DigraphEdges(gr);
+[ [ 1, 7 ], [ 1, 2 ], [ 1, 8 ], [ 5, 21 ], [ 7, 19 ], [ 9, 1 ], [ 11, 2 ],
+  [ 21, 1 ] ]
+<digraph with 21 vertices, 8 edges>
+gap> gr2 := DigraphReverseEdges(gr, [1,2,3]);
+<digraph with 21 vertices, 8 edges>
+gap> gr = DigraphReverseEdges(gr2, [[7,1], [2,1], [8,1]]);
+true
+gap> gr2 := DigraphReverseEdge(gr, 4);
+<digraph with 21 vertices, 8 edges>
+gap> DigraphEdges(gr2);
+[ [ 1, 7 ], [ 1, 2 ], [ 1, 8 ], [ 7, 19 ], [ 9, 1 ], [ 11, 2 ], [ 21, 5 ],
+  [ 21, 1 ] ]
+gap> gr2 = DigraphReverseEdge(gr, [5, 21]);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="OnDigraphs">
 <ManSection>
   <Oper Name="OnDigraphs" Arg="digraph, perm"/>
@@ -686,6 +725,24 @@ gap> gr := Digraph( [ [ 3, 2 ], [ 1, 2 ], [ 2 ], [ 3, 4 ] ] );
 <digraph with 4 vertices, 7 edges>
 gap> AsBinaryRelation(gr);
 Binary Relation on 4 points
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphDisjointUnion">
+<ManSection>
+  <Oper Name="DigraphDisjointUnion" Arg="digraph1, digraph2"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Returns a digraph with the vertex and edge sets being the disjoint union of
+    vertex and edge sets of <A>digraph1</A> and <A>digraph2</A> respectively. 
+    <P/>
+<Example><![CDATA[
+gap> gr := CycleDigraph(10);
+<digraph with 10 vertices, 10 edges>
+gap> DigraphDisjointUnion(gr, gr);
+<digraph with 20 vertices, 20 edges>
 ]]></Example>
   </Description>
 </ManSection>

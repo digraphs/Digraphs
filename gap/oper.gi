@@ -278,13 +278,14 @@ function(digraph, edges)
       temp := current - pos_l;
       toadd[pos] := [ i, new[i][temp]];
       pos := pos + 1;
-      Remove(new[i], temp); 
+      Unbind(new[i][temp]); 
       if IsBound(edges[pos]) then
 	current := edges[pos];
       else
 	break;
       fi;
     od;
+    new[i] := Flat(new[i]);
     pos_l := pos_l + Length(out[i]);
   od;
 
