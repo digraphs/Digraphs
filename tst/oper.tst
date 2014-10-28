@@ -894,6 +894,20 @@ gap> gr = DigraphReverseEdges(gr, []);
 true
 
 #
+gap> gr := CycleDigraph(1000);
+<digraph with 1000 vertices, 1000 edges>
+gap> gr2 := CompleteDigraph(100);
+<digraph with 100 vertices, 10000 edges>
+gap> DigraphDisjointUnion(gr, gr);
+<digraph with 2000 vertices, 2000 edges>
+gap> DigraphDisjointUnion(gr2, gr2);
+<digraph with 200 vertices, 20000 edges>
+gap> DigraphDisjointUnion(gr, gr2);
+<digraph with 1100 vertices, 11000 edges>
+gap> DigraphDisjointUnion(gr2, gr);
+<digraph with 1100 vertices, 11000 edges>
+
+#
 gap> DigraphsStopTest();
 
 #
