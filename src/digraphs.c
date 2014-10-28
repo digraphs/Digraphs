@@ -162,6 +162,16 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
   return out;
 }
 
+// Takes OutNeighbours
+static Obj FuncWCC_OUTNEIGHBOURS(Obj self, Obj adj) {
+  
+}
+
+// Takes Source and Range
+static Obj FuncWCC_SOURCE(Obj self, Obj source, Obj range) {
+  
+}
+
 static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) { 
   UInt  nr, i, j, k, level;
   Obj   nbs;

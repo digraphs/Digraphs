@@ -108,16 +108,20 @@ gap> ReadDigraphs(
 
 <#GAPDoc Label="WriteDigraphs">
 <ManSection>
-  <Oper Name="WriteDigraphs" Arg="filename, digraphs [,encoder]"/>
+  <Oper Name="WriteDigraphs" Arg="filename, digraphs"/>
   <Description>
     If <A>digraphs</A> is a list of digraphs, then <C>WriteDigraphs</C> writes
-    its contents to a file in a compressed format.  If the optional function
-    argument <A>encoder</A> is specified, this is the function which will be
-    used to encode the graphs.
+    its contents to a file in a compact format.  If the supplied filename ends
+    in one of the extensions <E>gz</E>, <E>xz</E>, or <E>bzip2</E>, the file
+    will be compressed appropriately.  Excluding these extensions, if the file
+    ends with an extension in the list below, the corresponding graph format
+    will be used to encode it.  If such an extension is not included, an
+    appropriate format will be chosen intelligently, and an extension appended,
+    to minimise file length.
 
     The currently supported file formats are:
     <List>
-      <Mark>graph6 (WriteGraph6)</Mark>
+      <Mark>graph6 (.g6)</Mark>
       <Item>
 	A standard and widely-used format for undirected graphs, with no support
 	for loops or multiple edges.  Only symmetric graphs are allowed -- each
@@ -125,19 +129,19 @@ gap> ReadDigraphs(
 	edge.  This format is best used for "dense" graphs -- those with many
 	edges per vertex.
       </Item>
-      <Mark>sparse6 (WriteSparse6)</Mark>
+      <Mark>sparse6 (.s6)</Mark>
       <Item>
 	Unlike graph6, sparse6 has support for loops and multiple edges.
 	However, its use is still limited to symmetric graphs.  This format is
 	better-suited to "sparse" graphs -- those with few edges per vertex.
       </Item>
-      <Mark>digraph6 (WriteDigraph6)</Mark>
+      <Mark>digraph6 (.d6)</Mark>
       <Item>
 	This format is based on graph6, but stores direction information -
 	therefore is not limited to symmetric graphs.  Loops are allowed, but
 	multiple edges are not.  Best compression with "dense" graphs.
       </Item>
-      <Mark>disparse6 (WriteDiSparse6)</Mark>
+      <Mark>disparse6 (.ds6)</Mark>
       <Item>
 	Any type of digraph can be encoded in disparse6: directions, loops, and
 	multiple edges are all allowed.  Similar to sparse6, this has the best
