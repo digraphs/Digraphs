@@ -489,7 +489,7 @@ end);
 InstallGlobalFunction(WriteDigraphs,
 function(name, digraphs)
   local splitpath, splitname, compext, ext, encoder, g6sum, s6sum, digraph, v, 
-        e, dg6sum, ds6sum, filepath, file, pos, s;
+        e, dg6sum, ds6sum, filepath, file, s;
   if not ForAll(digraphs, IsDigraph) then
     Error("Digraphs: WriteDigraphs: usage,\n",
           "<digraphs> must be a list of digraphs,");
@@ -600,12 +600,8 @@ function(name, digraphs)
 
   for digraph in digraphs do
     s := encoder(digraph);
-    pos := 0;
-    while pos + 2^17 < Length(s) do
-      IO_Write(file, s{[pos+1..pos+2^17]});
-      pos := pos + 2^17;
-    od;
-    IO_WriteLine(file, s{[pos+1..Length(s)]});
+    ConvertToStringRep(s);
+    IO_WriteLine(file, s);
   od;
   
   IO_Close(file);
