@@ -134,7 +134,7 @@ if IsBound(IS_ACYCLIC_DIGRAPH) then
       return false; 
     elif HasDigraphStronglyConnectedComponents(digraph) then
       scc := StronglyConnectedComponents(digraph);
-      if not Length(scc[1]) = n then
+      if not Length(scc.comps) = n then
         SetIsStronglyConnectedDigraph(digraph, false);
         return false;
       else
