@@ -343,6 +343,9 @@ function(s)
   while i <= finish - k do
     if blist[i] then
       v := v + 1;
+      if v = n then # We have reached the end
+        break;
+      fi;
     fi;
     x := 0;
     for j in [ 1 .. k ] do
@@ -357,9 +360,12 @@ function(s)
     else
       range[len] := x; 
       source[len] := v;
-      range[len + 1] := v;
-      source[len + 1] := x;
-      len  := len + 2;
+      len := len + 1;
+      if x <> v then
+        range[len] := v;
+        source[len] := x;
+        len := len + 1;
+      fi;
     fi;
     i := i + k + 1;
   od;
