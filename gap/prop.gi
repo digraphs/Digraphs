@@ -358,7 +358,7 @@ function(digraph)
   for i in [ 1 .. Length(source) ] do
     if source[i] <> current then
       current := current + 1;
-      if bool or source[i] > current then
+      if not bool or source[i] > current then
         return false;
       fi;
       bool := false;
@@ -367,7 +367,7 @@ function(digraph)
       bool := true;
     fi;
   od;
-  return true;
+  return bool;
 end);
 
 #
