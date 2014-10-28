@@ -304,8 +304,7 @@ function(n)
     SetDigraphNrEdges(gr, nr);
   fi;
   SetIsAntisymmetricDigraph(gr, true);
-  # Commented out for now to allow testing of IsTournament
-  # SetIsTournament(gr, true);
+  SetIsTournament(gr, true);
   return gr;
 
 end);
@@ -315,7 +314,7 @@ end);
 InstallMethod(CompleteDigraph, "for an integer",
 [IsInt],
 function(n)
-  local verts, adj, gr, i;
+  local verts, out, gr, i;
   
   if n < 0 then
     Error("Digraphs: CompleteDigraph: usage,\n",
@@ -323,25 +322,21 @@ function(n)
     return;
   elif n = 0 then
     gr := EmptyDigraph(0);
-    SetIsCompleteDigraph(gr, true);
-    return gr;
+  else
+    verts := [ 1 .. n ];
+    out := EmptyPlist(n);
+    for i in verts do
+      out[i] := verts;
+    od;
+    gr := DigraphNC(out);
+    SetIsEmptyDigraph(gr, false);
+    SetIsAcyclicDigraph(gr, false);
+    if n > 1 then
+      SetIsAntisymmetricDigraph(gr, true);
+    fi;
   fi;
-  verts := [ 1 .. n ];
-  adj := EmptyPlist(n);
-  for i in verts do
-    adj[i] := verts;
-  od;
-  gr := DigraphNC(adj);
-  SetIsEmptyDigraph(gr, false);
-  SetIsAcyclicDigraph(gr, false);
   SetIsMultiDigraph(gr, false);
-  SetIsReflexiveDigraph(gr, true);
-  SetIsSymmetricDigraph(gr, true);
-  SetIsTransitiveDigraph(gr, true);
   SetIsCompleteDigraph(gr, true);
-  if n > 1 then
-    SetIsAntisymmetricDigraph(gr, true);
-  fi;
   return gr;
 end);
 
@@ -676,13 +671,13 @@ function(edges)
     max_range := Maximum(max_range, edge[2]);
   od;
 
-  for i in [1 .. Maximum(Length(adj), max_range)] do 
+  for i in [ 1 .. Maximum(Length(adj), max_range) ] do 
     if not IsBound(adj[i]) then 
       adj[i] := [];
     fi;
   od;
 
-  gr:=DigraphNC(adj);
+  gr := DigraphNC(adj);
   SetDigraphEdges(gr, edges);
   return gr;
 end);
@@ -706,7 +701,7 @@ function(edges, n)
     return;
   fi;
 
-  adj := List( [ 1.. n ], x-> [  ]);
+  adj := List( [ 1.. n ], x-> [  ] );
 
   for edge in edges do
     if edge[1] > n or edge[2] > n then

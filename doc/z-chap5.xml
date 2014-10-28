@@ -2,14 +2,15 @@
   
   <Section><Heading>Edge properties</Heading>
     <#Include Label="DigraphHasLoops">
+    <#Include Label="IsAntisymmetricDigraph">
     <#Include Label="IsCompleteDigraph">
     <#Include Label="IsEmptyDigraph">
     <#Include Label="IsFunctionalDigraph">
     <#Include Label="IsMultiDigraph">
     <#Include Label="IsReflexiveDigraph">
     <#Include Label="IsSymmetricDigraph">
-    <#Include Label="IsAntisymmetricDigraph">
     <#Include Label="IsTournament">
+    <#Include Label="IsTransitiveDigraph">
   </Section>
   
   <Section><Heading>Connectivity and cycles</Heading>

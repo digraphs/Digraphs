@@ -25,3 +25,6 @@ DeclareProperty("IsAperiodicDigraph", IsDigraph);
 InstallTrueMethod( IsAntisymmetricDigraph, IsAcyclicDigraph );
 InstallTrueMethod( IsTransitiveDigraph, IsTournament and IsAcyclicDigraph );
 InstallTrueMethod( IsAcyclicDigraph, IsTournament and IsTransitiveDigraph );
+InstallTrueMethod( IsReflexiveDigraph, IsCompleteDigraph );
+InstallTrueMethod( IsSymmetricDigraph, IsCompleteDigraph );
+InstallTrueMethod( IsTransitiveDigraph, IsCompleteDigraph );
