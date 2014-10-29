@@ -15,15 +15,16 @@
 InstallMethod(DigraphCopy, "for a digraph",
 [IsDigraph and HasDigraphSource],
 function(digraph)
-  local source, range, n;
+  local source, range, n, gr;
 
   source := ShallowCopy(DigraphSource(digraph));
   range := ShallowCopy(DigraphRange(digraph));
   n := DigraphNrVertices(digraph);
-  return DigraphNC(rec( nrvertices := n,
+  gr :=  DigraphNC(rec( nrvertices := n,
                         source := source,
 			range := range));
-                        
+  SetDigraphVertexNames(gr, DigraphVertexNames(gr));
+  return gr;                     
 end);
 
 #
@@ -661,8 +662,7 @@ function(digraph, verts)
   newnrverts := n - len;
   diff := Difference(DigraphVertices(digraph), verts);
   if IsEmpty(verts) then
-    news := ShallowCopy(DigraphSource(digraph));
-    newr := ShallowCopy(DigraphRange(digraph));
+    return DigraphCopy(digraph);
   else
     if newnrverts = 0 then
       return EmptyDigraph(0);
@@ -708,7 +708,7 @@ function(digraph, verts)
   
   diff := Difference(DigraphVertices(digraph), verts);
   if IsEmpty(verts) then
-    new := List( OutNeighbours(digraph), ShallowCopy );
+    return DigraphCopy(digraph);
   else
     n := DigraphNrVertices(digraph);
     len := Length(verts);
@@ -718,7 +718,7 @@ function(digraph, verts)
     fi;
     lookup := EmptyPlist(n);
     count := 0;
-    for i in diff do
+   for i in diff do
       count := count + 1;
       lookup[ i ] := count;
     od;
