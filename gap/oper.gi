@@ -135,7 +135,7 @@ function(digraph, edges)
   if not IsPosInt(edges[1][1]) or 
     not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the second argument <edges> must be a list of edge of <digraph>,");
+    "the second argument <edges> must be a list of edges of <digraph>,");
     return;
   fi;
  
@@ -174,7 +174,7 @@ function(digraph, edges)
   if not IsPosInt(edges[1][1]) or 
     not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the second argument <edges> must be a list of edge of <digraph>,");
+    "the second argument <edges> must be a list of edges of <digraph>,");
     return;
   fi;
  
@@ -223,7 +223,7 @@ function(digraph, edges)
     not IsHomogeneousList(edges) or
     not ForAll( edges, x -> x <= nredges) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the second argument <edges> must be a list of edge of <digraph>,");
+    "the second argument <edges> must be a list of edges of <digraph>,");
     return;
   fi;
  
@@ -264,7 +264,7 @@ function(digraph, edges)
     not IsHomogeneousList(edges) or
     not ForAll(edges, x -> x <= nredges) then 
     Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the second argument <edge> must be a list of edge of <digraph>,");
+    "the second argument <edge> must be a list of edges of <digraph>,");
     return;
   fi;
 
@@ -589,7 +589,7 @@ InstallMethod(DigraphRemoveVertex, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],
 function(digraph, m)
   if m > DigraphNrVertices(digraph) then
-    Error("Digraphs: DigraphRemoveVertices: usage,\n",
+    Error("Digraphs: DigraphRemoveVertex: usage,\n",
     "the second arg <m> is not a vertex of the first arg <digraph>,");
     return;
   fi;
