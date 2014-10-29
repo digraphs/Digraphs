@@ -47,29 +47,29 @@ end);
 InstallMethod(DigraphFloydWarshall, "for a digraph",
 [IsDigraph, IsFunction, IsObject, IsObject],
 function(graph, func, nopath, edge)
-  local vertices, n, m, dist, out, i, j, k;
+  local vertices, n, m, mat, out, i, j, k;
 
   vertices := DigraphVertices(graph);
   n := DigraphNrVertices(graph);
-  dist := EmptyPlist(n);
+  mat := EmptyPlist(n);
 
   for i in vertices do
-    dist[i] := EmptyPlist(n);
+    mat[i] := EmptyPlist(n);
     for j in vertices do 
-      dist[i][j] := nopath;
+      mat[i][j] := nopath;
     od;
   od;
   
   if HasDigraphSource(graph) then 
     m := Length(DigraphSource(graph));
     for i in [ 1 .. m ] do
-      dist[ DigraphSource(graph)[i] ][ DigraphRange(graph)[i] ] := edge;
+      mat[ DigraphSource(graph)[i] ][ DigraphRange(graph)[i] ] := edge;
     od;
   else
     out := OutNeighbours(graph);
     for i in vertices do 
       for j in out[i] do 
-        dist[i][j] := edge;
+        mat[i][j] := edge;
       od;
     od;
   fi;
@@ -77,12 +77,12 @@ function(graph, func, nopath, edge)
   for k in vertices do
     for i in vertices do
       for j in vertices do
-        func(dist, i, j, k);
+        func(mat, i, j, k);
       od;
     od;
   od;
 
-  return dist;
+  return mat;
 end);
 
 #
@@ -1423,7 +1423,7 @@ function(digraph1, digraph2)
   source := Concatenation(DigraphSource(digraph1), DigraphSource(digraph2) +
 	   nrvertices1);
   return DigraphNC(rec(nrvertices := nrvertices1 + DigraphNrVertices(digraph2),
-                       source := source, range := range));
+                        source := source, range := range));
 end);
 
 #
@@ -1455,5 +1455,37 @@ InstallMethod(DigraphDisjointUnion, "for two digraphs",
 function(digraph1, digraph2)
   DigraphSource(digraph1);
   return DigraphDisjointUnion(digraph1, digraph2); 
+end);
+
+#
+
+InstallMethod(DigraphEdgeUnion, "for two digraphs on the same vertex set",
+[IsDigraph, IsDigraph],
+function(digraph1, digraph2)
+  if DigraphNrVertices(digraph1) <> DigraphNrVertices(digraph2) then
+    Error("Digraphs: DigraphEdgeUnion: usage,\n",
+          "the arguments <digraph1> and <digraph2> must be defined \n",
+	  "on the same vertex set,");
+    return;
+  else 
+    return DigraphEdgeUnionNC(digraph1, digraph2);
+  fi;
+end);
+
+#
+
+
+InstallMethod(DigraphEdgeUnion, "for two digraphs on the same vertex set",
+[IsDigraph, IsDigraph],
+function(digraph1, digraph2)
+  local out1, out2, new, i;
+
+  out1 := OutNeighbours(digraph1);
+  out2 := OutNeighbours(digraph2);
+  new := [];
+  for i in [ 1 .. DigraphNrVertices(digraph1) ] do
+    new[i] := Concatenation(out1[i], out2[i]);
+  od;
+  return DigraphNC(new);
 end);
 #EOF

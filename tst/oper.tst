@@ -893,7 +893,7 @@ gap> gr3 := Digraph(
 gap> gr2 = gr3;
 true
 
-#
+# DigraphReverseEdge & DigraphReverseEdges
 gap> gr := CompleteDigraph(100);
 <digraph with 100 vertices, 10000 edges>
 gap> edges := ShallowCopy(DigraphEdges(gr));;
@@ -924,7 +924,7 @@ true
 gap> gr = DigraphReverseEdges(gr, []);
 true
 
-#
+# DigraphDisjointUnion
 gap> gr := CycleDigraph(1000);
 <digraph with 1000 vertices, 1000 edges>
 gap> gr2 := CompleteDigraph(100);
@@ -937,6 +937,41 @@ gap> DigraphDisjointUnion(gr, gr2);
 <digraph with 1100 vertices, 11000 edges>
 gap> DigraphDisjointUnion(gr2, gr);
 <digraph with 1100 vertices, 11000 edges>
+
+# DigraphFloydWarshall
+gap> func := function(mat, i, j, k)
+>   if (i = j) or (mat[i][k] <> 0 and mat[k][j] <> 0) then
+>     mat[i][j] := 1;
+>   fi;
+> end;
+function( mat, i, j, k ) ... end
+gap> gr := Digraph(
+> [ [ 1, 2, 4, 5, 7 ], [ 1, 2 ], [ 3, 7 ], [ 2, 10 ], [ 2, 6 ], [ 2, 7 ],
+>   [  ], [ 3, 4 ], [ 1, 10 ], [ 1, 3, 9 ] ] );
+<digraph with 10 vertices, 22 edges>
+gap> rtclosure := DigraphFloydWarshall( gr, func, 0, 1 );;
+gap> grrt := DigraphByAdjacencyMatrix(rtclosure);
+<digraph with 10 vertices, 76 edges>
+gap> grrt = DigraphReflexiveTransitiveClosure(gr);
+true
+gap> func := function(mat, i, j, k)
+>   if mat[i][k] <> 0 and mat[k][j] <> 0 then
+>     mat[i][j] := 1;
+>   fi;
+> end;
+function( mat, i, j, k ) ... end
+gap> gr := Digraph(
+> rec(
+>   nrvertices := 10,
+>   source := [ 1, 2, 2, 3, 4, 5, 6, 7, 10, 10, 10 ],
+>   range :=  [ 6, 9, 5, 7, 3, 4, 8, 4, 7, 9, 8 ],
+> ) );
+<digraph with 10 vertices, 11 edges>
+gap> tclosure := DigraphFloydWarshall( gr, func, 0, 1 );;
+gap> grt := DigraphByAdjacencyMatrix(tclosure);
+<digraph with 10 vertices, 25 edges>
+gap> grt = DigraphTransitiveClosure(gr);
+true
 
 #
 gap> DigraphsStopTest();
