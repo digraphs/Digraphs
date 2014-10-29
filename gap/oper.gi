@@ -462,8 +462,8 @@ function(digraph, edges)
   return DigraphAddEdgesNC(digraph, edges);
 end);
 
-InstallMethod(DigraphAddEdgesNC, "for a digraph and a list",
-[IsDigraph, IsList],
+InstallMethod(DigraphAddEdgesNC, "for a digraph with range and a list",
+[IsDigraph and HasDigraphRange, IsList], 1,
 function(digraph, edges)
   local newsource, newrange, m, edge;
 
@@ -482,6 +482,19 @@ function(digraph, edges)
                         nrvertices := DigraphNrVertices(digraph) ) );
 end);
 
+InstallMethod(DigraphAddEdgesNC, "for a digraph with out-neighbours and a list",
+[IsDigraph and HasOutNeighbours, IsList],
+function(digraph, edges)
+  local out, new, verts, edge;
+
+  out := OutNeighbours(digraph);
+  new := List( out, ShallowCopy );
+  verts := DigraphVertices( digraph );
+  for edge in edges do
+    Add( new[ edge[1] ], edge[2] );
+  od;
+  return DigraphNC( new );
+end);
 #
 
 InstallMethod(DigraphAddVertex, "for a digraph",

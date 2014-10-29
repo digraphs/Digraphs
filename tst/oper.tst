@@ -492,6 +492,14 @@ gap> gr2 := DigraphAddEdges( gr, [ [ 2, 1 ], [ 3, 3 ], [ 2, 4 ], [ 3, 3 ] ] );
 gap> DigraphEdges(gr2);
 [ [ 1, 2 ], [ 1, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], [ 2, 1 ], [ 2, 4 ], 
   [ 3, 2 ], [ 3, 1 ], [ 3, 3 ], [ 3, 3 ], [ 4, 1 ] ]
+gap> gr3 := Digraph( rec( nrvertices := DigraphNrVertices(gr),
+>                         source     := ShallowCopy(DigraphSource(gr)),
+>                         range      := ShallowCopy(DigraphRange(gr)) ) );
+<multidigraph with 4 vertices, 8 edges>
+gap> gr4 := DigraphAddEdges( gr3, [ [ 2, 1 ], [ 3, 3 ], [ 2, 4 ], [ 3, 3 ] ] );
+<multidigraph with 4 vertices, 12 edges>
+gap> gr2 = gr4;
+true
 
 # IsDigraphEdge
 gap> gr := CycleDigraph(1000); # CycleDigraph with source/range

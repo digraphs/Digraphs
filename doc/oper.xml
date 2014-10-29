@@ -345,11 +345,11 @@ gap> DigraphEdges(gr3);
   <Oper Name="DigraphAddEdges" Arg="digraph, edges"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>edges</A> is a list of pairs of vertices of <A>digraph</A>,
-    then this operation returns a new digraph constructed from <A>digraph</A> 
-    by adding the edges specified by <A>edges</A>. More precisely, for each
-    <C>i</C>, a new edge will be added with source <A>edges</A><C>[i][1]</C>
-    and range <A>edges</A><C>[i][2]</C>.
+    If <A>edges</A> is a (possibly empty) list of pairs of vertices of 
+    <A>digraph</A>, then this operation returns a new digraph constructed from 
+    <A>digraph</A> by adding the edges specified by <A>edges</A>.
+    More precisely, for each <C>i</C>, a new edge will be added with source 
+    <A>edges</A><C>[i][1]</C> and range <A>edges</A><C>[i][2]</C>.
     <P/>
     
     If an edge is included multiple times in <A>edges</A>, then it will be
