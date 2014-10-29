@@ -228,7 +228,7 @@ gap> DigraphVertexNames(new);
   <Oper Name="DigraphAddVertices" Arg="digraph, m[, names ]"/>
   <Returns>A digraph.</Returns>
   <Description>
-    For a positive integer <A>m</A>, this operation returns a new digraph 
+    For a non-negative integer <A>m</A>, this operation returns a new digraph 
     constructed from <A>digraph</A> by adding <A>m</A> new vertices. If the
     optional third argument <A>names</A> is a list of length <A>m</A> consisting
     of arbitrary &GAP; objects, then the new vertices will be named according 
@@ -244,6 +244,8 @@ gap> new := DigraphAddVertices(gr, 2, [ Group( [(1,2)] ), "d" ] );
 <digraph with 5 vertices, 9 edges>
 gap> DigraphVertexNames(new);
 [ 1, 2, 3, Group([ (1,2) ]), "d" ]
+gap> DigraphAddVertices(gr, 0) = gr;
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -285,10 +287,10 @@ gap> DigraphVertexNames(new);
   <Oper Name="DigraphRemoveVertices " Arg="digraph, verts"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>verts</A> is a duplicate-free list of vertices of <A>digraph</A>,
-    then this operation returns a new digraph constructed from <A>digraph</A>
-    by removing every vertex in <A>verts</A>, along with any edges which have 
-    source or range is an element of <A>verts</A>. <P/>
+    If <A>verts</A> is a (possibly empty) duplicate-free list of vertices of 
+    <A>digraph</A>, then this operation returns a new digraph constructed from 
+    <A>digraph</A> by removing every vertex in <A>verts</A>, along with any 
+    edges which have source or range is an element of <A>verts</A>. <P/>
 
     If <A>digraph</A> has <C>n</C> vertices, then the vertices of the new
     digraph are <C>[ 1 .. n - Length(</C><A> verts </A><C>) ]</C>, but the 
@@ -343,11 +345,11 @@ gap> DigraphEdges(gr3);
   <Oper Name="DigraphAddEdges" Arg="digraph, edges"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>edges</A> is a list of pairs of vertices of <A>digraph</A>,
-    then this operation returns a new digraph constructed from <A>digraph</A> 
-    by adding the edges specified by <A>edges</A>. More precisely, for each
-    <C>i</C>, a new edge will be added with source <A>edges</A><C>[i][1]</C>
-    and range <A>edges</A><C>[i][2]</C>.
+    If <A>edges</A> is a (possibly empty) list of pairs of vertices of 
+    <A>digraph</A>, then this operation returns a new digraph constructed from 
+    <A>digraph</A> by adding the edges specified by <A>edges</A>.
+    More precisely, for each <C>i</C>, a new edge will be added with source 
+    <A>edges</A><C>[i][1]</C> and range <A>edges</A><C>[i][2]</C>.
     <P/>
     
     If an edge is included multiple times in <A>edges</A>, then it will be

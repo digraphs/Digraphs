@@ -462,8 +462,8 @@ function(digraph, edges)
   return DigraphAddEdgesNC(digraph, edges);
 end);
 
-InstallMethod(DigraphAddEdgesNC, "for a digraph and a list",
-[IsDigraph, IsList],
+InstallMethod(DigraphAddEdgesNC, "for a digraph with range and a list",
+[IsDigraph and HasDigraphRange, IsList], 1,
 function(digraph, edges)
   local newsource, newrange, m, edge;
 
@@ -482,6 +482,19 @@ function(digraph, edges)
                         nrvertices := DigraphNrVertices(digraph) ) );
 end);
 
+InstallMethod(DigraphAddEdgesNC, "for a digraph with out-neighbours and a list",
+[IsDigraph and HasOutNeighbours, IsList],
+function(digraph, edges)
+  local out, new, verts, edge;
+
+  out := OutNeighbours(digraph);
+  new := List( out, ShallowCopy );
+  verts := DigraphVertices( digraph );
+  for edge in edges do
+    Add( new[ edge[1] ], edge[2] );
+  od;
+  return DigraphNC( new );
+end);
 #
 
 InstallMethod(DigraphAddVertex, "for a digraph",
@@ -499,19 +512,29 @@ end);
 #
 
 InstallMethod(DigraphAddVertices, "for a digraph and a pos int",
-[IsDigraph, IsPosInt],
+[IsDigraph, IsInt],
 function(digraph, m)
+  if m < 0 then
+    Error("Digraphs: DigraphAddVertices: usage,\n",
+    "the second arg <m> (the number of vertices to add) must be non-negative,");
+    return;
+  fi;
   return DigraphAddVerticesNC(digraph, m, [ ]);
 end);
 
 InstallMethod(DigraphAddVertices, "for a digraph, a pos int and a list",
-[IsDigraph, IsPosInt, IsList],
+[IsDigraph, IsInt, IsList],
 function(digraph, m, names)
-  if Length(names) <> m then
+  if m < 0 then
+    Error("Digraphs: DigraphAddVertices: usage,\n",
+    "the second arg <m> (the number of vertices to add) must be non-negative,");
+    return;
+  elif Length(names) <> m then
     Error("Digraphs: DigraphAddVertices: usage,\n",
       "the number of new vertex names (the length of the third arg <names>)\n",
       "must match the number of new vertices (the value of the second arg <m>),"
     );
+    return;
   fi;
   return DigraphAddVerticesNC(digraph, m, names);
 end);
@@ -520,7 +543,7 @@ end);
 
 InstallMethod(DigraphAddVerticesNC,
 "for a digraph with source, a pos int and a list",
-[IsDigraph and HasDigraphSource, IsPosInt, IsList],
+[IsDigraph and HasDigraphSource, IsInt, IsList],
 function(digraph, m, names)
   local s, r, n, out, nam;
   
@@ -539,7 +562,7 @@ end);
 
 InstallMethod(DigraphAddVerticesNC,
 "for a digraph with out-neighbours, a pos int and a list",
-[IsDigraph and HasOutNeighbours, IsPosInt, IsList],
+[IsDigraph and HasOutNeighbours, IsInt, IsList],
 function(digraph, m, names)
   local out, new, n, newverts, nam, i;
   
@@ -568,6 +591,7 @@ function(digraph, m)
   if m > DigraphNrVertices(digraph) then
     Error("Digraphs: DigraphRemoveVertices: usage,\n",
     "the second arg <m> is not a vertex of the first arg <digraph>,");
+    return;
   fi;
   return DigraphRemoveVerticesNC(digraph, [ m ]);
 end);
@@ -580,16 +604,15 @@ function(digraph, verts)
   local n;
   
   n := DigraphNrVertices(digraph);
-  if IsEmpty(verts) then
+  if not IsEmpty(verts) and 
+   (not IsPosInt(verts[1]) or
+    not IsHomogeneousList(verts) or
+    not IsDuplicateFreeList(verts) or
+    ForAny(verts, x -> x < 1 or n < x)) then
     Error("Digraphs: DigraphRemoveVertices: usage,\n",
-    "the second arg <verts> is empty; no vertices are specified for removal,");
-  elif not IsPosInt(verts[1]) or
-   not IsHomogeneousList(verts) or
-   not IsDuplicateFreeList(verts) or
-   ForAny(verts, x -> x < 1 or n < x) then
-    Error("Digraphs: DigraphRemoveVertices: usage,\n",
-    "the second arg <verts> should be a duplicate free list of vertices of\n",
-    "the first arg <digraph>, specifically: a subset of [ 1 .. ", n, " ],");
+      "the second arg <verts> should be a duplicate free list of vertices of\n",
+      "the first arg <digraph>, specifically: a subset of [ 1 .. ", n, " ],");
+    return;
   fi;
   return DigraphRemoveVerticesNC(digraph, verts );
 end);
@@ -600,35 +623,46 @@ InstallMethod(DigraphRemoveVerticesNC,
 "for a digraph with source and a list",
 [IsDigraph and HasDigraphSource, IsList],
 function(digraph, verts)
-  local n, newnrverts, lookup, count, diff, m, source, range, news, newr, gr, i;
+  local n, len, newnrverts, diff, news, newr, lookup, count, m, source, range, 
+        log, gr, i;
 
   n := DigraphNrVertices(digraph);
-  newnrverts := n - Length(verts);
-  if newnrverts = 0 then
-    return EmptyDigraph(0);
-  fi;
-  lookup := EmptyPlist(n);
-  count := 0;
+  len := Length(verts);
+  newnrverts := n - len;
   diff := Difference(DigraphVertices(digraph), verts);
-  for i in diff do
-    count := count + 1;
-    lookup[ i ] := count;
-  od;
-  m := DigraphNrEdges(digraph);
-  source := DigraphSource(digraph);
-  range := DigraphRange(digraph);
-  news := EmptyPlist(m);
-  newr := EmptyPlist(m);
-  count := 0;
-  for i in [ 1 .. m ] do
-    if not (source[i] in verts or range[i] in verts) then
-      count := count + 1;
-      news[count] := lookup[ source[i] ];
-      newr[count] := lookup[ range[i] ];
+  if IsEmpty(verts) then
+    news := ShallowCopy(DigraphSource(digraph));
+    newr := ShallowCopy(DigraphRange(digraph));
+  else
+    if newnrverts = 0 then
+      return EmptyDigraph(0);
     fi;
-  od;
-  ShrinkAllocationPlist(news);
-  ShrinkAllocationPlist(newr);
+    lookup := EmptyPlist(n);
+    count := 0;
+    for i in diff do
+      count := count + 1;
+      lookup[ i ] := count;
+    od;
+    m      := DigraphNrEdges(digraph);
+    source := DigraphSource(digraph);
+    range  := DigraphRange(digraph);
+    news   := EmptyPlist(m);
+    newr   := EmptyPlist(m);
+    count  := 0;
+    log    := LogInt(len, 2);
+    if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
+      Sort(verts);
+    fi;
+    for i in [ 1 .. m ] do
+      if not (source[i] in verts or range[i] in verts) then
+        count := count + 1;
+        news[ count ] := lookup[ source[i] ];
+        newr[ count ] := lookup[ range[i] ];
+      fi;
+    od;
+    ShrinkAllocationPlist(news);
+    ShrinkAllocationPlist(newr);
+  fi;
   gr := DigraphNC( rec( nrvertices := newnrverts,
                         source := news, range := newr ) );
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
@@ -640,28 +674,38 @@ InstallMethod(DigraphRemoveVerticesNC,
 "for a digraph with out-neighbours and a list",
 [IsDigraph and HasOutNeighbours, IsList],
 function(digraph, verts)
-  local n, newnrverts, lookup, count, diff, out, new, gr, i;
+  local diff, new, n, len, newnrverts, lookup, count, out, m, log, gr, i;
   
-  n := DigraphNrVertices(digraph);
-  newnrverts := n - Length(verts);
-  if newnrverts = 0 then
-    return EmptyDigraph(0);
-  fi;
-  lookup := EmptyPlist(n);
-  count := 0;
   diff := Difference(DigraphVertices(digraph), verts);
-  for i in diff do
-    count := count + 1;
-    lookup[ i ] := count;
-  od;
-  out := OutNeighbours(digraph);
-  new := EmptyPlist(newnrverts);
-  count := 0;
-  for i in diff do
-    count := count + 1;
-    new[ count ] := List(
-      Filtered( out[ i ], x -> not x in verts ), y -> lookup[ y ] );
-  od;
+  if IsEmpty(verts) then
+    new := List( OutNeighbours(digraph), ShallowCopy );
+  else
+    n := DigraphNrVertices(digraph);
+    len := Length(verts);
+    newnrverts := n - len;
+    if newnrverts = 0 then
+      return EmptyDigraph(0);
+    fi;
+    lookup := EmptyPlist(n);
+    count := 0;
+    for i in diff do
+      count := count + 1;
+      lookup[ i ] := count;
+    od;
+    out   := OutNeighbours(digraph);
+    new   := EmptyPlist(newnrverts);
+    count := 0;
+    m     := DigraphNrEdges(digraph);
+    log   := LogInt(len, 2);
+    if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
+      Sort(verts);
+    fi;
+    for i in diff do
+      count := count + 1;
+      new[ count ] := List(
+        Filtered( out[ i ], x -> not x in verts ), y -> lookup[ y ] );
+    od;
+  fi;
   gr := DigraphNC(new);
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
   # Transfer data

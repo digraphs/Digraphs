@@ -746,7 +746,6 @@ function(graph1, graph2)
   range := DigraphRange(graph2);
   verts := DigraphVertices(graph1);
   start := 1;
-  stop := 0;
   i := 0;
   while true do
     i := i + 1;
@@ -827,7 +826,7 @@ function(graph1, graph2)
   fi;
 
   source := DigraphSource(graph1);
-  sources := Set(source);
+  sources := DuplicateFreeList(source);
   range1 := DigraphRange(graph1);
   range2 := DigraphRange(graph2);
   m := Length(source);
@@ -849,10 +848,12 @@ function(graph1, graph2)
   od;
   a := range1{ [ stop .. m ] };
   b := range2{ [ stop .. m ] };
-  Sort(a);
-  Sort(b);
   if a <> b then
-    return false;
+    Sort(a);
+    Sort(b);
+    if a <> b then
+      return false;
+    fi;
   fi;
 
   return true;

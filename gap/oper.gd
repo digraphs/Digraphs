@@ -20,9 +20,9 @@ DeclareOperation("DigraphAddEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphAddEdgesNC", [IsDigraph, IsList]);
 DeclareOperation("DigraphAddVertex", [IsDigraph]);
 DeclareOperation("DigraphAddVertex", [IsDigraph, IsObject]);
-DeclareOperation("DigraphAddVertices", [IsDigraph, IsPosInt]);
-DeclareOperation("DigraphAddVertices", [IsDigraph, IsPosInt, IsList]);
-DeclareOperation("DigraphAddVerticesNC", [IsDigraph, IsPosInt, IsList]);
+DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt]);
+DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt, IsList]);
+DeclareOperation("DigraphAddVerticesNC", [IsDigraph, IsInt, IsList]);
 
 DeclareOperation("DigraphFloydWarshall", [IsDigraph, IsFunction,
  IsObject, IsObject]);

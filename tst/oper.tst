@@ -492,6 +492,14 @@ gap> gr2 := DigraphAddEdges( gr, [ [ 2, 1 ], [ 3, 3 ], [ 2, 4 ], [ 3, 3 ] ] );
 gap> DigraphEdges(gr2);
 [ [ 1, 2 ], [ 1, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], [ 2, 1 ], [ 2, 4 ], 
   [ 3, 2 ], [ 3, 1 ], [ 3, 3 ], [ 3, 3 ], [ 4, 1 ] ]
+gap> gr3 := Digraph( rec( nrvertices := DigraphNrVertices(gr),
+>                         source     := ShallowCopy(DigraphSource(gr)),
+>                         range      := ShallowCopy(DigraphRange(gr)) ) );
+<multidigraph with 4 vertices, 8 edges>
+gap> gr4 := DigraphAddEdges( gr3, [ [ 2, 1 ], [ 3, 3 ], [ 2, 4 ], [ 3, 3 ] ] );
+<multidigraph with 4 vertices, 12 edges>
+gap> gr2 = gr4;
+true
 
 # IsDigraphEdge
 gap> gr := CycleDigraph(1000); # CycleDigraph with source/range
@@ -685,6 +693,24 @@ gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
 <digraph with 3 vertices, 1 edge>
 gap> DigraphVertexNames(gr2);
 [ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
+gap> DigraphAddVertices(gr2, -1);
+Error, Digraphs: DigraphAddVertices: usage,
+the second arg <m> (the number of vertices to add) must be non-negative,
+gap> gr3 := DigraphAddVertices(gr2, 0);
+<digraph with 3 vertices, 1 edge>
+gap> IsIdenticalObj(gr2, gr3);
+false
+gap> gr2 = gr3;
+true
+gap> DigraphAddVertices(gr2, -1, [ ]);
+Error, Digraphs: DigraphAddVertices: usage,
+the second arg <m> (the number of vertices to add) must be non-negative,
+gap> gr3 := DigraphAddVertices(gr2, 0, [ ]);
+<digraph with 3 vertices, 1 edge>
+gap> IsIdenticalObj(gr2, gr3);
+false
+gap> gr2 = gr3;
+true
 
 # DigraphRemoveVertex
 gap> gr := Digraph( [
@@ -713,8 +739,9 @@ true
 gap> gr := CompleteDigraph(4);
 <digraph with 4 vertices, 16 edges>
 gap> gr2 := DigraphRemoveVertices( gr, [  ] );
-Error, Digraphs: DigraphRemoveVertices: usage,
-the second arg <verts> is empty; no vertices are specified for removal,
+<digraph with 4 vertices, 16 edges>
+gap> gr = gr2;
+true
 gap> gr2 := DigraphRemoveVertices(gr, [ 0 ] );
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
@@ -756,6 +783,10 @@ gap> gr3 := DigraphRemoveVertices( gr, [ 2, 3 ] );
 <digraph with 2 vertices, 4 edges>
 gap> DigraphVertexNames(gr3);
 [ (), (1,2,3,4) ]
+gap> gr4 := DigraphRemoveVertices( gr, [ ] );
+<digraph with 4 vertices, 16 edges>
+gap> gr = gr4;
+true
 
 # AsBinaryRelation
 gap> gr := EmptyDigraph(0);
