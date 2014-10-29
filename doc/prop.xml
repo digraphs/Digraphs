@@ -358,7 +358,6 @@ true
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ] );
 <digraph with 4 vertices, 6 edges>
-gap> IsAcyclicDigraph(gr);;
 gap> IsTournament(gr);
 true
 gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );

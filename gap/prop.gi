@@ -247,24 +247,24 @@ end);
 
 InstallMethod(IsTournament, "for a digraph",
 [IsDigraph], 
-function(graph)
+function(digraph)
   local n;
   
-  if IsMultiDigraph(graph) then 
+  if IsMultiDigraph(digraph) then
     return false;
   fi;
 
-  n := DigraphNrVertices(graph);
+  n := DigraphNrVertices(digraph);
 
   if n = 0 then
     return true;
   fi;
 
-  if DigraphNrEdges(graph) <> n * (n - 1) / 2 then 
+  if DigraphNrEdges(digraph) <> n * (n - 1) / 2 then 
     return false;
   fi;
 
-  if DigraphHasLoops(graph) then
+  if DigraphHasLoops(digraph) then
     return false;
   fi;
 
@@ -272,11 +272,11 @@ function(graph)
     return true;
   fi;
 
-  if HasIsAcyclicDigraph(graph) and IsAcyclicDigraph(graph) then 
+  if HasIsAcyclicDigraph(digraph) and IsAcyclicDigraph(digraph) then 
     return true;
   fi;
 
-  Error("Digraphs: IsTournament: not yet implemented,");
+  return IsAntisymmetricDigraph(digraph);
 
 end);
 
