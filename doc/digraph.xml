@@ -226,8 +226,7 @@ gap> AsDigraph(f, 4);
     If the optional second argument <A>p</A> is a float with value 
     <M>0 \leq <A> p </A> \leq 1</M>, then an edge will exist between each 
     pair of vertices with probability approximately <A>p</A>.
-    If <A>p</A> is not specified, then a probability of <C>0.5</C> will be
-    assumed.
+    If <A>p</A> is not specified, then a random probability will be assumed.
     <Log><![CDATA[
 gap> RandomDigraph(1000);
 <digraph with 1000 vertices, 364444 edges>

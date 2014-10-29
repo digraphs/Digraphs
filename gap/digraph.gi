@@ -217,7 +217,7 @@ end);
 InstallMethod(RandomDigraph, "for a pos int",
 [IsPosInt],
 function(n)
-  return RandomDigraph( n, 0.5 );
+  return RandomDigraph( n, Float(Random([0..10000]))/10000 );
 end);
 
 InstallMethod(RandomDigraph, "for a pos int and a float",
