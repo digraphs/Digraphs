@@ -12,7 +12,7 @@
 
 #
 
-InstallMethod(MultidigraphEdgeUnion, "for digraphs",
+InstallMethod(MultiDigraphEdgeUnion, "for digraphs",
 [IsDigraph, IsDigraph],
 function(graph1, graph2)
   local m, n, outm, outn, out, i;
