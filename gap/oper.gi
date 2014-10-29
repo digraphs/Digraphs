@@ -15,15 +15,16 @@
 InstallMethod(DigraphCopy, "for a digraph",
 [IsDigraph and HasDigraphSource],
 function(digraph)
-  local source, range, n;
+  local source, range, n, gr;
 
   source := ShallowCopy(DigraphSource(digraph));
   range := ShallowCopy(DigraphRange(digraph));
   n := DigraphNrVertices(digraph);
-  return DigraphNC(rec( nrvertices := n,
+  gr :=  DigraphNC(rec( nrvertices := n,
                         source := source,
 			range := range));
-                        
+  SetDigraphVertexNames(gr, DigraphVertexNames(gr));
+  return gr;                     
 end);
 
 #
