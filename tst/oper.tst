@@ -738,7 +738,7 @@ gap> DigraphRemoveVertex(gr, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphRemoveVertex' on 2 arguments
 gap> DigraphRemoveVertex(gr, 15);
-Error, Digraphs: DigraphRemoveVertices: usage,
+Error, Digraphs: DigraphRemoveVertex: usage,
 the second arg <m> is not a vertex of the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertex(gr, 10);;
 gap> DigraphNrVertices(gr2);

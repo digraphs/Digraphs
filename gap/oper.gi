@@ -12,7 +12,7 @@
 
 #
 
-InstallMethod(MultiDigraphEdgeUnion, "for digraphs",
+InstallMethod(DigraphEdgeUnion, "for digraphs",
 [IsDigraph, IsDigraph],
 function(graph1, graph2)
   local m, n, outm, outn, out, i;
@@ -589,7 +589,7 @@ InstallMethod(DigraphRemoveVertex, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],
 function(digraph, m)
   if m > DigraphNrVertices(digraph) then
-    Error("Digraphs: DigraphRemoveVertices: usage,\n",
+    Error("Digraphs: DigraphRemoveVertex: usage,\n",
     "the second arg <m> is not a vertex of the first arg <digraph>,");
     return;
   fi;
@@ -1459,33 +1459,25 @@ end);
 
 #
 
-InstallMethod(DigraphEdgeUnion, "for two digraphs on the same vertex set",
+InstallMethod(DigraphJoin, "for two digraphs",
 [IsDigraph, IsDigraph],
 function(digraph1, digraph2)
-  if DigraphNrVertices(digraph1) <> DigraphNrVertices(digraph2) then
-    Error("Digraphs: DigraphEdgeUnion: usage,\n",
-          "the arguments <digraph1> and <digraph2> must be defined \n",
-	  "on the same vertex set,");
-    return;
-  else 
-    return DigraphEdgeUnionNC(digraph1, digraph2);
-  fi;
-end);
-
-#
-
-
-InstallMethod(DigraphEdgeUnion, "for two digraphs on the same vertex set",
-[IsDigraph, IsDigraph],
-function(digraph1, digraph2)
-  local out1, out2, new, i;
+  local out1, out2, n, m, new, i;
 
   out1 := OutNeighbours(digraph1);
   out2 := OutNeighbours(digraph2);
-  new := [];
-  for i in [ 1 .. DigraphNrVertices(digraph1) ] do
-    new[i] := Concatenation(out1[i], out2[i]);
+  n := DigraphNrVertices(digraph1);
+  m := DigraphNrVertices(digraph2);
+  new := EmptyPlist(n + m);
+
+  for i in [ 1 .. n ] do
+    new[i] := Concatenation(out1[i], [n + 1 .. n + m]); 
   od;
+  for i in [ n + 1 .. n +  m ] do
+    new[i] := Concatenation([ 1 .. n ], out2[i - n] + n);
+  od;
+
   return DigraphNC(new);
 end);
+
 #EOF
