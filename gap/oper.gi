@@ -754,8 +754,9 @@ function(graph, perm)
     "of the 1st argument <graph>,");
     return;
   fi;
-  
-  adj := Permuted(OutNeighbours(graph), perm);
+ 
+  adj := List( OutNeighbours(graph), ShallowCopy );
+  adj := Permuted(adj, perm);
   Apply(adj, x-> OnTuples(x, perm));
 
   return DigraphNC(adj);
