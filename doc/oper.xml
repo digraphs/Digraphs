@@ -287,10 +287,10 @@ gap> DigraphVertexNames(new);
   <Oper Name="DigraphRemoveVertices " Arg="digraph, verts"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>verts</A> is a duplicate-free list of vertices of <A>digraph</A>,
-    then this operation returns a new digraph constructed from <A>digraph</A>
-    by removing every vertex in <A>verts</A>, along with any edges which have 
-    source or range is an element of <A>verts</A>. <P/>
+    If <A>verts</A> is a (possibly empty) duplicate-free list of vertices of 
+    <A>digraph</A>, then this operation returns a new digraph constructed from 
+    <A>digraph</A> by removing every vertex in <A>verts</A>, along with any 
+    edges which have source or range is an element of <A>verts</A>. <P/>
 
     If <A>digraph</A> has <C>n</C> vertices, then the vertices of the new
     digraph are <C>[ 1 .. n - Length(</C><A> verts </A><C>) ]</C>, but the 

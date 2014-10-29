@@ -739,8 +739,9 @@ true
 gap> gr := CompleteDigraph(4);
 <digraph with 4 vertices, 16 edges>
 gap> gr2 := DigraphRemoveVertices( gr, [  ] );
-Error, Digraphs: DigraphRemoveVertices: usage,
-the second arg <verts> is empty; no vertices are specified for removal,
+<digraph with 4 vertices, 16 edges>
+gap> gr = gr2;
+true
 gap> gr2 := DigraphRemoveVertices(gr, [ 0 ] );
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
@@ -782,6 +783,10 @@ gap> gr3 := DigraphRemoveVertices( gr, [ 2, 3 ] );
 <digraph with 2 vertices, 4 edges>
 gap> DigraphVertexNames(gr3);
 [ (), (1,2,3,4) ]
+gap> gr4 := DigraphRemoveVertices( gr, [ ] );
+<digraph with 4 vertices, 16 edges>
+gap> gr = gr4;
+true
 
 # AsBinaryRelation
 gap> gr := EmptyDigraph(0);
