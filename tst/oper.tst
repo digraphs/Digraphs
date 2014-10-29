@@ -1039,13 +1039,29 @@ gap> gr := Digraph([[6,1,2,3], [6], [2,2,3], [1,1], [6,5], [6,4]]);
 gap> gr = DigraphCopy(gr);
 true
 gap> gr := CompleteDigraph(100);
-<digraph with 100 vertices, 10000 edges>
+<digraph with 100 vertices, 9900 edges>
 gap> gr = DigraphCopy(gr);
 true
 gap> gr := CycleDigraph(10000);
 <digraph with 10000 vertices, 10000 edges>
 gap> gr = DigraphCopy(gr);
 true
+
+# DigraphJoin
+gap> gr := CompleteDigraph(20);
+<digraph with 20 vertices, 380 edges>
+gap> gr2 := EmptyDigraph(10);
+<digraph with 10 vertices, 0 edges>
+gap> DigraphJoin(gr, gr2);
+<digraph with 30 vertices, 780 edges>
+gap> DigraphJoin(gr, EmptyDigraph(0));
+<digraph with 20 vertices, 380 edges>
+gap> DigraphJoin(EmptyDigraph(0), CycleDigraph(1000));
+<digraph with 1000 vertices, 1000 edges>
+gap> DigraphJoin(EmptyDigraph(0), EmptyDigraph(0));
+<digraph with 0 vertices, 0 edges>
+gap> DigraphJoin(EmptyDigraph(5), EmptyDigraph(5));
+<digraph with 10 vertices, 50 edges>
 
 #
 gap> DigraphsStopTest();

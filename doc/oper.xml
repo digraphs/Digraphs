@@ -812,3 +812,27 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphJoin">
+<ManSection>
+  <Oper Name="DigraphJoin" Arg="digraph1, digraph2"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Let <M>V_1</M> and <M>V_2</M> be vertex sets of the digraphs
+    <A>digraph1</A> and <A>digraph</A>. Then <C>DigraphJoin</C> return a new
+    digraph with the vertexi set being the disjoint union of <M>V_1</M> and
+    <M>V_2</M>, and the edge set being the union of the corresponding edge sets
+    together with all edges between <M>V_1</M> and <M>V_2</M>.
+<Example><![CDATA[
+gap> gr := CompleteDigraph(3);
+<digraph with 3 vertices, 6 edges>
+gap> IsCompleteDigraph(DigraphJoin(gr, gr));
+true
+gap> gr2 := CycleDigraph(3);
+<digraph with 3 vertices, 3 edges>
+gap> DigraphJoin(gr, gr2);
+<digraph with 6 vertices, 27 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
