@@ -12,6 +12,33 @@
 
 #
 
+InstallMethod(DigraphCopy, "for a digraph",
+[IsDigraph and HasDigraphSource],
+function(digraph)
+  local source, range, n;
+
+  source := ShallowCopy(DigraphSource(digraph));
+  range := ShallowCopy(DigraphRange(digraph));
+  n := DigraphNrVertices(digraph);
+  return DigraphNC(rec( nrvertices := n,
+                        source := source,
+			range := range));
+                        
+end);
+
+#
+
+InstallMethod(DigraphCopy, "for a digraph",
+[IsDigraph and HasOutNeighbours],
+function(digraph)
+  local out;
+
+  out := StructuralCopy(OutNeighbours(digraph));
+  return DigraphNC(out);
+end);
+
+#
+
 InstallMethod(DigraphEdgeUnion, "for digraphs",
 [IsDigraph, IsDigraph],
 function(graph1, graph2)
@@ -215,7 +242,7 @@ function(digraph, edges)
   fi;
   
   if Length(edges) = 0 then
-    return digraph;
+    return DigraphCopy(digraph);
   fi;
 
   nredges := DigraphNrEdges(digraph);
@@ -256,7 +283,7 @@ function(digraph, edges)
   fi;
 
   if Length(edges) = 0 then
-    return digraph;
+    return DigraphCopy(digraph);
   fi;
   
   nredges := DigraphNrEdges(digraph);
@@ -299,7 +326,7 @@ function(digraph, edges)
     Add(new[edge[2]], edge[1]);
   od;
 
-  return DigraphNC(new);
+  return DigraphNC(new); 
 end);
 
 #

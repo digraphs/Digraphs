@@ -1033,6 +1033,20 @@ gap> m := DigraphEdgeUnion(gr1, gr2);
 gap> m = CycleDigraph(6);
 true
 
+# DigraphCopy
+gap> gr := Digraph([[6,1,2,3], [6], [2,2,3], [1,1], [6,5], [6,4]]);
+<multidigraph with 6 vertices, 14 edges>
+gap> gr = DigraphCopy(gr);
+true
+gap> gr := CompleteDigraph(100);
+<digraph with 100 vertices, 10000 edges>
+gap> gr = DigraphCopy(gr);
+true
+gap> gr := CycleDigraph(10000);
+<digraph with 10000 vertices, 10000 edges>
+gap> gr = DigraphCopy(gr);
+true
+
 #
 gap> DigraphsStopTest();
 

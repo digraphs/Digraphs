@@ -796,3 +796,19 @@ gap> DigraphDisjointUnion(gr, gr);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphCopy">
+<ManSection>
+  <Oper Name="DigraphCopy" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Returns a new copy of <A>digraph</A>.
+<Example><![CDATA[
+gap> gr := CycleDigraph(10);
+<digraph with 10 vertices, 10 edges>
+gap> DigraphCopy(gr) = gr;
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
