@@ -1459,6 +1459,29 @@ end);
 
 #
 
+InstallMethod(DigraphJoin, "for two digraphs",
+[IsDigraph, IsDigraph],
+function(digraph1, digraph2)
+  local out1, out2, n, m, new, i;
+
+  out1 := OutNeighbours(digraph1);
+  out2 := OutNeighbours(digraph2);
+  n := DigraphNrVertices(digraph1);
+  m := DigraphNrVertices(digraph2);
+  new := EmptyPlist(n + m);
+
+  for i in [ 1 .. n ] do
+    new[i] := Concatenation(out1[i], [n + 1 .. n + m]); 
+  od;
+  for i in [ n + 1 .. n +  m ] do
+    new[i] := Concatenation([ 1 .. n ], out2[i - n] + n);
+  od;
+
+  return DigraphNC(new);
+end);
+
+#
+
 InstallMethod(DigraphEdgeUnion, "for two digraphs on the same vertex set",
 [IsDigraph, IsDigraph],
 function(digraph1, digraph2)
