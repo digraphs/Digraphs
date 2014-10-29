@@ -894,8 +894,31 @@ gap> gr2 = gr3;
 true
 
 # DigraphReverseEdge & DigraphReverseEdges
+gap> gr := Digraph( [ [ 1, 1 ] ] );
+<multidigraph with 1 vertex, 2 edges>
+gap> DigraphReverseEdges( gr, [ [ 2, 2 ] ] );
+Error, Digraphs: DigraphReverseEdges: usage,
+the first argument <digraph> must not be a multigraph,
+gap> DigraphReverseEdges( gr, [ 2 ] );
+Error, Digraphs: DigraphReverseEdges: usage,
+the first argument <digraph> must not be a multigraph,
 gap> gr := CompleteDigraph(100);
 <digraph with 100 vertices, 10000 edges>
+gap> DigraphReverseEdges(gr, "a");
+Error, Digraphs: DigraphReverseEdges: usage,
+the second argument <edge> must be a list of edges of <digraph>,
+gap> DigraphReverseEdges( gr, Group(()) );
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `DigraphReverseEdges' on 2 arguments
+gap> DigraphReverseEdges(gr, [ 0, 0 ]);
+Error, Digraphs: DigraphReverseEdges: usage,
+the second argument <edge> must be a list of edges of <digraph>,
+gap> DigraphReverseEdges(gr, [ [ 0 ] ]);
+Error, Digraphs: DigraphReverseEdges: usage,
+the second argument <edges> must be a list of edges of <digraph>,
+gap> DigraphReverseEdges(gr, [ [ 1 ], [ 1 ] ]);
+Error, Digraphs: DigraphReverseEdges: usage,
+the second argument <edges> must be a list of edges of <digraph>,
 gap> edges := ShallowCopy(DigraphEdges(gr));;
 gap> gr = DigraphReverseEdges(gr, edges);
 true
