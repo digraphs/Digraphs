@@ -242,7 +242,7 @@ function(digraph, edges)
   fi;
   
   if Length(edges) = 0 then
-    return digraph;
+    return DigraphCopy(digraph);
   fi;
 
   nredges := DigraphNrEdges(digraph);
@@ -283,7 +283,7 @@ function(digraph, edges)
   fi;
 
   if Length(edges) = 0 then
-    return digraph;
+    return DigraphCopy(digraph);
   fi;
   
   nredges := DigraphNrEdges(digraph);
@@ -326,7 +326,7 @@ function(digraph, edges)
     Add(new[edge[2]], edge[1]);
   od;
 
-  return DigraphNC(new);
+  return DigraphNC(new); 
 end);
 
 #
