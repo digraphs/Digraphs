@@ -12,6 +12,30 @@
 
 #
 
+InstallMethod(DigraphCopy, "for a digraph",
+[IsDigraph and HasDigraphSource],
+function(digraph)
+  local source, range, n;
+
+  source := DigraphSource(digraph);
+  range := DigraphRange(digraph);
+  n := DigraphNrVertices(digraph);
+  return DigraphNC(rec( nrvertices := n,
+                        source := source,
+			range := range));
+                        
+end);
+
+#
+
+InstallMethod(DigraphCopy, "for a digraph",
+[IsDigraph and HasOutNeighbours],
+function(digraph)
+  return DigraphNC(OutNeighbours(digraph));
+end);
+
+#
+
 InstallMethod(DigraphEdgeUnion, "for digraphs",
 [IsDigraph, IsDigraph],
 function(graph1, graph2)

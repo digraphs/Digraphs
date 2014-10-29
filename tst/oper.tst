@@ -996,7 +996,7 @@ gap> grt := DigraphByAdjacencyMatrix(tclosure);
 gap> grt = DigraphTransitiveClosure(gr);
 true
 
-# MultiDigraphEdgeUnion
+# DigraphEdgeUnion
 gap> gr1 := Digraph(
 > rec(
 >   nrvertices := 10,
@@ -1007,17 +1007,31 @@ gap> gr1 := Digraph(
 gap> gr2 := Digraph( [ [ 9 ], [ 9, 1, 6, 3 ], [ ], [ ], [ 9, 3, 9 ],
 > [ 1, 4, 3, 2, 9, 4 ], [ 1, 7 ], [ 1, 2, 4 ], [ 8 ] ] );
 <multidigraph with 9 vertices, 20 edges>
-gap> m1 := MultiDigraphEdgeUnion(gr1, gr2);
+gap> m1 := DigraphEdgeUnion(gr1, gr2);
 <multidigraph with 10 vertices, 29 edges>
-gap> m2 := MultiDigraphEdgeUnion(gr2, gr1);
+gap> m2 := DigraphEdgeUnion(gr2, gr1);
 <multidigraph with 10 vertices, 29 edges>
 gap> gr1 := Digraph( [ [ 2 ], [ ], [ 4 ], [ ], [ 6 ], [ ] ] );
 <digraph with 6 vertices, 3 edges>
 gap> gr2 := Digraph( [ [ ], [ 3 ], [ ], [ 5 ], [ ], [ 1 ] ] );
 <digraph with 6 vertices, 3 edges>
-gap> m := MultiDigraphEdgeUnion(gr1, gr2);
+gap> m := DigraphEdgeUnion(gr1, gr2);
 <digraph with 6 vertices, 6 edges>
 gap> m = CycleDigraph(6);
+true
+
+# DigraphCopy
+gap> gr := Digraph([[6,1,2,3], [6], [2,2,3], [1,1], [6,5], [6,4]]);
+<multidigraph with 6 vertices, 14 edges>
+gap> gr = DigraphCopy(gr);
+true
+gap> gr := CompleteDigraph(100);
+<digraph with 100 vertices, 10000 edges>
+gap> gr = DigraphCopy(gr);
+true
+gap> gr := CycleDigraph(10000);
+<digraph with 10000 vertices, 10000 edges>
+gap> gr = DigraphCopy(gr);
 true
 
 #
