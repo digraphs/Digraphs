@@ -623,10 +623,12 @@ InstallMethod(DigraphRemoveVerticesNC,
 "for a digraph with source and a list",
 [IsDigraph and HasDigraphSource, IsList],
 function(digraph, verts)
-  local n, newnrverts, lookup, count, diff, m, source, range, news, newr, gr, i;
+  local n, len, newnrverts, diff, news, newr, lookup, count, m, source, range, 
+        log, gr, i;
 
   n := DigraphNrVertices(digraph);
-  newnrverts := n - Length(verts);
+  len := Length(verts);
+  newnrverts := n - len;
   diff := Difference(DigraphVertices(digraph), verts);
   if IsEmpty(verts) then
     news := ShallowCopy(DigraphSource(digraph));
@@ -641,12 +643,16 @@ function(digraph, verts)
       count := count + 1;
       lookup[ i ] := count;
     od;
-    m := DigraphNrEdges(digraph);
+    m      := DigraphNrEdges(digraph);
     source := DigraphSource(digraph);
-    range := DigraphRange(digraph);
-    news := EmptyPlist(m);
-    newr := EmptyPlist(m);
-    count := 0;
+    range  := DigraphRange(digraph);
+    news   := EmptyPlist(m);
+    newr   := EmptyPlist(m);
+    count  := 0;
+    log    := LogInt(len, 2);
+    if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
+      Sort(verts);
+    fi;
     for i in [ 1 .. m ] do
       if not (source[i] in verts or range[i] in verts) then
         count := count + 1;
@@ -668,14 +674,15 @@ InstallMethod(DigraphRemoveVerticesNC,
 "for a digraph with out-neighbours and a list",
 [IsDigraph and HasOutNeighbours, IsList],
 function(digraph, verts)
-  local n, newnrverts, lookup, count, diff, out, new, gr, i;
+  local diff, new, n, len, newnrverts, lookup, count, out, m, log, gr, i;
   
   diff := Difference(DigraphVertices(digraph), verts);
   if IsEmpty(verts) then
     new := List( OutNeighbours(digraph), ShallowCopy );
   else
     n := DigraphNrVertices(digraph);
-    newnrverts := n - Length(verts);
+    len := Length(verts);
+    newnrverts := n - len;
     if newnrverts = 0 then
       return EmptyDigraph(0);
     fi;
@@ -685,9 +692,14 @@ function(digraph, verts)
       count := count + 1;
       lookup[ i ] := count;
     od;
-    out := OutNeighbours(digraph);
-    new := EmptyPlist(newnrverts);
+    out   := OutNeighbours(digraph);
+    new   := EmptyPlist(newnrverts);
     count := 0;
+    m     := DigraphNrEdges(digraph);
+    log   := LogInt(len, 2);
+    if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
+      Sort(verts);
+    fi;
     for i in diff do
       count := count + 1;
       new[ count ] := List(
