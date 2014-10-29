@@ -288,7 +288,7 @@ gap> RandomTournament(10);
     digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/>. <P/>
     <Log><![CDATA[
 gap> CompleteDigraph(20);
-<digraph with 20 vertices, 400 edges>
+<digraph with 20 vertices, 380 edges>
 ]]></Log>
   </Description>
 </ManSection>
