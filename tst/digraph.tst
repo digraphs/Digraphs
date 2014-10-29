@@ -498,7 +498,7 @@ gap> gr2 := Digraph( [ [ 2 ], [ 1 ] , [ 2, 1 ] ] );
 <digraph with 3 vertices, 4 edges>
 gap> gr1 = gr2;
 true
-gap> im := OnDigraphs( gr1, (1,2) );    
+gap> im := OnDigraphs( gr1, (1,2) ); 
 <digraph with 3 vertices, 4 edges>
 gap> DigraphSource(im);
 [ 1, 2, 3, 3 ]
