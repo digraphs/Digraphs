@@ -102,7 +102,7 @@ end);
 InstallMethod(DigraphFromGraph6String, "for a string",
 [IsString],
 function(s)
-  local FindCoord, list, n, start, maxedges, range, source, pos, len, i, bpos, edge, graph, j;
+  local FindCoord, list, n, start, maxedges, out, pos, i, bpos, edge, graph, j;
 
   # find a position in the adj matrix from the vector
   # knowing a lower bound for pos_y
@@ -158,12 +158,13 @@ function(s)
     return;
   fi;
 
-  range := [];
-  source := [];
+  out := EmptyPlist(n);
+  for i in [ 1 .. n ] do
+    out[i] := [];
+  od;
 
   # Obtaining the adjacency vector
   pos := 1;
-  len := 1;
   for j in [start .. Length(list)] do # Every integer corresponds to 6 bits
     i := list[j];
     bpos := 1;
@@ -172,20 +173,15 @@ function(s)
         i := i / 2;
       else
         edge := FindCoord(pos + 6 - bpos, 0);
-	range[len] := edge[1];
-	source[len] := edge[2];
-	range[len + 1] := edge[2];
-	source[len + 1] := edge[1];
-	len := len + 2;
+	out[edge[1]][LEN_LIST(out[edge[1]]) + 1] := edge[2];
+	out[edge[2]][LEN_LIST(out[edge[2]]) + 1] := edge[1];
         i := (i - 1) / 2;
       fi;
       bpos := bpos + 1;
     od;
     pos := pos + 6;
   od;
-
-  graph := Digraph(rec(nrvertices := n, range := range,
-    source := source ));
+  graph := DigraphNC(out);
   SetIsSymmetricDigraph(graph, true);
   return graph;
 end);

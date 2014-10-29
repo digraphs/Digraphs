@@ -47,10 +47,13 @@ function(graph)
   verts := DigraphVertices(graph) * 1;
   m := DigraphNrEdges(graph);
   n := DigraphNrVertices(graph);
-  if m = 0 then
-    return CompleteDigraph(n);
-  fi;
   new := EmptyPlist(n);
+  if m = 0 then
+    for i in verts do
+      new[i] := verts;
+    od;
+    return DigraphNC(new);
+  fi;
   empty := [];
   current := source[ 1 ];
   empty := [ 1 .. (current - 1) ];

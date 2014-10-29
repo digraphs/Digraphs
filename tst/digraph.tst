@@ -365,7 +365,9 @@ gap> DigraphByAdjacencyMatrix( [ ] );
 
 # CompleteDigraph
 gap> gr := CompleteDigraph(5);
-<digraph with 5 vertices, 25 edges>
+<digraph with 5 vertices, 20 edges>
+gap> CompleteDigraph(1) = EmptyDigraph(1);
+true
 gap> CompleteDigraph(0);
 <digraph with 0 vertices, 0 edges>
 gap> CompleteDigraph(-1);
@@ -496,7 +498,7 @@ gap> gr2 := Digraph( [ [ 2 ], [ 1 ] , [ 2, 1 ] ] );
 <digraph with 3 vertices, 4 edges>
 gap> gr1 = gr2;
 true
-gap> im := OnDigraphs( gr1, (1,2) );    
+gap> im := OnDigraphs( gr1, (1,2) ); 
 <digraph with 3 vertices, 4 edges>
 gap> DigraphSource(im);
 [ 1, 2, 3, 3 ]

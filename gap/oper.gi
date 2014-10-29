@@ -12,7 +12,35 @@
 
 #
 
-InstallMethod(MultiDigraphEdgeUnion, "for digraphs",
+InstallMethod(DigraphCopy, "for a digraph",
+[IsDigraph and HasDigraphSource],
+function(digraph)
+  local source, range, n, gr;
+
+  source := ShallowCopy(DigraphSource(digraph));
+  range := ShallowCopy(DigraphRange(digraph));
+  n := DigraphNrVertices(digraph);
+  gr :=  DigraphNC(rec( nrvertices := n,
+                        source := source,
+			range := range));
+  SetDigraphVertexNames(gr, DigraphVertexNames(gr));
+  return gr;                     
+end);
+
+#
+
+InstallMethod(DigraphCopy, "for a digraph",
+[IsDigraph and HasOutNeighbours],
+function(digraph)
+  local out;
+
+  out := StructuralCopy(OutNeighbours(digraph));
+  return DigraphNC(out);
+end);
+
+#
+
+InstallMethod(DigraphEdgeUnion, "for digraphs",
 [IsDigraph, IsDigraph],
 function(graph1, graph2)
   local m, n, outm, outn, out, i;
@@ -215,7 +243,7 @@ function(digraph, edges)
   fi;
   
   if Length(edges) = 0 then
-    return digraph;
+    return DigraphCopy(digraph);
   fi;
 
   nredges := DigraphNrEdges(digraph);
@@ -256,7 +284,7 @@ function(digraph, edges)
   fi;
 
   if Length(edges) = 0 then
-    return digraph;
+    return DigraphCopy(digraph);
   fi;
   
   nredges := DigraphNrEdges(digraph);
@@ -299,7 +327,7 @@ function(digraph, edges)
     Add(new[edge[2]], edge[1]);
   od;
 
-  return DigraphNC(new);
+  return DigraphNC(new); 
 end);
 
 #
@@ -567,8 +595,11 @@ function(digraph, m, names)
   local out, new, n, newverts, nam, i;
   
   out := OutNeighbours(digraph);
-  new := ShallowCopy(out);
   n := DigraphNrVertices(digraph);
+  new := EmptyPlist(n);
+  for i in [ 1 .. n ] do
+    new[i] := ShallowCopy(out[i]);
+  od;
   newverts := [ (n + 1) .. (n + m) ];
   for i in newverts do
     new[i] := [ ];
@@ -631,8 +662,7 @@ function(digraph, verts)
   newnrverts := n - len;
   diff := Difference(DigraphVertices(digraph), verts);
   if IsEmpty(verts) then
-    news := ShallowCopy(DigraphSource(digraph));
-    newr := ShallowCopy(DigraphRange(digraph));
+    return DigraphCopy(digraph);
   else
     if newnrverts = 0 then
       return EmptyDigraph(0);
@@ -678,7 +708,7 @@ function(digraph, verts)
   
   diff := Difference(DigraphVertices(digraph), verts);
   if IsEmpty(verts) then
-    new := List( OutNeighbours(digraph), ShallowCopy );
+    return DigraphCopy(digraph);
   else
     n := DigraphNrVertices(digraph);
     len := Length(verts);
@@ -688,7 +718,7 @@ function(digraph, verts)
     fi;
     lookup := EmptyPlist(n);
     count := 0;
-    for i in diff do
+   for i in diff do
       count := count + 1;
       lookup[ i ] := count;
     od;
@@ -725,8 +755,9 @@ function(graph, perm)
     "of the 1st argument <graph>,");
     return;
   fi;
-  
-  adj := Permuted(OutNeighbours(graph), perm);
+ 
+  adj := List( OutNeighbours(graph), ShallowCopy );
+  adj := Permuted(adj, perm);
   Apply(adj, x-> OnTuples(x, perm));
 
   return DigraphNC(adj);
@@ -1459,33 +1490,25 @@ end);
 
 #
 
-InstallMethod(DigraphEdgeUnion, "for two digraphs on the same vertex set",
+InstallMethod(DigraphJoin, "for two digraphs",
 [IsDigraph, IsDigraph],
 function(digraph1, digraph2)
-  if DigraphNrVertices(digraph1) <> DigraphNrVertices(digraph2) then
-    Error("Digraphs: DigraphEdgeUnion: usage,\n",
-          "the arguments <digraph1> and <digraph2> must be defined \n",
-	  "on the same vertex set,");
-    return;
-  else 
-    return DigraphEdgeUnionNC(digraph1, digraph2);
-  fi;
-end);
-
-#
-
-
-InstallMethod(DigraphEdgeUnion, "for two digraphs on the same vertex set",
-[IsDigraph, IsDigraph],
-function(digraph1, digraph2)
-  local out1, out2, new, i;
+  local out1, out2, n, m, new, i;
 
   out1 := OutNeighbours(digraph1);
   out2 := OutNeighbours(digraph2);
-  new := [];
-  for i in [ 1 .. DigraphNrVertices(digraph1) ] do
-    new[i] := Concatenation(out1[i], out2[i]);
+  n := DigraphNrVertices(digraph1);
+  m := DigraphNrVertices(digraph2);
+  new := EmptyPlist(n + m);
+
+  for i in [ 1 .. n ] do
+    new[i] := Concatenation(out1[i], [n + 1 .. n + m]); 
   od;
+  for i in [ n + 1 .. n +  m ] do
+    new[i] := Concatenation([ 1 .. n ], out2[i - n] + n);
+  od;
+
   return DigraphNC(new);
 end);
+
 #EOF

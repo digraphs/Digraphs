@@ -347,13 +347,13 @@ gap> InducedSubdigraph( gr, [ 7, 8 ] );
 
 # QuotientDigraph
 gap> gr := CompleteDigraph(2);
-<digraph with 2 vertices, 4 edges>
+<digraph with 2 vertices, 2 edges>
 gap> DigraphEdges(gr);
-[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ] ]
+[ [ 1, 2 ], [ 2, 1 ] ]
 gap> qr := QuotientDigraph( gr, [ [ 1, 2 ] ] );
-<multidigraph with 1 vertex, 4 edges>
+<multidigraph with 1 vertex, 2 edges>
 gap> DigraphEdges(qr);
-[ [ 1, 1 ], [ 1, 1 ], [ 1, 1 ], [ 1, 1 ] ]
+[ [ 1, 1 ], [ 1, 1 ] ]
 gap> QuotientDigraph( EmptyDigraph(0), [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> QuotientDigraph( EmptyDigraph(0), [ [ 1 ] ] );
@@ -546,11 +546,13 @@ gap> IsDigraphEdge(gr, [ 2, 1 ] );
 false
 gap> IsDigraphEdge(gr, [ 1, 1 ] );
 false
-gap> gr := CompleteDigraph(10000); # A bigger CycleDigraph with source/range
-<digraph with 10000 vertices, 100000000 edges>
-gap> IsDigraphEdge(gr, [ 10000, 9999 ]);
+gap> gr := CompleteDigraph(500); # A bigger digraph with OutNeighbours
+<digraph with 500 vertices, 249500 edges>
+gap> IsDigraphEdge(gr, [ 200, 199 ]);
 true
-gap> IsDigraphEdge(gr, [ 9999, 9999 ]);
+gap> IsDigraphEdge(gr, [ 499, 499 ]);
+false
+gap> IsDigraphEdge(gr, [ 249, 251 ]);
 true
 gap> gr := EmptyDigraph(1000000);
 <digraph with 1000000 vertices, 0 edges>
@@ -625,6 +627,16 @@ gap> DigraphEdges(gr);
 
 # DigraphAddVertex
 gap> gr := CompleteDigraph(1);
+<digraph with 1 vertex, 0 edges>
+gap> DigraphVertices(gr);
+[ 1 ]
+gap> gr2 := DigraphAddVertex(gr);
+<digraph with 2 vertices, 0 edges>
+gap> DigraphVertices(gr2);
+[ 1, 2 ]
+gap> DigraphEdges(gr) = DigraphEdges(gr2);
+true
+gap> gr := DigraphAddEdge(gr, [ 1, 1 ]);
 <digraph with 1 vertex, 1 edge>
 gap> DigraphVertices(gr);
 [ 1 ]
@@ -646,7 +658,7 @@ gap> DigraphVertexNames(gr2);
 [ 1, Sym( [ 1 .. 2 ] ) ]
 
 # DigraphAddVertices
-gap> gr := CompleteDigraph(1);;
+gap> gr := Digraph( [ [ 1 ] ] );;
 gap> gr2 := DigraphAddVertices(gr, 3);
 <digraph with 4 vertices, 1 edge>
 gap> DigraphVertices(gr2);
@@ -665,7 +677,7 @@ gap> DigraphEdges(gr) = DigraphEdges(gr2);
 true
 gap> DigraphVertexNames(gr2);
 [ 1, Sym( [ 1 .. 2 ] ), Group(()) ]
-gap> gr := CompleteDigraph(1);;
+gap> gr := Digraph( [ [ 1 ] ] );;
 gap> SetDigraphVertexNames(gr, [ AlternatingGroup(5) ]);
 gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
 <digraph with 3 vertices, 1 edge>
@@ -737,9 +749,9 @@ true
 
 # DigraphRemoveVertices
 gap> gr := CompleteDigraph(4);
-<digraph with 4 vertices, 16 edges>
+<digraph with 4 vertices, 12 edges>
 gap> gr2 := DigraphRemoveVertices( gr, [  ] );
-<digraph with 4 vertices, 16 edges>
+<digraph with 4 vertices, 12 edges>
 gap> gr = gr2;
 true
 gap> gr2 := DigraphRemoveVertices(gr, [ 0 ] );
@@ -763,7 +775,7 @@ Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
 the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 3 ] );
-<digraph with 2 vertices, 4 edges>
+<digraph with 2 vertices, 2 edges>
 gap> IsCompleteDigraph(gr2);
 true
 gap> DigraphVertexNames(gr2);
@@ -775,7 +787,7 @@ gap> gr := Digraph( rec( nrvertices := 4,
 > range  := [ 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4 ] ) );
 <digraph with 4 vertices, 16 edges>
 gap> IsCompleteDigraph(gr);
-true
+false
 gap> SetDigraphVertexNames( gr, [ (), (1,2), (1,2,3), (1,2,3,4) ] );
 gap> gr2 := DigraphRemoveVertices( gr, [ 1 .. 4 ] );
 <digraph with 0 vertices, 0 edges>
@@ -903,7 +915,7 @@ gap> DigraphReverseEdges( gr, [ 2 ] );
 Error, Digraphs: DigraphReverseEdges: usage,
 the first argument <digraph> must not be a multigraph,
 gap> gr := CompleteDigraph(100);
-<digraph with 100 vertices, 10000 edges>
+<digraph with 100 vertices, 9900 edges>
 gap> DigraphReverseEdges(gr, "a");
 Error, Digraphs: DigraphReverseEdges: usage,
 the second argument <edge> must be a list of edges of <digraph>,
@@ -924,9 +936,9 @@ gap> gr = DigraphReverseEdges(gr, edges);
 true
 gap> gr = DigraphReverseEdges(gr, [1 .. DigraphNrEdges(gr) ]);
 true
-gap> DigraphReverseEdge(gr, 2) = DigraphReverseEdge(gr, [1,2]);
+gap> DigraphReverseEdge(gr, 2) = DigraphReverseEdge( gr, [ 1, 3 ] );
 true
-gap> gr = DigraphReverseEdges(gr, []);
+gap> gr = DigraphReverseEdges(gr, [  ]);
 true
 gap> gr := CycleDigraph(100);
 <digraph with 100 vertices, 100 edges>
@@ -951,15 +963,16 @@ true
 gap> gr := CycleDigraph(1000);
 <digraph with 1000 vertices, 1000 edges>
 gap> gr2 := CompleteDigraph(100);
-<digraph with 100 vertices, 10000 edges>
+<digraph with 100 vertices, 9900 edges>
 gap> DigraphDisjointUnion(gr, gr);
 <digraph with 2000 vertices, 2000 edges>
 gap> DigraphDisjointUnion(gr2, gr2);
-<digraph with 200 vertices, 20000 edges>
+<digraph with 200 vertices, 19800 edges>
 gap> DigraphDisjointUnion(gr, gr2);
-<digraph with 1100 vertices, 11000 edges>
+<digraph with 1100 vertices, 10900 edges>
+gap> gr := CycleDigraph(1000);; # Recalculating as we now know Source(gr)
 gap> DigraphDisjointUnion(gr2, gr);
-<digraph with 1100 vertices, 11000 edges>
+<digraph with 1100 vertices, 10900 edges>
 
 # DigraphFloydWarshall
 gap> func := function(mat, i, j, k)
@@ -996,7 +1009,7 @@ gap> grt := DigraphByAdjacencyMatrix(tclosure);
 gap> grt = DigraphTransitiveClosure(gr);
 true
 
-# MultiDigraphEdgeUnion
+# DigraphEdgeUnion
 gap> gr1 := Digraph(
 > rec(
 >   nrvertices := 10,
@@ -1007,18 +1020,48 @@ gap> gr1 := Digraph(
 gap> gr2 := Digraph( [ [ 9 ], [ 9, 1, 6, 3 ], [ ], [ ], [ 9, 3, 9 ],
 > [ 1, 4, 3, 2, 9, 4 ], [ 1, 7 ], [ 1, 2, 4 ], [ 8 ] ] );
 <multidigraph with 9 vertices, 20 edges>
-gap> m1 := MultiDigraphEdgeUnion(gr1, gr2);
+gap> m1 := DigraphEdgeUnion(gr1, gr2);
 <multidigraph with 10 vertices, 29 edges>
-gap> m2 := MultiDigraphEdgeUnion(gr2, gr1);
+gap> m2 := DigraphEdgeUnion(gr2, gr1);
 <multidigraph with 10 vertices, 29 edges>
 gap> gr1 := Digraph( [ [ 2 ], [ ], [ 4 ], [ ], [ 6 ], [ ] ] );
 <digraph with 6 vertices, 3 edges>
 gap> gr2 := Digraph( [ [ ], [ 3 ], [ ], [ 5 ], [ ], [ 1 ] ] );
 <digraph with 6 vertices, 3 edges>
-gap> m := MultiDigraphEdgeUnion(gr1, gr2);
+gap> m := DigraphEdgeUnion(gr1, gr2);
 <digraph with 6 vertices, 6 edges>
 gap> m = CycleDigraph(6);
 true
+
+# DigraphCopy
+gap> gr := Digraph([[6,1,2,3], [6], [2,2,3], [1,1], [6,5], [6,4]]);
+<multidigraph with 6 vertices, 14 edges>
+gap> gr = DigraphCopy(gr);
+true
+gap> gr := CompleteDigraph(100);
+<digraph with 100 vertices, 9900 edges>
+gap> gr = DigraphCopy(gr);
+true
+gap> gr := CycleDigraph(10000);
+<digraph with 10000 vertices, 10000 edges>
+gap> gr = DigraphCopy(gr);
+true
+
+# DigraphJoin
+gap> gr := CompleteDigraph(20);
+<digraph with 20 vertices, 380 edges>
+gap> gr2 := EmptyDigraph(10);
+<digraph with 10 vertices, 0 edges>
+gap> DigraphJoin(gr, gr2);
+<digraph with 30 vertices, 780 edges>
+gap> DigraphJoin(gr, EmptyDigraph(0));
+<digraph with 20 vertices, 380 edges>
+gap> DigraphJoin(EmptyDigraph(0), CycleDigraph(1000));
+<digraph with 1000 vertices, 1000 edges>
+gap> DigraphJoin(EmptyDigraph(0), EmptyDigraph(0));
+<digraph with 0 vertices, 0 edges>
+gap> DigraphJoin(EmptyDigraph(5), EmptyDigraph(5));
+<digraph with 10 vertices, 50 edges>
 
 #
 gap> DigraphsStopTest();

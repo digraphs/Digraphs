@@ -76,18 +76,20 @@ true
     Returns <K>true</K> if the digraph <A>digraph</A> is complete, and 
     <K>false</K> if it is not. <P/>
     
-    A digraph is <E>complete</E> if, for all vertices <C>i</C> and <C>j</C> (not
-    necessarily distinct), there is exactly one edge with source <C>i</C> and
-    range <C>j</C>.  Equivalently, a digraph with <M>n</M> vertices is complete
-    precisely when it has <M>n^2</M> edges and no multiple edges.
+    A digraph is <E>complete</E> if it has no loops, and for all
+    <E>distinct</E> vertices <C>i</C> and <C>j</C>,
+    there is exactly one edge with source <C>i</C> and range <C>j</C>.
+    
+    Equivalently, a digraph with <M>n</M> vertices is complete precisely when
+    it has <M>n(n - 1)</M> edges, no loops, and no multiple edges.
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1 ] ] );
-<digraph with 1 vertex, 1 edge>
+gap> gr := Digraph( [ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ] );
+<digraph with 3 vertices, 6 edges>
 gap> IsCompleteDigraph(gr);
 true
-gap> gr := Digraph( [ [ 1, 2, 2 ], [ 1, 2 ] ] );
-<multidigraph with 2 vertices, 5 edges>
+gap> gr := Digraph( [ [ 2, 2 ], [ 1 ] ] );
+<multidigraph with 2 vertices, 3 edges>
 gap> IsCompleteDigraph(gr);
 false
 ]]></Example>
@@ -356,7 +358,6 @@ true
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ] );
 <digraph with 4 vertices, 6 edges>
-gap> IsAcyclicDigraph(gr);;
 gap> IsTournament(gr);
 true
 gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );

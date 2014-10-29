@@ -23,6 +23,7 @@ DeclareOperation("DigraphAddVertex", [IsDigraph, IsObject]);
 DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt]);
 DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt, IsList]);
 DeclareOperation("DigraphAddVerticesNC", [IsDigraph, IsInt, IsList]);
+DeclareOperation("DigraphCopy", [IsDigraph]);
 
 DeclareOperation("DigraphFloydWarshall", [IsDigraph, IsFunction,
  IsObject, IsObject]);
@@ -36,11 +37,10 @@ DeclareOperation("DigraphReverseEdge", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphReverseEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphDisjointUnion", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphEdgeUnion", [IsDigraph, IsDigraph]);
-DeclareOperation("DigraphEdgeUnionNC", [IsDigraph, IsDigraph]);
+DeclareOperation("DigraphJoin", [IsDigraph, IsDigraph]);
 
 DeclareOperation("QuotientDigraph", [IsDigraph, IsList]);
 DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);
-DeclareOperation("MultiDigraphEdgeUnion", [IsDigraph, IsDigraph]);
 
 DeclareOperation("InDegreeOfVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("InDegreeOfVertexNC", [IsDigraph, IsPosInt]);

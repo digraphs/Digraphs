@@ -306,7 +306,11 @@ true
 gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 1 ] ] );
 <digraph with 3 vertices, 3 edges>
 gap> IsTournament(gr);
-Error, Digraphs: IsTournament: not yet implemented,
+true
+gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 1 ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> IsTournament(gr);
+false
 
 # IsStronglyConnectedDigraph
 gap> gr := Digraph( [ ] );
@@ -417,16 +421,20 @@ gap> gr := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> IsCompleteDigraph(gr);
 true
-gap> gr := Digraph( [ [ 1, 2 ], [ 2, 2 ] ] );
-<multidigraph with 2 vertices, 4 edges>
+gap> gr := Digraph( [ [ 2, 2 ], [ ] ] );
+<multidigraph with 2 vertices, 2 edges>
 gap> IsCompleteDigraph(gr);
 false
-gap> gr := Digraph( [ [ 1, 2 ], [ 2 ] ] );
+gap> gr := Digraph( [ [ 1, 2 ], [ 1 ] ] );
 <digraph with 2 vertices, 3 edges>
 gap> IsCompleteDigraph(gr);
 false
-gap> gr := Digraph( [ [ 1, 2 ], [ 2, 1 ] ] );
-<digraph with 2 vertices, 4 edges>
+gap> gr := Digraph( [ [ 1, 2 ], [ ] ] );
+<digraph with 2 vertices, 2 edges>
+gap> IsCompleteDigraph(gr);
+false
+gap> gr := Digraph( [ [ 2 ], [ 1 ] ] );
+<digraph with 2 vertices, 2 edges>
 gap> IsCompleteDigraph(gr);
 true
 

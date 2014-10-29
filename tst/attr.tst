@@ -23,7 +23,7 @@ gap> OutNeighbours(DigraphDual(gr));
   [ 8, 9 ], [ 2, 3, 4, 8, 9 ], [ 1, 3, 6, 7, 8 ], [ 1, 2 ], [ 2, 4, 6, 10 ], 
   [ 3, 4, 6, 7, 8, 9, 10 ], [ 3, 5, 9, 10 ] ]
 gap> gr := Digraph( rec( vertices := [ "a", "b" ], 
-> source := ["b", "b"], range := ["a", "a"] ) );    
+> source := [ "b", "b" ], range := [ "a", "a" ] ) );    
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphDual(gr);
 Error, Digraphs: DigraphDual: usage,
@@ -494,7 +494,7 @@ gap> gr := EmptyDigraph(100);
 gap> DigraphPeriod(gr);
 0
 gap> gr := CompleteDigraph(100);
-<digraph with 100 vertices, 10000 edges>
+<digraph with 100 vertices, 9900 edges>
 gap> DigraphPeriod(gr);
 1
 gap> gr := Digraph( [ [ 2, 2 ], [ 3 ], [ 4 ], [ 1 ] ] );

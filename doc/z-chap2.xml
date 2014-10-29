@@ -16,6 +16,7 @@
   </Section>
 
   <Section><Heading>New digraphs from old</Heading>
+    <#Include Label="DigraphCopy">
     <#Include Label="InducedSubdigraph">
     <#Include Label="QuotientDigraph">
     <#Include Label="DigraphReverse">
@@ -30,6 +31,7 @@
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphRemoveLoops">
     <#Include Label="DigraphDisjointUnion">
+    <#Include Label="DigraphJoin">
   </Section>
 
   <Section><Heading>Random digraphs</Heading>
