@@ -47,29 +47,29 @@ end);
 InstallMethod(DigraphFloydWarshall, "for a digraph",
 [IsDigraph, IsFunction, IsObject, IsObject],
 function(graph, func, nopath, edge)
-  local vertices, n, m, dist, out, i, j, k;
+  local vertices, n, m, mat, out, i, j, k;
 
   vertices := DigraphVertices(graph);
   n := DigraphNrVertices(graph);
-  dist := EmptyPlist(n);
+  mat := EmptyPlist(n);
 
   for i in vertices do
-    dist[i] := EmptyPlist(n);
+    mat[i] := EmptyPlist(n);
     for j in vertices do 
-      dist[i][j] := nopath;
+      mat[i][j] := nopath;
     od;
   od;
   
   if HasDigraphSource(graph) then 
     m := Length(DigraphSource(graph));
     for i in [ 1 .. m ] do
-      dist[ DigraphSource(graph)[i] ][ DigraphRange(graph)[i] ] := edge;
+      mat[ DigraphSource(graph)[i] ][ DigraphRange(graph)[i] ] := edge;
     od;
   else
     out := OutNeighbours(graph);
     for i in vertices do 
       for j in out[i] do 
-        dist[i][j] := edge;
+        mat[i][j] := edge;
       od;
     od;
   fi;
@@ -77,12 +77,12 @@ function(graph, func, nopath, edge)
   for k in vertices do
     for i in vertices do
       for j in vertices do
-        func(dist, i, j, k);
+        func(mat, i, j, k);
       od;
     od;
   od;
 
-  return dist;
+  return mat;
 end);
 
 #
