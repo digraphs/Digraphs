@@ -589,7 +589,7 @@ InstallMethod(DigraphRemoveVertex, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],
 function(digraph, m)
   if m > DigraphNrVertices(digraph) then
-    Error("Digraphs: DigraphRemoveVertices: usage,\n",
+    Error("Digraphs: DigraphRemoveVertex: usage,\n",
     "the second arg <m> is not a vertex of the first arg <digraph>,");
     return;
   fi;
