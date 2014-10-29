@@ -499,15 +499,24 @@ end);
 #
 
 InstallMethod(DigraphAddVertices, "for a digraph and a pos int",
-[IsDigraph, IsPosInt],
+[IsDigraph, IsInt],
 function(digraph, m)
+  if m < 0 then
+    Error("Digraphs: DigraphAddVertices: usage,\n",
+    "the second arg <m> (the number of vertices to add) must be non-negative,");
+    return;
+  fi;
   return DigraphAddVerticesNC(digraph, m, [ ]);
 end);
 
 InstallMethod(DigraphAddVertices, "for a digraph, a pos int and a list",
-[IsDigraph, IsPosInt, IsList],
+[IsDigraph, IsInt, IsList],
 function(digraph, m, names)
-  if Length(names) <> m then
+  if m < 0 then
+    Error("Digraphs: DigraphAddVertices: usage,\n",
+    "the second arg <m> (the number of vertices to add) must be non-negative,");
+    return;
+  elif Length(names) <> m then
     Error("Digraphs: DigraphAddVertices: usage,\n",
       "the number of new vertex names (the length of the third arg <names>)\n",
       "must match the number of new vertices (the value of the second arg <m>),"
@@ -520,7 +529,7 @@ end);
 
 InstallMethod(DigraphAddVerticesNC,
 "for a digraph with source, a pos int and a list",
-[IsDigraph and HasDigraphSource, IsPosInt, IsList],
+[IsDigraph and HasDigraphSource, IsInt, IsList],
 function(digraph, m, names)
   local s, r, n, out, nam;
   
@@ -539,7 +548,7 @@ end);
 
 InstallMethod(DigraphAddVerticesNC,
 "for a digraph with out-neighbours, a pos int and a list",
-[IsDigraph and HasOutNeighbours, IsPosInt, IsList],
+[IsDigraph and HasOutNeighbours, IsInt, IsList],
 function(digraph, m, names)
   local out, new, n, newverts, nam, i;
   

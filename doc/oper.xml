@@ -228,7 +228,7 @@ gap> DigraphVertexNames(new);
   <Oper Name="DigraphAddVertices" Arg="digraph, m[, names ]"/>
   <Returns>A digraph.</Returns>
   <Description>
-    For a positive integer <A>m</A>, this operation returns a new digraph 
+    For a non-negative integer <A>m</A>, this operation returns a new digraph 
     constructed from <A>digraph</A> by adding <A>m</A> new vertices. If the
     optional third argument <A>names</A> is a list of length <A>m</A> consisting
     of arbitrary &GAP; objects, then the new vertices will be named according 
@@ -244,6 +244,8 @@ gap> new := DigraphAddVertices(gr, 2, [ Group( [(1,2)] ), "d" ] );
 <digraph with 5 vertices, 9 edges>
 gap> DigraphVertexNames(new);
 [ 1, 2, 3, Group([ (1,2) ]), "d" ]
+gap> DigraphAddVertices(gr, 0) = gr;
+true
 ]]></Example>
   </Description>
 </ManSection>

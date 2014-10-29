@@ -685,6 +685,24 @@ gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
 <digraph with 3 vertices, 1 edge>
 gap> DigraphVertexNames(gr2);
 [ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
+gap> DigraphAddVertices(gr2, -1);
+Error, Digraphs: DigraphAddVertices: usage,
+the second arg <m> (the number of vertices to add) must be non-negative,
+gap> gr3 := DigraphAddVertices(gr2, 0);
+<digraph with 3 vertices, 1 edge>
+gap> IsIdenticalObj(gr2, gr3);
+false
+gap> gr2 = gr3;
+true
+gap> DigraphAddVertices(gr2, -1, [ ]);
+Error, Digraphs: DigraphAddVertices: usage,
+the second arg <m> (the number of vertices to add) must be non-negative,
+gap> gr3 := DigraphAddVertices(gr2, 0, [ ]);
+<digraph with 3 vertices, 1 edge>
+gap> IsIdenticalObj(gr2, gr3);
+false
+gap> gr2 = gr3;
+true
 
 # DigraphRemoveVertex
 gap> gr := Digraph( [
