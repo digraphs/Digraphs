@@ -933,25 +933,22 @@ static Obj FuncDIGRAPH_EQUALS_OUT_NBS(Obj self, Obj digraph1, Obj digraph2) {
 static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
 
   UInt n1, n2, m, n, stop, start, i, j, p;
+  Int  k;
   Obj  source1, source2, range1, range2, sources, a, b;
 
 
   n1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nrvertices")));
   n2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nrvertices")));
   if (n1 != n2) {
-    // Pr("Different vertices,\n", 0L, 0L);
     return False;
   }
-  // Pr("Equal vertices,\n", 0L, 0L);
   
   source1 = ElmPRec(digraph1, RNamName("source"));
   source2 = ElmPRec(digraph2, RNamName("source"));
 
   if ( !EqListList(source1, source2) ) {
     return False;
-    // Pr("Different sources,\n", 0L, 0L);
   }
-  // Pr("Equal sources,\n", 0L, 0L);
 
   range1 = ElmPRec(digraph1, RNamName("range"));
   range2 = ElmPRec(digraph2, RNamName("range"));
@@ -959,52 +956,62 @@ static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
   PLAIN_LIST(range2);
 
   if ( EqListList(range1, range2) ) {
-    // Pr("Equal ranges,\n", 0L, 0L);
     return True;
   }
-  // Pr("Different ranges,\n", 0L, 0L);
 
   PLAIN_LIST(source1);
   PLAIN_LIST(source2);
   m = LEN_PLIST(source2);
 
-  RemoveDupsDensePlist(source2);
-  sources = source2;
+  // RemoveDupsDensePlist(source2);
+  sources = SetList(source2);  // This should be removed ASAP
   n = LEN_PLIST(sources);
 
   stop = 1;
-  for ( i = 2; i <= (n + 1); i++ ) {
+  for ( i = 2; i <= n; i++ ) {
     start = stop;
-    if ( i == (n + 1) ) {
-      stop = m + 1;
-    } else {
-      stop = PositionSortedDensePlist( source1, ELM_PLIST( sources, i ) );
-    }
+    stop = PositionSortedDensePlist(source1, ELM_PLIST( sources, i ) );
     p = stop - start;
-    a = NEW_PLIST(T_PLIST_CYC, p);
+    a = NEW_PLIST(T_PLIST, p);
     SET_LEN_PLIST(a, p);
-    b = NEW_PLIST(T_PLIST_CYC, p);
+    b = NEW_PLIST(T_PLIST, p);
     SET_LEN_PLIST(b, p);
-    for ( j = start; j <= (stop - 1); j++ ) {
-      SET_ELM_PLIST(a, j, ELM_PLIST(range1, j) );
-      CHANGED_BAG(a);
-      SET_ELM_PLIST(b, j, ELM_PLIST(range2, j) );
-      CHANGED_BAG(b);
+    k = 0;
+    for ( j = start; j < stop; j++ ) {
+      k++;
+      SET_ELM_PLIST(a, k, ELM_PLIST(range1, j) );
+      SET_ELM_PLIST(b, k, ELM_PLIST(range2, j) );
     }
     if ( !EqListList(a, b) ) {
-      Pr("Sorting...\n", 0L, 0L);
       SORT_LIST(a);
       SORT_LIST(b);
       if ( !EqListList( a, b ) ) {
-        Pr("Difference out-neighbours for vertex #%d\n", i - 1, 0L);
         return False;
       }
     }
-    Pr("Equal out-neighbours for vertex #%d\n", i - 1, 0L);
   }
 
+  // Almost same code as above; we could combine into the FOR loop and
+  // check in every loop whether or not we were in this final case
+  p = (m + 1) - stop;
+  a = NEW_PLIST(T_PLIST, p);
+  SET_LEN_PLIST(a, p);
+  b = NEW_PLIST(T_PLIST, p);
+  SET_LEN_PLIST(b, p);
+  k = 0;
+  for ( j = stop; j <= m; j++ ) {
+    k++;
+    SET_ELM_PLIST(a, k, ELM_PLIST(range1, j) );
+    SET_ELM_PLIST(b, k, ELM_PLIST(range2, j) );
+  }
+  if ( !EqListList(a, b) ) {
+    SORT_LIST(a);
+    SORT_LIST(b);
+    if ( !EqListList( a, b ) ) {
+      return False;
+    }
+  }
   return True;
-
 }
 
 // bliss 

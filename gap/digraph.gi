@@ -815,50 +815,51 @@ DIGRAPH_EQUALS_OUT_NBS);
 
 InstallMethod(\=, "for two digraphs with range",
 [IsDigraph and HasDigraphRange, IsDigraph and HasDigraphRange], 2,
-function(graph1, graph2)
-  local sources, source, range1, range2, m, n, stop, start, a, b, i;
-  
-  if DigraphNrVertices(graph1) <> DigraphNrVertices(graph2) then
-    return false;
-  elif DigraphSource(graph1) <> DigraphSource(graph2) then # Checks nr edges too
-    return false;
-  elif DigraphRange(graph1) = DigraphRange(graph2) then
-    return true;
-  fi;
-
-  source := DigraphSource(graph1);
-  sources := DuplicateFreeList(source);
-  range1 := DigraphRange(graph1);
-  range2 := DigraphRange(graph2);
-  m := Length(source);
-  n := Length(sources);
-
-  stop := 1;
-  for i in [ 2 .. n ] do
-    start := stop;
-    stop := PositionSorted(source, sources[i]);
-    a := range1{ [ start .. (stop - 1) ] };
-    b := range2{ [ start .. (stop - 1) ] };
-    if a <> b then
-      Sort(a);
-      Sort(b);
-      if a <> b then
-        return false;
-      fi;
-    fi;
-  od;
-  a := range1{ [ stop .. m ] };
-  b := range2{ [ stop .. m ] };
-  if a <> b then
-    Sort(a);
-    Sort(b);
-    if a <> b then
-      return false;
-    fi;
-  fi;
-
-  return true;
-
-end);
+DIGRAPH_EQUALS_SOURCE);
+#function(graph1, graph2)
+#  local sources, source, range1, range2, m, n, stop, start, a, b, i;
+#  
+#  if DigraphNrVertices(graph1) <> DigraphNrVertices(graph2) then
+#    return false;
+#  elif DigraphSource(graph1) <> DigraphSource(graph2) then # Checks nr edges too
+#    return false;
+#  elif DigraphRange(graph1) = DigraphRange(graph2) then
+#    return true;
+#  fi;
+#
+#  source := DigraphSource(graph1);
+#  sources := DuplicateFreeList(source);
+#  range1 := DigraphRange(graph1);
+#  range2 := DigraphRange(graph2);
+#  m := Length(source);
+#  n := Length(sources);
+#
+#  stop := 1;
+#  for i in [ 2 .. n ] do
+#    start := stop;
+#    stop := PositionSorted(source, sources[i]);
+#    a := range1{ [ start .. (stop - 1) ] };
+#    b := range2{ [ start .. (stop - 1) ] };
+#    if a <> b then
+#      Sort(a);
+#      Sort(b);
+#      if a <> b then
+#        return false;
+#      fi;
+#    fi;
+#  od;
+#  a := range1{ [ stop .. m ] };
+#  b := range2{ [ stop .. m ] };
+#  if a <> b then
+#    Sort(a);
+#    Sort(b);
+#    if a <> b then
+#      return false;
+#    fi;
+#  fi;
+#
+#  return true;
+#
+#end);
 
 #EOF
