@@ -1379,7 +1379,7 @@ function(digraph1, digraph2)
   source := Concatenation(DigraphSource(digraph1), DigraphSource(digraph2) +
 	   nrvertices1);
   return DigraphNC(rec(nrvertices := nrvertices1 + DigraphNrVertices(digraph2),
-                       source := source, range := range));
+                        source := source, range := range));
 end);
 
 #
@@ -1411,5 +1411,37 @@ InstallMethod(DigraphDisjointUnion, "for two digraphs",
 function(digraph1, digraph2)
   DigraphSource(digraph1);
   return DigraphDisjointUnion(digraph1, digraph2); 
+end);
+
+#
+
+InstallMethod(DigraphEdgeUnion, "for two digraphs on the same vertex set",
+[IsDigraph, IsDigraph],
+function(digraph1, digraph2)
+  if DigraphNrVertices(digraph1) <> DigraphNrVertices(digraph2) then
+    Error("Digraphs: DigraphEdgeUnion: usage,\n",
+          "the arguments <digraph1> and <digraph2> must be defined \n",
+	  "on the same vertex set,");
+    return;
+  else 
+    return DigraphEdgeUnionNC(digraph1, digraph2);
+  fi;
+end);
+
+#
+
+
+InstallMethod(DigraphEdgeUnion, "for two digraphs on the same vertex set",
+[IsDigraph, IsDigraph],
+function(digraph1, digraph2)
+  local out1, out2, new, i;
+
+  out1 := OutNeighbours(digraph1);
+  out2 := OutNeighbours(digraph2);
+  new := [];
+  for i in [ 1 .. DigraphNrVertices(digraph1) ] do
+    new[i] := Concatenation(out1[i], out2[i]);
+  od;
+  return DigraphNC(new);
 end);
 #EOF
