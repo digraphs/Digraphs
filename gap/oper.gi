@@ -594,8 +594,11 @@ function(digraph, m, names)
   local out, new, n, newverts, nam, i;
   
   out := OutNeighbours(digraph);
-  new := ShallowCopy(out);
   n := DigraphNrVertices(digraph);
+  new := EmptyPlist(n);
+  for i in [ 1 .. n ] do
+    new[i] := ShallowCopy(out[i]);
+  od;
   newverts := [ (n + 1) .. (n + m) ];
   for i in newverts do
     new[i] := [ ];
