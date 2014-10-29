@@ -97,12 +97,10 @@ function(digraph)
     return true;
   elif IsMultiDigraph(digraph) then
     return false;
-  elif DigraphNrEdges(digraph) <> (n * n) then
+  elif DigraphNrEdges(digraph) <> (n * (n - 1) ) then
     return false;
   fi;
- 
-  SetIsSymmetricDigraph(digraph, true);
-  return true;
+  return not DigraphHasLoops(digraph);
 end);
 
 #

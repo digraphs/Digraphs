@@ -209,13 +209,13 @@ gap> DigraphRemoveLoops(gr);
     <P/>
     <Example><![CDATA[
 gap> gr := CompleteDigraph(3);
-<digraph with 3 vertices, 9 edges>
+<digraph with 3 vertices, 6 edges>
 gap> new := DigraphAddVertex(gr);
-<digraph with 4 vertices, 9 edges>
+<digraph with 4 vertices, 6 edges>
 gap> DigraphVertices(new);
 [ 1 .. 4 ]
 gap> new := DigraphAddVertex(gr, Group( [(1,2)] ));
-<digraph with 4 vertices, 9 edges>
+<digraph with 4 vertices, 6 edges>
 gap> DigraphVertexNames(new);
 [ 1, 2, 3, Group([ (1,2) ]) ]
 ]]></Example>
@@ -235,13 +235,13 @@ gap> DigraphVertexNames(new);
     to this list. <P/>
     <Example><![CDATA[
 gap> gr := CompleteDigraph(3);
-<digraph with 3 vertices, 9 edges>
+<digraph with 3 vertices, 6 edges>
 gap> new := DigraphAddVertices(gr, 3);
-<digraph with 6 vertices, 9 edges>
+<digraph with 6 vertices, 6 edges>
 gap> DigraphVertices(new);
 [ 1 .. 6 ]
 gap> new := DigraphAddVertices(gr, 2, [ Group( [(1,2)] ), "d" ] );
-<digraph with 5 vertices, 9 edges>
+<digraph with 5 vertices, 6 edges>
 gap> DigraphVertexNames(new);
 [ 1, 2, 3, Group([ (1,2) ]), "d" ]
 gap> DigraphAddVertices(gr, 0) = gr;

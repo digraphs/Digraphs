@@ -326,7 +326,7 @@ function(n)
     verts := [ 1 .. n ];
     out := EmptyPlist(n);
     for i in verts do
-      out[i] := verts;
+      out[i] := Concatenation( [ 1 .. (i - 1) ], [ (i + 1) .. n ] );
     od;
     gr := DigraphNC(out);
     SetIsEmptyDigraph(gr, false);
