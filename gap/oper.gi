@@ -17,8 +17,8 @@ InstallMethod(DigraphCopy, "for a digraph",
 function(digraph)
   local source, range, n;
 
-  source := DigraphSource(digraph);
-  range := DigraphRange(digraph);
+  source := ShallowCopy(DigraphSource(digraph));
+  range := ShallowCopy(DigraphRange(digraph));
   n := DigraphNrVertices(digraph);
   return DigraphNC(rec( nrvertices := n,
                         source := source,
@@ -31,7 +31,10 @@ end);
 InstallMethod(DigraphCopy, "for a digraph",
 [IsDigraph and HasOutNeighbours],
 function(digraph)
-  return DigraphNC(OutNeighbours(digraph));
+  local out;
+
+  out := StructuralCopy(OutNeighbours(digraph));
+  return DigraphNC(out);
 end);
 
 #
