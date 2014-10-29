@@ -719,7 +719,6 @@ false
     <A>digraph</A>: <P/>
 
 <Listing><![CDATA[
-verts := ;
 for i in DigraphsVertices(digraph) do
   for j in DigraphsVertices(digraph) do
     for k in DigraphsVertices(digraph) do

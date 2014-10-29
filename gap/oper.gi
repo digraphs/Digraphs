@@ -12,7 +12,7 @@
 
 #
 
-InstallMethod(MultidigraphEdgeUnion, "for digraphs",
+InstallMethod(MultiDigraphEdgeUnion, "for digraphs",
 [IsDigraph, IsDigraph],
 function(graph1, graph2)
   local m, n, outm, outn, out, i;
@@ -135,7 +135,7 @@ function(digraph, edges)
   if not IsPosInt(edges[1][1]) or 
     not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the second argument <edges> must be a list of edge of <digraph>,");
+    "the second argument <edges> must be a list of edges of <digraph>,");
     return;
   fi;
  
@@ -174,7 +174,7 @@ function(digraph, edges)
   if not IsPosInt(edges[1][1]) or 
     not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the second argument <edges> must be a list of edge of <digraph>,");
+    "the second argument <edges> must be a list of edges of <digraph>,");
     return;
   fi;
  
@@ -223,7 +223,7 @@ function(digraph, edges)
     not IsHomogeneousList(edges) or
     not ForAll( edges, x -> x <= nredges) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the second argument <edges> must be a list of edge of <digraph>,");
+    "the second argument <edges> must be a list of edges of <digraph>,");
     return;
   fi;
  
@@ -264,7 +264,7 @@ function(digraph, edges)
     not IsHomogeneousList(edges) or
     not ForAll(edges, x -> x <= nredges) then 
     Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the second argument <edge> must be a list of edge of <digraph>,");
+    "the second argument <edge> must be a list of edges of <digraph>,");
     return;
   fi;
 

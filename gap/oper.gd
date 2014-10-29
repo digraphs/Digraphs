@@ -40,7 +40,7 @@ DeclareOperation("DigraphEdgeUnionNC", [IsDigraph, IsDigraph]);
 
 DeclareOperation("QuotientDigraph", [IsDigraph, IsList]);
 DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);
-DeclareOperation("MultidigraphEdgeUnion", [IsDigraph, IsDigraph]);
+DeclareOperation("MultiDigraphEdgeUnion", [IsDigraph, IsDigraph]);
 
 DeclareOperation("InDegreeOfVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("InDegreeOfVertexNC", [IsDigraph, IsPosInt]);

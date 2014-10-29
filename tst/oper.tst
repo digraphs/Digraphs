@@ -894,8 +894,31 @@ gap> gr2 = gr3;
 true
 
 # DigraphReverseEdge & DigraphReverseEdges
+gap> gr := Digraph( [ [ 1, 1 ] ] );
+<multidigraph with 1 vertex, 2 edges>
+gap> DigraphReverseEdges( gr, [ [ 2, 2 ] ] );
+Error, Digraphs: DigraphReverseEdges: usage,
+the first argument <digraph> must not be a multigraph,
+gap> DigraphReverseEdges( gr, [ 2 ] );
+Error, Digraphs: DigraphReverseEdges: usage,
+the first argument <digraph> must not be a multigraph,
 gap> gr := CompleteDigraph(100);
 <digraph with 100 vertices, 10000 edges>
+gap> DigraphReverseEdges(gr, "a");
+Error, Digraphs: DigraphReverseEdges: usage,
+the second argument <edge> must be a list of edges of <digraph>,
+gap> DigraphReverseEdges( gr, Group(()) );
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `DigraphReverseEdges' on 2 arguments
+gap> DigraphReverseEdges(gr, [ 0, 0 ]);
+Error, Digraphs: DigraphReverseEdges: usage,
+the second argument <edge> must be a list of edges of <digraph>,
+gap> DigraphReverseEdges(gr, [ [ 0 ] ]);
+Error, Digraphs: DigraphReverseEdges: usage,
+the second argument <edges> must be a list of edges of <digraph>,
+gap> DigraphReverseEdges(gr, [ [ 1 ], [ 1 ] ]);
+Error, Digraphs: DigraphReverseEdges: usage,
+the second argument <edges> must be a list of edges of <digraph>,
 gap> edges := ShallowCopy(DigraphEdges(gr));;
 gap> gr = DigraphReverseEdges(gr, edges);
 true
@@ -971,6 +994,30 @@ gap> tclosure := DigraphFloydWarshall( gr, func, 0, 1 );;
 gap> grt := DigraphByAdjacencyMatrix(tclosure);
 <digraph with 10 vertices, 25 edges>
 gap> grt = DigraphTransitiveClosure(gr);
+true
+
+# MultiDigraphEdgeUnion
+gap> gr1 := Digraph(
+> rec(
+>   nrvertices := 10,
+>   source := [ 3, 4, 4, 6, 6, 9, 9, 9, 9 ],
+>   range := [ 10, 5, 7, 3, 9, 4, 5, 8, 10 ],
+> ) );
+<digraph with 10 vertices, 9 edges>
+gap> gr2 := Digraph( [ [ 9 ], [ 9, 1, 6, 3 ], [ ], [ ], [ 9, 3, 9 ],
+> [ 1, 4, 3, 2, 9, 4 ], [ 1, 7 ], [ 1, 2, 4 ], [ 8 ] ] );
+<multidigraph with 9 vertices, 20 edges>
+gap> m1 := MultiDigraphEdgeUnion(gr1, gr2);
+<multidigraph with 10 vertices, 29 edges>
+gap> m2 := MultiDigraphEdgeUnion(gr2, gr1);
+<multidigraph with 10 vertices, 29 edges>
+gap> gr1 := Digraph( [ [ 2 ], [ ], [ 4 ], [ ], [ 6 ], [ ] ] );
+<digraph with 6 vertices, 3 edges>
+gap> gr2 := Digraph( [ [ ], [ 3 ], [ ], [ 5 ], [ ], [ 1 ] ] );
+<digraph with 6 vertices, 3 edges>
+gap> m := MultiDigraphEdgeUnion(gr1, gr2);
+<digraph with 6 vertices, 6 edges>
+gap> m = CycleDigraph(6);
 true
 
 #
