@@ -162,14 +162,97 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
   return out;
 }
 
-// Takes OutNeighbours
-static Obj FuncWCC_OUTNEIGHBOURS(Obj self, Obj adj) {
-  
+static UInt UF_FIND(UInt *id, UInt i) {
+  while (i != id[i])
+    i = id[i];
+  return i;
 }
 
-// Takes Source and Range
-static Obj FuncWCC_SOURCE(Obj self, Obj source, Obj range) {
-  
+static void UF_COMBINE_CLASSES(UInt *id, UInt i, UInt j) {
+  i = UF_FIND(id, i);
+  j = UF_FIND(id, j);
+  if (i < j)
+    id[j] = i;
+  else if (j < i)
+    id[i] = j;
+}
+
+
+static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
+  UInt n, *id, *nid, i, j, e, len, f, nrcomps;
+  Obj  adj, adji, source, range, gid, gcomps, comp, out;
+
+  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  if (n == 0) {
+    out = NEW_PREC(2);
+    AssPRec(out, RNamName("id"), NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE,0));
+    AssPRec(out, RNamName("comps"), NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE,0));
+    CHANGED_BAG(out);
+    return out;
+  }
+
+  id = malloc( n * sizeof(UInt) );
+  for (i = 0; i < n; i++) {
+    id[i] = i;
+  }
+
+  if (IsbPRec(digraph, RNamName("adj"))) {
+    // Digraph by adjacencies
+    adj = ElmPRec(digraph, RNamName("adj"));
+    for (i = 0; i < n; i++) {
+      adji = ELM_PLIST(adj, i+1);
+      PLAIN_LIST(adji);
+      len = LEN_PLIST(adji);
+      for (e = 1; e <= len; e++) {
+	UF_COMBINE_CLASSES(id, i, INT_INTOBJ(ELM_PLIST(adji, e))-1);
+      }
+    }
+  } else {
+    // Digraph by source and range
+    source = ElmPRec(digraph, RNamName("source"));
+    range = ElmPRec(digraph, RNamName("range"));
+    PLAIN_LIST(source);
+    PLAIN_LIST(range);
+    len = LEN_PLIST(source);
+    for (e = 1; e <= len; e++) {
+      i = INT_INTOBJ(ELM_PLIST(source, e)) - 1;
+      j = INT_INTOBJ(ELM_PLIST(range,  e)) - 1;
+      UF_COMBINE_CLASSES(id, i, j);
+    }
+  }
+
+  // "Normalise" id, giving it sensible labels
+  nid = malloc(n * sizeof(UInt));
+  nrcomps = 0;
+  for (i = 0; i < n; i++) {
+    f = UF_FIND(id, i);
+    nid[i] = (f == i) ? ++nrcomps : nid[f];
+  }
+  free(id);
+
+  // Make GAP object from nid
+  gid = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, n);
+  gcomps = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, nrcomps);
+  SET_LEN_PLIST(gid, n);
+  SET_LEN_PLIST(gcomps, nrcomps);
+  for (i = 1; i <= nrcomps; i++) {
+    CHANGED_BAG(gcomps);
+    SET_ELM_PLIST(gcomps, i, NEW_PLIST(T_PLIST_CYC+IMMUTABLE,0));
+    SET_LEN_PLIST(ELM_PLIST(gcomps, i), 0);
+  }
+  for (i = 1; i <= n; i++) {
+    SET_ELM_PLIST(gid, i, INTOBJ_INT(nid[i-1]));
+    comp = ELM_PLIST(gcomps, nid[i-1]);
+    len = LEN_PLIST(comp);
+    AssPlist(comp, len + 1, INTOBJ_INT(i));
+  }
+  free(nid);
+
+  out = NEW_PREC(2);
+  AssPRec(out, RNamName("id"), gid);
+  AssPRec(out, RNamName("comps"), gcomps);
+  CHANGED_BAG(out);
+  return out;
 }
 
 static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) { 
@@ -1221,6 +1304,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "GABOW_SCC", 1, "adj",
     FuncGABOW_SCC, 
     "src/digraphs.c:GABOW_SCC" },
+
+  { "DIGRAPH_CONNECTED_COMPONENTS", 1, "digraph",
+    FuncDIGRAPH_CONNECTED_COMPONENTS,
+    "src/digraphs.c:DIGRAPH_CONNECTED_COMPONENTS" },
 
   { "IS_ACYCLIC_DIGRAPH", 1, "adj",
     FuncIS_ACYCLIC_DIGRAPH, 

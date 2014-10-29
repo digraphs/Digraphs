@@ -477,77 +477,84 @@ fi;
 
 #
 
-InstallMethod(DigraphConnectedComponents, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local n, verts, tab, find, union, source, range, adj, normalise, comps, i, j;
-
-  n := DigraphNrVertices(digraph);
-  verts := DigraphVertices(digraph);
-  if n = 0 then
-    return rec( comps := [  ], id := [  ] );
-  fi;
-
-  tab := ShallowCopy(DigraphVertices(digraph));
-
-  find := function(i)
-    while i <> tab[i] do
-      i := tab[i];
-    od;
-    return i;
-  end;
-
-  union := function(i, j)
-    i := find(i);
-    j := find(j);
-    if i < j then
-      tab[j] := i;
-    elif j < i then
-      tab[i] := j;
+if IsBound(DIGRAPH_CONNECTED_COMPONENTS) then
+  InstallMethod(DigraphConnectedComponents, "for a digraph",
+  [IsDigraph],
+  function(digraph)
+    return DIGRAPH_CONNECTED_COMPONENTS(digraph);
+  end);
+else
+  InstallMethod(DigraphConnectedComponents, "for a digraph",
+  [IsDigraph],
+  function(digraph)
+    local n, verts, tab, find, union, source, range, adj, normalise, comps, i, j;
+    
+    n := DigraphNrVertices(digraph);
+    verts := DigraphVertices(digraph);
+    if n = 0 then
+      return rec( comps := [  ], id := [  ] );
     fi;
-  end;
-  
-  if HasDigraphSource(digraph) then
-    source := DigraphSource(digraph);
-    range := DigraphRange(digraph);
-    for i in [ 1 .. Size(source) ] do
-      union(source[i], range[i]);
-    od;
-  elif HasOutNeighbours(digraph) then
-    adj := OutNeighbours(digraph);
-    for i in verts do
-      for j in adj[i] do
-        union(i, j);
+    
+    tab := ShallowCopy(DigraphVertices(digraph));
+    
+    find := function(i)
+      while i <> tab[i] do
+        i := tab[i];
       od;
-    od;
-  fi;
-
-  normalise := function()
-    local ht, next, i, ii, table;
-    table := EmptyPlist(n);
-    ht := [];
-    next := 1;
-    for i in verts do
-      ii := find(i);
-      if IsBound(ht[ii]) then
-        table[i] := ht[ii];
-      else
-        table[i] := next;
-        ht[ii] := next;
-        next := next + 1;
+      return i;
+    end;
+    
+    union := function(i, j)
+      i := find(i);
+      j := find(j);
+      if i < j then
+        tab[j] := i;
+      elif j < i then
+        tab[i] := j;
       fi;
+    end;
+    
+    if HasDigraphSource(digraph) then
+      source := DigraphSource(digraph);
+      range := DigraphRange(digraph);
+      for i in [ 1 .. Size(source) ] do
+        union(source[i], range[i]);
+      od;
+    elif HasOutNeighbours(digraph) then
+      adj := OutNeighbours(digraph);
+      for i in verts do
+        for j in adj[i] do
+          union(i, j);
+        od;
+      od;
+    fi;
+    
+    normalise := function()
+      local ht, next, i, ii, table;
+      table := EmptyPlist(n);
+      ht := [];
+      next := 1;
+      for i in verts do
+        ii := find(i);
+        if IsBound(ht[ii]) then
+          table[i] := ht[ii];
+        else
+          table[i] := next;
+          ht[ii] := next;
+          next := next + 1;
+        fi;
+      od;
+      return table;
+    end;
+    
+    tab := normalise();
+    comps := List([ 1 .. Maximum(tab) ], x -> [ ]);
+    for i in verts do
+      Add(comps[ tab[i] ], i);
     od;
-    return table;
-  end;
- 
-  tab := normalise();
-  comps := List([ 1 .. Maximum(tab) ], x -> [ ]);
-  for i in verts do
-    Add(comps[ tab[i] ], i);
-  od;
-  return rec( comps := comps, id := tab );
-end);
-
+    return rec( comps := comps, id := tab );
+  end);
+fi;
 #
 
 InstallMethod(OutDegrees, "for a digraph with out neighbours",
