@@ -443,6 +443,26 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   return out;
 }
 
+UInt DigraphNrEdges(Obj digraph) {
+  Obj   adj;
+  UInt  nr, i, n;
+  if (IsbPRec(digraph, RNamName("nredges"))) {
+    return INT_INTOBJ(ElmPRec(digraph, RNamName("nredges")));
+  }
+  if (IsbPRec(digraph, RNamName("source"))) { 
+    return LEN_LIST(ElmPRec(digraph, RNamName("source")));
+  } else {
+    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+    adj = ElmPRec(digraph, RNamName("adj"));
+    nr = 0;
+    for (i = 1; i <= n; i++) {
+      nr+= LEN_PLIST(ELM_PLIST(adj, i));
+    }
+  }
+  AssPRec(digraph, RNamName("nredges"), INTOBJ_INT(nr));
+  return nr;
+}
+
 static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph) { 
   Obj   range, source, adj, adjj;
   UInt  n, i, j, len;
@@ -769,28 +789,71 @@ static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
   return adj;
 }
 
-// bliss 
+static Obj FuncDIGRAPH_EQUALS_OUT_NBS(Obj self, Obj digraph1, Obj digraph2) {
+  UInt i, n1, n2, m1, m2;
+  Obj  out1, out2, a, b;
+   
+  n1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nrvertices")));
+  n2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nrvertices")));
+  if (n1 != n2) {
+    // Pr("Different vertices,\n", 0L, 0L);
+    return False;
+  }
+  // Pr("Equal vertices,\n", 0L, 0L);
 
-UInt DigraphNrEdges(Obj digraph) {
-  Obj   adj;
-  UInt  nr, i, n;
-  if (IsbPRec(digraph, RNamName("nredges"))) {
-    return INT_INTOBJ(ElmPRec(digraph, RNamName("nredges")));
-  }
-  if (IsbPRec(digraph, RNamName("source"))) { 
-    return LEN_LIST(ElmPRec(digraph, RNamName("source")));
+  out1 = ElmPRec(digraph1, RNamName("adj"));
+  out2 = ElmPRec(digraph2, RNamName("adj"));
+
+  if (IsbPRec(digraph1, RNamName("nredges"))) {
+    m1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nredges")));
   } else {
-    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
-    adj = ElmPRec(digraph, RNamName("adj"));
-    nr = 0;
-    for (i = 1; i <= n; i++) {
-      nr+= LEN_PLIST(ELM_PLIST(adj, i));
-    }
+    m1 = DigraphNrEdges(digraph1);
   }
-  AssPRec(digraph, RNamName("nredges"), INTOBJ_INT(nr));
-  return nr;
+  if (IsbPRec(digraph2, RNamName("nredges"))) {
+    m2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nredges")));
+  } else {
+    m2 = DigraphNrEdges(digraph2);
+  }
+
+  if ( m1 != m2 ) {
+    return False;
+    // Pr("Different edges,\n", 0L, 0L);
+  } else if ( out1 == out2 ) {
+    // Pr("Equal out-neighbours,\n", 0L, 0L);
+    return True;
+  }
+  // Pr("Equal edges, different out-neighbours,\n", 0L, 0L);
+
+  for ( i = 1; i <= n1; i++ ) {
+    a = ELM_PLIST( out1, i );
+    b = ELM_PLIST( out2, i );
+    //PLAIN_LIST(a);
+    //PLAIN_LIST(b);
+    if ( LEN_LIST( a ) != LEN_LIST( b ) ) {
+      // Pr("Different out-degree for vertex %d,\n", i, 0L);
+      return False;
+    }
+    if ( !EqListList( a, b ) ) {
+      // Pr("Sorting...\n", 0L, 0L);
+      SORT_LIST(a);
+      SORT_LIST(b);
+      if ( !EqListList( a, b ) ) {
+        // Pr("Different out-neighbours for vertex %d,", i, 0L);
+        return b;
+      }
+    }
+    // Pr("Equal out-neighbours for vertex %d,\n:", i, 0L);
+  }
+  return True;
 }
 
+static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
+
+  return True;
+
+}
+
+// bliss 
 
 BlissGraph* buildBlissMultiDigraph(Obj digraph) {
   UInt        n, i, j, k, l, nr, len;
@@ -1268,8 +1331,16 @@ static StructGVarFunc GVarFuncs [] = {
  
   { "RANDOM_MULTI_DIGRAPH", 2, "nn, mm",
     FuncRANDOM_MULTI_DIGRAPH,
-    "src/digraphs.c:FuncRANDOM_MULTI_DIGRAPH" },  
+    "src/digraphs.c:FuncRANDOM_MULTI_DIGRAPH" },
+
+  { "DIGRAPH_EQUALS_OUT_NBS", 2, "digraph1, digraph2",
+    FuncDIGRAPH_EQUALS_OUT_NBS,
+    "src/digraphs.c:FuncDIGRAPH_EQUALS_OUT_NBS" },
  
+  { "DIGRAPH_EQUALS_SOURCE", 2, "digraph1, digraph2",
+    FuncDIGRAPH_EQUALS_SOURCE,
+    "src/digraphs.c:FuncDIGRAPH_EQUALS_SOURCE" },
+
   { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncDIGRAPH_AUTOMORPHISMS, 
     "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS" },
