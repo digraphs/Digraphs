@@ -641,9 +641,14 @@ function(digraph, verts)
     not IsDuplicateFreeList(verts) or
     ForAny(verts, x -> x < 1 or n < x)) then
     Error("Digraphs: DigraphRemoveVertices: usage,\n",
-      "the second arg <verts> should be a duplicate free list of vertices of\n",
-      "the first arg <digraph>, specifically: a subset of [ 1 .. ", n, " ],");
-    return;
+    "the second arg <verts> is empty; no vertices are specified for removal,");
+  elif not IsPosInt(verts[1]) or
+   not IsHomogeneousList(verts) or
+   not IsDuplicateFreeList(verts) or
+   ForAny(verts, x -> x < 1 or n < x) then
+    Error("Digraphs: DigraphRemoveVertices: usage,\n",
+    "the second arg <verts> should be a duplicate free list of vertices of\n",
+    "the first arg <digraph>,");
   fi;
   return DigraphRemoveVerticesNC(digraph, verts );
 end);
@@ -663,36 +668,32 @@ function(digraph, verts)
   diff := Difference(DigraphVertices(digraph), verts);
   if IsEmpty(verts) then
     return DigraphCopy(digraph);
-  else
-    if newnrverts = 0 then
-      return EmptyDigraph(0);
-    fi;
-    lookup := EmptyPlist(n);
-    count := 0;
-    for i in diff do
-      count := count + 1;
-      lookup[ i ] := count;
-    od;
-    m      := DigraphNrEdges(digraph);
-    source := DigraphSource(digraph);
-    range  := DigraphRange(digraph);
-    news   := EmptyPlist(m);
-    newr   := EmptyPlist(m);
-    count  := 0;
-    log    := LogInt(len, 2);
-    if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
-      Sort(verts);
-    fi;
-    for i in [ 1 .. m ] do
-      if not (source[i] in verts or range[i] in verts) then
-        count := count + 1;
-        news[ count ] := lookup[ source[i] ];
-        newr[ count ] := lookup[ range[i] ];
-      fi;
-    od;
-    ShrinkAllocationPlist(news);
-    ShrinkAllocationPlist(newr);
   fi;
+  
+  lookup := EmptyPlist(n);
+  count := 0;
+  diff := Difference(DigraphVertices(digraph), verts);
+  for i in diff do
+    count := count + 1;
+    lookup[ i ] := count;
+  od;
+  m := DigraphNrEdges(digraph);
+  source := DigraphSource(digraph);
+  range := DigraphRange(digraph);
+  news := EmptyPlist(m);
+  newr := EmptyPlist(m);
+  count := 0;
+ 
+  for i in [ 1 .. m ] do
+    if not (source[i] in verts or range[i] in verts) then
+      count := count + 1;
+      news[count] := lookup[ source[i] ];
+      newr[count] := lookup[ range[i] ];
+    fi;
+  od;
+  ShrinkAllocationPlist(news);
+  ShrinkAllocationPlist(newr);
+  
   gr := DigraphNC( rec( nrvertices := newnrverts,
                         source := news, range := newr ) );
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});

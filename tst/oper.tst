@@ -757,23 +757,23 @@ true
 gap> gr2 := DigraphRemoveVertices(gr, [ 0 ] );
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, "a" ]);
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 1 ] );
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 0 ] );
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 5 ] );
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 3 ] );
 <digraph with 2 vertices, 2 edges>
 gap> IsCompleteDigraph(gr2);

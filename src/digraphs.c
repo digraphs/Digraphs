@@ -314,7 +314,7 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
 }
 
 static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
-  UInt  nr, i, j, k, l, level, last1, last2;
+  Int  nr, i, j, k, l, level, last1, last2;
   Obj   nbs;
   UInt  *stack, *ptr;
   
@@ -354,13 +354,13 @@ static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
         nbs = ELM_PLIST(adj, j);
         if( ptr[j] == 2 ) {
           PLAIN_LIST(nbs);
-          for ( l = 1; l <= LEN_LIST(nbs); l++ ) {
+          for ( l = 1; l <= LEN_PLIST(nbs); l++ ) {
             if ( last1 != j && INT_INTOBJ(ADDR_OBJ(nbs)[l]) == last1 ) {
               return False;
             }
           }
         }
-        if ( k > (UInt) LEN_LIST(nbs) ) {
+        if ( k > LEN_LIST(nbs) ) {
           ptr[j] = 1;
         }
         if( ptr[j] >= 1 ) {
@@ -873,8 +873,10 @@ static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
 }
 
 static Obj FuncDIGRAPH_EQUALS_OUT_NBS(Obj self, Obj digraph1, Obj digraph2) {
-  UInt i, n1, n2, m1, m2;
-  Obj  out1, out2, a, b;
+  UInt  i, n1, n2, m1, m2;
+  Obj   out1, out2, a, b;
+  bool  eq;
+  Int   nr, j, jj, *buf, max;
   
   // Check NrVertices is equal
   n1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nrvertices")));
@@ -887,46 +889,57 @@ static Obj FuncDIGRAPH_EQUALS_OUT_NBS(Obj self, Obj digraph1, Obj digraph2) {
   out2 = ElmPRec(digraph2, RNamName("adj"));
 
   // Check NrEdges is equal
-  if (IsbPRec(digraph1, RNamName("nredges"))) {
-    m1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nredges")));
-  } else {
-    m1 = DigraphNrEdges(digraph1);
-  }
-  if (IsbPRec(digraph2, RNamName("nredges"))) {
-    m2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nredges")));
-  } else {
-    m2 = DigraphNrEdges(digraph2);
-  }
+  m1 = DigraphNrEdges(digraph1);
+  m2 = DigraphNrEdges(digraph2);
+  
   if ( m1 != m2 ) {
     return False;
   }
 
-  // Check if OutNeighbours are equal
-  if ( out1 == out2 ) {
-    return True;
-  }
+  buf = calloc(n1, sizeof(Int));
 
   // Compare OutNeighbours of each vertex in turn
   for ( i = 1; i <= n1; i++ ) {
     a = ELM_PLIST( out1, i );
     b = ELM_PLIST( out2, i );
-    //PLAIN_LIST(a); // Necessary or not?
-    //PLAIN_LIST(b); // Necessary or not?
+    PLAIN_LIST(a); 
+    PLAIN_LIST(b);
 
+    nr = LEN_PLIST(a);
     // Check that the OutDegrees match
-    if ( LEN_LIST( a ) != LEN_LIST( b ) ) {
+    if ( nr != LEN_PLIST( b ) ) {
+      free(buf);
       return False;
     }
 
-    // Check if a = b already; else sort and then compare again
-    if ( !EqListList( a, b ) ) {
-      SORT_LIST(a);
-      SORT_LIST(b);
-      if ( !EqListList( a, b ) ) {
-        return False;
+    eq = true;
+    for (j = 1; j <= nr; j++) {
+      jj = INT_INTOBJ(ELM_PLIST(a, j));
+      if (jj != INT_INTOBJ(ELM_PLIST(b, j))) {
+        eq = false;
+        break;
+      }
+    }
+    
+    if (!eq) {
+
+      for (j = 1; j <= nr; j++) {
+        jj = INT_INTOBJ(ELM_PLIST(a, j)) - 1 ;
+        buf[jj]++;
+        jj = INT_INTOBJ(ELM_PLIST(b, j)) - 1;
+        buf[jj]--;
+      }
+
+      for (j = 1; j <= nr; j++) {
+        jj = INT_INTOBJ(ELM_PLIST(a, j)) - 1 ;
+        if (buf[jj] != 0) {
+          free(buf);
+          return False;
+        }
       }
     }
   }
+  free(buf);
   return True;
 }
 
@@ -1036,16 +1049,8 @@ static Obj FuncDIGRAPH_EQUALS_MIXED(Obj self, Obj digraph1, Obj digraph2) {
   }
   
   // Check NrEdges is equal
-  if (IsbPRec(digraph1, RNamName("nredges"))) {
-    m1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nredges")));
-  } else {
-    m1 = DigraphNrEdges(digraph1);
-  }
-  if (IsbPRec(digraph2, RNamName("nredges"))) {
-    m2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nredges")));
-  } else {
-    m2 = DigraphNrEdges(digraph2);
-  }
+  m1 = DigraphNrEdges(digraph1);
+  m2 = DigraphNrEdges(digraph2);
   if ( m1 != m2 ) {
     return False;
   }
@@ -1157,7 +1162,7 @@ BlissGraph* buildBlissMultiDigraph(Obj digraph) {
 }
 
 void digraph_hook_function(void               *user_param,
-	                   unsigned           int N,
+	                   unsigned int       N,
 	                   const unsigned int *aut        ) {
   UInt4* ptr;
   Obj p;
