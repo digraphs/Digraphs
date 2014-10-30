@@ -444,7 +444,7 @@ InstallMethod(DigraphRemoveVertex, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],
 function(digraph, m)
   if m > DigraphNrVertices(digraph) then
-    Error("Digraphs: DigraphRemoveVertices: usage,\n",
+    Error("Digraphs: DigraphRemoveVertex: usage,\n",
     "the second arg <m> is not a vertex of the first arg <digraph>,");
   fi;
   return DigraphRemoveVerticesNC(digraph, [ m ]);
@@ -467,7 +467,7 @@ function(digraph, verts)
    ForAny(verts, x -> x < 1 or n < x) then
     Error("Digraphs: DigraphRemoveVertices: usage,\n",
     "the second arg <verts> should be a duplicate free list of vertices of\n",
-    "the first arg <digraph>, specifically: a subset of [ 1 .. ", n, " ],");
+    "the first arg <digraph>,");
   fi;
   return DigraphRemoveVerticesNC(digraph, verts );
 end);
@@ -498,6 +498,7 @@ function(digraph, verts)
   news := EmptyPlist(m);
   newr := EmptyPlist(m);
   count := 0;
+ 
   for i in [ 1 .. m ] do
     if not (source[i] in verts or range[i] in verts) then
       count := count + 1;

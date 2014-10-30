@@ -759,7 +759,7 @@ BlissGraph* buildBlissMultiDigraph(Obj digraph) {
 }
 
 void digraph_hook_function(void               *user_param,
-	                   unsigned           int N,
+	                   unsigned int       N,
 	                   const unsigned int *aut        ) {
   UInt4* ptr;
   Obj p;
@@ -1169,12 +1169,12 @@ static Obj FuncRANDOM_DIGRAPH(Obj self, Obj m) {
   return adj;
 }
 
-static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj arg) {
+static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj mm, Obj nn) {
   UInt n, m, i, j, k, len;
   Obj  adj, adjj;
 
-  n = INT_INTOBJ(ELM_PLIST(arg, 1));
-  m = INT_INTOBJ(ELM_PLIST(arg, 2));
+  n = INT_INTOBJ(nn);
+  m = INT_INTOBJ(mm);
   adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
   SET_LEN_PLIST(adj, n);
   

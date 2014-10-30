@@ -700,7 +700,7 @@ gap> DigraphRemoveVertex(gr, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphRemoveVertex' on 2 arguments
 gap> DigraphRemoveVertex(gr, 15);
-Error, Digraphs: DigraphRemoveVertices: usage,
+Error, Digraphs: DigraphRemoveVertex: usage,
 the second arg <m> is not a vertex of the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertex(gr, 10);;
 gap> DigraphNrVertices(gr2);
@@ -718,23 +718,23 @@ the second arg <verts> is empty; no vertices are specified for removal,
 gap> gr2 := DigraphRemoveVertices(gr, [ 0 ] );
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, "a" ]);
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 1 ] );
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 0 ] );
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 5 ] );
 Error, Digraphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>, specifically: a subset of [ 1 .. 4 ],
+the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 3 ] );
 <digraph with 2 vertices, 4 edges>
 gap> IsCompleteDigraph(gr2);
