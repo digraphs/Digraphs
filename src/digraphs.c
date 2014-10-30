@@ -816,11 +816,11 @@ static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj limm) {
 
   n   = INT_INTOBJ(nn);
   lim = INT_INTOBJ(limm);
-  adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+  adj = NEW_PLIST(T_PLIST_TAB, n);
   SET_LEN_PLIST(adj, n);
   
   for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+    SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY, 0));
     SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
     CHANGED_BAG(adj);
   }
@@ -832,7 +832,7 @@ static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj limm) {
         adji  = ELM_PLIST(adj, i);
         len   = LEN_PLIST(adji);
         if (len == 0) {
-          RetypeBag(adji, T_PLIST_CYC+IMMUTABLE);
+          RetypeBag(adji, T_PLIST_CYC);
           CHANGED_BAG(adj);
         }
         AssPlist(adji, len + 1,  INTOBJ_INT(j));
@@ -849,11 +849,11 @@ static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
 
   n = INT_INTOBJ(nn);
   m = INT_INTOBJ(mm);
-  adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+  adj = NEW_PLIST(T_PLIST_TAB, n);
   SET_LEN_PLIST(adj, n);
   
   for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+    SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY, 0));
     SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
     CHANGED_BAG(adj);
   }
@@ -864,7 +864,7 @@ static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
     adjj  = ELM_PLIST(adj, j);
     len   = LEN_PLIST(adjj);
     if (len == 0) {
-      RetypeBag(adjj, T_PLIST_CYC+IMMUTABLE);
+      RetypeBag(adjj, T_PLIST_CYC);
       CHANGED_BAG(adj);
     }
     AssPlist(adjj, len + 1,  INTOBJ_INT(k));
@@ -875,18 +875,18 @@ static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
 static Obj FuncDIGRAPH_EQUALS_OUT_NBS(Obj self, Obj digraph1, Obj digraph2) {
   UInt i, n1, n2, m1, m2;
   Obj  out1, out2, a, b;
-   
+  
+  // Check NrVertices is equal
   n1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nrvertices")));
   n2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nrvertices")));
   if (n1 != n2) {
-    // Pr("Different vertices,\n", 0L, 0L);
     return False;
   }
-  // Pr("Equal vertices,\n", 0L, 0L);
 
   out1 = ElmPRec(digraph1, RNamName("adj"));
   out2 = ElmPRec(digraph2, RNamName("adj"));
 
+  // Check NrEdges is equal
   if (IsbPRec(digraph1, RNamName("nredges"))) {
     m1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nredges")));
   } else {
@@ -897,35 +897,35 @@ static Obj FuncDIGRAPH_EQUALS_OUT_NBS(Obj self, Obj digraph1, Obj digraph2) {
   } else {
     m2 = DigraphNrEdges(digraph2);
   }
-
   if ( m1 != m2 ) {
     return False;
-    // Pr("Different edges,\n", 0L, 0L);
-  } else if ( out1 == out2 ) {
-    // Pr("Equal out-neighbours,\n", 0L, 0L);
+  }
+
+  // Check if OutNeighbours are equal
+  if ( out1 == out2 ) {
     return True;
   }
-  // Pr("Equal edges, different out-neighbours,\n", 0L, 0L);
 
+  // Compare OutNeighbours of each vertex in turn
   for ( i = 1; i <= n1; i++ ) {
     a = ELM_PLIST( out1, i );
     b = ELM_PLIST( out2, i );
-    //PLAIN_LIST(a);
-    //PLAIN_LIST(b);
+    //PLAIN_LIST(a); // Necessary or not?
+    //PLAIN_LIST(b); // Necessary or not?
+
+    // Check that the OutDegrees match
     if ( LEN_LIST( a ) != LEN_LIST( b ) ) {
-      // Pr("Different out-degree for vertex %d,\n", i, 0L);
       return False;
     }
+
+    // Check if a = b already; else sort and then compare again
     if ( !EqListList( a, b ) ) {
-      // Pr("Sorting...\n", 0L, 0L);
       SORT_LIST(a);
       SORT_LIST(b);
       if ( !EqListList( a, b ) ) {
-        // Pr("Different out-neighbours for vertex %d,", i, 0L);
-        return b;
+        return False;
       }
     }
-    // Pr("Equal out-neighbours for vertex %d,\n:", i, 0L);
   }
   return True;
 }
@@ -936,16 +936,16 @@ static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
   Int  k;
   Obj  source1, source2, range1, range2, sources, a, b;
 
-
+  // Check NrVertices is equal
   n1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nrvertices")));
   n2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nrvertices")));
   if (n1 != n2) {
     return False;
   }
   
+  // Check if DigraphSource (and hence NrEdges) is equal
   source1 = ElmPRec(digraph1, RNamName("source"));
   source2 = ElmPRec(digraph2, RNamName("source"));
-
   if ( !EqListList(source1, source2) ) {
     return False;
   }
@@ -955,22 +955,26 @@ static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
   PLAIN_LIST(range1);
   PLAIN_LIST(range2);
 
+  // Check if DigraphRange is equal
   if ( EqListList(range1, range2) ) {
     return True;
   }
 
-  PLAIN_LIST(source1);
+  // Calculate which vertices have positive out-degree
   PLAIN_LIST(source2);
-  m = LEN_PLIST(source2);
-
-  // RemoveDupsDensePlist(source2);
-  sources = SetList(source2);  // This should be removed ASAP
+  // RemoveDupsDensePlist(source2); // This should be re-instated ASAP
+  sources = SetList(source2);       // This should be removed ASAP
+  m = LEN_PLIST(range2);
   n = LEN_PLIST(sources);
 
+  // Compare OutNeighbours of each vertex with positive out-degree in turn
   stop = 1;
   for ( i = 2; i <= n; i++ ) {
     start = stop;
-    stop = PositionSortedDensePlist(source1, ELM_PLIST( sources, i ) );
+    stop  = PositionSortedDensePlist( source1, ELM_PLIST( sources, i ) );
+
+    /* The following code calculates a = range1{[ start .. stop - 1 ]}
+                                 and b = range2{[ start .. stop - 1 ]} */
     p = stop - start;
     a = NEW_PLIST(T_PLIST, p);
     SET_LEN_PLIST(a, p);
@@ -982,6 +986,8 @@ static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
       SET_ELM_PLIST(a, k, ELM_PLIST(range1, j) );
       SET_ELM_PLIST(b, k, ELM_PLIST(range2, j) );
     }
+    
+    // Check if a = b already; else sort and then compare again
     if ( !EqListList(a, b) ) {
       SORT_LIST(a);
       SORT_LIST(b);
@@ -991,8 +997,9 @@ static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
     }
   }
 
-  // Almost same code as above; we could combine into the FOR loop and
-  // check in every loop whether or not we were in this final case
+  // Almost exactly same code as above, but for the final vertex in sources
+  // Repeating this code here is slightly more efficient than having an
+  // IF statement inside the FOR loop up there, which is the other option
   p = (m + 1) - stop;
   a = NEW_PLIST(T_PLIST, p);
   SET_LEN_PLIST(a, p);
@@ -1001,8 +1008,8 @@ static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
   k = 0;
   for ( j = stop; j <= m; j++ ) {
     k++;
-    SET_ELM_PLIST(a, k, ELM_PLIST(range1, j) );
-    SET_ELM_PLIST(b, k, ELM_PLIST(range2, j) );
+    SET_ELM_PLIST(a, k, ELM_PLIST( range1, j ) );
+    SET_ELM_PLIST(b, k, ELM_PLIST( range2, j ) );
   }
   if ( !EqListList(a, b) ) {
     SORT_LIST(a);
@@ -1012,6 +1019,100 @@ static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
     }
   }
   return True;
+}
+
+static Obj FuncDIGRAPH_EQUALS_MIXED(Obj self, Obj digraph1, Obj digraph2) {
+
+  Int n1, n2, m1, m2, i, j, k, p, len, start, stop;
+  Obj out, source, range, a, b, outi, outii;
+  // digraph1 has OutNeighbours
+  // digraph2 has DigraphSource
+
+  // Check NrVertices is equal
+  n1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nrvertices")));
+  n2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nrvertices")));
+  if (n1 != n2) {
+    return False;
+  }
+  
+  // Check NrEdges is equal
+  if (IsbPRec(digraph1, RNamName("nredges"))) {
+    m1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nredges")));
+  } else {
+    m1 = DigraphNrEdges(digraph1);
+  }
+  if (IsbPRec(digraph2, RNamName("nredges"))) {
+    m2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nredges")));
+  } else {
+    m2 = DigraphNrEdges(digraph2);
+  }
+  if ( m1 != m2 ) {
+    return False;
+  }
+
+  // Check NrEdges = 0
+  if ( m1 == 0 ) {
+    return True;
+  }
+
+  // Compare OutNeighbours of each vertex with positive out-degree in turn
+  out    = ElmPRec(digraph1, RNamName("adj"));
+  source = ElmPRec(digraph2, RNamName("source"));
+  range  = ElmPRec(digraph2, RNamName("range"));
+  PLAIN_LIST(source);
+  PLAIN_LIST(range);
+  start  = 1;
+  i      = 0;
+  while (1) {
+    i++;
+
+    // Get OutNeighbours and OutDegree of digraph1, vertex i
+    outi = ELM_PLIST( out, i );
+    PLAIN_LIST(outi);
+    len  = LEN_LIST( outi );
+    stop = start + len - 1;
+
+    // Check that out-degrees aren't completely inconsistent
+    if ( len == 0 && INT_INTOBJ( ELM_PLIST( source, start ) ) == i ) {
+      return False;
+    } else if ( len != 0 && (
+                 INT_INTOBJ( ELM_PLIST( source, start ) ) != i ||
+                 INT_INTOBJ( ELM_PLIST( source, stop ) )!= i
+                )) {
+      return False;
+    }
+
+    // By this point, we have that either:
+    // 1. Both digraphs have OutDegree 0 for vertex i;
+    // 2. OutDegree(digraph2, i) >= OutDegree(digraph1, i) > 0
+
+    // Create b = OutNeighboursOfVertex(digraph2, i)
+    p = (stop - start) + 1;
+    b = NEW_PLIST(T_PLIST, p);
+    SET_LEN_PLIST(b, p);
+    k = 0;
+    for ( j = start; j <= stop; j++ ) {
+      k++;
+      SET_ELM_PLIST(b, k, ELM_PLIST( range, j ) );
+    }
+
+    // Check if outi = b already; else sort and then compare again
+    if ( !EqListList( outi, b ) ) {
+      SORT_LIST(outi);
+      SORT_LIST(b);
+      if ( !EqListList( outi, b ) ) {
+        return False;
+      }
+    }
+    start = stop + 1;
+    // Check whether we have compared all vertices
+    if ( m1 < start ) {
+      return True;
+    }
+  }
+
+  // Should never be reached
+  return Fail;
 }
 
 // bliss 
@@ -1505,6 +1606,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_EQUALS_SOURCE", 2, "digraph1, digraph2",
     FuncDIGRAPH_EQUALS_SOURCE,
     "src/digraphs.c:FuncDIGRAPH_EQUALS_SOURCE" },
+
+  { "DIGRAPH_EQUALS_MIXED", 2, "digraph1, digraph2",
+    FuncDIGRAPH_EQUALS_MIXED,
+    "src/digraphs.c:FuncDIGRAPH_EQUALS_MIXED" },
 
   { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncDIGRAPH_AUTOMORPHISMS, 

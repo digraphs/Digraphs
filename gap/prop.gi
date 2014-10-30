@@ -123,6 +123,17 @@ end);
 
 #
 
+InstallImmediateMethod(IsAcyclicDigraph, "for a reflexive digraph", IsReflexiveDigraph, 0,
+function(digraph)
+  if IsEmptyDigraph(digraph) then
+    return true;
+  else
+    return false;
+  fi;
+end);
+
+#
+
 if IsBound(IS_ACYCLIC_DIGRAPH) then
   InstallMethod(IsAcyclicDigraph, "for a digraph",
   [IsDigraph],
@@ -131,12 +142,14 @@ if IsBound(IS_ACYCLIC_DIGRAPH) then
 
     n := DigraphNrVertices(digraph);
 
-    # WW: I think condition can't be met w/o IsAcyclic already being set false
+    # WW: I think condition can't be met w/o IsAcyclic already being set false:
     # if HasIsStronglyConnectedDigraph(digraph) and 
     #  IsStronglyConnectedDigraph(digraph) and n > 1 then
     #   return false; 
     # fi;
-    if HasDigraphHasLoops(digraph) and DigraphHasLoops(digraph) then
+    if n = 0 then
+      return true;
+    elif HasDigraphHasLoops(digraph) and DigraphHasLoops(digraph) then
       return false;
     elif HasDigraphStronglyConnectedComponents(digraph) then
       scc := DigraphStronglyConnectedComponents(digraph);

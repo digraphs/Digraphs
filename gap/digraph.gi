@@ -212,7 +212,7 @@ function(graph)
   return Graph(Group(()), ShallowCopy(DigraphVertices(graph)), OnPoints, adj, true);
 end);
 
-# JDM improve this!
+#
 
 InstallMethod(RandomDigraph, "for a pos int",
 [IsPosInt],
@@ -234,26 +234,7 @@ function(n, p)
   return out;
 end);
 
-#InstallMethod(RandomDigraph, "for a pos int",
-#[IsPosInt],
-#function(n)
-#  local verts, adj, nr, i, j, gr;
 #
-#  verts := [ 1 .. n ];
-#  adj := [ ];
-#
-#  for i in verts do
-#    nr := Random(verts);
-#    adj[i] := [ ];
-#    for j in [ 1 .. nr ] do
-#      AddSet(adj[i], Random(verts));
-#    od;
-#  od;
-#
-#  gr := DigraphNC(adj);
-#  SetIsMultiDigraph(gr, false);
-#  return gr;
-#end);
 
 InstallMethod(RandomMultiDigraph, "for a pos int",
 [IsPosInt],
@@ -292,21 +273,19 @@ function(n)
         count := count + 1;
         if Random(choice) then
           source[count] := i;
-          range[count] := j;
+          range[count]  := j;
         else
           source[count] := j;
-          range[count] := i;
+          range[count]  := i;
         fi;
       od;
     od;
     range := Permuted(range, Sortex(source));
-    gr := DigraphNC(rec( nrvertices := n, source := source, range := range )); 
+    gr := DigraphNC(rec(nrvertices := n, source := source, range :=range)); 
     SetDigraphNrEdges(gr, nr);
   fi;
-  SetIsAntisymmetricDigraph(gr, true);
   SetIsTournament(gr, true);
   return gr;
-
 end);
 
 #
@@ -363,17 +342,17 @@ end);
 InstallMethod(CycleDigraph, "for a positive integer",
 [IsPosInt],
 function(n)
-  local gr, source, range, i;
+  local s, r, gr, i;
 
-  source := EmptyPlist(n);
-  range := EmptyPlist(n);
+  s := EmptyPlist(n);
+  r := EmptyPlist(n);
   for i in [ 1 .. (n - 1) ] do
-    source[i] := i;
-    range[i] := i + 1;
+    s[i] := i;
+    r[i] := i + 1;
   od;
-  source[n] := n;
-  range[n] := 1;
-  gr := DigraphNC( rec( nrvertices := n, source := source, range := range ) );
+  s[n] := n;
+  r[n] := 1;
+  gr := DigraphNC( rec( nrvertices := n, source := s, range := r ) );
   if n = 1 then
     SetIsTransitiveDigraph(gr, true);
     SetDigraphHasLoops(gr, true);
@@ -404,7 +383,7 @@ function(m, n)
       count := count + 1;
       source[count] := i;
       range[count] := m + j;
-      k := (m * n) + ( (j - 1) * m ) + i; # This ensures that source is sorted
+      k := (m * n) + ( (j - 1) * m ) + i; # Ensures that source is sorted
       source[k] := m + j;
       range[k] := i;
     od;
@@ -728,54 +707,55 @@ end);
 
 InstallMethod(\=, "for a digraph with out-neighbours and a digraph with range",
 [IsDigraph and HasOutNeighbours, IsDigraph and HasDigraphRange], 1,
-function(graph1, graph2)
-  local m, out, source, range, verts, start, stop, len, b, a, i;
-
-  if DigraphNrVertices(graph1) <> DigraphNrVertices(graph2) then
-    return false;
-  fi;
-  m := DigraphNrEdges(graph1);
-  if m <> DigraphNrEdges(graph2) then
-    return false;
-  elif m = 0 then
-    return true;
-  fi;
-  
-  out := OutNeighbours(graph1);
-  source := DigraphSource(graph2);
-  range := DigraphRange(graph2);
-  verts := DigraphVertices(graph1);
-  start := 1;
-  i := 0;
-  while true do
-    i := i + 1;
-    len := Length(out[i]);
-    stop := start + len - 1;
-    if len = 0 and source[start] = i then
-      return false;
-    elif len <> 0 and not (source[start] = i and source[stop] = i) then
-      return false;
-    fi;
-
-    # By here, either:
-    # 1. 0 == graph1[i] out-degree == graph2[i] out-degree
-    # 2. 0 <> graph1[i] out-degree <= graph2[i] out-degree
-
-    b := range{[ start .. stop ]};
-    if out[i] <> b then
-      a := ShallowCopy(out[i]);
-      Sort(a);
-      Sort(b);
-      if a <> b then
-        return false;
-      fi;
-    fi;
-    start := stop + 1;
-    if m < start then
-      return true;
-    fi;
-  od;
-end);
+DIGRAPH_EQUALS_MIXED);
+#function(graph1, graph2)
+#  local m, out, source, range, verts, start, stop, len, b, a, i;
+#
+#  if DigraphNrVertices(graph1) <> DigraphNrVertices(graph2) then
+#    return false;
+#  fi;
+#  m := DigraphNrEdges(graph1);
+#  if m <> DigraphNrEdges(graph2) then
+#    return false;
+#  elif m = 0 then
+#    return true;
+#  fi;
+#  
+#  out := OutNeighbours(graph1);
+#  source := DigraphSource(graph2);
+#  range := DigraphRange(graph2);
+#  verts := DigraphVertices(graph1);
+#  start := 1;
+#  i := 0;
+#  while true do
+#    i := i + 1;
+#    len := Length(out[i]);
+#    stop := start + len - 1;
+#    if len = 0 and source[start] = i then
+#      return false;
+#    elif len <> 0 and not (source[start] = i and source[stop] = i) then
+#      return false;
+#    fi;
+#
+#    # By here, either:
+#    # 1. 0 == graph1[i] out-degree == graph2[i] out-degree
+#    # 2. 0 <> graph1[i] out-degree <= graph2[i] out-degree
+#
+#    b := range{[ start .. stop ]};
+#    if out[i] <> b then
+#      a := ShallowCopy(out[i]);
+#      Sort(a);
+#      Sort(b);
+#      if a <> b then
+#        return false;
+#      fi;
+#    fi;
+#    start := stop + 1;
+#    if m < start then
+#      return true;
+#    fi;
+#  od;
+#end);
 
 InstallMethod(\=, "for two digraphs with out-neighbours",
 [IsDigraph and HasOutNeighbours, IsDigraph and HasOutNeighbours], 2,
