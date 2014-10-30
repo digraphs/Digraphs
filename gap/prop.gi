@@ -125,7 +125,7 @@ end);
 
 InstallImmediateMethod(IsAcyclicDigraph, "for a reflexive digraph", IsReflexiveDigraph, 0,
 function(digraph)
-  if IsEmptyDigraph(digraph) then
+  if DigraphNrVertices(digraph) = 0 then
     return true;
   else
     return false;

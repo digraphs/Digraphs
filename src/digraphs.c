@@ -46,6 +46,17 @@
 ** the implementation of STRONGLY_CONNECTED_COMPONENTS_DIGRAPH in listfunc.c.
 */
 
+UInt DigraphNrVertices(Obj digraph) {
+  if (IsbPRec(digraph, RNamName("nrvertices"))) {
+    return INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  }
+  ErrorQuit(
+    "Digraphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
+    0L,
+    0L);
+  return 0;
+}
+
 static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
   UInt end1, end2, count, level, w, v, n, nr, idw, *frames, *stack2;
   Obj  id, stack1, out, comp, comps, adj; 
@@ -182,7 +193,7 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
   UInt n, *id, *nid, i, j, e, len, f, nrcomps;
   Obj  adj, adji, source, range, gid, gcomps, comp, out;
 
-  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  n = DigraphNrVertices(digraph);
   if (n == 0) {
     out = NEW_PREC(2);
     AssPRec(out, RNamName("id"), NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE,0));
@@ -535,9 +546,9 @@ UInt DigraphNrEdges(Obj digraph) {
   if (IsbPRec(digraph, RNamName("source"))) { 
     return LEN_LIST(ElmPRec(digraph, RNamName("source")));
   } else {
-    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+    n   = DigraphNrVertices(digraph);
     adj = ElmPRec(digraph, RNamName("adj"));
-    nr = 0;
+    nr  = 0;
     for (i = 1; i <= n; i++) {
       nr+= LEN_PLIST(ELM_PLIST(adj, i));
     }
@@ -551,7 +562,7 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph) {
   UInt  n, i, j, len;
   
   
-  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  n = DigraphNrVertices(digraph);
 
   if (n == 0) {
     return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
@@ -591,7 +602,7 @@ static Obj FuncDIGRAPH_IN_NBS(Obj self, Obj digraph) {
   Obj   range, source, inn, innk, innj, adj, adji;
   UInt  n, m, i, j, k, len, len2, nam;
   
-  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  n = DigraphNrVertices(digraph);
 
   if (n == 0) {
     return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
@@ -663,7 +674,7 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
     
     range = ElmPRec(digraph, RNamName("range"));
     PLAIN_LIST(range);
-    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
+    n = DigraphNrVertices(digraph);
 
     current = INT_INTOBJ(ELM_PLIST(source, 1));
     marked = calloc(n + 1, sizeof(UInt));
@@ -689,7 +700,7 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
     return False;
   } else {
     adj = ElmPRec(digraph, RNamName("adj"));
-    n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices"))); 
+    n = DigraphNrVertices(digraph);
     for (i = 1; i <= n; i++) {
       adji = ELM_PLIST(adj, i);
       PLAIN_LIST(adji);
@@ -717,7 +728,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
   Int   n, i, j, k, *dist;
   Obj   next, source, range, out, outi, val;
 
-  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  n = DigraphNrVertices(digraph);
 
   if (n == 0) {
     return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
@@ -879,8 +890,8 @@ static Obj FuncDIGRAPH_EQUALS_OUT_NBS(Obj self, Obj digraph1, Obj digraph2) {
   Int   nr, j, jj, *buf, max;
   
   // Check NrVertices is equal
-  n1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nrvertices")));
-  n2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nrvertices")));
+  n1 = DigraphNrVertices(digraph1);
+  n2 = DigraphNrVertices(digraph2);
   if (n1 != n2) {
     return False;
   }
@@ -950,8 +961,8 @@ static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
   Obj  source1, source2, range1, range2, sources, a, b;
 
   // Check NrVertices is equal
-  n1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nrvertices")));
-  n2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nrvertices")));
+  n1 = DigraphNrVertices(digraph1);
+  n2 = DigraphNrVertices(digraph2);
   if (n1 != n2) {
     return False;
   }
@@ -1042,8 +1053,8 @@ static Obj FuncDIGRAPH_EQUALS_MIXED(Obj self, Obj digraph1, Obj digraph2) {
   // digraph2 has DigraphSource
 
   // Check NrVertices is equal
-  n1 = INT_INTOBJ(ElmPRec(digraph1, RNamName("nrvertices")));
-  n2 = INT_INTOBJ(ElmPRec(digraph2, RNamName("nrvertices")));
+  n1 = DigraphNrVertices(digraph1);
+  n2 = DigraphNrVertices(digraph2);
   if (n1 != n2) {
     return False;
   }
@@ -1127,7 +1138,7 @@ BlissGraph* buildBlissMultiDigraph(Obj digraph) {
   Obj         adji, adj, source, range;
   BlissGraph  *graph;
 
-  n = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  n = DigraphNrVertices(digraph);
   graph = bliss_new(n);
 
   if (IsbPRec(digraph, RNamName("adj"))) { 
@@ -1190,7 +1201,7 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   graph = buildBlissMultiDigraph(digraph);
   
   autos = NEW_PLIST(T_PLIST, 1);
-  n = ElmPRec(digraph, RNamName("nrvertices"));
+  n = INTOBJ_INT(DigraphNrVertices(digraph));
 
   SET_ELM_PLIST(autos, 1, n);
   SET_LEN_PLIST(autos, 1);
@@ -1274,7 +1285,7 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   graph = buildBlissMultiDigraph(digraph);
   
   autos = NEW_PLIST(T_PLIST, 4);
-  SET_ELM_PLIST(autos, 1, ElmPRec(digraph, RNamName("nrvertices")));
+  SET_ELM_PLIST(autos, 1, INTOBJ_INT(DigraphNrVertices(digraph)));
   CHANGED_BAG(autos);
   SET_ELM_PLIST(autos, 2, INTOBJ_INT(DigraphNrEdges(digraph)));
   SET_ELM_PLIST(autos, 3, NEW_PLIST(T_PLIST, 0)); // perms of the vertices
@@ -1284,7 +1295,7 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
 
   canon = bliss_find_canonical_labeling(graph, multidigraph_hook_function, autos, 0);
   
-  n   = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  n   = DigraphNrVertices(digraph);
   p   = NEW_PERM4(n);
   ptr = ADDR_PERM4(p);
  
@@ -1331,7 +1342,7 @@ static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   
   canon = bliss_find_canonical_labeling(graph, 0, 0, 0); 
   
-  n   = INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  n   = DigraphNrVertices(digraph);
   p   = NEW_PERM4(n);
   ptr = ADDR_PERM4(p);
  
