@@ -242,16 +242,7 @@ false]]></Example>
     of vertices in the digraph. 
   
     <Example><![CDATA[
-gap> cycle:=function(n)
->  local record, i;
->  record:=rec(vertices:=[1..n], source:=[], range:=[]);
->  for i in [0..n-1] do 
->    Add(record.source, i mod Length(record.vertices) + 1);
->    Add(record.range, (i + 1) mod Length(record.vertices) +1);
->  od;
->  return Digraph(record);
-> end;;
-gap> gr:=cycle(250000);
+gap> gr:=CycleDigraph(250000);
 <digraph with 250000 vertices, 250000 edges>
 gap> IsStronglyConnectedDigraph(gr);
 true

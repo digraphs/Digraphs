@@ -379,7 +379,7 @@ gap> gr := DigraphAddEdges(gr,
   <Oper Name="DigraphRemoveEdges" Arg="digraph, edges"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If:
+    If one of the following holds: 
     <List>
       <Item>
         <A>digraph</A> is a digraph with no multiple edges, and <A>edges</A> is 
@@ -395,16 +395,7 @@ gap> gr := DigraphAddEdges(gr,
     removing all of the edges specified by <A>edges</A>. <P/>
 
     <Example><![CDATA[
-gap> cycle := function(n)
->  local record, i;
->  record := rec( nrvertices := n, source := [  ], range := [  ] );
->  for i in [ 0 .. n - 1 ] do 
->    Add(record.source, i mod n + 1);
->    Add(record.range, (i + 1) mod n + 1);
->  od;
->  return Digraph(record);
-> end;;
-gap> gr := cycle(250000);
+gap> gr := CycleDigraph(250000);
 <digraph with 250000 vertices, 250000 edges>
 gap> gr := DigraphRemoveEdges(gr, [ [ 250000, 1 ] ]);
 <digraph with 250000 vertices, 249999 edges>
