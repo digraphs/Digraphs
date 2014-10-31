@@ -55,15 +55,33 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
 
     The currently supported file formats are:
     <List>
-      <Mark>graph6</Mark>
+      <Mark>graph6 (.g6)</Mark>
       <Item>
-        Say something.
+	A standard and widely-used format for undirected graphs, with no support
+	for loops or multiple edges.  Only symmetric graphs are allowed -- each
+	edge is combined with its converse edge to produce a single undirected
+	edge.  This format is best used for "dense" graphs -- those with many
+	edges per vertex.
       </Item>
-      <Mark>digraph6</Mark>
+      <Mark>sparse6 (.s6)</Mark>
       <Item>
-        Say something.
+	Unlike graph6, sparse6 has support for loops and multiple edges.
+	However, its use is still limited to symmetric graphs.  This format is
+	better-suited to "sparse" graphs -- those with few edges per vertex.
       </Item>
-      <Mark>plain text</Mark>
+      <Mark>digraph6 (.d6)</Mark>
+      <Item>
+	This format is based on graph6, but stores direction information -
+	therefore is not limited to symmetric graphs.  Loops are allowed, but
+	multiple edges are not.  Best compression with "dense" graphs.
+      </Item>
+      <Mark>disparse6 (.ds6)</Mark>
+      <Item>
+	Any type of digraph can be encoded in disparse6: directions, loops, and
+	multiple edges are all allowed.  Similar to sparse6, this has the best
+	compression rate with "sparse" graphs.
+      </Item>
+      <Mark>plain text (.txt)</Mark>
       <Item>
         <A>filename</A> should be a plain text file containing lines of the form 
         <C>0 7  0 8  1 7  2 8  3 8  4 8  5 8  6 8</C> i.e. pairs of vertices
@@ -185,10 +203,10 @@ gap> ReadDigraphs(filename);
 
 <#GAPDoc Label="WriteGraph6">
 <ManSection>
-  <Oper Name="WriteGraph6" Arg="digraph"/>
-  <Oper Name="WriteDigraph6" Arg="digraph"/>
-  <Oper Name="WriteSparse6" Arg="digraph"/>
-  <Oper Name="WriteDiSparse6" Arg="digraph"/>
+  <Oper Name="Graph6String" Arg="digraph"/>
+  <Oper Name="Digraph6String" Arg="digraph"/>
+  <Oper Name="Sparse6String" Arg="digraph"/>
+  <Oper Name="DiSparse6String" Arg="digraph"/>
   <Returns>A string.</Returns>
   <Description>
     These four functions return a highly compressed string fully describing the
@@ -200,9 +218,9 @@ gap> ReadDigraphs(filename);
     <Example><![CDATA[
 gap> gr := Digraph([[2,3], [1], [1]]);
 <digraph with 3 vertices, 4 edges>
-gap> WriteSparse6(gr);
+gap> Sparse6String(gr);
 ":Bc"
-gap> WriteDiSparse6(gr);
+gap> DiSparse6String(gr);
 ".Bc{f"
 ]]></Example>
   </Description>

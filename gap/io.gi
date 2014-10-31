@@ -516,13 +516,13 @@ function(name, digraphs)
     fi;
     # Format extensions
     if ext = "g6" then
-      encoder := WriteGraph6;
+      encoder := Graph6String;
     elif ext = "s6" then
-      encoder := WriteSparse6;
+      encoder := Sparse6String;
     elif ext = "d6" then
-      encoder := WriteDigraph6;
+      encoder := Digraph6String;
     elif ext = "ds6" then
-      encoder := WriteDiSparse6;
+      encoder := DiSparse6String;
 #   elif ext = "txt" then
 #     encoder := DigraphPlainTextLineEncoder("  ", " ", 1);
     else
@@ -537,7 +537,7 @@ function(name, digraphs)
     # Do we know all the graphs to be symmetric?
     if ForAll(digraphs, g-> HasIsSymmetricDigraph(g) and IsSymmetricDigraph(g)) then
       if ForAll(digraphs, IsMultiDigraph) then
-        encoder := WriteDiSparse6;
+        encoder := DiSparse6String;
         Add(splitname, "ds6");
       else
         # Find the sum of length estimates using Graph6 and Sparse6
@@ -550,16 +550,16 @@ function(name, digraphs)
           s6sum := s6sum + (e/2 * (Log2Int(v-1) + 2) * 3/2);
         od;
         if g6sum < s6sum and not ForAny(digraphs, DigraphHasLoops) then
-          encoder := WriteGraph6;
+          encoder := Graph6String;
           Add(splitname, "g6");
         else
-          encoder := WriteSparse6;
+          encoder := Sparse6String;
           Add(splitname, "s6");
         fi;
       fi;
     else
       if ForAny(digraphs, IsMultiDigraph) then
-        encoder := WriteDiSparse6;
+        encoder := DiSparse6String;
         Add(splitname, "ds6");
       else
         # Find the sum of length estimates using Digraph6 and DiSparse6
@@ -572,10 +572,10 @@ function(name, digraphs)
           ds6sum := ds6sum + (e * (Log2Int(v) + 2) * 3/2);
         od;
         if dg6sum < ds6sum then
-          encoder := WriteDigraph6;
+          encoder := Digraph6String;
           Add(splitname, "d6");
         else
-          encoder := WriteDiSparse6;
+          encoder := DiSparse6String;
           Add(splitname, "ds6");
         fi;
       fi;
@@ -641,14 +641,14 @@ end);
 
 
 
-InstallMethod(WriteGraph6, "for a digraph",
+InstallMethod(Graph6String, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   if ( IsMultiDigraph(graph)
        or not IsSymmetricDigraph(graph)
        or DigraphHasLoops(graph) ) then
-    Error("Digraphs: WriteGraph6: usage,\n",
+    Error("Digraphs: Graph6String: usage,\n",
           "<graph> must be symmetric and have no loops or multiple edges,");
     return;
   fi;
@@ -660,7 +660,7 @@ function(graph)
   # First write the number of vertices
   lenlist := Graph6Length(n);
   if lenlist = fail then
-    Error("Digraphs: WriteGraph6: usage,\n",
+    Error("Digraphs: Graph6String: usage,\n",
           "<graph> must have between 0 and 68719476736 vertices,");
     return;
   fi;
@@ -699,7 +699,7 @@ end);
 
 #
 
-InstallMethod(WriteDigraph6, "for a digraph",
+InstallMethod(Digraph6String, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
@@ -713,7 +713,7 @@ function(graph)
   # Now write the number of vertices
   lenlist := Graph6Length(n);
   if lenlist = fail then
-    Error("Digraphs: WriteDigraph6: usage,\n",
+    Error("Digraphs: Digraph6String: usage,\n",
           "<graph> must have between 0 and 68719476736 vertices,");
     return;
   fi;
@@ -747,13 +747,13 @@ end);
 
 #
 
-InstallMethod(WriteSparse6, "for a digraph",
+InstallMethod(Sparse6String, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, n, lenlist, source, range, k, blist, v, nextbit, AddBinary, i,
         bitstopad, pos, block;
   if not IsSymmetricDigraph(graph) then
-    Error("Digraphs: WriteSparse6: usage,\n",
+    Error("Digraphs: Sparse6String: usage,\n",
           "the argument <graph> must be a symmetric digraph,");
     return;
   fi;
@@ -767,7 +767,7 @@ function(graph)
   # Now write the number of vertices
   lenlist := Graph6Length(n);
   if lenlist = fail then
-    Error("Digraphs: WriteSparse6: usage,\n",
+    Error("Digraphs: Sparse6String: usage,\n",
           "<graph> must have between 0 and 68719476736 vertices,");
     return;
   fi;
@@ -861,7 +861,7 @@ end);
 
 #
 
-InstallMethod(WriteDiSparse6, "for a digraph",
+InstallMethod(DiSparse6String, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, n, lenlist, source, range, source_i, range_i, source_d, range_d,
@@ -877,7 +877,7 @@ function(graph)
   # Now write the number of vertices
   lenlist := Graph6Length(n);
   if lenlist = fail then
-    Error("Digraphs: WriteDiSparse6: usage,\n",
+    Error("Digraphs: DiSparse6String: usage,\n",
           "<graph> must have between 0 and 68719476736 vertices,");
     return;
   fi;

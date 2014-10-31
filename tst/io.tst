@@ -22,14 +22,14 @@ gap> DigraphFromGraph6String("E?A?");
 #
 gap> gr := Digraph(rec( nrvertices := 300, source := [1..2], range := [2,1]));
 <digraph with 300 vertices, 2 edges>
-gap> str := WriteGraph6(gr);;
+gap> str := Graph6String(gr);;
 gap> DigraphFromGraph6String(str) = gr;
 true
 
 #
 gap> gr := Digraph([[2], [1,4], [5], [2], [3]]);
 <digraph with 5 vertices, 6 edges>
-gap> str := WriteGraph6(gr);
+gap> str := Graph6String(gr);
 "DaG"
 gap> DigraphFromGraph6String(str);
 <digraph with 5 vertices, 6 edges>
@@ -64,7 +64,7 @@ gap> DigraphFromSparse6String(":U___fEcdGcdeJfIcFdEbLNaKM`H`GbIRaJQ");
 #
 gap> gr := Digraph([[2], [1,4], [5], [2], [3]]);
 <digraph with 5 vertices, 6 edges>
-gap> str :=  WriteSparse6(gr);
+gap> str :=  Sparse6String(gr);
 ":Dapj"
 
 #
@@ -73,14 +73,14 @@ gap> DigraphFromSparse6String(str);
 gap> gr := Digraph(rec(nrvertices := 231, source := [1,1,3,4],
 > range := [3,4,1,1]));
 <digraph with 231 vertices, 4 edges>
-gap> str := WriteSparse6(gr);
+gap> str := Sparse6String(gr);
 ":~?Bf_O?_F"
 gap> DigraphFromSparse6String(str);
 <digraph with 231 vertices, 4 edges>
 gap> gr := Digraph(rec(nrvertices := 2^17, source := [1,1,3,4,10,100],
 > range := [3,4,1,1,100,10]));
 <digraph with 131072 vertices, 6 edges>
-gap> str := WriteSparse6(gr);
+gap> str := Sparse6String(gr);
 ":~_??_?A???_??_@b??H"
 gap> DigraphFromSparse6String(str);
 <digraph with 131072 vertices, 6 edges>
@@ -88,48 +88,48 @@ gap> DigraphFromSparse6String(str);
 #
 gap> gr := Digraph([[5], [1,2,5], [1], [2],[4]]);
 <digraph with 5 vertices, 7 edges>
-gap> str := WriteDigraph6(gr);
+gap> str := Digraph6String(gr);
 "+DWg?[?"
 gap> DigraphFromDigraph6String(str);
 <digraph with 5 vertices, 7 edges>
 gap> gr := Digraph(rec(nrvertices := 231, source := [1..100],
 > range := [1..100]*0+200));
 <digraph with 231 vertices, 100 edges>
-gap> str := WriteDigraph6(gr);;
+gap> str := Digraph6String(gr);;
 gap> DigraphFromDigraph6String(str);
 <digraph with 231 vertices, 100 edges>
 
 #
 gap> gr := Digraph([[1,4],[2,3,4],[2,4],[2]]);
 <digraph with 4 vertices, 8 edges>
-gap> str := WriteDiSparse6(gr);
+gap> str := DiSparse6String(gr);
 ".CgXoHe@J"
 gap> DigraphFromDiSparse6String(str) = gr;
 true
 gap> gr := Digraph(rec( nrvertices := 1617, source := [1..100],
 > range := Concatenation( [1..50], [1..50]*0 + 51 )));
 <digraph with 1617 vertices, 100 edges>
-gap> str := WriteDiSparse6(gr);;
+gap> str := DiSparse6String(gr);;
 gap> DigraphFromDiSparse6String(str) = gr;
 true
 gap> gr := Digraph(rec( nrvertices := 2^17, source := [1..100],
 > range := Concatenation( [50..98], [-1050.. - 1000]*-1 )));
 <digraph with 131072 vertices, 100 edges>
-gap> str := WriteDiSparse6(gr);;
+gap> str := DiSparse6String(gr);;
 gap> DigraphFromDiSparse6String(str) = gr;
 true
 
 #
 gap> gr := Digraph([[1,1,4],[2,3,4],[2,4],[2]]);
 <multidigraph with 4 vertices, 9 edges>
-gap> str := WriteDiSparse6(gr);
+gap> str := DiSparse6String(gr);
 ".CgXo?eWCn"
 gap> gr = DigraphFromDiSparse6String(str);
 true
 gap> gr := Digraph(rec( nrvertices := 7890, source := [1..100]*0 + 1000,
 > range := [1..100]*0 + 2000));
 <multidigraph with 7890 vertices, 100 edges>
-gap> str := WriteDiSparse6(gr);;
+gap> str := DiSparse6String(gr);;
 gap> gr = DigraphFromDiSparse6String(str);
 true
 
