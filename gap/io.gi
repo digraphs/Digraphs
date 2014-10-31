@@ -375,7 +375,8 @@ end);
 
 #
 
-SplitStringBySubstring:=function(string, substring)
+BindGlobal("SplitStringBySubstring",
+function(string, substring)
   local m, n, i, j, out, nr;
 
   if Length(substring) = 1 then
@@ -404,7 +405,7 @@ SplitStringBySubstring:=function(string, substring)
   nr := nr + 1;
   out[nr] := string{ [ j .. Length(string) ] };
   return out;
-end;
+end);
 
 # one graph per line
 
@@ -443,6 +444,29 @@ function(arg)
           "DigraphPlainTextLineDecoder(delimiter, [,delimiter], offset),");
     return;
   fi;
+end);
+
+InstallGlobalFunction(DigraphPlainTextLineEncoder,
+function(delimiter1, delimiter2, offset)
+  offset := offset - 1;
+  return function(digraph)
+    local str, i, edges;
+    edges := DigraphEdges(digraph);
+
+    if Length(edges) = 0 then 
+      return "";
+    fi;
+
+    str := Concatenation(String(edges[1][1] + offset), 
+             delimiter2, String(edges[1][2] + offset));
+
+    for i in [2 .. Length(edges)] do 
+      Append(str, 
+       Concatenation(delimiter1, String(edges[i][1] + offset), 
+                     delimiter2, String(edges[i][2] + offset)));
+    od;
+    return str;
+  end;
 end);
 
 # one edge per line, one graph per file
@@ -523,8 +547,8 @@ function(name, digraphs)
       encoder := Digraph6String;
     elif ext = "ds6" then
       encoder := DiSparse6String;
-#   elif ext = "txt" then
-#     encoder := DigraphPlainTextLineEncoder("  ", " ", 1);
+   elif ext = "txt" then
+     encoder := DigraphPlainTextLineEncoder("  ", " ", 1);
     else
       encoder := fail;
     fi;
@@ -639,7 +663,7 @@ function(n)
   return list;
 end);
 
-
+#
 
 InstallMethod(Graph6String, "for a digraph",
 [IsDigraph],
@@ -1166,12 +1190,31 @@ function(s)
     fi;
     i := i + k + 1;
   od;
-
+  # BAD!! JDM
   range := range + 1;
   source := source + 1;
 
   return Digraph( rec( nrvertices := n, range := range,
     source := source  ) );
 end);
+
+#
+
+InstallMethod(PlainTextString, "for a digraph",
+[IsDigraph], 
+function(digraph)
+  local encoder;
+  encoder := DigraphPlainTextLineEncoder("  ", " ", 0);
+  return encoder(digraph);
+end);
+
+InstallMethod(DigraphFromPlainTextString, "for a string",
+[IsString], 
+function(digraph)
+  local decoder;
+  decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
+  return decoder(digraph);
+end);
+
 
 #EOF

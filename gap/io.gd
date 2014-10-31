@@ -9,11 +9,14 @@
 ##
 
 DeclareGlobalFunction("ReadDigraphs");
+DeclareGlobalFunction("ReadPlainTextDigraph");
+
 DeclareOperation("DigraphFromGraph6String", [IsString]);
 DeclareOperation("DigraphFromDigraph6String", [IsString]);
 DeclareOperation("DigraphFromSparse6String", [IsString]);
 DeclareOperation("DigraphFromDiSparse6String", [IsString]);
-DeclareGlobalFunction("ReadPlainTextDigraph");
+DeclareOperation("DigraphFromPlainTextString", [IsString]);
+
 DeclareGlobalFunction("DigraphPlainTextLineDecoder");
 
 DeclareGlobalFunction("WriteDigraphs");
@@ -21,3 +24,6 @@ DeclareOperation("Graph6String", [IsDigraph]);
 DeclareOperation("Digraph6String", [IsDigraph]);
 DeclareOperation("Sparse6String", [IsDigraph]);
 DeclareOperation("DiSparse6String", [IsDigraph]);
+DeclareOperation("PlainTextString", [IsDigraph]);
+
+DeclareGlobalFunction("DigraphPlainTextLineEncoder");
