@@ -449,6 +449,46 @@ fi;
 #
 
 InstallMethod(IsTransitiveDigraph, "for a digraph",
-[IsDigraph], IS_TRANSITIVE_DIGRAPH);
+[IsDigraph], 
+function(digraph)
+  local n, m, sorted, verts, out, trans, reflex, v, u;
+
+  n := DigraphNrVertices(digraph);
+  m := DigraphNrEdges(digraph);
+
+  # Try correct method vis-a-vis complexity
+  if 20 * ( m + n + ( m * n ) ) < ( n * n * n ) then
+    sorted := DigraphTopologicalSort(digraph);
+    if sorted <> fail then
+      # Essentially create the transitive closure vertex by vertex.
+      # And after doing this for each vertex, check we've added nothing
+      verts := DigraphVertices(digraph);
+      out   := OutNeighbours(digraph);
+      trans := EmptyPlist(n);
+      for v in sorted do
+        trans[v] := BlistList( verts, [v]);
+        reflex   := false;
+        for u in out[v] do
+          trans[v] := UnionBlist(trans[v], trans[u]);
+          if u = v then
+            reflex := true;
+          fi;
+        od;
+        if not reflex then
+          trans[v][v] := false;
+        fi;
+        # Set() is a temporary stop-gap, to allow multi-digraphs
+        # and to not have to worry about the ordering of these lists yet
+        if Set(out[v]) <> Set(ListBlist(verts, trans[v])) then
+          return false;
+        fi;
+        trans[v][v] := true;
+      od;
+      return true;
+    fi;
+  fi;
+  # Otherwise fall back to the Floyd Warshall version
+  return IS_TRANSITIVE_DIGRAPH(digraph);
+end);
 
 #EOF
