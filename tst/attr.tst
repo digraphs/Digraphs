@@ -59,8 +59,9 @@ gap> DigraphDual(gr);
 <digraph with 4 vertices, 16 edges>
 
 # AdjacencyMatrix
-gap> gr:=Digraph(rec(vertices:=[1..10], 
-> source:=[1,1,1,1,1,1,1,1], range:=[2,2,3,3,4,4,5,5]));
+gap> gr:=Digraph( rec( nrvertices := 10, 
+> source := [ 1, 1, 1, 1, 1, 1, 1, 1 ],
+> range := [ 2, 2, 3, 3, 4, 4, 5, 5 ] ) );
 <multidigraph with 10 vertices, 8 edges>
 gap> AdjacencyMatrix(gr);
 [ [ 0, 2, 2, 2, 2, 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], 
@@ -72,59 +73,49 @@ gap> AdjacencyMatrix( Digraph( [ [ ] ] ) );
 [ [ 0 ] ]
 gap> AdjacencyMatrix( Digraph( [ ] ) );
 [  ]
-
-# AdjacencyMatrix, testing before and after getting IsSimple and OutNeighbours
-# (with a simple digraph)
-gap> r:=rec(vertices:=[1..7],
-> source:=[1,1,2,2,3,4,4,5,6,7],
-> range:=[3,4,2,4,6,6,7,2,7,5]);
-rec( range := [ 3, 4, 2, 4, 6, 6, 7, 2, 7, 5 ], 
-  source := [ 1, 1, 2, 2, 3, 4, 4, 5, 6, 7 ], vertices := [ 1 .. 7 ] )
+gap> r := rec( nrvertices := 7,
+> source := [ 1, 1, 2, 2, 3, 4, 4, 5, 6, 7, 7 ],
+> range  := [ 3, 4, 2, 4, 6, 6, 7, 2, 7, 5, 5 ] );;
 gap> gr := Digraph(r);
-<digraph with 7 vertices, 10 edges>
+<multidigraph with 7 vertices, 11 edges>
 gap> adj1 := AdjacencyMatrix(gr);
 [ [ 0, 0, 1, 1, 0, 0, 0 ], [ 0, 1, 0, 1, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 1, 0 ], 
   [ 0, 0, 0, 0, 0, 1, 1 ], [ 0, 1, 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 0, 1 ], 
-  [ 0, 0, 0, 0, 1, 0, 0 ] ]
-gap> gr := Digraph(r);
-<digraph with 7 vertices, 10 edges>
-gap> IsMultiDigraph(gr);
-false
-gap> OutNeighbours(gr);
-[ [ 3, 4 ], [ 2, 4 ], [ 6 ], [ 6, 7 ], [ 2 ], [ 7 ], [ 5 ] ]
+  [ 0, 0, 0, 0, 2, 0, 0 ] ]
+gap> gr := Digraph(OutNeighbours(gr));
+<multidigraph with 7 vertices, 11 edges>
 gap> adj2 := AdjacencyMatrix(gr);
 [ [ 0, 0, 1, 1, 0, 0, 0 ], [ 0, 1, 0, 1, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 1, 0 ], 
   [ 0, 0, 0, 0, 0, 1, 1 ], [ 0, 1, 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 0, 1 ], 
-  [ 0, 0, 0, 0, 1, 0, 0 ] ]
+  [ 0, 0, 0, 0, 2, 0, 0 ] ]
 gap> adj1 = adj2;
 true
-
-# AdjacencyMatrix, testing before and after getting IsSimple and OutNeighbours
-# (with a not simple digraph)
-gap> r:=rec(vertices:=[1..1], source:=[1,1], range:=[1,1]);
-rec( range := [ 1, 1 ], source := [ 1, 1 ], vertices := [ 1 ] )
+gap> r := rec( nrvertices := 1, source := [ 1, 1 ], range := [ 1, 1 ] );;
 gap> gr := Digraph(r);
 <multidigraph with 1 vertex, 2 edges>
 gap> adj1 := AdjacencyMatrix(gr);
 [ [ 2 ] ]
-gap> gr := Digraph(r);
+gap> gr := Digraph(OutNeighbours(gr));
 <multidigraph with 1 vertex, 2 edges>
-gap> IsMultiDigraph(gr);
-true
 gap> adj2 := AdjacencyMatrix(gr);
 [ [ 2 ] ]
 gap> adj1 = adj2;
 true
+gap> AdjacencyMatrix(Digraph( [ ] ));
+[  ]
+gap> AdjacencyMatrix( 
+> Digraph( rec( nrvertices := 0, source := [ ], range := [ ] ) ) );
+[  ]
 
 # DigraphTopologicalSort: standard example
-gap> r := rec( vertices := [1..20000], source := [], range := [] );;
-gap> for i in [1..9999] do
+gap> r := rec( nrvertices := 20000, source := [  ], range := [  ] );;
+gap> for i in [ 1 .. 9999 ] do
 >   Add(r.source, i);
 >   Add(r.range, i+1);
 > od;
 > Add(r.source, 10000);; Add(r.range, 20000);;
 > Add(r.source, 10001);; Add(r.range, 1);;
-> for i in [ 10001..19999 ] do
+> for i in [ 10001 .. 19999 ] do
 >   Add(r.source, i);
 >   Add(r.range, i+1);
 > od;
@@ -145,15 +136,15 @@ gap> DigraphTopologicalSort(gr);
 fail
 
 # DigraphTopologicalSort: testing almost trivial cases
-gap> r := rec( vertices := [ 1, 2 ], source := [ 1, 1 ], range := [ 2, 2 ] );;
+gap> r := rec( nrvertices := 2, source := [ 1, 1 ], range := [ 2, 2 ] );;
 gap> multiple := Digraph(r);;
 gap> DigraphTopologicalSort(multiple);
 [ 2, 1 ]
-gap> gr := Digraph( [] );
+gap> gr := Digraph( [  ] );
 <digraph with 0 vertices, 0 edges>
 gap> DigraphTopologicalSort(gr);
 [  ]
-gap> gr := Digraph([ [ ] ]);
+gap> gr := Digraph([ [  ] ]);
 <digraph with 1 vertex, 0 edges>
 gap> DigraphTopologicalSort(gr);
 [ 1 ]

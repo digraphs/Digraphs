@@ -2,8 +2,9 @@
 
   This is the introduction.<P/>
 
-  A <E>digraph</E> <M>E=(E^0,E^1,r,s)</M> consists of a set of vertices
-  <M>E^0</M> and a set of edges <M>E^1</M> together with functions <M>s, r: E^1
-    \to E^0</M>, called the <E>source</E> and <E>range</E>, respectively.
+  A <E>digraph</E> <M>E=(E^0,E^1,r,s)</M>, also known as a 
+  <E>directed graph</E> consists of a set of vertices <M>E^0</M> and a set of 
+  edges <M>E^1</M> together with functions <M>s, r: E^1 \to E^0</M>, called 
+  the <E>source</E> and <E>range</E>, respectively.
 
 </Chapter>

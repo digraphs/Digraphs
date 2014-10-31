@@ -449,20 +449,6 @@ fi;
 #
 
 InstallMethod(IsTransitiveDigraph, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local closure, adjmat;
-
-  # I want to be able to do this whole thing in C, so that there is
-  # no need to pass things back to GAP, and no need to duplicate work
-  # calculating the adjacency matrix
-  closure := DIGRAPH_TRANS_CLOSURE(digraph);
-  adjmat := AdjacencyMatrix(digraph);
-  if closure = adjmat then
-    return true;
-  else
-    return false;
-  fi;
-end);
+[IsDigraph], IS_TRANSITIVE_DIGRAPH);
 
 #EOF

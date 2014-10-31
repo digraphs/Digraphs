@@ -815,9 +815,10 @@ static Obj FLOYD_WARSHALL(Obj digraph,
                                        Int   j,
                                        Int   k, 
                                        Int   n),
-                          Int val1, 
-                          Int val2) {
-  Int   n, i, j, k, *dist;
+                          Int  val1, 
+                          Int  val2,
+                          bool copy) {
+  Int   n, i, j, k, *dist, *adj;
   Obj   next, source, range, out, outi, val;
 
   n = DigraphNrVertices(digraph);
@@ -852,6 +853,15 @@ static Obj FLOYD_WARSHALL(Obj digraph,
       } 
     }
   }
+
+  if ( copy ) {
+    // This is the special case for IS_TRANSITIVE_DIGRAPH
+    adj = malloc( n * n * sizeof(Int) );
+    for ( i = 0; i < n * n; i++ ) {
+      adj[i] = dist[i];
+    }
+    // memcpy( (void*)adj, (void*)dist, n * n * sizeof(Int) );
+  }
   
   for (k = 0; k < n; k++) {
     for (i = 0; i < n; i++) {
@@ -859,6 +869,20 @@ static Obj FLOYD_WARSHALL(Obj digraph,
         func(&dist, i, j, k, n);
       }
     }
+  }
+
+  if ( copy ) {
+    // This is the special case for IS_TRANSITIVE_DIGRAPH
+    for ( i = 0; i < n * n; i++) {
+      if ( adj[ i ] != dist[ i ] ) {
+        free(dist);
+        free(adj);
+        return False;
+      }
+    }
+    free(dist);
+    free(adj);
+    return True;
   }
   
   out = NEW_PLIST(T_PLIST_TAB, n);
@@ -889,8 +913,8 @@ void FW_FUNC_SHORTEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
   }
 }
  
-static Obj FuncDIGRAPH_SHORTEST_DIST(Obj self, Obj digraph){
-  return FLOYD_WARSHALL(digraph, FW_FUNC_SHORTEST_DIST, -1, 1);
+static Obj FuncDIGRAPH_SHORTEST_DIST(Obj self, Obj digraph) {
+  return FLOYD_WARSHALL(digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false);
 }
 
 void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
@@ -899,8 +923,12 @@ void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
   }
 }
 
-static Obj FuncDIGRAPH_TRANS_CLOSURE(Obj self, Obj digraph){
-  return FLOYD_WARSHALL(digraph, FW_FUNC_TRANS_CLOSURE, 0, 1);
+static Obj FuncIS_TRANSITIVE_DIGRAPH(Obj self, Obj digraph) {
+  return FLOYD_WARSHALL(digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, true);
+}
+
+static Obj FuncDIGRAPH_TRANS_CLOSURE(Obj self, Obj digraph) {
+  return FLOYD_WARSHALL(digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, false);
 }
 
 void FW_FUNC_REFLEX_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
@@ -909,8 +937,8 @@ void FW_FUNC_REFLEX_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
   }
 }
 
-static Obj FuncDIGRAPH_REFLEX_TRANS_CLOSURE(Obj self, Obj digraph){
-  return FLOYD_WARSHALL(digraph, FW_FUNC_REFLEX_TRANS_CLOSURE, 0, 1);
+static Obj FuncDIGRAPH_REFLEX_TRANS_CLOSURE(Obj self, Obj digraph) {
+  return FLOYD_WARSHALL(digraph, FW_FUNC_REFLEX_TRANS_CLOSURE, 0, 1, false);
 }
 
 static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj limm) {
@@ -1683,6 +1711,10 @@ static StructGVarFunc GVarFuncs [] = {
     FuncDIGRAPH_SHORTEST_DIST, 
     "src/digraphs.c:FuncDIGRAPH_SHORTEST_DIST" },
 
+  { "IS_TRANSITIVE_DIGRAPH", 1, "digraph",
+    FuncIS_TRANSITIVE_DIGRAPH,
+    "src/digraphs.c:FuncIS_TRANSITIVE_DIGRAPH" },
+  
   { "DIGRAPH_TRANS_CLOSURE", 1, "digraph",
     FuncDIGRAPH_TRANS_CLOSURE,
     "src/digraphs.c:FuncDIGRAPH_TRANS_CLOSURE" },

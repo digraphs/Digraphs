@@ -60,25 +60,27 @@ gap> DigraphTopologicalSort(gr);
   <Attr Name="AdjacencyMatrix" Arg="digraph"/>
   <Returns>A square matrix of non-negative integers.</Returns>
   <Description>
-    Returns adjacency matrix <C>mat</C> of the digraph <A>digraph</A>.
-    The value of <C>mat[i][j]</C> is the number of edges from the vertex
-    <C>i</C> to the vertex <C>j</C> in <A>digraph</A>.
+    This function returns the adjacency matrix <C>mat</C> of the digraph 
+    <A>digraph</A>.
+    The value of the matrix entry <C>mat[i][j]</C> is the number of edges 
+    in <A>digraph</A> with source <C>i</C> and range <C>j</C>.
     
     <Example><![CDATA[
-gap> gr:=Digraph( [ [ 2 ], [ 1, 3, 6, 8, 9, 10 ], [ 4, 6, 8 ], 
-> [ 1, 2, 3, 9 ], [ 3 ], [ 3, 5, 6, 10 ], 
-> [ 1, 2, 7 ], [ 1, 2, 3, 5, 6, 10 ], [ 1, 3, 4, 5, 8, 10 ], 
-> [ 2, 3, 4, 6, 7, 10 ] ] );;
+gap> gr:=Digraph( [ [ 2, 2, 2 ], [ 1, 3, 6, 8, 9, 10 ], [ 4, 6, 8 ],
+> [ 1, 2, 3, 9 ], [ 3, 3 ], [ 3, 5, 6, 10 ], [ 1, 2, 7 ],
+> [ 1, 2, 3, 10, 5, 6, 10 ], [ 1, 3, 4, 5, 8, 10 ], 
+> [ 2, 3, 4, 6, 7, 10 ] ] );
+<multidigraph with 10 vertices, 44 edges>
 gap> mat := AdjacencyMatrix(gr);;
 gap> Display(mat);
-[ [  0,  1,  0,  0,  0,  0,  0,  0,  0,  0 ],
+[ [  0,  3,  0,  0,  0,  0,  0,  0,  0,  0 ],
   [  1,  0,  1,  0,  0,  1,  0,  1,  1,  1 ],
   [  0,  0,  0,  1,  0,  1,  0,  1,  0,  0 ],
   [  1,  1,  1,  0,  0,  0,  0,  0,  1,  0 ],
-  [  0,  0,  1,  0,  0,  0,  0,  0,  0,  0 ],
+  [  0,  0,  2,  0,  0,  0,  0,  0,  0,  0 ],
   [  0,  0,  1,  0,  1,  1,  0,  0,  0,  1 ],
   [  1,  1,  0,  0,  0,  0,  1,  0,  0,  0 ],
-  [  1,  1,  1,  0,  1,  1,  0,  0,  0,  1 ],
+  [  1,  1,  1,  0,  1,  1,  0,  0,  0,  2 ],
   [  1,  0,  1,  1,  1,  0,  0,  1,  0,  1 ],
   [  0,  1,  1,  1,  0,  1,  1,  0,  0,  1 ] ]]]></Example>
   </Description>
@@ -118,16 +120,16 @@ gap> DigraphEdges(gr);
   <Attr Name="DigraphEdges" Arg="digraph"/>
   <Returns>The edges of a digraph.</Returns>
   <Description>
-    Returns the set of edges of the digraph <A>digraph</A>, that is, a set of
-    pairs of elements of <Ref Oper="DigraphVertices"/>.
+    Returns the list of edges of the directed graph <A>digraph</A>,
+    that is, a list of pairs of elements of <Ref Oper="DigraphVertices"/>.
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 3, 4, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
+gap> gr := Digraph( [ [ 1, 3, 4, 3, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
 > [ 2, 4, 5 ], [ 1 ] ] );
-<digraph with 5 vertices, 15 edges>
+<multidigraph with 5 vertices, 16 edges>
 gap> DigraphEdges(gr);
-[ [ 1, 1 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 2, 1 ], [ 2, 2 ], 
-  [ 2, 3 ], [ 2, 5 ], [ 3, 2 ], [ 3, 4 ], [ 3, 5 ], [ 4, 2 ], 
-  [ 4, 4 ], [ 4, 5 ], [ 5, 1 ] ]
+[ [ 1, 1 ], [ 1, 3 ], [ 1, 4 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], 
+  [ 2, 2 ], [ 2, 3 ], [ 2, 5 ], [ 3, 2 ], [ 3, 4 ], [ 3, 5 ], 
+  [ 4, 2 ], [ 4, 4 ], [ 4, 5 ], [ 5, 1 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -138,7 +140,7 @@ gap> DigraphEdges(gr);
   <Attr Name="DigraphNrEdges" Arg="digraph"/>
   <Returns>The number of edges of a digraph.</Returns>
   <Description>
-    Returns the number of edges of the digraph <A>digraph</A>.
+    This function returns the number of edges of the digraph <A>digraph</A>.
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1, 3, 4, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
 > [ 2, 4, 5 ], [ 1 ] ] );;
@@ -159,9 +161,11 @@ gap> DigraphNrEdges(gr);
   <Attr Name="OutNeighbors" Arg="digraph"/>
   <Returns>The adjacencies of a digraph.</Returns>
   <Description>
-    Returns the list <C>out</C> of out-neighbours of the digraph
-    <A>digraph</A>. More specifically, <C>j</C> belongs to <C>out[i]</C>
-    whenever there is an edge from <C>i</C> to <C>j</C> in <A>digraph</A>. <P/>
+    This function returns the list <C>out</C> of out-neighbours of each vertex
+    of the digraph <A>digraph</A>.
+    More specifically, a vertex <C>j</C> appears in <C>out[i]</C> each time
+    there exists an edge with source <C>i</C> and range <C>j</C> in 
+    <A>digraph</A>. <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
@@ -188,14 +192,15 @@ gap> OutNeighbours(gr);
 <ManSection>
   <Attr Name="InNeighbours" Arg="digraph"/>
   <Attr Name="InNeighbors" Arg="digraph"/>
-  <Returns>A list of lists of positive integers.</Returns>
+  <Returns>A list of lists of vertices.</Returns>
   <Description>
-    Returns the list <C>in</C> of in-neighbours of the digraph
-    <A>digraph</A>. More specifically, <C>j</C> belongs to <C>in[i]</C>
-    whenever there is an edge from <C>j</C> to <C>i</C> in <A>digraph</A>. <P/>
-
-    Note that each entry of <C>in</C> is sorted into ascending order.
-<P/>
+    This function returns the list <C>inn</C> of in-neighbours of each vertex
+    of the digraph <A>digraph</A>.
+    More specifically, a vertex <C>j</C> appears in <C>inn[i]</C> each time
+    there exists an edge with source <C>j</C> and range <C>i</C> in
+    <A>digraph</A>. <P/>
+    
+    Note that each entry of <C>inn</C> is sorted into ascending order. <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
@@ -225,13 +230,14 @@ gap> InNeighbours(gr);
   <Returns>A list of non-negative integers.</Returns>
   <Description>
 
-    Given a digraph <A>digraph</A> with <M>n</M> vertices, <C>OutDegrees</C> 
-    returns a list <C>out</C> of length <M>n</M>, such that for a vertex <C>i</C>
-    in <A>digraph</A>, the value of <C>out[i]</C> is the out-degree of vertex 
-    <C>i</C>. See <Ref Oper="OutDegreeOfVertex"/>. <P/>
+    Given a directed graph <A>digraph</A> with <M>n</M> vertices, the function
+    <C>OutDegrees</C> returns a list <C>out</C> of length <M>n</M>, such that 
+    for a vertex <C>i</C> in <A>digraph</A>, the value of <C>out[i]</C> is the 
+    out-degree of vertex <C>i</C>.
+    See <Ref Oper="OutDegreeOfVertex"/>. <P/>
 
-    The function <C>OutDegreeSequence</C> returns the same list, after it has been
-    sorted into non-increasing order.
+    The function <C>OutDegreeSequence</C> returns the same list,
+    after it has been sorted into non-increasing order.
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1, 3, 2, 2 ], [ ], [ 2, 1 ] ] );
@@ -252,13 +258,14 @@ gap> OutDegreeSequence(gr);
   <Returns>A list of non-negative integers.</Returns>
   <Description>
 
-    Given a digraph <A>digraph</A> with <M>n</M> vertices, <C>InDegrees</C> 
-    returns a list <C>out</C> of length <M>n</M>, such that for a vertex <C>i</C>
-    in <A>digraph</A>, the value of <C>out[i]</C> is the in-degree of vertex 
-    <C>i</C>. See <Ref Oper="InDegreeOfVertex"/>. <P/>
+    Given a directed graph <A>digraph</A> with <M>n</M> vertices, the function
+    <C>InDegrees</C> returns a list <C>inn</C> of length <M>n</M>, such that 
+    for a vertex <C>i</C> in <A>digraph</A>, the value of <C>inn[i]</C> is 
+    the in-degree of vertex <C>i</C>.
+    See <Ref Oper="InDegreeOfVertex"/>. <P/>
 
-    The function <C>InDegreeSequence</C> returns the same list, after it has been
-    sorted into non-increasing order.
+    The function <C>InDegreeSequence</C> returns the same list, 
+    after it has been sorted into non-increasing order.
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1, 3, 2, 2 ], [ ], [ 2, 1 ] ] );
@@ -328,14 +335,20 @@ gap> DigraphNrVertices(RandomDigraph(100));
   <Attr Name="DigraphStronglyConnectedComponents" Arg="digraph"/>
   <Returns>A record.</Returns>
   <Description>
-    Returns the record <C>scc</C> corresponding to the strongly connected
-    components of the digraph <A>digraph</A>. The record <C>scc</C> has 2
-    components <C>comps</C> and <C>id</C>. The component <C>comps</C> is a list
-    of the strongly connected components of <A>digraph</A> (as a list of
-    vertices) and <C>id</C> is a list such that the vertex <C>i</C> is an
-    element of <C>comps[id[i]]</C>.<P/>
+    This function returns the record <C>scc</C> corresponding to the 
+    strongly connected components of the directed graph <A>digraph</A>.
+    Two vertices of <A>digraph</A> are in the same strongly connected
+    component whenever there is a path from each vertex to the other.
+    The set of strongly connected components is a partition of
+    the vertex set of <A>digraph</A>. <P/>
 
-    The method used in this operation is a non-recursive version of Gabow's
+    The record <C>scc</C> has 2 components: <C>comps</C> and <C>id</C>.
+    The component <C>comps</C> is a list of the strongly connected components
+    of <A>digraph</A> (each of which is a list of vertices).
+    The component <C>id</C> is a list such that the vertex <C>i</C> is an
+    element of the strongly connected component <C>comps[id[i]]</C>. <P/>
+
+    The method used in this function is a non-recursive version of Gabow's
     Algorithm <Cite Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
     <M>n</M> is the number of vertices in the digraph. 
@@ -358,20 +371,21 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
   <Attr Name="DigraphConnectedComponents" Arg="digraph"/>
   <Returns>A record.</Returns>
   <Description>
-    Returns the record <C>wcc</C> corresponding to the weakly connected
-    components of the digraph <A>digraph</A>. 
-    The record <C>wcc</C> has 2 components, <C>comps</C> and <C>id</C>.
-    The component <C>comps</C> is a list of the weakly connected components of 
-    <A>digraph</A> (each of which is a list of vertices).
-    The component <C>id</C> is a list such that the vertex <C>i</C> is an element 
-    of <C>comps[id[i]]</C>. <P/>
+    This function returns the record <C>wcc</C> corresponding to the weakly 
+    connected components of the digraph <A>digraph</A>.
+    Two vertices of <A>digraph</A> are in the same weakly connected 
+    component whenever there exists a path (ignoring the orientation
+    of edges) between them.
+    The set of weakly connected components is a partition of
+    the vertex set of <A>digraph</A>. <P/>
 
-    The weakly connected components of a digraph partition the set of 
-    vertices of a digraph. Two vertices are in the same weakly connected 
-    component whenever (ignoring the orientation of edges) there is a path from
-    one vertex to the other. <P/>
+    The record <C>wcc</C> has 2 components: <C>comps</C> and <C>id</C>.
+    The component <C>comps</C> is a list of the weakly connected components
+    of  <A>digraph</A> (each of which is a list of vertices).
+    The component <C>id</C> is a list such that the vertex <C>i</C> is an 
+    element of the weakly connected component <C>comps[id[i]]</C>. <P/>
 
-    The method used in this operation has complexity <M>O(m+n)</M> where
+    The method used in this function has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
     <M>n</M> is the number of vertices in the digraph. 
     
@@ -430,8 +444,10 @@ gap> Display(mat);
   <Attr Name="DigraphSinks" Arg="digraph"/>
   <Returns>A list of vertices.</Returns>
   <Description>
-    Returns a list of the sinks of the digraph <A>digraph</A>. A sink is a vertex with 
-    out-degree zero. See <Ref Oper="OutDegreeOfVertex"/>.
+    This function returns a list of the sinks of the directed graph
+    <A>digraph</A>.
+    A sink of a digraph is a vertex with out-degree zero.
+    See <Ref Oper="OutDegreeOfVertex"/>.
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 3, 5, 2, 2 ], [ 3 ], [  ], [ 5, 2, 5, 3 ], [  ] ] );
 <multidigraph with 5 vertices, 9 edges>
@@ -447,8 +463,10 @@ gap> DigraphSinks(gr);
   <Attr Name="DigraphSources" Arg="digraph"/>
   <Returns>A list of vertices.</Returns>
   <Description>
-    Returns a list of the sources of the digraph <A>digraph</A>. A source is a vertex with 
-    in-degree zero. See <Ref Oper="InDegreeOfVertex"/>.
+    This function returns a list of the sources of the directed graph 
+    <A>digraph</A>.
+    A source of a digraph is a vertex with in-degree zero.
+    See <Ref Oper="InDegreeOfVertex"/>.
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 3, 5, 2, 2 ], [ 3 ], [  ], [ 5, 2, 5, 3 ], [  ] ] );
 <multidigraph with 5 vertices, 9 edges>
@@ -464,15 +482,15 @@ gap> DigraphSources(gr);
   <Prop Name="DigraphPeriod" Arg="digraph"/>
   <Returns>An integer.</Returns>
   <Description>
-    This function returns the period of <A>digraph</A>.<P/>
+    This function returns the period of the directed graph <A>digraph</A>.<P/>
 
     If a directed graph <A>digraph</A> has at least one cycle, then the
-    period is the greatest positive integer which 
-    divides the lengths of every cycle of <A>digraph</A>. If <A>digraph</A>
-    has no cycles, this function returns <M>0</M>.<P/>
+    period is the greatest positive integer which divides the lengths of all 
+    cycles of <A>digraph</A>.
+    If <A>digraph</A> has no cycles, then this function returns <M>0</M>.<P/>
     
-    A digraph with a period of <M>1</M> is said to be <E>aperiodic</E>. See
-    <Ref Prop="IsAperiodicDigraph"/>. <P/>
+    A digraph with a period of <M>1</M> is said to be <E>aperiodic</E>.
+    See <Ref Prop="IsAperiodicDigraph"/>. <P/>
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );
 <multidigraph with 6 vertices, 7 edges>
@@ -492,3 +510,4 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+    <A>digraph</A>. Specifically, a vertex <C>j</C> belongs to <C>inn[i]</C>

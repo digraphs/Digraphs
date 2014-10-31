@@ -481,8 +481,10 @@ gap> DigraphVertices(last);
   <Oper Name="OutDegreeOfVertex" Arg="digraph, vertex"/>
   <Returns>The non-negative integer.</Returns>
   <Description>
-    Returns the out-degree of <A>vertex</A> in <A>digraph</A>; specifically,
-    the number of edges in <A>digraph</A> whose source is <A>vertex</A>.
+    This function returns the out-degree of the vertex <A>vertex</A> in the 
+    directed graph <A>digraph</A>.
+    The out-degree of <A>vertex</A> is the number of edges in <A>digraph</A>
+    whose source is <A>vertex</A>.
     <P/>
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 2, 2, 1 ], [ 1, 4 ], [ 2, 2, 4, 2 ], 
@@ -505,10 +507,14 @@ gap> OutDegreeOfVertex(gr, 4);
 <ManSection>
   <Oper Name="OutNeighboursOfVertex" Arg="digraph, vertex"/>
   <Oper Name="OutNeighborsOfVertex" Arg="digraph, vertex"/>
-  <Returns>A list of positive integers.</Returns>
+  <Returns>A list of vertices.</Returns>
   <Description>
-    Returns the list <C>out</C> such that a vertex <C>i</C> is in <C>out</C>
-    whenever there is an edge from <A>vertex</A> to <C>i</C> in <A>digraph</A>.
+
+    This function returns the list <C>out</C> of vertices of the directed graph
+    <A>digraph</A>.
+    A vertex <C>i</C> appears in the list <C>out</C> each time there exists an
+    edge  with source <A>vertex</A> and range <C>i</C> in <A>digraph</A>; in
+    particular, this means that <C>out</C> may contain duplicates.<P/>
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 2, 2, 3 ], [ 1, 3, 4 ], [ 2, 2, 3 ], 
 > [ 1, 1, 2, 2, 1, 2, 2 ] ] );
@@ -527,8 +533,10 @@ gap> OutNeighboursOfVertex(gr, 3);
   <Oper Name="InDegreeOfVertex" Arg="digraph, vertex"/>
   <Returns>A non-negative integer.</Returns>
   <Description>
-    Returns the in-degree of <A>vertex</A> in <A>digraph</A>; specifically,
-    the number of edges in <A>digraph</A> whose range is <A>vertex</A>.
+    This function returns the in-degree of the vertex <A>vertex</A> in the 
+    directed graph <A>digraph</A>.
+    The in-degree of <A>vertex</A> is the number of edges in <A>digraph</A>
+    whose range is <A>vertex</A>.
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 2, 2, 1 ], [ 1, 4 ], [ 2, 2, 4, 2 ], 
 > [ 1, 1, 2, 2, 1, 2, 2 ] ] );
@@ -550,10 +558,15 @@ gap> InDegreeOfVertex(gr, 4);
 <ManSection>
   <Oper Name="InNeighboursOfVertex" Arg="digraph, vertex"/>
   <Oper Name="InNeighborsOfVertex" Arg="digraph, vertex"/>
-  <Returns>A list of postitive integers.</Returns>
+  <Returns>A list of postitive vertices.</Returns>
   <Description>
-    Returns the list <C>inn</C> such that a vertex <C>i</C> is in <C>inn</C>
-    whenever there is an edge from <C>i</C> to <A>vertex</A> in <A>digraph</A>.
+
+    This function returns the list <C>inn</C> of vertices of the directed graph
+    <A>digraph</A>.
+    A vertex <C>i</C> appears in the list <C>inn</C> each time there exists an 
+    edge  with source <C>i</C> and range <A>vertex</A> in <A>digraph</A>; in
+    particular, this means that <C>inn</C> may contain duplicates. <P/>
+
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 2, 2, 3 ], [ 1, 3, 4 ], [ 2, 2, 3 ], 
 > [ 1, 1, 2, 2, 1, 2, 2 ] ] );
@@ -606,8 +619,10 @@ gap> DigraphOutEdges(gr, 2);
   <Oper Name="DigraphStronglyConnectedComponent" Arg="digraph, vertex"/>
   <Returns>A list of vertices.</Returns>
   <Description>
-    <C>DigraphStronglyConnectedComponent</C> returns the strongly connected
-    component of <A>vertex</A> in <A>digraph</A>.
+    If <A>vertex</A> is a vertex in the directed graph <A>digraph</A>, then
+    this function returns the strongly connected component of <A>vertex</A> 
+    in <A>digraph</A>.
+    See <Ref Attr="DigraphStronglyConnectedComponents"/> for more information.
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 3 ], [ 2 ], [ 1, 2 ], [ 3 ] ] );
 <digraph with 4 vertices, 5 edges>

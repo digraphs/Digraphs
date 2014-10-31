@@ -563,6 +563,12 @@ gap> gr := Digraph( [ [ 1, 1 ] ] );
 <multidigraph with 1 vertex, 2 edges>
 gap> IsTransitiveDigraph(gr);
 true
+gap> gr := Digraph( [ [ 2, 2 ], [ 1, 1 ] ] );;
+gap> IsTransitiveDigraph(gr);
+false
+gap> gr := Digraph( [ [ 1, 2, 2 ], [ 1, 2 ] ] );;
+gap> IsTransitiveDigraph(gr);
+true
 
 #
 gap> DigraphsStopTest();
