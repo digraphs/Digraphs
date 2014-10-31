@@ -117,8 +117,7 @@ function(digraph)
   elif DigraphNrEdges(digraph) < DigraphNrVertices(digraph) - 1 then
     return false;
   fi;
-  # DigraphSymmetricClosure is not yet implemented!
-  return IsStronglyConnectedDigraph( DigraphSymmetricClosure(digraph) );
+  return (Length(DigraphConnectedComponents(digraph).comps) = 1);
 end);
 
 #

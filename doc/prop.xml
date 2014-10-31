@@ -201,6 +201,31 @@ false
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsConnectedDigraph">
+<ManSection>
+  <Prop Name="IsConnectedDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This function returns <K>true</K> if the digraph <A>digraph</A> is
+    weakly connected and <K>false</K> if it is not.  A digraph <A>digraph</A>
+    is <E>weakly connected</E> if it is possible to travel from any vertex to
+    any other vertex by traversing edges in either direction (possibly against
+    the direction of some of them). <P/>
+
+    The method used in this operation has complexity <M>O(m)</M> where <M>m</M>
+    is the number of edges.
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [3], []]);;
+gap> IsConnectedDigraph(gr);
+true
+gap> gr := Digraph([[1,3], [4], [3], []]);;
+gap> IsConnectedDigraph(gr);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsStronglyConnectedDigraph">
 <ManSection>
   <Prop Name="IsStronglyConnectedDigraph" Arg="digraph"/>
