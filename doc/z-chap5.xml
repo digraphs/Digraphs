@@ -15,6 +15,7 @@
   
   <Section><Heading>Connectivity and cycles</Heading>
     <#Include Label="IsAcyclicDigraph">
+    <#Include Label="IsConnectedDigraph">
     <#Include Label="IsStronglyConnectedDigraph">
     <#Include Label="IsAperiodicDigraph">
   </Section>
