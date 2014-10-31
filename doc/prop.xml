@@ -333,12 +333,16 @@ gap> DigraphEdges(gr2);
   <Prop Name="IsTransitiveDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if <A>digraph</A> is transitive, and
-    <K>false</K> if it is not. <P/>
+    This function returns <K>true</K> if the directed graph <A>digraph</A>
+    is transitive, and <K>false</K> if it is not.
     
     A digraph is <E>transitive</E> if whenever <C>[ i, j ]</C> and 
     <C>[ j, k ]</C> are edges of the digraph, then <C>[ i, k ]</C> is also an
     edge of the digraph. <P/>
+
+    The method used in this function is a version of the Floyd-Warshall 
+    algorithm, and has complexity <M>O(n^3)</M>, where <M>n</M> is the number
+    of vertices of <A>digraph</A>.
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 3 ] ] );
 <digraph with 3 vertices, 4 edges>

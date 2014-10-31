@@ -227,8 +227,7 @@ else
   end);
 fi;
 
-InstallMethod(OutNeighbors, "for a digraph",
-[IsDigraph], OutNeighbours);
+InstallMethod(OutNeighbors, "for a digraph", [IsDigraph], OutNeighbours);
 
 #
 
@@ -268,48 +267,46 @@ else
   end);
 fi;
 
-InstallMethod(InNeighbors, "for a digraph",
-[IsDigraph], InNeighbours);
+InstallMethod(InNeighbors, "for a digraph", [IsDigraph], InNeighbours);
 
 #
 
 InstallMethod(AdjacencyMatrix, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours], 
-function(graph)
-  local verts, adj, out, i;
+function(digraph)
+  local verts, out, mat, i, j;
   
-  verts := [ 1 .. DigraphNrVertices(graph) ];
-  adj := OutNeighbours(graph);
-  
-  out := EmptyPlist(DigraphNrVertices(graph));
-  
-  for i in verts do 
-    out[i] := verts * 0;
-    out[i]{adj[i]} := ( [1 .. Length(adj[i])] * 0 ) + 1;
+  verts := ShallowCopy(DigraphVertices(digraph)); 
+  out   := OutNeighbours(digraph);
+  mat   := EmptyPlist(DigraphNrVertices(digraph));
+ 
+  for i in verts do
+    mat[i] := verts * 0;
+    for j in out[i] do
+      mat[i][j] := mat[i][j] + 1;
+    od;
   od;
-  return out;
+  return mat;
 end);
 
 InstallMethod(AdjacencyMatrix, "for a digraph with source and range",
 [IsDigraph and HasDigraphSource], 
-function(graph)
-  local verts, source, range, out, i;
+function(digraph)
+  local verts, source, range, mat, i;
   
-  verts := [ 1 .. DigraphNrVertices(graph) ];
-  source := DigraphSource(graph);
-  range := DigraphRange(graph);
-
-  out := EmptyPlist(DigraphNrVertices(graph));
+  verts  := ShallowCopy(DigraphVertices(digraph)); 
+  source := DigraphSource(digraph);
+  range  := DigraphRange(digraph);
+  mat    := EmptyPlist(DigraphNrVertices(digraph));
   
   for i in verts do 
-    out[i] := verts * 0;
+    mat[i] := verts * 0;
   od;
-  
   for i in [1..Length(source)] do 
-    out[source[i]][range[i]] := out[source[i]][range[i]] + 1;
+    mat[source[i]][range[i]] := mat[source[i]][range[i]] + 1;
   od;
   
-  return out;  
+  return mat;  
 end);
 
 #

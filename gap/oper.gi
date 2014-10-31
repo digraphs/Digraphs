@@ -870,35 +870,43 @@ end);
 InstallMethod(DigraphTransitiveClosure, "for a digraph and a boolean", 
 [IsDigraph, IsBool],
 function(graph, reflexive)
-  local n, vertices, adj, sorted, out, trans, reflex, mat, v, u;
+  local adj, m, n, verts, sorted, out, trans, reflex, mat, v, u;
 
-  n := DigraphNrVertices(graph);
-  vertices := DigraphVertices(graph);
-  adj := OutNeighbours(graph);
-  sorted := DigraphTopologicalSort(graph);
-
-  if sorted <> fail then # Easier method for acyclic graphs (loops allowed)
-    out := EmptyPlist(n);
-    trans := EmptyPlist(n);
-
-    for v in sorted do
-      trans[v] := BlistList( vertices, [v]);
-      reflex := false;
-      for u in adj[v] do
-        trans[v] := UnionBlist(trans[v], trans[u]);
-        if u = v then
-          reflex := true;
+  # <graph> is a digraph without multiple edges
+  # <reflexive> is a boolean: true if we want the reflexive transitive closure
+ 
+  adj   := OutNeighbours(graph);
+  m     := DigraphNrEdges(graph);
+  n     := DigraphNrVertices(graph);
+  verts := DigraphVertices(graph);
+  
+  # Try correct method vis-a-vis complexity
+  if 20 * ( m + n + ( m * n ) ) < ( n * n * n ) then
+    sorted := DigraphTopologicalSort(graph);
+    if sorted <> fail then # Method for big acyclic digraphs (loops allowed)
+      out   := EmptyPlist(n);
+      trans := EmptyPlist(n);
+      for v in sorted do
+        trans[v] := BlistList( verts, [v]);
+        reflex   := false;
+        for u in adj[v] do
+          trans[v] := UnionBlist(trans[v], trans[u]);
+          if u = v then
+            reflex := true;
+          fi;
+        od;
+        if (not reflexive) and (not reflex) then
+          trans[v][v] := false;
         fi;
+        out[v] := ListBlist(verts, trans[v]);
+        trans[v][v] := true;
       od;
-      if (not reflexive) and (not reflex) then
-        trans[v][v] := false;
-      fi;
-      out[v] := ListBlist(vertices, trans[v]);
-      trans[v][v] := true;
-    od;
+      out := DigraphNC(out);
+    fi;
+  fi;
 
-    out := DigraphNC(out);
-  else # Non-acyclic: C method
+  # Method for small or non-acyclic digraphs
+  if not IsBound(out) then
     if reflexive then
       mat := DIGRAPH_REFLEX_TRANS_CLOSURE(graph);
     else
@@ -906,6 +914,7 @@ function(graph, reflexive)
     fi;
     out := DigraphByAdjacencyMatrixNC(mat);
   fi;
+
   SetIsMultiDigraph(out, false);
   SetIsTransitiveDigraph(out, true);
   return out;
