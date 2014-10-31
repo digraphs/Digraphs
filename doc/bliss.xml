@@ -11,6 +11,7 @@
 <#GAPDoc Label="AutomorphismGroupDigraph">
 <ManSection>
   <Attr Name="AutomorphismGroup" Label="for a digraph" Arg="digraph"/>
+  <Returns>A permutation group.</Returns>
   <Description>
     If <A>digraph</A> is a digraph without multiple edges, then this function
     returns the automorphism group of <A>digraph</A>, as a group of permutations
@@ -31,11 +32,12 @@ gap> Size(last);
 48]]></Example>
     </Description>
   </ManSection>
-  <#/GAPDoc>
+<#/GAPDoc>
 
-  <#GAPDoc Label="AutomorphismGroupMultiDigraph">
+<#GAPDoc Label="AutomorphismGroupMultiDigraph">
   <ManSection>
     <Attr Name="AutomorphismGroup" Label="for a multidigraph" Arg="digraph"/>
+    <Returns>A direct product of permutation groups.</Returns>
     <Description>
     If <A>digraph</A> is a multidigraph, then this function
     returns the automorphism group of <A>digraph</A>, as a group of permutations
@@ -67,49 +69,115 @@ Group([ (5,6), (3,4), (1,2) ])
 gap> Size(G);
 24]]></Example>
   </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphEndomorphisms">
-<ManSection>
-  <Attr Name="DigraphEndomorphisms" Label="for a digraph" Arg="digraph"/>
-  <Description>
-
-  <Example><![CDATA[
-  ]]></Example>
-  </Description>
-</ManSection>
+  </ManSection>
 <#/GAPDoc>
 
 <#GAPDoc Label="DigraphCanonicalLabelling">
 <ManSection>
   <Attr Name="DigraphCanonicalLabelling" Label="for a digraph" Arg="digraph"/>
+  <Returns> A permutation.</Returns>
   <Description>
+    A function <M>\rho</M> from a digraph to a digraph is a <E>canonical
+    representative map</E> if the following two conditions hold:
+    <List>
+      <Item>
+        <M>\rho(G)</M> and <M>G</M> are isomorphic; and 
+      </Item>
+      <Item>
+        <M>\rho(G)=\rho(H)</M> if and only if <M>G</M> and <M>H</M> are isomorphic.
+      </Item>
+    </List>
+    A canonical labelling of a digraph <A>digraph</A> (under <M>\rho</M>) is an
+    isomorphism of <A>digraph</A> onto its canonical representative
+    <M>\rho(digraph)</M> given as a permutation of the vertices. <P/>
 
-  <Example><![CDATA[
-  ]]></Example>
+    The canonical labelling is found using <URL
+      Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
+    Tommi Junttila and Petteri Kaski.
+    <Example><![CDATA[
+gap> G := Digraph( rec(
+>  nrvertices := 10,
+>  source := [ 1, 1, 3, 4, 4, 5, 8, 8 ],
+>  range := [ 6, 3, 3, 9, 10, 9, 4, 10 ],
+>   ) );
+<digraph with 10 vertices, 8 edges>
+gap> DigraphCanonicalLabelling(G);
+(1,8,5,3,10,6,4,9,7)
+gap> p := (1,2,7,5)(3,9)(6,10,8);;
+gap> H := Digraph( rec(
+>  nrvertices := 10,
+>  source := OnTuples([ 1, 1, 3, 4, 4, 5, 8, 8 ], p),
+>  range := OnTuples([ 6, 3, 3, 9, 10, 9, 4, 10 ], p),
+>   ) );
+<digraph with 10 vertices, 8 edges>
+gap> G = H;
+false
+gap> OnDigraphs(G, DigraphCanonicalLabelling(G)) =
+> OnDigraphs(H, DigraphCanonicalLabelling(H));
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
 <#GAPDoc Label="IsIsomorphicDigraph">
 <ManSection>
-  <Oper Name="IsIsomorphicDigraph" Label="for a digraph" Arg="digraph"/>
+  <Oper Name="IsIsomorphicDigraph" Label="for digraphs" Arg="digraph1, digraph2"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-
-  <Example><![CDATA[
-  ]]></Example>
+    This operation returns <K>true</K> if the digraph <A>digraph1</A> is
+    isomorphic to the digraph <A>digraph2</A>.<P/>
+    
+    This operation uses the canonical labelling of the digraphs found with <URL
+      Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
+    Tommi Junttila and Petteri Kaski.
+    
+    <Example><![CDATA[
+gap> digraph1:=CycleDigraph(4);
+<digraph with 4 vertices, 4 edges>
+gap> digraph2:=CycleDigraph(5);
+<digraph with 5 vertices, 5 edges>
+gap> IsIsomorphicDigraph(digraph1, digraph2);
+false
+gap> digraph2:=DigraphReverse(digraph1);
+<digraph with 4 vertices, 4 edges>
+gap> IsIsomorphicDigraph(digraph1, digraph2);
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
 <#GAPDoc Label="IsomorphismDigraphs">
 <ManSection>
-  <Oper Name="IsomorphismDigraphs" Label="for a digraph" Arg="digraph"/>
+  <Oper Name="IsomorphismDigraphs" Label="for digraphs" Arg="digraph1, digraph2"/>
+  <Returns> A permutation or <K>fail</K>.</Returns>
   <Description>
+    If <A>digraph1</A> and <A>digraph2</A> are isomorphic digraphs, then this
+    operation returns an isomorphism from <A>digraph1</A> to <A>digraphs2</A>,
+    i.e. a permutation <C>p</C> such that <C>OnDigraphs(digraph1,
+      p)=digraph2</C>. <P/>
 
-  <Example><![CDATA[
-  ]]></Example>
+    If <A>digraph1</A> and <A>digraph2</A> are not isomorphic, then <K>fail</K>
+    is returned. <P/>
+
+    This operation uses the canonical labelling of the digraphs found with <URL
+    Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
+    Tommi Junttila and Petteri Kaski.
+
+    <Example><![CDATA[
+gap> digraph1:=CycleDigraph(4);          
+<digraph with 4 vertices, 4 edges>
+gap> digraph2:=CycleDigraph(5);
+<digraph with 5 vertices, 5 edges>
+gap> IsomorphismDigraphs(digraph1, digraph2);
+fail
+gap> gr1 := CompleteBipartiteDigraph(10,5);
+<digraph with 15 vertices, 100 edges>
+gap> gr2 := CompleteBipartiteDigraph(5,10);
+<digraph with 15 vertices, 100 edges>
+gap> p := IsomorphismDigraphs(gr1, gr2);
+(1,6,11)(2,7,12)(3,8,13)(4,9,14)(5,10,15)
+gap> OnDigraphs(gr1, p) = gr2;
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -117,6 +185,17 @@ gap> Size(G);
 <#GAPDoc Label="EndomorphismMonoid">
 <ManSection>
   <Attr Name="EndomorphismMonoid" Label="for a digraph" Arg="digraph"/>
+  <Description>
+
+  <Example><![CDATA[
+  ]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphEndomorphisms">
+<ManSection>
+  <Attr Name="DigraphEndomorphisms" Label="for a digraph" Arg="digraph"/>
   <Description>
 
   <Example><![CDATA[
