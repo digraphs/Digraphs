@@ -548,7 +548,7 @@ function(name, digraphs)
     elif ext = "ds6" then
       encoder := DiSparse6String;
    elif ext = "txt" then
-     encoder := DigraphPlainTextLineEncoder("  ", " ", 1);
+     encoder := DigraphPlainTextLineEncoder("  ", " ", 0);
     else
       encoder := fail;
     fi;
