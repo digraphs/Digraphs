@@ -626,9 +626,8 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
 
 // THIS FUNCTION IS CURRENTLY NOT USED AT ALL! NEED TO DEFINE IT WELL
 static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
-  UInt  m, n;
   Obj   source, range, adj, adji;
-  Int   i, j, k;
+  Int   i, j, k, m, n;
 
   m      = DigraphNrEdges(digraph);
   n      = DigraphNrVertices(digraph);
@@ -1089,7 +1088,6 @@ static Obj FuncDIGRAPH_EQUALS_OUT_NBS(Obj self, Obj digraph1, Obj digraph2) {
 }
 
 static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
-
   UInt n1, n2, m, n, stop, start, i, j, p;
   Int  k, v, current, *buf;
   Obj  source1, source2, range1, range2, sources, a, b;
@@ -1109,7 +1107,7 @@ static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
   PLAIN_LIST(source2);
   m = LEN_PLIST(source1);
 
-  if ( m != LEN_PLIST(source2) ) {
+  if ( m != (UInt) LEN_PLIST(source2) ) {
     return False;   // Different DigraphNrEdges
   } else if ( m == 0 ) {
     return True;    // DigraphNrEdges = 0 so nothing to check
