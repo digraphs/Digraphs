@@ -759,39 +759,39 @@ DIGRAPH_EQUALS_MIXED);
 
 InstallMethod(\=, "for two digraphs with out-neighbours",
 [IsDigraph and HasOutNeighbours, IsDigraph and HasOutNeighbours], 2,
-#DIGRAPH_EQUALS_OUT_NBS);
-function(graph1, graph2)
-  local out1, out2, verts, a, b, i;
-  
-  if DigraphNrVertices(graph1) <> DigraphNrVertices(graph2) then
-    return false;
-  fi;
-  
-  out1 := OutNeighbours(graph1);
-  out2 := OutNeighbours(graph2);
-  if DigraphNrEdges(graph1) <> DigraphNrEdges(graph2) then
-    return false;
-  elif out1 = out2 then
-    return true;
-  fi;
-
-  verts := DigraphVertices(graph1);
-  for i in verts do
-    if Length(out1[i]) <> Length(out2[i]) then
-      return false;
-    fi;
-    if out1[i] <> out2[i] then
-      a := ShallowCopy(out1[i]);
-      b := ShallowCopy(out2[i]);
-      Sort(a);
-      Sort(b);
-      if a <> b then
-        return false;
-      fi;
-    fi;
-  od;
-  return true;
-end);
+DIGRAPH_EQUALS_OUT_NBS);
+#function(graph1, graph2)
+#  local out1, out2, verts, a, b, i;
+#  
+#  if DigraphNrVertices(graph1) <> DigraphNrVertices(graph2) then
+#    return false;
+#  fi;
+#  
+#  out1 := OutNeighbours(graph1);
+#  out2 := OutNeighbours(graph2);
+#  if DigraphNrEdges(graph1) <> DigraphNrEdges(graph2) then
+#    return false;
+#  elif out1 = out2 then
+#    return true;
+#  fi;
+#
+#  verts := DigraphVertices(graph1);
+#  for i in verts do
+#    if Length(out1[i]) <> Length(out2[i]) then
+#      return false;
+#    fi;
+#    if out1[i] <> out2[i] then
+#      a := ShallowCopy(out1[i]);
+#      b := ShallowCopy(out2[i]);
+#      Sort(a);
+#      Sort(b);
+#      if a <> b then
+#        return false;
+#      fi;
+#    fi;
+#  od;
+#  return true;
+#end);
 
 InstallMethod(\=, "for two digraphs with range",
 [IsDigraph and HasDigraphRange, IsDigraph and HasDigraphRange], 2,

@@ -186,6 +186,9 @@ InstallMethod(DigraphRange, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours],
 function(graph)
   DIGRAPHS_SourceRange(graph);
+  # If we don't do the following line, although the graph record has source,
+  # GAP doesn't know that we have the attribute DigraphSource
+  SetDigraphSource(graph, graph!.source);
   return graph!.range;
 end);
 
@@ -193,6 +196,9 @@ InstallMethod(DigraphSource, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours],
 function(graph)
   DIGRAPHS_SourceRange(graph);
+  # If we don't do the following line, although the graph record has range,
+  # GAP doesn't know that we have the attribute DigraphRange
+  SetDigraphRange(graph, graph!.range);
   return graph!.source;
 end);
 
