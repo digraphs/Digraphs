@@ -1,10 +1,21 @@
 <Chapter Label="Homomorphisms"><Heading>Homomorphisms</Heading>
-  
+  <!--Let $E_a=(E_a^0,E_a^1,\ra_a,\so_a)$ and $E_b=(E_b^0,E_b^1,\ra_b,\so_b)$ be two
+graphs, and let $\phi_0 : E_a^0 \to E_b^0$ and $\phi_1 : E_a^1 \to E_b^1$ be
+functions. Then the pair $\phi = (\phi_0, \phi_1)$ is a \emph{graph homomorphism
+from} $E_a$ \emph{to} $E_b$ if $\phi_0(\so_a(e)) = \so_b(\phi_1(e))$ and
+$\phi_0(\ra_a(e)) = \ra_b(\phi_1(e))$ for every $e \in E_a^1$. If $\phi_0$ and
+$\phi_1$ are in addition bijective, then $\phi$ is a \emph{graph isomorphism
+from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
+\emph{isomorphic} and write $E_a \cong E_b$.-->
+
   <Section><Heading>Acting on digraphs</Heading>
     <#Include Label="OnDigraphs">
   </Section>
 
   <Section><Heading>Isomorphisms, and Canonical labellings</Heading>
+  
+
+
     <#Include Label="AutomorphismGroupDigraph">
     <#Include Label="AutomorphismGroupMultiDigraph">
     <#Include Label="DigraphCanonicalLabelling">
