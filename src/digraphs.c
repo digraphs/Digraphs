@@ -514,29 +514,29 @@ static Obj FuncIS_STRONGLY_CONNECTED_DIGRAPH(Obj self, Obj digraph) {
   while (1) { // we always return before level = 0
     if (fptr[1] > (UInt) LEN_PLIST(ELM_PLIST(digraph, fptr[0]))) {
       if (*ptr2 == id[fptr[0]]) {
-  do {
-    n--;
-  } while (*(ptr1--) != fptr[0]);
-  free(bag);
-  free(id);
-  return n==0 ? True : False;
+        do {
+          n--;
+        } while (*(ptr1--) != fptr[0]);
+        free(bag);
+        free(id);
+        return n==0 ? True : False;
       }
       fptr -= 2;
     } else {
       w = INT_INTOBJ(ELM_PLIST(ELM_PLIST(digraph, fptr[0]), fptr[1]++));
       if(id[w] == 0){
-  PLAIN_LIST(ELM_PLIST(digraph, w));
-  fptr += 2; 
-  fptr[0] = w; // vertex
-  fptr[1] = 1; // index
-  nextid++;
-  *(++ptr1) = w; 
-  *(++ptr2) = nextid;
-  id[w] = nextid;
+        PLAIN_LIST(ELM_PLIST(digraph, w));
+        fptr += 2; 
+        fptr[0] = w; // vertex
+        fptr[1] = 1; // index
+        nextid++;
+        *(++ptr1) = w; 
+        *(++ptr2) = nextid;
+        id[w] = nextid;
       } else {
-  while ((*ptr2) > id[w]) {
-    ptr2--;
-  }
+        while ((*ptr2) > id[w]) {
+          ptr2--;
+        }
       }
     }
   }
@@ -838,7 +838,8 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     PLAIN_LIST(range);
 
     for (i = 1; i <= LEN_PLIST(source); i++) {
-      j = (INT_INTOBJ(ELM_PLIST(source, i)) - 1) * n + INT_INTOBJ(ELM_PLIST(range, i)) - 1;
+      j = (INT_INTOBJ(ELM_PLIST(source, i)) - 1) * n +
+        INT_INTOBJ(ELM_PLIST(range, i)) - 1;
       dist[j] = val2;
     }
   } else { 
@@ -1009,8 +1010,8 @@ bool EqJumbledPlists(Obj l, Obj r, Int start, Int stop, Int offset, Int max, Int
 
   // Check first whether the lists are identical
   eq = true;
-  for ( j = start; j < stop; j++ ) {
-    jj      = INT_INTOBJ(ELM_PLIST( l, j ) );
+  for (j = start; j < stop; j++) {
+    jj = INT_INTOBJ(ELM_PLIST( l, j ));
     if ( jj != INT_INTOBJ(ELM_PLIST( r, j + offset ) ) ) {
       eq = false;
       break;
@@ -1020,7 +1021,7 @@ bool EqJumbledPlists(Obj l, Obj r, Int start, Int stop, Int offset, Int max, Int
   // Otherwise check that they have equal content
   if (!eq) {
 
-    for ( j = start; j < stop; j++ ) {
+    for (j = start; j < stop; j++) {
       jj = INT_INTOBJ(ELM_PLIST(l, j)) - 1 ;
       buf[jj]++;
       jj = INT_INTOBJ(ELM_PLIST(r, j + offset)) - 1;
