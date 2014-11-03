@@ -1259,9 +1259,9 @@ BlissGraph* buildBlissMultiDigraph(Obj digraph) {
       for(j = 1; j <= nr; j++) {
         k = bliss_add_vertex(graph, 1);
         l = bliss_add_vertex(graph, 2);
-        bliss_add_edge(graph, i-1, k);
+        bliss_add_edge(graph, i - 1, k);
         bliss_add_edge(graph, k, l);
-        bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j))-1);
+        bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
       }
     }
   } else {
@@ -1285,19 +1285,20 @@ BlissGraph* buildBlissMultiDigraph(Obj digraph) {
 void digraph_hook_function(void               *user_param,
 	                   unsigned int       N,
 	                   const unsigned int *aut        ) {
-  UInt4* ptr;
-  Obj p;
-  UInt i, n;
+  UInt4*  ptr;
+  Obj     p, gens;
+  UInt    i, n;
   
   n   = INT_INTOBJ(ELM_PLIST(user_param, 1));  //the degree
   p   = NEW_PERM4(n);
   ptr = ADDR_PERM4(p);
   
-  for(i = 0; i < n; ++i){
+  for(i = 0; i < n; i++){
     ptr[i] = aut[i];
   }
   
-  AssPlist(user_param, LEN_PLIST(user_param)+1, p);
+  gens = ELM_PLIST(user_param, 2);
+  AssPlist(gens, LEN_PLIST(gens) + 1, p);
   CHANGED_BAG(user_param);
 }
 
@@ -1310,42 +1311,35 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   
   graph = buildBlissMultiDigraph(digraph);
   
-  autos = NEW_PLIST(T_PLIST, 1);
+  autos = NEW_PLIST(T_PLIST, 2);
   n = INTOBJ_INT(DigraphNrVertices(digraph));
 
   SET_ELM_PLIST(autos, 1, n);
-  SET_LEN_PLIST(autos, 1);
+  SET_ELM_PLIST(autos, 2, NEW_PLIST(T_PLIST, 0)); // perms of the vertices
+  CHANGED_BAG(autos);
+  SET_LEN_PLIST(autos, 2);
   canon = bliss_find_canonical_labeling(graph, digraph_hook_function, autos, 0);
   
   p   = NEW_PERM4(INT_INTOBJ(n));
   ptr = ADDR_PERM4(p);
  
-  for(i = 0; i < INT_INTOBJ(n); ++i){
+  for(i = 0; i < INT_INTOBJ(n); i++){
     ptr[i] = canon[i];
   }
   
   bliss_release(graph);
-  
-  nr = LEN_PLIST(autos) - 1;
-  if (nr == 0) {
-    SET_ELM_PLIST(autos, 1, IdentityPerm);
-  } else {
-    memmove((void *) (ADDR_OBJ(autos) + 1), //destination
-            (void *) (ADDR_OBJ(autos) + 2), //source
-            (size_t) nr * sizeof(Obj));
-    SET_LEN_PLIST(autos, nr);
-    CHANGED_BAG(autos);
-    SortDensePlist(autos);
-    RemoveDupsDensePlist(autos);
-  }
 
-  out = NEW_PLIST(T_PLIST, 2);
-  SET_ELM_PLIST(out, 1, p);
-  SET_ELM_PLIST(out, 2, autos);
-  SET_LEN_PLIST(out, 2);
-  CHANGED_BAG(out);
-  
-  return out;
+  SET_ELM_PLIST(autos, 1, p);
+
+  if (LEN_PLIST(ELM_PLIST(autos, 2)) == 0) {
+    AssPlist(ELM_PLIST(autos, 2), 1, IdentityPerm);
+  } else {
+    SortDensePlist(ELM_PLIST(autos, 2));
+    RemoveDupsDensePlist(ELM_PLIST(autos, 2));
+  }
+  CHANGED_BAG(autos);
+
+  return autos;
 }
 
 void multidigraph_hook_function(void               *user_param,
@@ -1381,7 +1375,7 @@ void multidigraph_hook_function(void               *user_param,
     gens = ELM_PLIST(user_param, 3);
   }
 
-  AssPlist(gens, LEN_PLIST(gens)+1, p);
+  AssPlist(gens, LEN_PLIST(gens) + 1, p);
   CHANGED_BAG(user_param);
 }
 
@@ -1409,7 +1403,7 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   p   = NEW_PERM4(n);
   ptr = ADDR_PERM4(p);
  
-  for(i = 0; i < n; ++i){
+  for(i = 0; i < n; i++){
     ptr[i] = canon[i];
   }
   
@@ -1425,13 +1419,13 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   CHANGED_BAG(autos);
 
   if (LEN_PLIST(ELM_PLIST(autos, 2)) == 0) {
-    SET_ELM_PLIST(ELM_PLIST(autos, 2), 1, IdentityPerm);
+    AssPlist(ELM_PLIST(autos, 2), 1, IdentityPerm);
   } else {
     SortDensePlist(ELM_PLIST(autos, 2));
     RemoveDupsDensePlist(ELM_PLIST(autos, 2));
   }
   if (LEN_PLIST(ELM_PLIST(autos, 3)) == 0) {
-    SET_ELM_PLIST(ELM_PLIST(autos, 3), 1, IdentityPerm);
+    AssPlist(ELM_PLIST(autos, 3), 1, IdentityPerm);
   } else {
     SortDensePlist(ELM_PLIST(autos, 3));
     RemoveDupsDensePlist(ELM_PLIST(autos, 3));
@@ -1456,7 +1450,7 @@ static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   p   = NEW_PERM4(n);
   ptr = ADDR_PERM4(p);
  
-  for(i = 0; i < n; ++i){
+  for(i = 0; i < n; i++){
       ptr[i] = canon[i];
   }
   bliss_release(graph);
@@ -1464,6 +1458,43 @@ static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   return p;
 } 
 
+static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
+  Obj                 p, q, out;
+  UInt4               *ptr;
+  BlissGraph          *graph;
+  Int                 m, n, i; 
+  const unsigned int  *canon;
+     
+  graph = buildBlissMultiDigraph(digraph);
+  
+  canon = bliss_find_canonical_labeling(graph, 0, 0, 0); 
+  
+  m   = DigraphNrVertices(digraph);
+  p   = NEW_PERM4(m);  // perm of vertices
+  ptr = ADDR_PERM4(p);
+ 
+  for(i = 0; i < m; i++){
+    ptr[i] = canon[i];
+  }
+  
+  n = DigraphNrEdges(digraph);
+  q   = NEW_PERM4(n);  // perm of edges
+  ptr = ADDR_PERM4(q);
+
+  for (i = 0 ; i < n; i ++ ) {
+    ptr[i] = (canon[2 * i + m] - m) / 2;
+  }
+  
+  bliss_release(graph);
+  
+  out = NEW_PLIST(T_PLIST, 2);
+  SET_ELM_PLIST(out, 1, p);
+  SET_ELM_PLIST(out, 2, q);
+  SET_LEN_PLIST(out, 2);
+  CHANGED_BAG(out);
+
+  return out;
+} 
 // graph homomorphisms . . . by Max Neunhoeffer
 
 #ifdef SYS_IS_64_BIT
