@@ -1363,14 +1363,14 @@ void multidigraph_hook_function(void               *user_param,
     n   = INT_INTOBJ(ELM_PLIST(user_param, 2));  //the nr of edges
     p   = NEW_PERM4(n);
     ptr = ADDR_PERM4(p);
-    for (i = 0 ; i < n; i ++ ) {
+    for (i = 0; i < n; i++) {
       ptr[i] = (aut[2 * i + m] - m) / 2;
     }
     gens = ELM_PLIST(user_param, 4);
   } else { // permutation of the vertices
     p   = NEW_PERM4(m);
     ptr = ADDR_PERM4(p);
-    for (i = 0 ; i < m; i ++ ) {
+    for (i = 0; i < m; i++) {
       ptr[i] = aut[i];
     }
     gens = ELM_PLIST(user_param, 3);
@@ -1482,8 +1482,8 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   q   = NEW_PERM4(n);  // perm of edges
   ptr = ADDR_PERM4(q);
 
-  for (i = 0 ; i < n; i ++ ) {
-    ptr[i] = (canon[2 * i + m] - m) / 2;
+  for (i = 0; i < n; i++ ) {
+    ptr[i] = canon[2 * i + m] - m;
   }
   
   bliss_release(graph);
@@ -1495,7 +1495,8 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   CHANGED_BAG(out);
 
   return out;
-} 
+}
+
 // graph homomorphisms . . . by Max Neunhoeffer
 
 #ifdef SYS_IS_64_BIT
@@ -1784,6 +1785,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncDIGRAPH_CANONICAL_LABELING, 
     "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELING" },
+  
+  { "MULTIDIGRAPH_CANONICAL_LABELING", 1, "digraph",
+    FuncMULTIDIGRAPH_CANONICAL_LABELING, 
+    "src/digraphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELING" },
 
   { "GRAPH_HOMOMORPHISMS", 8, 
     "gra1obj, gra2obj, tryinit, maxdepth, constraintsobj, maxanswers, result, onlyinjective",

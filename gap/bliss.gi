@@ -17,10 +17,10 @@ InstallMethod(DigraphCanonicalLabelling, "for a digraph",
 function(graph)
 
   if IsMultiDigraph(graph) then 
-    Error("Digraphs: DigraphCanonicalLabelling:\n",
-          "not yet implemented for multidigraphs,");
+    return MULTIDIGRAPH_CANONICAL_LABELING(graph);
+  else
+    return DIGRAPH_CANONICAL_LABELING(graph);
   fi;
-  return DIGRAPH_CANONICAL_LABELING(graph);
 end);
 
 #
