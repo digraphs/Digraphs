@@ -842,4 +842,34 @@ DIGRAPH_EQUALS_SOURCE);
 #
 #end);
 
+#
+
+InstallMethod(DigraphCopy, "for a digraph",
+[IsDigraph and HasDigraphSource],
+function(digraph)
+  local source, range, n, gr;
+
+  source := ShallowCopy(DigraphSource(digraph));
+  range := ShallowCopy(DigraphRange(digraph));
+  n := DigraphNrVertices(digraph);
+  gr :=  DigraphNC(rec( nrvertices := n,
+                        source := source,
+			range := range));
+  SetDigraphVertexNames(gr, DigraphVertexNames(digraph));
+  return gr;
+end);
+
+#
+
+InstallMethod(DigraphCopy, "for a digraph",
+[IsDigraph and HasOutNeighbours],
+function(digraph)
+  local out, gr;
+
+  out := List(OutNeighbours(digraph), ShallowCopy);
+  gr := DigraphNC(out);
+  SetDigraphVertexNames(gr, DigraphVertexNames(digraph));
+  return gr;
+end);
+
 #EOF

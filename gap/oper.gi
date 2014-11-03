@@ -12,34 +12,6 @@
 
 #
 
-InstallMethod(DigraphCopy, "for a digraph",
-[IsDigraph and HasDigraphSource],
-function(digraph)
-  local source, range, n, gr;
-
-  source := ShallowCopy(DigraphSource(digraph));
-  range := ShallowCopy(DigraphRange(digraph));
-  n := DigraphNrVertices(digraph);
-  gr :=  DigraphNC(rec( nrvertices := n,
-                        source := source,
-			range := range));
-  SetDigraphVertexNames(gr, DigraphVertexNames(gr));
-  return gr;                     
-end);
-
-#
-
-InstallMethod(DigraphCopy, "for a digraph",
-[IsDigraph and HasOutNeighbours],
-function(digraph)
-  local out;
-
-  out := StructuralCopy(OutNeighbours(digraph));
-  return DigraphNC(out);
-end);
-
-#
-
 InstallMethod(DigraphEdgeUnion, "for digraphs",
 [IsDigraph, IsDigraph],
 function(graph1, graph2)
@@ -881,7 +853,7 @@ function(graph, reflexive)
   verts := DigraphVertices(graph);
   
   # Try correct method vis-a-vis complexity
-  if 20 * ( m + n + ( m * n ) ) < ( n * n * n ) then
+  if m + n + ( m * n ) < ( n * n * n ) then
     sorted := DigraphTopologicalSort(graph);
     if sorted <> fail then # Method for big acyclic digraphs (loops allowed)
       out   := EmptyPlist(n);

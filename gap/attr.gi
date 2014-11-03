@@ -54,7 +54,6 @@ function(graph)
     od;
     return DigraphNC(new);
   fi;
-  empty := [];
   current := source[ 1 ];
   empty := [ 1 .. (current - 1) ];
   seen := [  ];
@@ -63,7 +62,7 @@ function(graph)
   for i in [ 1 .. m ] do
     if source[i] > current then
       new[current] := DifferenceLists(verts, seen);
-      empty := Concatenation(empty, [ (current + 1) .. (source[i] - 1) ]);
+      Append(empty, [ (current + 1) .. (source[i] - 1) ]);
       current := source[i];
       seen := [ ];
       count := 0;

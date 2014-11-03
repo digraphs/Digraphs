@@ -37,6 +37,7 @@ DeclareOperation("DigraphByEdges", [IsRectangularTable, IsPosInt]);
 DeclareOperation("Graph", [IsDigraph]);
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
+DeclareOperation("DigraphCopy", [IsDigraph]);
 
 DeclareOperation("RandomDigraph", [IsPosInt]);
 DeclareOperation("RandomDigraph", [IsPosInt, IsFloat]);

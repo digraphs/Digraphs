@@ -361,6 +361,10 @@ InstallMethod(IsReflexiveDigraph, "for a digraph",
 function(digraph)
   local source, range, current, bool, i;
   
+  if DigraphNrVertices(digraph) = 0 then
+    return true;
+  fi;
+
   source := DigraphSource(digraph);
   range := DigraphRange(digraph);
   current := 1;
@@ -458,7 +462,7 @@ function(digraph)
   m := DigraphNrEdges(digraph);
 
   # Try correct method vis-a-vis complexity
-  if 20 * ( m + n + ( m * n ) ) < ( n * n * n ) then
+  if m + n + ( m * n ) < ( n * n * n ) then
     sorted := DigraphTopologicalSort(digraph);
     if sorted <> fail then
       # Essentially create the transitive closure vertex by vertex.
