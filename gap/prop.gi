@@ -361,6 +361,10 @@ InstallMethod(IsReflexiveDigraph, "for a digraph",
 function(digraph)
   local source, range, current, bool, i;
   
+  if DigraphNrVertices(digraph) = 0 then
+    return true;
+  fi;
+
   source := DigraphSource(digraph);
   range := DigraphRange(digraph);
   current := 1;
