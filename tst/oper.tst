@@ -1034,7 +1034,8 @@ gap> m = CycleDigraph(6);
 true
 
 # DigraphCopy
-gap> gr := Digraph([[6,1,2,3], [6], [2,2,3], [1,1], [6,5], [6,4]]);
+gap> gr := Digraph( [ [ 6, 1, 2, 3 ], [ 6 ], [ 2, 2, 3 ], [ 1, 1 ], [ 6, 5 ],
+> [ 6, 4 ] ] );
 <multidigraph with 6 vertices, 14 edges>
 gap> gr = DigraphCopy(gr);
 true
@@ -1046,6 +1047,19 @@ gap> gr := CycleDigraph(10000);
 <digraph with 10000 vertices, 10000 edges>
 gap> gr = DigraphCopy(gr);
 true
+gap> SetDigraphVertexName(gr, 1, "w");
+gap> DigraphVertexNames(DigraphCopy(gr))[1];
+"w"
+gap> gr := Digraph( rec( vertices := [ "a", Group((1,2)) ],
+> source := [ Group((1,2)) ], range := [ "a" ] ) );
+<digraph with 2 vertices, 1 edge>
+gap> DigraphVertexNames(gr);
+[ "a", Group([ (1,2) ]) ]
+gap> gr2 := DigraphCopy(gr);;
+gap> gr = gr2;
+true
+gap> DigraphVertexNames(gr2);
+[ "a", Group([ (1,2) ]) ]
 
 # DigraphJoin
 gap> gr := CompleteDigraph(20);

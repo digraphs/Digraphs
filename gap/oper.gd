@@ -23,7 +23,6 @@ DeclareOperation("DigraphAddVertex", [IsDigraph, IsObject]);
 DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt]);
 DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt, IsList]);
 DeclareOperation("DigraphAddVerticesNC", [IsDigraph, IsInt, IsList]);
-DeclareOperation("DigraphCopy", [IsDigraph]);
 
 DeclareOperation("DigraphFloydWarshall", [IsDigraph, IsFunction,
  IsObject, IsObject]);
