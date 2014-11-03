@@ -125,7 +125,8 @@ gap> DigraphCanonicalLabelling(gr);
 48,27,45,29,32,20,62,18,15,6,33,36,41,46,69,73,2,24,49,71,28,97,9,11,70,47,80,
 68)(3,34,14,44,79,8)(4,42,90,37,31,65,78,23,25,38,86,100,52,13,82,83,39,61,95,
 91,81,10,59,58,43,84,88,66)(5,40,12,99,75,54,56,63,74,72,77)
-gap> gr:=ReadDigraphs("pkg/digraphs/data/test-1.d6.gz")[1];
+gap> gr:=ReadDigraphs(
+> Concatenation(DigraphsDir(), "/data/test-1.d6"))[1];
 <digraph with 1000 vertices, 100368 edges>
 gap> DigraphCanonicalLabelling(gr);
 (1,894,760,546,212,603,466,938,837,802,929,717,865,809,599,672,859,937,816,
