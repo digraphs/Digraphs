@@ -294,18 +294,7 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
     id[i] = i;
   }
 
-  if (HasOutNeighbours(digraph)) {
-    // Digraph by adjacencies
-    adj = OutNeighbours(digraph);
-    for (i = 0; i < n; i++) {
-      adji = ELM_PLIST(adj, i+1);
-      PLAIN_LIST(adji);
-      len = LEN_PLIST(adji);
-      for (e = 1; e <= len; e++) {
-        UF_COMBINE_CLASSES( id, i, INT_INTOBJ( ELM_PLIST( adji, e ) ) - 1 );
-      }
-    }
-  } else {
+  if (HasDigraphSource(digraph)) {
     // Digraph by source and range
     source = DigraphSource(digraph);
     range  = DigraphRange(digraph);
@@ -316,6 +305,17 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
       i = INT_INTOBJ(ELM_PLIST(source, e)) - 1;
       j = INT_INTOBJ(ELM_PLIST(range,  e)) - 1;
       UF_COMBINE_CLASSES(id, i, j);
+    }
+  } else {
+    // Digraph by adjacencies
+    adj = OutNeighbours(digraph);
+    for (i = 0; i < n; i++) {
+      adji = ELM_PLIST(adj, i+1);
+      PLAIN_LIST(adji);
+      len = LEN_PLIST(adji);
+      for (e = 1; e <= len; e++) {
+        UF_COMBINE_CLASSES( id, i, INT_INTOBJ( ELM_PLIST( adji, e ) ) - 1 );
+      }
     }
   }
 
