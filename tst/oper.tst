@@ -89,6 +89,40 @@ gap> gr1 := DigraphTransitiveClosure(gr);
 <digraph with 5 vertices, 10 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
 <digraph with 5 vertices, 14 edges>
+gap> gr := Digraph(
+> [ [ 1, 4, 5, 6, 7, 8 ], [ 5, 7, 8, 9, 10, 13 ], [ 2, 4, 6, 10 ], 
+>   [ 7, 9, 10, 11 ], [ 7, 9, 10, 12, 13, 15 ], [ 7, 8, 10, 13 ], [ 10, 11 ], 
+>   [ 7, 10, 12, 13, 14, 15, 16 ], [ 7, 10, 11, 14, 16 ], [ 11 ], [ 11 ], 
+>   [ 7, 13, 14 ], [ 10, 11 ], [ 7, 10, 11 ], [ 7, 13, 16 ], [ 7, 10, 11 ] ] );
+<digraph with 16 vertices, 60 edges>
+gap> trans1 := DigraphTransitiveClosure(gr);
+<digraph with 16 vertices, 98 edges>
+gap> trans2 := DigraphByAdjacencyMatrix(DIGRAPH_TRANS_CLOSURE(gr));
+<digraph with 16 vertices, 98 edges>
+gap> trans1 = trans2;
+true
+gap> trans := Digraph(OutNeighbours(trans1));
+<digraph with 16 vertices, 98 edges>
+gap> IsReflexiveDigraph(trans);
+false
+gap> IsTransitiveDigraph(trans);
+true
+gap> IS_TRANSITIVE_DIGRAPH(trans);
+true
+gap> reflextrans1 := DigraphReflexiveTransitiveClosure(gr);
+<digraph with 16 vertices, 112 edges>
+gap> reflextrans2 :=DigraphByAdjacencyMatrix(DIGRAPH_REFLEX_TRANS_CLOSURE(gr));
+<digraph with 16 vertices, 112 edges>
+gap> reflextrans1 = reflextrans2;
+true
+gap> reflextrans := Digraph(OutNeighbours(reflextrans1));
+<digraph with 16 vertices, 112 edges>
+gap> IsReflexiveDigraph(reflextrans);
+true
+gap> IsTransitiveDigraph(reflextrans);
+true
+gap> IS_TRANSITIVE_DIGRAPH(reflextrans);
+true
 
 # DigraphRemoveLoops (for a digraph by adjacency)
 gap> adj := [ [ 1, 2 ], [ 3, 2 ], [ 1, 2 ], [ 4 ],  [ ], [ 1, 2, 3, 6 ] ];

@@ -853,7 +853,7 @@ function(graph, reflexive)
   verts := DigraphVertices(graph);
   
   # Try correct method vis-a-vis complexity
-  if 20 * ( m + n + ( m * n ) ) < ( n * n * n ) then
+  if m + n + ( m * n ) < ( n * n * n ) then
     sorted := DigraphTopologicalSort(graph);
     if sorted <> fail then # Method for big acyclic digraphs (loops allowed)
       out   := EmptyPlist(n);
