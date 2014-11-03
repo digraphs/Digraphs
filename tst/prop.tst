@@ -391,6 +391,10 @@ gap> gr := Digraph(r);
 <multidigraph with 5 vertices, 12 edges>
 gap> IsReflexiveDigraph(gr);
 true
+gap> gr := EmptyDigraph(0);
+<digraph with 0 vertices, 0 edges>
+gap> IsReflexiveDigraph(gr);
+true
 
 # IsReflexiveDigraph: using OutNeighbours
 gap> adj := [ [ 2, 1 ], [ 1, 3 ], [ ] ];;
