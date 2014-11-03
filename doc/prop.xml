@@ -212,8 +212,10 @@ false
     any other vertex by traversing edges in either direction (possibly against
     the direction of some of them). <P/>
 
-    The method used in this operation has complexity <M>O(m)</M> where <M>m</M>
-    is the number of edges.
+    The method used in this function has complexity <M>O(m)</M> or <M>O(m+n)</M>,
+    depending on whether the digraph's Source attribute is set, where
+    <M>m</M> is the number of edges and
+    <M>n</M> is the number of vertices in the digraph. 
 
     <Example><![CDATA[
 gap> gr := Digraph([[2], [3], []]);;

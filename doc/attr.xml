@@ -385,8 +385,9 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
     The component <C>id</C> is a list such that the vertex <C>i</C> is an 
     element of the weakly connected component <C>comps[id[i]]</C>. <P/>
 
-    The method used in this function has complexity <M>O(m+n)</M> where
-    <M>m</M> is the number of edges (counting multiple edges as one) and
+    The method used in this function has complexity <M>O(m)</M> or <M>O(m+n)</M>,
+    depending on whether the digraph's Source attribute is set, where
+    <M>m</M> is the number of edges and
     <M>n</M> is the number of vertices in the digraph. 
     
     <Example><![CDATA[
