@@ -1,13 +1,13 @@
 #############################################################################
 ##
-#W  attrs.tst
+#W  attr.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: attrs.tst");
+gap> START_TEST("Digraphs package: attr.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -513,4 +513,4 @@ gap> DigraphPeriod(gr);
 gap> DigraphsStopTest();
 
 #
-gap> STOP_TEST( "Digraphs package: attrs.tst", 0);
+gap> STOP_TEST( "Digraphs package: attr.tst", 0);
