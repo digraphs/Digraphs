@@ -557,8 +557,7 @@ function(digraph, m, names)
   fi;
   nam := Concatenation(DigraphVertexNames(digraph), names);
   SetDigraphVertexNames(out, nam);
-  #nam := Concatenation(DigraphEdgeLabels(digraph), names);
-  #SetDigraphEdgeLabels(out, nam);
+  SetDigraphEdgeLabels(out, DigraphEdgeLabels(digraph));
   return out;
 end);
 
@@ -585,8 +584,7 @@ function(digraph, m, names)
   fi;
   nam := Concatenation(DigraphVertexNames(digraph), names);
   SetDigraphVertexNames(out, nam);
-  #nam := Concatenation(DigraphEdgeLabels(digraph), names);
-  #SetDigraphEdgeLabels(out, nam);
+  SetDigraphEdgeLabels(out, DigraphEdgeLabels(digraph));
   return out;
 end);
 
@@ -630,8 +628,8 @@ InstallMethod(DigraphRemoveVerticesNC,
 "for a digraph with source and a list",
 [IsDigraph and HasDigraphSource, IsList],
 function(digraph, verts)
-  local n, len, newnrverts, diff, news, newr, lookup, count, m, source, range, 
-        log, gr, i;
+  local n, len, newnrverts, diff, lookup, count, m, source, range, news, newr, 
+        log, oldlabs, labs, gr, i;
 
   n := DigraphNrVertices(digraph);
   len := Length(verts);
@@ -660,19 +658,22 @@ function(digraph, verts)
     if (2 * m * log) + (len * log) < (2 * m * len) then
       Sort(verts); # Sort verts if it is sensible to do so
     fi;
-
+    
+    oldlabs := DigraphEdgeLabels(digraph);
+    labs := [  ];
     for i in [ 1 .. m ] do
       if not (source[i] in verts or range[i] in verts) then
         count := count + 1;
         news[ count ] := lookup[ source[i] ];
         newr[ count ] := lookup[ range[i] ];
+        labs[ count ] := oldlabs[ i ];
       fi;
     od;
   fi;
   gr := DigraphNC( rec( nrvertices := newnrverts,
                         source := news, range := newr ) );
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
-  #SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph){diff});
+  SetDigraphEdgeLabels(gr, labs);
   # Transfer data
   return gr;
 end);
@@ -681,7 +682,7 @@ InstallMethod(DigraphRemoveVerticesNC,
 "for a digraph with out-neighbours and a list",
 [IsDigraph and HasOutNeighbours, IsList],
 function(digraph, verts)
-  local diff, new, n, len, newnrverts, lookup, count, out, m, log, gr, i;
+  local diff, new, n, len, newnrverts, lookup, count, out, m, log, gr, i, j, x;
   
   diff := Difference(DigraphVertices(digraph), verts);
   if IsEmpty(verts) then
@@ -709,8 +710,14 @@ function(digraph, verts)
     fi;
     for i in diff do
       count := count + 1;
-      new[ count ] := List(
-        Filtered( out[ i ], x -> not x in verts ), y -> lookup[ y ] );
+      new[count] := [ ];
+      j := 0;
+      for x in out[ i ] do
+        if not x in verts then
+          j := j + 1;
+          new[count][j] := lookup[x];
+        fi;
+      od;
     od;
   fi;
   gr := DigraphNC(new);
