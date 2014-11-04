@@ -797,8 +797,23 @@ Binary Relation on 4 points
   <Returns>A digraph.</Returns>
   <Description>
     Returns a digraph with the vertex and edge sets being the disjoint union of
-    vertex and edge sets of <A>digraph1</A> and <A>digraph2</A> respectively. 
+    the vertex and edge sets of <A>digraph1</A> and <A>digraph2</A> 
+    respectively. 
     <P/>
+
+    In particular, if <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
+    edges, and if <A>digraph2</A> has <M>n_2</M> vertices and <M>m_2</M> edges,
+    then <C>DigraphDisjointUnion( </C>
+    <A>digraph1</A><C>, </C><A>digraph2</A><C> )</C>
+    will have <M>n_1 + n_2</M> vertices and <M>m_1 + m_2</M> edges. <P/>
+
+    The vertices of <A>digraph1</A> will become
+    <C>[ 1 .. </C><M>n_1</M><C> ]</C> in the new digraph,
+    and the vertices of <A>digraph2</A> will become
+    <C>[ </C><M>n_1 + 1</M><C> .. </C><M>n_1 + n_2</M><C> ]</C>.
+
+    Previously set <Ref Attr="DigraphVertexNames"/> will be lost.
+    
 <Example><![CDATA[
 gap> gr := CycleDigraph(10);
 <digraph with 10 vertices, 10 edges>
@@ -831,10 +846,27 @@ true
   <Returns>A digraph.</Returns>
   <Description>
     Let <M>V_1</M> and <M>V_2</M> be vertex sets of the digraphs
-    <A>digraph1</A> and <A>digraph</A>. Then <C>DigraphJoin</C> return a new
-    digraph with the vertexi set being the disjoint union of <M>V_1</M> and
-    <M>V_2</M>, and the edge set being the union of the corresponding edge sets
-    together with all edges between <M>V_1</M> and <M>V_2</M>.
+    <A>digraph1</A> and <A>digraph2</A>.
+    Then <C>DigraphJoin</C> returns a new
+    digraph whose vertex set is the disjoint union of <M>V_1</M> and
+    <M>V_2</M>, and whose edge set is the union of the corresponding edge sets
+    together with all edges between <M>V_1</M> and <M>V_2</M>. <P/>
+
+    In particular, if <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
+    edges, and if <A>digraph2</A> has <M>n_2</M> vertices and <M>m_2</M> edges,
+    then
+    <C>DigraphJoin( </C><A>digraph1</A><C>, </C><A>digraph2</A><C> )</C> will
+    have <M>n_1 + n_2</M> vertices and <M>m_1 + m_2 + 2n_1n_2</M> edges.
+
+    <P/>
+
+    The vertices of <A>digraph1</A> will become
+    <C>[ 1 .. </C><M>n_1</M><C> ]</C>, in the new digraph,
+    the vertices of <A>digraph2</A> will become
+    <C>[ </C><M>n_1 + 1</M><C> .. </C><M>n_1 + n_2</M><C> ]</C>.
+
+    Previously set <Ref Attr="DigraphVertexNames"/> will be lost.
+
 <Example><![CDATA[
 gap> gr := CompleteDigraph(3);
 <digraph with 3 vertices, 6 edges>
