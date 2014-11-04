@@ -20,7 +20,7 @@ found endomorphism of rank 2
 found endomorphism of rank 3
 found endomorphism of rank 3
 found endomorphism of rank 2
-[ Transformation( [ 1, 1 ] ), IdentityTransformation,
+[ Transformation( [ 1, 1 ] ), IdentityTransformation, 
   Transformation( [ 2, 1 ] ), Transformation( [ 2, 2 ] ) ]
 gap> DigraphEndomorphisms(gr);
 GAP: at depth 1
