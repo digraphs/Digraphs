@@ -725,7 +725,7 @@ end);
 InstallMethod(OnDigraphs, "for a digraph by adjacency and perm",
 [IsDigraph and HasOutNeighbours, IsPerm],
 function(graph, perm)
-  local adj;
+  local adj, out;
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: OnDigraphs: usage,\n",
@@ -738,13 +738,17 @@ function(graph, perm)
   adj := Permuted(adj, perm);
   Apply(adj, x-> OnTuples(x, perm));
 
-  return DigraphNC(adj);
+  out := DigraphNC(adj);
+  SetDigraphVertexNames(out, Permuted(DigraphVertexNames(graph), perm));
+  return out;
 end);
+
+#
 
 InstallMethod(OnDigraphs, "for a digraph and perm",
 [IsDigraph and HasDigraphRange, IsPerm],
 function(graph, perm)
-  local source, range;
+  local source, range, out;
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: OnDigraphs: usage,\n",
@@ -755,10 +759,12 @@ function(graph, perm)
   source := ShallowCopy(OnTuples(DigraphSource(graph), perm));
   range := ShallowCopy(OnTuples(DigraphRange(graph), perm));
   range := Permuted(range, Sortex(source));
-  return DigraphNC(rec(
+  out := DigraphNC(rec(
     source := source,
     range := range,
     nrvertices:=DigraphNrVertices(graph)));
+  SetDigraphVertexNames(out, Permuted(DigraphVertexNames(graph), perm));
+  return out;
 end);
 
 #
