@@ -48,13 +48,13 @@ false
     <M>n</M> is the number of vertices in the digraph. 
 
     <Example><![CDATA[
-gap> Petersen := Graph( SymmetricGroup(5), [[1,2]], OnSets,           
-> function(x,y) return Intersection(x,y)=[]; end );;
+gap> Petersen := Graph( SymmetricGroup(5), [ [ 1, 2 ] ], OnSets,           
+> function(x, y) return IsEmpty(Intersection(x, y)); end );;
 gap> gr:=Digraph(Petersen);                    
 <digraph with 10 vertices, 30 edges>
 gap> IsAcyclicDigraph(gr);
 false
-gap> gr:=Digraph( [ [ ], [ 1 ], [ 1 ], [ 1 ], [ 3 ], [ 3 ], 
+gap> gr:=Digraph( [ [  ], [ 1 ], [ 1 ], [ 1 ], [ 3 ], [ 3 ], 
 > [ 4 ], [ 4 ], [ 5 ], [ 5 ], [ 5 ], [ 6 ], [ 6 ], [ 7 ], [ 7 ], 
 > [ 7 ], [ 8 ], [ 9 ], [ 9 ], [ 11 ], [ 11 ], [ 12 ], [ 12 ], [ 13 ], 
 > [ 14 ], [ 15 ], [ 15 ], [ 16 ], [ 16 ], [ 17 ], [ 17 ], [ 18 ], 
@@ -106,11 +106,11 @@ false
     <K>false</K> if it is not. A digraph is <E>empty</E> if it has no edges.
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ ], [ ] ] );
+gap> gr := Digraph( [ [  ], [  ] ] );
 <digraph with 2 vertices, 0 edges>
 gap> IsEmptyDigraph(gr);
 true
-gap> gr := Digraph( [ [ ], [ 1 ] ] );
+gap> gr := Digraph( [ [  ], [ 1 ] ] );
 <digraph with 2 vertices, 1 edge>
 gap> IsEmptyDigraph(gr);
 false
@@ -158,18 +158,20 @@ true
     edges with equal source and range. 
     
     <Example><![CDATA[
-gap> gr:=Digraph(rec(vertices:=["a", "b", "c"],
-> source:=["a", "b", "b"], range:=["b", "c", "a"]));
+gap> gr:=Digraph( rec( vertices := [ "a", "b", "c" ],
+> source := [ "a", "b", "b" ], range := [ "b", "c", "a" ]) );
 <digraph with 3 vertices, 3 edges>
 gap> IsMultiDigraph(gr);
 false
-gap> gr:=Digraph(rec(nrvertices:=3, 
-> source:=[1,2,3,1,1,2], range:=[1,2,3,2,3,1]));
+gap> gr := Digraph( rec( nrvertices := 3, 
+> source := [ 1, 2, 3, 1, 1, 2 ],
+> range := [ 1, 2, 3, 2, 3, 1 ] ) );
 <digraph with 3 vertices, 6 edges>
 gap> IsMultiDigraph(gr);
 false
-gap> gr:=Digraph(rec(nrvertices:=3,
-> source:=[1,2,3,1,1,2,1], range:=[1,2,3,2,3,1,2]));
+gap> gr := Digraph( rec( nrvertices := 3,
+> source := [ 1, 2, 3, 1, 1, 2, 1 ],
+> range := [ 1, 2, 3, 2, 3, 1, 2 ] ) );
 <multidigraph with 3 vertices, 7 edges>
 gap> IsMultiDigraph(gr);
 true
@@ -192,7 +194,8 @@ gap> gr := Digraph( [ [ 1, 2 ], [ 2 ] ] );
 gap> IsReflexiveDigraph(gr);
 true
 gap> gr := Digraph( rec ( nrvertices := 4,
-> source := [ 1, 1, 2, 2, 3, 4, 4 ], range := [ 3, 1, 4, 2, 3, 2, 1 ] )  );
+> source := [ 1, 1, 2, 2, 3, 4, 4 ],
+> range := [ 3, 1, 4, 2, 3, 2, 1 ] )  );
 <digraph with 4 vertices, 7 edges>
 gap> IsReflexiveDigraph(gr);
 false
@@ -206,22 +209,23 @@ false
   <Prop Name="IsConnectedDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the digraph <A>digraph</A> is
-    weakly connected and <K>false</K> if it is not.  A digraph <A>digraph</A>
-    is <E>weakly connected</E> if it is possible to travel from any vertex to
-    any other vertex by traversing edges in either direction (possibly against
-    the direction of some of them). <P/>
+    This function returns <K>true</K> if the directed graph <A>digraph</A>
+    is weakly connected and <K>false</K> if it is not.  A directed graph
+    <A>digraph</A> is <E>weakly connected</E> if it is possible to travel 
+    from any vertex to any other vertex by traversing edges in either
+    direction (possibly against the orientation of some of them). <P/>
 
-    The method used in this function has complexity <M>O(m)</M> or <M>O(m+n)</M>,
-    depending on whether the digraph's Source attribute is set, where
+    The method used in this function has complexity <M>O(m)</M> if the 
+    digraph's Source attribute is set, otherwise it has complexity
+    <M>O(m+n)</M> (where 
     <M>m</M> is the number of edges and
-    <M>n</M> is the number of vertices in the digraph. 
+    <M>n</M> is the number of vertices of the digraph).
 
     <Example><![CDATA[
-gap> gr := Digraph([[2], [3], []]);;
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [  ] ] );;
 gap> IsConnectedDigraph(gr);
 true
-gap> gr := Digraph([[1,3], [4], [3], []]);;
+gap> gr := Digraph( [ [ 1, 3 ], [ 4 ], [ 3 ], [  ] ] );;
 gap> IsConnectedDigraph(gr);
 false]]></Example>
   </Description>
@@ -233,22 +237,22 @@ false]]></Example>
   <Prop Name="IsStronglyConnectedDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the digraph <A>digraph</A> is
-    strongly connected and <K>false</K> if it is not.  A digraph <A>digraph</A>
-    is <E>strongly connected</E> if there is a path from every vertex to every
-    other vertex. <P/>
+    This function returns <K>true</K> if the directed graph <A>digraph</A> 
+    is strongly connected and <K>false</K> if it is not.
+    A directed graph <A>digraph</A> is <E>strongly connected</E> if there 
+    is a path from every vertex to every other vertex. <P/>
 
-    The method used in this operation is based on Gabow's Algorithm <Cite
-      Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M> where <M>m</M> is the
-    number of edges (counting multiple edges as one) and <M>n</M> is the number
-    of vertices in the digraph. 
+    The method used in this operation is based on Gabow's Algorithm
+    <Cite Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M>,
+    where <M>m</M> is the number of edges (counting multiple edges as one) 
+    and <M>n</M> is the number of vertices in the digraph. 
   
     <Example><![CDATA[
-gap> gr:=CycleDigraph(250000);
+gap> gr := CycleDigraph(250000);
 <digraph with 250000 vertices, 250000 edges>
 gap> IsStronglyConnectedDigraph(gr);
 true
-gap> gr:=DigraphRemoveEdges(gr, [[250000, 1]]);
+gap> gr:=DigraphRemoveEdges(gr, [ [ 250000, 1 ] ]);
 <digraph with 250000 vertices, 249999 edges>
 gap> IsStronglyConnectedDigraph(gr);
 false
@@ -267,9 +271,10 @@ false
 
     A <E>symmetric digraph</E> is one where for each non-loop edge,
     having source <M>u</M> and range <M>v</M>, there is a corresponding edge
-    with source v and range u. If there are <M>n</M> edges with source <M>u</M>
-    and range <M>v</M>, then there must be precisely <M>n</M> edges with source
-    <M>v</M> and range <M>u</M>.
+    with source v and range u.
+    If there are <M>n</M> edges with source <M>u</M>
+    and range <M>v</M>, then there must be precisely <M>n</M> edges with 
+    source <M>v</M> and range <M>u</M>.
     In other words, an undirected digraph has a symmetric adjacency 
     matrix <Ref Attr="AdjacencyMatrix"/>.<P/>
     <Example><![CDATA[
