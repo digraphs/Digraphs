@@ -1,0 +1,33 @@
+#############################################################################
+##
+#W  grahom.tst
+#Y  Copyright (C) 2014
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
+gap> START_TEST("Digraphs package: grahom.tst");
+gap> LoadPackage("digraphs", false);;
+
+#
+gap> DigraphsStartTest();
+
+#
+gap> gr := Digraph([[],[],[3]]);;
+gap> HomomorphismDigraphs(gr, gr);
+found endomorphism of rank 2
+found endomorphism of rank 3
+found endomorphism of rank 3
+found endomorphism of rank 2
+[ Transformation( [ 1, 1 ] ), IdentityTransformation,
+  Transformation( [ 2, 1 ] ), Transformation( [ 2, 2 ] ) ]
+gap> DigraphEndomorphisms(gr);
+GAP: at depth 1
+[ Transformation( [ 2, 1 ] ) ]
+
+#
+gap> DigraphsStopTest();
+
+#
+gap> STOP_TEST( "Digraphs package: grahom.tst", 0);

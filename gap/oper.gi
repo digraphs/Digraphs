@@ -557,6 +557,8 @@ function(digraph, m, names)
   fi;
   nam := Concatenation(DigraphVertexNames(digraph), names);
   SetDigraphVertexNames(out, nam);
+  nam := Concatenation(DigraphEdgeLabels(digraph), names);
+  SetDigraphEdgeLabels(out, nam);
   return out;
 end);
 
@@ -583,6 +585,8 @@ function(digraph, m, names)
   fi;
   nam := Concatenation(DigraphVertexNames(digraph), names);
   SetDigraphVertexNames(out, nam);
+  nam := Concatenation(DigraphEdgeLabels(digraph), names);
+  SetDigraphEdgeLabels(out, nam);
   return out;
 end);
 
@@ -668,6 +672,7 @@ function(digraph, verts)
   gr := DigraphNC( rec( nrvertices := newnrverts,
                         source := news, range := newr ) );
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
+  SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph){diff});
   # Transfer data
   return gr;
 end);
@@ -710,6 +715,7 @@ function(digraph, verts)
   fi;
   gr := DigraphNC(new);
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
+  SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph){diff});
   # Transfer data
   return gr;
 end);
@@ -719,7 +725,7 @@ end);
 InstallMethod(OnDigraphs, "for a digraph by adjacency and perm",
 [IsDigraph and HasOutNeighbours, IsPerm],
 function(graph, perm)
-  local adj;
+  local adj, out;
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: OnDigraphs: usage,\n",
@@ -732,13 +738,17 @@ function(graph, perm)
   adj := Permuted(adj, perm);
   Apply(adj, x-> OnTuples(x, perm));
 
-  return DigraphNC(adj);
+  out := DigraphNC(adj);
+  SetDigraphVertexNames(out, Permuted(DigraphVertexNames(graph), perm));
+  return out;
 end);
+
+#
 
 InstallMethod(OnDigraphs, "for a digraph and perm",
 [IsDigraph and HasDigraphRange, IsPerm],
 function(graph, perm)
-  local source, range;
+  local source, range, out;
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: OnDigraphs: usage,\n",
@@ -749,10 +759,12 @@ function(graph, perm)
   source := ShallowCopy(OnTuples(DigraphSource(graph), perm));
   range := ShallowCopy(OnTuples(DigraphRange(graph), perm));
   range := Permuted(range, Sortex(source));
-  return DigraphNC(rec(
+  out := DigraphNC(rec(
     source := source,
     range := range,
     nrvertices:=DigraphNrVertices(graph)));
+  SetDigraphVertexNames(out, Permuted(DigraphVertexNames(graph), perm));
+  return out;
 end);
 
 #
@@ -937,6 +949,7 @@ function( digraph, subverts )
   
   new := DigraphNC(new);
   SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
+  SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
   return new;
 end);
 
@@ -993,6 +1006,7 @@ function( digraph, subverts )
 
   new := DigraphNC( rec ( nrvertices := nr, source := news, range := newr ) );
   SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
+  SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
   return new;
 
 end);
