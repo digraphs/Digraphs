@@ -12,6 +12,7 @@ DeclareOperation("AsBinaryRelation", [IsDigraph]);
 DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);
 DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPermCollection]);
 DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPerm, IsPerm]);
+
 DeclareOperation("DigraphRemoveLoops", [IsDigraph]);
 DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveVertex", [IsDigraph, IsPosInt]);
