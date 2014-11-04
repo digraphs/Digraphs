@@ -557,8 +557,8 @@ function(digraph, m, names)
   fi;
   nam := Concatenation(DigraphVertexNames(digraph), names);
   SetDigraphVertexNames(out, nam);
-  nam := Concatenation(DigraphEdgeLabels(digraph), names);
-  SetDigraphEdgeLabels(out, nam);
+  #nam := Concatenation(DigraphEdgeLabels(digraph), names);
+  #SetDigraphEdgeLabels(out, nam);
   return out;
 end);
 
@@ -585,8 +585,8 @@ function(digraph, m, names)
   fi;
   nam := Concatenation(DigraphVertexNames(digraph), names);
   SetDigraphVertexNames(out, nam);
-  nam := Concatenation(DigraphEdgeLabels(digraph), names);
-  SetDigraphEdgeLabels(out, nam);
+  #nam := Concatenation(DigraphEdgeLabels(digraph), names);
+  #SetDigraphEdgeLabels(out, nam);
   return out;
 end);
 
@@ -672,7 +672,7 @@ function(digraph, verts)
   gr := DigraphNC( rec( nrvertices := newnrverts,
                         source := news, range := newr ) );
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
-  SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph){diff});
+  #SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph){diff});
   # Transfer data
   return gr;
 end);
@@ -715,7 +715,7 @@ function(digraph, verts)
   fi;
   gr := DigraphNC(new);
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
-  SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph){diff});
+  #SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph){diff});
   # Transfer data
   return gr;
 end);
