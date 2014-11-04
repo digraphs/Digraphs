@@ -13,6 +13,7 @@
 #include <stdbool.h>
 
 #include "src/compiled.h"          /* GAP headers                */
+#include "src/digraphs.h"
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -49,75 +50,60 @@ Int DigraphNrVertices(Obj digraph) {
   if (IsbPRec(digraph, RNamName("nrvertices"))) {
     return INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
   }
+  // The record comp should always be set so this should never be triggered
   ErrorQuit(
-    "Digraphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
-    0L,
-    0L);
+  "Digraphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
+  0L, 0L);
   return 0;
 }
 
 Obj OutNeighbours(Obj digraph) {
-  if (!IsbPRec(digraph, RNamName("adj"))) {
-    // Call funcDIGRAPH_OUT_NBS?
-    ErrorQuit(
-      "Digraphs: OutNeighbours (C):\nrec comp <adj> is not set,",
-      0L,
-      0L
-    );
-    return Fail;
+  if (HasOutNeighbours(digraph)) {
+    return ElmPRec(digraph, RNamName("adj"));
   }
-  return ElmPRec(digraph, RNamName("adj"));
+  return FuncDIGRAPH_OUT_NBS( NULL, digraph );
 }
 
-Obj OutNeighboursOfVertex(Obj digraph, Int v) { 
+/*Obj OutNeighboursOfVertex(Obj digraph, Int v) { 
   Obj out;
 
   // Do all kinds of safety checking
   out = OutNeighbours(digraph);
   return ELM_PLIST( out, v );
-}
+}*/
 
 Obj DigraphSource(Obj digraph) {
-if (!IsbPRec(digraph, RNamName("source"))) {
-    // Call funcDIGRAPH_SOURCE_RANGE?
-    ErrorQuit(
-      "Digraphs: DigraphSource (C):\nrec comp <source> is not set,",
-      0L,
-      0L
-    );
-    return Fail;
+  if (!HasDigraphSource(digraph)) {
+    FuncDIGRAPH_SOURCE_RANGE( NULL, digraph );
   }
   return ElmPRec(digraph, RNamName("source"));
 }
 
 Obj DigraphRange(Obj digraph) {
-  if (!IsbPRec(digraph, RNamName("range"))) {
-    // Call funcDIGRAPH_SOURCE_RANGE?
-    ErrorQuit(
-      "Digraphs: DigraphRange (C):\nrec comp <range> is not set,",
-      0L,
-      0L
-    );
-    return Fail;
+  if (!HasDigraphRange(digraph)) {
+    FuncDIGRAPH_SOURCE_RANGE( NULL, digraph );
   }
   return ElmPRec(digraph, RNamName("range"));
 }
 
 Int DigraphNrEdges(Obj digraph) {
   Obj   adj;
-  UInt  nr, i, n;
+  Int  nr, i, n;
   if (IsbPRec(digraph, RNamName("nredges"))) {
     return INT_INTOBJ(ElmPRec(digraph, RNamName("nredges")));
   }
   if (HasDigraphSource(digraph)) { 
     return LEN_LIST( DigraphSource(digraph) );
-  } else {
+    // Is this known to be be a Plist?
+  } else if (HasOutNeighbours(digraph)) {
     n   = DigraphNrVertices(digraph);
     adj = OutNeighbours(digraph); 
     nr  = 0;
     for (i = 1; i <= n; i++) {
       nr += LEN_PLIST(ELM_PLIST(adj, i));
     }
+  } else {
+    ErrorQuit("Digraphs: DigraphNrEdges (C): impossible situation,",0L,0L);
   }
   AssPRec(digraph, RNamName("nredges"), INTOBJ_INT(nr));
   return nr;
@@ -624,32 +610,30 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   return out;
 }
 
-// THIS FUNCTION IS CURRENTLY NOT USED AT ALL! NEED TO DEFINE IT WELL
 static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
   Obj   source, range, adj, adji;
-  Int   i, j, k, m, n;
+  Int   i, j, k, m, n, len;
 
   m      = DigraphNrEdges(digraph);
   n      = DigraphNrVertices(digraph);
   adj    = OutNeighbours(digraph); 
   source = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, m);
   range  = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, m);
-  
   SET_LEN_PLIST(source, m);
   SET_LEN_PLIST(range, m);
 
   k = 0;
   for ( i = 1; i <= n; i++ ) {
     adji = ELM_PLIST( adj, i );
-    n    = LEN_PLIST( adji );
-    for ( j = 1; j <= n; j++ ) {
+    len    = LEN_LIST( adji );
+    for ( j = 1; j <= len; j++ ) {
       k++;
       SET_ELM_PLIST( source, k, INTOBJ_INT( i ) );
-      SET_ELM_PLIST( range,  k, ELM_PLIST( adj, j ) );
+      SET_ELM_PLIST( range,  k, ELM_LIST( adji, j ) );
     }
   }
   AssPRec(digraph, RNamName("source"), source);
-  AssPRec(digraph, RNamName("range"), range);
+  AssPRec(digraph, RNamName("range"),  range);
   return True;
 }
 
@@ -808,6 +792,24 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   }
 } 
 
+
+/***************** GENERAL FLOYD_WARSHALL ALGORITHM***********************
+ * This function accepts 5 arguments:
+ *   1. A digraph.
+ *   2. A special function which takes 5 arguments:
+ *       - The matrix dist
+ *       - 3 integers i, j, k
+ *       - An integer n (the number of vertices of digraph)
+ *      and modifies the matrix dist according to the values of i, j, k.
+ *   3. Int val1 s.t initially dist[i][j] = val1 if [ i, j ] isn't an edge.
+ *   4. Int val2 s.t initially dist[i][j] = val2 if [ i, j ] is an edge.
+ *   5. bool copy:
+ *      - If false, proceeds as usual Floyd-Warshall algorithm and returns
+ *        a GAP object matrix as the result.
+ *      - If true, FLOYD_WARSHALL stores the initialised dist, and
+ *        compares it with dist after it has gone through the 3 for loops,
+ *        and returns true iff it is unchanged.
+ */
 static Obj FLOYD_WARSHALL(Obj digraph, 
                           void (*func)(Int** dist,
                                        Int   i,
@@ -1740,6 +1742,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_TOPO_SORT", 1, "adj",
     FuncDIGRAPH_TOPO_SORT, 
     "src/digraphs.c:FuncDIGRAPH_TOPO_SORT" },
+
+  { "DIGRAPH_SOURCE_RANGE", 1, "digraph",
+    FuncDIGRAPH_SOURCE_RANGE, 
+    "src/digraphs.c:FuncDIGRAPH_SOURCE_RANGE" },
 
   { "DIGRAPH_OUT_NBS", 1, "digraph",
     FuncDIGRAPH_OUT_NBS, 

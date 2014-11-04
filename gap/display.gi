@@ -102,14 +102,14 @@ InstallMethod(DotDigraph, "for a digraph",
 function(graph)
   local verts, source, range, m, str, i;
 
-  verts := DigraphVertices(graph);
+  verts  := DigraphVertices(graph);
   source := DigraphSource(graph);
-  range := DigraphRange(graph);
-  m := Length(source);
-  str:="//dot\n";
+  range  := DigraphRange(graph);
+  m      := Length(source);
+  str    := "//dot\n";
 
-  Append(str,"digraph hgn{\n");
-  Append(str,"node [shape=circle]\n");
+  Append(str, "digraph hgn{\n");
+  Append(str, "node [shape=circle]\n");
 
   for i in verts do
     Append(str, Concatenation( String(i), "\n"));
@@ -135,11 +135,11 @@ function(graph)
     return;
   fi;
 
-  verts := DigraphVertices(graph);
+  verts  := DigraphVertices(graph);
   source := DigraphSource(graph);
-  range := DigraphRange(graph);
-  m := Length(source);
-  str:="//dot\n";
+  range  := DigraphRange(graph);
+  m      := Length(source);
+  str    := "//dot\n";
 
   Append(str,"graph hgn{\n");
   Append(str,"node [shape=circle]\n\n");

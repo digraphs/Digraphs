@@ -81,7 +81,7 @@ function(g)
     o := List(Orbits(auts,d,OnPoints),x->x[1]);
     todoo := Intersection(out[depth],[1..depth - 1]);
     todoi := Intersection(inn[depth],[1..depth - 1]);
-    if todoo = 0 and todoi = 0 then
+    if Length(todoo) = 0 and Length(todoi) = 0 then
       if depth in loops then
         todo := loops;
       else
