@@ -1513,6 +1513,7 @@ static num gra1[MAXVERT];
 static num nrvert1;
 static num gra2[MAXVERT];
 static num gra2inn[MAXVERT];
+static num gra2hasloops;
 static num nrvert2;
 static num constraints[MAXVERT];
 static num maxdepth;
@@ -1570,13 +1571,17 @@ static void dowork(num *try, num depth){
     for (i = 0;i < depth;i++) {
         if (gra1[i] & oneone[depth]){    /* if depth adjacent to try[i] */
             todo &= gra2[try[i]];        /* Only these images are possible */
-            if (todo == 0) return;
         }
 	if (gra1[depth] & oneone[i]) {
            todo &= gra2inn[try[i]];
-	   if (todo == 0) return;
         }
     }
+    if (gra1[depth] & oneone[depth]) {   /* if depth has a loop in gra1 */
+       todo &= gra2hasloops;
+    } else {
+       todo &= ones[nrvert2 - 1] ^ gra2hasloops;
+    }
+    if (todo == 0 ) return;
     for (i = 0;i < nrvert2 && todo;i++, todo >>= 1) {
         if (todo & 1) {
             try[depth] = i;
@@ -1647,6 +1652,7 @@ Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
     memset(gra1,0,sizeof(num)*MAXVERT);
     memset(gra2,0,sizeof(num)*MAXVERT);
     memset(gra2inn,0,sizeof(num)*MAXVERT);
+    gra2hasloops = (num) 0;
     nrvert1 = LEN_PLIST(gra1obj);
     nrvert2 = LEN_PLIST(gra2obj);
     for (i = 0; i < MAXVERT; i++) constraints[i] = ones[nrvert2-1];
@@ -1666,6 +1672,9 @@ Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
             k = (num) INT_INTOBJ(ELM_PLIST(tmp,(Int) j + 1)) - 1;
             gra2[i] |= oneone[k];
             gra2inn[k] |= oneone[i];
+	    if (i == k) {
+	      gra2hasloops |= oneone[k];
+	    }
         }
     }
     if (constraintsobj != Fail) {

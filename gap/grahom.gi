@@ -34,38 +34,63 @@ end);
 InstallMethod(DigraphEndomorphisms, "for a digraph",
 [IsDigraph],
 function(g)
-  local Dowork,aut,n,result,try;
+  local DigraphVerticesWithLoops, Dowork, n, aut, result, try;
 
   if IsMultiDigraph(g) then 
     return fail;
   fi;
 
+  DigraphVerticesWithLoops := function(digraph)
+    local out, output, len, i;
+
+    out := OutNeighbours(digraph);
+    output := [];
+    len := 1;
+    for i in [1 .. DigraphNrVertices(digraph)] do
+      if i in out[i] then
+	output[len] := i;
+	len := len + 1;
+      fi;
+    od;
+    return output;
+  end;
+
+
   Dowork := function(g,try,depth,auts,result)
+    local out, inn, loops, s, d, o, todoo, todoi, todo, i;
     # This computes generators for the semigroup of all graph endomorphisms
     # of g which map the first depth-1 points according to the vector try
     # auts is a known subgroup of the automorphism group which fixes
     # the points occurring in try and thus can be used to break symmetry.
     # All resulting generators are appended to the plain list result.
-    local ad,d,i,o,s,todo;
     Print("GAP: at depth ", depth, "\n");
     if depth > DigraphNrVertices(g) then
         Add(result,TransformationNC(try));
         return;
     fi;
-    ad := OutNeighbours(g);
+    out := OutNeighbours(g);
+    inn := InNeighbours(g);
+    loops := DigraphVerticesWithLoops(g);
     if Size(auts) = 1 then
-        GRAPH_HOMOMORPHISMS(ad, ad, try, DigraphNrVertices(g), fail, fail, result, false);
+        GRAPH_HOMOMORPHISMS(out, out, try, DigraphNrVertices(g), fail, fail, result, false);
         return;
     fi;
 
     s := Set(try);
     d := Difference([1..DigraphNrVertices(g)],s);
     o := List(Orbits(auts,d,OnPoints),x->x[1]);
-    todo := Intersection(ad[depth],[1..depth-1]);
-    if Length(todo) = 0 then
-        todo := [1..DigraphNrVertices(g)];
+    todoo := Intersection(out[depth],[1..depth - 1]);
+    todoi := Intersection(inn[depth],[1..depth - 1]);
+    if todoo = 0 and todoi = 0 then
+      if depth in loops then
+        todo := loops;
+      else
+        todo := Difference([1 .. DigraphNrVertices(g)], loops);
+      fi;
     else
-        todo := Intersection(List(todo,x->ad[try[x]]));
+      todoo := List(todoo, x -> out[try[x]]);
+      todoi := List(todoi, x -> inn[try[x]]);
+      todo := Intersection(todoo, todoi);
     fi;
     for i in Intersection(todo,o) do
         try[depth] := i;
