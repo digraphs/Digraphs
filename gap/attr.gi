@@ -141,37 +141,37 @@ end);
 
 InstallMethod(AsGraph, "for a digraph", [IsDigraph], Graph);
 
-BindGlobal("DIGRAPHS_SourceRange",
-function(graph)
-  local adj, nr, source, range, j, i;
-
-  if IsBound(graph!.range) then
-    return;
-  fi;
-
-  adj := OutNeighbours(graph);
-  nr := 0;
-
-  for j in adj do
-    nr := nr + Length(j);
-  od;
-
-  source := EmptyPlist(nr);
-  range := EmptyPlist(nr);
-  nr := 0;
-
-  for i in [1..Length(adj)] do
-    for j in adj[i] do
-      nr := nr + 1;
-      source[nr] := i;
-      range[nr] := j;
-    od;
-  od;
-
-  graph!.range := range;
-  graph!.source := source;
-  return;
-end);
+#BindGlobal("DIGRAPHS_SourceRange",
+#function(graph)
+#  local adj, nr, source, range, j, i;
+#
+#  if IsBound(graph!.range) then
+#    return;
+#  fi;
+#
+#  adj := OutNeighbours(graph);
+#  nr := 0;
+#
+#  for j in adj do
+#    nr := nr + Length(j);
+#  od;
+#
+#  source := EmptyPlist(nr);
+#  range := EmptyPlist(nr);
+#  nr := 0;
+#
+#  for i in [1..Length(adj)] do
+#    for j in adj[i] do
+#      nr := nr + 1;
+#      source[nr] := i;
+#      range[nr] := j;
+#    od;
+#  od;
+#
+#  graph!.range := range;
+#  graph!.source := source;
+#  return;
+#end);
 
 #
 
@@ -184,7 +184,7 @@ end);
 InstallMethod(DigraphRange, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours],
 function(graph)
-  DIGRAPHS_SourceRange(graph);
+  DIGRAPH_SOURCE_RANGE(graph);
   # If we don't do the following line, although the graph record has source,
   # GAP doesn't know that we have the attribute DigraphSource
   SetDigraphSource(graph, graph!.source);
@@ -194,7 +194,7 @@ end);
 InstallMethod(DigraphSource, "for a digraph with out-neighbours",
 [IsDigraph and HasOutNeighbours],
 function(graph)
-  DIGRAPHS_SourceRange(graph);
+  DIGRAPH_SOURCE_RANGE(graph);
   # If we don't do the following line, although the graph record has range,
   # GAP doesn't know that we have the attribute DigraphRange
   SetDigraphRange(graph, graph!.range);

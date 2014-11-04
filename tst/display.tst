@@ -68,14 +68,14 @@ gap> DotSymmetricDigraph(gr);
 Error, Digraphs: DotSymmetricDigraph: usage,
 the argument <graph> should be symmetric,
 
-# DotDigraph & DotSymmetricDigraph for a small undirected simple graph
+# DotDigraph & DotSymmetricDigraph for a small symmetric non-multi digraph
 gap> adj := [ [ 2 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3 ] ];
 [ [ 2 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3 ] ]
 gap> gr := Digraph(adj);
 <digraph with 4 vertices, 7 edges>
-gap> DotDigraph(gr){[11..75]};
+gap> DotDigraph(gr){[ 11 .. 75 ]};
 "aph hgn{\nnode [shape=circle]\n1\n2\n3\n4\n1 -> 2\n2 -> 1\n2 -> 3\n3 -> 2\n"
-gap> DotSymmetricDigraph(gr){[12..70]};
+gap> DotSymmetricDigraph(gr){[ 12 .. 70 ]};
 " hgn{\nnode [shape=circle]\n\n1\n2\n3\n4\n1 -- 2\n2 -- 3\n3 -- 3\n3 -"
 
 # DotDigraph & DotSymmetricDigraph for a bigger undirected not simple graph
