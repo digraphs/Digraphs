@@ -379,6 +379,9 @@ BindGlobal("SplitStringBySubstring",
 function(string, substring)
   local m, n, i, j, out, nr;
 
+  if Length(string) = 0 then
+    return [];
+  fi;
   if Length(substring) = 1 then
     return SplitString(string, substring);
   fi;
@@ -547,8 +550,8 @@ function(name, digraphs)
       encoder := Digraph6String;
     elif ext = "ds6" then
       encoder := DiSparse6String;
-   elif ext = "txt" then
-     encoder := DigraphPlainTextLineEncoder("  ", " ", 0);
+    elif ext = "txt" then
+      encoder := DigraphPlainTextLineEncoder("  ", " ", 0);
     else
       encoder := fail;
     fi;
