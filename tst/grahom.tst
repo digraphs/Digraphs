@@ -27,7 +27,7 @@ GAP: at depth 1
 GAP: at depth 2
 found endomorphism of rank 2
 found endomorphism of rank 3
-[ Transformation( [ 2, 1 ] ), Transformation( [ 1, 1 ] ),
+[ Transformation( [ 2, 1 ] ), Transformation( [ 1, 1 ] ), 
   IdentityTransformation ]
 gap> s := Semigroup(DigraphEndomorphisms(EmptyDigraph(4)));
 GAP: at depth 1
