@@ -118,6 +118,64 @@ function(graph)
   return graph!.vertexnames;
 end);
 
+InstallMethod(SetDigraphEdgeLabel, "for a digraph, pos int, object",
+[IsDigraph, IsPosInt, IsObject], 
+function(graph, i, name)
+
+  if not IsBound(graph!.edgelabels) then 
+    graph!.edgelabels := [ 1 .. DigraphNrVertices(graph) ];
+  fi;
+
+  if i > DigraphNrVertices(graph) then 
+    Error("Digraphs: SetDigraphEdgeLabel: usage,\n",
+    "there are only ",  DigraphNrVertices(graph), " vertices,");
+    return;
+  fi;
+  graph!.edgelabels[i] := name;
+  return;
+end);
+
+InstallMethod(DigraphEdgeLabel, "for a digraph and pos int",
+[IsDigraph, IsPosInt], 
+function(graph, i)
+
+  if not IsBound(graph!.edgelabels) then 
+    graph!.edgelabels := [1 .. DigraphNrVertices(graph)];
+  fi;
+
+  if IsBound(graph!.edgelabels[i]) then 
+    return graph!.edgelabels[i];
+  fi;
+  Error("Digraphs: DigraphEdgeLabel: usage,\n",
+   i, " is nameless or not a vertex,");
+  return;
+end);
+
+InstallMethod(SetDigraphEdgeLabels, "for a digraph and list",
+[IsDigraph, IsList], 
+function(graph, names)
+  
+  if Length(names) = DigraphNrVertices(graph) then 
+    graph!.edgelabels := names;
+  else 
+    Error("Digraphs: SetDigraphEdgeLabels: usage,\n",
+    "the 2nd arument <names> must be a list with length equal",
+    " to the number of\nvertices of the digraph,");
+    return;
+  fi;
+  return;
+end);
+
+InstallMethod(DigraphEdgeLabels, "for a digraph and pos int",
+[IsDigraph], 
+function(graph)
+
+  if not IsBound(graph!.edgelabels) then 
+    graph!.edgelabels := [ 1 .. DigraphNrVertices(graph) ];
+  fi;
+  return graph!.edgelabels;
+end);
+
 # multi means it has at least one multiple edges
 
 if IsBound(IS_MULTI_DIGRAPH) then
