@@ -34,6 +34,8 @@ DeclareOperation("DigraphByAdjacencyMatrixNC", [IsRectangularTable]);
 DeclareOperation("DigraphByAdjacencyMatrixNC", [IsList and IsEmpty]);
 DeclareOperation("DigraphByEdges", [IsRectangularTable]);
 DeclareOperation("DigraphByEdges", [IsRectangularTable, IsPosInt]);
+DeclareOperation("DigraphByEdges", [IsList and IsEmpty]);
+DeclareOperation("DigraphByEdges", [IsList and IsEmpty, IsPosInt]);
 DeclareOperation("Graph", [IsDigraph]);
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
