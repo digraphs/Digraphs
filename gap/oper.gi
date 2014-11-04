@@ -767,6 +767,36 @@ function(graph, perm)
   return out;
 end);
 
+InstallMethod(OnMultiDigraphs, "for a digraph, perm and perm",
+[IsDigraph, IsPerm, IsPerm],
+function(graph, perm1, perm2)
+  return OnMultiDigraphs(graph, [perm1, perm2]);
+end);
+
+InstallMethod(OnMultiDigraphs, "for a digraph and perm coll",
+[IsDigraph, IsPermCollection],
+function(graph, perms)
+  local source, range, out;
+
+  if Length(perms) <> 2 then 
+    Error("Digraphs: OnMultiDigraphs: usage,\n",
+    "the 2nd argument must be a pair of permutations,");
+    return;
+  fi;
+
+  if ForAny([ 1 .. DigraphNrEdges(graph) ], i-> 
+    i^perms[2] > DigraphNrEdges(graph)) then
+    Error("Digraphs: OnDigraphs: usage,\n",
+    "the argument <perms[2]> must permute the edges ",
+    "of the 1st argument <graph>,");
+    return;
+  fi;
+ 
+  out := OnDigraphs(graph, perms[1]);
+  SetDigraphEdgeLabels(out, Permuted(DigraphEdgeLabels(graph), perms[2]));
+  return out;
+end);
+
 #
 
 InstallMethod(DigraphSymmetricClosure, "for a digraph",
@@ -949,7 +979,8 @@ function( digraph, subverts )
   
   new := DigraphNC(new);
   SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
-  SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
+  #JDM need to set this correctly!
+  #SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
   return new;
 end);
 
@@ -1006,7 +1037,8 @@ function( digraph, subverts )
 
   new := DigraphNC( rec ( nrvertices := nr, source := news, range := newr ) );
   SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
-  SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
+  #JDM need to set this correctly!
+  #SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
   return new;
 
 end);
