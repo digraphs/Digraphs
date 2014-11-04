@@ -342,9 +342,15 @@ gap> DigraphEdges(gr2);
     <C>[ j, k ]</C> are edges of the digraph, then <C>[ i, k ]</C> is also an
     edge of the digraph. <P/>
 
-    The method used in this function is a version of the Floyd-Warshall 
-    algorithm, and has complexity <M>O(n^3)</M>, where <M>n</M> is the number
-    of vertices of <A>digraph</A>.
+    Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
+        <M>m</M> be the number of edges.
+    For general digraphs, the methods used in this function use a version
+    of the Floyd-Warshall algorithm, and have complexity <M>O(n^3)</M>.
+
+    However for digraphs which are topologically sortable
+    [<Ref Attr="DigraphTopologicalSort"/>], then this function will 
+    use methods with complexity <M>O(m + n + m \cdot n)</M> when appropriate.
+    <P/>
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 3 ] ] );
 <digraph with 3 vertices, 4 edges>
