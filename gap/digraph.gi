@@ -123,12 +123,12 @@ InstallMethod(SetDigraphEdgeLabel, "for a digraph, pos int, object",
 function(graph, i, name)
 
   if not IsBound(graph!.edgelabels) then 
-    graph!.edgelabels := [ 1 .. DigraphNrVertices(graph) ];
+    graph!.edgelabels := [ 1 .. DigraphNrEdges(graph) ];
   fi;
 
-  if i > DigraphNrVertices(graph) then 
+  if i > DigraphNrEdges(graph) then 
     Error("Digraphs: SetDigraphEdgeLabel: usage,\n",
-    "there are only ",  DigraphNrVertices(graph), " vertices,");
+    "there are only ",  DigraphNrEdges(graph), " vertices,");
     return;
   fi;
   graph!.edgelabels[i] := name;
@@ -140,7 +140,7 @@ InstallMethod(DigraphEdgeLabel, "for a digraph and pos int",
 function(graph, i)
 
   if not IsBound(graph!.edgelabels) then 
-    graph!.edgelabels := [1 .. DigraphNrVertices(graph)];
+    graph!.edgelabels := [1 .. DigraphNrEdges(graph)];
   fi;
 
   if IsBound(graph!.edgelabels[i]) then 
@@ -155,7 +155,7 @@ InstallMethod(SetDigraphEdgeLabels, "for a digraph and list",
 [IsDigraph, IsList], 
 function(graph, names)
   
-  if Length(names) = DigraphNrVertices(graph) then 
+  if Length(names) = DigraphNrEdges(graph) then 
     graph!.edgelabels := names;
   else 
     Error("Digraphs: SetDigraphEdgeLabels: usage,\n",
@@ -171,7 +171,7 @@ InstallMethod(DigraphEdgeLabels, "for a digraph and pos int",
 function(graph)
 
   if not IsBound(graph!.edgelabels) then 
-    graph!.edgelabels := [ 1 .. DigraphNrVertices(graph) ];
+    graph!.edgelabels := [ 1 .. DigraphNrEdges(graph) ];
   fi;
   return graph!.edgelabels;
 end);
