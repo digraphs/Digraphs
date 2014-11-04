@@ -979,7 +979,8 @@ function( digraph, subverts )
   
   new := DigraphNC(new);
   SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
-  SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
+  #JDM need to set this correctly!
+  #SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
   return new;
 end);
 
@@ -1036,7 +1037,8 @@ function( digraph, subverts )
 
   new := DigraphNC( rec ( nrvertices := nr, source := news, range := newr ) );
   SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
-  SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
+  #JDM need to set this correctly!
+  #SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
   return new;
 
 end);

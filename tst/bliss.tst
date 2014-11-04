@@ -204,6 +204,22 @@ true
 gap> IsomorphismDigraphs(EmptyDigraph(1), gr1);
 fail
 
+# Canonical labelling: multidigraphs
+gap> gr1 := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
+<multidigraph with 3 vertices, 6 edges>
+gap> perms:=DigraphCanonicalLabelling(gr1);
+[ (1,3), (1,6)(2,3,5) ]
+gap> gr2 := OnMultiDigraphs(gr1, perms);
+<multidigraph with 3 vertices, 6 edges>
+gap> DigraphEdgeLabels(gr2);
+[ 6, 5, 2, 4, 3, 1 ]
+gap> DigraphCanonicalLabelling(gr2);
+[ (1,3,2), (1,6,4)(2,3) ]
+gap> OnMultiDigraphs(gr2, last)=gr2;
+true
+gap> gr2 = gr1;
+false
+
 #
 gap> DigraphsStopTest();
 
