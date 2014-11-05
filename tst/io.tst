@@ -169,9 +169,16 @@ gap> ReadDigraphs(filename);
 [ <digraph with 5 vertices, 7 edges>, <digraph with 105 vertices, 100 edges>, 
   <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
 
+# Note that some edges in gr[2] are lost
+gap> filename := Concatenation(DigraphsDir(), "/tst/out/test.txt");;
+gap> WriteDigraphs(filename, gr);
+gap> ReadDigraphs(filename);
+[ <digraph with 5 vertices, 7 edges>, <digraph with 100 vertices, 100 edges>, 
+  <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
+
 #
 gap> gr := [];;
-gap> gr[1] := Digraph(rec( nrvertices := 30, source := [1..2], range := [2,1]));
+gap> gr[1] := Digraph(rec(nrvertices := 30, source := [1..2], range := [2,1]));
 <digraph with 30 vertices, 2 edges>
 gap> gr[2] := Digraph([[2], [1,4], [5], [2], [3]]);
 <digraph with 5 vertices, 6 edges>

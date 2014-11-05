@@ -25,5 +25,6 @@ DeclareOperation("Digraph6String", [IsDigraph]);
 DeclareOperation("Sparse6String", [IsDigraph]);
 DeclareOperation("DiSparse6String", [IsDigraph]);
 DeclareOperation("PlainTextString", [IsDigraph]);
+DeclareGlobalFunction("WritePlainTextDigraph");
 
 DeclareGlobalFunction("DigraphPlainTextLineEncoder");
