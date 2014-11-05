@@ -631,36 +631,34 @@ function(digraph, verts)
   local n, len, newnrverts, diff, lookup, count, m, source, range, news, newr, 
         log, oldlabs, labs, gr, i;
 
-  n := DigraphNrVertices(digraph);
-  len := Length(verts);
-  newnrverts := n - len;
-  diff := Difference(DigraphVertices(digraph), verts);
   if IsEmpty(verts) then
     return DigraphCopy(digraph);
   else
+    n := DigraphNrVertices(digraph);
+    len := Length(verts);
+    newnrverts := n - len;
     if newnrverts = 0 then
       return EmptyDigraph(0);
     fi;
     lookup := EmptyPlist(n);
-    count := 0;
-    for i in diff do
-      count := count + 1;
-      lookup[ i ] := count;
-    od;
     m      := DigraphNrEdges(digraph);
     source := DigraphSource(digraph);
     range  := DigraphRange(digraph);
     news   := [ ];
     newr   := [ ];
-    count  := 0;
-
     log    := LogInt(len, 2);
     if (2 * m * log) + (len * log) < (2 * m * len) then
       Sort(verts); # Sort verts if it is sensible to do so
     fi;
-    
+    diff := Difference(DigraphVertices(digraph), verts);
+    count := 0;
+    for i in diff do
+      count := count + 1;
+      lookup[ i ] := count;
+    od;
     oldlabs := DigraphEdgeLabels(digraph);
     labs := [  ];
+    count := 0;
     for i in [ 1 .. m ] do
       if not (source[i] in verts or range[i] in verts) then
         count := count + 1;
@@ -674,7 +672,6 @@ function(digraph, verts)
                         source := news, range := newr ) );
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
   SetDigraphEdgeLabels(gr, labs);
-  # Transfer data
   return gr;
 end);
 
@@ -682,48 +679,61 @@ InstallMethod(DigraphRemoveVerticesNC,
 "for a digraph with out-neighbours and a list",
 [IsDigraph and HasOutNeighbours, IsList],
 function(digraph, verts)
-  local diff, new, n, len, newnrverts, lookup, count, out, m, log, gr, i, j, x;
+  local n, len, new_nrverts, m, log, diff, j, lookup, old_edge_count, old_labels, new_edge_count, new_labels, new_vertex_count, old_nbs, new_nbs, gr, i, x;
   
-  diff := Difference(DigraphVertices(digraph), verts);
   if IsEmpty(verts) then
     return DigraphCopy(digraph);
   else
     n := DigraphNrVertices(digraph);
     len := Length(verts);
-    newnrverts := n - len;
-    if newnrverts = 0 then
+    new_nrverts := n - len;
+    if new_nrverts = 0 then
       return EmptyDigraph(0);
     fi;
-    lookup := EmptyPlist(n);
-    count := 0;
-   for i in diff do
-      count := count + 1;
-      lookup[ i ] := count;
-    od;
-    out   := OutNeighbours(digraph);
-    new   := EmptyPlist(newnrverts);
-    count := 0;
     m     := DigraphNrEdges(digraph);
     log   := LogInt(len, 2);
     if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
       Sort(verts);
     fi;
+    diff := Difference(DigraphVertices(digraph), verts);
+
+    j := 0;
+    lookup := EmptyPlist(n);
     for i in diff do
-      count := count + 1;
-      new[count] := [ ];
-      j := 0;
-      for x in out[ i ] do
-        if not x in verts then
-          j := j + 1;
-          new[count][j] := lookup[x];
-        fi;
-      od;
+      j := j + 1;
+      lookup[ i ] := j;
+    od;
+
+    old_edge_count   := 0;
+    old_labels       := DigraphEdgeLabels(digraph);
+    new_edge_count   := 0;
+    new_labels       := [ ];
+    new_vertex_count := 0;
+
+    old_nbs := OutNeighbours(digraph);
+    new_nbs := EmptyPlist(new_nrverts);
+    for i in DigraphVertices(digraph) do
+      if IsBound(lookup[i]) then
+        new_vertex_count := new_vertex_count + 1;
+        new_nbs[new_vertex_count] := [  ];
+        j := 0;
+        for x in old_nbs[ i ] do
+          old_edge_count := old_edge_count + 1;
+          if not x in verts then # Can search through diff if |diff| < |verts|
+            j := j + 1;
+            new_nbs[ new_vertex_count ][j] := lookup[x];
+            new_edge_count := new_edge_count + 1;
+            new_labels[ new_edge_count ] := old_labels[ old_edge_count ];
+          fi;
+        od;
+      else
+        old_edge_count := old_edge_count + Length(old_nbs[i]);
+      fi;
     od;
   fi;
-  gr := DigraphNC(new);
+  gr := DigraphNC(new_nbs);
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
-  #SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph){diff});
-  # Transfer data
+  SetDigraphEdgeLabels(gr, new_labels);
   return gr;
 end);
 
