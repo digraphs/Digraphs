@@ -129,4 +129,8 @@ function()
   return;
 end);
 
+InstallGlobalFunction(IsSemigroupsLoaded,
+function()
+  return IsPackageMarkedForLoading("semigroups", "2.1");
+end);
 #EOF

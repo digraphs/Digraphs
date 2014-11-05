@@ -163,5 +163,10 @@ function(digraph)
     "the argument <digraph> must not be a multigraph,");
     return;
   fi;
-  return Monoid(DigraphEndomorphisms(digraph));
+  if IsSemigroupsLoaded() then 
+    return Monoid(DigraphEndomorphisms(digraph), rec(small := true));
+  else
+    return Monoid(DigraphEndomorphisms(digraph));
+  fi; 
+ 
 end);
