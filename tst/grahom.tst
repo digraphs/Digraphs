@@ -57,6 +57,12 @@ GAP: at depth 5
 <transformation monoid on 4 pts with 17 generators>
 gap> IsFullTransformationMonoid(s);
 true
+gap> m := EndomorphismMonoid(CompleteDigraph(4));
+GAP: at depth 1
+GAP: at depth 2
+<transformation monoid on 4 pts with 3 generators>
+gap> Size(m);
+24
 
 #
 gap> DigraphsStopTest();

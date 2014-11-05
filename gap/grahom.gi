@@ -37,7 +37,9 @@ function(g)
   local DigraphVerticesWithLoops, Dowork, n, aut, result, try;
 
   if IsMultiDigraph(g) then 
-    return fail;
+    Error("Digraphs: DigraphEndomorphisms: usage,\n",
+    "the argument <digraph> must not be a multigraph,");
+    return;
   fi;
 
   DigraphVerticesWithLoops := function(digraph)
@@ -111,6 +113,16 @@ function(g)
   Append(result,List(GeneratorsOfGroup(aut),AsTransformation));
   try := EmptyPlist(n);
   Dowork(g,try,1,aut,result);
-  return result;
+  return result; 
 end);
 
+InstallMethod(EndomorphismMonoid, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if IsMultiDigraph(digraph) then 
+    Error("Digraphs: EndomorphismMonoid: usage,\n",
+    "the argument <digraph> must not be a multigraph,");
+    return;
+  fi;
+  return Monoid(DigraphEndomorphisms(digraph));
+end);
