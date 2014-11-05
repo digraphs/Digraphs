@@ -17,3 +17,4 @@ DeclareGlobalFunction("DigraphsTestManualExamples");
 DeclareGlobalFunction("DigraphsManualExamples");
 DeclareGlobalFunction("DigraphsTestEverything");
 DeclareGlobalFunction("DigraphsDir");
+DeclareGlobalFunction("IsSemigroupsLoaded");
