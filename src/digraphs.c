@@ -259,6 +259,7 @@ static void UF_COMBINE_CLASSES(UInt *id, UInt i, UInt j) {
     id[j] = i;
   else if (j < i)
     id[i] = j;
+  // if i = j then there is nothing to combine
 }
 
 
@@ -266,73 +267,71 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
   UInt n, *id, *nid, i, j, e, len, f, nrcomps;
   Obj  adj, adji, source, range, gid, gcomps, comp, out;
 
+  out = NEW_PREC(2);
   n = DigraphNrVertices(digraph);
   if (n == 0) {
-    out = NEW_PREC(2);
-    AssPRec(out, RNamName("id"), NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE,0));
-    AssPRec(out, RNamName("comps"), NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE,0));
-    CHANGED_BAG(out);
-    return out;
-  }
-
-  id = malloc( n * sizeof(UInt) );
-  for (i = 0; i < n; i++) {
-    id[i] = i;
-  }
-
-  if (HasDigraphSource(digraph)) {
-    // Digraph by source and range
-    source = DigraphSource(digraph);
-    range  = DigraphRange(digraph);
-    PLAIN_LIST(source);
-    PLAIN_LIST(range);
-    len = LEN_PLIST(source);
-    for (e = 1; e <= len; e++) {
-      i = INT_INTOBJ(ELM_PLIST(source, e)) - 1;
-      j = INT_INTOBJ(ELM_PLIST(range,  e)) - 1;
-      UF_COMBINE_CLASSES(id, i, j);
-    }
+    gid = NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE,0);
+    gcomps = NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE,0);
   } else {
-    // Digraph by adjacencies
-    adj = OutNeighbours(digraph);
+
+    id = malloc( n * sizeof(UInt) );
     for (i = 0; i < n; i++) {
-      adji = ELM_PLIST(adj, i+1);
-      PLAIN_LIST(adji);
-      len = LEN_PLIST(adji);
+      id[i] = i;
+    }
+
+    if (HasDigraphSource(digraph)) {
+      // Digraph by source and range
+      source = DigraphSource(digraph);
+      range  = DigraphRange(digraph);
+      PLAIN_LIST(source);
+      PLAIN_LIST(range);
+      len = LEN_PLIST(source);
       for (e = 1; e <= len; e++) {
-        UF_COMBINE_CLASSES( id, i, INT_INTOBJ( ELM_PLIST( adji, e ) ) - 1 );
+        i = INT_INTOBJ(ELM_PLIST(source, e)) - 1;
+        j = INT_INTOBJ(ELM_PLIST(range,  e)) - 1;
+        UF_COMBINE_CLASSES(id, i, j);
+      }
+    } else {
+      // Digraph by adjacencies
+      adj = OutNeighbours(digraph);
+      for (i = 0; i < n; i++) {
+        adji = ELM_PLIST(adj, i + 1);
+        PLAIN_LIST(adji);
+        len = LEN_PLIST(adji);
+        for (e = 1; e <= len; e++) {
+          UF_COMBINE_CLASSES(id, i, INT_INTOBJ(ELM_PLIST( adji, e )) - 1);
+        }
       }
     }
-  }
 
-  // "Normalise" id, giving it sensible labels
-  nid = malloc(n * sizeof(UInt));
-  nrcomps = 0;
-  for (i = 0; i < n; i++) {
-    f = UF_FIND(id, i);
-    nid[i] = (f == i) ? ++nrcomps : nid[f];
-  }
-  free(id);
+    // "Normalise" id, giving it sensible labels
+    nid = malloc(n * sizeof(UInt));
+    nrcomps = 0;
+    for (i = 0; i < n; i++) {
+      f = UF_FIND(id, i);
+      nid[i] = (f == i) ? ++nrcomps : nid[f];
+    }
+    free(id);
 
-  // Make GAP object from nid
-  gid = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, n);
-  gcomps = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, nrcomps);
-  SET_LEN_PLIST(gid, n);
-  SET_LEN_PLIST(gcomps, nrcomps);
-  for (i = 1; i <= nrcomps; i++) {
-    CHANGED_BAG(gcomps);
-    SET_ELM_PLIST(gcomps, i, NEW_PLIST(T_PLIST_CYC+IMMUTABLE,0));
-    SET_LEN_PLIST(ELM_PLIST(gcomps, i), 0);
-  }
-  for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(gid, i, INTOBJ_INT(nid[i-1]));
-    comp = ELM_PLIST(gcomps, nid[i-1]);
-    len = LEN_PLIST(comp);
-    AssPlist(comp, len + 1, INTOBJ_INT(i));
-  }
-  free(nid);
+    // Make GAP object from nid
+    gid = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, n);
+    gcomps = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, nrcomps);
+    SET_LEN_PLIST(gid, n);
+    SET_LEN_PLIST(gcomps, nrcomps);
+    for (i = 1; i <= nrcomps; i++) {
+      SET_ELM_PLIST(gcomps, i, NEW_PLIST(T_PLIST_CYC+IMMUTABLE,0));
+      CHANGED_BAG(gcomps);
+      SET_LEN_PLIST(ELM_PLIST(gcomps, i), 0);
+    }
+    for (i = 1; i <= n; i++) {
+      SET_ELM_PLIST(gid, i, INTOBJ_INT(nid[i - 1]));
+      comp = ELM_PLIST(gcomps, nid[i - 1]);
+      len = LEN_PLIST(comp);
+      AssPlist(comp, len + 1, INTOBJ_INT(i));
+    }
+    free(nid);
 
-  out = NEW_PREC(2);
+  }
   AssPRec(out, RNamName("id"), gid);
   AssPRec(out, RNamName("comps"), gcomps);
   CHANGED_BAG(out);
