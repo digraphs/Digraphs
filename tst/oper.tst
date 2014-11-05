@@ -34,9 +34,7 @@ gap> e := DigraphEdges(gr);
   [ 3, 4 ], [ 4, 1 ], [ 4, 3 ], [ 4, 5 ], [ 5, 1 ], [ 5, 1 ], [ 5, 3 ] ]
 gap> rev := DigraphReverse(gr);
 <multidigraph with 5 vertices, 14 edges>
-gap> erev := DigraphEdges(rev);
-[ [ 1, 1 ], [ 1, 2 ], [ 1, 5 ], [ 1, 4 ], [ 1, 5 ], [ 2, 2 ], [ 2, 2 ], 
-  [ 3, 1 ], [ 3, 4 ], [ 3, 5 ], [ 4, 3 ], [ 4, 2 ], [ 5, 2 ], [ 5, 4 ] ]
+gap> erev := DigraphEdges(rev);;
 gap> temp := List( erev, x -> [ x[2], x[1] ] );;
 gap> Sort(temp);
 gap> e = temp;
@@ -445,7 +443,7 @@ gap> gr := Digraph( rec( nrvertices := 8,
 gap> qr := QuotientDigraph( gr, [ [ 1 ], [ 2, 3, 5, 7 ], [ 4, 6, 8 ] ] );
 <multidigraph with 3 vertices, 21 edges>
 gap> OutNeighbours(qr);
-[ [ 3, 2 ], [ 1, 3, 2, 2, 3, 3, 1, 3, 1, 3, 2, 2, 2 ], [ 1, 3, 2, 3, 2, 3 ] ]
+[ [ 3, 2 ], [ 1, 3, 2, 1, 2, 3, 3, 2, 1, 3, 2, 3, 2 ], [ 1, 3, 3, 2, 2, 3 ] ]
 
 # DigraphInEdges / DigraphOutEdges
 gap> gr := Digraph( [ [ 2, 2, 2, 2, 2 ], [ 1, 1, 1, 1 ], [ 1 ], [ 3, 2 ] ] );
