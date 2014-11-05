@@ -1579,9 +1579,7 @@ static void dowork(num *try, num depth){
     }
     if (gra1[depth] & oneone[depth]) {   /* if depth has a loop in gra1 */
        todo &= gra2hasloops;
-    } else {
-       todo &= ones[nrvert2 - 1] ^ gra2hasloops;
-    }
+    } 
     if (todo == 0 ) return;
     for (i = 0;i < nrvert2 && todo;i++, todo >>= 1) {
         if (todo & 1) {
