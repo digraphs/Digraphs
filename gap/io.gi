@@ -421,7 +421,7 @@ function(arg)
     offset := arg[2];    # indexing starts at 0 or 1? or what?
     return
       function(string)
-        string := SplitString(string, delimiter);
+        string := SplitStringBySubstring(string, delimiter);
         Apply(string, Int);
         return string + offset;
       end;
@@ -477,8 +477,12 @@ InstallGlobalFunction(ReadPlainTextDigraph,
 function(name, delimiter, offset, ignore)
   local file, lines, edges, nr, decoder, line;
 
+  if IsChar(delimiter) then
+    delimiter := [delimiter];
+  fi;
+
   if (not IsString(name)) or (not IsString(delimiter))
-    or (not (IsInt(offset) and offset >= 0))
+    or (not IsInt(offset))
     or (not (IsString(ignore) or IsChar(ignore))) then
     Error("Digraphs: ReadPlainTextDigraph: usage,\n",
           "ReadPlainTextDigraph( filename, delimiter, offset, ignore ),");
@@ -510,6 +514,40 @@ function(name, delimiter, offset, ignore)
   od;
 
   return DigraphByEdges(edges);
+end);
+
+#
+
+InstallGlobalFunction(WritePlainTextDigraph,
+function(name, digraph, delimiter, offset)
+  local file, encoder, edge;
+
+  if IsChar(delimiter) then
+    delimiter := [delimiter];
+  fi;
+
+  if (not IsString(name)) or (not IsString(delimiter))
+    or (not (IsInt(offset) and offset >= 0)) then
+    Error("Digraphs: WritePlainTextDigraph: usage,\n",
+          "ReadPlainTextDigraph( filename, digraph, delimiter, ignore ),");
+    return;
+  fi;
+
+  file := IO_CompressedFile(name, "w");
+
+  if file = fail then
+    Error("Digraphs: WritePlainTextDigraph: usage,\n",
+          "can't open file ", name, ",");
+    return;
+  fi;
+
+  for edge in DigraphEdges(digraph) do
+    IO_WriteLine(file, Concatenation(
+            String(edge[1]+offset),
+            delimiter,
+            String(edge[2]+offset) ));
+  od;
+  IO_Close(file);
 end);
 
 #

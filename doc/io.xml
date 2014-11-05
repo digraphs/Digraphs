@@ -245,6 +245,10 @@ gap> DiSparse6String(gr);
     corresponding decoder function, which takes a string argument in this format
     and returns a digraph.<P/>
 
+    If only one delimiter is passed as an argument to
+    <A>DigraphPlainTextLineDecoder</A>, it will return a function which decodes
+    a single edge, returning its contents as a list of integers.<P/>
+
     The argument <A>offset</A> should be an integer, which will describe a
     number to be added to each vertex before it is encoded, or after it is
     decoded.  This may be used, for example, to label vertices starting at 0
