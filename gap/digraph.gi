@@ -559,8 +559,12 @@ end);
 
 InstallMethod(DigraphNC, "for a record", [IsRecord],
 function(graph)
+  local out;
   ObjectifyWithAttributes(graph, DigraphType, DigraphRange,
    graph.range, DigraphSource, graph.source);
+  # Temporary probably; make sure it works 
+  out := DIGRAPH_OUT_NBS( graph, graph!.source, graph!.range );
+  SetOutNeighbours(graph, out);
   return graph;
 end);
 
@@ -773,148 +777,9 @@ end);
 
 # operators . . .
 
-InstallMethod(\=, "for a digraph with range and a digraph with out-neighbours",
-[IsDigraph and HasDigraphRange, IsDigraph and HasOutNeighbours], 1,
-function(graph1, graph2)
-  return graph2 = graph1;
-end);
-
-InstallMethod(\=, "for a digraph with out-neighbours and a digraph with range",
-[IsDigraph and HasOutNeighbours, IsDigraph and HasDigraphRange], 1,
-DIGRAPH_EQUALS_MIXED);
-#function(graph1, graph2)
-#  local m, out, source, range, verts, start, stop, len, b, a, i;
-#
-#  if DigraphNrVertices(graph1) <> DigraphNrVertices(graph2) then
-#    return false;
-#  fi;
-#  m := DigraphNrEdges(graph1);
-#  if m <> DigraphNrEdges(graph2) then
-#    return false;
-#  elif m = 0 then
-#    return true;
-#  fi;
-#  
-#  out := OutNeighbours(graph1);
-#  source := DigraphSource(graph2);
-#  range := DigraphRange(graph2);
-#  verts := DigraphVertices(graph1);
-#  start := 1;
-#  i := 0;
-#  while true do
-#    i := i + 1;
-#    len := Length(out[i]);
-#    stop := start + len - 1;
-#    if len = 0 and source[start] = i then
-#      return false;
-#    elif len <> 0 and not (source[start] = i and source[stop] = i) then
-#      return false;
-#    fi;
-#
-#    # By here, either:
-#    # 1. 0 == graph1[i] out-degree == graph2[i] out-degree
-#    # 2. 0 <> graph1[i] out-degree <= graph2[i] out-degree
-#
-#    b := range{[ start .. stop ]};
-#    if out[i] <> b then
-#      a := ShallowCopy(out[i]);
-#      Sort(a);
-#      Sort(b);
-#      if a <> b then
-#        return false;
-#      fi;
-#    fi;
-#    start := stop + 1;
-#    if m < start then
-#      return true;
-#    fi;
-#  od;
-#end);
-
 InstallMethod(\=, "for two digraphs with out-neighbours",
 [IsDigraph and HasOutNeighbours, IsDigraph and HasOutNeighbours], 2,
-DIGRAPH_EQUALS_OUT_NBS);
-#function(graph1, graph2)
-#  local out1, out2, verts, a, b, i;
-#  
-#  if DigraphNrVertices(graph1) <> DigraphNrVertices(graph2) then
-#    return false;
-#  fi;
-#  
-#  out1 := OutNeighbours(graph1);
-#  out2 := OutNeighbours(graph2);
-#  if DigraphNrEdges(graph1) <> DigraphNrEdges(graph2) then
-#    return false;
-#  elif out1 = out2 then
-#    return true;
-#  fi;
-#
-#  verts := DigraphVertices(graph1);
-#  for i in verts do
-#    if Length(out1[i]) <> Length(out2[i]) then
-#      return false;
-#    fi;
-#    if out1[i] <> out2[i] then
-#      a := ShallowCopy(out1[i]);
-#      b := ShallowCopy(out2[i]);
-#      Sort(a);
-#      Sort(b);
-#      if a <> b then
-#        return false;
-#      fi;
-#    fi;
-#  od;
-#  return true;
-#end);
-
-InstallMethod(\=, "for two digraphs with range",
-[IsDigraph and HasDigraphRange, IsDigraph and HasDigraphRange], 2,
-DIGRAPH_EQUALS_SOURCE);
-#function(graph1, graph2)
-#  local sources, source, range1, range2, m, n, stop, start, a, b, i;
-#  
-#  if DigraphNrVertices(graph1) <> DigraphNrVertices(graph2) then
-#    return false;
-#  elif DigraphSource(graph1) <> DigraphSource(graph2) then # Checks nr edges too
-#    return false;
-#  elif DigraphRange(graph1) = DigraphRange(graph2) then
-#    return true;
-#  fi;
-#
-#  source := DigraphSource(graph1);
-#  sources := DuplicateFreeList(source);
-#  range1 := DigraphRange(graph1);
-#  range2 := DigraphRange(graph2);
-#  m := Length(source);
-#  n := Length(sources);
-#
-#  stop := 1;
-#  for i in [ 2 .. n ] do
-#    start := stop;
-#    stop := PositionSorted(source, sources[i]);
-#    a := range1{ [ start .. (stop - 1) ] };
-#    b := range2{ [ start .. (stop - 1) ] };
-#    if a <> b then
-#      Sort(a);
-#      Sort(b);
-#      if a <> b then
-#        return false;
-#      fi;
-#    fi;
-#  od;
-#  a := range1{ [ stop .. m ] };
-#  b := range2{ [ stop .. m ] };
-#  if a <> b then
-#    Sort(a);
-#    Sort(b);
-#    if a <> b then
-#      return false;
-#    fi;
-#  fi;
-#
-#  return true;
-#
-#end);
+DIGRAPH_EQUALS);
 
 #
 

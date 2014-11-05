@@ -28,6 +28,7 @@
 
 /*************************************************************************/
 
+/* These functions are now unnecessary/invalid
 bool HasOutNeighbours(Obj digraph) {
   return IsbPRec(digraph, RNamName("adj"));
 }
@@ -46,32 +47,6 @@ bool HasDigraphRange(Obj digraph) {
   return IsbPRec(digraph, RNamName("range"));
 }
 
-Int DigraphNrVertices(Obj digraph) {
-  if (IsbPRec(digraph, RNamName("nrvertices"))) {
-    return INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
-  }
-  // The record comp should always be set so this should never be triggered
-  ErrorQuit(
-  "Digraphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
-  0L, 0L);
-  return 0;
-}
-
-Obj OutNeighbours(Obj digraph) {
-  if (HasOutNeighbours(digraph)) {
-    return ElmPRec(digraph, RNamName("adj"));
-  }
-  return FuncDIGRAPH_OUT_NBS( NULL, digraph );
-}
-
-/*Obj OutNeighboursOfVertex(Obj digraph, Int v) { 
-  Obj out;
-
-  // Do all kinds of safety checking
-  out = OutNeighbours(digraph);
-  return ELM_PLIST( out, v );
-}*/
-
 Obj DigraphSource(Obj digraph) {
   if (!HasDigraphSource(digraph)) {
     FuncDIGRAPH_SOURCE_RANGE( NULL, digraph );
@@ -84,6 +59,17 @@ Obj DigraphRange(Obj digraph) {
     FuncDIGRAPH_SOURCE_RANGE( NULL, digraph );
   }
   return ElmPRec(digraph, RNamName("range"));
+}*/
+
+Int DigraphNrVertices(Obj digraph) {
+  if (IsbPRec(digraph, RNamName("nrvertices"))) {
+    return INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  }
+  // The record comp should always be set so this should never be triggered
+  ErrorQuit(
+  "Digraphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
+  0L, 0L);
+  return 0;
 }
 
 Int DigraphNrEdges(Obj digraph) {
@@ -92,22 +78,27 @@ Int DigraphNrEdges(Obj digraph) {
   if (IsbPRec(digraph, RNamName("nredges"))) {
     return INT_INTOBJ(ElmPRec(digraph, RNamName("nredges")));
   }
-  if (HasDigraphSource(digraph)) { 
-    return LEN_LIST( DigraphSource(digraph) );
-    // Is this known to be be a Plist?
-  } else if (HasOutNeighbours(digraph)) {
-    n   = DigraphNrVertices(digraph);
-    adj = OutNeighbours(digraph); 
-    nr  = 0;
-    for (i = 1; i <= n; i++) {
-      nr += LEN_PLIST(ELM_PLIST(adj, i));
-    }
-  } else {
-    ErrorQuit("Digraphs: DigraphNrEdges (C): impossible situation,",0L,0L);
+  n   = DigraphNrVertices(digraph);
+  adj = OutNeighbours(digraph); 
+  nr  = 0;
+  for (i = 1; i <= n; i++) {
+    nr += LEN_PLIST(ELM_PLIST(adj, i));
   }
   AssPRec(digraph, RNamName("nredges"), INTOBJ_INT(nr));
   return nr;
 }
+
+Obj OutNeighbours(Obj digraph) {
+  return ElmPRec(digraph, RNamName("adj"));
+}
+
+/*Obj OutNeighboursOfVertex(Obj digraph, Int v) { 
+  Obj out;
+
+  // Do all kinds of safety checking
+  out = OutNeighbours(digraph);
+  return ELM_PLIST( out, v );
+}*/
 
 /****************************************************************************
 **
@@ -279,28 +270,13 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
       id[i] = i;
     }
 
-    if (HasDigraphSource(digraph)) {
-      // Digraph by source and range
-      source = DigraphSource(digraph);
-      range  = DigraphRange(digraph);
-      PLAIN_LIST(source);
-      PLAIN_LIST(range);
-      len = LEN_PLIST(source);
+    adj = OutNeighbours(digraph);
+    for (i = 0; i < n; i++) {
+      adji = ELM_PLIST(adj, i + 1);
+      PLAIN_LIST(adji);
+      len = LEN_PLIST(adji);
       for (e = 1; e <= len; e++) {
-        i = INT_INTOBJ(ELM_PLIST(source, e)) - 1;
-        j = INT_INTOBJ(ELM_PLIST(range,  e)) - 1;
-        UF_COMBINE_CLASSES(id, i, j);
-      }
-    } else {
-      // Digraph by adjacencies
-      adj = OutNeighbours(digraph);
-      for (i = 0; i < n; i++) {
-        adji = ELM_PLIST(adj, i + 1);
-        PLAIN_LIST(adji);
-        len = LEN_PLIST(adji);
-        for (e = 1; e <= len; e++) {
-          UF_COMBINE_CLASSES(id, i, INT_INTOBJ(ELM_PLIST( adji, e )) - 1);
-        }
+        UF_COMBINE_CLASSES(id, i, INT_INTOBJ(ELM_PLIST( adji, e )) - 1);
       }
     }
 
@@ -636,48 +612,53 @@ static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
   return True;
 }
 
-static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph) { 
-  Obj   range, source, adj, adjj;
-  UInt  n, i, j, len;
-  
+// Assume we are passed two GAP lists of PosInts of equal length
+static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range) { 
+  Obj   adj, adjj;
+  UInt  n, m, i, j, len, m1, m2;
+ 
+  m1 = LEN_LIST(source);
+  m2 = LEN_LIST(range);
+  if (m1 != m2) {
+    ErrorQuit("different length lists", 0L, 0L);
+  }
   n = DigraphNrVertices(digraph);
-
   if (n == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
-  }
-  
-  source = DigraphSource(digraph); 
-  range  = DigraphRange(digraph);
-  PLAIN_LIST(source);
-  PLAIN_LIST(range);
+    adj = NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
+  } else {
+ 
+    PLAIN_LIST(source);
+    PLAIN_LIST(range);
 
-  adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
-  SET_LEN_PLIST(adj, n);
-  
-  // fill adj with empty plists 
-  for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
-    SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
-    CHANGED_BAG(adj);
-  }
-  
-  n = LEN_PLIST(source);
-  for (i = 1; i <= n; i++) {
-    j = INT_INTOBJ(ELM_PLIST(source, i));
-    adjj = ELM_PLIST(adj, j);
-    len = LEN_PLIST(adjj); 
-    if(len == 0){
-      RetypeBag(adjj, T_PLIST_CYC+IMMUTABLE);
+    adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+    SET_LEN_PLIST(adj, n);
+    
+    // fill adj with empty plists 
+    for (i = 1; i <= n; i++) {
+      SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+      SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
       CHANGED_BAG(adj);
     }
-    AssPlist(adjj, len + 1,  ELM_PLIST(range, i));
+    
+    n = m1;
+    for (i = 1; i <= n; i++) {
+      j = INT_INTOBJ(ELM_PLIST(source, i));
+      adjj = ELM_PLIST(adj, j);
+      len = LEN_PLIST(adjj); 
+      if(len == 0){
+        RetypeBag(adjj, T_PLIST_CYC+IMMUTABLE);
+        CHANGED_BAG(adj);
+      }
+      AssPlist(adjj, len + 1,  ELM_PLIST(range, i));
+    }
   }
+
   AssPRec(digraph, RNamName("adj"), adj);
   return adj;
 }
 
 static Obj FuncDIGRAPH_IN_NBS(Obj self, Obj digraph) { 
-  Obj   range, source, inn, innk, innj, adj, adji;
+  Obj   inn, innk, innj, adj, adji;
   UInt  n, m, i, j, k, len, len2;
   
   n = DigraphNrVertices(digraph);
@@ -696,99 +677,44 @@ static Obj FuncDIGRAPH_IN_NBS(Obj self, Obj digraph) {
     CHANGED_BAG(inn);
   }
 
-  if (HasDigraphSourceAndRange(digraph)) {
-    source = DigraphSource(digraph);
-    range  = DigraphRange(digraph); 
-    PLAIN_LIST(source);
-    PLAIN_LIST(range);
-    m = LEN_PLIST(range);
-
-    for (i = 1; i <= m; i++) {
-      j = INT_INTOBJ(ELM_PLIST(range, i));
-      innj = ELM_PLIST(inn, j);
-      len = LEN_PLIST(innj); 
-      if(len == 0){
-        RetypeBag(innj, T_PLIST_CYC+IMMUTABLE);
+  adj = OutNeighbours(digraph);
+  for (i = 1; i <= n; i++){
+    adji = ELM_PLIST(adj, i);
+    len = LEN_PLIST(adji);
+    for (j = 1; j <= len; j++){
+      k = INT_INTOBJ(ELM_PLIST(adji, j));
+      innk = ELM_PLIST(inn, k);
+      len2 = LEN_PLIST(innk); 
+      if(len2 == 0){
+        RetypeBag(innk, T_PLIST_CYC+IMMUTABLE);
         CHANGED_BAG(inn);
       }
-      AssPlist(innj, len + 1,  ELM_PLIST(source, i));
+      AssPlist(innk, len2 + 1, INTOBJ_INT(i));
     }
-  } else {
-    adj = OutNeighbours(digraph);
-    for (i = 1; i <= n; i++){
-      adji = ELM_PLIST(adj, i);
-      len = LEN_PLIST(adji);
-      for (j = 1; j <= len; j++){
-        k = INT_INTOBJ(ELM_PLIST(adji, j));
-        innk = ELM_PLIST(inn, k);
-        len2 = LEN_PLIST(innk); 
-        if(len2 == 0){
-          RetypeBag(innk, T_PLIST_CYC+IMMUTABLE);
-          CHANGED_BAG(inn);
-        }
-        AssPlist(innk, len2 + 1, INTOBJ_INT(i));
-      }
-    } 
-  }
+  } 
   AssPRec(digraph, RNamName("inn"), inn);
   return inn;
 }
 
 static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
-  Obj   range, adj, source, adji;
-  int   n, i, k, *marked, current, j, jj;
+  Obj   adj, adji;
+  int   n, i, k, j, jj;
  
-  if (HasDigraphSourceAndRange(digraph)) {
-    source = DigraphSource(digraph);
-    PLAIN_LIST(source);
-  
-    if ( LEN_PLIST(source) == 0 ) {
-      return False;
-    }
-    
-    range = DigraphRange(digraph);
-    PLAIN_LIST(range);
-    n = DigraphNrVertices(digraph);
-
-    current = INT_INTOBJ(ELM_PLIST(source, 1));
-    marked  = calloc(n + 1, sizeof(UInt));
-    marked[ INT_INTOBJ( ELM_PLIST(range, 1) ) ] = current;
-    
-    for (i = 2; i <= LEN_PLIST(source); i++) {
-      j = INT_INTOBJ(ELM_PLIST(source, i));
-      if (j != current) {
-        current = j;
-        marked[INT_INTOBJ(ELM_PLIST(range, i))] = j;
-      } else {
-        k = INT_INTOBJ(ELM_PLIST(range, i));
-        if(marked[k] == current){
-          free(marked);
+  adj = OutNeighbours(digraph); 
+  n = DigraphNrVertices(digraph);
+  for (i = 1; i <= n; i++) {
+    adji = ELM_PLIST(adj, i);
+    PLAIN_LIST(adji);
+    for (j = 2; j <= LEN_PLIST(adji); j++) {
+      jj = INT_INTOBJ(ELM_PLIST(adji, j));
+      for (k = 1; k < j; k++) {
+        if (INT_INTOBJ(ELM_PLIST(adji, k)) == jj) {
           return True;
-        } else {
-          marked[k] = j;
         }
       }
     }
-     
-    free(marked);
-    return False;
-  } else {
-    adj = OutNeighbours(digraph); 
-    n = DigraphNrVertices(digraph);
-    for (i = 1; i <= n; i++) {
-      adji = ELM_PLIST(adj, i);
-      PLAIN_LIST(adji);
-      for (j = 2; j <= LEN_PLIST(adji); j++) {
-        jj = INT_INTOBJ(ELM_PLIST(adji, j));
-        for (k = 1; k < j; k++) {
-          if (INT_INTOBJ(ELM_PLIST(adji, k)) == jj) {
-            return True;
-          }
-        }
-      }
-    }
-    return False;
   }
+  return False;
 } 
 
 
@@ -819,7 +745,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
                           Int  val2,
                           bool copy) {
   Int   n, i, j, k, *dist, *adj;
-  Obj   next, source, range, out, outi, val;
+  Obj   next, out, outi, val;
 
   n = DigraphNrVertices(digraph);
 
@@ -832,27 +758,14 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     dist[i] = val1;
   }
 
-  if (HasDigraphSourceAndRange(digraph)) {
-    source = DigraphSource(digraph);
-    range  = DigraphRange(digraph); 
-    PLAIN_LIST(source);
-    PLAIN_LIST(range);
-
-    for (i = 1; i <= LEN_PLIST(source); i++) {
-      j = (INT_INTOBJ(ELM_PLIST(source, i)) - 1) * n +
-        INT_INTOBJ(ELM_PLIST(range, i)) - 1;
-      dist[j] = val2;
-    }
-  } else { 
-    out = OutNeighbours(digraph); 
-    for (i = 1; i <= n; i++) {
-      outi = ELM_PLIST(out, i);
-      PLAIN_LIST(outi);
-      for (j = 1; j <= LEN_PLIST(outi); j++) {
-        k = (i - 1) * n + INT_INTOBJ(ELM_PLIST(outi, j)) - 1;
-        dist[k] = val2;
-      } 
-    }
+  out = OutNeighbours(digraph); 
+  for (i = 1; i <= n; i++) {
+    outi = ELM_PLIST(out, i);
+    PLAIN_LIST(outi);
+    for (j = 1; j <= LEN_PLIST(outi); j++) {
+      k = (i - 1) * n + INT_INTOBJ(ELM_PLIST(outi, j)) - 1;
+      dist[k] = val2;
+    } 
   }
 
   if ( copy ) {
@@ -1040,7 +953,7 @@ bool EqJumbledPlists(Obj l, Obj r, Int start, Int stop, Int offset, Int max, Int
   return true;
 }
 
-static Obj FuncDIGRAPH_EQUALS_OUT_NBS(Obj self, Obj digraph1, Obj digraph2) {
+static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
   UInt  i, n1, n2, m1, m2;
   Obj   out1, out2, a, b;
   bool  eq;
@@ -1089,198 +1002,28 @@ static Obj FuncDIGRAPH_EQUALS_OUT_NBS(Obj self, Obj digraph1, Obj digraph2) {
   return True;
 }
 
-static Obj FuncDIGRAPH_EQUALS_SOURCE(Obj self, Obj digraph1, Obj digraph2) {
-  UInt n1, n2, m, n, stop, start, i, j, p;
-  Int  k, v, current, *buf;
-  Obj  source1, source2, range1, range2, sources, a, b;
-  bool eq;
-
-  // Check NrVertices is equal
-  n1 = DigraphNrVertices(digraph1);
-  n2 = DigraphNrVertices(digraph2);
-  if (n1 != n2) {
-    return False;
-  }
-
-  // Check if DigraphSource (and hence NrEdges) is equal
-  source1 = DigraphSource(digraph1); 
-  source2 = DigraphSource(digraph2);
-  PLAIN_LIST(source1);
-  PLAIN_LIST(source2);
-  m = LEN_PLIST(source1);
-
-  if ( m != (UInt) LEN_PLIST(source2) ) {
-    return False;   // Different DigraphNrEdges
-  } else if ( m == 0 ) {
-    return True;    // DigraphNrEdges = 0 so nothing to check
-  }
-
-  for ( i = 1; i <= m; i++ ) {
-    if (INT_INTOBJ( ELM_PLIST( source1, i ) )
-        !=
-        INT_INTOBJ( ELM_PLIST( source2, i ) )) {
-      return False; // Different DigraphSource
-    }
-  }
-
-  // Check if DigraphRange is equal
-  range1 = DigraphRange(digraph1);
-  range2 = DigraphRange(digraph2);
-  PLAIN_LIST(range1);
-  PLAIN_LIST(range2);
-
-  eq = true;
-  for ( i = 1; i <= m; i++ ) {
-    if (INT_INTOBJ( ELM_PLIST( range1, i ) )
-        !=
-        INT_INTOBJ( ELM_PLIST( range2, i ) )) {
-      eq = false;
-      break;        // Different DigraphRange
-    }
-  }
-  if (eq) {
-    return True;    // Equal DigraphRange
-  }
-
-  // Compare OutNeighbours of each vertex
-  current = INT_INTOBJ( ELM_PLIST( source1, 1 ) );
-  stop    = 1;
-  buf = calloc(n1, sizeof(Int));
-  for ( i = 1; i <= m; i++ ) {
-    v = INT_INTOBJ( ELM_PLIST( source1, i ) );
-    if ( v != current ) {
-      current = v;
-      start   = stop;
-      stop    = i;
-      if (!EqJumbledPlists( range1, range2, start, stop, 0, n1, buf )) {
-        free(buf);
-        return False;
-      }
-    }
-  }
-  if (!EqJumbledPlists( range1, range2, stop, m + 1, 0, n1, buf )) {
-    free(buf);
-    return False;
-  }
-
-  // Nothing amiss
-  free(buf);
-  return True;
-}
-
-static Obj FuncDIGRAPH_EQUALS_MIXED(Obj self, Obj digraph1, Obj digraph2) {
-
-  Int n1, n2, m1, m2, i, len, start, stop, current, v, *buf;
-  Obj out, source, range, a, b, outi, outii, outc;
-  // digraph1 has OutNeighbours
-  // digraph2 has DigraphSource
-
-  // Check NrVertices is equal
-  n1 = DigraphNrVertices(digraph1);
-  n2 = DigraphNrVertices(digraph2);
-  if (n1 != n2) {
-    return False;
-  }
-  
-  // Check NrEdges is equal
-  m1 = DigraphNrEdges(digraph1);
-  m2 = DigraphNrEdges(digraph2);
-  if ( m1 != m2 ) {
-    return False;
-  }
-
-  // Check NrEdges = 0
-  if ( m1 == 0 ) {
-    return True;
-  }
-
-  // Compare OutNeighbours of each vertex with positive out-degree in turn
-  out    = OutNeighbours(digraph1);
-  source = DigraphSource(digraph2);
-  range  = DigraphRange(digraph2); 
-  PLAIN_LIST(source);
-  PLAIN_LIST(range);
-
-  // Compare OutNeighbours of each vertex
-  current = INT_INTOBJ( ELM_PLIST( source, 1 ) );
-  stop    = 1;
-  buf = calloc(n1, sizeof(Int));
-  for ( i = 1; i <= m1; i++ ) {
-    v = INT_INTOBJ( ELM_PLIST( source, i ) );
-    if ( v != current ) {
-      start   = stop;
-      stop    = i;
-      outc    = ELM_PLIST( out, current );
-      len     = LEN_PLIST( outc );
-      PLAIN_LIST(outc);
-      if ( len != ( stop - start ) ) {
-        free(buf);
-        return False;
-      }
-      current = v; 
-      if (!EqJumbledPlists( outc, range, 1, len + 1, start - 1, n1, buf )) {
-        free(buf);
-        return False;
-      }
-    }
-  }
-
-  outc = ELM_PLIST( out, current );
-  len  = LEN_PLIST( outc );
-  PLAIN_LIST(outc);
-  if ( len != ( ( m1 + 1 ) - stop ) ) {
-    free(buf);
-    return False;
-  }
-  if (!EqJumbledPlists( outc, range, 1, len + 1, stop - 1, n1, buf )) {
-    free(buf);
-    return False;
-  }
-
-  // Nothing is amiss
-  free(buf);
-  return True;
-
-}
-
 // bliss 
 
 BlissGraph* buildBlissMultiDigraph(Obj digraph) {
-  UInt        n, i, j, k, l, nr, len;
-  Obj         adji, adj, source, range;
+  UInt        n, i, j, k, l, nr;
+  Obj         adji, adj;
   BlissGraph  *graph;
 
   n = DigraphNrVertices(digraph);
   graph = bliss_new(n);
 
-  if (HasOutNeighbours(digraph)) { 
-    adj = OutNeighbours(digraph);
-    for (i = 1; i <= n; i++) {
-      adji = ELM_PLIST(adj, i);
-      nr = LEN_PLIST(adji);
-      for(j = 1; j <= nr; j++) {
-        k = bliss_add_vertex(graph, 1);
-        l = bliss_add_vertex(graph, 2);
-        bliss_add_edge(graph, i - 1, k);
-        bliss_add_edge(graph, k, l);
-        bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
-      }
-    }
-  } else {
-    source = DigraphSource(digraph); 
-    range  = DigraphRange(digraph);
-    PLAIN_LIST(source);
-    PLAIN_LIST(range);
-    n = LEN_PLIST(source);
-    for (i = 1; i <= n; i++) {
+  adj = OutNeighbours(digraph);
+  for (i = 1; i <= n; i++) {
+    adji = ELM_PLIST(adj, i);
+    nr = LEN_PLIST(adji);
+    for(j = 1; j <= nr; j++) {
       k = bliss_add_vertex(graph, 1);
       l = bliss_add_vertex(graph, 2);
-      bliss_add_edge(graph, INT_INTOBJ(ELM_PLIST(source, i)) - 1, k);
+      bliss_add_edge(graph, i - 1, k);
       bliss_add_edge(graph, k, l);
-      bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(range,  i)) - 1);
+      bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
     }
   }
-
   return graph;
 }
 
@@ -1744,7 +1487,7 @@ static StructGVarFunc GVarFuncs [] = {
     FuncDIGRAPH_SOURCE_RANGE, 
     "src/digraphs.c:FuncDIGRAPH_SOURCE_RANGE" },
 
-  { "DIGRAPH_OUT_NBS", 1, "digraph",
+  { "DIGRAPH_OUT_NBS", 3, "digraph, source, range",
     FuncDIGRAPH_OUT_NBS, 
     "src/digraphs.c:FuncDIGRAPH_OUT_NBS" },
 
@@ -1780,17 +1523,9 @@ static StructGVarFunc GVarFuncs [] = {
     FuncRANDOM_MULTI_DIGRAPH,
     "src/digraphs.c:FuncRANDOM_MULTI_DIGRAPH" },
 
-  { "DIGRAPH_EQUALS_OUT_NBS", 2, "digraph1, digraph2",
-    FuncDIGRAPH_EQUALS_OUT_NBS,
-    "src/digraphs.c:FuncDIGRAPH_EQUALS_OUT_NBS" },
- 
-  { "DIGRAPH_EQUALS_SOURCE", 2, "digraph1, digraph2",
-    FuncDIGRAPH_EQUALS_SOURCE,
-    "src/digraphs.c:FuncDIGRAPH_EQUALS_SOURCE" },
-
-  { "DIGRAPH_EQUALS_MIXED", 2, "digraph1, digraph2",
-    FuncDIGRAPH_EQUALS_MIXED,
-    "src/digraphs.c:FuncDIGRAPH_EQUALS_MIXED" },
+  { "DIGRAPH_EQUALS", 2, "digraph1, digraph2",
+    FuncDIGRAPH_EQUALS,
+    "src/digraphs.c:FuncDIGRAPH_EQUALS" },
 
   { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncDIGRAPH_AUTOMORPHISMS, 

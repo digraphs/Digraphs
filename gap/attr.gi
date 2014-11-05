@@ -203,30 +203,30 @@ end);
 
 #
 
-if IsBound(DIGRAPH_OUT_NBS) then
-  InstallMethod(OutNeighbours, "for a digraph",
-  [IsDigraph and HasDigraphSource], DIGRAPH_OUT_NBS);
-else
-  InstallMethod(OutNeighbours, "for a digraph with source and range",
-  [IsDigraph and HasDigraphSource],
-  function(graph)
-    local range, source, out, i;
-
-    range:=DigraphRange(graph);
-    source:=DigraphSource(graph);
-    out:=List(DigraphVertices(graph), x-> []);
-
-    for i in [ 1 .. Length(source)] do
-      Add(out[source[i]], range[i]);
-    od;
-
-    MakeImmutable(out);
-    graph!.adj := out;
-    return out;
-  end);
-fi;
-
-InstallMethod(OutNeighbors, "for a digraph", [IsDigraph], OutNeighbours);
+#if IsBound(DIGRAPH_OUT_NBS) then
+#  InstallMethod(OutNeighbours, "for a digraph",
+#  [IsDigraph and HasDigraphSource], DIGRAPH_OUT_NBS);
+#else
+#  InstallMethod(OutNeighbours, "for a digraph with source and range",
+#  [IsDigraph and HasDigraphSource],
+#  function(graph)
+#    local range, source, out, i;
+#
+#    range:=DigraphRange(graph);
+#    source:=DigraphSource(graph);
+#    out:=List(DigraphVertices(graph), x-> []);
+#
+#    for i in [ 1 .. Length(source)] do
+#      Add(out[source[i]], range[i]);
+#    od;
+#
+#    MakeImmutable(out);
+#    graph!.adj := out;
+#    return out;
+#  end);
+#fi;
+#
+#InstallMethod(OutNeighbors, "for a digraph", [IsDigraph], OutNeighbours);
 
 #
 
