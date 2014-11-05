@@ -37,12 +37,13 @@ function(g1, g2)
   fi; #JDM more!
 
   if IsMultiDigraph(g1) then 
-    Error("Digraphs: DigraphCanonicalLabelling: usage,\n",
-          "not yet implemented for multidigraphs,");
+    return OnMultiDigraphs(g1, DigraphCanonicalLabelling(g1)) 
+      = OnMultiDigraphs(g2, DigraphCanonicalLabelling(g2));
+  else 
+    return OnDigraphs(g1, DigraphCanonicalLabelling(g1)) 
+      = OnDigraphs(g2, DigraphCanonicalLabelling(g2));
   fi;
   
-  return OnDigraphs(g1, DigraphCanonicalLabelling(g1)) 
-    = OnDigraphs(g2, DigraphCanonicalLabelling(g2));
 end);
 
 #
@@ -68,12 +69,20 @@ end);
 InstallMethod(IsomorphismDigraphs, "for digraphs",
 [IsDigraph, IsDigraph],
 function(g1, g2)
+  local label1, label2;
   
   if not IsIsomorphicDigraph(g1, g2) then 
     return fail;
   fi;
+
+  if IsMultiDigraph(g1) then   
+    label1 := DigraphCanonicalLabelling(g1);
+    label2 := DigraphCanonicalLabelling(g2);
+    return [label1[1]/label2[1], label1[2]/label2[2]];
+  else
+    return DigraphCanonicalLabelling(g1)/DigraphCanonicalLabelling(g2);
+  fi;
   
-  return DigraphCanonicalLabelling(g1)/DigraphCanonicalLabelling(g2);
 end);
 
 #EOF

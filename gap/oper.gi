@@ -286,9 +286,9 @@ function(digraph, edges)
       pos := pos + 1;
       Unbind(new[i][temp]); 
       if IsBound(edges[pos]) then
-	current := edges[pos];
+        current := edges[pos];
       else
-	break;
+        break;
       fi;
     od;
     new[i] := Flat(new[i]);
@@ -557,6 +557,7 @@ function(digraph, m, names)
   fi;
   nam := Concatenation(DigraphVertexNames(digraph), names);
   SetDigraphVertexNames(out, nam);
+  SetDigraphEdgeLabels(out, DigraphEdgeLabels(digraph));
   return out;
 end);
 
@@ -569,7 +570,7 @@ function(digraph, m, names)
   out := OutNeighbours(digraph);
   n := DigraphNrVertices(digraph);
   new := EmptyPlist(n);
-  for i in [ 1 .. n ] do
+  for i in DigraphVertices(digraph) do
     new[i] := ShallowCopy(out[i]);
   od;
   newverts := [ (n + 1) .. (n + m) ];
@@ -583,6 +584,7 @@ function(digraph, m, names)
   fi;
   nam := Concatenation(DigraphVertexNames(digraph), names);
   SetDigraphVertexNames(out, nam);
+  SetDigraphEdgeLabels(out, DigraphEdgeLabels(digraph));
   return out;
 end);
 
@@ -626,8 +628,8 @@ InstallMethod(DigraphRemoveVerticesNC,
 "for a digraph with source and a list",
 [IsDigraph and HasDigraphSource, IsList],
 function(digraph, verts)
-  local n, len, newnrverts, diff, news, newr, lookup, count, m, source, range, 
-        log, gr, i;
+  local n, len, newnrverts, diff, lookup, count, m, source, range, news, newr, 
+        log, oldlabs, labs, gr, i;
 
   n := DigraphNrVertices(digraph);
   len := Length(verts);
@@ -656,18 +658,22 @@ function(digraph, verts)
     if (2 * m * log) + (len * log) < (2 * m * len) then
       Sort(verts); # Sort verts if it is sensible to do so
     fi;
-
+    
+    oldlabs := DigraphEdgeLabels(digraph);
+    labs := [  ];
     for i in [ 1 .. m ] do
       if not (source[i] in verts or range[i] in verts) then
         count := count + 1;
         news[ count ] := lookup[ source[i] ];
         newr[ count ] := lookup[ range[i] ];
+        labs[ count ] := oldlabs[ i ];
       fi;
     od;
   fi;
   gr := DigraphNC( rec( nrvertices := newnrverts,
                         source := news, range := newr ) );
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
+  SetDigraphEdgeLabels(gr, labs);
   # Transfer data
   return gr;
 end);
@@ -676,7 +682,7 @@ InstallMethod(DigraphRemoveVerticesNC,
 "for a digraph with out-neighbours and a list",
 [IsDigraph and HasOutNeighbours, IsList],
 function(digraph, verts)
-  local diff, new, n, len, newnrverts, lookup, count, out, m, log, gr, i;
+  local diff, new, n, len, newnrverts, lookup, count, out, m, log, gr, i, j, x;
   
   diff := Difference(DigraphVertices(digraph), verts);
   if IsEmpty(verts) then
@@ -704,12 +710,19 @@ function(digraph, verts)
     fi;
     for i in diff do
       count := count + 1;
-      new[ count ] := List(
-        Filtered( out[ i ], x -> not x in verts ), y -> lookup[ y ] );
+      new[count] := [ ];
+      j := 0;
+      for x in out[ i ] do
+        if not x in verts then
+          j := j + 1;
+          new[count][j] := lookup[x];
+        fi;
+      od;
     od;
   fi;
   gr := DigraphNC(new);
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
+  #SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph){diff});
   # Transfer data
   return gr;
 end);
@@ -719,7 +732,7 @@ end);
 InstallMethod(OnDigraphs, "for a digraph by adjacency and perm",
 [IsDigraph and HasOutNeighbours, IsPerm],
 function(graph, perm)
-  local adj;
+  local adj, out;
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: OnDigraphs: usage,\n",
@@ -732,13 +745,17 @@ function(graph, perm)
   adj := Permuted(adj, perm);
   Apply(adj, x-> OnTuples(x, perm));
 
-  return DigraphNC(adj);
+  out := DigraphNC(adj);
+  SetDigraphVertexNames(out, Permuted(DigraphVertexNames(graph), perm));
+  return out;
 end);
+
+#
 
 InstallMethod(OnDigraphs, "for a digraph and perm",
 [IsDigraph and HasDigraphRange, IsPerm],
 function(graph, perm)
-  local source, range;
+  local source, range, out;
 
   if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
     Error("Digraphs: OnDigraphs: usage,\n",
@@ -749,10 +766,42 @@ function(graph, perm)
   source := ShallowCopy(OnTuples(DigraphSource(graph), perm));
   range := ShallowCopy(OnTuples(DigraphRange(graph), perm));
   range := Permuted(range, Sortex(source));
-  return DigraphNC(rec(
+  out := DigraphNC(rec(
     source := source,
     range := range,
     nrvertices:=DigraphNrVertices(graph)));
+  SetDigraphVertexNames(out, Permuted(DigraphVertexNames(graph), perm));
+  return out;
+end);
+
+InstallMethod(OnMultiDigraphs, "for a digraph, perm and perm",
+[IsDigraph, IsPerm, IsPerm],
+function(graph, perm1, perm2)
+  return OnMultiDigraphs(graph, [perm1, perm2]);
+end);
+
+InstallMethod(OnMultiDigraphs, "for a digraph and perm coll",
+[IsDigraph, IsPermCollection],
+function(graph, perms)
+  local source, range, out;
+
+  if Length(perms) <> 2 then 
+    Error("Digraphs: OnMultiDigraphs: usage,\n",
+    "the 2nd argument must be a pair of permutations,");
+    return;
+  fi;
+
+  if ForAny([ 1 .. DigraphNrEdges(graph) ], i-> 
+    i^perms[2] > DigraphNrEdges(graph)) then
+    Error("Digraphs: OnDigraphs: usage,\n",
+    "the argument <perms[2]> must permute the edges ",
+    "of the 1st argument <graph>,");
+    return;
+  fi;
+ 
+  out := OnDigraphs(graph, perms[1]);
+  SetDigraphEdgeLabels(out, Permuted(DigraphEdgeLabels(graph), perms[2]));
+  return out;
 end);
 
 #
@@ -937,6 +986,8 @@ function( digraph, subverts )
   
   new := DigraphNC(new);
   SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
+  #JDM need to set this correctly!
+  #SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
   return new;
 end);
 
@@ -993,6 +1044,8 @@ function( digraph, subverts )
 
   new := DigraphNC( rec ( nrvertices := nr, source := news, range := newr ) );
   SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
+  #JDM need to set this correctly!
+  #SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
   return new;
 
 end);
@@ -1482,7 +1535,7 @@ function(digraph1, digraph2)
   m := DigraphNrVertices(digraph2);
   new := EmptyPlist(n + m);
 
-  for i in [ 1 .. n ] do
+  for i in DigraphVertices(digraph1) do
     new[i] := Concatenation(out1[i], [n + 1 .. n + m]); 
   od;
   for i in [ n + 1 .. n +  m ] do

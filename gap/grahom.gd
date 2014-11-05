@@ -10,6 +10,7 @@
 
 DeclareAttribute("DigraphEndomorphisms", IsDigraph);
 DeclareOperation("HomomorphismDigraphs", [IsDigraph, IsDigraph]);
+DeclareOperation("DigraphHomomorphism", [IsDigraph, IsDigraph]);
 DeclareAttribute("EndomorphismMonoid", IsDigraph);
 DeclareOperation("DigraphColoring", [IsDigraph, IsPosInt]);
 

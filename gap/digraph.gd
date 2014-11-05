@@ -57,3 +57,8 @@ DeclareOperation("DigraphVertexNames", [IsDigraph]);
 DeclareOperation("SetDigraphVertexName", [IsDigraph, IsPosInt, IsObject]);
 DeclareOperation("SetDigraphVertexNames", [IsDigraph, IsList]);
 
+DeclareOperation("DigraphEdgeLabel", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphEdgeLabels", [IsDigraph]);
+DeclareOperation("SetDigraphEdgeLabel", [IsDigraph, IsPosInt, IsObject]);
+DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsList]);
+

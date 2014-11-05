@@ -1007,6 +1007,20 @@ gap> DigraphDisjointUnion(gr, gr2);
 gap> gr := CycleDigraph(1000);; # Recalculating as we now know Source(gr)
 gap> DigraphDisjointUnion(gr2, gr);
 <digraph with 1100 vertices, 10900 edges>
+gap> gr1 := Digraph( [ [ 2, 2, 3 ], [ 3 ], [ 2 ] ] );
+<multidigraph with 3 vertices, 5 edges>
+gap> gr2 := Digraph( [ [ 1, 2 ], [ 1 ] ] );
+<digraph with 2 vertices, 3 edges>
+gap> gr3 := Digraph( rec( nrvertices := 2,
+> source := [ 1, 1, 2 ], range := [ 2, 1, 1 ] ) );;
+gap> gr2 = gr3;
+true
+gap> u1 := DigraphDisjointUnion(gr1, gr2);
+<multidigraph with 5 vertices, 8 edges>
+gap> u2 := DigraphDisjointUnion(gr1, gr3);
+<multidigraph with 5 vertices, 8 edges>
+gap> u1 = u2;
+true
 
 # DigraphFloydWarshall
 gap> func := function(mat, i, j, k)
@@ -1110,6 +1124,20 @@ gap> DigraphJoin(EmptyDigraph(0), EmptyDigraph(0));
 <digraph with 0 vertices, 0 edges>
 gap> DigraphJoin(EmptyDigraph(5), EmptyDigraph(5));
 <digraph with 10 vertices, 50 edges>
+gap> gr1 := Digraph( [ [ 2, 2, 3 ], [ 3 ], [ 2 ] ] );
+<multidigraph with 3 vertices, 5 edges>
+gap> gr2 := Digraph( [ [ 1, 2 ], [ 1 ] ] );
+<digraph with 2 vertices, 3 edges>
+gap> gr3 := Digraph( rec( nrvertices := 2,
+> source := [ 1, 1, 2 ], range := [ 2, 1, 1 ] ) );;
+gap> gr2 = gr3;
+true
+gap> j1 := DigraphJoin(gr1, gr2);
+<multidigraph with 5 vertices, 20 edges>
+gap> j2 := DigraphJoin(gr1, gr3);
+<multidigraph with 5 vertices, 20 edges>
+gap> u1 = u2;
+true
 
 #
 gap> DigraphsStopTest();
