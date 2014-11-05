@@ -755,6 +755,22 @@ function(edges, n)
   return gr;
 end);
 
+#
+
+InstallMethod(DigraphByEdges, "for an empty list",
+[IsList and IsEmpty],
+function(edges)
+  return EmptyDigraph(0);
+end);
+
+#
+
+InstallMethod(DigraphByEdges, "for an empty list, and a pos int",
+[IsList and IsEmpty, IsPosInt],
+function(edges, n)
+  return EmptyDigraph(n);
+end);
+
 # operators . . .
 
 InstallMethod(\=, "for a digraph with range and a digraph with out-neighbours",

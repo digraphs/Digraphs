@@ -83,17 +83,18 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
       </Item>
       <Mark>plain text (.txt)</Mark>
       <Item>
-        <A>filename</A> should be a plain text file containing lines of the form 
+	This is a human-readable format which stores graphs in the form
         <C>0 7  0 8  1 7  2 8  3 8  4 8  5 8  6 8</C> i.e. pairs of vertices
         describing edges in a graph. More specifically, the vertices making up
         one edge must be separated by a single space, and pairs of vertices must
         be separated by two spaces. <P/>
 
-        See <Ref Func="ReadPlainTextDigraph"/> for a more flexible way to read
+        See <Ref Func="ReadPlainTextDigraph"/> for a more flexible way to store
         digraphs in a plain text file. <P/>
-
+<!--
         Just so I remember:
         <C>ReadPlainTextDigraph("data-local/soc-Epinions1.txt.gz", "\t", 1, '#');</C>
+-->
       </Item>
     </List>
     
@@ -165,22 +166,22 @@ gap> ReadDigraphs(
 	multiple edges are all allowed.  Similar to sparse6, this has the best
 	compression rate with "sparse" graphs.
       </Item>
-<!--
-      <Mark>plain text</Mark>
+
+      <Mark>plain text (.txt)</Mark>
       <Item>
-        <A>filename</A> should be a plain text file containing lines of the form
+	This is a human-readable format which stores graphs in the form
         <C>0 7  0 8  1 7  2 8  3 8  4 8  5 8  6 8</C> i.e. pairs of vertices
         describing edges in a graph. More specifically, the vertices making up
         one edge must be separated by a single space, and pairs of vertices must
         be separated by two spaces. <P/>
 
-        See <Ref Func="ReadPlainTextDigraph"/> for a more flexible way to read
+        See <Ref Func="ReadPlainTextDigraph"/> for a more flexible way to store
         digraphs in a plain text file. <P/>
-
+<!--
         Just so I remember:
         <C>ReadPlainTextDigraph("data-local/soc-Epinions1.txt.gz", "\t", 1, '#');</C>
-      </Item>
 -->
+      </Item>
     </List>
     
     <Example><![CDATA[
@@ -227,8 +228,81 @@ gap> DiSparse6String(gr);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="ReadPlainTextDigraph">
+<#GAPDoc Label="DigraphPlainTextLineEncoder">
 <ManSection>
+  <Oper Name="DigraphPlainTextLineEncoder" Arg="delimiter1, [delimiter2,] offset"/>
+  <Oper Name="DigraphPlainTextLineDecoder" Arg="delimiter1, [delimiter2,] offset"/>
+  <Returns>A string.</Returns>
+  <Description>
+    These two functions return a function which encodes or decodes a digraph in
+    a plain text format.<P/>
+
+    <A>DigraphPlainTextLineEncoder</A> returns a function which takes a single
+    digraph as an argument.  The function returns a string describing the edges
+    of that digraph; each edge is written as a pair of integers separated by the
+    string <A>delimiter2</A>, and the edges themselves are separated by the
+    string <A>delimiter1</A>.  <A>DigraphPlainTextLineDecoder</A> returns the
+    corresponding decoder function, which takes a string argument in this format
+    and returns a digraph.<P/>
+
+    If only one delimiter is passed as an argument to
+    <A>DigraphPlainTextLineDecoder</A>, it will return a function which decodes
+    a single edge, returning its contents as a list of integers.<P/>
+
+    The argument <A>offset</A> should be an integer, which will describe a
+    number to be added to each vertex before it is encoded, or after it is
+    decoded.  This may be used, for example, to label vertices starting at 0
+    instead of 1.<P/>
+
+    Note that the number of vertices of a digraph is not stored, and so vertices
+    which are not connected to any edge may be lost.
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2,3], [1], [1]]);
+<digraph with 3 vertices, 4 edges>
+gap> enc := DigraphPlainTextLineEncoder("  ", " ", -1);;
+gap> dec := DigraphPlainTextLineDecoder("  ", " ",  1);;
+gap> enc(gr);
+"0 1  0 2  1 0  2 0"
+gap> dec(last);
+<digraph with 3 vertices, 4 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="PlainTextString">
+<ManSection>
+  <Oper Name="PlainTextString" Arg="digraph"/>
+  <Oper Name="DigraphFromPlainTextString" Arg="s"/>
+  <Returns>A string.</Returns>
+  <Description>
+    <A>PlainTextString</A> takes a single digraph, and returns a string
+    describing the edges of that digraph.  <A>DigraphFromPlainTextString</A>
+    takes such a string and returns the digraph which it describes.  Each edge
+    is written as a pair of integers separated by a single space.  The edges
+    themselves are separated by a double space.  Vertex numbers are reduced by
+    1 when they are encoded, so that vertices in the string are labelled
+    starting at 0.<P/>
+
+    Note that the number of vertices of a digraph is not stored, and so vertices
+    which are not connected to any edge may be lost.
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2,3], [1], [1]]);
+<digraph with 3 vertices, 4 edges>
+gap> PlainTextString(gr);
+"0 1  0 2  1 0  2 0"
+gap> DigraphFromPlainTextString(last);
+<digraph with 3 vertices, 4 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WritePlainTextDigraph">
+<ManSection>
+  <Func Name="WritePlainTextDigraph" Arg="?"/>
   <Func Name="ReadPlainTextDigraph" Arg="?"/>
   <Returns>?.</Returns>
   <Description>

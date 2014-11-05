@@ -10,34 +10,75 @@
 
 InstallMethod(DigraphColoring, "for a digraph and pos int",
 [IsDigraph, IsPosInt],
-function(g, n)
-  return HomomorphismDigraphs(g, DigraphRemoveLoops(CompleteDigraph(n)));
+function(digraph, n)
+  if IsMultiDigraph(digraph) then 
+    Error("Digraphs: DigraphColoring: usage,\n",
+    "the argument <digraph> must not be a  multigraph,");
+    return;
+  fi;
+  return DigraphHomomorphism(digraph, CompleteDigraph(n)); 
 end);
 
 # formerly GraphEndomorphismsTrivial
 InstallMethod(HomomorphismDigraphs, "for digraphs",
 [IsDigraph, IsDigraph],
 function(g, h)
-  # g a graph with OutNeighbours information
-  local number,result;
+  local n, result;
+  
+  if IsMultiDigraph(g) or IsMultiDigraph(h) then 
+    Error("Digraphs: HomomorphismDigraphs: usage,\n",
+    "the arguments must not be multigraphs,");
+    return;
+  fi;
+
+  n := DigraphNrVertices(g);
   result := [];
-  number := GRAPH_HOMOMORPHISMS(OutNeighbours(g), OutNeighbours(h),
-                                [],    # this is the initial try
-                                Length(OutNeighbours(g)),   # maxdepth
-                                fail,  # no further known constraints
-                                fail,  # no limit on maxanswers
+  GRAPH_HOMOMORPHISMS(OutNeighbours(g), OutNeighbours(h),
+                                [],       # this is the initial try
+                                n,        # maxdepth
+                                fail,     # no further known constraints
+                                fail,     # no limit on maxanswers
                                 result,   # this is modified
                                 false);   # allow non-injective ones
-  return result;
+  return result; 
+end);
+
+InstallMethod(DigraphHomomorphism, "for digraphs",
+[IsDigraph, IsDigraph],
+function(digraph1, digraph2)
+  local n, result;
+
+  if IsMultiDigraph(digraph1) or IsMultiDigraph(digraph2) then 
+    Error("Digraphs: DigraphHomomorphism: usage,\n",
+    "the arguments must not be multigraphs,");
+    return;
+  fi;
+
+  n := DigraphNrVertices(digraph1);
+  result := [];
+  GRAPH_HOMOMORPHISMS(OutNeighbours(digraph1), OutNeighbours(digraph2),
+                                [],       # this is the initial try
+                                n,        # maxdepth
+                                fail,     # no further known constraints
+                                1,        # no limit on maxanswers
+                                result,   # this is modified
+                                false);   # allow non-injective ones
+  if IsEmpty(result) then
+    return fail;
+  else
+    return result[1]; 
+  fi;
 end);
 
 InstallMethod(DigraphEndomorphisms, "for a digraph",
 [IsDigraph],
 function(g)
-  local DigraphVerticesWithLoops, Dowork, n, aut, result, try;
+   local DigraphVerticesWithLoops, Dowork, n, aut, result, try;
 
   if IsMultiDigraph(g) then 
-    return fail;
+    Error("Digraphs: DigraphEndomorphisms: usage,\n",
+    "the argument <digraph> must not be a multigraph,");
+    return;
   fi;
 
   DigraphVerticesWithLoops := function(digraph)
@@ -111,6 +152,21 @@ function(g)
   Append(result,List(GeneratorsOfGroup(aut),AsTransformation));
   try := EmptyPlist(n);
   Dowork(g,try,1,aut,result);
-  return result;
+  return result; 
 end);
 
+InstallMethod(EndomorphismMonoid, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if IsMultiDigraph(digraph) then 
+    Error("Digraphs: EndomorphismMonoid: usage,\n",
+    "the argument <digraph> must not be a multigraph,");
+    return;
+  fi;
+  if IsSemigroupsLoaded() then 
+    return Monoid(DigraphEndomorphisms(digraph), rec(small := true));
+  else
+    return Monoid(DigraphEndomorphisms(digraph));
+  fi; 
+ 
+end);
