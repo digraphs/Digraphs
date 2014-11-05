@@ -286,9 +286,9 @@ function(digraph, edges)
       pos := pos + 1;
       Unbind(new[i][temp]); 
       if IsBound(edges[pos]) then
-	current := edges[pos];
+        current := edges[pos];
       else
-	break;
+        break;
       fi;
     od;
     new[i] := Flat(new[i]);
@@ -570,7 +570,7 @@ function(digraph, m, names)
   out := OutNeighbours(digraph);
   n := DigraphNrVertices(digraph);
   new := EmptyPlist(n);
-  for i in [ 1 .. n ] do
+  for i in DigraphVertices(digraph) do
     new[i] := ShallowCopy(out[i]);
   od;
   newverts := [ (n + 1) .. (n + m) ];
@@ -1535,7 +1535,7 @@ function(digraph1, digraph2)
   m := DigraphNrVertices(digraph2);
   new := EmptyPlist(n + m);
 
-  for i in [ 1 .. n ] do
+  for i in DigraphVertices(digraph1) do
     new[i] := Concatenation(out1[i], [n + 1 .. n + m]); 
   od;
   for i in [ n + 1 .. n +  m ] do
