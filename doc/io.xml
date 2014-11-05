@@ -302,12 +302,16 @@ gap> DigraphFromPlainTextString(last);
 
 <#GAPDoc Label="WritePlainTextDigraph">
 <ManSection>
-  <Func Name="WritePlainTextDigraph" Arg="?"/>
-  <Func Name="ReadPlainTextDigraph" Arg="?"/>
-  <Returns>?.</Returns>
+  <Func Name="WritePlainTextDigraph" Arg="name, digraph, delimiter, offset"/>
+  <Func Name="ReadPlainTextDigraph" Arg="name, delimiter, offset, ignore"/>
   <Description>
-  ?
-  <Example><![CDATA[
+    These functions write and read a single digraph in a human-readable plain
+    text format as follows: each line contains a single edge, and each edge is
+    written as a pair of integers separated by the string <A>delimiter</A>.
+
+    <A>name</A> should be a filename...
+<!-- TODO: Finish this! -->
+    <Example><![CDATA[
 gap> 5 + 1;
 6
 ]]></Example>
