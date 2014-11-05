@@ -87,9 +87,11 @@ gap> Size(G);
         <M>\rho(G)=\rho(H)</M> if and only if <M>G</M> and <M>H</M> are isomorphic.
       </Item>
     </List>
+
     A canonical labelling of a digraph <A>digraph</A> (under <M>\rho</M>) is an
     isomorphism of <A>digraph</A> onto its canonical representative
-    <M>\rho(digraph)</M> given as a permutation of the vertices. <P/>
+    <M>\rho(digraph)</M> given as a permutation of the vertices (and the edges
+    in case <A>digraph</A> has multiple edges). <P/>
 
     The canonical labelling is found using <URL
       Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
@@ -114,7 +116,12 @@ gap> G = H;
 false
 gap> OnDigraphs(G, DigraphCanonicalLabelling(G)) =
 > OnDigraphs(H, DigraphCanonicalLabelling(H));
-true]]></Example>
+true
+gap> gr := Digraph( [ [ 7, 2, 8, 2 ], [ 7, 6 ], [ 9 ], [ ], 
+> [ ], [ ], [ ], [ 2 ], [ 6 ], [ 4 ] ] );
+<multidigraph with 10 vertices, 10 edges>
+gap> DigraphCanonicalLabelling(gr);
+[ (1,9,7,5)(2,10,3), (1,7,3,8,2,6,10,4,5,9) ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -152,9 +159,24 @@ true]]></Example>
   <Returns> A permutation or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph1</A> and <A>digraph2</A> are isomorphic digraphs, then this
-    operation returns an isomorphism from <A>digraph1</A> to <A>digraphs2</A>,
-    i.e. a permutation <C>p</C> such that <C>OnDigraphs(digraph1,
-      p)=digraph2</C>. <P/>
+    operation returns an isomorphism from <A>digraph1</A> to <A>digraphs2</A>. 
+
+    More precisely, 
+
+    <List>
+      <Mark>for multidigraphs</Mark>
+      <Item>
+        this operation returns a pair of permutations <C>P</C>so that 
+        <C>OnMultiDigraphs(<A>digraph1</A>, P) = digraph2</C>. The first
+        permutation is defined on the vertices of <A>digraph1</A> and the second
+        on the edges. 
+      </Item>
+      <Mark>for digraphs without multiple edges</Mark>
+      <Item>
+        this operation returns a  permutations <C>p</C>so that 
+        <C>OnDigraphs(<A>digraph1</A>, p) = digraph2</C>. 
+      </Item>
+    </List>
 
     If <A>digraph1</A> and <A>digraph2</A> are not isomorphic, then <K>fail</K>
     is returned. <P/>
@@ -177,7 +199,15 @@ gap> gr2 := CompleteBipartiteDigraph(5,10);
 gap> p := IsomorphismDigraphs(gr1, gr2);
 (1,6,11)(2,7,12)(3,8,13)(4,9,14)(5,10,15)
 gap> OnDigraphs(gr1, p) = gr2;
-true]]></Example>
+true
+gap> gr1 := Digraph( [ [ 3, 6, 3 ], [ ], [ 3 ], [ 9, 10 ], [ 9 ], [ ], 
+> [ ], [ 10, 4, 10 ], [ ], [ ] ] );
+<multidigraph with 10 vertices, 10 edges>
+gap> gr2 := Digraph( [ [ ], [ ], [ 5 ], [ ], [ ], [ ], 
+> [ 5, 6 ], [ 6, 7, 6 ], [ 10, 4, 10 ], [ 10 ] ] );
+<multidigraph with 10 vertices, 10 edges>
+gap> IsomorphismDigraphs(gr1, gr2);
+[ (1,9,5,3,10,6,4,7,2), (1,7)(2,8,4,10,6,3,9,5) ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
