@@ -18,17 +18,26 @@ gap> gr := Digraph([[],[],[3]]);;
 gap> HomomorphismDigraphs(gr, gr);
 found endomorphism of rank 2
 found endomorphism of rank 3
+found endomorphism of rank 2
 found endomorphism of rank 3
 found endomorphism of rank 2
+found endomorphism of rank 2
+found endomorphism of rank 2
+found endomorphism of rank 2
+found endomorphism of rank 1
 [ Transformation( [ 1, 1 ] ), IdentityTransformation, 
-  Transformation( [ 2, 1 ] ), Transformation( [ 2, 2 ] ) ]
+  Transformation( [ 1, 3, 3 ] ), Transformation( [ 2, 1 ] ), 
+  Transformation( [ 2, 2 ] ), Transformation( [ 2, 3, 3 ] ), 
+  Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 2, 3 ] ), 
+  Transformation( [ 3, 3, 3 ] ) ]
 gap> DigraphEndomorphisms(gr);
 GAP: at depth 1
 GAP: at depth 2
 found endomorphism of rank 2
 found endomorphism of rank 3
+found endomorphism of rank 2
 [ Transformation( [ 2, 1 ] ), Transformation( [ 1, 1 ] ), 
-  IdentityTransformation ]
+  IdentityTransformation, Transformation( [ 1, 3, 3 ] ) ]
 gap> s := Semigroup(DigraphEndomorphisms(EmptyDigraph(4)));
 GAP: at depth 1
 GAP: at depth 2
