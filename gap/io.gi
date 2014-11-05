@@ -451,7 +451,6 @@ end);
 
 InstallGlobalFunction(DigraphPlainTextLineEncoder,
 function(delimiter1, delimiter2, offset)
-  offset := offset - 1;
   return function(digraph)
     local str, i, edges;
     edges := DigraphEdges(digraph);
@@ -551,7 +550,7 @@ function(name, digraphs)
     elif ext = "ds6" then
       encoder := DiSparse6String;
     elif ext = "txt" then
-      encoder := DigraphPlainTextLineEncoder("  ", " ", 0);
+      encoder := DigraphPlainTextLineEncoder("  ", " ", -1);
     else
       encoder := fail;
     fi;
@@ -1207,7 +1206,7 @@ InstallMethod(PlainTextString, "for a digraph",
 [IsDigraph], 
 function(digraph)
   local encoder;
-  encoder := DigraphPlainTextLineEncoder("  ", " ", 0);
+  encoder := DigraphPlainTextLineEncoder("  ", " ", -1);
   return encoder(digraph);
 end);
 

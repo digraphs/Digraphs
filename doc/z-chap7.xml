@@ -57,6 +57,8 @@
     <#Include Label="WriteGraph6">
     <#Include Label="ReadDigraphs">
     <#Include Label="WriteDigraphs">
-    <#Include Label="ReadPlainTextDigraph">
+    <#Include Label="DigraphPlainTextLineEncoder">
+    <#Include Label="PlainTextString">
+    <#Include Label="WritePlainTextDigraph">
   </Section>
 </Chapter>
