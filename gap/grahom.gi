@@ -10,8 +10,13 @@
 
 InstallMethod(DigraphColoring, "for a digraph and pos int",
 [IsDigraph, IsPosInt],
-function(g, n)
-  return HomomorphismDigraphs(g, DigraphRemoveLoops(CompleteDigraph(n)));
+function(digraph, n)
+  if IsMultiDigraph(digraph) then 
+    Error("Digraphs: DigraphColoring: usage,\n",
+    "the argument <digraph> must not be a  multigraph,");
+    return;
+  fi;
+  return DigraphHomomorphism(digraph, CompleteDigraph(n)); 
 end);
 
 # formerly GraphEndomorphismsTrivial

@@ -74,6 +74,14 @@ found endomorphism of rank 2
 Transformation( [ 1, 2, 1, 2 ] )
 gap> DigraphHomomorphism(gr2, gr);
 fail
+gap> DigraphColoring(gr,2);
+found endomorphism of rank 2
+Transformation( [ 1, 2, 1, 2 ] )
+gap> DigraphColoring(gr,3);
+found endomorphism of rank 2
+Transformation( [ 1, 2, 1, 2 ] )
+gap> DigraphColoring(gr,1);
+fail
 
 #
 gap> DigraphsStopTest();
