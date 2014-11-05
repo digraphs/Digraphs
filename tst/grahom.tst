@@ -65,6 +65,17 @@ gap> Size(m);
 24
 
 #
+gap> gr := CycleDigraph(4);
+<digraph with 4 vertices, 4 edges>
+gap> gr2 := CompleteDigraph(10);
+<digraph with 10 vertices, 90 edges>
+gap> DigraphHomomorphism(gr, gr2);
+found endomorphism of rank 2
+Transformation( [ 1, 2, 1, 2 ] )
+gap> DigraphHomomorphism(gr2, gr);
+fail
+
+#
 gap> DigraphsStopTest();
 
 #
