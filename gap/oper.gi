@@ -47,7 +47,7 @@ end);
 InstallMethod(DigraphFloydWarshall, "for a digraph",
 [IsDigraph, IsFunction, IsObject, IsObject],
 function(graph, func, nopath, edge)
-  local vertices, n, m, mat, out, i, j, k;
+  local vertices, n, mat, out, i, j, k;
 
   vertices := DigraphVertices(graph);
   n := DigraphNrVertices(graph);
@@ -60,19 +60,12 @@ function(graph, func, nopath, edge)
     od;
   od;
   
-  if HasDigraphSource(graph) then 
-    m := Length(DigraphSource(graph));
-    for i in [ 1 .. m ] do
-      mat[ DigraphSource(graph)[i] ][ DigraphRange(graph)[i] ] := edge;
+  out := OutNeighbours(graph);
+  for i in vertices do 
+    for j in out[i] do 
+      mat[i][j] := edge;
     od;
-  else
-    out := OutNeighbours(graph);
-    for i in vertices do 
-      for j in out[i] do 
-        mat[i][j] := edge;
-      od;
-    od;
-  fi;
+  od;
   
   for k in vertices do
     for i in vertices do
@@ -87,28 +80,13 @@ end);
 
 #
 
-InstallMethod(DigraphReverse, "for a digraph with source",
-[IsDigraph and HasDigraphSource],
-function(graph)
-  local source, range;
-
-    source := ShallowCopy(DigraphRange(graph));
-    range := Permuted(DigraphSource(graph), Sortex(source));
-
-    return DigraphNC(rec( source:=source, 
-                                range:=range,
-                                nrvertices:=DigraphNrVertices(graph)));
-end);
-
-#
-
-InstallMethod(DigraphReverse, "for a digraph by adjacency",
-[IsDigraph and HasOutNeighbours],
+InstallMethod(DigraphReverse, "for a digraph",
+[IsDigraph],
 function(graph)
   local old, new, i, j;
 
   old := OutNeighbours(graph);
-  new := List(DigraphVertices(graph), x -> []);
+  new := List(DigraphVertices(graph), x -> [ ]);
 
   for i in DigraphVertices(graph) do 
     for j in old[i] do 
@@ -819,51 +797,44 @@ end);
 InstallMethod(DigraphSymmetricClosure, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local n, verts, mat, m, source, range, s, r, x, out, i, j, k;
+  local n, verts, mat, out, new, x, gr, i, j, k;
   
-  source := ShallowCopy(DigraphSource(digraph));
-  range  := ShallowCopy(DigraphRange(digraph));
   n := DigraphNrVertices(digraph);
-  
   if not (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph))
    and n > 1 then
     verts := ShallowCopy(DigraphVertices(digraph));
     mat := List( verts, x -> verts * 0 );
-    m := DigraphNrEdges(digraph);
-    source := ShallowCopy(DigraphSource(digraph));
-    range  := ShallowCopy(DigraphRange(digraph));
-    for i in [ 1 .. m ] do
-      s := source[i];
-      r := range[i];
-      if r < s then
-        mat[r][s] := mat[r][s] - 1;
-      else
-        mat[s][r] := mat[s][r] + 1;
-      fi;
+    out := OutNeighbours(digraph);
+    for i in verts do
+      for j in out[i] do
+        if j < i then
+          mat[j][i] := mat[j][i] - 1;
+        else
+          mat[i][j] := mat[i][j] + 1;
+        fi;
+      od;
     od;
+    new := List( out, ShallowCopy );
     for i in verts do
       for j in [ i + 1 .. n ] do
         x := mat[i][j];
         if x > 0 then
           for k in [ 1 .. x ] do
-            m := m + 1;
-            source[m] := j;
-            range[m] := i;
+            Add(new[j], i);
           od;
         elif x < 0 then
           for k in [ 1 .. -x ] do
-            m := m + 1;
-            source[m] := i;
-            range[m] := j;
+            Add(new[i], j);
           od;
         fi;
       od;
     od;
-    range := Permuted(range, Sortex(source)); 
+    gr := DigraphNC( new );
+  else
+    gr := DigraphCopy(digraph);
   fi;
-  out := DigraphNC( rec( nrvertices := n, source := source, range := range ) );
-  SetIsSymmetricDigraph(out, true);
-  return out;
+  SetIsSymmetricDigraph(gr, true);
+  return gr;
 end);
 
 #
@@ -871,13 +842,11 @@ end);
 InstallMethod(DigraphTransitiveClosure, "for a digraph",
 [IsDigraph],
 function(graph)
-  
   if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphTransitiveClosure: usage,\n",
     "the argument <graph> cannot have multiple edges,");
     return;
   fi;
-
   return DigraphTransitiveClosure(graph, false);
 end);
 
@@ -886,13 +855,11 @@ end);
 InstallMethod(DigraphReflexiveTransitiveClosure, "for a digraph",
 [IsDigraph],
 function(graph)
-
   if IsMultiDigraph(graph) then
     Error("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
     "the argument <graph> cannot have multiple edges,");
     return;
   fi;
-
   return DigraphTransitiveClosure(graph, true); 
 end);
 
@@ -954,8 +921,8 @@ end);
 #
 
 InstallMethod(InducedSubdigraph, 
-"for a digraph with out neighbours and a homogeneous list",
-[IsDigraph and HasOutNeighbours, IsHomogeneousList],
+"for a digraph and a homogeneous list",
+[IsDigraph, IsHomogeneousList],
 function( digraph, subverts )
   local n, old, nr, lookup, adj, j, l, i, k, new;
 
@@ -974,7 +941,6 @@ function( digraph, subverts )
     return;
   fi;
   
-  Sort(subverts); # Sorting for consistency with Source/Range version
   nr := Length(subverts);
   old := OutNeighbours(digraph);
   new := EmptyPlist(nr);
@@ -1003,65 +969,6 @@ end);
 
 #
 
-InstallMethod(InducedSubdigraph, "for a digraph with digraph source and a list",
-[IsDigraph and HasDigraphSource, IsHomogeneousList], 1,
-function( digraph, subverts )
-  local n, lookup, nr, source, range, news, newr, current, count, source_in,
-  allowed, new, i;
-
-  if IsEmpty(subverts) then
-    return DigraphNC( [ ] );
-  fi;
-
-  n := DigraphNrVertices(digraph);
-  if (IsRange(subverts) and not (IsPosInt(subverts[1]) and subverts[1] <= n and
-    subverts[Length(subverts)] <= n))
-    or not IsDuplicateFree(subverts)
-    or not ForAll( subverts, x -> IsPosInt(x) and x < (n + 1)) then
-    Error("Digraphs: InducedSubdigraph: usage,\n",
-    "the second argument <subverts> must be a duplicate-free subset\n",
-    "of the vertices of the first argument <digraph>,");
-    return;
-  fi;
-
-  Sort(subverts); # Sorting to ensure new source will be sorted
-  lookup := EmptyPlist( n );
-  nr := Length(subverts);
-  for i in [ 1 .. nr ] do
-    lookup[ subverts[i] ] := i;
-  od;
-
-  source  := DigraphSource(digraph);
-  range   := DigraphRange(digraph);
-  news      := [ ];
-  newr      := [ ];
-  current   := 0;
-  count     := 0;
-  source_in := false;
-  allowed   := BlistList( DigraphVertices(digraph), subverts );
-
-  for i in [ 1 .. Length(source) ] do
-    if source[i] <> current then
-      current   := source[i];
-      source_in := allowed[current];
-    fi;
-    if source_in and allowed[range[i]] then
-      count        := count + 1;
-      news[count]  := lookup[current];
-      newr[count]  := lookup[range[i]];
-    fi;
-  od;
-
-  new := DigraphNC( rec ( nrvertices := nr, source := news, range := newr ) );
-  SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
-  #JDM need to set this correctly!
-  #SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
-  return new;
-
-end);
-
-#
-
 InstallMethod(InNeighborsOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
@@ -1080,13 +987,13 @@ function(digraph, v)
 end);
 
 InstallMethod(InNeighboursOfVertexNC, "for a digraph with in-neighbours and a vertex",
-[IsDigraph and HasInNeighbours, IsPosInt], 3,
+[IsDigraph and HasInNeighbours, IsPosInt],
 function(digraph, v)
   return InNeighbours(digraph)[v];
 end);
 
-InstallMethod(InNeighboursOfVertexNC, "for a digraph with out-neighbours and a vertex",
-[IsDigraph and HasOutNeighbours, IsPosInt],
+InstallMethod(InNeighboursOfVertexNC, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
 function(digraph, v)
   local inn, pos, out, i, j;
 
@@ -1100,24 +1007,6 @@ function(digraph, v)
         pos := pos + 1;
       fi;
     od;
-  od;
-  return inn;
-end);
-
-InstallMethod(InNeighboursOfVertexNC, "for a digraph with range/source and a vertex",
-[IsDigraph and HasDigraphRange, IsPosInt], 1,
-function(digraph, v)
-  local inn, pos, source, range, i;
-
-  inn := [];
-  pos := 1;
-  source := DigraphSource(digraph);
-  range := DigraphRange(digraph);
-  for i in [ 1 .. Length(range) ] do
-    if range[i] = v then
-      inn[pos] := source[i];
-      pos := pos + 1;
-    fi;
   od;
   return inn;
 end);
@@ -1141,31 +1030,10 @@ function(digraph, v)
   return OutNeighboursOfVertexNC(digraph, v);
 end);
 
-InstallMethod(OutNeighboursOfVertexNC, "for a digraph with out-neighbours and a vertex",
-[IsDigraph and HasOutNeighbours, IsPosInt],
+InstallMethod(OutNeighboursOfVertexNC, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
 function(digraph, v)
   return OutNeighbours(digraph)[v];
-end);
-
-InstallMethod(OutNeighboursOfVertexNC, "for a digraph with only source/range and a vertex",
-[IsDigraph and HasDigraphRange, IsPosInt], 1,
-function(digraph, v)
-  local out, pos, source, range, m, i;
-
-  out := [];
-  pos := 1;
-  source := DigraphSource(digraph);
-  range := DigraphRange(digraph);
-  m := Length(source);
-  i := PositionSorted(source, v);
-  if i <> fail then
-    while i <= m and source[i] = v do
-      out[pos] := range[i];
-      pos := pos + 1;
-      i := i + 1;
-    od;
-  fi;
-  return out;
 end);
 
 #
@@ -1188,13 +1056,13 @@ function(digraph, v)
 end);
 
 InstallMethod(InDegreeOfVertexNC, "for a digraph with in-neighbours and a vertex",
-[IsDigraph and HasInNeighbours, IsPosInt], 3,
+[IsDigraph and HasInNeighbours, IsPosInt],
 function(digraph, v)
   return Length(InNeighbours(digraph)[v]);
 end);
 
-InstallMethod(InDegreeOfVertexNC, "for a digraph with out-neighbours and a vertex",
-[IsDigraph and HasOutNeighbours, IsPosInt],
+InstallMethod(InDegreeOfVertexNC, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
 function(digraph, v)
   local count, out, x, i;
 
@@ -1206,21 +1074,6 @@ function(digraph, v)
         count := count + 1;
       fi;
     od;
-  od;
-  return count;
-end);
-
-InstallMethod(InDegreeOfVertexNC, "for a digraph (with only source/range) and a vertex",
-[IsDigraph and HasDigraphRange, IsPosInt],
-function(digraph, v)
-  local range, count, i;
-
-  range := DigraphRange(digraph);
-  count := 0;
-  for i in [ 1 .. Length(range) ] do
-    if range[i] = v then
-      count := count + 1;
-    fi;
   od;
   return count;
 end);
@@ -1239,33 +1092,15 @@ function(digraph, v)
 end);
 
 InstallMethod(OutDegreeOfVertexNC, "for a digraph with out-degrees and a vertex",
-[IsDigraph and HasOutDegrees, IsPosInt], 3,
+[IsDigraph and HasOutDegrees, IsPosInt],
 function(digraph, v)
   return OutDegrees(digraph)[v];
 end);
 
-InstallMethod(OutDegreeOfVertexNC, "for a digraph with out-neighbours and a vertex",
-[IsDigraph and HasOutNeighbours, IsPosInt],
+InstallMethod(OutDegreeOfVertexNC, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
 function(digraph, v)
   return Length(OutNeighbours(digraph)[v]);
-end);
-
-InstallMethod(OutDegreeOfVertexNC, "for a digraph with source/range and a vertex",
-[IsDigraph and HasDigraphSource, IsPosInt], 1,
-function(digraph, v)
-  local count, source, m, i;
-
-  source := DigraphSource(digraph);
-  m := Length(source);
-  i := PositionSorted(source, v);
-  count := 0;
-  if i <> fail then
-    while i <= m and source[i] = v do
-      i := i + 1;
-      count := count + 1;
-    od;
-  fi;
-  return count;
 end);
 
 #
@@ -1273,8 +1108,7 @@ end);
 InstallMethod(QuotientDigraph, "for a digraph and a homogeneous list",
 [IsDigraph, IsHomogeneousList],
 function(digraph, partition)
-  local n, nr, check, lookup, out, new, gr, source, range, m, newsource,
-  newrange, x, i, j;
+  local n, nr, check, lookup, out, new, x, i, j;
 
   n := DigraphNrVertices(digraph);
   if n = 0 and IsEmpty(partition) then
@@ -1321,33 +1155,15 @@ function(digraph, partition)
     return;
   fi;
 
-  if HasOutNeighbours(digraph) then
-    out := OutNeighbours(digraph);
-    new := List( [ 1 .. nr ], x -> [ ] );
-    for i in DigraphVertices(digraph) do
-      for j in out[i] do
-        Add(new[lookup[i]], lookup[j]);
-      od;
+  out := OutNeighbours(digraph);
+  new := List( [ 1 .. nr ], x -> [ ] );
+  for i in DigraphVertices(digraph) do
+    for j in out[i] do
+      Add(new[lookup[i]], lookup[j]);
     od;
-    gr := DigraphNC(new);
-  elif HasDigraphRange(digraph) then
-    source := DigraphSource(digraph);
-    range := DigraphRange(digraph);
-    m := Length(source);
-    newsource := EmptyPlist(m);
-    newrange := EmptyPlist(m);
-    for i in [ 1 .. m ] do
-      newsource[i] := lookup[source[i]];
-      newrange[i] := lookup[range[i]];
-    od;
-    newrange := Permuted(newrange, Sortex(newsource));
-    gr := DigraphNC( rec( nrvertices := nr,
-                          source     := newsource,
-                          range      := newrange ) );
-  fi;
-
+  od;
+  return DigraphNC(new);
   # Pass on information about <digraph> which might be relevant to gr?
-  return gr;
 end);
 
 #
@@ -1397,8 +1213,8 @@ end);
 
 #
 
-InstallMethod(IsDigraphEdge, "for a digraph with out-neighbours and a list",
-[IsDigraph and HasOutNeighbours, IsList], 1,
+InstallMethod(IsDigraphEdge, "for a digraph and a list",
+[IsDigraph, IsList],
 function(digraph, edge)
   local n;
 
@@ -1411,43 +1227,6 @@ function(digraph, edge)
     return false;
   elif edge[2] in OutNeighboursOfVertex(digraph, edge[1]) then
     return true;
-  fi;
-  return false;
-end);
-
-#
-
-InstallMethod(IsDigraphEdge, "for a digraph and a list",
-[IsDigraph and HasDigraphRange, IsList],
-function(digraph, edge)
-  local edge_src, edge_rng, n, source, range, pos, i;
-
-  if Length(edge) <> 2 then
-    return false;
-  fi;
-
-  edge_src := edge[1];
-  edge_rng := edge[2];
-  n := DigraphNrVertices(digraph);
-
-  if not IsPosInt(edge_src) or
-   not IsPosInt(edge_rng) or
-   n < edge_src or
-   n < edge_rng then
-    return false;
-  fi;
-
-  source := DigraphSource(digraph);
-  range := DigraphRange(digraph);
-  pos := PositionSorted(source, edge_src);
-  if pos <> fail then
-    for i in [ pos .. Length(source) ] do
-      if source[i] = edge_src and range[i] = edge_rng then
-        return true;
-      elif source[i] > edge_src then
-        return false;
-      fi;
-    od;
   fi;
   return false;
 end);
@@ -1488,23 +1267,7 @@ end);
 #
 
 InstallMethod(DigraphDisjointUnion, "for two digraphs",
-[IsDigraph and HasDigraphSource, IsDigraph and HasDigraphSource], 1,
-function(digraph1, digraph2)
-  local nrvertices1, range, source;
-
-  nrvertices1 := DigraphNrVertices(digraph1); 
-  range := Concatenation(DigraphRange(digraph1), DigraphRange(digraph2) +
-	   nrvertices1);
-  source := Concatenation(DigraphSource(digraph1), DigraphSource(digraph2) +
-	   nrvertices1);
-  return DigraphNC(rec(nrvertices := nrvertices1 + DigraphNrVertices(digraph2),
-                        source := source, range := range));
-end);
-
-#
-
-InstallMethod(DigraphDisjointUnion, "for two digraphs",
-[IsDigraph and HasOutNeighbours, IsDigraph and HasOutNeighbours], 1,
+[IsDigraph, IsDigraph],
 function(digraph1, digraph2)
   local nrvertices1, out2;
 
@@ -1512,24 +1275,6 @@ function(digraph1, digraph2)
   out2 := List(OutNeighbours(digraph2), x -> x + nrvertices1);
 
   return DigraphNC(Concatenation(OutNeighbours(digraph1), out2));
-end);
-
-#
-
-InstallMethod(DigraphDisjointUnion, "for two digraphs",
-[IsDigraph and HasDigraphSource, IsDigraph and HasOutNeighbours],
-function(digraph1, digraph2)
-  DigraphSource(digraph2);
-  return DigraphDisjointUnion(digraph1, digraph2); 
-end);
-
-#
-
-InstallMethod(DigraphDisjointUnion, "for two digraphs",
-[IsDigraph and HasOutNeighbours, IsDigraph and HasDigraphSource],
-function(digraph1, digraph2)
-  DigraphSource(digraph1);
-  return DigraphDisjointUnion(digraph1, digraph2); 
 end);
 
 #

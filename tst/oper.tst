@@ -330,7 +330,7 @@ gap> InducedSubdigraph( gr, [ 8 ] );
 gap> i1 := InducedSubdigraph( gr, [ 1, 4, 3 ] );
 <multidigraph with 3 vertices, 6 edges>
 gap> OutNeighbours(i1);
-[ [ 1, 1, 2, 2, 3 ], [ 3 ], [  ] ]
+[ [ 1, 1, 3, 3, 2 ], [  ], [ 2 ] ]
 gap> i2 := InducedSubdigraph( gr, [ 3, 4, 3, 1 ] );
 Error, Digraphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
@@ -369,6 +369,8 @@ gap> OutNeighbours(i1);
 gap> i2 := InducedSubdigraph( gr, [ 7, 5, 3, 1 ] );
 <digraph with 4 vertices, 8 edges>
 gap> i1 = i2;
+false
+gap> IsIsomorphicDigraph(i1, i2);
 true
 gap> InducedSubdigraph( gr, [ 2 .. 8 ] );
 <multidigraph with 7 vertices, 15 edges>
