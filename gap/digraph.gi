@@ -519,8 +519,10 @@ function(graph)
   local out;
   ObjectifyWithAttributes(graph, DigraphType, DigraphRange,
    graph.range, DigraphSource, graph.source);
+  
   # Temporary probably; make sure it works 
-  out := DIGRAPH_OUT_NBS( graph, graph!.source, graph!.range );
+  out := DIGRAPH_OUT_NBS( graph!.nrvertices, graph!.source, graph!.range );
+  graph!.adj := out;
   SetOutNeighbours(graph, out);
   return graph;
 end);

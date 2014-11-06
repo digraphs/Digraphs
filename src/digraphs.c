@@ -621,7 +621,7 @@ static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
 }
 
 // Assume we are passed two GAP lists of PosInts of equal length
-static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range) { 
+static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) { 
   Obj   adj, adjj;
   UInt  n, m, i, j, len, m1, m2;
  
@@ -630,7 +630,7 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range) {
   if (m1 != m2) {
     ErrorQuit("different length lists", 0L, 0L);
   }
-  n = DigraphNrVertices(digraph);
+  n = INT_INTOBJ(nrvertices);
   if (n == 0) {
     adj = NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
   } else {
@@ -661,7 +661,7 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range) {
     }
   }
 
-  AssPRec(digraph, RNamName("adj"), adj);
+  //AssPRec(digraph, RNamName("adj"), adj);
   return adj;
 }
 
@@ -1534,7 +1534,7 @@ static StructGVarFunc GVarFuncs [] = {
     FuncDIGRAPH_SOURCE_RANGE, 
     "src/digraphs.c:FuncDIGRAPH_SOURCE_RANGE" },
 
-  { "DIGRAPH_OUT_NBS", 3, "digraph, source, range",
+  { "DIGRAPH_OUT_NBS", 3, "nrvertices, source, range",
     FuncDIGRAPH_OUT_NBS, 
     "src/digraphs.c:FuncDIGRAPH_OUT_NBS" },
 
