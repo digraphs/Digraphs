@@ -178,47 +178,8 @@ end);
 
 # multi means it has at least one multiple edges
 
-if IsBound(IS_MULTI_DIGRAPH) then
-  InstallMethod(IsMultiDigraph, "for a digraph",
-  [IsDigraph], IS_MULTI_DIGRAPH);
-else 
-  InstallMethod(IsMultiDigraph, "for a digraph",
-  [IsDigraph],
-  function(graph)
-    local range, source, nredges, current, marked, out, nbs, i, j;
-
-    if HasDigraphSource(graph) then
-      range := DigraphRange(graph);
-      source := DigraphSource(graph);
-      nredges := Length(range);
-      current := 0;
-      marked := [ 1 .. DigraphNrVertices(graph)] * 0;
-
-      for i in [ 1 .. nredges ] do
-        if source[i] <> current then
-          current := source[i];
-          marked[range[i]] := current;
-        elif marked[range[i]] = current then
-          return true;
-        else
-          marked[range[i]] := current;
-        fi;
-      od;
-      return false;
-    else
-      out := OutNeighbours(graph);
-      for i in DigraphVertices(graph) do
-        nbs := out[i];
-        for j in [ 1 .. Length(nbs) ] do 
-          if Position( nbs, nbs[j], 0 ) < j  then
-            return true;
-          fi;
-        od;
-      od;
-      return false;
-    fi;
-  end);
-fi;
+InstallMethod(IsMultiDigraph, "for a digraph",
+[IsDigraph], IS_MULTI_DIGRAPH);
 
 # constructors . . .
 
@@ -233,7 +194,7 @@ end);
 InstallMethod(AsDigraph, "for a transformation and an integer",
 [IsTransformation, IsInt],
 function(trans, int)
-  local deg, ran, r, gr;
+  local ran, out, gr, i;
   
   if int < 0 then
     Error("Digraphs: AsDigraph: usage,\n",
@@ -242,12 +203,13 @@ function(trans, int)
   fi;
 
   ran := ListTransformation(trans, int);
-  r := rec( nrvertices := int, source := [ 1 .. int ], range := ran );
-  gr := DigraphNC(r);
-  
+  out := EmptyPlist(int);
+  for i in [ 1 .. int ] do
+    out[i] := [ ran[i] ];
+  od;
+  gr := DigraphNC(out);
   SetIsMultiDigraph(gr, false);
   SetIsFunctionalDigraph(gr, true);
-  
   return gr;
 end);
 
@@ -311,7 +273,7 @@ end);
 InstallMethod(RandomTournament, "for an integer",
 [IsInt],
 function(n)
-  local verts, choice, nr, source, range, count, gr, i, j;
+  local gr, choice, nr, out, i, j;
   
   if n < 0 then
     Error("Digraphs: RandomTournament: usage,\n",
@@ -320,26 +282,24 @@ function(n)
   elif n = 0 then
     gr := EmptyDigraph(0);
   else
-    verts := [ 1 .. n ];
     choice := [ true, false ];
     nr := n * (n - 1) / 2;
-    source := EmptyPlist( nr );
-    range := EmptyPlist( nr );
-    count := 0;
-    for i in verts do
+    out := [ ];
+    for i in [ 1 .. n ] do
+      out[ i ] := [ ];
       for j in [ (i + 1) .. n ] do
-        count := count + 1;
         if Random(choice) then
-          source[count] := i;
-          range[count]  := j;
+          Add(out[i], j);
         else
-          source[count] := j;
-          range[count]  := i;
+          if IsBound(out[j]) then
+            Add(out[j], i);
+          else
+          out[j] := [ i ];
+          fi;
         fi;
       od;
     od;
-    range := Permuted(range, Sortex(source));
-    gr := DigraphNC(rec(nrvertices := n, source := source, range :=range)); 
+    gr := DigraphNC(out);
     SetDigraphNrEdges(gr, nr);
   fi;
   SetIsTournament(gr, true);
@@ -389,7 +349,7 @@ function(n)
       "the argument <n> must be a non-negative integer,");
     return;
   fi;
-  gr := DigraphNC( rec( nrvertices := n, source := [ ], range := [ ] ) );
+  gr := DigraphNC( List( [ 1 .. n ], x -> [  ] ) );
   SetIsEmptyDigraph(gr, true);
   SetIsMultiDigraph(gr, false);
   return gr;
@@ -400,17 +360,14 @@ end);
 InstallMethod(CycleDigraph, "for a positive integer",
 [IsPosInt],
 function(n)
-  local s, r, gr, i;
+  local gr, i, out;
 
-  s := EmptyPlist(n);
-  r := EmptyPlist(n);
-  for i in [ 1 .. (n - 1) ] do
-    s[i] := i;
-    r[i] := i + 1;
+  out := EmptyPlist(n);
+  for i in [ 1 .. n - 1 ] do
+    out[i] := [ i + 1 ];
   od;
-  s[n] := n;
-  r[n] := 1;
-  gr := DigraphNC( rec( nrvertices := n, source := s, range := r ) );
+  out[n] := [ 1 ];
+  gr := DigraphNC( out ); 
   if n = 1 then
     SetIsTransitiveDigraph(gr, true);
     SetDigraphHasLoops(gr, true);
@@ -611,7 +568,7 @@ end);
 InstallMethod(DigraphByAdjacencyMatrix, "for a rectangular table",
 [IsRectangularTable],
 function(mat)
-  local n, record, verts, out, i, j, k;
+  local n, verts, out, count, i, j, k;
 
   n := Length(mat);
 
@@ -621,14 +578,16 @@ function(mat)
     return;
   fi;
 
-  record := rec( nrvertices := n, source := [], range := [] );
   verts := [ 1 .. n ];
+  out := EmptyPlist(n);
   for i in verts do
+    out[i] := [  ];
+    count := 0;
     for j in verts do
       if IsInt(mat[i][j]) and mat[i][j] >= 0 then 
         for k in [ 1 .. mat[i][j] ] do
-          Add(record.source, i);
-          Add(record.range, j);
+          count := count + 1;
+          out[i][count] := j;
         od;
       else
         Error("Digraphs: DigraphByAdjacencyMatrix: usage,\n",
@@ -637,7 +596,7 @@ function(mat)
       fi;
     od;
   od;
-  out := DigraphNC(record);
+  out := DigraphNC(out);
   SetAdjacencyMatrix(out, mat);
   return out;
 end);
@@ -655,20 +614,22 @@ end);
 InstallMethod(DigraphByAdjacencyMatrixNC, "for a rectangular table",
 [IsRectangularTable],
 function(mat)
-  local n, record, verts, out, i, j, k;
+  local n, verts, out, count, i, j, k;
 
   n := Length(mat);
-  record := rec( nrvertices := n, source := [], range := [] );
   verts := [ 1 .. n ];
+  out := EmptyPlist(n);
   for i in verts do
+    out[i] := [  ];
+    count := 0;
     for j in verts do
       for k in [ 1 .. mat[i][j] ] do
-        Add(record.source, i);
-        Add(record.range, j);
+        count := count + 1;
+        out[i][count] := j;
       od;
     od;
   od;
-  out := DigraphNC(record);
+  out := DigraphNC(out);
   SetAdjacencyMatrix(out, mat);
   return out;
 end);
@@ -678,7 +639,7 @@ end);
 InstallMethod(DigraphByAdjacencyMatrixNC, "for an empty list",
 [IsList and IsEmpty],
 function(mat)
-  return DigraphNC( [ ] );
+  return EmptyDigraph(0);
 end);
 
 #
@@ -742,7 +703,7 @@ function(edges, n)
     return;
   fi;
 
-  adj := List( [ 1.. n ], x-> [  ] );
+  adj := List( [ 1 .. n ], x-> [  ] );
 
   for edge in edges do
     if edge[1] > n or edge[2] > n then
@@ -754,7 +715,7 @@ function(edges, n)
     Add(adj[edge[1]], edge[2]);
   od;
 
-  gr:=DigraphNC(adj);
+  gr := DigraphNC(adj);
   SetDigraphEdges(gr, edges);
   return gr;
 end);
@@ -777,31 +738,14 @@ end);
 
 # operators . . .
 
-InstallMethod(\=, "for two digraphs with out-neighbours",
-[IsDigraph and HasOutNeighbours, IsDigraph and HasOutNeighbours], 2,
+InstallMethod(\=, "for two digraphs",
+[IsDigraph, IsDigraph],
 DIGRAPH_EQUALS);
 
 #
 
 InstallMethod(DigraphCopy, "for a digraph",
-[IsDigraph and HasDigraphSource],
-function(digraph)
-  local source, range, n, gr;
-
-  source := ShallowCopy(DigraphSource(digraph));
-  range := ShallowCopy(DigraphRange(digraph));
-  n := DigraphNrVertices(digraph);
-  gr :=  DigraphNC(rec( nrvertices := n,
-                        source := source,
-			range := range));
-  SetDigraphVertexNames(gr, DigraphVertexNames(digraph));
-  return gr;
-end);
-
-#
-
-InstallMethod(DigraphCopy, "for a digraph",
-[IsDigraph and HasOutNeighbours],
+[IsDigraph],
 function(digraph)
   local out, gr;
 
@@ -809,6 +753,93 @@ function(digraph)
   gr := DigraphNC(out);
   SetDigraphVertexNames(gr, DigraphVertexNames(digraph));
   return gr;
+end);
+
+# Printing, and viewing . . .
+
+InstallMethod(ViewString, "for a digraph",
+[IsDigraph],
+function(graph)
+  local str, n, m;
+  
+  str := "<";
+  
+  if IsMultiDigraph(graph) then 
+    Append(str, "multi");
+  fi;
+
+  n := DigraphNrVertices(graph);
+  m := DigraphNrEdges(graph);
+
+  Append(str, "digraph with ");
+  Append(str, String(n));
+  if n = 1 then
+    Append(str, " vertex, ");
+  else
+    Append(str, " vertices, ");
+  fi;
+  Append(str, String(m));
+  if m = 1 then
+    Append(str, " edge>");
+  else
+    Append(str, " edges>");
+  fi;
+  return str;
+end);
+
+#
+
+InstallMethod(PrintString, "for a digraph",
+[IsDigraph],
+function(graph)
+  local str;
+
+  str:="Digraph( ";
+
+  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
+    return Concatenation(str, PrintString(OutNeighbours(graph)), " )");
+  else 
+    Append(str, "\>\>rec(\n\>\>");
+    SET_PRINT_OBJ_INDEX(1);
+    str := Concatenation(str, "\<nrvertices := \>",
+                          PrintString(DigraphNrVertices(graph)), "\<\<,\n\>\>");
+    SET_PRINT_OBJ_INDEX(2);
+    str := Concatenation(str, "\<source := \>",
+                          PrintString(DigraphSource(graph)), "\<\<,\n\>\>");
+    SET_PRINT_OBJ_INDEX(3);
+    str := Concatenation(str, "\<range := \>",
+                          PrintString(DigraphRange(graph)), "\<\<\n\>\>");
+    Append(str, " \<\<) \<\<)");
+    return str;
+  fi;
+end);
+
+#
+
+InstallMethod(String, "for a digraph",
+[IsDigraph],
+function(graph)
+  local str;
+
+  str:="Digraph( ";
+
+  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
+    return Concatenation(str, String(OutNeighbours(graph)), " )");
+  else
+    Append(str, "rec( ");
+    
+    SET_PRINT_OBJ_INDEX(1);
+    str := Concatenation(str,
+                          "nrvertices := ", PrintString(DigraphNrVertices(graph)), ", ");
+    SET_PRINT_OBJ_INDEX(2);
+    str := Concatenation(str,
+                          "source := ", PrintString(DigraphSource(graph)), ", ");
+    SET_PRINT_OBJ_INDEX(3);
+    str := Concatenation(str,
+                          "range := ", PrintString(DigraphRange(graph)));
+    Append(str, " ) )");
+    return str;
+  fi;
 end);
 
 #EOF

@@ -8,8 +8,8 @@
 #############################################################################
 ##
 
-InstallMethod(DigraphDual, "for a digraph with out-neighbours", 
-[IsDigraph and HasOutNeighbours], 
+InstallMethod(DigraphDual, "for a digraph", 
+[IsDigraph], 
 function(graph)
   local verts, old, new, i;
   
@@ -21,62 +21,11 @@ function(graph)
   
   verts := DigraphVertices(graph);
   old := OutNeighbours(graph);
-  new := [];
+  new := [  ];
 
   for i in verts do 
     new[i] := DifferenceLists(verts, old[i]);
   od;
-  return DigraphNC(new);
-end);
-
-#
-
-InstallMethod(DigraphDual, "for a digraph (without out-neighbours)", 
-[IsDigraph], 
-function(graph)
-  local source, range, verts, m, n, new, empty, current, seen, count, i, j;
-  
-  if IsMultiDigraph(graph) then 
-    Error("Digraphs: DigraphDual: usage,\n", 
-      "the argument <graph> must not have multiple edges,");
-    return;
-  fi;
-  
-  source := DigraphSource(graph);
-  range := DigraphRange(graph);
-  verts := DigraphVertices(graph) * 1;
-  m := DigraphNrEdges(graph);
-  n := DigraphNrVertices(graph);
-  new := EmptyPlist(n);
-  if m = 0 then
-    for i in verts do
-      new[i] := verts;
-    od;
-    return DigraphNC(new);
-  fi;
-  current := source[ 1 ];
-  empty := [ 1 .. (current - 1) ];
-  seen := [  ];
-  count := 0;
-
-  for i in [ 1 .. m ] do
-    if source[i] > current then
-      new[current] := DifferenceLists(verts, seen);
-      Append(empty, [ (current + 1) .. (source[i] - 1) ]);
-      current := source[i];
-      seen := [ ];
-      count := 0;
-    fi;
-    count := count + 1;
-    seen[count] := range[i];
-  od;
-
-  new[ source[m] ] := DifferenceLists(verts, seen);
-  empty := Concatenation(empty, [ (source[m] + 1) .. n ]);
-  for i in empty do
-    new[i] := verts;
-  od;
-  
   return DigraphNC(new);
 end);
 
@@ -90,37 +39,13 @@ end);
 
 #
 
-InstallMethod(DigraphNrEdges, "for a digraph with out-neighbours",
-[IsDigraph and HasOutNeighbours],
-function(graph)
-  return Sum(List(OutNeighbours(graph), Length));
-end);
-
 InstallMethod(DigraphNrEdges, "for a digraph",
-[IsDigraph and HasDigraphSource], 
-function(graph)
-  return Length(DigraphSource(graph));
-end);
+[IsDigraph], DIGRAPH_NREDGES);
 
 #
 
-InstallMethod(DigraphEdges, "for a digraph with range",
-[IsDigraph and HasDigraphRange],
-function(graph)
-  local out, range, source, i;
-
-  out:=EmptyPlist(Length(DigraphRange(graph)));
-  range:=DigraphRange(graph);
-  source:=DigraphSource(graph);
-
-  for i in [1..Length(source)] do
-    out[i]:=[source[i], range[i]];
-  od;
-  return out;
-end);
-
 InstallMethod(DigraphEdges, "for a digraph",
-[IsDigraph and HasOutNeighbours],
+[IsDigraph],
 function(graph)
   local out, adj, nr, i, j;
 
@@ -128,10 +53,10 @@ function(graph)
   adj := OutNeighbours(graph);
   nr := 0;
   
-  for i in [ 1 .. Length(adj) ] do 
+  for i in DigraphVertices(graph) do 
     for j in adj[i] do 
       nr := nr + 1;
-      out[nr] :=[i, j];
+      out[nr] := [ i, j ];
     od;
   od;
   return out;   
@@ -141,172 +66,48 @@ end);
 
 InstallMethod(AsGraph, "for a digraph", [IsDigraph], Graph);
 
-#BindGlobal("DIGRAPHS_SourceRange",
-#function(graph)
-#  local adj, nr, source, range, j, i;
-#
-#  if IsBound(graph!.range) then
-#    return;
-#  fi;
-#
-#  adj := OutNeighbours(graph);
-#  nr := 0;
-#
-#  for j in adj do
-#    nr := nr + Length(j);
-#  od;
-#
-#  source := EmptyPlist(nr);
-#  range := EmptyPlist(nr);
-#  nr := 0;
-#
-#  for i in [1..Length(adj)] do
-#    for j in adj[i] do
-#      nr := nr + 1;
-#      source[nr] := i;
-#      range[nr] := j;
-#    od;
-#  od;
-#
-#  graph!.range := range;
-#  graph!.source := source;
-#  return;
-#end);
-
 #
 
 InstallMethod(DigraphVertices, "for a digraph",
 [IsDigraph],
-function(graph)
-  return [ 1 .. DigraphNrVertices(graph) ];
+function(digraph)
+  return [ 1 .. DigraphNrVertices(digraph) ];
 end);
 
-InstallMethod(DigraphRange, "for a digraph with out-neighbours",
-[IsDigraph and HasOutNeighbours],
-function(graph)
-  DIGRAPH_SOURCE_RANGE(graph);
-  # If we don't do the following line, although the graph record has source,
-  # GAP doesn't know that we have the attribute DigraphSource
-  SetDigraphSource(graph, graph!.source);
-  return graph!.range;
+InstallMethod(DigraphRange, "for a digraph",
+[IsDigraph],
+function(digraph)
+  DIGRAPH_SOURCE_RANGE(digraph);
+  SetDigraphSource(digraph, digraph!.source);
+  return digraph!.range;
 end);
 
-InstallMethod(DigraphSource, "for a digraph with out-neighbours",
-[IsDigraph and HasOutNeighbours],
-function(graph)
-  DIGRAPH_SOURCE_RANGE(graph);
-  # If we don't do the following line, although the graph record has range,
-  # GAP doesn't know that we have the attribute DigraphRange
-  SetDigraphRange(graph, graph!.range);
-  return graph!.source;
+InstallMethod(DigraphSource, "for a digraph",
+[IsDigraph],
+function(digraph)
+  DIGRAPH_SOURCE_RANGE(digraph);
+  SetDigraphRange(digraph, digraph!.range);
+  return digraph!.source;
 end);
 
-#
+# We don't need an OutNeighbours function, as any graph already has this attr
 
-#if IsBound(DIGRAPH_OUT_NBS) then
-#  InstallMethod(OutNeighbours, "for a digraph",
-#  [IsDigraph and HasDigraphSource], DIGRAPH_OUT_NBS);
-#else
-#  InstallMethod(OutNeighbours, "for a digraph with source and range",
-#  [IsDigraph and HasDigraphSource],
-#  function(graph)
-#    local range, source, out, i;
-#
-#    range:=DigraphRange(graph);
-#    source:=DigraphSource(graph);
-#    out:=List(DigraphVertices(graph), x-> []);
-#
-#    for i in [ 1 .. Length(source)] do
-#      Add(out[source[i]], range[i]);
-#    od;
-#
-#    MakeImmutable(out);
-#    graph!.adj := out;
-#    return out;
-#  end);
-#fi;
-#
-#InstallMethod(OutNeighbors, "for a digraph", [IsDigraph], OutNeighbours);
+#InstallMethod(OutNeighbours, "for a digraph",
+#[IsDigraph], DIGRAPH_OUT_NBS);
+
+InstallMethod(OutNeighbors, "for a digraph", [IsDigraph], OutNeighbours);
 
 #
 
-if IsBound(DIGRAPH_IN_NBS) then
-  InstallMethod(InNeighbours, "for a digraph",
-  [IsDigraph], DIGRAPH_IN_NBS);
-else
-  InstallMethod(InNeighbours, "for a digraph with out-neighbours",
-  [IsDigraph and HasOutNeighbours],
-  function(graph)
-    local out, inn, i, j;
-  
-    out := OutNeighbours(graph);
-    inn := List(DigraphVertices(graph), x -> []);
-    for i in DigraphVertices(graph) do
-      for j in [ 1 .. Length(out[i]) ] do
-        Add(inn[out[i][j]], i); 
-      od;
-    od;
-    return inn;
-  end);
-  
-  InstallMethod(InNeighbours, "for a digraph with source and range",
-  [IsDigraph and HasDigraphSource], 1,
-  function(graph)
-    local range, source, inn, i;
-    
-    range := DigraphRange(graph);
-    source := DigraphSource(graph);
-    inn := List(DigraphVertices(graph), x -> [] );
-    
-    for i in [ 1 .. Length(source) ] do
-      Add(inn[range[i]], source[i]);
-    od;
-    
-    return inn;
-  end);
-fi;
+InstallMethod(InNeighbours, "for a digraph",
+[IsDigraph], DIGRAPH_IN_NBS);
 
 InstallMethod(InNeighbors, "for a digraph", [IsDigraph], InNeighbours);
 
 #
 
-InstallMethod(AdjacencyMatrix, "for a digraph with out-neighbours",
-[IsDigraph and HasOutNeighbours], 
-function(digraph)
-  local verts, out, mat, i, j;
-  
-  verts := ShallowCopy(DigraphVertices(digraph)); 
-  out   := OutNeighbours(digraph);
-  mat   := EmptyPlist(DigraphNrVertices(digraph));
- 
-  for i in verts do
-    mat[i] := verts * 0;
-    for j in out[i] do
-      mat[i][j] := mat[i][j] + 1;
-    od;
-  od;
-  return mat;
-end);
-
-InstallMethod(AdjacencyMatrix, "for a digraph with source and range",
-[IsDigraph and HasDigraphSource], 
-function(digraph)
-  local verts, source, range, mat, i;
-  
-  verts  := ShallowCopy(DigraphVertices(digraph)); 
-  source := DigraphSource(digraph);
-  range  := DigraphRange(digraph);
-  mat    := EmptyPlist(DigraphNrVertices(digraph));
-  
-  for i in verts do 
-    mat[i] := verts * 0;
-  od;
-  for i in [1..Length(source)] do 
-    mat[source[i]][range[i]] := mat[source[i]][range[i]] + 1;
-  od;
-  
-  return mat;  
-end);
+InstallMethod(AdjacencyMatrix, "for a digraph",
+[IsDigraph], ADJACENCY_MATRIX);
 
 #
 
@@ -316,71 +117,10 @@ InstallMethod(DigraphShortestDistances, "for a digraph",
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
-if IsBound(DIGRAPH_TOPO_SORT) then
-  InstallMethod(DigraphTopologicalSort, "for a digraph",
-  [IsDigraph], function(graph)
-    return DIGRAPH_TOPO_SORT(OutNeighbours(graph));
-  end);
-else
-  InstallMethod(DigraphTopologicalSort, "for a digraph",
-  [IsDigraph],
-  function(graph)
-    local n, verts, adj, vertex_complete, vertex_in_path, stack, out, level, j, 
-    k, i;
-
-    n := DigraphNrVertices(graph);
-    verts := DigraphVertices(graph);
-    if n <= 1 then
-      return verts;
-    fi;
-    adj := OutNeighbours(graph);
-    vertex_complete := BlistList( verts, [ ] );
-    vertex_in_path := BlistList( verts, [ ] );
-    stack := EmptyPlist(2 * n + 2);
-    out := EmptyPlist(n);
-
-    for i in verts do
-      if Length(adj[i]) = 0 then
-        vertex_complete[i] := true;
-      elif not vertex_complete[i] then
-        level := 1;
-        stack[1] := i;
-        stack[2] := 1;
-        while true do
-          j := stack[2 * level - 1];
-          k := stack[2 * level];
-          if vertex_in_path[j] then
-            # Note: can't enter this if level <= 1
-            SetIsAcyclicDigraph(graph, false);
-            level := level - 1;
-            if stack[2 * level - 1] <> j then # Cycle is not just a loop 
-              return fail;
-            fi;
-            stack[2 * level] := stack[2 * level] + 1;
-            vertex_in_path[j] := false;
-          elif vertex_complete[j] or k > Length(adj[j]) then
-            if not vertex_complete[j] then
-              Add(out, j);
-            fi;
-            vertex_complete[j] := true;
-            level := level - 1;
-            if level = 0 then
-              break;
-            fi;
-            stack[2 * level] := stack[2 * level] + 1;
-            vertex_in_path[stack[2 * level - 1]] := false;
-          else
-            vertex_in_path[j] := true;
-            level := level + 1;
-            stack[2 * level - 1] := adj[j][k];
-            stack[2 * level] := 1;
-          fi;
-        od;
-      fi;
-    od;
-    return out;
-  end);
-fi;
+InstallMethod(DigraphTopologicalSort, "for a digraph",
+[IsDigraph], function(graph)
+  return DIGRAPH_TOPO_SORT(OutNeighbours(graph));
+end);
 
 # the scc index 1 corresponds to the "deepest" scc, i.e. the minimal ideal in
 # our case...
@@ -394,11 +134,13 @@ if IsBound(GABOW_SCC) then
     if HasIsAcyclicDigraph(digraph) and IsAcyclicDigraph(digraph) then
       verts := DigraphVertices(digraph);
       return rec( comps := List( verts, x -> [ x ] ), id := verts * 1 );
+
     elif HasIsStronglyConnectedDigraph(digraph)
      and IsStronglyConnectedDigraph(digraph) then
       verts := DigraphVertices(digraph);
       return rec( comps := [ verts * 1 ], id := verts * 0 + 1 );
     fi;
+
     return GABOW_SCC(OutNeighbours(digraph));
   end);
 else
@@ -485,14 +227,12 @@ fi;
 if IsBound(DIGRAPH_CONNECTED_COMPONENTS) then
   InstallMethod(DigraphConnectedComponents, "for a digraph",
   [IsDigraph],
-  function(digraph)
-    return DIGRAPH_CONNECTED_COMPONENTS(digraph);
-  end);
+  DIGRAPH_CONNECTED_COMPONENTS);
 else
   InstallMethod(DigraphConnectedComponents, "for a digraph",
   [IsDigraph],
   function(digraph)
-    local n, verts, tab, find, union, source, range, adj, normalise, comps, i, j;
+    local n, verts, tab, find, union, adj, normalise, comps, i, j;
     
     n := DigraphNrVertices(digraph);
     verts := DigraphVertices(digraph);
@@ -519,20 +259,12 @@ else
       fi;
     end;
     
-    if HasDigraphSource(digraph) then
-      source := DigraphSource(digraph);
-      range := DigraphRange(digraph);
-      for i in [ 1 .. Size(source) ] do
-        union(source[i], range[i]);
+    adj := OutNeighbours(digraph);
+    for i in verts do
+      for j in adj[i] do
+        union(i, j);
       od;
-    elif HasOutNeighbours(digraph) then
-      adj := OutNeighbours(digraph);
-      for i in verts do
-        for j in adj[i] do
-          union(i, j);
-        od;
-      od;
-    fi;
+    od;
     
     normalise := function()
       local ht, next, i, ii, table;
@@ -562,8 +294,8 @@ else
 fi;
 #
 
-InstallMethod(OutDegrees, "for a digraph with out neighbours",
-[IsDigraph and HasOutNeighbours],
+InstallMethod(OutDegrees, "for a digraph",
+[IsDigraph],
 function(digraph)
   local adj, degs, i;
   
@@ -577,37 +309,8 @@ end);
 
 #
 
-InstallMethod(OutDegrees, "for a digraph with source and range",
-[IsDigraph and HasDigraphSource],
-function(digraph)
-  local n, source, degs, current, count, i;
-
-  n := DigraphNrVertices(digraph);
-  if n = 0 then
-    return [ ];
-  fi;
-  source := DigraphSource(digraph);
-  degs := [ 1 .. n ] * 0;
-  if Length(source) <> 0 then
-    current := source[1];
-    count := 0;
-    for i in source do
-      if i <> current then
-        degs[current] := count;
-        count := 0;
-        current := i;
-      fi;
-      count := count + 1;
-    od;
-    degs[current] := count;
-  fi;
-  return degs;
-end);
-
-#
-
 InstallMethod(InDegrees, "for a digraph with in neighbours",
-[IsDigraph and HasInNeighbours], 3,
+[IsDigraph and HasInNeighbours], 
 function(digraph)
   local inn, degs, i;
   
@@ -621,8 +324,8 @@ end);
 
 #
 
-InstallMethod(InDegrees, "for a digraph with out neighbours",
-[IsDigraph and HasOutNeighbours],
+InstallMethod(InDegrees, "for a digraph",
+[IsDigraph],
 function(digraph)
   local adj, degs, x, i;
   
@@ -632,21 +335,6 @@ function(digraph)
     for i in x do
       degs[i] := degs[i] + 1;
     od;
-  od;
-  return degs;
-end);
-
-#
-
-InstallMethod(InDegrees, "for a digraph with source and range",
-[IsDigraph and HasDigraphSource],
-function(digraph)
-  local range, degs, i;
-
-  range := DigraphRange(digraph);
-  degs := [ 1 .. DigraphNrVertices(digraph)] * 0;
-  for i in range do
-    degs[i] := degs[i] + 1;
   od;
   return degs;
 end);
@@ -678,7 +366,7 @@ end);
 #
 
 InstallMethod(DigraphSources, "for a digraph with in-degrees",
-[IsDigraph and HasInDegrees], 4,
+[IsDigraph and HasInDegrees], 3,
 function(digraph)
   local degs;
 
@@ -687,7 +375,7 @@ function(digraph)
 end);
 
 InstallMethod(DigraphSources, "for a digraph with in-neighbours",
-[IsDigraph and HasInNeighbours], 3,
+[IsDigraph and HasInNeighbours],
 function(digraph)
   local inn, sources, count, i;
 
@@ -704,22 +392,8 @@ function(digraph)
   return sources;
 end);
 
-InstallMethod(DigraphSources, "for a digraph with digraph range",
-[IsDigraph and HasDigraphRange],
-function(digraph)
-  local verts, range, seen, i;
-  
-  verts := DigraphVertices(digraph);
-  range := DigraphRange(digraph);
-  seen := BlistList( verts, [  ] );
-  for i in range do
-    seen[i] := true;
-  od;
-  return Filtered( verts, x -> not seen[x] );
-end);
-
-InstallMethod(DigraphSources, "for a digraph with out-neighbours",
-[IsDigraph and HasOutNeighbours],
+InstallMethod(DigraphSources, "for a digraph",
+[IsDigraph],
 function(digraph)
   local verts, out, seen, v, i;
 
@@ -737,7 +411,7 @@ end);
 #
 
 InstallMethod(DigraphSinks, "for a digraph with out-degrees",
-[IsDigraph and HasOutDegrees], 3,
+[IsDigraph and HasOutDegrees],
 function(digraph)
   local degs;
 
@@ -745,13 +419,13 @@ function(digraph)
   return Filtered( DigraphVertices(digraph), x -> degs[x] = 0 );
 end);
 
-InstallMethod(DigraphSinks, "for a digraph with out-neighbours",
-[IsDigraph and HasOutNeighbours],
+InstallMethod(DigraphSinks, "for a digraph",
+[IsDigraph],
 function(digraph)
   local out, sinks, count, i;
 
   out   := OutNeighbours(digraph);
-  sinks := EmptyPlist( DigraphNrVertices(digraph) );
+  sinks := [  ];
   count := 0;
   for i in DigraphVertices(digraph) do
     if IsEmpty(out[i]) then
@@ -759,22 +433,7 @@ function(digraph)
       sinks[count] := i;
     fi;
   od;
-  ShrinkAllocationPlist(sinks);
   return sinks;
-end);
-
-InstallMethod(DigraphSinks, "for a digraph with digraph source",
-[IsDigraph and HasDigraphSource], 1,
-function(digraph)
-  local verts, source, seen, i;
-  
-  verts := DigraphVertices(digraph);
-  source := DigraphSource(digraph);
-  seen := BlistList( verts, [  ] );
-  for i in source do
-    seen[i] := true;
-  od;
-  return Filtered( verts, x -> not seen[x] );
 end);
 
 #

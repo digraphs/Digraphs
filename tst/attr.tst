@@ -171,6 +171,16 @@ gap> IsAcyclicDigraph(gr);
 false
 gap> DigraphTopologicalSort(gr);
 [ 2, 4, 3, 1 ]
+gap> gr := Digraph([
+> [ 7 ], [  ], [  ], [ 6 ], [  ], [ 3 ], [  ], [  ], [ 5, 15 ], [  ], [  ], 
+> [ 6 ], [ 19 ], [  ], [ 11 ], [ 13 ], [  ], [ 17 ], [  ], [ 17 ] ]);
+<digraph with 20 vertices, 11 edges>
+gap> DigraphTopologicalSort(gr);
+[ 7, 1, 2, 3, 6, 4, 5, 8, 11, 15, 9, 10, 12, 19, 13, 14, 16, 17, 18, 20 ]
+gap> gr := Digraph( [ [ 2 ], [ ], [ ] ] );
+<digraph with 3 vertices, 1 edge>
+gap> DigraphTopologicalSort(gr);
+[ 2, 1, 3 ]
 
 # DigraphStronglyConnectedComponents
 gap> gens := [ Transformation( [ 1, 3, 3 ] ), Transformation( [ 2, 1, 2 ] ), 

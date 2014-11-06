@@ -88,6 +88,10 @@ Int DigraphNrEdges(Obj digraph) {
   return nr;
 }
 
+static Obj FuncDIGRAPH_NREDGES(Obj self, Obj digraph) {
+  return INTOBJ_INT(DigraphNrEdges(digraph));
+}
+
 Obj OutNeighbours(Obj digraph) {
   return ElmPRec(digraph, RNamName("adj"));
 }
@@ -516,7 +520,7 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   if (nr == 0) {
     return adj;
   }
-  out = NEW_PLIST(T_PLIST_CYC, nr);
+  out = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, nr);
   SET_LEN_PLIST(out, nr);
   if (nr == 1) {
     SET_ELM_PLIST(out, 1, INTOBJ_INT(1));
@@ -531,6 +535,10 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   for (i = 1; i <= nr; i++) {
     nbs = ELM_PLIST(adj, i);
     if (LEN_LIST(nbs) == 0) {
+      if (ptr[i] == 0) {
+        count++;
+        SET_ELM_PLIST(out, count, INTOBJ_INT(i));
+      }
       ptr[i] = 1;
     } else if (ptr[i] == 0) {
       level = 1;
@@ -694,6 +702,41 @@ static Obj FuncDIGRAPH_IN_NBS(Obj self, Obj digraph) {
   } 
   AssPRec(digraph, RNamName("inn"), inn);
   return inn;
+}
+
+static Obj FuncADJACENCY_MATRIX(Obj self, Obj digraph) {
+  Int   n, i, j, val, len, outj;
+  Obj   adj, mat, adji, next;
+
+  n = DigraphNrVertices(digraph);
+  if (n == 0) {
+    return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
+  }
+  
+  adj = OutNeighbours(digraph);
+  mat = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+  SET_LEN_PLIST(mat, n);
+
+  for (i = 1; i <= n; i++) {
+    // Set up the i^th row of the adjacency matrix
+    next = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, n);
+    SET_LEN_PLIST(next, n);
+    for (j = 1; j <= n; j++) {
+      SET_ELM_PLIST(next, j, INTOBJ_INT(0));
+    }
+    // Fill in the correct values of the matrix
+    adji = ELM_PLIST(adj, i);
+    len = LEN_LIST(adji);
+    for (j = 1; j <= len; j++) {
+      outj = INT_INTOBJ( ELM_LIST( adji, j ) );
+      val = INT_INTOBJ( ELM_PLIST(next, outj ) ) + 1;
+      SET_ELM_PLIST(next, outj, INTOBJ_INT(val));
+    }
+    SET_ELM_PLIST(mat, i, next);
+    CHANGED_BAG(mat);
+  }
+  SET_FILT_LIST(mat, FN_IS_RECT);
+  return mat;
 }
 
 static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
@@ -1459,6 +1502,10 @@ Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
 
 static StructGVarFunc GVarFuncs [] = {
 
+  { "DIGRAPH_NREDGES", 1, "digraph",
+    FuncDIGRAPH_NREDGES, 
+    "src/digraphs.c:DIGRAPH_NREDGES" },
+  
   { "GABOW_SCC", 1, "adj",
     FuncGABOW_SCC, 
     "src/digraphs.c:GABOW_SCC" },
@@ -1494,6 +1541,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_IN_NBS", 1, "digraph",
     FuncDIGRAPH_IN_NBS, 
     "src/digraphs.c:FuncDIGRAPH_IN_NBS" },
+
+  { "ADJACENCY_MATRIX", 1, "digraph",
+    FuncADJACENCY_MATRIX, 
+    "src/digraphs.c:FuncADJACENCY_MATRIX" },
 
   { "IS_MULTI_DIGRAPH", 1, "digraph",
     FuncIS_MULTI_DIGRAPH, 
