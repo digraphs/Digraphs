@@ -496,7 +496,7 @@ function(name, delimiter, offset, ignore)
   file := IO_CompressedFile(name, "r");
 
   if file = fail then
-    Error("Digraphs: ReadPlainTextDigraph: usage,\n",
+    Error("Digraphs: ReadPlainTextDigraph,\n",
           "can't open file ", name, ",");
     return;
   fi;
@@ -527,16 +527,16 @@ function(name, digraph, delimiter, offset)
   fi;
 
   if (not IsString(name)) or (not IsString(delimiter))
-    or (not (IsInt(offset) and offset >= 0)) then
+    or (not IsInt(offset)) then
     Error("Digraphs: WritePlainTextDigraph: usage,\n",
-          "ReadPlainTextDigraph( filename, digraph, delimiter, ignore ),");
+          "WritePlainTextDigraph( filename, digraph, delimiter, offset ),");
     return;
   fi;
 
   file := IO_CompressedFile(name, "w");
 
   if file = fail then
-    Error("Digraphs: WritePlainTextDigraph: usage,\n",
+    Error("Digraphs: WritePlainTextDigraph,\n",
           "can't open file ", name, ",");
     return;
   fi;
