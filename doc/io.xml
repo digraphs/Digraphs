@@ -302,18 +302,30 @@ gap> DigraphFromPlainTextString(last);
 
 <#GAPDoc Label="WritePlainTextDigraph">
 <ManSection>
-  <Func Name="WritePlainTextDigraph" Arg="name, digraph, delimiter, offset"/>
-  <Func Name="ReadPlainTextDigraph" Arg="name, delimiter, offset, ignore"/>
+  <Func Name="WritePlainTextDigraph" Arg="filename, digraph, delimiter, offset"/>
+  <Func Name="ReadPlainTextDigraph" Arg="filename, delimiter, offset, ignore"/>
   <Description>
     These functions write and read a single digraph in a human-readable plain
     text format as follows: each line contains a single edge, and each edge is
-    written as a pair of integers separated by the string <A>delimiter</A>.
+    written as a pair of integers separated by the string <A>delimiter</A>.<P/>
 
-    <A>name</A> should be a filename...
-<!-- TODO: Finish this! -->
+    <A>filename</A> should be the name of a file which will be written to or
+    read from, and <A>offset</A> should be an integer which is added to each
+    vertex number as it is written or read.  For example, if
+    <A>WritePlainTextDigraph</A> is called with <A>offset</A> <E>-1</E>, then
+    the vertices will be numbered in the file starting from 0 instead of 1 -
+    <A>ReadPlainTextDigraph</A> would then need to be called with <A>offset</A>
+    <E>1</E> to convert back to the original graph.<P/>
+
+    <A>ignore</A> should be a list of characters which will be ignored when
+    reading the graph.
     <Example><![CDATA[
-gap> 5 + 1;
-6
+gap> gr := Digraph([[1,2,3], [1,1], [2]]);
+<multidigraph with 3 vertices, 6 edges>
+gap> filename := Concatenation(DigraphsDir(), "/tst/out/plain.txt");;
+gap> WritePlainTextDigraph(filename, gr, ",", -1);
+gap> ReadPlainTextDigraph(filename, ",", 1, ['/','%']);
+<multidigraph with 3 vertices, 6 edges>
 ]]></Example>
   </Description>
 </ManSection>
