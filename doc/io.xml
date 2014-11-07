@@ -50,7 +50,7 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
     <C>ReadDigraphs</C> returns these digraphs as a list.<P/>
     
     If the optional argument <A>nr</A> is specified, the function
-    return the graph encoded in the <A>nr</A>th line of the file
+    returns the graph encoded in the <A>nr</A>th line of the file
     <A>filename</A>.
 
     The currently supported file formats are:
@@ -312,10 +312,10 @@ gap> DigraphFromPlainTextString(last);
     <A>filename</A> should be the name of a file which will be written to or
     read from, and <A>offset</A> should be an integer which is added to each
     vertex number as it is written or read.  For example, if
-    <A>WritePlainTextDigraph</A> is called with <A>offset</A> <E>-1</E>, then
+    <C>WritePlainTextDigraph</C> is called with <A>offset</A> <C>-1</C>, then
     the vertices will be numbered in the file starting from 0 instead of 1 -
-    <A>ReadPlainTextDigraph</A> would then need to be called with <A>offset</A>
-    <E>1</E> to convert back to the original graph.<P/>
+    <C>ReadPlainTextDigraph</C> would then need to be called with <A>offset</A>
+    <C>1</C> to convert back to the original graph.<P/>
 
     <A>ignore</A> should be a list of characters which will be ignored when
     reading the graph.
