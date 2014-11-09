@@ -440,28 +440,8 @@ function(digraph, edges)
   return DigraphAddEdgesNC(digraph, edges);
 end);
 
-InstallMethod(DigraphAddEdgesNC, "for a digraph with range and a list",
-[IsDigraph and HasDigraphRange, IsList], 1,
-function(digraph, edges)
-  local newsource, newrange, m, edge;
-
-  newsource := ShallowCopy(DigraphSource(digraph));
-  newrange  := ShallowCopy(DigraphRange(digraph));
-  m := Length(newsource);
-  for edge in edges do
-    m := m + 1;
-    newsource[m] := edge[1];
-    newrange[m] := edge[2];
-  od;
-
-  newrange := Permuted(newrange, Sortex(newsource));
-  return DigraphNC(rec( source     := newsource,
-                        range      := newrange,
-                        nrvertices := DigraphNrVertices(digraph) ) );
-end);
-
-InstallMethod(DigraphAddEdgesNC, "for a digraph with out-neighbours and a list",
-[IsDigraph and HasOutNeighbours, IsList],
+InstallMethod(DigraphAddEdgesNC, "for a digraph and a list",
+[IsDigraph, IsList],
 function(digraph, edges)
   local out, new, verts, edge;
 
@@ -519,29 +499,8 @@ end);
 
 #
 
-InstallMethod(DigraphAddVerticesNC,
-"for a digraph with source, a pos int and a list",
-[IsDigraph and HasDigraphSource, IsInt, IsList],
-function(digraph, m, names)
-  local s, r, n, out, nam;
-  
-  s := DigraphSource(digraph);
-  r := DigraphRange(digraph);
-  n := DigraphNrVertices(digraph);
-  out := DigraphNC( rec( nrvertices := n + m, source := s, range := r ) );
-  # Transfer known data
-  if IsEmpty(names) then
-    names := [ (n + 1) .. (n + m) ];
-  fi;
-  nam := Concatenation(DigraphVertexNames(digraph), names);
-  SetDigraphVertexNames(out, nam);
-  SetDigraphEdgeLabels(out, DigraphEdgeLabels(digraph));
-  return out;
-end);
-
-InstallMethod(DigraphAddVerticesNC,
-"for a digraph with out-neighbours, a pos int and a list",
-[IsDigraph and HasOutNeighbours, IsInt, IsList],
+InstallMethod(DigraphAddVerticesNC, "for a digraph, a pos int and a list",
+[IsDigraph, IsInt, IsList],
 function(digraph, m, names)
   local out, new, n, newverts, nam, i;
   
@@ -602,60 +561,8 @@ end);
 
 #
 
-InstallMethod(DigraphRemoveVerticesNC,
-"for a digraph with source and a list",
-[IsDigraph and HasDigraphSource, IsList],
-function(digraph, verts)
-  local n, len, newnrverts, diff, lookup, count, m, source, range, news, newr, 
-        log, oldlabs, labs, gr, i;
-
-  if IsEmpty(verts) then
-    return DigraphCopy(digraph);
-  else
-    n := DigraphNrVertices(digraph);
-    len := Length(verts);
-    newnrverts := n - len;
-    if newnrverts = 0 then
-      return EmptyDigraph(0);
-    fi;
-    lookup := EmptyPlist(n);
-    m      := DigraphNrEdges(digraph);
-    source := DigraphSource(digraph);
-    range  := DigraphRange(digraph);
-    news   := [ ];
-    newr   := [ ];
-    log    := LogInt(len, 2);
-    if (2 * m * log) + (len * log) < (2 * m * len) then
-      Sort(verts); # Sort verts if it is sensible to do so
-    fi;
-    diff := Difference(DigraphVertices(digraph), verts);
-    count := 0;
-    for i in diff do
-      count := count + 1;
-      lookup[ i ] := count;
-    od;
-    oldlabs := DigraphEdgeLabels(digraph);
-    labs := [  ];
-    count := 0;
-    for i in [ 1 .. m ] do
-      if not (source[i] in verts or range[i] in verts) then
-        count := count + 1;
-        news[ count ] := lookup[ source[i] ];
-        newr[ count ] := lookup[ range[i] ];
-        labs[ count ] := oldlabs[ i ];
-      fi;
-    od;
-  fi;
-  gr := DigraphNC( rec( nrvertices := newnrverts,
-                        source := news, range := newr ) );
-  SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
-  SetDigraphEdgeLabels(gr, labs);
-  return gr;
-end);
-
-InstallMethod(DigraphRemoveVerticesNC,
-"for a digraph with out-neighbours and a list",
-[IsDigraph and HasOutNeighbours, IsList],
+InstallMethod(DigraphRemoveVerticesNC, "for a digraph and a list",
+[IsDigraph, IsList],
 function(digraph, verts)
   local n, len, new_nrverts, m, log, diff, j, lookup, old_edge_count, old_labels, new_edge_count, new_labels, new_vertex_count, old_nbs, new_nbs, gr, i, x;
   

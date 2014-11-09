@@ -90,10 +90,18 @@ function(digraph)
   return digraph!.source;
 end);
 
-# We don't need an OutNeighbours function, as any graph already has this attr
+#
 
-#InstallMethod(OutNeighbours, "for a digraph",
-#[IsDigraph], DIGRAPH_OUT_NBS);
+InstallMethod(OutNeighbours, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out;
+  out := DIGRAPH_OUT_NBS(DigraphNrVertices(digraph),
+                         DigraphSource(digraph),
+                         DigraphRange(digraph));
+  digraph!.adj := out; # TEMP
+  return out;
+end);
 
 InstallMethod(OutNeighbors, "for a digraph", [IsDigraph], OutNeighbours);
 

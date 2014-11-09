@@ -414,7 +414,7 @@ end);
 
 InstallMethod(Digraph, "for a record", [IsRecord],
 function(graph)
-  local check_source, cmp, obj, i;
+  local check_source, cmp, obj, i, m;
 
   if IsGraph(graph) then
     return DigraphNC(List(Vertices(graph), x-> Adjacency(graph, x)));
@@ -434,12 +434,14 @@ function(graph)
     return;
   fi;
   
-  if Length(graph.source) <> Length(graph.range) then
+  m := Length(graph.source);
+  if m <> Length(graph.range) then
     Error("Digraphs: Digraph: usage,\n",
           "the record components ",
           "'source' and 'range' should have equal length,");
     return;
   fi;
+  graph!.nredges := m;
   
   check_source := true;
 
@@ -492,7 +494,7 @@ function(graph)
     return;
   fi;
 
-  graph:=StructuralCopy(graph);
+  graph := StructuralCopy(graph);
 
   # rewrite the vertices to numbers
   if IsBound(graph.vertices) then
@@ -518,12 +520,11 @@ InstallMethod(DigraphNC, "for a record", [IsRecord],
 function(graph)
   local out;
   ObjectifyWithAttributes(graph, DigraphType, DigraphRange,
-   graph.range, DigraphSource, graph.source);
-  
-  # Temporary probably; make sure it works 
-  out := DIGRAPH_OUT_NBS( graph!.nrvertices, graph!.source, graph!.range );
-  graph!.adj := out;
-  SetOutNeighbours(graph, out);
+   graph.range, DigraphSource, graph.source, DigraphNrVertices,
+   graph.nrvertices);
+  if IsBound(graph!.nredges) then # Temporary workaround
+    SetDigraphNrEdges(graph, graph!.nredges);
+  fi;
   return graph;
 end);
 
@@ -545,6 +546,7 @@ function(adj)
               "not exceeding the length of the argument,");
         return;
       fi;
+      # Could count nredges here. But how to pass to DigraphNC?
     od;
   od;
 
