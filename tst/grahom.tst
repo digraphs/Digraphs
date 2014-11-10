@@ -14,7 +14,7 @@ gap> LoadPackage("digraphs", false);;
 gap> DigraphsStartTest();
 
 #
-gap> gr := Digraph([[],[],[3]]);;
+gap> gr := Digraph( [ [  ], [  ], [ 3 ] ] );;
 gap> HomomorphismDigraphs(gr, gr);
 found endomorphism of rank 2
 found endomorphism of rank 3
@@ -91,6 +91,26 @@ found endomorphism of rank 2
 Transformation( [ 1, 2, 1, 2 ] )
 gap> DigraphColoring(gr,1);
 fail
+
+# Tests for multidigraphs - currently these examples return errors
+gap> gr := RandomMultiDigraph(8, 100);;
+gap> IsMultiDigraph(gr);
+true
+gap> DigraphColoring(gr, 3);
+Error, Digraphs: DigraphColoring: usage,
+the argument <digraph> must not be a  multigraph,
+gap> HomomorphismDigraphs(gr, gr);
+Error, Digraphs: HomomorphismDigraphs: usage,
+the arguments must not be multigraphs,
+gap> DigraphHomomorphism(gr, gr);
+Error, Digraphs: DigraphHomomorphism: usage,
+the arguments must not be multigraphs,
+gap> DigraphEndomorphisms(gr);
+Error, Digraphs: DigraphEndomorphisms: usage,
+the argument <digraph> must not be a multigraph,
+gap> EndomorphismMonoid(gr);
+Error, Digraphs: EndomorphismMonoid: usage,
+the argument <digraph> must not be a multigraph,
 
 #
 gap> DigraphsStopTest();

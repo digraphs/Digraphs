@@ -132,6 +132,16 @@ gap> DigraphStronglyConnectedComponents(gr);
 rec( comps := [ [ 1, 2 ] ], id := [ 1, 1 ] )
 gap> IsAcyclicDigraph(gr);
 false
+gap> gr := Digraph(
+> [ [ 9, 10 ], [ 8 ], [ 4 ], [ 1, 7, 8 ], [ ], [ 5 ], [ ], [ 6 ], [ ], [ 4, 8 ]
+> ] );
+<digraph with 10 vertices, 11 edges>
+gap> DigraphTopologicalSort(gr);
+fail
+gap> HasIsAcyclicDigraph(gr);
+false
+gap> IsAcyclicDigraph(gr);
+false
 
 # IsFunctionalDigraph
 gap> IsFunctionalDigraph(multiple);
@@ -259,10 +269,10 @@ gap> gr2 :=
 > Digraph( rec( vertices := [ 1 .. 6 ], source := [ 6 ], range := [ 1 ] ) );;
 gap> IsEmptyDigraph(gr2);
 false
-gap> gr3 := Digraph( [ [ ], [ ], [ ], [ ] ] );;
+gap> gr3 := DigraphNC( [ [ ], [ ], [ ], [ ] ] );;
 gap> IsEmptyDigraph(gr3);
 true
-gap> gr4 := Digraph( [ [ ], [ 3 ], [ 1 ] ] );;
+gap> gr4 := DigraphNC( [ [ ], [ 3 ], [ 1 ] ] );;
 gap> IsEmptyDigraph(gr4);
 false
 gap> gr5 := DigraphByAdjacencyMatrix( [ [ 0, 0 ], [ 0, 0 ] ] );
@@ -545,6 +555,10 @@ gap> gr := Digraph(r);
 <digraph with 10 vertices, 51 edges>
 gap> DigraphHasLoops(gr);
 true
+gap> gr := Digraph(r);;
+gap> AdjacencyMatrix(gr);;
+gap> DigraphHasLoops(gr);
+true
 gap> r := rec( nrvertices := 10,
 > source := [ 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6,
 >             6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10,
@@ -552,8 +566,12 @@ gap> r := rec( nrvertices := 10,
 > range  := [ 6, 7, 6, 9, 1, 2, 4, 5, 8, 9, 1, 2, 3, 7, 5, 6, 7, 10, 1, 2, 2, 6, 7, 10,
 >             2, 4, 5, 9, 10, 3, 4, 5, 6, 8, 8, 9, 10, 1, 1, 3, 5, 7, 6, 9, 1, 1, 1, 2,
 >             5, 1, 2, 4, 6, 7, 8 ] );;
-gap> gr := Digraph( r );
+gap> gr := Digraph(r);
 <multidigraph with 10 vertices, 55 edges>
+gap> DigraphHasLoops(gr);
+false
+gap> gr := Digraph(r);;
+gap> AdjacencyMatrix(gr);;
 gap> DigraphHasLoops(gr);
 false
 

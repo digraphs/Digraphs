@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
-# Names
+# DigraphVertexLabels
 gap> gr := RandomDigraph(10);;
 gap> DigraphVertexLabels(gr);
 [ 1 .. 10 ]
@@ -53,6 +53,43 @@ gap> DigraphVertexLabels(gr);
 [ 1, 2, 3, 5, 7 ]
 gap> DigraphVertices(gr);
 [ 1 .. 5 ]
+
+# DigraphEdgeLabels
+gap> gr := RandomMultiDigraph(8, 20);;
+gap> DigraphEdgeLabels(gr);
+[ 1 .. 20 ]
+gap> DigraphEdgeLabel(gr, 10);
+10
+gap> gr := RandomMultiDigraph(8, 20);;
+gap> DigraphEdgeLabel(gr, 15);
+15
+gap> gr := RandomMultiDigraph(8, 20);;
+gap> SetDigraphEdgeLabel(gr, 4, Group((1,2,3)));
+gap> DigraphEdgeLabel(gr, 4);
+Group([ (1,2,3) ])
+gap> DigraphEdgeLabel(gr, 5);
+5
+gap> gr := RandomMultiDigraph(8, 20);;
+gap> SetDigraphEdgeLabel(gr, 0, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `SetDigraphEdgeLabel' on 3 arguments
+gap> SetDigraphEdgeLabel(gr, 21, 21);
+Error, Digraphs: SetDigraphEdgeLabel: usage,
+there are only 20 vertices,
+gap> SetDigraphEdgeLabels(gr, Elements(CyclicGroup(20)));;
+gap> DigraphEdgeLabels(gr);
+[ <identity> of ..., f1, f2, f3, f1*f2, f1*f3, f2*f3, f3^2, f1*f2*f3, 
+  f1*f3^2, f2*f3^2, f3^3, f1*f2*f3^2, f1*f3^3, f2*f3^3, f3^4, f1*f2*f3^3, 
+  f1*f3^4, f2*f3^4, f1*f2*f3^4 ]
+gap> DigraphEdgeLabel(gr, 10);
+f1*f3^2
+gap> DigraphEdgeLabel(gr, 21);
+Error, Digraphs: DigraphEdgeLabel: usage,
+21 is nameless or not a vertex,
+gap> SetDigraphEdgeLabels(gr, [ 1 .. 21 ]);
+Error, Digraphs: SetDigraphEdgeLabels: usage,
+the 2nd arument <names> must be a list with length equal to the number of
+vertices of the digraph,
 
 # Graph
 gap> gr := Digraph( [ [ 2, 2 ], [ ] ] );
@@ -270,6 +307,8 @@ gap> gr := DigraphByEdges( [ [ 2, 1 ] ] );
 gap> gr := DigraphByEdges( [ [ 1, 2 ] ], 1 ); 
 Error, Digraphs: DigraphByEdges: usage,
 the specified edges must not contain values greater than 1,
+gap> gr := DigraphByEdges( [  ], 3 );
+<digraph with 3 vertices, 0 edges>
 
 # AsDigraph
 gap> f := Transformation([]);
@@ -799,6 +838,59 @@ false
 gap> gr1 < gr2;
 false
 gap> gr2 < gr1;
+true
+
+# DigraphByInNeighbours
+gap> gr1 := RandomMultiDigraph(50, 3000);
+<multidigraph with 50 vertices, 3000 edges>
+gap> inn := InNeighbours(gr1);;
+gap> gr2 := DigraphByInNeighbours(inn);
+<multidigraph with 50 vertices, 3000 edges>
+gap> gr3 := DigraphByInNeighbors(inn);;
+gap> gr4 := DigraphByInNeighboursNC(inn);
+<multidigraph with 50 vertices, 3000 edges>
+gap> HasDigraphNrEdges(gr3);
+true
+gap> DigraphNrEdges(gr3);
+3000
+gap> gr1 = gr2;
+true
+gap> gr1 = gr3;
+true
+gap> gr2 = gr3;
+true
+gap> gr1 = gr4;
+true
+gap> HasInNeighbours(gr2);
+true
+gap> InNeighbours(gr2) = inn;
+true
+gap> HasInNeighbours(gr3);
+true
+gap> InNeighbours(gr3) = inn;
+true
+gap> inn := [ [ 3, 1, 2 ], [ 1 ] ];;
+gap> DigraphByInNeighbours(inn);
+Error, Digraphs: DigraphByInNeighbours: usage,
+the argument must be a list of lists of positive integers
+not exceeding the length of the argument,
+gap> inn := [
+> [  ], [ 3 ], [ 7 ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [ 6 ],
+> [  ], [ 2 ], [  ], [  ], [  ], [  ], [ 5 ], [  ] ];;
+gap> gr := DigraphByInNeighbours(inn);
+<digraph with 20 vertices, 5 edges>
+gap> OutNeighbours(gr);
+[ [  ], [ 14 ], [ 2 ], [  ], [ 19 ], [ 12 ], [ 3 ], [  ], [  ], [  ], [  ], 
+  [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ] ]
+gap> inn := [
+> [ 14 ], [ 20 ], [  ], [  ], [ 5, 19, 5 ], [ 4 ], [  ], [  ], [  ], [  ],
+> [ 12 ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [ 2 ] ];;
+gap> gr := DigraphByInNeighbours(inn);
+<multidigraph with 20 vertices, 8 edges>
+gap> OutNeighbours(gr);
+[ [  ], [ 20 ], [  ], [ 6 ], [ 5, 5 ], [  ], [  ], [  ], [  ], [  ], [  ], 
+  [ 11 ], [  ], [ 1 ], [  ], [  ], [  ], [  ], [ 5 ], [ 2 ] ]
+gap> InNeighbors(gr) = inn;
 true
 
 #

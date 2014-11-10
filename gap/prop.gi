@@ -253,7 +253,7 @@ function(digraph)
   local mat, i;
 
   mat := AdjacencyMatrix(digraph);
-  for i in mat do
+  for i in DigraphVertices(digraph) do
     if mat[i][i] <> 0 then
       return true;
     fi;

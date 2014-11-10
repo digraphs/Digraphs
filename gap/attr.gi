@@ -108,12 +108,24 @@ end);
 
 InstallMethod(OutNeighbors, "for a digraph", [IsDigraph], OutNeighbours);
 
+InstallImmediateMethod(OutNeighbors, "for a digraph", HasOutNeighbours, 0,
+OutNeighbours);
+
+InstallImmediateMethod(OutNeighbours, "for a digraph", HasOutNeighbors, 0,
+OutNeighbors);
+
 #
 
 InstallMethod(InNeighbours, "for a digraph",
 [IsDigraph], DIGRAPH_IN_NBS);
 
 InstallMethod(InNeighbors, "for a digraph", [IsDigraph], InNeighbours);
+
+InstallImmediateMethod(InNeighbors, "for a digraph", HasInNeighbours, 0,
+InNeighbours);
+
+InstallImmediateMethod(InNeighbours, "for a digraph", HasInNeighbors, 0,
+InNeighbors);
 
 #
 
@@ -136,173 +148,30 @@ end);
 # the scc index 1 corresponds to the "deepest" scc, i.e. the minimal ideal in
 # our case...
 
-if IsBound(GABOW_SCC) then
-  InstallMethod(DigraphStronglyConnectedComponents, "for a digraph",
-  [IsDigraph],
-  function(digraph)
-    local verts;
-    
-    if HasIsAcyclicDigraph(digraph) and IsAcyclicDigraph(digraph) then
-      verts := DigraphVertices(digraph);
-      return rec( comps := List( verts, x -> [ x ] ), id := verts * 1 );
-
-    elif HasIsStronglyConnectedDigraph(digraph)
-     and IsStronglyConnectedDigraph(digraph) then
-      verts := DigraphVertices(digraph);
-      return rec( comps := [ verts * 1 ], id := verts * 0 + 1 );
-    fi;
-
-    return GABOW_SCC(OutNeighbours(digraph));
-  end);
-else
-  InstallMethod(DigraphStronglyConnectedComponents, "for a digraph",
-  [IsDigraph],
-  function(digraph)
-    local n, verts, stack1, len1, stack2, len2, id, count, comps, fptr, level, nr, w, comp, v;
-
-    n := DigraphNrVertices(digraph);
-    if n = 0 then
-      return rec( comps := [], id := []);
-    fi;
+InstallMethod(DigraphStronglyConnectedComponents, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local verts;
+  
+  if HasIsAcyclicDigraph(digraph) and IsAcyclicDigraph(digraph) then
     verts := DigraphVertices(digraph);
-    digraph := OutNeighbours(digraph);
-    stack1 := EmptyPlist(n); len1 := 0;
-    stack2 := EmptyPlist(n); len2 := 0;
-    id := verts * 0;
-    count := Length(digraph);
-    comps := [];
-    fptr := [];
+    return rec( comps := List( verts, x -> [ x ] ), id := verts * 1 );
 
-    for v in verts do
-      if id[v] = 0 then
-        level := 1;
-        fptr[1] := v; #fptr[0], vertex
-        fptr[2] := 1; #fptr[2], index
-        len1 := len1 + 1;
-        stack1[len1] := v;
-        len2 := len2 + 1;
-        stack2[len2] := len1;
-        id[v] := len1;
+  elif HasIsStronglyConnectedDigraph(digraph)
+   and IsStronglyConnectedDigraph(digraph) then
+    verts := DigraphVertices(digraph);
+    return rec( comps := [ verts * 1 ], id := verts * 0 + 1 );
+  fi;
 
-        while level > 0 do
-          if fptr[ 2 * level] > Length(digraph[fptr[2 * level - 1]]) then
-            if stack2[len2] = id[fptr[2 * level - 1]] then
-              len2 := len2 - 1;
-              count := count + 1;
-              nr := 0;
-              repeat
-                nr := nr + 1;
-                w := stack1[len1];
-                len1 := len1 - 1;
-                id[w] := count;
-              until w = fptr[2 * level - 1];
-              comp := stack1{[len1 + 1..len1 + nr]};
-              ShrinkAllocationPlist(comp);
-              MakeImmutable(comp);
-              Add(comps, comp);
-            fi;
-            level := level - 1;
-          else
-            w := digraph[fptr[2 * level - 1]][fptr[2 * level]];
-            fptr[2 * level] := fptr[2 * level] + 1;
-
-            if id[w] = 0 then
-              level := level + 1;
-              fptr[2 * level - 1 ] := w; #fptr[0], vertex
-              fptr[2 * level] := 1;   #fptr[2], index
-              len1 := len1 + 1;
-              stack1[len1] := w;
-              len2 := len2 + 1;
-              stack2[len2] := len1;
-              id[w] := len1;
-
-            else # we saw <w> earlier in this run
-              while stack2[len2] > id[w] do
-                len2 := len2 - 1; # pop from stack2
-              od;
-            fi;
-          fi;
-        od;
-      fi;
-    od;
-
-    MakeImmutable(id);
-    ShrinkAllocationPlist(comps);
-    MakeImmutable(comps);
-    return rec(id := id - Length(digraph), comps := comps);
-  end);
-fi;
+  return GABOW_SCC(OutNeighbours(digraph));
+end);
 
 #
 
-if IsBound(DIGRAPH_CONNECTED_COMPONENTS) then
-  InstallMethod(DigraphConnectedComponents, "for a digraph",
-  [IsDigraph],
-  DIGRAPH_CONNECTED_COMPONENTS);
-else
-  InstallMethod(DigraphConnectedComponents, "for a digraph",
-  [IsDigraph],
-  function(digraph)
-    local n, verts, tab, find, union, adj, normalise, comps, i, j;
-    
-    n := DigraphNrVertices(digraph);
-    verts := DigraphVertices(digraph);
-    if n = 0 then
-      return rec( comps := [  ], id := [  ] );
-    fi;
-    
-    tab := ShallowCopy(DigraphVertices(digraph));
-    
-    find := function(i)
-      while i <> tab[i] do
-        i := tab[i];
-      od;
-      return i;
-    end;
-    
-    union := function(i, j)
-      i := find(i);
-      j := find(j);
-      if i < j then
-        tab[j] := i;
-      elif j < i then
-        tab[i] := j;
-      fi;
-    end;
-    
-    adj := OutNeighbours(digraph);
-    for i in verts do
-      for j in adj[i] do
-        union(i, j);
-      od;
-    od;
-    
-    normalise := function()
-      local ht, next, i, ii, table;
-      table := EmptyPlist(n);
-      ht := [];
-      next := 1;
-      for i in verts do
-        ii := find(i);
-        if IsBound(ht[ii]) then
-          table[i] := ht[ii];
-        else
-          table[i] := next;
-          ht[ii] := next;
-          next := next + 1;
-        fi;
-      od;
-      return table;
-    end;
-    
-    tab := normalise();
-    comps := List([ 1 .. Maximum(tab) ], x -> [ ]);
-    for i in verts do
-      Add(comps[ tab[i] ], i);
-    od;
-    return rec( comps := comps, id := tab );
-  end);
-fi;
+InstallMethod(DigraphConnectedComponents, "for a digraph",
+[IsDigraph],
+DIGRAPH_CONNECTED_COMPONENTS);
+
 #
 
 InstallMethod(OutDegrees, "for a digraph",

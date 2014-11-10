@@ -1042,7 +1042,11 @@ function(digraph, edge)
    n < edge[1] or
    n < edge[2] then
     return false;
-  elif edge[2] in OutNeighboursOfVertex(digraph, edge[1]) then
+  fi;
+  if HasAdjacencyMatrix(digraph) then
+    return AdjacencyMatrix(digraph)[edge[1]][edge[2]] <> 0;
+  fi;
+  if edge[2] in OutNeighboursOfVertex(digraph, edge[1]) then
     return true;
   fi;
   return false;
@@ -1115,6 +1119,91 @@ function(digraph1, digraph2)
   od;
 
   return DigraphNC(new);
+end);
+
+#
+
+InstallMethod(IsReachable, "for a digraph and two pos ints",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, u, v)
+  local verts, wcc, scc;
+
+  verts := DigraphVertices(digraph);
+  if not (u in verts and v in verts) then
+    Error("Digraphs: IsReachable: usage,\n",
+    "the second and third arguments <u> and <v> must be vertices\n",
+    "of the first argument <digraph>,");
+    return;
+  fi;
+
+  # If it's a known transitive digraph, just check whether the edge exists
+  if HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
+    return IsDigraphEdge(digraph, [ u, v ]);
+  fi;
+  
+  # Glean information from WCC if we have it
+  if HasDigraphConnectedComponents(digraph) then
+    wcc := DigraphConnectedComponents(digraph);
+    if wcc.id[u] <> wcc.id[v] then
+      return false;
+    fi;
+  fi;
+
+  # Glean information from SCC if we have it
+  if HasDigraphStronglyConnectedComponents(digraph) then
+    scc := DigraphStronglyConnectedComponents(digraph);
+    if u <> v then
+      if scc.id[u] = scc.id[v] then
+        return true;
+      fi;
+    else
+      if Length(scc.comps[scc.id[u]]) > 1 then
+        return true;
+      else
+        return IsDigraphEdge(digraph, [u, u]);
+      fi;
+    fi;
+  fi;
+
+  # Glean information from adjacency matrix if we have it
+  if HasAdjacencyMatrix(digraph) then
+    if AdjacencyMatrix(digraph)[u][v] <> 0 then
+      return true;
+    fi;
+  fi;
+
+  Error("Digraphs: IsReachable: not yet implemented,");
+  # return DIGRAPHS_IS_REACHABLE(digraph, u, v);
+end);
+
+#
+
+InstallMethod(DigraphRemoveAllMultipleEdges, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local n, verts, nseen, old_adj, new_adj, tot, seen, count, gr, i, j;
+
+  n := DigraphNrVertices(digraph);
+  verts := DigraphVertices(digraph);
+  old_adj := OutNeighbours(digraph);
+  new_adj := EmptyPlist(n);
+  tot := 0;
+  for i in verts do
+    seen := BlistList(verts, [  ]);
+    count := 0;
+    new_adj[i] := [  ];
+    for j in old_adj[i] do
+      if not seen[j] then
+        seen[j] := true;
+        count := count + 1;
+        tot := tot + 1;
+        new_adj[i][count] := j;
+      fi;
+    od;
+  od;
+  gr := DigraphNC(new_adj, tot);
+  SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
+  return gr;
 end);
 
 #EOF

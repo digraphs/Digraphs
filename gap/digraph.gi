@@ -140,7 +140,7 @@ InstallMethod(DigraphEdgeLabel, "for a digraph and pos int",
 function(graph, i)
 
   if not IsBound(graph!.edgelabels) then 
-    graph!.edgelabels := [1 .. DigraphNrEdges(graph)];
+    graph!.edgelabels := [ 1 .. DigraphNrEdges(graph) ];
   fi;
 
   if IsBound(graph!.edgelabels[i]) then 
@@ -791,7 +791,7 @@ function(inn)
   out := DIGRAPH_IN_TO_OUT_NBS(inn);
   gr := DigraphNC(out);
   SetInNeighbours(gr, inn);
-  return DigraphNC(gr);
+  return gr;
 end);
 
 InstallMethod(DigraphByInNeighboursNC, "for a list and an int",
@@ -802,7 +802,7 @@ function(inn, nredges)
   out := DIGRAPH_IN_TO_OUT_NBS(inn);
   gr := DigraphNC(out, nredges);
   SetInNeighbours(gr, inn);
-  return DigraphNC(gr);
+  return gr;
 end);
 
 
