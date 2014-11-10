@@ -100,46 +100,7 @@ end);
 #
 
 InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
-[IsDigraph and HasDigraphSource, IsRectangularTable],
-function(digraph, edges)
-  local source, range, i;
-
-  if IsMultiDigraph(digraph) then
-    Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the first argument <digraph> must not be a multigraph,");
-    return;
-  fi;
-
-  if not IsPosInt(edges[1][1]) or 
-    not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
-    Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the second argument <edges> must be a list of edges of <digraph>,");
-    return;
-  fi;
- 
-  source := ShallowCopy(DigraphSource(digraph));
-  range := ShallowCopy(DigraphRange(digraph));
-
-  Sort(edges); 
-  for i in [ 1 .. Length(source) ] do
-    if [source[i], range[i]] in edges then 
-      # swap source[ i] and range[i]
-      source[i] := range[i] + source[i]; 
-      range[i] := source[i] - range[i];
-      source[i] := source[i] - range[i];
-    fi;
-  od;
-
-  range := Permuted(range, Sortex(source));
-  return DigraphNC(rec( source:=source, 
-                        range:=range,
-                        nrvertices:=DigraphNrVertices(digraph)));
-end);
-
-#
-
-InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
-[IsDigraph and HasOutNeighbours, IsRectangularTable],
+[IsDigraph, IsRectangularTable],
 function(digraph, edges)
   local current, nredges, out, new, i;
 
@@ -180,50 +141,9 @@ end);
 
 #
 
-# can we use IsListOf...
+# can we use IsListOf... jj
 InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
-[IsDigraph and HasDigraphSource, IsList], 1,
-function(digraph, edges)
-  local nredges, source, range, i; 
-
-  if IsMultiDigraph(digraph) then
-    Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the first argument <digraph> must not be a multigraph,");
-    return;
-  fi;
-  
-  if Length(edges) = 0 then
-    return DigraphCopy(digraph);
-  fi;
-
-  nredges := DigraphNrEdges(digraph);
-  if not IsPosInt(edges[1]) or 
-    not IsHomogeneousList(edges) or
-    not ForAll( edges, x -> x <= nredges) then
-    Error("Digraphs: DigraphReverseEdges: usage,\n",
-    "the second argument <edges> must be a list of edges of <digraph>,");
-    return;
-  fi;
- 
-  source := ShallowCopy(DigraphSource(digraph));
-  range := ShallowCopy(DigraphRange(digraph));
-  
-  for i in edges do
-    # swap source[i] and range[i]
-    source[i] := range[i] + source[i]; 
-    range[i] := source[i] - range[i];
-    source[i] := source[i] - range[i];
-  od;
-
-  range := Permuted(range, Sortex(source));
-  return DigraphNC(rec( source:=source, 
-                        range:=range,
-                        nrvertices:=DigraphNrVertices(digraph)));
-end);
-
-#
-InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
-[IsDigraph and HasOutNeighbours, IsList],
+[IsDigraph, IsList],
 function(digraph, edges)
   local nredges, current, out, new, pos_l, pos_h, toadd, pos, temp, i, edge;
 
@@ -298,41 +218,16 @@ end);
 
 #
 
-InstallMethod(DigraphRemoveLoops, "for a digraph with source",
-[IsDigraph and HasDigraphSource],
-function(graph)
-  local source, range, newsource, newrange, nr, out, i;
-
-  source := DigraphSource(graph);
-  range := DigraphRange(graph);
-
-  newsource := [];
-  newrange := [];
-  nr := 0;
-
-  for i in [ 1 .. Length(source) ] do
-    if range[i] <> source[i] then
-      nr := nr + 1;
-      newrange[nr] := range[i];
-      newsource[nr] := source[i];
-    fi;
-  od;
-
-  out := DigraphNC(rec( source := newsource, range := newrange,
-                        nrvertices := DigraphNrVertices(graph) ) );
-  SetDigraphHasLoops(out, false);
-  return out;
-end);
-
-InstallMethod(DigraphRemoveLoops, "for a digraph by adjacency",
-[IsDigraph and HasOutNeighbours],
-function(graph)
-  local old, new, nr, out, i, j;
+InstallMethod(DigraphRemoveLoops, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local old, new, nr, out, i, j, tot;
   
-  old := OutNeighbours(graph);
+  old := OutNeighbours(digraph);
   new := [];
+  tot := 0;
 
-  for i in DigraphVertices(graph) do 
+  for i in DigraphVertices(digraph) do 
     new[i] := []; 
     nr := 0;
     for j in old[i] do 
@@ -341,10 +236,12 @@ function(graph)
         new[i][nr] := j;
       fi;
     od;
+    tot := tot + nr;
   od;
 
   out := DigraphNC(new);
   SetDigraphHasLoops(out, false);
+  SetDigraphNrEdges(out, tot);
   return out;
 end);
 
@@ -362,7 +259,7 @@ function(graph, edges)
       source     := DigraphSource(graph){edges},
       range      := DigraphRange(graph){edges},
       nrvertices := DigraphNrVertices(graph)));
-  else
+  else # Remove edges specified by source and range
     if IsMultiDigraph(graph) then
       Error("Digraphs: DigraphRemoveEdges: usage,\n",
       "the first argument <graph> must not have multiple edges\n",
@@ -624,8 +521,8 @@ end);
 
 #
 
-InstallMethod(OnDigraphs, "for a digraph by adjacency and perm",
-[IsDigraph and HasOutNeighbours, IsPerm],
+InstallMethod(OnDigraphs, "for a digraph and a perm",
+[IsDigraph, IsPerm],
 function(graph, perm)
   local adj, out;
 
@@ -646,28 +543,6 @@ function(graph, perm)
 end);
 
 #
-
-InstallMethod(OnDigraphs, "for a digraph and perm",
-[IsDigraph and HasDigraphRange, IsPerm],
-function(graph, perm)
-  local source, range, out;
-
-  if ForAny(DigraphVertices(graph), i-> i^perm > DigraphNrVertices(graph)) then
-    Error("Digraphs: OnDigraphs: usage,\n",
-    "the 2nd argument <perm> must permute the vertices ",
-    "of the 1st argument <graph>,");
-    return;
-  fi;
-  source := ShallowCopy(OnTuples(DigraphSource(graph), perm));
-  range := ShallowCopy(OnTuples(DigraphRange(graph), perm));
-  range := Permuted(range, Sortex(source));
-  out := DigraphNC(rec(
-    source := source,
-    range := range,
-    nrvertices:=DigraphNrVertices(graph)));
-  SetDigraphVertexNames(out, Permuted(DigraphVertexNames(graph), perm));
-  return out;
-end);
 
 InstallMethod(OnMultiDigraphs, "for a digraph, perm and perm",
 [IsDigraph, IsPerm, IsPerm],
