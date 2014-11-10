@@ -844,4 +844,43 @@ function(graph)
   fi;
 end);
 
+#
+
+InstallMethod(ReducedDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+
+  old := DigraphOutNeighbours(digraph);
+
+  # Extract all the non-empty lists of out-neighbours
+  adj := []; len := 0; map := [];
+  for i in DigraphVertices(digraph) do
+    if not IsEmpty(old[i]) then
+      len := len + 1;
+      adj[len] := ShallowCopy(old[i]);
+      map[len] := i;
+    fi;
+  od;
+
+  # Renumber the contents
+  sinkmap := []; sinklen := 0;
+  for x in adj do
+    for i in [1..Length(x)] do
+      pos := PositionSorted(map, x[i]);
+      if pos = fail then
+        # x[i] has no out-neighbours
+        pos := Position(sinkmap, x[i]);
+        if pos = fail then
+          # x[i] has not yet been encountered
+          sinklen := sinklen + 1;
+          sinkmap[sinklen] := x[i];
+          pos := sinklen;
+        fi;
+        pos := pos + len;
+      fi;
+      x[i] := pos;
+    od;
+  od;
+end);
+
 #EOF
