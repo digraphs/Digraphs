@@ -7,8 +7,8 @@
     <#Include Label="DigraphSinks">
     <#Include Label="DigraphSources">
     <#Include Label="DigraphTopologicalSort">
-    <#Include Label="DigraphVertexName">
-    <#Include Label="DigraphVertexNames">
+    <#Include Label="DigraphVertexLabel">
+    <#Include Label="DigraphVertexLabels">
     <#Include Label="DigraphInEdges">
     <#Include Label="DigraphOutEdges">
     <#Include Label="IsDigraphEdge">

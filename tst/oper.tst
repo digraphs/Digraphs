@@ -183,7 +183,7 @@ gap> gr := Digraph( [ [ 2, 2 ], [  ] ] );
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphRemoveEdges(gr, [ [ 1, 2 ] ] );
 Error, Digraphs: DigraphRemoveEdges: usage,
-the first argument <graph> must not have multiple edges
+the first argument <digraph> must not have multiple edges
 when the second argument <edges> is a list of edges,
 
 # OnDigraphs (for a digraph by adjacency and perm)
@@ -686,9 +686,9 @@ gap> DigraphVertices(gr2);
 [ 1, 2 ]
 gap> DigraphEdges(gr) = DigraphEdges(gr2);
 true
-gap> DigraphVertexNames(gr);
+gap> DigraphVertexLabels(gr);
 [ 1 ]
-gap> DigraphVertexNames(gr2);
+gap> DigraphVertexLabels(gr2);
 [ 1, Sym( [ 1 .. 2 ] ) ]
 
 # DigraphAddVertices
@@ -709,35 +709,35 @@ gap> DigraphVertices(gr2);
 [ 1 .. 3 ]
 gap> DigraphEdges(gr) = DigraphEdges(gr2);
 true
-gap> DigraphVertexNames(gr2);
+gap> DigraphVertexLabels(gr2);
 [ 1, Sym( [ 1 .. 2 ] ), Group(()) ]
 gap> gr := Digraph( [ [ 1 ] ] );;
-gap> SetDigraphVertexNames(gr, [ AlternatingGroup(5) ]);
+gap> SetDigraphVertexLabels(gr, [ AlternatingGroup(5) ]);
 gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
 <digraph with 3 vertices, 1 edge>
-gap> DigraphVertexNames(gr2);
+gap> DigraphVertexLabels(gr2);
 [ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
 gap> gr := Digraph( rec( nrvertices := 1, source := [ 1 ], range := [ 1 ] ) );
 <digraph with 1 vertex, 1 edge>
 gap> gr2 := DigraphAddVertices(gr, 2);
 <digraph with 3 vertices, 1 edge>
-gap> DigraphVertexNames(gr2);
+gap> DigraphVertexLabels(gr2);
 [ 1, 2, 3 ]
-gap> SetDigraphVertexNames(gr, [ true ]);
+gap> SetDigraphVertexLabels(gr, [ true ]);
 gap> gr2 := DigraphAddVertices(gr, 2);
 <digraph with 3 vertices, 1 edge>
-gap> DigraphVertexNames(gr2);
+gap> DigraphVertexLabels(gr2);
 [ true, 2, 3 ]
 gap> gr := Digraph( rec( nrvertices := 1, source := [ 1 ], range := [ 1 ] ) );;
 gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
 <digraph with 3 vertices, 1 edge>
-gap> DigraphVertexNames(gr2);
+gap> DigraphVertexLabels(gr2);
 [ 1, Sym( [ 1 .. 2 ] ), Group(()) ]
 gap> gr := Digraph( rec( nrvertices := 1, source := [ 1 ], range := [ 1 ] ) );;
-gap> SetDigraphVertexNames(gr, [ AlternatingGroup(5) ]);
+gap> SetDigraphVertexLabels(gr, [ AlternatingGroup(5) ]);
 gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
 <digraph with 3 vertices, 1 edge>
-gap> DigraphVertexNames(gr2);
+gap> DigraphVertexLabels(gr2);
 [ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
 gap> DigraphAddVertices(gr2, -1);
 Error, Digraphs: DigraphAddVertices: usage,
@@ -812,7 +812,7 @@ gap> gr2 := DigraphRemoveVertices( gr, [ 1, 3 ] );
 <digraph with 2 vertices, 2 edges>
 gap> IsCompleteDigraph(gr2);
 true
-gap> DigraphVertexNames(gr2);
+gap> DigraphVertexLabels(gr2);
 [ 2, 4 ]
 gap> gr3 := DigraphRemoveVertices( gr, [ 1 .. 4 ] );
 <digraph with 0 vertices, 0 edges>
@@ -822,12 +822,12 @@ gap> gr := Digraph( rec( nrvertices := 4,
 <digraph with 4 vertices, 16 edges>
 gap> IsCompleteDigraph(gr);
 false
-gap> SetDigraphVertexNames( gr, [ (), (1,2), (1,2,3), (1,2,3,4) ] );
+gap> SetDigraphVertexLabels( gr, [ (), (1,2), (1,2,3), (1,2,3,4) ] );
 gap> gr2 := DigraphRemoveVertices( gr, [ 1 .. 4 ] );
 <digraph with 0 vertices, 0 edges>
 gap> gr3 := DigraphRemoveVertices( gr, [ 2, 3 ] );
 <digraph with 2 vertices, 4 edges>
-gap> DigraphVertexNames(gr3);
+gap> DigraphVertexLabels(gr3);
 [ (), (1,2,3,4) ]
 gap> gr4 := DigraphRemoveVertices( gr, [ ] );
 <digraph with 4 vertices, 16 edges>
@@ -1095,18 +1095,18 @@ gap> gr := CycleDigraph(10000);
 <digraph with 10000 vertices, 10000 edges>
 gap> gr = DigraphCopy(gr);
 true
-gap> SetDigraphVertexName(gr, 1, "w");
-gap> DigraphVertexNames(DigraphCopy(gr))[1];
+gap> SetDigraphVertexLabel(gr, 1, "w");
+gap> DigraphVertexLabels(DigraphCopy(gr))[1];
 "w"
 gap> gr := Digraph( rec( vertices := [ "a", Group((1,2)) ],
 > source := [ Group((1,2)) ], range := [ "a" ] ) );
 <digraph with 2 vertices, 1 edge>
-gap> DigraphVertexNames(gr);
+gap> DigraphVertexLabels(gr);
 [ "a", Group([ (1,2) ]) ]
 gap> gr2 := DigraphCopy(gr);;
 gap> gr = gr2;
 true
-gap> DigraphVertexNames(gr2);
+gap> DigraphVertexLabels(gr2);
 [ "a", Group([ (1,2) ]) ]
 
 # DigraphJoin

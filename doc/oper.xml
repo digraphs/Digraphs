@@ -8,10 +8,10 @@
 #############################################################################
 ##
 
-<#GAPDoc Label="DigraphVertexNames">
+<#GAPDoc Label="DigraphVertexLabels">
 <ManSection>
-  <Oper Name="DigraphVertexNames" Arg="digraph"/>
-  <Oper Name="SetDigraphVertexNames" Arg="digraph, list"/>
+  <Oper Name="DigraphVertexLabels" Arg="digraph"/>
+  <Oper Name="SetDigraphVertexLabels" Arg="digraph, list"/>
   <Returns>A list of names of a vertices.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then the first operation returns the names 
@@ -20,7 +20,7 @@
     &GAP; objects <A>list</A>. <P/>
 
     The name of vertex can be changed an arbitrary number of times. If no name
-    has be set for the vertex <A>i</A>, then <C>DigraphVertexNames</C> just
+    has be set for the vertex <A>i</A>, then <C>DigraphVertexLabels</C> just
     assumses that the name is <C>i</C>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
@@ -33,28 +33,28 @@
 gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
 > [ 2, 3, 5 ] ] );
 <digraph with 5 vertices, 11 edges>
-gap> DigraphVertexNames(gr);
+gap> DigraphVertexLabels(gr);
 [ 1 .. 5 ]
 gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
 > range := [  ], source := [  ] ) );
 <digraph with 3 vertices, 0 edges>
-gap> DigraphVertexNames(gr);
+gap> DigraphVertexLabels(gr);
 [ "a", "b", "c" ]
-gap> SetDigraphVertexName(gr, 2, "d");
-gap> DigraphVertexNames(gr);
+gap> SetDigraphVertexLabel(gr, 2, "d");
+gap> DigraphVertexLabels(gr);
 [ "a", "d", "c" ]
 gap> gr:=InducedSubdigraph(gr, [ 1, 3 ]);
 <digraph with 2 vertices, 0 edges>
-gap> DigraphVertexNames(gr);
+gap> DigraphVertexLabels(gr);
 [ "a", "c" ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphVertexName">
+<#GAPDoc Label="DigraphVertexLabel">
 <ManSection>
-  <Oper Name="DigraphVertexName" Arg="digraph, i"/>
-  <Oper Name="SetDigraphVertexName" Arg="digraph, i, obj"/>
+  <Oper Name="DigraphVertexLabel" Arg="digraph, i"/>
+  <Oper Name="SetDigraphVertexLabel" Arg="digraph, i, obj"/>
   <Returns>The name of a vertex.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then the first operation returns the name of
@@ -63,7 +63,7 @@ gap> DigraphVertexNames(gr);
     <P/>
 
     The name of vertex can be changed an arbitrary number of times. If no name
-    has be set for the vertex <A>i</A>, then <C>DigraphVertexName</C> just
+    has be set for the vertex <A>i</A>, then <C>DigraphVertexLabel</C> just
     returns <C>i</C>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
@@ -76,19 +76,19 @@ gap> DigraphVertexNames(gr);
 gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
 > [ 2, 3, 5 ] ] );
 <digraph with 5 vertices, 11 edges>
-gap> DigraphVertexName(gr, 3);
+gap> DigraphVertexLabel(gr, 3);
 3
 gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
 > range := [  ], source := [  ] ) );
 <digraph with 3 vertices, 0 edges>
-gap> DigraphVertexName(gr, 2);
+gap> DigraphVertexLabel(gr, 2);
 "b"
-gap> SetDigraphVertexName(gr, 2, "d");
-gap> DigraphVertexName(gr, 2);
+gap> SetDigraphVertexLabel(gr, 2, "d");
+gap> DigraphVertexLabel(gr, 2);
 "d"
 gap> gr:=InducedSubdigraph(gr, [ 1, 2 ]);
 <digraph with 2 vertices, 0 edges>
-gap> DigraphVertexName(gr, 2);
+gap> DigraphVertexLabel(gr, 2);
 "d"]]></Example>
   </Description>
 </ManSection>
@@ -216,7 +216,7 @@ gap> DigraphVertices(new);
 [ 1 .. 4 ]
 gap> new := DigraphAddVertex(gr, Group( [(1,2)] ));
 <digraph with 4 vertices, 6 edges>
-gap> DigraphVertexNames(new);
+gap> DigraphVertexLabels(new);
 [ 1, 2, 3, Group([ (1,2) ]) ]
 ]]></Example>
   </Description>
@@ -242,7 +242,7 @@ gap> DigraphVertices(new);
 [ 1 .. 6 ]
 gap> new := DigraphAddVertices(gr, 2, [ Group( [(1,2)] ), "d" ] );
 <digraph with 5 vertices, 6 edges>
-gap> DigraphVertexNames(new);
+gap> DigraphVertexLabels(new);
 [ 1, 2, 3, Group([ (1,2) ]), "d" ]
 gap> DigraphAddVertices(gr, 0) = gr;
 true
@@ -262,20 +262,20 @@ true
 
     If <A>digraph</A> has <C>n</C> vertices, then the vertices of the new
     digraph are <C>[ 1 .. n - 1 ]</C>, but the original names can be 
-    accessed via <Ref Oper="DigraphVertexNames"/>.
+    accessed via <Ref Oper="DigraphVertexLabels"/>.
 
     <Example><![CDATA[
 gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
 > source := [ "a", "a", "b", "c", "c" ],
 > range  := [ "b", "c", "a", "a", "c" ] ) );
 <digraph with 3 vertices, 5 edges>
-gap> DigraphVertexNames(gr);
+gap> DigraphVertexLabels(gr);
 [ "a", "b", "c" ]
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 3, 1 ], [ 3, 3 ] ]
 gap> new := DigraphRemoveVertex(gr, 2);
 <digraph with 2 vertices, 3 edges>
-gap> DigraphVertexNames(new);
+gap> DigraphVertexLabels(new);
 [ "a", "c" ]
 ]]></Example>
   </Description>
@@ -294,16 +294,16 @@ gap> DigraphVertexNames(new);
 
     If <A>digraph</A> has <C>n</C> vertices, then the vertices of the new
     digraph are <C>[ 1 .. n - Length(</C><A> verts </A><C>) ]</C>, but the 
-    original names can be accessed via <Ref Oper="DigraphVertexNames"/>. <P/>
+    original names can be accessed via <Ref Oper="DigraphVertexLabels"/>. <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ],
 > [ 2, 3, 5 ] ] );
 <digraph with 5 vertices, 11 edges>
-gap> SetDigraphVertexNames( gr, [ "a", "b", "c", "d", "e" ] );
+gap> SetDigraphVertexLabels( gr, [ "a", "b", "c", "d", "e" ] );
 gap> new := DigraphRemoveVertices(gr, [ 2, 4 ] );
 <digraph with 3 vertices, 4 edges>
-gap> DigraphVertexNames(new);
+gap> DigraphVertexLabels(new);
 [ "a", "c", "e" ]
 ]]></Example>
   </Description>
@@ -459,7 +459,7 @@ gap> OutNeighbours(last);
     <A>verts</A>. <P/>
     The vertices of the induced subdigraph are 
     <C>[ 1 .. Length(verts) ]</C> but the original names can be accessed via 
-    <Ref Oper="DigraphVertexNames"/>.
+    <Ref Oper="DigraphVertexLabels"/>.
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1, 1, 2, 3, 4, 4 ], [ 1, 3, 4 ], [ 3, 1 ], 
 > [ 1, 1 ] ] ); 
@@ -812,7 +812,7 @@ Binary Relation on 4 points
     and the vertices of <A>digraph2</A> will become
     <C>[ </C><M>n_1 + 1</M><C> .. </C><M>n_1 + n_2</M><C> ]</C>.
 
-    Previously set <Ref Attr="DigraphVertexNames"/> will be lost.
+    Previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
     
 <Example><![CDATA[
 gap> gr := CycleDigraph(10);
@@ -865,7 +865,7 @@ true
     the vertices of <A>digraph2</A> will become
     <C>[ </C><M>n_1 + 1</M><C> .. </C><M>n_1 + n_2</M><C> ]</C>.
 
-    Previously set <Ref Attr="DigraphVertexNames"/> will be lost.
+    Previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
 
 <Example><![CDATA[
 gap> gr := CompleteDigraph(3);

@@ -60,47 +60,47 @@ function(rel)
   return gr;
 end);
 
-InstallMethod(SetDigraphVertexName, "for a digraph, pos int, object",
+InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
 [IsDigraph, IsPosInt, IsObject], 
 function(graph, i, name)
 
-  if not IsBound(graph!.vertexnames) then 
-    graph!.vertexnames := [ 1 .. DigraphNrVertices(graph) ];
+  if not IsBound(graph!.vertexlabels) then 
+    graph!.vertexlabels := [ 1 .. DigraphNrVertices(graph) ];
   fi;
 
   if i > DigraphNrVertices(graph) then 
-    Error("Digraphs: SetDigraphVertexName: usage,\n",
+    Error("Digraphs: SetDigraphVertexLabel: usage,\n",
     "there are only ",  DigraphNrVertices(graph), " vertices,");
     return;
   fi;
-  graph!.vertexnames[i] := name;
+  graph!.vertexlabels[i] := name;
   return;
 end);
 
-InstallMethod(DigraphVertexName, "for a digraph and pos int",
+InstallMethod(DigraphVertexLabel, "for a digraph and pos int",
 [IsDigraph, IsPosInt], 
 function(graph, i)
 
-  if not IsBound(graph!.vertexnames) then 
-    graph!.vertexnames := [1 .. DigraphNrVertices(graph)];
+  if not IsBound(graph!.vertexlabels) then 
+    graph!.vertexlabels := [1 .. DigraphNrVertices(graph)];
   fi;
 
-  if IsBound(graph!.vertexnames[i]) then 
-    return graph!.vertexnames[i];
+  if IsBound(graph!.vertexlabels[i]) then 
+    return graph!.vertexlabels[i];
   fi;
-  Error("Digraphs: DigraphVertexName: usage,\n",
+  Error("Digraphs: DigraphVertexLabel: usage,\n",
    i, " is nameless or not a vertex,");
   return;
 end);
 
-InstallMethod(SetDigraphVertexNames, "for a digraph and list",
+InstallMethod(SetDigraphVertexLabels, "for a digraph and list",
 [IsDigraph, IsList], 
 function(graph, names)
   
   if Length(names) = DigraphNrVertices(graph) then 
-    graph!.vertexnames := names;
+    graph!.vertexlabels := names;
   else 
-    Error("Digraphs: SetDigraphVertexNames: usage,\n",
+    Error("Digraphs: SetDigraphVertexLabels: usage,\n",
     "the 2nd arument <names> must be a list with length equal",
     " to the number of\nvertices of the digraph,");
     return;
@@ -108,14 +108,14 @@ function(graph, names)
   return;
 end);
 
-InstallMethod(DigraphVertexNames, "for a digraph and pos int",
+InstallMethod(DigraphVertexLabels, "for a digraph and pos int",
 [IsDigraph], 
 function(graph)
 
-  if not IsBound(graph!.vertexnames) then 
-    graph!.vertexnames := [ 1 .. DigraphNrVertices(graph) ];
+  if not IsBound(graph!.vertexlabels) then 
+    graph!.vertexlabels := [ 1 .. DigraphNrVertices(graph) ];
   fi;
-  return graph!.vertexnames;
+  return graph!.vertexlabels;
 end);
 
 InstallMethod(SetDigraphEdgeLabel, "for a digraph, pos int, object",
@@ -503,7 +503,7 @@ function(graph)
         graph.range[i] := Position(graph.vertices, graph.range[i]);
         graph.source[i] := Position(graph.vertices, graph.source[i]);
       od;
-      graph.vertexnames := graph.vertices;
+      graph.vertexlabels := graph.vertices;
       Unbind(graph.vertices);
     fi;
   fi;
@@ -533,24 +533,25 @@ end);
 InstallMethod(Digraph, "for a list of lists of pos ints",
 [IsList],
 function(adj)
-  local nr, record, x, y;
+  local nrvertices, nredges, record, x, y;
 
-  nr := Length(adj);
+  nrvertices := Length(adj);
+  nredges := 0;
 
   for x in adj do
     for y in x do
       if not IsPosInt(y)
-         or y > nr then
+         or y > nrvertices then
         Error("Digraphs: Digraph: usage,\n",
               "the argument must be a list of lists of positive integers\n",
               "not exceeding the length of the argument,");
         return;
       fi;
-      # Could count nredges here. But how to pass to DigraphNC?
+      nredges := nredges + 1;
     od;
   od;
 
-  return DigraphNC(adj);
+  return DigraphNC(adj, nredges);
 end);
 
 #
@@ -564,6 +565,21 @@ function(adj)
 
   ObjectifyWithAttributes(graph, DigraphType, 
     OutNeighbours, adj, DigraphNrVertices, graph.nrvertices);
+  return graph;
+end);
+
+InstallMethod(DigraphNC, "for a list and an integer",
+[IsList, IsInt],
+function(adj, nredges)
+  local graph;
+  
+  graph := rec( adj        := StructuralCopy(adj),
+                nredges    := nredges,
+                nrvertices := Length(adj)         );
+
+  ObjectifyWithAttributes(graph, DigraphType, 
+    OutNeighbours, adj, DigraphNrVertices, graph.nrvertices, DigraphNrEdges,
+    graph.nredges);
   return graph;
 end);
 
@@ -755,7 +771,7 @@ function(digraph)
 
   out := List(OutNeighbours(digraph), ShallowCopy);
   gr := DigraphNC(out);
-  SetDigraphVertexNames(gr, DigraphVertexNames(digraph));
+  SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
   return gr;
 end);
 
@@ -796,26 +812,7 @@ end);
 InstallMethod(PrintString, "for a digraph",
 [IsDigraph],
 function(graph)
-  local str;
-
-  str:="Digraph( ";
-
-  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
-    return Concatenation(str, PrintString(OutNeighbours(graph)), " )");
-  else 
-    Append(str, "\>\>rec(\n\>\>");
-    SET_PRINT_OBJ_INDEX(1);
-    str := Concatenation(str, "\<nrvertices := \>",
-                          PrintString(DigraphNrVertices(graph)), "\<\<,\n\>\>");
-    SET_PRINT_OBJ_INDEX(2);
-    str := Concatenation(str, "\<source := \>",
-                          PrintString(DigraphSource(graph)), "\<\<,\n\>\>");
-    SET_PRINT_OBJ_INDEX(3);
-    str := Concatenation(str, "\<range := \>",
-                          PrintString(DigraphRange(graph)), "\<\<\n\>\>");
-    Append(str, " \<\<) \<\<)");
-    return str;
-  fi;
+  return Concatenation("Digraph( ", PrintString(OutNeighbours(graph)), " )");
 end);
 
 #
@@ -823,27 +820,7 @@ end);
 InstallMethod(String, "for a digraph",
 [IsDigraph],
 function(graph)
-  local str;
-
-  str:="Digraph( ";
-
-  if DigraphNrEdges(graph) >= DigraphNrVertices(graph) then
-    return Concatenation(str, String(OutNeighbours(graph)), " )");
-  else
-    Append(str, "rec( ");
-    
-    SET_PRINT_OBJ_INDEX(1);
-    str := Concatenation(str,
-                          "nrvertices := ", PrintString(DigraphNrVertices(graph)), ", ");
-    SET_PRINT_OBJ_INDEX(2);
-    str := Concatenation(str,
-                          "source := ", PrintString(DigraphSource(graph)), ", ");
-    SET_PRINT_OBJ_INDEX(3);
-    str := Concatenation(str,
-                          "range := ", PrintString(DigraphRange(graph)));
-    Append(str, " ) )");
-    return str;
-  fi;
+  return Concatenation("Digraph( ", String(OutNeighbours(graph)), " )");
 end);
 
 #

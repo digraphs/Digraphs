@@ -28,6 +28,7 @@ DeclareOperation("Digraph", [IsPosInt, IsFunction]);
 DeclareOperation("Digraph", [IsBinaryRelation]);
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsList]);
+DeclareOperation("DigraphNC", [IsList, IsInt]);
 DeclareOperation("DigraphByAdjacencyMatrix", [IsRectangularTable]);
 DeclareOperation("DigraphByAdjacencyMatrix", [IsList and IsEmpty]);
 DeclareOperation("DigraphByAdjacencyMatrixNC", [IsRectangularTable]);
@@ -52,10 +53,10 @@ DeclareOperation("CompleteDigraph", [IsInt]);
 DeclareOperation("EmptyDigraph", [IsInt]);
 DeclareOperation("CycleDigraph", [IsPosInt]);
 
-DeclareOperation("DigraphVertexName", [IsDigraph, IsPosInt]);
-DeclareOperation("DigraphVertexNames", [IsDigraph]);
-DeclareOperation("SetDigraphVertexName", [IsDigraph, IsPosInt, IsObject]);
-DeclareOperation("SetDigraphVertexNames", [IsDigraph, IsList]);
+DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphVertexLabels", [IsDigraph]);
+DeclareOperation("SetDigraphVertexLabel", [IsDigraph, IsPosInt, IsObject]);
+DeclareOperation("SetDigraphVertexLabels", [IsDigraph, IsList]);
 
 DeclareOperation("DigraphEdgeLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphEdgeLabels", [IsDigraph]);

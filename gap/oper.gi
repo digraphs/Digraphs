@@ -248,42 +248,77 @@ end);
 #
 
 InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
-[IsDigraph, IsList],
-function(graph, edges)
-  local range, nrvertices, source, newsource, newrange, pos, i;
+[IsDigraph, IsHomogeneousList],
+function(digraph, edges)
+  local m, n, old_adj, new_adj, old_edge_count, new_edge_count, degree_count,
+        old_labs, new_labs, pos, gr, i, j, x, verts, remove, offsets, count;
 
-  if Length(edges) > 0 and IsPosInt(edges[1]) then # remove edges by index
-    edges := Difference( [ 1 .. Length(DigraphSource(graph)) ], edges );
+  if IsEmpty(edges) then
+    return DigraphCopy(digraph);
+  fi;
 
-    return DigraphNC(rec(
-      source     := DigraphSource(graph){edges},
-      range      := DigraphRange(graph){edges},
-      nrvertices := DigraphNrVertices(graph)));
-  else # Remove edges specified by source and range
-    if IsMultiDigraph(graph) then
+  m := DigraphNrEdges(digraph);
+  n := DigraphNrVertices(digraph);
+  old_adj := OutNeighbours(digraph);
+  verts := DigraphVertices(digraph);
+
+  if IsPosInt(edges[1]) and ForAll(edges, x -> 0 < x and x <= m) then
+    # Remove edges by index
+    new_adj := EmptyPlist(n);
+    edges := BlistList( [ 1 .. m ], edges );
+    old_edge_count := 0;
+    new_edge_count := 0;
+    degree_count := 0;
+    old_labs := DigraphEdgeLabels(digraph);
+    new_labs := [  ];
+    for i in DigraphVertices(digraph) do # Loop over each vertex
+      new_adj[i] := [  ];
+      degree_count := 0;
+      for j in old_adj[i] do
+        old_edge_count := old_edge_count + 1;
+        if not edges[ old_edge_count ] then # Keep this edge
+          new_edge_count := new_edge_count + 1;
+          degree_count := degree_count + 1;
+          new_adj[ i ][ degree_count ] := j;
+          new_labs[ new_edge_count ] := old_labs[ old_edge_count ];
+        fi;
+      od;
+    od;
+  elif IsRectangularTable(edges) and Length(edges[1]) = 2
+   and IsPosInt(edges[1][1])
+   and ForAll(edges, x -> x[1] in verts and x[2] in verts) then
+    # Remove edges by [ source, range ]
+    if IsMultiDigraph(digraph) then
       Error("Digraphs: DigraphRemoveEdges: usage,\n",
-      "the first argument <graph> must not have multiple edges\n",
+      "the first argument <digraph> must not have multiple edges\n",
       "when the second argument <edges> is a list of edges,");
       return;
     fi;
-    source := DigraphSource(graph);;
-    range := DigraphRange(graph);;
-    newsource := [ ];
-    newrange := [ ];
-
-    for i in [ 1 .. Length(source) ] do
-      pos := Position(edges, [ source[i], range[i] ]); 
-      if pos = fail then
-        Add(newrange, range[i]);
-        Add(newsource, source[i]);
-      else 
-        Remove(edges, pos);
+    count := 0;
+    remove := [  ];
+    offsets := EmptyPlist(n);
+    offsets[1] := 0;
+    for i in [ 2 .. n ] do
+      offsets[ i ] := offsets[ i - 1 ] + Length( old_adj[ i - 1 ] );
+    od;
+    for x in edges do
+      pos := Position( old_adj[ x[1] ], x[2] );
+      if pos <> fail then
+        count := count + 1;
+        remove[ count ] :=  offsets[x[1]] + pos;
       fi;
     od;
-
-    return DigraphNC(rec( source := newsource, range := newrange,
-                          nrvertices := DigraphNrVertices(graph) ) );
+    return DigraphRemoveEdges(digraph, remove);
+  else
+    Error("Digraphs: DigraphRemoveEdges: usage,\n",
+    "the second argument <edges> must be a list of indices of edges\n",
+    "or a list of edges of the first argument <digraph>,");
+    return;
   fi;
+  gr := DigraphNC(new_adj);
+  SetDigraphVertexLabels( gr, DigraphVertexLabels(digraph) );
+  SetDigraphEdgeLabels( gr, new_labs );
+  return gr;
 end);
 
 #
@@ -416,8 +451,8 @@ function(digraph, m, names)
   if IsEmpty(names) then
     names := newverts;
   fi;
-  nam := Concatenation(DigraphVertexNames(digraph), names);
-  SetDigraphVertexNames(out, nam);
+  nam := Concatenation(DigraphVertexLabels(digraph), names);
+  SetDigraphVertexLabels(out, nam);
   SetDigraphEdgeLabels(out, DigraphEdgeLabels(digraph));
   return out;
 end);
@@ -514,7 +549,7 @@ function(digraph, verts)
     od;
   fi;
   gr := DigraphNC(new_nbs);
-  SetDigraphVertexNames(gr, DigraphVertexNames(digraph){diff});
+  SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){diff});
   SetDigraphEdgeLabels(gr, new_labels);
   return gr;
 end);
@@ -538,7 +573,7 @@ function(graph, perm)
   Apply(adj, x-> OnTuples(x, perm));
 
   out := DigraphNC(adj);
-  SetDigraphVertexNames(out, Permuted(DigraphVertexNames(graph), perm));
+  SetDigraphVertexLabels(out, Permuted(DigraphVertexLabels(graph), perm));
   return out;
 end);
 
@@ -743,7 +778,7 @@ function( digraph, subverts )
   od;
   
   new := DigraphNC(new);
-  SetDigraphVertexNames(new, DigraphVertexNames(digraph){subverts});
+  SetDigraphVertexLabels(new, DigraphVertexLabels(digraph){subverts});
   #JDM need to set this correctly!
   #SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
   return new;

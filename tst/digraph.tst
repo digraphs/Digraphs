@@ -15,41 +15,41 @@ gap> DigraphsStartTest();
 
 # Names
 gap> gr := RandomDigraph(10);;
-gap> DigraphVertexNames(gr);
+gap> DigraphVertexLabels(gr);
 [ 1 .. 10 ]
-gap> SetDigraphVertexNames( gr, [ "a", "b", 10 ] );
-Error, Digraphs: SetDigraphVertexNames: usage,
+gap> SetDigraphVertexLabels( gr, [ "a", "b", 10 ] );
+Error, Digraphs: SetDigraphVertexLabels: usage,
 the 2nd arument <names> must be a list with length equal to the number of
 vertices of the digraph,
 gap> gr := RandomDigraph(3);;
-gap> SetDigraphVertexNames( gr, [ "a", "b", 10 ] );
-gap> DigraphVertexNames(gr);
+gap> SetDigraphVertexLabels( gr, [ "a", "b", 10 ] );
+gap> DigraphVertexLabels(gr);
 [ "a", "b", 10 ]
-gap> DigraphVertexName(gr, 1);
+gap> DigraphVertexLabel(gr, 1);
 "a"
-gap> DigraphVertexName(gr, 2);
+gap> DigraphVertexLabel(gr, 2);
 "b"
-gap> DigraphVertexName(gr, 10);
-Error, Digraphs: DigraphVertexName: usage,
+gap> DigraphVertexLabel(gr, 10);
+Error, Digraphs: DigraphVertexLabel: usage,
 10 is nameless or not a vertex,
-gap> DigraphVertexName(gr, 3);
+gap> DigraphVertexLabel(gr, 3);
 10
-gap> SetDigraphVertexName(gr, 3, 3);
-gap> DigraphVertexName(gr, 3);
+gap> SetDigraphVertexLabel(gr, 3, 3);
+gap> DigraphVertexLabel(gr, 3);
 3
 gap> gr := RandomDigraph(5);;
-gap> SetDigraphVertexName(gr, 6, (1,3,2,5,4));
-Error, Digraphs: SetDigraphVertexName: usage,
+gap> SetDigraphVertexLabel(gr, 6, (1,3,2,5,4));
+Error, Digraphs: SetDigraphVertexLabel: usage,
 there are only 5 vertices,
-gap> SetDigraphVertexName(gr, 2, (1,3,2,5,4));
-gap> DigraphVertexName(gr, 2);
+gap> SetDigraphVertexLabel(gr, 2, (1,3,2,5,4));
+gap> DigraphVertexLabel(gr, 2);
 (1,3,2,5,4)
 gap> gr := RandomDigraph(3);;
-gap> DigraphVertexName(gr, 2);
+gap> DigraphVertexLabel(gr, 2);
 2
 gap> gr := RandomDigraph(10);;
 gap> gr := InducedSubdigraph( gr, [ 1, 2, 3, 5, 7 ] );;
-gap> DigraphVertexNames(gr);
+gap> DigraphVertexLabels(gr);
 [ 1, 2, 3, 5, 7 ]
 gap> DigraphVertices(gr);
 [ 1 .. 5 ]
