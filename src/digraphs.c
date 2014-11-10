@@ -636,7 +636,8 @@ static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
   return True;
 }
 
-// Assume we are passed two GAP lists of PosInts of equal length
+// Assume we are passed a GAP Int nrvertices
+// Two GAP lists of PosInts (all <= nrvertices) of equal length
 static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) { 
   Obj   adj, adjj;
   UInt  n, m, i, j, len, m1, m2;
@@ -644,7 +645,7 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) 
   m1 = LEN_LIST(source);
   m2 = LEN_LIST(range);
   if (m1 != m2) {
-    ErrorQuit("different length lists", 0L, 0L);
+    ErrorQuit("Digraphs: DIGRAPH_OUT_NBS: usage,\n<source> and <range> must be lists of equal length,", 0L, 0L);
   }
   n = INT_INTOBJ(nrvertices);
   if (n == 0) {
@@ -669,7 +670,7 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) 
       j = INT_INTOBJ(ELM_PLIST(source, i));
       adjj = ELM_PLIST(adj, j);
       len = LEN_PLIST(adjj); 
-      if(len == 0){
+      if (len == 0){
         RetypeBag(adjj, T_PLIST_CYC+IMMUTABLE);
         CHANGED_BAG(adj);
       }
@@ -678,6 +679,42 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) 
   }
 
   //AssPRec(digraph, RNamName("adj"), adj);
+  return adj;
+}
+
+static Obj FuncDIGRAPH_IN_TO_OUT_NBS(Obj self, Obj inn) {
+  Obj   adj, inni, adjk;
+  UInt  n, i, j, k, len1, len2;
+
+  n = LEN_PLIST(inn);
+  if (n == 0) {
+    adj = NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
+  } else {
+    adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+    SET_LEN_PLIST(adj, n);
+    
+    // fill adj with empty plists 
+    for (i = 1; i <= n; i++) {
+      SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+      SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
+      CHANGED_BAG(adj);
+    }
+    
+    for (i = 1; i <= n; i++) {
+      inni = ELM_PLIST(inn, i);
+      len1 = LEN_LIST(inni);
+      for (j = 1; j <= len1; j++) {
+        k = INT_INTOBJ(ELM_PLIST(inni, j));
+        adjk = ELM_PLIST(adj, k);
+        len2 = LEN_PLIST(adjk); 
+        if (len2 == 0){
+          RetypeBag(adjk, T_PLIST_CYC+IMMUTABLE);
+          CHANGED_BAG(adj);
+        }
+        AssPlist(adjk, len2 + 1,  INTOBJ_INT(i));
+      }
+    }
+  }
   return adj;
 }
 
@@ -1553,6 +1590,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_OUT_NBS", 3, "nrvertices, source, range",
     FuncDIGRAPH_OUT_NBS, 
     "src/digraphs.c:FuncDIGRAPH_OUT_NBS" },
+  
+  { "DIGRAPH_IN_TO_OUT_NBS", 1, "inn",
+    FuncDIGRAPH_IN_TO_OUT_NBS, 
+    "src/digraphs.c:FuncDIGRAPH_IN_TO_OUT_NBS" },
 
   { "DIGRAPH_IN_NBS", 1, "digraph",
     FuncDIGRAPH_IN_NBS, 

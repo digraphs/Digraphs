@@ -756,11 +756,91 @@ function(edges, n)
   return EmptyDigraph(n);
 end);
 
+#
+
+InstallMethod(DigraphByInNeighbors, "for a list", [IsList],
+DigraphByInNeighbours);
+
+InstallMethod(DigraphByInNeighbours, "for a list of lists of pos ints",
+[IsList],
+function(inn)
+  local nrvertices, nredges, x, y;
+
+  nrvertices := Length(inn);
+  nredges := 0;
+  for x in inn do
+    for y in x do
+      if not IsPosInt(y)
+         or y > nrvertices then
+        Error("Digraphs: DigraphByInNeighbours: usage,\n",
+              "the argument must be a list of lists of positive integers\n",
+              "not exceeding the length of the argument,");
+        return;
+      fi;
+      nredges := nredges + 1;
+    od;
+  od;
+
+  return DigraphByInNeighboursNC(inn, nredges);
+end);
+
+InstallMethod(DigraphByInNeighboursNC, "for a list", [IsList],
+function(inn)
+  local out, gr;
+
+  out := DIGRAPH_IN_TO_OUT_NBS(inn);
+  gr := DigraphNC(out);
+  SetInNeighbours(gr, inn);
+  return DigraphNC(gr);
+end);
+
+InstallMethod(DigraphByInNeighboursNC, "for a list and an int",
+[IsList, IsInt],
+function(inn, nredges)
+  local out, gr;
+
+  out := DIGRAPH_IN_TO_OUT_NBS(inn);
+  gr := DigraphNC(out, nredges);
+  SetInNeighbours(gr, inn);
+  return DigraphNC(gr);
+end);
+
+
 # operators . . .
 
 InstallMethod(\=, "for two digraphs",
 [IsDigraph, IsDigraph],
 DIGRAPH_EQUALS);
+
+#
+
+InstallMethod(\<, "for two digraphs",
+[IsDigraph, IsDigraph],
+function(digraph1, digraph2)
+  local n1, n2, m1, m2, e1, e2;
+
+  n1 := DigraphNrVertices(digraph1);
+  n2 := DigraphNrVertices(digraph2);
+  if n1 < n2 then
+    return true;
+  elif n2 < n1 then
+    return false;
+  fi;
+
+  m1 := DigraphNrEdges(digraph1);
+  m2 := DigraphNrEdges(digraph2);
+  if m1 < m2 then
+    return true;
+  elif m2 < m1 then
+    return false;
+  fi;
+
+  e1 := ShallowCopy(DigraphEdges(digraph1));
+  e2 := ShallowCopy(DigraphEdges(digraph2));
+  Sort(e1);
+  Sort(e2);
+  return e1 < e2;
+end);
 
 #
 
