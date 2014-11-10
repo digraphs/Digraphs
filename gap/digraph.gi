@@ -849,8 +849,9 @@ end);
 InstallMethod(ReducedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
+  local old, adj, len, map, i, sinkmap, sinklen, x, pos;
 
-  old := DigraphOutNeighbours(digraph);
+  old := OutNeighbours(digraph);
 
   # Extract all the non-empty lists of out-neighbours
   adj := []; len := 0; map := [];
@@ -866,7 +867,7 @@ function(digraph)
   sinkmap := []; sinklen := 0;
   for x in adj do
     for i in [1..Length(x)] do
-      pos := PositionSorted(map, x[i]);
+      pos := PositionSet(map, x[i]);
       if pos = fail then
         # x[i] has no out-neighbours
         pos := Position(sinkmap, x[i]);
@@ -874,13 +875,18 @@ function(digraph)
           # x[i] has not yet been encountered
           sinklen := sinklen + 1;
           sinkmap[sinklen] := x[i];
-          pos := sinklen;
+          pos := sinklen + len;
+          adj[pos] := EmptyPlist(0);
+        else
+          pos := pos + len;
         fi;
-        pos := pos + len;
       fi;
       x[i] := pos;
     od;
   od;
+
+  # Return the reduced graph and a map for it
+  return rec( gr := DigraphNC(adj), map := Concatenation(map, sinkmap) );
 end);
 
 #EOF
