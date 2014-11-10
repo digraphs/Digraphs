@@ -672,6 +672,135 @@ gap> gr2 := Digraph( rec( nrvertices := 10, source := s, range := r2 ) );;
 gap> gr1 = gr2;
 true
 
+# < for two digraphs (LT, \<)
+gap> gr1 := RandomMultiDigraph(10, 20);;
+gap> gr2 := RandomMultiDigraph(11, 21);;
+gap> gr1 < gr2; # Different NrVertices
+true
+gap> gr2 < gr1;
+false
+gap> gr2 := RandomMultiDigraph(10, 21);;
+gap> gr1 < gr2; # Different NrEdges
+true
+gap> gr2 < gr1;
+false
+gap> error := false;; # Test lots randomly with equal vertices & edges
+> for i in [ 1 .. 20 ] do
+>   j := Random( [ 10 .. 100 ] );
+>   k := Random( [ j .. j^2 ] );
+>   gr1 := RandomMultiDigraph(j, k);
+>   gr2 := RandomMultiDigraph(j, k);
+>   c1 := gr1 < gr2;
+>   c2 := gr2 < gr1;
+>   if c1 and c2 then
+>     error := true;
+>   fi;
+>   if not c1 and not c2 and not c1 = c2 then
+>     error := true;
+>   fi;
+> od;
+> if error then
+>   Print("Error encountered!");
+> fi;
+gap> gr1 := Digraph( [ [ 1 ], [ 1, 1 ] ] );
+<multidigraph with 2 vertices, 3 edges>
+gap> gr2 := Digraph( [ [ 2, 2 ], [ 1 ] ] );
+<multidigraph with 2 vertices, 3 edges>
+gap> gr1 < gr2; #
+true
+gap> gr2 < gr1;
+false
+gap> gr1 := Digraph( [ [ 1 ], [ 1, 1 ] ] );
+<multidigraph with 2 vertices, 3 edges>
+gap> gr2 := Digraph( [ [ 1, 1 ], [ 2 ] ] );
+<multidigraph with 2 vertices, 3 edges>
+gap> gr1 < gr2; #
+false
+gap> gr2 < gr1;
+true
+gap> gr1 := Digraph( [ [ 2 ], [ 1, 2 ] ] );
+<digraph with 2 vertices, 3 edges>
+gap> gr2 := Digraph( [ [ 1, 2 ], [ 2 ] ] );
+<digraph with 2 vertices, 3 edges>
+gap> gr1 < gr2; #
+false
+gap> gr2 < gr1;
+true
+gap> gr1 := Digraph( [ [ 3 ], [  ], [ 2 ] ] );
+<digraph with 3 vertices, 2 edges>
+gap> gr2 := Digraph( [ [ 3 ], [  ], [ 2 ] ] );
+<digraph with 3 vertices, 2 edges>
+gap> gr1 < gr2;
+false
+gap> gr2 < gr1;
+false
+gap> gr1 = gr2;
+true
+gap> gr1 := Digraph( [ [ 3 ], [  ], [ 2 ] ] );
+<digraph with 3 vertices, 2 edges>
+gap> gr2 := Digraph( [ [ 3 ], [ 1 ], [  ] ] );
+<digraph with 3 vertices, 2 edges>
+gap> gr1 < gr2;
+false
+gap> gr2 < gr1;
+true
+gap> gr1 := Digraph( [ [ 3 ], [  ], [ 2, 3 ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> gr2 := Digraph( [ [ 3 ], [  ], [ 3, 2 ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> gr1 < gr2;
+false
+gap> gr2 < gr1;
+false
+gap> gr1 = gr2;
+true
+gap> gr1 := Digraph( [ [ 3 ], [  ], [ 2, 3 ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> gr2 := Digraph( [ [ 3 ], [  ], [ 2, 3 ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> gr1 < gr2;
+false
+gap> gr2 < gr1;
+false
+gap> gr1 = gr2;
+true
+gap> gr1 := Digraph( [ [ 3 ], [ 2 ], [ 1, 2 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> gr2 := Digraph( [ [ 3 ], [ 1, 2 ], [ 1 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> gr1 < gr2;
+false
+gap> gr2 < gr1;
+true
+gap> gr1 := Digraph( [ [ 3 ], [ 1 ], [ 1, 2 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> gr2 := Digraph( [ [ 3 ], [ 2, 3 ], [ 1 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> gr1 < gr2;
+true
+gap> gr2 < gr1;
+false
+gap> gr1 := Digraph([
+>   [ 1, 2, 3 ], [ 15 ], [ 1, 11 ], [ 8, 14, 11, 15 ],
+>   [ 10, 11, 10, 20, 15, 8, 16, 2 ], [ 11, 4 ], [ 11, 18 ], [ 6, 14 ],
+>   [ 18, 7, 13 ], [ 5, 16, 5, 19 ], [ 13 ], [ 8, 18 ], [ 12 ], [ 5 ],
+>   [ 5, 4, 7, 19, 13 ], [ 15 ], [ 17, 19, 3 ], [ 9 ], [ 4, 12, 14 ], [ 3 ]
+> ] );
+<multidigraph with 20 vertices, 50 edges>
+gap> gr2 := Digraph( [
+>   [ 1, 2, 3 ], [ 15 ], [ 1, 11 ], [ 8, 14, 11, 15 ],
+>   [ 10, 11, 10, 20, 15, 8, 16, 2 ], [ 11, 4 ], [ 11, 18 ], [ 6, 14 ],
+>   [ 18, 7, 13 ], [ 5, 16, 5, 19 ], [ 13 ], [ 8, 18, 12 ], [  ], [ 5 ],
+>   [ 5, 4, 7, 19, 13 ], [ 15 ], [ 17, 19, 3 ], [ 9 ], [ 4, 12, 14 ], [ 3 ]
+> ] );
+<multidigraph with 20 vertices, 50 edges>
+gap> gr1 = gr2;
+false
+gap> gr1 < gr2;
+false
+gap> gr2 < gr1;
+true
+
 #
 gap> DigraphsStopTest();
 

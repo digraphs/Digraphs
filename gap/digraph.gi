@@ -815,32 +815,7 @@ DIGRAPH_EQUALS);
 #
 
 InstallMethod(\<, "for two digraphs",
-[IsDigraph, IsDigraph],
-function(digraph1, digraph2)
-  local n1, n2, m1, m2, e1, e2;
-
-  n1 := DigraphNrVertices(digraph1);
-  n2 := DigraphNrVertices(digraph2);
-  if n1 < n2 then
-    return true;
-  elif n2 < n1 then
-    return false;
-  fi;
-
-  m1 := DigraphNrEdges(digraph1);
-  m2 := DigraphNrEdges(digraph2);
-  if m1 < m2 then
-    return true;
-  elif m2 < m1 then
-    return false;
-  fi;
-
-  e1 := ShallowCopy(DigraphEdges(digraph1));
-  e2 := ShallowCopy(DigraphEdges(digraph2));
-  Sort(e1);
-  Sort(e2);
-  return e1 < e2;
-end);
+[IsDigraph, IsDigraph], DIGRAPH_LT);
 
 #
 

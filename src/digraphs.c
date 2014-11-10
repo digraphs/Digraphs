@@ -1014,15 +1014,15 @@ static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
   return adj;
 }
 
-bool EqJumbledPlists(Obj l, Obj r, Int start, Int stop, Int offset, Int max, Int *buf ) {
+bool EqJumbledPlists(Obj l, Obj r, Int nr, Int *buf ) {
   bool eq;
   Int  j, jj;
 
   // Check first whether the lists are identical
   eq = true;
-  for (j = start; j < stop; j++) {
+  for (j = 1; j <= nr; j++) {
     jj = INT_INTOBJ(ELM_PLIST( l, j ));
-    if ( jj != INT_INTOBJ(ELM_PLIST( r, j + offset ) ) ) {
+    if ( jj != INT_INTOBJ(ELM_PLIST( r, j ) ) ) {
       eq = false;
       break;
     }
@@ -1031,14 +1031,14 @@ bool EqJumbledPlists(Obj l, Obj r, Int start, Int stop, Int offset, Int max, Int
   // Otherwise check that they have equal content
   if (!eq) {
 
-    for (j = start; j < stop; j++) {
+    for (j = 1; j <= nr; j++) {
       jj = INT_INTOBJ(ELM_PLIST(l, j)) - 1 ;
       buf[jj]++;
-      jj = INT_INTOBJ(ELM_PLIST(r, j + offset)) - 1;
+      jj = INT_INTOBJ(ELM_PLIST(r, j)) - 1;
       buf[jj]--;
     }
 
-    for ( j = start; j < stop; j++ ) {
+    for ( j = 1; j <= nr; j++ ) {
       jj = INT_INTOBJ(ELM_PLIST(l, j)) - 1;
       if (buf[jj] != 0) {
         return false;
@@ -1052,8 +1052,7 @@ bool EqJumbledPlists(Obj l, Obj r, Int start, Int stop, Int offset, Int max, Int
 static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
   UInt  i, n1, n2, m1, m2;
   Obj   out1, out2, a, b;
-  bool  eq;
-  Int   nr, j, jj, *buf, max;
+  Int   nr, *buf;
 
   // Check NrVertices is equal
   n1 = DigraphNrVertices(digraph1);
@@ -1062,9 +1061,6 @@ static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
     return False;
   }
 
-  out1 = OutNeighbours(digraph1);
-  out2 = OutNeighbours(digraph2); 
-
   // Check NrEdges is equal
   m1 = DigraphNrEdges(digraph1);
   m2 = DigraphNrEdges(digraph2);
@@ -1072,6 +1068,9 @@ static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
   if ( m1 != m2 ) {
     return False;
   }
+
+  out1 = OutNeighbours(digraph1);
+  out2 = OutNeighbours(digraph2);
 
   buf = calloc(n1, sizeof(Int));
 
@@ -1089,13 +1088,138 @@ static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
       return False;
     }
 
-    if (!EqJumbledPlists( a, b, 1, nr + 1, 0, n1, buf ) ) {
+    if (!EqJumbledPlists( a, b, nr, buf ) ) {
       free(buf);
       return False;
     }
   }
   free(buf);
   return True;
+}
+
+Int LTJumbledPlists(Obj l, Obj r, Int nr1, Int nr2, Int *buf, Int n ) {
+  bool eq;
+  Int  j, jj, min;
+
+  // Check first whether the lists are identical
+  if ( nr1 == nr2 ) {
+    eq = true;
+    for (j = 1; j <= nr1; j++) {
+      jj = INT_INTOBJ(ELM_PLIST( l, j ));
+      if ( jj != INT_INTOBJ(ELM_PLIST( r, j ) ) ) {
+        eq = false;
+        break;
+      }
+    }
+  } else {
+    eq = false;
+  }
+  
+  // Otherwise compare their content
+  if (!eq) {
+
+    min = nr1 < nr2 ? nr1 : nr2;
+
+    for (j = 1; j <= min; j++) {
+      jj = INT_INTOBJ(ELM_PLIST(l, j)) - 1 ;
+      buf[jj]++;
+      jj = INT_INTOBJ(ELM_PLIST(r, j)) - 1;
+      buf[jj]--;
+    }
+
+    for (j = min + 1; j <= nr1; j++) {
+      jj = INT_INTOBJ(ELM_PLIST(l, j)) - 1 ;
+      buf[jj]++;
+    }
+
+    for (j = min + 1; j <= nr2; j++) {
+      jj = INT_INTOBJ(ELM_PLIST(r, j)) - 1 ;
+      buf[jj]--;
+    }
+
+    for ( j = 0; j < n; j++ ) {
+      if (buf[j] < 0) {
+        //Pr("Found difference: range: %d, number: %d\n", j + 1, buf[j]);
+        return 2;
+      } else if (buf[j] > 0) {
+        //Pr("Found difference: range: %d, number: %d\n", j + 1, buf[j]);
+        return 1;
+      }
+    }
+ 
+  }
+  return 0;
+  // Return 0: l = r (as multisets)
+  // Return 1: l < r
+  // Return 2: r < l 
+}
+
+
+static Obj FuncDIGRAPH_LT(Obj self, Obj digraph1, Obj digraph2) {
+  UInt  i, n1, n2, m1, m2;
+  Obj   out1, out2, a, b;
+  Int   nr1, nr2, *buf, comp, max, min;
+
+  // Compare NrVertices
+  n1 = DigraphNrVertices(digraph1);
+  n2 = DigraphNrVertices(digraph2);
+  if (n1 < n2) {
+    return True;
+  } else if (n2 < n1) {
+    return False;
+  }
+
+  // Compare NrEdges
+  m1 = DigraphNrEdges(digraph1);
+  m2 = DigraphNrEdges(digraph2);
+
+  if ( m1 < m2 ) {
+    return True;
+  } else if ( m2 < m1 ) {
+    return False;
+  }
+
+  out1 = OutNeighbours(digraph1);
+  out2 = OutNeighbours(digraph2); 
+
+  buf = calloc(n1, sizeof(Int));
+
+  // Compare Sorted(out1[i]) and Sorted(out2[i]) for each vertex i
+  for ( i = 1; i <= n1; i++ ) {
+    a = ELM_PLIST( out1, i );
+    b = ELM_PLIST( out2, i );
+    PLAIN_LIST(a);
+    PLAIN_LIST(b);
+
+    nr1 = LEN_PLIST(a);
+    nr2 = LEN_PLIST(b);
+    max = nr1 < nr2 ? nr2 : nr1;
+
+    // Check whether both vertices have 0 out-degree
+    if ( max != 0 ) {
+      if ( nr1 == 0 ) {
+        free(buf);
+        return False;
+      } else if ( nr2 == 0 ) {
+        free(buf);
+        return True;
+      }
+      // Both vertices have positive out-degree
+
+      // Compare out1[i] and out2[i]
+      comp = LTJumbledPlists( a, b, nr1, nr2, buf, n1 );
+      if (comp == 1) {
+        free(buf);
+        return True;
+      } else if (comp == 2) {
+        free(buf);
+        return False;
+      }
+      // if comp == 0 then the lists are equal, so continue
+    }
+  }
+  free(buf);
+  return False;
 }
 
 // bliss 
@@ -1634,6 +1758,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_EQUALS", 2, "digraph1, digraph2",
     FuncDIGRAPH_EQUALS,
     "src/digraphs.c:FuncDIGRAPH_EQUALS" },
+  
+  { "DIGRAPH_LT", 2, "digraph1, digraph2",
+    FuncDIGRAPH_LT,
+    "src/digraphs.c:FuncDIGRAPH_LT" },
 
   { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncDIGRAPH_AUTOMORPHISMS, 
