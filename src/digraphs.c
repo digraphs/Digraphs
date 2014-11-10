@@ -92,8 +92,24 @@ static Obj FuncDIGRAPH_NREDGES(Obj self, Obj digraph) {
   return INTOBJ_INT(DigraphNrEdges(digraph));
 }
 
+// Need to decide what we're doing with all this
 Obj OutNeighbours(Obj digraph) {
-  return ElmPRec(digraph, RNamName("adj"));
+  Obj adj;
+
+  if (IsbPRec(digraph, RNamName("adj"))) {
+    return ElmPRec(digraph, RNamName("adj"));
+  } else if (IsbPRec(digraph, RNamName("source"))
+          && IsbPRec(digraph, RNamName("range"))) {
+
+    adj = FuncDIGRAPH_OUT_NBS( NULL,
+                               ElmPRec(digraph, RNamName("nrvertices")),
+                               ElmPRec(digraph, RNamName("source")),
+                               ElmPRec(digraph, RNamName("range")) );
+    AssPRec(digraph, RNamName("adj"), adj);
+    return adj;
+  }
+  ErrorQuit("Digraphs: OutNeighbours (C): not enough record components set,", 0L, 0L);
+  return False;
 }
 
 /*Obj OutNeighboursOfVertex(Obj digraph, Int v) { 

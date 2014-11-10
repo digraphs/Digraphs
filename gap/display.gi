@@ -13,13 +13,12 @@
 InstallMethod(DotDigraph, "for a digraph",
 [IsDigraph],
 function(graph)
-  local verts, source, range, m, str, i;
+  local verts, out, m, str, i, j;
 
-  verts  := DigraphVertices(graph);
-  source := DigraphSource(graph);
-  range  := DigraphRange(graph);
-  m      := Length(source);
-  str    := "//dot\n";
+  verts := DigraphVertices(graph);
+  out   := OutNeighbours(graph);
+  m     := DigraphNrVertices(graph);
+  str   := "//dot\n";
 
   Append(str, "digraph hgn{\n");
   Append(str, "node [shape=circle]\n");
@@ -28,8 +27,10 @@ function(graph)
     Append(str, Concatenation( String(i), "\n"));
   od;
 
-  for i in [ 1 .. m ] do
-    Append(str, Concatenation( String(source[i]), " -> ", String(range[i]) , "\n"));
+  for i in verts do
+    for j in out[i] do
+    Append(str, Concatenation( String(i), " -> ", String(j) , "\n"));
+    od;
   od;
   Append(str,"}\n");
   return str;
@@ -40,7 +41,7 @@ end);
 InstallMethod(DotSymmetricDigraph, "for an 'undirected' digraph",
 [IsDigraph],
 function(graph)
-  local verts, source, range, m, str, i;
+  local verts, out, m, str, i, j;
 
   if not IsSymmetricDigraph(graph) then
     Error("Digraphs: DotSymmetricDigraph: usage,\n",
@@ -48,11 +49,10 @@ function(graph)
     return;
   fi;
 
-  verts  := DigraphVertices(graph);
-  source := DigraphSource(graph);
-  range  := DigraphRange(graph);
-  m      := Length(source);
-  str    := "//dot\n";
+  verts := DigraphVertices(graph);
+  out   := OutNeighbours(graph);
+  m     := DigraphNrEdges(graph);
+  str   := "//dot\n";
 
   Append(str,"graph hgn{\n");
   Append(str,"node [shape=circle]\n\n");
@@ -61,10 +61,12 @@ function(graph)
     Append(str, Concatenation( String(i), "\n"));
   od;
 
-  for i in [ 1 .. m ] do
-    if range[i] >= source[i] then
-      Append(str, Concatenation( String(source[i]), " -- ", String(range[i]) , "\n"));
-    fi;
+  for i in verts do
+    for j in out[i] do
+      if j >= i then
+        Append(str, Concatenation( String(i), " -- ", String(j) , "\n"));
+      fi;
+    od;
   od;
   Append(str,"}\n");
   return str;
