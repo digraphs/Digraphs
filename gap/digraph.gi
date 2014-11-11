@@ -883,17 +883,18 @@ end);
 InstallMethod(ReducedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local old, adj, len, map, i, sinkmap, sinklen, x, pos;
+  local old, adj, len, map, labels, i, sinkmap, sinklen, x, pos, gr;
 
   old := OutNeighbours(digraph);
 
   # Extract all the non-empty lists of out-neighbours
-  adj := []; len := 0; map := [];
+  adj := []; len := 0; map := []; labels := [];
   for i in DigraphVertices(digraph) do
     if not IsEmpty(old[i]) then
       len := len + 1;
       adj[len] := ShallowCopy(old[i]);
       map[len] := i;
+      labels[len] := DigraphVertexLabel(digraph, i);
     fi;
   od;
 
@@ -911,6 +912,7 @@ function(digraph)
           sinkmap[sinklen] := x[i];
           pos := sinklen + len;
           adj[pos] := EmptyPlist(0);
+          labels[pos] := DigraphVertexLabel(digraph, x[i]);
         else
           pos := pos + len;
         fi;
@@ -919,8 +921,11 @@ function(digraph)
     od;
   od;
 
-  # Return the reduced graph and a map for it
-  return rec( gr := DigraphNC(adj), map := Concatenation(map, sinkmap) );
+  # Return the reduced graph, with labels preserved
+  gr := DigraphNC(adj);
+  SetDigraphVertexLabels(gr, labels);
+  SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph));
+  return gr;
 end);
 
 #EOF
