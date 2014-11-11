@@ -117,7 +117,10 @@ OutNeighbors);
 #
 
 InstallMethod(InNeighbours, "for a digraph",
-[IsDigraph], DIGRAPH_IN_NBS);
+[IsDigraph],
+function(digraph)
+  return DIGRAPH_IN_OUT_NBS(OutNeighbours(digraph));
+end);
 
 InstallMethod(InNeighbors, "for a digraph", [IsDigraph], InNeighbours);
 

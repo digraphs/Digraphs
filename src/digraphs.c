@@ -682,78 +682,40 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) 
   return adj;
 }
 
-static Obj FuncDIGRAPH_IN_TO_OUT_NBS(Obj self, Obj inn) {
-  Obj   adj, inni, adjk;
-  UInt  n, i, j, k, len1, len2;
-
-  n = LEN_PLIST(inn);
-  if (n == 0) {
-    adj = NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
-  } else {
-    adj = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
-    SET_LEN_PLIST(adj, n);
-    
-    // fill adj with empty plists 
-    for (i = 1; i <= n; i++) {
-      SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
-      SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
-      CHANGED_BAG(adj);
-    }
-    
-    for (i = 1; i <= n; i++) {
-      inni = ELM_PLIST(inn, i);
-      len1 = LEN_LIST(inni);
-      for (j = 1; j <= len1; j++) {
-        k = INT_INTOBJ(ELM_PLIST(inni, j));
-        adjk = ELM_PLIST(adj, k);
-        len2 = LEN_PLIST(adjk); 
-        if (len2 == 0){
-          RetypeBag(adjk, T_PLIST_CYC+IMMUTABLE);
-          CHANGED_BAG(adj);
-        }
-        AssPlist(adjk, len2 + 1,  INTOBJ_INT(i));
-      }
-    }
-  }
-  return adj;
-}
-
-static Obj FuncDIGRAPH_IN_NBS(Obj self, Obj digraph) { 
-  Obj   inn, innk, innj, adj, adji;
+// Function to change Out-Neighbours to In-Neighbours, and vice versa
+static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) { 
+  Obj   inn, innk, innj, adji;
   UInt  n, m, i, j, k, len, len2;
   
-  n = DigraphNrVertices(digraph);
-
+  n = LEN_PLIST(adj);
   if (n == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
-  }
+    inn = NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
+  } else {
+    inn = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+    SET_LEN_PLIST(inn, n);
 
-  inn = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
-  SET_LEN_PLIST(inn, n);
-
-  // fill adj with empty plists 
-  for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(inn, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
-    SET_LEN_PLIST(ELM_PLIST(inn, i), 0);
-    CHANGED_BAG(inn);
-  }
-
-  adj = OutNeighbours(digraph);
-  for (i = 1; i <= n; i++){
-    adji = ELM_PLIST(adj, i);
-    len = LEN_PLIST(adji);
-    for (j = 1; j <= len; j++){
-      k = INT_INTOBJ(ELM_PLIST(adji, j));
-      innk = ELM_PLIST(inn, k);
-      len2 = LEN_PLIST(innk); 
-      if(len2 == 0){
-        RetypeBag(innk, T_PLIST_CYC+IMMUTABLE);
-        CHANGED_BAG(inn);
-      }
-      AssPlist(innk, len2 + 1, INTOBJ_INT(i));
+    // fill adj with empty plists 
+    for (i = 1; i <= n; i++) {
+      SET_ELM_PLIST(inn, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+      SET_LEN_PLIST(ELM_PLIST(inn, i), 0);
+      CHANGED_BAG(inn);
     }
-  } 
-  AssPRec(digraph, RNamName("inn"), inn);
+
+    for (i = 1; i <= n; i++){
+      adji = ELM_PLIST(adj, i);
+      len = LEN_PLIST(adji);
+      for (j = 1; j <= len; j++){
+        k = INT_INTOBJ(ELM_PLIST(adji, j));
+        innk = ELM_PLIST(inn, k);
+        len2 = LEN_PLIST(innk); 
+        if(len2 == 0){
+          RetypeBag(innk, T_PLIST_CYC+IMMUTABLE);
+          CHANGED_BAG(inn);
+        }
+        AssPlist(innk, len2 + 1, INTOBJ_INT(i));
+      }
+    }
+  }
   return inn;
 }
 
@@ -1715,13 +1677,9 @@ static StructGVarFunc GVarFuncs [] = {
     FuncDIGRAPH_OUT_NBS, 
     "src/digraphs.c:FuncDIGRAPH_OUT_NBS" },
   
-  { "DIGRAPH_IN_TO_OUT_NBS", 1, "inn",
-    FuncDIGRAPH_IN_TO_OUT_NBS, 
-    "src/digraphs.c:FuncDIGRAPH_IN_TO_OUT_NBS" },
-
-  { "DIGRAPH_IN_NBS", 1, "digraph",
-    FuncDIGRAPH_IN_NBS, 
-    "src/digraphs.c:FuncDIGRAPH_IN_NBS" },
+  { "DIGRAPH_IN_OUT_NBS", 1, "adj",
+    FuncDIGRAPH_IN_OUT_NBS, 
+    "src/digraphs.c:FuncDIGRAPH_IN_OUT_NBS" },
 
   { "ADJACENCY_MATRIX", 1, "digraph",
     FuncADJACENCY_MATRIX, 

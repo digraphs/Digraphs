@@ -788,7 +788,7 @@ InstallMethod(DigraphByInNeighboursNC, "for a list", [IsList],
 function(inn)
   local out, gr;
 
-  out := DIGRAPH_IN_TO_OUT_NBS(inn);
+  out := DIGRAPH_IN_OUT_NBS(inn);
   gr := DigraphNC(out);
   SetInNeighbours(gr, inn);
   return gr;
@@ -799,7 +799,7 @@ InstallMethod(DigraphByInNeighboursNC, "for a list and an int",
 function(inn, nredges)
   local out, gr;
 
-  out := DIGRAPH_IN_TO_OUT_NBS(inn);
+  out := DIGRAPH_IN_OUT_NBS(inn);
   gr := DigraphNC(out, nredges);
   SetInNeighbours(gr, inn);
   return gr;
