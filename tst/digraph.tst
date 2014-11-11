@@ -894,6 +894,35 @@ gap> InNeighbors(gr) = inn;
 true
 
 #
+gap> gr := Digraph([]);;
+gap> ReducedDigraph(gr) = gr;
+true
+gap> gr := Digraph([[2,4,2,6,1], [], [], [2,1,4], [], [1,7,7,7], [4,6]]);
+<multidigraph with 7 vertices, 14 edges>
+gap> rd := ReducedDigraph(gr);
+<multidigraph with 5 vertices, 14 edges>
+gap> DigraphEdgeLabels(rd) = DigraphEdgeLabels(gr);
+true
+gap> DigraphVertexLabels(rd);
+[ 1, 4, 6, 7, 2 ]
+gap> gr := CompleteDigraph(10);
+<digraph with 10 vertices, 90 edges>
+gap> rd := ReducedDigraph(gr);
+<digraph with 10 vertices, 90 edges>
+gap> rd = gr;
+true
+gap> DigraphVertexLabels(gr) = DigraphVertexLabels(rd);
+true
+gap> gr := Digraph([ [], [4,2], [], [3] ]);
+<digraph with 4 vertices, 3 edges>
+gap> SetDigraphVertexLabels(gr, ["one", "two", "three", "four"]);
+gap> rd := ReducedDigraph(gr);
+<digraph with 3 vertices, 3 edges>
+gap> DigraphVertexLabels(gr); DigraphVertexLabels(rd);
+[ "one", "two", "three", "four" ]
+[ "two", "four", "three" ]
+
+#
 gap> DigraphsStopTest();
 
 #
