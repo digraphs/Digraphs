@@ -1240,22 +1240,25 @@ Error, Digraphs: IsReachable: usage,
 the second and third arguments <u> and <v> must be vertices
 of the first argument <digraph>,
 gap> IsReachable(gr1, 1, 2);
-Error, Digraphs: IsReachable: not yet implemented,
+true
+gap> gr1 := DigraphRemoveEdges(CycleDigraph(100), [ [ 100, 1 ], [ 99, 100 ] ]);;
 gap> AdjacencyMatrix(gr1);;
 gap> IsReachable(gr1, 1, 2);
 true
 gap> gr1 := DigraphRemoveEdges(CycleDigraph(100), [ [ 100, 1 ], [ 99, 100 ] ]);;
 gap> IsReachable(gr1, 100, 1);
-Error, Digraphs: IsReachable: not yet implemented,
+false
+gap> gr1 := DigraphRemoveEdges(CycleDigraph(100), [ [ 100, 1 ], [ 99, 100 ] ]);;
 gap> DigraphConnectedComponents(gr1);;
 gap> IsReachable(gr1, 100, 1);
 false
 gap> gr1 := CycleDigraph(100);
 <digraph with 100 vertices, 100 edges>
 gap> IsReachable(gr1, 1, 50);
-Error, Digraphs: IsReachable: not yet implemented,
+true
 gap> IsReachable(gr1, 1, 1);
-Error, Digraphs: IsReachable: not yet implemented,
+true
+gap> gr1 := CycleDigraph(100);;
 gap> DigraphStronglyConnectedComponents(gr1);;
 gap> IsReachable(gr1, 1, 50);
 true
@@ -1264,15 +1267,16 @@ true
 gap> gr1 := Digraph( [ [ 2 ], [ 1 ], [ 3 ], [  ] ] );
 <digraph with 4 vertices, 3 edges>
 gap> IsReachable(gr1, 1, 2);
-Error, Digraphs: IsReachable: not yet implemented,
+true
 gap> IsReachable(gr1, 1, 1);
-Error, Digraphs: IsReachable: not yet implemented,
+true
 gap> IsReachable(gr1, 3, 3);
-Error, Digraphs: IsReachable: not yet implemented,
+true
 gap> IsReachable(gr1, 1, 3);
-Error, Digraphs: IsReachable: not yet implemented,
+false
 gap> IsReachable(gr1, 4, 4);
-Error, Digraphs: IsReachable: not yet implemented,
+false
+gap> gr1 := Digraph( [ [ 2 ], [ 1 ], [ 3 ], [  ] ] );;
 gap> DigraphStronglyConnectedComponents(gr1);
 rec( comps := [ [ 1, 2 ], [ 3 ], [ 4 ] ], id := [ 1, 1, 2, 3 ] )
 gap> IsReachable(gr1, 1, 2);
@@ -1282,16 +1286,18 @@ true
 gap> IsReachable(gr1, 3, 3);
 true
 gap> IsReachable(gr1, 1, 3);
-Error, Digraphs: IsReachable: not yet implemented,
+false
 gap> IsReachable(gr1, 4, 4);
 false
 gap> gr := Digraph(
 > [ [ 1, 3, 4, 5 ], [ ], [ 1, 3, 4, 5 ], [ 1, 3, 4, 5 ], [ 1, 3, 4, 5 ] ]);
 <digraph with 5 vertices, 16 edges>
 gap> IsReachable(gr, 1, 2);
-Error, Digraphs: IsReachable: not yet implemented,
+false
 gap> IsReachable(gr, 1, 4);
-Error, Digraphs: IsReachable: not yet implemented,
+true
+gap> gr := Digraph(
+> [ [ 1, 3, 4, 5 ], [ ], [ 1, 3, 4, 5 ], [ 1, 3, 4, 5 ], [ 1, 3, 4, 5 ] ]);;
 gap> IsTransitiveDigraph(gr);
 true
 gap> IsReachable(gr, 1, 2);

@@ -35,5 +35,6 @@
     <#Include Label="DigraphStronglyConnectedComponent">
     <#Include Label="DigraphPeriod">
     <#Include Label="DigraphFloydWarshall">
+    <#Include Label="IsReachable">
   </Section>
 </Chapter>

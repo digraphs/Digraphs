@@ -64,3 +64,5 @@ DeclareOperation("IsDigraphEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("IsReachable", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);
+
+DeclareOperation("CopyOutNeighbours", [IsDigraph]);

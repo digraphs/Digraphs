@@ -914,3 +914,27 @@ gap> DigraphJoin(gr, gr2);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsReachable">
+<ManSection>
+  <Oper Name="IsReachable" Arg="digraph, u, v"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This function returns <K>true</K> is there exists a directed path (of 
+    non-zero length) from vertex <A>u</A> to vertex <A>v</A> in the directed 
+    graph <A>digraph</A>, and <K>false</K> if there does not exist such a path.
+<Example><![CDATA[
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 2, 3 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> IsReachable(gr, 1, 3);
+true
+gap> IsReachable(gr, 2, 1);
+false
+gap> IsReachable(gr, 3, 3);
+true
+gap> IsReachable(gr, 1, 1);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

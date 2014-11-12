@@ -1228,8 +1228,7 @@ function(digraph, u, v)
     fi;
   fi;
 
-  Error("Digraphs: IsReachable: not yet implemented,");
-  # return DIGRAPHS_IS_REACHABLE(digraph, u, v);
+  return DIGRAPHS_IS_REACHABLE(OutNeighbours(digraph), u, v);
 end);
 
 #
@@ -1260,6 +1259,12 @@ function(digraph)
   gr := DigraphNC(new_adj, tot);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
   return gr;
+end);
+
+InstallMethod(CopyOutNeighbours, "for a digraph",
+[IsDigraph],
+function(digraph)
+  return List(OutNeighbours(digraph), ShallowCopy);
 end);
 
 #EOF
