@@ -29,6 +29,7 @@
     <#Include Label="DigraphAddEdges">
     <#Include Label="DigraphRemoveVertex">
     <#Include Label="DigraphRemoveVertices">
+    <#Include Label="DigraphRemoveEdge">
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphRemoveLoops">
     <#Include Label="DigraphDisjointUnion">
