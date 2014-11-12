@@ -814,7 +814,7 @@ end);
 InstallMethod(Sparse6String, "for a digraph",
 [IsDigraph],
 function(graph)
-  local list, n, lenlist, source, range, k, blist, v, nextbit, AddBinary, i,
+  local list, n, lenlist, adj, nredges, k, blist, v, nextbit, AddBinary, i, j,
         bitstopad, pos, block;
   if not IsSymmetricDigraph(graph) then
     Error("Digraphs: Sparse6String: usage,\n",
@@ -837,9 +837,9 @@ function(graph)
   fi;
   Append(list, lenlist);
 
-  # Get the source and range - half these edges will be discarded
-  source := DigraphSource(graph) - 1;
-  range := DigraphRange(graph) - 1;
+  # Get the out-neighbours - half these edges will be discarded
+  adj := OutNeighbours(graph);
+  nredges := DigraphNrEdges(graph);
 
   # k is the number of bits in a vertex label
   if n > 1 then
@@ -849,7 +849,7 @@ function(graph)
   fi;
 
   # Add the edges one by one
-  blist := BlistList([1..Length(source)*(k+1)/2],[]);
+  blist := BlistList([1..nredges*(k+1)/2],[]);
   v := 0;
   nextbit := 1;
   AddBinary := function(blist, i)
@@ -859,25 +859,27 @@ function(graph)
       nextbit := nextbit + 1;
     od;
   end;
-  for i in [1..Length(source)] do
-    if source[i] < range[i] then
+  for i in [1..Length(adj)] do
+  for j in adj[i] do
+    if i < j then
       continue;
-    elif source[i] = v then
+    elif i-1 = v then
       blist[nextbit] := false;
       nextbit := nextbit + 1;
-    elif source[i] = v+1 then
+    elif i-1 = v+1 then
       blist[nextbit] := true;
       nextbit := nextbit + 1;
       v := v + 1;
-    elif source[i] > v+1 then
+    elif i-1 > v+1 then
       blist[nextbit] := true;
       nextbit := nextbit + 1;
-      AddBinary(blist, source[i]);
-      v := source[i];
+      AddBinary(blist, i-1);
+      v := i-1;
       blist[nextbit] := false;
       nextbit := nextbit + 1;
     fi;
-    AddBinary(blist, range[i]);
+    AddBinary(blist, j-1);
+  od;
   od;
 
   # Add padding bits:
@@ -928,10 +930,10 @@ end);
 InstallMethod(DiSparse6String, "for a digraph",
 [IsDigraph],
 function(graph)
-  local list, n, lenlist, source, range, source_i, range_i, source_d, range_d,
-  len1, len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad,
-  pos, block, i;
-
+  local list, n, lenlist, adj, source_i, range_i, source_d, range_d, len1, len2, 
+        i, j, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad, 
+        pos, block;
+  
   list := [];
   n := Length(DigraphVertices(graph));
 
@@ -947,26 +949,26 @@ function(graph)
   fi;
   Append(list, lenlist);
 
-  source := DigraphSource(graph) - 1;
-  range := DigraphRange(graph) - 1;
-
   # Separate edges into increasing and decreasing
+  adj := OutNeighbours(graph);
   source_i := [];
   range_i := [];
   source_d := [];
   range_d := [];
   len1 := 1;
   len2 := 1;
-  for i in [ 1 .. Length(source) ] do
-    if source[i] <= range[i] then
-      source_i[len1] := source[i];
-      range_i[len1] := range[i];
-      len1 := len1 + 1;
-    else
-      source_d[len2] := source[i];
-      range_d[len2] := range[i];
-      len2 := len2 + 1;
-    fi;
+  for i in DigraphVertices(graph) do
+    for j in adj[i] do
+      if i <= j then
+        source_i[len1] := i-1;
+        range_i[len1] := j-1;
+        len1 := len1 + 1;
+      else
+        source_d[len2] := i-1;
+        range_d[len2] := j-1;
+        len2 := len2 + 1;
+      fi;
+    od;
   od;
 
   # Sort decresing edges according to source and then range
