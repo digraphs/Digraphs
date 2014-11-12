@@ -930,10 +930,10 @@ end);
 InstallMethod(DiSparse6String, "for a digraph",
 [IsDigraph],
 function(graph)
-  local list, n, lenlist, source, range, source_i, range_i, source_d, range_d,
-  len1, len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad,
-  pos, block, i;
-
+  local list, n, lenlist, adj, source_i, range_i, source_d, range_d, len1, len2, 
+        i, j, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad, 
+        pos, block;
+  
   list := [];
   n := Length(DigraphVertices(graph));
 
@@ -949,26 +949,26 @@ function(graph)
   fi;
   Append(list, lenlist);
 
-  source := DigraphSource(graph) - 1;
-  range := DigraphRange(graph) - 1;
-
   # Separate edges into increasing and decreasing
+  adj := OutNeighbours(graph);
   source_i := [];
   range_i := [];
   source_d := [];
   range_d := [];
   len1 := 1;
   len2 := 1;
-  for i in [ 1 .. Length(source) ] do
-    if source[i] <= range[i] then
-      source_i[len1] := source[i];
-      range_i[len1] := range[i];
-      len1 := len1 + 1;
-    else
-      source_d[len2] := source[i];
-      range_d[len2] := range[i];
-      len2 := len2 + 1;
-    fi;
+  for i in DigraphVertices(graph) do
+    for j in adj[i] do
+      if i <= j then
+        source_i[len1] := i-1;
+        range_i[len1] := j-1;
+        len1 := len1 + 1;
+      else
+        source_d[len2] := i-1;
+        range_d[len2] := j-1;
+        len2 := len2 + 1;
+      fi;
+    od;
   od;
 
   # Sort decresing edges according to source and then range
