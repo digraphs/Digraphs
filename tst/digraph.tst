@@ -284,6 +284,65 @@ gap> gr := Digraph(bin);
 gap> OutNeighbours(gr);
 [ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 4 ] ]
 
+# Digraph (for vertices, source, range)
+gap> Digraph( Group(()), [  ], [  ] );
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 3 arguments
+gap> Digraph( [  ], Group(()), [  ] );
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 3 arguments
+gap> Digraph( [  ], [  ], Group(()) );
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 3 arguments
+gap> Digraph( [ 1 ], [ 2 ], [ 3, 4 ] );
+Error, Digraphs: Digraph: usage,
+the second and third arguments <source> and <range> must be lists of
+equal length,
+gap> Digraph( [ 1, 1 ], [  ], [  ] );
+Error, Digraphs: Digraph: usage,
+the first argument <vertices> must be a duplicate-free list,
+gap> Digraph( [ Group(()) ], [ 1 ], [ Group(()) ] );
+Error, Digraphs: Digraph: usage,
+the second argument <source> must be a list of elements of <vertices>,
+gap> Digraph( [ Group(()) ], [ Group(()) ], [ 1 ] );
+Error, Digraphs: Digraph: usage,
+the third argument <range> must be a list of elements of <vertices>,
+gap> gr := Digraph(
+> [ Group(()), SymmetricGroup(3) ], [ Group(()) ], [ SymmetricGroup(3) ] );;
+gap> DigraphVertexLabels(gr);
+[ Group(()), Sym( [ 1 .. 3 ] ) ]
+gap> HasDigraphNrEdges(gr);
+true
+gap> HasDigraphNrVertices(gr);
+true
+gap> HasDigraphSource(gr);
+true
+gap> HasDigraphRange(gr);
+true
+gap> gr;
+<digraph with 2 vertices, 1 edge>
+gap> DigraphSource(gr);
+[ 1 ]
+gap> DigraphRange(gr);
+[ 2 ]
+gap> gr := Digraph( [ 1 .. 3 ], [ 3, 2, 1 ], [ 2, 3, 2 ] );;
+gap> DigraphVertexLabels(gr);
+[ 1 .. 3 ]
+gap> HasDigraphNrEdges(gr);
+true
+gap> HasDigraphNrVertices(gr);
+true
+gap> HasDigraphSource(gr);
+true
+gap> HasDigraphRange(gr);
+true
+gap> DigraphSource(gr);
+[ 1, 2, 3 ]
+gap> DigraphRange(gr);
+[ 2, 3, 2 ]
+gap> gr;
+<digraph with 3 vertices, 3 edges>
+
 # RandomDigraph
 gap> DigraphNrVertices(RandomDigraph(10));
 10

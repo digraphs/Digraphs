@@ -259,9 +259,12 @@ function(digraph, edge)
       return;
   fi;
   verts := DigraphVertices(digraph);
-  if Length(edge) <> 2 or not edge[1] in verts or not edge[2] in verts then
+  if Length(edge) <> 2
+   or not IsPosInt(edge[1])
+   or not edge[1] in verts
+   or not edge[2] in verts then
     Error("Digraphs: DigraphRemoveEdge: usage,\n",
-    "the second component <edge> must be a pair of vertices of <digraph>,");
+    "the second argument <edge> must be a pair of vertices of <digraph>,");
     return;
   fi;
   return DigraphRemoveEdges(digraph, [ edge ]);
