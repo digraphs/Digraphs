@@ -62,14 +62,14 @@ SearchForEndomorphisms:=function(map, condition, neighbours, result, limit)
   if Length(result) = limit then 
     return;
   fi;
-
+  Print("at depth: ", Length(map), "\n");
   condition:=StructuralCopy(condition);
   nr := Length(condition);
 
   for i in [1..Length(map)] do
     if IsBound(map[i]) then 
       for j in neighbours[i] do
-        condition[j]:=Intersection(condition[j], neighbours[map[i]]);
+        condition[j]:=Intersection2(condition[j], neighbours[map[i]]);
         if IsEmpty(condition[j]) then 
           return;
         fi;
@@ -106,12 +106,14 @@ SearchForEndomorphisms:=function(map, condition, neighbours, result, limit)
 end;
 
 GraphEndomorphisms := function(digraph, limit)
-  local result, nr;
+  local result, nr, nbs;
 
   result := [];
   nr := DigraphNrVertices(digraph);
+  nbs := List(OutNeighbours(digraph), ShallowCopy);
+  Apply(nbs, Set);
   SearchForEndomorphisms([], List([ 1 .. nr ], x -> [ 1 .. nr ] ),
-   OutNeighbours(digraph), result, limit);
+   nbs, result, limit);
   return result;
 end;
 
