@@ -126,7 +126,15 @@ Dependencies := rec(
   ExternalConditions := [],
 ),
 
-  AvailabilityTest := ReturnTrue, 
+  AvailabilityTest := function()
+    if (not "digraphs" in SHOW_STAT()) and
+      (Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") = fail)
+     then
+      Info(InfoWarning, 1, "Digraphs: kernel functions are not compiled.");
+      return fail;
+    fi;
+    return true;
+  end,
   Autoload := false,
   TestFile := "tst/testinstall.tst",
   Keywords := []
