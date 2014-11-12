@@ -414,7 +414,7 @@ gap> gr := DigraphRemoveEdges(gr, [ 10 ]);
     <List>
       <Item>
         <A>digraph</A> is a digraph with no multiple edges, and <A>edge</A> is 
-        a pairs of vertices of <A>digraph</A>, or
+        a pair of vertices of <A>digraph</A>, or
       </Item>
       <Item>
         <A>digraph</A> is any digraph and <A>edge</A> is the index of 
