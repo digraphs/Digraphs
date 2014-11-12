@@ -498,6 +498,11 @@ function(graph)
 
   # rewrite the vertices to numbers
   if IsBound(graph.vertices) then
+    if not IsDuplicateFreeList(graph.vertices) then
+      Error("Digraphs: Digraph: usage,\n",
+            "the record component 'vertices' must be duplicate-free,");
+      return;
+    fi;
     if graph.vertices <> [ 1 .. graph.nrvertices ] then  
       for i in [ 1 .. Length(graph.range) ] do
         graph.range[i] := Position(graph.vertices, graph.range[i]);
@@ -581,6 +586,42 @@ function(adj, nredges)
     OutNeighbours, adj, DigraphNrVertices, graph.nrvertices, DigraphNrEdges,
     graph.nredges);
   return graph;
+end);
+
+#
+
+
+InstallMethod(Digraph, "for an int and two homogeneous lists",
+[IsInt, IsHomogeneousList, IsHomogeneousList],
+function(nrvertices, source, range)
+  local m;
+
+  if nrvertices < 0 then
+    Error("Digraphs: Digraph: usage,\n",
+    "the first argument <nrvertices> must be a non-negative integer,");
+    return;
+  fi;
+  m := Length(source);
+  if m <> Length(range) then
+    Error("Digraphs: Digraph: usage,\n",
+    "the second and third arguments <source> and <range> must be lists\n",
+    "of equal length,");
+    return;
+  elif m <> 0 then
+    if not IsPosInt(source[1])
+     or not IsPosInt(range[1])
+     or ForAny(source, x -> x < 1 or x > nrvertices)
+     or ForAny(range,  x -> x < 1 or x > nrvertices) then
+      Error("Digraphs: Digraph: usage,\n",
+      "the second and third arguments <source> and <range> must be lists\n",
+      "of positive integers no greater than the first argument <nrvertices>,");
+    fi;
+    range := Permuted(range, Sortex(source));
+  fi;
+  return DigraphNC( rec( nrvertices := nrvertices,
+                         source := source,
+                         range := range,
+                         nredges := m ) );
 end);
 
 # JDM: could set IsMultigraph here if we check if mat[i][j] > 1 in line 234 
@@ -788,7 +829,7 @@ InstallMethod(DigraphByInNeighboursNC, "for a list", [IsList],
 function(inn)
   local out, gr;
 
-  out := DIGRAPH_IN_TO_OUT_NBS(inn);
+  out := DIGRAPH_IN_OUT_NBS(inn);
   gr := DigraphNC(out);
   SetInNeighbours(gr, inn);
   return gr;
@@ -799,7 +840,7 @@ InstallMethod(DigraphByInNeighboursNC, "for a list and an int",
 function(inn, nredges)
   local out, gr;
 
-  out := DIGRAPH_IN_TO_OUT_NBS(inn);
+  out := DIGRAPH_IN_OUT_NBS(inn);
   gr := DigraphNC(out, nredges);
   SetInNeighbours(gr, inn);
   return gr;

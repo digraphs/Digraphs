@@ -22,34 +22,65 @@
 
 <#GAPDoc Label="Digraph">
 <ManSection>
-  <Oper Name="Digraph" Arg="obj"/>
+  <Oper Name="Digraph" Arg="obj[, source, range]"/>
   <Returns>A digraph.</Returns>
   <Description>
     <List>
-      
-      <Mark>for a record</Mark>
-      <Item> 
-        if <A>obj</A> is a record with components <C>vertices</C>,
-        <C>source</C>, and <C>range</C>, then this function returns the directed
-        graph with vertices <M>E^0=</M><C>[1..Length(<A>obj</A>.vertices)]</C>,
-        edges indexed by <C>[1..Length(<A>obj</A>.source)]</C>, range and source
-        function defined by <C><A>obj</A>.range</C> and
-        <C><A>obj</A>.source</C>.  The components <C><A>obj</A>.range</C> and
-        <C><A>obj</A>.source</C> must be lists of equal length consisting of
-        elements of the list <C><A>obj</A>.vertices</C>.  
-      </Item>
-      
-      <Mark>for a list</Mark> 
+      <Mark>for a list</Mark>
       <Item>
         if <A>obj</A> is a list of lists of positive integers in
         the range from <C>1</C> to <C>Length(<A>obj</A>)</C>, then this function
         returns the digraph with vertices
-        <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>, and edges corresponding to
-        the entries of <A>obj</A>. More precisely, there is an edge from vertex
-        <C>i</C> to <C>j</C> if <C>j</C> is in <C><A>obj</A>[i]</C>; the source of this
-        edge is <C>i</C> and the range is <C>j</C>. If <C>j</C> occurs multiple
+        <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>,
+        and edges corresponding to the entries of <A>obj</A>.
+        More precisely, there is an edge from vertex <C>i</C> to <C>j</C> if
+        <C>j</C> is in <C><A>obj</A>[i]</C>; the source of this edge is
+        <C>i</C> and the range is <C>j</C>. If <C>j</C> occurs multiple
         times in <C><A>obj</A>[i]</C>, then there are multiple edges from
         <C>i</C> to <C>j</C>.
+      </Item>
+
+      <Mark>for a record with components <C>vertices</C>, <C>source</C>,
+        and <C>range</C>.</Mark>
+      <Item> 
+        if <A>obj</A> is a record with components
+        <C>vertices</C>, <C>source</C>, and <C>range</C>,
+        then this function returns the directed graph with vertices 
+        <M>E^0=</M><C>[1..Length(<A>obj</A>.vertices)]</C>,
+        edges indexed by
+        <C>[1..Length(<A>obj</A>.source)]</C>, and
+        range and source functions defined by <C><A>obj</A>.range</C> and
+        <C><A>obj</A>.source</C>.  The components <C><A>obj</A>.range</C> and
+        <C><A>obj</A>.source</C> must be lists of equal length consisting of
+        elements of the duplicate-free list <C><A>obj</A>.vertices</C>.  
+      </Item>
+
+      <Mark>for a record with components <C>nrvertices</C>, <C>source</C>,
+        and <C>range</C>.</Mark>
+      <Item> 
+        if <A>obj</A> is a record with components
+        <C>nrvertices</C>, <C>source</C>, and <C>range</C>,
+        then this function returns the directed graph with vertices 
+        <M>E^0=</M><C>[1..nrvertices]</C>,
+        edges indexed by
+        <C>[1..Length(<A>obj</A>.source)]</C>, and
+        range and source functions defined by <C><A>obj</A>.range</C> and
+        <C><A>obj</A>.source</C>. The components <C><A>obj</A>.range</C> and
+        <C><A>obj</A>.source</C> must be lists of equal length consisting of
+        positive integers in the list <C>[1..nrvertices]</C>.  
+      </Item>
+
+      <Mark>for an integer, and two lists</Mark>
+      <Item>
+        if <A>obj</A> is a non-negative integer,
+        then this function returns the directed graph with vertices 
+        <M>E^0=</M><C>[1..<A>obj</A>]</C>,
+        edges indexed by
+        <C>[1..Length(<A>source</A>)]</C>, and
+        range and source functions defined by <A>range</A> and
+        <A>source</A>. The components <A>range</A> and
+        <A>source</A> must be lists of equal length consisting of
+        positive integers in the list <C>[1..<A>obj</A>]</C>.  
       </Item>
 
       <Mark>for a Grape package graph</Mark>
@@ -72,20 +103,16 @@
     </List>
   
     <Example><![CDATA[
+gap> gr:= Digraph( [ [ 2, 5, 8, 10 ], [ 2, 3, 4, 2, 5, 6, 8, 9, 10 ], 
+> [ 1 ], [ 3, 5, 7, 8, 10 ], [ 2, 5, 7 ], [ 3, 6, 7, 9, 10 ], [ 1, 4 ],
+> [ 1, 5, 9 ], [ 1, 2, 7, 8 ], [ 3, 5 ] ] );
+<multidigraph with 10 vertices, 38 edges>
 gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
 > source := [ "a" ], range := [ "b" ] ) );
 <digraph with 3 vertices, 1 edge>
-gap> gr := Digraph( rec( vertices := [ 1, 2, 3, 4, 5 ], 
-> source := [ 1, 2, 2, 4, 4, 1, 1 ],
-> range := [ 2, 3, 5, 3, 5, 1, 1 ] ) );
-<multidigraph with 5 vertices, 7 edges>
-gap> gr:= Digraph( [ [ 2, 5, 8, 10 ], [ 2, 3, 4, 5, 6, 8, 9, 10 ], 
-> [ 1 ], [ 3, 5, 7, 8, 10 ], [ 2, 5, 7 ], [ 3, 6, 7, 9, 10 ], [ 1, 4 ], 
-> [ 1, 5, 9 ], [ 1, 2, 7, 8 ], [ 3, 5 ] ] );
-<digraph with 10 vertices, 37 edges>
-gap> gr := CycleDigraph(10000);
-<digraph with 10000 vertices, 10000 edges>
-gap> Petersen := Graph( SymmetricGroup(5), [ [1,2] ], OnSets,
+gap> gr := Digraph( 5, [ 1, 2, 2, 4, 1, 1 ], [ 2, 3, 5, 5, 1, 1 ] );
+<multidigraph with 5 vertices, 6 edges>
+gap> Petersen := Graph( SymmetricGroup(5), [ [ 1, 2 ] ], OnSets,
 > function(x, y) return Intersection(x, y) = [ ]; end );;
 gap> Digraph(Petersen);
 <digraph with 10 vertices, 30 edges>
@@ -174,6 +201,35 @@ gap> DigraphByEdges(
 > [ [ 1, 3 ], [ 2, 1 ], [ 2, 3 ], [ 2, 5 ], [ 3, 6 ], 
 >   [ 4, 6 ], [ 5, 2 ], [ 5, 4 ], [ 5, 6 ], [ 6, 6 ] ], 10);
 <digraph with 10 vertices, 10 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphByInNeighbours">
+<ManSection>
+  <Oper Name="DigraphByInNeighbours" Arg="in"/>
+  <Oper Name="DigraphByInNeighbors" Arg="in"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+
+  If <A>in</A> is a list of lists of positive integers in the range from 
+  <C>1</C> to <C>Length(<A>in</A>)</C>, then this function returns the
+  digraph with vertices <M>E^0=</M><C>[ 1 .. Length(<A>in</A>) ]</C>, and 
+  edges corresponding to the entries of <A>in</A>. More precisely, there is an 
+  edge from vertex <C>i</C> to <C>j</C> if <C>i</C> is in <C><A>in</A>[j]</C>;
+  the source of this edge is <C>i</C> and the range is <C>j</C>.
+  If <C>i</C> occurs multiple times in <C><A>in</A>[j]</C>, then there are 
+  multiple edges from <C>i</C> to <C>j</C>.
+    
+    <Example><![CDATA[
+gap> gr := DigraphByInNeighbours( [
+> [ 2, 5, 8, 10 ], [ 2, 3, 4, 5, 6, 8, 9, 10 ], 
+> [ 1 ], [ 3, 5, 7, 8, 10 ], [ 2, 5, 7 ], [ 3, 6, 7, 9, 10 ], [ 1, 4 ], 
+> [ 1, 5, 9 ], [ 1, 2, 7, 8 ], [ 3, 5 ] ] );
+<digraph with 10 vertices, 37 edges>
+gap> gr := DigraphByInNeighbours( [ [ 2, 3, 2 ], [ 1 ], [ 1, 2, 3 ] ] );
+<multidigraph with 3 vertices, 7 edges>
 ]]></Example>
   </Description>
 </ManSection>

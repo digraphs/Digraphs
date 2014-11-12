@@ -247,43 +247,55 @@ end);
 
 #
 
+InstallMethod(DigraphRemoveEdge, "for a digraph and a list of two pos ints",
+[IsDigraph, IsHomogeneousList],
+function(digraph, edge)
+  local verts;
+
+  if IsMultiDigraph(digraph) then
+      Error("Digraphs: DigraphRemoveEdge: usage,\n",
+      "the first argument <digraph> must not have multiple edges\n",
+      "when the second argument <edges> is a pair of vertices,");
+      return;
+  fi;
+  verts := DigraphVertices(digraph);
+  if Length(edge) <> 2 or not edge[1] in verts or not edge[2] in verts then
+    Error("Digraphs: DigraphRemoveEdge: usage,\n",
+    "the second component <edge> must be a pair of vertices of <digraph>,");
+    return;
+  fi;
+  return DigraphRemoveEdges(digraph, [ edge ]);
+end);
+
+InstallMethod(DigraphRemoveEdge, "for a digraph and a pos int",
+[IsDigraph, IsPosInt],
+function(digraph, edge)
+  local m;
+
+  m := DigraphNrEdges(digraph);
+  if edge > m then
+    Error("Digraphs, DigraphRemoveEdge, usage,\n",
+    "the second argument <edge> must be the index of an edge in <digraph>,");
+    return;
+  fi;
+  return DigraphRemoveEdgesNC(digraph, [ edge ]);
+end);
+
 InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
 [IsDigraph, IsHomogeneousList],
 function(digraph, edges)
-  local m, n, old_adj, new_adj, old_edge_count, new_edge_count, degree_count,
-        old_labs, new_labs, pos, gr, i, j, x, verts, remove, offsets, count;
+  local m, verts, remove, n, old_adj, count, offsets, pos, i, x;
 
   if IsEmpty(edges) then
     return DigraphCopy(digraph);
   fi;
 
   m := DigraphNrEdges(digraph);
-  n := DigraphNrVertices(digraph);
-  old_adj := OutNeighbours(digraph);
   verts := DigraphVertices(digraph);
 
   if IsPosInt(edges[1]) and ForAll(edges, x -> 0 < x and x <= m) then
     # Remove edges by index
-    new_adj := EmptyPlist(n);
-    edges := BlistList( [ 1 .. m ], edges );
-    old_edge_count := 0;
-    new_edge_count := 0;
-    degree_count := 0;
-    old_labs := DigraphEdgeLabels(digraph);
-    new_labs := [  ];
-    for i in DigraphVertices(digraph) do # Loop over each vertex
-      new_adj[i] := [  ];
-      degree_count := 0;
-      for j in old_adj[i] do
-        old_edge_count := old_edge_count + 1;
-        if not edges[ old_edge_count ] then # Keep this edge
-          new_edge_count := new_edge_count + 1;
-          degree_count := degree_count + 1;
-          new_adj[ i ][ degree_count ] := j;
-          new_labs[ new_edge_count ] := old_labs[ old_edge_count ];
-        fi;
-      od;
-    od;
+    remove := edges;
   elif IsRectangularTable(edges) and Length(edges[1]) = 2
    and IsPosInt(edges[1][1])
    and ForAll(edges, x -> x[1] in verts and x[2] in verts) then
@@ -294,6 +306,8 @@ function(digraph, edges)
       "when the second argument <edges> is a list of edges,");
       return;
     fi;
+    n := DigraphNrVertices(digraph);
+    old_adj := OutNeighbours(digraph);
     count := 0;
     remove := [  ];
     offsets := EmptyPlist(n);
@@ -308,17 +322,55 @@ function(digraph, edges)
         remove[ count ] :=  offsets[x[1]] + pos;
       fi;
     od;
-    return DigraphRemoveEdges(digraph, remove);
   else
     Error("Digraphs: DigraphRemoveEdges: usage,\n",
     "the second argument <edges> must be a list of indices of edges\n",
     "or a list of edges of the first argument <digraph>,");
     return;
   fi;
+  return DigraphRemoveEdgesNC(digraph, remove);
+end);
+
+# DigraphRemoveEdgesNC assumes you are removing edges by index
+
+InstallMethod(DigraphRemoveEdgesNC, "for a digraph and a list",
+[IsDigraph, IsHomogeneousList],
+function(digraph, edges)
+  local m, n, old_adj, new_adj, old_edge_count, new_edge_count, degree_count, 
+  old_labs, new_labs, gr, i, j;
+
+  if IsEmpty(edges) then
+    return DigraphCopy(digraph);
+  fi;
+  
+  m := DigraphNrEdges(digraph);
+  n := DigraphNrVertices(digraph);
+  old_adj := OutNeighbours(digraph);
+  new_adj := EmptyPlist(n);
+  edges := BlistList( [ 1 .. m ], edges );
+  old_edge_count := 0;
+  new_edge_count := 0;
+  degree_count := 0;
+  old_labs := DigraphEdgeLabels(digraph);
+  new_labs := [  ];
+  for i in DigraphVertices(digraph) do # Loop over each vertex
+    new_adj[i] := [  ];
+    degree_count := 0;
+    for j in old_adj[i] do
+      old_edge_count := old_edge_count + 1;
+      if not edges[ old_edge_count ] then # Keep this edge
+        new_edge_count := new_edge_count + 1;
+        degree_count := degree_count + 1;
+        new_adj[ i ][ degree_count ] := j;
+        new_labs[ new_edge_count ] := old_labs[ old_edge_count ];
+      fi;
+    od;
+  od;
   gr := DigraphNC(new_adj);
   SetDigraphVertexLabels( gr, DigraphVertexLabels(digraph) );
   SetDigraphEdgeLabels( gr, new_labs );
   return gr;
+
 end);
 
 #

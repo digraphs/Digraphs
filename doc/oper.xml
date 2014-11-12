@@ -391,8 +391,8 @@ gap> gr := DigraphAddEdges(gr,
       </Item>
     </List>
     
-    then this operation returns a digraph constructed from <A>digraph</A> by 
-    removing all of the edges specified by <A>edges</A>. <P/>
+    then this operation returns a new digraph constructed from <A>digraph</A> 
+    by removing all of the edges specified by <A>edges</A>. <P/>
 
     <Example><![CDATA[
 gap> gr := CycleDigraph(250000);
@@ -404,6 +404,38 @@ gap> gr := DigraphRemoveEdges(gr, [ 10 ]);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphRemoveEdge">
+<ManSection>
+  <Oper Name="DigraphRemoveEdge" Arg="digraph, edge"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If one of the following holds: 
+    <List>
+      <Item>
+        <A>digraph</A> is a digraph with no multiple edges, and <A>edge</A> is 
+        a pairs of vertices of <A>digraph</A>, or
+      </Item>
+      <Item>
+        <A>digraph</A> is any digraph and <A>edge</A> is the index of 
+        an edge of <A>digraph</A>,
+      </Item>
+    </List>
+    
+    then this operation returns a new digraph constructed from <A>digraph</A> 
+    by removing the edges specified by <A>edges</A>. <P/>
+
+    <Example><![CDATA[
+gap> gr := CycleDigraph(250000);
+<digraph with 250000 vertices, 250000 edges>
+gap> gr := DigraphRemoveEdge(gr, [ 250000, 1 ]);
+<digraph with 250000 vertices, 249999 edges>
+gap> gr := DigraphRemoveEdge(gr, 10);
+<digraph with 250000 vertices, 249998 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 
 <#GAPDoc Label="DigraphReflexiveTransitiveClosure">
 <ManSection>

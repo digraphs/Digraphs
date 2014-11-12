@@ -14,7 +14,10 @@ DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPermCollection]);
 DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPerm, IsPerm]);
 
 DeclareOperation("DigraphRemoveLoops", [IsDigraph]);
+DeclareOperation("DigraphRemoveEdge", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphRemoveEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
+DeclareOperation("DigraphRemoveEdgesNC", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphRemoveVertices", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveVerticesNC", [IsDigraph, IsList]);

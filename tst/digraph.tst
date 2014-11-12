@@ -176,6 +176,60 @@ Error, Digraphs: Digraph: usage,
 the record component 'range' is invalid,
 gap> Digraph( rec( vertices := "abc", source := "acbab", range := "cbabb" ) );
 <digraph with 3 vertices, 5 edges>
+gap> Digraph( rec(
+> vertices := [ 1, 1, 2 ], source := [ 1, 2 ], range := [ 1, 2 ] ) );
+Error, Digraphs: Digraph: usage,
+the record component 'vertices' must be duplicate-free,
+
+# Digraph (for nrvertices, source and range)
+gap> Digraph( "a", [  ], [  ] );
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 3 arguments
+gap> Digraph( 2, [ 1, "a" ], [ 2, 1 ] );
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 3 arguments
+gap> Digraph( 2, [ 1, 1 ], [ 1, Group(()) ] );
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 3 arguments
+gap> Digraph( -1, [  ], [  ] );
+Error, Digraphs: Digraph: usage,
+the first argument <nrvertices> must be a non-negative integer,
+gap> Digraph( 0, [  ], [ "a" ] );
+Error, Digraphs: Digraph: usage,
+the second and third arguments <source> and <range> must be lists
+of equal length,
+gap> Digraph( 2, [ 1 ], [ 2, 2 ] );
+Error, Digraphs: Digraph: usage,
+the second and third arguments <source> and <range> must be lists
+of equal length,
+gap> Digraph( 5, [  ], [  ] );
+<digraph with 5 vertices, 0 edges>
+gap> Digraph( 2, "ab", [ 0, 1 ] );
+Error, Digraphs: Digraph: usage,
+the second and third arguments <source> and <range> must be lists
+of positive integers no greater than the first argument <nrvertices>,
+gap> Digraph( 2, [ 0, 1 ], "ab" );
+Error, Digraphs: Digraph: usage,
+the second and third arguments <source> and <range> must be lists
+of positive integers no greater than the first argument <nrvertices>,
+gap> Digraph( 1, [ 2 ], [ 1 ] );
+Error, Digraphs: Digraph: usage,
+the second and third arguments <source> and <range> must be lists
+of positive integers no greater than the first argument <nrvertices>,
+gap> Digraph( 1, [ 1 ], [ 2 ] );
+Error, Digraphs: Digraph: usage,
+the second and third arguments <source> and <range> must be lists
+of positive integers no greater than the first argument <nrvertices>,
+gap> Digraph( 2, [ 1, 0 ], [ 2, 1 ] );
+Error, Digraphs: Digraph: usage,
+the second and third arguments <source> and <range> must be lists
+of positive integers no greater than the first argument <nrvertices>,
+gap> Digraph( 2, [ 1, 1 ], [ 2, 0 ] );
+Error, Digraphs: Digraph: usage,
+the second and third arguments <source> and <range> must be lists
+of positive integers no greater than the first argument <nrvertices>,
+gap> Digraph( 4, [ 3, 1, 2, 3 ], [ 4, 1, 2, 4 ] );
+<multidigraph with 4 vertices, 4 edges>
 
 # Digraph (for an integer and a function)
 gap> divides := function(a, b)
