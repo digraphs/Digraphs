@@ -201,8 +201,8 @@ gap> OutNeighbours(last);
     use <C>OnDigraphs</C> instead of <C>OnMultiDigraphs</C>. 
 
     <Example><![CDATA[
-gap> gr1 := Digraph( [ [ 3, 6, 3 ], [ ], [ 3 ], [ 9, 10 ], [ 9 ], 
-[ ], [ ], [ 10, 4, 10 ], [ ], [ ] ] );
+gap> gr1 := Digraph( [ [ 3, 6, 3 ], [  ], [ 3 ], [ 9, 10 ], [ 9 ], 
+> [  ],  [ ], [ 10, 4, 10 ], [  ], [  ] ] );
 <multidigraph with 10 vertices, 10 edges>
 gap> p := DigraphCanonicalLabelling(gr1);
 [ (1,9,5,3,10,6,4,7), (1,7,9,5,2,8,4,10,3,6) ]
