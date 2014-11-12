@@ -179,6 +179,43 @@ gap> OutNeighbours(last);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="OnMultiDigraphs">
+<ManSection>
+  <Oper Name="OnMultiDigraphs" Arg="digraph, pair"/>
+  <Oper Name="OnMultiDigraphs" Arg="digraph, perm1, perm2"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, and <A>pair</A> is a pair consisting of a
+    permutation of the vertices and a permutation of the edges of
+    <A>digraph</A>, then this operation returns a digraph
+    constructed by relabelling the vertices and edges of <A>digraph</A> according to
+    <A>perm[1]</A> and <A>perm[2]</A>, respectively. <P/>
+
+    In its second form, <C>OnMultiDigraphs</C> returns a digraph with vertices
+    and edges permuted by <A>perm1</A> and <A>perm2</A>, respectively. <P/>
+
+    Note that <C>OnDigraphs(<A>digraph</A>,
+      perm)=OnMultiDigraphs(<A>digraph</A>, [perm, ()])</C> where <C>perm</C> is
+    a permutation of the vertices of <A>digraph</A>. If you are only interested
+    in the action of a permutation on the vertices of a digraph, then you can
+    use <C>OnDigraphs</C> instead of <C>OnMultiDigraphs</C>. 
+
+    <Example><![CDATA[
+gap> gr1 := Digraph( [ [ 3, 6, 3 ], [ ], [ 3 ], [ 9, 10 ], [ 9 ], 
+[ ], [ ], [ 10, 4, 10 ], [ ], [ ] ] );
+<multidigraph with 10 vertices, 10 edges>
+gap> p := DigraphCanonicalLabelling(gr1);
+[ (1,9,5,3,10,6,4,7), (1,7,9,5,2,8,4,10,3,6) ]
+gap> gr2 := OnMultiDigraphs(gr1, p);
+<multidigraph with 10 vertices, 10 edges>
+gap> DigraphEdgeLabels(gr2);
+[ 6, 5, 10, 8, 9, 3, 1, 2, 7, 4 ]
+gap> DigraphVertexLabels(gr2);
+[ 7, 2, 5, 6, 9, 10, 4, 8, 1, 3 ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphRemoveLoops">
 <ManSection>
   <Oper Name="DigraphRemoveLoops" Arg="digraph"/>
