@@ -259,9 +259,12 @@ function(digraph, edge)
       return;
   fi;
   verts := DigraphVertices(digraph);
-  if Length(edge) <> 2 or not edge[1] in verts or not edge[2] in verts then
+  if Length(edge) <> 2
+   or not IsPosInt(edge[1])
+   or not edge[1] in verts
+   or not edge[2] in verts then
     Error("Digraphs: DigraphRemoveEdge: usage,\n",
-    "the second component <edge> must be a pair of vertices of <digraph>,");
+    "the second argument <edge> must be a pair of vertices of <digraph>,");
     return;
   fi;
   return DigraphRemoveEdges(digraph, [ edge ]);
@@ -550,54 +553,55 @@ function(digraph, verts)
   
   if IsEmpty(verts) then
     return DigraphCopy(digraph);
-  else
-    n := DigraphNrVertices(digraph);
-    len := Length(verts);
-    new_nrverts := n - len;
-    if new_nrverts = 0 then
-      return EmptyDigraph(0);
-    fi;
-    m     := DigraphNrEdges(digraph);
-    log   := LogInt(len, 2);
-    if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
-      Sort(verts);
-    fi;
-    diff := Difference(DigraphVertices(digraph), verts);
-
-    j := 0;
-    lookup := EmptyPlist(n);
-    for i in diff do
-      j := j + 1;
-      lookup[ i ] := j;
-    od;
-
-    old_edge_count   := 0;
-    old_labels       := DigraphEdgeLabels(digraph);
-    new_edge_count   := 0;
-    new_labels       := [ ];
-    new_vertex_count := 0;
-
-    old_nbs := OutNeighbours(digraph);
-    new_nbs := EmptyPlist(new_nrverts);
-    for i in DigraphVertices(digraph) do
-      if IsBound(lookup[i]) then
-        new_vertex_count := new_vertex_count + 1;
-        new_nbs[new_vertex_count] := [  ];
-        j := 0;
-        for x in old_nbs[ i ] do
-          old_edge_count := old_edge_count + 1;
-          if not x in verts then # Can search through diff if |diff| < |verts|
-            j := j + 1;
-            new_nbs[ new_vertex_count ][j] := lookup[x];
-            new_edge_count := new_edge_count + 1;
-            new_labels[ new_edge_count ] := old_labels[ old_edge_count ];
-          fi;
-        od;
-      else
-        old_edge_count := old_edge_count + Length(old_nbs[i]);
-      fi;
-    od;
   fi;
+
+  n := DigraphNrVertices(digraph);
+  len := Length(verts);
+  new_nrverts := n - len;
+  if new_nrverts = 0 then
+    return EmptyDigraph(0);
+  fi;
+  m     := DigraphNrEdges(digraph);
+  log   := LogInt(len, 2);
+  if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
+    Sort(verts);
+  fi;
+  diff := Difference(DigraphVertices(digraph), verts);
+
+  j := 0;
+  lookup := EmptyPlist(n);
+  for i in diff do
+    j := j + 1;
+    lookup[ i ] := j;
+  od;
+
+  old_edge_count   := 0;
+  old_labels       := DigraphEdgeLabels(digraph);
+  new_edge_count   := 0;
+  new_labels       := [ ];
+  new_vertex_count := 0;
+
+  old_nbs := OutNeighbours(digraph);
+  new_nbs := EmptyPlist(new_nrverts);
+  for i in DigraphVertices(digraph) do
+    if IsBound(lookup[i]) then
+      new_vertex_count := new_vertex_count + 1;
+      new_nbs[new_vertex_count] := [  ];
+      j := 0;
+      for x in old_nbs[ i ] do
+        old_edge_count := old_edge_count + 1;
+        if not x in verts then # Can search through diff if |diff| < |verts|
+          j := j + 1;
+          new_nbs[ new_vertex_count ][j] := lookup[x];
+          new_edge_count := new_edge_count + 1;
+          new_labels[ new_edge_count ] := old_labels[ old_edge_count ];
+        fi;
+      od;
+    else
+      old_edge_count := old_edge_count + Length(old_nbs[i]);
+    fi;
+  od;
+
   gr := DigraphNC(new_nbs);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){diff});
   SetDigraphEdgeLabels(gr, new_labels);

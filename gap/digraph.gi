@@ -528,7 +528,7 @@ function(graph)
   ObjectifyWithAttributes(graph, DigraphType, DigraphRange,
    graph.range, DigraphSource, graph.source, DigraphNrVertices,
    graph.nrvertices);
-  if IsBound(graph!.nredges) then # Temporary workaround
+  if IsBound(graph!.nredges) then
     SetDigraphNrEdges(graph, graph!.nredges);
   fi;
   return graph;
@@ -621,6 +621,7 @@ function(nrvertices, source, range)
       Error("Digraphs: Digraph: usage,\n",
       "the second and third arguments <source> and <range> must be lists\n",
       "of positive integers no greater than the first argument <nrvertices>,");
+      return;
     fi;
     range := Permuted(range, Sortex(source));
   fi;
@@ -661,10 +662,10 @@ function(vertices, source, range)
     return;
   fi;
 
-  vertices := ShallowCopy(vertices);
-  source := ShallowCopy(source);
-  range  := ShallowCopy(range);
-  n := Length(vertices);
+  vertices := StructuralCopy(vertices);
+  source   := StructuralCopy(source);
+  range    := StructuralCopy(range);
+  n        := Length(vertices);
 
   # rewrite the vertices to numbers
   if vertices <> [ 1 .. n ] then  
