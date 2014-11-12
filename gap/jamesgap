@@ -1,0 +1,259 @@
+
+addmap:=function(list,map)
+local i,m,l;
+m:=[];
+l:=list;
+for i in map do
+ Add(m,i);
+od;
+Add(m,l);
+return m;
+end;
+
+ismapped:=function(n,map) # checks is 'n' has an image under 'map'
+local i,j;
+
+for i in map do
+if n=i[1] then
+ return true;
+fi;
+od;
+
+return false;
+end;
+
+ismap:=function(map,degree) #checks if the map 'map' is a map
+local i,j,d;
+d:=degree;
+j:=true;
+for i in [1..d] do
+	if not ismapped(i,map) then
+		j:=false;
+	fi;
+od;
+
+return j;
+end;
+
+imagemap:=function(map)
+local i,j,l;
+l:=[];
+
+for i in map do
+	Add(l,i[2]);
+od;
+return AsSet(l);
+end;
+
+mmapp:=function(n,map)
+local i,j,k;
+
+for i in map do
+ if n=i[1] then
+  return i[2];  
+ fi;
+od;
+return Print("Is not mapped","\n");
+end;
+
+
+updatecondition:=function(map,cond,q)# q is the list of neighbours
+local i,j,k,l,ll;
+l:=[];
+ll:=[];
+for i in [1..Size(cond)] do
+ll[i]:=cond[i];
+od;
+
+for i in map do
+ for j in q[i[1]] do
+  ll[j]:=Intersection(ll[j],q[i[2]]);
+ od;
+od;
+
+for i in [1..Size(cond)] do
+	if ismapped(i,map) then
+		ll[i]:=[mmapp(i,map)];
+	fi;
+od;
+
+return ll;
+end;
+
+smallestcondition:=function(map,cond)
+local i,j,k,l,min;
+l:=[];
+
+
+for i in [1..Size(cond)] do
+
+ if not ismapped(i,map) then
+  if Size(cond[i])>1 then
+   Add(l,Size(cond[i]));
+  fi;
+ fi;
+od;
+
+if IsEmpty(l) then
+ return false;
+fi;
+min:=Minimum(l);
+
+for i in [1..Size(cond)] do
+ if Size(cond[i])=min then
+  if not ismapped(i,map) then
+  return i;
+  fi;
+ fi;
+od;
+
+end;
+
+isvalidcondition:=function(map,cond)
+local i,j,k,n,l,ll;
+for i in cond do
+ if IsEmpty(i) then
+  return false;
+ fi;
+od;
+
+return true;
+end;
+
+MakeNeighboursfromGraph:=function(graph)
+return MakeListOfNeighboursForEachVertex(MakeOrbitalfromGraph(graph));
+end;
+
+
+MakeListOfNeighboursForEachVertex:=function(orbit)
+local i,j,k,l,m;
+m:=Adjacencymatrix(orbit);
+l:=[];
+for i in [1..Size(m)] do
+	l[i]:=[];
+	for j in [1..Size(m)] do
+		if m[i][j]=1 then
+			Add(l[i],j);
+		fi;
+	od;
+od;
+
+return l;
+end;
+
+
+Initialcondition:=function(n)
+local i,l;
+l:=[];
+for i in [1..n] do
+	l[i]:=[1..n];
+od;
+return l;
+end;
+
+
+endocandidate:=function(orbit,trafo)
+local i,j,k,o,t;
+o:=(orbit);
+t:=trafo;
+if RankOfTransformation(t)=DegreeOfTransformation(t) then
+	return false;
+fi;
+if IsSubset(o,OnSetsTuples(o,t)) then
+ return true;
+fi;
+
+return false;
+end;
+
+endocandidatelist:=function(orbit,listoftrafo)
+local i,j,k,o,t;
+for i in listoftrafo do
+	if not endocandidate(orbit,i) then
+		return false;
+	fi;
+od;
+return true;
+end;
+
+
+maketrafo:=function(map,cond,orbit,llist)
+local i,m,j,l,tt,kk;
+m:=map;
+for i in [1..Size(cond)] do                        
+    if not ismapped(i,map) then
+      Add(m,[i,cond[i][1]]);                 
+    fi;
+   od;
+   kk:=[];
+   for i in [1..Size(cond)] do
+    kk[i]:=mmapp(i,m);
+   od;
+   tt:=Transformation(kk);
+
+# the next lines purpose is only for observation and can be left out
+
+#Print(RankOfTransformation(tt),"\t",tt,"\n");
+
+# end of observation
+
+   if not endocandidate(orbit,tt) then
+    #Print("this map is not an endormophisms \n");
+   else
+		if RankOfTransformation(tt) in llist then
+			#if IsIdempotent(tt) then
+    		#Print("\nWe found an endomorphism candidate: \n");
+			#k:=k+1;
+			Print(tt,",\n");# ,RankOfTransformation(tt));   
+			#fi;
+			return tt;
+		fi;
+	fi;
+
+return false;
+end;
+
+
+searchhom:=function(mapping,condition,neighbours,orbit,llist)
+local i,j,map,cond,cond1,map1,sint,orb,q; # llist contains the possible ranks for the minimal non synchr. map.
+map:=mapping;
+cond:=condition;
+q:=neighbours;
+orb:=orbit;
+
+cond1:=updatecondition(map,cond,q);
+#Print("condition ",cond1,"\n");
+if not isvalidcondition(map,cond1) then                    
+  return 0;
+fi;
+#Print(smallestcondition(map,cond1),"\n");
+if smallestcondition(map,cond1)=false then
+   Print(maketrafo(map,cond1,orb,llist),"\n");   
+fi;
+#Print("start loop \n");
+for i in cond1[smallestcondition(map,cond1)] do
+ map1:=addmap([smallestcondition(map,cond1),i],map);
+ #Print("mapping ",map1,"\n");
+ searchhom(map1,cond1,q,orb,llist);
+od;
+end;
+
+
+startsearchhomallgivengraph:=function(graph,lss,map,conditionsonimage)
+local g,allorbs,orb,m,gr,f,l,k,i,j,kk,list,orbital,lls,condition;
+#g:=group;
+#list:=orbitlist;
+#
+orbital:=MakeOrbitalfromGraph(graph);
+lls:=lss;#[1..DegreeAction(g)];
+orb:=orbital;
+m:=Adjacencymatrix(orb);;
+condition:=List([1..Size(m)],i->conditionsonimage);
+#gr:=Graph(Group(()),[1..DegreeAction(g)],OnPoints, function(x,y) return m[x][y]=1; end, true);;
+f:=MakeListOfNeighboursForEachVertex(orb);
+
+return searchallhom(map,condition,f,orb,lls,[]);
+end;
+
+
+
