@@ -1,4 +1,28 @@
 
+MakeOrbitalGraph:=function(arg) # arg[1]=orbit or group, arg[2]=[list of orbits]
+local i,j,k,m,gr,o,orbit;
+#arg[1]=orbit,
+if not IsGroup(arg[1]) then
+		m:=Adjacencymatrix(arg[1]);;
+		gr:=Graph(Group(()),[1..Size(m)],OnPoints, function(x,y) return m[x][y]=1; end, true);;
+		return gr;
+else
+	if IsList(arg[2]) then
+		o:=GenerateOrbitals(arg[1]);
+		orbit:=UniteOrbitals(o,arg[2]);
+		m:=Adjacencymatrix(orbit);;
+		gr:=Graph(Group(()),[1..Size(m)],OnPoints, function(x,y) return m[x][y]=1; end, true);;
+		return gr;
+	fi;
+fi;
+end;
+
+MakeOrbitalfromGraph:=function(graph)
+local i,j,k;
+return DirectedEdges(graph);
+end;
+
+
 addmap:=function(list,map)
 local i,m,l;
 m:=[];
