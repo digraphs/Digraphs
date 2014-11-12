@@ -505,7 +505,7 @@ function(graph)
       return;
     fi;
     if graph.vertices <> [ 1 .. graph.nrvertices ] then  
-      for i in [ 1 .. Length(graph.range) ] do
+      for i in [ 1 .. m ] do
         graph.range[i] := Position(graph.vertices, graph.range[i]);
         graph.source[i] := Position(graph.vertices, graph.source[i]);
       od;
@@ -608,7 +608,12 @@ function(nrvertices, source, range)
     "the second and third arguments <source> and <range> must be lists\n",
     "of equal length,");
     return;
-  elif m <> 0 then
+  fi;
+
+  source := ShallowCopy(source);
+  range := ShallowCopy(range);
+  
+  if m <> 0 then
     if not IsPosInt(source[1])
      or not IsPosInt(range[1])
      or ForAny(source, x -> x < 1 or x > nrvertices)
@@ -623,6 +628,58 @@ function(nrvertices, source, range)
                          source := source,
                          range := range,
                          nredges := m ) );
+end);
+
+InstallMethod(Digraph, "for three lists",
+[IsList, IsList, IsList],
+function(vertices, source, range)
+  local m, n, i;
+
+  m := Length(source);
+  if m <> Length(range) then
+    Error("Digraphs: Digraph: usage,\n",
+    "the second and third arguments <source> and <range> must be lists of\n",
+    "equal length,");
+    return;
+  fi;
+
+  if not IsDuplicateFreeList(vertices) then
+    Error("Digraphs: Digraph: usage,\n",
+          "the first argument <vertices> must be a duplicate-free list,");
+    return;
+  fi;
+
+  if ForAny(source, x -> not x in vertices) then
+    Error("Digraphs: Digraph: usage,\n",
+    "the second argument <source> must be a list of elements of <vertices>,");
+    return;
+  fi;
+
+  if ForAny(range, x -> not x in vertices) then
+    Error("Digraphs: Digraph: usage,\n",
+    "the third argument <range> must be a list of elements of <vertices>,");
+    return;
+  fi;
+
+  vertices := ShallowCopy(vertices);
+  source := ShallowCopy(source);
+  range  := ShallowCopy(range);
+  n := Length(vertices);
+
+  # rewrite the vertices to numbers
+  if vertices <> [ 1 .. n ] then  
+    for i in [ 1 .. m ] do
+      source[i] := Position(vertices, source[i]);
+      range[i]  := Position(vertices, range[i]);
+    od;
+  fi;
+
+  range := Permuted(range, Sortex(source));
+  return DigraphNC( rec( nrvertices   := n,
+                         nredges      := m,
+                         vertexlabels := vertices,
+                         source       := source,
+                         range        := range ) );
 end);
 
 # JDM: could set IsMultigraph here if we check if mat[i][j] > 1 in line 234 
