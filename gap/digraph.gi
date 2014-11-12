@@ -11,16 +11,17 @@
 InstallMethod(Digraph, "for a positive integer and a function",
 [IsPosInt, IsFunction],
 function(n, func)
-  local out, V, i, j;
+  local V, out, i, len, j;
 
-  out := List( [ 1 .. n ], x -> [ ] );
-  
   V:= [ 1 .. n ];
-
-  for i in V do 
-    for j in V do 
-      if func(i, j) then 
-        Add(out[i], j);
+  out := List( V, x -> [ ] );
+  
+  for i in V do
+    len := 0;
+    for j in V do
+      if func(i, j) then
+        len := len + 1;
+        out[i][len] := j;
       fi;
     od;
   od;
