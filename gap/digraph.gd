@@ -26,6 +26,7 @@ DeclareOperation("Digraph", [IsRecord]);
 DeclareOperation("Digraph", [IsList]);
 DeclareOperation("Digraph", [IsPosInt, IsFunction]);
 DeclareOperation("Digraph", [IsInt, IsList, IsList]);
+DeclareOperation("Digraph", [IsList, IsList, IsList]);
 DeclareOperation("Digraph", [IsBinaryRelation]);
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsList]);

@@ -182,7 +182,7 @@ Error, Digraphs: Digraph: usage,
 the record component 'vertices' must be duplicate-free,
 
 # Digraph (for nrvertices, source and range)
-gap> Digraph( "a", [  ], [  ] );
+gap> Digraph( Group(()), [  ], [  ] );
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `Digraph' on 3 arguments
 gap> Digraph( 2, [ 1, "a" ], [ 2, 1 ] );
