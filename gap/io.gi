@@ -666,7 +666,6 @@ function(name, digraphs)
 
   for digraph in digraphs do
     s := encoder(digraph);
-    ConvertToStringRep(s);
     IO_WriteLine(file, s);
   od;
   
