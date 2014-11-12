@@ -1265,4 +1265,7 @@ function(digraph)
   return List(OutNeighbours(digraph), ShallowCopy);
 end);
 
+InstallMethod(CopyOutNeighbors, "for a digraph",
+[IsDigraph], CopyOutNeighbours);
+
 #EOF
