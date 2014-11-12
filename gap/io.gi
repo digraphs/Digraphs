@@ -860,26 +860,26 @@ function(graph)
     od;
   end;
   for i in [1..Length(adj)] do
-  for j in adj[i] do
-    if i < j then
-      continue;
-    elif i-1 = v then
-      blist[nextbit] := false;
-      nextbit := nextbit + 1;
-    elif i-1 = v+1 then
-      blist[nextbit] := true;
-      nextbit := nextbit + 1;
-      v := v + 1;
-    elif i-1 > v+1 then
-      blist[nextbit] := true;
-      nextbit := nextbit + 1;
-      AddBinary(blist, i-1);
-      v := i-1;
-      blist[nextbit] := false;
-      nextbit := nextbit + 1;
-    fi;
-    AddBinary(blist, j-1);
-  od;
+    for j in adj[i] do
+      if i < j then
+        continue;
+      elif i-1 = v then
+        blist[nextbit] := false;
+        nextbit := nextbit + 1;
+      elif i-1 = v+1 then
+        blist[nextbit] := true;
+        nextbit := nextbit + 1;
+        v := v + 1;
+      elif i-1 > v+1 then
+        blist[nextbit] := true;
+        nextbit := nextbit + 1;
+        AddBinary(blist, i-1);
+        v := i-1;
+        blist[nextbit] := false;
+        nextbit := nextbit + 1;
+      fi;
+      AddBinary(blist, j-1);
+    od;
   od;
 
   # Add padding bits:
@@ -971,7 +971,7 @@ function(graph)
     od;
   od;
 
-  # Sort decresing edges according to source and then range
+  # Sort decreasing edges according to source and then range
   sort_d := function(i, j)
     if source_d[i] < source_d[j] or (source_d[i] = source_d[j]
       and range_d[i] <= range_d[j]) then
