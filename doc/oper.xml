@@ -423,7 +423,9 @@ gap> gr := DigraphRemoveEdges(gr, [ 10 ]);
     </List>
     
     then this operation returns a new digraph constructed from <A>digraph</A> 
-    by removing the edges specified by <A>edges</A>. <P/>
+    by removing the edges specified by <A>edges</A>. If, in the first case,
+    the pair of vertices <A>edge</A> does not specify an edge of <A>digraph</A>,
+    then a new copy of <A>digraph</A> will be returned.<P/>
 
     <Example><![CDATA[
 gap> gr := CycleDigraph(250000);

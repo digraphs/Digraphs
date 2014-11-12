@@ -650,6 +650,20 @@ gap> gr := EmptyDigraph(1000000);
 <digraph with 1000000 vertices, 0 edges>
 gap> IsDigraphEdge(gr, [ 9999, 9999 ]);
 false
+gap> gr := CompleteDigraph( 10 );
+<digraph with 10 vertices, 90 edges>
+gap> mat := AdjacencyMatrix(gr);;
+gap> IsDigraphEdge( gr, [ 5, 5 ] );
+false
+gap> IsDigraphEdge( gr, [ 5, 6 ] );
+true
+gap> gr := Digraph( [ [ 1, 1 ], [ 2 ] ] );
+<multidigraph with 2 vertices, 3 edges>
+gap> mat := AdjacencyMatrix(gr);;
+gap> IsDigraphEdge(gr, [ 1, 1 ]);
+true
+gap> IsDigraphEdge(gr, [ 1, 2 ]);
+false
 
 # DigraphAddEdge
 gap> gr := RandomDigraph(10);;
@@ -1210,6 +1224,92 @@ the 2nd argument must be a pair of permutations,
 gap> OnMultiDigraphs( gr1, [ (1,3), (1,7) ] );
 Error, Digraphs: OnDigraphs: usage,
 the argument <perms[2]> must permute the edges of the 1st argument <graph>,
+
+# IsReachable( digraph, vertex1, vertex2 )
+gap> gr1 := DigraphRemoveEdges(CycleDigraph(100), [ [ 100, 1 ], [ 99, 100 ] ]);
+<digraph with 100 vertices, 98 edges>
+gap> IsReachable(gr1, 0, 1);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `IsReachable' on 3 arguments
+gap> IsReachable(gr1, 101, 1);
+Error, Digraphs: IsReachable: usage,
+the second and third arguments <u> and <v> must be vertices
+of the first argument <digraph>,
+gap> IsReachable(gr1, 1, 101);
+Error, Digraphs: IsReachable: usage,
+the second and third arguments <u> and <v> must be vertices
+of the first argument <digraph>,
+gap> IsReachable(gr1, 1, 2);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> AdjacencyMatrix(gr1);;
+gap> IsReachable(gr1, 1, 2);
+true
+gap> gr1 := DigraphRemoveEdges(CycleDigraph(100), [ [ 100, 1 ], [ 99, 100 ] ]);;
+gap> IsReachable(gr1, 100, 1);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> DigraphConnectedComponents(gr1);;
+gap> IsReachable(gr1, 100, 1);
+false
+gap> gr1 := CycleDigraph(100);
+<digraph with 100 vertices, 100 edges>
+gap> IsReachable(gr1, 1, 50);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> IsReachable(gr1, 1, 1);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> DigraphStronglyConnectedComponents(gr1);;
+gap> IsReachable(gr1, 1, 50);
+true
+gap> IsReachable(gr1, 1, 1);
+true
+gap> gr1 := Digraph( [ [ 2 ], [ 1 ], [ 3 ], [  ] ] );
+<digraph with 4 vertices, 3 edges>
+gap> IsReachable(gr1, 1, 2);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> IsReachable(gr1, 1, 1);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> IsReachable(gr1, 3, 3);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> IsReachable(gr1, 1, 3);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> IsReachable(gr1, 4, 4);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> DigraphStronglyConnectedComponents(gr1);
+rec( comps := [ [ 1, 2 ], [ 3 ], [ 4 ] ], id := [ 1, 1, 2, 3 ] )
+gap> IsReachable(gr1, 1, 2);
+true
+gap> IsReachable(gr1, 1, 1);
+true
+gap> IsReachable(gr1, 3, 3);
+true
+gap> IsReachable(gr1, 1, 3);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> IsReachable(gr1, 4, 4);
+false
+gap> gr := Digraph(
+> [ [ 1, 3, 4, 5 ], [ ], [ 1, 3, 4, 5 ], [ 1, 3, 4, 5 ], [ 1, 3, 4, 5 ] ]);
+<digraph with 5 vertices, 16 edges>
+gap> IsReachable(gr, 1, 2);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> IsReachable(gr, 1, 4);
+Error, Digraphs: IsReachable: not yet implemented,
+gap> IsTransitiveDigraph(gr);
+true
+gap> IsReachable(gr, 1, 2);
+false
+gap> IsReachable(gr, 1, 4);
+true
+
+# DigraphRemoveAllMultipleEdges
+gap> gr1 := Digraph( [ [ 1, 1, 2, 1 ], [ 1 ] ] );
+<multidigraph with 2 vertices, 5 edges>
+gap> gr2 := DigraphRemoveAllMultipleEdges(gr1);
+<digraph with 2 vertices, 3 edges>
+gap> gr3 := DigraphEdgeUnion(gr1, gr1);
+<multidigraph with 2 vertices, 10 edges>
+gap> gr4 := DigraphRemoveAllMultipleEdges(gr3);
+<digraph with 2 vertices, 3 edges>
+gap> gr2 = gr4;
+true
 
 #
 gap> DigraphsStopTest();
