@@ -297,7 +297,6 @@ function(digraph, edges)
     # Remove edges by index
     remove := edges;
   elif IsRectangularTable(edges) and Length(edges[1]) = 2
-   and IsPosInt(edges[1][1])
    and ForAll(edges, x -> x[1] in verts and x[2] in verts) then
     # Remove edges by [ source, range ]
     if IsMultiDigraph(digraph) then
@@ -370,7 +369,6 @@ function(digraph, edges)
   SetDigraphVertexLabels( gr, DigraphVertexLabels(digraph) );
   SetDigraphEdgeLabels( gr, new_labs );
   return gr;
-
 end);
 
 #
