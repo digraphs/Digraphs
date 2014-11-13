@@ -8,6 +8,10 @@
 #############################################################################
 ##
 
+if not DIGRAPHS_IsGrapeLoaded then 
+  Add(DIGRAPHS_OmitFromTestManualExamples, "Graph(");
+fi;
+
 ReadPackage("digraphs/gap/digraph.gi");
 ReadPackage("digraphs/gap/attr.gi");
 ReadPackage("digraphs/gap/prop.gi");

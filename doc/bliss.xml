@@ -148,6 +148,20 @@ false
 gap> digraph2:=DigraphReverse(digraph1);
 <digraph with 4 vertices, 4 edges>
 gap> IsIsomorphicDigraph(digraph1, digraph2);
+true
+gap> digraph1 := Digraph( [ [ ], [ 9, 8, 9 ], [ 7 ], 
+> [ ], [ ], [ 5, 3 ], [ 8 ], [ 6 ], [ 4, 5 ], [ ] ] );
+<multidigraph with 10 vertices, 10 edges>
+gap> digraph2 := Digraph( [ [ ], [ 4 ], [ ], [ 7 ], [ ], 
+> [ 4, 5, 10, 5 ], [ ], [ 9 ], [ 4, 2 ], [ 2 ] ] );
+<multidigraph with 10 vertices, 10 edges>
+gap> IsIsomorphicDigraph(digraph1, digraph2);
+false
+gap> digraph1 := RandomMultiDigraph(10, 1);
+<digraph with 10 vertices, 1 edge>
+gap> digraph2 := RandomMultiDigraph(10, 1);
+<digraph with 10 vertices, 1 edge>
+gap> IsIsomorphicDigraph(digraph1, digraph2);
 true]]></Example>
   </Description>
 </ManSection>

@@ -92,9 +92,19 @@ end);
 
 InstallGlobalFunction(DigraphsTestManualExamples,
 function()
-  local ex;
+  local ex, omit, str;
 
   ex:=DigraphsManualExamples();
+  omit:=DIGRAPHS_OmitFromTestManualExamples;
+  if Length(omit)>0 then 
+    Print("# not testing examples containing the strings");
+    for str in omit do 
+      ex:=Filtered(ex, x-> PositionSublist(x[1][1], str)=fail);
+      Print(", \"", str, "\"");
+    od;
+    Print(" . . .\n");
+  fi;
+
   DigraphsStartTest();
   RunExamples(ex);
   DigraphsStopTest();
