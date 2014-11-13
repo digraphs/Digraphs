@@ -8,7 +8,10 @@
        returns <K>true</K> if <A>digraph1</A> and <A>digraph2</A> have the same
        vertices, and
        <C>DigraphEdges(<A>digraph1</A>) = DigraphEdges(<A>digraph2</A>)</C>,
-       up to some re-ordering of the edge lists.
+       up to some re-ordering of the edge lists. <P/>
+
+       Note that this operator does not compare the vertex
+       labels or edge labels of <A>digraph1</A> and <A>digraph2</A>.
      </Item>
 
      <Mark><C><A>digraph1</A> &lt; <A>digraph2</A></C></Mark>
@@ -38,7 +41,7 @@
            <M>n_1 &lt; n_2</M>.
          </Item>
          <Item>
-           <M>n_1 = n_2</M>, and <M>m_1 &lt; m_2</M>
+           <M>n_1 = n_2</M>, and <M>m_1 &lt; m_2</M>.
          </Item>
          <Item>
            <M>n_1 = n_2</M>, <M>m_1 = m_2</M>, and <M>e_1 &lt; e_2</M> 
