@@ -1259,13 +1259,13 @@ function(digraph)
   return gr;
 end);
 
-InstallMethod(CopyOutNeighbours, "for a digraph",
+InstallMethod(OutNeighboursCopy, "for a digraph",
 [IsDigraph],
 function(digraph)
   return List(OutNeighbours(digraph), ShallowCopy);
 end);
 
-InstallMethod(CopyOutNeighbors, "for a digraph",
-[IsDigraph], CopyOutNeighbours);
+InstallMethod(OutNeighborsCopy, "for a digraph",
+[IsDigraph], OutNeighboursCopy);
 
 #EOF

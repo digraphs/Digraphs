@@ -1317,7 +1317,7 @@ gap> gr4 := DigraphRemoveAllMultipleEdges(gr3);
 gap> gr2 = gr4;
 true
 
-# CopyOutNeighbours
+# OutNeighboursCopy
 gap> gr := Digraph(
 > [ [ 3 ], [ 10 ], [ 6 ], [ 3 ], [ 10 ], [  ], [ 6 ], [ 3 ], [  ], [ 3 ] ]);
 <digraph with 10 vertices, 8 edges>
@@ -1327,13 +1327,13 @@ gap> IsMutable(out1);
 false
 gap> IsMutable(out1[1]);
 false
-gap> out2 := CopyOutNeighbours(gr);
+gap> out2 := OutNeighboursCopy(gr);
 [ [ 3 ], [ 10 ], [ 6 ], [ 3 ], [ 10 ], [  ], [ 6 ], [ 3 ], [  ], [ 3 ] ]
 gap> IsMutable(out2);
 true
 gap> IsMutable(out2[1]);
 true
-gap> out3 := CopyOutNeighbors(gr);
+gap> out3 := OutNeighborsCopy(gr);
 [ [ 3 ], [ 10 ], [ 6 ], [ 3 ], [ 10 ], [  ], [ 6 ], [ 3 ], [  ], [ 3 ] ]
 gap> IsMutable(out3);
 true
