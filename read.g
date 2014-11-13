@@ -9,7 +9,6 @@
 ##
 
 ReadPackage("digraphs/gap/digraph.gi");
-
 ReadPackage("digraphs/gap/attr.gi");
 ReadPackage("digraphs/gap/prop.gi");
 ReadPackage("digraphs/gap/oper.gi");

@@ -182,7 +182,7 @@ gap> OutNeighbours(last);
 <#GAPDoc Label="OnMultiDigraphs">
 <ManSection>
   <Oper Name="OnMultiDigraphs" Arg="digraph, pair"/>
-  <Oper Name="OnMultiDigraphs" Arg="digraph, perm1, perm2"/>
+  <Oper Name="OnMultiDigraphs" Arg="digraph, perm1, perm2" Label="for a digraph, perm, and perm"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, and <A>pair</A> is a pair consisting of a

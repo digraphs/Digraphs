@@ -94,10 +94,9 @@ vertices of the digraph,
 # Graph
 gap> gr := Digraph( [ [ 2, 2 ], [ ] ] );
 <multidigraph with 2 vertices, 2 edges>
-gap> Graph(gr);
-rec( adjacencies := [ [ 2 ], [  ] ], group := Group(()), isGraph := true, 
-  names := [ 1, 2 ], order := 2, representatives := [ 1, 2 ], 
-  schreierVector := [ -1, -2 ] )
+gap> if DIGRAPHS_IsGrapeLoaded then 
+>   Graph(gr); 
+> fi;
 
 # Digraph (by list of OutNeighbours)
 gap> Digraph( [ [ 0, 1 ] ] );

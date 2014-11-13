@@ -12,7 +12,7 @@
 ##  <!ENTITY VERSION "0.1">
 ##  <!ENTITY GAPVERS "4.7.5">
 ##  <!ENTITY GRAPEVERS "4.5">
-##  <!ENTITY IOVERS "4.4">
+##  <!ENTITY IOVERS "4.4.4">
 ##  <!ENTITY ARCHIVENAME "digraphs-0.1">
 ##  <!ENTITY COPYRIGHTYEARS "2014">
 ##  <#/GAPDoc>
@@ -121,8 +121,8 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">=4.7.5",
-  NeededOtherPackages := [["io", ">=4.4.4"], ["grape", ">=4.5"]],
-  SuggestedOtherPackages := [["gapdoc", ">=1.5.1"]], 
+  NeededOtherPackages := [["io", ">=4.4.4"]],
+  SuggestedOtherPackages := [["gapdoc", ">=1.5.1"], ["grape", ">=4.5"]], 
   ExternalConditions := [],
 ),
 
