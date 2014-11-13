@@ -130,7 +130,8 @@ Dependencies := rec(
     if (not "digraphs" in SHOW_STAT()) and
       (Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") = fail)
      then
-      Info(InfoWarning, 1, "Digraphs: kernel functions are not compiled.");
+      Info(InfoWarning, 1, "Digraphs: the kernel module is not compiled, ",
+      "the package cannot be loaded.");
       return fail;
     fi;
     return true;
