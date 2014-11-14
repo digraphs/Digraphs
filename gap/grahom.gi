@@ -215,7 +215,6 @@ SearchForEndomorphisms:=function(map, condition, neighbours, result, limit, G)
     fi;
   od;
   
-  map  := ShallowCopy(map);
   todo := condition[pos];
   vals := BlistList([1..nr], map);
   reps := BlistList([1..nr], List(Orbits(G, Difference([1..nr], Set(map)), OnPoints), x -> x[1]));
@@ -246,8 +245,8 @@ GraphEndomorphisms := function(digraph, limit)
   return result;
 end;
 
-#endocandidate:=function(digraph,t)
-#  local o;
-#  o:=DigraphEdges(digraph);
-#  return IsSubset(o,OnSetsTuples(o,t));
-#end;
+IsEndomorphism:=function(digraph,t)
+  local o;
+  o:=DigraphEdges(digraph);
+  return IsSubset(o,OnSetsTuples(o,t));
+end;
