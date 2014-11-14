@@ -40,6 +40,7 @@ DeclareOperation("DigraphReverse", [IsDigraph]);
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphReverseEdges", [IsDigraph, IsList]);
+DeclareOperation("DigraphReverseEdgesNC", [IsDigraph, IsList]);
 DeclareOperation("DigraphDisjointUnion", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphEdgeUnion", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphJoin", [IsDigraph, IsDigraph]);

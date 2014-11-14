@@ -82,13 +82,17 @@ end);
 
 InstallMethod(DigraphReverse, "for a digraph",
 [IsDigraph],
-function(graph)
+function(digraph)
   local old, new, i, j;
 
-  old := OutNeighbours(graph);
-  new := List(DigraphVertices(graph), x -> [ ]);
+  if HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph) then
+    return DigraphCopy(digraph);
+  fi;
 
-  for i in DigraphVertices(graph) do 
+  old := OutNeighbours(digraph);
+  new := List(DigraphVertices(digraph), x -> [ ]);
+
+  for i in DigraphVertices(digraph) do 
     for j in old[i] do 
       Add(new[j], i);
     od;
@@ -99,16 +103,17 @@ end);
 
 #
 
-InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
+InstallMethod(DigraphReverseEdges, "for a digraph and a rectangular table",
 [IsDigraph, IsRectangularTable],
 function(digraph, edges)
-  local current, nredges, out, new, i;
-
+  
   if IsMultiDigraph(digraph) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
     "the first argument <digraph> must not be a multigraph,");
     return;
   fi;
+
+  # A rectangular table is always non-empty so
 
   if not IsPosInt(edges[1][1]) or 
     not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
@@ -116,17 +121,23 @@ function(digraph, edges)
     "the second argument <edges> must be a list of edges of <digraph>,");
     return;
   fi;
- 
-  Sort(edges);
+
+  return DigraphReverseEdgesNC(digraph, edges);
+end);
+
+InstallMethod(DigraphReverseEdgesNC, "for a digraph and a rectangular table",
+[IsDigraph, IsRectangularTable],
+function(digraph, edges)
+  local current, nredges, out, new, i;
+
+  Sort(edges); # Why are we sorting these edges?
+
   current := 1;
-
-
-  nredges := Length(edges); 
+  nredges := Length(edges);
   out := OutNeighbours(digraph);
-  new := [];
-  for i in [ 1 .. Length(DigraphVertices(digraph)) ] do
-    new[i] := ShallowCopy(out[i]);
-    while current <= nredges and  edges[current][1]  = i do
+  new := OutNeighboursCopy(digraph);
+  for i in DigraphVertices(digraph) do
+    while current <= nredges and edges[current][1] = i do
       Remove(new[i], Position(new[i], edges[current][2]));
       current := current + 1;
     od;
@@ -142,10 +153,10 @@ end);
 #
 
 # can we use IsListOf... jj
-InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
+InstallMethod(DigraphReverseEdges, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edges)
-  local nredges, current, out, new, pos_l, pos_h, toadd, pos, temp, i, edge;
+  local nredges;
 
   if IsMultiDigraph(digraph) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
@@ -166,7 +177,16 @@ function(digraph, edges)
     return;
   fi;
 
-  Sort(edges); 
+  return DigraphReverseEdgesNC(digraph, edges);
+end);
+
+InstallMethod(DigraphReverseEdgesNC, "for a digraph and a list",
+[IsDigraph, IsList],
+function(digraph, edges)
+  local nredges, current, out, new, pos_l, pos_h, toadd, pos, temp, i, edge;
+
+  nredges := DigraphNrEdges(digraph);
+  Sort(edges); # Why are we sorting the edges?
   current := edges[1];
   out := OutNeighbours(digraph);  
   new := [];
@@ -175,7 +195,7 @@ function(digraph, edges)
 
   toadd := [];
   pos := 1;
-  for i in [ 1 .. Length(DigraphVertices(digraph)) ] do
+  for i in DigraphVertices(digraph) do
     pos_h := pos_h + Length(out[i]);
     new[i] := ShallowCopy(out[i]);
     while pos_l < current and current <= pos_h do
@@ -428,10 +448,9 @@ end);
 InstallMethod(DigraphAddEdgesNC, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edges)
-  local out, new, verts, edge;
+  local new, verts, edge;
 
-  out := OutNeighbours(digraph);
-  new := List( out, ShallowCopy );
+  new := OutNeighboursCopy(digraph);
   verts := DigraphVertices( digraph );
   for edge in edges do
     Add( new[ edge[1] ], edge[2] );
@@ -487,14 +506,10 @@ end);
 InstallMethod(DigraphAddVerticesNC, "for a digraph, a pos int and a list",
 [IsDigraph, IsInt, IsList],
 function(digraph, m, names)
-  local out, new, n, newverts, nam, i;
+  local n, new, newverts, out, nam, i;
   
-  out := OutNeighbours(digraph);
   n := DigraphNrVertices(digraph);
-  new := EmptyPlist(n);
-  for i in DigraphVertices(digraph) do
-    new[i] := ShallowCopy(out[i]);
-  od;
+  new := OutNeighboursCopy(digraph);
   newverts := [ (n + 1) .. (n + m) ];
   for i in newverts do
     new[i] := [ ];
@@ -622,7 +637,7 @@ function(graph, perm)
     return;
   fi;
  
-  adj := List( OutNeighbours(graph), ShallowCopy );
+  adj := OutNeighboursCopy(graph);
   adj := Permuted(adj, perm);
   Apply(adj, x-> OnTuples(x, perm));
 
@@ -674,11 +689,11 @@ function(digraph)
   n := DigraphNrVertices(digraph);
   if not (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph))
    and n > 1 then
-    verts := ShallowCopy(DigraphVertices(digraph));
+    verts := [ 1 .. n ]; # We don't want DigraphVertices as that's immutable
     mat := List( verts, x -> verts * 0 );
-    out := OutNeighbours(digraph);
+    new := OutNeighboursCopy(digraph);
     for i in verts do
-      for j in out[i] do
+      for j in new[i] do
         if j < i then
           mat[j][i] := mat[j][i] - 1;
         else
@@ -686,7 +701,6 @@ function(digraph)
         fi;
       od;
     od;
-    new := List( out, ShallowCopy );
     for i in verts do
       for j in [ i + 1 .. n ] do
         x := mat[i][j];

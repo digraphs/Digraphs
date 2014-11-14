@@ -32,6 +32,7 @@
     <#Include Label="DigraphRemoveEdge">
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphRemoveLoops">
+    <#Include Label="DigraphReverseEdges">
     <#Include Label="DigraphDisjointUnion">
     <#Include Label="DigraphJoin">
   </Section>

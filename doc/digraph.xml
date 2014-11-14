@@ -199,15 +199,16 @@ gap> DigraphByEdges(
   <Returns>A digraph.</Returns>
   <Description>
 
-  If <A>in</A> is a list of lists of positive integers in the range from 
-  <C>1</C> to <C>Length(<A>in</A>)</C>, then this function returns the
-  digraph with vertices <M>E^0=</M><C>[ 1 .. Length(<A>in</A>) ]</C>, and 
+  If <A>in</A> is a list of lists of positive integers in the range 
+  <C>[1..Length(<A>in</A>)]</C>, then this function returns the
+  digraph with vertices <M>E^0=</M><C>[1..Length(<A>in</A>)]</C>, and 
   edges corresponding to the entries of <A>in</A>. More precisely, there is an 
-  edge from vertex <C>i</C> to <C>j</C> if <C>i</C> is in <C><A>in</A>[j]</C>;
-  the source of this edge is <C>i</C> and the range is <C>j</C>.
+  with source vertex <C>i</C> and range vertex <C>j</C> if <C>i</C> is in 
+  <C><A>in</A>[j]</C>. <P/>
+
   If <C>i</C> occurs multiple times in <C><A>in</A>[j]</C>, then there are 
   multiple edges from <C>i</C> to <C>j</C>.
-    
+
     <Example><![CDATA[
 gap> gr := DigraphByInNeighbours( [
 > [ 2, 5, 8, 10 ], [ 2, 3, 4, 5, 6, 8, 9, 10 ], 
@@ -227,10 +228,12 @@ gap> gr := DigraphByInNeighbours( [ [ 2, 3, 2 ], [ 1 ], [ 1, 2, 3 ] ] );
   <Returns>A digraph.</Returns>
   <Description>
     If <A>trans</A> is transformation and <A>n</A> is a non-negative integer,
-    then this function returns a functional digraph with <A>n</A> 
-    vertices, corresponding to <A>trans</A>. Specifically, the graph has 
-    <A>n</A> edges, and for each vertex <M>x</M>, there is a unique edge with
-    source <M>x</M> and range <M>x</M>^<A>trans</A>.
+    then this function returns the functional digraph with <A>n</A> 
+    vertices defined by <A>trans</A>. See <Ref Prop="IsFunctionalDigraph"/>.
+    
+    Specifically, the graph has  <A>n</A> edges: for each vertex <M>x</M>, 
+    there is a unique edge with source <M>x</M>; this edge has range 
+    <M>x</M>^<A>trans</A>.
     <P/>
 
     If the optional second argument <A>n</A> is not supplied, then the degree
