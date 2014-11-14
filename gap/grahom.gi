@@ -170,3 +170,84 @@ function(digraph)
   fi; 
  
 end);
+
+SearchForEndomorphisms:=function(map, condition, neighbours, result, limit, G)
+  local nr, min, pos, todo, vals, reps, i, j;
+  
+  if Length(result) = limit then 
+    return;
+  fi;
+  #Print("at depth: ", Length(map), "\n");
+  condition:=StructuralCopy(condition);
+  nr := Length(condition[1]);
+
+  for i in [1..Length(map)] do
+    if IsBound(map[i]) then 
+      for j in ListBlist([1..nr], neighbours[i]) do
+        INTER_BLIST(condition[j], neighbours[map[i]]);
+        if SIZE_BLIST(condition[j]) = 0 then 
+          return;
+        fi;
+      od;
+    fi;
+  od;
+
+  for i in [ 1 .. nr ] do
+    if IsBound(map[i]) then
+      condition[i]:=BlistList([1..nr], [map[i]]);
+    fi;
+  od;
+
+  #Print(map,condition,"\n");
+  if ForAll(condition, x-> SizeBlist(x) = 1) then 
+    Add(result, Transformation(List(condition, x-> ListBlist([1..nr], x)[1])));
+    Print("found ", Length(result), "\n");
+    return;
+  fi;
+
+  min := Length(neighbours) + 1;
+  pos := 0;
+
+  for i in [ 1 .. nr ] do 
+    if (not IsBound(map[i])) and SizeBlist(condition[i]) < min then
+      min := SizeBlist(condition[i]);
+      pos := i;
+    fi;
+  od;
+  
+  map  := ShallowCopy(map);
+  todo := condition[pos];
+  vals := BlistList([1..nr], map);
+  reps := BlistList([1..nr], List(Orbits(G, Difference([1..nr], Set(map)), OnPoints), x -> x[1]));
+
+  for i in [1..nr] do 
+    if todo[i] then 
+      map[pos] := i;
+      if vals[i] then 
+        SearchForEndomorphisms(map, condition, neighbours, result, limit, G);
+      elif reps[i] then 
+        SearchForEndomorphisms(map, condition, neighbours, result, limit, Stabilizer(G, i));
+      fi;
+      Unbind(map[pos]);
+    fi;
+  od;
+
+  return;
+end;
+
+GraphEndomorphisms := function(digraph, limit)
+  local result, nr, nbs;
+
+  result := [];
+  nr := DigraphNrVertices(digraph);
+  nbs := List(OutNeighbours(digraph), x -> BlistList([ 1 .. nr ], x));
+  SearchForEndomorphisms([], List([ 1 .. nr ], x -> BlistList([ 1 .. nr ], 
+  [ 1 .. nr ])), nbs, result, limit, AutomorphismGroup(digraph));
+  return result;
+end;
+
+#endocandidate:=function(digraph,t)
+#  local o;
+#  o:=DigraphEdges(digraph);
+#  return IsSubset(o,OnSetsTuples(o,t));
+#end;
