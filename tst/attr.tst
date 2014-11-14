@@ -111,6 +111,11 @@ gap> gr := Digraph(r);
 <digraph with 4 vertices, 0 edges>
 gap> DigraphDual(gr);
 <digraph with 4 vertices, 16 edges>
+gap> gr := Digraph(r);;
+gap> SetDigraphVertexLabels(gr, [ 4, 3, 2, 1 ] );
+gap> gr2 := DigraphDual(gr);;
+gap> DigraphVertexLabels(gr2);
+[ 4, 3, 2, 1 ]
 
 # AdjacencyMatrix
 gap> gr:=Digraph( rec( nrvertices := 10, 

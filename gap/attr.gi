@@ -10,23 +10,25 @@
 
 InstallMethod(DigraphDual, "for a digraph", 
 [IsDigraph], 
-function(graph)
-  local verts, old, new, i;
+function(digraph)
+  local verts, old, new, gr, i;
   
-  if IsMultiDigraph(graph) then 
+  if IsMultiDigraph(digraph) then 
     Error("Digraphs: DigraphDual: usage,\n", 
       "the argument <graph> must not have multiple edges,");
     return;
   fi;
   
-  verts := DigraphVertices(graph);
-  old := OutNeighbours(graph);
+  verts := DigraphVertices(digraph);
+  old := OutNeighbours(digraph);
   new := [  ];
 
   for i in verts do 
     new[i] := DifferenceLists(verts, old[i]);
   od;
-  return DigraphNC(new);
+  gr := DigraphNC(new);
+  SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
+  return gr;
 end);
 
 #
