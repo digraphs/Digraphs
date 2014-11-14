@@ -795,9 +795,10 @@ InstallMethod(InducedSubdigraph,
 "for a digraph and a homogeneous list",
 [IsDigraph, IsHomogeneousList],
 function( digraph, subverts )
-  local n, old, nr, lookup, adj, j, l, i, k, new;
+  local nr, n, old_labs, old_adj, new_labs, new_adj, offsets, lookup, new_edge_count, adji, j, old_edge_count, l, gr, i, k;
 
-  if IsEmpty(subverts) then
+  nr := Length(subverts);
+  if nr = 0 then
     return DigraphNC( [ ] );
   fi;
 
@@ -811,31 +812,41 @@ function( digraph, subverts )
     "of the vertices of the first argument <digraph>,");
     return;
   fi;
+
+  old_labs := DigraphEdgeLabels(digraph);
+  old_adj  := OutNeighbours(digraph);
+  new_labs := [  ];
+  new_adj  := EmptyPlist(nr);
   
-  nr := Length(subverts);
-  old := OutNeighbours(digraph);
-  new := EmptyPlist(nr);
+  offsets := EmptyPlist(n);
+  offsets[1] := 0;
+  for i in [ 2 .. Maximum(subverts) ] do
+    offsets[ i ] := offsets[ i - 1 ] + Length( old_adj[ i - 1 ] );
+  od;
+
   lookup := [ 1 .. n ] * 0;
   lookup{subverts} := [ 1 .. nr ];
+  new_edge_count := 0;
 
   for i in [ 1 .. nr ] do 
-    adj := [ ];
+    adji := [  ];
     j := 0;
-    for k in old[ subverts[i] ] do
-      l := lookup[k];
+    for k in [ 1 .. Length(old_adj[ subverts[i] ]) ] do
+      l := lookup[ old_adj[ subverts[i] ][k] ];
       if l <> 0 then
         j := j + 1;
-        adj[j] := l;
+        adji[ j ] := l;
+        new_edge_count := new_edge_count + 1;
+        new_labs[ new_edge_count ] := old_labs[ offsets[subverts[i]] + k ];
       fi;
     od;
-    new[i] := adj;
+    new_adj[i] := adji;
   od;
   
-  new := DigraphNC(new);
-  SetDigraphVertexLabels(new, DigraphVertexLabels(digraph){subverts});
-  #JDM need to set this correctly!
-  #SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
-  return new;
+  gr := DigraphNC(new_adj);
+  SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){subverts});
+  SetDigraphEdgeLabels(gr, new_labs);
+  return gr;
 end);
 
 #

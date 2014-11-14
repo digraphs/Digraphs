@@ -362,7 +362,7 @@ gap> OutDegrees(gr);
 gap> OutDegreeOfVertex(gr, 1);
 4
 
-# InducedSubdigraph (source and range version)
+# InducedSubdigraph
 gap> r := rec( nrvertices := 8,
 > source := [ 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 5, 5, 5, 5, 5, 5 ],
 > range  := [ 1, 1, 2, 3, 3, 4, 1, 1, 3, 4, 5, 1, 3, 4, 4, 5, 7 ] );
@@ -436,6 +436,18 @@ gap> InducedSubdigraph( gr, [ 8 ] );
 <digraph with 1 vertex, 0 edges>
 gap> InducedSubdigraph( gr, [ 7, 8 ] );
 <digraph with 2 vertices, 0 edges>
+gap> gr := Digraph( [  [ 2, 4 ], [ 4, 5 ], [ 2, 5, 5 ], [ 5, 5 ] , [ 3 ] ] );
+<multidigraph with 5 vertices, 10 edges>
+gap> DigraphEdgeLabels(gr);
+[ 1 .. 10 ]
+gap> gri := InducedSubdigraph(gr, [ 4, 2, 5 ] );
+<multidigraph with 3 vertices, 4 edges>
+gap> DigraphVertexLabels(gri);
+[ 4, 2, 5 ]
+gap> DigraphEdgeLabels(gri);
+[ 8, 9, 3, 4 ]
+gap> OutNeighbours(gri);
+[ [ 3, 3 ], [ 1, 3 ], [  ] ]
 
 # QuotientDigraph
 gap> gr := CompleteDigraph(2);
