@@ -37,8 +37,7 @@ gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ],
 <digraph with 5 vertices, 11 edges>
 gap> DigraphVertexLabels(gr);
 [ 1 .. 5 ]
-gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
-> range := [  ], source := [  ] ) );
+gap> gr := Digraph( [ "a", "b", "c" ], [  ], [  ] );
 <digraph with 3 vertices, 0 edges>
 gap> DigraphVertexLabels(gr);
 [ "a", "b", "c" ]
@@ -81,8 +80,7 @@ gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ],
 <digraph with 5 vertices, 11 edges>
 gap> DigraphVertexLabel(gr, 3);
 3
-gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
-> range := [  ], source := [  ] ) );
+gap> gr := Digraph( [ "a", "b", "c" ], [  ], [  ] );
 <digraph with 3 vertices, 0 edges>
 gap> DigraphVertexLabel(gr, 2);
 "b"
@@ -112,9 +110,9 @@ gap> DigraphReverse(gr);
 <digraph with 5 vertices, 11 edges>
 gap> OutNeighbours(last);
 [ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ]
-gap> gr := Digraph( rec( nrvertices := 4,
-> source := [ 1, 1, 1, 2, 3, 3, 4, 4 ], 
-> range := [ 1, 2, 4, 1, 2, 4, 3, 4 ] ) );
+gap> gr := Digraph( 4,
+> [ 1, 1, 1, 2, 3, 3, 4, 4 ], 
+> [ 1, 2, 4, 1, 2, 4, 3, 4 ] );
 <digraph with 4 vertices, 8 edges>
 gap> gr:=DigraphReverse(gr);
 <digraph with 4 vertices, 8 edges>
@@ -144,16 +142,18 @@ gap> DigraphSource(gr);
     outputmight. Also if the argument <A>edges</A> is an empty list, the
     digraph itself is returned.<P/>
     <Example><![CDATA[
-gap> gr := Digraph(rec(nrvertices := 21, source := [1,1,1,5,7,9,11,21],
-> range := [7,2,8,21,19,1,2,1]));
+gap> gr := Digraph( 21,
+> [ 1, 1, 1, 5, 7, 9, 11, 21 ],
+> [ 7, 2, 8, 21, 19, 1, 2, 1 ]);
 <digraph with 21 vertices, 8 edges>
-gap> gr2 := DigraphReverseEdges(gr, [1,2,3]);
+gap> gr2 := DigraphReverseEdges(gr, [ 1, 2, 3 ] );
 <digraph with 21 vertices, 8 edges>
-gap> gr = DigraphReverseEdges(gr2, [[7,1], [2,1], [8,1]]);
+gap> gr = DigraphReverseEdges( gr2,
+> [ [ 7, 1 ], [ 2, 1 ], [ 8, 1 ] ] );
 true
 gap> gr2 := DigraphReverseEdge(gr, 4);
 <digraph with 21 vertices, 8 edges>
-gap> gr2 = DigraphReverseEdge(gr, [5, 21]);
+gap> gr2 = DigraphReverseEdge(gr, [ 5, 21 ]);
 true
 ]]></Example>
   </Description>
@@ -305,9 +305,9 @@ true
     accessed via <Ref Oper="DigraphVertexLabels"/>.
 
     <Example><![CDATA[
-gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
-> source := [ "a", "a", "b", "c", "c" ],
-> range  := [ "b", "c", "a", "a", "c" ] ) );
+gap> gr := Digraph( [ "a", "b", "c" ],
+> [ "a", "a", "b", "c", "c" ],
+> [ "b", "c", "a", "a", "c" ] );
 <digraph with 3 vertices, 5 edges>
 gap> DigraphVertexLabels(gr);
 [ "a", "b", "c" ]
@@ -397,13 +397,14 @@ gap> DigraphEdges(gr3);
 
     <Example><![CDATA[
 gap> func := function(n)
->  local record, i;
->  record := rec( nrvertices := n, source := [  ], range := [  ] );
+>  local source, range, i;
+>  source := [  ];
+>  range  := [  ];
 >  for i in [ 1 .. n - 2 ] do 
->    Add(record.source, i);
->    Add(record.range, i + 1);
+>    Add(source, i);
+>    Add(range, i + 1);
 >  od;
->  return Digraph(record);
+>  return Digraph( n, source, range );
 > end;;
 gap> gr := func(1024);
 <digraph with 1024 vertices, 1022 edges>
@@ -529,11 +530,13 @@ gap> OutNeighbours(last);
     If <A>digraph</A> is a digraph, and <A>verts</A> is a subset of the 
     vertices of <A>digraph</A>, then this operation returns a digraph 
     constructed from <A>digraph</A> by retaining precisely those vertices in 
-    <A>verts</A>, and those edges whose source and range are both contained in
-    <A>verts</A>. <P/>
+    <A>verts</A>, and those edges whose source and range vertices are both
+    contained in <A>verts</A>. <P/>
+
     The vertices of the induced subdigraph are 
-    <C>[ 1 .. Length(verts) ]</C> but the original names can be accessed via 
-    <Ref Oper="DigraphVertexLabels"/>.
+    <C>[ 1 .. Length(verts) ]</C> but the original vertex labels can be 
+    accessed via <Ref Oper="DigraphVertexLabels"/>. The original edge labels
+    can be accessed via <Ref Oper="DigraphEdgeLabels"/>.
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1, 1, 2, 3, 4, 4 ], [ 1, 3, 4 ], [ 3, 1 ], 
 > [ 1, 1 ] ] ); 
@@ -763,9 +766,7 @@ gap> QuotientDigraph( EmptyDigraph(0), [ ] );
     <A>list</A><C>[2]</C> is the range of an edge in <A>digraph</A>, and false 
     otherwise. <P/>
 <Example><![CDATA[
-gap> gr := Digraph( rec( nrvertices := 6,
-> source := [ 1, 1, 2, 4, 6 ],
-> range  := [ 2, 2, 6, 3, 1 ] ) );
+gap> gr := Digraph( 6, [ 1, 1, 2, 4, 6 ], [ 2, 2, 6, 3, 1 ] );
 <multidigraph with 6 vertices, 5 edges>
 gap> IsDigraphEdge( gr, [ 1, 1 ] );
 false

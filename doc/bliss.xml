@@ -97,20 +97,20 @@ gap> Size(G);
       Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
     Tommi Junttila and Petteri Kaski.
     <Example><![CDATA[
-gap> G := Digraph( rec(
->  nrvertices := 10,
->  source := [ 1, 1, 3, 4, 4, 5, 8, 8 ],
->  range := [ 6, 3, 3, 9, 10, 9, 4, 10 ],
->   ) );
+gap> G := Digraph( 
+>  10,
+>  [ 1, 1, 3, 4, 4, 5, 8, 8 ],
+>  [ 6, 3, 3, 9, 10, 9, 4, 10 ]
+>  );
 <digraph with 10 vertices, 8 edges>
 gap> DigraphCanonicalLabelling(G);
 (1,8,5,3,10,6,4,9,7)
 gap> p := (1,2,7,5)(3,9)(6,10,8);;
-gap> H := Digraph( rec(
->  nrvertices := 10,
->  source := OnTuples([ 1, 1, 3, 4, 4, 5, 8, 8 ], p),
->  range := OnTuples([ 6, 3, 3, 9, 10, 9, 4, 10 ], p),
->   ) );
+gap> H := Digraph( 
+>  10,
+>  OnTuples([ 1, 1, 3, 4, 4, 5, 8, 8 ], p),
+>  OnTuples([ 6, 3, 3, 9, 10, 9, 4, 10 ], p)
+>  );
 <digraph with 10 vertices, 8 edges>
 gap> G = H;
 false

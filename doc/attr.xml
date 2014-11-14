@@ -146,8 +146,9 @@ gap> gr := Digraph( [ [ 1, 3, 4, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ],
 > [ 2, 4, 5 ], [ 1 ] ] );;
 gap> DigraphNrEdges(gr);
 15
-gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
-> source := [ "a", "b", "b" ], range := [ "b", "a", "a" ] ) );
+gap> gr := Digraph( [ "a", "b", "c" ],
+> [ "a", "b", "b" ],
+> [ "b", "a", "a" ] );
 <multidigraph with 3 vertices, 3 edges>
 gap> DigraphNrEdges(gr);
 3]]></Example>
@@ -173,18 +174,21 @@ gap> DigraphNrEdges(gr);
     lists, whereas the function <C>OutNeighboursCopy</C> returns a mutable list
     of mutable lists. <P/>
     <Example><![CDATA[
-gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
-> source := [ "a", "b", "b" ], range := [ "b", "a", "c" ] ) );
+gap> gr := Digraph( [ "a", "b", "c" ],
+> [ "a", "b", "b" ],
+> [ "b", "a", "c" ] );
 <digraph with 3 vertices, 3 edges>
 gap> OutNeighbours(gr);
 [ [ 2 ], [ 1, 3 ], [  ] ]
-gap> gr := Digraph( rec( vertices := [ 1 .. 3 ], 
-> source := [ 1, 2, 3, 1, 1, 2 ], range := [ 1, 2, 3, 2, 3, 1 ] ) );
+gap> gr := Digraph( 3, 
+> [ 1, 2, 3, 1, 1, 2 ],
+> [ 1, 2, 3, 2, 3, 1 ] );
 <digraph with 3 vertices, 6 edges>
 gap> OutNeighbours(gr);
 [ [ 1, 2, 3 ], [ 2, 1 ], [ 3 ] ]
-gap> gr := Digraph( rec( vertices := [ 1 .. 3 ],
-> source := [ 1, 2, 3, 1, 1, 2, 1 ], range := [ 1, 2, 3, 2, 3, 1, 2 ] ) );
+gap> gr := Digraph( 3,
+> [ 1, 2, 3, 1, 1, 2, 1 ],
+> [ 1, 2, 3, 2, 3, 1, 2 ] );
 <multidigraph with 3 vertices, 7 edges>
 gap> OutNeighbours(gr);
 [ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ]
@@ -210,18 +214,21 @@ gap> OutNeighboursCopy(gr);
     Note that each entry of <C>inn</C> is sorted into ascending order. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
-> source := [ "a", "b", "b" ], range := [ "b", "a", "c" ] ) );
+gap> gr := Digraph( [ "a", "b", "c" ],
+> [ "a", "b", "b" ],
+> [ "b", "a", "c" ] );
 <digraph with 3 vertices, 3 edges>
 gap> InNeighbours(gr);
 [ [ 2 ], [ 1 ], [ 2 ] ]
-gap> gr := Digraph( rec( vertices := [ 1 .. 3 ], 
-> source := [ 1, 2, 3, 1, 1, 2 ], range := [ 1, 2, 3, 2, 3, 1 ] ) );
+gap> gr := Digraph( 3, 
+> [ 1, 2, 3, 1, 1, 2 ],
+> [ 1, 2, 3, 2, 3, 1 ] );
 <digraph with 3 vertices, 6 edges>
 gap> InNeighbours(gr);
 [ [ 1, 2 ], [ 1, 2 ], [ 1, 3 ] ]
-gap> gr := Digraph( rec( vertices := [ 1 .. 3 ],
-> source := [ 1, 2, 3, 1, 1, 2, 1 ], range := [ 1, 2, 3, 2, 3, 1, 2 ] ) );
+gap> gr := Digraph( 3,
+> [ 1, 2, 3, 1, 1, 2, 1 ],
+> [ 1, 2, 3, 2, 3, 1, 2 ] );
 <multidigraph with 3 vertices, 7 edges>
 gap> InNeighbours(gr);
 [ [ 1, 2 ], [ 1, 1, 2 ], [ 1, 3 ] ]
@@ -296,13 +303,15 @@ gap> InDegreeSequence(gr);
     <B>Note that:</B> the vertices of a digraph are always a range of
     positive integers from <C>1</C> to the number of vertices of the graph. 
     <Example><![CDATA[
-gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
-> source := [ "a", "b", "b" ], range := [ "b", "c", "a" ] ) );
+gap> gr := Digraph( [ "a", "b", "c" ],
+> [ "a", "b", "b" ],
+> [ "b", "c", "a" ] );
 <digraph with 3 vertices, 3 edges>
 gap> DigraphVertices(gr);
 [ 1 .. 3 ]
-gap> gr := Digraph( rec( vertices := [ 1, 2, 3, 4, 5, 7 ],
-> source := [ 1, 2, 2, 4, 4 ], range := [ 2, 3, 5, 3, 5 ] ) );
+gap> gr := Digraph( [ 1, 2, 3, 4, 5, 7 ],
+> [ 1, 2, 2, 4, 4 ],
+> [ 2, 3, 5, 3, 5 ] );
 <digraph with 6 vertices, 5 edges>
 gap> DigraphVertices(gr);
 [ 1 .. 6 ]
@@ -321,13 +330,15 @@ gap> DigraphVertices(RandomDigraph(100));
     Returns the number of vertices of the digraph <A>digraph</A>. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
-> source := [ "a", "b", "b" ], range := [ "b", "c", "a" ] ) );
+gap> gr := Digraph( [ "a", "b", "c" ],
+> [ "a", "b", "b" ],
+> [ "b", "c", "a" ] );
 <digraph with 3 vertices, 3 edges>
 gap> DigraphNrVertices(gr);
 3
-gap> gr := Digraph( rec( vertices := [ 1, 2, 3, 4, 5, 7 ],
-> source := [ 1, 2, 2, 4, 4 ], range := [ 2, 3, 5, 3, 5 ] ) );
+gap> gr := Digraph( [ 1, 2, 3, 4, 5, 7 ],
+> [ 1, 2, 2, 4, 4 ], 
+> [ 2, 3, 5, 3, 5 ] );
 <digraph with 6 vertices, 5 edges>
 gap> DigraphNrVertices(gr);
 6
@@ -361,8 +372,9 @@ gap> DigraphNrVertices(RandomDigraph(100));
     <M>n</M> is the number of vertices in the digraph. 
     
     <Example><![CDATA[
-gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
-> source := [ "a", "b", "b" ], range := [ "b", "c", "a" ] ) );
+gap> gr := Digraph( [ "a", "b", "c" ],
+> [ "a", "b", "b" ],
+> [ "b", "c", "a" ] );
 <digraph with 3 vertices, 3 edges>
 gap> DigraphStronglyConnectedComponents(gr);
 rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
@@ -398,8 +410,9 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
     <M>n</M> is the number of vertices in the digraph. 
     
     <Example><![CDATA[
-gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ],
-> source := [ "a", "b", "b" ], range := [ "b", "c", "a" ] ) );
+gap> gr := Digraph( [ "a", "b", "c" ],
+> [ "a", "b", "b" ], 
+> [ "b", "c", "a" ] );
 <digraph with 3 vertices, 3 edges>
 gap> DigraphConnectedComponents(gr);
 rec( comps := [ [ 1, 2, 3 ] ], id := [ 1, 1, 1 ] )
