@@ -19,8 +19,15 @@ if (not IsBound(DIGRAPHS_C)) and
   "digraphs.so"));
 fi;
 
-ReadPackage("digraphs/gap/digraph.gd");
+BindGlobal("DIGRAPHS_IsGrapeLoaded", IsPackageMarkedForLoading("grape", "4.5"));
 
+if not DIGRAPHS_IsGrapeLoaded then 
+  IsGraph := ReturnFalse;
+  Vertices := IdFunc;
+  Adjacency := IdFunc;
+fi;
+
+ReadPackage("digraphs/gap/digraph.gd");
 ReadPackage("digraphs/gap/attr.gd");
 ReadPackage("digraphs/gap/prop.gd");
 ReadPackage("digraphs/gap/oper.gd");

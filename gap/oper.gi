@@ -628,6 +628,7 @@ function(graph, perm)
 
   out := DigraphNC(adj);
   SetDigraphVertexLabels(out, Permuted(DigraphVertexLabels(graph), perm));
+  # don't set the edge labels . . .
   return out;
 end);
 

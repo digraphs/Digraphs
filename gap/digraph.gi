@@ -926,8 +926,8 @@ function(digraph)
 
   out := List(OutNeighbours(digraph), ShallowCopy);
   gr := DigraphNC(out);
-  SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
-  SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph));
+  SetDigraphVertexLabels(gr, StructuralCopy(DigraphVertexLabels(digraph)));
+  SetDigraphEdgeLabels(gr, StructuralCopy(DigraphEdgeLabels(digraph)));
   return gr;
 end);
 

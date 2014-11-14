@@ -32,8 +32,22 @@ gap> graph5:=ReadDigraphs(Concatenation(DigraphsDir(), "/data/graph5.g6"));
   <digraph with 5 vertices, 14 edges>, <digraph with 5 vertices, 16 edges>, 
   <digraph with 5 vertices, 14 edges>, <digraph with 5 vertices, 16 edges>, 
   <digraph with 5 vertices, 18 edges>, <digraph with 5 vertices, 20 edges> ]
-gap> List(graph5, AutomorphismGroup)                                           
-> = List(graph5, gr-> AutomorphismGroup(Graph(gr)));
+gap> group5 := [ 
+>  Group([ (4,5), (3,4), (2,3), (1,2) ]), Group([ (1,5), (3,4), (2,3) ]), 
+>  Group([ (1,2), (3,4) ]), Group([ (2,3), (1,2) ]), Group([ (3,4), (2,3), (1,
+>   2) ]), Group([ (2,5), (1,2)(4,5) ]), Group([ (1,4), (2,3) ]), 
+>  Group([ (4,5), (1,4), (2,3) ]), Group([ (1,5)(2,4) ]), Group([ (1,4) ]), 
+>  Group([ (2,3) ]), Group([ (1,4), (2,3) ]), Group([ (2,3)(4,5) ]), 
+>  Group([ (4,5), (1,2), (1,4)(2,5) ]), Group([ (4,5), (1,2) ]), 
+>  Group([ (1,2) ]), Group([ (1,2) ]), Group([ (4,5), (2,3), (1,2) ]), 
+>  Group([ (4,5), (2,3), (1,2) ]), Group([ (3,5), (1,3), (2,4) ]), 
+>  Group([ (1,2)(3,4) ]), Group([ (1,3) ]), Group([ (2,4), (1,2)(3,4) ]), 
+>  Group([ (4,5), (3,4), (1,3) ]), Group([ (1,3) ]), Group([ (3,4), (1,3) ]), 
+>  Group([ (2,5)(3,4), (1,2,3,4,5) ]), Group([ (1,5)(2,4) ]), Group([ (1,4)
+>  (2,3) ]), Group([ (4,5), (1,3) ]), Group([ (3,5), (1,2) ]), 
+>  Group([ (3,4), (1,2), (1,3)(2,4) ]), Group([ (4,5), (3,4), (1,2) ]), 
+>  Group([ (4,5), (3,4), (2,3), (1,2) ]) ];;
+gap> List(graph5, AutomorphismGroup) = group5;                                          
 true
 gap> trees:=ReadDigraphs(Concatenation(DigraphsDir(), "/data/tree9.4.txt"));
 [ <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
@@ -43,21 +57,31 @@ gap> trees:=ReadDigraphs(Concatenation(DigraphsDir(), "/data/tree9.4.txt"));
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges> ]
-gap> List(trees, AutomorphismGroup) 
-> =List(trees, gr-> AutomorphismGroup(Graph(gr))); 
+gap> treeAuts := [ 
+>  Group([ (6,7), (5,6), (4,5), (3,4) ]), Group([ (6,7), (5,6), (4,5), (2,
+>   3) ]), Group([ (3,4), (2,3), (6,7), (5,6), (2,5)(3,6)(4,7)(8,9) ]), 
+>  Group([ (5,6), (4,5), (3,4), (1,2)(7,8) ]), Group([ (5,6), (4,5), (3,4) ]), 
+>  Group([ (5,6), (4,5), (2,3) ]), Group([ (5,6), (4,5), (2,3) ]), 
+>  Group([ (5,6), (3,4), (2,3) ]), Group([ (5,6), (4,5), (2,3)(7,8) ]), 
+>  Group([ (5,6), (3,4), (1,2), (1,3)(2,4)(7,8) ]), Group([ (4,5), (2,3)
+>  (7,8), (1,2)(6,7) ]), Group([ (3,4), (1,2)(6,7) ]), Group([ (4,5), (2,3),
+>  (2,4)(3,5)(7,8) ]), Group([ (3,4)(7,8), (2,3)(6,7), (1,2)(5,6) ]) ];;
+gap> List(trees, AutomorphismGroup) = treeAuts;
 true
 
 # AutomorphismGroup: this example is broken if we use Digraphs rather than
-# Graphs in the bliss code
-gap> G:=PrimitiveGroup(45,3);;
-gap> H:=Stabilizer(G,1);;
-gap> S:=Filtered(Orbits(H,[1..45]),x->(Size(x)=4))[1];;
-gap> graph:=EdgeOrbitsGraph(G,List(S,x->[1,x]));;
-gap> gr:=Digraph(graph);
+# Graphs in the bliss code (PJC's example)
+gap> gr := DigraphFromDigraph6String(Concatenation(
+> "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?A?S??", 
+> "?OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO??`?_O??G?@",
+> "?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W?????K???__O[????",
+> "??O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G?O??A@??D??G?C_?A??O?_G",
+> "A??@@?_?G???E?IW??????_@G?C??"
+> ));
 <digraph with 45 vertices, 180 edges>
 gap> H:=AutomorphismGroup(gr);
-<permutation group with 6 generators>
-gap> IsomorphismGroups(G, H) <> fail;
+<permutation group with 5 generators>
+gap> IsomorphismGroups(PrimitiveGroup(45,3), H) <> fail;
 true
 
 # AutomorphismGroup: some random examples
@@ -90,16 +114,18 @@ gap> AutomorphismGroup(gr);
 gap> Size(last);
 56294995342131200
 
-# DigraphCanonicalLabelling: non-multigraph
-gap> G:=PrimitiveGroup(45,3);;                                        
-gap> H:=Stabilizer(G,1);;
-gap> S:=Filtered(Orbits(H,[1..45]),x->(Size(x)=4))[1];;
-gap> graph:=EdgeOrbitsGraph(G,List(S,x->[1,x]));;
-gap> gr:=Digraph(graph);
+# DigraphCanonicalLabelling: non-multigraph, PJC's example
+gap> gr := DigraphFromDigraph6String(Concatenation(
+> "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?A?S??", 
+> "?OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO??`?_O??G?@",
+> "?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W?????K???__O[????",
+> "??O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G?O??A@??D??G?C_?A??O?_G",
+> "A??@@?_?G???E?IW??????_@G?C??"
+> ));
 <digraph with 45 vertices, 180 edges>
 gap> DigraphCanonicalLabelling(gr);
-(1,45,3,36,20,13,12,18,16,19,22,14,44,17,31,28,43,39,42,41,40,29,24,6,33,34,4,
-26,5,15,30,11,10,7,25,37,2,27,21,23,9,38)
+(1,45,23,34,3,13,26,22,27,2,9,31,10,8,17,41,44,18,36,21,24)(4,15,38,20,28,40,
+37,5,35,14,39,30,25,32,42,29,7,16,6,11,33,12)
 gap> gr:=DigraphFromDiSparse6String(Concatenation(
 > ".~?@caOa??gGEA?e@?oOIb_SIc?MQBhOQCwIV?PY@B@IRDGgL__sYao{ODWCNC@MKBOwUEHGTdPmE",
 > "BwkXFGoV_ogNCGCIBO{ZGGGFD@U?APGUDwW_GWGGFAU??PKUE@eDA`?TFAi?A_{da@GgaosVEQciIw",
