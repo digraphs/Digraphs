@@ -546,6 +546,27 @@ gap> DigraphEdges(gr);
 gap> gr := CycleDigraph(1000);
 <digraph with 1000 vertices, 1000 edges>
 
+# ChainDigraph
+gap> gr := ChainDigraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `ChainDigraph' on 1 arguments
+gap> gr := ChainDigraph(1);
+<digraph with 1 vertex, 0 edges>
+gap> IsEmptyDigraph(gr);
+true
+gap> gr = EmptyDigraph(1);
+true
+gap> gr := ChainDigraph(10);
+<digraph with 10 vertices, 9 edges>
+gap> OutNeighbours(gr);
+[ [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], [  ] ]
+gap> grrt := DigraphReflexiveTransitiveClosure(gr);
+<digraph with 10 vertices, 55 edges>
+gap> IsPartialOrderBinaryRelation(AsBinaryRelation(grrt));
+true
+gap> IsAntisymmetricDigraph(grrt);
+true
+
 # CompleteBipartiteDigraph
 gap> gr := CompleteBipartiteDigraph(2, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound

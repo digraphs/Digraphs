@@ -44,6 +44,7 @@
   </Section>
 
   <Section><Heading>Standard examples</Heading>
+    <#Include Label="ChainDigraph">
     <#Include Label="CompleteDigraph">
     <#Include Label="CompleteBipartiteDigraph">
     <#Include Label="CycleDigraph">

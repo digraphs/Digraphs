@@ -262,7 +262,8 @@ gap> AsDigraph(f, 4);
     If the optional second argument <A>p</A> is a float with value 
     <M>0 \leq <A> p </A> \leq 1</M>, then an edge will exist between each 
     pair of vertices with probability approximately <A>p</A>.
-    If <A>p</A> is not specified, then a random probability will be assumed.
+    If <A>p</A> is not specified, then a random probability will be assumed
+    (chosen with uniform probability).
     <Log><![CDATA[
 gap> RandomDigraph(1000);
 <digraph with 1000 vertices, 364444 edges>
@@ -282,7 +283,7 @@ gap> RandomDigraph(10000, 0.023);
     digraph with <A>n</A> vertices. If the optional second argument 
     <A>m</A> is a positive integer, then the digraph will have <A>m</A>
     edges. If <A>m</A> is not specified, then the number of edges will be
-    chosen randomly from the range 
+    chosen randomly (with uniform probability) from the range 
     <C>[ 1 .. </C><M>{n \choose 2}</M><C> ]</C>.
     <P/>
 
@@ -315,6 +316,27 @@ gap> RandomTournament(10);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="ChainDigraph">
+<ManSection>
+  <Oper Name="ChainDigraph" Arg="n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer, this function returns a chain 
+    with <A>n</A> vertices and <A>n</A><C> - 1</C> edges.
+    Specifically,
+    for each vertex <C>i</C> (with <M>i &lt; n</M>), there is a directed 
+    edge with source <C>i</C> and range <C>i + 1</C>. <P/>
+    
+    The <Ref Oper="DigraphReflexiveTransitiveClosure"/> of a chain represents a
+    total order.<P/>
+    <Log><![CDATA[
+gap> ChainDigraph(42);
+<digraph with 42 vertices, 41 edges>
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="CompleteDigraph">
 <ManSection>
   <Oper Name="CompleteDigraph" Arg="n"/>
@@ -342,8 +364,8 @@ gap> CompleteDigraph(20);
 
     If <A>m</A> and <A>n</A> are positive integers, this function 
     returns the complete bipartite digraph with vertex sets of size
-    <A>m</A> (containing the vertices <C>[ 1 .. m ]</C>) and size
-    <A>n</A> (containing the vertices <C>[ (m + 1) .. n ]</C>). 
+    <A>m</A> (containing the vertices <C>[1..m]</C>) and size
+    <A>n</A> (containing the vertices <C>[(m+1)..n]</C>). 
     <Log><![CDATA[
 gap> CompleteBipartiteDigraph(2, 3);
 <digraph with 5 vertices, 12 edges>
@@ -358,7 +380,7 @@ gap> CompleteBipartiteDigraph(2, 3);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> is a non-negative integer, this function returns the empty 
-    digraph with <A>n</A> vertices. See <Ref Prop="IsEmptyDigraph"/> <P/>
+    digraph with <A>n</A> vertices. An empty digraph is one with no edges. <P/>
     <Log><![CDATA[
 gap> EmptyDigraph(20);
 <digraph with 20 vertices, 0 edges>

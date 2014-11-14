@@ -58,6 +58,7 @@ DeclareOperation("CompleteBipartiteDigraph", [IsPosInt, IsPosInt]);
 DeclareOperation("CompleteDigraph", [IsInt]);
 DeclareOperation("EmptyDigraph", [IsInt]);
 DeclareOperation("CycleDigraph", [IsPosInt]);
+DeclareOperation("ChainDigraph", [IsPosInt]);
 
 DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphVertexLabels", [IsDigraph]);

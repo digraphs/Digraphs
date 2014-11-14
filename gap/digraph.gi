@@ -386,6 +386,38 @@ end);
 
 #
 
+InstallMethod(ChainDigraph, "for a positive integer",
+[IsPosInt],
+function(n)
+  local gr, i, out;
+
+  if n = 1 then
+    return EmptyDigraph(1);
+  fi;
+  
+  out := EmptyPlist(n);
+  for i in [ 1 .. n - 1 ] do
+    out[i] := [ i + 1 ];
+  od;
+  out[n] := [  ];
+  gr := DigraphNC( out );
+  if n = 2 then
+    SetIsTransitiveDigraph(gr, true);
+  else
+    SetIsTransitiveDigraph(gr, false);
+  fi;
+  SetDigraphHasLoops(gr, false);
+  SetIsAcyclicDigraph(gr, true);
+  SetIsMultiDigraph(gr, false);
+  SetDigraphNrEdges(gr, n - 1);
+  SetIsConnectedDigraph(gr, true);
+  SetIsStronglyConnectedDigraph(gr, false);
+  SetIsFunctionalDigraph(gr, false);
+  return gr;
+end);
+
+#
+
 InstallMethod(CompleteBipartiteDigraph, "for two positive integers",
 [IsPosInt, IsPosInt],
 function(m, n)
