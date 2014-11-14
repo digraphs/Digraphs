@@ -1633,6 +1633,73 @@ Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
     else return INTOBJ_INT(count);
 }
 
+Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
+  Int   nrgens, i, j, max, fst, m, img, n;
+  int   *dom1, *dom2, *orb;
+  Obj   reps, gen;
+  UInt2 *ptr;
+
+  nrgens = LEN_PLIST(gens);
+  max = 0;
+  for (i = 1; i <= nrgens; i++) {
+    gen = ELM_PLIST(gens, i);
+    j = DEG_PERM2(gen);
+    ptr = ADDR_PERM2(gen);
+    while (j > max && ptr[j - 1] == j - 1) j--;
+    if (j > max) {
+      max = j;
+    }
+  }
+  dom1 = calloc(max, sizeof(int));
+  dom2 = calloc(max, sizeof(int));
+
+  reps = NEW_PLIST(T_PLIST_CYC, 0);
+  SET_LEN_PLIST(reps, 0);
+  m = 0; //number of orbit reps
+
+  PLAIN_LIST(D);
+  for (i = 1; i <= LEN_PLIST(D); i++) {
+    j = INT_INTOBJ(ELM_PLIST(D, i));
+    if (j <= max) {
+      dom1[j - 1] = 1;
+    } else {
+      AssPlist(reps, ++m, INTOBJ_INT(j));
+    }
+  }      
+
+  fst = 0; 
+  while (dom1[fst] != 1 && fst < max) fst++;
+
+  orb = malloc(max * sizeof(int));
+
+  while (fst < max) {
+    AssPlist(reps, ++m, INTOBJ_INT(fst + 1));
+    orb[0] = fst;
+    n = 1; //length of orb
+    dom2[fst] = 1;
+    dom1[fst] = 0;
+
+    for (i = 0; i < n; i++) {
+      for (j = 1; j <= nrgens; j++) {
+        gen = ELM_PLIST(gens, j);
+        img = IMAGE(orb[i], ADDR_PERM2(gen), DEG_PERM2(gen));
+        //Pr("img = %d\n", (Int) img, 0L);
+        if (dom2[img] == 0) {
+          
+          orb[n++] = img;
+          dom2[img] = 1;
+          dom1[img] = 0;
+        }
+      }
+    }
+    while (dom1[fst] != 1 && fst < max) fst++; 
+  }
+  free(dom1);
+  free(dom2);
+  free(orb);
+  return reps;
+}
+
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
 
 /******************************************************************************
@@ -1741,6 +1808,10 @@ static StructGVarFunc GVarFuncs [] = {
     "gra1obj, gra2obj, tryinit, maxdepth, constraintsobj, maxanswers, result, onlyinjective",
     FuncGRAPH_HOMOMORPHISMS,
     "grahom.c:FuncGRAPH_HOMOMORPHISMS" },
+  
+  { "ORBIT_REPS_PERMS", 2, "gens, D",
+    FuncORBIT_REPS_PERMS,
+    "src/digraphs.c:FuncORBIT_REPS_PERMS" },
 
   { 0 }
 

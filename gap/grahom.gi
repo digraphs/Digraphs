@@ -171,15 +171,23 @@ function(digraph)
  
 end);
 
-SearchForEndomorphisms:=function(map, condition, neighbours, result, limit, G)
+SearchForEndomorphisms:=function(map, condition, neighbours, result, limit, G, depth)
   local nr, min, pos, todo, vals, reps, i, j;
+  
+  #Print(map,condition,"\n");
+  nr := Length(condition[1]);
+  if depth = nr then 
+    Add(result, Transformation(List(condition, x-> ListBlist([1..nr], x)[1])));
+    Print("found ", Length(result), "\n");
+    return;
+  fi;
   
   if Length(result) = limit then 
     return;
   fi;
+
   #Print("at depth: ", Length(map), "\n");
   condition:=StructuralCopy(condition);
-  nr := Length(condition[1]);
 
   for i in [1..Length(map)] do
     if IsBound(map[i]) then 
@@ -198,13 +206,6 @@ SearchForEndomorphisms:=function(map, condition, neighbours, result, limit, G)
     fi;
   od;
 
-  #Print(map,condition,"\n");
-  if ForAll(condition, x-> SizeBlist(x) = 1) then 
-    Add(result, Transformation(List(condition, x-> ListBlist([1..nr], x)[1])));
-    Print("found ", Length(result), "\n");
-    return;
-  fi;
-
   min := Length(neighbours) + 1;
   pos := 0;
 
@@ -217,15 +218,16 @@ SearchForEndomorphisms:=function(map, condition, neighbours, result, limit, G)
   
   todo := condition[pos];
   vals := BlistList([1..nr], map);
-  reps := BlistList([1..nr], List(Orbits(G, Difference([1..nr], Set(map)), OnPoints), x -> x[1]));
+  reps := BlistList([1..nr], List(ORBIT_REPS_PERMS(G, Difference([1..nr], Set(map))), x -> x[1]));
 
   for i in [1..nr] do 
     if todo[i] then 
       map[pos] := i;
       if vals[i] then 
-        SearchForEndomorphisms(map, condition, neighbours, result, limit, G);
+        SearchForEndomorphisms(map, condition, neighbours, result, limit, G, depth + 1);
       elif reps[i] then 
-        SearchForEndomorphisms(map, condition, neighbours, result, limit, Stabilizer(G, i));
+        SearchForEndomorphisms(map, condition, neighbours, result, limit, 
+         Stabilizer(G, i), depth + 1);
       fi;
       Unbind(map[pos]);
     fi;
@@ -241,7 +243,7 @@ GraphEndomorphisms := function(digraph, limit)
   nr := DigraphNrVertices(digraph);
   nbs := List(OutNeighbours(digraph), x -> BlistList([ 1 .. nr ], x));
   SearchForEndomorphisms([], List([ 1 .. nr ], x -> BlistList([ 1 .. nr ], 
-  [ 1 .. nr ])), nbs, result, limit, AutomorphismGroup(digraph));
+  [ 1 .. nr ])), nbs, result, limit, AutomorphismGroup(digraph), 0);
   return result;
 end;
 
