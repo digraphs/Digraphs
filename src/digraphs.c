@@ -1635,23 +1635,43 @@ Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
 
 Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
   Int   nrgens, i, j, max, fst, m, img, n;
-  int   *dom1, *dom2, *orb;
   Obj   reps, gen;
-  UInt2 *ptr;
+  UInt2 *ptr2;
+  UInt4 *ptr4;
 
   nrgens = LEN_PLIST(gens);
   max = 0;
   for (i = 1; i <= nrgens; i++) {
     gen = ELM_PLIST(gens, i);
-    j = DEG_PERM2(gen);
-    ptr = ADDR_PERM2(gen);
-    while (j > max && ptr[j - 1] == j - 1) j--;
-    if (j > max) {
-      max = j;
+    if (TNUM_OBJ(gen) == T_PERM2) {
+      j = DEG_PERM2(gen);
+      ptr2 = ADDR_PERM2(gen);
+      while (j > max && ptr2[j - 1] == j - 1){
+        j--;
+      }
+      if (j > max) {
+        max = j;
+      }
+    } else if (TNUM_OBJ(gen) == T_PERM4) {
+      j = DEG_PERM4(gen);
+      ptr4 = ADDR_PERM4(gen);
+      while (j > max && ptr4[j - 1] == j - 1){
+        j--;
+      }
+      if (j > max) {
+        max = j;
+      }
+    } else {
+      ErrorQuit("expected a perm, didn't get one", 0L, 0L);
     }
   }
-  dom1 = calloc(max, sizeof(int));
-  dom2 = calloc(max, sizeof(int));
+  
+  int dom1[max]; // = calloc(max, sizeof(int));
+  int dom2[max]; // = calloc(max, sizeof(int));
+  int orb[max]; // malloc(max * sizeof(int));
+
+  memset(dom1, 0, max * sizeof(int)); 
+  memset(dom2, 0, max * sizeof(int)); 
 
   reps = NEW_PLIST(T_PLIST_CYC, 0);
   SET_LEN_PLIST(reps, 0);
@@ -1670,7 +1690,6 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
   fst = 0; 
   while (dom1[fst] != 1 && fst < max) fst++;
 
-  orb = malloc(max * sizeof(int));
 
   while (fst < max) {
     AssPlist(reps, ++m, INTOBJ_INT(fst + 1));
@@ -1682,7 +1701,11 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
     for (i = 0; i < n; i++) {
       for (j = 1; j <= nrgens; j++) {
         gen = ELM_PLIST(gens, j);
-        img = IMAGE(orb[i], ADDR_PERM2(gen), DEG_PERM2(gen));
+        if (TNUM_OBJ(gen) == T_PERM2){
+          img = IMAGE(orb[i], ADDR_PERM2(gen), DEG_PERM2(gen));
+        } else {
+          img = IMAGE(orb[i], ADDR_PERM4(gen), DEG_PERM2(gen));
+        }
         //Pr("img = %d\n", (Int) img, 0L);
         if (dom2[img] == 0) {
           
@@ -1694,9 +1717,9 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
     }
     while (dom1[fst] != 1 && fst < max) fst++; 
   }
-  free(dom1);
-  free(dom2);
-  free(orb);
+  //free(dom1);
+  //free(dom2);
+  //free(orb);
   return reps;
 }
 
