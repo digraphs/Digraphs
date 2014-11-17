@@ -172,19 +172,16 @@ function(digraph)
 end);
 
 SearchForEndomorphisms:=function(map, condition, neighbours, S, limit, G, depth)
-  local nr, x, min, pos, todo, vals, pts, reps, i, j;
-  
-  #Print(map,condition,"\n");
+  local nr, x, r, min, pos, todo, vals, pts, reps, i, j;
   nr := Length(condition[1]);
   if depth = nr then 
     x :=  Transformation(List(condition, x-> ListBlist([1..nr], x)[1]));
     S[1] := ClosureSemigroup(S[1], x); 
-    max := Maximum(max, RankOfTransformation(x,
-    DegreeOfTransformationSemigroup(S[1])));
+    r := RankOfTransformation(x, DegreeOfTransformationSemigroup(S[1]));
 
     #Add(result, Transformation(List(condition, x-> ListBlist([1..nr], x)[1])));
     Print("found ", Size(S[1]), ", ", Length(Generators(S[1])), 
-    " generators, max rank is ", max, "\n");
+    " generators, generator rank is ", r, "\n");
     return;
   fi;
   
@@ -230,14 +227,18 @@ SearchForEndomorphisms:=function(map, condition, neighbours, S, limit, G, depth)
   #reps2 := BlistList([1..nr], List(Orbits(G, Difference([1..nr], Set(map)), OnPoints), x -> x[1]));
   
   for i in [1..nr] do 
-    if todo[i] then 
+    if todo[i] and reps[i] then 
       map[pos] := i;
-      if vals[i] then 
-        SearchForEndomorphisms(map, condition, neighbours, S, limit, G, depth + 1);
-      elif reps[i] then 
-        SearchForEndomorphisms(map, condition, neighbours, S, limit, 
-         Stabilizer(G, i), depth + 1);
-      fi;
+      SearchForEndomorphisms(map, condition, neighbours, S, limit, 
+       Stabilizer(G, i), depth + 1);
+      Unbind(map[pos]);
+    fi;
+  od;
+  for i in [1..nr] do 
+    if todo[i] and vals[i] then 
+      map[pos] := i;
+      SearchForEndomorphisms(map, condition, neighbours, S, limit, 
+       Stabilizer(G, i), depth + 1);
       Unbind(map[pos]);
     fi;
   od;

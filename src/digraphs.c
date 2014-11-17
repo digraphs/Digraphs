@@ -1690,7 +1690,6 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
   fst = 0; 
   while (dom1[fst] != 1 && fst < max) fst++;
 
-
   while (fst < max) {
     AssPlist(reps, ++m, INTOBJ_INT(fst + 1));
     orb[0] = fst;
