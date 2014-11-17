@@ -1447,7 +1447,6 @@ static Obj results;
 
 static num tablesinitialised = 0;
 static num oneone[MAXVERT];
-static num onezero[MAXVERT];
 static num ones[MAXVERT];
 static num count;
 static num maxresults;
@@ -1460,9 +1459,8 @@ static void inittabs(void)
     num i;
     num v = 1;
     num w = 1;
-    for (i = 0; i < MAXVERT; i++) {
+    for (i = 0;i < MAXVERT;i++) {
         oneone[i] = w;
-        onezero[i] = ~w;
         ones[i] = v;
         w <<= 1;
         v |= w;
@@ -1640,13 +1638,9 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
   Obj   reps, gen;
   UInt2 *ptr2;
   UInt4 *ptr4;
-  
-  /*if (TNUM_OBJ(gens) != T_PLIST) {
-    ErrorQuit("expected a plain list, didn't get one", 0L, 0L);
-  }*/
 
   nrgens = LEN_PLIST(gens);
-  max = 0; // the largest moved point of any element in gens
+  max = 0;
   for (i = 1; i <= nrgens; i++) {
     gen = ELM_PLIST(gens, i);
     if (TNUM_OBJ(gen) == T_PERM2) {
@@ -1671,48 +1665,37 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
       ErrorQuit("expected a perm, didn't get one", 0L, 0L);
     }
   }
- 
-  if (max > 64) {
-    ErrorQuit("this func only works for perms on [1..64]", 0L, 0L);
-  }
-
-  if (!tablesinitialised) inittabs();
-
-  num dom1 = 0; //int dom1[max]; // = calloc(max, sizeof(int));
-  num dom2 = 0; //int dom2[max]; // = calloc(max, sizeof(int));
+  
+  int dom1[max]; // = calloc(max, sizeof(int));
+  int dom2[max]; // = calloc(max, sizeof(int));
   int orb[max]; // malloc(max * sizeof(int));
 
-  //memset(dom1, 0, max * sizeof(int)); 
-  //memset(dom2, 0, max * sizeof(int)); 
+  memset(dom1, 0, max * sizeof(int)); 
+  memset(dom2, 0, max * sizeof(int)); 
 
   reps = NEW_PLIST(T_PLIST_CYC, 0);
   SET_LEN_PLIST(reps, 0);
   m = 0; //number of orbit reps
 
-  //TODO check the argument D is ok
   PLAIN_LIST(D);
   for (i = 1; i <= LEN_PLIST(D); i++) {
     j = INT_INTOBJ(ELM_PLIST(D, i));
     if (j <= max) {
-      //dom1[j - 1] = 1;
-      dom1 |= oneone[j - 1];
+      dom1[j - 1] = 1;
     } else {
       AssPlist(reps, ++m, INTOBJ_INT(j));
     }
   }      
 
   fst = 0; 
-  // find first point not yet processed
-  while ((dom1 & oneone[fst]) == 0 && fst < max) fst++;
+  while (dom1[fst] != 1 && fst < max) fst++;
 
   while (fst < max) {
     AssPlist(reps, ++m, INTOBJ_INT(fst + 1));
     orb[0] = fst;
     n = 1; //length of orb
-    dom2 |= oneone[fst];
-    //dom2[fst] = 1;
-    dom1 &= onezero[fst];
-    //dom1[fst] = 0;
+    dom2[fst] = 1;
+    dom1[fst] = 0;
 
     for (i = 0; i < n; i++) {
       for (j = 1; j <= nrgens; j++) {
@@ -1723,17 +1706,15 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
           img = IMAGE(orb[i], ADDR_PERM4(gen), DEG_PERM2(gen));
         }
         //Pr("img = %d\n", (Int) img, 0L);
-        if ((dom2 & oneone[img]) == 0) {
+        if (dom2[img] == 0) {
+          
           orb[n++] = img;
-
-          dom2 |= oneone[img];
-          //dom2[img] = 1;
-          dom1 &= onezero[img];
-          //dom1[img] = 0;
+          dom2[img] = 1;
+          dom1[img] = 0;
         }
       }
     }
-    while ((dom1 & oneone[fst]) == 0 && fst < max) fst++;
+    while (dom1[fst] != 1 && fst < max) fst++; 
   }
   //free(dom1);
   //free(dom2);
