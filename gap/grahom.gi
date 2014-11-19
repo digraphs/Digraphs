@@ -179,7 +179,7 @@ SearchForEndomorphisms:=function(map, condition, neighbours, S, limit, G, depth,
     x := Transformation(List(condition, x-> ListBlist([1..nr], x)[1]));
     S[1] := ClosureSemigroup(S[1], x); 
     r := RankOfTransformation(x, DegreeOfTransformationSemigroup(S[1]));
-
+    Print(x);
     #Add(result, Transformation(List(condition, x-> ListBlist([1..nr], x)[1])));
     Print("found ", Size(S[1]), ", ", Length(Generators(S[1])), 
      " generators, generator rank is ", r, "\n");
@@ -195,18 +195,14 @@ SearchForEndomorphisms:=function(map, condition, neighbours, S, limit, G, depth,
   
   if pos <> 0 then 
     for j in ListBlist([1..nr], neighbours[pos]) do
-      INTER_BLIST(condition[j], neighbours[map[pos]]);
-      if SIZE_BLIST(condition[j]) = 0 then 
-        return;
+      if j > pos then 
+        INTER_BLIST(condition[j], neighbours[map[pos]]);
+        if SIZE_BLIST(condition[j]) = 0 then 
+          return;
+        fi;
       fi;
     od;
   fi;
-
-  #for i in [ 1 .. nr ] do
-  #  if IsBound(map[i]) then
-  #    condition[i]:=BlistList([1..nr], [map[i]]);
-  #  fi;
-  #od;
 
   min := Length(neighbours) + 1;
   pos := 0;

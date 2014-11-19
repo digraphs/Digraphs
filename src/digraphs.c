@@ -1830,7 +1830,7 @@ void OrbitReps (Obj gens, int* vals, int sizeVals, int* reps) {
       if (i <= max) {
         dom1[i] = 1;
       } else {
-        reps[m++] = i;
+        reps[i] = 1;
       }
     }      
   }
@@ -1890,22 +1890,22 @@ void SEARCH_ENDOS (Obj   map,          // a transformation 2
   memcpy((void *) copy, 
          (void *) condition, 
          (size_t) (nr * nr) * sizeof(int));
-
   
   ptr = ADDR_TRANS2(map);
   if (depth != 0) {
-    for (j = 0; j < nr; j++){
-      l = neighbours[nr * (depth - 1) + j];
-      isEmpty = true;
-      for (k = 0; k < nr; k++) {
-        copy[nr * l + k] *= neighbours[nr * ptr[depth - 1] + k];
-        if (copy[nr * l + k] == 1) {
-          isEmpty = false;
+    for (j = depth; j < nr; j++){
+      if (neighbours[nr * (depth - 1) + j] != 0) {
+        isEmpty = true;
+        for (k = 0; k < nr; k++) {
+          copy[nr * j + k] *= neighbours[nr * ptr[depth - 1] + k];
+          if (copy[nr * j + k] == 1) {
+            isEmpty = false;
+          }
         }
-      }
-      if (isEmpty) {
-        free(copy);
-        return;
+        if (isEmpty) {
+          free(copy);
+          return;
+        }
       }
     }
   }
@@ -1915,6 +1915,13 @@ void SEARCH_ENDOS (Obj   map,          // a transformation 2
   memset(reps, 0, sizeof(int) * nr);
   OrbitReps(gens, vals, nr, reps);
   
+  //find smallest list here!
+  for (i = 0; i < nr; i++) {
+    if (vals[i] == 0) {
+      for (j = 0; j < nr; j++) {
+        if (copy
+  
+  
   for (i = 0; i < nr; i++) {
     if (copy[nr * depth + i] && reps[i] == 1) {
       (ADDR_TRANS2(map))[depth] = i;
@@ -1923,15 +1930,14 @@ void SEARCH_ENDOS (Obj   map,          // a transformation 2
           CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1)), 
           depth + 1, hook, user_param, Stabilizer);
       vals[i] = 0;
-      (ADDR_TRANS2(map))[depth] = 0;
     }
   }
   for (i = 0; i < nr; i++) {
     if (copy[nr * depth + i] && vals[i] == 1) {
       (ADDR_TRANS2(map))[depth] = i;
+      // could pass reps here!
       SEARCH_ENDOS(map, vals, nr, rank, copy, neighbours, gens, depth + 1, hook,
           user_param, Stabilizer);
-      (ADDR_TRANS2(map))[depth] = 0;
     }
   }
   free(copy);
@@ -1957,9 +1963,10 @@ void endo_hook_function(Obj map,
   for(i = 0; i < n; i++){
     ptr2[i] = ptr1[i];
   }
-  
+   
   AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
   CHANGED_BAG(user_param);
+  Pr("found %d endomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
 }
 
 Obj FuncGRAPH_ENDOS (Obj self, Obj graph, Obj gens, Obj Stabilizer) {
