@@ -171,7 +171,4 @@ gap> gr2 := DigraphReverseEdge(gr, 2);
 <digraph with 7 vertices, 12 edges>
 
 #
-gap> DigraphsStopTest();
-
-#
-gap> STOP_TEST( "Digraphs package: testinstall.tst", 0);
+gap> STOP_TEST( "Digraphs package: testinstall.tst");

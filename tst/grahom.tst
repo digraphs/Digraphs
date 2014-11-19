@@ -113,7 +113,4 @@ Error, Digraphs: EndomorphismMonoid: usage,
 the argument <digraph> must not be a multigraph,
 
 #
-gap> DigraphsStopTest();
-
-#
-gap> STOP_TEST( "Digraphs package: grahom.tst", 0);
+gap> STOP_TEST( "Digraphs package: grahom.tst");

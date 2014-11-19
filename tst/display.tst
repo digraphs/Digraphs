@@ -101,7 +101,4 @@ gap> DotSymmetricDigraph(gr){[ 12 .. 70 ]};
 #"\n4 -- 5\n5 -- 6\n5 -- 6\n6 -- 7\n6 -- 7\n7 -- 8\n7 -- 8\n}"
 
 #
-gap> DigraphsStopTest();
-
-#
-gap> STOP_TEST( "Digraphs package: display.tst", 0);
+gap> STOP_TEST( "Digraphs package: display.tst");
