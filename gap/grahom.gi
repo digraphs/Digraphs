@@ -174,8 +174,9 @@ end);
 SearchForEndomorphisms:=function(map, condition, neighbours, S, limit, G, depth, pos)
   local nr, x, r, min, todo, vals, pts, reps, i, j;
   nr := Length(condition[1]);
+  
   if depth = nr then 
-    x :=  Transformation(List(condition, x-> ListBlist([1..nr], x)[1]));
+    x := Transformation(List(condition, x-> ListBlist([1..nr], x)[1]));
     S[1] := ClosureSemigroup(S[1], x); 
     r := RankOfTransformation(x, DegreeOfTransformationSemigroup(S[1]));
 
@@ -241,6 +242,13 @@ SearchForEndomorphisms:=function(map, condition, neighbours, S, limit, G, depth,
   od;
 
   return;
+end;
+
+STAB:= function(gens, pt)
+  if gens = [] then 
+    return [()];
+  fi;
+  return GeneratorsOfGroup(Stabilizer(Group(gens), pt));
 end;
 
 GraphEndomorphisms := function(digraph, limit)

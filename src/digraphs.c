@@ -1723,9 +1723,9 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
     }
   }
   
-  int dom1[max]; // = calloc(max, sizeof(int));
-  int dom2[max]; // = calloc(max, sizeof(int));
-  int orb[max]; // malloc(max * sizeof(int));
+  int  dom1[max]; // = calloc(max, sizeof(int));
+  int  dom2[max]; // = calloc(max, sizeof(int));
+  UInt orb[max]; // malloc(max * sizeof(int));
 
   memset(dom1, 0, max * sizeof(int)); 
   memset(dom2, 0, max * sizeof(int)); 
@@ -1760,7 +1760,7 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
         if (TNUM_OBJ(gen) == T_PERM2){
           img = IMAGE(orb[i], ADDR_PERM2(gen), DEG_PERM2(gen));
         } else {
-          img = IMAGE(orb[i], ADDR_PERM4(gen), DEG_PERM2(gen));
+          img = IMAGE(orb[i], ADDR_PERM4(gen), DEG_PERM4(gen));
         }
         //Pr("img = %d\n", (Int) img, 0L);
         if (dom2[img] == 0) {
@@ -1777,6 +1777,229 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
   //free(dom2);
   //free(orb);
   return reps;
+}
+
+// vals is a blist corresponding to the complement of the domain we are acting
+// on. 
+
+void OrbitReps (Obj gens, int* vals, int sizeVals, int* reps) {
+  Int    nrgens, i, j, max, fst, m, img, n;
+  Obj    gen;
+  UInt2  *ptr2;
+  UInt4  *ptr4;
+
+  nrgens = LEN_PLIST(gens);
+  max = 0;
+  for (i = 1; i <= nrgens; i++) {
+    gen = ELM_PLIST(gens, i);
+    if (TNUM_OBJ(gen) == T_PERM2) {
+      j = DEG_PERM2(gen);
+      ptr2 = ADDR_PERM2(gen);
+      while (j > max && ptr2[j - 1] == j - 1){
+        j--;
+      }
+      if (j > max) {
+        max = j;
+      }
+    } else if (TNUM_OBJ(gen) == T_PERM4) {
+      j = DEG_PERM4(gen);
+      ptr4 = ADDR_PERM4(gen);
+      while (j > max && ptr4[j - 1] == j - 1){
+        j--;
+      }
+      if (j > max) {
+        max = j;
+      }
+    } else {
+      ErrorQuit("expected a perm, didn't get one", 0L, 0L);
+    }
+  }
+  // special case in case there are no gens, or just the identity.
+
+  int dom1[max]; 
+  int dom2[max];
+  UInt orb[max];
+
+  memset(dom1, 0, max * sizeof(int)); 
+  memset(dom2, 0, max * sizeof(int)); 
+  
+  m = 0; //number of orbit reps
+
+  for (i = 0; i < sizeVals; i++) {
+    if (! vals[i]) {
+      if (i <= max) {
+        dom1[i] = 1;
+      } else {
+        reps[m++] = i;
+      }
+    }      
+  }
+
+  fst = 0; 
+  while (dom1[fst] != 1 && fst < max) fst++;
+
+  while (fst < max) {
+    reps[fst] = 1;
+    orb[0] = fst;
+    n = 1; //length of orb
+    dom2[fst] = 1;
+    dom1[fst] = 0;
+
+    for (i = 0; i < n; i++) {
+      for (j = 1; j <= nrgens; j++) {
+        gen = ELM_PLIST(gens, j);
+        if (TNUM_OBJ(gen) == T_PERM2){
+          img = IMAGE(orb[i], ADDR_PERM2(gen), DEG_PERM2(gen));
+        } else {
+          img = IMAGE(orb[i], ADDR_PERM4(gen), DEG_PERM4(gen));
+        }
+        if (dom2[img] == 0) {
+          orb[n++] = img;
+          dom2[img] = 1;
+          dom1[img] = 0;
+        }
+      }
+    }
+    while (dom1[fst] != 1 && fst < max) fst++; 
+  }
+}
+
+void SEARCH_ENDOS (Obj   map,          // a transformation 2
+                   int  *vals,        // blist for values in map
+                   int   nr,           // nr of vertices
+                   int   rank,         // nr distinct vals in map 
+                   int  *condition, 
+                   int  *neighbours, 
+                   Obj   gens, 
+                   int   depth, 
+                   void (*hook)(Obj map,
+                                void *user_param),  
+                   void  *user_param, 
+                   Obj   Stabilizer) {
+  UInt2 *ptr;
+  int   i, j, k, l;
+  int  *copy;
+  bool isEmpty;
+  
+  if (depth == nr) {
+    hook(map, user_param);
+    return;
+  }
+
+  copy = malloc((nr * nr) * sizeof(int));
+  memcpy((void *) copy, 
+         (void *) condition, 
+         (size_t) (nr * nr) * sizeof(int));
+
+  
+  ptr = ADDR_TRANS2(map);
+  if (depth != 0) {
+    for (j = 0; j < nr; j++){
+      l = neighbours[nr * (depth - 1) + j];
+      isEmpty = true;
+      for (k = 0; k < nr; k++) {
+        copy[nr * l + k] *= neighbours[nr * ptr[depth - 1] + k];
+        if (copy[nr * l + k] == 1) {
+          isEmpty = false;
+        }
+      }
+      if (isEmpty) {
+        free(copy);
+        return;
+      }
+    }
+  }
+
+  // blist of orbit reps of things not in vals
+  int reps[nr];
+  memset(reps, 0, sizeof(int) * nr);
+  OrbitReps(gens, vals, nr, reps);
+  
+  for (i = 0; i < nr; i++) {
+    if (copy[nr * depth + i] && reps[i] == 1) {
+      (ADDR_TRANS2(map))[depth] = i;
+      vals[i] = 1;
+      SEARCH_ENDOS(map, vals, nr, rank + 1, copy, neighbours,
+          CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1)), 
+          depth + 1, hook, user_param, Stabilizer);
+      vals[i] = 0;
+      (ADDR_TRANS2(map))[depth] = 0;
+    }
+  }
+  for (i = 0; i < nr; i++) {
+    if (copy[nr * depth + i] && vals[i] == 1) {
+      (ADDR_TRANS2(map))[depth] = i;
+      SEARCH_ENDOS(map, vals, nr, rank, copy, neighbours, gens, depth + 1, hook,
+          user_param, Stabilizer);
+      (ADDR_TRANS2(map))[depth] = 0;
+    }
+  }
+  free(copy);
+  return;
+}
+
+UInt2 TransVal (Obj t, int i) {
+  return ADDR_TRANS2(t)[i];
+}
+
+void endo_hook_function(Obj map, 
+                        void *user_param) {
+  UInt2   *ptr1, *ptr2;
+  Obj     t;
+  UInt    i, n;
+
+  // copy map into new trans2 
+  n    = DEG_TRANS2(map);  
+  ptr1 = ADDR_TRANS2(map);
+  t    = NEW_TRANS2(n);
+  ptr2  = ADDR_TRANS2(t);
+  
+  for(i = 0; i < n; i++){
+    ptr2[i] = ptr1[i];
+  }
+  
+  AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
+  CHANGED_BAG(user_param);
+}
+
+Obj FuncGRAPH_ENDOS (Obj self, Obj graph, Obj gens, Obj Stabilizer) {
+  Obj   user_param, map, nbs, nbsi;
+  int   nr, i, j, k;
+  int  *condition, *neighbours;
+
+  user_param = NEW_PLIST(T_PLIST, 0);
+  SET_LEN_PLIST(user_param, 0);
+  nr = DigraphNrVertices(graph);
+  map = NEW_TRANS2(nr);
+  int vals[nr];
+
+  for (i = 0; i < nr; i++) {
+    vals[i] = 0;
+  }
+
+  condition  = malloc((nr * nr) * sizeof(int));
+  neighbours = calloc((nr * nr),  sizeof(int));
+  
+  for (i = 0; i < (nr * nr); i++) {
+    condition[i] = 1;
+  }
+
+  nbs = OutNeighbours(graph);
+  
+  for (i = 0; i < nr; i++) {
+    nbsi = ELM_PLIST(nbs, i + 1);
+    for (j = 0; j < LEN_LIST(nbsi); j++) {
+      k = INT_INTOBJ(ELM_LIST(nbsi, j + 1)) - 1;
+      neighbours[nr * i + k] = 1;
+    }
+  }
+
+  SEARCH_ENDOS(map, vals, nr, 0, condition, neighbours, gens, 
+        0, endo_hook_function, user_param, Stabilizer);
+
+  free(condition);
+  free(neighbours);
+  return user_param;
 }
 
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
@@ -1895,6 +2118,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "ORBIT_REPS_PERMS", 2, "gens, D",
     FuncORBIT_REPS_PERMS,
     "src/digraphs.c:FuncORBIT_REPS_PERMS" },
+
+  { "GRAPH_ENDOS", 3, "graph, gens, Stabilizer",
+    FuncGRAPH_ENDOS,
+    "src/digraphs.c:FuncGRAPH_ENDOS" },
 
   { 0 }
 
