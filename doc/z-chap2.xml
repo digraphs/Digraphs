@@ -19,6 +19,7 @@
   <Section><Heading>New digraphs from old</Heading>
     <#Include Label="DigraphCopy">
     <#Include Label="InducedSubdigraph">
+    <#Include Label="ReducedDigraph">
     <#Include Label="QuotientDigraph">
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">
@@ -32,6 +33,7 @@
     <#Include Label="DigraphRemoveEdge">
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphRemoveLoops">
+    <#Include Label="DigraphReverseEdges">
     <#Include Label="DigraphDisjointUnion">
     <#Include Label="DigraphJoin">
   </Section>
@@ -43,6 +45,7 @@
   </Section>
 
   <Section><Heading>Standard examples</Heading>
+    <#Include Label="ChainDigraph">
     <#Include Label="CompleteDigraph">
     <#Include Label="CompleteBipartiteDigraph">
     <#Include Label="CycleDigraph">

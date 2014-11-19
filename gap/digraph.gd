@@ -26,6 +26,7 @@ DeclareOperation("Digraph", [IsRecord]);
 DeclareOperation("Digraph", [IsList]);
 DeclareOperation("Digraph", [IsPosInt, IsFunction]);
 DeclareOperation("Digraph", [IsInt, IsList, IsList]);
+DeclareOperation("Digraph", [IsList, IsList, IsList]);
 DeclareOperation("Digraph", [IsBinaryRelation]);
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsList]);
@@ -57,6 +58,7 @@ DeclareOperation("CompleteBipartiteDigraph", [IsPosInt, IsPosInt]);
 DeclareOperation("CompleteDigraph", [IsInt]);
 DeclareOperation("EmptyDigraph", [IsInt]);
 DeclareOperation("CycleDigraph", [IsPosInt]);
+DeclareOperation("ChainDigraph", [IsPosInt]);
 
 DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphVertexLabels", [IsDigraph]);

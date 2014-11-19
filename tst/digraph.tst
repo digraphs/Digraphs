@@ -94,10 +94,9 @@ vertices of the digraph,
 # Graph
 gap> gr := Digraph( [ [ 2, 2 ], [ ] ] );
 <multidigraph with 2 vertices, 2 edges>
-gap> Graph(gr);
-rec( adjacencies := [ [ 2 ], [  ] ], group := Group(()), isGraph := true, 
-  names := [ 1, 2 ], order := 2, representatives := [ 1, 2 ], 
-  schreierVector := [ -1, -2 ] )
+gap> if DIGRAPHS_IsGrapeLoaded then 
+>   Graph(gr); 
+> fi;
 
 # Digraph (by list of OutNeighbours)
 gap> Digraph( [ [ 0, 1 ] ] );
@@ -182,7 +181,7 @@ Error, Digraphs: Digraph: usage,
 the record component 'vertices' must be duplicate-free,
 
 # Digraph (for nrvertices, source and range)
-gap> Digraph( "a", [  ], [  ] );
+gap> Digraph( Group(()), [  ], [  ] );
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `Digraph' on 3 arguments
 gap> Digraph( 2, [ 1, "a" ], [ 2, 1 ] );
@@ -283,6 +282,65 @@ gap> gr := Digraph(bin);
 <digraph with 5 vertices, 5 edges>
 gap> OutNeighbours(gr);
 [ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 4 ] ]
+
+# Digraph (for vertices, source, range)
+gap> Digraph( Group(()), [  ], [  ] );
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 3 arguments
+gap> Digraph( [  ], Group(()), [  ] );
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 3 arguments
+gap> Digraph( [  ], [  ], Group(()) );
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 3 arguments
+gap> Digraph( [ 1 ], [ 2 ], [ 3, 4 ] );
+Error, Digraphs: Digraph: usage,
+the second and third arguments <source> and <range> must be lists of
+equal length,
+gap> Digraph( [ 1, 1 ], [  ], [  ] );
+Error, Digraphs: Digraph: usage,
+the first argument <vertices> must be a duplicate-free list,
+gap> Digraph( [ Group(()) ], [ 1 ], [ Group(()) ] );
+Error, Digraphs: Digraph: usage,
+the second argument <source> must be a list of elements of <vertices>,
+gap> Digraph( [ Group(()) ], [ Group(()) ], [ 1 ] );
+Error, Digraphs: Digraph: usage,
+the third argument <range> must be a list of elements of <vertices>,
+gap> gr := Digraph(
+> [ Group(()), SymmetricGroup(3) ], [ Group(()) ], [ SymmetricGroup(3) ] );;
+gap> DigraphVertexLabels(gr);
+[ Group(()), Sym( [ 1 .. 3 ] ) ]
+gap> HasDigraphNrEdges(gr);
+true
+gap> HasDigraphNrVertices(gr);
+true
+gap> HasDigraphSource(gr);
+true
+gap> HasDigraphRange(gr);
+true
+gap> gr;
+<digraph with 2 vertices, 1 edge>
+gap> DigraphSource(gr);
+[ 1 ]
+gap> DigraphRange(gr);
+[ 2 ]
+gap> gr := Digraph( [ 1 .. 3 ], [ 3, 2, 1 ], [ 2, 3, 2 ] );;
+gap> DigraphVertexLabels(gr);
+[ 1 .. 3 ]
+gap> HasDigraphNrEdges(gr);
+true
+gap> HasDigraphNrVertices(gr);
+true
+gap> HasDigraphSource(gr);
+true
+gap> HasDigraphRange(gr);
+true
+gap> DigraphSource(gr);
+[ 1, 2, 3 ]
+gap> DigraphRange(gr);
+[ 2, 3, 2 ]
+gap> gr;
+<digraph with 3 vertices, 3 edges>
 
 # RandomDigraph
 gap> DigraphNrVertices(RandomDigraph(10));
@@ -487,6 +545,27 @@ gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 4, 5 ], [ 5, 6 ], [ 6, 1 ] ]
 gap> gr := CycleDigraph(1000);
 <digraph with 1000 vertices, 1000 edges>
+
+# ChainDigraph
+gap> gr := ChainDigraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `ChainDigraph' on 1 arguments
+gap> gr := ChainDigraph(1);
+<digraph with 1 vertex, 0 edges>
+gap> IsEmptyDigraph(gr);
+true
+gap> gr = EmptyDigraph(1);
+true
+gap> gr := ChainDigraph(10);
+<digraph with 10 vertices, 9 edges>
+gap> OutNeighbours(gr);
+[ [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], [  ] ]
+gap> grrt := DigraphReflexiveTransitiveClosure(gr);
+<digraph with 10 vertices, 55 edges>
+gap> IsPartialOrderBinaryRelation(AsBinaryRelation(grrt));
+true
+gap> IsAntisymmetricDigraph(grrt);
+true
 
 # CompleteBipartiteDigraph
 gap> gr := CompleteBipartiteDigraph(2, 0);
@@ -977,7 +1056,4 @@ gap> DigraphVertexLabels(gr); DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
 
 #
-gap> DigraphsStopTest();
-
-#
-gap> STOP_TEST( "Digraphs package: digraph.tst", 0);
+gap> STOP_TEST( "Digraphs package: digraph.tst");

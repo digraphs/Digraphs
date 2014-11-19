@@ -40,6 +40,7 @@ DeclareOperation("DigraphReverse", [IsDigraph]);
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphReverseEdges", [IsDigraph, IsList]);
+DeclareOperation("DigraphReverseEdgesNC", [IsDigraph, IsList]);
 DeclareOperation("DigraphDisjointUnion", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphEdgeUnion", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphJoin", [IsDigraph, IsDigraph]);
@@ -64,3 +65,6 @@ DeclareOperation("IsDigraphEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("IsReachable", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);
+
+DeclareOperation("OutNeighboursCopy", [IsDigraph]);
+DeclareOperation("OutNeighborsCopy", [IsDigraph]);

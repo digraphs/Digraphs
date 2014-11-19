@@ -21,26 +21,56 @@ function()
   local record;
 
   record:=DigraphsTestRec;
-
+  
+  record.timeofday := IO_gettimeofday();
   record.InfoLevelInfoWarning:=InfoLevel(InfoWarning);;
   record.InfoLevelInfoDigraphs:=InfoLevel(InfoDigraphs);;
 
   SetInfoLevel(InfoWarning, 0);;
   SetInfoLevel(InfoDigraphs, 0);
 
+  record.STOP_TEST := STOP_TEST;
+
+  MakeReadWriteGlobal("STOP_TEST");
+  UnbindGlobal("STOP_TEST");
+  BindGlobal("STOP_TEST", DigraphsStopTest);
+
   return;
 end);
 
 InstallGlobalFunction(DigraphsStopTest,
-function()
-  local record;
+function(file)
+  local timeofday, record, elapsed, str;
 
+  timeofday := IO_gettimeofday();
+  
   record:=DigraphsTestRec;
+ 
+  elapsed := (timeofday.tv_sec - record.timeofday.tv_sec) * 1000 
+   + Int((timeofday.tv_usec - record.timeofday.tv_usec) / 1000);
 
+  str := "elapsed time: ";
+  Append(str, String(elapsed));
+  Append(str, "ms\n");
+  
   SetInfoLevel(InfoWarning, record.InfoLevelInfoWarning);;
   SetInfoLevel(InfoDigraphs, record.InfoLevelInfoDigraphs);
 
-  return;
+  if not IsBound( GAPInfo.TestData.START_TIME )  then
+      Error( "`STOP_TEST' command without `START_TEST' command for `", 
+       file, "'" );
+  fi;
+  Print( GAPInfo.TestData.START_NAME, "\n" );
+  
+  SetAssertionLevel( GAPInfo.TestData.AssertionLevel );
+  Unbind( GAPInfo.TestData.AssertionLevel );
+  Unbind( GAPInfo.TestData.START_TIME );
+  Unbind( GAPInfo.TestData.START_NAME );
+  Print(str);
+  MakeReadWriteGlobal("STOP_TEST");
+  UnbindGlobal("STOP_TEST");
+  BindGlobal("STOP_TEST", record.STOP_TEST);
+  return; 
 end);
 
 InstallGlobalFunction(DigraphsMakeDoc,
@@ -92,12 +122,22 @@ end);
 
 InstallGlobalFunction(DigraphsTestManualExamples,
 function()
-  local ex;
+  local ex, omit, str;
 
   ex:=DigraphsManualExamples();
+  omit:=DIGRAPHS_OmitFromTestManualExamples;
+  if Length(omit)>0 then 
+    Print("# not testing examples containing the strings");
+    for str in omit do 
+      ex:=Filtered(ex, x-> PositionSublist(x[1][1], str)=fail);
+      Print(", \"", str, "\"");
+    od;
+    Print(" . . .\n");
+  fi;
+
   DigraphsStartTest();
   RunExamples(ex);
-  DigraphsStopTest();
+  DigraphsStopTest("");
   return;
 end);
 
@@ -123,8 +163,9 @@ function()
     Print("Abort: DigraphsTestAll failed . . . \n");
     return false;
   fi;
-  DigraphsStopTest();
-
+  SetInfoLevel(InfoWarning, DigraphsTestRec.InfoLevelInfoWarning);
+  SetInfoLevel(InfoDigraphs, DigraphsTestRec.InfoLevelInfoDigraphs);
+  
   DigraphsTestManualExamples();
   return;
 end);

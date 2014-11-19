@@ -82,13 +82,17 @@ end);
 
 InstallMethod(DigraphReverse, "for a digraph",
 [IsDigraph],
-function(graph)
+function(digraph)
   local old, new, i, j;
 
-  old := OutNeighbours(graph);
-  new := List(DigraphVertices(graph), x -> [ ]);
+  if HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph) then
+    return DigraphCopy(digraph);
+  fi;
 
-  for i in DigraphVertices(graph) do 
+  old := OutNeighbours(digraph);
+  new := List(DigraphVertices(digraph), x -> [ ]);
+
+  for i in DigraphVertices(digraph) do 
     for j in old[i] do 
       Add(new[j], i);
     od;
@@ -99,16 +103,17 @@ end);
 
 #
 
-InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
+InstallMethod(DigraphReverseEdges, "for a digraph and a rectangular table",
 [IsDigraph, IsRectangularTable],
 function(digraph, edges)
-  local current, nredges, out, new, i;
-
+  
   if IsMultiDigraph(digraph) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
     "the first argument <digraph> must not be a multigraph,");
     return;
   fi;
+
+  # A rectangular table is always non-empty so
 
   if not IsPosInt(edges[1][1]) or 
     not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
@@ -116,17 +121,23 @@ function(digraph, edges)
     "the second argument <edges> must be a list of edges of <digraph>,");
     return;
   fi;
- 
-  Sort(edges);
+
+  return DigraphReverseEdgesNC(digraph, edges);
+end);
+
+InstallMethod(DigraphReverseEdgesNC, "for a digraph and a rectangular table",
+[IsDigraph, IsRectangularTable],
+function(digraph, edges)
+  local current, nredges, out, new, i;
+
+  Sort(edges); # Why are we sorting these edges?
+
   current := 1;
-
-
-  nredges := Length(edges); 
+  nredges := Length(edges);
   out := OutNeighbours(digraph);
-  new := [];
-  for i in [ 1 .. Length(DigraphVertices(digraph)) ] do
-    new[i] := ShallowCopy(out[i]);
-    while current <= nredges and  edges[current][1]  = i do
+  new := OutNeighboursCopy(digraph);
+  for i in DigraphVertices(digraph) do
+    while current <= nredges and edges[current][1] = i do
       Remove(new[i], Position(new[i], edges[current][2]));
       current := current + 1;
     od;
@@ -142,10 +153,10 @@ end);
 #
 
 # can we use IsListOf... jj
-InstallMethod(DigraphReverseEdges, "for a digraph and an edge",
+InstallMethod(DigraphReverseEdges, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edges)
-  local nredges, current, out, new, pos_l, pos_h, toadd, pos, temp, i, edge;
+  local nredges;
 
   if IsMultiDigraph(digraph) then
     Error("Digraphs: DigraphReverseEdges: usage,\n",
@@ -166,7 +177,16 @@ function(digraph, edges)
     return;
   fi;
 
-  Sort(edges); 
+  return DigraphReverseEdgesNC(digraph, edges);
+end);
+
+InstallMethod(DigraphReverseEdgesNC, "for a digraph and a list",
+[IsDigraph, IsList],
+function(digraph, edges)
+  local nredges, current, out, new, pos_l, pos_h, toadd, pos, temp, i, edge;
+
+  nredges := DigraphNrEdges(digraph);
+  Sort(edges); # Why are we sorting the edges?
   current := edges[1];
   out := OutNeighbours(digraph);  
   new := [];
@@ -175,7 +195,7 @@ function(digraph, edges)
 
   toadd := [];
   pos := 1;
-  for i in [ 1 .. Length(DigraphVertices(digraph)) ] do
+  for i in DigraphVertices(digraph) do
     pos_h := pos_h + Length(out[i]);
     new[i] := ShallowCopy(out[i]);
     while pos_l < current and current <= pos_h do
@@ -259,9 +279,12 @@ function(digraph, edge)
       return;
   fi;
   verts := DigraphVertices(digraph);
-  if Length(edge) <> 2 or not edge[1] in verts or not edge[2] in verts then
+  if Length(edge) <> 2
+   or not IsPosInt(edge[1])
+   or not edge[1] in verts
+   or not edge[2] in verts then
     Error("Digraphs: DigraphRemoveEdge: usage,\n",
-    "the second component <edge> must be a pair of vertices of <digraph>,");
+    "the second argument <edge> must be a pair of vertices of <digraph>,");
     return;
   fi;
   return DigraphRemoveEdges(digraph, [ edge ]);
@@ -297,7 +320,6 @@ function(digraph, edges)
     # Remove edges by index
     remove := edges;
   elif IsRectangularTable(edges) and Length(edges[1]) = 2
-   and IsPosInt(edges[1][1])
    and ForAll(edges, x -> x[1] in verts and x[2] in verts) then
     # Remove edges by [ source, range ]
     if IsMultiDigraph(digraph) then
@@ -370,7 +392,6 @@ function(digraph, edges)
   SetDigraphVertexLabels( gr, DigraphVertexLabels(digraph) );
   SetDigraphEdgeLabels( gr, new_labs );
   return gr;
-
 end);
 
 #
@@ -427,10 +448,9 @@ end);
 InstallMethod(DigraphAddEdgesNC, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edges)
-  local out, new, verts, edge;
+  local new, verts, edge;
 
-  out := OutNeighbours(digraph);
-  new := List( out, ShallowCopy );
+  new := OutNeighboursCopy(digraph);
   verts := DigraphVertices( digraph );
   for edge in edges do
     Add( new[ edge[1] ], edge[2] );
@@ -486,14 +506,10 @@ end);
 InstallMethod(DigraphAddVerticesNC, "for a digraph, a pos int and a list",
 [IsDigraph, IsInt, IsList],
 function(digraph, m, names)
-  local out, new, n, newverts, nam, i;
+  local n, new, newverts, out, nam, i;
   
-  out := OutNeighbours(digraph);
   n := DigraphNrVertices(digraph);
-  new := EmptyPlist(n);
-  for i in DigraphVertices(digraph) do
-    new[i] := ShallowCopy(out[i]);
-  od;
+  new := OutNeighboursCopy(digraph);
   newverts := [ (n + 1) .. (n + m) ];
   for i in newverts do
     new[i] := [ ];
@@ -552,54 +568,55 @@ function(digraph, verts)
   
   if IsEmpty(verts) then
     return DigraphCopy(digraph);
-  else
-    n := DigraphNrVertices(digraph);
-    len := Length(verts);
-    new_nrverts := n - len;
-    if new_nrverts = 0 then
-      return EmptyDigraph(0);
-    fi;
-    m     := DigraphNrEdges(digraph);
-    log   := LogInt(len, 2);
-    if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
-      Sort(verts);
-    fi;
-    diff := Difference(DigraphVertices(digraph), verts);
-
-    j := 0;
-    lookup := EmptyPlist(n);
-    for i in diff do
-      j := j + 1;
-      lookup[ i ] := j;
-    od;
-
-    old_edge_count   := 0;
-    old_labels       := DigraphEdgeLabels(digraph);
-    new_edge_count   := 0;
-    new_labels       := [ ];
-    new_vertex_count := 0;
-
-    old_nbs := OutNeighbours(digraph);
-    new_nbs := EmptyPlist(new_nrverts);
-    for i in DigraphVertices(digraph) do
-      if IsBound(lookup[i]) then
-        new_vertex_count := new_vertex_count + 1;
-        new_nbs[new_vertex_count] := [  ];
-        j := 0;
-        for x in old_nbs[ i ] do
-          old_edge_count := old_edge_count + 1;
-          if not x in verts then # Can search through diff if |diff| < |verts|
-            j := j + 1;
-            new_nbs[ new_vertex_count ][j] := lookup[x];
-            new_edge_count := new_edge_count + 1;
-            new_labels[ new_edge_count ] := old_labels[ old_edge_count ];
-          fi;
-        od;
-      else
-        old_edge_count := old_edge_count + Length(old_nbs[i]);
-      fi;
-    od;
   fi;
+
+  n := DigraphNrVertices(digraph);
+  len := Length(verts);
+  new_nrverts := n - len;
+  if new_nrverts = 0 then
+    return EmptyDigraph(0);
+  fi;
+  m     := DigraphNrEdges(digraph);
+  log   := LogInt(len, 2);
+  if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
+    Sort(verts);
+  fi;
+  diff := Difference(DigraphVertices(digraph), verts);
+
+  j := 0;
+  lookup := EmptyPlist(n);
+  for i in diff do
+    j := j + 1;
+    lookup[ i ] := j;
+  od;
+
+  old_edge_count   := 0;
+  old_labels       := DigraphEdgeLabels(digraph);
+  new_edge_count   := 0;
+  new_labels       := [ ];
+  new_vertex_count := 0;
+
+  old_nbs := OutNeighbours(digraph);
+  new_nbs := EmptyPlist(new_nrverts);
+  for i in DigraphVertices(digraph) do
+    if IsBound(lookup[i]) then
+      new_vertex_count := new_vertex_count + 1;
+      new_nbs[new_vertex_count] := [  ];
+      j := 0;
+      for x in old_nbs[ i ] do
+        old_edge_count := old_edge_count + 1;
+        if not x in verts then # Can search through diff if |diff| < |verts|
+          j := j + 1;
+          new_nbs[ new_vertex_count ][j] := lookup[x];
+          new_edge_count := new_edge_count + 1;
+          new_labels[ new_edge_count ] := old_labels[ old_edge_count ];
+        fi;
+      od;
+    else
+      old_edge_count := old_edge_count + Length(old_nbs[i]);
+    fi;
+  od;
+
   gr := DigraphNC(new_nbs);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){diff});
   SetDigraphEdgeLabels(gr, new_labels);
@@ -620,12 +637,13 @@ function(graph, perm)
     return;
   fi;
  
-  adj := List( OutNeighbours(graph), ShallowCopy );
+  adj := OutNeighboursCopy(graph);
   adj := Permuted(adj, perm);
   Apply(adj, x-> OnTuples(x, perm));
 
   out := DigraphNC(adj);
   SetDigraphVertexLabels(out, Permuted(DigraphVertexLabels(graph), perm));
+  # don't set the edge labels . . .
   return out;
 end);
 
@@ -671,11 +689,11 @@ function(digraph)
   n := DigraphNrVertices(digraph);
   if not (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph))
    and n > 1 then
-    verts := ShallowCopy(DigraphVertices(digraph));
+    verts := [ 1 .. n ]; # We don't want DigraphVertices as that's immutable
     mat := List( verts, x -> verts * 0 );
-    out := OutNeighbours(digraph);
+    new := OutNeighboursCopy(digraph);
     for i in verts do
-      for j in out[i] do
+      for j in new[i] do
         if j < i then
           mat[j][i] := mat[j][i] - 1;
         else
@@ -683,7 +701,6 @@ function(digraph)
         fi;
       od;
     od;
-    new := List( out, ShallowCopy );
     for i in verts do
       for j in [ i + 1 .. n ] do
         x := mat[i][j];
@@ -793,9 +810,10 @@ InstallMethod(InducedSubdigraph,
 "for a digraph and a homogeneous list",
 [IsDigraph, IsHomogeneousList],
 function( digraph, subverts )
-  local n, old, nr, lookup, adj, j, l, i, k, new;
+  local nr, n, old_labs, old_adj, new_labs, new_adj, offsets, lookup, new_edge_count, adji, j, old_edge_count, l, gr, i, k;
 
-  if IsEmpty(subverts) then
+  nr := Length(subverts);
+  if nr = 0 then
     return DigraphNC( [ ] );
   fi;
 
@@ -809,31 +827,41 @@ function( digraph, subverts )
     "of the vertices of the first argument <digraph>,");
     return;
   fi;
+
+  old_labs := DigraphEdgeLabels(digraph);
+  old_adj  := OutNeighbours(digraph);
+  new_labs := [  ];
+  new_adj  := EmptyPlist(nr);
   
-  nr := Length(subverts);
-  old := OutNeighbours(digraph);
-  new := EmptyPlist(nr);
+  offsets := EmptyPlist(n);
+  offsets[1] := 0;
+  for i in [ 2 .. Maximum(subverts) ] do
+    offsets[ i ] := offsets[ i - 1 ] + Length( old_adj[ i - 1 ] );
+  od;
+
   lookup := [ 1 .. n ] * 0;
   lookup{subverts} := [ 1 .. nr ];
+  new_edge_count := 0;
 
   for i in [ 1 .. nr ] do 
-    adj := [ ];
+    adji := [  ];
     j := 0;
-    for k in old[ subverts[i] ] do
-      l := lookup[k];
+    for k in [ 1 .. Length(old_adj[ subverts[i] ]) ] do
+      l := lookup[ old_adj[ subverts[i] ][k] ];
       if l <> 0 then
         j := j + 1;
-        adj[j] := l;
+        adji[ j ] := l;
+        new_edge_count := new_edge_count + 1;
+        new_labs[ new_edge_count ] := old_labs[ offsets[subverts[i]] + k ];
       fi;
     od;
-    new[i] := adj;
+    new_adj[i] := adji;
   od;
   
-  new := DigraphNC(new);
-  SetDigraphVertexLabels(new, DigraphVertexLabels(digraph){subverts});
-  #JDM need to set this correctly!
-  #SetDigraphEdgeLabels(new, DigraphEdgeLabels(digraph){subverts});
-  return new;
+  gr := DigraphNC(new_adj);
+  SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){subverts});
+  SetDigraphEdgeLabels(gr, new_labs);
+  return gr;
 end);
 
 #
@@ -1224,8 +1252,7 @@ function(digraph, u, v)
     fi;
   fi;
 
-  Error("Digraphs: IsReachable: not yet implemented,");
-  # return DIGRAPHS_IS_REACHABLE(digraph, u, v);
+  return DIGRAPHS_IS_REACHABLE(OutNeighbours(digraph), u, v);
 end);
 
 #
@@ -1257,5 +1284,14 @@ function(digraph)
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
   return gr;
 end);
+
+InstallMethod(OutNeighboursCopy, "for a digraph",
+[IsDigraph],
+function(digraph)
+  return List(OutNeighbours(digraph), ShallowCopy);
+end);
+
+InstallMethod(OutNeighborsCopy, "for a digraph",
+[IsDigraph], OutNeighboursCopy);
 
 #EOF

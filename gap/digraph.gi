@@ -11,16 +11,17 @@
 InstallMethod(Digraph, "for a positive integer and a function",
 [IsPosInt, IsFunction],
 function(n, func)
-  local out, V, i, j;
+  local V, out, i, len, j;
 
-  out := List( [ 1 .. n ], x -> [ ] );
-  
   V:= [ 1 .. n ];
-
-  for i in V do 
-    for j in V do 
-      if func(i, j) then 
-        Add(out[i], j);
+  out := List( V, x -> [ ] );
+  
+  for i in V do
+    len := 0;
+    for j in V do
+      if func(i, j) then
+        len := len + 1;
+        out[i][len] := j;
       fi;
     od;
   od;
@@ -385,6 +386,38 @@ end);
 
 #
 
+InstallMethod(ChainDigraph, "for a positive integer",
+[IsPosInt],
+function(n)
+  local gr, i, out;
+
+  if n = 1 then
+    return EmptyDigraph(1);
+  fi;
+  
+  out := EmptyPlist(n);
+  for i in [ 1 .. n - 1 ] do
+    out[i] := [ i + 1 ];
+  od;
+  out[n] := [  ];
+  gr := DigraphNC( out );
+  if n = 2 then
+    SetIsTransitiveDigraph(gr, true);
+  else
+    SetIsTransitiveDigraph(gr, false);
+  fi;
+  SetDigraphHasLoops(gr, false);
+  SetIsAcyclicDigraph(gr, true);
+  SetIsMultiDigraph(gr, false);
+  SetDigraphNrEdges(gr, n - 1);
+  SetIsConnectedDigraph(gr, true);
+  SetIsStronglyConnectedDigraph(gr, false);
+  SetIsFunctionalDigraph(gr, false);
+  return gr;
+end);
+
+#
+
 InstallMethod(CompleteBipartiteDigraph, "for two positive integers",
 [IsPosInt, IsPosInt],
 function(m, n)
@@ -504,7 +537,7 @@ function(graph)
       return;
     fi;
     if graph.vertices <> [ 1 .. graph.nrvertices ] then  
-      for i in [ 1 .. Length(graph.range) ] do
+      for i in [ 1 .. m ] do
         graph.range[i] := Position(graph.vertices, graph.range[i]);
         graph.source[i] := Position(graph.vertices, graph.source[i]);
       od;
@@ -527,7 +560,7 @@ function(graph)
   ObjectifyWithAttributes(graph, DigraphType, DigraphRange,
    graph.range, DigraphSource, graph.source, DigraphNrVertices,
    graph.nrvertices);
-  if IsBound(graph!.nredges) then # Temporary workaround
+  if IsBound(graph!.nredges) then
     SetDigraphNrEdges(graph, graph!.nredges);
   fi;
   return graph;
@@ -607,7 +640,12 @@ function(nrvertices, source, range)
     "the second and third arguments <source> and <range> must be lists\n",
     "of equal length,");
     return;
-  elif m <> 0 then
+  fi;
+
+  source := ShallowCopy(source);
+  range := ShallowCopy(range);
+  
+  if m <> 0 then
     if not IsPosInt(source[1])
      or not IsPosInt(range[1])
      or ForAny(source, x -> x < 1 or x > nrvertices)
@@ -615,6 +653,7 @@ function(nrvertices, source, range)
       Error("Digraphs: Digraph: usage,\n",
       "the second and third arguments <source> and <range> must be lists\n",
       "of positive integers no greater than the first argument <nrvertices>,");
+      return;
     fi;
     range := Permuted(range, Sortex(source));
   fi;
@@ -622,6 +661,58 @@ function(nrvertices, source, range)
                          source := source,
                          range := range,
                          nredges := m ) );
+end);
+
+InstallMethod(Digraph, "for three lists",
+[IsList, IsList, IsList],
+function(vertices, source, range)
+  local m, n, i;
+
+  m := Length(source);
+  if m <> Length(range) then
+    Error("Digraphs: Digraph: usage,\n",
+    "the second and third arguments <source> and <range> must be lists of\n",
+    "equal length,");
+    return;
+  fi;
+
+  if not IsDuplicateFreeList(vertices) then
+    Error("Digraphs: Digraph: usage,\n",
+          "the first argument <vertices> must be a duplicate-free list,");
+    return;
+  fi;
+
+  if ForAny(source, x -> not x in vertices) then
+    Error("Digraphs: Digraph: usage,\n",
+    "the second argument <source> must be a list of elements of <vertices>,");
+    return;
+  fi;
+
+  if ForAny(range, x -> not x in vertices) then
+    Error("Digraphs: Digraph: usage,\n",
+    "the third argument <range> must be a list of elements of <vertices>,");
+    return;
+  fi;
+
+  vertices := StructuralCopy(vertices);
+  source   := StructuralCopy(source);
+  range    := StructuralCopy(range);
+  n        := Length(vertices);
+
+  # rewrite the vertices to numbers
+  if vertices <> [ 1 .. n ] then  
+    for i in [ 1 .. m ] do
+      source[i] := Position(vertices, source[i]);
+      range[i]  := Position(vertices, range[i]);
+    od;
+  fi;
+
+  range := Permuted(range, Sortex(source));
+  return DigraphNC( rec( nrvertices   := n,
+                         nredges      := m,
+                         vertexlabels := vertices,
+                         source       := source,
+                         range        := range ) );
 end);
 
 # JDM: could set IsMultigraph here if we check if mat[i][j] > 1 in line 234 
@@ -867,8 +958,8 @@ function(digraph)
 
   out := List(OutNeighbours(digraph), ShallowCopy);
   gr := DigraphNC(out);
-  SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
-  SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph));
+  SetDigraphVertexLabels(gr, StructuralCopy(DigraphVertexLabels(digraph)));
+  SetDigraphEdgeLabels(gr, StructuralCopy(DigraphEdgeLabels(digraph)));
   return gr;
 end);
 

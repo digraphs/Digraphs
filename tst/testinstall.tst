@@ -23,11 +23,14 @@ gap> OutNeighbours(gr);
 [ [ 8 ], [ 4, 5, 6, 8, 9 ], [ 2, 4, 5, 7, 10 ], [ 9 ], [ 1, 4, 6, 7, 9 ], 
   [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], [ 3, 4, 9, 10 ], 
   [ 1, 2, 3, 5, 6, 9, 10 ], [ 2, 4, 5, 6, 9 ] ]
-gap> Digraph(Graph(gr)) = gr;
+gap> not DIGRAPHS_IsGrapeLoaded 
+> or (DIGRAPHS_IsGrapeLoaded and Digraph(Graph(gr)) = gr);
 true
-gap> Graph(Digraph(Graph(gr))) = Graph(gr);
+gap> not DIGRAPHS_IsGrapeLoaded 
+> or (DIGRAPHS_IsGrapeLoaded and Graph(Digraph(Graph(gr))) = Graph(gr));
 true
-gap> r := rec( adjacencies := [
+gap> not DIGRAPHS_IsGrapeLoaded or 
+> (DIGRAPHS_IsGrapeLoaded and Digraph(rec( adjacencies := [
 >       [ 17, 19 ], [ 17, 20 ], [ 17, 18 ], [ 17, 20 ], [ 17, 18 ], [ 18, 19 ],
 >       [ 18, 20 ], [ 17, 19 ], [ 19, 20 ], [ 17, 20 ], [ 19, 20 ], [ 18, 19 ],
 >       [ 19, 20 ], [ 17, 19 ], [ 18, 20 ], [ 18, 20 ], 
@@ -36,9 +39,8 @@ gap> r := rec( adjacencies := [
 >   group := Group(()), isGraph := true, names := [ 1 .. 20 ], order := 20, 
 >   representatives := [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], 
 >   schreierVector := [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,
->                      -11,-12,-13,-14,-15,-16,-17,-18,-19,-20] );;
-gap> Digraph(r);
-<digraph with 20 vertices, 64 edges>
+>                      -11,-12,-13,-14,-15,-16,-17,-18,-19,-20] )) <> fail);
+true
 
 # IsAcyclicDigraph
 gap> gr := Digraph([
@@ -149,11 +151,11 @@ gap> IsDigraphEdge(gr, [2,2]);
 false
 
 #
-gap> gr := Digraph([[2],[3,5],[4],[5],[1,2]]);
+gap> gr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );
 <digraph with 5 vertices, 7 edges>
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 2, 3 ], [ 2, 5 ], [ 3, 4 ], [ 4, 5 ], [ 5, 1 ], [ 5, 2 ] ]
-gap> gr2 := DigraphReverseEdge(gr, [2,3]);
+gap> gr2 := DigraphReverseEdge( gr, [ 2, 3 ] );
 <digraph with 5 vertices, 7 edges>
 gap> DigraphEdges(gr2);
 [ [ 1, 2 ], [ 2, 5 ], [ 3, 4 ], [ 3, 2 ], [ 4, 5 ], [ 5, 1 ], [ 5, 2 ] ]
@@ -169,7 +171,4 @@ gap> gr2 := DigraphReverseEdge(gr, 2);
 <digraph with 7 vertices, 12 edges>
 
 #
-gap> DigraphsStopTest();
-
-#
-gap> STOP_TEST( "Digraphs package: testinstall.tst", 0);
+gap> STOP_TEST( "Digraphs package: testinstall.tst");

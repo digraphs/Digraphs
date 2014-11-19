@@ -220,7 +220,4 @@ gap> last = gr;
 true
 
 #
-gap> DigraphsStopTest();
-
-#
-gap> STOP_TEST( "Digraphs package: io.tst", 0);
+gap> STOP_TEST( "Digraphs package: io.tst");

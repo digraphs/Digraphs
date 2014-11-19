@@ -217,9 +217,6 @@ gap> g6 := Digraph( [ [ 1, 2, 4 ], [ 1, 3 ], [ 2, 3, 4 ], [ 3, 1 ] ] );
 <digraph with 4 vertices, 10 edges>
 gap> IsSymmetricDigraph(g6);
 true
-gap> gr := Digraph(CayleyGraph(SymmetricGroup(6)));;
-gap> IsSymmetricDigraph(gr);
-true
 gap> gr := Digraph( rec ( nrvertices := 3, source := [ 1, 1, 2, 2, 2, 2, 3, 3 ],
 > range := [ 2, 2, 1, 1, 3, 3, 2, 2 ] ) );;
 gap> IsSymmetricDigraph(gr);
@@ -686,7 +683,4 @@ gap> IS_TRANSITIVE_DIGRAPH(gr);
 true
 
 #
-gap> DigraphsStopTest();
-
-#
-gap> STOP_TEST( "Digraphs package: prop.tst", 0);
+gap> STOP_TEST( "Digraphs package: prop.tst");

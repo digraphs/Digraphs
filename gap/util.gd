@@ -8,6 +8,8 @@
 #############################################################################
 ##
 
+BindGlobal("DIGRAPHS_OmitFromTestManualExamples", []);
+
 DeclareGlobalFunction("DigraphsStartTest");
 DeclareGlobalFunction("DigraphsStopTest");
 DeclareGlobalFunction("DigraphsMakeDoc");

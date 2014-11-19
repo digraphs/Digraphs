@@ -12,7 +12,6 @@
     <#Include Label="DigraphInEdges">
     <#Include Label="DigraphOutEdges">
     <#Include Label="IsDigraphEdge">
-    <#Include Label="DigraphReverseEdges">
   </Section>
 
   <Section><Heading>Neighbours and degree</Heading>
@@ -35,5 +34,6 @@
     <#Include Label="DigraphStronglyConnectedComponent">
     <#Include Label="DigraphPeriod">
     <#Include Label="DigraphFloydWarshall">
+    <#Include Label="IsReachable">
   </Section>
 </Chapter>

@@ -392,6 +392,63 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
   return True;
 }
 
+static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) { 
+  UInt  nr, i, j, k, level, target;
+  Obj   nbs;
+  UInt  *stack, *ptr;
+
+  i      = INT_INTOBJ(u);
+  nbs    = ELM_PLIST(adj, i);
+  if (LEN_LIST(nbs) == 0) {
+    return False;
+  }
+  target = INT_INTOBJ(v);
+  nr     = LEN_PLIST(adj);
+
+  //init the buf
+  ptr = calloc( nr + 1, sizeof(UInt) );
+  stack =  malloc( (2 * nr + 2) * sizeof(UInt) );
+
+  level = 1;
+  stack[0] = i;
+  stack[1] = 1;
+  while (1) {
+    j = stack[0];
+    k = stack[1];
+    // Check whether:
+    // 1. We've previously visited with this vertex, OR 
+    // 2. Whether we've now investigated all descendant branches
+    nbs = ELM_PLIST(adj, j);
+    if( ptr[j] != 0 || k > (UInt) LEN_LIST(nbs)) {
+      ptr[j] = 1;
+      level--;
+      if (level == 0) { 
+        break;
+      }
+      // Backtrack and choose next available branch
+      stack -= 2;
+      ptr[stack[0]] = 0; 
+      stack[1]++;
+    } else { //Otherwise move onto the next available branch
+      ptr[j] = 2; 
+      level++;
+      nbs = ELM_PLIST(adj, j);
+      stack += 2;
+      stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+      if (stack[0] == target) {
+        free(ptr);
+        stack -= (2 * level) - 2; // put the stack back to the start
+        free(stack);
+        return True;
+      }
+      stack[1] = 1;
+    }
+  }
+  free(ptr);
+  free(stack);
+  return False;
+}
+
 static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
   Int  nr, i, j, k, l, level, last1, last2;
   Obj   nbs;
@@ -1809,6 +1866,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_LT", 2, "digraph1, digraph2",
     FuncDIGRAPH_LT,
     "src/digraphs.c:FuncDIGRAPH_LT" },
+
+  { "DIGRAPHS_IS_REACHABLE", 3, "digraph, u, v",
+    FuncDIGRAPHS_IS_REACHABLE,
+    "src/digraphs.c:FuncDIGRAPHS_IS_REACHABLE" },
 
   { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncDIGRAPH_AUTOMORPHISMS, 
