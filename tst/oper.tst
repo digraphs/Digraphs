@@ -1322,6 +1322,8 @@ gap> gr1 := Digraph( [ [ 1, 1, 2, 1 ], [ 1 ] ] );
 <multidigraph with 2 vertices, 5 edges>
 gap> gr2 := DigraphRemoveAllMultipleEdges(gr1);
 <digraph with 2 vertices, 3 edges>
+gap> OutNeighbours(gr2);
+[ [ 1, 2 ], [ 1 ] ]
 gap> gr3 := DigraphEdgeUnion(gr1, gr1);
 <multidigraph with 2 vertices, 10 edges>
 gap> gr4 := DigraphRemoveAllMultipleEdges(gr3);

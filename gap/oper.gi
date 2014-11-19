@@ -1282,6 +1282,7 @@ function(digraph)
   od;
   gr := DigraphNC(new_adj, tot);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
+  SetIsMultiDigraph(gr, false);
   return gr;
 end);
 
