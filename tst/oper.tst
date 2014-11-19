@@ -1353,7 +1353,4 @@ gap> IsMutable(out3[1]);
 true
 
 #
-gap> DigraphsStopTest();
-
-#
-gap> STOP_TEST( "Digraphs package: attrs.tst", 0);
+gap> STOP_TEST( "Digraphs package: oper.tst");

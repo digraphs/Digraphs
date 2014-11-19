@@ -606,7 +606,4 @@ gap> DigraphPeriod(gr);
 0
 
 #
-gap> DigraphsStopTest();
-
-#
-gap> STOP_TEST( "Digraphs package: attr.tst", 0);
+gap> STOP_TEST( "Digraphs package: attr.tst");
