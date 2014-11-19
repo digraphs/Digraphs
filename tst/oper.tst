@@ -1143,11 +1143,10 @@ true
 
 # DigraphEdgeUnion
 gap> gr1 := Digraph(
-> rec(
->   nrvertices := 10,
->   source := [ 3, 4, 4, 6, 6, 9, 9, 9, 9 ],
->   range := [ 10, 5, 7, 3, 9, 4, 5, 8, 10 ],
-> ) );
+>  10,
+>  [ 3, 4, 4, 6, 6, 9, 9, 9, 9 ],
+>  [ 10, 5, 7, 3, 9, 4, 5, 8, 10 ]
+> );
 <digraph with 10 vertices, 9 edges>
 gap> gr2 := Digraph( [ [ 9 ], [ 9, 1, 6, 3 ], [ ], [ ], [ 9, 3, 9 ],
 > [ 1, 4, 3, 2, 9, 4 ], [ 1, 7 ], [ 1, 2, 4 ], [ 8 ] ] );
@@ -1163,6 +1162,12 @@ gap> gr2 := Digraph( [ [ ], [ 3 ], [ ], [ 5 ], [ ], [ 1 ] ] );
 gap> m := DigraphEdgeUnion(gr1, gr2);
 <digraph with 6 vertices, 6 edges>
 gap> m = CycleDigraph(6);
+true
+gap> m = DigraphEdgeUnion(gr2, gr1);
+true
+gap> DigraphEdgeUnion(EmptyDigraph(0),EmptyDigraph(0)) = EmptyDigraph(0);
+true
+gap> DigraphEdgeUnion(EmptyDigraph(5),EmptyDigraph(3)) = EmptyDigraph(5);
 true
 
 # DigraphCopy

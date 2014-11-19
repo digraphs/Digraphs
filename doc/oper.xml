@@ -915,6 +915,69 @@ Binary Relation on 4 points
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphCopy">
+<ManSection>
+  <Oper Name="DigraphCopy" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    This function returns a new copy of <A>digraph</A>.
+<Example><![CDATA[
+gap> gr := CycleDigraph(10);
+<digraph with 10 vertices, 10 edges>
+gap> DigraphCopy(gr) = gr;
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphEdgeUnion">
+<ManSection>
+  <Oper Name="DigraphEdgeUnion" Arg="digraph1, digraph2"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph1</A> and <A>digraph2</A> are directed graphs, then this 
+    function returns the edge union of these digraphs. <P/>
+   
+    The vertex and edge sets of the edge union are the union of
+    the vertex sets and the concatenation of the edge sets of <A>digraph1</A>
+    and <A>digraph2</A> respectively.
+    <P/>
+
+    More specifically, if <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
+    edges, and if <A>digraph2</A> has <M>n_2</M> vertices and <M>m_2</M> edges,
+    then <C>DigraphDisjointUnion(<A>digraph1</A>, <A>digraph2</A>)</C>
+    will have <C>Maximum(</C><M>n_1, n_2</M><C>)</C> vertices and
+    <M>m_1 + m_2</M> edges. 
+
+    The vertices of <A>digraph1</A> will remain
+    <C>[1..</C><M>n_1</M><C>]</C> in the edge union,
+    and the vertices of <A>digraph2</A> will remain
+    <C>[</C><M>1</M><C>..</C><M>n_2</M><C>]</C>. <P/>
+
+    Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
+    
+<Example><![CDATA[
+gap> gr := CycleDigraph(10);
+<digraph with 10 vertices, 10 edges>
+gap> DigraphEdgeUnion(gr, gr);
+<multidigraph with 10 vertices, 20 edges>
+gap> gr1 := Digraph( [ [ 2 ], [ 1 ] ] );
+<digraph with 2 vertices, 2 edges>
+gap> gr2 := Digraph( [ [ 2, 3 ], [ 2 ], [ 1 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> union := DigraphEdgeUnion(gr1, gr2);
+<multidigraph with 3 vertices, 6 edges>
+gap> OutNeighbours(union);
+[ [ 2, 2, 3 ], [ 1, 2 ], [ 1 ] ]
+gap> unionofedges := Concatenation(DigraphEdges(gr1), DigraphEdges(gr2));;
+gap> union = DigraphByEdges(unionofedges);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphDisjointUnion">
 <ManSection>
   <Oper Name="DigraphDisjointUnion" Arg="digraph1, digraph2"/>
@@ -933,34 +996,28 @@ Binary Relation on 4 points
     then <C>DigraphDisjointUnion(<A>digraph1</A>, <A>digraph2</A>)</C>
     will have <M>n_1 + n_2</M> vertices and <M>m_1 + m_2</M> edges. 
 
-    The vertices of <A>digraph1</A> will become
-    <C>[1..</C><M>n_1</M><C>]</C> in the disjoint union,
-    and the vertices of <A>digraph2</A> will become
-    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>. <P/>
+    The vertices of <A>digraph1</A> will remain
+    <C>[1..</C><M>n_1</M><C>]</C> in the disjoint union.
+    The vertices of <A>digraph2</A> will become
+    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>,
+    and an edge <C>[</C><M>i,j</M><C>]</C> in <A>digraph2</A> will become
+    the edge <C>[</C><M>n_1+i,n_1+j</M><C>]</C>.<P/>
 
     Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
     
 <Example><![CDATA[
-gap> gr := CycleDigraph(10);
-<digraph with 10 vertices, 10 edges>
-gap> DigraphDisjointUnion(gr, gr);
-<digraph with 20 vertices, 20 edges>
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphCopy">
-<ManSection>
-  <Oper Name="DigraphCopy" Arg="digraph"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    This function returns a new copy of <A>digraph</A>.
-<Example><![CDATA[
-gap> gr := CycleDigraph(10);
-<digraph with 10 vertices, 10 edges>
-gap> DigraphCopy(gr) = gr;
-true
+gap> gr1 := CycleDigraph(3);
+<digraph with 3 vertices, 3 edges>
+gap> OutNeighbours(gr1);
+[ [ 2 ], [ 3 ], [ 1 ] ]
+gap> gr2 := CompleteDigraph(3);
+<digraph with 3 vertices, 6 edges>
+gap> OutNeighbours(gr2);
+[ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ]
+gap> union := DigraphDisjointUnion(gr1, gr2);
+<digraph with 6 vertices, 9 edges>
+gap> OutNeighbours(union);
+[ [ 2 ], [ 3 ], [ 1 ], [ 5, 6 ], [ 4, 6 ], [ 4, 5 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -984,13 +1041,15 @@ true
 
     In particular, if <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
     edges, and if <A>digraph2</A> has <M>n_2</M> vertices and <M>m_2</M> edges,
-    then <C>DigraphJoin(<A>digraph1</A> <A>digraph2</A>)</C> will
+    then <C>DigraphJoin(<A>digraph1</A>, <A>digraph2</A>)</C> will
     have <M>n_1+n_2</M> vertices and <M>m_1+m_2+2n_1n_2</M> edges. <P/>
 
-    The vertices of <A>digraph1</A> will become
-    <C>[1..</C><M>n_1</M><C>]</C>, in the new digraph,
-    the vertices of <A>digraph2</A> will become
-    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>. <P/>
+    The vertices of <A>digraph1</A> will remain
+    <C>[1..</C><M>n_1</M><C>]</C>, in the new digraph.
+    The vertices of <A>digraph2</A> will become
+    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>,
+    and an edge <C>[</C><M>i,j</M><C>]</C> in <A>digraph2</A> will become
+    the edge <C>[</C><M>n_1+i,n_1+j</M><C>]</C>. <P/>
 
     Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
 

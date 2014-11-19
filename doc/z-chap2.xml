@@ -36,6 +36,7 @@
     <#Include Label="DigraphRemoveAllMultipleEdges">
     <#Include Label="DigraphReverseEdges">
     <#Include Label="DigraphDisjointUnion">
+    <#Include Label="DigraphEdgeUnion">
     <#Include Label="DigraphJoin">
   </Section>
 
