@@ -231,7 +231,7 @@ SearchForEndomorphisms:=function(nr, map, condition, neighbours, S, limit, G, de
     fi;
   od;
   
-  vals := BlistList([1..nr], map);
+  #vals := BlistList([1..nr], map);
   for i in [1..nr] do 
     if todo[i] and vals[i] then 
       map[pos] := i;

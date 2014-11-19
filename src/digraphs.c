@@ -1894,7 +1894,7 @@ void SEARCH_ENDOS (Obj   map,          // a transformation 2
   ptr = ADDR_TRANS2(map);
   if (pos != -1) {
     for (j = 0; j < nr; j++){
-      if (vals[j] == 0 && neighbours[nr * pos + j] != 0) {
+      if (vals[j] == 0 && neighbours[nr * pos + j] == 1) {
         isEmpty = true;
         for (k = 0; k < nr; k++) {
           copy[nr * j + k] *= neighbours[nr * ptr[pos] + k];
