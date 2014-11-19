@@ -39,6 +39,9 @@ function(graph1, graph2)
     out[i] := ShallowCopy(outn[i]);
   od;
 
+  if HasDigraphNrEdges(graph1) and HasDigraphNrEdges(graph2) then
+    return DigraphNC(out, DigraphNrEdges(graph1) + DigraphNrEdges(graph2));
+  fi;
   return DigraphNC(out);
 end);
 

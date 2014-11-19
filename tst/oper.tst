@@ -1169,6 +1169,14 @@ gap> DigraphEdgeUnion(EmptyDigraph(0),EmptyDigraph(0)) = EmptyDigraph(0);
 true
 gap> DigraphEdgeUnion(EmptyDigraph(5),EmptyDigraph(3)) = EmptyDigraph(5);
 true
+gap> gr := DigraphNC([ [ 6, 3, 3, 10, 6 ], [ 4 ], [ 5, 1 ], [ 5, 4, 6 ],
+> [ 9 ], [ 8 ], [ 7, 6 ], [ 8, 10, 8, 1 ], [  ], [ 2 ] ]);;
+gap> gr := DigraphEdgeUnion(gr, gr);
+<multidigraph with 10 vertices, 40 edges>
+gap> OutNeighbours(gr);
+[ [ 6, 3, 3, 10, 6, 6, 3, 3, 10, 6 ], [ 4, 4 ], [ 5, 1, 5, 1 ], 
+  [ 5, 4, 6, 5, 4, 6 ], [ 9, 9 ], [ 8, 8 ], [ 7, 6, 7, 6 ], 
+  [ 8, 10, 8, 1, 8, 10, 8, 1 ], [  ], [ 2, 2 ] ]
 
 # DigraphCopy
 gap> gr := Digraph( [ [ 6, 1, 2, 3 ], [ 6 ], [ 2, 2, 3 ], [ 1, 1 ], [ 6, 5 ],
