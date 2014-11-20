@@ -173,12 +173,13 @@ end);
 
 SearchForEndomorphisms:=function(nr, map, condition, neighbours, S, limit, G, depth, pos, vals, reps)
   local x, r, nbs, min, todo, pts, j, i;
-  
+  #Error();
   if depth = nr then 
     x :=  TransformationNC(map);
     S[1] := ClosureSemigroup(S[1], x); 
     r := RankOfTransformation(x, DegreeOfTransformationSemigroup(S[1]));
     #Add(result, Transformation(List(condition, x-> ListBlist([1..nr], x)[1])));
+    Print(x, "\n");
     Print("found ", Size(S[1]), ", ", Length(Generators(S[1])), 
      " generators, generator rank is ", r, "\n");
     return;

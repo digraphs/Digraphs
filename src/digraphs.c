@@ -1790,6 +1790,7 @@ void OrbitReps (Obj gens, int* vals, int sizeVals, int* reps) {
 
   nrgens = LEN_PLIST(gens);
   max = 0;
+  // get the largest moved point + 1
   for (i = 1; i <= nrgens; i++) {
     gen = ELM_PLIST(gens, i);
     if (TNUM_OBJ(gen) == T_PERM2) {
@@ -1826,8 +1827,8 @@ void OrbitReps (Obj gens, int* vals, int sizeVals, int* reps) {
   m = 0; //number of orbit reps
 
   for (i = 0; i < sizeVals; i++) {
-    if (! vals[i]) {
-      if (i <= max) {
+    if (vals[i] == 0) {
+      if (i < max) {
         dom1[i] = 1;
       } else {
         reps[i] = 1;
@@ -1864,15 +1865,16 @@ void OrbitReps (Obj gens, int* vals, int sizeVals, int* reps) {
   }
 }
 
-void SEARCH_ENDOS (Obj   map,          // a transformation 2
+void SEARCH_ENDOS (int  *map,          // partial image list
                    int  *vals,         // blist for values in map
                    int   nr,           // nr of vertices
                    int  *condition, 
                    int  *neighbours, 
                    Obj   gens, 
-                   int   depth, 
-                   void (*hook)(Obj map,
-                                void *user_param),  
+                   int   depth, // the number of positions filled 
+                   void (*hook)(int   *map,
+                                int   nr,
+                                void  *user_param),  
                    void  *user_param, 
                    Obj   Stabilizer, 
                    int   pos) { // the last position filled
@@ -1882,7 +1884,7 @@ void SEARCH_ENDOS (Obj   map,          // a transformation 2
   bool isEmpty;
   
   if (depth == nr) {
-    hook(map, user_param);
+    hook(map, nr, user_param);
     return;
   }
 
@@ -1891,13 +1893,12 @@ void SEARCH_ENDOS (Obj   map,          // a transformation 2
          (void *) condition, 
          (size_t) (nr * nr) * sizeof(int));
   
-  ptr = ADDR_TRANS2(map);
   if (pos != -1) {
     for (j = 0; j < nr; j++){
-      if (vals[j] == 0 && neighbours[nr * pos + j] == 1) {
+      if (map[j] == -1 && neighbours[nr * pos + j] == 1) {
         isEmpty = true;
         for (k = 0; k < nr; k++) {
-          copy[nr * j + k] *= neighbours[nr * ptr[pos] + k];
+          copy[nr * j + k] *= neighbours[nr * map[pos] + k];
           if (copy[nr * j + k] == 1) {
             isEmpty = false;
           }
@@ -1920,7 +1921,7 @@ void SEARCH_ENDOS (Obj   map,          // a transformation 2
 
   //find smallest list here!
   for (i = 0; i < nr; i++) {
-    if (vals[i] == 0) {
+    if (map[i] == -1) {
       k = 0;
       for (j = 0; j < nr; j++) {
         if (copy[nr * i + j] == 1) k++;
@@ -1934,20 +1935,22 @@ void SEARCH_ENDOS (Obj   map,          // a transformation 2
   
   for (i = 0; i < nr; i++) {
     if (copy[nr * pos + i] == 1 && reps[i] == 1) {
-      (ADDR_TRANS2(map))[pos] = i;
+      map[pos] = i;
       vals[i] = 1;
       SEARCH_ENDOS(map, vals, nr, copy, neighbours,
           CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1)), 
           depth + 1, hook, user_param, Stabilizer, pos);
+      map[pos] = -1;
       vals[i] = 0;
     }
   }
   for (i = 0; i < nr; i++) {
     if (copy[nr * pos + i] == 1 && vals[i] == 1) {
-      (ADDR_TRANS2(map))[pos] = i;
+      map[pos] = i;
       // could pass reps here!
       SEARCH_ENDOS(map, vals, nr, copy, neighbours, gens, depth + 1, hook,
           user_param, Stabilizer, pos);
+      map[pos] = -1;
     }
   }
   free(copy);
@@ -1958,45 +1961,53 @@ UInt2 TransVal (Obj t, int i) {
   return ADDR_TRANS2(t)[i];
 }
 
-void endo_hook_function(Obj map, 
+void endo_hook_function(int  *map, 
+                        int  nr,
                         void *user_param) {
-  UInt2   *ptr1, *ptr2;
+  UInt2   *ptr;
   Obj     t;
   UInt    i, n;
 
   // copy map into new trans2 
-  n    = DEG_TRANS2(map);  
-  ptr1 = ADDR_TRANS2(map);
-  t    = NEW_TRANS2(n);
-  ptr2  = ADDR_TRANS2(t);
+  t    = NEW_TRANS2(nr);
+  ptr  = ADDR_TRANS2(t);
   
-  for(i = 0; i < n; i++){
-    ptr2[i] = ptr1[i];
+  for (i = 0; i < nr; i++) {
+    ptr[i] = map[i];
   }
    
   AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
   CHANGED_BAG(user_param);
-  Pr("found %d endomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
+  //Pr("Transformation( [ ", 0L, 0L);
+  //Pr("%d", (Int) map[0] + 1, 0L);
+  //for (i = 1; i < nr; i++) {
+  //  Pr(", %d", (Int) map[i] + 1, 0L);
+  //}
+  //Pr(" ] )\n", 0L, 0L);
+  //Pr("found %d endomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
+  
 }
 
 Obj FuncGRAPH_ENDOS (Obj self, Obj graph, Obj gens, Obj Stabilizer) {
-  Obj   user_param, map, nbs, nbsi;
+  Obj   user_param, bs, nbsi, nbs;
   int   nr, i, j, k;
   int  *condition, *neighbours;
 
   user_param = NEW_PLIST(T_PLIST, 0);
   SET_LEN_PLIST(user_param, 0);
   nr = DigraphNrVertices(graph);
-  map = NEW_TRANS2(nr);
-  int vals[nr];
+  
+  int map[nr];
+  int vals[nr];       //vals[i] == 1 iff i in img(map)
 
   for (i = 0; i < nr; i++) {
+    map[i] = -1; //undefined
     vals[i] = 0;
   }
 
   condition  = malloc((nr * nr) * sizeof(int));
   neighbours = calloc((nr * nr),  sizeof(int));
-  
+   
   for (i = 0; i < (nr * nr); i++) {
     condition[i] = 1;
   }
