@@ -1143,11 +1143,10 @@ true
 
 # DigraphEdgeUnion
 gap> gr1 := Digraph(
-> rec(
->   nrvertices := 10,
->   source := [ 3, 4, 4, 6, 6, 9, 9, 9, 9 ],
->   range := [ 10, 5, 7, 3, 9, 4, 5, 8, 10 ],
-> ) );
+>  10,
+>  [ 3, 4, 4, 6, 6, 9, 9, 9, 9 ],
+>  [ 10, 5, 7, 3, 9, 4, 5, 8, 10 ]
+> );
 <digraph with 10 vertices, 9 edges>
 gap> gr2 := Digraph( [ [ 9 ], [ 9, 1, 6, 3 ], [ ], [ ], [ 9, 3, 9 ],
 > [ 1, 4, 3, 2, 9, 4 ], [ 1, 7 ], [ 1, 2, 4 ], [ 8 ] ] );
@@ -1164,6 +1163,20 @@ gap> m := DigraphEdgeUnion(gr1, gr2);
 <digraph with 6 vertices, 6 edges>
 gap> m = CycleDigraph(6);
 true
+gap> m = DigraphEdgeUnion(gr2, gr1);
+true
+gap> DigraphEdgeUnion(EmptyDigraph(0),EmptyDigraph(0)) = EmptyDigraph(0);
+true
+gap> DigraphEdgeUnion(EmptyDigraph(5),EmptyDigraph(3)) = EmptyDigraph(5);
+true
+gap> gr := DigraphNC([ [ 6, 3, 3, 10, 6 ], [ 4 ], [ 5, 1 ], [ 5, 4, 6 ],
+> [ 9 ], [ 8 ], [ 7, 6 ], [ 8, 10, 8, 1 ], [  ], [ 2 ] ]);;
+gap> gr := DigraphEdgeUnion(gr, gr);
+<multidigraph with 10 vertices, 40 edges>
+gap> OutNeighbours(gr);
+[ [ 6, 3, 3, 10, 6, 6, 3, 3, 10, 6 ], [ 4, 4 ], [ 5, 1, 5, 1 ], 
+  [ 5, 4, 6, 5, 4, 6 ], [ 9, 9 ], [ 8, 8 ], [ 7, 6, 7, 6 ], 
+  [ 8, 10, 8, 1, 8, 10, 8, 1 ], [  ], [ 2, 2 ] ]
 
 # DigraphCopy
 gap> gr := Digraph( [ [ 6, 1, 2, 3 ], [ 6 ], [ 2, 2, 3 ], [ 1, 1 ], [ 6, 5 ],
@@ -1322,6 +1335,8 @@ gap> gr1 := Digraph( [ [ 1, 1, 2, 1 ], [ 1 ] ] );
 <multidigraph with 2 vertices, 5 edges>
 gap> gr2 := DigraphRemoveAllMultipleEdges(gr1);
 <digraph with 2 vertices, 3 edges>
+gap> OutNeighbours(gr2);
+[ [ 1, 2 ], [ 1 ] ]
 gap> gr3 := DigraphEdgeUnion(gr1, gr1);
 <multidigraph with 2 vertices, 10 edges>
 gap> gr4 := DigraphRemoveAllMultipleEdges(gr3);
