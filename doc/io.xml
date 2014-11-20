@@ -127,7 +127,7 @@ gap> ReadDigraphs(
 
 <#GAPDoc Label="WriteDigraphs">
 <ManSection>
-  <Oper Name="WriteDigraphs" Arg="filename, digraphs"/>
+  <Oper Name="WriteDigraphs" Arg="filename, digraphs [,verbose]"/>
   <Description>
     If <A>digraphs</A> is a list of digraphs, then <C>WriteDigraphs</C> writes
     its contents to a file in a compact format.  If the supplied filename ends
@@ -136,7 +136,10 @@ gap> ReadDigraphs(
     ends with an extension in the list below, the corresponding graph format
     will be used to encode it.  If such an extension is not included, an
     appropriate format will be chosen intelligently, and an extension appended,
-    to minimise file length.
+    to minimise file length.<P/>
+
+    If a third argument <A>verbose</A> is specified, then information on the
+    progress of the function will be printed.<P/>
 
     The currently supported file formats are:
     <List>

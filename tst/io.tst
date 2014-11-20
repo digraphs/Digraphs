@@ -18,6 +18,8 @@ gap> DigraphFromGraph6String("?");
 <digraph with 0 vertices, 0 edges>
 gap> DigraphFromGraph6String("E?A?");
 <digraph with 6 vertices, 2 edges>
+gap> DigraphFromGraph6String("@");
+<digraph with 1 vertex, 0 edges>
 
 #
 gap> gr := Digraph(rec( nrvertices := 300, source := [1..2], range := [2,1]));
