@@ -2227,7 +2227,7 @@ void GraphHomomorphisms (Obj  graph1,
   user_param = user_param_arg; 
   
   if (setjmp(outofhere) == 0) {
-    SEARCH_ENDOS_MID(0, -1, condition, gens, reps, hook, Stabilizer);
+    SEARCH_HOMOS_MID(0, -1, condition, gens, reps, hook, Stabilizer);
   }
   free(condition);
 }
