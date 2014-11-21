@@ -1817,7 +1817,7 @@ void OrbitReps (Obj gens, bool* vals, int sizeVals, bool* reps) {
   }
   // special case in case there are no gens, or just the identity.
 
-  int dom1[max]; 
+  int dom1[max]; //TODO change these to bool 
   int dom2[max];
   UInt orb[max];
 
@@ -1827,11 +1827,11 @@ void OrbitReps (Obj gens, bool* vals, int sizeVals, bool* reps) {
   m = 0; //number of orbit reps
 
   for (i = 0; i < sizeVals; i++) {
-    if (vals[i] == 0) {
+    if (! vals[i]) {
       if (i < max) {
         dom1[i] = 1;
       } else {
-        reps[i] = 1;
+        reps[i] = true;
       }
     }      
   }
@@ -1840,7 +1840,7 @@ void OrbitReps (Obj gens, bool* vals, int sizeVals, bool* reps) {
   while (dom1[fst] != 1 && fst < max) fst++;
 
   while (fst < max) {
-    reps[fst] = 1;
+    reps[fst] = true;
     orb[0] = fst;
     n = 1; //length of orb
     dom2[fst] = 1;
@@ -1867,13 +1867,13 @@ void OrbitReps (Obj gens, bool* vals, int sizeVals, bool* reps) {
 
 // algorithm for graphs with between SMALL and MID vertices . . .
 
-#define MID 256
+#define MID 512
 
-static int  nr;                 // nr of vertices
-static int  map[MID];         // partial image list
-static bool vals[MID];        // blist for values in map
-static bool neighbours[MID];  // the neighbours of the graph
-static void *user_param;        // a user_param for the hook
+static int  nr;                     // nr of vertices
+static int  map[MID];               // partial image list
+static bool vals[MID];              // blist for values in map
+static bool neighbours[MID * MID];  // the neighbours of the graph
+static void *user_param;            // a user_param for the hook
 
 void SEARCH_ENDOS_MID ( int   depth,        // the number of filled positions in map
                         int   pos,          // the last position filled
@@ -1929,27 +1929,27 @@ void SEARCH_ENDOS_MID ( int   depth,        // the number of filled positions in
       }
     }
   }
-
-  // blist of orbit reps of things not in vals
-  if (reps == NULL) {
-    bool reps[nr];
-    memset(reps, 0, sizeof(bool) * nr);
-    OrbitReps(gens, vals, nr, reps);
-  }
   
   for (i = 0; i < nr; i++) {
-    if (copy[nr * next + i] == 1 && reps[i] == 1 && vals[i] == 0) {
+    if (copy[nr * next + i] && reps[i] && ! vals[i]) {
+      
+      Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
+
       map[next] = i;
       vals[i] = 1;
-      SEARCH_ENDOS_MID(depth + 1, next, copy,
-          CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1)), 
-          NULL, hook, Stabilizer);
+      
+      // blist of orbit reps of things not in vals
+      bool newReps[nr];
+      memset(newReps, false, sizeof(bool) * nr);
+      OrbitReps(newGens, vals, nr, newReps);
+
+      SEARCH_ENDOS_MID(depth + 1, next, copy, newGens, newReps, hook, Stabilizer);
       map[next] = -1;
       vals[i] = 0;
     }
   }
   for (i = 0; i < nr; i++) {
-    if (copy[nr * next + i] == 1 && vals[i] == 1) {
+    if (copy[nr * next + i] && vals[i]) {
       map[next] = i;
       SEARCH_ENDOS_MID(depth + 1, next, copy, gens, reps, hook, Stabilizer);
       map[next] = -1;
@@ -1976,6 +1976,7 @@ void endo_hook_MID_collect(void *user_param,
    
   AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
   CHANGED_BAG(user_param);
+  Pr("found %d endomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
 }
 
 void endo_hook_MID_print (void *user_param, 
@@ -1989,7 +1990,6 @@ void endo_hook_MID_print (void *user_param,
     Pr(", %d", (Int) map[i] + 1, 0L);
   }
   Pr(" ] )\n", 0L, 0L);
-  Pr("found %d endomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
 }
 
 Obj FuncGRAPH_ENDOS_MID (Obj self, Obj graph, Obj gens, Obj Stabilizer) {
@@ -2025,8 +2025,12 @@ Obj FuncGRAPH_ENDOS_MID (Obj self, Obj graph, Obj gens, Obj Stabilizer) {
       neighbours[nr * i + k] = true;
     }
   }
+  
+  bool reps[nr];
+  memset(reps, false, sizeof(bool) * nr);
+  OrbitReps(gens, vals, nr, reps);
 
-  SEARCH_ENDOS_MID(0, -1, condition, gens, NULL, endo_hook_MID_collect,
+  SEARCH_ENDOS_MID(0, -1, condition, gens, reps, endo_hook_MID_collect,
       Stabilizer);
 
   free(condition);
