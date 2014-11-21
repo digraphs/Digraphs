@@ -171,25 +171,21 @@ function(digraph)
  
 end);
 
-SearchForEndomorphisms:=function(nr, map, condition, neighbours, S, limit, G, depth, pos, vals, reps)
+SearchForEndomorphisms:=function(nr, map, condition, neighbours, results, limit, G,
+depth, pos, vals, reps)
   local x, r, nbs, min, todo, pts, j, i;
-  #Error();
+  
   if depth = nr then 
     x :=  TransformationNC(map);
-    S[1] := ClosureSemigroup(S[1], x); 
-    r := RankOfTransformation(x, DegreeOfTransformationSemigroup(S[1]));
-    #Add(result, Transformation(List(condition, x-> ListBlist([1..nr], x)[1])));
-    Print(x, "\n");
-    Print("found ", Size(S[1]), ", ", Length(Generators(S[1])), 
-     " generators, generator rank is ", r, "\n");
+    Add(results, x);
+    Print(map, "\n");
     return;
   fi;
   
-  if Size(S[1]) >= limit then 
+  if Size(results) >= limit then 
     return;
   fi;
 
-  #Print("at depth: ", Length(map), "\n");
   condition:=StructuralCopy(condition);
   
   if pos <> 0 then 
@@ -222,21 +218,20 @@ SearchForEndomorphisms:=function(nr, map, condition, neighbours, S, limit, G, de
   fi;
   
   for i in [1..nr] do 
-    if todo[i] and reps[i] then 
+    if todo[i] and reps[i] and not vals[i] then 
       map[pos] := i;
       vals[i] := true;
-      SearchForEndomorphisms(nr, map, condition, neighbours, S, limit, 
+      SearchForEndomorphisms(nr, map, condition, neighbours, results, limit, 
        Stabilizer(G, i), depth + 1, pos, vals, fail);
       Unbind(map[pos]);
       vals[i] := false;
     fi;
   od;
   
-  #vals := BlistList([1..nr], map);
   for i in [1..nr] do 
     if todo[i] and vals[i] then 
       map[pos] := i;
-      SearchForEndomorphisms(nr, map, condition, neighbours, S, limit, 
+      SearchForEndomorphisms(nr, map, condition, neighbours, results, limit, 
        Stabilizer(G, i), depth + 1, pos, vals, reps);
       Unbind(map[pos]);
     fi;
@@ -245,23 +240,32 @@ SearchForEndomorphisms:=function(nr, map, condition, neighbours, S, limit, G, de
   return;
 end;
 
-STAB:= function(gens, pt)
-  if gens = [] then 
-    return [()];
-  fi;
-  return GeneratorsOfGroup(Stabilizer(Group(gens), pt));
-end;
-
 GraphEndomorphisms := function(digraph, limit)
-  local S, nr, nbs;
-  
-  S := [AsTransformationSemigroup(AutomorphismGroup(digraph))];
+  local nr, STAB, nbs, results;
+ 
+  if not IsSymmetricDigraph(digraph) then 
+    Error("not yet implemented");
+  fi;
+
   nr := DigraphNrVertices(digraph);
+  
+  if nr <= 256 then
+    STAB:= function(gens, pt)
+      if gens = [] then 
+        return [()];
+      fi;
+      return GeneratorsOfGroup(Stabilizer(Group(gens), pt));
+    end;
+    return GRAPH_ENDOS_MID(digraph,
+     GeneratorsOfGroup(AutomorphismGroup(digraph)), STAB);
+  fi;
+  
   nbs := List(OutNeighbours(digraph), x -> BlistList([ 1 .. nr ], x));
+  results := [];
   SearchForEndomorphisms(nr, [], List([ 1 .. nr ], x -> BlistList([ 1 .. nr ], 
-  [ 1 .. nr ])), nbs, S, limit, AutomorphismGroup(digraph), 0, 0, 
+  [ 1 .. nr ])), nbs, results, limit, AutomorphismGroup(digraph), 0, 0, 
   BlistList( [ 1 .. nr ], [] ), fail);
-  return S[1];
+  return results;
 end;
 
 IsEndomorphism:=function(digraph,t)
