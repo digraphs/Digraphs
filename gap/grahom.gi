@@ -259,7 +259,7 @@ GraphEndomorphisms := function(arg)
 
   nr := DigraphNrVertices(digraph);
   
-  if nr <= 256 then
+  if nr <= 512 then
     STAB:= function(gens, pt)
       if gens = [] then 
         return [()];
@@ -267,7 +267,7 @@ GraphEndomorphisms := function(arg)
       return GeneratorsOfGroup(Stabilizer(Group(gens), pt));
     end;
     return GRAPH_ENDOS_MID(digraph,
-     GeneratorsOfGroup(AutomorphismGroup(digraph)), STAB);
+     GeneratorsOfGroup(AutomorphismGroup(digraph)), STAB, fail);
   fi;
   
   nbs := List(OutNeighbours(digraph), x -> BlistList([ 1 .. nr ], x));
@@ -276,6 +276,27 @@ GraphEndomorphisms := function(arg)
   [ 1 .. nr ])), nbs, results, limit, AutomorphismGroup(digraph), 0, 0, 
   BlistList( [ 1 .. nr ], [] ), fail);
   return results;
+end;
+
+ClosureSemigroupHook := function(S, f) 
+  if Length(S) = 0 then 
+    S[1] := Semigroup(IdentityTransformation);
+  fi;
+  S[1] := ClosureSemigroup(S[1], f);
+  #Print("found ", Size(S[1]), " endomorphisms so far\n");
+end;
+
+EndomorphismMonoid2 := function(digraph)
+  local STAB;
+
+  STAB:= function(gens, pt)
+    if gens = [] then 
+      return [()];
+    fi;
+    return GeneratorsOfGroup(Stabilizer(Group(gens), pt));
+  end;
+  return GRAPH_ENDOS_MID(digraph,
+   GeneratorsOfGroup(AutomorphismGroup(digraph)), STAB, ClosureSemigroupHook);
 end;
 
 IsEndomorphism:=function(digraph,t)

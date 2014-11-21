@@ -1874,6 +1874,7 @@ static int  map[MID];               // partial image list
 static bool vals[MID];              // blist for values in map
 static bool neighbours[MID * MID];  // the neighbours of the graph
 static void *user_param;            // a user_param for the hook
+static Obj  GAP_FUNC;
 
 void SEARCH_ENDOS_MID ( int   depth,        // the number of filled positions in map
                         int   pos,          // the last position filled
@@ -1992,7 +1993,24 @@ void endo_hook_MID_print (void *user_param,
   Pr(" ] )\n", 0L, 0L);
 }
 
-Obj FuncGRAPH_ENDOS_MID (Obj self, Obj graph, Obj gens, Obj Stabilizer) {
+void endo_hook_MID_GAP(void *user_param, 
+                       int  nr,
+                       int  *map) {
+  UInt2   *ptr;
+  Obj     t;
+  UInt    i, n;
+
+  // copy map into new trans2 
+  t   = NEW_TRANS2(nr);
+  ptr = ADDR_TRANS2(t);
+  
+  for (i = 0; i < nr; i++) {
+    ptr[i] = map[i];
+  }
+  CALL_2ARGS(GAP_FUNC, user_param, t);
+}
+
+Obj FuncGRAPH_ENDOS_MID (Obj self, Obj graph, Obj gens, Obj Stabilizer, Obj hook_GAP_func) {
   Obj   out, nbs;
   int   i, j, k;
   bool  *condition;
@@ -2029,9 +2047,15 @@ Obj FuncGRAPH_ENDOS_MID (Obj self, Obj graph, Obj gens, Obj Stabilizer) {
   bool reps[nr];
   memset(reps, false, sizeof(bool) * nr);
   OrbitReps(gens, vals, nr, reps);
-
-  SEARCH_ENDOS_MID(0, -1, condition, gens, reps, endo_hook_MID_collect,
-      Stabilizer);
+  
+  if (hook_GAP_func == Fail) {
+    SEARCH_ENDOS_MID(0, -1, condition, gens, reps, endo_hook_MID_collect,
+        Stabilizer);
+  } else {
+    GAP_FUNC = hook_GAP_func;
+    SEARCH_ENDOS_MID(0, -1, condition, gens, reps, endo_hook_MID_GAP,
+        Stabilizer);
+  }
 
   free(condition);
   return user_param;
@@ -2154,7 +2178,7 @@ static StructGVarFunc GVarFuncs [] = {
     FuncORBIT_REPS_PERMS,
     "src/digraphs.c:FuncORBIT_REPS_PERMS" },
 
-  { "GRAPH_ENDOS_MID", 3, "graph, gens, Stabilizer",
+  { "GRAPH_ENDOS_MID", 4, "graph, gens, Stabilizer, func",
     FuncGRAPH_ENDOS_MID,
     "src/digraphs.c:FuncGRAPH_ENDOS_MID" },
 
