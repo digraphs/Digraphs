@@ -240,11 +240,17 @@ depth, pos, vals, reps)
   return;
 end;
 
-GraphEndomorphisms := function(digraph, limit)
-  local nr, STAB, nbs, results;
- 
-  if not IsSymmetricDigraph(digraph) then 
+GraphEndomorphisms := function(arg)
+  local digraph, limit, nr, STAB, nbs, results;
+
+  digraph := arg[1];
+
+  if not (IsDigraph(digraph) and IsSymmetricDigraph(digraph)) then 
     Error("not yet implemented");
+  fi;
+
+  if IsBound(arg[2]) and (IsPosInt(arg[2]) or arg[2] = infinity) then 
+    limit := arg[2];
   fi;
 
   nr := DigraphNrVertices(digraph);
