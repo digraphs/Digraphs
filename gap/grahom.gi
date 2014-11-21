@@ -155,22 +155,6 @@ function(g)
   return result; 
 end);
 
-InstallMethod(EndomorphismMonoid, "for a digraph",
-[IsDigraph],
-function(digraph)
-  if IsMultiDigraph(digraph) then 
-    Error("Digraphs: EndomorphismMonoid: usage,\n",
-    "the argument <digraph> must not be a multigraph,");
-    return;
-  fi;
-  if IsSemigroupsLoaded() then 
-    return Monoid(DigraphEndomorphisms(digraph), rec(small := true));
-  else
-    return Monoid(DigraphEndomorphisms(digraph));
-  fi; 
- 
-end);
-
 SearchForEndomorphisms:=function(nr, map, condition, neighbours, results, limit, G,
 depth, pos, vals, reps)
   local x, r, nbs, min, todo, pts, j, i;
