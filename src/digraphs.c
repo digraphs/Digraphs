@@ -1782,7 +1782,7 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
 // vals is a blist corresponding to the complement of the domain we are acting
 // on. 
 
-void OrbitReps (Obj gens, int* vals, int sizeVals, int* reps) {
+void OrbitReps (Obj gens, bool* vals, int sizeVals, bool* reps) {
   Int    nrgens, i, j, max, fst, m, img, n;
   Obj    gen;
   UInt2  *ptr2;
@@ -1865,112 +1865,110 @@ void OrbitReps (Obj gens, int* vals, int sizeVals, int* reps) {
   }
 }
 
-void SEARCH_ENDOS (int  *map,          // partial image list
-                   int  *vals,         // blist for values in map
-                   int   nr,           // nr of vertices
-                   int  *condition, 
-                   int  *neighbours, 
-                   Obj   gens, 
-                   int   depth, // the number of positions filled 
-                   void (*hook)(int   *map,
-                                int   nr,
-                                void  *user_param),  
-                   void  *user_param, 
-                   Obj   Stabilizer, 
-                   int   pos) { // the last position filled
-  UInt2 *ptr;
-  int   i, j, k, l, min;
-  int  *copy;
-  bool isEmpty;
+// algorithm for graphs with between SMALL and MID vertices . . .
+
+#define MID 256
+
+static int  nr;                 // nr of vertices
+static int  map[MID];         // partial image list
+static bool vals[MID];        // blist for values in map
+static bool neighbours[MID];  // the neighbours of the graph
+static void *user_param;        // a user_param for the hook
+
+void SEARCH_ENDOS_MID ( int   depth,        // the number of filled positions in map
+                        int   pos,          // the last position filled
+                        bool  *condition,   // blist of possible values for map[i]
+                        Obj   gens,         // generators for Stabilizer(AsSet(map));
+                        bool  *reps,        // orbit reps of points not in <map> under <gens>
+                        void  hook (void *user_param,
+                                    int  nr,
+                                    int *map),
+                        Obj   Stabilizer) { // TODO remove this!
+  int   i, j, k, l, min, next, size;
+  bool  *copy;
   
   if (depth == nr) {
-    hook(map, nr, user_param);
+    hook(user_param, nr, map);
     return;
   }
 
-  copy = malloc((nr * nr) * sizeof(int));
+  copy = malloc((nr * nr) * sizeof(bool));
   memcpy((void *) copy, 
          (void *) condition, 
-         (size_t) (nr * nr) * sizeof(int));
+         (size_t) (nr * nr) * sizeof(bool));
   
+  next = 0;     // the next position to fill
+  min = nr + 1; // the minimum number of candidates for map[next]
+
   if (pos != -1) {
     for (j = 0; j < nr; j++){
-      if (map[j] == -1 && neighbours[nr * pos + j] == 1) {
-        isEmpty = true;
-        for (k = 0; k < nr; k++) {
-          copy[nr * j + k] *= neighbours[nr * map[pos] + k];
-          if (copy[nr * j + k] == 1) {
-            isEmpty = false;
+      if (map[j] == -1) {
+        size = 0;
+        if(neighbours[nr * pos + j]) {
+          for (k = 0; k < nr; k++) {
+            copy[nr * j + k] &= neighbours[nr * map[pos] + k];
+            if (copy[nr * j + k]) {
+              size++;
+            }
+          }
+        } else {
+          for (k = 0; k < nr; k++) {
+            if (copy[nr * j + k]) {
+              size++;
+            }
           }
         }
-        if (isEmpty) {
+        if (size == 0) {
           free(copy);
           return;
+        }
+        if (size < min) {
+          next = j;
+          min = size;
         }
       }
     }
   }
 
   // blist of orbit reps of things not in vals
-  int reps[nr];
-  memset(reps, 0, sizeof(int) * nr);
-  OrbitReps(gens, vals, nr, reps);
-  
-  min = nr + 1;
-  pos = 0; // the next position to fill
-
-  //find smallest list here!
-  for (i = 0; i < nr; i++) {
-    if (map[i] == -1) {
-      k = 0;
-      for (j = 0; j < nr; j++) {
-        if (copy[nr * i + j] == 1) k++;
-      }
-      if (k < min) {
-        min = k;
-        pos = i;
-      }
-    }
+  if (reps == NULL) {
+    bool reps[nr];
+    memset(reps, 0, sizeof(bool) * nr);
+    OrbitReps(gens, vals, nr, reps);
   }
   
   for (i = 0; i < nr; i++) {
-    if (copy[nr * pos + i] == 1 && reps[i] == 1) {
-      map[pos] = i;
+    if (copy[nr * next + i] == 1 && reps[i] == 1 && vals[i] == 0) {
+      map[next] = i;
       vals[i] = 1;
-      SEARCH_ENDOS(map, vals, nr, copy, neighbours,
+      SEARCH_ENDOS_MID(depth + 1, next, copy,
           CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1)), 
-          depth + 1, hook, user_param, Stabilizer, pos);
-      map[pos] = -1;
+          NULL, hook, Stabilizer);
+      map[next] = -1;
       vals[i] = 0;
     }
   }
   for (i = 0; i < nr; i++) {
-    if (copy[nr * pos + i] == 1 && vals[i] == 1) {
-      map[pos] = i;
-      // could pass reps here!
-      SEARCH_ENDOS(map, vals, nr, copy, neighbours, gens, depth + 1, hook,
-          user_param, Stabilizer, pos);
-      map[pos] = -1;
+    if (copy[nr * next + i] == 1 && vals[i] == 1) {
+      map[next] = i;
+      SEARCH_ENDOS_MID(depth + 1, next, copy, gens, reps, hook, Stabilizer);
+      map[next] = -1;
     }
   }
   free(copy);
   return;
 }
 
-UInt2 TransVal (Obj t, int i) {
-  return ADDR_TRANS2(t)[i];
-}
-
-void endo_hook_function(int  *map, 
-                        int  nr,
-                        void *user_param) {
+void endo_hook_MID_collect(void *user_param, 
+                           int  nr,
+                           int  *map) {
   UInt2   *ptr;
   Obj     t;
   UInt    i, n;
 
   // copy map into new trans2 
-  t    = NEW_TRANS2(nr);
-  ptr  = ADDR_TRANS2(t);
+  t   = NEW_TRANS2(nr);
+  ptr = ADDR_TRANS2(t);
   
   for (i = 0; i < nr; i++) {
     ptr[i] = map[i];
@@ -1978,55 +1976,60 @@ void endo_hook_function(int  *map,
    
   AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
   CHANGED_BAG(user_param);
-  //Pr("Transformation( [ ", 0L, 0L);
-  //Pr("%d", (Int) map[0] + 1, 0L);
-  //for (i = 1; i < nr; i++) {
-  //  Pr(", %d", (Int) map[i] + 1, 0L);
-  //}
-  //Pr(" ] )\n", 0L, 0L);
-  //Pr("found %d endomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
-  
 }
 
-Obj FuncGRAPH_ENDOS (Obj self, Obj graph, Obj gens, Obj Stabilizer) {
-  Obj   user_param, bs, nbsi, nbs;
-  int   nr, i, j, k;
-  int  *condition, *neighbours;
+void endo_hook_MID_print (void *user_param, 
+                          int  nr,
+                          int  *map) {
+  int i;
+
+  Pr("Transformation( [ ", 0L, 0L);
+  Pr("%d", (Int) map[0] + 1, 0L);
+  for (i = 1; i < nr; i++) {
+    Pr(", %d", (Int) map[i] + 1, 0L);
+  }
+  Pr(" ] )\n", 0L, 0L);
+  Pr("found %d endomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
+}
+
+Obj FuncGRAPH_ENDOS_MID (Obj self, Obj graph, Obj gens, Obj Stabilizer) {
+  Obj   out, nbs;
+  int   i, j, k;
+  bool  *condition;
 
   user_param = NEW_PLIST(T_PLIST, 0);
   SET_LEN_PLIST(user_param, 0);
   nr = DigraphNrVertices(graph);
   
-  int map[nr];
-  int vals[nr];       //vals[i] == 1 iff i in img(map)
+  if (nr > MID) {
+    ErrorQuit("too many vertices!", 0L, 0L);
+  }
 
   for (i = 0; i < nr; i++) {
-    map[i] = -1; //undefined
-    vals[i] = 0;
+    map[i] = -1;     //undefined
+    vals[i] = false;
   }
 
   condition  = malloc((nr * nr) * sizeof(int));
-  neighbours = calloc((nr * nr),  sizeof(int));
    
   for (i = 0; i < (nr * nr); i++) {
-    condition[i] = 1;
+    condition[i] = true;
+    neighbours[i] = false;
   }
 
-  nbs = OutNeighbours(graph);
-  
+  out = OutNeighbours(graph);
   for (i = 0; i < nr; i++) {
-    nbsi = ELM_PLIST(nbs, i + 1);
-    for (j = 0; j < LEN_LIST(nbsi); j++) {
-      k = INT_INTOBJ(ELM_LIST(nbsi, j + 1)) - 1;
-      neighbours[nr * i + k] = 1;
+    nbs = ELM_PLIST(out, i + 1);
+    for (j = 0; j < LEN_LIST(nbs); j++) {
+      k = INT_INTOBJ(ELM_LIST(nbs, j + 1)) - 1;
+      neighbours[nr * i + k] = true;
     }
   }
 
-  SEARCH_ENDOS(map, vals, nr, condition, neighbours, gens, 
-        0, endo_hook_function, user_param, Stabilizer, -1);
+  SEARCH_ENDOS_MID(0, -1, condition, gens, NULL, endo_hook_MID_collect,
+      Stabilizer);
 
   free(condition);
-  free(neighbours);
   return user_param;
 }
 
@@ -2147,9 +2150,9 @@ static StructGVarFunc GVarFuncs [] = {
     FuncORBIT_REPS_PERMS,
     "src/digraphs.c:FuncORBIT_REPS_PERMS" },
 
-  { "GRAPH_ENDOS", 3, "graph, gens, Stabilizer",
-    FuncGRAPH_ENDOS,
-    "src/digraphs.c:FuncGRAPH_ENDOS" },
+  { "GRAPH_ENDOS_MID", 3, "graph, gens, Stabilizer",
+    FuncGRAPH_ENDOS_MID,
+    "src/digraphs.c:FuncGRAPH_ENDOS_MID" },
 
   { 0 }
 
