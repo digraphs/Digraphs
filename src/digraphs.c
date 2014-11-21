@@ -2250,7 +2250,7 @@ Obj FuncGRAPH_ENDOS (Obj self, Obj graph, Obj hook_gap, Obj user_param_gap,
       ErrorQuit("param and hook must both be set or not set", 0L, 0L);
     }
     user_param_arg = NEW_PLIST(T_PLIST, 0);
-    SET_LEN_PLIST(user_param, 0);
+    SET_LEN_PLIST(user_param_arg, 0);
   } else {
     user_param_arg = user_param_gap;
   }
@@ -2288,7 +2288,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj graph1, Obj graph2, Obj hook_gap,
       ErrorQuit("param and hook must both be set or not set", 0L, 0L);
     }
     user_param_arg = NEW_PLIST(T_PLIST, 0);
-    SET_LEN_PLIST(user_param, 0);
+    SET_LEN_PLIST(user_param_arg, 0);
   } else {
     user_param_arg = user_param_gap;
   }
