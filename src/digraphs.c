@@ -1960,9 +1960,9 @@ void SEARCH_ENDOS_MID ( int   depth,        // the number of filled positions in
   return;
 }
 
-void endo_hook_MID_collect(void *user_param, 
-                           int  nr,
-                           int  *map) {
+void endo_hook_collect(void *user_param, 
+                       int  nr,
+                       int  *map) {
   UInt2   *ptr;
   Obj     t;
   UInt    i, n;
@@ -1980,7 +1980,7 @@ void endo_hook_MID_collect(void *user_param,
   Pr("found %d endomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
 }
 
-void endo_hook_MID_print (void *user_param, 
+void endo_hook_print (void *user_param, 
                           int  nr,
                           int  *map) {
   int i;
@@ -1993,9 +1993,9 @@ void endo_hook_MID_print (void *user_param,
   Pr(" ] )\n", 0L, 0L);
 }
 
-void endo_hook_MID_GAP(void *user_param, 
-                       int  nr,
-                       int  *map) {
+void endo_hook_gap (void *user_param, 
+                    int  nr,
+                    int  *map) {
   UInt2   *ptr;
   Obj     t;
   UInt    i, n;
@@ -2010,15 +2010,18 @@ void endo_hook_MID_GAP(void *user_param,
   CALL_2ARGS(GAP_FUNC, user_param, t);
 }
 
-Obj FuncGRAPH_ENDOS_MID (Obj self, Obj graph, Obj gens, Obj Stabilizer, Obj hook_GAP_func) {
-  Obj   out, nbs;
+void GraphEndomorphisms (Obj  graph, 
+                         void hook (void *user_param,
+                                    int  nr,
+                                    int *map),
+                         void *user_param, 
+                         Obj  Stabilizer) { // TODO remove this!
+  Obj   out, nbs, gens;
   int   i, j, k;
   bool  *condition;
 
-  user_param = NEW_PLIST(T_PLIST, 0);
-  SET_LEN_PLIST(user_param, 0);
   nr = DigraphNrVertices(graph);
-  
+
   if (nr > MID) {
     ErrorQuit("too many vertices!", 0L, 0L);
   }
@@ -2046,18 +2049,33 @@ Obj FuncGRAPH_ENDOS_MID (Obj self, Obj graph, Obj gens, Obj Stabilizer, Obj hook
   
   bool reps[nr];
   memset(reps, false, sizeof(bool) * nr);
+  gens = ELM_PLIST(FuncDIGRAPH_AUTOMORPHISMS(0L, graph), 2);
   OrbitReps(gens, vals, nr, reps);
   
-  if (hook_GAP_func == Fail) {
-    SEARCH_ENDOS_MID(0, -1, condition, gens, reps, endo_hook_MID_collect,
-        Stabilizer);
-  } else {
-    GAP_FUNC = hook_GAP_func;
-    SEARCH_ENDOS_MID(0, -1, condition, gens, reps, endo_hook_MID_GAP,
-        Stabilizer);
-  }
+  SEARCH_ENDOS_MID(0, -1, condition, gens, reps, hook, Stabilizer);
 
   free(condition);
+}
+
+Obj FuncGRAPH_ENDOS (Obj self, Obj graph, Obj hook_gap, Obj user_param_gap, 
+     Obj Stabilizer) {
+  int   i, j, k;
+  bool  *condition;
+  
+  if (user_param_gap == Fail) {
+    user_param = NEW_PLIST(T_PLIST, 0);
+    SET_LEN_PLIST(user_param, 0);
+  } else {
+    user_param = user_param_gap;
+  }
+  
+  if (hook_gap == Fail) {
+    GraphEndomorphisms(graph, endo_hook_collect, user_param, Stabilizer); 
+  } else {
+    GAP_FUNC = hook_gap;
+    GraphEndomorphisms(graph, endo_hook_gap, user_param, Stabilizer);
+  }
+
   return user_param;
 }
 
@@ -2178,9 +2196,9 @@ static StructGVarFunc GVarFuncs [] = {
     FuncORBIT_REPS_PERMS,
     "src/digraphs.c:FuncORBIT_REPS_PERMS" },
 
-  { "GRAPH_ENDOS_MID", 4, "graph, gens, Stabilizer, func",
-    FuncGRAPH_ENDOS_MID,
-    "src/digraphs.c:FuncGRAPH_ENDOS_MID" },
+  { "GRAPH_ENDOS", 4, "graph, hook, user_param, Stabilizer",
+    FuncGRAPH_ENDOS,
+    "src/digraphs.c:FuncGRAPH_ENDOS" },
 
   { 0 }
 
