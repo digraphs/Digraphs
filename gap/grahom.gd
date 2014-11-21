@@ -8,7 +8,9 @@
 #############################################################################
 ##
 
-DeclareAttribute("DigraphEndomorphisms", IsDigraph);
+DeclareGlobalFunction("GeneratorsOfEndomorphismMonoid");
+DeclareAttribute("GeneratorsOfEndomorphismMonoidAttr", IsDigraph);
+
 DeclareOperation("HomomorphismDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphHomomorphism", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphColoring", [IsDigraph, IsPosInt]);

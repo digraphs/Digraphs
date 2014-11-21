@@ -1690,6 +1690,7 @@ Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
     else return INTOBJ_INT(count);
 }
 
+// TODO remove this function when we no longer require GAP level code
 Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
   Int   nrgens, i, j, max, fst, m, img, n;
   Obj   reps, gen;
@@ -1723,9 +1724,9 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
     }
   }
   
-  int  dom1[max]; // = calloc(max, sizeof(int));
-  int  dom2[max]; // = calloc(max, sizeof(int));
-  UInt orb[max]; // malloc(max * sizeof(int));
+  int  dom1[max]; 
+  int  dom2[max];
+  UInt orb[max];
 
   memset(dom1, 0, max * sizeof(int)); 
   memset(dom2, 0, max * sizeof(int)); 
@@ -1773,9 +1774,6 @@ Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
     }
     while (dom1[fst] != 1 && fst < max) fst++; 
   }
-  //free(dom1);
-  //free(dom2);
-  //free(orb);
   return reps;
 }
 
@@ -1875,6 +1873,7 @@ static bool vals[MID];              // blist for values in map
 static bool neighbours[MID * MID];  // the neighbours of the graph
 static void *user_param;            // a user_param for the hook
 static Obj  GAP_FUNC;
+static num  mycount; //TODO rename this count once MN's code is removed
 
 void SEARCH_ENDOS_MID ( int   depth,        // the number of filled positions in map
                         int   pos,          // the last position filled
@@ -1890,6 +1889,10 @@ void SEARCH_ENDOS_MID ( int   depth,        // the number of filled positions in
   
   if (depth == nr) {
     hook(user_param, nr, map);
+    mycount++;
+    if (mycount >= maxresults) {
+      longjmp(outofhere, 1);
+    }
     return;
   }
 
@@ -2014,7 +2017,8 @@ void GraphEndomorphisms (Obj  graph,
                          void hook (void *user_param,
                                     int  nr,
                                     int *map),
-                         void *user_param, 
+                         void *user_param_arg, 
+                         num  max_results_arg,
                          Obj  Stabilizer) { // TODO remove this!
   Obj   out, nbs, gens;
   int   i, j, k;
@@ -2052,28 +2056,43 @@ void GraphEndomorphisms (Obj  graph,
   gens = ELM_PLIST(FuncDIGRAPH_AUTOMORPHISMS(0L, graph), 2);
   OrbitReps(gens, vals, nr, reps);
   
-  SEARCH_ENDOS_MID(0, -1, condition, gens, reps, hook, Stabilizer);
-
+  mycount = 0;
+  maxresults = max_results_arg;
+  user_param = user_param_arg; 
+  
+  if (setjmp(outofhere) == 0) {
+    SEARCH_ENDOS_MID(0, -1, condition, gens, reps, hook, Stabilizer);
+  }
   free(condition);
 }
 
 Obj FuncGRAPH_ENDOS (Obj self, Obj graph, Obj hook_gap, Obj user_param_gap, 
-     Obj Stabilizer) {
+    Obj limit_gap, Obj Stabilizer) {
   int   i, j, k;
+  num   max_results_arg;
   bool  *condition;
-  
+  void  *user_param_arg;   
+
+  if (limit_gap == Fail || !IS_INTOBJ(limit_gap)) {
+    max_results_arg = SMALLINTLIMIT;
+  } else {
+    max_results_arg = (num) INT_INTOBJ(limit_gap);
+  }
+
   if (user_param_gap == Fail) {
-    user_param = NEW_PLIST(T_PLIST, 0);
+    user_param_arg = NEW_PLIST(T_PLIST, 0);
     SET_LEN_PLIST(user_param, 0);
   } else {
-    user_param = user_param_gap;
+    user_param_arg = user_param_gap;
   }
-  
+
   if (hook_gap == Fail) {
-    GraphEndomorphisms(graph, endo_hook_collect, user_param, Stabilizer); 
+    GraphEndomorphisms(graph, endo_hook_collect, user_param_arg,
+        max_results_arg, Stabilizer); 
   } else {
     GAP_FUNC = hook_gap;
-    GraphEndomorphisms(graph, endo_hook_gap, user_param, Stabilizer);
+    GraphEndomorphisms(graph, endo_hook_gap, user_param_arg, max_results_arg,
+        Stabilizer);
   }
 
   return user_param;
@@ -2196,7 +2215,7 @@ static StructGVarFunc GVarFuncs [] = {
     FuncORBIT_REPS_PERMS,
     "src/digraphs.c:FuncORBIT_REPS_PERMS" },
 
-  { "GRAPH_ENDOS", 4, "graph, hook, user_param, Stabilizer",
+  { "GRAPH_ENDOS", 5, "graph, hook, user_param, limit, Stabilizer",
     FuncGRAPH_ENDOS,
     "src/digraphs.c:FuncGRAPH_ENDOS" },
 
