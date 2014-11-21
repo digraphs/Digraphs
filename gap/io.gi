@@ -93,7 +93,10 @@ function(arg)
 
   lines:=IO_ReadLines(file);
   IO_Close(file);
-  Apply(lines, x-> decoder(Chomp(x)));
+  for i in [1..Length(lines)] do
+    Info(InfoDigraphs, 1, "Reading graph ", i, " of ", Length(lines));
+    lines[i] := decoder(Chomp(lines[i]));
+  od;
   return lines;
 end);
 
