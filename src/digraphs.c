@@ -2246,9 +2246,9 @@ Obj FuncGRAPH_ENDOS (Obj self, Obj graph, Obj hook_gap, Obj user_param_gap,
   }
 
   if (user_param_gap == Fail) {
-    if (hook_gap != Fail) {
+    /*if (hook_gap != Fail) {
       ErrorQuit("param and hook must both be set or not set", 0L, 0L);
-    }
+    }*/
     user_param_arg = NEW_PLIST(T_PLIST, 0);
     SET_LEN_PLIST(user_param_arg, 0);
   } else {
@@ -2256,9 +2256,9 @@ Obj FuncGRAPH_ENDOS (Obj self, Obj graph, Obj hook_gap, Obj user_param_gap,
   }
 
   if (hook_gap == Fail) {
-    if (user_param_gap != Fail) {
+    /*if (user_param_gap != Fail) {
       ErrorQuit("param and hook must both be set or not set", 0L, 0L);
-    }
+    }*/
     GraphEndomorphisms(graph, endo_hook_collect, user_param_arg,
         max_results_arg, Stabilizer); 
   } else {
