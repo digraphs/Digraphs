@@ -234,7 +234,7 @@ end);
 
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid, 
 function(arg)
-  local digraph, limit, nr, STAB, gens, nbs, results;
+  local digraph, limit, nr, STAB, gens, out, nbs, results;
 
   digraph := arg[1];
 
