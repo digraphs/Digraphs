@@ -226,18 +226,24 @@ end;
 
 # make this an attribute
 
+InstallMethod(GeneratorsOfEndomorphismMonoidAttr, "for a digraph",
+[IsDigraph], 
+function(digraph)
+  return GeneratorsOfEndomorphismMonoid(digraph);
+end);
+
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid, 
 function(arg)
   local digraph, limit, nr, STAB, gens, nbs, results;
 
   digraph := arg[1];
 
-  if not (IsDigraph(digraph) and IsSymmetricDigraph(digraph)) then 
-    Error("not yet implemented");
-  fi;
-
   if HasGeneratorsOfEndomorphismMonoidAttr(digraph) then 
     return GeneratorsOfEndomorphismMonoidAttr(digraph);
+  fi;
+  
+  if not (IsDigraph(digraph) and IsSymmetricDigraph(digraph)) then 
+    Error("not yet implemented");
   fi;
 
   if IsBound(arg[2]) and (IsPosInt(arg[2]) or arg[2] = infinity) then 
@@ -261,7 +267,15 @@ function(arg)
     else 
       limit := limit - Length(gens);
     fi;
-    return GRAPH_ENDOS(digraph, fail, gens, limit, STAB);
+
+    if limit <= 0 then 
+      return gens;
+    fi;
+    out := GRAPH_ENDOS(digraph, fail, gens, limit, STAB);
+    if limit = infinity then 
+      SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
+    fi;
+    return out;
   fi;
   
   nbs := List(OutNeighbours(digraph), x -> BlistList([ 1 .. nr ], x));
