@@ -2276,18 +2276,19 @@ Obj FuncGRAPH_ENDOS (Obj self, Obj graph, Obj hook_gap, Obj user_param_gap,
   return user_param;
 }
 
-Obj FuncGRAPH_HOMOS (Obj self, 
-                     Obj graph1, 
-                     Obj graph2, 
-                     Obj hook_gap, 
-                     Obj user_param_gap, 
-                     Obj limit_gap, 
-                     Obj hint_gap, 
-                     Obj Stabilizer) {
+Obj FuncGRAPH_HOMOS (Obj self, Obj args) { 
   int   i, j, k, hint_arg;
   num   max_results_arg;
   bool  *condition;
-  void  *user_param_arg;   
+  void  *user_param_arg;  
+
+  Obj graph1 = ELM_PLIST(args, 1);
+  Obj graph2 = ELM_PLIST(args, 2); 
+  Obj hook_gap = ELM_PLIST(args, 3); 
+  Obj user_param_gap = ELM_PLIST(args, 4); 
+  Obj limit_gap = ELM_PLIST(args, 5);
+  Obj hint_gap = ELM_PLIST(args, 6);
+  Obj Stabilizer =ELM_PLIST(args, 7);
 
   if (limit_gap == Fail || !IS_INTOBJ(limit_gap)) {
     max_results_arg = SMALLINTLIMIT;
