@@ -2002,14 +2002,14 @@ void SEARCH_HOMOS_MID ( int   depth,        // the number of filled positions in
         size = 0;
         if (neighbours1[nr1 * pos + j]) { // vertex j is adjacent to vertex pos in graph1
           for (k = 0; k < nr2; k++) {
-            copy[nr1 * j + k] &= neighbours2[nr2 * map[pos] + k];
-            if (copy[nr1 * j + k]) {
+            copy[nr2 * j + k] &= neighbours2[nr2 * map[pos] + k];
+            if (copy[nr2 * j + k]) {
               size++;
             }
           }
         } else {
           for (k = 0; k < nr2; k++) {
-            if (copy[nr1 * j + k]) {
+            if (copy[nr2 * j + k]) {
               size++;
             }
           }
@@ -2027,7 +2027,7 @@ void SEARCH_HOMOS_MID ( int   depth,        // the number of filled positions in
   }
   
   for (i = 0; i < nr2; i++) {
-    if (copy[nr1 * next + i] && reps[i] && ! vals[i]) { //TODO is ! vals[i] necessary?
+    if (copy[nr2 * next + i] && reps[i] && ! vals[i]) { //TODO is ! vals[i] necessary?
       
       Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
 
@@ -2045,7 +2045,7 @@ void SEARCH_HOMOS_MID ( int   depth,        // the number of filled positions in
     }
   }
   for (i = 0; i < nr2; i++) {
-    if (copy[nr1 * next + i] && vals[i]) {
+    if (copy[nr2 * next + i] && vals[i]) {
       map[next] = i;
       SEARCH_HOMOS_MID(depth + 1, next, copy, gens, reps, hook, Stabilizer);
       map[next] = -1;
