@@ -1876,6 +1876,7 @@ static bool neighbours2[MID * MID]; // the neighbours of the graph2
 static void *user_param;            // a user_param for the hook
 static Obj  GAP_FUNC;               // variable to hold a GAP level hook function
 static num  mycount; //TODO rename this count once MN's code is removed
+static int  hint;                   // an upper bound for the number of distinct values in map
 
 void SEARCH_ENDOS_MID ( int   depth,        // the number of filled positions in map
                         int   pos,          // the last position filled
@@ -1972,6 +1973,7 @@ void SEARCH_HOMOS_MID ( int   depth,        // the number of filled positions in
                                             // Stabilizer(AsSet(map)) subgroup
                                             // of automorphism group of graph2
                         bool  *reps,        // orbit reps of points not in <map> under <gens>
+                        int   rank,         // current number of distinct values in map
                         void  hook (void *user_param,
                                     int  nr1,
                                     int *map),
@@ -2026,28 +2028,30 @@ void SEARCH_HOMOS_MID ( int   depth,        // the number of filled positions in
     }
   }
   
-  for (i = 0; i < nr2; i++) {
-    if (copy[nr2 * next + i] && reps[i] && ! vals[i]) { //TODO is ! vals[i] necessary?
-      
-      Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
+  if (rank < hint) {
+    for (i = 0; i < nr2; i++) {
+      if (copy[nr2 * next + i] && reps[i] && ! vals[i]) { //TODO is ! vals[i] necessary?
+        
+        Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
 
-      map[next] = i;
-      vals[i] = true;
-      
-      // blist of orbit reps of things not in vals
-      bool newReps[nr2];
-      memset(newReps, false, sizeof(bool) * nr2);
-      OrbitReps(newGens, vals, nr2, newReps);
+        map[next] = i;
+        vals[i] = true;
+        
+        // blist of orbit reps of things not in vals
+        bool newReps[nr2];
+        memset(newReps, false, sizeof(bool) * nr2);
+        OrbitReps(newGens, vals, nr2, newReps);
 
-      SEARCH_HOMOS_MID(depth + 1, next, copy, newGens, newReps, hook, Stabilizer);
-      map[next] = -1;
-      vals[i] = false;
+        SEARCH_HOMOS_MID(depth + 1, next, copy, newGens, newReps, rank + 1, hook, Stabilizer);
+        map[next] = -1;
+        vals[i] = false;
+      }
     }
-  }
+  } 
   for (i = 0; i < nr2; i++) {
     if (copy[nr2 * next + i] && vals[i]) {
       map[next] = i;
-      SEARCH_HOMOS_MID(depth + 1, next, copy, gens, reps, hook, Stabilizer);
+      SEARCH_HOMOS_MID(depth + 1, next, copy, gens, reps, rank, hook, Stabilizer);
       map[next] = -1;
     }
   }
@@ -2159,12 +2163,13 @@ void GraphEndomorphisms (Obj  graph,
 }
 
 void GraphHomomorphisms (Obj  graph1, 
-                         Obj graph2,
+                         Obj  graph2,
                          void hook (void *user_param,
                                     int  nr,
                                     int *map),
                          void *user_param_arg, 
                          num  max_results_arg,
+                         int  hint_arg, 
                          Obj  Stabilizer) { // TODO remove this!
   Obj   out, nbs, gens;
   int   i, j, k;
@@ -2225,9 +2230,10 @@ void GraphHomomorphisms (Obj  graph1,
   mycount = 0;
   maxresults = max_results_arg;
   user_param = user_param_arg; 
+  hint = hint_arg;
   
   if (setjmp(outofhere) == 0) {
-    SEARCH_HOMOS_MID(0, -1, condition, gens, reps, hook, Stabilizer);
+    SEARCH_HOMOS_MID(0, -1, condition, gens, reps, 0, hook, Stabilizer);
   }
   free(condition);
 }
@@ -2270,9 +2276,15 @@ Obj FuncGRAPH_ENDOS (Obj self, Obj graph, Obj hook_gap, Obj user_param_gap,
   return user_param;
 }
 
-Obj FuncGRAPH_HOMOS (Obj self, Obj graph1, Obj graph2, Obj hook_gap, 
-    Obj user_param_gap, Obj limit_gap, Obj Stabilizer) {
-  int   i, j, k;
+Obj FuncGRAPH_HOMOS (Obj self, 
+                     Obj graph1, 
+                     Obj graph2, 
+                     Obj hook_gap, 
+                     Obj user_param_gap, 
+                     Obj limit_gap, 
+                     Obj hint_gap, 
+                     Obj Stabilizer) {
+  int   i, j, k, hint_arg;
   num   max_results_arg;
   bool  *condition;
   void  *user_param_arg;   
@@ -2292,17 +2304,23 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj graph1, Obj graph2, Obj hook_gap,
   } else {
     user_param_arg = user_param_gap;
   }
+  
+  if (IS_INTOBJ(hint_gap)) { 
+    hint_arg = INT_INTOBJ(hint_gap);
+  } else {
+    hint_arg = MID + 1;
+  }
 
   if (hook_gap == Fail) {
     if (user_param_gap != Fail) {
       ErrorQuit("param and hook must both be set or not set", 0L, 0L);
     }
     GraphHomomorphisms(graph1, graph2, endo_hook_collect, user_param_arg,
-        max_results_arg, Stabilizer); 
+        max_results_arg, hint_arg, Stabilizer); 
   } else {
     GAP_FUNC = hook_gap;
-    GraphHomomorphisms(graph1, graph2, endo_hook_gap, user_param_arg, max_results_arg,
-        Stabilizer);
+    GraphHomomorphisms(graph1, graph2, endo_hook_gap, user_param_arg,
+        max_results_arg, hint_arg, Stabilizer);
   }
 
   return user_param;
@@ -2429,7 +2447,7 @@ static StructGVarFunc GVarFuncs [] = {
     FuncGRAPH_ENDOS,
     "src/digraphs.c:FuncGRAPH_ENDOS" },
   
-  { "GRAPH_HOMOS", 6, "graph1, graph2, hook, user_param, limit, Stabilizer",
+  { "GRAPH_HOMOS", 7, "graph1, graph2, hook, user_param, limit, hint, Stabilizer",
     FuncGRAPH_HOMOS,
     "src/digraphs.c:FuncGRAPH_HOMOS" },
 
