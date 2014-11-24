@@ -33,13 +33,13 @@ function(g, h)
 
   n := DigraphNrVertices(g);
   result := [];
-  GRAPH_HOMOMORPHISMS(OutNeighbours(g), OutNeighbours(h),
-                                [],       # this is the initial try
-                                n,        # maxdepth
-                                fail,     # no further known constraints
-                                fail,     # no limit on maxanswers
-                                result,   # this is modified
-                                false);   # allow non-injective ones
+ # GRAPH_HOMOMORPHISMS(OutNeighbours(g), OutNeighbours(h),
+ #                               [],       # this is the initial try
+ #                               n,        # maxdepth
+ #                               fail,     # no further known constraints
+ #                              fail,     # no limit on maxanswers
+ #                               result,   # this is modified
+ #                               false);   # allow non-injective ones
   return result; 
 end);
 
@@ -56,13 +56,13 @@ function(digraph1, digraph2)
 
   n := DigraphNrVertices(digraph1);
   result := [];
-  GRAPH_HOMOMORPHISMS(OutNeighbours(digraph1), OutNeighbours(digraph2),
-                                [],       # this is the initial try
-                                n,        # maxdepth
-                                fail,     # no further known constraints
-                                1,        # no limit on maxanswers
-                                result,   # this is modified
-                                false);   # allow non-injective ones
+  #GRAPH_HOMOMORPHISMS(OutNeighbours(digraph1), OutNeighbours(digraph2),
+  #                              [],       # this is the initial try
+  #                              n,        # maxdepth
+  #                              fail,     # no further known constraints
+  #                              1,        # no limit on maxanswers
+  #                              result,   # this is modified
+  #                              false);   # allow non-injective ones
   if IsEmpty(result) then
     return fail;
   else
@@ -271,7 +271,7 @@ function(arg)
     if limit <= 0 then 
       return gens;
     fi;
-    out := GRAPH_ENDOS(digraph, fail, gens, limit, STAB);
+    out := GRAPH_HOMOS(digraph, digraph, fail, gens, limit, fail, false, STAB);
     if limit = infinity then 
       SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
     fi;
