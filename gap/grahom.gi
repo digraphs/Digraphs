@@ -257,7 +257,7 @@ function(arg)
   if nr <= 512 then
     STAB:= function(gens, pt)
       if gens = [] then 
-        return [()];
+        return fail;
       fi;
       return GeneratorsOfGroup(Stabilizer(Group(gens), pt));
     end;
@@ -272,7 +272,7 @@ function(arg)
       return gens;
     fi;
     out := GRAPH_HOMOS(digraph, digraph, fail, gens, limit, fail, false, STAB);
-    if limit = infinity then 
+    if limit = infinity then # if limit = fail TODO
       SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
     fi;
     return out;

@@ -1953,8 +1953,8 @@ num OrbitReps_sm (Obj gens, int sizeVals) {
         }
         if ((dom2_sm & oneone[img]) == 0) {
           orb[n++] = img;
-          dom2_sm |= oneone[fst];
-          dom1_sm ^= oneone[fst];
+          dom2_sm |= oneone[img];
+          dom1_sm ^= oneone[img];
         }
       }
     }
@@ -2163,13 +2163,25 @@ void SEARCH_HOMOS_SM (int   depth,        // the number of filled positions in m
   if (rank < hint) {
     for (i = 0; i < nr2; i++) {
       if ((copy[next] & reps & oneone[i]) && ! (vals_sm & oneone[i])) { 
-        Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
+        Obj newGens;
+        num newReps;
+        if (gens != Fail) {
+          newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
+          if (newGens != Fail) {
+            newReps = OrbitReps_sm(newGens, nr2);
+          } else {
+            newReps = ones[nr2];
+          }
+
+        } else {
+          newGens = gens;
+          newReps = reps;
+        }
 
         map[next] = i;
         vals_sm |= oneone[i];
         
         // blist of orbit reps of things not in vals_sm
-        num newReps = OrbitReps_sm(newGens, nr2);
         SEARCH_HOMOS_SM(depth + 1, next, copy, newGens, newReps, rank + 1, hook, Stabilizer);
         map[next] = -1;
         vals_sm ^= oneone[i];
@@ -2291,7 +2303,6 @@ void GraphHomomorphisms_md (Obj  graph1,
   Obj   out, nbs, gens;
   int   i, j, k;
   bool  *condition;
-
   nr1 = DigraphNrVertices(graph1);
   nr2 = DigraphNrVertices(graph2);
 
@@ -2375,6 +2386,7 @@ void GraphHomomorphisms_sm (Obj  graph1,
                             Obj  Stabilizer) { // TODO remove this!
   Obj   out, nbs, gens;
   int   i, j, k;
+  Pr("GraphHomomorphisms_sm!\n", 0L, 0L);
 
   nr1 = DigraphNrVertices(graph1);
   nr2 = DigraphNrVertices(graph2);
