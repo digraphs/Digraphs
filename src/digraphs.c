@@ -1836,7 +1836,7 @@ void OrbitReps_md (Obj gens, bool* vals, int sizeVals, bool* reps) {
   // special case in case there are no gens, or just the identity.
 
   int dom1[max]; //TODO change these to bool 
-  int dom2[max];
+  int dom2[max]; // one of these can be removed?
   UInt orb[max];
 
   memset(dom1, 0, max * sizeof(int)); 
@@ -2019,18 +2019,18 @@ void homo_hook_gap (void *user_param,
 
 // the main recursive search algorithm
 
-void SEARCH_HOMOS_MD ( int   depth,        // the number of filled positions in map
-                        int   pos,          // the last position filled
-                        bool  *condition,   // blist of possible values for map[i]
-                        Obj   gens,         // generators for
+void SEARCH_HOMOS_MD (int   depth,        // the number of filled positions in map
+                      int   pos,          // the last position filled
+                      bool  *condition,   // blist of possible values for map[i]
+                      Obj   gens,         // generators for
                                             // Stabilizer(AsSet(map)) subgroup
                                             // of automorphism group of graph2
-                        bool  *reps,        // orbit reps of points not in <map> under <gens>
-                        int   rank,         // current number of distinct values in map
-                        void  hook (void *user_param,
+                       bool  *reps,        // orbit reps of points not in <map> under <gens>
+                       int   rank,         // current number of distinct values in map
+                       void  hook (void *user_param,
                                     int  nr1,
                                     int *map),
-                        Obj   Stabilizer) { // TODO remove this!
+                       Obj   Stabilizer) { // TODO remove this!
   int   i, j, k, l, min, next, size;
   bool  *copy;
   
@@ -2458,14 +2458,14 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   bool  *condition;
   void  *user_param_arg;  
 
-  Obj graph1     = ELM_PLIST(args, 1);
-  Obj graph2     = ELM_PLIST(args, 2); 
-  Obj hook_gap   = ELM_PLIST(args, 3); 
+  Obj graph1         = ELM_PLIST(args, 1);
+  Obj graph2         = ELM_PLIST(args, 2); 
+  Obj hook_gap       = ELM_PLIST(args, 3); 
   Obj user_param_gap = ELM_PLIST(args, 4); 
-  Obj limit_gap = ELM_PLIST(args, 5);
-  Obj hint_gap = ELM_PLIST(args, 6);
-  Obj isinjective = ELM_PLIST(args, 7);
-  Obj Stabilizer =ELM_PLIST(args, 8);
+  Obj limit_gap      = ELM_PLIST(args, 5);
+  Obj hint_gap       = ELM_PLIST(args, 6);
+  Obj isinjective    = ELM_PLIST(args, 7);
+  Obj Stabilizer     = ELM_PLIST(args, 8);
 
   nr1 = DigraphNrVertices(graph1);
   nr2 = DigraphNrVertices(graph2);
