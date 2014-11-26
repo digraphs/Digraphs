@@ -1779,23 +1779,29 @@ static inline int sizenum (num n, int m) {
 
 static int  nr1;                    // nr of vertices in graph1
 static int  nr2;                    // nr of vertices in graph2
-static int  map[MD];               // partial image list
-static bool vals_md[MD];              // blist for values in map
-static bool neighbours1_md[MD * MD]; // the neighbours of the graph1
-static bool neighbours2_md[MD * MD]; // the neighbours of the graph2
-
-static UInt orb[MD];                  // to hold the orbits in OrbitReps
-
-static num  vals_sm;              // blist for values in map
-static num  neighbours1_sm[SM];          // the neighbours of the graph1
-static num  neighbours2_sm[SM];          // the neighbours of the graph2
-static num  dom1_sm;
-static num  dom2_sm;
-static void *user_param;             // a user_param for the hook
-static Obj  GAP_FUNC;                // variable to hold a GAP level hook function
-static num  mycount; //TODO rename this count once MN's code is removed
+static num  count;                  // the number of endos found so far
 static int  hint;                   // an upper bound for the number of distinct values in map
 static num  maxresults;             // upper bound for the number of returned homos
+static UInt orb[MD];                // to hold the orbits in OrbitReps
+
+static int  map[MD];                // partial image list
+static bool vals_md[MD];            // blist for values in map
+static bool neighbours1_md[MD * MD];// the neighbours of the graph1
+static bool neighbours2_md[MD * MD];// the neighbours of the graph2
+
+static num  vals_sm;                // blist for values in map
+static num  neighbours1_sm[SM];     // the neighbours of the graph1
+static num  neighbours2_sm[SM];     // the neighbours of the graph2
+static num  dom1_sm;                // 
+static num  dom2_sm;
+
+static void *user_param;            // a user_param for the hook
+static Obj  GAP_FUNC;               // variable to hold a GAP level hook function
+
+static int calls1;                  // number of function call statistics
+static int calls2;                  // calls1 is the number of calls to the search function
+                                    // calls2 is the number of stabilizers
+                                    // calculated
 
 // vals is a blist corresponding to the complement of the domain we are acting
 // on. 
@@ -2033,11 +2039,11 @@ void SEARCH_HOMOS_MD (int   depth,        // the number of filled positions in m
                        Obj   Stabilizer) { // TODO remove this!
   int   i, j, k, l, min, next, size;
   bool  *copy;
-  
+  calls1++;
   if (depth == nr1) {
     hook(user_param, nr1, map);
-    mycount++;
-    if (mycount >= maxresults) {
+    count++;
+    if (count >= maxresults) {
       longjmp(outofhere, 1);
     }
     return;
@@ -2118,7 +2124,7 @@ void SEARCH_HOMOS_SM (int   depth,        // the number of filled positions in m
                       Obj   gens,         // generators for
                                           // Stabilizer(AsSet(map)) subgroup
                                           // of automorphism group of graph2
-                      num   reps,        // orbit reps of points not in <map> under <gens>
+                      num   reps,         // orbit reps of points not in <map> under <gens>
                       int   rank,         // current number of distinct values in map
                       void  hook (void *user_param,
                                   int  nr1,
@@ -2128,10 +2134,11 @@ void SEARCH_HOMOS_SM (int   depth,        // the number of filled positions in m
   int  i, j, k, l, min, next, size;
   num  copy[nr1];
   
+  calls1++;
   if (depth == nr1) {
     hook(user_param, nr1, map);
-    mycount++;
-    if (mycount >= maxresults) {
+    count++;
+    if (count >= maxresults) {
       longjmp(outofhere, 1);
     }
     return;
@@ -2163,10 +2170,11 @@ void SEARCH_HOMOS_SM (int   depth,        // the number of filled positions in m
   if (rank < hint) {
     for (i = 0; i < nr2; i++) {
       if ((copy[next] & reps & oneone[i]) && ! (vals_sm & oneone[i])) { 
+        calls2++;
         Obj newGens;
         num newReps;
         if (gens != Fail) {
-          newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
+          newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));//TODO remove
           if (newGens != Fail) {
             newReps = OrbitReps_sm(newGens, nr2);
           } else {
@@ -2200,22 +2208,22 @@ void SEARCH_HOMOS_SM (int   depth,        // the number of filled positions in m
 
 void SEARCH_INJ_HOMOS_MD (int  depth,        // the number of filled positions in map
                           int  pos,          // the last position filled
-                          bool *condition,    // blist of possible values for map[i]
+                          bool *condition,   // blist of possible values for map[i]
                           Obj  gens,         // generators for
                                              // Stabilizer(AsSet(map)) subgroup
                                              // of automorphism group of graph2
-                          bool  *reps,         // orbit reps of points not in <map> under <gens>
+                          bool  *reps,       // orbit reps of points not in <map> under <gens>
                           void hook (void *user_param,
                                      int  nr1,
                                      int *map),
-                          Obj   Stabilizer) { // TODO remove this!
+                          Obj   Stabilizer) {// TODO remove this!
   int   i, j, k, l, min, next, size;
   bool  *copy;
   
   if (depth == nr1) {
     hook(user_param, nr1, map);
-    mycount++;
-    if (mycount >= maxresults) {
+    count++;
+    if (count >= maxresults) {
       longjmp(outofhere, 1);
     }
     return;
@@ -2290,6 +2298,8 @@ void SEARCH_INJ_HOMOS_MD (int  depth,        // the number of filled positions i
   return;
 }
 
+// prepare the graphs for SEARCH_HOMOS_MD
+
 void GraphHomomorphisms_md (Obj  graph1, 
                             Obj  graph2,
                             void hook (void *user_param,
@@ -2359,7 +2369,7 @@ void GraphHomomorphisms_md (Obj  graph1,
   gens = ELM_PLIST(FuncDIGRAPH_AUTOMORPHISMS(0L, graph2), 2);
   OrbitReps_md(gens, vals_md, nr2, reps);
   
-  mycount = 0;
+  count = 0;
   maxresults = max_results_arg;
   user_param = user_param_arg; 
   hint = hint_arg;
@@ -2373,6 +2383,8 @@ void GraphHomomorphisms_md (Obj  graph1,
   }
   free(condition);
 }
+
+// prepare the graphs for SEARCH_HOMOS_SM
 
 void GraphHomomorphisms_sm (Obj  graph1, 
                             Obj  graph2,
@@ -2438,7 +2450,7 @@ void GraphHomomorphisms_sm (Obj  graph1,
   gens = ELM_PLIST(FuncDIGRAPH_AUTOMORPHISMS(0L, graph2), 2);
   num reps = OrbitReps_sm(gens, nr2);
   
-  mycount = 0;
+  count = 0;
   maxresults = max_results_arg;
   user_param = user_param_arg; 
   hint = hint_arg;
@@ -2501,6 +2513,9 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   }
 
   bool isinjective_c = (isinjective == True ? true : false);
+  
+  calls1 = 0;
+  calls2 = 0;
 
   if (hook_gap == Fail) {
     /*if (user_param_gap != Fail) {
@@ -2523,7 +2538,8 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
           max_results_arg, hint_arg, isinjective_c, Stabilizer);
     }
   }
-
+  Pr("calls to search = %d\n", (Int) calls1, 0L);
+  Pr("stabs computed = %d\n", (Int) calls2, 0L);
   return user_param;
 }
 
