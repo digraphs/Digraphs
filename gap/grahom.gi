@@ -283,10 +283,11 @@ function(arg)
   SearchForEndomorphisms(nr, [], List([ 1 .. nr ], x -> BlistList([ 1 .. nr ], 
   [ 1 .. nr ])), nbs, results, limit, AutomorphismGroup(digraph), 0, 0, 
   BlistList( [ 1 .. nr ], [] ), fail);
-  return results;
+  return results ;
 end);
 
-InstallMethod(HomomorphismGraphs, "for two digraphs",
+## Finds a single homomorphism of highest rank from graph1 to graph2
+InstallMethod(HomomorphismGraphs, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(gr1, gr2)
   local nr1, nr2, STAB, out;
@@ -317,6 +318,91 @@ function(gr1, gr2)
   fi;
 end);
 
+## Finds a set S of homomorphism from graph1 to graph2 such that every homomorphism
+## between the two graphs can expressed as a composition of an element in S
+## and an automorphism of graph2.
+InstallMethod(HomomorphismGraphsRepresetatives, "for a digraph and a digraph",
+[IsDigraph, IsDigraph],
+function(gr1, gr2) 
+  local nr1, nr2, STAB, out;
+
+  if not (IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2)) then 
+    Error("not yet implemented");
+  fi;
+
+  nr1 := DigraphNrVertices(gr1);
+  nr2 := DigraphNrVertices(gr2);
+
+  if nr1 <= 512 and nr2 <= 512 then
+    STAB:= function(gens, pt)
+      if gens = [] then 
+        return fail;
+      fi;
+      return GeneratorsOfGroup(Stabilizer(Group(gens), pt));
+    end;
+    out := GRAPH_HOMOS(gr1, gr2, fail, fail, fail, nr2, false, STAB);
+    return out;
+  else 
+    Error("not yet implemented");
+    return;
+  fi;
+end);
+
+## Wrapper for C function GRAPH_HOMOS
+InstallGlobalFunction(HomomorphismGraphsFinder, 
+function(gr1, gr2, hook, user_param, limit, hint, isinjective) 
+  local nr1, nr2, STAB, out;
+
+  if not (IsDigraph(gr1) and IsDigraph(gr2) and IsSymmetricDigraph(gr1)
+    and IsSymmetricDigraph(gr2)) then 
+    Error("not yet implemented");
+  fi;
+
+  if hook <> fail and not IsFunction(hook) then
+    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+          "<hook> has to be a function,");
+    return;
+  fi;
+
+  if limit = infinity then
+    limit := fail;
+  elif limit <> fail and not IsPosInt(limit) then
+    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+          "<limit> has to be a positive integer or infinity,");
+    return;
+  fi;
+
+  if hint = infinity then
+    hint := fail;
+  elif hint <> fail and not IsPosInt(hint) then
+    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+          "<hint> has to be a positive integer or infinity,");
+    return;
+  fi;
+
+  if not IsBool(isinjective) then
+    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+          "<isinjective> has to be a bool,");
+    return;
+  fi;
+  
+  nr1 := DigraphNrVertices(gr1);
+  nr2 := DigraphNrVertices(gr2);
+
+  if nr1 <= 512 and nr2 <= 512 then
+    STAB:= function(gens, pt)
+      if gens = [] then 
+        return fail;
+      fi;
+      return GeneratorsOfGroup(Stabilizer(Group(gens), pt));
+    end;
+    out := GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, STAB);
+    return out;
+  else 
+    Error("not yet implemented");
+    return;
+  fi;
+end);
 #IsEndomorphism:=function(digraph,t)
 #  local o;
 #  o:=DigraphEdges(digraph);
