@@ -15,6 +15,7 @@ DeclareOperation("HomomorphismDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphHomomorphism", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphColoring", [IsDigraph, IsPosInt]);
 DeclareOperation("HomomorphismGraphs", [IsDigraph, IsDigraph]);
+DeclareOperation("MonomorphismGraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("HomomorphismGraphsRepresetatives", [IsDigraph, IsDigraph]);
 
 DeclareGlobalFunction("HomomorphismGraphsFinder");
