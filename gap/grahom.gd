@@ -14,4 +14,5 @@ DeclareAttribute("GeneratorsOfEndomorphismMonoidAttr", IsDigraph);
 DeclareOperation("HomomorphismDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphHomomorphism", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphColoring", [IsDigraph, IsPosInt]);
+DeclareOperation("HomomorphismGraphs", [IsDigraph, IsDigraph]);
 

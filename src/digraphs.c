@@ -2427,7 +2427,7 @@ void GraphHomomorphisms_sm (Obj  graph1,
   }
 
   out = OutNeighbours(graph2);
-  for (i = 0; i < nr1; i++) {
+  for (i = 0; i < nr2; i++) {
     nbs = ELM_PLIST(out, i + 1);
     for (j = 0; j < LEN_LIST(nbs); j++) {
       k = INT_INTOBJ(ELM_LIST(nbs, j + 1)) - 1;

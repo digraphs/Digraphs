@@ -286,6 +286,37 @@ function(arg)
   return results;
 end);
 
+InstallMethod(HomomorphismGraphs, "for two digraphs",
+[IsDigraph, IsDigraph],
+function(gr1, gr2)
+  local nr1, nr2, STAB, out;
+  
+  if not (IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2)) then 
+    Error("not yet implemented");
+  fi;
+
+  nr1 := DigraphNrVertices(gr1);
+  nr2 := DigraphNrVertices(gr2);
+  
+  if nr1 <= 512 and nr2 <= 512 then
+    STAB:= function(gens, pt)
+      if gens = [] then 
+        return fail;
+      fi;
+      return GeneratorsOfGroup(Stabilizer(Group(gens), pt));
+    end;
+    out := GRAPH_HOMOS(gr1, gr2, fail, fail, 1, nr2, false, STAB);
+    if IsEmpty(out) then
+      return fail;
+    else
+      return out[1];
+    fi;
+  else 
+    Error("not yet implemented");
+    return;
+  fi;
+end);
+
 #IsEndomorphism:=function(digraph,t)
 #  local o;
 #  o:=DigraphEdges(digraph);
