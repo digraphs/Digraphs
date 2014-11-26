@@ -211,7 +211,7 @@ true
 gap> ForAny(graph5, x-> Number(graph5, y-> IsIsomorphicDigraph(x, y)) <> 1);
 false
 
-# IsomorphismDigraphs
+# IsomorphismDigraphs
 gap> gr1 := CompleteBipartiteDigraph(100,50);
 <digraph with 150 vertices, 10000 edges>
 gap> gr2 := CompleteBipartiteDigraph(50,100);

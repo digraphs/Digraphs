@@ -180,7 +180,7 @@ gap> rdgr := ReadDigraphs(filename);;
 gap> gr = rdgr;
 true
 
-# WritePlainTestDigraph and ReadPlainTextDigraph
+# WritePlainTextDigraph and ReadPlainTextDigraph
 gap> gr := Digraph( [ [ 1, 2 ], [ 2, 3 ], [  ] ] );
 <digraph with 3 vertices, 4 edges>
 gap> filename := Concatenation(DigraphsDir(), "/tst/out/plain.txt");;
