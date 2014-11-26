@@ -166,7 +166,7 @@ gap> AdjacencyMatrix(
 > Digraph( rec( nrvertices := 0, source := [ ], range := [ ] ) ) );
 [  ]
 
-# DigraphTopologicalSort: standard example
+# DigraphTopologicalSort
 gap> r := rec( nrvertices := 20000, source := [  ], range := [  ] );;
 gap> for i in [ 1 .. 9999 ] do
 >   Add(r.source, i);
@@ -193,8 +193,6 @@ gap> gr := Digraph( [ [ 2 ], [ 1 ] ] );
 <digraph with 2 vertices, 2 edges>
 gap> DigraphTopologicalSort(gr);
 fail
-
-# DigraphTopologicalSort: testing almost trivial cases
 gap> r := rec( nrvertices := 2, source := [ 1, 1 ], range := [ 2, 2 ] );;
 gap> multiple := Digraph(r);;
 gap> DigraphTopologicalSort(multiple);
@@ -215,8 +213,6 @@ gap> gr := Digraph([ [ 2 ], [ 1 ] ]);
 <digraph with 2 vertices, 2 edges>
 gap> DigraphTopologicalSort(gr);
 fail
-
-# DigraphTopologicalSort: other small cases
 gap> r:=rec( nrvertices := 8,
 > source := [ 1, 1, 1, 2, 3, 4, 4, 5, 7, 7 ], 
 > range := [ 4, 3, 4, 8, 2, 2, 6, 7, 4, 8 ] );;
@@ -265,8 +261,6 @@ gap> gr := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> DigraphStronglyConnectedComponents(gr);
 rec( comps := [  ], id := [  ] )
-
-# DigraphStronglyConnectedComponents: weakly connected, 4 strong components
 gap> r := rec( nrvertices := 9, 
 > range := [ 1, 7, 6, 9, 4, 8, 2, 5, 8, 9, 3, 9, 4, 8, 1, 1, 3 ], 
 > source := [ 1, 1, 2, 2, 4, 4, 5, 6, 6, 6, 7, 7, 8, 8, 9, 9, 9 ] );
@@ -281,15 +275,11 @@ rec( comps := [ [ 3 ], [ 1, 7, 9 ], [ 8, 4 ], [ 2, 6, 5 ] ],
 gap> wcc := DigraphConnectedComponents(gr);
 rec( comps := [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ] ], 
   id := [ 1, 1, 1, 1, 1, 1, 1, 1, 1 ] )
-
-# DigraphStronglyConnectedComponents: weakly conn., 20000 singletonstrong comps
 gap> scc := DigraphStronglyConnectedComponents(circuit);;
 gap> Length(scc.comps);
 20000
 gap> Length(scc.comps) = DigraphNrVertices(circuit);
 true
-
-# DigraphStronglyConnectedComponents: other cases
 gap> gr := CycleDigraph(10);
 <digraph with 10 vertices, 10 edges>
 gap> gr2 := DigraphRemoveEdges( gr, [ 10 ] );
@@ -419,7 +409,7 @@ gap> Display(DigraphShortestDistances(gr));
   [  -1,  -1,  -1,  -1,  -1,  -1,  -1 ],
   [  -1,   1,   3,   2,   4,   2,   5 ] ]
 
-#
+# OutNeighbours and InNeighbours
 gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 1, 5, 5, 7, 10 ],
 > range := [ 3, 3, 1, 10, 7, 1 ] ) );
 <multidigraph with 10 vertices, 6 edges>
@@ -434,7 +424,7 @@ gap> InNeighbours(gr);
 gap> OutNeighbours(gr);
 [ [ 1, 1, 4 ], [ 2, 3, 4 ], [ 2, 4, 4, 4 ], [ 2 ] ]
 
-# OutDegrees & OutDegreeSequence; InDegrees & InDegreeSequence (Trivial cases)
+# OutDegrees, OutDegreeSequence, InDegrees, InDegreeSequence
 gap> r := rec( nrvertices := 0, source := [ ], range := [ ] );;
 gap> gr1 := Digraph(r);
 <digraph with 0 vertices, 0 edges>
@@ -468,8 +458,6 @@ gap> InDegrees(gr3);
 [  ]
 gap> InDegreeSequence(gr3);
 [  ]
-
-# OutDegrees & OutDegreeSequence; InDegrees & InDegreeSequence
 gap> adj :=  [
 > [ 6, 7, 1 ], [ 1, 3, 3, 6 ], [ 5 ], [ 1, 4, 4, 4, 8 ], [ 1, 3, 4, 6, 7 ],
 > [ 7, 7 ], [ 1, 4, 5, 6, 5, 7 ], [ 5, 6 ] ];;
@@ -575,7 +563,7 @@ gap> DigraphSinks(gr);
 gap> DigraphSources(gr);
 [ 1, 3, 7, 9, 10 ]
 
-#
+# DigraphPeriod
 gap> gr := EmptyDigraph(100);
 <digraph with 100 vertices, 0 edges>
 gap> DigraphPeriod(gr);
