@@ -1481,7 +1481,7 @@ static num  count;                   // the number of endos found so far
 static int  hint;                    // an upper bound for the number of distinct values in map
 static num  maxresults;              // upper bound for the number of returned homos
 static UInt orb[MD];                 // to hold the orbits in OrbitReps
-
+static unsigned int sizes[MD * MD];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
 static int  map[MD];                 // partial image list
 static bool vals_md[MD];             // blist for values in map
 static bool neighbours1_md[MD * MD]; // the neighbours of the graph1
@@ -1731,9 +1731,12 @@ void SEARCH_HOMOS_MD (unsigned int depth, // the number of filled positions in m
                        int   rank,        // current number of distinct values in map
                        void  hook (),
                        Obj   Stabilizer) { // TODO remove this!
-  unsigned int   i, j, k, l, min, next, size;
+
+  unsigned int   i, j, k, l, min, next;
   bool  *copy;
+
   calls1++;
+  
   if (depth == nr1) {
     hook();
     count++;
@@ -1754,31 +1757,29 @@ void SEARCH_HOMOS_MD (unsigned int depth, // the number of filled positions in m
   if (pos != -1) {
     for (j = 0; j < nr1; j++){
       if (map[j] == -1) {
-        size = 0;
         if (neighbours1_md[nr1 * pos + j]) { // vertex j is adjacent to vertex pos in graph1
+          sizes[depth * nr1 + j] = 0;
           for (k = 0; k < nr2; k++) {
             copy[nr2 * j + k] &= neighbours2_md[nr2 * map[pos] + k];
             if (copy[nr2 * j + k]) {
-              size++;
+              sizes[depth * nr1 + j]++;
             }
           }
-        } else {
-          for (k = 0; k < nr2; k++) {
-            if (copy[nr2 * j + k]) {
-              size++;
-            }
-          }
-        }
-        if (size == 0) {
+        } 
+        if (sizes[depth * nr1 + j] == 0) {
           free(copy);
           return;
         }
-        if (size < min) {
+        if (sizes[depth * nr1 + j] < min) {
           next = j;
-          min = size;
+          min = sizes[depth * nr1 + j];
         }
       }
     }
+  }
+  
+  for (i = 0; i < nr1; i++) {
+    sizes[(depth + 1) * nr1 + i] = sizes[(depth * nr1) + i]; 
   }
   
   if (rank < hint) {
@@ -2005,6 +2006,10 @@ void GraphHomomorphisms_md (Obj  graph1,
   memset((void *) vals_md, false, nr2 * sizeof(bool));
   memset((void *) neighbours1_md, false, nr1 * nr1 * sizeof(bool));
   memset((void *) neighbours2_md, false, nr2 * nr2 * sizeof(bool));
+  
+  for (i = 0; i < nr1; i++) {
+    sizes[i] = nr2;
+  }
 
   // install out-neighbours for graph1 
   out = OutNeighbours(graph1);
