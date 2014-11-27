@@ -1482,8 +1482,8 @@ static int  hint;                    // an upper bound for the number of distinc
 static num  maxresults;              // upper bound for the number of returned homos
 static UInt orb[MD];                 // to hold the orbits in OrbitReps
 static unsigned int sizes[MD * MD];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
-static bool reps[MD * MD];           // 
 static int  map[MD];                 // partial image list
+static bool reps_md[MD * MD];        // blist for orbit reps
 static bool vals_md[MD];             // blist for values in map
 static bool neighbours1_md[MD * MD]; // the neighbours of the graph1
 static bool neighbours2_md[MD * MD]; // the neighbours of the graph2
@@ -1514,7 +1514,9 @@ void OrbitReps_md (Obj gens, unsigned int rep_depth) {
   UInt2  *ptr2;
   UInt4  *ptr4;
   
-  memset((void *) reps + (rep_depth * nr2), false, nr2 * sizeof(bool));
+  for (i = rep_depth * nr2; i < (rep_depth + 1) * nr2; i++) {
+    reps_md[i] = false;
+  }
 
   nrgens = LEN_PLIST(gens);
   max = 0;
@@ -1555,7 +1557,7 @@ void OrbitReps_md (Obj gens, unsigned int rep_depth) {
       if (i < max) {
         dom1_md[i] = true;
       } else {
-        reps[(rep_depth * nr2) + i] = true;
+        reps_md[(rep_depth * nr2) + i] = true;
       }
     }      
   }
@@ -1564,7 +1566,7 @@ void OrbitReps_md (Obj gens, unsigned int rep_depth) {
   while (dom1_md[fst] != 1 && fst < max) fst++;
 
   while (fst < max) {
-    reps[(rep_depth * nr2) + fst] = true;
+    reps_md[(rep_depth * nr2) + fst] = true;
     orb[0] = fst;
     n = 1; //length of orb
     dom2_md[fst] = true;
@@ -1723,13 +1725,13 @@ void homo_hook_gap () {
 
 // the main recursive search algorithm
 
-void SEARCH_HOMOS_MD (unsigned int depth, // the number of filled positions in map
+void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled positions in map
                       int   pos,          // the last position filled
                       bool  *condition,   // blist of possible values for map[i]
                       Obj   gens,         // generators for
                                           // Stabilizer(AsSet(map)) subgroup
                                           // of automorphism group of graph2
-                      unsigned int rep_depth,
+                      unsigned int const rep_depth,
                       int   rank,         // current number of distinct values in map
                       void  hook (),
                       Obj   Stabilizer) { // TODO remove this!
@@ -1786,7 +1788,7 @@ void SEARCH_HOMOS_MD (unsigned int depth, // the number of filled positions in m
   
   if (rank < hint) {
     for (i = 0; i < nr2; i++) {
-      if (copy[nr2 * next + i] && reps[(rep_depth * nr2) + i] && ! vals_md[i]) { //TODO is ! vals_md[i] necessary?
+      if (copy[nr2 * next + i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) { 
         calls2++;
         Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
         OrbitReps_md(newGens, rep_depth + 1);
@@ -1884,7 +1886,7 @@ void SEARCH_HOMOS_SM (unsigned int depth, // the number of filled positions in m
   return;
 }
 
-void SEARCH_INJ_HOMOS_MD (unsigned int  depth,  // the number of filled positions in map
+/*void SEARCH_INJ_HOMOS_MD (unsigned int  depth,  // the number of filled positions in map
                           int  pos,             // the last position filled
                           bool *condition,      // blist of possible values for map[i]
                           Obj  gens,            // generators for
@@ -1968,7 +1970,7 @@ void SEARCH_INJ_HOMOS_MD (unsigned int  depth,  // the number of filled position
   }
   free(copy);
   return;
-}
+}*/
 
 // prepare the graphs for SEARCH_HOMOS_MD
 
@@ -2042,7 +2044,7 @@ void GraphHomomorphisms_md (Obj  graph1,
   // go! 
   if (setjmp(outofhere) == 0) {
     if (isinjective) {
-      SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook, Stabilizer);
+     // SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook, Stabilizer);
     } else {
       SEARCH_HOMOS_MD(0, -1, condition, gens, 0, 0, hook, Stabilizer);
     }
