@@ -255,9 +255,9 @@ function(arg)
   nr := DigraphNrVertices(digraph);
   
   if nr <= 512 then
-    STAB:= function(gens, pt)
+    STAB := function(gens, pt)
       if gens = [] then 
-        return fail;
+        return [];
       fi;
       return GeneratorsOfGroup(Stabilizer(Group(gens), pt));
     end;

@@ -7,12 +7,6 @@
 **  
 */
 
-#include "bliss-0.72/bliss_C.h"
-
-#include <stdlib.h>
-#include <stdbool.h>
-
-#include "src/compiled.h"          /* GAP headers                */
 #include "src/digraphs.h"
 
 #undef PACKAGE
@@ -23,43 +17,11 @@
 #undef PACKAGE_URL
 #undef PACKAGE_VERSION
 
-
-//#include "pkgconfig.h"             /* our own configure results */
+static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
+static Obj FuncDIGRAPH_IN_NBS(Obj self, Obj digraph);
+static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 
 /*************************************************************************/
-
-/* These functions are now unnecessary/invalid
-bool HasOutNeighbours(Obj digraph) {
-  return IsbPRec(digraph, RNamName("adj"));
-}
-
-bool HasDigraphSourceAndRange(Obj digraph) {
-  return (IsbPRec(digraph, RNamName("source")) 
-          &&
-          IsbPRec(digraph, RNamName("range")));
-}
-
-bool HasDigraphSource(Obj digraph) {
-  return IsbPRec(digraph, RNamName("source"));
-}
-
-bool HasDigraphRange(Obj digraph) {
-  return IsbPRec(digraph, RNamName("range"));
-}
-
-Obj DigraphSource(Obj digraph) {
-  if (!HasDigraphSource(digraph)) {
-    FuncDIGRAPH_SOURCE_RANGE( NULL, digraph );
-  }
-  return ElmPRec(digraph, RNamName("source"));
-}
-
-Obj DigraphRange(Obj digraph) {
-  if (!HasDigraphRange(digraph)) {
-    FuncDIGRAPH_SOURCE_RANGE( NULL, digraph );
-  }
-  return ElmPRec(digraph, RNamName("range"));
-}*/
 
 Int DigraphNrVertices(Obj digraph) {
   if (IsbPRec(digraph, RNamName("nrvertices"))) {
@@ -111,14 +73,6 @@ Obj OutNeighbours(Obj digraph) {
   ErrorQuit("Digraphs: OutNeighbours (C): not enough record components set,", 0L, 0L);
   return False;
 }
-
-/*Obj OutNeighboursOfVertex(Obj digraph, Int v) { 
-  Obj out;
-
-  // Do all kinds of safety checking
-  out = OutNeighbours(digraph);
-  return ELM_PLIST( out, v );
-}*/
 
 /****************************************************************************
 **
@@ -1629,7 +1583,7 @@ static num  neighbours2_sm[SM];     // the neighbours of the graph2
 static num  dom1_sm;                // 
 static num  dom2_sm;
 
-static void *user_param;            // a user_param for the hook
+static Obj  user_param;            // a user_param for the hook
 static Obj  GAP_FUNC;               // variable to hold a GAP level hook function
 
 static int calls1;                  // number of function call statistics
@@ -1995,20 +1949,8 @@ void SEARCH_HOMOS_SM (unsigned int depth,        // the number of filled positio
     for (i = 0; i < nr2; i++) {
       if ((copy[next] & reps & oneone[i]) && ! (vals_sm & oneone[i])) { 
         calls2++;
-        Obj newGens;
-        num newReps;
-        if (gens != Fail) {
-          newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));//TODO remove
-          if (newGens != Fail) {
-            newReps = OrbitReps_sm(newGens, nr2);
-          } else {
-            newReps = ones[nr2];
-          }
-
-        } else {
-          newGens = gens;
-          newReps = reps;
-        }
+        Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));//TODO remove
+        num newReps = OrbitReps_sm(newGens, nr2);
 
         map[next] = i;
         vals_sm |= oneone[i];
@@ -2126,10 +2068,8 @@ void SEARCH_INJ_HOMOS_MD (unsigned int  depth,        // the number of filled po
 
 void GraphHomomorphisms_md (Obj  graph1, 
                             Obj  graph2,
-                            void hook (void *user_param,
-                                       int  nr,
-                                       int *map),
-                            void *user_param_arg, 
+                            void hook (),
+                            Obj  user_param_arg, 
                             num  max_results_arg,
                             int  hint_arg, 
                             bool isinjective,
@@ -2212,9 +2152,7 @@ void GraphHomomorphisms_md (Obj  graph1,
 
 void GraphHomomorphisms_sm (Obj  graph1, 
                             Obj  graph2,
-                            void hook (void *user_param,
-                                       int  nr,
-                                       int *map),
+                            void hook (),
                             void *user_param_arg, 
                             num  max_results_arg,
                             int  hint_arg, 
@@ -2288,11 +2226,34 @@ void GraphHomomorphisms_sm (Obj  graph1,
   }
 }
 
+// c wrapper
+
+void GraphHomomorphisms (Obj  graph1, 
+                         Obj  graph2,
+                         void hook (),
+                         void *user_param_arg, 
+                         num  max_results_arg,
+                         int  hint_arg, 
+                         bool isinjective,
+                         Obj  Stabilizer) { // TODO remove this!
+
+  nr1 = DigraphNrVertices(graph1);
+  nr2 = DigraphNrVertices(graph2);
+
+  if (nr1 < SM && nr2 < SM) {
+    GraphHomomorphisms_sm(graph1, graph2, hook, user_param_arg, max_results_arg,
+        hint_arg, isinjective, Stabilizer);
+  } else if (nr1 < MD && nr2 < MD) {
+    GraphHomomorphisms_md(graph1, graph2, hook, user_param_arg, max_results_arg,
+        hint_arg, isinjective, Stabilizer);
+  }
+}
+
 Obj FuncGRAPH_HOMOS (Obj self, Obj args) { 
-  int   i, j, k, hint_arg, type;
+  int   i, j, k, hint_arg;
   num   max_results_arg;
   bool  *condition;
-  void  *user_param_arg;  
+  Obj   user_param_arg;  
 
   Obj graph1         = ELM_PLIST(args, 1);
   Obj graph2         = ELM_PLIST(args, 2); 
@@ -2306,11 +2267,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   nr1 = DigraphNrVertices(graph1);
   nr2 = DigraphNrVertices(graph2);
 
-  if (nr1 < SM && nr2 < SM) {
-    type = SM;
-  } else if (nr1 < MD && nr2 < MD) {
-    type = MD;
-  } else {
+  if (nr1 > MD || nr2 > MD) {
     ErrorQuit("too many vertices!", 0L, 0L);
   }
 
@@ -2320,10 +2277,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
     max_results_arg = (num) INT_INTOBJ(limit_gap);
   }
 
-  if (user_param_gap == Fail) {
-    /*if (hook_gap != Fail) {
-      ErrorQuit("param and hook must both be set or not set", 0L, 0L);
-    }*/
+  if (user_param_gap == Fail || (hook_gap == Fail && !IS_PLIST(user_param_gap))) {
     user_param_arg = NEW_PLIST(T_PLIST, 0);
     SET_LEN_PLIST(user_param_arg, 0);
   } else {
@@ -2333,7 +2287,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   if (IS_INTOBJ(hint_gap)) { 
     hint_arg = INT_INTOBJ(hint_gap);
   } else {
-    hint_arg = type + 1;
+    hint_arg = MD + 1;
   }
 
   bool isinjective_c = (isinjective == True ? true : false);
@@ -2342,28 +2296,20 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   calls2 = 0;
 
   if (hook_gap == Fail) {
-    /*if (user_param_gap != Fail) {
-      ErrorQuit("param and hook must both be set or not set", 0L, 0L);
-    }*/
-    if (type == SM) {
-      GraphHomomorphisms_sm(graph1, graph2, homo_hook_collect, user_param_arg,
-          max_results_arg, hint_arg, isinjective_c, Stabilizer); 
-    } else {
-      GraphHomomorphisms_md(graph1, graph2, homo_hook_collect, user_param_arg,
-          max_results_arg, hint_arg, isinjective_c, Stabilizer); 
-    }
+    GraphHomomorphisms(graph1, graph2, homo_hook_collect, user_param_arg,
+        max_results_arg, hint_arg, isinjective_c, Stabilizer); 
   } else {
     GAP_FUNC = hook_gap;
-    if (type == SM) {
-      GraphHomomorphisms_sm(graph1, graph2, homo_hook_gap, user_param_arg,
-          max_results_arg, hint_arg, isinjective_c, Stabilizer);
-    } else {
-      GraphHomomorphisms_md(graph1, graph2, homo_hook_gap, user_param_arg,
-          max_results_arg, hint_arg, isinjective_c, Stabilizer);
-    }
+    GraphHomomorphisms(graph1, graph2, homo_hook_gap, user_param_arg,
+        max_results_arg, hint_arg, isinjective_c, Stabilizer);
   }
   Pr("calls to search = %d\n", (Int) calls1, 0L);
   Pr("stabs computed = %d\n", (Int) calls2, 0L);
+  
+  if (IS_PLIST(user_param) && LEN_PLIST(user_param) == 0 
+      && ! TNUM_OBJ(user_param) == T_PLIST_EMPTY) {
+    RetypeBag(user_param, T_PLIST_EMPTY);
+  }
   return user_param;
 }
 
