@@ -1,23 +1,19 @@
-
-
-
-
 # calculates the stabilizer chain data structure completely.
 
 init_stab_chain := function(gens)
   local lmp;
-  if IsGroup(gens) then 
+  if IsGroup(gens) then
     gens := GeneratorsOfGroup(gens);
   fi;
 
   lmp := LargestMovedPoint(gens);
-  return rec( 
+  return rec(
      S := [gens],
-     orbits := [], 
-     borbits := [], 
-     transversal := [], 
+     orbits := [],
+     borbits := [],
+     transversal := [],
      lmp := lmp,
-     base := [], 
+     base := [],
    );
 end;
 
@@ -29,10 +25,10 @@ orbit_stab_chain := function(stab_chain, depth, pt)
   transversal := stab_chain.transversal[depth];
   S := stab_chain.S[depth];
 
-  for pt in orbits do 
+  for pt in orbits do
     for x in S do
       img := pt ^ x;
-      if borbits[img] = false then 
+      if borbits[img] = false then
         Add(orbits, img);
         borbits[img] := true;
         transversal[img] := transversal[pt] * x;
@@ -49,9 +45,9 @@ add_gen_orbit_stab_chain := function(stab_chain, depth, gen)
   S := stab_chain.S[depth];
 
   len := Length(orbits);
-  for i in [1..Length(orbits)] do 
+  for i in [1..Length(orbits)] do
     img := orbits[i] ^ gen;
-    if borbits[img] = false then 
+    if borbits[img] = false then
       Add(orbits, img);
       borbits[img] := true;
       transversal[img] := transversal[orbits[i]] * gen;
@@ -60,12 +56,12 @@ add_gen_orbit_stab_chain := function(stab_chain, depth, gen)
 
   if len < Length(orbits) then
     i := len;
-    while i < Length(orbits) do 
+    while i < Length(orbits) do
       i := i + 1;
       pt := orbits[i];
-      for x in S do 
+      for x in S do
         img := pt ^ x;
-        if borbits[img] = false then 
+        if borbits[img] = false then
           Add(orbits, img);
           borbits[img] := true;
           transversal[img] := transversal[pt] * x;
@@ -80,17 +76,26 @@ sift_stab_chain := function (stab_chain, g)
   
   base := stab_chain.base;
   borbits := stab_chain.borbits;
-  transversal:= stab_chain.transversal;
+  transversal := stab_chain.transversal;
   
-  for i in [1 .. Length(base)] do 
+  for i in [1 .. Length(base)] do
     beta := base[i] ^ g;
-    if not borbits[i][beta] then 
+    if not borbits[i][beta] then
       return [g, i];
     fi;
     g := g * transversal[i][beta] ^ -1;
   od;
 
   return [g, Length(stab_chain.base) + 1];
+end;
+
+add_base_point := function(stab_chain, k)
+  Add(stab_chain.S, []);
+  Add(stab_chain.base, k);
+  Add(stab_chain.orbits, [k]);
+  Add(stab_chain.borbits, BlistList([1..stab_chain.lmp], [k]));
+  Add(stab_chain.transversal, []);
+  stab_chain.transversal[Length(stab_chain.transversal)][k] := ();
 end;
 
 schreier_sims_stab_chain := function(stab_chain)
@@ -102,18 +107,14 @@ schreier_sims_stab_chain := function(stab_chain)
   borbits := stab_chain.borbits;
   lmp := stab_chain.lmp;
   S := stab_chain.S;
-  
-  for j in [1..Length(S)] do 
-    for x in S[j] do  
-      if ForAll(base, i-> i^x = i) then 
-        for i in [1 .. lmp] do 
-          if i^x <> i then 
-            Add(S, []);
-            Add(base, i);
-            Add(orbits, [i]);
-            Add(borbits, BlistList([1..lmp], [i]));
-            Add(transversal, []);
-            transversal[Length(transversal)][i] := ();
+
+  # I don't think this loop agrees with the book. Is this deliberate?
+  for j in [1 .. Length(S)] do
+    for x in S[j] do 
+      if ForAll(base, i -> i ^ x = i) then
+        for i in [1 .. lmp] do
+          if i ^ x <> i then
+            add_base_point(stab_chain, i);
             break;
           fi;
         od;
@@ -121,11 +122,11 @@ schreier_sims_stab_chain := function(stab_chain)
     od;
   od;
   
-  for i in [2 .. Length(base) + 1] do 
+  for i in [2 .. Length(base) + 1] do
     beta := base[i - 1];
     # set up the strong generators
-    for x in S[i - 1] do 
-      if beta ^ x = beta then 
+    for x in S[i - 1] do
+      if beta ^ x = beta then
         Add(S[i], x);
       fi;
     od;
@@ -136,12 +137,12 @@ schreier_sims_stab_chain := function(stab_chain)
 
   i := Length(base);
 
-  while i >= 1 do 
+  while i >= 1 do
     escape := false;
     for j in [1..Length(orbits[i])] do
       beta := orbits[i][j];
-      for x in S[i] do 
-        if transversal[i][beta] * x <> transversal[i][beta ^ x] then 
+      for x in S[i] do
+        if transversal[i][beta] * x <> transversal[i][beta ^ x] then
           y := true;
           tmp := sift_stab_chain(stab_chain, transversal[i][beta] * x *
             transversal[i][beta ^ x] ^ - 1);
@@ -149,23 +150,18 @@ schreier_sims_stab_chain := function(stab_chain)
           j := tmp[2];
           if j <= Length(base) then 
             y := false;
-          elif not IsOne(h) then 
+          elif not IsOne(h) then
             y := false;
-            for k in [1 .. lmp] do 
-              if k ^ h <> k then 
-                Add(base, k);
-                Add(orbits, [k]);
-                Add(borbits, BlistList([1..lmp], [k]));
-                Add(transversal, []);
-                transversal[Length(transversal)][k] := ();
+            for k in [1 .. lmp] do
+              if k ^ h <> k then
+                add_base_point(stab_chain, k);
                 break;
               fi;
             od;
-            S[Length(base)] := [];
           fi;
     
-          if y = false then 
-            for l in [i + 1 .. j] do 
+          if y = false then
+            for l in [i + 1 .. j] do
               Add(S[l], h);
               add_gen_orbit_stab_chain(stab_chain, l, h);
               # add generator to <h> to orbit of base[l]
@@ -176,11 +172,11 @@ schreier_sims_stab_chain := function(stab_chain)
           fi;
         fi;
       od;
-      if escape then 
+      if escape then
         break;
       fi;
     od;
-    if escape then 
+    if escape then
       continue;
     fi;
     i := i - 1;
@@ -192,8 +188,3 @@ end;
 size_stab_chain := function(stab_chain)
   return Product(List(stab_chain.orbits, Length));
 end;
-
-
-add_base_point := ReturnFail;
-
-
