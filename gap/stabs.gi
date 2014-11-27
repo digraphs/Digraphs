@@ -1,7 +1,3 @@
-
-
-
-
 # calculates the stabilizer chain data structure completely.
 
 init_stab_chain := function(gens)
@@ -93,6 +89,15 @@ sift_stab_chain := function (stab_chain, g)
   return [g, Length(stab_chain.base) + 1];
 end;
 
+add_base_point := function(stab_chain, k)
+  Add(stab_chain.S, []);
+  Add(stab_chain.base, k);
+  Add(stab_chain.orbits, [k]);
+  Add(stab_chain.borbits, BlistList([1..stab_chain.lmp], [k]));
+  Add(stab_chain.transversal, []);
+  stab_chain.transversal[Length(stab_chain.transversal)][k] := ();
+end;
+
 schreier_sims_stab_chain := function(stab_chain)
   local gens, base, transversal, orbits, borbits, lmp, S, i, escape, beta, y, tmp, h, j, k, x, l;
 
@@ -108,12 +113,7 @@ schreier_sims_stab_chain := function(stab_chain)
       if ForAll(base, i-> i^x = i) then 
         for i in [1 .. lmp] do 
           if i^x <> i then 
-            Add(S, []);
-            Add(base, i);
-            Add(orbits, [i]);
-            Add(borbits, BlistList([1..lmp], [i]));
-            Add(transversal, []);
-            transversal[Length(transversal)][i] := ();
+            add_base_point(stab_chain, i);
             break;
           fi;
         od;
@@ -152,16 +152,11 @@ schreier_sims_stab_chain := function(stab_chain)
           elif not IsOne(h) then 
             y := false;
             for k in [1 .. lmp] do 
-              if k ^ h <> k then 
-                Add(base, k);
-                Add(orbits, [k]);
-                Add(borbits, BlistList([1..lmp], [k]));
-                Add(transversal, []);
-                transversal[Length(transversal)][k] := ();
+              if k ^ h <> k then
+                add_base_point(stab_chain, k);
                 break;
               fi;
             od;
-            S[Length(base)] := [];
           fi;
     
           if y = false then 
@@ -192,8 +187,3 @@ end;
 size_stab_chain := function(stab_chain)
   return Product(List(stab_chain.orbits, Length));
 end;
-
-
-add_base_point := ReturnFail;
-
-
