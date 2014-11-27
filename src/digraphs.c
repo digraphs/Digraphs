@@ -1675,7 +1675,6 @@ num OrbitReps_sm (Obj gens) {
   return reps;
 }
 
-
 // algorithm for graphs with between SM and MD vertices . . .
 
 // homomorphism hook funcs
