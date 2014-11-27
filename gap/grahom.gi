@@ -198,7 +198,7 @@ depth, pos, vals, reps)
   pts := [1..nr];
   SubtractSet(pts, Set(map));
   if reps = fail then 
-    reps := BlistList([1..nr], ORBIT_REPS_PERMS(GeneratorsOfGroup(G), pts));
+    reps := BlistList([1..nr], List(Orbits(G, pts), x-> x[1]));
   fi;
   
   for i in [1..nr] do 

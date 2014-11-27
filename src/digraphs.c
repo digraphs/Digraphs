@@ -1434,94 +1434,6 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   return out;
 }
 
-// TODO remove this function when we no longer require GAP level code
-
-Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
-  Int   nrgens, i, j, max, fst, m, img, n;
-  Obj   reps, gen;
-  UInt2 *ptr2;
-  UInt4 *ptr4;
-
-  nrgens = LEN_PLIST(gens);
-  max = 0;
-  for (i = 1; i <= nrgens; i++) {
-    gen = ELM_PLIST(gens, i);
-    if (TNUM_OBJ(gen) == T_PERM2) {
-      j = DEG_PERM2(gen);
-      ptr2 = ADDR_PERM2(gen);
-      while (j > max && ptr2[j - 1] == j - 1){
-        j--;
-      }
-      if (j > max) {
-        max = j;
-      }
-    } else if (TNUM_OBJ(gen) == T_PERM4) {
-      j = DEG_PERM4(gen);
-      ptr4 = ADDR_PERM4(gen);
-      while (j > max && ptr4[j - 1] == j - 1){
-        j--;
-      }
-      if (j > max) {
-        max = j;
-      }
-    } else {
-      ErrorQuit("expected a perm, didn't get one", 0L, 0L);
-    }
-  }
-  
-  int  dom1[max]; 
-  int  dom2[max];
-  UInt orb[max];
-
-  memset(dom1, 0, max * sizeof(int)); 
-  memset(dom2, 0, max * sizeof(int)); 
-
-  reps = NEW_PLIST(T_PLIST_CYC, 0);
-  SET_LEN_PLIST(reps, 0);
-  m = 0; //number of orbit reps
-
-  PLAIN_LIST(D);
-  for (i = 1; i <= LEN_PLIST(D); i++) {
-    j = INT_INTOBJ(ELM_PLIST(D, i));
-    if (j <= max) {
-      dom1[j - 1] = 1;
-    } else {
-      AssPlist(reps, ++m, INTOBJ_INT(j));
-    }
-  }      
-
-  fst = 0; 
-  while (dom1[fst] != 1 && fst < max) fst++;
-
-  while (fst < max) {
-    AssPlist(reps, ++m, INTOBJ_INT(fst + 1));
-    orb[0] = fst;
-    n = 1; //length of orb
-    dom2[fst] = 1;
-    dom1[fst] = 0;
-
-    for (i = 0; i < n; i++) {
-      for (j = 1; j <= nrgens; j++) {
-        gen = ELM_PLIST(gens, j);
-        if (TNUM_OBJ(gen) == T_PERM2){
-          img = IMAGE(orb[i], ADDR_PERM2(gen), DEG_PERM2(gen));
-        } else {
-          img = IMAGE(orb[i], ADDR_PERM4(gen), DEG_PERM4(gen));
-        }
-        //Pr("img = %d\n", (Int) img, 0L);
-        if (dom2[img] == 0) {
-          
-          orb[n++] = img;
-          dom2[img] = 1;
-          dom1[img] = 0;
-        }
-      }
-    }
-    while (dom1[fst] != 1 && fst < max) fst++; 
-  }
-  return reps;
-}
-
 #ifdef SYS_IS_64_BIT
 #define SM 64
 typedef UInt8 num;
@@ -2420,10 +2332,6 @@ static StructGVarFunc GVarFuncs [] = {
   { "MULTIDIGRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncMULTIDIGRAPH_CANONICAL_LABELING, 
     "src/digraphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELING" },
-
-  { "ORBIT_REPS_PERMS", 2, "gens, D",
-    FuncORBIT_REPS_PERMS,
-    "src/digraphs.c:FuncORBIT_REPS_PERMS" },
 
   { "GRAPH_HOMOS", 8, "graph1, graph2, hook, user_param, limit, hint, isinjective, Stabilizer",
     FuncGRAPH_HOMOS,
