@@ -1480,176 +1480,8 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   return out;
 }
 
-// graph homomorphisms . . . by Max Neunhoeffer
-
-
-/* static void dowork(num *try, num depth){
-    num   i, todo;
-    Obj   t;
-    UInt2 *pt;
-    //Pr("C: at depth %d\n", (Int) depth, 0L);
-    if (depth == maxdepth) {
-        if (results != Fail) {
-            t  = NEW_TRANS2(depth);
-            pt = ADDR_TRANS2(t);
-            for (i = 0; i < depth; i++) {
-              pt[i] = (UInt2) try[i];
-            }
-            Pr("found endomorphism of rank %d\n", (Int) RANK_TRANS2(t), 0L); 
-            if (IS_PLIST(results)) {
-                ASS_LIST(results,LEN_PLIST(results)+1, t);
-            } //else {
-              //  CALL_1ARGS(results,tmp);
-            //}
-        }
-        count++;
-        if (count >= maxresults) {
-            if (count >= SMALLINTLIMIT) overflow = 1;
-            longjmp(outofhere,1);
-        }
-        return;
-    }
-    todo = constraints[depth];
-    for (i = 0;i < depth;i++) {
-        if (gra1[i] & oneone[depth]){    // if depth adjacent to try[i] 
-            todo &= gra2[try[i]];        // Only these images are possible 
-        }
-	if (gra1[depth] & oneone[i]) {
-           todo &= gra2inn[try[i]];
-        }
-    }
-    if (gra1[depth] & oneone[depth]) {  // if depth has a loop in gra1 
-       todo &= gra2hasloops;
-    } 
-    if (todo == 0 ) return;
-    for (i = 0;i < nrvert2 && todo;i++, todo >>= 1) {
-        if (todo & 1) {
-            try[depth] = i;
-            dowork(try,depth+1);
-        }
-    }
-}
-
-static void doworkinj(num *try, num depth, num used)
-{
-    num i, todo;
-    Obj tmp;
-    if (depth == maxdepth) {
-        if (results != Fail) {
-            tmp = NEW_PLIST(T_PLIST_CYC,depth);
-            SET_LEN_PLIST(tmp,depth);
-            for (i = 0; i < depth; i++) {
-                SET_ELM_PLIST(tmp,i+1,INTOBJ_INT((Int) (try[i]+1)));
-            }
-            ASS_LIST(results,LEN_PLIST(results)+1,tmp);
-        }
-        count++;
-        if (count >= maxresults) {
-            if (count >= SMALLINTLIMIT) overflow = 1;
-            longjmp(outofhere,1);
-        }
-        return;
-    }
-    todo = constraints[depth] & ~(used);
-    for (i = 0;i < depth;i++) {
-        if (gra1[i] & oneone[depth]) {   // if depth adjacent to try[i] 
-            todo &= gra2[try[i]];     //Only these images are possible 
-            if (todo == 0) return; 
-        }
-    }
-    for (i = 0;i < nrvert2 && todo;i++, todo >>= 1) {
-        if (todo & 1) {
-            try[depth] = i;
-            doworkinj(try,depth+1,used | oneone[i]);
-        }
-    }
-}
-
-Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
-{
-    Obj gra1obj = ELM_PLIST(args,1); 
-    Obj gra2obj = ELM_PLIST(args,2);
-    Obj tryinit = ELM_PLIST(args,3);
-    Obj mymaxdepth = ELM_PLIST(args,4);
-    Obj constraintsobj = ELM_PLIST(args,5);
-    Obj maxanswers = ELM_PLIST(args,6);
-    Obj myresult = ELM_PLIST(args,7);
-    Obj onlyinj = ELM_PLIST(args,8);
-    num try[SM];
-    num used;
-    num depth;
-    num i,j,k,up;
-    Obj tmp;
-
-    if (!tablesinitialised) inittabs();
-    count = 0;
-    overflow = 0;
-    if (maxanswers == Fail || !IS_INTOBJ(maxanswers))
-        maxresults = SMALLINTLIMIT;
-    else
-        maxresults = (num) INT_INTOBJ(maxanswers);
-    // now fill our data structures: 
-    memset(gra1,0,sizeof(num)*SM);
-    memset(gra2,0,sizeof(num)*SM);
-    memset(gra2inn,0,sizeof(num)*SM);
-    gra2hasloops = (num) 0;
-    nrvert1 = LEN_PLIST(gra1obj);
-    nrvert2 = LEN_PLIST(gra2obj);
-    for (i = 0; i < SM; i++) constraints[i] = ones[nrvert2-1];
-    up = (num) LEN_PLIST(gra1obj);
-    for (i = 0; i < up; i++) {
-        tmp = ELM_PLIST(gra1obj,(Int) i+1);
-        for (j = 0; j < (num) LEN_PLIST(tmp); j++) {
-            k = (num) INT_INTOBJ(ELM_PLIST(tmp,(Int) j + 1)) - 1;
-            gra1[i] |= oneone[k];
-            //gra1[k] |= oneone[i];
-        }
-    }
-    up = (num) LEN_PLIST(gra2obj);
-    for (i = 0; i < up; i++) {
-        tmp = ELM_PLIST(gra2obj,(Int) i+1);
-        for (j = 0; j < (num) LEN_PLIST(tmp); j++) {
-            k = (num) INT_INTOBJ(ELM_PLIST(tmp,(Int) j + 1)) - 1;
-            gra2[i] |= oneone[k];
-            gra2inn[k] |= oneone[i];
-	    if (i == k) {
-	      gra2hasloops |= oneone[k];
-	    }
-        }
-    }
-    if (constraintsobj != Fail) {
-        up = (num) LEN_PLIST(constraintsobj);
-        for (i = 0; i < up; i++) {
-            tmp = ELM_PLIST(constraintsobj,(Int) i + 1);
-            if (tmp && tmp != Fail) {
-                constraints[i] = 0;
-                for (j = 0; j < (num) LEN_PLIST(tmp); j++) {
-                    k = (num) INT_INTOBJ(ELM_PLIST(tmp,(Int) j + 1)) - 1;
-                    constraints[i] |= oneone[k];
-                }
-            }
-        }
-    }
-    depth = (num) LEN_PLIST(tryinit);
-    used = 0;
-    for (i = 0; i < depth; i++) {
-        try[i] = (num) INT_INTOBJ(ELM_PLIST(tryinit,(Int) i + 1)) - 1;
-        used |= oneone[try[i]];
-    }
-    maxdepth = (num) INT_INTOBJ(mymaxdepth);
-    results = myresult;
-    if (setjmp(outofhere) == 0) {
-        if (onlyinj == True) {
-            doworkinj(try,depth,used);
-        } else {
-            dowork(try,depth);
-        }
-    }
-    if (overflow) return Fail;
-    else return INTOBJ_INT(count);
-} */
-
 // TODO remove this function when we no longer require GAP level code
+
 Obj FuncORBIT_REPS_PERMS (Obj self, Obj gens, Obj D) {
   Int   nrgens, i, j, max, fst, m, img, n;
   Obj   reps, gen;
@@ -1777,8 +1609,8 @@ static inline int sizenum (num n, int m) {
 
 #define MD 512
 
-static int  nr1;                    // nr of vertices in graph1
-static int  nr2;                    // nr of vertices in graph2
+static unsigned int nr1;                   // nr of vertices in graph1
+static unsigned int nr2;                   // nr of vertices in graph2
 static num  count;                  // the number of endos found so far
 static int  hint;                   // an upper bound for the number of distinct values in map
 static num  maxresults;             // upper bound for the number of returned homos
@@ -1788,6 +1620,8 @@ static int  map[MD];                // partial image list
 static bool vals_md[MD];            // blist for values in map
 static bool neighbours1_md[MD * MD];// the neighbours of the graph1
 static bool neighbours2_md[MD * MD];// the neighbours of the graph2
+static bool dom1_md[MD];                // 
+static bool dom2_md[MD];
 
 static num  vals_sm;                // blist for values in map
 static num  neighbours1_sm[SM];     // the neighbours of the graph1
@@ -1841,19 +1675,15 @@ void OrbitReps_md (Obj gens, bool* vals, int sizeVals, bool* reps) {
   }
   // special case in case there are no gens, or just the identity.
 
-  int dom1[max]; //TODO change these to bool 
-  int dom2[max]; // one of these can be removed?
-  UInt orb[max];
-
-  memset(dom1, 0, max * sizeof(int)); 
-  memset(dom2, 0, max * sizeof(int)); 
+  memset((void *) dom1_md, false, max * sizeof(int)); 
+  memset((void *) dom2_md, false, max * sizeof(int)); 
   
   m = 0; //number of orbit reps
 
   for (i = 0; i < sizeVals; i++) {
     if (! vals[i]) {
       if (i < max) {
-        dom1[i] = 1;
+        dom1_md[i] = true;
       } else {
         reps[i] = true;
       }
@@ -1861,14 +1691,14 @@ void OrbitReps_md (Obj gens, bool* vals, int sizeVals, bool* reps) {
   }
 
   fst = 0; 
-  while (dom1[fst] != 1 && fst < max) fst++;
+  while (dom1_md[fst] != 1 && fst < max) fst++;
 
   while (fst < max) {
     reps[fst] = true;
     orb[0] = fst;
     n = 1; //length of orb
-    dom2[fst] = 1;
-    dom1[fst] = 0;
+    dom2_md[fst] = true;
+    dom1_md[fst] = false;
 
     for (i = 0; i < n; i++) {
       for (j = 1; j <= nrgens; j++) {
@@ -1878,14 +1708,14 @@ void OrbitReps_md (Obj gens, bool* vals, int sizeVals, bool* reps) {
         } else {
           img = IMAGE(orb[i], ADDR_PERM4(gen), DEG_PERM4(gen));
         }
-        if (dom2[img] == 0) {
+        if (! dom2_md[img]) {
           orb[n++] = img;
-          dom2[img] = 1;
-          dom1[img] = 0;
+          dom2_md[img] = true;
+          dom1_md[img] = false;
         }
       }
     }
-    while (dom1[fst] != 1 && fst < max) fst++; 
+    while (! dom1_md[fst] && fst < max) fst++; 
   }
 }
 
@@ -1973,18 +1803,16 @@ num OrbitReps_sm (Obj gens, int sizeVals) {
 // algorithm for graphs with between SM and MD vertices . . .
 
 // homomorphism hook funcs
-void homo_hook_collect(void *user_param, 
-                       int  nr,
-                       int  *map) {
+void homo_hook_collect () {
   UInt2   *ptr;
   Obj     t;
-  UInt    i, n;
+  UInt    i;
 
   // copy map into new trans2 
-  t   = NEW_TRANS2(nr);
+  t   = NEW_TRANS2(nr1);
   ptr = ADDR_TRANS2(t);
   
-  for (i = 0; i < nr; i++) {
+  for (i = 0; i < nr1; i++) {
     ptr[i] = map[i];
   }
    
@@ -1993,31 +1821,27 @@ void homo_hook_collect(void *user_param,
   Pr("found %d homomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
 }
 
-void homo_hook_print (void *user_param, 
-                          int  nr,
-                          int  *map) {
-  int i;
+void homo_hook_print () {
+  UInt i;
 
   Pr("Transformation( [ ", 0L, 0L);
   Pr("%d", (Int) map[0] + 1, 0L);
-  for (i = 1; i < nr; i++) {
+  for (i = 1; i < nr1; i++) {
     Pr(", %d", (Int) map[i] + 1, 0L);
   }
   Pr(" ] )\n", 0L, 0L);
 }
 
-void homo_hook_gap (void *user_param, 
-                    int  nr,
-                    int  *map) {
+void homo_hook_gap () {
   UInt2   *ptr;
   Obj     t;
-  UInt    i, n;
+  UInt    i;
 
   // copy map into new trans2 
-  t   = NEW_TRANS2(nr);
+  t   = NEW_TRANS2(nr1);
   ptr = ADDR_TRANS2(t);
   
-  for (i = 0; i < nr; i++) {
+  for (i = 0; i < nr1; i++) {
     ptr[i] = map[i];
   }
   CALL_2ARGS(GAP_FUNC, user_param, t);
@@ -2025,7 +1849,7 @@ void homo_hook_gap (void *user_param,
 
 // the main recursive search algorithm
 
-void SEARCH_HOMOS_MD (int   depth,        // the number of filled positions in map
+void SEARCH_HOMOS_MD (unsigned int depth,        // the number of filled positions in map
                       int   pos,          // the last position filled
                       bool  *condition,   // blist of possible values for map[i]
                       Obj   gens,         // generators for
@@ -2037,7 +1861,7 @@ void SEARCH_HOMOS_MD (int   depth,        // the number of filled positions in m
                                     int  nr1,
                                     int *map),
                        Obj   Stabilizer) { // TODO remove this!
-  int   i, j, k, l, min, next, size;
+  unsigned int   i, j, k, l, min, next, size;
   bool  *copy;
   calls1++;
   if (depth == nr1) {
@@ -2118,7 +1942,7 @@ void SEARCH_HOMOS_MD (int   depth,        // the number of filled positions in m
   return;
 }
 
-void SEARCH_HOMOS_SM (int   depth,        // the number of filled positions in map
+void SEARCH_HOMOS_SM (unsigned int depth,        // the number of filled positions in map
                       int   pos,          // the last position filled
                       num*  condition,    // blist of possible values for map[i]
                       Obj   gens,         // generators for
@@ -2131,7 +1955,7 @@ void SEARCH_HOMOS_SM (int   depth,        // the number of filled positions in m
                                   int *map),
                       Obj   Stabilizer) { // TODO remove this!
 
-  int  i, j, k, l, min, next, size;
+  unsigned int  i, j, k, l, min, next, size;
   num  copy[nr1];
   
   calls1++;
@@ -2206,7 +2030,7 @@ void SEARCH_HOMOS_SM (int   depth,        // the number of filled positions in m
   return;
 }
 
-void SEARCH_INJ_HOMOS_MD (int  depth,        // the number of filled positions in map
+void SEARCH_INJ_HOMOS_MD (unsigned int  depth,        // the number of filled positions in map
                           int  pos,          // the last position filled
                           bool *condition,   // blist of possible values for map[i]
                           Obj  gens,         // generators for
@@ -2217,7 +2041,7 @@ void SEARCH_INJ_HOMOS_MD (int  depth,        // the number of filled positions i
                                      int  nr1,
                                      int *map),
                           Obj   Stabilizer) {// TODO remove this!
-  int   i, j, k, l, min, next, size;
+  unsigned int   i, j, k, l, min, next, size;
   bool  *copy;
   
   if (depth == nr1) {
@@ -2242,7 +2066,7 @@ void SEARCH_INJ_HOMOS_MD (int  depth,        // the number of filled positions i
       if (map[j] == -1) {
         size = 0;
         if (neighbours1_md[nr1 * pos + j]) { // vertex j is adjacent to vertex pos in graph1
-          for (k = 0; k < map[pos]; k++) {
+          for (k = 0; (int) k < map[pos]; k++) {
             copy[nr2 * j + k] &= neighbours2_md[nr2 * map[pos] + k];
             if (copy[nr2 * j + k]) {
               size++;
@@ -2311,7 +2135,7 @@ void GraphHomomorphisms_md (Obj  graph1,
                             bool isinjective,
                             Obj  Stabilizer) { // TODO remove this!
   Obj   out, nbs, gens;
-  int   i, j, k;
+  unsigned int   i, j, k;
   bool  *condition;
   nr1 = DigraphNrVertices(graph1);
   nr2 = DigraphNrVertices(graph2);
@@ -2396,8 +2220,8 @@ void GraphHomomorphisms_sm (Obj  graph1,
                             int  hint_arg, 
                             bool isinjective,
                             Obj  Stabilizer) { // TODO remove this!
-  Obj   out, nbs, gens;
-  int   i, j, k;
+  Obj            out, nbs, gens;
+  unsigned int   i, j, k;
   Pr("GraphHomomorphisms_sm!\n", 0L, 0L);
 
   nr1 = DigraphNrVertices(graph1);
