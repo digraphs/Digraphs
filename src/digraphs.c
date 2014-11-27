@@ -1482,6 +1482,7 @@ static int  hint;                    // an upper bound for the number of distinc
 static num  maxresults;              // upper bound for the number of returned homos
 static UInt orb[MD];                 // to hold the orbits in OrbitReps
 static unsigned int sizes[MD * MD];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
+static bool reps[MD * MD];           // 
 static int  map[MD];                 // partial image list
 static bool vals_md[MD];             // blist for values in map
 static bool neighbours1_md[MD * MD]; // the neighbours of the graph1
@@ -1507,12 +1508,13 @@ static int  calls2;                  // calls1 is the number of calls to the sea
 // <gens> not including any values already in <map> (i.e. those with vals[i] =
 // true)
 
-void OrbitReps_md (Obj gens, bool* reps) {
+void OrbitReps_md (Obj gens, unsigned int rep_depth) {
   Int    nrgens, i, j, max, fst, m, img, n;
   Obj    gen;
   UInt2  *ptr2;
   UInt4  *ptr4;
   
+  memset((void *) reps + (rep_depth * nr2), false, nr2 * sizeof(bool));
 
   nrgens = LEN_PLIST(gens);
   max = 0;
@@ -1553,7 +1555,7 @@ void OrbitReps_md (Obj gens, bool* reps) {
       if (i < max) {
         dom1_md[i] = true;
       } else {
-        reps[i] = true;
+        reps[(rep_depth * nr2) + i] = true;
       }
     }      
   }
@@ -1562,7 +1564,7 @@ void OrbitReps_md (Obj gens, bool* reps) {
   while (dom1_md[fst] != 1 && fst < max) fst++;
 
   while (fst < max) {
-    reps[fst] = true;
+    reps[(rep_depth * nr2) + fst] = true;
     orb[0] = fst;
     n = 1; //length of orb
     dom2_md[fst] = true;
@@ -1727,10 +1729,10 @@ void SEARCH_HOMOS_MD (unsigned int depth, // the number of filled positions in m
                       Obj   gens,         // generators for
                                           // Stabilizer(AsSet(map)) subgroup
                                           // of automorphism group of graph2
-                       bool  *reps,       // orbit reps of points not in <map> under <gens>
-                       int   rank,        // current number of distinct values in map
-                       void  hook (),
-                       Obj   Stabilizer) { // TODO remove this!
+                      unsigned int rep_depth,
+                      int   rank,         // current number of distinct values in map
+                      void  hook (),
+                      Obj   Stabilizer) { // TODO remove this!
 
   unsigned int   i, j, k, l, min, next;
   bool  *copy;
@@ -1784,18 +1786,14 @@ void SEARCH_HOMOS_MD (unsigned int depth, // the number of filled positions in m
   
   if (rank < hint) {
     for (i = 0; i < nr2; i++) {
-      if (copy[nr2 * next + i] && reps[i] && ! vals_md[i]) { //TODO is ! vals_md[i] necessary?
+      if (copy[nr2 * next + i] && reps[(rep_depth * nr2) + i] && ! vals_md[i]) { //TODO is ! vals_md[i] necessary?
         calls2++;
         Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
-        bool newReps[nr2];
-        memset(newReps, false, sizeof(bool) * nr2);
-        OrbitReps_md(newGens, newReps);
-        // blist of orbit reps of things not in vals_md
+        OrbitReps_md(newGens, rep_depth + 1);
 
         map[next] = i;
         vals_md[i] = true;
-
-        SEARCH_HOMOS_MD(depth + 1, next, copy, newGens, newReps, rank + 1, hook, Stabilizer);
+        SEARCH_HOMOS_MD(depth + 1, next, copy, newGens, rep_depth + 1, rank + 1, hook, Stabilizer);
         map[next] = -1;
         vals_md[i] = false;
       }
@@ -1804,7 +1802,7 @@ void SEARCH_HOMOS_MD (unsigned int depth, // the number of filled positions in m
   for (i = 0; i < nr2; i++) {
     if (copy[nr2 * next + i] && vals_md[i]) {
       map[next] = i;
-      SEARCH_HOMOS_MD(depth + 1, next, copy, gens, reps, rank, hook, Stabilizer);
+      SEARCH_HOMOS_MD(depth + 1, next, copy, gens, rep_depth, rank, hook, Stabilizer);
       map[next] = -1;
     }
   }
@@ -1958,14 +1956,12 @@ void SEARCH_INJ_HOMOS_MD (unsigned int  depth,  // the number of filled position
     if (copy[nr2 * next + i] && reps[i]) { 
       
       Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
-      bool newReps[nr2];
-      memset(newReps, false, sizeof(bool) * nr2);
-      OrbitReps_md(newGens, newReps);
+      OrbitReps_md(newGens, depth + 1);
       // blist of orbit reps of things not in vals_md
 
       map[next] = i;
       vals_md[i] = true;
-      SEARCH_INJ_HOMOS_MD(depth + 1, next, copy, newGens, newReps, hook, Stabilizer);
+//SEARCH_INJ_HOMOS_MD(depth + 1, next, copy, newGens, newReps, hook, Stabilizer);
       map[next] = -1;
       vals_md[i] = false;
     }
@@ -2035,9 +2031,7 @@ void GraphHomomorphisms_md (Obj  graph1,
   gens = ELM_PLIST(FuncDIGRAPH_AUTOMORPHISMS(0L, graph2), 2);
   
   // get orbit reps 
-  bool reps[nr2];
-  memset(reps, false, sizeof(bool) * nr2);
-  OrbitReps_md(gens, reps);
+  OrbitReps_md(gens, 0);
   
   // misc parameters
   count = 0;
@@ -2050,7 +2044,7 @@ void GraphHomomorphisms_md (Obj  graph1,
     if (isinjective) {
       SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook, Stabilizer);
     } else {
-      SEARCH_HOMOS_MD(0, -1, condition, gens, reps, 0, hook, Stabilizer);
+      SEARCH_HOMOS_MD(0, -1, condition, gens, 0, 0, hook, Stabilizer);
     }
   }
   free(condition);
