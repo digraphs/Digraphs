@@ -1530,30 +1530,47 @@ static void init_stab_chain (Obj gens) {
     strong[i - 1] = ELM_PLIST(gens, i);
   }
   strong_gens[0] = strong; // TODO don't forget to free this!!
+  size_strong_gens[0] = nrgens;
   for (i = 0; i < nr2 - 1; i++) {
     base[i] = i;
   }
+  size_base = nr2 - 1;
 
   // TODO initialise: borbits, size_strong_gens, size_orbits, more?
+  for (i = 0; i < MD * MD; i++) {
+    borbits[i] = false; // TODO: only do the minimum initialisation necessary
+  }
+  for (i = 1; i < MD; i++) { // Deliberately avoiding i = 0 as it's already set
+    size_strong_gens[i] = 0;
+    size_orbits[i] = 0;
+  }
 }
 
 static void orbit_stab_chain (unsigned int const depth, unsigned int const init_pt) {
   unsigned int i, j, pt, img;
   Obj          x;
 
+  assert( depth <= size_base ); // Should this be strict?
+
   orbits[depth * MD] = init_pt;
   size_orbits[depth] = 1;
-  borbits[depth * MD + init_pt] = true;
+  borbits[depth * MD + init_pt] = true; // Do we need to set anything to false?
   transversal[depth * MD + init_pt] = IdentityPerm;
 
   for (i = 0; i < size_orbits[depth]; i++) {
     pt = orbits[depth * MD + i];
     for (j = 0; j < size_strong_gens[depth]; j++) {
       x = strong_gens[depth][j];
-      img = (unsigned int) IMAGE(pt, ADDR_PERM4(x), DEG_PERM4(x));
+      if (TNUM_OBJ(x) == T_PERM2) {
+        img = (unsigned int) IMAGE(pt, ADDR_PERM2(x), DEG_PERM2(x));
+      } else if (TNUM_OBJ(x) == T_PERM4) {
+        img = (unsigned int) IMAGE(pt, ADDR_PERM4(x), DEG_PERM4(x));
+      } else {
+        ErrorQuit("orbit_stab_chain: expected a perm, didn't get one", 0L, 0L);
+      }
       if (! borbits[depth * MD + img]) {
-        size_orbits[depth]++;
         orbits[depth * MD + size_orbits[depth]] = img;
+        size_orbits[depth]++;
         borbits[depth * MD + img] = true;
         transversal[depth * MD + img] = PROD(transversal[depth * MD + pt], x);
       }
@@ -1565,10 +1582,18 @@ static void add_gen_orbit_stab_chain (unsigned int const depth, Obj const gen) {
   unsigned int  i, j, pt, img;
   Obj           x;
 
+  assert( depth <= size_base );
+
   // apply the new generator to existing points in orbits[depth]
   unsigned int nr = size_orbits[depth];
   for (i = 0; i < nr; i++) {
-    img = (unsigned int) IMAGE(orbits[depth * MD + i], ADDR_PERM4(gen), DEG_PERM4(gen));
+    if (TNUM_OBJ(gen) == T_PERM2) {
+      img = (unsigned int) IMAGE(orbits[depth * MD + i], ADDR_PERM2(gen), DEG_PERM2(gen));
+    } else if (TNUM_OBJ(gen) == T_PERM4) {
+      img = (unsigned int) IMAGE(orbits[depth * MD + i], ADDR_PERM4(gen), DEG_PERM4(gen));
+    } else {
+      ErrorQuit("add_gen_orbit_stab_chain: expected a perm, didn't get one", 0L, 0L);
+    }
     if (! borbits[depth * MD + img]) {
       size_orbits[depth]++;
       orbits[depth * MD + size_orbits[depth]] = img;
@@ -1577,12 +1602,18 @@ static void add_gen_orbit_stab_chain (unsigned int const depth, Obj const gen) {
         = PROD(transversal[depth * MD + orbits[depth * MD + i]], gen);
     }
   }
-  
+ 
   for (i = nr; i < size_orbits[depth]; i++) {
     pt = orbits[depth * MD + i];
     for (j = 0; j < size_strong_gens[depth]; j++) {
       x = strong_gens[depth][j];
-      img = (unsigned int) IMAGE(pt, ADDR_PERM4(x), DEG_PERM4(x));
+      if (TNUM_OBJ(x) == T_PERM2) {
+        img = (unsigned int) IMAGE(pt, ADDR_PERM2(x), DEG_PERM2(x));
+      } else if (TNUM_OBJ(x) == T_PERM4) {
+        img = (unsigned int) IMAGE(pt, ADDR_PERM4(x), DEG_PERM4(x));
+      } else {
+        ErrorQuit("add_gen_orbit_stab_chain: expected a perm, didn't get one", 0L, 0L);
+      }
       if (! borbits[depth * MD + img]) {
         size_orbits[depth]++;
         orbits[depth * MD + size_orbits[depth]] = img;
@@ -1591,18 +1622,27 @@ static void add_gen_orbit_stab_chain (unsigned int const depth, Obj const gen) {
       }
     }
   }
+
 }
 
-static void sift_stab_chain (Obj g, unsigned int depth) {
+static void sift_stab_chain (Obj* g, unsigned int* depth) {
+
+  unsigned int beta;
+
+  assert(*depth == 0);
   
-  assert(depth == 0);
-  
-  for (; depth < size_base; depth++) {
-    unsigned int beta = (unsigned int) IMAGE(base[depth], ADDR_PERM4(g), DEG_PERM4(g));
-    if (! borbits[depth * MD + beta]) {
+  for (; *depth < size_base; (*depth)++) {
+    if (TNUM_OBJ(*g) == T_PERM2) {
+      beta = (unsigned int) IMAGE(base[*depth], ADDR_PERM2(*g), DEG_PERM2(*g));
+    } else if (TNUM_OBJ(*g) == T_PERM4) {
+      beta = (unsigned int) IMAGE(base[*depth], ADDR_PERM4(*g), DEG_PERM4(*g));
+    } else {
+      ErrorQuit("sift_stab_chain: expected a perm, didn't get one", 0L, 0L);
+    }
+    if (! borbits[*depth * MD + beta]) {
       return;
     }
-    g = QUO(g, transversal[depth * MD + beta]);
+    *g = QUO(*g, transversal[*depth * MD + beta]);
   }
 }
 
@@ -1614,16 +1654,142 @@ static inline void add_base_point (unsigned int const pt) {
 static void remove_base_points (unsigned int const depth) {
   unsigned int i, j;
 
+  assert( depth <= size_base );
+
   for (i = depth; i < size_base; i++) {
     size_base--;
-    free(strong_gens[i+1]);
-    size_strong_gens[i+1] = 0;
+    free(strong_gens[i + 1]);
+    size_strong_gens[i + 1] = 0;
     size_orbits[i] = 0;
     
     for (j = 0; j < nr2; j++) {//TODO double-check nr2!
       borbits[i * MD + j] = false;
     }
   }
+}
+
+static bool perm_fixes_all_base_points ( Obj x ) {
+  unsigned int i;
+
+  if (TNUM_OBJ(x) == T_PERM2) {
+    for (i = 0; i < size_base; i++) {
+      if ( base[i] != (unsigned int) IMAGE(base[i], ADDR_PERM2(x), DEG_PERM2(x)) ) {
+        return false;
+      }
+    }
+  } else if (TNUM_OBJ(x) == T_PERM4) {
+    for (i = 0; i < size_base; i++) {
+      if ( base[i] != (unsigned int) IMAGE(base[i], ADDR_PERM4(x), DEG_PERM4(x)) ) {
+        return false;
+      }
+    }
+  } else {
+    ErrorQuit("perm_fixes_all_base_points: expected a perm, didn't get one", 0L, 0L);
+  }
+  return true;
+}
+
+static void schreier_sims_stab_chain ( unsigned int const depth ) {
+
+  Obj           x, h, prod;
+  bool          escape, y;
+  unsigned int  i, j, jj, k, l, m, beta, betax;
+
+  for (i = 0; i < size_base; i++) { // TODO: find correct number
+    for (j = 0; j < size_strong_gens[i]; j++) { 
+      x = strong_gens[i][j];
+      if ( perm_fixes_all_base_points( x ) ) {
+        for (k = 0; k < lmp; k++) {
+          if ( k != (unsigned int) IMAGE(k, ADDR_PERM2(x), DEG_PERM2(x)) ) {
+            add_base_point(k);
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  for (i = depth + 1; i < size_base + 1; i++) {
+    beta = base[i - 1];
+    // set up the strong generators
+    for (j = 0; j < size_strong_gens[i - 1]; j++) {
+      x = strong_gens[i - 1][j];
+      if ( beta == (unsigned int) IMAGE(beta, ADDR_PERM2(x), DEG_PERM2(x)) ) {
+        size_strong_gens[i]++;
+        strong_gens[i] = realloc(strong_gens[i], size_strong_gens[i] * sizeof(Obj));
+        strong_gens[i][size_strong_gens[i]] = x; // TODO: improve memory usage
+      }
+    }
+
+    // find the orbit of <beta> under strong_gens[i - 1]
+    orbit_stab_chain(i - 1, beta);
+  }
+
+  i = size_base - 1; // Unsure about this
+
+  while (i >= depth) { 
+    printf("i = %d...\n", i);
+    escape = false;
+    for (j = 0; j < size_orbits[i]; j++) {
+      beta = orbits[i * MD + j];
+      for (m = 0; m < size_strong_gens[i]; m++) {
+        x  = strong_gens[i][m];
+        prod  = PROD( transversal[i * MD + beta], x );
+        betax =  (unsigned int) IMAGE(beta, ADDR_PERM2(x), DEG_PERM2(x));
+        if ( ! EQ(prod, transversal[i * MD + betax]) ) {
+          y = true;
+          h = QUO(prod, transversal[i * MD + betax]);
+          jj = 0;
+          sift_stab_chain(&h, &jj);
+          printf("after sift_stab_chain: jj = %d\n", jj);
+          if ( jj <= size_base ) {
+            y = false;
+          } else if ( ! EQ(h, IdentityPerm) ) { // better method? IsOne(h)?
+            y = false;
+            for ( k = 0; k < lmp; k++ ) {
+              if( k != (unsigned int) IMAGE(k, ADDR_PERM2(h), DEG_PERM2(h)) ) {
+                add_base_point(k);
+                break;
+              }
+            }
+          }
+    
+          if ( !y ) {
+            for (l = i + 1; l <= jj; l++) {
+              size_strong_gens[l]++;
+              strong_gens[l] = realloc(strong_gens[l], size_strong_gens[l] * sizeof(Obj));
+              strong_gens[l][size_strong_gens[l]] = h; // TODO: improve memory usage
+              add_gen_orbit_stab_chain(l, h);
+              // add generator to <h> to orbit of base[l]
+            }
+            printf("finished adding new strong generators.\n");
+            i = j;
+            escape = true;
+            break;
+          }
+        }
+      }
+      if (escape) {
+        break;
+      }
+    }
+    if (escape) {
+      continue;
+    }
+    i--;
+  }
+
+}
+
+static unsigned int size_stab_chain () {
+  unsigned int i, tot;
+  
+  tot = 1;
+  for (i = 0; i < size_base; i++) {
+    printf("orbit[%d] has size %d\n", i, size_orbits[i]);
+    tot *= size_orbits[i];
+  }
+  return tot;
 }
 
 static unsigned int LargestMovedPointPermColl (Obj const gens) {
@@ -1665,6 +1831,16 @@ static unsigned int LargestMovedPointPermColl (Obj const gens) {
   }
 
   return max;
+}
+
+static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
+  nr2 = 5;
+  Pr("Set nr2 = %d\n", nr2, 0L);
+  init_stab_chain(gens);
+  Pr("Initialised stab chain.\n", 0L, 0L);
+  schreier_sims_stab_chain(0);
+  Pr("Completed the algorithm.\n", 0L, 0L);
+  return INTOBJ_INT(size_stab_chain());
 }
 
 // returns a bool array representing the orbit reps of the group generated by
@@ -2469,6 +2645,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "GRAPH_HOMOS", 8, "graph1, graph2, hook, user_param, limit, hint, isinjective, Stabilizer",
     FuncGRAPH_HOMOS,
     "src/digraphs.c:FuncGRAPH_HOMOS" },
+
+  { "C_STAB_CHAIN", 1, "gens",
+    FuncC_STAB_CHAIN,
+    "src/digraphs.c:FuncC_STAB_CHAIN" },
 
   { 0 }
 

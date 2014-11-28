@@ -111,7 +111,7 @@ remove_base_point := function(stab_chain, depth)
 end;
 
 schreier_sims_stab_chain := function(stab_chain, depth)
-  local base, transversal, orbits, borbits, lmp, S, beta, i, escape, y, tmp, h, j, T, x, k, l;
+  local base, transversal, orbits, borbits, lmp, S, beta, i, escape, y, tmp, h, jj, T, x, j, k, l;
 
   base := stab_chain.base;
   transversal := stab_chain.transversal;
@@ -148,7 +148,10 @@ schreier_sims_stab_chain := function(stab_chain, depth)
 
   i := Length(base);
 
+  Print(S);
+
   while i >= depth do
+    Print("i = ", i, "\n");
     escape := false;
     for j in [1..Length(orbits[i])] do
       beta := orbits[i][j];
@@ -158,8 +161,9 @@ schreier_sims_stab_chain := function(stab_chain, depth)
           tmp := sift_stab_chain(stab_chain, transversal[i][beta] * x *
             transversal[i][beta ^ x] ^ - 1);
           h := tmp[1];
-          j := tmp[2];
-          if j <= Length(base) then 
+          jj := tmp[2];
+          Print("after sift_stab_chain: jj = ", jj, "\n");
+          if jj <= Length(base) then 
             y := false;
           elif not IsOne(h) then
             y := false;
@@ -172,7 +176,7 @@ schreier_sims_stab_chain := function(stab_chain, depth)
           fi;
     
           if y = false then
-            for l in [i + 1 .. j] do
+            for l in [i + 1 .. jj] do
               Add(S[l], h);
               add_gen_orbit_stab_chain(stab_chain, l, h);
               # add generator to <h> to orbit of base[l]
