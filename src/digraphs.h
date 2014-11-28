@@ -8,9 +8,9 @@ Header file for the digraphs.c file.
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #include "src/compiled.h"          /* GAP headers                */
-
 
 Int DigraphNrVertices(Obj digraph);
 Int DigraphNrEdges(Obj digraph);

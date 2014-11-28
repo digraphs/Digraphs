@@ -90,16 +90,28 @@ sift_stab_chain := function (stab_chain, g)
 end;
 
 add_base_point := function(stab_chain, k)
-  Add(stab_chain.S, []);
   Add(stab_chain.base, k);
+  stab_chain.S[Length(stab_chain.base) + 1] := [];
   Add(stab_chain.orbits, [k]);
   Add(stab_chain.borbits, BlistList([1..stab_chain.lmp], [k]));
   Add(stab_chain.transversal, []);
   stab_chain.transversal[Length(stab_chain.transversal)][k] := ();
 end;
 
-schreier_sims_stab_chain := function(stab_chain)
-  local gens, base, transversal, orbits, borbits, lmp, S, i, escape, beta, y, tmp, h, j, k, x, l;
+remove_base_point := function(stab_chain, depth)
+  local i;
+
+  for i in [depth .. Length(stab_chain.base)] do 
+    Unbind(stab_chain.S[i + 1]);
+    Unbind(stab_chain.base[i]);
+    Unbind(stab_chain.orbits[i]);
+    Unbind(stab_chain.borbits[i]);
+    Unbind(stab_chain.transversal[i]);
+  od;
+end;
+
+schreier_sims_stab_chain := function(stab_chain, depth)
+  local base, transversal, orbits, borbits, lmp, S, beta, i, escape, y, tmp, h, j, T, x, k, l;
 
   base := stab_chain.base;
   transversal := stab_chain.transversal;
@@ -108,9 +120,8 @@ schreier_sims_stab_chain := function(stab_chain)
   lmp := stab_chain.lmp;
   S := stab_chain.S;
 
-  # I don't think this loop agrees with the book. Is this deliberate?
-  for j in [1 .. Length(S)] do
-    for x in S[j] do 
+  for T in S do
+    for x in T do 
       if ForAll(base, i -> i ^ x = i) then
         for i in [1 .. lmp] do
           if i ^ x <> i then
@@ -122,7 +133,7 @@ schreier_sims_stab_chain := function(stab_chain)
     od;
   od;
   
-  for i in [2 .. Length(base) + 1] do
+  for i in [depth + 1 .. Length(base) + 1] do
     beta := base[i - 1];
     # set up the strong generators
     for x in S[i - 1] do
@@ -137,7 +148,7 @@ schreier_sims_stab_chain := function(stab_chain)
 
   i := Length(base);
 
-  while i >= 1 do
+  while i >= depth do
     escape := false;
     for j in [1..Length(orbits[i])] do
       beta := orbits[i][j];
@@ -183,6 +194,10 @@ schreier_sims_stab_chain := function(stab_chain)
   od;
 
   return stab_chain;
+end;
+
+schreier_sims_stab_chain_default := function(stab_chain) 
+  return schreier_sims_stab_chain(stab_chain, 1);
 end;
 
 size_stab_chain := function(stab_chain)
