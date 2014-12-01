@@ -1504,21 +1504,168 @@ static int  calls2;                  // calls1 is the number of calls to the sea
                                      // calls2 is the number of stabilizers
                                      // calculated
 
+// perms
+
+static unsigned int perm_buf[MD];
+
+typedef unsigned int* perm;
+
+static perm new_perm () {
+  return malloc(nr2 * sizeof(unsigned int));
+}
+
+static perm id_perm () {
+  unsigned int i;
+  perm id = new_perm();
+  for (i = 0; i < nr2; i++) {
+    id[i] = i;
+  }
+  return id;
+}
+
+static bool is_one (perm x) {
+  unsigned int i;
+
+  for (i = 0; i < nr2; i++) {
+    if (x[i] != i) {
+      return false;
+    }
+  }
+  return true;
+}
+
+static bool eq_perms (perm x, perm y) {
+  unsigned int i;
+
+  for (i = 0; i < nr2; i++) {
+    if (x[i] != y[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+// convert GAP perms to perms
+static perm as_perm (Obj x) {
+  UInt  deg, i;
+  UInt2 *ptr2;
+  UInt4 *ptr4;
+  perm  out = new_perm();
+
+  if (TNUM_OBJ(x) == T_PERM2) {
+    deg = DEG_PERM2(x); 
+    ptr2 = ADDR_PERM2(x);
+    for (i = 0; i < deg; i++) {
+      out[i] = (unsigned int) ptr2[i];
+    }
+  } else if (TNUM_OBJ(x) == T_PERM4) {
+    deg = DEG_PERM4(x); 
+    ptr4 = ADDR_PERM4(x);
+    for (i = 0; i < deg; i++) {
+      out[i] = (unsigned int) ptr4[i];
+    }
+  }
+
+  for (; i < nr2; i++) {
+    out[i] = i;
+  }
+  return out;
+}
+
+static perm prod_perms (perm x, perm y) {
+  unsigned int i;
+  perm z = new_perm();
+
+  for (i = 0; i < nr2; i++) {
+    z[i] = y[x[i]];
+  }
+  return z;
+}
+
+static perm quo_perms (perm x, perm y) {
+  unsigned int i;
+
+  // invert y into the buf
+  for (i = 0; i < nr2; i++) {
+    perm_buf[y[i]] = i;
+  }
+  return prod_perms(x, perm_buf);
+}
+
+// changes the lhs 
+
+static void quo_perms_in_place (perm x, perm y) {
+  unsigned int i;
+
+  // invert y into the buf
+  for (i = 0; i < nr2; i++) {
+    perm_buf[y[i]] = i;
+  }
+
+  for (i = 0; i < nr2; i++) {
+    x[i] = perm_buf[x[i]];
+  }
+}
+
+/*static unsigned int* print_perm (perm x) {
+  unsigned int i;
+
+  Pr("(", 0L, 0L);
+  for (i = 0; i < nr2; i++) {
+    Pr("x[%d]=%d,", (Int) i, (Int) x[i]);
+  }
+  Pr(")\n", 0L, 0L);
+
+}*/
+
 // Schreier-Sims set up
 
-Obj*          strong_gens[MD];      // strong generators
-unsigned int  size_strong_gens[MD];
-unsigned int  orbits[MD * MD];
-unsigned int  size_orbits[MD];
-bool          borbits[MD * MD];
-Obj           transversal[MD * MD];
-unsigned int  lmp;
-unsigned int  base[MD];
-unsigned int  size_base;
+static perm *        strong_gens[MD];      // strong generators
+static perm          transversal[MD * MD];
+static bool          first_ever_call = true;
+static unsigned int  size_strong_gens[MD];
+static unsigned int  orbits[MD * MD];
+static unsigned int  size_orbits[MD];
+static bool          borbits[MD * MD];
+static unsigned int  lmp;
+static unsigned int  base[MD];
+static unsigned int  size_base;
+
+static inline void add_strong_gens (unsigned int const pos, perm const value) {
+  size_strong_gens[pos]++;
+  strong_gens[pos] = realloc(strong_gens[pos], size_strong_gens[pos] * sizeof(perm));
+  strong_gens[pos][size_strong_gens[pos] - 1] = value;
+}
+
+static inline perm get_strong_gens (unsigned int const i, unsigned int const j) {
+  return strong_gens[i][j];
+}
+
+static inline perm get_transversal (unsigned int const i, unsigned int const j) {
+  return transversal[i * MD + j];
+}
+
+static inline void set_transversal (unsigned int const i, unsigned int const j, 
+    perm const value) {
+  transversal[i * MD + j] = value;
+}
+
+static bool perm_fixes_all_base_points ( perm const x ) {
+  unsigned int i;
+
+  for (i = 0; i < size_base; i++) {
+    if (x[base[i]] != base[i]) {
+      return false;
+    }
+  }
+  return true;
+}
 
 static unsigned int LargestMovedPointPermColl (Obj gens); 
 
-static unsigned int IMAGE_PERM (unsigned int const pt, Obj const perm) {
+// 
+
+/*static unsigned int IMAGE_PERM (unsigned int const pt, Obj const perm) {
 
   if (TNUM_OBJ(perm) == T_PERM2) {
     return (unsigned int) IMAGE(pt, ADDR_PERM2(perm), DEG_PERM2(perm));
@@ -1527,22 +1674,36 @@ static unsigned int IMAGE_PERM (unsigned int const pt, Obj const perm) {
   } else {
     ErrorQuit("orbit_stab_chain: expected a perm, didn't get one", 0L, 0L);
   }
-  return 0;
+  return 0; // keep compiler happy!
+}*/
+
+static void first_ever_init () {
+  unsigned int i;
+
+  first_ever_call = false;
+
+  for (i = 0; i < MD; i++) { 
+    size_strong_gens[i] = 0;
+    size_orbits[i] = 0;
+  }
 }
 
 static void init_stab_chain (Obj const gens) {
   unsigned int  nrgens, i;
   Obj*          strong;
+  Pr("init_stab_chain!\n", 0L, 0L);
 
+  if (first_ever_call) {
+    first_ever_init();
+  }
+
+  
   lmp = LargestMovedPointPermColl(gens);
   nrgens = (unsigned int) LEN_PLIST(gens);
-  strong = malloc(nrgens * sizeof(Obj));
 
   for (i = 1; i <= nrgens; i++) {
-    strong[i - 1] = ELM_PLIST(gens, i);
+    add_strong_gens(0, as_perm(ELM_PLIST(gens, i)));
   }
-  strong_gens[0] = strong; // TODO don't forget to free this!!
-  size_strong_gens[0] = nrgens;
   for (i = 0; i < nr2 - 1; i++) {
     base[i] = i;
   }
@@ -1552,52 +1713,46 @@ static void init_stab_chain (Obj const gens) {
   for (i = 0; i < MD * MD; i++) {
     borbits[i] = false; // TODO: only do the minimum initialisation necessary
   }
-  for (i = 1; i < MD; i++) { // Deliberately avoiding i = 0 as it's already set
-    size_strong_gens[i] = 0;
-    size_orbits[i] = 0;
-  }
 }
 
 static void free_stab_chain () { // TODO: This needs to be done correctly
   int i;
 
-  for (i = 0; i < MD; i++) {
-    if (size_strong_gens[i] != 0) {
-      free(strong_gens[i]);
-    }
+  for (i = 0; i < size_base; i++) {
+    size_strong_gens[i] = 0;
+    size_orbits[i] = 0;
   }
-
 }
 
 static void orbit_stab_chain (unsigned int const depth, unsigned int const init_pt) {
   unsigned int i, j, pt, img;
-  Obj          x;
+  perm         x;
 
   assert( depth <= size_base ); // Should this be strict?
 
   orbits[depth * MD] = init_pt;
   size_orbits[depth] = 1;
   borbits[depth * MD + init_pt] = true; // Do we need to set anything to false?
-  transversal[depth * MD + init_pt] = IdentityPerm;
+  set_transversal(depth, init_pt, id_perm());
 
   for (i = 0; i < size_orbits[depth]; i++) {
     pt = orbits[depth * MD + i];
     for (j = 0; j < size_strong_gens[depth]; j++) {
-      x = strong_gens[depth][j];
-      img = IMAGE_PERM(pt, x);
+      x = get_strong_gens(depth, j);
+      img = x[pt];
       if (! borbits[depth * MD + img]) {
         orbits[depth * MD + size_orbits[depth]] = img;
         size_orbits[depth]++;
         borbits[depth * MD + img] = true;
-        transversal[depth * MD + img] = PROD(transversal[depth * MD + pt], x);
+        set_transversal(depth, img, prod_perms(get_transversal(depth, pt), x));
       }
     }
   }
 }
 
-static void add_gen_orbit_stab_chain (unsigned int const depth, Obj const gen) {
+static void add_gen_orbit_stab_chain (unsigned int const depth, perm const gen) {
   unsigned int  i, j, pt, img;
-  Obj           x;
+  perm          x;
 
   assert( depth <= size_base );
 
@@ -1605,45 +1760,44 @@ static void add_gen_orbit_stab_chain (unsigned int const depth, Obj const gen) {
   unsigned int nr = size_orbits[depth];
   for (i = 0; i < nr; i++) {
     pt = orbits[depth * MD + i];
-    img = IMAGE_PERM(pt, gen);
+    img = gen[pt];
     if (! borbits[depth * MD + img]) {
       //printf("\tfound new img = %d\n", img);
       orbits[depth * MD + size_orbits[depth]] = img;
       size_orbits[depth]++;
       borbits[depth * MD + img] = true;
-      transversal[depth * MD + img] 
-        = PROD(transversal[depth * MD + pt], gen);
+      set_transversal(depth, img, 
+        prod_perms(get_transversal(depth, pt), gen));
     }
   }
 
   for (i = nr; i < size_orbits[depth]; i++) {
     pt = orbits[depth * MD + i];
     for (j = 0; j < size_strong_gens[depth]; j++) {
-      x = strong_gens[depth][j];
-      img = IMAGE_PERM(pt, gen);
+      x = get_strong_gens(depth, j);
+      img = x[pt];
       if (! borbits[depth * MD + img]) {
         //printf("\tfound new img = %d\n", img);
         orbits[depth * MD + size_orbits[depth]] = img;
         size_orbits[depth]++;
         borbits[depth * MD + img] = true;
-        transversal[depth * MD + img] = PROD(transversal[depth * MD + pt], x);
+        set_transversal(depth, img, prod_perms(get_transversal(depth, pt), x));
       }
     }
   }
 }
 
-static void sift_stab_chain (Obj* g, unsigned int* depth) {
-
+static void sift_stab_chain (perm* g, unsigned int* depth) {
   unsigned int beta;
 
   assert(*depth == 0);
   
   for (; *depth < size_base; (*depth)++) {
-    beta = IMAGE_PERM(base[*depth], *g);
+    beta = (*g)[base[*depth]];
     if (! borbits[*depth * MD + beta]) {
       return;
     }
-    *g = QUO(*g, transversal[*depth * MD + beta]);
+    quo_perms_in_place(*g, get_transversal(*depth, beta));
   }
 }
 
@@ -1659,7 +1813,7 @@ static void remove_base_points (unsigned int const depth) {
 
   for (i = depth; i < size_base; i++) {
     size_base--;
-    free(strong_gens[i + 1]);
+    //free(strong_gens[i + 1]);
     size_strong_gens[i + 1] = 0;
     size_orbits[i] = 0;
     
@@ -1669,39 +1823,18 @@ static void remove_base_points (unsigned int const depth) {
   }
 }
 
-static bool perm_fixes_all_base_points ( Obj const x ) {
-  unsigned int i;
-
-  if (TNUM_OBJ(x) == T_PERM2) {
-    for (i = 0; i < size_base; i++) {
-      if ( base[i] != (unsigned int) IMAGE(base[i], ADDR_PERM2(x), DEG_PERM2(x)) ) {
-        return false;
-      }
-    }
-  } else if (TNUM_OBJ(x) == T_PERM4) {
-    for (i = 0; i < size_base; i++) {
-      if ( base[i] != (unsigned int) IMAGE(base[i], ADDR_PERM4(x), DEG_PERM4(x)) ) {
-        return false;
-      }
-    }
-  } else {
-    ErrorQuit("perm_fixes_all_base_points: expected a perm, didn't get one", 0L, 0L);
-  }
-  return true;
-}
-
 static void schreier_sims_stab_chain ( unsigned int const depth ) {
 
-  Obj           x, h, prod;
+  perm          x, h, prod;
   bool          escape, y;
   unsigned int  i, j, jj, k, l, m, beta, betax;
 
-  for (i = 0; i < size_base; i++) { // TODO: find correct number
+  for (i = 0; i < size_base; i++) { 
     for (j = 0; j < size_strong_gens[i]; j++) { 
-      x = strong_gens[i][j];
+      x = get_strong_gens(i, j);
       if ( perm_fixes_all_base_points( x ) ) {
         for (k = 0; k < lmp; k++) {
-          if ( k != (unsigned int) IMAGE(k, ADDR_PERM2(x), DEG_PERM2(x)) ) {
+          if (k != x[k]) {
             add_base_point(k);
             break;
           }
@@ -1714,11 +1847,9 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
     beta = base[i - 1];
     // set up the strong generators
     for (j = 0; j < size_strong_gens[i - 1]; j++) {
-      x = strong_gens[i - 1][j];
-      if ( beta == (unsigned int) IMAGE(beta, ADDR_PERM2(x), DEG_PERM2(x)) ) {
-        size_strong_gens[i]++;
-        strong_gens[i] = realloc(strong_gens[i], size_strong_gens[i] * sizeof(Obj));
-        strong_gens[i][size_strong_gens[i] - 1] = x; // TODO: improve memory usage
+      x = get_strong_gens(i - 1, j);
+      if (beta == x[beta]) {
+        add_strong_gens(i, x);
       }
     }
 
@@ -1733,21 +1864,21 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
     for (j = 0; j < size_orbits[i]; j++) {
       beta = orbits[i * MD + j];
       for (m = 0; m < size_strong_gens[i]; m++) {
-        x  = strong_gens[i][m];
-        prod  = PROD( transversal[i * MD + beta], x );
-        betax =  (unsigned int) IMAGE(beta, ADDR_PERM2(x), DEG_PERM2(x));
-        if ( ! EQ(prod, transversal[i * MD + betax]) ) {
+        x  = get_strong_gens(i, m);
+        prod  = prod_perms(get_transversal(i, beta), x );
+        betax =  x[beta];
+        if ( ! eq_perms(prod, get_transversal(i, betax)) ) {
           y = true;
-          h = QUO(prod, transversal[i * MD + betax]);
+          h = quo_perms(prod, get_transversal(i, betax));
           jj = 0;
           sift_stab_chain(&h, &jj);
           //printf("after sift_stab_chain: jj = %d\n", jj);
           if ( jj < size_base ) {
             y = false;
-          } else if ( ! EQ(h, IdentityPerm) ) { // better method? IsOne(h)?
+          } else if ( ! is_one(h) ) { // better method? IsOne(h)?
             y = false;
-            for ( k = 0; k < lmp; k++ ) {
-              if( k != (unsigned int) IMAGE(k, ADDR_PERM2(h), DEG_PERM2(h)) ) {
+            for (k = 0; k < lmp; k++) {
+              if(k != h[k]) {
                 add_base_point(k);
                 break;
               }
@@ -1756,10 +1887,7 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
     
           if ( !y ) {
             for (l = i + 1; l <= jj; l++) {
-              size_strong_gens[l]++;
-              strong_gens[l] = realloc(strong_gens[l], size_strong_gens[l] * sizeof(Obj));
-              strong_gens[l][size_strong_gens[l] - 1] = h; // TODO: improve memory usage
-              //printf("adding new strong generators at depth %d...\n", l);
+              add_strong_gens(l, h); 
               add_gen_orbit_stab_chain(l, h);
               // add generator to <h> to orbit of base[l]
             }
