@@ -1518,7 +1518,19 @@ unsigned int  size_base;
 
 static unsigned int LargestMovedPointPermColl (Obj gens); 
 
-static void init_stab_chain (Obj gens) {
+static unsigned int IMAGE_PERM (unsigned int const pt, Obj const perm) {
+
+  if (TNUM_OBJ(perm) == T_PERM2) {
+    return (unsigned int) IMAGE(pt, ADDR_PERM2(perm), DEG_PERM2(perm));
+  } else if (TNUM_OBJ(perm) == T_PERM4) {
+    return (unsigned int) IMAGE(pt, ADDR_PERM4(perm), DEG_PERM4(perm));
+  } else {
+    ErrorQuit("orbit_stab_chain: expected a perm, didn't get one", 0L, 0L);
+  }
+  return 0;
+}
+
+static void init_stab_chain (Obj const gens) {
   unsigned int  nrgens, i;
   Obj*          strong;
 
@@ -1546,6 +1558,17 @@ static void init_stab_chain (Obj gens) {
   }
 }
 
+static void free_stab_chain () { // TODO: This needs to be done correctly
+  int i;
+
+  for (i = 0; i < MD; i++) {
+    if (size_strong_gens[i] != 0) {
+      free(strong_gens[i]);
+    }
+  }
+
+}
+
 static void orbit_stab_chain (unsigned int const depth, unsigned int const init_pt) {
   unsigned int i, j, pt, img;
   Obj          x;
@@ -1561,13 +1584,7 @@ static void orbit_stab_chain (unsigned int const depth, unsigned int const init_
     pt = orbits[depth * MD + i];
     for (j = 0; j < size_strong_gens[depth]; j++) {
       x = strong_gens[depth][j];
-      if (TNUM_OBJ(x) == T_PERM2) {
-        img = (unsigned int) IMAGE(pt, ADDR_PERM2(x), DEG_PERM2(x));
-      } else if (TNUM_OBJ(x) == T_PERM4) {
-        img = (unsigned int) IMAGE(pt, ADDR_PERM4(x), DEG_PERM4(x));
-      } else {
-        ErrorQuit("orbit_stab_chain: expected a perm, didn't get one", 0L, 0L);
-      }
+      img = IMAGE_PERM(pt, x);
       if (! borbits[depth * MD + img]) {
         orbits[depth * MD + size_orbits[depth]] = img;
         size_orbits[depth]++;
@@ -1588,13 +1605,7 @@ static void add_gen_orbit_stab_chain (unsigned int const depth, Obj const gen) {
   unsigned int nr = size_orbits[depth];
   for (i = 0; i < nr; i++) {
     pt = orbits[depth * MD + i];
-    if (TNUM_OBJ(gen) == T_PERM2) {
-      img = (unsigned int) IMAGE(pt, ADDR_PERM2(gen), DEG_PERM2(gen));
-    } else if (TNUM_OBJ(gen) == T_PERM4) {
-      img = (unsigned int) IMAGE(pt, ADDR_PERM4(gen), DEG_PERM4(gen));
-    } else {
-      ErrorQuit("add_gen_orbit_stab_chain: expected a perm, didn't get one", 0L, 0L);
-    }
+    img = IMAGE_PERM(pt, gen);
     if (! borbits[depth * MD + img]) {
       //printf("\tfound new img = %d\n", img);
       orbits[depth * MD + size_orbits[depth]] = img;
@@ -1609,13 +1620,7 @@ static void add_gen_orbit_stab_chain (unsigned int const depth, Obj const gen) {
     pt = orbits[depth * MD + i];
     for (j = 0; j < size_strong_gens[depth]; j++) {
       x = strong_gens[depth][j];
-      if (TNUM_OBJ(x) == T_PERM2) {
-        img = (unsigned int) IMAGE(pt, ADDR_PERM2(x), DEG_PERM2(x));
-      } else if (TNUM_OBJ(x) == T_PERM4) {
-        img = (unsigned int) IMAGE(pt, ADDR_PERM4(x), DEG_PERM4(x));
-      } else {
-        ErrorQuit("add_gen_orbit_stab_chain: expected a perm, didn't get one", 0L, 0L);
-      }
+      img = IMAGE_PERM(pt, gen);
       if (! borbits[depth * MD + img]) {
         //printf("\tfound new img = %d\n", img);
         orbits[depth * MD + size_orbits[depth]] = img;
@@ -1634,13 +1639,7 @@ static void sift_stab_chain (Obj* g, unsigned int* depth) {
   assert(*depth == 0);
   
   for (; *depth < size_base; (*depth)++) {
-    if (TNUM_OBJ(*g) == T_PERM2) {
-      beta = (unsigned int) IMAGE(base[*depth], ADDR_PERM2(*g), DEG_PERM2(*g));
-    } else if (TNUM_OBJ(*g) == T_PERM4) {
-      beta = (unsigned int) IMAGE(base[*depth], ADDR_PERM4(*g), DEG_PERM4(*g));
-    } else {
-      ErrorQuit("sift_stab_chain: expected a perm, didn't get one", 0L, 0L);
-    }
+    beta = IMAGE_PERM(base[*depth], *g);
     if (! borbits[*depth * MD + beta]) {
       return;
     }
@@ -1670,7 +1669,7 @@ static void remove_base_points (unsigned int const depth) {
   }
 }
 
-static bool perm_fixes_all_base_points ( Obj x ) {
+static bool perm_fixes_all_base_points ( Obj const x ) {
   unsigned int i;
 
   if (TNUM_OBJ(x) == T_PERM2) {
@@ -1784,24 +1783,13 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
   
 }
 
-static void free_stab_chain () { // TODO: This needs to be done correctly
-  int i;
-
-  for (i = 0; i < MD; i++) {
-    if (size_strong_gens[i] != 0) {
-      free(strong_gens[i]);
-    }
-  }
-
-}
-
-static unsigned long long int size_stab_chain () {
-  unsigned int            i;
-  unsigned long long int  tot;
+static Obj size_stab_chain () {
+  unsigned int  i;
+  Obj           tot;
   
-  tot = 1;
+  tot = INTOBJ_INT(1);
   for (i = 0; i < size_base; i++) {
-    tot *= size_orbits[i];
+    tot = ProdInt(tot, INTOBJ_INT((Int) size_orbits[i]));
   }
   return tot;
 }
@@ -1848,14 +1836,14 @@ static unsigned int LargestMovedPointPermColl (Obj const gens) {
 }
 
 static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
-  unsigned long long int  size;
+  Obj size;
 
   nr2 = LargestMovedPointPermColl(gens);
   init_stab_chain(gens);
   schreier_sims_stab_chain(0);
   size = size_stab_chain();
   free_stab_chain();
-  return INTOBJ_INT( (Int) size);
+  return size;
 }
 
 // returns a bool array representing the orbit reps of the group generated by
