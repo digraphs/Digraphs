@@ -1827,7 +1827,8 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
 
   perm          x, h, prod;
   bool          escape, y;
-  unsigned int  i, j, jj, k, l, m, beta, betax;
+  int           i;
+  unsigned int  j, jj, k, l, m, beta, betax;
 
   for (i = 0; i < size_base; i++) { 
     for (j = 0; j < size_strong_gens[i]; j++) { 
@@ -1859,7 +1860,7 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
 
   i = size_base - 1; // Unsure about this
 
-  while (i >= depth) { 
+  while (i >= (int) depth) { 
     escape = false;
     for (j = 0; j < size_orbits[i] && !escape; j++) {
       beta = orbits[i * MD + j];
@@ -1897,10 +1898,6 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
         }
       }
     }
-    if (i == 0) { 
-      break; 
-    }  // TODO: remove this line (temporary)
-    // i is an unsigned int so don't take one away!
     if (! escape) {
       i--;
     }
@@ -2169,13 +2166,8 @@ void homo_hook_gap () {
 void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled positions in map
                       int   pos,          // the last position filled
                       bool  *condition,   // blist of possible values for map[i]
-                      Obj   gens,         // generators for
-                                          // Stabilizer(AsSet(map)) subgroup
-                                          // of automorphism group of graph2
-                      unsigned int const rep_depth,
                       int   rank,         // current number of distinct values in map
-                      void  hook (),
-                      Obj   Stabilizer) { // TODO remove this!
+                      void  hook ()) {
 
   unsigned int   i, j, k, l, min, next;
   bool  *copy;
@@ -2228,24 +2220,28 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
   }
   
   if (rank < hint) {
-    for (i = 0; i < nr2; i++) {
-      if (copy[nr2 * next + i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) { 
-        calls2++;
-        Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
-        OrbitReps_md(newGens, rep_depth + 1);
-
+    i = base[depth];
+    while (i < nr2) {
+      if (copy[nr2 * next + i] && !vals_md[i]) {
         map[next] = i;
         vals_md[i] = true;
-        SEARCH_HOMOS_MD(depth + 1, next, copy, newGens, rep_depth + 1, rank + 1, hook, Stabilizer);
+        SEARCH_HOMOS_MD(depth + 1, next, copy, rank + 1, hook);
         map[next] = -1;
         vals_md[i] = false;
       }
-    }
+      while (borbits[depth * MD + i] && i < nr2) i++;
+      if (i < nr2) {
+        calls2++;
+        remove_base_points(depth);
+        add_base_point(i);
+        schreier_sims_stab_chain(depth);
+      }
+    } 
   } 
   for (i = 0; i < nr2; i++) {
     if (copy[nr2 * next + i] && vals_md[i]) {
       map[next] = i;
-      SEARCH_HOMOS_MD(depth + 1, next, copy, gens, rep_depth, rank, hook, Stabilizer);
+      SEARCH_HOMOS_MD(depth + 1, next, copy, rank, hook);
       map[next] = -1;
     }
   }
@@ -2473,21 +2469,26 @@ void GraphHomomorphisms_md (Obj  graph1,
   // get generators of the automorphism group
   gens = ELM_PLIST(FuncDIGRAPH_AUTOMORPHISMS(0L, graph2), 2);
   
+  // stab chain for automorphism group
+  init_stab_chain(gens);
+  schreier_sims_stab_chain(0);
+  
   // get orbit reps 
-  OrbitReps_md(gens, 0);
+  // OrbitReps_md(gens, 0);
   
   // misc parameters
   count = 0;
   maxresults = max_results_arg;
   user_param = user_param_arg; 
   hint = hint_arg;
+
   
   // go! 
   if (setjmp(outofhere) == 0) {
     if (isinjective) {
      // SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook, Stabilizer);
     } else {
-      SEARCH_HOMOS_MD(0, -1, condition, gens, 0, 0, hook, Stabilizer);
+      SEARCH_HOMOS_MD(0, -1, condition, 0, hook);
     }
   }
   free(condition);
