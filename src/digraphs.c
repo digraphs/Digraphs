@@ -1861,9 +1861,9 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
 
   while (i >= depth) { 
     escape = false;
-    for (j = 0; j < size_orbits[i]; j++) {
+    for (j = 0; j < size_orbits[i] && !escape; j++) {
       beta = orbits[i * MD + j];
-      for (m = 0; m < size_strong_gens[i]; m++) {
+      for (m = 0; m < size_strong_gens[i] && !escape; m++) {
         x  = get_strong_gens(i, m);
         prod  = prod_perms(get_transversal(i, beta), x );
         betax =  x[beta];
@@ -1893,20 +1893,17 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
             }
             i = jj;
             escape = true;
-            break;
           }
         }
       }
-      if (escape) {
-        break;
-      }
     }
-    if (escape) {
-      continue;
+    if (i == 0) { 
+      break; 
+    }  // TODO: remove this line (temporary)
+    // i is an unsigned int so don't take one away!
+    if (! escape) {
+      i--;
     }
-    if (i == 0) { break; }  // TODO: remove this line (temporary)
-                            // i is an unsigned int so don't take one away!
-    i--;
   }
   
 }
