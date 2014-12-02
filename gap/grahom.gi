@@ -445,3 +445,69 @@ end);
 #  o:=DigraphEdges(digraph);
 #  return IsSubset(o,OnSetsTuples(o,t));
 #end;
+
+ReorderVertices := function(graph)
+  local out, degs, max, pos, nr, l, s, new, p;
+
+  out := OutNeighbours(graph); 
+  degs := OutDegrees(graph);
+  max := Maximum(degs);
+  pos := Position(degs, max);  # this is the first vertex
+  nr := DigraphNrVertices(graph);
+  l := [pos];
+  s := [pos];
+  new := [fail];
+  while Length(l) < nr do
+    if Length(new) = 0 then
+      new := Difference([1..nr],s){[1]};
+    else
+      new := Difference(Union(out{l}),s);
+    fi;
+    Append(l,new);
+    UniteSet(s,new);
+  od;
+  p := PermList(l);
+  return rec( perm := p, verts := l, graph := graph,
+              newadj := List(out{l},v->OnTuples(v,p)) );
+
+end;
+
+# Choose vertices with higher degree first
+ReorderVertices2 := function(graph)
+  local out, degs, nr, l, s, choices, newdegs, max, pos, p, i;
+
+  out := OutNeighbours(graph); 
+  degs := OutDegrees(graph);
+  nr := DigraphNrVertices(graph);
+  l := [];
+  s := [];
+  choices := [];
+ # i'th position gives the number of edges to already defined part of graph
+  newdegs := [1 .. nr] * 0;
+  while Length(l) < nr do
+    if Length(choices) = 0 then # new connected component
+      choices := Difference([1..nr],s);
+      max := Maximum(degs{choices});
+      pos := Position(degs, max); 
+    else
+      choices := Difference(Union(out{l}),s);
+      max := 0;
+      pos := 0;
+      for i in choices do
+        if newdegs[i] > max then
+          max := newdegs[i];
+          pos := i;
+        fi;
+      od;
+    fi;
+    Add(l,pos);
+    UniteSet(s,[pos]);
+    for i in out[pos] do
+      newdegs[i] := newdegs[i] + 1;
+    od;
+  od;
+  p := PermList(l);
+  return rec( perm := p, verts := l, graph := graph,
+              newadj := List(out{l},v->OnTuples(v,p)) );
+
+end;
