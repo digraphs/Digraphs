@@ -2050,8 +2050,8 @@ void OrbitReps_md (Obj gens, unsigned int rep_depth) {
 
   // special case in case there are no gens, or just the identity.
 
-  memset((void *) dom1_md, false, max * sizeof(int)); 
-  memset((void *) dom2_md, false, max * sizeof(int)); 
+  memset((void *) dom1_md, false, max * sizeof(bool)); 
+  memset((void *) dom2_md, false, max * sizeof(bool)); 
   
   m = 0; //number of orbit reps
 
@@ -2066,7 +2066,7 @@ void OrbitReps_md (Obj gens, unsigned int rep_depth) {
   }
 
   fst = 0; 
-  while (dom1_md[fst] != 1 && fst < max) fst++;
+  while (! dom1_md[fst] && fst < max) fst++;
 
   while (fst < max) {
     reps_md[(rep_depth * nr2) + fst] = true;
