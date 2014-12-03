@@ -2561,7 +2561,6 @@ void GraphHomomorphisms_md (Obj  graph1,
   }
   size_stab_gens[0] = len;
   lmp_stab_gens[0] = LargestMovedPointPermColl( stab_gens[0], len );
-  printf("the automorphism group has %d gens, with lmp = %d...\n", len, lmp_stab_gens[0]);
   
   // get orbit reps
   OrbitReps_md(0, 0); //TODO: make this work with our new gens
