@@ -2015,24 +2015,30 @@ static unsigned int LargestMovedPointPermColl ( perm* const gens, unsigned int c
 
 static void point_stabilizer( unsigned int const depth, unsigned int const pt ) {
 
-  unsigned int  len, i;
-  Obj           out;
+  unsigned int  i, len;
+  // I want to work out the Stabiliser of pt in the group   <stab_gens[depth]>
+  // I want to store the generators of the resulting Stab in stab_gens[depth + 1]
+  // I want to use the schreier-sims stuff
 
-  lmp = lmp_stab_gens[depth]; // get the lmp of the current over-group
+  lmp = lmp_stab_gens[depth]; // the lmp <stab_gens[depth]>
   init_stab_chain();
+  // put stab_gens[depth] into strong_gens[0]
   for (i = 0; i < size_stab_gens[depth]; i++) {
-    // copy the gens of the over-group to where we want them
     add_strong_gens(0, stab_gens[depth][i]);
   }
   add_base_point(pt);
   schreier_sims_stab_chain(0);
+  // the Stabiliser we want is <strong_gens[1]>
   len = size_strong_gens[1];
+
+  // store these new generators in the correct place in stab_gens that we want
   stab_gens[depth + 1] = realloc(stab_gens[depth + 1], len * sizeof(perm));
   for (i = 0; i < len; i++) {
     stab_gens[depth + 1][i] = strong_gens[1][i];
   }
   size_stab_gens[depth + 1] = len;
-  lmp_stab_gens[depth + 1] = LargestMovedPointPermColl( stab_gens[depth + 1], len );
+  lmp_stab_gens[depth + 1] = LargestMovedPointPermColl( strong_gens[1], len );
+  
   free_stab_chain();
 }
 
@@ -2278,7 +2284,7 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
                       unsigned int const rep_depth,
                       unsigned int const rank){ // current number of distinct values in map
 
-  unsigned int   i, j, k, min, next;
+  unsigned int   i, j, k, min, next, w;
   bool           *copy;
 
   calls1++;
@@ -2337,7 +2343,6 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
     for (i = 0; i < nr2; i++) {
       if (copy[nr2 * next + i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) {
         calls2++;
-        printf("point_stabilizer(%d, %d); OrbitReps_md(%d, %d);\n", depth, i, depth + 1, rep_depth + 1);
         point_stabilizer(depth, i); // Calculate the stabiliser of the point i
                                     // in the stabiliser at the current depth
         OrbitReps_md(depth + 1, rep_depth + 1);
@@ -2352,6 +2357,16 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
   for (i = 0; i < nr2; i++) {
     if (copy[nr2 * next + i] && vals_md[i]) {
       map[next] = i;
+
+      //start of: make sure the next level knows that we have the same stabiliser
+      size_stab_gens[depth + 1] = size_stab_gens[depth];
+      stab_gens[depth + 1] = realloc(stab_gens[depth + 1], size_stab_gens[depth] * sizeof(perm));
+      for (w = 0; w < size_stab_gens[depth]; w++) {
+        stab_gens[depth + 1][w] = stab_gens[depth][w];
+      }
+      lmp_stab_gens[depth + 1] = lmp_stab_gens[depth];
+      //end of that
+
       SEARCH_HOMOS_MD(depth + 1, next, copy, rep_depth, rank);
       map[next] = -1;
     }
@@ -2995,5 +3010,4 @@ StructInitInfo * Init__digraphs ( void )
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 
