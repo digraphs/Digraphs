@@ -1995,6 +1995,7 @@ static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
 
   nr2 = LargestMovedPointPermColl(gens);
   init_stab_chain(gens);
+  init_endos_base_points();
   schreier_sims_stab_chain(0);
   size = size_stab_chain();
   free_stab_chain();
