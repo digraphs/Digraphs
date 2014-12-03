@@ -1435,11 +1435,11 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
 }
 
 #ifdef SYS_IS_64_BIT
-#define SM 64 
+#define SM 0  // used to be 64; temporarily 0 until we update the perm type
 typedef UInt8 num;
 #define SMALLINTLIMIT 1152921504606846976
 #else
-#define SM 32
+#define SM 0  // used to be 32; temporarily 0 until we update the perm type
 typedef UInt4 num;
 #define SMALLINTLIMIT 268435456
 #endif
