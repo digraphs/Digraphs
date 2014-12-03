@@ -1499,10 +1499,13 @@ static num  dom2_sm;
 static Obj  user_param;              // a user_param for the hook
 static Obj  GAP_FUNC;                // variable to hold a GAP level hook function
 
-static int  calls1;                  // number of function call statistics 
-static int  calls2;                  // calls1 is the number of calls to the search function
+static num  calls1;                  // number of function call statistics 
+static num  calls2;                  // calls1 is the number of calls to the search function
                                      // calls2 is the number of stabilizers
                                      // calculated
+                                     
+static num last_report = 0;          // the last value of calls1 when we reported
+static num report_interval = 999999; // the interval when we report
 
 // perms
 
@@ -2227,7 +2230,6 @@ void homo_hook_gap () {
 
 // the main recursive search algorithm
 
-static unsigned long int last_report = 0;
 
 void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled positions in map
                       int   pos,          // the last position filled
@@ -2243,7 +2245,7 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
   bool  *copy;
 
   calls1++;
-  if (calls1 > last_report + 999999) {
+  if (calls1 > last_report + report_interval) {
     Pr("calls to search = %d\n", (Int) calls1, 0L);
     Pr("stabs computed = %d\n", (Int) calls2, 0L);
     last_report = calls1;
