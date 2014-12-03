@@ -1572,6 +1572,20 @@ static perm as_perm (Obj x) {
   return out;
 }
 
+static Obj as_PERM4 (perm x) {
+  Obj           p;
+  unsigned int  i;
+  UInt4         *ptr;
+  
+  p   = NEW_PERM4(nr2);
+  ptr = ADDR_PERM4(p);
+ 
+  for (i = 0; i < nr2; i++) {
+    ptr[i] = (UInt4) x[i];
+  }
+  return p;
+}
+
 static perm prod_perms (perm x, perm y) {
   unsigned int i;
   perm z = new_perm();
@@ -1955,6 +1969,26 @@ static unsigned int LargestMovedPointPermColl (Obj const gens) {
   }
 
   return max;
+}
+
+static Obj point_stabilizer( Obj gens, unsigned int pt ) {
+
+  unsigned int  len, i;
+  Obj           out;
+
+
+  // Need to pick the correct base point(s). Current this picks a weird base
+  // point
+  init_stab_chain(gens);
+  schreier_sims_stab_chain(0);
+  len = size_strong_gens[1];
+  out = NEW_PLIST(T_PLIST, len);
+  for (i = 0; i < len; i++) {
+    SET_ELM_PLIST(out, i + 1, as_PERM4(strong_gens[1][i]) );
+  }
+  SET_LEN_PLIST(out, (UInt) len);
+  CHANGED_BAG(out);
+  return out;
 }
 
 static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
