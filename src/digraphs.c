@@ -2015,9 +2015,10 @@ static void point_stabilizer( unsigned int const depth, unsigned int const pt ) 
   unsigned int  len, i;
   Obj           out;
 
-  lmp = lmp_stab_gens[depth];   // get the lmp of the current over-group
+  lmp = lmp_stab_gens[depth]; // get the lmp of the current over-group
   init_stab_chain();
   for (i = 0; i < size_stab_gens[depth]; i++) {
+    // copy the gens of the over-group to where we want them
     add_strong_gens(0, stab_gens[depth][i]);
   }
   add_base_point(pt);
@@ -2027,6 +2028,7 @@ static void point_stabilizer( unsigned int const depth, unsigned int const pt ) 
   for (i = 0; i < len; i++) {
     stab_gens[depth + 1][i] = strong_gens[1][i];
   }
+  size_stab_gens[depth + 1] = len;
   lmp_stab_gens[depth + 1] = LargestMovedPointPermColl( stab_gens[depth + 1], len );
   free_stab_chain();
 }
