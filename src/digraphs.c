@@ -2065,11 +2065,9 @@ static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
 // true)
 
 void OrbitReps_md (unsigned int depth, unsigned int rep_depth) {
-  Int    nrgens, i, j, max, fst, m, img, n;
+  unsigned int  nrgens, i, j, fst, m, img, n, max;
   perm*  gens;
   perm   gen;
-  UInt2  *ptr2;
-  UInt4  *ptr4;
  
   gens = stab_gens[depth];
   for (i = rep_depth * nr2; i < (rep_depth + 1) * nr2; i++) {
@@ -2572,7 +2570,7 @@ void GraphHomomorphisms_md (Obj  graph1,
   lmp_stab_gens[0] = LargestMovedPointPermColl( stab_gens[0], len );
   
   // get orbit reps
-  OrbitReps_md(0, 0); //TODO: make this work with our new gens
+  OrbitReps_md(0, 0);
   
   // misc parameters
   count = 0;
@@ -2597,9 +2595,9 @@ void GraphHomomorphisms_md (Obj  graph1,
 void GraphHomomorphisms_sm (Obj  graph1, 
                             Obj  graph2,
                             void hook_arg (),
-                            void *user_param_arg, 
+                            void *user_param_arg,
                             num  max_results_arg,
-                            int  hint_arg, 
+                            int  hint_arg,
                             bool isinjective,
                             Obj  Stabilizer) { // TODO remove this!
   Obj            out, nbs, gens;
