@@ -1478,7 +1478,7 @@ static inline int sizenum (num n, int m) {
 static unsigned int nr1;             // nr of vertices in graph1
 static unsigned int nr2;             // nr of vertices in graph2
 static num  count;                   // the number of endos found so far
-static int  hint;                    // an upper bound for the number of distinct values in map
+static unsigned int  hint;           // an upper bound for the number of distinct values in map
 static num  maxresults;              // upper bound for the number of returned homos
 static UInt orb[MD];                 // to hold the orbits in OrbitReps
 static unsigned int sizes[MD * MD];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
@@ -1490,17 +1490,18 @@ static bool neighbours2_md[MD * MD]; // the neighbours of the graph2
 static bool dom1_md[MD];             
 static bool dom2_md[MD];
 
-static num  vals_sm;                 // blist for values in map
-static num  neighbours1_sm[SM];      // the neighbours of the graph1
-static num  neighbours2_sm[SM];      // the neighbours of the graph2
-static num  dom1_sm;               
-static num  dom2_sm;
+static num   vals_sm;                 // blist for values in map
+static num   neighbours1_sm[SM];      // the neighbours of the graph1
+static num   neighbours2_sm[SM];      // the neighbours of the graph2
+static num   dom1_sm;               
+static num   dom2_sm;
 
-static Obj  user_param;              // a user_param for the hook
-static Obj  GAP_FUNC;                // variable to hold a GAP level hook function
+static Obj   user_param;              // a user_param for the hook
+static Obj   GAP_FUNC;                // variable to hold a GAP level hook function
+static void  (*hook)();               // hook function applied to every homom. found
 
-static num  calls1;                  // number of function call statistics 
-static num  calls2;                  // calls1 is the number of calls to the search function
+static num   calls1;                  // number of function call statistics 
+static num   calls2;                  // calls1 is the number of calls to the search function
                                      // calls2 is the number of stabilizers
                                      // calculated
                                      
@@ -1510,7 +1511,6 @@ static num report_interval = 999999; // the interval when we report
 // perms
 
 static unsigned int perm_buf[MD];
-
 typedef unsigned int* perm;
 
 static perm new_perm () {
@@ -2230,19 +2230,17 @@ void homo_hook_gap () {
 
 // the main recursive search algorithm
 
-
 void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled positions in map
-                      int   pos,          // the last position filled
-                      bool  *condition,   // blist of possible values for map[i]
-                      Obj   gens,         // generators for
-                                          // Stabilizer(AsSet(map)) subgroup
-                                          // of automorphism group of graph2
+                      unsigned int const pos,   // the last position filled
+                      bool const *condition,    // blist of possible values for map[i]
+                      Obj const gens,           // generators for
+                                                // Stabilizer(AsSet(map)) subgroup
+                                                // of automorphism group of graph2
                       unsigned int const rep_depth,
-                      int   rank,         // current number of distinct values in map
-                      void  hook () ) {
+                      unsigned int const rank){ // current number of distinct values in map
 
-  unsigned int   i, j, k, l, min, next;
-  bool  *copy;
+  unsigned int   i, j, k, min, next;
+  bool           *copy;
 
   calls1++;
   if (calls1 > last_report + report_interval) {
@@ -2268,7 +2266,7 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
   next = 0;      // the next position to fill
   min = nr2 + 1; // the minimum number of candidates for map[next]
 
-  if (pos != -1) {
+  if (pos != MD + 1) {
     for (j = 0; j < nr1; j++){
       if (map[j] == -1) {
         if (neighbours1_md[nr1 * pos + j]) { // vertex j is adjacent to vertex pos in graph1
@@ -2306,7 +2304,7 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
 
         map[next] = i;
         vals_md[i] = true;
-        SEARCH_HOMOS_MD(depth + 1, next, copy, newGens, rep_depth + 1, rank + 1, hook);
+        SEARCH_HOMOS_MD(depth + 1, next, copy, newGens, rep_depth + 1, rank + 1);
         map[next] = -1;
         vals_md[i] = false;
       }
@@ -2315,7 +2313,7 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
   for (i = 0; i < nr2; i++) {
     if (copy[nr2 * next + i] && vals_md[i]) {
       map[next] = i;
-      SEARCH_HOMOS_MD(depth + 1, next, copy, gens, rep_depth, rank, hook);
+      SEARCH_HOMOS_MD(depth + 1, next, copy, gens, rep_depth, rank);
       map[next] = -1;
     }
   }
@@ -2331,7 +2329,7 @@ void SEARCH_HOMOS_SM (unsigned int depth, // the number of filled positions in m
                                           // of automorphism group of graph2
                       num   reps,         // orbit reps of points not in <map> under <gens>
                       int   rank,         // current number of distinct values in map
-                      void  hook (),      // hook function applied to every new homo
+                      void  hook_arg (),  // hook function applied to every new homo
                       Obj   Stabilizer) { // TODO remove this!
 
   unsigned int  i, j, k, l, min, next, size;
@@ -2487,7 +2485,7 @@ void SEARCH_HOMOS_SM (unsigned int depth, // the number of filled positions in m
 
 void GraphHomomorphisms_md (Obj  graph1, 
                             Obj  graph2,
-                            void hook (),
+                            void hook_arg (),
                             Obj  user_param_arg, 
                             num  max_results_arg,
                             int  hint_arg, 
@@ -2550,13 +2548,14 @@ void GraphHomomorphisms_md (Obj  graph1,
   maxresults = max_results_arg;
   user_param = user_param_arg; 
   hint = hint_arg;
+  hook = hook_arg;
   
   // go! 
   if (setjmp(outofhere) == 0) {
     if (isinjective) {
      // SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook);
     } else {
-      SEARCH_HOMOS_MD(0, -1, condition, gens, 0, 0, hook);
+      SEARCH_HOMOS_MD(0, MD + 1, condition, gens, 0, 0);
     }
   }
   free(condition);
@@ -2566,7 +2565,7 @@ void GraphHomomorphisms_md (Obj  graph1,
 
 void GraphHomomorphisms_sm (Obj  graph1, 
                             Obj  graph2,
-                            void hook (),
+                            void hook_arg (),
                             void *user_param_arg, 
                             num  max_results_arg,
                             int  hint_arg, 
@@ -2639,7 +2638,7 @@ void GraphHomomorphisms_sm (Obj  graph1,
     if (isinjective) {
       //SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook, Stabilizer);
     } else {
-      SEARCH_HOMOS_SM(0, -1, condition, gens, reps, 0, hook, Stabilizer);
+      SEARCH_HOMOS_SM(0, -1, condition, gens, reps, 0, hook_arg, Stabilizer);
     }
   }
 }
@@ -2648,7 +2647,7 @@ void GraphHomomorphisms_sm (Obj  graph1,
 
 void GraphHomomorphisms (Obj  graph1, 
                          Obj  graph2,
-                         void hook (),
+                         void hook_arg (),
                          void *user_param_arg, 
                          num  max_results_arg,
                          int  hint_arg, 
@@ -2659,10 +2658,10 @@ void GraphHomomorphisms (Obj  graph1,
   nr2 = DigraphNrVertices(graph2);
 
   if (nr1 < SM && nr2 < SM) {
-    GraphHomomorphisms_sm(graph1, graph2, hook, user_param_arg, max_results_arg,
+    GraphHomomorphisms_sm(graph1, graph2, hook_arg, user_param_arg, max_results_arg,
         hint_arg, isinjective, Stabilizer);
   } else if (nr1 < MD && nr2 < MD) {
-    GraphHomomorphisms_md(graph1, graph2, hook, user_param_arg, max_results_arg,
+    GraphHomomorphisms_md(graph1, graph2, hook_arg, user_param_arg, max_results_arg,
         hint_arg, isinjective);
   }
 }
