@@ -1546,7 +1546,7 @@ static bool eq_perms (perm x, perm y) {
 }
 
 // convert GAP perms to perms
-static perm as_perm (Obj x) {
+static perm as_perm (Obj const x) {
   UInt  deg, i;
   UInt2 *ptr2;
   UInt4 *ptr4;
@@ -1572,7 +1572,7 @@ static perm as_perm (Obj x) {
   return out;
 }
 
-static Obj as_PERM4 (perm x) {
+static Obj as_PERM4 (perm const x) {
   Obj           p;
   unsigned int  i;
   UInt4         *ptr;
@@ -1586,7 +1586,7 @@ static Obj as_PERM4 (perm x) {
   return p;
 }
 
-static perm prod_perms (perm x, perm y) {
+static perm prod_perms (perm const x, perm const y) {
   unsigned int i;
   perm z = new_perm();
 
@@ -1596,7 +1596,7 @@ static perm prod_perms (perm x, perm y) {
   return z;
 }
 
-static perm quo_perms (perm x, perm y) {
+static perm quo_perms (perm const x, perm const y) {
   unsigned int i;
 
   // invert y into the buf
@@ -1608,7 +1608,7 @@ static perm quo_perms (perm x, perm y) {
 
 // changes the lhs 
 
-static void quo_perms_in_place (perm x, perm y) {
+static void quo_perms_in_place (perm x, perm const y) {
   unsigned int i;
 
   // invert y into the buf
@@ -1619,6 +1619,24 @@ static void quo_perms_in_place (perm x, perm y) {
   for (i = 0; i < nr2; i++) {
     x[i] = perm_buf[x[i]];
   }
+}
+
+static void prod_perms_in_place (perm x, perm const y) {
+  unsigned int i;
+
+  for (i = 0; i < nr2; i++) {
+    x[i] = y[x[i]];
+  }
+}
+
+static perm invert_perm (perm const x) {
+  unsigned int i;
+  
+  perm y = new_perm();
+  for (i = 0; i < nr2; i++) {
+    y[x[i]] = i;
+  }
+  return y;
 }
 
 /*static unsigned int* print_perm (perm x) {
@@ -1636,6 +1654,7 @@ static void quo_perms_in_place (perm x, perm y) {
 
 static perm *        strong_gens[MD];      // strong generators
 static perm          transversal[MD * MD];
+static perm          transversal_inv[MD * MD];
 static bool          first_ever_call = true;
 static unsigned int  size_strong_gens[MD];
 static unsigned int  orbits[MD * MD];
@@ -1659,9 +1678,14 @@ static inline perm get_transversal (unsigned int const i, unsigned int const j) 
   return transversal[i * MD + j];
 }
 
+static inline perm get_transversal_inv (unsigned int const i, unsigned int const j) {
+  return transversal_inv[i * MD + j];
+}
+
 static inline void set_transversal (unsigned int const i, unsigned int const j, 
     perm const value) {
   transversal[i * MD + j] = value;
+  transversal_inv[i * MD + j] = invert_perm(value);
 }
 
 static bool perm_fixes_all_base_points ( perm const x ) {
@@ -1834,7 +1858,7 @@ static void sift_stab_chain (perm* g, unsigned int* depth) {
     if (! borbits[*depth * MD + beta]) {
       return;
     }
-    quo_perms_in_place(*g, get_transversal(*depth, beta));
+    prod_perms_in_place(*g, get_transversal_inv(*depth, beta));
   }
 }
 
@@ -1885,7 +1909,7 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
         betax = x[beta];
         if ( ! eq_perms(prod, get_transversal(i, betax)) ) {
           y = true;
-          h = quo_perms(prod, get_transversal(i, betax));
+          h = prod_perms(prod, get_transversal_inv(i, betax));
           jj = 0;
           sift_stab_chain(&h, &jj);
           if ( jj < size_base ) {
