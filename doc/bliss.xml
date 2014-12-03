@@ -157,10 +157,10 @@ gap> digraph2 := Digraph( [ [ ], [ 4 ], [ ], [ 7 ], [ ],
 <multidigraph with 10 vertices, 10 edges>
 gap> IsIsomorphicDigraph(digraph1, digraph2);
 false
-gap> digraph1 := RandomMultiDigraph(10, 1);
-<digraph with 10 vertices, 1 edge>
-gap> digraph2 := RandomMultiDigraph(10, 1);
-<digraph with 10 vertices, 1 edge>
+gap> digraph1 := Digraph([ [3], [], [] ]);
+<digraph with 3 vertices, 1 edge>
+gap> digraph2 := Digraph([ [], [], [2] ]);
+<digraph with 3 vertices, 1 edge>
 gap> IsIsomorphicDigraph(digraph1, digraph2);
 true]]></Example>
   </Description>
