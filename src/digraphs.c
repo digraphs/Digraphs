@@ -1513,7 +1513,8 @@ static unsigned int perm_buf[MD];
 typedef unsigned int* perm;
 
 static perm * stab_gens[MD];              // GRAPH_HOMOS stabiliser gens
-static unsigned int size_stab_gens[MD];   // Same
+static unsigned int size_stab_gens[MD];   // GRAPH_HOMOS
+static unsigned int lmp_stab_gens[MD];    // GRAPH_HOMOS
 
 static perm new_perm () {
   return malloc(nr2 * sizeof(unsigned int));
@@ -1704,7 +1705,8 @@ static bool perm_fixes_all_base_points ( perm const x ) {
   return true;
 }
 
-static unsigned int LargestMovedPointPermColl (Obj gens); 
+static unsigned int LargestMovedPointPermCollOld (Obj gens);
+static unsigned int LargestMovedPointPermColl ( perm* const gens, unsigned int const nrgens); 
 
 // 
 
@@ -1763,7 +1765,6 @@ static void init_stab_chain () {
   if (first_ever_call) {
     first_ever_init();
   }
-  
 
   // TODO initialise: borbits, size_strong_gens, size_orbits, more?
   for (i = 0; i < nr2 * nr2; i++) {
@@ -1951,7 +1952,7 @@ static Obj size_stab_chain () {
   return tot;
 }
 
-static unsigned int LargestMovedPointPermColl (Obj const gens) {
+static unsigned int LargestMovedPointPermCollOld (Obj const gens) {
   Obj           gen;
   unsigned int  i, j;
   UInt2*        ptr2;
@@ -1992,7 +1993,7 @@ static unsigned int LargestMovedPointPermColl (Obj const gens) {
   return max;
 }
 
-static unsigned int LargestMovedPointPermCollNew ( perm* const gens, unsigned int const nrgens ) {
+static unsigned int LargestMovedPointPermColl ( perm* const gens, unsigned int const nrgens ) {
   perm          gen; 
   unsigned int  max = 0, i, j;
 
@@ -2009,37 +2010,38 @@ static unsigned int LargestMovedPointPermCollNew ( perm* const gens, unsigned in
   return max;
 }
 
-static Obj point_stabilizer( unsigned int const depth, unsigned int const pt ) {
+static void point_stabilizer( unsigned int const depth, unsigned int const pt ) {
 
   unsigned int  len, i;
   Obj           out;
 
-  lmp = LargestMovedPointPermCollNew( stab_gens[depth], size_stab_gens[depth] );
+  lmp = lmp_stab_gens[depth];   // get the lmp of the current over-group
   init_stab_chain();
+  for (i = 0; i < size_stab_gens[depth]; i++) {
+    add_strong_gens(0, stab_gens[depth][i]);
+  }
   add_base_point(pt);
   schreier_sims_stab_chain(0);
   len = size_strong_gens[1];
-  out = NEW_PLIST(T_PLIST, len);
+  stab_gens[depth + 1] = realloc(stab_gens[depth + 1], len * sizeof(perm));
   for (i = 0; i < len; i++) {
-    SET_ELM_PLIST(out, i + 1, as_PERM4(strong_gens[1][i]) );
+    stab_gens[depth + 1][i] = strong_gens[1][i];
   }
-  SET_LEN_PLIST(out, (UInt) len);
-  CHANGED_BAG(out);
+  lmp_stab_gens[depth + 1] = LargestMovedPointPermColl( stab_gens[depth + 1], len );
   free_stab_chain();
-  return out;
 }
 
 static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
   Obj           size;
   unsigned int  nrgens, i;
 
-  nr2 = LargestMovedPointPermColl(gens);
-  lmp = LargestMovedPointPermColl(gens);
+  nr2 = LargestMovedPointPermCollOld(gens);
+  lmp = nr2;
+  init_stab_chain();
   nrgens = (unsigned int) LEN_PLIST(gens);
   for (i = 1; i <= nrgens; i++) {
     add_strong_gens(0, as_perm(ELM_PLIST(gens, i)));
   }
-  init_stab_chain();
   init_endos_base_points();
   schreier_sims_stab_chain(0);
   size = size_stab_chain();
@@ -2057,18 +2059,20 @@ static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
 // <gens> not including any values already in <map> (i.e. those with vals[i] =
 // true)
 
-void OrbitReps_md (Obj gens, unsigned int rep_depth) {
+void OrbitReps_md (unsigned int depth, unsigned int rep_depth) {
   Int    nrgens, i, j, max, fst, m, img, n;
-  Obj    gen;
+  perm*  gens;
+  perm   gen;
   UInt2  *ptr2;
   UInt4  *ptr4;
-  
+ 
+  gens = stab_gens[depth];
   for (i = rep_depth * nr2; i < (rep_depth + 1) * nr2; i++) {
     reps_md[i] = false;
   }
 
-  nrgens = LEN_PLIST(gens);
-  max = LargestMovedPointPermColl(gens);
+  nrgens  = size_stab_gens[depth];
+  max     = LargestMovedPointPermColl(gens, nrgens);
 
   // special case in case there are no gens, or just the identity.
 
@@ -2098,13 +2102,9 @@ void OrbitReps_md (Obj gens, unsigned int rep_depth) {
     dom1_md[fst] = false;
 
     for (i = 0; i < n; i++) {
-      for (j = 1; j <= nrgens; j++) {
-        gen = ELM_PLIST(gens, j);
-        if (TNUM_OBJ(gen) == T_PERM2){
-          img = IMAGE(orb[i], ADDR_PERM2(gen), DEG_PERM2(gen));
-        } else {
-          img = IMAGE(orb[i], ADDR_PERM4(gen), DEG_PERM4(gen));
-        }
+      for (j = 0; j < nrgens; j++) {
+        gen = gens[j];
+        img = gen[orb[i]];
         if (! dom2_md[img]) {
           orb[n++] = img;
           dom2_md[img] = true;
@@ -2311,12 +2311,11 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
   
   if (rank < hint) {
     for (i = 0; i < nr2; i++) {
-      if (copy[nr2 * next + i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) { 
+      if (copy[nr2 * next + i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) {
         calls2++;
-        //Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
-        point_stabilizer(depth + 1, i);
+        point_stabilizer(depth, i); // Calculate the stabiliser of the point i
+                                    // in the stabiliser at the current depth
         OrbitReps_md(depth + 1, rep_depth + 1);
-
         map[next] = i;
         vals_md[i] = true;
         SEARCH_HOMOS_MD(depth + 1, next, copy, rep_depth + 1, rank + 1, hook);
@@ -2324,7 +2323,7 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
         vals_md[i] = false;
       }
     }
-  } 
+  }
   for (i = 0; i < nr2; i++) {
     if (copy[nr2 * next + i] && vals_md[i]) {
       map[next] = i;
@@ -2561,9 +2560,11 @@ void GraphHomomorphisms_md (Obj  graph1,
     stab_gens[0][i - 1] = as_perm(ELM_PLIST(gens, i));
   }
   size_stab_gens[0] = len;
+  lmp_stab_gens[0] = LargestMovedPointPermColl( stab_gens[0], len );
+  printf("the automorphism group has %d gens, with lmp = %d...\n", len, lmp_stab_gens[0]);
   
-  // get orbit reps 
-  OrbitReps_md(gens, 0); //TODO: make this work with our new gens
+  // get orbit reps
+  OrbitReps_md(0, 0); //TODO: make this work with our new gens
   
   // misc parameters
   count = 0;
