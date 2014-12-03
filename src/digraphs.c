@@ -2695,20 +2695,24 @@ void GraphHomomorphisms (Obj  graph1,
   }
 }
 
+// GAP-level function
+
 Obj FuncGRAPH_HOMOS (Obj self, Obj args) { 
   int   i, j, k, hint_arg;
   num   max_results_arg;
   bool  *condition;
   Obj   user_param_arg;  
 
-  Obj graph1         = ELM_PLIST(args, 1);
-  Obj graph2         = ELM_PLIST(args, 2); 
-  Obj hook_gap       = ELM_PLIST(args, 3); 
-  Obj user_param_gap = ELM_PLIST(args, 4); 
-  Obj limit_gap      = ELM_PLIST(args, 5);
-  Obj hint_gap       = ELM_PLIST(args, 6);
-  Obj isinjective    = ELM_PLIST(args, 7);
-  Obj Stabilizer     = ELM_PLIST(args, 8);
+  Obj graph1         = ELM_PLIST(args, 1); // find homomorphisms from graph1 
+  Obj graph2         = ELM_PLIST(args, 2); // to graph2
+  Obj hook_gap       = ELM_PLIST(args, 3); // apply this function to every homomorphism 
+                                           // Fail for none
+  Obj user_param_gap = ELM_PLIST(args, 4); // user_param which can be used in the hook
+                                           // Fail for none
+  Obj limit_gap      = ELM_PLIST(args, 5); // the maximum number of results
+  Obj hint_gap       = ELM_PLIST(args, 6); // the maximum rank of a result
+  Obj isinjective    = ELM_PLIST(args, 7); // only consider injective homomorphism
+  Obj Stabilizer     = ELM_PLIST(args, 8); // TODO remove
 
   nr1 = DigraphNrVertices(graph1);
   nr2 = DigraphNrVertices(graph2);
