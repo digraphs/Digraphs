@@ -2045,6 +2045,7 @@ void OrbitReps_md (Obj gens, unsigned int rep_depth) {
     reps_md[i] = false;
   }
 
+  nrgens = LEN_PLIST(gens);
   max = LargestMovedPointPermColl(gens);
 
   // special case in case there are no gens, or just the identity.
