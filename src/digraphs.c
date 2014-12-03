@@ -1478,7 +1478,7 @@ static inline int sizenum (num n, int m) {
 static unsigned int nr1;             // nr of vertices in graph1
 static unsigned int nr2;             // nr of vertices in graph2
 static num  count;                   // the number of endos found so far
-static int  hint;                    // an upper bound for the number of distinct values in map
+static unsigned int  hint;           // an upper bound for the number of distinct values in map
 static num  maxresults;              // upper bound for the number of returned homos
 static UInt orb[MD];                 // to hold the orbits in OrbitReps
 static unsigned int sizes[MD * MD];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
@@ -1490,25 +1490,34 @@ static bool neighbours2_md[MD * MD]; // the neighbours of the graph2
 static bool dom1_md[MD];             
 static bool dom2_md[MD];
 
-static num  vals_sm;                 // blist for values in map
-static num  neighbours1_sm[SM];      // the neighbours of the graph1
-static num  neighbours2_sm[SM];      // the neighbours of the graph2
-static num  dom1_sm;               
-static num  dom2_sm;
+static num   vals_sm;                 // blist for values in map
+static num   neighbours1_sm[SM];      // the neighbours of the graph1
+static num   neighbours2_sm[SM];      // the neighbours of the graph2
+static num   dom1_sm;               
+static num   dom2_sm;
 
-static Obj  user_param;              // a user_param for the hook
-static Obj  GAP_FUNC;                // variable to hold a GAP level hook function
+static Obj   user_param;              // a user_param for the hook
+static Obj   GAP_FUNC;                // variable to hold a GAP level hook function
+static void  (*hook)();               // hook function applied to every homom. found
 
-static int  calls1;                  // number of function call statistics 
-static int  calls2;                  // calls1 is the number of calls to the search function
+static num   calls1;                  // number of function call statistics 
+static num   calls2;                  // calls1 is the number of calls to the search function
                                      // calls2 is the number of stabilizers
                                      // calculated
+                                     
+static num last_report = 0;          // the last value of calls1 when we reported
+static num report_interval = 999999; // the interval when we report
+
+
 
 // perms
 
 static unsigned int perm_buf[MD];
-
 typedef unsigned int* perm;
+
+static perm * stab_gens[MD];              // GRAPH_HOMOS stabiliser gens
+static unsigned int size_stab_gens[MD];   // GRAPH_HOMOS
+static unsigned int lmp_stab_gens[MD];    // GRAPH_HOMOS
 
 static perm new_perm () {
   return malloc(nr2 * sizeof(unsigned int));
@@ -1699,7 +1708,8 @@ static bool perm_fixes_all_base_points ( perm const x ) {
   return true;
 }
 
-static unsigned int LargestMovedPointPermColl (Obj gens); 
+static unsigned int LargestMovedPointPermCollOld (Obj gens);
+static unsigned int LargestMovedPointPermColl ( perm* const gens, unsigned int const nrgens); 
 
 // 
 
@@ -1752,20 +1762,11 @@ static void first_ever_init () {
   }
 }
 
-static void init_stab_chain (Obj const gens) {
-  unsigned int  nrgens, i;
-  Obj*          strong;
-  //Pr("init_stab_chain!\n", 0L, 0L);
+static void init_stab_chain () {
+  unsigned int  i;
 
   if (first_ever_call) {
     first_ever_init();
-  }
-  
-  lmp = LargestMovedPointPermColl(gens);
-  nrgens = (unsigned int) LEN_PLIST(gens);
-
-  for (i = 1; i <= nrgens; i++) {
-    add_strong_gens(0, as_perm(ELM_PLIST(gens, i)));
   }
 
   // TODO initialise: borbits, size_strong_gens, size_orbits, more?
@@ -1784,7 +1785,7 @@ static void init_endos_base_points() {
 }
 
 static void free_stab_chain () { // TODO: This needs to be done correctly
-  int i;
+  unsigned int i;
 
   for (i = 0; i < size_base; i++) {
     size_strong_gens[i] = 0;
@@ -1869,7 +1870,7 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
   int           i;
   unsigned int  j, jj, k, l, m, beta, betax;
 
-  for (i = 0; i < size_base; i++) { 
+  for (i = 0; i < (int) size_base; i++) { 
     for (j = 0; j < size_strong_gens[i]; j++) { 
       x = get_strong_gens(i, j);
       if ( perm_fixes_all_base_points( x ) ) {
@@ -1883,7 +1884,7 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
     }
   }
 
-  for (i = depth + 1; i < size_base + 1; i++) {
+  for (i = depth + 1; i < (int) size_base + 1; i++) {
     beta = base[i - 1];
     // set up the strong generators
     for (j = 0; j < size_strong_gens[i - 1]; j++) {
@@ -1954,7 +1955,7 @@ static Obj size_stab_chain () {
   return tot;
 }
 
-static unsigned int LargestMovedPointPermColl (Obj const gens) {
+static unsigned int LargestMovedPointPermCollOld (Obj const gens) {
   Obj           gen;
   unsigned int  i, j;
   UInt2*        ptr2;
@@ -1995,30 +1996,57 @@ static unsigned int LargestMovedPointPermColl (Obj const gens) {
   return max;
 }
 
-static Obj point_stabilizer( Obj const gens, unsigned int const pt ) {
+static unsigned int LargestMovedPointPermColl ( perm* const gens, unsigned int const nrgens ) {
+  perm          gen; 
+  unsigned int  max = 0, i, j;
+
+  for (i = 0; i < nrgens; i++) {
+    gen = gens[i];
+    j = nr2;
+    while ( j > max && gen[j - 1] == j - 1 ) {
+      j--;
+    }
+    if (j > max) {
+      max = j;
+    }
+  }
+  return max;
+}
+
+static void point_stabilizer( unsigned int const depth, unsigned int const pt ) {
 
   unsigned int  len, i;
   Obj           out;
 
-  init_stab_chain(gens);
+  lmp = lmp_stab_gens[depth]; // get the lmp of the current over-group
+  init_stab_chain();
+  for (i = 0; i < size_stab_gens[depth]; i++) {
+    // copy the gens of the over-group to where we want them
+    add_strong_gens(0, stab_gens[depth][i]);
+  }
   add_base_point(pt);
   schreier_sims_stab_chain(0);
   len = size_strong_gens[1];
-  out = NEW_PLIST(T_PLIST, len);
+  stab_gens[depth + 1] = realloc(stab_gens[depth + 1], len * sizeof(perm));
   for (i = 0; i < len; i++) {
-    SET_ELM_PLIST(out, i + 1, as_PERM4(strong_gens[1][i]) );
+    stab_gens[depth + 1][i] = strong_gens[1][i];
   }
-  SET_LEN_PLIST(out, (UInt) len);
-  CHANGED_BAG(out);
+  size_stab_gens[depth + 1] = len;
+  lmp_stab_gens[depth + 1] = LargestMovedPointPermColl( stab_gens[depth + 1], len );
   free_stab_chain();
-  return out;
 }
 
 static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
-  Obj size;
+  Obj           size;
+  unsigned int  nrgens, i;
 
-  nr2 = LargestMovedPointPermColl(gens);
-  init_stab_chain(gens);
+  nr2 = LargestMovedPointPermCollOld(gens);
+  lmp = nr2;
+  init_stab_chain();
+  nrgens = (unsigned int) LEN_PLIST(gens);
+  for (i = 1; i <= nrgens; i++) {
+    add_strong_gens(0, as_perm(ELM_PLIST(gens, i)));
+  }
   init_endos_base_points();
   schreier_sims_stab_chain(0);
   size = size_stab_chain();
@@ -2026,32 +2054,33 @@ static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
   return size;
 }
 
-static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
+/*static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
+  return Fail;
   nr2 = LargestMovedPointPermColl(gens);
   return point_stabilizer( gens, ((unsigned int) INT_INTOBJ(pt)) - 1 );
-}
+}*/
 
 // returns a bool array representing the orbit reps of the group generated by
 // <gens> not including any values already in <map> (i.e. those with vals[i] =
 // true)
 
-void OrbitReps_md (Obj gens, unsigned int rep_depth) {
-  Int    nrgens, i, j, max, fst, m, img, n;
-  Obj    gen;
-  UInt2  *ptr2;
-  UInt4  *ptr4;
-  
+void OrbitReps_md (unsigned int depth, unsigned int rep_depth) {
+  unsigned int  nrgens, i, j, fst, m, img, n, max;
+  perm*  gens;
+  perm   gen;
+ 
+  gens = stab_gens[depth];
   for (i = rep_depth * nr2; i < (rep_depth + 1) * nr2; i++) {
     reps_md[i] = false;
   }
 
-  nrgens = LEN_PLIST(gens);
-  max = LargestMovedPointPermColl(gens);
+  nrgens  = size_stab_gens[depth];
+  max     = LargestMovedPointPermColl(gens, nrgens);
 
   // special case in case there are no gens, or just the identity.
 
-  memset((void *) dom1_md, false, max * sizeof(int)); 
-  memset((void *) dom2_md, false, max * sizeof(int)); 
+  memset((void *) dom1_md, false, max * sizeof(bool)); 
+  memset((void *) dom2_md, false, max * sizeof(bool)); 
   
   m = 0; //number of orbit reps
 
@@ -2066,7 +2095,7 @@ void OrbitReps_md (Obj gens, unsigned int rep_depth) {
   }
 
   fst = 0; 
-  while (dom1_md[fst] != 1 && fst < max) fst++;
+  while (! dom1_md[fst] && fst < max) fst++;
 
   while (fst < max) {
     reps_md[(rep_depth * nr2) + fst] = true;
@@ -2076,13 +2105,9 @@ void OrbitReps_md (Obj gens, unsigned int rep_depth) {
     dom1_md[fst] = false;
 
     for (i = 0; i < n; i++) {
-      for (j = 1; j <= nrgens; j++) {
-        gen = ELM_PLIST(gens, j);
-        if (TNUM_OBJ(gen) == T_PERM2){
-          img = IMAGE(orb[i], ADDR_PERM2(gen), DEG_PERM2(gen));
-        } else {
-          img = IMAGE(orb[i], ADDR_PERM4(gen), DEG_PERM4(gen));
-        }
+      for (j = 0; j < nrgens; j++) {
+        gen = gens[j];
+        img = gen[orb[i]];
         if (! dom2_md[img]) {
           orb[n++] = img;
           dom2_md[img] = true;
@@ -2228,20 +2253,24 @@ void homo_hook_gap () {
 // the main recursive search algorithm
 
 void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled positions in map
-                      int   pos,          // the last position filled
-                      bool  *condition,   // blist of possible values for map[i]
-                      Obj   gens,         // generators for
-                                          // Stabilizer(AsSet(map)) subgroup
-                                          // of automorphism group of graph2
+                      unsigned int const pos,   // the last position filled
+                      bool const *condition,    // blist of possible values for map[i]
+                      //Obj const gens,           // generators for
+                                                // Stabilizer(AsSet(map)) subgroup
+                                                // of automorphism group of graph2
                       unsigned int const rep_depth,
-                      int   rank,         // current number of distinct values in map
-                      void  hook () ) {
+                      unsigned int const rank){ // current number of distinct values in map
 
-  unsigned int   i, j, k, l, min, next;
-  bool  *copy;
+  unsigned int   i, j, k, min, next;
+  bool           *copy;
 
   calls1++;
-  
+  if (calls1 > last_report + report_interval) {
+    Pr("calls to search = %d\n", (Int) calls1, 0L);
+    Pr("stabs computed = %d\n", (Int) calls2, 0L);
+    last_report = calls1;
+  }
+
   if (depth == nr1) {
     hook();
     count++;
@@ -2259,7 +2288,7 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
   next = 0;      // the next position to fill
   min = nr2 + 1; // the minimum number of candidates for map[next]
 
-  if (pos != -1) {
+  if (pos != MD + 1) {
     for (j = 0; j < nr1; j++){
       if (map[j] == -1) {
         if (neighbours1_md[nr1 * pos + j]) { // vertex j is adjacent to vertex pos in graph1
@@ -2289,24 +2318,23 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
   
   if (rank < hint) {
     for (i = 0; i < nr2; i++) {
-      if (copy[nr2 * next + i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) { 
+      if (copy[nr2 * next + i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) {
         calls2++;
-        //Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
-        Obj newGens = point_stabilizer(gens, i);
-        OrbitReps_md(newGens, rep_depth + 1);
-
+        point_stabilizer(depth, i); // Calculate the stabiliser of the point i
+                                    // in the stabiliser at the current depth
+        OrbitReps_md(depth + 1, rep_depth + 1);
         map[next] = i;
         vals_md[i] = true;
-        SEARCH_HOMOS_MD(depth + 1, next, copy, newGens, rep_depth + 1, rank + 1, hook);
+        SEARCH_HOMOS_MD(depth + 1, next, copy, rep_depth + 1, rank + 1);
         map[next] = -1;
         vals_md[i] = false;
       }
     }
-  } 
+  }
   for (i = 0; i < nr2; i++) {
     if (copy[nr2 * next + i] && vals_md[i]) {
       map[next] = i;
-      SEARCH_HOMOS_MD(depth + 1, next, copy, gens, rep_depth, rank, hook);
+      SEARCH_HOMOS_MD(depth + 1, next, copy, rep_depth, rank);
       map[next] = -1;
     }
   }
@@ -2322,7 +2350,7 @@ void SEARCH_HOMOS_SM (unsigned int depth, // the number of filled positions in m
                                           // of automorphism group of graph2
                       num   reps,         // orbit reps of points not in <map> under <gens>
                       int   rank,         // current number of distinct values in map
-                      void  hook () ){      // hook function applied to every new homo
+                      void  hook_arg () ){      // hook function applied to every new homo
                       
 
   unsigned int  i, j, k, l, min, next ;
@@ -2483,14 +2511,14 @@ void SEARCH_HOMOS_SM (unsigned int depth, // the number of filled positions in m
 
 void GraphHomomorphisms_md (Obj  graph1, 
                             Obj  graph2,
-                            void hook (),
+                            void hook_arg (),
                             Obj  user_param_arg, 
                             num  max_results_arg,
                             int  hint_arg, 
                             bool isinjective) {
-  Obj   out, nbs, gens;
-  unsigned int   i, j, k;
-  bool  *condition;
+  Obj             out, nbs, gens;
+  unsigned int    i, j, k, len;
+  bool            *condition;
   
   nr1 = DigraphNrVertices(graph1);
   nr2 = DigraphNrVertices(graph2);
@@ -2510,7 +2538,7 @@ void GraphHomomorphisms_md (Obj  graph1,
   memset((void *) vals_md, false, nr2 * sizeof(bool));
   memset((void *) neighbours1_md, false, nr1 * nr1 * sizeof(bool));
   memset((void *) neighbours2_md, false, nr2 * nr2 * sizeof(bool));
-  
+ 
   for (i = 0; i < nr1; i++) {
     sizes[i] = nr2;
   }
@@ -2537,22 +2565,31 @@ void GraphHomomorphisms_md (Obj  graph1,
 
   // get generators of the automorphism group
   gens = ELM_PLIST(FuncDIGRAPH_AUTOMORPHISMS(0L, graph2), 2);
+  // convert generators to our perm type
+  len = (unsigned int) LEN_PLIST(gens);
+  stab_gens[0] = realloc(stab_gens[0], len * sizeof(perm));
+  for (i = 1; i <= len; i++) {
+    stab_gens[0][i - 1] = as_perm(ELM_PLIST(gens, i));
+  }
+  size_stab_gens[0] = len;
+  lmp_stab_gens[0] = LargestMovedPointPermColl( stab_gens[0], len );
   
-  // get orbit reps 
-  OrbitReps_md(gens, 0);
+  // get orbit reps
+  OrbitReps_md(0, 0);
   
   // misc parameters
   count = 0;
   maxresults = max_results_arg;
   user_param = user_param_arg; 
   hint = hint_arg;
+  hook = hook_arg;
   
   // go! 
   if (setjmp(outofhere) == 0) {
     if (isinjective) {
      // SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook);
     } else {
-      SEARCH_HOMOS_MD(0, -1, condition, gens, 0, 0, hook);
+      SEARCH_HOMOS_MD(0, MD + 1, condition, 0, 0);
     }
   }
   free(condition);
@@ -2562,8 +2599,8 @@ void GraphHomomorphisms_md (Obj  graph1,
 
 void GraphHomomorphisms_sm (Obj  graph1, 
                             Obj  graph2,
-                            void hook (),
-                            Obj  user_param_arg, 
+                            void hook_arg (),
+                            Obj  user_param_arg,
                             num  max_results_arg,
                             int  hint_arg, 
                             bool isinjective) {
@@ -2634,7 +2671,7 @@ void GraphHomomorphisms_sm (Obj  graph1,
     if (isinjective) {
       //SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook, Stabilizer);
     } else {
-      SEARCH_HOMOS_SM(0, -1, condition, gens, reps, 0, hook);
+      SEARCH_HOMOS_SM(0, -1, condition, gens, reps, 0, hook_arg);
     }
   }
 }
@@ -2643,7 +2680,7 @@ void GraphHomomorphisms_sm (Obj  graph1,
 
 void GraphHomomorphisms (Obj  graph1, 
                          Obj  graph2,
-                         void hook (),
+                         void hook_arg (),
                          void *user_param_arg, 
                          num  max_results_arg,
                          int  hint_arg, 
@@ -2653,13 +2690,15 @@ void GraphHomomorphisms (Obj  graph1,
   nr2 = DigraphNrVertices(graph2);
 
   if (nr1 < SM && nr2 < SM) {
-    GraphHomomorphisms_sm(graph1, graph2, hook, user_param_arg, max_results_arg,
+    GraphHomomorphisms_sm(graph1, graph2, hook_arg, user_param_arg, max_results_arg,
         hint_arg, isinjective);
   } else if (nr1 < MD && nr2 < MD) {
-    GraphHomomorphisms_md(graph1, graph2, hook, user_param_arg, max_results_arg,
+    GraphHomomorphisms_md(graph1, graph2, hook_arg, user_param_arg, max_results_arg,
         hint_arg, isinjective);
   }
 }
+
+// GAP-level function
 
 Obj FuncGRAPH_HOMOS (Obj self, Obj args) { 
   int   i, j, k, hint_arg;
@@ -2667,14 +2706,16 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   bool  *condition;
   Obj   user_param_arg;  
 
-  Obj graph1         = ELM_PLIST(args, 1);
-  Obj graph2         = ELM_PLIST(args, 2); 
-  Obj hook_gap       = ELM_PLIST(args, 3); 
-  Obj user_param_gap = ELM_PLIST(args, 4); 
-  Obj limit_gap      = ELM_PLIST(args, 5);
-  Obj hint_gap       = ELM_PLIST(args, 6);
-  Obj isinjective    = ELM_PLIST(args, 7);
-  Obj Stabilizer     = ELM_PLIST(args, 8);
+  Obj graph1         = ELM_PLIST(args, 1); // find homomorphisms from graph1 
+  Obj graph2         = ELM_PLIST(args, 2); // to graph2
+  Obj hook_gap       = ELM_PLIST(args, 3); // apply this function to every homomorphism 
+                                           // Fail for none
+  Obj user_param_gap = ELM_PLIST(args, 4); // user_param which can be used in the hook
+                                           // Fail for none
+  Obj limit_gap      = ELM_PLIST(args, 5); // the maximum number of results
+  Obj hint_gap       = ELM_PLIST(args, 6); // the maximum rank of a result
+  Obj isinjective    = ELM_PLIST(args, 7); // only consider injective homomorphism
+  Obj Stabilizer     = ELM_PLIST(args, 8); // TODO remove
 
   nr1 = DigraphNrVertices(graph1);
   nr2 = DigraphNrVertices(graph2);
@@ -2840,10 +2881,6 @@ static StructGVarFunc GVarFuncs [] = {
   { "C_STAB_CHAIN", 1, "gens",
     FuncC_STAB_CHAIN,
     "src/digraphs.c:FuncC_STAB_CHAIN" },
-  
-  { "STAB", 2, "gens, pt",
-    FuncSTAB,
-    "src/digraphs.c:FuncSTAB" },
 
   { 0 }
 
