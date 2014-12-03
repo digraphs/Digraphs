@@ -2092,7 +2092,7 @@ void OrbitReps_md (unsigned int depth, unsigned int rep_depth) {
   }
 
   nrgens  = size_stab_gens[depth];
-  max     = LargestMovedPointPermColl(gens, nrgens);
+  max     = lmp_stab_gens[depth];
 
   // special case in case there are no gens, or just the identity.
 
@@ -2337,6 +2337,7 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
     for (i = 0; i < nr2; i++) {
       if (copy[nr2 * next + i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) {
         calls2++;
+        printf("point_stabilizer(%d, %d); OrbitReps_md(%d, %d);\n", depth, i, depth + 1, rep_depth + 1);
         point_stabilizer(depth, i); // Calculate the stabiliser of the point i
                                     // in the stabiliser at the current depth
         OrbitReps_md(depth + 1, rep_depth + 1);
@@ -2415,7 +2416,7 @@ void SEARCH_HOMOS_SM (unsigned int depth, // the number of filled positions in m
       if ((copy[next] & reps & oneone[i]) && ! (vals_sm & oneone[i])) { 
         calls2++;
         //Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));//TODO remove
-	Obj newGens; //= point_stabilizer(gens, i);
+	Obj newGens; //= point_stabilizer(gens, i); // TODO: fix this to use the new perms
         num newReps = OrbitReps_sm(newGens);
 
         map[next] = i;
