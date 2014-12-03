@@ -1787,7 +1787,7 @@ static void init_endos_base_points() {
 }
 
 static void free_stab_chain () { // TODO: This needs to be done correctly
-  int i;
+  unsigned int i;
 
   for (i = 0; i < size_base; i++) {
     size_strong_gens[i] = 0;
@@ -1872,7 +1872,7 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
   int           i;
   unsigned int  j, jj, k, l, m, beta, betax;
 
-  for (i = 0; i < size_base; i++) { 
+  for (i = 0; i < (int) size_base; i++) { 
     for (j = 0; j < size_strong_gens[i]; j++) { 
       x = get_strong_gens(i, j);
       if ( perm_fixes_all_base_points( x ) ) {
@@ -1886,7 +1886,7 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
     }
   }
 
-  for (i = depth + 1; i < size_base + 1; i++) {
+  for (i = depth + 1; i < (int) size_base + 1; i++) {
     beta = base[i - 1];
     // set up the strong generators
     for (j = 0; j < size_strong_gens[i - 1]; j++) {
