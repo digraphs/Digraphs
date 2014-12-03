@@ -1691,6 +1691,32 @@ static unsigned int LargestMovedPointPermColl (Obj gens);
   return 0; // keep compiler happy!
 }*/
 
+static inline void add_base_point (unsigned int const pt) {
+  base[size_base] = pt;
+  size_orbits[size_base] = 1;
+  orbits[size_base * MD] = pt;
+  borbits[size_base * MD + pt] = true;
+  set_transversal(size_base, pt, id_perm());
+  size_base++;
+}
+
+static void remove_base_points (unsigned int const depth) {
+  unsigned int i, j;
+
+  assert( depth <= size_base );
+
+  for (i = depth; i < size_base; i++) {
+    size_base--;
+    //free(strong_gens[i + 1]);
+    size_strong_gens[i + 1] = 0;
+    size_orbits[i] = 0;
+    
+    for (j = 0; j < nr2; j++) {//TODO double-check nr2!
+      borbits[i * MD + j] = false;
+    }
+  }
+}
+
 static void first_ever_init () {
   unsigned int i;
 
@@ -1710,7 +1736,6 @@ static void init_stab_chain (Obj const gens) {
   if (first_ever_call) {
     first_ever_init();
   }
-
   
   lmp = LargestMovedPointPermColl(gens);
   nrgens = (unsigned int) LEN_PLIST(gens);
@@ -1718,14 +1743,19 @@ static void init_stab_chain (Obj const gens) {
   for (i = 1; i <= nrgens; i++) {
     add_strong_gens(0, as_perm(ELM_PLIST(gens, i)));
   }
-  for (i = 0; i < nr2 - 1; i++) {
-    base[i] = i;
-  }
-  size_base = nr2 - 1;
 
   // TODO initialise: borbits, size_strong_gens, size_orbits, more?
   for (i = 0; i < MD * MD; i++) {
     borbits[i] = false; // TODO: only do the minimum initialisation necessary
+  }
+  size_base = 0;
+}
+
+static void init_endos_base_points() {
+  unsigned int  i;
+
+  for (i = 0; i < nr2 - 1; i++) {
+    add_base_point(i);
   }
 }
 
@@ -1743,11 +1773,6 @@ static void orbit_stab_chain (unsigned int const depth, unsigned int const init_
   perm         x;
 
   assert( depth <= size_base ); // Should this be strict?
-
-  orbits[depth * MD] = init_pt;
-  size_orbits[depth] = 1;
-  borbits[depth * MD + init_pt] = true; // Do we need to set anything to false?
-  set_transversal(depth, init_pt, id_perm());
 
   for (i = 0; i < size_orbits[depth]; i++) {
     pt = orbits[depth * MD + i];
@@ -1776,7 +1801,6 @@ static void add_gen_orbit_stab_chain (unsigned int const depth, perm const gen) 
     pt = orbits[depth * MD + i];
     img = gen[pt];
     if (! borbits[depth * MD + img]) {
-      //printf("\tfound new img = %d\n", img);
       orbits[depth * MD + size_orbits[depth]] = img;
       size_orbits[depth]++;
       borbits[depth * MD + img] = true;
@@ -1791,7 +1815,6 @@ static void add_gen_orbit_stab_chain (unsigned int const depth, perm const gen) 
       x = get_strong_gens(depth, j);
       img = x[pt];
       if (! borbits[depth * MD + img]) {
-        //printf("\tfound new img = %d\n", img);
         orbits[depth * MD + size_orbits[depth]] = img;
         size_orbits[depth]++;
         borbits[depth * MD + img] = true;
@@ -1812,28 +1835,6 @@ static void sift_stab_chain (perm* g, unsigned int* depth) {
       return;
     }
     quo_perms_in_place(*g, get_transversal(*depth, beta));
-  }
-}
-
-static inline void add_base_point (unsigned int const pt) {
-  size_base++;
-  base[size_base] = pt;
-}
-
-static void remove_base_points (unsigned int const depth) {
-  unsigned int i, j;
-
-  assert( depth <= size_base );
-
-  for (i = depth; i < size_base; i++) {
-    size_base--;
-    //free(strong_gens[i + 1]);
-    size_strong_gens[i + 1] = 0;
-    size_orbits[i] = 0;
-    
-    for (j = 0; j < nr2; j++) {//TODO double-check nr2!
-      borbits[i * MD + j] = false;
-    }
   }
 }
 
@@ -1874,26 +1875,25 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
 
   i = size_base - 1; // Unsure about this
 
-  while (i >= (int) depth) { 
+  while (i >= (int) depth) {
     escape = false;
     for (j = 0; j < size_orbits[i] && !escape; j++) {
       beta = orbits[i * MD + j];
       for (m = 0; m < size_strong_gens[i] && !escape; m++) {
-        x  = get_strong_gens(i, m);
+        x = get_strong_gens(i, m);
         prod  = prod_perms(get_transversal(i, beta), x );
-        betax =  x[beta];
+        betax = x[beta];
         if ( ! eq_perms(prod, get_transversal(i, betax)) ) {
           y = true;
           h = quo_perms(prod, get_transversal(i, betax));
           jj = 0;
           sift_stab_chain(&h, &jj);
-          //printf("after sift_stab_chain: jj = %d\n", jj);
           if ( jj < size_base ) {
             y = false;
           } else if ( ! is_one(h) ) { // better method? IsOne(h)?
             y = false;
             for (k = 0; k < lmp; k++) {
-              if(k != h[k]) {
+              if (k != h[k]) {
                 add_base_point(k);
                 break;
               }
@@ -1902,7 +1902,7 @@ static void schreier_sims_stab_chain ( unsigned int const depth ) {
     
           if ( !y ) {
             for (l = i + 1; l <= jj; l++) {
-              add_strong_gens(l, h); 
+              add_strong_gens(l, h);
               add_gen_orbit_stab_chain(l, h);
               // add generator to <h> to orbit of base[l]
             }
@@ -1971,15 +1971,13 @@ static unsigned int LargestMovedPointPermColl (Obj const gens) {
   return max;
 }
 
-static Obj point_stabilizer( Obj gens, unsigned int pt ) {
+static Obj point_stabilizer( Obj const gens, unsigned int const pt ) {
 
   unsigned int  len, i;
   Obj           out;
 
-
-  // Need to pick the correct base point(s). Current this picks a weird base
-  // point
   init_stab_chain(gens);
+  add_base_point(pt);
   schreier_sims_stab_chain(0);
   len = size_strong_gens[1];
   out = NEW_PLIST(T_PLIST, len);
@@ -1988,6 +1986,7 @@ static Obj point_stabilizer( Obj gens, unsigned int pt ) {
   }
   SET_LEN_PLIST(out, (UInt) len);
   CHANGED_BAG(out);
+  free_stab_chain();
   return out;
 }
 
@@ -2000,6 +1999,11 @@ static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
   size = size_stab_chain();
   free_stab_chain();
   return size;
+}
+
+static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
+  nr2 = LargestMovedPointPermColl(gens);
+  return point_stabilizer( gens, ((unsigned int) INT_INTOBJ(pt)) - 1 );
 }
 
 // returns a bool array representing the orbit reps of the group generated by
@@ -2505,6 +2509,7 @@ void GraphHomomorphisms_md (Obj  graph1,
   
   // stab chain for automorphism group
   init_stab_chain(gens);
+  init_endos_base_points();
   schreier_sims_stab_chain(0);
   
   // get orbit reps 
@@ -2812,6 +2817,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "C_STAB_CHAIN", 1, "gens",
     FuncC_STAB_CHAIN,
     "src/digraphs.c:FuncC_STAB_CHAIN" },
+  
+  { "STAB", 2, "gens, pt",
+    FuncSTAB,
+    "src/digraphs.c:FuncSTAB" },
 
   { 0 }
 

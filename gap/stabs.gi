@@ -93,7 +93,7 @@ add_base_point := function(stab_chain, k)
   Add(stab_chain.base, k);
   stab_chain.S[Length(stab_chain.base) + 1] := [];
   Add(stab_chain.orbits, [k]);
-  Add(stab_chain.borbits, BlistList([1..stab_chain.lmp], [k]));
+  Add(stab_chain.borbits, BlistList([1 .. stab_chain.lmp], [k]));
   Add(stab_chain.transversal, []);
   stab_chain.transversal[Length(stab_chain.transversal)][k] := ();
 end;
@@ -150,7 +150,7 @@ schreier_sims_stab_chain := function(stab_chain, depth)
 
   while i >= depth do
     escape := false;
-    for j in [1..Length(orbits[i])] do
+    for j in [1 .. Length(orbits[i])] do
       beta := orbits[i][j];
       for x in S[i] do
         if transversal[i][beta] * x <> transversal[i][beta ^ x] then
