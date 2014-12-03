@@ -2227,6 +2227,8 @@ void homo_hook_gap () {
 
 // the main recursive search algorithm
 
+static unsigned long int last_report = 0;
+
 void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled positions in map
                       int   pos,          // the last position filled
                       bool  *condition,   // blist of possible values for map[i]
@@ -2241,7 +2243,12 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
   bool  *copy;
 
   calls1++;
-  
+  if (calls1 > last_report + 999999) {
+    Pr("calls to search = %d\n", (Int) calls1, 0L);
+    Pr("stabs computed = %d\n", (Int) calls2, 0L);
+    last_report = calls1;
+  }
+
   if (depth == nr1) {
     hook();
     count++;
