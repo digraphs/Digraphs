@@ -1435,7 +1435,7 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
 }
 
 #ifdef SYS_IS_64_BIT
-#define SM 0
+#define SM 64 
 typedef UInt8 num;
 #define SMALLINTLIMIT 1152921504606846976
 #else
@@ -2322,10 +2322,10 @@ void SEARCH_HOMOS_SM (unsigned int depth, // the number of filled positions in m
                                           // of automorphism group of graph2
                       num   reps,         // orbit reps of points not in <map> under <gens>
                       int   rank,         // current number of distinct values in map
-                      void  hook (),      // hook function applied to every new homo
-                      Obj   Stabilizer) { // TODO remove this!
+                      void  hook () ){      // hook function applied to every new homo
+                      
 
-  unsigned int  i, j, k, l, min, next, size;
+  unsigned int  i, j, k, l, min, next ;
   num  copy[nr1];
   
   calls1++;
@@ -2345,34 +2345,39 @@ void SEARCH_HOMOS_SM (unsigned int depth, // the number of filled positions in m
   if (pos != -1) {
     for (j = 0; j < nr1; j++){
       if (map[j] == -1) {
-        size = 0;
+	sizes[depth * nr1 + j] = 0;
         if (neighbours1_sm[pos] & oneone[j]) { // vertex j is adjacent to vertex pos in graph1
           copy[j] &= neighbours2_sm[map[pos]];
           if (copy[j] == 0) {
             return;
           }
         }
-        size = sizenum(copy[j], nr2);
-        if (size < min) {
+        sizes[depth * nr1 + j] = sizenum(copy[j], nr2);
+        if (sizes[depth * nr1 + j] < min) {
           next = j;
-          min = size;
+          min = sizes[depth * nr1 + j];
         }
       }
     }
+  }
+
+  for (i = 0; i < nr1; i++) {
+    sizes[(depth + 1) * nr1 + i] = sizes[depth * nr1 + i]; 
   }
   
   if (rank < hint) {
     for (i = 0; i < nr2; i++) {
       if ((copy[next] & reps & oneone[i]) && ! (vals_sm & oneone[i])) { 
         calls2++;
-        Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));//TODO remove
+        //Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));//TODO remove
+	Obj newGens = point_stabilizer(gens, i);
         num newReps = OrbitReps_sm(newGens);
 
         map[next] = i;
         vals_sm |= oneone[i];
         
         // blist of orbit reps of things not in vals_sm
-        SEARCH_HOMOS_SM(depth + 1, next, copy, newGens, newReps, rank + 1, hook, Stabilizer);
+        SEARCH_HOMOS_SM(depth + 1, next, copy, newGens, newReps, rank + 1, hook);
         map[next] = -1;
         vals_sm ^= oneone[i];
       }
@@ -2381,7 +2386,7 @@ void SEARCH_HOMOS_SM (unsigned int depth, // the number of filled positions in m
   for (i = 0; i < nr2; i++) {
     if (copy[next] & vals_sm & oneone[i]) {
       map[next] = i;
-      SEARCH_HOMOS_SM(depth + 1, next, copy, gens, reps, rank, hook, Stabilizer);
+      SEARCH_HOMOS_SM(depth + 1, next, copy, gens, reps, rank, hook);
       map[next] = -1;
     }
   }
@@ -2558,11 +2563,10 @@ void GraphHomomorphisms_md (Obj  graph1,
 void GraphHomomorphisms_sm (Obj  graph1, 
                             Obj  graph2,
                             void hook (),
-                            void *user_param_arg, 
+                            Obj  user_param_arg, 
                             num  max_results_arg,
                             int  hint_arg, 
-                            bool isinjective,
-                            Obj  Stabilizer) { // TODO remove this!
+                            bool isinjective) {
   Obj            out, nbs, gens;
   unsigned int   i, j, k;
   Pr("GraphHomomorphisms_sm!\n", 0L, 0L);
@@ -2630,7 +2634,7 @@ void GraphHomomorphisms_sm (Obj  graph1,
     if (isinjective) {
       //SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook, Stabilizer);
     } else {
-      SEARCH_HOMOS_SM(0, -1, condition, gens, reps, 0, hook, Stabilizer);
+      SEARCH_HOMOS_SM(0, -1, condition, gens, reps, 0, hook);
     }
   }
 }
@@ -2643,15 +2647,14 @@ void GraphHomomorphisms (Obj  graph1,
                          void *user_param_arg, 
                          num  max_results_arg,
                          int  hint_arg, 
-                         bool isinjective,
-                         Obj  Stabilizer) { // TODO remove this!
+                         bool isinjective) { 
 
   nr1 = DigraphNrVertices(graph1);
   nr2 = DigraphNrVertices(graph2);
 
   if (nr1 < SM && nr2 < SM) {
     GraphHomomorphisms_sm(graph1, graph2, hook, user_param_arg, max_results_arg,
-        hint_arg, isinjective, Stabilizer);
+        hint_arg, isinjective);
   } else if (nr1 < MD && nr2 < MD) {
     GraphHomomorphisms_md(graph1, graph2, hook, user_param_arg, max_results_arg,
         hint_arg, isinjective);
@@ -2706,11 +2709,11 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
 
   if (hook_gap == Fail) {
     GraphHomomorphisms(graph1, graph2, homo_hook_collect, user_param_arg,
-        max_results_arg, hint_arg, isinjective_c, Stabilizer); 
+        max_results_arg, hint_arg, isinjective_c); 
   } else {
     GAP_FUNC = hook_gap;
     GraphHomomorphisms(graph1, graph2, homo_hook_gap, user_param_arg,
-        max_results_arg, hint_arg, isinjective_c, Stabilizer);
+        max_results_arg, hint_arg, isinjective_c);
   }
   Pr("calls to search = %d\n", (Int) calls1, 0L);
   Pr("stabs computed = %d\n", (Int) calls2, 0L);

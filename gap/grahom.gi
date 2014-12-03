@@ -390,13 +390,7 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective)
   nr2 := DigraphNrVertices(gr2);
 
   if nr1 <= 512 and nr2 <= 512 then
-    STAB:= function(gens, pt)
-      if gens = [] then 
-        return fail;
-      fi;
-      return GeneratorsOfGroup(Stabilizer(Group(gens), pt));
-    end;
-    out := GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, STAB);
+    out := GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective);
     return out;
   else 
     Error("not yet implemented");
