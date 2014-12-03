@@ -1719,7 +1719,7 @@ static inline void add_base_point (unsigned int const pt) {
   base[size_base] = pt;
   size_orbits[size_base] = 1;
   orbits[size_base * MD] = pt;
-  borbits[size_base * MD + pt] = true;
+  borbits[size_base * nr2 + pt] = true;
   set_transversal(size_base, pt, id_perm());
   size_base++;
 }
@@ -1736,7 +1736,7 @@ static void remove_base_points (unsigned int const depth) {
     size_orbits[i] = 0;
     
     for (j = 0; j < nr2; j++) {//TODO double-check nr2!
-      borbits[i * MD + j] = false;
+      borbits[i * nr2 + j] = false;
     }
   }
 }
@@ -1769,7 +1769,7 @@ static void init_stab_chain (Obj const gens) {
   }
 
   // TODO initialise: borbits, size_strong_gens, size_orbits, more?
-  for (i = 0; i < MD * MD; i++) {
+  for (i = 0; i < nr2 * nr2; i++) {
     borbits[i] = false; // TODO: only do the minimum initialisation necessary
   }
   size_base = 0;
@@ -1803,10 +1803,10 @@ static void orbit_stab_chain (unsigned int const depth, unsigned int const init_
     for (j = 0; j < size_strong_gens[depth]; j++) {
       x = get_strong_gens(depth, j);
       img = x[pt];
-      if (! borbits[depth * MD + img]) {
+      if (! borbits[depth * nr2 + img]) {
         orbits[depth * MD + size_orbits[depth]] = img;
         size_orbits[depth]++;
-        borbits[depth * MD + img] = true;
+        borbits[depth * nr2 + img] = true;
         set_transversal(depth, img, prod_perms(get_transversal(depth, pt), x));
       }
     }
@@ -1824,10 +1824,10 @@ static void add_gen_orbit_stab_chain (unsigned int const depth, perm const gen) 
   for (i = 0; i < nr; i++) {
     pt = orbits[depth * MD + i];
     img = gen[pt];
-    if (! borbits[depth * MD + img]) {
+    if (! borbits[depth * nr2 + img]) {
       orbits[depth * MD + size_orbits[depth]] = img;
       size_orbits[depth]++;
-      borbits[depth * MD + img] = true;
+      borbits[depth * nr2 + img] = true;
       set_transversal(depth, img, 
         prod_perms(get_transversal(depth, pt), gen));
     }
@@ -1838,10 +1838,10 @@ static void add_gen_orbit_stab_chain (unsigned int const depth, perm const gen) 
     for (j = 0; j < size_strong_gens[depth]; j++) {
       x = get_strong_gens(depth, j);
       img = x[pt];
-      if (! borbits[depth * MD + img]) {
+      if (! borbits[depth * nr2 + img]) {
         orbits[depth * MD + size_orbits[depth]] = img;
         size_orbits[depth]++;
-        borbits[depth * MD + img] = true;
+        borbits[depth * nr2 + img] = true;
         set_transversal(depth, img, prod_perms(get_transversal(depth, pt), x));
       }
     }
@@ -1855,7 +1855,7 @@ static void sift_stab_chain (perm* g, unsigned int* depth) {
   
   for (; *depth < size_base; (*depth)++) {
     beta = (*g)[base[*depth]];
-    if (! borbits[*depth * MD + beta]) {
+    if (! borbits[*depth * nr2 + beta]) {
       return;
     }
     prod_perms_in_place(*g, get_transversal_inv(*depth, beta));
