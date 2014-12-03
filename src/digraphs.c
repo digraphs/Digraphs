@@ -1755,7 +1755,7 @@ static void first_ever_init () {
 static void init_stab_chain (Obj const gens) {
   unsigned int  nrgens, i;
   Obj*          strong;
-  Pr("init_stab_chain!\n", 0L, 0L);
+  //Pr("init_stab_chain!\n", 0L, 0L);
 
   if (first_ever_call) {
     first_ever_init();
@@ -2235,8 +2235,7 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
                                           // of automorphism group of graph2
                       unsigned int const rep_depth,
                       int   rank,         // current number of distinct values in map
-                      void  hook (),
-                      Obj   Stabilizer) { // TODO remove this!
+                      void  hook () ) {
 
   unsigned int   i, j, k, l, min, next;
   bool  *copy;
@@ -2292,12 +2291,13 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
     for (i = 0; i < nr2; i++) {
       if (copy[nr2 * next + i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) { 
         calls2++;
-        Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
+        //Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));
+        Obj newGens = point_stabilizer(gens, i);
         OrbitReps_md(newGens, rep_depth + 1);
 
         map[next] = i;
         vals_md[i] = true;
-        SEARCH_HOMOS_MD(depth + 1, next, copy, newGens, rep_depth + 1, rank + 1, hook, Stabilizer);
+        SEARCH_HOMOS_MD(depth + 1, next, copy, newGens, rep_depth + 1, rank + 1, hook);
         map[next] = -1;
         vals_md[i] = false;
       }
@@ -2306,7 +2306,7 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
   for (i = 0; i < nr2; i++) {
     if (copy[nr2 * next + i] && vals_md[i]) {
       map[next] = i;
-      SEARCH_HOMOS_MD(depth + 1, next, copy, gens, rep_depth, rank, hook, Stabilizer);
+      SEARCH_HOMOS_MD(depth + 1, next, copy, gens, rep_depth, rank, hook);
       map[next] = -1;
     }
   }
@@ -2482,8 +2482,7 @@ void GraphHomomorphisms_md (Obj  graph1,
                             Obj  user_param_arg, 
                             num  max_results_arg,
                             int  hint_arg, 
-                            bool isinjective,
-                            Obj  Stabilizer) { // TODO remove this!
+                            bool isinjective) {
   Obj   out, nbs, gens;
   unsigned int   i, j, k;
   bool  *condition;
@@ -2546,9 +2545,9 @@ void GraphHomomorphisms_md (Obj  graph1,
   // go! 
   if (setjmp(outofhere) == 0) {
     if (isinjective) {
-     // SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook, Stabilizer);
+     // SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook);
     } else {
-      SEARCH_HOMOS_MD(0, -1, condition, gens, 0, 0, hook, Stabilizer);
+      SEARCH_HOMOS_MD(0, -1, condition, gens, 0, 0, hook);
     }
   }
   free(condition);
@@ -2655,7 +2654,7 @@ void GraphHomomorphisms (Obj  graph1,
         hint_arg, isinjective, Stabilizer);
   } else if (nr1 < MD && nr2 < MD) {
     GraphHomomorphisms_md(graph1, graph2, hook, user_param_arg, max_results_arg,
-        hint_arg, isinjective, Stabilizer);
+        hint_arg, isinjective);
   }
 }
 
