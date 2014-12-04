@@ -2616,6 +2616,7 @@ void GraphHomomorphisms_md (Obj  graph1,
   user_param = user_param_arg; 
   hint = hint_arg;
   hook = hook_arg;
+  last_report = 0;
   
   // go! 
   if (setjmp(outofhere) == 0) {
