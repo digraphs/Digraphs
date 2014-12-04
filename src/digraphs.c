@@ -1508,8 +1508,6 @@ static num   calls2;                  // calls1 is the number of calls to the se
 static num last_report = 0;          // the last value of calls1 when we reported
 static num report_interval = 999999; // the interval when we report
 
-
-
 // perms
 
 static unsigned int perm_buf[MD];
@@ -2276,23 +2274,7 @@ void homo_hook_gap () {
 // condition handling
 
 static bool* conditions[MD * MD];
-
-static void init_conditions() {
-  unsigned int i; 
-  bool* data = malloc(nr1 * nr2 * sizeof(bool));
-  memset((void *) data, true, nr1 * nr2 * sizeof(bool));
-  for (i = 0; i < nr1; i++) {
-    conditions[i] = data;
-    data += nr2; 
-  }
-}
-
-static void free_condition(unsigned int const depth, unsigned int const upto) {
-  unsigned int i;
-  for (i = 0; i < upto; i++) {
-    free(conditions[depth * nr1 + i]);
-  }
-}
+static bool  alloc_conditions[MD * MD];
 
 static inline bool* get_condition(unsigned int const depth, 
                                   unsigned int const i     ) {  // vertex in graph1
@@ -2305,13 +2287,43 @@ static inline void set_condition(unsigned int const depth,
   conditions[depth * nr1 + i] = data;
 }
 
+static void init_conditions() {
+  unsigned int i, j; 
+
+  for (i = 0; i < nr1; i++) {
+    conditions[i] = malloc(nr2 * sizeof(bool));
+    alloc_conditions[i] = true;
+    for (j = 0; j < nr2; j++) {
+      conditions[i][j] = true;
+    }
+  }
+
+  for (i = nr1; i < nr1 * nr2; i++) {
+    alloc_conditions[i] = false;
+  }
+}
+
+static void free_conditions() {
+  unsigned int i, j;
+  for (i = 0; i < nr1; i++) {
+    for (j = 0; j < nr2; j++) {
+      if (alloc_conditions[i * nr2 + j]) {
+        free(conditions[i * nr2 + j]);
+      }
+      conditions[i * nr2 + j] = NULL;
+    }
+  }
+}
+
+// copy from <depth> to <depth + 1> 
 static inline bool* copy_condition(unsigned int const depth, 
                                    unsigned int const i     ) { // vertex in graph1
-  bool* copy = malloc(nr2 * sizeof(bool));
-  memcpy((void *) copy, 
+  conditions[(depth + 1) * nr1 + i] = malloc(nr2 * sizeof(bool));
+  memcpy((void *) conditions[(depth + 1) * nr1 + i], 
          (void *) get_condition(depth, i), 
          (size_t) nr2 * sizeof(bool));
-  return copy;
+  alloc_conditions[(depth + 1) * nr1 + i] = true;
+  return conditions[(depth + 1) * nr1 + i];
 }
 
 // the main recursive search algorithm
@@ -2365,10 +2377,8 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
               sizes[depth * nr1 + j]++;
             }
           }
-          set_condition(depth, j, copy);
         } 
         if (sizes[depth * nr1 + j] == 0) {
-          //free_condition(depth, j);
           return;
         }
         if (sizes[depth * nr1 + j] < min) {
@@ -2376,6 +2386,10 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
           min = sizes[depth * nr1 + j];
         }
       }
+      sizes[(depth + 1) * nr1 + j] = sizes[(depth * nr1) + j]; 
+    }
+  } else {
+    for (j = 0; j < nr1; j++){
       sizes[(depth + 1) * nr1 + j] = sizes[(depth * nr1) + j]; 
     }
   }
@@ -2415,7 +2429,6 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
     }
   }
   
-  //free_condition(depth, nr1);
   return;
 }
 
@@ -2668,7 +2681,7 @@ void GraphHomomorphisms_md (Obj  graph1,
       SEARCH_HOMOS_MD(0, MD + 1, 0, 0);
     }
   }
-  //free_conditions();
+  free_conditions();
 }
 
 // prepare the graphs for SEARCH_HOMOS_SM
