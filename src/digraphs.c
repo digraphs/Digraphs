@@ -2285,6 +2285,7 @@ static inline void set_condition(unsigned int const depth,
                                  unsigned int const i,         // vertex in graph1
                                  bool*              data  ) {
   conditions[depth * nr1 + i] = data;
+  alloc_conditions[depth * nr1 + i] = false;
 }
 
 static void init_conditions() {
@@ -2298,20 +2299,18 @@ static void init_conditions() {
     }
   }
 
-  for (i = nr1; i < nr1 * nr2; i++) {
+  for (i = nr1; i < nr1 * nr1; i++) {
     alloc_conditions[i] = false;
   }
 }
 
-static void free_conditions() {
-  unsigned int i, j;
+static inline void free_conditions(unsigned int const depth) {
+  unsigned int i;
   for (i = 0; i < nr1; i++) {
-    for (j = 0; j < nr2; j++) {
-      if (alloc_conditions[i * nr2 + j]) {
-        free(conditions[i * nr2 + j]);
-      }
-      conditions[i * nr2 + j] = NULL;
+    if (alloc_conditions[depth * nr1 + i]) {
+      free(conditions[depth * nr1 + i]);
     }
+    conditions[depth * nr1 + i] = NULL;
   }
 }
 
@@ -2319,23 +2318,19 @@ static void free_conditions() {
 static inline bool* copy_condition(unsigned int const depth, 
                                    unsigned int const i     ) { // vertex in graph1
   conditions[(depth + 1) * nr1 + i] = malloc(nr2 * sizeof(bool));
+  alloc_conditions[(depth + 1) * nr1 + i] = true;
   memcpy((void *) conditions[(depth + 1) * nr1 + i], 
          (void *) get_condition(depth, i), 
          (size_t) nr2 * sizeof(bool));
-  alloc_conditions[(depth + 1) * nr1 + i] = true;
   return conditions[(depth + 1) * nr1 + i];
 }
 
 // the main recursive search algorithm
 
-void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled positions in map
-                      unsigned int const pos,   // the last position filled
-                      //bool const *condition,    // blist of possible values for map[i]
-                      //Obj const gens,           // generators for
-                                                // Stabilizer(AsSet(map)) subgroup
-                                                // of automorphism group of graph2
+void SEARCH_HOMOS_MD (unsigned int const depth,     // the number of filled positions in map
+                      unsigned int const pos,       // the last position filled
                       unsigned int const rep_depth,
-                      unsigned int const rank){ // current number of distinct values in map
+                      unsigned int const rank){     // current number of distinct values in map
 
   unsigned int   i, j, k, min, next, w;
   bool           *copy;
@@ -2356,11 +2351,6 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
     return;
   }
 
-  /*copy = malloc((nr1 * nr2) * sizeof(bool));
-  memcpy((void *) copy, 
-         (void *) condition, 
-         (size_t) (nr1 * nr2) * sizeof(bool));*/
-  
   next = 0;      // the next position to fill
   min = nr2 + 1; // the minimum number of candidates for map[next]
 
@@ -2428,7 +2418,7 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
       map[next] = -1;
     }
   }
-  
+  free_conditions(depth); 
   return;
 }
 
@@ -2681,7 +2671,6 @@ void GraphHomomorphisms_md (Obj  graph1,
       SEARCH_HOMOS_MD(0, MD + 1, 0, 0);
     }
   }
-  free_conditions();
 }
 
 // prepare the graphs for SEARCH_HOMOS_SM
