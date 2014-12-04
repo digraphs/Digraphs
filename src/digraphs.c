@@ -2092,18 +2092,18 @@ static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
 // <gens> not including any values already in <map> (i.e. those with vals[i] =
 // true)
 
-void OrbitReps_md (unsigned int depth, unsigned int rep_depth) {
+void OrbitReps_md (unsigned int rep_depth) {
   unsigned int  nrgens, i, j, fst, m, img, n, max;
   perm*  gens;
   perm   gen;
  
-  gens = stab_gens[depth];
+  gens = stab_gens[rep_depth];
   for (i = rep_depth * nr2; i < (rep_depth + 1) * nr2; i++) {
     reps_md[i] = false;
   }
 
-  nrgens  = size_stab_gens[depth];
-  max     = lmp_stab_gens[depth];
+  nrgens  = size_stab_gens[rep_depth];
+  max     = lmp_stab_gens[rep_depth];
 
   // special case in case there are no gens, or just the identity.
 
@@ -2396,9 +2396,9 @@ void SEARCH_HOMOS_MD (unsigned int const depth,     // the number of filled posi
       copy = get_condition(depth, next);
       if (copy[i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) {
         calls2++;
-        point_stabilizer(depth, i); // Calculate the stabiliser of the point i
+        point_stabilizer(rep_depth, i); // Calculate the stabiliser of the point i
                                     // in the stabiliser at the current depth
-        OrbitReps_md(depth + 1, rep_depth + 1);
+        OrbitReps_md(rep_depth + 1);
         map[next] = i;
         vals_md[i] = true;
         SEARCH_HOMOS_MD(depth + 1, next, rep_depth + 1, rank + 1);
@@ -2413,12 +2413,13 @@ void SEARCH_HOMOS_MD (unsigned int const depth,     // the number of filled posi
       map[next] = i;
 
       //start of: make sure the next level knows that we have the same stabiliser
-      size_stab_gens[depth + 1] = size_stab_gens[depth];
+      /*size_stab_gens[depth + 1] = size_stab_gens[depth];
       stab_gens[depth + 1] = realloc(stab_gens[depth + 1], size_stab_gens[depth] * sizeof(perm));
       for (w = 0; w < size_stab_gens[depth]; w++) {
         stab_gens[depth + 1][w] = stab_gens[depth][w];
       }
       lmp_stab_gens[depth + 1] = lmp_stab_gens[depth];
+      */
       //end of that
 
       SEARCH_HOMOS_MD(depth + 1, next, rep_depth, rank);
@@ -2660,7 +2661,7 @@ void GraphHomomorphisms_md (Obj  graph1,
   lmp_stab_gens[0] = LargestMovedPointPermColl( stab_gens[0], len );
   
   // get orbit reps
-  OrbitReps_md(0, 0);
+  OrbitReps_md(0);
   
   // misc parameters
   count = 0;
