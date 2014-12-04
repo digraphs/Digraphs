@@ -2273,11 +2273,52 @@ void homo_hook_gap () {
   CALL_2ARGS(GAP_FUNC, user_param, t);
 }
 
+// condition handling
+
+static bool* conditions[MD * MD];
+
+static void init_conditions() {
+  unsigned int i; 
+  bool* data = malloc(nr1 * nr2 * sizeof(bool));
+  memset((void *) data, true, nr1 * nr2 * sizeof(bool));
+  for (i = 0; i < nr1; i++) {
+    conditions[i] = data;
+    data += nr2; 
+  }
+}
+
+static void free_condition(unsigned int const depth, unsigned int const upto) {
+  unsigned int i;
+  for (i = 0; i < upto; i++) {
+    free(conditions[depth * nr1 + i]);
+  }
+}
+
+static inline bool* get_condition(unsigned int const depth, 
+                                  unsigned int const i     ) {  // vertex in graph1
+  return conditions[depth * nr1 + i];
+}
+
+static inline void set_condition(unsigned int const depth, 
+                                 unsigned int const i,         // vertex in graph1
+                                 bool*              data  ) {
+  conditions[depth * nr1 + i] = data;
+}
+
+static inline bool* copy_condition(unsigned int const depth, 
+                                   unsigned int const i     ) { // vertex in graph1
+  bool* copy = malloc(nr2 * sizeof(bool));
+  memcpy((void *) copy, 
+         (void *) get_condition(depth, i), 
+         (size_t) nr2 * sizeof(bool));
+  return copy;
+}
+
 // the main recursive search algorithm
 
 void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled positions in map
                       unsigned int const pos,   // the last position filled
-                      bool const *condition,    // blist of possible values for map[i]
+                      //bool const *condition,    // blist of possible values for map[i]
                       //Obj const gens,           // generators for
                                                 // Stabilizer(AsSet(map)) subgroup
                                                 // of automorphism group of graph2
@@ -2303,28 +2344,31 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
     return;
   }
 
-  copy = malloc((nr1 * nr2) * sizeof(bool));
+  /*copy = malloc((nr1 * nr2) * sizeof(bool));
   memcpy((void *) copy, 
          (void *) condition, 
-         (size_t) (nr1 * nr2) * sizeof(bool));
+         (size_t) (nr1 * nr2) * sizeof(bool));*/
   
   next = 0;      // the next position to fill
   min = nr2 + 1; // the minimum number of candidates for map[next]
 
   if (pos != MD + 1) {
     for (j = 0; j < nr1; j++){
+      set_condition(depth, j, get_condition(depth - 1, j));
       if (map[j] == -1) {
         if (neighbours1_md[nr1 * pos + j]) { // vertex j is adjacent to vertex pos in graph1
+          copy = copy_condition(depth - 1, j);
           sizes[depth * nr1 + j] = 0;
           for (k = 0; k < nr2; k++) {
-            copy[nr2 * j + k] &= neighbours2_md[nr2 * map[pos] + k];
-            if (copy[nr2 * j + k]) {
+            copy[k] &= neighbours2_md[nr2 * map[pos] + k];
+            if (copy[k]) {
               sizes[depth * nr1 + j]++;
             }
           }
+          set_condition(depth, j, copy);
         } 
         if (sizes[depth * nr1 + j] == 0) {
-          free(copy);
+          //free_condition(depth, j);
           return;
         }
         if (sizes[depth * nr1 + j] < min) {
@@ -2332,30 +2376,29 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
           min = sizes[depth * nr1 + j];
         }
       }
+      sizes[(depth + 1) * nr1 + j] = sizes[(depth * nr1) + j]; 
     }
-  }
-  
-  for (i = 0; i < nr1; i++) {
-    sizes[(depth + 1) * nr1 + i] = sizes[(depth * nr1) + i]; 
   }
   
   if (rank < hint) {
     for (i = 0; i < nr2; i++) {
-      if (copy[nr2 * next + i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) {
+      copy = get_condition(depth, next);
+      if (copy[i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) {
         calls2++;
         point_stabilizer(depth, i); // Calculate the stabiliser of the point i
                                     // in the stabiliser at the current depth
         OrbitReps_md(depth + 1, rep_depth + 1);
         map[next] = i;
         vals_md[i] = true;
-        SEARCH_HOMOS_MD(depth + 1, next, copy, rep_depth + 1, rank + 1);
+        SEARCH_HOMOS_MD(depth + 1, next, rep_depth + 1, rank + 1);
         map[next] = -1;
         vals_md[i] = false;
       }
     }
   }
   for (i = 0; i < nr2; i++) {
-    if (copy[nr2 * next + i] && vals_md[i]) {
+    copy = get_condition(depth, next);
+    if (copy[i] && vals_md[i]) {
       map[next] = i;
 
       //start of: make sure the next level knows that we have the same stabiliser
@@ -2367,11 +2410,12 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
       lmp_stab_gens[depth + 1] = lmp_stab_gens[depth];
       //end of that
 
-      SEARCH_HOMOS_MD(depth + 1, next, copy, rep_depth, rank);
+      SEARCH_HOMOS_MD(depth + 1, next, rep_depth, rank);
       map[next] = -1;
     }
   }
-  free(copy);
+  
+  //free_condition(depth, nr1);
   return;
 }
 
@@ -2551,7 +2595,6 @@ void GraphHomomorphisms_md (Obj  graph1,
                             bool isinjective) {
   Obj             out, nbs, gens;
   unsigned int    i, j, k, len;
-  bool            *condition;
   
   nr1 = DigraphNrVertices(graph1);
   nr2 = DigraphNrVertices(graph2);
@@ -2565,8 +2608,7 @@ void GraphHomomorphisms_md (Obj  graph1,
   }
 
   // initialise everything . . .
-  condition = malloc(nr1 * nr2 * sizeof(bool));
-  memset((void *) condition, true, nr1 * nr2 * sizeof(bool));
+  init_conditions();
   memset((void *) map, -1, nr1 * sizeof(int));
   memset((void *) vals_md, false, nr2 * sizeof(bool));
   memset((void *) neighbours1_md, false, nr1 * nr1 * sizeof(bool));
@@ -2623,10 +2665,10 @@ void GraphHomomorphisms_md (Obj  graph1,
     if (isinjective) {
      // SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook);
     } else {
-      SEARCH_HOMOS_MD(0, MD + 1, condition, 0, 0);
+      SEARCH_HOMOS_MD(0, MD + 1, 0, 0);
     }
   }
-  free(condition);
+  //free_conditions();
 }
 
 // prepare the graphs for SEARCH_HOMOS_SM
