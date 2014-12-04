@@ -2411,17 +2411,6 @@ void SEARCH_HOMOS_MD (unsigned int const depth,     // the number of filled posi
     copy = get_condition(depth, next);
     if (copy[i] && vals_md[i]) {
       map[next] = i;
-
-      //start of: make sure the next level knows that we have the same stabiliser
-      /*size_stab_gens[depth + 1] = size_stab_gens[depth];
-      stab_gens[depth + 1] = realloc(stab_gens[depth + 1], size_stab_gens[depth] * sizeof(perm));
-      for (w = 0; w < size_stab_gens[depth]; w++) {
-        stab_gens[depth + 1][w] = stab_gens[depth][w];
-      }
-      lmp_stab_gens[depth + 1] = lmp_stab_gens[depth];
-      */
-      //end of that
-
       SEARCH_HOMOS_MD(depth + 1, next, rep_depth, rank);
       map[next] = -1;
     }
