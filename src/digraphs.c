@@ -2020,20 +2020,27 @@ static void point_stabilizer( unsigned int const depth, unsigned int const pt ) 
 
   lmp = lmp_stab_gens[depth]; // the lmp <stab_gens[depth]>
   init_stab_chain();
+
   // put stab_gens[depth] into strong_gens[0]
-  for (i = 0; i < size_stab_gens[depth]; i++) {
-    add_strong_gens(0, stab_gens[depth][i]);
+  if (strong_gens[0] != NULL) {
+    free(strong_gens[0]);
   }
+  len = size_stab_gens[depth];
+  strong_gens[0] = malloc(len * sizeof(perm));
+  memcpy(strong_gens[0], stab_gens[depth], len * sizeof(perm));
+  size_strong_gens[0] = len;
+  
   add_base_point(pt);
   schreier_sims_stab_chain(0);
-  // the Stabiliser we want is <strong_gens[1]>
-  len = size_strong_gens[1];
 
+  // the Stabiliser we want is <strong_gens[1]>
   // store these new generators in the correct place in stab_gens that we want
-  stab_gens[depth + 1] = realloc(stab_gens[depth + 1], len * sizeof(perm));
-  for (i = 0; i < len; i++) {
-    stab_gens[depth + 1][i] = strong_gens[1][i];
+  if (stab_gens[depth + 1] != NULL) {
+    free(stab_gens[depth + 1]);
   }
+  len = size_strong_gens[1];
+  stab_gens[depth + 1] = malloc(len * sizeof(perm));
+  memcpy(stab_gens[depth + 1], strong_gens[1], len * sizeof(perm));
   size_stab_gens[depth + 1] = len;
   lmp_stab_gens[depth + 1] = LargestMovedPointPermColl( strong_gens[1], len );
   
