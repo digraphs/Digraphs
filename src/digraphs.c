@@ -1749,15 +1749,13 @@ static void remove_base_points (unsigned int const depth) {
   }
 }
 
-static void first_ever_init () {
+static inline void first_ever_init () {
   unsigned int i;
 
   first_ever_call = false;
 
-  for (i = 0; i < MD; i++) { 
-    size_strong_gens[i] = 0;
-    size_orbits[i] = 0;
-  }
+  memset((void *) size_strong_gens, 0, MD * sizeof(unsigned int));
+  memset((void *) size_orbits, 0, MD * sizeof(unsigned int));
 }
 
 static void init_stab_chain () {
@@ -1767,10 +1765,7 @@ static void init_stab_chain () {
     first_ever_init();
   }
 
-  // TODO initialise: borbits, size_strong_gens, size_orbits, more?
-  for (i = 0; i < nr2 * nr2; i++) {
-    borbits[i] = false; // TODO: only do the minimum initialisation necessary
-  }
+  memset((void *) borbits, false, nr2 * nr2 * sizeof(bool)); 
   size_base = 0;
 }
 
@@ -1782,13 +1777,11 @@ static void init_endos_base_points() {
   }
 }
 
-static void free_stab_chain () { // TODO: This needs to be done correctly
+static void free_stab_chain () {
   unsigned int i;
 
-  for (i = 0; i < size_base; i++) {
-    size_strong_gens[i] = 0;
-    size_orbits[i] = 0;
-  }
+  memset((void *) size_strong_gens, 0, size_base * sizeof(unsigned int));
+  memset((void *) size_orbits, 0, size_base * sizeof(unsigned int));
 }
 
 static void orbit_stab_chain (unsigned int const depth, unsigned int const init_pt) {
