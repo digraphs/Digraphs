@@ -1511,8 +1511,6 @@ static num   calls2;                  // calls1 is the number of calls to the se
 static num last_report = 0;          // the last value of calls1 when we reported
 static num report_interval = 999999; // the interval when we report
 
-
-
 // perms
 
 static unsigned int perm_buf[MD];
@@ -1754,15 +1752,13 @@ static void remove_base_points (unsigned int const depth) {
   }
 }
 
-static void first_ever_init () {
+static inline void first_ever_init () {
   unsigned int i;
 
   first_ever_call = false;
 
-  for (i = 0; i < MD; i++) { 
-    size_strong_gens[i] = 0;
-    size_orbits[i] = 0;
-  }
+  memset((void *) size_strong_gens, 0, MD * sizeof(unsigned int));
+  memset((void *) size_orbits, 0, MD * sizeof(unsigned int));
 }
 
 static void init_stab_chain () {
@@ -1772,10 +1768,7 @@ static void init_stab_chain () {
     first_ever_init();
   }
 
-  // TODO initialise: borbits, size_strong_gens, size_orbits, more?
-  for (i = 0; i < nr2 * nr2; i++) {
-    borbits[i] = false; // TODO: only do the minimum initialisation necessary
-  }
+  memset((void *) borbits, false, nr2 * nr2 * sizeof(bool)); 
   size_base = 0;
 }
 
@@ -1787,13 +1780,11 @@ static void init_endos_base_points() {
   }
 }
 
-static void free_stab_chain () { // TODO: This needs to be done correctly
+static void free_stab_chain () {
   unsigned int i;
 
-  for (i = 0; i < size_base; i++) {
-    size_strong_gens[i] = 0;
-    size_orbits[i] = 0;
-  }
+  memset((void *) size_strong_gens, 0, size_base * sizeof(unsigned int));
+  memset((void *) size_orbits, 0, size_base * sizeof(unsigned int));
 }
 
 static void orbit_stab_chain (unsigned int const depth, unsigned int const init_pt) {
@@ -2025,20 +2016,27 @@ static void point_stabilizer( unsigned int const depth, unsigned int const pt ) 
 
   lmp = lmp_stab_gens[depth]; // the lmp <stab_gens[depth]>
   init_stab_chain();
+
   // put stab_gens[depth] into strong_gens[0]
-  for (i = 0; i < size_stab_gens[depth]; i++) {
-    add_strong_gens(0, stab_gens[depth][i]);
+  if (strong_gens[0] != NULL) {
+    free(strong_gens[0]);
   }
+  len = size_stab_gens[depth];
+  strong_gens[0] = malloc(len * sizeof(perm));
+  memcpy(strong_gens[0], stab_gens[depth], len * sizeof(perm));
+  size_strong_gens[0] = len;
+  
   add_base_point(pt);
   schreier_sims_stab_chain(0);
-  // the Stabiliser we want is <strong_gens[1]>
-  len = size_strong_gens[1];
 
+  // the Stabiliser we want is <strong_gens[1]>
   // store these new generators in the correct place in stab_gens that we want
-  stab_gens[depth + 1] = realloc(stab_gens[depth + 1], len * sizeof(perm));
-  for (i = 0; i < len; i++) {
-    stab_gens[depth + 1][i] = strong_gens[1][i];
+  if (stab_gens[depth + 1] != NULL) {
+    free(stab_gens[depth + 1]);
   }
+  len = size_strong_gens[1];
+  stab_gens[depth + 1] = malloc(len * sizeof(perm));
+  memcpy(stab_gens[depth + 1], strong_gens[1], len * sizeof(perm));
   size_stab_gens[depth + 1] = len;
   lmp_stab_gens[depth + 1] = LargestMovedPointPermColl( strong_gens[1], len );
   
@@ -2090,18 +2088,18 @@ static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
 // <gens> not including any values already in <map> (i.e. those with vals[i] =
 // true)
 
-void OrbitReps_md (unsigned int depth, unsigned int rep_depth) {
+void OrbitReps_md (unsigned int rep_depth) {
   unsigned int  nrgens, i, j, fst, m, img, n, max;
   perm*  gens;
   perm   gen;
  
-  gens = stab_gens[depth];
+  gens = stab_gens[rep_depth];
   for (i = rep_depth * nr2; i < (rep_depth + 1) * nr2; i++) {
     reps_md[i] = false;
   }
 
-  nrgens  = size_stab_gens[depth];
-  max     = lmp_stab_gens[depth];
+  nrgens  = size_stab_gens[rep_depth];
+  max     = lmp_stab_gens[rep_depth];
 
   // special case in case there are no gens, or just the identity.
 
@@ -2341,16 +2339,66 @@ void homo_hook_gap () {
   CALL_2ARGS(GAP_FUNC, user_param, t);
 }
 
+// condition handling
+
+static bool* conditions[MD * MD];
+static bool  alloc_conditions[MD * MD];
+
+static inline bool* get_condition(unsigned int const depth, 
+                                  unsigned int const i     ) {  // vertex in graph1
+  return conditions[depth * nr1 + i];
+}
+
+static inline void set_condition(unsigned int const depth, 
+                                 unsigned int const i,         // vertex in graph1
+                                 bool*              data  ) {
+  conditions[depth * nr1 + i] = data;
+  alloc_conditions[depth * nr1 + i] = false;
+}
+
+static void init_conditions() {
+  unsigned int i, j; 
+
+  for (i = 0; i < nr1; i++) {
+    conditions[i] = malloc(nr2 * sizeof(bool));
+    alloc_conditions[i] = true;
+    for (j = 0; j < nr2; j++) {
+      conditions[i][j] = true;
+    }
+  }
+
+  for (i = nr1; i < nr1 * nr1; i++) {
+    alloc_conditions[i] = false;
+  }
+}
+
+static inline void free_conditions(unsigned int const depth) {
+  unsigned int i;
+  for (i = 0; i < nr1; i++) {
+    if (alloc_conditions[depth * nr1 + i]) {
+      free(conditions[depth * nr1 + i]);
+    }
+    conditions[depth * nr1 + i] = NULL;
+  }
+}
+
+// copy from <depth> to <depth + 1> 
+static inline bool* copy_condition(unsigned int const depth, 
+                                   unsigned int const i     ) { // vertex in graph1
+  conditions[(depth + 1) * nr1 + i] = malloc(nr2 * sizeof(bool));
+  alloc_conditions[(depth + 1) * nr1 + i] = true;
+  memcpy((void *) conditions[(depth + 1) * nr1 + i], 
+         (void *) get_condition(depth, i), 
+         (size_t) nr2 * sizeof(bool));
+  return conditions[(depth + 1) * nr1 + i];
+}
+
 // the main recursive search algorithm
 
-void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled positions in map
-                      unsigned int const pos,   // the last position filled
-                      bool const *condition,    // blist of possible values for map[i]
-                      //Obj const gens,           // generators for
-                                                // Stabilizer(AsSet(map)) subgroup
-                                                // of automorphism group of graph2
+void SEARCH_HOMOS_MD (unsigned int const depth,     // the number of filled positions in map
+                      unsigned int const pos,       // the last position filled
                       unsigned int const rep_depth,
-                      unsigned int const rank){ // current number of distinct values in map
+                      unsigned int const rank){     // current number of distinct values in map
 
   unsigned int   i, j, k, min, next, w;
   bool           *copy;
@@ -2371,28 +2419,24 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
     return;
   }
 
-  copy = malloc((nr1 * nr2) * sizeof(bool));
-  memcpy((void *) copy, 
-         (void *) condition, 
-         (size_t) (nr1 * nr2) * sizeof(bool));
-  
   next = 0;      // the next position to fill
   min = nr2 + 1; // the minimum number of candidates for map[next]
 
   if (pos != MD + 1) {
     for (j = 0; j < nr1; j++){
+      set_condition(depth, j, get_condition(depth - 1, j));
       if (map[j] == -1) {
         if (neighbours1_md[nr1 * pos + j]) { // vertex j is adjacent to vertex pos in graph1
+          copy = copy_condition(depth - 1, j);
           sizes[depth * nr1 + j] = 0;
           for (k = 0; k < nr2; k++) {
-            copy[nr2 * j + k] &= neighbours2_md[nr2 * map[pos] + k];
-            if (copy[nr2 * j + k]) {
+            copy[k] &= neighbours2_md[nr2 * map[pos] + k];
+            if (copy[k]) {
               sizes[depth * nr1 + j]++;
             }
           }
         } 
         if (sizes[depth * nr1 + j] == 0) {
-          free(copy);
           return;
         }
         if (sizes[depth * nr1 + j] < min) {
@@ -2400,46 +2444,39 @@ void SEARCH_HOMOS_MD (unsigned int const depth, // the number of filled position
           min = sizes[depth * nr1 + j];
         }
       }
+      sizes[(depth + 1) * nr1 + j] = sizes[(depth * nr1) + j]; 
     }
-  }
-  
-  for (i = 0; i < nr1; i++) {
-    sizes[(depth + 1) * nr1 + i] = sizes[(depth * nr1) + i]; 
+  } else {
+    for (j = 0; j < nr1; j++){
+      sizes[(depth + 1) * nr1 + j] = sizes[(depth * nr1) + j]; 
+    }
   }
   
   if (rank < hint) {
     for (i = 0; i < nr2; i++) {
-      if (copy[nr2 * next + i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) {
+      copy = get_condition(depth, next);
+      if (copy[i] && reps_md[(rep_depth * nr2) + i] && ! vals_md[i]) {
         calls2++;
-        point_stabilizer(depth, i); // Calculate the stabiliser of the point i
+        point_stabilizer(rep_depth, i); // Calculate the stabiliser of the point i
                                     // in the stabiliser at the current depth
-        OrbitReps_md(depth + 1, rep_depth + 1);
+        OrbitReps_md(rep_depth + 1);
         map[next] = i;
         vals_md[i] = true;
-        SEARCH_HOMOS_MD(depth + 1, next, copy, rep_depth + 1, rank + 1);
+        SEARCH_HOMOS_MD(depth + 1, next, rep_depth + 1, rank + 1);
         map[next] = -1;
         vals_md[i] = false;
       }
     }
   }
   for (i = 0; i < nr2; i++) {
-    if (copy[nr2 * next + i] && vals_md[i]) {
+    copy = get_condition(depth, next);
+    if (copy[i] && vals_md[i]) {
       map[next] = i;
-
-      //start of: make sure the next level knows that we have the same stabiliser
-      size_stab_gens[depth + 1] = size_stab_gens[depth];
-      stab_gens[depth + 1] = realloc(stab_gens[depth + 1], size_stab_gens[depth] * sizeof(perm));
-      for (w = 0; w < size_stab_gens[depth]; w++) {
-        stab_gens[depth + 1][w] = stab_gens[depth][w];
-      }
-      lmp_stab_gens[depth + 1] = lmp_stab_gens[depth];
-      //end of that
-
-      SEARCH_HOMOS_MD(depth + 1, next, copy, rep_depth, rank);
+      SEARCH_HOMOS_MD(depth + 1, next, rep_depth, rank);
       map[next] = -1;
     }
   }
-  free(copy);
+  free_conditions(depth); 
   return;
 }
 
@@ -2638,7 +2675,6 @@ void GraphHomomorphisms_md (Obj  graph1,
                             bool isinjective) {
   Obj             out, nbs, gens;
   unsigned int    i, j, k, len;
-  bool            *condition;
   
   nr1 = DigraphNrVertices(graph1);
   nr2 = DigraphNrVertices(graph2);
@@ -2652,8 +2688,7 @@ void GraphHomomorphisms_md (Obj  graph1,
   }
 
   // initialise everything . . .
-  condition = malloc(nr1 * nr2 * sizeof(bool));
-  memset((void *) condition, true, nr1 * nr2 * sizeof(bool));
+  init_conditions();
   memset((void *) map, -1, nr1 * sizeof(int));
   memset((void *) vals_md, false, nr2 * sizeof(bool));
   memset((void *) neighbours1_md, false, nr1 * nr1 * sizeof(bool));
@@ -2695,7 +2730,7 @@ void GraphHomomorphisms_md (Obj  graph1,
   lmp_stab_gens[0] = LargestMovedPointPermColl( stab_gens[0], len );
   
   // get orbit reps
-  OrbitReps_md(0, 0);
+  OrbitReps_md(0);
   
   // misc parameters
   count = 0;
@@ -2710,10 +2745,9 @@ void GraphHomomorphisms_md (Obj  graph1,
     if (isinjective) {
      // SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook);
     } else {
-      SEARCH_HOMOS_MD(0, MD + 1, condition, 0, 0);
+      SEARCH_HOMOS_MD(0, MD + 1, 0, 0);
     }
   }
-  free(condition);
 }
 
 // prepare the graphs for SEARCH_HOMOS_SM
