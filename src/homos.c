@@ -10,6 +10,8 @@
 
 #include "src/homos.h"
 
+#define UNDEFINED MAXVERTS + 1
+
 static bool tables_init = false;
 static UIntL oneone[SYS_BITS];
 static UIntL ones[SYS_BITS];
@@ -59,6 +61,56 @@ void add_edges_homos_graph (HomosGraph* graph, UIntS from_vert, UIntS to_vert) {
   graph->neighbours[8 * from_vert + (to_vert / SYS_BITS)] |= oneone[to_vert % SYS_BITS];
 }
 
+
+// automorphism group 
+
+static BlissGraph* as_bliss_graph (HomosGraph* graph) {
+  BlissGraph  *graph;
+
+  n = graph->nr_verts;
+  m = (n / SYS_BITS);
+  graph = bliss_new(n);
+
+  adj = graph->neighbours;
+  for (i = 0; i < n; i++) {   // loop over vertices
+    for (j = 0; j < m; j++) { // loop over neighbours of vertex <i>
+      for (k = 0; k < SYS_BITS; k++) {
+        if (graph->neighbours[8 * i + j] & oneone[k]) {
+          bliss_add_edge(graph, i, SYS_BITS * j + k);
+        }
+      }
+    }
+    for (k = 0; k < (n % SYS_BITS); k++) {
+      if (graph->neighbours[8 * i + j] & oneone[k]) {
+        bliss_add_edge(graph, i, SYS_BITS * j + k);
+      }
+    }
+  }
+  return graph;
+}
+
+void auto_hook (void               *user_param,  // perm_coll!
+	        unsigned int       N,
+	        const unsigned int *aut        ) {
+  
+  unsigned int i;
+  perm* p = new_perm(user_param->deg);
+   
+  for(i = 0; i < N; i++){
+    p[i] = aut[i];
+  }
+  add_perm_coll(p);
+}
+
+static PermColl* homos_find_automorphisms (HomosGraph* homos_graph) {
+  
+  BlissGraph* graph = as_bliss_graph(homos_graph);
+  PermColl*   gens  = new_perm_coll(graph->nr_verts, graph->nr_verts - 1);
+  bliss_find_automorphisms(graph, auto_hook, gens, 0);
+  bliss_release(graph);
+  return gens;
+}
+
 static UIntS nr1;             // nr of vertices in graph1
 static UIntS nr2;             // nr of vertices in graph2
 static UIntS nr2_d;           // nr2 / SYS_BITS 
@@ -66,7 +118,7 @@ static UIntS nr2_m;           // nr2 % SYS_BITS
 static UIntL  count;                   // the UIntLber of endos found so far
 static UIntS  hint;           // an upper bound for the UIntLber of distinct values in map
 static UIntL  maxresults;              // upper bound for the UIntLber of returned homos
-static int  map[MAXVERTS];                 // partial image list
+static UIntS  map[MAXVERTS];                 // partial image list
 static UIntS sizes[MAXVERTS * MAXVERTS];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
 /*static UInt orb[MAXVERTS];                 // to hold the orbits in OrbitReps
 static bool reps_md[MAXVERTS * MAXVERTS];        // blist for orbit reps
@@ -84,7 +136,10 @@ static UIntL   dom2_sm[8];
 static UIntL   reps_sm[8 * MAXVERTS];
 
 static void*  user_param;              // a user_param for the hook
-static void  (*hook)();               // hook function applied to every homom. found
+void         (*hook)(void*        user_param,
+	                                      const UIntS  nr,
+	                                      const UIntS  *map       );
+                  // hook function applied to every homom. found
 
 static UIntL   calls1;                  // UIntLber of function call statistics 
 static UIntL   calls2;                  // calls1 is the UIntLber of calls to the search function
@@ -278,7 +333,7 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
   
   calls1++;
   if (depth == nr1) {
-    hook();
+    hook(user_param, nr1, map);
     count++;
     if (count >= maxresults) {
       longjmp(outofhere, 1);
@@ -290,11 +345,11 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
   next = 0;      // the next position to fill
   min = nr2 + 1; // the minimum UIntLber of candidates for map[next]
 
-  if (pos != MAXVERTS + 1) {
+  if (pos != UNDEFINED) {
     for (j = 0; j < nr1; j++){
       i = j / SYS_BITS;
       m = j % SYS_BITS;
-      if (map[j] == -1) {
+      if (map[j] == UNDEFINED) {
         if (neighbours1[pos * 8 + i] & oneone[m]) { // vertex j is adjacent to vertex pos in graph1
           sizes[depth * nr1 + j] = 0;
 	  for (k = 0; k < nr2_d; k++){
@@ -335,7 +390,7 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
         orbit_reps(rep_depth + 1);
         // blist of orbit reps of things not in vals_sm
         SEARCH_HOMOS_SM(depth + 1, next, copy, rep_depth + 1, rank + 1);
-        map[next] = -1;
+        map[next] = UNDEFINED;
         vals_sm[j] ^= oneone[m];
       }
     }
@@ -346,7 +401,7 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
     if (copy[8 * next + j] & vals_sm[j] & oneone[m]) {
       map[next] = i;
       SEARCH_HOMOS_SM(depth + 1, next, copy, rep_depth, rank);
-      map[next] = -1;
+      map[next] = UNDEFINED;
     }
   }
   return;
@@ -476,7 +531,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
     condition[8 * i + d] = ones[m];
   }
 
-  memset((void *) map, -1, nr1 * sizeof(int)); //everything is undefined
+  memset((void *) map, UNDEFINED, nr1 * sizeof(UIntS)); //everything is undefined
   
   for (i = 0; i < 8; i++){
     vals_sm[i] = 0;
@@ -540,7 +595,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
     if (isinjective) {
       //SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook, Stabilizer);
     } else {
-      SEARCH_HOMOS_SM(0, MAXVERTS + 1, condition, 0, 0);
+      SEARCH_HOMOS_SM(0, UNDEFINED, condition, 0, 0);
     }
   }
 }

@@ -4,17 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef SYS_IS_64_BIT
+// FIXME detect if we are on a 32-bit machine
 #define MAXVERTS 512
 typedef unsigned long int UIntL;
 #define SMALLINTLIMIT 1152921504606846976
 #define SYS_BITS 64
-#else
-#define MAXVERTS 256
-typedef unsigned int UIntL;
-#define SMALLINTLIMIT 268435456
-#define SYS_BITS 32
-#endif
 
 typedef unsigned short int UIntS;
 
