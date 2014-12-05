@@ -11,6 +11,7 @@ Header file for the digraphs.c file.
 #include <assert.h>
 
 #include "src/compiled.h"          /* GAP headers                */
+#include "src/homos.h"     
 
 Int DigraphNrVertices(Obj digraph);
 Int DigraphNrEdges(Obj digraph);
