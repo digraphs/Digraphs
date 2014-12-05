@@ -1,4 +1,4 @@
 #include "src/perms.h"
 
-extern perm* point_stabilizer( perm* const gens, UIntS const pt );
-extern extern void orbit_reps (UIntS depth, UIntS rep_depth);
+extern PermColl point_stabilizer( PermColl const genscoll, UIntS const pt );
+extern void orbit_reps (UIntS depth, UIntS rep_depth);
