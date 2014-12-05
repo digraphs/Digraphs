@@ -1,5 +1,4 @@
-static UIntS perm_buf[MAXVERTS];
-typedef UIntS* perm;
+#include "src/perms.h"
 
 static perm new_perm () {
   return malloc(nr2 * sizeof(UIntS));
