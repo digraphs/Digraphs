@@ -110,11 +110,6 @@ static UIntS lmp_stab_gens[MAXVERTS];    // GRAPH_HOMOS
 
 }*/
 
-
-
-static UIntS LargestMovedPointPermCollOld (Obj gens);
-static UIntS LargestMovedPointPermColl ( perm* const gens, UIntS const nrgens); 
-
 // 
 
 /*static UIntS IMAGE_PERM (UIntS const pt, Obj const perm) {
@@ -129,7 +124,7 @@ static UIntS LargestMovedPointPermColl ( perm* const gens, UIntS const nrgens);
   return 0; // keep compiler happy!
 }*/
 
-static UIntS LargestMovedPointPermCollOld (Obj const gens) {
+/*static UIntS LargestMovedPointPermCollOld (Obj const gens) {
   Obj           gen;
   UIntS  i, j;
   UInt2*        ptr2;
@@ -168,7 +163,7 @@ static UIntS LargestMovedPointPermCollOld (Obj const gens) {
   }
 
   return max;
-}
+}*/
 
 static UIntS LargestMovedPointPermColl ( perm* const gens, UIntS const nrgens ) {
   perm          gen; 

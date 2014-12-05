@@ -1439,7 +1439,7 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
 }
 
 // convert GAP perms to perms
-static perm as_perm (Obj const x) {
+/*static perm as_perm (Obj const x) {
   UInt  deg, i;
   UInt2 *ptr2;
   UInt4 *ptr4;
@@ -1477,7 +1477,7 @@ static Obj as_PERM4 (perm const x) {
     ptr[i] = (UInt4) x[i];
   }
   return p;
-}
+}*/
 
 // GAP-level function
 
