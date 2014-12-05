@@ -261,7 +261,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   
 }
 
-extern perm* point_stabilizer( *perm const gens, UIntS const pt ) {
+extern perm* point_stabilizer( perm* const gens, UIntS const pt ) {
 
   UIntS  i, len;
   perm*  ptr;
