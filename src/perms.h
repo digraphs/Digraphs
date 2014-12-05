@@ -21,3 +21,11 @@ static UIntS perm_buf[MAXVERTS];
 typedef UIntS* perm;
 
 static perm new_perm();
+
+struct perm_col {
+  perm* gens;
+  UIntL nr_gens;
+  UIntS lmp;
+};
+
+typedef struct perm_col PermCol;
