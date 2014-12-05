@@ -334,7 +334,7 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
                                     // in the stabiliser at the current depth
         map[next] = i;
         vals_sm[j] |= oneone[m];
-        OrbitReps_sm(depth + 1, rep_depth + 1);
+        orbit_reps(depth + 1, rep_depth + 1);
         // blist of orbit reps of things not in vals_sm
         SEARCH_HOMOS_SM(depth + 1, next, copy, rep_depth + 1, rank + 1);
         map[next] = -1;
@@ -454,9 +454,9 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
 
 void GraphHomomorphisms (HomosGraph*  graph1, 
                          HomosGraph*  graph2,
-                         void         (*hook_arg) (void*        user_param,
-	                                           const UIntS  nr,
-	                                           const UIntS  *map       ),
+                         void         (*hook_arg)(void*        user_param,
+	                                          const UIntS  nr,
+	                                          const UIntS  *map       ),
                          void*        user_param_arg,
                          UIntL        max_results_arg,
                          int          hint_arg, 
@@ -520,7 +520,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   lmp_stab_gens[0] = LargestMovedPointPermColl( stab_gens[0], len );
 
   // get orbit reps
-  OrbitReps_sm(0, 0);
+  orbit_reps(0, 0);
 
   // misc parameters
   count = 0;
@@ -531,7 +531,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   last_report = 0;
 
   // get orbit reps 
-  //UIntL reps = OrbitReps_sm(gens);
+  //UIntL reps = orbit_reps(gens);
   
   // misc parameters
   //count = 0;
