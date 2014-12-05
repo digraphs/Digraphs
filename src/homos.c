@@ -92,13 +92,17 @@ void auto_hook (void               *user_param,  // perm_coll!
 	        unsigned int       N,
 	        const unsigned int *aut        ) {
   
-  unsigned int i;
-  perm* p = new_perm(((PermColl*)user_param)->deg);
+  UIntS i;
+  UIntS deg = ((PermColl*) user_param)->deg;
+  perm p = new_perm(deg);
    
-  for(i = 0; i < N; i++){
+  for (i = 0; i < (UIntS) N; i++) {
     p[i] = aut[i];
   }
-  add_perm_coll(p);
+  for (; i < deg; i++) {
+    p[i] = i;
+  }
+  add_perm_coll((PermColl*) user_param, p);
 }
 
 static PermColl* homos_find_automorphisms (HomosGraph* homos_graph) {
