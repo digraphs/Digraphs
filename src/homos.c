@@ -1,4 +1,12 @@
-
+/***************************************************************************
+**
+*A  homos.c                  graph homomorphisms              Julius Jonusas
+**                                                            J. D. Mitchell 
+**                                                            
+**  Copyright (C) 2014 - Julius Jonusas and J. D. Mitchell 
+**  This file is free software, see license information at the end.
+**  
+*/
 
 #include "src/homos.h"
 
