@@ -99,8 +99,7 @@ void auto_hook (void               *user_param,  // perm_coll!
   for(i = 0; i < N; i++){
     p[i] = aut[i];
   }
-  user_param->gens[nrgens] = p
-  user_param->nrgens++;
+  add_perm_coll(p);
 }
 
 static PermColl* homos_find_automorphisms (HomosGraph* homos_graph) {
