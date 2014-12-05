@@ -18,3 +18,5 @@ typedef unsigned short int UIntS;
 
 static UIntS perm_buf[MAXVERTS];
 typedef UIntS* perm;
+
+static perm new_perm();
