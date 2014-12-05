@@ -261,10 +261,10 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   
 }
 
-extern perm* point_stabilizer( perm* const gens, UIntS const pt ) {
+extern PermColl point_stabilizer( PermColl const genscoll, UIntS const pt ) {
 
-  UIntS  i, len;
-  perm*  ptr;
+  UIntS     i, len;
+  PermColl  newcoll;
   // I want to work out the Stabiliser of pt in the group   <gens>
   // I want to store the generators of the resulting Stab in stab_gens[depth + 1]
   // I want to use the schreier-sims stuff
