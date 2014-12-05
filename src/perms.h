@@ -19,12 +19,13 @@ static perm new_perm();
 
 struct perm_coll {
   perm* gens;
-  UIntL nr_gens;
-  UIntS lmp;
+  UIntS nr_gens;
+  UIntS deg;
 };
 
-typedef struct perm_col PermColl;
+typedef struct perm_coll PermColl;
 
-PermColl* new_perm_coll(perm* gens, UIntL nr_gens); 
+PermColl* new_perm_coll(UIntS deg, UIntS nr_gens); 
+PermColl* add_perm_coll(PermColl* coll, perm* gen);
 PermColl* copy_perm_coll(PermColl* coll);
 void free_perm_coll(PermColl* coll);

@@ -191,7 +191,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
     for (j = 0; j < size_strong_gens[i]; j++) { 
       x = get_strong_gens(i, j);
       if ( perm_fixes_all_base_points( x ) ) {
-        for (k = 0; k < lmp; k++) {
+        for (k = 0; k < nr2; k++) {
           if (k != x[k]) {
             add_base_point(k);
             break;
@@ -234,7 +234,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
             y = false;
           } else if ( ! is_one(h) ) { // better method? IsOne(h)?
             y = false;
-            for (k = 0; k < lmp; k++) {
+            for (k = 0; k < nr2; k++) {
               if (k != h[k]) {
                 add_base_point(k);
                 break;
@@ -261,39 +261,33 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   
 }
 
-extern PermColl point_stabilizer( PermColl const genscoll, UIntS const pt ) {
+extern PermColl point_stabilizer( PermColl const genscoll*, UIntS const pt, PermColl outgens*) {
 
   UIntS     i, len;
-  PermColl  newcoll;
-  // I want to work out the Stabiliser of pt in the group   <gens>
-  // I want to store the generators of the resulting Stab in stab_gens[depth + 1]
-  // I want to use the schreier-sims stuff
-
-  lmp = // get the lmp 
+  
   init_stab_chain();
 
   // put gens into strong_gens[0]
   if (strong_gens[0] != NULL) {
     free(strong_gens[0]);
   }
-  len = // get the number of gens
+  len = genscoll->nr_gens;
   strong_gens[0] = malloc(len * sizeof(perm));
-  memcpy(strong_gens[0], gens[depth], len * sizeof(perm));
+  memcpy(strong_gens[0], genscoll->gens, len * sizeof(perm));
   size_strong_gens[0] = len;
   
   add_base_point(pt);
   schreier_sims_stab_chain(0);
 
-  // the s§tabiliser we want is <strong_gens[1]>
+  // the stabiliser we want is <strong_gens[1]>
   // store these new generators in the correct place in stab_gens that we want
-  if (stab_gens[depth + 1] != NULL) {
+  if ([depth + 1] != NULL) {
     free(stab_gens[depth + 1]);
   }
   len = size_strong_gens[1];  // number of new gens
   ptr = malloc(len * sizeof(perm));
   memcpy(ptr, strong_gens[1], len * sizeof(perm)); // set the new gens
   size_stab_gens[depth + 1] = len; // set the nr new gens
-  lmp_stab_gens[depth + 1] = LargestMovedPointPermColl( strong_gens[1], len ); // set the new lmp
   // put everything in the struct
 
   free_stab_chain();
@@ -413,18 +407,18 @@ static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
   return;
 }*/
 
-extern void orbit_reps (UIntS depth, UIntS rep_depth) {
+extern void orbit_reps (UIntS rep_depth) {
   UIntS  nrgens, i, j, fst, m, img, n, max, d;
   perm*  gens;
   perm   gen;
  
-  gens = stab_gens[depth];
+  gens = stab_gens[rep_depth];
   for (i = 8 * rep_depth; i < 8 * (rep_depth + 1); i++) {
     reps_sm[i] = 0;
   }
 
-  nrgens  = size_stab_gens[depth];
-  max     = lmp_stab_gens[depth];
+  nrgens  = size_stab_gens[rep_depth];
+  max     = lmp_stab_gens[rep_depth];
 
   // special case in case there are no gens, or just the identity.
 

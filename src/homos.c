@@ -148,10 +148,8 @@ static UIntL   calls2;                  // calls1 is the UIntLber of calls to th
 static UIntL last_report = 0;          // the last value of calls1 when we reported
 static UIntL report_interval = 999999; // the interval when we report
 
-static perm * stab_gens[MAXVERTS];              // GRAPH_HOMOS stabiliser gens
-static UIntS size_stab_gens[MAXVERTS];   // GRAPH_HOMOS
-static UIntS lmp_stab_gens[MAXVERTS];    // GRAPH_HOMOS
-
+static PermColl * stab_gens[MAXVERTS]; // GRAPH_HOMOS stabiliser gens
+static perm * new_gens;
 
 // algorithm for graphs with between SM and MD vertices . . .
 
@@ -382,11 +380,13 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
       if ((copy[8 * next + j] & reps_sm[(8 * rep_depth) + j] & oneone[m]) 
           && (vals_sm[j] & oneone[m]) == 0) { 
         calls2++;
-        point_stabilizer(depth, i); // Calculate the stabiliser of the point i
-                                    // in the stabiliser at the current depth
+
+        // stabiliser of the point i in the stabiliser at the current rep_depth
+        //stab_gens[rep_depth + 1] = point_stabilizer(stab_gens[rep_depth], i);
+        //TODO
         map[next] = i;
         vals_sm[j] |= oneone[m];
-        orbit_reps(depth + 1, rep_depth + 1);
+        orbit_reps(rep_depth + 1);
         // blist of orbit reps of things not in vals_sm
         SEARCH_HOMOS_SM(depth + 1, next, copy, rep_depth + 1, rank + 1);
         map[next] = UNDEFINED;
@@ -399,16 +399,6 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
     m = i % SYS_BITS;
     if (copy[8 * next + j] & vals_sm[j] & oneone[m]) {
       map[next] = i;
-
-      //start of: make sure the next level knows that we have the same stabiliser
-      size_stab_gens[depth + 1] = size_stab_gens[depth];
-      stab_gens[depth + 1] = realloc(stab_gens[depth + 1], size_stab_gens[depth] * sizeof(perm));
-      for (w = 0; w < size_stab_gens[depth]; w++) {
-        stab_gens[depth + 1][w] = stab_gens[depth][w];
-      }
-      lmp_stab_gens[depth + 1] = lmp_stab_gens[depth];
-      //end of that
-
       SEARCH_HOMOS_SM(depth + 1, next, copy, rep_depth, rank);
       map[next] = UNDEFINED;
     }
@@ -558,15 +548,30 @@ void GraphHomomorphisms (HomosGraph*  graph1,
 
   // convert generators to our perm type
   len = (UIntS) LEN_PLIST(gens);
-  stab_gens[0] = realloc(stab_gens[0], len * sizeof(perm));
-  for (i = 1; i <= len; i++) {
-    stab_gens[0][i - 1] = as_perm(ELM_PLIST(gens, i));
+
+  // get pointer to where we want the new generators to go
+  if (stab_gens[0] == NULL) {
+    new_gens = malloc(len * sizeof(perm));
+  } else {
+    new_gens = realloc(stab_gens[0]->gens, len * sizeof(perm));
   }
-  size_stab_gens[0] = len;
-  lmp_stab_gens[0] = LargestMovedPointPermColl( stab_gens[0], len );
+
+  // populate the new generators
+  for (i = 1; i <= len; i++) {
+    new_gens[i - 1] = as_perm(ELM_PLIST(gens, i));
+  }
+
+  // store the info in our struct
+  if (stab_gens[0] == NULL) {
+    stab_gens[0] = new_perm_coll(new_gens, len);
+  } else {
+    stab_gens[0]->gens = new_gens;
+    stab_gens[0]->nr_gens = len;
+    stab_gens[0]->lmp = largest_moved_point(new_gens, len);
+  }
 
   // get orbit reps
-  orbit_reps(0, 0);
+  orbit_reps(0);
 
   // misc parameters
   count = 0;
