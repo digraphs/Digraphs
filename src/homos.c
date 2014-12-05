@@ -15,8 +15,7 @@ static UIntL oneone[SYS_BITS];
 static UIntL ones[SYS_BITS];
 static jmp_buf outofhere;
 
-static void inittabs(void)
-{ 
+static void inittabs(void) { 
   if(!tables_init) {
     UIntL i;
     UIntL v = 1;
@@ -475,10 +474,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   }
 
   // initialise everything . . .
-  if (!tablesinitialised) {
-    inittabs();
-    tablesinitialised = true;
-  }
+  inittabs();
   
   UIntL condition[8 * nr1];
   d = nr1 / SYS_BITS;
