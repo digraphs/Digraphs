@@ -15,8 +15,7 @@ static UIntL oneone[SYS_BITS];
 static UIntL ones[SYS_BITS];
 static jmp_buf outofhere;
 
-static void inittabs(void)
-{ 
+static void inittabs(void) { 
   if(!tables_init) {
     UIntL i;
     UIntL v = 1;
@@ -67,9 +66,9 @@ static UIntS nr2_m;           // nr2 % SYS_BITS
 static UIntL  count;                   // the UIntLber of endos found so far
 static UIntS  hint;           // an upper bound for the UIntLber of distinct values in map
 static UIntL  maxresults;              // upper bound for the UIntLber of returned homos
-/*static UInt orb[MAXVERTS];                 // to hold the orbits in OrbitReps
-static UIntS sizes[MAXVERTS * MAXVERTS];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
 static int  map[MAXVERTS];                 // partial image list
+static UIntS sizes[MAXVERTS * MAXVERTS];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
+/*static UInt orb[MAXVERTS];                 // to hold the orbits in OrbitReps
 static bool reps_md[MAXVERTS * MAXVERTS];        // blist for orbit reps
 static bool vals_md[MAXVERTS];             // blist for values in map
 static bool neighbours1_md[MAXVERTS * MAXVERTS]; // the neighbours of the graph1
@@ -118,7 +117,7 @@ void homo_hook_print () {
 
 // condition handling
 
-static bool* conditions[MAXVERTS * MAXVERTS];
+/*static bool* conditions[MAXVERTS * MAXVERTS];
 static bool  alloc_conditions[MAXVERTS * MAXVERTS];
 
 static inline bool* get_condition(UIntS const depth, 
@@ -175,11 +174,11 @@ static inline bool* copy_condition(UIntS const depth,
          (void *) get_condition(depth, i), 
          (size_t) nr2 * sizeof(bool));
   return conditions[(depth + 1) * nr1 + i];
-}
+}*/
 
 // the main recursive search algorithm
 
-void SEARCH_HOMOS_MD (UIntS const depth,     // the UIntLber of filled positions in map
+/*void SEARCH_HOMOS_MD (UIntS const depth,     // the UIntLber of filled positions in map
                       UIntS const pos,       // the last position filled
                       UIntS const rep_depth,
                       UIntS const rank){     // current UIntLber of distinct values in map
@@ -264,7 +263,7 @@ void SEARCH_HOMOS_MD (UIntS const depth,     // the UIntLber of filled positions
   }
   free_conditions(depth); 
   return;
-}
+}*/
 
 void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
                       UIntS   pos,  // the last position filled
@@ -326,15 +325,14 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
     for (i = 0; i < nr2; i++) {
       j = i / SYS_BITS;
       m = i % SYS_BITS;
-      if ((copy[8 * next + j] & reps_sm[(8 * rep_depth) + j] & oneone[m]) && (vals_sm[j] & oneone[m]) == 0) { 
+      if ((copy[8 * next + j] & reps_sm[(8 * rep_depth) + j] & oneone[m]) 
+          && (vals_sm[j] & oneone[m]) == 0) { 
         calls2++;
-        //Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));//TODO remove
-	//Obj newGens; //= point_stabilizer(gens, i); // TODO: fix this to use the new perms
         point_stabilizer(depth, i); // Calculate the stabiliser of the point i
                                     // in the stabiliser at the current depth
         map[next] = i;
         vals_sm[j] |= oneone[m];
-        OrbitReps_sm(depth + 1, rep_depth + 1);
+        orbit_reps(depth + 1, rep_depth + 1);
         // blist of orbit reps of things not in vals_sm
         SEARCH_HOMOS_SM(depth + 1, next, copy, rep_depth + 1, rank + 1);
         map[next] = -1;
@@ -454,9 +452,9 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
 
 void GraphHomomorphisms (HomosGraph*  graph1, 
                          HomosGraph*  graph2,
-                         void         hook_arg (void*        user_param,
-	                                        const UIntS  nr,
-	                                        const UIntS  *map       ),
+                         void         (*hook_arg)(void*        user_param,
+	                                          const UIntS  nr,
+	                                          const UIntS  *map       ),
                          void*        user_param_arg,
                          UIntL        max_results_arg,
                          int          hint_arg, 
@@ -464,26 +462,19 @@ void GraphHomomorphisms (HomosGraph*  graph1,
 
   UIntS   i, j, k, d, m, len;
   
-  Pr("GraphHomomorphisms_sm!\n", 0L, 0L);
-
   nr1 = graph1->nr_verts;
   nr2 = graph2->nr_verts;
   nr2_d = nr2 / SYS_BITS;
   nr2_m = nr2 % SYS_BITS;
 
-  if (nr1 > MAXVERTS || nr2 > MAXVERTS) {
-    ErrorQuit("too many vertices!", 0L, 0L);
-  }
+  assert(nr1 <= MAXVERTS && nr2 <= MAXVERTS);
   
   if (isinjective) {// && nr2 < nr1) { TODO uncomment when we have sm method for injective
     return;
   }
 
   // initialise everything . . .
-  if (!tablesinitialised) {
-    inittabs();
-    tablesinitialised = true;
-  }
+  inittabs();
   
   UIntL condition[8 * nr1];
   d = nr1 / SYS_BITS;
@@ -520,7 +511,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   lmp_stab_gens[0] = LargestMovedPointPermColl( stab_gens[0], len );
 
   // get orbit reps
-  OrbitReps_sm(0, 0);
+  orbit_reps(0, 0);
 
   // misc parameters
   count = 0;
@@ -531,7 +522,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   last_report = 0;
 
   // get orbit reps 
-  //UIntL reps = OrbitReps_sm(gens);
+  //UIntL reps = orbit_reps(gens);
   
   // misc parameters
   //count = 0;

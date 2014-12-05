@@ -10,6 +10,8 @@
 
 #include "src/schreier-sims.h"
 
+#include <setjmp.h>
+
 struct homos_graph_struct {
   UIntL* neighbours;
   UIntS  nr_verts;
@@ -21,7 +23,9 @@ void homo_hook_print ();
 
 void GraphHomomorphisms (HomosGraph*  graph1, 
                          HomosGraph*  graph2,
-                         void         hook_arg (),
+                         void         (*hook)(void*        user_param,
+	                                      const UIntS  nr,
+	                                      const UIntS  *map       ),
                          void*        user_param_arg,
                          UIntL        max_results_arg,
                          int          hint_arg, 

@@ -2,14 +2,14 @@
 
 // Schreier-Sims set up
 
-static perm *        strong_gens[MAXVERTS];      // strong generators
-static perm          transversal[MAXVERTS * MAXVERTS];
-static perm          transversal_inv[MAXVERTS * MAXVERTS];
-static bool          first_ever_call = true;
+static perm * strong_gens[MAXVERTS];      // strong generators
+static perm   transversal[MAXVERTS * MAXVERTS];
+static perm   transversal_inv[MAXVERTS * MAXVERTS];
+static bool   first_ever_call = true;
 static UIntS  size_strong_gens[MAXVERTS];
 static UIntS  orbits[MAXVERTS * MAXVERTS];
 static UIntS  size_orbits[MAXVERTS];
-static bool          borbits[MAXVERTS * MAXVERTS];
+static bool   borbits[MAXVERTS * MAXVERTS];
 static UIntS  lmp;
 static UIntS  base[MAXVERTS];
 static UIntS  size_base;
@@ -261,40 +261,43 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   
 }
 
-static void point_stabilizer( UIntS const depth, UIntS const pt ) {
+extern PermColl point_stabilizer( PermColl const genscoll, UIntS const pt ) {
 
-  UIntS  i, len;
-  // I want to work out the Stabiliser of pt in the group   <stab_gens[depth]>
+  UIntS     i, len;
+  PermColl  newcoll;
+  // I want to work out the Stabiliser of pt in the group   <gens>
   // I want to store the generators of the resulting Stab in stab_gens[depth + 1]
   // I want to use the schreier-sims stuff
 
-  lmp = lmp_stab_gens[depth]; // the lmp <stab_gens[depth]>
+  lmp = // get the lmp 
   init_stab_chain();
 
-  // put stab_gens[depth] into strong_gens[0]
+  // put gens into strong_gens[0]
   if (strong_gens[0] != NULL) {
     free(strong_gens[0]);
   }
-  len = size_stab_gens[depth];
+  len = // get the number of gens
   strong_gens[0] = malloc(len * sizeof(perm));
-  memcpy(strong_gens[0], stab_gens[depth], len * sizeof(perm));
+  memcpy(strong_gens[0], gens[depth], len * sizeof(perm));
   size_strong_gens[0] = len;
   
   add_base_point(pt);
   schreier_sims_stab_chain(0);
 
-  // the Stabiliser we want is <strong_gens[1]>
+  // the s§tabiliser we want is <strong_gens[1]>
   // store these new generators in the correct place in stab_gens that we want
   if (stab_gens[depth + 1] != NULL) {
     free(stab_gens[depth + 1]);
   }
-  len = size_strong_gens[1];
-  stab_gens[depth + 1] = malloc(len * sizeof(perm));
-  memcpy(stab_gens[depth + 1], strong_gens[1], len * sizeof(perm));
-  size_stab_gens[depth + 1] = len;
-  lmp_stab_gens[depth + 1] = LargestMovedPointPermColl( strong_gens[1], len );
-  
+  len = size_strong_gens[1];  // number of new gens
+  ptr = malloc(len * sizeof(perm));
+  memcpy(ptr, strong_gens[1], len * sizeof(perm)); // set the new gens
+  size_stab_gens[depth + 1] = len; // set the nr new gens
+  lmp_stab_gens[depth + 1] = LargestMovedPointPermColl( strong_gens[1], len ); // set the new lmp
+  // put everything in the struct
+
   free_stab_chain();
+  return ptr;
 }
 
 /*static Obj size_stab_chain () {
@@ -354,7 +357,7 @@ static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
 // <gens> not including any values already in <map> (i.e. those with vals[i] =
 // true)
 
-void OrbitReps_md (UIntS rep_depth) {
+/*void OrbitReps_md (UIntS rep_depth) {
   UIntS  nrgens, i, j, fst, m, img, n, max;
   perm*  gens;
   perm   gen;
@@ -408,9 +411,9 @@ void OrbitReps_md (UIntS rep_depth) {
     while (! dom1_md[fst] && fst < max) fst++; 
   }
   return;
-}
+}*/
 
-void OrbitReps_sm (UIntS depth, UIntS rep_depth) {
+extern void orbit_reps (UIntS depth, UIntS rep_depth) {
   UIntS  nrgens, i, j, fst, m, img, n, max, d;
   perm*  gens;
   perm   gen;
