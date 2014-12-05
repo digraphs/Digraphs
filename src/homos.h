@@ -10,6 +10,8 @@
 
 #include "src/schreier-sims.h"
 
+#include <setjmp.h>
+
 struct homos_graph_struct {
   UIntL* neighbours;
   UIntS  nr_verts;

@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 #ifdef SYS_IS_64_BIT
 #define MAXVERTS 512
