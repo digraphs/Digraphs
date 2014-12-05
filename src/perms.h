@@ -27,6 +27,6 @@ struct perm_coll {
 typedef struct perm_coll PermColl;
 
 PermColl* new_perm_coll(UIntS deg, UIntS upper_bound);
-PermColl* add_perm_coll(PermColl* coll, Perm* gen);
+PermColl* add_perm_coll(PermColl* coll, Perm gen);
 PermColl* copy_perm_coll(PermColl* coll);
 void free_perm_coll(PermColl* coll);

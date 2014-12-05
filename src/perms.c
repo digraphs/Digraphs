@@ -2,9 +2,9 @@
 
 PermColl* new_perm_coll (UIntS deg, UIntS upper_bound) {
   PermColl coll;
-  Perm**   gens;
+  Perm*   gens;
 
-  gens = malloc(nr_gens * sizeof(perm*));
+  gens = malloc(nr_gens * sizeof(perm));
   coll->gens = gens;
   coll->nr_gens = 0;
   coll->deg = deg;
@@ -13,12 +13,12 @@ PermColl* new_perm_coll (UIntS deg, UIntS upper_bound) {
 }
 
 // the generator is now controlled by the PermColl
-PermColl* add_perm_coll (PermColl* coll, perm* gen) {
+PermColl* add_perm_coll (PermColl* coll, perm gen) {
 
   assert(coll->nr_gens <= coll->alloc_size);
 
   if (nr_gens == alloc) {
-    coll->gens = realloc(coll->gens, (nr_gens + 1) * sizeof(perm*));
+    coll->gens = realloc(coll->gens, (nr_gens + 1) * sizeof(perm));
     (coll->alloc_size)++;
   }
   coll->gens[(coll->nr_gens)++] = gen;
