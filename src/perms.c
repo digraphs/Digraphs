@@ -1,18 +1,26 @@
 #include "src/perms.h"
 
-// new_perm_coll takes ownership of gens
-PermColl* new_perm_coll (UIntS deg, UIntS nr_gens) {
+PermColl* new_perm_coll (UIntS deg, UIntS upper_bound) {
   PermColl coll;
-  perm*    gens;
+  Perm**   gens;
 
-  gens = malloc(nr_gens * sizeof(perm));
+  gens = malloc(nr_gens * sizeof(perm*));
   coll->gens = gens;
   coll->nr_gens = 0;
   coll->deg = deg;
+  coll->alloc_size = upper_bound;
   return coll;
 }
 
+// the generator is now controlled by the PermColl
 PermColl* add_perm_coll (PermColl* coll, perm* gen) {
+
+  assert(coll->nr_gens <= coll->alloc_size);
+
+  if (nr_gens == alloc) {
+    coll->gens = realloc(coll->gens, (nr_gens + 1) * sizeof(perm*));
+    (coll->alloc_size)++;
+  }
   coll->gens[(coll->nr_gens)++] = gen;
   return coll;
 }

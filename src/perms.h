@@ -15,17 +15,18 @@ typedef unsigned short int UIntS;
 static UIntS perm_buf[MAXVERTS];
 typedef UIntS* perm;
 
-static perm new_perm();
+static Perm new_perm();
 
 struct perm_coll {
   perm* gens;
   UIntS nr_gens;
   UIntS deg;
+  UIntS alloc_size;
 };
 
 typedef struct perm_coll PermColl;
 
-PermColl* new_perm_coll(UIntS deg, UIntS nr_gens); 
-PermColl* add_perm_coll(PermColl* coll, perm* gen);
+PermColl* new_perm_coll(UIntS deg, UIntS upper_bound);
+PermColl* add_perm_coll(PermColl* coll, Perm* gen);
 PermColl* copy_perm_coll(PermColl* coll);
 void free_perm_coll(PermColl* coll);
