@@ -67,9 +67,9 @@ static UIntS nr2_m;           // nr2 % SYS_BITS
 static UIntL  count;                   // the UIntLber of endos found so far
 static UIntS  hint;           // an upper bound for the UIntLber of distinct values in map
 static UIntL  maxresults;              // upper bound for the UIntLber of returned homos
-/*static UInt orb[MAXVERTS];                 // to hold the orbits in OrbitReps
-static UIntS sizes[MAXVERTS * MAXVERTS];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
 static int  map[MAXVERTS];                 // partial image list
+static UIntS sizes[MAXVERTS * MAXVERTS];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
+/*static UInt orb[MAXVERTS];                 // to hold the orbits in OrbitReps
 static bool reps_md[MAXVERTS * MAXVERTS];        // blist for orbit reps
 static bool vals_md[MAXVERTS];             // blist for values in map
 static bool neighbours1_md[MAXVERTS * MAXVERTS]; // the neighbours of the graph1
@@ -118,7 +118,7 @@ void homo_hook_print () {
 
 // condition handling
 
-static bool* conditions[MAXVERTS * MAXVERTS];
+/*static bool* conditions[MAXVERTS * MAXVERTS];
 static bool  alloc_conditions[MAXVERTS * MAXVERTS];
 
 static inline bool* get_condition(UIntS const depth, 
@@ -175,11 +175,11 @@ static inline bool* copy_condition(UIntS const depth,
          (void *) get_condition(depth, i), 
          (size_t) nr2 * sizeof(bool));
   return conditions[(depth + 1) * nr1 + i];
-}
+}*/
 
 // the main recursive search algorithm
 
-void SEARCH_HOMOS_MD (UIntS const depth,     // the UIntLber of filled positions in map
+/*void SEARCH_HOMOS_MD (UIntS const depth,     // the UIntLber of filled positions in map
                       UIntS const pos,       // the last position filled
                       UIntS const rep_depth,
                       UIntS const rank){     // current UIntLber of distinct values in map
@@ -264,7 +264,7 @@ void SEARCH_HOMOS_MD (UIntS const depth,     // the UIntLber of filled positions
   }
   free_conditions(depth); 
   return;
-}
+}*/
 
 void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
                       UIntS   pos,  // the last position filled
@@ -454,9 +454,9 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
 
 void GraphHomomorphisms (HomosGraph*  graph1, 
                          HomosGraph*  graph2,
-                         void         hook_arg (void*        user_param,
-	                                        const UIntS  nr,
-	                                        const UIntS  *map       ),
+                         void         (*hook_arg) (void*        user_param,
+	                                           const UIntS  nr,
+	                                           const UIntS  *map       ),
                          void*        user_param_arg,
                          UIntL        max_results_arg,
                          int          hint_arg, 
