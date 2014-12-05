@@ -22,10 +22,14 @@ typedef UIntS* perm;
 
 static perm new_perm();
 
-struct perm_col {
+struct perm_coll {
   perm* gens;
   UIntL nr_gens;
   UIntS lmp;
 };
 
-typedef struct perm_col PermCol;
+typedef struct perm_col PermColl;
+
+PermColl* new_perm_coll(perm* gens, UIntL nr_gens); 
+PermColl* copy_perm_coll(PermColl* coll);
+void free_perm_coll(PermColl* coll);

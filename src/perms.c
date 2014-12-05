@@ -1,5 +1,24 @@
 #include "src/perms.h"
 
+// new_perm_coll takes ownership of gens
+PermColl* new_perm_coll (perm* gens, UIntL ne_gens) {
+  PermColl coll;
+  coll->gens = gens;
+  coll->nr_gens = nr_gens;
+  return coll;
+}
+
+PermColl* copy_perm_coll (PermColl* coll) {
+
+  return newcoll;
+}
+
+void free_perm_coll (PermColl* coll) {
+  if (coll->gens != NULL) {
+    free(coll->gens);
+  }
+}
+
 static perm new_perm () {
   return malloc(nr2 * sizeof(UIntS));
 }
