@@ -1,20 +1,36 @@
 #include "src/perms.h"
 
 // new_perm_coll takes ownership of gens
-PermColl* new_perm_coll (perm* gens, UIntL ne_gens) {
+PermColl* new_perm_coll (UIntS deg, UIntS nr_gens) {
   PermColl coll;
+  perm*    gens;
+
+  gens = malloc(nr_gens * sizeof(perm));
   coll->gens = gens;
-  coll->nr_gens = nr_gens;
+  coll->nr_gens = 0;
+  coll->deg = deg;
+  return coll;
+}
+
+PermColl* add_perm_coll (PermColl* coll, perm* gen) {
+  coll->gens[(coll->nr_gens)++] = gen;
   return coll;
 }
 
 PermColl* copy_perm_coll (PermColl* coll) {
-
+  //TODO
   return newcoll;
 }
 
 void free_perm_coll (PermColl* coll) {
+  unsigned int i;
+  
   if (coll->gens != NULL) {
+    for (i = 0; i < coll->nr_gens; i++) {
+      if (coll->gens[i] != NULL) {
+        free(coll->gens[i]);
+      }
+    }
     free(coll->gens);
   }
 }
@@ -171,7 +187,7 @@ static perm invert_perm (perm const x) {
   return max;
 }*/
 
-static UIntS LargestMovedPointPermColl ( perm* const gens, UIntS const nrgens ) {
+/*static UIntS largest_moved_point ( perm* const gens, UIntS const nrgens ) {
   perm          gen;
   UIntS  max = 0, i, j;
 
@@ -186,6 +202,5 @@ static UIntS LargestMovedPointPermColl ( perm* const gens, UIntS const nrgens ) 
     }
   }
   return max;
-}
-
+}*/
 
