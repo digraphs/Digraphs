@@ -105,14 +105,14 @@ static UIntS lmp_stab_gens[MAXVERTS];    // GRAPH_HOMOS
 // homomorphism hook funcs
 
 void homo_hook_print () {
-  UInt i;
+  UIntS i;
 
-  Pr("Transformation( [ ", 0L, 0L);
-  Pr("%d", (Int) map[0] + 1, 0L);
+  printf("endomorphism image list: { ");
+  printf("%d", map[0] + 1);
   for (i = 1; i < nr1; i++) {
-    Pr(", %d", (Int) map[i] + 1, 0L);
+    printf(", %d", map[i] + 1);
   }
-  Pr(" ] )\n", 0L, 0L);
+  printf(" }\n");
 }
 
 
