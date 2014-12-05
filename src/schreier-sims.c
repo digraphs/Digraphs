@@ -2,9 +2,9 @@
 
 // Schreier-Sims set up
 
-static perm * strong_gens[MAXVERTS];      // strong generators
-static perm   transversal[MAXVERTS * MAXVERTS];
-static perm   transversal_inv[MAXVERTS * MAXVERTS];
+static Perm * strong_gens[MAXVERTS];      // strong generators
+static Perm   transversal[MAXVERTS * MAXVERTS];
+static Perm   transversal_inv[MAXVERTS * MAXVERTS];
 static bool   first_ever_call = true;
 static UIntS  size_strong_gens[MAXVERTS];
 static UIntS  orbits[MAXVERTS * MAXVERTS];
@@ -14,31 +14,31 @@ static UIntS  lmp;
 static UIntS  base[MAXVERTS];
 static UIntS  size_base;
 
-static inline void add_strong_gens (UIntS const pos, perm const value) {
+static inline void add_strong_gens (UIntS const pos, Perm const value) {
   size_strong_gens[pos]++;
-  strong_gens[pos] = realloc(strong_gens[pos], size_strong_gens[pos] * sizeof(perm));
+  strong_gens[pos] = realloc(strong_gens[pos], size_strong_gens[pos] * sizeof(Perm));
   strong_gens[pos][size_strong_gens[pos] - 1] = value;
 }
 
-static inline perm get_strong_gens (UIntS const i, UIntS const j) {
+static inline Perm get_strong_gens (UIntS const i, UIntS const j) {
   return strong_gens[i][j];
 }
 
-static inline perm get_transversal (UIntS const i, UIntS const j) {
+static inline Perm get_transversal (UIntS const i, UIntS const j) {
   return transversal[i * MAXVERTS + j];
 }
 
-static inline perm get_transversal_inv (UIntS const i, UIntS const j) {
+static inline Perm get_transversal_inv (UIntS const i, UIntS const j) {
   return transversal_inv[i * MAXVERTS + j];
 }
 
 static inline void set_transversal (UIntS const i, UIntS const j, 
-    perm const value) {
+    Perm const value) {
   transversal[i * MAXVERTS + j] = value;
   transversal_inv[i * MAXVERTS + j] = invert_perm(value);
 }
 
-static bool perm_fixes_all_base_points ( perm const x ) {
+static bool perm_fixes_all_base_points ( Perm const x ) {
   UIntS i;
 
   for (i = 0; i < size_base; i++) {
@@ -53,7 +53,7 @@ static inline void add_base_point (UIntS const pt) {
   base[size_base] = pt;
   size_orbits[size_base] = 1;
   orbits[size_base * MAXVERTS] = pt;
-  borbits[size_base * nr2 + pt] = true;
+  borbits[size_base * deg + pt] = true;
   set_transversal(size_base, pt, id_perm());
   size_base++;
 }
@@ -69,8 +69,8 @@ static void remove_base_points (UIntS const depth) {
     size_strong_gens[i + 1] = 0;
     size_orbits[i] = 0;
     
-    for (j = 0; j < nr2; j++) {//TODO double-check nr2!
-      borbits[i * nr2 + j] = false;
+    for (j = 0; j < deg; j++) {//TODO double-check deg!
+      borbits[i * deg + j] = false;
     }
   }
 }
@@ -91,14 +91,14 @@ static void init_stab_chain () {
     first_ever_init();
   }
 
-  memset((void *) borbits, false, nr2 * nr2 * sizeof(bool)); 
+  memset((void *) borbits, false, deg * deg * sizeof(bool)); 
   size_base = 0;
 }
 
 static void init_endos_base_points() {
   UIntS  i;
 
-  for (i = 0; i < nr2 - 1; i++) {
+  for (i = 0; i < deg - 1; i++) {
     add_base_point(i);
   }
 }
@@ -112,7 +112,7 @@ static void free_stab_chain () {
 
 static void orbit_stab_chain (UIntS const depth, UIntS const init_pt) {
   UIntS i, j, pt, img;
-  perm         x;
+  Perm         x;
 
   assert( depth <= size_base ); // Should this be strict?
 
@@ -121,19 +121,19 @@ static void orbit_stab_chain (UIntS const depth, UIntS const init_pt) {
     for (j = 0; j < size_strong_gens[depth]; j++) {
       x = get_strong_gens(depth, j);
       img = x[pt];
-      if (! borbits[depth * nr2 + img]) {
+      if (! borbits[depth * deg + img]) {
         orbits[depth * MAXVERTS + size_orbits[depth]] = img;
         size_orbits[depth]++;
-        borbits[depth * nr2 + img] = true;
+        borbits[depth * deg + img] = true;
         set_transversal(depth, img, prod_perms(get_transversal(depth, pt), x));
       }
     }
   }
 }
 
-static void add_gen_orbit_stab_chain (UIntS const depth, perm const gen) {
+static void add_gen_orbit_stab_chain (UIntS const depth, Perm const gen) {
   UIntS  i, j, pt, img;
-  perm          x;
+  Perm          x;
 
   assert( depth <= size_base );
 
@@ -142,10 +142,10 @@ static void add_gen_orbit_stab_chain (UIntS const depth, perm const gen) {
   for (i = 0; i < nr; i++) {
     pt = orbits[depth * MAXVERTS + i];
     img = gen[pt];
-    if (! borbits[depth * nr2 + img]) {
+    if (! borbits[depth * deg + img]) {
       orbits[depth * MAXVERTS + size_orbits[depth]] = img;
       size_orbits[depth]++;
-      borbits[depth * nr2 + img] = true;
+      borbits[depth * deg + img] = true;
       set_transversal(depth, img, 
         prod_perms(get_transversal(depth, pt), gen));
     }
@@ -156,24 +156,24 @@ static void add_gen_orbit_stab_chain (UIntS const depth, perm const gen) {
     for (j = 0; j < size_strong_gens[depth]; j++) {
       x = get_strong_gens(depth, j);
       img = x[pt];
-      if (! borbits[depth * nr2 + img]) {
+      if (! borbits[depth * deg + img]) {
         orbits[depth * MAXVERTS + size_orbits[depth]] = img;
         size_orbits[depth]++;
-        borbits[depth * nr2 + img] = true;
+        borbits[depth * deg + img] = true;
         set_transversal(depth, img, prod_perms(get_transversal(depth, pt), x));
       }
     }
   }
 }
 
-static void sift_stab_chain (perm* g, UIntS* depth) {
+static void sift_stab_chain (Perm* g, UIntS* depth) {
   UIntS beta;
 
   assert(*depth == 0);
   
   for (; *depth < size_base; (*depth)++) {
     beta = (*g)[base[*depth]];
-    if (! borbits[*depth * nr2 + beta]) {
+    if (! borbits[*depth * deg + beta]) {
       return;
     }
     prod_perms_in_place(*g, get_transversal_inv(*depth, beta));
@@ -182,7 +182,7 @@ static void sift_stab_chain (perm* g, UIntS* depth) {
 
 static void schreier_sims_stab_chain ( UIntS const depth ) {
 
-  perm          x, h, prod;
+  Perm          x, h, prod;
   bool          escape, y;
   int           i;
   UIntS  j, jj, k, l, m, beta, betax;
@@ -191,7 +191,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
     for (j = 0; j < size_strong_gens[i]; j++) { 
       x = get_strong_gens(i, j);
       if ( perm_fixes_all_base_points( x ) ) {
-        for (k = 0; k < nr2; k++) {
+        for (k = 0; k < deg; k++) {
           if (k != x[k]) {
             add_base_point(k);
             break;
@@ -234,7 +234,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
             y = false;
           } else if ( ! is_one(h) ) { // better method? IsOne(h)?
             y = false;
-            for (k = 0; k < nr2; k++) {
+            for (k = 0; k < deg; k++) {
               if (k != h[k]) {
                 add_base_point(k);
                 break;
@@ -261,7 +261,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   
 }
 
-extern PermColl point_stabilizer( PermColl const genscoll*, UIntS const pt, PermColl outgens*) {
+extern PermColl point_stabilizer( PermColl const* genscoll, UIntS const pt, PermColl* outgens) {
 
   UIntS     i, len;
   
@@ -272,8 +272,8 @@ extern PermColl point_stabilizer( PermColl const genscoll*, UIntS const pt, Perm
     free(strong_gens[0]);
   }
   len = genscoll->nr_gens;
-  strong_gens[0] = malloc(len * sizeof(perm));
-  memcpy(strong_gens[0], genscoll->gens, len * sizeof(perm));
+  strong_gens[0] = malloc(len * sizeof(Perm));
+  memcpy(strong_gens[0], genscoll->gens, len * sizeof(Perm));
   size_strong_gens[0] = len;
   
   add_base_point(pt);
@@ -285,8 +285,8 @@ extern PermColl point_stabilizer( PermColl const genscoll*, UIntS const pt, Perm
     free(stab_gens[depth + 1]);
   }
   len = size_strong_gens[1];  // number of new gens
-  ptr = malloc(len * sizeof(perm));
-  memcpy(ptr, strong_gens[1], len * sizeof(perm)); // set the new gens
+  ptr = malloc(len * sizeof(Perm));
+  memcpy(ptr, strong_gens[1], len * sizeof(Perm)); // set the new gens
   size_stab_gens[depth + 1] = len; // set the nr new gens
   // put everything in the struct
 
@@ -309,8 +309,8 @@ static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
   Obj           size;
   UIntS  nrgens, i;
 
-  nr2 = LargestMovedPointPermCollOld(gens);
-  lmp = nr2;
+  deg = LargestMovedPointPermCollOld(gens);
+  lmp = deg;
   init_stab_chain();
   nrgens = (UIntS) LEN_PLIST(gens);
   for (i = 1; i <= nrgens; i++) {
@@ -327,11 +327,11 @@ static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
   UIntS  nrgens, i, len;
   Obj           out;
 
-  nr2 = LargestMovedPointPermCollOld(gens);
-  lmp_stab_gens[0] = nr2;
+  deg = LargestMovedPointPermCollOld(gens);
+  lmp_stab_gens[0] = deg;
   nrgens = (UIntS) LEN_PLIST(gens);
   size_stab_gens[0] = nrgens;
-  stab_gens[0] = realloc( stab_gens[0], nrgens * sizeof(perm));
+  stab_gens[0] = realloc( stab_gens[0], nrgens * sizeof(Perm));
   for (i = 0; i < nrgens; i++) {
     stab_gens[0][i] = as_perm(ELM_PLIST(gens, i + 1));
   }
@@ -347,127 +347,3 @@ static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
 }
 */
 
-// returns a bool array representing the orbit reps of the group generated by
-// <gens> not including any values already in <map> (i.e. those with vals[i] =
-// true)
-
-/*void OrbitReps_md (UIntS rep_depth) {
-  UIntS  nrgens, i, j, fst, m, img, n, max;
-  perm*  gens;
-  perm   gen;
- 
-  gens = stab_gens[rep_depth];
-  for (i = rep_depth * nr2; i < (rep_depth + 1) * nr2; i++) {
-    reps_md[i] = false;
-  }
-
-  nrgens  = size_stab_gens[rep_depth];
-  max     = lmp_stab_gens[rep_depth];
-
-  // special case in case there are no gens, or just the identity.
-
-  memset((void *) dom1_md, false, max * sizeof(bool)); 
-  memset((void *) dom2_md, false, max * sizeof(bool)); 
-  
-  m = 0; //UIntLber of orbit reps
-
-  for (i = 0; i < nr2; i++) {
-    if (! vals_md[i]) {
-      if (i < max) {
-        dom1_md[i] = true;
-      } else {
-        reps_md[(rep_depth * nr2) + i] = true;
-      }
-    }      
-  }
-
-  fst = 0; 
-  while (! dom1_md[fst] && fst < max) fst++;
-
-  while (fst < max) {
-    reps_md[(rep_depth * nr2) + fst] = true;
-    orb[0] = fst;
-    n = 1; //length of orb
-    dom2_md[fst] = true;
-    dom1_md[fst] = false;
-
-    for (i = 0; i < n; i++) {
-      for (j = 0; j < nrgens; j++) {
-        gen = gens[j];
-        img = gen[orb[i]];
-        if (! dom2_md[img]) {
-          orb[n++] = img;
-          dom2_md[img] = true;
-          dom1_md[img] = false;
-        }
-      }
-    }
-    while (! dom1_md[fst] && fst < max) fst++; 
-  }
-  return;
-}*/
-
-extern void orbit_reps (UIntS rep_depth) {
-  UIntS  nrgens, i, j, fst, m, img, n, max, d;
-  perm*  gens;
-  perm   gen;
- 
-  gens = stab_gens[rep_depth];
-  for (i = 8 * rep_depth; i < 8 * (rep_depth + 1); i++) {
-    reps_sm[i] = 0;
-  }
-
-  nrgens  = size_stab_gens[rep_depth];
-  max     = lmp_stab_gens[rep_depth];
-
-  // special case in case there are no gens, or just the identity.
-
-  //memset((void *) dom1_md, false, max * sizeof(bool)); 
-  //memset((void *) dom2_md, false, max * sizeof(bool)); 
-
-  for (i = 0; i < 8; i++){
-    dom1_sm[i] = 0;
-    dom2_sm[i] = 0;
-  }
-  
-  for (i = 0; i < nr2; i++) {
-    d = i / SYS_BITS;
-    m = i % SYS_BITS;
-    if ((vals_sm[d] & oneone[m]) == 0) {
-      if (i < max) {
-        dom1_sm[d] |= oneone[m];
-      } else {
-        reps_sm[(8 * rep_depth) + d] |= oneone[m];
-      }
-    }      
-  }
-
-  fst = 0; 
-  while ( ((dom1_sm[fst / SYS_BITS] & oneone[fst % SYS_BITS]) == 0) && fst < max) fst++;
-
-  while (fst < max) {
-    d = fst / SYS_BITS;
-    m = fst % SYS_BITS;
-    reps_sm[(8 * rep_depth) + d] |= oneone[m];
-    orb[0] = fst;
-    n = 1; //length of orb
-    dom2_sm[d] |= oneone[m];
-    dom1_sm[d] ^= oneone[m];
-
-    for (i = 0; i < n; i++) {
-      for (j = 0; j < nrgens; j++) {
-        gen = gens[j];
-        img = gen[orb[i]];
-	d = img / SYS_BITS;
-	m = img % SYS_BITS;
-        if ((dom2_sm[d] & oneone[m]) == 0) {
-          orb[n++] = img;
-          dom2_sm[d] |= oneone[m];
-          dom1_sm[d] ^= oneone[m];
-        }
-      }
-    }
-    while ( ((dom1_sm[fst / SYS_BITS] & oneone[fst % SYS_BITS]) == 0) && fst < max) fst++;
-  }
-  return;
-}

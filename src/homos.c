@@ -93,8 +93,7 @@ void auto_hook (void               *user_param,  // perm_coll!
 	        const unsigned int *aut        ) {
   
   UIntS i;
-  UIntS deg = ((PermColl*) user_param)->deg;
-  perm p = new_perm(deg);
+  Perm  p = new_perm();
    
   for (i = 0; i < (UIntS) N; i++) {
     p[i] = aut[i];
@@ -108,35 +107,35 @@ void auto_hook (void               *user_param,  // perm_coll!
 static PermColl* homos_find_automorphisms (HomosGraph* homos_graph) {
   
   BlissGraph* graph = as_bliss_graph(homos_graph);
-  PermColl*   gens  = new_perm_coll(graph->nr_verts, graph->nr_verts - 1);
+  PermColl*   gens  = new_perm_coll(homos_graph->nr_verts - 1);
   bliss_find_automorphisms(graph, auto_hook, gens, 0);
   bliss_release(graph);
   return gens;
 }
 
-static UIntS nr1;             // nr of vertices in graph1
-static UIntS nr2;             // nr of vertices in graph2
-static UIntS nr2_d;           // nr2 / SYS_BITS 
-static UIntS nr2_m;           // nr2 % SYS_BITS 
+static UIntS  nr1;             // nr of vertices in graph1
+static UIntS  nr2;             // nr of vertices in graph2
+static UIntS  nr2_d;           // nr2 / SYS_BITS 
+static UIntS  nr2_m;           // nr2 % SYS_BITS 
 static UIntL  count;                   // the UIntLber of endos found so far
 static UIntS  hint;           // an upper bound for the UIntLber of distinct values in map
 static UIntL  maxresults;              // upper bound for the UIntLber of returned homos
 static UIntS  map[MAXVERTS];                 // partial image list
-static UIntS sizes[MAXVERTS * MAXVERTS];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
-/*static UInt orb[MAXVERTS];                 // to hold the orbits in OrbitReps
-static bool reps_md[MAXVERTS * MAXVERTS];        // blist for orbit reps
+static UIntS  sizes[MAXVERTS * MAXVERTS];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
+static UIntS  orb[MAXVERTS];                 // to hold the orbits in OrbitReps
+/*static bool reps_md[MAXVERTS * MAXVERTS];        // blist for orbit reps
 static bool vals_md[MAXVERTS];             // blist for values in map
 static bool neighbours1_md[MAXVERTS * MAXVERTS]; // the neighbours of the graph1
 static bool neighbours2_md[MAXVERTS * MAXVERTS]; // the neighbours of the graph2
 static bool dom1_md[MAXVERTS];             
 static bool dom2_md[MAXVERTS];*/
 
-static UIntL   vals_sm[8];                 // blist for values in map
+static UIntL   vals[8];                 // blist for values in map
 static UIntL   neighbours1[8 * MAXVERTS];      // the neighbours of the graph1
 static UIntL   neighbours2[8 * MAXVERTS];      // the neighbours of the graph2
-static UIntL   dom1_sm[8];               
-static UIntL   dom2_sm[8];
-static UIntL   reps_sm[8 * MAXVERTS];
+static UIntL   dom1[8];               
+static UIntL   dom2[8];
+static UIntL   reps[8 * MAXVERTS];
 
 static void*  user_param;              // a user_param for the hook
 void         (*hook)(void*        user_param,
@@ -153,7 +152,6 @@ static UIntL last_report = 0;          // the last value of calls1 when we repor
 static UIntL report_interval = 999999; // the interval when we report
 
 static PermColl * stab_gens[MAXVERTS]; // GRAPH_HOMOS stabiliser gens
-static perm * new_gens;
 
 // algorithm for graphs with between SM and MD vertices . . .
 
@@ -170,7 +168,62 @@ void homo_hook_print () {
   printf(" }\n");
 }
 
+extern void orbit_reps (UIntS rep_depth) {
+  UIntS     nrgens, i, j, fst, m, img, n, max, d;
+  PermColl* gens;
+  Perm      gen;
+ 
+  gens = stab_gens[rep_depth];
+  for (i = 8 * rep_depth; i < 8 * (rep_depth + 1); i++) {
+    reps[i] = 0;
+  }
 
+  nrgens  = gens->nr_gens;
+
+  // TODO special case in case there are no gens, or just the identity.
+
+  for (i = 0; i < 8; i++){
+    dom1[i] = 0;
+    dom2[i] = 0;
+  }
+  
+  for (i = 0; i < deg; i++) {
+    d = i / SYS_BITS;
+    m = i % SYS_BITS;
+    if ((vals[d] & oneone[m]) == 0) {
+      reps[(8 * rep_depth) + d] |= oneone[m];
+    }      
+  }
+
+  fst = 0; 
+  while ( ((dom1[fst / SYS_BITS] & oneone[fst % SYS_BITS]) == 0) && fst < deg) fst++;
+
+  while (fst < deg) {
+    d = fst / SYS_BITS;
+    m = fst % SYS_BITS;
+    reps[(8 * rep_depth) + d] |= oneone[m];
+    orb[0] = fst;
+    n = 1; //length of orb
+    dom2[d] |= oneone[m];
+    dom1[d] ^= oneone[m];
+
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < nrgens; j++) {
+        gen = gens->gens[j];
+        img = gen[orb[i]];
+	d = img / SYS_BITS;
+	m = img % SYS_BITS;
+        if ((dom2[d] & oneone[m]) == 0) {
+          orb[n++] = img;
+          dom2[d] |= oneone[m];
+          dom1[d] ^= oneone[m];
+        }
+      }
+    }
+    while ( ((dom1[fst / SYS_BITS] & oneone[fst % SYS_BITS]) == 0) && fst < deg) fst++;
+  }
+  return;
+}
 // condition handling
 
 /*static bool* conditions[MAXVERTS * MAXVERTS];
@@ -346,7 +399,7 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
 
   memcpy((void *) copy, (void *) condition, (size_t) nr1 * 8 * sizeof(UIntL));
   next = 0;      // the next position to fill
-  min = nr2 + 1; // the minimum UIntLber of candidates for map[next]
+  min = nr2 + 1; // the minimum number of candidates for map[next]
 
   if (pos != UNDEFINED) {
     for (j = 0; j < nr1; j++){
@@ -381,27 +434,27 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
     for (i = 0; i < nr2; i++) {
       j = i / SYS_BITS;
       m = i % SYS_BITS;
-      if ((copy[8 * next + j] & reps_sm[(8 * rep_depth) + j] & oneone[m]) 
-          && (vals_sm[j] & oneone[m]) == 0) { 
+      if ((copy[8 * next + j] & reps[(8 * rep_depth) + j] & oneone[m]) 
+          && (vals[j] & oneone[m]) == 0) { 
         calls2++;
 
         // stabiliser of the point i in the stabiliser at the current rep_depth
         //stab_gens[rep_depth + 1] = point_stabilizer(stab_gens[rep_depth], i);
         //TODO
         map[next] = i;
-        vals_sm[j] |= oneone[m];
+        vals[j] |= oneone[m];
         orbit_reps(rep_depth + 1);
-        // blist of orbit reps of things not in vals_sm
+        // blist of orbit reps of things not in vals
         SEARCH_HOMOS_SM(depth + 1, next, copy, rep_depth + 1, rank + 1);
         map[next] = UNDEFINED;
-        vals_sm[j] ^= oneone[m];
+        vals[j] ^= oneone[m];
       }
     }
   } 
   for (i = 0; i < nr2; i++) {
     j = i / SYS_BITS;
     m = i % SYS_BITS;
-    if (copy[8 * next + j] & vals_sm[j] & oneone[m]) {
+    if (copy[8 * next + j] & vals[j] & oneone[m]) {
       map[next] = i;
       SEARCH_HOMOS_SM(depth + 1, next, copy, rep_depth, rank);
       map[next] = UNDEFINED;
@@ -507,8 +560,8 @@ void GraphHomomorphisms (HomosGraph*  graph1,
                          UIntL        max_results_arg,
                          int          hint_arg, 
                          bool         isinjective     ) {
-
-  UIntS   i, j, k, d, m, len;
+  PermColl* gens;
+  UIntS     i, j, k, d, m, len;
   
   nr1 = graph1->nr_verts;
   nr2 = graph2->nr_verts;
@@ -537,7 +590,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   memset((void *) map, UNDEFINED, nr1 * sizeof(UIntS)); //everything is undefined
   
   for (i = 0; i < 8; i++){
-    vals_sm[i] = 0;
+    vals[i] = 0;
   }
 
   memcpy((void *) neighbours1, graph1->neighbours, nr1 * 8 * sizeof(UIntL));
@@ -548,31 +601,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   }
 
   // get generators of the automorphism group
-  gens = homos_find_automorphisms(graph2);
-
-  // convert generators to our perm type
-  len = (UIntS) LEN_PLIST(gens);
-
-  // get pointer to where we want the new generators to go
-  if (stab_gens[0] == NULL) {
-    new_gens = malloc(len * sizeof(perm));
-  } else {
-    new_gens = realloc(stab_gens[0]->gens, len * sizeof(perm));
-  }
-
-  // populate the new generators
-  for (i = 1; i <= len; i++) {
-    new_gens[i - 1] = as_perm(ELM_PLIST(gens, i));
-  }
-
-  // store the info in our struct
-  if (stab_gens[0] == NULL) {
-    stab_gens[0] = new_perm_coll(new_gens, len);
-  } else {
-    stab_gens[0]->gens = new_gens;
-    stab_gens[0]->nr_gens = len;
-    stab_gens[0]->lmp = largest_moved_point(new_gens, len);
-  }
+  stab_gens[0] = homos_find_automorphisms(graph2);
 
   // get orbit reps
   orbit_reps(0);

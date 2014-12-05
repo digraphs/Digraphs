@@ -12,13 +12,12 @@ typedef unsigned long int UIntL;
 
 typedef unsigned short int UIntS;
 
-static UIntS perm_buf[MAXVERTS];
-typedef UIntS* perm;
+typedef UIntS* Perm;
 
-static Perm new_perm();
+Perm new_perm();
 
 struct perm_coll {
-  perm* gens;
+  Perm* gens;
   UIntS nr_gens;
   UIntS deg;
   UIntS alloc_size;
@@ -26,7 +25,20 @@ struct perm_coll {
 
 typedef struct perm_coll PermColl;
 
-PermColl* new_perm_coll(UIntS deg, UIntS upper_bound);
+void set_perms_degree(UIntS deg);
+PermColl* new_perm_coll(UIntS upper_bound);
 PermColl* add_perm_coll(PermColl* coll, Perm gen);
 PermColl* copy_perm_coll(PermColl* coll);
 void free_perm_coll(PermColl* coll);
+
+Perm id_perm ();
+bool is_one (Perm x);
+bool eq_perms (Perm x, Perm y);
+Perm prod_perms (Perm const x, Perm const y);
+void prod_perms_in_place (Perm x, Perm const y);
+Perm invert_perm (Perm const x);
+
+UIntS deg;
+
+
+

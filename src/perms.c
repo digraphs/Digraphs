@@ -1,10 +1,16 @@
 #include "src/perms.h"
 
-PermColl* new_perm_coll (UIntS deg, UIntS upper_bound) {
-  PermColl coll;
+static UIntS perm_buf[MAXVERTS]; //TODO remove this
+
+void set_perms_degree (UIntS deg_arg) {
+  deg = deg_arg;
+}
+
+PermColl* new_perm_coll (UIntS upper_bound) {
+  PermColl* coll;
   Perm*   gens;
 
-  gens = malloc(nr_gens * sizeof(perm));
+  gens = malloc(upper_bound * sizeof(Perm));
   coll->gens = gens;
   coll->nr_gens = 0;
   coll->deg = deg;
@@ -13,22 +19,22 @@ PermColl* new_perm_coll (UIntS deg, UIntS upper_bound) {
 }
 
 // the generator is now controlled by the PermColl
-PermColl* add_perm_coll (PermColl* coll, perm gen) {
+PermColl* add_perm_coll (PermColl* coll, Perm gen) {
 
   assert(coll->nr_gens <= coll->alloc_size);
 
-  if (nr_gens == alloc) {
-    coll->gens = realloc(coll->gens, (nr_gens + 1) * sizeof(perm));
+  if (coll->nr_gens == coll->alloc_size) {
+    coll->gens = realloc(coll->gens, (coll->nr_gens + 1) * sizeof(Perm));
     (coll->alloc_size)++;
   }
   coll->gens[(coll->nr_gens)++] = gen;
   return coll;
 }
 
-PermColl* copy_perm_coll (PermColl* coll) {
+/*PermColl* copy_perm_coll (PermColl* coll) {
   //TODO
-  return newcoll;
-}
+  return ;
+}*/
 
 void free_perm_coll (PermColl* coll) {
   unsigned int i;
@@ -43,23 +49,23 @@ void free_perm_coll (PermColl* coll) {
   }
 }
 
-static perm new_perm () {
-  return malloc(nr2 * sizeof(UIntS));
+extern Perm new_perm () {
+  return malloc(deg * sizeof(UIntS));
 }
 
-static perm id_perm () {
+ Perm id_perm () {
   UIntS i;
-  perm id = new_perm();
-  for (i = 0; i < nr2; i++) {
+  Perm id = new_perm();
+  for (i = 0; i < deg; i++) {
     id[i] = i;
   }
   return id;
 }
 
-static bool is_one (perm x) {
+ bool is_one (Perm x) {
   UIntS i;
 
-  for (i = 0; i < nr2; i++) {
+  for (i = 0; i < deg; i++) {
     if (x[i] != i) {
       return false;
     }
@@ -67,10 +73,10 @@ static bool is_one (perm x) {
   return true;
 }
 
-static bool eq_perms (perm x, perm y) {
+ bool eq_perms (Perm x, Perm y) {
   UIntS i;
 
-  for (i = 0; i < nr2; i++) {
+  for (i = 0; i < deg; i++) {
     if (x[i] != y[i]) {
       return false;
     }
@@ -78,71 +84,71 @@ static bool eq_perms (perm x, perm y) {
   return true;
 }
 
-static perm prod_perms (perm const x, perm const y) {
+ Perm prod_perms (Perm const x, Perm const y) {
   UIntS i;
-  perm z = new_perm();
+  Perm z = new_perm();
 
-  for (i = 0; i < nr2; i++) {
+  for (i = 0; i < deg; i++) {
     z[i] = y[x[i]];
   }
   return z;
 }
-
-static perm quo_perms (perm const x, perm const y) {
+// TODO remove 
+ Perm quo_perms (Perm const x, Perm const y) {
   UIntS i;
 
   // invert y into the buf
-  for (i = 0; i < nr2; i++) {
+  for (i = 0; i < deg; i++) {
     perm_buf[y[i]] = i;
   }
   return prod_perms(x, perm_buf);
 }
 
 // changes the lhs
-
-static void quo_perms_in_place (perm x, perm const y) {
+// TODO remove
+ void quo_perms_in_place (Perm x, Perm const y) {
   UIntS i;
 
   // invert y into the buf
-  for (i = 0; i < nr2; i++) {
+  for (i = 0; i < deg; i++) {
     perm_buf[y[i]] = i;
   }
 
-  for (i = 0; i < nr2; i++) {
+  for (i = 0; i < deg; i++) {
     x[i] = perm_buf[x[i]];
   }
 }
 
-static void prod_perms_in_place (perm x, perm const y) {
+ void prod_perms_in_place (Perm x, Perm const y) {
   UIntS i;
 
-  for (i = 0; i < nr2; i++) {
+  for (i = 0; i < deg; i++) {
     x[i] = y[x[i]];
   }
 }
 
-static perm invert_perm (perm const x) {
+ Perm invert_perm (Perm const x) {
   UIntS i;
 
-  perm y = new_perm();
-  for (i = 0; i < nr2; i++) {
+  Perm y = new_perm();
+  for (i = 0; i < deg; i++) {
     y[x[i]] = i;
   }
   return y;
 }
 
-/*static UIntS* print_perm (perm x) {
+/* UIntS* print_perm (perm x) {
   UIntS i;
 
   Pr("(", 0L, 0L);
-  for (i = 0; i < nr2; i++) {
+  for (i = 0; i < deg; i++) {
     Pr("x[%d]=%d,", (Int) i, (Int) x[i]);
   }
   Pr(")\n", 0L, 0L);
 
 }*/
 
-/*static UIntS IMAGE_PERM (UIntS const pt, Obj const perm) {
+/* UIntS IMAGE_PERM (UIntS const pt, Obj const perm) {
 
   if (TUIntL_OBJ(perm) == T_PERM2) {
     return (UIntS) IMAGE(pt, ADDR_PERM2(perm), DEG_PERM2(perm));
@@ -154,7 +160,7 @@ static perm invert_perm (perm const x) {
   return 0; // keep compiler happy!
 }*/
 
-/*static UIntS LargestMovedPointPermCollOld (Obj const gens) {
+/* UIntS LargestMovedPointPermCollOld (Obj const gens) {
   Obj           gen;
   UIntS  i, j;
   UInt2*        ptr2;
@@ -195,13 +201,13 @@ static perm invert_perm (perm const x) {
   return max;
 }*/
 
-/*static UIntS largest_moved_point ( perm* const gens, UIntS const nrgens ) {
+/* UIntS largest_moved_point ( perm* const gens, UIntS const nrgens ) {
   perm          gen;
   UIntS  max = 0, i, j;
 
   for (i = 0; i < nrgens; i++) {
     gen = gens[i];
-    j = nr2;
+    j = deg;
     while ( j > max && gen[j - 1] == j - 1 ) {
       j--;
     }
