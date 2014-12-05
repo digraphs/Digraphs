@@ -23,4 +23,8 @@ struct perm_coll {
   UIntS lmp;
 };
 
-typedef struct perm_coll PermColl;
+typedef struct perm_col PermColl;
+
+PermColl* new_perm_coll(perm* gens, UIntL nr_gens); 
+PermColl* copy_perm_coll(PermColl* coll);
+void free_perm_coll(PermColl* coll);
