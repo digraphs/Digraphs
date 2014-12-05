@@ -131,46 +131,6 @@ static bool eq_perms (perm x, perm y) {
   return true;
 }
 
-// convert GAP perms to perms
-static perm as_perm (Obj const x) {
-  UInt  deg, i;
-  UInt2 *ptr2;
-  UInt4 *ptr4;
-  perm  out = new_perm();
-
-  if (TNUM_OBJ(x) == T_PERM2) {
-    deg = DEG_PERM2(x); 
-    ptr2 = ADDR_PERM2(x);
-    for (i = 0; i < deg; i++) {
-      out[i] = (UIntS) ptr2[i];
-    }
-  } else if (TNUM_OBJ(x) == T_PERM4) {
-    deg = DEG_PERM4(x); 
-    ptr4 = ADDR_PERM4(x);
-    for (i = 0; i < deg; i++) {
-      out[i] = (UIntS) ptr4[i];
-    }
-  }
-
-  for (; i < nr2; i++) {
-    out[i] = i;
-  }
-  return out;
-}
-
-static Obj as_PERM4 (perm const x) {
-  Obj           p;
-  UIntS  i;
-  UInt4         *ptr;
-  
-  p   = NEW_PERM4(nr2);
-  ptr = ADDR_PERM4(p);
- 
-  for (i = 0; i < nr2; i++) {
-    ptr[i] = (UInt4) x[i];
-  }
-  return p;
-}
 
 static perm prod_perms (perm const x, perm const y) {
   UIntS i;
@@ -927,6 +887,13 @@ static inline void free_conditions(UIntS const depth) {
   }
 }
 
+static inline void free_conditions_jmp() {
+  unsigned int i, depth;
+  for (depth = 0; depth < nr1; depth++) {
+    free_conditions(depth);
+  }
+}
+
 // copy from <depth> to <depth + 1> 
 static inline bool* copy_condition(UIntS const depth, 
                                    UIntS const i     ) { // vertex in graph1
@@ -959,6 +926,7 @@ void SEARCH_HOMOS_MD (UIntS const depth,     // the UIntLber of filled positions
     hook();
     count++;
     if (count >= maxresults) {
+      free_conditions_jmp();
       longjmp(outofhere, 1);
     }
     return;
@@ -982,6 +950,7 @@ void SEARCH_HOMOS_MD (UIntS const depth,     // the UIntLber of filled positions
           }
         } 
         if (sizes[depth * nr1 + j] == 0) {
+          free_conditions(depth); 
           return;
         }
         if (sizes[depth * nr1 + j] < min) {
