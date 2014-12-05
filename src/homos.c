@@ -65,28 +65,27 @@ void add_edges_homos_graph (HomosGraph* graph, UIntS from_vert, UIntS to_vert) {
 // automorphism group 
 
 static BlissGraph* as_bliss_graph (HomosGraph* graph) {
-  BlissGraph  *graph;
+  UIntS  i, j, k;
+  UIntS  n = graph->nr_verts;
+  UIntS  m = (n / SYS_BITS);
+  
+  BlissGraph* bliss_graph = bliss_new(n);
 
-  n = graph->nr_verts;
-  m = (n / SYS_BITS);
-  graph = bliss_new(n);
-
-  adj = graph->neighbours;
   for (i = 0; i < n; i++) {   // loop over vertices
     for (j = 0; j < m; j++) { // loop over neighbours of vertex <i>
       for (k = 0; k < SYS_BITS; k++) {
         if (graph->neighbours[8 * i + j] & oneone[k]) {
-          bliss_add_edge(graph, i, SYS_BITS * j + k);
+          bliss_add_edge(bliss_graph, i, SYS_BITS * j + k);
         }
       }
     }
     for (k = 0; k < (n % SYS_BITS); k++) {
       if (graph->neighbours[8 * i + j] & oneone[k]) {
-        bliss_add_edge(graph, i, SYS_BITS * j + k);
+        bliss_add_edge(bliss_graph, i, SYS_BITS * j + k);
       }
     }
   }
-  return graph;
+  return bliss_graph;
 }
 
 void auto_hook (void               *user_param,  // perm_coll!
@@ -94,7 +93,7 @@ void auto_hook (void               *user_param,  // perm_coll!
 	        const unsigned int *aut        ) {
   
   unsigned int i;
-  perm* p = new_perm(user_param->deg);
+  perm* p = new_perm(((PermColl*)user_param)->deg);
    
   for(i = 0; i < N; i++){
     p[i] = aut[i];
@@ -555,7 +554,8 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   }
 
   // get generators of the automorphism group
-  gens = ELM_PLIST(FuncDIGRAPH_AUTOMORPHISMS(0L, graph2), 2);
+  gens = homos_find_automorphisms(graph2);
+
   // convert generators to our perm type
   len = (UIntS) LEN_PLIST(gens);
   stab_gens[0] = realloc(stab_gens[0], len * sizeof(perm));
