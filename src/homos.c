@@ -326,10 +326,9 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
     for (i = 0; i < nr2; i++) {
       j = i / SYS_BITS;
       m = i % SYS_BITS;
-      if ((copy[8 * next + j] & reps_sm[(8 * rep_depth) + j] & oneone[m]) && (vals_sm[j] & oneone[m]) == 0) { 
+      if ((copy[8 * next + j] & reps_sm[(8 * rep_depth) + j] & oneone[m]) 
+          && (vals_sm[j] & oneone[m]) == 0) { 
         calls2++;
-        //Obj newGens = CALL_2ARGS(Stabilizer, gens, INTOBJ_INT(i + 1));//TODO remove
-	//Obj newGens; //= point_stabilizer(gens, i); // TODO: fix this to use the new perms
         point_stabilizer(depth, i); // Calculate the stabiliser of the point i
                                     // in the stabiliser at the current depth
         map[next] = i;
@@ -464,16 +463,12 @@ void GraphHomomorphisms (HomosGraph*  graph1,
 
   UIntS   i, j, k, d, m, len;
   
-  Pr("GraphHomomorphisms_sm!\n", 0L, 0L);
-
   nr1 = graph1->nr_verts;
   nr2 = graph2->nr_verts;
   nr2_d = nr2 / SYS_BITS;
   nr2_m = nr2 % SYS_BITS;
 
-  if (nr1 > MAXVERTS || nr2 > MAXVERTS) {
-    ErrorQuit("too many vertices!", 0L, 0L);
-  }
+  assert(nr1 <= MAXVERTS && nr2 <= MAXVERTS);
   
   if (isinjective) {// && nr2 < nr1) { TODO uncomment when we have sm method for injective
     return;
