@@ -99,108 +99,20 @@ static perm * stab_gens[MAXVERTS];              // GRAPH_HOMOS stabiliser gens
 static UIntS size_stab_gens[MAXVERTS];   // GRAPH_HOMOS
 static UIntS lmp_stab_gens[MAXVERTS];    // GRAPH_HOMOS
 
-/*static UIntS* print_perm (perm x) {
-  UIntS i;
-
-  Pr("(", 0L, 0L);
-  for (i = 0; i < nr2; i++) {
-    Pr("x[%d]=%d,", (Int) i, (Int) x[i]);
-  }
-  Pr(")\n", 0L, 0L);
-
-}*/
-
-
-
-static UIntS LargestMovedPointPermCollOld (Obj gens);
-static UIntS LargestMovedPointPermColl ( perm* const gens, UIntS const nrgens); 
-
-// 
-
-/*static UIntS IMAGE_PERM (UIntS const pt, Obj const perm) {
-
-  if (TUIntL_OBJ(perm) == T_PERM2) {
-    return (UIntS) IMAGE(pt, ADDR_PERM2(perm), DEG_PERM2(perm));
-  } else if (TUIntL_OBJ(perm) == T_PERM4) {
-    return (UIntS) IMAGE(pt, ADDR_PERM4(perm), DEG_PERM4(perm));
-  } else {
-    ErrorQuit("orbit_stab_chain: expected a perm, didn't get one", 0L, 0L);
-  }
-  return 0; // keep compiler happy!
-}*/
-
-static UIntS LargestMovedPointPermCollOld (Obj const gens) {
-  Obj           gen;
-  UIntS  i, j;
-  UInt2*        ptr2;
-  UInt4*        ptr4;
-  Int           nrgens = LEN_PLIST(gens);
-  UIntS  max = 0;
-  
-  if (! IS_PLIST(gens)) {
-    ErrorQuit("LargestMovedPointPermColl: expected a plist, didn't get one", 0L, 0L);
-  }
-
-  // get the largest moved point + 1
-  for (i = 1; i <= (UIntS) nrgens; i++) {
-    gen = ELM_PLIST(gens, i);
-    if (TUIntL_OBJ(gen) == T_PERM2) {
-      j = DEG_PERM2(gen);
-      ptr2 = ADDR_PERM2(gen);
-      while (j > max && ptr2[j - 1] == j - 1){
-        j--;
-      }
-      if (j > max) {
-        max = j;
-      }
-    } else if (TUIntL_OBJ(gen) == T_PERM4) {
-      j = DEG_PERM4(gen);
-      ptr4 = ADDR_PERM4(gen);
-      while (j > max && ptr4[j - 1] == j - 1){
-        j--;
-      }
-      if (j > max) {
-        max = j;
-      }
-    } else {
-      ErrorQuit("LargestMovedPointPermColl: expected a perm, didn't get one", 0L, 0L);
-    }
-  }
-
-  return max;
-}
-
-static UIntS LargestMovedPointPermColl ( perm* const gens, UIntS const nrgens ) {
-  perm          gen; 
-  UIntS  max = 0, i, j;
-
-  for (i = 0; i < nrgens; i++) {
-    gen = gens[i];
-    j = nr2;
-    while ( j > max && gen[j - 1] == j - 1 ) {
-      j--;
-    }
-    if (j > max) {
-      max = j;
-    }
-  }
-  return max;
-}
-
 
 // algorithm for graphs with between SM and MD vertices . . .
 
 // homomorphism hook funcs
 
 void homo_hook_print () {
-  UInt i;
+  UIntS i;
 
-  Pr("Transformation( [ ", 0L, 0L);
-  Pr("%d", (Int) map[0] + 1, 0L);
+  printf("endomorphism image list: { ");
+  printf("%d", map[0] + 1);
   for (i = 1; i < nr1; i++) {
-    Pr(", %d", (Int) map[i] + 1, 0L);
+    printf(", %d", map[i] + 1);
   }
-  Pr(" ] )\n", 0L, 0L);
+  printf(" }\n");
 }
 
 

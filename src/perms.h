@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <stdio.h>
 
 #ifdef SYS_IS_64_BIT
 #define MAXVERTS 512
@@ -18,3 +19,13 @@ typedef unsigned short int UIntS;
 
 static UIntS perm_buf[MAXVERTS];
 typedef UIntS* perm;
+
+static perm new_perm();
+
+struct perm_col {
+  perm* gens;
+  UIntL nr_gens;
+  UIntS lmp;
+};
+
+typedef struct perm_col PermCol;

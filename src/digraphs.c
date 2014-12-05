@@ -1,8 +1,12 @@
 /***************************************************************************
 **
-*A  digraphs.c               Digraphs package             J. D. Mitchell 
+*A  digraphs.c                  GAP package digraphs          Julius Jonusas
+**                                                            James Mitchell 
+**                                                            Michael Torpey
+**                                                            Wilfred Wilson
 **
-**  Copyright (C) 2014 - J. D. Mitchell 
+**  Copyright (C) 2014 - Julius Jonusas, James Mitchell, Michael Torpey, 
+**  Wilfred Wilson 
 **  This file is free software, see license information at the end.
 **  
 */
@@ -1435,7 +1439,7 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
 }
 
 // convert GAP perms to perms
-static perm as_perm (Obj const x) {
+/*static perm as_perm (Obj const x) {
   UInt  deg, i;
   UInt2 *ptr2;
   UInt4 *ptr4;
@@ -1473,7 +1477,7 @@ static Obj as_PERM4 (perm const x) {
     ptr[i] = (UInt4) x[i];
   }
   return p;
-}
+}*/
 
 // GAP-level function
 
