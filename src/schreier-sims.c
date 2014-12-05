@@ -357,7 +357,7 @@ static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
 // <gens> not including any values already in <map> (i.e. those with vals[i] =
 // true)
 
-void OrbitReps_md (UIntS rep_depth) {
+/*void OrbitReps_md (UIntS rep_depth) {
   UIntS  nrgens, i, j, fst, m, img, n, max;
   perm*  gens;
   perm   gen;
@@ -411,9 +411,9 @@ void OrbitReps_md (UIntS rep_depth) {
     while (! dom1_md[fst] && fst < max) fst++; 
   }
   return;
-}
+}*/
 
-void OrbitReps_sm (UIntS depth, UIntS rep_depth) {
+extern void orbit_reps (UIntS depth, UIntS rep_depth) {
   UIntS  nrgens, i, j, fst, m, img, n, max, d;
   perm*  gens;
   perm   gen;
