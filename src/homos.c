@@ -151,6 +151,7 @@ static UIntL   calls2;                  // calls1 is the UIntLber of calls to th
 static UIntL last_report = 0;          // the last value of calls1 when we reported
 static UIntL report_interval = 999999; // the interval when we report
 
+static PermColl * stab_gens[MAXVERTS]; // GRAPH_HOMOS stabiliser gens
 
 // algorithm for graphs with between SM and MD vertices . . .
 
