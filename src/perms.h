@@ -11,10 +11,7 @@ typedef unsigned long int UIntL;
 #define SYS_BITS 64
 
 typedef unsigned short int UIntS;
-
 typedef UIntS* Perm;
-
-Perm new_perm();
 
 struct perm_coll {
   Perm* gens;
@@ -31,6 +28,9 @@ PermColl* add_perm_coll(PermColl* coll, Perm gen);
 PermColl* copy_perm_coll(PermColl* coll);
 void free_perm_coll(PermColl* coll);
 
+extern UIntS deg;
+
+Perm new_perm();
 Perm id_perm ();
 bool is_one (Perm x);
 bool eq_perms (Perm x, Perm y);
@@ -38,4 +38,3 @@ Perm prod_perms (Perm const x, Perm const y);
 void prod_perms_in_place (Perm x, Perm const y);
 Perm invert_perm (Perm const x);
 
-extern UIntS deg;
