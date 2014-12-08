@@ -2,26 +2,26 @@
 
 // Schreier-Sims set up
 
-static Perm * strong_gens[MAXVERTS];      // strong generators
-static Perm   transversal[MAXVERTS * MAXVERTS];
-static Perm   transversal_inv[MAXVERTS * MAXVERTS];
-static bool   first_ever_call = true;
-static UIntS  size_strong_gens[MAXVERTS];
-static UIntS  orbits[MAXVERTS * MAXVERTS];
-static UIntS  size_orbits[MAXVERTS];
-static bool   borbits[MAXVERTS * MAXVERTS];
-static UIntS  lmp;
-static UIntS  base[MAXVERTS];
-static UIntS  size_base;
+static PermColl * strong_gens[MAXVERTS];                // strong generators
+static Perm       transversal[MAXVERTS * MAXVERTS];
+static Perm       transversal_inv[MAXVERTS * MAXVERTS];
+static bool       first_ever_call = true;
+static bool       borbits[MAXVERTS * MAXVERTS];
+static UIntS      orbits[MAXVERTS * MAXVERTS];
+static UIntS      size_orbits[MAXVERTS];
+static UIntS      lmp;
+static UIntS      base[MAXVERTS];
+static UIntS      size_base;
 
 static inline void add_strong_gens (UIntS const pos, Perm const value) {
-  size_strong_gens[pos]++;
+  add_perm_coll(strong_gens[pos], value);
+  /*size_strong_gens[pos]++;
   strong_gens[pos] = realloc(strong_gens[pos], size_strong_gens[pos] * sizeof(Perm));
-  strong_gens[pos][size_strong_gens[pos] - 1] = value;
+  strong_gens[pos][size_strong_gens[pos] - 1] = value;*/
 }
 
 static inline Perm get_strong_gens (UIntS const i, UIntS const j) {
-  return strong_gens[i][j];
+  return strong_gens[i]->gens[j];
 }
 
 static inline Perm get_transversal (UIntS const i, UIntS const j) {
@@ -66,7 +66,7 @@ static void remove_base_points (UIntS const depth) {
   for (i = depth; i < size_base; i++) {
     size_base--;
     //free(strong_gens[i + 1]);
-    size_strong_gens[i + 1] = 0;
+    //size_strong_gens[i + 1] = 0; // TODO: work out what needs to happen here
     size_orbits[i] = 0;
     
     for (j = 0; j < deg; j++) {//TODO double-check deg!
@@ -80,7 +80,7 @@ static inline void first_ever_init () {
 
   first_ever_call = false;
 
-  memset((void *) size_strong_gens, 0, MAXVERTS * sizeof(UIntS));
+  //memset((void *) size_strong_gens, 0, MAXVERTS * sizeof(UIntS));
   memset((void *) size_orbits, 0, MAXVERTS * sizeof(UIntS));
 }
 
@@ -106,7 +106,7 @@ static void init_endos_base_points() {
 static void free_stab_chain () {
   UIntS i;
 
-  memset((void *) size_strong_gens, 0, size_base * sizeof(UIntS));
+  //memset((void *) size_strong_gens, 0, size_base * sizeof(UIntS));
   memset((void *) size_orbits, 0, size_base * sizeof(UIntS));
 }
 
@@ -118,7 +118,7 @@ static void orbit_stab_chain (UIntS const depth, UIntS const init_pt) {
 
   for (i = 0; i < size_orbits[depth]; i++) {
     pt = orbits[depth * MAXVERTS + i];
-    for (j = 0; j < size_strong_gens[depth]; j++) {
+    for (j = 0; j < strong_gens[depth]->nr_gens; j++) {
       x = get_strong_gens(depth, j);
       img = x[pt];
       if (! borbits[depth * deg + img]) {
@@ -153,7 +153,7 @@ static void add_gen_orbit_stab_chain (UIntS const depth, Perm const gen) {
 
   for (i = nr; i < size_orbits[depth]; i++) {
     pt = orbits[depth * MAXVERTS + i];
-    for (j = 0; j < size_strong_gens[depth]; j++) {
+    for (j = 0; j < strong_gens[depth]->nr_gens; j++) {
       x = get_strong_gens(depth, j);
       img = x[pt];
       if (! borbits[depth * deg + img]) {
@@ -188,7 +188,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   UIntS  j, jj, k, l, m, beta, betax;
 
   for (i = 0; i < (int) size_base; i++) { 
-    for (j = 0; j < size_strong_gens[i]; j++) { 
+    for (j = 0; j < strong_gens[i]->nr_gens; j++) { 
       x = get_strong_gens(i, j);
       if ( perm_fixes_all_base_points( x ) ) {
         for (k = 0; k < deg; k++) {
@@ -204,7 +204,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   for (i = depth + 1; i < (int) size_base + 1; i++) {
     beta = base[i - 1];
     // set up the strong generators
-    for (j = 0; j < size_strong_gens[i - 1]; j++) {
+    for (j = 0; j < strong_gens[i - 1]->nr_gens; j++) {
       x = get_strong_gens(i - 1, j);
       if (beta == x[beta]) {
         add_strong_gens(i, x);
@@ -221,7 +221,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
     escape = false;
     for (j = 0; j < size_orbits[i] && !escape; j++) {
       beta = orbits[i * MAXVERTS + j];
-      for (m = 0; m < size_strong_gens[i] && !escape; m++) {
+      for (m = 0; m < strong_gens[i]->nr_gens && !escape; m++) {
         x = get_strong_gens(i, m);
         prod  = prod_perms(get_transversal(i, beta), x );
         betax = x[beta];
@@ -261,37 +261,34 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   
 }
 
-extern PermColl point_stabilizer( PermColl const* genscoll, UIntS const pt, PermColl* outgens) {
+extern PermColl* point_stabilizer( PermColl * genscoll, UIntS const pt, PermColl* outgens) {
 
   UIntS     i, len;
   
   init_stab_chain();
 
-  // put gens into strong_gens[0]
   if (strong_gens[0] != NULL) {
-    free(strong_gens[0]);
+    //free(strong_gens[0]);
+    free_perm_coll(strong_gens[0]);
   }
-  len = genscoll->nr_gens;
-  strong_gens[0] = malloc(len * sizeof(Perm));
-  memcpy(strong_gens[0], genscoll->gens, len * sizeof(Perm));
-  size_strong_gens[0] = len;
   
+  strong_gens[0] = genscoll;    // let SS take control of <genscoll>
   add_base_point(pt);
   schreier_sims_stab_chain(0);
+  strong_gens[0] = NULL;        // release control of <genscoll>
 
-  // the stabiliser we want is <strong_gens[1]>
-  // store these new generators in the correct place in stab_gens that we want
-  if ([depth + 1] != NULL) {
-    free(stab_gens[depth + 1]);
+  // The stabiliser we want is the PermColl pointed to by <strong_gens[1]>
+  if (outgens != NULL) {
+    //free(outgens);
+    free_perm_coll(outgens);
   }
-  len = size_strong_gens[1];  // number of new gens
-  ptr = malloc(len * sizeof(Perm));
-  memcpy(ptr, strong_gens[1], len * sizeof(Perm)); // set the new gens
-  size_stab_gens[depth + 1] = len; // set the nr new gens
-  // put everything in the struct
+
+  outgens = strong_gens[1];
+  strong_gens[1] = NULL;
 
   free_stab_chain();
-  return ptr;
+
+  return outgens;
 }
 
 /*static Obj size_stab_chain () {
@@ -344,6 +341,4 @@ static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
   }
   CHANGED_BAG(out);
   return out;
-}
-*/
-
+}*/
