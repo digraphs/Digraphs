@@ -1,5 +1,6 @@
 #include "src/perms.h"
 
+UIntS deg;
 static UIntS perm_buf[MAXVERTS]; //TODO remove this
 
 void set_perms_degree (UIntS deg_arg) {
