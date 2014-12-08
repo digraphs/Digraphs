@@ -24,9 +24,9 @@ typedef struct perm_coll PermColl;
 
 void set_perms_degree(UIntS deg_arg);
 PermColl* new_perm_coll(UIntS upper_bound);
-PermColl* add_perm_coll(PermColl* coll, Perm gen);
+void add_perm_coll(PermColl* coll, Perm gen);
 PermColl* copy_perm_coll(PermColl* coll);
-void reset_perm_coll(PermColl* coll);
+//void reset_perm_coll(PermColl* coll);
 void free_perm_coll(PermColl* coll);
 
 // TODO remove this

@@ -17,7 +17,7 @@ PermColl* new_perm_coll (UIntS upper_bound) {
 }
 
 // the generator is now controlled by the PermColl
-PermColl* add_perm_coll (PermColl* coll, Perm gen) {
+void add_perm_coll (PermColl* coll, Perm gen) {
 
   assert(coll->nr_gens <= coll->alloc_size);
 
@@ -26,20 +26,26 @@ PermColl* add_perm_coll (PermColl* coll, Perm gen) {
     (coll->alloc_size)++;
   }
   coll->gens[(coll->nr_gens)++] = gen;
-  return coll;
+}
+
+static Perm copy_perm (Perm const p) {
+  Perm newP = malloc(deg * sizeof(UIntS));
+  memcpy((void *) newP, (void *) p, (size_t) deg * sizeof(UIntS));
+  return newP;
 }
 
 PermColl* copy_perm_coll (PermColl* coll) {
+  UIntS i;
   PermColl* out = malloc(sizeof(PermColl));
   
   out = new_perm_coll(coll->nr_gens);
-  out->nr_gens = coll->nr_gens;
-  memcpy((void *) out->gens, (void *) coll->gens, coll->nr_gens * sizeof(Perm) );
-
+  for (i = 0; i < coll->nr_gens; i++) {
+    add_perm_coll(out, copy_perm(coll->gens[i]));
+  }
   return out;
 }
 
-void reset_perm_coll (PermColl* coll) {
+void free_perm_coll (PermColl* coll) {
   unsigned int i;
   
   if (coll->gens != NULL) {
@@ -50,12 +56,6 @@ void reset_perm_coll (PermColl* coll) {
     }
     free(coll->gens);
   }
-  coll->nr_gens = 0;
-  coll->alloc_size = 0;
-}
-
-void free_perm_coll (PermColl* coll) {
-  reset_perm_coll(coll);
   free(coll);
 }
 
@@ -63,7 +63,8 @@ extern Perm new_perm () {
   return malloc(deg * sizeof(UIntS));
 }
 
- Perm id_perm () {
+
+Perm id_perm () {
   UIntS i;
   Perm id = new_perm();
   for (i = 0; i < deg; i++) {

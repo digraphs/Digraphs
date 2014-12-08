@@ -70,7 +70,7 @@ static void remove_base_points (UIntS const depth) {
     size_base--;
     //free(strong_gens[i + 1]);
     //size_strong_gens[i + 1] = 0;
-    reset_perm_coll(strong_gens[i + 1]); // TODO: not sure if necessary or even wise
+    free_perm_coll(strong_gens[i + 1]); // TODO: not sure if necessary or even wise
     size_orbits[i] = 0;
     
     for (j = 0; j < deg; j++) {//TODO double-check deg!
@@ -192,9 +192,9 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   Perm          x, h, prod;
   bool          escape, y;
   int           i;
-  UIntS  j, jj, k, l, m, beta, betax;
+  UIntS         j, jj, k, l, m, beta, betax;
 
-  for (i = 0; i < (int) size_base; i++) { 
+  for (i = 0; i <= (int) depth; i++) { 
     for (j = 0; j < strong_gens[i]->nr_gens; j++) { 
       x = get_strong_gens(i, j);
       if ( perm_fixes_all_base_points( x ) ) {
@@ -222,7 +222,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
     orbit_stab_chain(i - 1, beta);
   }
 
-  i = size_base - 1; // Unsure about this
+  i = size_base - 1; 
 
   while (i >= (int) depth) {
     escape = false;
@@ -269,30 +269,19 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
 }
 
 extern void point_stabilizer( PermColl* gens, UIntS const pt, PermColl** out) {
-
   UIntS     i, len;
   
   init_stab_chain();
 
-  if (strong_gens[0] != NULL) {
-    //free(strong_gens[0]);
-    reset_perm_coll(strong_gens[0]);
-  }
-  
-  strong_gens[0] = gens;    // let SS take control of <genscoll>
+  strong_gens[ 0 ] = copy_perm_coll(gens);
   add_base_point(pt);
   schreier_sims_stab_chain(0);
-  strong_gens[0] = NULL;        // release control of <genscoll>
 
   // The stabiliser we want is the PermColl pointed to by <strong_gens[1]>
   if (*out != NULL) {
-    //free(out);
-    reset_perm_coll(*out);
+    free_perm_coll(*out);
   }
-
-  *out = strong_gens[1];
-  strong_gens[1] = NULL;
-
+  *out = copy_perm_coll(strong_gens[1]);
   free_stab_chain();
 }
 
