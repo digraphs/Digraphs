@@ -25,7 +25,7 @@ struct perm_coll {
 
 typedef struct perm_coll PermColl;
 
-void set_perms_degree(UIntS deg);
+void set_perms_degree(UIntS deg_arg);
 PermColl* new_perm_coll(UIntS upper_bound);
 PermColl* add_perm_coll(PermColl* coll, Perm gen);
 PermColl* copy_perm_coll(PermColl* coll);
@@ -39,6 +39,3 @@ void prod_perms_in_place (Perm x, Perm const y);
 Perm invert_perm (Perm const x);
 
 UIntS deg;
-
-
-

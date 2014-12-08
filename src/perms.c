@@ -47,6 +47,8 @@ void free_perm_coll (PermColl* coll) {
     }
     free(coll->gens);
   }
+  coll->nr_gens = 0;
+  coll->alloc_size = 0;
 }
 
 extern Perm new_perm () {

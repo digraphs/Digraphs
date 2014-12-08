@@ -9,11 +9,14 @@ static bool       first_ever_call = true;
 static bool       borbits[MAXVERTS * MAXVERTS];
 static UIntS      orbits[MAXVERTS * MAXVERTS];
 static UIntS      size_orbits[MAXVERTS];
-static UIntS      lmp;
+//static UIntS      lmp;
 static UIntS      base[MAXVERTS];
 static UIntS      size_base;
 
 static inline void add_strong_gens (UIntS const pos, Perm const value) {
+  if (strong_gens[pos] == NULL) {
+    strong_gens[pos] = new_perm_coll(1);
+  }
   add_perm_coll(strong_gens[pos], value);
   /*size_strong_gens[pos]++;
   strong_gens[pos] = realloc(strong_gens[pos], size_strong_gens[pos] * sizeof(Perm));
@@ -66,7 +69,8 @@ static void remove_base_points (UIntS const depth) {
   for (i = depth; i < size_base; i++) {
     size_base--;
     //free(strong_gens[i + 1]);
-    //size_strong_gens[i + 1] = 0; // TODO: work out what needs to happen here
+    //size_strong_gens[i + 1] = 0;
+    free_perm_coll(strong_gens[i + 1]); // TODO: not sure if necessary or even wise
     size_orbits[i] = 0;
     
     for (j = 0; j < deg; j++) {//TODO double-check deg!
@@ -106,8 +110,11 @@ static void init_endos_base_points() {
 static void free_stab_chain () {
   UIntS i;
 
-  //memset((void *) size_strong_gens, 0, size_base * sizeof(UIntS));
   memset((void *) size_orbits, 0, size_base * sizeof(UIntS));
+  //memset((void *) size_strong_gens, 0, size_base * sizeof(UIntS));
+  for (i = 0; i < size_base; i++) {
+    strong_gens[i]->nr_gens = 0; // Again, not sure if this is okay
+  }
 }
 
 static void orbit_stab_chain (UIntS const depth, UIntS const init_pt) {
@@ -261,7 +268,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   
 }
 
-extern PermColl* point_stabilizer( PermColl * genscoll, UIntS const pt, PermColl* outgens) {
+extern void point_stabilizer( PermColl* gens, UIntS const pt, PermColl** out) {
 
   UIntS     i, len;
   
@@ -272,23 +279,21 @@ extern PermColl* point_stabilizer( PermColl * genscoll, UIntS const pt, PermColl
     free_perm_coll(strong_gens[0]);
   }
   
-  strong_gens[0] = genscoll;    // let SS take control of <genscoll>
+  strong_gens[0] = gens;    // let SS take control of <genscoll>
   add_base_point(pt);
   schreier_sims_stab_chain(0);
   strong_gens[0] = NULL;        // release control of <genscoll>
 
   // The stabiliser we want is the PermColl pointed to by <strong_gens[1]>
-  if (outgens != NULL) {
-    //free(outgens);
-    free_perm_coll(outgens);
+  if (*out != NULL) {
+    //free(out);
+    free_perm_coll(*out);
   }
 
-  outgens = strong_gens[1];
+  *out = strong_gens[1];
   strong_gens[1] = NULL;
 
   free_stab_chain();
-
-  return outgens;
 }
 
 /*static Obj size_stab_chain () {

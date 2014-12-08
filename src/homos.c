@@ -439,8 +439,7 @@ void SEARCH_HOMOS_SM (UIntS depth,  // the UIntLber of filled positions in map
         calls2++;
 
         // stabiliser of the point i in the stabiliser at the current rep_depth
-        //stab_gens[rep_depth + 1] = point_stabilizer(stab_gens[rep_depth], i);
-        //TODO
+        point_stabilizer(stab_gens[rep_depth], i, &stab_gens[rep_depth + 1]);
         map[next] = i;
         vals[j] |= oneone[m];
         orbit_reps(rep_depth + 1);
