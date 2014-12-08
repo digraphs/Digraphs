@@ -9,7 +9,7 @@ static bool       first_ever_call = true;
 static bool       borbits[MAXVERTS * MAXVERTS];
 static UIntS      orbits[MAXVERTS * MAXVERTS];
 static UIntS      size_orbits[MAXVERTS];
-//static UIntS      lmp;
+//static UIntS    lmp;
 static UIntS      base[MAXVERTS];
 static UIntS      size_base;
 
@@ -305,27 +305,27 @@ extern void point_stabilizer( PermColl* gens, UIntS const pt, PermColl** out) {
     tot = ProdInt(tot, INTOBJ_INT((Int) size_orbits[i]));
   }
   return tot;
-}
+}*/
 
-static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens ) {
+/*static Obj FuncC_STAB_CHAIN ( Obj self, Obj gens, Obj lmp ) {
   Obj           size;
   UIntS  nrgens, i;
 
-  deg = LargestMovedPointPermCollOld(gens);
-  lmp = deg;
+  deg = (UIntS) INT_INTOBJ(lmp);
   init_stab_chain();
+  strong_gens[0] = new_perm_coll(nrgens);
   nrgens = (UIntS) LEN_PLIST(gens);
   for (i = 1; i <= nrgens; i++) {
-    add_strong_gens(0, as_perm(ELM_PLIST(gens, i)));
+    add_perm_coll(strong_gens[0], as_perm(ELM_PLIST(gens, i)));
   }
   init_endos_base_points();
   schreier_sims_stab_chain(0);
   size = size_stab_chain();
   free_stab_chain();
   return size;
-}
+}*/
 
-static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
+/*static Obj FuncSTAB( Obj self, Obj gens, Obj pt ) {
   UIntS  nrgens, i, len;
   Obj           out;
 

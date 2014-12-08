@@ -1716,11 +1716,11 @@ static StructGVarFunc GVarFuncs [] = {
     FuncGRAPH_HOMOS,
     "src/digraphs.c:FuncGRAPH_HOMOS" },
 
-  /*{ "C_STAB_CHAIN", 1, "gens",
+  /*{ "C_STAB_CHAIN", 1, "gens, lmp",
     FuncC_STAB_CHAIN,
-    "src/digraphs.c:FuncC_STAB_CHAIN" },
+    "src/digraphs.c:FuncC_STAB_CHAIN" },*/
   
-  { "STAB", 2, "gens, pt",
+  /*{ "STAB", 2, "gens, pt",
     FuncSTAB,
     "src/digraphs.c:FuncC_STAB" },*/
 

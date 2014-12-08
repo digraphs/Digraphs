@@ -31,10 +31,17 @@ PermColl* add_perm_coll (PermColl* coll, Perm gen) {
   return coll;
 }
 
-/*PermColl* copy_perm_coll (PermColl* coll) {
-  //TODO
-  return ;
-}*/
+PermColl* copy_perm_coll (PermColl* coll) {
+  PermColl* out;
+  UIntS     nr;
+ 
+  nr = coll->nr_gens;
+  out = new_perm_coll(nr);
+  out->nr_gens = nr;
+  memcpy( (void *) out->gens, coll->gens, nr * sizeof(Perm) );
+
+  return out;
+}
 
 void free_perm_coll (PermColl* coll) {
   unsigned int i;

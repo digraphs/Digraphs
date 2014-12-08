@@ -177,7 +177,7 @@ extern void orbit_reps (UIntS rep_depth) {
   for (i = 8 * rep_depth; i < 8 * (rep_depth + 1); i++) {
     reps[i] = 0;
   }
-
+  
   nrgens  = gens->nr_gens;
 
   // TODO special case in case there are no gens, or just the identity.
@@ -192,7 +192,7 @@ extern void orbit_reps (UIntS rep_depth) {
     m = i % SYS_BITS;
     if ((vals[d] & oneone[m]) == 0) {
       reps[(8 * rep_depth) + d] |= oneone[m];
-    }      
+    }
   }
 
   fst = 0; 

@@ -26,4 +26,3 @@ Int DigraphNrEdges(Obj digraph);
 Obj OutNeighbours(Obj digraph);
 Obj DigraphSource(Obj digraph);
 Obj DigraphRange(Obj digraph);
-
