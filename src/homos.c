@@ -43,8 +43,8 @@ static inline UIntS sizeUIntL (UIntL n, int m) {
   return out;
 }
 
-HomosGraph* new_homos_graph (UIntS nr_verts) {
-  HomosGraph* graph;
+HomosGraph* new_homos_graph (UIntS const nr_verts) {
+  HomosGraph* graph = malloc(sizeof(HomosGraph));
   graph->neighbours = malloc(8 * nr_verts * sizeof(UIntL));
   graph->nr_verts = nr_verts;
   inittabs();
