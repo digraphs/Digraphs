@@ -44,7 +44,7 @@ PermColl* copy_perm_coll (PermColl* coll) {
   return out;
 }
 
-void free_perm_coll (PermColl* coll) {
+void reset_perm_coll (PermColl* coll) {
   unsigned int i;
   
   if (coll->gens != NULL) {
@@ -57,6 +57,11 @@ void free_perm_coll (PermColl* coll) {
   }
   coll->nr_gens = 0;
   coll->alloc_size = 0;
+}
+
+void free_perm_coll (PermColl* coll) {
+  reset_perm_coll(coll);
+  free(coll);
 }
 
 extern Perm new_perm () {
