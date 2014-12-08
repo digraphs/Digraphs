@@ -28,6 +28,7 @@ PermColl* add_perm_coll(PermColl* coll, Perm gen);
 PermColl* copy_perm_coll(PermColl* coll);
 void free_perm_coll(PermColl* coll);
 
+// TODO remove this
 extern UIntS deg;
 
 Perm new_perm();

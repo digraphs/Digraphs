@@ -8,11 +8,8 @@ void set_perms_degree (UIntS deg_arg) {
 }
 
 PermColl* new_perm_coll (UIntS upper_bound) {
-  PermColl* coll;
-  Perm*   gens;
-
-  gens = malloc(upper_bound * sizeof(Perm));
-  coll->gens = gens;
+  PermColl* coll = malloc(sizeof(PermColl));
+  coll->gens = malloc(upper_bound * sizeof(Perm));
   coll->nr_gens = 0;
   coll->deg = deg;
   coll->alloc_size = upper_bound;
@@ -33,13 +30,11 @@ PermColl* add_perm_coll (PermColl* coll, Perm gen) {
 }
 
 PermColl* copy_perm_coll (PermColl* coll) {
-  PermColl* out;
-  UIntS     nr;
- 
-  nr = coll->nr_gens;
-  out = new_perm_coll(nr);
-  out->nr_gens = nr;
-  memcpy( (void *) out->gens, coll->gens, nr * sizeof(Perm) );
+  PermColl* out = malloc(sizeof(PermColl));
+  
+  out = new_perm_coll(coll->nr_gens);
+  out->nr_gens = coll->nr_gens;
+  memcpy((void *) out->gens, (void *) coll->gens, coll->nr_gens * sizeof(Perm) );
 
   return out;
 }
