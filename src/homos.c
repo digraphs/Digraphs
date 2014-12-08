@@ -45,7 +45,7 @@ static inline UIntS sizeUIntL (UIntL n, int m) {
 
 HomosGraph* new_homos_graph (UIntS const nr_verts) {
   HomosGraph* graph = malloc(sizeof(HomosGraph));
-  graph->neighbours = malloc(8 * nr_verts * sizeof(UIntL));
+  graph->neighbours = calloc(8 * nr_verts, sizeof(UIntL));
   graph->nr_verts = nr_verts;
   inittabs();
   return graph;
@@ -133,8 +133,8 @@ static bool dom2_md[MAXVERTS];*/
 static UIntL   vals[8];                 // blist for values in map
 static UIntL   neighbours1[8 * MAXVERTS];      // the neighbours of the graph1
 static UIntL   neighbours2[8 * MAXVERTS];      // the neighbours of the graph2
-static UIntL   dom1[8];               
-static UIntL   dom2[8];
+static UIntL   domain[8];                     // for finding orbit reps               
+static UIntL   orb_lookup[8];                 // for finding orbit reps
 static UIntL   reps[8 * MAXVERTS];
 
 static void*  user_param;              // a user_param for the hook
@@ -168,59 +168,55 @@ void homo_hook_print () {
   printf(" }\n");
 }
 
-extern void orbit_reps (UIntS rep_depth) {
+static void orbit_reps (UIntS rep_depth) {
   UIntS     nrgens, i, j, fst, m, img, n, max, d;
-  PermColl* gens;
   Perm      gen;
  
-  gens = stab_gens[rep_depth];
   for (i = 8 * rep_depth; i < 8 * (rep_depth + 1); i++) {
     reps[i] = 0;
   }
-  
-  nrgens  = gens->nr_gens;
 
   // TODO special case in case there are no gens, or just the identity.
 
   for (i = 0; i < 8; i++){
-    dom1[i] = 0;
-    dom2[i] = 0;
+    domain[i] = 0;
+    orb_lookup[i] = 0;
   }
   
   for (i = 0; i < deg; i++) {
     d = i / SYS_BITS;
     m = i % SYS_BITS;
     if ((vals[d] & oneone[m]) == 0) {
-      reps[(8 * rep_depth) + d] |= oneone[m];
+      domain[d] |= oneone[m];
     }
   }
 
   fst = 0; 
-  while ( ((dom1[fst / SYS_BITS] & oneone[fst % SYS_BITS]) == 0) && fst < deg) fst++;
+  while ( ((domain[fst / SYS_BITS] & oneone[fst % SYS_BITS]) == 0) && fst < deg) fst++;
 
   while (fst < deg) {
     d = fst / SYS_BITS;
     m = fst % SYS_BITS;
     reps[(8 * rep_depth) + d] |= oneone[m];
     orb[0] = fst;
-    n = 1; //length of orb
-    dom2[d] |= oneone[m];
-    dom1[d] ^= oneone[m];
+    n = 1;   //length of orb
+    orb_lookup[d] |= oneone[m];
+    domain[d] ^= oneone[m];
 
     for (i = 0; i < n; i++) {
-      for (j = 0; j < nrgens; j++) {
-        gen = gens->gens[j];
+      for (j = 0; j < stab_gens[rep_depth]->nr_gens; j++) {
+        gen = stab_gens[rep_depth]->gens[j];
         img = gen[orb[i]];
 	d = img / SYS_BITS;
 	m = img % SYS_BITS;
-        if ((dom2[d] & oneone[m]) == 0) {
+        if ((orb_lookup[d] & oneone[m]) == 0) {
           orb[n++] = img;
-          dom2[d] |= oneone[m];
-          dom1[d] ^= oneone[m];
+          orb_lookup[d] |= oneone[m];
+          domain[d] ^= oneone[m];
         }
       }
     }
-    while ( ((dom1[fst / SYS_BITS] & oneone[fst % SYS_BITS]) == 0) && fst < deg) fst++;
+    while ( ((domain[fst / SYS_BITS] & oneone[fst % SYS_BITS]) == 0) && fst < deg) fst++;
   }
   return;
 }
@@ -580,13 +576,13 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   d = nr1 / SYS_BITS;
   m = nr1 % SYS_BITS;
   for (i = 0; i < nr1; i++) {
+    map[i] = UNDEFINED;
+    sizes[i] = nr2;
     for (j = 0; j < d; j++){
       condition[8 * i + j] = ones[63];
     }
     condition[8 * i + d] = ones[m];
   }
-
-  memset((void *) map, UNDEFINED, nr1 * sizeof(UIntS)); //everything is undefined
   
   for (i = 0; i < 8; i++){
     vals[i] = 0;
@@ -595,11 +591,8 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   memcpy((void *) neighbours1, graph1->neighbours, nr1 * 8 * sizeof(UIntL));
   memcpy((void *) neighbours2, graph2->neighbours, nr2 * 8 * sizeof(UIntL));
 
-  for (i = 0; i < nr1; i++) {
-    sizes[i] = nr2;
-  }
-
   // get generators of the automorphism group
+  set_perms_degree(nr2);
   stab_gens[0] = homos_find_automorphisms(graph2);
 
   // get orbit reps

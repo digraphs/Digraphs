@@ -21,8 +21,6 @@ typedef struct homos_graph_struct HomosGraph;
 
 void homo_hook_print ();
 
-void orbit_reps (UIntS rep_depth);
-
 void GraphHomomorphisms (HomosGraph*  graph1, 
                          HomosGraph*  graph2,
                          void         (*hook)(void*        user_param,
