@@ -38,4 +38,4 @@ Perm prod_perms (Perm const x, Perm const y);
 void prod_perms_in_place (Perm x, Perm const y);
 Perm invert_perm (Perm const x);
 
-UIntS deg;
+extern UIntS deg;
