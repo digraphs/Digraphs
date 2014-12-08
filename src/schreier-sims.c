@@ -70,7 +70,7 @@ static void remove_base_points (UIntS const depth) {
     size_base--;
     //free(strong_gens[i + 1]);
     //size_strong_gens[i + 1] = 0;
-    free_perm_coll(strong_gens[i + 1]); // TODO: not sure if necessary or even wise
+    reset_perm_coll(strong_gens[i + 1]); // TODO: not sure if necessary or even wise
     size_orbits[i] = 0;
     
     for (j = 0; j < deg; j++) {//TODO double-check deg!
@@ -276,7 +276,7 @@ extern void point_stabilizer( PermColl* gens, UIntS const pt, PermColl** out) {
 
   if (strong_gens[0] != NULL) {
     //free(strong_gens[0]);
-    free_perm_coll(strong_gens[0]);
+    reset_perm_coll(strong_gens[0]);
   }
   
   strong_gens[0] = gens;    // let SS take control of <genscoll>
@@ -287,7 +287,7 @@ extern void point_stabilizer( PermColl* gens, UIntS const pt, PermColl** out) {
   // The stabiliser we want is the PermColl pointed to by <strong_gens[1]>
   if (*out != NULL) {
     //free(out);
-    free_perm_coll(*out);
+    reset_perm_coll(*out);
   }
 
   *out = strong_gens[1];
