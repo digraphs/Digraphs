@@ -12,13 +12,48 @@
 
 #define UNDEFINED MAXVERTS + 1
 
-static bool tables_init = false;
-static UIntL oneone[SYS_BITS];
-static UIntL ones[SYS_BITS];
-static jmp_buf outofhere;
+// globals for the recursive find_homos
+static UIntS  nr1;                         // nr of vertices in graph1
+static UIntS  nr2;                         // nr of vertices in graph2
+static UIntS  nr2_d;                       // nr2 / SYS_BITS 
+static UIntS  nr2_m;                       // nr2 % SYS_BITS 
+static UIntL  count;                       // nr of homos found so far
+static UIntS  hint;                        // wanted nr of distinct values in map
+static UIntL  maxresults;                  // upper bound for the nr of returned homos
+static UIntS  map[MAXVERTS];               // partial image list
+static UIntS  sizes[MAXVERTS * MAXVERTS];  // sizes[depth * nr1 + i] = |condition[i]| at <depth>
+static UIntL  vals[8];                     // blist for values in map
+static UIntL  neighbours1[8 * MAXVERTS];   // the neighbours of the graph1
+static UIntL  neighbours2[8 * MAXVERTS];   // the neighbours of the graph2
 
-static void inittabs(void) { 
-  if(!tables_init) {
+static void*  user_param;                  // a user_param for the hook
+void          (*hook)(void* user_param,    // hook function applied to every homo found
+	              const UIntS nr,
+	              const UIntS *map);
+
+// globals for the orbit reps calculation  // TODO remove this whole section
+static UIntS     orb[MAXVERTS];            // to hold the orbits in orbit_reps
+static UIntL     domain[8];                // for finding orbit reps               
+static UIntL     orb_lookup[8];            // for finding orbit reps
+static UIntL     reps[8 * MAXVERTS];       // orbit reps
+static PermColl* stab_gens[MAXVERTS];      // stabiliser generators
+
+// globals for statics
+static UIntL calls1;                       // calls1 is the nr of calls to find_homos
+static UIntL calls2;                       // calls2 is the nr of stabs calculated
+static UIntL last_report = 0;              // the last value of calls1 when we reported
+static UIntL report_interval = 999999;     // the interval when we report
+
+// globals for bitwise operations
+static bool    are_bit_tabs_init = false;  // did we call init_bit_tabs already?
+static UIntL   oneone[SYS_BITS];           // bit lists for intersection etc.
+static UIntL   ones[SYS_BITS];             // bit lists for intersection etc.
+static jmp_buf outofhere;                  // so we can jump out of the deepest level of recursion
+
+// initial the bit tabs
+
+static void init_bit_tabs (void) { 
+  if (! are_bit_tabs_init) {
     UIntL i;
     UIntL v = 1;
     UIntL w = 1;
@@ -28,9 +63,11 @@ static void inittabs(void) {
         w <<= 1;
         v |= w;
     }
-    tables_init = true;
+    are_bit_tabs_init = true;
   }
 }
+
+// number of 1s in the binary expansion of an array consisting of <m> UIntLs
 
 static inline UIntS sizeUIntL (UIntL n, int m) {
   int out = 0;
@@ -43,11 +80,13 @@ static inline UIntS sizeUIntL (UIntL n, int m) {
   return out;
 }
 
+// creating graphs . . . 
+
 HomosGraph* new_homos_graph (UIntS const nr_verts) {
   HomosGraph* graph = malloc(sizeof(HomosGraph));
   graph->neighbours = calloc(8 * nr_verts, sizeof(UIntL));
   graph->nr_verts = nr_verts;
-  inittabs();
+  init_bit_tabs();
   return graph;
 }
 
@@ -61,7 +100,7 @@ void add_edges_homos_graph (HomosGraph* graph, UIntS from_vert, UIntS to_vert) {
   graph->neighbours[8 * from_vert + (to_vert / SYS_BITS)] |= oneone[to_vert % SYS_BITS];
 }
 
-// automorphism group 
+// automorphism group . . . 
 
 static BlissGraph* as_bliss_graph (HomosGraph* graph) {
   UIntS  i, j, k;
@@ -87,9 +126,9 @@ static BlissGraph* as_bliss_graph (HomosGraph* graph) {
   return bliss_graph;
 }
 
-void auto_hook (void               *user_param,  // perm_coll!
+void auto_hook (void               *user_param_arg,  // perm_coll!
 	        unsigned int       N,
-	        const unsigned int *aut        ) {
+	        const unsigned int *aut            ) {
   
   UIntS i;
   Perm  p = new_perm();
@@ -100,7 +139,7 @@ void auto_hook (void               *user_param,  // perm_coll!
   for (; i < deg; i++) {
     p[i] = i;
   }
-  add_perm_coll((PermColl*) user_param, p);
+  add_perm_coll((PermColl*) user_param_arg, p);
 }
 
 static PermColl* homos_find_automorphisms (HomosGraph* homos_graph) {
@@ -111,42 +150,6 @@ static PermColl* homos_find_automorphisms (HomosGraph* homos_graph) {
   bliss_release(graph);
   return gens;
 }
-
-static UIntS  nr1;             // nr of vertices in graph1
-static UIntS  nr2;             // nr of vertices in graph2
-static UIntS  nr2_d;           // nr2 / SYS_BITS 
-static UIntS  nr2_m;           // nr2 % SYS_BITS 
-static UIntL  count;                   // the UIntLber of endos found so far
-static UIntS  hint;           // an upper bound for the UIntLber of distinct values in map
-static UIntL  maxresults;              // upper bound for the UIntLber of returned homos
-static UIntS  map[MAXVERTS];                 // partial image list
-static UIntS  sizes[MAXVERTS * MAXVERTS];  // sizes[depth * nr1 + i] = |condition[i]| at depth <depth>
-static UIntS  orb[MAXVERTS];                 // to hold the orbits in OrbitReps
-
-static UIntL   vals[8];                 // blist for values in map
-static UIntL   neighbours1[8 * MAXVERTS];      // the neighbours of the graph1
-static UIntL   neighbours2[8 * MAXVERTS];      // the neighbours of the graph2
-static UIntL   domain[8];                     // for finding orbit reps               
-static UIntL   orb_lookup[8];                 // for finding orbit reps
-static UIntL   reps[8 * MAXVERTS];
-
-static void*  user_param;              // a user_param for the hook
-void         (*hook)(void*        user_param,
-	                                      const UIntS  nr,
-	                                      const UIntS  *map       );
-                  // hook function applied to every homom. found
-
-static UIntL   calls1;                  // UIntLber of function call statistics 
-static UIntL   calls2;                  // calls1 is the UIntLber of calls to the search function
-                                     // calls2 is the UIntLber of stabilizers
-                                     // calculated
-                                    
-static UIntL last_report = 0;          // the last value of calls1 when we reported
-static UIntL report_interval = 999999; // the interval when we report
-
-static PermColl * stab_gens[MAXVERTS]; // GRAPH_HOMOS stabiliser gens
-
-// algorithm for graphs with between SM and MD vertices . . .
 
 // homomorphism hook funcs
 
@@ -160,6 +163,8 @@ void homo_hook_print () {
   }
   printf(" }\n");
 }
+
+// TODO this should become redundant
 
 static void orbit_reps (UIntS rep_depth) {
   UIntS     nrgens, i, j, fst, m, img, n, max, d;
@@ -214,11 +219,13 @@ static void orbit_reps (UIntS rep_depth) {
   return;
 }
 
-void SEARCH_HOMOS_SM (UIntS depth,        // the number of filled positions in map
-                      UIntS   pos,        // the last position filled
-                      UIntL*  condition,  // blist of possible values for map[i]
-                      UIntS rep_depth,    
-                      UIntS   rank){      // current number of distinct values in map
+// the main recursive algorithm
+
+void find_homos (UIntS   depth,       // the number of filled positions in map
+                 UIntS   pos,         // the last position filled
+                 UIntL*  condition,   // blist of possible values for map[i]
+                 UIntS   rep_depth,   // TODO remove this  
+                 UIntS   rank      ){ // current number of distinct values in map
 
   UIntS  i, j, k, l, min, next, m, sum, w;
   UIntL  copy[8 * nr1];
@@ -290,7 +297,7 @@ void SEARCH_HOMOS_SM (UIntS depth,        // the number of filled positions in m
         vals[j] |= oneone[m];
         orbit_reps(rep_depth + 1);
         // blist of orbit reps of things not in vals
-        SEARCH_HOMOS_SM(depth + 1, next, copy, rep_depth + 1, rank + 1);
+        find_homos(depth + 1, next, copy, rep_depth + 1, rank + 1);
         map[next] = UNDEFINED;
         vals[j] ^= oneone[m];
       }
@@ -301,14 +308,13 @@ void SEARCH_HOMOS_SM (UIntS depth,        // the number of filled positions in m
     m = i % SYS_BITS;
     if (copy[8 * next + j] & vals[j] & oneone[m]) {
       map[next] = i;
-      SEARCH_HOMOS_SM(depth + 1, next, copy, rep_depth, rank);
+      find_homos(depth + 1, next, copy, rep_depth, rank);
       map[next] = UNDEFINED;
     }
   }
 }
 
 // prepare the graphs for SEARCH_HOMOS
-
 void GraphHomomorphisms (HomosGraph*  graph1, 
                          HomosGraph*  graph2,
                          void         (*hook_arg)(void*        user_param,
@@ -332,9 +338,6 @@ void GraphHomomorphisms (HomosGraph*  graph1,
     return;
   }
 
-  // initialise everything . . .
-  inittabs();
-  
   UIntL condition[8 * nr1];
   d = nr1 / SYS_BITS;
   m = nr1 % SYS_BITS;
@@ -376,9 +379,10 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   // go! 
   if (setjmp(outofhere) == 0) {
     if (isinjective) {
-      //SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook, Stabilizer);
+      //SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook,
+      //Stabilizer);//TODO uncomment
     } else {
-      SEARCH_HOMOS_SM(0, UNDEFINED, condition, 0, 0);
+      find_homos(0, UNDEFINED, condition, 0, 0);
     }
   }
   printf("calls to search = %d\n", (int) calls1);
