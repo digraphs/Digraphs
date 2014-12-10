@@ -50,35 +50,11 @@ static UIntL   oneone[SYS_BITS];           // bit lists for intersection etc.
 static UIntL   ones[SYS_BITS];             // bit lists for intersection etc.
 static jmp_buf outofhere;                  // so we can jump out of the deepest level of recursion
 
-// initial the bit tabs
+// for handling the conditions
+static UIntL conditions[nr1 * len_nr2];       // keep track of what's available for assigning
+static bool  alloc_conditions[nr1 * len_nr2]; // alloc_conditions[depth * i + j] = true if we allocated 
+                                              // condition[depth * i + j] at <depth> 
 
-static void init_bit_tabs (void) { 
-  if (! are_bit_tabs_init) {
-    UIntL i;
-    UIntL v = 1;
-    UIntL w = 1;
-    for (i = 0; i < SYS_BITS; i++) {
-        oneone[i] = w;
-        ones[i] = v;
-        w <<= 1;
-        v |= w;
-    }
-    are_bit_tabs_init = true;
-  }
-}
-
-// number of 1s in the binary expansion of an array consisting of <m> UIntLs
-
-static inline UIntS sizeUIntL (UIntL n, int m) {
-  int out = 0;
-  int i;
-  for (i = 0; i < m; i++) {
-    if (n & oneone[i]) {
-      out++;
-    }
-  }
-  return out;
-}
 
 // creating graphs . . . 
 
@@ -217,6 +193,86 @@ static void orbit_reps (UIntS rep_depth) {
     while ( ((domain[fst / SYS_BITS] & oneone[fst % SYS_BITS]) == 0) && fst < deg) fst++;
   }
   return;
+}
+
+// condition handling
+
+static inline bool* get_condition(unsigned int const depth, 
+                                  unsigned int const i     ) {  // vertex in graph1
+  return conditions[depth * nr1 + i];
+}
+
+static inline void set_condition(unsigned int const depth, 
+                                 unsigned int const i,         // vertex in graph1
+                                 bool*              data  ) {
+  conditions[depth * nr1 + i] = data;
+  alloc_conditions[depth * nr1 + i] = false;
+}
+
+static void init_conditions() {
+  unsigned int i, j; 
+
+  for (i = 0; i < nr1; i++) {
+    conditions[i] = malloc(nr2 * sizeof(bool));
+    nr_allocs++;
+    alloc_conditions[i] = true;
+    for (j = 0; j < nr2; j++) {
+      conditions[i][j] = true;
+    }
+  }
+
+  for (i = nr1; i < nr1 * nr1; i++) {
+    alloc_conditions[i] = false;
+  }
+}
+
+static inline void free_conditions(unsigned int const depth) {
+  unsigned int i;
+  for (i = 0; i < nr1; i++) {
+    if (alloc_conditions[depth * nr1 + i]) {
+      nr_frees++;
+      free(conditions[depth * nr1 + i]);
+      alloc_conditions[depth * nr1 + i] = false;
+    }
+    conditions[depth * nr1 + i] = NULL;
+  }
+}
+
+static inline void free_conditions_jmp() {
+  unsigned int i, depth;
+  for (depth = 0; depth < nr1; depth++) {
+    free_conditions(depth);
+  }
+}
+
+// initial the bit tabs
+
+static void init_bit_tabs (void) { 
+  if (! are_bit_tabs_init) {
+    UIntL i;
+    UIntL v = 1;
+    UIntL w = 1;
+    for (i = 0; i < SYS_BITS; i++) {
+        oneone[i] = w;
+        ones[i] = v;
+        w <<= 1;
+        v |= w;
+    }
+    are_bit_tabs_init = true;
+  }
+}
+
+// number of 1s in the binary expansion of an array consisting of <m> UIntLs
+
+static inline UIntS sizeUIntL (UIntL n, int m) {
+  int out = 0;
+  int i;
+  for (i = 0; i < m; i++) {
+    if (n & oneone[i]) {
+      out++;
+    }
+  }
+  return out;
 }
 
 // the main recursive algorithm
