@@ -66,20 +66,19 @@ void add_edges_homos_graph (HomosGraph* graph, UIntS from_vert, UIntS to_vert) {
 static BlissGraph* as_bliss_graph (HomosGraph* graph) {
   UIntS  i, j, k;
   UIntS  n = graph->nr_verts;
-  UIntS  d = (graph->nr_verts - 1 / SYS_BITS) + 1;
-  UIntS  m = (n / SYS_BITS);
+  UIntS  d = ((n - 1) / SYS_BITS) + 1;
   
   BlissGraph* bliss_graph = bliss_new(n);
 
   for (i = 0; i < n; i++) {   // loop over vertices
-    for (j = 0; j < m; j++) { // loop over neighbours of vertex <i>
+    for (j = 0; j < d - 1; j++) { // loop over neighbours of vertex <i>
       for (k = 0; k < SYS_BITS; k++) {
         if (graph->neighbours[d * i + j] & oneone[k]) {
           bliss_add_edge(bliss_graph, i, SYS_BITS * j + k);
         }
       }
     }
-    for (k = 0; k < (n % SYS_BITS); k++) {
+    for (k = 0; k <=  ((n - 1) % SYS_BITS); k++) {
       if (graph->neighbours[d * i + j] & oneone[k]) {
         bliss_add_edge(bliss_graph, i, SYS_BITS * j + k);
       }
@@ -114,9 +113,11 @@ static PermColl* homos_find_automorphisms (HomosGraph* homos_graph) {
 }
 
 static UIntS  nr1;             // nr of vertices in graph1
+static UIntS  nr1_d;           // nr1 - 1 / SYS_BITS 
+static UIntS  nr1_m;           // nr1 - 1 % SYS_BITS 
 static UIntS  nr2;             // nr of vertices in graph2
-static UIntS  nr2_d;           // nr2 / SYS_BITS 
-static UIntS  nr2_m;           // nr2 % SYS_BITS 
+static UIntS  nr2_d;           // nr2 - 1 / SYS_BITS 
+static UIntS  nr2_m;           // nr2 - 1 % SYS_BITS 
 static UIntS  len_nr1;         // number of UIntS to store all neighbours1
 static UIntS  len_nr2;         // number of UIntS to store all neighbours2
 static UIntL  count;                   // the UIntLber of endos found so far
@@ -263,7 +264,7 @@ void SEARCH_HOMOS_SM (UIntS depth,        // the number of filled positions in m
             sizes[depth * nr1 + j] += sizeUIntL(copy[len_nr2 * j + k], SYS_BITS);
 	  }
           copy[len_nr2 * j + nr2_d] &= neighbours2[len_nr2 * map[pos] + nr2_d];
-          sizes[depth * nr1 + j] += sizeUIntL(copy[len_nr2 * j + nr2_d], nr2_m);
+          sizes[depth * nr1 + j] += sizeUIntL(copy[len_nr2 * j + nr2_d], nr2_m + 1);
           if (sizes[depth * nr1 + j] == 0) {
             return;
           }
@@ -322,14 +323,16 @@ void GraphHomomorphisms (HomosGraph*  graph1,
                          int          hint_arg, 
                          bool         isinjective     ) {
   PermColl* gens;
-  UIntS     i, j, k, d, m, len;
+  UIntS     i, j, k, len;
   
   nr1 = graph1->nr_verts;
+  nr1_d = (nr1 - 1) / SYS_BITS;
+  nr1_m = (nr1 - 1) % SYS_BITS;
   nr2 = graph2->nr_verts;
-  len_nr1 = (nr1 - 1) / SYS_BITS + 1;
-  len_nr2 = (nr2 - 1) / SYS_BITS + 1;
-  nr2_d = nr2 / SYS_BITS;
-  nr2_m = nr2 % SYS_BITS;
+  nr2_d = (nr2 - 1) / SYS_BITS;
+  nr2_m = (nr2 - 1) % SYS_BITS;
+  len_nr1 = nr1_d + 1;
+  len_nr2 = nr2_d + 1;
 
   assert(nr1 <= MAXVERTS && nr2 <= MAXVERTS);
   
@@ -341,15 +344,13 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   inittabs();
   
   UIntL condition[len_nr2 * nr1];
-  d = nr1 / SYS_BITS;
-  m = nr1 % SYS_BITS;
   for (i = 0; i < nr1; i++) {
     map[i] = UNDEFINED;
     sizes[i] = nr2;
-    for (j = 0; j < d; j++){
+    for (j = 0; j < nr2_d; j++){
       condition[len_nr2 * i + j] = ones[63];
     }
-    condition[len_nr2 * i + d] = ones[m];
+    condition[len_nr2 * i + nr2_d] = ones[nr2_m];
   }
   
   for (i = 0; i < len_nr2; i++){
