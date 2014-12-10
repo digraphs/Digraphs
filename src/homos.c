@@ -240,37 +240,37 @@ static inline UIntL* push_condition(UIntS const depth,
                                     UIntS const i,         // vertex in graph1
                                     UIntL*      data  ) {  // len_nr2 * UIntL
   alloc_condition[nr1 * depth + i] = true;
-  condition[len_condition[i]] = malloc(len_nr2 * sizeof(UIntL));
+  condition[nr1 * len_condition[i] + i] = malloc(len_nr2 * sizeof(UIntL));
   nr_allocs++;
-  memcpy((void *)condition[len_condition[i]], (void *) data, (size_t) len_nr2 * sizeof(UIntL));
+  memcpy((void *)condition[nr1 * len_condition[i] + i], (void *) data, (size_t) len_nr2 * sizeof(UIntL));
   len_condition[i]++;
-  return condition[len_condition[i] - 1];
+  return condition[nr1 * (len_condition[i] - 1) + i];
 }
 
 static inline void pop_condition(UIntS const depth) {
   UIntS i;
   for (i = 0; i < nr1; i++) {
     if (alloc_condition[nr1 * depth + i]) {
-      free(condition[len_condition[i]]);
-      nr_frees++;
       len_condition[i]--;
+      free(condition[nr1 * len_condition[i] + i]);
+      nr_frees++;
     }
   }
 }
 
 static void init_conditions() {
-  unsigned int i, j; 
+  UIntS i, j; 
 
   for (i = 0; i < nr1; i++) {
     condition[i] = malloc(len_nr2 * sizeof(UIntL));
     nr_allocs++;
     alloc_condition[i] = true;
-    len_condition[i] = 0;
+    len_condition[i] = 1;
 
-    for (j = 0; j < nr2_d - 1; j++) {
+    for (j = 0; j < len_nr2 - 1; j++) {
       condition[i][j] = ones[SYS_BITS - 1];
     }
-    condition[i][nr2_d - 1] = ones[nr2_m];
+    condition[i][len_nr2 - 1] = ones[nr2_m];
   }
 }
 
