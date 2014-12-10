@@ -156,7 +156,7 @@ schreier_sims_stab_chain := function(stab_chain, depth)
         if transversal[i][beta] * x <> transversal[i][beta ^ x] then
           y := true;
           tmp := sift_stab_chain(stab_chain, transversal[i][beta] * x *
-            transversal[i][beta ^ x] ^ - 1);
+            transversal[i][beta ^ x] ^ -1);
           h := tmp[1];
           jj := tmp[2];
           if jj <= Length(base) then 

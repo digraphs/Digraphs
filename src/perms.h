@@ -38,5 +38,11 @@ bool is_one (Perm x);
 bool eq_perms (Perm x, Perm y);
 Perm prod_perms (Perm const x, Perm const y);
 void prod_perms_in_place (Perm x, Perm const y);
+Perm copy_perm (Perm const x);
 Perm invert_perm (Perm const x);
 
+// variables for debugging memory leaks
+extern UIntL nr_ss_allocs;
+extern UIntL nr_ss_frees;
+extern UIntL nr_new_perm_coll;
+extern UIntL nr_free_perm_coll;

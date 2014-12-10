@@ -229,6 +229,7 @@ void SEARCH_HOMOS_SM (UIntS depth,        // the number of filled positions in m
     printf("stabs computed = %d\n", (int) calls2);
     //printf("nr allocs = %d\n", (int) nr_allocs);
     //printf("nr frees = %d\n", (int) nr_frees);
+
     last_report = calls1;
   }
 
@@ -320,7 +321,13 @@ void GraphHomomorphisms (HomosGraph*  graph1,
                          bool         isinjective     ) {
   PermColl* gens;
   UIntS     i, j, k, d, m, len;
-  
+
+  // debugging memory leaks
+  nr_ss_allocs = 0;
+  nr_ss_frees = 0;
+  nr_new_perm_coll = 0;
+  nr_free_perm_coll = 0;
+
   nr1 = graph1->nr_verts;
   nr2 = graph2->nr_verts;
   nr2_d = nr2 / SYS_BITS;
@@ -383,4 +390,21 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   }
   printf("calls to search = %d\n", (int) calls1);
   printf("stabs computed = %d\n", (int) calls2);
+
+  
+  // free the stab_gens
+  for (i = 0; i < MAXVERTS; i++) {
+    if (stab_gens[i] != NULL) {
+      free_perm_coll(stab_gens[i]);
+      nr_ss_frees++;
+      stab_gens[i] = NULL;
+    }
+  }
+
+  // debugging memory leaks
+  printf("\n");
+  printf("nr ss-related allocs = %llu\n", (unsigned long long int) nr_ss_allocs );
+  printf("nr ss-related frees = %llu\n", (unsigned long long int) nr_ss_frees );
+  printf("nr new perm colls = %llu\n", (unsigned long long int) nr_new_perm_coll );
+  printf("nr perm colls freed = %llu\n", (unsigned long long int) nr_free_perm_coll );
 }

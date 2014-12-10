@@ -1,5 +1,11 @@
 #include "src/perms.h"
 
+// variables for debugging memory leaks
+UIntL nr_ss_allocs = 0;
+UIntL nr_ss_frees = 0;
+UIntL nr_new_perm_coll = 0;
+UIntL nr_free_perm_coll = 0;
+
 UIntS deg;
 static UIntS perm_buf[MAXVERTS]; //TODO remove this
 
@@ -8,8 +14,11 @@ void set_perms_degree (UIntS deg_arg) {
 }
 
 PermColl* new_perm_coll (UIntS upper_bound) {
+  nr_new_perm_coll++;
   PermColl* coll = malloc(sizeof(PermColl));
+  nr_ss_allocs++;
   coll->gens = malloc(upper_bound * sizeof(Perm));
+  nr_ss_allocs++;
   coll->nr_gens = 0;
   coll->deg = deg;
   coll->alloc_size = upper_bound;
@@ -24,19 +33,22 @@ void add_perm_coll (PermColl* coll, Perm gen) {
   if (coll->nr_gens == coll->alloc_size) {
     coll->gens = realloc(coll->gens, (coll->nr_gens + 1) * sizeof(Perm));
     (coll->alloc_size)++;
+    nr_ss_allocs++;
+    nr_ss_frees++;
   }
   coll->gens[(coll->nr_gens)++] = gen;
 }
 
-static Perm copy_perm (Perm const p) {
+extern Perm copy_perm (Perm const p) {
   Perm newP = malloc(deg * sizeof(UIntS));
+  nr_ss_allocs++;
   memcpy((void *) newP, (void *) p, (size_t) deg * sizeof(UIntS));
   return newP;
 }
 
 PermColl* copy_perm_coll (PermColl* coll) {
-  UIntS i;
-  PermColl* out = malloc(sizeof(PermColl));
+  UIntS     i;
+  PermColl* out;
   
   out = new_perm_coll(coll->nr_gens);
   for (i = 0; i < coll->nr_gens; i++) {
@@ -47,19 +59,24 @@ PermColl* copy_perm_coll (PermColl* coll) {
 
 void free_perm_coll (PermColl* coll) {
   unsigned int i;
-  
+ 
+  nr_free_perm_coll++;
   if (coll->gens != NULL) {
     for (i = 0; i < coll->nr_gens; i++) {
       if (coll->gens[i] != NULL) {
         free(coll->gens[i]);
+        nr_ss_frees++;
       }
     }
     free(coll->gens);
+    nr_ss_frees++;
   }
   free(coll);
+  nr_ss_frees++;
 }
 
 extern Perm new_perm () {
+  nr_ss_allocs++;
   return malloc(deg * sizeof(UIntS));
 }
 
@@ -73,7 +90,7 @@ Perm id_perm () {
   return id;
 }
 
- bool is_one (Perm x) {
+bool is_one (Perm x) {
   UIntS i;
 
   for (i = 0; i < deg; i++) {
@@ -84,7 +101,7 @@ Perm id_perm () {
   return true;
 }
 
- bool eq_perms (Perm x, Perm y) {
+bool eq_perms (Perm x, Perm y) {
   UIntS i;
 
   for (i = 0; i < deg; i++) {
@@ -95,7 +112,7 @@ Perm id_perm () {
   return true;
 }
 
- Perm prod_perms (Perm const x, Perm const y) {
+Perm prod_perms (Perm const x, Perm const y) {
   UIntS i;
   Perm z = new_perm();
 
@@ -117,7 +134,7 @@ Perm id_perm () {
 
 // changes the lhs
 // TODO remove
- void quo_perms_in_place (Perm x, Perm const y) {
+void quo_perms_in_place (Perm x, Perm const y) {
   UIntS i;
 
   // invert y into the buf
@@ -130,7 +147,7 @@ Perm id_perm () {
   }
 }
 
- void prod_perms_in_place (Perm x, Perm const y) {
+void prod_perms_in_place (Perm x, Perm const y) {
   UIntS i;
 
   for (i = 0; i < deg; i++) {
@@ -138,7 +155,7 @@ Perm id_perm () {
   }
 }
 
- Perm invert_perm (Perm const x) {
+Perm invert_perm (Perm const x) {
   UIntS i;
 
   Perm y = new_perm();
