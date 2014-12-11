@@ -218,7 +218,7 @@ static void sift_stab_chain (Perm* g, UIntS* depth) {
 static void schreier_sims_stab_chain ( UIntS const depth ) {
 
   Perm          x, h, prod;
-  bool          escape, y, free_h;
+  bool          escape, y;
   int           i;
   UIntS         j, jj, k, l, m, beta, betax;
 
@@ -277,10 +277,8 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
             }
           }
           
-          free_h = true;
           if ( !y ) {
             for (l = i + 1; l <= jj; l++) {
-              free_h = false;
               add_strong_gens(l, copy_perm(h));
               add_gen_orbit_stab_chain(l, h);
               // add generator to <h> to orbit of base[l]
@@ -288,15 +286,11 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
             i = jj;
             escape = true;
           }
-          if (free_h) {
-            free(h);
-            nr_ss_frees++;
-          }
+          free(h);
+          nr_ss_frees++;
         }
-
         free(prod);
         nr_ss_frees++;
-
       }
     }
     if (! escape) {
