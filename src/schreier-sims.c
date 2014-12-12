@@ -314,7 +314,8 @@ extern void point_stabilizer( PermColl* gens, UIntS const pt, PermColl** out) {
     free_perm_coll(*out);
   }
   if (strong_gens[1] == NULL) {
-    *out = copy_perm_coll(strong_gens[0]);
+    // this means that the stabilizer of the point pt is trivial
+    *out = copy_perm_coll(strong_gens[0]); // THIS IS WRONG
   } else {
     *out = copy_perm_coll(strong_gens[1]);
   }
