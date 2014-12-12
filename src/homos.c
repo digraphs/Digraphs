@@ -286,10 +286,12 @@ static inline void free_conditions_jmp() {
 void find_homos (UIntS   depth,       // the number of filled positions in map
                  UIntS   pos,         // the last position filled
                  UIntS   rep_depth,   // TODO remove this  
-                 UIntS   rank      ){ // current number of distinct values in map
+                 UIntS   rank,        // current number of distinct values in map
+                 bool    trivial_stab ){
 
   UIntS   i, j, k, l, min, next, m, sum, w;
   UIntL*  copy;
+  bool    is_trivial;
   
   calls1++;
   if (calls1 > last_report + report_interval) {
@@ -356,14 +358,19 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
       if ((copy[len_nr2 * next + j] & reps[(len_nr2 * rep_depth) + j] & oneone[m]) 
           && (vals[j] & oneone[m]) == 0) { 
         calls2++;
-
-        // stabiliser of the point i in the stabiliser at the current rep_depth
-        point_stabilizer(stab_gens[rep_depth], i, &stab_gens[rep_depth + 1]);
         map[next] = i;
         vals[j] |= oneone[m];
-        orbit_reps(rep_depth + 1);
-        // blist of orbit reps of things not in vals
-        find_homos(depth + 1, next, rep_depth + 1, rank + 1);
+
+        if (!trivial_stab) {
+          // calculate stabiliser of the point i in the stabiliser at the current rep_depth
+          is_trivial = point_stabilizer(stab_gens[rep_depth], i, &stab_gens[rep_depth + 1]);
+          // blist of orbit reps of things not in vals
+          orbit_reps(rep_depth + 1); // if (is_trivial), orbit_reps should be trivial to calc
+          find_homos(depth + 1, next, rep_depth + 1, rank + 1, is_trivial);
+        } else {
+          find_homos(depth + 1, next, rep_depth, rank + 1, true);
+        }
+        
         map[next] = UNDEFINED;
         vals[j] ^= oneone[m];
       }
@@ -374,7 +381,7 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
     m = i % SYS_BITS;
     if (copy[len_nr2 * next + j] & vals[j] & oneone[m]) {
       map[next] = i;
-      find_homos(depth + 1, next, rep_depth, rank);
+      find_homos(depth + 1, next, rep_depth, rank, trivial_stab);
       map[next] = UNDEFINED;
     }
   }
@@ -456,7 +463,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
       //SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook,
       //Stabilizer);//TODO uncomment
     } else {
-      find_homos(0, UNDEFINED, 0, 0);
+      find_homos(0, UNDEFINED, 0, 0, false);
     }
   }
 

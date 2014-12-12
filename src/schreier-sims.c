@@ -300,7 +300,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   
 }
 
-extern void point_stabilizer( PermColl* gens, UIntS const pt, PermColl** out) {
+extern bool point_stabilizer( PermColl* gens, UIntS const pt, PermColl** out) {
   init_stab_chain();
 
   strong_gens[0] = copy_perm_coll(gens);
@@ -314,12 +314,15 @@ extern void point_stabilizer( PermColl* gens, UIntS const pt, PermColl** out) {
     free_perm_coll(*out);
   }
   if (strong_gens[1] == NULL) {
-    // this means that the stabilizer of the point pt is trivial
-    *out = copy_perm_coll(strong_gens[0]); // THIS IS WRONG
-  } else {
-    *out = copy_perm_coll(strong_gens[1]);
+    // this means that the stabilizer of pt under <gens> is trivial
+    *out = new_perm_coll(1);
+    add_perm_coll(*out, id_perm());
+    free_stab_chain();
+    return true;
   }
+  *out = copy_perm_coll(strong_gens[1]);
   free_stab_chain();
+  return false;
 }
 
 /*static Obj size_stab_chain () {
