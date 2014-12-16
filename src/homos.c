@@ -233,16 +233,18 @@ static bool   alloc_condition[MAXVERTS * MAXVERTS];
 static UIntS  len_condition[MAXVERTS * MAXVERTS / SYS_BITS];
 
 static inline UIntL* get_condition(UIntS const i) {   // vertex in graph1
-  return &condition[nr1 * (len_condition[i] - 1) + i];
+  return &condition[nr1 * len_nr2 * (len_condition[i] - 1) + len_nr2 * i];
 }
 
 static inline UIntL* push_condition(UIntS const depth, 
                                     UIntS const i,         // vertex in graph1
                                     UIntL*      data  ) {  // len_nr2 * UIntL
   alloc_condition[nr1 * depth + i] = true;
-  memcpy((void *)condition[nr1 * len_condition[i] + i], (void *) data, (size_t) len_nr2 * sizeof(UIntL));
+  memcpy((void *) &condition[nr1 * len_nr2 * len_condition[i] + len_nr2 * i],
+         (void *) data,
+	 (size_t) len_nr2 * sizeof(UIntL));
   len_condition[i]++;
-  return &condition[nr1 * (len_condition[i] - 1) + i];
+  return &condition[nr1 * len_nr2 * (len_condition[i] - 1) + len_nr2 * i];
 }
 
 static inline void pop_condition(UIntS const depth) {
@@ -265,9 +267,9 @@ static void init_conditions() {
     len_condition[i] = 1;
 
     for (j = 0; j < len_nr2 - 1; j++) {
-      condition[nr1 * i + j] = ones[SYS_BITS - 1];
+      condition[len_nr2 * i + j] = ones[SYS_BITS - 1];
     }
-    condition[nr1 * i + len_nr2 - 1] = ones[nr2_m];
+    condition[len_nr2 * i + len_nr2 - 1] = ones[nr2_m];
 
     for (j = 1; j < nr1; j++) {
       alloc_condition[nr1 * j + i] = false;
@@ -277,9 +279,6 @@ static void init_conditions() {
 
 static inline void free_conditions_jmp() {
   unsigned int i, depth;
-  for (depth = nr1; depth > 0; depth--) { //JJ: delete
-    pop_condition(depth - 1);
-  }
   free(condition);
   nr_frees++;
 }
@@ -332,7 +331,7 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
           sizes[depth * nr1 + j] = 0;
 	  for (k = 0; k < nr2_d; k++){
             copy[k] &= neighbours2[len_nr2 * map[pos] + k];
-            sizes[depth * nr1 + j] += sizeUIntL(copy[len_nr2 * j + k], SYS_BITS);
+            sizes[depth * nr1 + j] += sizeUIntL(copy[k], SYS_BITS);
 	  }
           copy[nr2_d] &= neighbours2[len_nr2 * map[pos] + nr2_d];
           sizes[depth * nr1 + j] += sizeUIntL(copy[nr2_d], nr2_m + 1);
