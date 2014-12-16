@@ -226,25 +226,23 @@ static void orbit_reps (UIntS rep_depth) {
 }
 
 // for handling the conditions
-static UIntL* condition[MAXVERTS * MAXVERTS]; // keep track of what's available for assigning
+static UIntL* condition; // keep track of what's available for assigning
 static bool   alloc_condition[MAXVERTS * MAXVERTS]; 
                                               // alloc_conditions[depth * i + j] = true if we allocated 
                                               // condition[depth * i + j] at <depth> 
 static UIntS  len_condition[MAXVERTS * MAXVERTS / SYS_BITS];
 
 static inline UIntL* get_condition(UIntS const i) {   // vertex in graph1
-  return condition[nr1 * (len_condition[i] - 1) + i];
+  return &condition[nr1 * (len_condition[i] - 1) + i];
 }
 
 static inline UIntL* push_condition(UIntS const depth, 
                                     UIntS const i,         // vertex in graph1
                                     UIntL*      data  ) {  // len_nr2 * UIntL
   alloc_condition[nr1 * depth + i] = true;
-  condition[nr1 * len_condition[i] + i] = malloc(len_nr2 * sizeof(UIntL));
-  nr_allocs++;
   memcpy((void *)condition[nr1 * len_condition[i] + i], (void *) data, (size_t) len_nr2 * sizeof(UIntL));
   len_condition[i]++;
-  return condition[nr1 * (len_condition[i] - 1) + i];
+  return &condition[nr1 * (len_condition[i] - 1) + i];
 }
 
 static inline void pop_condition(UIntS const depth) {
@@ -252,9 +250,7 @@ static inline void pop_condition(UIntS const depth) {
   for (i = 0; i < nr1; i++) {
     if (alloc_condition[nr1 * depth + i]) {
       len_condition[i]--;
-      free(condition[nr1 * len_condition[i] + i]);
       alloc_condition[nr1 * depth + i] = false;
-      nr_frees++;
     }
   }
 }
@@ -262,16 +258,16 @@ static inline void pop_condition(UIntS const depth) {
 static void init_conditions() {
   UIntS i, j; 
 
+  condition = malloc(nr1 * nr1 * len_nr2 * sizeof(UIntL)); //JJ: calloc?
+  nr_allocs++;
   for (i = 0; i < nr1; i++) {
-    condition[i] = malloc(len_nr2 * sizeof(UIntL));
-    nr_allocs++;
     alloc_condition[i] = true;
     len_condition[i] = 1;
 
     for (j = 0; j < len_nr2 - 1; j++) {
-      condition[i][j] = ones[SYS_BITS - 1];
+      condition[nr1 * i + j] = ones[SYS_BITS - 1];
     }
-    condition[i][len_nr2 - 1] = ones[nr2_m];
+    condition[nr1 * i + len_nr2 - 1] = ones[nr2_m];
 
     for (j = 1; j < nr1; j++) {
       alloc_condition[nr1 * j + i] = false;
@@ -281,9 +277,11 @@ static void init_conditions() {
 
 static inline void free_conditions_jmp() {
   unsigned int i, depth;
-  for (depth = nr1; depth > 0; depth--) {
+  for (depth = nr1; depth > 0; depth--) { //JJ: delete
     pop_condition(depth - 1);
   }
+  free(condition);
+  nr_frees++;
 }
 
 // the main recursive algorithm
