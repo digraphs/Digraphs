@@ -233,7 +233,7 @@ static bool   alloc_condition[MAXVERTS * MAXVERTS];
 static UIntS  len_condition[MAXVERTS * MAXVERTS / SYS_BITS];
 
 static inline UIntL* get_condition(UIntS const i) {   // vertex in graph1
-  return condition[len_condition[i]];
+  return condition[nr1 * (len_condition[i] - 1) + i];
 }
 
 static inline UIntL* push_condition(UIntS const depth, 
@@ -253,6 +253,7 @@ static inline void pop_condition(UIntS const depth) {
     if (alloc_condition[nr1 * depth + i]) {
       len_condition[i]--;
       free(condition[nr1 * len_condition[i] + i]);
+      alloc_condition[nr1 * depth + i] = false;
       nr_frees++;
     }
   }
@@ -271,6 +272,10 @@ static void init_conditions() {
       condition[i][j] = ones[SYS_BITS - 1];
     }
     condition[i][len_nr2 - 1] = ones[nr2_m];
+
+    for (j = 1; j < nr1; j++) {
+      alloc_condition[nr1 * j + i] = false;
+    }
   }
 }
 
@@ -328,11 +333,11 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
           copy = push_condition(depth, j, get_condition(j));
           sizes[depth * nr1 + j] = 0;
 	  for (k = 0; k < nr2_d; k++){
-            copy[len_nr2 * j + k] &= neighbours2[len_nr2 * map[pos] + k];
+            copy[k] &= neighbours2[len_nr2 * map[pos] + k];
             sizes[depth * nr1 + j] += sizeUIntL(copy[len_nr2 * j + k], SYS_BITS);
 	  }
-          copy[len_nr2 * j + nr2_d] &= neighbours2[len_nr2 * map[pos] + nr2_d];
-          sizes[depth * nr1 + j] += sizeUIntL(copy[len_nr2 * j + nr2_d], nr2_m + 1);
+          copy[nr2_d] &= neighbours2[len_nr2 * map[pos] + nr2_d];
+          sizes[depth * nr1 + j] += sizeUIntL(copy[nr2_d], nr2_m + 1);
           if (sizes[depth * nr1 + j] == 0) {
             pop_condition(depth);
             return;
@@ -355,7 +360,7 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
     for (i = 0; i < nr2; i++) {
       j = i / SYS_BITS;
       m = i % SYS_BITS;
-      if ((copy[len_nr2 * next + j] & reps[(len_nr2 * rep_depth) + j] & oneone[m]) 
+      if ((copy[j] & reps[(len_nr2 * rep_depth) + j] & oneone[m]) 
           && (vals[j] & oneone[m]) == 0) { 
         calls2++;
 
@@ -380,7 +385,7 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
   for (i = 0; i < nr2; i++) {
     j = i / SYS_BITS;
     m = i % SYS_BITS;
-    if (copy[len_nr2 * next + j] & vals[j] & oneone[m]) {
+    if (copy[j] & vals[j] & oneone[m]) {
       map[next] = i;
       find_homos(depth + 1, next, rep_depth, has_trivial_stab, rank);
       map[next] = UNDEFINED;
