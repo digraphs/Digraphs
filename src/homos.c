@@ -227,9 +227,9 @@ static void orbit_reps (UIntS rep_depth) {
 
 // for handling the conditions
 static UIntL* condition; // keep track of what's available for assigning
-static bool   alloc_condition[MAXVERTS * MAXVERTS]; 
-                                              // alloc_conditions[depth * i + j] = true if we allocated 
-                                              // condition[depth * i + j] at <depth> 
+static UIntS  changed_condition[MAXVERTS * (MAXVERTS + 1)];
+// changed_conditions[depth * i] the number of conditions updated at <depth> 
+// s.t. condition[depth * i + changed_condition[depth * i + j]] was updated 
 static UIntS  len_condition[MAXVERTS * MAXVERTS / SYS_BITS];
 
 static inline UIntL* get_condition(UIntS const i) {   // vertex in graph1
@@ -239,7 +239,9 @@ static inline UIntL* get_condition(UIntS const i) {   // vertex in graph1
 static inline UIntL* push_condition(UIntS const depth, 
                                     UIntS const i,         // vertex in graph1
                                     UIntL*      data  ) {  // len_nr2 * UIntL
-  alloc_condition[nr1 * depth + i] = true;
+
+  changed_condition[nr1 * depth]++;
+  changed_condition[nr1 * depth + changed_condition[nr1 * depth]] = i;
   memcpy((void *) &condition[nr1 * len_nr2 * len_condition[i] + len_nr2 * i],
          (void *) data,
 	 (size_t) len_nr2 * sizeof(UIntL));
@@ -249,12 +251,10 @@ static inline UIntL* push_condition(UIntS const depth,
 
 static inline void pop_condition(UIntS const depth) {
   UIntS i;
-  for (i = 0; i < nr1; i++) {
-    if (alloc_condition[nr1 * depth + i]) {
-      len_condition[i]--;
-      alloc_condition[nr1 * depth + i] = false;
-    }
+  for (i = 1; i < changed_condition[nr1 * depth] + 1; i++) {
+    len_condition[ changed_condition[nr1 * depth + i]]--;
   }
+  changed_condition[nr1 * depth] = 0;
 }
 
 static void init_conditions() {
@@ -263,17 +263,14 @@ static void init_conditions() {
   condition = malloc(nr1 * nr1 * len_nr2 * sizeof(UIntL)); //JJ: calloc?
   nr_allocs++;
   for (i = 0; i < nr1; i++) {
-    alloc_condition[i] = true;
+    changed_condition[i + 1] = i;
+    changed_condition[nr1 * i] = 0;
     len_condition[i] = 1;
 
     for (j = 0; j < len_nr2 - 1; j++) {
       condition[len_nr2 * i + j] = ones[SYS_BITS - 1];
     }
     condition[len_nr2 * i + len_nr2 - 1] = ones[nr2_m];
-
-    for (j = 1; j < nr1; j++) {
-      alloc_condition[nr1 * j + i] = false;
-    }
   }
 }
 
@@ -281,6 +278,19 @@ static inline void free_conditions_jmp() {
   unsigned int i, depth;
   free(condition);
   nr_frees++;
+}
+
+// handling sizes
+static inline UIntS get_size_condition(UIntS const i) {   // vertex in graph1
+  return sizes[nr1 * (len_condition[i] - 1) + i];
+}
+
+// push_size_condition has to be used AFTER push_conditoin since it 
+// relies on len_condition to updated before
+static inline void push_size_condition(UIntS const i,         // vertex in graph1
+                                       UIntS       size  ) {  // len_nr2 * UIntL
+
+  sizes[nr1 * (len_condition[i] - 1) + i] = size;
 }
 
 // the main recursive algorithm
@@ -291,7 +301,7 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
                  bool    has_trivial_stab,
                  UIntS   rank      ){ // current number of distinct values in map
 
-  UIntS   i, j, k, l, min, next, m, sum, w;
+  UIntS   i, j, k, l, min, next, m, sum, w, size;
   UIntL*  copy;
   bool    is_trivial;
   
@@ -328,27 +338,25 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
       if (map[j] == UNDEFINED) {
         if (neighbours1[pos * len_nr1 + i] & oneone[m]) { // vertex j is adjacent to vertex pos in graph1
           copy = push_condition(depth, j, get_condition(j));
-          sizes[depth * nr1 + j] = 0;
+          size = 0; 
 	  for (k = 0; k < nr2_d; k++){
             copy[k] &= neighbours2[len_nr2 * map[pos] + k];
-            sizes[depth * nr1 + j] += sizeUIntL(copy[k], SYS_BITS);
+            size += sizeUIntL(copy[k], SYS_BITS);
 	  }
           copy[nr2_d] &= neighbours2[len_nr2 * map[pos] + nr2_d];
-          sizes[depth * nr1 + j] += sizeUIntL(copy[nr2_d], nr2_m + 1);
-          if (sizes[depth * nr1 + j] == 0) {
+          size += sizeUIntL(copy[nr2_d], nr2_m + 1);
+          if (size == 0) {
             pop_condition(depth);
             return;
           }
+	  push_size_condition(j, size);
         }
-        if (sizes[depth * nr1 + j] < min) {
+        if (get_size_condition(j) < min) {
           next = j;
-          min = sizes[depth * nr1 + j];
+          min = get_size_condition(j);
         }
       }
-      sizes[(depth + 1) * nr1 + j] = sizes[(depth * nr1) + j]; 
     }
-  } else {
-    memcpy(&sizes[(depth + 1) * nr1], &sizes[depth * nr1], (size_t) nr1 * sizeof(UIntS));
   }
 
   copy = get_condition(next);
@@ -429,7 +437,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
 
   for (i = 0; i < nr1; i++) {
     map[i] = UNDEFINED;
-    sizes[i] = nr2;
+    push_size_condition(i, nr2);
   }
   
   for (i = 0; i < len_nr2; i++){
