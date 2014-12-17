@@ -28,6 +28,7 @@
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>
+    <#Include Label="DigraphDiameter">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphConnectedComponents">
     <#Include Label="DigraphStronglyConnectedComponents">
