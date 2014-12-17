@@ -149,7 +149,6 @@ static void free_stab_chain () {
       free_perm_coll(strong_gens[i]);
       strong_gens[i] = NULL;
     }
-    //strong_gens[i]->nr_gens = 0;
   }
 }
 

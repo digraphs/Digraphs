@@ -369,10 +369,10 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
       m = i % SYS_BITS;
       if ((copy[j] & reps[(len_nr2 * rep_depth) + j] & oneone[m]) 
           && (vals[j] & oneone[m]) == 0) { 
-        calls2++;
 
         if (!has_trivial_stab) {
-          // stabiliser of the point i in the stabiliser at the current rep_depth
+          calls2++;
+          // stabiliser of the point i in the stabiliser at current rep_depth
           is_trivial = point_stabilizer(stab_gens[rep_depth], i, &stab_gens[rep_depth + 1]);
         }
         map[next] = i;
