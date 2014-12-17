@@ -72,7 +72,11 @@ function(arg)
   fi;
   
   if not (IsDigraph(digraph) and IsSymmetricDigraph(digraph)) then 
-    Error("not yet implemented");
+    Error("not yet implemented for non-symmetric digraphs,");
+  fi;
+
+  if IsDigraph(digraph) and DigraphHasLoops(digraph) then
+    Error("not yet implemented for digraphs with loops,");
   fi;
 
   if IsBound(arg[2]) and (IsPosInt(arg[2]) or arg[2] = infinity) then 

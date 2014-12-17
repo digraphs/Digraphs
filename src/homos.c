@@ -370,10 +370,10 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
       m = i % SYS_BITS;
       if ((copy[j] & reps[(len_nr2 * rep_depth) + j] & oneone[m]) 
           && (vals[j] & oneone[m]) == 0) { 
-        calls2++;
 
         if (!has_trivial_stab) {
-          // stabiliser of the point i in the stabiliser at the current rep_depth
+          calls2++;
+          // stabiliser of the point i in the stabiliser at current rep_depth
           is_trivial = point_stabilizer(stab_gens[rep_depth], i, &stab_gens[rep_depth + 1]);
         }
         map[next] = i;
@@ -415,7 +415,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   PermColl* gens;
   UIntS     i, j, k, len;
 
-  // debugging memory leaks
+  // debugging memory leaks in permutations & schreier-sims
   nr_ss_allocs = 0;
   nr_ss_frees = 0;
   nr_new_perm_coll = 0;
@@ -485,7 +485,6 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   for (i = 0; i < MAXVERTS; i++) {
     if (stab_gens[i] != NULL) {
       free_perm_coll(stab_gens[i]);
-      nr_ss_frees++;
       stab_gens[i] = NULL;
     }
   }
@@ -493,10 +492,11 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   // debugging memory leaks
 #if DEBUG 
   printf("\n");
-  printf("nr ss-related allocs = %llu\n", (unsigned long long int) nr_ss_allocs );
-  printf("nr ss-related frees = %llu\n", (unsigned long long int) nr_ss_frees );
-  printf("nr new perm colls = %llu\n", (unsigned long long int) nr_new_perm_coll );
-  printf("nr perm colls freed = %llu\n", (unsigned long long int) nr_free_perm_coll );
+  printf("nr ss allocs = %llu\n", (unsigned long long int) nr_ss_allocs );
+  printf("nr ss frees = %llu\n", (unsigned long long int) nr_ss_frees );
+  printf("new perm colls = %llu\n", (unsigned long long int) nr_new_perm_coll );
+  printf("perm colls freed = %llu\n", (unsigned long long int) nr_free_perm_coll );
+  printf("\n");
   printf("calls to search = %llu\n", calls1);
   printf("stabs computed = %llu\n",  calls2);
 #endif

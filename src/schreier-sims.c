@@ -18,9 +18,6 @@ static inline void add_strong_gens (UIntS const pos, Perm const value) {
     strong_gens[pos] = new_perm_coll(1);
   }
   add_perm_coll(strong_gens[pos], value);
-  /*size_strong_gens[pos]++;
-  strong_gens[pos] = realloc(strong_gens[pos], size_strong_gens[pos] * sizeof(Perm));
-  strong_gens[pos][size_strong_gens[pos] - 1] = value;*/
 }
 
 static inline Perm get_strong_gens (UIntS const i, UIntS const j) {
@@ -89,7 +86,15 @@ static void remove_base_points (UIntS const depth) {
 }
 
 static inline void first_ever_init () {
-  UIntS i;
+  /*UIntL i;
+
+  for (i = 0; i < MAXVERTS; i++) {
+    strong_gens[i] = NULL;
+  }
+  for (i = 0; i < MAXVERTS * MAXVERTS; i++) {
+    transversal[i] = NULL;
+    transversal_inv[i] = NULL;
+  }*/
 
   first_ever_call = false;
   memset((void *) size_orbits, 0, MAXVERTS * sizeof(UIntS));
@@ -121,8 +126,8 @@ static void free_stab_chain () {
 
   // free the transversal
   // free the transversal_inv
-  for (i = 0; i < (int) size_base; i++) {
-    for (j = 0; j < (int) size_base; j++) {
+  for (i = 0; i < (int) deg; i++) {
+    for (j = 0; j < (int) deg; j++) {
       k = i * MAXVERTS + j;
       if (transversal[k] != NULL) {
         free(transversal[k]);
@@ -141,7 +146,6 @@ static void free_stab_chain () {
       free_perm_coll(strong_gens[i]);
       strong_gens[i] = NULL;
     }
-    //strong_gens[i]->nr_gens = 0;
   }
 }
 
@@ -235,7 +239,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
       }
     }
   }
-
+  
   for (i = depth + 1; i < (int) size_base + 1; i++) {
     beta = base[i - 1];
     // set up the strong generators
@@ -251,7 +255,7 @@ static void schreier_sims_stab_chain ( UIntS const depth ) {
   }
 
   i = size_base - 1; 
-
+  
   while (i >= (int) depth) {
     escape = false;
     for (j = 0; j < size_orbits[i] && !escape; j++) {

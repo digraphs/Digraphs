@@ -1,13 +1,12 @@
 #include "src/perms.h"
 
 // variables for debugging memory leaks
-UIntL nr_ss_allocs = 0;
-UIntL nr_ss_frees = 0;
-UIntL nr_new_perm_coll = 0;
-UIntL nr_free_perm_coll = 0;
+UIntL nr_ss_allocs;
+UIntL nr_ss_frees;
+UIntL nr_new_perm_coll;
+UIntL nr_free_perm_coll;
 
 UIntS deg;
-static UIntS perm_buf[MAXVERTS]; //TODO remove this
 
 void set_perms_degree (UIntS deg_arg) {
   deg = deg_arg;
@@ -120,31 +119,6 @@ Perm prod_perms (Perm const x, Perm const y) {
     z[i] = y[x[i]];
   }
   return z;
-}
-// TODO remove 
- Perm quo_perms (Perm const x, Perm const y) {
-  UIntS i;
-
-  // invert y into the buf
-  for (i = 0; i < deg; i++) {
-    perm_buf[y[i]] = i;
-  }
-  return prod_perms(x, perm_buf);
-}
-
-// changes the lhs
-// TODO remove
-void quo_perms_in_place (Perm x, Perm const y) {
-  UIntS i;
-
-  // invert y into the buf
-  for (i = 0; i < deg; i++) {
-    perm_buf[y[i]] = i;
-  }
-
-  for (i = 0; i < deg; i++) {
-    x[i] = perm_buf[x[i]];
-  }
 }
 
 void prod_perms_in_place (Perm x, Perm const y) {
