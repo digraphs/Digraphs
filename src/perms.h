@@ -9,6 +9,7 @@
 typedef unsigned long int UIntL;
 #define SMALLINTLIMIT 1152921504606846976
 #define SYS_BITS 64
+#define DEBUG false
 
 typedef unsigned short int UIntS;
 typedef UIntS* Perm;

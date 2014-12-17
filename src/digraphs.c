@@ -1517,7 +1517,9 @@ void homo_hook_collect (void*        user_param,
    
   AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
   CHANGED_BAG(user_param);
+#if DEBUG
   Pr("found %d homomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
+#endif
 }
 
 Obj FuncGRAPH_HOMOS (Obj self, Obj args) { 
