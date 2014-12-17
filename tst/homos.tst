@@ -51,4 +51,16 @@ gap> 5^t;
 97
 
 #
+gap> gr := Digraph([[2], [1,3], [2] ]);
+<digraph with 3 vertices, 4 edges>
+gap> GeneratorsOfEndomorphismMonoid(gr);
+[ Transformation( [ 3, 2, 1 ] ), IdentityTransformation, 
+  Transformation( [ 1, 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
+gap> gr := Digraph([[2], [1,3], [2] ]);
+<digraph with 3 vertices, 4 edges>
+gap> GeneratorsOfEndomorphismMonoid(gr);
+[ Transformation( [ 3, 2, 1 ] ), IdentityTransformation, 
+  Transformation( [ 1, 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
+
+#
 gap> STOP_TEST("Digraphs package: homos.tst");

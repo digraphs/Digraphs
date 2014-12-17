@@ -240,8 +240,8 @@ static inline UIntL* push_condition(UIntS const depth,
                                     UIntS const i,         // vertex in graph1
                                     UIntL*      data  ) {  // len_nr2 * UIntL
 
-  changed_condition[nr1 * depth]++;
-  changed_condition[nr1 * depth + changed_condition[nr1 * depth]] = i;
+  changed_condition[(nr1 + 1) * depth]++;
+  changed_condition[(nr1 + 1) * depth + changed_condition[(nr1 + 1) * depth]] = i;
   memcpy((void *) &condition[nr1 * len_nr2 * len_condition[i] + len_nr2 * i],
          (void *) data,
 	 (size_t) len_nr2 * sizeof(UIntL));
@@ -251,10 +251,10 @@ static inline UIntL* push_condition(UIntS const depth,
 
 static inline void pop_condition(UIntS const depth) {
   UIntS i;
-  for (i = 1; i < changed_condition[nr1 * depth] + 1; i++) {
-    len_condition[ changed_condition[nr1 * depth + i]]--;
+  for (i = 1; i < changed_condition[(nr1 + 1) * depth] + 1; i++) {
+    len_condition[ changed_condition[(nr1 + 1) * depth + i]]--;
   }
-  changed_condition[nr1 * depth] = 0;
+  changed_condition[(nr1 + 1) * depth] = 0;
 }
 
 static void init_conditions() {
@@ -264,7 +264,7 @@ static void init_conditions() {
   nr_allocs++;
   for (i = 0; i < nr1; i++) {
     changed_condition[i + 1] = i;
-    changed_condition[nr1 * i] = 0;
+    changed_condition[(nr1 + 1) * i] = 0;
     len_condition[i] = 1;
 
     for (j = 0; j < len_nr2 - 1; j++) {
@@ -272,6 +272,7 @@ static void init_conditions() {
     }
     condition[len_nr2 * i + len_nr2 - 1] = ones[nr2_m];
   }
+  changed_condition[0] = nr1;
 }
 
 static inline void free_conditions_jmp() {
