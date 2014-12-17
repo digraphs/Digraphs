@@ -304,7 +304,8 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
   UIntS   i, j, k, l, min, next, m, sum, w, size;
   UIntL*  copy;
   bool    is_trivial;
-  
+
+#if DEBUG 
   calls1++;
   if (calls1 > last_report + report_interval) {
     printf("calls to search = %llu\n", calls1);
@@ -313,6 +314,7 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
     printf("nr frees = %llu\n", nr_frees);
     last_report = calls1;
   }
+#endif 
 
   if (depth == nr1) {
     if (hint != UNDEFINED && rank != hint) {
@@ -488,6 +490,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   }
 
   // debugging memory leaks
+#if DEBUG 
   printf("\n");
   printf("nr ss-related allocs = %llu\n", (unsigned long long int) nr_ss_allocs );
   printf("nr ss-related frees = %llu\n", (unsigned long long int) nr_ss_frees );
@@ -495,4 +498,5 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   printf("nr perm colls freed = %llu\n", (unsigned long long int) nr_free_perm_coll );
   printf("calls to search = %llu\n", calls1);
   printf("stabs computed = %llu\n",  calls2);
+#endif
 }
