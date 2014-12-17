@@ -89,7 +89,15 @@ static void remove_base_points (UIntS const depth) {
 }
 
 static inline void first_ever_init () {
-  UIntS i;
+  /*UIntL i;
+
+  for (i = 0; i < MAXVERTS; i++) {
+    strong_gens[i] = NULL;
+  }
+  for (i = 0; i < MAXVERTS * MAXVERTS; i++) {
+    transversal[i] = NULL;
+    transversal_inv[i] = NULL;
+  }*/
 
   first_ever_call = false;
   memset((void *) size_orbits, 0, MAXVERTS * sizeof(UIntS));
