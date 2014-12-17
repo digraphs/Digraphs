@@ -257,7 +257,9 @@ static inline void pop_condition(UIntS const depth) {
   changed_condition[(nr1 + 1) * depth] = 0;
 }
 
-static void init_conditions() {
+// initialises condition[i] to be cond for all i 
+// where cond is len_nr2 many UIntL's
+static void init_conditions(UIntL *cond) {
   UIntS i, j; 
 
   condition = malloc(nr1 * nr1 * len_nr2 * sizeof(UIntL)); //JJ: calloc?
@@ -267,10 +269,9 @@ static void init_conditions() {
     changed_condition[(nr1 + 1) * i] = 0;
     len_condition[i] = 1;
 
-    for (j = 0; j < len_nr2 - 1; j++) {
-      condition[len_nr2 * i + j] = ones[SYS_BITS - 1];
+    for (j = 0; j < len_nr2; j++) {
+      condition[len_nr2 * i + j] = cond[j];
     }
-    condition[len_nr2 * i + len_nr2 - 1] = ones[nr2_m];
   }
   changed_condition[0] = nr1;
 }
@@ -411,7 +412,8 @@ void GraphHomomorphisms (HomosGraph*  graph1,
                          void*        user_param_arg,
                          UIntL        max_results_arg,
                          int          hint_arg, 
-                         bool         isinjective     ) {
+                         bool         isinjective, 
+                         int*         image           ) {
   PermColl* gens;
   UIntS     i, j, k, len;
 
@@ -435,8 +437,22 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   if (isinjective) {// && nr2 < nr1) { TODO uncomment when we have sm method for injective
     return;
   }
-
-  init_conditions();
+   
+  UIntL new_image[len_nr2];
+  if (image[0] == 0) { // image was not specified
+    for (i = 0; i < nr2_d; i++) {
+      new_image[i] = ones[SYS_BITS - 1];
+    }
+    new_image[nr2_d] = ones[nr2_m];
+  } else {
+    for (i = 0; i < nr2_d + 1; i++) {
+      new_image[i] = 0;
+      for (j = 0; j < image[0]; j++) {
+        new_image[i] |= oneone[image[j + 1] - 1];
+      }
+    }
+  }
+  init_conditions(new_image);
 
   for (i = 0; i < nr1; i++) {
     map[i] = UNDEFINED;

@@ -1527,16 +1527,20 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   UInt8         max_results_arg;
   bool          *condition;
   Obj           user_param_arg, out, nbs;  
+  int           image[MAXVERTS];
 
-  Obj graph1         = ELM_PLIST(args, 1); // find homomorphisms from graph1 
-  Obj graph2         = ELM_PLIST(args, 2); // to graph2
-  Obj hook_gap       = ELM_PLIST(args, 3); // apply this function to every homomorphism 
-                                           // Fail for none
-  Obj user_param_gap = ELM_PLIST(args, 4); // user_param which can be used in the hook
-                                           // Fail for none
-  Obj limit_gap      = ELM_PLIST(args, 5); // the maximum number of results
-  Obj hint_gap       = ELM_PLIST(args, 6); // the maximum rank of a result
-  Obj isinjective    = ELM_PLIST(args, 7); // only consider injective homomorphism
+  Obj graph1         = ELM_PLIST(args, 1);  // find homomorphisms from graph1 
+  Obj graph2         = ELM_PLIST(args, 2);  // to graph2
+  Obj hook_gap       = ELM_PLIST(args, 3);  // apply this function to every homomorphism 
+                                            // Fail for none
+  Obj user_param_gap = ELM_PLIST(args, 4);  // user_param which can be used in the hook
+                                            // Fail for none
+  Obj limit_gap      = ELM_PLIST(args, 5);  // the maximum number of results
+  Obj hint_gap       = ELM_PLIST(args, 6);  // the maximum rank of a result
+  Obj isinjective    = ELM_PLIST(args, 7);  // only consider injective homomorphism
+  Obj image_gap      = ELM_PLIST(args, 8);  // only consider homos with image <image>
+  Obj kernel         = ELM_PLIST(args, 9);  // only consider homos with kernel <kernel>
+  Obj partial_map    = ELM_PLIST(args, 10); // only look for extensions of <partial_map>
 
 
   if (limit_gap == Fail || !IS_INTOBJ(limit_gap)) {
@@ -1560,6 +1564,8 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
 
   bool isinjective_c = (isinjective == True ? true : false);
  
+
+
   // install out-neighbours for graph1 
   nr1 = DigraphNrVertices(graph1);
   HomosGraph* homos_graph1 = new_homos_graph(nr1);
@@ -1585,14 +1591,23 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
       add_edges_homos_graph(homos_graph2, i, k);
     }
   }
+
+  // init image
+  image[0] = 0;                                 //number of entries in image (rank)
+  if (image_gap != Fail && IS_PLIST(image_gap)) {
+    for (i = 0; i < LEN_LIST(image_gap); i++) {
+      image[0]++;
+      image[image[0]] = INT_INTOBJ(ELM_LIST(image_gap, i + 1));
+    }
+  }
   
   if (hook_gap == Fail) {
     GraphHomomorphisms(homos_graph1, homos_graph2, homo_hook_collect, user_param_arg,
-        max_results_arg, hint_arg, isinjective_c); 
+        max_results_arg, hint_arg, isinjective_c, image); 
   } else {
     GAP_FUNC = hook_gap;
     GraphHomomorphisms(homos_graph1, homos_graph2, homo_hook_gap, user_param_arg,
-        max_results_arg, hint_arg, isinjective_c);
+        max_results_arg, hint_arg, isinjective_c, image);
   }
   
   if (IS_PLIST(user_param_arg) && LEN_PLIST(user_param_arg) == 0 
@@ -1714,7 +1729,7 @@ static StructGVarFunc GVarFuncs [] = {
     FuncMULTIDIGRAPH_CANONICAL_LABELING, 
     "src/digraphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELING" },
 
-  { "GRAPH_HOMOS", 8, "graph1, graph2, hook, user_param, limit, hint, isinjective, Stabilizer",
+  { "GRAPH_HOMOS", 10, "graph1, graph2, hook, user_param, limit, hint, isinjective, image, kernel, partial_map",
     FuncGRAPH_HOMOS,
     "src/digraphs.c:FuncGRAPH_HOMOS" },
 

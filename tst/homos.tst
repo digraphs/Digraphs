@@ -27,6 +27,12 @@ gap> Length(gens);
 330
 gap> Size(Semigroup(gens));
 105120
+gap> HomomorphismGraphsFinder(gr, gr, fail, fail, fail, fail, false,
+> [1, 14, 28, 39, 42]);;
+gap> str := HomomorphismGraphsFinder(gr, gr, fail, fail, fail, fail, false,
+> [1, 14, 28, 39, 42]);;
+gap> Length(str);
+192
 
 # PJC example, 153 vertices
 gap> G:=PrimitiveGroup(153, 1);;
@@ -35,9 +41,7 @@ gap> S:=Filtered(Orbits(H,[1..45]),x->(Size(x)=4))[1];;
 gap> graph:=EdgeOrbitsGraph(G,List(S,x->[1,x]));;
 gap> gr:=Digraph(graph);
 <digraph with 153 vertices, 612 edges>
-gap> HomomorphismGraphsFinder(gr, gr, fail, fail, 1, 7, false);
-[ <transformation on 153 pts with rank 7> ]
-gap> t := HomomorphismGraphsFinder(gr, gr, fail, fail, 1, 7, false)[1];
+gap> t := HomomorphismGraphsFinder(gr, gr, fail, fail, 1, 7, false, fail)[1];
 <transformation on 153 pts with rank 7>
 gap> 1^t;
 1
