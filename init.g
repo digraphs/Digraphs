@@ -27,7 +27,7 @@ if not GRAPHS_IsGrapeLoaded then
   Adjacency := IdFunc;
 fi;
 
-ReadPackage("graphs/gap/graph.gd");
+ReadPackage("graphs/gap/digraph.gd");
 ReadPackage("graphs/gap/attr.gd");
 ReadPackage("graphs/gap/prop.gd");
 ReadPackage("graphs/gap/oper.gd");

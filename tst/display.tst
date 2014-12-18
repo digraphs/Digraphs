@@ -7,11 +7,11 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: display.tst");
-gap> LoadPackage("digraphs", false);;
+gap> START_TEST("Graphs package: display.tst");
+gap> LoadPackage("graphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> GraphsStartTest();
 
 # Display, PrintString, String
 gap> Digraph( [ ] );
@@ -68,7 +68,7 @@ gap> DotDigraph(gr2){[ 11 .. 75 ]};
 gap> DotSymmetricDigraph(gr2){[ 12 .. 70 ]};
 " hgn{\nnode [shape=circle]\n\n1\n2\n3\n4\n1 -- 2\n2 -- 3\n3 -- 3\n3 -"
 gap> DotSymmetricDigraph(gr1);
-Error, Digraphs: DotSymmetricDigraph: usage,
+Error, Graphs: DotSymmetricDigraph: usage,
 the argument <graph> should be symmetric,
 
 #

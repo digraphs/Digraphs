@@ -7,11 +7,11 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: attr.tst");
-gap> LoadPackage("digraphs", false);;
+gap> START_TEST("Graphs package: attr.tst");
+gap> LoadPackage("graphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> GraphsStartTest();
 
 # DigraphSource and DigraphRange
 gap> nbs := [ [ 12, 22, 17, 1, 10, 11 ], [ 23, 21, 21, 16 ], 
@@ -80,7 +80,7 @@ gap> gr := Digraph( rec( vertices := [ "a", "b" ],
 > source := [ "b", "b" ], range := [ "a", "a" ] ) );    
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphDual(gr);
-Error, Digraphs: DigraphDual: usage,
+Error, Graphs: DigraphDual: usage,
 the argument <graph> must not have multiple edges,
 gap> gr := Digraph( [ ] );                  
 <digraph with 0 vertices, 0 edges>
@@ -97,7 +97,7 @@ gap> DigraphDual(gr);
 gap> gr := Digraph( [ [ 2, 2 ], [  ] ] );
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphDual(gr);
-Error, Digraphs: DigraphDual: usage,
+Error, Graphs: DigraphDual: usage,
 the argument <graph> must not have multiple edges,
 gap> r := rec( nrvertices := 6,
 > source := [ 2, 2, 2, 2, 2, 2, 4, 4, 4 ],
