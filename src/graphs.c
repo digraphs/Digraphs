@@ -780,6 +780,7 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   for (i = 1; i <= n; i++) {
     adji = ELM_PLIST(adj, i);
     if ((UInt) LEN_LIST(adji) > n) {
+      free(seen);
       return True;
     }
     PLAIN_LIST(adji);
@@ -788,10 +789,12 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
       if (seen[k] != i) {
         seen[k] = i;
       } else {
+        free(seen);
         return True;
       }
     }
   }
+  free(seen);
   return False;
 } 
 
