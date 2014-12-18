@@ -378,7 +378,7 @@ end);
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
-  if DigraphNrVertices(digraph) <= 1 then
+  if DigraphNrVertices(digraph) = 0 then
     return -1;
   elif HasIsStronglyConnectedDigraph(digraph)
    and not IsStronglyConnectedDigraph(digraph) then

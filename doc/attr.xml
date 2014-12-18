@@ -14,14 +14,14 @@
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a directed graph without multiple edges, then this
-    function returns the dual of <A>digraph</A>. <P/> 
+    function returns the <E>dual</E> of <A>digraph</A>. The <E>dual</E> is sometimes called the <E>complement</E>.<P/> 
     
     The <E>dual</E> of <A>digraph</A> has the same vertices as <A>digraph</A>,
     and there is an edge in the dual from <C>i</C> to <C>j</C>
     whenever there is no edge from <C>i</C> to <C>j</C> in <A>digraph</A>.
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 2, 3 ], [  ], [ 4, 6 ], [ 5 ], [  ], [ 7, 8, 9 ], [  ],
-> [  ], [  ] ] );
+gap> gr := Digraph( [ [ 2, 3 ], [  ], [ 4, 6 ], [ 5 ], [  ],
+> [ 7, 8, 9 ], [  ], [  ], [  ] ] );
 <digraph with 9 vertices, 8 edges>
 gap> DigraphDual(gr);
 <digraph with 9 vertices, 73 edges>]]></Example>
@@ -404,8 +404,7 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
     The component <C>id</C> is a list such that the vertex <C>i</C> is an 
     element of the weakly connected component <C>comps[id[i]]</C>. <P/>
 
-    The method used in this function has complexity <M>O(m)</M> or <M>O(m+n)</M>,
-    depending on whether the digraph's Source attribute is set, where
+    The method used in this function has complexity  <M>O(m+n)</M>, where
     <M>m</M> is the number of edges and
     <M>n</M> is the number of vertices in the digraph. 
     
@@ -544,9 +543,10 @@ true
   <Description>
     This function returns the diameter of the directed graph <A>digraph</A>.<P/>
 
-    Ignoring loops, if a directed graph <A>digraph</A> is strongly connected,
+    If a directed graph <A>digraph</A> is strongly connected,
     then the diameter is the maximum shortest distance between any 
-    distinct pair of vertices. Otherwise, the diameter of <A>digraph</A>
+    pair of vertices. Otherwise, or if <A>digraph</A> has no vertices,
+    then the diameter of <A>digraph</A>
     is undefined, and this function returns the value <C>-1</C>. <P/>
     
     See <Ref Attr="DigraphShortestDistances"/>. <P/>

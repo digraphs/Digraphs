@@ -610,13 +610,13 @@ gap> DigraphDiameter(gr);
 -1
 gap> gr := Digraph( [ [ 1 ] ] );;
 gap> DigraphDiameter(gr);
--1
+0
 gap> gr := EmptyDigraph(0);;
 gap> DigraphDiameter(gr);
 -1
 gap> gr := EmptyDigraph(1);;
 gap> DigraphDiameter(gr);
--1
+0
 
 #
 gap> STOP_TEST( "Digraphs package: attr.tst");

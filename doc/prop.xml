@@ -288,6 +288,8 @@ gap> Display(adj1);
   [  0,  1,  1 ] ]
 gap> adj1 = TransposedMat(adj1);
 true
+gap> gr1 = DigraphReverse(gr1);
+true
 gap> gr2 := Digraph( [ [ 2, 3 ], [ 1, 3 ], [ 2, 3 ] ] );
 <digraph with 3 vertices, 6 edges>
 gap> IsSymmetricDigraph(gr2);

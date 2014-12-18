@@ -1133,6 +1133,23 @@ end);
 
 #
 
+InstallMethod(DigraphConnectedComponent, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  local wcc;
+
+  if not v in DigraphVertices(digraph) then
+    Error("Graphs: DigraphConnectedComponent: usage,\n",
+          v, " is not a vertex of the digraph,");
+    return;
+  fi;
+
+  wcc := DigraphConnectedComponents(digraph);
+  return wcc.comps[wcc.id[v]];
+end);
+
+#
+
 InstallMethod(IsDigraphEdge, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edge)

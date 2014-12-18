@@ -124,6 +124,10 @@ function(digraph, n)
   return DigraphHomomorphism(digraph, CompleteDigraph(n)); 
 end);
 
+InstallMethod(DigraphColouring, "for a digraph and a pos int",
+[IsDigraph, IsPosInt],
+DigraphColoring);
+
 #
 
 InstallMethod(GeneratorsOfEndomorphismMonoidAttr, "for a digraph",

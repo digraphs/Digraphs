@@ -870,12 +870,10 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     Int maximum = -1;
     for ( i = 0; i < n; i++ ) {
       for ( j = 0; j < n; j++ ) {
-        if ( i != j ) {
-          if ( dist[i * n + j] > maximum ) {
-            maximum = dist[i * n + j];
-          } else if ( dist[i * n + j] == -1 ) {
-            return INTOBJ_INT(-1);
-          }
+        if ( dist[i * n + j] > maximum ) {
+          maximum = dist[i * n + j];
+        } else if ( dist[i * n + j] == -1 ) {
+          return INTOBJ_INT(-1);
         }
       }
     }

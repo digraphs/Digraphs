@@ -11,8 +11,8 @@
 <#GAPDoc Label="DigraphHomomorphism">
 <ManSection>
   <Oper Name="DigraphHomomorphism" Arg="digraph1, digraph2"/>
-  <Oper Name="HomomorphismDigraphs" Arg="digraph1, digraph2"/>
-  <Returns> A transformation. <Returns>
+  <Oper Name="HomomorphismsDigraphs" Arg="digraph1, digraph2"/>
+  <Returns> A transformation.</Returns>
   <Description>
     A homomorphism from <A>digraph1</A> to <A>digraph2</A> is a mapping from
     the vertex set of <A>digraph1</A> a vertex set of <A>digraph2</A> such that
@@ -22,6 +22,7 @@
     <A>digraph2</A>, while <C>HomomorphismDigraphs</C> returns all of such
     homomorphisms.
     <Example><![CDATA[
+gap>
 ]]></Example>
   </Description>
 </ManSection>
@@ -30,14 +31,18 @@
 <#GAPDoc Label="DigraphColoring">
 <ManSection>
   <Oper Name="DigraphColoring" Arg="digraph, n"/>
-  <Returns> A transformation. <Returns>
+  <Oper Name="DigraphColouring" Arg="digraph, n"/>
+  <Returns> A transformation.</Returns>
   <Description>
     A digraph coloring is a labeling of the vertices (with <A>n</A> colors) in
     such a way that two adjacent vertices can not have the same label.
     Alternetively, it can be defined to be a homomorphism from <A>digraph</A>
-    to a complete digraph on <A>n</A> points.<C>DigraphColoring</C> returns
-    such a homomorphism. 
+    to a complete digraph on <A>n</A> points.
+
+    <C>DigraphColoring</C> returns such a homomorphism.
+
     <Example><![CDATA[
+gap>
 ]]></Example>
   </Description>
 </ManSection>
@@ -46,15 +51,15 @@
 <#GAPDoc Label="DigraphEndomorphisms">
 <ManSection>
   <Oper Name="DigraphEndomorphisms" Arg="digraph"/>
-  <Oper Name="EndomorphismMonoid" Arg="digraph"/>
-  <Returns> A list of transformation. <Returns>
+  <Returns> A list of transformation.</Returns>
   <Description>
-    An endomorphism of <A>digraph</A> is a homomorphism <Ref
-    Oper="DigraphHomomorphism"/> from <A>digraph</A> back to itself.
-    <C>DigraphEndomorphisms</C> returns a genereting set of for the
-    endomorphisms on <A>digraph</A>, while <C>EndomorphismMonoid</C> returns
-    the monoid itself. 
+    An endomorphism of <A>digraph</A> is a homomorphism
+    <Ref Oper="DigraphHomomorphism"/> from <A>digraph</A> back to itself.
+    <C>DigraphEndomorphisms</C> returns a generating set of for the
+    endomorphisms on <A>digraph</A>.
+
     <Example><![CDATA[
+gap>      
 ]]></Example>
   </Description>
 </ManSection>

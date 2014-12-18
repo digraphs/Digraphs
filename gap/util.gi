@@ -10,8 +10,8 @@
 ## this file contains utilies for use with the Graphs package.
 
 BindGlobal("GraphsDocXMLFiles", [ "attr.xml", "bliss.xml",
-"digraph.xml", "display.xml", "grape.xml", "io.xml", "oper.xml", "prop.xml", 
-"util.xml", "../PackageInfo.g"]);
+"digraph.xml", "display.xml", "grahom.xml", "grape.xml", "io.xml", "oper.xml",
+"prop.xml", "util.xml", "../PackageInfo.g"]);
 
 BindGlobal("GraphsTestRec", rec());
 MakeReadWriteGlobal("GraphsTestRec");

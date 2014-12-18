@@ -561,6 +561,15 @@ gap> DigraphStronglyConnectedComponent(gr, 7);
 Error, Graphs: DigraphStronglyConnectedComponent: usage,
 7 is not a vertex of the digraph,
 
+# DigraphyConnectedComponent
+gap> gr := Digraph( [ [ 2, 4 ], [ ], [ 2, 6 ], [ 1, 3 ], [ 2, 3 ], [ 5 ] ] );
+<digraph with 6 vertices, 9 edges>
+gap> DigraphConnectedComponent(gr, 3);
+[ 1, 2, 3, 4, 5, 6 ]
+gap> DigraphConnectedComponent(gr, 7);
+Error, Graphs: DigraphConnectedComponent: usage,
+7 is not a vertex of the digraph,
+
 # IsDigraphEdge
 gap> gr := CycleDigraph(1000); # CycleDigraph with source/range
 <digraph with 1000 vertices, 1000 edges>
