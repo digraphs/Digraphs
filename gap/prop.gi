@@ -63,7 +63,7 @@ end);
 #
 
 InstallImmediateMethod(IsAcyclicDigraph, "for a reflexive digraph",
-IsReflexiveDigraph,
+IsReflexiveDigraph, 0,
 function(digraph)
   if DigraphNrVertices(digraph) = 0 then
     return true;
@@ -72,7 +72,7 @@ function(digraph)
 end);
 
 InstallImmediateMethod(IsAcyclicDigraph, "for a strongly connected digraph",
-IsStronglyConnectedDigraph,
+IsStronglyConnectedDigraph, 0,
 function(digraph)
   if DigraphNrVertices(digraph) > 1 then
     return false;
@@ -239,7 +239,7 @@ end);
 #
 
 InstallImmediateMethod(DigraphHasLoops, "for a reflexive digraph",
-IsReflexiveDigraph, 
+IsReflexiveDigraph, 0,
 function(digraph)
   if DigraphNrVertices(digraph) = 0 then
     return false;
