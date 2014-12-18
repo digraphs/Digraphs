@@ -136,7 +136,10 @@ gap> ReadDigraphs(
     ends with an extension in the list below, the corresponding graph format
     will be used to encode it.  If such an extension is not included, an
     appropriate format will be chosen intelligently, and an extension appended,
-    to minimise file length.
+    to minimise file length.<P/>
+
+    For more verbose information on the progress of the function, set the info
+    level of <A>InfoDigraphs</A> to 1 or higher, using <C>SetInfoLevel</C>.<P/>
 
     The currently supported file formats are:
     <List>

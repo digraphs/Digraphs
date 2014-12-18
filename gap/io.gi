@@ -93,7 +93,10 @@ function(arg)
 
   lines:=IO_ReadLines(file);
   IO_Close(file);
-  Apply(lines, x-> decoder(Chomp(x)));
+  for i in [1..Length(lines)] do
+    Info(InfoDigraphs, 1, "Reading graph ", i, " of ", Length(lines));
+    lines[i] := decoder(Chomp(lines[i]));
+  od;
   return lines;
 end);
 
@@ -151,8 +154,11 @@ function(s)
   fi;
 
   maxedges := n * ( n - 1 ) / 2;
-  if list <> [0] and not (Int((maxedges - 1) / 6) +  start = Length(list) and
-     list[Length(list)] mod 2 ^ ((0 - maxedges) mod 6) = 0) then
+  if list <> [0] and
+     list <> [1] and
+     not (Int((maxedges - 1) / 6) +  start = Length(list) and
+          list[Length(list)] mod 2 ^ ((0 - maxedges) mod 6) = 0)
+     then
     Error("Digraphs: DigraphFromGraph6String: usage,\n",
           "<s> is not a valid graph6 input,");
     return;
@@ -555,8 +561,12 @@ end);
 InstallGlobalFunction(WriteDigraphs,
 function(name, digraphs)
   local splitpath, splitname, compext, ext, encoder, g6sum, s6sum, digraph, v, 
-        e, dg6sum, ds6sum, filepath, file, s;
-  if not ForAll(digraphs, IsDigraph) then
+        e, dg6sum, ds6sum, filepath, file, i, s;
+  if not IsString(name) then
+    Error("Digraphs: WriteDigraphs: usage,\n",
+          "<name> must be a string,");
+    return;
+  elif not ForAll(digraphs, IsDigraph) then
     Error("Digraphs: WriteDigraphs: usage,\n",
           "<digraphs> must be a list of digraphs,");
     return;
@@ -664,8 +674,10 @@ function(name, digraphs)
     return;
   fi;
 
-  for digraph in digraphs do
-    s := encoder(digraph);
+  for i in [1..Length(digraphs)] do
+    Info(InfoDigraphs, 1,
+         "Writing graph ", String(i), " of ", String(Length(digraphs)));
+    s := encoder(digraphs[i]);
     IO_WriteLine(file, s);
   od;
   
