@@ -98,4 +98,5 @@ src/bliss-0.72/.dirstamp
 src/bliss-0.72/.deps/.dirstamp
 tst/out/*
 tags
-digraphs-dev/*
+digraphs_la-homos.Tpo
+digraphs_la-schreier-sims.Tpo

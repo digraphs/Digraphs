@@ -372,4 +372,19 @@ function(digraph)
 
   return period;
 end);
+
+#
+
+InstallMethod(DigraphDiameter, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if DigraphNrVertices(digraph) <= 1 then
+    return -1;
+  elif HasIsStronglyConnectedDigraph(digraph)
+   and not IsStronglyConnectedDigraph(digraph) then
+    return -1;
+  fi;
+  return DIGRAPH_DIAMETER(digraph);
+end);
+
 #EOF

@@ -1,22 +1,28 @@
-/*
-
-Header file for the digraphs.c file.
-
+/***************************************************************************
+**
+*A  digraphs.h                  GAP package digraphs          Julius Jonusas
+**                                                            James Mitchell 
+**                                                            Michael Torpey
+**                                                            Wilfred Wilson
+**
+**  Copyright (C) 2014 - Julius Jonusas, James Mitchell, Michael Torpey, 
+**  Wilfred Wilson 
+**  This file is free software, see license information at the end.
+**  
 */
 
-//bool HasOutNeighbours(Obj digraph);
-//bool HasDigraphSourceAndRange(Obj digraph);
-//bool HasDigraphSource(Obj digraph);
-//bool HasDigraphRange(Obj digraph);
+#include "bliss-0.72/bliss_C.h"
+
+#include <stdlib.h>
+#include <stdbool.h>
+#include <assert.h>
+
+#include "src/compiled.h"          /* GAP headers                */
+#include "src/homos.h"     
 
 Int DigraphNrVertices(Obj digraph);
 Int DigraphNrEdges(Obj digraph);
 
 Obj OutNeighbours(Obj digraph);
-//Obj OutNeighboursOfVertex(Obj digraph, Int v);
 Obj DigraphSource(Obj digraph);
 Obj DigraphRange(Obj digraph);
-
-static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
-static Obj FuncDIGRAPH_IN_NBS(Obj self, Obj digraph);
-static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);

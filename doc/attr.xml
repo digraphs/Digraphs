@@ -500,7 +500,7 @@ gap> DigraphSources(gr);
 
 <#GAPDoc Label="DigraphPeriod">
 <ManSection>
-  <Prop Name="DigraphPeriod" Arg="digraph"/>
+  <Attr Name="DigraphPeriod" Arg="digraph"/>
   <Returns>An integer.</Returns>
   <Description>
     This function returns the period of the directed graph <A>digraph</A>.<P/>
@@ -531,4 +531,33 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
-    <A>digraph</A>. Specifically, a vertex <C>j</C> belongs to <C>inn[i]</C>
+
+<#GAPDoc Label="DigraphDiameter">
+<ManSection>
+  <Attr Name="DigraphDiameter" Arg="digraph"/>
+  <Returns>An integer.</Returns>
+  <Description>
+    This function returns the diameter of the directed graph <A>digraph</A>.<P/>
+
+    Ignoring loops, if a directed graph <A>digraph</A> is strongly connected,
+    then the diameter is the maximum shortest distance between any 
+    distinct pair of vertices. Otherwise, the diameter of <A>digraph</A>
+    is undefined, and this function returns the value <C>-1</C>. <P/>
+    
+    See <Ref Attr="DigraphShortestDistances"/>. <P/>
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 4, 5 ], [ 5 ], 
+> [ 1, 2, 3, 4, 5 ] ] );
+<digraph with 5 vertices, 10 edges>
+gap> DigraphDiameter(gr);
+3
+gap> gr := Digraph( [ [ 2 ], [  ] ] );
+<digraph with 2 vertices, 1 edge>
+gap> DigraphDiameter(gr);
+-1
+gap> IsStronglyConnectedDigraph(gr);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
