@@ -216,21 +216,25 @@ end);
 
 #
 
-InstallMethod(Graph, "for a digraph",
-[IsDigraph],
+InstallMethod(Graph, "for a digraph", [IsDigraph],
 function(graph)
-  local adj;
+  local gamma, i;
 
   if IsMultiDigraph(graph) then
     Info(InfoWarning, 1, "Grape does not support multiple edges, so ",
     "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
 
-  adj:=function(i, j)
-    return j in OutNeighbours(graph)[i];
-  end;
+  gamma := NullGraph(Group([], ()), DigraphNrVertices(graph));
+  Unbind(gamma.isSimple);
 
-  return Graph(Group(()), ShallowCopy(DigraphVertices(graph)), OnPoints, adj, true);
+  for i in [ 1 .. gamma.order ] do
+    gamma.adjacencies[i] := Set(OutNeighbours(graph)[i]);
+  od;
+
+  gamma.names := Immutable(DigraphVertexLabels(graph));
+
+  return gamma;
 end);
 
 #
