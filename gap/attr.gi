@@ -14,7 +14,7 @@ function(digraph)
   local verts, old, new, gr, i;
   
   if IsMultiDigraph(digraph) then 
-    Error("Digraphs: DigraphDual: usage,\n", 
+    Error("Graphs: DigraphDual: usage,\n", 
       "the argument <graph> must not have multiple edges,");
     return;
   fi;

@@ -1,9 +1,9 @@
 /***************************************************************************
 **
-*A  digraphs.c                  GAP package digraphs          Julius Jonusas
-**                                                            James Mitchell 
-**                                                            Michael Torpey
-**                                                            Wilfred Wilson
+*A  graphs.c                  GAP package graphs          Julius Jonusas
+**                                                        James Mitchell 
+**                                                        Michael Torpey
+**                                                        Wilfred Wilson
 **
 **  Copyright (C) 2014 - Julius Jonusas, James Mitchell, Michael Torpey, 
 **  Wilfred Wilson 
@@ -11,7 +11,7 @@
 **  
 */
 
-#include "src/digraphs.h"
+#include "src/graphs.h"
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -33,7 +33,7 @@ Int DigraphNrVertices(Obj digraph) {
   }
   // The record comp should always be set so this should never be triggered
   ErrorQuit(
-  "Digraphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
+  "Graphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
   0L, 0L);
   return 0;
 }
@@ -74,7 +74,7 @@ Obj OutNeighbours(Obj digraph) {
     AssPRec(digraph, RNamName("adj"), adj);
     return adj;
   }
-  ErrorQuit("Digraphs: OutNeighbours (C): not enough record components set,", 0L, 0L);
+  ErrorQuit("Graphs: OutNeighbours (C): not enough record components set,", 0L, 0L);
   return False;
 }
 
@@ -660,7 +660,7 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) 
   m1 = LEN_LIST(source);
   m2 = LEN_LIST(range);
   if (m1 != m2) {
-    ErrorQuit("Digraphs: DIGRAPH_OUT_NBS: usage,\n<source> and <range> must be lists of equal length,", 0L, 0L);
+    ErrorQuit("Graphs: DIGRAPH_OUT_NBS: usage,\n<source> and <range> must be lists of equal length,", 0L, 0L);
   }
   n = INT_INTOBJ(nrvertices);
   if (n == 0) {
@@ -789,7 +789,6 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   }
   return False;
 } 
-
 
 /***************** GENERAL FLOYD_WARSHALL ALGORITHM***********************
  * This function accepts 5 arguments:
@@ -1654,119 +1653,111 @@ static StructGVarFunc GVarFuncs [] = {
 
   { "DIGRAPH_NREDGES", 1, "digraph",
     FuncDIGRAPH_NREDGES, 
-    "src/digraphs.c:DIGRAPH_NREDGES" },
+    "src/graphs.c:DIGRAPH_NREDGES" },
   
   { "GABOW_SCC", 1, "adj",
     FuncGABOW_SCC, 
-    "src/digraphs.c:GABOW_SCC" },
+    "src/graphs.c:GABOW_SCC" },
 
   { "DIGRAPH_CONNECTED_COMPONENTS", 1, "digraph",
     FuncDIGRAPH_CONNECTED_COMPONENTS,
-    "src/digraphs.c:DIGRAPH_CONNECTED_COMPONENTS" },
+    "src/graphs.c:DIGRAPH_CONNECTED_COMPONENTS" },
 
   { "IS_ACYCLIC_DIGRAPH", 1, "adj",
     FuncIS_ACYCLIC_DIGRAPH, 
-    "src/digraphs.c:FuncIS_ACYCLIC_DIGRAPH" },
+    "src/graphs.c:FuncIS_ACYCLIC_DIGRAPH" },
  
   { "IS_ANTISYMMETRIC_DIGRAPH", 1, "adj",
     FuncIS_ANTISYMMETRIC_DIGRAPH, 
-    "src/digraphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH" },
+    "src/graphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH" },
  
   { "IS_STRONGLY_CONNECTED_DIGRAPH", 1, "adj",
     FuncIS_STRONGLY_CONNECTED_DIGRAPH, 
-    "src/digraphs.c:FuncIS_STRONGLY_CONNECTED_DIGRAPH" },
+    "src/graphs.c:FuncIS_STRONGLY_CONNECTED_DIGRAPH" },
 
   { "DIGRAPH_TOPO_SORT", 1, "adj",
     FuncDIGRAPH_TOPO_SORT, 
-    "src/digraphs.c:FuncDIGRAPH_TOPO_SORT" },
+    "src/graphs.c:FuncDIGRAPH_TOPO_SORT" },
 
   { "DIGRAPH_SOURCE_RANGE", 1, "digraph",
     FuncDIGRAPH_SOURCE_RANGE, 
-    "src/digraphs.c:FuncDIGRAPH_SOURCE_RANGE" },
+    "src/graphs.c:FuncDIGRAPH_SOURCE_RANGE" },
 
   { "DIGRAPH_OUT_NBS", 3, "nrvertices, source, range",
     FuncDIGRAPH_OUT_NBS, 
-    "src/digraphs.c:FuncDIGRAPH_OUT_NBS" },
+    "src/graphs.c:FuncDIGRAPH_OUT_NBS" },
   
   { "DIGRAPH_IN_OUT_NBS", 1, "adj",
     FuncDIGRAPH_IN_OUT_NBS, 
-    "src/digraphs.c:FuncDIGRAPH_IN_OUT_NBS" },
+    "src/graphs.c:FuncDIGRAPH_IN_OUT_NBS" },
 
   { "ADJACENCY_MATRIX", 1, "digraph",
     FuncADJACENCY_MATRIX, 
-    "src/digraphs.c:FuncADJACENCY_MATRIX" },
+    "src/graphs.c:FuncADJACENCY_MATRIX" },
 
   { "IS_MULTI_DIGRAPH", 1, "digraph",
     FuncIS_MULTI_DIGRAPH, 
-    "src/digraphs.c:FuncIS_MULTI_DIGRAPH" },
+    "src/graphs.c:FuncIS_MULTI_DIGRAPH" },
 
   { "DIGRAPH_SHORTEST_DIST", 1, "digraph",
     FuncDIGRAPH_SHORTEST_DIST, 
-    "src/digraphs.c:FuncDIGRAPH_SHORTEST_DIST" },
+    "src/graphs.c:FuncDIGRAPH_SHORTEST_DIST" },
 
   { "DIGRAPH_DIAMETER", 1, "digraph",
     FuncDIGRAPH_DIAMETER, 
-    "src/digraphs.c:FuncDIGRAPH_DIAMETER" },
+    "src/graphs.c:FuncDIGRAPH_DIAMETER" },
 
   { "IS_TRANSITIVE_DIGRAPH", 1, "digraph",
     FuncIS_TRANSITIVE_DIGRAPH,
-    "src/digraphs.c:FuncIS_TRANSITIVE_DIGRAPH" },
+    "src/graphs.c:FuncIS_TRANSITIVE_DIGRAPH" },
   
   { "DIGRAPH_TRANS_CLOSURE", 1, "digraph",
     FuncDIGRAPH_TRANS_CLOSURE,
-    "src/digraphs.c:FuncDIGRAPH_TRANS_CLOSURE" },
+    "src/graphs.c:FuncDIGRAPH_TRANS_CLOSURE" },
 
   { "DIGRAPH_REFLEX_TRANS_CLOSURE", 1, "digraph",
     FuncDIGRAPH_REFLEX_TRANS_CLOSURE,
-    "src/digraphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE" },
+    "src/graphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE" },
 
   { "RANDOM_DIGRAPH", 2, "nn, limm",
     FuncRANDOM_DIGRAPH,
-    "src/digraphs.c:FuncRANDOM_DIGRAPH" },
+    "src/graphs.c:FuncRANDOM_DIGRAPH" },
  
   { "RANDOM_MULTI_DIGRAPH", 2, "nn, mm",
     FuncRANDOM_MULTI_DIGRAPH,
-    "src/digraphs.c:FuncRANDOM_MULTI_DIGRAPH" },
+    "src/graphs.c:FuncRANDOM_MULTI_DIGRAPH" },
 
   { "DIGRAPH_EQUALS", 2, "digraph1, digraph2",
     FuncDIGRAPH_EQUALS,
-    "src/digraphs.c:FuncDIGRAPH_EQUALS" },
+    "src/graphs.c:FuncDIGRAPH_EQUALS" },
   
   { "DIGRAPH_LT", 2, "digraph1, digraph2",
     FuncDIGRAPH_LT,
-    "src/digraphs.c:FuncDIGRAPH_LT" },
+    "src/graphs.c:FuncDIGRAPH_LT" },
 
   { "DIGRAPHS_IS_REACHABLE", 3, "digraph, u, v",
     FuncDIGRAPHS_IS_REACHABLE,
-    "src/digraphs.c:FuncDIGRAPHS_IS_REACHABLE" },
+    "src/graphs.c:FuncDIGRAPHS_IS_REACHABLE" },
 
   { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncDIGRAPH_AUTOMORPHISMS, 
-    "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS" },
+    "src/graphs.c:FuncDIGRAPH_AUTOMORPHISMS" },
  
   { "MULTIDIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncMULTIDIGRAPH_AUTOMORPHISMS, 
-    "src/digraphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS" },
+    "src/graphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS" },
 
   { "DIGRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncDIGRAPH_CANONICAL_LABELING, 
-    "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELING" },
+    "src/graphs.c:FuncDIGRAPH_CANONICAL_LABELING" },
   
   { "MULTIDIGRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncMULTIDIGRAPH_CANONICAL_LABELING, 
-    "src/digraphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELING" },
+    "src/graphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELING" },
 
   { "GRAPH_HOMOS", 10, "graph1, graph2, hook, user_param, limit, hint, isinjective, image, kernel, partial_map",
     FuncGRAPH_HOMOS,
-    "src/digraphs.c:FuncGRAPH_HOMOS" },
-
-  /*{ "C_STAB_CHAIN", 1, "gens, lmp",
-    FuncC_STAB_CHAIN,
-    "src/digraphs.c:FuncC_STAB_CHAIN" },*/
-  
-  /*{ "STAB", 2, "gens, pt",
-    FuncSTAB,
-    "src/digraphs.c:FuncC_STAB" },*/
+    "src/graphs.c:FuncGRAPH_HOMOS" },
 
   { 0 }
 
@@ -1801,7 +1792,7 @@ static Int InitLibrary ( StructInitInfo *module )
     }
 
     tmp = NEW_PREC(0);
-    gvar = GVarName("DIGRAPHS_C"); 
+    gvar = GVarName("GRAPHS_C"); 
     AssGVar( gvar, tmp ); 
     MakeReadOnlyGVar(gvar);
 
@@ -1813,12 +1804,12 @@ static Int InitLibrary ( StructInitInfo *module )
 *F  InitInfopl()  . . . . . . . . . . . . . . . . . table of init functions
 */
 static StructInitInfo module = {
-#ifdef DIGRAPHSSTATIC
+#ifdef GRAPHSSTATIC
  /* type        = */ MODULE_STATIC,
 #else
  /* type        = */ MODULE_DYNAMIC,
 #endif
- /* name        = */ "digraphs",
+ /* name        = */ "graphs",
  /* revision_c  = */ 0,
  /* revision_h  = */ 0,
  /* version     = */ 0,
@@ -1831,14 +1822,14 @@ static StructInitInfo module = {
  /* postRestore = */ 0
 };
 
-#ifndef DIGRAPHSSTATIC
+#ifndef GRAPHSSTATIC
 StructInitInfo * Init__Dynamic ( void )
 {
   return &module;
 }
 #endif
 
-StructInitInfo * Init__digraphs ( void )
+StructInitInfo * Init__graphs ( void )
 {
   return &module;
 }
