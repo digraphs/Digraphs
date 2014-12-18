@@ -10,7 +10,9 @@
   
   <Author>Julius Jonu&#353;as</Author>
   <Author>Michael Torpey</Author>
-  <Author>Wilf Wilson</Author>
+  <Author>Wilf Wilson
+    <Homepage>http://www-groups.mcs.st-and.ac.uk/~waw7</Homepage>
+  </Author>
 
   <Copyright>&copyright; &COPYRIGHTYEARS; by J. D. Mitchell, Julius Jonu&#353;as, Michael Torpey,
     Wilf Wilson.<P/>
