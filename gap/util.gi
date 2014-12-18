@@ -152,7 +152,6 @@ function()
   DigraphsMakeDoc();
   Print("\n");
 
-  DigraphsStartTest();
   if not DigraphsTestInstall() then 
     Print("Abort: testinstall.tst failed . . . \n");
     return false;
@@ -163,8 +162,6 @@ function()
     Print("Abort: DigraphsTestAll failed . . . \n");
     return false;
   fi;
-  SetInfoLevel(InfoWarning, DigraphsTestRec.InfoLevelInfoWarning);
-  SetInfoLevel(InfoDigraphs, DigraphsTestRec.InfoLevelInfoDigraphs);
   
   DigraphsTestManualExamples();
   return;

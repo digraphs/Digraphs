@@ -274,7 +274,7 @@ end);
 InstallMethod(RandomTournament, "for an integer",
 [IsInt],
 function(n)
-  local gr, choice, nr, out, i, j;
+  local gr, choice, nr, verts, out, i, j;
   
   if n < 0 then
     Error("Digraphs: RandomTournament: usage,\n",
@@ -285,18 +285,14 @@ function(n)
   else
     choice := [ true, false ];
     nr := n * (n - 1) / 2;
-    out := [ ];
-    for i in [ 1 .. n ] do
-      out[ i ] := [ ];
+    verts := [ 1 .. n ];
+    out := List( verts, x -> [  ] );
+    for i in verts do
       for j in [ (i + 1) .. n ] do
         if Random(choice) then
           Add(out[i], j);
         else
-          if IsBound(out[j]) then
-            Add(out[j], i);
-          else
-          out[j] := [ i ];
-          fi;
+          Add(out[j], i);
         fi;
       od;
     od;

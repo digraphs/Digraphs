@@ -29,7 +29,8 @@ void GraphHomomorphisms (HomosGraph*  graph1,
                          void*        user_param_arg,
                          UIntL        max_results_arg,
                          int          hint_arg, 
-                         bool         isinjective     );
+                         bool         isinjective, 
+                         int*        image     );
 
 HomosGraph* new_homos_graph (UIntS nr_verts);
 

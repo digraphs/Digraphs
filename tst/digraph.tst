@@ -98,7 +98,7 @@ gap> if DIGRAPHS_IsGrapeLoaded then
 >   Graph(gr); 
 > fi;
 
-# Digraph (by list of OutNeighbours)
+# Digraph (by OutNeighbours)
 gap> Digraph( [ [ 0, 1 ] ] );
 Error, Digraphs: Digraph: usage,
 the argument must be a list of lists of positive integers
@@ -230,59 +230,6 @@ of positive integers no greater than the first argument <nrvertices>,
 gap> Digraph( 4, [ 3, 1, 2, 3 ], [ 4, 1, 2, 4 ] );
 <multidigraph with 4 vertices, 4 edges>
 
-# Digraph (for an integer and a function)
-gap> divides := function(a, b)
->   if b mod a = 0 then
->     return true;
->   fi;
->   return false;
-> end;;
-gap> gr := Digraph( 12, divides );
-<digraph with 12 vertices, 35 edges>
-
-# Digraph (for a binary relation)
-gap> g := Group( (1,2,3) );
-Group([ (1,2,3) ])
-gap> elms := [
->  DirectProductElement( [ (1,2,3), (1,3,2) ] ),
->  DirectProductElement( [ (1,3,2), (1,2,3) ] ),
->  DirectProductElement( [ (), () ] )
-> ];;
-gap> bin := BinaryRelationByElements(g, elms);
-<general mapping: Group( [ (1,2,3) ] ) -> Group( [ (1,2,3) ] ) >
-gap> Digraph(bin);
-Error, Digraphs: Digraph: usage,
-the argument <rel> must be a binary relation
-on the domain [ 1 .. n ] for some positive integer n,
-gap> d := Domain( [ 2 .. 10 ] );;
-gap> bin := BinaryRelationByElements(d, [
->  DirectProductElement([ 2, 5 ]),
->  DirectProductElement([ 6, 3 ]),
->  DirectProductElement([ 4, 5 ])
-> ] );
-<general mapping: <object> -> <object> >
-gap> gr := Digraph(bin);
-Error, Digraphs: Digraph: usage,
-the argument <rel> must be a binary relation
-on the domain [ 1 .. n ] for some positive integer n,
-gap> d := Domain( [ 1 .. 10 ] );;
-gap> bin := BinaryRelationByElements(d, [
->  DirectProductElement([ 2, 5 ]),
->  DirectProductElement([ 6, 3 ]),
->  DirectProductElement([ 4, 5 ])
-> ] );
-<general mapping: <object> -> <object> >
-gap> gr := Digraph(bin);
-<digraph with 10 vertices, 3 edges>
-gap> DigraphEdges(gr);
-[ [ 2, 5 ], [ 4, 5 ], [ 6, 3 ] ]
-gap> bin := BinaryRelationOnPoints( [ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 4 ] ] );
-Binary Relation on 5 points
-gap> gr := Digraph(bin);
-<digraph with 5 vertices, 5 edges>
-gap> OutNeighbours(gr);
-[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 4 ] ]
-
 # Digraph (for vertices, source, range)
 gap> Digraph( Group(()), [  ], [  ] );
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
@@ -342,55 +289,58 @@ gap> DigraphRange(gr);
 gap> gr;
 <digraph with 3 vertices, 3 edges>
 
-# RandomDigraph
-gap> DigraphNrVertices(RandomDigraph(10));
-10
-gap> DigraphNrVertices(RandomDigraph(200, 0.854));
-200
-gap> IsMultiDigraph(RandomDigraph(1000));
-false
-gap> RandomDigraph(0);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `RandomDigraph' on 1 arguments
-gap> RandomDigraph("a");
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `RandomDigraph' on 1 arguments
-gap> RandomDigraph(4, 0);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `RandomDigraph' on 2 arguments
-gap> RandomDigraph(10, 1.01);
-Error, Digraphs: RandomDigraph: usage,
-the second argument <p> must be a float between 0 and 1,
-gap> RandomDigraph(10, -0.01);
-Error, Digraphs: RandomDigraph: usage,
-the second argument <p> must be a float between 0 and 1,
+# Digraph (for an integer and a function)
+gap> divides := function(a, b)
+>   if b mod a = 0 then
+>     return true;
+>   fi;
+>   return false;
+> end;;
+gap> gr := Digraph( 12, divides );
+<digraph with 12 vertices, 35 edges>
 
-# RandomMultiDigraph
-gap> DigraphNrVertices(RandomMultiDigraph(100));
-100
-gap> gr := RandomMultiDigraph(100, 1000);;
-gap> DigraphNrVertices(gr);
-100
-gap> DigraphNrEdges(gr);
-1000
-gap> RandomMultiDigraph(0);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `RandomMultiDigraph' on 1 arguments
-gap> RandomMultiDigraph(0, 1);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `RandomMultiDigraph' on 2 arguments
-gap> RandomMultiDigraph(1, 0);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `RandomMultiDigraph' on 2 arguments
-
-# RandomTournament
-gap> RandomTournament(25);
-<digraph with 25 vertices, 300 edges>
-gap> RandomTournament(0);
-<digraph with 0 vertices, 0 edges>
-gap> RandomTournament(-1);
-Error, Digraphs: RandomTournament: usage,
-the argument <n> must be a non-negative integer,
+# Digraph (for a binary relation)
+gap> g := Group( (1,2,3) );
+Group([ (1,2,3) ])
+gap> elms := [
+>  DirectProductElement( [ (1,2,3), (1,3,2) ] ),
+>  DirectProductElement( [ (1,3,2), (1,2,3) ] ),
+>  DirectProductElement( [ (), () ] )
+> ];;
+gap> bin := BinaryRelationByElements(g, elms);
+<general mapping: Group( [ (1,2,3) ] ) -> Group( [ (1,2,3) ] ) >
+gap> Digraph(bin);
+Error, Digraphs: Digraph: usage,
+the argument <rel> must be a binary relation
+on the domain [ 1 .. n ] for some positive integer n,
+gap> d := Domain( [ 2 .. 10 ] );;
+gap> bin := BinaryRelationByElements(d, [
+>  DirectProductElement([ 2, 5 ]),
+>  DirectProductElement([ 6, 3 ]),
+>  DirectProductElement([ 4, 5 ])
+> ] );
+<general mapping: <object> -> <object> >
+gap> gr := Digraph(bin);
+Error, Digraphs: Digraph: usage,
+the argument <rel> must be a binary relation
+on the domain [ 1 .. n ] for some positive integer n,
+gap> d := Domain( [ 1 .. 10 ] );;
+gap> bin := BinaryRelationByElements(d, [
+>  DirectProductElement([ 2, 5 ]),
+>  DirectProductElement([ 6, 3 ]),
+>  DirectProductElement([ 4, 5 ])
+> ] );
+<general mapping: <object> -> <object> >
+gap> gr := Digraph(bin);
+<digraph with 10 vertices, 3 edges>
+gap> DigraphEdges(gr);
+[ [ 2, 5 ], [ 4, 5 ], [ 6, 3 ] ]
+gap> bin := BinaryRelationOnPoints( [ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 4 ] ] );
+Binary Relation on 5 points
+gap> gr := Digraph(bin);
+<digraph with 5 vertices, 5 edges>
+gap> OutNeighbours(gr);
+[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 4 ] ]
 
 # DigraphByEdges
 gap> gr := Digraph( [ [ 1, 2, 3, 5 ], [ 1, 5 ], [ 2, 3, 6 ], [ 1, 3, 4 ], 
@@ -421,29 +371,6 @@ Error, Digraphs: DigraphByEdges: usage,
 the specified edges must not contain values greater than 1,
 gap> gr := DigraphByEdges( [  ], 3 );
 <digraph with 3 vertices, 0 edges>
-
-# AsDigraph
-gap> f := Transformation([]);
-IdentityTransformation
-gap> gr := AsDigraph(f);
-<digraph with 0 vertices, 0 edges>
-gap> gr = Digraph( [] );
-true
-gap> AsDigraph(f, 10);
-<digraph with 10 vertices, 10 edges>
-gap> g := Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] );
-Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] )
-gap> AsDigraph(g);
-<digraph with 8 vertices, 8 edges>
-gap> AsDigraph(g, -1);
-Error, Digraphs: AsDigraph: usage,
-the second argument should be a non-negative integer,
-gap> AsDigraph(g, 10);
-<digraph with 10 vertices, 10 edges>
-gap> h := Transformation( [ 2, 4, 1, 3, 5 ] );
-Transformation( [ 2, 4, 1, 3 ] )
-gap> AsDigraph(h);
-<digraph with 4 vertices, 4 edges>
 
 # DigraphByAdjacencyMatrix
 gap> mat := [
@@ -513,6 +440,132 @@ gap> AdjacencyMatrix(gr2) = mat;
 true
 gap> DigraphByAdjacencyMatrix( [ ] );
 <digraph with 0 vertices, 0 edges>
+
+# DigraphByInNeighbours
+gap> gr1 := RandomMultiDigraph(50, 3000);
+<multidigraph with 50 vertices, 3000 edges>
+gap> inn := InNeighbours(gr1);;
+gap> gr2 := DigraphByInNeighbours(inn);
+<multidigraph with 50 vertices, 3000 edges>
+gap> gr3 := DigraphByInNeighbors(inn);;
+gap> gr4 := DigraphByInNeighboursNC(inn);
+<multidigraph with 50 vertices, 3000 edges>
+gap> HasDigraphNrEdges(gr3);
+true
+gap> DigraphNrEdges(gr3);
+3000
+gap> gr1 = gr2;
+true
+gap> gr1 = gr3;
+true
+gap> gr2 = gr3;
+true
+gap> gr1 = gr4;
+true
+gap> HasInNeighbours(gr2);
+true
+gap> InNeighbours(gr2) = inn;
+true
+gap> HasInNeighbours(gr3);
+true
+gap> InNeighbours(gr3) = inn;
+true
+gap> inn := [ [ 3, 1, 2 ], [ 1 ] ];;
+gap> DigraphByInNeighbours(inn);
+Error, Digraphs: DigraphByInNeighbours: usage,
+the argument must be a list of lists of positive integers
+not exceeding the length of the argument,
+gap> inn := [
+> [  ], [ 3 ], [ 7 ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [ 6 ],
+> [  ], [ 2 ], [  ], [  ], [  ], [  ], [ 5 ], [  ] ];;
+gap> gr := DigraphByInNeighbours(inn);
+<digraph with 20 vertices, 5 edges>
+gap> OutNeighbours(gr);
+[ [  ], [ 14 ], [ 2 ], [  ], [ 19 ], [ 12 ], [ 3 ], [  ], [  ], [  ], [  ], 
+  [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ] ]
+gap> inn := [
+> [ 14 ], [ 20 ], [  ], [  ], [ 5, 19, 5 ], [ 4 ], [  ], [  ], [  ], [  ],
+> [ 12 ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [ 2 ] ];;
+gap> gr := DigraphByInNeighbours(inn);
+<multidigraph with 20 vertices, 8 edges>
+gap> OutNeighbours(gr);
+[ [  ], [ 20 ], [  ], [ 6 ], [ 5, 5 ], [  ], [  ], [  ], [  ], [  ], [  ], 
+  [ 11 ], [  ], [ 1 ], [  ], [  ], [  ], [  ], [ 5 ], [ 2 ] ]
+gap> InNeighbors(gr) = inn;
+true
+
+# AsDigraph
+gap> f := Transformation([]);
+IdentityTransformation
+gap> gr := AsDigraph(f);
+<digraph with 0 vertices, 0 edges>
+gap> gr = Digraph( [] );
+true
+gap> AsDigraph(f, 10);
+<digraph with 10 vertices, 10 edges>
+gap> g := Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] );
+Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] )
+gap> AsDigraph(g);
+<digraph with 8 vertices, 8 edges>
+gap> AsDigraph(g, -1);
+Error, Digraphs: AsDigraph: usage,
+the second argument should be a non-negative integer,
+gap> AsDigraph(g, 10);
+<digraph with 10 vertices, 10 edges>
+gap> h := Transformation( [ 2, 4, 1, 3, 5 ] );
+Transformation( [ 2, 4, 1, 3 ] )
+gap> AsDigraph(h);
+<digraph with 4 vertices, 4 edges>
+
+# RandomDigraph
+gap> DigraphNrVertices(RandomDigraph(10));
+10
+gap> DigraphNrVertices(RandomDigraph(200, 0.854));
+200
+gap> IsMultiDigraph(RandomDigraph(1000));
+false
+gap> RandomDigraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomDigraph' on 1 arguments
+gap> RandomDigraph("a");
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomDigraph' on 1 arguments
+gap> RandomDigraph(4, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomDigraph' on 2 arguments
+gap> RandomDigraph(10, 1.01);
+Error, Digraphs: RandomDigraph: usage,
+the second argument <p> must be a float between 0 and 1,
+gap> RandomDigraph(10, -0.01);
+Error, Digraphs: RandomDigraph: usage,
+the second argument <p> must be a float between 0 and 1,
+
+# RandomMultiDigraph
+gap> DigraphNrVertices(RandomMultiDigraph(100));
+100
+gap> gr := RandomMultiDigraph(100, 1000);;
+gap> DigraphNrVertices(gr);
+100
+gap> DigraphNrEdges(gr);
+1000
+gap> RandomMultiDigraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomMultiDigraph' on 1 arguments
+gap> RandomMultiDigraph(0, 1);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomMultiDigraph' on 2 arguments
+gap> RandomMultiDigraph(1, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomMultiDigraph' on 2 arguments
+
+# RandomTournament
+gap> RandomTournament(25);
+<digraph with 25 vertices, 300 edges>
+gap> RandomTournament(0);
+<digraph with 0 vertices, 0 edges>
+gap> RandomTournament(-1);
+Error, Digraphs: RandomTournament: usage,
+the argument <n> must be a non-negative integer,
 
 # CompleteDigraph
 gap> gr := CompleteDigraph(5);
@@ -584,7 +637,7 @@ gap> DigraphEdges(gr);
   [ 5, 3 ], [ 5, 4 ], [ 6, 1 ], [ 6, 2 ], [ 6, 3 ], [ 6, 4 ], [ 7, 1 ], 
   [ 7, 2 ], [ 7, 3 ], [ 7, 4 ] ]
 
-# Equals (= \=)
+# Equals
 gap> r1 := rec( nrvertices := 2, source := [ 1, 1, 2 ], range := [ 1, 2, 2 ] );
 rec( nrvertices := 2, range := [ 1, 2, 2 ], source := [ 1, 1, 2 ] )
 gap> r2 := rec( nrvertices := 2, source := [ 1, 1, 2 ], range := [ 2, 1, 2 ] );
@@ -680,8 +733,6 @@ gap> gr2 = im;
 true
 gap> gr1 = gr1;
 true
-
-# \= for digraph with out-neighbours, and digraph with range 
 gap> gr1 := Digraph( [ [ 2 ], [ ] ] );;
 gap> gr2 := Digraph( rec( nrvertices := 1, source := [ ], range := [ ] ) );;
 gap> gr1 = gr2; # Different number of vertices
@@ -733,8 +784,6 @@ gap> r2 :=
 gap> gr2 := Digraph( rec( nrvertices := 10, source := s, range := r2 ) );;
 gap> gr1 = gr2;
 true
-
-# \= for 2 digraphs with out-neighbours
 gap> gr1 := Digraph( [ [ 2 ], [ ] ] );;
 gap> gr2 := Digraph( [ [ 1 ] ] );;
 gap> gr1 = gr2; # Different number of vertices
@@ -786,8 +835,6 @@ gap> gr1 := RandomDigraph( 10, 0.264 );;
 gap> gr2 := Digraph( List( ShallowCopy(OutNeighbours(gr1)), Reversed ) );;
 gap> gr1 = gr2;
 true
-
-# \= for 2 digraphs with source and range
 gap> gr1 := Digraph( rec( nrvertices := 0, source := [ ], range := [ ] ) );;
 gap> gr1 = gr1; # IsIdenticalObj
 true
@@ -844,7 +891,7 @@ gap> gr2 := Digraph( rec( nrvertices := 10, source := s, range := r2 ) );;
 gap> gr1 = gr2;
 true
 
-# < for two digraphs (LT, \<)
+# Less than (<) for two digraphs
 gap> gr1 := RandomMultiDigraph(10, 20);;
 gap> gr2 := RandomMultiDigraph(11, 21);;
 gap> gr1 < gr2; # Different NrVertices
@@ -973,64 +1020,12 @@ false
 gap> gr2 < gr1;
 true
 
-# DigraphByInNeighbours
-gap> gr1 := RandomMultiDigraph(50, 3000);
-<multidigraph with 50 vertices, 3000 edges>
-gap> inn := InNeighbours(gr1);;
-gap> gr2 := DigraphByInNeighbours(inn);
-<multidigraph with 50 vertices, 3000 edges>
-gap> gr3 := DigraphByInNeighbors(inn);;
-gap> gr4 := DigraphByInNeighboursNC(inn);
-<multidigraph with 50 vertices, 3000 edges>
-gap> HasDigraphNrEdges(gr3);
-true
-gap> DigraphNrEdges(gr3);
-3000
-gap> gr1 = gr2;
-true
-gap> gr1 = gr3;
-true
-gap> gr2 = gr3;
-true
-gap> gr1 = gr4;
-true
-gap> HasInNeighbours(gr2);
-true
-gap> InNeighbours(gr2) = inn;
-true
-gap> HasInNeighbours(gr3);
-true
-gap> InNeighbours(gr3) = inn;
-true
-gap> inn := [ [ 3, 1, 2 ], [ 1 ] ];;
-gap> DigraphByInNeighbours(inn);
-Error, Digraphs: DigraphByInNeighbours: usage,
-the argument must be a list of lists of positive integers
-not exceeding the length of the argument,
-gap> inn := [
-> [  ], [ 3 ], [ 7 ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [ 6 ],
-> [  ], [ 2 ], [  ], [  ], [  ], [  ], [ 5 ], [  ] ];;
-gap> gr := DigraphByInNeighbours(inn);
-<digraph with 20 vertices, 5 edges>
-gap> OutNeighbours(gr);
-[ [  ], [ 14 ], [ 2 ], [  ], [ 19 ], [ 12 ], [ 3 ], [  ], [  ], [  ], [  ], 
-  [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ] ]
-gap> inn := [
-> [ 14 ], [ 20 ], [  ], [  ], [ 5, 19, 5 ], [ 4 ], [  ], [  ], [  ], [  ],
-> [ 12 ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [  ], [ 2 ] ];;
-gap> gr := DigraphByInNeighbours(inn);
-<multidigraph with 20 vertices, 8 edges>
-gap> OutNeighbours(gr);
-[ [  ], [ 20 ], [  ], [ 6 ], [ 5, 5 ], [  ], [  ], [  ], [  ], [  ], [  ], 
-  [ 11 ], [  ], [ 1 ], [  ], [  ], [  ], [  ], [ 5 ], [ 2 ] ]
-gap> InNeighbors(gr) = inn;
-true
-
-#
-gap> gr := Digraph([]);;
+# ReducedDigraph
+gap> gr := EmptyDigraph(0);;
 gap> ReducedDigraph(gr) = gr;
 true
-gap> gr := Digraph([[2,4,2,6,1], [], [], [2,1,4], [], [1,7,7,7], [4,6]]);
+gap> gr := Digraph( [ [ 2, 4, 2, 6, 1 ], [  ], [  ], [ 2, 1, 4 ], [  ],
+> [ 1, 7, 7, 7 ], [ 4, 6 ] ] );
 <multidigraph with 7 vertices, 14 edges>
 gap> rd := ReducedDigraph(gr);
 <multidigraph with 5 vertices, 14 edges>
@@ -1046,13 +1041,14 @@ gap> rd = gr;
 true
 gap> DigraphVertexLabels(gr) = DigraphVertexLabels(rd);
 true
-gap> gr := Digraph([ [], [4,2], [], [3] ]);
+gap> gr := Digraph( [ [  ], [ 4, 2 ], [  ], [ 3 ] ] );
 <digraph with 4 vertices, 3 edges>
-gap> SetDigraphVertexLabels(gr, ["one", "two", "three", "four"]);
+gap> SetDigraphVertexLabels(gr, [ "one", "two", "three", "four" ]);
 gap> rd := ReducedDigraph(gr);
 <digraph with 3 vertices, 3 edges>
-gap> DigraphVertexLabels(gr); DigraphVertexLabels(rd);
+gap> DigraphVertexLabels(gr);
 [ "one", "two", "three", "four" ]
+gap> DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
 
 #
