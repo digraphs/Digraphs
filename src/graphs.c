@@ -771,19 +771,24 @@ static Obj FuncADJACENCY_MATRIX(Obj self, Obj digraph) {
 
 static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   Obj   adj, adji;
-  int   n, i, k, j, jj;
+  UInt  n, i, k, j, jj, *seen;
  
   adj = OutNeighbours(digraph); 
   n = DigraphNrVertices(digraph);
+  seen = calloc(n + 1, sizeof(UInt));
+
   for (i = 1; i <= n; i++) {
     adji = ELM_PLIST(adj, i);
+    if ((UInt) LEN_LIST(adji) > n) {
+      return True;
+    }
     PLAIN_LIST(adji);
-    for (j = 2; j <= LEN_PLIST(adji); j++) {
-      jj = INT_INTOBJ(ELM_PLIST(adji, j));
-      for (k = 1; k < j; k++) {
-        if (INT_INTOBJ(ELM_PLIST(adji, k)) == jj) {
-          return True;
-        }
+    for (j = 1; j <= (UInt) LEN_PLIST(adji); j++) {
+      k = INT_INTOBJ(ELM_PLIST(adji, j));
+      if (seen[k] != i) {
+        seen[k] = i;
+      } else {
+        return True;
       }
     }
   }
