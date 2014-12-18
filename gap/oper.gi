@@ -652,6 +652,26 @@ end);
 
 #
 
+InstallMethod(OnDigraphs, "for a digraph and a transformation",
+[IsDigraph, IsTransformation],
+function(digraph, trans)
+  local kernel, n;
+
+  n := DigraphNrVertices(digraph);
+  if ForAny(DigraphVertices(digraph),
+   i -> i ^ trans > n) then
+    Error("Graphs: OnDigraphs: usage,\n",
+    "the 2nd argument <trans> must transform the vertices of the 1st argument",
+    "\n<digraph>,");
+    return;
+  fi;
+
+  kernel := KernelOfTransformation(trans, n);
+  return QuotientDigraph(digraph, kernel);
+end);
+
+#
+
 InstallMethod(OnMultiDigraphs, "for a digraph, perm and perm",
 [IsDigraph, IsPerm, IsPerm],
 function(graph, perm1, perm2)

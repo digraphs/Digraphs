@@ -238,7 +238,7 @@ gap> gr := DigraphRemoveEdge( gr, [ 2, 1 ] );
 gap> DigraphEdges(gr);
 [ [ 1, 2 ] ]
 
-# OnDigraphs
+# OnDigraphs (for a digraph and a perm)
 gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );
 <digraph with 3 vertices, 3 edges>
 gap> DigraphEdges(gr);
@@ -291,6 +291,22 @@ gap> OnDigraphs(gr, p2);
 gap> DigraphEdges(last);
 [ [ 1, 2 ], [ 1, 4 ], [ 2, 2 ], [ 3, 4 ], [ 3, 1 ], [ 3, 1 ], [ 4, 3 ], 
   [ 4, 2 ] ]
+
+# OnDigraphs (for a digraph and a transformation)
+gap> gr := Digraph( [ [ 2 ], [ 1, 3 ], [  ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> OutNeighbours(gr);
+[ [ 2 ], [ 1, 3 ], [  ] ]
+gap> t := Transformation([ 4, 2, 3, 4 ]);;
+gap> OnDigraphs(gr, t);
+Error, Graphs: OnDigraphs: usage,
+the 2nd argument <trans> must transform the vertices of the 1st argument
+<digraph>,
+gap> t := Transformation([ 1, 2, 1 ]);;
+gap> gr := OnDigraphs(gr, t);
+<multidigraph with 2 vertices, 3 edges>
+gap> OutNeighbours(gr);
+[ [ 2 ], [ 1, 1 ] ]
 
 # InNeighboursOfVertex, InDegreeOfVertex
 gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 1, 5, 5, 7, 10 ],
