@@ -786,11 +786,11 @@ gap> DigraphStronglyConnectedComponent(gr, 4);
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 3 ], [ 2 ], [ 1, 2 ], [ 4 ] ] );
 <digraph with 4 vertices, 5 edges>
-gap> DigraphStronglyComponent(gr, 3);
+gap> DigraphConnectedComponent(gr, 3);
 [ 1, 2, 3 ]
-gap> DigraphStronglyConnectedComponent(gr, 2);
+gap> DigraphConnectedComponent(gr, 2);
 [ 1, 2, 3 ]
-gap> DigraphStronglyConnectedComponent(gr, 4);
+gap> DigraphConnectedComponent(gr, 4);
 [ 4 ]
 ]]></Example>
   </Description>
