@@ -175,13 +175,18 @@ true
 
 <#GAPDoc Label="OnDigraphs">
 <ManSection>
-  <Oper Name="OnDigraphs" Arg="digraph, perm"/>
+  <Oper Name="OnDigraphs" Arg="digraph, perm" Label="for a digraph and a perm"/>
+  <Oper Name="OnDigraphs" Arg="digraph, trans" Label="for a digraph and a transformation"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, and <A>perm</A> is a permutation of
-    the vertices of <A>digraph</A>, then this operation returns a digraph
-    constructed by relabelling the vertices of <A>digraph</A> according to
-    <A>perm</A>. <P/>
+    If <A>digraph</A> is a digraph, and the second argument is a permutation 
+    <A>perm</A> of the vertices of <A>digraph</A>, then this operation returns
+    a digraph constructed by relabelling the vertices of 
+    <A>digraph</A> according to <A>perm</A>. <P/>
+
+    If the second argument is a transformation <A>trans</A> of the vertices
+    of <A>digraph</A>, then this operation returns the quotient of 
+    <A>digraph</A> by the kernel of <A>trans</A>. <P/>
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
 > [ 2, 3, 5 ] ] );
@@ -193,6 +198,12 @@ gap> OutNeighbours(new);
 [ [ 2, 3, 5 ], [ 3 ], [ 2 ], [ 2, 1, 4 ], [ 1, 3, 5 ] ]
 gap> DigraphVertexLabels(new);
 [ "b", "a", "c", "d", "e" ]
+gap> gr := Digraph( [ [ 2 ], [  ], [ 2 ] ] );
+<digraph with 3 vertices, 2 edges>
+gap> new := OnDigraphs(gr, Transformation( [ 1, 2, 1 ] ));
+<multidigraph with 2 vertices, 2 edges>
+gap> OutNeighbours(new);
+[ [ 2, 2 ], [  ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -867,8 +878,8 @@ od;
 ]]></Listing>
 
     The matrix <C>mat</C> is then returned as the result. An example of using
-    <C>DigraphFloydWarshall</C> to calculate the shortest distances between the
-    vertices of a digraph is shown below: <P/>
+    <C>DigraphFloydWarshall</C> to calculate the shortest (non-zero) distances
+    between the vertices of a digraph is shown below: <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 5 ], [ 3, 6 ], [ 2, 5 ], [ 1, 4, 5 ],
@@ -883,8 +894,6 @@ gap> func := function(mat, i, j, k)
 > end;
 function( mat, i, j, k ) ... end
 gap> shortest_distances := DigraphFloydWarshall( gr, func, -1, 1 );;
-gap> shortest_distances = DigraphShortestDistances(gr);
-true
 gap> Display(shortest_distances);
 [ [   3,  -1,  -1,   2,   1,   2 ],
   [   4,   2,   1,   3,   2,   1 ],
