@@ -6,6 +6,7 @@
 
 // FIXME detect if we are on a 32-bit machine
 #define MAXVERTS 512
+#define UNDEFINED MAXVERTS + 1
 typedef unsigned long int UIntL;
 #define SMALLINTLIMIT 1152921504606846976
 #define SYS_BITS 64

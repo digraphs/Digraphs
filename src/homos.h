@@ -30,7 +30,8 @@ void GraphHomomorphisms (HomosGraph*  graph1,
                          UIntL        max_results_arg,
                          int          hint_arg, 
                          bool         isinjective, 
-                         int*        image     );
+                         int*         image,
+                         UIntS*       map     );
 
 HomosGraph* new_homos_graph (UIntS nr_verts);
 

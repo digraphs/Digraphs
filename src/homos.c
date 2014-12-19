@@ -10,8 +10,6 @@
 
 #include "src/homos.h"
 
-#define UNDEFINED MAXVERTS + 1
-
 // globals for the recursive find_homos
 static UIntS  nr1;                         // nr of vertices in graph1
 static UIntS  nr1_d;                       // nr1 - 1 / SYS_BITS 
@@ -21,6 +19,7 @@ static UIntS  nr2_d;                       // nr2 - 1 / SYS_BITS
 static UIntS  nr2_m;                       // nr2 - 1 % SYS_BITS 
 static UIntS  len_nr1;                     // number of UIntL to store all neighbours1
 static UIntS  len_nr2;                     // number of UIntL to store all neighbours2
+static UIntS  next;                        // next position of map to assign 
 static UIntS  hint;                        // wanted nr of distinct values in map
 static UIntL  maxresults;                  // upper bound for the nr of returned homos
 static UIntS  map[MAXVERTS];               // partial image list
@@ -303,7 +302,7 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
                  bool    has_trivial_stab,
                  UIntS   rank      ){ // current number of distinct values in map
 
-  UIntS   i, j, k, l, min, next, m, sum, w, size;
+  UIntS   i, j, k, l, min, m, sum, w, size;
   UIntL*  copy;
   bool    is_trivial;
 
@@ -332,10 +331,10 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
   }
 
   //memcpy((void *) copy, (void *) condition, (size_t) nr1 * len_nr2 * sizeof(UIntL));
-  next = 0;      // the next position to fill
-  min = nr2 + 1; // the minimum number of candidates for map[next]
 
   if (pos != UNDEFINED) {
+    next = 0;      // the next position to fill
+    min = nr2 + 1; // the minimum number of candidates for map[next]
     for (j = 0; j < nr1; j++){
       i = j / SYS_BITS;
       m = j % SYS_BITS;
@@ -386,6 +385,7 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
         } else {
           find_homos(depth + 1, next, rep_depth, true, rank + 1);
         }
+	next = j * SYS_BITS + m; // since next is global :(
         map[next] = UNDEFINED;
         vals[j] ^= oneone[m];
       }
@@ -397,6 +397,7 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
     if (copy[j] & vals[j] & oneone[m]) {
       map[next] = i;
       find_homos(depth + 1, next, rep_depth, has_trivial_stab, rank);
+      next = j * SYS_BITS + m;
       map[next] = UNDEFINED;
     }
   }
@@ -413,9 +414,12 @@ void GraphHomomorphisms (HomosGraph*  graph1,
                          UIntL        max_results_arg,
                          int          hint_arg, 
                          bool         isinjective, 
-                         int*         image           ) {
+                         int*         image,
+                         UIntS        *partial_map           ) {
   PermColl* gens;
-  UIntS     i, j, k, len;
+  UIntS     i, j, k, len, depth, pos, min, size, d, m, rep_depth, rank;
+  UIntL*    copy;
+  bool      has_trivial_stab, is_trivial;
 
   // debugging memory leaks in permutations & schreier-sims
   nr_ss_allocs = 0;
@@ -431,6 +435,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   nr2_m = (nr2 - 1) % SYS_BITS;
   len_nr1 = nr1_d + 1;
   len_nr2 = nr2_d + 1;
+  
 
   assert(nr1 <= MAXVERTS && nr2 <= MAXVERTS);
   
@@ -448,17 +453,12 @@ void GraphHomomorphisms (HomosGraph*  graph1,
     for (i = 0; i < nr2_d + 1; i++) {
       new_image[i] = 0;
       for (j = 0; j < image[0]; j++) {
-        new_image[i] |= oneone[image[j + 1] - 1];
+        new_image[i] |= oneone[image[j + 1]];
       }
     }
   }
   init_conditions(new_image);
 
-  for (i = 0; i < nr1; i++) {
-    map[i] = UNDEFINED;
-    push_size_condition(i, nr2);
-  }
-  
   for (i = 0; i < len_nr2; i++){
     vals[i] = 0;
   }
@@ -472,6 +472,69 @@ void GraphHomomorphisms (HomosGraph*  graph1,
 
   // get orbit reps
   orbit_reps(0);
+
+  // dealing with partial_map
+  next = 0;
+  min = nr2 + 1;
+  depth = 0;
+  pos = UNDEFINED;
+  rank = 0;
+  rep_depth = 0;
+  has_trivial_stab = false;
+  for (i = 0; i < nr1; i++) {
+    map[i] = partial_map[i];
+  }
+  for (i = 0; i < nr1; i++) {
+    push_size_condition(i, nr2);
+    if (map[i] != UNDEFINED) {// map[i] is defined
+      depth++;
+      pos = i;
+      // update conditions since map[pos] is defined
+      for (j = 0; j < nr1; j++) {
+        d = j / SYS_BITS;
+        m = j % SYS_BITS;
+        if (map[j] == UNDEFINED) {
+          if (neighbours1[pos * len_nr1 + d] & oneone[m]) {
+	    // vertex j is adjacent to vertex pos in graph1
+            copy = push_condition(depth, j, get_condition(j));
+            size = 0; 
+            for (k = 0; k < nr2_d; k++){
+              copy[k] &= neighbours2[len_nr2 * map[pos] + k];
+              size += sizeUIntL(copy[k], SYS_BITS);
+            }
+            copy[nr2_d] &= neighbours2[len_nr2 * map[pos] + nr2_d];
+            size += sizeUIntL(copy[nr2_d], nr2_m + 1);
+            if (size == 0) {
+              pop_condition(depth);
+              return;
+            }
+            push_size_condition(j, size);
+          }
+        }
+        if (get_size_condition(j) < min) {
+          next = j;
+          min = get_size_condition(j);
+        }
+      }
+      // calculate stabs
+      d = map[pos] / SYS_BITS;
+      m = map[pos] % SYS_BITS;
+      if ((vals[d] & oneone[m]) == 0) {
+	rank++;
+        if (!has_trivial_stab) {
+          calls2++;
+	  rep_depth++;
+          // stabiliser of the point i in the stabiliser at current rep_depth
+          is_trivial = point_stabilizer(stab_gens[rep_depth], map[pos], &stab_gens[rep_depth]);
+        }
+        vals[d] |= oneone[m];
+        if (!has_trivial_stab) {
+          // blist of orbit reps of things not in vals
+          orbit_reps(rep_depth);
+        }
+      }
+    }
+  }
 
   // misc parameters
   maxresults = max_results_arg;
@@ -493,7 +556,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
       //SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook,
       //Stabilizer);//TODO uncomment
     } else {
-      find_homos(0, UNDEFINED, 0, false, 0);
+      find_homos(depth, UNDEFINED, rep_depth, has_trivial_stab, rank);
     }
   }
 
