@@ -7,11 +7,11 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: homos.tst");
-gap> LoadPackage("digraphs", false);;
+gap> START_TEST("Graphs package: homos.tst");
+gap> LoadPackage("graphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> GraphsStartTest();
 
 # PJC example, 45 vertices
 gap> gr := DigraphFromDigraph6String(Concatenation(

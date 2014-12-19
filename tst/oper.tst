@@ -7,13 +7,13 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: oper.tst");
-gap> LoadPackage("digraphs", false);;
+gap> START_TEST("Graphs package: oper.tst");
+gap> LoadPackage("graphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> GraphsStartTest();
 
-# DigraphReverse (for a digraph by adjacency)
+# DigraphReverse
 gap> gr := Digraph(
 > [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], [ 2, 3, 5 ] ]);
 <digraph with 5 vertices, 11 edges>
@@ -23,8 +23,6 @@ gap> OutNeighbours(rgr);
 [ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ]
 gap> gr = DigraphReverse(rgr);
 true
-
-# DigraphReverse (for a digraph with source)
 gap> gr := Digraph( rec ( nrvertices := 5,
 > source := [ 1, 1, 2, 2, 2, 2, 2, 3, 4, 4, 4, 5, 5, 5 ],
 > range  := [ 1, 3, 1, 2, 2, 4, 5, 4, 1, 3, 5, 1, 1, 3 ] ) );
@@ -40,15 +38,15 @@ gap> Sort(temp);
 gap> e = temp;
 true
 
-# DigraphTransitiveClosure & DigraphReflexiveTransitiveClosure
+# Digraph(Reflexive)TransitiveClosure
 gap> gr := Digraph( 
 > rec( nrvertices := 2, source := [ 1, 1 ], range := [ 2, 2 ] ) );
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphReflexiveTransitiveClosure(gr);
-Error, Digraphs: DigraphReflexiveTransitiveClosure: usage,
+Error, Graphs: DigraphReflexiveTransitiveClosure: usage,
 the argument <graph> cannot have multiple edges,
 gap> DigraphTransitiveClosure(gr);
-Error, Digraphs: DigraphTransitiveClosure: usage,
+Error, Graphs: DigraphTransitiveClosure: usage,
 the argument <graph> cannot have multiple edges,
 gap> r := rec( vertices := [ 1 .. 4 ], source := [ 1, 1, 2, 3, 4 ], 
 > range := [ 1, 2, 3, 4, 1 ] );
@@ -122,15 +120,13 @@ true
 gap> IS_TRANSITIVE_DIGRAPH(reflextrans);
 true
 
-# DigraphRemoveLoops (for a digraph by adjacency)
+# DigraphRemoveLoops
 gap> adj := [ [ 1, 2 ], [ 3, 2 ], [ 1, 2 ], [ 4 ],  [ ], [ 1, 2, 3, 6 ] ];
 [ [ 1, 2 ], [ 3, 2 ], [ 1, 2 ], [ 4 ], [  ], [ 1, 2, 3, 6 ] ]
 gap> gr := Digraph(adj);
 <digraph with 6 vertices, 11 edges>
 gap> DigraphRemoveLoops(gr);
 <digraph with 6 vertices, 7 edges>
-
-# DigraphRemoveLoops (for a digraph by source and range)
 gap> source := [ 1, 1, 2, 2, 3, 3, 4, 6, 6, 6, 6 ];;
 gap> range  := [ 1, 2, 3, 2, 1, 2, 4, 1, 2, 3, 6 ];;
 gap> gr := Digraph( 
@@ -148,6 +144,11 @@ gap> DigraphHasLoops(gr1);
 false
 
 # DigraphRemoveEdges (by index)
+gap> gr := RandomDigraph(10);;
+gap> DigraphRemoveEdges(gr, [ Group(()) ]);
+Error, Graphs: DigraphRemoveEdges: usage,
+the second argument <edges> must be a list of indices of edges
+or a list of edges of the first argument <digraph>,
 gap> gr := Digraph( [ [ 2 ], [  ] ] );
 <digraph with 2 vertices, 1 edge>
 gap> DigraphRemoveEdges( gr, [ 1 ] );
@@ -167,13 +168,6 @@ gap> DigraphRemoveEdges(gr1, [  ]);
 <multidigraph with 5 vertices, 6 edges>
 gap> last = gr1;
 true
-
-# DigraphRemoveEdges (errors)
-gap> gr := RandomDigraph(10);;
-gap> DigraphRemoveEdges(gr, [ Group(()) ]);
-Error, Digraphs: DigraphRemoveEdges: usage,
-the second argument <edges> must be a list of indices of edges
-or a list of edges of the first argument <digraph>,
 
 # DigraphRemoveEdges (by list of edges)
 gap> gr := Digraph( [ [ 2 ], [  ] ] );
@@ -197,7 +191,7 @@ gap> DigraphEdges(gr1);
 gap> gr := Digraph( [ [ 2, 2 ], [  ] ] );
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphRemoveEdges(gr, [ [ 1, 2 ] ] );
-Error, Digraphs: DigraphRemoveEdges: usage,
+Error, Graphs: DigraphRemoveEdges: usage,
 the first argument <digraph> must not have multiple edges
 when the second argument <edges> is a list of edges,
 
@@ -208,7 +202,7 @@ gap> DigraphRemoveEdge(gr, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphRemoveEdge' on 2 arguments
 gap> DigraphRemoveEdge(gr, 5);
-Error, Digraphs, DigraphRemoveEdge, usage,
+Error, Graphs, DigraphRemoveEdge, usage,
 the second argument <edge> must be the index of an edge in <digraph>,
 gap> gr := DigraphRemoveEdge(gr, 3);
 <digraph with 3 vertices, 3 edges>
@@ -219,32 +213,32 @@ gap> DigraphEdges(gr);
 gap> gr := Digraph( [ [ 1, 1 ] ] );
 <multidigraph with 1 vertex, 2 edges>
 gap> DigraphRemoveEdge(gr, [ 1, 1 ] );
-Error, Digraphs: DigraphRemoveEdge: usage,
+Error, Graphs: DigraphRemoveEdge: usage,
 the first argument <digraph> must not have multiple edges
 when the second argument <edges> is a pair of vertices,
 gap> gr := Digraph( [ [ 2 ], [ 1 ] ] );
 <digraph with 2 vertices, 2 edges>
 gap> DigraphRemoveEdge( gr, [ 1, 1, 1 ] );
-Error, Digraphs: DigraphRemoveEdge: usage,
+Error, Graphs: DigraphRemoveEdge: usage,
 the second argument <edge> must be a pair of vertices of <digraph>,
 gap> DigraphRemoveEdge( gr, [ Group(()), Group(()) ] );
-Error, Digraphs: DigraphRemoveEdge: usage,
+Error, Graphs: DigraphRemoveEdge: usage,
 the second argument <edge> must be a pair of vertices of <digraph>,
 gap> DigraphRemoveEdge( gr, [ 1, Group(()) ] );
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphRemoveEdge' on 2 arguments
 gap> DigraphRemoveEdge( gr, [ 3, 1 ] );
-Error, Digraphs: DigraphRemoveEdge: usage,
+Error, Graphs: DigraphRemoveEdge: usage,
 the second argument <edge> must be a pair of vertices of <digraph>,
 gap> DigraphRemoveEdge( gr, [ 1, 3 ] );
-Error, Digraphs: DigraphRemoveEdge: usage,
+Error, Graphs: DigraphRemoveEdge: usage,
 the second argument <edge> must be a pair of vertices of <digraph>,
 gap> gr := DigraphRemoveEdge( gr, [ 2, 1 ] );
 <digraph with 2 vertices, 1 edge>
 gap> DigraphEdges(gr);
 [ [ 1, 2 ] ]
 
-# OnDigraphs (for a digraph by adjacency and perm)
+# OnDigraphs (for a digraph and a perm)
 gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );
 <digraph with 3 vertices, 3 edges>
 gap> DigraphEdges(gr);
@@ -258,7 +252,7 @@ gap> DigraphEdges(last);
 gap> h := (1, 2, 3, 4);
 (1,2,3,4)
 gap> OnDigraphs(gr, h);
-Error, Digraphs: OnDigraphs: usage,
+Error, Graphs: OnDigraphs: usage,
 the 2nd argument <perm> must permute the vertices of the 1st argument <graph>,
 gap> gr := Digraph( [ [ 1, 1, 1, 3, 5 ], [ ], [ 3, 2, 4, 5 ], [ 2, 5 ], [ 1, 2, 1 ] ] );
 <multidigraph with 5 vertices, 14 edges>
@@ -268,7 +262,7 @@ gap> DigraphEdges(gr);
 gap> p1 := (2,4)(3,6,5);
 (2,4)(3,6,5)
 gap> OnDigraphs(gr, p1);
-Error, Digraphs: OnDigraphs: usage,
+Error, Graphs: OnDigraphs: usage,
 the 2nd argument <perm> must permute the vertices of the 1st argument <graph>,
 gap> p2 := (1,3,4,2);
 (1,3,4,2)
@@ -288,7 +282,7 @@ gap> DigraphEdges(gr);
 gap> p1 := (1,5,4,2,3);
 (1,5,4,2,3)
 gap> OnDigraphs(gr, p1);
-Error, Digraphs: OnDigraphs: usage,
+Error, Graphs: OnDigraphs: usage,
 the 2nd argument <perm> must permute the vertices of the 1st argument <graph>,
 gap> p2 := (1,4)(2,3);
 (1,4)(2,3)
@@ -298,7 +292,23 @@ gap> DigraphEdges(last);
 [ [ 1, 2 ], [ 1, 4 ], [ 2, 2 ], [ 3, 4 ], [ 3, 1 ], [ 3, 1 ], [ 4, 3 ], 
   [ 4, 2 ] ]
 
-# InNeighboursOfVertex, InNeighborsOfVertex, InDegreeOfVertex
+# OnDigraphs (for a digraph and a transformation)
+gap> gr := Digraph( [ [ 2 ], [ 1, 3 ], [  ] ] );
+<digraph with 3 vertices, 3 edges>
+gap> OutNeighbours(gr);
+[ [ 2 ], [ 1, 3 ], [  ] ]
+gap> t := Transformation([ 4, 2, 3, 4 ]);;
+gap> OnDigraphs(gr, t);
+Error, Graphs: OnDigraphs: usage,
+the 2nd argument <trans> must transform the vertices of the 1st argument
+<digraph>,
+gap> t := Transformation([ 1, 2, 1 ]);;
+gap> gr := OnDigraphs(gr, t);
+<multidigraph with 2 vertices, 3 edges>
+gap> OutNeighbours(gr);
+[ [ 2 ], [ 1, 1 ] ]
+
+# InNeighboursOfVertex, InDegreeOfVertex
 gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 1, 5, 5, 7, 10 ],
 > range := [ 3, 3, 1, 10, 7, 1 ] ) );
 <multidigraph with 10 vertices, 6 edges>
@@ -309,10 +319,10 @@ gap> InNeighboursOfVertex(gr, 7);
 gap> InDegreeOfVertex(gr, 7);
 1
 gap> InNeighboursOfVertex(gr, 11);
-Error, Digraphs: InNeighboursOfVertex: usage,
+Error, Graphs: InNeighboursOfVertex: usage,
 the second argument <v> is not a vertex of the first, <digraph>,
 gap> InDegreeOfVertex(gr, 11);
-Error, Digraphs: InDegreeOfVertex: usage,
+Error, Graphs: InDegreeOfVertex: usage,
 the second argument <v> is not a vertex of the first, <digraph>,
 gap> gr := Digraph( [ [ 1, 1, 4 ], [ 2, 3, 4 ], [ 2, 4, 4, 4 ], [ 2 ] ] );
 <multidigraph with 4 vertices, 11 edges>
@@ -331,7 +341,7 @@ gap> InDegrees(gr);
 gap> InDegreeOfVertex(gr, 2);
 3
 
-# OutNeighboursOfVertex, OutNeighborsOfVertex, OutDegreeOfVertex
+# OutNeighboursOfVertex, OutDegreeOfVertex
 gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 5, 5, 5, 5, 5, 5, 6 ],
 > range := [ 1, 1, 2, 3, 1, 2, 3, 6 ] ) );
 <multidigraph with 10 vertices, 8 edges>
@@ -346,10 +356,10 @@ gap> OutNeighboursOfVertex(gr, 5);
 gap> OutDegreeOfVertex(gr, 5);
 6
 gap> OutNeighboursOfVertex(gr, 12);
-Error, Digraphs: OutNeighboursOfVertex: usage,
+Error, Graphs: OutNeighboursOfVertex: usage,
 the second argument <v> is not a vertex of the first, <digraph>,
 gap> OutDegreeOfVertex(gr, 12);
-Error, Digraphs: OutDegreeOfVertex: usage,
+Error, Graphs: OutDegreeOfVertex: usage,
 the second argument <v> is not a vertex of the first, <digraph>,
 gap> gr := Digraph( [ [ 2, 2, 2, 2 ], [ 2, 2 ] ] );
 <multidigraph with 2 vertices, 6 edges>
@@ -372,11 +382,11 @@ rec( nrvertices := 8,
 gap> gr := Digraph(r);
 <multidigraph with 8 vertices, 17 edges>
 gap> InducedSubdigraph( gr, [ -1 ] );
-Error, Digraphs: InducedSubdigraph: usage,
+Error, Graphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
 gap> InducedSubdigraph( gr, [ 1 .. 9 ] );
-Error, Digraphs: InducedSubdigraph: usage,
+Error, Graphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
 gap> InducedSubdigraph( gr, [ ] );
@@ -390,11 +400,9 @@ gap> i1 := InducedSubdigraph( gr, [ 1, 4, 3 ] );
 gap> OutNeighbours(i1);
 [ [ 1, 1, 3, 3, 2 ], [  ], [ 2 ] ]
 gap> i2 := InducedSubdigraph( gr, [ 3, 4, 3, 1 ] );
-Error, Digraphs: InducedSubdigraph: usage,
+Error, Graphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
-
-# InducedSubdigraph (OutNeighbours version)
 gap> adj := [
 > [ 2, 3, 4, 5, 6, 6, 7 ],
 > [ 1, 1, 1, 3, 4, 5 ],
@@ -407,15 +415,15 @@ gap> adj := [
 gap> gr := Digraph(adj);
 <multidigraph with 8 vertices, 27 edges>
 gap> InducedSubdigraph( gr, [ "a" ] );
-Error, Digraphs: InducedSubdigraph: usage,
+Error, Graphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
 gap> InducedSubdigraph( gr, [ 0 ] );
-Error, Digraphs: InducedSubdigraph: usage,
+Error, Graphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
 gap> InducedSubdigraph( gr, [ 2 .. 9 ] );
-Error, Digraphs: InducedSubdigraph: usage,
+Error, Graphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
 gap> InducedSubdigraph( gr, [ ] );
@@ -461,7 +469,7 @@ gap> DigraphEdges(qr);
 gap> QuotientDigraph( EmptyDigraph(0), [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> QuotientDigraph( EmptyDigraph(0), [ [ 1 ] ] );
-Error, Digraphs: QuotientDigraph: usage,
+Error, Graphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition of the
 vertices of the null digraph <digraph>. The only valid partition
 of <digraph> is the empty list,
@@ -476,35 +484,35 @@ gap> DigraphEdges(qr);
 [ [ 1, 1 ], [ 1, 2 ], [ 1, 1 ], [ 1, 2 ], [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], 
   [ 2, 1 ], [ 2, 2 ] ]
 gap> QuotientDigraph( gr, [ 3 ] );
-Error, Digraphs: QuotientDigraph: usage,
+Error, Graphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph( gr, [ ] );
-Error, Digraphs: QuotientDigraph: usage,
+Error, Graphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph( gr, [ [ ], [ ] ] );
-Error, Digraphs: QuotientDigraph: usage,
+Error, Graphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph( gr, [ [ 0 ], [ 1 ] ] );
-Error, Digraphs: QuotientDigraph: usage,
+Error, Graphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph( gr, [ [ 1 ], [ 2 ], [ 0 ] ] );
-Error, Digraphs: QuotientDigraph: usage,
+Error, Graphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph( gr, [ [ 1 ], [ 2, 4 ] ] );
-Error, Digraphs: QuotientDigraph: usage,
+Error, Graphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph( gr, [ [ 1, 2 ], [ 2 ] ] );
-Error, Digraphs: QuotientDigraph: usage,
+Error, Graphs: QuotientDigraph: usage,
 the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph( gr, [ [ 1 ], [ 2 ] ] );
-Error, Digraphs: QuotientDigraph: usage,
+Error, Graphs: QuotientDigraph: usage,
 the second argument <partition> does not partition
 every vertex of the first argument, <digraph>,
 gap> gr := Digraph( rec( nrvertices := 8,
@@ -517,7 +525,7 @@ gap> qr := QuotientDigraph( gr, [ [ 1 ], [ 2, 3, 5, 7 ], [ 4, 6, 8 ] ] );
 gap> OutNeighbours(qr);
 [ [ 3, 2 ], [ 1, 3, 2, 1, 2, 3, 3, 2, 1, 3, 2, 3, 2 ], [ 1, 3, 3, 2, 2, 3 ] ]
 
-# DigraphInEdges / DigraphOutEdges
+# DigraphInEdges and DigraphOutEdges
 gap> gr := Digraph( [ [ 2, 2, 2, 2, 2 ], [ 1, 1, 1, 1 ], [ 1 ], [ 3, 2 ] ] );
 <multidigraph with 4 vertices, 12 edges>
 gap> DigraphInEdges(gr, 1);
@@ -525,10 +533,10 @@ gap> DigraphInEdges(gr, 1);
 gap> DigraphOutEdges(gr, 3);
 [ [ 3, 1 ] ]
 gap> DigraphOutEdges(gr, 5);
-Error, Digraphs: DigraphOutEdges: usage,
+Error, Graphs: DigraphOutEdges: usage,
 5 is not a vertex of the digraph,
 gap> DigraphInEdges(gr, 1000);
-Error, Digraphs: DigraphInEdges: usage,
+Error, Graphs: DigraphInEdges: usage,
 1000 is not a vertex of the digraph,
 gap> gr := Digraph( rec( vertices := [ "a", "b", "c" ], source := [ "a", "a", "b" ],
 > range := [ "b", "b", "c" ] ) );
@@ -550,60 +558,17 @@ gap> DigraphStronglyConnectedComponent(gr, 2);
 gap> DigraphStronglyConnectedComponent(gr, 3);
 [ 3, 6, 5 ]
 gap> DigraphStronglyConnectedComponent(gr, 7);
-Error, Digraphs: DigraphStronglyConnectedComponent: usage,
+Error, Graphs: DigraphStronglyConnectedComponent: usage,
 7 is not a vertex of the digraph,
 
-# DigraphAddEdges
-gap> gr := RandomDigraph(100);;
-gap> DigraphAddEdges(gr, [ ]);;
-gap> gr = last;
-true
-gap> DigraphAddEdges(gr, [ 12 ] );
-Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of pairs of vertices
-of the first argument <digraph>,
-gap> DigraphAddEdges(gr, [ [ 12 ] ] );
-Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of pairs of vertices
-of the first argument <digraph>,
-gap> DigraphAddEdges(gr, [ [ 12, 13, 14 ], [ 11, 10 ] ] );
-Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of pairs of vertices
-of the first argument <digraph>,
-gap> DigraphAddEdges(gr, [ [ -2, 3 ], [ "a" ] ] );
-Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of pairs of vertices
-of the first argument <digraph>,
-gap> DigraphAddEdges(gr, [ [ 11, 10 ], [ 12, 13, 14 ] ] );
-Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of pairs of vertices
-of the first argument <digraph>,
-gap> DigraphAddEdges(gr, [ [ 4, 5 ], [ 1, 120 ], [ 1, 1 ] ] );
-Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of pairs of vertices
-of the first argument <digraph>,
-gap> DigraphAddEdges(gr, [ [ 4, 5 ], [ 120, 1 ], [ 1, 1 ] ] );
-Error, Digraphs: DigraphAddEdges: usage,
-the second argument <edges> must be a list of pairs of vertices
-of the first argument <digraph>,
-gap> gr := Digraph( [ [ 2, 2 ], [ 1, 3, 2 ], [ 2, 1 ], [ 1 ] ] );
-<multidigraph with 4 vertices, 8 edges>
-gap> DigraphEdges(gr);
-[ [ 1, 2 ], [ 1, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], [ 3, 2 ], [ 3, 1 ], 
-  [ 4, 1 ] ]
-gap> gr2 := DigraphAddEdges( gr, [ [ 2, 1 ], [ 3, 3 ], [ 2, 4 ], [ 3, 3 ] ] );
-<multidigraph with 4 vertices, 12 edges>
-gap> DigraphEdges(gr2);
-[ [ 1, 2 ], [ 1, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], [ 2, 1 ], [ 2, 4 ], 
-  [ 3, 2 ], [ 3, 1 ], [ 3, 3 ], [ 3, 3 ], [ 4, 1 ] ]
-gap> gr3 := Digraph( rec( nrvertices := DigraphNrVertices(gr),
->                         source     := ShallowCopy(DigraphSource(gr)),
->                         range      := ShallowCopy(DigraphRange(gr)) ) );
-<multidigraph with 4 vertices, 8 edges>
-gap> gr4 := DigraphAddEdges( gr3, [ [ 2, 1 ], [ 3, 3 ], [ 2, 4 ], [ 3, 3 ] ] );
-<multidigraph with 4 vertices, 12 edges>
-gap> gr2 = gr4;
-true
+# DigraphyConnectedComponent
+gap> gr := Digraph( [ [ 2, 4 ], [ ], [ 2, 6 ], [ 1, 3 ], [ 2, 3 ], [ 5 ] ] );
+<digraph with 6 vertices, 9 edges>
+gap> DigraphConnectedComponent(gr, 3);
+[ 1, 2, 3, 4, 5, 6 ]
+gap> DigraphConnectedComponent(gr, 7);
+Error, Graphs: DigraphConnectedComponent: usage,
+7 is not a vertex of the digraph,
 
 # IsDigraphEdge
 gap> gr := CycleDigraph(1000); # CycleDigraph with source/range
@@ -677,31 +642,57 @@ true
 gap> IsDigraphEdge(gr, [ 1, 2 ]);
 false
 
-# DigraphAddEdge
-gap> gr := RandomDigraph(10);;
-gap> DigraphAddEdge( gr, [ 1, 2, 3 ] );
-Error, Digraphs: DigraphAddEdge: usage,
-the second argument <edge> must be a pair of vertices of <digraph>,
-gap> DigraphAddEdge( gr, [ "a", "a" ] );
-Error, Digraphs: DigraphAddEdge: usage,
-the second argument <edge> must be a pair of vertices of <digraph>,
-gap> DigraphAddEdge( gr, [ 1, "a" ] );
-Error, Digraphs: DigraphAddEdge: usage,
-the second argument <edge> must be a pair of vertices of <digraph>,
-gap> DigraphAddEdge( gr, [ 11, 1 ] );
-Error, Digraphs: DigraphAddEdge: usage,
-the second argument <edge> must be a pair of vertices of <digraph>,
-gap> DigraphAddEdge( gr, [ 1, 11 ] );
-Error, Digraphs: DigraphAddEdge: usage,
-the second argument <edge> must be a pair of vertices of <digraph>,
-gap> gr := EmptyDigraph(2);
-<digraph with 2 vertices, 0 edges>
-gap> DigraphAddEdge( gr, [ 1, 2 ] );
-<digraph with 2 vertices, 1 edge>
-gap> DigraphEdges(last);
-[ [ 1, 2 ] ]
-
 # DigraphAddEdges
+gap> gr := RandomDigraph(100);;
+gap> DigraphAddEdges(gr, [ ]);;
+gap> gr = last;
+true
+gap> DigraphAddEdges(gr, [ 12 ] );
+Error, Graphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
+gap> DigraphAddEdges(gr, [ [ 12 ] ] );
+Error, Graphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
+gap> DigraphAddEdges(gr, [ [ 12, 13, 14 ], [ 11, 10 ] ] );
+Error, Graphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
+gap> DigraphAddEdges(gr, [ [ -2, 3 ], [ "a" ] ] );
+Error, Graphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
+gap> DigraphAddEdges(gr, [ [ 11, 10 ], [ 12, 13, 14 ] ] );
+Error, Graphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
+gap> DigraphAddEdges(gr, [ [ 4, 5 ], [ 1, 120 ], [ 1, 1 ] ] );
+Error, Graphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
+gap> DigraphAddEdges(gr, [ [ 4, 5 ], [ 120, 1 ], [ 1, 1 ] ] );
+Error, Graphs: DigraphAddEdges: usage,
+the second argument <edges> must be a list of pairs of vertices
+of the first argument <digraph>,
+gap> gr := Digraph( [ [ 2, 2 ], [ 1, 3, 2 ], [ 2, 1 ], [ 1 ] ] );
+<multidigraph with 4 vertices, 8 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 2 ], [ 1, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], [ 3, 2 ], [ 3, 1 ], 
+  [ 4, 1 ] ]
+gap> gr2 := DigraphAddEdges( gr, [ [ 2, 1 ], [ 3, 3 ], [ 2, 4 ], [ 3, 3 ] ] );
+<multidigraph with 4 vertices, 12 edges>
+gap> DigraphEdges(gr2);
+[ [ 1, 2 ], [ 1, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], [ 2, 1 ], [ 2, 4 ], 
+  [ 3, 2 ], [ 3, 1 ], [ 3, 3 ], [ 3, 3 ], [ 4, 1 ] ]
+gap> gr3 := Digraph( rec( nrvertices := DigraphNrVertices(gr),
+>                         source     := ShallowCopy(DigraphSource(gr)),
+>                         range      := ShallowCopy(DigraphRange(gr)) ) );
+<multidigraph with 4 vertices, 8 edges>
+gap> gr4 := DigraphAddEdges( gr3, [ [ 2, 1 ], [ 3, 3 ], [ 2, 4 ], [ 3, 3 ] ] );
+<multidigraph with 4 vertices, 12 edges>
+gap> gr2 = gr4;
+true
 gap> gr := Digraph( [ [ 1, 2 ], [ ], [ 1 ] ] );
 <digraph with 3 vertices, 3 edges>
 gap> gr1 := DigraphAddEdges( gr, [ ] );
@@ -709,31 +700,31 @@ gap> gr1 := DigraphAddEdges( gr, [ ] );
 gap> gr = gr1;
 true
 gap> DigraphAddEdges( gr, [ 3 ] );
-Error, Digraphs: DigraphAddEdges: usage,
+Error, Graphs: DigraphAddEdges: usage,
 the second argument <edges> must be a list of pairs of vertices
 of the first argument <digraph>,
 gap> DigraphAddEdges( gr, [ [ 3 ] ] );
-Error, Digraphs: DigraphAddEdges: usage,
+Error, Graphs: DigraphAddEdges: usage,
 the second argument <edges> must be a list of pairs of vertices
 of the first argument <digraph>,
 gap> DigraphAddEdges( gr, [ "ab" ] );
-Error, Digraphs: DigraphAddEdges: usage,
+Error, Graphs: DigraphAddEdges: usage,
 the second argument <edges> must be a list of pairs of vertices
 of the first argument <digraph>,
 gap> DigraphAddEdges( gr, [ [ -1, -2 ] ] );
-Error, Digraphs: DigraphAddEdges: usage,
+Error, Graphs: DigraphAddEdges: usage,
 the second argument <edges> must be a list of pairs of vertices
 of the first argument <digraph>,
 gap> DigraphAddEdges( gr, [ [ 1, 2 ], [ 1, 2, 3 ] ] );
-Error, Digraphs: DigraphAddEdges: usage,
+Error, Graphs: DigraphAddEdges: usage,
 the second argument <edges> must be a list of pairs of vertices
 of the first argument <digraph>,
 gap> DigraphAddEdges( gr, [ [ 4, 2 ] ] );
-Error, Digraphs: DigraphAddEdges: usage,
+Error, Graphs: DigraphAddEdges: usage,
 the second argument <edges> must be a list of pairs of vertices
 of the first argument <digraph>,
 gap> DigraphAddEdges( gr, [ [ 2, 4 ] ] );
-Error, Digraphs: DigraphAddEdges: usage,
+Error, Graphs: DigraphAddEdges: usage,
 the second argument <edges> must be a list of pairs of vertices
 of the first argument <digraph>,
 gap> DigraphAddEdges( gr, [ [ 2, 3 ], [ 2, 3 ] ] );
@@ -743,37 +734,29 @@ gap> DigraphEdges(last);
 gap> DigraphEdges(gr);
 [ [ 1, 1 ], [ 1, 2 ], [ 3, 1 ] ]
 
-# DigraphAddVertex
-gap> gr := CompleteDigraph(1);
-<digraph with 1 vertex, 0 edges>
-gap> DigraphVertices(gr);
-[ 1 ]
-gap> gr2 := DigraphAddVertex(gr);
+# DigraphAddEdge
+gap> gr := RandomDigraph(10);;
+gap> DigraphAddEdge( gr, [ 1, 2, 3 ] );
+Error, Graphs: DigraphAddEdge: usage,
+the second argument <edge> must be a pair of vertices of <digraph>,
+gap> DigraphAddEdge( gr, [ "a", "a" ] );
+Error, Graphs: DigraphAddEdge: usage,
+the second argument <edge> must be a pair of vertices of <digraph>,
+gap> DigraphAddEdge( gr, [ 1, "a" ] );
+Error, Graphs: DigraphAddEdge: usage,
+the second argument <edge> must be a pair of vertices of <digraph>,
+gap> DigraphAddEdge( gr, [ 11, 1 ] );
+Error, Graphs: DigraphAddEdge: usage,
+the second argument <edge> must be a pair of vertices of <digraph>,
+gap> DigraphAddEdge( gr, [ 1, 11 ] );
+Error, Graphs: DigraphAddEdge: usage,
+the second argument <edge> must be a pair of vertices of <digraph>,
+gap> gr := EmptyDigraph(2);
 <digraph with 2 vertices, 0 edges>
-gap> DigraphVertices(gr2);
-[ 1, 2 ]
-gap> DigraphEdges(gr) = DigraphEdges(gr2);
-true
-gap> gr := DigraphAddEdge(gr, [ 1, 1 ]);
-<digraph with 1 vertex, 1 edge>
-gap> DigraphVertices(gr);
-[ 1 ]
-gap> gr2 := DigraphAddVertex(gr);
+gap> DigraphAddEdge( gr, [ 1, 2 ] );
 <digraph with 2 vertices, 1 edge>
-gap> DigraphVertices(gr2);
-[ 1, 2 ]
-gap> DigraphEdges(gr) = DigraphEdges(gr2);
-true
-gap> gr2 := DigraphAddVertex(gr, SymmetricGroup(2));
-<digraph with 2 vertices, 1 edge>
-gap> DigraphVertices(gr2);
-[ 1, 2 ]
-gap> DigraphEdges(gr) = DigraphEdges(gr2);
-true
-gap> DigraphVertexLabels(gr);
-[ 1 ]
-gap> DigraphVertexLabels(gr2);
-[ 1, Sym( [ 1 .. 2 ] ) ]
+gap> DigraphEdges(last);
+[ [ 1, 2 ] ]
 
 # DigraphAddVertices
 gap> gr := Digraph( [ [ 1 ] ] );;
@@ -784,7 +767,7 @@ gap> DigraphVertices(gr2);
 gap> DigraphEdges(gr) = DigraphEdges(gr2);
 true
 gap> gr2 := DigraphAddVertices(gr, 3, [ SymmetricGroup(2), Group(()) ] );
-Error, Digraphs: DigraphAddVertices: usage,
+Error, Graphs: DigraphAddVertices: usage,
 the number of new vertex names (the length of the third arg <names>)
 must match the number of new vertices (the value of the second arg <m>),
 gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
@@ -824,7 +807,7 @@ gap> gr2 := DigraphAddVertices(gr, 2, [ SymmetricGroup(2), Group(()) ] );
 gap> DigraphVertexLabels(gr2);
 [ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
 gap> DigraphAddVertices(gr2, -1);
-Error, Digraphs: DigraphAddVertices: usage,
+Error, Graphs: DigraphAddVertices: usage,
 the second arg <m> (the number of vertices to add) must be non-negative,
 gap> gr3 := DigraphAddVertices(gr2, 0);
 <digraph with 3 vertices, 1 edge>
@@ -833,7 +816,7 @@ false
 gap> gr2 = gr3;
 true
 gap> DigraphAddVertices(gr2, -1, [ ]);
-Error, Digraphs: DigraphAddVertices: usage,
+Error, Graphs: DigraphAddVertices: usage,
 the second arg <m> (the number of vertices to add) must be non-negative,
 gap> gr3 := DigraphAddVertices(gr2, 0, [ ]);
 <digraph with 3 vertices, 1 edge>
@@ -841,6 +824,38 @@ gap> IsIdenticalObj(gr2, gr3);
 false
 gap> gr2 = gr3;
 true
+
+# DigraphAddVertex
+gap> gr := CompleteDigraph(1);
+<digraph with 1 vertex, 0 edges>
+gap> DigraphVertices(gr);
+[ 1 ]
+gap> gr2 := DigraphAddVertex(gr);
+<digraph with 2 vertices, 0 edges>
+gap> DigraphVertices(gr2);
+[ 1, 2 ]
+gap> DigraphEdges(gr) = DigraphEdges(gr2);
+true
+gap> gr := DigraphAddEdge(gr, [ 1, 1 ]);
+<digraph with 1 vertex, 1 edge>
+gap> DigraphVertices(gr);
+[ 1 ]
+gap> gr2 := DigraphAddVertex(gr);
+<digraph with 2 vertices, 1 edge>
+gap> DigraphVertices(gr2);
+[ 1, 2 ]
+gap> DigraphEdges(gr) = DigraphEdges(gr2);
+true
+gap> gr2 := DigraphAddVertex(gr, SymmetricGroup(2));
+<digraph with 2 vertices, 1 edge>
+gap> DigraphVertices(gr2);
+[ 1, 2 ]
+gap> DigraphEdges(gr) = DigraphEdges(gr2);
+true
+gap> DigraphVertexLabels(gr);
+[ 1 ]
+gap> DigraphVertexLabels(gr2);
+[ 1, Sym( [ 1 .. 2 ] ) ]
 
 # DigraphRemoveVertex
 gap> gr := Digraph( [
@@ -856,7 +871,7 @@ gap> DigraphRemoveVertex(gr, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphRemoveVertex' on 2 arguments
 gap> DigraphRemoveVertex(gr, 15);
-Error, Digraphs: DigraphRemoveVertex: usage,
+Error, Graphs: DigraphRemoveVertex: usage,
 the second arg <m> is not a vertex of the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertex(gr, 10);;
 gap> DigraphNrVertices(gr2);
@@ -873,23 +888,23 @@ gap> gr2 := DigraphRemoveVertices( gr, [  ] );
 gap> gr = gr2;
 true
 gap> gr2 := DigraphRemoveVertices(gr, [ 0 ] );
-Error, Digraphs: DigraphRemoveVertices: usage,
+Error, Graphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
 the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, "a" ]);
-Error, Digraphs: DigraphRemoveVertices: usage,
+Error, Graphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
 the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 1 ] );
-Error, Digraphs: DigraphRemoveVertices: usage,
+Error, Graphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
 the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 0 ] );
-Error, Digraphs: DigraphRemoveVertices: usage,
+Error, Graphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
 the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 5 ] );
-Error, Digraphs: DigraphRemoveVertices: usage,
+Error, Graphs: DigraphRemoveVertices: usage,
 the second arg <verts> should be a duplicate free list of vertices of
 the first arg <digraph>,
 gap> gr2 := DigraphRemoveVertices( gr, [ 1, 3 ] );
@@ -922,12 +937,12 @@ true
 gap> gr := EmptyDigraph(0);
 <digraph with 0 vertices, 0 edges>
 gap> AsBinaryRelation(gr);
-Error, Digraphs: AsBinaryRelation: usage,
+Error, Graphs: AsBinaryRelation: usage,
 the argument <digraph> must have at least one vertex,
 gap> gr := Digraph( [ [ 1, 1 ] ] );
 <multidigraph with 1 vertex, 2 edges>
 gap> AsBinaryRelation(gr);
-Error, Digraphs: AsBinaryRelation: usage,
+Error, Graphs: AsBinaryRelation: usage,
 this function does not apply to digraphs with multiple edges,
 gap> gr := Digraph(
 > [ [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3 ], [ 4, 5 ], [ 4, 5 ] ] );
@@ -1023,31 +1038,31 @@ gap> gr3 := Digraph(
 gap> gr2 = gr3;
 true
 
-# DigraphReverseEdge & DigraphReverseEdges
+# DigraphReverseEdge and DigraphReverseEdges
 gap> gr := Digraph( [ [ 1, 1 ] ] );
 <multidigraph with 1 vertex, 2 edges>
 gap> DigraphReverseEdges( gr, [ [ 2, 2 ] ] );
-Error, Digraphs: DigraphReverseEdges: usage,
+Error, Graphs: DigraphReverseEdges: usage,
 the first argument <digraph> must not be a multigraph,
 gap> DigraphReverseEdges( gr, [ 2 ] );
-Error, Digraphs: DigraphReverseEdges: usage,
+Error, Graphs: DigraphReverseEdges: usage,
 the first argument <digraph> must not be a multigraph,
 gap> gr := CompleteDigraph(100);
 <digraph with 100 vertices, 9900 edges>
 gap> DigraphReverseEdges(gr, "a");
-Error, Digraphs: DigraphReverseEdges: usage,
+Error, Graphs: DigraphReverseEdges: usage,
 the second argument <edge> must be a list of edges of <digraph>,
 gap> DigraphReverseEdges( gr, Group(()) );
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphReverseEdges' on 2 arguments
 gap> DigraphReverseEdges(gr, [ 0, 0 ]);
-Error, Digraphs: DigraphReverseEdges: usage,
+Error, Graphs: DigraphReverseEdges: usage,
 the second argument <edge> must be a list of edges of <digraph>,
 gap> DigraphReverseEdges(gr, [ [ 0 ] ]);
-Error, Digraphs: DigraphReverseEdges: usage,
+Error, Graphs: DigraphReverseEdges: usage,
 the second argument <edges> must be a list of edges of <digraph>,
 gap> DigraphReverseEdges(gr, [ [ 1 ], [ 1 ] ]);
-Error, Digraphs: DigraphReverseEdges: usage,
+Error, Graphs: DigraphReverseEdges: usage,
 the second argument <edges> must be a list of edges of <digraph>,
 gap> edges := ShallowCopy(DigraphEdges(gr));;
 gap> gr = DigraphReverseEdges(gr, edges);
@@ -1088,7 +1103,7 @@ gap> DigraphDisjointUnion(gr2, gr2);
 <digraph with 200 vertices, 19800 edges>
 gap> DigraphDisjointUnion(gr, gr2);
 <digraph with 1100 vertices, 10900 edges>
-gap> gr := CycleDigraph(1000);; # Recalculating as we now know Source(gr)
+gap> gr := CycleDigraph(1000);;
 gap> DigraphDisjointUnion(gr2, gr);
 <digraph with 1100 vertices, 10900 edges>
 gap> gr1 := Digraph( [ [ 2, 2, 3 ], [ 3 ], [ 2 ] ] );
@@ -1143,11 +1158,10 @@ true
 
 # DigraphEdgeUnion
 gap> gr1 := Digraph(
-> rec(
->   nrvertices := 10,
->   source := [ 3, 4, 4, 6, 6, 9, 9, 9, 9 ],
->   range := [ 10, 5, 7, 3, 9, 4, 5, 8, 10 ],
-> ) );
+>  10,
+>  [ 3, 4, 4, 6, 6, 9, 9, 9, 9 ],
+>  [ 10, 5, 7, 3, 9, 4, 5, 8, 10 ]
+> );
 <digraph with 10 vertices, 9 edges>
 gap> gr2 := Digraph( [ [ 9 ], [ 9, 1, 6, 3 ], [ ], [ ], [ 9, 3, 9 ],
 > [ 1, 4, 3, 2, 9, 4 ], [ 1, 7 ], [ 1, 2, 4 ], [ 8 ] ] );
@@ -1164,6 +1178,20 @@ gap> m := DigraphEdgeUnion(gr1, gr2);
 <digraph with 6 vertices, 6 edges>
 gap> m = CycleDigraph(6);
 true
+gap> m = DigraphEdgeUnion(gr2, gr1);
+true
+gap> DigraphEdgeUnion(EmptyDigraph(0),EmptyDigraph(0)) = EmptyDigraph(0);
+true
+gap> DigraphEdgeUnion(EmptyDigraph(5),EmptyDigraph(3)) = EmptyDigraph(5);
+true
+gap> gr := DigraphNC([ [ 6, 3, 3, 10, 6 ], [ 4 ], [ 5, 1 ], [ 5, 4, 6 ],
+> [ 9 ], [ 8 ], [ 7, 6 ], [ 8, 10, 8, 1 ], [  ], [ 2 ] ]);;
+gap> gr := DigraphEdgeUnion(gr, gr);
+<multidigraph with 10 vertices, 40 edges>
+gap> OutNeighbours(gr);
+[ [ 6, 3, 3, 10, 6, 6, 3, 3, 10, 6 ], [ 4, 4 ], [ 5, 1, 5, 1 ], 
+  [ 5, 4, 6, 5, 4, 6 ], [ 9, 9 ], [ 8, 8 ], [ 7, 6, 7, 6 ], 
+  [ 8, 10, 8, 1, 8, 10, 8, 1 ], [  ], [ 2, 2 ] ]
 
 # DigraphCopy
 gap> gr := Digraph( [ [ 6, 1, 2, 3 ], [ 6 ], [ 2, 2, 3 ], [ 1, 1 ], [ 6, 5 ],
@@ -1231,24 +1259,24 @@ gap> DigraphEdges(gr1);
 gap> gr2 := OnMultiDigraphs( gr1, (1,3), (3,6) );;
 gap> DigraphEdges(gr1);;
 gap> OnMultiDigraphs( gr1, [ (1,3) ] );
-Error, Digraphs: OnMultiDigraphs: usage,
+Error, Graphs: OnMultiDigraphs: usage,
 the 2nd argument must be a pair of permutations,
 gap> OnMultiDigraphs( gr1, [ (1,3), (1,7) ] );
-Error, Digraphs: OnDigraphs: usage,
+Error, Graphs: OnDigraphs: usage,
 the argument <perms[2]> must permute the edges of the 1st argument <graph>,
 
-# IsReachable( digraph, vertex1, vertex2 )
+# IsReachable
 gap> gr1 := DigraphRemoveEdges(CycleDigraph(100), [ [ 100, 1 ], [ 99, 100 ] ]);
 <digraph with 100 vertices, 98 edges>
 gap> IsReachable(gr1, 0, 1);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `IsReachable' on 3 arguments
 gap> IsReachable(gr1, 101, 1);
-Error, Digraphs: IsReachable: usage,
+Error, Graphs: IsReachable: usage,
 the second and third arguments <u> and <v> must be vertices
 of the first argument <digraph>,
 gap> IsReachable(gr1, 1, 101);
-Error, Digraphs: IsReachable: usage,
+Error, Graphs: IsReachable: usage,
 the second and third arguments <u> and <v> must be vertices
 of the first argument <digraph>,
 gap> IsReachable(gr1, 1, 2);
@@ -1322,6 +1350,8 @@ gap> gr1 := Digraph( [ [ 1, 1, 2, 1 ], [ 1 ] ] );
 <multidigraph with 2 vertices, 5 edges>
 gap> gr2 := DigraphRemoveAllMultipleEdges(gr1);
 <digraph with 2 vertices, 3 edges>
+gap> OutNeighbours(gr2);
+[ [ 1, 2 ], [ 1 ] ]
 gap> gr3 := DigraphEdgeUnion(gr1, gr1);
 <multidigraph with 2 vertices, 10 edges>
 gap> gr4 := DigraphRemoveAllMultipleEdges(gr3);

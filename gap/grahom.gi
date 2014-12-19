@@ -23,7 +23,7 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
   fi;
 
   if hook <> fail and not IsFunction(hook) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+    Error("Graphs: HomomorphismGraphsFinder: usage,\n",
           "<hook> has to be a function,");
     return;
   fi;
@@ -31,7 +31,7 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
   if limit = infinity then
     limit := fail;
   elif limit <> fail and not IsPosInt(limit) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+    Error("Graphs: HomomorphismGraphsFinder: usage,\n",
           "<limit> has to be a positive integer or infinity,");
     return;
   fi;
@@ -39,25 +39,25 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
   if hint = infinity then
     hint := fail;
   elif hint <> fail and not IsPosInt(hint) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+    Error("Graphs: HomomorphismGraphsFinder: usage,\n",
           "<hint> has to be a positive integer or infinity,");
     return;
   fi;
 
   if not IsBool(isinjective) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+    Error("Graphs: HomomorphismGraphsFinder: usage,\n",
           "<isinjective> has to be a bool,");
     return;
   fi;
 
   if not (image = fail or IsList(image))  then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+    Error("Graphs: HomomorphismGraphsFinder: usage,\n",
           "<image> has to be a list,");
     return;
   fi;
 
   if not (map = fail or IsList(map)) then 
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+    Error("Graphs: HomomorphismGraphsFinder: usage,\n",
           "<map> has to be a list,");
     return;
   fi;
@@ -123,12 +123,16 @@ InstallMethod(DigraphColoring, "for a digraph and pos int",
 [IsDigraph, IsPosInt],
 function(digraph, n)
   if IsMultiDigraph(digraph) then 
-    Error("Digraphs: DigraphColoring: usage,\n",
+    Error("Graphs: DigraphColoring: usage,\n",
     "the argument <digraph> must not be a  multigraph,");
     return;
   fi;
   return DigraphHomomorphism(digraph, CompleteDigraph(n)); 
 end);
+
+InstallMethod(DigraphColouring, "for a digraph and a pos int",
+[IsDigraph, IsPosInt],
+DigraphColoring);
 
 #
 

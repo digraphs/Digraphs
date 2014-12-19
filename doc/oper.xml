@@ -175,21 +175,35 @@ true
 
 <#GAPDoc Label="OnDigraphs">
 <ManSection>
-  <Oper Name="OnDigraphs" Arg="digraph, perm"/>
+  <Oper Name="OnDigraphs" Arg="digraph, perm" Label="for a digraph and a perm"/>
+  <Oper Name="OnDigraphs" Arg="digraph, trans" Label="for a digraph and a transformation"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, and <A>perm</A> is a permutation of
-    the vertices of <A>digraph</A>, then this operation returns a digraph
-    constructed by relabelling the vertices of <A>digraph</A> according to
-    <A>perm</A>. <P/>
+    If <A>digraph</A> is a digraph, and the second argument is a permutation 
+    <A>perm</A> of the vertices of <A>digraph</A>, then this operation returns
+    a digraph constructed by relabelling the vertices of 
+    <A>digraph</A> according to <A>perm</A>. <P/>
+
+    If the second argument is a transformation <A>trans</A> of the vertices
+    of <A>digraph</A>, then this operation returns the quotient of 
+    <A>digraph</A> by the kernel of <A>trans</A>. <P/>
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
 > [ 2, 3, 5 ] ] );
 <digraph with 5 vertices, 11 edges>
-gap> OnDigraphs(gr, (1,2));
+gap> SetDigraphVertexLabels(gr, [ "a", "b", "c", "d", "e" ]);
+gap> new := OnDigraphs(gr, (1,2));
 <digraph with 5 vertices, 11 edges>
-gap> OutNeighbours(last);
+gap> OutNeighbours(new);
 [ [ 2, 3, 5 ], [ 3 ], [ 2 ], [ 2, 1, 4 ], [ 1, 3, 5 ] ]
+gap> DigraphVertexLabels(new);
+[ "b", "a", "c", "d", "e" ]
+gap> gr := Digraph( [ [ 2 ], [  ], [ 2 ] ] );
+<digraph with 3 vertices, 2 edges>
+gap> new := OnDigraphs(gr, Transformation( [ 1, 2, 1 ] ));
+<multidigraph with 2 vertices, 2 edges>
+gap> OutNeighbours(new);
+[ [ 2, 2 ], [  ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -251,6 +265,30 @@ gap> DigraphRemoveLoops(gr);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphRemoveAllMultipleEdges">
+<ManSection>
+  <Oper Name="DigraphRemoveAllMultipleEdges" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a directed graph, then this operation returns a new
+    digraph  constructed from <A>digraph</A> by removing all multiple edges.
+    The result is the largest subdigraph of <A>digraph</A> which does not 
+    contain multiple edges. <P/>
+
+    Note that previously set <Ref Attr="DigraphEdgeLabels"/> of <A>digraph</A>
+    will be ignored by this operation. <P/>
+    <Example><![CDATA[
+gap> gr1 := Digraph( [ [ 1, 2, 3, 2 ], [ 1, 1, 3 ], [ 2, 2, 2 ] ] );
+<multidigraph with 3 vertices, 10 edges>
+gap> gr2 := DigraphRemoveAllMultipleEdges(gr1);
+<digraph with 3 vertices, 6 edges>
+gap> OutNeighbours(gr2);
+[ [ 1, 2, 3 ], [ 1, 3 ], [ 2 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphAddVertex">
 <ManSection>
   <Oper Name="DigraphAddVertex" Arg="digraph[, label ]"/>
@@ -269,7 +307,7 @@ gap> new := DigraphAddVertex(gr);
 <digraph with 4 vertices, 6 edges>
 gap> DigraphVertices(new);
 [ 1 .. 4 ]
-gap> new := DigraphAddVertex(gr, Group( [(1,2)] ));
+gap> new := DigraphAddVertex(gr, Group((1,2)));
 <digraph with 4 vertices, 6 edges>
 gap> DigraphVertexLabels(new);
 [ 1, 2, 3, Group([ (1,2) ]) ]
@@ -349,7 +387,7 @@ gap> DigraphVertexLabels(new);
     edge whose source or range vertex is in <A>verts</A>. <P/>
 
     If <A>digraph</A> has <C>n</C> vertices, then the vertices of the new
-    digraph are <C>[1..n-Length(</C><A>verts</A><C>)]</C>, but the 
+    digraph are <C>[1..n-Length(<A>verts</A>)]</C>, but the 
     original names can be accessed via <Ref Oper="DigraphVertexLabels"/>. <P/>
 
     <Example><![CDATA[
@@ -382,7 +420,7 @@ gap> DigraphVertexLabels(new);
     <P/>
 
     <Example><![CDATA[
-gap> gr1 := Digraph( [ [ 2 ], [ 3 ], [ ] ] );
+gap> gr1 := Digraph( [ [ 2 ], [ 3 ], [  ] ] );
 <digraph with 3 vertices, 2 edges>
 gap> DigraphEdges(gr1);
 [ [ 1, 2 ], [ 2, 3 ] ]
@@ -407,12 +445,13 @@ gap> DigraphEdges(gr3);
     If <A>edges</A> is a (possibly empty) list of pairs of vertices of 
     <A>digraph</A>, then this operation returns a new digraph constructed from 
     <A>digraph</A> by adding the edges specified by <A>edges</A>.
-    More precisely, for each <C>i</C>, a new edge will be added with source 
+    More precisely, for each position <C>i</C> of the list <A>edges</A>,
+    a new edge will be added with source 
     <A>edges</A><C>[i][1]</C> and range <A>edges</A><C>[i][2]</C>.
     <P/>
     
-    If an edge is included multiple times in <A>edges</A>, then it will be
-    added multiple times. <P/>
+    If an edge is included in <A>edges</A> with multiplicity <C>k</C>,
+    then it will be added <C>k</C> times. <P/>
 
     If the optional third argument <A>labels</A> is a list with length equal
     to <C>Length(<A>edges</A>)</C> consisting of arbitrary &GAP; objects, then
@@ -529,8 +568,8 @@ gap> gr := DigraphRemoveEdge(gr, 10);
     use methods with complexity <M>O(m + n + m \cdot n)</M> when appropriate.
     <P/>
     <Example><![CDATA[
-gap> gr:=Digraph( [ [ 4, 6 ], [ 1, 3 ], [ ], [ 5 ], [ ], [ 7, 8, 9 ], 
-> [ ], [ ], [ ] ] );;
+gap> gr := Digraph( [ [ 4, 6 ], [ 1, 3 ], [  ], [ 5 ], [  ],
+> [ 7, 8, 9 ], [  ], [  ], [  ] ] );;
 gap> DigraphTransitiveClosure(gr);
 <digraph with 9 vertices, 18 edges>
 gap> OutNeighbours(last);
@@ -735,6 +774,29 @@ gap> DigraphStronglyConnectedComponent(gr, 4);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphConnectedComponent">
+<ManSection>
+  <Oper Name="DigraphConnectedComponent" Arg="digraph, vertex"/>
+  <Returns>A list of vertices.</Returns>
+  <Description>
+    If <A>vertex</A> is a vertex in the directed graph <A>digraph</A>, then
+    this function returns the connected component of <A>vertex</A> 
+    in <A>digraph</A>.
+    See <Ref Attr="DigraphConnectedComponents"/> for more information.
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 3 ], [ 2 ], [ 1, 2 ], [ 4 ] ] );
+<digraph with 4 vertices, 5 edges>
+gap> DigraphConnectedComponent(gr, 3);
+[ 1, 2, 3 ]
+gap> DigraphConnectedComponent(gr, 2);
+[ 1, 2, 3 ]
+gap> DigraphConnectedComponent(gr, 4);
+[ 4 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="QuotientDigraph">
 <ManSection>
   <Oper Name="QuotientDigraph" Arg="digraph, p"/>
@@ -840,8 +902,8 @@ od;
 ]]></Listing>
 
     The matrix <C>mat</C> is then returned as the result. An example of using
-    <C>DigraphFloydWarshall</C> to calculate the shortest distances between the
-    vertices of a digraph is shown below: <P/>
+    <C>DigraphFloydWarshall</C> to calculate the shortest (non-zero) distances
+    between the vertices of a digraph is shown below: <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 5 ], [ 3, 6 ], [ 2, 5 ], [ 1, 4, 5 ],
@@ -856,8 +918,6 @@ gap> func := function(mat, i, j, k)
 > end;
 function( mat, i, j, k ) ... end
 gap> shortest_distances := DigraphFloydWarshall( gr, func, -1, 1 );;
-gap> shortest_distances = DigraphShortestDistances(gr);
-true
 gap> Display(shortest_distances);
 [ [   3,  -1,  -1,   2,   1,   2 ],
   [   4,   2,   1,   3,   2,   1 ],
@@ -878,14 +938,63 @@ gap> Display(shortest_distances);
     If <A>digraph</A> is a directed graph with a positive number of vertices 
     <M>n</M>, and no multiple edges, then this function returns a binary 
     relation on the points <C>[1..n]</C>.
-    The pair <C>[ i, j ]</C> is in the binary relation if and only if
-    <C>[ i, j ]</C> is an edge in <A>digraph</A>. 
+    The pair <C>[i,j]</C> is in the binary relation if and only if
+    <C>[i,j]</C> is an edge in <A>digraph</A>. 
     <P/>
 <Example><![CDATA[
 gap> gr := Digraph( [ [ 3, 2 ], [ 1, 2 ], [ 2 ], [ 3, 4 ] ] );
 <digraph with 4 vertices, 7 edges>
 gap> AsBinaryRelation(gr);
 Binary Relation on 4 points
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphEdgeUnion">
+<ManSection>
+  <Oper Name="DigraphEdgeUnion" Arg="digraph1, digraph2"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph1</A> and <A>digraph2</A> are directed graphs, then this 
+    function returns the edge union of these digraphs. <P/>
+   
+    The vertex and edge sets of the edge union are the union of
+    the vertex sets and the concatenation of the edge sets of <A>digraph1</A>
+    and <A>digraph2</A> respectively.
+    <P/>
+
+    More specifically, if <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
+    edges, and if <A>digraph2</A> has <M>n_2</M> vertices and <M>m_2</M> edges,
+    then <C>DigraphDisjointUnion(<A>digraph1</A>, <A>digraph2</A>)</C>
+    will have <C>Maximum(</C><M>n_1, n_2</M><C>)</C> vertices and
+    <M>m_1 + m_2</M> edges. 
+
+    The vertices of <A>digraph1</A> will remain
+    <C>[1..</C><M>n_1</M><C>]</C> in the edge union,
+    and the vertices of <A>digraph2</A> will remain
+    <C>[</C><M>1</M><C>..</C><M>n_2</M><C>]</C>. <P/>
+
+    Note that previously set <Ref Attr="DigraphVertexLabels"/> and
+    <Ref Attr="DigraphEdgeLabels"/> will be lost.
+    
+<Example><![CDATA[
+gap> gr := CycleDigraph(10);
+<digraph with 10 vertices, 10 edges>
+gap> DigraphEdgeUnion(gr, gr);
+<multidigraph with 10 vertices, 20 edges>
+gap> gr1 := Digraph( [ [ 2 ], [ 1 ] ] );
+<digraph with 2 vertices, 2 edges>
+gap> gr2 := Digraph( [ [ 2, 3 ], [ 2 ], [ 1 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> union := DigraphEdgeUnion(gr1, gr2);
+<multidigraph with 3 vertices, 6 edges>
+gap> OutNeighbours(union);
+[ [ 2, 2, 3 ], [ 1, 2 ], [ 1 ] ]
+gap> unionofedges := Concatenation(
+> DigraphEdges(gr1), DigraphEdges(gr2));;
+gap> union = DigraphByEdges(unionofedges);
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -909,34 +1018,29 @@ Binary Relation on 4 points
     then <C>DigraphDisjointUnion(<A>digraph1</A>, <A>digraph2</A>)</C>
     will have <M>n_1 + n_2</M> vertices and <M>m_1 + m_2</M> edges. 
 
-    The vertices of <A>digraph1</A> will become
-    <C>[1..</C><M>n_1</M><C>]</C> in the disjoint union,
-    and the vertices of <A>digraph2</A> will become
-    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>. <P/>
+    The vertices of <A>digraph1</A> will remain
+    <C>[1..</C><M>n_1</M><C>]</C> in the disjoint union.
+    The vertices of <A>digraph2</A> will become
+    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>,
+    and an edge <C>[</C><M>i,j</M><C>]</C> in <A>digraph2</A> will become
+    the edge <C>[</C><M>n_1+i,n_1+j</M><C>]</C>.<P/>
 
-    Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
+    Note that previously set <Ref Attr="DigraphVertexLabels"/> and
+    <Ref Attr="DigraphEdgeLabels"/> will be lost.
     
 <Example><![CDATA[
-gap> gr := CycleDigraph(10);
-<digraph with 10 vertices, 10 edges>
-gap> DigraphDisjointUnion(gr, gr);
-<digraph with 20 vertices, 20 edges>
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphCopy">
-<ManSection>
-  <Oper Name="DigraphCopy" Arg="digraph"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    This function returns a new copy of <A>digraph</A>.
-<Example><![CDATA[
-gap> gr := CycleDigraph(10);
-<digraph with 10 vertices, 10 edges>
-gap> DigraphCopy(gr) = gr;
-true
+gap> gr1 := CycleDigraph(3);
+<digraph with 3 vertices, 3 edges>
+gap> OutNeighbours(gr1);
+[ [ 2 ], [ 3 ], [ 1 ] ]
+gap> gr2 := CompleteDigraph(3);
+<digraph with 3 vertices, 6 edges>
+gap> OutNeighbours(gr2);
+[ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ]
+gap> union := DigraphDisjointUnion(gr1, gr2);
+<digraph with 6 vertices, 9 edges>
+gap> OutNeighbours(union);
+[ [ 2 ], [ 3 ], [ 1 ], [ 5, 6 ], [ 4, 6 ], [ 4, 5 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -960,15 +1064,18 @@ true
 
     In particular, if <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
     edges, and if <A>digraph2</A> has <M>n_2</M> vertices and <M>m_2</M> edges,
-    then <C>DigraphJoin(<A>digraph1</A> <A>digraph2</A>)</C> will
+    then <C>DigraphJoin(<A>digraph1</A>, <A>digraph2</A>)</C> will
     have <M>n_1+n_2</M> vertices and <M>m_1+m_2+2n_1n_2</M> edges. <P/>
 
-    The vertices of <A>digraph1</A> will become
-    <C>[1..</C><M>n_1</M><C>]</C>, in the new digraph,
-    the vertices of <A>digraph2</A> will become
-    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>. <P/>
+    The vertices of <A>digraph1</A> will remain
+    <C>[1..</C><M>n_1</M><C>]</C>, in the new digraph.
+    The vertices of <A>digraph2</A> will become
+    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>,
+    and an edge <C>[</C><M>i,j</M><C>]</C> in <A>digraph2</A> will become
+    the edge <C>[</C><M>n_1+i,n_1+j</M><C>]</C>. <P/>
 
-    Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
+    Note that previously set <Ref Attr="DigraphVertexLabels"/> and
+    <Ref Attr="DigraphEdgeLabels"/> will be lost.
 
 <Example><![CDATA[
 gap> gr := CompleteDigraph(3);

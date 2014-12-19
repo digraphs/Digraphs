@@ -10,6 +10,7 @@
 
 DeclareOperation("AsBinaryRelation", [IsDigraph]);
 DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);
+DeclareOperation("OnDigraphs", [IsDigraph, IsTransformation]);
 DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPermCollection]);
 DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPerm, IsPerm]);
 
@@ -62,6 +63,7 @@ DeclareOperation("DigraphInEdges", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphOutEdges", [IsDigraph, IsPosInt]);
 DeclareOperation("IsDigraphEdge", [IsDigraph, IsList]);
 
+DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("IsReachable", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);

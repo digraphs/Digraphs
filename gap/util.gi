@@ -7,44 +7,44 @@
 ##
 #############################################################################
 ##
-## this file contains utilies for use with the Digraphs package.
+## this file contains utilies for use with the Graphs package.
 
-BindGlobal("DigraphsDocXMLFiles", [ "attr.xml", "bliss.xml",
-"digraph.xml", "display.xml", "grape.xml", "io.xml", "oper.xml", "prop.xml", 
-"util.xml", "../PackageInfo.g"]);
+BindGlobal("GraphsDocXMLFiles", [ "attr.xml", "bliss.xml",
+"digraph.xml", "display.xml", "grahom.xml", "grape.xml", "io.xml", "oper.xml",
+"prop.xml", "util.xml", "../PackageInfo.g"]);
 
-BindGlobal("DigraphsTestRec", rec());
-MakeReadWriteGlobal("DigraphsTestRec");
+BindGlobal("GraphsTestRec", rec());
+MakeReadWriteGlobal("GraphsTestRec");
 
-InstallGlobalFunction(DigraphsStartTest,
+InstallGlobalFunction(GraphsStartTest,
 function()
   local record;
 
-  record:=DigraphsTestRec;
+  record:=GraphsTestRec;
   
   record.timeofday := IO_gettimeofday();
   record.InfoLevelInfoWarning:=InfoLevel(InfoWarning);;
-  record.InfoLevelInfoDigraphs:=InfoLevel(InfoDigraphs);;
+  record.InfoLevelInfoGraphs:=InfoLevel(InfoGraphs);;
 
   SetInfoLevel(InfoWarning, 0);;
-  SetInfoLevel(InfoDigraphs, 0);
+  SetInfoLevel(InfoGraphs, 0);
 
   record.STOP_TEST := STOP_TEST;
 
   MakeReadWriteGlobal("STOP_TEST");
   UnbindGlobal("STOP_TEST");
-  BindGlobal("STOP_TEST", DigraphsStopTest);
+  BindGlobal("STOP_TEST", GraphsStopTest);
 
   return;
 end);
 
-InstallGlobalFunction(DigraphsStopTest,
+InstallGlobalFunction(GraphsStopTest,
 function(file)
   local timeofday, record, elapsed, str;
 
   timeofday := IO_gettimeofday();
   
-  record:=DigraphsTestRec;
+  record:=GraphsTestRec;
  
   elapsed := (timeofday.tv_sec - record.timeofday.tv_sec) * 1000 
    + Int((timeofday.tv_usec - record.timeofday.tv_usec) / 1000);
@@ -54,7 +54,7 @@ function(file)
   Append(str, "ms\n");
   
   SetInfoLevel(InfoWarning, record.InfoLevelInfoWarning);;
-  SetInfoLevel(InfoDigraphs, record.InfoLevelInfoDigraphs);
+  SetInfoLevel(InfoGraphs, record.InfoLevelInfoGraphs);
 
   if not IsBound( GAPInfo.TestData.START_TIME )  then
       Error( "`STOP_TEST' command without `START_TEST' command for `", 
@@ -73,20 +73,20 @@ function(file)
   return; 
 end);
 
-InstallGlobalFunction(DigraphsMakeDoc,
+InstallGlobalFunction(GraphsMakeDoc,
 function()
-  MakeGAPDocDoc(Concatenation(PackageInfo("digraphs")[1]!.
-   InstallationPath, "/doc"), "main.xml", DigraphsDocXMLFiles, "digraphs",
+  MakeGAPDocDoc(Concatenation(PackageInfo("graphs")[1]!.
+   InstallationPath, "/doc"), "main.xml", GraphsDocXMLFiles, "graphs",
    "MathJax", "../../..");;
   return;
 end);
 
-InstallGlobalFunction(DigraphsTestAll,
+InstallGlobalFunction(GraphsTestAll,
 function()
   local dir_str, tst, dir, passed, filesplit, test, stringfile, filename;
 
-  Print("Reading all .tst files in the directory digraphs/tst/...\n\n");
-  dir_str:=Concatenation(PackageInfo("digraphs")[1]!.InstallationPath,"/tst");
+  Print("Reading all .tst files in the directory graphs/tst/...\n\n");
+  dir_str:=Concatenation(PackageInfo("graphs")[1]!.InstallationPath,"/tst");
   tst:=DirectoryContents(dir_str);
   dir:=Directory(dir_str);
   
@@ -107,25 +107,25 @@ function()
   return passed;
 end);
 
-InstallGlobalFunction(DigraphsTestInstall,
+InstallGlobalFunction(GraphsTestInstall,
 function()
-  return Test(Filename(DirectoriesPackageLibrary("digraphs","tst"),
+  return Test(Filename(DirectoriesPackageLibrary("graphs","tst"),
    "testinstall.tst"));;
 end);
 
-InstallGlobalFunction(DigraphsManualExamples,
+InstallGlobalFunction(GraphsManualExamples,
 function()
 return
-  ExtractExamples(DirectoriesPackageLibrary("digraphs","doc"),
-  "main.xml",  DigraphsDocXMLFiles, "Single" );
+  ExtractExamples(DirectoriesPackageLibrary("graphs","doc"),
+  "main.xml",  GraphsDocXMLFiles, "Single" );
 end);
 
-InstallGlobalFunction(DigraphsTestManualExamples,
+InstallGlobalFunction(GraphsTestManualExamples,
 function()
   local ex, omit, str;
 
-  ex:=DigraphsManualExamples();
-  omit:=DIGRAPHS_OmitFromTestManualExamples;
+  ex:=GraphsManualExamples();
+  omit:=GRAPHS_OmitFromTestManualExamples;
   if Length(omit)>0 then 
     Print("# not testing examples containing the strings");
     for str in omit do 
@@ -135,38 +135,35 @@ function()
     Print(" . . .\n");
   fi;
 
-  DigraphsStartTest();
+  GraphsStartTest();
   RunExamples(ex);
-  DigraphsStopTest("");
+  GraphsStopTest("");
   return;
 end);
 
-InstallGlobalFunction(DigraphsDir,
+InstallGlobalFunction(GraphsDir,
 function()
-  return PackageInfo("digraphs")[1]!.InstallationPath;
+  return PackageInfo("graphs")[1]!.InstallationPath;
 end);
 
-InstallGlobalFunction(DigraphsTestEverything, 
+InstallGlobalFunction(GraphsTestEverything, 
 function()
 
-  DigraphsMakeDoc();
+  GraphsMakeDoc();
   Print("\n");
 
-  DigraphsStartTest();
-  if not DigraphsTestInstall() then 
+  if not GraphsTestInstall() then 
     Print("Abort: testinstall.tst failed . . . \n");
     return false;
   fi;
   Print("\n");
 
-  if not DigraphsTestAll() then 
-    Print("Abort: DigraphsTestAll failed . . . \n");
+  if not GraphsTestAll() then 
+    Print("Abort: GraphsTestAll failed . . . \n");
     return false;
   fi;
-  SetInfoLevel(InfoWarning, DigraphsTestRec.InfoLevelInfoWarning);
-  SetInfoLevel(InfoDigraphs, DigraphsTestRec.InfoLevelInfoDigraphs);
   
-  DigraphsTestManualExamples();
+  GraphsTestManualExamples();
   return;
 end);
 

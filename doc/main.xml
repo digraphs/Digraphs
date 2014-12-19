@@ -1,5 +1,5 @@
 <!DOCTYPE Book SYSTEM "gapdoc.dtd"
-   [ <!ENTITY Digraphs "<Package>Digraphs</Package>">
+   [ <!ENTITY Digraphs "<Package>Graphs</Package>">
      <!ENTITY Grape "<Alt Not='Text'><URL
    Text='Grape'>http://www.maths.qmul.ac.uk/~leonard/grape/</URL></Alt><Alt
    Only='Text'><Package>Grape</Package></Alt>">
@@ -9,7 +9,7 @@
      <#Include Label="PKGVERSIONDATA">
    ]>
 
-<Book Name="digraphs">
+<Book Name="graphs">
 <#Include SYSTEM="z-title.xml">
 
 <TableOfContents/>
@@ -24,7 +24,7 @@
   <#Include SYSTEM="z-chap7.xml"> <!-- visualising, io --> 
 </Body>
 
-<Bibliography Databases="digraphs" />
+<Bibliography Databases="graphs" />
 <TheIndex/>
 
 </Book>

@@ -7,25 +7,21 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: prop.tst");
-gap> LoadPackage("digraphs", false);;
+gap> START_TEST("Graphs package: prop.tst");
+gap> LoadPackage("graphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> GraphsStartTest();
 
 # IsMultiDigraph
 gap> gr1 := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> IsMultiDigraph(gr1);
 false
-
-#
 gap> gr2 := Digraph( [ [ ] ] );
 <digraph with 1 vertex, 0 edges>
 gap> IsMultiDigraph(gr2);
 false
-
-#
 gap> source := [1..10000];;
 gap> range := List( source, x->Random(source) );;
 gap> r := rec (vertices := [ 1 .. 10000 ], source := source, range := range);;
@@ -33,8 +29,6 @@ gap> gr3 := Digraph(r);
 <digraph with 10000 vertices, 10000 edges>
 gap> IsMultiDigraph(gr3);
 false
-
-#
 gap> Add(source, 10000);;
 gap> Add(range, range[10000]);;
 gap> r := rec(vertices := [ 1 .. 10000 ], source := source, range := range);;
@@ -156,8 +150,6 @@ gap> gr := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> IsFunctionalDigraph(gr);
 true
-
-#
 gap> r := rec( vertices := [ 1 .. 10 ], 
 > source := 
 > [ 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5,
@@ -171,27 +163,19 @@ gap> g1 := Digraph(r);
 <digraph with 10 vertices, 51 edges>
 gap> IsFunctionalDigraph(g1);
 false
-
-#
 gap> g2 := Digraph(OutNeighbours(g1));
 <digraph with 10 vertices, 51 edges>
 gap> IsFunctionalDigraph(g2);
 false
-
-#
-gap> g3 := Digraph( [ [1], [3], [2], [2] ] );
+gap> g3 := Digraph( [ [ 1 ], [ 3 ], [ 2 ], [ 2 ] ] );
 <digraph with 4 vertices, 4 edges>
 gap> IsFunctionalDigraph(g3);
 true
-
-#
 gap> g4 := Digraph( rec( vertices := [ 1 .. 3 ] ,
 > source := [ 3, 2, 1 ], range := [ 2 , 1, 3 ] ) );
 <digraph with 3 vertices, 3 edges>
 gap> IsFunctionalDigraph(g4);
 true
-
-#
 gap> g5 := Digraph( rec( vertices := [ 1 .. 3 ] ,
 > source := [ 3, 2, 2 ], range := [ 2 , 1, 3 ] ) );
 <digraph with 3 vertices, 3 edges>
@@ -376,7 +360,7 @@ false
 gap> IsStronglyConnectedDigraph(gr);
 false
 
-# IsReflexiveDigraph: using source and range
+# IsReflexiveDigraph
 gap> r := rec( vertices := [ 1 .. 5 ],
 > source := [ 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
 > range  := [ 1, 2, 3, 1, 2, 5, 1, 3, 5, 2, 3, 4, 1, 2, 2 ]);;
@@ -415,8 +399,6 @@ true
 gap> gr := Digraph( [ ] );;
 gap> IsAcyclicDigraph(gr);
 true
-
-# IsReflexiveDigraph: using OutNeighbours
 gap> adj := [ [ 2, 1 ], [ 1, 3 ], [ ] ];;
 gap> gr := Digraph(adj);
 <digraph with 3 vertices, 4 edges>
@@ -427,8 +409,6 @@ gap> gr := Digraph(adj);
 <digraph with 4 vertices, 9 edges>
 gap> IsReflexiveDigraph(gr);
 true
-
-# IsReflexiveDigraph: using adjacency matrix
 gap> mat := [ [ 2, 1, 0 ], [ 0, 1, 0 ], [ 0, 0, 0 ] ];;
 gap> gr := DigraphByAdjacencyMatrix(mat);
 <multidigraph with 3 vertices, 4 edges>
@@ -500,7 +480,7 @@ gap> gr := Digraph( [ [ 2 ], [ 3 ], [  ], [ 3 ] ] );
 gap> IsConnectedDigraph(gr);
 true
 
-# DigraphHasLoops (out neighbours)
+# DigraphHasLoops
 gap> gr := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> DigraphHasLoops(gr);
@@ -527,8 +507,6 @@ gap> gr := Digraph( [ [ 6, 7 ], [ 6, 9 ], [ 1, 2, 4, 5, 8, 9 ],
 <multidigraph with 10 vertices, 55 edges>
 gap> DigraphHasLoops(gr);
 false
-
-# DigraphHasLoops (source and range)
 gap> gr := Digraph( rec( nrvertices := 0, source := [  ], range := [  ] ) );
 <digraph with 0 vertices, 0 edges>
 gap> DigraphHasLoops(gr);

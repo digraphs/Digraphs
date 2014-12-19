@@ -100,3 +100,7 @@ tst/out/*
 tags
 digraphs_la-homos.Tpo
 digraphs_la-schreier-sims.Tpo
+graphs.la
+.libs/graphs.la
+.libs/graphs.lai
+.libs/graphs.so

@@ -1,7 +1,9 @@
 ############################################################################
 ##
 #W  PackageInfo.g
-#Y  Copyright (C) 2011-14                                James D. Mitchell
+#Y  Copyright (C) 2014                                   James D. Mitchell
+##
+##
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -13,16 +15,16 @@
 ##  <!ENTITY GAPVERS "4.7.5">
 ##  <!ENTITY GRAPEVERS "4.5">
 ##  <!ENTITY IOVERS "4.4.4">
-##  <!ENTITY ARCHIVENAME "digraphs-0.1">
+##  <!ENTITY ARCHIVENAME "graphs-0.1">
 ##  <!ENTITY COPYRIGHTYEARS "2014">
 ##  <#/GAPDoc>
 
 SetPackageInfo( rec(
-PackageName := "Digraphs",
-Subtitle := "Methods for Directed Graphs",
+PackageName := "Graphs",
+Subtitle := "Methods for graphs",
 Version := "0.1",
 Date := "??",
-ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.1",
+ArchiveURL := "http://tinyurl.com/jdmitchell/graphs/graphs-0.1",
 ArchiveFormats := ".tar.gz",
 Persons := [
   rec( 
@@ -54,21 +56,6 @@ Persons := [
     Institution   := "University of St Andrews"
   ),
         
-   rec(
-    LastName      := "Pfeiffer",
-    FirstNames    := "Markus",
-    IsAuthor      := true,
-    IsMaintainer  := false,
-    Email         := "markus.pfeiffer@morphism.de",
-    WWWHome       := "http://www.morphism.de/~markusp/",
-    PostalAddress := Concatenation( [
-                       "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
-                       " Scotland"] ),
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"
-  ), 
-
   rec( 
     LastName      := "Torpey",
     FirstNames    := "M.",
@@ -89,7 +76,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "waw7@st-and.ac.uk",
-    WWWHome       := "http://wilf-wilson.net",
+    WWWHome       := "http://www-groups.mcs.st-and.ac.uk/~waw7/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
@@ -101,21 +88,21 @@ Persons := [
 Status := "deposited",
 
 README_URL := 
-  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README",
+  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/graphs/README",
 PackageInfoURL := 
-  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/PackageInfo.g",
+  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/graphs/PackageInfo.g",
 
 AbstractHTML := "",
 
-PackageWWWHome := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php",
+PackageWWWHome := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/graphs.php",
                
 PackageDoc := rec(
-  BookName  := "Digraphs",
+  BookName  := "Graphs",
   ArchiveURLSubset := ["doc"],
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",  
   SixFile   := "doc/manual.six",
-  LongTitle := "Digraphs - Methods for directed graphs",
+  LongTitle := "Graphs - Methods for graphs",
   Autoload  := true,
 ),
 
@@ -127,10 +114,10 @@ Dependencies := rec(
 ),
 
   AvailabilityTest := function()
-    if (not "digraphs" in SHOW_STAT()) and
-      (Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") = fail)
+    if (not "graphs" in SHOW_STAT()) and
+      (Filename(DirectoriesPackagePrograms("graphs"), "graphs.so") = fail)
      then
-      Info(InfoWarning, 1, "Digraphs: the kernel module is not compiled, ",
+      Info(InfoWarning, 1, "Graphs: the kernel module is not compiled, ",
       "the package cannot be loaded.");
       return fail;
     fi;

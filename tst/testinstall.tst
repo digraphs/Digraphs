@@ -7,11 +7,11 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: testinstall.tst");
-gap> LoadPackage("digraphs", false);;
+gap> START_TEST("Graphs package: testinstall.tst");
+gap> LoadPackage("graphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> GraphsStartTest();
 
 # conversion to and from Grape graphs
 gap> gr := Digraph( 
@@ -23,14 +23,14 @@ gap> OutNeighbours(gr);
 [ [ 8 ], [ 4, 5, 6, 8, 9 ], [ 2, 4, 5, 7, 10 ], [ 9 ], [ 1, 4, 6, 7, 9 ], 
   [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], [ 3, 4, 9, 10 ], 
   [ 1, 2, 3, 5, 6, 9, 10 ], [ 2, 4, 5, 6, 9 ] ]
-gap> not DIGRAPHS_IsGrapeLoaded 
-> or (DIGRAPHS_IsGrapeLoaded and Digraph(Graph(gr)) = gr);
+gap> not GRAPHS_IsGrapeLoaded 
+> or (GRAPHS_IsGrapeLoaded and Digraph(Graph(gr)) = gr);
 true
-gap> not DIGRAPHS_IsGrapeLoaded 
-> or (DIGRAPHS_IsGrapeLoaded and Graph(Digraph(Graph(gr))) = Graph(gr));
+gap> not GRAPHS_IsGrapeLoaded 
+> or (GRAPHS_IsGrapeLoaded and Graph(Digraph(Graph(gr))).adjacencies = Graph(gr).adjacencies);
 true
-gap> not DIGRAPHS_IsGrapeLoaded or 
-> (DIGRAPHS_IsGrapeLoaded and Digraph(rec( adjacencies := [
+gap> not GRAPHS_IsGrapeLoaded or 
+> (GRAPHS_IsGrapeLoaded and Digraph(Graph(rec( adjacencies := [
 >       [ 17, 19 ], [ 17, 20 ], [ 17, 18 ], [ 17, 20 ], [ 17, 18 ], [ 18, 19 ],
 >       [ 18, 20 ], [ 17, 19 ], [ 19, 20 ], [ 17, 20 ], [ 19, 20 ], [ 18, 19 ],
 >       [ 19, 20 ], [ 17, 19 ], [ 18, 20 ], [ 18, 20 ], 
@@ -39,7 +39,7 @@ gap> not DIGRAPHS_IsGrapeLoaded or
 >   group := Group(()), isGraph := true, names := [ 1 .. 20 ], order := 20, 
 >   representatives := [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], 
 >   schreierVector := [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,
->                      -11,-12,-13,-14,-15,-16,-17,-18,-19,-20] )) <> fail);
+>                      -11,-12,-13,-14,-15,-16,-17,-18,-19,-20] ))) <> fail);
 true
 
 # IsAcyclicDigraph

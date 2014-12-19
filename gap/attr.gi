@@ -14,7 +14,7 @@ function(digraph)
   local verts, old, new, gr, i;
   
   if IsMultiDigraph(digraph) then 
-    Error("Digraphs: DigraphDual: usage,\n", 
+    Error("Graphs: DigraphDual: usage,\n", 
       "the argument <graph> must not have multiple edges,");
     return;
   fi;
@@ -378,7 +378,7 @@ end);
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
-  if DigraphNrVertices(digraph) <= 1 then
+  if DigraphNrVertices(digraph) = 0 then
     return -1;
   elif HasIsStronglyConnectedDigraph(digraph)
    and not IsStronglyConnectedDigraph(digraph) then
