@@ -203,4 +203,4 @@ gap> last = gr;
 true
 
 #
-gap> STOP_TEST( "Digraphs package: io.tst");
+gap> STOP_TEST( "Graphs package: io.tst");

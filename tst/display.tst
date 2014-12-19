@@ -72,4 +72,4 @@ Error, Graphs: DotSymmetricDigraph: usage,
 the argument <graph> should be symmetric,
 
 #
-gap> STOP_TEST( "Digraphs package: display.tst");
+gap> STOP_TEST( "Graphs package: display.tst");

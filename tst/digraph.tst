@@ -1052,4 +1052,4 @@ gap> DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
 
 #
-gap> STOP_TEST( "Digraphs package: digraph.tst");
+gap> STOP_TEST( "Graphs package: digraph.tst");

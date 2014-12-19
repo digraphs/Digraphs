@@ -1383,4 +1383,4 @@ gap> IsMutable(out3[1]);
 true
 
 #
-gap> STOP_TEST( "Digraphs package: oper.tst");
+gap> STOP_TEST( "Graphs package: oper.tst");

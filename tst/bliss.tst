@@ -247,4 +247,4 @@ gap> gr2 = gr1;
 false
 
 #
-gap> STOP_TEST("Digraphs package: bliss.tst");
+gap> STOP_TEST("Graphs package: bliss.tst");

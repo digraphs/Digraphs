@@ -67,4 +67,4 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
   Transformation( [ 1, 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
 
 #
-gap> STOP_TEST("Digraphs package: homos.tst");
+gap> STOP_TEST("Graphs package: homos.tst");

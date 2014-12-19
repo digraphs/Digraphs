@@ -619,4 +619,4 @@ gap> DigraphDiameter(gr);
 0
 
 #
-gap> STOP_TEST( "Digraphs package: attr.tst");
+gap> STOP_TEST( "Graphs package: attr.tst");

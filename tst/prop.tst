@@ -661,4 +661,4 @@ gap> IS_TRANSITIVE_DIGRAPH(gr);
 true
 
 #
-gap> STOP_TEST( "Digraphs package: prop.tst");
+gap> STOP_TEST( "Graphs package: prop.tst");
