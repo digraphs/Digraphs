@@ -14,7 +14,7 @@
 # Wrapper for C function GRAPH_HOMOS
 
 InstallGlobalFunction(HomomorphismGraphsFinder, 
-function(gr1, gr2, hook, user_param, limit, hint, isinjective, image) 
+function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map) 
   local out;
 
   if not (IsDigraph(gr1) and IsDigraph(gr2) and IsSymmetricDigraph(gr1)
@@ -52,13 +52,19 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image)
 
   if not (image = fail or IsList(image))  then
     Error("Graphs: HomomorphismGraphsFinder: usage,\n",
-          "<image> has to be a plist,");
+          "<image> has to be a list,");
+    return;
+  fi;
+
+  if not (map = fail or IsList(map)) then 
+    Error("Graphs: HomomorphismGraphsFinder: usage,\n",
+          "<map> has to be a list,");
     return;
   fi;
   
   if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
     out := GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
-	   fail, fail);
+	   fail, map);
     return out;
   else 
     Error("not yet implemented");
@@ -103,7 +109,7 @@ function(arg)
     return gens;
   fi;
   
-  out := HomomorphismGraphsFinder(digraph, digraph, fail, gens, limit, fail, false, fail);
+  out := HomomorphismGraphsFinder(digraph, digraph, fail, gens, limit, fail, false, fail, fail);
 
   if limit = fail then 
     SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
@@ -145,7 +151,7 @@ function(gr1, gr2)
   local out;
 
   out := HomomorphismGraphsFinder(gr1, gr2, fail, fail, 1,
-   DigraphNrVertices(gr2), false, fail);
+   DigraphNrVertices(gr2), false, fail, fail);
 
   if IsEmpty(out) then
     return fail;
@@ -162,7 +168,7 @@ InstallMethod(HomomorphismsGraphsRepresentatives, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(gr1, gr2) 
   return HomomorphismGraphsFinder(gr1, gr2, fail, fail, fail,
-   DigraphNrVertices(gr2), false, fail);
+   DigraphNrVertices(gr2), false, fail, fail);
 end);
 
 InstallMethod(HomomorphismsDigraphs, "for a digraph and a digraph",
@@ -188,7 +194,7 @@ function(gr1, gr2)
   fi;
 
   out := HomomorphismGraphsFinder(gr1, gr2, fail, fail, 1, DigraphNrVertices(gr2), true,
-	 fail);
+	 fail, fail);
 
   if IsEmpty(out) then
     return fail;

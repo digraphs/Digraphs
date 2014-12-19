@@ -1563,6 +1563,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   bool          *condition;
   Obj           user_param_arg, out, nbs;  
   int           image[MAXVERTS];
+  UIntS         partial_map[MAXVERTS];
 
   Obj graph1         = ELM_PLIST(args, 1);  // find homomorphisms from graph1 
   Obj graph2         = ELM_PLIST(args, 2);  // to graph2
@@ -1575,7 +1576,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   Obj isinjective    = ELM_PLIST(args, 7);  // only consider injective homomorphism
   Obj image_gap      = ELM_PLIST(args, 8);  // only consider homos with image <image>
   Obj kernel         = ELM_PLIST(args, 9);  // only consider homos with kernel <kernel>
-  Obj partial_map    = ELM_PLIST(args, 10); // only look for extensions of <partial_map>
+  Obj partial_map_gap    = ELM_PLIST(args, 10); // only look for extensions of <partial_map_gap>
 
 
   if (limit_gap == Fail || !IS_INTOBJ(limit_gap)) {
@@ -1598,8 +1599,6 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   }
 
   bool isinjective_c = (isinjective == True ? true : false);
- 
-
 
   // install out-neighbours for graph1 
   nr1 = DigraphNrVertices(graph1);
@@ -1629,20 +1628,40 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
 
   // init image
   image[0] = 0;                                 //number of entries in image (rank)
-  if (image_gap != Fail && IS_PLIST(image_gap)) {
+  if (image_gap != Fail && IS_LIST(image_gap)) {
     for (i = 0; i < LEN_LIST(image_gap); i++) {
       image[0]++;
-      image[image[0]] = INT_INTOBJ(ELM_LIST(image_gap, i + 1));
+      image[image[0]] = INT_INTOBJ(ELM_LIST(image_gap, i + 1)) - 1;
+    }
+  }
+
+  // start with a partialy defined map
+  // suppose partial_map_gap is a plist
+  if (partial_map_gap != Fail && IS_LIST(partial_map_gap)) {
+    for (i = 0; i < LEN_LIST(partial_map_gap); i++) {
+      if (ISB_LIST(partial_map_gap, i + 1)) {
+        partial_map[i] = INT_INTOBJ(ELM_LIST(partial_map_gap, i + 1)) - 1;
+      }
+      else { 
+        partial_map[i] = UNDEFINED;
+      } 
+    }
+    for (i = LEN_LIST(partial_map_gap); i < nr1; i++) {
+      partial_map[i] = UNDEFINED;
+    }
+  } else {
+    for (i = 0; i < nr1; i++) {
+      partial_map[i] = UNDEFINED;
     }
   }
   
   if (hook_gap == Fail) {
     GraphHomomorphisms(homos_graph1, homos_graph2, homo_hook_collect, user_param_arg,
-        max_results_arg, hint_arg, isinjective_c, image); 
+        max_results_arg, hint_arg, isinjective_c, image, partial_map); 
   } else {
     GAP_FUNC = hook_gap;
     GraphHomomorphisms(homos_graph1, homos_graph2, homo_hook_gap, user_param_arg,
-        max_results_arg, hint_arg, isinjective_c, image);
+        max_results_arg, hint_arg, isinjective_c, image, partial_map);
   }
   
   if (IS_PLIST(user_param_arg) && LEN_PLIST(user_param_arg) == 0 

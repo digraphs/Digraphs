@@ -10,8 +10,6 @@
 
 #include "src/homos.h"
 
-#define UNDEFINED MAXVERTS + 1
-
 // globals for the recursive find_homos
 static UIntS  nr1;                         // nr of vertices in graph1
 static UIntS  nr1_d;                       // nr1 - 1 / SYS_BITS 
@@ -303,7 +301,7 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
                  bool    has_trivial_stab,
                  UIntS   rank      ){ // current number of distinct values in map
 
-  UIntS   i, j, k, l, min, next, m, sum, w, size;
+  UIntS   i, j, k, l, min, m, sum, w, size, next;
   UIntL*  copy;
   bool    is_trivial;
 
@@ -332,9 +330,9 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
   }
 
   //memcpy((void *) copy, (void *) condition, (size_t) nr1 * len_nr2 * sizeof(UIntL));
+
   next = 0;      // the next position to fill
   min = nr2 + 1; // the minimum number of candidates for map[next]
-
   if (pos != UNDEFINED) {
     for (j = 0; j < nr1; j++){
       i = j / SYS_BITS;
@@ -413,9 +411,12 @@ void GraphHomomorphisms (HomosGraph*  graph1,
                          UIntL        max_results_arg,
                          int          hint_arg, 
                          bool         isinjective, 
-                         int*         image           ) {
+                         int*         image,
+                         UIntS        *partial_map           ) {
   PermColl* gens;
-  UIntS     i, j, k, len;
+  UIntS     i, j, k, len, depth, pos, min, size, d, m, rep_depth, rank, next;
+  UIntL*    copy;
+  bool      has_trivial_stab, is_trivial;
 
   // debugging memory leaks in permutations & schreier-sims
   nr_ss_allocs = 0;
@@ -431,6 +432,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   nr2_m = (nr2 - 1) % SYS_BITS;
   len_nr1 = nr1_d + 1;
   len_nr2 = nr2_d + 1;
+  
 
   assert(nr1 <= MAXVERTS && nr2 <= MAXVERTS);
   
@@ -448,7 +450,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
     for (i = 0; i < nr2_d + 1; i++) {
       new_image[i] = 0;
       for (j = 0; j < image[0]; j++) {
-        new_image[i] |= oneone[image[j + 1] - 1];
+        new_image[i] |= oneone[image[j + 1]];
       }
     }
   }
@@ -458,7 +460,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
     map[i] = UNDEFINED;
     push_size_condition(i, nr2);
   }
-  
+
   for (i = 0; i < len_nr2; i++){
     vals[i] = 0;
   }
@@ -493,7 +495,69 @@ void GraphHomomorphisms (HomosGraph*  graph1,
       //SEARCH_INJ_HOMOS_MD(0, -1, condition, gens, reps, hook,
       //Stabilizer);//TODO uncomment
     } else {
-      find_homos(0, UNDEFINED, 0, false, 0);
+      // dealing with partial_map
+      depth = 0;
+      pos = UNDEFINED;
+      rank = 0;
+      rep_depth = 0;
+      has_trivial_stab = false;
+
+      for (next = 0; next < nr1; next++) {
+        if (partial_map[next] != UNDEFINED) { // map[next] will get a new value
+          if (pos != UNDEFINED) { // update conditions since 
+            for (j = 0; j < nr1; j++) {   
+              d = j / SYS_BITS;
+              m = j % SYS_BITS;
+              if (map[j] == UNDEFINED) {
+                if (neighbours1[pos * len_nr1 + d] & oneone[m]) {
+                  // vertex j is adjacent to vertex pos in graph1
+                  copy = push_condition(depth, j, get_condition(j));
+                  size = 0; 
+                  for (k = 0; k < nr2_d; k++){
+                    copy[k] &= neighbours2[len_nr2 * map[pos] + k];
+                    size += sizeUIntL(copy[k], SYS_BITS);
+                  }
+                  copy[nr2_d] &= neighbours2[len_nr2 * map[pos] + nr2_d];
+                  size += sizeUIntL(copy[nr2_d], nr2_m + 1);
+                  if (size == 0) {
+                    pop_condition(depth);
+                    return;
+                  }
+                  push_size_condition(j, size);
+                }
+              }
+            }
+	  }
+	  
+          copy = get_condition(next);
+
+          // calculate stabs
+	  // JJ: should we check rank < hint?
+          d = partial_map[next] / SYS_BITS;
+          m = partial_map[next] % SYS_BITS;
+          if ((vals[d] & oneone[m]) == 0) {
+            rank++;
+            if (!has_trivial_stab) {
+              calls2++;
+              // stabiliser of the point i in the stabiliser at current rep_depth
+              is_trivial = point_stabilizer(stab_gens[rep_depth], partial_map[next], &stab_gens[rep_depth + 1]);
+            }
+      	    map[next] = partial_map[next];
+	    depth++;
+            vals[d] |= oneone[m];
+            if (!has_trivial_stab) {
+              // blist of orbit reps of things not in vals
+              rep_depth++;
+              orbit_reps(rep_depth);
+            }
+          } else {
+      	    map[next] = partial_map[next];
+	    depth++;
+          }
+	  pos = next;
+        }
+      }
+      find_homos(depth, pos, rep_depth, has_trivial_stab, rank);
     }
   }
 

@@ -1,2 +1,2 @@
 #!/bin/sh -ex
-autoreconf -vif `dirname "$0"`
+autoreconf -if `dirname "$0"`
