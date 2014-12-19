@@ -19,7 +19,6 @@ static UIntS  nr2_d;                       // nr2 - 1 / SYS_BITS
 static UIntS  nr2_m;                       // nr2 - 1 % SYS_BITS 
 static UIntS  len_nr1;                     // number of UIntL to store all neighbours1
 static UIntS  len_nr2;                     // number of UIntL to store all neighbours2
-static UIntS  next;                        // next position of map to assign 
 static UIntS  hint;                        // wanted nr of distinct values in map
 static UIntL  maxresults;                  // upper bound for the nr of returned homos
 static UIntS  map[MAXVERTS];               // partial image list
@@ -302,7 +301,7 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
                  bool    has_trivial_stab,
                  UIntS   rank      ){ // current number of distinct values in map
 
-  UIntS   i, j, k, l, min, m, sum, w, size;
+  UIntS   i, j, k, l, min, m, sum, w, size, next;
   UIntL*  copy;
   bool    is_trivial;
 
@@ -385,7 +384,6 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
         } else {
           find_homos(depth + 1, next, rep_depth, true, rank + 1);
         }
-	next = j * SYS_BITS + m; // since next is global :(
         map[next] = UNDEFINED;
         vals[j] ^= oneone[m];
       }
@@ -397,7 +395,6 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
     if (copy[j] & vals[j] & oneone[m]) {
       map[next] = i;
       find_homos(depth + 1, next, rep_depth, has_trivial_stab, rank);
-      next = j * SYS_BITS + m;
       map[next] = UNDEFINED;
     }
   }
@@ -474,8 +471,6 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   orbit_reps(0);
 
   // dealing with partial_map
-  next = 0;
-  min = nr2 + 1;
   depth = 0;
   pos = UNDEFINED;
   rank = 0;
@@ -510,10 +505,6 @@ void GraphHomomorphisms (HomosGraph*  graph1,
             }
             push_size_condition(j, size);
           }
-        }
-        if (get_size_condition(j) < min) {
-          next = j;
-          min = get_size_condition(j);
         }
       }
       // calculate stabs
