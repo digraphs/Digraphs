@@ -1,4 +1,4 @@
-#############################################################################
+#%T##########################################################################
 ##
 #W  testinstall.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
@@ -13,7 +13,7 @@ gap> LoadPackage("graphs", false);;
 #
 gap> GraphsStartTest();
 
-# conversion to and from Grape graphs
+#T# Conversion to and from Grape graphs
 gap> gr := Digraph( 
 > [ [ 8 ], [ 4, 5, 6, 8, 9 ], [ 2, 4, 5, 7, 10 ], [ 9 ], 
 > [ 1, 4, 6, 7, 9 ], [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], 
@@ -42,7 +42,7 @@ gap> not GRAPHS_IsGrapeLoaded or
 >                      -11,-12,-13,-14,-15,-16,-17,-18,-19,-20] ))) <> fail);
 true
 
-# IsAcyclicDigraph
+#T# IsAcyclicDigraph
 gap> gr := Digraph([
 >  [ 1, 2, 4, 10 ], [ 3, 15 ], [ 3, 15 ], [ 1, 3, 7, 8, 9, 11, 12, 13 ], 
 >  [ 4, 8 ], [ 1, 2, 4, 5, 6, 7, 8, 10, 14, 15 ], [ 3, 4, 6, 11, 13, 15 ], 
@@ -74,19 +74,19 @@ gap> gr := Digraph( [ [ 2, 3 ], [ 4, 5 ], [ 5, 6 ], [], [], [], [ 3 ] ] );
 gap> IsDigraph(gr);
 true
 
-# check if OutNeighbours can handle non-plists in source, range.
-gap> gr:=Digraph( rec( nrvertices := 1000,
->                      source := [ 1 .. 1000 ],
->                      range := Concatenation( [2 .. 1000 ], [ 1 ] ) ) );;
+#T# Check if OutNeighbours can handle non-plists in source, range.
+gap> gr := Digraph( rec( nrvertices := 1000,
+>                        source := [ 1 .. 1000 ],
+>                        range := Concatenation( [2 .. 1000 ], [ 1 ] ) ) );;
 gap> OutNeighbours(gr);;
 
-#
+#T# IsMultiDigraph
 gap> d := Digraph( rec( vertices := [ 1 .. 5 ], range := [ ], source := [ ] ) );
 <digraph with 5 vertices, 0 edges>
 gap> IsMultiDigraph(d);
 false
 
-#
+#T# Other functions
 gap> DigraphFromSparse6String(":Fa@x^");
 <digraph with 7 vertices, 8 edges>
 
@@ -170,5 +170,5 @@ true
 gap> gr2 := DigraphReverseEdge(gr, 2);
 <digraph with 7 vertices, 12 edges>
 
-#
+#E#
 gap> STOP_TEST( "Graphs package: testinstall.tst");

@@ -1,4 +1,4 @@
-#############################################################################
+#%T##########################################################################
 ##
 #W  homos.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
@@ -13,7 +13,7 @@ gap> LoadPackage("graphs", false);;
 #
 gap> GraphsStartTest();
 
-# PJC example, 45 vertices
+#T# PJC example, 45 vertices
 gap> gr := DigraphFromDigraph6String(Concatenation(
 > "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?A?S??", 
 > "?OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO??`?_O??G?@",
@@ -34,7 +34,7 @@ gap> str := HomomorphismGraphsFinder(gr, gr, fail, fail, fail, fail, false,
 gap> Length(str);
 192
 
-# PJC example, 153 vertices
+#T# PJC example, 153 vertices
 gap> G:=PrimitiveGroup(153, 1);;
 gap> H:=Stabilizer(G,1);;
 gap> S:=Filtered(Orbits(H,[1..45]),x->(Size(x)=4))[1];;
@@ -54,7 +54,7 @@ gap> 4^t;
 gap> 5^t;
 97
 
-#
+#T# GeneratorsOfEndomorphismMonoid
 gap> gr := Digraph([[2], [1,3], [2] ]);
 <digraph with 3 vertices, 4 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr);
@@ -66,5 +66,5 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 3, 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 1, 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
 
-#
+#E#
 gap> STOP_TEST("Graphs package: homos.tst");
