@@ -8,6 +8,28 @@
 #############################################################################
 ##
 
+#TODO make this a global function, doc, tests.
+
+TournamentLineDecoder := function(str)
+  local out, pos, n, i, j;
+  
+  pos := 0;
+  n := (Sqrt(8 * Length(str) + 1) + 1) / 2;
+  out := List([1 .. n], x -> []);
+  for i in [1 .. n - 1] do 
+    for j in [i + 1 .. n] do 
+      pos := pos + 1;
+      if str[pos] = '1' then 
+        Add(out[i], j);
+      else
+        Add(out[j], i);
+      fi;
+    od;
+  od;
+
+  return Digraph(out);
+end;
+
 InstallGlobalFunction(ReadDigraphs,
 function(arg)
   local name, decoder, nr, file, splitname, extension, i, line, lines;
