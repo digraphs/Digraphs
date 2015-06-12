@@ -15,16 +15,16 @@
 ##  <!ENTITY GAPVERS "4.7.5">
 ##  <!ENTITY GRAPEVERS "4.5">
 ##  <!ENTITY IOVERS "4.4.4">
-##  <!ENTITY ARCHIVENAME "graphs-0.1">
+##  <!ENTITY ARCHIVENAME "digraphs-0.1">
 ##  <!ENTITY COPYRIGHTYEARS "2014">
 ##  <#/GAPDoc>
 
 SetPackageInfo( rec(
-PackageName := "Graphs",
-Subtitle := "Methods for graphs",
+PackageName := "Digraphs",
+Subtitle := "Methods for digraphs",
 Version := "0.1",
 Date := "??",
-ArchiveURL := "http://tinyurl.com/jdmitchell/graphs/graphs-0.1",
+ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.1",
 ArchiveFormats := ".tar.gz",
 Persons := [
   rec( 
@@ -88,21 +88,21 @@ Persons := [
 Status := "deposited",
 
 README_URL := 
-  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/graphs/README",
+  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README",
 PackageInfoURL := 
-  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/graphs/PackageInfo.g",
+  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/PackageInfo.g",
 
 AbstractHTML := "",
 
-PackageWWWHome := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/graphs.php",
+PackageWWWHome := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php",
                
 PackageDoc := rec(
-  BookName  := "Graphs",
+  BookName  := "Digraphs",
   ArchiveURLSubset := ["doc"],
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",  
   SixFile   := "doc/manual.six",
-  LongTitle := "Graphs - Methods for graphs",
+  LongTitle := "Digraphs - Methods for digraphs",
   Autoload  := true,
 ),
 
@@ -114,10 +114,10 @@ Dependencies := rec(
 ),
 
   AvailabilityTest := function()
-    if (not "graphs" in SHOW_STAT()) and
-      (Filename(DirectoriesPackagePrograms("graphs"), "graphs.so") = fail)
+    if (not "digraphs" in SHOW_STAT()) and
+      (Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") = fail)
      then
-      Info(InfoWarning, 1, "Graphs: the kernel module is not compiled, ",
+      Info(InfoWarning, 1, "Digraphs: the kernel module is not compiled, ",
       "the package cannot be loaded.");
       return fail;
     fi;

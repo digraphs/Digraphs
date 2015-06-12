@@ -9,33 +9,33 @@
 ##
   
 # load kernel function if it is installed:
-if (not IsBound(GRAPHS_C)) and ("graphs" in SHOW_STAT()) then
+if (not IsBound(DIGRAPHS_C)) and ("digraphs" in SHOW_STAT()) then
   # try static module
-  LoadStaticModule("graphs");
+  LoadStaticModule("digraphs");
 fi;
-if (not IsBound(GRAPHS_C)) and
-   (Filename(DirectoriesPackagePrograms("graphs"), "graphs.so") <> fail) then
-  LoadDynamicModule(Filename(DirectoriesPackagePrograms("graphs"),
-  "graphs.so"));
+if (not IsBound(DIGRAPHS_C)) and
+   (Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") <> fail) then
+  LoadDynamicModule(Filename(DirectoriesPackagePrograms("digraphs"),
+  "digraphs.so"));
 fi;
 
-BindGlobal("GRAPHS_IsGrapeLoaded", IsPackageMarkedForLoading("grape", "4.5"));
+BindGlobal("DIGRAPHS_IsGrapeLoaded", IsPackageMarkedForLoading("grape", "4.5"));
 
-if not GRAPHS_IsGrapeLoaded then 
+if not DIGRAPHS_IsGrapeLoaded then 
   IsGraph := ReturnFalse;
   Vertices := IdFunc;
   Adjacency := IdFunc;
 fi;
 
-ReadPackage("graphs/gap/digraph.gd");
-ReadPackage("graphs/gap/attr.gd");
-ReadPackage("graphs/gap/prop.gd");
-ReadPackage("graphs/gap/oper.gd");
-ReadPackage("graphs/gap/display.gd");
-ReadPackage("graphs/gap/bliss.gd");
-ReadPackage("graphs/gap/util.gd");
-ReadPackage("graphs/gap/io.gd");
-ReadPackage("graphs/gap/grahom.gd");
-ReadPackage("graphs/gap/stabs.gd");
+ReadPackage("digraphs/gap/digraph.gd");
+ReadPackage("digraphs/gap/attr.gd");
+ReadPackage("digraphs/gap/prop.gd");
+ReadPackage("digraphs/gap/oper.gd");
+ReadPackage("digraphs/gap/display.gd");
+ReadPackage("digraphs/gap/bliss.gd");
+ReadPackage("digraphs/gap/util.gd");
+ReadPackage("digraphs/gap/io.gd");
+ReadPackage("digraphs/gap/grahom.gd");
+ReadPackage("digraphs/gap/stabs.gd");
 
-DeclareInfoClass("InfoGraphs");;
+DeclareInfoClass("InfoDigraphs");;

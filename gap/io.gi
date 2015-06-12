@@ -116,7 +116,7 @@ function(arg)
   lines:=IO_ReadLines(file);
   IO_Close(file);
   for i in [1..Length(lines)] do
-    Info(InfoGraphs, 1, "Reading graph ", i, " of ", Length(lines));
+    Info(InfoDigraphs, 1, "Reading graph ", i, " of ", Length(lines));
     lines[i] := decoder(Chomp(lines[i]));
   od;
   return lines;
@@ -697,7 +697,7 @@ function(name, digraphs)
   fi;
 
   for i in [1..Length(digraphs)] do
-    Info(InfoGraphs, 1,
+    Info(InfoDigraphs, 1,
          "Writing graph ", String(i), " of ", String(Length(digraphs)));
     s := encoder(digraphs[i]);
     IO_WriteLine(file, s);

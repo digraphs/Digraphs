@@ -9,8 +9,8 @@ dnl ##
 dnl ## Setup autoconf
 dnl ##
 AC_PREREQ([2.68])
-AC_INIT([graphs], m4_esyscmd([tr -d '\n' < VERSION]))
-AC_CONFIG_SRCDIR([src/graphs.c])
+AC_INIT([digraphs], m4_esyscmd([tr -d '\n' < VERSION]))
+AC_CONFIG_SRCDIR([src/digraphs.c])
 AC_CONFIG_HEADER([src/pkgconfig.h:cnf/pkgconfig.h.in])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([cnf])

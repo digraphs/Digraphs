@@ -24,10 +24,10 @@ function()
   
   record.timeofday := IO_gettimeofday();
   record.InfoLevelInfoWarning:=InfoLevel(InfoWarning);;
-  record.InfoLevelInfoGraphs:=InfoLevel(InfoGraphs);;
+  record.InfoLevelInfoDigraphs:=InfoLevel(InfoDigraphs);;
 
   SetInfoLevel(InfoWarning, 0);;
-  SetInfoLevel(InfoGraphs, 0);
+  SetInfoLevel(InfoDigraphs, 0);
 
   record.STOP_TEST := STOP_TEST;
 
@@ -54,7 +54,7 @@ function(file)
   Append(str, "ms\n");
   
   SetInfoLevel(InfoWarning, record.InfoLevelInfoWarning);;
-  SetInfoLevel(InfoGraphs, record.InfoLevelInfoGraphs);
+  SetInfoLevel(InfoDigraphs, record.InfoLevelInfoDigraphs);
 
   if not IsBound( GAPInfo.TestData.START_TIME )  then
       Error( "`STOP_TEST' command without `START_TEST' command for `", 
