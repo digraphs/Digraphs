@@ -935,6 +935,19 @@ static Obj FuncDIGRAPH_SHORTEST_DIST(Obj self, Obj digraph) {
   return FLOYD_WARSHALL(digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false, false, true);
 }
 
+void FW_FUNC_LONGEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
+  if((*dist)[i * n + k] != -1 && (*dist)[k * n + j] != -1){
+    if ((*dist)[i * n + j] == -1 || 
+        (*dist)[i * n + j] < (*dist)[i * n + k] + (*dist)[k * n + j]) {
+      (*dist)[i * n + j] = (*dist)[i * n + k] + (*dist)[k * n + j];
+    }
+  }
+}
+
+static Obj FuncDIGRAPH_LONGEST_DIST(Obj self, Obj digraph) {
+  return FLOYD_WARSHALL(digraph, FW_FUNC_LONGEST_DIST, -1, 1, false, false, true);
+}
+
 static Obj FuncDIGRAPH_DIAMETER(Obj self, Obj digraph) {
   return FLOYD_WARSHALL(digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false, true, true);
 }
@@ -1734,6 +1747,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_SHORTEST_DIST", 1, "digraph",
     FuncDIGRAPH_SHORTEST_DIST, 
     "src/graphs.c:FuncDIGRAPH_SHORTEST_DIST" },
+  
+  { "DIGRAPH_LONGEST_DIST", 1, "digraph",
+    FuncDIGRAPH_LONGEST_DIST, 
+    "src/graphs.c:FuncDIGRAPH_LONGEST_DIST" },
 
   { "DIGRAPH_DIAMETER", 1, "digraph",
     FuncDIGRAPH_DIAMETER, 

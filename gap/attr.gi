@@ -142,6 +142,9 @@ InstallMethod(AdjacencyMatrix, "for a digraph",
 InstallMethod(DigraphShortestDistances, "for a digraph",
 [IsDigraph], DIGRAPH_SHORTEST_DIST);
 
+InstallMethod(DigraphLongestDistances, "for a digraph",
+[IsDigraph], DIGRAPH_LONGEST_DIST);
+
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
