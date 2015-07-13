@@ -8,6 +8,28 @@
 #############################################################################
 ##
 
+#TODO make this a global function, doc, tests.
+
+TournamentLineDecoder := function(str)
+  local out, pos, n, i, j;
+  
+  pos := 0;
+  n := (Sqrt(8 * Length(str) + 1) + 1) / 2;
+  out := List([1 .. n], x -> []);
+  for i in [1 .. n - 1] do 
+    for j in [i + 1 .. n] do 
+      pos := pos + 1;
+      if str[pos] = '1' then 
+        Add(out[i], j);
+      else
+        Add(out[j], i);
+      fi;
+    od;
+  od;
+
+  return Digraph(out);
+end;
+
 InstallGlobalFunction(ReadDigraphs,
 function(arg)
   local name, decoder, nr, file, splitname, extension, i, line, lines;
@@ -94,7 +116,7 @@ function(arg)
   lines:=IO_ReadLines(file);
   IO_Close(file);
   for i in [1..Length(lines)] do
-    Info(InfoGraphs, 1, "Reading graph ", i, " of ", Length(lines));
+    Info(InfoDigraphs, 1, "Reading graph ", i, " of ", Length(lines));
     lines[i] := decoder(Chomp(lines[i]));
   od;
   return lines;
@@ -675,7 +697,7 @@ function(name, digraphs)
   fi;
 
   for i in [1..Length(digraphs)] do
-    Info(InfoGraphs, 1,
+    Info(InfoDigraphs, 1,
          "Writing graph ", String(i), " of ", String(Length(digraphs)));
     s := encoder(digraphs[i]);
     IO_WriteLine(file, s);

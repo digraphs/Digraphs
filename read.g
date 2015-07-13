@@ -8,17 +8,17 @@
 #############################################################################
 ##
 
-if not GRAPHS_IsGrapeLoaded then 
-  Add(GRAPHS_OmitFromTestManualExamples, "Graph(");
+if not DIGRAPHS_IsGrapeLoaded then 
+  Add(DIGRAPHS_OmitFromTestManualExamples, "Graph(");
 fi;
 
-ReadPackage("graphs/gap/digraph.gi");
-ReadPackage("graphs/gap/attr.gi");
-ReadPackage("graphs/gap/prop.gi");
-ReadPackage("graphs/gap/oper.gi");
-ReadPackage("graphs/gap/display.gi");
-ReadPackage("graphs/gap/bliss.gi");
-ReadPackage("graphs/gap/util.gi");
-ReadPackage("graphs/gap/io.gi");
-ReadPackage("graphs/gap/grahom.gi");
-ReadPackage("graphs/gap/stabs.gi");
+ReadPackage("digraphs/gap/digraph.gi");
+ReadPackage("digraphs/gap/attr.gi");
+ReadPackage("digraphs/gap/prop.gi");
+ReadPackage("digraphs/gap/oper.gi");
+ReadPackage("digraphs/gap/display.gi");
+ReadPackage("digraphs/gap/bliss.gi");
+ReadPackage("digraphs/gap/util.gi");
+ReadPackage("digraphs/gap/io.gi");
+ReadPackage("digraphs/gap/grahom.gi");
+ReadPackage("digraphs/gap/stabs.gi");

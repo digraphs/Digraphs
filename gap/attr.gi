@@ -150,8 +150,7 @@ InstallMethod(DigraphTopologicalSort, "for a digraph",
   return DIGRAPH_TOPO_SORT(OutNeighbours(graph));
 end);
 
-# the scc index 1 corresponds to the "deepest" scc, i.e. the minimal ideal in
-# our case...
+# 
 
 InstallMethod(DigraphStronglyConnectedComponents, "for a digraph",
 [IsDigraph],
