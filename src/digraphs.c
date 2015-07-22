@@ -1,6 +1,6 @@
 /***************************************************************************
 **
-*A  graphs.c                  GAP package graphs          Julius Jonusas
+*A  digraphs.c                GAP package Digraphs        Julius Jonusas
 **                                                        James Mitchell 
 **                                                        Michael Torpey
 **                                                        Wilfred Wilson

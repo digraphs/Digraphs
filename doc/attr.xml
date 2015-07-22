@@ -492,12 +492,6 @@ gap> Display(mat);
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 1, 2 ], [ 4 ] ] );
 <digraph with 4 vertices, 6 edges>
-gap> mat := DigraphLongestDistances(gr);;
-gap> Display(mat);
-[ [   0,   1,   2,  -1 ],
-  [   2,   0,   1,  -1 ],
-  [   1,   1,   0,  -1 ],
-  [  -1,  -1,  -1,   0 ] ]
 ]]></Example>
   </Description>
 </ManSection>
