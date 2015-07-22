@@ -1335,4 +1335,12 @@ end);
 InstallMethod(OutNeighborsCopy, "for a digraph",
 [IsDigraph], OutNeighboursCopy);
 
+InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  local out;
+  out := OutNeighbours(digraph);
+  return DIGRAPH_LONGEST_DIST_VERTEX(out, v);
+end);
+
 #EOF

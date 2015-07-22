@@ -350,6 +350,80 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
   return True;
 }
 
+static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) { 
+  UInt  nr, i, j, k, level, x, prev;
+  Obj   nbs;
+  UInt  *stack, *ptr, *depth;
+  
+  nr = LEN_PLIST(adj);
+  i = INT_INTOBJ(start);
+
+  if (i > nr || i < 1) {
+    ErrorQuit("Digraphs: DIGRAPH_LONGEST_DIST_VERTEX: usage,\nthe second argument must be a vertex of the first argument,", 0L, 0L);
+  }
+
+  nbs = ELM_PLIST(adj, i);
+  if (LEN_LIST(nbs) == 0) {
+    return INTOBJ_INT(0);
+  }
+
+  ptr   = calloc( nr + 1, sizeof(UInt) );
+  depth = calloc( nr + 1, sizeof(UInt) );
+  stack = malloc( (2 * nr + 2) * sizeof(UInt) );
+
+  level = 1;
+  stack[0] = i;
+  stack[1] = 1;
+  prev = 0;
+  while (1) {
+    j = stack[0];
+    k = stack[1];
+    if (ptr[j] == 2) { // we have identified a cycle
+      stack -= (2 * level) - 2;
+      free(stack);
+      free(ptr);
+      free(depth);
+      return INTOBJ_INT(-1);  // We have just travelled around a cycle
+    }
+
+    if (prev > depth[j]) {
+      depth[j] = prev;
+    }
+    // Check whether:
+    // 1. We've previously finished with this vertex, OR 
+    // 2. Whether we've now investigated all descendant branches
+    nbs = ELM_PLIST(adj, j);
+    if( ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
+      ptr[j] = 1;
+      level--;
+      prev = depth[j];
+      if (level == 0) { 
+        // finished the search
+        break;
+      }
+      // Backtrack and choose next available branch
+      stack -= 2;
+      ptr[stack[0]] = 0;
+      prev++;
+      stack[1]++;
+    } else { //Otherwise move onto the next available branch
+      ptr[j] = 2;
+      level++;
+      nbs = ELM_PLIST(adj, j);
+      stack += 2;
+      stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+      stack[1] = 1;
+      prev = 0;
+    }
+  }
+
+  x = depth[INT_INTOBJ(start)];
+  free(ptr);
+  free(depth);
+  free(stack);
+  return INTOBJ_INT(x);
+}
+
 static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) { 
   UInt  nr, i, j, k, level, target;
   Obj   nbs;
@@ -1711,7 +1785,11 @@ static StructGVarFunc GVarFuncs [] = {
   { "IS_ACYCLIC_DIGRAPH", 1, "adj",
     FuncIS_ACYCLIC_DIGRAPH, 
     "src/graphs.c:FuncIS_ACYCLIC_DIGRAPH" },
- 
+
+  { "DIGRAPH_LONGEST_DIST_VERTEX", 2, "adj, start",
+    FuncDIGRAPH_LONGEST_DIST_VERTEX, 
+    "src/graphs.c:FuncDIGRAPH_LONGEST_DIST_VERTEX" },
+
   { "IS_ANTISYMMETRIC_DIGRAPH", 1, "adj",
     FuncIS_ANTISYMMETRIC_DIGRAPH, 
     "src/graphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH" },
