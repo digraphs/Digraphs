@@ -7,11 +7,11 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Graphs package: oper.tst");
-gap> LoadPackage("graphs", false);;
+gap> START_TEST("Digraphs package: oper.tst");
+gap> LoadPackage("digraphs", false);;
 
 #
-gap> GraphsStartTest();
+gap> DigraphsStartTest();
 
 # DigraphReverse
 gap> gr := Digraph(

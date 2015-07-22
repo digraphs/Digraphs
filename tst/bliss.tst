@@ -7,14 +7,14 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Graphs package: bliss.tst");
-gap> LoadPackage("Graphs", false);;
+gap> START_TEST("Digraphs package: bliss.tst");
+gap> LoadPackage("digraphs", false);;
 
 #
-gap> GraphsStartTest();
+gap> DigraphsStartTest();
 
 # AutomorphismGroup: all graphs of 5 vertices, compare with grape
-gap> graph5:=ReadDigraphs(Concatenation(GraphsDir(), "/data/graph5.g6"));
+gap> graph5:=ReadDigraphs(Concatenation(DigraphsDir(), "/data/graph5.g6"));
 [ <digraph with 5 vertices, 0 edges>, <digraph with 5 vertices, 2 edges>, 
   <digraph with 5 vertices, 4 edges>, <digraph with 5 vertices, 6 edges>, 
   <digraph with 5 vertices, 8 edges>, <digraph with 5 vertices, 4 edges>, 
@@ -49,7 +49,7 @@ gap> group5 := [
 >  Group([ (4,5), (3,4), (2,3), (1,2) ]) ];;
 gap> List(graph5, AutomorphismGroup) = group5;                                          
 true
-gap> trees:=ReadDigraphs(Concatenation(GraphsDir(), "/data/tree9.4.txt"));
+gap> trees:=ReadDigraphs(Concatenation(DigraphsDir(), "/data/tree9.4.txt"));
 [ <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
@@ -152,7 +152,7 @@ gap> DigraphCanonicalLabelling(gr);
 68)(3,34,14,44,79,8)(4,42,90,37,31,65,78,23,25,38,86,100,52,13,82,83,39,61,95,
 91,81,10,59,58,43,84,88,66)(5,40,12,99,75,54,56,63,74,72,77)
 gap> gr:=ReadDigraphs(
-> Concatenation(GraphsDir(), "/data/test-1.d6"))[1];
+> Concatenation(DigraphsDir(), "/data/test-1.d6"))[1];
 <digraph with 1000 vertices, 100368 edges>
 gap> DigraphCanonicalLabelling(gr);
 (1,894,760,546,212,603,466,938,837,802,929,717,865,809,599,672,859,937,816,

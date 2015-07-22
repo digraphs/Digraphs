@@ -7,11 +7,11 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Graphs package: attr.tst");
-gap> LoadPackage("graphs", false);;
+gap> START_TEST("Digraphs package: attr.tst");
+gap> LoadPackage("digraphs", false);;
 
 #
-gap> GraphsStartTest();
+gap> DigraphsStartTest();
 
 # DigraphSource and DigraphRange
 gap> nbs := [ [ 12, 22, 17, 1, 10, 11 ], [ 23, 21, 21, 16 ], 

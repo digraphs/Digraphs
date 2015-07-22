@@ -7,11 +7,11 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Graphs package: testinstall.tst");
-gap> LoadPackage("graphs", false);;
+gap> START_TEST("Digraphs package: testinstall.tst");
+gap> LoadPackage("digraphs", false);;
 
 #
-gap> GraphsStartTest();
+gap> DigraphsStartTest();
 
 # conversion to and from Grape graphs
 gap> gr := Digraph( 
@@ -23,14 +23,14 @@ gap> OutNeighbours(gr);
 [ [ 8 ], [ 4, 5, 6, 8, 9 ], [ 2, 4, 5, 7, 10 ], [ 9 ], [ 1, 4, 6, 7, 9 ], 
   [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], [ 3, 4, 9, 10 ], 
   [ 1, 2, 3, 5, 6, 9, 10 ], [ 2, 4, 5, 6, 9 ] ]
-gap> not GRAPHS_IsGrapeLoaded 
-> or (GRAPHS_IsGrapeLoaded and Digraph(Graph(gr)) = gr);
+gap> not DIGRAPHS_IsGrapeLoaded 
+> or (DIGRAPHS_IsGrapeLoaded and Digraph(Graph(gr)) = gr);
 true
-gap> not GRAPHS_IsGrapeLoaded 
-> or (GRAPHS_IsGrapeLoaded and Graph(Digraph(Graph(gr))).adjacencies = Graph(gr).adjacencies);
+gap> not DIGRAPHS_IsGrapeLoaded 
+> or (DIGRAPHS_IsGrapeLoaded and Graph(Digraph(Graph(gr))).adjacencies = Graph(gr).adjacencies);
 true
-gap> not GRAPHS_IsGrapeLoaded or 
-> (GRAPHS_IsGrapeLoaded and Digraph(Graph(rec( adjacencies := [
+gap> not DIGRAPHS_IsGrapeLoaded or 
+> (DIGRAPHS_IsGrapeLoaded and Digraph(Graph(rec( adjacencies := [
 >       [ 17, 19 ], [ 17, 20 ], [ 17, 18 ], [ 17, 20 ], [ 17, 18 ], [ 18, 19 ],
 >       [ 18, 20 ], [ 17, 19 ], [ 19, 20 ], [ 17, 20 ], [ 19, 20 ], [ 18, 19 ],
 >       [ 19, 20 ], [ 17, 19 ], [ 18, 20 ], [ 18, 20 ], 
@@ -171,4 +171,4 @@ gap> gr2 := DigraphReverseEdge(gr, 2);
 <digraph with 7 vertices, 12 edges>
 
 #
-gap> STOP_TEST( "Digraphs package: testinstall.tst");
+gap> STOP_TEST("Digraphs package: testinstall.tst");

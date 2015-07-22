@@ -7,11 +7,11 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Graphs package: digraph.tst");
-gap> LoadPackage("graphs", false);;
+gap> START_TEST("Digraphs package: digraph.tst");
+gap> LoadPackage("digraphs", false);;
 
 #
-gap> GraphsStartTest();
+gap> DigraphsStartTest();
 
 # DigraphVertexLabels
 gap> gr := RandomDigraph(10);;
@@ -94,7 +94,7 @@ vertices of the digraph,
 # Graph
 gap> gr := Digraph( [ [ 2, 2 ], [ ] ] );
 <multidigraph with 2 vertices, 2 edges>
-gap> if GRAPHS_IsGrapeLoaded then 
+gap> if DIGRAPHS_IsGrapeLoaded then 
 >   Graph(gr); 
 > fi;
 

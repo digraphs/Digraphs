@@ -7,11 +7,11 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Graphs package: prop.tst");
-gap> LoadPackage("graphs", false);;
+gap> START_TEST("Digraphs package: prop.tst");
+gap> LoadPackage("digraphs", false);;
 
 #
-gap> GraphsStartTest();
+gap> DigraphsStartTest();
 
 # IsMultiDigraph
 gap> gr1 := Digraph( [ ] );

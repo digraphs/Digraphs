@@ -7,11 +7,11 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Graphs package: display.tst");
-gap> LoadPackage("graphs", false);;
+gap> START_TEST("Digraphs package: display.tst");
+gap> LoadPackage("digraphs", false);;
 
 #
-gap> GraphsStartTest();
+gap> DigraphsStartTest();
 
 # Display, PrintString, String
 gap> Digraph( [ ] );
