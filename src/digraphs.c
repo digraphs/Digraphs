@@ -324,7 +324,7 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
         // 1. We've previously finished with this vertex, OR 
         // 2. Whether we've now investigated all descendant branches
         nbs = ELM_PLIST(adj, j);
-        if( ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
+        if (ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
           ptr[j] = 1;
           level--;
           if (level == 0) { 
@@ -383,7 +383,7 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
       free(stack);
       free(ptr);
       free(depth);
-      return INTOBJ_INT(-1);  // We have just travelled around a cycle
+      return INTOBJ_INT(-2);  // We have just travelled around a cycle
     }
 
     if (prev > depth[j]) {
@@ -393,7 +393,7 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
     // 1. We've previously finished with this vertex, OR 
     // 2. Whether we've now investigated all descendant branches
     nbs = ELM_PLIST(adj, j);
-    if( ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
+    if (ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
       ptr[j] = 1;
       level--;
       prev = depth[j];
@@ -451,7 +451,7 @@ static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) {
     // 1. We've previously visited with this vertex, OR 
     // 2. Whether we've now investigated all descendant branches
     nbs = ELM_PLIST(adj, j);
-    if( ptr[j] != 0 || k > (UInt) LEN_LIST(nbs)) {
+    if (ptr[j] != 0 || k > (UInt) LEN_LIST(nbs)) {
       ptr[j] = 1;
       level--;
       if (level == 0) { 
@@ -520,7 +520,7 @@ static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
         // 1. We've previously finished with this vertex, OR 
         // 2. Whether we've now investigated all descendant branches
         nbs = ELM_PLIST(adj, j);
-        if( ptr[j] == 2 ) {
+        if (ptr[j] == 2) {
           PLAIN_LIST(nbs);
           for ( l = 1; l <= LEN_PLIST(nbs); l++ ) {
             if ( last1 != j && INT_INTOBJ(ADDR_OBJ(nbs)[l]) == last1 ) {
@@ -531,7 +531,7 @@ static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
         if ( k > LEN_LIST(nbs) ) {
           ptr[j] = 1;
         }
-        if( ptr[j] >= 1 ) {
+        if (ptr[j] >= 1) {
           level--;
           if (level == 0) { 
             break;
@@ -883,11 +883,19 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
  *   3. Int val1 s.t initially dist[i][j] = val1 if [ i, j ] isn't an edge.
  *   4. Int val2 s.t initially dist[i][j] = val2 if [ i, j ] is an edge.
  *   5. bool copy:
+ *      - If true, FLOYD_WARSHALL stores the initialised dist, and
+ *        compares it with dist after it has gone through the 3 for-loops,
+ *        and returns true iff it is unchanged.
  *      - If false, proceeds as usual Floyd-Warshall algorithm and returns
  *        a GAP object matrix as the result.
- *      - If true, FLOYD_WARSHALL stores the initialised dist, and
- *        compares it with dist after it has gone through the 3 for loops,
- *        and returns true iff it is unchanged.
+ *   6. bool diameter:
+ *      - If true, FLOYD_WARSHALL goes through dist after the 3 for-loops,
+ *        returns -1 if dist contains the value -1, else it returns the 
+ *        maximum value of dist
+ *      - If false, proceeds as usual
+ *   7. bool shortest:
+ *      - If true, for each vertex i, dist[i][i] is initially set to 0
+ *      - If false, this step is skipped
  */
 static Obj FLOYD_WARSHALL(Obj digraph, 
                           void (*func)(Int** dist,
@@ -905,15 +913,16 @@ static Obj FLOYD_WARSHALL(Obj digraph,
 
   n = DigraphNrVertices(digraph);
 
+  // Special case for 0-vertex graph
   if (n == 0) {
     return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
   }
-  dist = malloc( n * n * sizeof(Int) );
 
+  // Initialise the n x n matrix with val1 and val2
+  dist = malloc( n * n * sizeof(Int) );
   for (i = 0; i < n * n; i++) {
     dist[i] = val1;
   }
-
   out = OutNeighbours(digraph); 
   for (i = 1; i <= n; i++) {
     outi = ELM_PLIST(out, i);
@@ -925,6 +934,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
   }
 
   if ( shortest ) {
+    // This is the special case for DIGRAPH_SHORTEST_DIST
     for ( i = 0; i < n; i++ ) {
       dist[i * n + i] = 0;
     }
@@ -936,7 +946,6 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     for ( i = 0; i < n * n; i++ ) {
       adj[i] = dist[i];
     }
-    // memcpy( (void*)adj, (void*)dist, n * n * sizeof(Int) );
   }
   
   for (k = 0; k < n; k++) {
@@ -949,6 +958,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
 
   // the following is a horrible hack
   if ( diameter ) {
+    // This is the special case for DIGRAPH_DIAMETER
     Int maximum = -1;
     for ( i = 0; i < n; i++ ) {
       for ( j = 0; j < n; j++ ) {
@@ -977,6 +987,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     return True;
   }
   
+  // Create GAP matrix to return
   out = NEW_PLIST(T_PLIST_TAB, n);
   SET_LEN_PLIST(out, n);
 
@@ -997,7 +1008,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
 }
 
 void FW_FUNC_SHORTEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
-  if((*dist)[i * n + k] != -1 && (*dist)[k * n + j] != -1){
+  if ((*dist)[i * n + k] != -1 && (*dist)[k * n + j] != -1) {
     if ((*dist)[i * n + j] == -1 || 
         (*dist)[i * n + j] > (*dist)[i * n + k] + (*dist)[k * n + j]) {
       (*dist)[i * n + j] = (*dist)[i * n + k] + (*dist)[k * n + j];
@@ -1010,16 +1021,22 @@ static Obj FuncDIGRAPH_SHORTEST_DIST(Obj self, Obj digraph) {
 }
 
 void FW_FUNC_LONGEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
-  if((*dist)[i * n + k] != -1 && (*dist)[k * n + j] != -1){
-    if ((*dist)[i * n + j] == -1 || 
-        (*dist)[i * n + j] < (*dist)[i * n + k] + (*dist)[k * n + j]) {
-      (*dist)[i * n + j] = (*dist)[i * n + k] + (*dist)[k * n + j];
+  if ((*dist)[i * n + j] != -2) {
+    if ((*dist)[i * n + k] != -1 && (*dist)[k * n + j] != -1) {
+      if (i == j || (*dist)[i * n + k] == -2 || (*dist)[k * n + j] == -2
+          || (*dist)[i * n + i] == -2 || (*dist)[j * n + j] == -2
+          || (*dist)[k * n + k] == -2) {
+        (*dist)[i * n + j] = -2;
+      } else if ((*dist)[i * n + j] == -1 || 
+          (*dist)[i * n + j] < (*dist)[i * n + k] + (*dist)[k * n + j]) {
+        (*dist)[i * n + j] = (*dist)[i * n + k] + (*dist)[k * n + j];
+      }
     }
   }
 }
 
 static Obj FuncDIGRAPH_LONGEST_DIST(Obj self, Obj digraph) {
-  return FLOYD_WARSHALL(digraph, FW_FUNC_LONGEST_DIST, -1, 1, false, false, true);
+  return FLOYD_WARSHALL(digraph, FW_FUNC_LONGEST_DIST, -1, 1, false, false, false);
 }
 
 static Obj FuncDIGRAPH_DIAMETER(Obj self, Obj digraph) {

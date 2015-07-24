@@ -381,6 +381,7 @@ function(n)
   SetIsMultiDigraph(gr, false);
   SetDigraphNrEdges(gr, n);
   SetIsFunctionalDigraph(gr, true);
+  SetIsStronglyConnectedDigraph(gr, true);
   return gr;
 end);
 
