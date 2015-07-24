@@ -915,6 +915,12 @@ static Obj FLOYD_WARSHALL(Obj digraph,
 
   // Special case for 0-vertex graph
   if (n == 0) {
+    if ( diameter ) {
+      return INTOBJ_INT(-1);
+    }
+    if ( copy ) {
+      return True;
+    }
     return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
   }
 
@@ -965,6 +971,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
         if ( dist[i * n + j] > maximum ) {
           maximum = dist[i * n + j];
         } else if ( dist[i * n + j] == -1 ) {
+          free(dist);
           return INTOBJ_INT(-1);
         }
       }
