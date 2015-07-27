@@ -1,4 +1,4 @@
-#############################################################################
+#%T##########################################################################
 ##
 #W  display.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
-# Display, PrintString, String
+#T# Display, PrintString, String
 gap> Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> Digraph( [ [ ] ] );
@@ -42,7 +42,7 @@ gap> PrintString(gr);
 gap> String(gr);
 "Digraph( [ [ 2 ], [ 3 ], [ ] ] )"
 
-# DotDigraph and DotSymmetricDigraph
+#T# DotDigraph and DotSymmetricDigraph
 gap> r := rec( vertices := [ 1 .. 3 ], source := [ 1, 1, 1, 1 ], 
 > range := [ 1, 2, 2, 3 ] );;
 gap> gr := Digraph(r);
@@ -71,5 +71,5 @@ gap> DotSymmetricDigraph(gr1);
 Error, Graphs: DotSymmetricDigraph: usage,
 the argument <graph> should be symmetric,
 
-#
-gap> STOP_TEST( "Digraphs package: display.tst");
+#E#
+gap> STOP_TEST( "Graphs package: display.tst");

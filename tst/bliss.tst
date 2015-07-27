@@ -1,4 +1,4 @@
-#############################################################################
+#%T##########################################################################
 ##
 #W  bliss.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
@@ -69,7 +69,7 @@ gap> treeAuts := [
 gap> List(trees, AutomorphismGroup) = treeAuts;
 true
 
-# AutomorphismGroup: this example is broken if we use Digraphs rather than
+#T# AutomorphismGroup: this example is broken if we use Digraphs rather than
 # Graphs in the bliss code (PJC's example)
 gap> gr := DigraphFromDigraph6String(Concatenation(
 > "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?A?S??", 
@@ -84,7 +84,7 @@ gap> H:=AutomorphismGroup(gr);
 gap> IsomorphismGroups(PrimitiveGroup(45,3), H) <> fail;
 true
 
-# AutomorphismGroup: some random examples
+#T# AutomorphismGroup: some random examples
 gap> AutomorphismGroup(Digraph( [ ] ));
 Group(())
 gap> gr := Digraph( [ [ 6, 7 ], [ 6, 9 ], [ 1, 3, 4, 5, 8, 9 ], 
@@ -100,7 +100,7 @@ gap> AutomorphismGroup(gr);
 gap> Size(last);
 1000
 
-# AutomorphismGroup for a MultiDigraph
+#T# AutomorphismGroup for a MultiDigraph
 gap> gr:=DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
 <multidigraph with 3 vertices, 6 edges>
 gap> AutomorphismGroup(gr);
@@ -114,7 +114,7 @@ gap> AutomorphismGroup(gr);
 gap> Size(last);
 56294995342131200
 
-# DigraphCanonicalLabelling: non-multigraph, PJC's example
+#T# DigraphCanonicalLabelling: non-multigraph, PJC's example
 gap> gr := DigraphFromDigraph6String(Concatenation(
 > "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?A?S??", 
 > "?OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO??`?_O??G?@",
@@ -198,7 +198,7 @@ gap> DigraphCanonicalLabelling(gr);
 344,824,601,2,518,446,74,891,106,920,587,884,248,477,594,854,119,843,982,392,
 134,252,173,194)( [...] )
 
-# IsIsomorphicDigraph
+#T# IsIsomorphicDigraph
 gap> p:=Random(SymmetricGroup(1000));;
 gap> gr2:=OnDigraphs(gr, p);
 <digraph with 1000 vertices, 100368 edges>
@@ -211,7 +211,7 @@ true
 gap> ForAny(graph5, x-> Number(graph5, y-> IsIsomorphicDigraph(x, y)) <> 1);
 false
 
-# IsomorphismDigraphs
+#T# IsomorphismDigraphs
 gap> gr1 := CompleteBipartiteDigraph(100,50);
 <digraph with 150 vertices, 10000 edges>
 gap> gr2 := CompleteBipartiteDigraph(50,100);
@@ -230,7 +230,7 @@ true
 gap> IsomorphismDigraphs(EmptyDigraph(1), gr1);
 fail
 
-# DigraphCanonicalLabelling for MultiDigraphs
+#T# DigraphCanonicalLabelling for MultiDigraphs
 gap> gr1 := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
 <multidigraph with 3 vertices, 6 edges>
 gap> perms := DigraphCanonicalLabelling(gr1);
@@ -246,5 +246,5 @@ true
 gap> gr2 = gr1;
 false
 
-#
-gap> STOP_TEST("Digraphs package: bliss.tst");
+#E#
+gap> STOP_TEST("Graphs package: bliss.tst");

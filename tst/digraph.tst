@@ -1,4 +1,4 @@
-#############################################################################
+#%T##########################################################################
 ##
 #W  digraph.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
-# DigraphVertexLabels
+#T# DigraphVertexLabels
 gap> gr := RandomDigraph(10);;
 gap> DigraphVertexLabels(gr);
 [ 1 .. 10 ]
@@ -54,7 +54,7 @@ gap> DigraphVertexLabels(gr);
 gap> DigraphVertices(gr);
 [ 1 .. 5 ]
 
-# DigraphEdgeLabels
+#T# DigraphEdgeLabels
 gap> gr := RandomMultiDigraph(8, 20);;
 gap> DigraphEdgeLabels(gr);
 [ 1 .. 20 ]
@@ -91,14 +91,14 @@ Error, Graphs: SetDigraphEdgeLabels: usage,
 the 2nd arument <names> must be a list with length equal to the number of
 vertices of the digraph,
 
-# Graph
+#T# Graph
 gap> gr := Digraph( [ [ 2, 2 ], [ ] ] );
 <multidigraph with 2 vertices, 2 edges>
 gap> if DIGRAPHS_IsGrapeLoaded then 
 >   Graph(gr); 
 > fi;
 
-# Digraph (by OutNeighbours)
+#T# Digraph (by OutNeighbours)
 gap> Digraph( [ [ 0, 1 ] ] );
 Error, Graphs: Digraph: usage,
 the argument must be a list of lists of positive integers
@@ -108,7 +108,7 @@ Error, Graphs: Digraph: usage,
 the argument must be a list of lists of positive integers
 not exceeding the length of the argument,
 
-# Digraph (by record)
+#T# Digraph (by record)
 gap> n := 3;;
 gap> v := [ 1 .. 3 ];;
 gap> s := [ 1, 2, 3 ];;
@@ -180,7 +180,7 @@ gap> Digraph( rec(
 Error, Graphs: Digraph: usage,
 the record component 'vertices' must be duplicate-free,
 
-# Digraph (for nrvertices, source and range)
+#T# Digraph (for nrvertices, source and range)
 gap> Digraph( Group(()), [  ], [  ] );
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `Digraph' on 3 arguments
@@ -230,7 +230,7 @@ of positive integers no greater than the first argument <nrvertices>,
 gap> Digraph( 4, [ 3, 1, 2, 3 ], [ 4, 1, 2, 4 ] );
 <multidigraph with 4 vertices, 4 edges>
 
-# Digraph (for vertices, source, range)
+#T# Digraph (for vertices, source, range)
 gap> Digraph( Group(()), [  ], [  ] );
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `Digraph' on 3 arguments
@@ -289,7 +289,7 @@ gap> DigraphRange(gr);
 gap> gr;
 <digraph with 3 vertices, 3 edges>
 
-# Digraph (for an integer and a function)
+#T# Digraph (for an integer and a function)
 gap> divides := function(a, b)
 >   if b mod a = 0 then
 >     return true;
@@ -299,7 +299,7 @@ gap> divides := function(a, b)
 gap> gr := Digraph( 12, divides );
 <digraph with 12 vertices, 35 edges>
 
-# Digraph (for a binary relation)
+#T# Digraph (for a binary relation)
 gap> g := Group( (1,2,3) );
 Group([ (1,2,3) ])
 gap> elms := [
@@ -342,7 +342,7 @@ gap> gr := Digraph(bin);
 gap> OutNeighbours(gr);
 [ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 4 ] ]
 
-# DigraphByEdges
+#T# DigraphByEdges
 gap> gr := Digraph( [ [ 1, 2, 3, 5 ], [ 1, 5 ], [ 2, 3, 6 ], [ 1, 3, 4 ], 
 > [ 1, 4, 6 ], [ 3, 4 ] ] );
 <digraph with 6 vertices, 17 edges>
@@ -372,7 +372,7 @@ the specified edges must not contain values greater than 1,
 gap> gr := DigraphByEdges( [  ], 3 );
 <digraph with 3 vertices, 0 edges>
 
-# DigraphByAdjacencyMatrix
+#T# DigraphByAdjacencyMatrix
 gap> mat := [
 > [ 1, 2, 3 ],
 > [ 1, 2, 3 ] ];;
@@ -441,7 +441,7 @@ true
 gap> DigraphByAdjacencyMatrix( [ ] );
 <digraph with 0 vertices, 0 edges>
 
-# DigraphByInNeighbours
+#T# DigraphByInNeighbours
 gap> gr1 := RandomMultiDigraph(50, 3000);
 <multidigraph with 50 vertices, 3000 edges>
 gap> inn := InNeighbours(gr1);;
@@ -494,7 +494,7 @@ gap> OutNeighbours(gr);
 gap> InNeighbors(gr) = inn;
 true
 
-# AsDigraph
+#T# AsDigraph
 gap> f := Transformation([]);
 IdentityTransformation
 gap> gr := AsDigraph(f);
@@ -517,7 +517,7 @@ Transformation( [ 2, 4, 1, 3 ] )
 gap> AsDigraph(h);
 <digraph with 4 vertices, 4 edges>
 
-# RandomDigraph
+#T# RandomDigraph
 gap> DigraphNrVertices(RandomDigraph(10));
 10
 gap> DigraphNrVertices(RandomDigraph(200, 0.854));
@@ -540,7 +540,7 @@ gap> RandomDigraph(10, -0.01);
 Error, Graphs: RandomDigraph: usage,
 the second argument <p> must be a float between 0 and 1,
 
-# RandomMultiDigraph
+#T# RandomMultiDigraph
 gap> DigraphNrVertices(RandomMultiDigraph(100));
 100
 gap> gr := RandomMultiDigraph(100, 1000);;
@@ -558,7 +558,7 @@ gap> RandomMultiDigraph(1, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `RandomMultiDigraph' on 2 arguments
 
-# RandomTournament
+#T# RandomTournament
 gap> RandomTournament(25);
 <digraph with 25 vertices, 300 edges>
 gap> RandomTournament(0);
@@ -567,7 +567,7 @@ gap> RandomTournament(-1);
 Error, Graphs: RandomTournament: usage,
 the argument <n> must be a non-negative integer,
 
-# CompleteDigraph
+#T# CompleteDigraph
 gap> gr := CompleteDigraph(5);
 <digraph with 5 vertices, 20 edges>
 gap> CompleteDigraph(1) = EmptyDigraph(1);
@@ -578,7 +578,7 @@ gap> CompleteDigraph(-1);
 Error, Graphs: CompleteDigraph: usage,
 the argument <n> must be a non-negative integer,
 
-# EmptyDigraph
+#T# EmptyDigraph
 gap> gr := EmptyDigraph(5);
 <digraph with 5 vertices, 0 edges>
 gap> EmptyDigraph(0);
@@ -587,7 +587,7 @@ gap> EmptyDigraph(-1);
 Error, Graphs: EmptyDigraph: usage,
 the argument <n> must be a non-negative integer,
 
-# CycleDigraph
+#T# CycleDigraph
 gap> gr := CycleDigraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `CycleDigraph' on 1 arguments
@@ -599,7 +599,7 @@ gap> DigraphEdges(gr);
 gap> gr := CycleDigraph(1000);
 <digraph with 1000 vertices, 1000 edges>
 
-# ChainDigraph
+#T# ChainDigraph
 gap> gr := ChainDigraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `ChainDigraph' on 1 arguments
@@ -620,7 +620,7 @@ true
 gap> IsAntisymmetricDigraph(grrt);
 true
 
-# CompleteBipartiteDigraph
+#T# CompleteBipartiteDigraph
 gap> gr := CompleteBipartiteDigraph(2, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `CompleteBipartiteDigraph' on 2 argument\
@@ -637,7 +637,7 @@ gap> DigraphEdges(gr);
   [ 5, 3 ], [ 5, 4 ], [ 6, 1 ], [ 6, 2 ], [ 6, 3 ], [ 6, 4 ], [ 7, 1 ], 
   [ 7, 2 ], [ 7, 3 ], [ 7, 4 ] ]
 
-# Equals
+#T# Equals
 gap> r1 := rec( nrvertices := 2, source := [ 1, 1, 2 ], range := [ 1, 2, 2 ] );
 rec( nrvertices := 2, range := [ 1, 2, 2 ], source := [ 1, 1, 2 ] )
 gap> r2 := rec( nrvertices := 2, source := [ 1, 1, 2 ], range := [ 2, 1, 2 ] );
@@ -891,7 +891,7 @@ gap> gr2 := Digraph( rec( nrvertices := 10, source := s, range := r2 ) );;
 gap> gr1 = gr2;
 true
 
-# Less than (<) for two digraphs
+#T# Less than (<) for two digraphs
 gap> gr1 := RandomMultiDigraph(10, 20);;
 gap> gr2 := RandomMultiDigraph(11, 21);;
 gap> gr1 < gr2; # Different NrVertices
@@ -1020,7 +1020,7 @@ false
 gap> gr2 < gr1;
 true
 
-# ReducedDigraph
+#T# ReducedDigraph
 gap> gr := EmptyDigraph(0);;
 gap> ReducedDigraph(gr) = gr;
 true
@@ -1051,5 +1051,5 @@ gap> DigraphVertexLabels(gr);
 gap> DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
 
-#
-gap> STOP_TEST( "Digraphs package: digraph.tst");
+#E#
+gap> STOP_TEST( "Graphs package: digraph.tst");

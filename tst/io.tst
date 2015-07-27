@@ -1,4 +1,4 @@
-#############################################################################
+#%T##########################################################################
 ##
 #W  io.tst
 #Y  Copyright (C) 2014
@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DigraphsStartTest();
 
-# DigraphFromGraph6String amd Graph6String
+#T# DigraphFromGraph6String amd Graph6String
 gap> DigraphFromGraph6String("?");
 <digraph with 0 vertices, 0 edges>
 gap> DigraphFromGraph6String("E?A?");
@@ -45,7 +45,7 @@ gap> list := ReadDigraphs(str);;
 gap> Size(list);
 34
 
-# DigraphFromSparse6String and Sparse6String
+#T# DigraphFromSparse6String and Sparse6String
 gap> DigraphFromSparse6String(":[___dCfEcdFjCIideLhIfJkLgkQge`RSbPTaOTbMNaS`QY");
 <digraph with 28 vertices, 84 edges>
 gap> DigraphFromSparse6String(":I`ACWqHKhhccTF");
@@ -76,7 +76,7 @@ gap> str := Sparse6String(gr);
 gap> DigraphFromSparse6String(str);
 <digraph with 131072 vertices, 6 edges>
 
-# DigraphFromDigraph6String and Digraph6String
+#T# DigraphFromDigraph6String and Digraph6String
 gap> gr := Digraph( [ [ 5 ], [ 1, 2, 5 ], [ 1 ], [ 2 ], [ 4 ] ] );
 <digraph with 5 vertices, 7 edges>
 gap> str := Digraph6String(gr);
@@ -89,7 +89,7 @@ gap> str := Digraph6String(gr);;
 gap> DigraphFromDigraph6String(str);
 <digraph with 231 vertices, 100 edges>
 
-# DigraphFromDiSparse6String and DiSparse6String
+#T# DigraphFromDiSparse6String and DiSparse6String
 gap> gr := Digraph( [ [ 1, 4 ], [ 2, 3, 4 ], [ 2, 4 ], [ 2 ] ] );
 <digraph with 4 vertices, 8 edges>
 gap> str := DiSparse6String(gr);
@@ -121,7 +121,7 @@ gap> str := DiSparse6String(gr);;
 gap> gr = DigraphFromDiSparse6String(str);
 true
 
-# WriteDigraphs and ReadDigraphs
+#T# WriteDigraphs and ReadDigraphs
 gap> gr := [  ];;
 gap> gr[1] := Digraph( 2^16, [ 1, 1, 3, 4, 7, 10, 100 ], 
 > [ 3, 4, 1, 1, 3, 100, 10 ] );
@@ -180,7 +180,7 @@ gap> rdgr := ReadDigraphs(filename);;
 gap> gr = rdgr;
 true
 
-# WritePlainTextDigraph and ReadPlainTextDigraph
+#T# WritePlainTextDigraph and ReadPlainTextDigraph
 gap> gr := Digraph( [ [ 1, 2 ], [ 2, 3 ], [  ] ] );
 <digraph with 3 vertices, 4 edges>
 gap> filename := Concatenation(DigraphsDir(), "/tst/out/plain.txt");;
@@ -202,5 +202,5 @@ gap> ReadPlainTextDigraph(filename, ',', 1, 'i');
 gap> last = gr;
 true
 
-#
-gap> STOP_TEST( "Digraphs package: io.tst");
+#E#
+gap> STOP_TEST( "Graphs package: io.tst");
