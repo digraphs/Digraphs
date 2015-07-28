@@ -85,7 +85,7 @@ InstallGlobalFunction(DigraphsTestAll,
 function()
   local dir_str, tst, dir, passed, filesplit, test, stringfile, filename;
 
-  Print("Reading all .tst files in the directory Digraphs/tst/...\n\n");
+  Print("Reading all .tst files in the directory digraphs/tst/...\n\n");
   dir_str:=Concatenation(PackageInfo("digraphs")[1]!.InstallationPath,"/tst");
   tst:=DirectoryContents(dir_str);
   dir:=Directory(dir_str);

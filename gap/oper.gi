@@ -1338,19 +1338,7 @@ InstallMethod(OutNeighborsCopy, "for a digraph",
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],
 function(digraph, v)
-  local x, max, out;
-
-  if HasDigraphLongestDistances(digraph) then
-    x := DigraphLongestDistances(digraph)[v];
-    if -2 in x then
-      return -2;
-    fi;
-    max := Maximum(x);
-    if max = -1 then
-      return 0;
-    fi;
-    return max;
-  fi;
+  local out;
 
   out := OutNeighbours(digraph);
   return DIGRAPH_LONGEST_DIST_VERTEX(out, v);

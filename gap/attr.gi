@@ -142,21 +142,6 @@ InstallMethod(AdjacencyMatrix, "for a digraph",
 InstallMethod(DigraphShortestDistances, "for a digraph",
 [IsDigraph], DIGRAPH_SHORTEST_DIST);
 
-InstallMethod(DigraphLongestDistances, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local n, l;
-
-  if HasIsStronglyConnectedDigraph(digraph)
-      and IsStronglyConnectedDigraph(digraph) then
-    n := DigraphNrVertices(digraph);
-    l := List([1 .. n], x -> -2);
-    return List([1 .. n], x -> l);
-  fi;
-
-  return DIGRAPH_LONGEST_DIST(digraph);
-end);
-
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
