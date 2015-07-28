@@ -170,5 +170,25 @@ true
 gap> gr2 := DigraphReverseEdge(gr, 2);
 <digraph with 7 vertices, 12 edges>
 
+#T# DigraphTopologicalSort
+gap> gr := Digraph( [ [ 2, 3 ], [ 3 ], [ ], [ 5, 6 ], [ 6 ], [ ] ] );
+<digraph with 6 vertices, 6 edges>
+gap> topo := DigraphTopologicalSort(gr);
+[ 3, 2, 1, 6, 5, 4 ]
+gap> p := Permutation(Transformation(topo), topo);
+(1,3)(4,6)
+gap> gr1 := OnDigraphs(gr, p);;
+gap> DigraphTopologicalSort(gr1) = DigraphVertices(gr1);
+true
+gap> gr := Digraph([[], [3], [], [5], [], [2, 3, 7, 1], [1], [2, 3, 4, 5]]);
+<digraph with 8 vertices, 11 edges>
+gap> topo := DigraphTopologicalSort(gr);
+[ 1, 3, 2, 5, 4, 7, 6, 8 ]
+gap> p := Permutation(Transformation(topo), topo);
+(2,3)(4,5)(6,7)
+gap> gr1 := OnDigraphs(gr, p ^ -1);;
+gap> DigraphTopologicalSort(gr1) = DigraphVertices(gr1);
+true
+
 #E#
 gap> STOP_TEST("Digraphs package: testinstall.tst");

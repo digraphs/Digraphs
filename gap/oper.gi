@@ -1356,4 +1356,40 @@ function(digraph, v)
   return DIGRAPH_LONGEST_DIST_VERTEX(out, v);
 end);
 
-#EOF
+# For a topologically sortable digraph G
+# This returns the least graph G' such that the reflexive transitive closures
+# of G and G' are equal
+
+InstallMethod(DigraphSkeleton, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local nr, topo, gr, p, new, inn, out;
+
+  nr := DigraphNrVertices(digraph);
+  if nr = 0 then
+    return digraph;
+  fi;
+
+  if IsMultiDigraph(digraph) then
+    Info(InfoDigraphs, 1, "This graph has multiple edges,");
+    return fail;
+  fi;
+
+  topo := DigraphTopologicalSort(digraph);
+  if topo = fail then
+    Info(InfoDigraphs, 1, "This graph is not topologically sortable,");
+    return fail;
+  fi;
+
+  gr := DigraphRemoveLoops(digraph);
+  if nr = 1 then
+    return gr;
+  fi;
+
+  p := Permutation(Transformation(topo), topo);
+  new := OnDigraphs(gr, p ^ -1);
+  inn := InNeighbours(new);
+  out := DIGRAPH_SKELETON(inn);
+
+  return OnDigraphs(Digraph(out), p);
+end);

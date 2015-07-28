@@ -33,7 +33,7 @@ Int DigraphNrVertices(Obj digraph) {
   }
   // The record comp should always be set so this should never be triggered
   ErrorQuit(
-  "Graphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
+  "Digraphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
   0L, 0L);
   return 0;
 }
@@ -74,7 +74,7 @@ Obj OutNeighbours(Obj digraph) {
     AssPRec(digraph, RNamName("adj"), adj);
     return adj;
   }
-  ErrorQuit("Graphs: OutNeighbours (C): not enough record components set,", 0L, 0L);
+  ErrorQuit("Digraphs: OutNeighbours (C): not enough record components set,", 0L, 0L);
   return False;
 }
 
@@ -424,6 +424,102 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
   return INTOBJ_INT(x);
 }
 
+// Takes in the InNeighbours of a topologically sorted digraph without
+// loops and without multiple edges.
+// Returns the OutNeighbours of its 'skeleton'.
+static Obj FuncDIGRAPH_SKELETON(Obj self, Obj adj) {
+
+  UInt  i, j, k, n, level, len, w, m, source;
+  bool  new_since, backtracking;
+  Obj   out, outj, nbs;
+  UInt  *ptr, *stack;
+  bool  *mat;
+
+  n = LEN_PLIST(adj);
+
+  // Special case for n = 0
+  if (n == 0) {
+    return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
+  }
+
+  // Create the GAP out-neighbours strcture of the result
+  out = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+  SET_LEN_PLIST(out, n);
+  for (i = 1; i <= n; i++) {
+    SET_ELM_PLIST(out, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+    SET_LEN_PLIST(ELM_PLIST(out, i), 0);
+    CHANGED_BAG(out);
+  }
+
+  // Create data structures needed for computation
+  ptr       = calloc(n + 1, sizeof(UInt));
+  mat = calloc(n * n, sizeof(bool));  
+  stack     = malloc((2 * n + 2) * sizeof(UInt));
+
+  // Start a depth-first search from each source of the digraph
+  for (i = 1; i <= n; i++) {
+    if (ptr[i] == 0) {
+      // Remember which vertex was the source
+      source = i;
+      // not sure if this next line is necessary 
+      backtracking = false;
+
+      stack[0] = i;
+      stack[1] = 1;
+      level = 1;
+      while (1) {
+        j = stack[0];
+        k = stack[1];
+
+        // Calculate if we need to add an edge from j -> (previous vertex)
+        if (!backtracking && j != source && !mat[(stack[-2]-1) * n + j - 1]) {
+          outj = ELM_PLIST(out, j);
+          len = LEN_PLIST(outj);
+          if (len == 0) {
+            RetypeBag(outj, T_PLIST_CYC+IMMUTABLE);
+            CHANGED_BAG(out);
+          }
+          AssPlist(outj, len + 1, INTOBJ_INT(stack[-2]));
+        }
+
+        nbs = ELM_PLIST(adj, j);
+
+        // Do we need to backtrack?
+        if (ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
+          if (level == 1) 
+            break;
+
+          backtracking = true;
+          level--;
+          stack -= 2;
+          ptr[stack[0]] = 0;
+          stack[1]++;
+          ptr[j] = 1;
+
+          // w is the vertex we are backtracking to (-1)
+          w = stack[0] - 1;
+          // Record which vertices we have discovered 'above' w
+          for (m = 0; m < n; m++) {
+            mat[w * n + m] = mat[w * n + m] + mat[(j - 1) * n + m];
+          }
+          mat[w * n + (j - 1)] = true;
+        } else {
+          backtracking = false;
+          level++;
+          stack += 2;
+          stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          stack[1] = 1;
+          ptr[j] = 2;
+        }
+      }
+    }
+  }
+  free(mat);
+  free(ptr);
+  free(stack);
+  return out;
+}
+
 static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) { 
   UInt  nr, i, j, k, level, target;
   Obj   nbs;
@@ -734,7 +830,7 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) 
   m1 = LEN_LIST(source);
   m2 = LEN_LIST(range);
   if (m1 != m2) {
-    ErrorQuit("Graphs: DIGRAPH_OUT_NBS: usage,\n<source> and <range> must be lists of equal length,", 0L, 0L);
+    ErrorQuit("Digraphs: DIGRAPH_OUT_NBS: usage,\n<source> and <range> must be lists of equal length,", 0L, 0L);
   }
   n = INT_INTOBJ(nrvertices);
   if (n == 0) {
@@ -1813,6 +1909,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_LONGEST_DIST_VERTEX", 2, "adj, start",
     FuncDIGRAPH_LONGEST_DIST_VERTEX, 
     "src/graphs.c:FuncDIGRAPH_LONGEST_DIST_VERTEX" },
+
+  { "DIGRAPH_SKELETON", 1, "adj",
+    FuncDIGRAPH_SKELETON,
+    "src/graphs.c:FuncDIGRAPH_SKELETON" },
 
   { "IS_ANTISYMMETRIC_DIGRAPH", 1, "adj",
     FuncIS_ANTISYMMETRIC_DIGRAPH, 

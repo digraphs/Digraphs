@@ -71,3 +71,5 @@ DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);
 
 DeclareOperation("OutNeighboursCopy", [IsDigraph]);
 DeclareOperation("OutNeighborsCopy", [IsDigraph]);
+
+DeclareAttribute("DigraphSkeleton", IsDigraph);
