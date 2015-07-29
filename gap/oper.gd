@@ -33,9 +33,12 @@ DeclareOperation("DigraphAddVerticesNC", [IsDigraph, IsInt, IsList]);
 
 DeclareOperation("DigraphFloydWarshall", [IsDigraph, IsFunction,
  IsObject, IsObject]);
-DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
-DeclareOperation("DigraphTransitiveClosure", [IsDigraph, IsBool]);
+DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
+DeclareOperation("DigraphTransitiveClosureNC", [IsDigraph, IsBool]);
+DeclareOperation("DigraphReflexiveTransitiveReduction", [IsDigraph]);
+DeclareOperation("DigraphTransitiveReduction", [IsDigraph]);
+DeclareOperation("DigraphTransitiveReductionNC", [IsDigraph, IsBool]);
 DeclareOperation("DigraphSymmetricClosure", [IsDigraph]);
 DeclareOperation("DigraphReverse", [IsDigraph]);
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsList]);
@@ -71,5 +74,3 @@ DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);
 
 DeclareOperation("OutNeighboursCopy", [IsDigraph]);
 DeclareOperation("OutNeighborsCopy", [IsDigraph]);
-
-DeclareAttribute("DigraphSkeleton", IsDigraph);

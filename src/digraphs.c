@@ -424,13 +424,13 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
   return INTOBJ_INT(x);
 }
 
-// Takes in the InNeighbours of a topologically sorted digraph without
-// loops and without multiple edges.
-// Returns the OutNeighbours of its 'skeleton'.
-static Obj FuncDIGRAPH_SKELETON(Obj self, Obj adj) {
+// Takes in-neighbours (Obj adj) of a topologically sorted non-multi digraph
+// Returns the out-neighbours of its transitive reduction.
+// If (Obj loops) == False, loops are removed (transitive reflexive reduction)
+static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
 
   UInt  i, j, k, n, level, len, w, m, source;
-  bool  new_since, backtracking;
+  bool  new_since, backtracking, rec_loops;
   Obj   out, outj, nbs;
   UInt  *ptr, *stack;
   bool  *mat;
@@ -440,6 +440,12 @@ static Obj FuncDIGRAPH_SKELETON(Obj self, Obj adj) {
   // Special case for n = 0
   if (n == 0) {
     return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
+  }
+
+  if (loops == True) {
+    rec_loops = true;
+  } else {
+    rec_loops = false;
   }
 
   // Create the GAP out-neighbours strcture of the result
@@ -470,6 +476,29 @@ static Obj FuncDIGRAPH_SKELETON(Obj self, Obj adj) {
       while (1) {
         j = stack[0];
         k = stack[1];
+
+        // We have found a loop on vertex j
+        if (ptr[j] == 2) {
+          if (stack[-2] != j) {
+            ErrorQuit("Digraphs: DIGRAPH_TRANS_REDUCTION, usage:\nThis function only accepts acyclic digraphs (with loops allowed),", 0L, 0L);
+          }
+          backtracking = true;
+          level--;
+          stack -= 2;
+          stack[1]++;
+          ptr[j] = 0;
+          if (rec_loops) {
+            // Store the loop
+            outj = ELM_PLIST(out, j);
+            len = LEN_PLIST(outj);
+            if (len == 0) {
+              RetypeBag(outj, T_PLIST_CYC+IMMUTABLE);
+              CHANGED_BAG(out);
+            }
+            AssPlist(outj, len + 1, INTOBJ_INT(j));
+          }
+          continue;
+        }
 
         // Calculate if we need to add an edge from j -> (previous vertex)
         if (!backtracking && j != source && !mat[(stack[-2]-1) * n + j - 1]) {
@@ -1891,9 +1920,9 @@ static StructGVarFunc GVarFuncs [] = {
     FuncDIGRAPH_LONGEST_DIST_VERTEX, 
     "src/graphs.c:FuncDIGRAPH_LONGEST_DIST_VERTEX" },
 
-  { "DIGRAPH_SKELETON", 1, "adj",
-    FuncDIGRAPH_SKELETON,
-    "src/graphs.c:FuncDIGRAPH_SKELETON" },
+  { "DIGRAPH_TRANS_REDUCTION", 2, "adj, loops",
+    FuncDIGRAPH_TRANS_REDUCTION,
+    "src/graphs.c:FuncDIGRAPH_TRANS_REDUCTION" },
 
   { "IS_ANTISYMMETRIC_DIGRAPH", 1, "adj",
     FuncIS_ANTISYMMETRIC_DIGRAPH, 

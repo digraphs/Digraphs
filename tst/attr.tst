@@ -240,8 +240,7 @@ gap> DigraphTopologicalSort(gr);
 #T# DigraphStronglyConnectedComponents
 gap> gens := [ Transformation( [ 1, 3, 3 ] ), Transformation( [ 2, 1, 2 ] ), 
 > Transformation( [ 2, 2, 1 ] ) ];;
-gap> s := Semigroup(gens);
-<transformation semigroup on 3 pts with 3 generators>
+gap> s := Semigroup(gens);;
 gap> gr := Digraph(RightCayleyGraphSemigroup(s));
 <multidigraph with 15 vertices, 45 edges>
 gap> DigraphStronglyConnectedComponents(gr);

@@ -585,6 +585,58 @@ gap> OutNeighbours(last);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphReflexiveTransitiveReduction">
+<ManSection>
+  <Oper Name="DigraphReflexiveTransitiveReduction" Arg="digraph"/>
+  <Oper Name="DigraphTransitiveReduction" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a topologically sortable digraph
+    [<Ref Attr="DigraphTopologicalSort"/>,
+    i.e. it contains no non-trivial cycles]
+    with no multiple edges, then these  functions return the
+    (reflexive) transitive reduction of <A>digraph</A>. 
+    <P/>
+
+    The (reflexive) transitive reduction of such a digraph is the unique
+    least subgraph such that the (reflexive) transitive closure of the
+    subgraph is equal to the (reflexive) transitive closure of <A>digraph</A>.
+    See <Ref Oper="DigraphReflexiveTransitiveClosure"/>.
+    In order words, it is the least subgraph of <A>digraph</A> which
+    retains the same reachability as <A>digraph</A>. <P/>
+
+    Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
+        <M>m</M> be the number of edges.
+    Then these operations
+    use methods with complexity <M>O(m + n + m \cdot n)</M>. 
+    <P/>
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 1, 2, 3 ], [ 3 ], [ 3 ] ] );;
+gap> DigraphHasLoops(gr);
+true
+gap> gr1 := DigraphReflexiveTransitiveReduction(gr);
+<digraph with 3 vertices, 2 edges>
+gap> DigraphHasLoops(gr1);
+false
+gap> OutNeighbours(gr1);
+[ [ 2 ], [ 3 ], [  ] ]
+gap> gr2 := DigraphTransitiveReduction(gr);
+<digraph with 3 vertices, 4 edges>
+gap> DigraphHasLoops(gr2);
+true
+gap> OutNeighbours(gr2);
+[ [ 2, 1 ], [ 3 ], [ 3 ] ]
+gap> DigraphReflexiveTransitiveClosure(gr)
+>  = DigraphReflexiveTransitiveClosure(gr1);
+true
+gap> DigraphTransitiveClosure(gr)
+>  = DigraphTransitiveClosure(gr2);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="InducedSubdigraph">
 <ManSection>
   <Oper Name="InducedSubdigraph" Arg="digraph, verts"/>
