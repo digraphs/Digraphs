@@ -330,7 +330,7 @@ function(n)
     SetIsEmptyDigraph(gr, false);
     SetIsAcyclicDigraph(gr, false);
     if n > 1 then
-      SetIsAntisymmetricDigraph(gr, true);
+      SetIsAntisymmetricDigraph(gr, false);
     fi;
   fi;
   SetIsMultiDigraph(gr, false);
