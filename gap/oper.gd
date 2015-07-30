@@ -31,8 +31,8 @@ DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt]);
 DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt, IsList]);
 DeclareOperation("DigraphAddVerticesNC", [IsDigraph, IsInt, IsList]);
 
-DeclareOperation("DigraphFloydWarshall", [IsDigraph, IsFunction,
- IsObject, IsObject]);
+DeclareOperation("DigraphFloydWarshall",
+                 [IsDigraph, IsFunction, IsObject, IsObject]);
 DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
 DeclareOperation("DigraphTransitiveClosureNC", [IsDigraph, IsBool]);

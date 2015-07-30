@@ -160,8 +160,8 @@ gap> DigraphNrEdges(gr);
 <ManSection>
   <Attr Name="OutNeighbours" Arg="digraph"/>
   <Attr Name="OutNeighbors" Arg="digraph"/>
-  <Attr Name="OutNeighboursCopy" Arg="digraph"/>
-  <Attr Name="OutNeighborsCopy" Arg="digraph"/>
+  <Oper Name="OutNeighboursCopy" Arg="digraph"/>
+  <Oper Name="OutNeighborsCopy" Arg="digraph"/>
   <Returns>The adjacencies of a digraph.</Returns>
   <Description>
     This function returns the list <C>out</C> of out-neighbours of each vertex
@@ -295,7 +295,7 @@ gap> InDegreeSequence(gr);
 
 <#GAPDoc Label="DigraphVertices">
 <ManSection>
-  <Oper Name="DigraphVertices" Arg="digraph"/>
+  <Attr Name="DigraphVertices" Arg="digraph"/>
   <Returns>The vertices of a digraph.</Returns>
   <Description>
     Returns the vertices of the digraph <A>digraph</A>. <P/>
