@@ -1372,5 +1372,25 @@ true
 gap> IsMutable(out3[1]);
 true
 
+#T# DigraphLongestDistanceFromVertex
+gap> nbs := [[2, 8, 10, 11], [3, 5], [4], [], [6], [7], [], [9], [5], [6],
+> [12], [13], [14], [6], [15, 1]];;
+gap> gr := Digraph(nbs);
+<digraph with 15 vertices, 18 edges>
+gap> DigraphHasLoops(gr);
+true
+gap> a := DigraphLongestDistanceFromVertex(gr, 1);
+6
+gap> 2 in nbs[1];
+true
+gap> b := DigraphLongestDistanceFromVertex(gr, 2);
+3
+gap> a >= b + 1;
+true
+gap> DigraphLongestDistanceFromVertex(gr, 4);
+0
+gap> DigraphLongestDistanceFromVertex(gr, 15);
+infinity
+
 #E#
 gap> STOP_TEST("Digraphs package: oper.tst");

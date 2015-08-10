@@ -383,7 +383,7 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
       free(stack);
       free(ptr);
       free(depth);
-      return INTOBJ_INT(-2);  // We have just travelled around a cycle
+      return -2;  // We have just travelled around a cycle
     }
 
     if (prev > depth[j]) {

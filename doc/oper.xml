@@ -1182,7 +1182,7 @@ false
         which traverses a cycle or a loop,
         then we consider there to be a path of infinite length from <A>v</A>
         (realised by repeatedly traversing the loop/cycle),
-        and so the result is <C>-2</C>.
+        and so the result is <C>infinity</C>.
         To disallow paths using loops, try using
         <Ref Oper="DigraphRemoveLoops"/>:<P/>
 
@@ -1212,7 +1212,7 @@ gap> DigraphLongestDistanceFromVertex(gr, 3);
 gap> 3 in DigraphSinks(gr);
 true
 gap> DigraphLongestDistanceFromVertex(gr, 6);
--2
+infinity
 ]]></Example>
   </Description>
 </ManSection>

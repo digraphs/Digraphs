@@ -1351,10 +1351,18 @@ InstallMethod(OutNeighborsCopy, "for a digraph",
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],
 function(digraph, v)
-  local out;
+  local dist;
 
-  out := OutNeighbours(digraph);
-  return DIGRAPH_LONGEST_DIST_VERTEX(out, v);
+  if not v in DigraphVertices(digraph) then
+    Error("Digraphs: DigraphLongestDistanceFromVertex: usage,\n",
+          "the second argument <v> must be a vertex of the first ",
+          "argument, <digraph>,");
+  fi;
+  dist := DIGRAPH_LONGEST_DIST_VERTEX(OutNeighbours(digraph), v);
+  if dist = -2 then
+    return infinity;
+  fi;
+  return dist;
 end);
 
 # For a topologically sortable digraph G
