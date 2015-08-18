@@ -160,8 +160,8 @@ gap> DigraphNrEdges(gr);
 <ManSection>
   <Attr Name="OutNeighbours" Arg="digraph"/>
   <Attr Name="OutNeighbors" Arg="digraph"/>
-  <Attr Name="OutNeighboursCopy" Arg="digraph"/>
-  <Attr Name="OutNeighborsCopy" Arg="digraph"/>
+  <Oper Name="OutNeighboursCopy" Arg="digraph"/>
+  <Oper Name="OutNeighborsCopy" Arg="digraph"/>
   <Returns>The adjacencies of a digraph.</Returns>
   <Description>
     This function returns the list <C>out</C> of out-neighbours of each vertex
@@ -295,7 +295,7 @@ gap> InDegreeSequence(gr);
 
 <#GAPDoc Label="DigraphVertices">
 <ManSection>
-  <Oper Name="DigraphVertices" Arg="digraph"/>
+  <Attr Name="DigraphVertices" Arg="digraph"/>
   <Returns>The vertices of a digraph.</Returns>
   <Description>
     Returns the vertices of the digraph <A>digraph</A>. <P/>
@@ -435,7 +435,7 @@ rec( comps := [  ], id := [  ] )
   <Attr Name="DigraphShortestDistances" Arg="digraph"/>
   <Returns>A square matrix of integers.</Returns>
   <Description>
-    If <A>digraph</A> is a directed graph with <M>n</M> vertices, then this 
+    If <A>digraph</A> is a digraph with <M>n</M> vertices, then this 
     function returns an <M>n \times n</M> matrix of integers <C>mat</C>.
     
     If a directed path from vertex <C>i</C> to vertex <C>j</C> exists,
@@ -459,39 +459,6 @@ gap> Display(mat);
   [   2,   0,   1,  -1 ],
   [   1,   1,   0,  -1 ],
   [  -1,  -1,  -1,   0 ] ]
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-#
-
-<#GAPDoc Label="DigraphLongestDistances">
-<ManSection>
-  <Attr Name="DigraphLongestDistances" Arg="digraph"/>
-  <Returns>A square matrix of integers.</Returns>
-  <Description>
-    If <A>digraph</A> is a directed graph with <M>n</M> vertices, then this 
-    function returns an <M>n \times n</M> matrix of integers <C>mat</C>.
-    
-    If a directed path from vertex <C>i</C> to vertex <C>j</C> exists,
-    then the value of <C>mat[i][j]</C> is the length of the longest such 
-    path.
-    <P/>
-
-    #TODO
-    WE NEED TO DECIDE WHAT TO DO IF A PATH ENCOUNTERS A CYCLE.
-    IGNORE? INFINITY? <P/>
-    
-    If no such path exists, then the value of <C>mat[i][j]</C> is <C>-1</C>.
-    If <M>n = 0</M>, then an empty list is returned. <P/>
-
-    The method used in this function is a version of the Floyd-Warshall 
-    algorithm, and has complexity <M>O(n^3)</M>.
-    
-    <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 1, 2 ], [ 4 ] ] );
-<digraph with 4 vertices, 6 edges>
 ]]></Example>
   </Description>
 </ManSection>

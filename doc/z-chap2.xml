@@ -24,6 +24,7 @@
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">
     <#Include Label="DigraphReflexiveTransitiveClosure">
+    <#Include Label="DigraphReflexiveTransitiveReduction">
     <#Include Label="DigraphAddVertex">
     <#Include Label="DigraphAddVertices">
     <#Include Label="DigraphAddEdge">

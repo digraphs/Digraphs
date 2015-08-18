@@ -30,7 +30,6 @@
   <Section><Heading>Reachability and connectivity</Heading>
     <#Include Label="DigraphDiameter">
     <#Include Label="DigraphShortestDistances">
-    <#Include Label="DigraphLongestDistances">
     <#Include Label="DigraphLongestDistanceFromVertex">
     <#Include Label="DigraphConnectedComponents">
     <#Include Label="DigraphConnectedComponent">

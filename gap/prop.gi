@@ -36,7 +36,7 @@ function(digraph)
     return true;
   elif IsMultiDigraph(digraph) then
     return false;
-  elif DigraphNrEdges(digraph) <> (n * (n - 1) ) then
+  elif DigraphNrEdges(digraph) <> (n * (n - 1)) then
     return false;
   fi;
   return not DigraphHasLoops(digraph);
@@ -51,7 +51,7 @@ function(digraph)
   if DigraphNrVertices(digraph) < 2 then
     return true;
   elif HasIsStronglyConnectedDigraph(digraph)
-   and IsStronglyConnectedDigraph(digraph) then
+      and IsStronglyConnectedDigraph(digraph) then
     return true;
   elif DigraphNrEdges(digraph) < DigraphNrVertices(digraph) - 1 then
     return false;
@@ -92,7 +92,7 @@ function(digraph)
   if n = 0 then
     return true;
   elif HasDigraphTopologicalSort(digraph) and
-    DigraphTopologicalSort(digraph) = fail then
+      DigraphTopologicalSort(digraph) = fail then
     return false;
   elif HasDigraphHasLoops(digraph) and DigraphHasLoops(digraph) then
     return false;
@@ -116,11 +116,11 @@ InstallMethod(IsSymmetricDigraph, "for a digraph",
 [IsDigraph],
 function(graph)
   local out, inn, new, i;
- 
+
   out := OutNeighbours(graph);
   inn := InNeighbours(graph);
 
-  if not ForAll(out, IsSortedList) then 
+  if not ForAll(out, IsSortedList) then
     new := EmptyPlist(Length(out));
     for i in DigraphVertices(graph) do
       new[i] := AsSortedList(ShallowCopy(out[i]));
@@ -142,10 +142,10 @@ end);
 #
 
 InstallMethod(IsTournament, "for a digraph",
-[IsDigraph], 
+[IsDigraph],
 function(digraph)
   local n;
-  
+
   if IsMultiDigraph(digraph) then
     return false;
   fi;
@@ -156,7 +156,7 @@ function(digraph)
     return true;
   fi;
 
-  if DigraphNrEdges(digraph) <> n * (n - 1) / 2 then 
+  if DigraphNrEdges(digraph) <> n * (n - 1) / 2 then
     return false;
   fi;
 
@@ -168,7 +168,7 @@ function(digraph)
     return true;
   fi;
 
-  if HasIsAcyclicDigraph(digraph) and IsAcyclicDigraph(digraph) then 
+  if HasIsAcyclicDigraph(digraph) and IsAcyclicDigraph(digraph) then
     return true;
   fi;
 
@@ -215,7 +215,7 @@ InstallMethod(IsReflexiveDigraph, "for a digraph with adjacency matrix",
 [IsDigraph and HasAdjacencyMatrix],
 function(digraph)
   local verts, mat, i;
-  
+
   verts := DigraphVertices(digraph);
   mat := AdjacencyMatrix(digraph);
 
@@ -231,9 +231,9 @@ InstallMethod(IsReflexiveDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
   local adj;
-  
+
   adj := OutNeighbours(digraph);
-  return ForAll( DigraphVertices(digraph), x -> x in adj[x] );
+  return ForAll(DigraphVertices(digraph), x -> x in adj[x]);
 end);
 
 #
@@ -293,7 +293,7 @@ end);
 #
 
 InstallMethod(IsTransitiveDigraph, "for a digraph",
-[IsDigraph], 
+[IsDigraph],
 function(digraph)
   local n, m, sorted, verts, out, trans, reflex, v, u;
 
@@ -301,7 +301,7 @@ function(digraph)
   m := DigraphNrEdges(digraph);
 
   # Try correct method vis-a-vis complexity
-  if m + n + ( m * n ) < ( n * n * n ) then
+  if m + n + (m * n) < (n * n * n) then
     sorted := DigraphTopologicalSort(digraph);
     if sorted <> fail then
       # Essentially create the transitive closure vertex by vertex.
@@ -310,7 +310,7 @@ function(digraph)
       out   := OutNeighbours(digraph);
       trans := EmptyPlist(n);
       for v in sorted do
-        trans[v] := BlistList( verts, [v]);
+        trans[v] := BlistList(verts, [v]);
         reflex   := false;
         for u in out[v] do
           trans[v] := UnionBlist(trans[v], trans[u]);
@@ -334,5 +334,3 @@ function(digraph)
   # Otherwise fall back to the Floyd Warshall version
   return IS_TRANSITIVE_DIGRAPH(digraph);
 end);
-
-#EOF

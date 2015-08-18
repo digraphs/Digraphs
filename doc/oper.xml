@@ -585,6 +585,58 @@ gap> OutNeighbours(last);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphReflexiveTransitiveReduction">
+<ManSection>
+  <Oper Name="DigraphReflexiveTransitiveReduction" Arg="digraph"/>
+  <Oper Name="DigraphTransitiveReduction" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a topologically sortable digraph
+    [<Ref Attr="DigraphTopologicalSort"/>,
+    i.e. it contains no non-trivial cycles]
+    with no multiple edges, then these  functions return the
+    (reflexive) transitive reduction of <A>digraph</A>. 
+    <P/>
+
+    The (reflexive) transitive reduction of such a digraph is the unique
+    least subgraph such that the (reflexive) transitive closure of the
+    subgraph is equal to the (reflexive) transitive closure of <A>digraph</A>.
+    See <Ref Oper="DigraphReflexiveTransitiveClosure"/>.
+    In order words, it is the least subgraph of <A>digraph</A> which
+    retains the same reachability as <A>digraph</A>. <P/>
+
+    Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
+        <M>m</M> be the number of edges.
+    Then these operations
+    use methods with complexity <M>O(m + n + m \cdot n)</M>. 
+    <P/>
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 1, 2, 3 ], [ 3 ], [ 3 ] ] );;
+gap> DigraphHasLoops(gr);
+true
+gap> gr1 := DigraphReflexiveTransitiveReduction(gr);
+<digraph with 3 vertices, 2 edges>
+gap> DigraphHasLoops(gr1);
+false
+gap> OutNeighbours(gr1);
+[ [ 2 ], [ 3 ], [  ] ]
+gap> gr2 := DigraphTransitiveReduction(gr);
+<digraph with 3 vertices, 4 edges>
+gap> DigraphHasLoops(gr2);
+true
+gap> OutNeighbours(gr2);
+[ [ 2, 1 ], [ 3 ], [ 3 ] ]
+gap> DigraphReflexiveTransitiveClosure(gr)
+>  = DigraphReflexiveTransitiveClosure(gr1);
+true
+gap> DigraphTransitiveClosure(gr)
+>  = DigraphTransitiveClosure(gr2);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="InducedSubdigraph">
 <ManSection>
   <Oper Name="InducedSubdigraph" Arg="digraph, verts"/>
@@ -1122,14 +1174,33 @@ false
   <Description>
     If <A>digraph</A> is a digraph and <A>v</A> is a vertex in <A>digraph</A>,
     then this function returns the length of the longest directed path in
-    <A>digraph</A> which begins at vertex <A>v</A>,
-    if all such paths have finite length.<P/>
+    <A>digraph</A> which begins at vertex <A>v</A>. <P/>
 
-    If no oath exists, i.e. if <A>v</A> is a sink of the digraph
-    (<Ref Attr="DigraphSinks"/>), then the result will be <C>0</C>.
-    If the longest directed path has infinite length,
-    i.e. if there is a path from <A>v</A> to a cycle of loop,
-    then the result will be <C>-1</C>.
+    <List>
+      <Item>
+        If there exists a directed path starting at vertex <A>v</A>
+        which traverses a cycle or a loop,
+        then we consider there to be a path of infinite length from <A>v</A>
+        (realised by repeatedly traversing the loop/cycle),
+        and so the result is <C>infinity</C>.
+        To disallow paths using loops, try using
+        <Ref Oper="DigraphRemoveLoops"/>:<P/>
+
+        <C>DigraphLongestDistanceFromVertex(DigraphRemoveLoops(<A>digraph</A>,<A>v</A>))</C>.
+      </Item>
+
+      <Item>
+        If no path from vertex <A>v</A> exists,
+        i.e. if <A>v</A> is a sink of the digraph
+        (<Ref Attr="DigraphSinks"/>), then the result is <C>0</C>.
+      </Item>
+
+      <Item>
+        Otherwise, if all directed paths
+        starting at vertex <A>v</A> have finite length,
+        then the length of the longest such path is returned.
+      </Item>
+    </List>
 
 <Example><![CDATA[
 gap> gr := Digraph( [ [ 2 ], [ 3, 4 ], [  ], [ 5 ], [  ], [ 6 ] ] );
@@ -1141,7 +1212,7 @@ gap> DigraphLongestDistanceFromVertex(gr, 3);
 gap> 3 in DigraphSinks(gr);
 true
 gap> DigraphLongestDistanceFromVertex(gr, 6);
--1
+infinity
 ]]></Example>
   </Description>
 </ManSection>

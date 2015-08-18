@@ -8,22 +8,22 @@
 #############################################################################
 ##
 
-InstallMethod(DigraphDual, "for a digraph", 
-[IsDigraph], 
+InstallMethod(DigraphDual, "for a digraph",
+[IsDigraph],
 function(digraph)
   local verts, old, new, gr, i;
-  
-  if IsMultiDigraph(digraph) then 
-    Error("Graphs: DigraphDual: usage,\n", 
-      "the argument <graph> must not have multiple edges,");
+
+  if IsMultiDigraph(digraph) then
+    Error("Digraphs: DigraphDual: usage,\n",
+          "the argument <graph> must not have multiple edges,");
     return;
   fi;
-  
+
   verts := DigraphVertices(digraph);
   old := OutNeighbours(digraph);
-  new := [  ];
+  new := [];
 
-  for i in verts do 
+  for i in verts do
     new[i] := DifferenceLists(verts, old[i]);
   od;
   gr := DigraphNC(new);
@@ -54,14 +54,14 @@ function(graph)
   out := EmptyPlist(DigraphNrEdges(graph));
   adj := OutNeighbours(graph);
   nr := 0;
-  
-  for i in DigraphVertices(graph) do 
-    for j in adj[i] do 
+
+  for i in DigraphVertices(graph) do
+    for j in adj[i] do
       nr := nr + 1;
-      out[nr] := [ i, j ];
+      out[nr] := [i, j];
     od;
   od;
-  return out;   
+  return out;
 end);
 
 # attributes for digraphs . . .
@@ -73,7 +73,7 @@ InstallMethod(AsGraph, "for a digraph", [IsDigraph], Graph);
 InstallMethod(DigraphVertices, "for a digraph",
 [IsDigraph],
 function(digraph)
-  return [ 1 .. DigraphNrVertices(digraph) ];
+  return [1 .. DigraphNrVertices(digraph)];
 end);
 
 InstallMethod(DigraphRange, "for a digraph",
@@ -142,9 +142,6 @@ InstallMethod(AdjacencyMatrix, "for a digraph",
 InstallMethod(DigraphShortestDistances, "for a digraph",
 [IsDigraph], DIGRAPH_SHORTEST_DIST);
 
-InstallMethod(DigraphLongestDistances, "for a digraph",
-[IsDigraph], DIGRAPH_LONGEST_DIST);
-
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
@@ -153,21 +150,21 @@ InstallMethod(DigraphTopologicalSort, "for a digraph",
   return DIGRAPH_TOPO_SORT(OutNeighbours(graph));
 end);
 
-# 
+#
 
 InstallMethod(DigraphStronglyConnectedComponents, "for a digraph",
 [IsDigraph],
 function(digraph)
   local verts;
-  
+
   if HasIsAcyclicDigraph(digraph) and IsAcyclicDigraph(digraph) then
     verts := DigraphVertices(digraph);
-    return rec( comps := List( verts, x -> [ x ] ), id := verts * 1 );
+    return rec(comps := List(verts, x -> [x]), id := verts * 1);
 
   elif HasIsStronglyConnectedDigraph(digraph)
-   and IsStronglyConnectedDigraph(digraph) then
+      and IsStronglyConnectedDigraph(digraph) then
     verts := DigraphVertices(digraph);
-    return rec( comps := [ verts * 1 ], id := verts * 0 + 1 );
+    return rec(comps := [verts * 1], id := verts * 0 + 1);
   fi;
 
   return GABOW_SCC(OutNeighbours(digraph));
@@ -185,9 +182,9 @@ InstallMethod(OutDegrees, "for a digraph",
 [IsDigraph],
 function(digraph)
   local adj, degs, i;
-  
+
   adj := OutNeighbours(digraph);
-  degs := EmptyPlist(  DigraphNrVertices(digraph) );
+  degs := EmptyPlist(DigraphNrVertices(digraph));
   for i in DigraphVertices(digraph) do
     degs[i] := Length(adj[i]);
   od;
@@ -197,12 +194,12 @@ end);
 #
 
 InstallMethod(InDegrees, "for a digraph with in neighbours",
-[IsDigraph and HasInNeighbours], 
+[IsDigraph and HasInNeighbours],
 function(digraph)
   local inn, degs, i;
-  
+
   inn := InNeighbours(digraph);
-  degs := EmptyPlist( DigraphNrVertices(digraph) );
+  degs := EmptyPlist(DigraphNrVertices(digraph));
   for i in DigraphVertices(digraph) do
     degs[i] := Length(inn[i]);
   od;
@@ -215,9 +212,9 @@ InstallMethod(InDegrees, "for a digraph",
 [IsDigraph],
 function(digraph)
   local adj, degs, x, i;
-  
+
   adj := OutNeighbours(digraph);
-  degs := [ 1 .. DigraphNrVertices(digraph)] * 0;
+  degs := [1 .. DigraphNrVertices(digraph)] * 0;
   for x in adj do
     for i in x do
       degs[i] := degs[i] + 1;
@@ -234,7 +231,10 @@ function(digraph)
   local out;
 
   out := ShallowCopy(OutDegrees(digraph));
-  Sort(out, function(a,b) return b < a; end);
+  Sort(out,
+       function(a, b)
+         return b < a;
+       end);
   return out;
 end);
 
@@ -246,7 +246,10 @@ function(digraph)
   local out;
 
   out := ShallowCopy(InDegrees(digraph));
-  Sort(out, function(a,b) return b < a; end);
+  Sort(out,
+       function(a, b)
+         return b < a;
+       end);
   return out;
 end);
 
@@ -258,7 +261,7 @@ function(digraph)
   local degs;
 
   degs := InDegrees(digraph);
-  return Filtered( DigraphVertices(digraph), x -> degs[x] = 0 );
+  return Filtered(DigraphVertices(digraph), x -> degs[x] = 0);
 end);
 
 InstallMethod(DigraphSources, "for a digraph with in-neighbours",
@@ -267,7 +270,7 @@ function(digraph)
   local inn, sources, count, i;
 
   inn := InNeighbours(digraph);
-  sources := EmptyPlist( DigraphNrVertices(digraph) );
+  sources := EmptyPlist(DigraphNrVertices(digraph));
   count := 0;
   for i in DigraphVertices(digraph) do
     if IsEmpty(inn[i]) then
@@ -286,13 +289,13 @@ function(digraph)
 
   verts := DigraphVertices(digraph);
   out := OutNeighbours(digraph);
-  seen := BlistList( verts, [  ] );
+  seen := BlistList(verts, []);
   for v in out do
     for i in v do
       seen[i] := true;
     od;
   od;
-  return Filtered( verts, x -> not seen[x] );
+  return Filtered(verts, x -> not seen[x]);
 end);
 
 #
@@ -303,7 +306,7 @@ function(digraph)
   local degs;
 
   degs := OutDegrees(digraph);
-  return Filtered( DigraphVertices(digraph), x -> degs[x] = 0 );
+  return Filtered(DigraphVertices(digraph), x -> degs[x] = 0);
 end);
 
 InstallMethod(DigraphSinks, "for a digraph",
@@ -312,7 +315,7 @@ function(digraph)
   local out, sinks, count, i;
 
   out   := OutNeighbours(digraph);
-  sinks := [  ];
+  sinks := [];
   count := 0;
   for i in DigraphVertices(digraph) do
     if IsEmpty(out[i]) then
@@ -339,10 +342,10 @@ function(digraph)
   out := OutNeighbours(digraph);
   deg := OutDegrees(digraph);
 
-  nrvisited := [ 1 .. Length(DigraphVertices(digraph)) ] * 0;
+  nrvisited := [1 .. Length(DigraphVertices(digraph))] * 0;
   period := 0;
 
-  for i in [ 1 .. Length(comps) ] do
+  for i in [1 .. Length(comps)] do
     stack := [comps[i][1]];
     len := 1;
     depth := EmptyPlist(Length(DigraphVertices(digraph)));
@@ -383,10 +386,8 @@ function(digraph)
   if DigraphNrVertices(digraph) = 0 then
     return -1;
   elif HasIsStronglyConnectedDigraph(digraph)
-   and not IsStronglyConnectedDigraph(digraph) then
+      and not IsStronglyConnectedDigraph(digraph) then
     return -1;
   fi;
   return DIGRAPH_DIAMETER(digraph);
 end);
-
-#EOF

@@ -12,14 +12,14 @@
 
 TournamentLineDecoder := function(str)
   local out, pos, n, i, j;
-  
+
   pos := 0;
   n := (Sqrt(8 * Length(str) + 1) + 1) / 2;
   out := List([1 .. n], x -> []);
-  for i in [1 .. n - 1] do 
-    for j in [i + 1 .. n] do 
+  for i in [1 .. n - 1] do
+    for j in [i + 1 .. n] do
       pos := pos + 1;
-      if str[pos] = '1' then 
+      if str[pos] = '1' then
         Add(out[i], j);
       else
         Add(out[j], i);
@@ -78,14 +78,14 @@ function(arg)
     decoder := arg[2];
     nr := arg[3];
   else
-    Error("Graphs: ReadDigraphs: usage,\n",
+    Error("Digraphs: ReadDigraphs: usage,\n",
           "ReadDigraphs( filename [,decoder][,pos] ),");
     return;
   fi;
 
   if (not IsString(name)) or (not (IsFunction(decoder) or decoder = fail))
-    or (not (IsPosInt(nr) or nr = infinity)) then
-    Error("Graphs: ReadDigraphs: usage,\n",
+      or (not (IsPosInt(nr) or nr = infinity)) then
+    Error("Digraphs: ReadDigraphs: usage,\n",
           "ReadDigraphs( filename [,decoder][,pos] ),");
     return;
   fi;
@@ -93,7 +93,7 @@ function(arg)
   file := IO_CompressedFile(name, "r");
 
   if file = fail then
-    Error("Graphs: ReadDigraphs: usage,\n",
+    Error("Digraphs: ReadDigraphs: usage,\n",
           "can't open file ", name, ",");
     return;
   fi;
@@ -102,13 +102,13 @@ function(arg)
     splitname := SplitString(name, ".");
     extension := splitname[Length(splitname)];
 
-    if extension in [ "gz", "bzip2", "xz"] then
+    if extension in ["gz", "bzip2", "xz"] then
       if Length(splitname) = 2 then
-        Error("Graphs: ReadDigraphs: usage,\n",
+        Error("Digraphs: ReadDigraphs: usage,\n",
               "can't determine the file format,");
         return;
       fi;
-      extension := splitname[Length(splitname)-1];
+      extension := splitname[Length(splitname) - 1];
     fi;
 
     if extension = "txt" then
@@ -122,7 +122,7 @@ function(arg)
     elif extension = "ds6" then
       decoder := DigraphFromDiSparse6String;
     else
-      Error("Graphs: ReadDigraphs: usage,\n",
+      Error("Digraphs: ReadDigraphs: usage,\n",
             "can't determine the file format,");
       return;
     fi;
@@ -130,18 +130,18 @@ function(arg)
   fi;
 
   if nr < infinity then
-    i:=0;
+    i := 0;
     repeat
-      i:=i+1;
-      line:=IO_ReadLine(file);
-    until i=nr or line="";
+      i := i + 1;
+      line := IO_ReadLine(file);
+    until i = nr or line = "";
     IO_Close(file);
     return decoder(Chomp(line));
   fi;
 
-  lines:=IO_ReadLines(file);
+  lines := IO_ReadLines(file);
   IO_Close(file);
-  for i in [1..Length(lines)] do
+  for i in [1 .. Length(lines)] do
     Info(InfoDigraphs, 1, "Reading graph ", i, " of ", Length(lines));
     lines[i] := decoder(Chomp(lines[i]));
   od;
@@ -165,11 +165,11 @@ function(s)
         i := i + 1;
         sum := sum + i;
       od;
-    return [ pos - sum + i, i + 1 ];
+    return [pos - sum + i, i + 1];
   end;
 
   if Length(s) = 0 then
-    Error("Graphs: DigraphFromGraph6String: usage,\n",
+    Error("Digraphs: DigraphFromGraph6String: usage,\n",
           "the input string has to be non-empty,");
     return;
   fi;
@@ -184,36 +184,34 @@ function(s)
   elif Length(list) > 300 then
     if list[2] = 63 then
       n := 0;
-      for i in [ 0 .. 5 ] do
+      for i in [0 .. 5] do
         n := n + 2 ^ (6 * i) * list[8 - i];
       od;
       start := 9;
     else
       n := 0;
-      for i in [ 0 .. 2 ] do
+      for i in [0 .. 2] do
         n := n + 2 ^ (6 * i) * list[4 - i];
       od;
-      start :=  5;
+      start := 5;
     fi;
   else
-    Error("Graphs: DigraphFromGraph6String: usage,\n",
+    Error("Digraphs: DigraphFromGraph6String: usage,\n",
           "<s> is not a valid graph6 input,");
     return;
   fi;
 
-  maxedges := n * ( n - 1 ) / 2;
-  if list <> [0] and
-     list <> [1] and
-     not (Int((maxedges - 1) / 6) +  start = Length(list) and
-          list[Length(list)] mod 2 ^ ((0 - maxedges) mod 6) = 0)
-     then
-    Error("Graphs: DigraphFromGraph6String: usage,\n",
+  maxedges := n * (n - 1) / 2;
+  if list <> [0] and list <> [1] and
+      not (Int((maxedges - 1) / 6) + start = Length(list) and
+           list[Length(list)] mod 2 ^ ((0 - maxedges) mod 6) = 0) then
+    Error("Digraphs: DigraphFromGraph6String: usage,\n",
           "<s> is not a valid graph6 input,");
     return;
   fi;
 
   out := EmptyPlist(n);
-  for i in [ 1 .. n ] do
+  for i in [1 .. n] do
     out[i] := [];
   od;
 
@@ -223,12 +221,12 @@ function(s)
     i := list[j];
     bpos := 1;
     while i > 0 do
-      if i mod 2  = 0 then
+      if i mod 2 = 0 then
         i := i / 2;
       else
         edge := FindCoord(pos + 6 - bpos, 0);
-	out[edge[1]][LEN_LIST(out[edge[1]]) + 1] := edge[2];
-	out[edge[2]][LEN_LIST(out[edge[2]]) + 1] := edge[1];
+        out[edge[1]][LEN_LIST(out[edge[1]]) + 1] := edge[2];
+        out[edge[2]][LEN_LIST(out[edge[2]]) + 1] := edge[1];
         i := (i - 1) / 2;
       fi;
       bpos := bpos + 1;
@@ -249,7 +247,7 @@ function(s)
 
   # Check for the special '+' character
   if s[1] <> '+' then
-    Error("Graphs: DigraphFromDigraph6String: usage,\n",
+    Error("Digraphs: DigraphFromDigraph6String: usage,\n",
           "<s> must be a string in Digraph6 format,");
     return;
   fi;
@@ -264,19 +262,19 @@ function(s)
   elif Length(list) > 300 then
     if list[3] = 63 then
       n := 0;
-      for i in [0..5] do
-        n := n + 2^(6*i)*list[9-i];
+      for i in [0 .. 5] do
+        n := n + 2 ^ (6 * i) * list[9 - i];
       od;
       start := 10;
     else
       n := 0;
-      for i in [0..2] do
-        n := n + 2^(6*i)*list[5-i];
+      for i in [0 .. 2] do
+        n := n + 2 ^ (6 * i) * list[5 - i];
       od;
       start := 6;
     fi;
   else
-    Error("Graphs: DigraphFromDigraph6String: usage,\n",
+    Error("Digraphs: DigraphFromDigraph6String: usage,\n",
           "<s> must be a string in Digraph6 format,");
     return;
   fi;
@@ -291,13 +289,13 @@ function(s)
     i := list[j];
     bpos := 1;
     while i > 0 do
-      if i mod 2  = 0 then
+      if i mod 2 = 0 then
         i := i / 2;
       else
         tabpos := pos + 6 - bpos;
-        source[len] := (tabpos-1) mod n + 1;
-	range[len] := (tabpos - source[len]) / n + 1;
-	len := len + 1;
+        source[len] := (tabpos - 1) mod n + 1;
+        range[len] := (tabpos - source[len]) / n + 1;
+        len := len + 1;
         i := (i - 1) / 2;
       fi;
       bpos := bpos + 1;
@@ -305,8 +303,7 @@ function(s)
     pos := pos + 6;
   od;
 
-  return Digraph( rec( nrvertices := n, range := range,
-    source := source ) );
+  return Digraph(rec(nrvertices := n, range := range, source := source));
 end);
 
 #
@@ -317,10 +314,9 @@ function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i,
   finish, x, j;
 
-
   # Check for the special ':' character
   if s[1] <> ':' then
-    Error("Graphs: DigraphFromSparse6String: usage,\n",
+    Error("Digraphs: DigraphFromSparse6String: usage,\n",
           "<s> must be a string in Sparse6 format,");
     return;
   fi;
@@ -337,23 +333,23 @@ function(s)
     start := 3;
   elif list[3] = 63 then
     if Length(list) <= 8 then
-      Error("Graphs: DigraphFromSparse6String: usage,\n",
+      Error("Digraphs: DigraphFromSparse6String: usage,\n",
             "<s> must be a string in Sparse6 format,");
       return;
     fi;
     n := 0;
-    for i in [ 0 .. 5 ] do
-      n := n + 2^(6 * i) * list[9 - i];
+    for i in [0 .. 5] do
+      n := n + 2 ^ (6 * i) * list[9 - i];
     od;
     start := 10;
   elif Length(list) > 4 then
-      n := 0; 
-      for i in [ 0 .. 2 ] do
-        n := n + 2^(6 * i) * list[5 - i];
+      n := 0;
+      for i in [0 .. 2] do
+        n := n + 2 ^ (6 * i) * list[5 - i];
       od;
       start := 6;
   else
-    Error("Graphs: DigraphFromSparse6String: usage,\n",
+    Error("Digraphs: DigraphFromSparse6String: usage,\n",
           "<s> must be a string in Sparse6 format,");
     return;
   fi;
@@ -366,12 +362,12 @@ function(s)
     bpos := 1;
     while num > 0 do
       if num mod 2 = 0 then
-	num := num / 2;
+        num := num / 2;
       else
         num := (num - 1) / 2;
-	blist[pos + 6 - bpos] := true;
+        blist[pos + 6 - bpos] := true;
       fi;
-      bpos :=  bpos + 1;
+      bpos := bpos + 1;
     od;
     pos := pos + 6;
   od;
@@ -388,7 +384,7 @@ function(s)
   len := 1;
   v := 0;
   i := 1;
-  # remove some of the padding 
+  # remove some of the padding
   finish := Length(blist) - (Length(blist) mod (k + 1));
   while i <= finish - k do
     if blist[i] then
@@ -398,9 +394,9 @@ function(s)
       fi;
     fi;
     x := 0;
-    for j in [ 1 .. k ] do
+    for j in [1 .. k] do
       if blist[i + j] then
-        x := x + 2^(k - j);
+        x := x + 2 ^ (k - j);
       fi;
     od;
     if x = n then # We have reached the end
@@ -408,7 +404,7 @@ function(s)
     elif x > v then
       v := x;
     else
-      range[len] := x; 
+      range[len] := x;
       source[len] := v;
       len := len + 1;
       if x <> v then
@@ -423,8 +419,7 @@ function(s)
   # JDM bad!
   range := range + 1;
   source := source + 1;
-  return Digraph( rec( nrvertices := n, range := range,
-   source := source  ) );
+  return Digraph(rec(nrvertices := n, range := range, source := source));
 end);
 
 #
@@ -448,10 +443,10 @@ function(string, substring)
   nr := 0;
 
   while m - i >= n do
-    if string{ [ i .. i + n - 1 ]} = substring then
+    if string{[i .. i + n - 1]} = substring then
       if i <> 1 then
         nr := nr + 1;
-        out[nr] := string{ [ j .. i - 1 ] };
+        out[nr] := string{[j .. i - 1]};
         j := i + n;
         i := i + n;
       fi;
@@ -460,7 +455,7 @@ function(string, substring)
     fi;
   od;
   nr := nr + 1;
-  out[nr] := string{ [ j .. Length(string) ] };
+  out[nr] := string{[j .. Length(string)]};
   return out;
 end);
 
@@ -481,13 +476,13 @@ function(arg)
       end;
   elif Length(arg) = 3 then
     delimiter1 := arg[1]; # what delineates one edge from the next
-    delimiter2 := arg[2]; # what delineates the range of an edge from its source
+    delimiter2 := arg[2];# what delineates the range of an edge from its source
     offset := arg[3];     # indexing starts at 0 or 1? or what?
     return
       function(string)
         local edges, x;
-        string:=SplitStringBySubstring(string, delimiter1);
-        Apply(string, x-> SplitStringBySubstring(x, delimiter2));
+        string := SplitStringBySubstring(string, delimiter1);
+        Apply(string, x -> SplitStringBySubstring(x, delimiter2));
         edges := EmptyPlist(Length(string));
         for x in string do
           Apply(x, Int);
@@ -497,7 +492,7 @@ function(arg)
         return DigraphByEdges(edges);
       end;
   else
-    Error("Graphs: DigraphPlainTextLineDecoder: usage,\n",
+    Error("Digraphs: DigraphPlainTextLineDecoder: usage,\n",
           "DigraphPlainTextLineDecoder(delimiter, [,delimiter], offset),");
     return;
   fi;
@@ -509,17 +504,16 @@ function(delimiter1, delimiter2, offset)
     local str, i, edges;
     edges := DigraphEdges(digraph);
 
-    if Length(edges) = 0 then 
+    if Length(edges) = 0 then
       return "";
     fi;
 
-    str := Concatenation(String(edges[1][1] + offset), 
-             delimiter2, String(edges[1][2] + offset));
+    str := Concatenation(String(edges[1][1] + offset), delimiter2,
+                         String(edges[1][2] + offset));
 
-    for i in [2 .. Length(edges)] do 
-      Append(str, 
-       Concatenation(delimiter1, String(edges[i][1] + offset), 
-                     delimiter2, String(edges[i][2] + offset)));
+    for i in [2 .. Length(edges)] do
+      Append(str, Concatenation(delimiter1, String(edges[i][1] + offset),
+                                delimiter2, String(edges[i][2] + offset)));
     od;
     return str;
   end;
@@ -535,10 +529,9 @@ function(name, delimiter, offset, ignore)
     delimiter := [delimiter];
   fi;
 
-  if (not IsString(name)) or (not IsString(delimiter))
-    or (not IsInt(offset))
-    or (not (IsString(ignore) or IsChar(ignore))) then
-    Error("Graphs: ReadPlainTextDigraph: usage,\n",
+  if (not IsString(name)) or (not IsString(delimiter)) or (not IsInt(offset))
+      or (not (IsString(ignore) or IsChar(ignore))) then
+    Error("Digraphs: ReadPlainTextDigraph: usage,\n",
           "ReadPlainTextDigraph( filename, delimiter, offset, ignore ),");
     return;
   fi;
@@ -550,7 +543,7 @@ function(name, delimiter, offset, ignore)
   file := IO_CompressedFile(name, "r");
 
   if file = fail then
-    Error("Graphs: ReadPlainTextDigraph,\n",
+    Error("Digraphs: ReadPlainTextDigraph: error,\n",
           "can't open file ", name, ",");
     return;
   fi;
@@ -574,15 +567,15 @@ end);
 
 InstallGlobalFunction(WritePlainTextDigraph,
 function(name, digraph, delimiter, offset)
-  local file, encoder, edge;
+  local file, edge;
 
   if IsChar(delimiter) then
     delimiter := [delimiter];
   fi;
 
   if (not IsString(name)) or (not IsString(delimiter))
-    or (not IsInt(offset)) then
-    Error("Graphs: WritePlainTextDigraph: usage,\n",
+      or (not IsInt(offset)) then
+    Error("Digraphs: WritePlainTextDigraph: usage,\n",
           "WritePlainTextDigraph( filename, digraph, delimiter, offset ),");
     return;
   fi;
@@ -590,16 +583,15 @@ function(name, digraph, delimiter, offset)
   file := IO_CompressedFile(name, "w");
 
   if file = fail then
-    Error("Graphs: WritePlainTextDigraph,\n",
+    Error("Digraphs: WritePlainTextDigraph: error,\n",
           "can't open file ", name, ",");
     return;
   fi;
 
   for edge in DigraphEdges(digraph) do
-    IO_WriteLine(file, Concatenation(
-            String(edge[1]+offset),
-            delimiter,
-            String(edge[2]+offset) ));
+    IO_WriteLine(file, Concatenation(String(edge[1] + offset),
+                                     delimiter,
+                                     String(edge[2] + offset)));
   od;
   IO_Close(file);
 end);
@@ -608,27 +600,28 @@ end);
 
 InstallGlobalFunction(WriteDigraphs,
 function(name, digraphs)
-  local splitpath, splitname, compext, ext, encoder, g6sum, s6sum, digraph, v, 
-        e, dg6sum, ds6sum, filepath, file, i, s;
+  local splitpath, splitname, compext, ext, encoder, g6sum, s6sum, v, e,
+  dg6sum, ds6sum, filepath, file, s, digraph, i;
+
   if not IsString(name) then
-    Error("Graphs: WriteDigraphs: usage,\n",
+    Error("Digraphs: WriteDigraphs: usage,\n",
           "<name> must be a string,");
     return;
   elif not ForAll(digraphs, IsDigraph) then
-    Error("Graphs: WriteDigraphs: usage,\n",
+    Error("Digraphs: WriteDigraphs: usage,\n",
           "<digraphs> must be a list of digraphs,");
     return;
   fi;
-  
+
   # Look for extension
   splitpath := SplitString(name, "/");
   splitname := SplitString(Remove(splitpath), ".");
   compext := fail;
-  
+
   if Length(splitname) >= 2 then
     ext := splitname[Length(splitname)];
     # Compression extensions
-    if ext in [ "gz", "bzip2", "xz"] then
+    if ext in ["gz", "bzip2", "xz"] then
       compext := Remove(splitname);
       if Length(splitname) >= 2 then
         ext := splitname[Length(splitname)];
@@ -652,12 +645,13 @@ function(name, digraphs)
     fi;
   else
     encoder := fail;
-  fi;  
-  
+  fi;
+
   if encoder = fail then
     # CHOOSE A GOOD ENCODER:
     # Do we know all the graphs to be symmetric?
-    if ForAll(digraphs, g-> HasIsSymmetricDigraph(g) and IsSymmetricDigraph(g)) then
+    if ForAll(digraphs, g -> HasIsSymmetricDigraph(g)
+                             and IsSymmetricDigraph(g)) then
       if ForAll(digraphs, IsMultiDigraph) then
         encoder := DiSparse6String;
         Add(splitname, "ds6");
@@ -668,8 +662,8 @@ function(name, digraphs)
         for digraph in digraphs do
           v := DigraphNrVertices(digraph);
           e := DigraphNrEdges(digraph);
-          g6sum := g6sum + (v * (v-1) / 2);
-          s6sum := s6sum + (e/2 * (Log2Int(v-1) + 2) * 3/2);
+          g6sum := g6sum + (v * (v - 1) / 2);
+          s6sum := s6sum + (e / 2 * (Log2Int(v - 1) + 2) * 3 / 2);
         od;
         if g6sum < s6sum and not ForAny(digraphs, DigraphHasLoops) then
           encoder := Graph6String;
@@ -690,8 +684,8 @@ function(name, digraphs)
         for digraph in digraphs do
           v := DigraphNrVertices(digraph);
           e := DigraphNrEdges(digraph);
-          dg6sum := dg6sum + v^2;
-          ds6sum := ds6sum + (e * (Log2Int(v) + 2) * 3/2);
+          dg6sum := dg6sum + v ^ 2;
+          ds6sum := ds6sum + (e * (Log2Int(v) + 2) * 3 / 2);
         od;
         if dg6sum < ds6sum then
           encoder := Digraph6String;
@@ -703,32 +697,32 @@ function(name, digraphs)
       fi;
     fi;
   fi;
-  
+
   # Rebuild the filename
   if compext <> fail then
     Add(splitname, compext);
   fi;
   Add(splitpath, JoinStringsWithSeparator(splitname, "."));
   filepath := JoinStringsWithSeparator(splitpath, "/");
-  
+
   if filepath <> name then
     Info(InfoWarning, 1, "Writing to ", filepath);
   fi;
   file := IO_CompressedFile(filepath, "w");
 
   if file = fail then
-    Error("Graphs: WriteDigraphs: usage,\n",
+    Error("Digraphs: WriteDigraphs: usage,\n",
           "can't open file ", filepath, ",\n");
     return;
   fi;
 
-  for i in [1..Length(digraphs)] do
+  for i in [1 .. Length(digraphs)] do
     Info(InfoDigraphs, 1,
          "Writing graph ", String(i), " of ", String(Length(digraphs)));
     s := encoder(digraphs[i]);
     IO_WriteLine(file, s);
   od;
-  
+
   IO_Close(file);
 end);
 
@@ -744,17 +738,17 @@ function(n)
     Add(list, n);
   elif n < 258248 then
     Add(list, 63);
-    Add(list, Int(n / 64^2));
+    Add(list, Int(n / 64 ^ 2));
     Add(list, Int(n / 64) mod 64);
     Add(list, n mod 64);
   elif n < 68719476736 then
     Add(list, 63);
     Add(list, 63);
-    Add(list, Int(n / 64^5));
-    Add(list, Int(n / 64^4) mod 64);
-    Add(list, Int(n / 64^3) mod 64);
-    Add(list, Int(n / 64^2) mod 64);
-    Add(list, Int(n / 64^1) mod 64);
+    Add(list, Int(n / 64 ^ 5));
+    Add(list, Int(n / 64 ^ 4) mod 64);
+    Add(list, Int(n / 64 ^ 3) mod 64);
+    Add(list, Int(n / 64 ^ 2) mod 64);
+    Add(list, Int(n / 64 ^ 1) mod 64);
     Add(list, n mod 64);
   else
     return fail;
@@ -768,14 +762,14 @@ InstallMethod(Graph6String, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
-  if ( IsMultiDigraph(graph)
-       or not IsSymmetricDigraph(graph)
-       or DigraphHasLoops(graph) ) then
-    Error("Graphs: Graph6String: usage,\n",
+  if (IsMultiDigraph(graph)
+      or not IsSymmetricDigraph(graph)
+      or DigraphHasLoops(graph)) then
+    Error("Digraphs: Graph6String: usage,\n",
           "<graph> must be symmetric and have no loops or multiple edges,");
     return;
   fi;
-  
+
   list := [];
   adj := OutNeighbours(graph);
   n := Length(DigraphVertices(graph));
@@ -783,22 +777,22 @@ function(graph)
   # First write the number of vertices
   lenlist := Graph6Length(n);
   if lenlist = fail then
-    Error("Graphs: Graph6String: usage,\n",
+    Error("Digraphs: Graph6String: usage,\n",
           "<graph> must have between 0 and 68719476736 vertices,");
     return;
   fi;
   Append(list, lenlist);
 
   # Find adjacencies (non-directed)
-  tablen := n * (n-1) / 2;
-  blist := BlistList([1..tablen+6], []);
+  tablen := n * (n - 1) / 2;
+  blist := BlistList([1 .. tablen + 6], []);
   for i in DigraphVertices(graph) do
     for j in adj[i] do
       # Loops not allowed
       if j > i then
-        blist[i + (j-2)*(j-1)/2] := true;
+        blist[i + (j - 2) * (j - 1) / 2] := true;
       elif i > j then
-        blist[j + (i-2)*(i-1)/2] := true;
+        blist[j + (i - 2) * (i - 1) / 2] := true;
       fi;
     od;
   od;
@@ -807,9 +801,9 @@ function(graph)
   pos := 0;
   while pos < tablen do
     block := 0;
-    for i in [1..6] do
-      if blist[pos+i] then
-        block := block + 2^(6-i);
+    for i in [1 .. 6] do
+      if blist[pos + i] then
+        block := block + 2 ^ (6 - i);
       fi;
     od;
     Add(list, block);
@@ -831,12 +825,12 @@ function(graph)
   n := Length(DigraphVertices(graph));
 
   # First write the special character '+'
-  Add(list,-20);
+  Add(list, -20);
 
   # Now write the number of vertices
   lenlist := Graph6Length(n);
   if lenlist = fail then
-    Error("Graphs: Digraph6String: usage,\n",
+    Error("Digraphs: Digraph6String: usage,\n",
           "<graph> must have between 0 and 68719476736 vertices,");
     return;
   fi;
@@ -844,10 +838,10 @@ function(graph)
 
   # Find adjacencies (non-directed)
   tablen := n ^ 2;
-  blist := BlistList([1..tablen+6], []);
+  blist := BlistList([1 .. tablen + 6], []);
   for i in DigraphVertices(graph) do
     for j in adj[i] do
-      blist[i + n*(j-1)] := true;
+      blist[i + n * (j - 1)] := true;
     od;
   od;
 
@@ -855,9 +849,9 @@ function(graph)
   pos := 0;
   while pos < tablen do
     block := 0;
-    for i in [1..6] do
-      if blist[pos+i] then
-        block := block + 2^(6-i);
+    for i in [1 .. 6] do
+      if blist[pos + i] then
+        block := block + 2 ^ (6 - i);
       fi;
     od;
     Add(list, block);
@@ -876,7 +870,7 @@ function(graph)
   local list, n, lenlist, adj, nredges, k, blist, v, nextbit, AddBinary, i, j,
         bitstopad, pos, block;
   if not IsSymmetricDigraph(graph) then
-    Error("Graphs: Sparse6String: usage,\n",
+    Error("Digraphs: Sparse6String: usage,\n",
           "the argument <graph> must be a symmetric digraph,");
     return;
   fi;
@@ -885,12 +879,12 @@ function(graph)
   n := Length(DigraphVertices(graph));
 
   # First write the special character ':'
-  Add(list,-5);
+  Add(list, -5);
 
   # Now write the number of vertices
   lenlist := Graph6Length(n);
   if lenlist = fail then
-    Error("Graphs: Sparse6String: usage,\n",
+    Error("Digraphs: Sparse6String: usage,\n",
           "<graph> must have between 0 and 68719476736 vertices,");
     return;
   fi;
@@ -902,42 +896,42 @@ function(graph)
 
   # k is the number of bits in a vertex label
   if n > 1 then
-    k := Log2Int(n-1) + 1;
+    k := Log2Int(n - 1) + 1;
   else
     k := 1;
   fi;
 
   # Add the edges one by one
-  blist := BlistList([1..nredges*(k+1)/2],[]);
+  blist := BlistList([1 .. nredges * (k + 1) / 2], []);
   v := 0;
   nextbit := 1;
   AddBinary := function(blist, i)
     local b;
-    for b in [1..k] do
-      blist[nextbit] := Int((i mod (2^(k-b+1))) / (2^(k-b))) = 1;
+    for b in [1 .. k] do
+      blist[nextbit] := Int((i mod (2 ^ (k - b + 1))) / (2 ^ (k - b))) = 1;
       nextbit := nextbit + 1;
     od;
   end;
-  for i in [1..Length(adj)] do
+  for i in [1 .. Length(adj)] do
     for j in adj[i] do
       if i < j then
         continue;
-      elif i-1 = v then
+      elif i = v + 1 then
         blist[nextbit] := false;
         nextbit := nextbit + 1;
-      elif i-1 = v+1 then
+      elif i = v + 2 then
         blist[nextbit] := true;
         nextbit := nextbit + 1;
         v := v + 1;
-      elif i-1 > v+1 then
+      elif i > v + 2 then
         blist[nextbit] := true;
         nextbit := nextbit + 1;
-        AddBinary(blist, i-1);
-        v := i-1;
+        AddBinary(blist, i - 1);
+        v := i - 1;
         blist[nextbit] := false;
         nextbit := nextbit + 1;
       fi;
-      AddBinary(blist, j-1);
+      AddBinary(blist, j - 1);
     od;
   od;
 
@@ -949,21 +943,21 @@ function(graph)
   #  2. Otherwise, pad with enough 1-bits to complete the
   #     multiple of 6.
 
-  bitstopad := 5 - ((nextbit-2) mod 6);
-  if ((n=2 and k=1) or
-      (n=4 and k=2) or
-      (n=8 and k=3) or
-      (n=16 and k=4)) and
-     (v = n-2) and
+  bitstopad := 5 - ((nextbit - 2) mod 6);
+  if ((n = 2 and k = 1) or
+      (n = 4 and k = 2) or
+      (n = 8 and k = 3) or
+      (n = 16 and k = 4)) and
+     (v = n - 2) and
      (bitstopad > k) then
     blist[nextbit] := false;
     bitstopad := bitstopad - 1;
   fi;
-  for i in [1..bitstopad] do
+  for i in [1 .. bitstopad] do
     Add(blist, true);
   od;
   if Length(blist) mod 6 <> 0 then
-    Error("Padding problem,");
+    Error("Digraphs: Sparse6String: usage,\nPadding problem,");
     return;
   fi;
 
@@ -971,9 +965,9 @@ function(graph)
   pos := 0;
   while pos < Length(blist) do
     block := 0;
-    for i in [1..6] do
-      if blist[pos+i] then
-        block := block + 2^(6-i);
+    for i in [1 .. 6] do
+      if blist[pos + i] then
+        block := block + 2 ^ (6 - i);
       fi;
     od;
     Add(list, block);
@@ -989,10 +983,10 @@ end);
 InstallMethod(DiSparse6String, "for a digraph",
 [IsDigraph],
 function(graph)
-  local list, n, lenlist, adj, source_i, range_i, source_d, range_d, len1, len2, 
-        i, j, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad, 
-        pos, block;
-  
+  local list, n, lenlist, adj, source_i, range_i, source_d, range_d, len1,
+  len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad,
+  pos, block, i, j;
+
   list := [];
   n := Length(DigraphVertices(graph));
 
@@ -1002,7 +996,7 @@ function(graph)
   # Now write the number of vertices
   lenlist := Graph6Length(n);
   if lenlist = fail then
-    Error("Graphs: DiSparse6String: usage,\n",
+    Error("Digraphs: DiSparse6String: usage,\n",
           "<graph> must have between 0 and 68719476736 vertices,");
     return;
   fi;
@@ -1019,12 +1013,12 @@ function(graph)
   for i in DigraphVertices(graph) do
     for j in adj[i] do
       if i <= j then
-        source_i[len1] := i-1;
-        range_i[len1] := j-1;
+        source_i[len1] := i - 1;
+        range_i[len1] := j - 1;
         len1 := len1 + 1;
       else
-        source_d[len2] := i-1;
-        range_d[len2] := j-1;
+        source_d[len2] := i - 1;
+        range_d[len2] := j - 1;
         len2 := len2 + 1;
       fi;
     od;
@@ -1032,34 +1026,34 @@ function(graph)
 
   # Sort decreasing edges according to source and then range
   sort_d := function(i, j)
-    if source_d[i] < source_d[j] or (source_d[i] = source_d[j]
-      and range_d[i] <= range_d[j]) then
+    if source_d[i] < source_d[j]
+        or (source_d[i] = source_d[j] and range_d[i] <= range_d[j]) then
       return true;
     else
       return false;
      fi;
   end;
 
-  perm := Sortex([ 1 .. Length(source_d) ], sort_d);
+  perm := Sortex([1 .. Length(source_d)], sort_d);
   source_d := Permuted(source_d, perm);
   range_d := Permuted(range_d, perm);
 
-  # Sort increasing edges according to range and then source 
+  # Sort increasing edges according to range and then source
   sort_i := function(i, j)
-    if range_i[i] < range_i[j] or (range_i[i] = range_i[j]
-      and source_i[i] <= source_i[j]) then
+    if range_i[i] < range_i[j]
+        or (range_i[i] = range_i[j] and source_i[i] <= source_i[j]) then
       return true;
     else
       return false;
      fi;
   end;
 
-  perm := Sortex([ 1 .. Length(range_i) ], sort_i);
+  perm := Sortex([1 .. Length(range_i)], sort_i);
   source_i := Permuted(source_i, perm);
   range_i := Permuted(range_i, perm);
 
-  # k is the number of bits in a vertex label we also want to be able to encode
-  # n as a separation symbol between increasing and decreasing edges
+  # k is the number of bits in a vertex label we also want to be able to
+  # encode n as a separation symbol between increasing and decreasing edges
   if n > 1 then
     k := LogInt(n, 2) + 1;
   else
@@ -1072,12 +1066,12 @@ function(graph)
   nextbit := 1;
   AddBinary := function(blist, i)
     local b;
-    for b in [1..k] do
-      blist[nextbit] := Int((i mod (2^(k - b + 1))) / (2^(k - b))) = 1;
+    for b in [1 .. k] do
+      blist[nextbit] := Int((i mod (2 ^ (k - b + 1))) / (2 ^ (k - b))) = 1;
       nextbit := nextbit + 1;
     od;
   end;
-  for i in [ 1 .. Length(source_d) ] do
+  for i in [1 .. Length(source_d)] do
     if source_d[i] = v then
       blist[nextbit] := false;
       nextbit := nextbit + 1;
@@ -1103,7 +1097,7 @@ function(graph)
 
   # Repeat everything for increasing edges
   v := 0;
-  for i in [ 1 .. Length(range_i) ] do
+  for i in [1 .. Length(range_i)] do
     if range_i[i] = v then
       blist[nextbit] := false;
       nextbit := nextbit + 1;
@@ -1132,19 +1126,19 @@ function(graph)
 
   bitstopad := 5 - ((nextbit - 2) mod 6);
   if ((n = 2 and k = 1) or
-     (n = 4 and k = 2) or
-     (n = 8 and k = 3) or
-     (n = 16 and k = 4)) and
-     (v = n - 2) and
-     (bitstopad > k) then
+      (n = 4 and k = 2) or
+      (n = 8 and k = 3) or
+      (n = 16 and k = 4)) and
+      (v = n - 2) and
+      (bitstopad > k) then
     blist[nextbit] := false;
     bitstopad := bitstopad - 1;
   fi;
-  for i in [ 1 .. bitstopad ] do
+  for i in [1 .. bitstopad] do
     Add(blist, true);
   od;
   if Length(blist) mod 6 <> 0 then
-    Error("Padding problem,");
+    Error("Digraphs: DiSparse6String: usage,\nPadding problem,");
     return;
   fi;
 
@@ -1154,7 +1148,7 @@ function(graph)
     block := 0;
     for i in [1 .. 6] do
       if blist[pos + i] then
-        block := block + 2^(6 - i);
+        block := block + 2 ^ (6 - i);
       fi;
     od;
     Add(list, block);
@@ -1164,7 +1158,7 @@ function(graph)
   # Create string to return
   return List(list, i -> CharInt(i + 63));
 end);
-  
+
 #
 
 InstallMethod(DigraphFromDiSparse6String, "for a directed graph",
@@ -1175,7 +1169,7 @@ function(s)
 
   # Check for the special ':' character
   if s[1] <> '.' then
-    Error("Graphs: DigraphFromDiSparse6String: usage,\n",
+    Error("Digraphs: DigraphFromDiSparse6String: usage,\n",
           "<s> must be a string in disparse6 format,");
     return;
   fi;
@@ -1192,39 +1186,39 @@ function(s)
     start := 3;
   elif list[3] = 63 then
     if Length(list) <= 8 then
-      Error("Graphs: DigraphFromDiSparse6String: usage,\n",
+      Error("Digraphs: DigraphFromDiSparse6String: usage,\n",
             s, " is not a valid disparse6 input,");
       return;
     fi;
     n := 0;
-    for i in [ 0 .. 5 ] do
-      n := n + 2^(6 * i) * list[9 - i];
+    for i in [0 .. 5] do
+      n := n + 2 ^ (6 * i) * list[9 - i];
     od;
     start := 10;
   elif Length(list) > 4 then
-      n := 0; 
-      for i in [ 0 .. 2 ] do
-        n := n + 2^(6 * i) * list[5 - i];
+      n := 0;
+      for i in [0 .. 2] do
+        n := n + 2 ^ (6 * i) * list[5 - i];
       od;
       start := 6;
   else
-    Error("Graphs: DigraphFromDiSparse6String: usage,\n",
+    Error("Digraphs: DigraphFromDiSparse6String: usage,\n",
           s, " is not a valid disparse6 input,");
     return;
   fi;
 
   # convert list into a list of bits;
-  blist := BlistList([ 1 .. (Length(list) - start + 1) * 6 ], []);
+  blist := BlistList([1 .. (Length(list) - start + 1) * 6], []);
   pos := 1;
-  for i in [ start .. Length(list) ] do
+  for i in [start .. Length(list)] do
     num := list[i];
     bpos := 1;
     while num > 0 do
       if num mod 2 = 0 then
-	num := num / 2;
+        num := num / 2;
       else
         num := (num - 1) / 2;
-	blist[pos + 6 - bpos] := true;
+        blist[pos + 6 - bpos] := true;
       fi;
       bpos := bpos + 1;
     od;
@@ -1233,7 +1227,7 @@ function(s)
 
   if n > 1 then
     k := LogInt(n, 2) + 1;
-  else 
+  else
     k := 1;
   fi;
 
@@ -1248,9 +1242,9 @@ function(s)
       v := v + 1;
     fi;
     x := 0;
-    for j in [ 1 .. k ] do
+    for j in [1 .. k] do
       if blist[i + j] then
-        x := x + 2^(k - j);
+        x := x + 2 ^ (k - j);
       fi;
     od;
     if x >= n then
@@ -1264,7 +1258,7 @@ function(s)
     fi;
     i := i + k + 1;
   od;
-  
+
   i := i + k + 1;
 
   # Get the increasing edges
@@ -1275,9 +1269,9 @@ function(s)
       v := v + 1;
     fi;
     x := 0;
-    for j in [ 1 .. k ] do
+    for j in [1 .. k] do
       if blist[i + j] then
-        x := x + 2^(k - j);
+        x := x + 2 ^ (k - j);
       fi;
     od;
     if x >= n then
@@ -1287,7 +1281,7 @@ function(s)
     else
       range[len] := v;
       source[len] := x;
-      len  := len + 1;
+      len := len + 1;
     fi;
     i := i + k + 1;
   od;
@@ -1295,14 +1289,13 @@ function(s)
   range := range + 1;
   source := source + 1;
 
-  return Digraph( rec( nrvertices := n, range := range,
-    source := source  ) );
+  return Digraph(rec(nrvertices := n, range := range, source := source));
 end);
 
 #
 
 InstallMethod(PlainTextString, "for a digraph",
-[IsDigraph], 
+[IsDigraph],
 function(digraph)
   local encoder;
   encoder := DigraphPlainTextLineEncoder("  ", " ", -1);
@@ -1310,12 +1303,9 @@ function(digraph)
 end);
 
 InstallMethod(DigraphFromPlainTextString, "for a string",
-[IsString], 
+[IsString],
 function(digraph)
   local decoder;
   decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
   return decoder(digraph);
 end);
-
-
-#EOF

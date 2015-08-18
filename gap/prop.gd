@@ -22,10 +22,10 @@ DeclareProperty("IsTransitiveDigraph", IsDigraph);
 DeclareProperty("DigraphHasLoops", IsDigraph);
 DeclareProperty("IsAperiodicDigraph", IsDigraph);
 
-InstallTrueMethod( IsAntisymmetricDigraph, IsTournament );
-InstallTrueMethod( IsAntisymmetricDigraph, IsAcyclicDigraph );
-InstallTrueMethod( IsTransitiveDigraph, IsTournament and IsAcyclicDigraph );
-InstallTrueMethod( IsAcyclicDigraph, IsTournament and IsTransitiveDigraph );
-InstallTrueMethod( IsSymmetricDigraph, IsCompleteDigraph );
-InstallTrueMethod( IsTransitiveDigraph, IsCompleteDigraph );
-InstallTrueMethod( IsAcyclicDigraph, IsEmptyDigraph );
+InstallTrueMethod(IsAntisymmetricDigraph, IsTournament);
+InstallTrueMethod(IsAntisymmetricDigraph, IsAcyclicDigraph);
+InstallTrueMethod(IsTransitiveDigraph, IsTournament and IsAcyclicDigraph);
+InstallTrueMethod(IsAcyclicDigraph, IsTournament and IsTransitiveDigraph);
+InstallTrueMethod(IsSymmetricDigraph, IsCompleteDigraph);
+InstallTrueMethod(IsTransitiveDigraph, IsCompleteDigraph);
+InstallTrueMethod(IsAcyclicDigraph, IsEmptyDigraph);
