@@ -30,6 +30,32 @@ TournamentLineDecoder := function(str)
   return Digraph(out);
 end;
 
+#TODO make this a global function, doc, tests.
+#
+# TCode is output by geng/watercluster each line looks like:
+#
+#   3 2 0 2 2 1
+#
+# interpreted as: 
+#
+#   3 vertices, 2 edges, 0 -> 2, 2 -> 1
+#
+# where the vertices are [0, 1, 2].
+
+TCodeDecoder := function(str)
+  local n, out, i;
+ 
+  str := SplitString(str, " ");
+  Apply(str, EvalString);
+  out := List([1 .. str[1]], x -> []); #str[1] = number of vertices
+
+  for i in [1 .. str[2]] do # str[2] = number of edges
+    Add(out[str[2 * i + 1] + 1],  str[2 * i + 2] + 1);
+  od;
+
+  return Digraph(out);
+end; 
+
 InstallGlobalFunction(ReadDigraphs,
 function(arg)
   local name, decoder, nr, file, splitname, extension, i, line, lines;
