@@ -8,9 +8,36 @@
 #############################################################################
 ##
 
+TournamentLineDecoder := function(str)
+  local out, pos, n, i, j;
+  
+  pos := 0;
+  n := (Sqrt(8 * Length(str) + 1) + 1) / 2;
+  out := List([1 .. n], x -> []);
+  for i in [1 .. n - 1] do 
+    for j in [i + 1 .. n] do 
+      pos := pos + 1;
+      if str[pos] = '1' then 
+        Add(out[i], j);
+      else
+        Add(out[j], i);
+      fi;
+    od;
+  od;
+
+  return Digraph(out);
+end;
+
+
 #TODO make this a global function, doc, tests.
 
-TournamentLineDecoder := function(str)
+# To decode graphs stored by:
+#
+#   Each is given as the upper triangle of the adjacency matrix in row order,
+#   on one line without spaces. The lower triangle is zero; that is, the points
+#   are in topological order.
+
+AdjacencyMatrixUpperTriangleLineDecoder := function(str)
   local out, pos, n, i, j;
 
   pos := 0;
@@ -21,8 +48,6 @@ TournamentLineDecoder := function(str)
       pos := pos + 1;
       if str[pos] = '1' then
         Add(out[i], j);
-      else
-        Add(out[j], i);
       fi;
     od;
   od;

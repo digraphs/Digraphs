@@ -23,50 +23,63 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
           "not yet implemented,");
   fi;
 
-  if hook <> fail and not IsFunction(hook) then
+  if hook <> fail then 
+    if not (IsFunction(hook) and NumberArgumentsFunction(hook) = 2) then
+      Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+            "the 3rd argument <hook> has to be a function with 2 arguments,");
+      return;
+    fi;
+  elif not IsList(user_param) then 
     Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "<hook> has to be a function,");
+          "the 4th argument <user_param> must be a list,");
     return;
   fi;
 
   if limit = infinity then
     limit := fail;
-  elif limit <> fail and not IsPosInt(limit) then
+  elif not IsPosInt(limit) then
     Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "<limit> has to be a positive integer or infinity,");
+          "the 5th argument <limit> has to be a positive integer or infinity,");
     return;
   fi;
 
-  if hint = infinity then
-    hint := fail;
-  elif hint <> fail and not IsPosInt(hint) then
+  if hint <> fail and not IsPosInt(hint) then
     Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "<hint> has to be a positive integer or infinity,");
+          "the 6th argument <hint> has to be a positive integer or infinity,");
     return;
   fi;
 
-  if not IsBool(isinjective) then
+  if not (isinjective in [true, false]) then
     Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "<isinjective> has to be a bool,");
+          "the 7th argument <isinjective> has to be a true or false,");
+    return;
+  elif isinjective and hint < DigraphNrVertices(gr1) then 
+    return user_param;
+  fi;
+
+  if not (IsHomogeneousList(image) 
+          and ForAll(image, x -> IsPosInt(x) and x <= DigraphNrVertices(gr2)))
+      then
+    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
+          "the 8th argument <image> has to be a list of vertices of the 2nd argument,");
     return;
   fi;
 
-  if not (image = fail or IsList(image))  then
+  if not (IsList(map) and Length(map) <= DigraphNrVertices(gr1) 
+          and ForAll(map, x -> x in image)) then
     Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "<image> has to be a list,");
+          "the 9th argument <map> has to be a list,");# TODO improve
     return;
   fi;
-
-  if not (map = fail or IsList(map)) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "<map> has to be a list,");
-    return;
+  
+  if image = DigraphVertices(gr2) then 
+    image := fail;
   fi;
 
   if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
-    out := GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective,
-                       image, fail, map);
-    return out;
+    GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
+                fail, map);
+    return user_param;
   else
     Error("Digraphs: HomomorphismGraphsFinder: error,\n",
           "not yet implemented,");
@@ -104,9 +117,8 @@ function(arg)
 
   gens := List(GeneratorsOfGroup(AutomorphismGroup(digraph)),
                AsTransformation);
-  if limit = infinity then
-    limit := fail;
-  else
+
+  if IsPosInt(limit) then
     limit := limit - Length(gens);
   fi;
 
@@ -115,7 +127,7 @@ function(arg)
   fi;
 
   out := HomomorphismGraphsFinder(digraph, digraph, fail, gens, limit, fail,
-                                  false, fail, fail);
+                                  false, DigraphVertices(digraph), []);
 
   if limit = fail then
     SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
@@ -154,7 +166,7 @@ InstallMethod(HomomorphismGraphs, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(gr1, gr2)
   local out;
-
+  # TODO revise this
   out := HomomorphismGraphsFinder(gr1, gr2, fail, fail, 1,
                                   DigraphNrVertices(gr2), false, fail, fail);
 
@@ -172,6 +184,7 @@ InstallMethod(HomomorphismsGraphsRepresentatives,
 "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(gr1, gr2)
+  # TODO revise this
   return HomomorphismGraphsFinder(gr1, gr2, fail, fail, fail,
                                   DigraphNrVertices(gr2), false, fail, fail);
 end);

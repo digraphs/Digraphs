@@ -1,3 +1,4 @@
+
 /***************************************************************************
 **
 *A  homos.c                  graph homomorphisms              Julius Jonusas
@@ -338,7 +339,8 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
       i = j / SYS_BITS;
       m = j % SYS_BITS;
       if (map[j] == UNDEFINED) {
-        if (neighbours1[pos * len_nr1 + i] & oneone[m]) { // vertex j is adjacent to vertex pos in graph1
+        if (neighbours1[pos * len_nr1 + i] & oneone[m]) { 
+          // vertex j is adjacent to vertex pos in graph1
           copy = push_condition(depth, j, get_condition(j));
           size = 0; 
 	  for (k = 0; k < nr2_d; k++){
@@ -432,7 +434,6 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   nr2_m = (nr2 - 1) % SYS_BITS;
   len_nr1 = nr1_d + 1;
   len_nr2 = nr2_d + 1;
-  
 
   assert(nr1 <= MAXVERTS && nr2 <= MAXVERTS);
   
@@ -540,7 +541,9 @@ void GraphHomomorphisms (HomosGraph*  graph1,
             if (!has_trivial_stab) {
               calls2++;
               // stabiliser of the point i in the stabiliser at current rep_depth
-              is_trivial = point_stabilizer(stab_gens[rep_depth], partial_map[next], &stab_gens[rep_depth + 1]);
+              is_trivial = point_stabilizer(stab_gens[rep_depth], 
+                                            partial_map[next], 
+                                            &stab_gens[rep_depth + 1]);
             }
       	    map[next] = partial_map[next];
 	    depth++;
