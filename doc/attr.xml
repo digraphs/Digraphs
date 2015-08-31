@@ -180,8 +180,8 @@ gap> DigraphNrEdges(gr);
     <A>digraph</A>. <P/>
 
     The function <C>OutNeighbours</C> returns an immutable list of immutable 
-    lists, whereas the function <C>OutNeighboursCopy</C> returns a mutable list
-    of mutable lists. <P/>
+    lists, whereas the function <C>OutNeighboursCopy</C> returns a copy of
+    <C>OutNeighbours</C> which is a mutable list of mutable lists. <P/>
     <Example><![CDATA[
 gap> gr := Digraph( [ "a", "b", "c" ],
 > [ "a", "b", "b" ],
