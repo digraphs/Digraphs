@@ -69,5 +69,3 @@ DeclareOperation("DigraphEdgeLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphEdgeLabels", [IsDigraph]);
 DeclareOperation("SetDigraphEdgeLabel", [IsDigraph, IsPosInt, IsObject]);
 DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsList]);
-
-DeclareOperation("ReducedDigraph", [IsDigraph]);
