@@ -40,7 +40,7 @@ gap> List(l, x -> DigraphFromGraph6String(x));
   <digraph with 9 vertices, 38 edges>, <digraph with 9 vertices, 34 edges> ]
 
 # ReadDigraphs
-gap> str := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6");;
+gap> str := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;
 gap> list := ReadDigraphs(str);;
 gap> Size(list);
 34
