@@ -1024,8 +1024,8 @@ function(digraph, partition)
   elif n = 0 then
     ErrorMayQuit("Digraphs: QuotientDigraph: usage,\n",
                  "the second arg <partition> is not a valid partition of ",
-                 "the\nvertices of the null digraph <digraph>. The only valid ",
-                 "partition\nof <digraph> is the empty list,");
+                 "the\nvertices of the null digraph <digraph>. The only ",
+                 "valid partition\nof <digraph> is the empty list,");
   fi;
   nr := Length(partition);
   if n = 0 or nr = 0 or not IsList(partition[1])

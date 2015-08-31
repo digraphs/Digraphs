@@ -98,6 +98,7 @@ function(graph, names)
 
   if Length(names) = DigraphNrVertices(graph) then
     graph!.vertexlabels := names;
+    return;
   fi;
   ErrorMayQuit("Digraphs: SetDigraphVertexLabels: usage,\n",
                "the 2nd arument <names> must be a list with length equal ",
@@ -617,7 +618,7 @@ function(nrvertices, source, range)
   m := Length(source);
   if m <> Length(range) then
     ErrorMayQuit("Digraphs: Digraph: usage,\n",
-                 "the second and third arguments <source> and <range>",
+                 "the second and third arguments <source> and <range> ",
                  "must be lists\nof equal length,");
   fi;
 
@@ -630,8 +631,8 @@ function(nrvertices, source, range)
         or ForAny(source, x -> x < 1 or x > nrvertices)
         or ForAny(range, x -> x < 1 or x > nrvertices) then
       ErrorMayQuit("Digraphs: Digraph: usage,\n",
-                   "the second and third arguments <source> and <range> must",
-                   "be lists\nof positive integers no greater than the first",
+                   "the second and third arguments <source> and <range> must ",
+                   "be lists\nof positive integers no greater than the first ",
                    "argument <nrvertices>,");
     fi;
     range := Permuted(range, Sortex(source));
@@ -650,8 +651,8 @@ function(vertices, source, range)
   m := Length(source);
   if m <> Length(range) then
     ErrorMayQuit("Digraphs: Digraph: usage,\n",
-                 "the second and third arguments <source> and <range>",
-                 " must be lists of\nequal length,");
+                 "the second and third arguments <source> and <range> ",
+                 "must be lists of\nequal length,");
   fi;
 
   if not IsDuplicateFreeList(vertices) then
@@ -877,7 +878,7 @@ function(inn)
       if not IsPosInt(y) or y > nrvertices then
         ErrorMayQuit("Digraphs: DigraphByInNeighbours: usage,\n",
                      "the argument must be a list of lists of positive ",
-                     "integers\n not exceeding the length of the argument,");
+                     "integers\nnot exceeding the length of the argument,");
       fi;
       nredges := nredges + 1;
     od;
