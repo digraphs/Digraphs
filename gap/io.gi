@@ -597,7 +597,7 @@ function(name, digraph, delimiter, offset)
 
   if file = fail then
     ErrorMayQuit("Digraphs: WritePlainTextDigraph:\n",
-                 "cannot open file ", name, ",");
+                 "can not open file ", name, ",");
   fi;
 
   for edge in DigraphEdges(digraph) do

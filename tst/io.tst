@@ -186,15 +186,15 @@ gap> gr := Digraph([[1, 2], [2, 3], []]);
 gap> filename := Concatenation(DigraphsDir(), "/tst/out/plain.txt");;
 gap> WritePlainTextDigraph(1, 2, 3, 4);
 Error, Digraphs: WritePlainTextDigraph: usage,
-WritePlainTextDigraph( filename, digraph, delimiter, offset ),
+WritePlainTextDigraph(filename, digraph, delimiter, offset),
 gap> WritePlainTextDigraph(".", gr, ",", -2);
-Error, Digraphs: WritePlainTextDigraph: error,
-can't open file .,
+Error, Digraphs: WritePlainTextDigraph:
+can not open file .,
 gap> WritePlainTextDigraph(filename, gr, ',', -3);
 gap> WritePlainTextDigraph(filename, gr, ",", -1);
 gap> ReadPlainTextDigraph(1, 2, 3, 4);
 Error, Digraphs: ReadPlainTextDigraph: usage,
-ReadPlainTextDigraph( filename, delimiter, offset, ignore ),
+ReadPlainTextDigraph(filename, delimiter, offset, ignore),
 gap> ReadPlainTextDigraph(filename, ",", 1, ['i', 'd']);
 <digraph with 3 vertices, 4 edges>
 gap> ReadPlainTextDigraph(filename, ',', 1, 'i');
