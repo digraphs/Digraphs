@@ -16,7 +16,7 @@ DeclareGlobalFunction("DigraphsMakeDoc");
 DeclareGlobalFunction("DigraphsTestAll");
 DeclareGlobalFunction("DigraphsTestInstall");
 DeclareGlobalFunction("DigraphsTestManualExamples");
-DeclareGlobalFunction("DigraphsManualExamples");
+DeclareGlobalFunction("DIGRAPHS_ManualExamples");
 DeclareGlobalFunction("DigraphsTestEverything");
 DeclareGlobalFunction("DigraphsDir");
 DeclareGlobalFunction("IsSemigroupsLoaded");
