@@ -43,7 +43,7 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
 
 <#GAPDoc Label="ReadDigraphs">
 <ManSection>
-  <Oper Name="ReadDigraphs" Arg="filename[, nr]"/>
+  <Func Name="ReadDigraphs" Arg="filename[, nr]"/>
   <Returns>A list of digraphs.</Returns>
   <Description>
     If <A>filename</A> is the name of a file containing digraphs, then 
@@ -127,7 +127,7 @@ gap> ReadDigraphs(
 
 <#GAPDoc Label="WriteDigraphs">
 <ManSection>
-  <Oper Name="WriteDigraphs" Arg="filename, digraphs"/>
+  <Func Name="WriteDigraphs" Arg="filename, digraphs"/>
   <Description>
     If <A>digraphs</A> is a list of digraphs, then <C>WriteDigraphs</C> writes
     its contents to a file in a compact format.  If the supplied filename ends
@@ -233,8 +233,8 @@ gap> DiSparse6String(gr);
 
 <#GAPDoc Label="DigraphPlainTextLineEncoder">
 <ManSection>
-  <Oper Name="DigraphPlainTextLineEncoder" Arg="delimiter1, [delimiter2,] offset"/>
-  <Oper Name="DigraphPlainTextLineDecoder" Arg="delimiter1, [delimiter2,] offset"/>
+  <Func Name="DigraphPlainTextLineEncoder" Arg="delimiter1, [delimiter2,] offset"/>
+  <Func Name="DigraphPlainTextLineDecoder" Arg="delimiter1, [delimiter2,] offset"/>
   <Returns>A string.</Returns>
   <Description>
     These two functions return a function which encodes or decodes a digraph in
