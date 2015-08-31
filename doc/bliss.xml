@@ -185,14 +185,14 @@ true]]></Example>
     <List>
       <Mark>for multidigraphs</Mark>
       <Item>
-        this operation returns a pair of permutations <C>P</C>so that 
+        this operation returns a pair of permutations <C>P</C> so that 
         <C>OnMultiDigraphs(<A>digraph1</A>, P) = digraph2</C>. The first
         permutation is defined on the vertices of <A>digraph1</A> and the second
         on the edges. 
       </Item>
       <Mark>for digraphs without multiple edges</Mark>
       <Item>
-        this operation returns a  permutations <C>p</C>so that 
+        this operation returns a  permutations <C>p</C> so that 
         <C>OnDigraphs(<A>digraph1</A>, p) = digraph2</C>. 
       </Item>
     </List>
