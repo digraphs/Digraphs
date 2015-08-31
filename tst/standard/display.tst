@@ -11,7 +11,7 @@ gap> START_TEST("Digraphs package: display.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> DIGRAPHS_StartTest();
 
 #T# Display, PrintString, String
 gap> Digraph([]);

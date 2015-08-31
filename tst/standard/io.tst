@@ -11,7 +11,7 @@ gap> START_TEST("Digraphs package: io.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> DIGRAPHS_StartTest();
 
 #T# DigraphFromGraph6String amd Graph6String
 gap> DigraphFromGraph6String("?");
@@ -40,7 +40,7 @@ gap> List(l, x -> DigraphFromGraph6String(x));
   <digraph with 9 vertices, 38 edges>, <digraph with 9 vertices, 34 edges> ]
 
 # ReadDigraphs
-gap> str := Concatenation(DigraphsDir(), "/data/graph5.g6");;
+gap> str := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6");;
 gap> list := ReadDigraphs(str);;
 gap> Size(list);
 34
@@ -133,7 +133,7 @@ gap> gr[2] := Digraph(1000,
 <digraph with 1000 vertices, 1000 edges>
 gap> gr[3] := Digraph([[1, 1, 4], [2, 3, 4], [2, 4], [2], [1, 3, 3, 5]]);
 <multidigraph with 5 vertices, 13 edges>
-gap> filename := Concatenation(DigraphsDir(), "/tst/out/test.ds6");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.ds6");;
 gap> WriteDigraphs(filename, gr);
 gap> ReadDigraphs(filename);
 [ <digraph with 65536 vertices, 7 edges>, 
@@ -150,12 +150,12 @@ gap> gr[4] := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],
 > [1, 2, 3, 4, 5, 6, 7, 10], [1, 5, 6, 7, 10], [2, 4, 5, 9, 10],
 > [3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 5, 7, 8, 9], [1, 2, 5], [1, 2]]);
 <digraph with 10 vertices, 47 edges>
-gap> filename := Concatenation(DigraphsDir(), "/tst/out/test.d6");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.d6");;
 gap> WriteDigraphs(filename, gr);
 gap> ReadDigraphs(filename);
 [ <digraph with 5 vertices, 7 edges>, <digraph with 105 vertices, 100 edges>, 
   <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
-gap> filename := Concatenation(DigraphsDir(), "/tst/out/test.txt");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.txt");;
 gap> WriteDigraphs(filename, gr);
 gap> ReadDigraphs(filename); # Note that some edges in gr[2] are lost
 [ <digraph with 5 vertices, 7 edges>, <digraph with 100 vertices, 100 edges>, 
@@ -167,14 +167,14 @@ gap> gr[2] := Digraph([[2], [1, 4], [5], [2], [3]]);
 <digraph with 5 vertices, 6 edges>
 gap> gr[3] := Digraph([[2], [1]]);
 <digraph with 2 vertices, 2 edges>
-gap> filename := Concatenation(DigraphsDir(), "/tst/out/test.g6");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.g6");;
 gap> WriteDigraphs(filename, gr);
 gap> rdgr := ReadDigraphs(filename);;
 gap> gr = rdgr;
 true
 gap> gr[3] := Digraph([[1, 2], [1, 2]]);
 <digraph with 2 vertices, 4 edges>
-gap> filename := Concatenation(DigraphsDir(), "/tst/out/test.s6");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.s6");;
 gap> WriteDigraphs(filename, gr);
 gap> rdgr := ReadDigraphs(filename);;
 gap> gr = rdgr;
@@ -183,7 +183,7 @@ true
 #T# WritePlainTextDigraph and ReadPlainTextDigraph
 gap> gr := Digraph([[1, 2], [2, 3], []]);
 <digraph with 3 vertices, 4 edges>
-gap> filename := Concatenation(DigraphsDir(), "/tst/out/plain.txt");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/plain.txt");;
 gap> WritePlainTextDigraph(1, 2, 3, 4);
 Error, Digraphs: WritePlainTextDigraph: usage,
 WritePlainTextDigraph(filename, digraph, delimiter, offset),

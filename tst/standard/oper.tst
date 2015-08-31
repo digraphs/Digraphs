@@ -11,7 +11,7 @@ gap> START_TEST("Digraphs package: oper.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> DIGRAPHS_StartTest();
 
 #T# DigraphReverse
 gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);

@@ -11,7 +11,7 @@ gap> START_TEST("Digraphs package: digraph.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> DIGRAPHS_StartTest();
 
 #T# DigraphVertexLabels
 gap> gr := RandomDigraph(10);;

@@ -44,6 +44,24 @@
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphsTestStandard">
+<ManSection>
+  <Func Name="DigraphsTestStandard" Arg=""/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsTestExtreme">
+<ManSection>
+  <Func Name="DigraphsTestExtreme" Arg=""/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphsTestInstall">
 <ManSection>
   <Func Name="DigraphsTestInstall" Arg=""/>
@@ -71,9 +89,9 @@
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphsDir">
+<#GAPDoc Label="DIGRAPHS_Dir">
 <ManSection>
-  <Func Name="DigraphsDir" Arg=""/>
+  <Func Name="DIGRAPHS_Dir" Arg=""/>
   <Returns></Returns>
   <Description>
   </Description>

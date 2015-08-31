@@ -11,7 +11,7 @@ gap> START_TEST("Digraphs package: prop.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> DIGRAPHS_StartTest();
 
 #T# IsMultiDigraph
 gap> gr1 := Digraph([]);

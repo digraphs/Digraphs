@@ -11,7 +11,7 @@ gap> START_TEST("Digraphs package: testinstall.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> DIGRAPHS_StartTest();
 
 #T# Conversion to and from Grape graphs
 gap> gr := Digraph(

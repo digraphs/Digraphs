@@ -11,7 +11,7 @@ gap> START_TEST("Digraphs package: homos.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> DIGRAPHS_StartTest();
 
 #T# PJC example, 45 vertices
 gap> gr := DigraphFromDigraph6String(Concatenation(
