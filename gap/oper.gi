@@ -174,7 +174,7 @@ function(digraph, edges)
       not IsHomogeneousList(edges) or
       not ForAll(edges, x -> x <= nredges) then
     ErrorMayQuit("Digraphs: DigraphReverseEdges: usage,\n",
-                 "the second argument <edge>",
+                 "the second argument <edge> ",
                  "must be a list of edges of <digraph>,");
   fi;
 
@@ -474,8 +474,8 @@ InstallMethod(DigraphAddVertices, "for a digraph and a pos int",
 function(digraph, m)
   if m < 0 then
     ErrorMayQuit("Digraphs: DigraphAddVertices: usage,\n",
-                 "the second arg <m> (the number of vertices to add) must be ",
-                 "non-negative,");
+                 "the second argument <m> (the number of vertices to add) ",
+                 "must be non-negative,");
   fi;
   return DigraphAddVerticesNC(digraph, m, []);
 end);
@@ -485,13 +485,13 @@ InstallMethod(DigraphAddVertices, "for a digraph, a pos int and a list",
 function(digraph, m, names)
   if m < 0 then
     ErrorMayQuit("Digraphs: DigraphAddVertices: usage,\n",
-                 "the second arg <m> (the number of vertices to add) must be ",
-                 "non-negative,");
+                 "the second argument <m> (the number of vertices to add) ",
+                 "must be non-negative,");
   elif Length(names) <> m then
     ErrorMayQuit("Digraphs: DigraphAddVertices: usage,\n",
                  "the number of new vertex names (the length of the third ",
-                 "arg <names>)\nmust match the number of new vertices (the ",
-                 "value of the second arg <m>),");
+                 "argument <names>)\nmust match the number of new vertices ",
+                 "( the value of the second argument <m>),");
   fi;
   return DigraphAddVerticesNC(digraph, m, names);
 end);
@@ -527,8 +527,8 @@ InstallMethod(DigraphRemoveVertex, "for a digraph and a pos int",
 function(digraph, m)
   if m > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphRemoveVertex: usage,\n",
-                 "the second arg <m> is not a ",
-                 "vertex of the first arg <digraph>,");
+                 "the second argument <m> is not a ",
+                 "vertex of the first argument <digraph>,");
   fi;
   return DigraphRemoveVerticesNC(digraph, [m]);
 end);
@@ -547,8 +547,8 @@ function(digraph, verts)
        not IsDuplicateFreeList(verts) or
        ForAny(verts, x -> x < 1 or n < x)) then
     ErrorMayQuit("Digraphs: DigraphRemoveVertices: usage,\n",
-                 "the second arg <verts> should be a duplicate free list of ",
-                 "vertices of\nthe first arg <digraph>,");
+                 "the second argument <verts> should be a duplicate free ",
+                 "list of vertices of\nthe first argument <digraph>,");
   fi;
   return DigraphRemoveVerticesNC(digraph, verts);
 end);
@@ -889,7 +889,8 @@ InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
 function(digraph, v)
   if not v in DigraphVertices(digraph) then
     ErrorMayQuit("Digraphs: InNeighboursOfVertex: usage,\n",
-                 "the 2nd arg <v> is not a vertex of the first, <digraph>,");
+                 "the 2nd argument <v> is not a vertex of the first, ",
+                 "<digraph>,");
   fi;
   return InNeighboursOfVertexNC(digraph, v);
 end);
@@ -933,7 +934,8 @@ InstallMethod(OutNeighboursOfVertex, "for a digraph and a vertex",
 function(digraph, v)
   if not v in DigraphVertices(digraph) then
     ErrorMayQuit("Digraphs: OutNeighboursOfVertex: usage,\n",
-                 "the 2nd arg <v> is not a vertex of the 1st, <digraph>,");
+                 "the 2nd argument <v> is not a vertex of the 1st, ",
+                 "<digraph>,");
   fi;
   return OutNeighboursOfVertexNC(digraph, v);
 end);
@@ -951,7 +953,8 @@ InstallMethod(InDegreeOfVertex, "for a digraph and a vertex",
 function(digraph, v)
   if not v in DigraphVertices(digraph) then
     ErrorMayQuit("Digraphs: InDegreeOfVertex: usage,\n",
-                 "the 2nd arg <v> is not a vertex of the 1st, <digraph>,");
+                 "the 2nd argument <v> is not a vertex of the 1st, ",
+                 "<digraph>,");
   fi;
   return InDegreeOfVertexNC(digraph, v);
 end);
@@ -993,7 +996,8 @@ InstallMethod(OutDegreeOfVertex, "for a digraph and a vertex",
 function(digraph, v)
   if not v in DigraphVertices(digraph) then
     ErrorMayQuit("Digraphs: OutDegreeOfVertex: usage,\n",
-                 "the 2nd arg <v> is not a vertex of the 1st, <digraph>,");
+                 "the 2nd argument <v> is not a vertex of the 1st, ",
+                 "<digraph>,");
   fi;
    return OutDegreeOfVertexNC(digraph, v);
 end);
@@ -1023,8 +1027,8 @@ function(digraph, partition)
     return EmptyDigraph(0);
   elif n = 0 then
     ErrorMayQuit("Digraphs: QuotientDigraph: usage,\n",
-                 "the second arg <partition> is not a valid partition of ",
-                 "the\nvertices of the null digraph <digraph>. The only ",
+                 "the second argument <partition> is not a valid partition ",
+                 "of the\nvertices of the null digraph <digraph>. The only ",
                  "valid partition\nof <digraph> is the empty list,");
   fi;
   nr := Length(partition);
@@ -1042,8 +1046,9 @@ function(digraph, partition)
     for i in partition[x] do
       if i < 1 or i > n or check[i] then
         ErrorMayQuit("Digraphs: QuotientDigraph: usage,\n",
-                     "the second arg <partition> is not a valid partition\n",
-                     "of the vertices of <digraph>, [ 1 .. ", n, " ],");
+                     "the second argument <partition> is not a valid\n",
+                     "partition of the vertices of <digraph>, ",
+                     "[ 1 .. ", n, " ],");
       fi;
       check[i] := true;
       lookup[i] := x;
