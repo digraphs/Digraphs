@@ -14,9 +14,6 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
   </Section>
 
   <Section><Heading>Isomorphisms, and Canonical labellings</Heading>
-  
-
-
     <#Include Label="AutomorphismGroupDigraph">
     <#Include Label="AutomorphismGroupMultiDigraph">
     <#Include Label="DigraphCanonicalLabelling">
@@ -25,8 +22,9 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
   </Section>
   
   <Section><Heading>Homomorphisms</Heading>
+    <#Include Label="DigraphColoring">
     <#Include Label="DigraphEndomorphisms">
-    <#Include Label="EndomorphismMonoid">
+    <#Include Label="DigraphHomomorphism">
   </Section>
 
 </Chapter>

@@ -14,7 +14,7 @@ function(digraph)
   local verts, old, new, gr, i;
   
   if IsMultiDigraph(digraph) then 
-    Error("Digraphs: DigraphDual: usage,\n", 
+    Error("Graphs: DigraphDual: usage,\n", 
       "the argument <graph> must not have multiple edges,");
     return;
   fi;
@@ -150,8 +150,7 @@ InstallMethod(DigraphTopologicalSort, "for a digraph",
   return DIGRAPH_TOPO_SORT(OutNeighbours(graph));
 end);
 
-# the scc index 1 corresponds to the "deepest" scc, i.e. the minimal ideal in
-# our case...
+# 
 
 InstallMethod(DigraphStronglyConnectedComponents, "for a digraph",
 [IsDigraph],
@@ -372,4 +371,19 @@ function(digraph)
 
   return period;
 end);
+
+#
+
+InstallMethod(DigraphDiameter, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if DigraphNrVertices(digraph) = 0 then
+    return -1;
+  elif HasIsStronglyConnectedDigraph(digraph)
+   and not IsStronglyConnectedDigraph(digraph) then
+    return -1;
+  fi;
+  return DIGRAPH_DIAMETER(digraph);
+end);
+
 #EOF

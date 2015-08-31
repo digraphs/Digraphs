@@ -1,4 +1,4 @@
-#############################################################################
+#%T##########################################################################
 ##
 #W  display.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
@@ -7,13 +7,13 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: display.tst");
-gap> LoadPackage("digraphs", false);;
+gap> START_TEST("Graphs package: display.tst");
+gap> LoadPackage("graphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> GraphsStartTest();
 
-# Display, PrintString, String
+#T# Display, PrintString, String
 gap> Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> Digraph( [ [ ] ] );
@@ -42,7 +42,7 @@ gap> PrintString(gr);
 gap> String(gr);
 "Digraph( [ [ 2 ], [ 3 ], [ ] ] )"
 
-# DotDigraph and DotSymmetricDigraph
+#T# DotDigraph and DotSymmetricDigraph
 gap> r := rec( vertices := [ 1 .. 3 ], source := [ 1, 1, 1, 1 ], 
 > range := [ 1, 2, 2, 3 ] );;
 gap> gr := Digraph(r);
@@ -68,8 +68,8 @@ gap> DotDigraph(gr2){[ 11 .. 75 ]};
 gap> DotSymmetricDigraph(gr2){[ 12 .. 70 ]};
 " hgn{\nnode [shape=circle]\n\n1\n2\n3\n4\n1 -- 2\n2 -- 3\n3 -- 3\n3 -"
 gap> DotSymmetricDigraph(gr1);
-Error, Digraphs: DotSymmetricDigraph: usage,
+Error, Graphs: DotSymmetricDigraph: usage,
 the argument <graph> should be symmetric,
 
-#
-gap> STOP_TEST( "Digraphs package: display.tst");
+#E#
+gap> STOP_TEST( "Graphs package: display.tst");

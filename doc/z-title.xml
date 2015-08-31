@@ -1,6 +1,6 @@
 <TitlePage>
   <Title>&Digraphs;</Title>
-  <Subtitle>Method for digraphs</Subtitle>
+  <Subtitle>Method for graphs</Subtitle>
   <Version>Version &VERSION;</Version>
 
   <Author>J. D. Mitchell
@@ -9,11 +9,14 @@
   </Author>
   
   <Author>Julius Jonu&#353;as</Author>
-  <Author>Markus Pfeiffer</Author>
   <Author>Michael Torpey</Author>
-  <Author>Wilf Wilson</Author>
+  <Author>Wilf Wilson
+    <Homepage>http://www-groups.mcs.st-and.ac.uk/~waw7</Homepage>
+  </Author>
 
-  <Copyright>&copyright; &COPYRIGHTYEARS; by J. D. Mitchell.<P/>
+  <Copyright>&copyright; &COPYRIGHTYEARS; by J. D. Mitchell, Julius Jonu&#353;as, Michael Torpey,
+    Wilf Wilson.<P/>
+
     &Digraphs; is free software; you can redistribute it and/or modify it
     under the terms of the <URL Text="GNU General Public License">
     http://www.fsf.org/licenses/gpl.html</URL> as published by the Free Software
@@ -22,9 +25,8 @@
   </Copyright>
 
   <Abstract>
+    The &Digraphs; package is a &GAP; package containing methods for graphs,
+    digraphs, and multidigraphs. 
   </Abstract>
-
-  <Acknowledgements>
-  </Acknowledgements>
 
 </TitlePage>

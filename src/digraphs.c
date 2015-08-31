@@ -1,19 +1,17 @@
 /***************************************************************************
 **
-*A  digraphs.c               Digraphs package             J. D. Mitchell 
+*A  graphs.c                  GAP package graphs          Julius Jonusas
+**                                                        James Mitchell 
+**                                                        Michael Torpey
+**                                                        Wilfred Wilson
 **
-**  Copyright (C) 2014 - J. D. Mitchell 
+**  Copyright (C) 2014 - Julius Jonusas, James Mitchell, Michael Torpey, 
+**  Wilfred Wilson 
 **  This file is free software, see license information at the end.
 **  
 */
 
-#include "bliss-0.72/bliss_C.h"
-
-#include <stdlib.h>
-#include <stdbool.h>
-
-#include "src/compiled.h"          /* GAP headers                */
-#include "src/digraphs.h"
+#include "src/graphs.h"
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -23,43 +21,11 @@
 #undef PACKAGE_URL
 #undef PACKAGE_VERSION
 
-
-//#include "pkgconfig.h"             /* our own configure results */
+static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
+static Obj FuncDIGRAPH_IN_NBS(Obj self, Obj digraph);
+static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 
 /*************************************************************************/
-
-/* These functions are now unnecessary/invalid
-bool HasOutNeighbours(Obj digraph) {
-  return IsbPRec(digraph, RNamName("adj"));
-}
-
-bool HasDigraphSourceAndRange(Obj digraph) {
-  return (IsbPRec(digraph, RNamName("source")) 
-          &&
-          IsbPRec(digraph, RNamName("range")));
-}
-
-bool HasDigraphSource(Obj digraph) {
-  return IsbPRec(digraph, RNamName("source"));
-}
-
-bool HasDigraphRange(Obj digraph) {
-  return IsbPRec(digraph, RNamName("range"));
-}
-
-Obj DigraphSource(Obj digraph) {
-  if (!HasDigraphSource(digraph)) {
-    FuncDIGRAPH_SOURCE_RANGE( NULL, digraph );
-  }
-  return ElmPRec(digraph, RNamName("source"));
-}
-
-Obj DigraphRange(Obj digraph) {
-  if (!HasDigraphRange(digraph)) {
-    FuncDIGRAPH_SOURCE_RANGE( NULL, digraph );
-  }
-  return ElmPRec(digraph, RNamName("range"));
-}*/
 
 Int DigraphNrVertices(Obj digraph) {
   if (IsbPRec(digraph, RNamName("nrvertices"))) {
@@ -67,7 +33,7 @@ Int DigraphNrVertices(Obj digraph) {
   }
   // The record comp should always be set so this should never be triggered
   ErrorQuit(
-  "Digraphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
+  "Graphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
   0L, 0L);
   return 0;
 }
@@ -108,17 +74,9 @@ Obj OutNeighbours(Obj digraph) {
     AssPRec(digraph, RNamName("adj"), adj);
     return adj;
   }
-  ErrorQuit("Digraphs: OutNeighbours (C): not enough record components set,", 0L, 0L);
+  ErrorQuit("Graphs: OutNeighbours (C): not enough record components set,", 0L, 0L);
   return False;
 }
-
-/*Obj OutNeighboursOfVertex(Obj digraph, Int v) { 
-  Obj out;
-
-  // Do all kinds of safety checking
-  out = OutNeighbours(digraph);
-  return ELM_PLIST( out, v );
-}*/
 
 /****************************************************************************
 **
@@ -702,7 +660,7 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) 
   m1 = LEN_LIST(source);
   m2 = LEN_LIST(range);
   if (m1 != m2) {
-    ErrorQuit("Digraphs: DIGRAPH_OUT_NBS: usage,\n<source> and <range> must be lists of equal length,", 0L, 0L);
+    ErrorQuit("Graphs: DIGRAPH_OUT_NBS: usage,\n<source> and <range> must be lists of equal length,", 0L, 0L);
   }
   n = INT_INTOBJ(nrvertices);
   if (n == 0) {
@@ -813,25 +771,32 @@ static Obj FuncADJACENCY_MATRIX(Obj self, Obj digraph) {
 
 static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   Obj   adj, adji;
-  int   n, i, k, j, jj;
+  UInt  n, i, k, j, jj, *seen;
  
   adj = OutNeighbours(digraph); 
   n = DigraphNrVertices(digraph);
+  seen = calloc(n + 1, sizeof(UInt));
+
   for (i = 1; i <= n; i++) {
     adji = ELM_PLIST(adj, i);
+    if ((UInt) LEN_LIST(adji) > n) {
+      free(seen);
+      return True;
+    }
     PLAIN_LIST(adji);
-    for (j = 2; j <= LEN_PLIST(adji); j++) {
-      jj = INT_INTOBJ(ELM_PLIST(adji, j));
-      for (k = 1; k < j; k++) {
-        if (INT_INTOBJ(ELM_PLIST(adji, k)) == jj) {
-          return True;
-        }
+    for (j = 1; j <= (UInt) LEN_PLIST(adji); j++) {
+      k = INT_INTOBJ(ELM_PLIST(adji, j));
+      if (seen[k] != i) {
+        seen[k] = i;
+      } else {
+        free(seen);
+        return True;
       }
     }
   }
+  free(seen);
   return False;
 } 
-
 
 /***************** GENERAL FLOYD_WARSHALL ALGORITHM***********************
  * This function accepts 5 arguments:
@@ -858,7 +823,9 @@ static Obj FLOYD_WARSHALL(Obj digraph,
                                        Int   n),
                           Int  val1, 
                           Int  val2,
-                          bool copy) {
+                          bool copy,
+                          bool diameter,
+                          bool shortest) {
   Int   n, i, j, k, *dist, *adj;
   Obj   next, out, outi, val;
 
@@ -880,7 +847,13 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     for (j = 1; j <= LEN_PLIST(outi); j++) {
       k = (i - 1) * n + INT_INTOBJ(ELM_PLIST(outi, j)) - 1;
       dist[k] = val2;
-    } 
+    }
+  }
+
+  if ( shortest ) {
+    for ( i = 0; i < n; i++ ) {
+      dist[i * n + i] = 0;
+    }
   }
 
   if ( copy ) {
@@ -898,6 +871,22 @@ static Obj FLOYD_WARSHALL(Obj digraph,
         func(&dist, i, j, k, n);
       }
     }
+  }
+
+  // the following is a horrible hack
+  if ( diameter ) {
+    Int maximum = -1;
+    for ( i = 0; i < n; i++ ) {
+      for ( j = 0; j < n; j++ ) {
+        if ( dist[i * n + j] > maximum ) {
+          maximum = dist[i * n + j];
+        } else if ( dist[i * n + j] == -1 ) {
+          return INTOBJ_INT(-1);
+        }
+      }
+    }
+    free(dist);
+    return INTOBJ_INT(maximum);
   }
 
   if ( copy ) {
@@ -941,9 +930,13 @@ void FW_FUNC_SHORTEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
     }
   }
 }
- 
+
 static Obj FuncDIGRAPH_SHORTEST_DIST(Obj self, Obj digraph) {
-  return FLOYD_WARSHALL(digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false);
+  return FLOYD_WARSHALL(digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false, false, true);
+}
+
+static Obj FuncDIGRAPH_DIAMETER(Obj self, Obj digraph) {
+  return FLOYD_WARSHALL(digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false, true, true);
 }
 
 void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
@@ -953,11 +946,11 @@ void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
 }
 
 static Obj FuncIS_TRANSITIVE_DIGRAPH(Obj self, Obj digraph) {
-  return FLOYD_WARSHALL(digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, true);
+  return FLOYD_WARSHALL(digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, true, false, false);
 }
 
 static Obj FuncDIGRAPH_TRANS_CLOSURE(Obj self, Obj digraph) {
-  return FLOYD_WARSHALL(digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, false);
+  return FLOYD_WARSHALL(digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, false, false, false);
 }
 
 void FW_FUNC_REFLEX_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
@@ -967,7 +960,7 @@ void FW_FUNC_REFLEX_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
 }
 
 static Obj FuncDIGRAPH_REFLEX_TRANS_CLOSURE(Obj self, Obj digraph) {
-  return FLOYD_WARSHALL(digraph, FW_FUNC_REFLEX_TRANS_CLOSURE, 0, 1, false);
+  return FLOYD_WARSHALL(digraph, FW_FUNC_REFLEX_TRANS_CLOSURE, 0, 1, false, false, false);
 }
 
 static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj limm) {
@@ -1480,214 +1473,206 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   return out;
 }
 
-// graph homomorphisms . . . by Max Neunhoeffer
+// convert GAP perms to perms
+/*static perm as_perm (Obj const x) {
+  UInt  deg, i;
+  UInt2 *ptr2;
+  UInt4 *ptr4;
+  perm  out = new_perm();
 
-#ifdef SYS_IS_64_BIT
-#define MAXVERT 64
-typedef UInt8 num;
-#define SMALLINTLIMIT 1152921504606846976
-#else
-#define MAXVERT 32
-typedef UInt4 num;
-#define SMALLINTLIMIT 268435456
+  if (TNUM_OBJ(x) == T_PERM2) {
+    deg = DEG_PERM2(x); 
+    ptr2 = ADDR_PERM2(x);
+    for (i = 0; i < deg; i++) {
+      out[i] = (UIntS) ptr2[i];
+    }
+  } else if (TNUM_OBJ(x) == T_PERM4) {
+    deg = DEG_PERM4(x); 
+    ptr4 = ADDR_PERM4(x);
+    for (i = 0; i < deg; i++) {
+      out[i] = (UIntS) ptr4[i];
+    }
+  }
+
+  for (; i < nr2; i++) {
+    out[i] = i;
+  }
+  return out;
+}
+
+static Obj as_PERM4 (perm const x) {
+  Obj           p;
+  UIntS  i;
+  UInt4         *ptr;
+  
+  p   = NEW_PERM4(nr2);
+  ptr = ADDR_PERM4(p);
+ 
+  for (i = 0; i < nr2; i++) {
+    ptr[i] = (UInt4) x[i];
+  }
+  return p;
+}*/
+
+// GAP-level function
+
+static Obj   GAP_FUNC;                // variable to hold a GAP level hook function
+
+void homo_hook_gap (void*        user_param,
+	            const UIntS  nr,
+	            const UIntS  *map       ) {
+  UInt2   *ptr;
+  Obj     t;
+  UInt    i;
+
+  // copy map into new trans2 
+  t   = NEW_TRANS2(nr);
+  ptr = ADDR_TRANS2(t);
+  
+  for (i = 0; i < nr; i++) {
+    ptr[i] = map[i];
+  }
+  CALL_2ARGS(GAP_FUNC, user_param, t);
+}
+
+void homo_hook_collect (void*        user_param,
+	                const UIntS  nr,
+	                const UIntS  *map       ) {
+  UInt2   *ptr;
+  Obj     t;
+  UInt    i;
+
+  // copy map into new trans2 
+  t   = NEW_TRANS2(nr);
+  ptr = ADDR_TRANS2(t);
+  
+  for (i = 0; i < nr; i++) {
+    ptr[i] = map[i];
+  }
+   
+  AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
+  CHANGED_BAG(user_param);
+#if DEBUG
+  Pr("found %d homomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
 #endif
-
-static num gra1[MAXVERT];
-static num nrvert1;
-static num gra2[MAXVERT];
-static num gra2inn[MAXVERT];
-static num gra2hasloops;
-static num nrvert2;
-static num constraints[MAXVERT];
-static num maxdepth;
-static Obj results;
-
-static num tablesinitialised = 0;
-static num oneone[MAXVERT];
-static num ones[MAXVERT];
-static num count;
-static num maxresults;
-static num overflow;
-
-static jmp_buf outofhere;
-
-static void inittabs(void)
-{
-    num i;
-    num v = 1;
-    num w = 1;
-    for (i = 0;i < MAXVERT;i++) {
-        oneone[i] = w;
-        ones[i] = v;
-        w <<= 1;
-        v |= w;
-    }
 }
 
-static void dowork(num *try, num depth){
-    num   i, todo;
-    Obj   t;
-    UInt2 *pt;
-    //Pr("C: at depth %d\n", (Int) depth, 0L);
-    if (depth == maxdepth) {
-        if (results != Fail) {
-            t  = NEW_TRANS2(depth);
-            pt = ADDR_TRANS2(t);
-            for (i = 0; i < depth; i++) {
-              pt[i] = (UInt2) try[i];
-            }
-            Pr("found endomorphism of rank %d\n", (Int) RANK_TRANS2(t), 0L); 
-            if (IS_PLIST(results)) {
-                ASS_LIST(results,LEN_PLIST(results)+1, t);
-            } /*else {
-                CALL_1ARGS(results,tmp);
-            }*/
-        }
-        count++;
-        if (count >= maxresults) {
-            if (count >= SMALLINTLIMIT) overflow = 1;
-            longjmp(outofhere,1);
-        }
-        return;
-    }
-    todo = constraints[depth];
-    for (i = 0;i < depth;i++) {
-        if (gra1[i] & oneone[depth]){    /* if depth adjacent to try[i] */
-            todo &= gra2[try[i]];        /* Only these images are possible */
-        }
-	if (gra1[depth] & oneone[i]) {
-           todo &= gra2inn[try[i]];
-        }
-    }
-    if (gra1[depth] & oneone[depth]) {   /* if depth has a loop in gra1 */
-       todo &= gra2hasloops;
-    } 
-    if (todo == 0 ) return;
-    for (i = 0;i < nrvert2 && todo;i++, todo >>= 1) {
-        if (todo & 1) {
-            try[depth] = i;
-            dowork(try,depth+1);
-        }
-    }
-}
+Obj FuncGRAPH_HOMOS (Obj self, Obj args) { 
+  unsigned int  i, j, k, hint_arg, nr1, nr2;
+  UInt8         max_results_arg;
+  bool          *condition;
+  Obj           user_param_arg, out, nbs;  
+  int           image[MAXVERTS];
+  UIntS         partial_map[MAXVERTS];
 
-static void doworkinj(num *try, num depth, num used)
-{
-    num i, todo;
-    Obj tmp;
-    if (depth == maxdepth) {
-        if (results != Fail) {
-            tmp = NEW_PLIST(T_PLIST_CYC,depth);
-            SET_LEN_PLIST(tmp,depth);
-            for (i = 0; i < depth; i++) {
-                SET_ELM_PLIST(tmp,i+1,INTOBJ_INT((Int) (try[i]+1)));
-            }
-            ASS_LIST(results,LEN_PLIST(results)+1,tmp);
-        }
-        count++;
-        if (count >= maxresults) {
-            if (count >= SMALLINTLIMIT) overflow = 1;
-            longjmp(outofhere,1);
-        }
-        return;
-    }
-    todo = constraints[depth] & ~(used);
-    for (i = 0;i < depth;i++) {
-        if (gra1[i] & oneone[depth]) {   /* if depth adjacent to try[i] */
-            todo &= gra2[try[i]];    /* Only these images are possible */
-            if (todo == 0) return;
-        }
-    }
-    for (i = 0;i < nrvert2 && todo;i++, todo >>= 1) {
-        if (todo & 1) {
-            try[depth] = i;
-            doworkinj(try,depth+1,used | oneone[i]);
-        }
-    }
-}
+  Obj graph1         = ELM_PLIST(args, 1);  // find homomorphisms from graph1 
+  Obj graph2         = ELM_PLIST(args, 2);  // to graph2
+  Obj hook_gap       = ELM_PLIST(args, 3);  // apply this function to every homomorphism 
+                                            // Fail for none
+  Obj user_param_gap = ELM_PLIST(args, 4);  // user_param which can be used in the hook
+                                            // Fail for none
+  Obj limit_gap      = ELM_PLIST(args, 5);  // the maximum number of results
+  Obj hint_gap       = ELM_PLIST(args, 6);  // the maximum rank of a result
+  Obj isinjective    = ELM_PLIST(args, 7);  // only consider injective homomorphism
+  Obj image_gap      = ELM_PLIST(args, 8);  // only consider homos with image <image>
+  Obj kernel         = ELM_PLIST(args, 9);  // only consider homos with kernel <kernel>
+  Obj partial_map_gap    = ELM_PLIST(args, 10); // only look for extensions of <partial_map_gap>
 
-Obj FuncGRAPH_HOMOMORPHISMS( Obj self, Obj args )
-{
-    Obj gra1obj = ELM_PLIST(args,1); 
-    Obj gra2obj = ELM_PLIST(args,2);
-    Obj tryinit = ELM_PLIST(args,3);
-    Obj mymaxdepth = ELM_PLIST(args,4);
-    Obj constraintsobj = ELM_PLIST(args,5);
-    Obj maxanswers = ELM_PLIST(args,6);
-    Obj myresult = ELM_PLIST(args,7);
-    Obj onlyinj = ELM_PLIST(args,8);
-    num try[MAXVERT];
-    num used;
-    num depth;
-    num i,j,k,up;
-    Obj tmp;
 
-    if (!tablesinitialised) inittabs();
-    count = 0;
-    overflow = 0;
-    if (maxanswers == Fail || !IS_INTOBJ(maxanswers))
-        maxresults = SMALLINTLIMIT;
-    else
-        maxresults = (num) INT_INTOBJ(maxanswers);
-    /* now fill our data structures: */
-    memset(gra1,0,sizeof(num)*MAXVERT);
-    memset(gra2,0,sizeof(num)*MAXVERT);
-    memset(gra2inn,0,sizeof(num)*MAXVERT);
-    gra2hasloops = (num) 0;
-    nrvert1 = LEN_PLIST(gra1obj);
-    nrvert2 = LEN_PLIST(gra2obj);
-    for (i = 0; i < MAXVERT; i++) constraints[i] = ones[nrvert2-1];
-    up = (num) LEN_PLIST(gra1obj);
-    for (i = 0; i < up; i++) {
-        tmp = ELM_PLIST(gra1obj,(Int) i+1);
-        for (j = 0; j < (num) LEN_PLIST(tmp); j++) {
-            k = (num) INT_INTOBJ(ELM_PLIST(tmp,(Int) j + 1)) - 1;
-            gra1[i] |= oneone[k];
-            //gra1[k] |= oneone[i];
-        }
+  if (limit_gap == Fail || !IS_INTOBJ(limit_gap)) {
+    max_results_arg = SMALLINTLIMIT;
+  } else {
+    max_results_arg = INT_INTOBJ(limit_gap);
+  }
+
+  if (user_param_gap == Fail || (hook_gap == Fail && !IS_PLIST(user_param_gap))) {
+    user_param_arg = NEW_PLIST(T_PLIST, 0);
+    SET_LEN_PLIST(user_param_arg, 0);
+  } else {
+    user_param_arg = user_param_gap;
+  }
+
+  if (IS_INTOBJ(hint_gap)) { 
+    hint_arg = INT_INTOBJ(hint_gap);
+  } else {
+    hint_arg = MAXVERTS + 1;
+  }
+
+  bool isinjective_c = (isinjective == True ? true : false);
+
+  // install out-neighbours for graph1 
+  nr1 = DigraphNrVertices(graph1);
+  HomosGraph* homos_graph1 = new_homos_graph(nr1);
+  out = OutNeighbours(graph1);
+  
+  for (i = 0; i < nr1; i++) {
+    nbs = ELM_PLIST(out, i + 1);
+    for (j = 0; j < LEN_LIST(nbs); j++) {
+      k = INT_INTOBJ(ELM_LIST(nbs, j + 1)) - 1;
+      add_edges_homos_graph(homos_graph1, i, k);
     }
-    up = (num) LEN_PLIST(gra2obj);
-    for (i = 0; i < up; i++) {
-        tmp = ELM_PLIST(gra2obj,(Int) i+1);
-        for (j = 0; j < (num) LEN_PLIST(tmp); j++) {
-            k = (num) INT_INTOBJ(ELM_PLIST(tmp,(Int) j + 1)) - 1;
-            gra2[i] |= oneone[k];
-            gra2inn[k] |= oneone[i];
-	    if (i == k) {
-	      gra2hasloops |= oneone[k];
-	    }
-        }
+  }
+  
+  // install out-neighbours for graph2
+  nr2 = DigraphNrVertices(graph2);
+  HomosGraph* homos_graph2 = new_homos_graph(nr2);
+  out = OutNeighbours(graph2);
+  
+  for (i = 0; i < nr2; i++) {
+    nbs = ELM_PLIST(out, i + 1);
+    for (j = 0; j < LEN_LIST(nbs); j++) {
+      k = INT_INTOBJ(ELM_LIST(nbs, j + 1)) - 1;
+      add_edges_homos_graph(homos_graph2, i, k);
     }
-    if (constraintsobj != Fail) {
-        up = (num) LEN_PLIST(constraintsobj);
-        for (i = 0; i < up; i++) {
-            tmp = ELM_PLIST(constraintsobj,(Int) i + 1);
-            if (tmp && tmp != Fail) {
-                constraints[i] = 0;
-                for (j = 0; j < (num) LEN_PLIST(tmp); j++) {
-                    k = (num) INT_INTOBJ(ELM_PLIST(tmp,(Int) j + 1)) - 1;
-                    constraints[i] |= oneone[k];
-                }
-            }
-        }
+  }
+
+  // init image
+  image[0] = 0;                                 //number of entries in image (rank)
+  if (image_gap != Fail && IS_LIST(image_gap)) {
+    for (i = 0; i < LEN_LIST(image_gap); i++) {
+      image[0]++;
+      image[image[0]] = INT_INTOBJ(ELM_LIST(image_gap, i + 1)) - 1;
     }
-    depth = (num) LEN_PLIST(tryinit);
-    used = 0;
-    for (i = 0; i < depth; i++) {
-        try[i] = (num) INT_INTOBJ(ELM_PLIST(tryinit,(Int) i + 1)) - 1;
-        used |= oneone[try[i]];
+  }
+
+  // start with a partialy defined map
+  // suppose partial_map_gap is a plist
+  if (partial_map_gap != Fail && IS_LIST(partial_map_gap)) {
+    for (i = 0; i < LEN_LIST(partial_map_gap); i++) {
+      if (ISB_LIST(partial_map_gap, i + 1)) {
+        partial_map[i] = INT_INTOBJ(ELM_LIST(partial_map_gap, i + 1)) - 1;
+      }
+      else { 
+        partial_map[i] = UNDEFINED;
+      } 
     }
-    maxdepth = (num) INT_INTOBJ(mymaxdepth);
-    results = myresult;
-    if (setjmp(outofhere) == 0) {
-        if (onlyinj == True) {
-            doworkinj(try,depth,used);
-        } else {
-            dowork(try,depth);
-        }
+    for (i = LEN_LIST(partial_map_gap); i < nr1; i++) {
+      partial_map[i] = UNDEFINED;
     }
-    if (overflow) return Fail;
-    else return INTOBJ_INT(count);
+  } else {
+    for (i = 0; i < nr1; i++) {
+      partial_map[i] = UNDEFINED;
+    }
+  }
+  
+  if (hook_gap == Fail) {
+    GraphHomomorphisms(homos_graph1, homos_graph2, homo_hook_collect, user_param_arg,
+        max_results_arg, hint_arg, isinjective_c, image, partial_map); 
+  } else {
+    GAP_FUNC = hook_gap;
+    GraphHomomorphisms(homos_graph1, homos_graph2, homo_hook_gap, user_param_arg,
+        max_results_arg, hint_arg, isinjective_c, image, partial_map);
+  }
+  
+  if (IS_PLIST(user_param_arg) && LEN_PLIST(user_param_arg) == 0 
+      && ! TNUM_OBJ(user_param_arg) == T_PLIST_EMPTY) {
+    RetypeBag(user_param_arg, T_PLIST_EMPTY);
+  }
+  
+  free_homos_graph(homos_graph1);
+  free_homos_graph(homos_graph2);
+
+  return user_param_arg;
 }
 
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
@@ -1700,108 +1685,111 @@ static StructGVarFunc GVarFuncs [] = {
 
   { "DIGRAPH_NREDGES", 1, "digraph",
     FuncDIGRAPH_NREDGES, 
-    "src/digraphs.c:DIGRAPH_NREDGES" },
+    "src/graphs.c:DIGRAPH_NREDGES" },
   
   { "GABOW_SCC", 1, "adj",
     FuncGABOW_SCC, 
-    "src/digraphs.c:GABOW_SCC" },
+    "src/graphs.c:GABOW_SCC" },
 
   { "DIGRAPH_CONNECTED_COMPONENTS", 1, "digraph",
     FuncDIGRAPH_CONNECTED_COMPONENTS,
-    "src/digraphs.c:DIGRAPH_CONNECTED_COMPONENTS" },
+    "src/graphs.c:DIGRAPH_CONNECTED_COMPONENTS" },
 
   { "IS_ACYCLIC_DIGRAPH", 1, "adj",
     FuncIS_ACYCLIC_DIGRAPH, 
-    "src/digraphs.c:FuncIS_ACYCLIC_DIGRAPH" },
+    "src/graphs.c:FuncIS_ACYCLIC_DIGRAPH" },
  
   { "IS_ANTISYMMETRIC_DIGRAPH", 1, "adj",
     FuncIS_ANTISYMMETRIC_DIGRAPH, 
-    "src/digraphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH" },
+    "src/graphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH" },
  
   { "IS_STRONGLY_CONNECTED_DIGRAPH", 1, "adj",
     FuncIS_STRONGLY_CONNECTED_DIGRAPH, 
-    "src/digraphs.c:FuncIS_STRONGLY_CONNECTED_DIGRAPH" },
+    "src/graphs.c:FuncIS_STRONGLY_CONNECTED_DIGRAPH" },
 
   { "DIGRAPH_TOPO_SORT", 1, "adj",
     FuncDIGRAPH_TOPO_SORT, 
-    "src/digraphs.c:FuncDIGRAPH_TOPO_SORT" },
+    "src/graphs.c:FuncDIGRAPH_TOPO_SORT" },
 
   { "DIGRAPH_SOURCE_RANGE", 1, "digraph",
     FuncDIGRAPH_SOURCE_RANGE, 
-    "src/digraphs.c:FuncDIGRAPH_SOURCE_RANGE" },
+    "src/graphs.c:FuncDIGRAPH_SOURCE_RANGE" },
 
   { "DIGRAPH_OUT_NBS", 3, "nrvertices, source, range",
     FuncDIGRAPH_OUT_NBS, 
-    "src/digraphs.c:FuncDIGRAPH_OUT_NBS" },
+    "src/graphs.c:FuncDIGRAPH_OUT_NBS" },
   
   { "DIGRAPH_IN_OUT_NBS", 1, "adj",
     FuncDIGRAPH_IN_OUT_NBS, 
-    "src/digraphs.c:FuncDIGRAPH_IN_OUT_NBS" },
+    "src/graphs.c:FuncDIGRAPH_IN_OUT_NBS" },
 
   { "ADJACENCY_MATRIX", 1, "digraph",
     FuncADJACENCY_MATRIX, 
-    "src/digraphs.c:FuncADJACENCY_MATRIX" },
+    "src/graphs.c:FuncADJACENCY_MATRIX" },
 
   { "IS_MULTI_DIGRAPH", 1, "digraph",
     FuncIS_MULTI_DIGRAPH, 
-    "src/digraphs.c:FuncIS_MULTI_DIGRAPH" },
+    "src/graphs.c:FuncIS_MULTI_DIGRAPH" },
 
   { "DIGRAPH_SHORTEST_DIST", 1, "digraph",
     FuncDIGRAPH_SHORTEST_DIST, 
-    "src/digraphs.c:FuncDIGRAPH_SHORTEST_DIST" },
+    "src/graphs.c:FuncDIGRAPH_SHORTEST_DIST" },
+
+  { "DIGRAPH_DIAMETER", 1, "digraph",
+    FuncDIGRAPH_DIAMETER, 
+    "src/graphs.c:FuncDIGRAPH_DIAMETER" },
 
   { "IS_TRANSITIVE_DIGRAPH", 1, "digraph",
     FuncIS_TRANSITIVE_DIGRAPH,
-    "src/digraphs.c:FuncIS_TRANSITIVE_DIGRAPH" },
+    "src/graphs.c:FuncIS_TRANSITIVE_DIGRAPH" },
   
   { "DIGRAPH_TRANS_CLOSURE", 1, "digraph",
     FuncDIGRAPH_TRANS_CLOSURE,
-    "src/digraphs.c:FuncDIGRAPH_TRANS_CLOSURE" },
+    "src/graphs.c:FuncDIGRAPH_TRANS_CLOSURE" },
 
   { "DIGRAPH_REFLEX_TRANS_CLOSURE", 1, "digraph",
     FuncDIGRAPH_REFLEX_TRANS_CLOSURE,
-    "src/digraphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE" },
+    "src/graphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE" },
 
   { "RANDOM_DIGRAPH", 2, "nn, limm",
     FuncRANDOM_DIGRAPH,
-    "src/digraphs.c:FuncRANDOM_DIGRAPH" },
+    "src/graphs.c:FuncRANDOM_DIGRAPH" },
  
   { "RANDOM_MULTI_DIGRAPH", 2, "nn, mm",
     FuncRANDOM_MULTI_DIGRAPH,
-    "src/digraphs.c:FuncRANDOM_MULTI_DIGRAPH" },
+    "src/graphs.c:FuncRANDOM_MULTI_DIGRAPH" },
 
   { "DIGRAPH_EQUALS", 2, "digraph1, digraph2",
     FuncDIGRAPH_EQUALS,
-    "src/digraphs.c:FuncDIGRAPH_EQUALS" },
+    "src/graphs.c:FuncDIGRAPH_EQUALS" },
   
   { "DIGRAPH_LT", 2, "digraph1, digraph2",
     FuncDIGRAPH_LT,
-    "src/digraphs.c:FuncDIGRAPH_LT" },
+    "src/graphs.c:FuncDIGRAPH_LT" },
 
   { "DIGRAPHS_IS_REACHABLE", 3, "digraph, u, v",
     FuncDIGRAPHS_IS_REACHABLE,
-    "src/digraphs.c:FuncDIGRAPHS_IS_REACHABLE" },
+    "src/graphs.c:FuncDIGRAPHS_IS_REACHABLE" },
 
   { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncDIGRAPH_AUTOMORPHISMS, 
-    "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS" },
+    "src/graphs.c:FuncDIGRAPH_AUTOMORPHISMS" },
  
   { "MULTIDIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncMULTIDIGRAPH_AUTOMORPHISMS, 
-    "src/digraphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS" },
+    "src/graphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS" },
 
   { "DIGRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncDIGRAPH_CANONICAL_LABELING, 
-    "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELING" },
+    "src/graphs.c:FuncDIGRAPH_CANONICAL_LABELING" },
   
   { "MULTIDIGRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncMULTIDIGRAPH_CANONICAL_LABELING, 
-    "src/digraphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELING" },
+    "src/graphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELING" },
 
-  { "GRAPH_HOMOMORPHISMS", 8, 
-    "gra1obj, gra2obj, tryinit, maxdepth, constraintsobj, maxanswers, result, onlyinjective",
-    FuncGRAPH_HOMOMORPHISMS,
-    "grahom.c:FuncGRAPH_HOMOMORPHISMS" },
+  { "GRAPH_HOMOS", 10, "graph1, graph2, hook, user_param, limit, hint, isinjective, image, kernel, partial_map",
+    FuncGRAPH_HOMOS,
+    "src/graphs.c:FuncGRAPH_HOMOS" },
 
   { 0 }
 
@@ -1836,7 +1824,7 @@ static Int InitLibrary ( StructInitInfo *module )
     }
 
     tmp = NEW_PREC(0);
-    gvar = GVarName("DIGRAPHS_C"); 
+    gvar = GVarName("GRAPHS_C"); 
     AssGVar( gvar, tmp ); 
     MakeReadOnlyGVar(gvar);
 
@@ -1848,12 +1836,12 @@ static Int InitLibrary ( StructInitInfo *module )
 *F  InitInfopl()  . . . . . . . . . . . . . . . . . table of init functions
 */
 static StructInitInfo module = {
-#ifdef DIGRAPHSSTATIC
+#ifdef GRAPHSSTATIC
  /* type        = */ MODULE_STATIC,
 #else
  /* type        = */ MODULE_DYNAMIC,
 #endif
- /* name        = */ "digraphs",
+ /* name        = */ "graphs",
  /* revision_c  = */ 0,
  /* revision_h  = */ 0,
  /* version     = */ 0,
@@ -1866,14 +1854,14 @@ static StructInitInfo module = {
  /* postRestore = */ 0
 };
 
-#ifndef DIGRAPHSSTATIC
+#ifndef GRAPHSSTATIC
 StructInitInfo * Init__Dynamic ( void )
 {
   return &module;
 }
 #endif
 
-StructInitInfo * Init__digraphs ( void )
+StructInitInfo * Init__graphs ( void )
 {
   return &module;
 }
@@ -1894,5 +1882,4 @@ StructInitInfo * Init__digraphs ( void )
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 

@@ -8,9 +8,16 @@
 #############################################################################
 ##
 
-DeclareAttribute("DigraphEndomorphisms", IsDigraph);
-DeclareOperation("HomomorphismDigraphs", [IsDigraph, IsDigraph]);
-DeclareOperation("DigraphHomomorphism", [IsDigraph, IsDigraph]);
-DeclareAttribute("EndomorphismMonoid", IsDigraph);
-DeclareOperation("DigraphColoring", [IsDigraph, IsPosInt]);
+DeclareGlobalFunction("GeneratorsOfEndomorphismMonoid");
+DeclareAttribute("GeneratorsOfEndomorphismMonoidAttr", IsDigraph);
 
+DeclareOperation("HomomorphismsDigraphs", [IsDigraph, IsDigraph]);
+DeclareOperation("HomomorphismsGraphsRepresentatives", [IsDigraph, IsDigraph]);
+
+DeclareOperation("DigraphHomomorphism", [IsDigraph, IsDigraph]);
+DeclareOperation("DigraphColoring", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphColouring", [IsDigraph, IsPosInt]);
+DeclareOperation("HomomorphismGraphs", [IsDigraph, IsDigraph]);
+DeclareOperation("MonomorphismGraphs", [IsDigraph, IsDigraph]);
+
+DeclareGlobalFunction("HomomorphismGraphsFinder");

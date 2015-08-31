@@ -1,4 +1,4 @@
-#############################################################################
+#%T##########################################################################
 ##
 #W  prop.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
@@ -7,13 +7,13 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: prop.tst");
-gap> LoadPackage("digraphs", false);;
+gap> START_TEST("Graphs package: prop.tst");
+gap> LoadPackage("graphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> GraphsStartTest();
 
-# IsMultiDigraph
+#T# IsMultiDigraph
 gap> gr1 := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> IsMultiDigraph(gr1);
@@ -37,7 +37,7 @@ gap> gr4 := Digraph(r);
 gap> IsMultiDigraph(gr4);
 true
 
-# IsAcyclicDigraph 
+#T# IsAcyclicDigraph 
 gap> loop := Digraph([ [1] ]);
 <digraph with 1 vertex, 1 edge>
 gap> IsMultiDigraph(loop);
@@ -137,7 +137,7 @@ false
 gap> IsAcyclicDigraph(gr);
 false
 
-# IsFunctionalDigraph
+#T# IsFunctionalDigraph
 gap> IsFunctionalDigraph(multiple);
 false
 gap> IsFunctionalDigraph(grid);
@@ -182,7 +182,7 @@ gap> g5 := Digraph( rec( vertices := [ 1 .. 3 ] ,
 gap> IsFunctionalDigraph(g5);
 false
 
-# IsSymmetricDigraph
+#T# IsSymmetricDigraph
 gap> IsSymmetricDigraph(g1);
 false
 gap> IsSymmetricDigraph(g2);
@@ -206,7 +206,7 @@ gap> gr := Digraph( rec ( nrvertices := 3, source := [ 1, 1, 2, 2, 2, 2, 3, 3 ],
 gap> IsSymmetricDigraph(gr);
 true
 
-# IsAntisymmetricDigraph
+#T# IsAntisymmetricDigraph
 gap> gr := Digraph( rec(
 > nrvertices := 10,
 > source := [ 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 5, 5, 6,
@@ -242,7 +242,7 @@ gap> gr := Digraph( [ [ 1, 1, 1, 1, 2 ], [ 2, 2, 2, 1 ] ] );
 gap> IsAntisymmetricDigraph(gr);
 false
 
-# IsEmptyDigraph
+#T# IsEmptyDigraph
 gap> gr1 := Digraph( rec( nrvertices := 5, source := [ ], range := [ ] ) );;
 gap> IsEmptyDigraph(gr1);
 true
@@ -265,7 +265,7 @@ gap> gr6 := DigraphByEdges( [ [ 3, 5 ], [ 1, 1 ], [ 2, 3 ], [ 5, 4 ] ] );
 gap> IsEmptyDigraph(gr6);
 false
 
-# IsTournament
+#T# IsTournament
 gap> gr := Digraph( rec ( 
 > nrvertices := 2, source := [ 1, 1 ], range := [ 2, 2 ] ) );
 <multidigraph with 2 vertices, 2 edges>
@@ -303,7 +303,7 @@ gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 1 ] ] );
 gap> IsTournament(gr);
 false
 
-# IsStronglyConnectedDigraph
+#T# IsStronglyConnectedDigraph
 gap> gr := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> IsStronglyConnectedDigraph(gr);
@@ -360,7 +360,7 @@ false
 gap> IsStronglyConnectedDigraph(gr);
 false
 
-# IsReflexiveDigraph
+#T# IsReflexiveDigraph
 gap> r := rec( vertices := [ 1 .. 5 ],
 > source := [ 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5 ],
 > range  := [ 1, 2, 3, 1, 2, 5, 1, 3, 5, 2, 3, 4, 1, 2, 2 ]);;
@@ -420,7 +420,7 @@ gap> gr := DigraphByAdjacencyMatrix(mat);
 gap> IsReflexiveDigraph(gr);
 true
 
-# IsCompleteDigraph
+#T# IsCompleteDigraph
 gap> gr := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> IsCompleteDigraph(gr);
@@ -442,7 +442,7 @@ gap> gr := Digraph( [ [ 2 ], [ 1 ] ] );
 gap> IsCompleteDigraph(gr);
 true
 
-# IsConnectedDigraph
+#T# IsConnectedDigraph
 gap> gr := Digraph( [  ] );
 <digraph with 0 vertices, 0 edges>
 gap> IsConnectedDigraph(gr);
@@ -480,7 +480,7 @@ gap> gr := Digraph( [ [ 2 ], [ 3 ], [  ], [ 3 ] ] );
 gap> IsConnectedDigraph(gr);
 true
 
-# DigraphHasLoops
+#T# DigraphHasLoops
 gap> gr := Digraph( [ ] );
 <digraph with 0 vertices, 0 edges>
 gap> DigraphHasLoops(gr);
@@ -550,7 +550,7 @@ gap> AdjacencyMatrix(gr);;
 gap> DigraphHasLoops(gr);
 false
 
-# IsAperiodicDigraph
+#T# IsAperiodicDigraph
 gap> gr := Digraph([[2],[3],[4],[5],[6],[1],[8],[7]]);
 <digraph with 8 vertices, 8 edges>
 gap> IsAperiodicDigraph(gr);
@@ -568,7 +568,7 @@ gap> gr := Digraph([[2,2],[3,3],[4],[]]);
 gap> IsAperiodicDigraph(gr);
 false
 
-# IsTransitiveDigraph
+#T# IsTransitiveDigraph
 gap> gr := Digraph( [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [ 4 ] ] );
 <digraph with 4 vertices, 7 edges>
 gap> IsTransitiveDigraph(gr);
@@ -660,5 +660,5 @@ true
 gap> IS_TRANSITIVE_DIGRAPH(gr);
 true
 
-#
-gap> STOP_TEST( "Digraphs package: prop.tst");
+#E#
+gap> STOP_TEST( "Graphs package: prop.tst");

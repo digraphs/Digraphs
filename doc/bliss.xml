@@ -233,26 +233,3 @@ gap> IsomorphismDigraphs(digraph1, digraph2);
 </Description>
 </ManSection>
 <#/GAPDoc>
-
-<#GAPDoc Label="EndomorphismMonoid">
-<ManSection>
-  <Attr Name="EndomorphismMonoid" Label="for a digraph" Arg="digraph"/>
-  <Description>
-
-  <Example><![CDATA[
-  ]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphEndomorphisms">
-<ManSection>
-  <Attr Name="DigraphEndomorphisms" Label="for a digraph" Arg="digraph"/>
-  <Description>
-
-  <Example><![CDATA[
-  ]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-

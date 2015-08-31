@@ -14,14 +14,14 @@
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a directed graph without multiple edges, then this
-    function returns the dual of <A>digraph</A>. <P/> 
+    function returns the <E>dual</E> of <A>digraph</A>. The <E>dual</E> is sometimes called the <E>complement</E>.<P/> 
     
     The <E>dual</E> of <A>digraph</A> has the same vertices as <A>digraph</A>,
     and there is an edge in the dual from <C>i</C> to <C>j</C>
     whenever there is no edge from <C>i</C> to <C>j</C> in <A>digraph</A>.
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 2, 3 ], [  ], [ 4, 6 ], [ 5 ], [  ], [ 7, 8, 9 ], [  ],
-> [  ], [  ] ] );
+gap> gr := Digraph( [ [ 2, 3 ], [  ], [ 4, 6 ], [ 5 ], [  ],
+> [ 7, 8, 9 ], [  ], [  ], [  ] ] );
 <digraph with 9 vertices, 8 edges>
 gap> DigraphDual(gr);
 <digraph with 9 vertices, 73 edges>]]></Example>
@@ -404,8 +404,7 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
     The component <C>id</C> is a list such that the vertex <C>i</C> is an 
     element of the weakly connected component <C>comps[id[i]]</C>. <P/>
 
-    The method used in this function has complexity <M>O(m)</M> or <M>O(m+n)</M>,
-    depending on whether the digraph's Source attribute is set, where
+    The method used in this function has complexity  <M>O(m+n)</M>, where
     <M>m</M> is the number of edges and
     <M>n</M> is the number of vertices in the digraph. 
     
@@ -436,11 +435,16 @@ rec( comps := [  ], id := [  ] )
   <Attr Name="DigraphShortestDistances" Arg="digraph"/>
   <Returns>A square matrix of integers.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph with <M>n</M> vertices, then this 
-    function returns an <M>n \times n</M> matrix <C>mat</C>. If a directed 
-    path from vertex <C>i</C> to vertex <C>j</C> exists, then the value of 
-    <C>mat[i][j]</C> is the length of the shortest such path. If no such
-    path exists, then the value of <C>mat[i][j]</C> is <C>-1</C>.
+    If <A>digraph</A> is a directed graph with <M>n</M> vertices, then this 
+    function returns an <M>n \times n</M> matrix of integers <C>mat</C>.
+    
+    If a directed path from vertex <C>i</C> to vertex <C>j</C> exists,
+    then the value of <C>mat[i][j]</C> is the length of the shortest such 
+    path. In particular <C>mat[i][i] = 0</C> for all vertices <C>i</C>,
+    using a directed path of length zero.
+    <P/>
+    
+    If no such path exists, then the value of <C>mat[i][j]</C> is <C>-1</C>.
     If <M>n = 0</M>, then an empty list is returned. <P/>
 
     The method used in this function is a version of the Floyd-Warshall 
@@ -451,10 +455,10 @@ gap> gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 1, 2 ], [ 4 ] ] );
 <digraph with 4 vertices, 6 edges>
 gap> mat := DigraphShortestDistances(gr);;
 gap> Display(mat);
-[ [   1,   1,   2,  -1 ],
-  [   2,   2,   1,  -1 ],
-  [   1,   1,   2,  -1 ],
-  [  -1,  -1,  -1,   1 ] ]
+[ [   0,   1,   2,  -1 ],
+  [   2,   0,   1,  -1 ],
+  [   1,   1,   0,  -1 ],
+  [  -1,  -1,  -1,   0 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -500,7 +504,7 @@ gap> DigraphSources(gr);
 
 <#GAPDoc Label="DigraphPeriod">
 <ManSection>
-  <Prop Name="DigraphPeriod" Arg="digraph"/>
+  <Attr Name="DigraphPeriod" Arg="digraph"/>
   <Returns>An integer.</Returns>
   <Description>
     This function returns the period of the directed graph <A>digraph</A>.<P/>
@@ -531,4 +535,34 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
-    <A>digraph</A>. Specifically, a vertex <C>j</C> belongs to <C>inn[i]</C>
+
+<#GAPDoc Label="DigraphDiameter">
+<ManSection>
+  <Attr Name="DigraphDiameter" Arg="digraph"/>
+  <Returns>An integer.</Returns>
+  <Description>
+    This function returns the diameter of the directed graph <A>digraph</A>.<P/>
+
+    If a directed graph <A>digraph</A> is strongly connected,
+    then the diameter is the maximum shortest distance between any 
+    pair of vertices. Otherwise, or if <A>digraph</A> has no vertices,
+    then the diameter of <A>digraph</A>
+    is undefined, and this function returns the value <C>-1</C>. <P/>
+    
+    See <Ref Attr="DigraphShortestDistances"/>. <P/>
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 4, 5 ], [ 5 ], 
+> [ 1, 2, 3, 4, 5 ] ] );
+<digraph with 5 vertices, 10 edges>
+gap> DigraphDiameter(gr);
+3
+gap> gr := Digraph( [ [ 2 ], [  ] ] );
+<digraph with 2 vertices, 1 edge>
+gap> DigraphDiameter(gr);
+-1
+gap> IsStronglyConnectedDigraph(gr);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

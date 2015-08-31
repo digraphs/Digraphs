@@ -1,7 +1,9 @@
 ############################################################################
 ##
 #W  PackageInfo.g
-#Y  Copyright (C) 2011-14                                James D. Mitchell
+#Y  Copyright (C) 2014                                   James D. Mitchell
+##
+##
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -19,7 +21,7 @@
 
 SetPackageInfo( rec(
 PackageName := "Digraphs",
-Subtitle := "Methods for Directed Graphs",
+Subtitle := "Methods for digraphs",
 Version := "0.1",
 Date := "??",
 ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.1",
@@ -54,21 +56,6 @@ Persons := [
     Institution   := "University of St Andrews"
   ),
         
-   rec(
-    LastName      := "Pfeiffer",
-    FirstNames    := "Markus",
-    IsAuthor      := true,
-    IsMaintainer  := false,
-    Email         := "markus.pfeiffer@morphism.de",
-    WWWHome       := "http://www.morphism.de/~markusp/",
-    PostalAddress := Concatenation( [
-                       "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
-                       " Scotland"] ),
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"
-  ), 
-
   rec( 
     LastName      := "Torpey",
     FirstNames    := "M.",
@@ -89,7 +76,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "waw7@st-and.ac.uk",
-    WWWHome       := "http://wilf-wilson.net",
+    WWWHome       := "http://www-groups.mcs.st-and.ac.uk/~waw7/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
@@ -115,7 +102,7 @@ PackageDoc := rec(
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",  
   SixFile   := "doc/manual.six",
-  LongTitle := "Digraphs - Methods for directed graphs",
+  LongTitle := "Digraphs - Methods for digraphs",
   Autoload  := true,
 ),
 

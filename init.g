@@ -36,5 +36,6 @@ ReadPackage("digraphs/gap/bliss.gd");
 ReadPackage("digraphs/gap/util.gd");
 ReadPackage("digraphs/gap/io.gd");
 ReadPackage("digraphs/gap/grahom.gd");
+ReadPackage("digraphs/gap/stabs.gd");
 
 DeclareInfoClass("InfoDigraphs");;

@@ -1,4 +1,4 @@
-#############################################################################
+#%T##########################################################################
 ##
 #W  attr.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
@@ -7,13 +7,13 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: attr.tst");
-gap> LoadPackage("digraphs", false);;
+gap> START_TEST("Graphs package: attr.tst");
+gap> LoadPackage("graphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> GraphsStartTest();
 
-# DigraphSource and DigraphRange
+#T# DigraphSource and DigraphRange
 gap> nbs := [ [ 12, 22, 17, 1, 10, 11 ], [ 23, 21, 21, 16 ], 
 >  [ 15, 5, 22, 11, 12, 8, 10, 1 ], [ 21, 15, 23, 5, 23, 8, 24 ], 
 >  [ 20, 17, 25, 25 ], [ 5, 24, 22, 5, 2 ], [ 11, 8, 19 ], 
@@ -67,7 +67,7 @@ gap> DigraphSource(gr);
   15, 15, 16, 17, 17, 17, 17, 18, 18, 18, 18, 18, 19, 20, 20, 21, 21, 22, 22, 
   22, 23, 23, 23, 24, 24, 24, 24, 24, 24, 25, 25, 25 ]
 
-# DigraphDual
+#T# DigraphDual
 gap> gr:= Digraph( [ [ 6, 7 ], [ 6, 9 ], [ 1, 3, 4, 5, 8, 9 ], 
 > [ 1, 2, 3, 4, 5, 6, 7, 10 ], [ 1, 5, 6, 7, 10 ], [ 2, 4, 5, 9, 10 ], 
 > [ 3, 4, 5, 6, 7, 8, 9, 10 ], [ 1, 3, 5, 7, 8, 9 ], [ 1, 2, 5 ], 
@@ -80,7 +80,7 @@ gap> gr := Digraph( rec( vertices := [ "a", "b" ],
 > source := [ "b", "b" ], range := [ "a", "a" ] ) );    
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphDual(gr);
-Error, Digraphs: DigraphDual: usage,
+Error, Graphs: DigraphDual: usage,
 the argument <graph> must not have multiple edges,
 gap> gr := Digraph( [ ] );                  
 <digraph with 0 vertices, 0 edges>
@@ -97,7 +97,7 @@ gap> DigraphDual(gr);
 gap> gr := Digraph( [ [ 2, 2 ], [  ] ] );
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphDual(gr);
-Error, Digraphs: DigraphDual: usage,
+Error, Graphs: DigraphDual: usage,
 the argument <graph> must not have multiple edges,
 gap> r := rec( nrvertices := 6,
 > source := [ 2, 2, 2, 2, 2, 2, 4, 4, 4 ],
@@ -117,7 +117,7 @@ gap> gr2 := DigraphDual(gr);;
 gap> DigraphVertexLabels(gr2);
 [ 4, 3, 2, 1 ]
 
-# AdjacencyMatrix
+#T# AdjacencyMatrix
 gap> gr:=Digraph( rec( nrvertices := 10, 
 > source := [ 1, 1, 1, 1, 1, 1, 1, 1 ],
 > range := [ 2, 2, 3, 3, 4, 4, 5, 5 ] ) );
@@ -166,7 +166,7 @@ gap> AdjacencyMatrix(
 > Digraph( rec( nrvertices := 0, source := [ ], range := [ ] ) ) );
 [  ]
 
-# DigraphTopologicalSort
+#T# DigraphTopologicalSort
 gap> r := rec( nrvertices := 20000, source := [  ], range := [  ] );;
 gap> for i in [ 1 .. 9999 ] do
 >   Add(r.source, i);
@@ -237,7 +237,7 @@ gap> gr := Digraph( [ [ 2 ], [ ], [ ] ] );
 gap> DigraphTopologicalSort(gr);
 [ 2, 1, 3 ]
 
-# DigraphStronglyConnectedComponents
+#T# DigraphStronglyConnectedComponents
 gap> gens := [ Transformation( [ 1, 3, 3 ] ), Transformation( [ 2, 1, 2 ] ), 
 > Transformation( [ 2, 2, 1 ] ) ];;
 gap> s := Semigroup(gens);
@@ -295,7 +295,7 @@ gap> DigraphStronglyConnectedComponents(gr2);
 rec( comps := [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], 
       [ 9 ], [ 10 ] ], id := [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] )
 
-# DigraphConnectedComponents
+#T# DigraphConnectedComponents
 gap> gr := Digraph( [ [ 1, 2 ], [ 1 ], [ 2 ], [ 5 ], [ ] ] );
 <digraph with 5 vertices, 5 edges>
 gap> wcc := DigraphConnectedComponents(gr);
@@ -347,28 +347,28 @@ rec( comps := [ [ 1 ], [ 2 ], [ 3 ], [ 4, 45 ], [ 5, 40 ], [ 6 ], [ 7 ],
       43, 14, 44, 45, 22, 14, 46, 14, 47, 16, 11, 48, 22, 49, 50, 26, 51, 52, 
       53, 54, 55, 14, 14, 11, 26, 56, 14 ] )
 
-# DigraphShortestDistances
+#T# DigraphShortestDistances
 gap> adj := Concatenation(List( [ 1 .. 11 ], x -> [ x + 1 ] ), [ [ 1 ] ]);;
 gap> cycle12 := Digraph(adj);
 <digraph with 12 vertices, 12 edges>
 gap> mat := DigraphShortestDistances(cycle12);;
 gap> Display(mat);
-[ [  12,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11 ],
-  [  11,  12,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10 ],
-  [  10,  11,  12,   1,   2,   3,   4,   5,   6,   7,   8,   9 ],
-  [   9,  10,  11,  12,   1,   2,   3,   4,   5,   6,   7,   8 ],
-  [   8,   9,  10,  11,  12,   1,   2,   3,   4,   5,   6,   7 ],
-  [   7,   8,   9,  10,  11,  12,   1,   2,   3,   4,   5,   6 ],
-  [   6,   7,   8,   9,  10,  11,  12,   1,   2,   3,   4,   5 ],
-  [   5,   6,   7,   8,   9,  10,  11,  12,   1,   2,   3,   4 ],
-  [   4,   5,   6,   7,   8,   9,  10,  11,  12,   1,   2,   3 ],
-  [   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,   1,   2 ],
-  [   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,   1 ],
-  [   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12 ] ]
+[ [   0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11 ],
+  [  11,   0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10 ],
+  [  10,  11,   0,   1,   2,   3,   4,   5,   6,   7,   8,   9 ],
+  [   9,  10,  11,   0,   1,   2,   3,   4,   5,   6,   7,   8 ],
+  [   8,   9,  10,  11,   0,   1,   2,   3,   4,   5,   6,   7 ],
+  [   7,   8,   9,  10,  11,   0,   1,   2,   3,   4,   5,   6 ],
+  [   6,   7,   8,   9,  10,  11,   0,   1,   2,   3,   4,   5 ],
+  [   5,   6,   7,   8,   9,  10,  11,   0,   1,   2,   3,   4 ],
+  [   4,   5,   6,   7,   8,   9,  10,  11,   0,   1,   2,   3 ],
+  [   3,   4,   5,   6,   7,   8,   9,  10,  11,   0,   1,   2 ],
+  [   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,   0,   1 ],
+  [   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,   0 ] ]
 gap> DigraphShortestDistances( Digraph( [ ] ) );
 [  ]
 gap> mat := DigraphShortestDistances( Digraph( [ [ ], [ ] ] ) );
-[ [ -1, -1 ], [ -1, -1 ] ]
+[ [ 0, -1 ], [ -1, 0 ] ]
 gap> r:=rec( vertices := [ 1 .. 15 ], source := [ ], range := [ ] );;
 gap> for i in [ 1 .. 15 ] do
 >   for j in [ 1 .. 15 ] do
@@ -379,21 +379,21 @@ gap> for i in [ 1 .. 15 ] do
 gap> complete15 := Digraph(r);
 <digraph with 15 vertices, 225 edges>
 gap> Display(DigraphShortestDistances(complete15));
-[ [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
-  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ] ]
+[ [  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1 ],
+  [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0 ] ]
 gap> r := rec( nrvertices := 7, range := [ 3, 5, 5, 4, 6, 2, 5, 3, 3, 7, 2 ], 
 >  source := [ 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 7 ] );
 rec( nrvertices := 7, range := [ 3, 5, 5, 4, 6, 2, 5, 3, 3, 7, 2 ], 
@@ -401,15 +401,15 @@ rec( nrvertices := 7, range := [ 3, 5, 5, 4, 6, 2, 5, 3, 3, 7, 2 ],
 gap> gr := Digraph(r);
 <multidigraph with 7 vertices, 11 edges>
 gap> Display(DigraphShortestDistances(gr));         
-[ [  -1,   2,   1,   3,   1,   3,   2 ],
-  [  -1,   3,   2,   1,   3,   1,   4 ],
-  [  -1,   1,   2,   2,   1,   2,   2 ],
-  [  -1,   2,   1,   3,   2,   3,   3 ],
-  [  -1,   2,   1,   3,   2,   3,   1 ],
-  [  -1,  -1,  -1,  -1,  -1,  -1,  -1 ],
-  [  -1,   1,   3,   2,   4,   2,   5 ] ]
+[ [   0,   2,   1,   3,   1,   3,   2 ],
+  [  -1,   0,   2,   1,   3,   1,   4 ],
+  [  -1,   1,   0,   2,   1,   2,   2 ],
+  [  -1,   2,   1,   0,   2,   3,   3 ],
+  [  -1,   2,   1,   3,   0,   3,   1 ],
+  [  -1,  -1,  -1,  -1,  -1,   0,  -1 ],
+  [  -1,   1,   3,   2,   4,   2,   0 ] ]
 
-# OutNeighbours and InNeighbours
+#T# OutNeighbours and InNeighbours
 gap> gr := Digraph( rec( nrvertices := 10, source := [ 1, 1, 5, 5, 7, 10 ],
 > range := [ 3, 3, 1, 10, 7, 1 ] ) );
 <multidigraph with 10 vertices, 6 edges>
@@ -424,7 +424,7 @@ gap> InNeighbours(gr);
 gap> OutNeighbours(gr);
 [ [ 1, 1, 4 ], [ 2, 3, 4 ], [ 2, 4, 4, 4 ], [ 2 ] ]
 
-# OutDegrees, OutDegreeSequence, InDegrees, InDegreeSequence
+#T# OutDegrees, OutDegreeSequence, InDegrees, InDegreeSequence
 gap> r := rec( nrvertices := 0, source := [ ], range := [ ] );;
 gap> gr1 := Digraph(r);
 <digraph with 0 vertices, 0 edges>
@@ -504,7 +504,7 @@ gap> gr := EmptyDigraph(5);; OutNeighbours(gr);;
 gap> InDegrees(gr);
 [ 0, 0, 0, 0, 0 ]
 
-# DigraphEdges
+#T# DigraphEdges
 gap> r := rec ( 
 > nrvertices := 5,
 > source := [ 1, 1, 2, 3, 5, 5 ],
@@ -530,7 +530,7 @@ gap> DigraphEdges(gr);
   [ 4, 7 ], [ 5, 5 ], [ 5, 6 ], [ 5, 5 ], [ 5, 5 ], [ 6, 3 ], [ 6, 2 ], 
   [ 6, 8 ], [ 7, 1 ], [ 7, 5 ], [ 7, 7 ], [ 8, 6 ], [ 8, 7 ] ]
 
-# DigraphSources and DigraphSinks
+#T# DigraphSources and DigraphSinks
 gap> r := rec( nrvertices := 10,
 > source := [ 2, 2, 3, 3, 3, 5, 7, 7, 7, 7, 9, 9, 9, 9, 9 ],
 > range  := [ 2, 2, 6, 8, 2, 4, 2, 6, 8, 6, 8, 5, 8, 2, 4 ] );;
@@ -563,7 +563,7 @@ gap> DigraphSinks(gr);
 gap> DigraphSources(gr);
 [ 1, 3, 7, 9, 10 ]
 
-# DigraphPeriod
+#T# DigraphPeriod
 gap> gr := EmptyDigraph(100);
 <digraph with 100 vertices, 0 edges>
 gap> DigraphPeriod(gr);
@@ -593,5 +593,30 @@ true
 gap> DigraphPeriod(gr);
 0
 
-#
-gap> STOP_TEST( "Digraphs package: attr.tst");
+#T# DigraphDiameter
+gap> gr := Digraph( [ [ 2 ], [  ] ] );;
+gap> DigraphDiameter(gr);
+-1
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 4, 5 ], [ 5 ] , [ 1 ] ] );;
+gap> DigraphDiameter(gr);
+4
+gap> gr := Digraph( [ [ 1, 2 ], [ 1 ] ] );;
+gap> DigraphDiameter(gr);
+1
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [  ] ] );;
+gap> IsStronglyConnectedDigraph(gr);
+false
+gap> DigraphDiameter(gr);
+-1
+gap> gr := Digraph( [ [ 1 ] ] );;
+gap> DigraphDiameter(gr);
+0
+gap> gr := EmptyDigraph(0);;
+gap> DigraphDiameter(gr);
+-1
+gap> gr := EmptyDigraph(1);;
+gap> DigraphDiameter(gr);
+0
+
+#E#
+gap> STOP_TEST( "Graphs package: attr.tst");

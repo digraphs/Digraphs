@@ -15,12 +15,12 @@
   </Section>
 
   <Section><Heading>Neighbours and degree</Heading>
+    <#Include Label="AdjacencyMatrix">
     <#Include Label="RangeSourceDigraph">
     <#Include Label="OutNeighbours">
     <#Include Label="InNeighbours">
     <#Include Label="OutDegrees">
     <#Include Label="InDegrees">
-    <#Include Label="AdjacencyMatrix">
     <#Include Label="OutDegreeOfVertex">
     <#Include Label="OutNeighboursOfVertex">
     <#Include Label="InDegreeOfVertex">
@@ -28,8 +28,10 @@
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>
+    <#Include Label="DigraphDiameter">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphConnectedComponents">
+    <#Include Label="DigraphConnectedComponent">
     <#Include Label="DigraphStronglyConnectedComponents">
     <#Include Label="DigraphStronglyConnectedComponent">
     <#Include Label="DigraphPeriod">

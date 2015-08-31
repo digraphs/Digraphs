@@ -1,0 +1,64 @@
+     ================================================================
+      README file for the `Graphs' GAP4 package by
+      Julius Jonusas, James Mitchell, Michael Torpey, Wilfred Wilson
+     ================================================================
+
+Getting Graphs                                
+----------------
+
+To get the latest version of the package, download the archive file 
+
+    graphs-x.x.tar.gz
+
+from 
+
+    http://www-groups.mcs.st-and.ac.uk/~jamesm/graphs.php
+
+and inside the 'pkg' subdirectory of your GAP installation unpack
+graphs-x.x.tar.gz using:
+
+    gunzip graphs-x.x.tar.gz; tar xvf graphs-x.x.tar
+
+This will create a subdirectory 'graphs-x.x'.
+
+Installation
+------------
+
+It is assumed that you have a working copy of GAP with version number 4.7.3 or
+higher.  The  most  up-to-date  version  of  GAP  and instructions on how to
+install it can be obtained from the main GAP webpage
+  
+  http://www.gap-system.org
+  
+The  following  is  a  summary of the steps that should lead to a successful
+installation of Graphs:
+
+ 1.  download the package archive 'graphs-x.x.tar.gz' from
+
+       http://www-groups.mcs.st-and.ac.uk/~jamesm/graphs.php
+
+ 2.  unzip and untar the file 'graphs-x.x.tar.gz' using
+ 
+        gunzip graphs-x.x.tar.gz; tar xvf graphs-x.x.tar
+    
+     this should create a directory called 'graphs-x.x'.
+
+ 3.  locate  the  'pkg'  directory  of your GAP directory, which contains the
+     directories 'lib', 'doc' and so on. Move the directory 'graphs-x.x'
+     into the 'pkg' directory (if it is not there already).
+
+ 4.  start GAP in the usual way.
+
+ 5.  type LoadPackage("graphs");
+
+ 6.  compile the documentation by typing GraphsMakeDoc();
+
+Further Information
+-------------------
+
+For questions, remarks, suggestions, and issues please use the issue tracker at:
+
+http://bitbucket.org/james-d-mitchell/graphs/issues
+
+Julius Jonusas, James Mitchell, Michael Torpey, Wilfred Wilson
+18th of December 2014
