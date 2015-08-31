@@ -293,8 +293,8 @@ function()
                  "the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
                  "required\nfor these tests to run. Please download the ",
                  "'digraphs-lib.tar.gz'\narchive from:\n\n",
-                 "http://bitbucket.org/james-d-mitchell/digraphs/downloads\n\n",
-                 "and try again,");
+                 "http://bitbucket.org/james-d-mitchell/digraphs/downloads",
+                 "\n\nand try again,");
   fi;
 
   return DIGRAPHS_TestDir("extreme", rec());

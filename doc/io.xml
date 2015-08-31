@@ -85,7 +85,6 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
     <C>.gz</C>, <C>.bzip2</C>, and <C>.xz</C>).
     For example, if the filename extension if <C>.g6</C>,
     then <C>ReadDigraphs</C> will use the graph6 decoder.
-
     <P/>
 
     The currently supported file formats, and associated filename extensions,

@@ -445,16 +445,14 @@ rec( comps := [  ], id := [  ] )
   <Returns>A square matrix of integers.</Returns>
   <Description>
     If <A>digraph</A> is a digraph with <M>n</M> vertices, then this 
-    function returns an <M>n \times n</M> matrix of integers <C>mat</C>.
+    function returns an <M>n \times n</M> matrix <C>mat</C> of integers.
+    If <M>n = 0</M>, then an empty list is returned.<P/>
     
-    If a directed path from vertex <C>i</C> to vertex <C>j</C> exists,
+    If there is a directed path from vertex <C>i</C> to vertex <C>j</C>,
     then the value of <C>mat[i][j]</C> is the length of the shortest such 
-    path. In particular <C>mat[i][i] = 0</C> for all vertices <C>i</C>,
-    using a directed path of length zero.
-    <P/>
-    
-    If no such path exists, then the value of <C>mat[i][j]</C> is <C>-1</C>.
-    If <M>n = 0</M>, then an empty list is returned. <P/>
+    path. If no such path exists, then the value of <C>mat[i][j]</C> is <C>-1</C>.
+    We use the convention that the distance of every vertex to itself is
+    <C>0</C>, i.e. <C>mat[i][i] = 0</C> for all vertices <C>i</C>. <P/>
 
     The method used in this function is a version of the Floyd-Warshall 
     algorithm, and has complexity <M>O(n^3)</M>.
@@ -555,7 +553,7 @@ true
     This function returns the diameter of the directed graph <A>digraph</A>.<P/>
 
     If a directed graph <A>digraph</A> is strongly connected,
-    then the diameter is the maximum shortest distance between any 
+    then the <E>diameter</E> is the maximum shortest distance between any 
     pair of vertices. Otherwise, or if <A>digraph</A> has no vertices,
     then the diameter of <A>digraph</A>
     is undefined, and this function returns the value <C>-1</C>. <P/>
