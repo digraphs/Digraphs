@@ -1,4 +1,4 @@
-##
+#############################################################################
 #W  digraph.xml
 #Y  Copyright (C) 2014                                  James D. Mitchell
 ##
@@ -6,6 +6,22 @@
 ##
 #############################################################################
 ##
+
+<#GAPDoc Label="DigraphType">
+<ManSection>
+  <Var Name="DigraphType"/>
+  <Description>
+    </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphFamily">
+<ManSection>
+  <Var Name="DigraphFamily"/>
+  <Description>
+    </Description>
+</ManSection>
+<#/GAPDoc>
 
 <#GAPDoc Label="IsDigraph">
 <ManSection>
@@ -19,6 +35,133 @@
     </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphVertexLabels">
+<ManSection>
+  <Oper Name="DigraphVertexLabels" Arg="digraph"/>
+  <Oper Name="SetDigraphVertexLabels" Arg="digraph, list"/>
+  <Oper Name="DigraphEdgeLabels" Arg="digraph"/>
+  <Oper Name="SetDigraphEdgeLabels" Arg="digraph, list"/>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns the labels 
+    of the vertices in <A>digraph</A>. <C>SetDigraphVertexLabels</C> can be used to set 
+    the labels of the vertices in <A>digraph</A> to the list of arbitrary 
+    &GAP; objects <A>list</A>. 
+    <C>DigraphEdgeLabels</C> and <C>SetDigraphEdgeLabels</C> are similar. <P/>
+
+    The label of a vertex can be changed an arbitrary number of times. If no label
+    has been set for the vertex <C>i</C>, then the default value is <C>i</C>.
+
+    If <A>digraph</A> is a digraph created from a record with a component
+    <C>vertices</C>, then the labels of the vertices are set to the value of this
+    component.<P/>
+
+    Induced subdigraphs, and other operations which create new digraphs from old
+    ones, inherit their labels from their parents. 
+
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
+> [ 2, 3, 5 ] ] );
+<digraph with 5 vertices, 11 edges>
+gap> DigraphVertexLabels(gr);
+[ 1 .. 5 ]
+gap> gr := Digraph( [ "a", "b", "c" ], [  ], [  ] );
+<digraph with 3 vertices, 0 edges>
+gap> DigraphVertexLabels(gr);
+[ "a", "b", "c" ]
+gap> SetDigraphVertexLabel(gr, 2, "d");
+gap> DigraphVertexLabels(gr);
+[ "a", "d", "c" ]
+gap> gr := InducedSubdigraph(gr, [ 1, 3 ]);
+<digraph with 2 vertices, 0 edges>
+gap> DigraphVertexLabels(gr);
+[ "a", "c" ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphVertexLabel">
+<ManSection>
+  <Oper Name="DigraphVertexLabel" Arg="digraph, i"/>
+  <Oper Name="SetDigraphVertexLabel" Arg="digraph, i, obj"/>
+  <Oper Name="DigraphEdgeLabel" Arg="digraph, i"/>
+  <Oper Name="SetDigraphEdgeLabel" Arg="digraph, i, obj"/>
+  <Description>
+    If <A>digraph</A> is a digraph, then the first operation returns the label of
+    the vertex <A>i</A>. The second operation can be used to set the label of the
+    vertex <A>i</A> in <A>digraph</A> to the arbitrary &GAP; object <A>obj</A>. 
+    <P/>
+
+    The label of a vertex can be changed an arbitrary number of times. If no label
+    has been set for the vertex <A>i</A>, then the default value is <C>i</C>. <P/>
+
+    If <A>digraph</A> is a digraph created from a record with a component
+    <C>vertices</C>, then the labels of the vertices are set to the value of this
+    component.<P/>
+
+    Induced subdigraphs, and other operations which create new digraphs from old
+    ones, inherit their labels from their parents. 
+
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
+> [ 2, 3, 5 ] ] );
+<digraph with 5 vertices, 11 edges>
+gap> DigraphVertexLabel(gr, 3);
+3
+gap> gr := Digraph( [ "a", "b", "c" ], [  ], [  ] );
+<digraph with 3 vertices, 0 edges>
+gap> DigraphVertexLabel(gr, 2);
+"b"
+gap> SetDigraphVertexLabel(gr, 2, "d");
+gap> DigraphVertexLabel(gr, 2);
+"d"
+gap> gr := InducedSubdigraph(gr, [ 1, 2 ]);
+<digraph with 2 vertices, 0 edges>
+gap> DigraphVertexLabel(gr, 2);
+"d"]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsMultiDigraph">
+<ManSection>
+  <Prop Name="IsMultiDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A <E>multidigraph</E> is one that has at least two 
+    edges with equal source and range. 
+    
+    <Example><![CDATA[
+gap> gr:=Digraph( [ "a", "b", "c" ],
+> [ "a", "b", "b" ],
+> [ "b", "c", "a" ] );
+<digraph with 3 vertices, 3 edges>
+gap> IsMultiDigraph(gr);
+false
+gap> gr := Digraph( 3, 
+> [ 1, 2, 3, 1, 1, 2 ],
+> [ 1, 2, 3, 2, 3, 1 ] );
+<digraph with 3 vertices, 6 edges>
+gap> IsMultiDigraph(gr);
+false
+gap> gr := Digraph( 3,
+> [ 1, 2, 3, 1, 1, 2, 1 ],
+> [ 1, 2, 3, 2, 3, 1, 2 ] );
+<multidigraph with 3 vertices, 7 edges>
+gap> IsMultiDigraph(gr);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+<#GAPDoc Label="DigraphNC">
+<ManSection>
+  <Oper Name="DigraphNC" Arg="??"/>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 
 <#GAPDoc Label="Digraph">
 <ManSection>

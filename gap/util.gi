@@ -57,8 +57,9 @@ function(file)
   SetInfoLevel(InfoDigraphs, record.InfoLevelInfoDigraphs);
 
   if not IsBound(GAPInfo.TestData.START_TIME) then
-      Error("`STOP_TEST' command without `START_TEST' command for `",
-            file, "'");
+      ErrorMayQuit("Digraphs: DigraphsStopTest:\n",
+                   "`STOP_TEST' command without `START_TEST' command for `",
+                   file, "'");
   fi;
   Print(GAPInfo.TestData.START_NAME, "\n");
 
@@ -115,7 +116,7 @@ function()
                        "testinstall.tst"));
 end);
 
-InstallGlobalFunction(DigraphsManualExamples,
+InstallGlobalFunction(DIGRAPHS_ManualExamples,
 function()
   return ExtractExamples(DirectoriesPackageLibrary("digraphs", "doc"),
                          "main.xml", DigraphsDocXMLFiles, "Single");
@@ -125,7 +126,7 @@ InstallGlobalFunction(DigraphsTestManualExamples,
 function()
   local ex, omit, str;
 
-  ex := DigraphsManualExamples();
+  ex := DIGRAPHS_ManualExamples();
   omit := DIGRAPHS_OmitFromTestManualExamples;
   if Length(omit) > 0 then
     Print("# not testing examples containing the strings");

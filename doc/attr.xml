@@ -8,6 +8,15 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="AsGraph">
+<ManSection>
+  <Attr Name="AsGraph" Arg="digraph"/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphDual">
 <ManSection>
   <Attr Name="DigraphDual" Arg="digraph"/>
