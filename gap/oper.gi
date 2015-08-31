@@ -648,18 +648,19 @@ end);
 InstallMethod(OnDigraphs, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
 function(digraph, trans)
-  local kernel, n;
-
+  local n, adj, new, i;
   n := DigraphNrVertices(digraph);
-  if ForAny(DigraphVertices(digraph),
-            i -> i ^ trans > n) then
+  if ForAny(DigraphVertices(digraph), i -> i ^ trans > n) then
     ErrorMayQuit("Digraphs: OnDigraphs: usage,\n",
                  "the 2nd argument <trans> must transform the vertices of ",
                  "the 1st argument\n<digraph>,");
   fi;
-
-  kernel := KernelOfTransformation(trans, n);
-  return QuotientDigraph(digraph, kernel);
+  adj := OutNeighbours(digraph);
+  new := List(DigraphVertices(digraph), i-> []);
+  for i in DigraphVertices(digraph) do
+    new[i^trans] := Union(new[i^trans], adj[i]);
+  od;
+  return OnTuplesSets(new, trans);
 end);
 
 #
