@@ -8,6 +8,19 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="PlainTextDecoders">
+<ManSection>
+  <Func Name="TournamentLineDecoder" Arg="digraph"/>
+  <Func Name="AdjacencyMatrixUpperTriangleLineDecoder" Arg="digraph"/>
+  <Func Name="TCodeDecoder" Arg="digraph"/>
+  <Returns></Returns>
+  <Description>
+    <Example><![CDATA[
+]]></Example>
+    </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphFromGraph6String">
 <ManSection>
   <Oper Name="DigraphFromGraph6String" Arg="str"/>

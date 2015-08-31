@@ -611,7 +611,7 @@ function(nrvertices, source, range)
 
   if nrvertices < 0 then
     ErrorMayQuit("Digraphs: Digraph: usage,\n",
-                 "the first argument <nrvertices> must be a non-negative"
+                 "the first argument <nrvertices> must be a non-negative",
                  " integer,");
   fi;
   m := Length(source);
@@ -630,8 +630,8 @@ function(nrvertices, source, range)
         or ForAny(source, x -> x < 1 or x > nrvertices)
         or ForAny(range, x -> x < 1 or x > nrvertices) then
       ErrorMayQuit("Digraphs: Digraph: usage,\n",
-                   "the second and third arguments <source> and <range> must"
-                   "be lists\nof positive integers no greater than the first"
+                   "the second and third arguments <source> and <range> must",
+                   "be lists\nof positive integers no greater than the first",
                    "argument <nrvertices>,");
     fi;
     range := Permuted(range, Sortex(source));
@@ -650,13 +650,13 @@ function(vertices, source, range)
   m := Length(source);
   if m <> Length(range) then
     ErrorMayQuit("Digraphs: Digraph: usage,\n",
-                 "the second and third arguments <source> and <range>"
+                 "the second and third arguments <source> and <range>",
                  " must be lists of\nequal length,");
   fi;
 
   if not IsDuplicateFreeList(vertices) then
     ErrorMayQuit("Digraphs: Digraph: usage,\n",
-                 "the first argument <vertices> must be a duplicate-free "
+                 "the first argument <vertices> must be a duplicate-free ",
                  "list,");
   fi;
 
