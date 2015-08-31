@@ -144,8 +144,8 @@ false
 gap> gr := RandomDigraph(10);;
 gap> DigraphRemoveEdges(gr, [Group(())]);
 Error, Digraphs: DigraphRemoveEdges: usage,
-the second argument <edges> must be a list of indices of edges
-or a list of edges of the first argument <digraph>,
+the second argument <edges> must be a list of indices of
+edges or a list of edges of the first argument <digraph>,
 gap> gr := Digraph([[2], []]);
 <digraph with 2 vertices, 1 edge>
 gap> DigraphRemoveEdges(gr, [1]);
@@ -317,10 +317,10 @@ gap> InDegreeOfVertex(gr, 7);
 1
 gap> InNeighboursOfVertex(gr, 11);
 Error, Digraphs: InNeighboursOfVertex: usage,
-the second argument <v> is not a vertex of the first, <digraph>,
+the 2nd argument <v> is not a vertex of the first, <digraph>,
 gap> InDegreeOfVertex(gr, 11);
 Error, Digraphs: InDegreeOfVertex: usage,
-the second argument <v> is not a vertex of the first, <digraph>,
+the 2nd argument <v> is not a vertex of the 1st, <digraph>,
 gap> gr := Digraph([[1, 1, 4], [2, 3, 4], [2, 4, 4, 4], [2]]);
 <multidigraph with 4 vertices, 11 edges>
 gap> InNeighboursOfVertex(gr, 3);
@@ -354,10 +354,10 @@ gap> OutDegreeOfVertex(gr, 5);
 6
 gap> OutNeighboursOfVertex(gr, 12);
 Error, Digraphs: OutNeighboursOfVertex: usage,
-the second argument <v> is not a vertex of the first, <digraph>,
+the 2nd argument <v> is not a vertex of the 1st, <digraph>,
 gap> OutDegreeOfVertex(gr, 12);
 Error, Digraphs: OutDegreeOfVertex: usage,
-the second argument <v> is not a vertex of the first, <digraph>,
+the 2nd argument <v> is not a vertex of the 1st, <digraph>,
 gap> gr := Digraph([[2, 2, 2, 2], [2, 2]]);
 <multidigraph with 2 vertices, 6 edges>
 gap> OutNeighboursOfVertex(gr, 2);
@@ -495,16 +495,16 @@ the second argument <partition> is not a valid partition
 of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph(gr, [[1], [2], [0]]);
 Error, Digraphs: QuotientDigraph: usage,
-the second argument <partition> is not a valid partition
-of the vertices of <digraph>, [ 1 .. 3 ],
+the second argument <partition> is not a valid
+partition of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph(gr, [[1], [2, 4]]);
 Error, Digraphs: QuotientDigraph: usage,
-the second argument <partition> is not a valid partition
-of the vertices of <digraph>, [ 1 .. 3 ],
+the second argument <partition> is not a valid
+partition of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph(gr, [[1, 2], [2]]);
 Error, Digraphs: QuotientDigraph: usage,
-the second argument <partition> is not a valid partition
-of the vertices of <digraph>, [ 1 .. 3 ],
+the second argument <partition> is not a valid
+partition of the vertices of <digraph>, [ 1 .. 3 ],
 gap> QuotientDigraph(gr, [[1], [2]]);
 Error, Digraphs: QuotientDigraph: usage,
 the second argument <partition> does not partition
@@ -762,8 +762,8 @@ gap> DigraphEdges(gr) = DigraphEdges(gr2);
 true
 gap> gr2 := DigraphAddVertices(gr, 3, [SymmetricGroup(2), Group(())]);
 Error, Digraphs: DigraphAddVertices: usage,
-the number of new vertex names (the length of the third arg <names>)
-must match the number of new vertices (the value of the second arg <m>),
+the number of new vertex names (the length of the third argument <names>)
+must match the number of new vertices ( the value of the second argument <m>),
 gap> gr2 := DigraphAddVertices(gr, 2, [SymmetricGroup(2), Group(())]);
 <digraph with 3 vertices, 1 edge>
 gap> DigraphVertices(gr2);
@@ -802,7 +802,7 @@ gap> DigraphVertexLabels(gr2);
 [ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
 gap> DigraphAddVertices(gr2, -1);
 Error, Digraphs: DigraphAddVertices: usage,
-the second arg <m> (the number of vertices to add) must be non-negative,
+the second argument <m> (the number of vertices to add) must be non-negative,
 gap> gr3 := DigraphAddVertices(gr2, 0);
 <digraph with 3 vertices, 1 edge>
 gap> IsIdenticalObj(gr2, gr3);
@@ -811,7 +811,7 @@ gap> gr2 = gr3;
 true
 gap> DigraphAddVertices(gr2, -1, []);
 Error, Digraphs: DigraphAddVertices: usage,
-the second arg <m> (the number of vertices to add) must be non-negative,
+the second argument <m> (the number of vertices to add) must be non-negative,
 gap> gr3 := DigraphAddVertices(gr2, 0, []);
 <digraph with 3 vertices, 1 edge>
 gap> IsIdenticalObj(gr2, gr3);
@@ -866,7 +866,7 @@ Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphRemoveVertex' on 2 arguments
 gap> DigraphRemoveVertex(gr, 15);
 Error, Digraphs: DigraphRemoveVertex: usage,
-the second arg <m> is not a vertex of the first arg <digraph>,
+the second argument <m> is not a vertex of the first argument <digraph>,
 gap> gr2 := DigraphRemoveVertex(gr, 10);;
 gap> DigraphNrVertices(gr2);
 13
@@ -883,24 +883,24 @@ gap> gr = gr2;
 true
 gap> gr2 := DigraphRemoveVertices(gr, [0]);
 Error, Digraphs: DigraphRemoveVertices: usage,
-the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>,
+the second argument <verts> should be a duplicate free list of vertices of
+the first argument <digraph>,
 gap> gr2 := DigraphRemoveVertices(gr, [1, "a"]);
 Error, Digraphs: DigraphRemoveVertices: usage,
-the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>,
+the second argument <verts> should be a duplicate free list of vertices of
+the first argument <digraph>,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 1]);
 Error, Digraphs: DigraphRemoveVertices: usage,
-the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>,
+the second argument <verts> should be a duplicate free list of vertices of
+the first argument <digraph>,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 0]);
 Error, Digraphs: DigraphRemoveVertices: usage,
-the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>,
+the second argument <verts> should be a duplicate free list of vertices of
+the first argument <digraph>,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 5]);
 Error, Digraphs: DigraphRemoveVertices: usage,
-the second arg <verts> should be a duplicate free list of vertices of
-the first arg <digraph>,
+the second argument <verts> should be a duplicate free list of vertices of
+the first argument <digraph>,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 3]);
 <digraph with 2 vertices, 2 edges>
 gap> IsCompleteDigraph(gr2);
@@ -1264,12 +1264,12 @@ Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `IsReachable' on 3 arguments
 gap> IsReachable(gr1, 101, 1);
 Error, Digraphs: IsReachable: usage,
-the second and third arguments <u> and <v> must be vertices
-of the first argument <digraph>,
+the second and third arguments <u> and <v> must be
+vertices of the first argument <digraph>,
 gap> IsReachable(gr1, 1, 101);
 Error, Digraphs: IsReachable: usage,
-the second and third arguments <u> and <v> must be vertices
-of the first argument <digraph>,
+the second and third arguments <u> and <v> must be
+vertices of the first argument <digraph>,
 gap> IsReachable(gr1, 1, 2);
 true
 gap> gr1 := DigraphRemoveEdges(CycleDigraph(100), [[100, 1], [99, 100]]);;
