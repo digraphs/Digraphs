@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#W  maxcliq.gi
+#W  maxcliq.gd
 #Y  Copyright (C) 2015                                   Markus Pfeiffer
 ##                                                       Raghav Mehra
 ##
@@ -9,4 +9,8 @@
 #############################################################################
 ##
 
+DeclareAttribute("DigraphMaxCliques", IsDigraph);
+
+DeclareGlobalFunction("DigraphBronKerbosch");
+DeclareGlobalFunction("DigraphBronKerboschIter");
 

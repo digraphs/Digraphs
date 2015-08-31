@@ -15,7 +15,7 @@ function(n, func)
 
   V:= [ 1 .. n ];
   out := List( V, x -> [ ] );
-  
+
   for i in V do
     len := 0;
     for j in V do
@@ -32,7 +32,7 @@ InstallMethod(Digraph, "for a binary relation",
 [IsBinaryRelation],
 function(rel)
   local d, out, gr, i;
-  
+
   d := GeneratorsOfDomain(UnderlyingDomainOfBinaryRelation(rel));
   if not IsRange(d) or d[1] <> 1 then
     Error("Digraphs: Digraph: usage,\n",
@@ -62,14 +62,14 @@ function(rel)
 end);
 
 InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
-[IsDigraph, IsPosInt, IsObject], 
+[IsDigraph, IsPosInt, IsObject],
 function(graph, i, name)
 
-  if not IsBound(graph!.vertexlabels) then 
+  if not IsBound(graph!.vertexlabels) then
     graph!.vertexlabels := [ 1 .. DigraphNrVertices(graph) ];
   fi;
 
-  if i > DigraphNrVertices(graph) then 
+  if i > DigraphNrVertices(graph) then
     Error("Digraphs: SetDigraphVertexLabel: usage,\n",
     "there are only ",  DigraphNrVertices(graph), " vertices,");
     return;
@@ -79,14 +79,14 @@ function(graph, i, name)
 end);
 
 InstallMethod(DigraphVertexLabel, "for a digraph and pos int",
-[IsDigraph, IsPosInt], 
+[IsDigraph, IsPosInt],
 function(graph, i)
 
-  if not IsBound(graph!.vertexlabels) then 
+  if not IsBound(graph!.vertexlabels) then
     graph!.vertexlabels := [1 .. DigraphNrVertices(graph)];
   fi;
 
-  if IsBound(graph!.vertexlabels[i]) then 
+  if IsBound(graph!.vertexlabels[i]) then
     return graph!.vertexlabels[i];
   fi;
   Error("Digraphs: DigraphVertexLabel: usage,\n",
@@ -95,12 +95,12 @@ function(graph, i)
 end);
 
 InstallMethod(SetDigraphVertexLabels, "for a digraph and list",
-[IsDigraph, IsList], 
+[IsDigraph, IsList],
 function(graph, names)
-  
-  if Length(names) = DigraphNrVertices(graph) then 
+
+  if Length(names) = DigraphNrVertices(graph) then
     graph!.vertexlabels := names;
-  else 
+  else
     Error("Digraphs: SetDigraphVertexLabels: usage,\n",
     "the 2nd arument <names> must be a list with length equal",
     " to the number of\nvertices of the digraph,");
@@ -110,24 +110,24 @@ function(graph, names)
 end);
 
 InstallMethod(DigraphVertexLabels, "for a digraph and pos int",
-[IsDigraph], 
+[IsDigraph],
 function(graph)
 
-  if not IsBound(graph!.vertexlabels) then 
+  if not IsBound(graph!.vertexlabels) then
     graph!.vertexlabels := [ 1 .. DigraphNrVertices(graph) ];
   fi;
   return graph!.vertexlabels;
 end);
 
 InstallMethod(SetDigraphEdgeLabel, "for a digraph, pos int, object",
-[IsDigraph, IsPosInt, IsObject], 
+[IsDigraph, IsPosInt, IsObject],
 function(graph, i, name)
 
-  if not IsBound(graph!.edgelabels) then 
+  if not IsBound(graph!.edgelabels) then
     graph!.edgelabels := [ 1 .. DigraphNrEdges(graph) ];
   fi;
 
-  if i > DigraphNrEdges(graph) then 
+  if i > DigraphNrEdges(graph) then
     Error("Digraphs: SetDigraphEdgeLabel: usage,\n",
     "there are only ",  DigraphNrEdges(graph), " vertices,");
     return;
@@ -137,14 +137,14 @@ function(graph, i, name)
 end);
 
 InstallMethod(DigraphEdgeLabel, "for a digraph and pos int",
-[IsDigraph, IsPosInt], 
+[IsDigraph, IsPosInt],
 function(graph, i)
 
-  if not IsBound(graph!.edgelabels) then 
+  if not IsBound(graph!.edgelabels) then
     graph!.edgelabels := [ 1 .. DigraphNrEdges(graph) ];
   fi;
 
-  if IsBound(graph!.edgelabels[i]) then 
+  if IsBound(graph!.edgelabels[i]) then
     return graph!.edgelabels[i];
   fi;
   Error("Digraphs: DigraphEdgeLabel: usage,\n",
@@ -153,12 +153,12 @@ function(graph, i)
 end);
 
 InstallMethod(SetDigraphEdgeLabels, "for a digraph and list",
-[IsDigraph, IsList], 
+[IsDigraph, IsList],
 function(graph, names)
-  
-  if Length(names) = DigraphNrEdges(graph) then 
+
+  if Length(names) = DigraphNrEdges(graph) then
     graph!.edgelabels := names;
-  else 
+  else
     Error("Digraphs: SetDigraphEdgeLabels: usage,\n",
     "the 2nd arument <names> must be a list with length equal",
     " to the number of\nvertices of the digraph,");
@@ -168,10 +168,10 @@ function(graph, names)
 end);
 
 InstallMethod(DigraphEdgeLabels, "for a digraph and pos int",
-[IsDigraph], 
+[IsDigraph],
 function(graph)
 
-  if not IsBound(graph!.edgelabels) then 
+  if not IsBound(graph!.edgelabels) then
     graph!.edgelabels := [ 1 .. DigraphNrEdges(graph) ];
   fi;
   return graph!.edgelabels;
@@ -196,7 +196,7 @@ InstallMethod(AsDigraph, "for a transformation and an integer",
 [IsTransformation, IsInt],
 function(trans, int)
   local ran, out, gr, i;
-  
+
   if int < 0 then
     Error("Digraphs: AsDigraph: usage,\n",
           "the second argument should be a non-negative integer,");
@@ -245,7 +245,7 @@ InstallMethod(RandomDigraph, "for a pos int and a float",
 [IsPosInt, IsFloat],
 function(n, p)
   local out, lim;
-  
+
   if p < 0.0 or 1.0 < p then
     Error("Digraphs: RandomDigraph: usage,\n",
     "the second argument <p> must be a float between 0 and 1,");
@@ -275,7 +275,7 @@ InstallMethod(RandomTournament, "for an integer",
 [IsInt],
 function(n)
   local gr, choice, nr, verts, out, i, j;
-  
+
   if n < 0 then
     Error("Digraphs: RandomTournament: usage,\n",
     "the argument <n> must be a non-negative integer,");
@@ -309,7 +309,7 @@ InstallMethod(CompleteDigraph, "for an integer",
 [IsInt],
 function(n)
   local verts, out, gr, i;
-  
+
   if n < 0 then
     Error("Digraphs: CompleteDigraph: usage,\n",
       "the argument <n> must be a non-negative integer,");
@@ -364,7 +364,7 @@ function(n)
     out[i] := [ i + 1 ];
   od;
   out[n] := [ 1 ];
-  gr := DigraphNC( out ); 
+  gr := DigraphNC( out );
   if n = 1 then
     SetIsTransitiveDigraph(gr, true);
     SetDigraphHasLoops(gr, true);
@@ -390,7 +390,7 @@ function(n)
   if n = 1 then
     return EmptyDigraph(1);
   fi;
-  
+
   out := EmptyPlist(n);
   for i in [ 1 .. n - 1 ] do
     out[i] := [ i + 1 ];
@@ -462,7 +462,7 @@ function(graph)
           "the graph components 'source' and 'range' should be lists,");
     return;
   fi;
-  
+
   m := Length(graph.source);
   if m <> Length(graph.range) then
     Error("Digraphs: Digraph: usage,\n",
@@ -471,11 +471,11 @@ function(graph)
     return;
   fi;
   graph!.nredges := m;
-  
+
   check_source := true;
 
-  if IsBound(graph.nrvertices) then 
-    if not (IsInt(graph.nrvertices) and graph.nrvertices >= 0) then 
+  if IsBound(graph.nrvertices) then
+    if not (IsInt(graph.nrvertices) and graph.nrvertices >= 0) then
       Error("Digraphs: Digraph: usage,\n",
             "the record component 'nrvertices' ",
             "should be a non-negative integer,");
@@ -489,10 +489,10 @@ function(graph)
     fi;
     cmp := LT;
     obj := graph.nrvertices + 1;
-    
-    if IsRange(graph.source) then 
+
+    if IsRange(graph.source) then
       if not IsEmpty(graph.source) and (graph.source[1] < 1 or
-         graph.source[Length(graph.source)] > graph.nrvertices) then 
+         graph.source[Length(graph.source)] > graph.nrvertices) then
         Error("Digraphs: Digraph: usage,\n",
               "the record component 'source' is invalid,");
         return;
@@ -500,7 +500,7 @@ function(graph)
       check_source := false;
     fi;
 
-  elif IsBound(graph.vertices) then 
+  elif IsBound(graph.vertices) then
     if not IsList(graph.vertices) then
       Error("Digraphs: Digraph: usage,\n",
             "the record component 'vertices' should be a list,");
@@ -532,7 +532,7 @@ function(graph)
             "the record component 'vertices' must be duplicate-free,");
       return;
     fi;
-    if graph.vertices <> [ 1 .. graph.nrvertices ] then  
+    if graph.vertices <> [ 1 .. graph.nrvertices ] then
       for i in [ 1 .. m ] do
         graph.range[i] := Position(graph.vertices, graph.range[i]);
         graph.source[i] := Position(graph.vertices, graph.source[i]);
@@ -593,11 +593,11 @@ end);
 InstallMethod(DigraphNC, "for a list", [IsList],
 function(adj)
   local graph;
-  
-  graph := rec( adj        := StructuralCopy(adj), 
+
+  graph := rec( adj        := StructuralCopy(adj),
                 nrvertices := Length(adj)         );
 
-  ObjectifyWithAttributes(graph, DigraphType, 
+  ObjectifyWithAttributes(graph, DigraphType,
     OutNeighbours, adj, DigraphNrVertices, graph.nrvertices);
   return graph;
 end);
@@ -606,12 +606,12 @@ InstallMethod(DigraphNC, "for a list and an integer",
 [IsList, IsInt],
 function(adj, nredges)
   local graph;
-  
+
   graph := rec( adj        := StructuralCopy(adj),
                 nredges    := nredges,
                 nrvertices := Length(adj)         );
 
-  ObjectifyWithAttributes(graph, DigraphType, 
+  ObjectifyWithAttributes(graph, DigraphType,
     OutNeighbours, adj, DigraphNrVertices, graph.nrvertices, DigraphNrEdges,
     graph.nredges);
   return graph;
@@ -640,7 +640,7 @@ function(nrvertices, source, range)
 
   source := ShallowCopy(source);
   range := ShallowCopy(range);
-  
+
   if m <> 0 then
     if not IsPosInt(source[1])
      or not IsPosInt(range[1])
@@ -696,7 +696,7 @@ function(vertices, source, range)
   n        := Length(vertices);
 
   # rewrite the vertices to numbers
-  if vertices <> [ 1 .. n ] then  
+  if vertices <> [ 1 .. n ] then
     for i in [ 1 .. m ] do
       source[i] := Position(vertices, source[i]);
       range[i]  := Position(vertices, range[i]);
@@ -711,7 +711,7 @@ function(vertices, source, range)
                          range        := range ) );
 end);
 
-# JDM: could set IsMultigraph here if we check if mat[i][j] > 1 in line 234 
+# JDM: could set IsMultigraph here if we check if mat[i][j] > 1 in line 234
 
 InstallMethod(DigraphByAdjacencyMatrix, "for a rectangular table",
 [IsRectangularTable],
@@ -732,7 +732,7 @@ function(mat)
     out[i] := [  ];
     count := 0;
     for j in verts do
-      if IsInt(mat[i][j]) and mat[i][j] >= 0 then 
+      if IsInt(mat[i][j]) and mat[i][j] >= 0 then
         for k in [ 1 .. mat[i][j] ] do
           count := count + 1;
           out[i][count] := j;
@@ -796,14 +796,14 @@ InstallMethod(DigraphByEdges, "for a rectangular table",
 [IsRectangularTable],
 function(edges)
   local adj, max_range, gr, edge, i;
-  
-  if not Length(edges[1]) = 2 then 
+
+  if not Length(edges[1]) = 2 then
     Error("Digraphs: DigraphByEdges: usage,\n",
           "the argument <edges> must be a list of pairs,");
     return;
   fi;
 
-  if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then 
+  if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then
     Error("Digraphs: DigraphByEdges: usage,\n",
           "the argument <edges> must be a list of pairs of pos ints,");
     return;
@@ -812,8 +812,8 @@ function(edges)
   adj := [];
   max_range := 0;
 
-  for edge in edges do 
-    if not IsBound(adj[edge[1]]) then 
+  for edge in edges do
+    if not IsBound(adj[edge[1]]) then
       adj[edge[1]] := [edge[2]];
     else
       Add(adj[edge[1]], edge[2]);
@@ -821,8 +821,8 @@ function(edges)
     max_range := Maximum(max_range, edge[2]);
   od;
 
-  for i in [ 1 .. Maximum(Length(adj), max_range) ] do 
-    if not IsBound(adj[i]) then 
+  for i in [ 1 .. Maximum(Length(adj), max_range) ] do
+    if not IsBound(adj[i]) then
       adj[i] := [];
     fi;
   od;
@@ -838,14 +838,14 @@ InstallMethod(DigraphByEdges, "for a rectangular table, and a pos int",
 [IsRectangularTable, IsPosInt],
 function(edges, n)
   local adj, gr, edge;
-  
-  if not Length(edges[1]) = 2 then 
+
+  if not Length(edges[1]) = 2 then
     Error("Digraphs: DigraphByEdges: usage,\n",
           "the argument <edges> must be a list of pairs,");
     return;
   fi;
 
-  if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then 
+  if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then
     Error("Digraphs: DigraphByEdges: usage,\n",
           "the argument <edges> must be a list of pairs of pos ints,");
     return;
@@ -965,10 +965,10 @@ InstallMethod(ViewString, "for a digraph",
 [IsDigraph],
 function(graph)
   local str, n, m;
-  
+
   str := "<";
-  
-  if IsMultiDigraph(graph) then 
+
+  if IsMultiDigraph(graph) then
     Append(str, "multi");
   fi;
 
