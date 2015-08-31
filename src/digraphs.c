@@ -1538,7 +1538,7 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
 }
 
 void multidigraph_hook_function(void               *user_param,
-	                        unsigned           int N,
+	                        unsigned int       N,
 	                        const unsigned int *aut        ) {
   UInt4   *ptr;
   Obj     p, gens;
