@@ -10,14 +10,14 @@
 
 TournamentLineDecoder := function(str)
   local out, pos, n, i, j;
-  
+
   pos := 0;
   n := (Sqrt(8 * Length(str) + 1) + 1) / 2;
   out := List([1 .. n], x -> []);
-  for i in [1 .. n - 1] do 
-    for j in [i + 1 .. n] do 
+  for i in [1 .. n - 1] do
+    for j in [i + 1 .. n] do
       pos := pos + 1;
-      if str[pos] = '1' then 
+      if str[pos] = '1' then
         Add(out[i], j);
       else
         Add(out[j], i);
@@ -27,7 +27,6 @@ TournamentLineDecoder := function(str)
 
   return Digraph(out);
 end;
-
 
 #TODO make this a global function, doc, tests.
 
@@ -61,25 +60,25 @@ end;
 #
 #   3 2 0 2 2 1
 #
-# interpreted as: 
+# interpreted as:
 #
 #   3 vertices, 2 edges, 0 -> 2, 2 -> 1
 #
 # where the vertices are [0, 1, 2].
 
 TCodeDecoder := function(str)
-  local n, out, i;
- 
+  local out, i;
+
   str := SplitString(str, " ");
   Apply(str, EvalString);
   out := List([1 .. str[1]], x -> []); #str[1] = number of vertices
 
   for i in [1 .. str[2]] do # str[2] = number of edges
-    Add(out[str[2 * i + 1] + 1],  str[2 * i + 2] + 1);
+    Add(out[str[2 * i + 1] + 1], str[2 * i + 2] + 1);
   od;
 
   return Digraph(out);
-end; 
+end;
 
 InstallGlobalFunction(ReadDigraphs,
 function(arg)
