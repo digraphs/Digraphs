@@ -8,7 +8,8 @@
 #############################################################################
 ##
 
-TournamentLineDecoder := function(str)
+InstallGlobalFunction(TournamentLineDecoder,
+function(str)
   local out, pos, n, i, j;
 
   pos := 0;
@@ -26,7 +27,7 @@ TournamentLineDecoder := function(str)
   od;
 
   return Digraph(out);
-end;
+end);
 
 #TODO make this a global function, doc, tests.
 
@@ -36,7 +37,8 @@ end;
 #   on one line without spaces. The lower triangle is zero; that is, the points
 #   are in topological order.
 
-AdjacencyMatrixUpperTriangleLineDecoder := function(str)
+InstallGlobalFunction(AdjacencyMatrixUpperTriangleLineDecoder,
+function(str)
   local out, pos, n, i, j;
 
   pos := 0;
@@ -52,7 +54,7 @@ AdjacencyMatrixUpperTriangleLineDecoder := function(str)
   od;
 
   return Digraph(out);
-end;
+end);
 
 #TODO make this a global function, doc, tests.
 #
@@ -66,7 +68,8 @@ end;
 #
 # where the vertices are [0, 1, 2].
 
-TCodeDecoder := function(str)
+InstallGlobalFunction(TCodeDecoder,
+function(str)
   local out, i;
 
   str := SplitString(str, " ");
@@ -78,7 +81,7 @@ TCodeDecoder := function(str)
   od;
 
   return Digraph(out);
-end;
+end);
 
 InstallGlobalFunction(ReadDigraphs,
 function(arg)
