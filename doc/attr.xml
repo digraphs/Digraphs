@@ -577,3 +577,37 @@ false
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="ReducedDigraph">
+<ManSection>
+  <Attr Name="ReducedDigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    This function returns a digraph isomorphic to the subdigraph of 
+    <A>digraph</A> induced by the set of non-isolated vertices,
+    i.e. the set of those vertices of <A>digraph</A> which are the source or 
+    range of some edge in <A>digraph</A>.
+    See <Ref Oper="InducedSubdigraph"/>.
+    <P/>
+    
+    The vertex labels and edge
+    labels of the graph are preserved, so that a vertex in the new digraph can
+    be matched to the corresponding vertex in <A>digraph</A>.<P/>
+    <Log><![CDATA[
+gap> d := Digraph([ [ 1, 2 ], [  ], [  ], [ 1, 4 ], [  ] ]);
+<digraph with 5 vertices, 4 edges>
+gap> r := ReducedDigraph(d);
+<digraph with 3 vertices, 4 edges>
+gap> OutNeighbours(r);
+[ [ 1, 3 ], [ 1, 2 ], [  ] ]
+gap> DigraphEdges(r); DigraphEdges(d);
+[ [ 1, 1 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ] ]
+[ [ 1, 1 ], [ 1, 2 ], [ 4, 1 ], [ 4, 4 ] ]
+gap> DigraphVertexLabel(r, 3);
+2
+gap> DigraphVertexLabel(r, 2);
+4
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>

@@ -283,6 +283,20 @@ end);
 
 InstallGlobalFunction(DigraphsTestExtreme,
 function()
+  local file;
+
+  file := Filename(DirectoriesPackageLibrary("digraphs", "digraphs-lib"),
+                   "extreme.d6.gz");
+
+  if file = fail then
+    ErrorMayQuit("Digraphs: DigraphsTestExtreme:\n",
+                 "the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
+                 "required\nfor these tests to run. Please download the ",
+                 "'digraphs-lib.tar.gz'\narchive from:\n",
+                 "http://bitbucket.org/james-d-mitchell/digraphs/downloads\n",
+                 "and try it again,");
+  fi;
+
   return DIGRAPHS_TestDir("extreme", rec());
 end);
 

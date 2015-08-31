@@ -1,13 +1,13 @@
 #%T##########################################################################
 ##
-#W  attr.tst
+#W  standard/attr.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: attr.tst");
+gap> START_TEST("Digraphs package: standard/attr.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -618,4 +618,4 @@ gap> DigraphDiameter(gr);
 0
 
 #E#
-gap> STOP_TEST("Digraphs package: attr.tst");
+gap> STOP_TEST("Digraphs package: standard/attr.tst");
