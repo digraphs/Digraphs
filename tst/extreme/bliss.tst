@@ -15,7 +15,7 @@ gap> DIGRAPHS_StartTest();
 
 # AutomorphismGroup: all graphs of 5 vertices, compare with grape
 gap> graph5 := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
-                                          "/data/graph5.g6.gz"));
+>                                         "/data/graph5.g6.gz"));
 [ <digraph with 5 vertices, 0 edges>, <digraph with 5 vertices, 2 edges>, 
   <digraph with 5 vertices, 4 edges>, <digraph with 5 vertices, 6 edges>, 
   <digraph with 5 vertices, 8 edges>, <digraph with 5 vertices, 4 edges>, 
@@ -215,6 +215,30 @@ true
 gap> ForAny(graph5, x -> Number(graph5, y -> IsIsomorphicDigraph(x, y)) <> 1);
 false
 
+# for a multidigraph
+gap> gr1 := Digraph([[3, 1, 3], [1, 3], [2, 2, 1]]);
+<multidigraph with 3 vertices, 8 edges>
+gap> gr2 := Digraph([[3, 1, 3], [1, 3], [2, 2]]);
+<multidigraph with 3 vertices, 7 edges>
+gap> IsIsomorphicDigraph(gr1, gr2);
+false
+gap> gr3 := Digraph([[3, 1, 3], [1, 3], [2, 2], []]);
+<multidigraph with 4 vertices, 7 edges>
+gap> IsIsomorphicDigraph(gr1, gr3);
+false
+gap> IsIsomorphicDigraph(gr2, gr3);
+false
+gap> gr4 := Digraph([[2, 3, 3], [2, 1, 1], [1, 2]]);
+<multidigraph with 3 vertices, 8 edges>
+gap> IsIsomorphicDigraph(gr1, gr4);
+true
+gap> IsIsomorphicDigraph(gr2, gr4);
+false
+gap> IsIsomorphicDigraph(gr3, gr4);
+false
+gap> IsIsomorphicDigraph(gr4, gr4);
+true
+
 #T# IsomorphismDigraphs
 gap> gr1 := CompleteBipartiteDigraph(100, 50);
 <digraph with 150 vertices, 10000 edges>
@@ -233,6 +257,24 @@ gap> OnDigraphs(gr1, p) = gr2;
 true
 gap> IsomorphismDigraphs(EmptyDigraph(1), gr1);
 fail
+
+# for a multidigraph
+gap> gr1 := Digraph([[3, 1, 3], [1, 3], [2, 2, 1]]);
+<multidigraph with 3 vertices, 8 edges>
+gap> gr4 := Digraph([[2, 3, 3], [2, 1, 1], [1, 2]]);
+<multidigraph with 3 vertices, 8 edges>
+gap> iso := IsomorphismDigraphs(gr1, gr4);
+[ (1,2,3), (1,5,7,3,6,2,4,8) ]
+gap> OnMultiDigraphs(gr1, iso) = gr4;
+true
+gap> iso := IsomorphismDigraphs(gr4, gr1);
+[ (1,3,2), (1,8,4,2,6,3,7,5) ]
+gap> OnMultiDigraphs(gr4, iso) = gr1;
+true
+gap> iso := IsomorphismDigraphs(gr1, gr1);
+[ (), () ]
+gap> OnMultiDigraphs(gr1, iso) = gr1;
+true
 
 #T# DigraphCanonicalLabelling for MultiDigraphs
 gap> gr1 := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
