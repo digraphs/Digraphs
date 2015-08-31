@@ -1262,13 +1262,13 @@ bool EqJumbledPlists(Obj l, Obj r, Int nr, Int *buf ) {
   if (!eq) {
 
     for (j = 1; j <= nr; j++) {
-      jj = INT_INTOBJ(ELM_PLIST(l, j)) - 1 ;
+      jj = INT_INTOBJ(ELM_PLIST(l, j)) - 1;
       buf[jj]++;
       jj = INT_INTOBJ(ELM_PLIST(r, j)) - 1;
       buf[jj]--;
     }
 
-    for ( j = 1; j <= nr; j++ ) {
+    for (j = 1; j <= nr; j++) {
       jj = INT_INTOBJ(ELM_PLIST(l, j)) - 1;
       if (buf[jj] != 0) {
         return false;

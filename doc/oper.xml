@@ -319,7 +319,6 @@ gap> DigraphVertexLabels(new);
 </ManSection>
 <#/GAPDoc>
 
-
 <#GAPDoc Label="DigraphAddEdge">
 <ManSection>
   <Oper Name="DigraphAddEdge" Arg="digraph, edge[, label]"/>
@@ -354,23 +353,18 @@ gap> DigraphEdges(gr3);
 
 <#GAPDoc Label="DigraphAddEdges">
 <ManSection>
-  <Oper Name="DigraphAddEdges" Arg="digraph, edges[, labels]"/>
+  <Oper Name="DigraphAddEdges" Arg="digraph, edges"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>edges</A> is a (possibly empty) list of pairs of vertices of 
-    <A>digraph</A>, then this operation returns a new digraph constructed from 
-    <A>digraph</A> by adding the edges specified by <A>edges</A>.
-    More precisely, for each position <C>i</C> of the list <A>edges</A>,
-    a new edge will be added with source 
-    <A>edges</A><C>[i][1]</C> and range <A>edges</A><C>[i][2]</C>.
+    If <A>edges</A> is a (possibly empty) list of pairs of vertices of
+    <A>digraph</A>, then this operation returns a new digraph constructed from
+    <A>digraph</A> by adding the edges specified by <A>edges</A>.  More
+    precisely, for every <C>edge</C> in <A>edges</A>, a new edge
+    will be added with source <C>edge[1]</C> and range <C>edges[2]</C>.
     <P/>
     
     If an edge is included in <A>edges</A> with multiplicity <C>k</C>,
-    then it will be added <C>k</C> times. <P/>
-
-    If the optional third argument <A>labels</A> is a list with length equal
-    to <C>Length(<A>edges</A>)</C> consisting of arbitrary &GAP; objects, then
-    the new edges will be labelled according to this list. <P/>
+    then it will be added <C>k</C> times.
 
     <Example><![CDATA[
 gap> func := function(n)
