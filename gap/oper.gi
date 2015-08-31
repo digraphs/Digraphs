@@ -1204,9 +1204,9 @@ function(digraph1, digraph2)
 
   out1 := OutNeighbours(digraph1);
   out2 := OutNeighbours(digraph2);
-  n := DigraphNrVertices(digraph1);
-  m := DigraphNrVertices(digraph2);
-  new := EmptyPlist(n + m);
+  n    := DigraphNrVertices(digraph1);
+  m    := DigraphNrVertices(digraph2);
+  new  := EmptyPlist(n + m);
 
   for i in DigraphVertices(digraph1) do
     new[i] := Concatenation(out1[i], [n + 1 .. n + m]);
