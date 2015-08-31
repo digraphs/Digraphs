@@ -8,6 +8,19 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="PlainTextDecoders">
+<ManSection>
+  <Func Name="TournamentLineDecoder" Arg="digraph"/>
+  <Func Name="AdjacencyMatrixUpperTriangleLineDecoder" Arg="digraph"/>
+  <Func Name="TCodeDecoder" Arg="digraph"/>
+  <Returns></Returns>
+  <Description>
+    <Example><![CDATA[
+]]></Example>
+    </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphFromGraph6String">
 <ManSection>
   <Oper Name="DigraphFromGraph6String" Arg="str"/>
@@ -43,7 +56,7 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
 
 <#GAPDoc Label="ReadDigraphs">
 <ManSection>
-  <Oper Name="ReadDigraphs" Arg="filename[, nr]"/>
+  <Func Name="ReadDigraphs" Arg="filename[, nr]"/>
   <Returns>A list of digraphs.</Returns>
   <Description>
     If <A>filename</A> is the name of a file containing digraphs, then 
@@ -100,13 +113,13 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
     
     <Example><![CDATA[
 gap> ReadDigraphs(
-> Concatenation(GraphsDir(), "/data/graph5.g6"), 10);
+> Concatenation(DigraphsDir(), "/data/graph5.g6"), 10);
 <digraph with 5 vertices, 8 edges>
 gap> ReadDigraphs(
-> Concatenation(GraphsDir(), "/data/graph5.g6"), 17);
+> Concatenation(DigraphsDir(), "/data/graph5.g6"), 17);
 <digraph with 5 vertices, 12 edges>
 gap> ReadDigraphs(
-> Concatenation(GraphsDir(), "/data/tree9.4.txt"));
+> Concatenation(DigraphsDir(), "/data/tree9.4.txt"));
 [ <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, 
@@ -127,7 +140,7 @@ gap> ReadDigraphs(
 
 <#GAPDoc Label="WriteDigraphs">
 <ManSection>
-  <Oper Name="WriteDigraphs" Arg="filename, digraphs"/>
+  <Func Name="WriteDigraphs" Arg="filename, digraphs"/>
   <Description>
     If <A>digraphs</A> is a list of digraphs, then <C>WriteDigraphs</C> writes
     its contents to a file in a compact format.  If the supplied filename ends
@@ -195,7 +208,7 @@ gap> grs[3] := Digraph( [ [ 6, 7 ], [ 6, 9 ], [ 1, 3, 4, 5, 8, 9 ],
 > [ 1, 2, 3, 4, 5, 6, 7, 10 ], [ 1, 5, 6, 7, 10 ], [ 2, 4, 5, 9, 10 ],
 > [ 3, 4, 5, 6, 7, 8, 9, 10 ], [ 1, 3, 5, 7, 8, 9 ], [ 1, 2, 5 ],
 > [ 1, 2, 4, 6, 7, 8 ] ] );;
-gap> filename := Concatenation(GraphsDir(), "/tst/out/man.d6.gz");;
+gap> filename := Concatenation(DigraphsDir(), "/tst/out/man.d6.gz");;
 gap> WriteDigraphs(filename, grs);
 gap> ReadDigraphs(filename);
 [ <digraph with 0 vertices, 0 edges>, 
@@ -233,8 +246,8 @@ gap> DiSparse6String(gr);
 
 <#GAPDoc Label="DigraphPlainTextLineEncoder">
 <ManSection>
-  <Oper Name="DigraphPlainTextLineEncoder" Arg="delimiter1, [delimiter2,] offset"/>
-  <Oper Name="DigraphPlainTextLineDecoder" Arg="delimiter1, [delimiter2,] offset"/>
+  <Func Name="DigraphPlainTextLineEncoder" Arg="delimiter1, [delimiter2,] offset"/>
+  <Func Name="DigraphPlainTextLineDecoder" Arg="delimiter1, [delimiter2,] offset"/>
   <Returns>A string.</Returns>
   <Description>
     These two functions return a function which encodes or decodes a digraph in
@@ -325,7 +338,7 @@ gap> DigraphFromPlainTextString(last);
     <Example><![CDATA[
 gap> gr := Digraph([[1,2,3], [1,1], [2]]);
 <multidigraph with 3 vertices, 6 edges>
-gap> filename := Concatenation(GraphsDir(), "/tst/out/plain.txt");;
+gap> filename := Concatenation(DigraphsDir(), "/tst/out/plain.txt");;
 gap> WritePlainTextDigraph(filename, gr, ",", -1);
 gap> ReadPlainTextDigraph(filename, ",", 1, ['/','%']);
 <multidigraph with 3 vertices, 6 edges>

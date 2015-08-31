@@ -1,6 +1,6 @@
 /***************************************************************************
 **
-*A  graphs.c                  GAP package graphs          Julius Jonusas
+*A  digraphs.c                GAP package Digraphs        Julius Jonusas
 **                                                        James Mitchell 
 **                                                        Michael Torpey
 **                                                        Wilfred Wilson
@@ -33,7 +33,7 @@ Int DigraphNrVertices(Obj digraph) {
   }
   // The record comp should always be set so this should never be triggered
   ErrorQuit(
-  "Graphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
+  "Digraphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
   0L, 0L);
   return 0;
 }
@@ -74,7 +74,7 @@ Obj OutNeighbours(Obj digraph) {
     AssPRec(digraph, RNamName("adj"), adj);
     return adj;
   }
-  ErrorQuit("Graphs: OutNeighbours (C): not enough record components set,", 0L, 0L);
+  ErrorQuit("Digraphs: OutNeighbours (C): not enough record components set,", 0L, 0L);
   return False;
 }
 
@@ -324,7 +324,7 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
         // 1. We've previously finished with this vertex, OR 
         // 2. Whether we've now investigated all descendant branches
         nbs = ELM_PLIST(adj, j);
-        if( ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
+        if (ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
           ptr[j] = 1;
           level--;
           if (level == 0) { 
@@ -348,6 +348,205 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
   free(ptr);
   free(stack);
   return True;
+}
+
+static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) { 
+  UInt  nr, i, j, k, level, x, prev;
+  Obj   nbs;
+  UInt  *stack, *ptr, *depth;
+  
+  nr = LEN_PLIST(adj);
+  i = INT_INTOBJ(start);
+
+  if (i > nr || i < 1) {
+    ErrorQuit("Digraphs: DIGRAPH_LONGEST_DIST_VERTEX: usage,\nthe second argument must be a vertex of the first argument,", 0L, 0L);
+  }
+
+  nbs = ELM_PLIST(adj, i);
+  if (LEN_LIST(nbs) == 0) {
+    return INTOBJ_INT(0);
+  }
+
+  ptr   = calloc( nr + 1, sizeof(UInt) );
+  depth = calloc( nr + 1, sizeof(UInt) );
+  stack = malloc( (2 * nr + 2) * sizeof(UInt) );
+
+  level = 1;
+  stack[0] = i;
+  stack[1] = 1;
+  prev = 0;
+  while (1) {
+    j = stack[0];
+    k = stack[1];
+    if (ptr[j] == 2) { // we have identified a cycle
+      stack -= (2 * level) - 2;
+      free(stack);
+      free(ptr);
+      free(depth);
+      return INTOBJ_INT(-2);  // We have just travelled around a cycle
+    }
+
+    if (prev > depth[j]) {
+      depth[j] = prev;
+    }
+    // Check whether:
+    // 1. We've previously finished with this vertex, OR 
+    // 2. Whether we've now investigated all descendant branches
+    nbs = ELM_PLIST(adj, j);
+    if (ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
+      ptr[j] = 1;
+      level--;
+      prev = depth[j];
+      if (level == 0) { 
+        // finished the search
+        break;
+      }
+      // Backtrack and choose next available branch
+      stack -= 2;
+      ptr[stack[0]] = 0;
+      prev++;
+      stack[1]++;
+    } else { //Otherwise move onto the next available branch
+      ptr[j] = 2;
+      level++;
+      nbs = ELM_PLIST(adj, j);
+      stack += 2;
+      stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+      stack[1] = 1;
+      prev = 0;
+    }
+  }
+
+  x = depth[INT_INTOBJ(start)];
+  free(ptr);
+  free(depth);
+  free(stack);
+  return INTOBJ_INT(x);
+}
+
+// Takes in-neighbours (Obj adj) of a topologically sorted non-multi digraph
+// Returns the out-neighbours of its transitive reduction.
+// If (Obj loops) == False, loops are removed (transitive reflexive reduction)
+static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
+
+  UInt  i, j, k, n, level, len, w, m, source;
+  bool  new_since, backtracking, rec_loops;
+  Obj   out, outj, nbs;
+  UInt  *ptr, *stack;
+  bool  *mat;
+
+  n = LEN_PLIST(adj);
+
+  // Special case for n = 0
+  if (n == 0) {
+    return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
+  }
+
+  if (loops == True) {
+    rec_loops = true;
+  } else {
+    rec_loops = false;
+  }
+
+  // Create the GAP out-neighbours strcture of the result
+  out = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+  SET_LEN_PLIST(out, n);
+  for (i = 1; i <= n; i++) {
+    SET_ELM_PLIST(out, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+    SET_LEN_PLIST(ELM_PLIST(out, i), 0);
+    CHANGED_BAG(out);
+  }
+
+  // Create data structures needed for computation
+  ptr       = calloc(n + 1, sizeof(UInt));
+  mat = calloc(n * n, sizeof(bool));  
+  stack     = malloc((2 * n + 2) * sizeof(UInt));
+
+  // Start a depth-first search from each source of the digraph
+  for (i = 1; i <= n; i++) {
+    if (ptr[i] == 0) {
+      // Remember which vertex was the source
+      source = i;
+      // not sure if this next line is necessary 
+      backtracking = false;
+
+      stack[0] = i;
+      stack[1] = 1;
+      level = 1;
+      while (1) {
+        j = stack[0];
+        k = stack[1];
+
+        // We have found a loop on vertex j
+        if (ptr[j] == 2) {
+          if (stack[-2] != j) {
+            ErrorQuit("Digraphs: DIGRAPH_TRANS_REDUCTION, usage:\nThis function only accepts acyclic digraphs (with loops allowed),", 0L, 0L);
+          }
+          backtracking = true;
+          level--;
+          stack -= 2;
+          stack[1]++;
+          ptr[j] = 0;
+          if (rec_loops) {
+            // Store the loop
+            outj = ELM_PLIST(out, j);
+            len = LEN_PLIST(outj);
+            if (len == 0) {
+              RetypeBag(outj, T_PLIST_CYC+IMMUTABLE);
+              CHANGED_BAG(out);
+            }
+            AssPlist(outj, len + 1, INTOBJ_INT(j));
+          }
+          continue;
+        }
+
+        // Calculate if we need to add an edge from j -> (previous vertex)
+        if (!backtracking && j != source && !mat[(stack[-2]-1) * n + j - 1]) {
+          outj = ELM_PLIST(out, j);
+          len = LEN_PLIST(outj);
+          if (len == 0) {
+            RetypeBag(outj, T_PLIST_CYC+IMMUTABLE);
+            CHANGED_BAG(out);
+          }
+          AssPlist(outj, len + 1, INTOBJ_INT(stack[-2]));
+        }
+
+        nbs = ELM_PLIST(adj, j);
+
+        // Do we need to backtrack?
+        if (ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
+          if (level == 1) 
+            break;
+
+          backtracking = true;
+          level--;
+          stack -= 2;
+          ptr[stack[0]] = 0;
+          stack[1]++;
+          ptr[j] = 1;
+
+          // w is the vertex we are backtracking to (-1)
+          w = stack[0] - 1;
+          // Record which vertices we have discovered 'above' w
+          for (m = 0; m < n; m++) {
+            mat[w * n + m] = mat[w * n + m] + mat[(j - 1) * n + m];
+          }
+          mat[w * n + (j - 1)] = true;
+        } else {
+          backtracking = false;
+          level++;
+          stack += 2;
+          stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          stack[1] = 1;
+          ptr[j] = 2;
+        }
+      }
+    }
+  }
+  free(mat);
+  free(ptr);
+  free(stack);
+  return out;
 }
 
 static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) { 
@@ -377,7 +576,7 @@ static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) {
     // 1. We've previously visited with this vertex, OR 
     // 2. Whether we've now investigated all descendant branches
     nbs = ELM_PLIST(adj, j);
-    if( ptr[j] != 0 || k > (UInt) LEN_LIST(nbs)) {
+    if (ptr[j] != 0 || k > (UInt) LEN_LIST(nbs)) {
       ptr[j] = 1;
       level--;
       if (level == 0) { 
@@ -446,7 +645,7 @@ static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
         // 1. We've previously finished with this vertex, OR 
         // 2. Whether we've now investigated all descendant branches
         nbs = ELM_PLIST(adj, j);
-        if( ptr[j] == 2 ) {
+        if (ptr[j] == 2) {
           PLAIN_LIST(nbs);
           for ( l = 1; l <= LEN_PLIST(nbs); l++ ) {
             if ( last1 != j && INT_INTOBJ(ADDR_OBJ(nbs)[l]) == last1 ) {
@@ -457,7 +656,7 @@ static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
         if ( k > LEN_LIST(nbs) ) {
           ptr[j] = 1;
         }
-        if( ptr[j] >= 1 ) {
+        if (ptr[j] >= 1) {
           level--;
           if (level == 0) { 
             break;
@@ -660,7 +859,7 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) 
   m1 = LEN_LIST(source);
   m2 = LEN_LIST(range);
   if (m1 != m2) {
-    ErrorQuit("Graphs: DIGRAPH_OUT_NBS: usage,\n<source> and <range> must be lists of equal length,", 0L, 0L);
+    ErrorQuit("Digraphs: DIGRAPH_OUT_NBS: usage,\n<source> and <range> must be lists of equal length,", 0L, 0L);
   }
   n = INT_INTOBJ(nrvertices);
   if (n == 0) {
@@ -809,11 +1008,19 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
  *   3. Int val1 s.t initially dist[i][j] = val1 if [ i, j ] isn't an edge.
  *   4. Int val2 s.t initially dist[i][j] = val2 if [ i, j ] is an edge.
  *   5. bool copy:
+ *      - If true, FLOYD_WARSHALL stores the initialised dist, and
+ *        compares it with dist after it has gone through the 3 for-loops,
+ *        and returns true iff it is unchanged.
  *      - If false, proceeds as usual Floyd-Warshall algorithm and returns
  *        a GAP object matrix as the result.
- *      - If true, FLOYD_WARSHALL stores the initialised dist, and
- *        compares it with dist after it has gone through the 3 for loops,
- *        and returns true iff it is unchanged.
+ *   6. bool diameter:
+ *      - If true, FLOYD_WARSHALL goes through dist after the 3 for-loops,
+ *        returns -1 if dist contains the value -1, else it returns the 
+ *        maximum value of dist
+ *      - If false, proceeds as usual
+ *   7. bool shortest:
+ *      - If true, for each vertex i, dist[i][i] is initially set to 0
+ *      - If false, this step is skipped
  */
 static Obj FLOYD_WARSHALL(Obj digraph, 
                           void (*func)(Int** dist,
@@ -831,15 +1038,22 @@ static Obj FLOYD_WARSHALL(Obj digraph,
 
   n = DigraphNrVertices(digraph);
 
+  // Special case for 0-vertex graph
   if (n == 0) {
+    if ( diameter ) {
+      return INTOBJ_INT(-1);
+    }
+    if ( copy ) {
+      return True;
+    }
     return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
   }
-  dist = malloc( n * n * sizeof(Int) );
 
+  // Initialise the n x n matrix with val1 and val2
+  dist = malloc( n * n * sizeof(Int) );
   for (i = 0; i < n * n; i++) {
     dist[i] = val1;
   }
-
   out = OutNeighbours(digraph); 
   for (i = 1; i <= n; i++) {
     outi = ELM_PLIST(out, i);
@@ -851,6 +1065,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
   }
 
   if ( shortest ) {
+    // This is the special case for DIGRAPH_SHORTEST_DIST
     for ( i = 0; i < n; i++ ) {
       dist[i * n + i] = 0;
     }
@@ -862,7 +1077,6 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     for ( i = 0; i < n * n; i++ ) {
       adj[i] = dist[i];
     }
-    // memcpy( (void*)adj, (void*)dist, n * n * sizeof(Int) );
   }
   
   for (k = 0; k < n; k++) {
@@ -875,12 +1089,14 @@ static Obj FLOYD_WARSHALL(Obj digraph,
 
   // the following is a horrible hack
   if ( diameter ) {
+    // This is the special case for DIGRAPH_DIAMETER
     Int maximum = -1;
     for ( i = 0; i < n; i++ ) {
       for ( j = 0; j < n; j++ ) {
         if ( dist[i * n + j] > maximum ) {
           maximum = dist[i * n + j];
         } else if ( dist[i * n + j] == -1 ) {
+          free(dist);
           return INTOBJ_INT(-1);
         }
       }
@@ -903,6 +1119,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     return True;
   }
   
+  // Create GAP matrix to return
   out = NEW_PLIST(T_PLIST_TAB, n);
   SET_LEN_PLIST(out, n);
 
@@ -923,7 +1140,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
 }
 
 void FW_FUNC_SHORTEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
-  if((*dist)[i * n + k] != -1 && (*dist)[k * n + j] != -1){
+  if ((*dist)[i * n + k] != -1 && (*dist)[k * n + j] != -1) {
     if ((*dist)[i * n + j] == -1 || 
         (*dist)[i * n + j] > (*dist)[i * n + k] + (*dist)[k * n + j]) {
       (*dist)[i * n + j] = (*dist)[i * n + k] + (*dist)[k * n + j];
@@ -1541,6 +1758,10 @@ void homo_hook_collect (void*        user_param,
   UInt2   *ptr;
   Obj     t;
   UInt    i;
+  
+  if (TNUM_OBJ((Obj)user_param) == T_PLIST_EMPTY) {
+    RetypeBag(user_param, T_PLIST);
+  }
 
   // copy map into new trans2 
   t   = NEW_TRANS2(nr);
@@ -1549,7 +1770,7 @@ void homo_hook_collect (void*        user_param,
   for (i = 0; i < nr; i++) {
     ptr[i] = map[i];
   }
-   
+
   AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
   CHANGED_BAG(user_param);
 #if DEBUG
@@ -1565,18 +1786,17 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   int           image[MAXVERTS];
   UIntS         partial_map[MAXVERTS];
 
-  Obj graph1         = ELM_PLIST(args, 1);  // find homomorphisms from graph1 
-  Obj graph2         = ELM_PLIST(args, 2);  // to graph2
-  Obj hook_gap       = ELM_PLIST(args, 3);  // apply this function to every homomorphism 
-                                            // Fail for none
-  Obj user_param_gap = ELM_PLIST(args, 4);  // user_param which can be used in the hook
-                                            // Fail for none
-  Obj limit_gap      = ELM_PLIST(args, 5);  // the maximum number of results
-  Obj hint_gap       = ELM_PLIST(args, 6);  // the maximum rank of a result
-  Obj isinjective    = ELM_PLIST(args, 7);  // only consider injective homomorphism
-  Obj image_gap      = ELM_PLIST(args, 8);  // only consider homos with image <image>
-  Obj kernel         = ELM_PLIST(args, 9);  // only consider homos with kernel <kernel>
-  Obj partial_map_gap    = ELM_PLIST(args, 10); // only look for extensions of <partial_map_gap>
+  Obj graph1          = ELM_PLIST(args, 1);  // find homomorphisms from graph1 
+  Obj graph2          = ELM_PLIST(args, 2);  // to graph2
+  Obj hook_gap        = ELM_PLIST(args, 3);  // apply this function to every homomorphism 
+                                             // Fail for none
+  Obj user_param_gap  = ELM_PLIST(args, 4);  // user_param which can be used in the hook
+  Obj limit_gap       = ELM_PLIST(args, 5);  // the maximum number of results
+  Obj hint_gap        = ELM_PLIST(args, 6);  // the maximum rank of a result
+  Obj isinjective     = ELM_PLIST(args, 7);  // only consider injective homomorphism
+  Obj image_gap       = ELM_PLIST(args, 8);  // only consider homos with image <image>
+  Obj kernel          = ELM_PLIST(args, 9);  // only consider homos with kernel <kernel>
+  Obj partial_map_gap = ELM_PLIST(args, 10); // only look for extensions of <partial_map_gap>
 
 
   if (limit_gap == Fail || !IS_INTOBJ(limit_gap)) {
@@ -1586,8 +1806,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   }
 
   if (user_param_gap == Fail || (hook_gap == Fail && !IS_PLIST(user_param_gap))) {
-    user_param_arg = NEW_PLIST(T_PLIST, 0);
-    SET_LEN_PLIST(user_param_arg, 0);
+    ErrorQuit("Digraphs: GRAPH_HOMOS (C):\n invalid argument 1,", 0L, 0L);
   } else {
     user_param_arg = user_param_gap;
   }
@@ -1698,7 +1917,15 @@ static StructGVarFunc GVarFuncs [] = {
   { "IS_ACYCLIC_DIGRAPH", 1, "adj",
     FuncIS_ACYCLIC_DIGRAPH, 
     "src/graphs.c:FuncIS_ACYCLIC_DIGRAPH" },
- 
+
+  { "DIGRAPH_LONGEST_DIST_VERTEX", 2, "adj, start",
+    FuncDIGRAPH_LONGEST_DIST_VERTEX, 
+    "src/graphs.c:FuncDIGRAPH_LONGEST_DIST_VERTEX" },
+
+  { "DIGRAPH_TRANS_REDUCTION", 2, "adj, loops",
+    FuncDIGRAPH_TRANS_REDUCTION,
+    "src/graphs.c:FuncDIGRAPH_TRANS_REDUCTION" },
+
   { "IS_ANTISYMMETRIC_DIGRAPH", 1, "adj",
     FuncIS_ANTISYMMETRIC_DIGRAPH, 
     "src/graphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH" },
@@ -1734,7 +1961,7 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_SHORTEST_DIST", 1, "digraph",
     FuncDIGRAPH_SHORTEST_DIST, 
     "src/graphs.c:FuncDIGRAPH_SHORTEST_DIST" },
-
+  
   { "DIGRAPH_DIAMETER", 1, "digraph",
     FuncDIGRAPH_DIAMETER, 
     "src/graphs.c:FuncDIGRAPH_DIAMETER" },

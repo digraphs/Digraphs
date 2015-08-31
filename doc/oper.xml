@@ -8,93 +8,6 @@
 #############################################################################
 ##
 
-<#GAPDoc Label="DigraphVertexLabels">
-<ManSection>
-  <Oper Name="DigraphVertexLabels" Arg="digraph"/>
-  <Oper Name="SetDigraphVertexLabels" Arg="digraph, list"/>
-  <Oper Name="DigraphEdgeLabels" Arg="digraph"/>
-  <Oper Name="SetDigraphEdgeLabels" Arg="digraph, list"/>
-  <Description>
-    If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns the labels 
-    of the vertices in <A>digraph</A>. <C>SetDigraphVertexLabels</C> can be used to set 
-    the labels of the vertices in <A>digraph</A> to the list of arbitrary 
-    &GAP; objects <A>list</A>. 
-    <C>DigraphEdgeLabels</C> and <C>SetDigraphEdgeLabels</C> are similar. <P/>
-
-    The label of a vertex can be changed an arbitrary number of times. If no label
-    has been set for the vertex <C>i</C>, then the default value is <C>i</C>.
-
-    If <A>digraph</A> is a digraph created from a record with a component
-    <C>vertices</C>, then the labels of the vertices are set to the value of this
-    component.<P/>
-
-    Induced subdigraphs, and other operations which create new digraphs from old
-    ones, inherit their labels from their parents. 
-
-    <Example><![CDATA[
-gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
-> [ 2, 3, 5 ] ] );
-<digraph with 5 vertices, 11 edges>
-gap> DigraphVertexLabels(gr);
-[ 1 .. 5 ]
-gap> gr := Digraph( [ "a", "b", "c" ], [  ], [  ] );
-<digraph with 3 vertices, 0 edges>
-gap> DigraphVertexLabels(gr);
-[ "a", "b", "c" ]
-gap> SetDigraphVertexLabel(gr, 2, "d");
-gap> DigraphVertexLabels(gr);
-[ "a", "d", "c" ]
-gap> gr := InducedSubdigraph(gr, [ 1, 3 ]);
-<digraph with 2 vertices, 0 edges>
-gap> DigraphVertexLabels(gr);
-[ "a", "c" ]]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphVertexLabel">
-<ManSection>
-  <Oper Name="DigraphVertexLabel" Arg="digraph, i"/>
-  <Oper Name="SetDigraphVertexLabel" Arg="digraph, i, obj"/>
-  <Oper Name="DigraphEdgeLabel" Arg="digraph, i"/>
-  <Oper Name="SetDigraphEdgeLabel" Arg="digraph, i, obj"/>
-  <Description>
-    If <A>digraph</A> is a digraph, then the first operation returns the label of
-    the vertex <A>i</A>. The second operation can be used to set the label of the
-    vertex <A>i</A> in <A>digraph</A> to the arbitrary &GAP; object <A>obj</A>. 
-    <P/>
-
-    The label of a vertex can be changed an arbitrary number of times. If no label
-    has been set for the vertex <A>i</A>, then the default value is <C>i</C>. <P/>
-
-    If <A>digraph</A> is a digraph created from a record with a component
-    <C>vertices</C>, then the labels of the vertices are set to the value of this
-    component.<P/>
-
-    Induced subdigraphs, and other operations which create new digraphs from old
-    ones, inherit their labels from their parents. 
-
-    <Example><![CDATA[
-gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
-> [ 2, 3, 5 ] ] );
-<digraph with 5 vertices, 11 edges>
-gap> DigraphVertexLabel(gr, 3);
-3
-gap> gr := Digraph( [ "a", "b", "c" ], [  ], [  ] );
-<digraph with 3 vertices, 0 edges>
-gap> DigraphVertexLabel(gr, 2);
-"b"
-gap> SetDigraphVertexLabel(gr, 2, "d");
-gap> DigraphVertexLabel(gr, 2);
-"d"
-gap> gr := InducedSubdigraph(gr, [ 1, 2 ]);
-<digraph with 2 vertices, 0 edges>
-gap> DigraphVertexLabel(gr, 2);
-"d"]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
 <#GAPDoc Label="DigraphReverse">
 <ManSection>
   <Oper Name="DigraphReverse" Arg="digraph"/>
@@ -580,6 +493,58 @@ gap> DigraphReflexiveTransitiveClosure(gr);
 gap> OutNeighbours(last);
 [ [ 1, 4, 5, 6, 7, 8, 9 ], [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ], [ 3 ], 
   [ 4, 5 ], [ 5 ], [ 6, 7, 8, 9 ], [ 7 ], [ 8 ], [ 9 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphReflexiveTransitiveReduction">
+<ManSection>
+  <Oper Name="DigraphReflexiveTransitiveReduction" Arg="digraph"/>
+  <Oper Name="DigraphTransitiveReduction" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a topologically sortable digraph
+    [<Ref Attr="DigraphTopologicalSort"/>,
+    i.e. it contains no non-trivial cycles]
+    with no multiple edges, then these  functions return the
+    (reflexive) transitive reduction of <A>digraph</A>. 
+    <P/>
+
+    The (reflexive) transitive reduction of such a digraph is the unique
+    least subgraph such that the (reflexive) transitive closure of the
+    subgraph is equal to the (reflexive) transitive closure of <A>digraph</A>.
+    See <Ref Oper="DigraphReflexiveTransitiveClosure"/>.
+    In order words, it is the least subgraph of <A>digraph</A> which
+    retains the same reachability as <A>digraph</A>. <P/>
+
+    Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
+        <M>m</M> be the number of edges.
+    Then these operations
+    use methods with complexity <M>O(m + n + m \cdot n)</M>. 
+    <P/>
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 1, 2, 3 ], [ 3 ], [ 3 ] ] );;
+gap> DigraphHasLoops(gr);
+true
+gap> gr1 := DigraphReflexiveTransitiveReduction(gr);
+<digraph with 3 vertices, 2 edges>
+gap> DigraphHasLoops(gr1);
+false
+gap> OutNeighbours(gr1);
+[ [ 2 ], [ 3 ], [  ] ]
+gap> gr2 := DigraphTransitiveReduction(gr);
+<digraph with 3 vertices, 4 edges>
+gap> DigraphHasLoops(gr2);
+true
+gap> OutNeighbours(gr2);
+[ [ 2, 1 ], [ 3 ], [ 3 ] ]
+gap> DigraphReflexiveTransitiveClosure(gr)
+>  = DigraphReflexiveTransitiveClosure(gr1);
+true
+gap> DigraphTransitiveClosure(gr)
+>  = DigraphTransitiveClosure(gr2);
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -1111,6 +1076,66 @@ true
 gap> IsReachable(gr, 1, 1);
 false
 ]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphLongestDistanceFromVertex">
+<ManSection>
+  <Oper Name="DigraphLongestDistanceFromVertex" Arg="digraph, v"/>
+  <Returns>An integer.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph and <A>v</A> is a vertex in <A>digraph</A>,
+    then this function returns the length of the longest directed path in
+    <A>digraph</A> which begins at vertex <A>v</A>. <P/>
+
+    <List>
+      <Item>
+        If there exists a directed path starting at vertex <A>v</A>
+        which traverses a cycle or a loop,
+        then we consider there to be a path of infinite length from <A>v</A>
+        (realised by repeatedly traversing the loop/cycle),
+        and so the result is <C>infinity</C>.
+        To disallow paths using loops, try using
+        <Ref Oper="DigraphRemoveLoops"/>:<P/>
+
+        <C>DigraphLongestDistanceFromVertex(DigraphRemoveLoops(<A>digraph</A>,<A>v</A>))</C>.
+      </Item>
+
+      <Item>
+        If no path from vertex <A>v</A> exists,
+        i.e. if <A>v</A> is a sink of the digraph
+        (<Ref Attr="DigraphSinks"/>), then the result is <C>0</C>.
+      </Item>
+
+      <Item>
+        Otherwise, if all directed paths
+        starting at vertex <A>v</A> have finite length,
+        then the length of the longest such path is returned.
+      </Item>
+    </List>
+
+<Example><![CDATA[
+gap> gr := Digraph( [ [ 2 ], [ 3, 4 ], [  ], [ 5 ], [  ], [ 6 ] ] );
+<digraph with 6 vertices, 5 edges>
+gap> DigraphLongestDistanceFromVertex(gr, 1);
+3
+gap> DigraphLongestDistanceFromVertex(gr, 3);
+0
+gap> 3 in DigraphSinks(gr);
+true
+gap> DigraphLongestDistanceFromVertex(gr, 6);
+infinity
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphSymmetricClosure">
+<ManSection>
+  <Oper Name="DigraphSymmetricClosure" Arg="digraph"/>
+  <Returns></Returns>
+  <Description>
   </Description>
 </ManSection>
 <#/GAPDoc>

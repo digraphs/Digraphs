@@ -1,9 +1,90 @@
 #############################################################################
 ##
 #W  util.xml
-#Y  Copyright (C) 2014                                  James D. Mitchell
+#Y  Copyright (C) 2015                                  Michael C. Torpey
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
+
+<#GAPDoc Label="DigraphsStartTest">
+<ManSection>
+  <Func Name="DigraphsStartTest" Arg=""/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsStopTest">
+<ManSection>
+  <Func Name="DigraphsStopTest" Arg="file"/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsMakeDoc">
+<ManSection>
+  <Func Name="DigraphsMakeDoc" Arg=""/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsTestAll">
+<ManSection>
+  <Func Name="DigraphsTestAll" Arg=""/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsTestInstall">
+<ManSection>
+  <Func Name="DigraphsTestInstall" Arg=""/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsTestManualExamples">
+<ManSection>
+  <Func Name="DigraphsTestManualExamples" Arg=""/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsTestEverything">
+<ManSection>
+  <Func Name="DigraphsTestEverything" Arg=""/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsDir">
+<ManSection>
+  <Func Name="DigraphsDir" Arg=""/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsSemigroupsLoaded">
+<ManSection>
+  <Func Name="IsSemigroupsLoaded" Arg=""/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>

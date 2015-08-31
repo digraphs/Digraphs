@@ -1,3 +1,4 @@
+
 /***************************************************************************
 **
 *A  homos.c                  graph homomorphisms              Julius Jonusas
@@ -88,7 +89,8 @@ static inline UIntS sizeUIntL (UIntL n, int m) {
 
 HomosGraph* new_homos_graph (UIntS const nr_verts) {
   HomosGraph* graph = malloc(sizeof(HomosGraph));
-  graph->neighbours = calloc(((nr_verts - 1) / SYS_BITS + 1) * nr_verts, sizeof(UIntL));
+  graph->neighbours = calloc(((nr_verts - 1) / SYS_BITS + 1) * nr_verts, 
+                             sizeof(UIntL));
   graph->nr_verts = nr_verts;
   init_bit_tabs();
   return graph;
@@ -223,11 +225,29 @@ static void orbit_reps (UIntS rep_depth) {
   return;
 }
 
-// for handling the conditions
-static UIntL* condition; // keep track of what's available for assigning
-static UIntS  changed_condition[MAXVERTS * (MAXVERTS + 1)];
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Conditions (for the homomorphism search)
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+// keep track of what's available for assigning
+////////////////////////////////////////////////////////////////////////////////
+
+static UIntL* condition; 
+
+////////////////////////////////////////////////////////////////////////////////
 // changed_conditions[depth * i] the number of conditions updated at <depth> 
 // s.t. condition[depth * i + changed_condition[depth * i + j]] was updated 
+////////////////////////////////////////////////////////////////////////////////
+
+static UIntS  changed_condition[MAXVERTS * (MAXVERTS + 1)];
+
+////////////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////////////
+
 static UIntS  len_condition[MAXVERTS * MAXVERTS / SYS_BITS];
 
 static inline UIntL* get_condition(UIntS const i) {   // vertex in graph1
@@ -338,7 +358,8 @@ void find_homos (UIntS   depth,       // the number of filled positions in map
       i = j / SYS_BITS;
       m = j % SYS_BITS;
       if (map[j] == UNDEFINED) {
-        if (neighbours1[pos * len_nr1 + i] & oneone[m]) { // vertex j is adjacent to vertex pos in graph1
+        if (neighbours1[pos * len_nr1 + i] & oneone[m]) { 
+          // vertex j is adjacent to vertex pos in graph1
           copy = push_condition(depth, j, get_condition(j));
           size = 0; 
 	  for (k = 0; k < nr2_d; k++){
@@ -432,7 +453,6 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   nr2_m = (nr2 - 1) % SYS_BITS;
   len_nr1 = nr1_d + 1;
   len_nr2 = nr2_d + 1;
-  
 
   assert(nr1 <= MAXVERTS && nr2 <= MAXVERTS);
   
@@ -540,7 +560,9 @@ void GraphHomomorphisms (HomosGraph*  graph1,
             if (!has_trivial_stab) {
               calls2++;
               // stabiliser of the point i in the stabiliser at current rep_depth
-              is_trivial = point_stabilizer(stab_gens[rep_depth], partial_map[next], &stab_gens[rep_depth + 1]);
+              is_trivial = point_stabilizer(stab_gens[rep_depth], 
+                                            partial_map[next], 
+                                            &stab_gens[rep_depth + 1]);
             }
       	    map[next] = partial_map[next];
 	    depth++;

@@ -7,14 +7,14 @@
 ##
 #############################################################################
 ##
-gap> START_TEST("Graphs package: bliss.tst");
-gap> LoadPackage("Graphs", false);;
+gap> START_TEST("Digraphs package: bliss.tst");
+gap> LoadPackage("digraphs", false);;
 
 #
-gap> GraphsStartTest();
+gap> DigraphsStartTest();
 
-#T# AutomorphismGroup: all graphs of 5 vertices, compare with grape
-gap> graph5:=ReadDigraphs(Concatenation(GraphsDir(), "/data/graph5.g6"));
+# AutomorphismGroup: all graphs of 5 vertices, compare with grape
+gap> graph5 := ReadDigraphs(Concatenation(DigraphsDir(), "/data/graph5.g6"));
 [ <digraph with 5 vertices, 0 edges>, <digraph with 5 vertices, 2 edges>, 
   <digraph with 5 vertices, 4 edges>, <digraph with 5 vertices, 6 edges>, 
   <digraph with 5 vertices, 8 edges>, <digraph with 5 vertices, 4 edges>, 
@@ -32,24 +32,24 @@ gap> graph5:=ReadDigraphs(Concatenation(GraphsDir(), "/data/graph5.g6"));
   <digraph with 5 vertices, 14 edges>, <digraph with 5 vertices, 16 edges>, 
   <digraph with 5 vertices, 14 edges>, <digraph with 5 vertices, 16 edges>, 
   <digraph with 5 vertices, 18 edges>, <digraph with 5 vertices, 20 edges> ]
-gap> group5 := [ 
->  Group([ (4,5), (3,4), (2,3), (1,2) ]), Group([ (1,5), (3,4), (2,3) ]), 
->  Group([ (1,2), (3,4) ]), Group([ (2,3), (1,2) ]), Group([ (3,4), (2,3), (1,
->   2) ]), Group([ (2,5), (1,2)(4,5) ]), Group([ (1,4), (2,3) ]), 
->  Group([ (4,5), (1,4), (2,3) ]), Group([ (1,5)(2,4) ]), Group([ (1,4) ]), 
->  Group([ (2,3) ]), Group([ (1,4), (2,3) ]), Group([ (2,3)(4,5) ]), 
->  Group([ (4,5), (1,2), (1,4)(2,5) ]), Group([ (4,5), (1,2) ]), 
->  Group([ (1,2) ]), Group([ (1,2) ]), Group([ (4,5), (2,3), (1,2) ]), 
->  Group([ (4,5), (2,3), (1,2) ]), Group([ (3,5), (1,3), (2,4) ]), 
->  Group([ (1,2)(3,4) ]), Group([ (1,3) ]), Group([ (2,4), (1,2)(3,4) ]), 
->  Group([ (4,5), (3,4), (1,3) ]), Group([ (1,3) ]), Group([ (3,4), (1,3) ]), 
->  Group([ (2,5)(3,4), (1,2,3,4,5) ]), Group([ (1,5)(2,4) ]), Group([ (1,4)
->  (2,3) ]), Group([ (4,5), (1,3) ]), Group([ (3,5), (1,2) ]), 
->  Group([ (3,4), (1,2), (1,3)(2,4) ]), Group([ (4,5), (3,4), (1,2) ]), 
->  Group([ (4,5), (3,4), (2,3), (1,2) ]) ];;
-gap> List(graph5, AutomorphismGroup) = group5;                                          
+gap> group5 := [
+>  Group([(4, 5), (3, 4), (2, 3), (1, 2)]), Group([(1, 5), (3, 4), (2, 3)]),
+>  Group([(1, 2), (3, 4)]), Group([(2, 3), (1, 2)]), Group([(3, 4), (2, 3), (1,
+>   2)]), Group([(2, 5), (1, 2)(4, 5)]), Group([(1, 4), (2, 3)]),
+>  Group([(4, 5), (1, 4), (2, 3)]), Group([(1, 5)(2, 4)]), Group([(1, 4)]),
+>  Group([(2, 3)]), Group([(1, 4), (2, 3)]), Group([(2, 3)(4, 5)]),
+>  Group([(4, 5), (1, 2), (1, 4)(2, 5)]), Group([(4, 5), (1, 2)]),
+>  Group([(1, 2)]), Group([(1, 2)]), Group([(4, 5), (2, 3), (1, 2)]),
+>  Group([(4, 5), (2, 3), (1, 2)]), Group([(3, 5), (1, 3), (2, 4)]),
+>  Group([(1, 2)(3, 4)]), Group([(1, 3)]), Group([(2, 4), (1, 2)(3, 4)]),
+>  Group([(4, 5), (3, 4), (1, 3)]), Group([(1, 3)]), Group([(3, 4), (1, 3)]),
+>  Group([(2, 5)(3, 4), (1, 2, 3, 4, 5)]), Group([(1, 5)(2, 4)]), Group([(1, 4)
+>  (2, 3)]), Group([(4, 5), (1, 3)]), Group([(3, 5), (1, 2)]),
+>  Group([(3, 4), (1, 2), (1, 3)(2, 4)]), Group([(4, 5), (3, 4), (1, 2)]),
+>  Group([(4, 5), (3, 4), (2, 3), (1, 2)])];;
+gap> List(graph5, AutomorphismGroup) = group5;
 true
-gap> trees:=ReadDigraphs(Concatenation(GraphsDir(), "/data/tree9.4.txt"));
+gap> trees := ReadDigraphs(Concatenation(DigraphsDir(), "/data/tree9.4.txt"));
 [ <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
@@ -57,40 +57,40 @@ gap> trees:=ReadDigraphs(Concatenation(GraphsDir(), "/data/tree9.4.txt"));
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges> ]
-gap> treeAuts := [ 
->  Group([ (6,7), (5,6), (4,5), (3,4) ]), Group([ (6,7), (5,6), (4,5), (2,
->   3) ]), Group([ (3,4), (2,3), (6,7), (5,6), (2,5)(3,6)(4,7)(8,9) ]), 
->  Group([ (5,6), (4,5), (3,4), (1,2)(7,8) ]), Group([ (5,6), (4,5), (3,4) ]), 
->  Group([ (5,6), (4,5), (2,3) ]), Group([ (5,6), (4,5), (2,3) ]), 
->  Group([ (5,6), (3,4), (2,3) ]), Group([ (5,6), (4,5), (2,3)(7,8) ]), 
->  Group([ (5,6), (3,4), (1,2), (1,3)(2,4)(7,8) ]), Group([ (4,5), (2,3)
->  (7,8), (1,2)(6,7) ]), Group([ (3,4), (1,2)(6,7) ]), Group([ (4,5), (2,3),
->  (2,4)(3,5)(7,8) ]), Group([ (3,4)(7,8), (2,3)(6,7), (1,2)(5,6) ]) ];;
+gap> treeAuts := [
+>  Group([(6, 7), (5, 6), (4, 5), (3, 4)]), Group([(6, 7), (5, 6), (4, 5),
+>  (2, 3)]), Group([(3, 4), (2, 3), (6, 7), (5, 6), (2, 5)(3, 6)(4, 7)(8, 9)]),
+>  Group([(5, 6), (4, 5), (3, 4), (1, 2)(7, 8)]), Group([(5, 6), (4, 5),
+>  (3, 4)]), Group([(5, 6), (4, 5), (2, 3)]), Group([(5, 6), (4, 5), (2, 3)]),
+>  Group([(5, 6), (3, 4), (2, 3)]), Group([(5, 6), (4, 5), (2, 3)(7, 8)]),
+>  Group([(5, 6), (3, 4), (1, 2), (1, 3)(2, 4)(7, 8)]), Group([(4, 5), (2, 3)
+>  (7, 8), (1, 2)(6, 7)]), Group([(3, 4), (1, 2)(6, 7)]), Group([(4, 5),
+>  (2, 3), (2, 4)(3, 5)(7, 8)]), Group([(3, 4)(7, 8), (2, 3)(6, 7),
+>  (1, 2)(5, 6)])];;
 gap> List(trees, AutomorphismGroup) = treeAuts;
 true
 
 #T# AutomorphismGroup: this example is broken if we use Digraphs rather than
 # Graphs in the bliss code (PJC's example)
 gap> gr := DigraphFromDigraph6String(Concatenation(
-> "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?A?S??", 
-> "?OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO??`?_O??G?@",
-> "?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W?????K???__O[????",
-> "??O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G?O??A@??D??G?C_?A??O?_G",
-> "A??@@?_?G???E?IW??????_@G?C??"
-> ));
+> "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?",
+> "A?S???OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO",
+> "??`?_O??G?@?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W",
+> "?????K???__O[??????O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G",
+> "?O??A@??D??G?C_?A??O?_GA??@@?_?G???E?IW??????_@G?C??"));
 <digraph with 45 vertices, 180 edges>
-gap> H:=AutomorphismGroup(gr);
+gap> H := AutomorphismGroup(gr);
 <permutation group with 5 generators>
-gap> IsomorphismGroups(PrimitiveGroup(45,3), H) <> fail;
+gap> IsomorphismGroups(PrimitiveGroup(45, 3), H) <> fail;
 true
 
 #T# AutomorphismGroup: some random examples
-gap> AutomorphismGroup(Digraph( [ ] ));
+gap> AutomorphismGroup(Digraph([]));
 Group(())
-gap> gr := Digraph( [ [ 6, 7 ], [ 6, 9 ], [ 1, 3, 4, 5, 8, 9 ], 
-> [ 1, 2, 3, 4, 5, 6, 7, 10 ], [ 1, 5, 6, 7, 10 ], [ 2, 4, 5, 9, 10 ], 
-> [ 3, 4, 5, 6, 7, 8, 9, 10 ], [ 1, 3, 5, 7, 8, 9 ], [ 1, 2, 5 ], 
-> [ 1, 2, 4, 6, 7, 8 ] ] );;
+gap> gr := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],
+> [1, 2, 3, 4, 5, 6, 7, 10], [1, 5, 6, 7, 10], [2, 4, 5, 9, 10],
+> [3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 5, 7, 8, 9], [1, 2, 5],
+> [1, 2, 4, 6, 7, 8]]);;
 gap> AutomorphismGroup(gr);
 Group(())
 gap> gr := CycleDigraph(1000);
@@ -101,13 +101,13 @@ gap> Size(last);
 1000
 
 #T# AutomorphismGroup for a MultiDigraph
-gap> gr:=DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
+gap> gr := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
 <multidigraph with 3 vertices, 6 edges>
 gap> AutomorphismGroup(gr);
 Group([ (1,2,3), (8,9), (6,7), (4,5) ])
 gap> Size(last);
 24
-gap> gr:=DigraphEdgeUnion(CycleDigraph(50), CycleDigraph(50));  
+gap> gr := DigraphEdgeUnion(CycleDigraph(50), CycleDigraph(50));
 <multidigraph with 50 vertices, 100 edges>
 gap> AutomorphismGroup(gr);
 <permutation group with 51 generators>
@@ -116,43 +116,44 @@ gap> Size(last);
 
 #T# DigraphCanonicalLabelling: non-multigraph, PJC's example
 gap> gr := DigraphFromDigraph6String(Concatenation(
-> "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?A?S??", 
-> "?OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO??`?_O??G?@",
-> "?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W?????K???__O[????",
-> "??O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G?O??A@??D??G?C_?A??O?_G",
-> "A??@@?_?G???E?IW??????_@G?C??"
-> ));
+> "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?",
+> "A?S???OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO",
+> "??`?_O??G?@?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W",
+> "?????K???__O[??????O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G",
+> "?O??A@??D??G?C_?A??O?_GA??@@?_?G???E?IW??????_@G?C??"));
 <digraph with 45 vertices, 180 edges>
 gap> DigraphCanonicalLabelling(gr);
 (1,45,23,34,3,13,26,22,27,2,9,31,10,8,17,41,44,18,36,21,24)(4,15,38,20,28,40,
 37,5,35,14,39,30,25,32,42,29,7,16,6,11,33,12)
-gap> gr:=DigraphFromDiSparse6String(Concatenation(
-> ".~?@caOa??gGEA?e@?oOIb_SIc?MQBhOQCwIV?PY@B@IRDGgL__sYao{ODWCNC@MKBOwUEHGTdPmE",
-> "BwkXFGoV_ogNCGCIBO{ZGGGFD@U?APGUDwW_GWGGFAU??PKUE@eDA`?TFAi?A_{da@GgaosVEQciIw",
-> "OJC@eCA_oVE@wbHH}IApGlb`caGq{p`@WXEqCq_pS]HQ{oepo^JHKdHwSHC`OVEps_GxWibPGSHQcl",
-> "KbQD@_kMEaou`OcYEpo\\HagmMGKDA?kcKWsRDakwNBu@E@srMRuEEqCaJb?xapGT`OkKBPG]GqmcN",
-> "wOFE@{oNCABAOkMCPo`IQkqbpo_Lbc}eQswMbpBPW{[MwCFAOkUFQ?bbP?ZJWOFB@O\\IWWLGQiUEq",
-> "_yNcUJErdHRG{cHacvMCyKNRy@AO{VFQOhJBCqNc@EQCeTFa?kJrk|NsiHB@SbHA{vMSHJ_qGdHsY?",
-> "@__\\Ha_hJBGrMblFQstOb`CWQg[HDpsxPg[GAPO\\ISHEQspR_@SVIR?|QDQ@B?sQCpc]Fq{vRwGY",
-> "Epo`HbCwNb|XgAstQC|SUw{gKBhESdPTaooPDPcZGq[nOCdOcqCdHbSuOcPHRt\\X_occKbOtQGCGB",
-> "`glJbGvNCDRVTx___gLB`CQLRlFTddYWWGEDBKuPCTHRDTYxGO?a?AK?g{GA_kKBwGCAGMGBOyB_O[",
-> "PCgCD@woPaOgNCwMJ_@[W`PGYEwQJC@QKCPGV`?gMFg?KBp]J``W\\_`GUcp_]FqECBPG^GQINC`SY",
-> "i?{OGwg^_OkNEQIHCpOWFaeBIamDA`OVEgWTIG_KkO?CAPgkJW?NC@KZFa?iJbEC@`okKBINEpohIb",
-> "IEA_oQFaGeKGWKBP[p_?CA@?WJBqY@?_kZIA{oKhKWEQeA@r]DBPCRFa[jJbe??_KPDA?`Ga_z_aWh",
-> "JgOMC`cZHawu`OcLGQKgJb[~c@SZFQclKbSyNwOPD`kaGrOy`okTJraQEa_qLsIOGqSfIAklNsQLCQ",
-> "{yNwo_KCAE@p?ZF`{fJAszNxSWGaoxaPgeIbE??oS[HackNW{_HQxI_?SOGq{s`@KYGA[qRGSIDa[j",
-> "KCPH`OgPDasmMcTFQw?CEB?wNC@Ma?cXGaO}NshO`@?_JRCrOgkUGQgmKBGwMRlA`_[ICp_\\GQkkL",
-> "buEApCRE@c^HR[xOchJapCRGqOgIasoNCDDPsu?AOoRFQGbHQ[gISLH_okZGagvMSLJ_ocLMCdL`O_",
-> "OC`gZGa[hPCYHDbCyMseMFAknKBCtMcXISx?QDPg^Jb|APCXIRtHUTte@@O[PCp_eIRpSTWK\\FqGg",
-> "IRGwNDM?CA{xRTHS_OKQIb[}Qd@]WWKGCaWjJQx@Qw?AA`[dHrSxU^"));
+gap> gr := DigraphFromDiSparse6String(Concatenation(
+> ".~?@caOa??gGEA?e@?oOIb_SIc?MQBhOQCwIV?PY@B@IRDGgL__sYao{ODWCNC@MKBOwUEHG",
+> "TdPmEBwkXFGoV_ogNCGCIBO{ZGGGFD@U?APGUDwW_GWGGFAU??PKUE@eDA`?TFAi?A_{da@G",
+> "gaosVEQciIwOJC@eCA_oVE@wbHH}IApGlb`caGq{p`@WXEqCq_pS]HQ{oepo^JHKdHwSHC`O",
+> "VEps_GxWibPGSHQclKbQD@_kMEaou`OcYEpo\\HagmMGKDA?kcKWsRDakwNBu@E@srMRuEEq",
+> "CaJb?xapGT`OkKBPG]GqmcNwOFE@{oNCABAOkMCPo`IQkqbpo_Lbc}eQswMbpBPW{[MwCFAO",
+> "kUFQ?bbP?ZJWOFB@O\\IWWLGQiUEq_yNcUJErdHRG{cHacvMCyKNRy@AO{VFQOhJBCqNc@EQ",
+> "CeTFa?kJrk|NsiHB@SbHA{vMSHJ_qGdHsY?@__\\Ha_hJBGrMblFQstOb`CWQg[HDpsxPg[G",
+> "APO\\ISHEQspR_@SVIR?|QDQ@B?sQCpc]Fq{vRwGYEpo`HbCwNb|XgAstQC|SUw{gKBhESdP",
+> "TaooPDPcZGq[nOCdOcqCdHbSuOcPHRt\\X_occKbOtQGCGB`glJbGvNCDRVTx___gLB`CQLR",
+> "lFTddYWWGEDBKuPCTHRDTYxGO?a?AK?g{GA_kKBwGCAGMGBOyB_O[PCgCD@woPaOgNCwMJ_@",
+> "[W`PGYEwQJC@QKCPGV`?gMFg?KBp]J``W\\_`GUcp_]FqECBPG^GQINC`SYi?{OGwg^_OkNE",
+> "QIHCpOWFaeBIamDA`OVEgWTIG_KkO?CAPgkJW?NC@KZFa?iJbEC@`okKBINEpohIbIEA_oQF",
+> "aGeKGWKBP[p_?CA@?WJBqY@?_kZIA{oKhKWEQeA@r]DBPCRFa[jJbe??_KPDA?`Ga_z_aWhJ",
+> "gOMC`cZHawu`OcLGQKgJb[~c@SZFQclKbSyNwOPD`kaGrOy`okTJraQEa_qLsIOGqSfIAklN",
+> "sQLCQ{yNwo_KCAE@p?ZF`{fJAszNxSWGaoxaPgeIbE??oS[HackNW{_HQxI_?SOGq{s`@KYG",
+> "A[qRGSIDa[jKCPH`OgPDasmMcTFQw?CEB?wNC@Ma?cXGaO}NshO`@?_JRCrOgkUGQgmKBGwM",
+> "RlA`_[ICp_\\GQkkLbuEApCRE@c^HR[xOchJapCRGqOgIasoNCDDPsu?AOoRFQGbHQ[gISLH",
+> "_okZGagvMSLJ_ocLMCdL`O_OC`gZGa[hPCYHDbCyMseMFAknKBCtMcXISx?QDPg^Jb|APCXI",
+> "RtHUTte@@O[PCp_eIRpSTWK\\FqGgIRGwNDM?CA{xRTHS_OKQIb[}Qd@]WWKGCaWjJQx@Qw?",
+> "AA`[dHrSxU^"));
 <digraph with 100 vertices, 1011 edges>
 gap> DigraphCanonicalLabelling(gr);
 (1,53,16,92,26,17,60,85,64,87,51,96,76,35,50,19,98,93,30,55,7,22,67,57,94,89,
 48,27,45,29,32,20,62,18,15,6,33,36,41,46,69,73,2,24,49,71,28,97,9,11,70,47,80,
 68)(3,34,14,44,79,8)(4,42,90,37,31,65,78,23,25,38,86,100,52,13,82,83,39,61,95,
 91,81,10,59,58,43,84,88,66)(5,40,12,99,75,54,56,63,74,72,77)
-gap> gr:=ReadDigraphs(
-> Concatenation(GraphsDir(), "/data/test-1.d6"))[1];
+gap> gr := ReadDigraphs(
+> Concatenation(DigraphsDir(), "/data/test-1.d6"))[1];
 <digraph with 1000 vertices, 100368 edges>
 gap> DigraphCanonicalLabelling(gr);
 (1,894,760,546,212,603,466,938,837,802,929,717,865,809,599,672,859,937,816,
@@ -199,22 +200,22 @@ gap> DigraphCanonicalLabelling(gr);
 134,252,173,194)( [...] )
 
 #T# IsIsomorphicDigraph
-gap> p:=Random(SymmetricGroup(1000));;
-gap> gr2:=OnDigraphs(gr, p);
+gap> p := Random(SymmetricGroup(1000));;
+gap> gr2 := OnDigraphs(gr, p);
 <digraph with 1000 vertices, 100368 edges>
-gap> gr = gr2; 
+gap> gr = gr2;
 false
 gap> IsIsomorphicDigraph(gr, gr2);
 true
-gap> IsIsomorphicDigraph(gr2, gr); 
+gap> IsIsomorphicDigraph(gr2, gr);
 true
-gap> ForAny(graph5, x-> Number(graph5, y-> IsIsomorphicDigraph(x, y)) <> 1);
+gap> ForAny(graph5, x -> Number(graph5, y -> IsIsomorphicDigraph(x, y)) <> 1);
 false
 
 #T# IsomorphismDigraphs
-gap> gr1 := CompleteBipartiteDigraph(100,50);
+gap> gr1 := CompleteBipartiteDigraph(100, 50);
 <digraph with 150 vertices, 10000 edges>
-gap> gr2 := CompleteBipartiteDigraph(50,100);
+gap> gr2 := CompleteBipartiteDigraph(50, 100);
 <digraph with 150 vertices, 10000 edges>
 gap> p := IsomorphismDigraphs(gr1, gr2);
 (1,51,101)(2,52,102)(3,53,103)(4,54,104)(5,55,105)(6,56,106)(7,57,107)(8,58,
@@ -241,10 +242,10 @@ gap> DigraphEdgeLabels(gr2);
 [ 6, 5, 2, 4, 3, 1 ]
 gap> DigraphCanonicalLabelling(gr2);
 [ (1,3,2), (1,6,4)(2,3) ]
-gap> OnMultiDigraphs(gr2, last)=gr2;
+gap> OnMultiDigraphs(gr2, last) = gr2;
 true
 gap> gr2 = gr1;
 false
 
 #E#
-gap> STOP_TEST("Graphs package: bliss.tst");
+gap> STOP_TEST("Digraphs package: bliss.tst");

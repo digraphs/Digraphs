@@ -8,6 +8,15 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="AsGraph">
+<ManSection>
+  <Attr Name="AsGraph" Arg="digraph"/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphDual">
 <ManSection>
   <Attr Name="DigraphDual" Arg="digraph"/>
@@ -160,8 +169,8 @@ gap> DigraphNrEdges(gr);
 <ManSection>
   <Attr Name="OutNeighbours" Arg="digraph"/>
   <Attr Name="OutNeighbors" Arg="digraph"/>
-  <Attr Name="OutNeighboursCopy" Arg="digraph"/>
-  <Attr Name="OutNeighborsCopy" Arg="digraph"/>
+  <Oper Name="OutNeighboursCopy" Arg="digraph"/>
+  <Oper Name="OutNeighborsCopy" Arg="digraph"/>
   <Returns>The adjacencies of a digraph.</Returns>
   <Description>
     This function returns the list <C>out</C> of out-neighbours of each vertex
@@ -295,7 +304,7 @@ gap> InDegreeSequence(gr);
 
 <#GAPDoc Label="DigraphVertices">
 <ManSection>
-  <Oper Name="DigraphVertices" Arg="digraph"/>
+  <Attr Name="DigraphVertices" Arg="digraph"/>
   <Returns>The vertices of a digraph.</Returns>
   <Description>
     Returns the vertices of the digraph <A>digraph</A>. <P/>
@@ -435,7 +444,7 @@ rec( comps := [  ], id := [  ] )
   <Attr Name="DigraphShortestDistances" Arg="digraph"/>
   <Returns>A square matrix of integers.</Returns>
   <Description>
-    If <A>digraph</A> is a directed graph with <M>n</M> vertices, then this 
+    If <A>digraph</A> is a digraph with <M>n</M> vertices, then this 
     function returns an <M>n \times n</M> matrix of integers <C>mat</C>.
     
     If a directed path from vertex <C>i</C> to vertex <C>j</C> exists,
@@ -463,6 +472,8 @@ gap> Display(mat);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+#
 
 <#GAPDoc Label="DigraphSinks">
 <ManSection>

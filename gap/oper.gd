@@ -31,11 +31,14 @@ DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt]);
 DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt, IsList]);
 DeclareOperation("DigraphAddVerticesNC", [IsDigraph, IsInt, IsList]);
 
-DeclareOperation("DigraphFloydWarshall", [IsDigraph, IsFunction,
- IsObject, IsObject]);
-DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
+DeclareOperation("DigraphFloydWarshall",
+                 [IsDigraph, IsFunction, IsObject, IsObject]);
 DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
-DeclareOperation("DigraphTransitiveClosure", [IsDigraph, IsBool]);
+DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
+DeclareOperation("DigraphTransitiveClosureNC", [IsDigraph, IsBool]);
+DeclareOperation("DigraphReflexiveTransitiveReduction", [IsDigraph]);
+DeclareOperation("DigraphTransitiveReduction", [IsDigraph]);
+DeclareOperation("DigraphTransitiveReductionNC", [IsDigraph, IsBool]);
 DeclareOperation("DigraphSymmetricClosure", [IsDigraph]);
 DeclareOperation("DigraphReverse", [IsDigraph]);
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsList]);
@@ -66,6 +69,7 @@ DeclareOperation("IsDigraphEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("IsReachable", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphLongestDistanceFromVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);
 
 DeclareOperation("OutNeighboursCopy", [IsDigraph]);

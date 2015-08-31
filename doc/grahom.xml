@@ -8,6 +8,99 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="HomomorphismGraphsFinder">
+<ManSection>
+  <Func Name="HomomorphismGraphsFinder" Arg="gr1, gr2, hook, user_param, limit, hint, injective, image, map"/>
+  <Returns>The argument <A>user_param</A>.</Returns>
+  <Description>
+    This function finds homomorphisms from the graph <A>gr1</A> to the graph
+    <A>gr2</A> subject to the conditions imposed by the other arguments as
+    described below.<P/>
+
+    If <C>f</C> and <C>g</C> are homomorphisms found by
+    <C>HomomorphismGraphsFinder</C>, then <C>f</C> cannot be obtained from
+    <C>g</C> by right multiplying by an automorphism of <A>gr2</A>.
+
+    <List>
+      <Mark><A>hook</A></Mark>
+      <Item>
+        This argument should be a function or <K>fail</K>.<P/>
+        
+        If <A>hook</A> is a function, then it should have two arguments
+        <A>user_param</A> (see below) and a transformation <C>t</C>. The
+        function <C><A>hook</A>(<A>user_param</A>, t)</C> is called every time
+        a new homomorphism <C>t</C> is found by
+        <C>HomomorphismGraphsFinder</C>.<P/>
+
+        If <A>hook</A> is <K>fail</K>, then a default function is used which
+        simply adds every new homomorphism found by
+        <C>HomomorphismGraphsFinder</C> to <A>user_param</A>, which must be a
+        list in this case. 
+      </Item>
+
+      <Mark><A>user_param</A></Mark>
+      <Item>
+        If <A>hook</A> is a function, then <A>user_param</A> can be any &GAP;
+        object. The object <A>user_param</A> is used as the first argument for
+        the function <A>hook</A>. For example, <A>user_param</A> might be a
+        transformation semigroup, and <C><A>hook</A>(<A>user_param</A>, t)</C>
+        might set <A>user_param</A> to be the closure of <A>user_param</A> and
+        <C>t</C>. <P/>
+
+        If the value of <A>hook</A> is <K>fail</K>, then the value of
+        <A>user_param</A> must be a list. 
+      </Item>
+
+      <Mark><A>limit</A></Mark>
+      <Item> 
+        This argument should be a positive integer or <K>infinity</K>.
+        <C>HomomorphismGraphsFinder</C> will return after it has found
+        <A>limit</A> homomorphisms or the search is complete.
+      </Item>
+      
+      <Mark><A>hint</A></Mark>
+      <Item> 
+        This argument should be a positive integer or <K>fail</K>. <P/>
+
+        If <A>hint</A> is a positive integer, then only homorphisms of rank
+        <A>hint</A> are found.<P/>
+
+        If <A>hint</A> is <K>fail</K>, then no restriction is put on the rank
+        of homomorphism found. 
+      </Item>
+      
+      <Mark><A>injective</A></Mark>
+      <Item> 
+        This argument should be <K>true</K> or <K>false</K>. If it is
+        <K>true</K>, then only injective homomorphisms are found, and if it is
+        <K>false</K> there are no restrictions imposed by this argument.
+      </Item>
+
+      <Mark><A>image</A></Mark>
+      <Item> 
+        This argument should be a subset of the vertices of the graph <A>gr2</A>.
+        <C>HomomorphismGraphsFinder</C> only finds homomorphisms from
+        <A>gr1</A> to the subgraph of <A>gr2</A> induced by the vertices <A>image</A>.
+      </Item>
+
+      <Mark><A>map</A></Mark>
+      <Item>
+        This argument should be a partial map from <A>gr1</A> to <A>gr2</A>,
+        that is, a (not necessarily dense) list of vertices of the graph
+        <A>gr2</A> of length no greater than the number vertices in the graph
+        <A>gr1</A>. <C>HomomorphismGraphsFinder</C> only finds homomorphisms
+        extending <A>map</A> (if any). 
+      </Item>
+
+    </List>
+
+    <Example><![CDATA[
+gap>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphHomomorphism">
 <ManSection>
   <Oper Name="DigraphHomomorphism" Arg="digraph1, digraph2"/>

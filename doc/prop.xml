@@ -147,37 +147,6 @@ true
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsMultiDigraph">
-<ManSection>
-  <Prop Name="IsMultiDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    A <E>multidigraph</E> is one that has at least two 
-    edges with equal source and range. 
-    
-    <Example><![CDATA[
-gap> gr:=Digraph( [ "a", "b", "c" ],
-> [ "a", "b", "b" ],
-> [ "b", "c", "a" ] );
-<digraph with 3 vertices, 3 edges>
-gap> IsMultiDigraph(gr);
-false
-gap> gr := Digraph( 3, 
-> [ 1, 2, 3, 1, 1, 2 ],
-> [ 1, 2, 3, 2, 3, 1 ] );
-<digraph with 3 vertices, 6 edges>
-gap> IsMultiDigraph(gr);
-false
-gap> gr := Digraph( 3,
-> [ 1, 2, 3, 1, 1, 2, 1 ],
-> [ 1, 2, 3, 2, 3, 1, 2 ] );
-<multidigraph with 3 vertices, 7 edges>
-gap> IsMultiDigraph(gr);
-true
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
 
 <#GAPDoc Label="IsReflexiveDigraph">
 <ManSection>
