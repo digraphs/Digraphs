@@ -100,6 +100,8 @@ gap> AutomorphismGroup(gr);
 <permutation group with 1 generators>
 gap> Size(last);
 1000
+gap> AutomorphismGroup(CompleteDigraph(6)) = SymmetricGroup(6);
+true
 
 #T# AutomorphismGroup for a MultiDigraph
 gap> gr := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
