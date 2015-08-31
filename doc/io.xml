@@ -56,17 +56,39 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
 
 <#GAPDoc Label="ReadDigraphs">
 <ManSection>
-  <Func Name="ReadDigraphs" Arg="filename[, nr]"/>
-  <Returns>A list of digraphs.</Returns>
+  <Func Name="ReadDigraphs" Arg="filename[, decoder][, n]"/>
+  <Returns>A digraph, or a list of digraphs.</Returns>
   <Description>
-    If <A>filename</A> is the name of a file containing digraphs, then 
-    <C>ReadDigraphs</C> returns these digraphs as a list.<P/>
-    
-    If the optional argument <A>nr</A> is specified, the function
-    returns the graph encoded in the <A>nr</A>th line of the file
-    <A>filename</A>.
+    If <A>filename</A> is the name of a file containing encoded digraphs
+    (with one digraph per line),
+    then <C>ReadDigraphs</C> returns these digraphs as a list.
+    Note that if <A>filename</A> is a compressed file, which has been
+    compressed appropriately to give a filename extension of
+    <C>.gz</C>, <C>.bzip2</C>, or <C>.xz</C>,
+    then <C>ReadDigraphs</C> can read <A>filename</A> without it first
+    needing to be decompressed.
+    <P/>
 
-    The currently supported file formats are:
+    If the optional argument <A>n</A> is specified, then <C>ReadDigraphs</C>
+    returns the digraph from the <A>n</A>th line of the file
+    <A>filename</A>.<P/>
+
+    If the optional argument <A>decoder</A> is specified
+    and is a function which decodes a string into a digraph,
+    then <C>ReadDigraphs</C> will use <A>decoder</A> to decode the digraphs
+    contained in <A>filename</A>.
+
+    If the optional argument <A>decoder</A> is not specified,
+    then <C>ReadDigraphs</C> will deduce which format to use based on the
+    filename extension of <A>filename</A>
+    (after removing the compression-related filename extensions
+    <C>.gz</C>, <C>.bzip2</C>, and <C>.xz</C>).
+    For example, if the filename extension if <C>.g6</C>,
+    then <C>ReadDigraphs</C> will use the graph6 decoder.
+    <P/>
+
+    The currently supported file formats, and associated filename extensions,
+    are:
     <List>
       <Mark>graph6 (.g6)</Mark>
       <Item>
@@ -113,10 +135,10 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
     
     <Example><![CDATA[
 gap> ReadDigraphs(
-> Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6"), 10);
+> Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 10);
 <digraph with 5 vertices, 8 edges>
 gap> ReadDigraphs(
-> Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6"), 17);
+> Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 17);
 <digraph with 5 vertices, 12 edges>
 gap> ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt"));
@@ -144,7 +166,7 @@ gap> ReadDigraphs(
   <Description>
     If <A>digraphs</A> is a list of digraphs, then <C>WriteDigraphs</C> writes
     its contents to a file in a compact format.  If the supplied filename ends
-    in one of the extensions <E>gz</E>, <E>xz</E>, or <E>bzip2</E>, the file
+    in one of the extensions <C>.gz</C>, <C>.bzip2</C>, or <C>.xz</C>, the file
     will be compressed appropriately.  Excluding these extensions, if the file
     ends with an extension in the list below, the corresponding graph format
     will be used to encode it.  If such an extension is not included, an

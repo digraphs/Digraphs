@@ -1066,6 +1066,8 @@ function(digraph, v)
                  v, " is not a vertex of the digraph,");
   fi;
 
+  # TODO check if strongly connected components are known and use them if they
+  # are and don't use them if they are not. 
   scc := DigraphStronglyConnectedComponents(digraph);
   return scc.comps[scc.id[v]];
 end);
