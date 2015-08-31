@@ -928,24 +928,20 @@ Binary Relation on 4 points
   <Oper Name="DigraphEdgeUnion" Arg="digraph1, digraph2"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph1</A> and <A>digraph2</A> are directed graphs, then this 
-    operation returns the edge union of these digraphs. <P/>
+    If <A>digraph1</A> and <A>digraph2</A> are digraphs, then this 
+    operation returns their edge union. <P/>
    
-    The vertex and edge sets of the edge union are the union of
-    the vertex sets and the concatenation of the edge sets of <A>digraph1</A>
-    and <A>digraph2</A> respectively.
+    The vertex set of the edge union is the union of the vertex sets
+    of <A>digraph1</A> and <A>digraph2</A>.
+    The edge list of the edge union is the concatenation of the edge lists of
+    <A>digraph1</A> and <A>digraph2</A>.
     <P/>
 
-    More specifically, if <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
+    If <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
     edges, and if <A>digraph2</A> has <M>n_2</M> vertices and <M>m_2</M> edges,
-    then <C>DigraphDisjointUnion(<A>digraph1</A>, <A>digraph2</A>)</C>
+    then <C>DigraphEdgeUnion(<A>digraph1</A>, <A>digraph2</A>)</C>
     will have <C>Maximum(</C><M>n_1, n_2</M><C>)</C> vertices and
     <M>m_1 + m_2</M> edges. 
-
-    The vertices of <A>digraph1</A> will remain
-    <C>[1..</C><M>n_1</M><C>]</C> in the edge union,
-    and the vertices of <A>digraph2</A> will remain
-    <C>[</C><M>1</M><C>..</C><M>n_2</M><C>]</C>. <P/>
 
     Note that previously set <Ref Attr="DigraphVertexLabels"/> and
     <Ref Attr="DigraphEdgeLabels"/> will be lost.
@@ -1134,15 +1130,6 @@ true
 gap> DigraphLongestDistanceFromVertex(gr, 6);
 infinity
 ]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphSymmetricClosure">
-<ManSection>
-  <Oper Name="DigraphSymmetricClosure" Arg="digraph"/>
-  <Returns></Returns>
-  <Description>
   </Description>
 </ManSection>
 <#/GAPDoc>

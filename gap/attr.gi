@@ -445,3 +445,47 @@ function(digraph)
   fi;
   return DIGRAPH_DIAMETER(digraph);
 end);
+
+#
+
+InstallMethod(DigraphSymmetricClosure, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local n, verts, mat, new, x, gr, i, j, k;
+
+  n := DigraphNrVertices(digraph);
+  if not (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph))
+      and n > 1 then
+    verts := [1 .. n]; # We don't want DigraphVertices as that's immutable
+    mat := List(verts, x -> verts * 0);
+    new := OutNeighboursCopy(digraph);
+    for i in verts do
+      for j in new[i] do
+        if j < i then
+          mat[j][i] := mat[j][i] - 1;
+        else
+          mat[i][j] := mat[i][j] + 1;
+        fi;
+      od;
+    od;
+    for i in verts do
+      for j in [i + 1 .. n] do
+        x := mat[i][j];
+        if x > 0 then
+          for k in [1 .. x] do
+            Add(new[j], i);
+          od;
+        elif x < 0 then
+          for k in [1 .. -x] do
+            Add(new[i], j);
+          od;
+        fi;
+      od;
+    od;
+    gr := DigraphNC(new);
+  else
+    gr := DigraphCopy(digraph);
+  fi;
+  SetIsSymmetricDigraph(gr, true);
+  return gr;
+end);
