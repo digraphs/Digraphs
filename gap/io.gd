@@ -18,6 +18,9 @@ DeclareOperation("DigraphFromDiSparse6String", [IsString]);
 DeclareOperation("DigraphFromPlainTextString", [IsString]);
 
 DeclareGlobalFunction("DigraphPlainTextLineDecoder");
+DeclareGlobalFunction("TournamentLineDecoder");
+DeclareGlobalFunction("AdjacencyMatrixUpperTriangleLineDecoder");
+DeclareGlobalFunction("TCodeDecoder");
 
 DeclareGlobalFunction("WriteDigraphs");
 DeclareOperation("Graph6String", [IsDigraph]);
