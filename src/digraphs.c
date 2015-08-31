@@ -1013,7 +1013,8 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
  *        and returns true iff it is unchanged.
  *      - If false, proceeds as usual Floyd-Warshall algorithm and returns
  *        a GAP object matrix as the result.
- *   6. bool diameter:
+ *   6. bool diameter: // TODO wouldn't it be better to just take a
+ *                        "post-processing" function. JDM
  *      - If true, FLOYD_WARSHALL goes through dist after the 3 for-loops,
  *        returns -1 if dist contains the value -1, else it returns the 
  *        maximum value of dist

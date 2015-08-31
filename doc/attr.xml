@@ -555,7 +555,7 @@ true
     This function returns the diameter of the directed graph <A>digraph</A>.<P/>
 
     If a directed graph <A>digraph</A> is strongly connected,
-    then the diameter is the maximum shortest distance between any 
+    then the <E>diameter</E> is the maximum shortest distance between any 
     pair of vertices. Otherwise, or if <A>digraph</A> has no vertices,
     then the diameter of <A>digraph</A>
     is undefined, and this function returns the value <C>-1</C>. <P/>
