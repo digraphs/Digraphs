@@ -319,7 +319,6 @@ gap> DigraphVertexLabels(new);
 </ManSection>
 <#/GAPDoc>
 
-
 <#GAPDoc Label="DigraphAddEdge">
 <ManSection>
   <Oper Name="DigraphAddEdge" Arg="digraph, edge[, label]"/>
