@@ -36,6 +36,12 @@ gap> temp := List(erev, x -> [x[2], x[1]]);;
 gap> Sort(temp);
 gap> e = temp;
 true
+gap> gr := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsSymmetricDigraph(gr);
+true
+gap> DigraphReverse(gr) = gr;
+true
 
 #T# Digraph(Reflexive)TransitiveClosure
 gap> gr := Digraph(rec(nrvertices := 2, source := [1, 1], range := [2, 2]));
@@ -1391,6 +1397,57 @@ gap> DigraphLongestDistanceFromVertex(gr, 4);
 0
 gap> DigraphLongestDistanceFromVertex(gr, 15);
 infinity
+gap> DigraphLongestDistanceFromVertex(gr, 16);
+Error, Digraphs: DigraphLongestDistanceFromVertex: usage,
+the second argument <v> must be a vertex of the first argument, <digraph>,
+
+#T# Digraph(Reflexive)TransitiveReduction
+gap> gr1 := ChainDigraph(6);
+<digraph with 6 vertices, 5 edges>
+gap> gr2 := DigraphReflexiveTransitiveClosure(gr1);
+<digraph with 6 vertices, 21 edges>
+gap> DigraphTransitiveReduction(gr2) = gr1; # trans reduction contains loops
+false
+gap> DigraphReflexiveTransitiveReduction(gr2) = gr1; # ref trans reduct doesnt
+true
+gap> gr3 := DigraphAddEdge(gr1, [3, 3]);
+<digraph with 6 vertices, 6 edges>
+gap> DigraphHasLoops(gr3);
+true
+gap> gr4 := DigraphTransitiveClosure(gr3);
+<digraph with 6 vertices, 16 edges>
+gap> gr2 = gr4;
+false
+gap> DigraphReflexiveTransitiveReduction(gr4) = gr1;
+true
+gap> DigraphReflexiveTransitiveReduction(gr4) = gr3;
+false
+gap> DigraphTransitiveReduction(gr4) = gr3;
+true
+
+# check special cases
+gap> DigraphTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
+true
+gap> DigraphReflexiveTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
+true
+
+# check errors
+gap> gr := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> DigraphTransitiveReduction(gr);
+Error, Digraphs: DigraphTransitiveReduction: usage,
+this method does not work for MultiDigraphs,
+gap> DigraphReflexiveTransitiveReduction(gr);
+Error, Digraphs: DigraphReflexiveTransitiveReduction: usage,
+this method does not work for MultiDigraphs,
+gap> gr := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> DigraphTransitiveReduction(gr);
+Error, Digraphs: DigraphTransitiveReduction:
+not yet implemented for non-topologically sortable digraphs,
+gap> DigraphReflexiveTransitiveReduction(gr);
+Error, Digraphs: DigraphReflexiveTransitiveReduction:
+not yet implemented for non-topologically sortable digraphs,
 
 #E#
 gap> STOP_TEST("Digraphs package: oper.tst");

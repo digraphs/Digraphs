@@ -60,7 +60,9 @@ gap> DigraphSource(gr);
     
     then <C>DigraphReverseEdges</C> returns a new digraph constructed from 
     <A>digraph</A> by reversing the orientation of every edge specified by
-    <A>edges</A>. <P/>
+    <A>edges</A>.  If only one edge is to be reversed, then
+    <C>DigraphReverseEdge</C> can be used instead.  In this case, the second
+    argument should just be a single vertex-pair or a single position. <P/>
 
     Note that even though <A>digraph</A> can not have multiple edges, the
     output may have multiple edges. <P/>

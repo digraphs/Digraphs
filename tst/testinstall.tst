@@ -30,19 +30,17 @@ gap> not DIGRAPHS_IsGrapeLoaded
 > or (DIGRAPHS_IsGrapeLoaded and Graph(Digraph(Graph(gr))).adjacencies =
 >     Graph(gr).adjacencies);
 true
+gap> adj := [
+> [17, 19], [17, 20], [17, 18], [17, 20], [17, 18], [18, 19],
+> [18, 20], [17, 19], [19, 20], [17, 20], [19, 20], [18, 19],
+> [19, 20], [17, 19], [18, 20], [18, 20],
+> [1, 2, 3, 4, 5, 8, 10, 14], [3, 5, 6, 7, 12, 15, 16],
+> [1, 6, 8, 9, 11, 12, 13, 14], [2, 4, 7, 9, 10, 11, 13, 15, 16]];;
+gap> func := function(x,y) return y in adjacencies[x]; end;
+function( x, y ) ... end
 gap> not DIGRAPHS_IsGrapeLoaded or
-> (DIGRAPHS_IsGrapeLoaded and Digraph(Graph(rec(adjacencies := [
->       [17, 19], [17, 20], [17, 18], [17, 20], [17, 18], [18, 19],
->       [18, 20], [17, 19], [19, 20], [17, 20], [19, 20], [18, 19],
->       [19, 20], [17, 19], [18, 20], [18, 20],
->       [1, 2, 3, 4, 5, 8, 10, 14], [3, 5, 6, 7, 12, 15, 16],
->       [1, 6, 8, 9, 11, 12, 13, 14], [2, 4, 7, 9, 10, 11, 13, 15, 16]],
->   group := Group(()), isGraph := true, names := [1 .. 20], order := 20,
->   representatives := [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
->                       17, 18, 19, 20],
->   schreierVector := [-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12,
-> -13, -14, -15, -16, -17, -18, -19, -20]))) <>
-> fail);
+> (DIGRAPHS_IsGrapeLoaded and
+>  Digraph(Graph(Group(()), [1 .. 20], OnPoints, func, true)) = Digraph(adj));
 true
 
 #T# IsAcyclicDigraph
