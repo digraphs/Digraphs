@@ -1,7 +1,7 @@
 #%T##########################################################################
 ##
 #W  homos.tst
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014-15                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -26,10 +26,10 @@ gap> Length(gens);
 330
 gap> Size(Semigroup(gens));
 105120
-gap> HomomorphismGraphsFinder(gr, gr, fail, fail, fail, fail, false,
-> [1, 14, 28, 39, 42], fail);;
-gap> str := HomomorphismGraphsFinder(gr, gr, fail, fail, fail, fail, false,
-> [1, 14, 28, 39, 42], fail);;
+gap> HomomorphismGraphsFinder(gr, gr, fail, [], infinity, fail, false,
+> [1, 14, 28, 39, 42], []);;
+gap> str := HomomorphismGraphsFinder(gr, gr, fail, [], infinity, fail, false,
+> [1, 14, 28, 39, 42], []);;
 gap> Length(str);
 192
 
@@ -40,8 +40,7 @@ gap> S := Filtered(Orbits(H, [1 .. 45]), x -> (Size(x) = 4))[1];;
 gap> graph := EdgeOrbitsGraph(G, List(S, x -> [1, x]));;
 gap> gr := Digraph(graph);
 <digraph with 153 vertices, 612 edges>
-gap> t := HomomorphismGraphsFinder(gr, gr, fail, fail, 1, 7, false, fail,
->                                  fail)[1];
+gap> t := HomomorphismGraphsFinder(gr, gr, fail, [], 1, 7, false, [], [])[1];
 <transformation on 153 pts with rank 7>
 gap> 1 ^ t;
 1

@@ -238,10 +238,15 @@ gap> DigraphTopologicalSort(gr);
 [ 2, 1, 3 ]
 
 #T# DigraphStronglyConnectedComponents
-gap> gens := [Transformation([1, 3, 3]), Transformation([2, 1, 2]),
-> Transformation([2, 2, 1])];;
-gap> s := Semigroup(gens);;
-gap> gr := Digraph(RightCayleyGraphSemigroup(s));
+# <gr> is Digraph(RightCayleyGraphSemigroup) of the gens:
+# [Transformation([1, 3, 3]),
+#  Transformation([2, 1, 2]),
+#  Transformation([2, 2, 1])];;
+gap> adj := [
+> [1, 11, 11], [3, 10, 11], [3, 11, 10], [6, 9, 11], [7, 8, 11],
+> [6, 11, 9], [7, 11, 8], [12, 5, 11], [13, 4, 11], [14, 2, 11],
+> [15, 1, 11], [12, 11, 5], [13, 11, 4], [14, 11, 2], [15, 11, 1]];;
+gap> gr := Digraph(adj);
 <multidigraph with 15 vertices, 45 edges>
 gap> DigraphStronglyConnectedComponents(gr);
 rec( 
