@@ -1130,3 +1130,12 @@ infinity
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphSymmetricClosure">
+<ManSection>
+  <Oper Name="DigraphSymmetricClosure" Arg="digraph"/>
+  <Returns></Returns>
+  <Description>
+  </Description>
+</ManSection>
+<#/GAPDoc>

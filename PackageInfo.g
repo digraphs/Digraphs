@@ -12,11 +12,11 @@
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
 ##  <!ENTITY VERSION "0.1">
-##  <!ENTITY GAPVERS "4.7.5">
+##  <!ENTITY GAPVERS "4.7.8">
 ##  <!ENTITY GRAPEVERS "4.5">
 ##  <!ENTITY IOVERS "4.4.4">
 ##  <!ENTITY ARCHIVENAME "digraphs-0.1">
-##  <!ENTITY COPYRIGHTYEARS "2014">
+##  <!ENTITY COPYRIGHTYEARS "2014-15">
 ##  <#/GAPDoc>
 
 SetPackageInfo( rec(
@@ -48,6 +48,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jj252@st-and.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~julius",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
@@ -107,7 +108,7 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">=4.7.5",
+  GAP := ">=4.7.8",
   NeededOtherPackages := [["io", ">=4.4.4"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"], ["grape", ">=4.5"]], 
   ExternalConditions := [],
