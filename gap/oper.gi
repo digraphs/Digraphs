@@ -1340,7 +1340,7 @@ function(digraph)
                  "this method does not work for MultiDigraphs,");
   fi;
   if DigraphTopologicalSort(digraph) = fail then
-    ErrorMayQuit("Digraphs: DigraphReflexiveTransitiveReduction: error,\n",
+    ErrorMayQuit("Digraphs: DigraphReflexiveTransitiveReduction:\n",
                  "not yet implemented for non-topologically sortable ",
                  "digraphs,");
   fi;
@@ -1355,7 +1355,7 @@ function(digraph)
                  "this method does not work for MultiDigraphs,");
   fi;
   if DigraphTopologicalSort(digraph) = fail then
-    ErrorMayQuit("Digraphs: DigraphTransitiveReduction: error,\n",
+    ErrorMayQuit("Digraphs: DigraphTransitiveReduction:\n",
                  "not yet implemented for non-topologically sortable ",
                  "digraphs,");
   fi;
