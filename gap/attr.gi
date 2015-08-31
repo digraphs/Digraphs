@@ -1,12 +1,68 @@
 #############################################################################
 ##
-#W  attrs.gi
+#W  attr.gi
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
+
+InstallMethod(ReducedDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local old, adj, len, map, labels, i, sinkmap, sinklen, x, pos, gr;
+
+  if IsConnectedDigraph(digraph) then
+    return digraph;
+  fi;
+
+  old := OutNeighbours(digraph);
+
+  # Extract all the non-empty lists of out-neighbours
+  adj := [];
+  len := 0;
+  map := [];
+  labels := [];
+  for i in DigraphVertices(digraph) do
+    if not IsEmpty(old[i]) then
+      len := len + 1;
+      adj[len] := ShallowCopy(old[i]);
+      map[len] := i;
+      labels[len] := DigraphVertexLabel(digraph, i);
+    fi;
+  od;
+
+  # Renumber the contents
+  sinkmap := [];
+  sinklen := 0;
+  for x in adj do
+    for i in [1 .. Length(x)] do
+      pos := PositionSet(map, x[i]);
+      if pos = fail then
+        # x[i] has no out-neighbours
+        pos := Position(sinkmap, x[i]);
+        if pos = fail then
+          # x[i] has not yet been encountered
+          sinklen := sinklen + 1;
+          sinkmap[sinklen] := x[i];
+          pos := sinklen + len;
+          adj[pos] := EmptyPlist(0);
+          labels[pos] := DigraphVertexLabel(digraph, x[i]);
+        else
+          pos := pos + len;
+        fi;
+      fi;
+      x[i] := pos;
+    od;
+  od;
+
+  # Return the reduced graph, with labels preserved
+  gr := DigraphNC(adj);
+  SetDigraphVertexLabels(gr, labels);
+  SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph));
+  return gr;
+end);
 
 InstallMethod(DigraphDual, "for a digraph",
 [IsDigraph],
