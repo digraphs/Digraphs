@@ -464,7 +464,7 @@ gap> gr := DigraphRemoveEdge(gr, 10);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a directed graph with no multiple edges, then these 
-    functions  return the (reflexive) transitive closure of <A>digraph</A>. <P/>
+    operations  return the (reflexive) transitive closure of <A>digraph</A>. <P/>
 
     A digraph is <E>reflexive</E> if it has a loop at every vertex, and it is 
     <E>transitive</E> if whenever <C>[i,j]</C> and <C>[j,k]</C> are edges of 
@@ -509,7 +509,7 @@ gap> OutNeighbours(last);
     If <A>digraph</A> is a topologically sortable digraph
     [<Ref Attr="DigraphTopologicalSort"/>,
     i.e. it contains no non-trivial cycles]
-    with no multiple edges, then these  functions return the
+    with no multiple edges, then these  operations return the
     (reflexive) transitive reduction of <A>digraph</A>. 
     <P/>
 
@@ -585,7 +585,7 @@ gap> DigraphVertices(last);
   <Oper Name="OutDegreeOfVertex" Arg="digraph, vertex"/>
   <Returns>The non-negative integer.</Returns>
   <Description>
-    This function returns the out-degree of the vertex <A>vertex</A> in the 
+    This operation returns the out-degree of the vertex <A>vertex</A> in the 
     directed graph <A>digraph</A>.
     The out-degree of <A>vertex</A> is the number of edges in <A>digraph</A>
     whose source is <A>vertex</A>.
@@ -614,7 +614,7 @@ gap> OutDegreeOfVertex(gr, 4);
   <Returns>A list of vertices.</Returns>
   <Description>
 
-    This function returns the list <C>out</C> of vertices of the directed graph
+    This operation returns the list <C>out</C> of vertices of the directed graph
     <A>digraph</A>.
     A vertex <C>i</C> appears in the list <C>out</C> each time there exists an
     edge  with source <A>vertex</A> and range <C>i</C> in <A>digraph</A>; in
@@ -637,7 +637,7 @@ gap> OutNeighboursOfVertex(gr, 3);
   <Oper Name="InDegreeOfVertex" Arg="digraph, vertex"/>
   <Returns>A non-negative integer.</Returns>
   <Description>
-    This function returns the in-degree of the vertex <A>vertex</A> in the 
+    This operation returns the in-degree of the vertex <A>vertex</A> in the 
     directed graph <A>digraph</A>.
     The in-degree of <A>vertex</A> is the number of edges in <A>digraph</A>
     whose range is <A>vertex</A>.
@@ -665,7 +665,7 @@ gap> InDegreeOfVertex(gr, 4);
   <Returns>A list of postitive vertices.</Returns>
   <Description>
 
-    This function returns the list <C>inn</C> of vertices of the directed graph
+    This operation returns the list <C>inn</C> of vertices of the directed graph
     <A>digraph</A>.
     A vertex <C>i</C> appears in the list <C>inn</C> each time there exists an 
     edge  with source <C>i</C> and range <A>vertex</A> in <A>digraph</A>; in
@@ -724,7 +724,7 @@ gap> DigraphOutEdges(gr, 2);
   <Returns>A list of vertices.</Returns>
   <Description>
     If <A>vertex</A> is a vertex in the directed graph <A>digraph</A>, then
-    this function returns the strongly connected component of <A>vertex</A> 
+    this operation returns the strongly connected component of <A>vertex</A> 
     in <A>digraph</A>.
     See <Ref Attr="DigraphStronglyConnectedComponents"/> for more information.
     <Example><![CDATA[
@@ -747,7 +747,7 @@ gap> DigraphStronglyConnectedComponent(gr, 4);
   <Returns>A list of vertices.</Returns>
   <Description>
     If <A>vertex</A> is a vertex in the directed graph <A>digraph</A>, then
-    this function returns the connected component of <A>vertex</A> 
+    this operation returns the connected component of <A>vertex</A> 
     in <A>digraph</A>.
     See <Ref Attr="DigraphConnectedComponents"/> for more information.
     <Example><![CDATA[
@@ -838,11 +838,11 @@ false
   <Returns>A matrix.</Returns>
   <Description>
     If <A>digraph</A> is a directed graph with <M>n</M> vertices, then
-    this function returns an <M>n \times n</M> matrix <C>mat</C> containing 
+    this operation returns an <M>n \times n</M> matrix <C>mat</C> containing 
     the output of a generalised version of the Floyd-Warshall algorithm,
     applied to <A>digraph</A>. <P/>
     
-    The function <C>DigraphFloydWarshall</C> is customised by the arguments 
+    The operation <C>DigraphFloydWarshall</C> is customised by the arguments 
     <A>func</A>, <A>nopath</A>, and <A>edge</A>.
     The arguments <A>nopath</A> and <A>edge</A> can be arbitrary &GAP; objects. 
     The argument <A>func</A> must be a function which accepts 4 arguments:
@@ -903,7 +903,7 @@ gap> Display(shortest_distances);
   <Returns>A binary relation.</Returns>
   <Description>
     If <A>digraph</A> is a directed graph with a positive number of vertices 
-    <M>n</M>, and no multiple edges, then this function returns a binary 
+    <M>n</M>, and no multiple edges, then this operation returns a binary 
     relation on the points <C>[1..n]</C>.
     The pair <C>[i,j]</C> is in the binary relation if and only if
     <C>[i,j]</C> is an edge in <A>digraph</A>. 
@@ -924,7 +924,7 @@ Binary Relation on 4 points
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph1</A> and <A>digraph2</A> are digraphs, then this 
-    operation returns the edge union of these digraphs. <P/>
+    operation returns their edge union. <P/>
    
     The vertex set of the edge union is the union of the vertex sets
     of <A>digraph1</A> and <A>digraph2</A>.
@@ -969,7 +969,7 @@ true
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph1</A> and <A>digraph2</A> are directed graphs, then this 
-    function returns the disjoint union of these digraphs. <P/>
+    operation returns the disjoint union of these digraphs. <P/>
    
     The vertex and edge sets of the disjoint union are the disjoint union of
     the vertex and edge sets of <A>digraph1</A> and <A>digraph2</A> 
@@ -1014,8 +1014,8 @@ gap> OutNeighbours(union);
   <Oper Name="DigraphJoin" Arg="digraph1, digraph2"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph1</A> and <A>digraph2</A> are directed graphs, then this
-    function returns the join of these digraphs. <P/>
+    If <A>digraph1</A> and <A>digraph2</A> are digraphs, then this
+    operation returns the join of these digraphs. <P/>
     
     Let <M>V_1</M>, <M>E_1</M> and <M>V_2</M>, <M>E_2</M> be vertex and edge 
     sets of the digraphs <A>digraph1</A> and <A>digraph2</A>, respectively.
@@ -1059,7 +1059,7 @@ gap> DigraphJoin(gr, gr2);
   <Oper Name="IsReachable" Arg="digraph, u, v"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> is there exists a directed path (of 
+    This operation returns <K>true</K> is there exists a directed path (of 
     non-zero length) from vertex <A>u</A> to vertex <A>v</A> in the directed 
     graph <A>digraph</A>, and <K>false</K> if there does not exist such a path.
 <Example><![CDATA[
@@ -1084,7 +1084,7 @@ false
   <Returns>An integer.</Returns>
   <Description>
     If <A>digraph</A> is a digraph and <A>v</A> is a vertex in <A>digraph</A>,
-    then this function returns the length of the longest directed path in
+    then this operation returns the length of the longest directed path in
     <A>digraph</A> which begins at vertex <A>v</A>. <P/>
 
     <List>
@@ -1125,15 +1125,6 @@ true
 gap> DigraphLongestDistanceFromVertex(gr, 6);
 infinity
 ]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphSymmetricClosure">
-<ManSection>
-  <Oper Name="DigraphSymmetricClosure" Arg="digraph"/>
-  <Returns></Returns>
-  <Description>
   </Description>
 </ManSection>
 <#/GAPDoc>

@@ -36,6 +36,8 @@ DeclareAttribute("DigraphSinks", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
 
+DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
+
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("ReducedDigraph", IsDigraph);
 
