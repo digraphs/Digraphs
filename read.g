@@ -8,7 +8,7 @@
 #############################################################################
 ##
 
-if not DIGRAPHS_IsGrapeLoaded then 
+if not DIGRAPHS_IsGrapeLoaded then
   Add(DIGRAPHS_OmitFromTestManualExamples, "Graph(");
 fi;
 
@@ -21,3 +21,4 @@ ReadPackage("digraphs/gap/bliss.gi");
 ReadPackage("digraphs/gap/util.gi");
 ReadPackage("digraphs/gap/io.gi");
 ReadPackage("digraphs/gap/grahom.gi");
+ReadPackage("digraphs/gap/maxcliq.gi");
