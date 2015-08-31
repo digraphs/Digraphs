@@ -14,7 +14,7 @@ print 'using temporary directory: ' + DIR
 COMMANDS = '''echo "CoverageLineByLine(\\"''' + DIR + '''/profile.gz\\");;
 LoadPackage(\\"digraphs\\", false);;
 Test(\\"''' + ARGS.file[0] + '''\\");;
-UnprofileLineByLine();;
+UncoverageLineByLine();;
 LoadPackage(\\"profiling\\", false);;
 filesdir := \\"/Users/jdm/gap/pkg/digraphs/gap/\\";;
 outdir := \\"''' + DIR + '''\\";;
