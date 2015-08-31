@@ -14,7 +14,8 @@ gap> LoadPackage("digraphs", false);;
 gap> DIGRAPHS_StartTest();
 
 # AutomorphismGroup: all graphs of 5 vertices, compare with grape
-gap> graph5 := ReadDigraphs(Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6"));
+gap> graph5 := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
+                                          "/data/graph5.g6.gz"));
 [ <digraph with 5 vertices, 0 edges>, <digraph with 5 vertices, 2 edges>, 
   <digraph with 5 vertices, 4 edges>, <digraph with 5 vertices, 6 edges>, 
   <digraph with 5 vertices, 8 edges>, <digraph with 5 vertices, 4 edges>, 

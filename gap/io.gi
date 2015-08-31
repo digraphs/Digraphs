@@ -106,13 +106,13 @@ function(arg)
     nr := arg[3];
   else
     ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
-                 "ReadDigraphs( filename [,decoder][,pos] ),");
+                 "ReadDigraphs( filename [, decoder][, pos] ),");
   fi;
 
   if (not IsString(name)) or (not (IsFunction(decoder) or decoder = fail))
       or (not (IsPosInt(nr) or nr = infinity)) then
     ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
-                 "ReadDigraphs( filename [,decoder][,pos] ),");
+                 "ReadDigraphs( filename [, decoder][, pos] ),");
   fi;
 
   file := IO_CompressedFile(name, "r");
