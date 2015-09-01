@@ -96,13 +96,14 @@ InstallMethod(SetDigraphVertexLabels, "for a digraph and list",
 [IsDigraph, IsList],
 function(graph, names)
 
-  if Length(names) = DigraphNrVertices(graph) then
-    graph!.vertexlabels := names;
-    return;
+  if not Length(names) = DigraphNrVertices(graph) then
+    ErrorMayQuit("Digraphs: SetDigraphVertexLabels: usage,\n",
+                 "the 2nd arument <names> must be a list with length equal ",
+                 "to the number of\nvertices of the digraph,");
   fi;
-  ErrorMayQuit("Digraphs: SetDigraphVertexLabels: usage,\n",
-               "the 2nd arument <names> must be a list with length equal ",
-               "to the number of\nvertices of the digraph,");
+
+  graph!.vertexlabels := names;
+  return;
 end);
 
 InstallMethod(DigraphVertexLabels, "for a digraph and pos int",
@@ -674,16 +675,15 @@ function(mat)
     out[i] := [];
     count := 0;
     for j in verts do
-      if IsInt(mat[i][j]) and mat[i][j] >= 0 then
-        for k in [1 .. mat[i][j]] do
-          count := count + 1;
-          out[i][count] := j;
-        od;
-      else
+      if not IsInt(mat[i][j]) or mat[i][j] < 0 then
         ErrorMayQuit("Digraphs: DigraphByAdjacencyMatrix: usage,\n",
                      "the argument must be a matrix of non-negative integers,",
                      " or a boolean matrix,");
       fi;
+      for k in [1 .. mat[i][j]] do
+        count := count + 1;
+        out[i][count] := j;
+      od;
     od;
   od;
 
