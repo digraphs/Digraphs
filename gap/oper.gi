@@ -1185,7 +1185,6 @@ function(digraph, u, v)
                  "vertices of the first argument <digraph>,");
   fi;
   
-  # Glean information from adjacency matrix if we have it
   if IsDigraphEdge(digraph, [u, v]) then 
     return true;
   elif HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
