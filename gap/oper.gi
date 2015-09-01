@@ -654,9 +654,9 @@ function(digraph, trans)
                  "the 1st argument\n<digraph>,");
   fi;
   adj := OutNeighbours(digraph);
-  new := List(DigraphVertices(digraph), i-> []);
+  new := List(DigraphVertices(digraph), i -> []);
   for i in DigraphVertices(digraph) do
-    new[i^trans] := Union(new[i^trans], adj[i]);
+    new[i ^ trans] := Union(new[i ^ trans], adj[i]);
   od;
   return OnTuplesSets(new, trans);
 end);
