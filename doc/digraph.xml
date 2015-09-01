@@ -186,21 +186,18 @@ true
 
       <Mark>for three lists</Mark>
       <Item>
-        if <A>obj</A> is a duplicate-free list,
-        and <A>source</A>, and <A>range</A> are lists of equal 
-        length consisting of positive integers in the list 
-        <C>[1..<A>obj</A>]</C>,
-        then this function returns the directed graph with vertices 
-        <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>,
-        edges indexed by
-        <C>[1..Length(<A>source</A>)]</C>, and
-        source and range functions defined by <A>source</A> and
-        <A>range</A>.
-        In particular, the edge with index <C>i</C>
-        has source vertex <C>source[i]</C> and range vertex <C>range[i]</C>.
+        if <A>obj</A> is a duplicate-free list, and <A>source</A>, and
+        <A>range</A> are lists of equal length consisting of positive integers
+        in the list <C>[1..Length(<A>obj</A>)]</C>, then this function
+        returns the directed graph with vertices
+        <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>, edges indexed by
+        <C>[1..Length(<A>source</A>)]</C>, and source and range functions
+        defined by <A>source</A> and <A>range</A>.  In particular, the edge
+        with index <C>i</C> has source vertex <C>source[i]</C> and range vertex
+        <C>range[i]</C>.
         <P/>
 
-        The vertices of the digraph will be be labelled by the elements of
+        The vertices of the digraph will be labelled by the elements of
         <A>obj</A>.
       </Item>
 

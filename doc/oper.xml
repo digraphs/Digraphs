@@ -447,50 +447,6 @@ gap> gr := DigraphRemoveEdge(gr, 10);
 </ManSection>
 <#/GAPDoc>
 
-
-<#GAPDoc Label="DigraphReflexiveTransitiveClosure">
-<ManSection>
-  <Oper Name="DigraphReflexiveTransitiveClosure" Arg="digraph"/>
-  <Oper Name="DigraphTransitiveClosure" Arg="digraph"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    If <A>digraph</A> is a directed graph with no multiple edges, then these 
-    operations  return the (reflexive) transitive closure of <A>digraph</A>. <P/>
-
-    A digraph is <E>reflexive</E> if it has a loop at every vertex, and it is 
-    <E>transitive</E> if whenever <C>[i,j]</C> and <C>[j,k]</C> are edges of 
-    <A>digraph</A>, <C>[i,k]</C> is also an edge.
-    The <E>(reflexive) transitive closure</E> 
-    of a digraph <A>digraph</A> is the least (reflexive and) transitive digraph 
-    containing <A>digraph</A>. <P/>
-
-    Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
-        <M>m</M> be the number of edges.
-    For general digraphs, the methods used for these operations use a version
-    of the Floyd-Warshall algorithm, and have complexity <M>O(n^3)</M>.
-
-    However, for digraphs which are topologically sortable
-    [<Ref Attr="DigraphTopologicalSort"/>], then these operations will 
-    use methods with complexity <M>O(m + n + m \cdot n)</M> when appropriate.
-    <P/>
-    <Example><![CDATA[
-gap> gr := Digraph( [ [ 4, 6 ], [ 1, 3 ], [  ], [ 5 ], [  ],
-> [ 7, 8, 9 ], [  ], [  ], [  ] ] );;
-gap> DigraphTransitiveClosure(gr);
-<digraph with 9 vertices, 18 edges>
-gap> OutNeighbours(last);
-[ [ 4, 5, 6, 7, 8, 9 ], [ 1, 3, 4, 5, 6, 7, 8, 9 ], [  ], [ 5 ], 
-  [  ], [ 7, 8, 9 ], [  ], [  ], [  ] ]
-gap> DigraphReflexiveTransitiveClosure(gr);  
-<digraph with 9 vertices, 27 edges>
-gap> OutNeighbours(last);
-[ [ 1, 4, 5, 6, 7, 8, 9 ], [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ], [ 3 ], 
-  [ 4, 5 ], [ 5 ], [ 6, 7, 8, 9 ], [ 7 ], [ 8 ], [ 9 ] ]
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
 <#GAPDoc Label="DigraphReflexiveTransitiveReduction">
 <ManSection>
   <Oper Name="DigraphReflexiveTransitiveReduction" Arg="digraph"/>
@@ -1055,9 +1011,15 @@ gap> DigraphJoin(gr, gr2);
   <Oper Name="IsReachable" Arg="digraph, u, v"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This operation returns <K>true</K> is there exists a directed path (of 
+    This operation returns <K>true</K> if there exists a directed path (of 
     non-zero length) from vertex <A>u</A> to vertex <A>v</A> in the directed 
     graph <A>digraph</A>, and <K>false</K> if there does not exist such a path.
+    <P/>
+
+    The method for <C>IsReachable</C> has worst case complexity of <M>O(m +
+      n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
+    vertices in <A>digraph</A>. 
+
 <Example><![CDATA[
 gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 2, 3 ] ] );
 <digraph with 3 vertices, 4 edges>

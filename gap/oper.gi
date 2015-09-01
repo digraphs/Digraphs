@@ -689,85 +689,6 @@ end);
 
 #
 
-InstallMethod(DigraphTransitiveClosure, "for a digraph",
-[IsDigraph],
-function(graph)
-  if IsMultiDigraph(graph) then
-    ErrorMayQuit("Digraphs: DigraphTransitiveClosure: usage,\n",
-                 "the argument <graph> cannot have multiple edges,");
-  fi;
-  return DigraphTransitiveClosureNC(graph, false);
-end);
-
-#
-
-InstallMethod(DigraphReflexiveTransitiveClosure, "for a digraph",
-[IsDigraph],
-function(graph)
-  if IsMultiDigraph(graph) then
-    ErrorMayQuit("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
-                 "the argument <graph> cannot have multiple edges,");
-  fi;
-  return DigraphTransitiveClosureNC(graph, true);
-end);
-
-#
-
-InstallMethod(DigraphTransitiveClosureNC, "for a digraph and a boolean",
-[IsDigraph, IsBool],
-function(graph, reflexive)
-  local adj, m, n, verts, sorted, out, trans, reflex, mat, v, u;
-
-  # <graph> is a digraph without multiple edges
-  # <reflexive> is a boolean: true if we want the reflexive transitive closure
-
-  adj   := OutNeighbours(graph);
-  m     := DigraphNrEdges(graph);
-  n     := DigraphNrVertices(graph);
-  verts := DigraphVertices(graph);
-
-  # Try correct method vis-a-vis complexity
-  if m + n + (m * n) < (n * n * n) then
-    sorted := DigraphTopologicalSort(graph);
-    if sorted <> fail then # Method for big acyclic digraphs (loops allowed)
-      out   := EmptyPlist(n);
-      trans := EmptyPlist(n);
-      for v in sorted do
-        trans[v] := BlistList(verts, [v]);
-        reflex   := false;
-        for u in adj[v] do
-          trans[v] := UnionBlist(trans[v], trans[u]);
-          if u = v then
-            reflex := true;
-          fi;
-        od;
-        if (not reflexive) and (not reflex) then
-          trans[v][v] := false;
-        fi;
-        out[v] := ListBlist(verts, trans[v]);
-        trans[v][v] := true;
-      od;
-      out := DigraphNC(out);
-    fi;
-  fi;
-
-  # Method for small or non-acyclic digraphs
-  if not IsBound(out) then
-    if reflexive then
-      mat := DIGRAPH_REFLEX_TRANS_CLOSURE(graph);
-    else
-      mat := DIGRAPH_TRANS_CLOSURE(graph);
-    fi;
-    out := DigraphByAdjacencyMatrixNC(mat);
-  fi;
-
-  SetIsMultiDigraph(out, false);
-  SetIsTransitiveDigraph(out, true);
-  return out;
-end);
-
-#
-
 InstallMethod(InducedSubdigraph,
 "for a digraph and a homogeneous list",
 [IsDigraph, IsHomogeneousList],
@@ -1115,8 +1036,9 @@ function(digraph)
     ErrorMayQuit("Digraphs: AsBinaryRelation: usage,\n",
                  "the argument <digraph> must have at least one vertex,");
   elif IsMultiDigraph(digraph) then
-    ErrorMayQuit("Digraphs: AsBinaryRelation: usage,\nthis ",
-                 "function does not apply to digraphs with multiple edges,");
+    ErrorMayQuit("Digraphs: AsBinaryRelation: usage,\n",
+                 "the argument <digraph> must be a digraph with ",
+                 "no multiple edges,");
   fi;
   # Can translate known attributes of <digraph> to the relation, e.g. symmetry
   rel := BinaryRelationOnPointsNC(OutNeighbours(digraph));
@@ -1176,7 +1098,7 @@ end);
 InstallMethod(IsReachable, "for a digraph and two pos ints",
 [IsDigraph, IsPosInt, IsPosInt],
 function(digraph, u, v)
-  local verts, wcc, scc;
+  local verts, scc;
 
   verts := DigraphVertices(digraph);
   if not (u in verts and v in verts) then
@@ -1184,40 +1106,26 @@ function(digraph, u, v)
                  "the second and third arguments <u> and <v> must be\n",
                  "vertices of the first argument <digraph>,");
   fi;
-
-  # If it's a known transitive digraph, just check whether the edge exists
-  if HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
-    return IsDigraphEdge(digraph, [u, v]);
-  fi;
-
-  # Glean information from WCC if we have it
-  if HasDigraphConnectedComponents(digraph) then
-    wcc := DigraphConnectedComponents(digraph);
-    if wcc.id[u] <> wcc.id[v] then
-      return false;
-    fi;
-  fi;
-
-  # Glean information from SCC if we have it
-  if HasDigraphStronglyConnectedComponents(digraph) then
+  
+  if IsDigraphEdge(digraph, [u, v]) then 
+    return true;
+  elif HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
+    # If it's a known transitive digraph, just check whether the edge exists
+    return false;
+    # Glean information from WCC if we have it
+  elif HasDigraphConnectedComponents(digraph)
+      and DigraphConnectedComponents(digraph).id[u] <> 
+          DigraphConnectedComponents(digraph).id[v] then
+    return false;
+    # Glean information from SCC if we have it
+  elif HasDigraphStronglyConnectedComponents(digraph) then
     scc := DigraphStronglyConnectedComponents(digraph);
     if u <> v then
       if scc.id[u] = scc.id[v] then
         return true;
       fi;
     else
-      if Length(scc.comps[scc.id[u]]) > 1 then
-        return true;
-      else
-        return IsDigraphEdge(digraph, [u, u]);
-      fi;
-    fi;
-  fi;
-
-  # Glean information from adjacency matrix if we have it
-  if HasAdjacencyMatrix(digraph) then
-    if AdjacencyMatrix(digraph)[u][v] <> 0 then
-      return true;
+      return Length(scc.comps[scc.id[u]]) > 1;
     fi;
   fi;
 

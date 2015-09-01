@@ -866,25 +866,24 @@ end);
 InstallMethod(DigraphByInNeighbors, "for a list", [IsList],
 DigraphByInNeighbours);
 
-InstallMethod(DigraphByInNeighbours, "for a list of lists of pos ints",
+InstallMethod(DigraphByInNeighbours, "for a list",
 [IsList],
-function(inn)
-  local nrvertices, nredges, x, y;
+function(nbs)
+  local n, m, x;
+  
+  n := Length(nbs); # number of vertices
+  m := 0;           # number of edges
 
-  nrvertices := Length(inn);
-  nredges := 0;
-  for x in inn do
-    for y in x do
-      if not IsPosInt(y) or y > nrvertices then
-        ErrorMayQuit("Digraphs: DigraphByInNeighbours: usage,\n",
-                     "the argument must be a list of lists of positive ",
-                     "integers\nnot exceeding the length of the argument,");
-      fi;
-      nredges := nredges + 1;
-    od;
+  for x in nbs do
+    if not ForAll(x, i -> IsPosInt(i) and i <= n) then 
+      ErrorMayQuit("Digraphs: DigraphByInNeighbours: usage,\n",
+                   "the argument must be a list of lists of positive ",
+                   "integers\nnot exceeding the length of the argument,");
+    fi;
+    m := m + Length(x);
   od;
 
-  return DigraphByInNeighboursNC(inn, nredges);
+  return DigraphByInNeighboursNC(nbs, m);
 end);
 
 InstallMethod(DigraphByInNeighboursNC, "for a list", [IsList],

@@ -37,6 +37,9 @@ DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
 
 DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
+DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
+DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
+DeclareGlobalFunction("DigraphTransitiveClosureNC");
 
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("ReducedDigraph", IsDigraph);
