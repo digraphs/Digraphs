@@ -338,6 +338,22 @@ gap> gr := Digraph(bin);
 <digraph with 5 vertices, 5 edges>
 gap> OutNeighbours(gr);
 [ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 4 ] ]
+gap> gr := Digraph([[1,2],[1,2],[3],[4,5],[4,5]]);;
+gap> b := AsBinaryRelation(gr);
+Binary Relation on 5 points
+gap> IsEquivalenceRelation(b);
+true
+gap> gr2 := Digraph(b);
+<digraph with 5 vertices, 9 edges>
+gap> gr := Digraph([[1,2], [3], []]);
+<digraph with 3 vertices, 3 edges>
+gap> b := AsBinaryRelation(gr);;
+gap> IsAntisymmetricBinaryRelation(b);
+true
+gap> gr := Digraph(b);
+<digraph with 3 vertices, 3 edges>
+gap> HasIsAntisymmetricDigraph(gr);
+true
 
 #T# DigraphByEdges
 gap> gr := Digraph([[1, 2, 3, 5], [1, 5], [2, 3, 6], [1, 3, 4],
