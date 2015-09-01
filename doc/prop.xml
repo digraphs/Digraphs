@@ -124,7 +124,7 @@ false
   <Prop Name="IsFunctionalDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the digraph <A>digraph</A> is
+    This property is <K>true</K> if the digraph <A>digraph</A> is
     functional. <P/>
     
     A digraph is <E>functional</E> if every vertex is the source of a
@@ -153,7 +153,7 @@ true
   <Prop Name="IsReflexiveDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the digraph <A>digraph</A> is 
+    This property is <K>true</K> if the digraph <A>digraph</A> is 
     reflexive, and <K>false</K> if it is not.
     A digraph is <E>reflexive</E> if it has a loop at every vertex. <P/>
     <Example><![CDATA[
@@ -177,8 +177,8 @@ false
   <Prop Name="IsConnectedDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the directed graph <A>digraph</A>
-    is weakly connected and <K>false</K> if it is not.  A directed graph
+    This property is <K>true</K> if the digraph <A>digraph</A>
+    is weakly connected and <K>false</K> if it is not.  A digraph
     <A>digraph</A> is <E>weakly connected</E> if it is possible to travel 
     from any vertex to any other vertex by traversing edges in either
     direction (possibly against the orientation of some of them). <P/>
@@ -205,9 +205,9 @@ false]]></Example>
   <Prop Name="IsStronglyConnectedDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the directed graph <A>digraph</A> 
+    This property is <K>true</K> if the digraph <A>digraph</A> 
     is strongly connected and <K>false</K> if it is not.
-    A directed graph <A>digraph</A> is <E>strongly connected</E> if there 
+    A digraph <A>digraph</A> is <E>strongly connected</E> if there 
     is a path from every vertex to every other vertex. <P/>
 
     The method used in this operation is based on Gabow's Algorithm
@@ -234,7 +234,7 @@ false
   <Prop Name="IsSymmetricDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the digraph <A>digraph</A> 
+    This property is <K>true</K> if the digraph <A>digraph</A> 
     is symmetric, and <K>false</K> if it is not.<P/>
 
     A <E>symmetric digraph</E> is one where for each non-loop edge,
@@ -280,13 +280,15 @@ false
   <Prop Name="IsAntisymmetricDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the digraph <A>digraph</A> 
-    is antisymmetric, and <K>false</K> if it is not. <P/>
+    This property is <K>true</K> if the digraph <A>digraph</A> 
+    is antisymmetric, and <K>false</K> if it is not.
+    <P/>
 
-    An <E>antisymmetric digraph</E> is one where for all vertices <C>u</C> and
-    <C>v</C>, if there is an edge with source <C>u</C> and range <C>v</C>,
-    and an edge with source <C>v</C> and range <C>u</C>, then the vertices
-    <C>u</C> and <C>v</C> are equal. <P/>
+    A digraph is <E>antisymmetric</E> if whenever there is an edge with source
+    <C>u</C> and range <C>v</C>, and an edge with source <C>v</C> and range
+    <C>u</C>, then the vertices <C>u</C> and <C>v</C> are equal.
+    <P/>
+
     <Example><![CDATA[
 gap> gr1 := Digraph( [ [ 2 ], [ 1, 3 ], [ 2, 3 ] ] );
 <digraph with 3 vertices, 5 edges>
@@ -310,7 +312,7 @@ gap> DigraphEdges(gr2);
   <Prop Name="IsTransitiveDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the directed graph <A>digraph</A>
+    This property is <K>true</K> if the digraph <A>digraph</A>
     is transitive, and <K>false</K> if it is not.
     
     A digraph is <E>transitive</E> if whenever <C>[ i, j ]</C> and 
@@ -319,12 +321,12 @@ gap> DigraphEdges(gr2);
 
     Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
         <M>m</M> be the number of edges.
-    For general digraphs, the methods used in this function use a version
+    For general digraphs, the methods used for this property use a version
     of the Floyd-Warshall algorithm, and have complexity <M>O(n^3)</M>.
 
     However for digraphs which are topologically sortable
-    [<Ref Attr="DigraphTopologicalSort"/>], then this function will 
-    use methods with complexity <M>O(m + n + m \cdot n)</M> when appropriate.
+    [<Ref Attr="DigraphTopologicalSort"/>], then methods with
+    complexity <M>O(m + n + m \cdot n)</M> will be used when appropriate.
     <P/>
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 3 ] ] );
@@ -351,7 +353,7 @@ true
   <Prop Name="IsTournament" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns <K>true</K> if the directed graph <A>digraph</A> is a tournament,
+    This property is <K>true</K> if the digraph <A>digraph</A> is a tournament,
     and <K>false</K> if it is not. <P/>
     
     A tournament is an orientation of a complete (undirected) graph.
@@ -377,7 +379,7 @@ false
   <Prop Name="IsAperiodicDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the directed graph <A>digraph</A>
+    This property is <K>true</K> if the digraph <A>digraph</A>
     is aperiodic, i.e. if its <Ref Attr = "DigraphPeriod"/> is equal to 1. 
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );

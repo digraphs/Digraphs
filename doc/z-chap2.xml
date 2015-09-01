@@ -23,6 +23,7 @@
     <#Include Label="QuotientDigraph">
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">
+    <#Include Label="DigraphSymmetricClosure">
     <#Include Label="DigraphReflexiveTransitiveClosure">
     <#Include Label="DigraphReflexiveTransitiveReduction">
     <#Include Label="DigraphAddVertex">

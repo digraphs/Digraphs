@@ -22,7 +22,7 @@
   <Attr Name="DigraphDual" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a directed graph without multiple edges, then this
+    If <A>digraph</A> is a digraph without multiple edges, then this
     function returns the <E>dual</E> of <A>digraph</A>. The <E>dual</E> is sometimes called the <E>complement</E>.<P/> 
     
     The <E>dual</E> of <A>digraph</A> has the same vertices as <A>digraph</A>,
@@ -103,7 +103,7 @@ gap> Display(mat);
   <Returns>A list of positive integers.</Returns>
   <Description>
     <C>DigraphRange</C> and <C>DigraphSource</C> return the range and source of
-    the directed graph <A>digraph</A>. More precisely, position <C>i</C> in
+    the digraph <A>digraph</A>. More precisely, position <C>i</C> in
     <C>DigraphRange(<A>digraph</A>)</C> is the range of the <C>i</C>th edge of
     <A>digraph</A>. 
 
@@ -129,8 +129,19 @@ gap> DigraphEdges(gr);
   <Attr Name="DigraphEdges" Arg="digraph"/>
   <Returns>The edges of a digraph.</Returns>
   <Description>
-    Returns the list of edges of the directed graph <A>digraph</A>,
-    that is, a list of pairs of elements of <Ref Oper="DigraphVertices"/>.
+    <C>DigraphEdges</C> returns a list of edges of the digraph <A>digraph</A>,
+    where each edge is a pair of elements of <Ref Oper="DigraphVertices"/> of
+    the form <C>[source,range]</C>.
+    <P/>
+
+    The entries of <C>DigraphEdges(</C><A>digraph</A><C>)</C> are in one-to-one
+    corresponence with the edges of <A>digraph</A>.  Hence
+    <C>DigraphEdges(</C><A>digraph</A><C>)</C> is duplicate-free if and only if
+    <A>digraph</A> contains no multiple edges. <P/>
+
+    The entries of <C>DigraphEdges</C> are guaranteed to be sorted by their
+    first component (i.e. by the source of each edge), but they are not
+    necessarily then sorted by the second component.
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1, 3, 4, 3, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
 > [ 2, 4, 5 ], [ 1 ] ] );
@@ -180,8 +191,8 @@ gap> DigraphNrEdges(gr);
     <A>digraph</A>. <P/>
 
     The function <C>OutNeighbours</C> returns an immutable list of immutable 
-    lists, whereas the function <C>OutNeighboursCopy</C> returns a mutable list
-    of mutable lists. <P/>
+    lists, whereas the function <C>OutNeighboursCopy</C> returns a copy of
+    <C>OutNeighbours</C> which is a mutable list of mutable lists. <P/>
     <Example><![CDATA[
 gap> gr := Digraph( [ "a", "b", "c" ],
 > [ "a", "b", "b" ],
@@ -253,7 +264,7 @@ gap> InNeighbours(gr);
   <Returns>A list of non-negative integers.</Returns>
   <Description>
 
-    Given a directed graph <A>digraph</A> with <M>n</M> vertices, the function
+    Given a digraph <A>digraph</A> with <M>n</M> vertices, the function
     <C>OutDegrees</C> returns a list <C>out</C> of length <M>n</M>, such that 
     for a vertex <C>i</C> in <A>digraph</A>, the value of <C>out[i]</C> is the 
     out-degree of vertex <C>i</C>.
@@ -281,7 +292,7 @@ gap> OutDegreeSequence(gr);
   <Returns>A list of non-negative integers.</Returns>
   <Description>
 
-    Given a directed graph <A>digraph</A> with <M>n</M> vertices, the function
+    Given a digraph <A>digraph</A> with <M>n</M> vertices, the function
     <C>InDegrees</C> returns a list <C>inn</C> of length <M>n</M>, such that 
     for a vertex <C>i</C> in <A>digraph</A>, the value of <C>inn[i]</C> is 
     the in-degree of vertex <C>i</C>.
@@ -363,7 +374,7 @@ gap> DigraphNrVertices(RandomDigraph(100));
   <Returns>A record.</Returns>
   <Description>
     This function returns the record <C>scc</C> corresponding to the 
-    strongly connected components of the directed graph <A>digraph</A>.
+    strongly connected components of the digraph <A>digraph</A>.
     Two vertices of <A>digraph</A> are in the same strongly connected
     component whenever there is a path from each vertex to the other.
     The set of strongly connected components is a partition of
@@ -445,16 +456,14 @@ rec( comps := [  ], id := [  ] )
   <Returns>A square matrix of integers.</Returns>
   <Description>
     If <A>digraph</A> is a digraph with <M>n</M> vertices, then this 
-    function returns an <M>n \times n</M> matrix of integers <C>mat</C>.
+    function returns an <M>n \times n</M> matrix <C>mat</C> of integers.
+    If <M>n = 0</M>, then an empty list is returned.<P/>
     
-    If a directed path from vertex <C>i</C> to vertex <C>j</C> exists,
+    If there is a directed path from vertex <C>i</C> to vertex <C>j</C>,
     then the value of <C>mat[i][j]</C> is the length of the shortest such 
-    path. In particular <C>mat[i][i] = 0</C> for all vertices <C>i</C>,
-    using a directed path of length zero.
-    <P/>
-    
-    If no such path exists, then the value of <C>mat[i][j]</C> is <C>-1</C>.
-    If <M>n = 0</M>, then an empty list is returned. <P/>
+    path. If no such path exists, then the value of <C>mat[i][j]</C> is <C>-1</C>.
+    We use the convention that the distance of every vertex to itself is
+    <C>0</C>, i.e. <C>mat[i][i] = 0</C> for all vertices <C>i</C>. <P/>
 
     The method used in this function is a version of the Floyd-Warshall 
     algorithm, and has complexity <M>O(n^3)</M>.
@@ -480,7 +489,7 @@ gap> Display(mat);
   <Attr Name="DigraphSinks" Arg="digraph"/>
   <Returns>A list of vertices.</Returns>
   <Description>
-    This function returns a list of the sinks of the directed graph
+    This function returns a list of the sinks of the digraph
     <A>digraph</A>.
     A sink of a digraph is a vertex with out-degree zero.
     See <Ref Oper="OutDegreeOfVertex"/>.
@@ -499,7 +508,7 @@ gap> DigraphSinks(gr);
   <Attr Name="DigraphSources" Arg="digraph"/>
   <Returns>A list of vertices.</Returns>
   <Description>
-    This function returns a list of the sources of the directed graph 
+    This function returns a list of the sources of the digraph 
     <A>digraph</A>.
     A source of a digraph is a vertex with in-degree zero.
     See <Ref Oper="InDegreeOfVertex"/>.
@@ -518,9 +527,9 @@ gap> DigraphSources(gr);
   <Attr Name="DigraphPeriod" Arg="digraph"/>
   <Returns>An integer.</Returns>
   <Description>
-    This function returns the period of the directed graph <A>digraph</A>.<P/>
+    This function returns the period of the digraph <A>digraph</A>.<P/>
 
-    If a directed graph <A>digraph</A> has at least one cycle, then the
+    If a digraph <A>digraph</A> has at least one cycle, then the
     period is the greatest positive integer which divides the lengths of all 
     cycles of <A>digraph</A>.
     If <A>digraph</A> has no cycles, then this function returns <M>0</M>.<P/>
@@ -552,10 +561,10 @@ true
   <Attr Name="DigraphDiameter" Arg="digraph"/>
   <Returns>An integer.</Returns>
   <Description>
-    This function returns the diameter of the directed graph <A>digraph</A>.<P/>
+    This function returns the diameter of the digraph <A>digraph</A>.<P/>
 
-    If a directed graph <A>digraph</A> is strongly connected,
-    then the diameter is the maximum shortest distance between any 
+    If a digraph <A>digraph</A> is strongly connected,
+    then the <E>diameter</E> is the maximum shortest distance between any 
     pair of vertices. Otherwise, or if <A>digraph</A> has no vertices,
     then the diameter of <A>digraph</A>
     is undefined, and this function returns the value <C>-1</C>. <P/>
@@ -573,6 +582,115 @@ gap> DigraphDiameter(gr);
 -1
 gap> IsStronglyConnectedDigraph(gr);
 false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ReducedDigraph">
+<ManSection>
+  <Attr Name="ReducedDigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    This function returns a digraph isomorphic to the subdigraph of 
+    <A>digraph</A> induced by the set of non-isolated vertices,
+    i.e. the set of those vertices of <A>digraph</A> which are the source or 
+    range of some edge in <A>digraph</A>.
+    See <Ref Oper="InducedSubdigraph"/>.
+    <P/>
+    
+    The vertex labels and edge
+    labels of the graph are preserved, so that a vertex in the new digraph can
+    be matched to the corresponding vertex in <A>digraph</A>.<P/>
+    <Log><![CDATA[
+gap> d := Digraph([ [ 1, 2 ], [  ], [  ], [ 1, 4 ], [  ] ]);
+<digraph with 5 vertices, 4 edges>
+gap> r := ReducedDigraph(d);
+<digraph with 3 vertices, 4 edges>
+gap> OutNeighbours(r);
+[ [ 1, 3 ], [ 1, 2 ], [  ] ]
+gap> DigraphEdges(r); DigraphEdges(d);
+[ [ 1, 1 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ] ]
+[ [ 1, 1 ], [ 1, 2 ], [ 4, 1 ], [ 4, 4 ] ]
+gap> DigraphVertexLabel(r, 3);
+2
+gap> DigraphVertexLabel(r, 2);
+4
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphSymmetricClosure">
+<ManSection>
+  <Attr Name="DigraphSymmetricClosure" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then this attribute gives the minimal
+    symmetric digraph which has the same vertices and contains all the edges of
+    <A>digraph</A>.
+    See <Ref Prop="IsSymmetricDigraph"/>.
+    A digraph is symmetric if, for every edge <M>(a,b)</M> it
+    contains, it also contains that edge's reverse <M>(b,a)</M>. <P/>
+
+<Example><![CDATA[
+gap> gr := Digraph([[1,2,3], [2,4], [1], [3,4]]);
+<digraph with 4 vertices, 8 edges>
+gap> gr1 := DigraphSymmetricClosure(gr);
+<digraph with 4 vertices, 11 edges>
+gap> IsSymmetricDigraph(gr1);
+true
+gap> OutNeighbours(gr1);
+[ [ 1, 2, 3 ], [ 2, 4, 1 ], [ 1, 4 ], [ 3, 4, 2 ] ]
+gap> gr := Digraph([[2, 2], [1]]);
+<multidigraph with 2 vertices, 3 edges>
+gap> gr1 := DigraphSymmetricClosure(gr);
+<multidigraph with 2 vertices, 4 edges>
+gap> OutNeighbours(gr1);
+[ [ 2, 2 ], [ 1, 1 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphReflexiveTransitiveClosure">
+<ManSection>
+  <Attr Name="DigraphReflexiveTransitiveClosure" Arg="digraph"/>
+  <Attr Name="DigraphTransitiveClosure" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph with no multiple edges, then these 
+    attributes return the (reflexive) transitive closure of <A>digraph</A>. <P/>
+
+    A digraph is <E>reflexive</E> if it has a loop at every vertex, and it is 
+    <E>transitive</E> if whenever <C>[i,j]</C> and <C>[j,k]</C> are edges of 
+    <A>digraph</A>, <C>[i,k]</C> is also an edge.
+    The <E>(reflexive) transitive closure</E> 
+    of a digraph <A>digraph</A> is the least (reflexive and) transitive digraph 
+    containing <A>digraph</A>. <P/>
+
+    Let <M>n</M> be the number of vertices of <A>digraph</A>, and let <M>m</M>
+    be the number of edges.  For an arbitrary digraph, these attributes will use
+    a version of the Floyd-Warshall algorithm, with complexity <M>O(n^3)</M>.
+
+    However, for a topologically sortable digraph
+    [see <Ref Attr="DigraphTopologicalSort"/>], these attributes will use
+    methods with complexity <M>O(m + n + m \cdot n)</M> when this is faster.
+    <P/>
+
+    <Example><![CDATA[
+gap> gr := Digraph( [ [ 4, 6 ], [ 1, 3 ], [  ], [ 5 ], [  ],
+> [ 7, 8, 9 ], [  ], [  ], [  ] ] );;
+gap> DigraphTransitiveClosure(gr);
+<digraph with 9 vertices, 18 edges>
+gap> OutNeighbours(last);
+[ [ 4, 5, 6, 7, 8, 9 ], [ 1, 3, 4, 5, 6, 7, 8, 9 ], [  ], [ 5 ], 
+  [  ], [ 7, 8, 9 ], [  ], [  ], [  ] ]
+gap> DigraphReflexiveTransitiveClosure(gr);  
+<digraph with 9 vertices, 27 edges>
+gap> OutNeighbours(last);
+[ [ 1, 4, 5, 6, 7, 8, 9 ], [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ], [ 3 ], 
+  [ 4, 5 ], [ 5 ], [ 6, 7, 8, 9 ], [ 7 ], [ 8 ], [ 9 ] ]
 ]]></Example>
   </Description>
 </ManSection>

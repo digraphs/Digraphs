@@ -1,11 +1,11 @@
 /***************************************************************************
 **
-*A  digraphs.h                  GAP package digraphs          Julius Jonusas
+*A  digraphs.h                  GAP package Digraphs          Julius Jonusas
 **                                                            James Mitchell 
 **                                                            Michael Torpey
 **                                                            Wilfred Wilson
 **
-**  Copyright (C) 2014 - Julius Jonusas, James Mitchell, Michael Torpey, 
+**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey, 
 **  Wilfred Wilson 
 **  This file is free software, see license information at the end.
 **  

@@ -83,6 +83,8 @@ function(str)
   return Digraph(out);
 end);
 
+#
+
 InstallGlobalFunction(ReadDigraphs,
 function(arg)
   local name, decoder, nr, file, splitname, extension, i, line, lines;
@@ -106,13 +108,13 @@ function(arg)
     nr := arg[3];
   else
     ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
-                 "ReadDigraphs( filename [,decoder][,pos] ),");
+                 "ReadDigraphs( filename [, decoder][, pos] ),");
   fi;
 
   if (not IsString(name)) or (not (IsFunction(decoder) or decoder = fail))
       or (not (IsPosInt(nr) or nr = infinity)) then
     ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
-                 "ReadDigraphs( filename [,decoder][,pos] ),");
+                 "ReadDigraphs( filename [, decoder][, pos] ),");
   fi;
 
   file := IO_CompressedFile(name, "r");
@@ -148,7 +150,6 @@ function(arg)
       ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
                    "cannot determine the file format,");
     fi;
-    # JDM: could also try to determine the type of the file by looking into it
   fi;
 
   if nr < infinity then
@@ -626,7 +627,6 @@ function(name, digraphs)
   # Look for extension
   splitpath := SplitString(name, "/");
   splitname := SplitString(Remove(splitpath), ".");
-  compext := fail;
 
   if Length(splitname) >= 2 then
     ext := splitname[Length(splitname)];
@@ -636,8 +636,6 @@ function(name, digraphs)
       if Length(splitname) >= 2 then
         ext := splitname[Length(splitname)];
       fi;
-    else
-      compext := fail;
     fi;
     # Format extensions
     if ext = "g6" then
@@ -650,14 +648,10 @@ function(name, digraphs)
       encoder := DiSparse6String;
     elif ext = "txt" then
       encoder := DigraphPlainTextLineEncoder("  ", " ", -1);
-    else
-      encoder := fail;
     fi;
-  else
-    encoder := fail;
   fi;
 
-  if encoder = fail then
+  if not IsBound(encoder) then
     # CHOOSE A GOOD ENCODER:
     # Do we know all the graphs to be symmetric?
     if ForAll(digraphs, g -> HasIsSymmetricDigraph(g)
@@ -709,7 +703,7 @@ function(name, digraphs)
   fi;
 
   # Rebuild the filename
-  if compext <> fail then
+  if IsBound(compext) then
     Add(splitname, compext);
   fi;
   Add(splitpath, JoinStringsWithSeparator(splitname, "."));

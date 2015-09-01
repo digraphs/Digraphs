@@ -1,17 +1,17 @@
-#%T##########################################################################
+#############################################################################
 ##
-#W  homos.tst
+#W  extreme/grahom.tst
 #Y  Copyright (C) 2014-15                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: homos.tst");
+gap> START_TEST("Digraphs package: extreme/grahom.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> DIGRAPHS_StartTest();
 
 #T# PJC example, 45 vertices
 gap> gr := DigraphFromDigraph6String(Concatenation(
@@ -66,4 +66,4 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
   Transformation( [ 1, 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
 
 #E#
-gap> STOP_TEST("Digraphs package: homos.tst");
+gap> STOP_TEST("Digraphs package: extreme/grahom.tst");

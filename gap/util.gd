@@ -8,15 +8,20 @@
 #############################################################################
 ##
 
-BindGlobal("DIGRAPHS_OmitFromTestManualExamples", []);
+BindGlobal("DIGRAPHS_OmitFromTests", []);
 
-DeclareGlobalFunction("DigraphsStartTest");
-DeclareGlobalFunction("DigraphsStopTest");
+DeclareGlobalFunction("DIGRAPHS_Dir");
+DeclareGlobalFunction("DIGRAPHS_Test");
+DeclareGlobalFunction("DIGRAPHS_ManualExamples");
+DeclareGlobalFunction("DIGRAPHS_StartTest");
+DeclareGlobalFunction("DIGRAPHS_StopTest");
+DeclareGlobalFunction("DIGRAPHS_TestDir");
+
 DeclareGlobalFunction("DigraphsMakeDoc");
 DeclareGlobalFunction("DigraphsTestAll");
+DeclareGlobalFunction("DigraphsTestExtreme");
 DeclareGlobalFunction("DigraphsTestInstall");
+DeclareGlobalFunction("DigraphsTestStandard");
 DeclareGlobalFunction("DigraphsTestManualExamples");
-DeclareGlobalFunction("DIGRAPHS_ManualExamples");
-DeclareGlobalFunction("DigraphsTestEverything");
-DeclareGlobalFunction("DigraphsDir");
+
 DeclareGlobalFunction("IsSemigroupsLoaded");

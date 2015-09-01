@@ -357,8 +357,7 @@ end);
 InstallMethod(DigraphRemoveEdgesNC, "for a digraph and a list",
 [IsDigraph, IsHomogeneousList],
 function(digraph, edges)
-  local m, n, old_adj, new_adj, old_edge_count, new_edge_count, degree_count,
-  old_labs, new_labs, gr, i, j;
+  local m, n, old_adj, new_adj, edge_count, degree_count, gr, i, j;
 
   if IsEmpty(edges) then
     return DigraphCopy(digraph);
@@ -369,27 +368,21 @@ function(digraph, edges)
   old_adj := OutNeighbours(digraph);
   new_adj := EmptyPlist(n);
   edges := BlistList([1 .. m], edges);
-  old_edge_count := 0;
-  new_edge_count := 0;
+  edge_count := 0;
   degree_count := 0;
-  old_labs := DigraphEdgeLabels(digraph);
-  new_labs := [];
   for i in DigraphVertices(digraph) do # Loop over each vertex
     new_adj[i] := [];
     degree_count := 0;
     for j in old_adj[i] do
-      old_edge_count := old_edge_count + 1;
-      if not edges[old_edge_count] then # Keep this edge
-        new_edge_count := new_edge_count + 1;
+      edge_count := edge_count + 1;
+      if not edges[edge_count] then # Keep this edge
         degree_count := degree_count + 1;
         new_adj[i][degree_count] := j;
-        new_labs[new_edge_count] := old_labs[old_edge_count];
       fi;
     od;
   od;
   gr := DigraphNC(new_adj);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
-  SetDigraphEdgeLabels(gr, new_labs);
   return gr;
 end);
 
@@ -516,7 +509,6 @@ function(digraph, m, names)
   fi;
   nam := Concatenation(DigraphVertexLabels(digraph), names);
   SetDigraphVertexLabels(out, nam);
-  SetDigraphEdgeLabels(out, DigraphEdgeLabels(digraph));
   return out;
 end);
 
@@ -558,9 +550,8 @@ end);
 InstallMethod(DigraphRemoveVerticesNC, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, verts)
-  local n, len, new_nrverts, m, log, diff, j, lookup, old_edge_count,
-  old_labels, new_edge_count, new_labels, new_vertex_count, old_nbs, new_nbs,
-  gr, i, x;
+  local n, len, new_nrverts, m, log, diff, j, lookup, new_vertex_count,
+  old_nbs, new_nbs, gr, i, x;
 
   if IsEmpty(verts) then
     return DigraphCopy(digraph);
@@ -572,8 +563,8 @@ function(digraph, verts)
   if new_nrverts = 0 then
     return EmptyDigraph(0);
   fi;
-  m     := DigraphNrEdges(digraph);
-  log   := LogInt(len, 2);
+  m := DigraphNrEdges(digraph);
+  log := LogInt(len, 2);
   if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
     Sort(verts);
   fi;
@@ -586,12 +577,7 @@ function(digraph, verts)
     lookup[i] := j;
   od;
 
-  old_edge_count   := 0;
-  old_labels       := DigraphEdgeLabels(digraph);
-  new_edge_count   := 0;
-  new_labels       := [];
   new_vertex_count := 0;
-
   old_nbs := OutNeighbours(digraph);
   new_nbs := EmptyPlist(new_nrverts);
   for i in DigraphVertices(digraph) do
@@ -600,22 +586,16 @@ function(digraph, verts)
       new_nbs[new_vertex_count] := [];
       j := 0;
       for x in old_nbs[i] do
-        old_edge_count := old_edge_count + 1;
         if not x in verts then # Can search through diff if |diff| < |verts|
           j := j + 1;
           new_nbs[new_vertex_count][j] := lookup[x];
-          new_edge_count := new_edge_count + 1;
-          new_labels[new_edge_count] := old_labels[old_edge_count];
         fi;
       od;
-    else
-      old_edge_count := old_edge_count + Length(old_nbs[i]);
     fi;
   od;
 
   gr := DigraphNC(new_nbs);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){diff});
-  SetDigraphEdgeLabels(gr, new_labels);
   return gr;
 end);
 
@@ -624,7 +604,7 @@ end);
 InstallMethod(OnDigraphs, "for a digraph and a perm",
 [IsDigraph, IsPerm],
 function(graph, perm)
-  local adj, out;
+  local adj;
 
   if ForAny(DigraphVertices(graph),
             i -> i ^ perm > DigraphNrVertices(graph)) then
@@ -637,10 +617,8 @@ function(graph, perm)
   adj := Permuted(adj, perm);
   Apply(adj, x -> OnTuples(x, perm));
 
-  out := DigraphNC(adj);
-  SetDigraphVertexLabels(out, Permuted(DigraphVertexLabels(graph), perm));
-  # don't set the edge labels . . .
-  return out;
+  # don't set the vertex or edge labels . . .
+  return DigraphNC(adj);
 end);
 
 #
@@ -648,18 +626,20 @@ end);
 InstallMethod(OnDigraphs, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
 function(digraph, trans)
-  local kernel, n;
+  local n, adj, new, i;
 
   n := DigraphNrVertices(digraph);
-  if ForAny(DigraphVertices(digraph),
-            i -> i ^ trans > n) then
+  if ForAny(DigraphVertices(digraph), i -> i ^ trans > n) then
     ErrorMayQuit("Digraphs: OnDigraphs: usage,\n",
                  "the 2nd argument <trans> must transform the vertices of ",
                  "the 1st argument\n<digraph>,");
   fi;
-
-  kernel := KernelOfTransformation(trans, n);
-  return QuotientDigraph(digraph, kernel);
+  adj := OutNeighbours(digraph);
+  new := List(DigraphVertices(digraph), i -> []);
+  for i in DigraphVertices(digraph) do
+    new[i ^ trans] := Unique(Concatenation(new[i ^ trans], adj[i]));
+  od;
+  return DigraphNC(List(new, x -> Unique(OnTuples(x, trans))));
 end);
 
 #
@@ -673,8 +653,6 @@ end);
 InstallMethod(OnMultiDigraphs, "for a digraph and perm coll",
 [IsDigraph, IsPermCollection],
 function(graph, perms)
-  local out;
-
   if Length(perms) <> 2 then
     ErrorMayQuit("Digraphs: OnMultiDigraphs: usage,\n",
                  "the 2nd argument must be a pair of permutations,");
@@ -687,132 +665,7 @@ function(graph, perms)
                  "of the 1st argument <graph>,");
   fi;
 
-  out := OnDigraphs(graph, perms[1]);
-  SetDigraphEdgeLabels(out, Permuted(DigraphEdgeLabels(graph), perms[2]));
-  return out;
-end);
-
-#
-
-InstallMethod(DigraphSymmetricClosure, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local n, verts, mat, new, x, gr, i, j, k;
-
-  n := DigraphNrVertices(digraph);
-  if not (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph))
-      and n > 1 then
-    verts := [1 .. n]; # We don't want DigraphVertices as that's immutable
-    mat := List(verts, x -> verts * 0);
-    new := OutNeighboursCopy(digraph);
-    for i in verts do
-      for j in new[i] do
-        if j < i then
-          mat[j][i] := mat[j][i] - 1;
-        else
-          mat[i][j] := mat[i][j] + 1;
-        fi;
-      od;
-    od;
-    for i in verts do
-      for j in [i + 1 .. n] do
-        x := mat[i][j];
-        if x > 0 then
-          for k in [1 .. x] do
-            Add(new[j], i);
-          od;
-        elif x < 0 then
-          for k in [1 .. -x] do
-            Add(new[i], j);
-          od;
-        fi;
-      od;
-    od;
-    gr := DigraphNC(new);
-  else
-    gr := DigraphCopy(digraph);
-  fi;
-  SetIsSymmetricDigraph(gr, true);
-  return gr;
-end);
-
-#
-
-InstallMethod(DigraphTransitiveClosure, "for a digraph",
-[IsDigraph],
-function(graph)
-  if IsMultiDigraph(graph) then
-    ErrorMayQuit("Digraphs: DigraphTransitiveClosure: usage,\n",
-                 "the argument <graph> cannot have multiple edges,");
-  fi;
-  return DigraphTransitiveClosureNC(graph, false);
-end);
-
-#
-
-InstallMethod(DigraphReflexiveTransitiveClosure, "for a digraph",
-[IsDigraph],
-function(graph)
-  if IsMultiDigraph(graph) then
-    ErrorMayQuit("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
-                 "the argument <graph> cannot have multiple edges,");
-  fi;
-  return DigraphTransitiveClosureNC(graph, true);
-end);
-
-#
-
-InstallMethod(DigraphTransitiveClosureNC, "for a digraph and a boolean",
-[IsDigraph, IsBool],
-function(graph, reflexive)
-  local adj, m, n, verts, sorted, out, trans, reflex, mat, v, u;
-
-  # <graph> is a digraph without multiple edges
-  # <reflexive> is a boolean: true if we want the reflexive transitive closure
-
-  adj   := OutNeighbours(graph);
-  m     := DigraphNrEdges(graph);
-  n     := DigraphNrVertices(graph);
-  verts := DigraphVertices(graph);
-
-  # Try correct method vis-a-vis complexity
-  if m + n + (m * n) < (n * n * n) then
-    sorted := DigraphTopologicalSort(graph);
-    if sorted <> fail then # Method for big acyclic digraphs (loops allowed)
-      out   := EmptyPlist(n);
-      trans := EmptyPlist(n);
-      for v in sorted do
-        trans[v] := BlistList(verts, [v]);
-        reflex   := false;
-        for u in adj[v] do
-          trans[v] := UnionBlist(trans[v], trans[u]);
-          if u = v then
-            reflex := true;
-          fi;
-        od;
-        if (not reflexive) and (not reflex) then
-          trans[v][v] := false;
-        fi;
-        out[v] := ListBlist(verts, trans[v]);
-        trans[v][v] := true;
-      od;
-      out := DigraphNC(out);
-    fi;
-  fi;
-
-  # Method for small or non-acyclic digraphs
-  if not IsBound(out) then
-    if reflexive then
-      mat := DIGRAPH_REFLEX_TRANS_CLOSURE(graph);
-    else
-      mat := DIGRAPH_TRANS_CLOSURE(graph);
-    fi;
-    out := DigraphByAdjacencyMatrixNC(mat);
-  fi;
-
-  SetIsMultiDigraph(out, false);
-  SetIsTransitiveDigraph(out, true);
-  return out;
+  return OnDigraphs(graph, perms[1]);
 end);
 
 #
@@ -821,8 +674,7 @@ InstallMethod(InducedSubdigraph,
 "for a digraph and a homogeneous list",
 [IsDigraph, IsHomogeneousList],
 function(digraph, subverts)
-  local nr, n, old_labs, old_adj, new_labs, new_adj, offsets, lookup,
-  new_edge_count, adji, j, l, gr, i, k;
+  local nr, n, old_adj, new_adj, lookup, adji, j, l, gr, i, k;
 
   nr := Length(subverts);
   if nr = 0 then
@@ -840,20 +692,11 @@ function(digraph, subverts)
                  "subset\nof the vertices of the first argument <digraph>,");
   fi;
 
-  old_labs := DigraphEdgeLabels(digraph);
-  old_adj  := OutNeighbours(digraph);
-  new_labs := [];
-  new_adj  := EmptyPlist(nr);
-
-  offsets := EmptyPlist(n);
-  offsets[1] := 0;
-  for i in [2 .. Maximum(subverts)] do
-    offsets[i] := offsets[i - 1] + Length(old_adj[i - 1]);
-  od;
+  old_adj := OutNeighbours(digraph);
+  new_adj := EmptyPlist(nr);
 
   lookup := [1 .. n] * 0;
   lookup{subverts} := [1 .. nr];
-  new_edge_count := 0;
 
   for i in [1 .. nr] do
     adji := [];
@@ -863,8 +706,6 @@ function(digraph, subverts)
       if l <> 0 then
         j := j + 1;
         adji[j] := l;
-        new_edge_count := new_edge_count + 1;
-        new_labs[new_edge_count] := old_labs[offsets[subverts[i]] + k];
       fi;
     od;
     new_adj[i] := adji;
@@ -872,7 +713,6 @@ function(digraph, subverts)
 
   gr := DigraphNC(new_adj);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){subverts});
-  SetDigraphEdgeLabels(gr, new_labs);
   return gr;
 end);
 
@@ -1110,6 +950,8 @@ function(digraph, v)
                  v, " is not a vertex of the digraph,");
   fi;
 
+  # TODO check if strongly connected components are known and use them if they
+  # are and don't use them if they are not.
   scc := DigraphStronglyConnectedComponents(digraph);
   return scc.comps[scc.id[v]];
 end);
@@ -1162,8 +1004,9 @@ function(digraph)
     ErrorMayQuit("Digraphs: AsBinaryRelation: usage,\n",
                  "the argument <digraph> must have at least one vertex,");
   elif IsMultiDigraph(digraph) then
-    ErrorMayQuit("Digraphs: AsBinaryRelation: usage,\nthis ",
-                 "function does not apply to digraphs with multiple edges,");
+    ErrorMayQuit("Digraphs: AsBinaryRelation: usage,\n",
+                 "the argument <digraph> must be a digraph with ",
+                 "no multiple edges,");
   fi;
   # Can translate known attributes of <digraph> to the relation, e.g. symmetry
   rel := BinaryRelationOnPointsNC(OutNeighbours(digraph));
@@ -1204,9 +1047,9 @@ function(digraph1, digraph2)
 
   out1 := OutNeighbours(digraph1);
   out2 := OutNeighbours(digraph2);
-  n := DigraphNrVertices(digraph1);
-  m := DigraphNrVertices(digraph2);
-  new := EmptyPlist(n + m);
+  n    := DigraphNrVertices(digraph1);
+  m    := DigraphNrVertices(digraph2);
+  new  := EmptyPlist(n + m);
 
   for i in DigraphVertices(digraph1) do
     new[i] := Concatenation(out1[i], [n + 1 .. n + m]);
@@ -1223,7 +1066,7 @@ end);
 InstallMethod(IsReachable, "for a digraph and two pos ints",
 [IsDigraph, IsPosInt, IsPosInt],
 function(digraph, u, v)
-  local verts, wcc, scc;
+  local verts, scc;
 
   verts := DigraphVertices(digraph);
   if not (u in verts and v in verts) then
@@ -1232,39 +1075,25 @@ function(digraph, u, v)
                  "vertices of the first argument <digraph>,");
   fi;
 
-  # If it's a known transitive digraph, just check whether the edge exists
-  if HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
-    return IsDigraphEdge(digraph, [u, v]);
-  fi;
-
-  # Glean information from WCC if we have it
-  if HasDigraphConnectedComponents(digraph) then
-    wcc := DigraphConnectedComponents(digraph);
-    if wcc.id[u] <> wcc.id[v] then
-      return false;
-    fi;
-  fi;
-
-  # Glean information from SCC if we have it
-  if HasDigraphStronglyConnectedComponents(digraph) then
+  if IsDigraphEdge(digraph, [u, v]) then
+    return true;
+  elif HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
+    # If it's a known transitive digraph, just check whether the edge exists
+    return false;
+    # Glean information from WCC if we have it
+  elif HasDigraphConnectedComponents(digraph)
+      and DigraphConnectedComponents(digraph).id[u] <>
+          DigraphConnectedComponents(digraph).id[v] then
+    return false;
+    # Glean information from SCC if we have it
+  elif HasDigraphStronglyConnectedComponents(digraph) then
     scc := DigraphStronglyConnectedComponents(digraph);
     if u <> v then
       if scc.id[u] = scc.id[v] then
         return true;
       fi;
     else
-      if Length(scc.comps[scc.id[u]]) > 1 then
-        return true;
-      else
-        return IsDigraphEdge(digraph, [u, u]);
-      fi;
-    fi;
-  fi;
-
-  # Glean information from adjacency matrix if we have it
-  if HasAdjacencyMatrix(digraph) then
-    if AdjacencyMatrix(digraph)[u][v] <> 0 then
-      return true;
+      return Length(scc.comps[scc.id[u]]) > 1;
     fi;
   fi;
 
@@ -1340,7 +1169,7 @@ function(digraph)
                  "this method does not work for MultiDigraphs,");
   fi;
   if DigraphTopologicalSort(digraph) = fail then
-    ErrorMayQuit("Digraphs: DigraphReflexiveTransitiveReduction: error,\n",
+    ErrorMayQuit("Digraphs: DigraphReflexiveTransitiveReduction:\n",
                  "not yet implemented for non-topologically sortable ",
                  "digraphs,");
   fi;
@@ -1355,7 +1184,7 @@ function(digraph)
                  "this method does not work for MultiDigraphs,");
   fi;
   if DigraphTopologicalSort(digraph) = fail then
-    ErrorMayQuit("Digraphs: DigraphTransitiveReduction: error,\n",
+    ErrorMayQuit("Digraphs: DigraphTransitiveReduction:\n",
                  "not yet implemented for non-topologically sortable ",
                  "digraphs,");
   fi;

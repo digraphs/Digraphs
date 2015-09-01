@@ -1,20 +1,21 @@
-#%T##########################################################################
+#############################################################################
 ##
-#W  bliss.tst
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#W  extreme/bliss.tst
+#Y  Copyright (C) 2014-15                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: bliss.tst");
+gap> START_TEST("Digraphs package: extreme/bliss.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> DIGRAPHS_StartTest();
 
 # AutomorphismGroup: all graphs of 5 vertices, compare with grape
-gap> graph5 := ReadDigraphs(Concatenation(DigraphsDir(), "/data/graph5.g6"));
+gap> graph5 := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
+>                                         "/data/graph5.g6.gz"));
 [ <digraph with 5 vertices, 0 edges>, <digraph with 5 vertices, 2 edges>, 
   <digraph with 5 vertices, 4 edges>, <digraph with 5 vertices, 6 edges>, 
   <digraph with 5 vertices, 8 edges>, <digraph with 5 vertices, 4 edges>, 
@@ -49,7 +50,7 @@ gap> group5 := [
 >  Group([(4, 5), (3, 4), (2, 3), (1, 2)])];;
 gap> List(graph5, AutomorphismGroup) = group5;
 true
-gap> trees := ReadDigraphs(Concatenation(DigraphsDir(), "/data/tree9.4.txt"));
+gap> trees := ReadDigraphs(Concatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt"));
 [ <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
@@ -99,6 +100,8 @@ gap> AutomorphismGroup(gr);
 <permutation group with 1 generators>
 gap> Size(last);
 1000
+gap> AutomorphismGroup(CompleteDigraph(6)) = SymmetricGroup(6);
+true
 
 #T# AutomorphismGroup for a MultiDigraph
 gap> gr := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
@@ -153,7 +156,7 @@ gap> DigraphCanonicalLabelling(gr);
 68)(3,34,14,44,79,8)(4,42,90,37,31,65,78,23,25,38,86,100,52,13,82,83,39,61,95,
 91,81,10,59,58,43,84,88,66)(5,40,12,99,75,54,56,63,74,72,77)
 gap> gr := ReadDigraphs(
-> Concatenation(DigraphsDir(), "/data/test-1.d6"))[1];
+> Concatenation(DIGRAPHS_Dir(), "/data/test-1.d6"))[1];
 <digraph with 1000 vertices, 100368 edges>
 gap> DigraphCanonicalLabelling(gr);
 (1,894,760,546,212,603,466,938,837,802,929,717,865,809,599,672,859,937,816,
@@ -212,6 +215,30 @@ true
 gap> ForAny(graph5, x -> Number(graph5, y -> IsIsomorphicDigraph(x, y)) <> 1);
 false
 
+# for a multidigraph
+gap> gr1 := Digraph([[3, 1, 3], [1, 3], [2, 2, 1]]);
+<multidigraph with 3 vertices, 8 edges>
+gap> gr2 := Digraph([[3, 1, 3], [1, 3], [2, 2]]);
+<multidigraph with 3 vertices, 7 edges>
+gap> IsIsomorphicDigraph(gr1, gr2);
+false
+gap> gr3 := Digraph([[3, 1, 3], [1, 3], [2, 2], []]);
+<multidigraph with 4 vertices, 7 edges>
+gap> IsIsomorphicDigraph(gr1, gr3);
+false
+gap> IsIsomorphicDigraph(gr2, gr3);
+false
+gap> gr4 := Digraph([[2, 3, 3], [2, 1, 1], [1, 2]]);
+<multidigraph with 3 vertices, 8 edges>
+gap> IsIsomorphicDigraph(gr1, gr4);
+true
+gap> IsIsomorphicDigraph(gr2, gr4);
+false
+gap> IsIsomorphicDigraph(gr3, gr4);
+false
+gap> IsIsomorphicDigraph(gr4, gr4);
+true
+
 #T# IsomorphismDigraphs
 gap> gr1 := CompleteBipartiteDigraph(100, 50);
 <digraph with 150 vertices, 10000 edges>
@@ -231,6 +258,24 @@ true
 gap> IsomorphismDigraphs(EmptyDigraph(1), gr1);
 fail
 
+# for a multidigraph
+gap> gr1 := Digraph([[3, 1, 3], [1, 3], [2, 2, 1]]);
+<multidigraph with 3 vertices, 8 edges>
+gap> gr4 := Digraph([[2, 3, 3], [2, 1, 1], [1, 2]]);
+<multidigraph with 3 vertices, 8 edges>
+gap> iso := IsomorphismDigraphs(gr1, gr4);
+[ (1,2,3), (1,5,7,3,6,2,4,8) ]
+gap> OnMultiDigraphs(gr1, iso) = gr4;
+true
+gap> iso := IsomorphismDigraphs(gr4, gr1);
+[ (1,3,2), (1,8,4,2,6,3,7,5) ]
+gap> OnMultiDigraphs(gr4, iso) = gr1;
+true
+gap> iso := IsomorphismDigraphs(gr1, gr1);
+[ (), () ]
+gap> OnMultiDigraphs(gr1, iso) = gr1;
+true
+
 #T# DigraphCanonicalLabelling for MultiDigraphs
 gap> gr1 := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
 <multidigraph with 3 vertices, 6 edges>
@@ -238,8 +283,6 @@ gap> perms := DigraphCanonicalLabelling(gr1);
 [ (1,3), (1,6)(2,3,5) ]
 gap> gr2 := OnMultiDigraphs(gr1, perms);
 <multidigraph with 3 vertices, 6 edges>
-gap> DigraphEdgeLabels(gr2);
-[ 6, 5, 2, 4, 3, 1 ]
 gap> DigraphCanonicalLabelling(gr2);
 [ (1,3,2), (1,6,4)(2,3) ]
 gap> OnMultiDigraphs(gr2, last) = gr2;
@@ -248,4 +291,4 @@ gap> gr2 = gr1;
 false
 
 #E#
-gap> STOP_TEST("Digraphs package: bliss.tst");
+gap> STOP_TEST("Digraphs package: extreme/bliss.tst");

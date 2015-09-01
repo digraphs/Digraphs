@@ -5,13 +5,13 @@
 **                                                        Michael Torpey
 **                                                        Wilfred Wilson
 **
-**  Copyright (C) 2014 - Julius Jonusas, James Mitchell, Michael Torpey, 
+**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey, 
 **  Wilfred Wilson 
 **  This file is free software, see license information at the end.
 **  
 */
 
-#include "src/graphs.h"
+#include "src/digraphs.h"
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -549,6 +549,8 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
   return out;
 }
 
+//TODO use generic DFS, when we have one.
+
 static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) { 
   UInt  nr, i, j, k, level, target;
   Obj   nbs;
@@ -915,7 +917,7 @@ static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) {
       CHANGED_BAG(inn);
     }
 
-    for (i = 1; i <= n; i++){
+    for (i = 1; i <= n; i++) {
       adji = ELM_PLIST(adj, i);
       len = LEN_PLIST(adji);
       for (j = 1; j <= len; j++){
@@ -1013,7 +1015,8 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
  *        and returns true iff it is unchanged.
  *      - If false, proceeds as usual Floyd-Warshall algorithm and returns
  *        a GAP object matrix as the result.
- *   6. bool diameter:
+ *   6. bool diameter: // TODO wouldn't it be better to just take a
+ *                        "post-processing" function. JDM
  *      - If true, FLOYD_WARSHALL goes through dist after the 3 for-loops,
  *        returns -1 if dist contains the value -1, else it returns the 
  *        maximum value of dist
@@ -1261,13 +1264,13 @@ bool EqJumbledPlists(Obj l, Obj r, Int nr, Int *buf ) {
   if (!eq) {
 
     for (j = 1; j <= nr; j++) {
-      jj = INT_INTOBJ(ELM_PLIST(l, j)) - 1 ;
+      jj = INT_INTOBJ(ELM_PLIST(l, j)) - 1;
       buf[jj]++;
       jj = INT_INTOBJ(ELM_PLIST(r, j)) - 1;
       buf[jj]--;
     }
 
-    for ( j = 1; j <= nr; j++ ) {
+    for (j = 1; j <= nr; j++) {
       jj = INT_INTOBJ(ELM_PLIST(l, j)) - 1;
       if (buf[jj] != 0) {
         return false;
@@ -1537,7 +1540,7 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
 }
 
 void multidigraph_hook_function(void               *user_param,
-	                        unsigned           int N,
+	                        unsigned int       N,
 	                        const unsigned int *aut        ) {
   UInt4   *ptr;
   Obj     p, gens;
@@ -1574,11 +1577,11 @@ void multidigraph_hook_function(void               *user_param,
 }
 
 static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
-  Obj                 autos, p, out;
+  Obj                 autos, p, q, out;
   BlissGraph          *graph;
   UInt4               *ptr;
   const unsigned int  *canon;
-  Int                 i, n;
+  Int                 i, m, n;
   
   graph = buildBlissMultiDigraph(digraph);
   
@@ -1593,17 +1596,34 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
 
   canon = bliss_find_canonical_labeling(graph, multidigraph_hook_function, autos, 0);
   
-  n   = DigraphNrVertices(digraph);
-  p   = NEW_PERM4(n);
+  // Get canonical labeling as GAP perms
+  m   = DigraphNrVertices(digraph);
+  p   = NEW_PERM4(m);  // perm of vertices
   ptr = ADDR_PERM4(p);
  
-  for(i = 0; i < n; i++){
+  for(i = 0; i < m; i++){
     ptr[i] = canon[i];
   }
   
-  bliss_release(graph);
+  n = DigraphNrEdges(digraph);
+  q   = NEW_PERM4(n);  // perm of edges
+  ptr = ADDR_PERM4(q);
 
-  SET_ELM_PLIST(autos, 1, p); 
+  for (i = 0; i < n; i++ ) {
+    ptr[i] = canon[2 * i + m] - m;
+  }
+
+  bliss_release(graph);
+  
+  // put the canonical labeling (as a list of two perms) into autos[1]
+  out = NEW_PLIST(T_PLIST, 2);
+  SET_ELM_PLIST(out, 1, p);
+  SET_ELM_PLIST(out, 2, q);
+  SET_LEN_PLIST(out, 2);
+  CHANGED_BAG(out);
+
+  SET_ELM_PLIST(autos, 1, out);
+  CHANGED_BAG(autos);
   
   // remove 2nd entry of autos . . .
   memmove((void *) (ADDR_OBJ(autos) + 2), //destination

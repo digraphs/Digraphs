@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#W  attrs.gd
+#W  attr.gd
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
@@ -36,7 +36,13 @@ DeclareAttribute("DigraphSinks", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
 
+DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
+DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
+DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
+DeclareGlobalFunction("DigraphTransitiveClosureNC");
+
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
+DeclareAttribute("ReducedDigraph", IsDigraph);
 
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");

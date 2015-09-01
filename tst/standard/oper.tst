@@ -1,17 +1,17 @@
-#%T##########################################################################
+#############################################################################
 ##
-#W  oper.tst
+#W  standard/oper.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: oper.tst");
+gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
-gap> DigraphsStartTest();
+gap> DIGRAPHS_StartTest();
 
 #T# DigraphReverse
 gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
@@ -36,85 +36,11 @@ gap> temp := List(erev, x -> [x[2], x[1]]);;
 gap> Sort(temp);
 gap> e = temp;
 true
-
-#T# Digraph(Reflexive)TransitiveClosure
-gap> gr := Digraph(rec(nrvertices := 2, source := [1, 1], range := [2, 2]));
-<multidigraph with 2 vertices, 2 edges>
-gap> DigraphReflexiveTransitiveClosure(gr);
-Error, Digraphs: DigraphReflexiveTransitiveClosure: usage,
-the argument <graph> cannot have multiple edges,
-gap> DigraphTransitiveClosure(gr);
-Error, Digraphs: DigraphTransitiveClosure: usage,
-the argument <graph> cannot have multiple edges,
-gap> r := rec(vertices := [1 .. 4], source := [1, 1, 2, 3, 4],
-> range := [1, 2, 3, 4, 1]);;
-gap> gr := Digraph(r);
-<digraph with 4 vertices, 5 edges>
-gap> IsAcyclicDigraph(gr);
-false
-gap> DigraphTopologicalSort(gr);
-fail
-gap> gr1 := DigraphTransitiveClosure(gr);
-<digraph with 4 vertices, 16 edges>
-gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
-<digraph with 4 vertices, 16 edges>
-gap> gr1 = gr2;
+gap> gr := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsSymmetricDigraph(gr);
 true
-gap> adj := [[2, 6], [3], [7], [3], [], [2, 7], [5]];;
-gap> gr := Digraph(adj);
-<digraph with 7 vertices, 8 edges>
-gap> IsAcyclicDigraph(gr);
-true
-gap> gr1 := DigraphTransitiveClosure(gr);
-<digraph with 7 vertices, 18 edges>
-gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
-<digraph with 7 vertices, 25 edges>
-gap> gr := Digraph([[2], [3], [4], [3]]);
-<digraph with 4 vertices, 4 edges>
-gap> gr1 := DigraphTransitiveClosure(gr);
-<digraph with 4 vertices, 9 edges>
-gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
-<digraph with 4 vertices, 11 edges>
-gap> gr := Digraph([[2], [3], [4, 5], [], [5]]);
-<digraph with 5 vertices, 5 edges>
-gap> gr1 := DigraphTransitiveClosure(gr);
-<digraph with 5 vertices, 10 edges>
-gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
-<digraph with 5 vertices, 14 edges>
-gap> gr := Digraph(
-> [[1, 4, 5, 6, 7, 8], [5, 7, 8, 9, 10, 13], [2, 4, 6, 10],
->  [7, 9, 10, 11], [7, 9, 10, 12, 13, 15], [7, 8, 10, 13], [10, 11],
->  [7, 10, 12, 13, 14, 15, 16], [7, 10, 11, 14, 16], [11], [11],
->  [7, 13, 14], [10, 11], [7, 10, 11], [7, 13, 16], [7, 10, 11]]);
-<digraph with 16 vertices, 60 edges>
-gap> trans1 := DigraphTransitiveClosure(gr);
-<digraph with 16 vertices, 98 edges>
-gap> trans2 := DigraphByAdjacencyMatrix(DIGRAPH_TRANS_CLOSURE(gr));
-<digraph with 16 vertices, 98 edges>
-gap> trans1 = trans2;
-true
-gap> trans := Digraph(OutNeighbours(trans1));
-<digraph with 16 vertices, 98 edges>
-gap> IsReflexiveDigraph(trans);
-false
-gap> IsTransitiveDigraph(trans);
-true
-gap> IS_TRANSITIVE_DIGRAPH(trans);
-true
-gap> reflextrans1 := DigraphReflexiveTransitiveClosure(gr);
-<digraph with 16 vertices, 112 edges>
-gap> reflextrans2 :=
-> DigraphByAdjacencyMatrix(DIGRAPH_REFLEX_TRANS_CLOSURE(gr));
-<digraph with 16 vertices, 112 edges>
-gap> reflextrans1 = reflextrans2;
-true
-gap> reflextrans := Digraph(OutNeighbours(reflextrans1));
-<digraph with 16 vertices, 112 edges>
-gap> IsReflexiveDigraph(reflextrans);
-true
-gap> IsTransitiveDigraph(reflextrans);
-true
-gap> IS_TRANSITIVE_DIGRAPH(reflextrans);
+gap> DigraphReverse(gr) = gr;
 true
 
 #T# DigraphRemoveLoops
@@ -301,9 +227,9 @@ the 2nd argument <trans> must transform the vertices of the 1st argument
 <digraph>,
 gap> t := Transformation([1, 2, 1]);;
 gap> gr := OnDigraphs(gr, t);
-<multidigraph with 2 vertices, 3 edges>
+<digraph with 3 vertices, 2 edges>
 gap> OutNeighbours(gr);
-[ [ 2 ], [ 1, 1 ] ]
+[ [ 2 ], [ 1 ], [  ] ]
 
 #T# InNeighboursOfVertex, InDegreeOfVertex
 gap> gr := Digraph(rec(nrvertices := 10, source := [1, 1, 5, 5, 7, 10],
@@ -440,14 +366,10 @@ gap> InducedSubdigraph(gr, [7, 8]);
 <digraph with 2 vertices, 0 edges>
 gap> gr := Digraph([[2, 4], [4, 5], [2, 5, 5], [5, 5], [3]]);
 <multidigraph with 5 vertices, 10 edges>
-gap> DigraphEdgeLabels(gr);
-[ 1 .. 10 ]
 gap> gri := InducedSubdigraph(gr, [4, 2, 5]);
 <multidigraph with 3 vertices, 4 edges>
 gap> DigraphVertexLabels(gri);
 [ 4, 2, 5 ]
-gap> DigraphEdgeLabels(gri);
-[ 8, 9, 3, 4 ]
 gap> OutNeighbours(gri);
 [ [ 3, 3 ], [ 1, 3 ], [  ] ]
 
@@ -937,7 +859,7 @@ gap> gr := Digraph([[1, 1]]);
 <multidigraph with 1 vertex, 2 edges>
 gap> AsBinaryRelation(gr);
 Error, Digraphs: AsBinaryRelation: usage,
-this function does not apply to digraphs with multiple edges,
+the argument <digraph> must be a digraph with no multiple edges,
 gap> gr := Digraph(
 > [[1, 2, 3], [1, 2, 3], [1, 2, 3], [4, 5], [4, 5]]);
 <digraph with 5 vertices, 13 edges>
@@ -992,44 +914,6 @@ true
 gap> HasIsTransitiveBinaryRelation(rel3);
 true
 gap> HasIsAntisymmetricBinaryRelation(rel3);
-true
-
-#T# DigraphSymmetricClosure
-gap> gr1 := Digraph([[2], [1]]);
-<digraph with 2 vertices, 2 edges>
-gap> IsSymmetricDigraph(gr);
-true
-gap> gr2 := DigraphSymmetricClosure(gr1);
-<digraph with 2 vertices, 2 edges>
-gap> IsIdenticalObj(gr1, gr2);
-false
-gap> gr1 = gr2;
-true
-gap> gr1 := Digraph([[1, 1, 1, 1]]);
-<multidigraph with 1 vertex, 4 edges>
-gap> gr2 := DigraphSymmetricClosure(gr1);
-<multidigraph with 1 vertex, 4 edges>
-gap> IsIdenticalObj(gr1, gr2);
-false
-gap> gr1 = gr2;
-true
-gap> gr1 := Digraph(
-> [[], [4, 5], [12], [3], [2, 10, 11, 12], [2, 8, 10, 12], [5],
-> [11, 12], [12], [12], [2, 6, 7, 8], [3, 8, 10]]);
-<digraph with 12 vertices, 24 edges>
-gap> IsSymmetricDigraph(gr1);
-false
-gap> gr2 := DigraphSymmetricClosure(gr1);
-<digraph with 12 vertices, 38 edges>
-gap> HasIsSymmetricDigraph(gr2);
-true
-gap> IsSymmetricDigraph(gr2);
-true
-gap> gr3 := Digraph(
-> [[], [4, 5, 11, 6], [4, 12], [2, 3], [2, 10, 11, 12, 7],
-> [8, 10, 12, 2, 11], [5, 11], [11, 12, 6], [12], [5, 6, 12],
-> [7, 6, 2, 5, 8], [10, 5, 3, 8, 6, 9]]);;
-gap> gr2 = gr3;
 true
 
 #T# DigraphReverseEdge and DigraphReverseEdges
@@ -1391,6 +1275,57 @@ gap> DigraphLongestDistanceFromVertex(gr, 4);
 0
 gap> DigraphLongestDistanceFromVertex(gr, 15);
 infinity
+gap> DigraphLongestDistanceFromVertex(gr, 16);
+Error, Digraphs: DigraphLongestDistanceFromVertex: usage,
+the second argument <v> must be a vertex of the first argument, <digraph>,
+
+#T# Digraph(Reflexive)TransitiveReduction
+gap> gr1 := ChainDigraph(6);
+<digraph with 6 vertices, 5 edges>
+gap> gr2 := DigraphReflexiveTransitiveClosure(gr1);
+<digraph with 6 vertices, 21 edges>
+gap> DigraphTransitiveReduction(gr2) = gr1; # trans reduction contains loops
+false
+gap> DigraphReflexiveTransitiveReduction(gr2) = gr1; # ref trans reduct doesnt
+true
+gap> gr3 := DigraphAddEdge(gr1, [3, 3]);
+<digraph with 6 vertices, 6 edges>
+gap> DigraphHasLoops(gr3);
+true
+gap> gr4 := DigraphTransitiveClosure(gr3);
+<digraph with 6 vertices, 16 edges>
+gap> gr2 = gr4;
+false
+gap> DigraphReflexiveTransitiveReduction(gr4) = gr1;
+true
+gap> DigraphReflexiveTransitiveReduction(gr4) = gr3;
+false
+gap> DigraphTransitiveReduction(gr4) = gr3;
+true
+
+# check special cases
+gap> DigraphTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
+true
+gap> DigraphReflexiveTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
+true
+
+# check errors
+gap> gr := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> DigraphTransitiveReduction(gr);
+Error, Digraphs: DigraphTransitiveReduction: usage,
+this method does not work for MultiDigraphs,
+gap> DigraphReflexiveTransitiveReduction(gr);
+Error, Digraphs: DigraphReflexiveTransitiveReduction: usage,
+this method does not work for MultiDigraphs,
+gap> gr := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> DigraphTransitiveReduction(gr);
+Error, Digraphs: DigraphTransitiveReduction:
+not yet implemented for non-topologically sortable digraphs,
+gap> DigraphReflexiveTransitiveReduction(gr);
+Error, Digraphs: DigraphReflexiveTransitiveReduction:
+not yet implemented for non-topologically sortable digraphs,
 
 #E#
-gap> STOP_TEST("Digraphs package: oper.tst");
+gap> STOP_TEST("Digraphs package: standard/oper.tst");
