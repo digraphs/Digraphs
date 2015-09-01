@@ -16,7 +16,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-// globals for the recursive find_homos
+
+// globals for the recursive find_graph_homos
 static UIntS  nr1;                         // nr of vertices in graph1
 static UIntS  nr1_d;                       // nr1 - 1 / SYS_BITS 
 static UIntS  nr1_m;                       // nr1 - 1 % SYS_BITS 
@@ -47,7 +48,7 @@ static PermColl* stab_gens[MAXVERTS];      // stabiliser generators
 
 // globals for statics
 static UIntL count;                        // nr of homos found so far
-static unsigned long long calls1;          // calls1 is the nr of calls to find_homos
+static unsigned long long calls1;          // calls1 is the nr of calls to find_graph_homos
 static unsigned long long calls2;          // calls2 is the nr of stabs calculated
 static UIntL last_report = 0;              // the last value of calls1 when we reported
 static UIntL report_interval = 999999;     // the interval when we report
@@ -96,12 +97,12 @@ static inline UIntS sizeUIntL (UIntL n, int m) {
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-// creating graphs . . . 
+// creating graphs for homomorphism finder. . . 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-//
+// new_homos_graph: 
 ////////////////////////////////////////////////////////////////////////////////
 
 HomosGraph* new_homos_graph (UIntS const nr_verts) {
@@ -114,7 +115,7 @@ HomosGraph* new_homos_graph (UIntS const nr_verts) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//
+// free_homos_graph:
 ////////////////////////////////////////////////////////////////////////////////
 
 void free_homos_graph (HomosGraph* graph) {
@@ -124,16 +125,22 @@ void free_homos_graph (HomosGraph* graph) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//
+// add_edge_homos_graph: 
 ////////////////////////////////////////////////////////////////////////////////
 
-void add_edges_homos_graph (HomosGraph* graph, UIntS from_vert, UIntS to_vert) {
+void add_edge_homos_graph (HomosGraph* graph, UIntS from_vert, UIntS to_vert) {
   graph->neighbours[((graph->nr_verts - 1) / SYS_BITS + 1) * from_vert +
     (to_vert / SYS_BITS)] |= oneone[to_vert % SYS_BITS];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // automorphism group . . . 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+//
 ////////////////////////////////////////////////////////////////////////////////
 
 static BlissGraph* as_bliss_graph (HomosGraph* graph) {
@@ -278,7 +285,7 @@ static void orbit_reps (UIntS rep_depth) {
 static UIntL* condition; 
 
 ////////////////////////////////////////////////////////////////////////////////
-// changed_conditions[depth * i] the number of conditions updated at <depth> 
+// changed_condition[depth * i] the number of conditions updated at <depth> 
 // s.t. condition[depth * i + changed_condition[depth * i + j]] was updated 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -294,7 +301,7 @@ static UIntS  len_condition[MAXVERTS * MAXVERTS / SYS_BITS];
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-static inline UIntL* get_condition(UIntS const i) {   // vertex in graph1
+static inline UIntL* get_condition (UIntS const i) {   // vertex in graph1
   return &condition[nr1 * len_nr2 * (len_condition[i] - 1) + len_nr2 * i];
 }
 
@@ -322,7 +329,7 @@ static inline UIntL* push_condition(UIntS const depth,
 static inline void pop_condition(UIntS const depth) {
   UIntS i;
   for (i = 1; i < changed_condition[(nr1 + 1) * depth] + 1; i++) {
-    len_condition[ changed_condition[(nr1 + 1) * depth + i]]--;
+    len_condition[changed_condition[(nr1 + 1) * depth + i]]--;
   }
   changed_condition[(nr1 + 1) * depth] = 0;
 }
@@ -332,7 +339,7 @@ static inline void pop_condition(UIntS const depth) {
 // where cond is len_nr2 many UIntL's
 ////////////////////////////////////////////////////////////////////////////////
 
-static void init_conditions(UIntL *cond) {
+static void init_conditions(UIntL* cond) {
   UIntS i, j; 
 
   condition = malloc(nr1 * nr1 * len_nr2 * sizeof(UIntL)); //JJ: calloc?
@@ -372,11 +379,15 @@ static inline UIntS get_size_condition(UIntS const i) {   // vertex in graph1
 // relies on len_condition to updated before
 ////////////////////////////////////////////////////////////////////////////////
 
-static inline void push_size_condition(UIntS const i,         // vertex in graph1
-                                       UIntS       size  ) {  // len_nr2 * UIntL
+static inline void push_size_condition(UIntS const i,       // vertex in graph1
+                                       UIntS       size) {  // len_nr2 * UIntL
 
   sizes[nr1 * (len_condition[i] - 1) + i] = size;
 }
+
+                  
+
+#define IS_ADJACENT_1(i, j) neighbours1[i * len_nr1 + j / SYS_BITS] & oneone[j % SYS_BITS]
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -384,11 +395,11 @@ static inline void push_size_condition(UIntS const i,         // vertex in graph
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-void find_homos (UIntS   depth,        // the number of filled positions in map
-                 UIntS   pos,          // the last position filled
-                 UIntS   rep_depth,    // TODO remove this
-                 bool    has_trivial_stab,
-                 UIntS   rank      ) { // current number of distinct values in map
+static void find_graph_homos (UIntS   depth,        // the number of filled positions in map
+                              UIntS   pos,          // the last position filled
+                              UIntS   rep_depth,    
+                              bool    has_trivial_stab,
+                              UIntS   rank      ) { // current number of distinct values in map
 
   UIntS   i, j, k, l, min, m, sum, w, size, next;
   UIntL*  copy;
@@ -404,8 +415,8 @@ void find_homos (UIntS   depth,        // the number of filled positions in map
     last_report = calls1;
   }
 #endif 
-
-  if (depth == nr1) {
+  
+  if (depth == nr1) { // we've assigned every position in <map>
     if (hint != UNDEFINED && rank != hint) {
       return;
     }
@@ -418,16 +429,15 @@ void find_homos (UIntS   depth,        // the number of filled positions in map
     return;
   }
 
-  //memcpy((void *) copy, (void *) condition, (size_t) nr1 * len_nr2 * sizeof(UIntL));
-
   next = 0;      // the next position to fill
   min = nr2 + 1; // the minimum number of candidates for map[next]
+
   if (pos != UNDEFINED) {
-    for (j = 0; j < nr1; j++){
+    for (j = 0; j < nr1; j++) {
       i = j / SYS_BITS;
       m = j % SYS_BITS;
       if (map[j] == UNDEFINED) {
-        if (neighbours1[pos * len_nr1 + i] & oneone[m]) { 
+        if (IS_ADJACENT_1(pos, j)) { 
           // vertex j is adjacent to vertex pos in graph1
           copy = push_condition(depth, j, get_condition(j));
           size = 0; 
@@ -470,9 +480,9 @@ void find_homos (UIntS   depth,        // the number of filled positions in map
         if (!has_trivial_stab) {
           // blist of orbit reps of things not in vals
           orbit_reps(rep_depth + 1);
-          find_homos(depth + 1, next, rep_depth + 1, is_trivial, rank + 1);
+          find_graph_homos(depth + 1, next, rep_depth + 1, is_trivial, rank + 1);
         } else {
-          find_homos(depth + 1, next, rep_depth, true, rank + 1);
+          find_graph_homos(depth + 1, next, rep_depth, true, rank + 1);
         }
         map[next] = UNDEFINED;
         vals[j] ^= oneone[m];
@@ -484,7 +494,7 @@ void find_homos (UIntS   depth,        // the number of filled positions in map
     m = i % SYS_BITS;
     if (copy[j] & vals[j] & oneone[m]) {
       map[next] = i;
-      find_homos(depth + 1, next, rep_depth, has_trivial_stab, rank);
+      find_graph_homos(depth + 1, next, rep_depth, has_trivial_stab, rank);
       map[next] = UNDEFINED;
     }
   }
@@ -492,7 +502,7 @@ void find_homos (UIntS   depth,        // the number of filled positions in map
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// prepare the graphs for find_homos
+// GraphHomomorphisms: prepare the graphs for find_graph_homos
 ////////////////////////////////////////////////////////////////////////////////
 
 void GraphHomomorphisms (HomosGraph*  graph1, 
@@ -651,7 +661,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
 	  pos = next;
         }
       }
-      find_homos(depth, pos, rep_depth, has_trivial_stab, rank);
+      find_graph_homos(depth, pos, rep_depth, has_trivial_stab, rank);
     }
   }
 
@@ -674,4 +684,290 @@ void GraphHomomorphisms (HomosGraph*  graph1,
   printf("calls to search = %llu\n", calls1);
   printf("stabs computed = %llu\n",  calls2);
 #endif
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// bit arrays
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+BitArray* new_bit_array (UIntS nr_bits) {
+  
+  BitArray* array = malloc(sizeof(BitArray));
+
+  array->nr_bits   = nr_bits;
+  array->nr_blocks = (nr_bits / sizeof(Block)) + 1;
+  array->last_bit  = nr_bits % sizeof(Block);
+  array->blocks    = malloc(array->nr_blocks * sizeof(Block));
+  return array;
+}
+
+inline void set_bit_array (BitArray* bit_array, UIntS pos, bool val) {
+  assert(pos < bit_array->nr_bits);
+  if (val) {
+    bit_array->blocks[pos / sizeof(Block)] |= oneone[pos % sizeof(Block)];
+  } else {
+    bit_array->blocks[pos / sizeof(Block)] &= ~oneone[pos % sizeof(Block)];
+  }
+}
+
+inline bool get_bit_array (BitArray* bit_array, UIntS pos) {
+  assert(pos < bit_array->nr_bits);
+  return bit_array->blocks[pos / sizeof(Block)] &= oneone[pos % sizeof(Block)];
+}
+
+inline BitArray* copy_bit_array (BitArray* old) {
+  UIntS i;
+  BitArray* new = new_bit_array(old->nr_bits);
+  for (i = 0; i < old->nr_blocks; i++) {
+    new->blocks[i] = old->blocks[i];
+  }
+  return new;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// interesect bit_array1 and bit_array2, change bit_array1 in place!!
+////////////////////////////////////////////////////////////////////////////////
+
+inline BitArray* intersect_bit_arrays (BitArray* bit_array1,
+                                       BitArray* bit_array2) {
+  assert(bit_array1->nr_bits == bit_array2->nr_bits);
+  assert(bit_array1->nr_blocks == bit_array2->nr_blocks);
+
+  UIntS i;
+  for (i = 0; i < bit_array1->nr_blocks; i++) {
+    bit_array1->blocks[i] &= bit_array2->blocks[i];
+  }
+  return bit_array1;
+}
+
+inline UIntS size_bit_array (BitArray* bit_array) {
+  UIntS i, out = 0;
+  for (i = 0; i < bit_array->nr_bits; i++) {
+    if (get_bit_array(bit_array, i)) {
+      out++;
+    }
+  }
+  return out;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// digraph
+////////////////////////////////////////////////////////////////////////////////
+
+Digraph* new_digraph (UIntS const nr_verts) {
+  UIntS i;
+  Digraph* digraph        = malloc(sizeof(Digraph));
+  digraph->in_neighbours  = malloc(nr_verts * sizeof(BitArray));
+  digraph->out_neighbours = malloc(nr_verts * sizeof(BitArray));
+
+  for (i = 0; i < nr_verts; i++) {
+    digraph->in_neighbours[i] = new_bit_array(nr_verts * nr_verts);
+    digraph->out_neighbours[i] = new_bit_array(nr_verts * nr_verts);
+  }
+  digraph->nr_vertices = nr_verts;
+  return digraph;
+}
+
+void add_edge_digraph (Digraph* digraph, 
+                       Vertex   i, 
+                       Vertex   j       ) {
+  assert(i < digraph->nr_vertices && j < digraph->nr_vertices);
+  set_bit_array(digraph->out_neighbours[i], j, true);
+  set_bit_array(digraph->in_neighbours[j], i, true);
+}
+
+bool inline is_adjacent (Digraph* digraph,
+                         Vertex   i,
+                         Vertex   j       ) {
+  assert(i < digraph->nr_vertices && j < digraph->nr_vertices);
+  return get_bit_array(digraph->out_neighbours[i], j);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// conditions
+////////////////////////////////////////////////////////////////////////////////
+
+struct conditions_struct {
+  BitArray** bit_array; // nr1 * nr1 array of bit arrays of length nr2
+  UIntS*     changed; 
+  UIntS*     height;
+  UIntS*     sizes;
+  UIntS      nr1;
+  UIntS      nr2;
+};
+
+typedef struct conditions_struct Conditions;
+
+////////////////////////////////////////////////////////////////////////////////
+// new_conditions: returns a pointer to a Conditions with one uninitialised row
+////////////////////////////////////////////////////////////////////////////////
+
+static Conditions* new_conditions (UIntS     nr1, 
+                                   UIntS     nr2) {
+
+  UIntS i, j; 
+  Conditions* conditions = malloc(sizeof(conditions));
+  
+  conditions->bit_array = malloc(sizeof(BitArray*) * nr1 * nr1);
+  conditions->changed   = malloc(nr1 * (nr1 + 1) * sizeof(UIntS));
+  conditions->height    = malloc(nr1 * sizeof(UIntS));
+  conditions->sizes     = malloc(nr1 * nr1 * sizeof(UIntS));
+  conditions->nr1       = nr1;
+  conditions->nr2       = nr2;
+  
+  for (i = 0; i < nr1; i++) {
+    conditions->bit_array[i] = new_bit_array(nr2);
+    conditions->changed[i + 1] = i;
+    conditions->changed[(nr1 + 1) * i] = 0;
+    conditions->height[i] = 1;
+  }
+  conditions->changed[0] = nr1;
+  return conditions;
+}
+
+static inline BitArray* get_conditions (Conditions*  conditions, 
+                                        Vertex const i          ) {
+  return conditions->bit_array[nr1 * conditions->height[i] + i];
+}
+
+static inline void set_size_conditions (Conditions*  conditions, 
+                                        Vertex const i          ) {
+  UIntS nr1 = conditions->nr1;
+  conditions->sizes[nr1 * (conditions->height[i] - 1) + i] 
+    = size_bit_array(get_conditions(conditions, i));
+  //FIXME why the -1 here???
+}
+
+static inline void push_conditions (Conditions*  conditions,
+                                    UIntS const  depth, 
+                                    Vertex const i,
+                                    BitArray*    bit_array) {
+  //TODO add asserts here
+  UIntS j, k;
+  UIntS nr1 = conditions->nr1;
+  UIntS nr2 = conditions->nr2;
+
+  conditions->changed[(nr1 + 1) * depth]++;
+  conditions->changed[(nr1 + 1) * depth + conditions->changed[(nr1 + 1) * depth]] = i;
+  conditions->bit_array[nr1 * conditions->height[i] + i] 
+    = intersect_bit_arrays(copy_bit_array(get_conditions(conditions, i)), bit_array);
+  conditions->height[i]++;
+  set_size_conditions(conditions, i);
+}
+
+static inline void pop_conditions (Conditions* conditions, 
+                                   UIntS const depth      ) {
+  //TODO add asserts here
+  UIntS i;
+  UIntS nr1 = conditions->nr1;
+  UIntS nr2 = conditions->nr2;
+
+  for (i = 1; i < conditions->changed[(nr1 + 1) * depth] + 1; i++) {
+    conditions->height[conditions->changed[(nr1 + 1) * depth + i]]--;
+  }
+  conditions->changed[(nr1 + 1) * depth] = 0;
+}
+
+static inline UIntS size_conditions (Conditions*  conditions, 
+                                     Vertex const i          ) {
+  //TODO add asserts here
+  return conditions->sizes[conditions->nr1 * (conditions->height[i] - 1) + i];
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// temporary
+////////////////////////////////////////////////////////////////////////////////
+
+static Digraph* digraph1; //FIXME remove thsi
+static Digraph* digraph2; //FIXME remove thsi
+static BitArray* new_vals;
+static BitArray** new_reps;
+
+////////////////////////////////////////////////////////////////////////////////
+// new main algorithm
+////////////////////////////////////////////////////////////////////////////////
+
+static void find_graph_homos2 (Conditions* conditions,
+                               UIntS       depth,               // the number of filled positions in map
+                               UIntS       pos,                 // the last position filled
+                               UIntS       rep_depth,    
+                               bool        has_trivial_stab,
+                               UIntS       rank             ) { // current number of distinct values in map
+
+  UIntS   i, min, next;
+  bool    is_trivial;
+
+  if (depth == nr1) { // we've assigned every position in <map>
+    if (hint != UNDEFINED && rank != hint) {
+      return;
+    }
+    hook(user_param, nr1, map);
+    count++;
+    if (count >= maxresults) {
+      free(conditions);
+      longjmp(outofhere, 1);
+    }
+    return;
+  }
+  
+  next = 0;         // the next position to fill
+  min  = UNDEFINED; // the minimum number of candidates for map[next]
+  
+  if (pos != UNDEFINED) { // this is not the first call of the function
+    for (i = 0; i < nr1; i++) {
+      if (map[i] == UNDEFINED) {
+        if (is_adjacent(digraph1, pos, i)) { 
+          push_conditions(conditions, depth, i, digraph2->out_neighbours[map[pos]]);         
+        }
+        if (is_adjacent(digraph1, i, pos)) { 
+          push_conditions(conditions, depth, i, digraph2->in_neighbours[map[pos]]);         
+        }
+        if (size_conditions(conditions, i) == 0) {
+          pop_conditions(conditions, depth);
+          return;
+        }
+      }
+      if (size_conditions(conditions, i) < min) {
+        next = i;
+        min = size_conditions(conditions, i);
+      }
+    }
+  }
+
+  BitArray* possible = get_conditions(conditions, next);
+
+  if (rank < hint) {
+    for (i = 0; i < nr2; i++) {
+      if (get_bit_array(possible, i) 
+          && !get_bit_array(new_vals, i) 
+          && get_bit_array(new_reps[rep_depth], i)) {
+        if (!has_trivial_stab) {
+          // stabiliser of the point i in the stabiliser at current rep_depth
+          is_trivial = point_stabilizer(stab_gens[rep_depth], i, &stab_gens[rep_depth + 1]);
+        }
+        map[next] = i;
+        set_bit_array(new_vals, i, true);
+        if (!has_trivial_stab) {
+          orbit_reps(rep_depth + 1);
+          find_graph_homos2(conditions, depth + 1, next, rep_depth + 1, is_trivial, rank + 1);
+        } else {
+          find_graph_homos2(conditions, depth + 1, next, rep_depth, true, rank + 1);
+        }
+        map[next] = UNDEFINED;
+        set_bit_array(new_vals, i, false);
+      }
+    }
+  } 
+
+  for (i = 0; i < nr2; i++) {
+    if (get_bit_array(possible, i) && get_bit_array(new_vals, i)) {
+      map[next] = i;
+      find_graph_homos(depth + 1, next, rep_depth, has_trivial_stab, rank);
+      map[next] = UNDEFINED;
+    }
+  }
+  pop_conditions(conditions, depth);
 }
