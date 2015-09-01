@@ -10,6 +10,23 @@
 ## This file contains some utilities for use with the Digraphs package.
 
 #############################################################################
+# Temporary stuff (until the released version of GAP contains this)
+#############################################################################
+
+# Code taken from GAP
+if not IsBound(ErrorMayQuit) then
+  BIND_GLOBAL("ErrorMayQuit",
+  function(arg)
+    ErrorInner(rec(context := ParentLVars(GetCurrentLVars()),
+                   mayReturnVoid := false,
+                   mayReturnObj := false,
+                   lateMessage := "type 'quit;' to quit to outer loop",
+                   printThisStatement := false),
+               arg);
+  end);
+fi;
+
+#############################################################################
 # Internal stuff
 #############################################################################
 
