@@ -58,6 +58,9 @@
     <#Include Label="ReadDigraphs">
     <#Include Label="WriteDigraphs">
     <#Include Label="DigraphPlainTextLineEncoder">
+    <#Include Label="TournamentLineDecoder">
+    <#Include Label="AdjacencyMatrixUpperTriangleLineDecoder">
+    <#Include Label="TCodeDecoder">
     <#Include Label="PlainTextString">
     <#Include Label="WritePlainTextDigraph">
   </Section>

@@ -83,6 +83,8 @@ function(str)
   return Digraph(out);
 end);
 
+#
+
 InstallGlobalFunction(ReadDigraphs,
 function(arg)
   local name, decoder, nr, file, splitname, extension, i, line, lines;
