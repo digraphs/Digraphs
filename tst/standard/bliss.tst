@@ -127,18 +127,24 @@ gap> gr = gr3;
 false
 gap> IsIsomorphicDigraph(gr, gr3);
 false
+
+# Different number of edges
 gap> gr4 := DigraphAddEdge(gr, [1, 3]);
 <digraph with 4 vertices, 4 edges>
 gap> gr = gr4;
 false
 gap> IsIsomorphicDigraph(gr, gr4);
 false
+
+# Different number of vertices
 gap> gr5 := DigraphAddVertex(gr);
 <digraph with 5 vertices, 3 edges>
 gap> gr = gr5;
 false
 gap> IsIsomorphicDigraph(gr, gr5);
 false
+
+# A larger example
 gap> gr := Digraph([
 > [10], [4, 8], [3, 9], [7, 13, 16, 20], [5, 10, 14, 18], [14],
 > [], [1, 6], [16], [6, 12], [8], [2, 14], [2, 12], [17],
@@ -161,6 +167,30 @@ false
 
 #T# IsIsomorphicDigraph: for digraphs possibly with multiple edges
 
+# Different number of vertices
+gap> gr1 := Digraph([[1, 2, 3, 2], [1, 3], [3]]);
+<multidigraph with 3 vertices, 7 edges>
+gap> gr2 := Digraph([[1, 2, 3, 2], [1, 3], [3], []]);
+<multidigraph with 4 vertices, 7 edges>
+gap> IsIsomorphicDigraph(gr1, gr2);
+false
+
+# Different number of edges
+gap> gr1 := Digraph([[1, 2, 3, 2], [1, 3], [3]]);
+<multidigraph with 3 vertices, 7 edges>
+gap> gr2 := Digraph([[1, 2, 3, 2], [1, 3], [3, 2]]);
+<multidigraph with 3 vertices, 8 edges>
+gap> IsIsomorphicDigraph(gr1, gr2);
+false
+
+# One MultiDigraph, one not MultiDigraph
+gap> gr1 := Digraph([[1, 2, 3, 2], [1, 3], [3]]);
+<multidigraph with 3 vertices, 7 edges>
+gap> gr2 := Digraph([[1, 2, 3], [1, 2, 3], [3]]);
+<digraph with 3 vertices, 7 edges>
+gap> IsIsomorphicDigraph(gr1, gr2);
+false
+
 # A random example
 gap> gr := Digraph([
 >   [5, 7, 8, 4, 6, 1], [3, 1, 7, 2, 7, 9], [1, 5, 2, 3, 9],
@@ -170,8 +200,26 @@ gap> gr := Digraph([
 <multidigraph with 9 vertices, 52 edges>
 gap> IsIsomorphicDigraph(gr, gr);
 true
+gap> gr1 := OnDigraphs(gr, (3, 9)(1, 2, 7, 5));;
+gap> IsIsomorphicDigraph(gr, gr1);
+true
+gap> gr2 := OnDigraphs(gr, (3, 9));;
+gap> IsIsomorphicDigraph(gr, gr2);
+true
 
 #T# IsomorphismDigraphs: for digraphs without multiple edges
+
+# Non-isomorphic graphs
+gap> gr1 := EmptyDigraph(3);
+<digraph with 3 vertices, 0 edges>
+gap> gr2 := ChainDigraph(3);
+<digraph with 3 vertices, 2 edges>
+gap> IsomorphismDigraphs(gr1, gr2);
+fail
+gap> IsomorphismDigraphs(gr2, gr1);
+fail
+gap> IsIsomorphicDigraph(gr1, gr2);
+false
 
 # A small example: check that all isomorphic copies give correct answer
 gap> gr := Digraph([[3], [2, 3, 4], [1, 3], [], [1, 4]]);
@@ -187,7 +235,42 @@ gap> for i in SymmetricGroup(DigraphNrVertices(gr)) do
 > od;
 
 #T# IsomorphismDigraphs: for digraphs without multiple edges
-gap> ;
+
+# An example used in previous tests
+gap> gr := Digraph([
+>   [5, 7, 8, 4, 6, 1], [3, 1, 7, 2, 7, 9], [1, 5, 2, 3, 9],
+>   [1, 3, 3, 9, 9], [6, 3, 5, 7, 9], [3, 9],
+>   [8, 3, 6, 8, 8, 7, 7, 8, 9], [6, 1, 6, 7, 8, 4, 2, 5, 4],
+>   [1, 5, 2, 3, 9]]);
+<multidigraph with 9 vertices, 52 edges>
+gap> DigraphCanonicalLabelling(gr);
+[ (1,5,4,2,3,7,9,6), (1,30,49)(2,34,47,35,45,39,38,51,8,12,18,24,21,28,23,13,
+    4,29,22,27,20,25,14)(3,33,48)(5,31,52,7,19,26,17,9,16,10,11,15,6,32,
+    50)(36,44)(37,46,40,41)(42,43) ]
+gap> AutomorphismGroup(gr);
+<permutation group with 10 generators>
+gap> p := (1,8,2)(3,5,4,9,7);;
+gap> gr1 := OnDigraphs(gr, p);
+<multidigraph with 9 vertices, 52 edges>
+gap> iso := IsomorphismDigraphs(gr, gr1);
+[ (1,8,2)(3,5,4,9,7), (1,42,10,4,45,13,30,16,33,19,49,38,24,26,28,35,21,51,40,
+    8,2,43,11,5,46,14,31,17,34,20,50,39,7)(3,44,12,6,47,15,32,18,48,37,23,25,
+    27,29,36,22,52,41,9) ]
+gap> OnMultiDigraphs(gr, iso) = gr1;
+true
+gap> iso[1] = p;
+true
+gap> p := (1,7,8,4)(2,6,5);;
+gap> gr1 := OnDigraphs(gr, p);
+<multidigraph with 9 vertices, 52 edges>
+gap> iso := IsomorphismDigraphs(gr, gr1);
+[ (1,7,8,4)(2,6,5), (1,33,42,19,2,34,43,20,3,35,44,21,4,36,45,22,5,37,46,23,6,
+    38,47,24,7,27,10,30,39,16,14,12,32,41,18)(8,28,25)(9,29,26)(11,31,40,17,
+    15,13) ]
+gap> OnMultiDigraphs(gr, iso) = gr1;
+true
+gap> iso[1] = p;
+true
 
 #T# DigraphCanonicalLabelling: for a digraph without multiple edges
 

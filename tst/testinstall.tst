@@ -191,5 +191,18 @@ gap> gr1 := OnDigraphs(gr, p ^ -1);;
 gap> DigraphTopologicalSort(gr1) = DigraphVertices(gr1);
 true
 
+#T# AutomorphismGroup for a multidigraph
+# Bug: DigraphCanonicalLabelling was being set incorrectly in this function
+gap> gr := Digraph([
+>   [5, 7, 8, 4, 6, 1], [3, 1, 7, 2, 7, 9], [1, 5, 2, 3, 9],
+>   [1, 3, 3, 9, 9], [6, 3, 5, 7, 9], [3, 9],
+>   [8, 3, 6, 8, 8, 7, 7, 8, 9], [6, 1, 6, 7, 8, 4, 2, 5, 4],
+>   [1, 5, 2, 3, 9]]);
+<multidigraph with 9 vertices, 52 edges>
+gap> G := AutomorphismGroup(gr);;
+gap> DigraphCanonicalLabelling(gr)
+> = DigraphCanonicalLabelling(DigraphCopy(gr));
+true
+
 #E#
 gap> STOP_TEST("Digraphs package: testinstall.tst");
