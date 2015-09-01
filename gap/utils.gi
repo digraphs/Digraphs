@@ -36,7 +36,7 @@ BindGlobal("DIGRAPHS_DocXMLFiles", ["attr.xml",
                                    "io.xml",
                                    "oper.xml",
                                    "prop.xml",
-                                   "util.xml",
+                                   "utils.xml",
                                    "../PackageInfo.g"]);
 
 BindGlobal("DIGRAPHS_TestRec", rec());
