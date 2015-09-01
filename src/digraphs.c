@@ -549,6 +549,8 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
   return out;
 }
 
+//TODO use generic DFS, when we have one.
+
 static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) { 
   UInt  nr, i, j, k, level, target;
   Obj   nbs;
