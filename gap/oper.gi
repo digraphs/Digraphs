@@ -647,6 +647,7 @@ InstallMethod(OnDigraphs, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
 function(digraph, trans)
   local n, adj, new, i;
+
   n := DigraphNrVertices(digraph);
   if ForAny(DigraphVertices(digraph), i -> i ^ trans > n) then
     ErrorMayQuit("Digraphs: OnDigraphs: usage,\n",
@@ -656,9 +657,9 @@ function(digraph, trans)
   adj := OutNeighbours(digraph);
   new := List(DigraphVertices(digraph), i -> []);
   for i in DigraphVertices(digraph) do
-    new[i ^ trans] := Union(new[i ^ trans], adj[i]);
+    new[i ^ trans] := Unique(Concatenation(new[i ^ trans], adj[i]));
   od;
-  return DigraphNC(OnTuplesSets(new, trans));
+  return DigraphNC(List(new, x -> Unique(OnTuples(x, trans))));
 end);
 
 #
