@@ -658,7 +658,7 @@ function(digraph, trans)
   for i in DigraphVertices(digraph) do
     new[i ^ trans] := Union(new[i ^ trans], adj[i]);
   od;
-  return OnTuplesSets(new, trans);
+  return DigraphNC(OnTuplesSets(new, trans));
 end);
 
 #
@@ -672,8 +672,6 @@ end);
 InstallMethod(OnMultiDigraphs, "for a digraph and perm coll",
 [IsDigraph, IsPermCollection],
 function(graph, perms)
-  local out;
-
   if Length(perms) <> 2 then
     ErrorMayQuit("Digraphs: OnMultiDigraphs: usage,\n",
                  "the 2nd argument must be a pair of permutations,");
@@ -686,9 +684,7 @@ function(graph, perms)
                  "of the 1st argument <graph>,");
   fi;
 
-  out := OnDigraphs(graph, perms[1]);
-  SetDigraphEdgeLabels(out, Permuted(DigraphEdgeLabels(graph), perms[2]));
-  return out;
+  return OnDigraphs(graph, perms[1]);
 end);
 
 #
