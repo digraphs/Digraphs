@@ -38,7 +38,7 @@
       <Mark> Digraph6 </Mark>
       <Item>
 	<E>Digraph6</E> is a new format based on <E> Graph6 </E>, but designed
-	for directed graphs. The entire adjacency matrix is stored, and
+	for digraphs. The entire adjacency matrix is stored, and
 	therefore there is support for directed edges and single-vertex loops.
 	However, multiple edges are not supported.
       </Item>
@@ -46,7 +46,7 @@
       <Mark> DiSparse6 </Mark>
       <Item>
 	<E>DiSparse6</E> is a new format based on <E> Sparse6 </E>, but
-	designed for directed graphs. In this format the list of edges is
+	designed for digraphs. In this format the list of edges is
 	partitioned into inceasing and decreasing edges, depending whether the
 	edge has it's source bigger than the range. Then both sets of edges are
 	written separetly in <E> Sparse6 </E> format with a separation symbol
