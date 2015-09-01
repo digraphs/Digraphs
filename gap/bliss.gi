@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  bliss.gi
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014-15                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -9,8 +9,6 @@
 ##
 
 # methods using bliss . . .
-
-# none of these methods applies to multigraphs
 
 InstallMethod(DigraphCanonicalLabelling, "for a digraph",
 [IsDigraph],

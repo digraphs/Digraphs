@@ -5,13 +5,13 @@
 **                                                        Michael Torpey
 **                                                        Wilfred Wilson
 **
-**  Copyright (C) 2014 - Julius Jonusas, James Mitchell, Michael Torpey, 
+**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey, 
 **  Wilfred Wilson 
 **  This file is free software, see license information at the end.
 **  
 */
 
-#include "src/graphs.h"
+#include "src/digraphs.h"
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -1575,11 +1575,11 @@ void multidigraph_hook_function(void               *user_param,
 }
 
 static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
-  Obj                 autos, p, out;
+  Obj                 autos, p, q, out;
   BlissGraph          *graph;
   UInt4               *ptr;
   const unsigned int  *canon;
-  Int                 i, n;
+  Int                 i, m, n;
   
   graph = buildBlissMultiDigraph(digraph);
   
@@ -1594,17 +1594,34 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
 
   canon = bliss_find_canonical_labeling(graph, multidigraph_hook_function, autos, 0);
   
-  n   = DigraphNrVertices(digraph);
-  p   = NEW_PERM4(n);
+  // Get canonical labeling as GAP perms
+  m   = DigraphNrVertices(digraph);
+  p   = NEW_PERM4(m);  // perm of vertices
   ptr = ADDR_PERM4(p);
  
-  for(i = 0; i < n; i++){
+  for(i = 0; i < m; i++){
     ptr[i] = canon[i];
   }
   
-  bliss_release(graph);
+  n = DigraphNrEdges(digraph);
+  q   = NEW_PERM4(n);  // perm of edges
+  ptr = ADDR_PERM4(q);
 
-  SET_ELM_PLIST(autos, 1, p); 
+  for (i = 0; i < n; i++ ) {
+    ptr[i] = canon[2 * i + m] - m;
+  }
+
+  bliss_release(graph);
+  
+  // put the canonical labeling (as a list of two perms) into autos[1]
+  out = NEW_PLIST(T_PLIST, 2);
+  SET_ELM_PLIST(out, 1, p);
+  SET_ELM_PLIST(out, 2, q);
+  SET_LEN_PLIST(out, 2);
+  CHANGED_BAG(out);
+
+  SET_ELM_PLIST(autos, 1, out);
+  CHANGED_BAG(autos);
   
   // remove 2nd entry of autos . . .
   memmove((void *) (ADDR_OBJ(autos) + 2), //destination
