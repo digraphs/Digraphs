@@ -1098,7 +1098,7 @@ end);
 InstallMethod(IsReachable, "for a digraph and two pos ints",
 [IsDigraph, IsPosInt, IsPosInt],
 function(digraph, u, v)
-  local verts, wcc, scc;
+  local verts, scc;
 
   verts := DigraphVertices(digraph);
   if not (u in verts and v in verts) then
@@ -1106,40 +1106,26 @@ function(digraph, u, v)
                  "the second and third arguments <u> and <v> must be\n",
                  "vertices of the first argument <digraph>,");
   fi;
-
-  # If it's a known transitive digraph, just check whether the edge exists
-  if HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
-    return IsDigraphEdge(digraph, [u, v]);
-  fi;
-
-  # Glean information from WCC if we have it
-  if HasDigraphConnectedComponents(digraph) then
-    wcc := DigraphConnectedComponents(digraph);
-    if wcc.id[u] <> wcc.id[v] then
-      return false;
-    fi;
-  fi;
-
-  # Glean information from SCC if we have it
-  if HasDigraphStronglyConnectedComponents(digraph) then
+  
+  if IsDigraphEdge(digraph, [u, v]) then 
+    return true;
+  elif HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
+    # If it's a known transitive digraph, just check whether the edge exists
+    return false;
+    # Glean information from WCC if we have it
+  elif HasDigraphConnectedComponents(digraph)
+      and DigraphConnectedComponents(digraph).id[u] <> 
+          DigraphConnectedComponents(digraph).id[v] then
+    return false;
+    # Glean information from SCC if we have it
+  elif HasDigraphStronglyConnectedComponents(digraph) then
     scc := DigraphStronglyConnectedComponents(digraph);
     if u <> v then
       if scc.id[u] = scc.id[v] then
         return true;
       fi;
     else
-      if Length(scc.comps[scc.id[u]]) > 1 then
-        return true;
-      else
-        return IsDigraphEdge(digraph, [u, u]);
-      fi;
-    fi;
-  fi;
-
-  # Glean information from adjacency matrix if we have it
-  if HasAdjacencyMatrix(digraph) then
-    if AdjacencyMatrix(digraph)[u][v] <> 0 then
-      return true;
+      return Length(scc.comps[scc.id[u]]) > 1;
     fi;
   fi;
 
