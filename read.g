@@ -9,7 +9,7 @@
 ##
 
 if not DIGRAPHS_IsGrapeLoaded then 
-  Add(DIGRAPHS_OmitFromTestManualExamples, "Graph(");
+  Add(DIGRAPHS_OmitFromTests, "Graph(");
 fi;
 
 ReadPackage("digraphs/gap/digraph.gi");

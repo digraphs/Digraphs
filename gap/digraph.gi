@@ -115,60 +115,6 @@ function(graph)
   return graph!.vertexlabels;
 end);
 
-InstallMethod(SetDigraphEdgeLabel, "for a digraph, pos int, object",
-[IsDigraph, IsPosInt, IsObject],
-function(graph, i, name)
-
-  if not IsBound(graph!.edgelabels) then
-    graph!.edgelabels := [1 .. DigraphNrEdges(graph)];
-  fi;
-
-  if i > DigraphNrEdges(graph) then
-    ErrorMayQuit("Digraphs: SetDigraphEdgeLabel: usage,\n",
-                 "there are only ", DigraphNrEdges(graph), " vertices,");
-  fi;
-  graph!.edgelabels[i] := name;
-  return;
-end);
-
-InstallMethod(DigraphEdgeLabel, "for a digraph and pos int",
-[IsDigraph, IsPosInt],
-function(graph, i)
-
-  if not IsBound(graph!.edgelabels) then
-    graph!.edgelabels := [1 .. DigraphNrEdges(graph)];
-  fi;
-
-  if IsBound(graph!.edgelabels[i]) then
-    return graph!.edgelabels[i];
-  fi;
-  ErrorMayQuit("Digraphs: DigraphEdgeLabel: usage,\n", i,
-               " is nameless or not a vertex,");
-end);
-
-InstallMethod(SetDigraphEdgeLabels, "for a digraph and list",
-[IsDigraph, IsList],
-function(graph, names)
-
-  if Length(names) = DigraphNrEdges(graph) then
-    graph!.edgelabels := names;
-  else
-    ErrorMayQuit("Digraphs: SetDigraphEdgeLabels: usage,\n",
-                 "the 2nd arument <names> must be a list with length equal",
-                 " to the number of\nvertices of the digraph,");
-  fi;
-end);
-
-InstallMethod(DigraphEdgeLabels, "for a digraph and pos int",
-[IsDigraph],
-function(graph)
-
-  if not IsBound(graph!.edgelabels) then
-    graph!.edgelabels := [1 .. DigraphNrEdges(graph)];
-  fi;
-  return graph!.edgelabels;
-end);
-
 # multi means it has at least one multiple edges
 
 InstallMethod(IsMultiDigraph, "for a digraph",
@@ -209,20 +155,31 @@ end);
 
 InstallMethod(Graph, "for a digraph", [IsDigraph],
 function(graph)
-  local gamma, i;
+  local gamma, i, n;
 
   if IsMultiDigraph(graph) then
     Info(InfoWarning, 1, "Grape does not support multiple edges, so ",
          "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
 
-  gamma := NullGraph(Group([], ()), DigraphNrVertices(graph));
-  Unbind(gamma.isSimple);
+  if not DIGRAPHS_IsGrapeLoaded then
+    Info(InfoWarning, 1, "Grape is not loaded,");
+  fi;
 
+  n := DigraphNrVertices(graph);
+  gamma := rec(order := n,
+               group := Group(()),
+               isGraph := true,
+               representatives := [1 .. n] * 1,
+               schreierVector := [1 .. n] * -1);
+
+  # Used to be the following, using the constructor from GRAPE:
+  # gamma := NullGraph(Group([], ()), DigraphNrVertices(graph));
+
+  gamma.adjacencies := EmptyPlist(n);
   for i in [1 .. gamma.order] do
     gamma.adjacencies[i] := Set(OutNeighbours(graph)[i]);
   od;
-
   gamma.names := Immutable(DigraphVertexLabels(graph));
 
   return gamma;
@@ -928,7 +885,6 @@ function(digraph)
   out := List(OutNeighbours(digraph), ShallowCopy);
   gr := DigraphNC(out);
   SetDigraphVertexLabels(gr, StructuralCopy(DigraphVertexLabels(digraph)));
-  SetDigraphEdgeLabels(gr, StructuralCopy(DigraphEdgeLabels(digraph)));
   return gr;
 end);
 

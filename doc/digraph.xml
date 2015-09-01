@@ -40,24 +40,22 @@
 <ManSection>
   <Oper Name="DigraphVertexLabels" Arg="digraph"/>
   <Oper Name="SetDigraphVertexLabels" Arg="digraph, list"/>
-  <Oper Name="DigraphEdgeLabels" Arg="digraph"/>
-  <Oper Name="SetDigraphEdgeLabels" Arg="digraph, list"/>
   <Description>
-    If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns the labels 
-    of the vertices in <A>digraph</A>. <C>SetDigraphVertexLabels</C> can be used to set 
-    the labels of the vertices in <A>digraph</A> to the list of arbitrary 
-    &GAP; objects <A>list</A>. 
-    <C>DigraphEdgeLabels</C> and <C>SetDigraphEdgeLabels</C> are similar. <P/>
+    If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns the
+    labels of the vertices in <A>digraph</A>. <C>SetDigraphVertexLabels</C> can
+    be used to set the labels of the vertices in <A>digraph</A> to the list of
+    arbitrary &GAP; objects <A>list</A>.
 
-    The label of a vertex can be changed an arbitrary number of times. If no label
-    has been set for the vertex <C>i</C>, then the default value is <C>i</C>.
+    The label of a vertex can be changed an arbitrary number of times. If no
+    label has been set for the vertex <C>i</C>, then the default value is
+    <C>i</C>.
 
     If <A>digraph</A> is a digraph created from a record with a component
-    <C>vertices</C>, then the labels of the vertices are set to the value of this
-    component.<P/>
+    <C>vertices</C>, then the labels of the vertices are set to the value of
+    this component.<P/>
 
-    Induced subdigraphs, and other operations which create new digraphs from old
-    ones, inherit their labels from their parents. 
+    Induced subdigraphs, and other operations which create new digraphs from
+    old ones, inherit their labels from their parents. 
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
@@ -84,23 +82,22 @@ gap> DigraphVertexLabels(gr);
 <ManSection>
   <Oper Name="DigraphVertexLabel" Arg="digraph, i"/>
   <Oper Name="SetDigraphVertexLabel" Arg="digraph, i, obj"/>
-  <Oper Name="DigraphEdgeLabel" Arg="digraph, i"/>
-  <Oper Name="SetDigraphEdgeLabel" Arg="digraph, i, obj"/>
   <Description>
-    If <A>digraph</A> is a digraph, then the first operation returns the label of
-    the vertex <A>i</A>. The second operation can be used to set the label of the
-    vertex <A>i</A> in <A>digraph</A> to the arbitrary &GAP; object <A>obj</A>. 
-    <P/>
+    If <A>digraph</A> is a digraph, then the first operation returns the label
+    of the vertex <A>i</A>. The second operation can be used to set the label
+    of the vertex <A>i</A> in <A>digraph</A> to the arbitrary &GAP; object
+    <A>obj</A>.  <P/>
 
-    The label of a vertex can be changed an arbitrary number of times. If no label
-    has been set for the vertex <A>i</A>, then the default value is <C>i</C>. <P/>
+    The label of a vertex can be changed an arbitrary number of times. If no
+    label has been set for the vertex <A>i</A>, then the default value is
+    <C>i</C>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
-    <C>vertices</C>, then the labels of the vertices are set to the value of this
-    component.<P/>
+    <C>vertices</C>, then the labels of the vertices are set to the value of
+    this component.<P/>
 
-    Induced subdigraphs, and other operations which create new digraphs from old
-    ones, inherit their labels from their parents. 
+    Induced subdigraphs, and other operations which create new digraphs from
+    old ones, inherit their labels from their parents. 
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
@@ -189,7 +186,7 @@ true
         if <A>obj</A> is a duplicate-free list, and <A>source</A>, and
         <A>range</A> are lists of equal length consisting of positive integers
         in the list <C>[1..Length(<A>obj</A>)]</C>, then this function
-        returns the directed graph with vertices
+        returns the digraph with vertices
         <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>, edges indexed by
         <C>[1..Length(<A>source</A>)]</C>, and source and range functions
         defined by <A>source</A> and <A>range</A>.  In particular, the edge
@@ -206,7 +203,7 @@ true
         if <A>obj</A> is a non-negative integer and
         <A>source</A> and <A>range</A> are lists of equal length consisting of
         positive integers in the list <C>[1..<A>obj</A>]</C>,
-        then this function returns the directed graph with vertices 
+        then this function returns the digraph with vertices 
         <M>E^0=</M><C>[1..<A>obj</A>]</C>,
         edges indexed by
         <C>[1..Length(<A>source</A>)]</C>, and
@@ -295,8 +292,8 @@ rec(
   <Returns>A digraph.</Returns>
   <Description>
     If <A>adj</A> is the adjacency matrix of a digraph, in the sense of
-    <Ref Attr="AdjacencyMatrix"/>, then this function returns the directed 
-    graph which is defined by <A>adj</A>.
+    <Ref Attr="AdjacencyMatrix"/>, then this function returns the digraph
+    which is defined by <A>adj</A>.
     <Example><![CDATA[
 gap> DigraphByAdjacencyMatrix( [
 > [ 0, 1, 0, 2, 0 ],

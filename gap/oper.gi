@@ -357,8 +357,7 @@ end);
 InstallMethod(DigraphRemoveEdgesNC, "for a digraph and a list",
 [IsDigraph, IsHomogeneousList],
 function(digraph, edges)
-  local m, n, old_adj, new_adj, old_edge_count, new_edge_count, degree_count,
-  old_labs, new_labs, gr, i, j;
+  local m, n, old_adj, new_adj, edge_count, degree_count, gr, i, j;
 
   if IsEmpty(edges) then
     return DigraphCopy(digraph);
@@ -369,27 +368,21 @@ function(digraph, edges)
   old_adj := OutNeighbours(digraph);
   new_adj := EmptyPlist(n);
   edges := BlistList([1 .. m], edges);
-  old_edge_count := 0;
-  new_edge_count := 0;
+  edge_count := 0;
   degree_count := 0;
-  old_labs := DigraphEdgeLabels(digraph);
-  new_labs := [];
   for i in DigraphVertices(digraph) do # Loop over each vertex
     new_adj[i] := [];
     degree_count := 0;
     for j in old_adj[i] do
-      old_edge_count := old_edge_count + 1;
-      if not edges[old_edge_count] then # Keep this edge
-        new_edge_count := new_edge_count + 1;
+      edge_count := edge_count + 1;
+      if not edges[edge_count] then # Keep this edge
         degree_count := degree_count + 1;
         new_adj[i][degree_count] := j;
-        new_labs[new_edge_count] := old_labs[old_edge_count];
       fi;
     od;
   od;
   gr := DigraphNC(new_adj);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
-  SetDigraphEdgeLabels(gr, new_labs);
   return gr;
 end);
 
@@ -516,7 +509,6 @@ function(digraph, m, names)
   fi;
   nam := Concatenation(DigraphVertexLabels(digraph), names);
   SetDigraphVertexLabels(out, nam);
-  SetDigraphEdgeLabels(out, DigraphEdgeLabels(digraph));
   return out;
 end);
 
@@ -558,9 +550,8 @@ end);
 InstallMethod(DigraphRemoveVerticesNC, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, verts)
-  local n, len, new_nrverts, m, log, diff, j, lookup, old_edge_count,
-  old_labels, new_edge_count, new_labels, new_vertex_count, old_nbs, new_nbs,
-  gr, i, x;
+  local n, len, new_nrverts, m, log, diff, j, lookup, new_vertex_count,
+  old_nbs, new_nbs, gr, i, x;
 
   if IsEmpty(verts) then
     return DigraphCopy(digraph);
@@ -572,8 +563,8 @@ function(digraph, verts)
   if new_nrverts = 0 then
     return EmptyDigraph(0);
   fi;
-  m     := DigraphNrEdges(digraph);
-  log   := LogInt(len, 2);
+  m := DigraphNrEdges(digraph);
+  log := LogInt(len, 2);
   if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
     Sort(verts);
   fi;
@@ -586,12 +577,7 @@ function(digraph, verts)
     lookup[i] := j;
   od;
 
-  old_edge_count   := 0;
-  old_labels       := DigraphEdgeLabels(digraph);
-  new_edge_count   := 0;
-  new_labels       := [];
   new_vertex_count := 0;
-
   old_nbs := OutNeighbours(digraph);
   new_nbs := EmptyPlist(new_nrverts);
   for i in DigraphVertices(digraph) do
@@ -600,22 +586,16 @@ function(digraph, verts)
       new_nbs[new_vertex_count] := [];
       j := 0;
       for x in old_nbs[i] do
-        old_edge_count := old_edge_count + 1;
         if not x in verts then # Can search through diff if |diff| < |verts|
           j := j + 1;
           new_nbs[new_vertex_count][j] := lookup[x];
-          new_edge_count := new_edge_count + 1;
-          new_labels[new_edge_count] := old_labels[old_edge_count];
         fi;
       od;
-    else
-      old_edge_count := old_edge_count + Length(old_nbs[i]);
     fi;
   od;
 
   gr := DigraphNC(new_nbs);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){diff});
-  SetDigraphEdgeLabels(gr, new_labels);
   return gr;
 end);
 
@@ -647,6 +627,7 @@ InstallMethod(OnDigraphs, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
 function(digraph, trans)
   local n, adj, new, i;
+
   n := DigraphNrVertices(digraph);
   if ForAny(DigraphVertices(digraph), i -> i ^ trans > n) then
     ErrorMayQuit("Digraphs: OnDigraphs: usage,\n",
@@ -656,9 +637,9 @@ function(digraph, trans)
   adj := OutNeighbours(digraph);
   new := List(DigraphVertices(digraph), i -> []);
   for i in DigraphVertices(digraph) do
-    new[i ^ trans] := Union(new[i ^ trans], adj[i]);
+    new[i ^ trans] := Unique(Concatenation(new[i ^ trans], adj[i]));
   od;
-  return DigraphNC(OnTuplesSets(new, trans));
+  return DigraphNC(List(new, x -> Unique(OnTuples(x, trans))));
 end);
 
 #
@@ -693,8 +674,7 @@ InstallMethod(InducedSubdigraph,
 "for a digraph and a homogeneous list",
 [IsDigraph, IsHomogeneousList],
 function(digraph, subverts)
-  local nr, n, old_labs, old_adj, new_labs, new_adj, offsets, lookup,
-  new_edge_count, adji, j, l, gr, i, k;
+  local nr, n, old_adj, new_adj, lookup, adji, j, l, gr, i, k;
 
   nr := Length(subverts);
   if nr = 0 then
@@ -712,20 +692,11 @@ function(digraph, subverts)
                  "subset\nof the vertices of the first argument <digraph>,");
   fi;
 
-  old_labs := DigraphEdgeLabels(digraph);
-  old_adj  := OutNeighbours(digraph);
-  new_labs := [];
-  new_adj  := EmptyPlist(nr);
-
-  offsets := EmptyPlist(n);
-  offsets[1] := 0;
-  for i in [2 .. Maximum(subverts)] do
-    offsets[i] := offsets[i - 1] + Length(old_adj[i - 1]);
-  od;
+  old_adj := OutNeighbours(digraph);
+  new_adj := EmptyPlist(nr);
 
   lookup := [1 .. n] * 0;
   lookup{subverts} := [1 .. nr];
-  new_edge_count := 0;
 
   for i in [1 .. nr] do
     adji := [];
@@ -735,8 +706,6 @@ function(digraph, subverts)
       if l <> 0 then
         j := j + 1;
         adji[j] := l;
-        new_edge_count := new_edge_count + 1;
-        new_labs[new_edge_count] := old_labs[offsets[subverts[i]] + k];
       fi;
     od;
     new_adj[i] := adji;
@@ -744,7 +713,6 @@ function(digraph, subverts)
 
   gr := DigraphNC(new_adj);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){subverts});
-  SetDigraphEdgeLabels(gr, new_labs);
   return gr;
 end);
 
@@ -1106,15 +1074,15 @@ function(digraph, u, v)
                  "the second and third arguments <u> and <v> must be\n",
                  "vertices of the first argument <digraph>,");
   fi;
-  
-  if IsDigraphEdge(digraph, [u, v]) then 
+
+  if IsDigraphEdge(digraph, [u, v]) then
     return true;
   elif HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
     # If it's a known transitive digraph, just check whether the edge exists
     return false;
     # Glean information from WCC if we have it
   elif HasDigraphConnectedComponents(digraph)
-      and DigraphConnectedComponents(digraph).id[u] <> 
+      and DigraphConnectedComponents(digraph).id[u] <>
           DigraphConnectedComponents(digraph).id[v] then
     return false;
     # Glean information from SCC if we have it

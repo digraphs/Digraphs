@@ -249,7 +249,7 @@ gap> DigraphCanonicalLabelling(gr);
     50)(36,44)(37,46,40,41)(42,43) ]
 gap> AutomorphismGroup(gr);
 <permutation group with 10 generators>
-gap> p := (1,8,2)(3,5,4,9,7);;
+gap> p := (1, 8, 2)(3, 5, 4, 9, 7);;
 gap> gr1 := OnDigraphs(gr, p);
 <multidigraph with 9 vertices, 52 edges>
 gap> iso := IsomorphismDigraphs(gr, gr1);
@@ -260,7 +260,7 @@ gap> OnMultiDigraphs(gr, iso) = gr1;
 true
 gap> iso[1] = p;
 true
-gap> p := (1,7,8,4)(2,6,5);;
+gap> p := (1, 7, 8, 4)(2, 6, 5);;
 gap> gr1 := OnDigraphs(gr, p);
 <multidigraph with 9 vertices, 52 edges>
 gap> iso := IsomorphismDigraphs(gr, gr1);

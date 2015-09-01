@@ -366,14 +366,10 @@ gap> InducedSubdigraph(gr, [7, 8]);
 <digraph with 2 vertices, 0 edges>
 gap> gr := Digraph([[2, 4], [4, 5], [2, 5, 5], [5, 5], [3]]);
 <multidigraph with 5 vertices, 10 edges>
-gap> DigraphEdgeLabels(gr);
-[ 1 .. 10 ]
 gap> gri := InducedSubdigraph(gr, [4, 2, 5]);
 <multidigraph with 3 vertices, 4 edges>
 gap> DigraphVertexLabels(gri);
 [ 4, 2, 5 ]
-gap> DigraphEdgeLabels(gri);
-[ 8, 9, 3, 4 ]
 gap> OutNeighbours(gri);
 [ [ 3, 3 ], [ 1, 3 ], [  ] ]
 
