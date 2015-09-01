@@ -1055,9 +1055,15 @@ gap> DigraphJoin(gr, gr2);
   <Oper Name="IsReachable" Arg="digraph, u, v"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This operation returns <K>true</K> is there exists a directed path (of 
+    This operation returns <K>true</K> if there exists a directed path (of 
     non-zero length) from vertex <A>u</A> to vertex <A>v</A> in the directed 
     graph <A>digraph</A>, and <K>false</K> if there does not exist such a path.
+    <P/>
+
+    The method for <C>IsReachable</C> has worst case complexity of <M>O(m +
+      n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
+    vertices in <A>digraph</A>. 
+
 <Example><![CDATA[
 gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 2, 3 ] ] );
 <digraph with 3 vertices, 4 edges>
