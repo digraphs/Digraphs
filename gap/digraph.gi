@@ -651,18 +651,21 @@ function(vertices, source, range)
                        range        := range ) );
 end);
 
-# JDM: could set IsMultigraph here if we check if mat[i][j] > 1 in line 234
+# JDM: could set IsMultigraph here if we check if mat[i][j] > 1
 
 InstallMethod(DigraphByAdjacencyMatrix, "for a rectangular table",
-[IsRectangularTable],
+[IsHomogeneousList],
 function(mat)
   local n, verts, out, count, i, j, k;
 
   n := Length(mat);
-
-  if Length(mat[1]) <> n then
+  if not IsRectangularTable(mat) or Length(mat[1]) <> n then
     ErrorMayQuit("Digraphs: DigraphByAdjacencyMatrix: usage,\n",
                  "the matrix is not square,");
+  fi;
+
+  if IsBool(mat[1][1]) then
+    return DigraphByAdjacencyMatrixNC(mat);
   fi;
 
   verts := [1 .. n];
@@ -678,11 +681,12 @@ function(mat)
         od;
       else
         ErrorMayQuit("Digraphs: DigraphByAdjacencyMatrix: usage,\n",
-                     "the argument must be a matrix of non-negative ",
-                     "integers,");
+                     "the argument must be a matrix of non-negative integers,",
+                     " or a boolean matrix,");
       fi;
     od;
   od;
+
   out := DigraphNC(out);
   SetAdjacencyMatrix(out, mat);
   return out;
@@ -699,9 +703,26 @@ end);
 #
 
 InstallMethod(DigraphByAdjacencyMatrixNC, "for a rectangular table",
-[IsRectangularTable],
+[IsHomogeneousList],
 function(mat)
-  local n, verts, out, count, i, j, k;
+  local create_func, n, verts, out, count, i, j;
+
+  if IsInt(mat[1][1]) then
+    create_func := function(i, j)
+      local k;
+      for k in [1 .. mat[i][j]] do
+        count := count + 1;
+        out[i][count] := j;
+      od;
+    end;
+  elif IsBool(mat[1][1]) then
+    create_func := function(i, j)
+      if mat[i][j] then
+        count := count + 1;
+        out[i][count] := j;
+      fi;
+    end;
+  fi;
 
   n := Length(mat);
   verts := [1 .. n];
@@ -710,14 +731,17 @@ function(mat)
     out[i] := [];
     count := 0;
     for j in verts do
-      for k in [1 .. mat[i][j]] do
-        count := count + 1;
-        out[i][count] := j;
-      od;
+      create_func(i, j);
     od;
   od;
+
   out := DigraphNC(out);
-  SetAdjacencyMatrix(out, mat);
+  if IsInt(mat[1][1]) then
+    SetAdjacencyMatrix(out, mat);
+  else
+    SetIsMultiDigraph(out, false);
+  fi;
+
   return out;
 end);
 
@@ -827,12 +851,12 @@ InstallMethod(DigraphByInNeighbours, "for a list",
 [IsList],
 function(nbs)
   local n, m, x;
-  
+
   n := Length(nbs); # number of vertices
   m := 0;           # number of edges
 
   for x in nbs do
-    if not ForAll(x, i -> IsPosInt(i) and i <= n) then 
+    if not ForAll(x, i -> IsPosInt(i) and i <= n) then
       ErrorMayQuit("Digraphs: DigraphByInNeighbours: usage,\n",
                    "the argument must be a list of lists of positive ",
                    "integers\nnot exceeding the length of the argument,");

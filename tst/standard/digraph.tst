@@ -349,6 +349,8 @@ gap> gr := DigraphByEdges([], 3);
 <digraph with 3 vertices, 0 edges>
 
 #T# DigraphByAdjacencyMatrix
+
+# for a matrix of integers
 gap> mat := [
 > [1, 2, 3],
 > [1, 2, 3]];;
@@ -361,11 +363,11 @@ gap> mat := [
 > [-1, 2, 2]];;
 gap> DigraphByAdjacencyMatrix(mat);
 Error, Digraphs: DigraphByAdjacencyMatrix: usage,
-the argument must be a matrix of non-negative integers,
+the argument must be a matrix of non-negative integers, or a boolean matrix,
 gap> mat := [["a"]];;
 gap> DigraphByAdjacencyMatrix(mat);
 Error, Digraphs: DigraphByAdjacencyMatrix: usage,
-the argument must be a matrix of non-negative integers,
+the argument must be a matrix of non-negative integers, or a boolean matrix,
 gap> mat := [
 > [0, 2, 0, 0, 1],
 > [0, 2, 1, 0, 1],
@@ -416,6 +418,15 @@ gap> AdjacencyMatrix(gr2) = mat;
 true
 gap> DigraphByAdjacencyMatrix([]);
 <digraph with 0 vertices, 0 edges>
+
+# for a boolean matrix
+gap> mat := List([1 .. 5], x -> BlistList([1 .. 5], []));;
+gap> DigraphByAdjacencyMatrix(mat) = EmptyDigraph(5);
+true
+gap> mat := List([1 .. 5], x -> BlistList([1 .. 5],
+>                                         Difference([1 .. 5], [x])));;
+gap> DigraphByAdjacencyMatrix(mat) = CompleteDigraph(5);
+true
 
 #T# DigraphByInNeighbours
 gap> gr1 := RandomMultiDigraph(50, 3000);

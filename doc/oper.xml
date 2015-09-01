@@ -930,25 +930,24 @@ true
   <Oper Name="DigraphDisjointUnion" Arg="digraph1, digraph2"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph1</A> and <A>digraph2</A> are digraphs, then this 
-    operation returns the disjoint union of these digraphs. <P/>
+    If <A>digraph1</A> and <A>digraph2</A> are digraphs, then this operation
+    returns the disjoint union of these digraphs. <P/>
    
-    The vertex and edge sets of the disjoint union are the disjoint union of
-    the vertex and edge sets of <A>digraph1</A> and <A>digraph2</A> 
-    respectively.
-    <P/>
+    The vertex sets and edge lists of the disjoint union are the disjoint
+    union of the vertex sets and edge lists of <A>digraph1</A> and
+    <A>digraph2</A> respectively.  <P/>
 
-    More specifically, if <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
-    edges, and if <A>digraph2</A> has <M>n_2</M> vertices and <M>m_2</M> edges,
-    then <C>DigraphDisjointUnion(<A>digraph1</A>, <A>digraph2</A>)</C>
-    will have <M>n_1 + n_2</M> vertices and <M>m_1 + m_2</M> edges. 
+    More specifically, if <A>digraph1</A> has <M>n_1</M> vertices and
+    <M>m_1</M> edges, and if <A>digraph2</A> has <M>n_2</M> vertices and
+    <M>m_2</M> edges, then <C>DigraphDisjointUnion(<A>digraph1</A>,
+      <A>digraph2</A>)</C> will have <M>n_1 + n_2</M> vertices and <M>m_1 +
+      m_2</M> edges. 
 
-    The vertices of <A>digraph1</A> will remain
-    <C>[1..</C><M>n_1</M><C>]</C> in the disjoint union.
-    The vertices of <A>digraph2</A> will become
-    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>,
-    and an edge <C>[</C><M>i,j</M><C>]</C> in <A>digraph2</A> will become
-    the edge <C>[</C><M>n_1+i,n_1+j</M><C>]</C>.<P/>
+    The vertices of <A>digraph1</A> will remain <C>[1..</C><M>n_1</M><C>]</C>
+    in the disjoint union.  The vertices of <A>digraph2</A> will become
+    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>, and an edge
+    <C>[</C><M>i,j</M><C>]</C> in <A>digraph2</A> will become the edge
+    <C>[</C><M>n_1+i,n_1+j</M><C>]</C>.<P/>
 
     Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
     
@@ -978,13 +977,12 @@ gap> OutNeighbours(union);
     If <A>digraph1</A> and <A>digraph2</A> are digraphs, then this
     operation returns the join of these digraphs. <P/>
     
-    Let <M>V_1</M>, <M>E_1</M> and <M>V_2</M>, <M>E_2</M> be vertex and edge 
-    sets of the digraphs <A>digraph1</A> and <A>digraph2</A>, respectively.
-    Then the vertex set of the join is the disjoint union of 
-    <M>V_1</M> and <M>V_2</M>,
-    and the edge set of the join is the disjoint union of 
-    <M>E_1</M> and <M>E_2</M>,
-    together with all possible edges between <M>V_1</M> and <M>V_2</M>. <P/>
+    Let <M>V_1</M>, <M>E_1</M> and <M>V_2</M>, <M>E_2</M> be vertex sets and
+    edge lists of the digraphs <A>digraph1</A> and <A>digraph2</A>,
+    respectively.  Then the vertex set of the join is the disjoint union of
+    <M>V_1</M> and <M>V_2</M>, and the edge list of the join is the disjoint
+    union of <M>E_1</M> and <M>E_2</M>, together with all possible edges
+    between <M>V_1</M> and <M>V_2</M>. <P/>
 
     In particular, if <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
     edges, and if <A>digraph2</A> has <M>n_2</M> vertices and <M>m_2</M> edges,

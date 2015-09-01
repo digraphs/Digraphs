@@ -291,17 +291,30 @@ rec(
   <Oper Name="DigraphByAdjacencyMatrix" Arg="adj"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>adj</A> is the adjacency matrix of a digraph, in the sense of
-    <Ref Attr="AdjacencyMatrix"/>, then this function returns the digraph
-    which is defined by <A>adj</A>.
+    If <A>adj</A> is the adjacency matrix of a digraph in the sense of
+    <Ref Attr="AdjacencyMatrix"/>, then this operation returns the digraph
+    which is defined by <A>adj</A>. <P/>
+
+    Alternatively, if <A>adj</A> is a square boolean matrix, then this
+    operation returns the digraph with <C>Length(</C><A>adj</A><C>)</C>
+    vertices which has the edge <C>[i,j]</C> if and only if
+    <A>adj</A><C>[i][j]</C> is <K>true</K>. <P/>
+
     <Example><![CDATA[
-gap> DigraphByAdjacencyMatrix( [
+gap> DigraphByAdjacencyMatrix([
 > [ 0, 1, 0, 2, 0 ],
 > [ 1, 1, 1, 0, 1 ],
 > [ 0, 3, 2, 1, 1 ],
 > [ 0, 0, 1, 0, 1 ],
 > [ 2, 0, 0, 0, 0 ] ]);
 <multidigraph with 5 vertices, 18 edges>
+gap> gr := DigraphByAdjacencyMatrix([
+> [ true,  false, true  ],
+> [ false, false, true  ],
+> [ false, true,  false ] ]);
+<digraph with 3 vertices, 4 edges>
+gap> OutNeighbours(gr);
+[ [ 1, 3 ], [ 3 ], [ 2 ] ]
 ]]></Example>
   </Description>
 </ManSection>
