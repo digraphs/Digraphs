@@ -624,7 +624,7 @@ end);
 InstallMethod(OnDigraphs, "for a digraph and a perm",
 [IsDigraph, IsPerm],
 function(graph, perm)
-  local adj, out;
+  local adj;
 
   if ForAny(DigraphVertices(graph),
             i -> i ^ perm > DigraphNrVertices(graph)) then
@@ -637,10 +637,8 @@ function(graph, perm)
   adj := Permuted(adj, perm);
   Apply(adj, x -> OnTuples(x, perm));
 
-  out := DigraphNC(adj);
-  SetDigraphVertexLabels(out, Permuted(DigraphVertexLabels(graph), perm));
-  # don't set the edge labels . . .
-  return out;
+  # don't set the vertex or edge labels . . .
+  return DigraphNC(adj);
 end);
 
 #
