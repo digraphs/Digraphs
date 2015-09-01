@@ -1,13 +1,13 @@
-#%T##########################################################################
+#############################################################################
 ##
-#W  digraph.tst
+#W  standard/digraph.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: digraph.tst");
+gap> START_TEST("Digraphs package: standard/digraph.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -1039,4 +1039,4 @@ gap> DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
 
 #E#
-gap> STOP_TEST("Digraphs package: digraph.tst");
+gap> STOP_TEST("Digraphs package: standard/digraph.tst");

@@ -1,13 +1,13 @@
-#%T##########################################################################
+#############################################################################
 ##
-#W  io.tst
+#W  standard/io.tst
 #Y  Copyright (C) 2014
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: io.tst");
+gap> START_TEST("Digraphs package: standard/io.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -203,4 +203,4 @@ gap> last = gr;
 true
 
 #E#
-gap> STOP_TEST("Digraphs package: io.tst");
+gap> STOP_TEST("Digraphs package: standard/io.tst");

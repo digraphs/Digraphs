@@ -1,13 +1,13 @@
-#%T##########################################################################
+#############################################################################
 ##
-#W  oper.tst
+#W  standard/oper.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: oper.tst");
+gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -1412,4 +1412,4 @@ Error, Digraphs: DigraphReflexiveTransitiveReduction:
 not yet implemented for non-topologically sortable digraphs,
 
 #E#
-gap> STOP_TEST("Digraphs package: oper.tst");
+gap> STOP_TEST("Digraphs package: standard/oper.tst");

@@ -1,13 +1,13 @@
-#%T##########################################################################
+#############################################################################
 ##
-#W  display.tst
+#W  standard/display.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: display.tst");
+gap> START_TEST("Digraphs package: standard/display.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -72,4 +72,4 @@ Error, Digraphs: DotSymmetricDigraph: usage,
 the argument <graph> should be symmetric,
 
 #E#
-gap> STOP_TEST("Digraphs package: display.tst");
+gap> STOP_TEST("Digraphs package: standard/display.tst");

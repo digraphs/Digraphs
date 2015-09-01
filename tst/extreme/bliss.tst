@@ -1,13 +1,13 @@
 #%T##########################################################################
 ##
-#W  bliss.tst
+#W  extreme/bliss.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: bliss.tst");
+gap> START_TEST("Digraphs package: extreme/bliss.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -293,4 +293,4 @@ gap> gr2 = gr1;
 false
 
 #E#
-gap> STOP_TEST("Digraphs package: bliss.tst");
+gap> STOP_TEST("Digraphs package: extreme/bliss.tst");

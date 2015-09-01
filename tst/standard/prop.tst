@@ -1,13 +1,13 @@
-#%T##########################################################################
+#############################################################################
 ##
-#W  prop.tst
+#W  standard/prop.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: prop.tst");
+gap> START_TEST("Digraphs package: standard/prop.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -664,4 +664,4 @@ gap> IS_TRANSITIVE_DIGRAPH(gr);
 true
 
 #E#
-gap> STOP_TEST("Digraphs package: prop.tst");
+gap> STOP_TEST("Digraphs package: standard/prop.tst");

@@ -105,4 +105,4 @@ gap> DigraphReverseEdge(d, [95000, 4067]);
 <digraph with 113082 vertices, 451854 edges>
 
 #E#
-gap> STOP_TEST("Digraphs package: homos.tst");
+gap> STOP_TEST("Digraphs package: extreme/oper.tst");
