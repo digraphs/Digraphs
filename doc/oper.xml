@@ -1020,8 +1020,8 @@ gap> DigraphJoin(gr, gr2);
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     This operation returns <K>true</K> if there exists a directed path (of 
-    non-zero length) from vertex <A>u</A> to vertex <A>v</A> in the directed 
-    graph <A>digraph</A>, and <K>false</K> if there does not exist such a path.
+    non-zero length) from vertex <A>u</A> to vertex <A>v</A> in the digraph
+    <A>digraph</A>, and <K>false</K> if there does not exist such a path.
     <P/>
 
     The method for <C>IsReachable</C> has worst case complexity of <M>O(m +

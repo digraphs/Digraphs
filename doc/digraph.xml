@@ -292,8 +292,8 @@ rec(
   <Returns>A digraph.</Returns>
   <Description>
     If <A>adj</A> is the adjacency matrix of a digraph, in the sense of
-    <Ref Attr="AdjacencyMatrix"/>, then this function returns the directed 
-    graph which is defined by <A>adj</A>.
+    <Ref Attr="AdjacencyMatrix"/>, then this function returns the digraph
+    which is defined by <A>adj</A>.
     <Example><![CDATA[
 gap> DigraphByAdjacencyMatrix( [
 > [ 0, 1, 0, 2, 0 ],
