@@ -307,9 +307,9 @@ the 2nd argument <trans> must transform the vertices of the 1st argument
 <digraph>,
 gap> t := Transformation([1, 2, 1]);;
 gap> gr := OnDigraphs(gr, t);
-<multidigraph with 2 vertices, 3 edges>
+<digraph with 3 vertices, 2 edges>
 gap> OutNeighbours(gr);
-[ [ 2 ], [ 1, 1 ] ]
+[ [ 2 ], [ 1 ], [  ] ]
 
 #T# InNeighboursOfVertex, InDegreeOfVertex
 gap> gr := Digraph(rec(nrvertices := 10, source := [1, 1, 5, 5, 7, 10],
