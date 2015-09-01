@@ -35,8 +35,8 @@ void GraphHomomorphisms (HomosGraph*  graph1,
 
 HomosGraph* new_homos_graph (UIntS nr_verts);
 
-void  add_edges_homos_graph (HomosGraph* graph, 
-                             UIntS from_vert, 
-                             UIntS to_vert);
+void  add_edge_homos_graph (HomosGraph* graph, 
+                            UIntS from_vert, 
+                            UIntS to_vert);
 
 void  free_homos_graph      (HomosGraph* graph);

@@ -1831,7 +1831,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
     nbs = ELM_PLIST(out, i + 1);
     for (j = 0; j < LEN_LIST(nbs); j++) {
       k = INT_INTOBJ(ELM_LIST(nbs, j + 1)) - 1;
-      add_edges_homos_graph(homos_graph1, i, k);
+      add_edge_homos_graph(homos_graph1, i, k);
     }
   }
   
@@ -1844,7 +1844,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
     nbs = ELM_PLIST(out, i + 1);
     for (j = 0; j < LEN_LIST(nbs); j++) {
       k = INT_INTOBJ(ELM_LIST(nbs, j + 1)) - 1;
-      add_edges_homos_graph(homos_graph2, i, k);
+      add_edge_homos_graph(homos_graph2, i, k);
     }
   }
 
