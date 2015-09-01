@@ -943,7 +943,7 @@ gap> gr := Digraph([[1, 1]]);
 <multidigraph with 1 vertex, 2 edges>
 gap> AsBinaryRelation(gr);
 Error, Digraphs: AsBinaryRelation: usage,
-this function does not apply to digraphs with multiple edges,
+the argument <digraph> must be a digraph with no multiple edges,
 gap> gr := Digraph(
 > [[1, 2, 3], [1, 2, 3], [1, 2, 3], [4, 5], [4, 5]]);
 <digraph with 5 vertices, 13 edges>

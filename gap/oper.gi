@@ -1115,8 +1115,9 @@ function(digraph)
     ErrorMayQuit("Digraphs: AsBinaryRelation: usage,\n",
                  "the argument <digraph> must have at least one vertex,");
   elif IsMultiDigraph(digraph) then
-    ErrorMayQuit("Digraphs: AsBinaryRelation: usage,\nthis ",
-                 "function does not apply to digraphs with multiple edges,");
+    ErrorMayQuit("Digraphs: AsBinaryRelation: usage,\n",
+                 "the argument <digraph> must be a digraph with ",
+                 "no multiple edges,");
   fi;
   # Can translate known attributes of <digraph> to the relation, e.g. symmetry
   rel := BinaryRelationOnPointsNC(OutNeighbours(digraph));
