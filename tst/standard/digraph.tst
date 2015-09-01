@@ -54,43 +54,6 @@ gap> DigraphVertexLabels(gr);
 gap> DigraphVertices(gr);
 [ 1 .. 5 ]
 
-#T# DigraphEdgeLabels
-gap> gr := RandomMultiDigraph(8, 20);;
-gap> DigraphEdgeLabels(gr);
-[ 1 .. 20 ]
-gap> DigraphEdgeLabel(gr, 10);
-10
-gap> gr := RandomMultiDigraph(8, 20);;
-gap> DigraphEdgeLabel(gr, 15);
-15
-gap> gr := RandomMultiDigraph(8, 20);;
-gap> SetDigraphEdgeLabel(gr, 4, Group((1, 2, 3)));
-gap> DigraphEdgeLabel(gr, 4);
-Group([ (1,2,3) ])
-gap> DigraphEdgeLabel(gr, 5);
-5
-gap> gr := RandomMultiDigraph(8, 20);;
-gap> SetDigraphEdgeLabel(gr, 0, 0);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `SetDigraphEdgeLabel' on 3 arguments
-gap> SetDigraphEdgeLabel(gr, 21, 21);
-Error, Digraphs: SetDigraphEdgeLabel: usage,
-there are only 20 vertices,
-gap> SetDigraphEdgeLabels(gr, Elements(CyclicGroup(20)));;
-gap> DigraphEdgeLabels(gr);
-[ <identity> of ..., f1, f2, f3, f1*f2, f1*f3, f2*f3, f3^2, f1*f2*f3, 
-  f1*f3^2, f2*f3^2, f3^3, f1*f2*f3^2, f1*f3^3, f2*f3^3, f3^4, f1*f2*f3^3, 
-  f1*f3^4, f2*f3^4, f1*f2*f3^4 ]
-gap> DigraphEdgeLabel(gr, 10);
-f1*f3^2
-gap> DigraphEdgeLabel(gr, 21);
-Error, Digraphs: DigraphEdgeLabel: usage,
-21 is nameless or not a vertex,
-gap> SetDigraphEdgeLabels(gr, [1 .. 21]);
-Error, Digraphs: SetDigraphEdgeLabels: usage,
-the 2nd arument <names> must be a list with length equal to the number of
-vertices of the digraph,
-
 #T# Graph
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
@@ -338,14 +301,14 @@ gap> gr := Digraph(bin);
 <digraph with 5 vertices, 5 edges>
 gap> OutNeighbours(gr);
 [ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 4 ] ]
-gap> gr := Digraph([[1,2],[1,2],[3],[4,5],[4,5]]);;
+gap> gr := Digraph([[1, 2], [1, 2], [3], [4, 5], [4, 5]]);;
 gap> b := AsBinaryRelation(gr);
 Binary Relation on 5 points
 gap> IsEquivalenceRelation(b);
 true
 gap> gr2 := Digraph(b);
 <digraph with 5 vertices, 9 edges>
-gap> gr := Digraph([[1,2], [3], []]);
+gap> gr := Digraph([[1, 2], [3], []]);
 <digraph with 3 vertices, 3 edges>
 gap> b := AsBinaryRelation(gr);;
 gap> IsAntisymmetricBinaryRelation(b);

@@ -60,7 +60,6 @@ function(digraph)
   # Return the reduced graph, with labels preserved
   gr := DigraphNC(adj);
   SetDigraphVertexLabels(gr, labels);
-  SetDigraphEdgeLabels(gr, DigraphEdgeLabels(digraph));
   return gr;
 end);
 

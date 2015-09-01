@@ -115,60 +115,6 @@ function(graph)
   return graph!.vertexlabels;
 end);
 
-InstallMethod(SetDigraphEdgeLabel, "for a digraph, pos int, object",
-[IsDigraph, IsPosInt, IsObject],
-function(graph, i, name)
-
-  if not IsBound(graph!.edgelabels) then
-    graph!.edgelabels := [1 .. DigraphNrEdges(graph)];
-  fi;
-
-  if i > DigraphNrEdges(graph) then
-    ErrorMayQuit("Digraphs: SetDigraphEdgeLabel: usage,\n",
-                 "there are only ", DigraphNrEdges(graph), " vertices,");
-  fi;
-  graph!.edgelabels[i] := name;
-  return;
-end);
-
-InstallMethod(DigraphEdgeLabel, "for a digraph and pos int",
-[IsDigraph, IsPosInt],
-function(graph, i)
-
-  if not IsBound(graph!.edgelabels) then
-    graph!.edgelabels := [1 .. DigraphNrEdges(graph)];
-  fi;
-
-  if IsBound(graph!.edgelabels[i]) then
-    return graph!.edgelabels[i];
-  fi;
-  ErrorMayQuit("Digraphs: DigraphEdgeLabel: usage,\n", i,
-               " is nameless or not a vertex,");
-end);
-
-InstallMethod(SetDigraphEdgeLabels, "for a digraph and list",
-[IsDigraph, IsList],
-function(graph, names)
-
-  if Length(names) = DigraphNrEdges(graph) then
-    graph!.edgelabels := names;
-  else
-    ErrorMayQuit("Digraphs: SetDigraphEdgeLabels: usage,\n",
-                 "the 2nd arument <names> must be a list with length equal",
-                 " to the number of\nvertices of the digraph,");
-  fi;
-end);
-
-InstallMethod(DigraphEdgeLabels, "for a digraph and pos int",
-[IsDigraph],
-function(graph)
-
-  if not IsBound(graph!.edgelabels) then
-    graph!.edgelabels := [1 .. DigraphNrEdges(graph)];
-  fi;
-  return graph!.edgelabels;
-end);
-
 # multi means it has at least one multiple edges
 
 InstallMethod(IsMultiDigraph, "for a digraph",
@@ -928,7 +874,6 @@ function(digraph)
   out := List(OutNeighbours(digraph), ShallowCopy);
   gr := DigraphNC(out);
   SetDigraphVertexLabels(gr, StructuralCopy(DigraphVertexLabels(digraph)));
-  SetDigraphEdgeLabels(gr, StructuralCopy(DigraphEdgeLabels(digraph)));
   return gr;
 end);
 

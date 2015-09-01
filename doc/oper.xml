@@ -200,8 +200,6 @@ gap> DigraphRemoveLoops(gr);
     The result is the largest subdigraph of <A>digraph</A> which does not 
     contain multiple edges. <P/>
 
-    Note that previously set <Ref Attr="DigraphEdgeLabels"/> of <A>digraph</A>
-    will be ignored by this operation. <P/>
     <Example><![CDATA[
 gap> gr1 := Digraph( [ [ 1, 2, 3, 2 ], [ 1, 1, 3 ], [ 2, 2, 2 ] ] );
 <multidigraph with 3 vertices, 10 edges>
@@ -903,8 +901,7 @@ Binary Relation on 4 points
     will have <C>Maximum(</C><M>n_1, n_2</M><C>)</C> vertices and
     <M>m_1 + m_2</M> edges. 
 
-    Note that previously set <Ref Attr="DigraphVertexLabels"/> and
-    <Ref Attr="DigraphEdgeLabels"/> will be lost.
+    Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
     
 <Example><![CDATA[
 gap> gr := CycleDigraph(10);
@@ -953,8 +950,7 @@ true
     and an edge <C>[</C><M>i,j</M><C>]</C> in <A>digraph2</A> will become
     the edge <C>[</C><M>n_1+i,n_1+j</M><C>]</C>.<P/>
 
-    Note that previously set <Ref Attr="DigraphVertexLabels"/> and
-    <Ref Attr="DigraphEdgeLabels"/> will be lost.
+    Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
     
 <Example><![CDATA[
 gap> gr1 := CycleDigraph(3);
@@ -1002,8 +998,7 @@ gap> OutNeighbours(union);
     and an edge <C>[</C><M>i,j</M><C>]</C> in <A>digraph2</A> will become
     the edge <C>[</C><M>n_1+i,n_1+j</M><C>]</C>. <P/>
 
-    Note that previously set <Ref Attr="DigraphVertexLabels"/> and
-    <Ref Attr="DigraphEdgeLabels"/> will be lost.
+    Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
 
 <Example><![CDATA[
 gap> gr := CompleteDigraph(3);

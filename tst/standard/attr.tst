@@ -891,8 +891,6 @@ gap> gr := Digraph([[2, 4, 2, 6, 1], [], [], [2, 1, 4], [],
 <multidigraph with 7 vertices, 14 edges>
 gap> rd := ReducedDigraph(gr);
 <multidigraph with 5 vertices, 14 edges>
-gap> DigraphEdgeLabels(rd) = DigraphEdgeLabels(gr);
-true
 gap> DigraphVertexLabels(rd);
 [ 1, 4, 6, 7, 2 ]
 gap> gr := CompleteDigraph(10);
