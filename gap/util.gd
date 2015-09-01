@@ -9,7 +9,6 @@
 ##
 
 BindGlobal("DIGRAPHS_OmitFromTests", []);
-BindGlobal("DIGRAPHS_OmitFromTestManualExamples", []);
 
 DeclareGlobalFunction("DIGRAPHS_Dir");
 DeclareGlobalFunction("DIGRAPHS_Test");

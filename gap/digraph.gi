@@ -155,20 +155,31 @@ end);
 
 InstallMethod(Graph, "for a digraph", [IsDigraph],
 function(graph)
-  local gamma, i;
+  local gamma, i, n;
 
   if IsMultiDigraph(graph) then
     Info(InfoWarning, 1, "Grape does not support multiple edges, so ",
          "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
 
-  gamma := NullGraph(Group([], ()), DigraphNrVertices(graph));
-  Unbind(gamma.isSimple);
+  if not DIGRAPHS_IsGrapeLoaded then
+    Info(InfoWarning, 1, "Grape is not loaded,");
+  fi;
 
+  n := DigraphNrVertices(graph);
+  gamma := rec(order := n,
+               group := Group(()),
+               isGraph := true,
+               representatives := [1 .. n] * 1,
+               schreierVector := [1 .. n] * -1);
+
+  # Used to be the following, using the constructor from GRAPE:
+  # gamma := NullGraph(Group([], ()), DigraphNrVertices(graph));
+
+  gamma.adjacencies := EmptyPlist(n);
   for i in [1 .. gamma.order] do
     gamma.adjacencies[i] := Set(OutNeighbours(graph)[i]);
   od;
-
   gamma.names := Immutable(DigraphVertexLabels(graph));
 
   return gamma;
