@@ -45,7 +45,7 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
 
   if hint <> fail and not IsPosInt(hint) then
     Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 6th argument <hint> has to be a positive integer or infinity,");
+          "the 6th argument <hint> has to be a positive integer or fail,");
     return;
   fi;
 
@@ -129,7 +129,7 @@ function(arg)
   out := HomomorphismGraphsFinder(digraph, digraph, fail, gens, limit, fail,
                                   false, DigraphVertices(digraph), []);
 
-  if limit = fail then
+  if limit = infinity then
     SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
   fi;
   return out;

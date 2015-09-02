@@ -59,11 +59,35 @@ gap> gr := Digraph([[2], [1, 3], [2]]);
 gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 3, 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 1, 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
-gap> gr := Digraph([[2], [1, 3], [2]]);
+gap> gr := DigraphCopy(gr);
 <digraph with 3 vertices, 4 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 3, 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 1, 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
+gap> gr := DigraphCopy(gr);;
+gap> GeneratorsOfEndomorphismMonoid(gr, infinity);
+[ Transformation( [ 3, 2, 1 ] ), IdentityTransformation, 
+  Transformation( [ 1, 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
+gap> gr := DigraphCopy(gr);;
+gap> GeneratorsOfEndomorphismMonoid(gr, 1);
+[ Transformation( [ 3, 2, 1 ] ) ]
+gap> gr := DigraphCopy(gr);;
+gap> GeneratorsOfEndomorphismMonoid(gr, 2);
+[ Transformation( [ 3, 2, 1 ] ), IdentityTransformation ]
+gap> HasGeneratorsOfEndomorphismMonoidAttr(gr);
+false
+gap> GeneratorsOfEndomorphismMonoid(gr, 3);
+[ Transformation( [ 3, 2, 1 ] ), IdentityTransformation, 
+  Transformation( [ 1, 2, 1 ] ) ]
+gap> HasGeneratorsOfEndomorphismMonoidAttr(gr);
+false
+gap> GeneratorsOfEndomorphismMonoid(gr, 4);
+[ Transformation( [ 3, 2, 1 ] ), IdentityTransformation, 
+  Transformation( [ 1, 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
+gap> HasGeneratorsOfEndomorphismMonoidAttr(gr);
+false
+
+#T# GeneratorsOfEndomorphismMonoid for complete digraphs
 
 # CompleteDigraph (with no loops) has no singular endomorphisms
 gap> gr := CompleteDigraph(25);
@@ -98,6 +122,8 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);
   Transformation( [ 2, 1 ] ), IdentityTransformation ]
 gap> ForAll(gens, x -> AsPermutation(x) in AutomorphismGroup(gr));
 true
+gap> GeneratorsOfEndomorphismMonoid(gr) = gens;
+true
 
 # CompleteDigraph(n) (with loops added) has T_n automorphism group
 gap> gr := Digraph(List([1 .. 5], x -> [1 .. 5]));
@@ -106,12 +132,16 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
 not yet implemented for digraphs with loops,
 
+#T# GeneratorsOfEndomorphismMonoid for empty digraphs
+
 # EmptyDigraph(n) has T_n automorphism group
 gap> gr := EmptyDigraph(5);
 <digraph with 5 vertices, 0 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> Size(Semigroup(gens)) = 5 ^ 5;
 true
+
+#T# GeneratorsOfEndomorphismMonoid for chain digraphs
 
 # ChainDigraph (with no loops) has all strict order preserving transformations
 gap> gr := ChainDigraph(20);
@@ -120,14 +150,51 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
 not yet implemented for non-symmetric digraphs,
 
-# ChainDigraph (with no loops) has all order preserving transformations
-gap> gr := ChainDigraph(20);
-<digraph with 20 vertices, 19 edges>
+# ChainDigraph (with loops) has all order preserving transformations
+gap> gr := Digraph(Concatenation(List([1 .. 19], x -> [x, x + 1]), [[20]]));
+<digraph with 20 vertices, 39 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
 not yet implemented for non-symmetric digraphs,
 
-#T# DIGRAPHS_UnbindVariables
+#T# GeneratorsOfEndomorphismMonoid for cycle digraphs
+
+# CycleDigraph (with no loops) has no singular endomorphisms
+gap> gr := CycleDigraph(20);
+<digraph with 20 vertices, 20 edges>
+gap> gens := [];;
+gap> gens := Concatenation(gens, GeneratorsOfEndomorphismMonoid(gr));
+Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
+not yet implemented for non-symmetric digraphs,
+gap> ForAll(gens, x -> AsPermutation(x) in AutomorphismGroup(gr));
+true
+
+# CycleDigraph (with loops)
+gap> gr := Digraph(List([1 .. 20], x -> [x, x mod 20 + 1]));
+<digraph with 20 vertices, 40 edges>
+
+#T# HomomorphismGraphsFinder: trying to break it
+
+#
+gap> gr1 := CompleteDigraph(2);
+<digraph with 2 vertices, 2 edges>
+gap> gr2 := CompleteDigraph(3);
+<digraph with 3 vertices, 6 edges>
+gap> func := function(user_param, t)
+>      user_param := user_param ^ t;
+> end;;
+gap> homos := HomomorphismGraphsFinder(gr1, gr2, func, Group(()), infinity,
+>  fail, false, DigraphVertices(gr2), []);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `^' on 2 arguments
+gap> func := function(user_param, t)
+>      Add(user_param, t);
+> end;;
+gap> homos := HomomorphismGraphsFinder(gr1, gr2, func, [], infinity,
+>  fail, false, DigraphVertices(gr2), []);
+[ IdentityTransformation ]
+
+##T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(G);
 gap> Unbind(H);
@@ -136,6 +203,9 @@ gap> Unbind(S);
 gap> Unbind(t);
 gap> Unbind(str);
 gap> Unbind(graph);
+gap> Unbind(homos);
+gap> Unbind(gr1);
+gap> Unbind(gr2);
 
 #E#
 gap> STOP_TEST("Digraphs package: extreme/grahom.tst");
