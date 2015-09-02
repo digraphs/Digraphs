@@ -38,14 +38,14 @@ gunzip digraphs-x.x.tar.gz; tar xvf digraphs-x.x.tar
 
 * start GAP in the usual way.
 
-* type LoadPackage("digraphs");
+* type `LoadPackage("digraphs");`
 
-* compile the documentation by typing DigraphsMakeDoc();
+* compile the documentation by typing `DigraphsMakeDoc();`
 
 ## Further Information
 
 For questions, remarks, suggestions, and issues please use the
 [issue tracker](http://bitbucket.org/james-d-mitchell/digraphs/issues).
 
-Julius Jonusas, James Mitchell, Michael Torpey, Wilfred Wilson
-2nd of September 2015
+# Julius Jonusas, James Mitchell, Michael Torpey, Wilfred Wilson
+# 2nd of September 2015
