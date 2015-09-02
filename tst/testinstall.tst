@@ -204,5 +204,20 @@ gap> DigraphCanonicalLabelling(gr)
 > = DigraphCanonicalLabelling(DigraphCopy(gr));
 true
 
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr2);
+gap> Unbind(gr);
+gap> Unbind(G);
+gap> Unbind(p);
+gap> Unbind(i);
+gap> Unbind(gr1);
+gap> Unbind(topo);
+gap> Unbind(source);
+gap> Unbind(range);
+gap> Unbind(r);
+gap> Unbind(func);
+gap> Unbind(adj);
+gap> Unbind(d);
+
 #E#
 gap> STOP_TEST("Digraphs package: testinstall.tst");
