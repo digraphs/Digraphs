@@ -290,5 +290,20 @@ true
 gap> gr2 = gr1;
 false
 
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr4);
+gap> Unbind(gr2);
+gap> Unbind(gr);
+gap> Unbind(p);
+gap> Unbind(perms);
+gap> Unbind(H);
+gap> Unbind(gr1);
+gap> Unbind(trees);
+gap> Unbind(group5);
+gap> Unbind(treeAuts);
+gap> Unbind(iso);
+gap> Unbind(graph5);
+gap> Unbind(gr3);
+
 #E#
 gap> STOP_TEST("Digraphs package: extreme/bliss.tst");

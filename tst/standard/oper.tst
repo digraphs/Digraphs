@@ -215,7 +215,7 @@ gap> DigraphEdges(last);
 [ [ 1, 2 ], [ 1, 4 ], [ 2, 2 ], [ 3, 4 ], [ 3, 1 ], [ 3, 1 ], [ 4, 3 ], 
   [ 4, 2 ] ]
 
-#T# OnDigraphs (for a digraph and a transformation)
+#T# OnDigraphs: for a digraph and a transformation
 gap> gr := Digraph([[2], [1, 3], []]);
 <digraph with 3 vertices, 3 edges>
 gap> OutNeighbours(gr);
@@ -231,7 +231,7 @@ gap> gr := OnDigraphs(gr, t);
 gap> OutNeighbours(gr);
 [ [ 2 ], [ 1 ], [  ] ]
 
-#T# InNeighboursOfVertex, InDegreeOfVertex
+#T# InNeighboursOfVertex and InDegreeOfVertex
 gap> gr := Digraph(rec(nrvertices := 10, source := [1, 1, 5, 5, 7, 10],
 > range := [3, 3, 1, 10, 7, 1]));
 <multidigraph with 10 vertices, 6 edges>
@@ -264,7 +264,7 @@ gap> InDegrees(gr);
 gap> InDegreeOfVertex(gr, 2);
 3
 
-#T# OutNeighboursOfVertex, OutDegreeOfVertex
+#T# OutNeighboursOfVertex and OutDegreeOfVertex
 gap> gr := Digraph(rec(nrvertices := 10, source := [1, 5, 5, 5, 5, 5, 5, 6],
 > range := [1, 1, 2, 3, 1, 2, 3, 6]));
 <multidigraph with 10 vertices, 8 edges>
@@ -975,9 +975,20 @@ gap> gr := CycleDigraph(1000);
 <digraph with 1000 vertices, 1000 edges>
 gap> gr2 := CompleteDigraph(100);
 <digraph with 100 vertices, 9900 edges>
+gap> DigraphDisjointUnion(gr) = gr;
+true
+gap> DigraphDisjointUnion([[]]);
+Error, Digraphs: DigraphDisjointUnion: usage,
+the arguments must be digraphs, or the argument must be a list of digraphs,
+gap> DigraphDisjointUnion([gr], [gr]);
+Error, Digraphs: DigraphDisjointUnion: usage,
+the arguments must be digraphs, or the argument must be a list of digraphs,
+gap> DigraphDisjointUnion(gr, Group(()));
+Error, Digraphs: DigraphDisjointUnion: usage,
+the arguments must be digraphs, or the argument must be a list of digraphs,
 gap> DigraphDisjointUnion(gr, gr);
 <digraph with 2000 vertices, 2000 edges>
-gap> DigraphDisjointUnion(gr2, gr2);
+gap> DigraphDisjointUnion([gr2, gr2]);
 <digraph with 200 vertices, 19800 edges>
 gap> DigraphDisjointUnion(gr, gr2);
 <digraph with 1100 vertices, 10900 edges>
@@ -997,6 +1008,16 @@ gap> u1 := DigraphDisjointUnion(gr1, gr2);
 gap> u2 := DigraphDisjointUnion(gr1, gr3);
 <multidigraph with 5 vertices, 8 edges>
 gap> u1 = u2;
+true
+gap> n := 10;;
+gap> DigraphDisjointUnion(List([1 .. n], x -> EmptyDigraph(x))) =
+> EmptyDigraph(Int(n * (n + 1) / 2));
+true
+gap> gr := DigraphDisjointUnion(List([2 .. 5], x -> ChainDigraph(x)));
+<digraph with 14 vertices, 10 edges>
+gap> gr := DigraphAddEdges(gr, [[2, 3], [5, 6], [9, 10]]);
+<digraph with 14 vertices, 13 edges>
+gap> gr = ChainDigraph(14);
 true
 
 #T# DigraphFloydWarshall
@@ -1041,6 +1062,17 @@ gap> gr1 := Digraph(
 gap> gr2 := Digraph([[9], [9, 1, 6, 3], [], [], [9, 3, 9],
 > [1, 4, 3, 2, 9, 4], [1, 7], [1, 2, 4], [8]]);
 <multidigraph with 9 vertices, 20 edges>
+gap> DigraphEdgeUnion(gr1) = gr1;
+true
+gap> DigraphEdgeUnion([[]]);
+Error, Digraphs: DigraphEdgeUnion: usage,
+the arguments must be digraphs, or the argument must be a list of digraphs,
+gap> DigraphEdgeUnion([gr1], [gr1]);
+Error, Digraphs: DigraphEdgeUnion: usage,
+the arguments must be digraphs, or the argument must be a list of digraphs,
+gap> DigraphEdgeUnion(gr1, Group(()));
+Error, Digraphs: DigraphEdgeUnion: usage,
+the arguments must be digraphs, or the argument must be a list of digraphs,
 gap> m1 := DigraphEdgeUnion(gr1, gr2);
 <multidigraph with 10 vertices, 29 edges>
 gap> m2 := DigraphEdgeUnion(gr2, gr1);
@@ -1067,6 +1099,10 @@ gap> OutNeighbours(gr);
 [ [ 6, 3, 3, 10, 6, 6, 3, 3, 10, 6 ], [ 4, 4 ], [ 5, 1, 5, 1 ], 
   [ 5, 4, 6, 5, 4, 6 ], [ 9, 9 ], [ 8, 8 ], [ 7, 6, 7, 6 ], 
   [ 8, 10, 8, 1, 8, 10, 8, 1 ], [  ], [ 2, 2 ] ]
+gap> gr := DigraphEdgeUnion(ChainDigraph(2), ChainDigraph(3), ChainDigraph(4));
+<multidigraph with 4 vertices, 6 edges>
+gap> OutNeighbours(gr);
+[ [ 2, 2, 2 ], [ 3, 3 ], [ 4 ], [  ] ]
 
 #T# DigraphCopy
 gap> gr := Digraph([[6, 1, 2, 3], [6], [2, 2, 3], [1, 1], [6, 5],
@@ -1101,6 +1137,17 @@ gap> gr := CompleteDigraph(20);
 <digraph with 20 vertices, 380 edges>
 gap> gr2 := EmptyDigraph(10);
 <digraph with 10 vertices, 0 edges>
+gap> DigraphJoin(gr) = gr;
+true
+gap> DigraphJoin([[]]);
+Error, Digraphs: DigraphJoin: usage,
+the arguments must be digraphs, or the argument must be a list of digraphs,
+gap> DigraphJoin([gr], [gr]);
+Error, Digraphs: DigraphJoin: usage,
+the arguments must be digraphs, or the argument must be a list of digraphs,
+gap> DigraphJoin([gr, Group(())]);
+Error, Digraphs: DigraphJoin: usage,
+the arguments must be digraphs, or the argument must be a list of digraphs,
 gap> DigraphJoin(gr, gr2);
 <digraph with 30 vertices, 780 edges>
 gap> DigraphJoin(gr, EmptyDigraph(0));
@@ -1125,8 +1172,24 @@ gap> j2 := DigraphJoin(gr1, gr3);
 <multidigraph with 5 vertices, 20 edges>
 gap> u1 = u2;
 true
+gap> gr := DigraphJoin(ChainDigraph(2), CycleDigraph(4), EmptyDigraph(0));
+<digraph with 6 vertices, 21 edges>
+gap> mat := [
+> [0, 1, 1, 1, 1, 1],
+> [0, 0, 1, 1, 1, 1],
+> [1, 1, 0, 1, 0, 0],
+> [1, 1, 0, 0, 1, 0],
+> [1, 1, 0, 0, 0, 1],
+> [1, 1, 1, 0, 0, 0]];;
+gap> AdjacencyMatrix(gr) = mat;
+true
+gap> DigraphJoin(List([1 .. 5], x -> EmptyDigraph(1))) = CompleteDigraph(5);
+true
+gap> DigraphJoin(EmptyDigraph(3), EmptyDigraph(2)) =
+> CompleteBipartiteDigraph(3, 2);
+true
 
-#T# OnMultiDigraphs
+#T# OnMultiDigraphs: for a pair of permutations
 gap> gr1 := CompleteDigraph(3);
 <digraph with 3 vertices, 6 edges>
 gap> DigraphEdges(gr1);
@@ -1326,6 +1389,60 @@ not yet implemented for non-topologically sortable digraphs,
 gap> DigraphReflexiveTransitiveReduction(gr);
 Error, Digraphs: DigraphReflexiveTransitiveReduction:
 not yet implemented for non-topologically sortable digraphs,
+
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr);
+gap> Unbind(nrvertices);
+gap> Unbind(nbs);
+gap> Unbind(u1);
+gap> Unbind(j1);
+gap> Unbind(j2);
+gap> Unbind(grrt);
+gap> Unbind(rtclosure);
+gap> Unbind(id);
+gap> Unbind(out);
+gap> Unbind(rgr);
+gap> Unbind(erev);
+gap> Unbind(rev);
+gap> Unbind(edges);
+gap> Unbind(u2);
+gap> Unbind(source);
+gap> Unbind(m1);
+gap> Unbind(edges2);
+gap> Unbind(m2);
+gap> Unbind(b);
+gap> Unbind(adj);
+gap> Unbind(gri);
+gap> Unbind(a);
+gap> Unbind(mat);
+gap> Unbind(i1);
+gap> Unbind(i2);
+gap> Unbind(grt);
+gap> Unbind(comps);
+gap> Unbind(qr);
+gap> Unbind(func);
+gap> Unbind(gr2);
+gap> Unbind(gr3);
+gap> Unbind(p2);
+gap> Unbind(out1);
+gap> Unbind(gr4);
+gap> Unbind(p1);
+gap> Unbind(e);
+gap> Unbind(g);
+gap> Unbind(temp);
+gap> Unbind(gr1);
+gap> Unbind(rel3);
+gap> Unbind(h);
+gap> Unbind(rel1);
+gap> Unbind(m);
+gap> Unbind(n);
+gap> Unbind(range);
+gap> Unbind(r);
+gap> Unbind(t);
+gap> Unbind(rel2);
+gap> Unbind(out3);
+gap> Unbind(out2);
+gap> Unbind(tclosure);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/oper.tst");

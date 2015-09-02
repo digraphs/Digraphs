@@ -238,6 +238,7 @@ gap> DigraphTopologicalSort(gr);
 [ 2, 1, 3 ]
 
 #T# DigraphStronglyConnectedComponents
+
 # <gr> is Digraph(RightCayleyGraphSemigroup) of the gens:
 # [Transformation([1, 3, 3]),
 #  Transformation([2, 1, 2]),
@@ -910,6 +911,40 @@ gap> DigraphVertexLabels(gr);
 [ "one", "two", "three", "four" ]
 gap> DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
+
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr);
+gap> Unbind(nrvertices);
+gap> Unbind(nbs);
+gap> Unbind(reflextrans);
+gap> Unbind(scc);
+gap> Unbind(id);
+gap> Unbind(rd);
+gap> Unbind(source);
+gap> Unbind(wcc);
+gap> Unbind(adj1);
+gap> Unbind(adj);
+gap> Unbind(reflextrans1);
+gap> Unbind(reflextrans2);
+gap> Unbind(multiple);
+gap> Unbind(mat);
+gap> Unbind(cycle12);
+gap> Unbind(adj2);
+gap> Unbind(trans1);
+gap> Unbind(trans2);
+gap> Unbind(topo);
+gap> Unbind(comps);
+gap> Unbind(grid);
+gap> Unbind(gr2);
+gap> Unbind(gr3);
+gap> Unbind(gr1);
+gap> Unbind(i);
+gap> Unbind(j);
+gap> Unbind(range);
+gap> Unbind(r);
+gap> Unbind(circuit);
+gap> Unbind(trans);
+gap> Unbind(complete15);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/attr.tst");

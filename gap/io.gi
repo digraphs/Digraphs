@@ -29,13 +29,7 @@ function(str)
   return Digraph(out);
 end);
 
-#TODO make this a global function, doc, tests.
-
-# To decode graphs stored by:
 #
-#   Each is given as the upper triangle of the adjacency matrix in row order,
-#   on one line without spaces. The lower triangle is zero; that is, the points
-#   are in topological order.
 
 InstallGlobalFunction(AdjacencyMatrixUpperTriangleLineDecoder,
 function(str)
@@ -56,27 +50,42 @@ function(str)
   return Digraph(out);
 end);
 
-#TODO make this a global function, doc, tests.
 #
-# TCode is output by geng/watercluster each line looks like:
-#
-#   3 2 0 2 2 1
-#
-# interpreted as:
-#
-#   3 vertices, 2 edges, 0 -> 2, 2 -> 1
-#
-# where the vertices are [0, 1, 2].
 
 InstallGlobalFunction(TCodeDecoder,
 function(str)
   local out, i;
+  if not IsString(str) then
+    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+                 "first argument <str> must be a string,");
+  fi;
 
   str := SplitString(str, " ");
   Apply(str, EvalString);
-  out := List([1 .. str[1]], x -> []); #str[1] = number of vertices
 
-  for i in [1 .. str[2]] do # str[2] = number of edges
+  if not ForAll(str, x -> IsInt(x) and x >= 0) then
+    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+                 "1st argument <str> must be a string of ",
+                 "space-separated non-negative integers,");
+  fi;
+  if not Length(str) >= 2 then
+    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+                 "first argument <str> must be a string of ",
+                 "at least two integers,");
+  fi;
+  if not ForAll([3 .. Length(str)], i -> str[i] < str[1]) then
+    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+                 "vertex numbers must be in the range [0..n-1],\n",
+                 "where n is the first entry in <str>,");
+  fi;
+  if Length(str) < 2 * str[2] + 2 then
+    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+                 "<str> must contain at least 2e+2 entries,\n",
+                 "where e is the number of edges (the 2nd entry in <str>),");
+  fi;
+
+  out := List([1 .. str[1]], x -> []);
+  for i in [1 .. str[2]] do
     Add(out[str[2 * i + 1] + 1], str[2 * i + 2] + 1);
   od;
 
@@ -956,7 +965,8 @@ function(graph)
     Add(blist, true);
   od;
   if Length(blist) mod 6 <> 0 then
-    ErrorMayQuit("Digraphs: Sparse6String: usage,\nPadding problem,");
+    ErrorMayQuit("Digraphs: Sparse6String: usage,\n",
+                 "Padding problem,");
   fi;
 
   # Read blist into list, 6 bits at a time
@@ -1135,7 +1145,8 @@ function(graph)
     Add(blist, true);
   od;
   if Length(blist) mod 6 <> 0 then
-    ErrorMayQuit("Digraphs: DiSparse6String: usage,\nPadding problem,");
+    ErrorMayQuit("Digraphs: DiSparse6String: usage,\n",
+                 "Padding problem,");
   fi;
 
   # Read blist into list, 6 bits at a time
