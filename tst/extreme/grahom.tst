@@ -257,7 +257,8 @@ gap> HomomorphismGraphsFinder(gr2, gr1, fail, [], 1, fail, false, [1 .. 20],
 #T# HomomorphismGraphsFinder: large example 1
 # Randomly chosen example
 gap> gr1 := DigraphFromGraph6String(
-> "]b?_?a@I??T_Y?ADcGAACUP@_AOG?C_BoH?Pg?C??gk?AA@?A?CJD?EO?sO`@H?j@S?C?_PG??");
+> "]b?_?a@I??T_Y?ADcGAACUP@_AOG?C_BoH?Pg?C??gk?AA@?A?CJD?EO?sO`@H?j@S?C?_PG??")
+> ;
 <digraph with 30 vertices, 174 edges>
 gap> gr2 := DigraphFromGraph6String(Concatenation(
 > "ghYlce}\\ANfA}}WbK^qUDQqfGwl]UecLg{xSyQ]fHK}]uHFUyn\\]weXQVCRZDlYUvqYpnNNv",
