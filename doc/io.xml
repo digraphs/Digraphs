@@ -374,21 +374,24 @@ gap> ReadPlainTextDigraph(filename, ",", 1, ['/','%']);
   <Func Name="TournamentLineDecoder" Arg="str"/>
   <Returns>A digraph.</Returns>
   <Description>
-    <A>str</A> should be a string with no spaces, representing the entries in
-    the upper triangle of a tournament's adjacency matrix [see <Ref
-    Prop="IsTournament"/>].
+    This function takes a string <A>str</A>, decodes it, and then returns the
+    tournament [see <Ref Prop="IsTournament"/>] which it defines, according to
+    the following rules. <P/>
 
-    A character <C>1</C> represents an edge, while any other character
-    represents a non-edge.  The number of vertices <C>n</C> will be detected
-    from the length of the string. <P/>
+    The characters of the string <A>str</A> represent the entries in the upper
+    triangle of a tournament's adjacency matrix. The number of vertices
+    <C>n</C> will be detected from the length of the string and will be as
+    large as possible.  <P/>
 
     The first character represents the possible edge <C>1 -> 2</C>, the second
     represents <C>1 -> 3</C> and so on until <C>1 -> n</C>; then the following
-    character represents <C>2 -> 3</C>, and so on up to <C>n-1 -> n</C>.
+    character represents <C>2 -> 3</C>, and so on up to the character which
+    represents the edge <C>n-1 -> n</C>. <P/>
 
-    In this way, all the possible edges <C>a -> b</C> such that <C>a &lt; b</C>
-    are encoded one-by-one.  If <C>a -> b</C> is not present, then <C>b -> a</C>
-    will be present instead. <P/>
+    If a character of the string with corresponding edge <C>i -> j</C> is equal
+    to <C>1</C>, then the edge <C>i -> j</C> is present in the tournament.
+    Otherwise, the edge <C>i -> j</C> is present instead.  In this way, all the
+    possible edges are encoded one-by-one.
 
     <Example><![CDATA[
 gap> gr := TournamentLineDecoder("100001");
@@ -405,18 +408,26 @@ gap> OutNeighbours(gr);
   <Func Name="AdjacencyMatrixUpperTriangleLineDecoder" Arg="str"/>
   <Returns>A digraph.</Returns>
   <Description>
-    <A>str</A> should be a string with no spaces, representing the entries in
-    the upper triangle of a digraph's adjacency matrix.  A character <C>1</C>
-    represents an edge, while any other character represents a non-edge.  The
-    number of vertices <C>n</C> will be detected from the length of the
-    string. <P/>
+    This function takes a string <A>str</A>, decodes it, and then returns the
+    topologically sorted digraph [see <Ref Prop="DigraphTopologicalSort"/>]
+    which it defines, according to the following rules. <P/>
+
+    The characters of the string <A>str</A> represent the entries in the upper
+    triangle of a digraph's adjacency matrix. The number of vertices <C>n</C>
+    will be detected from the length of the string and will be as large as
+    possible.  <P/>
 
     The first character represents the possible edge <C>1 -> 2</C>, the second
     represents <C>1 -> 3</C> and so on until <C>1 -> n</C>; then the following
-    character represents <C>2 -> 3</C>, and so on up to <C>n-1 -> n</C>. <P/>
+    character represents <C>2 -> 3</C>, and so on up to the character which
+    represents the edge <C>n-1 -> n</C>.  If a character of the string with
+    corresponding edge <C>i -> j</C> is equal to <C>1</C>, then this edge is
+    present in the digraph. Otherwise, it is not present.  In this way, all the
+    possible edges are encoded one-by-one. <P/>
 
-    The points will be in topological order; that is, an edge <C>[i,j]</C> can
-    only exist if <C>i &lt; j</C>.
+    In particular, note that there exists no edge <C>[i, j]</C> if <M>j \leq
+      i</M>.  In order words, the digraph will be topologically sorted.
+
     <Example><![CDATA[
 gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("100001");
 <digraph with 4 vertices, 2 edges>
@@ -436,14 +447,17 @@ gap> OutNeighbours(gr);
   <Func Name="TCodeDecoder" Arg="str"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>str</A> is a string consisting of positive integers separated by
-    spaces, then this function will return the digraph defined by it as a TCode
-    string. <P/>
+    If <A>str</A> is a string consisting of at least two non-negative integers
+    separated by spaces, then this function will attempt to return the digraph
+    which it defines as a TCode string. <P/>
 
-    The first integer is the number of vertices <C>v</C> in the digraph, and the
-    second is the number of edges <C>e</C>.  The following <C>2e</C> integers
-    should be vertex numbers in the range <C>[0 .. v-1]</C> which are read in
-    pairs and define the digraph's edges. <P/>
+    The first integer of the string defines the number of vertices <C>v</C> in
+    the digraph, and the second defines the number of edges <C>e</C>.  The
+    following <C>2e</C> integers should be vertex numbers in the range <C>[0 ..
+      v-1]</C>. These integers are read in pairs and define the digraph's
+    edges.  This function will return an error if
+    <C>Length(</C><A>str</A><C>)</C> &lt; <C>2e+2</C>.
+    <P/>
 
     Note that the vertex numbers will be incremented by 1 in the digraph
     returned.  Hence the string fragment <C>0 6</C> will describe the edge
