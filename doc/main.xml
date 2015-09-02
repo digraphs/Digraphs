@@ -1,5 +1,5 @@
 <!DOCTYPE Book SYSTEM "gapdoc.dtd"
-   [ <!ENTITY Digraphs "<Package>Graphs</Package>">
+   [ <!ENTITY Digraphs "<Package>Digraphs</Package>">
      <!ENTITY Grape "<Alt Not='Text'><URL
    Text='Grape'>http://www.maths.qmul.ac.uk/~leonard/grape/</URL></Alt><Alt
    Only='Text'><Package>Grape</Package></Alt>">

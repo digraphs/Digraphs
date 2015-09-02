@@ -8,29 +8,13 @@
 #############################################################################
 ##
 
-<#GAPDoc Label="DigraphsStartTest">
-<ManSection>
-  <Func Name="DigraphsStartTest" Arg=""/>
-  <Returns></Returns>
-  <Description>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphsStopTest">
-<ManSection>
-  <Func Name="DigraphsStopTest" Arg="file"/>
-  <Returns></Returns>
-  <Description>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
 <#GAPDoc Label="DigraphsMakeDoc">
 <ManSection>
   <Func Name="DigraphsMakeDoc" Arg=""/>
-  <Returns></Returns>
+  <Returns>Nothing</Returns>
   <Description>
+    This function should be called with no argument to compile the &Digraphs;
+    documentation.
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -38,8 +22,15 @@
 <#GAPDoc Label="DigraphsTestAll">
 <ManSection>
   <Func Name="DigraphsTestAll" Arg=""/>
-  <Returns></Returns>
+  <Returns>Nothing.</Returns>
   <Description>
+    This function should be called to comprehensively test that &Digraphs; is
+    working correctly. These tests should take no more than a few minutes to
+    complete. The tests will include compiling the package's documentation and
+    running all the examples included in the manual. <P/>
+
+    To quickly test that &Digraphs; is installed correctly use <Ref
+    Func="DigraphsTestInstall"/>.
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -47,8 +38,14 @@
 <#GAPDoc Label="DigraphsTestStandard">
 <ManSection>
   <Func Name="DigraphsTestStandard" Arg=""/>
-  <Returns></Returns>
+  <Returns>Nothing.</Returns>
   <Description>
+    This function should be called to test all the methods included in
+    &Digraphs;.  These tests should take only a few seconds to complete. <P/>
+
+    To quickly test that &Digraphs; is installed correctly use <Ref
+    Func="DigraphsTestInstall"/>.  For a more thorough test, use <Ref
+    Func="DigraphsTestAll"/>.
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -56,8 +53,12 @@
 <#GAPDoc Label="DigraphsTestExtreme">
 <ManSection>
   <Func Name="DigraphsTestExtreme" Arg=""/>
-  <Returns></Returns>
+  <Returns>Nothing.</Returns>
   <Description>
+    This function should be called with no arguments to execute a series of
+    particularly demanding tests, which measure the performance of a variety of
+    functions on large examples.  These tests could take a long time to
+    complete.
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -65,8 +66,12 @@
 <#GAPDoc Label="DigraphsTestInstall">
 <ManSection>
   <Func Name="DigraphsTestInstall" Arg=""/>
-  <Returns></Returns>
+  <Returns>Nothing.</Returns>
   <Description>
+    This function should be called with no argument to test your installation of
+    &Digraphs; is working correctly. These tests should take no more than a
+    fraction of a second to complete.  To test more comprehensively that
+    &Digraphs; is working correctly, use <Ref Func="DigraphsTestAll"/>.
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -74,35 +79,13 @@
 <#GAPDoc Label="DigraphsTestManualExamples">
 <ManSection>
   <Func Name="DigraphsTestManualExamples" Arg=""/>
-  <Returns></Returns>
+  <Returns>Nothing.</Returns>
   <Description>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphsTestEverything">
-<ManSection>
-  <Func Name="DigraphsTestEverything" Arg=""/>
-  <Returns></Returns>
-  <Description>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DIGRAPHS_Dir">
-<ManSection>
-  <Func Name="DIGRAPHS_Dir" Arg=""/>
-  <Returns></Returns>
-  <Description>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsSemigroupsLoaded">
-<ManSection>
-  <Func Name="IsSemigroupsLoaded" Arg=""/>
-  <Returns></Returns>
-  <Description>
+    This function should be called with no argument to test the examples in the
+    &Digraphs; manual. These tests should take no more than a few minutes to
+    complete.  To more comprehensively test that &Digraphs; is installed
+    correctly use <Ref Func="DigraphsTestAll"/>. See also <Ref
+    Func="DigraphsTestInstall"/>.
   </Description>
 </ManSection>
 <#/GAPDoc>

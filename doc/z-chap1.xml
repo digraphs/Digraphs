@@ -7,4 +7,13 @@
   edges <M>E^1</M> together with functions <M>s, r: E^1 \to E^0</M>, called 
   the <E>source</E> and <E>range</E>, respectively.
 
+  <Section><Heading>Testing and Documentation</Heading>
+    <#Include Label="DigraphsMakeDoc">
+    <#Include Label="DigraphsTestInstall">
+    <#Include Label="DigraphsTestAll">
+    <#Include Label="DigraphsTestStandard">
+    <#Include Label="DigraphsTestExtreme">
+    <#Include Label="DigraphsTestManualExamples">
+  </Section>
+
 </Chapter>
