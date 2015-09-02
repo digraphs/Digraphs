@@ -66,7 +66,7 @@
         <A>hint</A> are found.<P/>
 
         If <A>hint</A> is <K>fail</K>, then no restriction is put on the rank
-        of homomorphism found. 
+        of homomorphisms found. 
       </Item>
       
       <Mark><A>injective</A></Mark>
