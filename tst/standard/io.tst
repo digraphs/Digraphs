@@ -202,5 +202,52 @@ gap> ReadPlainTextDigraph(filename, ',', 1, 'i');
 gap> last = gr;
 true
 
+#T# TournamentLineDecoder
+gap> gr := TournamentLineDecoder("101001");
+<digraph with 4 vertices, 6 edges>
+gap> OutNeighbours(gr);
+[ [ 2, 4 ], [  ], [ 1, 2, 4 ], [ 2 ] ]
+gap> gr := TournamentLineDecoder("");
+<digraph with 1 vertex, 0 edges>
+
+#T# AdjacencyMatrixUpperTriangleLineDecoder
+gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("100101");
+<digraph with 4 vertices, 3 edges>
+gap> OutNeighbours(gr);
+[ [ 2 ], [ 3 ], [ 4 ], [  ] ]
+gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("11y111x111");
+<digraph with 5 vertices, 8 edges>
+gap> OutNeighbours(gr);
+[ [ 2, 3, 5 ], [ 3, 4 ], [ 4, 5 ], [ 5 ], [  ] ]
+gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("");
+<digraph with 1 vertex, 0 edges>
+
+#T# TCodeDecoder
+gap> gr := TCodeDecoder("3 2 0 2 2 1");
+<digraph with 3 vertices, 2 edges>
+gap> OutNeighbours(gr);
+[ [ 3 ], [  ], [ 2 ] ]
+gap> gr := TCodeDecoder("12 3 0 10 6 2 8 8");
+<digraph with 12 vertices, 3 edges>
+gap> OutNeighbours(gr);
+[ [ 11 ], [  ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [ 9 ], [  ], [  ], [  ] ]
+gap> gr := TCodeDecoder(3);
+Error, Digraphs: TCodeDecoder: usage,
+first argument <str> must be a string,
+gap> gr := TCodeDecoder("gr 5");
+Error, Digraphs: TCodeDecoder: usage,
+1st argument <str> must be a string of space-separated non-negative integers,
+gap> gr := TCodeDecoder("10");
+Error, Digraphs: TCodeDecoder: usage,
+first argument <str> must be a string of at least two integers,
+gap> gr := TCodeDecoder("2 2 0 4 1 2");
+Error, Digraphs: TCodeDecoder: usage,
+vertex numbers must be in the range [0..n-1],
+where n is the first entry in <str>,
+gap> gr := TCodeDecoder("3 2 0 2");
+Error, Digraphs: TCodeDecoder: usage,
+<str> must contain at least 2e+2 entries,
+where e is the number of edges (the 2nd entry in <str>),
+
 #E#
 gap> STOP_TEST("Digraphs package: standard/io.tst");
