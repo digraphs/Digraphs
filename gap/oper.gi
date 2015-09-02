@@ -12,37 +12,38 @@
 
 #
 
-InstallMethod(DigraphEdgeUnion, "for digraphs",
-[IsDigraph, IsDigraph],
-function(graph1, graph2)
-  local m, n, outm, outn, out, i;
+InstallGlobalFunction(DigraphEdgeUnion, "for digraphs or a list of digraphs",
+function(arg)
+  local n, out, nbs, new, gr, i;
 
-  if DigraphNrVertices(graph1) > DigraphNrVertices(graph2) then
-    m := DigraphNrVertices(graph2); # smaller graph
-    n := DigraphNrVertices(graph1);
-    outm := OutNeighbours(graph2); # out neighbours of smaller graph
-    outn := OutNeighbours(graph1);
-  else
-    m := DigraphNrVertices(graph1);
-    n := DigraphNrVertices(graph2);
-    outm := OutNeighbours(graph1);
-    outn := OutNeighbours(graph2);
+  # allow user the possibility of supplying arguments in a list
+  if Length(arg) = 1 and IsList(arg[1]) then
+    arg := arg[1];
   fi;
 
-  out := EmptyPlist(n);
-
-  for i in [1 .. m] do
-    out[i] := Concatenation(outm[i], outn[i]);
-  od;
-
-  for i in [m + 1 .. n] do
-    out[i] := ShallowCopy(outn[i]);
-  od;
-
-  if HasDigraphNrEdges(graph1) and HasDigraphNrEdges(graph2) then
-    return DigraphNC(out, DigraphNrEdges(graph1) + DigraphNrEdges(graph2));
+  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDigraph) then
+    ErrorMayQuit("Digraphs: DigraphEdgeUnion: usage,\n",
+                 "the arguments must be digraphs, or the argument must be a ",
+                 "list of digraphs,");
   fi;
-  return DigraphNC(out);
+
+  n := Maximum(List(arg, DigraphNrVertices));
+  out := List([1 .. n], x -> []);
+
+  for gr in arg do
+    nbs := OutNeighbours(gr);
+    for i in DigraphVertices(gr) do
+      if not IsEmpty(nbs[i]) then
+        out[i] := Concatenation(out[i], nbs[i]);
+      fi;
+    od;
+  od;
+
+  new := DigraphNC(out);
+  if ForAll(arg, HasDigraphNrEdges) then
+    SetDigraphNrEdges(new, Sum(arg, DigraphNrEdges));
+  fi;
+  return new;
 end);
 
 #
@@ -1027,38 +1028,70 @@ end);
 
 #
 
-InstallMethod(DigraphDisjointUnion, "for two digraphs",
-[IsDigraph, IsDigraph],
-function(digraph1, digraph2)
-  local nrvertices1, out2;
+InstallGlobalFunction(DigraphDisjointUnion,
+"for digraphs or a list of digraphs",
+function(arg)
+  local out, offset, n, new, gr;
 
-  nrvertices1 := DigraphNrVertices(digraph1);
-  out2 := List(OutNeighbours(digraph2), x -> x + nrvertices1);
+  # allow user the possibility of supplying arguments in a list
+  if Length(arg) = 1 and IsList(arg[1]) then
+    arg := arg[1];
+  fi;
 
-  return DigraphNC(Concatenation(OutNeighbours(digraph1), out2));
+  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDigraph) then
+    ErrorMayQuit("Digraphs: DigraphDisjointUnion: usage,\n",
+                 "the arguments must be digraphs, or the argument must be a ",
+                 "list of digraphs,");
+  fi;
+
+  out := EmptyPlist(Sum(arg, DigraphNrVertices));
+  offset := 0;
+
+  for gr in arg do
+    n := DigraphNrVertices(gr);
+    out{[offset + 1 .. offset + n]} := OutNeighbours(gr) + offset;
+    offset := offset + n;
+  od;
+
+  new := DigraphNC(out);
+  if ForAll(arg, HasDigraphNrEdges) then
+    SetDigraphNrEdges(new, Sum(arg, DigraphNrEdges));
+  fi;
+  return new;
 end);
 
 #
 
-InstallMethod(DigraphJoin, "for two digraphs",
-[IsDigraph, IsDigraph],
-function(digraph1, digraph2)
-  local out1, out2, n, m, new, i;
+InstallGlobalFunction(DigraphJoin, "for digraphs or a list of digraphs",
+function(arg)
+  local tot, out, offset, n, nbs, gr, i;
 
-  out1 := OutNeighbours(digraph1);
-  out2 := OutNeighbours(digraph2);
-  n    := DigraphNrVertices(digraph1);
-  m    := DigraphNrVertices(digraph2);
-  new  := EmptyPlist(n + m);
+  # allow user the possibility of supplying arguments in a list
+  if Length(arg) = 1 and IsList(arg[1]) then
+    arg := arg[1];
+  fi;
 
-  for i in DigraphVertices(digraph1) do
-    new[i] := Concatenation(out1[i], [n + 1 .. n + m]);
+  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDigraph) then
+    ErrorMayQuit("Digraphs: DigraphJoin: usage,\n",
+                 "the arguments must be digraphs, or the argument must be a ",
+                 "list of digraphs,");
+  fi;
+
+  tot := Sum(arg, DigraphNrVertices);
+  out := EmptyPlist(tot);
+  offset := 0;
+
+  for gr in arg do
+    n := DigraphNrVertices(gr);
+    nbs := OutNeighbours(gr);
+    for i in DigraphVertices(gr) do
+      out[i + offset] := Concatenation([1 .. offset], nbs[i] + offset,
+                                       [offset + n + 1 .. tot]);
+    od;
+    offset := offset + n;
   od;
-  for i in [n + 1 .. n +  m] do
-    new[i] := Concatenation([1 .. n], out2[i - n] + n);
-  od;
 
-  return DigraphNC(new);
+  return DigraphNC(out);
 end);
 
 #

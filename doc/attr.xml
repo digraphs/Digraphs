@@ -129,8 +129,19 @@ gap> DigraphEdges(gr);
   <Attr Name="DigraphEdges" Arg="digraph"/>
   <Returns>The edges of a digraph.</Returns>
   <Description>
-    Returns the list of edges of the digraph <A>digraph</A>,
-    that is, a list of pairs of elements of <Ref Oper="DigraphVertices"/>.
+    <C>DigraphEdges</C> returns a list of edges of the digraph <A>digraph</A>,
+    where each edge is a pair of elements of <Ref Oper="DigraphVertices"/> of
+    the form <C>[source,range]</C>.
+    <P/>
+
+    The entries of <C>DigraphEdges(</C><A>digraph</A><C>)</C> are in one-to-one
+    corresponence with the edges of <A>digraph</A>.  Hence
+    <C>DigraphEdges(</C><A>digraph</A><C>)</C> is duplicate-free if and only if
+    <A>digraph</A> contains no multiple edges. <P/>
+
+    The entries of <C>DigraphEdges</C> are guaranteed to be sorted by their
+    first component (i.e. by the source of each edge), but they are not
+    necessarily then sorted by the second component.
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 1, 3, 4, 3, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
 > [ 2, 4, 5 ], [ 1 ] ] );

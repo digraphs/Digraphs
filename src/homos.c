@@ -16,7 +16,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-// globals for the recursive find_homos
+typedef UIntS Vertex;
+
+// globals for the recursive find_graph_homos
 static UIntS  nr1;                         // nr of vertices in graph1
 static UIntS  nr1_d;                       // nr1 - 1 / SYS_BITS 
 static UIntS  nr1_m;                       // nr1 - 1 % SYS_BITS 
@@ -47,7 +49,7 @@ static PermColl* stab_gens[MAXVERTS];      // stabiliser generators
 
 // globals for statics
 static UIntL count;                        // nr of homos found so far
-static unsigned long long calls1;          // calls1 is the nr of calls to find_homos
+static unsigned long long calls1;          // calls1 is the nr of calls to find_graph_homos
 static unsigned long long calls2;          // calls2 is the nr of stabs calculated
 static UIntL last_report = 0;              // the last value of calls1 when we reported
 static UIntL report_interval = 999999;     // the interval when we report
@@ -96,12 +98,12 @@ static inline UIntS sizeUIntL (UIntL n, int m) {
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-// creating graphs . . . 
+// creating graphs for homomorphism finder. . . 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-//
+// new_homos_graph: 
 ////////////////////////////////////////////////////////////////////////////////
 
 HomosGraph* new_homos_graph (UIntS const nr_verts) {
@@ -114,7 +116,7 @@ HomosGraph* new_homos_graph (UIntS const nr_verts) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//
+// free_homos_graph:
 ////////////////////////////////////////////////////////////////////////////////
 
 void free_homos_graph (HomosGraph* graph) {
@@ -124,16 +126,22 @@ void free_homos_graph (HomosGraph* graph) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//
+// add_edge_homos_graph: 
 ////////////////////////////////////////////////////////////////////////////////
 
-void add_edges_homos_graph (HomosGraph* graph, UIntS from_vert, UIntS to_vert) {
+void add_edge_homos_graph (HomosGraph* graph, UIntS from_vert, UIntS to_vert) {
   graph->neighbours[((graph->nr_verts - 1) / SYS_BITS + 1) * from_vert +
     (to_vert / SYS_BITS)] |= oneone[to_vert % SYS_BITS];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // automorphism group . . . 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+//
 ////////////////////////////////////////////////////////////////////////////////
 
 static BlissGraph* as_bliss_graph (HomosGraph* graph) {
@@ -278,7 +286,7 @@ static void orbit_reps (UIntS rep_depth) {
 static UIntL* condition; 
 
 ////////////////////////////////////////////////////////////////////////////////
-// changed_conditions[depth * i] the number of conditions updated at <depth> 
+// changed_condition[depth * i] the number of conditions updated at <depth> 
 // s.t. condition[depth * i + changed_condition[depth * i + j]] was updated 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -294,7 +302,7 @@ static UIntS  len_condition[MAXVERTS * MAXVERTS / SYS_BITS];
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-static inline UIntL* get_condition(UIntS const i) {   // vertex in graph1
+static inline UIntL* get_condition (UIntS const i) {   // vertex in graph1
   return &condition[nr1 * len_nr2 * (len_condition[i] - 1) + len_nr2 * i];
 }
 
@@ -322,7 +330,7 @@ static inline UIntL* push_condition(UIntS const depth,
 static inline void pop_condition(UIntS const depth) {
   UIntS i;
   for (i = 1; i < changed_condition[(nr1 + 1) * depth] + 1; i++) {
-    len_condition[ changed_condition[(nr1 + 1) * depth + i]]--;
+    len_condition[changed_condition[(nr1 + 1) * depth + i]]--;
   }
   changed_condition[(nr1 + 1) * depth] = 0;
 }
@@ -332,7 +340,7 @@ static inline void pop_condition(UIntS const depth) {
 // where cond is len_nr2 many UIntL's
 ////////////////////////////////////////////////////////////////////////////////
 
-static void init_conditions(UIntL *cond) {
+static void init_conditions(UIntL* cond) {
   UIntS i, j; 
 
   condition = malloc(nr1 * nr1 * len_nr2 * sizeof(UIntL)); //JJ: calloc?
@@ -372,11 +380,20 @@ static inline UIntS get_size_condition(UIntS const i) {   // vertex in graph1
 // relies on len_condition to updated before
 ////////////////////////////////////////////////////////////////////////////////
 
-static inline void push_size_condition(UIntS const i,         // vertex in graph1
-                                       UIntS       size  ) {  // len_nr2 * UIntL
+static inline void push_size_condition(UIntS const i,       // vertex in graph1
+                                       UIntS       size) {  // len_nr2 * UIntL
 
   sizes[nr1 * (len_condition[i] - 1) + i] = size;
 }
+
+//bool is_adjacent (HomosGraph* graph,
+//                  Vertex      i,
+//                  Vertex      j) {
+//  graph->neighbours
+
+                  
+
+#define IS_ADJACENT_1(i, j) neighbours1[i * len_nr1 + j / SYS_BITS] & oneone[j % SYS_BITS]
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -384,11 +401,11 @@ static inline void push_size_condition(UIntS const i,         // vertex in graph
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-void find_homos (UIntS   depth,        // the number of filled positions in map
-                 UIntS   pos,          // the last position filled
-                 UIntS   rep_depth,    // TODO remove this
-                 bool    has_trivial_stab,
-                 UIntS   rank      ) { // current number of distinct values in map
+static void find_graph_homos (UIntS   depth,        // the number of filled positions in map
+                              UIntS   pos,          // the last position filled
+                              UIntS   rep_depth,    
+                              bool    has_trivial_stab,
+                              UIntS   rank      ) { // current number of distinct values in map
 
   UIntS   i, j, k, l, min, m, sum, w, size, next;
   UIntL*  copy;
@@ -404,8 +421,8 @@ void find_homos (UIntS   depth,        // the number of filled positions in map
     last_report = calls1;
   }
 #endif 
-
-  if (depth == nr1) {
+  
+  if (depth == nr1) { // we've assigned every position in <map>
     if (hint != UNDEFINED && rank != hint) {
       return;
     }
@@ -418,16 +435,14 @@ void find_homos (UIntS   depth,        // the number of filled positions in map
     return;
   }
 
-  //memcpy((void *) copy, (void *) condition, (size_t) nr1 * len_nr2 * sizeof(UIntL));
-
   next = 0;      // the next position to fill
   min = nr2 + 1; // the minimum number of candidates for map[next]
   if (pos != UNDEFINED) {
-    for (j = 0; j < nr1; j++){
+    for (j = 0; j < nr1; j++) {
       i = j / SYS_BITS;
       m = j % SYS_BITS;
       if (map[j] == UNDEFINED) {
-        if (neighbours1[pos * len_nr1 + i] & oneone[m]) { 
+        if (IS_ADJACENT_1(pos, j)) { 
           // vertex j is adjacent to vertex pos in graph1
           copy = push_condition(depth, j, get_condition(j));
           size = 0; 
@@ -470,9 +485,9 @@ void find_homos (UIntS   depth,        // the number of filled positions in map
         if (!has_trivial_stab) {
           // blist of orbit reps of things not in vals
           orbit_reps(rep_depth + 1);
-          find_homos(depth + 1, next, rep_depth + 1, is_trivial, rank + 1);
+          find_graph_homos(depth + 1, next, rep_depth + 1, is_trivial, rank + 1);
         } else {
-          find_homos(depth + 1, next, rep_depth, true, rank + 1);
+          find_graph_homos(depth + 1, next, rep_depth, true, rank + 1);
         }
         map[next] = UNDEFINED;
         vals[j] ^= oneone[m];
@@ -484,7 +499,7 @@ void find_homos (UIntS   depth,        // the number of filled positions in map
     m = i % SYS_BITS;
     if (copy[j] & vals[j] & oneone[m]) {
       map[next] = i;
-      find_homos(depth + 1, next, rep_depth, has_trivial_stab, rank);
+      find_graph_homos(depth + 1, next, rep_depth, has_trivial_stab, rank);
       map[next] = UNDEFINED;
     }
   }
@@ -492,7 +507,7 @@ void find_homos (UIntS   depth,        // the number of filled positions in map
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// prepare the graphs for find_homos
+// GraphHomomorphisms: prepare the graphs for find_graph_homos
 ////////////////////////////////////////////////////////////////////////////////
 
 void GraphHomomorphisms (HomosGraph*  graph1, 
@@ -651,7 +666,7 @@ void GraphHomomorphisms (HomosGraph*  graph1,
 	  pos = next;
         }
       }
-      find_homos(depth, pos, rep_depth, has_trivial_stab, rank);
+      find_graph_homos(depth, pos, rep_depth, has_trivial_stab, rank);
     }
   }
 
