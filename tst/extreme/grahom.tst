@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# PJC example, 45 vertices
+#T# GeneratorsOfEndomorphismMonoid: PJC example, 45 vertices
 gap> gr := DigraphFromDigraph6String(Concatenation(
 > "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?A",
 > "?S???OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO??",
@@ -33,7 +33,7 @@ gap> str := HomomorphismGraphsFinder(gr, gr, fail, [], infinity, fail, false,
 gap> Length(str);
 192
 
-#T# PJC example, 153 vertices
+#T# GeneratorsOfEndomorphismMonoid: PJC example, 153 vertices
 gap> G := PrimitiveGroup(153, 1);;
 gap> H := Stabilizer(G, 1);;
 gap> S := Filtered(Orbits(H, [1 .. 45]), x -> (Size(x) = 4))[1];;
@@ -53,7 +53,7 @@ gap> 4 ^ t;
 gap> 5 ^ t;
 97
 
-#T# GeneratorsOfEndomorphismMonoid
+#T# GeneratorsOfEndomorphismMonoid: small example
 gap> gr := Digraph([[2], [1, 3], [2]]);
 <digraph with 3 vertices, 4 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr);
@@ -87,7 +87,7 @@ gap> GeneratorsOfEndomorphismMonoid(gr, 4);
 gap> HasGeneratorsOfEndomorphismMonoidAttr(gr);
 false
 
-#T# GeneratorsOfEndomorphismMonoid for complete digraphs
+#T# GeneratorsOfEndomorphismMonoid: complete digraph
 
 # CompleteDigraph (with no loops) has no singular endomorphisms
 gap> gr := CompleteDigraph(25);
@@ -132,16 +132,16 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
 not yet implemented for digraphs with loops,
 
-#T# GeneratorsOfEndomorphismMonoid for empty digraphs
-
-# EmptyDigraph(n) has T_n automorphism group
+#T# GeneratorsOfEndomorphismMonoid: empty digraph
+# EmptyDigraph(n) has endomorphism monoid T_n
 gap> gr := EmptyDigraph(5);
 <digraph with 5 vertices, 0 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> Size(Semigroup(gens)) = 5 ^ 5;
 true
 
-#T# GeneratorsOfEndomorphismMonoid for chain digraphs
+#T# GeneratorsOfEndomorphismMonoid: chain digraph
+# Endomorphisms of the chain preserve order
 
 # ChainDigraph (with no loops) has all strict order preserving transformations
 gap> gr := ChainDigraph(20);
@@ -157,7 +157,8 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
 not yet implemented for non-symmetric digraphs,
 
-#T# GeneratorsOfEndomorphismMonoid for cycle digraphs
+#T# GeneratorsOfEndomorphismMonoid: cycle digraph
+# CycleDigraph(n) has EndomorphismMonoid = AutomorphismGroup = C_n
 
 # CycleDigraph (with no loops) has no singular endomorphisms
 gap> gr := CycleDigraph(20);
@@ -173,7 +174,7 @@ true
 gap> gr := Digraph(List([1 .. 20], x -> [x, x mod 20 + 1]));
 <digraph with 20 vertices, 40 edges>
 
-#T# HomomorphismGraphsFinder: trying to break it
+#T# HomomorphismGraphsFinder: small example 1
 gap> gr1 := CompleteDigraph(2);
 <digraph with 2 vertices, 2 edges>
 gap> gr2 := CompleteDigraph(3);
@@ -189,7 +190,7 @@ gap> func := function(user_param, t)
 >      Add(user_param, t);
 > end;;
 
-#T# HomomorphismGraphsFinder: some larger examples
+#T# HomomorphismGraphsFinder: large example 1
 gap> homos := HomomorphismGraphsFinder(gr1, gr2, func, [], infinity,
 >  fail, false, DigraphVertices(gr2), []);
 [ IdentityTransformation ]
@@ -244,7 +245,7 @@ gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 10, false, [1 .. 12],
 [ Transformation( [ 2, 11, 3, 2, 5, 4, 7, 7, 2, 2, 2, 7, 1, 10, 2, 2, 8, 6, 2,
      2 ] ) ]
 
-##T# DIGRAPHS_UnbindVariables
+#T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(G);
 gap> Unbind(H);
