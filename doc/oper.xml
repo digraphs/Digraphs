@@ -883,23 +883,24 @@ Binary Relation on 4 points
 
 <#GAPDoc Label="DigraphEdgeUnion">
 <ManSection>
-  <Oper Name="DigraphEdgeUnion" Arg="digraph1, digraph2"/>
+  <Oper Name="DigraphEdgeUnion" Arg="gr1, gr2, ..." Label="for an arbitrary
+    number of digraphs"/>
+  <Oper Name="DigraphEdgeUnion" Arg="list" Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph1</A> and <A>digraph2</A> are digraphs, then this 
-    operation returns their edge union. <P/>
-   
-    The vertex set of the edge union is the union of the vertex sets
-    of <A>digraph1</A> and <A>digraph2</A>.
-    The edge list of the edge union is the concatenation of the edge lists of
-    <A>digraph1</A> and <A>digraph2</A>.
-    <P/>
+    In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
+    <C>DigraphEdgeUnion</C> returns their edge union.
 
-    If <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
-    edges, and if <A>digraph2</A> has <M>n_2</M> vertices and <M>m_2</M> edges,
-    then <C>DigraphEdgeUnion(<A>digraph1</A>, <A>digraph2</A>)</C>
-    will have <C>Maximum(</C><M>n_1, n_2</M><C>)</C> vertices and
-    <M>m_1 + m_2</M> edges. 
+    In the second form, if <A>list</A> is a non-empty list of digraphs, then
+    <C>DigraphEdgeUnion</C> returns the edge union of the digraphs contained
+    in the list.  <P/>
+   
+    The vertex set of the edge union of a collection of digraphs is the
+    <E>union</E> of the vertex sets, whilst the edge list of the edge union is
+    the <E>concatenation</E> of the edge lists.  The number of vertices of the
+    edge union is equal to the <E>maximum</E> number of vertices of one of the
+    digraphs, whilst the number of edges of the edge union will equal the
+    <E>sum</E> of the number of edges of each digraph. <P/>
 
     Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
     
@@ -916,9 +917,8 @@ gap> union := DigraphEdgeUnion(gr1, gr2);
 <multidigraph with 3 vertices, 6 edges>
 gap> OutNeighbours(union);
 [ [ 2, 2, 3 ], [ 1, 2 ], [ 1 ] ]
-gap> unionofedges := Concatenation(
-> DigraphEdges(gr1), DigraphEdges(gr2));;
-gap> union = DigraphByEdges(unionofedges);
+gap> union = DigraphByEdges(
+> Concatenation(DigraphEdges(gr1), DigraphEdges(gr2)));
 true
 ]]></Example>
   </Description>
@@ -927,27 +927,35 @@ true
 
 <#GAPDoc Label="DigraphDisjointUnion">
 <ManSection>
-  <Oper Name="DigraphDisjointUnion" Arg="digraph1, digraph2"/>
+  <Oper Name="DigraphDisjointUnion" Arg="gr1, gr2, ..." Label="for an
+    arbitrary number of digraphs"/>
+  <Oper Name="DigraphDisjointUnion" Arg="list" Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph1</A> and <A>digraph2</A> are digraphs, then this operation
-    returns the disjoint union of these digraphs. <P/>
-   
-    The vertex sets and edge lists of the disjoint union are the disjoint
-    union of the vertex sets and edge lists of <A>digraph1</A> and
-    <A>digraph2</A> respectively.  <P/>
+    In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
+    <C>DigraphDisjointUnion</C> returns their disjoint union.
 
-    More specifically, if <A>digraph1</A> has <M>n_1</M> vertices and
-    <M>m_1</M> edges, and if <A>digraph2</A> has <M>n_2</M> vertices and
-    <M>m_2</M> edges, then <C>DigraphDisjointUnion(<A>digraph1</A>,
-      <A>digraph2</A>)</C> will have <M>n_1 + n_2</M> vertices and <M>m_1 +
-      m_2</M> edges. 
+    In the second form, if <A>list</A> is a non-empty list of digraphs, then
+    <C>DigraphDisjointUnion</C> returns the disjoint union of the digraphs
+    contained in the list.  <P/>
 
-    The vertices of <A>digraph1</A> will remain <C>[1..</C><M>n_1</M><C>]</C>
-    in the disjoint union.  The vertices of <A>digraph2</A> will become
-    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>, and an edge
-    <C>[</C><M>i,j</M><C>]</C> in <A>digraph2</A> will become the edge
-    <C>[</C><M>n_1+i,n_1+j</M><C>]</C>.<P/>
+    For a disjoint union of digraphs, the vertex set is the disjoint union of
+    the vertex sets, and the edge list is the disjoint union of the edge lists.
+    <P/>
+
+    More specifically, for a collection of digraphs <A>gr1</A>, <A>gr2</A>,
+    <C>...</C>, the disjoint union with have
+    <C>DigraphNrVertices(</C><A>gr1</A><C>)</C> <C>+</C>
+    <C>DigraphNrVertices(</C><A>gr2</A><C>)</C> <C>+</C> <C>...</C> vertices.
+    The edges of <A>gr1</A> will remain unchanged, whilst the edges of the
+    <C>i</C>th digraph, <A>gr</A><C>[i]</C>, will be changed so that they
+    belong to the vertices of the disjoint union corresponding to
+    <A>gr</A><C>[i]</C>.  In particular, the edges of <A>gr</A><C>[i]</C> will
+    have their source and range increased by
+    <C>DigraphNrVertices(</C><A>gr1</A><C>)</C> <C>+</C> <C>...</C> <C>+</C>
+    <C>DigraphNrVertices(</C><A>gr</A><C>[i-1])</C>.
+
+    <P/>
 
     Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
     
@@ -971,30 +979,32 @@ gap> OutNeighbours(union);
 
 <#GAPDoc Label="DigraphJoin">
 <ManSection>
-  <Oper Name="DigraphJoin" Arg="digraph1, digraph2"/>
+  <Oper Name="DigraphJoin" Arg="gr1, gr2, ..." Label="for an arbitrary number
+    of digraphs"/>
+  <Oper Name="DigraphJoin" Arg="list" Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph1</A> and <A>digraph2</A> are digraphs, then this
-    operation returns the join of these digraphs. <P/>
+    In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
+    <C>DigraphJoin</C> returns their join.
+
+    In the second form, if <A>list</A> is a non-empty list of digraphs,
+    then <C>DigraphJoin</C> returns the join of the digraphs contained in the
+    list. <P/>
+
+    The join of a collection of digraphs <A>gr1</A>, <A>gr2</A>, <C>...</C> is
+    formed by first taking the <Ref Oper="DigraphDisjointUnion" Label="for a list of digraphs"/> of the collection.
+
+    In the disjoint union, if <M>i \neq j</M> then there are no edges between
+    vertices corresponding to digraphs <A>gr</A><C>[i]</C> and
+    <A>gr</A><C>[j]</C> in the collection; the join is created by including
+    all such edges.
+
+    <P/>
+
+    For example, the join of two empty digraphs is a complete bipartite
+    digraph.
     
-    Let <M>V_1</M>, <M>E_1</M> and <M>V_2</M>, <M>E_2</M> be vertex sets and
-    edge lists of the digraphs <A>digraph1</A> and <A>digraph2</A>,
-    respectively.  Then the vertex set of the join is the disjoint union of
-    <M>V_1</M> and <M>V_2</M>, and the edge list of the join is the disjoint
-    union of <M>E_1</M> and <M>E_2</M>, together with all possible edges
-    between <M>V_1</M> and <M>V_2</M>. <P/>
-
-    In particular, if <A>digraph1</A> has <M>n_1</M> vertices and <M>m_1</M>
-    edges, and if <A>digraph2</A> has <M>n_2</M> vertices and <M>m_2</M> edges,
-    then <C>DigraphJoin(<A>digraph1</A>, <A>digraph2</A>)</C> will
-    have <M>n_1+n_2</M> vertices and <M>m_1+m_2+2n_1n_2</M> edges. <P/>
-
-    The vertices of <A>digraph1</A> will remain
-    <C>[1..</C><M>n_1</M><C>]</C>, in the new digraph.
-    The vertices of <A>digraph2</A> will become
-    <C>[</C><M>n_1+1</M><C>..</C><M>n_1+n_2</M><C>]</C>,
-    and an edge <C>[</C><M>i,j</M><C>]</C> in <A>digraph2</A> will become
-    the edge <C>[</C><M>n_1+i,n_1+j</M><C>]</C>. <P/>
+    <P/>
 
     Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
 
