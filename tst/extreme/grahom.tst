@@ -175,6 +175,7 @@ gap> gr := Digraph(List([1 .. 20], x -> [x, x mod 20 + 1]));
 <digraph with 20 vertices, 40 edges>
 
 #T# HomomorphismGraphsFinder: small example 1
+# CompleteDigraph(2) to CompleteDigraph(3)
 gap> gr1 := CompleteDigraph(2);
 <digraph with 2 vertices, 2 edges>
 gap> gr2 := CompleteDigraph(3);
@@ -189,8 +190,12 @@ Error, no 1st choice method found for `^' on 2 arguments
 gap> func := function(user_param, t)
 >      Add(user_param, t);
 > end;;
+gap> homos := HomomorphismGraphsFinder(gr1, gr2, fail, [], infinity, fail,
+> false, DigraphVertices(gr2), []);
+[ IdentityTransformation ]
 
-#T# HomomorphismGraphsFinder: large example 1
+#T# HomomorphismGraphsFinder: small example 2
+# CompleteDigraph(15) to [CompleteDigraph(3) with loops]
 gap> homos := HomomorphismGraphsFinder(gr1, gr2, func, [], infinity,
 >  fail, false, DigraphVertices(gr2), []);
 [ IdentityTransformation ]
@@ -201,49 +206,98 @@ gap> Length(homos);
 2391485
 gap> last * 6 = 3 ^ 15 + 3;
 true
+
+#T# HomomorphismGraphsFinder: small example 3
+# Randomly chosen example
 gap> gr1 := Digraph([
->  [3, 8, 7, 16, 20], [6, 8, 17, 3, 5], [2, 9, 20, 1, 19],
->  [7, 11, 14, 16, 17], [2, 7, 8, 18, 13], [18, 20, 2, 16],
->  [1, 10, 15, 4, 5, 18], [8, 1, 2, 5, 11, 16, 20], [10, 3, 12],
->  [9, 7], [4, 8, 12, 16, 20, 17], [9, 12, 13, 19, 11, 18],
->  [5, 13, 12], [4, 16], [15, 17, 7, 20], [1, 4, 6, 8, 20, 11, 14],
->  [4, 11, 2, 15], [7, 12, 5, 6], [3, 12], [1, 8, 15, 3, 6, 11, 16]]);
-<digraph with 20 vertices, 92 edges>
+>  [15, 3, 6, 7, 8, 16, 19], [5, 17, 18, 13, 19], [1, 7, 19, 4, 15, 17],
+>  [3, 7, 15, 10, 14, 16], [8, 2, 7, 10], [1],
+>  [1, 4, 5, 9, 12, 3, 8, 16], [1, 7, 13, 5, 11, 17], [14, 7, 13],
+>  [4, 5, 19], [8, 18], [7, 15, 20], [2, 9, 16, 18, 8, 19],
+>  [4, 18, 9], [3, 12, 1, 4, 16, 18], [1, 4, 7, 15, 13, 17],
+>  [3, 8, 16, 2], [13, 15, 2, 11, 14, 20], [1, 2, 10, 13, 20, 3],
+>  [12, 18, 19]]);
+<digraph with 20 vertices, 94 edges>
 gap> gr2 := Digraph([
->  [7, 5, 12], [2, 4, 7, 8, 3, 10], [2, 11], [2, 6, 10, 11],
->  [1, 6, 7, 9, 11], [7, 10, 4, 5], [2, 5, 6, 11, 1, 12], [9, 11, 2],
->  [5, 9, 11, 8], [2, 11, 4, 6], [4, 3, 5, 7, 8, 9, 10, 12],
->  [1, 7, 11, 12]]);
-<digraph with 12 vertices, 53 edges>
+>  [2, 6, 8, 11, 9, 12], [3, 7, 1, 8], [12, 2], [7, 11, 12, 5, 9],
+>  [4, 7, 9], [12, 1], [5, 9, 10, 2, 4, 8], [2, 7, 10, 1],
+>  [1, 4, 5, 7], [7, 8], [1, 4], [1, 6, 3, 4]]);
+<digraph with 12 vertices, 44 edges>
 gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, fail, false, [1 .. 12],
 > []);
-[ Transformation( [ 1, 11, 5, 1, 7, 12, 5, 12, 6, 7, 12, 7, 2, 7, 1, 12, 7, 1,
-     1, 7 ] ) ]
+[ Transformation( [ 4, 5, 5, 9, 4, 11, 7, 5, 5, 5, 4, 5, 4, 4, 7, 5, 4, 9, 7,
+      4 ] ) ]
 gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 10, fail, false, [1 .. 12],
 > []);
-[ Transformation( [ 1, 11, 5, 1, 7, 12, 5, 12, 6, 7, 12, 7, 2, 7, 1, 12, 7, 1,
-     1, 7 ] ), Transformation( [ 1, 11, 5, 1, 7, 12, 5, 12, 6, 7, 12, 7, 1, 7,
-     1, 12, 7, 1, 1, 7 ] ), Transformation( [ 1, 11, 5, 1, 7, 12, 5, 12, 6, 7,
-     12, 7, 5, 7, 1, 12, 7, 1, 1, 7 ] ), 
-  Transformation( [ 1, 11, 5, 1, 7, 12, 5, 12, 6, 7, 12, 7, 6, 7, 1, 12, 7, 1,
-     1, 7 ] ), Transformation( [ 1, 11, 5, 1, 7, 12, 5, 12, 6, 7, 12, 7, 11,
-      7, 1, 12, 7, 1, 1, 7 ] ), 
-  Transformation( [ 1, 11, 5, 1, 7, 12, 5, 12, 6, 7, 12, 7, 12, 7, 1, 12, 7,
-      1, 1, 7 ] ), Transformation( [ 1, 11, 5, 1, 7, 12, 5, 12, 6, 7, 12, 7,
-      2, 7, 1, 12, 7, 1, 6, 7 ] ), 
-  Transformation( [ 1, 11, 5, 1, 7, 12, 5, 12, 6, 7, 12, 7, 1, 7, 1, 12, 7, 1,
-     6, 7 ] ), Transformation( [ 1, 11, 5, 1, 7, 12, 5, 12, 6, 7, 12, 7, 5, 7,
-     1, 12, 7, 1, 6, 7 ] ), Transformation( [ 1, 11, 5, 1, 7, 12, 5, 12, 6, 7,
-     12, 7, 6, 7, 1, 12, 7, 1, 6, 7 ] ) ]
-gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 50, fail, false, [1 .. 12],
+[ Transformation( [ 4, 5, 5, 9, 4, 11, 7, 5, 5, 5, 4, 5, 4, 4, 7, 5, 4, 9, 7,
+      4 ] ), Transformation( [ 4, 5, 5, 9, 4, 12, 7, 5, 5, 5, 4, 5, 4, 4, 7,
+      5, 4, 9, 7, 4 ] ), Transformation( [ 4, 5, 5, 9, 4, 5, 7, 5, 5, 5, 4, 5,
+     4, 4, 7, 5, 4, 9, 7, 4 ] ), 
+  Transformation( [ 4, 5, 5, 9, 4, 7, 7, 5, 5, 5, 4, 5, 4, 4, 7, 5, 4, 9, 7,
+      4 ] ), Transformation( [ 4, 5, 5, 9, 4, 9, 7, 5, 5, 5, 4, 5, 4, 4, 7, 5,
+     4, 9, 7, 4 ] ), Transformation( [ 4, 5, 5, 9, 4, 11, 7, 5, 5, 5, 4, 5, 4,
+     4, 7, 5, 7, 9, 7, 4 ] ), Transformation( [ 4, 5, 5, 9, 4, 12, 7, 5, 5, 5,
+     4, 5, 4, 4, 7, 5, 7, 9, 7, 4 ] ), 
+  Transformation( [ 4, 5, 5, 9, 4, 5, 7, 5, 5, 5, 4, 5, 4, 4, 7, 5, 7, 9, 7,
+      4 ] ), Transformation( [ 4, 5, 5, 9, 4, 7, 7, 5, 5, 5, 4, 5, 4, 4, 7, 5,
+     7, 9, 7, 4 ] ), Transformation( [ 4, 5, 5, 9, 4, 9, 7, 5, 5, 5, 4, 5, 4,
+      4, 7, 5, 7, 9, 7, 4 ] ) ]
+gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 200, fail, false, [1 .. 12],
 > []);;
 gap> ForAll(last, t -> ForAll(DigraphEdges(gr1),
->                e -> e[1] = e[2] or IsDigraphEdge(gr2, [e[1] ^ t, e[2] ^ t])));
+>                        e -> IsDigraphEdge(gr2, [e[1] ^ t, e[2] ^ t])));
 true
-gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 10, false, [1 .. 12],
+gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 12, false, [1 .. 12],
 > []);
-[ Transformation( [ 2, 11, 3, 2, 5, 4, 7, 7, 2, 2, 2, 7, 1, 10, 2, 2, 8, 6, 2,
-     2 ] ) ]
+[  ]
+gap> HomomorphismGraphsFinder(gr2, gr1, fail, [], 1, fail, false, [1 .. 20],
+> []);
+[  ]
+
+#T# HomomorphismGraphsFinder: large example 1
+# Randomly chosen example
+gap> gr1 := DigraphFromGraph6String(
+> "]b?_?a@I??T_Y?ADcGAACUP@_AOG?C_BoH?Pg?C??gk?AA@?A?CJD?EO?sO`@H?j@S?C?_PG??");
+<digraph with 30 vertices, 174 edges>
+gap> gr2 := DigraphFromGraph6String(Concatenation(
+> "ghYlce}\\ANfA}}WbK^qUDQqfGwl]UecLg{xSyQ]fHK}]uHFUyn\\]weXQVCRZDlYUvqYpnNNv",
+> "z@v]KDJvDxH}BB\\wwtMdxNFpKu?QX]RA@|MlHRpLK]EFg}WaFWuKcFK}hFs"));
+<digraph with 40 vertices, 812 edges>
+gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, fail, false, [1 .. 40],
+> []);
+[ Transformation( [ 1, 2, 22, 5, 31, 5, 12, 3, 6, 36, 10, 19, 25, 5, 38, 15,
+      13, 16, 26, 9, 7, 8, 7, 29, 4, 30, 27, 11, 32, 17 ] ) ]
+gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 10, false, [1 .. 40],
+> []);
+[ Transformation( [ 1, 2, 2, 5, 1, 1, 1, 3, 6, 20, 2, 20, 13, 7, 13, 15, 13,
+      3, 13, 9, 7, 20, 2, 13, 1, 13, 2, 1, 2, 1 ] ) ]
+gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 15, false, [1 .. 40],
+> []);
+[ Transformation( [ 1, 2, 22, 5, 8, 1, 1, 3, 6, 1, 2, 19, 11, 7, 38, 15, 13,
+      30, 13, 9, 7, 8, 7, 13, 1, 30, 8, 11, 7, 8 ] ) ]
+gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 20, false, [1 .. 40],
+> []);
+[ Transformation( [ 1, 2, 22, 5, 31, 1, 1, 3, 6, 19, 2, 19, 25, 5, 38, 15, 13,
+     16, 9, 9, 7, 8, 7, 29, 1, 30, 27, 11, 7, 3 ] ) ]
+gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 25, false, [1 .. 40],
+> []);
+[ Transformation( [ 1, 2, 22, 5, 31, 5, 1, 3, 6, 36, 3, 19, 25, 5, 38, 15, 13,
+     16, 26, 9, 7, 8, 7, 29, 4, 30, 27, 11, 32, 17 ] ) ]
+gap> t := HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 23, false,
+> [4 .. 37], [])[1];
+Transformation( [ 4, 7, 13, 9, 28, 28, 6, 11, 8, 20, 5, 10, 20, 13, 31, 15,
+  13, 30, 23, 25, 18, 20, 18, 37, 26, 34, 12, 4, 29, 16 ] )
+gap> ForAll(DigraphEdges(gr1), e -> IsDigraphEdge(gr2, [e[1] ^ t, e[2] ^ t]));
+true
+gap> t := HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 23, false,
+> [6 .. 37], [])[1];
+Transformation( [ 6, 9, 30, 32, 31, 34, 8, 21, 10, 11, 15, 11, 7, 14, 16, 24,
+  18, 25, 27, 21, 9, 23, 29, 34, 12, 19, 19, 13, 6, 21 ] )
+gap> ForAll(DigraphEdges(gr1), e -> IsDigraphEdge(gr2, [e[1] ^ t, e[2] ^ t]));
+true
+gap> HomomorphismGraphsFinder(gr2, gr1, fail, [], 1, fail, false, [1 .. 30],
+> []);
+[  ]
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
