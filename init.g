@@ -7,21 +7,23 @@
 ##
 #############################################################################
 ##
-  
+
 # load kernel function if it is installed:
 if (not IsBound(DIGRAPHS_C)) and ("digraphs" in SHOW_STAT()) then
   # try static module
   LoadStaticModule("digraphs");
 fi;
 if (not IsBound(DIGRAPHS_C)) and
-   (Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") <> fail) then
+    (Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") <> fail)
+    then
   LoadDynamicModule(Filename(DirectoriesPackagePrograms("digraphs"),
-  "digraphs.so"));
+                             "digraphs.so"));
 fi;
 
-BindGlobal("DIGRAPHS_IsGrapeLoaded", IsPackageMarkedForLoading("grape", "4.5"));
+BindGlobal("DIGRAPHS_IsGrapeLoaded",
+           IsPackageMarkedForLoading("grape", "4.5"));
 
-if not DIGRAPHS_IsGrapeLoaded then 
+if not DIGRAPHS_IsGrapeLoaded then
   IsGraph := ReturnFalse;
   Vertices := IdFunc;
   Adjacency := IdFunc;
@@ -38,4 +40,4 @@ ReadPackage("digraphs/gap/io.gd");
 ReadPackage("digraphs/gap/grahom.gd");
 ReadPackage("digraphs/gap/stabs.gd");
 
-DeclareInfoClass("InfoDigraphs");;
+DeclareInfoClass("InfoDigraphs");
