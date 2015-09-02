@@ -323,5 +323,22 @@ false
 gap> canon = OnMultiDigraphs(gr1, DigraphCanonicalLabelling(gr1));
 false
 
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr4);
+gap> Unbind(gr5);
+gap> Unbind(gr2);
+gap> Unbind(gr);
+gap> Unbind(G);
+gap> Unbind(gr1);
+gap> Unbind(i);
+gap> Unbind(canon);
+gap> Unbind(j);
+gap> Unbind(m);
+gap> Unbind(n);
+gap> Unbind(p);
+gap> Unbind(iso);
+gap> Unbind(new);
+gap> Unbind(gr3);
+
 #E#
 gap> STOP_TEST("Digraphs package: standard/bliss.tst");

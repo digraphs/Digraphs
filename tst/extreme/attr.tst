@@ -27,5 +27,8 @@ gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 gap> DigraphSymmetricClosure(gr);
 <digraph with 5000 vertices, 7713076 edges>
 
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr);
+
 #E#
 gap> STOP_TEST("Digraphs package: extreme/attr.tst");

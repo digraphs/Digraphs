@@ -104,5 +104,10 @@ gap> DigraphReverseEdges(d, [12, 2001, 401000]);
 gap> DigraphReverseEdge(d, [95000, 4067]);
 <digraph with 113082 vertices, 451854 edges>
 
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(d);
+gap> Unbind(gr);
+gap> Unbind(out);
+
 #E#
 gap> STOP_TEST("Digraphs package: extreme/oper.tst");

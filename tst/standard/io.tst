@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# DigraphFromGraph6String amd Graph6String
+#T# DigraphFromGraph6String and Graph6String
 gap> DigraphFromGraph6String("?");
 <digraph with 0 vertices, 0 edges>
 gap> DigraphFromGraph6String("E?A?");
@@ -201,6 +201,16 @@ gap> ReadPlainTextDigraph(filename, ',', 1, 'i');
 <digraph with 3 vertices, 4 edges>
 gap> last = gr;
 true
+
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr);
+gap> Unbind(list);
+gap> Unbind(l);
+gap> Unbind(filename);
+gap> Unbind(source);
+gap> Unbind(range);
+gap> Unbind(str);
+gap> Unbind(rdgr);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/io.tst");

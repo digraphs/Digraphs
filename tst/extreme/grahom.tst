@@ -65,5 +65,15 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 3, 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 1, 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
 
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr);
+gap> Unbind(G);
+gap> Unbind(H);
+gap> Unbind(gens);
+gap> Unbind(S);
+gap> Unbind(t);
+gap> Unbind(str);
+gap> Unbind(graph);
+
 #E#
 gap> STOP_TEST("Digraphs package: extreme/grahom.tst");

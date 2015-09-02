@@ -215,7 +215,7 @@ gap> DigraphEdges(last);
 [ [ 1, 2 ], [ 1, 4 ], [ 2, 2 ], [ 3, 4 ], [ 3, 1 ], [ 3, 1 ], [ 4, 3 ], 
   [ 4, 2 ] ]
 
-#T# OnDigraphs (for a digraph and a transformation)
+#T# OnDigraphs: for a digraph and a transformation
 gap> gr := Digraph([[2], [1, 3], []]);
 <digraph with 3 vertices, 3 edges>
 gap> OutNeighbours(gr);
@@ -231,7 +231,7 @@ gap> gr := OnDigraphs(gr, t);
 gap> OutNeighbours(gr);
 [ [ 2 ], [ 1 ], [  ] ]
 
-#T# InNeighboursOfVertex, InDegreeOfVertex
+#T# InNeighboursOfVertex and InDegreeOfVertex
 gap> gr := Digraph(rec(nrvertices := 10, source := [1, 1, 5, 5, 7, 10],
 > range := [3, 3, 1, 10, 7, 1]));
 <multidigraph with 10 vertices, 6 edges>
@@ -264,7 +264,7 @@ gap> InDegrees(gr);
 gap> InDegreeOfVertex(gr, 2);
 3
 
-#T# OutNeighboursOfVertex, OutDegreeOfVertex
+#T# OutNeighboursOfVertex and OutDegreeOfVertex
 gap> gr := Digraph(rec(nrvertices := 10, source := [1, 5, 5, 5, 5, 5, 5, 6],
 > range := [1, 1, 2, 3, 1, 2, 3, 6]));
 <multidigraph with 10 vertices, 8 edges>
@@ -1189,7 +1189,7 @@ gap> DigraphJoin(EmptyDigraph(3), EmptyDigraph(2)) =
 > CompleteBipartiteDigraph(3, 2);
 true
 
-#T# OnMultiDigraphs
+#T# OnMultiDigraphs: for a pair of permutations
 gap> gr1 := CompleteDigraph(3);
 <digraph with 3 vertices, 6 edges>
 gap> DigraphEdges(gr1);
@@ -1389,6 +1389,60 @@ not yet implemented for non-topologically sortable digraphs,
 gap> DigraphReflexiveTransitiveReduction(gr);
 Error, Digraphs: DigraphReflexiveTransitiveReduction:
 not yet implemented for non-topologically sortable digraphs,
+
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr);
+gap> Unbind(nrvertices);
+gap> Unbind(nbs);
+gap> Unbind(u1);
+gap> Unbind(j1);
+gap> Unbind(j2);
+gap> Unbind(grrt);
+gap> Unbind(rtclosure);
+gap> Unbind(id);
+gap> Unbind(out);
+gap> Unbind(rgr);
+gap> Unbind(erev);
+gap> Unbind(rev);
+gap> Unbind(edges);
+gap> Unbind(u2);
+gap> Unbind(source);
+gap> Unbind(m1);
+gap> Unbind(edges2);
+gap> Unbind(m2);
+gap> Unbind(b);
+gap> Unbind(adj);
+gap> Unbind(gri);
+gap> Unbind(a);
+gap> Unbind(mat);
+gap> Unbind(i1);
+gap> Unbind(i2);
+gap> Unbind(grt);
+gap> Unbind(comps);
+gap> Unbind(qr);
+gap> Unbind(func);
+gap> Unbind(gr2);
+gap> Unbind(gr3);
+gap> Unbind(p2);
+gap> Unbind(out1);
+gap> Unbind(gr4);
+gap> Unbind(p1);
+gap> Unbind(e);
+gap> Unbind(g);
+gap> Unbind(temp);
+gap> Unbind(gr1);
+gap> Unbind(rel3);
+gap> Unbind(h);
+gap> Unbind(rel1);
+gap> Unbind(m);
+gap> Unbind(n);
+gap> Unbind(range);
+gap> Unbind(r);
+gap> Unbind(t);
+gap> Unbind(rel2);
+gap> Unbind(out3);
+gap> Unbind(out2);
+gap> Unbind(tclosure);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/oper.tst");
