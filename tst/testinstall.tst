@@ -204,5 +204,28 @@ gap> DigraphCanonicalLabelling(gr)
 > = DigraphCanonicalLabelling(DigraphCopy(gr));
 true
 
+#T# segfault fixed in DIGRAPH_IN_OUT_NBS: not checking that a list is a PLIST
+gap> gr := Digraph(List([1 .. 5], x -> [1 .. 5]));
+<digraph with 5 vertices, 25 edges>
+gap> out := OutNeighbours(gr);
+[ [ 1 .. 5 ], [ 1 .. 5 ], [ 1 .. 5 ], [ 1 .. 5 ], [ 1 .. 5 ] ]
+gap> InNeighbours(gr) = out;
+true
+
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr2);
+gap> Unbind(gr);
+gap> Unbind(G);
+gap> Unbind(p);
+gap> Unbind(i);
+gap> Unbind(gr1);
+gap> Unbind(topo);
+gap> Unbind(source);
+gap> Unbind(range);
+gap> Unbind(r);
+gap> Unbind(func);
+gap> Unbind(adj);
+gap> Unbind(d);
+
 #E#
 gap> STOP_TEST("Digraphs package: testinstall.tst");

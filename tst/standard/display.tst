@@ -71,5 +71,15 @@ gap> DotSymmetricDigraph(gr1);
 Error, Digraphs: DotSymmetricDigraph: usage,
 the argument <graph> should be symmetric,
 
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr2);
+gap> Unbind(gr);
+gap> Unbind(gr1);
+gap> Unbind(source);
+gap> Unbind(range);
+gap> Unbind(r);
+gap> Unbind(adj);
+gap> Unbind(dot);
+
 #E#
 gap> STOP_TEST("Digraphs package: standard/display.tst");

@@ -905,31 +905,31 @@ static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) {
   
   n = LEN_PLIST(adj);
   if (n == 0) {
-    inn = NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
-  } else {
-    inn = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
-    SET_LEN_PLIST(inn, n);
+    return NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0);
+  }
+  inn = NEW_PLIST(T_PLIST_TAB+IMMUTABLE, n);
+  SET_LEN_PLIST(inn, n);
 
-    // fill adj with empty plists 
-    for (i = 1; i <= n; i++) {
-      SET_ELM_PLIST(inn, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
-      SET_LEN_PLIST(ELM_PLIST(inn, i), 0);
-      CHANGED_BAG(inn);
-    }
+  // fill adj with empty plists 
+  for (i = 1; i <= n; i++) {
+    SET_ELM_PLIST(inn, i, NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, 0));
+    SET_LEN_PLIST(ELM_PLIST(inn, i), 0);
+    CHANGED_BAG(inn);
+  }
 
-    for (i = 1; i <= n; i++) {
-      adji = ELM_PLIST(adj, i);
-      len = LEN_PLIST(adji);
-      for (j = 1; j <= len; j++){
-        k = INT_INTOBJ(ELM_PLIST(adji, j));
-        innk = ELM_PLIST(inn, k);
-        len2 = LEN_PLIST(innk); 
-        if(len2 == 0){
-          RetypeBag(innk, T_PLIST_CYC+IMMUTABLE);
-          CHANGED_BAG(inn);
-        }
-        AssPlist(innk, len2 + 1, INTOBJ_INT(i));
+  for (i = 1; i <= n; i++) {
+    adji = ELM_PLIST(adj, i);
+    PLAIN_LIST(adji);
+    len = LEN_PLIST(adji);
+    for (j = 1; j <= len; j++){
+      k = INT_INTOBJ(ELM_PLIST(adji, j));
+      innk = ELM_PLIST(inn, k);
+      len2 = LEN_PLIST(innk); 
+      if(len2 == 0){
+        RetypeBag(innk, T_PLIST_CYC+IMMUTABLE);
+        CHANGED_BAG(inn);
       }
+      AssPlist(innk, len2 + 1, INTOBJ_INT(i));
     }
   }
   return inn;

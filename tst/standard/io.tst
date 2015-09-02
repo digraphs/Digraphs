@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# DigraphFromGraph6String amd Graph6String
+#T# DigraphFromGraph6String and Graph6String
 gap> DigraphFromGraph6String("?");
 <digraph with 0 vertices, 0 edges>
 gap> DigraphFromGraph6String("E?A?");
@@ -248,6 +248,16 @@ gap> gr := TCodeDecoder("3 2 0 2");
 Error, Digraphs: TCodeDecoder: usage,
 <str> must contain at least 2e+2 entries,
 where e is the number of edges (the 2nd entry in <str>),
+
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr);
+gap> Unbind(list);
+gap> Unbind(l);
+gap> Unbind(filename);
+gap> Unbind(source);
+gap> Unbind(range);
+gap> Unbind(str);
+gap> Unbind(rdgr);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/io.tst");

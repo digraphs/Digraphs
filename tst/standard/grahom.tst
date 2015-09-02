@@ -13,5 +13,8 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
+#T# DIGRAPHS_UnbindVariables
+gap> ;
+
 #E#
 gap> STOP_TEST("Digraphs package: standard/grahom.tst");

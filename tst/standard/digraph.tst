@@ -1038,5 +1038,45 @@ gap> String(gr2);
 gap> PrintString(gr2);
 "Digraph( [ ] )"
 
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(r1);
+gap> Unbind(j);
+gap> Unbind(gr);
+gap> Unbind(nrvertices);
+gap> Unbind(r2);
+gap> Unbind(inn);
+gap> Unbind(im);
+gap> Unbind(grnc);
+gap> Unbind(elms);
+gap> Unbind(grrt);
+gap> Unbind(s);
+gap> Unbind(graph2);
+gap> Unbind(source);
+gap> Unbind(graph1);
+gap> Unbind(new);
+gap> Unbind(divides);
+gap> Unbind(bin);
+gap> Unbind(mat);
+gap> Unbind(error);
+gap> Unbind(gr5);
+gap> Unbind(c2);
+gap> Unbind(c1);
+gap> Unbind(d);
+gap> Unbind(gr4);
+gap> Unbind(b);
+gap> Unbind(gr2);
+gap> Unbind(gr3);
+gap> Unbind(g);
+gap> Unbind(f);
+gap> Unbind(i);
+gap> Unbind(h);
+gap> Unbind(k);
+gap> Unbind(gr1);
+gap> Unbind(vertices);
+gap> Unbind(n);
+gap> Unbind(range);
+gap> Unbind(r);
+gap> Unbind(v);
+
 #E#
 gap> STOP_TEST("Digraphs package: standard/digraph.tst");
