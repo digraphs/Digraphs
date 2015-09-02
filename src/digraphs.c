@@ -1914,6 +1914,128 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   return user_param_arg;
 }
 
+Digraph* new_digraph_from_gap_digraph (Obj digraph_gap) {
+  unsigned int i, j, k;
+  unsigned int nr      = DigraphNrVertices(digraph_gap);
+  Digraph*     digraph = new_digraph(nr);
+  Obj          out     = OutNeighbours(digraph_gap);
+  Obj          nbs;
+  
+  for (i = 0; i < nr; i++) {
+    nbs = ELM_PLIST(out, i + 1);
+    for (j = 0; j < LEN_LIST(nbs); j++) {
+      k = INT_INTOBJ(ELM_LIST(nbs, j + 1)) - 1;
+      add_edge_digraph(digraph, i, k);
+    }
+  }
+  return digraph;
+}
+
+Obj FuncDIGRAPH_HOMOS (Obj self, Obj args) { 
+  unsigned int  i, j, k, hint_arg, nr1, nr2;
+  UInt8         max_results_arg;
+  bool          *condition;
+  Obj           user_param_arg, out, nbs;  
+  UIntS*        partial_map;
+
+  // get the args . . .
+  
+  Obj digraph1_gap    = ELM_PLIST(args, 1);  // find homomorphisms from graph1 
+  Obj digraph2_gap    = ELM_PLIST(args, 2);  // to graph2
+  Obj hook_gap        = ELM_PLIST(args, 3);  // apply this function to every homomorphism 
+                                             // Fail for none
+  Obj user_param_gap  = ELM_PLIST(args, 4);  // user_param which can be used in the hook
+  Obj limit_gap       = ELM_PLIST(args, 5);  // the maximum number of results
+  Obj hint_gap        = ELM_PLIST(args, 6);  // the maximum rank of a result
+  Obj isinjective_gap = ELM_PLIST(args, 7);  // only consider injective homomorphism
+  Obj image_gap       = ELM_PLIST(args, 8);  // only consider homos with image <image>
+  Obj kernel_gap      = ELM_PLIST(args, 9);  // only consider homos with kernel <kernel>
+  Obj partial_map_gap = ELM_PLIST(args, 10); // only look for extensions of <partial_map_gap>
+  
+  // get the c digraph objects . . . 
+  Digraph* digraph1 = new_digraph_from_gap_digraph(digraph1_gap);
+  nr1 = digraph1->nr_vertices;
+  Digraph* digraph2 = new_digraph_from_gap_digraph(digraph2_gap);
+  nr2 = digraph2->nr_vertices;
+
+  // process the hook and user_param . . .
+  if (user_param_gap == Fail || (hook_gap == Fail && !IS_PLIST(user_param_gap))) {
+    ErrorQuit("Digraphs: DIGRAPH_HOMOS (C):\n invalid argument 1,", 0L, 0L);
+  } else {
+    user_param_arg = user_param_gap;
+  }
+
+  // process the limit . . .
+  if (limit_gap == Fail || !IS_INTOBJ(limit_gap)) {
+    max_results_arg = SMALLINTLIMIT;
+  } else {
+    max_results_arg = INT_INTOBJ(limit_gap);
+  }
+  
+  // process hint . . . 
+  if (IS_INTOBJ(hint_gap)) { 
+    hint_arg = INT_INTOBJ(hint_gap);
+  } else {
+    hint_arg = MAXVERTS + 1;
+  }
+
+  // process injective . . .
+  bool isinjective = (isinjective_gap == True ? true : false);
+
+  // init the image . . . 
+  BitArray* image;
+
+  if (LEN_LIST(image_gap) == nr2) {
+    image = NULL;
+  } else {
+    image = new_bit_array(nr2);
+    for (i = 0; i < LEN_LIST(image_gap); i++) {
+      set_bit_array(image, INT_INTOBJ(ELM_LIST(image_gap, i + 1)) - 1, true);
+    }
+  }
+
+  // TODO process the kernel . . .
+
+  // process the partially defined map . . .
+  
+  if (partial_map_gap == Fail || !IS_LIST(partial_map_gap)) {
+    partial_map = NULL;
+  } else {
+    partial_map = malloc(nr2 * sizeof(UIntS));
+    for (i = 0; i < LEN_LIST(partial_map_gap); i++) {
+      if (ISB_LIST(partial_map_gap, i + 1) == 1) {
+        partial_map[i] = INT_INTOBJ(ELM_LIST(partial_map_gap, i + 1)) - 1;
+      } else { 
+        partial_map[i] = UNDEFINED;
+      } 
+    }
+    for (i = LEN_LIST(partial_map_gap); i < nr1; i++) {
+      partial_map[i] = UNDEFINED;
+    }
+  } 
+ 
+  // go!
+  if (hook_gap == Fail) {
+    DigraphHomomorphisms(digraph1, digraph2, homo_hook_collect, user_param_arg,
+        max_results_arg, hint_arg, isinjective, image, partial_map); 
+  } else {
+    GAP_FUNC = hook_gap;
+    DigraphHomomorphisms(digraph1, digraph2, homo_hook_gap, user_param_arg,
+        max_results_arg, hint_arg, isinjective, image, partial_map);
+  }
+  
+  if (IS_PLIST(user_param_arg) && LEN_PLIST(user_param_arg) == 0 
+      && ! TNUM_OBJ(user_param_arg) == T_PLIST_EMPTY) {
+    RetypeBag(user_param_arg, T_PLIST_EMPTY);
+  }
+
+  free(partial_map); 
+  free_digraph(digraph1);
+  free_digraph(digraph2);
+
+  return user_param_arg;
+}
+
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
 
 /******************************************************************************
@@ -2037,8 +2159,12 @@ static StructGVarFunc GVarFuncs [] = {
   { "GRAPH_HOMOS", 10, "graph1, graph2, hook, user_param, limit, hint, isinjective, image, kernel, partial_map",
     FuncGRAPH_HOMOS,
     "src/graphs.c:FuncGRAPH_HOMOS" },
+  
+  { "DIGRAPH_HOMOS", 10, "digraph1, digraph2, hook, user_param, limit, hint, isinjective, image, kernel, partial_map",
+    FuncDIGRAPH_HOMOS,
+    "src/graphs.c:FuncDIGRAPH_HOMOS" },
 
-  { 0 }
+  { 0, 0, 0, 0, 0 } /* Finish with an empty entry */
 
 };
 
@@ -2098,7 +2224,9 @@ static StructInitInfo module = {
  /* checkInit   = */ 0,
  /* preSave     = */ 0,
  /* postSave    = */ 0,
- /* postRestore = */ 0
+ /* postRestore = */ 0,
+ /* filename    = */ (char*) "pkg/digraphs/digraphs.c",
+ /* isGapRootR  = */ true
 };
 
 #ifndef GRAPHSSTATIC

@@ -3,7 +3,7 @@
 *A  homos.h                  graph homomorphisms              Julius Jonusas
 **                                                            J. D. Mitchell 
 **                                                            
-**  Copyright (C) 2014-15 - Julius Jonusas and J. D. Mitchell 
+**  Copyright (C) 2014 - Julius Jonusas and J. D. Mitchell 
 **  This file is free software, see license information at the end.
 **  
 */
@@ -40,7 +40,7 @@ void  add_edge_homos_graph (HomosGraph* graph,
                             UIntS from_vert, 
                             UIntS to_vert);
 
-void  free_homos_graph      (HomosGraph* graph);
+void  free_homos_graph     (HomosGraph* graph);
 
 ////////////////////////////////////////////////////////////////////////////////
 // new stuff
@@ -51,11 +51,15 @@ typedef unsigned long int Block;
 struct bit_array_struct {
   UIntS  nr_bits;   // number of bits
   UIntS  nr_blocks; // number of blocks
-  UIntS  last_bit;  // the position of the last bit used in the last block
   Block* blocks;    // the blocks themselves
 };
 
 typedef struct bit_array_struct BitArray;
+
+BitArray* new_bit_array (UIntS nr_bits);
+void set_bit_array (BitArray* bit_array, UIntS pos, bool val);
+bool get_bit_array (BitArray* bit_array, UIntS pos);
+void init_bit_array(BitArray* bit_array, bool val);
 
 struct digraph_struct {
   BitArray** in_neighbours;
@@ -65,3 +69,19 @@ struct digraph_struct {
 
 typedef struct digraph_struct Digraph;
 typedef UIntS Vertex;
+
+Digraph* new_digraph (UIntS nr_verts);
+void free_digraph (Digraph* digraph);
+void add_edge_digraph (Digraph* digraph, Vertex i, Vertex j);
+
+void DigraphHomomorphisms (Digraph* digraph1,
+                           Digraph* digraph2,
+                           void     (*hook_arg)(void*        user_param,
+	                                        const UIntS  nr,
+	                                        const UIntS  *map       ),
+                           void*     user_param_arg,
+                           UIntL     max_results_arg,
+                           int       hint_arg,
+                           bool      isinjective,
+                           BitArray* image,
+                           UIntS*    partial_map                           );
