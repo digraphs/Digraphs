@@ -883,9 +883,9 @@ Binary Relation on 4 points
 
 <#GAPDoc Label="DigraphEdgeUnion">
 <ManSection>
-  <Oper Name="DigraphEdgeUnion" Arg="gr1, gr2, ..." Label="for an arbitrary
+  <Func Name="DigraphEdgeUnion" Arg="gr1, gr2, ..." Label="for an arbitrary
     number of digraphs"/>
-  <Oper Name="DigraphEdgeUnion" Arg="list" Label="for a list of digraphs"/>
+  <Func Name="DigraphEdgeUnion" Arg="list" Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
   <Description>
     In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
@@ -927,9 +927,9 @@ true
 
 <#GAPDoc Label="DigraphDisjointUnion">
 <ManSection>
-  <Oper Name="DigraphDisjointUnion" Arg="gr1, gr2, ..." Label="for an
+  <Func Name="DigraphDisjointUnion" Arg="gr1, gr2, ..." Label="for an
     arbitrary number of digraphs"/>
-  <Oper Name="DigraphDisjointUnion" Arg="list" Label="for a list of digraphs"/>
+  <Func Name="DigraphDisjointUnion" Arg="list" Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
   <Description>
     In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
@@ -979,9 +979,9 @@ gap> OutNeighbours(union);
 
 <#GAPDoc Label="DigraphJoin">
 <ManSection>
-  <Oper Name="DigraphJoin" Arg="gr1, gr2, ..." Label="for an arbitrary number
+  <Func Name="DigraphJoin" Arg="gr1, gr2, ..." Label="for an arbitrary number
     of digraphs"/>
-  <Oper Name="DigraphJoin" Arg="list" Label="for a list of digraphs"/>
+  <Func Name="DigraphJoin" Arg="list" Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
   <Description>
     In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
@@ -992,7 +992,7 @@ gap> OutNeighbours(union);
     list. <P/>
 
     The join of a collection of digraphs <A>gr1</A>, <A>gr2</A>, <C>...</C> is
-    formed by first taking the <Ref Oper="DigraphDisjointUnion" Label="for a list of digraphs"/> of the collection.
+    formed by first taking the <Ref Func="DigraphDisjointUnion" Label="for a list of digraphs"/> of the collection.
 
     In the disjoint union, if <M>i \neq j</M> then there are no edges between
     vertices corresponding to digraphs <A>gr</A><C>[i]</C> and
