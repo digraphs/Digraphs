@@ -675,7 +675,7 @@ function(mat)
     out[i] := [];
     count := 0;
     for j in verts do
-      if not IsInt(mat[i][j]) or mat[i][j] < 0 then
+      if not (IsPosInt(mat[i][j]) or mat[i][j] = 0) then
         ErrorMayQuit("Digraphs: DigraphByAdjacencyMatrix: usage,\n",
                      "the argument must be a matrix of non-negative integers,",
                      " or a boolean matrix,");
@@ -715,7 +715,7 @@ function(mat)
         out[i][count] := j;
       od;
     end;
-  elif IsBool(mat[1][1]) then
+  else # boolean matrix
     create_func := function(i, j)
       if mat[i][j] then
         count := count + 1;
@@ -738,7 +738,7 @@ function(mat)
   out := DigraphNC(out);
   if IsInt(mat[1][1]) then
     SetAdjacencyMatrix(out, mat);
-  else
+  else # boolean matrix
     SetIsMultiDigraph(out, false);
   fi;
 
