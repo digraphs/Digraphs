@@ -965,7 +965,7 @@ function(graph)
     Add(blist, true);
   od;
   if Length(blist) mod 6 <> 0 then
-    ErrorMayQuit("Digraphs: Sparse6String: usage,\n"
+    ErrorMayQuit("Digraphs: Sparse6String: usage,\n",
                  "Padding problem,");
   fi;
 
