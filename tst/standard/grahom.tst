@@ -117,6 +117,94 @@ gap> HomomorphismGraphsFinder(gr, gr, fail, [], 1, fail, false, [1 .. 513], []);
 Error, Digraphs: HomomorphismGraphsFinder: error,
 not yet implemented for digraphs with more than 512 vertices,
 
+#T# GeneratorsOfEndomorphismMonoid: checking errors and robustness
+gap> gr := ChainDigraph(2);
+<digraph with 2 vertices, 1 edge>
+gap> GeneratorsOfEndomorphismMonoid();
+Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
+this function takes at least one argument,
+gap> GeneratorsOfEndomorphismMonoid(Group(()));
+Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
+the 1st argument <digraph> must be a digraph,
+gap> GeneratorsOfEndomorphismMonoid(gr);
+Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
+not yet implemented for non-symmetric digraphs,
+gap> gr := DigraphTransitiveClosure(CompleteDigraph(2));
+<digraph with 2 vertices, 4 edges>
+gap> DigraphHasLoops(gr);
+true
+gap> GeneratorsOfEndomorphismMonoid(gr);
+Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
+not yet implemented for digraphs with loops,
+gap> gr := EmptyDigraph(2);
+<digraph with 2 vertices, 0 edges>
+gap> GeneratorsOfEndomorphismMonoid(gr, Group(()), Group((1, 2)));
+[ Transformation( [ 2, 1 ] ), IdentityTransformation, 
+  Transformation( [ 1, 1 ] ) ]
+gap> gr := EmptyDigraph(2);;
+gap> GeneratorsOfEndomorphismMonoid(gr, Group(()));
+[ Transformation( [ 2, 1 ] ), IdentityTransformation, 
+  Transformation( [ 1, 1 ] ) ]
+gap> gr := EmptyDigraph(2);;
+gap> GeneratorsOfEndomorphismMonoid(gr, 1);
+[ Transformation( [ 2, 1 ] ) ]
+gap> gr := EmptyDigraph(2);;
+gap> GeneratorsOfEndomorphismMonoid(gr, 2);
+[ Transformation( [ 2, 1 ] ), IdentityTransformation ]
+gap> gr := EmptyDigraph(2);;
+gap> GeneratorsOfEndomorphismMonoidAttr(gr);;
+gap> GeneratorsOfEndomorphismMonoid(gr, 4) = last;
+true
+gap> gens := GeneratorsOfEndomorphismMonoid(gr, 3);
+[ Transformation( [ 2, 1 ] ), IdentityTransformation, 
+  Transformation( [ 1, 1 ] ) ]
+gap> IsFullTransformationSemigroup(Semigroup(gens));
+true
+gap> Size(Semigroup(gens));
+4
+
+#T# DigraphColoring and DigraphColouring: checking errors and robustness
+gap> gr := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> DigraphColouring(gr, 1);
+Error, Digraphs: DigraphColoring: usage,
+the 1st argument <digraph> must not be a  multidigraph,
+gap> gr := EmptyDigraph(3);
+<digraph with 3 vertices, 0 edges>
+gap> DigraphColoring(gr, 4);
+fail
+
+# the following don't work because injective homos are not yet done
+#gap> DigraphColoring(gr, 3);
+#IdentityTransformation
+#gap> DigraphColoring(gr, 2);
+#Transformation( [ 1, 2, 1 ] )
+#gap> DigraphColoring(gr, 1);
+#Transformation( [ 1, 1, 1 ] )
+#gap> gr := CompleteDigraph(3);
+#<digraph with 3 vertices, 6 edges>
+#gap> DigraphColoring(gr, 1);
+#fail
+#gap> DigraphColoring(gr, 2);
+#fail
+#gap> DigraphColoring(gr, 3);
+
+#T# MonomorphismGraphs
+gap> gr1 := EmptyDigraph(1);;
+gap> MonomorphismGraphs(gr1, gr1);
+()
+gap> gr2 := EmptyDigraph(2);;
+gap> MonomorphismGraphs(gr2, gr1);
+fail
+
+# the following currently returns fail, even though it should not
+# this is because the injective homos code is not yet done
+#gap> MonomorphismGraphs(gr1, gr2);
+
+# the following currently returns fail, even though it should not
+# this is because the injective homos code is not yet done
+#gap> MonomorphismGraphs(CompleteDigraph(2), Digraph([[2],[1,3],[2]]));
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(gr1);
