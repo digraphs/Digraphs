@@ -195,7 +195,8 @@ gap> DigraphTopologicalSort(gr1) = DigraphVertices(gr1);
 true
 
 #T# AutomorphismGroup: for a multidigraph
-# Bug: DigraphCanonicalLabelling was being set incorrectly in this function
+# DigraphCanonicalLabelling was being set incorrectly by AutomorphismGroup for
+# a multidigraph
 gap> gr := Digraph([
 >   [5, 7, 8, 4, 6, 1], [3, 1, 7, 2, 7, 9], [1, 5, 2, 3, 9],
 >   [1, 3, 3, 9, 9], [6, 3, 5, 7, 9], [3, 9],

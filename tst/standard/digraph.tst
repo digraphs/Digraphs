@@ -358,7 +358,7 @@ gap> gr := DigraphByEdges([]);
 gap> gr = EmptyDigraph(0);
 true
 
-#T# DigraphByAdjacencyMatrix: by an integer matrix
+#T# DigraphByAdjacencyMatrix (by an integer matrix)
 
 # for a matrix of integers
 gap> mat := [
@@ -429,7 +429,7 @@ true
 gap> DigraphByAdjacencyMatrix([]);
 <digraph with 0 vertices, 0 edges>
 
-#T# DigraphByAdjacencyMatrix: by a boolean matrix
+#T# DigraphByAdjacencyMatrix (by a boolean matrix)
 gap> mat := List([1 .. 5], x -> BlistList([1 .. 5], []));;
 gap> DigraphByAdjacencyMatrix(mat) = EmptyDigraph(5);
 true

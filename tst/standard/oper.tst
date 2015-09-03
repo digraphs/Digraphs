@@ -455,7 +455,7 @@ gap> qr := QuotientDigraph(gr, [[1], [2, 3, 5, 7], [4, 6, 8]]);
 gap> OutNeighbours(qr);
 [ [ 3, 2 ], [ 1, 3, 2, 1, 2, 3, 3, 2, 1, 3, 2, 3, 2 ], [ 1, 3, 3, 2, 2, 3 ] ]
 
-#T# DigraphInEdges and DigraphOutEdges for a vertex
+#T# DigraphInEdges and DigraphOutEdges: for a vertex
 gap> gr := Digraph([[2, 2, 2, 2, 2], [1, 1, 1, 1], [1], [3, 2]]);
 <multidigraph with 4 vertices, 12 edges>
 gap> DigraphInEdges(gr, 1);

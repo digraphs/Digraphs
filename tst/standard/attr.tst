@@ -619,7 +619,8 @@ gap> DigraphDiameter(gr);
 0
 
 #T# DigraphDiameter 2
-# For a not strongly connected, with too many vertices for Floyd-Warshall
+# For a digraph (not strongly connected) with too many vertices for
+# Floyd-Warshall
 gap> str := Concatenation(
 > ".~?Ng_k?QDoFG]?MaO?IHoBwu?`cGBQPGAXD_Ic]AaKO^xO`\\dMD}VGYwcq}DTKWSsq?mrRAP",
 > "BmZ?]HlAACzLoWSv_ur`EvMSE[y@VrIfWAU]GkH{AlgAEU_W?yBbBg[FqaGUII?kguBW^{xiO?G",
