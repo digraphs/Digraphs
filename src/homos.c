@@ -66,6 +66,7 @@ static jmp_buf outofhere;                  // so we can jump out of the deepest 
 ////////////////////////////////////////////////////////////////////////////////
 
 static void init_bit_tabs (void) {
+  assert(false);
   if (! are_bit_tabs_init) {
     UIntL i;
     UIntL v = 1;
@@ -739,7 +740,36 @@ void GraphHomomorphisms (HomosGraph*  graph1,
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////
+// NUMBER_BITS_PER_BLOCK: the number of bits in every Block
+////////////////////////////////////////////////////////////////////////////////
+
 #define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)
+
+////////////////////////////////////////////////////////////////////////////////
+// COUNT_TRUES_BLOCK: this is from gap/src/blister.h
+////////////////////////////////////////////////////////////////////////////////
+
+#if SIZEOF_VOID_P == 8
+#define COUNT_TRUES_BLOCK( block )                                                          \
+        do {                                                                                \
+        (block) = ((block) & 0x5555555555555555L) + (((block) >> 1) & 0x5555555555555555L); \
+        (block) = ((block) & 0x3333333333333333L) + (((block) >> 2) & 0x3333333333333333L); \
+        (block) = ((block) + ((block) >>  4)) & 0x0f0f0f0f0f0f0f0fL;                        \
+        (block) = ((block) + ((block) >>  8));                                              \
+        (block) = ((block) + ((block) >> 16));                                              \
+        (block) = ((block) + ((block) >> 32)) & 0x00000000000000ffL; } while (0)            
+
+#else
+
+#define COUNT_TRUES_BLOCK( block )                                        \
+        do {                                                              \
+        (block) = ((block) & 0x55555555) + (((block) >> 1) & 0x55555555); \
+        (block) = ((block) & 0x33333333) + (((block) >> 2) & 0x33333333); \
+        (block) = ((block) + ((block) >>  4)) & 0x0f0f0f0f;               \
+        (block) = ((block) + ((block) >>  8));                            \
+        (block) = ((block) + ((block) >> 16)) & 0x000000ff; } while (0)   
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // new_bit_array: get a pointer to a new BitArray with space for <nr_bits>
@@ -846,17 +876,32 @@ static inline BitArray* intersect_bit_arrays (BitArray* bit_array1,
 // place!!
 ////////////////////////////////////////////////////////////////////////////////
 
-//TODO improve this, see blister.c/h
-
 static inline UIntS size_bit_array (BitArray* bit_array) {
-  UIntS i, out = 0;
+  UIntS  n, i;
+  Block  m;
+  UIntS  nrb    = bit_array->nr_blocks;
+  Block* blocks = bit_array->blocks;
+
+  /* loop over the blocks, adding the number of bits of each one         */
+  n = 0;
+  for ( i = 1; i <= nrb; i++ ) {
+      m = *blocks++;
+      COUNT_TRUES_BLOCK(m);
+      n += m;
+  }
+
+  return n;
+}
+
+/*static inline UIntS size_bit_array (BitArray* bit_array) {
+UIntS i, out = 0;
   for (i = 0; i < bit_array->nr_bits; i++) {
     if (get_bit_array(bit_array, i)) {
       out++;
     }
   }
   return out;
-}
+}*/
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
