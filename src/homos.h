@@ -71,7 +71,6 @@ void DigraphHomomorphisms (Digraph* digraph1,
                            void*     user_param_arg,
                            UIntL     max_results_arg,
                            int       hint_arg,
-                           bool      isinjective,
                            BitArray* image,
                            UIntS*    partial_map                           );
 
@@ -100,6 +99,5 @@ void GraphHomomorphisms (Graph* graph1,
                          void*     user_param_arg,
                          UIntL     max_results_arg,
                          int       hint_arg,
-                         bool      isinjective,
                          BitArray* image,
                          UIntS*    partial_map                           );
