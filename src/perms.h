@@ -1,4 +1,4 @@
-#define NDEBUG
+//#define NDEBUG
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>

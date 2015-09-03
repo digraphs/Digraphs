@@ -14,39 +14,12 @@
 #include <limits.h>
 #include <config.h>
 
-
-struct homos_graph_struct {
-  UIntL* neighbours;
-  UIntS  nr_verts;
-};
-
-typedef struct homos_graph_struct HomosGraph;
-
-
 void homo_hook_print ();
 
-void GraphHomomorphisms (HomosGraph*  graph1, 
-                         HomosGraph*  graph2,
-                         void         (*hook)(void*        user_param,
-	                                      const UIntS  nr,
-	                                      const UIntS  *map       ),
-                         void*        user_param_arg,
-                         UIntL        max_results_arg,
-                         int          hint_arg, 
-                         bool         isinjective, 
-                         int*         image,
-                         UIntS*       map     );
-
-HomosGraph* new_homos_graph (UIntS nr_verts);
-
-void  add_edge_homos_graph (HomosGraph* graph, 
-                            UIntS from_vert, 
-                            UIntS to_vert);
-
-void  free_homos_graph     (HomosGraph* graph);
-
 ////////////////////////////////////////////////////////////////////////////////
-// new stuff
+////////////////////////////////////////////////////////////////////////////////
+// BitArrays
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef unsigned long int Block;
@@ -64,6 +37,20 @@ void set_bit_array (BitArray* bit_array, UIntS pos, bool val);
 bool get_bit_array (BitArray* bit_array, UIntS pos);
 void init_bit_array(BitArray* bit_array, bool val);
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Vertex
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+typedef UIntS Vertex;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Digraphs (undirected)
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 struct digraph_struct {
   BitArray** in_neighbours;
   BitArray** out_neighbours;
@@ -71,7 +58,6 @@ struct digraph_struct {
 };
 
 typedef struct digraph_struct Digraph;
-typedef UIntS Vertex;
 
 Digraph* new_digraph (UIntS nr_verts);
 void free_digraph (Digraph* digraph);
@@ -88,3 +74,32 @@ void DigraphHomomorphisms (Digraph* digraph1,
                            bool      isinjective,
                            BitArray* image,
                            UIntS*    partial_map                           );
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Graphs (undirected)
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+struct graph_struct {
+  BitArray** neighbours;
+  UIntS      nr_vertices;
+};
+
+typedef struct graph_struct Graph;
+
+Graph* new_graph (UIntS nr_verts);
+void free_graph (Graph* graph);
+void add_edge_graph (Graph* graph, Vertex i, Vertex j);
+
+void GraphHomomorphisms (Graph* graph1,
+                         Graph* graph2,
+                         void     (*hook_arg)(void*        user_param,
+	                                      const UIntS  nr,
+	                                      const UIntS  *map       ),
+                         void*     user_param_arg,
+                         UIntL     max_results_arg,
+                         int       hint_arg,
+                         bool      isinjective,
+                         BitArray* image,
+                         UIntS*    partial_map                           );

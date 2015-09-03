@@ -77,7 +77,7 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
   #fi;
 
   if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
-    GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
+    DIGRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
                 fail, map);
     return user_param;
   else

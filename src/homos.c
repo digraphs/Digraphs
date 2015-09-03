@@ -66,7 +66,7 @@ static jmp_buf outofhere;                  // so we can jump out of the deepest 
 ////////////////////////////////////////////////////////////////////////////////
 
 static void init_bit_tabs (void) {
-  assert(false);
+  //assert(false);
   if (! are_bit_tabs_init) {
     UIntL i;
     UIntL v = 1;
@@ -273,52 +273,6 @@ static void orbit_reps (UIntS rep_depth) {
   return;
 }
 
-static BitArray* new_vals;
-static BitArray* new_domain;
-static BitArray* new_orb_lookup;
-
-static BitArray** new_reps;
-
-static void new_orbit_reps (UIntS rep_depth) {
-  UIntS     nrgens, i, j, fst, m, img, n, max, d;
-  Perm      gen;
-
-  init_bit_array(new_reps[rep_depth], false);
-  init_bit_array(new_domain, false);
-  init_bit_array(new_orb_lookup, false);
-
-  // TODO special case in case there are no gens, or just the identity.
-  for (i = 0; i < deg; i++) {
-    if (!get_bit_array(new_vals, i)) {
-      set_bit_array(new_domain, i, true);
-    }
-  }
-
-  fst = 0;
-  while (fst < deg && !get_bit_array(new_domain, fst)) fst++;
-
-  while (fst < deg) {
-    orb[0] = fst;
-    n = 1;   //length of orb
-    
-    set_bit_array(new_reps[rep_depth], fst, true);
-    set_bit_array(new_orb_lookup, fst, true);
-    set_bit_array(new_domain, fst, false);
-
-    for (i = 0; i < n; i++) {
-      for (j = 0; j < stab_gens[rep_depth]->nr_gens; j++) {
-        gen = stab_gens[rep_depth]->gens[j];
-        img = gen[orb[i]];
-        if (!get_bit_array(new_orb_lookup, img)) {
-          orb[n++] = img;
-          set_bit_array(new_orb_lookup, img, true);
-          set_bit_array(new_domain, img, false);
-        }
-      }
-    }
-    while (fst < deg && !get_bit_array(new_domain, fst)) fst++;
-  }
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -734,6 +688,53 @@ void GraphHomomorphisms (HomosGraph*  graph1,
 #endif
 }
 
+static BitArray* new_vals;
+static BitArray* new_domain;
+static BitArray* new_orb_lookup;
+
+static BitArray** new_reps;
+
+static void new_orbit_reps (UIntS rep_depth) {
+  UIntS     nrgens, i, j, fst, m, img, n, max, d;
+  Perm      gen;
+
+  init_bit_array(new_reps[rep_depth], false);
+  init_bit_array(new_domain, false);
+  init_bit_array(new_orb_lookup, false);
+
+  // TODO special case in case there are no gens, or just the identity.
+  for (i = 0; i < deg; i++) {
+    if (!get_bit_array(new_vals, i)) {
+      set_bit_array(new_domain, i, true);
+    }
+  }
+
+  fst = 0;
+  while (fst < deg && !get_bit_array(new_domain, fst)) fst++;
+
+  while (fst < deg) {
+    orb[0] = fst;
+    n = 1;   //length of orb
+    
+    set_bit_array(new_reps[rep_depth], fst, true);
+    set_bit_array(new_orb_lookup, fst, true);
+    set_bit_array(new_domain, fst, false);
+
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < stab_gens[rep_depth]->nr_gens; j++) {
+        gen = stab_gens[rep_depth]->gens[j];
+        img = gen[orb[i]];
+        if (!get_bit_array(new_orb_lookup, img)) {
+          orb[n++] = img;
+          set_bit_array(new_orb_lookup, img, true);
+          set_bit_array(new_domain, img, false);
+        }
+      }
+    }
+    while (fst < deg && !get_bit_array(new_domain, fst)) fst++;
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // bit arrays
@@ -893,142 +894,6 @@ static inline UIntS size_bit_array (BitArray* bit_array) {
   return n;
 }
 
-/*static inline UIntS size_bit_array (BitArray* bit_array) {
-UIntS i, out = 0;
-  for (i = 0; i < bit_array->nr_bits; i++) {
-    if (get_bit_array(bit_array, i)) {
-      out++;
-    }
-  }
-  return out;
-}*/
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// digraphs
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
- 
-////////////////////////////////////////////////////////////////////////////////
-// new_digraph: returns a pointer to a Digraph with nr_verts vertices and no
-// edges.
-////////////////////////////////////////////////////////////////////////////////
-
-Digraph* new_digraph (UIntS const nr_verts) {
-  UIntS i;
-  Digraph* digraph        = malloc(sizeof(Digraph));
-  digraph->in_neighbours  = malloc(nr_verts * sizeof(BitArray));
-  digraph->out_neighbours = malloc(nr_verts * sizeof(BitArray));
-  init_bit_tabs();
-  for (i = 0; i < nr_verts; i++) {
-    digraph->in_neighbours[i] = new_bit_array(nr_verts);
-    digraph->out_neighbours[i] = new_bit_array(nr_verts);
-  }
-  digraph->nr_vertices = nr_verts;
-  return digraph;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//
-////////////////////////////////////////////////////////////////////////////////
-
-void free_digraph (Digraph* digraph) {
-  UIntS i, nr = digraph->nr_vertices;
-
-  for (i = 0; i < nr; i++) {
-    free(digraph->in_neighbours[i]);
-    free(digraph->out_neighbours[i]);
-  }
-  free(digraph->in_neighbours);
-  free(digraph->out_neighbours);
-  free(digraph);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// add_edge_digraph: add an edge from Vertex <i> to Vertex <j> in the Digraph
-// pointed to by <digraph>.
-////////////////////////////////////////////////////////////////////////////////
-
-void add_edge_digraph (Digraph* digraph,
-                       Vertex   i,
-                       Vertex   j       ) {
-  assert(i < digraph->nr_vertices && j < digraph->nr_vertices);
-  set_bit_array(digraph->out_neighbours[i], j, true);
-  set_bit_array(digraph->in_neighbours[j], i, true);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// is_adjacent_digraph: returns <true> if there is an edge from <i> to <j> in the
-// Digraph pointed to by <digraph> and returns <false> if there is not.
-////////////////////////////////////////////////////////////////////////////////
-
-static bool inline is_adjacent_digraph (Digraph* digraph,
-                                 Vertex   i,
-                                 Vertex   j       ) {
-  assert(i < digraph->nr_vertices && j < digraph->nr_vertices);
-  return get_bit_array(digraph->out_neighbours[i], j);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// 
-////////////////////////////////////////////////////////////////////////////////
-
-static BlissGraph* new_bliss_graph_from_digraph (Digraph* digraph) {
-  UIntS  i, j, k, l;
-  UIntS  n = digraph->nr_vertices;
-
-  BlissGraph* bliss_graph = bliss_new(n);
-
-  for (i = 0; i < n; i++) {       // loop over vertices
-    for (j = 0; j < n; j++) {
-      if (is_adjacent_digraph(digraph, i, j)) {
-        k = bliss_add_vertex(bliss_graph, 1);
-        l = bliss_add_vertex(bliss_graph, 2);
-        bliss_add_edge(bliss_graph, i, k);
-        bliss_add_edge(bliss_graph, k, l);
-        bliss_add_edge(bliss_graph, l, j);
-      }
-    }
-  }
-  return bliss_graph;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// 
-////////////////////////////////////////////////////////////////////////////////
-
-static void bliss_hook_digraph (void               *user_param_arg,  // perm_coll!
-         	                unsigned int       N,
-	                        const unsigned int *aut            ) {
-
-  UIntS        i;
-  Perm         p = new_perm();
-  // TODO should restrict to the vertices [1..n] only and not include the
-  // vertices of colours 1 and 2 (which are only used to indicate the direct of
-  // edges. Not sure how to do this.
-
-  UIntS min = (N < deg ? N : deg); 
-
-  for (i = 0; i < min; i++) {
-    p[i] = aut[i];
-  }
-  for (; i < deg; i++) {
-    p[i] = i;
-  }
-  add_perm_coll((PermColl*) user_param_arg, p);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// 
-////////////////////////////////////////////////////////////////////////////////
-
-static PermColl* automorphisms_digraph (Digraph* digraph) {
-  BlissGraph* bliss_graph = new_bliss_graph_from_digraph(digraph);
-  PermColl*   gens  = new_perm_coll(digraph->nr_vertices - 1);
-  bliss_find_automorphisms(bliss_graph, bliss_hook_digraph, gens, 0);
-  bliss_release(bliss_graph);
-  return gens;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -1207,9 +1072,131 @@ static inline UIntS size_conditions (Conditions*  conditions,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// temporary
+////////////////////////////////////////////////////////////////////////////////
+// digraphs
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+ 
+////////////////////////////////////////////////////////////////////////////////
+// new_digraph: returns a pointer to a Digraph with nr_verts vertices and no
+// edges.
 ////////////////////////////////////////////////////////////////////////////////
 
+Digraph* new_digraph (UIntS const nr_verts) {
+  UIntS i;
+  Digraph* digraph        = malloc(sizeof(Digraph));
+  digraph->in_neighbours  = malloc(nr_verts * sizeof(BitArray));
+  digraph->out_neighbours = malloc(nr_verts * sizeof(BitArray));
+  init_bit_tabs();
+  for (i = 0; i < nr_verts; i++) {
+    digraph->in_neighbours[i] = new_bit_array(nr_verts);
+    digraph->out_neighbours[i] = new_bit_array(nr_verts);
+  }
+  digraph->nr_vertices = nr_verts;
+  return digraph;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////////////
+
+void free_digraph (Digraph* digraph) {
+  UIntS i, nr = digraph->nr_vertices;
+
+  for (i = 0; i < nr; i++) {
+    free(digraph->in_neighbours[i]);
+    free(digraph->out_neighbours[i]);
+  }
+  free(digraph->in_neighbours);
+  free(digraph->out_neighbours);
+  free(digraph);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// add_edge_digraph: add an edge from Vertex <i> to Vertex <j> in the Digraph
+// pointed to by <digraph>.
+////////////////////////////////////////////////////////////////////////////////
+
+void add_edge_digraph (Digraph* digraph,
+                       Vertex   i,
+                       Vertex   j       ) {
+  assert(i < digraph->nr_vertices && j < digraph->nr_vertices);
+  set_bit_array(digraph->out_neighbours[i], j, true);
+  set_bit_array(digraph->in_neighbours[j], i, true);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// is_adjacent_digraph: returns <true> if there is an edge from <i> to <j> in the
+// Digraph pointed to by <digraph> and returns <false> if there is not.
+////////////////////////////////////////////////////////////////////////////////
+
+static bool inline is_adjacent_digraph (Digraph* digraph,
+                                 Vertex   i,
+                                 Vertex   j       ) {
+  assert(i < digraph->nr_vertices && j < digraph->nr_vertices);
+  return get_bit_array(digraph->out_neighbours[i], j);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 
+////////////////////////////////////////////////////////////////////////////////
+
+static BlissGraph* new_bliss_graph_from_digraph (Digraph* digraph) {
+  UIntS  i, j, k, l;
+  UIntS  n = digraph->nr_vertices;
+
+  BlissGraph* bliss_graph = bliss_new(n);
+
+  for (i = 0; i < n; i++) {       // loop over vertices
+    for (j = 0; j < n; j++) {
+      if (is_adjacent_digraph(digraph, i, j)) {
+        k = bliss_add_vertex(bliss_graph, 1);
+        l = bliss_add_vertex(bliss_graph, 2);
+        bliss_add_edge(bliss_graph, i, k);
+        bliss_add_edge(bliss_graph, k, l);
+        bliss_add_edge(bliss_graph, l, j);
+      }
+    }
+  }
+  return bliss_graph;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 
+////////////////////////////////////////////////////////////////////////////////
+
+static void bliss_hook_digraph (void               *user_param_arg,  // perm_coll!
+         	                unsigned int       N,
+	                        const unsigned int *aut            ) {
+
+  UIntS        i;
+  Perm         p = new_perm();
+  // TODO should restrict to the vertices [1..n] only and not include the
+  // vertices of colours 1 and 2 (which are only used to indicate the direct of
+  // edges. Not sure how to do this.
+
+  UIntS min = (N < deg ? N : deg); 
+
+  for (i = 0; i < min; i++) {
+    p[i] = aut[i];
+  }
+  for (; i < deg; i++) {
+    p[i] = i;
+  }
+  add_perm_coll((PermColl*) user_param_arg, p);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 
+////////////////////////////////////////////////////////////////////////////////
+
+static PermColl* automorphisms_digraph (Digraph* digraph) {
+  BlissGraph* bliss_graph = new_bliss_graph_from_digraph(digraph);
+  PermColl*   gens  = new_perm_coll(digraph->nr_vertices - 1);
+  bliss_find_automorphisms(bliss_graph, bliss_hook_digraph, gens, 0);
+  bliss_release(bliss_graph);
+  return gens;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -1270,7 +1257,15 @@ static void find_digraph_homos (Digraph*    digraph1,
         }
       }
     }
+  } else {
+    for (i = 0; i < nr1; i++) {
+      if (size_conditions(conditions, i) < min) {
+        next = i;
+        min = size_conditions(conditions, i);
+      }
+    }
   }
+
   BitArray* possible = get_conditions(conditions, next);
 
   if (rank < hint) {
@@ -1427,4 +1422,122 @@ void DigraphHomomorphisms (Digraph* digraph1,
     }
   }
   free_conditions(conditions);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// graphs (undirected)
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+ 
+////////////////////////////////////////////////////////////////////////////////
+// new_graph: returns a pointer to a Graph with nr_verts vertices and no
+// edges.
+////////////////////////////////////////////////////////////////////////////////
+
+Graph* new_graph (UIntS const nr_verts) {
+  UIntS i;
+  Graph* graph      = malloc(sizeof(Graph));
+  graph->neighbours = malloc(nr_verts * sizeof(BitArray));
+  init_bit_tabs();
+  for (i = 0; i < nr_verts; i++) {
+    graph->neighbours[i] = new_bit_array(nr_verts);
+  }
+  graph->nr_vertices = nr_verts;
+  return graph;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// free_graph: frees the Graph pointed to by <graph>.
+////////////////////////////////////////////////////////////////////////////////
+
+void free_graph (Graph* graph) {
+  UIntS i, nr = graph->nr_vertices;
+
+  for (i = 0; i < nr; i++) {
+    free(graph->neighbours[i]);
+  }
+  free(graph->neighbours);
+  free(graph);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// add_edge_graph: add an edge from Vertex <i> to Vertex <j> in the Graph
+// pointed to by <graph>.
+////////////////////////////////////////////////////////////////////////////////
+
+void add_edge_graph (Graph* graph,
+                     Vertex i,
+                     Vertex j     ) {
+  assert(i < graph->nr_vertices && j < graph->nr_vertices);
+  set_bit_array(graph->neighbours[i], j, true);
+  set_bit_array(graph->neighbours[j], i, true);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// is_adjacent_graph: returns <true> if there is an edge from <i> to <j> in the
+// Graph pointed to by <graph> and returns <false> if there is not.
+////////////////////////////////////////////////////////////////////////////////
+
+static bool inline is_adjacent_graph (Graph* graph,
+                                      Vertex i,
+                                      Vertex j     ) {
+  assert(i < graph->nr_vertices && j < graph->nr_vertices);
+  return get_bit_array(graph->out_neighbours[i], j);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// new_bliss_graph_from_graph: get a new Bliss graph from the Graph pointed to
+// by <graph>.
+////////////////////////////////////////////////////////////////////////////////
+
+static BlissGraph* new_bliss_graph_from_graph (Graph* graph) {
+  UIntS  i, j;
+  UIntS  n = graph->nr_vertices;
+
+  BlissGraph* bliss_graph = bliss_new(n);
+
+  for (i = 0; i < n; i++) {       // loop over vertices
+    for (j = 0; j < n; j++) {
+      if (is_adjacent_graph(graph, i, j)) {
+        bliss_add_edge(bliss_graph, i, j);
+      }
+    }
+  }
+  return bliss_graph;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// bliss_hook_graph: the hook for bliss_find_automorphism. 
+////////////////////////////////////////////////////////////////////////////////
+
+static void bliss_hook_graph (void               *user_param_arg,  // perm_coll!
+                              unsigned int       N,
+                              const unsigned int *aut            ) {
+  
+  assert(N <= deg);
+
+  UIntS        i;
+  Perm         p = new_perm();
+
+  for (i = 0; i < N; i++) {
+    p[i] = aut[i];
+  }
+  for (; i < deg; i++) {
+    p[i] = i;
+  }
+  add_perm_coll((PermColl*) user_param_arg, p);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// automorphisms_graph: get the automorphism group of the Graph pointed to by
+// <graph>.
+////////////////////////////////////////////////////////////////////////////////
+
+static PermColl* automorphisms_graph (Graph* graph) {
+  BlissGraph* bliss_graph = new_bliss_graph_from_graph(graph);
+  PermColl*   gens  = new_perm_coll(graph->nr_vertices - 1);
+  bliss_find_automorphisms(bliss_graph, bliss_hook_graph, gens, 0);
+  bliss_release(bliss_graph);
+  return gens;
 }
