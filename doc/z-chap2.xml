@@ -4,6 +4,7 @@
 
   <Section><Heading>Creating digraphs</Heading>
     <#Include Label="IsDigraph">
+    <#Include Label="DigraphType">
     <#Include Label="Digraph">
     <#Include Label="DigraphByAdjacencyMatrix">
     <#Include Label="DigraphByEdges">
@@ -14,6 +15,7 @@
     <#Include Label="AsBinaryRelation">
     <#Include Label="AsDigraph">
     <#Include Label="GrapeGraph">
+    <#Include Label="AsGraph">
   </Section>
 
   <Section><Heading>New digraphs from old</Heading>
