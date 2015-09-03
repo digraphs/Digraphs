@@ -9,7 +9,7 @@
      <#Include Label="PKGVERSIONDATA">
    ]>
 
-<Book Name="graphs">
+<Book Name="digraphs">
 <#Include SYSTEM="z-title.xml">
 
 <TableOfContents/>
@@ -24,7 +24,7 @@
   <#Include SYSTEM="z-chap7.xml"> <!-- visualising, io --> 
 </Body>
 
-<Bibliography Databases="graphs" />
+<Bibliography Databases="digraphs" />
 <TheIndex/>
 
 </Book>
