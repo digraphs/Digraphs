@@ -13,8 +13,13 @@
   <Attr Name="AsGraph" Arg="digraph"/>
   <Returns>A record.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, then this returns a different representation
-    of <A>digraph</A>, as a record to be used by the &Grape; package.
+    If <A>digraph</A> is a digraph, then this method returns the same as
+    <Ref Oper="Graph"/>, except that the result will be stored as a mutable
+    attribute of <A>digraph</A>. <P/>
+
+    If <C>AsGraph(</C><A>digraph</A><C>)</C> is called subsequently,
+    then the same &GAP; object will be returned as before.
+    
     <Example><![CDATA[
 gap> d := Digraph([[1,2], [3], []]);
 <digraph with 3 vertices, 3 edges>
@@ -33,7 +38,8 @@ rec( adjacencies := [ [ 1, 2 ], [ 3 ], [  ] ], group := Group(()),
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph without multiple edges, then this
-    function returns the <E>dual</E> of <A>digraph</A>. The <E>dual</E> is sometimes called the <E>complement</E>.<P/> 
+    returns the <E>dual</E> of <A>digraph</A>. The <E>dual</E> is sometimes
+    called the <E>complement</E>.<P/> 
     
     The <E>dual</E> of <A>digraph</A> has the same vertices as <A>digraph</A>,
     and there is an edge in the dual from <C>i</C> to <C>j</C>

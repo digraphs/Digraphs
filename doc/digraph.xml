@@ -254,8 +254,13 @@ gap> gr := Digraph(b);
   <Oper Name="Graph" Arg="digraph"/>
   <Returns>A <Package>Grape</Package> package graph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, then this method returns a &Grape;
-    package graph that is isomorphic to <A>digraph</A>.
+    If <A>digraph</A> is a digraph without multiple edges, then this operation
+    returns a &Grape; package graph that is isomorphic to <A>digraph</A>. <P/>
+
+    If <A>digraph</A> is a multidigraph, then since &Grape; does not support
+    multiple edges, the multiple edges will be reduced to a single edge in the
+    result. In order words, for a multidigraph this operation will return the
+    same as <C>Graph(DigraphRemoveAllMultipleEdges(</C><A>digraph</A><C>))</C>.
     
     <Example><![CDATA[
 gap> Petersen := Graph( SymmetricGroup(5), [[1,2]], OnSets,
