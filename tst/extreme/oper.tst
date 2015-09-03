@@ -14,7 +14,8 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-# OutNeighboursCopy, extreme
+#T# OutNeighboursCopy 1
+# For a digraph with lots of edges: digraphs-lib/extreme.d6.gz
 gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                       "/digraphs-lib/extreme.d6.gz"), 1);
 <digraph with 5000 vertices, 4211332 edges>
@@ -96,7 +97,8 @@ gap> OutNeighbours(gr)[1];
   550, 4572, 1972, 890, 2938, 3341, 3661, 1594, 2599, 2775, 4175, 1221, 3709, 
   2113, 111, 2122, 1026, 3864, 4265, 3854, 823, 975, 4783, 675, 3336 ]
 
-#T# DigraphReverseEdges
+#T# DigraphReverseEdges 1
+# For a digraph with lots of edges: digraphs-lib/extreme.d6.gz
 gap> d := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                      "/digraphs-lib/extreme.ds6.gz"))[1];;
 gap> DigraphReverseEdges(d, [12, 2001, 401000]);

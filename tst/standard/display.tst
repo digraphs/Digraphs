@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  standard/display.tst
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014-15                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# Display, PrintString, String
+#T# Display and PrintString and String
 gap> Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> Digraph([[]]);
