@@ -58,7 +58,7 @@
     This function should be called with no arguments to execute a series of
     particularly demanding tests, which measure the performance of a variety of
     functions on large examples.  These tests could take a long time to
-    complete.
+    complete, probably at least several minutes.
   </Description>
 </ManSection>
 <#/GAPDoc>

@@ -15,75 +15,86 @@
 
 InstallGlobalFunction(HomomorphismGraphsFinder,
 function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
-  local out;
 
-  if not (IsDigraph(gr1) and IsDigraph(gr2) and IsSymmetricDigraph(gr1)
-          and IsSymmetricDigraph(gr2)) then
-    Error("Digraphs: HomomorphismGraphsFinder: error,\n",
-          "not yet implemented,");
+  if not (IsDigraph(gr1) and IsDigraph(gr2)) then
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 1st and 2nd arguments <gr1> and <gr2> must be digraphs,");
   fi;
 
-  if hook <> fail then 
+  if not (IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2)) then
+    Error("Digraphs: HomomorphismGraphsFinder: error,\n",
+          "not yet implemented for non-symmetric digraphs,");
+  fi;
+
+  if hook <> fail then
     if not (IsFunction(hook) and NumberArgumentsFunction(hook) = 2) then
-      Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-            "the 3rd argument <hook> has to be a function with 2 arguments,");
-      return;
+      ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                   "the 3rd argument <hook> has to be a function with 2 ",
+                   "arguments,");
     fi;
-  elif not IsList(user_param) then 
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 4th argument <user_param> must be a list,");
-    return;
+  elif not IsList(user_param) then
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 4th argument <user_param> must be a list,");
   fi;
 
   if limit = infinity then
     limit := fail;
   elif not IsPosInt(limit) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 5th argument <limit> has to be a positive integer or infinity,");
-    return;
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 5th argument <limit> has to be a positive integer or ",
+                 "infinity,");
   fi;
 
   if hint <> fail and not IsPosInt(hint) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 6th argument <hint> has to be a positive integer or fail,");
-    return;
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                  "the 6th argument <hint> has to be a positive integer or ",
+                  "fail,");
   fi;
 
   if not (isinjective in [true, false]) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 7th argument <isinjective> has to be a true or false,");
-    return;
-  elif isinjective and hint < DigraphNrVertices(gr1) then 
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 7th argument <isinjective> has to be a true or false,");
+  fi;
+
+  if not (IsHomogeneousList(image)
+          and ForAll(image, x -> IsPosInt(x) and x <= DigraphNrVertices(gr2))
+          and IsDuplicateFreeList(image))
+      then
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 8th argument <image> has to be a duplicate-free list of ",
+                 "vertices of the\n2nd argument <gr2>,");
+  fi;
+
+  if not (IsList(map) and Length(map) <= DigraphNrVertices(gr1)
+          and ForAll(map, x -> x in image)) then
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 9th argument <map> must be a list of vertices of the 8th",
+                 " argument <image>\nwhich is no longer than the number of ",
+                 "vertices of the 1st argument <gr1>,");# TODO improve
+  fi;
+
+  # Cases where we already know the answer
+  if (isinjective and (hint <> DigraphNrVertices(gr1) or
+          DigraphNrVertices(gr1) > DigraphNrVertices(gr2)))
+        or (IsPosInt(hint) and (hint > DigraphNrVertices(gr1) or hint >
+          DigraphNrVertices(gr2)))
+        or IsEmpty(image)
+        or (IsPosInt(hint) and hint > Length(image))
+      then
     return user_param;
   fi;
 
-  if not (IsHomogeneousList(image) 
-          and ForAll(image, x -> IsPosInt(x) and x <= DigraphNrVertices(gr2)))
-      then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 8th argument <image> has to be a list of vertices of the 2nd argument,");
-    return;
-  fi;
-
-  if not (IsList(map) and Length(map) <= DigraphNrVertices(gr1) 
-          and ForAll(map, x -> x in image)) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 9th argument <map> has to be a list,");# TODO improve
-    return;
-  fi;
-  
-  if image = DigraphVertices(gr2) then 
+  if image = DigraphVertices(gr2) then
     image := fail;
   fi;
-
   if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
     GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
                 fail, map);
     return user_param;
   else
-    Error("Digraphs: HomomorphismGraphsFinder: error,\n",
-          "not yet implemented,");
-    return;
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: error,\n",
+                 "not yet implemented for digraphs with more than 512 ",
+                 "vertices,");
   fi;
 end);
 

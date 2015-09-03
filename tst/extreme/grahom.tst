@@ -42,7 +42,8 @@ gap> S := Filtered(Orbits(H, [1 .. 45]), x -> (Size(x) = 4))[1];;
 gap> graph := EdgeOrbitsGraph(G, List(S, x -> [1, x]));;
 gap> gr := Digraph(graph);
 <digraph with 153 vertices, 612 edges>
-gap> t := HomomorphismGraphsFinder(gr, gr, fail, [], 1, 7, false, [], [])[1];
+gap> t := HomomorphismGraphsFinder(gr, gr, fail, [], 1, 7, false,
+> DigraphVertices(gr), [])[1];
 <transformation on 153 pts with rank 7>
 gap> 1 ^ t;
 1
@@ -54,6 +55,8 @@ gap> 4 ^ t;
 97
 gap> 5 ^ t;
 97
+gap> ForAll(DigraphEdges(gr), e -> IsDigraphEdge(gr, [e[1] ^ t, e[2] ^ t]));
+true
 
 #T# GeneratorsOfEndomorphismMonoid 3
 # Small example
