@@ -40,7 +40,7 @@ gap> S := Filtered(Orbits(H, [1 .. 45]), x -> (Size(x) = 4))[1];;
 gap> graph := EdgeOrbitsGraph(G, List(S, x -> [1, x]));;
 gap> gr := Digraph(graph);
 <digraph with 153 vertices, 612 edges>
-gap> t := HomomorphismGraphsFinder(gr, gr, fail, [], 1, 7, false, [], [])[1];
+gap> t := HomomorphismGraphsFinder(gr, gr, fail, [], 1, 7, false, [1..153], [])[1];
 <transformation on 153 pts with rank 7>
 gap> 1 ^ t;
 1
