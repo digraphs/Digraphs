@@ -23,5 +23,3 @@ DeclareGlobalFunction("DigraphsTestExtreme");
 DeclareGlobalFunction("DigraphsTestInstall");
 DeclareGlobalFunction("DigraphsTestStandard");
 DeclareGlobalFunction("DigraphsTestManualExamples");
-
-DeclareGlobalFunction("IsSemigroupsLoaded");
