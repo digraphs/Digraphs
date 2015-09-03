@@ -1,4 +1,4 @@
-#%T##########################################################################
+#############################################################################
 ##
 #W  testinstall.tst
 #Y  Copyright (C) 2014                                   James D. Mitchell
@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# Conversion to and from Grape graphs
+#T# Conversion to and from GRAPE graphs
 gap> gr := Digraph(
 > [[8], [4, 5, 6, 8, 9], [2, 4, 5, 7, 10], [9],
 > [1, 4, 6, 7, 9], [2, 3, 6, 7, 10], [3, 4, 5, 8, 9],
@@ -75,23 +75,24 @@ gap> gr := Digraph([[2, 3], [4, 5], [5, 6], [], [], [], [3]]);
 gap> IsDigraph(gr);
 true
 
-#T# Check if OutNeighbours can handle non-plists in source, range.
+#T# OutNeighbours
+# Check that it can handle non-plists in the source and range
 gap> gr := Digraph(rec(nrvertices := 1000,
 >                      source := [1 .. 1000],
 >                      range := Concatenation([2 .. 1000], [1])));;
 gap> OutNeighbours(gr);;
 
-#T# IsMultiDigraph
+#T# IsMultiDigraph: for an empty digraph
 gap> d := Digraph(rec(vertices := [1 .. 5], range := [], source := []));
 <digraph with 5 vertices, 0 edges>
 gap> IsMultiDigraph(d);
 false
 
-#T# Other functions
+#T# DigraphFromSparse6String
 gap> DigraphFromSparse6String(":Fa@x^");
 <digraph with 7 vertices, 8 edges>
 
-#
+#T# (In/Out)Neighbours and (In/Out)NeighboursOfVertex and (In/Out)DegreeOfVertex
 gap> gr := Digraph([[4], [2, 2], [2, 3, 1, 4], [1]]);
 <multidigraph with 4 vertices, 8 edges>
 gap> InDegreeOfVertex(gr, 2);
@@ -118,7 +119,7 @@ gap> OutNeighboursOfVertex(gr, 3);
 gap> OutNeighbours(gr);
 [ [ 3, 1 ], [ 1 ], [ 4, 4, 1 ], [  ], [  ], [  ], [  ], [  ], [  ], [  ] ]
 
-#
+# DigraphInEdges and DigraphOutEdges for a vertex
 gap> gr := Digraph([[5, 5, 1, 5], [], [], [2, 3, 1], [4]]);
 <multidigraph with 5 vertices, 8 edges>
 gap> DigraphInEdges(gr, 5);
@@ -128,7 +129,7 @@ gap> DigraphOutEdges(gr, 2);
 gap> DigraphOutEdges(gr, 4);
 [ [ 4, 2 ], [ 4, 3 ], [ 4, 1 ] ]
 
-#
+#T# DigraphPeriod and IsAperiodicDigraph
 gap> gr := Digraph([[2], [3], [4], [5], [1], [7], [6]]);
 <digraph with 7 vertices, 7 edges>
 gap> DigraphPeriod(gr);
@@ -142,7 +143,7 @@ gap> DigraphPeriod(gr);
 gap> IsAperiodicDigraph(gr);
 false
 
-#
+#T# IsDigraphEdge
 gap> gr := Digraph(rec(nrvertices := 5, source := [1, 2, 3, 4, 5],
 > range := [2, 3, 4, 5, 1]));
 <digraph with 5 vertices, 5 edges>
@@ -150,6 +151,8 @@ gap> IsDigraphEdge(gr, [1, 2]);
 true
 gap> IsDigraphEdge(gr, [2, 2]);
 false
+
+#T# DigraphReverseEdge and DigraphEdges
 
 #
 gap> gr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
@@ -191,7 +194,7 @@ gap> gr1 := OnDigraphs(gr, p ^ -1);;
 gap> DigraphTopologicalSort(gr1) = DigraphVertices(gr1);
 true
 
-#T# AutomorphismGroup for a multidigraph
+#T# AutomorphismGroup: for a multidigraph
 # Bug: DigraphCanonicalLabelling was being set incorrectly in this function
 gap> gr := Digraph([
 >   [5, 7, 8, 4, 6, 1], [3, 1, 7, 2, 7, 9], [1, 5, 2, 3, 9],
@@ -200,11 +203,18 @@ gap> gr := Digraph([
 >   [1, 5, 2, 3, 9]]);
 <multidigraph with 9 vertices, 52 edges>
 gap> G := AutomorphismGroup(gr);;
-gap> DigraphCanonicalLabelling(gr)
-> = DigraphCanonicalLabelling(DigraphCopy(gr));
+gap> HasDigraphCanonicalLabelling(gr);
+true
+gap> DigraphCanonicalLabelling(gr);
+[ (1,5,4,2,3,7,9,6), (1,30,49)(2,34,47,35,45,39,38,51,8,12,18,24,21,28,23,13,
+    4,29,22,27,20,25,14)(3,33,48)(5,31,52,7,19,26,17,9,16,10,11,15,6,32,
+    50)(36,44)(37,46,40,41)(42,43) ]
+gap> last = DigraphCanonicalLabelling(DigraphCopy(gr));
 true
 
-#T# segfault fixed in DIGRAPH_IN_OUT_NBS: not checking that a list is a PLIST
+#T# DIGRAPH_IN_OUT_NBS: for a list containing ranges
+# A segfault was caused by assuming that an element of OutNeighbours was a
+# PLIST. This is solved by using PLAIN_LIST on each entry of OutNeighbours.
 gap> gr := Digraph(List([1 .. 5], x -> [1 .. 5]));
 <digraph with 5 vertices, 25 edges>
 gap> out := OutNeighbours(gr);
