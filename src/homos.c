@@ -739,6 +739,8 @@ void GraphHomomorphisms (HomosGraph*  graph1,
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+#define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)
+
 ////////////////////////////////////////////////////////////////////////////////
 // new_bit_array: get a pointer to a new BitArray with space for <nr_bits>
 // bits, and with every bit set to false.
@@ -749,8 +751,8 @@ BitArray* new_bit_array (UIntS nr_bits) {
   BitArray* bit_array = malloc(sizeof(BitArray));
 
   bit_array->nr_bits   = nr_bits;
-  bit_array->nr_blocks = (nr_bits / sizeof(Block)) + 1;
-  bit_array->blocks    = calloc(bit_array->nr_blocks, sizeof(Block));
+  bit_array->nr_blocks = (nr_bits / NUMBER_BITS_PER_BLOCK) + 1;
+  bit_array->blocks    = calloc(bit_array->nr_blocks, NUMBER_BITS_PER_BLOCK);
   return bit_array;
 }
 
@@ -762,9 +764,9 @@ BitArray* new_bit_array (UIntS nr_bits) {
 inline void set_bit_array (BitArray* bit_array, UIntS pos, bool val) {
   assert(pos < bit_array->nr_bits);
   if (val) {
-    bit_array->blocks[pos / sizeof(Block)] |= oneone[pos % sizeof(Block)];
+    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] |= oneone[pos % NUMBER_BITS_PER_BLOCK];
   } else {
-    bit_array->blocks[pos / sizeof(Block)] &= ~oneone[pos % sizeof(Block)];
+    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] &= ~oneone[pos % NUMBER_BITS_PER_BLOCK];
   }
 }
 
@@ -803,7 +805,7 @@ inline void init_bit_array (BitArray* bit_array, bool val) {
 
 inline bool get_bit_array (BitArray* bit_array, UIntS pos) {
   assert(pos < bit_array->nr_bits);
-  return bit_array->blocks[pos / sizeof(Block)] & oneone[pos % sizeof(Block)];
+  return bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] & oneone[pos % NUMBER_BITS_PER_BLOCK];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1061,7 +1063,22 @@ static Conditions* new_conditions (UIntS      nr1,
   return conditions;
 }
 
-//TODO free_conditions
+////////////////////////////////////////////////////////////////////////////////
+// 
+////////////////////////////////////////////////////////////////////////////////
+
+static void free_conditions (Conditions* conditions) {
+  UIntS i;
+  for (i = 0; i < conditions->nr1; i++) {
+    for (j = 0; j < conditions->height[i]
+    free_bit_array(conditions->bit_array[i]);
+  }
+  free(conditions->bit_array);
+  free(conditions->changed);
+  free(conditions->height);
+  free(conditions->sizes);
+  free(conditions);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // get_conditions: returns the top most BitArray* in column <i>.
@@ -1202,7 +1219,6 @@ static void find_digraph_homos (Digraph*    digraph1,
       }
     }
   }
-  printf("next = %d\n", next);
   BitArray* possible = get_conditions(conditions, next);
 
   if (rank < hint) {
@@ -1217,7 +1233,9 @@ static void find_digraph_homos (Digraph*    digraph1,
         map[next] = i;
         set_bit_array(new_vals, i, true);
         if (!has_trivial_stab) {
-          new_orbit_reps(rep_depth + 1);
+          if (depth != nr1 - 1) {
+            new_orbit_reps(rep_depth + 1);
+          }
           find_digraph_homos(digraph1, digraph2, conditions, depth + 1, next,
                              rep_depth + 1, is_trivial, rank + 1);
         } else {
@@ -1340,4 +1358,5 @@ void DigraphHomomorphisms (Digraph* digraph1,
       stab_gens[i] = NULL;
     }
   }
+  free_conditions(conditions);
 }
