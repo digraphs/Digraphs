@@ -2015,13 +2015,24 @@ Obj FuncDIGRAPH_HOMOS (Obj self, Obj args) {
   } 
  
   // go!
-  if (hook_gap == Fail) {
-    DigraphHomomorphisms(digraph1, digraph2, homo_hook_collect, user_param_arg,
-        max_results_arg, hint_arg, isinjective, image, partial_map); 
+  if (!isinjective) { 
+    if (hook_gap == Fail) {
+      DigraphHomomorphisms(digraph1, digraph2, homo_hook_collect, user_param_arg,
+          max_results_arg, hint_arg, image, partial_map); 
+    } else {
+      GAP_FUNC = hook_gap;
+      DigraphHomomorphisms(digraph1, digraph2, homo_hook_gap, user_param_arg,
+          max_results_arg, hint_arg, image, partial_map);
+    }
   } else {
-    GAP_FUNC = hook_gap;
-    DigraphHomomorphisms(digraph1, digraph2, homo_hook_gap, user_param_arg,
-        max_results_arg, hint_arg, isinjective, image, partial_map);
+    if (hook_gap == Fail) {
+      DigraphMonomorphisms(digraph1, digraph2, homo_hook_collect, user_param_arg,
+          max_results_arg, image, partial_map); 
+    } else {
+      GAP_FUNC = hook_gap;
+      DigraphMonomorphisms(digraph1, digraph2, homo_hook_gap, user_param_arg,
+          max_results_arg, image, partial_map);
+    }
   }
   
   if (IS_PLIST(user_param_arg) && LEN_PLIST(user_param_arg) == 0 

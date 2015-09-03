@@ -16,5 +16,15 @@ gap> DIGRAPHS_StartTest();
 #T# DIGRAPHS_UnbindVariables
 gap> ;
 
+#T# Monomorphisms
+gap> gr1 := Digraph([[], [1]]);;
+gap> gr1 := DigraphSymmetricClosure(gr1);;
+gap> gr2 := Digraph([[], [1], [1, 3]]);;
+gap> gr2 := DigraphSymmetricClosure(gr2);;
+gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], infinity, fail, true,
+> [1,2,3], []);
+[ IdentityTransformation, Transformation( [ 1, 3 ] ), 
+  Transformation( [ 2, 1 ] ), Transformation( [ 3, 1 ] ) ]
+
 #E#
 gap> STOP_TEST("Digraphs package: standard/grahom.tst");
