@@ -1285,7 +1285,7 @@ void DigraphHomomorphisms (Digraph* digraph1,
   PermColl* gens;
   UIntS     i, j;
   BitArray* mask;
-  printf("DigraphHomomorphisms!!\n");
+  
   init_bit_tabs();
   
   nr1 = digraph1->nr_vertices;
@@ -1312,6 +1312,22 @@ void DigraphHomomorphisms (Digraph* digraph1,
         set_bit_array(mask, partial_map[i], true);
         intersect_bit_arrays(get_conditions(conditions, i), mask);
       }
+    }
+  }
+
+  // find loops in digraph2
+  BitArray* loops = new_bit_array(nr2);
+
+  for (i = 0; i < nr2; i++) {
+    if (is_adjacent_digraph(digraph2, i, i)) {
+      set_bit_array(loops, i, true);
+    }
+  }
+  
+  // loops in digraph1 can only map to loops in digraph2
+  for (i = 0; i < nr1; i++) {
+    if (is_adjacent_digraph(digraph1, i, i)) {
+      intersect_bit_arrays(get_conditions(conditions, i), loops);
     }
   }
 

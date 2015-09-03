@@ -91,7 +91,7 @@ end);
 
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid,
 function(arg)
-  local digraph, limit, gens, out;
+  local digraph, limit, G, gens, out;
 
   digraph := arg[1];
 
@@ -104,10 +104,10 @@ function(arg)
           "not yet implemented for non-symmetric digraphs,");
   fi;
 
-  if IsDigraph(digraph) and DigraphHasLoops(digraph) then
-    Error("Digraphs: GeneratorsOfEndomorphismMonoid: error,\n",
-          "not yet implemented for digraphs with loops,");
-  fi;
+  #if IsDigraph(digraph) and DigraphHasLoops(digraph) then
+  #  Error("Digraphs: GeneratorsOfEndomorphismMonoid: error,\n",
+  #        "not yet implemented for digraphs with loops,");
+  #fi;
 
   if IsBound(arg[2]) and (IsPosInt(arg[2]) or arg[2] = infinity) then
     limit := arg[2];
@@ -115,8 +115,13 @@ function(arg)
     limit := infinity;
   fi;
 
-  gens := List(GeneratorsOfGroup(AutomorphismGroup(digraph)),
-               AsTransformation);
+  G := AutomorphismGroup(digraph);
+
+  if IsTrivial(G) then 
+    gens := [];
+  else 
+    gens := List(GeneratorsOfGroup(G), AsTransformation);
+  fi;
 
   if IsPosInt(limit) then
     limit := limit - Length(gens);
