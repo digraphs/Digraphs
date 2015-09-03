@@ -11,7 +11,7 @@
 <#GAPDoc Label="AsGraph">
 <ManSection>
   <Attr Name="AsGraph" Arg="digraph"/>
-  <Returns>A record.</Returns>
+  <Returns>A &Grape; package graph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then this method returns the same as
     <Ref Oper="Graph"/>, except that the result will be stored as a mutable

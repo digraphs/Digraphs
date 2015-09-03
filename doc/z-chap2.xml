@@ -14,7 +14,7 @@
   <Section><Heading>Changing representations</Heading>
     <#Include Label="AsBinaryRelation">
     <#Include Label="AsDigraph">
-    <#Include Label="GrapeGraph">
+    <#Include Label="Graph">
     <#Include Label="AsGraph">
   </Section>
 
