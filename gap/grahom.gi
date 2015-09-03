@@ -85,6 +85,7 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
   if image = DigraphVertices(gr2) then
     image := fail;
   fi;
+
   if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
     GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
                 fail, map);
@@ -124,8 +125,8 @@ function(arg)
   fi;
 
   if IsDigraph(digraph) and DigraphHasLoops(digraph) then
-    ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: error,\n",
-                 "not yet implemented for digraphs with loops,");
+    Error("Digraphs: GeneratorsOfEndomorphismMonoid: error,\n",
+          "not yet implemented for digraphs with loops,");
   fi;
 
   if IsBound(arg[2]) and (IsPosInt(arg[2]) or arg[2] = infinity) then

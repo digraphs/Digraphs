@@ -42,8 +42,7 @@ gap> S := Filtered(Orbits(H, [1 .. 45]), x -> (Size(x) = 4))[1];;
 gap> graph := EdgeOrbitsGraph(G, List(S, x -> [1, x]));;
 gap> gr := Digraph(graph);
 <digraph with 153 vertices, 612 edges>
-gap> t := HomomorphismGraphsFinder(gr, gr, fail, [], 1, 7, false,
-> DigraphVertices(gr), [])[1];
+gap> t := HomomorphismGraphsFinder(gr, gr, fail, [], 1, 7, false, [1..153], [])[1];
 <transformation on 153 pts with rank 7>
 gap> 1 ^ t;
 1
@@ -182,6 +181,9 @@ true
 # CycleDigraph (with loops)
 gap> gr := Digraph(List([1 .. 20], x -> [x, x mod 20 + 1]));
 <digraph with 20 vertices, 40 edges>
+
+#T# GeneratorsOfEndomorphismMonoid8
+# All symmetric graphs with 5 vertices
 
 #T# HomomorphismGraphsFinder 1
 # Small example: CompleteDigraph(2) to CompleteDigraph(3)
