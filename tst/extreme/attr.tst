@@ -13,14 +13,16 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# ReducedDigraph, for a digraph with lots of edges
+#T# ReducedDigraph 1
+# For a digraph with lots of edges: digraphs-lib/extreme.d6.gz
 gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                                     "/digraphs-lib/extreme.d6.gz"), 1);
 <digraph with 5000 vertices, 4211332 edges>
 gap> ReducedDigraph(gr);
 <digraph with 5000 vertices, 4211332 edges>
 
-#T# DigraphSymmetricClosure, for a digraph with lots of edges
+#T# DigraphSymmetricClosure 1
+# For a digraph with lots of edges: digraphs-lib/extreme.d6.gz
 gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                                     "/digraphs-lib/extreme.d6.gz"), 1);
 <digraph with 5000 vertices, 4211332 edges>

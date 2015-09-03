@@ -1,10 +1,8 @@
 #############################################################################
 ##
 #W  grahom.gi
-#Y  Copyright (C) 2014                                     Julius Jonusas
+#Y  Copyright (C) 2014-15                                  Julius Jonusas
 ##                                                         James Mitchell
-##
-##  Copyright (C) 2014 - Julius Jonusas and James Mitchell.
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -15,83 +13,100 @@
 
 InstallGlobalFunction(HomomorphismGraphsFinder,
 function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
-  local out;
 
-  if not (IsDigraph(gr1) and IsDigraph(gr2) and IsSymmetricDigraph(gr1)
-          and IsSymmetricDigraph(gr2)) then
-    Error("Digraphs: HomomorphismGraphsFinder: error,\n",
-          "not yet implemented,");
+  if not (IsDigraph(gr1) and IsDigraph(gr2)) then
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 1st and 2nd arguments <gr1> and <gr2> must be digraphs,");
   fi;
 
-  if hook <> fail then 
+  if not (IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2)) then
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: error,\n",
+                 "not yet implemented for non-symmetric digraphs,");
+  fi;
+
+  if hook <> fail then
     if not (IsFunction(hook) and NumberArgumentsFunction(hook) = 2) then
-      Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-            "the 3rd argument <hook> has to be a function with 2 arguments,");
-      return;
+      ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                   "the 3rd argument <hook> has to be a function with 2 ",
+                   "arguments,");
     fi;
-  elif not IsList(user_param) then 
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 4th argument <user_param> must be a list,");
-    return;
+  elif not IsList(user_param) then
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 4th argument <user_param> must be a list,");
   fi;
 
   if limit = infinity then
     limit := fail;
   elif not IsPosInt(limit) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 5th argument <limit> has to be a positive integer or infinity,");
-    return;
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 5th argument <limit> has to be a positive integer or ",
+                 "infinity,");
   fi;
 
   if hint <> fail and not IsPosInt(hint) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 6th argument <hint> has to be a positive integer or fail,");
-    return;
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                  "the 6th argument <hint> has to be a positive integer or ",
+                  "fail,");
   fi;
 
   if not (isinjective in [true, false]) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 7th argument <isinjective> has to be a true or false,");
-    return;
-  elif isinjective and hint < DigraphNrVertices(gr1) then 
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 7th argument <isinjective> has to be a true or false,");
+  fi;
+
+  if not (IsHomogeneousList(image)
+          and ForAll(image, x -> IsPosInt(x) and x <= DigraphNrVertices(gr2))
+          and IsDuplicateFreeList(image))
+      then
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 8th argument <image> has to be a duplicate-free list of ",
+                 "vertices of the\n2nd argument <gr2>,");
+  fi;
+
+  if not (IsList(map) and Length(map) <= DigraphNrVertices(gr1)
+          and ForAll(map, x -> x in image)) then
+    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
+                 "the 9th argument <map> must be a list of vertices of the 8th",
+                 " argument <image>\nwhich is no longer than the number of ",
+                 "vertices of the 1st argument <gr1>,");# TODO improve
+  fi;
+
+  # Cases where we already know the answer
+  if (isinjective and ((hint <> infinity and hint <> DigraphNrVertices(gr1)) or
+            DigraphNrVertices(gr1) > DigraphNrVertices(gr2)))
+        or (IsPosInt(hint) and (hint > DigraphNrVertices(gr1) or hint >
+            DigraphNrVertices(gr2)))
+        or IsEmpty(image)
+        or (IsPosInt(hint) and hint > Length(image))
+      then
     return user_param;
   fi;
-
-  if not (IsHomogeneousList(image) 
-          and ForAll(image, x -> IsPosInt(x) and x <= DigraphNrVertices(gr2)))
-      then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 8th argument <image> has to be a list of vertices of the 2nd argument,");
-    return;
-  fi;
-
-  if not (IsList(map) and Length(map) <= DigraphNrVertices(gr1) 
-          and ForAll(map, x -> x in image)) then
-    Error("Digraphs: HomomorphismGraphsFinder: usage,\n",
-          "the 9th argument <map> has to be a list,");# TODO improve
-    return;
-  fi;
-  
-  #if image = DigraphVertices(gr2) then 
-  #  image := fail;
-  #fi;
 
   if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
-    DIGRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
-                fail, map);
+    if IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2) then 
+      GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
+                  fail, map);
+    else 
+      DIGRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
+                   fail, map);
+    fi;
     return user_param;
-  else
-    Error("Digraphs: HomomorphismGraphsFinder: error,\n",
-          "not yet implemented,");
-    return;
   fi;
+  ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: error,\n",
+               "not yet implemented for digraphs with more than 512 ",
+               "vertices,");
 end);
 
 #
 
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid,
 function(arg)
-  local digraph, limit, G, gens, out;
+  local digraph, limit, limit_arg, gens, out;
+
+  if IsEmpty(arg) then
+    ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
+                 "this function takes at least one argument,");
+  fi;
 
   digraph := arg[1];
 
@@ -99,15 +114,15 @@ function(arg)
     return GeneratorsOfEndomorphismMonoidAttr(digraph);
   fi;
 
-  if not (IsDigraph(digraph) and IsSymmetricDigraph(digraph)) then
-    Error("Digraphs: GeneratorsOfEndomorphismMonoid: error,\n",
-          "not yet implemented for non-symmetric digraphs,");
+  if not IsDigraph(digraph) then
+    ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
+                 "the 1st argument <digraph> must be a digraph,");
   fi;
 
-  #if IsDigraph(digraph) and DigraphHasLoops(digraph) then
-  #  Error("Digraphs: GeneratorsOfEndomorphismMonoid: error,\n",
-  #        "not yet implemented for digraphs with loops,");
-  #fi;
+  if not IsSymmetricDigraph(digraph) then
+    ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: error,\n",
+                 "not yet implemented for non-symmetric digraphs,");
+  fi;
 
   if IsBound(arg[2]) and (IsPosInt(arg[2]) or arg[2] = infinity) then
     limit := arg[2];
@@ -124,6 +139,7 @@ function(arg)
   fi;
 
   if IsPosInt(limit) then
+    limit_arg := limit;
     limit := limit - Length(gens);
   fi;
 
@@ -134,7 +150,7 @@ function(arg)
   out := HomomorphismGraphsFinder(digraph, digraph, fail, gens, limit, fail,
                                   false, DigraphVertices(digraph), []);
 
-  if limit = infinity then
+  if limit = infinity or Length(gens) < limit_arg then
     SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
   fi;
   return out;
@@ -145,12 +161,18 @@ end);
 InstallMethod(DigraphColoring, "for a digraph and pos int",
 [IsDigraph, IsPosInt],
 function(digraph, n)
+  local out;
+
   if IsMultiDigraph(digraph) then
-    Error("Digraphs: DigraphColoring: usage,\n",
-          "the argument <digraph> must not be a  multigraph,");
-    return;
+    ErrorMayQuit("Digraphs: DigraphColoring: usage,\n",
+                 "the 1st argument <digraph> must not be a  multidigraph,");
   fi;
-  return DigraphHomomorphism(digraph, CompleteDigraph(n));
+  out := HomomorphismGraphsFinder(digraph, CompleteDigraph(n), fail, [], 1, n,
+                                  false, [1 .. n], [1]);
+  if IsEmpty(out) then
+    return fail;
+  fi;
+  return out[1];
 end);
 
 InstallMethod(DigraphColouring, "for a digraph and a pos int",
@@ -172,13 +194,13 @@ InstallMethod(HomomorphismGraphs, "for a digraph and a digraph",
 function(gr1, gr2)
   local out;
   # TODO revise this
-  out := HomomorphismGraphsFinder(gr1, gr2, fail, fail, 1,
-                                  DigraphNrVertices(gr2), false, fail, fail);
+  out := HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, fail, false,
+                                  DigraphVertices(gr2), []);
 
   if IsEmpty(out) then
     return fail;
   fi;
-    return out[1];
+  return out[1];
 end);
 
 # Finds a set S of homomorphism from graph1 to graph2 such that every
@@ -215,8 +237,8 @@ function(gr1, gr2)
     return IsomorphismDigraphs(gr1, gr2);
   fi;
 
-  out := HomomorphismGraphsFinder(gr1, gr2, fail, fail, 1,
-                                  DigraphNrVertices(gr2), true, fail, fail);
+  out := HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, DigraphNrVertices(gr1),
+                                  true, DigraphVertices(gr2), []);
 
   if IsEmpty(out) then
     return fail;

@@ -165,7 +165,7 @@ false
 gap> IsIsomorphicDigraph(gr, gr2);
 false
 
-#T# IsIsomorphicDigraph: for digraphs possibly with multiple edges
+#T# IsIsomorphicDigraph: for digraphs with multiple edges
 
 # Different number of vertices
 gap> gr1 := Digraph([[1, 2, 3, 2], [1, 3], [3]]);
@@ -234,7 +234,7 @@ gap> for i in SymmetricGroup(DigraphNrVertices(gr)) do
 >   fi;
 > od;
 
-#T# IsomorphismDigraphs: for digraphs without multiple edges
+#T# IsomorphismDigraphs: for digraphs with multiple edges
 
 # An example used in previous tests
 gap> gr := Digraph([

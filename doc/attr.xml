@@ -11,8 +11,23 @@
 <#GAPDoc Label="AsGraph">
 <ManSection>
   <Attr Name="AsGraph" Arg="digraph"/>
-  <Returns></Returns>
+  <Returns>A record.</Returns>
   <Description>
+    If <A>digraph</A> is a digraph, then this method returns the same as
+    <Ref Oper="Graph"/>, except that the result will be stored as a mutable
+    attribute of <A>digraph</A>. <P/>
+
+    If <C>AsGraph(</C><A>digraph</A><C>)</C> is called subsequently,
+    then the same &GAP; object will be returned as before.
+    
+    <Example><![CDATA[
+gap> d := Digraph([[1,2], [3], []]);
+<digraph with 3 vertices, 3 edges>
+gap> g := AsGraph(d);
+rec( adjacencies := [ [ 1, 2 ], [ 3 ], [  ] ], group := Group(()), 
+  isGraph := true, names := [ 1 .. 3 ], order := 3, 
+  representatives := [ 1, 2, 3 ], schreierVector := [ -1, -2, -3 ] )
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -23,7 +38,8 @@
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph without multiple edges, then this
-    function returns the <E>dual</E> of <A>digraph</A>. The <E>dual</E> is sometimes called the <E>complement</E>.<P/> 
+    returns the <E>dual</E> of <A>digraph</A>. The <E>dual</E> is sometimes
+    called the <E>complement</E>.<P/> 
     
     The <E>dual</E> of <A>digraph</A> has the same vertices as <A>digraph</A>,
     and there is an edge in the dual from <C>i</C> to <C>j</C>
@@ -373,12 +389,13 @@ gap> DigraphNrVertices(RandomDigraph(100));
   <Attr Name="DigraphStronglyConnectedComponents" Arg="digraph"/>
   <Returns>A record.</Returns>
   <Description>
-    This function returns the record <C>scc</C> corresponding to the 
-    strongly connected components of the digraph <A>digraph</A>.
-    Two vertices of <A>digraph</A> are in the same strongly connected
-    component whenever there is a path from each vertex to the other.
-    The set of strongly connected components is a partition of
-    the vertex set of <A>digraph</A>. <P/>
+    This function returns the record <C>scc</C> corresponding to the strongly
+    connected components of the digraph <A>digraph</A>.  Two vertices of
+    <A>digraph</A> are in the same strongly connected component whenever they
+    are equal, or there is a directed path from each vertex to the other.  The
+    set of strongly connected components is a partition of the vertex set of
+    <A>digraph</A>.
+    <P/>
 
     The record <C>scc</C> has 2 components: <C>comps</C> and <C>id</C>.
     The component <C>comps</C> is a list of the strongly connected components
@@ -410,11 +427,15 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
   <Attr Name="DigraphConnectedComponents" Arg="digraph"/>
   <Returns>A record.</Returns>
   <Description>
-    This function returns the record <C>wcc</C> corresponding to the weakly 
-    connected components of the digraph <A>digraph</A>.
-    Two vertices of <A>digraph</A> are in the same weakly connected 
-    component whenever there exists a path (ignoring the orientation
-    of edges) between them.
+    This function returns the record <C>wcc</C> corresponding to the weakly
+    connected components of the digraph <A>digraph</A>.  Two vertices of
+    <A>digraph</A> are in the same weakly connected component whenever they are
+    equal, or there exists a path (ignoring the orientation of edges) between
+    them.  In other words, two vertices are in the same weakly connected
+    component of <A>digraph</A> if and only if they are in the same strongly
+    connected component (see <Ref Attr="DigraphStronglyConnectedComponents"/>)
+    of the <Ref Attr="DigraphSymmetricClosure"/> of <A>digraph</A>.  <P/>
+
     The set of weakly connected components is a partition of
     the vertex set of <A>digraph</A>. <P/>
 
@@ -459,10 +480,10 @@ rec( comps := [  ], id := [  ] )
     function returns an <M>n \times n</M> matrix <C>mat</C> of integers.
     If <M>n = 0</M>, then an empty list is returned.<P/>
     
-    If there is a directed path from vertex <C>i</C> to vertex <C>j</C>,
-    then the value of <C>mat[i][j]</C> is the length of the shortest such 
-    path. If no such path exists, then the value of <C>mat[i][j]</C> is <C>-1</C>.
-    We use the convention that the distance of every vertex to itself is
+    If there is a directed path from vertex <C>i</C> to vertex <C>j</C>, then
+    the value of <C>mat[i][j]</C> is the length of the shortest such path. If
+    no such path exists, then the value of <C>mat[i][j]</C> is <C>-1</C>.
+    We use the convention that the distance from every vertex to itself is
     <C>0</C>, i.e. <C>mat[i][i] = 0</C> for all vertices <C>i</C>. <P/>
 
     The method used in this function is a version of the Floyd-Warshall 

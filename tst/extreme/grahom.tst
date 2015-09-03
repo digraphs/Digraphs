@@ -13,7 +13,8 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# GeneratorsOfEndomorphismMonoid: PJC example, 45 vertices
+#T# GeneratorsOfEndomorphismMonoid 1
+# PJC example, 45 vertices
 gap> gr := DigraphFromDigraph6String(Concatenation(
 > "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?A",
 > "?S???OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO??",
@@ -33,14 +34,16 @@ gap> str := HomomorphismGraphsFinder(gr, gr, fail, [], infinity, fail, false,
 gap> Length(str);
 192
 
-#T# GeneratorsOfEndomorphismMonoid: PJC example, 153 vertices
+#T# GeneratorsOfEndomorphismMonoid 2
+# PJC example, 153 vertices
 gap> G := PrimitiveGroup(153, 1);;
 gap> H := Stabilizer(G, 1);;
 gap> S := Filtered(Orbits(H, [1 .. 45]), x -> (Size(x) = 4))[1];;
 gap> graph := EdgeOrbitsGraph(G, List(S, x -> [1, x]));;
 gap> gr := Digraph(graph);
 <digraph with 153 vertices, 612 edges>
-gap> t := HomomorphismGraphsFinder(gr, gr, fail, [], 1, 7, false, [1..153], [])[1];
+gap> t := HomomorphismGraphsFinder(gr, gr, fail, [], 1, 7, false,
+> DigraphVertices(gr), [])[1];
 <transformation on 153 pts with rank 7>
 gap> 1 ^ t;
 1
@@ -52,8 +55,11 @@ gap> 4 ^ t;
 97
 gap> 5 ^ t;
 97
+gap> ForAll(DigraphEdges(gr), e -> IsDigraphEdge(gr, [e[1] ^ t, e[2] ^ t]));
+true
 
-#T# GeneratorsOfEndomorphismMonoid: small example
+#T# GeneratorsOfEndomorphismMonoid 3
+# Small example
 gap> gr := Digraph([[2], [1, 3], [2]]);
 <digraph with 3 vertices, 4 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr);
@@ -87,7 +93,8 @@ gap> GeneratorsOfEndomorphismMonoid(gr, 4);
 gap> HasGeneratorsOfEndomorphismMonoidAttr(gr);
 false
 
-#T# GeneratorsOfEndomorphismMonoid: complete digraph
+#T# GeneratorsOfEndomorphismMonoid 4
+# Complete digraph
 
 # CompleteDigraph (with no loops) has no singular endomorphisms
 gap> gr := CompleteDigraph(25);
@@ -132,7 +139,9 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
 not yet implemented for digraphs with loops,
 
-#T# GeneratorsOfEndomorphismMonoid: empty digraph
+#T# GeneratorsOfEndomorphismMonoid 5
+# Empty digraph
+
 # EmptyDigraph(n) has endomorphism monoid T_n
 gap> gr := EmptyDigraph(5);
 <digraph with 5 vertices, 0 edges>
@@ -140,8 +149,8 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> Size(Semigroup(gens)) = 5 ^ 5;
 true
 
-#T# GeneratorsOfEndomorphismMonoid: chain digraph
-# Endomorphisms of the chain preserve order
+#T# GeneratorsOfEndomorphismMonoid 6
+# Chain digraph: endomorphisms of the chain preserve order
 
 # ChainDigraph (with no loops) has all strict order preserving transformations
 gap> gr := ChainDigraph(20);
@@ -157,8 +166,8 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
 not yet implemented for non-symmetric digraphs,
 
-#T# GeneratorsOfEndomorphismMonoid: cycle digraph
-# CycleDigraph(n) has EndomorphismMonoid = AutomorphismGroup = C_n
+#T# GeneratorsOfEndomorphismMonoid 7
+# Cycle digraph: EndomorphismMonoid = AutomorphismGroup = C_n
 
 # CycleDigraph (with no loops) has no singular endomorphisms
 gap> gr := CycleDigraph(20);
@@ -174,8 +183,8 @@ true
 gap> gr := Digraph(List([1 .. 20], x -> [x, x mod 20 + 1]));
 <digraph with 20 vertices, 40 edges>
 
-#T# HomomorphismGraphsFinder: small example 1
-# CompleteDigraph(2) to CompleteDigraph(3)
+#T# HomomorphismGraphsFinder 1
+# Small example: CompleteDigraph(2) to CompleteDigraph(3)
 gap> gr1 := CompleteDigraph(2);
 <digraph with 2 vertices, 2 edges>
 gap> gr2 := CompleteDigraph(3);
@@ -194,8 +203,8 @@ gap> homos := HomomorphismGraphsFinder(gr1, gr2, fail, [], infinity, fail,
 > false, DigraphVertices(gr2), []);
 [ IdentityTransformation ]
 
-#T# HomomorphismGraphsFinder: small example 2
-# CompleteDigraph(15) to [CompleteDigraph(3) with loops]
+#T# HomomorphismGraphsFinder 2
+# Small example: CompleteDigraph(15) to [CompleteDigraph(3) with loops]
 gap> homos := HomomorphismGraphsFinder(gr1, gr2, func, [], infinity,
 >  fail, false, DigraphVertices(gr2), []);
 [ IdentityTransformation ]
@@ -207,8 +216,8 @@ gap> Length(homos);
 gap> last * 6 = 3 ^ 15 + 3;
 true
 
-#T# HomomorphismGraphsFinder: small example 3
-# Randomly chosen example
+#T# HomomorphismGraphsFinder 3
+# Small example: randomly chosen
 gap> gr1 := Digraph([
 >  [15, 3, 6, 7, 8, 16, 19], [5, 17, 18, 13, 19], [1, 7, 19, 4, 15, 17],
 >  [3, 7, 15, 10, 14, 16], [8, 2, 7, 10], [1],
@@ -254,8 +263,8 @@ gap> HomomorphismGraphsFinder(gr2, gr1, fail, [], 1, fail, false, [1 .. 20],
 > []);
 [  ]
 
-#T# HomomorphismGraphsFinder: large example 1
-# Randomly chosen example
+#T# HomomorphismGraphsFinder 4
+# Large example: randomly chosen
 gap> gr1 := DigraphFromGraph6String(
 > "]b?_?a@I??T_Y?ADcGAACUP@_AOG?C_BoH?Pg?C??gk?AA@?A?CJD?EO?sO`@H?j@S?C?_PG??")
 > ;

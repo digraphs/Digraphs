@@ -40,8 +40,9 @@ false
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     Returns <K>true</K> if the digraph <A>digraph</A> is acyclic and
-    <K>false</K> if it is not. A digraph is <E>acyclic</E> if
-    there are no cycles, i.e. paths starting and ending at the same vertex. <P/>
+    <K>false</K> if it is not. A digraph is <E>acyclic</E> if there are no
+    cycles, i.e. if there are no directed paths which start and end at the same
+    vertex.  <P/>
 
     The method used in this operation has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
@@ -208,7 +209,7 @@ false]]></Example>
     This property is <K>true</K> if the digraph <A>digraph</A> 
     is strongly connected and <K>false</K> if it is not.
     A digraph <A>digraph</A> is <E>strongly connected</E> if there 
-    is a path from every vertex to every other vertex. <P/>
+    is a directed path from every vertex to every other vertex. <P/>
 
     The method used in this operation is based on Gabow's Algorithm
     <Cite Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M>,

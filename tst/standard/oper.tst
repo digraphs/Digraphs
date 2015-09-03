@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  standard/oper.tst
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014-15                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -66,7 +66,7 @@ true
 gap> DigraphHasLoops(gr1);
 false
 
-#T# DigraphRemoveEdges (by index)
+#T# DigraphRemoveEdges: for an index
 gap> gr := RandomDigraph(10);;
 gap> DigraphRemoveEdges(gr, [Group(())]);
 Error, Digraphs: DigraphRemoveEdges: usage,
@@ -92,7 +92,7 @@ gap> DigraphRemoveEdges(gr1, []);
 gap> last = gr1;
 true
 
-#T# DigraphRemoveEdges (by list of edges)
+#T# DigraphRemoveEdges: for a list of edges
 gap> gr := Digraph([[2], []]);
 <digraph with 2 vertices, 1 edge>
 gap> DigraphRemoveEdges(gr, [[2, 1]]);
@@ -118,7 +118,7 @@ Error, Digraphs: DigraphRemoveEdges: usage,
 the first argument <digraph> must not have multiple edges
 when the second argument <edges> is a list of edges,
 
-#T# DigraphRemoveEdge (by index)
+#T# DigraphRemoveEdge: for an index
 gap> gr := Digraph([[2, 3], [1], [3]]);
 <digraph with 3 vertices, 4 edges>
 gap> DigraphRemoveEdge(gr, 0);
@@ -132,7 +132,7 @@ gap> gr := DigraphRemoveEdge(gr, 3);
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 1, 3 ], [ 3, 3 ] ]
 
-#T# DigraphRemoveEdge (by a specific edge)
+#T# DigraphRemoveEdge: for an edge
 gap> gr := Digraph([[1, 1]]);
 <multidigraph with 1 vertex, 2 edges>
 gap> DigraphRemoveEdge(gr, [1, 1]);
@@ -161,7 +161,7 @@ gap> gr := DigraphRemoveEdge(gr, [2, 1]);
 gap> DigraphEdges(gr);
 [ [ 1, 2 ] ]
 
-#T# OnDigraphs (for a digraph and a perm)
+#T# OnDigraphs: for a digraph and a perm
 gap> gr := Digraph([[2], [1], [3]]);
 <digraph with 3 vertices, 3 edges>
 gap> DigraphEdges(gr);
@@ -230,6 +230,20 @@ gap> gr := OnDigraphs(gr, t);
 <digraph with 3 vertices, 2 edges>
 gap> OutNeighbours(gr);
 [ [ 2 ], [ 1 ], [  ] ]
+
+#T# OnMultiDigraphs: for a pair of permutations
+gap> gr1 := CompleteDigraph(3);
+<digraph with 3 vertices, 6 edges>
+gap> DigraphEdges(gr1);
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 3 ], [ 3, 1 ], [ 3, 2 ] ]
+gap> gr2 := OnMultiDigraphs(gr1, (1, 3), (3, 6));;
+gap> DigraphEdges(gr1);;
+gap> OnMultiDigraphs(gr1, [(1, 3)]);
+Error, Digraphs: OnMultiDigraphs: usage,
+the 2nd argument must be a pair of permutations,
+gap> OnMultiDigraphs(gr1, [(1, 3), (1, 7)]);
+Error, Digraphs: OnMultiDigraphs: usage,
+the argument <perms[2]> must permute the edges of the 1st argument <graph>,
 
 #T# InNeighboursOfVertex and InDegreeOfVertex
 gap> gr := Digraph(rec(nrvertices := 10, source := [1, 1, 5, 5, 7, 10],
@@ -441,7 +455,7 @@ gap> qr := QuotientDigraph(gr, [[1], [2, 3, 5, 7], [4, 6, 8]]);
 gap> OutNeighbours(qr);
 [ [ 3, 2 ], [ 1, 3, 2, 1, 2, 3, 3, 2, 1, 3, 2, 3, 2 ], [ 1, 3, 3, 2, 2, 3 ] ]
 
-#T# DigraphInEdges and DigraphOutEdges
+#T# DigraphInEdges and DigraphOutEdges: for a vertex
 gap> gr := Digraph([[2, 2, 2, 2, 2], [1, 1, 1, 1], [1], [3, 2]]);
 <multidigraph with 4 vertices, 12 edges>
 gap> DigraphInEdges(gr, 1);
@@ -487,7 +501,9 @@ Error, Digraphs: DigraphConnectedComponent: usage,
 7 is not a vertex of the digraph,
 
 #T# IsDigraphEdge
-gap> gr := CycleDigraph(1000); # CycleDigraph with source/range
+
+# CycleDigraph with source/range
+gap> gr := CycleDigraph(1000);
 <digraph with 1000 vertices, 1000 edges>
 gap> IsDigraphEdge(gr, [1]);
 false
@@ -507,7 +523,9 @@ gap> IsDigraphEdge(gr, [1000, 600]);
 false
 gap> out := List([1 .. 999], x -> [x + 1]);;
 gap> Add(out, [1]);;
-gap> gr := Digraph(out); # CycleDigraph with OutNeighbours
+
+# CycleDigraph with OutNeighbours
+gap> gr := Digraph(out);
 <digraph with 1000 vertices, 1000 edges>
 gap> IsDigraphEdge(gr, [1]);
 false
@@ -531,7 +549,9 @@ gap> IsDigraphEdge(gr, [2, 1]);
 false
 gap> IsDigraphEdge(gr, [1, 1]);
 false
-gap> gr := CompleteDigraph(500); # A bigger digraph with OutNeighbours
+
+# A bigger digraph with OutNeighbours
+gap> gr := CompleteDigraph(500);
 <digraph with 500 vertices, 249500 edges>
 gap> IsDigraphEdge(gr, [200, 199]);
 true
@@ -970,6 +990,70 @@ true
 gap> gr = DigraphReverseEdges(gr, []);
 true
 
+#T# DigraphFloydWarshall
+gap> func := function(mat, i, j, k)
+>   if (i = j) or (mat[i][k] <> 0 and mat[k][j] <> 0) then
+>     mat[i][j] := 1;
+>   fi;
+> end;
+function( mat, i, j, k ) ... end
+gap> gr := Digraph(
+> [[1, 2, 4, 5, 7], [1, 2], [3, 7], [2, 10], [2, 6], [2, 7],
+>  [], [3, 4], [1, 10], [1, 3, 9]]);
+<digraph with 10 vertices, 22 edges>
+gap> rtclosure := DigraphFloydWarshall(gr, func, 0, 1);;
+gap> grrt := DigraphByAdjacencyMatrix(rtclosure);
+<digraph with 10 vertices, 76 edges>
+gap> grrt = DigraphReflexiveTransitiveClosure(gr);
+true
+gap> func := function(mat, i, j, k)
+>   if mat[i][k] <> 0 and mat[k][j] <> 0 then
+>     mat[i][j] := 1;
+>   fi;
+> end;
+function( mat, i, j, k ) ... end
+gap> gr := Digraph(rec(
+> nrvertices := 10,
+> source := [1, 2, 2, 3, 4, 5, 6, 7, 10, 10, 10],
+> range := [6, 9, 5, 7, 3, 4, 8, 4, 7, 9, 8]));
+<digraph with 10 vertices, 11 edges>
+gap> tclosure := DigraphFloydWarshall(gr, func, 0, 1);;
+gap> grt := DigraphByAdjacencyMatrix(tclosure);
+<digraph with 10 vertices, 25 edges>
+gap> grt = DigraphTransitiveClosure(gr);
+true
+gap> func := function(mat, i, j, k)
+>   if (i = j) or (mat[i][k] <> 0 and mat[k][j] <> 0) then
+>     mat[i][j] := 1;
+>   fi;
+> end;
+function( mat, i, j, k ) ... end
+gap> gr := Digraph(
+> [[1, 2, 4, 5, 7], [1, 2], [3, 7], [2, 10], [2, 6], [2, 7],
+>  [], [3, 4], [1, 10], [1, 3, 9]]);
+<digraph with 10 vertices, 22 edges>
+gap> rtclosure := DigraphFloydWarshall(gr, func, 0, 1);;
+gap> grrt := DigraphByAdjacencyMatrix(rtclosure);
+<digraph with 10 vertices, 76 edges>
+gap> grrt = DigraphReflexiveTransitiveClosure(gr);
+true
+gap> func := function(mat, i, j, k)
+>   if mat[i][k] <> 0 and mat[k][j] <> 0 then
+>     mat[i][j] := 1;
+>   fi;
+> end;
+function( mat, i, j, k ) ... end
+gap> gr := Digraph(rec(
+> nrvertices := 10,
+> source := [1, 2, 2, 3, 4, 5, 6, 7, 10, 10, 10],
+> range := [6, 9, 5, 7, 3, 4, 8, 4, 7, 9, 8]));
+<digraph with 10 vertices, 11 edges>
+gap> tclosure := DigraphFloydWarshall(gr, func, 0, 1);;
+gap> grt := DigraphByAdjacencyMatrix(tclosure);
+<digraph with 10 vertices, 25 edges>
+gap> grt = DigraphTransitiveClosure(gr);
+true
+
 #T# DigraphDisjointUnion
 gap> gr := CycleDigraph(1000);
 <digraph with 1000 vertices, 1000 edges>
@@ -1018,39 +1102,6 @@ gap> gr := DigraphDisjointUnion(List([2 .. 5], x -> ChainDigraph(x)));
 gap> gr := DigraphAddEdges(gr, [[2, 3], [5, 6], [9, 10]]);
 <digraph with 14 vertices, 13 edges>
 gap> gr = ChainDigraph(14);
-true
-
-#T# DigraphFloydWarshall
-gap> func := function(mat, i, j, k)
->   if (i = j) or (mat[i][k] <> 0 and mat[k][j] <> 0) then
->     mat[i][j] := 1;
->   fi;
-> end;
-function( mat, i, j, k ) ... end
-gap> gr := Digraph(
-> [[1, 2, 4, 5, 7], [1, 2], [3, 7], [2, 10], [2, 6], [2, 7],
->  [], [3, 4], [1, 10], [1, 3, 9]]);
-<digraph with 10 vertices, 22 edges>
-gap> rtclosure := DigraphFloydWarshall(gr, func, 0, 1);;
-gap> grrt := DigraphByAdjacencyMatrix(rtclosure);
-<digraph with 10 vertices, 76 edges>
-gap> grrt = DigraphReflexiveTransitiveClosure(gr);
-true
-gap> func := function(mat, i, j, k)
->   if mat[i][k] <> 0 and mat[k][j] <> 0 then
->     mat[i][j] := 1;
->   fi;
-> end;
-function( mat, i, j, k ) ... end
-gap> gr := Digraph(rec(
-> nrvertices := 10,
-> source := [1, 2, 2, 3, 4, 5, 6, 7, 10, 10, 10],
-> range := [6, 9, 5, 7, 3, 4, 8, 4, 7, 9, 8]));
-<digraph with 10 vertices, 11 edges>
-gap> tclosure := DigraphFloydWarshall(gr, func, 0, 1);;
-gap> grt := DigraphByAdjacencyMatrix(tclosure);
-<digraph with 10 vertices, 25 edges>
-gap> grt = DigraphTransitiveClosure(gr);
 true
 
 #T# DigraphEdgeUnion
@@ -1103,34 +1154,6 @@ gap> gr := DigraphEdgeUnion(ChainDigraph(2), ChainDigraph(3), ChainDigraph(4));
 <multidigraph with 4 vertices, 6 edges>
 gap> OutNeighbours(gr);
 [ [ 2, 2, 2 ], [ 3, 3 ], [ 4 ], [  ] ]
-
-#T# DigraphCopy
-gap> gr := Digraph([[6, 1, 2, 3], [6], [2, 2, 3], [1, 1], [6, 5],
-> [6, 4]]);
-<multidigraph with 6 vertices, 14 edges>
-gap> gr = DigraphCopy(gr);
-true
-gap> gr := CompleteDigraph(100);
-<digraph with 100 vertices, 9900 edges>
-gap> gr = DigraphCopy(gr);
-true
-gap> gr := CycleDigraph(10000);
-<digraph with 10000 vertices, 10000 edges>
-gap> gr = DigraphCopy(gr);
-true
-gap> SetDigraphVertexLabel(gr, 1, "w");
-gap> DigraphVertexLabels(DigraphCopy(gr))[1];
-"w"
-gap> gr := Digraph(rec(vertices := ["a", Group((1, 2))],
-> source := [Group((1, 2))], range := ["a"]));
-<digraph with 2 vertices, 1 edge>
-gap> DigraphVertexLabels(gr);
-[ "a", Group([ (1,2) ]) ]
-gap> gr2 := DigraphCopy(gr);;
-gap> gr = gr2;
-true
-gap> DigraphVertexLabels(gr2);
-[ "a", Group([ (1,2) ]) ]
 
 #T# DigraphJoin
 gap> gr := CompleteDigraph(20);
@@ -1189,19 +1212,41 @@ gap> DigraphJoin(EmptyDigraph(3), EmptyDigraph(2)) =
 > CompleteBipartiteDigraph(3, 2);
 true
 
-#T# OnMultiDigraphs: for a pair of permutations
-gap> gr1 := CompleteDigraph(3);
-<digraph with 3 vertices, 6 edges>
-gap> DigraphEdges(gr1);
-[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 3 ], [ 3, 1 ], [ 3, 2 ] ]
-gap> gr2 := OnMultiDigraphs(gr1, (1, 3), (3, 6));;
-gap> DigraphEdges(gr1);;
-gap> OnMultiDigraphs(gr1, [(1, 3)]);
-Error, Digraphs: OnMultiDigraphs: usage,
-the 2nd argument must be a pair of permutations,
-gap> OnMultiDigraphs(gr1, [(1, 3), (1, 7)]);
-Error, Digraphs: OnMultiDigraphs: usage,
-the argument <perms[2]> must permute the edges of the 1st argument <graph>,
+#T# OutNeighboursCopy
+gap> gr := Digraph([[3], [10], [6], [3], [10], [], [6], [3], [], [3]]);
+<digraph with 10 vertices, 8 edges>
+gap> out1 := OutNeighbours(gr);
+[ [ 3 ], [ 10 ], [ 6 ], [ 3 ], [ 10 ], [  ], [ 6 ], [ 3 ], [  ], [ 3 ] ]
+gap> IsMutable(out1);
+false
+gap> IsMutable(out1[1]);
+false
+gap> out2 := OutNeighboursCopy(gr);
+[ [ 3 ], [ 10 ], [ 6 ], [ 3 ], [ 10 ], [  ], [ 6 ], [ 3 ], [  ], [ 3 ] ]
+gap> IsMutable(out2);
+true
+gap> IsMutable(out2[1]);
+true
+gap> out3 := OutNeighborsCopy(gr);
+[ [ 3 ], [ 10 ], [ 6 ], [ 3 ], [ 10 ], [  ], [ 6 ], [ 3 ], [  ], [ 3 ] ]
+gap> IsMutable(out3);
+true
+gap> IsMutable(out3[1]);
+true
+
+#T# DigraphRemoveAllMultipleEdges
+gap> gr1 := Digraph([[1, 1, 2, 1], [1]]);
+<multidigraph with 2 vertices, 5 edges>
+gap> gr2 := DigraphRemoveAllMultipleEdges(gr1);
+<digraph with 2 vertices, 3 edges>
+gap> OutNeighbours(gr2);
+[ [ 1, 2 ], [ 1 ] ]
+gap> gr3 := DigraphEdgeUnion(gr1, gr1);
+<multidigraph with 2 vertices, 10 edges>
+gap> gr4 := DigraphRemoveAllMultipleEdges(gr3);
+<digraph with 2 vertices, 3 edges>
+gap> gr2 = gr4;
+true
 
 #T# IsReachable
 gap> gr1 := DigraphRemoveEdges(CycleDigraph(100), [[100, 1], [99, 100]]);
@@ -1283,42 +1328,6 @@ false
 gap> IsReachable(gr, 1, 4);
 true
 
-#T# DigraphRemoveAllMultipleEdges
-gap> gr1 := Digraph([[1, 1, 2, 1], [1]]);
-<multidigraph with 2 vertices, 5 edges>
-gap> gr2 := DigraphRemoveAllMultipleEdges(gr1);
-<digraph with 2 vertices, 3 edges>
-gap> OutNeighbours(gr2);
-[ [ 1, 2 ], [ 1 ] ]
-gap> gr3 := DigraphEdgeUnion(gr1, gr1);
-<multidigraph with 2 vertices, 10 edges>
-gap> gr4 := DigraphRemoveAllMultipleEdges(gr3);
-<digraph with 2 vertices, 3 edges>
-gap> gr2 = gr4;
-true
-
-#T# OutNeighboursCopy
-gap> gr := Digraph([[3], [10], [6], [3], [10], [], [6], [3], [], [3]]);
-<digraph with 10 vertices, 8 edges>
-gap> out1 := OutNeighbours(gr);
-[ [ 3 ], [ 10 ], [ 6 ], [ 3 ], [ 10 ], [  ], [ 6 ], [ 3 ], [  ], [ 3 ] ]
-gap> IsMutable(out1);
-false
-gap> IsMutable(out1[1]);
-false
-gap> out2 := OutNeighboursCopy(gr);
-[ [ 3 ], [ 10 ], [ 6 ], [ 3 ], [ 10 ], [  ], [ 6 ], [ 3 ], [  ], [ 3 ] ]
-gap> IsMutable(out2);
-true
-gap> IsMutable(out2[1]);
-true
-gap> out3 := OutNeighborsCopy(gr);
-[ [ 3 ], [ 10 ], [ 6 ], [ 3 ], [ 10 ], [  ], [ 6 ], [ 3 ], [  ], [ 3 ] ]
-gap> IsMutable(out3);
-true
-gap> IsMutable(out3[1]);
-true
-
 #T# DigraphLongestDistanceFromVertex
 gap> nbs := [[2, 8, 10, 11], [3, 5], [4], [], [6], [7], [], [9], [5], [6],
 > [12], [13], [14], [6], [15, 1]];;
@@ -1343,6 +1352,26 @@ Error, Digraphs: DigraphLongestDistanceFromVertex: usage,
 the second argument <v> must be a vertex of the first argument, <digraph>,
 
 #T# Digraph(Reflexive)TransitiveReduction
+
+# Check errors
+gap> gr := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> DigraphTransitiveReduction(gr);
+Error, Digraphs: DigraphTransitiveReduction: usage,
+this method does not work for MultiDigraphs,
+gap> DigraphReflexiveTransitiveReduction(gr);
+Error, Digraphs: DigraphReflexiveTransitiveReduction: usage,
+this method does not work for MultiDigraphs,
+gap> gr := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> DigraphTransitiveReduction(gr);
+Error, Digraphs: DigraphTransitiveReduction:
+not yet implemented for non-topologically sortable digraphs,
+gap> DigraphReflexiveTransitiveReduction(gr);
+Error, Digraphs: DigraphReflexiveTransitiveReduction:
+not yet implemented for non-topologically sortable digraphs,
+
+# Working examples
 gap> gr1 := ChainDigraph(6);
 <digraph with 6 vertices, 5 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr1);
@@ -1366,29 +1395,11 @@ false
 gap> DigraphTransitiveReduction(gr4) = gr3;
 true
 
-# check special cases
+# Special cases
 gap> DigraphTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
 true
 gap> DigraphReflexiveTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
 true
-
-# check errors
-gap> gr := Digraph([[2, 2], []]);
-<multidigraph with 2 vertices, 2 edges>
-gap> DigraphTransitiveReduction(gr);
-Error, Digraphs: DigraphTransitiveReduction: usage,
-this method does not work for MultiDigraphs,
-gap> DigraphReflexiveTransitiveReduction(gr);
-Error, Digraphs: DigraphReflexiveTransitiveReduction: usage,
-this method does not work for MultiDigraphs,
-gap> gr := Digraph([[2], [1]]);
-<digraph with 2 vertices, 2 edges>
-gap> DigraphTransitiveReduction(gr);
-Error, Digraphs: DigraphTransitiveReduction:
-not yet implemented for non-topologically sortable digraphs,
-gap> DigraphReflexiveTransitiveReduction(gr);
-Error, Digraphs: DigraphReflexiveTransitiveReduction:
-not yet implemented for non-topologically sortable digraphs,
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);

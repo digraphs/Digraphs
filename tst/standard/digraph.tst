@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  standard/digraph.tst
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014-15                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -143,7 +143,7 @@ gap> Digraph(rec(
 Error, Digraphs: Digraph: usage,
 the record component 'vertices' must be duplicate-free,
 
-#T# Digraph (for nrvertices, source and range)
+#T# Digraph (by nrvertices, source, and range)
 gap> Digraph(Group(()), [], []);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `Digraph' on 3 arguments
@@ -193,7 +193,7 @@ of positive integers no greater than the first argument <nrvertices>,
 gap> Digraph(4, [3, 1, 2, 3], [4, 1, 2, 4]);
 <multidigraph with 4 vertices, 4 edges>
 
-#T# Digraph (for vertices, source, range)
+#T# Digraph (by vertices, source, and range)
 gap> Digraph(Group(()), [], []);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `Digraph' on 3 arguments
@@ -258,7 +258,7 @@ gap> if DIGRAPHS_IsGrapeLoaded then
 >   fi;
 > fi;
 
-#T# Digraph (for an integer and a function)
+#T# Digraph (by an integer and a function)
 gap> divides := function(a, b)
 >   if b mod a = 0 then
 >     return true;
@@ -268,7 +268,7 @@ gap> divides := function(a, b)
 gap> gr := Digraph(12, divides);
 <digraph with 12 vertices, 35 edges>
 
-#T# Digraph (for a binary relation)
+#T# Digraph (by binary relation)
 gap> g := Group((1, 2, 3));
 Group([ (1,2,3) ])
 gap> elms := [
@@ -358,7 +358,7 @@ gap> gr := DigraphByEdges([]);
 gap> gr = EmptyDigraph(0);
 true
 
-#T# DigraphByAdjacencyMatrix
+#T# DigraphByAdjacencyMatrix (by an integer matrix)
 
 # for a matrix of integers
 gap> mat := [
@@ -429,7 +429,7 @@ true
 gap> DigraphByAdjacencyMatrix([]);
 <digraph with 0 vertices, 0 edges>
 
-# for a boolean matrix
+#T# DigraphByAdjacencyMatrix (by a boolean matrix)
 gap> mat := List([1 .. 5], x -> BlistList([1 .. 5], []));;
 gap> DigraphByAdjacencyMatrix(mat) = EmptyDigraph(5);
 true
@@ -640,7 +640,7 @@ gap> DigraphEdges(gr);
   [ 5, 3 ], [ 5, 4 ], [ 6, 1 ], [ 6, 2 ], [ 6, 3 ], [ 6, 4 ], [ 7, 1 ], 
   [ 7, 2 ], [ 7, 3 ], [ 7, 4 ] ]
 
-#T# Equals
+#T# Equals (\=) for two digraphs
 gap> r1 := rec(nrvertices := 2, source := [1, 1, 2], range := [1, 2, 2]);;
 gap> r2 := rec(nrvertices := 2, source := [1, 1, 2], range := [2, 1, 2]);;
 gap> gr1 := Digraph(r1);
@@ -886,7 +886,7 @@ gap> gr2 := Digraph(rec(nrvertices := 10, source := s, range := r2));;
 gap> gr1 = gr2;
 true
 
-#T# Less than (<) for two digraphs
+#T# Less than (\<) for two digraphs
 gap> gr1 := RandomMultiDigraph(10, 20);;
 gap> gr2 := RandomMultiDigraph(11, 21);;
 gap> gr1 < gr2; # Different NrVertices
@@ -1014,6 +1014,8 @@ gap> gr2 < gr1;
 true
 
 #T# DigraphCopy
+
+# Tests for DigraphCopy originally located in digraph.tst
 gap> gr1 := CompleteDigraph(6);
 <digraph with 6 vertices, 30 edges>
 gap> SetDigraphVertexLabels(gr1, Elements(SymmetricGroup(3)));
@@ -1037,6 +1039,34 @@ gap> String(gr2);
 "Digraph( [ ] )"
 gap> PrintString(gr2);
 "Digraph( [ ] )"
+
+# Tests for DigraphCopy originally located in oper.tst
+gap> gr := Digraph([[6, 1, 2, 3], [6], [2, 2, 3], [1, 1], [6, 5],
+> [6, 4]]);
+<multidigraph with 6 vertices, 14 edges>
+gap> gr = DigraphCopy(gr);
+true
+gap> gr := CompleteDigraph(100);
+<digraph with 100 vertices, 9900 edges>
+gap> gr = DigraphCopy(gr);
+true
+gap> gr := CycleDigraph(10000);
+<digraph with 10000 vertices, 10000 edges>
+gap> gr = DigraphCopy(gr);
+true
+gap> SetDigraphVertexLabel(gr, 1, "w");
+gap> DigraphVertexLabels(DigraphCopy(gr))[1];
+"w"
+gap> gr := Digraph(rec(vertices := ["a", Group((1, 2))],
+> source := [Group((1, 2))], range := ["a"]));
+<digraph with 2 vertices, 1 edge>
+gap> DigraphVertexLabels(gr);
+[ "a", Group([ (1,2) ]) ]
+gap> gr2 := DigraphCopy(gr);;
+gap> gr = gr2;
+true
+gap> DigraphVertexLabels(gr2);
+[ "a", Group([ (1,2) ]) ]
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);

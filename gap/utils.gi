@@ -31,11 +31,6 @@ fi;
 # Internal stuff
 #############################################################################
 
-InstallGlobalFunction(IsSemigroupsLoaded,
-function()
-  return IsPackageMarkedForLoading("semigroups", "2.1");
-end);
-
 BindGlobal("DIGRAPHS_PF",
 function(pass)
   if pass then
