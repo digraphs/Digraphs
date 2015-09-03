@@ -496,7 +496,7 @@ end);
 
 InstallMethod(DigraphNC, "for a record", [IsRecord],
 function(graph)
-  ObjectifyWithAttributes(graph, DIGRAPHS_DigraphType,
+  ObjectifyWithAttributes(graph, DigraphType,
                           DigraphRange, graph.range,
                           DigraphSource, graph.source,
                           DigraphNrVertices, graph.nrvertices);
@@ -539,7 +539,7 @@ function(adj)
 
   graph := rec(adj := StructuralCopy(adj), nrvertices := Length(adj));
 
-  ObjectifyWithAttributes(graph, DIGRAPHS_DigraphType,
+  ObjectifyWithAttributes(graph, DigraphType,
                           OutNeighbours, adj,
                           DigraphNrVertices, graph.nrvertices);
   return graph;
@@ -554,7 +554,7 @@ function(adj, nredges)
                nredges    := nredges,
                nrvertices := Length(adj)         );
 
-  ObjectifyWithAttributes(graph, DIGRAPHS_DigraphType,
+  ObjectifyWithAttributes(graph, DigraphType,
                           OutNeighbours, adj,
                           DigraphNrVertices, graph.nrvertices,
                           DigraphNrEdges, graph.nredges);

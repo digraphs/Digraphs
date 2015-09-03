@@ -7,6 +7,22 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="DigraphType">
+<ManSection>
+  <Var Name="DigraphType"/>
+  <Description>
+    </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphFamily">
+<ManSection>
+  <Var Name="DigraphFamily"/>
+  <Description>
+    </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsDigraph">
 <ManSection>
   <Filt Name="IsDigraph" Type='Category'/>
