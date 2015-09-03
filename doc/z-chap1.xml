@@ -7,6 +7,17 @@
   edges <M>E^1</M> together with functions <M>s, r: E^1 \to E^0</M>, called 
   the <E>source</E> and <E>range</E>, respectively.
 
+  An edge is called a <E>loop</E> if its source and range are the same.
+
+  A digraph is called a <E>multidigraph</E> if there exist two or more edges
+  with the same source and the same range (two or more edges "in the same
+  place"). <P/>
+
+  A <E>directed path</E> on a digraph is a sequence of alternating vertices and
+  edges <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M> such that each edge
+  <M>e_i</M> has source <M>v_i</M> and range <M>v_{i+1}</M>, and no vertex is
+  ever repeated.
+
   <Section><Heading>Testing and Documentation</Heading>
     <#Include Label="DigraphsMakeDoc">
     <#Include Label="DigraphsTestInstall">
