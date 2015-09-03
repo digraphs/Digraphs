@@ -4,6 +4,7 @@
 
   <Section><Heading>Creating digraphs</Heading>
     <#Include Label="IsDigraph">
+    <#Include Label="DigraphType">
     <#Include Label="Digraph">
     <#Include Label="DigraphByAdjacencyMatrix">
     <#Include Label="DigraphByEdges">
