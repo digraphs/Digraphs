@@ -1,12 +1,12 @@
-/***************************************************************************
+/********************************************************************************
 **
-*A  homos.c                  graph homomorphisms              Julius Jonusas
-**                                                            J. D. Mitchell
-**
-**  Copyright (C) 2014 - Julius Jonusas and J. D. Mitchell
+*A  homos.h               di/graph homomorphisms              Julius Jonusas
+**                                                            J. D. Mitchell 
+**                                                            
+**  Copyright (C) 2014-15 - Julius Jonusas and J. D. Mitchell 
 **  This file is free software, see license information at the end.
-**
-*/
+**  
+********************************************************************************/
 
 #include "src/homos.h"
 
@@ -141,28 +141,10 @@ BitArray* new_bit_array (UIntS nr_bits) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// set_bit_array: set the <pos>th bit of the BitArray pointed to by <bit_array>
-// to the value <val>.
-////////////////////////////////////////////////////////////////////////////////
-
-inline void set_bit_array (BitArray* bit_array, UIntS pos, bool val) {
-  assert(bit_array != NULL);
-  assert(pos < bit_array->nr_bits);
-
-  if (val) {
-    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] 
-      |= MASK[pos % NUMBER_BITS_PER_BLOCK];
-  } else {
-    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] 
-      &= ~MASK[pos % NUMBER_BITS_PER_BLOCK];
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // free_bit_array: free the BitArray pointed to by bit_array.
 ////////////////////////////////////////////////////////////////////////////////
 
-static void free_bit_array (BitArray* bit_array) {
+void free_bit_array (BitArray* bit_array) {
   assert(bit_array != NULL);
 
   free(bit_array->blocks);
@@ -186,6 +168,24 @@ inline void init_bit_array (BitArray* bit_array, bool val) {
     for (i = 0; i < bit_array->nr_blocks; i++) {
       bit_array->blocks[i] = 0;
     }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// set_bit_array: set the <pos>th bit of the BitArray pointed to by <bit_array>
+// to the value <val>.
+////////////////////////////////////////////////////////////////////////////////
+
+inline void set_bit_array (BitArray* bit_array, UIntS pos, bool val) {
+  assert(bit_array != NULL);
+  assert(pos < bit_array->nr_bits);
+
+  if (val) {
+    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] 
+      |= MASK[pos % NUMBER_BITS_PER_BLOCK];
+  } else {
+    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] 
+      &= ~MASK[pos % NUMBER_BITS_PER_BLOCK];
   }
 }
 
