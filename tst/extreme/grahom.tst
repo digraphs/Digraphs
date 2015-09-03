@@ -183,7 +183,25 @@ gap> gr := Digraph(List([1 .. 20], x -> [x, x mod 20 + 1]));
 <digraph with 20 vertices, 40 edges>
 
 #T# GeneratorsOfEndomorphismMonoid8
-# All symmetric graphs with 5 vertices
+# Check endomorphism monoid of all symmetric graphs with 5 vertices
+gap> graph5 := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
+>                                         "/data/graph5.g6.gz"));;
+gap> ForAll(graph5, IsSymmetricDigraph);
+true
+gap> for gr in graph5
+> do
+>   adj := AdjacencyMatrix(gr);;
+>   endos1 := Elements(Semigroup(GeneratorsOfEndomorphismMonoid(gr)));
+>   endos2 := [];
+>   for t in Elements(FullTransformationMonoid(5)) do
+>     if ForAll(DigraphEdges(gr), x -> adj[x[1] ^ t][x[2] ^ t] = 1) then
+>       Add(endos2, t);
+>     fi;
+>   od;
+>   if not (IsSubset(endos1, endos2) and Length(endos1) = Length(endos2)) then
+>     Print("fail");
+>   fi;
+> od;
 
 #T# HomomorphismGraphsFinder 1
 # Small example: CompleteDigraph(2) to CompleteDigraph(3)
@@ -323,6 +341,10 @@ gap> Unbind(graph);
 gap> Unbind(homos);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
+gap> Unbind(adj);
+gap> Unbind(endos1);
+gap> Unbind(endos2);
+gap> Unbind(graph5);
 
 #E#
 gap> STOP_TEST("Digraphs package: extreme/grahom.tst");
