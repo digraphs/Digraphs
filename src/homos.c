@@ -12,126 +12,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-// Global variables
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-static BitArray*  VALS;
-static BitArray*  DOMAIN;
-static BitArray*  ORB_LOOKUP;
-static BitArray** REPS;
-static UIntS      ORB[MAXVERTS];
-
-static UIntS      NR1, NR2;                // the number of vertices in di/graph1/2
-static UIntS      MAP[MAXVERTS];           // partial image list
-static UIntS      HINT;                    // wanted nr of distinct values in MAP
-static UIntL      MAX_RESULTS;             // upper bound for the nr of returned homos
-
-static void*      USER_PARAM;              // a USER_PARAM for the hook
-
-void          (*HOOK)(void*,               // HOOK function applied to every homo found
-	              const UIntS,
-	              const UIntS*);
-
-// globals for the orbit reps calculation  
-static PermColl* STAB_GENS[MAXVERTS];      // stabiliser generators
-
-// globals for statics
-static UIntL count;                        // nr of homos found so far
-static unsigned long long calls1;          // calls1 is the nr of calls to find_graph_homos
-static unsigned long long calls2;          // calls2 is the nr of stabs calculated
-static UIntL last_report = 0;              // the last value of calls1 when we reported
-static UIntL report_interval = 999999;     // the interval when we report
-static unsigned long long nr_allocs;
-static unsigned long long nr_frees;
-
-// globals for bitwise operations
-static bool    are_bit_tabs_init = false;  // did we call init_bit_tabs already?
-static UIntL   oneone[SYS_BITS];           // bit lists for intersection etc.
-static UIntL   ones[SYS_BITS];             // bit lists for intersection etc.
-static jmp_buf outofhere;                  // so we can jump out of the deepest level of recursion
-
-////////////////////////////////////////////////////////////////////////////////
-// initial the bit tabs
-////////////////////////////////////////////////////////////////////////////////
-
-static void init_bit_tabs (void) {
-  //assert(false);
-  if (! are_bit_tabs_init) {
-    UIntL i;
-    UIntL v = 1;
-    UIntL w = 1;
-    for (i = 0; i < SYS_BITS; i++) {
-        oneone[i] = w;
-        ones[i] = v;
-        w <<= 1;
-        v |= w;
-    }
-    are_bit_tabs_init = true;
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// homomorphism HOOK functions
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-/*void homo_hook_print () {
-  UIntS i;
-
-  printf("endomorphism image list: { ");
-  printf("%d", MAP[0] + 1);
-  for (i = 1; i < nr1; i++) {
-    printf(", %d", MAP[i] + 1);
-  }
-  printf(" }\n");
-}*/
-
-static void orbit_reps (UIntS rep_depth) {
-  UIntS     nrgens, i, j, fst, m, img, n, max, d;
-  Perm      gen;
-
-  init_bit_array(REPS[rep_depth], false);
-  init_bit_array(DOMAIN,          false);
-  init_bit_array(ORB_LOOKUP,      false);
-
-  // TODO special case in case there are no gens, or just the identity.
-  for (i = 0; i < deg; i++) {
-    if (!get_bit_array(VALS, i)) {
-      set_bit_array(DOMAIN, i, true);
-    }
-  }
-
-  fst = 0;
-  while (fst < deg && !get_bit_array(DOMAIN, fst)) fst++;
-
-  while (fst < deg) {
-    ORB[0] = fst;
-    n = 1;   //length of ORB
-    
-    set_bit_array(REPS[rep_depth], fst, true);
-    set_bit_array(ORB_LOOKUP, fst, true);
-    set_bit_array(DOMAIN, fst, false);
-
-    for (i = 0; i < n; i++) {
-      for (j = 0; j < STAB_GENS[rep_depth]->nr_gens; j++) {
-        gen = STAB_GENS[rep_depth]->gens[j];
-        img = gen[ORB[i]];
-        if (!get_bit_array(ORB_LOOKUP, img)) {
-          ORB[n++] = img;
-          set_bit_array(ORB_LOOKUP, img, true);
-          set_bit_array(DOMAIN, img, false);
-        }
-      }
-    }
-    while (fst < deg && !get_bit_array(DOMAIN, fst)) fst++;
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// bit arrays
+// Macros
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -142,7 +23,85 @@ static void orbit_reps (UIntS rep_depth) {
 #define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)
 
 ////////////////////////////////////////////////////////////////////////////////
-// COUNT_TRUES_BLOCK: this is from gap/src/blister.h
+////////////////////////////////////////////////////////////////////////////////
+// Global variables
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+// Arguments . . .
+////////////////////////////////////////////////////////////////////////////////
+
+static UIntS      NR1, NR2;                // the number of vertices in di/graph1/2
+static UIntS      MAP[MAXVERTS];           // partial image list
+static BitArray*  VALS;                    // values in MAP already
+static UIntS      HINT;                    // wanted nr of distinct values in MAP
+static UIntL      MAX_RESULTS;             // upper bound for the nr of returned homos
+static void*      USER_PARAM;              // a USER_PARAM for the hook
+void              (*HOOK)(void*,           // HOOK function applied to every homo found
+	                  const UIntS,
+	                  const UIntS*);
+static jmp_buf    outofhere;              // so we can jump out of the deepest
+                                          // level of recursion
+
+////////////////////////////////////////////////////////////////////////////////
+// For the orbit reps calculation, and stabiliser chain . . . 
+////////////////////////////////////////////////////////////////////////////////
+
+static PermColl*  STAB_GENS[MAXVERTS];      // stabiliser generators
+static BitArray*  DOMAIN;                   // [1 .. NR2]
+static BitArray*  ORB_LOOKUP;               // which point is in which orbit
+static BitArray** REPS;                     // orbit representatives organised by depth in 
+                                            // the search
+static UIntS      ORB[MAXVERTS];            // array for containing individual orbits
+
+////////////////////////////////////////////////////////////////////////////////
+// globals for bitwise operations
+////////////////////////////////////////////////////////////////////////////////
+
+static bool    IS_MASK_INITIALIZED = false;   // did we call init_mask already?
+static Block   MASK[NUMBER_BITS_PER_BLOCK];   // MASK[i] is a Block with a 1 in
+                                              // position i and 0s everywhere
+                                              // else
+
+////////////////////////////////////////////////////////////////////////////////
+// Statistics - not currently used
+////////////////////////////////////////////////////////////////////////////////
+
+static UIntL              count;                    // nr of homos found so far
+static unsigned long long calls1;                   // calls1 is the nr of calls to find_graph_homos
+static unsigned long long calls2;                   // calls2 is the nr of stabs calculated
+static UIntL              last_report = 0;          // the last value of calls1 when we reported
+static UIntL              report_interval = 999999; // the interval when we report
+static unsigned long long nr_allocs;
+static unsigned long long nr_frees;
+
+////////////////////////////////////////////////////////////////////////////////
+// initial the bit tabs
+////////////////////////////////////////////////////////////////////////////////
+
+static void init_mask (void) {
+  //assert(false);
+  if (!IS_MASK_INITIALIZED) {
+    UIntS i;
+    Block w = 1;
+    for (i = 0; i < SYS_BITS; i++) {
+        MASK[i] = w;
+        w <<= 1;
+    }
+    IS_MASK_INITIALIZED = true;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// bit arrays
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+// COUNT_TRUES_BLOCK: this is from gap/src/blister.h, it counts the number of
+// bits in a block which are set to 1.
 ////////////////////////////////////////////////////////////////////////////////
 
 #if SIZEOF_VOID_P == 8
@@ -187,21 +146,27 @@ BitArray* new_bit_array (UIntS nr_bits) {
 ////////////////////////////////////////////////////////////////////////////////
 
 inline void set_bit_array (BitArray* bit_array, UIntS pos, bool val) {
+  assert(bit_array != NULL);
   assert(pos < bit_array->nr_bits);
+
   if (val) {
-    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] |= oneone[pos % NUMBER_BITS_PER_BLOCK];
+    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] 
+      |= MASK[pos % NUMBER_BITS_PER_BLOCK];
   } else {
-    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] &= ~oneone[pos % NUMBER_BITS_PER_BLOCK];
+    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] 
+      &= ~MASK[pos % NUMBER_BITS_PER_BLOCK];
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//
+// free_bit_array: free the BitArray pointed to by bit_array.
 ////////////////////////////////////////////////////////////////////////////////
 
 static void free_bit_array (BitArray* bit_array) {
+  assert(bit_array != NULL);
+
   free(bit_array->blocks);
-  //free(bit_array); //TODO correct?
+  free(bit_array);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -211,6 +176,7 @@ static void free_bit_array (BitArray* bit_array) {
 
 inline void init_bit_array (BitArray* bit_array, bool val) {
   assert(bit_array != NULL);
+
   UIntS i;
   if (val) {
     for (i = 0; i < bit_array->nr_blocks; i++) {
@@ -229,22 +195,11 @@ inline void init_bit_array (BitArray* bit_array, bool val) {
 ////////////////////////////////////////////////////////////////////////////////
 
 inline bool get_bit_array (BitArray* bit_array, UIntS pos) {
+  assert(bit_array != NULL);
   assert(pos < bit_array->nr_bits);
-  return bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] & oneone[pos % NUMBER_BITS_PER_BLOCK];
-}
 
-////////////////////////////////////////////////////////////////////////////////
-// copy_bit_array: get a pointer to a new BitArray which is identical to the
-// BitArray pointed to by <old>.
-////////////////////////////////////////////////////////////////////////////////
-
-static inline BitArray* copy_bit_array (BitArray* old) {
-  UIntS i;
-  BitArray* new = new_bit_array(old->nr_bits);
-  for (i = 0; i < old->nr_blocks; i++) {
-    new->blocks[i] = old->blocks[i];
-  }
-  return new;
+  return bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] 
+    & MASK[pos % NUMBER_BITS_PER_BLOCK];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -254,7 +209,9 @@ static inline BitArray* copy_bit_array (BitArray* old) {
 ////////////////////////////////////////////////////////////////////////////////
 
 static inline BitArray* intersect_bit_arrays (BitArray* bit_array1,
-                                       BitArray* bit_array2) {
+                                              BitArray* bit_array2) {
+
+  assert(bit_array1 != NULL && bit_array2 != NULL);
   assert(bit_array1->nr_bits == bit_array2->nr_bits);
   assert(bit_array1->nr_blocks == bit_array2->nr_blocks);
 
@@ -266,9 +223,7 @@ static inline BitArray* intersect_bit_arrays (BitArray* bit_array1,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// size_bit_arrays: interesect the BitArrays pointed to by <bit_array1>
-// and <bit_array2>. The BitArray pointed to by <bit_array1> is changed in
-// place!!
+// size_bit_array: return the size of a bit array
 ////////////////////////////////////////////////////////////////////////////////
 
 static inline UIntS size_bit_array (BitArray* bit_array) {
@@ -277,7 +232,6 @@ static inline UIntS size_bit_array (BitArray* bit_array) {
   UIntS  nrb    = bit_array->nr_blocks;
   Block* blocks = bit_array->blocks;
 
-  /* loop over the blocks, adding the number of bits of each one         */
   n = 0;
   for ( i = 1; i <= nrb; i++ ) {
       m = *blocks++;
@@ -288,11 +242,10 @@ static inline UIntS size_bit_array (BitArray* bit_array) {
   return n;
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // conditions: this is a data structure for keeping track of what possible
-// values a vertex can be MAPped to by a partially defined homomorphism, given
+// values a vertex can be mapped to by a partially defined homomorphism, given
 // the existing values where the homomorphism is defined.
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -300,31 +253,31 @@ static inline UIntS size_bit_array (BitArray* bit_array) {
 ////////////////////////////////////////////////////////////////////////////////
 // Conditions: struct to contain the data. If <nr1> is the number of vertices
 // in the source di/graph and <nr2> is the number of vertices in the range
-// di/graph, then
+// di/graph, then a Conditions object looks like:
 //
 //  ^
 //  |
 //  |
-//  |
-//  |                +------------+
-//                   | BitArray*  |
-//  n                | length nr2 |
-//  r                +------------+                    +------------+
-//  1                | BitArray*  |                    | BitArray*  |
-//                   | length nr2 |                    | length nr2 |
-//  r                +------------+------------+       +------------+
-//  o                | BitArray*  | BitArray*  |       | BitArray*  |
-//  w                | length nr2 | length nr2 |       | length nr2 |
-//  s   +------------+------------+------------+ - -  -+------------+
-//      | BitArray*  | BitArray*  | BitArray*  |       | BitArray*  |
+//   
+//  n                +------------+
+//  r                | BitArray*  |
+//  1                | length nr2 |
+//                   +------------+                    +------------+
+//  r                | BitArray*  |                    | BitArray*  |
+//  o                | length nr2 |                    | length nr2 |
+//  w                +------------+------------+       +------------+
+//  s                | BitArray*  | BitArray*  |       | BitArray*  |
+//                   | length nr2 | length nr2 |       | length nr2 |
+//  |   +------------+------------+------------+ - -  -+------------+
+//  |   | BitArray*  | BitArray*  | BitArray*  |       | BitArray*  |
 //  |   | length nr2 | length nr2 | length nr2 |       | length nr2 |
 //  v   +------------+------------+------------+ - -  -+------------+
 //
-//      <--------------------------- nr1 columns ------------------->
+//      <----------------------- nr1 columns ----------------------->
 //
 //  The BitArray pointed to in row <i+1> and column <j> row is the intersection
 //  of the BitArray pointed to in row <i> and column <j> with some other
-//  BitArray (the things adjacent to some vertex in graph2).
+//  BitArray (the things adjacent to some vertex in di/graph2).
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -346,19 +299,22 @@ typedef struct conditions_struct Conditions;
 
 static Conditions* new_conditions (UIntS      nr1,
                                    UIntS      nr2) {
+  assert(nr1 != 0 && nr2 != 0);
+
   UIntS i, j;
   Conditions* conditions = malloc(sizeof(Conditions));
 
-  conditions->bit_array = malloc(sizeof(BitArray*) * nr1 * nr1);
-  conditions->changed   = malloc(nr1 * (nr1 + 1) * sizeof(UIntS));
-  conditions->height    = malloc(nr1 * sizeof(UIntS));
-  conditions->sizes     = malloc(nr1 * nr1 * sizeof(UIntS));
-  conditions->nr1       = nr1;
-  conditions->nr2       = nr2;
+  conditions->bit_array  = malloc(sizeof(BitArray*) * nr1 * nr1);
+  conditions->changed    = malloc(nr1 * (nr1 + 1) * sizeof(UIntS));
+  conditions->height     = malloc(nr1 * sizeof(UIntS));
+  conditions->sizes      = malloc(nr1 * nr1 * sizeof(UIntS));
+  conditions->nr1        = nr1;
+  conditions->nr2        = nr2;
 
   for (i = 0; i < nr1 * nr1; i++) {
     conditions->bit_array[i] = new_bit_array(nr2);
   }
+  
   for (i = 0; i < nr1; i++) {
     init_bit_array(conditions->bit_array[i], true);
     conditions->changed[i + 1] = i;
@@ -370,10 +326,13 @@ static Conditions* new_conditions (UIntS      nr1,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// 
+// free_conditions: free the entire Conditions object pointed to by
+// <conditions>.
 ////////////////////////////////////////////////////////////////////////////////
 
 static void free_conditions (Conditions* conditions) {
+  assert(conditions != NULL);
+
   UIntS i;
   for (i = 0; i < conditions->nr1 * conditions->nr1; i++) {
     free_bit_array(conditions->bit_array[i]);
@@ -391,6 +350,9 @@ static void free_conditions (Conditions* conditions) {
 
 static inline BitArray* get_conditions (Conditions*  conditions,
                                         Vertex const i          ) {
+  assert(conditions != NULL);
+  assert(i < conditions->nr1);
+
   return conditions->bit_array[conditions->nr1 * (conditions->height[i] - 1) + i];
 }
 
@@ -401,10 +363,12 @@ static inline BitArray* get_conditions (Conditions*  conditions,
 
 static inline void store_size_conditions (Conditions*  conditions,
                                           Vertex const i          ) {
+  assert(conditions != NULL);
+  assert(i < conditions->nr1);
+
   UIntS nr1 = conditions->nr1;
   conditions->sizes[nr1 * (conditions->height[i] - 1) + i]
     = size_bit_array(get_conditions(conditions, i));
-  //FIXME why the -1 here???
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -414,11 +378,13 @@ static inline void store_size_conditions (Conditions*  conditions,
 ////////////////////////////////////////////////////////////////////////////////
 
 static inline void push_conditions (Conditions*  conditions,
-                                    UIntS const  depth, //TODO remove this (as an argument here)
+                                    UIntS const  depth,
                                     Vertex const i,
                                     BitArray*    bit_array) {
   assert(conditions != NULL);
-  //TODO add more asserts here
+  assert(i < conditions->nr1);
+  assert(depth < conditions->nr1);
+  
   UIntS j, k;
   UIntS nr1 = conditions->nr1;
   UIntS nr2 = conditions->nr2;
@@ -442,8 +408,10 @@ static inline void push_conditions (Conditions*  conditions,
 ////////////////////////////////////////////////////////////////////////////////
 
 static inline void pop_conditions (Conditions* conditions,
-                                   UIntS const depth      ) { //TODO remove this as an argument
-  //TODO add asserts here
+                                   UIntS const depth      ) {
+  assert(conditions != NULL);
+  assert(depth < conditions->nr1);
+  
   UIntS i;
   UIntS nr1 = conditions->nr1;
   UIntS nr2 = conditions->nr2;
@@ -461,8 +429,57 @@ static inline void pop_conditions (Conditions* conditions,
 
 static inline UIntS size_conditions (Conditions*  conditions,
                                      Vertex const i          ) {
-  //TODO add asserts here
+  assert(conditions != NULL);
+  assert(i < conditions->nr1);
+  
   return conditions->sizes[conditions->nr1 * (conditions->height[i] - 1) + i];
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// orbits_reps: find orbit_reps at <rep_depth>
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+static void orbit_reps (UIntS rep_depth) {
+  UIntS     nrgens, i, j, fst, m, img, n, max, d;
+  Perm      gen;
+
+  init_bit_array(REPS[rep_depth], false);
+  init_bit_array(DOMAIN,          false);
+  init_bit_array(ORB_LOOKUP,      false);
+
+  // TODO special case in case there are no gens, or just the identity.
+  for (i = 0; i < deg; i++) {
+    if (!get_bit_array(VALS, i)) {
+      set_bit_array(DOMAIN, i, true);
+    }
+  }
+
+  fst = 0;
+  while (fst < deg && !get_bit_array(DOMAIN, fst)) fst++;
+
+  while (fst < deg) {
+    ORB[0] = fst;
+    n = 1;   //length of ORB
+    
+    set_bit_array(REPS[rep_depth], fst, true);
+    set_bit_array(ORB_LOOKUP, fst, true);
+    set_bit_array(DOMAIN, fst, false);
+
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < STAB_GENS[rep_depth]->nr_gens; j++) {
+        gen = STAB_GENS[rep_depth]->gens[j];
+        img = gen[ORB[i]];
+        if (!get_bit_array(ORB_LOOKUP, img)) {
+          ORB[n++] = img;
+          set_bit_array(ORB_LOOKUP, img, true);
+          set_bit_array(DOMAIN, img, false);
+        }
+      }
+    }
+    while (fst < deg && !get_bit_array(DOMAIN, fst)) fst++;
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -472,7 +489,7 @@ static inline UIntS size_conditions (Conditions*  conditions,
 ////////////////////////////////////////////////////////////////////////////////
  
 ////////////////////////////////////////////////////////////////////////////////
-// new_digraph: returns a pointer to a Digraph with nr_verts vertices and no
+// new_digraph: returns a pointer to a Digraph with <nr_verts> vertices and no
 // edges.
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -481,7 +498,7 @@ Digraph* new_digraph (UIntS const nr_verts) {
   Digraph* digraph        = malloc(sizeof(Digraph));
   digraph->in_neighbours  = malloc(nr_verts * sizeof(BitArray));
   digraph->out_neighbours = malloc(nr_verts * sizeof(BitArray));
-  init_bit_tabs();
+  init_mask();
   for (i = 0; i < nr_verts; i++) {
     digraph->in_neighbours[i] = new_bit_array(nr_verts);
     digraph->out_neighbours[i] = new_bit_array(nr_verts);
@@ -491,10 +508,12 @@ Digraph* new_digraph (UIntS const nr_verts) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//
+// free_digraph: free the Digraph pointed to by <digraph>.
 ////////////////////////////////////////////////////////////////////////////////
 
 void free_digraph (Digraph* digraph) {
+  assert(digraph != NULL);
+  
   UIntS i, nr = digraph->nr_vertices;
 
   for (i = 0; i < nr; i++) {
@@ -514,7 +533,9 @@ void free_digraph (Digraph* digraph) {
 void add_edge_digraph (Digraph* digraph,
                        Vertex   i,
                        Vertex   j       ) {
+  assert(digraph != NULL);
   assert(i < digraph->nr_vertices && j < digraph->nr_vertices);
+
   set_bit_array(digraph->out_neighbours[i], j, true);
   set_bit_array(digraph->in_neighbours[j], i, true);
 }
@@ -525,17 +546,22 @@ void add_edge_digraph (Digraph* digraph,
 ////////////////////////////////////////////////////////////////////////////////
 
 static bool inline is_adjacent_digraph (Digraph* digraph,
-                                 Vertex   i,
-                                 Vertex   j       ) {
+                                        Vertex   i,
+                                        Vertex   j       ) {
+  assert(digraph != NULL);
   assert(i < digraph->nr_vertices && j < digraph->nr_vertices);
+  
   return get_bit_array(digraph->out_neighbours[i], j);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// 
+// new_bliss_graph: get a new bliss (undirected, vertex coloured) digraph from
+// the Digraph pointed to by <digraph>. 
 ////////////////////////////////////////////////////////////////////////////////
 
 static BlissGraph* new_bliss_graph_from_digraph (Digraph* digraph) {
+  assert(digraph != NULL);
+  
   UIntS  i, j, k, l;
   UIntS  n = digraph->nr_vertices;
 
@@ -556,7 +582,8 @@ static BlissGraph* new_bliss_graph_from_digraph (Digraph* digraph) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// 
+// bliss_hook_digraph: the hook function for bliss_find_automorphisms to
+// collect the generators of the automorphism group in a PermColl
 ////////////////////////////////////////////////////////////////////////////////
 
 static void bliss_hook_digraph (void               *user_param_arg,  // perm_coll!
@@ -565,9 +592,6 @@ static void bliss_hook_digraph (void               *user_param_arg,  // perm_col
 
   UIntS        i;
   Perm         p = new_perm();
-  // TODO should restrict to the vertices [1..n] only and not include the
-  // vertices of colours 1 and 2 (which are only used to indicate the direct of
-  // edges. Not sure how to do this.
 
   UIntS min = (N < deg ? N : deg); 
 
@@ -581,10 +605,13 @@ static void bliss_hook_digraph (void               *user_param_arg,  // perm_col
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// 
+// automorphisms_digraph: get a PermColl* to the generators of the Digraph
+// pointed to by <digraph>.
 ////////////////////////////////////////////////////////////////////////////////
 
 static PermColl* automorphisms_digraph (Digraph* digraph) {
+  assert(digraph != NULL);
+
   BlissGraph* bliss_graph = new_bliss_graph_from_digraph(digraph);
   PermColl*   gens  = new_perm_coll(digraph->nr_vertices - 1);
   bliss_find_automorphisms(bliss_graph, bliss_hook_digraph, gens, 0);
@@ -701,8 +728,10 @@ static void find_digraph_homos (Digraph*    digraph1,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // DigraphHomomorphisms: the function which calls the main recursive function 
 // <find_digraph_homos>.
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 void DigraphHomomorphisms (Digraph* digraph1,
@@ -712,57 +741,63 @@ void DigraphHomomorphisms (Digraph* digraph1,
 	                                        const UIntS  *MAP       ),
                            void*     user_param_arg,
                            UIntL     max_results_arg,
-                           int       HINT_arg,
-                           BitArray* image,
-                           UIntS     *partial_MAP                          ) {
-  PermColl* gens;
-  UIntS     i, j;
-  BitArray* mask;
+                           int       hint_arg,
+                           BitArray* image_arg,
+                           UIntS     *partial_map_arg                     ) {
   
-  init_bit_tabs();
+  assert(digraph1 != NULL && digraph2 != NULL);
+
+  UIntS      i, j;
+  PermColl*  gens;
+  BitArray*  bit_array;
   
   NR1 = digraph1->nr_vertices;
   NR2 = digraph2->nr_vertices;
 
   assert(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
   
-  //TODO isinjective case
-  
   // initialise the conditions . . .
   Conditions* conditions = new_conditions(NR1, NR2);
-  
-  if (image != NULL) { // image was specified
+
+  // image_arg is a pointer to a BitArray of possible image values for the
+  // homomorphisms . . .
+  if (image_arg != NULL) { // image was specified
     for (i = 0; i < NR1; i++) {
-      intersect_bit_arrays(get_conditions(conditions, i), image);
+      intersect_bit_arrays(get_conditions(conditions, i), image_arg);
       // intersect everything in the first row of conditions with <image>
     }
   }
 
-  if (partial_MAP != NULL) { // a partial MAP was defined
+  // partial_map_arg is an array of UIntS's partially defining a map from
+  // digraph1 to digraph2.
+  bit_array = new_bit_array(NR2); // every position is false by default
+
+  if (partial_map_arg != NULL) { // a partial MAP was defined
     for (i = 0; i < NR1; i++) {
-      if (partial_MAP[i] != UNDEFINED) {
-        mask = new_bit_array(NR2); // every position is false by default
-        set_bit_array(mask, partial_MAP[i], true);
-        intersect_bit_arrays(get_conditions(conditions, i), mask);
+      if (partial_map_arg[i] != UNDEFINED) {
+        init_bit_array(bit_array, false);
+        set_bit_array(bit_array, partial_map_arg[i], true);
+        intersect_bit_arrays(get_conditions(conditions, i), bit_array);
       }
     }
   }
 
   // find loops in digraph2
-  BitArray* loops = new_bit_array(NR2);
-
   for (i = 0; i < NR2; i++) {
     if (is_adjacent_digraph(digraph2, i, i)) {
-      set_bit_array(loops, i, true);
+      set_bit_array(bit_array, i, true);
     }
   }
   
-  // loops in digraph1 can only MAP to loops in digraph2
+  // bit_array in digraph1 can only MAP to bit_array in digraph2
   for (i = 0; i < NR1; i++) {
     if (is_adjacent_digraph(digraph1, i, i)) {
-      intersect_bit_arrays(get_conditions(conditions, i), loops);
+      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
     }
+    store_size_conditions(conditions, i);
   }
+  
+  free(bit_array);
 
   // store the values in <MAP>, this is initialised to every bit set to false,
   // by default.
@@ -774,31 +809,27 @@ void DigraphHomomorphisms (Digraph* digraph1,
   // initialise the <MAP> and store the sizes in the conditions. 
   for (i = 0; i < NR1; i++) {
     REPS[i] = new_bit_array(NR2);
-    MAP[i] = UNDEFINED;
-    store_size_conditions(conditions, i);
+    MAP[i]  = UNDEFINED;
   }
 
-  // get generators of the automorphism group of digraph2
+  // get generators of the automorphism group of digraph2, and the orbit reps
   set_perms_degree(NR2);
   STAB_GENS[0] = automorphisms_digraph(digraph2);
-
-  // get orbit reps
   orbit_reps(0);
 
   // misc parameters
   MAX_RESULTS = max_results_arg;
-  USER_PARAM = user_param_arg;
-  HINT = HINT_arg;
-  HOOK = hook_arg;
+  USER_PARAM  = user_param_arg;
+  HINT        = hint_arg;
+  HOOK        = hook_arg;
 
-  // statistics . . .
+  // statistics . . . FIXME not currently used for anything
   count = 0;
   last_report = 0;
 
   // go!
   if (setjmp(outofhere) == 0) {
-    find_digraph_homos(digraph1, digraph2, conditions, 0, UNDEFINED, 0, false,
-                       0);
+    find_digraph_homos(digraph1, digraph2, conditions, 0, UNDEFINED, 0, false, 0);
   }
 
   // free the STAB_GENS
@@ -808,12 +839,18 @@ void DigraphHomomorphisms (Digraph* digraph1,
       STAB_GENS[i] = NULL;
     }
   }
+  free_bit_array(VALS);
+  free_bit_array(DOMAIN);
+  for (i = 0; i < NR1; i++) {
+    free_bit_array(REPS[i]);
+  }
+  free(REPS);
   free_conditions(conditions);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-// graphs (undirected)
+// Graphs (undirected)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
  
@@ -826,7 +863,7 @@ Graph* new_graph (UIntS const nr_verts) {
   UIntS i;
   Graph* graph      = malloc(sizeof(Graph));
   graph->neighbours = malloc(nr_verts * sizeof(BitArray));
-  init_bit_tabs();
+  init_mask();
   for (i = 0; i < nr_verts; i++) {
     graph->neighbours[i] = new_bit_array(nr_verts);
   }
@@ -839,6 +876,8 @@ Graph* new_graph (UIntS const nr_verts) {
 ////////////////////////////////////////////////////////////////////////////////
 
 void free_graph (Graph* graph) {
+  assert(graph != NULL);
+
   UIntS i, nr = graph->nr_vertices;
 
   for (i = 0; i < nr; i++) {
@@ -856,7 +895,9 @@ void free_graph (Graph* graph) {
 void add_edge_graph (Graph* graph,
                      Vertex i,
                      Vertex j     ) {
+  assert(graph != NULL);
   assert(i < graph->nr_vertices && j < graph->nr_vertices);
+  
   set_bit_array(graph->neighbours[i], j, true);
   set_bit_array(graph->neighbours[j], i, true);
 }
@@ -869,7 +910,9 @@ void add_edge_graph (Graph* graph,
 static bool inline is_adjacent_graph (Graph* graph,
                                       Vertex i,
                                       Vertex j     ) {
+  assert(graph != NULL);
   assert(i < graph->nr_vertices && j < graph->nr_vertices);
+
   return get_bit_array(graph->neighbours[i], j);
 }
 
@@ -879,6 +922,8 @@ static bool inline is_adjacent_graph (Graph* graph,
 ////////////////////////////////////////////////////////////////////////////////
 
 static BlissGraph* new_bliss_graph_from_graph (Graph* graph) {
+  assert(graph != NULL);
+  
   UIntS  i, j;
   UIntS  n = graph->nr_vertices;
 
@@ -922,6 +967,8 @@ static void bliss_hook_graph (void               *user_param_arg,  // perm_coll!
 ////////////////////////////////////////////////////////////////////////////////
 
 static PermColl* automorphisms_graph (Graph* graph) {
+  assert(graph != NULL);
+  
   BlissGraph* bliss_graph = new_bliss_graph_from_graph(graph);
   PermColl*   gens  = new_perm_coll(graph->nr_vertices - 1);
   bliss_find_automorphisms(bliss_graph, bliss_hook_graph, gens, 0);
@@ -1042,8 +1089,11 @@ void GraphHomomorphisms (Graph*    graph1,
                          int       hint_arg,
                          BitArray* image_arg,
                          UIntS     *partial_map_arg                     ) {
-  PermColl  *gens;
+  
+  assert(graph1 != NULL && graph2 != NULL);
+  
   UIntS     i, j;
+  PermColl  *gens;
   BitArray* bit_array; 
 
   NR1 = graph1->nr_vertices;
@@ -1107,11 +1157,9 @@ void GraphHomomorphisms (Graph*    graph1,
     MAP[i]  = UNDEFINED;
   }
 
-  // get generators of the automorphism group of graph2
+  // get generators of the automorphism group of graph2, and the orbit reps
   set_perms_degree(NR2);
   STAB_GENS[0] = automorphisms_graph(graph2);
-
-  // get orbit reps
   orbit_reps(0);
 
   // misc parameters . . .
