@@ -89,7 +89,7 @@ gap> IsomorphismGroups(PrimitiveGroup(45, 3), H) <> fail;
 true
 
 #T# AutomorphismGroup: for a digraph, 3
-# Rndom examples
+# Random examples
 gap> AutomorphismGroup(Digraph([]));
 Group(())
 gap> gr := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],

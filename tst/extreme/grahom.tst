@@ -214,7 +214,7 @@ gap> last * 6 = 3 ^ 15 + 3;
 true
 
 #T# HomomorphismGraphsFinder 3
-# Small example: dandomly chosen
+# Small example: randomly chosen
 gap> gr1 := Digraph([
 >  [15, 3, 6, 7, 8, 16, 19], [5, 17, 18, 13, 19], [1, 7, 19, 4, 15, 17],
 >  [3, 7, 15, 10, 14, 16], [8, 2, 7, 10], [1],
