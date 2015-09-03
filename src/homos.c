@@ -1052,8 +1052,10 @@ static Conditions* new_conditions (UIntS      nr1,
   conditions->nr1       = nr1;
   conditions->nr2       = nr2;
 
-  for (i = 0; i < nr1; i++) {
+  for (i = 0; i < nr1 * nr1; i++) {
     conditions->bit_array[i] = new_bit_array(nr2);
+  }
+  for (i = 0; i < nr1; i++) {
     init_bit_array(conditions->bit_array[i], true);
     conditions->changed[i + 1] = i;
     conditions->changed[(nr1 + 1) * i] = 0;
@@ -1069,8 +1071,7 @@ static Conditions* new_conditions (UIntS      nr1,
 
 static void free_conditions (Conditions* conditions) {
   UIntS i;
-  for (i = 0; i < conditions->nr1; i++) {
-    for (j = 0; j < conditions->height[i]
+  for (i = 0; i < conditions->nr1 * conditions->nr1; i++) {
     free_bit_array(conditions->bit_array[i]);
   }
   free(conditions->bit_array);
@@ -1112,16 +1113,23 @@ static inline void push_conditions (Conditions*  conditions,
                                     UIntS const  depth, //TODO remove this (as an argument here)
                                     Vertex const i,
                                     BitArray*    bit_array) {
-  //TODO add asserts here
+  assert(conditions != NULL);
+  //TODO add more asserts here
   UIntS j, k;
   UIntS nr1 = conditions->nr1;
   UIntS nr2 = conditions->nr2;
 
+  memcpy((void *) conditions->bit_array[nr1 * conditions->height[i] + i]->blocks,
+         (void *) conditions->bit_array[nr1 * (conditions->height[i] - 1) + i]->blocks, 
+	 (size_t) conditions->bit_array[0]->nr_blocks * sizeof(Block));
+
   conditions->changed[(nr1 + 1) * depth]++;
   conditions->changed[(nr1 + 1) * depth + conditions->changed[(nr1 + 1) * depth]] = i;
-  conditions->bit_array[nr1 * conditions->height[i] + i]
-    = intersect_bit_arrays(copy_bit_array(get_conditions(conditions, i)), bit_array);
+
   conditions->height[i]++;
+  
+  intersect_bit_arrays(get_conditions(conditions, i), bit_array);
+
   store_size_conditions(conditions, i);
 }
 
@@ -1183,7 +1191,6 @@ static void find_digraph_homos (Digraph*    digraph1,
     hook(user_param, nr1, map);
     count++;
     if (count >= maxresults) {
-      free(conditions);
       longjmp(outofhere, 1);
     }
     return;
@@ -1278,7 +1285,7 @@ void DigraphHomomorphisms (Digraph* digraph1,
   PermColl* gens;
   UIntS     i, j;
   BitArray* mask;
-  
+  printf("DigraphHomomorphisms!!\n");
   init_bit_tabs();
   
   nr1 = digraph1->nr_vertices;
@@ -1313,7 +1320,7 @@ void DigraphHomomorphisms (Digraph* digraph1,
   new_vals       = new_bit_array(nr2);
   new_domain     = new_bit_array(nr2);
   new_orb_lookup = new_bit_array(nr2);
-  new_reps       = malloc(nr1 * sizeof(BitArray));
+  new_reps       = malloc(nr1 * sizeof(BitArray*));
 
   // initialise the <map> and store the sizes in the conditions. 
   for (i = 0; i < nr1; i++) {

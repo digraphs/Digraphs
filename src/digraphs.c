@@ -2001,7 +2001,7 @@ Obj FuncDIGRAPH_HOMOS (Obj self, Obj args) {
   if (partial_map_gap == Fail || !IS_LIST(partial_map_gap)) {
     partial_map = NULL;
   } else {
-    partial_map = malloc(nr2 * sizeof(UIntS));
+    partial_map = malloc(nr1 * sizeof(UIntS));
     for (i = 0; i < LEN_LIST(partial_map_gap); i++) {
       if (ISB_LIST(partial_map_gap, i + 1) == 1) {
         partial_map[i] = INT_INTOBJ(ELM_LIST(partial_map_gap, i + 1)) - 1;
