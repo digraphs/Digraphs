@@ -625,6 +625,8 @@ static PermColl* automorphisms_digraph (Digraph* digraph) {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+//TODO describe the args
+
 static void find_digraph_homos (Digraph*    digraph1,
                                 Digraph*    digraph2, 
                                 Conditions* conditions,
@@ -982,7 +984,10 @@ static PermColl* automorphisms_graph (Graph* graph) {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+//TODO describe the args
+
 static void find_graph_homos (Graph*      graph1,
+
                               Graph*      graph2, 
                               Conditions* conditions,
                               UIntS       depth,               // the number of filled positions in MAP
