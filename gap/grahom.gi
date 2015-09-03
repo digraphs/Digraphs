@@ -19,11 +19,6 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
                  "the 1st and 2nd arguments <gr1> and <gr2> must be digraphs,");
   fi;
 
-  if not (IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2)) then
-    ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: error,\n",
-                 "not yet implemented for non-symmetric digraphs,");
-  fi;
-
   if hook <> fail then
     if not (IsFunction(hook) and NumberArgumentsFunction(hook) = 2) then
       ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: usage,\n",
@@ -77,8 +72,7 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
         or (IsPosInt(hint) and (hint > DigraphNrVertices(gr1) or hint >
             DigraphNrVertices(gr2)))
         or IsEmpty(image)
-        or (IsPosInt(hint) and hint > Length(image))
-      then
+        or (IsPosInt(hint) and hint > Length(image)) then
     return user_param;
   fi;
 
@@ -88,7 +82,7 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
                   fail, map);
     else 
       DIGRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
-                   fail, map);
+                    fail, map);
     fi;
     return user_param;
   fi;
@@ -101,7 +95,7 @@ end);
 
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid,
 function(arg)
-  local digraph, limit, limit_arg, gens, out;
+  local digraph, limit, G, gens, limit_arg, out;
 
   if IsEmpty(arg) then
     ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
@@ -117,11 +111,6 @@ function(arg)
   if not IsDigraph(digraph) then
     ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
                  "the 1st argument <digraph> must be a digraph,");
-  fi;
-
-  if not IsSymmetricDigraph(digraph) then
-    ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: error,\n",
-                 "not yet implemented for non-symmetric digraphs,");
   fi;
 
   if IsBound(arg[2]) and (IsPosInt(arg[2]) or arg[2] = infinity) then
