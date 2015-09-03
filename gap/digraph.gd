@@ -14,11 +14,13 @@ DeclareCategory("IsDigraph", IsObject);
 # meaning it really has multiple edges!!
 DeclareProperty("IsMultiDigraph", IsDigraph);
 
-BindGlobal("DigraphFamily", NewFamily("DigraphFamily", IsDigraph));
+BindGlobal("DIGRAPHS_DigraphFamily",
+           NewFamily("DIGRAPHS_DigraphFamily", IsDigraph));
 
-BindGlobal("DigraphType", NewType(DigraphFamily,
-                                  IsDigraph and IsComponentObjectRep
-                                  and IsAttributeStoringRep));
+BindGlobal("DIGRAPHS_DigraphType",
+           NewType(DIGRAPHS_DigraphFamily,
+                   IsDigraph and IsComponentObjectRep
+                   and IsAttributeStoringRep));
 
 # constructors . . .
 
