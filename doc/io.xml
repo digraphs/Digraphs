@@ -240,7 +240,7 @@ gap> ReadDigraphs(filename);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="WriteGraph6">
+<#GAPDoc Label="Graph6String">
 <ManSection>
   <Oper Name="Graph6String" Arg="digraph"/>
   <Oper Name="Digraph6String" Arg="digraph"/>
@@ -249,11 +249,13 @@ gap> ReadDigraphs(filename);
   <Returns>A string.</Returns>
   <Description>
     These four functions return a highly compressed string fully describing the
-    <A> digraph </A>. <P/>
+    digraph <A>digraph</A>. <P/>
 
     Graph6 and Digraph6 are formats best used on small, dense graphs, if
     applicable. For larger, sparse graphs use <E>Sparse6</E> and
-    <E>Disparse6</E> (this latter also preserves multiple edges).
+    <E>Disparse6</E> (this latter also preserves multiple edges). <P/>
+
+    See <Ref Oper="WriteDigraphs"/>.
     <Example><![CDATA[
 gap> gr := Digraph([[2,3], [1], [1]]);
 <digraph with 3 vertices, 4 edges>
