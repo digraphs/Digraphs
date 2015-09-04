@@ -662,8 +662,8 @@ gap> gr2 := Digraph([[], [1], [1, 3]]);;
 gap> gr2 := DigraphSymmetricClosure(gr2);;
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], infinity, fail, true,
 > [1,2,3], []);
-[ IdentityTransformation, Transformation( [ 1, 3 ] ), 
-  Transformation( [ 2, 1 ] ), Transformation( [ 3, 1 ] ) ]
+[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
+  Transformation( [ 2, 1 ] ), Transformation( [ 3, 1, 3 ] ) ]
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);

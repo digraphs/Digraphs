@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 static UIntS      NR1, NR2;                // the number of vertices in di/graph1/2
-static UIntS      MAX_NR1_NR2;
+static UIntS      MAX_NR1_NR2;             // 
 static UIntS      MAP[MAXVERTS];           // partial image list
 static BitArray*  VALS;                    // values in MAP already
 static UIntS      HINT;                    // wanted nr of distinct values in MAP
@@ -647,7 +647,7 @@ static void find_digraph_homos (Digraph*    digraph1,
     if (HINT != UNDEFINED && rank != HINT) {
       return;
     }
-    HOOK(USER_PARAM, NR1, MAP);
+    HOOK(USER_PARAM, MAX_NR1_NR2, MAP);
     count++;
     if (count >= MAX_RESULTS) {
       longjmp(outofhere, 1);
@@ -757,8 +757,9 @@ void DigraphHomomorphisms (Digraph* digraph1,
   PermColl*  gens;
   BitArray*  bit_array;
   
-  NR1 = digraph1->nr_vertices;
-  NR2 = digraph2->nr_vertices;
+  NR1         = digraph1->nr_vertices;
+  NR2         = digraph2->nr_vertices;
+  MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
 
   assert(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
   
@@ -819,6 +820,9 @@ void DigraphHomomorphisms (Digraph* digraph1,
     REPS[i] = new_bit_array(NR2);
     MAP[i]  = UNDEFINED;
   }
+  for (i = NR1; i < MAX_NR1_NR2; i++) {
+    MAP[i] = i;
+  }
 
   // get generators of the automorphism group of digraph2, and the orbit reps
   set_perms_degree(NR2);
@@ -873,7 +877,7 @@ static void find_digraph_monos (Digraph*    digraph1,
   bool    is_trivial;
 
   if (depth == NR1) { // we've assigned every position in <MAP>
-    HOOK(USER_PARAM, NR1, MAP);
+    HOOK(USER_PARAM, MAX_NR1_NR2, MAP);
     count++;
     if (count >= MAX_RESULTS) {
       longjmp(outofhere, 1);
@@ -967,8 +971,9 @@ void DigraphMonomorphisms (Digraph* digraph1,
   PermColl*  gens;
   BitArray*  bit_array;
   
-  NR1 = digraph1->nr_vertices;
-  NR2 = digraph2->nr_vertices;
+  NR1         = digraph1->nr_vertices;
+  NR2         = digraph2->nr_vertices;
+  MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
 
   assert(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
   
@@ -1039,6 +1044,9 @@ void DigraphMonomorphisms (Digraph* digraph1,
   for (i = 0; i < NR1; i++) {
     REPS[i] = new_bit_array(NR2);
     MAP[i]  = UNDEFINED;
+  }
+  for (i = NR1; i < MAX_NR1_NR2; i++) {
+    MAP[i] = i;
   }
 
   // get generators of the automorphism group of digraph2, and the orbit reps
@@ -1230,7 +1238,7 @@ static void find_graph_homos (Graph*      graph1,
     if (HINT != UNDEFINED && rank != HINT) {
       return;
     }
-    HOOK(USER_PARAM, NR1, MAP);
+    HOOK(USER_PARAM, MAX_NR1_NR2, MAP);
     count++;
     if (count >= MAX_RESULTS) {
       longjmp(outofhere, 1);
@@ -1328,8 +1336,9 @@ void GraphHomomorphisms (Graph*    graph1,
   PermColl  *gens;
   BitArray* bit_array; 
 
-  NR1 = graph1->nr_vertices;
-  NR2 = graph2->nr_vertices;
+  NR1         = graph1->nr_vertices;
+  NR2         = graph2->nr_vertices;
+  MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
 
   assert(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
   
@@ -1390,6 +1399,9 @@ void GraphHomomorphisms (Graph*    graph1,
     REPS[i] = new_bit_array(NR2);
     MAP[i]  = UNDEFINED;
   }
+  for (i = NR1; i < MAX_NR1_NR2; i++) {
+    MAP[i] = i;
+  }
 
   // get generators of the automorphism group of graph2, and the orbit reps
   set_perms_degree(NR2);
@@ -1444,7 +1456,7 @@ static void find_graph_monos (Graph*      graph1,
   bool    is_trivial;
 
   if (depth == NR1) { // we've assigned every position in <MAP>
-    HOOK(USER_PARAM, NR1, MAP);
+    HOOK(USER_PARAM, MAX_NR1_NR2, MAP);
     count++;
     if (count >= MAX_RESULTS) {
       longjmp(outofhere, 1);
@@ -1534,8 +1546,9 @@ void GraphMonomorphisms (Graph*   graph1,
   PermColl*  gens;
   BitArray*  bit_array;
   
-  NR1 = graph1->nr_vertices;
-  NR2 = graph2->nr_vertices;
+  NR1         = graph1->nr_vertices;
+  NR2         = graph2->nr_vertices;
+  MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
 
   assert(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
   
@@ -1606,6 +1619,9 @@ void GraphMonomorphisms (Graph*   graph1,
   for (i = 0; i < NR1; i++) {
     REPS[i] = new_bit_array(NR2);
     MAP[i]  = UNDEFINED;
+  }
+  for (i = NR1; i < MAX_NR1_NR2; i++) {
+    MAP[i] = i;
   }
 
   // get generators of the automorphism group of graph2, and the orbit reps
