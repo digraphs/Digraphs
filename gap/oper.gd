@@ -51,13 +51,13 @@ DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);
 
 DeclareOperation("InDegreeOfVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("InDegreeOfVertexNC", [IsDigraph, IsPosInt]);
-DeclareOperation("InNeighborsOfVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("InNeighboursOfVertex", [IsDigraph, IsPosInt]);
+DeclareSynonym("InNeighborsOfVertex", InNeighboursOfVertex);
 DeclareOperation("InNeighboursOfVertexNC", [IsDigraph, IsPosInt]);
 DeclareOperation("OutDegreeOfVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("OutDegreeOfVertexNC", [IsDigraph, IsPosInt]);
-DeclareOperation("OutNeighborsOfVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("OutNeighboursOfVertex", [IsDigraph, IsPosInt]);
+DeclareSynonym("OutNeighborsOfVertex", OutNeighboursOfVertex);
 DeclareOperation("OutNeighboursOfVertexNC", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphInEdges", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphOutEdges", [IsDigraph, IsPosInt]);
@@ -70,4 +70,4 @@ DeclareOperation("DigraphLongestDistanceFromVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);
 
 DeclareOperation("OutNeighboursCopy", [IsDigraph]);
-DeclareOperation("OutNeighborsCopy", [IsDigraph]);
+DeclareSynonym("OutNeighborsCopy", OutNeighboursCopy);

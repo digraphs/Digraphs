@@ -160,10 +160,6 @@ function(digraph, n)
   return DigraphEpimorphism(digraph, CompleteDigraph(n));
 end);
 
-InstallMethod(DigraphColouring, "for a digraph and a pos int",
-[IsDigraph, IsPosInt],
-DigraphColoring);
-
 ################################################################################
 # HOMOMORPHISMS
 
