@@ -29,6 +29,19 @@ if not DIGRAPHS_IsGrapeLoaded then
   Adjacency := IdFunc;
 fi;
 
+# Temporary binding (until the released version of GAP contains this)
+if not IsBound(ErrorMayQuit) then
+  BindGlobal("ErrorMayQuit",
+  function(arg)
+      ErrorInner(rec(context := ParentLVars(GetCurrentLVars()),
+                     mayReturnVoid := false,
+                     mayReturnObj := false,
+                     lateMessage := "type 'quit;' to quit to outer loop",
+                     printThisStatement := false),
+                 arg);
+    end);
+fi;
+
 ReadPackage("digraphs/gap/digraph.gd");
 ReadPackage("digraphs/gap/attr.gd");
 ReadPackage("digraphs/gap/prop.gd");
