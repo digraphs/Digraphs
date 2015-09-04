@@ -108,8 +108,9 @@ gap>
   <Description>
     A homomorphism from <A>digraph1</A> to <A>digraph2</A> is a mapping from
     the vertex set of <A>digraph1</A> to a subset of the vertices of
-    <A>digraph2</A> such that every pair of adjacent vertices is mapped to a
-    pair of adjacent vertices.  Note that non adjacent vertices can still be
+    <A>digraph2</A>, such that every pair of vertices <C>[i,j]</C> which has
+    an edge <C>i->j</C> is mapped to a pair of vertices <C>[a,b]</C> which
+    has an edge <C>a->b</C>.  Note that non adjacent vertices can still be
     mapped onto adjacent ones. <P/>
 
     <C>DigraphHomomorphism</C> returns a single homomorphism between
@@ -147,12 +148,12 @@ gap>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphEmbedding">
+<#GAPDoc Label="DigraphMonomorphism">
 <ManSection>
-  <Oper Name="DigraphEmbedding" Arg="digraph1, digraph2"/>
+  <Oper Name="DigraphMonomorphism" Arg="digraph1, digraph2"/>
   <Returns>A transformation, or <K>fail</K>.</Returns>
   <Description>
-    <C>DigraphEmbedding</C> returns a single <E>injective</E> <Ref
+    <C>DigraphMonomorphism</C> returns a single <E>injective</E> <Ref
       Oper="DigraphHomomorphism"/> between <A>digraph1</A> and <A>digraph2</A>
     if one exists, otherwise it returns <K>fail</K>.
     <Example><![CDATA[
@@ -183,7 +184,7 @@ gap>
   <Oper Name="DigraphEpimorphism" Arg="digraph1, digraph2"/>
   <Returns>A transformation, or <K>fail</K>.</Returns>
   <Description>
-    <C>DigraphEmbedding</C> returns a single <E>surjective</E> <Ref
+    <C>DigraphEpimorphism</C> returns a single <E>surjective</E> <Ref
       Oper="DigraphHomomorphism"/> between <A>digraph1</A> and <A>digraph2</A>
     if one exists, otherwise it returns <K>fail</K>.
     <Example><![CDATA[
@@ -240,6 +241,18 @@ gap>
 
     <C>DigraphColoring</C> returns such a homomorphism if one exists,
     else it returns <K>fail</K>.
+    <Example><![CDATA[
+gap>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphEmbedding">
+<ManSection>
+  <Oper Name="DigraphEmbedding" Arg="digraph"/>
+  <Returns> A transformation, or <K>fail</K>.</Returns>
+  <Description>
     <Example><![CDATA[
 gap>
 ]]></Example>

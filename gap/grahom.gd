@@ -16,7 +16,7 @@ DeclareOperation("HomomorphismsDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("HomomorphismsDigraphsRepresentatives",
                  [IsDigraph, IsDigraph]);
 
-DeclareOperation("DigraphEmbedding", [IsDigraph, IsDigraph]);
+DeclareOperation("DigraphMonomorphism", [IsDigraph, IsDigraph]);
 DeclareOperation("MonomorphismsDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("MonomorphismsDigraphsRepresentatives",
                  [IsDigraph, IsDigraph]);
@@ -24,6 +24,8 @@ DeclareOperation("MonomorphismsDigraphsRepresentatives",
 DeclareOperation("DigraphEpimorphism", [IsDigraph, IsDigraph]);
 DeclareOperation("EpimorphismsDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("EpimorphismsDigraphsRepresentatives", [IsDigraph, IsDigraph]);
+
+DeclareOperation("DigraphEmbedding", [IsDigraph, IsDigraph]);
 
 DeclareOperation("DigraphColoring", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphColouring", [IsDigraph, IsPosInt]);

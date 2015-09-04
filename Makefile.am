@@ -12,9 +12,9 @@ GAPINSTALLLIB = $(abs_top_srcdir)/$(BINARCHDIR)/digraphs.so
 lib_LTLIBRARIES = digraphs.la
 
 digraphs_la_SOURCES = src/digraphs.c src/homos.c src/perms.c src/schreier-sims.c
-digraphs_la_SOURCES += src/bliss-0.72/defs.cc src/bliss-0.72/graph.cc src/bliss-0.72/partition.cc
-digraphs_la_SOURCES += src/bliss-0.72/orbit.cc src/bliss-0.72/uintseqhash.cc src/bliss-0.72/heap.cc
-digraphs_la_SOURCES += src/bliss-0.72/timer.cc src/bliss-0.72/utils.cc src/bliss-0.72/bliss_C.cc
+digraphs_la_SOURCES += src/bliss-0.73/defs.cc src/bliss-0.73/graph.cc src/bliss-0.73/partition.cc
+digraphs_la_SOURCES += src/bliss-0.73/orbit.cc src/bliss-0.73/uintseqhash.cc src/bliss-0.73/heap.cc
+digraphs_la_SOURCES += src/bliss-0.73/timer.cc src/bliss-0.73/utils.cc src/bliss-0.73/bliss_C.cc
 
 digraphs_la_CPPFLAGS = $(GAP_CPPFLAGS) -DCONFIG_H
 # Note that the latter is only for GAP 4.4.12

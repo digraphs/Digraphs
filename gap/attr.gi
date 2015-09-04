@@ -438,9 +438,9 @@ InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
   if DigraphNrVertices(digraph) = 0 then
-    return -1;
+    return - 1;
   elif not IsStronglyConnectedDigraph(digraph) then
-    return -1;
+    return - 1;
   fi;
   return DIGRAPH_DIAMETER(digraph);
 end);

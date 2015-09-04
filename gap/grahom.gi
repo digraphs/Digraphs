@@ -9,7 +9,7 @@
 #############################################################################
 ##
 
-# Wrapper for C function GRAPH_HOMOS
+# Wrapper for C function DI/GRAPH_HOMOS
 
 InstallGlobalFunction(HomomorphismDigraphsFinder,
 function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
@@ -17,11 +17,6 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
   if not (IsDigraph(gr1) and IsDigraph(gr2)) then
     ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                  "the 1st and 2nd arguments <gr1> and <gr2> must be digraphs,");
-  fi;
-
-  if not (IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2)) then
-    ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: error,\n",
-                 "not yet implemented for non-symmetric digraphs,");
   fi;
 
   if hook <> fail then
@@ -72,36 +67,35 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
   fi;
 
   # Cases where we already know the answer
-  if (isinjective and ((hint <> infinity and hint <> DigraphNrVertices(gr1)) or
+  if (isinjective and ((hint <> fail and hint <> DigraphNrVertices(gr1)) or
             DigraphNrVertices(gr1) > DigraphNrVertices(gr2)))
         or (IsPosInt(hint) and (hint > DigraphNrVertices(gr1) or hint >
             DigraphNrVertices(gr2)))
         or IsEmpty(image)
-        or (IsPosInt(hint) and hint > Length(image))
-      then
+        or (IsPosInt(hint) and hint > Length(image)) then
     return user_param;
-  fi;
-
-  if image = DigraphVertices(gr2) then
-    image := fail;
   fi;
 
   if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
-    GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
-                fail, map);
+    if IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2) then
+      GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
+                  fail, map);
+    else
+      DIGRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
+                    fail, map);
+    fi;
     return user_param;
-  else
-    ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: error,\n",
-                 "not yet implemented for digraphs with more than 512 ",
-                 "vertices,");
   fi;
+  ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: error,\n",
+               "not yet implemented for digraphs with more than 512 ",
+               "vertices,");
 end);
 
 #
 
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid,
 function(arg)
-  local digraph, limit, limit_arg, gens, out;
+  local digraph, limit, G, gens, limit_arg, out;
 
   if IsEmpty(arg) then
     ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
@@ -119,24 +113,19 @@ function(arg)
                  "the 1st argument <digraph> must be a digraph,");
   fi;
 
-  if not IsSymmetricDigraph(digraph) then
-    ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: error,\n",
-                 "not yet implemented for non-symmetric digraphs,");
-  fi;
-
-  if IsDigraph(digraph) and DigraphHasLoops(digraph) then
-    Error("Digraphs: GeneratorsOfEndomorphismMonoid: error,\n",
-          "not yet implemented for digraphs with loops,");
-  fi;
-
   if IsBound(arg[2]) and (IsPosInt(arg[2]) or arg[2] = infinity) then
     limit := arg[2];
   else
     limit := infinity;
   fi;
 
-  gens := List(GeneratorsOfGroup(AutomorphismGroup(digraph)),
-               AsTransformation);
+  G := AutomorphismGroup(digraph);
+
+  if IsTrivial(G) then
+    gens := [];
+  else
+    gens := List(GeneratorsOfGroup(G), AsTransformation);
+  fi;
 
   if IsPosInt(limit) then
     limit_arg := limit;
@@ -148,7 +137,7 @@ function(arg)
   fi;
 
   out := HomomorphismDigraphsFinder(digraph, digraph, fail, gens, limit, fail,
-                                  false, DigraphVertices(digraph), []);
+                                    false, DigraphVertices(digraph), []);
 
   if limit = infinity or Length(gens) < limit_arg then
     SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
@@ -168,19 +157,7 @@ end);
 InstallMethod(DigraphColoring, "for a digraph and pos int",
 [IsDigraph, IsPosInt],
 function(digraph, n)
-  local out;
-
-  if IsMultiDigraph(digraph) then
-    ErrorMayQuit("Digraphs: DigraphColoring: usage,\n",
-                 "the 1st argument <digraph> must not be a  multidigraph,");
-  fi;
-
-  out := DigraphEpimorphism(digraph, CompleteDigraph(n));
-
-  if IsEmpty(out) then
-    return fail;
-  fi;
-  return out[1];
+  return DigraphEpimorphism(digraph, CompleteDigraph(n));
 end);
 
 InstallMethod(DigraphColouring, "for a digraph and a pos int",
@@ -234,16 +211,12 @@ end);
 ################################################################################
 # INJECTIVE HOMOMORPHISMS
 
-# Finds a single embedding of gr1 into gr2
+# Finds a single injective homomorphism of gr1 into gr2
 
-InstallMethod(DigraphEmbedding, "for a digraph and a digraph",
+InstallMethod(DigraphMonomorphism, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(gr1, gr2)
   local out;
-
-  if DigraphNrVertices(gr1) = DigraphNrVertices(gr2) then
-    return AsTransformation(IsomorphismDigraphs(gr1, gr2));
-  fi;
 
   out := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1,
                                     DigraphNrVertices(gr1), true,
@@ -289,10 +262,6 @@ InstallMethod(DigraphEpimorphism, "for a digraph and a digraph",
 function(gr1, gr2)
   local out;
 
-  if DigraphNrVertices(gr1) = DigraphNrVertices(gr2) then
-    return AsTransformation(IsomorphismDigraphs(gr1, gr2));
-  fi;
-
   out := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1,
                                     DigraphNrVertices(gr2), false,
                                     DigraphVertices(gr2), []);
@@ -325,4 +294,16 @@ function(gr1, gr2)
   hom := EpimorphismsDigraphsRepresentatives(gr1, gr2);
   aut := List(AutomorphismGroup(gr2), AsTransformation);
   return Union(List(aut, x -> hom * x));
+end);
+
+################################################################################
+# EMBEDDINGS
+
+InstallMethod(DigraphEmbedding, "for a digraph and a digraph",
+[IsDigraph, IsDigraph],
+function(gr1, gr2)
+  if DigraphNrVertices(gr1) = DigraphNrVertices(gr2) then
+    iso := IsomorphismDigraphs(gr1, gr2);
+    return 
+  fi;
 end);
