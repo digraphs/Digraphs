@@ -141,9 +141,9 @@ function(dir, opts)
   if Length(DIGRAPHS_OmitFromTests) > 0 then
     Print("not testing files containing the strings");
     for str in DIGRAPHS_OmitFromTests do
-      PRINT_STRINGIFY(", \"", str, "\"");
+      Print(PRINT_STRINGIFY(", \"", str, "\""));
     od;
-    PRINT_STRINGIFY(" . . .\n\n");
+    Print(PRINT_STRINGIFY(" . . .\n\n"));
   fi;
 
   tst_dir  := Concatenation(PackageInfo("digraphs")[1]!.InstallationPath,
@@ -326,7 +326,7 @@ function()
   ex := DIGRAPHS_ManualExamples();
   omit := DIGRAPHS_OmitFromTests;
   if Length(omit) > 0 then
-    Print("# not testing examples containing the strings");
+    Print("# not testing examples containing the strings:");
     for str in omit do
       ex := Filtered(ex, x -> PositionSublist(x[1][1], str) = fail);
       Print(", \"", str, "\"");
