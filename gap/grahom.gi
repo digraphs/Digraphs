@@ -86,7 +86,7 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
     fi;
     return user_param;
   fi;
-  ErrorMayQuit("Digraphs: HomomorphismGraphsFinder: error,\n",
+  ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: error,\n",
                "not yet implemented for digraphs with more than 512 ",
                "vertices,");
 end);
