@@ -39,11 +39,11 @@
     If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns the
     labels of the vertices in <A>digraph</A>. <C>SetDigraphVertexLabels</C> can
     be used to set the labels of the vertices in <A>digraph</A> to the list of
-    arbitrary &GAP; objects <A>list</A>.
+    arbitrary &GAP; objects <A>list</A>. <P/>
 
     The label of a vertex can be changed an arbitrary number of times. If no
-    label has been set for the vertex <C>i</C>, then the default value is
-    <C>i</C>.
+    label has been set for the vertex <A>i</A>, then the default value is
+    <A>i</A>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
     <C>vertices</C>, then the labels of the vertices are set to the value of
@@ -85,7 +85,7 @@ gap> DigraphVertexLabels(gr);
 
     The label of a vertex can be changed an arbitrary number of times. If no
     label has been set for the vertex <A>i</A>, then the default value is
-    <C>i</C>. <P/>
+    <A>i</A>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
     <C>vertices</C>, then the labels of the vertices are set to the value of
@@ -467,7 +467,7 @@ gap> RandomDigraph(10000, 0.023);
 
     The method used by this function chooses each edge from the set of 
     all possible edges with uniform probability. No effort is made to avoid
-    creating multiple edges, so it is likely (but not guaranteed) that the
+    creating multiple edges, so it is possible (but not guaranteed) that the
     result will have multiple edges. The result may or may not have loops.<P/>
     <Log><![CDATA[
 gap> RandomMultiDigraph(1000);
@@ -500,9 +500,9 @@ gap> RandomTournament(10);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> is a positive integer, this function returns a chain 
-    with <A>n</A> vertices and <A>n</A><C> - 1</C> edges.
+    with <A>n</A> vertices and <A>n</A><C>-1</C> edges.
     Specifically,
-    for each vertex <C>i</C> (with <M>i &lt; n</M>), there is a directed 
+    for each vertex <C>i</C> (with <C>i</C> &lt; <C>n</C>), there is a directed 
     edge with source <C>i</C> and range <C>i+1</C>. <P/>
     
     The <Ref Oper="DigraphReflexiveTransitiveClosure"/> of a chain represents a
@@ -521,8 +521,7 @@ gap> ChainDigraph(42);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> is a non-negative integer, this function returns the complete 
-    digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/> 
-    for a definition. <P/>
+    digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/>. <P/>
     <Log><![CDATA[
 gap> CompleteDigraph(20);
 <digraph with 20 vertices, 380 edges>
@@ -538,13 +537,13 @@ gap> CompleteDigraph(20);
   <Description>
     A complete bipartite digraph is a digraph whose vertices
     can be partitioned into two non-empty vertex sets, such there exists
-    a unique edge with source <C>i</C> and range <C>j</C> whenever
+    a unique edge with source <C>i</C> and range <C>j</C> if and only if
     <C>i</C> and <C>j</C> lie in different vertex sets. <P/>
 
     If <A>m</A> and <A>n</A> are positive integers, this function 
-    returns the complete bipartite digraph with vertex sets of size
-    <A>m</A> (containing the vertices <C>[1..m]</C>) and size
-    <A>n</A> (containing the vertices <C>[(m+1)..n]</C>). 
+    returns the complete bipartite digraph with vertex sets of sizes
+    <A>m</A> (containing the vertices <C>[1..m]</C>) and
+    <A>n</A> (containing the vertices <C>[(m+1)..(m+n)]</C>). 
     <Log><![CDATA[
 gap> CompleteBipartiteDigraph(2, 3);
 <digraph with 5 vertices, 12 edges>
@@ -576,7 +575,7 @@ gap> EmptyDigraph(20);
   <Description>
     If <A>n</A> is a positive integer, this function returns a <E>cycle</E>
     digraph with <A>n</A> vertices and <A>n</A> edges. Specifically,
-    for each vertex <C>i</C> (with <M>i &lt; n</M>), there is a directed 
+    for each vertex <C>i</C> (with <C>i</C> &lt; <C>n</C>), there is a directed 
     edge with source <C>i</C> and range <C>i+1</C>. In addition, there is
     an edge with source <C>n</C> and range <C>1</C>. <P/>
     <Log><![CDATA[
