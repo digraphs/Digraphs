@@ -34,6 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 static UIntS      NR1, NR2;                // the number of vertices in di/graph1/2
+static UIntS      MAX_NR1_NR2;
 static UIntS      MAP[MAXVERTS];           // partial image list
 static BitArray*  VALS;                    // values in MAP already
 static UIntS      HINT;                    // wanted nr of distinct values in MAP
