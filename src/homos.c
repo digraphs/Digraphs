@@ -1,11 +1,12 @@
 /********************************************************************************
 **
-*A  homos.h               di/graph homomorphisms              Julius Jonusas
-**                                                            J. D. Mitchell 
-**                                                            
-**  Copyright (C) 2014-15 - Julius Jonusas and J. D. Mitchell 
-**  This file is free software, see license information at the end.
-**  
+*A  homos.c               di/graph homomorphisms              Julius Jonusas
+**                                                            J. D. Mitchell
+**
+**  Copyright (C) 2014-15 - Julius Jonusas and J. D. Mitchell
+**
+**  This file is free software, see the digraphs/LICENSE.
+**
 ********************************************************************************/
 
 #include "src/homos.h"

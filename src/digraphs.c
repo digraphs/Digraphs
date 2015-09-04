@@ -1,15 +1,16 @@
-/***************************************************************************
+/*******************************************************************************
 **
-*A  digraphs.c                GAP package Digraphs        Julius Jonusas
-**                                                        James Mitchell 
-**                                                        Michael Torpey
-**                                                        Wilfred Wilson
+*A  digraphs.c                  GAP package Digraphs          Julius Jonusas
+**                                                            James Mitchell
+**                                                            Michael Torpey
+**                                                            Wilfred Wilson
 **
-**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey, 
-**  Wilfred Wilson 
-**  This file is free software, see license information at the end.
-**  
-*/
+**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey,
+**  Wilfred Wilson
+**
+**  This file is free software, see the digraphs/LICENSE.
+**
+*******************************************************************************/
 
 #include "src/digraphs.h"
 
@@ -1862,7 +1863,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
     hint_arg = UNDEFINED;
   }
   
-  // process injective . . . //TODO fix this up
+  // process injective . . . 
   bool isinjective = (isinjective_gap == True ? true : false);
 
   // init the image . . . 

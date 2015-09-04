@@ -8,7 +8,7 @@
 #############################################################################
 ##
 
-if not DIGRAPHS_IsGrapeLoaded then 
+if not DIGRAPHS_IsGrapeLoaded then
   Add(DIGRAPHS_OmitFromTests, "Graph(");
 fi;
 
