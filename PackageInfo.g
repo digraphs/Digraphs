@@ -13,7 +13,7 @@
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
 ##  <!ENTITY VERSION        "0.2">
-##  <!ENTITY GAPVERS        "4.7.9">
+##  <!ENTITY GAPVERS        "4.7.8">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
 ##  <!ENTITY ARCHIVENAME    "digraphs-0.2">
@@ -110,7 +110,7 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">=4.7.9",
+  GAP := ">=4.7.8",
   NeededOtherPackages := [["io", ">=4.4.4"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"], ["grape", ">=4.5"]], 
   ExternalConditions := [],
