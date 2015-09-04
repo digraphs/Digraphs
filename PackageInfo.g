@@ -91,7 +91,7 @@ Persons := [
 Status := "dev",
 
 README_URL := 
-  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README",
+  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README.md",
 PackageInfoURL := 
   "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/PackageInfo.g",
 
