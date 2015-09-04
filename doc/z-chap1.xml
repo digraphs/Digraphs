@@ -93,9 +93,9 @@ make]]></Listing>
       available:
       
       <List>
-        <Item> 
-          WHAT? TODO
-        </Item>
+        <Item><Ref Oper="Graph"/> with a digraph argument</Item>
+        <Item><Ref Oper="AsGraph"/> with a digraph argument</Item>
+        <Item><Ref Oper="Digraph"/> with a &Grape; graph argument</Item>
       </List>
 
       If &Grape; is not available, then &Digraphs; can be used as normal with
@@ -162,10 +162,7 @@ make]]></Listing>
     In this section we describe how to test that &Digraphs; is working as
     intended.  To test that &Digraphs; is installed correctly use 
     <Ref Func="DigraphsTestInstall"/> or for more extensive tests use 
-    <Ref Func="DigraphsTestStandard"/>. Please note that it will take a few
-    seconds for <Ref Func="DigraphsTestInstall"/> to finish and it may take
-    several minutes for <Ref Func="DigraphsTestStandard"/> to finish.
-    <P/>
+    <Ref Func="DigraphsTestStandard"/>. <P/>
 
     If something goes wrong, then please review the instructions in Section <Ref
       Sect="For those in a hurry"/> and ensure that &Digraphs; has been

@@ -1,31 +1,13 @@
 #############################################################################
 ##
 #W  utils.gi
-#Y  Copyright (C) 2013-14                                James D. Mitchell
+#Y  Copyright (C) 2013-15                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
 ## This file contains some utilities for use with the Digraphs package.
-
-#############################################################################
-# Temporary stuff (until the released version of GAP contains this)
-#############################################################################
-
-# Code taken from GAP
-# gaplint: ignore 2
-if not IsBound(ErrorMayQuit) then
-  BindGlobal("ErrorMayQuit",
-  function(arg)
-      ErrorInner(rec(context := ParentLVars(GetCurrentLVars()),
-                     mayReturnVoid := false,
-                     mayReturnObj := false,
-                     lateMessage := "type 'quit;' to quit to outer loop",
-                     printThisStatement := false),
-                 arg);
-    end);
-fi;
 
 #############################################################################
 # Internal stuff
