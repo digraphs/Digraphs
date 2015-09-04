@@ -1,6 +1,6 @@
 <TitlePage>
   <Title>&Digraphs;</Title>
-  <Subtitle>Method for graphs</Subtitle>
+  <Subtitle>Methods for digraphs</Subtitle>
   <Version>Version &VERSION;</Version>
 
   <Author>Julius Jonu&#353;as
@@ -22,8 +22,8 @@
     <Homepage>http://www-groups.mcs.st-and.ac.uk/~waw7</Homepage>
   </Author>
 
-  <Copyright>&copyright; &COPYRIGHTYEARS; by J. D. Mitchell, Julius Jonu&#353;as, Michael Torpey,
-    Wilf Wilson.<P/>
+  <Copyright>&copyright; &COPYRIGHTYEARS; by J. D. Mitchell, Julius
+  Jonu&#353;as, Michael Torpey, Wilf Wilson.<P/>
 
     &Digraphs; is free software; you can redistribute it and/or modify it
     under the terms of the <URL Text="GNU General Public License">
@@ -36,5 +36,13 @@
     The &Digraphs; package is a &GAP; package containing methods for graphs,
     digraphs, and multidigraphs. 
   </Abstract>
+
+  <Acknowledgements>
+    We would like to thank Chris Jefferson for his help in including the &bliss;
+    tool in the package.  We would also like to thank Max Neunh&#246;ffer, who
+    wrote the code that inspired this package's methods for computing digraph
+    homomorphisms, and Artur Sch&#228;fer, who independently created the same
+    algorithm.
+  </Acknowledgements>
 
 </TitlePage>
