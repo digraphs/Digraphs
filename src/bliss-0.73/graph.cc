@@ -12,22 +12,22 @@
 #include "utils.hh"
 
 /*
-  Copyright (c) 2006-2011 Tommi Junttila
-  Released under the GNU General Public License version 3.
+  Copyright (c) 2003-2015 Tommi Junttila
+  Released under the GNU Lesser General Public License version 3.
   
   This file is part of bliss.
   
   bliss is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License version 3
-  as published by the Free Software Foundation.
-  
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation, version 3 of the License.
+
   bliss is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public License
+  along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
@@ -974,7 +974,7 @@ AbstractGraph::search(const bool canonical, Stats& stats)
        */
       {
 	unsigned int  next_split_element = UINT_MAX;
-	unsigned int* next_split_element_pos = 0;
+	//unsigned int* next_split_element_pos = 0;
 	unsigned int* ep = p.elements + cell->first;
 	if(current_node.fp_on)
 	  {
@@ -985,7 +985,7 @@ AbstractGraph::search(const bool canonical, Stats& stats)
 		 *ep < next_split_element and
 		 first_path_orbits.is_minimal_representative(*ep)) {
 		next_split_element = *ep;
-		next_split_element_pos = ep;
+		//next_split_element_pos = ep;
 	      }
 	    }
 	  }
@@ -1001,7 +1001,7 @@ AbstractGraph::search(const bool canonical, Stats& stats)
 		  current_node.long_prune_redundant.find(*ep) ==
 		  current_node.long_prune_redundant.end())) {
 		next_split_element = *ep;
-		next_split_element_pos = ep;
+		//next_split_element_pos = ep;
 	      }
 	    }
 	  }
@@ -1015,7 +1015,7 @@ AbstractGraph::search(const bool canonical, Stats& stats)
 		  current_node.long_prune_redundant.find(*ep) ==
 		  current_node.long_prune_redundant.end())) {
 		next_split_element = *ep;
-		next_split_element_pos = ep;
+		//next_split_element_pos = ep;
 	      }
 	    }
 	  }
@@ -1364,8 +1364,6 @@ AbstractGraph::search(const bool canonical, Stats& stats)
 			 * first path automorphisms */
 			if(old_info.fp_on)
 			  goto handle_first_path_automorphism;
-			/* Should never get here because of CR:FP */
-			_INTERNAL_ERROR();
 		      }
 		  }
 
@@ -1920,6 +1918,7 @@ Digraph::Vertex::sort_edges()
 Digraph::Digraph(const unsigned int nof_vertices)
 {
   vertices.resize(nof_vertices);
+  sh = shs_flm;
 }
 
 
@@ -3725,9 +3724,11 @@ Digraph::nucr_find_first_component(const unsigned int level,
       first_cell = first_cell->next_nonsingleton;
     }
 
-  /* The component is discrete, return false */
   if(!first_cell)
-    return false;
+    {
+      /* The component is discrete, return false */
+      return false;
+    }
 	
   std::vector<Partition::Cell*> comp;
   KStack<Partition::Cell*> neighbours;
@@ -3816,13 +3817,15 @@ Digraph::nucr_find_first_component(const unsigned int level,
       /*| Phase 3: splitting heuristics */
       switch(sh) {
       case shs_f:
-	if(cell->first <= sh_first) {
+	if(sh_return == 0 or
+	   cell->first <= sh_first) {
 	  sh_return = cell;
 	  sh_first = cell->first;
 	}
 	break;
       case shs_fs:
-	if(cell->length < sh_size or
+	if(sh_return == 0 or
+	   cell->length < sh_size or
 	   (cell->length == sh_size and cell->first <= sh_first)) {
 	  sh_return = cell;
 	  sh_first = cell->first;
@@ -3830,7 +3833,8 @@ Digraph::nucr_find_first_component(const unsigned int level,
 	}
 	break;
       case shs_fl:
-	if(cell->length > sh_size or
+	if(sh_return == 0 or
+	   cell->length > sh_size or
 	   (cell->length == sh_size and cell->first <= sh_first)) {
 	  sh_return = cell;
 	  sh_first = cell->first;
@@ -3838,7 +3842,8 @@ Digraph::nucr_find_first_component(const unsigned int level,
 	}
 	break;
       case shs_fm:
-	if(nuconn > sh_nuconn or
+	if(sh_return == 0 or
+	   nuconn > sh_nuconn or
 	   (nuconn == sh_nuconn and cell->first <= sh_first)) {
 	  sh_return = cell;
 	  sh_first = cell->first;
@@ -3846,7 +3851,8 @@ Digraph::nucr_find_first_component(const unsigned int level,
 	}
 	break;
       case shs_fsm:
-	if(nuconn > sh_nuconn or
+	if(sh_return == 0 or
+	   nuconn > sh_nuconn or
 	   (nuconn == sh_nuconn and
 	    (cell->length < sh_size or
 	     (cell->length == sh_size and cell->first <= sh_first)))) {
@@ -3857,7 +3863,8 @@ Digraph::nucr_find_first_component(const unsigned int level,
 	}
 	break;
       case shs_flm:
-	if(nuconn > sh_nuconn or
+	if(sh_return == 0 or
+	   nuconn > sh_nuconn or
 	   (nuconn == sh_nuconn and
 	    (cell->length > sh_size or
 	     (cell->length == sh_size and cell->first <= sh_first)))) {
@@ -4609,15 +4616,16 @@ Graph::split_neighbourhood_of_cell(Partition::Cell* const cell)
 	    {
 	      neighbour_cell->max_ival = ival;
 	      neighbour_cell->max_ival_count = 1;
-	      if(ival == 1)
+	      if(ival == 1) {
 		neighbour_heap.insert(neighbour_cell->first);
+	      }
 	    }
 	  else if(ival == neighbour_cell->max_ival) {
 	    neighbour_cell->max_ival_count++;
 	  }
 	}
     }
-
+  
   while(!neighbour_heap.is_empty())
     {
       const unsigned int start = neighbour_heap.remove();
@@ -4682,7 +4690,7 @@ Graph::split_neighbourhood_of_cell(Partition::Cell* const cell)
 	}
       neighbour_cell->max_ival = 0;
       neighbour_cell->max_ival_count = 0;
-      p.clear_ivs(neighbour_cell);
+     p.clear_ivs(neighbour_cell);
     }
   if(opt_use_failure_recording and was_equal_to_first)
     {
@@ -5457,10 +5465,12 @@ Graph::nucr_find_first_component(const unsigned int level,
       first_cell = first_cell->next_nonsingleton;
     }
 
-  /* The component is discrete, return false */
   if(!first_cell)
-    return false;
-	
+    {
+      /* The component is discrete, return false */
+      return false;
+    }
+
   std::vector<Partition::Cell*> comp;
   KStack<Partition::Cell*> neighbours;
   neighbours.init(get_nof_vertices());
@@ -5512,13 +5522,15 @@ Graph::nucr_find_first_component(const unsigned int level,
 
       switch(sh) {
       case shs_f:
-	if(cell->first <= sh_first) {
+	if(sh_return == 0 or
+	   cell->first <= sh_first) {
 	  sh_return = cell;
 	  sh_first = cell->first;
 	}
 	break;
       case shs_fs:
-	if(cell->length < sh_size or
+	if(sh_return == 0 or
+	   cell->length < sh_size or
 	   (cell->length == sh_size and cell->first <= sh_first)) {
 	  sh_return = cell;
 	  sh_first = cell->first;
@@ -5526,7 +5538,8 @@ Graph::nucr_find_first_component(const unsigned int level,
 	}
 	break;
       case shs_fl:
-	if(cell->length > sh_size or
+	if(sh_return == 0 or
+	   cell->length > sh_size or
 	   (cell->length == sh_size and cell->first <= sh_first)) {
 	  sh_return = cell;
 	  sh_first = cell->first;
@@ -5534,7 +5547,8 @@ Graph::nucr_find_first_component(const unsigned int level,
 	}
 	break;
       case shs_fm:
-	if(nuconn > sh_nuconn or
+	if(sh_return == 0 or
+	   nuconn > sh_nuconn or
 	   (nuconn == sh_nuconn and cell->first <= sh_first)) {
 	  sh_return = cell;
 	  sh_first = cell->first;
@@ -5542,7 +5556,8 @@ Graph::nucr_find_first_component(const unsigned int level,
 	}
 	break;
       case shs_fsm:
-	if(nuconn > sh_nuconn or
+	if(sh_return == 0 or
+	   nuconn > sh_nuconn or
 	   (nuconn == sh_nuconn and
 	    (cell->length < sh_size or
 	     (cell->length == sh_size and cell->first <= sh_first)))) {
@@ -5553,7 +5568,8 @@ Graph::nucr_find_first_component(const unsigned int level,
 	}
 	break;
       case shs_flm:
-	if(nuconn > sh_nuconn or
+	if(sh_return == 0 or
+	   nuconn > sh_nuconn or
 	   (nuconn == sh_nuconn and
 	    (cell->length > sh_size or
 	     (cell->length == sh_size and cell->first <= sh_first)))) {

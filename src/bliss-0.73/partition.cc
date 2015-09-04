@@ -5,28 +5,25 @@
 #include "partition.hh"
 
 /*
-  Copyright (c) 2006-2011 Tommi Junttila
-  Released under the GNU General Public License version 3.
+  Copyright (c) 2003-2015 Tommi Junttila
+  Released under the GNU Lesser General Public License version 3.
   
   This file is part of bliss.
   
   bliss is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License version 3
-  as published by the Free Software Foundation.
-  
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation, version 3 of the License.
+
   bliss is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public License
+  along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 namespace bliss {
-
-
 
 Partition::Partition()
 {
@@ -267,7 +264,6 @@ Partition::individualize(Partition::Cell * const cell,
   Partition::Cell * const new_cell = aux_split_in_two(cell, cell->length-1);
   element_to_cell_map[element] = new_cell;
 
-
   return new_cell;
 } 
 
@@ -441,59 +437,59 @@ Partition::sort_and_split_cell1(Partition::Cell* const cell)
 #endif
 
 
-  /* Allocate new cell */
+  /* (Pseudo)allocate new cell */
   Cell* const new_cell = free_cells;
   free_cells = new_cell->next;
 
 #define NEW_SORT1
 #ifdef NEW_SORT1
-  unsigned int *ep0 = elements + cell->first;
-  unsigned int *ep1 = ep0 + cell->length - cell->max_ival_count;
-  if(cell->max_ival_count > cell->length / 2)
-    {
-      /* There are more ones than zeros, only move zeros */
-      unsigned int * const end = ep0 + cell->length;
-      while(ep1 < end)
+      unsigned int *ep0 = elements + cell->first;
+      unsigned int *ep1 = ep0 + cell->length - cell->max_ival_count;
+      if(cell->max_ival_count > cell->length / 2)
 	{
-	  while(invariant_values[*ep1] == 0)
+	  /* There are more ones than zeros, only move zeros */
+	  unsigned int * const end = ep0 + cell->length;
+	  while(ep1 < end)
 	    {
-	      const unsigned int tmp = *ep1;
-	      *ep1 = *ep0;
-	      *ep0 = tmp;
-	      in_pos[tmp] = ep0;
-	      in_pos[*ep1] = ep1;
-	      ep0++;
-	    }
-	  element_to_cell_map[*ep1] = new_cell;
-	  invariant_values[*ep1] = 0;
-	  ep1++;
-	}
-    }
-  else
-    {
-      /* There are more zeros than ones, only move ones */
-      unsigned int * const end = ep1;
-      while(ep0 < end)
-	{
-	  while(invariant_values[*ep0] != 0)
-	    {
-	      const unsigned int tmp = *ep0;
-	      *ep0 = *ep1;
-	      *ep1 = tmp;
-	      in_pos[tmp] = ep1;
-	      in_pos[*ep0] = ep0;
+	      while(invariant_values[*ep1] == 0)
+		{
+		  const unsigned int tmp = *ep1;
+		  *ep1 = *ep0;
+		  *ep0 = tmp;
+		  in_pos[tmp] = ep0;
+		  in_pos[*ep1] = ep1;
+		  ep0++;
+		}
+	      element_to_cell_map[*ep1] = new_cell;
+	      invariant_values[*ep1] = 0;
 	      ep1++;
 	    }
-	  ep0++;
 	}
-      ep1 = end;
-      while(ep1 < elements + cell->first + cell->length)
+      else
 	{
-	  element_to_cell_map[*ep1] = new_cell;
-	  invariant_values[*ep1] = 0;
-	  ep1++;
+	  /* There are more zeros than ones, only move ones */
+	  unsigned int * const end = ep1;
+	  while(ep0 < end)
+	    {
+	      while(invariant_values[*ep0] != 0)
+		{
+		  const unsigned int tmp = *ep0;
+		  *ep0 = *ep1;
+		  *ep1 = tmp;
+		  in_pos[tmp] = ep1;
+		  in_pos[*ep0] = ep0;
+		  ep1++;
+		}
+	      ep0++;
+	    }
+	  ep1 = end;
+	  while(ep1 < elements + cell->first + cell->length)
+	    {
+	      element_to_cell_map[*ep1] = new_cell;
+	      invariant_values[*ep1] = 0;
+	      ep1++;
+	    }
 	}
-    }
   /* Update new cell parameters */
   new_cell->first = cell->first + cell->length - cell->max_ival_count;
   new_cell->length = cell->length - (new_cell->first - cell->first);
@@ -985,7 +981,6 @@ Partition::zplit_cell(Partition::Cell* const cell,
 	  last_new_cell = split_cell(cell);
 	}
     }
-
   cell->max_ival = 0;
   cell->max_ival_count = 0;
   return last_new_cell;

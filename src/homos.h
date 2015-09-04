@@ -9,7 +9,7 @@
 ********************************************************************************/
 
 #include "src/schreier-sims.h"
-#include "bliss-0.72/bliss_C.h"
+#include "bliss-0.73/bliss_C.h"
 #include <setjmp.h>
 #include <limits.h>
 #include <config.h>
