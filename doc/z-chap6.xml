@@ -23,9 +23,14 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
   
   <Section><Heading>Homomorphisms</Heading>
     <#Include Label="HomomorphismGraphsFinder">
-    <#Include Label="DigraphColoring">
-    <#Include Label="DigraphEndomorphisms">
     <#Include Label="DigraphHomomorphism">
+    <#Include Label="HomomorphismsDigraphs">
+    <#Include Label="DigraphEmbedding">
+    <#Include Label="MonomorphismsDigraphs">
+    <#Include Label="DigraphEpimorphism">
+    <#Include Label="EpimorphismsDigraphs">
+    <#Include Label="GeneratorsOfEndomorphismMonoid">
+    <#Include Label="DigraphColoring">
   </Section>
 
 </Chapter>

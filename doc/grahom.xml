@@ -104,7 +104,6 @@ gap>
 <#GAPDoc Label="DigraphHomomorphism">
 <ManSection>
   <Oper Name="DigraphHomomorphism" Arg="digraph1, digraph2"/>
-  <Oper Name="HomomorphismsDigraphs" Arg="digraph1, digraph2"/>
   <Returns> A transformation.</Returns>
   <Description>
     A homomorphism from <A>digraph1</A> to <A>digraph2</A> is a mapping from
@@ -112,10 +111,98 @@ gap>
     every pair of adjacent vertices is mapped to a pair of adjacent vertices.
     Note, that non adjacent vertices can still be mapped onto adjacent ones.
     <C>DigraphHomomorphism</C> finds a homomorphism between <A>digraph1</A> and
-    <A>digraph2</A>, while <C>HomomorphismDigraphs</C> returns all of such
+    <A>digraph2</A>, while <C>HomomorphismsDigraphs</C> returns all such
     homomorphisms.
     <Example><![CDATA[
 gap>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HomomorphismsDigraphs">
+<ManSection>
+  <Oper Name="HomomorphismsDigraphs" Arg="digraph1, digraph2"/>
+  <Oper Name="HomomorphismsDigraphsRepresentatives" Arg="digraph1, digraph2"/>
+  <Returns> A list of transformations.</Returns>
+  <Description>
+    A homomorphism from <A>digraph1</A> to <A>digraph2</A> is a mapping from
+    the vertex set of <A>digraph1</A> a vertex set of <A>digraph2</A> such that
+    every pair of adjacent vertices is mapped to a pair of adjacent vertices.
+    Note, that non adjacent vertices can still be mapped onto adjacent ones.
+    <C>DigraphHomomorphism</C> finds a homomorphism between <A>digraph1</A> and
+    <A>digraph2</A>, while <C>HomomorphismsDigraphs</C> returns all such
+    homomorphisms.
+    <Example><![CDATA[
+gap>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphEmbedding">
+<ManSection>
+  <Oper Name="DigraphEmbedding" Arg="digraph1, digraph2"/>
+  <Returns>A transformation.</Returns>
+  <Description>
+    <Example><![CDATA[
+gap>      
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="MonomorphismsDigraphs">
+<ManSection>
+  <Oper Name="MonomorphismsDigraphs" Arg="digraph1, digraph2"/>
+  <Oper Name="MonomorphismsDigraphsRepresentatives" Arg="digraph1, digraph2"/>
+  <Returns>A list of transformations.</Returns>
+  <Description>
+    <Example><![CDATA[
+gap>      
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphEpimorphism">
+<ManSection>
+  <Oper Name="DigraphEpimorphism" Arg="digraph1, digraph2"/>
+  <Returns>A transformation.</Returns>
+  <Description>
+    <Example><![CDATA[
+gap>      
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="EpimorphismsDigraphs">
+<ManSection>
+  <Oper Name="EpimorphismsDigraphs" Arg="digraph1, digraph2"/>
+  <Oper Name="EpimorphismsDigraphsRepresentatives" Arg="digraph1, digraph2"/>
+  <Returns>A list of transformation.</Returns>
+  <Description>
+    <Example><![CDATA[
+gap>      
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="GeneratorsOfEndomorphismMonoid">
+<ManSection>
+  <Func Name="GeneratorsOfEndomorphismMonoid" Arg="digraph"/>
+  <Attr Name="GeneratorsOfEndomorphismMonoidAttr" Arg="digraph"/>
+  <Returns> A list of transformations.</Returns>
+  <Description>
+    An endomorphism of <A>digraph</A> is a homomorphism
+    <Ref Oper="DigraphHomomorphism"/> from <A>digraph</A> back to itself.
+    <C>DigraphEndomorphisms</C> returns a generating set for the
+    endomorphisms on <A>digraph</A>.
+
+    <Example><![CDATA[
+gap>      
 ]]></Example>
   </Description>
 </ManSection>
@@ -130,29 +217,12 @@ gap>
     A digraph coloring is a labeling of the vertices (with <A>n</A> colors) in
     such a way that two adjacent vertices can not have the same label.
     Alternetively, it can be defined to be a homomorphism from <A>digraph</A>
-    to a complete digraph on <A>n</A> points.
+    to a complete digraph with <A>n</A> vertices.
 
     <C>DigraphColoring</C> returns such a homomorphism.
 
     <Example><![CDATA[
 gap>
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphEndomorphisms">
-<ManSection>
-  <Oper Name="DigraphEndomorphisms" Arg="digraph"/>
-  <Returns> A list of transformation.</Returns>
-  <Description>
-    An endomorphism of <A>digraph</A> is a homomorphism
-    <Ref Oper="DigraphHomomorphism"/> from <A>digraph</A> back to itself.
-    <C>DigraphEndomorphisms</C> returns a generating set of for the
-    endomorphisms on <A>digraph</A>.
-
-    <Example><![CDATA[
-gap>      
 ]]></Example>
   </Description>
 </ManSection>
