@@ -137,7 +137,7 @@ function(arg)
   fi;
 
   out := HomomorphismDigraphsFinder(digraph, digraph, fail, gens, limit, fail,
-                                  false, DigraphVertices(digraph), []);
+                                    false, DigraphVertices(digraph), []);
 
   if limit = infinity or Length(gens) < limit_arg then
     SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
