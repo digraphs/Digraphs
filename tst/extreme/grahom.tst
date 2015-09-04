@@ -14006,7 +14006,8 @@ gap> gr2 := DigraphFromGraph6String(Concatenation(
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, fail, false, [1 .. 40],
 > []);
 [ Transformation( [ 1, 2, 22, 5, 31, 5, 12, 3, 6, 36, 10, 19, 25, 5, 38, 15,
-      13, 16, 26, 9, 7, 8, 7, 29, 4, 30, 27, 11, 32, 17 ] ) ]
+      13, 16, 26, 9, 7, 8, 7, 29, 4, 30, 27, 11, 32, 17, 31, 32, 33, 34, 35,
+      36, 37, 38 ] ) ]
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 10, false, [1 .. 40],
 > []);
 [ Transformation( [ 1, 2, 2, 5, 1, 1, 1, 3, 6, 20, 2, 20, 13, 7, 13, 15, 13,
@@ -14014,25 +14015,29 @@ gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 10, false, [1 .. 40],
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 15, false, [1 .. 40],
 > []);
 [ Transformation( [ 1, 2, 22, 5, 8, 1, 1, 3, 6, 1, 2, 19, 11, 7, 38, 15, 13,
-      30, 13, 9, 7, 8, 7, 13, 1, 30, 8, 11, 7, 8 ] ) ]
+      30, 13, 9, 7, 8, 7, 13, 1, 30, 8, 11, 7, 8, 31, 32, 33, 34, 35, 36, 37,
+      38 ] ) ]
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 20, false, [1 .. 40],
 > []);
 [ Transformation( [ 1, 2, 22, 5, 31, 1, 1, 3, 6, 19, 2, 19, 25, 5, 38, 15, 13,
-     16, 9, 9, 7, 8, 7, 29, 1, 30, 27, 11, 7, 3 ] ) ]
+     16, 9, 9, 7, 8, 7, 29, 1, 30, 27, 11, 7, 3, 31, 32, 33, 34, 35, 36, 37,
+      38 ] ) ]
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 25, false, [1 .. 40],
 > []);
 [ Transformation( [ 1, 2, 22, 5, 31, 5, 1, 3, 6, 36, 3, 19, 25, 5, 38, 15, 13,
-     16, 26, 9, 7, 8, 7, 29, 4, 30, 27, 11, 32, 17 ] ) ]
+     16, 26, 9, 7, 8, 7, 29, 4, 30, 27, 11, 32, 17, 31, 32, 33, 34, 35, 36,
+      37, 38 ] ) ]
 gap> t := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 23, false,
 > [4 .. 37], [])[1];
 Transformation( [ 4, 7, 13, 9, 28, 28, 6, 11, 8, 20, 5, 10, 20, 13, 31, 15,
-  13, 30, 23, 25, 18, 20, 18, 37, 26, 34, 12, 4, 29, 16 ] )
+  13, 30, 23, 25, 18, 20, 18, 37, 26, 34, 12, 4, 29, 16, 31, 32, 33, 34, 35,
+  36, 37 ] )
 gap> ForAll(DigraphEdges(gr1), e -> IsDigraphEdge(gr2, [e[1] ^ t, e[2] ^ t]));
 true
 gap> t := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 23, false,
 > [6 .. 37], [])[1];
 Transformation( [ 6, 9, 30, 32, 31, 34, 8, 21, 10, 11, 15, 11, 7, 14, 16, 24,
-  18, 25, 27, 21, 9, 23, 29, 34, 12, 19, 19, 13, 6, 21 ] )
+  18, 25, 27, 21, 9, 23, 29, 34, 12, 19, 19, 13, 6, 21, 31, 32, 33, 34 ] )
 gap> ForAll(DigraphEdges(gr1), e -> IsDigraphEdge(gr2, [e[1] ^ t, e[2] ^ t]));
 true
 gap> HomomorphismDigraphsFinder(gr2, gr1, fail, [], 1, fail, false, [1 .. 30],
