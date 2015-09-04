@@ -6,7 +6,7 @@
 ##                                                       Michael Torpey
 ##                                                       Wilfred Wilson
 ##
-##  Licensing information can be found in the README file of this package.
+##  Licensing information can be found in the README.md file of this package.
 ##
 #############################################################################
 ##
@@ -95,7 +95,7 @@ README_URL :=
 PackageInfoURL := 
   "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/PackageInfo.g",
 
-AbstractHTML := "",
+AbstractHTML := "The <b>Digraphs</b> package is a <b>GAP</b> package containing methods for digraphs and multidigraphs.",
 
 PackageWWWHome := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php",
                
