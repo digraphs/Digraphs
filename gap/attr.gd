@@ -24,9 +24,9 @@ DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
 DeclareAttribute("DigraphConnectedComponents", IsDigraph);
 
 DeclareAttribute("OutNeighbours", IsDigraph);
-DeclareAttribute("OutNeighbors", IsDigraph);
+DeclareSynonymAttr("OutNeighbors", OutNeighbours);
 DeclareAttribute("InNeighbours", IsDigraph);
-DeclareAttribute("InNeighbors", IsDigraph);
+DeclareSynonymAttr("InNeighbors", InNeighbours);
 DeclareAttribute("OutDegrees", IsDigraph);
 DeclareAttribute("OutDegreeSequence", IsDigraph);
 DeclareAttribute("InDegrees", IsDigraph);

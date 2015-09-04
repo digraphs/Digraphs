@@ -119,7 +119,7 @@ function(arg)
     limit := infinity;
   fi;
 
-  G := AutomorphismGroup(digraph);
+  G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph));
 
   if IsTrivial(G) then
     gens := [];
@@ -159,10 +159,6 @@ InstallMethod(DigraphColoring, "for a digraph and pos int",
 function(digraph, n)
   return DigraphEpimorphism(digraph, CompleteDigraph(n));
 end);
-
-InstallMethod(DigraphColouring, "for a digraph and a pos int",
-[IsDigraph, IsPosInt],
-DigraphColoring);
 
 ################################################################################
 # HOMOMORPHISMS
@@ -204,7 +200,8 @@ function(gr1, gr2)
   local hom, aut;
 
   hom := HomomorphismsDigraphsRepresentatives(gr1, gr2);
-  aut := List(AutomorphismGroup(gr2), AsTransformation);
+  aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(gr2)),
+              AsTransformation);
   return Union(List(aut, x -> hom * x));
 end);
 
@@ -248,7 +245,8 @@ function(gr1, gr2)
   local hom, aut;
 
   hom := MonomorphismsDigraphsRepresentatives(gr1, gr2);
-  aut := List(AutomorphismGroup(gr2), AsTransformation);
+  aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(gr2)),
+              AsTransformation);
   return Union(List(aut, x -> hom * x));
 end);
 
@@ -292,7 +290,8 @@ function(gr1, gr2)
   local hom, aut;
 
   hom := EpimorphismsDigraphsRepresentatives(gr1, gr2);
-  aut := List(AutomorphismGroup(gr2), AsTransformation);
+  aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(gr2)),
+              AsTransformation);
   return Union(List(aut, x -> hom * x));
 end);
 
