@@ -1897,13 +1897,24 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   } 
   
   // go!
-  if (hook_gap == Fail) {
-    GraphHomomorphisms(graph1, graph2, homo_hook_collect, user_param_arg,
-        max_results_arg, hint_arg, image, partial_map); 
+  if (!isinjective) { 
+    if (hook_gap == Fail) {
+      GraphHomomorphisms(graph1, graph2, homo_hook_collect, user_param_arg,
+                         max_results_arg, hint_arg, image, partial_map); 
+    } else {
+      GAP_FUNC = hook_gap;
+      GraphHomomorphisms(graph1, graph2, homo_hook_gap, user_param_arg,
+                         max_results_arg, hint_arg, image, partial_map);
+    }
   } else {
-    GAP_FUNC = hook_gap;
-    GraphHomomorphisms(graph1, graph2, homo_hook_gap, user_param_arg,
-        max_results_arg, hint_arg, image, partial_map);
+    if (hook_gap == Fail) {
+      GraphMonomorphisms(graph1, graph2, homo_hook_collect, user_param_arg,
+                         max_results_arg, image, partial_map); 
+    } else {
+      GAP_FUNC = hook_gap;
+      GraphMonomorphisms(graph1, graph2, homo_hook_gap, user_param_arg,
+                         max_results_arg, image, partial_map);
+    }
   }
   
   if (IS_PLIST(user_param_arg) && LEN_PLIST(user_param_arg) == 0 
@@ -1983,7 +1994,7 @@ Obj FuncDIGRAPH_HOMOS (Obj self, Obj args) {
     hint_arg = UNDEFINED;
   }
 
-  // process injective . . . //TODO fix this up
+  // process injective . . . 
   bool isinjective = (isinjective_gap == True ? true : false);
 
   // init the image . . . 

@@ -67,7 +67,7 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
   fi;
 
   # Cases where we already know the answer
-  if (isinjective and ((hint <> infinity and hint <> DigraphNrVertices(gr1)) or
+  if (isinjective and ((hint <> fail and hint <> DigraphNrVertices(gr1)) or
             DigraphNrVertices(gr1) > DigraphNrVertices(gr2)))
         or (IsPosInt(hint) and (hint > DigraphNrVertices(gr1) or hint >
             DigraphNrVertices(gr2)))

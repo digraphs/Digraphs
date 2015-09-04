@@ -177,3 +177,17 @@ void GraphHomomorphisms (Graph* graph1,
                          int       hint_arg,
                          BitArray* image,
                          UIntS*    partial_map                           );
+
+////////////////////////////////////////////////////////////////////////////////
+// GraphMonomorphisms: TODO add description of args
+////////////////////////////////////////////////////////////////////////////////
+
+void GraphMonomorphisms (Graph*   graph1,
+                         Graph*   graph2,
+                         void     (*hook_arg)(void*        user_param,
+	                                      const UIntS  nr,
+	                                      const UIntS  *map       ),
+                         void*     user_param_arg,
+                         UIntL     max_results_arg,
+                         BitArray* image_arg,
+                         UIntS     *partial_map_arg                     );
