@@ -117,6 +117,20 @@ void DigraphHomomorphisms (Digraph* digraph1,
                            UIntS*    partial_map                           );
 
 ////////////////////////////////////////////////////////////////////////////////
+// DigraphMonomorphisms: TODO add description of args
+////////////////////////////////////////////////////////////////////////////////
+
+void DigraphMonomorphisms (Digraph* digraph1,
+                           Digraph* digraph2,
+                           void     (*hook_arg)(void*        user_param,
+	                                        const UIntS  nr,
+	                                        const UIntS  *map       ),
+                           void*     user_param_arg,
+                           UIntL     max_results_arg,
+                           BitArray* image,
+                           UIntS*    partial_map                           );
+
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // Graphs (undirected)
 ////////////////////////////////////////////////////////////////////////////////
