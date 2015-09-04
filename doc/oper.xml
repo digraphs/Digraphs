@@ -64,7 +64,7 @@ gap> DigraphSource(gr);
     <C>DigraphReverseEdge</C> can be used instead.  In this case, the second
     argument should just be a single vertex-pair or a single position. <P/>
 
-    Note that even though <A>digraph</A> can not have multiple edges, the
+    Note that even though <A>digraph</A> cannot have multiple edges, the
     output may have multiple edges. <P/>
     <Example><![CDATA[
 gap> gr := Digraph( 21,
@@ -220,7 +220,7 @@ gap> OutNeighbours(gr2);
     The operation returns a new digraph constructed from <A>digraph</A> by
     adding a single new vertex. <P/>
     
-    If the optional second argument <A>label</A> is an arbitrary &GAP; object,
+    If the optional second argument <A>label</A> is a &GAP; object,
     then the new vertex will be labelled <A>label</A>.
     <P/>
     <Example><![CDATA[
@@ -248,7 +248,7 @@ gap> DigraphVertexLabels(new);
     constructed from <A>digraph</A> by adding <A>m</A> new vertices. <P/>
     
     If the optional third argument <A>labels</A> is a list of length <A>m</A> 
-    consisting of arbitrary &GAP; objects, then the new vertices will be 
+    consisting of &GAP; objects, then the new vertices will be 
     labelled according to this list. <P/>
     <Example><![CDATA[
 gap> gr := CompleteDigraph(3);
@@ -278,7 +278,7 @@ true
     along with any edge whose source or range vertex is <A>v</A>. <P/>
 
     If <A>digraph</A> has <C>n</C> vertices, then the vertices of the new
-    digraph are <C>[1..n-1]</C>, but the original names can be 
+    digraph are <C>[1..n-1]</C>, but the original labels can be 
     accessed via <Ref Oper="DigraphVertexLabels"/>. <P/>
 
     <Example><![CDATA[
@@ -311,7 +311,7 @@ gap> DigraphVertexLabels(new);
 
     If <A>digraph</A> has <C>n</C> vertices, then the vertices of the new
     digraph are <C>[1..n-Length(<A>verts</A>)]</C>, but the 
-    original names can be accessed via <Ref Oper="DigraphVertexLabels"/>. <P/>
+    original labels can be accessed via <Ref Oper="DigraphVertexLabels"/>. <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ],
@@ -329,17 +329,13 @@ gap> DigraphVertexLabels(new);
 
 <#GAPDoc Label="DigraphAddEdge">
 <ManSection>
-  <Oper Name="DigraphAddEdge" Arg="digraph, edge[, label]"/>
+  <Oper Name="DigraphAddEdge" Arg="digraph, edge"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>edge</A> is a pairs of vertices of <A>digraph</A>,
     then this operation returns a new digraph constructed from <A>digraph</A> 
     by adding a new edge with source <A>edge</A><C>[1]</C> and range 
     <A>edge</A><C>[2]</C>. <P/>
-
-    If the optional second argument <A>label</A> is
-    an arbitrary &GAP; object, then the new edge will be labelled <A>label</A>.
-    <P/>
 
     <Example><![CDATA[
 gap> gr1 := Digraph( [ [ 2 ], [ 3 ], [  ] ] );
@@ -412,7 +408,8 @@ gap> gr := DigraphAddEdges(gr,
     </List>
     
     then this operation returns a new digraph constructed from <A>digraph</A> 
-    by removing all of the edges specified by <A>edges</A>. <P/>
+    by removing all of the edges specified by <A>edges</A>
+    [see <Ref Oper="DigraphRemoveEdge"/>]. <P/>
 
     <Example><![CDATA[
 gap> gr := CycleDigraph(250000);
@@ -465,16 +462,15 @@ gap> gr := DigraphRemoveEdge(gr, 10);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a topologically sortable digraph
-    [<Ref Attr="DigraphTopologicalSort"/>,
-    i.e. it contains no non-trivial cycles]
+    [see <Ref Attr="DigraphTopologicalSort"/>]
     with no multiple edges, then these  operations return the
     (reflexive) transitive reduction of <A>digraph</A>. 
     <P/>
 
     The (reflexive) transitive reduction of such a digraph is the unique
     least subgraph such that the (reflexive) transitive closure of the
-    subgraph is equal to the (reflexive) transitive closure of <A>digraph</A>.
-    See <Ref Oper="DigraphReflexiveTransitiveClosure"/>.
+    subgraph is equal to the (reflexive) transitive closure of <A>digraph</A>
+    [see <Ref Oper="DigraphReflexiveTransitiveClosure"/>].
     In order words, it is the least subgraph of <A>digraph</A> which
     retains the same reachability as <A>digraph</A>. <P/>
 
@@ -734,7 +730,7 @@ gap> DigraphConnectedComponent(gr, 4);
     <P/>
 
     A partition of the vertices of <A>digraph</A> is a list of non-empty
-    disjoint lists, such that the concatenation of all the sub-lists is equal
+    disjoint lists, such that the union of all the sub-lists is equal
     to the vertex set of <A>digraph</A>. In particular, each vertex must appear
     in precisely one sub-list.
     <P/>

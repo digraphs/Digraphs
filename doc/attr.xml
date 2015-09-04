@@ -620,9 +620,8 @@ false
     See <Ref Oper="InducedSubdigraph"/>.
     <P/>
     
-    The vertex labels and edge
-    labels of the graph are preserved, so that a vertex in the new digraph can
-    be matched to the corresponding vertex in <A>digraph</A>.<P/>
+    The vertex labels of the graph are preserved, so that a vertex in the new
+    digraph can be matched to the corresponding vertex in <A>digraph</A>.<P/>
     <Log><![CDATA[
 gap> d := Digraph([ [ 1, 2 ], [  ], [  ], [ 1, 4 ], [  ] ]);
 <digraph with 5 vertices, 4 edges>
@@ -651,8 +650,8 @@ gap> DigraphVertexLabel(r, 2);
     symmetric digraph which has the same vertices and contains all the edges of
     <A>digraph</A>.
     See <Ref Prop="IsSymmetricDigraph"/>.
-    A digraph is symmetric if, for every edge <M>(a,b)</M> it
-    contains, it also contains that edge's reverse <M>(b,a)</M>. <P/>
+    A digraph is symmetric if, whenever there is an edge from <C>i</C> to
+    <C>j</C>, there is also an edge from <C>j</C> to <C>i</C>. <P/>
 
 <Example><![CDATA[
 gap> gr := Digraph([[1,2,3], [2,4], [1], [3,4]]);
