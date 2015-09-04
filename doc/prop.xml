@@ -41,8 +41,8 @@ false
   <Description>
     Returns <K>true</K> if the digraph <A>digraph</A> is acyclic and
     <K>false</K> if it is not. A digraph is <E>acyclic</E> if there are no
-    cycles, i.e. if there are no directed paths which start and end at the same
-    vertex.  <P/>
+    cycles, i.e. if there are no directed walks which start and end at the same
+    vertex. <P/>
 
     The method used in this operation has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
@@ -185,8 +185,8 @@ false
     direction (possibly against the orientation of some of them). <P/>
 
     The method used in this function has complexity <M>O(m)</M> if the 
-    digraph's Source attribute is set, otherwise it has complexity
-    <M>O(m+n)</M> (where 
+    digraph's <Ref Attr="DigraphSource"/> attribute is set, otherwise it has
+    complexity <M>O(m+n)</M> (where 
     <M>m</M> is the number of edges and
     <M>n</M> is the number of vertices of the digraph).
 
