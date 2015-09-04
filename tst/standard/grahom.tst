@@ -662,13 +662,30 @@ gap> DigraphHomomorphism(gr1, gr2);
 fail
 gap> gr2 := Digraph([[], [], [], [], [4], []]);;
 gap> DigraphHomomorphism(gr1, gr2);
-Transformation( [ 1, 5, 4, 4, 5, 6 ] )
+Transformation( [ 1, 5, 4, 4, 5 ] )
 
 #T# HomomorphismsDigraphs and HomomorphismsDigraphsRepresentatives
 gap> gr1 := Digraph([[], [3], []]);;
 gap> gr2 := Digraph([[], [], [], [], [4], []]);;
 gap> HomomorphismsDigraphsRepresentatives(gr1, gr2);
+[ Transformation( [ 1, 5, 4, 4, 5 ] ), Transformation( [ 4, 5, 4, 4, 5 ] ), 
+  Transformation( [ 5, 5, 4, 4, 5 ] ) ]
 gap> homos := HomomorphismsDigraphs(gr1, gr2);
+[ Transformation( [ 1, 5, 4, 4, 5, 2 ] ), 
+  Transformation( [ 1, 5, 4, 4, 5, 3 ] ), Transformation( [ 1, 5, 4, 4, 5 ] ),
+  Transformation( [ 2, 5, 4, 4, 5, 1 ] ), 
+  Transformation( [ 2, 5, 4, 4, 5, 3 ] ), Transformation( [ 2, 5, 4, 4, 5 ] ),
+  Transformation( [ 3, 5, 4, 4, 5, 1 ] ), 
+  Transformation( [ 3, 5, 4, 4, 5, 2 ] ), Transformation( [ 3, 5, 4, 4, 5 ] ),
+  Transformation( [ 4, 5, 4, 4, 5, 1 ] ), 
+  Transformation( [ 4, 5, 4, 4, 5, 2 ] ), 
+  Transformation( [ 4, 5, 4, 4, 5, 3 ] ), Transformation( [ 4, 5, 4, 4, 5 ] ),
+  Transformation( [ 5, 5, 4, 4, 5, 1 ] ), 
+  Transformation( [ 5, 5, 4, 4, 5, 2 ] ), 
+  Transformation( [ 5, 5, 4, 4, 5, 3 ] ), Transformation( [ 5, 5, 4, 4, 5 ] ),
+  Transformation( [ 6, 5, 4, 4, 5, 1 ] ), 
+  Transformation( [ 6, 5, 4, 4, 5, 2 ] ), 
+  Transformation( [ 6, 5, 4, 4, 5, 3 ] ) ]
 gap> edges := DigraphEdges(gr1);;
 gap> mat := AdjacencyMatrix(gr2);;
 gap> ForAll(homos, t -> ForAll(edges, e -> mat[e[1] ^ t][e[2] ^ t] = 1));
@@ -692,6 +709,11 @@ gap> MonomorphismsDigraphs(gr1, EmptyDigraph(1));
 [  ]
 gap> gr2 := DigraphFromDigraph6String("+DRZ?L?");;
 gap> monos := MonomorphismsDigraphs(gr1, gr2);
+[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
+  Transformation( [ 1, 5, 3, 4, 5 ] ), Transformation( [ 2, 1 ] ), 
+  Transformation( [ 2, 3, 3 ] ), Transformation( [ 2, 5, 3, 4, 5 ] ), 
+  Transformation( [ 3, 2, 3 ] ), Transformation( [ 4, 2, 3, 4 ] ), 
+  Transformation( [ 4, 5, 3, 4, 5 ] ), Transformation( [ 5, 1, 3, 4, 5 ] ) ]
 gap> monos = MonomorphismsDigraphsRepresentatives(gr1, gr2);
 true
 gap> monos = HomomorphismsDigraphsRepresentatives(gr1, gr2);
