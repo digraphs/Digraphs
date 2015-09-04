@@ -77,10 +77,10 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
   fi;
 
   if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
-    if IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2) then 
+    if IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2) then
       GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
                   fail, map);
-    else 
+    else
       DIGRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
                     fail, map);
     fi;
@@ -121,9 +121,9 @@ function(arg)
 
   G := AutomorphismGroup(digraph);
 
-  if IsTrivial(G) then 
+  if IsTrivial(G) then
     gens := [];
-  else 
+  else
     gens := List(GeneratorsOfGroup(G), AsTransformation);
   fi;
 
