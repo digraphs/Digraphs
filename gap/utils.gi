@@ -16,7 +16,7 @@
 # Code taken from GAP
 # gaplint: ignore 2
 if not IsBound(ErrorMayQuit) then
-  BIND_GLOBAL("ErrorMayQuit",
+  BindGlobal("ErrorMayQuit",
   function(arg)
       ErrorInner(rec(context := ParentLVars(GetCurrentLVars()),
                      mayReturnVoid := false,

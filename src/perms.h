@@ -15,6 +15,8 @@
 #ifndef HOMOS_PERMS_H
 #define HOMOS_PERMS_H 1
 
+#define NDEBUG
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
