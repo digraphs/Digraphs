@@ -22,7 +22,7 @@
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
-Subtitle := "Methods for digraphs",
+Subtitle := "Methods for digraphs and multidigraphs",
 Version := "0.2",
 Date := "04/09/2015",
 ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.2",
