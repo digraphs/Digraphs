@@ -1054,32 +1054,32 @@ false
   <Returns>An integer.</Returns>
   <Description>
     If <A>digraph</A> is a digraph and <A>v</A> is a vertex in <A>digraph</A>,
-    then this operation returns the length of the longest directed path in
+    then this operation returns the length of the longest directed walk in
     <A>digraph</A> which begins at vertex <A>v</A>. <P/>
 
     <List>
       <Item>
-        If there exists a directed path starting at vertex <A>v</A>
+        If there exists a directed walk starting at vertex <A>v</A>
         which traverses a cycle or a loop,
-        then we consider there to be a path of infinite length from <A>v</A>
+        then we consider there to be a walk of infinite length from <A>v</A>
         (realised by repeatedly traversing the loop/cycle),
         and so the result is <C>infinity</C>.
-        To disallow paths using loops, try using
+        To disallow walks using loops, try using
         <Ref Oper="DigraphRemoveLoops"/>:<P/>
 
         <C>DigraphLongestDistanceFromVertex(DigraphRemoveLoops(<A>digraph</A>,<A>v</A>))</C>.
       </Item>
 
       <Item>
-        If no path from vertex <A>v</A> exists,
+        If no walk from vertex <A>v</A> exists,
         i.e. if <A>v</A> is a sink of the digraph
         (<Ref Attr="DigraphSinks"/>), then the result is <C>0</C>.
       </Item>
 
       <Item>
-        Otherwise, if all directed paths
+        Otherwise, if all directed walks
         starting at vertex <A>v</A> have finite length,
-        then the length of the longest such path is returned.
+        then the length of the longest such walk is returned.
       </Item>
     </List>
 

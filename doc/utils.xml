@@ -38,14 +38,14 @@
 <#GAPDoc Label="DigraphsTestStandard">
 <ManSection>
   <Func Name="DigraphsTestStandard" Arg=""/>
-  <Returns>Nothing.</Returns>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     This function should be called to test all the methods included in
     &Digraphs;.  These tests should take only a few seconds to complete. <P/>
 
     To quickly test that &Digraphs; is installed correctly use <Ref
     Func="DigraphsTestInstall"/>.  For a more thorough test, use <Ref
-    Func="DigraphsTestAll"/>.
+    Func="DigraphsTestStandard"/>.
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -70,12 +70,12 @@
 <#GAPDoc Label="DigraphsTestInstall">
 <ManSection>
   <Func Name="DigraphsTestInstall" Arg=""/>
-  <Returns>Nothing.</Returns>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     This function should be called with no argument to test your installation of
     &Digraphs; is working correctly. These tests should take no more than a
     fraction of a second to complete.  To test more comprehensively that
-    &Digraphs; is working correctly, use <Ref Func="DigraphsTestAll"/>.
+    &Digraphs; is working correctly, use <Ref Func="DigraphsTestStandard"/>.
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -88,7 +88,7 @@
     This function should be called with no argument to test the examples in the
     &Digraphs; manual. These tests should take no more than a few minutes to
     complete.  To more comprehensively test that &Digraphs; is installed
-    correctly use <Ref Func="DigraphsTestAll"/>. See also <Ref
+    correctly use <Ref Func="DigraphsTestStandard"/>. See also <Ref
     Func="DigraphsTestInstall"/>.
   </Description>
 </ManSection>

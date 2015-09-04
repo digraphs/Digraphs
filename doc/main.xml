@@ -18,7 +18,8 @@
 <TableOfContents/>
 
 <Body>
-  <#Include SYSTEM="z-chap1.xml"> <!-- intro -->
+  <#Include SYSTEM="z-chap0.xml"> <!-- intro -->
+  <#Include SYSTEM="z-chap1.xml"> <!-- installing -->
   <#Include SYSTEM="z-chap2.xml"> <!-- creating --> 
   <#Include SYSTEM="z-chap3.xml"> <!-- operators/hashs --> 
   <#Include SYSTEM="z-chap4.xml"> <!-- attributes, operations --> 
