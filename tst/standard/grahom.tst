@@ -661,7 +661,7 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 3, 3, 3 ] ) ]
 
-#T# Monomorphisms
+#T# HomomorphismGraphsFinder: finding monomorphisms
 gap> gr1 := Digraph([[], [1]]);;
 gap> gr1 := DigraphSymmetricClosure(gr1);;
 gap> gr2 := Digraph([[], [1], [1, 3]]);;
