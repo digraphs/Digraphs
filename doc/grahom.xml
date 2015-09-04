@@ -137,7 +137,13 @@ gap> HomomorphismDigraphsFinder(gr, gr2, func, [Transformation([2,2])],
     <A>digraph1</A> and <A>digraph2</A> if it exists, otherwise it returns
     <K>fail</K>.
 <Example><![CDATA[
-gap>
+gap> gr1 := ChainDigraph(3);;
+gap> gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);
+<digraph with 5 vertices, 6 edges>
+gap> DigraphHomomorphism(gr1, gr1);
+IdentityTransformation
+gap> DigraphHomomorphism(gr1, gr2);
+Transformation( [ 1, 3, 1 ] )
 ]]></Example>
   </Description>
 </ManSection>
@@ -162,7 +168,16 @@ gap>
     <C>HomomorphismsDigraphs</C> returns all homomorphisms between
     <A>digraph1</A> and <A>digraph2</A>.
     <Example><![CDATA[
-gap>
+gap> gr1 := ChainDigraph(3);;
+gap> gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);
+<digraph with 5 vertices, 6 edges>
+gap> HomomorphismsDigraphs(gr1, gr2);
+[ Transformation( [ 1, 3, 1 ] ), Transformation( [ 1, 3, 3 ] ), 
+  Transformation( [ 1, 5, 4, 4, 5 ] ), Transformation( [ 2, 2, 2 ] ), 
+  Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 1, 5, 4, 5 ] ), 
+  Transformation( [ 3, 3, 1 ] ), Transformation( [ 3, 3, 3 ] ) ]
+gap> HomomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));
+[ IdentityTransformation, Transformation( [ 1, 2, 1 ] ) ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -177,7 +192,13 @@ gap>
       Oper="DigraphHomomorphism"/> between <A>digraph1</A> and <A>digraph2</A>
     if one exists, otherwise it returns <K>fail</K>.
     <Example><![CDATA[
-gap>      
+gap> gr1 := ChainDigraph(3);;
+gap> gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);
+<digraph with 5 vertices, 6 edges>
+gap> DigraphMonomorphism(gr1, gr1);
+IdentityTransformation
+gap> DigraphMonomorphism(gr1, gr2);
+Transformation( [ 1, 5, 4, 4, 5 ] )
 ]]></Example>
   </Description>
 </ManSection>
@@ -193,7 +214,14 @@ gap>
     <Ref Oper="HomomorphismsDigraphsRepresentatives"/>, expect they only return
     <E>injective</E> homomorphisms.
     <Example><![CDATA[
-gap>      
+gap> gr1 := ChainDigraph(3);;
+gap> gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);
+<digraph with 5 vertices, 6 edges>
+gap> MonomorphismsDigraphs(gr1, gr2);
+[ Transformation( [ 1, 5, 4, 4, 5 ] ), 
+  Transformation( [ 3, 1, 5, 4, 5 ] ) ]
+gap> MonomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));
+[ IdentityTransformation ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -208,7 +236,14 @@ gap>
       Oper="DigraphHomomorphism"/> between <A>digraph1</A> and <A>digraph2</A>
     if one exists, otherwise it returns <K>fail</K>.
     <Example><![CDATA[
-gap>      
+gap> gr1 := DigraphReverse(ChainDigraph(4));
+<digraph with 4 vertices, 3 edges>
+gap> gr2 := DigraphRemoveEdge(CompleteDigraph(3), [1, 2]);
+<digraph with 3 vertices, 5 edges>
+gap> DigraphEpimorphism(gr2, gr1);
+fail
+gap> DigraphEpimorphism(gr1, gr2);
+Transformation( [ 1, 2, 3, 1 ] )
 ]]></Example>
   </Description>
 </ManSection>
@@ -224,7 +259,23 @@ gap>
     <Ref Oper="HomomorphismsDigraphsRepresentatives"/>, expect they only return
     <E>surjective</E> homomorphisms.
     <Example><![CDATA[
-gap>      
+gap> gr1 := DigraphReverse(ChainDigraph(4));
+<digraph with 4 vertices, 3 edges>
+gap> gr2 := DigraphSymmetricClosure(CycleDigraph(3));
+<digraph with 3 vertices, 6 edges>
+gap> EpimorphismsDigraphsRepresentatives(gr1, gr2);
+[ Transformation( [ 1, 2, 3, 1 ] ), Transformation( [ 1, 2, 3, 2 ] ), 
+  Transformation( [ 1, 2, 1, 3 ] ) ]
+gap> EpimorphismsDigraphs(gr1, gr2);
+[ Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 3, 1 ] ), 
+  Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 3, 1, 2 ] ), 
+  Transformation( [ 1, 3, 2, 1 ] ), Transformation( [ 1, 3, 2, 3 ] ), 
+  Transformation( [ 2, 1, 2, 3 ] ), Transformation( [ 2, 1, 3, 1 ] ), 
+  Transformation( [ 2, 1, 3, 2 ] ), Transformation( [ 2, 3, 1, 2 ] ), 
+  Transformation( [ 2, 3, 1, 3 ] ), Transformation( [ 2, 3, 2, 1 ] ), 
+  Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ), 
+  Transformation( [ 3, 1, 3, 2 ] ), Transformation( [ 3, 2, 1, 2 ] ), 
+  Transformation( [ 3, 2, 1, 3 ] ), Transformation( [ 3, 2, 3, 1 ] ) ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -242,7 +293,16 @@ gap>
     <C>GeneratorsOfEndomorphismMonoid</C> returns a generating set for the
     monoid of all endomorphisms of <A>digraph</A>. <P/>
     <Example><![CDATA[
-gap>      
+gap> gr := Digraph(List([1 .. 3], x -> [1 .. 3]));;
+gap> GeneratorsOfEndomorphismMonoid(gr);
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
+  IdentityTransformation, Transformation( [ 1, 2, 1 ] ), 
+  Transformation( [ 1, 2, 2 ] ), Transformation( [ 1, 1, 2 ] ), 
+  Transformation( [ 1, 1, 1 ] ) ]
+gap> gr := CompleteDigraph(3);;
+gap> GeneratorsOfEndomorphismMonoid(gr);
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
+  IdentityTransformation ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -262,7 +322,15 @@ gap>
     <C>DigraphColoring</C> returns such a homomorphism if one exists,
     else it returns <K>fail</K>.
     <Example><![CDATA[
-gap>
+gap> DigraphColoring(CompleteDigraph(5), 4);
+fail
+gap> DigraphColoring(ChainDigraph(10), 1);
+fail
+gap> gr := ChainDigraph(10);;
+gap> t := DigraphColoring(gr, 2);
+Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
+gap> ForAll(DigraphEdges(gr), e -> e[1] ^ t <> e[2] ^ t);
+true
 ]]></Example>
   </Description>
 </ManSection>

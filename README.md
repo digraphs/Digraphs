@@ -1,6 +1,6 @@
 ##README
 ### Digraphs package for GAP
-#### Copyright (C) 2014-15 Julius Jonusas, James Mitchell, Michael Torpey, Wilfred Wilson
+#### Copyright (C) 2014-15 Julius Jonusas, James D. Mitchell, Michael Torpey, Wilf Wilson
 
 ## Getting Digraphs
 
