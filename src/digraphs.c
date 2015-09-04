@@ -1863,7 +1863,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
     hint_arg = UNDEFINED;
   }
   
-  // process injective . . . //TODO fix this up
+  // process injective . . . 
   bool isinjective = (isinjective_gap == True ? true : false);
 
   // init the image . . . 
