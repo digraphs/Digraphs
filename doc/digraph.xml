@@ -39,11 +39,11 @@
     If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns the
     labels of the vertices in <A>digraph</A>. <C>SetDigraphVertexLabels</C> can
     be used to set the labels of the vertices in <A>digraph</A> to the list of
-    arbitrary &GAP; objects <A>list</A>.
+    arbitrary &GAP; objects <A>list</A>. <P/>
 
     The label of a vertex can be changed an arbitrary number of times. If no
-    label has been set for the vertex <C>i</C>, then the default value is
-    <C>i</C>.
+    label has been set for the vertex <A>i</A>, then the default value is
+    <A>i</A>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
     <C>vertices</C>, then the labels of the vertices are set to the value of
@@ -85,7 +85,7 @@ gap> DigraphVertexLabels(gr);
 
     The label of a vertex can be changed an arbitrary number of times. If no
     label has been set for the vertex <A>i</A>, then the default value is
-    <C>i</C>. <P/>
+    <A>i</A>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
     <C>vertices</C>, then the labels of the vertices are set to the value of
@@ -169,24 +169,24 @@ true
         <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>,
         and edges corresponding to the entries of <A>obj</A>. <P/>
         
-        More precisely, there is an edge from vertex <C>i</C> to <C>j</C> if
-        <C>j</C> is in <C><A>obj</A>[i]</C>; the source of this edge is
-        <C>i</C> and the range is <C>j</C>. If <C>j</C> occurs 
-        in <C><A>obj</A>[i]</C> with multiplicity <C>k</C>,
-        then there are <C>k</C> edges from <C>i</C> to <C>j</C>.
+        More precisely, there is an edge from vertex <C>i</C> to <C>j</C> if and
+        only if <C>j</C> is in <C><A>obj</A>[i]</C>; the source of this edge is
+        <C>i</C> and the range is <C>j</C>. If <C>j</C> occurs in
+        <C><A>obj</A>[i]</C> with multiplicity <C>k</C>, then there are <C>k</C>
+        edges from <C>i</C> to <C>j</C>.
       </Item>
 
       <Mark>for three lists</Mark>
       <Item>
-        if <A>obj</A> is a duplicate-free list, and <A>source</A>, and
+        if <A>obj</A> is a duplicate-free list, and <A>source</A> and
         <A>range</A> are lists of equal length consisting of positive integers
         in the list <C>[1..Length(<A>obj</A>)]</C>, then this function
-        returns the digraph with vertices
-        <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>, edges indexed by
-        <C>[1..Length(<A>source</A>)]</C>, and source and range functions
-        defined by <A>source</A> and <A>range</A>.  In particular, the edge
-        with index <C>i</C> has source vertex <C>source[i]</C> and range vertex
-        <C>range[i]</C>.
+        returns a digraph with vertices
+        <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>, and
+        <C>Length(<A>source</A>)</C> edges.  For each <C>i</C> in
+        <C>[1..Length(<A>source</A>)]</C> there exists an edge with source
+        vertex <C>source[i]</C> and range vertex <C>range[i]</C>.
+        See <Ref Attr="DigraphSource"/> and <Ref Attr="DigraphRange"/>.
         <P/>
 
         The vertices of the digraph will be labelled by the elements of
@@ -195,16 +195,16 @@ true
 
       <Mark>for an integer, and two lists</Mark>
       <Item>
-        if <A>obj</A> is a non-negative integer and
-        <A>source</A> and <A>range</A> are lists of equal length consisting of
-        positive integers in the list <C>[1..<A>obj</A>]</C>,
-        then this function returns the digraph with vertices 
-        <M>E^0=</M><C>[1..<A>obj</A>]</C>,
-        edges indexed by
-        <C>[1..Length(<A>source</A>)]</C>, and
-        source and range functions defined by <A>source</A> and
-        <A>range</A>. In particular, the edge with index <C>i</C>
-        has source vertex <C>source[i]</C> and range vertex <C>range[i]</C>.
+        if <A>obj</A> is an integer, and <A>source</A> and
+        <A>range</A> are lists of equal length consisting of positive integers
+        in the list <C>[1..<A>obj</A>]</C>, then this function
+        returns a digraph with vertices
+        <M>E^0=</M><C>[1..<A>obj</A>]</C>, and
+        <C>Length(<A>source</A>)</C> edges.  For each <C>i</C> in
+        <C>[1..Length(<A>source</A>)]</C> there exists an edge with source
+        vertex <C>source[i]</C> and range vertex <C>range[i]</C>.
+        See <Ref Attr="DigraphSource"/> and <Ref Attr="DigraphRange"/>.
+        <P/>
       </Item>
 
       <Mark>for a Grape package graph</Mark>
@@ -249,10 +249,10 @@ gap> gr := Digraph(b);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="GrapeGraph">
+<#GAPDoc Label="Graph">
 <ManSection>
   <Oper Name="Graph" Arg="digraph"/>
-  <Returns>A <Package>Grape</Package> package graph.</Returns>
+  <Returns>A &Grape; package graph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph without multiple edges, then this operation
     returns a &Grape; package graph that is isomorphic to <A>digraph</A>. <P/>
@@ -332,7 +332,9 @@ gap> OutNeighbours(gr);
     If the optional second argument <A>n</A> is a positive integer with
     <C><A>n</A> >= m</C> (with <C>m</C> defined as above),
     then this function returns the digraph with <A>n</A> vertices and edges
-    <A>edges</A>. 
+    <A>edges</A>. <P/>
+
+    See <Ref Attr="DigraphEdges"/>.
     
     <Example><![CDATA[
 gap> DigraphByEdges( 
@@ -363,7 +365,9 @@ gap> DigraphByEdges(
   <C><A>in</A>[j]</C>. <P/>
 
   If <C>i</C> occurs in <C><A>in</A>[j]</C> with multiplicity <C>k</C>,
-  then there are <C>k</C> multiple edges from <C>i</C> to <C>j</C>.
+  then there are <C>k</C> multiple edges from <C>i</C> to <C>j</C>. <P/>
+
+  See <Ref Attr="InNeighbours"/>.
 
     <Example><![CDATA[
 gap> gr := DigraphByInNeighbours( [
@@ -383,7 +387,7 @@ gap> gr := DigraphByInNeighbours( [ [ 2, 3, 2 ], [ 1 ], [ 1, 2, 3 ] ] );
   <Oper Name="AsDigraph" Arg="trans[, n]"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>trans</A> is transformation and <A>n</A> is a non-negative integer,
+    If <A>trans</A> is a transformation and <A>n</A> is a non-negative integer,
     then this function returns the functional digraph with <A>n</A> 
     vertices defined by <A>trans</A>. See <Ref Prop="IsFunctionalDigraph"/>.
     
@@ -463,7 +467,7 @@ gap> RandomDigraph(10000, 0.023);
 
     The method used by this function chooses each edge from the set of 
     all possible edges with uniform probability. No effort is made to avoid
-    creating multiple edges, so it is likely (but not guaranteed) that the
+    creating multiple edges, so it is possible (but not guaranteed) that the
     result will have multiple edges. The result may or may not have loops.<P/>
     <Log><![CDATA[
 gap> RandomMultiDigraph(1000);
@@ -496,9 +500,9 @@ gap> RandomTournament(10);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> is a positive integer, this function returns a chain 
-    with <A>n</A> vertices and <A>n</A><C> - 1</C> edges.
+    with <A>n</A> vertices and <A>n</A><C>-1</C> edges.
     Specifically,
-    for each vertex <C>i</C> (with <M>i &lt; n</M>), there is a directed 
+    for each vertex <C>i</C> (with <C>i</C> &lt; <C>n</C>), there is a directed 
     edge with source <C>i</C> and range <C>i+1</C>. <P/>
     
     The <Ref Oper="DigraphReflexiveTransitiveClosure"/> of a chain represents a
@@ -517,8 +521,7 @@ gap> ChainDigraph(42);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> is a non-negative integer, this function returns the complete 
-    digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/> 
-    for a definition. <P/>
+    digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/>. <P/>
     <Log><![CDATA[
 gap> CompleteDigraph(20);
 <digraph with 20 vertices, 380 edges>
@@ -534,13 +537,13 @@ gap> CompleteDigraph(20);
   <Description>
     A complete bipartite digraph is a digraph whose vertices
     can be partitioned into two non-empty vertex sets, such there exists
-    a unique edge with source <C>i</C> and range <C>j</C> whenever
+    a unique edge with source <C>i</C> and range <C>j</C> if and only if
     <C>i</C> and <C>j</C> lie in different vertex sets. <P/>
 
     If <A>m</A> and <A>n</A> are positive integers, this function 
-    returns the complete bipartite digraph with vertex sets of size
-    <A>m</A> (containing the vertices <C>[1..m]</C>) and size
-    <A>n</A> (containing the vertices <C>[(m+1)..n]</C>). 
+    returns the complete bipartite digraph with vertex sets of sizes
+    <A>m</A> (containing the vertices <C>[1..m]</C>) and
+    <A>n</A> (containing the vertices <C>[(m+1)..(m+n)]</C>). 
     <Log><![CDATA[
 gap> CompleteBipartiteDigraph(2, 3);
 <digraph with 5 vertices, 12 edges>
@@ -572,7 +575,7 @@ gap> EmptyDigraph(20);
   <Description>
     If <A>n</A> is a positive integer, this function returns a <E>cycle</E>
     digraph with <A>n</A> vertices and <A>n</A> edges. Specifically,
-    for each vertex <C>i</C> (with <M>i &lt; n</M>), there is a directed 
+    for each vertex <C>i</C> (with <C>i</C> &lt; <C>n</C>), there is a directed 
     edge with source <C>i</C> and range <C>i+1</C>. In addition, there is
     an edge with source <C>n</C> and range <C>1</C>. <P/>
     <Log><![CDATA[
