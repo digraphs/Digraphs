@@ -314,7 +314,7 @@ function(gr1, gr2)
   fi;
 
   monos := MonomorphismsDigraphsRepresentatives(gr1, gr2);
-  dual1 := DigraphDual(gr1);
+  dual1 := DigraphDual(DigraphRemoveAllMultipleEdges(gr1));
   edges1 := DigraphEdges(dual1);
   mat := AdjacencyMatrix(gr2);
   for t in monos do

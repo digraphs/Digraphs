@@ -250,11 +250,29 @@ gap>
 
 <#GAPDoc Label="DigraphEmbedding">
 <ManSection>
-  <Oper Name="DigraphEmbedding" Arg="digraph"/>
+  <Oper Name="DigraphEmbedding" Arg="digraph1, digraph2"/>
   <Returns> A transformation, or <K>fail</K>.</Returns>
   <Description>
+    An embedding of a digraph <A>digraph1</A> into another digraph
+    <A>digraph2</A> is a <Ref Oper="DigraphMonomorphism"/> from <A>digraph1</A>
+    to <A>digraph2</A> which has the additional property that a pair of
+    vertices <C>[i,j]</C> which have no edge <C>i->j</C> in <A>digraph1</A> are
+    mapped to a pair of vertices <C>[a,b]</C> which have no edge <C>a->b</C> in
+    <A>digraph2</A>.<P/>
+
+    In other words, an embedding <C>t</C> is an isomorphism from
+    <A>digraph1</A> to the <Ref Oper="InducedSubdigraph"/> of <A>digraph2</A>
+    on the image of <C>t</C>. <P/>
+
+    <C>DigraphEmbedding</C> returns a single embedding if one exists, otherwise
+    it returns <K>fail</K>.
     <Example><![CDATA[
-gap>
+gap> gr := ChainDigraph(3);
+<digraph with 3 vertices, 2 edges>
+gap> DigraphEmbedding(gr, CompleteDigraph(4));
+fail
+gap> DigraphEmbedding(gr, Digraph([[3], [1, 4], [1], [3]]));
+Transformation( [ 2, 4, 3, 4 ] )
 ]]></Example>
   </Description>
 </ManSection>
