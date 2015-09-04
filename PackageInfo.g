@@ -88,7 +88,7 @@ Persons := [
     Institution   := "University of St Andrews"
   )],
 
-Status := "",
+Status := "dev",
 
 README_URL := 
   "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README",
