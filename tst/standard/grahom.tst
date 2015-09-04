@@ -90,7 +90,8 @@ gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [3], [1 .. 4]);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 9th argument <map> must be a list of vertices of the 8th argument <image>
 which is no longer than the number of vertices of the 1st argument <gr1>,
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [], [1, 2, 3, 2]);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [],
+> [1, 2, 3, 2]);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 9th argument <map> must be a list of vertices of the 8th argument <image>
 which is no longer than the number of vertices of the 1st argument <gr1>,
@@ -113,7 +114,8 @@ gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 2, false, [1], []);
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2], []);
 [ IdentityTransformation ]
 gap> gr := CompleteDigraph(513);;
-gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, false, [1 .. 513], []);
+gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, false, [1 .. 513],
+> []);
 Error, Digraphs: HomomorphismDigraphsFinder: error,
 not yet implemented for digraphs with more than 512 vertices,
 
@@ -208,10 +210,10 @@ gap> DigraphColoring(gr, 3);
 IdentityTransformation
 
 #T# GRAPH_HOMOS 1
-gap> gr := Digraph([[2,3], [], [], [5], [], []]);;
+gap> gr := Digraph([[2, 3], [], [], [5], [], []]);;
 gap> gr := DigraphSymmetricClosure(gr);;
 gap> x := [];;
-gap> GRAPH_HOMOS(gr, gr, fail, x, fail, fail, false, [1..6], fail, fail);
+gap> GRAPH_HOMOS(gr, gr, fail, x, fail, fail, false, [1 .. 6], fail, fail);
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 2 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 3 ] ), 
@@ -295,7 +297,7 @@ gap> GRAPH_HOMOS(gr, gr, fail, x, fail, fail, false, [1..6], fail, fail);
   Transformation( [ 4, 5, 5, 5, 4, 5 ] ) ]
 gap> Length(x);
 100
-gap> DIGRAPH_HOMOS(gr, gr, fail, x, fail, fail, false, [1..6], fail, fail);
+gap> DIGRAPH_HOMOS(gr, gr, fail, x, fail, fail, false, [1 .. 6], fail, fail);
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 2 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 3 ] ), 
@@ -460,13 +462,13 @@ gap> DIGRAPH_HOMOS(gr, gr, fail, x, fail, fail, false, [1..6], fail, fail);
   Transformation( [ 4, 5, 5, 5, 4, 5 ] ) ]
 gap> Length(x);
 200
-gap> x{[1..100]} = x{[101..200]};
+gap> x{[1 .. 100]} = x{[101 .. 200]};
 true
 
 #T# DIGRAPH_HOMOS 1
-gap> gr := Digraph([[2,3], [], [], [5], [], []]);
+gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
 <digraph with 6 vertices, 3 edges>
-gap> DIGRAPH_HOMOS(gr, gr, fail, [], fail, fail, false, [1..5], fail, fail);
+gap> DIGRAPH_HOMOS(gr, gr, fail, [], fail, fail, false, [1 .. 5], fail, fail);
 [ Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 2 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 3 ] ), 
@@ -510,9 +512,9 @@ gap> Length(last);
 39
 
 #T# DIGRAPH_HOMOS 2
-gap> gr := Digraph([[2,3], [], [], [5], [], []]);
+gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
 <digraph with 6 vertices, 3 edges>
-gap> DIGRAPH_HOMOS(gr, gr, fail, [], fail, fail, false, [1..6], fail, fail);
+gap> DIGRAPH_HOMOS(gr, gr, fail, [], fail, fail, false, [1 .. 6], fail, fail);
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 2 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 3 ] ), 
@@ -556,11 +558,11 @@ gap> Length(last);
 47
 
 #T# DIGRAPH_HOMOS 3
-gap> gr := Digraph([[2,3], [], [], [5], [], []]);
+gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
 <digraph with 6 vertices, 3 edges>
 gap> gr := DigraphSymmetricClosure(gr);
 <digraph with 6 vertices, 6 edges>
-gap> DIGRAPH_HOMOS(gr, gr, fail, [], fail, fail, false, [1..6], fail, fail);
+gap> DIGRAPH_HOMOS(gr, gr, fail, [], fail, fail, false, [1 .. 6], fail, fail);
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 2 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 3 ] ), 
@@ -651,7 +653,7 @@ gap> gr1 := DigraphSymmetricClosure(gr1);;
 gap> gr2 := Digraph([[], [1], [1, 3]]);;
 gap> gr2 := DigraphSymmetricClosure(gr2);;
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], infinity, fail, true,
-> [1,2,3], []);
+> [1, 2, 3], []);
 [ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
   Transformation( [ 2, 1 ] ), Transformation( [ 3, 1, 3 ] ) ]
 
@@ -700,7 +702,7 @@ gap> DigraphMonomorphism(gr2, gr1);
 fail
 gap> DigraphMonomorphism(gr1, gr2);
 IdentityTransformation
-gap> DigraphMonomorphism(CompleteDigraph(2), Digraph([[2],[1,3],[2]]));
+gap> DigraphMonomorphism(CompleteDigraph(2), Digraph([[2], [1, 3], [2]]));
 IdentityTransformation
 
 #T# MonomorphismsDigraphs and MonomorphismsDigraphsRepresentatives
