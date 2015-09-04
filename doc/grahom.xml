@@ -147,12 +147,12 @@ gap>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphEmbedding">
+<#GAPDoc Label="DigraphMonomorphism">
 <ManSection>
-  <Oper Name="DigraphEmbedding" Arg="digraph1, digraph2"/>
+  <Oper Name="DigraphMonomorphism" Arg="digraph1, digraph2"/>
   <Returns>A transformation, or <K>fail</K>.</Returns>
   <Description>
-    <C>DigraphEmbedding</C> returns a single <E>injective</E> <Ref
+    <C>DigraphMonomorphism</C> returns a single <E>injective</E> <Ref
       Oper="DigraphHomomorphism"/> between <A>digraph1</A> and <A>digraph2</A>
     if one exists, otherwise it returns <K>fail</K>.
     <Example><![CDATA[
@@ -183,7 +183,7 @@ gap>
   <Oper Name="DigraphEpimorphism" Arg="digraph1, digraph2"/>
   <Returns>A transformation, or <K>fail</K>.</Returns>
   <Description>
-    <C>DigraphEmbedding</C> returns a single <E>surjective</E> <Ref
+    <C>DigraphEpimorphism</C> returns a single <E>surjective</E> <Ref
       Oper="DigraphHomomorphism"/> between <A>digraph1</A> and <A>digraph2</A>
     if one exists, otherwise it returns <K>fail</K>.
     <Example><![CDATA[

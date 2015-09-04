@@ -1,3 +1,17 @@
+/*******************************************************************************
+**
+*A  schreier-sims.h        A rudimentary Schreier-Sims        Julius Jonusas
+**                                                            James Mitchell
+**                                                            Michael Torpey
+**                                                            Wilfred Wilson
+**
+**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey,
+**  Wilfred Wilson
+**
+**  This file is free software, see the digraphs/LICENSE.
+**
+*******************************************************************************/
+
 #include "src/schreier-sims.h"
 
 // Schreier-Sims set up
