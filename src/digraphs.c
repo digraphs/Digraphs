@@ -1922,7 +1922,9 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
     RetypeBag(user_param_arg, T_PLIST_EMPTY);
   }
   
-  free_bit_array(image);
+  if (image != NULL) { 
+    free_bit_array(image);
+  }
   free(partial_map); 
   free_graph(graph1);
   free_graph(graph2);
@@ -2054,7 +2056,10 @@ Obj FuncDIGRAPH_HOMOS (Obj self, Obj args) {
     RetypeBag(user_param_arg, T_PLIST_EMPTY);
   }
 
-  free_bit_array(image);
+  if (image != NULL) {
+    free_bit_array(image);
+  }
+
   free(partial_map); 
   free_digraph(digraph1);
   free_digraph(digraph2);
