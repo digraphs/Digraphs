@@ -22,9 +22,13 @@
   converted to &Digraphs; objects with <Ref Oper="Digraph"/>.  &Grape; is not
   required for &Digraphs; to run. <P/>
 
-  The <E>bliss</E> tool is included in this package.  It is an open-source tool
-  for computing automorphism groups and canonical forms of graphs, written by
-  Tommi Junttila and Petteri Kaski. Several algorithms rely on it. <P/>
+  The &bliss; tool <Cite Key="JunttilaKaski"/> is included in this package.  It
+  is an open-source tool for computing automorphism groups and canonical forms
+  of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods
+  in the &Digraphs; package rely on &bliss;. <P/>
+
+  For the purposes of this package and its documentation, the following
+  definitions apply: <P/>
 
   A <E>digraph</E> <M>E=(E^0,E^1,r,s)</M>, also known as a 
   <E>directed graph</E>, consists of a set of vertices <M>E^0</M> and a set of 
