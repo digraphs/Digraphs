@@ -69,8 +69,7 @@ cd /tmp/digraphs
 rm .hgignore
 rm .hgtags
 rm code-coverage-test.py
-rm configure.ac
-rm Makefile.am
+rm -rf digraphs-dev
 
 cd /tmp
 ditto --norsrc digraphs digraphs_copy
