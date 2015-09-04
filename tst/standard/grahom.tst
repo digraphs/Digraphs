@@ -86,7 +86,7 @@ gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 1, true, [3], 0);
 Error, Digraphs: HomomorphismGraphsFinder: usage,
 the 9th argument <map> must be a list of vertices of the 8th argument <image>
 which is no longer than the number of vertices of the 1st argument <gr1>,
-gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 1, true, [3], [1..4]);
+gap> HomomorphismGraphsFinder(gr1, gr2, fail, [], 1, 1, true, [3], [1 .. 4]);
 Error, Digraphs: HomomorphismGraphsFinder: usage,
 the 9th argument <map> must be a list of vertices of the 8th argument <image>
 which is no longer than the number of vertices of the 1st argument <gr1>,

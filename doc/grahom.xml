@@ -8,9 +8,9 @@
 #############################################################################
 ##
 
-<#GAPDoc Label="HomomorphismGraphsFinder">
+<#GAPDoc Label="HomomorphismDigraphsFinder">
 <ManSection>
-  <Func Name="HomomorphismGraphsFinder" Arg="gr1, gr2, hook, user_param, limit, hint, injective, image, map"/>
+  <Func Name="HomomorphismDigraphsFinder" Arg="gr1, gr2, hook, user_param, limit, hint, injective, image, map"/>
   <Returns>The argument <A>user_param</A>.</Returns>
   <Description>
     This function finds homomorphisms from the graph <A>gr1</A> to the graph

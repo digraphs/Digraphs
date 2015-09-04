@@ -14,12 +14,12 @@ DeclareAttribute("GeneratorsOfEndomorphismMonoidAttr", IsDigraph);
 DeclareOperation("DigraphHomomorphism", [IsDigraph, IsDigraph]);
 DeclareOperation("HomomorphismsDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("HomomorphismsDigraphsRepresentatives",
-[IsDigraph, IsDigraph]);
+                 [IsDigraph, IsDigraph]);
 
 DeclareOperation("DigraphEmbedding", [IsDigraph, IsDigraph]);
 DeclareOperation("MonomorphismsDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("MonomorphismsDigraphsRepresentatives",
-[IsDigraph, IsDigraph]);
+                 [IsDigraph, IsDigraph]);
 
 DeclareOperation("DigraphEpimorphism", [IsDigraph, IsDigraph]);
 DeclareOperation("EpimorphismsDigraphs", [IsDigraph, IsDigraph]);
