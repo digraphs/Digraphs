@@ -3,16 +3,22 @@
   <Subtitle>Method for graphs</Subtitle>
   <Version>Version &VERSION;</Version>
 
-  <Author>J. D. Mitchell
+  <Author>Julius Jonu&#353;as
+    <Email>jj252@st-and.ac.uk</Email>
+    <Homepage>http://www-circa.mcs.st-and.ac.uk/~julius</Homepage>
+  </Author>
+
+  <Author>James D. Mitchell
     <Email>jdm3@st-and.ac.uk</Email>
     <Homepage>http://tinyurl.com/jdmitchell</Homepage>
   </Author>
-  
-  <Author>Julius Jonu&#353;as
-    <Homepage>http://www-circa.mcs.st-and.ac.uk/~julius</Homepage>
+
+  <Author>Michael Torpey
+    <Email>mct25@st-and.ac.uk</Email>
   </Author>
-  <Author>Michael Torpey</Author>
+
   <Author>Wilf Wilson
+    <Email>waw7@st-and.ac.uk</Email>
     <Homepage>http://www-groups.mcs.st-and.ac.uk/~waw7</Homepage>
   </Author>
 

@@ -166,8 +166,7 @@ gap> Size(Semigroup(gens));
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphColouring(gr, 1);
-Error, Digraphs: DigraphColoring: usage,
-the 1st argument <digraph> must not be a  multidigraph,
+fail
 gap> gr := EmptyDigraph(3);
 <digraph with 3 vertices, 0 edges>
 gap> DigraphColoring(gr, 4);
