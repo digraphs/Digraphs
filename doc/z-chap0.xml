@@ -38,6 +38,9 @@
   edges <M>E^1</M> together with functions <M>s, r: E^1 \to E^0</M>, called 
   the <E>source</E> and <E>range</E>, respectively.
 
+  The source and range of an edge is respectively the values of <M>s, r</M>
+  at that edge.
+
   An edge is called a <E>loop</E> if its source and range are the same.
 
   A digraph is called a <E>multidigraph</E> if there exist two or more edges
