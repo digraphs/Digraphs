@@ -60,13 +60,13 @@ gap> DigraphDual(gr);
   <Returns>A list of positive integers, or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph with no cycles of length greater than
-    <M>1</M>, then this operation returns the vertices of <A>digraph</A> 
-    ordered so that every vertex adjacent to <C>i</C> occurs before <C>i</C>. 
-    If the digraph <A>digraph</A> contains cycles of length greater than 
+    <M>1</M>, then this operation returns the vertices of <A>digraph</A> ordered
+    so that every edge's source appears no earlier in the list than its range.
+    If the digraph <A>digraph</A> contains cycles of length greater than
     <M>1</M>, then this operation returns <K>fail</K>.
     <P/>
 
-    The method used in this operation has complexity <M>O(m+n)</M> where
+    The method used for this attribute has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
     <M>n</M> is the number of vertices in the digraph. <P/> 
     <Example><![CDATA[
@@ -143,7 +143,7 @@ gap> DigraphEdges(gr);
 <#GAPDoc Label="DigraphEdges">
 <ManSection>
   <Attr Name="DigraphEdges" Arg="digraph"/>
-  <Returns>The edges of a digraph.</Returns>
+  <Returns>A list of lists.</Returns>
   <Description>
     <C>DigraphEdges</C> returns a list of edges of the digraph <A>digraph</A>,
     where each edge is a pair of elements of <Ref Oper="DigraphVertices"/> of
@@ -174,7 +174,7 @@ gap> DigraphEdges(gr);
 <#GAPDoc Label="DigraphNrEdges">
 <ManSection>
   <Attr Name="DigraphNrEdges" Arg="digraph"/>
-  <Returns>The number of edges of a digraph.</Returns>
+  <Returns>An integer.</Returns>
   <Description>
     This function returns the number of edges of the digraph <A>digraph</A>.
     <Example><![CDATA[
@@ -332,11 +332,11 @@ gap> InDegreeSequence(gr);
 <#GAPDoc Label="DigraphVertices">
 <ManSection>
   <Attr Name="DigraphVertices" Arg="digraph"/>
-  <Returns>The vertices of a digraph.</Returns>
+  <Returns>A list of integers.</Returns>
   <Description>
     Returns the vertices of the digraph <A>digraph</A>. <P/>
 
-    <B>Note that:</B> the vertices of a digraph are always a range of
+    Note that the vertices of a digraph are always a range of
     positive integers from <C>1</C> to the number of vertices of the graph. 
     <Example><![CDATA[
 gap> gr := Digraph( [ "a", "b", "c" ],
@@ -361,7 +361,7 @@ gap> DigraphVertices(RandomDigraph(100));
 <#GAPDoc Label="DigraphNrVertices">
 <ManSection>
   <Attr Name="DigraphNrVertices" Arg="digraph"/>
-  <Returns>The number of vertices of a digraph.</Returns>
+  <Returns>An integer.</Returns>
   <Description>
     Returns the number of vertices of the digraph <A>digraph</A>. <P/>
 

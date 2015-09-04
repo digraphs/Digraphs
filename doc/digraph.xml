@@ -39,11 +39,11 @@
     If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns the
     labels of the vertices in <A>digraph</A>. <C>SetDigraphVertexLabels</C> can
     be used to set the labels of the vertices in <A>digraph</A> to the list of
-    arbitrary &GAP; objects <A>list</A>.
+    arbitrary &GAP; objects <A>list</A>. <P/>
 
     The label of a vertex can be changed an arbitrary number of times. If no
-    label has been set for the vertex <C>i</C>, then the default value is
-    <C>i</C>.
+    label has been set for the vertex <A>i</A>, then the default value is
+    <A>i</A>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
     <C>vertices</C>, then the labels of the vertices are set to the value of
@@ -85,7 +85,7 @@ gap> DigraphVertexLabels(gr);
 
     The label of a vertex can be changed an arbitrary number of times. If no
     label has been set for the vertex <A>i</A>, then the default value is
-    <C>i</C>. <P/>
+    <A>i</A>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
     <C>vertices</C>, then the labels of the vertices are set to the value of
