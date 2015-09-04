@@ -92,6 +92,7 @@ function(file)
   MakeReadWriteGlobal("STOP_TEST");
   UnbindGlobal("STOP_TEST");
   BindGlobal("STOP_TEST", record.STOP_TEST);
+  MakeReadWriteGlobal("STOP_TEST");
   return;
 end);
 
