@@ -1,4 +1,4 @@
-/***************************************************************************
+/*******************************************************************************
 **
 *A  digraphs.h                  GAP package Digraphs          Julius Jonusas
 **                                                            James Mitchell 
@@ -7,9 +7,13 @@
 **
 **  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey, 
 **  Wilfred Wilson 
+**
 **  This file is free software, see license information at the end.
 **  
-*/
+*******************************************************************************/
+
+#ifndef DIGRAPHS_DIGRAPHS_H
+#define DIGRAPHS_DIGRAPHS_H 1
 
 #include "bliss-0.73/bliss_C.h"
 
@@ -26,3 +30,5 @@ Int DigraphNrEdges(Obj digraph);
 Obj OutNeighbours(Obj digraph);
 Obj DigraphSource(Obj digraph);
 Obj DigraphRange(Obj digraph);
+
+#endif
