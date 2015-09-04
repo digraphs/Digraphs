@@ -95,8 +95,8 @@ gap> Size(G);
 
     A canonical labelling of a digraph <A>digraph</A> (under <M>\rho</M>) is an
     isomorphism of <A>digraph</A> onto its canonical representative
-    <M>\rho(digraph)</M> given as a permutation of the vertices (and the edges
-    in case <A>digraph</A> has multiple edges). <P/>
+    <M>\rho(</M><A>digraph</A><M>)</M> given as a permutation of the vertices
+    (and the edges in case <A>digraph</A> has multiple edges). <P/>
 
     The canonical labelling is found using <URL
       Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by

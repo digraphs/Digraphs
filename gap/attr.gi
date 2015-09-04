@@ -162,14 +162,6 @@ function(digraph)
   return out;
 end);
 
-InstallMethod(OutNeighbors, "for a digraph", [IsDigraph], OutNeighbours);
-
-InstallImmediateMethod(OutNeighbors, "for a digraph", HasOutNeighbours, 0,
-OutNeighbours);
-
-InstallImmediateMethod(OutNeighbours, "for a digraph", HasOutNeighbors, 0,
-OutNeighbors);
-
 #
 
 InstallMethod(InNeighbours, "for a digraph",
@@ -177,14 +169,6 @@ InstallMethod(InNeighbours, "for a digraph",
 function(digraph)
   return DIGRAPH_IN_OUT_NBS(OutNeighbours(digraph));
 end);
-
-InstallMethod(InNeighbors, "for a digraph", [IsDigraph], InNeighbours);
-
-InstallImmediateMethod(InNeighbors, "for a digraph", HasInNeighbours, 0,
-InNeighbours);
-
-InstallImmediateMethod(InNeighbours, "for a digraph", HasInNeighbors, 0,
-InNeighbors);
 
 #
 

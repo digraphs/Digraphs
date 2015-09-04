@@ -719,12 +719,6 @@ end);
 
 #
 
-InstallMethod(InNeighborsOfVertex, "for a digraph and a vertex",
-[IsDigraph, IsPosInt],
-function(digraph, v)
-  return InNeighboursOfVertex(digraph, v);
-end);
-
 InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
@@ -763,12 +757,6 @@ function(digraph, v)
 end);
 
 #
-
-InstallMethod(OutNeighborsOfVertex, "for a digraph and a vertex",
-[IsDigraph, IsPosInt],
-function(digraph, v)
-  return OutNeighboursOfVertex(digraph, v);
-end);
 
 InstallMethod(OutNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
@@ -1169,9 +1157,6 @@ InstallMethod(OutNeighboursCopy, "for a digraph",
 function(digraph)
   return List(OutNeighbours(digraph), ShallowCopy);
 end);
-
-InstallMethod(OutNeighborsCopy, "for a digraph",
-[IsDigraph], OutNeighboursCopy);
 
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],

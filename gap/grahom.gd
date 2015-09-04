@@ -28,6 +28,6 @@ DeclareOperation("EpimorphismsDigraphsRepresentatives", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphEmbedding", [IsDigraph, IsDigraph]);
 
 DeclareOperation("DigraphColoring", [IsDigraph, IsPosInt]);
-DeclareOperation("DigraphColouring", [IsDigraph, IsPosInt]);
+DeclareSynonym("DigraphColouring", DigraphColoring);
 
 DeclareGlobalFunction("HomomorphismDigraphsFinder");
