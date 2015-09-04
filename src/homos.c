@@ -865,8 +865,7 @@ static void find_digraph_monos (Digraph*    digraph1,
                                 UIntS       depth,               // the number of filled positions in map
                                 UIntS       pos,                 // the last position filled
                                 UIntS       rep_depth,
-                                bool        has_trivial_stab,
-                                UIntS       rank             ) { // current number of distinct values in map
+                                bool        has_trivial_stab) {
 
   UIntS   i, min, next;
   bool    is_trivial;
@@ -932,10 +931,10 @@ static void find_digraph_monos (Digraph*    digraph1,
           orbit_reps(rep_depth + 1);
         }
         find_digraph_monos(digraph1, digraph2, conditions, depth + 1, next,
-                           rep_depth + 1, is_trivial, rank + 1);
+                           rep_depth + 1, is_trivial);
       } else {
         find_digraph_monos(digraph1, digraph2, conditions, depth + 1, next,
-                           rep_depth, true, rank + 1);
+                           rep_depth, true);
       }
       MAP[next] = UNDEFINED;
       set_bit_array(VALS, i, false);
@@ -1056,8 +1055,7 @@ void DigraphMonomorphisms (Digraph* digraph1,
 
   // go!
   if (setjmp(outofhere) == 0) {
-    find_digraph_monos(digraph1, digraph2, conditions, 0, UNDEFINED, 0,
-                       false, 0);
+    find_digraph_monos(digraph1, digraph2, conditions, 0, UNDEFINED, 0, false);
   }
 
   // free the stab_gens
@@ -1438,8 +1436,7 @@ static void find_graph_monos (Graph*      graph1,
                               UIntS       depth,               // the number of filled positions in map
                               UIntS       pos,                 // the last position filled
                               UIntS       rep_depth,
-                              bool        has_trivial_stab,
-                              UIntS       rank             ) { // current number of distinct values in map
+                              bool        has_trivial_stab) { 
 
   UIntS   i, min, next;
   bool    is_trivial;
@@ -1501,10 +1498,10 @@ static void find_graph_monos (Graph*      graph1,
           orbit_reps(rep_depth + 1);
         }
         find_graph_monos(graph1, graph2, conditions, depth + 1, next,
-                         rep_depth + 1, is_trivial, rank + 1);
+                         rep_depth + 1, is_trivial);
       } else {
         find_graph_monos(graph1, graph2, conditions, depth + 1, next,
-                         rep_depth, true, rank + 1);
+                         rep_depth, true);
       }
       MAP[next] = UNDEFINED;
       set_bit_array(VALS, i, false);
@@ -1625,7 +1622,7 @@ void GraphMonomorphisms (Graph*   graph1,
 
   // go!
   if (setjmp(outofhere) == 0) {
-    find_graph_monos(graph1, graph2, conditions, 0, UNDEFINED, 0, false, 0);
+    find_graph_monos(graph1, graph2, conditions, 0, UNDEFINED, 0, false);
   }
 
   // free the stab_gens
