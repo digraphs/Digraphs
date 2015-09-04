@@ -157,12 +157,6 @@ end);
 InstallMethod(DigraphColoring, "for a digraph and pos int",
 [IsDigraph, IsPosInt],
 function(digraph, n)
-
-  if IsMultiDigraph(digraph) then
-    ErrorMayQuit("Digraphs: DigraphColoring: usage,\n",
-                 "the 1st argument <digraph> must not be a  multidigraph,");
-  fi;
-
   return DigraphEpimorphism(digraph, CompleteDigraph(n));
 end);
 
@@ -300,4 +294,16 @@ function(gr1, gr2)
   hom := EpimorphismsDigraphsRepresentatives(gr1, gr2);
   aut := List(AutomorphismGroup(gr2), AsTransformation);
   return Union(List(aut, x -> hom * x));
+end);
+
+################################################################################
+# EMBEDDINGS
+
+InstallMethod(DigraphEmbedding, "for a digraph and a digraph",
+[IsDigraph, IsDigraph],
+function(gr1, gr2)
+  if DigraphNrVertices(gr1) = DigraphNrVertices(gr2) then
+    iso := IsomorphismDigraphs(gr1, gr2);
+    return 
+  fi;
 end);

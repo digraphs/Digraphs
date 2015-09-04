@@ -25,6 +25,8 @@ DeclareOperation("DigraphEpimorphism", [IsDigraph, IsDigraph]);
 DeclareOperation("EpimorphismsDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("EpimorphismsDigraphsRepresentatives", [IsDigraph, IsDigraph]);
 
+DeclareOperation("DigraphEmbedding", [IsDigraph, IsDigraph]);
+
 DeclareOperation("DigraphColoring", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphColouring", [IsDigraph, IsPosInt]);
 
