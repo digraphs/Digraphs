@@ -58,7 +58,11 @@
     This function should be called with no arguments to execute a series of
     particularly demanding tests, which measure the performance of a variety of
     functions on large examples.  These tests could take a long time to
-    complete, probably at least several minutes.
+    complete, probably at least several minutes. <P/>
+
+    For these tests to complete, the digraphs library <C>digraphs-lib</C> must
+    be downloaded and placed in the <C>digraphs</C> directory.  This library can
+    be found on the &Digraphs; website.
   </Description>
 </ManSection>
 <#/GAPDoc>

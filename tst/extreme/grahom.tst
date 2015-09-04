@@ -42,8 +42,7 @@ gap> S := Filtered(Orbits(H, [1 .. 45]), x -> (Size(x) = 4))[1];;
 gap> graph := EdgeOrbitsGraph(G, List(S, x -> [1, x]));;
 gap> gr := Digraph(graph);
 <digraph with 153 vertices, 612 edges>
-gap> t := HomomorphismGraphsFinder(gr, gr, fail, [], 1, 7, false,
-> DigraphVertices(gr), [])[1];
+gap> t := HomomorphismGraphsFinder(gr, gr, fail, [], 1, 7, false, [1..153], [])[1];
 <transformation on 153 pts with rank 7>
 gap> 1 ^ t;
 1
@@ -152,16 +151,26 @@ true
 #T# GeneratorsOfEndomorphismMonoid 6
 # Chain digraph: endomorphisms of the chain preserve order
 
-# ChainDigraph (with no loops) has all strict order preserving transformations
+# ChainDigraph (with no loops) has no singular endomorphisms
 gap> gr := ChainDigraph(20);
 <digraph with 20 vertices, 19 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
 not yet implemented for non-symmetric digraphs,
 
-# ChainDigraph (with loops) has all order preserving transformations
-gap> gr := Digraph(Concatenation(List([1 .. 19], x -> [x, x + 1]), [[20]]));
-<digraph with 20 vertices, 39 edges>
+# ChainDigraph (with loops) has all transformations where the image of a point
+# is equal to, or one more than, the image of the previous point
+gap> n := 12;;
+gap> gr := Digraph(Concatenation(List([1 .. n - 1], x -> [x, x + 1]), [[n]]));
+<digraph with 12 vertices, 23 edges>
+gap> gens := GeneratorsOfEndomorphismMonoid(gr);
+Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
+not yet implemented for non-symmetric digraphs,
+
+# Reflexive transitive closure of ChainDigraph has all order preserving
+# transformations
+gap> gr := DigraphReflexiveTransitiveClosure(ChainDigraph(6));
+<digraph with 6 vertices, 21 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: error,
 not yet implemented for non-symmetric digraphs,
@@ -182,6 +191,59 @@ true
 # CycleDigraph (with loops)
 gap> gr := Digraph(List([1 .. 20], x -> [x, x mod 20 + 1]));
 <digraph with 20 vertices, 40 edges>
+
+#T# GeneratorsOfEndomorphismMonoid8
+# Check endomorphism monoid of all symmetric digraphs with 5 vertices
+gap> graph5 := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
+>                                         "/data/graph5.g6.gz"));;
+gap> ForAll(graph5, IsSymmetricDigraph);
+true
+gap> adj := [];;
+gap> for gr in graph5
+> do
+>   adj := AdjacencyMatrix(gr);;
+>   endos1 := Elements(Semigroup(GeneratorsOfEndomorphismMonoid(gr)));
+>   endos2 := [];
+>   for t in Elements(FullTransformationMonoid(5)) do
+>     if ForAll(DigraphEdges(gr), x -> adj[x[1] ^ t][x[2] ^ t] = 1) then
+>       Add(endos2, t);
+>     fi;
+>   od;
+>   if not (IsSubset(endos1, endos2) and Length(endos1) = Length(endos2)) then
+>     Print("fail");
+>   fi;
+> od;
+
+#T# GeneratorsOfEndomorphismMonoid9
+# Check some symmetric digraphs from digraphs-lib
+gap> gr := ReadDigraphs(
+> Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 1);
+<digraph with 26 vertices, 390 edges>
+gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
+gap> adj := AdjacencyMatrix(gr);;
+gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
+>      x -> adj[x[1] ^ t][x[2] ^ t] = 1));
+true
+gap> gr := ReadDigraphs(
+> Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 2);
+<digraph with 35 vertices, 630 edges>
+gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
+gap> adj := AdjacencyMatrix(gr);;
+gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
+>      x -> adj[x[1] ^ t][x[2] ^ t] = 1));
+true
+gap> gr := ReadDigraphs(
+> Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 21);
+<digraph with 7 vertices, 42 edges>
+gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
+gap> adj := AdjacencyMatrix(gr);;
+gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
+>      x -> adj[x[1] ^ t][x[2] ^ t] = 1));
+true
+gap> gr := ReadDigraphs(
+> Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 25);
+<digraph with 12 vertices, 108 edges>
+gap> GeneratorsOfEndomorphismMonoid(gr);;
 
 #T# HomomorphismGraphsFinder 1
 # Small example: CompleteDigraph(2) to CompleteDigraph(3)
@@ -321,6 +383,11 @@ gap> Unbind(graph);
 gap> Unbind(homos);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
+gap> Unbind(adj);
+gap> Unbind(endos1);
+gap> Unbind(endos2);
+gap> Unbind(graph5);
+gap> Unbind(graphs);
 
 #E#
 gap> STOP_TEST("Digraphs package: extreme/grahom.tst");

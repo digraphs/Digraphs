@@ -2,22 +2,22 @@
 #define BLISS_GRAPH_HH
 
 /*
-  Copyright (c) 2006-2011 Tommi Junttila
-  Released under the GNU General Public License version 3.
+  Copyright (c) 2003-2015 Tommi Junttila
+  Released under the GNU Lesser General Public License version 3.
   
   This file is part of bliss.
   
   bliss is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License version 3
-  as published by the Free Software Foundation.
-  
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation, version 3 of the License.
+
   bliss is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public License
+  along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /**
@@ -120,6 +120,172 @@ public:
 class AbstractGraph
 {
   friend class Partition;
+
+public:
+  AbstractGraph();
+  virtual ~AbstractGraph();
+
+  /**
+   * Set the verbose output level for the algorithms.
+   * \param level  the level of verbose output, 0 means no verbose output
+   */
+  void set_verbose_level(const unsigned int level);
+
+  /**
+   * Set the file stream for the verbose output.
+   * \param fp  the file stream; if null, no verbose output is written
+   */
+  void set_verbose_file(FILE * const fp);
+
+  /**
+   * Add a new vertex with color \a color in the graph and return its index.
+   */
+  virtual unsigned int add_vertex(const unsigned int color = 0) = 0;
+
+  /**
+   * Add an edge between vertices \a source and \a target.
+   * Duplicate edges between vertices are ignored but try to avoid introducing
+   * them in the first place as they are not ignored immediately but will
+   * consume memory and computation resources for a while.
+   */
+  virtual void add_edge(const unsigned int source, const unsigned int target) = 0;
+
+  /**
+   * Change the color of the vertex \a vertex to \a color.
+   */
+  virtual void change_color(const unsigned int vertex, const unsigned int color) = 0;
+
+  /**
+   * Check whether \a perm is an automorphism of this graph.
+   * Unoptimized, mainly for debugging purposes.
+   */
+  virtual bool is_automorphism(const std::vector<unsigned int>& perm) const;
+
+
+  /** Activate/deactivate failure recording.
+   * May not be called during the search, i.e. from an automorphism reporting
+   * hook function.
+   * \param active  if true, activate failure recording, deactivate otherwise
+   */
+  void set_failure_recording(const bool active) {assert(!in_search); opt_use_failure_recording = active;}
+
+  /** Activate/deactivate component recursion.
+   * The choice affects the computed canonical labelings;
+   * therefore, if you want to compare whether two graphs are isomorphic by
+   * computing and comparing (for equality) their canonical versions,
+   * be sure to use the same choice for both graphs.
+   * May not be called during the search, i.e. from an automorphism reporting
+   * hook function.
+   * \param active  if true, activate component recursion, deactivate otherwise
+   */
+  void set_component_recursion(const bool active) {assert(!in_search); opt_use_comprec = active;}
+
+
+
+  /**
+   * Return the number of vertices in the graph.
+   */
+  virtual unsigned int get_nof_vertices() const = 0;
+
+  /**
+   * Return a new graph that is the result of applying the permutation \a perm
+   * to this graph. This graph is not modified.
+   * \a perm must contain N=this.get_nof_vertices() elements and be a bijection
+   * on {0,1,...,N-1}, otherwise the result is undefined or a segfault.
+   */
+  virtual AbstractGraph* permute(const unsigned int* const perm) const = 0;
+  virtual AbstractGraph* permute(const std::vector<unsigned int>& perm) const = 0;
+
+  /**
+   * Find a set of generators for the automorphism group of the graph.
+   * The function \a hook (if non-null) is called each time a new generator
+   * for the automorphism group is found.
+   * The first argument \a user_param for the hook is the
+   * \a hook_user_param given below,
+   * the second argument \a n is the length of the automorphism (equal to
+   * get_nof_vertices()) and
+   * the third argument \a aut is the automorphism
+   * (a bijection on {0,...,get_nof_vertices()-1}).
+   * The memory for the automorphism \a aut will be invalidated immediately
+   * after the return from the hook function;
+   * if you want to use the automorphism later, you have to take a copy of it.
+   * Do not call any member functions in the hook.
+   * The search statistics are copied in \a stats.
+   */
+  void find_automorphisms(Stats& stats,
+			  void (*hook)(void* user_param,
+				       unsigned int n,
+				       const unsigned int* aut),
+			  void* hook_user_param);
+
+  /**
+   * Otherwise the same as find_automorphisms() except that
+   * a canonical labeling of the graph (a bijection on
+   * {0,...,get_nof_vertices()-1}) is returned.
+   * The memory allocated for the returned canonical labeling will remain
+   * valid only until the next call to a member function with the exception
+   * that constant member functions (for example, bliss::Graph::permute()) can
+   * be called without invalidating the labeling.
+   * To compute the canonical version of an undirected graph, call this
+   * function and then bliss::Graph::permute() with the returned canonical
+   * labeling.
+   * Note that the computed canonical version may depend on the applied version
+   * of bliss as well as on some other options (for instance, the splitting
+   * heuristic selected with bliss::Graph::set_splitting_heuristic()).
+   */
+  const unsigned int* canonical_form(Stats& stats,
+				     void (*hook)(void* user_param,
+						  unsigned int n,
+						  const unsigned int* aut),
+				     void* hook_user_param);
+
+  /**
+   * Write the graph to a file in a variant of the DIMACS format.
+   * See the <A href="http://www.tcs.hut.fi/Software/bliss/">bliss website</A>
+   * for the definition of the file format.
+   * Note that in the DIMACS file the vertices are numbered from 1 to N while
+   * in this C++ API they are from 0 to N-1.
+   * Thus the vertex n in the file corresponds to the vertex n-1 in the API.
+   * \param fp  the file stream where the graph is written
+   */
+  virtual void write_dimacs(FILE * const fp) = 0;
+
+  /**
+   * Write the graph to a file in the graphviz dotty format.
+   * \param fp  the file stream where the graph is written
+   */
+  virtual void write_dot(FILE * const fp) = 0;
+
+  /**
+   * Write the graph in a file in the graphviz dotty format.
+   * Do nothing if the file cannot be written.
+   * \param file_name  the name of the file to which the graph is written
+   */
+  virtual void write_dot(const char * const file_name) = 0;
+
+  /**
+   * Get a hash value for the graph.
+   * \return  the hash value
+   */ 
+  virtual unsigned int get_hash() = 0;
+
+  /**
+   * Disable/enable the "long prune" method.
+   * The choice affects the computed canonical labelings;
+   * therefore, if you want to compare whether two graphs are isomorphic by
+   * computing and comparing (for equality) their canonical versions,
+   * be sure to use the same choice for both graphs.
+   * May not be called during the search, i.e. from an automorphism reporting
+   * hook function.
+   * \param active  if true, activate "long prune", deactivate otherwise
+   */
+  void set_long_prune_activity(const bool active) {
+    assert(!in_search);
+    opt_use_long_prune = active;
+  }
+
+
+
 protected:
   /** \internal
    * How much verbose output is produced (0 means none) */
@@ -335,12 +501,11 @@ protected:
    * (assumes that they are 0 when called and
    *  quarantees that they are 0 when returned).
    */
-  virtual bool nucr_find_first_component(const unsigned int level) {assert(false); }
+  virtual bool nucr_find_first_component(const unsigned int level) = 0;
   virtual bool nucr_find_first_component(const unsigned int level,
 					 std::vector<unsigned int>& component,
 					 unsigned int& component_elements,
-					 Partition::Cell*& sh_return)
-  {assert(false); }
+					 Partition::Cell*& sh_return) = 0;
   /** \internal
    * The non-uniformity component found by nucr_find_first_component()
    * is stored here.
@@ -353,152 +518,6 @@ protected:
 
 
 
-
-public:
-  AbstractGraph();
-  virtual ~AbstractGraph();
-
-  /**
-   * Check whether \a perm is an automorphism of this graph.
-   * Unoptimized, mainly for debugging purposes.
-   */
-  virtual bool is_automorphism(const std::vector<unsigned int>& perm) const;
-
-
-
-  /**
-   * Set the verbose output level for the algorithms.
-   * \param level  the level of verbose output, 0 means no verbose output
-   */
-  void set_verbose_level(const unsigned int level);
-
-  /**
-   * Set the file stream for the verbose output.
-   * \param fp  the file stream; if null, no verbose output is written
-   */
-  void set_verbose_file(FILE * const fp);
-
-  /** Activate/deactivate failure recording.
-   * May not be called during the search, i.e. from an automorphism reporting
-   * hook function.
-   * \param active  if true, activate failure recording, deactivate otherwise
-   */
-  void set_failure_recording(const bool active) {assert(!in_search); opt_use_failure_recording = active;}
-
-  /** Activate/deactivate component recursion.
-   * The choice affects the computed canonical labelings;
-   * therefore, if you want to compare whether two graphs are isomorphic by
-   * computing and comparing (for equality) their canonical versions,
-   * be sure to use the same choice for both graphs.
-   * May not be called during the search, i.e. from an automorphism reporting
-   * hook function.
-   * \param active  if true, activate component recursion, deactivate otherwise
-   */
-  void set_component_recursion(const bool active) {assert(!in_search); opt_use_comprec = active;}
-
-
-
-  /**
-   * Return the number of vertices in the graph.
-   */
-  virtual unsigned int get_nof_vertices() const = 0;
-
-  /**
-   * Return a new graph that is the result of applying the permutation \a perm
-   * to this graph. This graph is not modified.
-   * \a perm must contain N=this.get_nof_vertices() elements and be a bijection
-   * on {0,1,...,N-1}, otherwise the result is undefined or a segfault.
-   */
-  virtual AbstractGraph* permute(const unsigned int* const perm) const = 0;
-  virtual AbstractGraph* permute(const std::vector<unsigned int>& perm) const = 0;
-
-  /**
-   * Find a set of generators for the automorphism group of the graph.
-   * The function \a hook (if non-null) is called each time a new generator
-   * for the automorphism group is found.
-   * The first argument \a user_param for the hook is the
-   * \a hook_user_param given below,
-   * the second argument \a n is the length of the automorphism (equal to
-   * get_nof_vertices()) and
-   * the third argument \a aut is the automorphism
-   * (a bijection on {0,...,get_nof_vertices()-1}).
-   * The memory for the automorphism \a aut will be invalidated immediately
-   * after the return from the hook function;
-   * if you want to use the automorphism later, you have to take a copy of it.
-   * Do not call any member functions in the hook.
-   * The search statistics are copied in \a stats.
-   */
-  void find_automorphisms(Stats& stats,
-			  void (*hook)(void* user_param,
-				       unsigned int n,
-				       const unsigned int* aut),
-			  void* hook_user_param);
-
-  /**
-   * Otherwise the same as find_automorphisms() except that
-   * a canonical labeling of the graph (a bijection on
-   * {0,...,get_nof_vertices()-1}) is returned.
-   * The memory allocated for the returned canonical labeling will remain
-   * valid only until the next call to a member function with the exception
-   * that constant member functions (for example, bliss::Graph::permute()) can
-   * be called without invalidating the labeling.
-   * To compute the canonical version of an undirected graph, call this
-   * function and then bliss::Graph::permute() with the returned canonical
-   * labeling.
-   * Note that the computed canonical version may depend on the applied version
-   * of bliss as well as on some other options (for instance, the splitting
-   * heuristic selected with bliss::Graph::set_splitting_heuristic()).
-   */
-  const unsigned int* canonical_form(Stats& stats,
-				     void (*hook)(void* user_param,
-						  unsigned int n,
-						  const unsigned int* aut),
-				     void* hook_user_param);
-
-  /**
-   * Write the graph to a file in a variant of the DIMACS format.
-   * See the <A href="http://www.tcs.hut.fi/Software/bliss/">bliss website</A>
-   * for the definition of the file format.
-   * Note that in the DIMACS file the vertices are numbered from 1 to N while
-   * in this C++ API they are from 0 to N-1.
-   * Thus the vertex n in the file corresponds to the vertex n-1 in the API.
-   * \param fp  the file stream where the graph is written
-   */
-  virtual void write_dimacs(FILE * const fp) = 0;
-
-  /**
-   * Write the graph to a file in the graphviz dotty format.
-   * \param fp  the file stream where the graph is written
-   */
-  virtual void write_dot(FILE * const fp) = 0;
-
-  /**
-   * Write the graph in a file in the graphviz dotty format.
-   * Do nothing if the file cannot be written.
-   * \param file_name  the name of the file to which the graph is written
-   */
-  virtual void write_dot(const char * const file_name) = 0;
-
-  /**
-   * Get a hash value for the graph.
-   * \return  the hash value
-   */ 
-  virtual unsigned int get_hash() = 0;
-
-  /**
-   * Disable/enable the "long prune" method.
-   * The choice affects the computed canonical labelings;
-   * therefore, if you want to compare whether two graphs are isomorphic by
-   * computing and comparing (for equality) their canonical versions,
-   * be sure to use the same choice for both graphs.
-   * May not be called during the search, i.e. from an automorphism reporting
-   * hook function.
-   * \param active  if true, activate "long prune", deactivate otherwise
-   */
-  void set_long_prune_activity(const bool active) {
-    assert(!in_search);
-    opt_use_long_prune = active;
-  }
 
 };
 
@@ -931,12 +950,12 @@ public:
   unsigned int add_vertex(const unsigned int color = 0);
 
   /**
-   * Add an edge from vertix \a v1 to vertex \a v2.
+   * Add an edge from the vertex \a source to the vertex \a target.
    * Duplicate edges are ignored but try to avoid introducing
    * them in the first place as they are not ignored immediately but will
    * consume memory and computation resources for a while.
    */
-  void add_edge(const unsigned int v1, const unsigned int v2);
+  void add_edge(const unsigned int source, const unsigned int target);
 
   /**
    * Change the color of the vertex 'vertex' to 'color'.

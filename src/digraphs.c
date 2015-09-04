@@ -1456,7 +1456,7 @@ static Obj FuncDIGRAPH_LT(Obj self, Obj digraph1, Obj digraph2) {
 
 // bliss 
 
-BlissGraph* buildBlissMultiDigraph(Obj digraph) {
+BlissGraph* buildBlissMultiDigraph (Obj digraph) {
   UInt        n, i, j, k, l, nr;
   Obj         adji, adj;
   BlissGraph  *graph;
@@ -1922,7 +1922,9 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
     RetypeBag(user_param_arg, T_PLIST_EMPTY);
   }
   
-  free(image);
+  if (image != NULL) { 
+    free_bit_array(image);
+  }
   free(partial_map); 
   free_graph(graph1);
   free_graph(graph2);
@@ -2054,7 +2056,10 @@ Obj FuncDIGRAPH_HOMOS (Obj self, Obj args) {
     RetypeBag(user_param_arg, T_PLIST_EMPTY);
   }
 
-  free(image);
+  if (image != NULL) {
+    free_bit_array(image);
+  }
+
   free(partial_map); 
   free_digraph(digraph1);
   free_digraph(digraph2);

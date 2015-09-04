@@ -11,7 +11,7 @@
 **  
 */
 
-#include "bliss-0.72/bliss_C.h"
+#include "bliss-0.73/bliss_C.h"
 
 #include <stdlib.h>
 #include <stdbool.h>
