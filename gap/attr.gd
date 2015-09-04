@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#W  attrs.gd
+#W  attr.gd
 #Y  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
@@ -24,9 +24,9 @@ DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
 DeclareAttribute("DigraphConnectedComponents", IsDigraph);
 
 DeclareAttribute("OutNeighbours", IsDigraph);
-DeclareAttribute("OutNeighbors", IsDigraph);
+DeclareSynonymAttr("OutNeighbors", OutNeighbours);
 DeclareAttribute("InNeighbours", IsDigraph);
-DeclareAttribute("InNeighbors", IsDigraph);
+DeclareSynonymAttr("InNeighbors", InNeighbours);
 DeclareAttribute("OutDegrees", IsDigraph);
 DeclareAttribute("OutDegreeSequence", IsDigraph);
 DeclareAttribute("InDegrees", IsDigraph);
@@ -36,7 +36,13 @@ DeclareAttribute("DigraphSinks", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
 
+DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
+DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
+DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
+DeclareGlobalFunction("DigraphTransitiveClosureNC");
+
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
+DeclareAttribute("ReducedDigraph", IsDigraph);
 
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");

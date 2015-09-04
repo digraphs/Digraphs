@@ -8,6 +8,19 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="PlainTextDecoders">
+<ManSection>
+  <Func Name="TournamentLineDecoder" Arg="digraph"/>
+  <Func Name="AdjacencyMatrixUpperTriangleLineDecoder" Arg="digraph"/>
+  <Func Name="TCodeDecoder" Arg="digraph"/>
+  <Returns></Returns>
+  <Description>
+    <Example><![CDATA[
+]]></Example>
+    </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphFromGraph6String">
 <ManSection>
   <Oper Name="DigraphFromGraph6String" Arg="str"/>
@@ -43,17 +56,39 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
 
 <#GAPDoc Label="ReadDigraphs">
 <ManSection>
-  <Oper Name="ReadDigraphs" Arg="filename[, nr]"/>
-  <Returns>A list of digraphs.</Returns>
+  <Func Name="ReadDigraphs" Arg="filename[, decoder][, n]"/>
+  <Returns>A digraph, or a list of digraphs.</Returns>
   <Description>
-    If <A>filename</A> is the name of a file containing digraphs, then 
-    <C>ReadDigraphs</C> returns these digraphs as a list.<P/>
-    
-    If the optional argument <A>nr</A> is specified, the function
-    returns the graph encoded in the <A>nr</A>th line of the file
-    <A>filename</A>.
+    If <A>filename</A> is the name of a file containing encoded digraphs
+    (with one digraph per line),
+    then <C>ReadDigraphs</C> returns these digraphs as a list.
+    Note that if <A>filename</A> is a compressed file, which has been
+    compressed appropriately to give a filename extension of
+    <C>.gz</C>, <C>.bzip2</C>, or <C>.xz</C>,
+    then <C>ReadDigraphs</C> can read <A>filename</A> without it first
+    needing to be decompressed.
+    <P/>
 
-    The currently supported file formats are:
+    If the optional argument <A>n</A> is specified, then <C>ReadDigraphs</C>
+    returns the digraph from the <A>n</A>th line of the file
+    <A>filename</A>.<P/>
+
+    If the optional argument <A>decoder</A> is specified
+    and is a function which decodes a string into a digraph,
+    then <C>ReadDigraphs</C> will use <A>decoder</A> to decode the digraphs
+    contained in <A>filename</A>.
+
+    If the optional argument <A>decoder</A> is not specified,
+    then <C>ReadDigraphs</C> will deduce which format to use based on the
+    filename extension of <A>filename</A>
+    (after removing the compression-related filename extensions
+    <C>.gz</C>, <C>.bzip2</C>, and <C>.xz</C>).
+    For example, if the filename extension if <C>.g6</C>,
+    then <C>ReadDigraphs</C> will use the graph6 decoder.
+    <P/>
+
+    The currently supported file formats, and associated filename extensions,
+    are:
     <List>
       <Mark>graph6 (.g6)</Mark>
       <Item>
@@ -100,13 +135,13 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
     
     <Example><![CDATA[
 gap> ReadDigraphs(
-> Concatenation(GraphsDir(), "/data/graph5.g6"), 10);
+> Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 10);
 <digraph with 5 vertices, 8 edges>
 gap> ReadDigraphs(
-> Concatenation(GraphsDir(), "/data/graph5.g6"), 17);
+> Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 17);
 <digraph with 5 vertices, 12 edges>
 gap> ReadDigraphs(
-> Concatenation(GraphsDir(), "/data/tree9.4.txt"));
+> Concatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt"));
 [ <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, 
   <digraph with 9 vertices, 8 edges>, 
@@ -127,11 +162,11 @@ gap> ReadDigraphs(
 
 <#GAPDoc Label="WriteDigraphs">
 <ManSection>
-  <Oper Name="WriteDigraphs" Arg="filename, digraphs"/>
+  <Func Name="WriteDigraphs" Arg="filename, digraphs"/>
   <Description>
     If <A>digraphs</A> is a list of digraphs, then <C>WriteDigraphs</C> writes
     its contents to a file in a compact format.  If the supplied filename ends
-    in one of the extensions <E>gz</E>, <E>xz</E>, or <E>bzip2</E>, the file
+    in one of the extensions <C>.gz</C>, <C>.bzip2</C>, or <C>.xz</C>, the file
     will be compressed appropriately.  Excluding these extensions, if the file
     ends with an extension in the list below, the corresponding graph format
     will be used to encode it.  If such an extension is not included, an
@@ -195,7 +230,7 @@ gap> grs[3] := Digraph( [ [ 6, 7 ], [ 6, 9 ], [ 1, 3, 4, 5, 8, 9 ],
 > [ 1, 2, 3, 4, 5, 6, 7, 10 ], [ 1, 5, 6, 7, 10 ], [ 2, 4, 5, 9, 10 ],
 > [ 3, 4, 5, 6, 7, 8, 9, 10 ], [ 1, 3, 5, 7, 8, 9 ], [ 1, 2, 5 ],
 > [ 1, 2, 4, 6, 7, 8 ] ] );;
-gap> filename := Concatenation(GraphsDir(), "/tst/out/man.d6.gz");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;
 gap> WriteDigraphs(filename, grs);
 gap> ReadDigraphs(filename);
 [ <digraph with 0 vertices, 0 edges>, 
@@ -205,7 +240,7 @@ gap> ReadDigraphs(filename);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="WriteGraph6">
+<#GAPDoc Label="Graph6String">
 <ManSection>
   <Oper Name="Graph6String" Arg="digraph"/>
   <Oper Name="Digraph6String" Arg="digraph"/>
@@ -214,11 +249,13 @@ gap> ReadDigraphs(filename);
   <Returns>A string.</Returns>
   <Description>
     These four functions return a highly compressed string fully describing the
-    <A> digraph </A>. <P/>
+    digraph <A>digraph</A>. <P/>
 
     Graph6 and Digraph6 are formats best used on small, dense graphs, if
     applicable. For larger, sparse graphs use <E>Sparse6</E> and
-    <E>Disparse6</E> (this latter also preserves multiple edges).
+    <E>Disparse6</E> (this latter also preserves multiple edges). <P/>
+
+    See <Ref Oper="WriteDigraphs"/>.
     <Example><![CDATA[
 gap> gr := Digraph([[2,3], [1], [1]]);
 <digraph with 3 vertices, 4 edges>
@@ -233,8 +270,8 @@ gap> DiSparse6String(gr);
 
 <#GAPDoc Label="DigraphPlainTextLineEncoder">
 <ManSection>
-  <Oper Name="DigraphPlainTextLineEncoder" Arg="delimiter1, [delimiter2,] offset"/>
-  <Oper Name="DigraphPlainTextLineDecoder" Arg="delimiter1, [delimiter2,] offset"/>
+  <Func Name="DigraphPlainTextLineEncoder" Arg="delimiter1, [delimiter2,] offset"/>
+  <Func Name="DigraphPlainTextLineDecoder" Arg="delimiter1, [delimiter2,] offset"/>
   <Returns>A string.</Returns>
   <Description>
     These two functions return a function which encodes or decodes a digraph in
@@ -325,7 +362,7 @@ gap> DigraphFromPlainTextString(last);
     <Example><![CDATA[
 gap> gr := Digraph([[1,2,3], [1,1], [2]]);
 <multidigraph with 3 vertices, 6 edges>
-gap> filename := Concatenation(GraphsDir(), "/tst/out/plain.txt");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/plain.txt");;
 gap> WritePlainTextDigraph(filename, gr, ",", -1);
 gap> ReadPlainTextDigraph(filename, ",", 1, ['/','%']);
 <multidigraph with 3 vertices, 6 edges>
@@ -334,3 +371,110 @@ gap> ReadPlainTextDigraph(filename, ",", 1, ['/','%']);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="TournamentLineDecoder">
+<ManSection>
+  <Func Name="TournamentLineDecoder" Arg="str"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    This function takes a string <A>str</A>, decodes it, and then returns the
+    tournament [see <Ref Prop="IsTournament"/>] which it defines, according to
+    the following rules. <P/>
+
+    The characters of the string <A>str</A> represent the entries in the upper
+    triangle of a tournament's adjacency matrix. The number of vertices
+    <C>n</C> will be detected from the length of the string and will be as
+    large as possible.  <P/>
+
+    The first character represents the possible edge <C>1 -> 2</C>, the second
+    represents <C>1 -> 3</C> and so on until <C>1 -> n</C>; then the following
+    character represents <C>2 -> 3</C>, and so on up to the character which
+    represents the edge <C>n-1 -> n</C>. <P/>
+
+    If a character of the string with corresponding edge <C>i -> j</C> is equal
+    to <C>1</C>, then the edge <C>i -> j</C> is present in the tournament.
+    Otherwise, the edge <C>i -> j</C> is present instead.  In this way, all the
+    possible edges are encoded one-by-one.
+
+    <Example><![CDATA[
+gap> gr := TournamentLineDecoder("100001");
+<digraph with 4 vertices, 6 edges>
+gap> OutNeighbours(gr);
+[ [ 2 ], [  ], [ 1, 2, 4 ], [ 1, 2 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AdjacencyMatrixUpperTriangleLineDecoder">
+<ManSection>
+  <Func Name="AdjacencyMatrixUpperTriangleLineDecoder" Arg="str"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    This function takes a string <A>str</A>, decodes it, and then returns the
+    topologically sorted digraph [see <Ref Prop="DigraphTopologicalSort"/>]
+    which it defines, according to the following rules. <P/>
+
+    The characters of the string <A>str</A> represent the entries in the upper
+    triangle of a digraph's adjacency matrix. The number of vertices <C>n</C>
+    will be detected from the length of the string and will be as large as
+    possible.  <P/>
+
+    The first character represents the possible edge <C>1 -> 2</C>, the second
+    represents <C>1 -> 3</C> and so on until <C>1 -> n</C>; then the following
+    character represents <C>2 -> 3</C>, and so on up to the character which
+    represents the edge <C>n-1 -> n</C>.  If a character of the string with
+    corresponding edge <C>i -> j</C> is equal to <C>1</C>, then this edge is
+    present in the digraph. Otherwise, it is not present.  In this way, all the
+    possible edges are encoded one-by-one. <P/>
+
+    In particular, note that there exists no edge <C>[i, j]</C> if <M>j \leq
+      i</M>.  In order words, the digraph will be topologically sorted.
+
+    <Example><![CDATA[
+gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("100001");
+<digraph with 4 vertices, 2 edges>
+gap> OutNeighbours(gr);
+[ [ 2 ], [  ], [ 4 ], [  ] ]
+gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("111111x111");
+<digraph with 5 vertices, 9 edges>
+gap> OutNeighbours(gr);
+[ [ 2, 3, 4, 5 ], [ 3, 4 ], [ 4, 5 ], [ 5 ], [  ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="TCodeDecoder">
+<ManSection>
+  <Func Name="TCodeDecoder" Arg="str"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>str</A> is a string consisting of at least two non-negative integers
+    separated by spaces, then this function will attempt to return the digraph
+    which it defines as a TCode string. <P/>
+
+    The first integer of the string defines the number of vertices <C>v</C> in
+    the digraph, and the second defines the number of edges <C>e</C>.  The
+    following <C>2e</C> integers should be vertex numbers in the range <C>[0 ..
+      v-1]</C>. These integers are read in pairs and define the digraph's
+    edges.  This function will return an error if
+    <C>Length(</C><A>str</A><C>)</C> &lt; <C>2e+2</C>.
+    <P/>
+
+    Note that the vertex numbers will be incremented by 1 in the digraph
+    returned.  Hence the string fragment <C>0 6</C> will describe the edge
+    <C>[1,7]</C>.
+    <Example><![CDATA[
+gap> gr := TCodeDecoder("3 2 0 2 2 1");
+<digraph with 3 vertices, 2 edges>
+gap> OutNeighbours(gr);
+[ [ 3 ], [  ], [ 2 ] ]
+gap> gr := TCodeDecoder("12 3 0 10 5 2 8 8");
+<digraph with 12 vertices, 3 edges>
+gap> OutNeighbours(gr);
+[ [ 11 ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [  ], [ 9 ], [  ], 
+  [  ], [  ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

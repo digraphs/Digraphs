@@ -1,15 +1,32 @@
+/*******************************************************************************
+**
+*A  perms.h                  permutations                     Julius Jonusas
+**                                                            James Mitchell 
+**                                                            Michael Torpey
+**                                                            Wilfred Wilson
+**
+**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey, 
+**  Wilfred Wilson 
+**
+**  This file is free software, see the digraphs/LICENSE.
+**  
+*******************************************************************************/
+
+#ifndef HOMOS_PERMS_H
+#define HOMOS_PERMS_H 1
+
+#define NDEBUG
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
-// FIXME detect if we are on a 32-bit machine
 #define MAXVERTS 512
 #define UNDEFINED MAXVERTS + 1
 typedef unsigned long int UIntL;
 #define SMALLINTLIMIT 1152921504606846976
-#define SYS_BITS 64
 #define DEBUG false
 
 typedef unsigned short int UIntS;
@@ -48,3 +65,5 @@ extern UIntL nr_ss_allocs;
 extern UIntL nr_ss_frees;
 extern UIntL nr_new_perm_coll;
 extern UIntL nr_free_perm_coll;
+
+#endif

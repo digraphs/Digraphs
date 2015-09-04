@@ -104,3 +104,6 @@ graphs.la
 .libs/graphs.la
 .libs/graphs.lai
 .libs/graphs.so
+digraphs-lib
+wilf-coverage.py
+release-checklist.tst

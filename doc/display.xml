@@ -130,7 +130,7 @@ gap> FileString("dot/k4.dot", DotDigraph(gr));
       <Ref Prop="IsSymmetricDigraph"/>.<P/>
       
       Vertices are displayed as circles, numbered consistently with
-      <A>digraph</A>. Since <A>digraph</A> is symmetrie, for every non-loop
+      <A>digraph</A>. Since <A>digraph</A> is symmetric, for every non-loop
       edge there is a complementary edge with opposite source and range.
       <C>DotSymmetricDigraph</C> displays each pair of complementary edges 
       as a single line between the relevant vertices, with no arrowhead.<P/>
@@ -140,7 +140,7 @@ gap> FileString("dot/k4.dot", DotDigraph(gr));
       to display or edit this format see 
       <URL>http://www.graphviz.org</URL>. <P/>
 
-      The string returned by <C>DotSymmetricDiraph</C> can be written to a 
+      The string returned by <C>DotSymmetricDigraph</C> can be written to a 
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
       <Log><![CDATA[

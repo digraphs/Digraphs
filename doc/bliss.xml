@@ -29,7 +29,12 @@ gap> johnson := Digraph( [ [ 2, 3, 4, 5 ], [ 1, 3, 4, 6 ],
 gap> AutomorphismGroup(johnson);
 Group([ (3,4), (2,3)(4,5), (1,2)(5,6) ])
 gap> Size(last);
-48]]></Example>
+48
+gap> cycle := CycleDigraph(20);
+<digraph with 20 vertices, 20 edges>
+gap> a := AutomorphismGroup(cycle);;
+gap> StructureDescription(a);
+"C20"]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -90,8 +95,8 @@ gap> Size(G);
 
     A canonical labelling of a digraph <A>digraph</A> (under <M>\rho</M>) is an
     isomorphism of <A>digraph</A> onto its canonical representative
-    <M>\rho(digraph)</M> given as a permutation of the vertices (and the edges
-    in case <A>digraph</A> has multiple edges). <P/>
+    <M>\rho(</M><A>digraph</A><M>)</M> given as a permutation of the vertices
+    (and the edges in case <A>digraph</A> has multiple edges). <P/>
 
     The canonical labelling is found using <URL
       Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
@@ -180,14 +185,14 @@ true]]></Example>
     <List>
       <Mark>for multidigraphs</Mark>
       <Item>
-        this operation returns a pair of permutations <C>P</C>so that 
+        this operation returns a pair of permutations <C>P</C> so that 
         <C>OnMultiDigraphs(<A>digraph1</A>, P) = digraph2</C>. The first
         permutation is defined on the vertices of <A>digraph1</A> and the second
         on the edges. 
       </Item>
       <Mark>for digraphs without multiple edges</Mark>
       <Item>
-        this operation returns a  permutations <C>p</C>so that 
+        this operation returns a  permutations <C>p</C> so that 
         <C>OnDigraphs(<A>digraph1</A>, p) = digraph2</C>. 
       </Item>
     </List>

@@ -1,21 +1,25 @@
 <!DOCTYPE Book SYSTEM "gapdoc.dtd"
-   [ <!ENTITY Digraphs "<Package>Graphs</Package>">
+   [ <!ENTITY Digraphs "<Package>Digraphs</Package>">
      <!ENTITY Grape "<Alt Not='Text'><URL
    Text='Grape'>http://www.maths.qmul.ac.uk/~leonard/grape/</URL></Alt><Alt
    Only='Text'><Package>Grape</Package></Alt>">
+     <!ENTITY bliss "<Alt Not='Text'><URL
+   Text='bliss'>http://www.tcs.tkk.fi/Software/bliss/</URL></Alt><Alt
+   Only='Text'><Package>bliss</Package></Alt>">
      <!ENTITY IO "<Alt Not='Text'><URL Text='IO'>
      http://www-groups.mcs.st-and.ac.uk/~neunhoef/Computer/Software/Gap/io.html
 </URL></Alt><Alt Only='Text'><Package>IO</Package></Alt>">
      <#Include Label="PKGVERSIONDATA">
    ]>
 
-<Book Name="graphs">
+<Book Name="digraphs">
 <#Include SYSTEM="z-title.xml">
 
 <TableOfContents/>
 
 <Body>
-  <#Include SYSTEM="z-chap1.xml"> <!-- intro -->
+  <#Include SYSTEM="z-chap0.xml"> <!-- intro -->
+  <#Include SYSTEM="z-chap1.xml"> <!-- installing -->
   <#Include SYSTEM="z-chap2.xml"> <!-- creating --> 
   <#Include SYSTEM="z-chap3.xml"> <!-- operators/hashs --> 
   <#Include SYSTEM="z-chap4.xml"> <!-- attributes, operations --> 
@@ -24,7 +28,7 @@
   <#Include SYSTEM="z-chap7.xml"> <!-- visualising, io --> 
 </Body>
 
-<Bibliography Databases="graphs" />
+<Bibliography Databases="digraphs" />
 <TheIndex/>
 
 </Book>

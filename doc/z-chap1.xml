@@ -1,10 +1,182 @@
-<Chapter Label="Introduction"><Heading>Introduction</Heading>
+<Chapter Label="Installing Digraphs">
+  <Heading>Installing &Digraphs;</Heading>
 
-  This is the introduction.<P/>
+  <Section Label="For those in a hurry">
+    <Heading>For those in a hurry</Heading>
+    In this section we give a brief description of how to start using
+    &Digraphs;.<P/>
 
-  A <E>digraph</E> <M>E=(E^0,E^1,r,s)</M>, also known as a 
-  <E>directed graph</E>, consists of a set of vertices <M>E^0</M> and a set of 
-  edges <M>E^1</M> together with functions <M>s, r: E^1 \to E^0</M>, called 
-  the <E>source</E> and <E>range</E>, respectively.
+    It is assumed that you have a working copy of &GAP; with version number 
+    &GAPVERS; or higher. The most up-to-date version of &GAP; and instructions
+    on how to install it can be obtained from the main &GAP; webpage
+    <URL>http://www.gap-system.org</URL>.<P/>
+
+    The following is a summary of the steps that should lead to a
+    successful installation of &Digraphs;:
+
+    <List>
+      
+      <Item> 
+        ensure that the &IO; package version &IOVERS; or higher is available.
+        &IO; must be compiled before &Digraphs; can be loaded.
+      </Item>
+      
+      <Item>  
+        <B>This step is optional:</B> certain functions in &Digraphs; require
+        the &Grape; package to be available; see Section 
+        <Ref Subsect="The Grape package"/> for full details.  To use these
+        functions make sure
+        that the &Grape; package version &GRAPEVERS; or higher is available.
+        If &Grape; is not available, then &Digraphs; can be used as normal with
+        the exception that the functions listed in Subsection 
+        <Ref Subsect="The Grape package"/> will not work. 
+      </Item>
+
+      <Item> 
+        download the package archive <F>&ARCHIVENAME;.tar.gz</F> from
+        <URL Text="the Digraph package webpage">http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php</URL>.
+      </Item>
+    
+      <Item> 
+        unzip and untar the file, this should create a directory called
+        <F>&ARCHIVENAME;</F>.
+      </Item>
+    
+      <Item> 
+        locate the <F>pkg</F> directory of your &GAP; directory, which contains
+        the directories <F>lib</F>, <F>doc</F> and so on. Move the directory
+        <F>&ARCHIVENAME;</F> into the <F>pkg</F> directory.  
+      </Item>
+
+      <Item>
+        it is necessary to compile the &Digraphs; package.
+        Inside the <F>pkg/&ARCHIVENAME;</F> directory, type
+        <Listing>
+<![CDATA[./configure
+make]]></Listing>
+        Further information about this step can be found in Section 
+        <Ref Sect="Compiling the kernel module"/>. 
+      </Item>
+
+      <Item>
+        start &GAP; in the usual way (i.e. type <C>gap</C> at the command line).
+      </Item>
+  
+      <Item> 
+        type <C>LoadPackage("digraphs");</C>
+      </Item>
+    </List>
+  
+    If you want to check that the package is working correctly, you
+    should run some of the tests described in Section 
+    <Ref Sect="Testing your installation"/>.
+  </Section>
+  
+  <!--**********************************************************************-->
+  <!--**********************************************************************-->
+
+  <Section Label="Optional package dependencies">
+    <Heading>Optional package dependencies</Heading>
+    
+    <!--********************************************************************-->
+
+    The &Digraphs; package is written in &GAP; and C code and requires the
+    &IO; package.  The &IO; package is used to read and write transformations,
+    partial permutations, and bipartitions to a file. <P/>
+    
+    <!--********************************************************************-->
+
+    <Subsection Label="The Grape package">
+      <Heading>The Grape package</Heading>
+      
+      The &Grape; package must be available for the following operations to be
+      available:
+      
+      <List>
+        <Item><Ref Oper="Graph"/> with a digraph argument</Item>
+        <Item><Ref Oper="AsGraph"/> with a digraph argument</Item>
+        <Item><Ref Oper="Digraph"/> with a &Grape; graph argument</Item>
+      </List>
+
+      If &Grape; is not available, then &Digraphs; can be used as normal with
+      the exception that the functions above will not work.
+    </Subsection>
+  </Section>
+  
+  <!--**********************************************************************-->
+  <!--**********************************************************************-->
+
+  <Section Label="Compiling the kernel module">
+    <Heading>Compiling the kernel module</Heading>
+    The &Digraphs; package has a &GAP; kernel component in
+    C which should be compiled. This component contains certain low-level
+    functions required by &Digraphs;.
+    <P/>
+
+    It is not possible to use the &Digraphs; package without compiling it.<P/>
+
+    To compile the kernel component inside the <F>pkg/&ARCHIVENAME;</F>
+    directory, type
+<Listing>
+<![CDATA[
+./configure
+make]]></Listing>
+    <P/>
+
+    If you installed the package in another 'pkg' directory than the standard 'pkg'
+    directory in your &GAP; installation, then you have to do two things. Firstly
+    during compilation you have to use the option '--with-gaproot=PATH' of the
+    'configure' script where 'PATH' is a path to the main GAP root directory (if
+    not given the default '../..' is assumed).<P/>
+
+    If you installed &GAP; on several architectures, you must execute the
+    configure/make step for each of the architectures. You can either do this
+    immediately after configuring and compiling GAP itself on this architecture, or
+    alternatively (when using version 4.5 of GAP or newer) set the environment
+    variable 'CONFIGNAME' to the name of the configuration you used when compiling
+    GAP before running './configure'.  Note however that your compiler choice and
+    flags (environment variables 'CC' and 'CFLAGS') need to be chosen to match the
+    setup of the original GAP compilation. For example you have to specify 32-bit
+    or 64-bit mode correctly!
+  </Section>
+  
+  <!--**********************************************************************-->
+  <!--**********************************************************************-->
+
+  <Section Label="Rebuilding the documentation">
+    <Heading>Rebuilding the documentation</Heading>
+    The &Digraphs; package comes complete with pdf, html, and text versions of
+    the documentation. However, you might find it necessary, at some point, to
+    rebuild the documentation. To rebuild the documentation use the <Ref
+      Func="DigraphsMakeDoc"/>.
+
+    <#Include Label="DigraphsMakeDoc">
+  </Section>
+  
+  <!--**********************************************************************-->
+  <!--**********************************************************************-->
+    
+  <Section Label="Testing your installation">
+    <Heading>Testing your installation</Heading>
+    
+    In this section we describe how to test that &Digraphs; is working as
+    intended.  To test that &Digraphs; is installed correctly use 
+    <Ref Func="DigraphsTestInstall"/> or for more extensive tests use 
+    <Ref Func="DigraphsTestStandard"/>. <P/>
+
+    If something goes wrong, then please review the instructions in Section <Ref
+      Sect="For those in a hurry"/> and ensure that &Digraphs; has been
+    properly installed.  If you continue having problems, please use the <URL
+      Text="issue tracker">http://bitbucket.org/james-d-mitchell/digraphs/issues</URL>
+    to report the issues you are having. 
+
+    <#Include Label="DigraphsTestInstall">
+    <#Include Label="DigraphsTestStandard">
+
+  </Section>
+  
+  <!--**********************************************************************-->
+  <!--**********************************************************************-->
+
 
 </Chapter>

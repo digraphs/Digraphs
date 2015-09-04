@@ -1,4 +1,4 @@
-<Chapter Label="Operators and hashing"><Heading>Operators and hashing</Heading>
+<Chapter Label="Operators"><Heading>Operators</Heading>
 
   <Section><Heading>Operators for digraphs</Heading>
     <List>
@@ -6,46 +6,35 @@
      <Item>
        <Index Key="="><C>=</C> (for digraphs)</Index>
        returns <K>true</K> if <A>digraph1</A> and <A>digraph2</A> have the same
-       vertices, and
-       <C>DigraphEdges(<A>digraph1</A>) = DigraphEdges(<A>digraph2</A>)</C>,
-       up to some re-ordering of the edge lists. <P/>
+       vertices, and <C>DigraphEdges(<A>digraph1</A>) =
+         DigraphEdges(<A>digraph2</A>)</C>, up to some re-ordering of the edge
+       lists. <P/>
 
-       Note that this operator does not compare the vertex
-       labels or edge labels of <A>digraph1</A> and <A>digraph2</A>.
+       Note that this operator does not compare the vertex labels 
+       of <A>digraph1</A> and <A>digraph2</A>.
      </Item>
 
      <Mark><C><A>digraph1</A> &lt; <A>digraph2</A></C></Mark>
      <Item>
        <Index Key="&lt;"><C>&lt;</C> (for digraphs)</Index>
 
-       <List>
-         <Item>
-           Let <M>n_1</M> and <M>n_2</M> be the number of vertices of 
-           <A>digraph1</A> and <A>digraph2</A> respectively.
-         </Item>
-         <Item>
-           Let <M>m_1</M> and <M>m_2</M> be the number of edges of
-           <A>digraph1</A> and <A>digraph2</A> respectively.
-         </Item>
-         <Item>
-           Let <M>e_1</M> = <C>DigraphEdges(<A>digraph1</A>)</C> and let
-           <M>e_2</M> = <C>DigraphEdges(<A>digraph2</A>)</C>, after having
-           been sorted with respect to the lexicographical order.
-         </Item>
-       </List>
-
-       Then this operator returns <K>true</K> if one of the following holds:
+       This operator returns <K>true</K> if one of the following holds:
 
        <List>
          <Item>
-           <M>n_1 &lt; n_2</M>.
+           The number <M>n_1</M> of vertices in <A>digraph1</A> is less than
+           the number <M>n_2</M> of vertices in <A>digraph2</A>;
          </Item>
          <Item>
-           <M>n_1 = n_2</M>, and <M>m_1 &lt; m_2</M>.
+           <M>n_1 = n_2</M>, and the number <M>m_1</M> of edges in
+           <A>digraph1</A> is less than the number <M>m_2</M> of edges in
+           <A>digraph2</A>;
          </Item>
          <Item>
-           <M>n_1 = n_2</M>, <M>m_1 = m_2</M>, and <M>e_1 &lt; e_2</M> 
-           (with respect to the lexicographical order).
+           <M>n_1 = n_2</M>, <M>m_1 = m_2</M>, and
+           <C>DigraphEdges(<A>digraph1</A>)</C> is less than
+           <C>DigraphEdges(<A>digraph2</A>)</C> after having both of these sets
+           have been sorted with respect to the lexicographical order.
          </Item>
        </List>
      </Item>
