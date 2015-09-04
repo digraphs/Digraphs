@@ -86,7 +86,7 @@ static void init_mask (void) {
   if (!IS_MASK_INITIALIZED) {
     UIntS i;
     Block w = 1;
-    for (i = 0; i < SYS_BITS; i++) {
+    for (i = 0; i < NUMBER_BITS_PER_BLOCK; i++) {
         MASK[i] = w;
         w <<= 1;
     }
