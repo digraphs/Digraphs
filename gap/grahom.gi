@@ -302,9 +302,28 @@ end);
 InstallMethod(DigraphEmbedding, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(gr1, gr2)
-  local iso;
+  local iso, monos, dual1, edges1, mat, t;
+
   if DigraphNrVertices(gr1) = DigraphNrVertices(gr2) then
-    iso := IsomorphismDigraphs(gr1, gr2);
-    return; 
+    iso := IsomorphismDigraphs(DigraphRemoveAllMultipleEdges(gr1),
+                               DigraphRemoveAllMultipleEdges(gr2));
+    if iso = fail then
+      return fail;
+    fi;
+    return AsTransformation(iso);
   fi;
+
+  # get all monomorphisms
+  monos := MonomorphismsDigraphsRepresentatives(gr1, gr2);
+
+
+  dual1 := DigraphDual(gr1);
+  edges1 := DigraphEdges(dual1);
+  mat := AdjacencyMatrix(gr2);;
+  for t in monos do
+    if ForAll(edges1, e -> mat[e[1] ^ t][e[2] ^ t] = 0) then
+      return t;
+    fi;
+  od;
+  return fail;
 end);
