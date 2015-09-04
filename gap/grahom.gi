@@ -302,8 +302,9 @@ end);
 InstallMethod(DigraphEmbedding, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(gr1, gr2)
+  local iso;
   if DigraphNrVertices(gr1) = DigraphNrVertices(gr2) then
     iso := IsomorphismDigraphs(gr1, gr2);
-    return 
+    return; 
   fi;
 end);
