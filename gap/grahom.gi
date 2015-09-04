@@ -9,7 +9,7 @@
 #############################################################################
 ##
 
-# Wrapper for C function GRAPH_HOMOS
+# Wrapper for C function DI/GRAPH_HOMOS
 
 InstallGlobalFunction(HomomorphismGraphsFinder,
 function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
