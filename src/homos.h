@@ -4,9 +4,13 @@
 **                                                            J. D. Mitchell 
 **                                                            
 **  Copyright (C) 2014-15 - Julius Jonusas and J. D. Mitchell 
+**
 **  This file is free software, see license information at the end.
 **  
 ********************************************************************************/
+
+#ifndef HOMOS_HOMOS_H
+#define HOMOS_HOMOS_H 1
 
 #include "src/schreier-sims.h"
 #include "bliss-0.73/bliss_C.h"
@@ -191,3 +195,4 @@ void GraphMonomorphisms (Graph*   graph1,
                          UIntL     max_results_arg,
                          BitArray* image_arg,
                          UIntS     *partial_map_arg                     );
+#endif

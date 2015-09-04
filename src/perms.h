@@ -1,4 +1,20 @@
-//#define NDEBUG
+/*******************************************************************************
+**
+*A  perms.h                  permutations                     Julius Jonusas
+**                                                            James Mitchell 
+**                                                            Michael Torpey
+**                                                            Wilfred Wilson
+**
+**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey, 
+**  Wilfred Wilson 
+**
+**  This file is free software, see license information at the end.
+**  
+*******************************************************************************/
+
+#ifndef HOMOS_PERMS_H
+#define HOMOS_PERMS_H 1
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
@@ -49,3 +65,5 @@ extern UIntL nr_ss_allocs;
 extern UIntL nr_ss_frees;
 extern UIntL nr_new_perm_coll;
 extern UIntL nr_free_perm_coll;
+
+#endif
