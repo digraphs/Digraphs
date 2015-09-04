@@ -1,6 +1,30 @@
-<Chapter Label="Introduction"><Heading>Introduction</Heading>
+<Chapter Label="Introduction">
+  <Heading>The &Digraphs; package</Heading>
 
-  This is the introduction.<P/>
+  <Section><Heading>Introduction</Heading>
+
+  This is the manual for the &Digraphs; package version &VERSION;.  This package
+  was developed at the University of St Andrews by:
+  <List>
+    <Item>Julius Jonusas</Item>
+    <Item>James D. Mitchell</Item>
+    <Item>Michael C. Torpey</Item>
+    <Item>Wilf A. Wilson</Item>
+  </List>
+
+  The &Digraphs; package contains a variety of methods for efficiently creating
+  and storing digraphs and computing information about them.  Full explanations
+  of all the functions contained in the package are provided below. <P/>
+
+  If the &Grape; package is available, it will be loaded automatically.
+  Digraphs created with the &Digraphs; package can be converted to &Grape;
+  graphs with <Ref Oper="Graph"/>, and conversely &Grape; graphs can be
+  converted to &Digraphs; objects with <Ref Oper="Digraph"/>.  &Grape; is not
+  required for &Digraphs; to run. <P/>
+
+  The <E>bliss</E> tool is included in this package.  It is an open-source tool
+  for computing automorphism groups and canonical forms of graphs, written by
+  Tommi Junttila and Petteri Kaski. Several algorithms rely on it. <P/>
 
   A <E>digraph</E> <M>E=(E^0,E^1,r,s)</M>, also known as a 
   <E>directed graph</E>, consists of a set of vertices <M>E^0</M> and a set of 
@@ -18,8 +42,9 @@
   repeated.  A <E>cycle</E> is defined similarly, except that <M>v_1 = v_n</M>.
   
   The <E>length</E> of a directed path or cycle <M>(v_1, e_1, v_2, e_2, ...,
-    e_{n-1}, v_n)</M> is equal to <M>n-1</M>, the number of edges it contains.
+  e_{n-1}, v_n)</M> is equal to <M>n-1</M>, the number of edges it contains.
 
+  </Section>
   <Section><Heading>Testing and Documentation</Heading>
     <#Include Label="DigraphsMakeDoc">
     <#Include Label="DigraphsTestInstall">
