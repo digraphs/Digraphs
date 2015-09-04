@@ -157,19 +157,13 @@ end);
 InstallMethod(DigraphColoring, "for a digraph and pos int",
 [IsDigraph, IsPosInt],
 function(digraph, n)
-  local out;
 
   if IsMultiDigraph(digraph) then
     ErrorMayQuit("Digraphs: DigraphColoring: usage,\n",
                  "the 1st argument <digraph> must not be a  multidigraph,");
   fi;
 
-  out := DigraphEpimorphism(digraph, CompleteDigraph(n));
-
-  if IsEmpty(out) then
-    return fail;
-  fi;
-  return out[1];
+  return DigraphEpimorphism(digraph, CompleteDigraph(n));
 end);
 
 InstallMethod(DigraphColouring, "for a digraph and a pos int",
@@ -223,16 +217,12 @@ end);
 ################################################################################
 # INJECTIVE HOMOMORPHISMS
 
-# Finds a single embedding of gr1 into gr2
+# Finds a single injective homomorphism of gr1 into gr2
 
-InstallMethod(DigraphEmbedding, "for a digraph and a digraph",
+InstallMethod(DigraphMonomorphism, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(gr1, gr2)
   local out;
-
-  if DigraphNrVertices(gr1) = DigraphNrVertices(gr2) then
-    return AsTransformation(IsomorphismDigraphs(gr1, gr2));
-  fi;
 
   out := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1,
                                     DigraphNrVertices(gr1), true,
@@ -277,10 +267,6 @@ InstallMethod(DigraphEpimorphism, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(gr1, gr2)
   local out;
-
-  if DigraphNrVertices(gr1) = DigraphNrVertices(gr2) then
-    return AsTransformation(IsomorphismDigraphs(gr1, gr2));
-  fi;
 
   out := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1,
                                     DigraphNrVertices(gr2), false,

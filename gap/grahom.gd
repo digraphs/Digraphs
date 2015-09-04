@@ -16,7 +16,7 @@ DeclareOperation("HomomorphismsDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("HomomorphismsDigraphsRepresentatives",
                  [IsDigraph, IsDigraph]);
 
-DeclareOperation("DigraphEmbedding", [IsDigraph, IsDigraph]);
+DeclareOperation("DigraphMonomorphism", [IsDigraph, IsDigraph]);
 DeclareOperation("MonomorphismsDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("MonomorphismsDigraphsRepresentatives",
                  [IsDigraph, IsDigraph]);

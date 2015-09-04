@@ -25,7 +25,7 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="HomomorphismDigraphsFinder">
     <#Include Label="DigraphHomomorphism">
     <#Include Label="HomomorphismsDigraphs">
-    <#Include Label="DigraphEmbedding">
+    <#Include Label="DigraphMonomorphism">
     <#Include Label="MonomorphismsDigraphs">
     <#Include Label="DigraphEpimorphism">
     <#Include Label="EpimorphismsDigraphs">
