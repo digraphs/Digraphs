@@ -48,7 +48,7 @@ installation of [Digraphs](http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digrap
   
 * compile the kernel module; more details below.
 
-* start [main GAP webpage](http://www.gap-system.org) in the usual way.
+* start [GAP](http://www.gap-system.org) in the usual way.
 
 * type `LoadPackage("digraphs");`
 
