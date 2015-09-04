@@ -519,8 +519,8 @@ void free_digraph (Digraph* digraph) {
   UIntS i, nr = digraph->nr_vertices;
 
   for (i = 0; i < nr; i++) {
-    free(digraph->in_neighbours[i]);
-    free(digraph->out_neighbours[i]);
+    free_bit_array(digraph->in_neighbours[i]);
+    free_bit_array(digraph->out_neighbours[i]);
   }
   free(digraph->in_neighbours);
   free(digraph->out_neighbours);
@@ -1108,7 +1108,7 @@ void free_graph (Graph* graph) {
   UIntS i, nr = graph->nr_vertices;
 
   for (i = 0; i < nr; i++) {
-    free(graph->neighbours[i]);
+    free_bit_array(graph->neighbours[i]);
   }
   free(graph->neighbours);
   free(graph);

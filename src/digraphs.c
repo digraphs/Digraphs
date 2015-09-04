@@ -1456,7 +1456,7 @@ static Obj FuncDIGRAPH_LT(Obj self, Obj digraph1, Obj digraph2) {
 
 // bliss 
 
-BlissGraph* buildBlissMultiDigraph(Obj digraph) {
+BlissGraph* buildBlissMultiDigraph (Obj digraph) {
   UInt        n, i, j, k, l, nr;
   Obj         adji, adj;
   BlissGraph  *graph;
