@@ -5,7 +5,7 @@
 **                                                            
 **  Copyright (C) 2014-15 - Julius Jonusas and J. D. Mitchell 
 **
-**  This file is free software, see license information at the end.
+**  This file is free software, see the digraphs/LICENSE.
 **  
 ********************************************************************************/
 
