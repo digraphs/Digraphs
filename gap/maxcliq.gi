@@ -307,7 +307,7 @@ function(g)
     end;
 
     outer_forbidden := [];
-    outer_try := DigraphDegeneracyOrdering(g);
+    outer_try := Reversed(DigraphDegeneracyOrdering(g));
 
     while not IsEmpty(outer_try) do
         outer_v := Remove(outer_try);
