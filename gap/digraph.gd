@@ -14,13 +14,13 @@ DeclareCategory("IsDigraph", IsObject);
 # meaning it really has multiple edges!!
 DeclareProperty("IsMultiDigraph", IsDigraph);
 
-BindGlobal("DigraphFamily", NewFamily("DigraphFamily",
- IsDigraph));
+BindGlobal("DigraphFamily", NewFamily("DigraphFamily", IsDigraph));
 
 BindGlobal("DigraphType", NewType(DigraphFamily,
- IsDigraph and IsComponentObjectRep and IsAttributeStoringRep));
+                                  IsDigraph and IsComponentObjectRep
+                                  and IsAttributeStoringRep));
 
-# constructors . . . 
+# constructors . . .
 
 DeclareOperation("Digraph", [IsRecord]);
 DeclareOperation("Digraph", [IsList]);
@@ -31,10 +31,8 @@ DeclareOperation("Digraph", [IsBinaryRelation]);
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsList]);
 DeclareOperation("DigraphNC", [IsList, IsInt]);
-DeclareOperation("DigraphByAdjacencyMatrix", [IsRectangularTable]);
-DeclareOperation("DigraphByAdjacencyMatrix", [IsList and IsEmpty]);
-DeclareOperation("DigraphByAdjacencyMatrixNC", [IsRectangularTable]);
-DeclareOperation("DigraphByAdjacencyMatrixNC", [IsList and IsEmpty]);
+DeclareOperation("DigraphByAdjacencyMatrix", [IsHomogeneousList]);
+DeclareOperation("DigraphByAdjacencyMatrixNC", [IsHomogeneousList]);
 DeclareOperation("DigraphByEdges", [IsRectangularTable]);
 DeclareOperation("DigraphByEdges", [IsRectangularTable, IsPosInt]);
 DeclareOperation("DigraphByEdges", [IsList and IsEmpty]);
@@ -64,10 +62,3 @@ DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphVertexLabels", [IsDigraph]);
 DeclareOperation("SetDigraphVertexLabel", [IsDigraph, IsPosInt, IsObject]);
 DeclareOperation("SetDigraphVertexLabels", [IsDigraph, IsList]);
-
-DeclareOperation("DigraphEdgeLabel", [IsDigraph, IsPosInt]);
-DeclareOperation("DigraphEdgeLabels", [IsDigraph]);
-DeclareOperation("SetDigraphEdgeLabel", [IsDigraph, IsPosInt, IsObject]);
-DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsList]);
-
-DeclareOperation("ReducedDigraph", [IsDigraph]);

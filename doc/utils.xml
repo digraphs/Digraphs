@@ -1,0 +1,95 @@
+#############################################################################
+##
+#W  utils.xml
+#Y  Copyright (C) 2015                                  Michael C. Torpey
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
+
+<#GAPDoc Label="DigraphsMakeDoc">
+<ManSection>
+  <Func Name="DigraphsMakeDoc" Arg=""/>
+  <Returns>Nothing</Returns>
+  <Description>
+    This function should be called with no argument to compile the &Digraphs;
+    documentation.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsTestAll">
+<ManSection>
+  <Func Name="DigraphsTestAll" Arg=""/>
+  <Returns>Nothing.</Returns>
+  <Description>
+    This function should be called to comprehensively test that &Digraphs; is
+    working correctly. These tests should take no more than a few minutes to
+    complete. The tests will include compiling the package's documentation and
+    running all the examples included in the manual. <P/>
+
+    To quickly test that &Digraphs; is installed correctly use <Ref
+    Func="DigraphsTestInstall"/>.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsTestStandard">
+<ManSection>
+  <Func Name="DigraphsTestStandard" Arg=""/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This function should be called to test all the methods included in
+    &Digraphs;.  These tests should take only a few seconds to complete. <P/>
+
+    To quickly test that &Digraphs; is installed correctly use <Ref
+    Func="DigraphsTestInstall"/>.  For a more thorough test, use <Ref
+    Func="DigraphsTestStandard"/>.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsTestExtreme">
+<ManSection>
+  <Func Name="DigraphsTestExtreme" Arg=""/>
+  <Returns>Nothing.</Returns>
+  <Description>
+    This function should be called with no arguments to execute a series of
+    particularly demanding tests, which measure the performance of a variety of
+    functions on large examples.  These tests could take a long time to
+    complete, probably at least several minutes. <P/>
+
+    For these tests to complete, the digraphs library <C>digraphs-lib</C> must
+    be downloaded and placed in the <C>digraphs</C> directory.  This library can
+    be found on the &Digraphs; website.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsTestInstall">
+<ManSection>
+  <Func Name="DigraphsTestInstall" Arg=""/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This function should be called with no argument to test your installation of
+    &Digraphs; is working correctly. These tests should take no more than a
+    fraction of a second to complete.  To test more comprehensively that
+    &Digraphs; is working correctly, use <Ref Func="DigraphsTestStandard"/>.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphsTestManualExamples">
+<ManSection>
+  <Func Name="DigraphsTestManualExamples" Arg=""/>
+  <Returns>Nothing.</Returns>
+  <Description>
+    This function should be called with no argument to test the examples in the
+    &Digraphs; manual. These tests should take no more than a few minutes to
+    complete.  To more comprehensively test that &Digraphs; is installed
+    correctly use <Ref Func="DigraphsTestStandard"/>. See also <Ref
+    Func="DigraphsTestInstall"/>.
+  </Description>
+</ManSection>
+<#/GAPDoc>

@@ -1,30 +1,49 @@
 ############################################################################
 ##
 #W  PackageInfo.g
-#Y  Copyright (C) 2011-14                                James D. Mitchell
+#Y  Copyright (C) 2015                                   Julius Jonusas
+##                                                       James Mitchell
+##                                                       Michael Torpey
+##                                                       Wilfred Wilson
 ##
-##  Licensing information can be found in the README file of this package.
+##  Licensing information can be found in the README.md file of this package.
 ##
 #############################################################################
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "0.1">
-##  <!ENTITY GAPVERS "4.7.5">
-##  <!ENTITY GRAPEVERS "4.5">
-##  <!ENTITY IOVERS "4.4.4">
-##  <!ENTITY ARCHIVENAME "digraphs-0.1">
-##  <!ENTITY COPYRIGHTYEARS "2014">
+##  <!ENTITY VERSION        "0.2">
+##  <!ENTITY GAPVERS        "4.7.8">
+##  <!ENTITY GRAPEVERS      "4.5">
+##  <!ENTITY IOVERS         "4.4.4">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.2">
+##  <!ENTITY COPYRIGHTYEARS "2014-15">
 ##  <#/GAPDoc>
 
-SetPackageInfo( rec(
+SetPackageInfo(rec(
 PackageName := "Digraphs",
-Subtitle := "Methods for Directed Graphs",
-Version := "0.1",
-Date := "??",
-ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.1",
+Subtitle := "Methods for digraphs and multidigraphs",
+Version := "0.2",
+Date := "04/09/2015",
+ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.2",
 ArchiveFormats := ".tar.gz",
 Persons := [
+  
+  rec( 
+    LastName      := "Jonusas",
+    FirstNames    := "J.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "jj252@st-and.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~julius",
+    PostalAddress := Concatenation( [
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
+  ),
+  
   rec( 
     LastName      := "Mitchell",
     FirstNames    := "J. D.",
@@ -39,42 +58,14 @@ Persons := [
     Place         := "St Andrews",
     Institution   := "University of St Andrews"
   ),
-  
-  rec( 
-    LastName      := "Jonusas",
-    FirstNames    := "J.",
-    IsAuthor      := true,
-    IsMaintainer  := false,
-    Email         := "jj252@st-and.ac.uk",
-    PostalAddress := Concatenation( [
-                       "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
-                       " Scotland"] ),
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"
-  ),
         
-   rec(
-    LastName      := "Pfeiffer",
-    FirstNames    := "Markus",
-    IsAuthor      := true,
-    IsMaintainer  := false,
-    Email         := "markus.pfeiffer@morphism.de",
-    WWWHome       := "http://www.morphism.de/~markusp/",
-    PostalAddress := Concatenation( [
-                       "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
-                       " Scotland"] ),
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"
-  ), 
-
   rec( 
     LastName      := "Torpey",
     FirstNames    := "M.",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mct25@st-and.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~mct25",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
@@ -89,7 +80,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "waw7@st-and.ac.uk",
-    WWWHome       := "http://wilf-wilson.net",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~waw7",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
@@ -98,14 +89,14 @@ Persons := [
     Institution   := "University of St Andrews"
   )],
 
-Status := "deposited",
+Status := "dev",
 
 README_URL := 
-  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README",
+  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README.md",
 PackageInfoURL := 
   "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/PackageInfo.g",
 
-AbstractHTML := "",
+AbstractHTML := "The <b>Digraphs</b> package is a <b>GAP</b> package containing methods for digraphs and multidigraphs.",
 
 PackageWWWHome := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php",
                
@@ -115,12 +106,12 @@ PackageDoc := rec(
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",  
   SixFile   := "doc/manual.six",
-  LongTitle := "Digraphs - Methods for directed graphs",
+  LongTitle := "Digraphs - Methods for digraphs",
   Autoload  := true,
 ),
 
 Dependencies := rec(
-  GAP := ">=4.7.5",
+  GAP := ">=4.7.8",
   NeededOtherPackages := [["io", ">=4.4.4"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"], ["grape", ">=4.5"]], 
   ExternalConditions := [],
@@ -131,7 +122,7 @@ Dependencies := rec(
       (Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") = fail)
      then
       Info(InfoWarning, 1, "Digraphs: the kernel module is not compiled, ",
-      "the package cannot be loaded.");
+           "the package cannot be loaded.");
       return fail;
     fi;
     return true;

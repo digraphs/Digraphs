@@ -1,30 +1,49 @@
 <TitlePage>
   <Title>&Digraphs;</Title>
-  <Subtitle>Method for digraphs</Subtitle>
+  <Subtitle>Methods for digraphs</Subtitle>
   <Version>Version &VERSION;</Version>
 
-  <Author>J. D. Mitchell
+  <Author>Julius Jonu&#353;as
+    <Email>jj252@st-and.ac.uk</Email>
+    <Homepage>http://www-circa.mcs.st-and.ac.uk/~julius</Homepage>
+  </Author>
+
+  <Author>James D. Mitchell
     <Email>jdm3@st-and.ac.uk</Email>
     <Homepage>http://tinyurl.com/jdmitchell</Homepage>
   </Author>
-  
-  <Author>Julius Jonu&#353;as</Author>
-  <Author>Markus Pfeiffer</Author>
-  <Author>Michael Torpey</Author>
-  <Author>Wilf Wilson</Author>
 
-  <Copyright>&copyright; &COPYRIGHTYEARS; by J. D. Mitchell.<P/>
+  <Author>Michael Torpey
+    <Email>mct25@st-and.ac.uk</Email>
+    <Homepage>http://www-circa.mcs.st-and.ac.uk/~mct25</Homepage>
+  </Author>
+
+  <Author>Wilf Wilson
+    <Email>waw7@st-and.ac.uk</Email>
+    <Homepage>http://www-circa.mcs.st-and.ac.uk/~waw7</Homepage>
+  </Author>
+
+  <Copyright>&copyright; &COPYRIGHTYEARS; by Julius Jonu&#353;as, J.D. Mitchell,
+  Michael Torpey, Wilf Wilson.<P/>
+
     &Digraphs; is free software; you can redistribute it and/or modify it
     under the terms of the <URL Text="GNU General Public License">
     http://www.fsf.org/licenses/gpl.html</URL> as published by the Free Software
-    Foundation; either version 2 of the License, or (at your option) any later
+    Foundation; either version 3 of the License, or (at your option) any later
     version.
   </Copyright>
 
   <Abstract>
+    The &Digraphs; package is a &GAP; package containing methods for graphs,
+    digraphs, and multidigraphs. 
   </Abstract>
 
   <Acknowledgements>
+    We would like to thank Chris Jefferson for his help in including the &bliss;
+    tool in the package.
+
+    This package's methods for computing digraph homomorphisms are based on work
+    by Max Neunh&#246;ffer, and independently Artur Sch&#228;fer.
   </Acknowledgements>
 
 </TitlePage>

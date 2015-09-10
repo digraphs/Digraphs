@@ -1,0 +1,60 @@
+<Chapter Label="The Digraphs package">
+  <Heading>
+    The &Digraphs; package
+  </Heading>
+  <Index Key="Digraphs">&Digraphs; package overview</Index>	
+
+<Section><Heading>Introduction</Heading>
+
+  This is the manual for the &Digraphs; package version &VERSION;.  This package
+  was developed at the University of St Andrews by:
+  <List>
+    <Item>Julius Jonusas</Item>
+    <Item>James D. Mitchell</Item>
+    <Item>Michael C. Torpey</Item>
+    <Item>Wilf A. Wilson</Item>
+  </List>
+
+  The &Digraphs; package contains a variety of methods for efficiently creating
+  and storing digraphs and computing information about them.  Full explanations
+  of all the functions contained in the package are provided below. <P/>
+
+  If the &Grape; package is available, it will be loaded automatically.
+  Digraphs created with the &Digraphs; package can be converted to &Grape;
+  graphs with <Ref Oper="Graph"/>, and conversely &Grape; graphs can be
+  converted to &Digraphs; objects with <Ref Oper="Digraph"/>.  &Grape; is not
+  required for &Digraphs; to run. <P/>
+
+  The &bliss; tool <Cite Key="JunttilaKaski"/> is included in this package.  It
+  is an open-source tool for computing automorphism groups and canonical forms
+  of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods
+  in the &Digraphs; package rely on &bliss;. <P/>
+
+  For the purposes of this package and its documentation, the following
+  definitions apply: <P/>
+
+  A <E>digraph</E> <M>E=(E^0,E^1,r,s)</M>, also known as a 
+  <E>directed graph</E>, consists of a set of vertices <M>E^0</M> and a set of 
+  edges <M>E^1</M> together with functions <M>s, r: E^1 \to E^0</M>, called 
+  the <E>source</E> and <E>range</E>, respectively.
+
+  The source and range of an edge is respectively the values of <M>s, r</M>
+  at that edge.
+
+  An edge is called a <E>loop</E> if its source and range are the same.
+
+  A digraph is called a <E>multidigraph</E> if there exist two or more edges
+  with the same source and the same range. <P/>
+
+  A <E>directed path</E> on a digraph is a sequence of alternating vertices and
+  edges <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M> such that each edge
+  <M>e_i</M> has source <M>v_i</M> and range <M>v_{i+1}</M>, and no vertex is
+  repeated.  A <E>directed walk</E> is defined similarly, but vertices may be
+  repeated.  A <E>cycle</E> is defined similarly to a directed path, except that
+  <M>v_1 = v_n</M>.
+  
+  The <E>length</E> of a directed path or cycle <M>(v_1, e_1, v_2, e_2, ...,
+  e_{n-1}, v_n)</M> is equal to <M>n-1</M>, the number of edges it contains.
+
+  </Section>
+</Chapter>

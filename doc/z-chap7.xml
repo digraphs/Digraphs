@@ -8,12 +8,12 @@
 
   <Section><Heading>Reading and writing graphs to a file</Heading>
     This section describes different ways to store and read graphs
-    form a file in the &Digraphs;. 
+    from a file in the &Digraphs; package. 
     <List>
       <Mark> Graph6 </Mark>
       <Item>
 	<E> Graph6 </E> is a graph data format for storing undirected graphs
-	with no multiple edges nor loops of size up to <M> 2^36 - 1 </M> in
+	with no multiple edges nor loops of size up to <M> 2^{36} - 1 </M> in
 	printable chracters. The format consists of two parts. The first part
 	uses one to eight bytes to store the number of vertices. And the second
 	part is the upper half of the adjacency matrix converted into ASCII
@@ -25,7 +25,7 @@
       <Item>
 	<E> Sparse6 </E> is a graph data format for storing undirected graphs
 	with possibly multiple edges or loops. The maximal number of vertices
-	allowed is <M> 2^36 - 1 </M>. The format consists of two parts. The
+	allowed is <M> 2^{36} - 1 </M>. The format consists of two parts. The
 	first part uses one to eight bytes to store the number of vertices.
 	And the second part only stores information about the edges.
 	Therefore, the <E> Sparse6 </E> format return a more compact encoding
@@ -38,7 +38,7 @@
       <Mark> Digraph6 </Mark>
       <Item>
 	<E>Digraph6</E> is a new format based on <E> Graph6 </E>, but designed
-	for directed graphs. The entire adjacency matrix is stored, and
+	for digraphs. The entire adjacency matrix is stored, and
 	therefore there is support for directed edges and single-vertex loops.
 	However, multiple edges are not supported.
       </Item>
@@ -46,7 +46,7 @@
       <Mark> DiSparse6 </Mark>
       <Item>
 	<E>DiSparse6</E> is a new format based on <E> Sparse6 </E>, but
-	designed for directed graphs. In this format the list of edges is
+	designed for digraphs. In this format the list of edges is
 	partitioned into inceasing and decreasing edges, depending whether the
 	edge has it's source bigger than the range. Then both sets of edges are
 	written separetly in <E> Sparse6 </E> format with a separation symbol
@@ -54,10 +54,13 @@
       </Item>
     </List>
     <#Include Label="DigraphFromGraph6String">
-    <#Include Label="WriteGraph6">
+    <#Include Label="Graph6String">
     <#Include Label="ReadDigraphs">
     <#Include Label="WriteDigraphs">
     <#Include Label="DigraphPlainTextLineEncoder">
+    <#Include Label="TournamentLineDecoder">
+    <#Include Label="AdjacencyMatrixUpperTriangleLineDecoder">
+    <#Include Label="TCodeDecoder">
     <#Include Label="PlainTextString">
     <#Include Label="WritePlainTextDigraph">
   </Section>

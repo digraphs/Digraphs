@@ -4,6 +4,7 @@
 
   <Section><Heading>Creating digraphs</Heading>
     <#Include Label="IsDigraph">
+    <#Include Label="DigraphType">
     <#Include Label="Digraph">
     <#Include Label="DigraphByAdjacencyMatrix">
     <#Include Label="DigraphByEdges">
@@ -13,7 +14,8 @@
   <Section><Heading>Changing representations</Heading>
     <#Include Label="AsBinaryRelation">
     <#Include Label="AsDigraph">
-    <#Include Label="GrapeGraph">
+    <#Include Label="Graph">
+    <#Include Label="AsGraph">
   </Section>
 
   <Section><Heading>New digraphs from old</Heading>
@@ -23,7 +25,9 @@
     <#Include Label="QuotientDigraph">
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">
+    <#Include Label="DigraphSymmetricClosure">
     <#Include Label="DigraphReflexiveTransitiveClosure">
+    <#Include Label="DigraphReflexiveTransitiveReduction">
     <#Include Label="DigraphAddVertex">
     <#Include Label="DigraphAddVertices">
     <#Include Label="DigraphAddEdge">

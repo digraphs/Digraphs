@@ -14,9 +14,6 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
   </Section>
 
   <Section><Heading>Isomorphisms, and Canonical labellings</Heading>
-  
-
-
     <#Include Label="AutomorphismGroupDigraph">
     <#Include Label="AutomorphismGroupMultiDigraph">
     <#Include Label="DigraphCanonicalLabelling">
@@ -24,9 +21,23 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="IsomorphismDigraphs">
   </Section>
   
-  <Section><Heading>Homomorphisms</Heading>
-    <#Include Label="DigraphEndomorphisms">
-    <#Include Label="EndomorphismMonoid">
+  <Section><Heading>Homomorphisms of digraphs</Heading>
+
+    The following methods exist to find homomorphisms between digraphs.
+    If an argument to one of these methods is a digraph with multiple edges,
+    then the multiplicity of edges will be ignored in order to perform the
+    calculation; the digraph will be treated as if it has no multiple edges.
+
+    <#Include Label="HomomorphismDigraphsFinder">
+    <#Include Label="DigraphHomomorphism">
+    <#Include Label="HomomorphismsDigraphs">
+    <#Include Label="DigraphMonomorphism">
+    <#Include Label="MonomorphismsDigraphs">
+    <#Include Label="DigraphEpimorphism">
+    <#Include Label="EpimorphismsDigraphs">
+    <#Include Label="GeneratorsOfEndomorphismMonoid">
+    <#Include Label="DigraphColoring">
+    <#Include Label="DigraphEmbedding">
   </Section>
 
 </Chapter>
