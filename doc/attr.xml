@@ -582,13 +582,14 @@ true
   <Attr Name="DigraphDiameter" Arg="digraph"/>
   <Returns>An integer.</Returns>
   <Description>
-    This function returns the diameter of the digraph <A>digraph</A>.<P/>
+    This function returns the diameter of the digraph <A>digraph</A>.
+    <P/>
 
-    If a digraph <A>digraph</A> is strongly connected,
-    then the <E>diameter</E> is the maximum shortest distance between any 
-    pair of vertices. Otherwise, or if <A>digraph</A> has no vertices,
-    then the diameter of <A>digraph</A>
-    is undefined, and this function returns the value <C>-1</C>. <P/>
+    If a digraph <A>digraph</A> is strongly connected and has at least 1
+    vertex, then the <E>diameter</E> is the maximum shortest distance between
+    any pair of distinct vertices. Otherwise then the diameter of
+    <A>digraph</A> is undefined, and this function returns the value <C>-1</C>.
+    <P/>
     
     See <Ref Attr="DigraphShortestDistances"/>. <P/>
     <Example><![CDATA[
