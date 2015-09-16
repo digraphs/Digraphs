@@ -44,5 +44,11 @@ DeclareGlobalFunction("DigraphTransitiveClosureNC");
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("ReducedDigraph", IsDigraph);
 
+DeclareAttribute("DigraphSubgroupOfAutomorphisms", IsDigraph);
+DeclareAttribute("DigraphOrbits", IsDigraph);
+DeclareAttribute("DigraphOrbitReps", IsDigraph);
+DeclareAttribute("DigraphStabilizerReps", IsDigraph);
+DeclareAttribute("DigraphSchreierVector", IsDigraph);
+
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");

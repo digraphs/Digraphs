@@ -8,6 +8,55 @@
 #############################################################################
 ##
 
+InstallMethod(DigraphOrbits, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local gens, orbs, nr, schreiervec, schreierpos, schreiergen, o, ind, k, i, j, g;
+
+  if HasAutomorphismGroup(digraph) or not
+      HasDigraphSubgroupOfAutomorphisms(digraph) then 
+    gens := GeneratorsOfGroup(AutomorphismGroup(digraph));
+  else
+    gens := GeneratorsOfGroup(DigraphSubgroupOfAutomorphisms(digraph));
+  fi;
+
+  orbs        := [];
+  nr          := DigraphNrVertices(digraph);
+  schreiervec := [1 .. nr] * 0;
+  schreierpos := EmptyPlist(nr);
+  schreiergen := EmptyPlist(nr);
+
+  for i in [1 .. Length(schreiervec)] do 
+    if schreiervec[i] = 0 then 
+      o := EmptyPlist(nr);
+      ind  := Length(orbs) + 1;
+
+      o[1] := i;
+      schreiervec[i] := -ind;
+      schreierpos[i] := fail;
+      schreiergen[i] := fail;
+
+      for j in o do 
+        for g in gens do 
+          k := j ^ g;
+          if schreiervec[k] = 0 then 
+            Add(o, k);
+            schreiervec[k] := ind;
+            schreierpos[k] := j;
+            schreiergen[k] := g;
+            nr := nr - 1;
+          fi;
+        od;
+        #TODO add a check to see if we are done
+        #TODO calculate stabiliser
+      od;
+      Add(orbs, o);
+    fi;
+  od;
+
+  return orbs;
+end);
+
 InstallMethod(ReducedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -421,12 +470,51 @@ end);
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
+  local G, V, reps, dist, out, max, u, v, w;
+
   if DigraphNrVertices(digraph) = 0 then
     return - 1;
   elif not IsStronglyConnectedDigraph(digraph) then
     return - 1;
   fi;
-  return DIGRAPH_DIAMETER(digraph);
+  
+  G    := AutomorphismGroup(digraph);
+  V    := DigraphVertices(digraph);
+  reps := List(OrbitsDomain(G, V), x -> x[1]);
+  dist := List(V, x -> [1 .. Length(V)] * 0 - 1);
+  out  := OutNeighbours(digraph);
+
+  for u in V do 
+    for v in out[u] do
+      dist[u][v] := 1;
+    od;
+  od;
+  for u in V do 
+    dist[u][u] := 0;
+  od;
+  
+  for w in V do
+    for u in reps do 
+      for v in List(OrbitsDomain(Stabilizer(G, u), [1 .. Length(V)]), x-> x[1]) do
+        if dist[u][w] <> -1 and dist[w][v] <> -1 then
+          if dist[u][v] = -1 or (dist[u][w] + dist[w][v] < dist[u][v]) then
+            dist[u][v] := dist[u][w] + dist[w][v];
+          fi;
+        fi;
+      od;
+    od;
+  od;
+  
+  max := 0;
+  for u in V do 
+    for v in V do 
+      if dist[u][v] > max then 
+        max := dist[u][v];
+      fi;
+    od;
+  od;
+  return max;
+  #return DIGRAPH_DIAMETER(digraph);
 end);
 
 #

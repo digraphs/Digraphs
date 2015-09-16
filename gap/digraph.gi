@@ -8,6 +8,38 @@
 #############################################################################
 ##
 
+# <G> is a group, <obj> a set of points on which <act> acts, and <adj> is a
+# function which for 2 elements u, v of <obj> returns <true> if and only if 
+# u and v should be adjacent in the digraph we are constructing.
+
+InstallMethod(Digraph, 
+"for a group, list or collection, function, and function",
+[IsGroup, IsListOrCollection, IsFunction, IsFunction],
+function(G, obj, act, adj)
+  local hom, H, reps, out, S, x, y, i, o;
+  
+  hom  := ActionHomomorphism(G, obj, act, "surjective");
+  H    := Range(hom);
+  reps := List(OrbitsDomain(H, [1 .. Size(obj)]), x -> x[1]);
+  out  := EmptyPlist(Length(reps));
+  
+  for i in [1 .. Length(reps)] do
+    S := Stabilizer(H, reps[i]);
+    if IsTrivial(S) then  
+      out[i] := Filtered([1 .. Size(obj)], j -> adj(obj[reps[i]], obj[j]));
+    else
+      out[i] := [];
+      for o in OrbitsDomain(S, [1 .. Size(obj)]) do
+        if adj(obj[reps[i]], obj[o[1]]) then
+          Append(out[i], o);
+        fi;
+      od;
+    fi;
+  od;
+
+  return out;
+end);
+
 InstallMethod(Digraph, "for a positive integer and a function",
 [IsPosInt, IsFunction],
 function(n, func)
