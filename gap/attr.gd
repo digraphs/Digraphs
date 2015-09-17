@@ -44,7 +44,23 @@ DeclareGlobalFunction("DigraphTransitiveClosureNC");
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("ReducedDigraph", IsDigraph);
 
-DeclareAttribute("DigraphSubgroupOfAutomorphisms", IsDigraph);
+# the following are for digraphs created with a known subgroup of the
+# automorphism group.
+
+DeclareAttribute("DigraphGroup", IsDigraph);
+
+DeclareOperation("DigraphOrbits", [IsGroup, IsList, IsPosInt]);
+DeclareAttribute("DigraphOrbits", IsDigraph);
+
+DeclareAttribute("DigraphOrbitReps", IsDigraph);
+
+DeclareOperation("DigraphStabilizers", [IsGroup, IsList]);
+DeclareAttribute("DigraphStabilizers", IsDigraph, "mutable");
+DeclareOperation("DigraphStabilizer",  [IsDigraph, IsPosInt]);
+
+DeclareAttribute("DigraphSchreierVector", IsDigraph);
+DeclareAttribute("DigraphInnerOrbits", IsDigraph);
+
 DeclareAttribute("RepresentativeOutNeighbours", IsDigraph);
 
 # AsGraph must be mutable for grape to function properly
