@@ -56,7 +56,7 @@ DeclareAttribute("DigraphOrbitReps", IsDigraph);
 
 DeclareOperation("DigraphStabilizers", [IsGroup, IsList]);
 DeclareAttribute("DigraphStabilizers", IsDigraph, "mutable");
-DeclareOperation("DigraphStabilizer",  [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphStabilizer", [IsDigraph, IsPosInt]);
 
 DeclareAttribute("DigraphSchreierVector", IsDigraph);
 DeclareAttribute("DigraphInnerOrbits", IsDigraph);

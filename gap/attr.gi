@@ -11,19 +11,19 @@
 BindGlobal("DIGRAPHS_OrbitNumbers",
 function(G, v, n)
   local orbits, out, i, j;
-  
+
   orbits := DigraphOrbits(G, Difference([1 .. n], [v]), n).orbits;
-  
+
   out := [1 .. n];
   out[v] := 1;
-  
-  for i in [1 .. Length(orbits)] do 
-    for j in orbits[i] do 
+
+  for i in [1 .. Length(orbits)] do
+    for j in orbits[i] do
       out[j] := i + 1;
     od;
   od;
- 
-  return rec(orbitNumbers := out, 
+
+  return rec(orbitNumbers := out,
              representatives := Concatenation([v], List(orbits, Representative)));
 end);
 
@@ -48,16 +48,16 @@ function(G, domain, nr_vertices)
   gens  := GeneratorsOfGroup(G);
   genstoapply := [1 .. Length(gens)];
 
-  for i in domain do 
-    if not blist[i] then 
+  for i in domain do
+    if not blist[i] then
       o        := [i];
       blist[i] := true;
       Add(orbs, o);
       sch[i] := -Length(orbs);
-      for j in o do  
-        for k in genstoapply do 
+      for j in o do
+        for k in genstoapply do
           l := j ^ gens[k];
-          if not blist[l] then 
+          if not blist[l] then
             blist[l] := true;
             Add(o, l);
             sch[l] := k;
@@ -69,18 +69,18 @@ function(G, domain, nr_vertices)
   return rec(orbits := orbs, schreier := sch);
 end);
 
-InstallMethod(DigraphStabilizers, "for a group and a list", 
+InstallMethod(DigraphStabilizers, "for a group and a list",
 [IsGroup, IsList], # list of orbit reps
 function(G, orbit_reps);
   return List(orbit_reps, i -> Stabilizer(G, i));
 end);
 
 InstallMethod(DigraphOrbits, "for a digraph",
-[IsDigraph], 
+[IsDigraph],
 function(digraph)
   local record;
 
-  record := DigraphOrbits(DigraphGroup(digraph), 
+  record := DigraphOrbits(DigraphGroup(digraph),
                           DigraphVertices(digraph),
                           DigraphNrVertices(digraph));
   SetDigraphSchreierVector(digraph, record.schreier);
@@ -88,40 +88,41 @@ function(digraph)
 end);
 
 InstallMethod(DigraphSchreierVector, "for a digraph",
-[IsDigraph], 
+[IsDigraph],
 function(digraph)
   local record;
 
   record := DigraphOrbits(DigraphGroup(digraph),
-                          DigraphVertices(digraph), 
+                          DigraphVertices(digraph),
                           DigraphNrVertices(digraph));
   SetDigraphOrbits(digraph, record.orbits);
   return record.schreier;
 end);
 
 InstallMethod(DigraphOrbitReps, "for a digraph",
-[IsDigraph], 
+[IsDigraph],
 function(digraph)
   return List(DigraphOrbits(digraph), x -> x[1]);
 end);
 
 InstallMethod(DigraphStabilizer, "for a digraph and a vertex",
-[IsDigraph, IsPosInt], 
+[IsDigraph, IsPosInt],
 function(digraph, rep)
-  local pos;
+  local pos, stabs;
 
   pos := -1 * DigraphSchreierVector(digraph)[rep];
-  if pos < 0 then 
-    ErrorMayQuit();
+  if pos < 0 then
+    ErrorMayQuit("Digraphs: DigraphStabilizer: usage,\n");
   fi;
+  stabs := DigraphStabilizers(digraph);
   if not IsBound(DigraphStabilizers(digraph)[pos]) then
-    DigraphStabilizers(digraph)[pos] := Stabilizer(DigraphGroup(digraph),
-                                                   DigraphOrbitReps(digraph)[pos]);
+    stabs[pos] := Stabilizer(DigraphGroup(digraph),
+                             DigraphOrbitReps(digraph)[pos]);
   fi;
   return DigraphStabilizers(digraph)[pos];
 end);
 
-InstallMethod(DigraphStabilizers, "for a digraph", 
+InstallMethod(DigraphStabilizers, "for a digraph",
 [IsDigraph],
 function(digraph);
   return [];
@@ -540,83 +541,81 @@ end);
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local outer_reps, out_nbs, diameter, v, stoplayer, orbs, orbnum, reps, laynum, localGirth, distance, localParameters, next, sum, layers, i, nprev, nhere, nnext, lnum, x, y;
-  
+  local outer_reps, out_nbs, diameter, orbs, v, orbnum, reps,
+    laynum, localGirth, next, layers, i, nprev, nhere, nnext, lnum, x, y;
+
   if DigraphNrVertices(digraph) = 0 then
     return - 1;
   elif not IsStronglyConnectedDigraph(digraph) then
     return - 1;
   fi;
-  
+
   #TODO improve this, really check if the complexity is better with the group
   #or without, or if the group is not known, but the number of vertices makes
   #the usual algorithm impossible.
-  #if not (HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1) then 
+  #if not (HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1) then
   #  return DIGRAPH_DIAMETER(digraph);
   #fi;
-  
+
   outer_reps := DigraphOrbitReps(digraph);
   out_nbs    := OutNeighbours(digraph);
   diameter   := 0;
 
-  for i in [1 .. Length(outer_reps)] do 
-    v := outer_reps[i];
-    stoplayer := 0; 
+  for i in [1 .. Length(outer_reps)] do
     orbs := DIGRAPHS_OrbitNumbers(DigraphStabilizer(digraph, v),
                                   v,
                                   DigraphNrVertices(digraph));
-    
-    orbnum := orbs.orbitNumbers;
-    reps   := orbs.representatives;
-    laynum := [1 .. Length(reps)] * 0;
-    localGirth := -1; 
-    distance := -1;
-    localParameters := []; 
-    next := [orbnum[v]];
-    sum := Length(next);
+
+    orbnum          := orbs.orbitNumbers;
+    reps            := orbs.representatives;
+    laynum          := [1 .. Length(reps)] * 0;
     laynum[next[1]] := 1;
-    layers := [next]; 
-    i := 1; 
-    
-    while stoplayer <> i and Length(next) > 0 do
+    localGirth      := -1;
+    next            := [orbnum[orbit_reps[i]]];
+    layers          := [next];
+    i               := 1;
+
+    while Length(next) > 0 do
       next := [];
-      for x in layers[i] do 
-        nprev := 0; 
-        nhere := 0; 
+      for x in layers[i] do
+        nprev := 0;
+        nhere := 0;
         nnext := 0;
         for y in out_nbs[reps[x]] do
           lnum := laynum[orbnum[y]];
-          if i > 1 and lnum = i - 1 then 
+          if i > 1 and lnum = i - 1 then
             nprev := nprev + 1;
-          elif lnum = i then 
+          elif lnum = i then
             nhere := nhere + 1;
           elif lnum = i + 1 then
             nnext := nnext + 1;
           elif lnum = 0 then
-            AddSet(next, orbnum[y]); 
+            AddSet(next, orbnum[y]);
             nnext := nnext + 1;
             laynum[orbnum[y]] := i + 1;
           fi;
         od;
-        if (localGirth = -1 or localGirth = 2 * i - 1) and nprev > 1 then 
-          localGirth := 2 * (i -1); 
+        if (localGirth = -1 or localGirth = 2 * i - 1) and nprev > 1 then
+          localGirth := 2 * (i - 1);
         fi;
-        if localGirth = -1 and nhere > 0 then 
-          localGirth := 2 * i - 1; 
+        if localGirth = -1 and nhere > 0 then
+          localGirth := 2 * i - 1;
         fi;
       od;
-      if Length(next) > 0 then 
-        i := i + 1; 
-        layers[i] := next; 
-        sum := sum + Length(next); 
+      if Length(next) > 0 then
+        i := i + 1;
+        layers[i] := next;
       fi;
     od;
-    
-    if Length(layers) - 1 > diameter then 
+
+    if Length(layers) - 1 > diameter then
       diameter := Length(layers) - 1;
     fi;
-    #TODO keep the girth 
+    if localGirth > girth then 
+      girth := localGirth;
+    fi;
   od;
+  SetDigraphGirth(digraph, girth);
   return diameter;
 end);
 
