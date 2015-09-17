@@ -8,53 +8,55 @@
 #############################################################################
 ##
 
-InstallMethod(DigraphOrbits, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local gens, orbs, nr, schreiervec, schreierpos, schreiergen, o, ind, k, i, j, g;
+BindGlobal("DIGRAPHS_OrbitsStabilizers",
+function(G, dom)
+  local base, schreiervec, orbs, reps, o, orbsizebound, permbase, permgens,
+   schreier, stabsizebound, i, stabs, foo;
 
-  if HasAutomorphismGroup(digraph) or not
-      HasDigraphSubgroupOfAutomorphisms(digraph) then 
-    gens := GeneratorsOfGroup(AutomorphismGroup(digraph));
-  else
-    gens := GeneratorsOfGroup(DigraphSubgroupOfAutomorphisms(digraph));
-  fi;
-
+  #if HasAutomorphismGroup(digraph) 
+  #    and not HasDigraphSubgroupOfAutomorphisms(digraph) then 
+  #  G := AutomorphismGroup(digraph);
+  #else
+  #  G := DigraphSubgroupOfAutomorphisms(digraph);
+  #fi;
+  
+  base        := BaseStabilizerChain(StabilizerChain(G)).points;
+  schreiervec := dom * 0;
   orbs        := [];
-  nr          := DigraphNrVertices(digraph);
-  schreiervec := [1 .. nr] * 0;
-  schreierpos := EmptyPlist(nr);
-  schreiergen := EmptyPlist(nr);
+  reps        := [];
 
   for i in [1 .. Length(schreiervec)] do 
     if schreiervec[i] = 0 then 
-      o := EmptyPlist(nr);
-      ind  := Length(orbs) + 1;
-
-      o[1] := i;
-      schreiervec[i] := -ind;
-      schreierpos[i] := fail;
-      schreiergen[i] := fail;
-
-      for j in o do 
-        for g in gens do 
-          k := j ^ g;
-          if schreiervec[k] = 0 then 
-            Add(o, k);
-            schreiervec[k] := ind;
-            schreierpos[k] := j;
-            schreiergen[k] := g;
-            nr := nr - 1;
-          fi;
-        od;
-        #TODO add a check to see if we are done
-        #TODO calculate stabiliser
-      od;
+      o := Orb(G, i, OnPoints, rec(grpsizebound  := Size(G),
+                                   orbsizebound  := Size(G), 
+                                   permbase      := base,
+                                   permgens      := GeneratorsOfGroup(G),
+                                   schreier      := true,
+                                   stabchainrandom := 1,
+                                   stabsizebound := Size(G)));
+      Enumerate(o);
+      Add(reps, i);
       Add(orbs, o);
+      schreiervec{o} := List([1 .. Length(o)], x-> Length(orbs));
+      schreiervec[i] := -Length(orbs); # <i> is the <Length(orbs)> orbit rep
+
     fi;
   od;
+  stabs := List(orbs, Stabilizer);
+  foo := function(S)
+    if IsTrivial(S) then 
+      return fail;
+    else 
+      return OrbitsDomain(S, dom);
+    fi;
+  end;
 
-  return orbs;
+
+  return rec(orbs        := orbs, 
+             reps        := reps, 
+             stabs       := stabs, 
+             stabsorbs   := List(stabs, foo),
+             schreiervec := schreiervec);
 end);
 
 InstallMethod(ReducedDigraph, "for a digraph",

@@ -16,27 +16,33 @@ InstallMethod(Digraph,
 "for a group, list or collection, function, and function",
 [IsGroup, IsListOrCollection, IsFunction, IsFunction],
 function(G, obj, act, adj)
-  local hom, H, reps, out, S, x, y, i, o;
+  local hom, dom, H, record, reps, stabs, stabsstabs, out, i, j, stabsorbs;
   
-  hom  := ActionHomomorphism(G, obj, act, "surjective");
-  H    := Range(hom);
-  reps := List(OrbitsDomain(H, [1 .. Size(obj)]), x -> x[1]);
+  hom    := ActionHomomorphism(G, obj, act, "surjective");
+  dom    := [1 .. Size(obj)];
+  H      := Range(hom);
+  record := DIGRAPHS_OrbitsStabilizers(H, dom);
+  reps   := record.reps;
+  stabs   := record.stabs;
+  stabsorbs := record.stabsorbs;
+
   out  := EmptyPlist(Length(reps));
   
   for i in [1 .. Length(reps)] do
-    S := Stabilizer(H, reps[i]);
-    if IsTrivial(S) then  
-      out[i] := Filtered([1 .. Size(obj)], j -> adj(obj[reps[i]], obj[j]));
+    if IsTrivial(stabs[i]) then  
+      out[i] := Filtered(dom, j -> adj(obj[reps[i]], obj[j]));
     else
       out[i] := [];
-      for o in OrbitsDomain(S, [1 .. Size(obj)]) do
-        if adj(obj[reps[i]], obj[o[1]]) then
-          Append(out[i], o);
+      for j in [1 .. Length(stabsorbs[i])] do 
+        if adj(obj[reps[i]], stabsorbs[i][j][1]) then
+          Append(out[i], stabsorbs[i][j]);
         fi;
       od;
     fi;
   od;
 
+  #SetDigraphSubgroupOfAutomorphisms(digraph, G);
+  #SetRepresentativeOutNeighbours(digraph, out);
   return out;
 end);
 
