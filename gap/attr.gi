@@ -541,8 +541,7 @@ end);
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local outer_reps, out_nbs, diameter, orbs, v, orbnum, reps,
-    laynum, localGirth, next, layers, i, nprev, nhere, nnext, lnum, x, y;
+  local outer_reps, out_nbs, diameter, girth, v, orbs, i, orbnum, reps, next, laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
 
   if DigraphNrVertices(digraph) = 0 then
     return - 1;
@@ -560,20 +559,22 @@ function(digraph)
   outer_reps := DigraphOrbitReps(digraph);
   out_nbs    := OutNeighbours(digraph);
   diameter   := 0;
+  girth      := 0;
 
   for i in [1 .. Length(outer_reps)] do
+    v := outer_reps[i];
     orbs := DIGRAPHS_OrbitNumbers(DigraphStabilizer(digraph, v),
                                   v,
                                   DigraphNrVertices(digraph));
 
+    i               := 1;
     orbnum          := orbs.orbitNumbers;
     reps            := orbs.representatives;
+    next            := [orbnum[v]];
     laynum          := [1 .. Length(reps)] * 0;
     laynum[next[1]] := 1;
     localGirth      := -1;
-    next            := [orbnum[orbit_reps[i]]];
     layers          := [next];
-    i               := 1;
 
     while Length(next) > 0 do
       next := [];

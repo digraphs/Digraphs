@@ -35,6 +35,7 @@ DeclareAttribute("DigraphSources", IsDigraph);
 DeclareAttribute("DigraphSinks", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
+DeclareAttribute("DigraphGirth", IsDigraph);
 
 DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
 DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
