@@ -10,13 +10,11 @@ is_bipart := function(digraph)
   
   #This means there is a vertex we haven't visited yet
   while 0 in colour do    
-#    Print("i",count,"\ncolour",colour);
     root := Position(colour,0);
-    colour[root] := 1;       #Colours the vertex 1
+    colour[root] := 1;
     queue := [root];
     #These are all the vertices we have yet to explore
     Append(queue,OutNeighboursOfVertex(digraph,root)); 
-#    Print("\nqueue",queue);
     while queue <> [] do
       #Explore the first element of queue
       node := queue[1];
@@ -40,6 +38,5 @@ is_bipart := function(digraph)
       od;
     od;
   od;
-#  Print(colour);
   return true;
 end;      
