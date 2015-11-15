@@ -1469,9 +1469,38 @@ BlissGraph* buildBlissMultiDigraph (Obj digraph) {
   for (i = 1; i <= n; i++) {
     adji = ELM_PLIST(adj, i);
     nr = LEN_PLIST(adji);
-    for(j = 1; j <= nr; j++) {
+    for (j = 1; j <= nr; j++) {
       k = bliss_add_vertex(graph, 1);
       l = bliss_add_vertex(graph, 2);
+      bliss_add_edge(graph, i - 1, k);
+      bliss_add_edge(graph, k, l);
+      bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
+    }
+  }
+  return graph;
+}
+
+BlissGraph* buildBlissDigraphWithColors (Obj digraph, Obj colors) {
+  UInt        n, i, j, k, l, nr;
+  Obj         adji, adj;
+  BlissGraph  *graph;
+
+  n = DigraphNrVertices(digraph);
+  assert(n == LEN_LIST(colors));
+
+  graph = bliss_new(0);
+  
+  for (i = 1; i <= n; i++) {
+    bliss_add_vertex(graph, INT_INTOBJ(ELM_LIST(colors, i)));
+  }
+
+  adj = OutNeighbours(digraph);
+  for (i = 1; i <= n; i++) {
+    adji = ELM_PLIST(adj, i);
+    nr = LEN_PLIST(adji);
+    for (j = 1; j <= nr; j++) {
+      k = bliss_add_vertex(graph, 2); //FIXME !!
+      l = bliss_add_vertex(graph, 3); //FIXME assumes there are only 2 colors
       bliss_add_edge(graph, i - 1, k);
       bliss_add_edge(graph, k, l);
       bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
@@ -1658,6 +1687,31 @@ static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   const unsigned int *canon;
      
   graph = buildBlissMultiDigraph(digraph);
+  
+  canon = bliss_find_canonical_labeling(graph, 0, 0, 0); 
+  
+  n   = DigraphNrVertices(digraph);
+  p   = NEW_PERM4(n);
+  ptr = ADDR_PERM4(p);
+ 
+  for(i = 0; i < n; i++){
+      ptr[i] = canon[i];
+  }
+  bliss_release(graph);
+
+  return p;
+} 
+
+static Obj FuncDIGRAPH_CANONICAL_LABELING_COLORS(Obj self, 
+                                                 Obj digraph, 
+                                                 Obj colors  ) {
+  Obj                 p;
+  UInt4               *ptr;
+  BlissGraph          *graph;
+  Int                 n, i; 
+  const unsigned int  *canon;
+     
+  graph = buildBlissDigraphWithColors(digraph, colors);
   
   canon = bliss_find_canonical_labeling(graph, 0, 0, 0); 
   
@@ -1919,7 +1973,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   }
   
   if (IS_PLIST(user_param_arg) && LEN_PLIST(user_param_arg) == 0 
-      && ! TNUM_OBJ(user_param_arg) == T_PLIST_EMPTY) {
+      && TNUM_OBJ(user_param_arg) != T_PLIST_EMPTY) {
     RetypeBag(user_param_arg, T_PLIST_EMPTY);
   }
   
@@ -2053,7 +2107,7 @@ Obj FuncDIGRAPH_HOMOS (Obj self, Obj args) {
   }
   
   if (IS_PLIST(user_param_arg) && LEN_PLIST(user_param_arg) == 0 
-      && ! TNUM_OBJ(user_param_arg) == T_PLIST_EMPTY) {
+      && TNUM_OBJ(user_param_arg) != T_PLIST_EMPTY) {
     RetypeBag(user_param_arg, T_PLIST_EMPTY);
   }
 
@@ -2183,6 +2237,10 @@ static StructGVarFunc GVarFuncs [] = {
   { "DIGRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncDIGRAPH_CANONICAL_LABELING, 
     "src/graphs.c:FuncDIGRAPH_CANONICAL_LABELING" },
+  
+  { "DIGRAPH_CANONICAL_LABELING_COLORS", 2, "digraph, colors",
+    FuncDIGRAPH_CANONICAL_LABELING_COLORS, 
+    "src/graphs.c:FuncDIGRAPH_CANONICAL_LABELING_COLORS" },
   
   { "MULTIDIGRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncMULTIDIGRAPH_CANONICAL_LABELING, 
