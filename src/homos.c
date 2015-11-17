@@ -1052,8 +1052,8 @@ void DigraphMonomorphisms (Digraph* digraph1,
   }
   
   if (colors1 != NULL) { // colors1 and colors2 specified
-    init_bit_array(bit_array, false);
     for (i = 0; i < NR1; i++) {
+      init_bit_array(bit_array, false);
       for (j = 0; j < NR2; j++) {
         if (colors1[i] == colors2[j]) {
           set_bit_array(bit_array, j, true); 
@@ -1191,13 +1191,21 @@ static bool inline is_adjacent_graph (Graph* graph,
 // by <graph>.
 ////////////////////////////////////////////////////////////////////////////////
 
-static BlissGraph* new_bliss_graph_from_graph (Graph* graph) {
+static BlissGraph* new_bliss_graph_from_graph (Graph* graph, UIntS* colors) {
   assert(graph != NULL);
   
-  UIntS  i, j;
-  UIntS  n = graph->nr_vertices;
+  UIntS       i, j;
+  BlissGraph* bliss_graph; 
+  UIntS       n = graph->nr_vertices;
 
-  BlissGraph* bliss_graph = bliss_new(n);
+  if (colors == NULL) {
+    bliss_graph = bliss_new(n);
+  } else {
+    bliss_graph = bliss_new(0);
+    for (i = 0; i < n; i++) {
+      bliss_add_vertex(bliss_graph, colors[i]);
+    }
+  } 
 
   for (i = 0; i < n; i++) {       // loop over vertices
     for (j = 0; j < n; j++) {
@@ -1236,10 +1244,10 @@ static void bliss_hook_graph (void               *user_param_arg,  // perm_coll!
 // <graph>.
 ////////////////////////////////////////////////////////////////////////////////
 
-static PermColl* automorphisms_graph (Graph* graph) {
+static PermColl* automorphisms_graph (Graph* graph, UIntS* colors) {
   assert(graph != NULL);
   
-  BlissGraph* bliss_graph = new_bliss_graph_from_graph(graph);
+  BlissGraph* bliss_graph = new_bliss_graph_from_graph(graph, colors);
   PermColl*   gens  = new_perm_coll(graph->nr_vertices - 1);
   bliss_find_automorphisms(bliss_graph, bliss_hook_graph, gens, 0);
   bliss_release(bliss_graph);
@@ -1361,11 +1369,13 @@ void GraphHomomorphisms (Graph*    graph1,
                          UIntL     max_results_arg,
                          int       hint_arg,
                          BitArray* image_arg,
-                         UIntS     *partial_map_arg                     ) {
+                         UIntS     *partial_map_arg,
+                         UIntS     *colors1, 
+                         UIntS     *colors2                           ) {
   
   assert(graph1 != NULL && graph2 != NULL);
   
-  UIntS     i;
+  UIntS     i, j;
   BitArray* bit_array; 
 
   NR1         = graph1->nr_vertices;
@@ -1417,6 +1427,19 @@ void GraphHomomorphisms (Graph*    graph1,
     store_size_conditions(conditions, i);
   }
   
+  if (colors1 != NULL) { // colors1 and colors2 specified
+    for (i = 0; i < NR1; i++) {
+      init_bit_array(bit_array, false);
+      for (j = 0; j < NR2; j++) {
+        if (colors1[i] == colors2[j]) {
+          set_bit_array(bit_array, j, true); 
+        }
+      }
+      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
+      // can only map vertices of color i to vertices of color i
+    }
+  }
+  
   free_bit_array(bit_array);
 
   // store the values in MAP, this is initialised to every bit set to false,
@@ -1437,7 +1460,7 @@ void GraphHomomorphisms (Graph*    graph1,
 
   // get generators of the automorphism group of graph2, and the orbit reps
   set_perms_degree(NR2);
-  STAB_GENS[0] = automorphisms_graph(graph2);
+  STAB_GENS[0] = automorphisms_graph(graph2, colors2);
   orbit_reps(0);
 
   // misc parameters . . .
@@ -1570,11 +1593,13 @@ void GraphMonomorphisms (Graph*   graph1,
                          void*     user_param_arg,
                          UIntL     max_results_arg,
                          BitArray* image_arg,
-                         UIntS     *partial_map_arg                     ) {
+                         UIntS     *partial_map_arg,
+                         UIntS     *colors1, 
+                         UIntS     *colors2                           ) {
   
   assert(graph1 != NULL && graph2 != NULL);
 
-  UIntS      i;
+  UIntS      i, j;
   BitArray*  bit_array;
   
   NR1         = graph1->nr_vertices;
@@ -1637,6 +1662,19 @@ void GraphMonomorphisms (Graph*   graph1,
     store_size_conditions(conditions, i);
   }
   
+  if (colors1 != NULL) { // colors1 and colors2 specified
+    for (i = 0; i < NR1; i++) {
+      init_bit_array(bit_array, false);
+      for (j = 0; j < NR2; j++) {
+        if (colors1[i] == colors2[j]) {
+          set_bit_array(bit_array, j, true); 
+        }
+      }
+      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
+      // can only map vertices of color i to vertices of color i
+    }
+  }
+  
   free_bit_array(bit_array);
 
   // store the values in <map>, this is initialised to every bit set to false,
@@ -1657,7 +1695,7 @@ void GraphMonomorphisms (Graph*   graph1,
 
   // get generators of the automorphism group of graph2, and the orbit reps
   set_perms_degree(NR2);
-  STAB_GENS[0] = automorphisms_graph(graph2);
+  STAB_GENS[0] = automorphisms_graph(graph2, colors2);
   orbit_reps(0);
 
   // misc parameters

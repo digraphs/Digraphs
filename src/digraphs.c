@@ -1860,7 +1860,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   unsigned int  i, hint_arg, nr1, nr2;
   UInt8         max_results_arg;
   Obj           user_param_arg;  
-  UIntS*        partial_map;
+  UIntS         *partial_map, *colors1, *colors2;
 
   // get the args . . .
 
@@ -1875,6 +1875,8 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   Obj image_gap       = ELM_PLIST(args, 8);  // only consider homos with image <image>
   //Obj kernel_gap      = ELM_PLIST(args, 9);  // only consider homos with kernel <kernel>
   Obj partial_map_gap = ELM_PLIST(args, 10); // only look for extensions of <partial_map_gap>
+  Obj colors1_gap     = ELM_PLIST(args, 11); // only look for extensions of <partial_map_gap>
+  Obj colors2_gap     = ELM_PLIST(args, 12); // only look for extensions of <partial_map_gap>
 
   // get the c graph objects . . . 
   Graph* graph1 = new_graph_from_gap_digraph(digraph1_gap);
@@ -1937,24 +1939,40 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
     }
   } 
   
+  // process the vertex colors . . .
+  if (colors1_gap == Fail || colors2_gap == Fail || !IS_LIST(colors1_gap) ||
+      !IS_LIST(colors2_gap)) {
+    colors1 = NULL;
+    colors2 = NULL;
+  } else {
+    colors1 = malloc(nr1 * sizeof(UIntS));
+    colors2 = malloc(nr2 * sizeof(UIntS));
+    for (i = 0; i < nr1; i++) {
+      colors1[i] = INT_INTOBJ(ELM_LIST(colors1_gap, i + 1)) - 1;
+    }
+    for (i = 0; i < nr2; i++) {
+      colors2[i] = INT_INTOBJ(ELM_LIST(colors2_gap, i + 1)) - 1;
+    }
+  } 
+ 
   // go!
   if (!isinjective) { 
     if (hook_gap == Fail) {
       GraphHomomorphisms(graph1, graph2, homo_hook_collect, user_param_arg,
-                         max_results_arg, hint_arg, image, partial_map); 
+                         max_results_arg, hint_arg, image, partial_map, colors1, colors2); 
     } else {
       GAP_FUNC = hook_gap;
       GraphHomomorphisms(graph1, graph2, homo_hook_gap, user_param_arg,
-                         max_results_arg, hint_arg, image, partial_map);
+                         max_results_arg, hint_arg, image, partial_map, colors1, colors2);
     }
   } else {
     if (hook_gap == Fail) {
       GraphMonomorphisms(graph1, graph2, homo_hook_collect, user_param_arg,
-                         max_results_arg, image, partial_map); 
+                         max_results_arg, image, partial_map, colors1, colors2); 
     } else {
       GAP_FUNC = hook_gap;
       GraphMonomorphisms(graph1, graph2, homo_hook_gap, user_param_arg,
-                         max_results_arg, image, partial_map);
+                         max_results_arg, image, partial_map, colors1, colors2);
     }
   }
   
@@ -1965,6 +1983,12 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   
   if (image != NULL) { 
     free_bit_array(image);
+  }
+  if (colors1 != NULL) {
+    free(colors1);
+  }
+  if (colors2 != NULL) {
+    free(colors2);
   }
   free(partial_map); 
   free_graph(graph1);
