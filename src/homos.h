@@ -118,7 +118,9 @@ void DigraphHomomorphisms (Digraph* digraph1,
                            UIntL     max_results_arg,
                            int       hint_arg,
                            BitArray* image,
-                           UIntS*    partial_map                           );
+                           UIntS*    partial_map,
+                           UIntS*    colors1, 
+                           UIntS*    colors2                           );
 
 ////////////////////////////////////////////////////////////////////////////////
 // DigraphMonomorphisms: TODO add description of args
@@ -132,7 +134,9 @@ void DigraphMonomorphisms (Digraph* digraph1,
                            void*     user_param_arg,
                            UIntL     max_results_arg,
                            BitArray* image,
-                           UIntS*    partial_map                           );
+                           UIntS*    partial_map,
+                           UIntS*    colors1, 
+                           UIntS*    colors2                           );
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

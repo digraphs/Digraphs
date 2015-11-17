@@ -84,13 +84,13 @@ AbstractGraph::~AbstractGraph()
     free(first_path_automorphism); first_path_automorphism = 0; }
   if(best_path_automorphism) {
     free(best_path_automorphism); best_path_automorphism = 0; }
-  for (int i = 0; i != long_prune_fixed.size(); i++) {
+  for (size_t i = 0; i != long_prune_fixed.size(); i++) {
     std::vector<bool> * ptr = long_prune_fixed[i];
     if (ptr != NULL) {
       delete ptr;
     }
   }
-  for (int i = 0; i != long_prune_mcrs.size(); i++) {
+  for (size_t i = 0; i != long_prune_mcrs.size(); i++) {
     std::vector<bool> * ptr = long_prune_mcrs[i];
     if (ptr != NULL) {
       delete ptr;
