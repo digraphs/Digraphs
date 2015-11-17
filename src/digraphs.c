@@ -23,7 +23,6 @@
 #undef PACKAGE_VERSION
 
 static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
-static Obj FuncDIGRAPH_IN_NBS(Obj self, Obj digraph);
 static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 
 /*************************************************************************/
@@ -234,8 +233,8 @@ static void UF_COMBINE_CLASSES(UInt *id, UInt i, UInt j) {
 
 
 static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
-  UInt n, *id, *nid, i, j, e, len, f, nrcomps;
-  Obj  adj, adji, source, range, gid, gcomps, comp, out;
+  UInt n, *id, *nid, i, e, len, f, nrcomps;
+  Obj  adj, adji, gid, gcomps, comp, out;
 
   out = NEW_PREC(2);
   n = DigraphNrVertices(digraph);
@@ -431,7 +430,7 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
 static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
 
   UInt  i, j, k, n, level, len, w, m, source;
-  bool  new_since, backtracking, rec_loops;
+  bool  backtracking, rec_loops;
   Obj   out, outj, nbs;
   UInt  *ptr, *stack;
   bool  *mat;
@@ -745,7 +744,7 @@ static Obj FuncIS_STRONGLY_CONNECTED_DIGRAPH(Obj self, Obj digraph) {
 static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   UInt  nr, i, j, k, count;
   UInt  level;
-  Obj   buf, nbs, out;
+  Obj   nbs, out;
   UInt  *stack, *ptr;
   
   nr = LEN_PLIST(adj);
@@ -857,7 +856,7 @@ static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
 // Two GAP lists of PosInts (all <= nrvertices) of equal length
 static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) { 
   Obj   adj, adjj;
-  UInt  n, m, i, j, len, m1, m2;
+  UInt  n, i, j, len, m1, m2;
  
   m1 = LEN_LIST(source);
   m2 = LEN_LIST(range);
@@ -901,8 +900,8 @@ static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) 
 
 // Function to change Out-Neighbours to In-Neighbours, and vice versa
 static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) { 
-  Obj   inn, innk, innj, adji;
-  UInt  n, m, i, j, k, len, len2;
+  Obj   inn, innk, adji;
+  UInt  n, i, j, k, len, len2;
   
   n = LEN_PLIST(adj);
   if (n == 0) {
@@ -973,7 +972,7 @@ static Obj FuncADJACENCY_MATRIX(Obj self, Obj digraph) {
 
 static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   Obj   adj, adji;
-  UInt  n, i, k, j, jj, *seen;
+  UInt  n, i, k, j, *seen;
  
   adj = OutNeighbours(digraph); 
   n = DigraphNrVertices(digraph);
@@ -1391,7 +1390,7 @@ Int LTJumbledPlists(Obj l, Obj r, Int nr1, Int nr2, Int *buf, Int n ) {
 static Obj FuncDIGRAPH_LT(Obj self, Obj digraph1, Obj digraph2) {
   UInt  i, n1, n2, m1, m2;
   Obj   out1, out2, a, b;
-  Int   nr1, nr2, *buf, comp, max, min;
+  Int   nr1, nr2, *buf, comp, max;
 
   // Compare NrVertices
   n1 = DigraphNrVertices(digraph1);
@@ -1499,8 +1498,8 @@ BlissGraph* buildBlissDigraphWithColors (Obj digraph, Obj colors) {
     adji = ELM_PLIST(adj, i);
     nr = LEN_PLIST(adji);
     for (j = 1; j <= nr; j++) {
-      k = bliss_add_vertex(graph, 2); //FIXME !!
-      l = bliss_add_vertex(graph, 3); //FIXME assumes there are only 2 colors
+      k = bliss_add_vertex(graph, n + 1);
+      l = bliss_add_vertex(graph, n + 2);
       bliss_add_edge(graph, i - 1, k);
       bliss_add_edge(graph, k, l);
       bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
@@ -1530,11 +1529,11 @@ void digraph_hook_function(void               *user_param,
 }
 
 static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
-  Obj                 autos, p, out, n;
+  Obj                 autos, p, n;
   BlissGraph          *graph;
   UInt4               *ptr;
   const unsigned int  *canon;
-  Int                 i, nr;
+  Int                 i;
   
   graph = buildBlissMultiDigraph(digraph);
   
@@ -1567,6 +1566,34 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   CHANGED_BAG(autos);
 
   return autos;
+}
+
+static Obj FuncDIGRAPH_AUTOMORPHISMS_COLORS(Obj self, Obj digraph, Obj colors) {
+  Obj                 autos, n;
+  BlissGraph          *graph;
+  const unsigned int  *canon;
+  
+  graph = buildBlissDigraphWithColors(digraph, colors);
+  
+  autos = NEW_PLIST(T_PLIST, 2);
+  n = INTOBJ_INT(DigraphNrVertices(digraph));
+
+  SET_ELM_PLIST(autos, 1, n);
+  SET_ELM_PLIST(autos, 2, NEW_PLIST(T_PLIST, 0)); // perms of the vertices
+  CHANGED_BAG(autos);
+  SET_LEN_PLIST(autos, 2);
+  canon = bliss_find_canonical_labeling(graph, digraph_hook_function, autos, 0);
+  bliss_release(graph);
+
+  if (LEN_PLIST(ELM_PLIST(autos, 2)) == 0) {
+    AssPlist(ELM_PLIST(autos, 2), 1, IdentityPerm);
+  } else {
+    SortDensePlist(ELM_PLIST(autos, 2));
+    RemoveDupsDensePlist(ELM_PLIST(autos, 2));
+  }
+  CHANGED_BAG(autos);
+
+  return ELM_PLIST(autos, 2);
 }
 
 void multidigraph_hook_function(void               *user_param,
@@ -1765,47 +1792,6 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   return out;
 }
 
-// convert GAP perms to perms
-/*static perm as_perm (Obj const x) {
-  UInt  deg, i;
-  UInt2 *ptr2;
-  UInt4 *ptr4;
-  perm  out = new_perm();
-
-  if (TNUM_OBJ(x) == T_PERM2) {
-    deg = DEG_PERM2(x); 
-    ptr2 = ADDR_PERM2(x);
-    for (i = 0; i < deg; i++) {
-      out[i] = (UIntS) ptr2[i];
-    }
-  } else if (TNUM_OBJ(x) == T_PERM4) {
-    deg = DEG_PERM4(x); 
-    ptr4 = ADDR_PERM4(x);
-    for (i = 0; i < deg; i++) {
-      out[i] = (UIntS) ptr4[i];
-    }
-  }
-
-  for (; i < nr2; i++) {
-    out[i] = i;
-  }
-  return out;
-}
-
-static Obj as_PERM4 (perm const x) {
-  Obj           p;
-  UIntS  i;
-  UInt4         *ptr;
-  
-  p   = NEW_PERM4(nr2);
-  ptr = ADDR_PERM4(p);
- 
-  for (i = 0; i < nr2; i++) {
-    ptr[i] = (UInt4) x[i];
-  }
-  return p;
-}*/
-
 // GAP-level function
 
 static Obj   GAP_FUNC;                // variable to hold a GAP level hook function
@@ -1871,9 +1857,9 @@ Graph* new_graph_from_gap_digraph (Obj digraph_gap) {
 }
 
 Obj FuncGRAPH_HOMOS (Obj self, Obj args) { 
-  unsigned int  i, j, k, hint_arg, nr1, nr2;
+  unsigned int  i, hint_arg, nr1, nr2;
   UInt8         max_results_arg;
-  Obj           user_param_arg, out, nbs;  
+  Obj           user_param_arg;  
   UIntS*        partial_map;
 
   // get the args . . .
@@ -1887,7 +1873,7 @@ Obj FuncGRAPH_HOMOS (Obj self, Obj args) {
   Obj hint_gap        = ELM_PLIST(args, 6);  // the rank of a result
   Obj isinjective_gap = ELM_PLIST(args, 7);  // only consider injective homomorphism
   Obj image_gap       = ELM_PLIST(args, 8);  // only consider homos with image <image>
-  Obj kernel_gap      = ELM_PLIST(args, 9);  // only consider homos with kernel <kernel>
+  //Obj kernel_gap      = ELM_PLIST(args, 9);  // only consider homos with kernel <kernel>
   Obj partial_map_gap = ELM_PLIST(args, 10); // only look for extensions of <partial_map_gap>
 
   // get the c graph objects . . . 
@@ -2005,9 +1991,9 @@ Digraph* new_digraph_from_gap_digraph (Obj digraph_gap) {
 }
 
 Obj FuncDIGRAPH_HOMOS (Obj self, Obj args) { 
-  unsigned int  i, j, k, hint_arg, nr1, nr2;
+  unsigned int  i, hint_arg, nr1, nr2;
   UInt8         max_results_arg;
-  Obj           user_param_arg, out, nbs;  
+  Obj           user_param_arg;  
   UIntS*        partial_map;
 
   // get the args . . .
@@ -2021,7 +2007,7 @@ Obj FuncDIGRAPH_HOMOS (Obj self, Obj args) {
   Obj hint_gap        = ELM_PLIST(args, 6);  // the rank of a result
   Obj isinjective_gap = ELM_PLIST(args, 7);  // only consider injective homomorphism
   Obj image_gap       = ELM_PLIST(args, 8);  // only consider homos with image <image>
-  Obj kernel_gap      = ELM_PLIST(args, 9);  // only consider homos with kernel <kernel>
+  //Obj kernel_gap      = ELM_PLIST(args, 9);  // only consider homos with kernel <kernel>
   Obj partial_map_gap = ELM_PLIST(args, 10); // only look for extensions of <partial_map_gap>
   
   // get the c digraph objects . . . 
@@ -2132,127 +2118,131 @@ static StructGVarFunc GVarFuncs [] = {
 
   { "DIGRAPH_NREDGES", 1, "digraph",
     FuncDIGRAPH_NREDGES, 
-    "src/graphs.c:DIGRAPH_NREDGES" },
+    "src/digraphs.c:DIGRAPH_NREDGES" },
   
   { "GABOW_SCC", 1, "adj",
     FuncGABOW_SCC, 
-    "src/graphs.c:GABOW_SCC" },
+    "src/digraphs.c:GABOW_SCC" },
 
   { "DIGRAPH_CONNECTED_COMPONENTS", 1, "digraph",
     FuncDIGRAPH_CONNECTED_COMPONENTS,
-    "src/graphs.c:DIGRAPH_CONNECTED_COMPONENTS" },
+    "src/digraphs.c:DIGRAPH_CONNECTED_COMPONENTS" },
 
   { "IS_ACYCLIC_DIGRAPH", 1, "adj",
     FuncIS_ACYCLIC_DIGRAPH, 
-    "src/graphs.c:FuncIS_ACYCLIC_DIGRAPH" },
+    "src/digraphs.c:FuncIS_ACYCLIC_DIGRAPH" },
 
   { "DIGRAPH_LONGEST_DIST_VERTEX", 2, "adj, start",
     FuncDIGRAPH_LONGEST_DIST_VERTEX, 
-    "src/graphs.c:FuncDIGRAPH_LONGEST_DIST_VERTEX" },
+    "src/digraphs.c:FuncDIGRAPH_LONGEST_DIST_VERTEX" },
 
   { "DIGRAPH_TRANS_REDUCTION", 2, "adj, loops",
     FuncDIGRAPH_TRANS_REDUCTION,
-    "src/graphs.c:FuncDIGRAPH_TRANS_REDUCTION" },
+    "src/digraphs.c:FuncDIGRAPH_TRANS_REDUCTION" },
 
   { "IS_ANTISYMMETRIC_DIGRAPH", 1, "adj",
     FuncIS_ANTISYMMETRIC_DIGRAPH, 
-    "src/graphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH" },
+    "src/digraphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH" },
  
   { "IS_STRONGLY_CONNECTED_DIGRAPH", 1, "adj",
     FuncIS_STRONGLY_CONNECTED_DIGRAPH, 
-    "src/graphs.c:FuncIS_STRONGLY_CONNECTED_DIGRAPH" },
+    "src/digraphs.c:FuncIS_STRONGLY_CONNECTED_DIGRAPH" },
 
   { "DIGRAPH_TOPO_SORT", 1, "adj",
     FuncDIGRAPH_TOPO_SORT, 
-    "src/graphs.c:FuncDIGRAPH_TOPO_SORT" },
+    "src/digraphs.c:FuncDIGRAPH_TOPO_SORT" },
 
   { "DIGRAPH_SOURCE_RANGE", 1, "digraph",
     FuncDIGRAPH_SOURCE_RANGE, 
-    "src/graphs.c:FuncDIGRAPH_SOURCE_RANGE" },
+    "src/digraphs.c:FuncDIGRAPH_SOURCE_RANGE" },
 
   { "DIGRAPH_OUT_NBS", 3, "nrvertices, source, range",
     FuncDIGRAPH_OUT_NBS, 
-    "src/graphs.c:FuncDIGRAPH_OUT_NBS" },
+    "src/digraphs.c:FuncDIGRAPH_OUT_NBS" },
   
   { "DIGRAPH_IN_OUT_NBS", 1, "adj",
     FuncDIGRAPH_IN_OUT_NBS, 
-    "src/graphs.c:FuncDIGRAPH_IN_OUT_NBS" },
+    "src/digraphs.c:FuncDIGRAPH_IN_OUT_NBS" },
 
   { "ADJACENCY_MATRIX", 1, "digraph",
     FuncADJACENCY_MATRIX, 
-    "src/graphs.c:FuncADJACENCY_MATRIX" },
+    "src/digraphs.c:FuncADJACENCY_MATRIX" },
 
   { "IS_MULTI_DIGRAPH", 1, "digraph",
     FuncIS_MULTI_DIGRAPH, 
-    "src/graphs.c:FuncIS_MULTI_DIGRAPH" },
+    "src/digraphs.c:FuncIS_MULTI_DIGRAPH" },
 
   { "DIGRAPH_SHORTEST_DIST", 1, "digraph",
     FuncDIGRAPH_SHORTEST_DIST, 
-    "src/graphs.c:FuncDIGRAPH_SHORTEST_DIST" },
+    "src/digraphs.c:FuncDIGRAPH_SHORTEST_DIST" },
   
   { "DIGRAPH_DIAMETER", 1, "digraph",
     FuncDIGRAPH_DIAMETER, 
-    "src/graphs.c:FuncDIGRAPH_DIAMETER" },
+    "src/digraphs.c:FuncDIGRAPH_DIAMETER" },
 
   { "IS_TRANSITIVE_DIGRAPH", 1, "digraph",
     FuncIS_TRANSITIVE_DIGRAPH,
-    "src/graphs.c:FuncIS_TRANSITIVE_DIGRAPH" },
+    "src/digraphs.c:FuncIS_TRANSITIVE_DIGRAPH" },
   
   { "DIGRAPH_TRANS_CLOSURE", 1, "digraph",
     FuncDIGRAPH_TRANS_CLOSURE,
-    "src/graphs.c:FuncDIGRAPH_TRANS_CLOSURE" },
+    "src/digraphs.c:FuncDIGRAPH_TRANS_CLOSURE" },
 
   { "DIGRAPH_REFLEX_TRANS_CLOSURE", 1, "digraph",
     FuncDIGRAPH_REFLEX_TRANS_CLOSURE,
-    "src/graphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE" },
+    "src/digraphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE" },
 
   { "RANDOM_DIGRAPH", 2, "nn, limm",
     FuncRANDOM_DIGRAPH,
-    "src/graphs.c:FuncRANDOM_DIGRAPH" },
+    "src/digraphs.c:FuncRANDOM_DIGRAPH" },
  
   { "RANDOM_MULTI_DIGRAPH", 2, "nn, mm",
     FuncRANDOM_MULTI_DIGRAPH,
-    "src/graphs.c:FuncRANDOM_MULTI_DIGRAPH" },
+    "src/digraphs.c:FuncRANDOM_MULTI_DIGRAPH" },
 
   { "DIGRAPH_EQUALS", 2, "digraph1, digraph2",
     FuncDIGRAPH_EQUALS,
-    "src/graphs.c:FuncDIGRAPH_EQUALS" },
+    "src/digraphs.c:FuncDIGRAPH_EQUALS" },
   
   { "DIGRAPH_LT", 2, "digraph1, digraph2",
     FuncDIGRAPH_LT,
-    "src/graphs.c:FuncDIGRAPH_LT" },
+    "src/digraphs.c:FuncDIGRAPH_LT" },
 
   { "DIGRAPHS_IS_REACHABLE", 3, "digraph, u, v",
     FuncDIGRAPHS_IS_REACHABLE,
-    "src/graphs.c:FuncDIGRAPHS_IS_REACHABLE" },
+    "src/digraphs.c:FuncDIGRAPHS_IS_REACHABLE" },
 
   { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncDIGRAPH_AUTOMORPHISMS, 
-    "src/graphs.c:FuncDIGRAPH_AUTOMORPHISMS" },
+    "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS" },
+  
+  { "DIGRAPH_AUTOMORPHISMS_COLORS", 2, "digraph, colors",
+    FuncDIGRAPH_AUTOMORPHISMS_COLORS, 
+    "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS_COLORS" },
  
   { "MULTIDIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncMULTIDIGRAPH_AUTOMORPHISMS, 
-    "src/graphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS" },
+    "src/digraphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS" },
 
   { "DIGRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncDIGRAPH_CANONICAL_LABELING, 
-    "src/graphs.c:FuncDIGRAPH_CANONICAL_LABELING" },
+    "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELING" },
   
   { "DIGRAPH_CANONICAL_LABELING_COLORS", 2, "digraph, colors",
     FuncDIGRAPH_CANONICAL_LABELING_COLORS, 
-    "src/graphs.c:FuncDIGRAPH_CANONICAL_LABELING_COLORS" },
+    "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELING_COLORS" },
   
   { "MULTIDIGRAPH_CANONICAL_LABELING", 1, "digraph",
     FuncMULTIDIGRAPH_CANONICAL_LABELING, 
-    "src/graphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELING" },
+    "src/digraphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELING" },
 
   { "GRAPH_HOMOS", 10, "graph1, graph2, hook, user_param, limit, hint, isinjective, image, kernel, partial_map",
     FuncGRAPH_HOMOS,
-    "src/graphs.c:FuncGRAPH_HOMOS" },
+    "src/digraphs.c:FuncGRAPH_HOMOS" },
   
   { "DIGRAPH_HOMOS", 10, "digraph1, digraph2, hook, user_param, limit, hint, isinjective, image, kernel, partial_map",
     FuncDIGRAPH_HOMOS,
-    "src/graphs.c:FuncDIGRAPH_HOMOS" },
+    "src/digraphs.c:FuncDIGRAPH_HOMOS" },
 
   { 0, 0, 0, 0, 0 } /* Finish with an empty entry */
 
