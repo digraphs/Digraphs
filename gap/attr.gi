@@ -8,6 +8,15 @@
 #############################################################################
 ##
 
+InstallMethod(AsTransformation, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if not IsFunctionalDigraph(digraph) then
+    return fail;
+  fi;
+  return Transformation(Concatenation(OutNeighbours(digraph)));
+end);
+
 InstallMethod(ReducedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)

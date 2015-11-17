@@ -45,5 +45,7 @@ DeclareGlobalFunction("DigraphTransitiveClosureNC");
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("ReducedDigraph", IsDigraph);
 
+DeclareAttribute("AsTransformation", IsDigraph);
+
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
