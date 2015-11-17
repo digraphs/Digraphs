@@ -349,6 +349,12 @@ gap> AutomorphismGroup(gr, [-1 .. -10]);
 Error, Digraphs: AutomorphismGroup: usage,
 the second arg must be a list of length 8 of integers in [1 .. 8],
 
+#T# AutomorphismGroup: for a multidigraph
+gap> gr := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> AutomorphismGroup(gr, [1,2]);
+fail
+
 #T# DigraphCanonicalLabelling: for a digraph with colored vertices
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <digraph with 8 vertices, 32 edges>
@@ -374,6 +380,12 @@ the second arg must be a list of length 8 of integers in [1 .. 8],
 gap> DigraphCanonicalLabelling(gr, [-1 .. -10]);
 Error, Digraphs: DigraphCanonicalLabelling: usage,
 the second arg must be a list of length 8 of integers in [1 .. 8],
+
+#T# DigraphCanonicalLabelling: for a multidigraph
+gap> gr := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> DigraphCanonicalLabelling(gr, [1,2]);
+fail
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr4);
