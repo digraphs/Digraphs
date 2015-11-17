@@ -92,6 +92,19 @@ function(str)
   return Digraph(out);
 end);
 
+InstallGlobalFunction(TCodeDecoderNC,
+function(str)
+  local out, i;
+
+  str := SplitString(str, " ");
+  Apply(str, Int);
+  out := List([1 .. str[1]], x -> []);
+  for i in [1 .. str[2]] do
+    Add(out[str[2 * i + 1] + 1], str[2 * i + 2] + 1);
+  od;
+  return DigraphNC(out);
+end);
+
 #
 
 InstallGlobalFunction(ReadDigraphs,
