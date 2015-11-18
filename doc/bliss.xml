@@ -10,12 +10,28 @@
 
 <#GAPDoc Label="AutomorphismGroupDigraph">
 <ManSection>
-  <Attr Name="AutomorphismGroup" Label="for a digraph" Arg="digraph"/>
+  <Attr Name="AutomorphismGroup" Label="for a digraph" Arg="digraph[, colors]"/>
   <Returns>A permutation group.</Returns>
   <Description>
     If <A>digraph</A> is a digraph without multiple edges, then this function
     returns the automorphism group of <A>digraph</A>, as a group of permutations
     on the vertices of <A>digraph</A>. <P/>
+
+    If the <A>colors</A> argument is specified, then the group will consist of
+    only those automorphisms which respect the given colouring.  The colouring
+    <A>colors</A> can be in one of two forms: <P/>
+
+    <List>
+      <Item>
+        A list of positive integers of size the number of vertices of
+        <A>digraph</A>, where <A>colors</A><C>[i]</C> is the colour of vertex
+        <C>i</C>.
+      </Item>
+      <Item>
+        A list of lists, such that <A>colors</A><C>[i]</C> is a list of all
+        vertices with colour <C>i</C>.
+      </Item>
+    </List>
 
     The automorphism group is found using <URL
       Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
@@ -30,11 +46,18 @@ gap> AutomorphismGroup(johnson);
 Group([ (3,4), (2,3)(4,5), (1,2)(5,6) ])
 gap> Size(last);
 48
-gap> cycle := CycleDigraph(20);
-<digraph with 20 vertices, 20 edges>
+gap> cycle := CycleDigraph(9);
+<digraph with 9 vertices, 9 edges>
 gap> a := AutomorphismGroup(cycle);;
 gap> StructureDescription(a);
-"C20"]]></Example>
+"C9"
+gap> a := AutomorphismGroup(cycle, [1, 2, 3, 1, 2, 3, 1, 2, 3]);;
+gap> StructureDescription(a);
+"C3"
+gap> a := AutomorphismGroup(cycle, [[1, 4, 7], [2, 5, 8], [3, 6, 9]]);;
+gap> StructureDescription(a);
+"C3"
+]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
