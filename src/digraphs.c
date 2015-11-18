@@ -652,6 +652,9 @@ static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
           PLAIN_LIST(nbs);
           for ( l = 1; l <= LEN_PLIST(nbs); l++ ) {
             if ( last1 != j && INT_INTOBJ(ADDR_OBJ(nbs)[l]) == last1 ) {
+              free(ptr);
+              stack -= (4 * level) - 4; // put the stack back to the start
+              free(stack);
               return False;
             }
           }
