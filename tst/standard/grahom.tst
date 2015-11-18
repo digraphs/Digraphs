@@ -140,12 +140,12 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
 gap> gr := EmptyDigraph(2);
 <digraph with 2 vertices, 0 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr, Group(()), Group((1, 2)));
-[ Transformation( [ 2, 1 ] ), IdentityTransformation, 
-  Transformation( [ 1, 1 ] ) ]
+Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
+<colors> must be a homogenous list,
 gap> gr := EmptyDigraph(2);;
 gap> GeneratorsOfEndomorphismMonoid(gr, Group(()));
-[ Transformation( [ 2, 1 ] ), IdentityTransformation, 
-  Transformation( [ 1, 1 ] ) ]
+Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
+<colors> must be a homogenous list,
 gap> gr := EmptyDigraph(2);;
 gap> GeneratorsOfEndomorphismMonoid(gr, 1);
 [ Transformation( [ 2, 1 ] ) ]
