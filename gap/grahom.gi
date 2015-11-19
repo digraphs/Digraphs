@@ -144,15 +144,24 @@ function(arg)
 
   digraph := arg[1];
 
-
   if not IsDigraph(digraph) then
     ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
                  "the 1st argument <digraph> must be a digraph,");
   fi;
 
   if IsBound(arg[2]) then
-    colors := arg[2];
-    G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph), colors);
+    if IsHomogeneousList(arg[2]) then
+      colors := arg[2];
+      G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph), colors);
+    elif not IsBound(arg[3]) and (IsPosInt(arg[2]) or arg[2] = infinity) then
+      # arg[2] is <limit>
+      arg[3] := arg[2];
+      colors := fail;
+      G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph));
+    else
+      ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
+                   "<colors> must be a homogenous list,");
+    fi;
   else
     if HasGeneratorsOfEndomorphismMonoidAttr(digraph) then
       return GeneratorsOfEndomorphismMonoidAttr(digraph);
@@ -161,12 +170,15 @@ function(arg)
     G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph));
   fi;
 
-  if IsBound(arg[3]) and (IsPosInt(arg[3]) or arg[3] = infinity) then
+  if IsBound(arg[3]) then
+    if not (IsPosInt(arg[3]) or arg[3] = infinity) then
+      ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
+                   "<limit> must be a positive integer or infinity,");
+    fi;
     limit := arg[3];
   else
     limit := infinity;
   fi;
-
 
   if IsTrivial(G) then
     gens := [];
