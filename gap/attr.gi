@@ -590,7 +590,7 @@ function(d)
     end;
 
     CIRCUIT := function(v, comp)
-      local f, endofstack, pos, buffer, dummy, w;
+      local f, pos, buffer, dummy, w;
 
       f := false;
 
