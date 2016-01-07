@@ -46,9 +46,7 @@ PrintPackageList := function(stream, pkgs)
     AppendTo(stream, "\n");
 end;
 
-# HACK
-MakeReadWriteGlobal("SetPackageInfo");
-SetPackageInfo:=function(pkg)
+GeneratePackageYML:=function(pkg)
     local stream, authors, maintainers, formats, f;
     stream := OutputTextFile("_data/package.yml", false);
     SetPrintFormattingStatus(stream, false);
@@ -117,4 +115,5 @@ SetPackageInfo:=function(pkg)
     CloseStream(stream);
 end;
 Read("PackageInfo.g");
+GeneratePackageYML(GAPInfo.PackageInfoCurrent);
 QUIT;
