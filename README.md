@@ -59,7 +59,7 @@ following these instructions.
    git push --set-upstream origin gh-pages
    ```
 
-That't it. You can now see your new package website under
+That's it. You can now see your new package website under
 http://USERNAME.github.io/REPOSITORY/ (of course after
 adjusting USERNAME and REPOSITORY suitably).
 
@@ -106,8 +106,9 @@ test the website locally as follows:
 ## Updating after you made a release
 
 Whenever you make a release of your package (and perhaps more often than
-that), you will want to update your website. The instructions for doing that
-are quite similar to the above:
+that), you will want to update your website. The easiest way is to use
+the `release` script from the [ReleaseTools][]. However, you can also do
+it manually. The steps for doing it are quite similar to the above:
 
 1. Go to the `gh-pages` directory we created above.
 
@@ -131,15 +132,10 @@ are quite similar to the above:
 A few seconds after you have done this, your changes will be online
 under http://USERNAME.github.io/REPOSITORY/ .
 
-Note that if you are using the [ReleaseTools for GAP
-packages](https://github.com/fingolfin/ReleaseTools), then its 
-`make-dist` script will automatically perform these steps for you
-(except for the final commit, which is always left to the user).
-
 
 ## Updating to a newer version of GitHubPagesForGAP
 
-Normally you should not have to every do this. However, if you really want to,
+Normally you should not have to ever do this. However, if you really want to,
 you can attempt to update to the most recent version of GitHubPagesForGAP via
 the following instructions. The difficulty of such an update depends on how
 much you tweaked the site after initially cloning GitHubPagesForGAP.
@@ -174,26 +170,28 @@ much you tweaked the site after initially cloning GitHubPagesForGAP.
 
 
 
-# Packages using GitHubPagesForGAP
+## Packages using GitHubPagesForGAP
 Packages using GitHubPagesForGAP include the following:
 
-* https://neunhoef.github.io/cvec
-* https://neunhoef.github.io/io
-* https://neunhoef.github.io/genss
-* https://neunhoef.github.io/orb
-* https://neunhoef.github.io/recog
-* https://neunhoef.github.io/recogbase
-* https://gap-system.github.io/libsing/
-* https://gap-system.github.io/nq/
-* https://gap-system.github.io/polenta/
-* https://fingolfin.github.io/NormalizInterface/
+* https://gap-packages.github.io/cvec
+* https://gap-packages.github.io/genss
+* https://gap-packages.github.io/io
+* https://gap-packages.github.io/NormalizInterface/
+* https://gap-packages.github.io/nq/
+* https://gap-packages.github.io/orb
+* https://gap-packages.github.io/polenta/
+* https://gap-packages.github.io/recog
+* https://gap-packages.github.io/recogbase
+* https://gap-packages.github.io/SingularInterface/
 
 
-# Contact
+## Contact
 
 Please submit bug reports, suggestions for improvements and patches via
 the [issue tracker](https://github.com/fingolfin/GitHubPagesForGAP/issues).
 
 You can also contact me directly via [email](max@quendi.de).
 
-Copyright (c) 2013-2014 Max Horn
+Copyright (c) 2013-2016 Max Horn
+
+[ReleaseTools]: https://github.com/fingolfin/ReleaseTools
