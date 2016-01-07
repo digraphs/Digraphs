@@ -8,7 +8,7 @@ layout: default
 
 The current version of this package is version {{site.data.package.version}}.
 For more information, please refer to [the package manual]({{site.data.package.doc-html}}).
-There is also a [README](README) file.
+There is also a [README](README.html) file.
 
 ## Dependencies
 
