@@ -1149,23 +1149,7 @@ function(graph)
   od;
 
   # Add padding bits:
-  #  1. If (n,k) = (2,1), (4,2), (8,3) or (16,4), and vertex
-  #     n-2 has an edge but n-1 doesn't have an edge, and
-  #     there are k+1 or more bits to pad, then pad with one
-  #     0-bit and enough 1-bits to complete the multiple of 6.
-  #  2. Otherwise, pad with enough 1-bits to complete the
-  #     multiple of 6.
-
   bitstopad := 5 - ((nextbit - 2) mod 6);
-  if ((n = 2 and k = 1) or
-      (n = 4 and k = 2) or
-      (n = 8 and k = 3) or
-      (n = 16 and k = 4)) and
-      (v = n - 2) and
-      (bitstopad > k) then
-    blist[nextbit] := false;
-    bitstopad := bitstopad - 1;
-  fi;
   for i in [1 .. bitstopad] do
     Add(blist, true);
   od;
