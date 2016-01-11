@@ -392,6 +392,27 @@ gap> DigraphPlainTextLineDecoder(" ", "  ", 1, ".");
 Error, Digraphs: DigraphPlainTextLineDecoder: usage,
 DigraphPlainTextLineDecoder(delimiter, [,delimiter], offset),
 
+#T# DigraphPlainTextLineDecoder: bad input
+gap> Graph6String(ChainDigraph(4));
+Error, Digraphs: Graph6String: usage,
+<graph> must be symmetric and have no loops or multiple edges,
+gap> Graph6Length(-1);
+fail
+gap> Graph6Length(68719476737);
+fail
+gap> Graph6Length(258748);
+[ 63, 63, 0, 0, 0, 63, 10, 60 ]
+gap> WriteDigraphs(1, 1);
+Error, Digraphs: WriteDigraphs: usage,
+<name> must be a string,
+gap> WriteDigraphs("string", [1]);
+Error, Digraphs: WriteDigraphs: usage,
+<digraphs> must be a list of digraphs,
+gap> Sparse6String(EmptyDigraph(2^20));
+":~~??C???"
+gap> DigraphFromSparse6String(":~~??C???");
+<digraph with 1048576 vertices, 0 edges>
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(list);
