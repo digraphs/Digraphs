@@ -78,6 +78,8 @@ Error, Digraphs: ReadDigraphs: usage,
 cannot open file path/to/some/madeupfile.g6.gz,
 
 #T# DigraphFromSparse6String and Sparse6String
+gap> DigraphFromSparse6String(":@");
+<digraph with 1 vertex, 0 edges>
 gap> DigraphFromSparse6String(Concatenation(":[___dCfEcdFjCIideLhIfJ",
 >                                           "kLgkQge`RSbPTaOTbMNaS`QY"));
 <digraph with 28 vertices, 84 edges>
@@ -351,6 +353,9 @@ Error, Digraphs: DigraphFromDigraph6String: usage,
 gap> DigraphFromSparse6String(":~~l");
 Error, Digraphs: DigraphFromSparse6String: usage,
 <s> must be a string in Sparse6 format,
+gap> DigraphFromSparse6String(":~hl");
+Error, Digraphs: DigraphFromSparse6String: usage,
+<s> must be a string in Sparse6 format,
 gap> DigraphFromDiSparse6String(".~~l");
 Error, Digraphs: DigraphFromDiSparse6String: usage,
 <s> must be a string in disparse6 format,
@@ -365,6 +370,17 @@ Error, Digraphs: DigraphFromSparse6String: usage,
 gap> DigraphFromDiSparse6String("z");
 Error, Digraphs: DigraphFromDiSparse6String: usage,
 <s> must be a string in disparse6 format,
+
+#T# DigraphFromSparse6String: an unusual but valid case
+gap> DigraphFromSparse6String(":TdBkJ`Kq?x");
+<digraph with 21 vertices, 10 edges>
+gap> Sparse6String(last);
+":TdBkJ`Kq?"
+
+#T# DigraphPlainTextLineDecoder: bad input
+gap> DigraphPlainTextLineDecoder(" ", "  ", 1, ".");
+Error, Digraphs: DigraphPlainTextLineDecoder: usage,
+DigraphPlainTextLineDecoder(delimiter, [,delimiter], offset),
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
