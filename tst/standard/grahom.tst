@@ -135,6 +135,21 @@ gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, false, [1 .. 513],
 > [], fail, fail);
 Error, Digraphs: HomomorphismDigraphsFinder: error,
 not yet implemented for digraphs with more than 512 vertices,
+gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
+> [], [1,2], [2, 1]);
+[ Transformation( [ 2, 1 ] ) ]
+gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
+> [], [1,2,3], [2, 1]);
+Error, Digraphs: HomomorphismDigraphsFinder: usage,
+the 10th arg must be a list of length 2 of integers in [1 .. 2],
+gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
+> [], [1,3], [2, 1]);
+Error, Digraphs: HomomorphismDigraphsFinder: usage,
+the 10th arg must be a list of length 2 of integers in [1 .. 2],
+gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
+> [], [1,fail], [2, 1]);
+Error, Digraphs: HomomorphismDigraphsFinder: usage,
+the 10th arg must be a list of length 2 of integers in [1 .. 2],
 gap> gr := ChainDigraph(2);
 <digraph with 2 vertices, 1 edge>
 gap> GeneratorsOfEndomorphismMonoid();
@@ -178,6 +193,20 @@ gap> IsFullTransformationSemigroup(Semigroup(gens));
 true
 gap> Size(Semigroup(gens));
 4
+gap> gr := CompleteDigraph(5);;
+gap> GeneratorsOfEndomorphismMonoid(gr, [1, 2, 3, 4, 5]);
+[ IdentityTransformation ]
+gap> GeneratorsOfEndomorphismMonoid(gr);
+[ IdentityTransformation ]
+gap> GeneratorsOfEndomorphismMonoid(gr, [1, 1, 1, 2, 2]);
+[ Transformation( [ 1, 2, 3, 5, 4 ] ), Transformation( [ 1, 3, 2 ] ), 
+  Transformation( [ 2, 1 ] ), IdentityTransformation ]
+gap> GeneratorsOfEndomorphismMonoid(gr, [1, 1, 1, 2, 2], 1);
+[ Transformation( [ 1, 2, 3, 5, 4 ] ), Transformation( [ 1, 3, 2 ] ), 
+  Transformation( [ 2, 1 ] ) ]
+gap> GeneratorsOfEndomorphismMonoid(gr, [1, 1, 1, 2, 2], 0);
+Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
+<limit> must be a positive integer or infinity,
 
 #T# GeneratorsOfEndomorphismMonoid: digraphs with loops
 
