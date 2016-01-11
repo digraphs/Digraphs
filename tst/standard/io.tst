@@ -297,6 +297,20 @@ where e is the number of edges (the 2nd entry in <str>),
 gap> gr := TCodeDecoderNC("100 5 0 12 48 49 99 1 54 49 49 49");
 <digraph with 100 vertices, 5 edges>
 
+#T# Empty strings should not create graphs
+gap> DigraphFromGraph6String("");
+Error, Digraphs: DigraphFromGraph6String: usage,
+the input string should be non-empty,
+gap> DigraphFromDigraph6String("");
+Error, Digraphs: DigraphFromDigraph6String: usage,
+the input string should be non-empty,
+gap> DigraphFromSparse6String("");
+Error, Digraphs: DigraphFromSparse6String: usage,
+the input string should be non-empty,
+gap> DigraphFromDiSparse6String("");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+the input string should be non-empty,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(list);

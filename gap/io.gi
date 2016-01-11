@@ -215,7 +215,7 @@ function(s)
 
   if Length(s) = 0 then
     ErrorMayQuit("Digraphs: DigraphFromGraph6String: usage,\n",
-                 "the input string has to be non-empty,");
+                 "the input string should be non-empty,");
   fi;
 
   # Convert ASCII chars to integers
@@ -287,6 +287,12 @@ InstallMethod(DigraphFromDigraph6String, "for a string",
 function(s)
   local list, i, n, start, range, source, pos, len, j, bpos, tabpos;
 
+  # Check non-emptiness
+  if Length(s) = 0 then
+    ErrorMayQuit("Digraphs: DigraphFromDigraph6String: usage,\n",
+                 "the input string should be non-empty,");
+  fi;
+
   # Check for the special '+' character
   if s[1] <> '+' then
     ErrorMayQuit("Digraphs: DigraphFromDigraph6String: usage,\n",
@@ -353,6 +359,12 @@ InstallMethod(DigraphFromSparse6String, "for a string",
 function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i,
   finish, x, j;
+
+  # Check non-emptiness
+  if Length(s) = 0 then
+    ErrorMayQuit("Digraphs: DigraphFromSparse6String: usage,\n",
+                 "the input string should be non-empty,");
+  fi;
 
   # Check for the special ':' character
   if s[1] <> ':' then
@@ -1186,6 +1198,12 @@ InstallMethod(DigraphFromDiSparse6String, "for a directed graph",
 function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i, x,
   finish, j;
+
+  # Check non-emptiness
+  if Length(s) = 0 then
+    ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
+                 "the input string should be non-empty,");
+  fi;
 
   # Check for the special ':' character
   if s[1] <> '.' then
