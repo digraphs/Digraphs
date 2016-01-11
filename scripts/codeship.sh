@@ -18,4 +18,4 @@ echo "LoadPackage(\"digraphs\"); DigraphsTestAll(); quit;" | sh gap4r8/bin/gap.s
 echo "GAP 4.8: Running tests with no optional packages loaded..."
 echo "LoadPackage(\"digraphs\"); LoadPackage(\"semigroups\"); DigraphsTestAll(); quit;" | sh gap4r8/bin/gap.sh | tee -a testlog.txt
 
-grep --colour=always -A 1 -E "########> Diff|$" testlog.txt ; ( ! grep -E "########> Diff|# WARNING" testlog.txt )
+grep --colour=always -A 1 -E "########> Diff|$" testlog.txt ; ( ! grep -E "########> Diff|WARNING" testlog.txt )
