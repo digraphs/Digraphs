@@ -750,7 +750,7 @@ function(name, digraphs)
 
   if file = fail then
     ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
-                 "cannot open file ", filepath, ",\n");
+                 "cannot open file ", filepath, ",");
   fi;
 
   for i in [1 .. Length(digraphs)] do

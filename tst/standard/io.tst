@@ -436,6 +436,25 @@ gap> list2 := ReadDigraphs(filename);
 [ <multidigraph with 2 vertices, 4 edges> ]
 gap> list2[1] = gr;
 true
+gap> list := [CompleteDigraph(10), CompleteDigraph(15)];;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.bzip2");;
+gap> WriteDigraphs(filename, list);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.g6.bzip2");;
+gap> list2 := ReadDigraphs(filename);;
+gap> list = list2;
+true
+gap> gr := [Digraph([[1,2,3,4], [1,2,3,4], [1,3,4], [1,2,3,4]])];
+[ <digraph with 4 vertices, 15 edges> ]
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense");;
+gap> WriteDigraphs(filename, gr);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.d6");;
+gap> list2 := ReadDigraphs(filename);;
+gap> gr = list2;
+true
+gap> filename := "does/not/exist.gz";;
+gap> WriteDigraphs(filename, gr);
+Error, Digraphs: WriteDigraphs: usage,
+cannot open file does/not/exist.d6.gz,
 
 #T# DigraphPlainTextLineDecoder: bad input
 gap> Graph6String(ChainDigraph(4));
