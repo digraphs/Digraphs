@@ -663,6 +663,56 @@ true
 gap> IS_TRANSITIVE_DIGRAPH(gr);
 true
 
+#T# IsBipartiteDigraph
+gap> gr := Digraph([[2, 4], [], [1], [1], [4]]);
+<digraph with 5 vertices, 5 edges>
+gap> IsBipartiteDigraph(gr);
+true
+gap> gr := Digraph([]);
+<digraph with 0 vertices, 0 edges>
+gap> IsBipartiteDigraph(gr);
+true
+gap> gr := CycleDigraph(89);
+<digraph with 89 vertices, 89 edges>
+gap> IsBipartiteDigraph(gr);
+false
+gap> gr := CycleDigraph(314);
+<digraph with 314 vertices, 314 edges>
+gap> IsBipartiteDigraph(gr);
+true
+gap> gr := CompleteDigraph(4);
+<digraph with 4 vertices, 12 edges>
+gap> IsBipartiteDigraph(gr);
+false
+gap> gr := Digraph([[2, 4], [], [1], [1], [4], [7], []]);
+<digraph with 7 vertices, 6 edges>
+gap> IsBipartiteDigraph(gr);
+true
+gap> gr := Digraph([[2], [3], [1], [6], [6], []]);
+<digraph with 6 vertices, 5 edges>
+gap> IsBipartiteDigraph(gr);
+false
+gap> gr := Digraph([[1], [2]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsBipartiteDigraph(gr);
+false
+gap> gr := Digraph([[3], [2], [1, 2]]);
+<digraph with 3 vertices, 4 edges>
+gap> IsBipartiteDigraph(gr);
+false
+gap> gr := Digraph([[3], [3], [1, 2]]);
+<digraph with 3 vertices, 4 edges>
+gap> IsBipartiteDigraph(gr);
+true
+gap> gr := Digraph([[2, 3, 4], [5, 6], [], [7], [], [], []]);
+<digraph with 7 vertices, 6 edges>
+gap> IsBipartiteDigraph(gr);
+true
+gap> gr := Digraph([[2, 3, 4], [5, 6], [], [7], [], [], [], [9], []]);
+<digraph with 9 vertices, 7 edges>
+gap> IsBipartiteDigraph(gr);
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);

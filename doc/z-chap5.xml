@@ -3,6 +3,7 @@
   <Section><Heading>Edge properties</Heading>
     <#Include Label="DigraphHasLoops">
     <#Include Label="IsAntisymmetricDigraph">
+    <#Include Label="IsBipartiteDigraph">
     <#Include Label="IsCompleteDigraph">
     <#Include Label="IsEmptyDigraph">
     <#Include Label="IsFunctionalDigraph">
