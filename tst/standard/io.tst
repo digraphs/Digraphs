@@ -317,7 +317,7 @@ Error, Digraphs: DigraphFromDiSparse6String: usage,
 <s> must be a string in disparse6 format,
 gap> DigraphFromDiSparse6String(".~~");
 Error, Digraphs: DigraphFromDiSparse6String: usage,
-.~~ is not a valid disparse6 input,
+<s> must be a string in disparse6 format,
 gap> DigraphFromDiSparse6String(".~~??@???o??N");
 <digraph with 262144 vertices, 0 edges>
 gap> DigraphFromDiSparse6String(".~??");
