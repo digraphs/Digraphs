@@ -311,6 +311,14 @@ gap> DigraphFromDiSparse6String("");
 Error, Digraphs: DigraphFromDiSparse6String: usage,
 the input string should be non-empty,
 
+#T# Invalid sizes
+gap> DigraphFromGraph6String("~llk");
+Error, Digraphs: DigraphFromGraph6String: usage,
+<s> is not a valid graph6 input,
+gap> DigraphFromDigraph6String("+~llk");
+Error, Digraphs: DigraphFromDigraph6String: usage,
+<s> must be a string in Digraph6 format,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(list);
