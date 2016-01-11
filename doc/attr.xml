@@ -726,23 +726,26 @@ gap> OutNeighbours(last);
     pair of bicomponents of <A>digraph</A>. Otherwise,
     <C>DigraphBicomponents</C> returns <K>fail</K>.<P/>
     
-    For a bipartite digraph, the vertices can be partitioned into two sets
-    such that the source and range of any edge are in distinct sets. The
+    For a bipartite digraph, the vertices can be partitioned into two non-empty
+    sets such that the source and range of any edge are in distinct sets. The
     parts of this partition are called <E>bicomponents</E> of <A>digraph</A>.
     Equivalently, a pair of bicomponents of <A>digraph</A> consists of the
     color-classes of a 2-coloring of <A>digraph</A>. <P/>
 
-    There is a unique pair of bicomponents of <A>digraph</A> if and only if
-    <A>digraph</A> is connected. See <Ref Prop="IsConnectedDigraph"/> for
-    more information.
+    For a bipartite digraph with at least 3 vertices, there is a unique pair of
+    bicomponents of bipartite if and only if the digraph is connected. See <Ref
+      Prop="IsConnectedDigraph"/> for more information.
     <Example><![CDATA[
 gap> gr := CycleDigraph(3);
+<digraph with 3 vertices, 3 edges>
 gap> DigraphBicomponents(gr);
 fail
 gap> gr := ChainDigraph(5);
+<digraph with 5 vertices, 4 edges>
 gap> DigraphBicomponents(gr);
 [ [ 1, 3, 5 ], [ 2, 4 ] ]
 gap> gr := Digraph([[5], [1, 4], [5], [5], []]);
+<digraph with 5 vertices, 5 edges>
 gap> DigraphBicomponents(gr);
 [ [ 1, 3, 4 ], [ 2, 5 ] ]]]></Example>
   </Description>

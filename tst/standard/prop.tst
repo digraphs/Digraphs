@@ -671,7 +671,7 @@ true
 gap> gr := Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> IsBipartiteDigraph(gr);
-true
+false
 gap> gr := CycleDigraph(89);
 <digraph with 89 vertices, 89 edges>
 gap> IsBipartiteDigraph(gr);
@@ -712,6 +712,12 @@ gap> gr := Digraph([[2, 3, 4], [5, 6], [], [7], [], [], [], [9], []]);
 <digraph with 9 vertices, 7 edges>
 gap> IsBipartiteDigraph(gr);
 true
+gap> gr := Digraph([[1]]);
+<digraph with 1 vertex, 1 edge>
+gap> DigraphHasLoops(gr);
+true
+gap> IsBipartiteDigraph(gr);
+false
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);

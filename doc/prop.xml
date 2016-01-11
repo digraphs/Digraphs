@@ -402,20 +402,22 @@ true
   <Prop Name="IsBipartiteDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-  This property is <K>true</K> if the digraph <A>digraph</A> is bipartite,
-  and <K>false</K> if it is not.  A digraph is bipartite if and only if the
-  vertices of <A>digraph</A> can be partitioned into two sets such that the
-  source and range of any edge of <A>digraph</A> lie in distinct sets.
+  This property is <K>true</K> if the digraph <A>digraph</A> is bipartite, and
+  <K>false</K> if it is not.  A digraph is bipartite if and only if the
+  vertices of <A>digraph</A> can be partitioned into two non-empty sets such
+  that the source and range of any edge of <A>digraph</A> lie in distinct sets.
   Equivalently, a digraph is bipartite if and only if it is 2-colorable; see
-  <Ref Oper="DigraphColoring"/>.
+  <Ref Oper="DigraphColoring"/>. <P/>
+
+  See also <Ref Attr="DigraphBicomponents"/>.
     <Example><![CDATA[
 gap> gr := ChainDigraph(4);
-<digraph with 4 vertices, 4 edges>
+<digraph with 4 vertices, 3 edges>
 gap> IsBipartiteDigraph(gr);
 true
-gap> gr := ChainDigraph(3);
+gap> gr := CycleDigraph(3);
 <digraph with 3 vertices, 3 edges>
-gap> IsBipartitionDigraph(gr);
+gap> IsBipartiteDigraph(gr);
 false]]></Example>
   </Description>
 </ManSection>

@@ -342,12 +342,13 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
   <Oper Name="DigraphColouring" Arg="digraph, n"/>
   <Returns> A transformation, or <K>fail</K>.</Returns>
   <Description>
-    A digraph coloring is a labeling of the vertices (with <A>n</A> colors)
-    in such a way that two adjacent vertices can not have the same label.
-    Alternatively, it can be defined to be a <Ref Oper="DigraphHomomorphism"/>
-    from <A>digraph</A> to a complete digraph with <A>n</A> vertices.<P/>
+    A digraph coloring is a labeling of the vertices (using precisely <A>n</A>
+    colors) in such a way that two adjacent vertices can not have the same
+    label.  Alternatively, it can be defined to be a <Ref
+      Oper="DigraphEpimorphism"/> from <A>digraph</A> onto a complete digraph
+    with <A>n</A> vertices.<P/>
 
-    <C>DigraphColoring</C> returns such a homomorphism if one exists, else it
+    <C>DigraphColoring</C> returns such an epimorphism if one exists, else it
     returns <K>fail</K>. <P/>
 
     Note that a digraph has a 2-coloring if and only if it is bipartite, see

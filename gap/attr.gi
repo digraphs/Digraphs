@@ -666,10 +666,16 @@ end);
 
 InstallMethod(DIGRAPHS_Bipartite, "for a digraph", [IsDigraph],
 function(digraph)
-  local n, colour, neighbours, queue, i, node, node_neighbours, root;
+  local n, colour, neighbours, queue, i, node, node_neighbours, root, t;
 
-  digraph := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(digraph));
   n := DigraphNrVertices(digraph);
+  if n < 2 then
+    return [false, fail];
+  elif IsEmptyDigraph(digraph) then
+    t := Concatenation(ListWithIdenticalEntries(n - 1, 1), [2]);
+    return [true, Transformation(t)];
+  fi;
+  digraph := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(digraph));
   colour := ListWithIdenticalEntries(n, 0);
   
   #This means there is a vertex we haven't visited yet
@@ -712,16 +718,7 @@ function(digraph)
   if not IsBipartiteDigraph(digraph) then
     return fail;
   fi;
-
-  if DigraphNrVertices(digraph) = 0 then
-    return [[], []];
-  fi;
-
   b := KernelOfTransformation(DIGRAPHS_Bipartite(digraph)[2],
                               DigraphNrVertices(digraph));
-  if Length(b) = 1 then
-    SetIsEmptyDigraph(digraph, true);
-    Add(b, []);
-  fi;
   return b;
 end);
