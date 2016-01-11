@@ -174,6 +174,17 @@ def _copy_build_files(dst, verbose):
         print _cyan_string('Copying cnf/* to the archive . . .')
     shutil.copytree('cnf', dst + '/cnf')
 
+def _delete_generated_build_files(verbose):
+    for filename in ['aclocal.m4', 'autom4te.cache', 'config.log',
+                     'config.status']:
+        if verbose:
+            print _cyan_string('Deleting ' + filename + ' from the archive . . .')
+        os.remove(filename)
+    for directory in ['libtool', 'digraphs-lib', 'm4']:
+        if verbose:
+            print _cyan_string('Deleting ' + directory + ' from the archive . . .')
+        shutil.rmtree(directory)
+
 def _download_digraphs_lib(dst, verbose):
     urllib.urlretrieve('https://bitbucket.org/james-d-mitchell/digraphs/downloads/digraphs-lib-0.2.tar.gz',
             'digraphs-lib-0.2.tar.gz')
@@ -316,10 +327,23 @@ def main():
                 if os.path.exists(os.path.join(tmpdir_base, 'digraphs')):
                     shutil.move(os.path.join(tmpdir_base, 'digraphs'),
                                 os.path.join(directory, 'pkg/digraphs'))
-                #shutil.rmtree(digraphs_dir)
+                shutil.rmtree(digraphs_dir)
 
     print _magenta_string('Creating the tarball . . .')
+    os.chdir(tmpdir)
+    _delete_generated_build_files(args.verbose)
     os.chdir(tmpdir_base)
+
+    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', 'autogen.sh']:
+        if (os.path.exists(os.path.join(tmpdir, filename))
+                and os.path.isfile(os.path.join(tmpdir, filename))):
+            print _magenta_string(pad('Deleting file ' + filename) + ' . . .')
+            try:
+                os.remove(os.path.join(tmpdir, filename))
+            except OSError:
+                sys.exit(_red_string('release.py: error: could not delete' +
+                                     filename))
+
     _exec('tar -cpf digraphs-' + vers + '.tar digraphs-' + vers +
           '; gzip -9 digraphs-' + vers + '.tar', args.verbose)
 
