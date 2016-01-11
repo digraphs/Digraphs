@@ -811,6 +811,43 @@ gap> DigraphVertexLabels(gr);
 gap> DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
 
+#T# DigraphAllSimpleCircuits
+gap> gr := ChainDigraph(4);;
+gap> DigraphAllSimpleCircuits(gr);
+[  ]
+gap> gr := CompleteDigraph(2);;
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 1, 2 ] ]
+
+#T# AsTransformation
+gap> gr := Digraph([[2], [1, 3], [4], [3]]);;
+gap> AsTransformation(gr);
+fail
+gap> gr := AsDigraph(Transformation([1, 1, 1]), 5);
+<digraph with 5 vertices, 5 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 1 ], [ 2, 1 ], [ 3, 1 ], [ 4, 4 ], [ 5, 5 ] ]
+gap> AsTransformation(gr);
+Transformation( [ 1, 1, 1 ] )
+
+#T# DigraphBicomponents
+gap> DigraphBicomponents(EmptyDigraph(0));
+fail
+gap> DigraphBicomponents(EmptyDigraph(1));
+fail
+gap> DigraphBicomponents(EmptyDigraph(2));
+[ [ 1 ], [ 2 ] ]
+gap> DigraphBicomponents(EmptyDigraph(3));
+[ [ 1, 2 ], [ 3 ] ]
+gap> DigraphBicomponents(EmptyDigraph(4));
+[ [ 1, 2, 3 ], [ 4 ] ]
+gap> DigraphBicomponents(CompleteBipartiteDigraph(3, 5));
+[ [ 1, 2, 3 ], [ 4, 5, 6, 7, 8 ] ]
+gap> DigraphBicomponents(Digraph([[2], [], [], [3]]));
+[ [ 1, 3 ], [ 2, 4 ] ]
+gap> DigraphBicomponents(CycleDigraph(3));
+fail
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);

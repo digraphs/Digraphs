@@ -118,7 +118,9 @@ void DigraphHomomorphisms (Digraph* digraph1,
                            UIntL     max_results_arg,
                            int       hint_arg,
                            BitArray* image,
-                           UIntS*    partial_map                           );
+                           UIntS*    partial_map,
+                           UIntS*    colors1, 
+                           UIntS*    colors2                           );
 
 ////////////////////////////////////////////////////////////////////////////////
 // DigraphMonomorphisms: TODO add description of args
@@ -132,7 +134,9 @@ void DigraphMonomorphisms (Digraph* digraph1,
                            void*     user_param_arg,
                            UIntL     max_results_arg,
                            BitArray* image,
-                           UIntS*    partial_map                           );
+                           UIntS*    partial_map,
+                           UIntS*    colors1, 
+                           UIntS*    colors2                           );
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -180,7 +184,9 @@ void GraphHomomorphisms (Graph* graph1,
                          UIntL     max_results_arg,
                          int       hint_arg,
                          BitArray* image,
-                         UIntS*    partial_map                           );
+                         UIntS*    partial_map,
+                         UIntS*    colors1, 
+                         UIntS*    colors2                           );
 
 ////////////////////////////////////////////////////////////////////////////////
 // GraphMonomorphisms: TODO add description of args
@@ -194,5 +200,7 @@ void GraphMonomorphisms (Graph*   graph1,
                          void*     user_param_arg,
                          UIntL     max_results_arg,
                          BitArray* image_arg,
-                         UIntS     *partial_map_arg                     );
+                         UIntS     *partial_map_arg,
+                         UIntS*    colors1, 
+                         UIntS*    colors2                           );
 #endif

@@ -22,6 +22,8 @@ DeclareAttribute("DigraphDual", IsDigraph);
 DeclareAttribute("DigraphShortestDistances", IsDigraph);
 DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
 DeclareAttribute("DigraphConnectedComponents", IsDigraph);
+DeclareAttribute("DIGRAPHS_Bipartite", IsDigraph);
+DeclareAttribute("DigraphBicomponents", IsDigraph);
 
 DeclareAttribute("OutNeighbours", IsDigraph);
 DeclareSynonymAttr("OutNeighbors", OutNeighbours);
@@ -36,6 +38,7 @@ DeclareAttribute("DigraphSinks", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
 DeclareAttribute("DigraphGirth", IsDigraph);
+DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
 
 DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
 DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
@@ -66,3 +69,4 @@ DeclareAttribute("RepresentativeOutNeighbours", IsDigraph);
 
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
+DeclareAttribute("AsTransformation", IsDigraph);

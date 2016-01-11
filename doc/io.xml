@@ -457,9 +457,8 @@ gap> OutNeighbours(gr);
     the digraph, and the second defines the number of edges <C>e</C>.  The
     following <C>2e</C> integers should be vertex numbers in the range <C>[0 ..
       v-1]</C>. These integers are read in pairs and define the digraph's
-    edges.  This function will return an error if
-    <C>Length(</C><A>str</A><C>)</C> &lt; <C>2e+2</C>.
-    <P/>
+    edges.  This function will return an error if <A>str</A> has fewer than
+    <C>2e+2</C> entries. <P/>
 
     Note that the vertex numbers will be incremented by 1 in the digraph
     returned.  Hence the string fragment <C>0 6</C> will describe the edge

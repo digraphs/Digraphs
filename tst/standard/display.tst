@@ -71,6 +71,23 @@ gap> DotSymmetricDigraph(gr1);
 Error, Digraphs: DotSymmetricDigraph: usage,
 the argument <graph> should be symmetric,
 
+#T# Splash
+gap> Splash(1);
+Error, Digraphs: Splash: usage,
+<arg>[1] must be a string,
+gap> Splash("string", 0);
+Error, Digraphs: Splash: usage,
+<arg>[2] must be a record,
+gap> Splash("string");
+Error, Digraphs: Splash: usage,
+the option <type> must be "dot" or "latex",
+gap> Splash("string", rec(path := "~/", filename := "filename"));
+Error, Digraphs: Splash: usage,
+the option <type> must be "dot" or "latex",
+gap> Splash("string", rec(viewer := "xpdf"));
+Error, Digraphs: Splash: usage,
+the option <type> must be "dot" or "latex",
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);

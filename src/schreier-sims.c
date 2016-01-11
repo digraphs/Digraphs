@@ -80,7 +80,7 @@ static inline void add_base_point (UIntS const pt) {
   size_base++;
 }
 
-static void remove_base_points (UIntS const depth) {
+/*static void remove_base_points (UIntS const depth) {
   UIntS i, j;
 
   printf("this is not yet used...\n");
@@ -97,7 +97,7 @@ static void remove_base_points (UIntS const depth) {
       borbits[i * deg + j] = false;
     }
   }
-}
+}*/
 
 static inline void first_ever_init () {
   /*UIntL i;
@@ -115,7 +115,6 @@ static inline void first_ever_init () {
 }
 
 static void init_stab_chain () {
-  UIntS  i;
 
   if (first_ever_call) {
     first_ever_init();
@@ -125,13 +124,13 @@ static void init_stab_chain () {
   size_base = 0;
 }
 
-static void init_endos_base_points() {
+/*static void init_endos_base_points() {
   UIntS  i;
 
   for (i = 0; i < deg - 1; i++) {
     add_base_point(i);
   }
-}
+}*/
 
 static void free_stab_chain () {
   int i, j, k;

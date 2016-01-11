@@ -20,6 +20,41 @@ function(graph)
   return DIGRAPH_CANONICAL_LABELING(graph);
 end);
 
+InstallMethod(DigraphCanonicalLabelling,
+"for a digraph and homogeneous list",
+[IsDigraph, IsHomogeneousList],
+function(graph, list)
+  local colors, i;
+
+  if IsMultiDigraph(graph) then
+    return fail;
+  fi;
+  if (not IsEmpty(list)) and IsList(list[1]) then # color classes
+    colors := [1 .. DigraphNrVertices(graph)];
+    if not (ForAll(list, IsDuplicateFreeList) and Union(list) = colors) then
+      ErrorMayQuit("Digraphs: DigraphCanonicalLabelling: usage,\n",
+                   "the union of the lists in the second arg should equal ",
+                   "[1 .. ", DigraphNrVertices(graph), "],");
+    fi;
+
+    for i in [1 .. Length(list)] do
+      colors{list[i]} := [1 .. Length(list[i])] * 0 + i;
+    od;
+  else
+    if not (Length(list) = DigraphNrVertices(graph)
+            and ForAll(list, c -> IsPosInt(c) and 1 <= c
+                                  and c <= DigraphNrVertices(graph))) then
+      ErrorMayQuit("Digraphs: DigraphCanonicalLabelling: usage,\n",
+                   "the second arg must be a list of length ",
+                   DigraphNrVertices(graph), " of integers in [1 .. ",
+                   DigraphNrVertices(graph), "],");
+    fi;
+    colors := list;
+  fi;
+
+  return DIGRAPH_CANONICAL_LABELING_COLORS(graph, colors);
+end);
+
 #
 
 InstallMethod(IsIsomorphicDigraph, "for digraphs",
@@ -60,6 +95,40 @@ function(graph)
     SetDigraphGroup(graph, Group(x[2]));
   fi;
   return Group(x[2]);
+end);
+
+InstallMethod(AutomorphismGroup, "for a digraph and homogeneous list",
+[IsDigraph, IsHomogeneousList],
+function(graph, list)
+  local colors, i;
+
+  if IsMultiDigraph(graph) then
+    return fail;
+  fi;
+  if (not IsEmpty(list)) and IsList(list[1]) then # color classes
+    colors := [1 .. DigraphNrVertices(graph)];
+    if not (ForAll(list, IsDuplicateFreeList) and Union(list) = colors) then
+      ErrorMayQuit("Digraphs: AutomorphismGroup: usage,\n",
+                   "the union of the lists in the second arg should equal ",
+                   "[1 .. ", DigraphNrVertices(graph), "],");
+    fi;
+
+    for i in [1 .. Length(list)] do
+      colors{list[i]} := [1 .. Length(list[i])] * 0 + i;
+    od;
+  else
+    if not (Length(list) = DigraphNrVertices(graph)
+            and ForAll(list, c -> IsPosInt(c) and 1 <= c
+                                  and c <= DigraphNrVertices(graph))) then
+      ErrorMayQuit("Digraphs: AutomorphismGroup: usage,\n",
+                   "the second arg must be a list of length ",
+                   DigraphNrVertices(graph), " of integers in [1 .. ",
+                   DigraphNrVertices(graph), "],");
+    fi;
+    colors := list;
+  fi;
+
+  return Group(DIGRAPH_AUTOMORPHISMS_COLORS(graph, colors));
 end);
 
 #

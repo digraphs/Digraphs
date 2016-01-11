@@ -128,6 +128,15 @@ function(digraph);
   return [];
 end);
 
+InstallMethod(AsTransformation, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if not IsFunctionalDigraph(digraph) then
+    return fail;
+  fi;
+  return Transformation(Concatenation(OutNeighbours(digraph)));
+end);
+
 InstallMethod(ReducedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -740,4 +749,166 @@ function(graph, reflexive)
   SetIsMultiDigraph(out, false);
   SetIsTransitiveDigraph(out, true);
   return out;
+end);
+
+InstallMethod(DigraphAllSimpleCircuits,
+"for a digraph",
+[IsDigraph],
+function(d)
+  local stack, endofstack, output, g, n, blocked, B, s, UNBLOCK, CIRCUIT, sub,
+    scc, min, index, ind, component, i;
+
+    stack := [];
+    endofstack := 0;
+    output := [];
+
+    g := ReducedDigraph(d);
+    n := Size(DigraphVertices(g));
+
+    blocked := List([1 .. n], x -> false);
+    B := List([1 .. n], x -> []);
+    s := 1;
+
+    UNBLOCK := function(u)
+      local w;
+      blocked[u] := false;
+      B[u] := [];
+      for w in B[u] do
+        if blocked[w] then
+          UNBLOCK(w);
+        fi;
+      od;
+    end;
+
+    CIRCUIT := function(v, comp)
+      local f, pos, buffer, dummy, w;
+
+      f := false;
+
+      endofstack := endofstack + 1;
+      stack[endofstack] := v;
+      blocked[v] := true;
+
+      pos := Position(List(DigraphVertices(comp),
+                           x -> DigraphVertexLabel(comp, x)), v);
+
+      for w in OutNeighbours(comp)[pos] do
+        if DigraphVertexLabel(comp, w) = s then
+          buffer := stack{[1 .. endofstack]};
+          Add(output, buffer);
+          f := true;
+        elif blocked[DigraphVertexLabel(comp, w)] = false then
+          dummy := CIRCUIT(DigraphVertexLabel(comp, w), comp);
+          if dummy then
+            f := true;
+          fi;
+        fi;
+      od;
+
+      if f then
+        UNBLOCK(v);
+      else for w in OutNeighbours(comp)[pos] do
+        if not DigraphVertexLabel(comp, w)
+            in B[DigraphVertexLabel(comp, w)] then
+          Add(B[DigraphVertexLabel(comp, w)], v);
+        fi;
+      od;
+      fi;
+
+      endofstack := endofstack - 1;
+      return f;
+    end;
+
+    while s < n do
+
+      sub := InducedSubdigraph(g, [s .. n]);
+      scc := DigraphStronglyConnectedComponents(sub);
+      min := Minimum(List([1 .. Size(scc.comps)], x -> Minimum(scc.comps[x])));
+
+      for component in scc.comps do
+        if min in component then
+          index := Position(scc.comps, component);
+        fi;
+      od;
+
+      ind := InducedSubdigraph(sub, scc.comps[index]);
+
+      if ForAny(OutNeighbours(ind), x -> not IsEmpty(x)) then
+        s := Minimum(DigraphVertexLabels(ind));
+        for i in DigraphVertices(ind) do;
+          blocked[DigraphVertexLabel(ind, i)] := false;
+          B[DigraphVertexLabel(ind, i)] := [];
+        od;
+        CIRCUIT(s, ind);
+        s := s + 1;
+      else
+        s := n;
+      fi;
+    od;
+    return output;
+end);
+
+# The following method 'DIGRAPHS_Bipartite' was written by Isabella Scott
+# It is the backend to IsBipartiteDigraph, Bicomponents, and DigraphColouring
+# for a 2-colouring
+
+# Can this be improved with a simple depth 1st search to remove need for
+# symmetric closure, etc?
+
+InstallMethod(DIGRAPHS_Bipartite, "for a digraph", [IsDigraph],
+function(digraph)
+  local n, colour, queue, i, node, node_neighbours, root, t;
+
+  n := DigraphNrVertices(digraph);
+  if n < 2 then
+    return [false, fail];
+  elif IsEmptyDigraph(digraph) then
+    t := Concatenation(ListWithIdenticalEntries(n - 1, 1), [2]);
+    return [true, Transformation(t)];
+  fi;
+  digraph := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(digraph));
+  colour := ListWithIdenticalEntries(n, 0);
+
+  #This means there is a vertex we haven't visited yet
+  while 0 in colour do
+    root := Position(colour, 0);
+    colour[root] := 1;
+    queue := [root];
+    Append(queue, OutNeighboursOfVertex(digraph, root));
+    while queue <> [] do
+      #Explore the first element of queue
+      node := queue[1];
+      node_neighbours := OutNeighboursOfVertex(digraph, node);
+      for i in node_neighbours do
+        #If node and its neighbour have the same colour, graph is not bipartite
+        if colour[node] = colour[i] then
+          return [false, fail, fail];
+        elif colour[i] = 0 then # Give i opposite colour to node
+          if colour[node] = 1 then
+            colour[i] := 2;
+          else
+            colour[i] := 1;
+          fi;
+          Add(queue, i);
+        fi;
+      od;
+      Remove(queue, 1);
+    od;
+  od;
+  return [true, Transformation(colour)];
+end);
+
+#
+
+InstallMethod(DigraphBicomponents, "for a digraph", [IsDigraph],
+function(digraph)
+  local b;
+
+  # Attribute only applies to bipartite digraphs
+  if not IsBipartiteDigraph(digraph) then
+    return fail;
+  fi;
+  b := KernelOfTransformation(DIGRAPHS_Bipartite(digraph)[2],
+                              DigraphNrVertices(digraph));
+  return b;
 end);
