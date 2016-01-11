@@ -371,6 +371,16 @@ gap> DigraphFromDiSparse6String("z");
 Error, Digraphs: DigraphFromDiSparse6String: usage,
 <s> must be a string in disparse6 format,
 
+#T# Special format characters
+gap> Sparse6String(ChainDigraph(3));
+Error, Digraphs: Sparse6String: usage,
+the argument <graph> must be a symmetric digraph,
+gap> Sparse6String(CompleteDigraph(1));
+":@"
+gap> gr := Digraph([[1], []]);;
+gap> Sparse6String(gr);
+":AF"
+
 #T# DigraphFromSparse6String: an unusual but valid case
 gap> DigraphFromSparse6String(":TdBkJ`Kq?x");
 <digraph with 21 vertices, 10 edges>
