@@ -31,7 +31,7 @@ def _cyan_string(string):
 
 def _blue_string(string):
     'blue string'
-    return '\n        '.join(_WRAPPER.wrap('\033[44m' + string + '\033[0m'))
+    return '\n        '.join(_WRAPPER.wrap('\033[34m' + string + '\033[0m'))
 
 def _magenta_string(string):
     'magenta string'
@@ -168,13 +168,13 @@ def _exec(command):
 
 ################################################################################
 
-def _make_clean(gap_root, name):
+def _make_clean(gap_root, directory, name):
     hide_cursor()
     print _cyan_string(pad('Deleting ' + name + ' binary') + ' . . . '),
     cwd = os.getcwd()
     sys.stdout.flush()
-    _get_ready_to_make(gap_root, name)
-    _exec('./configure')
+    _get_ready_to_make(directory, name)
+    _exec('./configure --with-gaproot=' + gap_root)
     _exec('make clean')
     os.chdir(cwd)
     print ''
@@ -182,13 +182,13 @@ def _make_clean(gap_root, name):
 
 ################################################################################
 
-def _configure_make(directory, name):
+def _configure_make(gap_root, directory, name):
     hide_cursor()
     print _cyan_string(pad('Compiling ' + name) + ' . . . '),
     cwd = os.getcwd()
     sys.stdout.flush()
     _get_ready_to_make(directory, name)
-    _exec('./configure')
+    _exec('./configure --with-gaproot=' + gap_root)
     _exec('make')
     os.chdir(cwd)
     print ''
@@ -237,11 +237,11 @@ def digraphs_make_doc(gap_root):
 def run_digraphs_tests(gap_root, pkg_dir, pkg_name):
 
     print ''
-    print _blue_string('Package name is ' + pkg_name)
-    print _blue_string('Running tests in ' + gap_root)
+    print _blue_string('Package name is ' + pkg_name + ','),
+    print _blue_string('gap root is ' + gap_root)
 
-    dots.dotIt(CYAN_DOT, _make_clean, pkg_dir, pkg_name)
-    dots.dotIt(CYAN_DOT, _configure_make, pkg_dir, pkg_name)
+    dots.dotIt(CYAN_DOT, _make_clean, gap_root, pkg_dir, pkg_name)
+    dots.dotIt(CYAN_DOT, _configure_make, gap_root, pkg_dir, pkg_name)
 
     _run_test(gap_root,
               pad('Validating PackageInfo.g'),
@@ -250,10 +250,10 @@ def run_digraphs_tests(gap_root, pkg_dir, pkg_name):
     _run_test(gap_root, pad('Loading package'), True, _LOAD)
     _run_test(gap_root, pad('Loading only needed'), True, _LOAD_ONLY_NEEDED)
 
-    _make_clean(pkg_dir, 'grape')
+    _make_clean(gap_root, pkg_dir, 'grape')
     _run_test(gap_root, pad('Loading Grape not compiled'), True, _LOAD)
 
-    dots.dotIt(CYAN_DOT, _configure_make, pkg_dir, 'grape')
+    dots.dotIt(CYAN_DOT, _configure_make, gap_root, pkg_dir, 'grape')
     _run_test(gap_root, pad('Loading Grape compiled'), True, _LOAD)
 
     _run_test(gap_root, pad('Compiling the doc'), True, _LOAD, _MAKE_DOC)
@@ -272,7 +272,7 @@ def run_digraphs_tests(gap_root, pkg_dir, pkg_name):
 
     print ''
     print _blue_string('Testing with Grape uncompiled')
-    _make_clean(pkg_dir, 'grape')
+    _make_clean(gap_root, pkg_dir, 'grape')
     _run_test(gap_root, pad('testinstall.tst'), True, _LOAD, _TEST_INSTALL)
     _run_test(gap_root, pad('manual examples'), True, _LOAD, _TEST_MAN_EX)
     _run_test(gap_root, pad('test standard'), True, _LOAD, _TEST_STANDARD)
