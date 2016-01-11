@@ -79,7 +79,8 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map,
     for i in [1, 2] do
       if (not IsEmpty(list[i])) and IsList(list[i][1]) then # color classes
         colors[i] := [1 .. DigraphNrVertices(gr[i])];
-        if not (ForAll(list[i], IsDuplicateFreeList) and Union(list[i]) = colors[i]) then
+	if not (ForAll(Concatenation(list[i]), IsDuplicateFreeList) and
+	        Union(list[i]) = colors[i]) then
           ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                        "the union of the lists in the ", 9 + i, "th arg should equal ",
                        "[1 .. ", DigraphNrVertices(gr[i]), "],");
