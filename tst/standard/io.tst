@@ -392,6 +392,41 @@ gap> DigraphPlainTextLineDecoder(" ", "  ", 1, ".");
 Error, Digraphs: DigraphPlainTextLineDecoder: usage,
 DigraphPlainTextLineDecoder(delimiter, [,delimiter], offset),
 
+#T# WriteDigraphs: bad input
+gap> list := [CompleteDigraph(4), CycleDigraph(8), "hello world"];;
+gap> WriteDigraphs(72, list);
+Error, Digraphs: WriteDigraphs: usage,
+<name> must be a string,
+gap> WriteDigraphs("mylist", list);
+Error, Digraphs: WriteDigraphs: usage,
+<digraphs> must be a list of digraphs,
+
+#T# WriteDigraphs: automatic format selection
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose.gz");;
+gap> list := [CompleteDigraph(5), EmptyDigraph(100), CompleteDigraph(3)];;
+gap> ForAll(list, IsSymmetricDigraph);
+true
+gap> WriteDigraphs(filename, list);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose.s6.gz");;
+gap> list2 := ReadDigraphs(filename);;
+gap> list = list2;
+true
+gap> mult := Digraph([[1,2], [1,1,3], []]);;
+gap> list := [CompleteDigraph(5), EmptyDigraph(100), mult];;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choosemult.gz");;
+gap> WriteDigraphs(filename, list);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choosemult.ds6.gz");;
+gap> list2 := ReadDigraphs(filename);;
+gap> list = list2;
+true
+gap> list := [CompleteDigraph(3), CycleDigraph(100), EmptyDigraph(2)];;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose");;
+gap> WriteDigraphs(filename, list);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose.ds6");;
+gap> list2 := ReadDigraphs(filename);;
+gap> list = list2;
+true
+
 #T# DigraphPlainTextLineDecoder: bad input
 gap> Graph6String(ChainDigraph(4));
 Error, Digraphs: Graph6String: usage,
