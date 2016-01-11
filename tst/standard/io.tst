@@ -426,6 +426,16 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose.ds6");;
 gap> list2 := ReadDigraphs(filename);;
 gap> list = list2;
 true
+gap> gr := Digraph([[2,2], [1,1]]);;
+gap> IsSymmetricDigraph(gr);
+true
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/alone");;
+gap> WriteDigraphs(filename, [gr]);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/alone.ds6");;
+gap> list2 := ReadDigraphs(filename);
+[ <multidigraph with 2 vertices, 4 edges> ]
+gap> list2[1] = gr;
+true
 
 #T# DigraphPlainTextLineDecoder: bad input
 gap> Graph6String(ChainDigraph(4));
