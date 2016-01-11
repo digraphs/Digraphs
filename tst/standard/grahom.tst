@@ -113,13 +113,28 @@ gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 2, false, [1], [], fail, 
 [  ]
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2], [], fail, fail);
 [ IdentityTransformation ]
+gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
+> [], [[1, 2]], fail);
+Error, Digraphs: HomomorphismDigraphsFinder: usage,
+the 10th and 11th arguments <list1> and <list2> must both be fail or neither m\
+ust be fail,
+gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
+> [], fail, [[1, 2]]);
+Error, Digraphs: HomomorphismDigraphsFinder: usage,
+the 10th and 11th arguments <list1> and <list2> must both be fail or neither m\
+ust be fail,
+gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
+> [], [[1, 2]], [[1, 2]]);
+[ IdentityTransformation ]
+gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
+> [], [[1, 2], [2]], [[1, 2]]);
+Error, Digraphs: HomomorphismDigraphsFinder: usage,
+the union of the lists in the 10th arg should equal [1 .. 2],
 gap> gr := CompleteDigraph(513);;
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, false, [1 .. 513],
 > [], fail, fail);
 Error, Digraphs: HomomorphismDigraphsFinder: error,
 not yet implemented for digraphs with more than 512 vertices,
-
-#T# GeneratorsOfEndomorphismMonoid: checking errors and robustness
 gap> gr := ChainDigraph(2);
 <digraph with 2 vertices, 1 edge>
 gap> GeneratorsOfEndomorphismMonoid();
