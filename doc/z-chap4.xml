@@ -7,6 +7,7 @@
     <#Include Label="DigraphSinks">
     <#Include Label="DigraphSources">
     <#Include Label="DigraphTopologicalSort">
+    <#Include Label="DigraphBicomponents">
     <#Include Label="DigraphVertexLabel">
     <#Include Label="DigraphVertexLabels">
     <#Include Label="DigraphInEdges">
@@ -28,6 +29,7 @@
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>
+    
     <#Include Label="DigraphDiameter">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphLongestDistanceFromVertex">
