@@ -690,7 +690,7 @@ function(name, digraphs)
     # Do we know all the graphs to be symmetric?
     if ForAll(digraphs, g -> HasIsSymmetricDigraph(g)
                              and IsSymmetricDigraph(g)) then
-      if ForAll(digraphs, IsMultiDigraph) then
+      if ForAny(digraphs, IsMultiDigraph) then
         encoder := DiSparse6String;
         Add(splitname, "ds6");
       else
@@ -750,7 +750,7 @@ function(name, digraphs)
 
   if file = fail then
     ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
-                 "cannot open file ", filepath, ",\n");
+                 "cannot open file ", filepath, ",");
   fi;
 
   for i in [1 .. Length(digraphs)] do
