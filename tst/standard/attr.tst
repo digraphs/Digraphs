@@ -811,6 +811,14 @@ gap> DigraphVertexLabels(gr);
 gap> DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
 
+#T# DigraphAllSimpleCircuits
+gap> gr := ChainDigraph(4);;
+gap> DigraphAllSimpleCircuits(gr);
+[  ]
+gap> gr := CompleteDigraph(2);;
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 1, 2 ] ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);
