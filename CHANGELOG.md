@@ -7,5 +7,5 @@
 ## Version 0.2 (released 04/09/2015)
 The first release.
 
-## Version 0.1
+## Version 0.1 ##
 Pre-release version that was not made publicly available.
