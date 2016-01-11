@@ -656,3 +656,69 @@ function(d)
     od;
     return output;
 end);
+
+# The following method 'DIGRAPHS_Bipartite' was written by Isabella Scott
+# It is the backend to IsBipartiteDigraph, Bicomponents, and DigraphColouring
+# for a 2-colouring
+
+# Can this be improved with a simple depth 1st search to remove need for
+# symmetric closure, etc?
+
+InstallMethod(DIGRAPHS_Bipartite, "for a digraph", [IsDigraph],
+function(digraph)
+  local n, colour, neighbours, queue, i, node, node_neighbours, root, t;
+
+  n := DigraphNrVertices(digraph);
+  if n < 2 then
+    return [false, fail];
+  elif IsEmptyDigraph(digraph) then
+    t := Concatenation(ListWithIdenticalEntries(n - 1, 1), [2]);
+    return [true, Transformation(t)];
+  fi;
+  digraph := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(digraph));
+  colour := ListWithIdenticalEntries(n, 0);
+  
+  #This means there is a vertex we haven't visited yet
+  while 0 in colour do    
+    root := Position(colour, 0);
+    colour[root] := 1;
+    queue := [root];
+    Append(queue, OutNeighboursOfVertex(digraph, root)); 
+    while queue <> [] do
+      #Explore the first element of queue
+      node := queue[1];
+      node_neighbours := OutNeighboursOfVertex(digraph, node);
+      for i in node_neighbours do
+        #If node and its neighbour have the same colour, graph is not bipartite
+        if colour[node] = colour[i] then         
+          return [false, fail, fail];
+        #Give i opposite colour to node
+        elif colour[i] = 0 then
+          if colour[node] = 1 then
+            colour[i] := 2;
+          else
+            colour[i] := 1;
+          fi;
+          Add(queue, i);
+        fi;
+      od;
+      Remove(queue, 1);
+    od;
+  od;
+  return [true, Transformation(colour)];
+end);
+
+#
+
+InstallMethod(DigraphBicomponents, "for a digraph", [IsDigraph],
+function(digraph)
+  local b;
+
+  # Attribute only applies to bipartite digraphs
+  if not IsBipartiteDigraph(digraph) then
+    return fail;
+  fi;
+  b := KernelOfTransformation(DIGRAPHS_Bipartite(digraph)[2],
+                              DigraphNrVertices(digraph));
+  return b;
+end);

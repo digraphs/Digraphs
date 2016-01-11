@@ -241,7 +241,7 @@ fail
 gap> DigraphColoring(gr, 3);
 IdentityTransformation
 gap> DigraphColoring(gr, 2);
-Transformation( [ 1, 2, 1 ] )
+Transformation( [ 1, 1, 2 ] )
 gap> DigraphColoring(gr, 1);
 Transformation( [ 1, 1, 1 ] )
 gap> gr := CompleteDigraph(3);
@@ -252,6 +252,20 @@ gap> DigraphColoring(gr, 2);
 fail
 gap> DigraphColoring(gr, 3);
 IdentityTransformation
+gap> gr := EmptyDigraph(0);
+<digraph with 0 vertices, 0 edges>
+gap> DigraphColoring(gr, 1);
+fail
+gap> DigraphColoring(gr, 2);
+fail
+gap> DigraphColoring(gr, 3);
+fail
+gap> gr := EmptyDigraph(1);
+<digraph with 1 vertex, 0 edges>
+gap> DigraphColoring(gr, 1);
+IdentityTransformation
+gap> DigraphColoring(gr, 2);
+fail
 
 #T# HomomorphismDigraphsFinder 1
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);;
