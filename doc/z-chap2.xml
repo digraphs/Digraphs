@@ -16,6 +16,7 @@
     <#Include Label="AsDigraph">
     <#Include Label="Graph">
     <#Include Label="AsGraph">
+    <#Include Label="AsTransformation">
   </Section>
 
   <Section><Heading>New digraphs from old</Heading>
