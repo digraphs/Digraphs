@@ -989,10 +989,6 @@ function(graph)
   for i in [1 .. bitstopad] do
     Add(blist, true);
   od;
-  if Length(blist) mod 6 <> 0 then
-    ErrorMayQuit("Digraphs: Sparse6String: usage,\n",
-                 "Padding problem,");
-  fi;
 
   # Read blist into list, 6 bits at a time
   pos := 0;
@@ -1153,10 +1149,6 @@ function(graph)
   for i in [1 .. bitstopad] do
     Add(blist, true);
   od;
-  if Length(blist) mod 6 <> 0 then
-    ErrorMayQuit("Digraphs: DiSparse6String: usage,\n",
-                 "Padding problem,");
-  fi;
 
   # Read blist into list, 6 bits at a time
   pos := 0;
