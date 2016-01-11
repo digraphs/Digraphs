@@ -31,7 +31,7 @@ def _cyan_string(string):
 
 def _blue_string(string):
     'blue string'
-    return '\n        '.join(_WRAPPER.wrap('\033[34m' + string + '\033[0m'))
+    return '\n        '.join(_WRAPPER.wrap('\033[40;38;5;82m' + string + '\033[0m'))
 
 def _magenta_string(string):
     'magenta string'
