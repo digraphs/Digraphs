@@ -41,5 +41,6 @@
     <#Include Label="DigraphPeriod">
     <#Include Label="DigraphFloydWarshall">
     <#Include Label="IsReachable">
+    <#Include Label="DigraphAllSimpleCircuits">
   </Section>
 </Chapter>

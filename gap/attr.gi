@@ -564,8 +564,8 @@ InstallMethod(DigraphAllSimpleCircuits,
 "for a digraph",
 [IsDigraph],
 function(digraph)
-  local UNBLOCK, CIRCUIT, out, stack, endofstack, gr, degs, blocked, B, scc, n,
-  component_induced, s, sub, component, i;
+  local UNBLOCK, CIRCUIT, out, stack, endofstack, gr, scc, n, blocked, B,
+  gr_comp, comp, s, loops, i;
 
     UNBLOCK := function(u)
       local w;
@@ -579,24 +579,22 @@ function(digraph)
       od;
     end;
 
-    CIRCUIT := function(v, comp)
+    CIRCUIT := function(v, component)
       local f, pos, buffer, dummy, w;
 
       f := false;
-
       endofstack := endofstack + 1;
       stack[endofstack] := v;
       blocked[v] := true;
+      pos := v;
 
-      pos := Position(DigraphVertexLabels(comp), v);
-
-      for w in OutNeighbours(comp)[pos] do
-        if DigraphVertexLabel(comp, w) = s then
+      for w in OutNeighboursOfVertex(component, pos) do
+        if w = s then
           buffer := stack{[1 .. endofstack]};
-          Add(out, buffer);
+          Add(out, DigraphVertexLabels(component){buffer});
           f := true;
-        elif blocked[DigraphVertexLabel(comp, w)] = false then
-          dummy := CIRCUIT(DigraphVertexLabel(comp, w), comp);
+        elif blocked[w] = false then
+          dummy := CIRCUIT(w, component);
           if dummy then
             f := true;
           fi;
@@ -605,12 +603,12 @@ function(digraph)
 
       if f then
         UNBLOCK(v);
-      else for w in OutNeighbours(comp)[pos] do
-        if not DigraphVertexLabel(comp, w)
-            in B[DigraphVertexLabel(comp, w)] then
-          Add(B[DigraphVertexLabel(comp, w)], v);
-        fi;
-      od;
+      else
+        for w in OutNeighboursOfVertex(component, pos) do
+          if not w in B[w] then
+            Add(B[w], v);
+          fi;
+        od;
       fi;
 
       endofstack := endofstack - 1;
@@ -625,44 +623,49 @@ function(digraph)
     # Reduce the digraph, remove loops, and store the correct vertex labels
     gr := DigraphRemoveLoops(ReducedDigraph(digraph));
     if DigraphVertexLabels(digraph) <> DigraphVertices(digraph) then
-      degs := OutDegrees(digraph);
       SetDigraphVertexLabels(gr, Filtered(DigraphVertices(digraph),
-                                          x -> degs[x] <> 0));
+                                          x -> OutDegrees(digraph) <> 0));
     fi;
 
-    blocked := BlistList(DigraphVertices(gr), []);
-    B := List(DigraphVertices(gr), x -> []);
+    # Strongly connected components of the reduced graph
     scc := DigraphStronglyConnectedComponents(gr);
 
-    for component in scc.comps do
-      n := Length(component);
+    # B and blocked only need to be as long as the longest connected component
+    n := Maximum(List(scc.comps, Length));
+    blocked := BlistList([1 .. n], []);
+    B := List([1 .. n], x -> []);
+
+    # Perform algorithm once per connected component
+    for gr_comp in scc.comps do
+      n := Length(gr_comp);
       if n = 1 then
         continue;
       fi;
-      component_induced := InducedSubdigraph(gr, component);
-      sub := component_induced;
+      gr_comp := InducedSubdigraph(gr, gr_comp);
+      comp := gr_comp;
       s := 1;
       while s < n do
         if s <> 1 then
-          sub := InducedSubdigraph(component_induced, [s .. n]);
-          sub := InducedSubdigraph(sub, DigraphStronglyConnectedComponent(sub,
-                                                                          1));
+          comp := InducedSubdigraph(gr_comp, [s .. n]);
+          comp := InducedSubdigraph(comp,
+                                    DigraphStronglyConnectedComponent(comp, 1));
         fi;
 
-        if not IsEmptyDigraph(sub) then
-          s := Minimum(DigraphVertexLabels(sub));
-          for i in DigraphVertices(sub) do
-            blocked[DigraphVertexLabel(sub, i)] := false;
-            B[DigraphVertexLabel(sub, i)] := [];
+        if not IsEmptyDigraph(comp) then
+          # TODO would it be faster/better to create blocked as a new BlistList?
+          for i in DigraphVertices(comp) do
+            blocked[i] := false;
+            B[i] := [];
           od;
-          CIRCUIT(s, sub);
+          CIRCUIT(s, comp);
           s := s + 1;
         else
           s := n;
         fi;
       od;
     od;
-    return Concatenation(List(DigraphLoops(digraph), x -> [x]), out);
+    loops := List(DigraphLoops(digraph), x -> [x]);
+    return Concatenation(loops, out);
 end);
 
 # The following method 'DIGRAPHS_Bipartite' was written by Isabella Scott

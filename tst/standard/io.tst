@@ -327,7 +327,7 @@ gap> DiSparse6String(CompleteDigraph(1));
 ".@~"
 gap> DigraphFromDiSparse6String(".@~");
 <digraph with 1 vertex, 0 edges>
-gap> gr := Digraph([[],[], [1, 2]]);;
+gap> gr := Digraph([[], [], [1, 2]]);;
 gap> DiSparse6String(gr);
 ".BoN"
 
