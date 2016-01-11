@@ -811,6 +811,24 @@ gap> DigraphVertexLabels(gr);
 gap> DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
 
+#T# DigraphBicomponents
+gap> DigraphBicomponents(EmptyDigraph(0));
+[ [  ], [  ] ]
+gap> DigraphBicomponents(EmptyDigraph(1));
+[ [ 1 ], [  ] ]
+gap> DigraphBicomponents(EmptyDigraph(2));
+[ [ 1, 2 ], [  ] ]
+gap> DigraphBicomponents(EmptyDigraph(3));
+[ [ 1, 2, 3 ], [  ] ]
+gap> DigraphBicomponents(EmptyDigraph(4));
+[ [ 1, 2, 3, 4 ], [  ] ]
+gap> DigraphBicomponents(CompleteBipartiteDigraph(3, 5));
+[ [ 1, 2, 3 ], [ 4, 5, 6, 7, 8 ] ]
+gap> DigraphBicomponents(Digraph([[2], [], [], [3]]));
+[ [ 1, 3 ], [ 2, 4 ] ]
+gap> DigraphBicomponents(CycleDigraph(3));
+fail
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);

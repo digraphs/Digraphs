@@ -217,6 +217,14 @@ end);
 InstallMethod(DigraphColoring, "for a digraph and pos int",
 [IsDigraph, IsPosInt],
 function(digraph, n)
+  # Special case for bipartite testing; works for large graphs
+  if n = 2 then
+    if not IsBipartiteDigraph(digraph) then
+      return fail;
+    fi;
+    return DIGRAPHS_Bipartite(digraph)[2];
+  fi;
+  # General case for n > 2; works for small graphs
   return DigraphEpimorphism(digraph, CompleteDigraph(n));
 end);
 

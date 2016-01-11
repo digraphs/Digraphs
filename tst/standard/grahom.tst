@@ -223,6 +223,10 @@ gap> DigraphColoring(gr, 2);
 fail
 gap> DigraphColoring(gr, 3);
 IdentityTransformation
+gap> gr := EmptyDigraph(0);
+gap> DigraphColoring(gr, 1);
+gap> DigraphColoring(gr, 2);
+gap> DigraphColoring(gr, 3);
 
 #T# HomomorphismDigraphsFinder 1
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);;
