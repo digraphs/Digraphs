@@ -319,6 +319,17 @@ gap> DigraphFromDigraph6String("+~llk");
 Error, Digraphs: DigraphFromDigraph6String: usage,
 <s> must be a string in Digraph6 format,
 
+#T# Special format characters
+gap> DigraphFromDigraph6String("x");
+Error, Digraphs: DigraphFromDigraph6String: usage,
+<s> must be a string in Digraph6 format,
+gap> DigraphFromSparse6String("y");
+Error, Digraphs: DigraphFromSparse6String: usage,
+<s> must be a string in Sparse6 format,
+gap> DigraphFromDiSparse6String("z");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+<s> must be a string in disparse6 format,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(list);
