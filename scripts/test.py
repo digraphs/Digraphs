@@ -295,7 +295,7 @@ def main():
                         help='the gap root directory (default: ~/gap)',
                         default='~/gap/')
     parser.add_argument('--pkg-dir', nargs='?', type=str,
-                        help='the pkg directory (default: gap-root/pkg/)',
+                        help='the pkg directory (default: ~/gap/pkg/)',
                         default='~/gap/pkg/')
     parser.add_argument('--pkg-name', nargs='?', type=str,
                         help='the pkg name (default: digraphs)',
