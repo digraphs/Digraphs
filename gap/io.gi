@@ -1208,7 +1208,7 @@ function(s)
   elif list[3] = 63 then
     if Length(list) <= 8 then
       ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
-                   s, " is not a valid disparse6 input,");
+                   "<s> must be a string in disparse6 format,");
     fi;
     n := 0;
     for i in [0 .. 5] do
