@@ -35,6 +35,7 @@ DeclareAttribute("DigraphSources", IsDigraph);
 DeclareAttribute("DigraphSinks", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
+DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
 
 DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
 DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
@@ -43,6 +44,8 @@ DeclareGlobalFunction("DigraphTransitiveClosureNC");
 
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("ReducedDigraph", IsDigraph);
+
+DeclareAttribute("AsTransformation", IsDigraph);
 
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");

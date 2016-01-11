@@ -8,6 +8,15 @@
 #############################################################################
 ##
 
+InstallMethod(AsTransformation, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if not IsFunctionalDigraph(digraph) then
+    return fail;
+  fi;
+  return Transformation(Concatenation(OutNeighbours(digraph)));
+end);
+
 InstallMethod(ReducedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -549,4 +558,101 @@ function(graph, reflexive)
   SetIsMultiDigraph(out, false);
   SetIsTransitiveDigraph(out, true);
   return out;
+end);
+
+InstallMethod(DigraphAllSimpleCircuits,
+"for a digraph",
+[IsDigraph],
+function(d)
+  local stack, endofstack, output, g, n, blocked, B, s, UNBLOCK, CIRCUIT, sub,
+    scc, min, index, ind, component, i;
+
+    stack := [];
+    endofstack := 0;
+    output := [];
+
+    g := ReducedDigraph(d);
+    n := Size(DigraphVertices(g));
+
+    blocked := List([1 .. n], x -> false);
+    B := List([1 .. n], x -> []);
+    s := 1;
+
+    UNBLOCK := function(u)
+      local w;
+      blocked[u] := false;
+      B[u] := [];
+      for w in B[u] do
+        if blocked[w] then
+          UNBLOCK(w);
+        fi;
+      od;
+    end;
+
+    CIRCUIT := function(v, comp)
+      local f, pos, buffer, dummy, w;
+
+      f := false;
+
+      endofstack := endofstack + 1;
+      stack[endofstack] := v;
+      blocked[v] := true;
+
+      pos := Position(List(DigraphVertices(comp),
+                           x -> DigraphVertexLabel(comp, x)), v);
+
+      for w in OutNeighbours(comp)[pos] do
+        if DigraphVertexLabel(comp, w) = s then
+          buffer := stack{[1 .. endofstack]};
+          Add(output, buffer);
+          f := true;
+        elif blocked[DigraphVertexLabel(comp, w)] = false then
+          dummy := CIRCUIT(DigraphVertexLabel(comp, w), comp);
+          if dummy then
+            f := true;
+          fi;
+        fi;
+      od;
+
+      if f then
+        UNBLOCK(v);
+      else for w in OutNeighbours(comp)[pos] do
+        if not DigraphVertexLabel(comp, w)
+            in B[DigraphVertexLabel(comp, w)] then
+          Add(B[DigraphVertexLabel(comp, w)], v);
+        fi;
+      od;
+      fi;
+
+      endofstack := endofstack - 1;
+      return f;
+    end;
+
+    while s < n do
+
+      sub := InducedSubdigraph(g, [s .. n]);
+      scc := DigraphStronglyConnectedComponents(sub);
+      min := Minimum(List([1 .. Size(scc.comps)], x -> Minimum(scc.comps[x])));
+
+      for component in scc.comps do
+        if min in component then
+          index := Position(scc.comps, component);
+        fi;
+      od;
+
+      ind := InducedSubdigraph(sub, scc.comps[index]);
+
+      if ForAny(OutNeighbours(ind), x -> not IsEmpty(x)) then
+        s := Minimum(DigraphVertexLabels(ind));
+        for i in DigraphVertices(ind) do;
+          blocked[DigraphVertexLabel(ind, i)] := false;
+          B[DigraphVertexLabel(ind, i)] := [];
+        od;
+        CIRCUIT(s, ind);
+        s := s + 1;
+      else
+        s := n;
+      fi;
+    od;
+    return output;
 end);

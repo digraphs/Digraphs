@@ -393,9 +393,7 @@ protected:
   virtual bool split_neighbourhood_of_cell(Partition::Cell * const) = 0;
   void refine_to_equitable();
   void refine_to_equitable(Partition::Cell * const unit_cell);
-  void refine_to_equitable(Partition::Cell * const unit_cell1,
-			   Partition::Cell * const unit_cell2);
-
+  void refine_to_equitable(Partition::Cell * const unit_cell1, Partition::Cell * const unit_cell2);
 
   /** \internal
    * \return false if it was detected that the current certificate

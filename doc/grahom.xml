@@ -100,23 +100,22 @@ gap> gr := ChainDigraph(10);
 gap> gr := DigraphSymmetricClosure(gr);
 <digraph with 10 vertices, 18 edges>
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, 2, false,
-> [3,4], []);
+> [3, 4], [], fail, fail);
 [ Transformation( [ 3, 4, 3, 4, 3, 4, 3, 4, 3, 4 ] ), 
   Transformation( [ 4, 3, 4, 3, 4, 3, 4, 3, 4, 3 ] ) ]
 gap> gr2 := CompleteDigraph(6);;
 gap> HomomorphismDigraphsFinder(gr, gr2, fail, [], 1, fail, false,
-> [1 .. 6], [1,2,1]);
+> [1 .. 6], [1, 2, 1], fail, fail);
 [ Transformation( [ 1, 2, 1, 3, 4, 5, 6, 1, 2, 1 ] ) ]
 gap> func := function(user_param, t)
 > Add(user_param, t * user_param[1]);
 > end;;
-gap> HomomorphismDigraphsFinder(gr, gr2, func, [Transformation([2,2])],
-> 3, fail, false, [1 .. 6], [1,2,1]);
+gap> HomomorphismDigraphsFinder(gr, gr2, func, [Transformation([2, 2])],
+> 3, fail, false, [1 .. 6], [1, 2, 1], fail, fail);
 [ Transformation( [ 2, 2 ] ), 
   Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 2 ] ), 
   Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 3 ] ), 
-  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 4 ] ) ]
-]]></Example>
+  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 4 ] ) ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -283,15 +282,37 @@ gap> EpimorphismsDigraphs(gr1, gr2);
 
 <#GAPDoc Label="GeneratorsOfEndomorphismMonoid">
 <ManSection>
-  <Func Name="GeneratorsOfEndomorphismMonoid" Arg="digraph"/>
+  <Func Name="GeneratorsOfEndomorphismMonoid" Arg="digraph[, colors][, limit]"/>
   <Attr Name="GeneratorsOfEndomorphismMonoidAttr" Arg="digraph"/>
   <Returns> A list of transformations.</Returns>
   <Description>
     An endomorphism of <A>digraph</A> is a homomorphism
     <Ref Oper="DigraphHomomorphism"/> from <A>digraph</A> back to itself.
 
-    <C>GeneratorsOfEndomorphismMonoid</C> returns a generating set for the
-    monoid of all endomorphisms of <A>digraph</A>. <P/>
+    <C>GeneratorsOfEndomorphismMonoid</C>, called with a single argument,
+    returns a generating set for the monoid of all endomorphisms of
+    <A>digraph</A>. <P/>
+
+    If the <A>colors</A> argument is specified, then it will return a generating
+    set for the monoid of endomorphisms which respect the given colouring.
+    The colouring <A>colors</A> can be in one of two forms: <P/>
+
+    <List>
+      <Item>
+        A list of positive integers of size the number of vertices of
+        <A>digraph</A>, where <A>colors</A><C>[i]</C> is the colour of vertex
+        <C>i</C>.
+      </Item>
+      <Item>
+        A list of lists, such that <A>colors</A><C>[i]</C> is a list of all
+        vertices with colour <C>i</C>.
+      </Item>
+    </List>
+
+    If the <A>limit</A> argument is specified, then it will return only the
+    first <A>limit</A> homomorphisms, where <A>limit</A> must be a positive
+    integer or <C>infinity</C>. <P/>
+
     <Example><![CDATA[
 gap> gr := Digraph(List([1 .. 3], x -> [1 .. 3]));;
 gap> GeneratorsOfEndomorphismMonoid(gr);
@@ -299,10 +320,17 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
   IdentityTransformation, Transformation( [ 1, 2, 1 ] ), 
   Transformation( [ 1, 2, 2 ] ), Transformation( [ 1, 1, 2 ] ), 
   Transformation( [ 1, 1, 1 ] ) ]
+gap> GeneratorsOfEndomorphismMonoid(gr, 3);
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
+  IdentityTransformation ]
 gap> gr := CompleteDigraph(3);;
 gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
   IdentityTransformation ]
+gap> GeneratorsOfEndomorphismMonoid(gr, [1, 2, 2]);
+[ Transformation( [ 1, 3, 2 ] ), IdentityTransformation ]
+gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
+[ Transformation( [ 1, 3, 2 ] ), IdentityTransformation ]
 ]]></Example>
   </Description>
 </ManSection>

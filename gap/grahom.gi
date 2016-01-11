@@ -12,7 +12,9 @@
 # Wrapper for C function DI/GRAPH_HOMOS
 
 InstallGlobalFunction(HomomorphismDigraphsFinder,
-function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
+function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map,
+         list1, list2)
+  local colors, gr, list, i, j;
 
   if not (IsDigraph(gr1) and IsDigraph(gr2)) then
     ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
@@ -66,6 +68,45 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
                  "vertices of the 1st argument <gr1>,");# TODO improve
   fi;
 
+
+
+  if list1 = fail and list2 = fail then
+    colors := [fail, fail];
+  elif list1 <> fail and list2 <> fail then
+    gr     := [gr1, gr2];
+    list   := [list1, list2];
+    colors := [];
+    for i in [1, 2] do
+      if (not IsEmpty(list[i])) and IsList(list[i][1]) then # color classes
+        colors[i] := [1 .. DigraphNrVertices(gr[i])];
+	if not ( IsDuplicateFreeList( Concatenation(list[i]) ) and
+	        Union(list[i]) = colors[i]) then
+          ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+                       "the union of the lists in the ", 9 + i, "th arg should equal ",
+                       "[1 .. ", DigraphNrVertices(gr[i]), "],");
+        fi;
+
+        for j in [1 .. Length(list[i])] do
+          colors[i]{list[i][j]} := [1 .. Length(list[i][j])] * 0 + j;
+        od;
+      else
+        if not (Length(list[i]) = DigraphNrVertices(gr[i])
+            and ForAll(list[i], c -> IsPosInt(c) and 1 <= c
+                                     and c <= DigraphNrVertices(gr[i]))) then
+          ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+                       "the ", 9 + i, "th arg must be a list of length ",
+                       DigraphNrVertices(gr[i]), " of integers in [1 .. ",
+                       DigraphNrVertices(gr[i]), "],");
+        fi;
+        colors[i] := list[i];
+      fi;
+    od;
+  else
+    ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+                 "the 10th and 11th arguments <list1> and <list2> must both be ",
+                 "fail or neither must be fail,");
+  fi;
+
   # Cases where we already know the answer
   if (isinjective and ((hint <> fail and hint <> DigraphNrVertices(gr1)) or
             DigraphNrVertices(gr1) > DigraphNrVertices(gr2)))
@@ -79,10 +120,10 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map)
   if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
     if IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2) then
       GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
-                  fail, map);
+                  fail, map, colors[1], colors[2]);
     else
       DIGRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
-                    fail, map);
+                    fail, map, colors[1], colors[2]);
     fi;
     return user_param;
   fi;
@@ -95,7 +136,7 @@ end);
 
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid,
 function(arg)
-  local digraph, limit, G, gens, limit_arg, out;
+  local digraph, limit, colors, G, gens, limit_arg, out;
 
   if IsEmpty(arg) then
     ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
@@ -104,22 +145,41 @@ function(arg)
 
   digraph := arg[1];
 
-  if HasGeneratorsOfEndomorphismMonoidAttr(digraph) then
-    return GeneratorsOfEndomorphismMonoidAttr(digraph);
-  fi;
-
   if not IsDigraph(digraph) then
     ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
                  "the 1st argument <digraph> must be a digraph,");
   fi;
 
-  if IsBound(arg[2]) and (IsPosInt(arg[2]) or arg[2] = infinity) then
-    limit := arg[2];
+  if IsBound(arg[2]) then
+    if IsHomogeneousList(arg[2]) then
+      colors := arg[2];
+      G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph), colors);
+    elif not IsBound(arg[3]) and (IsPosInt(arg[2]) or arg[2] = infinity) then
+      # arg[2] is <limit>
+      arg[3] := arg[2];
+      colors := fail;
+      G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph));
+    else
+      ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
+                   "<colors> must be a homogenous list,");
+    fi;
+  else
+    if HasGeneratorsOfEndomorphismMonoidAttr(digraph) then
+      return GeneratorsOfEndomorphismMonoidAttr(digraph);
+    fi;
+    colors := fail;
+    G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph));
+  fi;
+
+  if IsBound(arg[3]) then
+    if not (IsPosInt(arg[3]) or arg[3] = infinity) then
+      ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
+                   "<limit> must be a positive integer or infinity,");
+    fi;
+    limit := arg[3];
   else
     limit := infinity;
   fi;
-
-  G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph));
 
   if IsTrivial(G) then
     gens := [];
@@ -137,7 +197,7 @@ function(arg)
   fi;
 
   out := HomomorphismDigraphsFinder(digraph, digraph, fail, gens, limit, fail,
-                                    false, DigraphVertices(digraph), []);
+                                    false, DigraphVertices(digraph), [], colors, colors);
 
   if limit = infinity or Length(gens) < limit_arg then
     SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
@@ -171,7 +231,7 @@ function(gr1, gr2)
   local out;
 
   out := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, fail, false,
-                                    DigraphVertices(gr2), []);
+                                    DigraphVertices(gr2), [], fail, fail);
 
   if IsEmpty(out) then
     return fail;
@@ -189,7 +249,7 @@ InstallMethod(HomomorphismsDigraphsRepresentatives,
 function(gr1, gr2)
 
   return HomomorphismDigraphsFinder(gr1, gr2, fail, [], infinity, fail, false,
-                                    DigraphVertices(gr2), []);
+                                    DigraphVertices(gr2), [], fail, fail);
 end);
 
 # Finds the set of all homomorphisms from gr1 to gr2
@@ -217,7 +277,7 @@ function(gr1, gr2)
 
   out := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1,
                                     DigraphNrVertices(gr1), true,
-                                    DigraphVertices(gr2), []);
+                                    DigraphVertices(gr2), [], fail, fail);
 
   if IsEmpty(out) then
     return fail;
@@ -234,7 +294,7 @@ function(gr1, gr2)
 
   return HomomorphismDigraphsFinder(gr1, gr2, fail, [], infinity,
                                     DigraphNrVertices(gr1), true,
-                                    DigraphVertices(gr2), []);
+                                    DigraphVertices(gr2), [], fail, fail);
 end);
 
 # Finds the set of all monomorphisms from gr1 to gr2
@@ -262,7 +322,7 @@ function(gr1, gr2)
 
   out := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1,
                                     DigraphNrVertices(gr2), false,
-                                    DigraphVertices(gr2), []);
+                                    DigraphVertices(gr2), [], fail, fail);
 
   if IsEmpty(out) then
     return fail;
@@ -279,7 +339,7 @@ function(gr1, gr2)
 
   return HomomorphismDigraphsFinder(gr1, gr2, fail, [], infinity,
                                     DigraphNrVertices(gr2), false,
-                                    DigraphVertices(gr2), []);
+                                    DigraphVertices(gr2), [], fail, fail);
 end);
 
 # Finds the set of all epimorphisms from gr1 to gr2
