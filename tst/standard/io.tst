@@ -56,7 +56,7 @@ true
 gap> ReadDigraphs(34, DigraphFromGraph6String, 5);
 Error, Digraphs: ReadDigraphs: usage,
 ReadDigraphs( filename [, decoder][, pos] ),
-gap> ReadDigraphs(str, (1,6,5), 5);
+gap> ReadDigraphs(str, (1, 6, 5), 5);
 Error, Digraphs: ReadDigraphs: usage,
 ReadDigraphs( filename [, decoder][, pos] ),
 gap> ReadDigraphs(str, DigraphFromGraph6String, 0);
@@ -310,6 +310,55 @@ the input string should be non-empty,
 gap> DigraphFromDiSparse6String("");
 Error, Digraphs: DigraphFromDiSparse6String: usage,
 the input string should be non-empty,
+
+#T# DiSparse6 
+gap> DigraphFromDiSparse6String("I'm a string");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+<s> must be a string in disparse6 format,
+gap> DigraphFromDiSparse6String(".~~");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+.~~ is not a valid disparse6 input,
+gap> DigraphFromDiSparse6String(".~~??@???o??N");
+<digraph with 262144 vertices, 0 edges>
+gap> DigraphFromDiSparse6String(".~??");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+.~?? is not a valid disparse6 input,
+gap> DiSparse6String(CompleteDigraph(1));
+".@~"
+gap> DigraphFromDiSparse6String(".@~");
+<digraph with 1 vertex, 0 edges>
+gap> gr := Digraph([[],[], [1, 2]]);;
+gap> DiSparse6String(gr);
+".BoN"
+
+#T# Plain text encoding  
+gap> gr := CompleteDigraph(3);
+<digraph with 3 vertices, 6 edges>
+gap> str := PlainTextString(gr);
+"0 1  0 2  1 0  1 2  2 0  2 1"
+gap> gr2 := DigraphFromPlainTextString(str);
+<digraph with 3 vertices, 6 edges>
+gap> gr = gr2;
+true
+
+#T# Invalid sizes
+gap> DigraphFromGraph6String("~llk");
+Error, Digraphs: DigraphFromGraph6String: usage,
+<s> is not a valid graph6 input,
+gap> DigraphFromDigraph6String("+~llk");
+Error, Digraphs: DigraphFromDigraph6String: usage,
+<s> must be a string in Digraph6 format,
+
+#T# Special format characters
+gap> DigraphFromDigraph6String("x");
+Error, Digraphs: DigraphFromDigraph6String: usage,
+<s> must be a string in Digraph6 format,
+gap> DigraphFromSparse6String("y");
+Error, Digraphs: DigraphFromSparse6String: usage,
+<s> must be a string in Sparse6 format,
+gap> DigraphFromDiSparse6String("z");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+<s> must be a string in disparse6 format,
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);

@@ -12,8 +12,7 @@
 # Wrapper for C function DI/GRAPH_HOMOS
 
 InstallGlobalFunction(HomomorphismDigraphsFinder,
-function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map,
-         list1, list2)
+function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
   local colors, gr, list, i, j;
 
   if not (IsDigraph(gr1) and IsDigraph(gr2)) then
@@ -46,9 +45,9 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map,
                   "fail,");
   fi;
 
-  if not (isinjective in [true, false]) then
+  if not (inj in [true, false]) then
     ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                 "the 7th argument <isinjective> has to be a true or false,");
+                 "the 7th argument <inj> has to be a true or false,");
   fi;
 
   if not (IsHomogeneousList(image)
@@ -68,8 +67,6 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map,
                  "vertices of the 1st argument <gr1>,");# TODO improve
   fi;
 
-
-
   if list1 = fail and list2 = fail then
     colors := [fail, fail];
   elif list1 <> fail and list2 <> fail then
@@ -79,10 +76,11 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map,
     for i in [1, 2] do
       if (not IsEmpty(list[i])) and IsList(list[i][1]) then # color classes
         colors[i] := [1 .. DigraphNrVertices(gr[i])];
-	if not ( IsDuplicateFreeList( Concatenation(list[i]) ) and
-	        Union(list[i]) = colors[i]) then
+        if not (IsDuplicateFreeList(Concatenation(list[i])) and
+                Union(list[i]) = colors[i]) then
           ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                       "the union of the lists in the ", 9 + i, "th arg should equal ",
+                       "the union of the lists in the ", 9 + i,
+                       "th arg should equal ",
                        "[1 .. ", DigraphNrVertices(gr[i]), "],");
         fi;
 
@@ -91,7 +89,7 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map,
         od;
       else
         if not (Length(list[i]) = DigraphNrVertices(gr[i])
-            and ForAll(list[i], c -> IsPosInt(c) and 1 <= c
+                and ForAll(list[i], c -> IsPosInt(c) and 1 <= c
                                      and c <= DigraphNrVertices(gr[i]))) then
           ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                        "the ", 9 + i, "th arg must be a list of length ",
@@ -103,12 +101,12 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map,
     od;
   else
     ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                 "the 10th and 11th arguments <list1> and <list2> must both be ",
-                 "fail or neither must be fail,");
+                 "the 10th and 11th arguments <list1> and <list2> must both ",
+                 "be fail or neither must be fail,");
   fi;
 
   # Cases where we already know the answer
-  if (isinjective and ((hint <> fail and hint <> DigraphNrVertices(gr1)) or
+  if (inj and ((hint <> fail and hint <> DigraphNrVertices(gr1)) or
             DigraphNrVertices(gr1) > DigraphNrVertices(gr2)))
         or (IsPosInt(hint) and (hint > DigraphNrVertices(gr1) or hint >
             DigraphNrVertices(gr2)))
@@ -119,10 +117,10 @@ function(gr1, gr2, hook, user_param, limit, hint, isinjective, image, map,
 
   if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
     if IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2) then
-      GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
+      GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, inj, image,
                   fail, map, colors[1], colors[2]);
     else
-      DIGRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, isinjective, image,
+      DIGRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, inj, image,
                     fail, map, colors[1], colors[2]);
     fi;
     return user_param;
@@ -197,7 +195,8 @@ function(arg)
   fi;
 
   out := HomomorphismDigraphsFinder(digraph, digraph, fail, gens, limit, fail,
-                                    false, DigraphVertices(digraph), [], colors, colors);
+                                    false, DigraphVertices(digraph), [], colors,
+                                    colors);
 
   if limit = infinity or Length(gens) < limit_arg then
     SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
@@ -217,6 +216,14 @@ end);
 InstallMethod(DigraphColoring, "for a digraph and pos int",
 [IsDigraph, IsPosInt],
 function(digraph, n)
+  # Special case for bipartite testing; works for large graphs
+  if n = 2 then
+    if not IsBipartiteDigraph(digraph) then
+      return fail;
+    fi;
+    return DIGRAPHS_Bipartite(digraph)[2];
+  fi;
+  # General case for n > 2; works for small graphs
   return DigraphEpimorphism(digraph, CompleteDigraph(n));
 end);
 
