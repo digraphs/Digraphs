@@ -811,6 +811,9 @@ gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);
 <digraph with 5 vertices, 6 edges>
 gap> DigraphAllSimpleCircuits(gr);
 [ [ 4 ], [ 4, 5 ], [ 2, 3 ] ]
+gap> gr := ChainDigraph(10);;
+gap> DigraphAllSimpleCircuits(gr);
+[  ]
 gap> gr := Digraph([[3], [1], [1]]);
 <digraph with 3 vertices, 3 edges>
 gap> DigraphAllSimpleCircuits(gr);
