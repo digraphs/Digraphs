@@ -797,3 +797,27 @@ gap> true;;]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphLoops">
+<ManSection>
+  <Attr Name="DigraphLoops" Arg="digraph"/>
+  <Returns>A list of vertices.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphLoops</C> returns the list
+    consisting of the <Ref Attr="DigraphVertices"/> of <A>digraph</A>
+    at which there is a loop. See <Ref Prop="DigraphHasLoops"/>. <P/>
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [3], []]);
+<digraph with 3 vertices, 2 edges>
+gap> DigraphHasLoops(gr);
+false
+gap> DigraphLoops(gr);
+[  ]
+gap> gr := Digraph([[3, 5], [1], [2, 4, 3], [4], [2, 1]]);
+<digraph with 5 vertices, 9 edges>
+gap> DigraphLoops(gr);
+[ 3, 4 ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

@@ -563,26 +563,16 @@ end);
 InstallMethod(DigraphAllSimpleCircuits,
 "for a digraph",
 [IsDigraph],
-function(d)
-  local stack, endofstack, output, g, n, blocked, B, s, UNBLOCK, CIRCUIT, sub,
-    scc, min, index, ind, component, i;
-
-    stack := [];
-    endofstack := 0;
-    output := [];
-
-    g := ReducedDigraph(d);
-    n := Size(DigraphVertices(g));
-
-    blocked := List([1 .. n], x -> false);
-    B := List([1 .. n], x -> []);
-    s := 1;
+function(digraph)
+  local UNBLOCK, CIRCUIT, out, stack, endofstack, gr, degs, blocked, B, scc, n,
+  component_induced, s, sub, component, i;
 
     UNBLOCK := function(u)
       local w;
       blocked[u] := false;
-      B[u] := [];
-      for w in B[u] do
+      while not IsEmpty(B[u]) do
+        w := B[u][1];
+        Remove(B[u], 1);
         if blocked[w] then
           UNBLOCK(w);
         fi;
@@ -598,13 +588,12 @@ function(d)
       stack[endofstack] := v;
       blocked[v] := true;
 
-      pos := Position(List(DigraphVertices(comp),
-                           x -> DigraphVertexLabel(comp, x)), v);
+      pos := Position(DigraphVertexLabels(comp), v);
 
       for w in OutNeighbours(comp)[pos] do
         if DigraphVertexLabel(comp, w) = s then
           buffer := stack{[1 .. endofstack]};
-          Add(output, buffer);
+          Add(out, buffer);
           f := true;
         elif blocked[DigraphVertexLabel(comp, w)] = false then
           dummy := CIRCUIT(DigraphVertexLabel(comp, w), comp);
@@ -628,33 +617,52 @@ function(d)
       return f;
     end;
 
-    while s < n do
+    out := [];
+    stack := [];
+    endofstack := 0;
 
-      sub := InducedSubdigraph(g, [s .. n]);
-      scc := DigraphStronglyConnectedComponents(sub);
-      min := Minimum(List([1 .. Size(scc.comps)], x -> Minimum(scc.comps[x])));
+    # TODO should we also remove multiple edges, as they create extra work?
+    # Reduce the digraph, remove loops, and store the correct vertex labels
+    gr := DigraphRemoveLoops(ReducedDigraph(digraph));
+    if DigraphVertexLabels(digraph) <> DigraphVertices(digraph) then
+      degs := OutDegrees(digraph);
+      SetDigraphVertexLabels(gr, Filtered(DigraphVertices(digraph),
+                                          x -> degs[x] <> 0));
+    fi;
 
-      for component in scc.comps do
-        if min in component then
-          index := Position(scc.comps, component);
+    blocked := BlistList(DigraphVertices(gr), []);
+    B := List(DigraphVertices(gr), x -> []);
+    scc := DigraphStronglyConnectedComponents(gr);
+
+    for component in scc.comps do
+      n := Length(component);
+      if n = 1 then
+        continue;
+      fi;
+      component_induced := InducedSubdigraph(gr, component);
+      sub := component_induced;
+      s := 1;
+      while s < n do
+        if s <> 1 then
+          sub := InducedSubdigraph(component_induced, [s .. n]);
+          sub := InducedSubdigraph(sub, DigraphStronglyConnectedComponent(sub,
+                                                                          1));
+        fi;
+
+        if not IsEmptyDigraph(sub) then
+          s := Minimum(DigraphVertexLabels(sub));
+          for i in DigraphVertices(sub) do
+            blocked[DigraphVertexLabel(sub, i)] := false;
+            B[DigraphVertexLabel(sub, i)] := [];
+          od;
+          CIRCUIT(s, sub);
+          s := s + 1;
+        else
+          s := n;
         fi;
       od;
-
-      ind := InducedSubdigraph(sub, scc.comps[index]);
-
-      if ForAny(OutNeighbours(ind), x -> not IsEmpty(x)) then
-        s := Minimum(DigraphVertexLabels(ind));
-        for i in DigraphVertices(ind) do;
-          blocked[DigraphVertexLabel(ind, i)] := false;
-          B[DigraphVertexLabel(ind, i)] := [];
-        od;
-        CIRCUIT(s, ind);
-        s := s + 1;
-      else
-        s := n;
-      fi;
     od;
-    return output;
+    return Concatenation(List(DigraphLoops(digraph), x -> [x]), out);
 end);
 
 # The following method 'DIGRAPHS_Bipartite' was written by Isabella Scott
@@ -720,4 +728,12 @@ function(digraph)
   b := KernelOfTransformation(DIGRAPHS_Bipartite(digraph)[2],
                               DigraphNrVertices(digraph));
   return b;
+end);
+
+InstallMethod(DigraphLoops, "for a digraph", [IsDigraph],
+function(gr)
+  if HasDigraphHasLoops(gr) and not DigraphHasLoops(gr) then
+    return [];
+  fi;
+  return Filtered(DigraphVertices(gr), x -> x in OutNeighboursOfVertex(gr, x));
 end);

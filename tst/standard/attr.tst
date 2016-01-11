@@ -848,6 +848,21 @@ gap> DigraphBicomponents(Digraph([[2], [], [], [3]]));
 gap> DigraphBicomponents(CycleDigraph(3));
 fail
 
+#T# DigraphLoops
+gap> gr := ChainDigraph(4);;
+gap> DigraphHasLoops(gr);
+false
+gap> DigraphLoops(gr);
+[  ]
+gap> gr := Digraph([[2], [1]]);;
+gap> DigraphLoops(gr);
+[  ]
+gap> gr := Digraph([[1, 5, 6], [1, 3, 4, 5, 6], [1, 3, 4], [2, 4, 6], [2],
+> [1, 4, 5]]);
+<digraph with 6 vertices, 18 edges>
+gap> DigraphLoops(gr);
+[ 1, 3, 4 ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);
