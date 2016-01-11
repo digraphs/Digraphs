@@ -580,16 +580,15 @@ function(digraph)
     end;
 
     CIRCUIT := function(v, component)
-      local f, pos, buffer, dummy, w;
+      local f, buffer, dummy, w;
 
       f := false;
       endofstack := endofstack + 1;
       stack[endofstack] := v;
       blocked[v] := true;
-      pos := v;
 
-      for w in OutNeighboursOfVertex(component, pos) do
-        if w = s then
+      for w in OutNeighboursOfVertex(component, v) do
+        if w = 1 then
           buffer := stack{[1 .. endofstack]};
           Add(out, DigraphVertexLabels(component){buffer});
           f := true;
@@ -604,7 +603,7 @@ function(digraph)
       if f then
         UNBLOCK(v);
       else
-        for w in OutNeighboursOfVertex(component, pos) do
+        for w in OutNeighboursOfVertex(component, v) do
           if not w in B[w] then
             Add(B[w], v);
           fi;
@@ -635,7 +634,7 @@ function(digraph)
     blocked := BlistList([1 .. n], []);
     B := List([1 .. n], x -> []);
 
-    # Perform algorithm once per connected component
+    # Perform algorithm once per connected component of the whole digraph
     for gr_comp in scc.comps do
       n := Length(gr_comp);
       if n = 1 then
@@ -653,11 +652,12 @@ function(digraph)
 
         if not IsEmptyDigraph(comp) then
           # TODO would it be faster/better to create blocked as a new BlistList?
+          # Are these things already going to be initialised anyway?
           for i in DigraphVertices(comp) do
             blocked[i] := false;
             B[i] := [];
           od;
-          CIRCUIT(s, comp);
+          CIRCUIT(1, comp);
           s := s + 1;
         else
           s := n;

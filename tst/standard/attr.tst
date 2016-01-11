@@ -820,7 +820,7 @@ gap> DigraphAllSimpleCircuits(gr);
 [ [ 1, 2 ] ]
 gap> gr := CompleteDigraph(3);;
 gap> DigraphAllSimpleCircuits(gr);
-[ [ 1, 2 ], [ 1, 2, 3 ], [ 1, 3 ], [ 1, 3, 2 ], [ 3, 2 ] ]
+[ [ 1, 2 ], [ 1, 2, 3 ], [ 1, 3 ], [ 1, 3, 2 ], [ 2, 3 ] ]
 gap> gr := Digraph(["a", "b"], ["a", "b"], ["b", "a"]);
 <digraph with 2 vertices, 2 edges>
 gap> DigraphAllSimpleCircuits(gr);
@@ -837,6 +837,14 @@ gap> gr := Digraph([[1, 2], [2, 1]]);
 <digraph with 2 vertices, 4 edges>
 gap> DigraphAllSimpleCircuits(gr);
 [ [ 1 ], [ 2 ], [ 1, 2 ] ]
+gap> gr := Digraph([[4], [1, 3], [1, 2], [2, 3]]);;
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 1, 4, 2 ], [ 1, 4, 2, 3 ], [ 1, 4, 3 ], [ 1, 4, 3, 2 ] ]
+gap> gr := Digraph( [ [ 3, 6, 7 ], [ 3, 6, 8 ], [ 1, 2, 3, 6, 7, 8 ],
+> [ 2, 3, 4, 8 ], [ 2, 3, 4, 5, 6, 7 ], [ 1, 3, 4, 5, 7 ], [ 2, 3, 6, 8 ],
+> [ 1, 2, 3, 8 ] ] );;
+gap> Length(DigraphAllSimpleCircuits(gr));
+259
 
 #T# AsTransformation
 gap> gr := Digraph([[2], [1, 3], [4], [3]]);;
