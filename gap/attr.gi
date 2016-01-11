@@ -666,7 +666,7 @@ end);
 
 InstallMethod(DIGRAPHS_Bipartite, "for a digraph", [IsDigraph],
 function(digraph)
-  local n, colour, neighbours, queue, i, node, node_neighbours, root, t;
+  local n, colour, queue, i, node, node_neighbours, root, t;
 
   n := DigraphNrVertices(digraph);
   if n < 2 then
@@ -677,23 +677,22 @@ function(digraph)
   fi;
   digraph := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(digraph));
   colour := ListWithIdenticalEntries(n, 0);
-  
+
   #This means there is a vertex we haven't visited yet
-  while 0 in colour do    
+  while 0 in colour do
     root := Position(colour, 0);
     colour[root] := 1;
     queue := [root];
-    Append(queue, OutNeighboursOfVertex(digraph, root)); 
+    Append(queue, OutNeighboursOfVertex(digraph, root));
     while queue <> [] do
       #Explore the first element of queue
       node := queue[1];
       node_neighbours := OutNeighboursOfVertex(digraph, node);
       for i in node_neighbours do
         #If node and its neighbour have the same colour, graph is not bipartite
-        if colour[node] = colour[i] then         
+        if colour[node] = colour[i] then
           return [false, fail, fail];
-        #Give i opposite colour to node
-        elif colour[i] = 0 then
+        elif colour[i] = 0 then # Give i opposite colour to node
           if colour[node] = 1 then
             colour[i] := 2;
           else

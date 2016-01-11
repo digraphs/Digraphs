@@ -56,7 +56,7 @@ true
 gap> ReadDigraphs(34, DigraphFromGraph6String, 5);
 Error, Digraphs: ReadDigraphs: usage,
 ReadDigraphs( filename [, decoder][, pos] ),
-gap> ReadDigraphs(str, (1,6,5), 5);
+gap> ReadDigraphs(str, (1, 6, 5), 5);
 Error, Digraphs: ReadDigraphs: usage,
 ReadDigraphs( filename [, decoder][, pos] ),
 gap> ReadDigraphs(str, DigraphFromGraph6String, 0);

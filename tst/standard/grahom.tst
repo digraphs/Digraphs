@@ -54,27 +54,33 @@ Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 6th argument <hint> has to be a positive integer or fail,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", 1, 1, 0, 0, 0, 0, 0);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
-the 7th argument <isinjective> has to be a true or false,
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", infinity, fail, 0, 0, 0, 0, 0);
+the 7th argument <inj> has to be a true or false,
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", infinity, fail, 0, 0, 0,
+> 0, 0);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
-the 7th argument <isinjective> has to be a true or false,
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", infinity, 2, true, 0, 0, 0, 0);
-Error, Digraphs: HomomorphismDigraphsFinder: usage,
-the 8th argument <image> has to be a duplicate-free list of vertices of the
-2nd argument <gr2>,
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [1, []], 0, 0, 0);
+the 7th argument <inj> has to be a true or false,
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", infinity, 2, true, 0, 0,
+> 0, 0);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 8th argument <image> has to be a duplicate-free list of vertices of the
 2nd argument <gr2>,
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [[], []], 0, 0, 0);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [1, []], 0,
+> 0, 0);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 8th argument <image> has to be a duplicate-free list of vertices of the
 2nd argument <gr2>,
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [0, 1], 0, 0, 0);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [[], []], 0,
+> 0, 0);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 8th argument <image> has to be a duplicate-free list of vertices of the
 2nd argument <gr2>,
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [4, 4], 0, 0, 0);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [0, 1], 0, 0,
+> 0);
+Error, Digraphs: HomomorphismDigraphsFinder: usage,
+the 8th argument <image> has to be a duplicate-free list of vertices of the
+2nd argument <gr2>,
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [4, 4], 0, 0,
+> 0);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 8th argument <image> has to be a duplicate-free list of vertices of the
 2nd argument <gr2>,
@@ -86,7 +92,8 @@ gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [3], 0, 0, 0);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 9th argument <map> must be a list of vertices of the 8th argument <image>
 which is no longer than the number of vertices of the 1st argument <gr1>,
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [3], [1 .. 4], 0, 0);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [3], [1 .. 4],
+> 0, 0);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 9th argument <map> must be a list of vertices of the 8th argument <image>
 which is no longer than the number of vertices of the 1st argument <gr1>,
@@ -95,23 +102,32 @@ gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [],
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 9th argument <map> must be a list of vertices of the 8th argument <image>
 which is no longer than the number of vertices of the 1st argument <gr1>,
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [1], [1], fail, fail);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, true, [1], [1],
+> fail, fail);
 [  ]
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 2, true, [1, 2], [1], fail, fail);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 2, true, [1, 2], [1],
+> fail, fail);
 [ IdentityTransformation ]
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 3, false, [1, 2], [1], fail, fail);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 3, false, [1, 2], [1],
+> fail, fail);
 [  ]
-gap> HomomorphismDigraphsFinder(gr2, gr1, fail, [], 1, 3, false, [1, 2], [1], fail, fail);
+gap> HomomorphismDigraphsFinder(gr2, gr1, fail, [], 1, 3, false, [1, 2], [1],
+> fail, fail);
 [  ]
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, false, [], [], fail, fail);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, false, [], [], fail,
+> fail);
 [  ]
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, false, [1, 2], [], fail, fail);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, false, [1, 2], [],
+> fail, fail);
 [  ]
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, false, [1, 2], [], fail, fail);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, false, [1, 2], [],
+> fail, fail);
 [  ]
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 2, false, [1], [], fail, fail);
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 2, false, [1], [], fail,
+> fail);
 [  ]
-gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2], [], fail, fail);
+gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2], [],
+> fail, fail);
 [ IdentityTransformation ]
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
 > [], [[1, 2]], fail);
@@ -136,18 +152,18 @@ gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, false, [1 .. 513],
 Error, Digraphs: HomomorphismDigraphsFinder: error,
 not yet implemented for digraphs with more than 512 vertices,
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
-> [], [1,2], [2, 1]);
+> [], [1, 2], [2, 1]);
 [ Transformation( [ 2, 1 ] ) ]
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
-> [], [1,2,3], [2, 1]);
+> [], [1, 2, 3], [2, 1]);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 10th arg must be a list of length 2 of integers in [1 .. 2],
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
-> [], [1,3], [2, 1]);
+> [], [1, 3], [2, 1]);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 10th arg must be a list of length 2 of integers in [1 .. 2],
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
-> [], [1,fail], [2, 1]);
+> [], [1, fail], [2, 1]);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 10th arg must be a list of length 2 of integers in [1 .. 2],
 gap> gr := ChainDigraph(2);
@@ -271,8 +287,8 @@ fail
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);;
 gap> gr := DigraphSymmetricClosure(gr);;
 gap> x := [];;
-gap> HomomorphismDigraphsFinder(gr, gr, fail, x, infinity, fail, false, [1 .. 6],
-> [], fail, fail);
+gap> HomomorphismDigraphsFinder(gr, gr, fail, x, infinity, fail, false,
+> [1 .. 6], [], fail, fail);
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 2 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 3 ] ), 
@@ -356,8 +372,8 @@ gap> HomomorphismDigraphsFinder(gr, gr, fail, x, infinity, fail, false, [1 .. 6]
   Transformation( [ 4, 5, 5, 5, 4, 5 ] ) ]
 gap> Length(x);
 100
-gap> HomomorphismDigraphsFinder(gr, gr, fail, x, infinity, fail, false, [1 .. 6],
-> [], fail, fail);
+gap> HomomorphismDigraphsFinder(gr, gr, fail, x, infinity, fail, false,
+> [1 .. 6], [], fail, fail);
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 2 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 3 ] ), 
@@ -528,8 +544,8 @@ true
 #T# HomomorphismDigraphsFinder 1
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
 <digraph with 6 vertices, 3 edges>
-gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, false, [1 .. 5],
-> [], fail, fail);
+gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, false,
+> [1 .. 5], [], fail, fail);
 [ Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 2 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 3 ] ), 
@@ -576,7 +592,7 @@ gap> Length(last);
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
 <digraph with 6 vertices, 3 edges>
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, false,
-> [1 .. 6], [],  fail, fail);
+> [1 .. 6], [], fail, fail);
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 2 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 3 ] ), 
@@ -624,8 +640,8 @@ gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
 <digraph with 6 vertices, 3 edges>
 gap> gr := DigraphSymmetricClosure(gr);
 <digraph with 6 vertices, 6 edges>
-gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, false, [1 .. 6],
-> [], fail, fail);
+gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, false,
+> [1 .. 6], [], fail, fail);
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 2 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 3 ] ), 
