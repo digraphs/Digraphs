@@ -5,7 +5,9 @@ things to the webpage.
 '''
 
 import textwrap, os, argparse, tempfile, subprocess, sys, os, re, shutil, gzip
-import test, time, webbrowser
+import test, time, webbrowser, urllib, dots
+
+from test import pad
 
 _WEBPAGE_DIR = os.path.expanduser('~/Sites/public_html/digraphs/')
 _MAMP_DIR = '/Applications/MAMP/'
@@ -159,15 +161,42 @@ def _copy_doc(dst, verbose):
                 '.js', '.six']:
             if verbose:
                 print _cyan_string('Copying ' + filename +
-                                     ' to archive . . .')
+                                     ' to the archive . . .')
             shutil.copy('doc/' + filename, dst)
+
+def _copy_build_files(dst, verbose):
+    for filename in ['configure', 'configure.ac', 'Makefile.in', 'Makefile.am']:
+        if verbose:
+            print _cyan_string('Copying ' + filename + ' to the archive . . .')
+        shutil.copy(filename, dst)
+
+    if verbose:
+        print _cyan_string('Copying cnf/* to the archive . . .')
+    shutil.copytree('cnf', dst + '/cnf')
+
+def _delete_generated_build_files(verbose):
+    for filename in ['aclocal.m4', 'autom4te.cache', 'config.log',
+                     'config.status']:
+        if verbose:
+            print _cyan_string('Deleting ' + filename + ' from the archive . . .')
+        os.remove(filename)
+    for directory in ['libtool', 'digraphs-lib', 'm4']:
+        if verbose:
+            print _cyan_string('Deleting ' + directory + ' from the archive . . .')
+        shutil.rmtree(directory)
+
+def _download_digraphs_lib(dst, verbose):
+    urllib.urlretrieve('https://bitbucket.org/james-d-mitchell/digraphs/downloads/digraphs-lib-0.2.tar.gz',
+            'digraphs-lib-0.2.tar.gz')
+    _exec('tar -xzf digraphs-lib-0.2.tar.gz', verbose)
+    shutil.copytree('digraphs-lib', dst + '/digraphs-lib')
 
 def _delete_xml_files(docdir, verbose):
     for filename in os.listdir(docdir):
         if os.path.splitext(filename)[-1] == '.xml':
             if verbose:
                 print _cyan_string('Deleting ' + filename +
-                                      ' from archive . . .')
+                                      ' from the archive . . .')
             os.remove(os.path.join(docdir, filename))
 
 def _start_mamp():
@@ -245,25 +274,29 @@ def main():
     test.digraphs_make_doc(args.gap_root[0])
 
     # archive . . .
-    print _magenta_string('Archiving using hg . . .')
+    print _magenta_string(pad('Archiving using hg') + ' . . .')
     _exec('hg archive ' + tmpdir, args.verbose)
 
     # handle the doc . . .
     _copy_doc(tmpdir + '/doc/', args.verbose)
+    _copy_build_files(tmpdir, args.verbose)
+    print _magenta_string(pad('Downloading digraphs-lib-0.2.tar.gz') + ' . . . '),
+    sys.stdout.flush()
+    dots.dotIt(test.MAGENTA_DOT, _download_digraphs_lib, tmpdir, args.verbose)
+    print ''
 
     # delete extra files and dirs
-    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore',
-                     'configure.ac', 'Makefile.am']:
+    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', 'autogen.sh']:
         if (os.path.exists(os.path.join(tmpdir, filename))
                 and os.path.isfile(os.path.join(tmpdir, filename))):
-            print _magenta_string('Deleting file ' + filename + ' . . .')
+            print _magenta_string(pad('Deleting file ' + filename) + ' . . .')
             try:
                 os.remove(os.path.join(tmpdir, filename))
             except OSError:
                 sys.exit(_red_string('release.py: error: could not delete' +
                                      filename))
 
-    print _magenta_string('Deleting directory scripts . . .')
+    print _magenta_string(pad('Deleting directory scripts') + ' . . .')
     try:
         shutil.rmtree(os.path.join(tmpdir, 'scripts'))
     except OSError:
@@ -272,7 +305,7 @@ def main():
     if args.skip_tests:
         print _magenta_string('Skipping tests . . .')
     else:
-        print _magenta_string('Running the tests on the archive . . .')
+        print _magenta_string(pad('Running the tests on the archive') + ' . . .')
         os.chdir(tmpdir_base)
         for directory in args.gap_root:
             digraphs_dir = os.path.join(directory, 'pkg/digraphs-' + vers)
@@ -297,7 +330,20 @@ def main():
                 shutil.rmtree(digraphs_dir)
 
     print _magenta_string('Creating the tarball . . .')
+    os.chdir(tmpdir)
+    _delete_generated_build_files(args.verbose)
     os.chdir(tmpdir_base)
+
+    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', 'autogen.sh']:
+        if (os.path.exists(os.path.join(tmpdir, filename))
+                and os.path.isfile(os.path.join(tmpdir, filename))):
+            print _magenta_string(pad('Deleting file ' + filename) + ' . . .')
+            try:
+                os.remove(os.path.join(tmpdir, filename))
+            except OSError:
+                sys.exit(_red_string('release.py: error: could not delete' +
+                                     filename))
+
     _exec('tar -cpf digraphs-' + vers + '.tar digraphs-' + vers +
           '; gzip -9 digraphs-' + vers + '.tar', args.verbose)
 
