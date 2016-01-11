@@ -37,8 +37,8 @@ def _magenta_string(string):
     'magenta string'
     return '\n        '.join(_WRAPPER.wrap('\033[35m' + string + '\033[0m'))
 
-_MAGENTA_DOT = _magenta_string('. ')
-_CYAN_DOT = _cyan_string('. ')
+MAGENTA_DOT = _magenta_string('. ')
+CYAN_DOT = _cyan_string('. ')
 
 def hide_cursor():
     if os.name == 'posix':
@@ -78,12 +78,12 @@ def _run_test(gap_root, message, stop_for_diffs, *arg):
     '''echo the GAP commands in the string <commands> into _GAPTest, after
        printing the string <message>.'''
 
-    dots.dotIt(_MAGENTA_DOT, _run_test_base, gap_root, message,
+    dots.dotIt(MAGENTA_DOT, _run_test_base, gap_root, message,
                stop_for_diffs, *arg)
 
 def _run_test_base (gap_root, message, stop_for_diffs, *arg):
     hide_cursor()
-    print _pad(_magenta_string(message + ' . . . ')),
+    print pad(_magenta_string(message + ' . . . ')),
     sys.stdout.flush()
 
     tmpdir = tempfile.mkdtemp()
@@ -117,6 +117,7 @@ def _run_test_base (gap_root, message, stop_for_diffs, *arg):
     try:
         log = open(log_file, 'r').read()
     except IOError:
+        show_cursor()
         sys.exit(_red_string('test.py: error: ' + log_file + ' not found!'))
 
     if len(log) == 0:
@@ -155,23 +156,25 @@ def _get_ready_to_make(pkg_dir, package_name):
 
 def _exec(command):
     try: #FIXME use popen here
-        pro = subprocess.call(command + ' &> /dev/null',
-                              shell=True)
+        pro = subprocess.check_call(command + ' &> /dev/null', shell=True)
     except KeyboardInterrupt:
         os.kill(pro.pid, signal.SIGKILL)
         print _red_string('Killed!')
+        show_cursor()
         sys.exit(1)
     except subprocess.CalledProcessError:
+        show_cursor()
         sys.exit(_red_string('test.py: error: ' + command + ' failed!!'))
 
 ################################################################################
 
 def _make_clean(gap_root, name):
     hide_cursor()
-    print _cyan_string(_pad('Deleting ' + name + ' binary') + ' . . . '),
+    print _cyan_string(pad('Deleting ' + name + ' binary') + ' . . . '),
     cwd = os.getcwd()
     sys.stdout.flush()
     _get_ready_to_make(gap_root, name)
+    _exec('./configure')
     _exec('make clean')
     os.chdir(cwd)
     print ''
@@ -181,7 +184,7 @@ def _make_clean(gap_root, name):
 
 def _configure_make(directory, name):
     hide_cursor()
-    print _cyan_string(_pad('Compiling ' + name) + ' . . . '),
+    print _cyan_string(pad('Compiling ' + name) + ' . . . '),
     cwd = os.getcwd()
     sys.stdout.flush()
     _get_ready_to_make(directory, name)
@@ -198,8 +201,8 @@ def _man_ex_str(gap_root, name):
             + name + '\\", [\\"' + name + '\\"], \\"Section\\");' +
             ' RunExamples(ex);')
 
-def _pad(string, extra=0):
-    for i in xrange(extra + 27 - len(string)):
+def pad(string, extra=0):
+    for i in xrange(extra + 35 - len(string)):
         string += ' '
     return string
 
@@ -229,56 +232,66 @@ def _test_gap_quick(gap_root):
 ############################################################################
 
 def digraphs_make_doc(gap_root):
-    _run_test(gap_root, 'Compiling the doc          ', True, _LOAD, _MAKE_DOC)
+    _run_test(gap_root, pad('Compiling the doc'), True, _LOAD, _MAKE_DOC)
 
 def run_digraphs_tests(gap_root, pkg_dir, pkg_name):
 
     print ''
-    print _blue_string(_pad('Running tests in ' + gap_root))
+    print _blue_string('Package name is ' + pkg_name)
+    print _blue_string('Running tests in ' + gap_root)
+
+    dots.dotIt(CYAN_DOT, _make_clean, pkg_dir, pkg_name)
+    dots.dotIt(CYAN_DOT, _configure_make, pkg_dir, pkg_name)
 
     _run_test(gap_root,
-              'Validating PackageInfo.g   ',
+              pad('Validating PackageInfo.g'),
               True,
               _validate_package_info(gap_root, pkg_name))
-    _run_test(gap_root, 'Loading package            ', True, _LOAD)
-    _run_test(gap_root, 'Loading only needed        ', True, _LOAD_ONLY_NEEDED)
+    _run_test(gap_root, pad('Loading package'), True, _LOAD)
+    _run_test(gap_root, pad('Loading only needed'), True, _LOAD_ONLY_NEEDED)
 
     _make_clean(pkg_dir, 'grape')
-    _run_test(gap_root, 'Loading Grape not compiled ', True, _LOAD)
+    _run_test(gap_root, pad('Loading Grape not compiled'), True, _LOAD)
 
-    dots.dotIt(_CYAN_DOT, _configure_make, pkg_dir, 'grape')
-    _run_test(gap_root, 'Loading Grape compiled     ', True, _LOAD)
+    dots.dotIt(CYAN_DOT, _configure_make, pkg_dir, 'grape')
+    _run_test(gap_root, pad('Loading Grape compiled'), True, _LOAD)
 
-    _run_test(gap_root, 'Compiling the doc          ', True, _LOAD, _MAKE_DOC)
+    _run_test(gap_root, pad('Compiling the doc'), True, _LOAD, _MAKE_DOC)
 
     print ''
     print _blue_string('Testing with Grape compiled')
-    _run_test(gap_root, 'testinstall.tst            ', True, _LOAD, _TEST_INSTALL)
-    _run_test(gap_root, 'manual examples            ', True, _LOAD, _TEST_MAN_EX)
-    _run_test(gap_root, 'test standard              ', True, _LOAD, _TEST_STANDARD)
-    _run_test(gap_root, _pad('test extreme'), True, _LOAD, _TEST_EXTREME)
-    _run_test(gap_root, 'GAP quick tests            ', False, _LOAD, _test_gap_quick(gap_root))
+    _run_test(gap_root, pad('testinstall.tst'), True, _LOAD, _TEST_INSTALL)
+    _run_test(gap_root, pad('manual examples'), True, _LOAD, _TEST_MAN_EX)
+    _run_test(gap_root, pad('test standard'), True, _LOAD, _TEST_STANDARD)
+    _run_test(gap_root, pad('test extreme'), True, _LOAD, _TEST_EXTREME)
+    _run_test(gap_root,
+              pad('GAP testinstall.g'),
+              False,
+              _LOAD,
+              _test_gap_quick(gap_root))
 
     print ''
     print _blue_string('Testing with Grape uncompiled')
     _make_clean(pkg_dir, 'grape')
-    _run_test(gap_root, 'testinstall.tst            ', True, _LOAD, _TEST_INSTALL)
-    _run_test(gap_root, 'manual examples            ', True, _LOAD, _TEST_MAN_EX)
-    _run_test(gap_root, 'test standard              ', True, _LOAD, _TEST_STANDARD)
-    _run_test(gap_root, 'test extreme               ', True, _LOAD, _TEST_EXTREME)
-    _run_test(gap_root, 'GAP quick tests            ', False, _LOAD,
+    _run_test(gap_root, pad('testinstall.tst'), True, _LOAD, _TEST_INSTALL)
+    _run_test(gap_root, pad('manual examples'), True, _LOAD, _TEST_MAN_EX)
+    _run_test(gap_root, pad('test standard'), True, _LOAD, _TEST_STANDARD)
+    _run_test(gap_root, pad('test extreme'), True, _LOAD, _TEST_EXTREME)
+    _run_test(gap_root,
+              pad('GAP testinstall.g'),
+              False,
+              _LOAD,
               _test_gap_quick(gap_root))
-
     print ''
     print _blue_string('Testing with only needed packages')
-    _run_test(gap_root, 'testinstall.tst            ', True, _LOAD_ONLY_NEEDED,
-              _TEST_INSTALL)
-    _run_test(gap_root, 'manual examples            ', True, _LOAD_ONLY_NEEDED,
-              _TEST_MAN_EX)
-    _run_test(gap_root, 'test standard              ', True, _LOAD_ONLY_NEEDED,
-              _TEST_STANDARD)
-    _run_test(gap_root, _pad('test extreme'), True, _LOAD, _TEST_EXTREME)
-    _run_test(gap_root, 'GAP quick tests            ', False, _LOAD,
+    _run_test(gap_root, pad('testinstall.tst'), True, _LOAD, _TEST_INSTALL)
+    _run_test(gap_root, pad('manual examples'), True, _LOAD, _TEST_MAN_EX)
+    _run_test(gap_root, pad('test standard'), True, _LOAD, _TEST_STANDARD)
+    _run_test(gap_root, pad('test extreme'), True, _LOAD, _TEST_EXTREME)
+    _run_test(gap_root,
+              pad('GAP testinstall.g'),
+              False,
+              _LOAD,
               _test_gap_quick(gap_root))
 
     print '\n\033[32mSUCCESS!\033[0m'
@@ -327,5 +340,6 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
+        show_cursor()
         print _red_string('Killed!')
         sys.exit(1)
