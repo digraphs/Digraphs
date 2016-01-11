@@ -48,5 +48,5 @@ try:
 except subprocess.CalledProcessError:
     sys.exit('\033[31mcode-coverage-test.py: error: something went wrong calling GAP!\033[0m')
 
-subprocess.call(('chromium-browser', _DIR + '/index.html'))
+subprocess.call(('open', _DIR + '/index.html'))
 print '\n\n\033[32mSUCCESS!\033[0m'
