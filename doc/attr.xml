@@ -54,6 +54,7 @@ gap> gr := Digraph([[1], [3], [2]]);
 gap> gr := CycleDigraph(3);
 <digraph with 3 vertices, 3 edges>
 gap> AsTransformation(gr);
+Transformation( [ 2, 3, 1 ] )
 gap> AsPermutation(last);
 (1,2,3)
 gap> gr := Digraph([[2, 3], [], []]);
@@ -191,8 +192,8 @@ gap> DigraphEdges(gr);
     first component (i.e. by the source of each edge), but they are not
     necessarily then sorted by the second component.
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 3, 4, 3, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
-> [ 2, 4, 5 ], [ 1 ] ] );
+gap> gr := Digraph([[1, 3, 4, 3, 5], [1, 2, 3, 5], [2, 4, 5], 
+> [2, 4, 5], [1]]);
 <multidigraph with 5 vertices, 16 edges>
 gap> DigraphEdges(gr);
 [ [ 1, 1 ], [ 1, 3 ], [ 1, 4 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], 
@@ -210,13 +211,13 @@ gap> DigraphEdges(gr);
   <Description>
     This function returns the number of edges of the digraph <A>digraph</A>.
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 3, 4, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
-> [ 2, 4, 5 ], [ 1 ] ] );;
+gap> gr := Digraph([[1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], 
+> [2, 4, 5], [1]]);;
 gap> DigraphNrEdges(gr);
 15
-gap> gr := Digraph( [ "a", "b", "c" ],
-> [ "a", "b", "b" ],
-> [ "b", "a", "a" ] );
+gap> gr := Digraph(["a", "b", "c"],
+> ["a", "b", "b"],
+> ["b", "a", "a"]);
 <multidigraph with 3 vertices, 3 edges>
 gap> DigraphNrEdges(gr);
 3]]></Example>
@@ -242,21 +243,21 @@ gap> DigraphNrEdges(gr);
     lists, whereas the function <C>OutNeighboursCopy</C> returns a copy of
     <C>OutNeighbours</C> which is a mutable list of mutable lists. <P/>
     <Example><![CDATA[
-gap> gr := Digraph( [ "a", "b", "c" ],
-> [ "a", "b", "b" ],
-> [ "b", "a", "c" ] );
+gap> gr := Digraph(["a", "b", "c"],
+> ["a", "b", "b"],
+> ["b", "a", "c"]);
 <digraph with 3 vertices, 3 edges>
 gap> OutNeighbours(gr);
 [ [ 2 ], [ 1, 3 ], [  ] ]
-gap> gr := Digraph( 3, 
-> [ 1, 2, 3, 1, 1, 2 ],
-> [ 1, 2, 3, 2, 3, 1 ] );
+gap> gr := Digraph(3, 
+> [1, 2, 3, 1, 1, 2],
+> [1, 2, 3, 2, 3, 1]);
 <digraph with 3 vertices, 6 edges>
 gap> OutNeighbours(gr);
 [ [ 1, 2, 3 ], [ 2, 1 ], [ 3 ] ]
-gap> gr := Digraph( 3,
-> [ 1, 2, 3, 1, 1, 2, 1 ],
-> [ 1, 2, 3, 2, 3, 1, 2 ] );
+gap> gr := Digraph(3,
+> [1, 2, 3, 1, 1, 2, 1],
+> [1, 2, 3, 2, 3, 1, 2]);
 <multidigraph with 3 vertices, 7 edges>
 gap> OutNeighbours(gr);
 [ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ]
@@ -282,21 +283,21 @@ gap> OutNeighboursCopy(gr);
     Note that each entry of <C>inn</C> is sorted into ascending order. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph( [ "a", "b", "c" ],
-> [ "a", "b", "b" ],
-> [ "b", "a", "c" ] );
+gap> gr := Digraph(["a", "b", "c"],
+> ["a", "b", "b"],
+> ["b", "a", "c"]);
 <digraph with 3 vertices, 3 edges>
 gap> InNeighbours(gr);
 [ [ 2 ], [ 1 ], [ 2 ] ]
-gap> gr := Digraph( 3, 
-> [ 1, 2, 3, 1, 1, 2 ],
-> [ 1, 2, 3, 2, 3, 1 ] );
+gap> gr := Digraph(3, 
+> [1, 2, 3, 1, 1, 2],
+> [1, 2, 3, 2, 3, 1]);
 <digraph with 3 vertices, 6 edges>
 gap> InNeighbours(gr);
 [ [ 1, 2 ], [ 1, 2 ], [ 1, 3 ] ]
-gap> gr := Digraph( 3,
-> [ 1, 2, 3, 1, 1, 2, 1 ],
-> [ 1, 2, 3, 2, 3, 1, 2 ] );
+gap> gr := Digraph(3,
+> [1, 2, 3, 1, 1, 2, 1],
+> [1, 2, 3, 2, 3, 1, 2]);
 <multidigraph with 3 vertices, 7 edges>
 gap> InNeighbours(gr);
 [ [ 1, 2 ], [ 1, 1, 2 ], [ 1, 3 ] ]
@@ -322,7 +323,7 @@ gap> InNeighbours(gr);
     after it has been sorted into non-increasing order.
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 3, 2, 2 ], [ ], [ 2, 1 ] ] );
+gap> gr := Digraph([[1, 3, 2, 2], [], [2, 1]]);
 <multidigraph with 3 vertices, 6 edges>
 gap> OutDegrees(gr);
 [ 4, 0, 2 ]
@@ -780,6 +781,19 @@ gap> gr := Digraph([[5], [1, 4], [5], [5], []]);
 <digraph with 5 vertices, 5 edges>
 gap> DigraphBicomponents(gr);
 [ [ 1, 3, 4 ], [ 2, 5 ] ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphAllSimpleCircuits">
+<ManSection>
+  <Attr Name="DigraphAllSimpleCircuits" Arg="digraph"/>
+  <Returns>A list of lists of vertices.</Returns>
+  <Description>
+    Stub.
+
+    <Example><![CDATA[
+gap> true;;]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
