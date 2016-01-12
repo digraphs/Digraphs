@@ -323,6 +323,70 @@ false
 gap> canon = OnMultiDigraphs(gr1, DigraphCanonicalLabelling(gr1));
 false
 
+#T# AutomorphismGroup: for a digraph with colored vertices
+gap> gr := CompleteBipartiteDigraph(4, 4);
+<digraph with 8 vertices, 32 edges>
+gap> AutomorphismGroup(gr);
+Group([ (7,8), (6,7), (5,6), (3,4), (2,3), (1,2), (1,5)(2,6)(3,7)(4,8) ])
+gap> AutomorphismGroup(gr, [[1 .. 4], [5 .. 8]]);
+Group([ (7,8), (6,7), (5,6), (3,4), (2,3), (1,2) ])
+gap> AutomorphismGroup(gr, [1 .. 8]);
+Group(())
+
+#T# AutomorphismGroup: for a digraph with incorrect colors
+gap> gr := CompleteBipartiteDigraph(4, 4);
+<digraph with 8 vertices, 32 edges>
+gap> AutomorphismGroup(gr, [[1 .. 4], [5 .. 9]]);
+Error, Digraphs: AutomorphismGroup: usage,
+the union of the lists in the second arg should equal [1 .. 8],
+gap> AutomorphismGroup(gr, ["a", "b"]);
+Error, Digraphs: AutomorphismGroup: usage,
+the union of the lists in the second arg should equal [1 .. 8],
+gap> AutomorphismGroup(gr, [1 .. 10]);
+Error, Digraphs: AutomorphismGroup: usage,
+the second arg must be a list of length 8 of integers in [1 .. 8],
+gap> AutomorphismGroup(gr, [-1 .. -10]);
+Error, Digraphs: AutomorphismGroup: usage,
+the second arg must be a list of length 8 of integers in [1 .. 8],
+
+#T# AutomorphismGroup: for a multidigraph
+gap> gr := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> AutomorphismGroup(gr, [1, 2]);
+fail
+
+#T# DigraphCanonicalLabelling: for a digraph with colored vertices
+gap> gr := CompleteBipartiteDigraph(4, 4);
+<digraph with 8 vertices, 32 edges>
+gap> DigraphCanonicalLabelling(gr);
+(1,8)(2,6,3,5,7)
+gap> DigraphCanonicalLabelling(gr, [1 .. 8]);
+()
+gap> DigraphCanonicalLabelling(gr, [[1 .. 4], [5 .. 8]]);
+(1,4)(2,3)(5,8)(6,7)
+
+#T# DigraphCanonicalLabelling: for a digraph with incorrect colors
+gap> gr := CompleteBipartiteDigraph(4, 4);
+<digraph with 8 vertices, 32 edges>
+gap> DigraphCanonicalLabelling(gr, [[1 .. 4], [5 .. 9]]);
+Error, Digraphs: DigraphCanonicalLabelling: usage,
+the union of the lists in the second arg should equal [1 .. 8],
+gap> DigraphCanonicalLabelling(gr, ["a", "b"]);
+Error, Digraphs: DigraphCanonicalLabelling: usage,
+the union of the lists in the second arg should equal [1 .. 8],
+gap> DigraphCanonicalLabelling(gr, [1 .. 10]);
+Error, Digraphs: DigraphCanonicalLabelling: usage,
+the second arg must be a list of length 8 of integers in [1 .. 8],
+gap> DigraphCanonicalLabelling(gr, [-1 .. -10]);
+Error, Digraphs: DigraphCanonicalLabelling: usage,
+the second arg must be a list of length 8 of integers in [1 .. 8],
+
+#T# DigraphCanonicalLabelling: for a multidigraph
+gap> gr := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> DigraphCanonicalLabelling(gr, [1, 2]);
+fail
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr4);
 gap> Unbind(gr5);

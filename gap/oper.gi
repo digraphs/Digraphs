@@ -264,6 +264,7 @@ function(digraph)
   out := DigraphNC(new);
   SetDigraphHasLoops(out, false);
   SetDigraphNrEdges(out, tot);
+  SetDigraphVertexLabels(out, DigraphVertexLabels(digraph));
   return out;
 end);
 
@@ -272,7 +273,7 @@ end);
 InstallMethod(DigraphRemoveEdge, "for a digraph and a list of two pos ints",
 [IsDigraph, IsHomogeneousList],
 function(digraph, edge)
-  local verts;
+  local verts, out;
 
   if IsMultiDigraph(digraph) then
       ErrorMayQuit("Digraphs: DigraphRemoveEdge: usage,\nthe ",
@@ -288,13 +289,15 @@ function(digraph, edge)
                  "the second argument <edge> must be a pair of vertices of ",
                  "<digraph>,");
   fi;
-  return DigraphRemoveEdges(digraph, [edge]);
+  out := DigraphRemoveEdges(digraph, [edge]);
+  SetDigraphVertexLabels(out, DigraphVertexLabels(digraph));
+  return out;
 end);
 
 InstallMethod(DigraphRemoveEdge, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],
 function(digraph, edge)
-  local m;
+  local m, out;
 
   m := DigraphNrEdges(digraph);
   if edge > m then
@@ -302,13 +305,15 @@ function(digraph, edge)
                  "the second argument <edge> must be the index of an edge in ",
                  "<digraph>,");
   fi;
-  return DigraphRemoveEdgesNC(digraph, [edge]);
+  out := DigraphRemoveEdgesNC(digraph, [edge]);
+  SetDigraphVertexLabels(out, DigraphVertexLabels(digraph));
+  return out;
 end);
 
 InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
 [IsDigraph, IsHomogeneousList],
 function(digraph, edges)
-  local m, verts, remove, n, old_adj, count, offsets, pos, i, x;
+  local m, verts, remove, n, old_adj, count, offsets, pos, i, x, out;
 
   if IsEmpty(edges) then
     return DigraphCopy(digraph);
@@ -350,7 +355,9 @@ function(digraph, edges)
                  "the second argument <edges> must be a list of indices of\n",
                  "edges or a list of edges of the first argument <digraph>,");
   fi;
-  return DigraphRemoveEdgesNC(digraph, remove);
+  out := DigraphRemoveEdgesNC(digraph, remove);
+  SetDigraphVertexLabels(out, DigraphVertexLabels(digraph));
+  return out;
 end);
 
 # DigraphRemoveEdgesNC assumes you are removing edges by index
@@ -392,7 +399,7 @@ end);
 InstallMethod(DigraphAddEdge, "for a digraph and an edge",
 [IsDigraph, IsList],
 function(digraph, edge)
-  local verts;
+  local verts, out;
 
   verts := DigraphVertices(digraph);
   if Length(edge) <> 2
@@ -405,13 +412,15 @@ function(digraph, edge)
                  "<digraph>,");
   fi;
 
-  return DigraphAddEdgesNC(digraph, [edge]);
+  out := DigraphAddEdgesNC(digraph, [edge]);
+  SetDigraphVertexLabels(out, DigraphVertexLabels(digraph));
+  return out;
 end);
 
 InstallMethod(DigraphAddEdges, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edges)
-  local vertices, edge;
+  local vertices, edge, out;
 
   if not IsEmpty(edges) and
       (not IsList(edges[1])
@@ -432,7 +441,9 @@ function(digraph, edges)
     fi;
   od;
 
-  return DigraphAddEdgesNC(digraph, edges);
+  out := DigraphAddEdgesNC(digraph, edges);
+  SetDigraphVertexLabels(out, DigraphVertexLabels(digraph));
+  return out;
 end);
 
 InstallMethod(DigraphAddEdgesNC, "for a digraph and a list",

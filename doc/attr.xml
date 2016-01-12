@@ -21,13 +21,46 @@
     then the same &GAP; object will be returned as before.
     
     <Example><![CDATA[
-gap> d := Digraph([[1,2], [3], []]);
+gap> d := Digraph([[1, 2], [3], []]);
 <digraph with 3 vertices, 3 edges>
 gap> g := AsGraph(d);
 rec( adjacencies := [ [ 1, 2 ], [ 3 ], [  ] ], group := Group(()), 
   isGraph := true, names := [ 1 .. 3 ], order := 3, 
   representatives := [ 1, 2, 3 ], schreierVector := [ -1, -2, -3 ] )
 ]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AsTransformation">
+<ManSection>
+  <Attr Name="AsTransformation" Arg="digraph"/>
+  <Returns>A transformation, or <K>fail</K></Returns>
+  <Description>
+    If <A>digraph</A> is a functional digraph, then <C>AsTransformation</C>
+    returns the transformation which is defined by <A>digraph</A>.  See <Ref
+      Prop="IsFunctionalDigraph"/>. Otherwise,
+    <C>AsTransformation(</C><A>digraph</A><C>)</C> returns <K>fail</K>.  <P/>
+
+    If <A>digraph</A> is a functional digraph with <M>n</M> vertices, then
+    <C>AsTransformation(</C><A>digraph</A><C>)</C> will return the
+    transformation <C>f</C> of degree at most <M>n</M> where for each <M>1
+      \leq i \leq n</M>, <C>i ^ f</C> is equal to the unique out-neighbour of
+    vertex <C>i</C> in <A>digraph</A>.
+    
+    <Example><![CDATA[
+gap> gr := Digraph([[1], [3], [2]]);
+<digraph with 3 vertices, 3 edges>
+gap> gr := CycleDigraph(3);
+<digraph with 3 vertices, 3 edges>
+gap> AsTransformation(gr);
+Transformation( [ 2, 3, 1 ] )
+gap> AsPermutation(last);
+(1,2,3)
+gap> gr := Digraph([[2, 3], [], []]);
+<digraph with 3 vertices, 2 edges>
+gap> AsTransformation(gr);
+fail]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -45,8 +78,8 @@ rec( adjacencies := [ [ 1, 2 ], [ 3 ], [  ] ], group := Group(()),
     and there is an edge in the dual from <C>i</C> to <C>j</C>
     whenever there is no edge from <C>i</C> to <C>j</C> in <A>digraph</A>.
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 2, 3 ], [  ], [ 4, 6 ], [ 5 ], [  ],
-> [ 7, 8, 9 ], [  ], [  ], [  ] ] );
+gap> gr := Digraph([[2, 3], [], [4, 6], [5], [],
+> [7, 8, 9], [], [], []]);
 <digraph with 9 vertices, 8 edges>
 gap> DigraphDual(gr);
 <digraph with 9 vertices, 73 edges>]]></Example>
@@ -60,18 +93,18 @@ gap> DigraphDual(gr);
   <Returns>A list of positive integers, or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph with no cycles of length greater than
-    <M>1</M>, then this operation returns the vertices of <A>digraph</A> ordered
-    so that every edge's source appears no earlier in the list than its range.
-    If the digraph <A>digraph</A> contains cycles of length greater than
-    <M>1</M>, then this operation returns <K>fail</K>.
-    <P/>
+    <M>1</M>, then <C>DigraphTopologicalSort</C> returns the vertices of
+    <A>digraph</A> ordered so that every edge's source appears no earlier in
+    the list than its range.  If the digraph <A>digraph</A> contains cycles
+    of length greater than <M>1</M>, then this operation returns
+    <K>fail</K>.  <P/>
 
     The method used for this attribute has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
     <M>n</M> is the number of vertices in the digraph. <P/> 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 2, 3 ], [  ], [ 4, 6 ], [ 5 ], [  ], [ 7, 8, 9 ], [  ],
-> [  ], [  ] ] );
+gap> gr := Digraph([[2, 3], [], [4, 6], [5], [], [7, 8, 9], [],
+> [], []]);
 <digraph with 9 vertices, 8 edges>
 gap> DigraphTopologicalSort(gr);
 [ 2, 5, 4, 7, 8, 9, 6, 3, 1 ]
@@ -91,10 +124,10 @@ gap> DigraphTopologicalSort(gr);
     in <A>digraph</A> with source <C>i</C> and range <C>j</C>.
     
     <Example><![CDATA[
-gap> gr:=Digraph( [ [ 2, 2, 2 ], [ 1, 3, 6, 8, 9, 10 ], [ 4, 6, 8 ],
-> [ 1, 2, 3, 9 ], [ 3, 3 ], [ 3, 5, 6, 10 ], [ 1, 2, 7 ],
-> [ 1, 2, 3, 10, 5, 6, 10 ], [ 1, 3, 4, 5, 8, 10 ], 
-> [ 2, 3, 4, 6, 7, 10 ] ] );
+gap> gr := Digraph([[2, 2, 2], [1, 3, 6, 8, 9, 10], [4, 6, 8],
+> [1, 2, 3, 9], [3, 3], [3, 5, 6, 10], [1, 2, 7],
+> [1, 2, 3, 10, 5, 6, 10], [1, 3, 4, 5, 8, 10], 
+> [2, 3, 4, 6, 7, 10]]);
 <multidigraph with 10 vertices, 44 edges>
 gap> mat := AdjacencyMatrix(gr);;
 gap> Display(mat);
@@ -124,8 +157,8 @@ gap> Display(mat);
     <A>digraph</A>. 
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 2, 3, 5 ], [ 1, 3, 4 ], [ 2, 3 ], 
-> [ 2 ], [ 1, 2, 3, 4 ] ] );
+gap> gr := Digraph([[1, 2, 3, 5], [1, 3, 4], [2, 3], 
+> [2], [1, 2, 3, 4]]);
 <digraph with 5 vertices, 14 edges>
 gap> DigraphRange(gr);
 [ 1, 2, 3, 5, 1, 3, 4, 2, 3, 2, 1, 2, 3, 4 ]
@@ -159,8 +192,8 @@ gap> DigraphEdges(gr);
     first component (i.e. by the source of each edge), but they are not
     necessarily then sorted by the second component.
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 3, 4, 3, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
-> [ 2, 4, 5 ], [ 1 ] ] );
+gap> gr := Digraph([[1, 3, 4, 3, 5], [1, 2, 3, 5], [2, 4, 5], 
+> [2, 4, 5], [1]]);
 <multidigraph with 5 vertices, 16 edges>
 gap> DigraphEdges(gr);
 [ [ 1, 1 ], [ 1, 3 ], [ 1, 4 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], 
@@ -178,13 +211,13 @@ gap> DigraphEdges(gr);
   <Description>
     This function returns the number of edges of the digraph <A>digraph</A>.
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 3, 4, 5 ], [ 1, 2, 3, 5 ], [ 2, 4, 5 ], 
-> [ 2, 4, 5 ], [ 1 ] ] );;
+gap> gr := Digraph([[1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], 
+> [2, 4, 5], [1]]);;
 gap> DigraphNrEdges(gr);
 15
-gap> gr := Digraph( [ "a", "b", "c" ],
-> [ "a", "b", "b" ],
-> [ "b", "a", "a" ] );
+gap> gr := Digraph(["a", "b", "c"],
+> ["a", "b", "b"],
+> ["b", "a", "a"]);
 <multidigraph with 3 vertices, 3 edges>
 gap> DigraphNrEdges(gr);
 3]]></Example>
@@ -210,21 +243,21 @@ gap> DigraphNrEdges(gr);
     lists, whereas the function <C>OutNeighboursCopy</C> returns a copy of
     <C>OutNeighbours</C> which is a mutable list of mutable lists. <P/>
     <Example><![CDATA[
-gap> gr := Digraph( [ "a", "b", "c" ],
-> [ "a", "b", "b" ],
-> [ "b", "a", "c" ] );
+gap> gr := Digraph(["a", "b", "c"],
+> ["a", "b", "b"],
+> ["b", "a", "c"]);
 <digraph with 3 vertices, 3 edges>
 gap> OutNeighbours(gr);
 [ [ 2 ], [ 1, 3 ], [  ] ]
-gap> gr := Digraph( 3, 
-> [ 1, 2, 3, 1, 1, 2 ],
-> [ 1, 2, 3, 2, 3, 1 ] );
+gap> gr := Digraph(3, 
+> [1, 2, 3, 1, 1, 2],
+> [1, 2, 3, 2, 3, 1]);
 <digraph with 3 vertices, 6 edges>
 gap> OutNeighbours(gr);
 [ [ 1, 2, 3 ], [ 2, 1 ], [ 3 ] ]
-gap> gr := Digraph( 3,
-> [ 1, 2, 3, 1, 1, 2, 1 ],
-> [ 1, 2, 3, 2, 3, 1, 2 ] );
+gap> gr := Digraph(3,
+> [1, 2, 3, 1, 1, 2, 1],
+> [1, 2, 3, 2, 3, 1, 2]);
 <multidigraph with 3 vertices, 7 edges>
 gap> OutNeighbours(gr);
 [ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ]
@@ -250,21 +283,21 @@ gap> OutNeighboursCopy(gr);
     Note that each entry of <C>inn</C> is sorted into ascending order. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph( [ "a", "b", "c" ],
-> [ "a", "b", "b" ],
-> [ "b", "a", "c" ] );
+gap> gr := Digraph(["a", "b", "c"],
+> ["a", "b", "b"],
+> ["b", "a", "c"]);
 <digraph with 3 vertices, 3 edges>
 gap> InNeighbours(gr);
 [ [ 2 ], [ 1 ], [ 2 ] ]
-gap> gr := Digraph( 3, 
-> [ 1, 2, 3, 1, 1, 2 ],
-> [ 1, 2, 3, 2, 3, 1 ] );
+gap> gr := Digraph(3, 
+> [1, 2, 3, 1, 1, 2],
+> [1, 2, 3, 2, 3, 1]);
 <digraph with 3 vertices, 6 edges>
 gap> InNeighbours(gr);
 [ [ 1, 2 ], [ 1, 2 ], [ 1, 3 ] ]
-gap> gr := Digraph( 3,
-> [ 1, 2, 3, 1, 1, 2, 1 ],
-> [ 1, 2, 3, 2, 3, 1, 2 ] );
+gap> gr := Digraph(3,
+> [1, 2, 3, 1, 1, 2, 1],
+> [1, 2, 3, 2, 3, 1, 2]);
 <multidigraph with 3 vertices, 7 edges>
 gap> InNeighbours(gr);
 [ [ 1, 2 ], [ 1, 1, 2 ], [ 1, 3 ] ]
@@ -290,7 +323,7 @@ gap> InNeighbours(gr);
     after it has been sorted into non-increasing order.
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 3, 2, 2 ], [ ], [ 2, 1 ] ] );
+gap> gr := Digraph([[1, 3, 2, 2], [], [2, 1]]);
 <multidigraph with 3 vertices, 6 edges>
 gap> OutDegrees(gr);
 [ 4, 0, 2 ]
@@ -679,24 +712,24 @@ gap> OutNeighbours(gr1);
   <Attr Name="DigraphTransitiveClosure" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph with no multiple edges, then these 
-    attributes return the (reflexive) transitive closure of <A>digraph</A>. <P/>
-
-    A digraph is <E>reflexive</E> if it has a loop at every vertex, and it is 
-    <E>transitive</E> if whenever <C>[i,j]</C> and <C>[j,k]</C> are edges of 
-    <A>digraph</A>, <C>[i,k]</C> is also an edge.
-    The <E>(reflexive) transitive closure</E> 
-    of a digraph <A>digraph</A> is the least (reflexive and) transitive digraph 
-    containing <A>digraph</A>. <P/>
-
-    Let <M>n</M> be the number of vertices of <A>digraph</A>, and let <M>m</M>
-    be the number of edges.  For an arbitrary digraph, these attributes will use
-    a version of the Floyd-Warshall algorithm, with complexity <M>O(n^3)</M>.
-
-    However, for a topologically sortable digraph
-    [see <Ref Attr="DigraphTopologicalSort"/>], these attributes will use
-    methods with complexity <M>O(m + n + m \cdot n)</M> when this is faster.
+    If <A>digraph</A> is a digraph with no multiple edges, then these
+    attributes return the (reflexive) transitive closure of <A>digraph</A>.
     <P/>
+
+    A digraph is <E>reflexive</E> if it has a loop at every vertex, and it is
+    <E>transitive</E> if whenever <C>[i,j]</C> and <C>[j,k]</C> are edges of
+    <A>digraph</A>, <C>[i,k]</C> is also an edge.  The <E>(reflexive)
+      transitive closure</E> of a digraph <A>digraph</A> is the least
+    (reflexive and) transitive digraph containing <A>digraph</A>. <P/>
+
+    Let <M>n</M> be the number of vertices of <A>digraph</A>, and let
+    <M>m</M> be the number of edges.  For an arbitrary digraph, these
+    attributes will use a version of the Floyd-Warshall algorithm, with
+    complexity <M>O(n^3)</M>.
+
+    However, for a topologically sortable digraph [see <Ref
+      Attr="DigraphTopologicalSort"/>], these attributes will use methods
+    with complexity <M>O(m + n + m \cdot n)</M> when this is faster.  <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 4, 6 ], [ 1, 3 ], [  ], [ 5 ], [  ],
@@ -712,6 +745,103 @@ gap> OutNeighbours(last);
 [ [ 1, 4, 5, 6, 7, 8, 9 ], [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ], [ 3 ], 
   [ 4, 5 ], [ 5 ], [ 6, 7, 8, 9 ], [ 7 ], [ 8 ], [ 9 ] ]
 ]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphBicomponents">
+<ManSection>
+  <Attr Name="DigraphBicomponents" Arg="digraph"/>
+  <Returns>A pair of lists of vertices, or <K>fail</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a bipartite digraph, i.e. if it satisfies <Ref
+      Prop="IsBipartiteDigraph"/>, then <C>DigraphBicomponents</C> returns a
+    pair of bicomponents of <A>digraph</A>. Otherwise,
+    <C>DigraphBicomponents</C> returns <K>fail</K>.<P/>
+    
+    For a bipartite digraph, the vertices can be partitioned into two non-empty
+    sets such that the source and range of any edge are in distinct sets. The
+    parts of this partition are called <E>bicomponents</E> of <A>digraph</A>.
+    Equivalently, a pair of bicomponents of <A>digraph</A> consists of the
+    color-classes of a 2-coloring of <A>digraph</A>. <P/>
+
+    For a bipartite digraph with at least 3 vertices, there is a unique pair of
+    bicomponents of bipartite if and only if the digraph is connected. See <Ref
+      Prop="IsConnectedDigraph"/> for more information.
+    <Example><![CDATA[
+gap> gr := CycleDigraph(3);
+<digraph with 3 vertices, 3 edges>
+gap> DigraphBicomponents(gr);
+fail
+gap> gr := ChainDigraph(5);
+<digraph with 5 vertices, 4 edges>
+gap> DigraphBicomponents(gr);
+[ [ 1, 3, 5 ], [ 2, 4 ] ]
+gap> gr := Digraph([[5], [1, 4], [5], [5], []]);
+<digraph with 5 vertices, 5 edges>
+gap> DigraphBicomponents(gr);
+[ [ 1, 3, 4 ], [ 2, 5 ] ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphAllSimpleCircuits">
+<ManSection>
+  <Attr Name="DigraphAllSimpleCircuits" Arg="digraph"/>
+  <Returns>A list of lists of vertices.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphAllSimpleCircuits</C>
+    returns a list of the <E>simple circuits</E> in <A>digraph</A>. <P/>
+    
+    A <E>simple circuit</E> in <A>digraph</A> is a non-trivial directed path
+    in <A>digraph</A> from a vertex <C>v</C> back to <C>v</C>, in which no
+    vertex is visited more than once. Since a circuit of length <C>n</C> is
+    determined by its first <C>n</C> vertices, a circuit <M>v_{1} \rightarrow
+      \cdots \rightarrow v_{n} \rightarrow v_{1}</M> can be represented as
+    the list <M>[v_{1}, \ldots, v_{n}]</M>. For each simple circuit of
+    <A>digraph</A>, <C>DigraphAllSimpleCircuits(</C><A>digraph</A><C>)</C>
+    will include precisely one such list to represents the circuit (cyclic
+    permutations of such a list describe the same circuit).
+    <P/>
+
+    Note that a loop is a simple circuit.
+
+    <Example><![CDATA[
+gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);
+<digraph with 5 vertices, 6 edges>
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 4 ], [ 4, 5 ], [ 2, 3 ] ]
+gap> gr := ChainDigraph(10);;
+gap> DigraphAllSimpleCircuits(gr);
+[  ]
+gap> gr := Digraph([[3], [1], [1]]);
+<digraph with 3 vertices, 3 edges>
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 1, 3 ] ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphLoops">
+<ManSection>
+  <Attr Name="DigraphLoops" Arg="digraph"/>
+  <Returns>A list of vertices.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphLoops</C> returns the list
+    consisting of the <Ref Attr="DigraphVertices"/> of <A>digraph</A>
+    at which there is a loop. See <Ref Prop="DigraphHasLoops"/>. <P/>
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [3], []]);
+<digraph with 3 vertices, 2 edges>
+gap> DigraphHasLoops(gr);
+false
+gap> DigraphLoops(gr);
+[  ]
+gap> gr := Digraph([[3, 5], [1], [2, 4, 3], [4], [2, 1]]);
+<digraph with 5 vertices, 9 edges>
+gap> DigraphLoops(gr);
+[ 3, 4 ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>

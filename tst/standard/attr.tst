@@ -811,6 +811,85 @@ gap> DigraphVertexLabels(gr);
 gap> DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
 
+#T# DigraphAllSimpleCircuits
+gap> gr := ChainDigraph(4);;
+gap> DigraphAllSimpleCircuits(gr);
+[  ]
+gap> gr := CompleteDigraph(2);;
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 1, 2 ] ]
+gap> gr := CompleteDigraph(3);;
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 1, 2 ], [ 1, 2, 3 ], [ 1, 3 ], [ 1, 3, 2 ], [ 2, 3 ] ]
+gap> gr := Digraph(["a", "b"], ["a", "b"], ["b", "a"]);
+<digraph with 2 vertices, 2 edges>
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 1, 2 ] ]
+gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);
+<digraph with 5 vertices, 6 edges>
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 4 ], [ 4, 5 ], [ 2, 3 ] ]
+gap> gr := Digraph([[], [], [], [4], [], [], [8], [7]]);
+<digraph with 8 vertices, 3 edges>
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 4 ], [ 7, 8 ] ]
+gap> gr := Digraph([[1, 2], [2, 1]]);
+<digraph with 2 vertices, 4 edges>
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 1 ], [ 2 ], [ 1, 2 ] ]
+gap> gr := Digraph([[4], [1, 3], [1, 2], [2, 3]]);;
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 1, 4, 2 ], [ 1, 4, 2, 3 ], [ 1, 4, 3 ], [ 1, 4, 3, 2 ] ]
+gap> gr := Digraph([[3, 6, 7], [3, 6, 8], [1, 2, 3, 6, 7, 8],
+> [2, 3, 4, 8], [2, 3, 4, 5, 6, 7], [1, 3, 4, 5, 7], [2, 3, 6, 8],
+> [1, 2, 3, 8]]);;
+gap> Length(DigraphAllSimpleCircuits(gr));
+259
+
+#T# AsTransformation
+gap> gr := Digraph([[2], [1, 3], [4], [3]]);;
+gap> AsTransformation(gr);
+fail
+gap> gr := AsDigraph(Transformation([1, 1, 1]), 5);
+<digraph with 5 vertices, 5 edges>
+gap> DigraphEdges(gr);
+[ [ 1, 1 ], [ 2, 1 ], [ 3, 1 ], [ 4, 4 ], [ 5, 5 ] ]
+gap> AsTransformation(gr);
+Transformation( [ 1, 1, 1 ] )
+
+#T# DigraphBicomponents
+gap> DigraphBicomponents(EmptyDigraph(0));
+fail
+gap> DigraphBicomponents(EmptyDigraph(1));
+fail
+gap> DigraphBicomponents(EmptyDigraph(2));
+[ [ 1 ], [ 2 ] ]
+gap> DigraphBicomponents(EmptyDigraph(3));
+[ [ 1, 2 ], [ 3 ] ]
+gap> DigraphBicomponents(EmptyDigraph(4));
+[ [ 1, 2, 3 ], [ 4 ] ]
+gap> DigraphBicomponents(CompleteBipartiteDigraph(3, 5));
+[ [ 1, 2, 3 ], [ 4, 5, 6, 7, 8 ] ]
+gap> DigraphBicomponents(Digraph([[2], [], [], [3]]));
+[ [ 1, 3 ], [ 2, 4 ] ]
+gap> DigraphBicomponents(CycleDigraph(3));
+fail
+
+#T# DigraphLoops
+gap> gr := ChainDigraph(4);;
+gap> DigraphHasLoops(gr);
+false
+gap> DigraphLoops(gr);
+[  ]
+gap> gr := Digraph([[2], [1]]);;
+gap> DigraphLoops(gr);
+[  ]
+gap> gr := Digraph([[1, 5, 6], [1, 3, 4, 5, 6], [1, 3, 4], [2, 4, 6], [2],
+> [1, 4, 5]]);
+<digraph with 6 vertices, 18 edges>
+gap> DigraphLoops(gr);
+[ 1, 3, 4 ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);

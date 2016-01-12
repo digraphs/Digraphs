@@ -9,6 +9,7 @@
 ##
 
 DeclareProperty("IsAcyclicDigraph", IsDigraph);
+DeclareProperty("IsBipartiteDigraph", IsDigraph);
 DeclareProperty("IsCompleteDigraph", IsDigraph);
 DeclareProperty("IsConnectedDigraph", IsDigraph);
 DeclareProperty("IsEmptyDigraph", IsDigraph);

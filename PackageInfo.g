@@ -12,24 +12,24 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.2">
-##  <!ENTITY GAPVERS        "4.7.8">
+##  <!ENTITY VERSION        "0.3">
+##  <!ENTITY GAPVERS        "4.8.1">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.2">
-##  <!ENTITY COPYRIGHTYEARS "2014-15">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.3">
+##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Methods for digraphs and multidigraphs",
-Version := "0.2",
-Date := "04/09/2015",
-ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.2",
+Version := "0.3",
+Date := "12/01/2016",
+ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.3",
 ArchiveFormats := ".tar.gz",
 Persons := [
-  
-  rec( 
+
+  rec(
     LastName      := "Jonusas",
     FirstNames    := "J.",
     IsAuthor      := true,
@@ -38,13 +38,13 @@ Persons := [
     WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~julius",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
                        " Scotland"] ),
     Place         := "St Andrews",
     Institution   := "University of St Andrews"
   ),
-  
-  rec( 
+
+  rec(
     LastName      := "Mitchell",
     FirstNames    := "J. D.",
     IsAuthor      := true,
@@ -53,36 +53,37 @@ Persons := [
     WWWHome       := "tinyurl.com/jdmitchell",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
                        " Scotland"] ),
     Place         := "St Andrews",
     Institution   := "University of St Andrews"
   ),
-        
-  rec( 
+
+  rec(
     LastName      := "Torpey",
     FirstNames    := "M.",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mct25@st-and.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~mct25",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
                        " Scotland"] ),
     Place         := "St Andrews",
     Institution   := "University of St Andrews"
   ),
-  
-  rec( 
+
+  rec(
     LastName      := "Wilson",
     FirstNames    := "W.",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "waw7@st-and.ac.uk",
-    WWWHome       := "http://www-groups.mcs.st-and.ac.uk/~waw7/",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~waw7",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
                        " Scotland"] ),
     Place         := "St Andrews",
     Institution   := "University of St Andrews"
@@ -90,29 +91,29 @@ Persons := [
 
 Status := "dev",
 
-README_URL := 
+README_URL :=
   "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README.md",
-PackageInfoURL := 
+PackageInfoURL :=
   "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/PackageInfo.g",
 
 AbstractHTML := "The <b>Digraphs</b> package is a <b>GAP</b> package containing methods for digraphs and multidigraphs.",
 
 PackageWWWHome := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php",
-               
+
 PackageDoc := rec(
   BookName  := "Digraphs",
   ArchiveURLSubset := ["doc"],
   HTMLStart := "doc/chap0.html",
-  PDFFile   := "doc/manual.pdf",  
+  PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Digraphs - Methods for digraphs",
   Autoload  := true,
 ),
 
 Dependencies := rec(
-  GAP := ">=4.7.8",
+  GAP := ">=4.8.1",
   NeededOtherPackages := [["io", ">=4.4.4"]],
-  SuggestedOtherPackages := [["gapdoc", ">=1.5.1"], ["grape", ">=4.5"]], 
+  SuggestedOtherPackages := [["gapdoc", ">=1.5.1"], ["grape", ">=4.5"]],
   ExternalConditions := [],
 ),
 

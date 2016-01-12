@@ -44,8 +44,42 @@ gap> str := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;
 gap> list := ReadDigraphs(str);;
 gap> Size(list);
 34
+gap> list2 := ReadDigraphs(str, DigraphFromGraph6String);;
+gap> list = list2;
+true
+gap> gr := ReadDigraphs(str, 10);
+<digraph with 5 vertices, 8 edges>
+gap> list = gr;
+false
+gap> list[10] = gr;
+true
+gap> ReadDigraphs(34, DigraphFromGraph6String, 5);
+Error, Digraphs: ReadDigraphs: usage,
+ReadDigraphs( filename [, decoder][, pos] ),
+gap> ReadDigraphs(str, (1, 6, 5), 5);
+Error, Digraphs: ReadDigraphs: usage,
+ReadDigraphs( filename [, decoder][, pos] ),
+gap> ReadDigraphs(str, DigraphFromGraph6String, 0);
+Error, Digraphs: ReadDigraphs: usage,
+ReadDigraphs( filename [, decoder][, pos] ),
+gap> str := Concatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt");;
+gap> list := ReadDigraphs(str);;
+gap> list2 := ReadDigraphs(str,
+>                          DigraphPlainTextLineDecoder("  ", " ", 1),
+>                          infinity);;
+gap> list = list2;
+true
+gap> ReadDigraphs(str, 2, true, "elephant");
+Error, Digraphs: ReadDigraphs: usage,
+ReadDigraphs( filename [, decoder][, pos] ),
+gap> badfilename := "path/to/some/madeupfile.g6.gz";;
+gap> ReadDigraphs(badfilename, 3);
+Error, Digraphs: ReadDigraphs: usage,
+cannot open file path/to/some/madeupfile.g6.gz,
 
 #T# DigraphFromSparse6String and Sparse6String
+gap> DigraphFromSparse6String(":@");
+<digraph with 1 vertex, 0 edges>
 gap> DigraphFromSparse6String(Concatenation(":[___dCfEcdFjCIideLhIfJ",
 >                                           "kLgkQge`RSbPTaOTbMNaS`QY"));
 <digraph with 28 vertices, 84 edges>
@@ -174,11 +208,23 @@ gap> gr = rdgr;
 true
 gap> gr[3] := Digraph([[1, 2], [1, 2]]);
 <digraph with 2 vertices, 4 edges>
-gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.s6");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.s6.bzip2");;
 gap> WriteDigraphs(filename, gr);
 gap> rdgr := ReadDigraphs(filename);;
 gap> gr = rdgr;
 true
+gap> newfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.bzip2");;
+gap> IO_rename(filename, newfilename);
+true
+gap> rdgr := ReadDigraphs(newfilename);
+Error, Digraphs: ReadDigraphs: usage,
+cannot determine the file format,
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.h6.bzip2");;
+gap> IO_rename(newfilename, filename);
+true
+gap> rdgr := ReadDigraphs(filename);
+Error, Digraphs: ReadDigraphs: usage,
+cannot determine the file format,
 
 #T# WritePlainTextDigraph and ReadPlainTextDigraph
 gap> gr := Digraph([[1, 2], [2, 3], []]);
@@ -227,6 +273,8 @@ gap> gr := TCodeDecoder("3 2 0 2 2 1");
 <digraph with 3 vertices, 2 edges>
 gap> OutNeighbours(gr);
 [ [ 3 ], [  ], [ 2 ] ]
+gap> gr = TCodeDecoderNC("3 2 0 2 2 1");
+true
 gap> gr := TCodeDecoder("12 3 0 10 6 2 8 8");
 <digraph with 12 vertices, 3 edges>
 gap> OutNeighbours(gr);
@@ -248,12 +296,194 @@ gap> gr := TCodeDecoder("3 2 0 2");
 Error, Digraphs: TCodeDecoder: usage,
 <str> must contain at least 2e+2 entries,
 where e is the number of edges (the 2nd entry in <str>),
+gap> gr := TCodeDecoderNC("100 5 0 12 48 49 99 1 54 49 49 49");
+<digraph with 100 vertices, 5 edges>
+
+#T# Empty strings should not create graphs
+gap> DigraphFromGraph6String("");
+Error, Digraphs: DigraphFromGraph6String: usage,
+the input string should be non-empty,
+gap> DigraphFromDigraph6String("");
+Error, Digraphs: DigraphFromDigraph6String: usage,
+the input string should be non-empty,
+gap> DigraphFromSparse6String("");
+Error, Digraphs: DigraphFromSparse6String: usage,
+the input string should be non-empty,
+gap> DigraphFromDiSparse6String("");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+the input string should be non-empty,
+
+#T# DiSparse6 
+gap> DigraphFromDiSparse6String("I'm a string");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+<s> must be a string in disparse6 format,
+gap> DigraphFromDiSparse6String(".~~");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+<s> must be a string in disparse6 format,
+gap> DigraphFromDiSparse6String(".~~??@???o??N");
+<digraph with 262144 vertices, 0 edges>
+gap> DigraphFromDiSparse6String(".~??");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+.~?? is not a valid disparse6 input,
+gap> DiSparse6String(CompleteDigraph(1));
+".@~"
+gap> DigraphFromDiSparse6String(".@~");
+<digraph with 1 vertex, 0 edges>
+gap> gr := Digraph([[], [], [1, 2]]);;
+gap> DiSparse6String(gr);
+".BoN"
+
+#T# Plain text encoding  
+gap> gr := CompleteDigraph(3);
+<digraph with 3 vertices, 6 edges>
+gap> str := PlainTextString(gr);
+"0 1  0 2  1 0  1 2  2 0  2 1"
+gap> gr2 := DigraphFromPlainTextString(str);
+<digraph with 3 vertices, 6 edges>
+gap> gr = gr2;
+true
+
+#T# Invalid sizes
+gap> DigraphFromGraph6String("~llk");
+Error, Digraphs: DigraphFromGraph6String: usage,
+<s> is not a valid graph6 input,
+gap> DigraphFromDigraph6String("+~llk");
+Error, Digraphs: DigraphFromDigraph6String: usage,
+<s> must be a string in Digraph6 format,
+gap> DigraphFromSparse6String(":~~l");
+Error, Digraphs: DigraphFromSparse6String: usage,
+<s> must be a string in Sparse6 format,
+gap> DigraphFromSparse6String(":~hl");
+Error, Digraphs: DigraphFromSparse6String: usage,
+<s> must be a string in Sparse6 format,
+gap> DigraphFromDiSparse6String(".~~l");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+<s> must be a string in disparse6 format,
+
+#T# Special format characters
+gap> DigraphFromDigraph6String("x");
+Error, Digraphs: DigraphFromDigraph6String: usage,
+<s> must be a string in Digraph6 format,
+gap> DigraphFromSparse6String("y");
+Error, Digraphs: DigraphFromSparse6String: usage,
+<s> must be a string in Sparse6 format,
+gap> DigraphFromDiSparse6String("z");
+Error, Digraphs: DigraphFromDiSparse6String: usage,
+<s> must be a string in disparse6 format,
+
+#T# Special format characters
+gap> Sparse6String(ChainDigraph(3));
+Error, Digraphs: Sparse6String: usage,
+the argument <graph> must be a symmetric digraph,
+gap> Sparse6String(CompleteDigraph(1));
+":@"
+gap> gr := Digraph([[1], []]);;
+gap> Sparse6String(gr);
+":AF"
+
+#T# DigraphFromSparse6String: an unusual but valid case
+gap> DigraphFromSparse6String(":TdBkJ`Kq?x");
+<digraph with 21 vertices, 10 edges>
+gap> Sparse6String(last);
+":TdBkJ`Kq?"
+
+#T# DigraphPlainTextLineDecoder: bad input
+gap> DigraphPlainTextLineDecoder(" ", "  ", 1, ".");
+Error, Digraphs: DigraphPlainTextLineDecoder: usage,
+DigraphPlainTextLineDecoder(delimiter, [,delimiter], offset),
+
+#T# WriteDigraphs: bad input
+gap> list := [CompleteDigraph(4), CycleDigraph(8), "hello world"];;
+gap> WriteDigraphs(72, list);
+Error, Digraphs: WriteDigraphs: usage,
+<name> must be a string,
+gap> WriteDigraphs("mylist", list);
+Error, Digraphs: WriteDigraphs: usage,
+<digraphs> must be a list of digraphs,
+
+#T# WriteDigraphs: automatic format selection
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose.gz");;
+gap> list := [CompleteDigraph(5), EmptyDigraph(100), CompleteDigraph(3)];;
+gap> ForAll(list, IsSymmetricDigraph);
+true
+gap> WriteDigraphs(filename, list);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose.s6.gz");;
+gap> list2 := ReadDigraphs(filename);;
+gap> list = list2;
+true
+gap> mult := Digraph([[1, 2], [1, 1, 3], []]);;
+gap> list := [CompleteDigraph(5), EmptyDigraph(100), mult];;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choosemult.gz");;
+gap> WriteDigraphs(filename, list);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choosemult.ds6.gz");;
+gap> list2 := ReadDigraphs(filename);;
+gap> list = list2;
+true
+gap> list := [CompleteDigraph(3), CycleDigraph(100), EmptyDigraph(2)];;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose");;
+gap> WriteDigraphs(filename, list);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose.ds6");;
+gap> list2 := ReadDigraphs(filename);;
+gap> list = list2;
+true
+gap> gr := Digraph([[2, 2], [1, 1]]);;
+gap> IsSymmetricDigraph(gr);
+true
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/alone");;
+gap> WriteDigraphs(filename, [gr]);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/alone.ds6");;
+gap> list2 := ReadDigraphs(filename);
+[ <multidigraph with 2 vertices, 4 edges> ]
+gap> list2[1] = gr;
+true
+gap> list := [CompleteDigraph(10), CompleteDigraph(15)];;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.bzip2");;
+gap> WriteDigraphs(filename, list);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.g6.bzip2");;
+gap> list2 := ReadDigraphs(filename);;
+gap> list = list2;
+true
+gap> gr := [Digraph([[1, 2, 3, 4], [1, 2, 3, 4], [1, 3, 4], [1, 2, 3, 4]])];
+[ <digraph with 4 vertices, 15 edges> ]
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense");;
+gap> WriteDigraphs(filename, gr);
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.d6");;
+gap> list2 := ReadDigraphs(filename);;
+gap> gr = list2;
+true
+gap> filename := "does/not/exist.gz";;
+gap> WriteDigraphs(filename, gr);
+Error, Digraphs: WriteDigraphs: usage,
+cannot open file does/not/exist.d6.gz,
+
+#T# DigraphPlainTextLineDecoder: bad input
+gap> Graph6String(ChainDigraph(4));
+Error, Digraphs: Graph6String: usage,
+<graph> must be symmetric and have no loops or multiple edges,
+gap> Graph6Length(-1);
+fail
+gap> Graph6Length(68719476737);
+fail
+gap> Graph6Length(258748);
+[ 63, 63, 0, 0, 0, 63, 10, 60 ]
+gap> WriteDigraphs(1, 1);
+Error, Digraphs: WriteDigraphs: usage,
+<name> must be a string,
+gap> WriteDigraphs("string", [1]);
+Error, Digraphs: WriteDigraphs: usage,
+<digraphs> must be a list of digraphs,
+gap> Sparse6String(EmptyDigraph(2 ^ 20));
+":~~??C???"
+gap> DigraphFromSparse6String(":~~??C???");
+<digraph with 1048576 vertices, 0 edges>
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(list);
+gap> Unbind(list2);
 gap> Unbind(l);
 gap> Unbind(filename);
+gap> Unbind(newfilename);
 gap> Unbind(source);
 gap> Unbind(range);
 gap> Unbind(str);

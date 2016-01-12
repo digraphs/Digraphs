@@ -21,6 +21,7 @@ DeclareGlobalFunction("DigraphPlainTextLineDecoder");
 DeclareGlobalFunction("TournamentLineDecoder");
 DeclareGlobalFunction("AdjacencyMatrixUpperTriangleLineDecoder");
 DeclareGlobalFunction("TCodeDecoder");
+DeclareGlobalFunction("TCodeDecoderNC");
 
 DeclareGlobalFunction("WriteDigraphs");
 DeclareOperation("Graph6String", [IsDigraph]);

@@ -107,3 +107,4 @@ graphs.la
 digraphs-lib
 wilf-coverage.py
 release-checklist.tst
+*.pyc
