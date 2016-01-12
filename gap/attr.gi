@@ -597,7 +597,11 @@ InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
   if not (HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1) then
-    return DIGRAPH_DIAMETER(digraph);
+    if IsStronglyConnectedDigraph(digraph) then
+      return DIGRAPH_DIAMETER(digraph);
+    else
+      return fail;
+    fi;
   fi;
   return DIGRAPHS_DiameterAndGirth(digraph).diameter;
 end);
