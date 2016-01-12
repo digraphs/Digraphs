@@ -177,13 +177,17 @@ def _copy_build_files(dst, verbose):
 def _delete_generated_build_files(verbose):
     for filename in ['aclocal.m4', 'autom4te.cache', 'config.log',
                      'config.status']:
-        if verbose:
-            print _cyan_string('Deleting ' + filename + ' from the archive . . .')
-        os.remove(filename)
+        if os.path.exists(filename) and os.path.isfile(filename):
+            if verbose:
+                print _cyan_string('Deleting ' + filename +
+                                   ' from the archive . . .')
+            os.remove(filename)
     for directory in ['libtool', 'digraphs-lib', 'm4']:
-        if verbose:
-            print _cyan_string('Deleting ' + directory + ' from the archive . . .')
-        shutil.rmtree(directory)
+        if os.path.exists(directory) and os.path.isdir(directory):
+            if verbose:
+                print _cyan_string('Deleting ' + directory
+                                   + ' from the archive . . .')
+            shutil.rmtree(directory)
 
 def _download_digraphs_lib(dst, verbose):
     urllib.urlretrieve('https://bitbucket.org/james-d-mitchell/digraphs/downloads/digraphs-lib-0.2.tar.gz',
@@ -280,10 +284,12 @@ def main():
     # handle the doc . . .
     _copy_doc(tmpdir + '/doc/', args.verbose)
     _copy_build_files(tmpdir, args.verbose)
-    print _magenta_string(pad('Downloading digraphs-lib-0.2.tar.gz') + ' . . . '),
-    sys.stdout.flush()
-    dots.dotIt(test.MAGENTA_DOT, _download_digraphs_lib, tmpdir, args.verbose)
-    print ''
+    if not args.skip_tests:
+        print _magenta_string(pad('Downloading digraphs-lib-0.2.tar.gz') +
+                              ' . . . '),
+        sys.stdout.flush()
+        dots.dotIt(test.MAGENTA_DOT, _download_digraphs_lib, tmpdir, args.verbose)
+        print ''
 
     # delete extra files and dirs
     for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', 'autogen.sh']:
