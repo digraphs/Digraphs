@@ -75,3 +75,5 @@ DeclareAttribute("RepresentativeOutNeighbours", IsDigraph);
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
 DeclareAttribute("AsTransformation", IsDigraph);
+
+DeclareGlobalFunction("DIGRAPHS_DIAMETER_AND_GIRTH");

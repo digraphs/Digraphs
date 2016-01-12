@@ -623,13 +623,39 @@ end);
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local outer_reps, out_nbs, diameter, girth, v, orbs, i, orbnum, reps, next,
-  laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
+  return DIGRAPHS_DIAMETER_AND_GIRTH(digraph).diameter;
+end);
 
+#
+
+InstallMethod(DigraphGirth, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local result;
+  if DigraphHasLoops(digraph) then
+    return 1;
+  fi;
+  result := DIGRAPHS_DIAMETER_AND_GIRTH(digraph);
+  if IsBound(result.girth) then
+    return result.girth;
+  fi;
+  TryNextMethod();
+end);
+
+#
+
+InstallGlobalFunction(DIGRAPHS_DIAMETER_AND_GIRTH,
+function(digraph)
+  local outer_reps, out_nbs, diameter, girth, i, v, orbs, orbnum, reps, next,
+        laynum, localGirth, layers, x, nprev, nhere, nnext, y, lnum;
   if DigraphNrVertices(digraph) = 0 then
-    return - 1;
-  elif not IsStronglyConnectedDigraph(digraph) then
-    return - 1;
+    SetDigraphDiameter(digraph, fail);
+    SetDigraphGirth(digraph, infinity);
+    return rec(diameter := fail, girth := infinity);
+  fi;
+  if not IsStronglyConnectedDigraph(digraph) then
+    SetDigraphDiameter(digraph, fail);
+    return rec(diameter := fail);
   fi;
 
   #TODO improve this, really check if the complexity is better with the group
@@ -699,8 +725,13 @@ function(digraph)
       girth := localGirth;
     fi;
   od;
+
+  if DigraphHasLoops(digraph) then
+    girth := 1;
+  fi;
+  SetDigraphDiameter(digraph, diameter);
   SetDigraphGirth(digraph, girth);
-  return diameter;
+  return rec(diameter := diameter, girth := girth);
 end);
 
 #

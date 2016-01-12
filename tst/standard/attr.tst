@@ -596,7 +596,7 @@ gap> DigraphPeriod(gr);
 #T# DigraphDiameter 1
 gap> gr := Digraph([[2], []]);;
 gap> DigraphDiameter(gr);
--1
+fail
 gap> gr := Digraph([[2], [3], [4, 5], [5], [1]]);;
 gap> DigraphDiameter(gr);
 4
@@ -607,13 +607,13 @@ gap> gr := Digraph([[2], [3], []]);;
 gap> IsStronglyConnectedDigraph(gr);
 false
 gap> DigraphDiameter(gr);
--1
+fail
 gap> gr := Digraph([[1]]);;
 gap> DigraphDiameter(gr);
 0
 gap> gr := EmptyDigraph(0);;
 gap> DigraphDiameter(gr);
--1
+fail
 gap> gr := EmptyDigraph(1);;
 gap> DigraphDiameter(gr);
 0
@@ -662,7 +662,7 @@ gap> str := Concatenation(
 gap> gr := DigraphFromDiSparse6String(str);
 <digraph with 1000 vertices, 1053 edges>
 gap> DigraphDiameter(gr);
--1
+fail
 
 #T# DigraphSymmetricClosure
 gap> gr1 := Digraph([[2], [1]]);
