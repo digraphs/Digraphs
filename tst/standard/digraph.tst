@@ -265,7 +265,7 @@ gap> divides := function(a, b)
 >   fi;
 >   return false;
 > end;;
-gap> gr := Digraph(12, divides);
+gap> gr := Digraph([1 .. 12], divides);
 <digraph with 12 vertices, 35 edges>
 
 #T# Digraph (by binary relation)
@@ -1067,6 +1067,31 @@ gap> gr = gr2;
 true
 gap> DigraphVertexLabels(gr2);
 [ "a", Group([ (1,2) ]) ]
+
+# Digraph: for a list and a function
+gap> G := DihedralGroup(8);
+<pc group of size 8 with 3 generators>
+gap> digraph := Digraph(G, ReturnTrue);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 2 arguments
+gap> digraph := Digraph(AsSet(G), ReturnTrue);
+<digraph with 8 vertices, 64 edges>
+gap> IsDigraphWithAdjacencyFunction(digraph);
+true
+gap> digraph := DigraphCopy(digraph);
+<digraph with 8 vertices, 64 edges>
+gap> IsDigraphWithAdjacencyFunction(digraph);
+false
+gap> foo := function(x, y)
+> return ForAny(GeneratorsOfGroup(G), z -> x * z = y);
+> end;
+function( x, y ) ... end
+gap> digraph := Digraph(AsSet(G), foo);
+<digraph with 8 vertices, 24 edges>
+gap> G := DihedralGroup(8);
+<pc group of size 8 with 3 generators>
+gap> digraph := Digraph(AsSet(G), ReturnTrue);
+<digraph with 8 vertices, 64 edges>
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);
