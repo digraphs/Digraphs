@@ -72,3 +72,5 @@ DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);
 
 DeclareOperation("OutNeighboursCopy", [IsDigraph]);
 DeclareSynonym("OutNeighborsCopy", OutNeighboursCopy);
+
+DeclareOperation("DigraphLayers", [IsDigraph, IsPosInt]);
