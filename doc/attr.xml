@@ -646,7 +646,7 @@ gap> DigraphDiameter(gr);
 gap> gr := Digraph( [ [ 2 ], [  ] ] );
 <digraph with 2 vertices, 1 edge>
 gap> DigraphDiameter(gr);
--1
+fail
 gap> IsStronglyConnectedDigraph(gr);
 false
 ]]></Example>
