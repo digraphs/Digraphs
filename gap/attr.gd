@@ -57,4 +57,4 @@ DeclareAttribute("ReducedDigraph", IsDigraph);
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
 DeclareAttribute("AsTransformation", IsDigraph);
 
-DeclareGlobalFunction("DIGRAPHS_DIAMETER_AND_GIRTH");
+DeclareGlobalFunction("DIGRAPHS_DiameterAndGirth");

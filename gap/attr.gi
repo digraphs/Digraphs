@@ -507,8 +507,13 @@ end);
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
-  return DIGRAPHS_DIAMETER_AND_GIRTH(digraph).diameter;
+  if not (HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1) then
+    return DIGRAPH_DIAMETER(digraph);
+  fi;
+  return DIGRAPHS_DiameterAndGirth(digraph).diameter;
 end);
+
+#
 
 InstallMethod(DigraphGirth, "for a digraph",
 [IsDigraph],
@@ -517,7 +522,7 @@ function(digraph)
   if DigraphHasLoops(digraph) then
     return 1;
   fi;
-  result := DIGRAPHS_DIAMETER_AND_GIRTH(digraph);
+  result := DIGRAPHS_DiameterAndGirth(digraph);
   if IsBound(result.girth) then
     return result.girth;
   fi;
@@ -526,7 +531,7 @@ end);
 
 #
 
-InstallGlobalFunction(DIGRAPHS_DIAMETER_AND_GIRTH,
+InstallGlobalFunction(DIGRAPHS_DiameterAndGirth,
 function(digraph)
   local outer_reps, out_nbs, diameter, girth, v, record, orbnum, reps, i, next,
   laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
@@ -544,9 +549,6 @@ function(digraph)
   #TODO improve this, really check if the complexity is better with the group
   #or without, or if the group is not known, but the number of vertices makes
   #the usual algorithm impossible.
-  if not (HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1) then
-    return DIGRAPH_DIAMETER(digraph);
-  fi;
 
   outer_reps := DigraphOrbitReps(digraph);
   out_nbs    := OutNeighbours(digraph);
