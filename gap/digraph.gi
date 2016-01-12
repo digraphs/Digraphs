@@ -132,18 +132,29 @@ function(rel)
   return gr;
 end);
 
-InstallMethod(CayleyDigraph,
-"for a group",
-[IsGroup],
-function(group)
-    local act,adj,obj,gens;
-    gens := GeneratorsOfGroup(group);
-    obj := AsList(group);
-    adj := function(x,y)
-        return x^-1*y in gens;
-    end;
-    return Digraph(group,obj,OnRight,adj);
-end );
+InstallMethod(CayleyDigraph, "for a group with generators",
+[IsGroup, IsHomogeneousList],
+function(G, gens)
+  local adj;
+
+  if not ForAll(gens, x -> x in G) then
+    ErrorMayQuit("Digraphs: CayleyDigraph: usage,\n",
+                 "the generators in the second argument must ",
+                 "all belong to the group in the first argument,");
+  fi;
+
+  adj := function(x, y)
+    return x ^ -1 * y in gens;
+  end;
+
+  return Digraph(G, AsList(G), OnRight, adj);
+end);
+
+InstallMethod(CayleyDigraph, "for a group with generators",
+[IsGroup and HasGeneratorsOfGroup],
+function(G)
+  return CayleyDigraph(G, GeneratorsOfGroup(G));
+end);
 
 InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
 [IsDigraph, IsPosInt, IsObject],

@@ -35,6 +35,7 @@ DeclareOperation("Digraph", [IsGroup,
                              IsFunction,
                              IsFunction]);
 DeclareOperation("CayleyDigraph", [IsGroup]);
+DeclareOperation("CayleyDigraph", [IsGroup, IsList]);
 
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsList]);
