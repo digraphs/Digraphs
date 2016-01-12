@@ -15,125 +15,9 @@ function(digraph)
   end;
 end);
 
-BindGlobal("DIGRAPHS_OrbitNumbers",
-function(G, v, n)
-  local orbits, out, i, j;
-
-  orbits := DigraphOrbits(G, Difference([1 .. n], [v]), n).orbits;
-
-  out := [1 .. n];
-  out[v] := 1;
-
-  for i in [1 .. Length(orbits)] do
-    for j in orbits[i] do
-      out[j] := i + 1;
-    od;
-  od;
-
-  return rec(orbitNumbers := out,
-             representatives := Concatenation([v], List(orbits, Representative)));
-end);
-
 InstallMethod(DigraphGroup, "for a digraph",
 [IsDigraph], AutomorphismGroup);
 
-# this is arranged like this in case we want to change the method in future,
-# and also to allow its use **before** the creation of a digraph (such as when
-# the group is given as an argument to the constructor).
-
-InstallMethod(DigraphOrbits, "for a group with known generators and a list",
-[IsGroup and HasGeneratorsOfGroup, IsList, IsPosInt],
-function(G, domain, nr_vertices)
-  local blist, sch, nr, orbs, gens, genstoapply, o, l, i, j, k;
-
-  #TODO add checks, list should be a list of pos ints closed under the action of
-  # G.
-  blist := BlistList([1 .. nr_vertices], []);
-  sch   := EmptyPlist(Length(domain));
-  nr    := Length(domain);
-  orbs  := [];
-  gens  := GeneratorsOfGroup(G);
-  genstoapply := [1 .. Length(gens)];
-
-  for i in domain do
-    if not blist[i] then
-      o        := [i];
-      blist[i] := true;
-      Add(orbs, o);
-      sch[i] := -Length(orbs);
-      for j in o do
-        for k in genstoapply do
-          l := j ^ gens[k];
-          if not blist[l] then
-            blist[l] := true;
-            Add(o, l);
-            sch[l] := k;
-          fi;
-        od;
-      od;
-    fi;
-  od;
-  return rec(orbits := orbs, schreier := sch);
-end);
-
-InstallMethod(DigraphStabilizers, "for a group and a list",
-[IsGroup, IsList], # list of orbit reps
-function(G, orbit_reps);
-  return List(orbit_reps, i -> Stabilizer(G, i));
-end);
-
-InstallMethod(DigraphOrbits, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local record;
-
-  record := DigraphOrbits(DigraphGroup(digraph),
-                          DigraphVertices(digraph),
-                          DigraphNrVertices(digraph));
-  SetDigraphSchreierVector(digraph, record.schreier);
-  return record.orbits;
-end);
-
-InstallMethod(DigraphSchreierVector, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local record;
-
-  record := DigraphOrbits(DigraphGroup(digraph),
-                          DigraphVertices(digraph),
-                          DigraphNrVertices(digraph));
-  SetDigraphOrbits(digraph, record.orbits);
-  return record.schreier;
-end);
-
-InstallMethod(DigraphOrbitReps, "for a digraph",
-[IsDigraph],
-function(digraph)
-  return List(DigraphOrbits(digraph), x -> x[1]);
-end);
-
-InstallMethod(DigraphStabilizer, "for a digraph and a vertex",
-[IsDigraph, IsPosInt],
-function(digraph, rep)
-  local pos, stabs;
-
-  pos := -1 * DigraphSchreierVector(digraph)[rep];
-  if pos < 0 then
-    ErrorMayQuit("Digraphs: DigraphStabilizer: usage,\n");
-  fi;
-  stabs := DigraphStabilizers(digraph);
-  if not IsBound(DigraphStabilizers(digraph)[pos]) then
-    stabs[pos] := Stabilizer(DigraphGroup(digraph),
-                             DigraphOrbitReps(digraph)[pos]);
-  fi;
-  return DigraphStabilizers(digraph)[pos];
-end);
-
-InstallMethod(DigraphStabilizers, "for a digraph",
-[IsDigraph],
-function(digraph);
-  return [];
-end);
 
 InstallMethod(AsTransformation, "for a digraph",
 [IsDigraph],
@@ -623,21 +507,21 @@ end);
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local outer_reps, out_nbs, diameter, girth, v, orbs, i, orbnum, reps, next,
+  local outer_reps, out_nbs, diameter, girth, v, record, orbnum, reps, i, next,
   laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
 
   if DigraphNrVertices(digraph) = 0 then
-    return - 1;
+    return -1;
   elif not IsStronglyConnectedDigraph(digraph) then
-    return - 1;
+    return -1;
   fi;
 
   #TODO improve this, really check if the complexity is better with the group
   #or without, or if the group is not known, but the number of vertices makes
   #the usual algorithm impossible.
-  #if not (HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1) then
-  #  return DIGRAPH_DIAMETER(digraph);
-  #fi;
+  if not (HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1) then
+    return DIGRAPH_DIAMETER(digraph);
+  fi;
 
   outer_reps := DigraphOrbitReps(digraph);
   out_nbs    := OutNeighbours(digraph);
@@ -646,13 +530,12 @@ function(digraph)
 
   for i in [1 .. Length(outer_reps)] do
     v := outer_reps[i];
-    orbs := DIGRAPHS_OrbitNumbers(DigraphStabilizer(digraph, v),
-                                  v,
-                                  DigraphNrVertices(digraph));
+    record := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
+                              DigraphVertices(digraph));
 
+    orbnum          := record.lookup;
+    reps            := List(record.orbits, Representative);
     i               := 1;
-    orbnum          := orbs.orbitNumbers;
-    reps            := orbs.representatives;
     next            := [orbnum[v]];
     laynum          := [1 .. Length(reps)] * 0;
     laynum[next[1]] := 1;

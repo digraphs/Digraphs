@@ -48,6 +48,7 @@ function(obj, adj)
 
   return digraph;
 end);
+
 # <G> is a group, <obj> a set of points on which <act> acts, and <adj> is a
 # function which for 2 elements u, v of <obj> returns <true> if and only if
 # u and v should be adjacent in the digraph we are constructing.
@@ -56,37 +57,33 @@ InstallMethod(Digraph,
 "for a group, list or collection, function, and function",
 [IsGroup, IsListOrCollection, IsFunction, IsFunction],
 function(G, obj, act, adj)
-  local hom, dom, orbits, reps, stabs, rep_out, stab_orbits, orbits2, sch, out,
-        gens, record, digraph, i, o, w;
+  local hom, dom, sch, orbits, reps, stabs, rep_out, out, gens, trace, word,
+        digraph, i, o, w;
 
   hom    := ActionHomomorphism(G, obj, act, "surjective");
   dom    := [1 .. Size(obj)];
 
-  record := DigraphOrbits(Range(hom), dom, Size(obj));
-  orbits := record.orbits;
+  sch    := DIGRAPHS_Orbits(Range(hom), dom);
+  orbits := sch.orbits;
+  sch    := sch.schreier;
   reps   := List(orbits, Representative);
-  stabs  := DigraphStabilizers(Range(hom), reps);
+  stabs  := List(reps, i -> Stabilizer(Range(hom), i));
 
   rep_out     := EmptyPlist(Length(reps));
-  stab_orbits := EmptyPlist(Length(reps));
 
   for i in [1 .. Length(reps)] do
     if IsTrivial(stabs[i]) then
       rep_out[i] := Filtered(dom, j -> adj(obj[reps[i]], obj[j]));
     else
       rep_out[i] := [];
-      orbits2 := DigraphOrbits(stabs[i], dom, Size(obj)).orbits;
-      stab_orbits[i] := orbits2;
-      for o in orbits2 do
+      for o in DIGRAPHS_Orbits(stabs[i], dom).orbits do
         if adj(obj[reps[i]], obj[o[1]]) then
           Append(rep_out[i], o);
         fi;
       od;
-
     fi;
   od;
 
-  sch  := record.schreier;
   out  := EmptyPlist(Size(obj));
   gens := GeneratorsOfGroup(Range(hom));
 
@@ -95,23 +92,24 @@ function(G, obj, act, adj)
       out[i] := rep_out[-sch[i]];
     fi;
 
-    record := DIGRAPHS_TraceSchreierVector(gens, sch, i);
-    out[i] := rep_out[-sch[record.representative]];
-    for w in record.word do
+    trace := DIGRAPHS_TraceSchreierVector(gens, sch, i);
+    out[i] := rep_out[-sch[trace.representative]];
+    word := trace.word;
+    for w in word do
        out[i] := OnTuples(out[i], gens[w]);
     od;
   od;
 
   digraph := DigraphNC(out);
   SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
-  SetDigraphAdjacencyFunction(digraph, adj);
-  SetDigraphGroup      (digraph, Range(hom));
-  SetDigraphOrbits     (digraph, orbits);
-  SetDigraphOrbitReps  (digraph, reps);
-  SetDigraphStabilizers(digraph, stabs);
-  SetDigraphInnerOrbits(digraph, stab_orbits);
 
+  SetDigraphAdjacencyFunction(digraph, adj);
+  SetDigraphGroup(digraph, Range(hom));
+  SetDigraphOrbits(digraph, orbits);
+  SetDigraphStabilizers(digraph, stabs);
+  SetDigraphSchreierVector(digraph, sch);
   SetRepresentativeOutNeighbours(digraph, rep_out);
+
   return digraph;
 end);
 
