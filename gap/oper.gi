@@ -1243,3 +1243,33 @@ function(gr, loops)
   out := DIGRAPH_TRANS_REDUCTION(inn, loops);
   return OnDigraphs(Digraph(out), p);
 end);
+
+#
+
+InstallMethod(DigraphLayers, "for a digraph, and a vertex",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  local list, vertices, out, i, u, w;
+
+  if v > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphLayers: usage,\n",
+                 "the argument <v> must be a vertex of <digraph>,");
+  fi;
+  list := [[v]];
+  vertices := BlistList([1 .. DigraphNrVertices(digraph)], [v]);
+  out := OutNeighbours(digraph);
+  i := 1;
+  while list[Length(list)] <> [] do
+    Add(list, []);
+    for u in list[i] do
+      for w in out[u] do
+        if not vertices[w] then
+          Add(list[i + 1], w);
+          vertices[w] := true;
+        fi;
+      od;
+    od;
+    i := i + 1;
+  od;
+  return list{[1 .. Length(list) - 1]};
+end);
