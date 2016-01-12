@@ -26,6 +26,7 @@
     <#Include Label="OutNeighboursOfVertex">
     <#Include Label="InDegreeOfVertex">
     <#Include Label="InNeighboursOfVertex">
+    <#Include Label="DigraphLoops">
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>
@@ -40,5 +41,6 @@
     <#Include Label="DigraphPeriod">
     <#Include Label="DigraphFloydWarshall">
     <#Include Label="IsReachable">
+    <#Include Label="DigraphAllSimpleCircuits">
   </Section>
 </Chapter>

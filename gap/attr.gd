@@ -41,6 +41,7 @@ DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
 DeclareAttribute("DigraphGirth", IsDigraph);
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
+DeclareAttribute("DigraphLoops", IsDigraph);
 
 DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
 DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);

@@ -776,51 +776,37 @@ end);
 InstallMethod(DigraphAllSimpleCircuits,
 "for a digraph",
 [IsDigraph],
-function(d)
-  local stack, endofstack, output, g, n, blocked, B, s, UNBLOCK, CIRCUIT, sub,
-    scc, min, index, ind, component, i;
-
-    stack := [];
-    endofstack := 0;
-    output := [];
-
-    g := ReducedDigraph(d);
-    n := Size(DigraphVertices(g));
-
-    blocked := List([1 .. n], x -> false);
-    B := List([1 .. n], x -> []);
-    s := 1;
+function(digraph)
+  local UNBLOCK, CIRCUIT, out, stack, endofstack, gr, scc, n, blocked, B,
+  gr_comp, comp, s, loops, i;
 
     UNBLOCK := function(u)
       local w;
       blocked[u] := false;
-      B[u] := [];
-      for w in B[u] do
+      while not IsEmpty(B[u]) do
+        w := B[u][1];
+        Remove(B[u], 1);
         if blocked[w] then
           UNBLOCK(w);
         fi;
       od;
     end;
 
-    CIRCUIT := function(v, comp)
-      local f, pos, buffer, dummy, w;
+    CIRCUIT := function(v, component)
+      local f, buffer, dummy, w;
 
       f := false;
-
       endofstack := endofstack + 1;
       stack[endofstack] := v;
       blocked[v] := true;
 
-      pos := Position(List(DigraphVertices(comp),
-                           x -> DigraphVertexLabel(comp, x)), v);
-
-      for w in OutNeighbours(comp)[pos] do
-        if DigraphVertexLabel(comp, w) = s then
+      for w in OutNeighboursOfVertex(component, v) do
+        if w = 1 then
           buffer := stack{[1 .. endofstack]};
-          Add(output, buffer);
+          Add(out, DigraphVertexLabels(component){buffer});
           f := true;
-        elif blocked[DigraphVertexLabel(comp, w)] = false then
-          dummy := CIRCUIT(DigraphVertexLabel(comp, w), comp);
+        elif blocked[w] = false then
+          dummy := CIRCUIT(w, component);
           if dummy then
             f := true;
           fi;
@@ -829,45 +815,70 @@ function(d)
 
       if f then
         UNBLOCK(v);
-      else for w in OutNeighbours(comp)[pos] do
-        if not DigraphVertexLabel(comp, w)
-            in B[DigraphVertexLabel(comp, w)] then
-          Add(B[DigraphVertexLabel(comp, w)], v);
-        fi;
-      od;
+      else
+        for w in OutNeighboursOfVertex(component, v) do
+          if not w in B[w] then
+            Add(B[w], v);
+          fi;
+        od;
       fi;
 
       endofstack := endofstack - 1;
       return f;
     end;
 
-    while s < n do
+    out := [];
+    stack := [];
+    endofstack := 0;
 
-      sub := InducedSubdigraph(g, [s .. n]);
-      scc := DigraphStronglyConnectedComponents(sub);
-      min := Minimum(List([1 .. Size(scc.comps)], x -> Minimum(scc.comps[x])));
+    # TODO should we also remove multiple edges, as they create extra work?
+    # Reduce the digraph, remove loops, and store the correct vertex labels
+    gr := DigraphRemoveLoops(ReducedDigraph(digraph));
+    if DigraphVertexLabels(digraph) <> DigraphVertices(digraph) then
+      SetDigraphVertexLabels(gr, Filtered(DigraphVertices(digraph),
+                                          x -> OutDegrees(digraph) <> 0));
+    fi;
 
-      for component in scc.comps do
-        if min in component then
-          index := Position(scc.comps, component);
+    # Strongly connected components of the reduced graph
+    scc := DigraphStronglyConnectedComponents(gr);
+
+    # B and blocked only need to be as long as the longest connected component
+    n := Maximum(List(scc.comps, Length));
+    blocked := BlistList([1 .. n], []);
+    B := List([1 .. n], x -> []);
+
+    # Perform algorithm once per connected component of the whole digraph
+    for gr_comp in scc.comps do
+      n := Length(gr_comp);
+      if n = 1 then
+        continue;
+      fi;
+      gr_comp := InducedSubdigraph(gr, gr_comp);
+      comp := gr_comp;
+      s := 1;
+      while s < n do
+        if s <> 1 then
+          comp := InducedSubdigraph(gr_comp, [s .. n]);
+          comp := InducedSubdigraph(comp,
+                                    DigraphStronglyConnectedComponent(comp, 1));
+        fi;
+
+        if not IsEmptyDigraph(comp) then
+          # TODO would it be faster/better to create blocked as a new BlistList?
+          # Are these things already going to be initialised anyway?
+          for i in DigraphVertices(comp) do
+            blocked[i] := false;
+            B[i] := [];
+          od;
+          CIRCUIT(1, comp);
+          s := s + 1;
+        else
+          s := n;
         fi;
       od;
-
-      ind := InducedSubdigraph(sub, scc.comps[index]);
-
-      if ForAny(OutNeighbours(ind), x -> not IsEmpty(x)) then
-        s := Minimum(DigraphVertexLabels(ind));
-        for i in DigraphVertices(ind) do;
-          blocked[DigraphVertexLabel(ind, i)] := false;
-          B[DigraphVertexLabel(ind, i)] := [];
-        od;
-        CIRCUIT(s, ind);
-        s := s + 1;
-      else
-        s := n;
-      fi;
     od;
-    return output;
+    loops := List(DigraphLoops(digraph), x -> [x]);
+    return Concatenation(loops, out);
 end);
 
 # The following method 'DIGRAPHS_Bipartite' was written by Isabella Scott
@@ -933,4 +944,12 @@ function(digraph)
   b := KernelOfTransformation(DIGRAPHS_Bipartite(digraph)[2],
                               DigraphNrVertices(digraph));
   return b;
+end);
+
+InstallMethod(DigraphLoops, "for a digraph", [IsDigraph],
+function(gr)
+  if HasDigraphHasLoops(gr) and not DigraphHasLoops(gr) then
+    return [];
+  fi;
+  return Filtered(DigraphVertices(gr), x -> x in OutNeighboursOfVertex(gr, x));
 end);
