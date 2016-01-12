@@ -907,14 +907,14 @@ gap> InNeighbours(gr);;
 gap> DigraphGroup(gr);
 Group([ (4,5), (3,4), (2,3) ])
 gap> InDegreeSequence(gr);
-[ 0, 1, 1, 1, 1 ]
+[ 1, 1, 1, 1, 0 ]
 gap> gr := DigraphSymmetricClosure(ChainDigraph(4));;
 gap> DigraphGroup(gr);
 Group([ (1,4)(2,3) ])
 gap> HasDigraphGroup(gr);
 true
 gap> OutDegreeSequence(gr);
-[ 1, 1, 2, 2 ]
+[ 2, 2, 1, 1 ]
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
