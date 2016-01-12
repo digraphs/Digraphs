@@ -10,7 +10,7 @@
 
 InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
 function(digraph)
-  return function(x, y) 
+  return function(x, y)
     return IsDigraphEdge(digraph, x, y);
   end;
 end);
@@ -427,7 +427,7 @@ function(digraph)
   orbs := DigraphOrbits(digraph);
   for orb in orbs do
     Append(out, [1 .. Length(orb)] * 0 + Length(adj[orb[1]]));
-  od; 
+  od;
   Sort(out,
        function(a, b)
          return b < a;
@@ -474,7 +474,7 @@ function(digraph)
   orbs := DigraphOrbits(digraph);
   for orb in orbs do
     Append(out, [1 .. Length(orb)] * 0 + Length(adj[orb[1]]));
-  od; 
+  od;
   Sort(out,
        function(a, b)
          return b < a;
@@ -623,7 +623,8 @@ end);
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local outer_reps, out_nbs, diameter, girth, v, orbs, i, orbnum, reps, next, laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
+  local outer_reps, out_nbs, diameter, girth, v, orbs, i, orbnum, reps, next,
+  laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
 
   if DigraphNrVertices(digraph) = 0 then
     return - 1;
@@ -694,7 +695,7 @@ function(digraph)
     if Length(layers) - 1 > diameter then
       diameter := Length(layers) - 1;
     fi;
-    if localGirth > girth then 
+    if localGirth > girth then
       girth := localGirth;
     fi;
   od;

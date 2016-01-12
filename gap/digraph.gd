@@ -30,7 +30,10 @@ DeclareOperation("Digraph", [IsList, IsFunction]);
 DeclareOperation("Digraph", [IsInt, IsList, IsList]);
 DeclareOperation("Digraph", [IsList, IsList, IsList]);
 DeclareOperation("Digraph", [IsBinaryRelation]);
-DeclareOperation("Digraph", [IsGroup, IsListOrCollection, IsFunction, IsFunction]);
+DeclareOperation("Digraph", [IsGroup,
+                             IsListOrCollection,
+                             IsFunction,
+                             IsFunction]);
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsList]);
 DeclareOperation("DigraphNC", [IsList, IsInt]);

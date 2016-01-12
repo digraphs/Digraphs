@@ -8,39 +8,39 @@
 #############################################################################
 ##
 
-BindGlobal("DIGRAPHS_TraceSchreierVector", 
+BindGlobal("DIGRAPHS_TraceSchreierVector",
 function(gens, sch, r)
   local word, w;
-  word := []; 
+  word := [];
   w := sch[r];
   while w > 0 do
-    Add(word, w); 
-    r := r / gens[w]; 
+    Add(word, w);
+    r := r / gens[w];
     w := sch[r];
   od;
   return rec(word := Reversed(word), representative := r);
 end);
 
-InstallMethod(Digraph, 
+InstallMethod(Digraph,
 "for a list and function",
 [IsList, IsFunction],
 function(obj, adj)
   local N, out_nbs, in_nbs, x, digraph, i, j;
- 
+
   N       := Size(obj); # number of vertices
   out_nbs := List([1 ..  N], x -> []);
   in_nbs  := List([1 ..  N], x -> []);
-  
-  for i in [1 .. N] do 
+
+  for i in [1 .. N] do
     x := obj[i];
-    for j in [1 .. N] do 
-      if adj(x, obj[j]) then 
+    for j in [1 .. N] do
+      if adj(x, obj[j]) then
         Add(out_nbs[i], j);
         Add(in_nbs[j], i);
       fi;
     od;
   od;
-  
+
   digraph := DigraphNC(out_nbs);
   SetDigraphAdjacencyFunction(digraph, adj);
   SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
@@ -49,35 +49,35 @@ function(obj, adj)
   return digraph;
 end);
 # <G> is a group, <obj> a set of points on which <act> acts, and <adj> is a
-# function which for 2 elements u, v of <obj> returns <true> if and only if 
+# function which for 2 elements u, v of <obj> returns <true> if and only if
 # u and v should be adjacent in the digraph we are constructing.
 
-InstallMethod(Digraph, 
+InstallMethod(Digraph,
 "for a group, list or collection, function, and function",
 [IsGroup, IsListOrCollection, IsFunction, IsFunction],
 function(G, obj, act, adj)
   local hom, dom, orbits, reps, stabs, rep_out, stab_orbits, orbits2, sch, out,
         gens, record, digraph, i, o, w;
-  
+
   hom    := ActionHomomorphism(G, obj, act, "surjective");
   dom    := [1 .. Size(obj)];
-  
-  record := DigraphOrbits(Range(hom), dom, Size(obj)); 
+
+  record := DigraphOrbits(Range(hom), dom, Size(obj));
   orbits := record.orbits;
-  reps   := List(orbits, Representative); 
+  reps   := List(orbits, Representative);
   stabs  := DigraphStabilizers(Range(hom), reps);
 
   rep_out     := EmptyPlist(Length(reps));
   stab_orbits := EmptyPlist(Length(reps));
 
   for i in [1 .. Length(reps)] do
-    if IsTrivial(stabs[i]) then  
+    if IsTrivial(stabs[i]) then
       rep_out[i] := Filtered(dom, j -> adj(obj[reps[i]], obj[j]));
     else
       rep_out[i] := [];
       orbits2 := DigraphOrbits(stabs[i], dom, Size(obj)).orbits;
       stab_orbits[i] := orbits2;
-      for o in orbits2 do 
+      for o in orbits2 do
         if adj(obj[reps[i]], obj[o[1]]) then
           Append(rep_out[i], o);
         fi;
@@ -90,25 +90,25 @@ function(G, obj, act, adj)
   out  := EmptyPlist(Size(obj));
   gens := GeneratorsOfGroup(Range(hom));
 
-  for i in [1 .. Length(sch)] do 
-    if sch[i] < 0 then 
+  for i in [1 .. Length(sch)] do
+    if sch[i] < 0 then
       out[i] := rep_out[-sch[i]];
     fi;
-    
+
     record := DIGRAPHS_TraceSchreierVector(gens, sch, i);
-    out[i] := rep_out[-sch[record.representative]]; 
-    for w in record.word do 
-       out[i] := OnTuples(out[i], gens[w]); 
+    out[i] := rep_out[-sch[record.representative]];
+    for w in record.word do
+       out[i] := OnTuples(out[i], gens[w]);
     od;
   od;
 
   digraph := DigraphNC(out);
   SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
   SetDigraphAdjacencyFunction(digraph, adj);
-  SetDigraphGroup      (digraph, G     );
+  SetDigraphGroup      (digraph, Range(hom));
   SetDigraphOrbits     (digraph, orbits);
-  SetDigraphOrbitReps  (digraph, reps  );
-  SetDigraphStabilizers(digraph, stabs );
+  SetDigraphOrbitReps  (digraph, reps);
+  SetDigraphStabilizers(digraph, stabs);
   SetDigraphInnerOrbits(digraph, stab_orbits);
 
   SetRepresentativeOutNeighbours(digraph, rep_out);

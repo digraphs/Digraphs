@@ -990,11 +990,11 @@ function(digraph, u, v)
 
   n := DigraphNrVertices(digraph);
 
-  if u > n or v > n then 
+  if u > n or v > n then
     return false;
   elif HasAdjacencyMatrix(digraph) then
     return AdjacencyMatrix(digraph)[u][v] <> 0;
-  elif IsDigraphWithAdjacencyFunction(digraph) then 
+  elif IsDigraphWithAdjacencyFunction(digraph) then
     return DigraphAdjacencyFunction(digraph)(u, v);
   fi;
   return v in OutNeighboursOfVertex(digraph, u);
