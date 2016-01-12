@@ -874,6 +874,8 @@ function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i, x,
   finish, j;
 
+  s := Chomp(s);
+
   # Check non-emptiness
   if Length(s) = 0 then
     ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
