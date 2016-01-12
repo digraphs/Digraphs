@@ -12,7 +12,7 @@
 DeclareAttribute("MaximalCliques", IsDigraph);
 
 DeclareGlobalFunction("DigraphBronKerbosch");
-DeclareGlobalFunction("DigraphBronKerboschPivot");
-DeclareGlobalFunction("DigraphBronKerboschWithOrdering");
+DeclareGlobalFunction("DigraphBronKerboschWithPivot");
+DeclareGlobalFunction("DigraphBronKerboschWithPivotAndOrdering");
 
 DeclareGlobalFunction("DigraphBronKerboschIter");
