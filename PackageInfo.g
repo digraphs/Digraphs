@@ -13,11 +13,11 @@
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
 ##  <!ENTITY VERSION        "0.3">
-##  <!ENTITY GAPVERS        "4.7.8">
+##  <!ENTITY GAPVERS        "4.8.1">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
 ##  <!ENTITY ARCHIVENAME    "digraphs-0.3">
-##  <!ENTITY COPYRIGHTYEARS "2014-15">
+##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
