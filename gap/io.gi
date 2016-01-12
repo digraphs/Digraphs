@@ -8,6 +8,61 @@
 #############################################################################
 ##
 
+##########
+# Pickler
+##########
+InstallMethod(IO_Pickle, "for a digraph with known digraph group",
+[IsFile, IsDigraph and HasDigraphGroup],
+function(file, gr)
+  local g, out;
+  g := DigraphGroup(gr);
+  if IsTrivial(g) then
+    TryNextMethod();
+  fi;
+  if IO_Write(file, "DIGG") = fail then
+    return IO_Error;
+  fi;
+  out := [GeneratorsOfGroup(g), RepresentativeOutNeighbours(gr)];
+  if IO_Pickle(file, out) = IO_Error then
+    return IO_Error;
+  fi;
+  return IO_OK;
+end);
+
+IO_Unpicklers.DIGG := function(file)
+  local out, g, rep_out;
+  out := IO_Unpickle(file);
+  if out = IO_Error then
+    return IO_Error;
+  fi;
+  g := Group(out[1]);
+  rep_out := out[2];
+  #TODO: Make a graph
+end;
+
+InstallMethod(IO_Pickle, "for a digraph",
+[IsFile, IsDigraph],
+function(file, gr)
+  if IO_Write(file, "DIGT") = fail then
+    return IO_Error;
+  fi;
+  if IO_Pickle(file, OutNeighbours(gr)) = IO_Error then
+    return IO_Error;
+  fi;
+  return IO_OK;
+end);
+
+IO_Unpicklers.DIGT := function(file)
+  local out;
+  out := IO_Unpickle(file);
+  if out = IO_Error then
+    return IO_Error;
+  fi;
+  return DigraphNC(out);
+end;
+
+#
+
 InstallGlobalFunction(TournamentLineDecoder,
 function(str)
   local out, pos, n, i, j;
