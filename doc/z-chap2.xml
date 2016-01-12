@@ -57,6 +57,7 @@
     <#Include Label="CompleteBipartiteDigraph">
     <#Include Label="CycleDigraph">
     <#Include Label="EmptyDigraph">
+    <#Include Label="CayleyDigraph">
   </Section>
 
 </Chapter>

@@ -1098,3 +1098,21 @@ infinity
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphLayers">
+<ManSection>
+  <Oper Name="DigraphLayers" Arg="digraph, vertex"/>
+  <Returns>A list.</Returns>
+  <Description>
+    This operation returns a list <K>list</K> such that <K>list[i]</K> is the
+    list of vertices whose minimum distance from the vertex <A>vertex</A> in
+    <A>digraph</A> is <K>i - 1</K>. Vertex <A>vertex</A> is
+    assumed to be at distance <K>0</K> from itself. 
+    <Example><![CDATA[
+gap> gr := CompleteDigraph(4);;
+gap> DigraphLayers(gr,1);
+[ [ 1 ], [ 2, 3, 4 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

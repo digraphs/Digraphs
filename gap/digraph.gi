@@ -132,6 +132,19 @@ function(rel)
   return gr;
 end);
 
+InstallMethod(CayleyDigraph,
+"for a group",
+[IsGroup],
+function(group)
+    local act,adj,obj,gens;
+    gens := GeneratorsOfGroup(group);
+    obj := AsList(group);
+    adj := function(x,y)
+        return x^-1*y in gens;
+    end;
+    return Digraph(group,obj,OnRight,adj);
+end );
+
 InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
 [IsDigraph, IsPosInt, IsObject],
 function(graph, i, name)

@@ -1401,6 +1401,22 @@ true
 gap> DigraphReflexiveTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
 true
 
+#T# DigraphLayers
+gap> gr := ChainDigraph(5);;
+gap> DigraphLayers(gr, 2);
+[ [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
+gap> DigraphLayers(gr, 4);
+[ [ 4 ], [ 5 ] ]
+gap> gr := Digraph([ [2,5], [3], [4], [5], [6], [7], [8], [1] ]);;
+gap> DigraphLayers(gr,1);
+[ [ 1 ], [ 2, 5 ], [ 3, 6 ], [ 4, 7 ], [ 8 ] ]
+gap> DigraphLayers(gr,3);
+[ [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 1 ], [ 2 ] ]
+gap> DigraphLayers(gr,6);
+[ [ 6 ], [ 7 ], [ 8 ], [ 1 ], [ 2, 5 ], [ 3 ], [ 4 ] ]
+gap> DigraphLayers(gr,7);
+[ [ 7 ], [ 8 ], [ 1 ], [ 2, 5 ], [ 3, 6 ], [ 4 ] ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);
