@@ -21,6 +21,32 @@ function(gens, sch, r)
   return rec(word := Reversed(word), representative := r);
 end);
 
+InstallMethod(Digraph, 
+"for a list and function",
+[IsList, IsFunction],
+function(obj, adj)
+  local N, out_nbs, in_nbs, x, digraph, i, j;
+ 
+  N       := Size(obj); # number of vertices
+  out_nbs := List([1 ..  N], x -> []);
+  in_nbs  := List([1 ..  N], x -> []);
+  
+  for i in [1 .. N] do 
+    x := obj[i];
+    for j in [1 .. N] do 
+      if adj(x, obj[j]) then 
+        Add(out_nbs[i], j);
+        Add(in_nbs[j], i);
+      fi;
+    od;
+  od;
+  
+  digraph := DigraphNC(out_nbs);
+  SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
+  SetInNeighbours(digraph, in_nbs);
+
+  return digraph;
+end);
 # <G> is a group, <obj> a set of points on which <act> acts, and <adj> is a
 # function which for 2 elements u, v of <obj> returns <true> if and only if 
 # u and v should be adjacent in the digraph we are constructing.
@@ -76,6 +102,7 @@ function(G, obj, act, adj)
   od;
 
   digraph := DigraphNC(out);
+  SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
 
   SetDigraphGroup      (digraph, G     );
   SetDigraphOrbits     (digraph, orbits);
@@ -85,26 +112,6 @@ function(G, obj, act, adj)
 
   SetRepresentativeOutNeighbours(digraph, rep_out);
   return digraph;
-end);
-
-InstallMethod(Digraph, "for a positive integer and a function",
-[IsPosInt, IsFunction],
-function(n, func)
-  local V, out, i, len, j;
-
-  V := [1 .. n];
-  out := List(V, x -> []);
-
-  for i in V do
-    len := 0;
-    for j in V do
-      if func(i, j) then
-        len := len + 1;
-        out[i][len] := j;
-      fi;
-    od;
-  od;
-  return DigraphNC(out);
 end);
 
 InstallMethod(Digraph, "for a binary relation",

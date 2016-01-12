@@ -157,7 +157,8 @@ true
 
 <#GAPDoc Label="Digraph">
 <ManSection>
-  <Oper Name="Digraph" Arg="obj[, source, range]"/>
+  <Oper Name = "Digraph" Arg = "obj[, source, range]"/>
+  <Oper Name = "Digraph" Arg = "list, func" Label = "for a list and function"/>
   <Returns>A digraph.</Returns>
   <Description>
     <List>
@@ -197,14 +198,23 @@ true
       <Item>
         if <A>obj</A> is an integer, and <A>source</A> and
         <A>range</A> are lists of equal length consisting of positive integers
-        in the list <C>[1..<A>obj</A>]</C>, then this function
+        in the list <C>[1 .. <A>obj</A>]</C>, then this function
         returns a digraph with vertices
         <M>E^0=</M><C>[1..<A>obj</A>]</C>, and
         <C>Length(<A>source</A>)</C> edges.  For each <C>i</C> in
-        <C>[1..Length(<A>source</A>)]</C> there exists an edge with source
+        <C>[1 .. Length(<A>source</A>)]</C> there exists an edge with source
         vertex <C>source[i]</C> and range vertex <C>range[i]</C>.
         See <Ref Attr="DigraphSource"/> and <Ref Attr="DigraphRange"/>.
-        <P/>
+      </Item>
+      
+      <Mark>for a list and a function</Mark>
+      <Item>
+        if <A>list</A> is a list and <A>func</A> is a function taking 2
+        arguments that are elements of <A>list</A>, and <A>func</A> returns
+        <K>true</K> or <K>false</K>, then this operation creates a digraph with
+        vertices <C>[1 .. Length(<A>obj</A>)]</C> and an edge from vertex
+        <C>i</C> to vertex <C>j</C> if and only if
+        <C><A>func</A>(<A>obj</A>[i], <A>obj</A>[j])</C> returns <K>true</K>.
       </Item>
 
       <Mark>for a Grape package graph</Mark>
@@ -244,7 +254,8 @@ gap> b := BinaryRelationOnPoints(
 Binary Relation on 5 points
 gap> gr := Digraph(b);
 <digraph with 5 vertices, 11 edges>
-]]></Example>
+gap> gr := Digraph([1 .. 10], ReturnTrue);
+<digraph with 10 vertices, 100 edges>]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
