@@ -1,3 +1,0 @@
-OutNeighboursCopy is in .gaplint_ignore because it is declared in oper.gd but
-documented together with OutNeighbours in attr.xml
-  - MT 2015-08-31
