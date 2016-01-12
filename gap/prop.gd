@@ -22,6 +22,9 @@ DeclareProperty("IsTournament", IsDigraph);
 DeclareProperty("IsTransitiveDigraph", IsDigraph);
 DeclareProperty("DigraphHasLoops", IsDigraph);
 DeclareProperty("IsAperiodicDigraph", IsDigraph);
+DeclareProperty("IsInRegularDigraph", IsDigraph);
+DeclareProperty("IsOutRegularDigraph", IsDigraph);
+DeclareProperty("IsRegularDigraph", IsDigraph);
 
 InstallTrueMethod(IsAntisymmetricDigraph, IsTournament);
 InstallTrueMethod(IsAntisymmetricDigraph, IsAcyclicDigraph);
@@ -30,3 +33,4 @@ InstallTrueMethod(IsAcyclicDigraph, IsTournament and IsTransitiveDigraph);
 InstallTrueMethod(IsSymmetricDigraph, IsCompleteDigraph);
 InstallTrueMethod(IsTransitiveDigraph, IsCompleteDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsEmptyDigraph);
+InstallTrueMethod(IsRegularDigraph, IsInRegularDigraph and IsOutRegularDigraph);
