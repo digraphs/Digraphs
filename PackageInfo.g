@@ -13,18 +13,18 @@
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
 ##  <!ENTITY VERSION        "0.3">
-##  <!ENTITY GAPVERS        "4.7.8">
+##  <!ENTITY GAPVERS        "4.8.1">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
 ##  <!ENTITY ARCHIVENAME    "digraphs-0.3">
-##  <!ENTITY COPYRIGHTYEARS "2014-15">
+##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Methods for digraphs and multidigraphs",
 Version := "0.3",
-Date := "11/01/2016",
+Date := "12/01/2016",
 ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.3",
 ArchiveFormats := ".tar.gz",
 Persons := [
@@ -111,7 +111,7 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">=4.7.8",
+  GAP := ">=4.8.1",
   NeededOtherPackages := [["io", ">=4.4.4"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"], ["grape", ">=4.5"]],
   ExternalConditions := [],
