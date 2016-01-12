@@ -4,7 +4,7 @@
 #### Copyright (C) 2014-16 Julius Jonusas, James D. Mitchell, Michael Torpey & Wilf Wilson
 #### Licensing information can be found in the LICENSE file.
 
-## Version 0.3 (released 11/01/2016)
+## Version 0.3 (released 12/01/2016)
 This release contains a number of bugfixes and performance improvements. 
 
 ###New Features in Version 0.3
