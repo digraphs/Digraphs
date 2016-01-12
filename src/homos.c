@@ -71,12 +71,12 @@ static Block   MASK[NUMBER_BITS_PER_BLOCK];   // MASK[i] is a Block with a 1 in
 ////////////////////////////////////////////////////////////////////////////////
 
 static UIntL              count;                    // nr of homos found so far
-static unsigned long long calls1;                   // calls1 is the nr of calls to find_graph_homos
-static unsigned long long calls2;                   // calls2 is the nr of stabs calculated
+//static unsigned long long calls1;                   // calls1 is the nr of calls to find_graph_homos
+//static unsigned long long calls2;                   // calls2 is the nr of stabs calculated
 static UIntL              last_report = 0;          // the last value of calls1 when we reported
-static UIntL              report_interval = 999999; // the interval when we report
-static unsigned long long nr_allocs;
-static unsigned long long nr_frees;
+//static UIntL              report_interval = 999999; // the interval when we report
+//static unsigned long long nr_allocs;
+//static unsigned long long nr_frees;
 
 ////////////////////////////////////////////////////////////////////////////////
 // initial the bit tabs
@@ -303,7 +303,7 @@ static Conditions* new_conditions (UIntS      nr1,
                                    UIntS      nr2) {
   assert(nr1 != 0 && nr2 != 0);
 
-  UIntS i, j;
+  UIntS i;
   Conditions* conditions = malloc(sizeof(Conditions));
 
   conditions->bit_array  = malloc(sizeof(BitArray*) * nr1 * nr1);
@@ -387,9 +387,7 @@ static inline void push_conditions (Conditions*  conditions,
   assert(i < conditions->nr1);
   assert(depth < conditions->nr1);
   
-  UIntS j, k;
   UIntS nr1 = conditions->nr1;
-  UIntS nr2 = conditions->nr2;
 
   memcpy((void *) conditions->bit_array[nr1 * conditions->height[i] + i]->blocks,
          (void *) conditions->bit_array[nr1 * (conditions->height[i] - 1) + i]->blocks, 
@@ -418,7 +416,6 @@ static inline void pop_conditions (Conditions* conditions,
   
   UIntS i;
   UIntS nr1 = conditions->nr1;
-  UIntS nr2 = conditions->nr2;
 
   for (i = 1; i < conditions->changed[(nr1 + 1) * depth] + 1; i++) {
     conditions->height[conditions->changed[(nr1 + 1) * depth + i]]--;
@@ -446,7 +443,7 @@ static inline UIntS size_conditions (Conditions*  conditions,
 ////////////////////////////////////////////////////////////////////////////////
 
 static void orbit_reps (UIntS rep_depth) {
-  UIntS     nrgens, i, j, fst, m, img, n, max, d;
+  UIntS     i, j, fst, img, n;
   Perm      gen;
 
   init_bit_array(REPS[rep_depth], false);
@@ -563,19 +560,27 @@ static bool inline is_adjacent_digraph (Digraph* digraph,
 // the Digraph pointed to by <digraph>. 
 ////////////////////////////////////////////////////////////////////////////////
 
-static BlissGraph* new_bliss_graph_from_digraph (Digraph* digraph) {
+static BlissGraph* new_bliss_graph_from_digraph (Digraph* digraph, UIntS* colors) {
   assert(digraph != NULL);
   
-  UIntS  i, j, k, l;
-  UIntS  n = digraph->nr_vertices;
+  UIntS       i, j, k, l;
+  BlissGraph* bliss_graph; 
+  UIntS       n = digraph->nr_vertices;
 
-  BlissGraph* bliss_graph = bliss_new(n);
+  if (colors == NULL) {
+    bliss_graph = bliss_new(n);
+  } else {
+    bliss_graph = bliss_new(0);
+    for (i = 0; i < n; i++) {
+      bliss_add_vertex(bliss_graph, colors[i]);
+    }
+  } 
 
   for (i = 0; i < n; i++) {       // loop over vertices
     for (j = 0; j < n; j++) {
       if (is_adjacent_digraph(digraph, i, j)) {
-        k = bliss_add_vertex(bliss_graph, 1);
-        l = bliss_add_vertex(bliss_graph, 2);
+        k = bliss_add_vertex(bliss_graph, n + 1);
+        l = bliss_add_vertex(bliss_graph, n + 2);
         bliss_add_edge(bliss_graph, i, k);
         bliss_add_edge(bliss_graph, k, l);
         bliss_add_edge(bliss_graph, l, j);
@@ -613,10 +618,10 @@ static void bliss_hook_digraph (void               *user_param_arg,  // perm_col
 // pointed to by <digraph>.
 ////////////////////////////////////////////////////////////////////////////////
 
-static PermColl* automorphisms_digraph (Digraph* digraph) {
+static PermColl* automorphisms_digraph (Digraph* digraph, UIntS* colors) {
   assert(digraph != NULL);
 
-  BlissGraph* bliss_graph = new_bliss_graph_from_digraph(digraph);
+  BlissGraph* bliss_graph = new_bliss_graph_from_digraph(digraph, colors);
   PermColl*   gens  = new_perm_coll(digraph->nr_vertices - 1);
   bliss_find_automorphisms(bliss_graph, bliss_hook_digraph, gens, 0);
   bliss_release(bliss_graph);
@@ -749,12 +754,13 @@ void DigraphHomomorphisms (Digraph* digraph1,
                            UIntL     max_results_arg,
                            int       hint_arg,
                            BitArray* image_arg,
-                           UIntS     *partial_map_arg                     ) {
+                           UIntS     *partial_map_arg,
+                           UIntS     *colors1,
+                           UIntS     *colors2                           ) {
   
   assert(digraph1 != NULL && digraph2 != NULL);
 
   UIntS      i, j;
-  PermColl*  gens;
   BitArray*  bit_array;
   
   NR1         = digraph1->nr_vertices;
@@ -806,6 +812,19 @@ void DigraphHomomorphisms (Digraph* digraph1,
     store_size_conditions(conditions, i);
   }
   
+  if (colors1 != NULL) { // colors1 and colors2 specified
+    for (i = 0; i < NR1; i++) {
+      init_bit_array(bit_array, false);
+      for (j = 0; j < NR2; j++) {
+        if (colors1[i] == colors2[j]) {
+          set_bit_array(bit_array, j, true); 
+        }
+      }
+      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
+      // can only map vertices of color i to vertices of color i
+    }
+  }
+  
   free_bit_array(bit_array);
 
   // store the values in <MAP>, this is initialised to every bit set to false,
@@ -826,7 +845,7 @@ void DigraphHomomorphisms (Digraph* digraph1,
 
   // get generators of the automorphism group of digraph2, and the orbit reps
   set_perms_degree(NR2);
-  STAB_GENS[0] = automorphisms_digraph(digraph2);
+  STAB_GENS[0] = automorphisms_digraph(digraph2, colors2);
   orbit_reps(0);
 
   // misc parameters
@@ -963,12 +982,13 @@ void DigraphMonomorphisms (Digraph* digraph1,
                            void*     user_param_arg,
                            UIntL     max_results_arg,
                            BitArray* image_arg,
-                           UIntS     *partial_map_arg                     ) {
+                           UIntS     *partial_map_arg,
+                           UIntS     *colors1, 
+                           UIntS     *colors2                           ) {
   
   assert(digraph1 != NULL && digraph2 != NULL);
 
   UIntS      i, j;
-  PermColl*  gens;
   BitArray*  bit_array;
   
   NR1         = digraph1->nr_vertices;
@@ -1031,6 +1051,19 @@ void DigraphMonomorphisms (Digraph* digraph1,
     store_size_conditions(conditions, i);
   }
   
+  if (colors1 != NULL) { // colors1 and colors2 specified
+    for (i = 0; i < NR1; i++) {
+      init_bit_array(bit_array, false);
+      for (j = 0; j < NR2; j++) {
+        if (colors1[i] == colors2[j]) {
+          set_bit_array(bit_array, j, true); 
+        }
+      }
+      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
+      // can only map vertices of color i to vertices of color i
+    }
+  }
+  
   free_bit_array(bit_array);
 
   // store the values in <map>, this is initialised to every bit set to false,
@@ -1051,7 +1084,7 @@ void DigraphMonomorphisms (Digraph* digraph1,
 
   // get generators of the automorphism group of digraph2, and the orbit reps
   set_perms_degree(NR2);
-  STAB_GENS[0] = automorphisms_digraph(digraph2);
+  STAB_GENS[0] = automorphisms_digraph(digraph2, colors2);
   orbit_reps(0);
 
   // misc parameters
@@ -1158,13 +1191,21 @@ static bool inline is_adjacent_graph (Graph* graph,
 // by <graph>.
 ////////////////////////////////////////////////////////////////////////////////
 
-static BlissGraph* new_bliss_graph_from_graph (Graph* graph) {
+static BlissGraph* new_bliss_graph_from_graph (Graph* graph, UIntS* colors) {
   assert(graph != NULL);
   
-  UIntS  i, j;
-  UIntS  n = graph->nr_vertices;
+  UIntS       i, j;
+  BlissGraph* bliss_graph; 
+  UIntS       n = graph->nr_vertices;
 
-  BlissGraph* bliss_graph = bliss_new(n);
+  if (colors == NULL) {
+    bliss_graph = bliss_new(n);
+  } else {
+    bliss_graph = bliss_new(0);
+    for (i = 0; i < n; i++) {
+      bliss_add_vertex(bliss_graph, colors[i]);
+    }
+  } 
 
   for (i = 0; i < n; i++) {       // loop over vertices
     for (j = 0; j < n; j++) {
@@ -1203,10 +1244,10 @@ static void bliss_hook_graph (void               *user_param_arg,  // perm_coll!
 // <graph>.
 ////////////////////////////////////////////////////////////////////////////////
 
-static PermColl* automorphisms_graph (Graph* graph) {
+static PermColl* automorphisms_graph (Graph* graph, UIntS* colors) {
   assert(graph != NULL);
   
-  BlissGraph* bliss_graph = new_bliss_graph_from_graph(graph);
+  BlissGraph* bliss_graph = new_bliss_graph_from_graph(graph, colors);
   PermColl*   gens  = new_perm_coll(graph->nr_vertices - 1);
   bliss_find_automorphisms(bliss_graph, bliss_hook_graph, gens, 0);
   bliss_release(bliss_graph);
@@ -1328,12 +1369,13 @@ void GraphHomomorphisms (Graph*    graph1,
                          UIntL     max_results_arg,
                          int       hint_arg,
                          BitArray* image_arg,
-                         UIntS     *partial_map_arg                     ) {
+                         UIntS     *partial_map_arg,
+                         UIntS     *colors1, 
+                         UIntS     *colors2                           ) {
   
   assert(graph1 != NULL && graph2 != NULL);
   
   UIntS     i, j;
-  PermColl  *gens;
   BitArray* bit_array; 
 
   NR1         = graph1->nr_vertices;
@@ -1385,6 +1427,19 @@ void GraphHomomorphisms (Graph*    graph1,
     store_size_conditions(conditions, i);
   }
   
+  if (colors1 != NULL) { // colors1 and colors2 specified
+    for (i = 0; i < NR1; i++) {
+      init_bit_array(bit_array, false);
+      for (j = 0; j < NR2; j++) {
+        if (colors1[i] == colors2[j]) {
+          set_bit_array(bit_array, j, true); 
+        }
+      }
+      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
+      // can only map vertices of color i to vertices of color i
+    }
+  }
+  
   free_bit_array(bit_array);
 
   // store the values in MAP, this is initialised to every bit set to false,
@@ -1405,7 +1460,7 @@ void GraphHomomorphisms (Graph*    graph1,
 
   // get generators of the automorphism group of graph2, and the orbit reps
   set_perms_degree(NR2);
-  STAB_GENS[0] = automorphisms_graph(graph2);
+  STAB_GENS[0] = automorphisms_graph(graph2, colors2);
   orbit_reps(0);
 
   // misc parameters . . .
@@ -1538,12 +1593,13 @@ void GraphMonomorphisms (Graph*   graph1,
                          void*     user_param_arg,
                          UIntL     max_results_arg,
                          BitArray* image_arg,
-                         UIntS     *partial_map_arg                     ) {
+                         UIntS     *partial_map_arg,
+                         UIntS     *colors1, 
+                         UIntS     *colors2                           ) {
   
   assert(graph1 != NULL && graph2 != NULL);
 
   UIntS      i, j;
-  PermColl*  gens;
   BitArray*  bit_array;
   
   NR1         = graph1->nr_vertices;
@@ -1606,6 +1662,19 @@ void GraphMonomorphisms (Graph*   graph1,
     store_size_conditions(conditions, i);
   }
   
+  if (colors1 != NULL) { // colors1 and colors2 specified
+    for (i = 0; i < NR1; i++) {
+      init_bit_array(bit_array, false);
+      for (j = 0; j < NR2; j++) {
+        if (colors1[i] == colors2[j]) {
+          set_bit_array(bit_array, j, true); 
+        }
+      }
+      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
+      // can only map vertices of color i to vertices of color i
+    }
+  }
+  
   free_bit_array(bit_array);
 
   // store the values in <map>, this is initialised to every bit set to false,
@@ -1626,7 +1695,7 @@ void GraphMonomorphisms (Graph*   graph1,
 
   // get generators of the automorphism group of graph2, and the orbit reps
   set_perms_degree(NR2);
-  STAB_GENS[0] = automorphisms_graph(graph2);
+  STAB_GENS[0] = automorphisms_graph(graph2, colors2);
   orbit_reps(0);
 
   // misc parameters

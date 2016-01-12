@@ -8,6 +8,15 @@
 #############################################################################
 ##
 
+InstallMethod(AsTransformation, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if not IsFunctionalDigraph(digraph) then
+    return fail;
+  fi;
+  return Transformation(Concatenation(OutNeighbours(digraph)));
+end);
+
 InstallMethod(ReducedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -549,4 +558,185 @@ function(graph, reflexive)
   SetIsMultiDigraph(out, false);
   SetIsTransitiveDigraph(out, true);
   return out;
+end);
+
+InstallMethod(DigraphAllSimpleCircuits,
+"for a digraph",
+[IsDigraph],
+function(digraph)
+  local UNBLOCK, CIRCUIT, out, stack, endofstack, gr, scc, n, blocked, B,
+  gr_comp, comp, s, loops, i;
+
+    UNBLOCK := function(u)
+      local w;
+      blocked[u] := false;
+      while not IsEmpty(B[u]) do
+        w := B[u][1];
+        Remove(B[u], 1);
+        if blocked[w] then
+          UNBLOCK(w);
+        fi;
+      od;
+    end;
+
+    CIRCUIT := function(v, component)
+      local f, buffer, dummy, w;
+
+      f := false;
+      endofstack := endofstack + 1;
+      stack[endofstack] := v;
+      blocked[v] := true;
+
+      for w in OutNeighboursOfVertex(component, v) do
+        if w = 1 then
+          buffer := stack{[1 .. endofstack]};
+          Add(out, DigraphVertexLabels(component){buffer});
+          f := true;
+        elif blocked[w] = false then
+          dummy := CIRCUIT(w, component);
+          if dummy then
+            f := true;
+          fi;
+        fi;
+      od;
+
+      if f then
+        UNBLOCK(v);
+      else
+        for w in OutNeighboursOfVertex(component, v) do
+          if not w in B[w] then
+            Add(B[w], v);
+          fi;
+        od;
+      fi;
+
+      endofstack := endofstack - 1;
+      return f;
+    end;
+
+    out := [];
+    stack := [];
+    endofstack := 0;
+
+    # TODO should we also remove multiple edges, as they create extra work?
+    # Reduce the digraph, remove loops, and store the correct vertex labels
+    gr := DigraphRemoveLoops(ReducedDigraph(digraph));
+    if DigraphVertexLabels(digraph) <> DigraphVertices(digraph) then
+      SetDigraphVertexLabels(gr, Filtered(DigraphVertices(digraph),
+                                          x -> OutDegrees(digraph) <> 0));
+    fi;
+
+    # Strongly connected components of the reduced graph
+    scc := DigraphStronglyConnectedComponents(gr);
+
+    # B and blocked only need to be as long as the longest connected component
+    n := Maximum(List(scc.comps, Length));
+    blocked := BlistList([1 .. n], []);
+    B := List([1 .. n], x -> []);
+
+    # Perform algorithm once per connected component of the whole digraph
+    for gr_comp in scc.comps do
+      n := Length(gr_comp);
+      if n = 1 then
+        continue;
+      fi;
+      gr_comp := InducedSubdigraph(gr, gr_comp);
+      comp := gr_comp;
+      s := 1;
+      while s < n do
+        if s <> 1 then
+          comp := InducedSubdigraph(gr_comp, [s .. n]);
+          comp := InducedSubdigraph(comp,
+                                    DigraphStronglyConnectedComponent(comp, 1));
+        fi;
+
+        if not IsEmptyDigraph(comp) then
+          # TODO would it be faster/better to create blocked as a new BlistList?
+          # Are these things already going to be initialised anyway?
+          for i in DigraphVertices(comp) do
+            blocked[i] := false;
+            B[i] := [];
+          od;
+          CIRCUIT(1, comp);
+          s := s + 1;
+        else
+          s := n;
+        fi;
+      od;
+    od;
+    loops := List(DigraphLoops(digraph), x -> [x]);
+    return Concatenation(loops, out);
+end);
+
+# The following method 'DIGRAPHS_Bipartite' was written by Isabella Scott
+# It is the backend to IsBipartiteDigraph, Bicomponents, and DigraphColouring
+# for a 2-colouring
+
+# Can this be improved with a simple depth 1st search to remove need for
+# symmetric closure, etc?
+
+InstallMethod(DIGRAPHS_Bipartite, "for a digraph", [IsDigraph],
+function(digraph)
+  local n, colour, queue, i, node, node_neighbours, root, t;
+
+  n := DigraphNrVertices(digraph);
+  if n < 2 then
+    return [false, fail];
+  elif IsEmptyDigraph(digraph) then
+    t := Concatenation(ListWithIdenticalEntries(n - 1, 1), [2]);
+    return [true, Transformation(t)];
+  fi;
+  digraph := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(digraph));
+  colour := ListWithIdenticalEntries(n, 0);
+
+  #This means there is a vertex we haven't visited yet
+  while 0 in colour do
+    root := Position(colour, 0);
+    colour[root] := 1;
+    queue := [root];
+    Append(queue, OutNeighboursOfVertex(digraph, root));
+    while queue <> [] do
+      #Explore the first element of queue
+      node := queue[1];
+      node_neighbours := OutNeighboursOfVertex(digraph, node);
+      for i in node_neighbours do
+        #If node and its neighbour have the same colour, graph is not bipartite
+        if colour[node] = colour[i] then
+          return [false, fail, fail];
+        elif colour[i] = 0 then # Give i opposite colour to node
+          if colour[node] = 1 then
+            colour[i] := 2;
+          else
+            colour[i] := 1;
+          fi;
+          Add(queue, i);
+        fi;
+      od;
+      Remove(queue, 1);
+    od;
+  od;
+  return [true, Transformation(colour)];
+end);
+
+#
+
+InstallMethod(DigraphBicomponents, "for a digraph", [IsDigraph],
+function(digraph)
+  local b;
+
+  # Attribute only applies to bipartite digraphs
+  if not IsBipartiteDigraph(digraph) then
+    return fail;
+  fi;
+  b := KernelOfTransformation(DIGRAPHS_Bipartite(digraph)[2],
+                              DigraphNrVertices(digraph));
+  return b;
+end);
+
+InstallMethod(DigraphLoops, "for a digraph", [IsDigraph],
+function(gr)
+  if HasDigraphHasLoops(gr) and not DigraphHasLoops(gr) then
+    return [];
+  fi;
+  return Filtered(DigraphVertices(gr), x -> x in OutNeighboursOfVertex(gr, x));
 end);

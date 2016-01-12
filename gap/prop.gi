@@ -336,3 +336,14 @@ function(digraph)
   # Otherwise fall back to the Floyd Warshall version
   return IS_TRANSITIVE_DIGRAPH(digraph);
 end);
+
+#
+
+InstallMethod(IsBipartiteDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if HasDigraphHasLoops(digraph) and DigraphHasLoops(digraph) then
+    return false;
+  fi;
+  return DIGRAPHS_Bipartite(digraph)[1];
+end);

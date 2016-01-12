@@ -1,7 +1,7 @@
 ############################################################################
 ##
 #W  VERSIONS
-#Y  Copyright (C) 2015                                   Julius Jonusas
+#Y  Copyright (C) 2016                                   Julius Jonusas
 ##                                                       James Mitchell
 ##                                                       Michael Torpey
 ##                                                       Wilfred Wilson
@@ -11,4 +11,5 @@
 #############################################################################
 ##
 
+release 0.3 - 12/01/16
 release 0.2 - 04/09/15

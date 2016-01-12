@@ -92,6 +92,19 @@ function(str)
   return Digraph(out);
 end);
 
+InstallGlobalFunction(TCodeDecoderNC,
+function(str)
+  local out, i;
+
+  str := SplitString(str, " ");
+  Apply(str, Int);
+  out := List([1 .. str[1]], x -> []);
+  for i in [1 .. str[2]] do
+    Add(out[str[2 * i + 1] + 1], str[2 * i + 2] + 1);
+  od;
+  return DigraphNC(out);
+end);
+
 #
 
 InstallGlobalFunction(ReadDigraphs,
@@ -202,7 +215,7 @@ function(s)
 
   if Length(s) = 0 then
     ErrorMayQuit("Digraphs: DigraphFromGraph6String: usage,\n",
-                 "the input string has to be non-empty,");
+                 "the input string should be non-empty,");
   fi;
 
   # Convert ASCII chars to integers
@@ -274,6 +287,12 @@ InstallMethod(DigraphFromDigraph6String, "for a string",
 function(s)
   local list, i, n, start, range, source, pos, len, j, bpos, tabpos;
 
+  # Check non-emptiness
+  if Length(s) = 0 then
+    ErrorMayQuit("Digraphs: DigraphFromDigraph6String: usage,\n",
+                 "the input string should be non-empty,");
+  fi;
+
   # Check for the special '+' character
   if s[1] <> '+' then
     ErrorMayQuit("Digraphs: DigraphFromDigraph6String: usage,\n",
@@ -340,6 +359,12 @@ InstallMethod(DigraphFromSparse6String, "for a string",
 function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i,
   finish, x, j;
+
+  # Check non-emptiness
+  if Length(s) = 0 then
+    ErrorMayQuit("Digraphs: DigraphFromSparse6String: usage,\n",
+                 "the input string should be non-empty,");
+  fi;
 
   # Check for the special ':' character
   if s[1] <> ':' then
@@ -665,7 +690,7 @@ function(name, digraphs)
     # Do we know all the graphs to be symmetric?
     if ForAll(digraphs, g -> HasIsSymmetricDigraph(g)
                              and IsSymmetricDigraph(g)) then
-      if ForAll(digraphs, IsMultiDigraph) then
+      if ForAny(digraphs, IsMultiDigraph) then
         encoder := DiSparse6String;
         Add(splitname, "ds6");
       else
@@ -725,7 +750,7 @@ function(name, digraphs)
 
   if file = fail then
     ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
-                 "cannot open file ", filepath, ",\n");
+                 "cannot open file ", filepath, ",");
   fi;
 
   for i in [1 .. Length(digraphs)] do
@@ -964,10 +989,6 @@ function(graph)
   for i in [1 .. bitstopad] do
     Add(blist, true);
   od;
-  if Length(blist) mod 6 <> 0 then
-    ErrorMayQuit("Digraphs: Sparse6String: usage,\n",
-                 "Padding problem,");
-  fi;
 
   # Read blist into list, 6 bits at a time
   pos := 0;
@@ -1124,30 +1145,10 @@ function(graph)
   od;
 
   # Add padding bits:
-  #  1. If (n,k) = (2,1), (4,2), (8,3) or (16,4), and vertex
-  #     n-2 has an edge but n-1 doesn't have an edge, and
-  #     there are k+1 or more bits to pad, then pad with one
-  #     0-bit and enough 1-bits to complete the multiple of 6.
-  #  2. Otherwise, pad with enough 1-bits to complete the
-  #     multiple of 6.
-
   bitstopad := 5 - ((nextbit - 2) mod 6);
-  if ((n = 2 and k = 1) or
-      (n = 4 and k = 2) or
-      (n = 8 and k = 3) or
-      (n = 16 and k = 4)) and
-      (v = n - 2) and
-      (bitstopad > k) then
-    blist[nextbit] := false;
-    bitstopad := bitstopad - 1;
-  fi;
   for i in [1 .. bitstopad] do
     Add(blist, true);
   od;
-  if Length(blist) mod 6 <> 0 then
-    ErrorMayQuit("Digraphs: DiSparse6String: usage,\n",
-                 "Padding problem,");
-  fi;
 
   # Read blist into list, 6 bits at a time
   pos := 0;
@@ -1174,6 +1175,12 @@ function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i, x,
   finish, j;
 
+  # Check non-emptiness
+  if Length(s) = 0 then
+    ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
+                 "the input string should be non-empty,");
+  fi;
+
   # Check for the special ':' character
   if s[1] <> '.' then
     ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
@@ -1193,7 +1200,7 @@ function(s)
   elif list[3] = 63 then
     if Length(list) <= 8 then
       ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
-                   s, " is not a valid disparse6 input,");
+                   "<s> must be a string in disparse6 format,");
     fi;
     n := 0;
     for i in [0 .. 5] do

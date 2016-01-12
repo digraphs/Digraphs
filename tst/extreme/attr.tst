@@ -29,8 +29,16 @@ gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 gap> DigraphSymmetricClosure(gr);
 <digraph with 5000 vertices, 7713076 edges>
 
+#T# DigraphAllSimpleCircuits
+gap> gr := DigraphFromDigraph6String("+N{MYG?cJOU}MqNJLoVPHC?tDlcxgFACCDWxDMX?");
+<digraph with 15 vertices, 92 edges>
+gap> circs := DigraphAllSimpleCircuits(gr);;
+gap> Length(circs);
+1291790
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
+gap> Unbind(circs);
 
 #E#
 gap> STOP_TEST("Digraphs package: extreme/attr.tst");
