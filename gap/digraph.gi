@@ -102,6 +102,7 @@ function(G, obj, act, adj)
   od;
 
   digraph := DigraphNC(out);
+  SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
 
   SetDigraphGroup      (digraph, G     );
   SetDigraphOrbits     (digraph, orbits);
