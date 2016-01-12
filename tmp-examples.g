@@ -3,10 +3,10 @@ group := DihedralGroup(8);
 obj := List(group);
 act := OnRight;
 gens := GeneratorsOfGroup(group);
-adj := function(x,y) 
-return x^-1*y in gens;
+adj := function(x, y)
+  return x ^ -1 * y in gens;
 end;
-graph := Digraph(group,obj,act,adj);
+graph := Digraph(group, obj, act, adj);
 
 #a so called dual polar graph: the vertices are the set of totally isotropic spaces with relation to a sesquilinear form. Two vertices are adjacent iff they have only the zero vector in common.
 #in this easy example the polar space comes from a hermitian form on a five dimensional projective space. We know that cliques should have size at most q^3+1.

@@ -9,6 +9,7 @@
 ##
 
 DeclareGlobalFunction("DIGRAPHS_Orbits");
+DeclareGlobalFunction("DIGRAPHS_TraceSchreierVector");
 
 DeclareAttribute("DigraphGroup", IsDigraph);
 DeclareAttribute("DigraphOrbits", IsDigraph);

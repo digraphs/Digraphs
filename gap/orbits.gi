@@ -8,6 +8,19 @@
 #############################################################################
 ##
 
+InstallGlobalFunction(DIGRAPHS_TraceSchreierVector,
+function(gens, sch, r)
+  local word, w;
+  word := [];
+  w := sch[r];
+  while w > 0 do
+    Add(word, w);
+    r := r / gens[w];
+    w := sch[r];
+  od;
+  return rec(word := Reversed(word), representative := r);
+end);
+
 # This is arranged like this in case we want to change the method in future,
 # and also to allow its use **before** the creation of a digraph (such as when
 # the group is given as an argument to the constructor).

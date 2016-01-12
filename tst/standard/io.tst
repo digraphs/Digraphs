@@ -460,11 +460,11 @@ cannot open file does/not/exist.d6.gz,
 gap> Graph6String(ChainDigraph(4));
 Error, Digraphs: Graph6String: usage,
 <graph> must be symmetric and have no loops or multiple edges,
-gap> Graph6Length(-1);
+gap> DIGRAPHS_Graph6Length(-1);
 fail
-gap> Graph6Length(68719476737);
+gap> DIGRAPHS_Graph6Length(68719476737);
 fail
-gap> Graph6Length(258748);
+gap> DIGRAPHS_Graph6Length(258748);
 [ 63, 63, 0, 0, 0, 63, 10, 60 ]
 gap> WriteDigraphs(1, 1);
 Error, Digraphs: WriteDigraphs: usage,

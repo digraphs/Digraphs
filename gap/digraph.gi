@@ -8,19 +8,6 @@
 #############################################################################
 ##
 
-BindGlobal("DIGRAPHS_TraceSchreierVector",
-function(gens, sch, r)
-  local word, w;
-  word := [];
-  w := sch[r];
-  while w > 0 do
-    Add(word, w);
-    r := r / gens[w];
-    w := sch[r];
-  od;
-  return rec(word := Reversed(word), representative := r);
-end);
-
 InstallMethod(Digraph,
 "for a list and function",
 [IsList, IsFunction],
