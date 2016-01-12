@@ -48,6 +48,8 @@ DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
 DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
 DeclareGlobalFunction("DigraphTransitiveClosureNC");
 
+DeclareAttribute("DigraphAdjacencyFunction", IsDigraph);
+
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("ReducedDigraph", IsDigraph);
 

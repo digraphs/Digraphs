@@ -977,20 +977,27 @@ end);
 InstallMethod(IsDigraphEdge, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edge)
+  if Length(edge) <> 2 or not IsPosInt(edge[1]) or not IsPosInt(edge[2]) then
+    return false;
+  fi;
+  return IsDigraphEdge(digraph, edge[1], edge[2]);
+end);
+
+InstallMethod(IsDigraphEdge, "for a digraph, pos int, pos int",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, u, v)
   local n;
 
   n := DigraphNrVertices(digraph);
-  if Length(edge) <> 2 or not IsPosInt(edge[1]) or not IsPosInt(edge[2])
-      or n < edge[1] or n < edge[2] then
+
+  if u > n or v > n then
     return false;
+  elif HasAdjacencyMatrix(digraph) then
+    return AdjacencyMatrix(digraph)[u][v] <> 0;
+  elif IsDigraphWithAdjacencyFunction(digraph) then
+    return DigraphAdjacencyFunction(digraph)(u, v);
   fi;
-  if HasAdjacencyMatrix(digraph) then
-    return AdjacencyMatrix(digraph)[edge[1]][edge[2]] <> 0;
-  fi;
-  if edge[2] in OutNeighboursOfVertex(digraph, edge[1]) then
-    return true;
-  fi;
-  return false;
+  return v in OutNeighboursOfVertex(digraph, u);
 end);
 
 #
