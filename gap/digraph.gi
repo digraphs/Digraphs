@@ -10,12 +10,12 @@
 
 BindGlobal("DIGRAPHS_TraceSchreierVector", 
 function(gens, sch, r)
-  local word,w;
+  local word, w;
   word := []; 
   w := sch[r];
   while w > 0 do
-    Add(word,w); 
-    r := r/gens[w]; 
+    Add(word, w); 
+    r := r / gens[w]; 
     w := sch[r];
   od;
   return rec(word := Reversed(word), representative := r);
@@ -61,7 +61,7 @@ function(G, obj, act, adj)
 
   sch  := record.schreier;
   out  := EmptyPlist(Size(obj));
-  gens := GeneratorsOfGroup(G);
+  gens := GeneratorsOfGroup(Range(hom));
 
   for i in [1 .. Length(sch)] do 
     if sch[i] < 0 then 
