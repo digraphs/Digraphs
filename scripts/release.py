@@ -10,6 +10,7 @@ import textwrap, os, argparse, tempfile, subprocess, sys, os, re, shutil, gzip
 import test, time, webbrowser, urllib, dots
 
 from test import pad
+from test import blue_string
 
 _WEBPAGE_DIR = os.path.expanduser('~/Sites/public_html/digraphs/')
 _MAMP_DIR = '/Applications/MAMP/'
@@ -30,7 +31,7 @@ def _red_string(string, wrap=True):
 
 def _green_string(string):
     'green string'
-    return '\n'.join(_WRAPPER.wrap('\033[1;32m' + string + '\033[0m'))
+    return '\n'.join(_WRAPPER.wrap('\033[32m' + string + '\033[0m'))
 
 def _cyan_string(string):
     'cyan string'
@@ -273,7 +274,7 @@ def main():
         sys.exit(_red_string('release.py: error: date in PackageInfo.g ' +
                              'is not today!'))
 
-    print _magenta_string('The version number is: ' + vers)
+    print blue_string('The version number is: ' + vers)
     if args.verbose:
         print _cyan_string('Using temporary directory: ' + tmpdir)
 
@@ -311,7 +312,7 @@ def main():
         sys.exit(_red_string('release.py: error: could not delete scripts/*'))
 
     if args.skip_tests:
-        print _magenta_string('Skipping tests . . .')
+        print _magenta_string(pad('Skipping tests') + ' . . .')
     else:
         print _magenta_string(pad('Running the tests on the archive') + ' . . .')
         os.chdir(tmpdir_base)
@@ -337,7 +338,7 @@ def main():
                                 os.path.join(directory, 'pkg/digraphs'))
                 shutil.rmtree(digraphs_dir)
 
-    print _magenta_string('Creating the tarball . . .')
+    print _magenta_string(pad('Creating the tarball') + ' . . .')
     os.chdir(tmpdir)
     _delete_generated_build_files(args.verbose)
     os.chdir(tmpdir_base)
@@ -355,7 +356,7 @@ def main():
     _exec('tar -cpf digraphs-' + vers + '.tar digraphs-' + vers +
           '; gzip -9 digraphs-' + vers + '.tar', args.verbose)
 
-    print _magenta_string('Copying to webpage . . .')
+    print _magenta_string(pad('Copying to webpage') + ' . . .')
     try:
         os.chdir(tmpdir_base)
         shutil.copy('digraphs-' + vers + '.tar.gz', _WEBPAGE_DIR)
@@ -370,10 +371,10 @@ def main():
         sys.exit(_red_string(str(e)))
 
     os.chdir(_WEBPAGE_DIR)
-    print _magenta_string('Adding archive to webpage repo . . .')
+    print _magenta_string(pad('Adding archive to webpage repo') + ' . . .')
     _exec('hg add digraphs-' + vers + '.tar.gz', args.verbose)
     _exec('hg addremove', args.verbose)
-    print _magenta_string('Committing webpage repo . . .')
+    print _magenta_string(pad('Committing webpage repo') + ' . . .')
     _exec('hg commit -m "Releasing digraphs ' + vers + '"', args.verbose)
 
     _start_mamp()
@@ -384,24 +385,24 @@ def main():
     if not publish:
         sys.exit(_red_string('Aborting!'))
 
-    print _magenta_string('Pushing webpage to server . . .')
+    print _magenta_string(pad('Pushing webpage to server') + ' . . .')
     _exec('hg push', args.verbose)
     os.chdir(_DIGRAPHS_REPO_DIR)
 
-    print _magenta_string('Merging ' + vers + ' into default . . .')
+    print _magenta_string(pad('Merging ' + vers + ' into default') + ' . . .')
     _exec('hg up -r default', args.verbose)
     _exec('hg merge -r ' + vers, args.verbose)
     _exec('hg commit -m "Merge from' + vers + '"', args.verbose)
 
-    print _magenta_string('Closing branch ' + vers + ' . . .')
+    print _magenta_string(pad('Closing branch ' + vers) + ' . . .')
     _exec('hg up -r ' + vers, args.verbose)
     _exec('hg commit --close-branch -m "closing branch"', args.verbose)
 
-    print _magenta_string('Updating to default branch . . .')
+    print _magenta_string(pad('Updating to default branch') + ' . . .')
     _exec('hg up -r default', args.verbose)
 
-    print _magenta_string('Don\'t forget to check everything is ok at:' +
-                          'http://www.gap-system.org/Packages/Authors/authors.html')
+    print blue_string('Don\'t forget to check everything is ok at: ' +
+                      'http://www.gap-system.org/Packages/Authors/authors.html')
     print _green_string('SUCCESS!')
     sys.exit(1)
 
