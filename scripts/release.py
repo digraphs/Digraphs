@@ -4,6 +4,8 @@ Create the archive of the Digraphs package for release, and copy the relevant
 things to the webpage.
 '''
 
+# TODO check that GAPVERS and dependencies have the same gap version number
+
 import textwrap, os, argparse, tempfile, subprocess, sys, os, re, shutil, gzip
 import test, time, webbrowser, urllib, dots
 
