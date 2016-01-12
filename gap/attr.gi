@@ -39,7 +39,7 @@ InstallMethod(DigraphGroup, "for a digraph",
 
 # this is arranged like this in case we want to change the method in future,
 # and also to allow its use **before** the creation of a digraph (such as when
-# the group is given as an argument to the constructor.
+# the group is given as an argument to the constructor).
 
 InstallMethod(DigraphOrbits, "for a group with known generators and a list",
 [IsGroup and HasGeneratorsOfGroup, IsList, IsPosInt],
@@ -218,6 +218,9 @@ function(digraph)
   od;
   gr := DigraphNC(new);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
+  if HasDigraphGroup(digraph) then
+    SetDigraphGroup(gr, DigraphGroup(digraph));
+  fi;
   return gr;
 end);
 
@@ -414,7 +417,7 @@ end);
 
 #
 
-InstallMethod(OutDegreeSequence, "for a digraph",
+InstallMethod(OutDegreeSequence, "for a digraph with known digraph group",
 [IsDigraph and HasDigraphGroup],
 function(digraph)
   local out, adj, orbs, orb;
@@ -460,7 +463,8 @@ end);
 
 #
 
-InstallMethod(InDegreeSequence, "for a digraph",
+InstallMethod(InDegreeSequence,
+"for a digraph with known digraph group and in-neighbours",
 [IsDigraph and HasDigraphGroup and HasInNeighbours],
 function(digraph)
   local out, adj, orbs, orb;
