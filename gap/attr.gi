@@ -504,34 +504,7 @@ end);
 
 #
 
-InstallMethod(DigraphDiameter, "for a digraph",
-[IsDigraph],
-function(digraph)
-  if not (HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1) then
-    return DIGRAPH_DIAMETER(digraph);
-  fi;
-  return DIGRAPHS_DiameterAndGirth(digraph).diameter;
-end);
-
-#
-
-InstallMethod(DigraphGirth, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local result;
-  if DigraphHasLoops(digraph) then
-    return 1;
-  fi;
-  result := DIGRAPHS_DiameterAndGirth(digraph);
-  if IsBound(result.girth) then
-    return result.girth;
-  fi;
-  TryNextMethod();
-end);
-
-#
-
-InstallGlobalFunction(DIGRAPHS_DiameterAndGirth,
+BindGlobal("DIGRAPHS_DiameterAndGirth",
 function(digraph)
   local outer_reps, out_nbs, diameter, girth, v, record, orbnum, reps, i, next,
   laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
@@ -616,6 +589,33 @@ function(digraph)
   SetDigraphDiameter(digraph, diameter);
   SetDigraphGirth(digraph, girth);
   return rec(diameter := diameter, girth := girth);
+end);
+
+#
+
+InstallMethod(DigraphDiameter, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if not (HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1) then
+    return DIGRAPH_DIAMETER(digraph);
+  fi;
+  return DIGRAPHS_DiameterAndGirth(digraph).diameter;
+end);
+
+#
+
+InstallMethod(DigraphGirth, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local result;
+  if DigraphHasLoops(digraph) then
+    return 1;
+  fi;
+  result := DIGRAPHS_DiameterAndGirth(digraph);
+  if IsBound(result.girth) then
+    return result.girth;
+  fi;
+  TryNextMethod();
 end);
 
 #

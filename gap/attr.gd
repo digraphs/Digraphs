@@ -56,5 +56,3 @@ DeclareAttribute("ReducedDigraph", IsDigraph);
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
 DeclareAttribute("AsTransformation", IsDigraph);
-
-DeclareGlobalFunction("DIGRAPHS_DiameterAndGirth");
