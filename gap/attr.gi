@@ -8,6 +8,13 @@
 #############################################################################
 ##
 
+InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
+function(digraph)
+  return function(x, y) 
+    return IsDigraphEdge(digraph, x, y);
+  end;
+end);
+
 BindGlobal("DIGRAPHS_OrbitNumbers",
 function(G, v, n)
   local orbits, out, i, j;
