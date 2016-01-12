@@ -719,6 +719,21 @@ true
 gap> IsBipartiteDigraph(gr);
 false
 
+#T# IsIn/OutRegularDigraph
+gap> gr := Digraph([[1,2,3,4], [], [], []]);;
+gap> IsInRegularDigraph(gr);
+true
+gap> IsOutRegularDigraph(gr);
+false
+gap> gr := CompleteDigraph(4);;
+gap> IsInRegularDigraph(gr);
+true
+gap> IsOutRegularDigraph(gr);
+true
+gap> gr := CompleteDigraph(4);;
+gap> IsRegularDigraph(gr);
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);

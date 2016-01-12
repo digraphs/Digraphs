@@ -418,6 +418,10 @@ function(digraph)
   for orb in orbs do
     Append(out, [1 .. Length(orb)] * 0 + Length(adj[orb[1]]));
   od; 
+  Sort(out,
+       function(a, b)
+         return b < a;
+       end);
   return out;
 end);
 
@@ -460,6 +464,10 @@ function(digraph)
   for orb in orbs do
     Append(out, [1 .. Length(orb)] * 0 + Length(adj[orb[1]]));
   od; 
+  Sort(out,
+       function(a, b)
+         return b < a;
+       end);
   return out;
 end);
 

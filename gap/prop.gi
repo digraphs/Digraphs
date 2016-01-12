@@ -347,3 +347,24 @@ function(digraph)
   fi;
   return DIGRAPHS_Bipartite(digraph)[1];
 end);
+
+#
+
+InstallMethod(IsInRegularDigraph, "for a digraph", [IsDigraph],
+function(digraph)
+  return Length(InDegreeSet(digraph)) = 1;
+end);
+
+#
+
+InstallMethod(IsOutRegularDigraph, "for a digraph", [IsDigraph],
+function(digraph)
+  return Length(OutDegreeSet(digraph)) = 1;
+end);
+
+# 
+
+InstallMethod(IsRegularDigraph, "for a digraph", [IsDigraph],
+function(digraph)
+  return IsInRegularDigraph(digraph) and IsOutRegularDigraph(digraph); 
+end);
