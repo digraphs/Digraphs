@@ -211,6 +211,9 @@ function(digraph)
   od;
   gr := DigraphNC(new);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
+  if HasDigraphGroup(digraph) then
+    SetDigraphGroup(gr, DigraphGroup(digraph));
+  fi;
   return gr;
 end);
 
