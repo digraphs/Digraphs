@@ -407,6 +407,22 @@ end);
 
 #
 
+InstallMethod(OutDegreeSequence, "for a digraph",
+[IsDigraph and HasDigraphGroup],
+function(digraph)
+  local out, adj, orbs, orb;
+
+  out := [];
+  adj := OutNeighbours(digraph);
+  orbs := DigraphOrbits(digraph);
+  for orb in orbs do
+    Append(out, [1 .. Length(orb)] * 0 + Length(adj[orb[1]]));
+  od; 
+  return out;
+end);
+
+#
+
 InstallMethod(OutDegreeSet, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -428,6 +444,22 @@ function(digraph)
        function(a, b)
          return b < a;
        end);
+  return out;
+end);
+
+#
+
+InstallMethod(InDegreeSequence, "for a digraph",
+[IsDigraph and HasDigraphGroup and HasInNeighbours],
+function(digraph)
+  local out, adj, orbs, orb;
+
+  out := [];
+  adj := InNeighbours(digraph);
+  orbs := DigraphOrbits(digraph);
+  for orb in orbs do
+    Append(out, [1 .. Length(orb)] * 0 + Length(adj[orb[1]]));
+  od; 
   return out;
 end);
 
