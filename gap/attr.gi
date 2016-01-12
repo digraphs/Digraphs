@@ -407,6 +407,17 @@ end);
 
 #
 
+InstallMethod(OutDegreeSet, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out;
+
+  out := ShallowCopy(OutDegrees(digraph));
+  return Set(out);
+end);
+
+#
+
 InstallMethod(InDegreeSequence, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -418,6 +429,17 @@ function(digraph)
          return b < a;
        end);
   return out;
+end);
+
+#
+
+InstallMethod(InDegreeSet, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out;
+
+  out := ShallowCopy(InDegrees(digraph));
+  return Set(out);
 end);
 
 #
