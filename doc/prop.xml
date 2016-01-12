@@ -422,3 +422,68 @@ false]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsInRegularDigraph">
+<ManSection>
+  <Prop Name="IsInRegularDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if there is an integer <K>n</K> such that
+    for every vertex <K>v</K> of digraph <A>digraph</A> there are exactly
+    <K>n</K> edges terminating in <K>v</K>. 
+
+    See also <Ref Attr="IsOutRegularDigraph"/> and <Ref
+	    Attr="IsRegularDigraph"/>.
+    <Example><![CDATA[
+gap> IsInRegularDigraph(CompleteDigraph(4));
+true
+gap> IsInRegularDigraph(ChainDigraph(4));
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsOutRegularDigraph">
+<ManSection>
+  <Prop Name="IsOutRegularDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if there is an integer <K>n</K> such that
+    for every vertex <K>v</K> of digraph <A>digraph</A> there are exactly
+    <K>n</K> edges starting at <K>v</K>. 
+
+    See also <Ref Attr="IsInRegularDigraph"/> and <Ref
+	    Attr="IsRegularDigraph"/>.
+    <Example><![CDATA[
+gap> IsOutRegularDigraph(CompleteDigraph(4));
+true
+gap> IsOutRegularDigraph(ChainDigraph(4));
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsRegularDigraph">
+<ManSection>
+  <Prop Name="IsRegularDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if there is an integer <K>n</K> such that
+    for every vertex <K>v</K> of digraph <A>digraph</A> there are exactly
+    <K>n</K> edges starting and terminating at <K>v</K>. In other words,
+    the property is <K>true</K> if <A>digraph</A> is both in-regular and
+    and out-regular.
+
+    See also <Ref Attr="IsInRegularDigraph"/> and <Ref
+	    Attr="IsOutRegularDigraph"/>.
+    <Example><![CDATA[
+gap> IsRegularDigraph(CompleteDigraph(4));
+true
+gap> IsRegularDigraph(ChainDigraph(4));
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
