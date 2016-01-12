@@ -11,6 +11,8 @@
 # category, family, type, representations . . .
 
 DeclareCategory("IsDigraph", IsObject);
+DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
+
 # meaning it really has multiple edges!!
 DeclareProperty("IsMultiDigraph", IsDigraph);
 
@@ -24,7 +26,7 @@ BindGlobal("DigraphType", NewType(DigraphFamily,
 
 DeclareOperation("Digraph", [IsRecord]);
 DeclareOperation("Digraph", [IsList]);
-DeclareOperation("Digraph", [IsPosInt, IsFunction]);
+DeclareOperation("Digraph", [IsList, IsFunction]);
 DeclareOperation("Digraph", [IsInt, IsList, IsList]);
 DeclareOperation("Digraph", [IsList, IsList, IsList]);
 DeclareOperation("Digraph", [IsBinaryRelation]);
