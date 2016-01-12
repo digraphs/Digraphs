@@ -9,7 +9,7 @@
 #############################################################################
 ##
 
-DeclareAttribute("DigraphMaxCliques", IsDigraph);
+DeclareAttribute("MaximalCliques", IsDigraph);
 
 DeclareGlobalFunction("DigraphBronKerbosch");
 DeclareGlobalFunction("DigraphBronKerboschPivot");

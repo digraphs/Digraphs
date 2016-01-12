@@ -21,5 +21,5 @@ ReadPackage("digraphs/gap/display.gi");
 ReadPackage("digraphs/gap/bliss.gi");
 ReadPackage("digraphs/gap/io.gi");
 ReadPackage("digraphs/gap/grahom.gi");
-ReadPackage("digraphs/gap/maxcliq.gi");
+ReadPackage("digraphs/gap/cliques.gi");
 ReadPackage("digraphs/gap/stabs.gi");
