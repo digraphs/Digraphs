@@ -1093,6 +1093,18 @@ gap> G := DihedralGroup(8);
 gap> digraph := Digraph(AsSet(G), ReturnTrue);
 <digraph with 8 vertices, 64 edges>
 
+#T# Digraphs with known automorphisms
+gap> gr := Digraph([ [  ], [  ], [  ], [  ], [ 1, 2, 3, 4, 5 ] ]);;
+gap> adj := function(x, y)
+> return x = 5;
+> end;;
+gap> gr2 := Digraph(SymmetricGroup([1 .. 4]), [1 .. 5], OnPoints, adj);;
+gap> gr3 := Digraph(Group((1, 2, 3, 4)), [1 .. 5], OnPoints, adj);;
+gap> gr = gr2;
+true
+gap> gr = gr3;
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);
 gap> Unbind(j);
