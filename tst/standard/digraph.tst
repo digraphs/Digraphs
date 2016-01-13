@@ -1105,6 +1105,56 @@ true
 gap> gr = gr3;
 true
 
+#T# LineDigraph 
+gap> gr := LineUndirectedDigraph(CompleteDigraph(3));
+<digraph with 3 vertices, 6 edges>
+gap> gr = CompleteDigraph(3);
+true
+gap> gr := LineDigraph(CompleteDigraph(3));                        
+<digraph with 6 vertices, 12 edges>
+gap> OutNeighbours(gr);
+[ [ 3, 4 ], [ 5, 6 ], [ 1, 2 ], [ 5, 6 ], [ 1, 2 ], [ 3, 4 ] ]
+gap> gr := LineUndirectedDigraph(CompleteDigraph(4));;
+gap> OutNeighbours(gr);
+[ [ 2, 3, 4, 5 ], [ 1, 3, 4, 6 ], [ 1, 2, 5, 6 ], [ 1, 2, 5, 6 ], 
+  [ 1, 3, 4, 6 ], [ 2, 3, 4, 5 ] ]
+gap> gr := Digraph([[2, 4], [1, 3, 4], [2, 4], [1, 2, 3]]);
+<digraph with 4 vertices, 10 edges>
+gap> gr2 := LineUndirectedDigraph(gr);
+<digraph with 5 vertices, 16 edges>
+gap> OutNeighbours(gr2);
+[ [ 2, 3, 4 ], [ 1, 4, 5 ], [ 1, 4, 5 ], [ 1, 2, 3, 5 ], [ 2, 3, 4 ] ]
+gap> gr := Digraph([ [2, 4], [3], [1, 2, 4], [3] ]);
+<digraph with 4 vertices, 7 edges>
+gap> gr2 := LineDigraph(gr);
+<digraph with 7 vertices, 12 edges>
+gap> OutNeighbours(gr2);
+[ [ 3 ], [ 7 ], [ 4, 5, 6 ], [ 1, 2 ], [ 3 ], [ 7 ], [ 4, 5, 6 ] ]
+gap> gr := CompleteDigraph(6);;
+gap> gr2 := LineUndirectedDigraph(gr);
+<digraph with 15 vertices, 120 edges>
+gap> DigraphGroup(gr);
+Group([ (5,6), (4,5), (3,4), (2,3), (1,2) ])
+gap> gr3 := LineUndirectedDigraph(gr);
+<digraph with 15 vertices, 120 edges>
+gap> gr2 = gr3;
+true
+gap> gr := CycleDigraph(8);   
+<digraph with 8 vertices, 8 edges>
+gap> gr2 := LineDigraph(gr);
+<digraph with 8 vertices, 8 edges>
+gap> DigraphGroup(gr);
+Group([ (1,2,3,4,5,6,7,8) ])
+gap> gr3 := LineDigraph(gr);  
+<digraph with 8 vertices, 8 edges>
+gap> gr2 = gr3;
+true
+gap> gr := ChainDigraph(4);
+<digraph with 4 vertices, 3 edges>
+gap> LineUndirectedDigraph(gr);
+Error, Digraphs: LineUndirectedDigraph: usage,
+the argument <digraph> must be a symmetric digraph,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);
 gap> Unbind(j);

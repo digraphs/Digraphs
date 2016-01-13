@@ -547,7 +547,7 @@ function(digraph)
     next            := [orbnum[v]];
     laynum          := [1 .. Length(reps)] * 0;
     laynum[next[1]] := 1;
-    localGirth      := -1;
+    localGirth      := - 1;
     layers          := [next];
 
     while Length(next) > 0 do
@@ -570,10 +570,10 @@ function(digraph)
             laynum[orbnum[y]] := i + 1;
           fi;
         od;
-        if (localGirth = -1 or localGirth = 2 * i - 1) and nprev > 1 then
+        if (localGirth = - 1 or localGirth = 2 * i - 1) and nprev > 1 then
           localGirth := 2 * (i - 1);
         fi;
-        if localGirth = -1 and nhere > 0 then
+        if localGirth = - 1 and nhere > 0 then
           localGirth := 2 * i - 1;
         fi;
       od;
@@ -675,7 +675,7 @@ function(digraph)
             Add(new[j], i);
           od;
         elif x < 0 then
-          for k in [1 .. -x] do
+          for k in [1 .. - x] do
             Add(new[i], j);
           od;
         fi;
