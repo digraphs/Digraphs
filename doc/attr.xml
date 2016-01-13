@@ -688,6 +688,42 @@ gap> DigraphUndirectedGirth(gr);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphGirth">
+<ManSection>
+  <Attr Name="DigraphGirth" Arg="digraph"/>
+  <Returns>An integer or <C>infinity</C>.</Returns>
+  <Description>
+    The <E>girth</E> of a digraph is the length of its shortest simple cycle,
+    i.e. the shortest non-trivial directed path starting and ending at the same
+    vertex and passing through no vertex more than once. <P/>
+
+    If <A>digraph</A> has no cycles, then this function will return
+    <C>infinity</C>.  If <A>digraph</A> contains a loop, then this function will
+    return <C>1</C>. <P/>
+
+    The method used in this function is a version of the Floyd-Warshall
+    algorithm, and has complexity <M>O(n^3)</M>, where <A>n</A> is the number of
+    vertices in <A>digraph</A>. <P/>
+
+    For symmetric digraphs, see also <Ref Oper="DigraphUndirectedGirth"/>. <P/>
+    <Example><![CDATA[
+gap> gr := Digraph([[1], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> DigraphGirth(gr);
+1
+gap> gr := Digraph([[2, 3], [3], [4], []]);
+<digraph with 4 vertices, 4 edges>
+gap> DigraphGirth(gr);
+infinity
+gap> gr := Digraph([[2, 3], [3], [4], [1]]);
+<digraph with 4 vertices, 5 edges>
+gap> DigraphGirth(gr);
+3
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="ReducedDigraph">
 <ManSection>
   <Attr Name="ReducedDigraph" Arg="digraph"/>
