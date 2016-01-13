@@ -178,14 +178,13 @@ def _copy_build_files(dst, verbose):
     shutil.copytree('cnf', dst + '/cnf')
 
 def _delete_generated_build_files(verbose):
-    for filename in ['aclocal.m4', 'autom4te.cache', 'config.log',
-                     'config.status']:
+    for filename in ['config.log', 'config.status']:
         if os.path.exists(filename) and os.path.isfile(filename):
             if verbose:
                 print _cyan_string('Deleting ' + filename +
                                    ' from the archive . . .')
             os.remove(filename)
-    for directory in ['libtool', 'digraphs-lib', 'm4']:
+    for directory in ['digraphs-lib']:
         if os.path.exists(directory) and os.path.isdir(directory):
             if verbose:
                 print _cyan_string('Deleting ' + directory
@@ -193,9 +192,9 @@ def _delete_generated_build_files(verbose):
             shutil.rmtree(directory)
 
 def _download_digraphs_lib(dst, verbose):
-    urllib.urlretrieve('https://bitbucket.org/james-d-mitchell/digraphs/downloads/digraphs-lib-0.2.tar.gz',
-            'digraphs-lib-0.2.tar.gz')
-    _exec('tar -xzf digraphs-lib-0.2.tar.gz', verbose)
+    urllib.urlretrieve('https://bitbucket.org/james-d-mitchell/digraphs/downloads/digraphs-lib-0.3.tar.gz',
+            'digraphs-lib-0.3.tar.gz')
+    _exec('tar -xzf digraphs-lib-0.3.tar.gz', verbose)
     shutil.copytree('digraphs-lib', dst + '/digraphs-lib')
 
 def _delete_xml_files(docdir, verbose):
@@ -288,7 +287,7 @@ def main():
     _copy_doc(tmpdir + '/doc/', args.verbose)
     _copy_build_files(tmpdir, args.verbose)
     if not args.skip_tests:
-        print _magenta_string(pad('Downloading digraphs-lib-0.2.tar.gz') +
+        print _magenta_string(pad('Downloading digraphs-lib-0.3.tar.gz') +
                               ' . . . '),
         sys.stdout.flush()
         dots.dotIt(test.MAGENTA_DOT, _download_digraphs_lib, tmpdir, args.verbose)
