@@ -39,9 +39,9 @@ Persons := [
     WWWHome       := "http://homepages.vub.ac.be/~jdbeule/",
     PostalAddress := Concatenation([
                      "Vrije Universiteit Brussel, ",
-                     " Vakgroep Wiskunde, "
-                     " Pleinlaan 2, "
-                     " B - 1050 Brussels, "
+                     " Vakgroep Wiskunde, ",
+                     " Pleinlaan 2, ",
+                     " B - 1050 Brussels, ",
                      " Belgium"]),
     Place         := "Brussels",
     Institution   := "Vrije Universiteit Brussel"
