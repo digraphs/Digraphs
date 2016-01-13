@@ -156,7 +156,11 @@ def _get_ready_to_make(pkg_dir, package_name):
 
 def _exec(command):
     try: #FIXME use popen here
-        pro = subprocess.check_call(command + ' &> /dev/null', shell=True)
+        devnull = open(os.devnull, 'w')
+        pro = subprocess.check_call(command,
+                                    stdout=devnull,
+                                    stderr=devnull,
+                                    shell=True)
     except KeyboardInterrupt:
         os.kill(pro.pid, signal.SIGKILL)
         print _red_string('Killed!')
@@ -237,8 +241,8 @@ def digraphs_make_doc(gap_root):
 def run_digraphs_tests(gap_root, pkg_dir, pkg_name):
 
     print ''
-    print _blue_string('Package name is ' + pkg_name + ','),
-    print _blue_string('gap root is ' + gap_root)
+    print blue_string('Package name is ' + pkg_name + ','),
+    print blue_string('gap root is ' + gap_root)
 
     dots.dotIt(CYAN_DOT, _make_clean, gap_root, pkg_dir, pkg_name)
     dots.dotIt(CYAN_DOT, _configure_make, gap_root, pkg_dir, pkg_name)
@@ -259,7 +263,7 @@ def run_digraphs_tests(gap_root, pkg_dir, pkg_name):
     _run_test(gap_root, pad('Compiling the doc'), True, _LOAD, _MAKE_DOC)
 
     print ''
-    print _blue_string('Testing with Grape compiled')
+    print blue_string('Testing with Grape compiled')
     _run_test(gap_root, pad('testinstall.tst'), True, _LOAD, _TEST_INSTALL)
     _run_test(gap_root, pad('manual examples'), True, _LOAD, _TEST_MAN_EX)
     _run_test(gap_root, pad('test standard'), True, _LOAD, _TEST_STANDARD)
@@ -271,7 +275,7 @@ def run_digraphs_tests(gap_root, pkg_dir, pkg_name):
               _test_gap_quick(gap_root))
 
     print ''
-    print _blue_string('Testing with Grape uncompiled')
+    print blue_string('Testing with Grape uncompiled')
     _make_clean(gap_root, pkg_dir, 'grape')
     _run_test(gap_root, pad('testinstall.tst'), True, _LOAD, _TEST_INSTALL)
     _run_test(gap_root, pad('manual examples'), True, _LOAD, _TEST_MAN_EX)
@@ -283,7 +287,7 @@ def run_digraphs_tests(gap_root, pkg_dir, pkg_name):
               _LOAD,
               _test_gap_quick(gap_root))
     print ''
-    print _blue_string('Testing with only needed packages')
+    print blue_string('Testing with only needed packages')
     _run_test(gap_root, pad('testinstall.tst'), True, _LOAD, _TEST_INSTALL)
     _run_test(gap_root, pad('manual examples'), True, _LOAD, _TEST_MAN_EX)
     _run_test(gap_root, pad('test standard'), True, _LOAD, _TEST_STANDARD)
