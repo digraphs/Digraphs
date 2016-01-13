@@ -1042,6 +1042,62 @@ end);
 
 #
 
+InstallMethod(LineDigraph, "for a symmetric digraph",
+[IsDigraph],
+function(digraph)
+  local edges, G, adj;
+
+  edges := DigraphEdges(digraph);
+
+  if HasDigraphGroup(digraph) then
+    G := DigraphGroup(digraph);
+  else
+    G := Group(());
+  fi;
+
+  adj := function(edge1, edge2)
+    if edge1 = edge2 then
+      return false;
+    else
+      return edge1[2] = edge2[1];
+    fi;
+  end;
+
+  return Digraph(G, edges, OnPairs, adj);
+end);
+
+#
+
+InstallMethod(LineUndirectedDigraph, "for a symmetric digraph",
+[IsDigraph],
+function(digraph)
+  local edges, G, adj;
+
+  if not IsSymmetricDigraph(digraph) then
+    ErrorMayQuit("Digraphs: LineUndirectedDigraph: usage,\n",
+                 "the argument <digraph> must be a symmetric digraph,");
+  fi;
+
+  edges := Set(List(DigraphEdges(digraph), x -> Set(x)));
+
+  if HasDigraphGroup(digraph) then
+    G := DigraphGroup(digraph);
+  else
+    G := Group(());
+  fi;
+
+  adj := function(edge1, edge2)
+    if edge1 = edge2 then
+      return false;
+    else
+      return not IsEmpty(Intersection(edge1, edge2));
+    fi;
+  end;
+
+  return Digraph(G, edges, OnSets, adj);
+end);
+
+#
 InstallMethod(PrintString, "for a digraph",
 [IsDigraph],
 function(graph)

@@ -610,3 +610,44 @@ gap> CayleyDigraph(G, [()]);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="LineUndirectedDigraph">
+<ManSection>
+  <Oper Name="LineUndirectedDigraph" Arg="digraph"/>
+  <Oper Name="EdgeUndirectedDigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Given a symmetric digraph <A>digraph</A>, the operation returns a
+    symmetric digraph obtained by associating a vertex with each edge of
+    <A>digraph</A>, ignoring directions and multiplicites, and two vertices
+    are adjecent if and only if the corresponding edges have a vertex in
+    common. 
+    <Example><![CDATA[
+gap> LineUndirectedDigraph(CompleteDigraph(3));
+<digraph with 3 vertices, 6 edges>
+gap> LineUndirectedDigraph(DigraphSymmetricClosure(ChainDigraph(3)));
+<digraph with 2 vertices, 2 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="LineDigraph">
+<ManSection>
+  <Oper Name="LineDigraph" Arg="digraph"/>
+  <Oper Name="EdgeDigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Given a directed digraph <A>digraph</A>, the operation returns a digraph
+    obtained by associating a vertex with each edge of <A>digraph</A>, and
+    there is an edge from a vertex <K>v</K> to a vertex <K>u</K> if and only
+    if the terminal vertex of the edge associated with <K>v</K> is the start
+    vertex of the edge associated with <K>u</K>.  
+    <Example><![CDATA[
+gap> LineDigraph(CompleteDigraph(3));
+<digraph with 6 vertices, 12 edges>
+gap> LineDigraph(ChainDigraph(3));
+<digraph with 2 vertices, 1 edge>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
