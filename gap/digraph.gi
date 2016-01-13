@@ -191,7 +191,8 @@ InstallMethod(BipartiteDoubleDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
   local out, vertices, newvertices, allvertices, newout1,
-    newout2, crossedouts, shift;
+    newout2, crossedouts, shift, double, group, conj, gens,
+    newgens;
   #note that this method is also applicable for digraphs with
   #an adjacency function. however, the resulting double graph
   #will not have an adjacency function anymore, since the
@@ -208,7 +209,18 @@ function(digraph)
   newout1 := List(vertices, x -> List(out[x], y -> y + shift));
   newout2 := List(newvertices, x -> out[x - shift]);
   crossedouts := Concatenation(newout1, newout2);
-  return DigraphNC(crossedouts);
+  double := DigraphNC(crossedouts);
+  #the following piece of code (if loopt) needs further review and testing.
+  if HasDigraphGroup(digraph) then
+    group := DigraphGroup(digraph);
+    gens := GeneratorsOfGroup(group);
+    conj := PermList(Concatenation(List([1 .. shift],
+                     x -> x + shift), [1 .. shift]));
+    newgens := List([1 .. Length(gens)], i -> gens[i] * (gens[i] ^ conj));
+    Add(newgens, conj);
+    SetDigraphGroup(double, Group(newgens));
+  fi;
+  return double;
 end);
 
 InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
