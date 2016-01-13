@@ -91,6 +91,8 @@ function(gr)
       Add(cliques, clique);
     else
 
+      # TODO choose a better pivot than this
+      #   Try one with largest number of outneighbours in 
       # Choose a pivot
       max := 0;
       for v in Concatenation(try_arg, forbid_arg) do
