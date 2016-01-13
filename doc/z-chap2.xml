@@ -43,6 +43,8 @@
     <#Include Label="DigraphDisjointUnion">
     <#Include Label="DigraphEdgeUnion">
     <#Include Label="DigraphJoin">
+    <#Include Label="LineDigraph">
+    <#Include Label="LineUndirectedDigraph">
     <#Include Label="DoubleDigraph">
     <#Include Label="BipartiteDoubleDigraph">
 

@@ -12,6 +12,7 @@
 
 DeclareCategory("IsDigraph", IsObject);
 DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
+DeclareCategory("IsCayleyDigraph", IsObject);
 
 # meaning it really has multiple edges!!
 DeclareProperty("IsMultiDigraph", IsDigraph);
@@ -69,6 +70,10 @@ DeclareOperation("CompleteDigraph", [IsInt]);
 DeclareOperation("EmptyDigraph", [IsInt]);
 DeclareOperation("CycleDigraph", [IsPosInt]);
 DeclareOperation("ChainDigraph", [IsPosInt]);
+DeclareOperation("LineDigraph", [IsDigraph]);
+DeclareOperation("LineUndirectedDigraph", [IsDigraph]);
+DeclareSynonym("EdgeDigraph", LineDigraph);
+DeclareSynonym("EdgeUndirectedDigraph", LineUndirectedDigraph);
 
 DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphVertexLabels", [IsDigraph]);

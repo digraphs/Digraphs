@@ -916,6 +916,69 @@ true
 gap> OutDegreeSequence(gr);
 [ 2, 2, 1, 1 ]
 
+#T# Diameter and UndirectedGirth with known automorphisms
+gap> gr := Digraph([[2,3,4,5], [], [], [], []]);;
+gap> DigraphGroup(gr);
+Group([ (4,5), (3,4), (2,3) ])
+gap> DigraphDiameter(gr);
+fail
+gap> gr := Digraph([[2,3,4,5], [6], [6], [6], [6], [1]]);;
+gap> DigraphGroup(gr);
+Group([ (4,5), (3,4), (2,3) ])
+gap> DigraphDiameter(gr);
+3
+gap> gr := DigraphSymmetricClosure(CycleDigraph(7));;
+gap> DigraphUndirectedGirth(gr);
+7
+gap> DigraphDiameter(gr);
+3
+gap> DigraphGroup(gr) = DihedralGroup(IsPermGroup, 14);
+true
+gap> gr := DigraphSymmetricClosure(CycleDigraph(7));;
+gap> DigraphDiameter(gr);
+3
+gap> DigraphUndirectedGirth(gr);
+7
+gap> DigraphGroup(gr) = DihedralGroup(IsPermGroup, 14);
+true
+gap> gr := Digraph([[], [3], [2]]);;
+gap> DigraphUndirectedGirth(gr);
+infinity
+gap> DigraphDiameter(gr);
+fail
+gap> gr := Digraph([[2, 4], [1, 3], [2, 3], [1, 5], [4, 5]]);;
+gap> DigraphGroup(gr);
+Group([ (2,4)(3,5) ])
+gap> DigraphDiameter(gr);
+4
+gap> DigraphUndirectedGirth(gr);
+1
+gap> gr := Digraph([[2, 2, 4, 4], [1, 1, 3], [2], [1, 1, 5], [4]]);
+<multidigraph with 5 vertices, 12 edges>
+gap> DigraphGroup(gr);
+Group([ (2,4)(3,5) ])
+gap> DigraphDiameter(gr);
+4
+gap> DigraphUndirectedGirth(gr);
+2
+gap> gr := EmptyDigraph(0);;
+gap> DigraphUndirectedGirth(gr);
+infinity
+gap> DigraphDiameter(gr);
+fail
+
+#T# DigraphUndirectedGirth: easy cases
+gap> gr := Digraph([[2], [3], []]);;
+gap> DigraphUndirectedGirth(gr);
+Error, Digraphs: DigraphUndirectedGirth: usage,
+<digraph> must be a symmetric digraph,
+gap> gr := Digraph([[2], [1, 3], [2, 3]]);;
+gap> DigraphUndirectedGirth(gr);
+1
+gap> gr := Digraph([[2, 2], [1, 1, 3], [2]]);;
+gap> DigraphUndirectedGirth(gr);
+2
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);

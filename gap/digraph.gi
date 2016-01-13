@@ -135,7 +135,7 @@ end);
 InstallMethod(CayleyDigraph, "for a group with generators",
 [IsGroup, IsHomogeneousList],
 function(G, gens)
-  local adj;
+  local adj, cayleydigraph;
 
   if not ForAll(gens, x -> x in G) then
     ErrorMayQuit("Digraphs: CayleyDigraph: usage,\n",
@@ -146,8 +146,9 @@ function(G, gens)
   adj := function(x, y)
     return x ^ -1 * y in gens;
   end;
-
-  return Digraph(G, AsList(G), OnRight, adj);
+  cayleydigraph := Digraph(G, AsList(G), OnRight, adj);
+  SetFilterObj(cayleydigraph, IsCayleyDigraph);
+  return cayleydigraph;
 end);
 
 InstallMethod(CayleyDigraph, "for a group with generators",
@@ -191,7 +192,8 @@ InstallMethod(BipartiteDoubleDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
   local out, vertices, newvertices, allvertices, newout1,
-    newout2, crossedouts, shift;
+    newout2, crossedouts, shift, double, group, conj, gens,
+    newgens;
   #note that this method is also applicable for digraphs with
   #an adjacency function. however, the resulting double graph
   #will not have an adjacency function anymore, since the
@@ -208,7 +210,18 @@ function(digraph)
   newout1 := List(vertices, x -> List(out[x], y -> y + shift));
   newout2 := List(newvertices, x -> out[x - shift]);
   crossedouts := Concatenation(newout1, newout2);
-  return DigraphNC(crossedouts);
+  double := DigraphNC(crossedouts);
+  #the following piece of code (if loopt) needs further review and testing.
+  if HasDigraphGroup(digraph) then
+    group := DigraphGroup(digraph);
+    gens := GeneratorsOfGroup(group);
+    conj := PermList(Concatenation(List([1 .. shift],
+                     x -> x + shift), [1 .. shift]));
+    newgens := List([1 .. Length(gens)], i -> gens[i] * (gens[i] ^ conj));
+    Add(newgens, conj);
+    SetDigraphGroup(double, Group(newgens));
+  fi;
+  return double;
 end);
 
 InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
@@ -1097,6 +1110,62 @@ end);
 
 #
 
+InstallMethod(LineDigraph, "for a symmetric digraph",
+[IsDigraph],
+function(digraph)
+  local edges, G, adj;
+
+  edges := DigraphEdges(digraph);
+
+  if HasDigraphGroup(digraph) then
+    G := DigraphGroup(digraph);
+  else
+    G := Group(());
+  fi;
+
+  adj := function(edge1, edge2)
+    if edge1 = edge2 then
+      return false;
+    else
+      return edge1[2] = edge2[1];
+    fi;
+  end;
+
+  return Digraph(G, edges, OnPairs, adj);
+end);
+
+#
+
+InstallMethod(LineUndirectedDigraph, "for a symmetric digraph",
+[IsDigraph],
+function(digraph)
+  local edges, G, adj;
+
+  if not IsSymmetricDigraph(digraph) then
+    ErrorMayQuit("Digraphs: LineUndirectedDigraph: usage,\n",
+                 "the argument <digraph> must be a symmetric digraph,");
+  fi;
+
+  edges := Set(List(DigraphEdges(digraph), x -> Set(x)));
+
+  if HasDigraphGroup(digraph) then
+    G := DigraphGroup(digraph);
+  else
+    G := Group(());
+  fi;
+
+  adj := function(edge1, edge2)
+    if edge1 = edge2 then
+      return false;
+    else
+      return not IsEmpty(Intersection(edge1, edge2));
+    fi;
+  end;
+
+  return Digraph(G, edges, OnSets, adj);
+end);
+
+#
 InstallMethod(PrintString, "for a digraph",
 [IsDigraph],
 function(graph)
