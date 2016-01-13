@@ -126,17 +126,19 @@ end);
 #
 
 DigraphDegeneracyOrdering := function(gr)
-  local n, out, deg_vert, verts_deg, k, i, cont, v, w;
+  local nbs, n, out, deg_vert, m, verts_deg, k, i, v, d, count, w;
 
+  # Assumes undirected, no multiple edges, no loops
   gr := UnderlyingSymmetricGraphOfDigraph(gr);
-
+  nbs := OutNeighbours(gr);
   n := DigraphNrVertices(gr);
   out := EmptyPlist(n);
   deg_vert := ShallowCopy(OutDegrees(gr));
-  verts_deg := List([1 .. Maximum(deg_vert)], x -> []);
+  m := Maximum(deg_vert);
+  verts_deg := List([1 .. m], x -> []);
 
-  # Prepare the set D
-  for v in DigraphVertices(g) do
+  # Prepare the set verts_deg
+  for v in DigraphVertices(gr) do
     if deg_vert[v] = 0 then
       Add(out, v);
     else
@@ -145,126 +147,85 @@ DigraphDegeneracyOrdering := function(gr)
   od;
 
   k := 0;
-
-  for n in [1 .. Length(degs)] do
-    i := 0;
-    cont := true;
-    while cont do
-      if not IsBound(verts[i + 1]) then
-        i := i + 1;
-      elif IsEmpty(verts[i + 1]) then
-        i := i + 1;
-      else
-        cont := false;
-      fi;
-    od;
-
-    # We are actually computing the degeneracy
+  while Length(out) < n do
+    i := First([1 .. m], x -> not IsEmpty(verts_deg[x]));
     k := Maximum(k, i);
-
-    v := Remove(verts[i + 1]);
+    v := Remove(verts_deg[i]);
     Add(out, v);
-    Add(order_set, v);
-
-    for w in InNeighboursOfVertex(g, v) do
-      if not (w in order_set) then
-        Remove(verts[degs[w] + 1], Position(verts[degs[w] + 1], w));
-        if not IsBound(verts[degs[w]]) then
-          verts[degs[w]] := [w];
-        else
-          Add(verts[degs[w]], w);
-        fi;
-
-        degs[w] := degs[w] - 1;
-      fi;
-    od;
-    for w in OutNeighboursOfVertex(g, v) do
-      if not (w in order_set) then
-        Remove(verts[degs[w] + 1], Position(verts[degs[w] + 1], w));
-        if not IsBound(verts[degs[w]]) then
-          verts[degs[w]] := [w];
-        else
-          Add(verts[degs[w]], w);
-        fi;
-        degs[w] := degs[w] - 1;
+    for w in Difference(nbs[v], out) do
+      d := deg_vert[w];
+      Remove(verts_deg[d], Position(verts_deg[d], w)); 
+      d := d - 1;
+      deg_vert[w] := d;
+      if d = 0 then
+        Add(out, w);
+      else
+        Add(verts_deg[d], w);
       fi;
     od;
   od;
-  return out;
+
+  # degeneracy = k
+  Print("degeneracy = ", k, "\n");
+  return out; 
 end;
 
 InstallGlobalFunction(DigraphBronKerboschWithPivotAndOrdering,
-function(g)
-  local cliques, recurse, outer_forbid, outer_try, outer_v, outer_neighbours;
+function(gr)
+  local nbs, degrees, count, recurse, forbid1, try1, cliques,
+  w, o_neighbours;
 
-    cliques := [];
+  gr := UnderlyingSymmetricGraphOfDigraph(gr);
+  nbs := OutNeighbours(gr);
+  degrees := OutDegrees(gr);
 
-    recurse := function(try_arg, forbid_arg, clique_arg, l)
-        local v, ptry, try, neighbours, forbid, n, max, pivot;
+  count := 0;
+  recurse := function(clique, try_arg, forbid_arg)
+    local v, ptry, try, neighbours, forbid, n, max, pivot;
 
-        if IsEmpty(try_arg) and IsEmpty(forbid_arg) then
-            Add(cliques, clique_arg);
-        else
-            # Choosing a pivot
-            pivot := fail;
-            max := 0;
-            for v in Union(try_arg, forbid_arg) do
-                n := InDegreeOfVertex(g, v) + OutDegreeOfVertex(g, v);
-                if n > max then
-                    pivot := v;
-                    max := n;
-                fi;
-            od;
-            forbid := ShallowCopy(forbid_arg);
-            neighbours := Intersection(InNeighboursOfVertex(g, pivot),
-                                       OutNeighboursOfVertex(g, pivot));
-            if pivot in neighbours then
-                Remove(neighbours, Position(neighbours, pivot));
-            fi;
-
-            ptry := Difference(try_arg, neighbours);
-            try := ShallowCopy(try_arg);
-
-            if IsEmpty(ptry) then
-            fi;
-
-            for v in ptry do
-                neighbours := Intersection(InNeighboursOfVertex(g, v),
-                              OutNeighboursOfVertex(g, v));
-                if v in neighbours then
-                    Remove(neighbours, Position(neighbours, v));
-                fi;
-
-                recurse(Intersection(try, neighbours),
-                        Intersection(forbid, neighbours),
-                        Union(clique_arg, [v]),
-                        l + 1);
-
-                Remove(try, Position(try, v));
-                Add(forbid, v);
-            od;
+    count := count + 1;
+    if IsEmpty(try_arg) and IsEmpty(forbid_arg) then
+      Add(cliques, clique);
+    else
+      # Choose a pivot
+      max := -1;
+      for v in Concatenation(try_arg, forbid_arg) do
+        if degrees[v] > max then
+          pivot := v;
+          max := degrees[v];
         fi;
-    end;
+      od;
+      if max = -1 then
+        Print("fail - this is bad,\n");
+      fi;
 
-    outer_forbid := [];
-    outer_try := Reversed(DigraphDegeneracyOrdering(g));
+      try := ShallowCopy(try_arg);
+      forbid := ShallowCopy(forbid_arg);
+      ptry := Difference(try, nbs[pivot]);
+      while not IsEmpty(ptry) do
+        v := Remove(ptry);
+        recurse(Union(clique, [v]),
+                Intersection(try, nbs[v]),
+                Intersection(forbid, nbs[v]));
+        Remove(try, Position(try, v)); # is there a way of getting rid of this?
+        Add(forbid, v);
+      od;
+    fi;
+  end;
 
-    while not IsEmpty(outer_try) do
-        outer_v := Remove(outer_try);
+  try1 := ShallowCopy(DigraphDegeneracyOrdering(gr));
+  forbid1 := [];
+  cliques := [];
+  while not IsEmpty(try1) do
+    w := Remove(try1, 1);
+    recurse([w],
+            Intersection(try1, nbs[w]),
+            Intersection(forbid1, nbs[w]));
+    Add(forbid1, w);
+  od;
 
-        outer_neighbours := Intersection(InNeighboursOfVertex(g, outer_v),
-        OutNeighboursOfVertex(g, outer_v));
-        if outer_v in outer_neighbours then
-            Remove(outer_neighbours, Position(outer_neighbours, outer_v));
-        fi;
-
-        recurse(Intersection(outer_try, outer_neighbours),
-        Intersection(outer_forbid, outer_neighbours), [outer_v], 1);
-
-        Add(outer_forbid, outer_v);
-    od;
-
-    return cliques;
+  Print(count, " recursions\n");
+  return cliques;
 end);
 
 # Version of basic algorithm, non-recursive with stack
