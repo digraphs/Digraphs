@@ -39,7 +39,7 @@ DeclareAttribute("DigraphSources", IsDigraph);
 DeclareAttribute("DigraphSinks", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
-DeclareAttribute("DigraphGirth", IsDigraph);
+DeclareAttribute("DigraphUndirectedGirth", IsDigraph);
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
 DeclareAttribute("DigraphLoops", IsDigraph);
 
@@ -56,5 +56,3 @@ DeclareAttribute("ReducedDigraph", IsDigraph);
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
 DeclareAttribute("AsTransformation", IsDigraph);
-
-DeclareGlobalFunction("DIGRAPHS_DiameterAndGirth");

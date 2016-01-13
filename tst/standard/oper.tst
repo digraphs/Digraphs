@@ -1416,6 +1416,13 @@ gap> DigraphLayers(gr,6);
 [ [ 6 ], [ 7 ], [ 8 ], [ 1 ], [ 2, 5 ], [ 3 ], [ 4 ] ]
 gap> DigraphLayers(gr,7);
 [ [ 7 ], [ 8 ], [ 1 ], [ 2, 5 ], [ 3, 6 ], [ 4 ] ]
+gap> gr := Digraph([ [2,5], [3], [4], [5], [6], [7], [8], [1], [9, 10, 11], [], [] ]);;
+gap> DigraphLayers(gr,1);
+[ [ 1 ], [ 2, 5 ], [ 3, 6 ], [ 4, 7 ], [ 8 ] ]
+gap> DigraphLayers(gr,9);
+[ [ 9 ], [ 10, 11 ] ]
+gap> DigraphLayers(gr,10);
+[ [ 10 ] ]
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
