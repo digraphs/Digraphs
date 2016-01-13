@@ -530,7 +530,7 @@ function(digraph)
   #TODO improve this, really check if the complexity is better with the group
   #or without, or if the group is not known, but the number of vertices makes
   #the usual algorithm impossible.
-
+  
   outer_reps := DigraphOrbitReps(digraph);
   out_nbs    := OutNeighbours(digraph);
   diameter   := 0;
