@@ -6,7 +6,10 @@ things to the webpage.
 
 # TODO
 # 1) check that GAPVERS and dependencies have the same gap version number
-# 2)
+# 2) check VERSIONS and VERSION file
+# 3) check CHANGELOG for entry with correct version number
+# 4) check all occurrences of all version numbers in PackageInfo.g
+# 5) --skip-extreme
 
 import textwrap, os, argparse, tempfile, subprocess, sys, os, re, shutil, gzip
 import test, time, webbrowser, urllib, dots
@@ -180,14 +183,13 @@ def _copy_build_files(dst, verbose):
     shutil.copytree('cnf', dst + '/cnf')
 
 def _delete_generated_build_files(verbose):
-    for filename in ['aclocal.m4', 'autom4te.cache', 'config.log',
-                     'config.status']:
+    for filename in ['config.log', 'config.status']:
         if os.path.exists(filename) and os.path.isfile(filename):
             if verbose:
                 print _cyan_string('Deleting ' + filename +
                                    ' from the archive . . .')
             os.remove(filename)
-    for directory in ['libtool', 'digraphs-lib', 'm4']:
+    for directory in ['digraphs-lib']:
         if os.path.exists(directory) and os.path.isdir(directory):
             if verbose:
                 print _cyan_string('Deleting ' + directory
@@ -195,9 +197,9 @@ def _delete_generated_build_files(verbose):
             shutil.rmtree(directory)
 
 def _download_digraphs_lib(dst, verbose):
-    urllib.urlretrieve('https://bitbucket.org/james-d-mitchell/digraphs/downloads/digraphs-lib-0.2.tar.gz',
-            'digraphs-lib-0.2.tar.gz')
-    _exec('tar -xzf digraphs-lib-0.2.tar.gz', verbose)
+    urllib.urlretrieve('https://bitbucket.org/james-d-mitchell/digraphs/downloads/digraphs-lib-0.3.tar.gz',
+            'digraphs-lib-0.3.tar.gz')
+    _exec('tar -xzf digraphs-lib-0.3.tar.gz', verbose)
     shutil.copytree('digraphs-lib', dst + '/digraphs-lib')
 
 def _delete_xml_files(docdir, verbose):
@@ -220,6 +222,25 @@ def _stop_mamp():
     os.chdir(_MAMP_DIR + 'bin')
     _exec('./stop.sh', False)
     os.chdir(cwd)
+
+def _hg_pending_commits ():
+    pro = subprocess.Popen(('hg', 'summary'),
+                          stdout=subprocess.PIPE)
+    output = subprocess.check_output(('grep', 'commit:'),
+                                     stdin=pro.stdout).rstrip()
+    if output != 'commit: (clean)' and output != 'commit: (head closed)':
+        pro = subprocess.Popen(('hg', 'summary'), stdout=subprocess.PIPE)
+        try:
+            output = subprocess.check_output(('grep', 'commit:.*clean'),
+                                             stdin=pro.stdout).rstrip()
+        except KeyboardInterrupt:
+            pro.terminate()
+            pro.wait()
+            print _red_string('Killed!')
+            sys.exit(1)
+        except:
+            print _red_string('There are uncommited changes! Aborting!')
+            sys.exit(1)
 
 ################################################################################
 # The main event
@@ -262,6 +283,8 @@ def main():
         sys.exit(_red_string('release.py: error: can\'t find package' +
                              ' directory!'))
 
+    _hg_pending_commits()
+
     # get the version number
     vers = _version_number_package_info()
     tmpdir_base = tempfile.mkdtemp()
@@ -290,7 +313,7 @@ def main():
     _copy_doc(tmpdir + '/doc/', args.verbose)
     _copy_build_files(tmpdir, args.verbose)
     if not args.skip_tests:
-        print _magenta_string(pad('Downloading digraphs-lib-0.2.tar.gz') +
+        print _magenta_string(pad('Downloading digraphs-lib-0.3.tar.gz') +
                               ' . . . '),
         sys.stdout.flush()
         dots.dotIt(test.MAGENTA_DOT, _download_digraphs_lib, tmpdir, args.verbose)
