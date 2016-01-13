@@ -28,6 +28,8 @@ gap> HasDigraphSource(gr);
 false
 gap> HasDigraphRange(gr);
 false
+gap> DigraphNrVertices(gr);
+25
 gap> DigraphSource(gr);
 [ 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 
   5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 
@@ -116,6 +118,8 @@ gap> SetDigraphVertexLabels(gr, [4, 3, 2, 1]);
 gap> gr2 := DigraphDual(gr);;
 gap> DigraphVertexLabels(gr2);
 [ 4, 3, 2, 1 ]
+gap> DigraphNrVertices(gr2);
+4
 
 #T# AdjacencyMatrix
 gap> gr := Digraph(rec(nrvertices := 10,
@@ -978,6 +982,37 @@ gap> DigraphUndirectedGirth(gr);
 gap> gr := Digraph([[2, 2], [1, 1, 3], [2]]);;
 gap> DigraphUndirectedGirth(gr);
 2
+
+#T# DigraphGirth
+gap> gr := Digraph([[1], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> DigraphGirth(gr);
+1
+gap> gr := Digraph([[2, 3], [3], [4], []]);
+<digraph with 4 vertices, 4 edges>
+gap> DigraphGirth(gr);
+infinity
+gap> gr := Digraph([[2, 3], [3], [4], [1]]);
+<digraph with 4 vertices, 5 edges>
+gap> DigraphGirth(gr);
+3
+gap> gr := EmptyDigraph(42);;
+gap> DigraphGirth(gr);
+infinity
+gap> gr := EmptyDigraph(0);;
+gap> DigraphGirth(gr);
+infinity
+gap> gr := Digraph([[2], [1]]);;
+gap> DigraphGirth(gr);
+2
+gap> DigraphUndirectedGirth(gr);
+infinity
+gap> gr := Digraph([[2], [1], [4], [5,6], [], []]);;
+gap> DigraphGirth(gr);
+2
+gap> DigraphUndirectedGirth(gr);
+Error, Digraphs: DigraphUndirectedGirth: usage,
+<digraph> must be a symmetric digraph,
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
