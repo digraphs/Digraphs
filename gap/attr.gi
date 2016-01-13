@@ -647,6 +647,32 @@ end);
 
 #
 
+InstallMethod(DigraphGirth, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local girth, out, dist, i, j;
+  if DigraphHasLoops(digraph) then
+    return 1;
+  fi;
+  girth := infinity;
+  out := OutNeighbours(digraph);
+  dist := DigraphShortestDistances(digraph);
+  for i in DigraphVertices(digraph) do
+    for j in out[i] do
+      # distance [j,i] + 1 equals the cycle length
+      if dist[j][i] + 1 < girth then
+        girth := dist[j][i] + 1;
+        if girth = 2 then
+          return girth;
+        fi;
+      fi;
+    od;
+  od;
+  return girth;
+end);
+
+#
+
 InstallMethod(DigraphSymmetricClosure, "for a digraph",
 [IsDigraph],
 function(digraph)
