@@ -565,10 +565,20 @@ end);
 
 InstallMethod(Digraph, "for a record", [IsRecord],
 function(graph)
-  local check_source, cmp, obj, i, m;
+  local digraph, m, check_source, cmp, obj, i;
 
   if IsGraph(graph) then
-    return DigraphNC(List(Vertices(graph), x -> Adjacency(graph, x)));
+    digraph := DigraphNC(List(Vertices(graph), x -> Adjacency(graph, x)));
+    if IsBound(graph.names) then
+      SetDigraphVertexLabels(digraph, ShallowCopy(graph.names));
+    fi;
+    if not IsTrivial(graph.group) then
+      Assert(IsPermGroup(graph.group), 1);
+      SetDigraphGroup(digraph, graph.group);
+      SetDigraphSchreierVector(digraph, graph.schreierVector);
+      SetRepresentativeOutNeighbours(digraph, graph.adjacencies);
+    fi;
+    return digraph;
   fi;
 
   if not (IsBound(graph.source) and IsBound(graph.range) and
