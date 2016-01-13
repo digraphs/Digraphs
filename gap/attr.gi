@@ -660,7 +660,7 @@ function(digraph)
   for i in DigraphVertices(digraph) do
     for j in out[i] do
       # distance [j,i] + 1 equals the cycle length
-      if dist[j][i] + 1 < girth then
+      if dist[j][i] <> -1 and dist[j][i] + 1 < girth then
         girth := dist[j][i] + 1;
         if girth = 2 then
           return girth;
