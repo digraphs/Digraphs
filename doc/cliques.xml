@@ -1,0 +1,124 @@
+#############################################################################
+##
+#W  cliques.xml
+#Y  Copyright (C) 2016                                  Wilfred A. Wilson
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
+
+<#GAPDoc Label="IsClique">
+<ManSection>
+  <Oper Name="IsClique" Arg="digraph, l"/>
+  <Oper Name="IsMaximalClique" Arg="digraph, l"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph and <A>l</A> is a duplicate-free list of
+    vertices of <A>digraph</A>, then
+    <C>IsClique(</C><A>digraph</A><C>,</C><A>l</A><C>)</C>
+    
+    <Example><![CDATA[
+gap> 1;;
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsIndependentSet">
+<ManSection>
+  <Oper Name="IsIndependentSet" Arg="digraph, l"/>
+  <Oper Name="IsMaximalIndependentSet" Arg="digraph, l"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    <Example><![CDATA[
+gap> 1;;
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphMaximalCliques">
+<ManSection>
+  <Attr Name="DigraphMaximalCliques" Arg="digraph"/>
+  <Oper Name="DigraphMaximalCliques" Arg="digraph, l[, m]"/>
+  <Attr Name="DigraphMaximalCliquesReps" Arg="digraph"/>
+  <Attr Name="DigraphMaximalClique" Arg="digraph"/>
+  <Oper Name="DigraphMaximalClique" Arg="digraph, l[, m]"/>
+  <Attr Name="DigraphClique" Arg="digraph"/>
+  <Oper Name="DigraphClique" Arg="digraph, l[, m]"/>
+  <Returns>?</Returns>
+  <Description>
+    <Example><![CDATA[
+gap> 1;;
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphMaximalIndependentSets">
+<ManSection>
+  <Attr Name="DigraphMaximalIndependentSets" Arg="digraph"/>
+  <Oper Name="DigraphMaximalIndependentSets" Arg="digraph, l[, m]"/>
+  <Attr Name="DigraphMaximalIndependentSetsReps" Arg="digraph"/>
+  <Attr Name="DigraphMaximalIndependentSet" Arg="digraph"/>
+  <Oper Name="DigraphMaximalIndependset" Arg="digraph, l[, m]"/>
+  <Attr Name="DigraphIndependentSet" Arg="digraph"/>
+  <Oper Name="DigraphIndependset" Arg="digraph, l[, m]"/>
+  <Returns>?</Returns>
+  <Description>
+    <Example><![CDATA[
+gap> 1;;
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphDegeneracy">
+<ManSection>
+  <Attr Name="DigraphDegeneracy" Arg="digraph"/>
+  <Returns>?</Returns>
+  <Description>
+    <Example><![CDATA[
+gap> 1;;
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphDegeneracyOrdering">
+<ManSection>
+  <Attr Name="DigraphDegeneracyOrdering" Arg="digraph"/>
+  <Returns>?</Returns>
+  <Description>
+    <Example><![CDATA[
+gap> 1;;
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BooleanAdjacencyMatrix">
+<ManSection>
+  <Attr Name="BooleanAdjacencyMatrix" Arg="digraph"/>
+  <Returns>?</Returns>
+  <Description>
+    <Example><![CDATA[
+gap> 1;;
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="MaximalSymmetricSubDigraph">
+<ManSection>
+  <Attr Name="MaximalSymmetricSubDigraph" Arg="digraph"/>
+  <Attr Name="MaximalSymmetricSubMultiDigraph" Arg="digraph"/>
+  <Returns>?</Returns>
+  <Description>
+    <Example><![CDATA[
+gap> 1;;
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

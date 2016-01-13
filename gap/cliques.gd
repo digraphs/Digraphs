@@ -29,11 +29,11 @@ DeclareOperation("IsMaximalClique", [IsDigraph, IsHomogeneousList]);
 ## Independent sets
 
 # Functions to return a single independent set or a single maximal ind set
-DeclareOperation("DigraphIndependentSet", [IsDigraph]);
+DeclareAttribute("DigraphIndependentSet", IsDigraph);
 DeclareOperation("DigraphIndependentSet", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("DigraphIndependentSet", [IsDigraph, IsHomogeneousList,
                                            IsHomogeneousList]);
-DeclareOperation("DigraphMaximalIndependentSet", [IsDigraph]);
+DeclareAttribute("DigraphMaximalIndependentSet", IsDigraph);
 DeclareOperation("DigraphMaximalIndependentSet", [IsDigraph,
                                                   IsHomogeneousList]);
 DeclareOperation("DigraphMaximalIndependentSet", [IsDigraph, IsHomogeneousList,

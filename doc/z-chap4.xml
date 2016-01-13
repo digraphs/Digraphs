@@ -30,7 +30,6 @@
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>
-    
     <#Include Label="DigraphDiameter">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphLongestDistanceFromVertex">
@@ -42,5 +41,16 @@
     <#Include Label="DigraphFloydWarshall">
     <#Include Label="IsReachable">
     <#Include Label="DigraphAllSimpleCircuits">
+  </Section>
+
+  <Section><Heading>Finding cliques and independent sets</Heading>
+    <#Include Label="IsClique">
+    <#Include Label="IsIndependentSet">
+    <#Include Label="DigraphMaximalCliques">
+    <#Include Label="DigraphMaximalIndependentSets">
+    <#Include Label="DigraphDegeneracy">
+    <#Include Label="DigraphDegeneracyOrdering">
+    <#Include Label="MaximalSymmetricSubDigraph">
+    <#Include Label="BooleanAdjacencyMatrix">
   </Section>
 </Chapter>

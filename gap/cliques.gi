@@ -368,7 +368,7 @@ end);
 
 InstallGlobalFunction(BronKerboschWithPivotBlist,
 function(gr)
-  local verts, mat, degrees, count, recurse, recurse_group, cliques;
+  local verts, mat, degrees, count, recurse, cliques;
 
   verts := DigraphVertices(gr);
   gr := MaximalSymmetricSubDigraph(gr);
@@ -389,6 +389,7 @@ function(gr)
     if not ForAny(try_arg, x -> x) and not ForAny(forbid_arg, x -> x) then
       clique := ListBlist(verts, clique);
       Add(cliques, clique);
+      return;
     fi;
 
     try := ShallowCopy(try_arg);
