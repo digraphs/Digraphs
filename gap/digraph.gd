@@ -37,6 +37,9 @@ DeclareOperation("Digraph", [IsGroup,
 DeclareOperation("CayleyDigraph", [IsGroup]);
 DeclareOperation("CayleyDigraph", [IsGroup, IsList]);
 
+DeclareOperation("DoubleDigraph", [IsDigraph]);
+DeclareOperation("BipartiteDoubleDigraph", [IsDigraph]);
+
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsList]);
 DeclareOperation("DigraphNC", [IsList, IsInt]);

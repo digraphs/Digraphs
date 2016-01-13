@@ -45,6 +45,9 @@
     <#Include Label="DigraphJoin">
     <#Include Label="LineDigraph">
     <#Include Label="LineUndirectedDigraph">
+    <#Include Label="DoubleDigraph">
+    <#Include Label="BipartiteDoubleDigraph">
+
   </Section>
 
   <Section><Heading>Random digraphs</Heading>
@@ -60,6 +63,7 @@
     <#Include Label="CycleDigraph">
     <#Include Label="EmptyDigraph">
     <#Include Label="CayleyDigraph">
+    
   </Section>
 
 </Chapter>
