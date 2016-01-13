@@ -18,6 +18,11 @@ end);
 InstallMethod(DigraphGroup, "for a digraph",
 [IsDigraph], AutomorphismGroup);
 
+InstallMethod(DigraphGroup, "for a digraph",
+[IsMultiDigraph],
+function(digraph)
+  return Range(Projection(AutomorphismGroup(digraph), 1));
+end);
 
 InstallMethod(AsTransformation, "for a digraph",
 [IsDigraph],
