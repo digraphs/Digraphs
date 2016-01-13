@@ -504,20 +504,23 @@ end);
 
 #
 
-BindGlobal("DIGRAPHS_DiameterAndGirth",
+BindGlobal("DIGRAPHS_DiameterAndUndirectedGirth",
 function(digraph)
+  #
+  # This function attempts to find the diameter and undirected girth of a given
+  # graph, using its DigraphGroup.  For some digraphs, the main algorithm will
+  # not produce a sensible answer, so there are checks at the start and end to
+  # alter the answer for the diameter/girth if necessary.  This function is
+  # called, if appropriate, by DigraphDiameter and DigraphUndirectedGirth.
+  #
   local outer_reps, out_nbs, diameter, girth, v, record, orbnum, reps, i, next,
   laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
 
   if DigraphNrVertices(digraph) = 0 then
     SetDigraphDiameter(digraph, fail);
-    SetDigraphGirth(digraph, infinity);
+    SetDigraphUndirectedGirth(digraph, infinity);
     return rec(diameter := fail, girth := infinity);
   fi;
-  # if not IsStronglyConnectedDigraph(digraph) then
-  #   SetDigraphDiameter(digraph, fail);
-  #   return rec(diameter := fail);
-  # fi;
 
   #TODO improve this, really check if the complexity is better with the group
   #or without, or if the group is not known, but the number of vertices makes
@@ -582,20 +585,20 @@ function(digraph)
     if localGirth <> -1 and localGirth < girth then
       girth := localGirth;
     fi;
-    #TODO: Note that if localGirth=3 then we can return girth=3
   od;
 
+  # Checks to ensure both components are valid
   if not IsStronglyConnectedDigraph(digraph) then
     diameter := fail;
   fi;
-
   if DigraphHasLoops(digraph) then
-    return 1;
+    girth := 1;
   elif IsMultiDigraph(digraph) then
-    return 2;
+    girth := 2;
   fi;
+
   SetDigraphDiameter(digraph, diameter);
-  SetDigraphGirth(digraph, girth);
+  SetDigraphUndirectedGirth(digraph, girth);
   return rec(diameter := diameter, girth := girth);
 end);
 
@@ -604,25 +607,26 @@ end);
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
-  if not (HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1) then
-    if IsStronglyConnectedDigraph(digraph) then
-      return DIGRAPH_DIAMETER(digraph);
-    else
-      return fail;
-    fi;
+  if not IsStronglyConnectedDigraph(digraph) then
+    # Diameter undefined
+    return fail;
+  elif HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1 then
+    # Use the group to calculate the diameter
+    return DIGRAPHS_DiameterAndUndirectedGirth(digraph).diameter;
   fi;
-  return DIGRAPHS_DiameterAndGirth(digraph).diameter;
+  # Use the C function
+  return DIGRAPH_DIAMETER(digraph);
 end);
 
 #
 
-InstallMethod(DigraphGirth, "for a digraph",
+InstallMethod(DigraphUndirectedGirth, "for a digraph",
 [IsDigraph],
 function(digraph)
   local result;
   # This is only defined on undirected graphs (i.e. symmetric digraphs)
   if not IsSymmetricDigraph(digraph) then
-    ErrorMayQuit("Digraphs: DigraphGirth: usage,\n",
+    ErrorMayQuit("Digraphs: DigraphUndirectedGirth: usage,\n",
                  "<digraph> must be a symmetric digraph,");
   fi;
   if DigraphHasLoops(digraph) then
@@ -633,7 +637,7 @@ function(digraph)
     return 2;
   fi;
   # Otherwise digraph is simple
-  return DIGRAPHS_DiameterAndGirth(digraph).girth;
+  return DIGRAPHS_DiameterAndUndirectedGirth(digraph).girth;
 end);
 
 #
