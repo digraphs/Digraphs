@@ -11,13 +11,13 @@ graph := Digraph(group, obj, act, adj);
 #a so called dual polar graph: the vertices are the set of totally isotropic spaces with relation to a sesquilinear form. Two vertices are adjacent iff they have only the zero vector in common.
 #in this easy example the polar space comes from a hermitian form on a five dimensional projective space. We know that cliques should have size at most q^3+1.
 q := 2;
-ps := HermitianPolarSpace(5,q^2);
-planes := Set(AsList(Planes(ps)));; #will be the set of vertices
+ps := HermitianPolarSpace(5, q ^ 2);
+planes := Set(AsList(Planes(ps))); #will be the set of vertices
 group := CollineationGroup(ps); # the full automorphism group of this hermitian polar space
-adj := function(x,y)
-return ProjectiveDimension(Meet(x,y))=-1;
+adj := function(x, y)
+  return ProjectiveDimension(Meet(x, y)) = -1;
 end;
-digraph := Digraph(group,planes,OnProjSubspaces,adj);
+digraph := Digraph(group, planes, OnProjSubspaces, adj);
 
 #again a dual polar graph: in this case the vertices are the set of totally isotropic spaces with relation to a hermitian form on a four dimensional projective space.
 #if you can show that this graph has no clique of size 3^5+1 = 244, you become very famous in the empire of finite geometry!
