@@ -218,6 +218,25 @@ def _stop_mamp():
     _exec('./stop.sh', False)
     os.chdir(cwd)
 
+def _hg_pending_commits ():
+    pro = subprocess.Popen(('hg', 'summary'),
+                          stdout=subprocess.PIPE)
+    output = subprocess.check_output(('grep', 'commit:'),
+                                     stdin=pro.stdout).rstrip()
+    if output != 'commit: (clean)' and output != 'commit: (head closed)':
+        pro = subprocess.Popen(('hg', 'summary'), stdout=subprocess.PIPE)
+        try:
+            output = subprocess.check_output(('grep', 'commit:.*clean'),
+                                             stdin=pro.stdout).rstrip()
+        except KeyboardInterrupt:
+            pro.terminate()
+            pro.wait()
+            print _red_string('Killed!')
+            sys.exit(1)
+        except:
+            print _red_string('There are uncommited changes! Aborting!')
+            sys.exit(1)
+
 ################################################################################
 # The main event
 ################################################################################
@@ -258,6 +277,8 @@ def main():
     if not (os.path.exists(args.pkg_dir) or os.path.isdir(args.pkg_dir)):
         sys.exit(_red_string('release.py: error: can\'t find package' +
                              ' directory!'))
+
+    _hg_pending_commits()
 
     # get the version number
     vers = _version_number_package_info()

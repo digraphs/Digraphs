@@ -242,8 +242,6 @@ def digraphs_make_doc(gap_root):
 
 def run_digraphs_tests(gap_root, pkg_dir, pkg_name):
 
-    # check for uncommited changes
-
     print ''
     print blue_string('Package name is ' + pkg_name + ','),
     print blue_string('gap root is ' + gap_root)
