@@ -159,25 +159,56 @@ end);
 InstallMethod(DoubleDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local out,vertices,newvertices,allvertices,shiftedout,newout1,
-    newout2,newout,crossedouts,doubleout,shift;
-  #note that this method is also applicable for digraphs with an adjacency function.
-  #however, the resulting double graph will not have an adjacency function anymore, since
-  #the original function may take arbitrary objects as argument, while the double graph has
-  #simply integers as vertices. So relying on the original adjacency function is meaningless unless
-  #this function would also be a function on integers. 
+  local out, vertices, newvertices, allvertices, shiftedout, newout1,
+  newout2, newout, crossedouts, doubleout, shift;
+  #note that this method is also applicable for digraphs with
+  #an adjacency function. however, the resulting double graph
+  #will not have an adjacency function anymore, since the
+  #original function may take arbitrary objects as argument,
+  #while the double graph has simply integers as vertices.
+  #So relying on the original adjacency function is meaningless
+  #unless this function would also be a function on integers.
   out := OutNeighbours(digraph);
-  vertices := [1..digraph!.nrvertices];
+  vertices := [1 .. digraph!.nrvertices];
   shift := Length(vertices);
-  newvertices := [shift+1..2*digraph!.nrvertices];
-  allvertices := [1..2*digraph!.nrvertices];
-  shiftedout := List(out,x->List(x,y->y+shift)); #"duplicate" of the outs for the new vertices
-  newout1 := List(vertices,x->List(out[x],y->y+shift)); #new out neighbours for vertices
-  newout2 := List(newvertices,x->out[x-shift]); #out neighbours for new vertices
-  newout := Concatenation(out,shiftedout);
-  crossedouts := Concatenation(newout1,newout2); #collected out neighbours between vertices and new vertices
-  doubleout := List(allvertices,x->Concatenation(newout[x],crossedouts[x])); #all out neighbours collected.
+  newvertices := [shift + 1 .. 2 * digraph!.nrvertices];
+  allvertices := [1 .. 2 * digraph!.nrvertices];
+  #"duplicate" of the outs for the new vertices:
+  shiftedout := List(out, x -> List(x, y -> y + shift));
+  newout1 := List(vertices, x -> List(out[x], y -> y + shift));
+  #new out neighbours for vertices
+  newout2 := List(newvertices, x -> out[x - shift]);
+  #out neighbours for new vertices
+  newout := Concatenation(out, shiftedout);
+  #collec out neighbours between vertices and new vertices
+  crossedouts := Concatenation(newout1, newout2);
+  doubleout := List(allvertices, x -> Concatenation(newout[x], crossedouts[x]));
+  #collect all out neighbours.
   return DigraphNC(doubleout);
+end);
+
+InstallMethod(BipartiteDoubleDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out, vertices, newvertices, allvertices, newout1,
+    newout2, crossedouts, shift;
+  #note that this method is also applicable for digraphs with
+  #an adjacency function. however, the resulting double graph
+  #will not have an adjacency function anymore, since the
+  #original function may take arbitrary objects as argument,
+  #while the double graph has simply integers as vertices.
+  #So relying on the original adjacency function is meaningless
+  #unless this function would also be a function on integers.
+  #compared with DoubleDigraph, we only need the "crossed adjacencies".
+  out := OutNeighbours(digraph);
+  vertices := [1 .. digraph!.nrvertices];
+  shift := Length(vertices);
+  newvertices := [shift + 1 .. 2 * digraph!.nrvertices];
+  allvertices := [1 .. 2 * digraph!.nrvertices];
+  newout1 := List(vertices, x -> List(out[x], y -> y + shift));
+  newout2 := List(newvertices, x -> out[x - shift]);
+  crossedouts := Concatenation(newout1, newout2);
+  return DigraphNC(crossedouts);
 end);
 
 InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
