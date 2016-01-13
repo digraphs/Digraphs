@@ -12,6 +12,7 @@
 
 DeclareCategory("IsDigraph", IsObject);
 DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
+DeclareCategory("IsCayleyDigraph", IsObject);
 
 # meaning it really has multiple edges!!
 DeclareProperty("IsMultiDigraph", IsDigraph);

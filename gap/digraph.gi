@@ -135,7 +135,7 @@ end);
 InstallMethod(CayleyDigraph, "for a group with generators",
 [IsGroup, IsHomogeneousList],
 function(G, gens)
-  local adj;
+  local adj, cayleydigraph;
 
   if not ForAll(gens, x -> x in G) then
     ErrorMayQuit("Digraphs: CayleyDigraph: usage,\n",
@@ -146,8 +146,9 @@ function(G, gens)
   adj := function(x, y)
     return x ^ -1 * y in gens;
   end;
-
-  return Digraph(G, AsList(G), OnRight, adj);
+  cayleydigraph := Digraph(G, AsList(G), OnRight, adj);
+  SetFilterObj(cayleydigraph, IsCayleyDigraph);
+  return cayleydigraph;
 end);
 
 InstallMethod(CayleyDigraph, "for a group with generators",
