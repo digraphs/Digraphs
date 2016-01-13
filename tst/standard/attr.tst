@@ -953,10 +953,10 @@ gap> DigraphDiameter(gr);
 4
 gap> DigraphUndirectedGirth(gr);
 1
-gap> gr := Digraph([[2, 2, 4, 4], [1, 1, 3], [2], [1, 1, 5], [4]]);   
+gap> gr := Digraph([[2, 2, 4, 4], [1, 1, 3], [2], [1, 1, 5], [4]]);
 <multidigraph with 5 vertices, 12 edges>
 gap> DigraphGroup(gr);
-Group([ (1,3)(2,4), (11,12), (9,10), (7,8), (5,6) ])
+Group([ (2,4)(3,5) ])
 gap> DigraphDiameter(gr);
 4
 gap> DigraphUndirectedGirth(gr);
