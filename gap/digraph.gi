@@ -319,10 +319,10 @@ end);
 #
 
 InstallMethod(Graph, "for a digraph", [IsDigraph],
-function(graph)
+function(digraph)
   local gamma, i, n;
 
-  if IsMultiDigraph(graph) then
+  if IsMultiDigraph(digraph) then
     Info(InfoWarning, 1, "Grape does not support multiple edges, so ",
          "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
@@ -331,22 +331,29 @@ function(graph)
     Info(InfoWarning, 1, "Grape is not loaded,");
   fi;
 
-  n := DigraphNrVertices(graph);
-  gamma := rec(order := n,
-               group := Group(()),
-               isGraph := true,
-               representatives := [1 .. n] * 1,
-               schreierVector := [1 .. n] * -1);
+  n := DigraphNrVertices(digraph);
+  if HasDigraphGroup(digraph) then
+    gamma := rec(order := n,
+                 group := DigraphGroup(digraph),
+                 isGraph := true,
+                 representatives := DigraphOrbitReps(digraph),
+                 schreierVector := DigraphSchreierVector(digraph));
+    gamma.adjacencies := ShallowCopy(RepresentativeOutNeighbours(digraph));
+    Apply(gamma.adjacencies, AsSet);
+  else
+    gamma := rec(order := n,
+                 group := Group(()),
+                 isGraph := true,
+                 representatives := [1 .. n] * 1,
+                 schreierVector := [1 .. n] * -1);
+    gamma.adjacencies := EmptyPlist(n);
 
-  # Used to be the following, using the constructor from GRAPE:
-  # gamma := NullGraph(Group([], ()), DigraphNrVertices(graph));
+    for i in [1 .. gamma.order] do
+      gamma.adjacencies[i] := Set(OutNeighbours(digraph)[i]);
+    od;
 
-  gamma.adjacencies := EmptyPlist(n);
-  for i in [1 .. gamma.order] do
-    gamma.adjacencies[i] := Set(OutNeighbours(graph)[i]);
-  od;
-  gamma.names := Immutable(DigraphVertexLabels(graph));
-
+  fi;
+  gamma.names := Immutable(DigraphVertexLabels(digraph));
   return gamma;
 end);
 
