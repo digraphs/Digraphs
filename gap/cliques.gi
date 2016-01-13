@@ -10,6 +10,26 @@
 #############################################################################
 ##
 
+# BooleanAdjacencyMatrix
+
+InstallMethod(BooleanAdjacencyMatrix,
+"for a digraph",
+[IsDigraph],
+function(gr)
+  local n, nbs, mat, i, j;
+
+  n := DigraphNrVertices(gr);
+  nbs := OutNeighbours(gr);
+  mat := List(DigraphVertices(gr), x -> BlistList([1 .. n], []));
+  for i in DigraphVertices(gr) do
+    for j in nbs[i] do
+      mat[j][i] := true;
+      mat[i][j] := true;
+    od;
+  od;
+  return mat;
+end);
+
 # This function returns a symmetric digraph without loops and without multiples
 # edges with the same maximal cliques. Using this speeds up clique finding
 
@@ -340,131 +360,84 @@ function(gr)
   return cliques;
 end);
 
-# BooleanAdjacencyMatrix
-
-InstallMethod(BooleanAdjacencyMatrix,
-"for a digraph",
-[IsDigraph],
-function(gr)
-  local n, nbs, mat, i, j;
-
-  n := DigraphNrVertices(gr);
-  nbs := OutNeighbours(gr);
-  mat := List(DigraphVertices(gr), x -> BlistList([1 .. n], []));
-  for i in DigraphVertices(gr) do
-    for j in nbs[i] do
-      mat[j][i] := true;
-      mat[i][j] := true;
-    od;
-  od;
-  return mat;
-end);
-
-InstallGlobalFunction(BronKerboschWithPivot,
-function(gr)
-  local nbs, degrees, count, recurse, cliques;
-
-  gr := MaximalSymmetricSubDigraph(gr);
-  nbs := OutNeighbours(gr);
-  #mat := BooleanAdjacencyMatrix(gr);
-  degrees := OutDegrees(gr);
-
-  count := 0;
-  recurse := function(clique, try_arg, forbid_arg)
-    local pivot, max, forbid, ptry, try, v;
-
-    count := count + 1;
-    if IsEmpty(try_arg) and IsEmpty(forbid_arg) then
-      Add(cliques, clique);
-    else
-
-      # Choose a pivot
-      max := 0;
-      for v in Concatenation(try_arg, forbid_arg) do
-        if degrees[v] > max then
-          pivot := v;
-          max := degrees[v];
-        fi;
-      od;
-      if max = 0 then
-        Print("fail - this is bad,\n");
-      fi;
-
-      try := ShallowCopy(try_arg);
-      forbid := ShallowCopy(forbid_arg);
-      ptry := Difference(try, nbs[pivot]);
-      while not IsEmpty(ptry) do
-        v := Remove(ptry);
-        recurse(Union(clique, [v]),
-                Intersection(try, nbs[v]),
-                Intersection(forbid, nbs[v]));
-        Remove(try, Position(try, v)); # is there a way of getting rid of this?
-        Add(forbid, v);
-      od;
-    fi;
-  end;
-
-  cliques := [];
-  recurse([], DigraphVertices(gr), []);
-  Print(count, " recursions\n");
-  return cliques;
-end);
-
 #
+
+# up to automorphisms / or all?
+# one or all? up to a particular limit?
+# size?
 
 InstallGlobalFunction(BronKerboschWithPivotBlist,
 function(gr)
-  local nbs, mat, degrees, count, recurse, cliques;
+  local verts, mat, degrees, count, recurse, recurse_group, cliques;
 
+  verts := DigraphVertices(gr);
   gr := MaximalSymmetricSubDigraph(gr);
-  nbs := OutNeighbours(gr);
   mat := BooleanAdjacencyMatrix(gr);
   degrees := OutDegrees(gr);
 
   count := 0;
-  recurse := function(clique, try_arg, forbid_arg)
-    local try, forbid, max, pivot, ptry, v, new_clique;
+
+  # Main recursive algorithm
+  recurse := function(clique, try_arg, forbid_arg, G)
+    local try, forbid, trivial, orbits, try_blist, max, pivot, ptry, v,
+    new_clique, H;
 
     count := count + 1;
+    trivial := G = fail or IsTrivial(G);
+
+    # Has a maximal clique been found?
     if not ForAny(try_arg, x -> x) and not ForAny(forbid_arg, x -> x) then
+      clique := ListBlist(verts, clique);
       Add(cliques, clique);
-    else
-      try := ShallowCopy(try_arg);
-      forbid := ShallowCopy(forbid_arg);
-
-      # Choose a pivot
-      max := -1;
-      pivot := 0;
-      for v in ListBlist(DigraphVertices(gr), UnionBlist(try, forbid)) do
-        #if SizeBlist(Intersection(mat[v], try)) > max then
-        if degrees[v] > max then
-          pivot := v;
-          max := degrees[v];
-        fi;
-      od;
-      if max = -1 then
-        Print("fail - this is bad,\n");
-      fi;
-
-      ptry := ListBlist(DigraphVertices(gr), DifferenceBlist(try, mat[pivot]));
-      ptry := ShallowCopy(ptry);
-      while not IsEmpty(ptry) do
-        v := Remove(ptry);
-        new_clique := ShallowCopy(clique);
-        new_clique := true;
-        recurse(new_clique,
-                IntersectionBlist(try, mat[v]),
-                IntersectionBlist(forbid, mat[v]));
-        try[v] := false;
-        forbid[v] := true;
-      od;
     fi;
+
+    try := ShallowCopy(try_arg);
+    forbid := ShallowCopy(forbid_arg);
+    if not trivial then
+      orbits := Orbits(G, ListBlist(verts, try));
+      try_blist := BlistList(verts, List(orbits, x -> x[1]));
+    else
+      try_blist := try;
+    fi;
+
+    # Choose a pivot: vertex with maximum outdegree
+    #                 vertex with maximum outdegree agmonst try would be
+    #                 faster but is more expensive - perhaps take a sample?
+    max := -1;
+    pivot := 0;
+    for v in ListBlist(verts, UnionBlist(try_blist, forbid)) do
+      if degrees[v] > max then
+        pivot := v;
+        max := degrees[v];
+      fi;
+    od;
+
+    # Try to extend clique
+    ptry := ListBlist(verts, DifferenceBlist(try_blist, mat[pivot]));
+    ptry := ShallowCopy(ptry);
+    while not IsEmpty(ptry) do
+      v := Remove(ptry);
+      new_clique := ShallowCopy(clique);
+      new_clique[v] := true;
+      if trivial then
+        H := fail;
+      else
+        H := Stabilizer(G, v);
+      fi;
+      recurse(new_clique,
+              IntersectionBlist(try, mat[v]),
+              IntersectionBlist(forbid, mat[v]),
+              H);
+      try[v] := false;
+      forbid[v] := true;
+    od;
   end;
 
   cliques := [];
-  recurse(BlistList(DigraphVertices(gr), []),
-          BlistList(DigraphVertices(gr), DigraphVertices(gr)),
-          BlistList(DigraphVertices(gr), []));
+  recurse(BlistList(verts, []),
+          BlistList(verts, verts),
+          BlistList(verts, []),
+          AutomorphismGroup(gr));
   Print(count, " recursions\n");
   return cliques;
 end);
