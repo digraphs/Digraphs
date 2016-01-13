@@ -288,9 +288,22 @@ function(arg)
 end);
 
 InstallGlobalFunction(WriteDigraphs,
-function(name, digraphs)
-  local splitpath, splitname, ext, compext, encoder, g6sum, s6sum, v, e,
-  dg6sum, ds6sum, line_encoder, filepath, file, digraph, i;
+function(arg)
+  local name, digraphs, mode, splitpath, splitname, ext, compext, encoder,
+  g6sum, s6sum, v, e, dg6sum, ds6sum, line_encoder, filepath, file, digraph, i;
+
+  if Length(arg) = 2 then
+    name := arg[1];
+    digraphs := arg[2];
+    mode := "a";
+  elif Length(arg) = 3 then
+    name := arg[1];
+    digraphs := arg[2];
+    mode := arg[3];
+  else
+    ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
+                 "there must be 2 or 3 arguments,");
+  fi;
 
   if not IsString(name) then
     ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
@@ -298,6 +311,10 @@ function(name, digraphs)
   elif not ForAll(digraphs, IsDigraph) then
     ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
                  "<digraphs> must be a list of digraphs,");
+  fi;
+
+  if not IsExistingFile(name) then
+    mode := "w";
   fi;
 
   # Look for extension
@@ -397,7 +414,7 @@ function(name, digraphs)
   if filepath <> name then
     Info(InfoWarning, 1, "Writing to ", filepath);
   fi;
-  file := IO_CompressedFile(filepath, "w");
+  file := IO_CompressedFile(filepath, mode);
 
   if file = fail then
     ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
