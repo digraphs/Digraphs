@@ -1249,46 +1249,25 @@ end);
 InstallMethod(DigraphLayers, "for a digraph, and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
-  local out_nbs, record, orbnum, orbs, reps, i, next, laynum, layers,
-        current, x, y, z;
+  local layers, layers_with_orbnums, orbs, i, x;
 
   if v > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphLayers: usage,\n",
                  "the argument <v> must be a vertex of <digraph>,");
   fi;
 
-  out_nbs         := OutNeighbours(digraph);
-  record := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
-                            DigraphVertices(digraph));
+  layers := [[v]];
+  layers_with_orbnums := DIGRAPHS_LocalParameters(digraph, v).layers;
+  orbs := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
+                          DigraphVertices(digraph)).orbits;
 
-  orbnum          := record.lookup;
-  orbs            := record.orbits;
-  reps            := List(record.orbits, Representative);
-  i               := 1;
-  next            := [orbnum[v]];
-  laynum          := [1 .. Length(reps)] * 0;
-  laynum[next[1]] := 1;
-  layers          := [[v]];
-
-  while Length(next) > 0 do
-    current := next;
-    next := [];
-    for x in current do
-      for y in out_nbs[reps[x]] do
-        if laynum[orbnum[y]] = 0 then
-          AddSet(next, orbnum[y]);
-          laynum[orbnum[y]] := i + 1;
-        fi;
-      od;
+  for i in [2 .. Length(layers_with_orbnums)] do
+    Add(layers, []);
+    for x in layers_with_orbnums[i] do
+      Append(layers[i], orbs[x]);
     od;
-    if Length(next) > 0 then
-      i := i + 1;
-      layers[i] := [];
-      for z in next do
-        Append(layers[i], orbs[z]);
-      od;
-    fi;
   od;
+
   return layers;
 end);
 

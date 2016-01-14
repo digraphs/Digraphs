@@ -518,8 +518,8 @@ end);
 InstallMethod(DigraphPeriod, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local comps, out, deg, nrvisited, period, current, stack, len, depth,
-  olddepth, i;
+  local comps, out, deg, nrvisited, period, stack, len, depth, current,
+        olddepth, i;
 
   if HasIsAcyclicDigraph(digraph) and IsAcyclicDigraph(digraph) then
     return 0;
@@ -567,10 +567,93 @@ end);
 
 #
 
+BindGlobal("DIGRAPHS_LocalParameters",
+function(digraph, v)
+  local out_nbs, record, orbnum, reps, i, next, laynum, localGirth, layers,
+        localParameters, sum, nprev, nhere, nnext, lnum, localDiameter,
+        layerNumbers, x, y;
+
+  out_nbs         := OutNeighbours(digraph);
+  record          := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
+                                     DigraphVertices(digraph));
+  orbnum          := record.lookup;
+  reps            := List(record.orbits, Representative);
+  i               := 1;
+  next            := [orbnum[v]];
+  laynum          := [1 .. Length(reps)] * 0;
+  laynum[next[1]] := 1;
+  localGirth      := -1;
+  layers          := [next];
+  localParameters := [];
+  sum             := 1;
+
+  while Length(next) > 0 do
+    next := [];
+    for x in layers[i] do
+      nprev := 0;
+      nhere := 0;
+      nnext := 0;
+      for y in out_nbs[reps[x]] do
+        lnum := laynum[orbnum[y]];
+        if i > 1 and lnum = i - 1 then
+          nprev := nprev + 1;
+        elif lnum = i then
+          nhere := nhere + 1;
+        elif lnum = i + 1 then
+          nnext := nnext + 1;
+        elif lnum = 0 then
+          AddSet(next, orbnum[y]);
+          nnext := nnext + 1;
+          laynum[orbnum[y]] := i + 1;
+        fi;
+      od;
+      if (localGirth = -1 or localGirth = 2 * i - 1) and nprev > 1 then
+        localGirth := 2 * (i - 1);
+      fi;
+      if localGirth = -1 and nhere > 0 then
+        localGirth := 2 * i - 1;
+      fi;
+      if not IsBound(localParameters[i]) then
+         localParameters[i] := [nprev, nhere, nnext];
+      else
+         if nprev <> localParameters[i][1] then
+            localParameters[i][1] := -1;
+         fi;
+         if nhere <> localParameters[i][2] then
+            localParameters[i][2] := -1;
+         fi;
+         if nnext <> localParameters[i][3] then
+            localParameters[i][3] := -1;
+         fi;
+      fi;
+    od;
+    if Length(next) > 0 then
+      i := i + 1;
+      layers[i] := next;
+      sum := sum + Length(next);
+    fi;
+  od;
+  if sum = Length(reps) then
+     localDiameter := Length(layers) - 1;
+  else
+     localDiameter := -1;
+  fi;
+
+  layerNumbers := orbnum;
+  for i in [1 .. Length(reps)] do
+     layerNumbers[i] := laynum[orbnum[i]];
+  od;
+  return rec(layerNumbers := layerNumbers, localDiameter := localDiameter,
+             localGirth := localGirth, localParameters := localParameters,
+             layers := layers);
+end);
+#
+
 BindGlobal("DIGRAPHS_DiameterAndUndirectedGirth",
 function(digraph)
-  local outer_reps, out_nbs, diameter, girth, v, record, orbnum, reps, i, next,
-        laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
+  local outer_reps, out_nbs, diameter, girth, v, record, localGirth,
+        localDiameter, i;
+
   #
   # This function attempts to find the diameter and undirected girth of a given
   # graph, using its DigraphGroup.  For some digraphs, the main algorithm will
@@ -596,53 +679,12 @@ function(digraph)
 
   for i in [1 .. Length(outer_reps)] do
     v := outer_reps[i];
-    record := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
-                              DigraphVertices(digraph));
+    record     := DIGRAPHS_LocalParameters(digraph, v);
+    localGirth := record.localGirth;
+    localDiameter := record.localDiameter;
 
-    orbnum          := record.lookup;
-    reps            := List(record.orbits, Representative);
-    i               := 1;
-    next            := [orbnum[v]];
-    laynum          := [1 .. Length(reps)] * 0;
-    laynum[next[1]] := 1;
-    localGirth      := -1;
-    layers          := [next];
-
-    while Length(next) > 0 do
-      next := [];
-      for x in layers[i] do
-        nprev := 0;
-        nhere := 0;
-        nnext := 0;
-        for y in out_nbs[reps[x]] do
-          lnum := laynum[orbnum[y]];
-          if i > 1 and lnum = i - 1 then
-            nprev := nprev + 1;
-          elif lnum = i then
-            nhere := nhere + 1;
-          elif lnum = i + 1 then
-            nnext := nnext + 1;
-          elif lnum = 0 then
-            AddSet(next, orbnum[y]);
-            nnext := nnext + 1;
-            laynum[orbnum[y]] := i + 1;
-          fi;
-        od;
-        if (localGirth = -1 or localGirth = 2 * i - 1) and nprev > 1 then
-          localGirth := 2 * (i - 1);
-        fi;
-        if localGirth = -1 and nhere > 0 then
-          localGirth := 2 * i - 1;
-        fi;
-      od;
-      if Length(next) > 0 then
-        i := i + 1;
-        layers[i] := next;
-      fi;
-    od;
-
-    if Length(layers) - 1 > diameter then
-      diameter := Length(layers) - 1;
+    if localDiameter > diameter then
+      diameter := localDiameter;
     fi;
 
     if localGirth <> -1 and localGirth < girth then
@@ -1047,6 +1089,8 @@ function(digraph)
                               DigraphNrVertices(digraph));
   return b;
 end);
+
+#
 
 InstallMethod(DigraphLoops, "for a digraph", [IsDigraph],
 function(gr)
