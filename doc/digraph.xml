@@ -7,6 +7,88 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="DigraphAddEdgeOrbit">
+<ManSection>
+  <Oper Name="DigraphAddEdgeOrbit" Arg="digraph, edge"/>
+  <Returns>
+    A new digraph.
+  </Returns>
+  <Description>
+    This operation returns a new digraph with the same vertices and edges as
+    <A>digraph</A> and with additional edges consisting of the orbit of the
+    edge <A>edge</A> under the action of the <Ref Attr="DigraphGroup"/> of
+    <A>digraph</A>.
+    <P/>
+
+    An edge is simply a pair of vertices of <A>digraph</A>.
+
+    <Example><![CDATA[
+gap> gr1 := CayleyDigraph(DihedralGroup(8));
+<digraph with 8 vertices, 24 edges>
+gap> gr2 := DigraphAddEdgeOrbit(gr1, [1, 8]);
+<digraph with 8 vertices, 32 edges>
+gap> DigraphEdges(gr1);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], 
+  [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], 
+  [ 5, 3 ], [ 5, 2 ], [ 5, 8 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], 
+  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 8, 7 ], [ 8, 6 ], [ 8, 5 ] ]
+gap> DigraphEdges(gr2);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 8 ], [ 2, 1 ], [ 2, 8 ], 
+  [ 2, 6 ], [ 2, 3 ], [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 3, 2 ], 
+  [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [ 4, 5 ], [ 5, 3 ], [ 5, 2 ], 
+  [ 5, 8 ], [ 5, 4 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], [ 6, 7 ], 
+  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 7, 6 ], [ 8, 7 ], [ 8, 6 ], 
+  [ 8, 5 ], [ 8, 1 ] ]
+gap> gr3 := DigraphRemoveEdgeOrbit(gr2, [1, 8]);
+<digraph with 8 vertices, 24 edges>
+gap> gr3 = gr1;
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphRemoveEdgeOrbit">
+<ManSection>
+  <Oper Name="DigraphRemoveEdgeOrbit" Arg="digraph, edge"/>
+  <Returns>
+    A new digraph.
+  </Returns>
+  <Description>
+    This operation returns a new digraph with the same vertices as
+    <A>digraph</A> and with the orbit of the edge <A>edge</A> (under the action
+    of the <Ref Attr="DigraphGroup"/> of <A>digraph</A>) removed.
+    <P/>
+    
+    An edge is simply a pair of vertices of <A>digraph</A>.
+
+    <Example><![CDATA[
+gap> gr1 := CayleyDigraph(DihedralGroup(8));
+<digraph with 8 vertices, 24 edges>
+gap> gr2 := DigraphAddEdgeOrbit(gr1, [1, 8]);
+<digraph with 8 vertices, 32 edges>
+gap> DigraphEdges(gr1);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], 
+  [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], 
+  [ 5, 3 ], [ 5, 2 ], [ 5, 8 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], 
+  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 8, 7 ], [ 8, 6 ], [ 8, 5 ] ]
+gap> DigraphEdges(gr2);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 8 ], [ 2, 1 ], [ 2, 8 ], 
+  [ 2, 6 ], [ 2, 3 ], [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 3, 2 ], 
+  [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [ 4, 5 ], [ 5, 3 ], [ 5, 2 ], 
+  [ 5, 8 ], [ 5, 4 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], [ 6, 7 ], 
+  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 7, 6 ], [ 8, 7 ], [ 8, 6 ], 
+  [ 8, 5 ], [ 8, 1 ] ]
+gap> gr3 := DigraphRemoveEdgeOrbit(gr2, [1, 8]);
+<digraph with 8 vertices, 24 edges>
+gap> gr3 = gr1;
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="IsDigraph">
 <ManSection>
   <Filt Name="IsDigraph" Type='Category'/>

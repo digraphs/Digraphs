@@ -59,7 +59,7 @@ InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
 function(digraph)
   local func;
 
-  if DigraphVertexLabels(digraph) = [1 .. DigraphNrVertices(digraph)] then 
+  if DigraphVertexLabels(digraph) = [1 .. DigraphNrVertices(digraph)] then
     func := function(x, y)
       return IsDigraphEdge(digraph, x, y);
     end;

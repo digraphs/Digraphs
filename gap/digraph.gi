@@ -1274,14 +1274,14 @@ function(digraph, edge)
     return digraph;
   fi;
 
-  out := List(OutNeighbours(digraph), ShallowCopy);
+  out := OutNeighboursCopy(digraph);
   G   := DigraphGroup(digraph);
   o   := Orbit(G, edge, OnTuples);
 
   for e in o do
     pos := Position(out[e[1]], e[2]);
     if pos <> fail then
-      Remove(out[e[1]], e[2]);
+      Remove(out[e[1]], pos);
     fi;
   od;
 

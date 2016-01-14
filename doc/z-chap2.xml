@@ -32,10 +32,12 @@
     <#Include Label="DigraphAddVertex">
     <#Include Label="DigraphAddVertices">
     <#Include Label="DigraphAddEdge">
+    <#Include Label="DigraphAddEdgeOrbit">
     <#Include Label="DigraphAddEdges">
     <#Include Label="DigraphRemoveVertex">
     <#Include Label="DigraphRemoveVertices">
     <#Include Label="DigraphRemoveEdge">
+    <#Include Label="DigraphRemoveEdgeOrbit">
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphRemoveLoops">
     <#Include Label="DigraphRemoveAllMultipleEdges">
