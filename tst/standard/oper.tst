@@ -1424,6 +1424,26 @@ gap> DigraphLayers(gr,9);
 gap> DigraphLayers(gr,10);
 [ [ 10 ] ]
 
+#T# DigraphDistancesSet
+gap> gr := ChainDigraph(10);                                               
+<digraph with 10 vertices, 9 edges>
+gap> DigraphDistanceSet(gr, 5, 2); 
+[ 7 ]
+gap> gr := DigraphSymmetricClosure(ChainDigraph(10)); 
+<digraph with 10 vertices, 18 edges>
+gap> DigraphDistanceSet(gr, 5, 2); 
+[ 3, 7 ]
+gap> gr := ChainDigraph(10);;
+gap> DigraphDistanceSet(gr, 20, 1);
+Error, Digraphs: DigraphDistanceSet: usage,
+the second argument must be a vertex of the digraph,
+gap> DigraphDistanceSet(gr, 20, [1]);
+Error, Digraphs: DigraphDistanceSet: usage,
+the second argument must be a vertex of the digraph,
+gap> DigraphDistanceSet(gr, 10, ["string", 1]);
+Error, Digraphs: DigraphDistanceSet: usage,
+the third argument must be a list of non negative integers,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);

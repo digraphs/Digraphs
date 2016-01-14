@@ -107,7 +107,8 @@ gap> DigraphReverseEdge(d, [95000, 4067]);
 <digraph with 113082 vertices, 451854 edges>
 
 #T# DigraphLayers
-gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/fining.p.gz"))[5];;
+gap> list := ReadDigraphs(Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/fining.p.gz"));;
+gap> gr := list[5];;
 gap> gr2 := DigraphCopy(gr);;
 gap> layers1 := List(DigraphLayers(gr,1), x -> Set(x));;
 gap> layers2 := List(DigraphLayers(gr2,1), x -> Set(x));;
@@ -117,6 +118,10 @@ true
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(d);
 gap> Unbind(gr);
+gap> Unbind(gr2);
+gap> Unbind(list);
+gap> Unbind(layers1);
+gap> Unbind(layers2);
 gap> Unbind(out);
 
 #E#
