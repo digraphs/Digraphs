@@ -73,6 +73,7 @@ DeclareOperation("RandomTournament", [IsInt]);
 DeclareOperation("CompleteBipartiteDigraph", [IsPosInt, IsPosInt]);
 DeclareOperation("CompleteDigraph", [IsInt]);
 DeclareOperation("EmptyDigraph", [IsInt]);
+DeclareSynonym("NullDigraph", EmptyDigraph);
 DeclareOperation("CycleDigraph", [IsPosInt]);
 DeclareOperation("ChainDigraph", [IsPosInt]);
 DeclareOperation("LineDigraph", [IsDigraph]);

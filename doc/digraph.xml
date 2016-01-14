@@ -477,10 +477,10 @@ gap> RandomMultiDigraph(1000, 950);
   <Description>
     If <A>n</A> is a non-negative integer, this function returns a random
     tournament with <A>n</A> vertices. See <Ref Prop="IsTournament"/>. <P/>
-    <Log><![CDATA[
+    <Example><![CDATA[
 gap> RandomTournament(10);
 <digraph with 10 vertices, 45 edges>
-]]></Log>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -498,10 +498,10 @@ gap> RandomTournament(10);
     
     The <Ref Oper="DigraphReflexiveTransitiveClosure"/> of a chain represents a
     total order.<P/>
-    <Log><![CDATA[
+    <Example><![CDATA[
 gap> ChainDigraph(42);
 <digraph with 42 vertices, 41 edges>
-]]></Log>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -513,10 +513,10 @@ gap> ChainDigraph(42);
   <Description>
     If <A>n</A> is a non-negative integer, this function returns the complete 
     digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/>. <P/>
-    <Log><![CDATA[
+    <Example><![CDATA[
 gap> CompleteDigraph(20);
 <digraph with 20 vertices, 380 edges>
-]]></Log>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -535,10 +535,10 @@ gap> CompleteDigraph(20);
     returns the complete bipartite digraph with vertex sets of sizes
     <A>m</A> (containing the vertices <C>[1 .. m]</C>) and
     <A>n</A> (containing the vertices <C>[m + 1 .. m + n]</C>). 
-    <Log><![CDATA[
+    <Example><![CDATA[
 gap> CompleteBipartiteDigraph(2, 3);
 <digraph with 5 vertices, 12 edges>
-]]></Log>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -546,15 +546,21 @@ gap> CompleteBipartiteDigraph(2, 3);
 <#GAPDoc Label="EmptyDigraph">
 <ManSection>
   <Oper Name="EmptyDigraph" Arg="n"/>
+  <Oper Name="NullDigraph" Arg="n"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>n</A> is a non-negative integer, this function returns the 
-    <E>empty</E> or <E>null</E>
-    digraph with <A>n</A> vertices. An empty digraph is one with no edges. <P/>
-    <Log><![CDATA[
+    If <A>n</A> is a non-negative integer, this function returns the
+    <E>empty</E> or <E>null</E> digraph with <A>n</A> vertices. An empty
+    digraph is one with no edges. 
+    <P/>
+
+    <C>NullDigraph</C> is a synonym for <C>EmptyDigraph</C>.
+
+    <Example><![CDATA[
 gap> EmptyDigraph(20);
 <digraph with 20 vertices, 0 edges>
-]]></Log>
+gap> NullDigraph(10);
+<digraph with 10 vertices, 0 edges>]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>

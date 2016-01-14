@@ -101,21 +101,28 @@ false
 <#GAPDoc Label="IsEmptyDigraph">
 <ManSection>
   <Prop Name="IsEmptyDigraph" Arg="digraph"/>
+  <Prop Name="IsNullDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     Returns <K>true</K> if the digraph <A>digraph</A> is empty, and
-    <K>false</K> if it is not. A digraph is <E>empty</E> if it has no edges.
+    <K>false</K> if it is not. A digraph is <E>empty</E> if it has no
+    edges.<P/>
+
+    <C>IsNullDigraph</C> is a synonym for <C>IsEmptyDigraph</C>.
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [  ], [  ] ] );
 <digraph with 2 vertices, 0 edges>
 gap> IsEmptyDigraph(gr);
 true
+gap> IsNullDigraph(gr);
+true
 gap> gr := Digraph( [ [  ], [ 1 ] ] );
 <digraph with 2 vertices, 1 edge>
 gap> IsEmptyDigraph(gr);
 false
-]]></Example>
+gap> IsNullDigraph(gr);
+false]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>

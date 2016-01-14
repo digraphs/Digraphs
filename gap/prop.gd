@@ -13,6 +13,7 @@ DeclareProperty("IsBipartiteDigraph", IsDigraph);
 DeclareProperty("IsCompleteDigraph", IsDigraph);
 DeclareProperty("IsConnectedDigraph", IsDigraph);
 DeclareProperty("IsEmptyDigraph", IsDigraph);
+DeclareSynonym("IsNullDiraph", IsEmptyDigraph);
 DeclareProperty("IsFunctionalDigraph", IsDigraph);
 DeclareProperty("IsReflexiveDigraph", IsDigraph);
 DeclareProperty("IsStronglyConnectedDigraph", IsDigraph);

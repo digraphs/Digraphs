@@ -776,7 +776,7 @@ gap> DigraphGirth(gr);
     
     The vertex labels of the graph are preserved, so that a vertex in the new
     digraph can be matched to the corresponding vertex in <A>digraph</A>.<P/>
-    <Log><![CDATA[
+    <Example><![CDATA[
 gap> d := Digraph([ [ 1, 2 ], [  ], [  ], [ 1, 4 ], [  ] ]);
 <digraph with 5 vertices, 4 edges>
 gap> r := ReducedDigraph(d);
@@ -789,8 +789,7 @@ gap> DigraphEdges(r); DigraphEdges(d);
 gap> DigraphVertexLabel(r, 3);
 2
 gap> DigraphVertexLabel(r, 2);
-4
-]]></Log>
+4]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
