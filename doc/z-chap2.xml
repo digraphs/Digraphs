@@ -23,6 +23,7 @@
     <#Include Label="DigraphCopy">
     <#Include Label="InducedSubdigraph">
     <#Include Label="ReducedDigraph">
+    <#Include Label="MaximalSymmetricSubdigraph">
     <#Include Label="QuotientDigraph">
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">

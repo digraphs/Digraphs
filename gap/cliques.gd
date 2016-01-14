@@ -11,19 +11,9 @@
 ##
 
 #
-DeclareAttribute("MaximalSymmetricSubMultiDigraph", IsDigraph);
-DeclareAttribute("MaximalSymmetricSubMultiDigraphWithoutLoops", IsDigraph);
-DeclareAttribute("MaximalSymmetricSubDigraph", IsDigraph);
-DeclareAttribute("MaximalSymmetricSubDigraphWithoutLoops", IsDigraph);
-DeclareOperation("DIGRAPHS_MaximalSymmetricSubDigraph", [IsDigraph, IsBool]);
-DeclareAttribute("DigraphDegeneracy", IsDigraph);
-DeclareAttribute("DigraphDegeneracyOrdering", IsDigraph);
-DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
-
-#
 DeclareOperation("IsIndependentSet", [IsDigraph, IsHomogeneousList]);
-DeclareOperation("IsClique", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximalIndependentSet", [IsDigraph, IsHomogeneousList]);
+DeclareOperation("IsClique", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximalClique", [IsDigraph, IsHomogeneousList]);
 
 ## Independent sets
@@ -39,10 +29,11 @@ DeclareOperation("DigraphMaximalIndependentSet", [IsDigraph,
 DeclareOperation("DigraphMaximalIndependentSet", [IsDigraph, IsHomogeneousList,
                                                   IsHomogeneousList]);
 # Functions to return all maximal independent sets
-DeclareAttribute("MaximalIndependentSets", IsDigraph);
-DeclareOperation("MaximalIndependentSets", [IsDigraph, IsHomogeneousList]);
-DeclareOperation("MaximalIndependentSets", [IsDigraph, IsHomogeneousList,
-                                            IsHomogeneousList]);
+DeclareAttribute("DigraphMaximalIndependentSets", IsDigraph);
+DeclareOperation("DigraphMaximalIndependentSets", [IsDigraph,
+                                                   IsHomogeneousList]);
+DeclareOperation("DigraphMaximalIndependentSets", [IsDigraph, IsHomogeneousList,
+                                                   IsHomogeneousList]);
 
 ## Cliques
 
@@ -56,10 +47,10 @@ DeclareOperation("DigraphMaximalClique", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("DigraphMaximalClique", [IsDigraph, IsHomogeneousList,
                                           IsHomogeneousList]);
 # Functions to return all maximal cliques
-DeclareAttribute("MaximalCliques", IsDigraph);
-DeclareOperation("MaximalCliques", [IsDigraph, IsHomogeneousList]);
-DeclareOperation("MaximalCliques", [IsDigraph, IsHomogeneousList,
-                                    IsHomogeneousList]);
+DeclareAttribute("DigraphMaximalCliques", IsDigraph);
+DeclareOperation("DigraphMaximalCliques", [IsDigraph, IsHomogeneousList]);
+DeclareOperation("DigraphMaximalCliques", [IsDigraph, IsHomogeneousList,
+                                           IsHomogeneousList]);
 
 # Temporary functions to calculate maximal cliques
 DeclareGlobalFunction("BronKerbosch");

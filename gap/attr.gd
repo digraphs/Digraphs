@@ -39,15 +39,21 @@ DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
 DeclareAttribute("DigraphLoops", IsDigraph);
+DeclareAttribute("DigraphDegeneracy", IsDigraph);
+DeclareAttribute("DigraphDegeneracyOrdering", IsDigraph);
+DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
 
 DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
 DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
 DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
 DeclareGlobalFunction("DigraphTransitiveClosureNC");
 
-DeclareAttribute("ReducedDigraph", IsDigraph);
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("BooleanAdjacencyMatrix", IsDigraph);
+DeclareAttribute("ReducedDigraph", IsDigraph);
+DeclareAttribute("MaximalSymmetricSubdigraph", IsDigraph);
+DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoops", IsDigraph);
+DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
 
 DeclareAttribute("AsTransformation", IsDigraph);
 

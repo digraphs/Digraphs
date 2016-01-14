@@ -10,146 +10,6 @@
 #############################################################################
 ##
 
-# This function returns a symmetric digraph without loops and without multiples
-# edges with the same maximal cliques. Using this speeds up clique finding
-
-InstallMethod(MaximalSymmetricSubMultiDigraphWithoutLoops, "for a digraph",
-[IsDigraph],
-function(gr)
-  if not IsMultiDigraph(gr) then
-    return MaximalSymmetricSubDigraphWithoutLoops(gr);
-  fi;
-  ErrorMayQuit("Digraphs: MaximalSymmetricSubMultiDigraphWithoutLoops: usage,",
-               "\nnot yet implemented,");
-end);
-
-InstallMethod(MaximalSymmetricSubMultiDigraph, "for a digraph",
-[IsDigraph],
-function(gr)
-  if not IsMultiDigraph(gr) then
-    return MaximalSymmetricSubDigraph(gr);
-  fi;
-  ErrorMayQuit("Digraphs: MaximalSymmetricSubMultiDigraph: usage,\n",
-               "not yet implemented,");
-end);
-
-# Need to make this more generic, naming more specific
-# loops/no loops; multiple edges/no multiple edges
-
-InstallMethod(MaximalSymmetricSubDigraphWithoutLoops, "for a digraph",
-[IsDigraph],
-function(gr)
-  if HasIsSymmetricDigraph(gr) and IsSymmetricDigraph(gr) then
-    if IsMultiDigraph(gr) then
-      return DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(gr));
-    fi;
-    return DigraphRemoveLoops(gr);
-  fi;
-  return DIGRAPHS_MaximalSymmetricSubDigraph(gr, false);
-end);
-
-InstallMethod(MaximalSymmetricSubDigraph, "for a digraph",
-[IsDigraph],
-function(gr)
-  if HasIsSymmetricDigraph(gr) and IsSymmetricDigraph(gr) then
-    if IsMultiDigraph(gr) then
-      return DigraphRemoveAllMultipleEdges(gr);
-    fi;
-    return gr;
-  fi;
-  return DIGRAPHS_MaximalSymmetricSubDigraph(gr, true);
-end);
-
-InstallMethod(DIGRAPHS_MaximalSymmetricSubDigraph,
-"for a digraph and a bool",
-[IsDigraph, IsBool],
-function(gr, loops)
-  local out_nbs, in_nbs, new_out, new_in, new_gr, i, j;
-
-  out_nbs := OutNeighbours(gr);
-  in_nbs  := InNeighbours(gr);
-  new_out := List(DigraphVertices(gr), x -> []);
-  new_in  := List(DigraphVertices(gr), x -> []);
-
-  for i in DigraphVertices(gr) do
-    for j in Intersection(out_nbs[i], in_nbs[i]) do
-      if loops or i <> j then
-        Add(new_out[i], j);
-        Add(new_in[j], i);
-      fi;
-    od;
-  od;
-
-  new_gr := DigraphNC(new_out);
-  SetInNeighbors(new_gr, new_in);
-  SetIsSymmetricDigraph(new_gr, true);
-  return new_gr;
-end);
-
-#
-
-InstallMethod(DigraphDegeneracy,
-"for a digraph",
-[IsDigraph],
-function(gr)
-  return DIGRAPHS_Degeneracy(gr)[1];
-end);
-
-InstallMethod(DigraphDegeneracyOrdering,
-"for a digraph",
-[IsDigraph],
-function(gr)
-  return DIGRAPHS_Degeneracy(gr)[2];
-end);
-
-# Returns [ degeneracy, degeneracy ordering ]
-
-InstallMethod(DIGRAPHS_Degeneracy,
-"for a digraph",
-[IsDigraph],
-function(gr)
-  local nbs, n, out, deg_vert, m, verts_deg, k, i, v, d, w;
-
-  # The code assumes undirected, no multiple edges, no loops
-  gr := MaximalSymmetricSubDigraph(gr);
-  nbs := OutNeighbours(gr);
-  n := DigraphNrVertices(gr);
-  out := EmptyPlist(n);
-  deg_vert := ShallowCopy(OutDegrees(gr));
-  m := Maximum(deg_vert);
-  verts_deg := List([1 .. m], x -> []);
-
-  # Prepare the set verts_deg
-  for v in DigraphVertices(gr) do
-    if deg_vert[v] = 0 then
-      Add(out, v);
-    else
-      Add(verts_deg[deg_vert[v]], v);
-    fi;
-  od;
-
-  k := 0;
-  while Length(out) < n do
-    i := First([1 .. m], x -> not IsEmpty(verts_deg[x]));
-    k := Maximum(k, i);
-    v := Remove(verts_deg[i]);
-    Add(out, v);
-    for w in Difference(nbs[v], out) do
-      d := deg_vert[w];
-      Remove(verts_deg[d], Position(verts_deg[d], w));
-      d := d - 1;
-      deg_vert[w] := d;
-      if d = 0 then
-        Add(out, w);
-      else
-        Add(verts_deg[d], w);
-      fi;
-    od;
-  od;
-
-  return [k, out];
-end);
-
 # IsIndependentSet: Check that the set is a duplicate-free subset of vertices
 #                   and that no vertex is an out-neighbour of another.
 
@@ -346,7 +206,7 @@ function(gr)
   local verts, mat, degrees, count, recurse, cliques;
 
   verts := DigraphVertices(gr);
-  gr := MaximalSymmetricSubDigraphWithoutLoops(gr);
+  gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
   mat := BooleanAdjacencyMatrix(gr);
   degrees := OutDegrees(gr);
 
@@ -377,7 +237,7 @@ function(gr)
     fi;
 
     # Choose a pivot: vertex with maximum outdegree
-    #                 vertex with maximum outdegree agmonst try would be
+    #                 vertex with maximum outdegree amongst try might be
     #                 faster but is more expensive - perhaps take a sample?
     max := -1;
     pivot := 0;

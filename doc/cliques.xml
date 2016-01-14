@@ -89,17 +89,20 @@ true
 
 <#GAPDoc Label="DigraphMaximalCliques">
 <ManSection>
-  <Attr Name="DigraphMaximalCliques" Arg="digraph"/>
-  <Oper Name="DigraphMaximalCliques" Arg="digraph, l[, m]"/>
+  <Attr Name="DigraphMaximalCliques" Label="for a digraph" Arg="digraph"/>
+  <Oper Name="DigraphMaximalCliques" Label="for a digraph and one or two
+    lists" Arg="digraph, l[, m]"/>
   <Attr Name="DigraphMaximalCliquesReps" Arg="digraph"/>
-  <Attr Name="DigraphMaximalClique" Arg="digraph"/>
-  <Oper Name="DigraphMaximalClique" Arg="digraph, l[, m]"/>
-  <Attr Name="DigraphClique" Arg="digraph"/>
-  <Oper Name="DigraphClique" Arg="digraph, l[, m]"/>
-  <Returns>?</Returns>
+  <Attr Name="DigraphMaximalClique" Label="for a digraph" Arg="digraph"/>
+  <Oper Name="DigraphMaximalClique" Label="for a digraph and one or two
+    lists" Arg="digraph, l[, m]"/>
+  <Attr Name="DigraphClique" Label="for a digraph" Arg="digraph"/>
+  <Oper Name="DigraphClique" Label="for a digraph and one or two lists"
+    Arg="digraph, l[, m]"/>
+  <Returns>A list of lists of positive integers.</Returns>
   <Description>
     <Example><![CDATA[
-gap> 1;;
+gap> true;;
 ]]></Example>
   </Description>
 </ManSection>
@@ -107,77 +110,19 @@ gap> 1;;
 
 <#GAPDoc Label="DigraphMaximalIndependentSets">
 <ManSection>
-  <Attr Name="DigraphMaximalIndependentSets" Arg="digraph"/>
-  <Oper Name="DigraphMaximalIndependentSets" Arg="digraph, l[, m]"/>
+  <Attr Name="DigraphMaximalIndependentSets" Label="for a digraph"
+    Arg="digraph"/>
+  <Oper Name="DigraphMaximalIndependentSets" Label="for a digraph and one or
+    two lists" Arg="digraph, l[, m]"/>
   <Attr Name="DigraphMaximalIndependentSetsReps" Arg="digraph"/>
-  <Attr Name="DigraphMaximalIndependentSet" Arg="digraph"/>
-  <Oper Name="DigraphMaximalIndependset" Arg="digraph, l[, m]"/>
-  <Attr Name="DigraphIndependentSet" Arg="digraph"/>
-  <Oper Name="DigraphIndependset" Arg="digraph, l[, m]"/>
+  <Attr Name="DigraphMaximalIndependentSet" Label="for a digraph"
+    Arg="digraph"/>
+  <Oper Name="DigraphMaximalIndependentSet" Label="for a digraph and one or
+    two lists" Arg="digraph, l[, m]"/>
+  <Attr Name="DigraphIndependentSet" Label="for a digraph" Arg="digraph"/>
+  <Oper Name="DigraphIndependentSet" Label="for a digraph and one or two
+    lists" Arg="digraph, l[, m]"/>
   <Returns>?</Returns>
-  <Description>
-    <Example><![CDATA[
-gap> 1;;
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphDegeneracy">
-<ManSection>
-  <Attr Name="DigraphDegeneracy" Arg="digraph"/>
-  <Returns>A non-negative integer, or <K>fail</K>.</Returns>
-  <Description>
-    If <A>digraph</A> is a symmetric digraph without multiple edges - see
-    <Ref Prop="IsSymmetricDigraph"/> and <Ref Prop="IsMultiDigraph"/> - then
-    this attribute returns the degeneracy of <A>digraph</A>. <P/>
-
-    The degeneracy of a digraph is the least integer <C>k</C> such
-    that every induced of <A>digraph</A> contains a vertex whose number of
-    neighbours (excluding itself) is at most <C>k</C>. Note that this means
-    that loops are ignored.<P/>
-
-    If <A>digraph</A> is not symmetric or has multiple edges then this
-    attribute returns <K>fail</K>.
-    <Example><![CDATA[
-gap> 1;;
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphDegeneracyOrdering">
-<ManSection>
-  <Attr Name="DigraphDegeneracyOrdering" Arg="digraph"/>
-  <Returns>A list of integers, or <K>fail</K>.</Returns>
-  <Description>
-    If <A>digraph</A> is a digraph for which
-    <C>DigraphDegeneracy(</C><A>digraph</A><C>)</C> is a non-negative integer
-    <C>k</C> - see <Ref Attr="DigraphDegeneracy"/> - then this attribute
-    returns a degeneracy ordering of the vertices of the vertices of
-    <A>digraph</A>.<P/>
-
-    A degeneracy ordering of <A>digraph</A> is a list <C>ordering</C> of the
-    vertices of <A>digraph</A> ordered such that for any
-    position <C>i</C> of the list, the vertex <C>ordering[i]</C> has at most
-    <C>k</C> neighbours in later position of the list.<P/>
-
-    If <C>DigraphDegeneracy(</C><A>digraph</A><C>)</C> returns <K>fail</K>,
-    then this attribute returns <K>fail</K>.
-    <Example><![CDATA[
-gap> 1;;
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="MaximalSymmetricSubDigraph">
-<ManSection>
-  <Attr Name="MaximalSymmetricSubDigraph" Arg="digraph"/>
-  <Attr Name="MaximalSymmetricSubDigraphWithoutLoops" Arg="digraph"/>
-  <Attr Name="MaximalSymmetricSubMultiDigraph" Arg="digraph"/>
-  <Attr Name="MaximalSymmetricSubMultiDigraphWithoutLoops" Arg="digraph"/>
-  <Returns>A digraph.</Returns>
   <Description>
     <Example><![CDATA[
 gap> 1;;

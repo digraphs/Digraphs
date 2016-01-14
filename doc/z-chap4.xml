@@ -42,6 +42,8 @@
     <#Include Label="DigraphFloydWarshall">
     <#Include Label="IsReachable">
     <#Include Label="DigraphAllSimpleCircuits">
+    <#Include Label="DigraphDegeneracy">
+    <#Include Label="DigraphDegeneracyOrdering">
   </Section>
 
   <Section><Heading>Finding cliques and independent sets</Heading>
@@ -49,8 +51,5 @@
     <#Include Label="IsIndependentSet">
     <#Include Label="DigraphMaximalCliques">
     <#Include Label="DigraphMaximalIndependentSets">
-    <#Include Label="DigraphDegeneracy">
-    <#Include Label="DigraphDegeneracyOrdering">
-    <#Include Label="MaximalSymmetricSubDigraph">
   </Section>
 </Chapter>
