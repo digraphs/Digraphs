@@ -8,6 +8,25 @@
 #############################################################################
 ##
 
+InstallMethod(RepresentativeOutNeighbours, "for a digraph", [IsDigraph],
+function(digraph)
+  local reps, out, nbs, v;
+  
+  if IsTrivial(DigraphGroup(digraph)) then 
+    return OutNeighbours(digraph);
+  fi;
+
+  reps  := DigraphOrbitReps(digraph);
+
+  out := EmptyPlist(Length(reps));
+  nbs := OutNeighbours(digraph);
+
+  for v in reps do
+    out[v] := nbs[v];
+  od;
+  return out;
+end);
+
 InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
 function(digraph)
   return function(x, y)
