@@ -816,6 +816,9 @@ gap> DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
 
 #T# DigraphAllSimpleCircuits
+gap> gr := Digraph([]);;
+gap> DigraphAllSimpleCircuits(gr);
+[  ]
 gap> gr := ChainDigraph(4);;
 gap> DigraphAllSimpleCircuits(gr);
 [  ]
@@ -849,6 +852,31 @@ gap> gr := Digraph([[3, 6, 7], [3, 6, 8], [1, 2, 3, 6, 7, 8],
 > [1, 2, 3, 8]]);;
 gap> Length(DigraphAllSimpleCircuits(gr));
 259
+
+#T# DigraphLongestSimpleCircuit
+gap> gr := Digraph([]);;
+gap> DigraphLongestSimpleCircuit(gr);
+fail
+gap> gr := Digraph([[], [2]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 2 ]
+gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 4, 5 ]
+gap> gr := ChainDigraph(10);;
+gap> DigraphLongestSimpleCircuit(gr);
+fail
+gap> gr := Digraph([[3], [1], [1, 4], [1, 1]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 1, 3, 4 ]
+gap> gr := Digraph([[2,6,10],[3],[4],[5],[1],
+>                   [7],[8],[9],[1],[11],[12],[13],[1]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 1, 2, 3, 4, 5 ]
+gap> gr := Digraph([[2,6,10],[3],[4],[5],[1],
+>                   [7],[8],[9],[1],[11],[12],[1,13],[14],[1]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 1, 10, 11, 12, 13, 14 ]
 
 #T# AsTransformation
 gap> gr := Digraph([[2], [1, 3], [4], [3]]);;
