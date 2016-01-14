@@ -1164,6 +1164,17 @@ gap> group := DihedralGroup(IsPermGroup,8);
 Group([ (1,2,3,4), (2,4) ])
 gap> digraph := CayleyDigraph(group);
 <digraph with 8 vertices, 16 edges>
+gap> IsCayleyDigraph(digraph);
+true
+gap> IsDigraph(digraph);
+true
+gap> digraph := CayleyDigraph(group, [(1,2,3,4), (2,5)]);
+Error, Digraphs: CayleyDigraph: usage,
+elements in the 2nd argument <gens> must all belong to the 1st argument <G>,
+gap> group := FreeGroup(2);;
+gap> digraph := CayleyDigraph(group);
+Error, Digraphs: CayleyDigraph: usage,
+the first argument <G> must be a finite group,
 
 #T# BipartiteDoubleDigraph
 gap> n := 5;

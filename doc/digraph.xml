@@ -731,10 +731,9 @@ gap> CycleDigraph(123);
   <Description>
     Let <A>G</A> be any group and let <A>gens</A> be a list of elements of
     <A>G</A>. This function returns the Cayley graph of the group with respect
-    <A>gens</A>. The vertices are the elements of <A>G</A>. The vertex <C>u</C>
-    is adjacent to the vertex <C>v</C> if and only if there exists a generator
-    <C>g</C> in <A>gens</A> such that <C>x * g = y</C>.
-    <P/>
+    <A>gens</A>. The vertices are the elements of <A>G</A>. There exists an edge
+    from the vertex <C>u</C> to the vertex <C>v</C> if and only if there exists
+    a generator <C>g</C> in <A>gens</A> such that <C>x * g = y</C>. <P/>
 
     If the optional second argument <A>gens</A> is not present, then the
     generators of <A>G</A> are used by default.

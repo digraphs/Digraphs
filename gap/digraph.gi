@@ -161,10 +161,15 @@ InstallMethod(CayleyDigraph, "for a group with generators",
 function(G, gens)
   local adj, cayleydigraph;
 
+  if not IsFinite(G) then
+    ErrorMayQuit("Digraphs: CayleyDigraph: usage,\n",
+                 "the first argument <G> must be a finite group,");
+  fi;
+
   if not ForAll(gens, x -> x in G) then
     ErrorMayQuit("Digraphs: CayleyDigraph: usage,\n",
-                 "the generators in the second argument must ",
-                 "all belong to the group in the first argument,");
+                 "elements in the 2nd argument <gens> must ",
+                 "all belong to the 1st argument <G>,");
   fi;
 
   adj := function(x, y)
