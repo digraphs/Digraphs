@@ -122,7 +122,8 @@ def _run_test_base (gap_root, message, stop_for_diffs, *arg):
 
     if len(log) == 0:
         print _red_string('test.py: warning: ' + log_file + ' is empty!')
-
+    #if verbose: #TODO
+    #    print '\n', log
     if (log.find('########> Diff') != -1
             or log.find('# WARNING') != -1
             or log.find('#E ') != -1
@@ -215,6 +216,7 @@ def pad(string, extra=0):
 ################################################################################
 
 _LOAD = 'LoadPackage(\\"digraphs\\", false);'
+_LOAD_SEMIGROUPS = 'LoadPackage(\\"semigroups\\", false);'
 _LOAD_SMALLSEMI = 'LoadPackage(\\"smallsemi\\", false);'
 _LOAD_ONLY_NEEDED = 'LoadPackage(\\"digraphs\\", false : OnlyNeeded);'
 _TEST_STANDARD = 'DigraphsTestStandard();'
@@ -259,8 +261,19 @@ def run_digraphs_tests(gap_root, pkg_dir, pkg_name):
 
     dots.dotIt(CYAN_DOT, _configure_make, gap_root, pkg_dir, 'grape')
     _run_test(gap_root, pad('Loading Grape compiled'), True, _LOAD)
+    _run_test(gap_root, pad('Loading Semigroups first'), True,
+              _LOAD_SEMIGROUPS, _LOAD)
 
     _run_test(gap_root, pad('Compiling the doc'), True, _LOAD, _MAKE_DOC)
+
+    print ''
+    print blue_string('Testing with Semigroups loaded first')
+    _run_test(gap_root, pad('testinstall.tst'), True, _LOAD_SEMIGROUPS, _LOAD,
+              _TEST_INSTALL)
+    _run_test(gap_root, pad('manual examples'), True, _LOAD_SEMIGROUPS, _LOAD,
+              _TEST_MAN_EX)
+    _run_test(gap_root, pad('test standard'), True, _LOAD_SEMIGROUPS, _LOAD,
+              _TEST_STANDARD)
 
     print ''
     print blue_string('Testing with Grape compiled')
