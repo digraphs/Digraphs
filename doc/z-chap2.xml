@@ -10,6 +10,7 @@
     <#Include Label="Digraph">
     <#Include Label="DigraphByAdjacencyMatrix">
     <#Include Label="DigraphByEdges">
+    <#Include Label="EdgeOrbitsDigraph">
     <#Include Label="DigraphByInNeighbours">
   </Section>
 
@@ -51,7 +52,6 @@
     <#Include Label="LineUndirectedDigraph">
     <#Include Label="DoubleDigraph">
     <#Include Label="BipartiteDoubleDigraph">
-
   </Section>
 
   <Section><Heading>Random digraphs</Heading>
