@@ -57,9 +57,20 @@ end);
 
 InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
 function(digraph)
-  return function(x, y)
-    return IsDigraphEdge(digraph, x, y);
-  end;
+  local func;
+
+  if DigraphVertexLabels(digraph) = [1 .. DigraphNrVertices(digraph)] then 
+    func := function(x, y)
+      return IsDigraphEdge(digraph, x, y);
+    end;
+  else
+    func := function(x, y)
+      local labels;
+      labels := DigraphVertexLabels(digraph);
+      return IsDigraphEdge(digraph, Position(labels, x), Position(labels, y));
+    end;
+  fi;
+  return func;
 end);
 
 InstallMethod(DigraphGroup, "for a digraph",

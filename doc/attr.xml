@@ -8,6 +8,46 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="DigraphAdjacencyFunction">
+<ManSection>
+  <Attr Name="DigraphAdjacencyFunction" Arg="digraph"/>
+  <Returns>A function.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphAdjacencyFunction</C>
+    returns a function with two vertex labels <C>x, y</C> which returns
+    <K>true</K> if the vertices labelled by <C>x</C> and <C>y</C> are adjacent
+    in <A>digraph</A> and <K>false</K> if they are not. 
+    
+    <Example><![CDATA[
+gap> digraph := Digraph([[1, 2], [3], []]);
+<digraph with 3 vertices, 3 edges>
+gap> foo := DigraphAdjacencyFunction(digraph);
+function( x, y ) ... end
+gap> foo(1, 1);
+true
+gap> foo(1, 2);
+true
+gap> foo(1, 3);
+false
+gap> foo(3, 1);
+false
+gap> gr := Digraph(["a", "b", "c"],
+>                  ["a", "b", "b"],
+>                  ["b", "a", "a"]);
+<multidigraph with 3 vertices, 3 edges>
+gap> foo := DigraphAdjacencyFunction(gr);
+function( x, y ) ... end
+gap> foo("a", "b");
+true
+gap> foo("c", "b");
+false
+gap> foo("c", "a");
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="AsGraph">
 <ManSection>
   <Attr Name="AsGraph" Arg="digraph"/>
