@@ -97,8 +97,29 @@ true
     <C>IsDigraph</C>.  Basic attributes and operations for digraphs
     are: <Ref Oper="DigraphVertices"/>, <Ref Attr="DigraphRange"/>, <Ref
       Attr="DigraphSource"/>, <Ref Attr="OutNeighbours"/>, and <Ref
-      Attr="DigraphEdges"/>. 
+      Attr="DigraphEdges"/>.
     </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsCayleyDigraph">
+<ManSection>
+  <Filt Name="IsCayleyDigraph" Type='Category'/>
+  <Description>
+    <C>IsCayleyDigraph</C> is a subcategory of <C>IsDigraph</C>. Digraphs that
+    are Cayley digraphs of a group and that are constructed by the operation
+    <Ref Oper="CayleyDigraph"/> are constructed in this category.
+    </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsDigraphWithAdjacencyFunction">
+<ManSection>
+  <Filt Name="IsDigraphWithAdjacencyFunction" Type='Category'/>
+  <Description>
+    <C>IsCayleyDigraph</C> is a subcategory of <C>IsDigraph</C>. Digraphs that
+    are <E>created</E> using an adjacency function are constructed in this
+    category</Description>
 </ManSection>
 <#/GAPDoc>
 
