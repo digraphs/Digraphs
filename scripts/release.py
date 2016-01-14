@@ -172,15 +172,11 @@ def _copy_doc(dst, verbose):
                                      ' to the archive . . .')
             shutil.copy('doc/' + filename, dst)
 
-def _copy_build_files(dst, verbose):
-    for filename in ['configure', 'configure.ac', 'Makefile.in', 'Makefile.am']:
-        if verbose:
-            print _cyan_string('Copying ' + filename + ' to the archive . . .')
-        shutil.copy(filename, dst)
-
-    if verbose:
-        print _cyan_string('Copying cnf/* to the archive . . .')
-    shutil.copytree('cnf', dst + '/cnf')
+def _create_build_files(dst, verbose):
+    cwd = os.getcwd()
+    os.chdir(dst)
+    _exec('./autogen.sh', verbose)
+    os.chdir(cwd)
 
 def _delete_generated_build_files(verbose):
     for filename in ['config.log', 'config.status']:
@@ -317,7 +313,7 @@ def main():
 
     # handle the doc . . .
     _copy_doc(tmpdir + '/doc/', args.verbose)
-    _copy_build_files(tmpdir, args.verbose)
+    _create_build_files(tmpdir, args.verbose)
     if not args.skip_tests:
         print _magenta_string(pad('Downloading digraphs-lib-0.3.tar.gz') +
                               ' . . . '),
@@ -326,8 +322,7 @@ def main():
         print ''
 
     # delete extra files and dirs
-    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', 'autogen.sh',
-                     '.hg_archival.txt']:
+    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', '.hg_archival.txt']:
         if (os.path.exists(os.path.join(tmpdir, filename))
                 and os.path.isfile(os.path.join(tmpdir, filename))):
             print _magenta_string(pad('Deleting file ' + filename) + ' . . .')
