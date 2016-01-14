@@ -186,6 +186,25 @@ InstallMethod(AdjacencyMatrix, "for a digraph",
 
 #
 
+InstallMethod(BooleanAdjacencyMatrix,
+"for a digraph",
+[IsDigraph],
+function(gr)
+  local n, nbs, mat, i, j;
+
+  n := DigraphNrVertices(gr);
+  nbs := OutNeighbours(gr);
+  mat := List(DigraphVertices(gr), x -> BlistList([1 .. n], []));
+  for i in DigraphVertices(gr) do
+    for j in nbs[i] do
+      mat[i][j] := true;
+    od;
+  od;
+  return mat;
+end);
+
+#
+
 InstallMethod(DigraphShortestDistances, "for a digraph",
 [IsDigraph], DIGRAPH_SHORTEST_DIST);
 

@@ -145,6 +145,39 @@ gap> Display(mat);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="BooleanAdjacencyMatrix">
+<ManSection>
+  <Attr Name="BooleanAdjacencyMatrix" Arg="digraph"/>
+  <Returns>A square matrix of booleans.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph with a positive number of vertices
+    <C>n</C>, then <C>BooleanAdjacencyMatrix(</C><A>digraph</A><C>)</C>
+    returns the boolean adjacency matrix <C>mat</C> of <A>digraph</A>.  The
+    value of the matrix entry <C>mat[j][i]</C> is <K>true</K> if and only if
+    there exists an edge in <A>digraph</A> with source <C>j</C> and range
+    <C>i</C>.<P/>
+    
+    Note this the boolean adjacency loses information about multiple edges.
+    <P/>
+
+    If <A>digraph</A> has no vertices, then this attribute returns the empty
+    list.
+    <Example><![CDATA[
+gap> gr := Digraph([[3, 4], [2, 3], [1, 2, 4], [4]]);
+<digraph with 4 vertices, 8 edges>
+gap> BooleanAdjacencyMatrix(gr);
+[ [ false, false, true, true ], [ false, true, true, false ], 
+  [ true, true, false, true ], [ false, false, false, true ] ]
+gap> gr := CycleDigraph(4);;
+gap> BooleanAdjacencyMatrix(gr);
+[ [ false, true, false, false ], [ false, false, true, false ], 
+  [ false, false, false, true ], [ true, false, false, false ] ]
+gap> BooleanAdjacencyMatrix(EmptyDigraph(0));
+[  ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="RangeSourceDigraph">
 <ManSection>
   <Attr Name="DigraphRange" Arg="digraph"/>

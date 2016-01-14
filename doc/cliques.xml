@@ -16,11 +16,34 @@
   <Description>
     If <A>digraph</A> is a digraph and <A>l</A> is a duplicate-free list of
     vertices of <A>digraph</A>, then
-    <C>IsClique(</C><A>digraph</A><C>,</C><A>l</A><C>)</C>
-    
+    <C>IsClique(</C><A>digraph</A><C>,</C><A>l</A><C>)</C> returns
+    <K>true</K> if and only if <A>l</A> defines a clique of <A>digraph</A>,
+    and <C>IsMaximalClique(</C><A>digraph</A><C>,</C><A>l</A><C>)</C> returns
+    <K>true</K> if and only if <A>l</A> defines a <E>maximal</E> clique of
+    <A>digraph</A>. <P/>
+
+    A set of vertices of a digraph defines a clique if and only if every
+    vertex of the set is an out-neighbour in the digraph of all of the other
+    vertices of the set.  Note that loops are not necessary for a clique.
+    Equivalently, a clique is a set of vertices of the digraph which induces a
+    complete digraph (when ignoring loops and multiple edges). <P/>
+
+    A clique of a digraph is a <E>maximal</E> clique if it is not properly
+    contained is another clique the digraph.
     <Example><![CDATA[
-gap> 1;;
-]]></Example>
+gap> gr := CompleteDigraph(4);;
+gap> IsClique(gr, [1, 3, 2]);
+true
+gap> IsMaximalClique(gr, [1, 3, 2]);
+false
+gap> IsMaximalClique(gr, DigraphVertices(gr));
+true
+gap> gr := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);
+<multidigraph with 4 vertices, 11 edges>
+gap> IsClique(gr, [2, 3, 4]);
+false
+gap> IsMaximalClique(gr, [1, 2, 4]);
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -31,8 +54,34 @@ gap> 1;;
   <Oper Name="IsMaximalIndependentSet" Arg="digraph, l"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
+    If <A>digraph</A> is a digraph and <A>l</A> is a duplicate-free list of
+    vertices of <A>digraph</A>, then
+    <C>IsIndependentSet(</C><A>digraph</A><C>,</C><A>l</A><C>)</C> returns
+    <K>true</K> if and only if <A>l</A> defines an independent set of
+    <A>digraph</A>, and
+    <C>IsMaximalIndependentSet(</C><A>digraph</A><C>,</C><A>l</A><C>)</C>
+    returns <K>true</K> if and only if <A>l</A> defines a <E>maximal</E>
+    independent set of <A>digraph</A>. <P/>
+
+    A set of vertices of a digraph is an independent set if and only if no
+    vertex of the set is an out-neighbour in the digraph of any other
+    vertex of the set. Equivalently, an independent set is a set of vertices
+    of the digraph which induces an empty digraph.<P/>
+
+    An independent of a digraph is a <E>maximal</E> independent set if it is
+    not properly contained is another independent set of the digraph.
     <Example><![CDATA[
-gap> 1;;
+gap> gr := CycleDigraph(4);;
+gap> IsIndependentSet(gr, [1]);
+true
+gap> IsMaximalIndependentSet(gr, [1]);
+false
+gap> IsIndependentSet(gr, [1, 4, 3]);
+false
+gap> IsIndependentSet(gr, [2, 4]);
+true
+gap> IsMaximalIndependentSet(gr, [2, 4]);
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -77,8 +126,19 @@ gap> 1;;
 <#GAPDoc Label="DigraphDegeneracy">
 <ManSection>
   <Attr Name="DigraphDegeneracy" Arg="digraph"/>
-  <Returns>?</Returns>
+  <Returns>A non-negative integer, or <K>fail</K>.</Returns>
   <Description>
+    If <A>digraph</A> is a symmetric digraph without multiple edges - see
+    <Ref Prop="IsSymmetricDigraph"/> and <Ref Prop="IsMultiDigraph"/> - then
+    this attribute returns the degeneracy of <A>digraph</A>. <P/>
+
+    The degeneracy of a digraph is the least integer <C>k</C> such
+    that every induced of <A>digraph</A> contains a vertex whose number of
+    neighbours (excluding itself) is at most <C>k</C>. Note that this means
+    that loops are ignored.<P/>
+
+    If <A>digraph</A> is not symmetric or has multiple edges then this
+    attribute returns <K>fail</K>.
     <Example><![CDATA[
 gap> 1;;
 ]]></Example>
@@ -89,20 +149,21 @@ gap> 1;;
 <#GAPDoc Label="DigraphDegeneracyOrdering">
 <ManSection>
   <Attr Name="DigraphDegeneracyOrdering" Arg="digraph"/>
-  <Returns>?</Returns>
+  <Returns>A list of integers, or <K>fail</K>.</Returns>
   <Description>
-    <Example><![CDATA[
-gap> 1;;
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
+    If <A>digraph</A> is a digraph for which
+    <C>DigraphDegeneracy(</C><A>digraph</A><C>)</C> is a non-negative integer
+    <C>k</C> - see <Ref Attr="DigraphDegeneracy"/> - then this attribute
+    returns a degeneracy ordering of the vertices of the vertices of
+    <A>digraph</A>.<P/>
 
-<#GAPDoc Label="BooleanAdjacencyMatrix">
-<ManSection>
-  <Attr Name="BooleanAdjacencyMatrix" Arg="digraph"/>
-  <Returns>?</Returns>
-  <Description>
+    A degeneracy ordering of <A>digraph</A> is a list <C>ordering</C> of the
+    vertices of <A>digraph</A> ordered such that for any
+    position <C>i</C> of the list, the vertex <C>ordering[i]</C> has at most
+    <C>k</C> neighbours in later position of the list.<P/>
+
+    If <C>DigraphDegeneracy(</C><A>digraph</A><C>)</C> returns <K>fail</K>,
+    then this attribute returns <K>fail</K>.
     <Example><![CDATA[
 gap> 1;;
 ]]></Example>
@@ -113,8 +174,10 @@ gap> 1;;
 <#GAPDoc Label="MaximalSymmetricSubDigraph">
 <ManSection>
   <Attr Name="MaximalSymmetricSubDigraph" Arg="digraph"/>
+  <Attr Name="MaximalSymmetricSubDigraphWithoutLoops" Arg="digraph"/>
   <Attr Name="MaximalSymmetricSubMultiDigraph" Arg="digraph"/>
-  <Returns>?</Returns>
+  <Attr Name="MaximalSymmetricSubMultiDigraphWithoutLoops" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
   <Description>
     <Example><![CDATA[
 gap> 1;;

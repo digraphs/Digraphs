@@ -17,6 +17,7 @@
 
   <Section><Heading>Neighbours and degree</Heading>
     <#Include Label="AdjacencyMatrix">
+    <#Include Label="BooleanAdjacencyMatrix">
     <#Include Label="RangeSourceDigraph">
     <#Include Label="OutNeighbours">
     <#Include Label="InNeighbours">
@@ -51,6 +52,5 @@
     <#Include Label="DigraphDegeneracy">
     <#Include Label="DigraphDegeneracyOrdering">
     <#Include Label="MaximalSymmetricSubDigraph">
-    <#Include Label="BooleanAdjacencyMatrix">
   </Section>
 </Chapter>

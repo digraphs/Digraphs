@@ -10,12 +10,12 @@
 #############################################################################
 ##
 
-# TEMP
-DeclareAttribute("BooleanAdjacencyMatrix", IsDigraph);
-
 #
 DeclareAttribute("MaximalSymmetricSubMultiDigraph", IsDigraph);
+DeclareAttribute("MaximalSymmetricSubMultiDigraphWithoutLoops", IsDigraph);
 DeclareAttribute("MaximalSymmetricSubDigraph", IsDigraph);
+DeclareAttribute("MaximalSymmetricSubDigraphWithoutLoops", IsDigraph);
+DeclareOperation("DIGRAPHS_MaximalSymmetricSubDigraph", [IsDigraph, IsBool]);
 DeclareAttribute("DigraphDegeneracy", IsDigraph);
 DeclareAttribute("DigraphDegeneracyOrdering", IsDigraph);
 DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
@@ -63,7 +63,3 @@ DeclareOperation("MaximalCliques", [IsDigraph, IsHomogeneousList,
 
 # Temporary functions to calculate maximal cliques
 DeclareGlobalFunction("BronKerbosch");
-DeclareGlobalFunction("BronKerboschWithPivot");
-DeclareGlobalFunction("BronKerboschWithPivotBlist");
-DeclareGlobalFunction("BronKerboschWithPivotAndOrdering");
-DeclareGlobalFunction("BronKerboschIter");

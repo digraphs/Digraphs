@@ -10,28 +10,18 @@
 #############################################################################
 ##
 
-# BooleanAdjacencyMatrix
-
-InstallMethod(BooleanAdjacencyMatrix,
-"for a digraph",
-[IsDigraph],
-function(gr)
-  local n, nbs, mat, i, j;
-
-  n := DigraphNrVertices(gr);
-  nbs := OutNeighbours(gr);
-  mat := List(DigraphVertices(gr), x -> BlistList([1 .. n], []));
-  for i in DigraphVertices(gr) do
-    for j in nbs[i] do
-      mat[j][i] := true;
-      mat[i][j] := true;
-    od;
-  od;
-  return mat;
-end);
-
 # This function returns a symmetric digraph without loops and without multiples
 # edges with the same maximal cliques. Using this speeds up clique finding
+
+InstallMethod(MaximalSymmetricSubMultiDigraphWithoutLoops, "for a digraph",
+[IsDigraph],
+function(gr)
+  if not IsMultiDigraph(gr) then
+    return MaximalSymmetricSubDigraphWithoutLoops(gr);
+  fi;
+  ErrorMayQuit("Digraphs: MaximalSymmetricSubMultiDigraphWithoutLoops: usage,",
+               "\nnot yet implemented,");
+end);
 
 InstallMethod(MaximalSymmetricSubMultiDigraph, "for a digraph",
 [IsDigraph],
@@ -45,9 +35,35 @@ end);
 
 # Need to make this more generic, naming more specific
 # loops/no loops; multiple edges/no multiple edges
+
+InstallMethod(MaximalSymmetricSubDigraphWithoutLoops, "for a digraph",
+[IsDigraph],
+function(gr)
+  if HasIsSymmetricDigraph(gr) and IsSymmetricDigraph(gr) then
+    if IsMultiDigraph(gr) then
+      return DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(gr));
+    fi;
+    return DigraphRemoveLoops(gr);
+  fi;
+  return DIGRAPHS_MaximalSymmetricSubDigraph(gr, false);
+end);
+
 InstallMethod(MaximalSymmetricSubDigraph, "for a digraph",
 [IsDigraph],
 function(gr)
+  if HasIsSymmetricDigraph(gr) and IsSymmetricDigraph(gr) then
+    if IsMultiDigraph(gr) then
+      return DigraphRemoveAllMultipleEdges(gr);
+    fi;
+    return gr;
+  fi;
+  return DIGRAPHS_MaximalSymmetricSubDigraph(gr, true);
+end);
+
+InstallMethod(DIGRAPHS_MaximalSymmetricSubDigraph,
+"for a digraph and a bool",
+[IsDigraph, IsBool],
+function(gr, loops)
   local out_nbs, in_nbs, new_out, new_in, new_gr, i, j;
 
   out_nbs := OutNeighbours(gr);
@@ -57,7 +73,7 @@ function(gr)
 
   for i in DigraphVertices(gr) do
     for j in Intersection(out_nbs[i], in_nbs[i]) do
-      if i <> j then
+      if loops or i <> j then
         Add(new_out[i], j);
         Add(new_in[j], i);
       fi;
@@ -86,7 +102,7 @@ function(gr)
   return DIGRAPHS_Degeneracy(gr)[2];
 end);
 
-# Calculates [ degeneracy, degeneracy ordering ]
+# Returns [ degeneracy, degeneracy ordering ]
 
 InstallMethod(DIGRAPHS_Degeneracy,
 "for a digraph",
@@ -172,7 +188,7 @@ function(gr, set)
     if IsEmpty(Intersection(set, OutNeighboursOfVertex(gr, v))) then
       return false;
     fi;
-    try := Difference(try, OutNeighbours(gr, v));
+    try := Difference(try, OutNeighboursOfVertex(gr, v));
   od;
   return true;
 end);
@@ -220,11 +236,11 @@ function(gr, clique)
   try := DigraphVertices(gr);
   n := Length(clique);
   i := 0;
-  while i < n and Length(try) > n do
+  while i < n and Length(try) > 0 do
     i := i + 1;
     try := Intersection(try, nbs[clique[i]]);
   od;
-  if Length(try) = n then
+  if IsSubset(clique, try) then
     return true;
   fi;
 
@@ -321,57 +337,16 @@ function(gr, set, exclude)
                "not yet implemented,");
 end);
 
-#
-
-# This is a basic implementation of the Bron-Kerbosch algorithm for finding all
-# maximal cliques in a digraph. The main purpose of this being here is for
-
-# checking results and better understanding of the more complicated algorithm.
-
-InstallGlobalFunction(BronKerbosch,
-function(gr)
-  local nbs, count, recurse, cliques;
-
-  nbs := OutNeighbours(MaximalSymmetricSubDigraph(gr));
-
-  count := 0;
-  recurse := function(clique, try_arg, forbid_arg)
-    local v, try, forbid;
-
-    count := count + 1;
-    if IsEmpty(try_arg) and IsEmpty(forbid_arg) then
-      Add(cliques, clique);
-    else
-      try := ShallowCopy(try_arg);
-      forbid := ShallowCopy(forbid_arg);
-      while not IsEmpty(try) do
-        v := Remove(try);
-        recurse(Concatenation(clique, [v]),
-                Intersection(try, nbs[v]),
-                Intersection(forbid, nbs[v]));
-        Add(forbid, v);
-      od;
-    fi;
-  end;
-
-  cliques := [];
-  recurse([], ShallowCopy(DigraphVertices(gr)), []);
-  Print(count, " recursions\n");
-  return cliques;
-end);
-
-#
-
 # up to automorphisms / or all?
 # one or all? up to a particular limit?
 # size?
 
-InstallGlobalFunction(BronKerboschWithPivotBlist,
+InstallGlobalFunction(BronKerbosch,
 function(gr)
   local verts, mat, degrees, count, recurse, cliques;
 
   verts := DigraphVertices(gr);
-  gr := MaximalSymmetricSubDigraph(gr);
+  gr := MaximalSymmetricSubDigraphWithoutLoops(gr);
   mat := BooleanAdjacencyMatrix(gr);
   degrees := OutDegrees(gr);
 
@@ -440,93 +415,5 @@ function(gr)
           BlistList(verts, []),
           AutomorphismGroup(gr));
   Print(count, " recursions\n");
-  return cliques;
-end);
-
-#
-
-InstallGlobalFunction(BronKerboschWithPivotAndOrdering,
-function(gr)
-  local nbs, degrees, count, recurse, try1, forbid1, cliques, w;
-
-  gr := MaximalSymmetricSubDigraph(gr);
-  nbs := OutNeighbours(gr);
-  degrees := OutDegrees(gr);
-
-  count := 0;
-  recurse := function(clique, try_arg, forbid_arg)
-    local max, pivot, try, forbid, ptry, v;
-
-    count := count + 1;
-    if IsEmpty(try_arg) and IsEmpty(forbid_arg) then
-      Add(cliques, clique);
-    else
-      # Choose a pivot
-      max := -1;
-      for v in Concatenation(try_arg, forbid_arg) do
-        if degrees[v] > max then
-          pivot := v;
-          max := degrees[v];
-        fi;
-      od;
-      if max = -1 then
-        Print("fail - this is bad,\n");
-      fi;
-
-      try := ShallowCopy(try_arg);
-      forbid := ShallowCopy(forbid_arg);
-      ptry := Difference(try, nbs[pivot]);
-      while not IsEmpty(ptry) do
-        v := Remove(ptry);
-        recurse(Union(clique, [v]),
-                Intersection(try, nbs[v]),
-                Intersection(forbid, nbs[v]));
-        Remove(try, Position(try, v)); # is there a way of getting rid of this?
-        Add(forbid, v);
-      od;
-    fi;
-  end;
-
-  try1 := ShallowCopy(DigraphDegeneracyOrdering(gr));
-  forbid1 := [];
-  cliques := [];
-  while not IsEmpty(try1) do
-    w := Remove(try1, 1);
-    recurse([w],
-            Intersection(try1, nbs[w]),
-            Intersection(forbid1, nbs[w]));
-    Add(forbid1, w);
-  od;
-
-  Print(count, " recursions\n");
-  return cliques;
-end);
-
-# Version of basic algorithm, non-recursive with stack
-
-InstallGlobalFunction(BronKerboschIter,
-function(gr)
-  local nbs, cliques, stack, state, try, forbid, v;
-
-  nbs := OutNeighbours(MaximalSymmetricSubDigraph(gr));
-  cliques := [];
-  stack := [[[], ShallowCopy(DigraphVertices(gr)), []]];
-  while not IsEmpty(stack) do
-    state := Remove(stack);
-    if IsEmpty(state[2]) and IsEmpty(state[3]) then
-      Add(cliques, state[1]);
-    else
-      try := state[2];
-      forbid := state[3];
-      while not IsEmpty(try) do
-        v := Remove(try);
-        Add(stack, [Union(state[1], [v]),
-                    Intersection(try, nbs[v]),
-                    Intersection(forbid, nbs[v])]);
-        Add(forbid, v);
-      od;
-    fi;
-  od;
-
   return cliques;
 end);
