@@ -570,7 +570,7 @@ function(graph)
   if IsGraph(graph) then
     digraph := DigraphNC(List(Vertices(graph), x -> Adjacency(graph, x)));
     if IsBound(graph.names) then
-      SetDigraphVertexLabels(digraph, ShallowCopy(graph.names));
+      SetDigraphVertexLabels(digraph, StructuralCopy(graph.names));
     fi;
     if not IsTrivial(graph.group) then
       Assert(IsPermGroup(graph.group), 1);
@@ -1181,6 +1181,104 @@ function(digraph)
 
   return Digraph(G, edges, OnSets, adj);
 end);
+
+# Returns the digraph with vertex - set {1, .. ., n} and edge-set
+# the union over e in E  of  e ^ G.
+# (E can consist of just a singleton edge.)
+
+InstallMethod(EdgeOrbitsDigraph, "for a perm group, list, and pos int",
+[IsPermGroup, IsList, IsPosInt],
+function(G, E, n)
+  local out, o, digraph, e, f;
+  
+  if IsPosInt(E[1]) then   # assume  E  consists of a single edge.
+    E := [E];
+  fi;
+  
+  if not ForAll(E, e -> Length(e) = 2 and ForAll(e, IsPosInt)) then 
+    ErrorMayQuit("Digraphs: EdgeOrbitsDigraph: usage,\n", 
+                 "the second argument must be a list of pairs of pos ints,");
+  fi;
+
+  out := List([1 .. n], x -> []);
+  for e in E do
+    o := Orbit(G, e, OnTuples); 
+    for f in o do 
+      AddSet(out[f[1]], f[2]);
+    od;
+  od;
+
+  digraph := DigraphNC(out);
+  SetDigraphGroup(digraph, G);
+  
+  return digraph;
+end);
+
+InstallMethod(EdgeOrbitsDigraph, "for a group and list",
+[IsPermGroup, IsList],
+function(G, E)
+  return EdgeOrbitsDigraph(G, E, LargestMovedPoint(G));
+end);
+
+#BindGlobal("AddEdgeOrbit", function(arg) 
+#  #
+#  # Let  gamma = arg[1]  and  e = arg[2].
+#  # If  arg[3]  is bound then it is assumed to be  Stabilizer(gamma.group, e[1]).
+#  # This procedure adds edge orbit  e ^ gamma.group  to the edge - set of  gamma.
+#  #
+#  local w, word, sch, gens, gamma, e, x, y, orb, u, v;
+#  gamma := arg[1]; 
+#  e := arg[2];
+#  if not IsGraph(gamma) or not IsList(e) 
+#    or (IsBound(arg[3]) and not IsPermGroup(arg[3])) then
+#    Error("usage: AddEdgeOrbit( < Graph > , < List > , [, < PermGroup > ])");
+#  fi;
+#  if Length(e) <> 2 or not IsVertex(gamma, e[1]) or not IsVertex(gamma, e[2]) then
+#    Error("invalid < e > ");
+#  fi;
+#  sch := gamma.schreierVector;
+#  gens := GeneratorsOfGroup(gamma.group);
+#  x := e[1];
+#  y := e[2];
+#  w := sch[x];
+#  word := [];
+#  while w > 0 do
+#    Add(word, w);
+#    x := x / gens[w];
+#    y := y / gens[w];
+#    w := sch[x];
+#  od;
+#  if not(y in gamma.adjacencies[- sch[x]]) then
+#    #  e  is not an edge of  gamma
+#    if not IsBound(arg[3]) then
+#      orb := Orbit(Stabilizer(gamma.group, x), y);
+#    else
+#      if ForAny(GeneratorsOfGroup(arg[3]), x -> e[1] ^ x <> e[1]) then
+#        Error(" < arg[3] > not equal to  Stabilizer( < gamma.group > , < e[1] > )");
+#      fi;
+#      orb := [];
+#      for u in Orbit(arg[3], e[2]) do
+#        v := u;
+#        for w in word do
+#          v := v / gens[w];
+#        od;
+#        Add(orb, v);
+#      od;
+#    fi;
+#    UniteSet(gamma.adjacencies[- sch[x]], orb);
+#    if e[1] = e[2] then
+#      gamma.isSimple := false;
+#    elif IsBound(gamma.isSimple) and gamma.isSimple then
+#      if not IsVertexPairEdge(gamma, e[2], e[1]) then 
+#        gamma.isSimple := false; 
+#      fi;
+#    else 
+#      Unbind(gamma.isSimple);
+#    fi;
+#    Unbind(gamma.autGroup);
+#    Unbind(gamma.canonicalLabelling);
+#  fi;   
+#end);
 
 #
 InstallMethod(PrintString, "for a digraph",

@@ -97,7 +97,7 @@ function(digraph, rep)
   local pos, stabs;
 
   pos := -1 * DigraphSchreierVector(digraph)[rep];
-  if pos < 0 then
+  if pos < 0 then #TODO!
     ErrorMayQuit("Digraphs: DigraphStabilizer: usage,\n");
   fi;
   stabs := DigraphStabilizers(digraph);

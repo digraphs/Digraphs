@@ -54,6 +54,9 @@ DeclareOperation("DigraphByInNeighbours", [IsList]);
 DeclareOperation("DigraphByInNeighbors", [IsList]);
 DeclareOperation("DigraphByInNeighboursNC", [IsList]);
 DeclareOperation("DigraphByInNeighboursNC", [IsList, IsInt]);
+DeclareOperation("EdgeOrbitsDigraph", [IsPermGroup, IsList, IsPosInt]);
+DeclareOperation("EdgeOrbitsDigraph", [IsPermGroup, IsList]);
+
 DeclareOperation("Graph", [IsDigraph]);
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
