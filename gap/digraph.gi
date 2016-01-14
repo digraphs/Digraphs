@@ -172,6 +172,7 @@ function(G, gens)
   end;
   cayleydigraph := Digraph(G, AsList(G), OnRight, adj);
   SetFilterObj(cayleydigraph, IsCayleyDigraph);
+  SetFilterObj(cayleydigraph, IsDigraphWithAdjacencyFunction);
   return cayleydigraph;
 end);
 
@@ -1198,20 +1199,20 @@ end);
 
 InstallMethod(EdgeOrbitsDigraph, "for a perm group, list, and pos int",
 [IsPermGroup, IsList, IsPosInt],
-function(G, E, n)
+function(G, edges, n)
   local out, o, digraph, e, f;
 
-  if IsPosInt(E[1]) then   # assume  E  consists of a single edge.
-    E := [E];
+  if IsPosInt(edges[1]) then   # E consists of a single edge
+    edges := [edges];
   fi;
 
-  if not ForAll(E, e -> Length(e) = 2 and ForAll(e, IsPosInt)) then
+  if not ForAll(edges, e -> Length(e) = 2 and ForAll(e, IsPosInt)) then
     ErrorMayQuit("Digraphs: EdgeOrbitsDigraph: usage,\n",
                  "the second argument must be a list of pairs of pos ints,");
   fi;
 
   out := List([1 .. n], x -> []);
-  for e in E do
+  for e in edges do
     o := Orbit(G, e, OnTuples);
     for f in o do
       AddSet(out[f[1]], f[2]);
