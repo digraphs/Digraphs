@@ -5,6 +5,11 @@ echo "(including DigraphsTestExtreme)"
 echo "-------------------------------"
 echo "LoadPackage(\"digraphs\"); LoadPackage(\"semigroups\"); DigraphsTestAll(); DigraphsTestExtreme(); quit;" | sh gap/bin/gap.sh | tee testlog.txt
 
+echo "=========================================================================="
+echo "GAP DEV: Running tests with Semigroups and Grape loaded BEFORE Digraphs..."
+echo "=========================================================================="
+echo "LoadPackage(\"semigroups\"); LoadPackage(\"grape\"); LoadPackage(\"digraphs\"); DigraphsTestAll(); quit;" | sh gap/bin/gap.sh | tee -a testlog.txt
+
 echo "================================================================"
 echo "GAP DEV: Running tests with Grape loaded (but NOT Semigroups)..."
 echo "================================================================"
