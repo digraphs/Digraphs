@@ -1000,21 +1000,13 @@ Partition::cr_init()
 
   cr_enabled = true;
 
-  if (cr_cells) {
-    free(cr_cells);
-  }
+  if(cr_cells) free(cr_cells);
   cr_cells = (CRCell*)malloc(N * sizeof(CRCell));
-  if (!cr_cells) {
-    assert(false && "Mem out");
-  }
+  if(!cr_cells) {assert(false && "Mem out"); }
 
-  if (cr_levels) {
-    free(cr_levels);
-  }
+  if(cr_levels) free(cr_levels);
   cr_levels = (CRCell**)malloc(N * sizeof(CRCell*));
-  if (!cr_levels) {
-    assert(false && "Mem out");
-  }
+  if(!cr_levels) {assert(false && "Mem out"); }
 
   for(unsigned int i = 0; i < N; i++) {
     cr_levels[i] = 0;
@@ -1046,20 +1038,23 @@ Partition::cr_free()
 
 
 unsigned int
-Partition::cr_split_level(const unsigned int level, const std::vector<unsigned int>& splitted_cells) {
+Partition::cr_split_level(const unsigned int level,
+			  const std::vector<unsigned int>& splitted_cells)
+{
   assert(cr_enabled);
   assert(level <= cr_max_level);
   cr_levels[++cr_max_level] = 0;
   cr_splitted_level_trail.push_back(level);
 
-  for(unsigned int i = 0; i < splitted_cells.size(); i++) {
-    const unsigned int cell_index = splitted_cells[i];
-    assert(cell_index < N);
-    CRCell& cr_cell = cr_cells[cell_index];
-    assert(cr_cell.level == level);
-    cr_cell.detach();
-    cr_create_at_level(cell_index, cr_max_level);
-  }
+  for(unsigned int i = 0; i < splitted_cells.size(); i++)
+    {
+      const unsigned int cell_index = splitted_cells[i];
+      assert(cell_index < N);
+      CRCell& cr_cell = cr_cells[cell_index];
+      assert(cr_cell.level == level);
+      cr_cell.detach();
+      cr_create_at_level(cell_index, cr_max_level);
+    }
 
   return cr_max_level;
 }

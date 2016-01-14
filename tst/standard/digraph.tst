@@ -1155,6 +1155,45 @@ gap> LineUndirectedDigraph(gr);
 Error, Digraphs: LineUndirectedDigraph: usage,
 the argument <digraph> must be a symmetric digraph,
 
+#T# CayleyDigraph
+gap> group := DihedralGroup(8);
+<pc group of size 8 with 3 generators>
+gap> digraph := CayleyDigraph(group);
+<digraph with 8 vertices, 24 edges>
+gap> group := DihedralGroup(IsPermGroup,8);
+Group([ (1,2,3,4), (2,4) ])
+gap> digraph := CayleyDigraph(group);
+<digraph with 8 vertices, 16 edges
+
+#T# BipartiteDoubleDigraph
+gap> n := 5;
+5
+gap> adj := function(x,y)
+> return ((x+1) mod n) = (y mod n);
+> end;
+function( x, y ) ... end
+gap> group := CyclicGroup(IsPermGroup,n);
+Group([ (1,2,3,4,5) ])
+gap> digraph := Digraph(group,[1..n],\^,adj);
+<digraph with 5 vertices, 5 edges>
+gap> bddigraph := BipartiteDoubleDigraph(digraph);
+<digraph with 10 vertices, 10 edges>
+gap> bdgroup := DigraphGroup(bddigraph);
+Group([ (1,2,3,4,5)(6,7,8,9,10), (1,6)(2,7)(3,8)(4,9)(5,10) ])
+
+#T# DoubleDigraph
+gap> out := [[2,3,4],[],[],[]];
+[ [ 2, 3, 4 ], [  ], [  ], [  ] ]
+gap> group := Group([(2,3),(2,4)]);
+Group([ (2,3), (2,4) ])
+gap> digraph := Digraph(out);
+<digraph with 4 vertices, 3 edges>
+gap> SetDigraphGroup(digraph,group);
+gap> ddigraph := BipartiteDoubleDigraph(digraph);
+<digraph with 8 vertices, 6 edges>
+gap> DigraphGroup(ddigraph);
+Group([ (2,3)(6,7), (2,4)(6,8), (1,5)(2,6)(3,7)(4,8) ])
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);
 gap> Unbind(j);
