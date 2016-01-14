@@ -36,6 +36,29 @@ function(obj, adj)
   return digraph;
 end);
 
+# for a group and representative out neighbours
+
+#InstallMethod(Digraph, "for a group, list, and list", 
+#[IsGroup, IsList, IsList],
+#function(G, vertices, rep)
+#  local digraph;
+#
+#  #TODO add checks!
+#
+#  digraph := Objectify(DigraphType, rec());
+#
+#  SetDigraphGroup(digraph, G);
+#  SetRepresentativeOutNeighbours(digraph, rep);
+#  SetDigraphVertices(digraph, vertices);
+#  SetDigraphNrVertices(digraph, Length(vertices));
+#  #TODO remove this, requires changing the OutNeighbours C function
+#
+#  digraph!.adj := OutNeighbours(digraph); 
+#  digraph!.nrvertices := DigraphNrVertices(digraph);
+#
+#  return digraph;   
+#end);
+
 # <G> is a group, <obj> a set of points on which <act> acts, and <adj> is a
 # function which for 2 elements u, v of <obj> returns <true> if and only if
 # u and v should be adjacent in the digraph we are constructing.
@@ -70,7 +93,8 @@ function(G, obj, act, adj)
       od;
     fi;
   od;
-
+  #TODO comment this out, use method for OutNeighbours for digraph with group
+  #instead.
   out  := EmptyPlist(Size(obj));
   gens := GeneratorsOfGroup(Range(hom));
 
@@ -91,6 +115,7 @@ function(G, obj, act, adj)
   SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
 
   SetDigraphAdjacencyFunction(digraph, adj);
+  SetDigraphAction(digraph, act);
   SetDigraphGroup(digraph, Range(hom));
   SetDigraphOrbits(digraph, orbits);
   SetDigraphStabilizers(digraph, stabs);
@@ -1108,38 +1133,6 @@ function(digraph)
   return gr;
 end);
 
-# Printing, and viewing . . .
-
-InstallMethod(ViewString, "for a digraph",
-[IsDigraph],
-function(graph)
-  local str, n, m;
-
-  str := "<";
-
-  if IsMultiDigraph(graph) then
-    Append(str, "multi");
-  fi;
-
-  n := DigraphNrVertices(graph);
-  m := DigraphNrEdges(graph);
-
-  Append(str, "digraph with ");
-  Append(str, String(n));
-  if n = 1 then
-    Append(str, " vertex, ");
-  else
-    Append(str, " vertices, ");
-  fi;
-  Append(str, String(m));
-  if m = 1 then
-    Append(str, " edge>");
-  else
-    Append(str, " edges>");
-  fi;
-  return str;
-end);
-
 #
 
 InstallMethod(LineDigraph, "for a symmetric digraph",
@@ -1253,7 +1246,7 @@ function(digraph, edge)
     return digraph;
   fi;
 
-  out := List(OutNeighbours(digraph), ShallowCopy);
+  out := OutNeighboursCopy(digraph);
   G   := DigraphGroup(digraph);
   o   := Orbit(G, edge, OnTuples); 
 
@@ -1299,12 +1292,54 @@ function(digraph, edge)
   return digraph;
 end);
 
+# Printing, and viewing . . .
+
+InstallMethod(ViewString, "for a digraph",
+[IsDigraph],
+function(graph)
+  local str, n, m;
+
+  str := "<";
+
+  if IsMultiDigraph(graph) then
+    Append(str, "multi");
+  fi;
+
+  n := DigraphNrVertices(graph);
+  m := DigraphNrEdges(graph);
+
+  Append(str, "digraph with ");
+  Append(str, String(n));
+  if n = 1 then
+    Append(str, " vertex, ");
+  else
+    Append(str, " vertices, ");
+  fi;
+  Append(str, String(m));
+  if m = 1 then
+    Append(str, " edge>");
+  else
+    Append(str, " edges>");
+  fi;
+  return str;
+end);
+
 #
 InstallMethod(PrintString, "for a digraph",
 [IsDigraph],
 function(graph)
   return Concatenation("Digraph( ", PrintString(OutNeighbours(graph)), " )");
 end);
+
+#InstallMethod(PrintString, 
+#"for a digraph with group and representative out neighbours",
+#[IsDigraph and HasDigraphGroup and HasRepresentativeOutNeighbours],
+#function(digraph)
+#  return Concatenation("Digraph( ", 
+#                       PrintString(DigraphGroup(digraph)), ", ",
+#                       PrintString(DigraphVertices(digraph)), ", ", 
+#                       PrintString(RepresentativeOutNeighbours(digraph)), ")");
+#end);
 
 #
 

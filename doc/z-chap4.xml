@@ -18,6 +18,7 @@
   <Section><Heading>Neighbours and degree</Heading>
     <#Include Label="AdjacencyMatrix">
     <#Include Label="RangeSourceDigraph">
+    <#Include Label="RepresentativeOutNeighbours">
     <#Include Label="OutNeighbours">
     <#Include Label="InNeighbours">
     <#Include Label="OutDegrees">

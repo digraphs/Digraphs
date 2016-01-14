@@ -8,9 +8,37 @@
 #############################################################################
 ##
 
+InstallMethod(OutNeighbours, 
+"for a digraph with representative out neighbours and group", 
+[IsDigraph and HasRepresentativeOutNeighbours and HasDigraphGroup],
+function(digraph)
+  local gens, sch, reps, out, trace, word, i, w;
+
+  gens := GeneratorsOfGroup(DigraphGroup(digraph));
+  sch  := DigraphSchreierVector(digraph);
+  reps := RepresentativeOutNeighbours(digraph);
+
+  out  := EmptyPlist(DigraphNrVertices(digraph));
+
+  for i in [1 .. Length(sch)] do
+    if sch[i] < 0 then
+      out[i] := reps[-sch[i]];
+    fi;
+
+    trace  := DIGRAPHS_TraceSchreierVector(gens, sch, i);
+    out[i] := out[-sch[trace.representative]];
+    word   := trace.word;
+    for w in word do
+       out[i] := OnTuples(out[i], gens[w]);
+    od;
+  od;
+
+  return out;
+end);
+
 InstallMethod(RepresentativeOutNeighbours, "for a digraph", [IsDigraph],
 function(digraph)
-  local reps, out, nbs, v;
+  local reps, out, nbs, i;
   
   if IsTrivial(DigraphGroup(digraph)) then 
     return OutNeighbours(digraph);
@@ -21,8 +49,8 @@ function(digraph)
   out := EmptyPlist(Length(reps));
   nbs := OutNeighbours(digraph);
 
-  for v in reps do
-    out[v] := nbs[v];
+  for i in [1 .. Length(reps)] do
+    out[i] := nbs[reps[i]];
   od;
   return out;
 end);

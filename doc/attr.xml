@@ -268,6 +268,43 @@ gap> OutNeighboursCopy(gr);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="RepresentativeOutNeighbours">
+<ManSection>
+  <Attr Name="RepresentativeOutNeighbours" Arg="digraph"/>
+  <Returns>The out neighbours of orbit representatives of a digraph.</Returns>
+  <Description>
+    This function returns the list <C>out</C> of out-neighbours of each
+    representative of the orbits of the action of <Ref Attr="DigraphGroup"/> on
+    the vertex set of the digraph <A>digraph</A>.
+    More specifically, if <C>reps</C> is the list of orbit representatives,
+    then a vertex <C>j</C> appears in <C>out[i]</C> each time
+    there exists an edge with source <C>reps[i]</C> and range <C>j</C> in 
+    <A>digraph</A>. 
+    <P/>
+
+    The function <C>OutNeighbours</C> returns an immutable list of immutable 
+    lists. <P/>
+
+    If <Ref Attr="DigraphGroup"/> is trivial, then <Ref Attr="OutNeighbours"/>
+    is returned.
+    
+    <Example><![CDATA[
+gap> digraph := Digraph([[1, 2, 3, 4, 5], [3, 5], [2], [1, 2, 3, 5], 
+>                        [1, 2, 3, 4]]);
+<digraph with 5 vertices, 16 edges>
+gap> DigraphGroup(digraph);
+Group(())
+gap> RepresentativeOutNeighbours(digraph);
+[ [ 1, 2, 3, 4, 5 ], [ 3, 5 ], [ 2 ], [ 1, 2, 3, 5 ], [ 1, 2, 3, 4 ] ]
+gap> digraph := Digraph([[2, 3, 5], [1, 4, 6], [4, 2, 7], [3, 1, 8], [6, 8, 1],
+>                        [5, 7, 2], [8, 5, 3], [7, 6, 4]]);
+<digraph with 8 vertices, 24 edges>
+gap> RepresentativeOutNeighbours(digraph);
+[ [ 2, 3, 5 ] ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="InNeighbours">
 <ManSection>
   <Attr Name="InNeighbours" Arg="digraph"/>
