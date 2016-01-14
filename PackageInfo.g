@@ -24,7 +24,7 @@ SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Methods for digraphs and multidigraphs",
 Version := "0.3.2",
-Date := "13/01/2016",
+Date := "14/01/2016",
 ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.3.2",
 ArchiveFormats := ".tar.gz",
 Persons := [
