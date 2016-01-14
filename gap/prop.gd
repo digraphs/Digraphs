@@ -26,6 +26,7 @@ DeclareProperty("IsAperiodicDigraph", IsDigraph);
 DeclareProperty("IsInRegularDigraph", IsDigraph);
 DeclareProperty("IsOutRegularDigraph", IsDigraph);
 DeclareProperty("IsRegularDigraph", IsDigraph);
+DeclareProperty("IsDistanceRegularDigraph", IsDigraph);
 
 InstallTrueMethod(IsAntisymmetricDigraph, IsTournament);
 InstallTrueMethod(IsAntisymmetricDigraph, IsAcyclicDigraph);

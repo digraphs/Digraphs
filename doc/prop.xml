@@ -494,3 +494,38 @@ false
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsDistanceRegularDigraph">
+<ManSection>
+  <Prop Name="IsDistanceRegularDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a connected symmetric graph, this property returns
+    <K>true</K> if for any two vertices <K>x</K> and <K>y</K> of <A>digraph</A>
+    and any two integers <K>i</K> and <K>j</K> between <K>0</K> and the
+    diameter of <A>digraph</A>, the number of vertices at distance <K>i</K>
+    from <K>x</K> and distance <K>j</K> from <K>y</K> depends only on
+    <K>i</K>,<K>j</K>, and the distance between vertices <K>x</K> and
+    <K>y</K>.<P/>
+
+    Alternatively, a distance regular graph is a graph for which there exist
+    integers <K>b_i</K>, <K>c_i</K>, and <K>i</K> such that for any two
+    vertices <K>x</K>, <K>y</K> in <A>digraph</A> which are distance <K>i</K>
+    apart, there are exactly <K>b_i</K> neighbors of <K>y</K> which are at
+    distance <K>i - 1</K> away from <K>x</K>, and <K>c_i</K> neighbors of
+    <K>y</K> which are at distance <K>i + 1</K> away from <K>x</K>. This
+    definition is used to check whether <A>digraph</A> is distance regular.<P/>
+
+    In the case where <A>digraph</A> is not symmetric or not connected, the
+    property is imediatlly set to <K>false</K>.
+    <Example><![CDATA[
+gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
+gap> IsDistanceRegularDigraph(gr);
+false
+gap> gr := Digraph([ [2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3] ]);;
+gap> IsDistanceRegularDigraph(gr);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
