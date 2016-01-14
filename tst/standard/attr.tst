@@ -374,7 +374,7 @@ gap> Display(mat);
 gap> DigraphShortestDistances(Digraph([]));
 [  ]
 gap> mat := DigraphShortestDistances(Digraph([[], []]));
-[ [ 0, -1 ], [ -1, 0 ] ]
+[ [ 0, fail ], [ fail, 0 ] ]
 gap> r := rec(vertices := [1 .. 15], source := [], range := []);;
 gap> for i in [1 .. 15] do
 >   for j in [1 .. 15] do
@@ -405,13 +405,13 @@ gap> r := rec(nrvertices := 7, range := [3, 5, 5, 4, 6, 2, 5, 3, 3, 7, 2],
 gap> gr := Digraph(r);
 <multidigraph with 7 vertices, 11 edges>
 gap> Display(DigraphShortestDistances(gr));
-[ [   0,   2,   1,   3,   1,   3,   2 ],
-  [  -1,   0,   2,   1,   3,   1,   4 ],
-  [  -1,   1,   0,   2,   1,   2,   2 ],
-  [  -1,   2,   1,   0,   2,   3,   3 ],
-  [  -1,   2,   1,   3,   0,   3,   1 ],
-  [  -1,  -1,  -1,  -1,  -1,   0,  -1 ],
-  [  -1,   1,   3,   2,   4,   2,   0 ] ]
+[ [     0,     2,     1,     3,     1,     3,     2 ],
+  [  fail,     0,     2,     1,     3,     1,     4 ],
+  [  fail,     1,     0,     2,     1,     2,     2 ],
+  [  fail,     2,     1,     0,     2,     3,     3 ],
+  [  fail,     2,     1,     3,     0,     3,     1 ],
+  [  fail,  fail,  fail,  fail,  fail,     0,  fail ],
+  [  fail,     1,     3,     2,     4,     2,     0 ] ]
 
 #T# OutNeighbours and InNeighbours
 gap> gr := Digraph(rec(nrvertices := 10, source := [1, 1, 5, 5, 7, 10],

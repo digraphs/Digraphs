@@ -1134,6 +1134,9 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     SET_LEN_PLIST(next, n);
     for (j = 1; j <= n; j++) {
       val = INTOBJ_INT(dist[ (i - 1) * n + (j - 1) ]);
+      if (val == INTOBJ_INT(-1)) {
+        val = Fail;
+      }
       SET_ELM_PLIST(next, j, val);
     }
     SET_ELM_PLIST(out, i, next);
