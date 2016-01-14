@@ -796,13 +796,13 @@ gap> LineDigraph(ChainDigraph(3));
 
 <#GAPDoc Label="DoubleDigraph">
 <ManSection>
-  <Oper Name="DoubleDigraph" Arg="Gamma"/>
+  <Oper Name="DoubleDigraph" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    Let <A>Gamma</A> be a digraph with vertex set <C>V</C>. This function returns the
-    double digraph of <A>Gamma</A>. The vertex set of the double digraph is the orginal vertex
+    Let <A>digraph</A> be a digraph with vertex set <C>V</C>. This function returns the
+    double digraph of <A>digraph</A>. The vertex set of the double digraph is the orginal vertex
     set together with a duplicate. The edges are <C>[u_1,v_2]</C> and <C>[u_2,v_1]</C> if and
-    only if <C>[u,v]</C> is an edge in <A>Gamma</A>, together with the original edges and
+    only if <C>[u,v]</C> is an edge in <A>digraph</A>, together with the original edges and
     their duplicates.
     <Example><![CDATA[
 gap> out := [[2],[3],[1]];
@@ -818,14 +818,14 @@ gap> DoubleDigraph(gamma);
 
 <#GAPDoc Label="BipartiteDoubleDigraph">
 <ManSection>
-  <Oper Name="BipartiteDoubleDigraph" Arg="Gamma"/>
+  <Oper Name="BipartiteDoubleDigraph" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    Let <A>Gamma</A> be a digraph with vertex set <C>V</C>. This function returns the
-    bipartite double digraph of <A>Gamma</A>. The vertex set of the double digraph is the orginal vertex
+    Let <A>digraph</A> be a digraph with vertex set <C>V</C>. This function returns the
+    bipartite double digraph of <A>digraph</A>. The vertex set of the double digraph is the orginal vertex
     set together with a duplicate. The edges are <C>[u_1,v_2]</C> and <C>[u_2,v_1]</C> if and
-    only if <C>[u,v]</C> is an edge in <A>Gamma</A>. The resulting graph is bipartite, since the
-    orignal edges not edges in the resulting digraph.
+    only if <C>[u,v]</C> is an edge in <A>digraph</A>. The resulting graph is bipartite, since the
+    orignal edges are not included in the resulting digraph.
     <Example><![CDATA[
 gap> out := [[2],[3],[1]];
 [ [ 2 ], [ 3 ], [ 1 ] ]
