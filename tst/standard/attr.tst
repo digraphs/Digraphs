@@ -1014,6 +1014,26 @@ gap> DigraphUndirectedGirth(gr);
 Error, Digraphs: DigraphUndirectedGirth: usage,
 <digraph> must be a symmetric digraph,
 
+#T# DigraphGirth with known automorphisms
+gap> gr := Digraph([[2,3,4,5], [6, 3], [6, 2], [6], [6], [1]]);;
+gap> DigraphGirth(gr);
+2
+gap> gr := Digraph([[2,3,4,5], [6, 3], [6, 2], [6], [6], [1]]);;
+gap> DigraphGroup(gr);
+Group([ (4,5), (2,3) ])
+gap> DigraphGirth(gr);
+2
+gap> gr := Digraph([[2,6,10],[3],[4],[5],[1],
+>                   [7],[8],[9],[1],[11],[12],[13],[1]]);;
+gap> DigraphGirth(gr);
+5
+gap> gr := Digraph([[2,6,10],[3],[4],[5],[1],
+>                   [7],[8],[9],[1],[11],[12],[13],[1]]);;
+gap> DigraphGroup(gr);
+Group([ (6,10)(7,11)(8,12)(9,13), (2,6)(3,7)(4,8)(5,9) ])
+gap> DigraphGirth(gr);
+5
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);

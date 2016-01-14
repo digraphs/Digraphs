@@ -669,14 +669,20 @@ end);
 InstallMethod(DigraphGirth, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local girth, out, dist, i, j;
+  local verts, girth, out, dist, i, j;
   if DigraphHasLoops(digraph) then
     return 1;
+  fi;
+  # Only consider one vertex from each orbit
+  if HasDigraphGroup(digraph) and not IsTrivial(DigraphGroup(digraph)) then
+    verts := DigraphOrbitReps(digraph);
+  else
+    verts := DigraphVertices(digraph);
   fi;
   girth := infinity;
   out := OutNeighbours(digraph);
   dist := DigraphShortestDistances(digraph);
-  for i in DigraphVertices(digraph) do
+  for i in verts do
     for j in out[i] do
       # distance [j,i] + 1 equals the cycle length
       if dist[j][i] <> -1 and dist[j][i] + 1 < girth then
