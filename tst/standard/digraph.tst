@@ -1194,6 +1194,32 @@ gap> ddigraph := BipartiteDoubleDigraph(digraph);
 gap> DigraphGroup(ddigraph);
 Group([ (2,3)(6,7), (2,4)(6,8), (1,5)(2,6)(3,7)(4,8) ])
 
+#T# DigraphAddEdgeOrbit
+gap> digraph := NullDigraph(4);
+<digraph with 4 vertices, 0 edges>
+gap> SetDigraphGroup(digraph, Group((1,3), (1,2)(3,4)));
+gap> digraph := DigraphAddEdgeOrbit(digraph, [4, 3]);
+<digraph with 4 vertices, 8 edges>
+gap> Graph(digraph);
+rec( adjacencies := [ [ 2, 4 ] ], group := Group([ (1,3), (1,2)(3,4) ]), 
+  isGraph := true, names := [ 1 .. 4 ], order := 4, representatives := [ 1 ], 
+  schreierVector := [ -1, 2, 1, 2 ] )
+gap> IsNullDigraph(DigraphRemoveEdgeOrbit(digraph, [4, 3]));
+true
+
+#T# DigraphRemoveEdgeOrbit
+gap> digraph := CompleteDigraph(4);
+<digraph with 4 vertices, 12 edges>
+gap> SetDigraphGroup(digraph, Group((1,3), (1,2)(3,4)));
+gap> digraph := DigraphRemoveEdgeOrbit(digraph, [1, 3]);
+<digraph with 4 vertices, 8 edges>
+gap> IsCompleteDigraph(DigraphAddEdgeOrbit(digraph, [1, 3]));
+true
+gap> Graph(digraph);
+rec( adjacencies := [ [ 2, 4 ] ], group := Group([ (1,3), (1,2)(3,4) ]), 
+  isGraph := true, names := [ 1 .. 4 ], order := 4, representatives := [ 1 ], 
+  schreierVector := [ -1, 2, 1, 2 ] )
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);
 gap> Unbind(j);
