@@ -1244,12 +1244,13 @@ function(gr, loops)
   return OnDigraphs(Digraph(out), p);
 end);
 
-# 
+#
 
 InstallMethod(DigraphLayers, "for a digraph, and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
-  local out_nbs, record, orbnum, orbs, reps, i, next, laynum, layers, current, x, y, z;
+  local out_nbs, record, orbnum, orbs, reps, i, next, laynum, layers,
+        current, x, y, z;
 
   if v > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphLayers: usage,\n",
@@ -1270,7 +1271,7 @@ function(digraph, v)
   layers          := [[v]];
 
   while Length(next) > 0 do
-    current := next; 
+    current := next;
     next := [];
     for x in current do
       for y in out_nbs[reps[x]] do
@@ -1288,6 +1289,43 @@ function(digraph, v)
       od;
     fi;
   od;
- 
   return layers;
+end);
+
+#
+
+InstallMethod(DigraphDistanceSet,
+"for a digraph, a vertex, and a non negative integer",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, vertex, distance)
+
+  if vertex > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphDistanceSet: usage,\n",
+                 "the second argument must be a vertex of the digraph,");
+  fi;
+
+  return DigraphDistanceSet(digraph, vertex, [distance]);
+end);
+
+#
+
+InstallMethod(DigraphDistanceSet,
+"for a digraph, a vertex, and a list of non negative integer",
+[IsDigraph, IsPosInt, IsList],
+function(digraph, vertex, distances)
+  local layers;
+
+  if vertex > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphDistanceSet: usage,\n",
+                 "the second argument must be a vertex of the digraph,");
+  fi;
+
+  if not ForAll(distances, x -> IsPosInt(x)) then
+    ErrorMayQuit("Digraphs: DigraphDistanceSet: usage,\n",
+                 "the third argument must be a list of non negative integers,");
+  fi;
+
+  distances := distances + 1;
+  layers := DigraphLayers(digraph, vertex);
+  return Concatenation(layers{distances});
 end);

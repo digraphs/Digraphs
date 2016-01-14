@@ -74,3 +74,5 @@ DeclareOperation("OutNeighboursCopy", [IsDigraph]);
 DeclareSynonym("OutNeighborsCopy", OutNeighboursCopy);
 
 DeclareOperation("DigraphLayers", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphDistanceSet", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphDistanceSet", [IsDigraph, IsPosInt, IsList]);

@@ -530,6 +530,8 @@ end);
 
 BindGlobal("DIGRAPHS_DiameterAndUndirectedGirth",
 function(digraph)
+  local outer_reps, out_nbs, diameter, girth, v, record, orbnum, reps, i, next,
+        laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
   #
   # This function attempts to find the diameter and undirected girth of a given
   # graph, using its DigraphGroup.  For some digraphs, the main algorithm will
@@ -537,8 +539,6 @@ function(digraph)
   # alter the answer for the diameter/girth if necessary.  This function is
   # called, if appropriate, by DigraphDiameter and DigraphUndirectedGirth.
   #
-  local outer_reps, out_nbs, diameter, girth, v, record, orbnum, reps, i, next,
-  laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
 
   if DigraphNrVertices(digraph) = 0 then
     SetDigraphDiameter(digraph, fail);
