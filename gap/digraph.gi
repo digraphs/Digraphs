@@ -1229,6 +1229,7 @@ end);
 InstallMethod(DigraphAddEdgeOrbit, "for a digraph and edge",
 [IsDigraph, IsList],
 function(digraph, edge)
+  local out, G, o, e;
   
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then 
     ErrorMayQuit("Digraphs: DigraphAddEdgeOrbit: usage,\n", 
@@ -1257,6 +1258,7 @@ end);
 InstallMethod(DigraphRemoveEdgeOrbit, "for a digraph and edge",
 [IsDigraph, IsList],
 function(digraph, edge)
+  local out, G, o, pos, e;
   
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then 
     ErrorMayQuit("Digraphs: DigraphAddEdgeOrbit: usage,\n", 
