@@ -115,7 +115,6 @@ function(G, obj, act, adj)
   SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
 
   SetDigraphAdjacencyFunction(digraph, adj);
-  SetDigraphAction(digraph, act);
   SetDigraphGroup(digraph, Range(hom));
   SetDigraphOrbits(digraph, orbits);
   SetDigraphStabilizers(digraph, stabs);
