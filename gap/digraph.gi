@@ -1186,6 +1186,9 @@ end);
 # the union over e in E  of  e ^ G.
 # (E can consist of just a singleton edge.)
 
+# Note: if at some point we don't store all of the out neighbours, then this
+# can be improved. JDM
+
 InstallMethod(EdgeOrbitsDigraph, "for a perm group, list, and pos int",
 [IsPermGroup, IsList, IsPosInt],
 function(G, E, n)
@@ -1220,65 +1223,64 @@ function(G, E)
   return EdgeOrbitsDigraph(G, E, LargestMovedPoint(G));
 end);
 
-#BindGlobal("AddEdgeOrbit", function(arg) 
-#  #
-#  # Let  gamma = arg[1]  and  e = arg[2].
-#  # If  arg[3]  is bound then it is assumed to be  Stabilizer(gamma.group, e[1]).
-#  # This procedure adds edge orbit  e ^ gamma.group  to the edge - set of  gamma.
-#  #
-#  local w, word, sch, gens, gamma, e, x, y, orb, u, v;
-#  gamma := arg[1]; 
-#  e := arg[2];
-#  if not IsGraph(gamma) or not IsList(e) 
-#    or (IsBound(arg[3]) and not IsPermGroup(arg[3])) then
-#    Error("usage: AddEdgeOrbit( < Graph > , < List > , [, < PermGroup > ])");
-#  fi;
-#  if Length(e) <> 2 or not IsVertex(gamma, e[1]) or not IsVertex(gamma, e[2]) then
-#    Error("invalid < e > ");
-#  fi;
-#  sch := gamma.schreierVector;
-#  gens := GeneratorsOfGroup(gamma.group);
-#  x := e[1];
-#  y := e[2];
-#  w := sch[x];
-#  word := [];
-#  while w > 0 do
-#    Add(word, w);
-#    x := x / gens[w];
-#    y := y / gens[w];
-#    w := sch[x];
-#  od;
-#  if not(y in gamma.adjacencies[- sch[x]]) then
-#    #  e  is not an edge of  gamma
-#    if not IsBound(arg[3]) then
-#      orb := Orbit(Stabilizer(gamma.group, x), y);
-#    else
-#      if ForAny(GeneratorsOfGroup(arg[3]), x -> e[1] ^ x <> e[1]) then
-#        Error(" < arg[3] > not equal to  Stabilizer( < gamma.group > , < e[1] > )");
-#      fi;
-#      orb := [];
-#      for u in Orbit(arg[3], e[2]) do
-#        v := u;
-#        for w in word do
-#          v := v / gens[w];
-#        od;
-#        Add(orb, v);
-#      od;
-#    fi;
-#    UniteSet(gamma.adjacencies[- sch[x]], orb);
-#    if e[1] = e[2] then
-#      gamma.isSimple := false;
-#    elif IsBound(gamma.isSimple) and gamma.isSimple then
-#      if not IsVertexPairEdge(gamma, e[2], e[1]) then 
-#        gamma.isSimple := false; 
-#      fi;
-#    else 
-#      Unbind(gamma.isSimple);
-#    fi;
-#    Unbind(gamma.autGroup);
-#    Unbind(gamma.canonicalLabelling);
-#  fi;   
-#end);
+# Note: if at some point we don't store all of the out neighbours, then this
+# can be improved. JDM
+
+InstallMethod(DigraphAddEdgeOrbit, "for a digraph and edge",
+[IsDigraph, IsList],
+function(digraph, edge)
+  
+  if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then 
+    ErrorMayQuit("Digraphs: DigraphAddEdgeOrbit: usage,\n", 
+                 "the second argument must be a pairs of pos ints,");
+  elif IsDigraphEdge(digraph, edge) then 
+    return digraph;
+  fi;
+
+  out := List(OutNeighbours(digraph), ShallowCopy);
+  G   := DigraphGroup(digraph);
+  o   := Orbit(G, edge, OnTuples); 
+
+  for e in o do 
+    Add(out[e[1]], e[2]);
+  od;
+   
+  digraph := DigraphNC(out);
+  SetDigraphGroup(digraph, G);
+  
+  return digraph;
+end);
+
+# Note: if at some point we don't store all of the out neighbours, then this
+# can be improved. JDM
+
+InstallMethod(DigraphRemoveEdgeOrbit, "for a digraph and edge",
+[IsDigraph, IsList],
+function(digraph, edge)
+  
+  if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then 
+    ErrorMayQuit("Digraphs: DigraphAddEdgeOrbit: usage,\n", 
+                 "the second argument must be a pairs of pos ints,");
+  elif not IsDigraphEdge(digraph, edge) then 
+    return digraph;
+  fi;
+
+  out := List(OutNeighbours(digraph), ShallowCopy);
+  G   := DigraphGroup(digraph);
+  o   := Orbit(G, edge, OnTuples); 
+
+  for e in o do 
+    pos := Position(out[e[1]], e[2]);
+    if pos <> fail then 
+      Remove(out[e[1]], e[2]);
+    fi;
+  od;
+   
+  digraph := DigraphNC(out);
+  SetDigraphGroup(digraph, G);
+  
+  return digraph;
+end);
 
 #
 InstallMethod(PrintString, "for a digraph",
