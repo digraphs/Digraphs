@@ -172,6 +172,7 @@ function(G, gens)
   end;
   cayleydigraph := Digraph(G, AsList(G), OnRight, adj);
   SetFilterObj(cayleydigraph, IsCayleyDigraph);
+  SetFilterObj(cayleydigraph, IsDigraphWithAdjacencyFunction);
   return cayleydigraph;
 end);
 
