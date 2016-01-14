@@ -4,7 +4,12 @@ Create the archive of the Digraphs package for release, and copy the relevant
 things to the webpage.
 '''
 
-# TODO check that GAPVERS and dependencies have the same gap version number
+# TODO
+# 1) check that GAPVERS and dependencies have the same gap version number
+# 2) check VERSIONS and VERSION file
+# 3) check CHANGELOG for entry with correct version number
+# 4) check all occurrences of all version numbers in PackageInfo.g
+# 5) --skip-extreme
 
 import textwrap, os, argparse, tempfile, subprocess, sys, os, re, shutil, gzip
 import test, time, webbrowser, urllib, dots
@@ -218,6 +223,25 @@ def _stop_mamp():
     _exec('./stop.sh', False)
     os.chdir(cwd)
 
+def _hg_pending_commits ():
+    pro = subprocess.Popen(('hg', 'summary'),
+                          stdout=subprocess.PIPE)
+    output = subprocess.check_output(('grep', 'commit:'),
+                                     stdin=pro.stdout).rstrip()
+    if output != 'commit: (clean)' and output != 'commit: (head closed)':
+        pro = subprocess.Popen(('hg', 'summary'), stdout=subprocess.PIPE)
+        try:
+            output = subprocess.check_output(('grep', 'commit:.*clean'),
+                                             stdin=pro.stdout).rstrip()
+        except KeyboardInterrupt:
+            pro.terminate()
+            pro.wait()
+            print _red_string('Killed!')
+            sys.exit(1)
+        except:
+            print _red_string('There are uncommited changes! Aborting!')
+            sys.exit(1)
+
 ################################################################################
 # The main event
 ################################################################################
@@ -258,6 +282,8 @@ def main():
     if not (os.path.exists(args.pkg_dir) or os.path.isdir(args.pkg_dir)):
         sys.exit(_red_string('release.py: error: can\'t find package' +
                              ' directory!'))
+
+    _hg_pending_commits()
 
     # get the version number
     vers = _version_number_package_info()
