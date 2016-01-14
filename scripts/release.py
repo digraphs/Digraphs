@@ -223,7 +223,7 @@ def _stop_mamp():
     _exec('./stop.sh', False)
     os.chdir(cwd)
 
-def _hg_pending_commits ():
+def _hg_pending_commits():
     pro = subprocess.Popen(('hg', 'summary'),
                           stdout=subprocess.PIPE)
     output = subprocess.check_output(('grep', 'commit:'),
@@ -241,6 +241,10 @@ def _hg_pending_commits ():
         except:
             print _red_string('There are uncommited changes! Aborting!')
             sys.exit(1)
+
+def _hg_tag(vers, verbose):
+    _exec('hg tag ' + vers + '-release', verbose)
+    _exec('hg commit', verbose)
 
 ################################################################################
 # The main event
@@ -306,6 +310,8 @@ def main():
     test.digraphs_make_doc(args.gap_root[0])
 
     # archive . . .
+    print _magenta_string(pad('Tagging the last commit') + ' . . .')
+    _hg_tag(vers, args.verbose)
     print _magenta_string(pad('Archiving using hg') + ' . . .')
     _exec('hg archive ' + tmpdir, args.verbose)
 
@@ -320,7 +326,8 @@ def main():
         print ''
 
     # delete extra files and dirs
-    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', 'autogen.sh']:
+    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', 'autogen.sh',
+                     '.hg_archival.txt']:
         if (os.path.exists(os.path.join(tmpdir, filename))
                 and os.path.isfile(os.path.join(tmpdir, filename))):
             print _magenta_string(pad('Deleting file ' + filename) + ' . . .')
