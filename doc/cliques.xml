@@ -122,7 +122,7 @@ gap> true;;
   <Attr Name="DigraphIndependentSet" Label="for a digraph" Arg="digraph"/>
   <Oper Name="DigraphIndependentSet" Label="for a digraph and one or two
     lists" Arg="digraph, l[, m]"/>
-  <Returns>?</Returns>
+  <Returns>A list of lists of positive integers.</Returns>
   <Description>
     <Example><![CDATA[
 gap> 1;;
