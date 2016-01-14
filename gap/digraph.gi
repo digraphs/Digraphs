@@ -135,7 +135,7 @@ end);
 InstallMethod(CayleyDigraph, "for a group with generators",
 [IsGroup, IsHomogeneousList],
 function(G, gens)
-  local adj;
+  local adj, cayleydigraph;
 
   if not ForAll(gens, x -> x in G) then
     ErrorMayQuit("Digraphs: CayleyDigraph: usage,\n",
@@ -146,8 +146,9 @@ function(G, gens)
   adj := function(x, y)
     return x ^ -1 * y in gens;
   end;
-
-  return Digraph(G, AsList(G), OnRight, adj);
+  cayleydigraph := Digraph(G, AsList(G), OnRight, adj);
+  SetFilterObj(cayleydigraph, IsCayleyDigraph);
+  return cayleydigraph;
 end);
 
 InstallMethod(CayleyDigraph, "for a group with generators",
@@ -160,7 +161,8 @@ InstallMethod(DoubleDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
   local out, vertices, newvertices, allvertices, shiftedout, newout1,
-  newout2, newout, crossedouts, doubleout, shift;
+  newout2, newout, crossedouts, doubleout, shift, double, group,
+  newgens, gens, conj;
   #note that this method is also applicable for digraphs with
   #an adjacency function. however, the resulting double graph
   #will not have an adjacency function anymore, since the
@@ -168,6 +170,8 @@ function(digraph)
   #while the double graph has simply integers as vertices.
   #So relying on the original adjacency function is meaningless
   #unless this function would also be a function on integers.
+  #if DigraphGroup is set, a subgroup of the automoraphism group
+  #of the bipartite double is computed and set.
   out := OutNeighbours(digraph);
   vertices := [1 .. digraph!.nrvertices];
   shift := Length(vertices);
@@ -184,14 +188,26 @@ function(digraph)
   crossedouts := Concatenation(newout1, newout2);
   doubleout := List(allvertices, x -> Concatenation(newout[x], crossedouts[x]));
   #collect all out neighbours.
-  return DigraphNC(doubleout);
+  double := DigraphNC(doubleout);
+  if HasDigraphGroup(digraph) then
+    group := DigraphGroup(digraph);
+    gens := GeneratorsOfGroup(group);
+    conj := PermList(Concatenation(List([1 .. shift],
+                     x -> x + shift), [1 .. shift]));
+    newgens := List([1 .. Length(gens)], i -> gens[i] * (gens[i] ^ conj));
+    Add(newgens, conj);
+    SetDigraphGroup(double, Group(newgens));
+  fi;
+  return double;
+
 end);
 
 InstallMethod(BipartiteDoubleDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
   local out, vertices, newvertices, allvertices, newout1,
-    newout2, crossedouts, shift;
+    newout2, crossedouts, shift, double, group, conj, gens,
+    newgens;
   #note that this method is also applicable for digraphs with
   #an adjacency function. however, the resulting double graph
   #will not have an adjacency function anymore, since the
@@ -200,6 +216,8 @@ function(digraph)
   #So relying on the original adjacency function is meaningless
   #unless this function would also be a function on integers.
   #compared with DoubleDigraph, we only need the "crossed adjacencies".
+  #if DigraphGroup is set, a subgroup of the automoraphism group
+  #of the bipartite double is computed and set.
   out := OutNeighbours(digraph);
   vertices := [1 .. digraph!.nrvertices];
   shift := Length(vertices);
@@ -208,7 +226,17 @@ function(digraph)
   newout1 := List(vertices, x -> List(out[x], y -> y + shift));
   newout2 := List(newvertices, x -> out[x - shift]);
   crossedouts := Concatenation(newout1, newout2);
-  return DigraphNC(crossedouts);
+  double := DigraphNC(crossedouts);
+  if HasDigraphGroup(digraph) then
+    group := DigraphGroup(digraph);
+    gens := GeneratorsOfGroup(group);
+    conj := PermList(Concatenation(List([1 .. shift],
+                     x -> x + shift), [1 .. shift]));
+    newgens := List([1 .. Length(gens)], i -> gens[i] * (gens[i] ^ conj));
+    Add(newgens, conj);
+    SetDigraphGroup(double, Group(newgens));
+  fi;
+  return double;
 end);
 
 InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
@@ -306,10 +334,10 @@ end);
 #
 
 InstallMethod(Graph, "for a digraph", [IsDigraph],
-function(graph)
+function(digraph)
   local gamma, i, n;
 
-  if IsMultiDigraph(graph) then
+  if IsMultiDigraph(digraph) then
     Info(InfoWarning, 1, "Grape does not support multiple edges, so ",
          "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
@@ -318,22 +346,29 @@ function(graph)
     Info(InfoWarning, 1, "Grape is not loaded,");
   fi;
 
-  n := DigraphNrVertices(graph);
-  gamma := rec(order := n,
-               group := Group(()),
-               isGraph := true,
-               representatives := [1 .. n] * 1,
-               schreierVector := [1 .. n] * -1);
+  n := DigraphNrVertices(digraph);
+  if HasDigraphGroup(digraph) then
+    gamma := rec(order := n,
+                 group := DigraphGroup(digraph),
+                 isGraph := true,
+                 representatives := DigraphOrbitReps(digraph),
+                 schreierVector := DigraphSchreierVector(digraph));
+    gamma.adjacencies := ShallowCopy(RepresentativeOutNeighbours(digraph));
+    Apply(gamma.adjacencies, AsSet);
+  else
+    gamma := rec(order := n,
+                 group := Group(()),
+                 isGraph := true,
+                 representatives := [1 .. n] * 1,
+                 schreierVector := [1 .. n] * -1);
+    gamma.adjacencies := EmptyPlist(n);
 
-  # Used to be the following, using the constructor from GRAPE:
-  # gamma := NullGraph(Group([], ()), DigraphNrVertices(graph));
+    for i in [1 .. gamma.order] do
+      gamma.adjacencies[i] := Set(OutNeighbours(digraph)[i]);
+    od;
 
-  gamma.adjacencies := EmptyPlist(n);
-  for i in [1 .. gamma.order] do
-    gamma.adjacencies[i] := Set(OutNeighbours(graph)[i]);
-  od;
-  gamma.names := Immutable(DigraphVertexLabels(graph));
-
+  fi;
+  gamma.names := Immutable(DigraphVertexLabels(digraph));
   return gamma;
 end);
 
@@ -545,10 +580,20 @@ end);
 
 InstallMethod(Digraph, "for a record", [IsRecord],
 function(graph)
-  local check_source, cmp, obj, i, m;
+  local digraph, m, check_source, cmp, obj, i;
 
   if IsGraph(graph) then
-    return DigraphNC(List(Vertices(graph), x -> Adjacency(graph, x)));
+    digraph := DigraphNC(List(Vertices(graph), x -> Adjacency(graph, x)));
+    if IsBound(graph.names) then
+      SetDigraphVertexLabels(digraph, ShallowCopy(graph.names));
+    fi;
+    if not IsTrivial(graph.group) then
+      Assert(IsPermGroup(graph.group), 1);
+      SetDigraphGroup(digraph, graph.group);
+      SetDigraphSchreierVector(digraph, graph.schreierVector);
+      SetRepresentativeOutNeighbours(digraph, graph.adjacencies);
+    fi;
+    return digraph;
   fi;
 
   if not (IsBound(graph.source) and IsBound(graph.range) and

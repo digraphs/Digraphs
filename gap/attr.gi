@@ -511,7 +511,8 @@ end);
 
 BindGlobal("DIGRAPHS_DiameterAndUndirectedGirth",
 function(digraph)
-  local outer_reps, out_nbs, diameter, girth, layerNumbers, v, record, orbnum, reps, i, next, laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
+  local outer_reps, out_nbs, diameter, girth, v, record, orbnum, reps, i, next,
+        laynum, localGirth, layers, nprev, nhere, nnext, lnum, x, y;
   #
   # This function attempts to find the diameter and undirected girth of a given
   # graph, using its DigraphGroup.  For some digraphs, the main algorithm will
@@ -529,12 +530,11 @@ function(digraph)
   #TODO improve this, really check if the complexity is better with the group
   #or without, or if the group is not known, but the number of vertices makes
   #the usual algorithm impossible.
-
-  outer_reps  := DigraphOrbitReps(digraph);
-  out_nbs     := OutNeighbours(digraph);
-  diameter    := 0;
-  girth       := infinity;
-  layerNumbers:= [];
+  
+  outer_reps := DigraphOrbitReps(digraph);
+  out_nbs    := OutNeighbours(digraph);
+  diameter   := 0;
+  girth      := infinity;
 
   for i in [1 .. Length(outer_reps)] do
     v := outer_reps[i];
@@ -590,7 +590,6 @@ function(digraph)
     if localGirth <> -1 and localGirth < girth then
       girth := localGirth;
     fi;
-    Add(layerNumbers, laynum);
   od;
 
   # Checks to ensure both components are valid
@@ -605,8 +604,7 @@ function(digraph)
 
   SetDigraphDiameter(digraph, diameter);
   SetDigraphUndirectedGirth(digraph, girth);
-  return rec(diameter := diameter, girth := girth,
-	     layerNumbers := layerNumbers);
+  return rec(diameter := diameter, girth := girth);
 end);
 
 #
@@ -645,6 +643,38 @@ function(digraph)
   fi;
   # Otherwise digraph is simple
   return DIGRAPHS_DiameterAndUndirectedGirth(digraph).girth;
+end);
+
+#
+
+InstallMethod(DigraphGirth, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local verts, girth, out, dist, i, j;
+  if DigraphHasLoops(digraph) then
+    return 1;
+  fi;
+  # Only consider one vertex from each orbit
+  if HasDigraphGroup(digraph) and not IsTrivial(DigraphGroup(digraph)) then
+    verts := DigraphOrbitReps(digraph);
+  else
+    verts := DigraphVertices(digraph);
+  fi;
+  girth := infinity;
+  out := OutNeighbours(digraph);
+  dist := DigraphShortestDistances(digraph);
+  for i in verts do
+    for j in out[i] do
+      # distance [j,i] + 1 equals the cycle length
+      if dist[j][i] <> -1 and dist[j][i] + 1 < girth then
+        girth := dist[j][i] + 1;
+        if girth = 2 then
+          return girth;
+        fi;
+      fi;
+    od;
+  od;
+  return girth;
 end);
 
 #
