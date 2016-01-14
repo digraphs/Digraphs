@@ -8,8 +8,8 @@
 #############################################################################
 ##
 
-InstallMethod(OutNeighbours, 
-"for a digraph with representative out neighbours and group", 
+InstallMethod(OutNeighbours,
+"for a digraph with representative out neighbours and group",
 [IsDigraph and HasRepresentativeOutNeighbours and HasDigraphGroup],
 function(digraph)
   local gens, sch, reps, out, trace, word, i, w;
@@ -39,8 +39,8 @@ end);
 InstallMethod(RepresentativeOutNeighbours, "for a digraph", [IsDigraph],
 function(digraph)
   local reps, out, nbs, i;
-  
-  if IsTrivial(DigraphGroup(digraph)) then 
+
+  if IsTrivial(DigraphGroup(digraph)) then
     return OutNeighbours(digraph);
   fi;
 
@@ -594,7 +594,7 @@ function(digraph)
     next            := [orbnum[v]];
     laynum          := [1 .. Length(reps)] * 0;
     laynum[next[1]] := 1;
-    localGirth      := - 1;
+    localGirth      := -1;
     layers          := [next];
 
     while Length(next) > 0 do
@@ -617,10 +617,10 @@ function(digraph)
             laynum[orbnum[y]] := i + 1;
           fi;
         od;
-        if (localGirth = - 1 or localGirth = 2 * i - 1) and nprev > 1 then
+        if (localGirth = -1 or localGirth = 2 * i - 1) and nprev > 1 then
           localGirth := 2 * (i - 1);
         fi;
-        if localGirth = - 1 and nhere > 0 then
+        if localGirth = -1 and nhere > 0 then
           localGirth := 2 * i - 1;
         fi;
       od;
@@ -675,7 +675,6 @@ end);
 InstallMethod(DigraphUndirectedGirth, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local result;
   # This is only defined on undirected graphs (i.e. symmetric digraphs)
   if not IsSymmetricDigraph(digraph) then
     ErrorMayQuit("Digraphs: DigraphUndirectedGirth: usage,\n",
@@ -769,7 +768,7 @@ function(digraph)
             Add(new[j], i);
           od;
         elif x < 0 then
-          for k in [1 .. - x] do
+          for k in [1 .. -x] do
             Add(new[i], j);
           od;
         fi;

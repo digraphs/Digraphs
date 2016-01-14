@@ -38,7 +38,7 @@ end);
 
 # for a group and representative out neighbours
 
-#InstallMethod(Digraph, "for a group, list, and list", 
+#InstallMethod(Digraph, "for a group, list, and list",
 #[IsGroup, IsList, IsList],
 #function(G, vertices, rep)
 #  local digraph;
@@ -53,10 +53,10 @@ end);
 #  SetDigraphNrVertices(digraph, Length(vertices));
 #  #TODO remove this, requires changing the OutNeighbours C function
 #
-#  digraph!.adj := OutNeighbours(digraph); 
+#  digraph!.adj := OutNeighbours(digraph);
 #  digraph!.nrvertices := DigraphNrVertices(digraph);
 #
-#  return digraph;   
+#  return digraph;
 #end);
 
 # <G> is a group, <obj> a set of points on which <act> acts, and <adj> is a
@@ -1200,27 +1200,27 @@ InstallMethod(EdgeOrbitsDigraph, "for a perm group, list, and pos int",
 [IsPermGroup, IsList, IsPosInt],
 function(G, E, n)
   local out, o, digraph, e, f;
-  
+
   if IsPosInt(E[1]) then   # assume  E  consists of a single edge.
     E := [E];
   fi;
-  
-  if not ForAll(E, e -> Length(e) = 2 and ForAll(e, IsPosInt)) then 
-    ErrorMayQuit("Digraphs: EdgeOrbitsDigraph: usage,\n", 
+
+  if not ForAll(E, e -> Length(e) = 2 and ForAll(e, IsPosInt)) then
+    ErrorMayQuit("Digraphs: EdgeOrbitsDigraph: usage,\n",
                  "the second argument must be a list of pairs of pos ints,");
   fi;
 
   out := List([1 .. n], x -> []);
   for e in E do
-    o := Orbit(G, e, OnTuples); 
-    for f in o do 
+    o := Orbit(G, e, OnTuples);
+    for f in o do
       AddSet(out[f[1]], f[2]);
     od;
   od;
 
   digraph := DigraphNC(out);
   SetDigraphGroup(digraph, G);
-  
+
   return digraph;
 end);
 
@@ -1237,25 +1237,25 @@ InstallMethod(DigraphAddEdgeOrbit, "for a digraph and edge",
 [IsDigraph, IsList],
 function(digraph, edge)
   local out, G, o, e;
-  
-  if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then 
-    ErrorMayQuit("Digraphs: DigraphAddEdgeOrbit: usage,\n", 
+
+  if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
+    ErrorMayQuit("Digraphs: DigraphAddEdgeOrbit: usage,\n",
                  "the second argument must be a pairs of pos ints,");
-  elif IsDigraphEdge(digraph, edge) then 
+  elif IsDigraphEdge(digraph, edge) then
     return digraph;
   fi;
 
   out := OutNeighboursCopy(digraph);
   G   := DigraphGroup(digraph);
-  o   := Orbit(G, edge, OnTuples); 
+  o   := Orbit(G, edge, OnTuples);
 
-  for e in o do 
+  for e in o do
     Add(out[e[1]], e[2]);
   od;
-   
+
   digraph := DigraphNC(out);
   SetDigraphGroup(digraph, G);
-  
+
   return digraph;
 end);
 
@@ -1266,28 +1266,28 @@ InstallMethod(DigraphRemoveEdgeOrbit, "for a digraph and edge",
 [IsDigraph, IsList],
 function(digraph, edge)
   local out, G, o, pos, e;
-  
-  if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then 
-    ErrorMayQuit("Digraphs: DigraphAddEdgeOrbit: usage,\n", 
+
+  if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
+    ErrorMayQuit("Digraphs: DigraphRemoveEdgeOrbit: usage,\n",
                  "the second argument must be a pairs of pos ints,");
-  elif not IsDigraphEdge(digraph, edge) then 
+  elif not IsDigraphEdge(digraph, edge) then
     return digraph;
   fi;
 
   out := List(OutNeighbours(digraph), ShallowCopy);
   G   := DigraphGroup(digraph);
-  o   := Orbit(G, edge, OnTuples); 
+  o   := Orbit(G, edge, OnTuples);
 
-  for e in o do 
+  for e in o do
     pos := Position(out[e[1]], e[2]);
-    if pos <> fail then 
+    if pos <> fail then
       Remove(out[e[1]], e[2]);
     fi;
   od;
-   
+
   digraph := DigraphNC(out);
   SetDigraphGroup(digraph, G);
-  
+
   return digraph;
 end);
 
@@ -1330,13 +1330,13 @@ function(graph)
   return Concatenation("Digraph( ", PrintString(OutNeighbours(graph)), " )");
 end);
 
-#InstallMethod(PrintString, 
+#InstallMethod(PrintString,
 #"for a digraph with group and representative out neighbours",
 #[IsDigraph and HasDigraphGroup and HasRepresentativeOutNeighbours],
 #function(digraph)
-#  return Concatenation("Digraph( ", 
+#  return Concatenation("Digraph( ",
 #                       PrintString(DigraphGroup(digraph)), ", ",
-#                       PrintString(DigraphVertices(digraph)), ", ", 
+#                       PrintString(DigraphVertices(digraph)), ", ",
 #                       PrintString(RepresentativeOutNeighbours(digraph)), ")");
 #end);
 
