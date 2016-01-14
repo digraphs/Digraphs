@@ -612,7 +612,7 @@ function(graph)
       SetDigraphVertexLabels(digraph, StructuralCopy(graph.names));
     fi;
     if not IsTrivial(graph.group) then
-      Assert(IsPermGroup(graph.group), 1);
+      Assert(1, IsPermGroup(graph.group));
       SetDigraphGroup(digraph, graph.group);
       SetDigraphSchreierVector(digraph, graph.schreierVector);
       SetRepresentativeOutNeighbours(digraph, graph.adjacencies);

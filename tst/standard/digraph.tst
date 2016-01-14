@@ -1220,6 +1220,31 @@ rec( adjacencies := [ [ 2, 4 ] ], group := Group([ (1,3), (1,2)(3,4) ]),
   isGraph := true, names := [ 1 .. 4 ], order := 4, representatives := [ 1 ], 
   schreierVector := [ -1, 2, 1, 2 ] )
 
+#T# Digraph: copying group from Grape
+gap> g := JohnsonGraph(5,3);;
+gap> gr := Digraph(g);
+<digraph with 10 vertices, 60 edges>
+gap> HasDigraphGroup(gr);
+true
+gap> DigraphGroup(gr);
+Group([ (1,7,10,6,3)(2,8,4,9,5), (4,7)(5,8)(6,9) ])
+gap> g := CompleteGraph( Group( (1,2,3), (1,2) ) );;
+gap> gr := Digraph(g);
+<digraph with 3 vertices, 6 edges>
+gap> HasDigraphGroup(gr);
+true
+gap> DigraphGroup(gr);
+Group([ (1,2,3), (1,2) ])
+gap> g := Graph(Group([()]), [1,2,3], OnPoints, function(x,y) return x < y; end);;
+gap> gr := Digraph(g);
+<digraph with 3 vertices, 3 edges>
+gap> HasDigraphGroup(gr);
+false
+gap> DigraphGroup(gr);
+Group(())
+gap> HasDigraphGroup(gr);
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);
 gap> Unbind(j);
