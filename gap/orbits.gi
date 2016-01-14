@@ -21,6 +21,16 @@ function(gens, sch, r)
   return rec(word := Reversed(word), representative := r);
 end);
 
+InstallGlobalFunction(DIGRAPHS_EvaluateWord,
+function(gens, word)
+  local out, i;
+  out := ();
+  for i in word do
+    out := out * gens[i];
+  od;
+  return out;
+end);
+
 # This is arranged like this in case we want to change the method in future,
 # and also to allow its use **before** the creation of a digraph (such as when
 # the group is given as an argument to the constructor).
@@ -94,18 +104,27 @@ end);
 InstallMethod(DigraphStabilizer, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, rep)
-  local pos, stabs;
+  local pos, gens, sch, trace, word, stabs;
 
-  pos := -1 * DigraphSchreierVector(digraph)[rep];
-  if pos < 0 then #TODO!
-    ErrorMayQuit("Digraphs: DigraphStabilizer: usage,\n");
+  pos := DigraphSchreierVector(digraph)[rep];
+  if pos < 0 then # rep is not one of the orbit reps
+    word := ();
+    pos := pos * -1;
+  else
+    gens := GeneratorsOfGroup(DigraphGroup(digraph));
+    sch := DigraphSchreierVector(digraph);
+    trace := DIGRAPHS_TraceSchreierVector(gens, sch, pos);
+    pos := trace.representative;
+    word := DIGRAPHS_EvaluateWord(gens, trace.word);
   fi;
+
   stabs := DigraphStabilizers(digraph);
+
   if not IsBound(DigraphStabilizers(digraph)[pos]) then
     stabs[pos] := Stabilizer(DigraphGroup(digraph),
                              DigraphOrbitReps(digraph)[pos]);
   fi;
-  return DigraphStabilizers(digraph)[pos];
+  return DigraphStabilizers(digraph)[pos] ^ word;
 end);
 
 InstallMethod(DigraphStabilizers, "for a digraph",
@@ -113,3 +132,5 @@ InstallMethod(DigraphStabilizers, "for a digraph",
 function(digraph);
   return [];
 end);
+
+
