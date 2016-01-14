@@ -324,7 +324,7 @@ gap> canon = OnMultiDigraphs(gr1, DigraphCanonicalLabelling(gr1));
 false
 
 #T# DigraphCanonicalLabelling: with colours
-gap> G := Digraph(10, [1, 1, 3, 4, 4, 5, 8, 8], [6, 3, 3, 9, 10, 9, 4, 10]);
+gap> G := Digraph(10, [1, 1, 3, 4, 4, 5, 8, 8], [6, 3, 3, 9, 10, 9, 4, 10]);;
 gap> DigraphCanonicalLabelling(G, [[1..5], [6..10]]);
 (1,3,5,2)(6,7)(8,9,10)
 gap> DigraphCanonicalLabelling(G, [1,1,1,1,1,2,2,2,2,2]);
