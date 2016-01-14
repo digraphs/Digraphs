@@ -154,10 +154,9 @@ def _version_hg():
     something goes wrong'''
     try:
         hg_version = subprocess.check_output(['hg', 'branch']).strip()
-    except OSError:
-        sys.exit(_red_string('release.py: error: could not determine the ',
-                             'version number'))
-    except subprocess.CalledProcessError:
+    except KeyboardInterrupt:
+        _killed()
+    except (subprocess.CalledProcessError, OSError):
         sys.exit(_red_string('release.py: error: could not determine the ',
                              'version number'))
     return hg_version
@@ -173,6 +172,25 @@ def _hg_identify():
         sys.exit(_red_string('release.py: error: could not determine the ',
                              'version number'))
     return hg_identify.split('+')[0]
+
+def _hg_pending_commits():
+    pro = subprocess.Popen(('hg', 'summary'),
+                          stdout=subprocess.PIPE)
+    output = subprocess.check_output(('grep', 'commit:'),
+                                     stdin=pro.stdout).rstrip()
+    if output != 'commit: (clean)' and output != 'commit: (head closed)':
+        pro = subprocess.Popen(('hg', 'summary'), stdout=subprocess.PIPE)
+        try:
+            output = subprocess.check_output(('grep', 'commit:.*clean'),
+                                             stdin=pro.stdout).rstrip()
+        except KeyboardInterrupt:
+            _killed(pro)
+        except:
+            print _red_string('There are uncommited changes! Aborting!')
+            sys.exit(1)
+
+def _hg_tag_release(vers, verbose):
+    _exec('hg tag -f ' + vers + '-release', verbose)
 
 def _copy_doc(dst, verbose):
     for filename in os.listdir('doc'):
@@ -230,25 +248,6 @@ def _stop_mamp():
     _exec('./stop.sh', False)
     os.chdir(cwd)
 
-def _hg_pending_commits():
-    pro = subprocess.Popen(('hg', 'summary'),
-                          stdout=subprocess.PIPE)
-    output = subprocess.check_output(('grep', 'commit:'),
-                                     stdin=pro.stdout).rstrip()
-    if output != 'commit: (clean)' and output != 'commit: (head closed)':
-        pro = subprocess.Popen(('hg', 'summary'), stdout=subprocess.PIPE)
-        try:
-            output = subprocess.check_output(('grep', 'commit:.*clean'),
-                                             stdin=pro.stdout).rstrip()
-        except KeyboardInterrupt:
-            _killed(pro)
-        except:
-            print _red_string('There are uncommited changes! Aborting!')
-            sys.exit(1)
-
-def _hg_tag(vers, verbose):
-    _exec('hg tag ' + vers + '-release', verbose)
-    _exec('hg commit', verbose)
 
 ################################################################################
 # The main event
@@ -321,7 +320,7 @@ def main():
 
     # archive . . .
     print _magenta_string(pad('Tagging the last commit') + ' . . .')
-    _hg_tag(vers, args.verbose)
+    _hg_tag_release(vers, args.verbose)
     print _magenta_string(pad('Archiving using hg') + ' . . .')
     _exec('hg archive ' + tmpdir, args.verbose)
 
