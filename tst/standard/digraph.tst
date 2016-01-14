@@ -1163,7 +1163,7 @@ gap> digraph := CayleyDigraph(group);
 gap> group := DihedralGroup(IsPermGroup,8);
 Group([ (1,2,3,4), (2,4) ])
 gap> digraph := CayleyDigraph(group);
-<digraph with 8 vertices, 16 edges
+<digraph with 8 vertices, 16 edges>
 
 #T# BipartiteDoubleDigraph
 gap> n := 5;
