@@ -374,7 +374,7 @@ gap> Display(mat);
 gap> DigraphShortestDistances(Digraph([]));
 [  ]
 gap> mat := DigraphShortestDistances(Digraph([[], []]));
-[ [ 0, -1 ], [ -1, 0 ] ]
+[ [ 0, fail ], [ fail, 0 ] ]
 gap> r := rec(vertices := [1 .. 15], source := [], range := []);;
 gap> for i in [1 .. 15] do
 >   for j in [1 .. 15] do
@@ -405,13 +405,13 @@ gap> r := rec(nrvertices := 7, range := [3, 5, 5, 4, 6, 2, 5, 3, 3, 7, 2],
 gap> gr := Digraph(r);
 <multidigraph with 7 vertices, 11 edges>
 gap> Display(DigraphShortestDistances(gr));
-[ [   0,   2,   1,   3,   1,   3,   2 ],
-  [  -1,   0,   2,   1,   3,   1,   4 ],
-  [  -1,   1,   0,   2,   1,   2,   2 ],
-  [  -1,   2,   1,   0,   2,   3,   3 ],
-  [  -1,   2,   1,   3,   0,   3,   1 ],
-  [  -1,  -1,  -1,  -1,  -1,   0,  -1 ],
-  [  -1,   1,   3,   2,   4,   2,   0 ] ]
+[ [     0,     2,     1,     3,     1,     3,     2 ],
+  [  fail,     0,     2,     1,     3,     1,     4 ],
+  [  fail,     1,     0,     2,     1,     2,     2 ],
+  [  fail,     2,     1,     0,     2,     3,     3 ],
+  [  fail,     2,     1,     3,     0,     3,     1 ],
+  [  fail,  fail,  fail,  fail,  fail,     0,  fail ],
+  [  fail,     1,     3,     2,     4,     2,     0 ] ]
 
 #T# OutNeighbours and InNeighbours
 gap> gr := Digraph(rec(nrvertices := 10, source := [1, 1, 5, 5, 7, 10],
@@ -816,6 +816,9 @@ gap> DigraphVertexLabels(rd);
 [ "two", "four", "three" ]
 
 #T# DigraphAllSimpleCircuits
+gap> gr := Digraph([]);;
+gap> DigraphAllSimpleCircuits(gr);
+[  ]
 gap> gr := ChainDigraph(4);;
 gap> DigraphAllSimpleCircuits(gr);
 [  ]
@@ -849,6 +852,31 @@ gap> gr := Digraph([[3, 6, 7], [3, 6, 8], [1, 2, 3, 6, 7, 8],
 > [1, 2, 3, 8]]);;
 gap> Length(DigraphAllSimpleCircuits(gr));
 259
+
+#T# DigraphLongestSimpleCircuit
+gap> gr := Digraph([]);;
+gap> DigraphLongestSimpleCircuit(gr);
+fail
+gap> gr := Digraph([[], [2]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 2 ]
+gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 4, 5 ]
+gap> gr := ChainDigraph(10);;
+gap> DigraphLongestSimpleCircuit(gr);
+fail
+gap> gr := Digraph([[3], [1], [1, 4], [1, 1]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 1, 3, 4 ]
+gap> gr := Digraph([[2,6,10],[3],[4],[5],[1],
+>                   [7],[8],[9],[1],[11],[12],[13],[1]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 1, 2, 3, 4, 5 ]
+gap> gr := Digraph([[2,6,10],[3],[4],[5],[1],
+>                   [7],[8],[9],[1],[11],[12],[1,13],[14],[1]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 1, 10, 11, 12, 13, 14 ]
 
 #T# AsTransformation
 gap> gr := Digraph([[2], [1, 3], [4], [3]]);;

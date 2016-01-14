@@ -556,15 +556,16 @@ rec( comps := [  ], id := [  ] )
 <#GAPDoc Label="DigraphShortestDistances">
 <ManSection>
   <Attr Name="DigraphShortestDistances" Arg="digraph"/>
-  <Returns>A square matrix of integers.</Returns>
+  <Returns>A square matrix.</Returns>
   <Description>
     If <A>digraph</A> is a digraph with <M>n</M> vertices, then this 
-    function returns an <M>n \times n</M> matrix <C>mat</C> of integers.
-    If <M>n = 0</M>, then an empty list is returned.<P/>
+    function returns an <M>n \times n</M> matrix <C>mat</C>, where each entry is
+    either a non-negative integer or <C>fail</C>.  If <M>n = 0</M>, then an
+    empty list is returned. <P/>
     
     If there is a directed path from vertex <C>i</C> to vertex <C>j</C>, then
     the value of <C>mat[i][j]</C> is the length of the shortest such path. If
-    no such path exists, then the value of <C>mat[i][j]</C> is <C>-1</C>.
+    no such path exists, then the value of <C>mat[i][j]</C> is <C>fail</C>.
     We use the convention that the distance from every vertex to itself is
     <C>0</C>, i.e. <C>mat[i][i] = 0</C> for all vertices <C>i</C>. <P/>
 
@@ -576,10 +577,10 @@ gap> gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 1, 2 ], [ 4 ] ] );
 <digraph with 4 vertices, 6 edges>
 gap> mat := DigraphShortestDistances(gr);;
 gap> Display(mat);
-[ [   0,   1,   2,  -1 ],
-  [   2,   0,   1,  -1 ],
-  [   1,   1,   0,  -1 ],
-  [  -1,  -1,  -1,   0 ] ]
+[ [     0,     1,     2,  fail ],
+  [     2,     0,     1,  fail ],
+  [     1,     1,     0,  fail ],
+  [  fail,  fail,  fail,     0 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -938,6 +939,42 @@ gap> gr := Digraph([[3], [1], [1]]);
 <digraph with 3 vertices, 3 edges>
 gap> DigraphAllSimpleCircuits(gr);
 [ [ 1, 3 ] ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphLongestSimpleCircuit">
+<ManSection>
+  <Attr Name="DigraphLongestSimpleCircuit" Arg="digraph"/>
+  <Returns>A list of vertices or <C>fail</C>.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphLongestSimpleCircuit</C>
+    returns the longest <E>simple circuit</E> in <A>digraph</A>. <P/>
+
+    A <E>simple circuit</E> in <A>digraph</A> is a non-trivial directed path
+    in <A>digraph</A> from a vertex <C>v</C> back to <C>v</C>, in which no
+    vertex is visited more than once. Since a circuit of length <C>n</C> is
+    determined by its first <C>n</C> vertices, a circuit <M>v_{1} \rightarrow
+      \cdots \rightarrow v_{n} \rightarrow v_{1}</M> can be represented as
+    the list <M>[v_{1}, \ldots, v_{n}]</M>. Note that a loop is a simple
+    circuit. <P/>
+
+    If <A>digraph</A> has no simple circuits, then this attribute returns
+    <C>fail</C>.  If <A>digraph</A> has multiple simple circuits of maximum
+    length, then this attribute returns one of them.<P/>
+
+    See <Ref Attr="DigraphAllSimpleCircuits"/>. <P/>
+
+    <Example><![CDATA[
+gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 4, 5 ]
+gap> gr := ChainDigraph(10);;
+gap> DigraphLongestSimpleCircuit(gr);
+fail
+gap> gr := Digraph([[3], [1], [1, 4], [1, 1]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 1, 3, 4 ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>

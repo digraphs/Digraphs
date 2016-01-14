@@ -42,6 +42,7 @@ DeclareAttribute("DigraphDiameter", IsDigraph);
 DeclareAttribute("DigraphGirth", IsDigraph);
 DeclareAttribute("DigraphUndirectedGirth", IsDigraph);
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
+DeclareAttribute("DigraphLongestSimpleCircuit", IsDigraph);
 DeclareAttribute("DigraphLoops", IsDigraph);
 
 DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
