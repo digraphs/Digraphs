@@ -161,7 +161,8 @@ InstallMethod(DoubleDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
   local out, vertices, newvertices, allvertices, shiftedout, newout1,
-  newout2, newout, crossedouts, doubleout, shift;
+  newout2, newout, crossedouts, doubleout, shift, double, group,
+  newgens, gens, conj;
   #note that this method is also applicable for digraphs with
   #an adjacency function. however, the resulting double graph
   #will not have an adjacency function anymore, since the
@@ -169,6 +170,8 @@ function(digraph)
   #while the double graph has simply integers as vertices.
   #So relying on the original adjacency function is meaningless
   #unless this function would also be a function on integers.
+  #if DigraphGroup is set, a subgroup of the automoraphism group
+  #of the bipartite double is computed and set.
   out := OutNeighbours(digraph);
   vertices := [1 .. digraph!.nrvertices];
   shift := Length(vertices);
@@ -185,7 +188,18 @@ function(digraph)
   crossedouts := Concatenation(newout1, newout2);
   doubleout := List(allvertices, x -> Concatenation(newout[x], crossedouts[x]));
   #collect all out neighbours.
-  return DigraphNC(doubleout);
+  double := DigraphNC(doubleout);
+  if HasDigraphGroup(digraph) then
+    group := DigraphGroup(digraph);
+    gens := GeneratorsOfGroup(group);
+    conj := PermList(Concatenation(List([1 .. shift],
+                     x -> x + shift), [1 .. shift]));
+    newgens := List([1 .. Length(gens)], i -> gens[i] * (gens[i] ^ conj));
+    Add(newgens, conj);
+    SetDigraphGroup(double, Group(newgens));
+  fi;
+  return double;
+
 end);
 
 InstallMethod(BipartiteDoubleDigraph, "for a digraph",
@@ -202,6 +216,8 @@ function(digraph)
   #So relying on the original adjacency function is meaningless
   #unless this function would also be a function on integers.
   #compared with DoubleDigraph, we only need the "crossed adjacencies".
+  #if DigraphGroup is set, a subgroup of the automoraphism group
+  #of the bipartite double is computed and set.
   out := OutNeighbours(digraph);
   vertices := [1 .. digraph!.nrvertices];
   shift := Length(vertices);
@@ -211,7 +227,6 @@ function(digraph)
   newout2 := List(newvertices, x -> out[x - shift]);
   crossedouts := Concatenation(newout1, newout2);
   double := DigraphNC(crossedouts);
-  #the following piece of code (if loopt) needs further review and testing.
   if HasDigraphGroup(digraph) then
     group := DigraphGroup(digraph);
     gens := GeneratorsOfGroup(group);
