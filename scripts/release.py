@@ -77,6 +77,12 @@ def query_yes_no(question, default="yes"):
         else:
             sys.stdout.write("Please respond with 'yes' or 'no' "
                              "(or 'y' or 'n').\n")
+def _killed (pro=None):
+    if pro != None:
+        pro.terminate()
+        pro.wait()
+    print _red_string('Killed!')
+    sys.exit(1)
 
 ################################################################################
 # Check the version number in the branch against that in the PackageInfo.g
@@ -127,26 +133,30 @@ def _exec(string, verbose):
     if verbose:
         print _cyan_string(string + ' . . .')
     try:
-        devnull = open(os.devnull, 'w')
-        proc = subprocess.Popen(string,
-                                stdout=devnull,
-                                stderr=devnull,
-                                shell=True)
-        proc.wait()
-    except OSError:
+        if verbose:
+            pro = subprocess.check_call(string,
+                                        stdout=subprocess.STDOUT,
+                                        stderr=subprocess.STDOUT,
+                                        shell=True)
+        else:
+            devnull = open(os.devnull, 'w')
+            pro = subprocess.check_call(string,
+                                        stdout=devnull,
+                                        stderr=devnull,
+                                        shell=True)
+    except KeyboardInterrupt:
         sys.exit(_red_string('release.py: error: ' + string + ' failed'))
-    except subprocess.CalledProcessError:
-        sys.exit(_red_string('release.py: error: ' +  string + ' failed'))
+    except (subprocess.CalledProcessError, OSError):
+        sys.exit(_red_string('release.py: error: ' + string + ' failed'))
 
 def _version_hg():
     '''returns the version number from the branch name in mercurial, exits if
     something goes wrong'''
     try:
         hg_version = subprocess.check_output(['hg', 'branch']).strip()
-    except OSError:
-        sys.exit(_red_string('release.py: error: could not determine the ',
-                             'version number'))
-    except subprocess.CalledProcessError:
+    except KeyboardInterrupt:
+        _killed()
+    except (subprocess.CalledProcessError, OSError):
         sys.exit(_red_string('release.py: error: could not determine the ',
                              'version number'))
     return hg_version
@@ -163,6 +173,25 @@ def _hg_identify():
                              'version number'))
     return hg_identify.split('+')[0]
 
+def _hg_pending_commits():
+    pro = subprocess.Popen(('hg', 'summary'),
+                          stdout=subprocess.PIPE)
+    output = subprocess.check_output(('grep', 'commit:'),
+                                     stdin=pro.stdout).rstrip()
+    if output != 'commit: (clean)' and output != 'commit: (head closed)':
+        pro = subprocess.Popen(('hg', 'summary'), stdout=subprocess.PIPE)
+        try:
+            output = subprocess.check_output(('grep', 'commit:.*clean'),
+                                             stdin=pro.stdout).rstrip()
+        except KeyboardInterrupt:
+            _killed(pro)
+        except:
+            print _red_string('There are uncommited changes! Aborting!')
+            sys.exit(1)
+
+def _hg_tag_release(vers, verbose):
+    _exec('hg tag -f ' + vers + '-release', verbose)
+
 def _copy_doc(dst, verbose):
     for filename in os.listdir('doc'):
         if os.path.splitext(filename)[-1] in ['.html', '.txt', '.pdf', '.css',
@@ -172,15 +201,11 @@ def _copy_doc(dst, verbose):
                                      ' to the archive . . .')
             shutil.copy('doc/' + filename, dst)
 
-def _copy_build_files(dst, verbose):
-    for filename in ['configure', 'configure.ac', 'Makefile.in', 'Makefile.am']:
-        if verbose:
-            print _cyan_string('Copying ' + filename + ' to the archive . . .')
-        shutil.copy(filename, dst)
-
-    if verbose:
-        print _cyan_string('Copying cnf/* to the archive . . .')
-    shutil.copytree('cnf', dst + '/cnf')
+def _create_build_files(dst, verbose):
+    cwd = os.getcwd()
+    os.chdir(dst)
+    _exec('./autogen.sh', verbose)
+    os.chdir(cwd)
 
 def _delete_generated_build_files(verbose):
     for filename in ['config.log', 'config.status']:
@@ -223,24 +248,6 @@ def _stop_mamp():
     _exec('./stop.sh', False)
     os.chdir(cwd)
 
-def _hg_pending_commits ():
-    pro = subprocess.Popen(('hg', 'summary'),
-                          stdout=subprocess.PIPE)
-    output = subprocess.check_output(('grep', 'commit:'),
-                                     stdin=pro.stdout).rstrip()
-    if output != 'commit: (clean)' and output != 'commit: (head closed)':
-        pro = subprocess.Popen(('hg', 'summary'), stdout=subprocess.PIPE)
-        try:
-            output = subprocess.check_output(('grep', 'commit:.*clean'),
-                                             stdin=pro.stdout).rstrip()
-        except KeyboardInterrupt:
-            pro.terminate()
-            pro.wait()
-            print _red_string('Killed!')
-            sys.exit(1)
-        except:
-            print _red_string('There are uncommited changes! Aborting!')
-            sys.exit(1)
 
 ################################################################################
 # The main event
@@ -255,8 +262,11 @@ def main():
                         help='verbose mode (default: False)')
     parser.set_defaults(verbose=False)
     parser.add_argument('--skip-tests', dest='skip_tests', action='store_true',
-                        help='verbose mode (default: False)')
+                        help='skip running all the tests (default: False)')
     parser.set_defaults(skip_tests=False)
+    parser.add_argument('--skip-extreme', dest='skip_extreme', action='store_true',
+                        help='skip running the extreme tests (default: False)')
+    parser.set_defaults(skip_extreme=False)
     parser.add_argument('--gap-root', nargs='*', type=str,
                         help='the gap root directory (default: [~/gap])',
                         default=['~/gap/'])
@@ -265,6 +275,9 @@ def main():
                         default='~/gap/pkg/')
 
     args = parser.parse_args()
+
+    if args.skip_tests:
+        args.skip_extreme = True
 
     for i in xrange(len(args.gap_root)):
         if args.gap_root[i][-1] != '/':
@@ -306,13 +319,18 @@ def main():
     test.digraphs_make_doc(args.gap_root[0])
 
     # archive . . .
+    print _magenta_string(pad('Tagging the last commit') + ' . . .')
+    _hg_tag_release(vers, args.verbose)
     print _magenta_string(pad('Archiving using hg') + ' . . .')
     _exec('hg archive ' + tmpdir, args.verbose)
 
     # handle the doc . . .
     _copy_doc(tmpdir + '/doc/', args.verbose)
-    _copy_build_files(tmpdir, args.verbose)
-    if not args.skip_tests:
+
+    print _magenta_string(pad('Creating the build files') + ' . . .')
+    _create_build_files(tmpdir, args.verbose)
+
+    if not args.skip_extreme:
         print _magenta_string(pad('Downloading digraphs-lib-0.3.tar.gz') +
                               ' . . . '),
         sys.stdout.flush()
@@ -320,7 +338,7 @@ def main():
         print ''
 
     # delete extra files and dirs
-    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', 'autogen.sh']:
+    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', '.hg_archival.txt']:
         if (os.path.exists(os.path.join(tmpdir, filename))
                 and os.path.isfile(os.path.join(tmpdir, filename))):
             print _magenta_string(pad('Deleting file ' + filename) + ' . . .')
@@ -368,7 +386,7 @@ def main():
     _delete_generated_build_files(args.verbose)
     os.chdir(tmpdir_base)
 
-    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', 'autogen.sh']:
+    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore']:
         if (os.path.exists(os.path.join(tmpdir, filename))
                 and os.path.isfile(os.path.join(tmpdir, filename))):
             print _magenta_string(pad('Deleting file ' + filename) + ' . . .')
@@ -439,4 +457,4 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        sys.exit(_red_string('Killed!'))
+        _killed()
