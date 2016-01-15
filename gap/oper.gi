@@ -1307,5 +1307,6 @@ function(digraph, vertex, distances)
 
   distances := distances + 1;
   layers := DigraphLayers(digraph, vertex);
+  distances := Intersection(distances, [1 .. Length(layers)]);
   return Concatenation(layers{distances});
 end);
