@@ -8,7 +8,6 @@
 #############################################################################
 ##
 
-
 InstallGlobalFunction(DIGRAPHS_TraceSchreierVector,
 function(gens, sch, r)
   local word, w;
@@ -135,6 +134,12 @@ InstallMethod(DigraphStabilizer, "for a digraph and a vertex",
 function(digraph, v)
   local pos, gens, sch, trace, word, stabs;
 
+  if v > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphStabilizer: usage,\n",
+                 "the second argument must not exceed ",
+                 DigraphNrVertices(digraph), ",");
+  fi;
+
   pos := DigraphSchreierVector(digraph)[v];
   if pos < 0 then # rep is one of the orbit reps
     word := ();
@@ -147,7 +152,7 @@ function(digraph, v)
     word  := DIGRAPHS_EvaluateWord(gens, trace.word);
   fi;
 
-  stabs := DigraphStabilizers(digraph);
+  stabs := DIGRAPHS_Stabilizers(digraph);
 
   if not IsBound(stabs[pos]) then
     stabs[pos] := Stabilizer(DigraphGroup(digraph),
@@ -156,7 +161,7 @@ function(digraph, v)
   return stabs[pos] ^ word;
 end);
 
-InstallMethod(DigraphStabilizers, "for a digraph", [IsDigraph],
+InstallMethod(DIGRAPHS_Stabilizers, "for a digraph", [IsDigraph],
 function(digraph);
   return [];
 end);

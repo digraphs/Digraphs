@@ -11,11 +11,11 @@
 DeclareGlobalFunction("DIGRAPHS_Orbits");
 DeclareGlobalFunction("DIGRAPHS_TraceSchreierVector");
 DeclareGlobalFunction("DIGRAPHS_EvaluateWord");
+DeclareAttribute("DIGRAPHS_Stabilizers", IsDigraph, "mutable");
 
 DeclareAttribute("DigraphGroup", IsDigraph);
 DeclareAttribute("DigraphOrbits", IsDigraph);
 DeclareAttribute("DigraphOrbitReps", IsDigraph);
-DeclareAttribute("DigraphStabilizers", IsDigraph, "mutable");
 DeclareOperation("DigraphStabilizer", [IsDigraph, IsPosInt]);
 DeclareAttribute("DigraphSchreierVector", IsDigraph);
 DeclareAttribute("RepresentativeOutNeighbours", IsDigraph);
