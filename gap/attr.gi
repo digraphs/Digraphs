@@ -1154,7 +1154,6 @@ function(gr)
   local nbs, n, out, deg_vert, m, verts_deg, k, i, v, d, w;
 
   # The code assumes undirected, no multiple edges, no loops
-  gr := MaximalSymmetricSubdigraph(gr);
   nbs := OutNeighbours(gr);
   n := DigraphNrVertices(gr);
   out := EmptyPlist(n);

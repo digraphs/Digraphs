@@ -1101,7 +1101,7 @@ gap> DigraphDegeneracy(gr);
 gap> gr := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);
 <digraph with 6 vertices, 10 edges>
 gap> DigraphDegeneracy(gr);
-2]]></Example>
+1]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1134,7 +1134,7 @@ gap> DigraphDegeneracyOrdering(gr);
 gap> gr := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);
 <digraph with 6 vertices, 10 edges>
 gap> DigraphDegeneracyOrdering(gr);
-[ 6, 5, 1, 2, 4, 3 ]]]></Example>
+[ 1, 6, 5, 2, 4, 3 ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
