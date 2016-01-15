@@ -339,22 +339,22 @@ true]]></Example>
         <C><A>func</A>(<A>obj</A>[i], <A>obj</A>[j])</C> returns <K>true</K>.
       </Item>
       
-      <Mark>
-        for a group, a list, a function <A>act</A> and a function <A>adj</A>
-        (i.e. an adjacency list)
-      </Mark>
+      <Mark>for a group, a list, and two functions</Mark>
       <Item>
-        Let <A>G</A> be a group acting on the objects in <A>list</A> through
-        the action function <A>act</A>, and let <A>adj</A> be a function taking
+        The arguments will be <A>G, list, act, adj</A>. <P/>
+
+        Let <A>G</A> be a group acting on the objects in <A>list</A> via
+        the action <A>act</A>, and let <A>adj</A> be a function taking
         two objects from <A>list</A> as arguments and returning <C>true</C> or
         <C>false</C>. The function <A>adj</A> will describe the adjacency
-        between objects from <A>list</A> that is invariant under the action of
+        between objects from <A>list</A>, which is invariant under the action of
         <A>G</A>. This variant of the constructor returns a digraph with
         vertices the objects of <A>list</A> and directed edges <C>[x, y]</C>
-        when <C>f(x, y)</C> is <C>true</C>. The action of the group <A>G</A> on
-        the objects in <A>list</A> is a permutation group that is stored in the
-        attribute <Ref Attr="DigraphGroup"/>, and this group is used to speed
-        up operations like <Ref Oper="DigraphDiameter"/>.
+        when <C>f(x, y)</C> is <C>true</C>. <P/>
+
+        The action of the group <A>G</A> on the objects in <A>list</A> is stored
+        in the attribute <Ref Attr="DigraphGroup"/>, and is used to speed up
+        operations like <Ref Oper="DigraphDiameter"/>.
       </Item>
 
       <Mark>for a Grape package graph</Mark>
