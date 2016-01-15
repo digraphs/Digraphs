@@ -903,7 +903,7 @@ function(digraph)
   local UNBLOCK, CIRCUIT, out, stack, endofstack, gr, scc, n, blocked, B,
   gr_comp, comp, s, loops, i;
 
-  if DigraphNrVertices(digraph) = 0 then
+  if DigraphNrVertices(digraph) = 0 or DigraphNrEdges(digraph) = 0 then
     return [];
   fi;
 
