@@ -8,24 +8,125 @@
 #############################################################################
 ##
 
-InstallMethod(Digraph, "for a positive integer and a function",
-[IsPosInt, IsFunction],
-function(n, func)
-  local V, out, i, len, j;
+InstallMethod(Digraph,
+"for a list and function",
+[IsList, IsFunction],
+function(obj, adj)
+  local N, out_nbs, in_nbs, x, digraph, i, j;
 
-  V := [1 .. n];
-  out := List(V, x -> []);
+  N       := Size(obj); # number of vertices
+  out_nbs := List([1 ..  N], x -> []);
+  in_nbs  := List([1 ..  N], x -> []);
 
-  for i in V do
-    len := 0;
-    for j in V do
-      if func(i, j) then
-        len := len + 1;
-        out[i][len] := j;
+  for i in [1 .. N] do
+    x := obj[i];
+    for j in [1 .. N] do
+      if adj(x, obj[j]) then
+        Add(out_nbs[i], j);
+        Add(in_nbs[j], i);
       fi;
     od;
   od;
-  return DigraphNC(out);
+
+  digraph := DigraphNC(out_nbs);
+  SetDigraphAdjacencyFunction(digraph, adj);
+  SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
+  SetInNeighbours(digraph, in_nbs);
+
+  return digraph;
+end);
+
+# for a group and representative out neighbours
+
+#InstallMethod(Digraph, "for a group, list, and list",
+#[IsGroup, IsList, IsList],
+#function(G, vertices, rep)
+#  local digraph;
+#
+#  #TODO add checks!
+#
+#  digraph := Objectify(DigraphType, rec());
+#
+#  SetDigraphGroup(digraph, G);
+#  SetRepresentativeOutNeighbours(digraph, rep);
+#  SetDigraphVertices(digraph, vertices);
+#  SetDigraphNrVertices(digraph, Length(vertices));
+#  #TODO remove this, requires changing the OutNeighbours C function
+#
+#  digraph!.adj := OutNeighbours(digraph);
+#  digraph!.nrvertices := DigraphNrVertices(digraph);
+#
+#  return digraph;
+#end);
+
+# <G> is a group, <obj> a set of points on which <act> acts, and <adj> is a
+# function which for 2 elements u, v of <obj> returns <true> if and only if
+# u and v should be adjacent in the digraph we are constructing.
+
+InstallMethod(Digraph,
+"for a group, list or collection, function, and function",
+[IsGroup, IsListOrCollection, IsFunction, IsFunction],
+function(G, obj, act, adj)
+  local hom, dom, sch, orbits, reps, stabs, rep_out, out, gens, trace, word,
+        digraph, i, o, w, dig_adj;
+
+  hom    := ActionHomomorphism(G, obj, act, "surjective");
+  dom    := [1 .. Size(obj)];
+
+  sch    := DIGRAPHS_Orbits(Range(hom), dom);
+  orbits := sch.orbits;
+  sch    := sch.schreier;
+  reps   := List(orbits, Representative);
+  stabs  := List(reps, i -> Stabilizer(Range(hom), i));
+
+  rep_out     := EmptyPlist(Length(reps));
+
+  for i in [1 .. Length(reps)] do
+    if IsTrivial(stabs[i]) then
+      rep_out[i] := Filtered(dom, j -> adj(obj[reps[i]], obj[j]));
+    else
+      rep_out[i] := [];
+      for o in DIGRAPHS_Orbits(stabs[i], dom).orbits do
+        if adj(obj[reps[i]], obj[o[1]]) then
+          Append(rep_out[i], o);
+        fi;
+      od;
+    fi;
+  od;
+  #TODO comment this out, use method for OutNeighbours for digraph with group
+  #instead.
+  out  := EmptyPlist(Size(obj));
+  gens := GeneratorsOfGroup(Range(hom));
+
+  for i in [1 .. Length(sch)] do
+    if sch[i] < 0 then
+      out[i] := rep_out[-sch[i]];
+    fi;
+
+    trace := DIGRAPHS_TraceSchreierVector(gens, sch, i);
+    out[i] := rep_out[-sch[trace.representative]];
+    word := trace.word;
+    for w in word do
+       out[i] := OnTuples(out[i], gens[w]);
+    od;
+  od;
+
+  digraph := DigraphNC(out);
+
+  # Create adjacency function that takes integers
+  dig_adj := function(i,j)
+    return adj(obj[i], obj[j]);
+  end;
+
+  SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
+  SetDigraphAdjacencyFunction(digraph, dig_adj);
+  SetDigraphGroup(digraph, Range(hom));
+  SetDigraphOrbits(digraph, orbits);
+  SetDigraphStabilizers(digraph, stabs);
+  SetDigraphSchreierVector(digraph, sch);
+  SetRepresentativeOutNeighbours(digraph, rep_out);
+
+  return digraph;
 end);
 
 InstallMethod(Digraph, "for a binary relation",
@@ -58,6 +159,118 @@ function(rel)
     SetIsAntisymmetricDigraph(gr, IsAntisymmetricBinaryRelation(rel));
   fi;
   return gr;
+end);
+
+InstallMethod(CayleyDigraph, "for a group with generators",
+[IsGroup, IsHomogeneousList],
+function(G, gens)
+  local adj, cayleydigraph;
+
+  if not IsFinite(G) then
+    ErrorMayQuit("Digraphs: CayleyDigraph: usage,\n",
+                 "the first argument <G> must be a finite group,");
+  fi;
+
+  if not ForAll(gens, x -> x in G) then
+    ErrorMayQuit("Digraphs: CayleyDigraph: usage,\n",
+                 "elements in the 2nd argument <gens> must ",
+                 "all belong to the 1st argument <G>,");
+  fi;
+
+  adj := function(x, y)
+    return x ^ -1 * y in gens;
+  end;
+  cayleydigraph := Digraph(G, AsList(G), OnRight, adj);
+  SetFilterObj(cayleydigraph, IsCayleyDigraph);
+  return cayleydigraph;
+end);
+
+InstallMethod(CayleyDigraph, "for a group with generators",
+[IsGroup and HasGeneratorsOfGroup],
+function(G)
+  return CayleyDigraph(G, GeneratorsOfGroup(G));
+end);
+
+InstallMethod(DoubleDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out, vertices, newvertices, allvertices, shiftedout, newout1,
+  newout2, newout, crossedouts, doubleout, shift, double, group,
+  newgens, gens, conj;
+  #note that this method is also applicable for digraphs with
+  #an adjacency function. however, the resulting double graph
+  #will not have an adjacency function anymore, since the
+  #original function may take arbitrary objects as argument,
+  #while the double graph has simply integers as vertices.
+  #So relying on the original adjacency function is meaningless
+  #unless this function would also be a function on integers.
+  #if DigraphGroup is set, a subgroup of the automoraphism group
+  #of the bipartite double is computed and set.
+  out := OutNeighbours(digraph);
+  vertices := [1 .. digraph!.nrvertices];
+  shift := Length(vertices);
+  newvertices := [shift + 1 .. 2 * digraph!.nrvertices];
+  allvertices := [1 .. 2 * digraph!.nrvertices];
+  #"duplicate" of the outs for the new vertices:
+  shiftedout := List(out, x -> List(x, y -> y + shift));
+  newout1 := List(vertices, x -> List(out[x], y -> y + shift));
+  #new out neighbours for vertices
+  newout2 := List(newvertices, x -> out[x - shift]);
+  #out neighbours for new vertices
+  newout := Concatenation(out, shiftedout);
+  #collec out neighbours between vertices and new vertices
+  crossedouts := Concatenation(newout1, newout2);
+  doubleout := List(allvertices, x -> Concatenation(newout[x], crossedouts[x]));
+  #collect all out neighbours.
+  double := DigraphNC(doubleout);
+  if HasDigraphGroup(digraph) then
+    group := DigraphGroup(digraph);
+    gens := GeneratorsOfGroup(group);
+    conj := PermList(Concatenation(List([1 .. shift],
+                     x -> x + shift), [1 .. shift]));
+    newgens := List([1 .. Length(gens)], i -> gens[i] * (gens[i] ^ conj));
+    Add(newgens, conj);
+    SetDigraphGroup(double, Group(newgens));
+  fi;
+  return double;
+
+end);
+
+InstallMethod(BipartiteDoubleDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out, vertices, newvertices, allvertices, newout1,
+    newout2, crossedouts, shift, double, group, conj, gens,
+    newgens;
+  #note that this method is also applicable for digraphs with
+  #an adjacency function. however, the resulting double graph
+  #will not have an adjacency function anymore, since the
+  #original function may take arbitrary objects as argument,
+  #while the double graph has simply integers as vertices.
+  #So relying on the original adjacency function is meaningless
+  #unless this function would also be a function on integers.
+  #compared with DoubleDigraph, we only need the "crossed adjacencies".
+  #if DigraphGroup is set, a subgroup of the automoraphism group
+  #of the bipartite double is computed and set.
+  out := OutNeighbours(digraph);
+  vertices := [1 .. digraph!.nrvertices];
+  shift := Length(vertices);
+  newvertices := [shift + 1 .. 2 * digraph!.nrvertices];
+  allvertices := [1 .. 2 * digraph!.nrvertices];
+  newout1 := List(vertices, x -> List(out[x], y -> y + shift));
+  newout2 := List(newvertices, x -> out[x - shift]);
+  crossedouts := Concatenation(newout1, newout2);
+  double := DigraphNC(crossedouts);
+  if HasDigraphGroup(digraph) then
+    group := DigraphGroup(digraph);
+    gens := GeneratorsOfGroup(group);
+    conj := PermList(Concatenation(List([1 .. shift],
+                     x -> x + shift), [1 .. shift]));
+    newgens := List([1 .. Length(gens)], i -> gens[i] * (gens[i] ^ conj));
+    Add(newgens, conj);
+    SetDigraphGroup(double, Group(newgens));
+  fi;
+  return double;
 end);
 
 InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
@@ -155,10 +368,10 @@ end);
 #
 
 InstallMethod(Graph, "for a digraph", [IsDigraph],
-function(graph)
+function(digraph)
   local gamma, i, n;
 
-  if IsMultiDigraph(graph) then
+  if IsMultiDigraph(digraph) then
     Info(InfoWarning, 1, "Grape does not support multiple edges, so ",
          "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
@@ -167,22 +380,29 @@ function(graph)
     Info(InfoWarning, 1, "Grape is not loaded,");
   fi;
 
-  n := DigraphNrVertices(graph);
-  gamma := rec(order := n,
-               group := Group(()),
-               isGraph := true,
-               representatives := [1 .. n] * 1,
-               schreierVector := [1 .. n] * -1);
+  n := DigraphNrVertices(digraph);
+  if HasDigraphGroup(digraph) then
+    gamma := rec(order := n,
+                 group := DigraphGroup(digraph),
+                 isGraph := true,
+                 representatives := DigraphOrbitReps(digraph),
+                 schreierVector := DigraphSchreierVector(digraph));
+    gamma.adjacencies := ShallowCopy(RepresentativeOutNeighbours(digraph));
+    Apply(gamma.adjacencies, AsSet);
+  else
+    gamma := rec(order := n,
+                 group := Group(()),
+                 isGraph := true,
+                 representatives := [1 .. n] * 1,
+                 schreierVector := [1 .. n] * -1);
+    gamma.adjacencies := EmptyPlist(n);
 
-  # Used to be the following, using the constructor from GRAPE:
-  # gamma := NullGraph(Group([], ()), DigraphNrVertices(graph));
+    for i in [1 .. gamma.order] do
+      gamma.adjacencies[i] := Set(OutNeighbours(digraph)[i]);
+    od;
 
-  gamma.adjacencies := EmptyPlist(n);
-  for i in [1 .. gamma.order] do
-    gamma.adjacencies[i] := Set(OutNeighbours(graph)[i]);
-  od;
-  gamma.names := Immutable(DigraphVertexLabels(graph));
-
+  fi;
+  gamma.names := Immutable(DigraphVertexLabels(digraph));
   return gamma;
 end);
 
@@ -394,10 +614,20 @@ end);
 
 InstallMethod(Digraph, "for a record", [IsRecord],
 function(graph)
-  local check_source, cmp, obj, i, m;
+  local digraph, m, check_source, cmp, obj, i;
 
   if IsGraph(graph) then
-    return DigraphNC(List(Vertices(graph), x -> Adjacency(graph, x)));
+    digraph := DigraphNC(List(Vertices(graph), x -> Adjacency(graph, x)));
+    if IsBound(graph.names) then
+      SetDigraphVertexLabels(digraph, StructuralCopy(graph.names));
+    fi;
+    if not IsTrivial(graph.group) then
+      Assert(1, IsPermGroup(graph.group));
+      SetDigraphGroup(digraph, graph.group);
+      SetDigraphSchreierVector(digraph, graph.schreierVector);
+      SetRepresentativeOutNeighbours(digraph, graph.adjacencies);
+    fi;
+    return digraph;
   fi;
 
   if not (IsBound(graph.source) and IsBound(graph.range) and
@@ -912,6 +1142,182 @@ function(digraph)
   return gr;
 end);
 
+#
+
+InstallMethod(LineDigraph, "for a symmetric digraph",
+[IsDigraph],
+function(digraph)
+  local edges, G, adj;
+
+  edges := DigraphEdges(digraph);
+
+  if HasDigraphGroup(digraph) then
+    G := DigraphGroup(digraph);
+  else
+    G := Group(());
+  fi;
+
+  adj := function(edge1, edge2)
+    if edge1 = edge2 then
+      return false;
+    else
+      return edge1[2] = edge2[1];
+    fi;
+  end;
+
+  return Digraph(G, edges, OnPairs, adj);
+end);
+
+#
+
+InstallMethod(LineUndirectedDigraph, "for a symmetric digraph",
+[IsDigraph],
+function(digraph)
+  local edges, G, adj;
+
+  if not IsSymmetricDigraph(digraph) then
+    ErrorMayQuit("Digraphs: LineUndirectedDigraph: usage,\n",
+                 "the argument <digraph> must be a symmetric digraph,");
+  fi;
+
+  edges := Set(List(DigraphEdges(digraph), x -> Set(x)));
+
+  if HasDigraphGroup(digraph) then
+    G := DigraphGroup(digraph);
+  else
+    G := Group(());
+  fi;
+
+  adj := function(edge1, edge2)
+    if edge1 = edge2 then
+      return false;
+    else
+      return not IsEmpty(Intersection(edge1, edge2));
+    fi;
+  end;
+
+  return Digraph(G, edges, OnSets, adj);
+end);
+
+# Returns the digraph with vertex - set {1, .. ., n} and edge-set
+# the union over e in E  of  e ^ G.
+# (E can consist of just a singleton edge.)
+
+# Note: if at some point we don't store all of the out neighbours, then this
+# can be improved. JDM
+
+InstallMethod(EdgeOrbitsDigraph, "for a perm group, list, and int",
+[IsPermGroup, IsList, IsInt],
+function(G, edges, n)
+  local out, o, digraph, e, f;
+
+  if n < 0 then
+    ErrorMayQuit("Digraphs: EdgeOrbitsDigraph: usage,\n",
+                 "the third argument must be a non-negative integer,");
+  elif n = 0 then
+    return EmptyDigraph(0);
+  fi;
+
+  if IsPosInt(edges[1]) then   # E consists of a single edge
+    edges := [edges];
+  fi;
+
+  if not ForAll(edges, e -> Length(e) = 2 and ForAll(e, IsPosInt)) then
+    ErrorMayQuit("Digraphs: EdgeOrbitsDigraph: usage,\n",
+                 "the second argument must be a list of pairs of pos ints,");
+  fi;
+
+  out := List([1 .. n], x -> []);
+  for e in edges do
+    o := Orbit(G, e, OnTuples);
+    for f in o do
+      AddSet(out[f[1]], f[2]);
+    od;
+  od;
+
+  digraph := DigraphNC(out);
+  SetDigraphGroup(digraph, G);
+
+  return digraph;
+end);
+
+InstallMethod(EdgeOrbitsDigraph, "for a group and list",
+[IsPermGroup, IsList],
+function(G, E)
+  return EdgeOrbitsDigraph(G, E, LargestMovedPoint(G));
+end);
+
+# Note: if at some point we don't store all of the out neighbours, then this
+# can be improved. JDM
+
+InstallMethod(DigraphAddEdgeOrbit, "for a digraph and edge",
+[IsDigraph, IsList],
+function(digraph, edge)
+  local out, G, o, e;
+
+  if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
+    ErrorMayQuit("Digraphs: DigraphAddEdgeOrbit: usage,\n",
+                 "the second argument must be a pair of pos ints,");
+  elif not (edge[1] in DigraphVertices(digraph)
+            and edge[2] in DigraphVertices(digraph)) then
+    ErrorMayQuit("Digraphs: DigraphAddEdgeOrbit: usage,\n",
+                 "the second argument must be a ",
+                 "pair of vertices of the first argument,");
+  elif IsDigraphEdge(digraph, edge) then
+    return digraph;
+  fi;
+
+  out := OutNeighboursCopy(digraph);
+  G   := DigraphGroup(digraph);
+  o   := Orbit(G, edge, OnTuples);
+
+  for e in o do
+    Add(out[e[1]], e[2]);
+  od;
+
+  digraph := DigraphNC(out);
+  SetDigraphGroup(digraph, G);
+
+  return digraph;
+end);
+
+# Note: if at some point we don't store all of the out neighbours, then this
+# can be improved. JDM
+
+InstallMethod(DigraphRemoveEdgeOrbit, "for a digraph and edge",
+[IsDigraph, IsList],
+function(digraph, edge)
+  local out, G, o, pos, e;
+
+  if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
+    ErrorMayQuit("Digraphs: DigraphRemoveEdgeOrbit: usage,\n",
+                 "the second argument must be a pair of pos ints,");
+  elif not (edge[1] in DigraphVertices(digraph)
+            and edge[2] in DigraphVertices(digraph)) then
+    ErrorMayQuit("Digraphs: DigraphRemoveEdgeOrbit: usage,\n",
+                 "the second argument must be a ",
+                 "pair of vertices of the first argument,");
+  elif not IsDigraphEdge(digraph, edge) then
+    return digraph;
+  fi;
+
+  out := OutNeighboursCopy(digraph);
+  G   := DigraphGroup(digraph);
+  o   := Orbit(G, edge, OnTuples);
+
+  for e in o do
+    pos := Position(out[e[1]], e[2]);
+    if pos <> fail then
+      Remove(out[e[1]], pos);
+    fi;
+  od;
+
+  digraph := DigraphNC(out);
+  SetDigraphGroup(digraph, G);
+
+  return digraph;
+end);
+
 # Printing, and viewing . . .
 
 InstallMethod(ViewString, "for a digraph",
@@ -945,12 +1351,21 @@ function(graph)
 end);
 
 #
-
 InstallMethod(PrintString, "for a digraph",
 [IsDigraph],
 function(graph)
   return Concatenation("Digraph( ", PrintString(OutNeighbours(graph)), " )");
 end);
+
+#InstallMethod(PrintString,
+#"for a digraph with group and representative out neighbours",
+#[IsDigraph and HasDigraphGroup and HasRepresentativeOutNeighbours],
+#function(digraph)
+#  return Concatenation("Digraph( ",
+#                       PrintString(DigraphGroup(digraph)), ", ",
+#                       PrintString(DigraphVertices(digraph)), ", ",
+#                       PrintString(RepresentativeOutNeighbours(digraph)), ")");
+#end);
 
 #
 

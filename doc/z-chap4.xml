@@ -18,7 +18,9 @@
   <Section><Heading>Neighbours and degree</Heading>
     <#Include Label="AdjacencyMatrix">
     <#Include Label="BooleanAdjacencyMatrix">
+    <#Include Label="DigraphAdjacencyFunction">
     <#Include Label="RangeSourceDigraph">
+    <#Include Label="RepresentativeOutNeighbours">
     <#Include Label="OutNeighbours">
     <#Include Label="InNeighbours">
     <#Include Label="OutDegrees">
@@ -34,6 +36,8 @@
     <#Include Label="DigraphDiameter">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphLongestDistanceFromVertex">
+    <#Include Label="DigraphGirth">
+    <#Include Label="DigraphUndirectedGirth">
     <#Include Label="DigraphConnectedComponents">
     <#Include Label="DigraphConnectedComponent">
     <#Include Label="DigraphStronglyConnectedComponents">
@@ -42,6 +46,8 @@
     <#Include Label="DigraphFloydWarshall">
     <#Include Label="IsReachable">
     <#Include Label="DigraphAllSimpleCircuits">
+    <#Include Label="DigraphLongestSimpleCircuit">
+    <#Include Label="DigraphLayers">
     <#Include Label="DigraphDegeneracy">
     <#Include Label="DigraphDegeneracyOrdering">
   </Section>

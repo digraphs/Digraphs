@@ -347,3 +347,66 @@ function(digraph)
   fi;
   return DIGRAPHS_Bipartite(digraph)[1];
 end);
+
+#
+
+InstallMethod(IsInRegularDigraph, "for a digraph", [IsDigraph],
+function(digraph)
+  return Length(InDegreeSet(digraph)) = 1;
+end);
+
+#
+
+InstallMethod(IsOutRegularDigraph, "for a digraph", [IsDigraph],
+function(digraph)
+  return Length(OutDegreeSet(digraph)) = 1;
+end);
+
+#
+
+InstallMethod(IsRegularDigraph, "for a digraph", [IsDigraph],
+function(digraph)
+  return IsInRegularDigraph(digraph) and IsOutRegularDigraph(digraph);
+end);
+
+#
+
+InstallMethod(IsDistanceRegularDigraph, "for a symmetric digraph",
+[IsDigraph],
+function(graph)
+  local reps, record, localParameters, localDiameter, i;
+
+  reps            := DigraphOrbitReps(graph);
+  record          := DIGRAPH_ConnectivityDataForVertex(graph, reps[1]);
+  localParameters := record.localParameters;
+  localDiameter   := record.localDiameter;
+
+  if not IsSymmetricDigraph(graph) or not IsConnectedDigraph(graph) then
+    return false;
+  fi;
+
+  if Length(reps) = 0 then
+    return false;
+  fi;
+
+  if localDiameter = -1 then  # graph is not connected
+     return false;
+  fi;
+
+  if - 1 in Flat(localParameters) then # some of the parameters don't exist
+     return false;
+  fi;
+
+  for i in [2 .. Length(reps)] do
+     record := DIGRAPH_ConnectivityDataForVertex(graph, reps[2]);
+     if record.localDiameter <> localDiameter then
+        return false;
+     fi;
+
+     if record.localParameters <> localParameters then
+        return false;
+     fi;
+  od;
+
+  return true;
+end);

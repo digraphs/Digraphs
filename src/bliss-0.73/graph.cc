@@ -1379,7 +1379,7 @@ AbstractGraph::search(const bool canonical, Stats& stats)
                         if(old_info.fp_on)
                           goto handle_first_path_automorphism;
                         /* Should never get here because of CR:FP */
-                        _INTERNAL_ERROR();
+                        //_INTERNAL_ERROR();
                       }
                   }
 

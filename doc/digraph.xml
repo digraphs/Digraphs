@@ -7,6 +7,123 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="EdgeOrbitsDigraph">
+<ManSection>
+  <Oper Name="EdgeOrbitsDigraph" Arg="G, edges[, n]"/>
+  <Returns>
+    A new digraph.
+  </Returns>
+  <Description>
+    If <A>G</A> is a permutation group, <A>edges</A> is an edge or list of
+    edges, and <A>n</A> is a non-negative integer such that <A>G</A> fixes
+    <C>[1 .. <A>n</A>]</C> setwise, then 
+    this operation returns a new digraph with <A>n</A> vertices and the union
+    of the orbits of the edges in <A> edges </A> under the action of the
+    permutation group <A>G</A>.  An edge in this context is simply a pair of
+    positive integers.
+    <P/>
+
+    If the optional third argument <A>n</A> is not present, then the largest
+    moved point of the permutation group <A>G</A> is used by default. 
+
+    <Example><![CDATA[
+gap> digraph := EdgeOrbitsDigraph(Group((1,3), (1,2)(3,4)), 
+>                                 [[1, 2], [4, 5]], 5);
+<digraph with 5 vertices, 12 edges>
+gap> OutNeighbours(digraph);
+[ [ 2, 4, 5 ], [ 1, 3, 5 ], [ 2, 4, 5 ], [ 1, 3, 5 ], [  ] ]
+gap> RepresentativeOutNeighbours(digraph);
+[ [ 2, 4, 5 ], [  ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphAddEdgeOrbit">
+<ManSection>
+  <Oper Name="DigraphAddEdgeOrbit" Arg="digraph, edge"/>
+  <Returns>
+    A new digraph.
+  </Returns>
+  <Description>
+    This operation returns a new digraph with the same vertices and edges as
+    <A>digraph</A> and with additional edges consisting of the orbit of the
+    edge <A>edge</A> under the action of the <Ref Attr="DigraphGroup"/> of
+    <A>digraph</A>.  If <A>edge</A> is already an edge in <A>digraph</A>, then
+    <A>digraph</A> is returns unchanged.
+    <P/>
+
+    An edge is simply a pair of vertices of <A>digraph</A>.
+
+    <Example><![CDATA[
+gap> gr1 := CayleyDigraph(DihedralGroup(8));
+<digraph with 8 vertices, 24 edges>
+gap> gr2 := DigraphAddEdgeOrbit(gr1, [1, 8]);
+<digraph with 8 vertices, 32 edges>
+gap> DigraphEdges(gr1);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], 
+  [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], 
+  [ 5, 3 ], [ 5, 2 ], [ 5, 8 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], 
+  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 8, 7 ], [ 8, 6 ], [ 8, 5 ] ]
+gap> DigraphEdges(gr2);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 8 ], [ 2, 1 ], [ 2, 8 ], 
+  [ 2, 6 ], [ 2, 3 ], [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 3, 2 ], 
+  [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [ 4, 5 ], [ 5, 3 ], [ 5, 2 ], 
+  [ 5, 8 ], [ 5, 4 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], [ 6, 7 ], 
+  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 7, 6 ], [ 8, 7 ], [ 8, 6 ], 
+  [ 8, 5 ], [ 8, 1 ] ]
+gap> gr3 := DigraphRemoveEdgeOrbit(gr2, [1, 8]);
+<digraph with 8 vertices, 24 edges>
+gap> gr3 = gr1;
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphRemoveEdgeOrbit">
+<ManSection>
+  <Oper Name="DigraphRemoveEdgeOrbit" Arg="digraph, edge"/>
+  <Returns>
+    A new digraph.
+  </Returns>
+  <Description>
+    This operation returns a new digraph with the same vertices as
+    <A>digraph</A> and with the orbit of the edge <A>edge</A> (under the action
+    of the <Ref Attr="DigraphGroup"/> of <A>digraph</A>) removed.
+    If <A>edge</A> is not an edge in <A>digraph</A>, then <A>digraph</A> is
+    returned unchanged.
+    <P/>
+    
+    An edge is simply a pair of vertices of <A>digraph</A>.
+
+    <Example><![CDATA[
+gap> gr1 := CayleyDigraph(DihedralGroup(8));
+<digraph with 8 vertices, 24 edges>
+gap> gr2 := DigraphAddEdgeOrbit(gr1, [1, 8]);
+<digraph with 8 vertices, 32 edges>
+gap> DigraphEdges(gr1);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], 
+  [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], 
+  [ 5, 3 ], [ 5, 2 ], [ 5, 8 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], 
+  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 8, 7 ], [ 8, 6 ], [ 8, 5 ] ]
+gap> DigraphEdges(gr2);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 8 ], [ 2, 1 ], [ 2, 8 ], 
+  [ 2, 6 ], [ 2, 3 ], [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 3, 2 ], 
+  [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [ 4, 5 ], [ 5, 3 ], [ 5, 2 ], 
+  [ 5, 8 ], [ 5, 4 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], [ 6, 7 ], 
+  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 7, 6 ], [ 8, 7 ], [ 8, 6 ], 
+  [ 8, 5 ], [ 8, 1 ] ]
+gap> gr3 := DigraphRemoveEdgeOrbit(gr2, [1, 8]);
+<digraph with 8 vertices, 24 edges>
+gap> gr3 = gr1;
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="IsDigraph">
 <ManSection>
   <Filt Name="IsDigraph" Type='Category'/>
@@ -15,8 +132,29 @@
     <C>IsDigraph</C>.  Basic attributes and operations for digraphs
     are: <Ref Oper="DigraphVertices"/>, <Ref Attr="DigraphRange"/>, <Ref
       Attr="DigraphSource"/>, <Ref Attr="OutNeighbours"/>, and <Ref
-      Attr="DigraphEdges"/>. 
+      Attr="DigraphEdges"/>.
     </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsCayleyDigraph">
+<ManSection>
+  <Filt Name="IsCayleyDigraph" Type='Category'/>
+  <Description>
+    <C>IsCayleyDigraph</C> is a subcategory of <C>IsDigraph</C>. Digraphs that
+    are Cayley digraphs of a group and that are constructed by the operation
+    <Ref Oper="CayleyDigraph"/> are constructed in this category.
+    </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsDigraphWithAdjacencyFunction">
+<ManSection>
+  <Filt Name="IsDigraphWithAdjacencyFunction" Type='Category'/>
+  <Description>
+    <C>IsCayleyDigraph</C> is a subcategory of <C>IsDigraph</C>. Digraphs that
+    are <E>created</E> using an adjacency function are constructed in this
+    category</Description>
 </ManSection>
 <#/GAPDoc>
 
@@ -53,19 +191,18 @@
     old ones, inherit their labels from their parents. 
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
-> [ 2, 3, 5 ] ] );
+gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
 <digraph with 5 vertices, 11 edges>
 gap> DigraphVertexLabels(gr);
 [ 1 .. 5 ]
-gap> gr := Digraph( [ "a", "b", "c" ], [  ], [  ] );
+gap> gr := Digraph(["a", "b", "c"], [], []);
 <digraph with 3 vertices, 0 edges>
 gap> DigraphVertexLabels(gr);
 [ "a", "b", "c" ]
 gap> SetDigraphVertexLabel(gr, 2, "d");
 gap> DigraphVertexLabels(gr);
 [ "a", "d", "c" ]
-gap> gr := InducedSubdigraph(gr, [ 1, 3 ]);
+gap> gr := InducedSubdigraph(gr, [1, 3]);
 <digraph with 2 vertices, 0 edges>
 gap> DigraphVertexLabels(gr);
 [ "a", "c" ]]]></Example>
@@ -75,8 +212,8 @@ gap> DigraphVertexLabels(gr);
 
 <#GAPDoc Label="DigraphVertexLabel">
 <ManSection>
-  <Oper Name="DigraphVertexLabel" Arg="digraph, i"/>
-  <Oper Name="SetDigraphVertexLabel" Arg="digraph, i, obj"/>
+  <Oper Name = "DigraphVertexLabel" Arg="digraph, i"/>
+  <Oper Name ="SetDigraphVertexLabel" Arg="digraph, i, obj"/>
   <Description>
     If <A>digraph</A> is a digraph, then the first operation returns the label
     of the vertex <A>i</A>. The second operation can be used to set the label
@@ -95,19 +232,18 @@ gap> DigraphVertexLabels(gr);
     old ones, inherit their labels from their parents. 
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], 
-> [ 2, 3, 5 ] ] );
+gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
 <digraph with 5 vertices, 11 edges>
 gap> DigraphVertexLabel(gr, 3);
 3
-gap> gr := Digraph( [ "a", "b", "c" ], [  ], [  ] );
+gap> gr := Digraph(["a", "b", "c"], [], []);
 <digraph with 3 vertices, 0 edges>
 gap> DigraphVertexLabel(gr, 2);
 "b"
 gap> SetDigraphVertexLabel(gr, 2, "d");
 gap> DigraphVertexLabel(gr, 2);
 "d"
-gap> gr := InducedSubdigraph(gr, [ 1, 2 ]);
+gap> gr := InducedSubdigraph(gr, [1, 2]);
 <digraph with 2 vertices, 0 edges>
 gap> DigraphVertexLabel(gr, 2);
 "d"]]></Example>
@@ -124,40 +260,27 @@ gap> DigraphVertexLabel(gr, 2);
     edges with equal source and range. 
     
     <Example><![CDATA[
-gap> gr:=Digraph( [ "a", "b", "c" ],
-> [ "a", "b", "b" ],
-> [ "b", "c", "a" ] );
+gap> gr := Digraph(["a", "b", "c"], ["a", "b", "b"], ["b", "c", "a"]);
 <digraph with 3 vertices, 3 edges>
 gap> IsMultiDigraph(gr);
 false
-gap> gr := Digraph( 3, 
-> [ 1, 2, 3, 1, 1, 2 ],
-> [ 1, 2, 3, 2, 3, 1 ] );
+gap> gr := Digraph(3, [1, 2, 3, 1, 1, 2], [1, 2, 3, 2, 3, 1]);
 <digraph with 3 vertices, 6 edges>
 gap> IsMultiDigraph(gr);
 false
-gap> gr := Digraph( 3,
-> [ 1, 2, 3, 1, 1, 2, 1 ],
-> [ 1, 2, 3, 2, 3, 1, 2 ] );
+gap> gr := Digraph(3, [1, 2, 3, 1, 1, 2, 1], [1, 2, 3, 2, 3, 1, 2]);
 <multidigraph with 3 vertices, 7 edges>
 gap> IsMultiDigraph(gr);
-true
-]]></Example>
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
-<#GAPDoc Label="DigraphNC">
-<ManSection>
-  <Oper Name="DigraphNC" Arg="??"/>
-  <Description>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
 
 <#GAPDoc Label="Digraph">
 <ManSection>
-  <Oper Name="Digraph" Arg="obj[, source, range]"/>
+  <Oper Name = "Digraph" Arg = "obj[, source, range]"/>
+  <Oper Name = "Digraph" Arg = "list, func" Label = "for a list and function"/>
+  <Oper Name = "Digraph" Arg = "G, list, act, adj" Label = "for a list and function"/>
   <Returns>A digraph.</Returns>
   <Description>
     <List>
@@ -166,7 +289,7 @@ true
         if <A>obj</A> is a list of lists of positive integers in
         the range from <C>1</C> to <C>Length(<A>obj</A>)</C>, then this function
         returns the digraph with vertices
-        <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>,
+        <M>E ^ 0 = </M><C>[1 .. Length(<A>obj</A>)]</C>,
         and edges corresponding to the entries of <A>obj</A>. <P/>
         
         More precisely, there is an edge from vertex <C>i</C> to <C>j</C> if and
@@ -180,11 +303,11 @@ true
       <Item>
         if <A>obj</A> is a duplicate-free list, and <A>source</A> and
         <A>range</A> are lists of equal length consisting of positive integers
-        in the list <C>[1..Length(<A>obj</A>)]</C>, then this function
+        in the list <C>[1 .. Length(<A>obj</A>)]</C>, then this function
         returns a digraph with vertices
-        <M>E^0=</M><C>[1..Length(<A>obj</A>)]</C>, and
+        <M>E ^ 0 = </M><C>[1 .. Length(<A>obj</A>)]</C>, and
         <C>Length(<A>source</A>)</C> edges.  For each <C>i</C> in
-        <C>[1..Length(<A>source</A>)]</C> there exists an edge with source
+        <C>[1 .. Length(<A>source</A>)]</C> there exists an edge with source
         vertex <C>source[i]</C> and range vertex <C>range[i]</C>.
         See <Ref Attr="DigraphSource"/> and <Ref Attr="DigraphRange"/>.
         <P/>
@@ -197,14 +320,23 @@ true
       <Item>
         if <A>obj</A> is an integer, and <A>source</A> and
         <A>range</A> are lists of equal length consisting of positive integers
-        in the list <C>[1..<A>obj</A>]</C>, then this function
+        in the list <C>[1 .. <A>obj</A>]</C>, then this function
         returns a digraph with vertices
-        <M>E^0=</M><C>[1..<A>obj</A>]</C>, and
+        <M>E ^ 0 = </M><C>[1 .. <A>obj</A>]</C>, and
         <C>Length(<A>source</A>)</C> edges.  For each <C>i</C> in
-        <C>[1..Length(<A>source</A>)]</C> there exists an edge with source
+        <C>[1 .. Length(<A>source</A>)]</C> there exists an edge with source
         vertex <C>source[i]</C> and range vertex <C>range[i]</C>.
         See <Ref Attr="DigraphSource"/> and <Ref Attr="DigraphRange"/>.
-        <P/>
+      </Item>
+      
+      <Mark>for a list and a function</Mark>
+      <Item>
+        if <A>list</A> is a list and <A>func</A> is a function taking 2
+        arguments that are elements of <A>list</A>, and <A>func</A> returns
+        <K>true</K> or <K>false</K>, then this operation creates a digraph with
+        vertices <C>[1 .. Length(<A>obj</A>)]</C> and an edge from vertex
+        <C>i</C> to vertex <C>j</C> if and only if
+        <C><A>func</A>(<A>obj</A>[i], <A>obj</A>[j])</C> returns <K>true</K>.
       </Item>
 
       <Mark>for a Grape package graph</Mark>
@@ -216,7 +348,7 @@ true
 
       <Mark>for a binary relation</Mark>
       <Item>
-        if <A>obj</A> is a binary relation on the points <C>[1..n]</C> for
+        if <A>obj</A> is a binary relation on the points <C>[1 .. n]</C> for
         some posititve integer <M>n</M>, then this function returns the digraph
         defined by <A>obj</A>. Specifically, this function returns a digraph
         which has <M>n</M> vertices, and which has an edge with source <C>i</C>
@@ -224,26 +356,67 @@ true
         the binary relation <A>obj</A>.
       </Item>
 
+      <Mark>for a group, a list, a function <A>act</A> and a function <A>adj</A> (i.e. an adjacency list)</Mark>
+      <Item>
+  
+        Let <A>G</A> be a group acting on the objects in <A>list</A> through the action function <A>act</A>,
+        and let <A>adj</A> be a function taking two objects from <A>list</A> as arguments and returning <C>true</C>
+        or <C>false</C>, describing the adjacency between objects from <A>list</A> that is invariant under the action
+        of <A>G</A>. Then this variant of the constructor returns a digraph with vertices the objects of <A>list</A>
+        and directed edges <C>[x,y]</C> when <C>f(x,y)</C> is <C>true</C>. The action of the group <A>G</A> on the
+        objects in <A>list</A> is a permutation group that is stored in the attribute <Ref Attr="DigraphGroup"/>,
+        and this group is used to speed up operations like <Ref Oper="DigraphDiameter"/>.<P/>
+        The second example illustrates the use of the second and third variant of this constructor. The resulting digraph
+        is a strongly regular graph, and it is actually the point graph of the van Lint-Schrijver partial geometry, <Cite Key="vanLintSchrijver1981"/>.
+        The algebraic description is taken from the seminal paper of Calderbank and Kantor <Cite Key="CalderbankKantor1986"/>.
+        </Item>
+
     </List>
   
     <Example><![CDATA[
-gap> gr:= Digraph( [ [ 2, 5, 8, 10 ], [ 2, 3, 4, 2, 5, 6, 8, 9, 10 ], 
-> [ 1 ], [ 3, 5, 7, 8, 10 ], [ 2, 5, 7 ], [ 3, 6, 7, 9, 10 ], [ 1, 4 ],
-> [ 1, 5, 9 ], [ 1, 2, 7, 8 ], [ 3, 5 ] ] );
+gap> gr := Digraph([[2, 5, 8, 10], [2, 3, 4, 2, 5, 6, 8, 9, 10], 
+> [1], [3, 5, 7, 8, 10], [2, 5, 7], [3, 6, 7, 9, 10], [1, 4],
+> [1, 5, 9], [1, 2, 7, 8], [3, 5]]);
 <multidigraph with 10 vertices, 38 edges>
-gap> gr := Digraph( [ "a", "b", "c" ], [ "a" ], [ "b" ] );
+gap> gr := Digraph(["a", "b", "c"], ["a"], ["b"]);
 <digraph with 3 vertices, 1 edge>
-gap> gr := Digraph( 5, [ 1, 2, 2, 4, 1, 1 ], [ 2, 3, 5, 5, 1, 1 ] );
+gap> gr := Digraph(5, [1, 2, 2, 4, 1, 1], [2, 3, 5, 5, 1, 1]);
 <multidigraph with 5 vertices, 6 edges>
-gap> Petersen := Graph( SymmetricGroup(5), [ [ 1, 2 ] ], OnSets,
-> function(x, y) return Intersection(x, y) = [ ]; end );;
+gap> Petersen := Graph(SymmetricGroup(5), [[1, 2]], OnSets,
+> function(x, y) return Intersection(x, y) = []; end);;
 gap> Digraph(Petersen);
 <digraph with 10 vertices, 30 edges>
 gap> b := BinaryRelationOnPoints(
-> [ [ 3 ], [ 1, 3, 5 ], [ 1 ], [ 1, 2, 4 ], [ 2, 3, 5 ] ] );
+> [[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
 Binary Relation on 5 points
 gap> gr := Digraph(b);
 <digraph with 5 vertices, 11 edges>
+gap> gr := Digraph([1 .. 10], ReturnTrue);
+<digraph with 10 vertices, 100 edges>
+gap> f := GF(3^4);
+GF(3^4)
+gap> gamma := First(f,x->Order(x)=5);
+Z(3^4)^64
+gap> L := Union([Zero(f)],List(Group(gamma)));
+[ 0*Z(3), Z(3)^0, Z(3^4)^16, Z(3^4)^32, Z(3^4)^48, Z(3^4)^64 ]
+gap> omega := Union(List(L,x->List(Difference(L,[x]),y->x-y)));
+[ Z(3)^0, Z(3), Z(3^4)^5, Z(3^4)^7, Z(3^4)^8, Z(3^4)^13, Z(3^4)^15, 
+  Z(3^4)^16, Z(3^4)^21, Z(3^4)^23, Z(3^4)^24, Z(3^4)^29, Z(3^4)^31, 
+  Z(3^4)^32, Z(3^4)^37, Z(3^4)^39, Z(3^4)^45, Z(3^4)^47, Z(3^4)^48, 
+  Z(3^4)^53, Z(3^4)^55, Z(3^4)^56, Z(3^4)^61, Z(3^4)^63, Z(3^4)^64, 
+  Z(3^4)^69, Z(3^4)^71, Z(3^4)^72, Z(3^4)^77, Z(3^4)^79 ]
+gap> adj := function(x,y)
+> return x-y in omega;
+> end;
+function( x, y ) ... end
+gap> digraph := Digraph(List(f),adj);
+<digraph with 81 vertices, 2430 edges>
+gap> group := Group(Z(3));
+<group with 1 generators>
+gap> act := \*;
+<Operation "*">
+gap> digraph := Digraph(group,List(f),act,adj);
+<digraph with 81 vertices, 2430 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -263,8 +436,8 @@ gap> gr := Digraph(b);
     same as <C>Graph(DigraphRemoveAllMultipleEdges(</C><A>digraph</A><C>))</C>.
     
     <Example><![CDATA[
-gap> Petersen := Graph( SymmetricGroup(5), [[1,2]], OnSets,
-> function(x,y) return Intersection(x,y)=[]; end );
+gap> Petersen := Graph(SymmetricGroup(5), [[1, 2]], OnSets,
+> function(x, y) return Intersection(x, y) = []; end);
 rec( adjacencies := [ [ 3, 5, 8 ] ], group := Group([ (1,2,3,5,7)
   (4,6,8,9,10), (2,4)(6,9)(7,10) ]), isGraph := true, 
   names := [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 1, 3 ], [ 4, 5 ], 
@@ -274,14 +447,12 @@ rec( adjacencies := [ [ 3, 5, 8 ] ], group := Group([ (1,2,3,5,7)
 gap> Digraph(Petersen);
 <digraph with 10 vertices, 30 edges>
 gap> Graph(last);
-rec( 
-  adjacencies := [ [ 3, 5, 8 ], [ 5, 7, 9 ], [ 1, 7, 10 ], 
-      [ 5, 6, 10 ], [ 1, 2, 4 ], [ 4, 7, 8 ], [ 2, 3, 6 ], 
-      [ 1, 6, 9 ], [ 2, 8, 10 ], [ 3, 4, 9 ] ], group := Group(()), 
-  isGraph := true, names := [ 1 .. 10 ], order := 10, 
-  representatives := [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 
-  schreierVector := [ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 ] )
-]]></Example>
+rec( adjacencies := [ [ 3, 5, 8 ] ], group := Group([ (1,2,3,5,7)
+  (4,6,8,9,10), (2,4)(6,9)(7,10) ]), isGraph := true, 
+  names := [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 1, 3 ], [ 4, 5 ], 
+      [ 2, 4 ], [ 1, 5 ], [ 3, 5 ], [ 1, 4 ], [ 2, 5 ] ], 
+  order := 10, representatives := [ 1 ], 
+  schreierVector := [ -1, 1, 1, 2, 1, 1, 1, 1, 2, 2 ] )]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -302,16 +473,16 @@ rec(
 
     <Example><![CDATA[
 gap> DigraphByAdjacencyMatrix([
-> [ 0, 1, 0, 2, 0 ],
-> [ 1, 1, 1, 0, 1 ],
-> [ 0, 3, 2, 1, 1 ],
-> [ 0, 0, 1, 0, 1 ],
-> [ 2, 0, 0, 0, 0 ] ]);
+> [0, 1, 0, 2, 0],
+> [1, 1, 1, 0, 1],
+> [0, 3, 2, 1, 1],
+> [0, 0, 1, 0, 1],
+> [2, 0, 0, 0, 0]]);
 <multidigraph with 5 vertices, 18 edges>
 gap> gr := DigraphByAdjacencyMatrix([
-> [ true,  false, true  ],
-> [ false, false, true  ],
-> [ false, true,  false ] ]);
+> [true, false, true],
+> [false, false, true],
+> [false, true, false]]);
 <digraph with 3 vertices, 4 edges>
 gap> OutNeighbours(gr);
 [ [ 1, 3 ], [ 3 ], [ 2 ] ]
@@ -337,13 +508,13 @@ gap> OutNeighbours(gr);
     See <Ref Attr="DigraphEdges"/>.
     
     <Example><![CDATA[
-gap> DigraphByEdges( 
-> [ [ 1, 3 ], [ 2, 1 ], [ 2, 3 ], [ 2, 5 ], [ 3, 6 ], 
->   [ 4, 6 ], [ 5, 2 ], [ 5, 4 ], [ 5, 6 ], [ 6, 6 ] ]);
+gap> DigraphByEdges(
+> [[1, 3], [2, 1], [2, 3], [2, 5], [3, 6], 
+>  [4, 6], [5, 2], [5, 4], [5, 6], [6, 6]]);
 <digraph with 6 vertices, 10 edges>
-gap> DigraphByEdges( 
-> [ [ 1, 3 ], [ 2, 1 ], [ 2, 3 ], [ 2, 5 ], [ 3, 6 ], 
->   [ 4, 6 ], [ 5, 2 ], [ 5, 4 ], [ 5, 6 ], [ 6, 6 ] ], 10);
+gap> DigraphByEdges(
+> [[1, 3], [2, 1], [2, 3], [2, 5], [3, 6], 
+>  [4, 6], [5, 2], [5, 4], [5, 6], [6, 6]], 10);
 <digraph with 10 vertices, 10 edges>
 ]]></Example>
   </Description>
@@ -358,8 +529,8 @@ gap> DigraphByEdges(
   <Description>
 
   If <A>in</A> is a list of lists of positive integers in the range 
-  <C>[1..Length(<A>in</A>)]</C>, then this function returns the
-  digraph with vertices <M>E^0=</M><C>[1..Length(<A>in</A>)]</C>, and 
+  <C>[1 .. Length(<A>in</A>)]</C>, then this function returns the
+  digraph with vertices <M>E^0=</M><C>[1 .. Length(<A>in</A>)]</C>, and 
   edges corresponding to the entries of <A>in</A>. More precisely, there is an 
   edge with source vertex <C>i</C> and range vertex <C>j</C> if <C>i</C> is in 
   <C><A>in</A>[j]</C>. <P/>
@@ -370,14 +541,13 @@ gap> DigraphByEdges(
   See <Ref Attr="InNeighbours"/>.
 
     <Example><![CDATA[
-gap> gr := DigraphByInNeighbours( [
-> [ 2, 5, 8, 10 ], [ 2, 3, 4, 5, 6, 8, 9, 10 ], 
-> [ 1 ], [ 3, 5, 7, 8, 10 ], [ 2, 5, 7 ], [ 3, 6, 7, 9, 10 ], [ 1, 4 ], 
-> [ 1, 5, 9 ], [ 1, 2, 7, 8 ], [ 3, 5 ] ] );
+gap> gr := DigraphByInNeighbours([
+> [2, 5, 8, 10], [2, 3, 4, 5, 6, 8, 9, 10], 
+> [1], [3, 5, 7, 8, 10], [2, 5, 7], [3, 6, 7, 9, 10], [1, 4], 
+> [1, 5, 9], [1, 2, 7, 8], [3, 5]]);
 <digraph with 10 vertices, 37 edges>
-gap> gr := DigraphByInNeighbours( [ [ 2, 3, 2 ], [ 1 ], [ 1, 2, 3 ] ] );
-<multidigraph with 3 vertices, 7 edges>
-]]></Example>
+gap> gr := DigraphByInNeighbours([[2, 3, 2], [1], [1, 2, 3]]);
+<multidigraph with 3 vertices, 7 edges>]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -400,7 +570,7 @@ gap> gr := DigraphByInNeighbours( [ [ 2, 3, 2 ], [ 1 ], [ 1, 2, 3 ] ] );
     of the transformation <A>trans</A> is used by default.
     
     <Example><![CDATA[
-gap> f := Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] );
+gap> f := Transformation([7, 10, 10, 1, 7, 9, 10, 4, 2, 3]);
 Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] )
 gap> AsDigraph(f); 
 <digraph with 10 vertices, 10 edges>
@@ -462,7 +632,7 @@ gap> RandomDigraph(10000, 0.023);
     <A>m</A> is a positive integer, then the digraph will have <A>m</A>
     edges. If <A>m</A> is not specified, then the number of edges will be
     chosen randomly (with uniform probability) from the range 
-    <C>[1..</C><M>{n \choose 2}</M><C>]</C>.
+    <C>[1 .. </C><M>{n \choose 2}</M><C>]</C>.
     <P/>
 
     The method used by this function chooses each edge from the set of 
@@ -486,10 +656,10 @@ gap> RandomMultiDigraph(1000, 950);
   <Description>
     If <A>n</A> is a non-negative integer, this function returns a random
     tournament with <A>n</A> vertices. See <Ref Prop="IsTournament"/>. <P/>
-    <Log><![CDATA[
+    <Example><![CDATA[
 gap> RandomTournament(10);
 <digraph with 10 vertices, 45 edges>
-]]></Log>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -500,17 +670,17 @@ gap> RandomTournament(10);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> is a positive integer, this function returns a chain 
-    with <A>n</A> vertices and <A>n</A><C>-1</C> edges.
+    with <A>n</A> vertices and <C><A>n</A> - 1</C> edges.
     Specifically,
     for each vertex <C>i</C> (with <C>i</C> &lt; <C>n</C>), there is a directed 
-    edge with source <C>i</C> and range <C>i+1</C>. <P/>
+    edge with source <C>i</C> and range <C>i + 1</C>. <P/>
     
     The <Ref Oper="DigraphReflexiveTransitiveClosure"/> of a chain represents a
     total order.<P/>
-    <Log><![CDATA[
+    <Example><![CDATA[
 gap> ChainDigraph(42);
 <digraph with 42 vertices, 41 edges>
-]]></Log>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -522,10 +692,10 @@ gap> ChainDigraph(42);
   <Description>
     If <A>n</A> is a non-negative integer, this function returns the complete 
     digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/>. <P/>
-    <Log><![CDATA[
+    <Example><![CDATA[
 gap> CompleteDigraph(20);
 <digraph with 20 vertices, 380 edges>
-]]></Log>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -542,12 +712,12 @@ gap> CompleteDigraph(20);
 
     If <A>m</A> and <A>n</A> are positive integers, this function 
     returns the complete bipartite digraph with vertex sets of sizes
-    <A>m</A> (containing the vertices <C>[1..m]</C>) and
-    <A>n</A> (containing the vertices <C>[(m+1)..(m+n)]</C>). 
-    <Log><![CDATA[
+    <A>m</A> (containing the vertices <C>[1 .. m]</C>) and
+    <A>n</A> (containing the vertices <C>[m + 1 .. m + n]</C>). 
+    <Example><![CDATA[
 gap> CompleteBipartiteDigraph(2, 3);
 <digraph with 5 vertices, 12 edges>
-]]></Log>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -555,15 +725,21 @@ gap> CompleteBipartiteDigraph(2, 3);
 <#GAPDoc Label="EmptyDigraph">
 <ManSection>
   <Oper Name="EmptyDigraph" Arg="n"/>
+  <Oper Name="NullDigraph" Arg="n"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>n</A> is a non-negative integer, this function returns the 
-    <E>empty</E> or <E>null</E>
-    digraph with <A>n</A> vertices. An empty digraph is one with no edges. <P/>
-    <Log><![CDATA[
+    If <A>n</A> is a non-negative integer, this function returns the
+    <E>empty</E> or <E>null</E> digraph with <A>n</A> vertices. An empty
+    digraph is one with no edges. 
+    <P/>
+
+    <C>NullDigraph</C> is a synonym for <C>EmptyDigraph</C>.
+
+    <Example><![CDATA[
 gap> EmptyDigraph(20);
 <digraph with 20 vertices, 0 edges>
-]]></Log>
+gap> NullDigraph(10);
+<digraph with 10 vertices, 0 edges>]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -576,14 +752,129 @@ gap> EmptyDigraph(20);
     If <A>n</A> is a positive integer, this function returns a <E>cycle</E>
     digraph with <A>n</A> vertices and <A>n</A> edges. Specifically,
     for each vertex <C>i</C> (with <C>i</C> &lt; <C>n</C>), there is a directed 
-    edge with source <C>i</C> and range <C>i+1</C>. In addition, there is
+    edge with source <C>i</C> and range <C>i + 1</C>. In addition, there is
     an edge with source <C>n</C> and range <C>1</C>. <P/>
-    <Log><![CDATA[
+    <Example><![CDATA[
 gap> CycleDigraph(1);
 <digraph with 1 vertex, 1 edge>
 gap> CycleDigraph(123);
 <digraph with 123 vertices, 123 edges>
-]]></Log>
+]]></Example>
   </Description>
 </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="CayleyDigraph">
+<ManSection>
+  <Oper Name="CayleyDigraph" Arg="G[, gens]"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Let <A>G</A> be any group and let <A>gens</A> be a list of elements of
+    <A>G</A>. This function returns the Cayley graph of the group with respect
+    <A>gens</A>. The vertices are the elements of <A>G</A>. There exists an edge
+    from the vertex <C>u</C> to the vertex <C>v</C> if and only if there exists
+    a generator <C>g</C> in <A>gens</A> such that <C>x * g = y</C>. <P/>
+
+    If the optional second argument <A>gens</A> is not present, then the
+    generators of <A>G</A> are used by default.
+    <Example><![CDATA[
+gap> G := DihedralGroup(8);
+<pc group of size 8 with 3 generators>
+gap> CayleyDigraph(G);
+<digraph with 8 vertices, 24 edges>
+gap> G := DihedralGroup(IsPermGroup, 8);
+Group([ (1,2,3,4), (2,4) ])
+gap> CayleyDigraph(G);
+<digraph with 8 vertices, 16 edges>
+gap> CayleyDigraph(G, [()]);  
+<digraph with 8 vertices, 8 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="LineUndirectedDigraph">
+<ManSection>
+  <Oper Name="LineUndirectedDigraph" Arg="digraph"/>
+  <Oper Name="EdgeUndirectedDigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Given a symmetric digraph <A>digraph</A>, the operation returns a
+    symmetric digraph obtained by associating a vertex with each edge of
+    <A>digraph</A>, ignoring directions and multiplicites, and two vertices
+    are adjecent if and only if the corresponding edges have a vertex in
+    common. 
+    <Example><![CDATA[
+gap> LineUndirectedDigraph(CompleteDigraph(3));
+<digraph with 3 vertices, 6 edges>
+gap> LineUndirectedDigraph(DigraphSymmetricClosure(ChainDigraph(3)));
+<digraph with 2 vertices, 2 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="LineDigraph">
+<ManSection>
+  <Oper Name="LineDigraph" Arg="digraph"/>
+  <Oper Name="EdgeDigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Given a directed digraph <A>digraph</A>, the operation returns a digraph
+    obtained by associating a vertex with each edge of <A>digraph</A>, and
+    there is an edge from a vertex <K>v</K> to a vertex <K>u</K> if and only
+    if the terminal vertex of the edge associated with <K>v</K> is the start
+    vertex of the edge associated with <K>u</K>.  
+    <Example><![CDATA[
+gap> LineDigraph(CompleteDigraph(3));
+<digraph with 6 vertices, 12 edges>
+gap> LineDigraph(ChainDigraph(3));
+<digraph with 2 vertices, 1 edge>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DoubleDigraph">
+<ManSection>
+  <Oper Name="DoubleDigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Let <A>digraph</A> be a digraph with vertex set <C>V</C>. This function returns the
+    double digraph of <A>digraph</A>. The vertex set of the double digraph is the orginal vertex
+    set together with a duplicate. The edges are <C>[u_1,v_2]</C> and <C>[u_2,v_1]</C> if and
+    only if <C>[u,v]</C> is an edge in <A>digraph</A>, together with the original edges and
+    their duplicates.
+    <Example><![CDATA[
+gap> out := [[2],[3],[1]];
+[ [ 2 ], [ 3 ], [ 1 ] ]
+gap> gamma := Digraph(out);
+<digraph with 3 vertices, 3 edges>
+gap> DoubleDigraph(gamma);
+<digraph with 6 vertices, 12 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BipartiteDoubleDigraph">
+<ManSection>
+  <Oper Name="BipartiteDoubleDigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Let <A>digraph</A> be a digraph with vertex set <C>V</C>. This function returns the
+    bipartite double digraph of <A>digraph</A>. The vertex set of the double digraph is the orginal vertex
+    set together with a duplicate. The edges are <C>[u_1,v_2]</C> and <C>[u_2,v_1]</C> if and
+    only if <C>[u,v]</C> is an edge in <A>digraph</A>. The resulting graph is bipartite, since the
+    orignal edges are not included in the resulting digraph.
+    <Example><![CDATA[
+gap> out := [[2],[3],[1]];
+[ [ 2 ], [ 3 ], [ 1 ] ]
+gap> gamma := Digraph(out);
+<digraph with 3 vertices, 3 edges>
+gap> BipartiteDoubleDigraph(gamma);
+<digraph with 6 vertices, 6 edges>
+]]></Example>
+  </Description>
+</ManSection>
+
 <#/GAPDoc>

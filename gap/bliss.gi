@@ -91,6 +91,9 @@ function(graph)
 
   x := DIGRAPH_AUTOMORPHISMS(graph);
   SetDigraphCanonicalLabelling(graph, x[1]);
+  if not HasDigraphGroup(graph) then
+    SetDigraphGroup(graph, Group(x[2]));
+  fi;
   return Group(x[2]);
 end);
 

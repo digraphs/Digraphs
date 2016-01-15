@@ -39,8 +39,7 @@ gap> Length(str);
 gap> G := PrimitiveGroup(153, 1);;
 gap> H := Stabilizer(G, 1);;
 gap> S := Filtered(Orbits(H, [1 .. 45]), x -> (Size(x) = 4))[1];;
-gap> graph := EdgeOrbitsGraph(G, List(S, x -> [1, x]));;
-gap> gr := Digraph(graph);
+gap> gr := EdgeOrbitsDigraph(G, List(S, x -> [1, x]));
 <digraph with 153 vertices, 612 edges>
 gap> t := HomomorphismDigraphsFinder(gr, gr, fail, [], 1, 7, false, [1 .. 153],
 > [], fail, fail)[1];

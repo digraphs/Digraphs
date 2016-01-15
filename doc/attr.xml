@@ -8,6 +8,46 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="DigraphAdjacencyFunction">
+<ManSection>
+  <Attr Name="DigraphAdjacencyFunction" Arg="digraph"/>
+  <Returns>A function.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphAdjacencyFunction</C>
+    returns a function with two vertex labels <C>x, y</C> which returns
+    <K>true</K> if the vertices labelled by <C>x</C> and <C>y</C> are adjacent
+    in <A>digraph</A> and <K>false</K> if they are not. 
+    
+    <Example><![CDATA[
+gap> digraph := Digraph([[1, 2], [3], []]);
+<digraph with 3 vertices, 3 edges>
+gap> foo := DigraphAdjacencyFunction(digraph);
+function( x, y ) ... end
+gap> foo(1, 1);
+true
+gap> foo(1, 2);
+true
+gap> foo(1, 3);
+false
+gap> foo(3, 1);
+false
+gap> gr := Digraph(["a", "b", "c"],
+>                  ["a", "b", "b"],
+>                  ["b", "a", "a"]);
+<multidigraph with 3 vertices, 3 edges>
+gap> foo := DigraphAdjacencyFunction(gr);
+function( x, y ) ... end
+gap> foo("a", "b");
+true
+gap> foo("c", "b");
+false
+gap> foo("c", "a");
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="AsGraph">
 <ManSection>
   <Attr Name="AsGraph" Arg="digraph"/>
@@ -301,6 +341,43 @@ gap> OutNeighboursCopy(gr);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="RepresentativeOutNeighbours">
+<ManSection>
+  <Attr Name="RepresentativeOutNeighbours" Arg="digraph"/>
+  <Returns>The out neighbours of orbit representatives of a digraph.</Returns>
+  <Description>
+    This function returns the list <C>out</C> of out-neighbours of each
+    representative of the orbits of the action of <Ref Attr="DigraphGroup"/> on
+    the vertex set of the digraph <A>digraph</A>.
+    More specifically, if <C>reps</C> is the list of orbit representatives,
+    then a vertex <C>j</C> appears in <C>out[i]</C> each time
+    there exists an edge with source <C>reps[i]</C> and range <C>j</C> in 
+    <A>digraph</A>. 
+    <P/>
+
+    The function <C>OutNeighbours</C> returns an immutable list of immutable 
+    lists. <P/>
+
+    If <Ref Attr="DigraphGroup"/> is trivial, then <Ref Attr="OutNeighbours"/>
+    is returned.
+    
+    <Example><![CDATA[
+gap> digraph := Digraph([[1, 2, 3, 4, 5], [3, 5], [2], [1, 2, 3, 5], 
+>                        [1, 2, 3, 4]]);
+<digraph with 5 vertices, 16 edges>
+gap> DigraphGroup(digraph);
+Group(())
+gap> RepresentativeOutNeighbours(digraph);
+[ [ 1, 2, 3, 4, 5 ], [ 3, 5 ], [ 2 ], [ 1, 2, 3, 5 ], [ 1, 2, 3, 4 ] ]
+gap> digraph := Digraph([[2, 3, 5], [1, 4, 6], [4, 2, 7], [3, 1, 8], [6, 8, 1],
+>                        [5, 7, 2], [8, 5, 3], [7, 6, 4]]);
+<digraph with 8 vertices, 24 edges>
+gap> RepresentativeOutNeighbours(digraph);
+[ [ 2, 3, 5 ] ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="InNeighbours">
 <ManSection>
   <Attr Name="InNeighbours" Arg="digraph"/>
@@ -343,6 +420,7 @@ gap> InNeighbours(gr);
 <ManSection>
   <Attr Name="OutDegrees" Arg="digraph"/>
   <Attr Name="OutDegreeSequence" Arg="digraph"/>
+  <Attr Name="OutDegreeSet" Arg="digraph"/>
   <Returns>A list of non-negative integers.</Returns>
   <Description>
 
@@ -353,15 +431,20 @@ gap> InNeighbours(gr);
     See <Ref Oper="OutDegreeOfVertex"/>. <P/>
 
     The function <C>OutDegreeSequence</C> returns the same list,
-    after it has been sorted into non-increasing order.
+    after it has been sorted into non-increasing order. <P/>
+
+    The function <C>OutDegreeSet</C> returns the same list, sorted into
+    increasing order with duplicate entries removed. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 3, 2, 2], [], [2, 1]]);
-<multidigraph with 3 vertices, 6 edges>
+gap> gr := Digraph([[1, 3, 2, 2], [], [2, 1], []]);
+<multidigraph with 4 vertices, 6 edges>
 gap> OutDegrees(gr);
-[ 4, 0, 2 ]
+[ 4, 0, 2, 0 ]
 gap> OutDegreeSequence(gr);
-[ 4, 2, 0 ]
+[ 4, 2, 0, 0 ]
+gap> OutDegreeSet(gr);
+[ 0, 2, 4 ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -371,6 +454,7 @@ gap> OutDegreeSequence(gr);
 <ManSection>
   <Attr Name="InDegrees" Arg="digraph"/>
   <Attr Name="InDegreeSequence" Arg="digraph"/>
+  <Attr Name="InDegreeSet" Arg="digraph"/>
   <Returns>A list of non-negative integers.</Returns>
   <Description>
 
@@ -381,15 +465,20 @@ gap> OutDegreeSequence(gr);
     See <Ref Oper="InDegreeOfVertex"/>. <P/>
 
     The function <C>InDegreeSequence</C> returns the same list, 
-    after it has been sorted into non-increasing order.
+    after it has been sorted into non-increasing order. <P/>
+
+    The function <C>InDegreeSet</C> returns the same list, sorted into
+    increasing order with duplicate entries removed. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 3, 2, 2 ], [ ], [ 2, 1 ] ] );
-<multidigraph with 3 vertices, 6 edges>
+gap> gr := Digraph( [ [ 1, 3, 2, 2, 4 ], [ ], [ 2, 1, 4 ], [ ] ] );
+<multidigraph with 4 vertices, 8 edges>
 gap> InDegrees(gr);
-[ 2, 3, 1 ]
+[ 2, 3, 1, 2 ]
 gap> InDegreeSequence(gr);
-[ 3, 2, 1 ]
+[ 3, 2, 2, 1 ]
+gap> InDegreeSet(gr);
+[ 1, 2, 3 ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -540,15 +629,16 @@ rec( comps := [  ], id := [  ] )
 <#GAPDoc Label="DigraphShortestDistances">
 <ManSection>
   <Attr Name="DigraphShortestDistances" Arg="digraph"/>
-  <Returns>A square matrix of integers.</Returns>
+  <Returns>A square matrix.</Returns>
   <Description>
     If <A>digraph</A> is a digraph with <M>n</M> vertices, then this 
-    function returns an <M>n \times n</M> matrix <C>mat</C> of integers.
-    If <M>n = 0</M>, then an empty list is returned.<P/>
+    function returns an <M>n \times n</M> matrix <C>mat</C>, where each entry is
+    either a non-negative integer or <C>fail</C>.  If <M>n = 0</M>, then an
+    empty list is returned. <P/>
     
     If there is a directed path from vertex <C>i</C> to vertex <C>j</C>, then
     the value of <C>mat[i][j]</C> is the length of the shortest such path. If
-    no such path exists, then the value of <C>mat[i][j]</C> is <C>-1</C>.
+    no such path exists, then the value of <C>mat[i][j]</C> is <C>fail</C>.
     We use the convention that the distance from every vertex to itself is
     <C>0</C>, i.e. <C>mat[i][i] = 0</C> for all vertices <C>i</C>. <P/>
 
@@ -560,10 +650,10 @@ gap> gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 1, 2 ], [ 4 ] ] );
 <digraph with 4 vertices, 6 edges>
 gap> mat := DigraphShortestDistances(gr);;
 gap> Display(mat);
-[ [   0,   1,   2,  -1 ],
-  [   2,   0,   1,  -1 ],
-  [   1,   1,   0,  -1 ],
-  [  -1,  -1,  -1,   0 ] ]
+[ [     0,     1,     2,  fail ],
+  [     2,     0,     1,  fail ],
+  [     1,     1,     0,  fail ],
+  [  fail,  fail,  fail,     0 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -646,15 +736,16 @@ true
 <#GAPDoc Label="DigraphDiameter">
 <ManSection>
   <Attr Name="DigraphDiameter" Arg="digraph"/>
-  <Returns>An integer.</Returns>
+  <Returns>An integer or <C>fail</C>.</Returns>
   <Description>
-    This function returns the diameter of the digraph <A>digraph</A>.<P/>
+    This function returns the diameter of the digraph <A>digraph</A>.
+    <P/>
 
-    If a digraph <A>digraph</A> is strongly connected,
-    then the <E>diameter</E> is the maximum shortest distance between any 
-    pair of vertices. Otherwise, or if <A>digraph</A> has no vertices,
-    then the diameter of <A>digraph</A>
-    is undefined, and this function returns the value <C>-1</C>. <P/>
+    If a digraph <A>digraph</A> is strongly connected and has at least 1
+    vertex, then the <E>diameter</E> is the maximum shortest distance between
+    any pair of distinct vertices. Otherwise then the diameter of
+    <A>digraph</A> is undefined, and this function returns the value
+    <C>fail</C>. <P/>
     
     See <Ref Attr="DigraphShortestDistances"/>. <P/>
     <Example><![CDATA[
@@ -666,9 +757,79 @@ gap> DigraphDiameter(gr);
 gap> gr := Digraph( [ [ 2 ], [  ] ] );
 <digraph with 2 vertices, 1 edge>
 gap> DigraphDiameter(gr);
--1
+fail
 gap> IsStronglyConnectedDigraph(gr);
 false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphUndirectedGirth">
+<ManSection>
+  <Attr Name="DigraphUndirectedGirth" Arg="digraph"/>
+  <Returns>An integer or <C>infinity</C>.</Returns>
+  <Description>
+    If <A>digraph</A> is a symmetric digraph, then this function returns the
+    girth of <A>digraph</A> when treated as an undirected graph (i.e. each pair
+    of edges <M>[i,j]</M> and <M>[j,i]</M> is treated as a single edge between
+    <M>i</M> and <M>j</M>). <P/>
+
+    The <E>girth</E> of an undirected graph is the length of its shortest simple
+    cycle, i.e. the shortest non-trivial path starting and ending at the same
+    vertex and passing through no vertex more than once. <P/>
+
+    If <A>digraph</A> has no cycles, then this function will return
+    <C>infinity</C>. <P/>
+    <Example><![CDATA[
+gap> gr := Digraph([[2,4], [1,3], [2,4], [1,3]]);
+<digraph with 4 vertices, 8 edges>
+gap> DigraphUndirectedGirth(gr);
+4
+gap> gr := Digraph([[2], [1,3], [2]]);
+<digraph with 3 vertices, 4 edges>
+gap> DigraphUndirectedGirth(gr);      
+infinity
+gap> gr := Digraph([[1], [], [4], [3]]);
+<digraph with 4 vertices, 3 edges>
+gap> DigraphUndirectedGirth(gr);
+1
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphGirth">
+<ManSection>
+  <Attr Name="DigraphGirth" Arg="digraph"/>
+  <Returns>An integer or <C>infinity</C>.</Returns>
+  <Description>
+    The <E>girth</E> of a digraph is the length of its shortest simple cycle,
+    i.e. the shortest non-trivial directed path starting and ending at the same
+    vertex and passing through no vertex more than once. <P/>
+
+    If <A>digraph</A> has no cycles, then this function will return
+    <C>infinity</C>.  If <A>digraph</A> contains a loop, then this function will
+    return <C>1</C>. <P/>
+
+    The method used in this function is a version of the Floyd-Warshall
+    algorithm, and has complexity <M>O(n^3)</M>, where <A>n</A> is the number of
+    vertices in <A>digraph</A>. <P/>
+
+    For symmetric digraphs, see also <Ref Oper="DigraphUndirectedGirth"/>. <P/>
+    <Example><![CDATA[
+gap> gr := Digraph([[1], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> DigraphGirth(gr);
+1
+gap> gr := Digraph([[2, 3], [3], [4], []]);
+<digraph with 4 vertices, 4 edges>
+gap> DigraphGirth(gr);
+infinity
+gap> gr := Digraph([[2, 3], [3], [4], [1]]);
+<digraph with 4 vertices, 5 edges>
+gap> DigraphGirth(gr);
+3
 ]]></Example>
   </Description>
 </ManSection>
@@ -688,7 +849,7 @@ false
     
     The vertex labels of the graph are preserved, so that a vertex in the new
     digraph can be matched to the corresponding vertex in <A>digraph</A>.<P/>
-    <Log><![CDATA[
+    <Example><![CDATA[
 gap> d := Digraph([ [ 1, 2 ], [  ], [  ], [ 1, 4 ], [  ] ]);
 <digraph with 5 vertices, 4 edges>
 gap> r := ReducedDigraph(d);
@@ -701,8 +862,7 @@ gap> DigraphEdges(r); DigraphEdges(d);
 gap> DigraphVertexLabel(r, 3);
 2
 gap> DigraphVertexLabel(r, 2);
-4
-]]></Log>
+4]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -851,6 +1011,42 @@ gap> gr := Digraph([[3], [1], [1]]);
 <digraph with 3 vertices, 3 edges>
 gap> DigraphAllSimpleCircuits(gr);
 [ [ 1, 3 ] ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphLongestSimpleCircuit">
+<ManSection>
+  <Attr Name="DigraphLongestSimpleCircuit" Arg="digraph"/>
+  <Returns>A list of vertices or <C>fail</C>.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphLongestSimpleCircuit</C>
+    returns the longest <E>simple circuit</E> in <A>digraph</A>. <P/>
+
+    A <E>simple circuit</E> in <A>digraph</A> is a non-trivial directed path
+    in <A>digraph</A> from a vertex <C>v</C> back to <C>v</C>, in which no
+    vertex is visited more than once. Since a circuit of length <C>n</C> is
+    determined by its first <C>n</C> vertices, a circuit <M>v_{1} \rightarrow
+      \cdots \rightarrow v_{n} \rightarrow v_{1}</M> can be represented as
+    the list <M>[v_{1}, \ldots, v_{n}]</M>. Note that a loop is a simple
+    circuit. <P/>
+
+    If <A>digraph</A> has no simple circuits, then this attribute returns
+    <C>fail</C>.  If <A>digraph</A> has multiple simple circuits of maximum
+    length, then this attribute returns one of them.<P/>
+
+    See <Ref Attr="DigraphAllSimpleCircuits"/>. <P/>
+
+    <Example><![CDATA[
+gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 4, 5 ]
+gap> gr := ChainDigraph(10);;
+gap> DigraphLongestSimpleCircuit(gr);
+fail
+gap> gr := Digraph([[3], [1], [1, 4], [1, 1]]);;
+gap> DigraphLongestSimpleCircuit(gr);
+[ 1, 3, 4 ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>

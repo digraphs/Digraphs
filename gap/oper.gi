@@ -977,20 +977,27 @@ end);
 InstallMethod(IsDigraphEdge, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edge)
+  if Length(edge) <> 2 or not IsPosInt(edge[1]) or not IsPosInt(edge[2]) then
+    return false;
+  fi;
+  return IsDigraphEdge(digraph, edge[1], edge[2]);
+end);
+
+InstallMethod(IsDigraphEdge, "for a digraph, pos int, pos int",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, u, v)
   local n;
 
   n := DigraphNrVertices(digraph);
-  if Length(edge) <> 2 or not IsPosInt(edge[1]) or not IsPosInt(edge[2])
-      or n < edge[1] or n < edge[2] then
+
+  if u > n or v > n then
     return false;
+  elif HasAdjacencyMatrix(digraph) then
+    return AdjacencyMatrix(digraph)[u][v] <> 0;
+  elif IsDigraphWithAdjacencyFunction(digraph) then
+    return DigraphAdjacencyFunction(digraph)(u, v);
   fi;
-  if HasAdjacencyMatrix(digraph) then
-    return AdjacencyMatrix(digraph)[edge[1]][edge[2]] <> 0;
-  fi;
-  if edge[2] in OutNeighboursOfVertex(digraph, edge[1]) then
-    return true;
-  fi;
-  return false;
+  return v in OutNeighboursOfVertex(digraph, u);
 end);
 
 #
@@ -1235,4 +1242,69 @@ function(gr, loops)
   inn := InNeighbours(new);
   out := DIGRAPH_TRANS_REDUCTION(inn, loops);
   return OnDigraphs(Digraph(out), p);
+end);
+
+#
+
+InstallMethod(DigraphLayers, "for a digraph, and a vertex",
+[IsDigraph, IsPosInt],
+function(digraph, v)
+  local layers, layers_with_orbnums, orbs, i, x;
+
+  if v > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphLayers: usage,\n",
+                 "the argument <v> must be a vertex of <digraph>,");
+  fi;
+
+  layers := [[v]];
+  layers_with_orbnums := DIGRAPH_ConnectivityDataForVertex(digraph, v).layers;
+  orbs := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
+                          DigraphVertices(digraph)).orbits;
+
+  for i in [2 .. Length(layers_with_orbnums)] do
+    Add(layers, []);
+    for x in layers_with_orbnums[i] do
+      Append(layers[i], orbs[x]);
+    od;
+  od;
+
+  return layers;
+end);
+
+#
+
+InstallMethod(DigraphDistanceSet,
+"for a digraph, a vertex, and a non negative integer",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, vertex, distance)
+
+  if vertex > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphDistanceSet: usage,\n",
+                 "the second argument must be a vertex of the digraph,");
+  fi;
+
+  return DigraphDistanceSet(digraph, vertex, [distance]);
+end);
+
+#
+
+InstallMethod(DigraphDistanceSet,
+"for a digraph, a vertex, and a list of non negative integer",
+[IsDigraph, IsPosInt, IsList],
+function(digraph, vertex, distances)
+  local layers;
+
+  if vertex > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphDistanceSet: usage,\n",
+                 "the second argument must be a vertex of the digraph,");
+  fi;
+
+  if not ForAll(distances, x -> IsPosInt(x)) then
+    ErrorMayQuit("Digraphs: DigraphDistanceSet: usage,\n",
+                 "the third argument must be a list of non negative integers,");
+  fi;
+
+  distances := distances + 1;
+  layers := DigraphLayers(digraph, vertex);
+  return Concatenation(layers{distances});
 end);

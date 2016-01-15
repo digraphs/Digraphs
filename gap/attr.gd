@@ -31,13 +31,18 @@ DeclareAttribute("InNeighbours", IsDigraph);
 DeclareSynonymAttr("InNeighbors", InNeighbours);
 DeclareAttribute("OutDegrees", IsDigraph);
 DeclareAttribute("OutDegreeSequence", IsDigraph);
+DeclareAttribute("OutDegreeSet", IsDigraph);
 DeclareAttribute("InDegrees", IsDigraph);
 DeclareAttribute("InDegreeSequence", IsDigraph);
+DeclareAttribute("InDegreeSet", IsDigraph);
 DeclareAttribute("DigraphSources", IsDigraph);
 DeclareAttribute("DigraphSinks", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
+DeclareAttribute("DigraphGirth", IsDigraph);
+DeclareAttribute("DigraphUndirectedGirth", IsDigraph);
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
+DeclareAttribute("DigraphLongestSimpleCircuit", IsDigraph);
 DeclareAttribute("DigraphLoops", IsDigraph);
 DeclareAttribute("DigraphDegeneracy", IsDigraph);
 DeclareAttribute("DigraphDegeneracyOrdering", IsDigraph);
@@ -48,6 +53,8 @@ DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
 DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
 DeclareGlobalFunction("DigraphTransitiveClosureNC");
 
+DeclareAttribute("DigraphAdjacencyFunction", IsDigraph);
+
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("BooleanAdjacencyMatrix", IsDigraph);
 DeclareAttribute("ReducedDigraph", IsDigraph);
@@ -55,7 +62,6 @@ DeclareAttribute("MaximalSymmetricSubdigraph", IsDigraph);
 DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoops", IsDigraph);
 DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
 
-DeclareAttribute("AsTransformation", IsDigraph);
-
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
+DeclareAttribute("AsTransformation", IsDigraph);

@@ -8,6 +8,80 @@
 #############################################################################
 ##
 
+InstallMethod(OutNeighbours,
+"for a digraph with representative out neighbours and group",
+[IsDigraph and HasRepresentativeOutNeighbours and HasDigraphGroup],
+function(digraph)
+  local gens, sch, reps, out, trace, word, i, w;
+
+  gens := GeneratorsOfGroup(DigraphGroup(digraph));
+  sch  := DigraphSchreierVector(digraph);
+  reps := RepresentativeOutNeighbours(digraph);
+
+  out  := EmptyPlist(DigraphNrVertices(digraph));
+
+  for i in [1 .. Length(sch)] do
+    if sch[i] < 0 then
+      out[i] := reps[-sch[i]];
+    fi;
+
+    trace  := DIGRAPHS_TraceSchreierVector(gens, sch, i);
+    out[i] := out[-sch[trace.representative]];
+    word   := trace.word;
+    for w in word do
+       out[i] := OnTuples(out[i], gens[w]);
+    od;
+  od;
+
+  return out;
+end);
+
+InstallMethod(RepresentativeOutNeighbours, "for a digraph", [IsDigraph],
+function(digraph)
+  local reps, out, nbs, i;
+
+  if IsTrivial(DigraphGroup(digraph)) then
+    return OutNeighbours(digraph);
+  fi;
+
+  reps  := DigraphOrbitReps(digraph);
+
+  out := EmptyPlist(Length(reps));
+  nbs := OutNeighbours(digraph);
+
+  for i in [1 .. Length(reps)] do
+    out[i] := nbs[reps[i]];
+  od;
+  return out;
+end);
+
+InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
+function(digraph)
+  local func;
+
+  if DigraphVertexLabels(digraph) = [1 .. DigraphNrVertices(digraph)] then
+    func := function(x, y)
+      return IsDigraphEdge(digraph, x, y);
+    end;
+  else
+    func := function(x, y)
+      local labels;
+      labels := DigraphVertexLabels(digraph);
+      return IsDigraphEdge(digraph, Position(labels, x), Position(labels, y));
+    end;
+  fi;
+  return func;
+end);
+
+InstallMethod(DigraphGroup, "for a digraph",
+[IsDigraph], AutomorphismGroup);
+
+InstallMethod(DigraphGroup, "for a digraph",
+[IsMultiDigraph],
+function(digraph)
+  return Range(Projection(AutomorphismGroup(digraph), 1));
+end);
+
 InstallMethod(AsTransformation, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -91,6 +165,9 @@ function(digraph)
   od;
   gr := DigraphNC(new);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
+  if HasDigraphGroup(digraph) then
+    SetDigraphGroup(gr, DigraphGroup(digraph));
+  fi;
   return gr;
 end);
 
@@ -306,6 +383,37 @@ end);
 
 #
 
+InstallMethod(OutDegreeSequence, "for a digraph with known digraph group",
+[IsDigraph and HasDigraphGroup],
+function(digraph)
+  local out, adj, orbs, orb;
+
+  out := [];
+  adj := OutNeighbours(digraph);
+  orbs := DigraphOrbits(digraph);
+  for orb in orbs do
+    Append(out, [1 .. Length(orb)] * 0 + Length(adj[orb[1]]));
+  od;
+  Sort(out,
+       function(a, b)
+         return b < a;
+       end);
+  return out;
+end);
+
+#
+
+InstallMethod(OutDegreeSet, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out;
+
+  out := ShallowCopy(OutDegrees(digraph));
+  return Set(out);
+end);
+
+#
+
 InstallMethod(InDegreeSequence, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -317,6 +425,38 @@ function(digraph)
          return b < a;
        end);
   return out;
+end);
+
+#
+
+InstallMethod(InDegreeSequence,
+"for a digraph with known digraph group and in-neighbours",
+[IsDigraph and HasDigraphGroup and HasInNeighbours],
+function(digraph)
+  local out, adj, orbs, orb;
+
+  out := [];
+  adj := InNeighbours(digraph);
+  orbs := DigraphOrbits(digraph);
+  for orb in orbs do
+    Append(out, [1 .. Length(orb)] * 0 + Length(adj[orb[1]]));
+  od;
+  Sort(out,
+       function(a, b)
+         return b < a;
+       end);
+  return out;
+end);
+
+#
+
+InstallMethod(InDegreeSet, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out;
+
+  out := ShallowCopy(InDegrees(digraph));
+  return Set(out);
 end);
 
 #
@@ -397,8 +537,8 @@ end);
 InstallMethod(DigraphPeriod, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local comps, out, deg, nrvisited, period, current, stack, len, depth,
-  olddepth, i;
+  local comps, out, deg, nrvisited, period, stack, len, depth, current,
+        olddepth, i;
 
   if HasIsAcyclicDigraph(digraph) and IsAcyclicDigraph(digraph) then
     return 0;
@@ -446,15 +586,228 @@ end);
 
 #
 
+BindGlobal("DIGRAPH_ConnectivityDataForVertex",
+function(digraph, v)
+  local out_nbs, record, orbnum, reps, i, next, laynum, localGirth, layers,
+        localParameters, sum, nprev, nhere, nnext, lnum, localDiameter,
+        layerNumbers, x, y;
+
+  out_nbs         := OutNeighbours(digraph);
+  record          := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
+                                     DigraphVertices(digraph));
+  orbnum          := record.lookup;
+  reps            := List(record.orbits, Representative);
+  i               := 1;
+  next            := [orbnum[v]];
+  laynum          := [1 .. Length(reps)] * 0;
+  laynum[next[1]] := 1;
+  localGirth      := -1;
+  layers          := [next];
+  localParameters := [];
+  sum             := 1;
+
+  while Length(next) > 0 do
+    next := [];
+    for x in layers[i] do
+      nprev := 0;
+      nhere := 0;
+      nnext := 0;
+      for y in out_nbs[reps[x]] do
+        lnum := laynum[orbnum[y]];
+        if i > 1 and lnum = i - 1 then
+          nprev := nprev + 1;
+        elif lnum = i then
+          nhere := nhere + 1;
+        elif lnum = i + 1 then
+          nnext := nnext + 1;
+        elif lnum = 0 then
+          AddSet(next, orbnum[y]);
+          nnext := nnext + 1;
+          laynum[orbnum[y]] := i + 1;
+        fi;
+      od;
+      if (localGirth = -1 or localGirth = 2 * i - 1) and nprev > 1 then
+        localGirth := 2 * (i - 1);
+      fi;
+      if localGirth = -1 and nhere > 0 then
+        localGirth := 2 * i - 1;
+      fi;
+      if not IsBound(localParameters[i]) then
+         localParameters[i] := [nprev, nhere, nnext];
+      else
+         if nprev <> localParameters[i][1] then
+            localParameters[i][1] := -1;
+         fi;
+         if nhere <> localParameters[i][2] then
+            localParameters[i][2] := -1;
+         fi;
+         if nnext <> localParameters[i][3] then
+            localParameters[i][3] := -1;
+         fi;
+      fi;
+    od;
+    if Length(next) > 0 then
+      i := i + 1;
+      layers[i] := next;
+      sum := sum + Length(next);
+    fi;
+  od;
+  if sum = Length(reps) then
+     localDiameter := Length(layers) - 1;
+  else
+     localDiameter := -1;
+  fi;
+
+  layerNumbers := orbnum;
+  for i in [1 .. Length(reps)] do
+     layerNumbers[i] := laynum[orbnum[i]];
+  od;
+  return rec(layerNumbers := layerNumbers, localDiameter := localDiameter,
+             localGirth := localGirth, localParameters := localParameters,
+             layers := layers);
+end);
+#
+
+BindGlobal("DIGRAPHS_DiameterAndUndirectedGirth",
+function(digraph)
+  local outer_reps, out_nbs, diameter, girth, v, record, localGirth,
+        localDiameter, i;
+
+  #
+  # This function attempts to find the diameter and undirected girth of a given
+  # graph, using its DigraphGroup.  For some digraphs, the main algorithm will
+  # not produce a sensible answer, so there are checks at the start and end to
+  # alter the answer for the diameter/girth if necessary.  This function is
+  # called, if appropriate, by DigraphDiameter and DigraphUndirectedGirth.
+  #
+
+  if DigraphNrVertices(digraph) = 0 then
+    SetDigraphDiameter(digraph, fail);
+    SetDigraphUndirectedGirth(digraph, infinity);
+    return rec(diameter := fail, girth := infinity);
+  fi;
+
+  #TODO improve this, really check if the complexity is better with the group
+  #or without, or if the group is not known, but the number of vertices makes
+  #the usual algorithm impossible.
+
+  outer_reps := DigraphOrbitReps(digraph);
+  out_nbs    := OutNeighbours(digraph);
+  diameter   := 0;
+  girth      := infinity;
+
+  for i in [1 .. Length(outer_reps)] do
+    v := outer_reps[i];
+    record     := DIGRAPH_ConnectivityDataForVertex(digraph, v);
+    localGirth := record.localGirth;
+    localDiameter := record.localDiameter;
+
+    if localDiameter > diameter then
+      diameter := localDiameter;
+    fi;
+
+    if localGirth <> -1 and localGirth < girth then
+      girth := localGirth;
+    fi;
+  od;
+
+  # Checks to ensure both components are valid
+  if not IsStronglyConnectedDigraph(digraph) then
+    diameter := fail;
+  fi;
+  if DigraphHasLoops(digraph) then
+    girth := 1;
+  elif IsMultiDigraph(digraph) then
+    girth := 2;
+  fi;
+
+  SetDigraphDiameter(digraph, diameter);
+  SetDigraphUndirectedGirth(digraph, girth);
+  return rec(diameter := diameter, girth := girth);
+end);
+
+#
+
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
-  if DigraphNrVertices(digraph) = 0 then
-    return - 1;
-  elif not IsStronglyConnectedDigraph(digraph) then
-    return - 1;
+  if not IsStronglyConnectedDigraph(digraph) then
+    # Diameter undefined
+    return fail;
+  elif HasDigraphGroup(digraph) and Size(DigraphGroup(digraph)) > 1 then
+    # Use the group to calculate the diameter
+    return DIGRAPHS_DiameterAndUndirectedGirth(digraph).diameter;
   fi;
+  # Use the C function
   return DIGRAPH_DIAMETER(digraph);
+end);
+
+#
+
+InstallMethod(DigraphUndirectedGirth, "for a digraph",
+[IsDigraph],
+function(digraph)
+  # This is only defined on undirected graphs (i.e. symmetric digraphs)
+  if not IsSymmetricDigraph(digraph) then
+    ErrorMayQuit("Digraphs: DigraphUndirectedGirth: usage,\n",
+                 "<digraph> must be a symmetric digraph,");
+  fi;
+  if DigraphHasLoops(digraph) then
+    # A loop is a cycle of length 1
+    return 1;
+  elif IsMultiDigraph(digraph) then
+    # A pair of multiple edges is a cycle of length 2
+    return 2;
+  fi;
+  # Otherwise digraph is simple
+  return DIGRAPHS_DiameterAndUndirectedGirth(digraph).girth;
+end);
+
+#
+
+InstallMethod(DigraphGirth, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local verts, girth, out, dist, i, j;
+  if DigraphHasLoops(digraph) then
+    return 1;
+  fi;
+  # Only consider one vertex from each orbit
+  if HasDigraphGroup(digraph) and not IsTrivial(DigraphGroup(digraph)) then
+    verts := DigraphOrbitReps(digraph);
+  else
+    verts := DigraphVertices(digraph);
+  fi;
+  girth := infinity;
+  out := OutNeighbours(digraph);
+  dist := DigraphShortestDistances(digraph);
+  for i in verts do
+    for j in out[i] do
+      # distance [j,i] + 1 equals the cycle length
+      if dist[j][i] <> fail and dist[j][i] + 1 < girth then
+        girth := dist[j][i] + 1;
+        if girth = 2 then
+          return girth;
+        fi;
+      fi;
+    od;
+  od;
+  return girth;
+end);
+
+#
+
+InstallMethod(DigraphLongestSimpleCircuit, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local circs, lens, max;
+  circs := DigraphAllSimpleCircuits(digraph);
+  if IsEmpty(circs) then
+    return fail;
+  fi;
+  lens := List(circs, Length);
+  max := Maximum(lens);
+  return circs[Position(lens, max)];
 end);
 
 #
@@ -586,105 +939,109 @@ function(digraph)
   local UNBLOCK, CIRCUIT, out, stack, endofstack, gr, scc, n, blocked, B,
   gr_comp, comp, s, loops, i;
 
-    UNBLOCK := function(u)
-      local w;
-      blocked[u] := false;
-      while not IsEmpty(B[u]) do
-        w := B[u][1];
-        Remove(B[u], 1);
-        if blocked[w] then
-          UNBLOCK(w);
-        fi;
-      od;
-    end;
+  if DigraphNrVertices(digraph) = 0 then
+    return [];
+  fi;
 
-    CIRCUIT := function(v, component)
-      local f, buffer, dummy, w;
-
-      f := false;
-      endofstack := endofstack + 1;
-      stack[endofstack] := v;
-      blocked[v] := true;
-
-      for w in OutNeighboursOfVertex(component, v) do
-        if w = 1 then
-          buffer := stack{[1 .. endofstack]};
-          Add(out, DigraphVertexLabels(component){buffer});
-          f := true;
-        elif blocked[w] = false then
-          dummy := CIRCUIT(w, component);
-          if dummy then
-            f := true;
-          fi;
-        fi;
-      od;
-
-      if f then
-        UNBLOCK(v);
-      else
-        for w in OutNeighboursOfVertex(component, v) do
-          if not w in B[w] then
-            Add(B[w], v);
-          fi;
-        od;
+  UNBLOCK := function(u)
+    local w;
+    blocked[u] := false;
+    while not IsEmpty(B[u]) do
+      w := B[u][1];
+      Remove(B[u], 1);
+      if blocked[w] then
+        UNBLOCK(w);
       fi;
+    od;
+  end;
 
-      endofstack := endofstack - 1;
-      return f;
-    end;
+  CIRCUIT := function(v, component)
+    local f, buffer, dummy, w;
 
-    out := [];
-    stack := [];
-    endofstack := 0;
+    f := false;
+    endofstack := endofstack + 1;
+    stack[endofstack] := v;
+    blocked[v] := true;
 
-    # TODO should we also remove multiple edges, as they create extra work?
-    # Reduce the digraph, remove loops, and store the correct vertex labels
-    gr := DigraphRemoveLoops(ReducedDigraph(digraph));
-    if DigraphVertexLabels(digraph) <> DigraphVertices(digraph) then
-      SetDigraphVertexLabels(gr, Filtered(DigraphVertices(digraph),
-                                          x -> OutDegrees(digraph) <> 0));
+    for w in OutNeighboursOfVertex(component, v) do
+      if w = 1 then
+        buffer := stack{[1 .. endofstack]};
+        Add(out, DigraphVertexLabels(component){buffer});
+        f := true;
+      elif blocked[w] = false then
+        dummy := CIRCUIT(w, component);
+        if dummy then
+          f := true;
+        fi;
+      fi;
+    od;
+
+    if f then
+      UNBLOCK(v);
+    else
+      for w in OutNeighboursOfVertex(component, v) do
+        if not w in B[w] then
+          Add(B[w], v);
+        fi;
+      od;
     fi;
 
-    # Strongly connected components of the reduced graph
-    scc := DigraphStronglyConnectedComponents(gr);
+    endofstack := endofstack - 1;
+    return f;
+  end;
 
-    # B and blocked only need to be as long as the longest connected component
-    n := Maximum(List(scc.comps, Length));
-    blocked := BlistList([1 .. n], []);
-    B := List([1 .. n], x -> []);
+  out := [];
+  stack := [];
+  endofstack := 0;
 
-    # Perform algorithm once per connected component of the whole digraph
-    for gr_comp in scc.comps do
-      n := Length(gr_comp);
-      if n = 1 then
-        continue;
+  # TODO should we also remove multiple edges, as they create extra work?
+  # Reduce the digraph, remove loops, and store the correct vertex labels
+  gr := DigraphRemoveLoops(ReducedDigraph(digraph));
+  if DigraphVertexLabels(digraph) <> DigraphVertices(digraph) then
+    SetDigraphVertexLabels(gr, Filtered(DigraphVertices(digraph),
+                                        x -> OutDegrees(digraph) <> 0));
+  fi;
+
+  # Strongly connected components of the reduced graph
+  scc := DigraphStronglyConnectedComponents(gr);
+
+  # B and blocked only need to be as long as the longest connected component
+  n := Maximum(List(scc.comps, Length));
+  blocked := BlistList([1 .. n], []);
+  B := List([1 .. n], x -> []);
+
+  # Perform algorithm once per connected component of the whole digraph
+  for gr_comp in scc.comps do
+    n := Length(gr_comp);
+    if n = 1 then
+      continue;
+    fi;
+    gr_comp := InducedSubdigraph(gr, gr_comp);
+    comp := gr_comp;
+    s := 1;
+    while s < n do
+      if s <> 1 then
+        comp := InducedSubdigraph(gr_comp, [s .. n]);
+        comp := InducedSubdigraph(comp,
+                                  DigraphStronglyConnectedComponent(comp, 1));
       fi;
-      gr_comp := InducedSubdigraph(gr, gr_comp);
-      comp := gr_comp;
-      s := 1;
-      while s < n do
-        if s <> 1 then
-          comp := InducedSubdigraph(gr_comp, [s .. n]);
-          comp := InducedSubdigraph(comp,
-                                    DigraphStronglyConnectedComponent(comp, 1));
-        fi;
 
-        if not IsEmptyDigraph(comp) then
-          # TODO would it be faster/better to create blocked as a new BlistList?
-          # Are these things already going to be initialised anyway?
-          for i in DigraphVertices(comp) do
-            blocked[i] := false;
-            B[i] := [];
-          od;
-          CIRCUIT(1, comp);
-          s := s + 1;
-        else
-          s := n;
-        fi;
-      od;
+      if not IsEmptyDigraph(comp) then
+        # TODO would it be faster/better to create blocked as a new BlistList?
+        # Are these things already going to be initialised anyway?
+        for i in DigraphVertices(comp) do
+          blocked[i] := false;
+          B[i] := [];
+        od;
+        CIRCUIT(1, comp);
+        s := s + 1;
+      else
+        s := n;
+      fi;
     od;
-    loops := List(DigraphLoops(digraph), x -> [x]);
-    return Concatenation(loops, out);
+  od;
+  loops := List(DigraphLoops(digraph), x -> [x]);
+  return Concatenation(loops, out);
 end);
 
 # The following method 'DIGRAPHS_Bipartite' was written by Isabella Scott
@@ -751,6 +1108,8 @@ function(digraph)
                               DigraphNrVertices(digraph));
   return b;
 end);
+
+#
 
 InstallMethod(DigraphLoops, "for a digraph", [IsDigraph],
 function(gr)
