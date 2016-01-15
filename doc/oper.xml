@@ -1119,8 +1119,8 @@ gap> DigraphLayers(gr,1);
 
 <#GAPDoc Label="DigraphDistanceSet">
 <ManSection>
-  <Oper Name="DigraphDistanceSet" Arg="digraph, vertex, distance"/>
-  <Oper Name="DigraphDistanceSet" Arg="digraph, vertex, distances"/>
+  <Oper Name="DigraphDistanceSet" Label="for a digraph and two ints" Arg="digraph, vertex, distance"/>
+  <Oper Name="DigraphDistanceSet" Label="for a digraph, an int, and a list" Arg="digraph, vertex, distances"/>
   <Returns>A list of vertices</Returns>
   <Description>
     This operation returns the list of all vertices in digraph <A>digraph</A>
