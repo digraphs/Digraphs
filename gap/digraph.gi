@@ -68,7 +68,7 @@ InstallMethod(Digraph,
 [IsGroup, IsListOrCollection, IsFunction, IsFunction],
 function(G, obj, act, adj)
   local hom, dom, sch, orbits, reps, stabs, rep_out, out, gens, trace, word,
-        digraph, i, o, w, dig_adj;
+  digraph, adj_func, i, o, w;
 
   hom    := ActionHomomorphism(G, obj, act, "surjective");
   dom    := [1 .. Size(obj)];
@@ -113,13 +113,12 @@ function(G, obj, act, adj)
 
   digraph := DigraphNC(out);
 
-  # Create adjacency function that takes integers
-  dig_adj := function(i,j)
-    return adj(obj[i], obj[j]);
+  adj_func := function(u, v)
+    return adj(obj[u], obj[v]);
   end;
 
   SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
-  SetDigraphAdjacencyFunction(digraph, dig_adj);
+  SetDigraphAdjacencyFunction(digraph, adj_func);
   SetDigraphGroup(digraph, Range(hom));
   SetDigraphOrbits(digraph, orbits);
   SetDigraphStabilizers(digraph, stabs);
@@ -164,7 +163,7 @@ end);
 InstallMethod(CayleyDigraph, "for a group with generators",
 [IsGroup, IsHomogeneousList],
 function(G, gens)
-  local adj, cayleydigraph;
+  local adj, digraph;
 
   if not IsFinite(G) then
     ErrorMayQuit("Digraphs: CayleyDigraph: usage,\n",
@@ -180,9 +179,9 @@ function(G, gens)
   adj := function(x, y)
     return x ^ -1 * y in gens;
   end;
-  cayleydigraph := Digraph(G, AsList(G), OnRight, adj);
-  SetFilterObj(cayleydigraph, IsCayleyDigraph);
-  return cayleydigraph;
+  digraph := Digraph(G, AsList(G), OnRight, adj);
+  SetFilterObj(digraph, IsCayleyDigraph);
+  return digraph;
 end);
 
 InstallMethod(CayleyDigraph, "for a group with generators",

@@ -127,8 +127,7 @@ function(digraph, v)
   return stabs[pos] ^ word;
 end);
 
-InstallMethod(DigraphStabilizers, "for a digraph",
-[IsDigraph],
+InstallMethod(DigraphStabilizers, "for a digraph", [IsDigraph],
 function(digraph);
   return [];
 end);
