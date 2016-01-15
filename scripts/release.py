@@ -16,10 +16,20 @@ import test, time, webbrowser, urllib, dots
 
 from test import pad
 from test import blue_string
+from test import MAGENTA_DOT
+
+################################################################################
+# Configurable variables
+################################################################################
 
 _WEBPAGE_DIR = os.path.expanduser('~/Sites/public_html/digraphs/')
 _MAMP_DIR = '/Applications/MAMP/'
 _DIGRAPHS_REPO_DIR = os.path.expanduser('~/gap/pkg/digraphs/')
+_DIGRAPHS_LIB_ARCHIVE = 'digraphs-lib-0.3.tar.gz'
+_DIGRAPHS_LIB_URL = ('https://bitbucket.org/james-d-mitchell/digraphs/downloads/'
+                     + _DIGRAPHS_LIB_ARCHIVE)
+_FILES_TO_DELETE_FROM_ARCHIVE = ['.hgignore', '.hgtags', '.gaplint_ignore',
+                                 '.hg_archival.txt']
 
 ################################################################################
 # Strings for printing
@@ -45,6 +55,17 @@ def _cyan_string(string):
 def _magenta_string(string):
     'magenta string'
     return '\n'.join(_WRAPPER.wrap('\033[35m' + string + '\033[0m'))
+
+################################################################################
+# Error strings
+################################################################################
+
+_ERROR = 'release.py: error: '
+_ABORT = '!\nAborting!'
+
+################################################################################
+# Helpers
+################################################################################
 
 def query_yes_no(question, default="yes"):
     """Ask a yes/no question via raw_input() and return their answer.
@@ -77,6 +98,25 @@ def query_yes_no(question, default="yes"):
         else:
             sys.stdout.write("Please respond with 'yes' or 'no' "
                              "(or 'y' or 'n').\n")
+def _abort(message):
+    sys.exit(_red_string(message + _ABORT))
+
+def _error(message):
+    sys.exit(_red_string(_ERROR + message))
+
+def _statement(message):
+    print blue_string(message)
+
+def _action(message):
+    print _magenta_string(pad(message) + ' . . .')
+
+def _action_no_eol(message):
+    print _magenta_string(pad(message) + ' . . .'),
+
+def _verbose(message, verbose):
+    if verbose:
+        print _cyan_string(message)
+
 def _killed (pro=None):
     if pro != None:
         pro.terminate()
@@ -84,52 +124,8 @@ def _killed (pro=None):
     print _red_string('Killed!')
     sys.exit(1)
 
-################################################################################
-# Check the version number in the branch against that in the PackageInfo.g
-################################################################################
-
-def _version_number_package_info():
-    '''returns the version number from the PackageInfo.g file, exits if this
-    file doesn't exist or the version number can't be found.'''
-
-    if not (os.path.exists('PackageInfo.g') and
-            os.path.isfile('PackageInfo.g')):
-        sys.exit(_red_string('release.py: error: cannot find PackageInfo.g file'))
-    else:
-        try:
-            contents = open('PackageInfo.g', 'r').read()
-        except IOError:
-            sys.exit(_red_string('release.py: error: cannot read PackageInfo.g'))
-        match = re.compile(r'Version\s*:=\s*"((\d.*)+)"').search(contents)
-        if match:
-            return match.group(1)
-        else:
-            sys.exit(_red_string('release.py: error: could not determine the',
-                                 'version number in PackageInfo.g'))
-
-def _check_date_package_info(verbose):
-    '''checks if the date in the PackageInfo.g file is today's date'''
-
-    if not (os.path.exists('PackageInfo.g') and
-            os.path.isfile('PackageInfo.g')):
-        sys.exit(_red_string('release.py: error: cannot find PackageInfo.g file'))
-    else:
-        try:
-            contents = open('PackageInfo.g', 'r').read()
-        except IOError:
-            sys.exit(_red_string('release.py: error: cannot read PackageInfo.g'))
-        match = re.compile(r'Date\s*:=\s*"(\d\d/\d\d/\d\d\d\d)"').search(contents)
-        if match:
-            today = time.strftime("%d/%m/%Y")
-            if match.group(1) != today and verbose:
-                print _cyan_string('Date in PackageInfo.g is ' + match.group(1)
-                                    + ' but today is ' + today)
-            return match.group(1) == today
-        else:
-            sys.exit(_red_string('release.py: error: could not determine the',
-                                 'version number in PackageInfo.g'))
-
 def _exec(string, verbose):
+    'execute the string in a subprocess.'
     if verbose:
         print _cyan_string(string + ' . . .')
     try:
@@ -145,11 +141,142 @@ def _exec(string, verbose):
                                         stderr=devnull,
                                         shell=True)
     except KeyboardInterrupt:
-        sys.exit(_red_string('release.py: error: ' + string + ' failed'))
+        sys.exit(_red_string(_ERROR + string + ' failed'))
     except (subprocess.CalledProcessError, OSError):
-        sys.exit(_red_string('release.py: error: ' + string + ' failed'))
+        sys.exit(_red_string(_ERROR + string + ' failed'))
 
-def _version_hg():
+################################################################################
+# Check the version numbers and dates in various files
+################################################################################
+
+def _version_number_package_info():
+    '''returns the version number from the PackageInfo.g file, exits if this
+    file doesn't exist or the version number can't be found.'''
+
+    if not (os.path.exists('PackageInfo.g') and
+            os.path.isfile('PackageInfo.g')):
+        _error('cannot find PackageInfo.g file')
+    else:
+        try:
+            contents = open('PackageInfo.g', 'r').read()
+        except IOError:
+            _error('cannot read PackageInfo.g')
+        match = re.compile(r'Version\s*:=\s*"((\d.*)+)"').search(contents)
+        if match:
+            return match.group(1)
+        else:
+            _error('could not determine the' +
+                   ' version number in PackageInfo.g')
+
+def _check_date_package_info():
+    '''checks if the date in the PackageInfo.g file is today's date'''
+
+    if not (os.path.exists('PackageInfo.g') and
+            os.path.isfile('PackageInfo.g')):
+        _error('cannot find PackageInfo.g file')
+    else:
+        try:
+            contents = open('PackageInfo.g', 'r').read()
+        except IOError:
+            _error('cannot read PackageInfo.g')
+        regex = re.compile(r'Date\s*:=\s*"(\d\d/\d\d/\d\d\d\d)"')
+        match = regex.search(contents)
+        if match:
+            today = time.strftime("%d/%m/%Y")
+            if match.group(1) != today:
+                _abort('Date in PackageInfo.g is ' + match.group(1)
+                       + ' but today is ' + today)
+        else:
+            _error('could not determine the ' +
+                   'version number in PackageInfo.g')
+
+def _check_versions_file(vers, verbose):
+    ''
+
+    if not (os.path.exists('VERSIONS') and
+            os.path.isfile('VERSIONS')):
+        _error('cannot find VERSIONS file')
+    else:
+        today = time.strftime("%d/%m/%y")
+        try:
+            contents = open('VERSIONS', 'r').read()
+        except IOError:
+            _error('cannot read VERSIONS file')
+
+        regex = re.compile(r'release\s+' +
+                r'(\d+.\d+.\d+|\d+.\d+)\s*\-\s*(\d\d/\d\d/\d\d)')
+        match = regex.search(contents)
+
+        if match:
+            if match.group(1) != vers:
+                _abort('The version number in VERSIONS is ' + match.group(1)
+                       + 'should be ' + vers)
+            if verbose:
+                print _cyan_string('Version in VERSIONS file is ' +
+                                   match.group(1))
+            if match.group(2) != today:
+                _abort('The date in VERSIONS is ' + match.group(2)
+                       + ' but today is ' + today)
+
+            return match.group(1)
+        else:
+            _error('could not determine the ' + 'version in VERSIONS')
+
+def _check_version_file(vers, verbose):
+    ''
+
+    if not (os.path.exists('VERSION') and
+            os.path.isfile('VERSION')):
+        _error('cannot find VERSION file')
+    else:
+        try:
+            contents = open('VERSION', 'r').read()
+        except IOError:
+            _error('cannot read VERSION file')
+
+        regex = re.compile(r'(\d+.\d+.\d+|\d+.\d+)')
+        match = regex.search(contents)
+
+        if match:
+            if match.group(1) != vers:
+                _abort('The version number in VERSION is ' + match.group(1)
+                       + 'should be ' + vers)
+            if verbose:
+                print _cyan_string('Version in VERSION file is ' +
+                                   match.group(1))
+        else:
+            _error('could not determine the ' + 'version in VERSIONS')
+
+def _check_change_log(vers, verbose):
+    ''
+
+    if not (os.path.exists('CHANGELOG.md') and
+            os.path.isfile('CHANGELOG.md')):
+        _error('cannot find CHANGELOG.md file')
+    else:
+        try:
+            contents = open('CHANGELOG.md', 'r').read()
+        except IOError:
+            _error('cannot read CHANGELOG.md file')
+
+        today = time.strftime("%d/%m/%Y")
+        regex = re.compile(r'##\s*Version\s*' + vers +
+                           r'\s*\(released\s*(\d\d/\d\d/\d\d\d\d)\)')
+        match = regex.search(contents)
+
+        if match:
+            if match.group(1) != today:
+                _abort('The date in CHANGELOG.md is ' + match.group(1)
+                       + ' but today is ' + today)
+        else:
+            _abort('The entry for Version ' + vers + ' in CHANGELOG.md'
+                   + ' is missing or incorrect')
+
+################################################################################
+# Mercurial stuff
+################################################################################
+
+def _check_hg_version(vers):
     '''returns the version number from the branch name in mercurial, exits if
     something goes wrong'''
     try:
@@ -157,25 +284,22 @@ def _version_hg():
     except KeyboardInterrupt:
         _killed()
     except (subprocess.CalledProcessError, OSError):
-        sys.exit(_red_string('release.py: error: could not determine the ',
-                             'version number'))
-    return hg_version
+        _error('could not determine the hg branch')
+    if hg_version != vers:
+        _abort('The version number in the PackageInfo.g file is '
+               + vers + ' but the branch name is ' + hg_version)
 
 def _hg_identify():
     'returns the current changeset'
     try:
         hg_identify = subprocess.check_output(['hg', 'identify']).strip()
-    except OSError:
-        sys.exit(_red_string('release.py: error: could not determine the ',
-                             'version number'))
-    except subprocess.CalledProcessError:
-        sys.exit(_red_string('release.py: error: could not determine the ',
-                             'version number'))
+    except (OSError, subprocess.CalledProcessError):
+        _error('could not determine the version number')
     return hg_identify.split('+')[0]
 
 def _hg_pending_commits():
     pro = subprocess.Popen(('hg', 'summary'),
-                          stdout=subprocess.PIPE)
+                           stdout=subprocess.PIPE)
     output = subprocess.check_output(('grep', 'commit:'),
                                      stdin=pro.stdout).rstrip()
     if output != 'commit: (clean)' and output != 'commit: (head closed)':
@@ -183,22 +307,23 @@ def _hg_pending_commits():
         try:
             output = subprocess.check_output(('grep', 'commit:.*clean'),
                                              stdin=pro.stdout).rstrip()
-        except KeyboardInterrupt:
+        except KeyboardInterrupt: #TODO add this in more places
             _killed(pro)
         except:
-            print _red_string('There are uncommited changes! Aborting!')
-            sys.exit(1)
+            _abort('There are uncommited changes')
 
 def _hg_tag_release(vers, verbose):
     _exec('hg tag -f ' + vers + '-release', verbose)
+
+################################################################################
+# Steps in the release process
+################################################################################
 
 def _copy_doc(dst, verbose):
     for filename in os.listdir('doc'):
         if os.path.splitext(filename)[-1] in ['.html', '.txt', '.pdf', '.css',
                 '.js', '.six']:
-            if verbose:
-                print _cyan_string('Copying ' + filename +
-                                     ' to the archive . . .')
+            _verbose('Copying ' + filename + ' to the archive . . .', verbose)
             shutil.copy('doc/' + filename, dst)
 
 def _create_build_files(dst, verbose):
@@ -210,30 +335,43 @@ def _create_build_files(dst, verbose):
 def _delete_generated_build_files(verbose):
     for filename in ['config.log', 'config.status']:
         if os.path.exists(filename) and os.path.isfile(filename):
-            if verbose:
-                print _cyan_string('Deleting ' + filename +
-                                   ' from the archive . . .')
+            _verbose('Deleting ' + filename + ' from the archive . . .',
+                     verbose)
             os.remove(filename)
     for directory in ['digraphs-lib']:
         if os.path.exists(directory) and os.path.isdir(directory):
-            if verbose:
-                print _cyan_string('Deleting ' + directory
-                                   + ' from the archive . . .')
+            _verbose('Deleting ' + directory + ' from the archive . . .',
+                     verbose)
             shutil.rmtree(directory)
 
-def _download_digraphs_lib(dst, verbose):
-    urllib.urlretrieve('https://bitbucket.org/james-d-mitchell/digraphs/downloads/digraphs-lib-0.3.tar.gz',
-            'digraphs-lib-0.3.tar.gz')
-    _exec('tar -xzf digraphs-lib-0.3.tar.gz', verbose)
+def _delete_files_archive(tmpdir):
+    # delete extra files and dirs
+    for filename in _FILES_TO_DELETE_FROM_ARCHIVE:
+        if (os.path.exists(os.path.join(tmpdir, filename))
+                and os.path.isfile(os.path.join(tmpdir, filename))):
+            _action('Deleting file ' + filename)
+            try:
+                os.remove(os.path.join(tmpdir, filename))
+            except:
+                _error('could not delete ' + filename)
+
+    _action('Deleting directory scripts')
+
+    try:
+        shutil.rmtree(os.path.join(tmpdir, 'scripts'))
+    except:
+        _error('could not delete scripts/*')
+
+def _download_digraphs_lib_inner(dst, verbose):
+    urllib.urlretrieve(_DIGRAPHS_LIB_URL, _DIGRAPHS_LIB_ARCHIVE)
+    _exec('tar -xzf ' + _DIGRAPHS_LIB_ARCHIVE, verbose)
     shutil.copytree('digraphs-lib', dst + '/digraphs-lib')
 
-def _delete_xml_files(docdir, verbose):
-    for filename in os.listdir(docdir):
-        if os.path.splitext(filename)[-1] == '.xml':
-            if verbose:
-                print _cyan_string('Deleting ' + filename +
-                                      ' from the archive . . .')
-            os.remove(os.path.join(docdir, filename))
+def _download_digraphs_lib(tmpdir, verbose):
+    _action_no_eol('Downloading ' + _DIGRAPHS_LIB_ARCHIVE)
+    sys.stdout.flush()
+    dots.dotIt(MAGENTA_DOT, _download_digraphs_lib_inner, tmpdir, verbose)
+    print ''
 
 def _start_mamp():
     _exec('open ' + _MAMP_DIR + 'MAMP.app', False)
@@ -254,7 +392,7 @@ def _stop_mamp():
 ################################################################################
 
 def main():
-    # parse the args
+    # Parse the args
     parser = argparse.ArgumentParser(prog='release.py',
                                      usage='%(prog)s [options]')
 
@@ -290,74 +428,59 @@ def main():
 
     for gap_root_dir in args.gap_root:
         if not (os.path.exists(gap_root_dir) and os.path.isdir(gap_root_dir)):
-            sys.exit(_red_string('release.py: error: can\'t find GAP root' +
-                                 ' directory' + gap_root_dir + '!'))
+            _error('can\'t find GAP root directory' + gap_root_dir + '!')
     if not (os.path.exists(args.pkg_dir) or os.path.isdir(args.pkg_dir)):
-        sys.exit(_red_string('release.py: error: can\'t find package' +
-                             ' directory!'))
+        _error('can\'t find package directory!')
 
+    # Check for pending commits
     _hg_pending_commits()
 
-    # get the version number
+    # Get the version number
     vers = _version_number_package_info()
-    tmpdir_base = tempfile.mkdtemp()
-    tmpdir = tmpdir_base + '/digraphs-' + vers
+    _statement('The version number is: ' + vers)
 
-    if vers != _version_hg():
-        sys.exit(_red_string('release.py: error: the version number in the ' +
-                             'PackageInfo.g file is ' + vers + ' but the branch ' +
-                             'name is ' + _version_hg()))
+    # Check the CHANGELOG.md, VERSIONS, and VERSION
+    _check_hg_version(vers)
+    _check_date_package_info()
+    _check_change_log(vers, args.verbose)
+    _check_version_file(vers, args.verbose)
+    _check_versions_file(vers, args.verbose)
 
-    if not _check_date_package_info(args.verbose):
-        sys.exit(_red_string('release.py: error: date in PackageInfo.g ' +
-                             'is not today!'))
-
-    print blue_string('The version number is: ' + vers)
-    if args.verbose:
-        print _cyan_string('Using temporary directory: ' + tmpdir)
-
+    # Compile the doc
     test.digraphs_make_doc(args.gap_root[0])
 
-    # archive . . .
-    print _magenta_string(pad('Tagging the last commit') + ' . . .')
+    # Get the temporary dir
+    tmpdir_base = tempfile.mkdtemp()
+    tmpdir = tmpdir_base + '/digraphs-' + vers
+    _verbose('Using temporary directory: ' + tmpdir, args.verbose)
+
+    # Tag . . .
+    _action('Tagging the last commit')
     _hg_tag_release(vers, args.verbose)
-    print _magenta_string(pad('Archiving using hg') + ' . . .')
+
+    # Archive
+    _action('Archiving using hg')
     _exec('hg archive ' + tmpdir, args.verbose)
 
-    # handle the doc . . .
+    # Copy the doc . . .
     _copy_doc(tmpdir + '/doc/', args.verbose)
 
-    print _magenta_string(pad('Creating the build files') + ' . . .')
+    # Run autogen.sh
+    _action('Creating the build files')
     _create_build_files(tmpdir, args.verbose)
 
+    # Delete unnecessary files from the archive
+    _delete_files_archive(tmpdir)
+
+    # Download digraphs-lib if we want to run extreme tests
     if not args.skip_extreme:
-        print _magenta_string(pad('Downloading digraphs-lib-0.3.tar.gz') +
-                              ' . . . '),
-        sys.stdout.flush()
-        dots.dotIt(test.MAGENTA_DOT, _download_digraphs_lib, tmpdir, args.verbose)
-        print ''
+        _download_digraphs_lib(tmpdir, args.verbose)
 
-    # delete extra files and dirs
-    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore', '.hg_archival.txt']:
-        if (os.path.exists(os.path.join(tmpdir, filename))
-                and os.path.isfile(os.path.join(tmpdir, filename))):
-            print _magenta_string(pad('Deleting file ' + filename) + ' . . .')
-            try:
-                os.remove(os.path.join(tmpdir, filename))
-            except OSError:
-                sys.exit(_red_string('release.py: error: could not delete' +
-                                     filename))
-
-    print _magenta_string(pad('Deleting directory scripts') + ' . . .')
-    try:
-        shutil.rmtree(os.path.join(tmpdir, 'scripts'))
-    except OSError:
-        sys.exit(_red_string('release.py: error: could not delete scripts/*'))
-
+    # Run the tests
     if args.skip_tests:
-        print _magenta_string(pad('Skipping tests') + ' . . .')
+        _statement('Skipping tests' + ' . . .')
     else:
-        print _magenta_string(pad('Running the tests on the archive') + ' . . .')
+        _action('Running the tests on the archive')
         os.chdir(tmpdir_base)
         for directory in args.gap_root:
             digraphs_dir = os.path.join(directory, 'pkg/digraphs-' + vers)
@@ -369,7 +492,7 @@ def main():
             except Exception as e:
                 sys.exit(_red_string(str(e)))
 
-            try:
+            try:#TODO pass skip-extreme here!
                 test.run_digraphs_tests(directory,
                                         directory + '/pkg',
                                         'digraphs-' + vers)
@@ -381,25 +504,16 @@ def main():
                                 os.path.join(directory, 'pkg/digraphs'))
                 shutil.rmtree(digraphs_dir)
 
-    print _magenta_string(pad('Creating the tarball') + ' . . .')
+    # Create the archive file
+    _action('Creating the tarball')
     os.chdir(tmpdir)
     _delete_generated_build_files(args.verbose)
     os.chdir(tmpdir_base)
-
-    for filename in ['.hgignore', '.hgtags', '.gaplint_ignore']:
-        if (os.path.exists(os.path.join(tmpdir, filename))
-                and os.path.isfile(os.path.join(tmpdir, filename))):
-            print _magenta_string(pad('Deleting file ' + filename) + ' . . .')
-            try:
-                os.remove(os.path.join(tmpdir, filename))
-            except OSError:
-                sys.exit(_red_string('release.py: error: could not delete' +
-                                     filename))
-
     _exec('tar -cpf digraphs-' + vers + '.tar digraphs-' + vers +
           '; gzip -9 digraphs-' + vers + '.tar', args.verbose)
 
-    print _magenta_string(pad('Copying to webpage') + ' . . .')
+    # Copy files to the local copy of the website
+    _action('Copying to webpage' + ' . . .')
     try:
         os.chdir(tmpdir_base)
         shutil.copy('digraphs-' + vers + '.tar.gz', _WEBPAGE_DIR)
@@ -410,44 +524,53 @@ def main():
         shutil.rmtree(_WEBPAGE_DIR + 'doc')
         shutil.copytree('doc', _WEBPAGE_DIR + 'doc')
     except Exception as e:
-        print _red_string('release.py: error: could not copy to the webpage!')
+        print _red_string(_ERROR + 'could not copy to the webpage!')
         sys.exit(_red_string(str(e)))
 
+    # hg add and commit files added
     os.chdir(_WEBPAGE_DIR)
-    print _magenta_string(pad('Adding archive to webpage repo') + ' . . .')
+    _action('Adding archive to webpage repo')
     _exec('hg add digraphs-' + vers + '.tar.gz', args.verbose)
     _exec('hg addremove', args.verbose)
-    print _magenta_string(pad('Committing webpage repo') + ' . . .')
+    _action('Committing webpage repo')
     _exec('hg commit -m "Releasing digraphs ' + vers + '"', args.verbose)
 
+    # open the webpage for inspection
     _start_mamp()
     webbrowser.open('http://localhost:8888/public_html/digraphs.php')
+
+    # actually publish?
     publish = query_yes_no(_magenta_string('Publish the webpage?'))
     _stop_mamp()
 
     if not publish:
         sys.exit(_red_string('Aborting!'))
 
-    print _magenta_string(pad('Pushing webpage to server') + ' . . .')
+    # push the website changes
+    _action('Pushing webpage to server')
     _exec('hg push', args.verbose)
     os.chdir(_DIGRAPHS_REPO_DIR)
 
-    print _magenta_string(pad('Merging ' + vers + ' into default') + ' . . .')
+    # merge the release branch into default
+    _action('Merging ' + vers + ' into default')
     _exec('hg up -r default', args.verbose)
     _exec('hg merge -r ' + vers, args.verbose)
     _exec('hg commit -m "Merge from' + vers + '"', args.verbose)
 
-    print _magenta_string(pad('Closing branch ' + vers) + ' . . .')
+    # close the release branch
+    _action('Closing branch ' + vers)
     _exec('hg up -r ' + vers, args.verbose)
     _exec('hg commit --close-branch -m "closing branch"', args.verbose)
 
-    print _magenta_string(pad('Updating to default branch') + ' . . .')
+    # go back to default branch
+    _action('Updating to default branch')
     _exec('hg up -r default', args.verbose)
 
-    print blue_string('Don\'t forget to check everything is ok at: ' +
-                      'http://www.gap-system.org/Packages/Authors/authors.html')
-    print _green_string('SUCCESS!')
-    sys.exit(1)
+    _statement('Don\'t forget to check everything is ok at: ' +
+               'http://www.gap-system.org/Packages/Authors/authors.html')
+    webbrowser.open('http://www.gap-system.org/Packages/Authors/authors.html')
+
+    sys.exit(0)
 
 ################################################################################
 # So that we can load this as a module if we want
