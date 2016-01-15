@@ -103,34 +103,31 @@ end);
 
 InstallMethod(DigraphStabilizer, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-function(digraph, rep)
+function(digraph, v)
   local pos, gens, sch, trace, word, stabs;
 
-  pos := DigraphSchreierVector(digraph)[rep];
-  if pos < 0 then # rep is not one of the orbit reps
+  pos := DigraphSchreierVector(digraph)[v];
+  if pos < 0 then # rep is one of the orbit reps
     word := ();
     pos := pos * -1;
   else
-    gens := GeneratorsOfGroup(DigraphGroup(digraph));
-    sch := DigraphSchreierVector(digraph);
-    trace := DIGRAPHS_TraceSchreierVector(gens, sch, pos);
-    pos := trace.representative;
-    word := DIGRAPHS_EvaluateWord(gens, trace.word);
+    gens  := GeneratorsOfGroup(DigraphGroup(digraph));
+    sch   := DigraphSchreierVector(digraph);
+    trace := DIGRAPHS_TraceSchreierVector(gens, sch, v);
+    pos   := trace.representative;
+    word  := DIGRAPHS_EvaluateWord(gens, trace.word);
   fi;
 
   stabs := DigraphStabilizers(digraph);
 
-  if not IsBound(DigraphStabilizers(digraph)[pos]) then
+  if not IsBound(stabs[pos]) then
     stabs[pos] := Stabilizer(DigraphGroup(digraph),
                              DigraphOrbitReps(digraph)[pos]);
   fi;
-  return DigraphStabilizers(digraph)[pos] ^ word;
+  return stabs[pos] ^ word;
 end);
 
-InstallMethod(DigraphStabilizers, "for a digraph",
-[IsDigraph],
+InstallMethod(DigraphStabilizers, "for a digraph", [IsDigraph],
 function(digraph);
   return [];
 end);
-
-

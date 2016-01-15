@@ -59,17 +59,10 @@ InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
 function(digraph)
   local func;
 
-  if DigraphVertexLabels(digraph) = [1 .. DigraphNrVertices(digraph)] then
-    func := function(x, y)
-      return IsDigraphEdge(digraph, x, y);
-    end;
-  else
-    func := function(x, y)
-      local labels;
-      labels := DigraphVertexLabels(digraph);
-      return IsDigraphEdge(digraph, Position(labels, x), Position(labels, y));
-    end;
-  fi;
+  func := function(u, v)
+    return IsDigraphEdge(digraph, u, v);
+  end;
+
   return func;
 end);
 
@@ -584,8 +577,15 @@ function(digraph, v)
   laynum[next[1]] := 1;
   localGirth      := -1;
   layers          := [next];
-  localParameters := [];
   sum             := 1;
+  localParameters := [];
+
+# localDiameter is the length of the longest shortest path starting at v
+#
+# localParameters is a list of 3-tuples [a_{i - 1}, b_{i - 1}, c_{i - 1}] for
+# each i between 1 and localDiameter where c_i (respectively a_i and b_i) is the
+# number of vertices at distance i − 1 (respectively i and i + 1) from v that
+# are adjacent to a vertex w at distance i from v.
 
   while Length(next) > 0 do
     next := [];

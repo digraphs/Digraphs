@@ -997,6 +997,7 @@ function(digraph, u, v)
   elif IsDigraphWithAdjacencyFunction(digraph) then
     return DigraphAdjacencyFunction(digraph)(u, v);
   fi;
+
   return v in OutNeighboursOfVertex(digraph, u);
 end);
 
