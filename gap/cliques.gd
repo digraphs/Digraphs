@@ -46,12 +46,9 @@ DeclareOperation("DigraphMaximalClique", [IsDigraph]);
 DeclareOperation("DigraphMaximalClique", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("DigraphMaximalClique", [IsDigraph, IsHomogeneousList,
                                           IsHomogeneousList]);
-# Functions to return cliques
+# Functions to calculate cliques
 DeclareGlobalFunction("DigraphMaximalCliquesReps");
-DeclareAttribute("DigraphMaximalCliquesRepsAttr", IsDigraph);
 DeclareGlobalFunction("DigraphMaximalCliques");
+DeclareAttribute("DigraphMaximalCliquesRepsAttr", IsDigraph);
 DeclareAttribute("DigraphMaximalCliquesAttr", IsDigraph);
-
-# Temporary functions to calculate maximal cliques
 DeclareGlobalFunction("DIGRAPHS_BronKerbosch");
-

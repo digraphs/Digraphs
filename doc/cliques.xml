@@ -89,18 +89,95 @@ true
 
 <#GAPDoc Label="DigraphMaximalCliques">
 <ManSection>
-  <Attr Name="DigraphMaximalCliques" Label="for a digraph" Arg="digraph"/>
-  <Oper Name="DigraphMaximalCliques" Label="for a digraph and one or two
-    lists" Arg="digraph, l[, m]"/>
-  <Attr Name="DigraphMaximalCliquesReps" Arg="digraph"/>
-  <Attr Name="DigraphMaximalClique" Label="for a digraph" Arg="digraph"/>
-  <Oper Name="DigraphMaximalClique" Label="for a digraph and one or two
-    lists" Arg="digraph, l[, m]"/>
-  <Attr Name="DigraphClique" Label="for a digraph" Arg="digraph"/>
-  <Oper Name="DigraphClique" Label="for a digraph and one or two lists"
-    Arg="digraph, l[, m]"/>
+  <Func Name="DigraphMaximalCliques" Label="for a digraph and two
+    lists and a number" Arg="digraph[, include[, exclude[, limit]]]"/>
+  <Attr Name="DigraphMaximalCliquesAttr" Label="for a digraph"
+    Arg="digraph"/>
+  <Func Name="DigraphMaximalCliquesReps" Label="for a digraph and two
+    lists and a number" Arg="digraph[, include[, exclude[, limit]]]"/>
+  <Attr Name="DigraphMaximalCliquesRepsAttr" Label="for a
+    digraph" Arg="digraph"/>
+  <Func Name="DigraphMaximalClique" Label="for a digraph and two
+    lists" Arg="digraph[, include[, exclude]]"/>
   <Returns>A list of lists of positive integers.</Returns>
   <Description>
+    If <A>digraph</A> is digraph, then these functions and attributes return
+    cliques of <A>digraph</A>. A clique is defined by the set of vertices
+    which it contains; see <Ref Oper="IsClique"/>.<P/>
+    
+    The optional arguments
+    <A>include</A> and <A>exclude</A> must be (possibly empty) duplicate-free
+    disjoint lists of vertices of <A>digraph</A>, and the optional argument
+    <A>limit</A> must be either a positive integer or <C>infinity</C>. By
+    default, <A>include</A> and <A>exclude</A> are empty, and <A>limit</A> is
+    <C>infinity</C>. The argument <A>include</A> must define a clique of
+    <A>digraph</A>, <A>limit</A> will provide an upper bound on the number of
+    cliques to be returned.<P/>
+    
+    The number of cliques of a digraph - indeed, even the number of maximal
+    cliques of a digraph - can be very large relative to the number of
+    vertices, and so for even relatively small digraphs this computation could
+    be very time-consuming.  The algorithms used to calculate maximal cliques
+    make use of the <Ref Attr="DigraphGroup"/> of <A>digraph</A> to reduce the
+    search space. Therefore the speed of computation may be improved if the
+    <Ref Attr="DigraphGroup"/> is as large as possible.
+    <P/>
+
+    <List>
+      <Mark>Maximal cliques</Mark>
+      <Item>
+        <C>DigraphMaximalCliques(</C><A>digraph</A><C>,
+        </C><A>include</A><C>, </C><A>exclude</A><C>,
+        </C><A>limit</A><C>)</C> returns a duplicate-free list of maximal
+        cliques of <A>digraph</A> which contain all of the vertices of
+        <A>include</A> and which do not contain any of the vertices of
+        <A>exclude</A>.
+        The computation may be significantly faster if <A>include</A> and
+        <A>exclude</A> are invariant under the action of the <Ref
+          Attr="DigraphGroup"/> of <A>digraph</A>.
+      </Item>
+
+      <Item>
+        To use <C>DigraphMaximalCliquesReps</C>, the arguments <A>include</A>
+        and <A>exclude</A> must each be invariant under the action of the <Ref
+          Attr="DigraphGroup"/> of <A>digraph</A>.
+        If this is the case, then
+        <C>DigraphMaximalCliquesReps(</C><A>digraph</A><C>,
+        </C><A>include</A><C>, </C><A>exclude</A><C>, </C><A>limit</A><C>)</C>
+        returns a list of orbits representatives (under the action of the <Ref
+          Attr="DigraphGroup"/> of <A>digraph</A>) of maximal cliques of
+        <A>digraph</A> which contain all of the vertices of <A>include</A> and
+        which do not contain any of the vertices of <A>exclude</A>.
+      </Item>
+
+      <Item>
+        <C>DigraphMaximalClique(</C><A>digraph</A><C>, </C><A>include</A><C>,
+        </C><A>exclude</A><C>)</C> returns the clique
+        <C>DigraphMaximalCliques(</C><A>digraph</A><C>, </C><A>include</A><C>,
+        </C><A>exclude</A><C>, 1)[1]</C> if such a clique exists, else it returns
+        <K>fail</K>.
+      </Item>
+
+      <Mark>Cliques</Mark>
+      <Item>
+        <C>DigraphCliques</C>
+      </Item>
+      <Item>
+        <C>DigraphCliquesReps</C>
+      </Item>
+      <Item>
+        <C>DigraphClique</C>
+      </Item>
+    </List>
+
+    The attributes <C>DigraphMaximalCliquesAttr</C> and
+    <C>DigraphMaximalCliquesRepsAttr</C> exist to store the values
+    of <C>DigraphMaximalCliques(</C><A>digraph</A><C>)</C> and
+    <C>DigraphMaximalCliquesReps(</C><A>digraph</A><C>)</C> respectively,
+    to avoid repeating computation. <P/>
+
+    The algorithms used to calculate maximal cliques are based on the
+    Bron-Kerbosch algorithm.
     <Example><![CDATA[
 gap> true;;
 ]]></Example>
