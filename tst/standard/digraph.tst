@@ -1205,6 +1205,26 @@ gap> ddigraph := BipartiteDoubleDigraph(digraph);
 gap> DigraphGroup(ddigraph);
 Group([ (2,3)(6,7), (2,4)(6,8), (1,5)(2,6)(3,7)(4,8) ])
 
+#T# (Bipartite)DoubleDigraph with multidigraph
+gap> gr := Digraph([[2,3], [1], []]);;
+gap> gr2 := DoubleDigraph(gr);
+<digraph with 6 vertices, 12 edges>
+gap> OutNeighbours(gr2);
+[ [ 2, 3, 5, 6 ], [ 1, 4 ], [  ], [ 5, 6, 2, 3 ], [ 4, 1 ], [  ] ]
+gap> gr2 := BipartiteDoubleDigraph(gr);
+<digraph with 6 vertices, 6 edges>
+gap> OutNeighbours(gr2);
+[ [ 5, 6 ], [ 4 ], [  ], [ 2, 3 ], [ 1 ], [  ] ]
+gap> gr := Digraph([[2,2,3], [1], []]);;
+gap> gr2 := DoubleDigraph(gr);
+<multidigraph with 6 vertices, 16 edges>
+gap> OutNeighbours(gr2);
+[ [ 2, 2, 3, 5, 5, 6 ], [ 1, 4 ], [  ], [ 5, 5, 6, 2, 2, 3 ], [ 4, 1 ], [  ] ]
+gap> gr2 := BipartiteDoubleDigraph(gr);
+<multidigraph with 6 vertices, 8 edges>
+gap> OutNeighbours(gr2);
+[ [ 5, 5, 6 ], [ 4 ], [  ], [ 2, 2, 3 ], [ 1 ], [  ] ]
+
 #T# DigraphAddEdgeOrbit
 gap> digraph := NullDigraph(4);
 <digraph with 4 vertices, 0 edges>
