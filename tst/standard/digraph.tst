@@ -1289,6 +1289,76 @@ Group(())
 gap> HasDigraphGroup(gr);
 true
 
+#T# EdgeOrbitsDigraph
+gap> digraph := EdgeOrbitsDigraph(Group((1,3), (1,2)(3,4)),
+>                                 [[1, 2], [4, 5]], 5);
+<digraph with 5 vertices, 12 edges>
+gap> OutNeighbours(digraph);
+[ [ 2, 4, 5 ], [ 1, 3, 5 ], [ 2, 4, 5 ], [ 1, 3, 5 ], [  ] ]
+gap> RepresentativeOutNeighbours(digraph);
+[ [ 2, 4, 5 ], [  ] ]
+gap> HasDigraphGroup(digraph);
+true
+gap> DigraphGroup(digraph) = Group((1,3), (1,2)(3,4));
+true
+gap> digraph := EdgeOrbitsDigraph(Group(()), [3,2], 3);
+<digraph with 3 vertices, 1 edge>
+gap> OutNeighbours(digraph);
+[ [  ], [  ], [ 2 ] ]
+gap> HasDigraphGroup(digraph);
+true
+gap> HasDigraphGroup(DigraphCopy(digraph));
+false
+gap> digraph := EdgeOrbitsDigraph(Group(()), [3,2]);
+<digraph with 0 vertices, 0 edges>
+gap> OutNeighbours(digraph);
+[  ]
+gap> HasDigraphGroup(digraph);
+false
+gap> digraph := EdgeOrbitsDigraph(Group((1,2)), [[1,2], [3,6,5]]);
+Error, Digraphs: EdgeOrbitsDigraph: usage,
+the second argument must be a list of pairs of pos ints,
+gap> digraph := EdgeOrbitsDigraph(Group((1,2)), [[1,2], [3,-6]]);
+Error, Digraphs: EdgeOrbitsDigraph: usage,
+the second argument must be a list of pairs of pos ints,
+gap> digraph := EdgeOrbitsDigraph(Group((1,2)), [[1,2], [3,6]], -1);
+Error, Digraphs: EdgeOrbitsDigraph: usage,
+the third argument must be a non-negative integer,
+
+#T# DigraphAdd/RemoveEdgeOrbit
+gap> gr1 := CayleyDigraph(DihedralGroup(8));
+<digraph with 8 vertices, 24 edges>
+gap> gr2 := DigraphAddEdgeOrbit(gr1, [1, 8]);
+<digraph with 8 vertices, 32 edges>
+gap> DigraphEdges(gr1);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], [ 3, 5 ], 
+  [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [ 5, 3 ], [ 5, 2 ], 
+  [ 5, 8 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], 
+  [ 8, 7 ], [ 8, 6 ], [ 8, 5 ] ]
+gap> DigraphEdges(gr2);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 8 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], 
+  [ 2, 3 ], [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 3, 2 ], [ 4, 6 ], [ 4, 7 ], 
+  [ 4, 1 ], [ 4, 5 ], [ 5, 3 ], [ 5, 2 ], [ 5, 8 ], [ 5, 4 ], [ 6, 4 ], 
+  [ 6, 5 ], [ 6, 2 ], [ 6, 7 ], [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 7, 6 ], 
+  [ 8, 7 ], [ 8, 6 ], [ 8, 5 ], [ 8, 1 ] ]
+gap> gr3 := DigraphRemoveEdgeOrbit(gr2, [1, 8]);
+<digraph with 8 vertices, 24 edges>
+gap> gr3 = gr1;
+true
+gap> DigraphAddEdgeOrbit(gr1, [0,3]);
+Error, Digraphs: DigraphAddEdgeOrbit: usage,
+the second argument must be a pair of pos ints,
+gap> DigraphAddEdgeOrbit(gr1, [1,2,3]);
+Error, Digraphs: DigraphAddEdgeOrbit: usage,
+the second argument must be a pair of pos ints,
+gap> gr2 := DigraphAddEdgeOrbit(gr1, [1,4]);
+<digraph with 8 vertices, 24 edges>
+gap> gr1 = gr2;
+true
+gap> DigraphAddEdgeOrbit(gr1, [3,9]);
+Error, Digraphs: DigraphAddEdgeOrbit: usage,
+the second argument must be a pair of vertices of the first argument,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);
 gap> Unbind(j);

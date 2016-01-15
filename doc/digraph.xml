@@ -19,7 +19,7 @@
     <P/>
 
     If <A>G</A> is a permutation group, <A>edges</A> is an edge or list of
-    edges, and <A>n</A> is a positive integer such that <A>G</A> fixes 
+    edges, and <A>n</A> is a non-negative integer such that <A>G</A> fixes
     <C>[1 .. <A>n</A>]</C> setwise, then 
     this operation returns a new digraph with <A>n</A> vertices and the union
     of the orbits of the edges in <A> edges </A> under the action of the
