@@ -241,7 +241,8 @@ true]]></Example>
     </List>
 
     If <A>digraph1</A> and <A>digraph2</A> are not isomorphic, then <K>fail</K>
-    is returned. <P/>
+    is returned. 
+    <P/>
 
     This operation uses the canonical labelling of the digraphs found with <URL
     Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by

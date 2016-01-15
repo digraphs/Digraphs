@@ -338,6 +338,24 @@ true]]></Example>
         <C>i</C> to vertex <C>j</C> if and only if
         <C><A>func</A>(<A>obj</A>[i], <A>obj</A>[j])</C> returns <K>true</K>.
       </Item>
+      
+      <Mark>
+        for a group, a list, a function <A>act</A> and a function <A>adj</A>
+        (i.e. an adjacency list)
+      </Mark>
+      <Item>
+        Let <A>G</A> be a group acting on the objects in <A>list</A> through
+        the action function <A>act</A>, and let <A>adj</A> be a function taking
+        two objects from <A>list</A> as arguments and returning <C>true</C> or
+        <C>false</C>. The function <A>adj</A> will describe the adjacency
+        between objects from <A>list</A> that is invariant under the action of
+        <A>G</A>. This variant of the constructor returns a digraph with
+        vertices the objects of <A>list</A> and directed edges <C>[x, y]</C>
+        when <C>f(x, y)</C> is <C>true</C>. The action of the group <A>G</A> on
+        the objects in <A>list</A> is a permutation group that is stored in the
+        attribute <Ref Attr="DigraphGroup"/>, and this group is used to speed
+        up operations like <Ref Oper="DigraphDiameter"/>.
+      </Item>
 
       <Mark>for a Grape package graph</Mark>
       <Item>
@@ -355,22 +373,6 @@ true]]></Example>
         and range <C>j</C> if and only if <C>[i,j]</C> is a pair in
         the binary relation <A>obj</A>.
       </Item>
-
-      <Mark>for a group, a list, a function <A>act</A> and a function <A>adj</A> (i.e. an adjacency list)</Mark>
-      <Item>
-  
-        Let <A>G</A> be a group acting on the objects in <A>list</A> through the action function <A>act</A>,
-        and let <A>adj</A> be a function taking two objects from <A>list</A> as arguments and returning <C>true</C>
-        or <C>false</C>, describing the adjacency between objects from <A>list</A> that is invariant under the action
-        of <A>G</A>. Then this variant of the constructor returns a digraph with vertices the objects of <A>list</A>
-        and directed edges <C>[x,y]</C> when <C>f(x,y)</C> is <C>true</C>. The action of the group <A>G</A> on the
-        objects in <A>list</A> is a permutation group that is stored in the attribute <Ref Attr="DigraphGroup"/>,
-        and this group is used to speed up operations like <Ref Oper="DigraphDiameter"/>.<P/>
-        The second example illustrates the use of the second and third variant of this constructor. The resulting digraph
-        is a strongly regular graph, and it is actually the point graph of the van Lint-Schrijver partial geometry, <Cite Key="vanLintSchrijver1981"/>.
-        The algebraic description is taken from the seminal paper of Calderbank and Kantor <Cite Key="CalderbankKantor1986"/>.
-        </Item>
-
     </List>
   
     <Example><![CDATA[
@@ -393,29 +395,38 @@ gap> gr := Digraph(b);
 <digraph with 5 vertices, 11 edges>
 gap> gr := Digraph([1 .. 10], ReturnTrue);
 <digraph with 10 vertices, 100 edges>
+  ]]></Example>
+
+      The next example illustrates the uses of the fourth and fifth variants of
+      this constructor. The resulting digraph is a strongly regular graph, and
+      it is actually the point graph of the van Lint-Schrijver partial
+      geometry, <Cite Key="vanLintSchrijver1981"/>.  The algebraic description
+      is taken from the seminal paper of Calderbank and Kantor <Cite
+        Key="CalderbankKantor1986"/>.
+<Example><![CDATA[
 gap> f := GF(3^4);
 GF(3^4)
-gap> gamma := First(f,x->Order(x)=5);
+gap> gamma := First(f, x -> Order(x) = 5);
 Z(3^4)^64
-gap> L := Union([Zero(f)],List(Group(gamma)));
+gap> L := Union([Zero(f)], List(Group(gamma)));
 [ 0*Z(3), Z(3)^0, Z(3^4)^16, Z(3^4)^32, Z(3^4)^48, Z(3^4)^64 ]
-gap> omega := Union(List(L,x->List(Difference(L,[x]),y->x-y)));
+gap> omega := Union(List(L, x -> List(Difference(L, [x]), y -> x - y)));
 [ Z(3)^0, Z(3), Z(3^4)^5, Z(3^4)^7, Z(3^4)^8, Z(3^4)^13, Z(3^4)^15, 
   Z(3^4)^16, Z(3^4)^21, Z(3^4)^23, Z(3^4)^24, Z(3^4)^29, Z(3^4)^31, 
   Z(3^4)^32, Z(3^4)^37, Z(3^4)^39, Z(3^4)^45, Z(3^4)^47, Z(3^4)^48, 
   Z(3^4)^53, Z(3^4)^55, Z(3^4)^56, Z(3^4)^61, Z(3^4)^63, Z(3^4)^64, 
   Z(3^4)^69, Z(3^4)^71, Z(3^4)^72, Z(3^4)^77, Z(3^4)^79 ]
-gap> adj := function(x,y)
-> return x-y in omega;
+gap> adj := function(x, y)
+> return x - y in omega;
 > end;
 function( x, y ) ... end
-gap> digraph := Digraph(List(f),adj);
+gap> digraph := Digraph(AsList(f), adj);
 <digraph with 81 vertices, 2430 edges>
 gap> group := Group(Z(3));
 <group with 1 generators>
 gap> act := \*;
 <Operation "*">
-gap> digraph := Digraph(group,List(f),act,adj);
+gap> digraph := Digraph(group, List(f), act, adj);
 <digraph with 81 vertices, 2430 edges>
 ]]></Example>
   </Description>
