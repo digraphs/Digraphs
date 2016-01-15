@@ -17,6 +17,7 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="AutomorphismGroupDigraph">
     <#Include Label="AutomorphismGroupMultiDigraph">
     <#Include Label="DigraphGroup">
+    <#Include Label="DigraphSchreierVector">
     <#Include Label="DigraphCanonicalLabelling">
     <#Include Label="IsIsomorphicDigraph">
     <#Include Label="IsomorphismDigraphs">
