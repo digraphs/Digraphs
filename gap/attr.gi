@@ -766,14 +766,24 @@ InstallMethod(DigraphDegeneracy,
 "for a digraph",
 [IsDigraph],
 function(gr)
-  return DIGRAPHS_Degeneracy(gr)[1];
+  if not IsSymmetricDigraph(gr) or IsMultiDigraph(gr) then
+    ErrorMayQuit("Digraphs: DigraphDegeneracy: usage,\n",
+                 "the argument <gr> must be a symmetric digraph without ",
+                 "multiple edges,");
+  fi;
+  return DIGRAPHS_Degeneracy(DigraphRemoveLoops(gr))[1];
 end);
 
 InstallMethod(DigraphDegeneracyOrdering,
 "for a digraph",
 [IsDigraph],
 function(gr)
-  return DIGRAPHS_Degeneracy(gr)[2];
+  if not IsSymmetricDigraph(gr) or IsMultiDigraph(gr) then
+    ErrorMayQuit("Digraphs: DigraphDegeneracyOrdering: usage,\n",
+                 "the argument <gr> must be a symmetric digraph without ",
+                 "multiple edges,");
+  fi;
+  return DIGRAPHS_Degeneracy(DigraphRemoveLoops(gr))[2];
 end);
 
 # Returns [ degeneracy, degeneracy ordering ]
@@ -829,6 +839,9 @@ end);
 InstallMethod(MaximalSymmetricSubdigraphWithoutLoops, "for a digraph",
 [IsDigraph],
 function(gr)
+  if not DigraphHasLoops(gr) then
+    return MaximalSymmetricSubdigraph(gr);
+  fi;
   if HasIsSymmetricDigraph(gr) and IsSymmetricDigraph(gr) then
     if IsMultiDigraph(gr) then
       return DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(gr));
