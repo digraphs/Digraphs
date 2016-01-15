@@ -548,13 +548,18 @@ end);
 
 BindGlobal("DIGRAPH_ConnectivityDataForVertex",
 function(digraph, v)
+  # FIXME: this should be stored
   local out_nbs, record, orbnum, reps, i, next, laynum, localGirth, layers,
         localParameters, sum, nprev, nhere, nnext, lnum, localDiameter,
-        layerNumbers, x, y;
+        layerNumbers, x, y, stab;
 
   out_nbs         := OutNeighbours(digraph);
-  record          := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
-                                     DigraphVertices(digraph));
+  if HasDigraphGroup(digraph) then
+    stab := DigraphStabilizer(digraph, v);
+  else
+    stab := Group(());
+  fi;
+  record          := DIGRAPHS_Orbits(stab, DigraphVertices(digraph));
   orbnum          := record.lookup;
   reps            := List(record.orbits, Representative);
   i               := 1;
