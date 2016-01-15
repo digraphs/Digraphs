@@ -280,7 +280,7 @@ true]]></Example>
 <ManSection>
   <Oper Name = "Digraph" Arg = "obj[, source, range]"/>
   <Oper Name = "Digraph" Arg = "list, func" Label = "for a list and function"/>
-  <Oper Name = "Digraph" Arg = "G, list, act, adj" Label = "for a list and function"/>
+  <Oper Name = "Digraph" Arg = "G, list, act, adj" Label = "for a group, list, function, and function"/>
   <Returns>A digraph.</Returns>
   <Description>
     <List>
