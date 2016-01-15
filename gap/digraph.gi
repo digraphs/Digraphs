@@ -1291,7 +1291,12 @@ function(digraph, edge)
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
     ErrorMayQuit("Digraphs: DigraphRemoveEdgeOrbit: usage,\n",
-                 "the second argument must be a pairs of pos ints,");
+                 "the second argument must be a pair of pos ints,");
+  elif not (edge[1] in DigraphVertices(digraph)
+            and edge[2] in DigraphVertices(digraph)) then
+    ErrorMayQuit("Digraphs: DigraphRemoveEdgeOrbit: usage,\n",
+                 "the second argument must be a ",
+                 "pair of vertices of the first argument,");
   elif not IsDigraphEdge(digraph, edge) then
     return digraph;
   fi;

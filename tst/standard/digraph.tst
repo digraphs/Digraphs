@@ -1345,11 +1345,23 @@ gap> gr3 := DigraphRemoveEdgeOrbit(gr2, [1, 8]);
 <digraph with 8 vertices, 24 edges>
 gap> gr3 = gr1;
 true
+gap> gr3 := DigraphRemoveEdgeOrbit(gr1, [1, 3]);
+<digraph with 8 vertices, 16 edges>
+gap> gr3 := DigraphRemoveEdgeOrbit(gr3, [1, 2]);
+<digraph with 8 vertices, 8 edges>
+gap> gr3 := DigraphRemoveEdgeOrbit(gr3, [1, 4]);
+<digraph with 8 vertices, 0 edges>
 gap> DigraphAddEdgeOrbit(gr1, [0,3]);
 Error, Digraphs: DigraphAddEdgeOrbit: usage,
 the second argument must be a pair of pos ints,
 gap> DigraphAddEdgeOrbit(gr1, [1,2,3]);
 Error, Digraphs: DigraphAddEdgeOrbit: usage,
+the second argument must be a pair of pos ints,
+gap> DigraphRemoveEdgeOrbit(gr1, [0,3]);
+Error, Digraphs: DigraphRemoveEdgeOrbit: usage,
+the second argument must be a pair of pos ints,
+gap> DigraphRemoveEdgeOrbit(gr1, [1,2,3]);
+Error, Digraphs: DigraphRemoveEdgeOrbit: usage,
 the second argument must be a pair of pos ints,
 gap> gr2 := DigraphAddEdgeOrbit(gr1, [1,4]);
 <digraph with 8 vertices, 24 edges>
@@ -1358,6 +1370,13 @@ true
 gap> DigraphAddEdgeOrbit(gr1, [3,9]);
 Error, Digraphs: DigraphAddEdgeOrbit: usage,
 the second argument must be a pair of vertices of the first argument,
+gap> DigraphRemoveEdgeOrbit(gr1, [3,9]);
+Error, Digraphs: DigraphRemoveEdgeOrbit: usage,
+the second argument must be a pair of vertices of the first argument,
+gap> gr2 := DigraphRemoveEdgeOrbit(gr1, [1,8]);
+<digraph with 8 vertices, 24 edges>
+gap> gr1 = gr2;
+true
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);

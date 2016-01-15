@@ -14,10 +14,6 @@
     A new digraph.
   </Returns>
   <Description>
-    This is apparently a common way of constructing a graph in the &Grape;
-    package.
-    <P/>
-
     If <A>G</A> is a permutation group, <A>edges</A> is an edge or list of
     edges, and <A>n</A> is a non-negative integer such that <A>G</A> fixes
     <C>[1 .. <A>n</A>]</C> setwise, then 
@@ -53,7 +49,8 @@ gap> RepresentativeOutNeighbours(digraph);
     This operation returns a new digraph with the same vertices and edges as
     <A>digraph</A> and with additional edges consisting of the orbit of the
     edge <A>edge</A> under the action of the <Ref Attr="DigraphGroup"/> of
-    <A>digraph</A>.
+    <A>digraph</A>.  If <A>edge</A> is already an edge in <A>digraph</A>, then
+    <A>digraph</A> is returns unchanged.
     <P/>
 
     An edge is simply a pair of vertices of <A>digraph</A>.
@@ -94,6 +91,8 @@ true
     This operation returns a new digraph with the same vertices as
     <A>digraph</A> and with the orbit of the edge <A>edge</A> (under the action
     of the <Ref Attr="DigraphGroup"/> of <A>digraph</A>) removed.
+    If <A>edge</A> is not an edge in <A>digraph</A>, then <A>digraph</A> is
+    returned unchanged.
     <P/>
     
     An edge is simply a pair of vertices of <A>digraph</A>.
