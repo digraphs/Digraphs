@@ -394,8 +394,7 @@ Binary Relation on 5 points
 gap> gr := Digraph(b);
 <digraph with 5 vertices, 11 edges>
 gap> gr := Digraph([1 .. 10], ReturnTrue);
-<digraph with 10 vertices, 100 edges>
-  ]]></Example>
+<digraph with 10 vertices, 100 edges>]]></Example>
 
       The next example illustrates the uses of the fourth and fifth variants of
       this constructor. The resulting digraph is a strongly regular graph, and

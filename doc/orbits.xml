@@ -30,8 +30,6 @@
     <Example><![CDATA[
 gap> n := 4;;
 gap> adj := function(x, y)
-  local group, digraph, ddigraph, sch, gens;
-  local group, digraph, ddigraph, sch, gens;
 >      return (((x-y) mod n) = 1) or (((x-y) mod n) = n-1);
 >    end;;
 gap> group := CyclicGroup(IsPermGroup, n);
@@ -182,7 +180,7 @@ Group(())
     <Ref Attr="DigraphGroup"/> on the set of vertices of <A>digraph</A>. 
     
     <Example><![CDATA[
-gap> G := Group((1,2,3), (1,2), (4,5,6), (7,9,9), (7,8));;
+gap> G := Group((1,2,3), (1,2), (4,5,6), (7,8,9), (7,8));;
 gap> gr := EdgeOrbitsDigraph(G, [1, 2]);
 <digraph with 9 vertices, 6 edges>
 gap> DigraphOrbits(gr);
@@ -222,7 +220,8 @@ gap> digraph := Digraph([[2, 3, 5], [1, 4, 6], [4, 2, 7], [3, 1, 8], [6, 8, 1],
 >                        [5, 7, 2], [8, 5, 3], [7, 6, 4]]);
 <digraph with 8 vertices, 24 edges>
 gap> DigraphGroup(digraph);
-Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)(4,7) ])
+Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)
+(4,7) ])
 gap> RepresentativeOutNeighbours(digraph);
 [ [ 2, 3, 5 ] ]]]></Example>
   </Description>
