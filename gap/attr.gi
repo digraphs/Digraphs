@@ -152,14 +152,6 @@ end);
 
 #
 
-InstallMethod(DigraphNrVertices, "for a digraph",
-[IsDigraph],
-function(graph)
-  return graph!.nrvertices;
-end);
-
-#
-
 InstallMethod(DigraphNrEdges, "for a digraph",
 [IsDigraph], DIGRAPH_NREDGES);
 
