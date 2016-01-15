@@ -19,7 +19,6 @@
     <#Include Label="AdjacencyMatrix">
     <#Include Label="DigraphAdjacencyFunction">
     <#Include Label="RangeSourceDigraph">
-    <#Include Label="RepresentativeOutNeighbours">
     <#Include Label="OutNeighbours">
     <#Include Label="InNeighbours">
     <#Include Label="OutDegrees">
@@ -49,4 +48,5 @@
     <#Include Label="DigraphLongestSimpleCircuit">
     <#Include Label="DigraphLayers">
   </Section>
+  
 </Chapter>

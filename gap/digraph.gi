@@ -121,7 +121,7 @@ function(G, obj, act, adj)
   SetDigraphAdjacencyFunction(digraph, adj_func);
   SetDigraphGroup(digraph, Range(hom));
   SetDigraphOrbits(digraph, orbits);
-  SetDigraphStabilizers(digraph, stabs);
+  SetDIGRAPHS_Stabilizers(digraph, stabs);
   SetDigraphSchreierVector(digraph, sch);
   SetRepresentativeOutNeighbours(digraph, rep_out);
 
