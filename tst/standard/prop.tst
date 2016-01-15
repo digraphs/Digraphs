@@ -750,6 +750,24 @@ gap> IsDistanceRegularDigraph(gr);
 true
 gap> IsDistanceRegularDigraph(ChainDigraph(5));
 false
+gap> IsDistanceRegularDigraph(EmptyDigraph(2));
+true
+gap> gr := Digraph([ [2], [1], [4], [3] ]);
+<digraph with 4 vertices, 4 edges>
+gap> IsDistanceRegularDigraph(gr);
+false
+gap> gr := Digraph([ [2], [1, 3], [2, 4], [3, 5, 6], [4, 6],  [4, 5] ]);
+<digraph with 6 vertices, 12 edges>
+gap> IsDistanceRegularDigraph(gr);
+false
+gap> gr := CompleteBipartiteDigraph(3, 4);
+<digraph with 7 vertices, 24 edges>
+gap> IsDistanceRegularDigraph(gr);
+false
+gap> gr := Digraph([ [], [3], [2] ]);
+<digraph with 3 vertices, 2 edges>
+gap> IsDistanceRegularDigraph(gr);
+false
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
