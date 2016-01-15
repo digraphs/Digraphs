@@ -567,7 +567,7 @@ end);
 
 #
 
-BindGlobal("DIGRAPHS_LocalParameters",
+BindGlobal("DIGRAPH_ConnectivityDataForVertex",
 function(digraph, v)
   local out_nbs, record, orbnum, reps, i, next, laynum, localGirth, layers,
         localParameters, sum, nprev, nhere, nnext, lnum, localDiameter,
@@ -679,7 +679,7 @@ function(digraph)
 
   for i in [1 .. Length(outer_reps)] do
     v := outer_reps[i];
-    record     := DIGRAPHS_LocalParameters(digraph, v);
+    record     := DIGRAPH_ConnectivityDataForVertex(digraph, v);
     localGirth := record.localGirth;
     localDiameter := record.localDiameter;
 
