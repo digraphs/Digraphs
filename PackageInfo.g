@@ -13,20 +13,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.3.1">
+##  <!ENTITY VERSION        "0.3.2">
 ##  <!ENTITY GAPVERS        "4.8.1">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.3.1">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.3.2">
 ##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Methods for digraphs and multidigraphs",
-Version := "0.3.1",
-Date := "13/01/2016",
-ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.3.1",
+Version := "0.3.2",
+Date := "14/01/2016",
+ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.3.2",
 ArchiveFormats := ".tar.gz",
 Persons := [
 

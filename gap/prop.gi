@@ -377,7 +377,7 @@ function(graph)
   local reps, record, localParameters, localDiameter, i;
 
   reps            := DigraphOrbitReps(graph);
-  record          := DIGRAPHS_LocalParameters(graph, reps[1]);
+  record          := DIGRAPH_ConnectivityDataForVertex(graph, reps[1]);
   localParameters := record.localParameters;
   localDiameter   := record.localDiameter;
 
@@ -398,7 +398,7 @@ function(graph)
   fi;
 
   for i in [2 .. Length(reps)] do
-     record := DIGRAPHS_LocalParameters(graph, reps[2]);
+     record := DIGRAPH_ConnectivityDataForVertex(graph, reps[2]);
      if record.localDiameter <> localDiameter then
         return false;
      fi;
