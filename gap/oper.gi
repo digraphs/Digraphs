@@ -1250,7 +1250,7 @@ end);
 InstallMethod(DigraphLayers, "for a digraph, and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
-  local layers, layers_with_orbnums, orbs, i, x;
+  local layers, layers_with_orbnums, stab, orbs, i, x;
 
   if v > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphLayers: usage,\n",
@@ -1259,8 +1259,13 @@ function(digraph, v)
 
   layers := [[v]];
   layers_with_orbnums := DIGRAPH_ConnectivityDataForVertex(digraph, v).layers;
-  orbs := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
-                          DigraphVertices(digraph)).orbits;
+  if HasDigraphGroup(digraph) then 
+    stab := DigraphStabilizer(digraph, v);
+  else
+    stab := Group(());
+  fi;
+
+  orbs := DIGRAPHS_Orbits(stab, DigraphVertices(digraph)).orbits;
 
   for i in [2 .. Length(layers_with_orbnums)] do
     Add(layers, []);
