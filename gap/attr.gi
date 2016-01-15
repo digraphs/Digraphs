@@ -8,33 +8,41 @@
 #############################################################################
 ##
 
-InstallMethod(OutNeighbours,
-"for a digraph with representative out neighbours and group",
-[IsDigraph and HasRepresentativeOutNeighbours and HasDigraphGroup],
-function(digraph)
-  local gens, sch, reps, out, trace, word, i, w;
+#
+# The following method is currently useless, as the OutNeighbours are computed
+# and set whenever a digraph is created.  It could be reinstated later if we
+# decide to allow digraphs to exist without known OutNeighbours.
+#
 
-  gens := GeneratorsOfGroup(DigraphGroup(digraph));
-  sch  := DigraphSchreierVector(digraph);
-  reps := RepresentativeOutNeighbours(digraph);
+# InstallMethod(OutNeighbours,
+# "for a digraph with representative out neighbours and group",
+# [IsDigraph and HasRepresentativeOutNeighbours and HasDigraphGroup],
+# function(digraph)
+#   local gens, sch, reps, out, trace, word, i, w;
+#
+#   gens := GeneratorsOfGroup(DigraphGroup(digraph));
+#   sch  := DigraphSchreierVector(digraph);
+#   reps := RepresentativeOutNeighbours(digraph);
+#
+#   out  := EmptyPlist(DigraphNrVertices(digraph));
+#
+#   for i in [1 .. Length(sch)] do
+#     if sch[i] < 0 then
+#       out[i] := reps[-sch[i]];
+#     fi;
+#
+#     trace  := DIGRAPHS_TraceSchreierVector(gens, sch, i);
+#     out[i] := out[-sch[trace.representative]];
+#     word   := trace.word;
+#     for w in word do
+#        out[i] := OnTuples(out[i], gens[w]);
+#     od;
+#   od;
 
-  out  := EmptyPlist(DigraphNrVertices(digraph));
+#   return out;
+# end);
 
-  for i in [1 .. Length(sch)] do
-    if sch[i] < 0 then
-      out[i] := reps[-sch[i]];
-    fi;
-
-    trace  := DIGRAPHS_TraceSchreierVector(gens, sch, i);
-    out[i] := out[-sch[trace.representative]];
-    word   := trace.word;
-    for w in word do
-       out[i] := OnTuples(out[i], gens[w]);
-    od;
-  od;
-
-  return out;
-end);
+#
 
 InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
 function(digraph)
@@ -47,6 +55,8 @@ function(digraph)
   return func;
 end);
 
+#
+
 InstallMethod(AsTransformation, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -55,6 +65,8 @@ function(digraph)
   fi;
   return Transformation(Concatenation(OutNeighbours(digraph)));
 end);
+
+#
 
 InstallMethod(ReducedDigraph, "for a digraph",
 [IsDigraph],
@@ -111,6 +123,8 @@ function(digraph)
   return gr;
 end);
 
+#
+
 InstallMethod(DigraphDual, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -134,14 +148,6 @@ function(digraph)
     SetDigraphGroup(gr, DigraphGroup(digraph));
   fi;
   return gr;
-end);
-
-#
-
-InstallMethod(DigraphNrVertices, "for a digraph",
-[IsDigraph],
-function(graph)
-  return graph!.nrvertices;
 end);
 
 #

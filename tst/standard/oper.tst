@@ -1446,6 +1446,9 @@ gap> DigraphLayers(gr, 3);
 [ [ 3 ], [ 2, 4, 7 ], [ 1, 5, 6, 8 ] ]
 gap> DigraphLayers(gr, 4);
 [ [ 4 ], [ 1, 3, 8 ], [ 2, 5, 6, 7 ] ]
+gap> DigraphLayers(gr, 10);
+Error, Digraphs: DigraphLayers: usage,
+the argument <v> must be a vertex of <digraph>,
 
 #T# DigraphDistancesSet
 gap> gr := ChainDigraph(10);                                               
@@ -1466,6 +1469,15 @@ the second argument must be a vertex of the digraph,
 gap> DigraphDistanceSet(gr, 10, ["string", 1]);
 Error, Digraphs: DigraphDistanceSet: usage,
 the third argument must be a list of non negative integers,
+gap> gr := DigraphFromDigraph6String("+GUIQQWWXHHPg");;
+gap> DigraphDistanceSet(gr, 1, [3,7]);
+[  ]
+gap> DigraphDistanceSet(gr, 1, [1]);  
+[ 2, 3, 5 ]
+gap> DigraphDistanceSet(gr, 1, [1,2]);
+[ 2, 3, 5, 4, 6, 7, 8 ]
+gap> DigraphDistanceSet(gr, 2, [2]);  
+[ 3, 5, 7, 8 ]
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);

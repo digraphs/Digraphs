@@ -1119,13 +1119,18 @@ gap> DigraphLayers(gr,1);
 
 <#GAPDoc Label="DigraphDistanceSet">
 <ManSection>
-  <Oper Name="DigraphDistanceSet" Arg="digraph, vertex, distance"/>
-  <Oper Name="DigraphDistanceSet" Arg="digraph, vertex, distances"/>
+  <Oper Name="DigraphDistanceSet" Label="for a digraph and two pos ints" Arg="digraph, vertex, distance"/>
+  <Oper Name="DigraphDistanceSet" Label="for a digraph, a pos int, and a list" Arg="digraph, vertex, distances"/>
   <Returns>A list of vertices</Returns>
   <Description>
     This operation returns the list of all vertices in digraph <A>digraph</A>
     such that the shortest distance to a vertex <A>vertex</A> is
-    <A>distance</A> or is in the list <A>distances</A>. 
+    <A>distance</A> or is in the list <A>distances</A>. <P/>
+
+    <A>digraph</A> should be a digraph, <A>vertex</A> should be a positive
+    integer, <A>distance</A> should be a positive integer, and <A>distances</A>
+    should be a list of positive integers.
+
     <Example><![CDATA[
 gap> gr := Digraph([ [2], [3], [1,4], [1,3] ]);
 <digraph with 4 vertices, 6 edges>

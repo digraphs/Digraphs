@@ -13,10 +13,10 @@
   <Attr Name="DigraphAdjacencyFunction" Arg="digraph"/>
   <Returns>A function.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, then <C>DigraphAdjacencyFunction</C>
-    returns a function with two vertices <C>x, y</C> which returns
-    <K>true</K> if the vertices labelled by <C>x</C> and <C>y</C> are adjacent
-    in <A>digraph</A> and <K>false</K> if they are not. 
+    If <A>digraph</A> is a digraph, then <C>DigraphAdjacencyFunction</C> returns
+    a function which takes two integer parameters <C>x, y</C> and returns
+    <K>true</K> if there exists an edge from vertex <C>x</C> to vertex <C>y</C>
+    in <A>digraph</A> and <K>false</K> if not.
     
     <Example><![CDATA[
 gap> digraph := Digraph([[1, 2], [3], []]);
@@ -306,7 +306,6 @@ gap> OutNeighboursCopy(gr);
   </Description>
 </ManSection>
 <#/GAPDoc>
-
 
 <#GAPDoc Label="InNeighbours">
 <ManSection>
