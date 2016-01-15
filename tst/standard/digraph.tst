@@ -1217,6 +1217,10 @@ gap> ddigraph := BipartiteDoubleDigraph(digraph);
 <digraph with 8 vertices, 6 edges>
 gap> DigraphGroup(ddigraph);
 Group([ (2,3)(6,7), (2,4)(6,8), (1,5)(2,6)(3,7)(4,8) ])
+gap> ddigraph := DoubleDigraph(digraph);
+<digraph with 8 vertices, 12 edges>
+gap> DigraphGroup(ddigraph);
+Group([ (2,3)(6,7), (2,4)(6,8), (1,5)(2,6)(3,7)(4,8) ])
 
 #T# (Bipartite)DoubleDigraph with multidigraph
 gap> gr := Digraph([[2,3], [1], []]);;
