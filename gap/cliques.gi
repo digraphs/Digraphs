@@ -367,6 +367,27 @@ end);
 
 #
 
+#InstallGlobalFunction(DIGRAPHS_Cliques,
+#function(arg)
+#  arg := arg[1];
+#  all := arg[1]; # are we finding all cliques (<all> = true) or orbit reps
+#  gr := arg[2];
+#  grp := DigraphGroup(gr);
+#  inc := arg[3];
+#  if not all then
+#    # check that inc is invariant grp
+#  fi;
+#  exc := arg[4];
+#  if not all then
+#    # check that exc is invariant under grp
+#  fi;
+#  lim := arg[5];
+#  size := arg[6];
+#  calculate cliques
+#  store cliques if applicable
+#  return cliques;
+#end);
+
 InstallGlobalFunction(DigraphMaximalCliques,
 function(arg)
   local gr, G, include, reps, out, exclude, limit, size, exclude_invariant,
@@ -403,6 +424,7 @@ function(arg)
     out := Concatenation(List(c, x -> Orbit(G, x, OnSets)));
     SetDigraphMaximalCliquesAttr(gr, out);
     return out;
+
   else
     include := [];
   fi;
@@ -445,35 +467,6 @@ function(arg)
     size := fail;
   fi;
 
-  # Calculate which orbits (if any) exclude contains
-  exclude_invariant := [];
-  exclude_variant := [];
-  while not IsEmpty(exclude) do
-    v := exclude[1];
-    orb := List(Orbit(G, v));
-    int := Intersection(exclude, orb);
-    if IsSubset(int, orb) then # int = orb
-      Append(exclude_invariant, int);
-    else
-      Append(exclude_variant, int);
-    fi;
-    exclude := Difference(exclude, int);
-  od;
-
-  # Calculate which orbits (if any) include contains
-  include_invariant := [];
-  include_variant := [];
-  while not IsEmpty(include) do
-    v := include[1];
-    orb := List(Orbit(G, v));
-    int := Intersection(include, orb);
-    if IsSubset(int, orb) then # int = orb
-      Append(include_invariant, int);
-    else
-      Append(include_variant, int);
-    fi;
-    include := Difference(include, int);
-  od;
 
   # Decide whether we need to collect all results as we go
   # Or just orbit representatives
@@ -506,179 +499,303 @@ function(arg)
 end);
 
 ################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
 
 InstallGlobalFunction(DIGRAPHS_BronKerbosch,
-function(gr, include_invariant, include_variant, exclude_invariant, exclude_variant, limit, group, all, size)
-  local include, exclude, add_valid_cliques_in_orbit, recurse, mat, verts,
-  degrees, looking_for_size, clique_start, try_start, cliques, count, found, x;
+function(gr, inc, exc, lim, size, max, reps)
+  local vtx, grp, invariant_inc, invariant_exc, inc_var, exc_var, x, v, o, i,
+  invariant, adj, deg, all, exc_inv, start, possible, add, bk, out, num;
 
-  # Check that our initial `clique` is actually a clique
-  # And that the include and exclude sets are disjoint
-  include := Concatenation(include_invariant, include_variant);
-  exclude := Concatenation(exclude_invariant, exclude_variant);
-  if not IsClique(gr, include) then
+  # Arguments should be:
+  # gr   - a digraph
+  # inc  - a duplicate-free list of vertices of <gr>
+  # exc  - a duplicate-free list of vertices of <gr>
+  # lim  - a positive integer or infinity
+  # size - a positive integer
+  # max  - do we care whether the results are maximal?
+  # reps - do we want to return all valid results or orbit representatives?
+
+
+  ##############################################################################
+  # Validate arguments
+  if not IsDigraph(gr) then
+    Error("needs to be a digraph");
+  fi;
+
+  vtx := DigraphVertices(gr);
+  grp := DigraphGroup(gr);
+
+  if not (IsList(inc) and IsDuplicateFreeList(inc) and IsSubset(vtx, inc))
+      or not (IsList(exc) and IsDuplicateFreeList(exc) and IsSubset(vtx, exc))
+      then
+    Error("must be duplicate-free subset of the vertices");
+  fi;
+
+  if not IsClique(gr, inc) then # the set we wish to extend is not a clique
     return [];
-  elif not IsEmpty(Intersection(include, exclude)) then
+  elif ForAny(exc, x -> x in inc) then # the clique contains excluded vertices
     return [];
   fi;
 
-  # Function to calculate valid cliques in the orbit of an orb representative
-  add_valid_cliques_in_orbit := function(clique)
+  if not (lim = infinity or IsPosInt(lim)) then
+    Error("lim must be a posint or inifinity");
+  fi;
+
+  if not (size = fail or IsPosInt(size)) then
+    Error("size must be a posint or fail");
+  fi;
+
+  if not (max = true or max = false) then
+    Error("max must be true or false");
+  fi;
+
+  gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
+
+  # Investigate whether <inc> and <exc> are invariant under <grp>
+  invariant_inc := true;
+  invariant_exc := true;
+  inc_var := [];
+  exc_var := [];
+
+  if IsTrivial(grp) then
+    grp := fail;
+  else
+    if not ForAll(GeneratorsOfGroup(grp), x -> IsSubset(inc, OnTuples(inc, x)))
+        then 
+      invariant_inc := false;
+      if not reps then
+        x := ShallowCopy(inc);
+        while not IsEmpty(x) do
+          v := x[1];
+          o := List(Orbit(grp, v));
+          i := Intersection(x, o);
+          if not IsSubset(x, o) then
+            Append(inc_var, i);
+          fi;
+          x := Difference(x, i);
+        od;
+      fi;
+    fi;
+    if not ForAll(GeneratorsOfGroup(grp), x -> IsSubset(exc, OnTuples(exc, x)))
+         then
+      invariant_exc := false;
+      if not reps then
+        x := ShallowCopy(exc);
+        while not IsEmpty(x) do
+          v := x[1];
+          o := List(Orbit(grp, v));
+          i := Intersection(x, o);
+          if not IsSubset(x, o) then
+            Append(exc_var, i);
+          fi;
+          x := Difference(x, i);
+        od;
+      fi;
+    fi;
+    if reps and not (invariant_inc and invariant_exc) then
+      Error("inv and exc must be invariant if you want reps");
+    fi;
+  fi;
+  invariant := invariant_inc and invariant_exc;
+
+  adj := BooleanAdjacencyMatrix(gr);
+  deg := OutDegrees(gr);
+
+  ##############################################################################
+  # Test for easy cases
+  if Length(inc) = DigraphNrVertices(gr) then # the clique is all of <gr>
+    return [inc];
+  elif size <> fail
+      and size > DigraphNrVertices(gr) then # the desired clique size is too big
+    return [];
+  fi;
+
+  # Variables
+  # gr    - a symmetric digraph without loops and multiple edges whose cliques
+  #         coincide with those of the original digraph
+  # adj   - boolean adjacency matrix of <gr>
+  # vtx   - DigraphVertices(gr)
+  # deg   - OutDegrees(gr)
+  # num   - number of results found so far
+  # out   - the list of results
+  # grp   - a perm group, a subgroup of the automorphism group of <gr>
+  # invariant_inc - is inc invariant under grp?
+  # invariant_exc - is exc invariant under grp?
+  # inc_var - the subset of inc whose orbit is not contained in inc
+  # exc_var - the subset of exc whose orbit is not contained in exc
+  # exc_inv - the subset of exc whose orbit is contained in exc
+
+  ##############################################################################
+  # Preparation, and processing of variables
+
+  # Decide whether we enumerate clique orbits as we find new results
+  all := not reps and (not invariant or lim < infinity);
+
+  inc_var  := BlistList(vtx, inc_var);
+  exc_var  := BlistList(vtx, exc_var);
+  exc_inv  := DifferenceBlist(BlistList(vtx, exc), exc_var);
+  start    := BlistList(vtx, inc);
+  possible := BlistList(vtx, vtx);
+  SubtractBlist(possible, start);
+  for x in inc do
+    IntersectBlist(possible, adj[x]);
+  od;
+  
+  # Function to find the valid cliques of an orbit given an orbit rep
+  add := function(c)
+    local orb, n, i;
+
+    c := ListBlist(vtx, c);
+    if not all then # we are only looking for orbit reps, so add the rep
+      Add(out, c);
+      num := num + 1;
+      return;
+    fi;
+
+    orb := Orbit(grp, c, OnSets);
+    n := Length(orb);
+    if invariant then # we're not just looking for orbit reps, but there is
+                      # nothing extra to check
+      n := Minimum(lim - num, n);
+      Append(out, orb{[1 .. n]});
+      num := num + n;
+      return;
+    fi;
+
+    if invariant_inc then
+      # Cliques in the orbit might contain forbidden vertices
+      i := 0;
+      while i < n and num < lim do
+        i := i + 1;
+        c := BlistList(vtx, orb[i]);
+        if not ForAny(IntersectionBlist(exc_var, c)) then
+          Add(out, orb[i]);
+          num := num + 1;
+        fi;
+      od;
+    elif invariant_exc then
+      # Cliques in the orbit might not contain all required vertices
+      i := 0;
+      while i < n and num < lim do
+        i := i + 1;
+        c := BlistList(vtx, orb[i]);
+        if IsSubsetBlist(c, inc_var) then
+          Add(out, orb[i]);
+          num := num + 1;
+        fi;
+      od;
+    else
+      # Cliques in the orbit might contain forbidden vertices
+      # Cliques in the orbit might not contain all required vertices
+      i := 0;
+      while i < n and num < lim do
+        i := i + 1;
+        c := BlistList(vtx, orb[i]);
+        if not ForAny(IntersectionBlist(exc_var, c))
+            and IsSubsetBlist(c, inc_var) then
+          Add(out, orb[i]);
+          num := num + 1;
+        fi;
+      od;
+    fi;
+    return;
   end;
 
-  # Main recursive algorithm
-  recurse := function(clique, try_arg, forbid_arg, G, depth)
-    local try, forbid, trivial, orbits, try_blist, max, pivot, ptry, v,
-    new_clique, H, orb, n;
+  # Main recursive function
+  bk := function(c, try, ban, G, d)
+    local orb, try_orb, top, piv, m, to_try, C, g, v;
 
-    count := count + 1;
-    trivial := G = fail or IsTrivial(G);
+    # <c> is a new clique rep
+    if not max and size <> fail and size = d then
+      # <c> has the desired size and we don't care about maximality
+      add(c);
+      return;
+    fi;
 
-    # Has a maximal clique representative been found?
-    if not ForAny(try_arg, x -> x) and not ForAny(forbid_arg, x -> x) then
-      clique := ListBlist(verts, clique);
-
-      if all then
-        # We are returning *all* maximal cliques, not just representatives
-        orb := Orbit(group, clique, OnSets);
-
-        if not exclude_variant = fail or not include_variant = fail then
-          # The orbit may contain forbidden vertices or
-          # The orbit may not contain all the required vertices
-          orb := List(orb);
-          if not exclude_variant = fail and not include_variant = fail then
-            while not IsEmpty(orb) and found < limit do
-              clique := Remove(orb);
-              if IsEmpty(Intersection(exclude_variant, clique))
-                  and IsSubset(clique, include_variant) then
-                Add(cliques, clique);
-                found := found + 1;
-              fi;
-            od;
-          elif not exclude_variant = fail then
-            while not IsEmpty(orb) and found < limit do
-              clique := Remove(orb);
-              if IsEmpty(Intersection(exclude_variant, clique)) then
-                Add(cliques, clique);
-                found := found + 1;
-              fi;
-            od;
-          else
-            while not IsEmpty(orb) and found < limit do
-              clique := Remove(orb);
-              if IsSubset(clique, include_variant) then
-                Add(cliques, clique);
-                found := found + 1;
-              fi;
-            od;
-          fi;
-        else
-          # limit < infinity so the orbit may give us too many results
-          n := Minimum(limit - found, Length(orb));
-          Append(cliques, orb{[1 .. n]});
-          found := found + n;
-        fi;
-      else
-        Add(cliques, clique);
-        found := found + 1;
+    if not ForAny(ban, x -> x) and not ForAny(try, x -> x) then
+      if (size = fail or size = d) then
+        # <c> is a new maximal clique rep and it has the right size
+        add(c);
+        return;
       fi;
       return;
     fi;
 
-    try := ShallowCopy(try_arg);
-    forbid := ShallowCopy(forbid_arg);
-    if not trivial then
-      orbits := Orbits(G, ListBlist(verts, try));
-      try_blist := BlistList(verts, List(orbits, x -> x[1]));
-    else
-      try_blist := try;
+    d := d + 1;
+    if size <> fail and size < d then
+      return;
     fi;
 
-    # Choose a pivot: vertex with maximum outdegree
-    #                 vertex with maximum outdegree amongst try might be
-    #                 faster but is more expensive - perhaps take a sample?
-    max := -1;
-    pivot := 0;
-    for v in ListBlist(verts, UnionBlist(try_blist, forbid)) do
-      if degrees[v] > max then
-        pivot := v;
-        max := degrees[v];
-      fi;
-    od;
+    # TODO should this come after choosing the pivot or before?
+    orb := ListBlist(vtx, UnionBlist(try, ban));
+    if not G = fail then # Use the group <G> to prune the vertices to try
+      orb := Orbits(G, orb);
+      orb := List(orb, x -> x[1]);
+      try_orb := IntersectionBlist(BlistList(vtx, orb), try);
+    else
+      try_orb := ShallowCopy(try);
+    fi;
 
-    # Try to extend clique
-    ptry := ListBlist(verts, DifferenceBlist(try_blist, mat[pivot]));
-    ptry := ShallowCopy(ptry);
-    while not IsEmpty(ptry) do
-      v := Remove(ptry);
-      new_clique := ShallowCopy(clique);
-      new_clique[v] := true;
-      if trivial then
-        H := fail;
-      else
-        H := Stabilizer(G, v);
-      fi;
-      # Are we allowed to add [v] to our clique?
-      if not exclude_invariant[v] then
-        recurse(new_clique,
-                IntersectionBlist(try, mat[v]),
-                IntersectionBlist(forbid, mat[v]),
-                H,
-                depth + 1);
+    # If we are searching for *maximal* cliques then choose a pivot
+    if max then
+      # Choose a pivot: choose a vertex with maximum out-degree in try or ban
+      # TODO optimise choice of pivot
+      #top := -1;
+      #piv := 0;
+      #for v in orb do
+      #  if deg[v] > top then
+      #    piv := v;
+      #    top := deg[v];
+      #  fi;
+      #od;
+
+      # Is this a better way of choosing a pivot?
+      top := -1;
+      piv := 0;
+      for v in orb do
+        m := SizeBlist(IntersectionBlist(try_orb, adj[v]));
+        if m > top then
+          piv := v;
+          top := m;
+        fi;
+      od;
+      to_try := ShallowCopy(ListBlist(vtx, DifferenceBlist(try_orb,
+                                                           adj[piv])));
+    else
+      # If we are searching for cliques (not necessarily maximal) of a given
+      # size then the logic of using a pivot doesn't work
+      to_try := ListBlist(vtx, try_orb);
+    fi;
+
+    # Try to extend <c> and recurse
+    for v in to_try do
+      if not exc_inv[v] then # We are allowed to add <v> to <c>
+        C := ShallowCopy(c);
+        C[v] := true;
+        if G = fail then
+          g := fail;
+        else
+          g := Stabilizer(G, v); # Calculate the stabilizer of <v> in <G>
+          if IsTrivial(g) then
+            g := fail; # Discard the group from this point as it is trivial
+          fi;
+        fi;
+        bk(C, IntersectionBlist(try, adj[v]), IntersectionBlist(ban, adj[v]),
+           g, d); # Recurse
       fi;
       try[v] := false;
-      forbid[v] := true;
-      # Have we found enough cliques?
-      if limit = found then
-        return;
+      ban[v] := true;
+      if lim = num then
+        return; # The limit of cliques has been reached
       fi;
     od;
   end;
 
-  if IsEmpty(include_variant) then
-    include_variant := fail;
-  fi;
-  if IsEmpty(exclude_variant) then
-    exclude_variant := fail;
-  fi;
-  gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
-  mat := BooleanAdjacencyMatrix(gr);
-  verts := DigraphVertices(gr);
-  degrees := OutDegrees(gr);
-  looking_for_size := not size = fail;
+  out := [];
+  num := 0;
+  bk(start, possible, BlistList(vtx, []), grp, Length(inc));
 
-  # I need to check that the next 10 or so lines are correct
-  # Prepare the initial sets
-  clique_start := BlistList(verts, include);
-  exclude_invariant := BlistList(verts, exclude_invariant);
-  include_invariant := BlistList(verts, include_invariant);
-  try_start := BlistList(verts, verts);
-  SubtractBlist(try_start, clique_start);
-  for x in include do
-    IntersectBlist(try_start, mat[x]);
-  od;
-
-  cliques := [];
-  count := 0;
-  found := 0;
-  recurse(clique_start, try_start, BlistList(verts, []), group,
-          Length(clique_start));
-  Print(count, " recursions, found ", found, " valid results\n");
-  return cliques;
+  if not reps and not all then
+    out := Concatenation(List(out, x -> Orbit(grp, x, OnSets))); 
+  fi;
+  return out;
 end);
