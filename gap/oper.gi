@@ -1257,7 +1257,7 @@ function(digraph, v)
   fi;
 
   layers := [[v]];
-  layers_with_orbnums := DIGRAPHS_LocalParameters(digraph, v).layers;
+  layers_with_orbnums := DIGRAPH_ConnectivityDataForVertex(digraph, v).layers;
   orbs := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
                           DigraphVertices(digraph)).orbits;
 
