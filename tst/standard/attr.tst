@@ -120,6 +120,20 @@ gap> DigraphVertexLabels(gr2);
 [ 4, 3, 2, 1 ]
 gap> DigraphNrVertices(gr2);
 4
+gap> gr := Digraph([[1], [1,3], [1,2]]);
+<digraph with 3 vertices, 5 edges>
+gap> DigraphGroup(gr) = Group( ( 2, 3 ) );
+true
+gap> gr2 := DigraphDual(gr);
+<digraph with 3 vertices, 4 edges>
+gap> OutNeighbours(gr2);
+[ [ 2, 3 ], [ 2 ], [ 3 ] ]
+gap> HasDigraphGroup(gr2);
+true
+gap> DigraphGroup(gr2) = Group( ( 2, 3 ) );
+true
+gap> DigraphGroup(gr2) = DigraphGroup(gr);
+true
 
 #T# AdjacencyMatrix
 gap> gr := Digraph(rec(nrvertices := 10,
