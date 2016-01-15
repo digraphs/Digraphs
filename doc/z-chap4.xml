@@ -53,9 +53,27 @@
   </Section>
 
   <Section><Heading>Finding cliques and independent sets</Heading>
+
+    The number of cliques and independent sets of a digraph - indeed, even the
+    number of maximal ones - can be very large relative to the number of
+    vertices, and so for even relatively small digraphs the computation of
+    particular types of these sets can be very lengthy. The algorithms used to
+    calculate cliques and independent sets make use of the <Ref
+      Attr="DigraphGroup"/> of <A>digraph</A> to reduce the search space.
+    Therefore the speed of computation may be improved if the <Ref
+      Attr="DigraphGroup"/> of the <A>digraph</A> is as large as possible.
+    <P/>
+    
+    The algorithms used to calculate cliques and independent sets are
+    based on the Bron-Kerbosch algorithm.
+
     <#Include Label="IsClique">
-    <#Include Label="IsIndependentSet">
+    <#Include Label="DigraphClique">
+    <#Include Label="DigraphCliquesOfSize">
     <#Include Label="DigraphMaximalCliques">
+    <#Include Label="IsIndependentSet">
+    <#Include Label="DigraphIndependentSet">
+    <#Include Label="DigraphIndependentSetsOfSize">
     <#Include Label="DigraphMaximalIndependentSets">
   </Section>
 </Chapter>
