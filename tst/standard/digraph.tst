@@ -1092,14 +1092,18 @@ gap> G := DihedralGroup(8);
 <pc group of size 8 with 3 generators>
 gap> digraph := Digraph(AsSet(G), ReturnTrue);
 <digraph with 8 vertices, 64 edges>
-gap> gr := Digraph("abcd", function(i,j) return i<j; end); 
+gap> HasOutNeighbours(digraph);
+true
+gap> digraph := Digraph("abcd", function(i,j) return i<j; end);
 <digraph with 4 vertices, 6 edges>
-gap> gr := Digraph([1..10], function(i,j) return i=j+1; end);
+gap> digraph := Digraph([1..10], function(i,j) return i=j+1; end);
 <digraph with 10 vertices, 9 edges>
-gap> gr := Digraph(["hello","world",13,true,(1,4,3)],
+gap> digraph := Digraph(["hello","world",13,true,(1,4,3)],
 >                  function(i,j) return j="world"; end);
 <digraph with 5 vertices, 5 edges>
-gap> IsDigraphWithAdjacencyFunction(gr);
+gap> IsDigraphWithAdjacencyFunction(digraph);
+true
+gap> HasOutNeighbours(digraph);
 true
 
 #T# Digraphs with known automorphisms
