@@ -68,7 +68,7 @@ InstallMethod(Digraph,
 [IsGroup, IsListOrCollection, IsFunction, IsFunction],
 function(G, obj, act, adj)
   local hom, dom, sch, orbits, reps, stabs, rep_out, out, gens, trace, word,
-        digraph, i, o, w;
+        digraph, i, o, w, dig_adj;
 
   hom    := ActionHomomorphism(G, obj, act, "surjective");
   dom    := [1 .. Size(obj)];
@@ -112,9 +112,14 @@ function(G, obj, act, adj)
   od;
 
   digraph := DigraphNC(out);
-  SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
 
-  SetDigraphAdjacencyFunction(digraph, adj);
+  # Create adjacency function that takes integers
+  dig_adj := function(i,j)
+    return adj(obj[i], obj[j]);
+  end;
+
+  SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
+  SetDigraphAdjacencyFunction(digraph, dig_adj);
   SetDigraphGroup(digraph, Range(hom));
   SetDigraphOrbits(digraph, orbits);
   SetDigraphStabilizers(digraph, stabs);
@@ -177,7 +182,6 @@ function(G, gens)
   end;
   cayleydigraph := Digraph(G, AsList(G), OnRight, adj);
   SetFilterObj(cayleydigraph, IsCayleyDigraph);
-  SetFilterObj(cayleydigraph, IsDigraphWithAdjacencyFunction);
   return cayleydigraph;
 end);
 
@@ -1202,10 +1206,17 @@ end);
 # Note: if at some point we don't store all of the out neighbours, then this
 # can be improved. JDM
 
-InstallMethod(EdgeOrbitsDigraph, "for a perm group, list, and pos int",
-[IsPermGroup, IsList, IsPosInt],
+InstallMethod(EdgeOrbitsDigraph, "for a perm group, list, and int",
+[IsPermGroup, IsList, IsInt],
 function(G, edges, n)
   local out, o, digraph, e, f;
+
+  if n < 0 then
+    ErrorMayQuit("Digraphs: EdgeOrbitsDigraph: usage,\n",
+                 "the third argument must be a non-negative integer,");
+  elif n = 0 then
+    return EmptyDigraph(0);
+  fi;
 
   if IsPosInt(edges[1]) then   # E consists of a single edge
     edges := [edges];
@@ -1246,7 +1257,12 @@ function(digraph, edge)
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
     ErrorMayQuit("Digraphs: DigraphAddEdgeOrbit: usage,\n",
-                 "the second argument must be a pairs of pos ints,");
+                 "the second argument must be a pair of pos ints,");
+  elif not (edge[1] in DigraphVertices(digraph)
+            and edge[2] in DigraphVertices(digraph)) then
+    ErrorMayQuit("Digraphs: DigraphAddEdgeOrbit: usage,\n",
+                 "the second argument must be a ",
+                 "pair of vertices of the first argument,");
   elif IsDigraphEdge(digraph, edge) then
     return digraph;
   fi;
@@ -1275,7 +1291,12 @@ function(digraph, edge)
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
     ErrorMayQuit("Digraphs: DigraphRemoveEdgeOrbit: usage,\n",
-                 "the second argument must be a pairs of pos ints,");
+                 "the second argument must be a pair of pos ints,");
+  elif not (edge[1] in DigraphVertices(digraph)
+            and edge[2] in DigraphVertices(digraph)) then
+    ErrorMayQuit("Digraphs: DigraphRemoveEdgeOrbit: usage,\n",
+                 "the second argument must be a ",
+                 "pair of vertices of the first argument,");
   elif not IsDigraphEdge(digraph, edge) then
     return digraph;
   fi;

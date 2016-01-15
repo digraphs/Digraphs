@@ -14,12 +14,8 @@
     A new digraph.
   </Returns>
   <Description>
-    This is apparently a common way of constructing a graph in the &Grape;
-    package.
-    <P/>
-
     If <A>G</A> is a permutation group, <A>edges</A> is an edge or list of
-    edges, and <A>n</A> is a positive integer such that <A>G</A> fixes 
+    edges, and <A>n</A> is a non-negative integer such that <A>G</A> fixes
     <C>[1 .. <A>n</A>]</C> setwise, then 
     this operation returns a new digraph with <A>n</A> vertices and the union
     of the orbits of the edges in <A> edges </A> under the action of the
@@ -53,7 +49,8 @@ gap> RepresentativeOutNeighbours(digraph);
     This operation returns a new digraph with the same vertices and edges as
     <A>digraph</A> and with additional edges consisting of the orbit of the
     edge <A>edge</A> under the action of the <Ref Attr="DigraphGroup"/> of
-    <A>digraph</A>.
+    <A>digraph</A>.  If <A>edge</A> is already an edge in <A>digraph</A>, then
+    <A>digraph</A> is returns unchanged.
     <P/>
 
     An edge is simply a pair of vertices of <A>digraph</A>.
@@ -94,6 +91,8 @@ true
     This operation returns a new digraph with the same vertices as
     <A>digraph</A> and with the orbit of the edge <A>edge</A> (under the action
     of the <Ref Attr="DigraphGroup"/> of <A>digraph</A>) removed.
+    If <A>edge</A> is not an edge in <A>digraph</A>, then <A>digraph</A> is
+    returned unchanged.
     <P/>
     
     An edge is simply a pair of vertices of <A>digraph</A>.
@@ -366,7 +365,10 @@ true]]></Example>
         of <A>G</A>. Then this variant of the constructor returns a digraph with vertices the objects of <A>list</A>
         and directed edges <C>[x,y]</C> when <C>f(x,y)</C> is <C>true</C>. The action of the group <A>G</A> on the
         objects in <A>list</A> is a permutation group that is stored in the attribute <Ref Attr="DigraphGroup"/>,
-        and this group is used to speed up operations like <Ref Oper="DigraphDiameter"/>.
+        and this group is used to speed up operations like <Ref Oper="DigraphDiameter"/>.<P/>
+        The second example illustrates the use of the second and third variant of this constructor. The resulting digraph
+        is a strongly regular graph, and it is actually the point graph of the van Lint-Schrijver partial geometry, <Cite Key="vanLintSchrijver1981"/>.
+        The algebraic description is taken from the seminal paper of Calderbank and Kantor <Cite Key="CalderbankKantor1986"/>.
         </Item>
 
     </List>
@@ -408,6 +410,12 @@ gap> adj := function(x,y)
 > end;
 function( x, y ) ... end
 gap> digraph := Digraph(List(f),adj);
+<digraph with 81 vertices, 2430 edges>
+gap> group := Group(Z(3));
+<group with 1 generators>
+gap> act := \*;
+<Operation "*">
+gap> digraph := Digraph(group,List(f),act,adj);
 <digraph with 81 vertices, 2430 edges>
 ]]></Example>
   </Description>
