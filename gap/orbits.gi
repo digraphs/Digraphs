@@ -8,6 +8,34 @@
 #############################################################################
 ##
 
+InstallMethod(RepresentativeOutNeighbours, "for a digraph", [IsDigraph],
+function(digraph)
+  local reps, out, nbs, i;
+
+  if IsTrivial(DigraphGroup(digraph)) then
+    return OutNeighbours(digraph);
+  fi;
+
+  reps  := DigraphOrbitReps(digraph);
+
+  out := EmptyPlist(Length(reps));
+  nbs := OutNeighbours(digraph);
+
+  for i in [1 .. Length(reps)] do
+    out[i] := nbs[reps[i]];
+  od;
+  return out;
+end);
+
+InstallMethod(DigraphGroup, "for a digraph",
+[IsDigraph], AutomorphismGroup);
+
+InstallMethod(DigraphGroup, "for a digraph",
+[IsMultiDigraph],
+function(digraph)
+  return Range(Projection(AutomorphismGroup(digraph), 1));
+end);
+
 InstallGlobalFunction(DIGRAPHS_TraceSchreierVector,
 function(gens, sch, r)
   local word, w;

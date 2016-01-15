@@ -2,7 +2,7 @@
 """
 """
 
-import argparse, tempfile, subprocess, sys, os, webbrowser
+import argparse, tempfile, subprocess, sys, os
 
 _PARSER = argparse.ArgumentParser(prog='code-coverage-test.py', usage='%(prog)s [options]')
 _PARSER.add_argument('files', nargs='+', type=str,
@@ -48,5 +48,5 @@ try:
 except subprocess.CalledProcessError:
     sys.exit('\033[31mcode-coverage-test.py: error: something went wrong calling GAP!\033[0m')
 
-webbrowser.open(_DIR + '/index.html', new=2, autoraise=True)
+subprocess.call(('open', _DIR + '/index.html'))
 print '\n\n\033[32mSUCCESS!\033[0m'

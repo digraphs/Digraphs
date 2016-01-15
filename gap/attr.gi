@@ -36,25 +36,6 @@ function(digraph)
   return out;
 end);
 
-InstallMethod(RepresentativeOutNeighbours, "for a digraph", [IsDigraph],
-function(digraph)
-  local reps, out, nbs, i;
-
-  if IsTrivial(DigraphGroup(digraph)) then
-    return OutNeighbours(digraph);
-  fi;
-
-  reps  := DigraphOrbitReps(digraph);
-
-  out := EmptyPlist(Length(reps));
-  nbs := OutNeighbours(digraph);
-
-  for i in [1 .. Length(reps)] do
-    out[i] := nbs[reps[i]];
-  od;
-  return out;
-end);
-
 InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
 function(digraph)
   local func;
@@ -64,15 +45,6 @@ function(digraph)
   end;
 
   return func;
-end);
-
-InstallMethod(DigraphGroup, "for a digraph",
-[IsDigraph], AutomorphismGroup);
-
-InstallMethod(DigraphGroup, "for a digraph",
-[IsMultiDigraph],
-function(digraph)
-  return Range(Projection(AutomorphismGroup(digraph), 1));
 end);
 
 InstallMethod(AsTransformation, "for a digraph",
@@ -580,12 +552,12 @@ function(digraph, v)
   sum             := 1;
   localParameters := [];
 
-# localDiameter is the length of the longest shortest path starting at v
-#
-# localParameters is a list of 3-tuples [a_{i - 1}, b_{i - 1}, c_{i - 1}] for
-# each i between 1 and localDiameter where c_i (respectively a_i and b_i) is the
-# number of vertices at distance i − 1 (respectively i and i + 1) from v that
-# are adjacent to a vertex w at distance i from v.
+  # localDiameter is the length of the longest shortest path starting at v
+  #
+  # localParameters is a list of 3-tuples [a_{i - 1}, b_{i - 1}, c_{i - 1}] for
+  # each i between 1 and localDiameter where c_i (respectively a_i and b_i) is
+  # the number of vertices at distance i − 1 (respectively i and i + 1) from v
+  # that are adjacent to a vertex w at distance i from v.
 
   while Length(next) > 0 do
     next := [];
