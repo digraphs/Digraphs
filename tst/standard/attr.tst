@@ -1062,6 +1062,30 @@ Group([ (6,10)(7,11)(8,12)(9,13), (2,6)(3,7)(4,8)(5,9) ])
 gap> DigraphGirth(gr);
 5
 
+#T# RepresentativeOutNeighbours
+gap> gr := CycleDigraph(5);
+<digraph with 5 vertices, 5 edges>
+gap> RepresentativeOutNeighbours(gr);
+[ [ 2 ] ]
+gap> DigraphOrbitReps(gr);
+[ 1 ]
+gap> gr := Digraph([[2], [3], []]);
+<digraph with 3 vertices, 2 edges>
+gap> RepresentativeOutNeighbours(gr);
+[ [ 2 ], [ 3 ], [  ] ]
+
+#T# DigraphAdjacencyFunction
+gap> gr := Digraph([[1, 3], [2], []]);
+<digraph with 3 vertices, 3 edges>
+gap> adj := DigraphAdjacencyFunction(gr);
+function( u, v ) ... end
+gap> adj(1, 1);
+true
+gap> adj(3, 1);
+false
+gap> adj(2, 7);
+false
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);
