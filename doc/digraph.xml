@@ -366,7 +366,10 @@ true]]></Example>
         of <A>G</A>. Then this variant of the constructor returns a digraph with vertices the objects of <A>list</A>
         and directed edges <C>[x,y]</C> when <C>f(x,y)</C> is <C>true</C>. The action of the group <A>G</A> on the
         objects in <A>list</A> is a permutation group that is stored in the attribute <Ref Attr="DigraphGroup"/>,
-        and this group is used to speed up operations like <Ref Oper="DigraphDiameter"/>.
+        and this group is used to speed up operations like <Ref Oper="DigraphDiameter"/>.<P/>
+        The second example illustrates the use of the second and third variant of this constructor. The resulting digraph
+        is a strongly regular graph, and it is actually the point graph of the van Lint-Schrijver partial geometry, <Cite Key="vanLintSchrijver1981"/>.
+        The algebraic description is taken from the seminal paper of Calderbank and Kantor <Cite Key="CalderbankKantor1986"/>.
         </Item>
 
     </List>
@@ -408,6 +411,12 @@ gap> adj := function(x,y)
 > end;
 function( x, y ) ... end
 gap> digraph := Digraph(List(f),adj);
+<digraph with 81 vertices, 2430 edges>
+gap> group := Group(Z(3));
+<group with 1 generators>
+gap> act := \*;
+<Operation "*">
+gap> digraph := Digraph(group,List(f),act,adj);
 <digraph with 81 vertices, 2430 edges>
 ]]></Example>
   </Description>
