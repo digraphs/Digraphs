@@ -1402,6 +1402,16 @@ gap> DigraphReflexiveTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
 true
 
 #T# DigraphLayers
+gap> gr := CompleteDigraph(4); 
+<digraph with 4 vertices, 12 edges>
+gap> DigraphLayers(gr, 1);
+[ [ 1 ], [ 2, 3, 4 ] ]
+gap> DigraphLayers(gr, 2);
+[ [ 2 ], [ 1, 3, 4 ] ]
+gap> DigraphLayers(gr, 3);
+[ [ 3 ], [ 1, 2, 4 ] ]
+gap> DigraphLayers(gr, 4);
+[ [ 4 ], [ 1, 2, 3 ] ]
 gap> gr := ChainDigraph(5);;
 gap> DigraphLayers(gr, 2);
 [ [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
@@ -1423,6 +1433,19 @@ gap> DigraphLayers(gr,9);
 [ [ 9 ], [ 10, 11 ] ]
 gap> DigraphLayers(gr,10);
 [ [ 10 ] ]
+gap> gr := DigraphFromDigraph6String("+GUIQQWWXHHPg");;
+gap> DigraphGroup(gr);
+Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)(4,7) ])
+gap> DigraphOrbitReps(gr);
+[ 1 ]
+gap> DigraphLayers(gr, 1);
+[ [ 1 ], [ 2, 3, 5 ], [ 4, 6, 7, 8 ] ]
+gap> DigraphLayers(gr, 2);
+[ [ 2 ], [ 1, 4, 6 ], [ 3, 5, 7, 8 ] ]
+gap> DigraphLayers(gr, 3);
+[ [ 3 ], [ 2, 4, 7 ], [ 1, 5, 6, 8 ] ]
+gap> DigraphLayers(gr, 4);
+[ [ 4 ], [ 1, 3, 8 ], [ 2, 5, 6, 7 ] ]
 
 #T# DigraphDistancesSet
 gap> gr := ChainDigraph(10);                                               
