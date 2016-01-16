@@ -12,11 +12,11 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.3.2">
+##  <!ENTITY VERSION        "0.4">
 ##  <!ENTITY GAPVERS        "4.8.1">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.3.2">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.4">
 ##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
@@ -25,7 +25,7 @@ PackageName := "Digraphs",
 Subtitle := "Methods for digraphs and multidigraphs",
 Version := "0.4",
 Date := "16/01/2016",
-ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.3",
+ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.4",
 ArchiveFormats := ".tar.gz",
 Persons := [
 
