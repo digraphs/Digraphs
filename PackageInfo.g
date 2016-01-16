@@ -1,7 +1,7 @@
 ############################################################################
 ##
 #W  PackageInfo.g
-#Y  Copyright (C) 2015                                   Julius Jonusas
+#Y  Copyright (C) 2016                                   Julius Jonusas
 ##                                                       James Mitchell
 ##                                                       Michael Torpey
 ##                                                       Wilfred Wilson
@@ -12,11 +12,11 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.3">
+##  <!ENTITY VERSION        "0.3.2">
 ##  <!ENTITY GAPVERS        "4.8.1">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.3">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.3.2">
 ##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
