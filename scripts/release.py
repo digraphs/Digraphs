@@ -7,12 +7,10 @@ things to the webpage.
 # TODO
 # 1) --skip-extreme
 
-import textwrap, os, argparse, tempfile, subprocess, sys, os, re, shutil, gzip
+import textwrap, os, argparse, tempfile, subprocess, sys, os, re, shutil
 import test, time, webbrowser, urllib, dots
 
-from test import pad
-from test import blue_string
-from test import MAGENTA_DOT
+from test import *
 
 ################################################################################
 # Configurable variables
@@ -26,6 +24,9 @@ _DIGRAPHS_LIB_URL = ('https://bitbucket.org/james-d-mitchell/digraphs/downloads/
                      + _DIGRAPHS_LIB_ARCHIVE)
 _FILES_TO_DELETE_FROM_ARCHIVE = ['.hgignore', '.hgtags', '.gaplint_ignore',
                                  '.hg_archival.txt']
+
+_VERSION = 0
+_VERBOSE = False
 
 ################################################################################
 # Strings for printing
@@ -53,12 +54,17 @@ def _magenta_string(string):
     return '\n'.join(_WRAPPER.wrap('\033[35m' + string + '\033[0m'))
 
 def _abort(message):
+    '''Exit the script and print message in red. Use this if something is wrong
+    in the release, i.e. dates or version numbers don't agree.'''
     sys.exit(_red_string(message + _ABORT))
 
 def _error(message):
+    '''Exit the script and print message in red. Use this if there is an error
+    reading a file etc.'''
     sys.exit(_red_string(_ERROR + message))
 
 def _statement(message):
+    '''Print the statement <message> in bright green.'''
     print blue_string(message)
 
 def _action(message):
@@ -67,8 +73,8 @@ def _action(message):
 def _action_no_eol(message):
     print _magenta_string(pad(message) + ' . . . '),
 
-def _verbose(message, verbose):
-    if verbose:
+def _verbose(message):
+    if _VERBOSE:
         print _cyan_string(pad(message) + ' . . .')
 
 ################################################################################
@@ -120,18 +126,18 @@ def _killed (pro=None):
     print _red_string('Killed!')
     sys.exit(1)
 
-def _exec(string, verbose):
+def _exec(string):
     'execute the string in a subprocess.'
-    _verbose(string, verbose)
+    _verbose(string)
     try:
-        if verbose:
-            pro = subprocess.check_call(string, shell=True)
+        if _VERBOSE:
+            subprocess.check_call(string, shell=True)
         else:
             devnull = open(os.devnull, 'w')
-            pro = subprocess.check_call(string,
-                                        stdout=devnull,
-                                        stderr=devnull,
-                                        shell=True)
+            subprocess.check_call(string,
+                                  stdout=devnull,
+                                  stderr=devnull,
+                                  shell=True)
     except KeyboardInterrupt:
         _killed()
     except (subprocess.CalledProcessError, OSError):
@@ -186,7 +192,7 @@ def _check_date_package_info():
             _error('could not determine the ' +
                    'version number in PackageInfo.g')
 
-def _check_versions_file(vers, verbose):
+def _check_versions_file():
     ''
 
     if not (os.path.exists('VERSIONS') and
@@ -206,12 +212,10 @@ def _check_versions_file(vers, verbose):
         match = regex.search(contents)
 
         if match:
-            if match.group(1) != vers:
+            if match.group(1) != _VERSION:
                 _abort('The version number in VERSIONS is ' + match.group(1)
-                       + ' should be ' + vers)
-            if verbose:
-                _verbose('Version in VERSIONS file is ' + match.group(1),
-                         verbose)
+                       + ' should be ' + _VERSION)
+            _verbose('Version in VERSIONS file is ' + match.group(1))
             if match.group(2) != today:
                 _abort('The date in VERSIONS is ' + match.group(2)
                        + ' but today is ' + today)
@@ -220,7 +224,7 @@ def _check_versions_file(vers, verbose):
         else:
             _error('could not determine the ' + 'version in VERSIONS')
 
-def _check_version_file(vers, verbose):
+def _check_version_file():
     ''
 
     if not (os.path.exists('VERSION') and
@@ -238,16 +242,14 @@ def _check_version_file(vers, verbose):
         match = regex.search(contents)
 
         if match:
-            if match.group(1) != vers:
+            if match.group(1) != _VERSION:
                 _abort('The version number in VERSION is ' + match.group(1)
-                       + ' should be ' + vers)
-            if verbose:
-                _verbose('Version in VERSION file is ' + match.group(1),
-                         verbose)
+                       + ' should be ' + _VERSION)
+            _verbose('Version in VERSION file is ' + match.group(1))
         else:
             _error('could not determine the version in VERSIONS')
 
-def _check_change_log(vers, verbose):
+def _check_change_log():
     ''
 
     if not (os.path.exists('CHANGELOG.md') and
@@ -262,7 +264,7 @@ def _check_change_log(vers, verbose):
             _error('cannot read CHANGELOG.md file')
 
         today = time.strftime("%d/%m/%Y")
-        regex = re.compile(r'##\s*Version\s*' + vers +
+        regex = re.compile(r'##\s*Version\s*' + _VERSION +
                            r'\s*\(released\s*(\d\d/\d\d/\d\d\d\d)\)')
         match = regex.search(contents)
 
@@ -271,10 +273,10 @@ def _check_change_log(vers, verbose):
                 _abort('The date in CHANGELOG.md is ' + match.group(1)
                        + ' but today is ' + today)
         else:
-            _abort('The entry for Version ' + vers + ' in CHANGELOG.md'
+            _abort('The entry for version ' + _VERSION + ' in CHANGELOG.md'
                    + ' is missing or incorrect')
 
-def _check_package_info(vers, verbose):
+def _check_package_info():
     '''check that all the version numbers in the package info and the archive
     names are correct.'''
 
@@ -292,22 +294,22 @@ def _check_package_info(vers, verbose):
     # get the doc's version number
     match = re.compile(r'<!ENTITY\s+VERSION\s*"((\d.*)+)"').search(contents)
     if match:
-        if match.group(1) != vers:
+        if match.group(1) != _VERSION:
             _abort('The version for the doc in PackageInfo.g is ' +
-                   match.group(1) + ' should be ' + vers)
+                   match.group(1) + ' should be ' + _VERSION)
         else:
-            _verbose('The version in PackageInfo.g is ok', verbose)
+            _verbose('The version in PackageInfo.g is ok')
     else:
         _abort('Can\'t find the digraphs version for the doc in PackageInfo.g')
 
     # check the ArchiveURL
     match = re.compile(r'ArchiveURL\s+:=\s+"([^"]*)"').search(contents)
     if match:
-        if not match.group(1).endswith('digraphs-' + vers):
+        if not match.group(1).endswith('digraphs-' + _VERSION):
             _abort('The ArchiveURL is ' + match.group(1).split('/')[-1]
-                   + ' should be digraphs-' + vers)
+                   + ' should be digraphs-' + _VERSION)
         else:
-            _verbose('The ArchiveURL is ok', verbose)
+            _verbose('The ArchiveURL is ok')
     else:
         _abort('Can\'t find the ArchiveURL in PackageInfo.g')
 
@@ -315,11 +317,11 @@ def _check_package_info(vers, verbose):
     match = re.compile(r'<!ENTITY\s+ARCHIVENAME\s*"([^"]*)"').search(contents)
     if not match:
         _abort('Can\'t find the ARCHIVENAME for the doc in PackageInfo.g')
-    if match.group(1) == 'digraphs-' + vers:
-        _verbose('The ARCHIVENAME is ok', verbose)
+    if match.group(1) == 'digraphs-' + _VERSION:
+        _verbose('The ARCHIVENAME is ok')
     else:
         _abort('The doc archive name is ' + match.group(1) +
-               ' it should be digraphs-' + vers)
+               ' it should be digraphs-' + _VERSION)
 
     # check GAPVERS
     match = re.compile(r'<!ENTITY\s+GAPVERS\s*"((\d.*)+)"').search(contents)
@@ -329,11 +331,10 @@ def _check_package_info(vers, verbose):
     match = re.compile(r'\s*GAP\s*:=\s*">=((\d.)*\d)"').search(contents)
     if match:
         if match.group(1) == gapvers:
-            _verbose('The GAP version is ok',
-                     verbose)
+            _verbose('The GAP version is ok')
         else:
             _abort('The doc GAP version is ' + gapvers +
-                    ' and dependencies GAP version is ' + match.group(1))
+                   ' and dependencies GAP version is ' + match.group(1))
     else:
         _abort('Can\'t find the GAP version in Dependencies')
 
@@ -345,10 +346,10 @@ def _check_package_info(vers, verbose):
     match = re.compile(r'"io"\s*,\s*">=((\d.)*\d)"').search(contents)
     if match:
         if match.group(1) == iovers:
-            _verbose('The IO version is ok', verbose)
+            _verbose('The IO version is ok')
         else:
             _abort('The doc io version is ' + iovers +
-                    ' and dependencies io version is ' + match.group(1))
+                   ' and dependencies io version is ' + match.group(1))
     else:
         _abort('Can\'t find the io version in Dependencies')
 
@@ -360,19 +361,18 @@ def _check_package_info(vers, verbose):
     match = re.compile(r'"grape"\s*,\s*">=((\d.)*\d)"').search(contents)
     if match:
         if match.group(1) == grapevers:
-            _verbose('The GRAPE version is ok', verbose)
+            _verbose('The GRAPE version is ok')
         else:
             _abort('The doc grape version is ' + grapevers +
                    ' and dependencies grape version is ' + match.group(1))
     else:
         _abort('Can\'t find the grape version in Dependencies')
 
-
 ################################################################################
 # Mercurial stuff
 ################################################################################
 
-def _check_hg_version(vers):
+def _check_hg_version():
     '''returns the version number from the branch name in mercurial, exits if
     something goes wrong'''
     try:
@@ -381,9 +381,9 @@ def _check_hg_version(vers):
         _killed()
     except (subprocess.CalledProcessError, OSError):
         _error('could not determine the hg branch')
-    if hg_version != vers:
+    if hg_version != _VERSION:
         _abort('The version number in the PackageInfo.g file is '
-               + vers + ' but the branch name is ' + hg_version)
+               + _VERSION + ' but the branch name is ' + hg_version)
 
 def _hg_identify():
     'returns the current changeset'
@@ -405,41 +405,39 @@ def _hg_pending_commits():
         try:
             output = subprocess.check_output(('grep', 'commit:.*clean'),
                                              stdin=pro.stdout).rstrip()
-        except KeyboardInterrupt: #TODO add this in more places
+        except KeyboardInterrupt:
             _killed(pro)
         except:
             _abort('There are uncommited changes')
 
-def _hg_tag_release(vers, verbose):
-    _exec('hg tag -f ' + vers + '-release', verbose)
+def _hg_tag_release():
+    _exec('hg tag -f ' + _VERSION + '-release')
 
 ################################################################################
 # Steps in the release process
 ################################################################################
 
-def _copy_doc(dst, verbose):
+def _copy_doc(dst):
     for filename in os.listdir('doc'):
-        if os.path.splitext(filename)[-1] in ['.html', '.txt', '.pdf', '.css',
-                '.js', '.six']:
-            _verbose('Copying ' + filename + ' to the archive', verbose)
+        if (os.path.splitext(filename)[-1] in
+                ['.html', '.txt', '.pdf', '.css', '.js', '.six']):
+            _verbose('Copying ' + filename + ' to the archive')
             shutil.copy('doc/' + filename, dst)
 
-def _create_build_files(dst, verbose):
+def _create_build_files(dst):
     cwd = os.getcwd()
     os.chdir(dst)
-    _exec('./autogen.sh', verbose)
+    _exec('./autogen.sh')
     os.chdir(cwd)
 
-def _delete_generated_build_files(verbose):
+def _delete_generated_build_files():
     for filename in ['config.log', 'config.status']:
         if os.path.exists(filename) and os.path.isfile(filename):
-            _verbose('Deleting ' + filename + ' from the archive',
-                     verbose)
+            _verbose('Deleting ' + filename + ' from the archive')
             os.remove(filename)
     for directory in ['digraphs-lib']:
         if os.path.exists(directory) and os.path.isdir(directory):
-            _verbose('Deleting ' + directory + ' from the archive',
-                     verbose)
+            _verbose('Deleting ' + directory + ' from the archive')
             shutil.rmtree(directory)
 
 def _delete_files_archive(tmpdir):
@@ -464,35 +462,36 @@ def _delete_files_archive(tmpdir):
     except:
         _error('could not delete scripts/*')
 
-def _download_digraphs_lib_inner(dst, verbose):
+def _download_digraphs_lib_inner(dst):
     urllib.urlretrieve(_DIGRAPHS_LIB_URL, _DIGRAPHS_LIB_ARCHIVE)
     shutil.copytree('digraphs-lib', dst + '/digraphs-lib')
 
-def _download_digraphs_lib(tmpdir, verbose):
+def _download_digraphs_lib(tmpdir):
     _action_no_eol('Downloading ' + _DIGRAPHS_LIB_ARCHIVE)
     sys.stdout.flush()
-    dots.dotIt(MAGENTA_DOT, _download_digraphs_lib_inner, tmpdir, verbose)
+    dots.dotIt(MAGENTA_DOT, _download_digraphs_lib_inner, tmpdir)
     print ''
-    _exec('tar -xzf ' + _DIGRAPHS_LIB_ARCHIVE, verbose)
+    _exec('tar -xzf ' + _DIGRAPHS_LIB_ARCHIVE)
 
 def _start_mamp():
-    _exec('open ' + _MAMP_DIR + 'MAMP.app', False)
+    _exec('open ' + _MAMP_DIR + 'MAMP.app')
     cwd = os.getcwd()
     os.chdir(_MAMP_DIR + 'bin')
-    _exec('./start.sh', False)
+    _exec('./start.sh')
     os.chdir(cwd)
 
 def _stop_mamp():
     cwd = os.getcwd()
     os.chdir(_MAMP_DIR + 'bin')
-    _exec('./stop.sh', False)
+    _exec('./stop.sh')
     os.chdir(cwd)
 
 ################################################################################
 # The main event
 ################################################################################
 
-def main():
+def _main():
+    global _VERBOSE, _VERSION
     # Parse the args
     parser = argparse.ArgumentParser(prog='release.py',
                                      usage='%(prog)s [options]')
@@ -515,6 +514,8 @@ def main():
 
     args = parser.parse_args()
 
+    _VERBOSE = args.verbose
+
     if args.skip_tests:
         args.skip_extreme = True
 
@@ -534,49 +535,49 @@ def main():
         _error('can\'t find package directory!')
 
     # Check for pending commits
-    #_hg_pending_commits()
+    _hg_pending_commits()
 
     # Get the version number
-    vers = _version_number_package_info()
-    _statement('The version number is: ' + vers)
+    _VERSION = _version_number_package_info()
+    _statement('The version number is: ' + _VERSION)
 
     # Check the CHANGELOG.md, VERSIONS, and VERSION
-    _check_hg_version(vers)
+    _check_hg_version()
     _check_date_package_info()
-    _check_change_log(vers, args.verbose)
-    _check_version_file(vers, args.verbose)
-    _check_versions_file(vers, args.verbose)
-    _check_package_info(vers, args.verbose)
+    _check_change_log()
+    _check_version_file()
+    _check_versions_file()
+    _check_package_info()
 
     # Compile the doc
     test.digraphs_make_doc(args.gap_root[0])
 
     # Get the temporary dir
     tmpdir_base = tempfile.mkdtemp()
-    tmpdir = tmpdir_base + '/digraphs-' + vers
-    _verbose('Using temporary directory: ' + tmpdir, args.verbose)
+    tmpdir = tmpdir_base + '/digraphs-' + _VERSION
+    _verbose('Using temporary directory: ' + tmpdir)
 
     # Tag . . .
     _action('Tagging the last commit')
-    _hg_tag_release(vers, args.verbose)
+    _hg_tag_release()
 
     # Archive
     _action('Archiving using hg')
-    _exec('hg archive ' + tmpdir, args.verbose)
+    _exec('hg archive ' + tmpdir)
 
     # Copy the doc . . .
-    _copy_doc(tmpdir + '/doc/', args.verbose)
+    _copy_doc(tmpdir + '/doc/')
 
     # Run autogen.sh
     _action('Creating the build files')
-    _create_build_files(tmpdir, args.verbose)
+    _create_build_files(tmpdir)
 
     # Delete unnecessary files from the archive
     _delete_files_archive(tmpdir)
 
     # Download digraphs-lib if we want to run extreme tests
     if not args.skip_extreme:
-        _download_digraphs_lib(tmpdir, args.verbose)
+        _download_digraphs_lib(tmpdir)
 
     # Run the tests
     if args.skip_tests:
@@ -585,9 +586,9 @@ def main():
         _action('Running the tests on the archive')
         os.chdir(tmpdir_base)
         for directory in args.gap_root:
-            digraphs_dir = os.path.join(directory, 'pkg/digraphs-' + vers)
+            digraphs_dir = os.path.join(directory, 'pkg/digraphs-' + _VERSION)
             try:
-                shutil.copytree('digraphs-' + vers, digraphs_dir)
+                shutil.copytree('digraphs-' + _VERSION, digraphs_dir)
                 if os.path.exists(os.path.join(directory, 'pkg/digraphs')):
                     shutil.move(os.path.join(directory, 'pkg/digraphs'),
                                 tmpdir_base)
@@ -599,7 +600,7 @@ def main():
             try:#TODO pass skip-extreme here!
                 test.run_digraphs_tests(directory,
                                         directory + '/pkg',
-                                        'digraphs-' + vers)
+                                        'digraphs-' + _VERSION)
             except (OSError, IOError) as e:
                 sys.exit(_red_string(str(e)))
             finally:
@@ -611,16 +612,16 @@ def main():
     # Create the archive file
     _action('Creating the tarball')
     os.chdir(tmpdir)
-    _delete_generated_build_files(args.verbose)
+    _delete_generated_build_files()
     os.chdir(tmpdir_base)
-    _exec('tar -cpf digraphs-' + vers + '.tar digraphs-' + vers +
-          '; gzip -9 digraphs-' + vers + '.tar', args.verbose)
+    _exec('tar -cpf digraphs-' + _VERSION + '.tar digraphs-' + _VERSION)
+    _exec('gzip -9 digraphs-' + _VERSION + '.tar')
 
     # Copy files to the local copy of the website
     _action('Copying to webpage' + ' . . .')
     try:
         os.chdir(tmpdir_base)
-        shutil.copy('digraphs-' + vers + '.tar.gz', _WEBPAGE_DIR)
+        shutil.copy('digraphs-' + _VERSION + '.tar.gz', _WEBPAGE_DIR)
         os.chdir(tmpdir)
         shutil.copy('README.md', _WEBPAGE_DIR)
         shutil.copy('PackageInfo.g', _WEBPAGE_DIR)
@@ -636,10 +637,10 @@ def main():
     # hg add and commit files added
     os.chdir(_WEBPAGE_DIR)
     _action('Adding archive to webpage repo')
-    _exec('hg add digraphs-' + vers + '.tar.gz', args.verbose)
-    _exec('hg addremove', args.verbose)
+    _exec('hg add digraphs-' + _VERSION + '.tar.gz')
+    _exec('hg addremove')
     _action('Committing webpage repo')
-    _exec('hg commit -m "Releasing digraphs ' + vers + '"', args.verbose)
+    _exec('hg commit -m "Releasing digraphs ' + _VERSION + '"')
 
     # open the webpage for inspection
     _start_mamp()
@@ -654,23 +655,23 @@ def main():
 
     # push the website changes
     _action('Pushing webpage to server')
-    _exec('hg push', args.verbose)
+    _exec('hg push')
     os.chdir(_DIGRAPHS_REPO_DIR)
 
     # merge the release branch into default
-    _action('Merging ' + vers + ' into default')
-    _exec('hg up -r default', args.verbose)
-    _exec('hg merge -r ' + vers, args.verbose)
-    _exec('hg commit -m "Merge from' + vers + '"', args.verbose)
+    _action('Merging ' + _VERSION + ' into default')
+    _exec('hg up -r default')
+    _exec('hg merge -r ' + _VERSION)
+    _exec('hg commit -m "Merge from' + _VERSION + '"')
 
     # close the release branch
-    _action('Closing branch ' + vers)
-    _exec('hg up -r ' + vers, args.verbose)
-    _exec('hg commit --close-branch -m "closing branch"', args.verbose)
+    _action('Closing branch ' + _VERSION)
+    _exec('hg up -r ' + _VERSION)
+    _exec('hg commit --close-branch -m "closing branch"')
 
     # go back to default branch
     _action('Updating to default branch')
-    _exec('hg up -r default', args.verbose)
+    _exec('hg up -r default')
 
     _statement('Don\'t forget to check everything is ok at: ' +
                'http://www.gap-system.org/Packages/Authors/authors.html')
@@ -684,6 +685,6 @@ def main():
 
 if __name__ == '__main__':
     try:
-        main()
+        _main()
     except KeyboardInterrupt:
         _killed()
