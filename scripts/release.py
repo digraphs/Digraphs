@@ -5,11 +5,7 @@ things to the webpage.
 '''
 
 # TODO
-# 1) check that GAPVERS and dependencies have the same gap version number
-# 2) check VERSIONS and VERSION file
-# 3) check CHANGELOG for entry with correct version number
-# 4) check all occurrences of all version numbers in PackageInfo.g
-# 5) --skip-extreme
+# 1) --skip-extreme
 
 import textwrap, os, argparse, tempfile, subprocess, sys, os, re, shutil, gzip
 import test, time, webbrowser, urllib, dots
@@ -56,6 +52,25 @@ def _magenta_string(string):
     'magenta string'
     return '\n'.join(_WRAPPER.wrap('\033[35m' + string + '\033[0m'))
 
+def _abort(message):
+    sys.exit(_red_string(message + _ABORT))
+
+def _error(message):
+    sys.exit(_red_string(_ERROR + message))
+
+def _statement(message):
+    print blue_string(message)
+
+def _action(message):
+    print _magenta_string(pad(message) + ' . . .')
+
+def _action_no_eol(message):
+    print _magenta_string(pad(message) + ' . . .'),
+
+def _verbose(message, verbose):
+    if verbose:
+        print _cyan_string(message)
+
 ################################################################################
 # Error strings
 ################################################################################
@@ -98,25 +113,6 @@ def query_yes_no(question, default="yes"):
         else:
             sys.stdout.write("Please respond with 'yes' or 'no' "
                              "(or 'y' or 'n').\n")
-def _abort(message):
-    sys.exit(_red_string(message + _ABORT))
-
-def _error(message):
-    sys.exit(_red_string(_ERROR + message))
-
-def _statement(message):
-    print blue_string(message)
-
-def _action(message):
-    print _magenta_string(pad(message) + ' . . .')
-
-def _action_no_eol(message):
-    print _magenta_string(pad(message) + ' . . .'),
-
-def _verbose(message, verbose):
-    if verbose:
-        print _cyan_string(message)
-
 def _killed (pro=None):
     if pro != None:
         pro.terminate()
@@ -126,8 +122,7 @@ def _killed (pro=None):
 
 def _exec(string, verbose):
     'execute the string in a subprocess.'
-    if verbose:
-        print _cyan_string(string + ' . . .')
+    _verbose(string + ' . . .', verbose)
     try:
         if verbose:
             pro = subprocess.check_call(string,
@@ -141,7 +136,7 @@ def _exec(string, verbose):
                                         stderr=devnull,
                                         shell=True)
     except KeyboardInterrupt:
-        sys.exit(_red_string(_ERROR + string + ' failed'))
+        _killed()
     except (subprocess.CalledProcessError, OSError):
         sys.exit(_red_string(_ERROR + string + ' failed'))
 
@@ -159,6 +154,8 @@ def _version_number_package_info():
     else:
         try:
             contents = open('PackageInfo.g', 'r').read()
+        except KeyboardInterrupt:
+            _killed()
         except IOError:
             _error('cannot read PackageInfo.g')
         match = re.compile(r'Version\s*:=\s*"((\d.*)+)"').search(contents)
@@ -177,6 +174,8 @@ def _check_date_package_info():
     else:
         try:
             contents = open('PackageInfo.g', 'r').read()
+        except KeyboardInterrupt:
+            _killed()
         except IOError:
             _error('cannot read PackageInfo.g')
         regex = re.compile(r'Date\s*:=\s*"(\d\d/\d\d/\d\d\d\d)"')
@@ -200,6 +199,8 @@ def _check_versions_file(vers, verbose):
         today = time.strftime("%d/%m/%y")
         try:
             contents = open('VERSIONS', 'r').read()
+        except KeyboardInterrupt:
+            _killed()
         except IOError:
             _error('cannot read VERSIONS file')
 
@@ -212,8 +213,8 @@ def _check_versions_file(vers, verbose):
                 _abort('The version number in VERSIONS is ' + match.group(1)
                        + 'should be ' + vers)
             if verbose:
-                print _cyan_string('Version in VERSIONS file is ' +
-                                   match.group(1))
+                _verbose('Version in VERSIONS file is ' + match.group(1),
+                         verbose)
             if match.group(2) != today:
                 _abort('The date in VERSIONS is ' + match.group(2)
                        + ' but today is ' + today)
@@ -231,6 +232,8 @@ def _check_version_file(vers, verbose):
     else:
         try:
             contents = open('VERSION', 'r').read()
+        except KeyboardInterrupt:
+            _killed()
         except IOError:
             _error('cannot read VERSION file')
 
@@ -242,8 +245,8 @@ def _check_version_file(vers, verbose):
                 _abort('The version number in VERSION is ' + match.group(1)
                        + 'should be ' + vers)
             if verbose:
-                print _cyan_string('Version in VERSION file is ' +
-                                   match.group(1))
+                _verbose('Version in VERSION file is ' + match.group(1),
+                         verbose)
         else:
             _error('could not determine the ' + 'version in VERSIONS')
 
@@ -256,6 +259,8 @@ def _check_change_log(vers, verbose):
     else:
         try:
             contents = open('CHANGELOG.md', 'r').read()
+        except KeyboardInterrupt:
+            _killed()
         except IOError:
             _error('cannot read CHANGELOG.md file')
 
@@ -271,6 +276,90 @@ def _check_change_log(vers, verbose):
         else:
             _abort('The entry for Version ' + vers + ' in CHANGELOG.md'
                    + ' is missing or incorrect')
+
+def _check_package_info(vers, verbose):
+    '''check that all the version numbers in the package info and the archive
+    names are correct.'''
+
+    if not (os.path.exists('PackageInfo.g') and
+            os.path.isfile('PackageInfo.g')):
+        _error('cannot find PackageInfo.g file')
+
+    try:
+        contents = open('PackageInfo.g', 'r').read()
+    except KeyboardInterrupt:
+        _killed()
+    except IOError:
+        _error('cannot read PackageInfo.g')
+
+    # get the doc's version number
+    match = re.compile(r'<!ENTITY\s+VERSION\s*"((\d.*)+)"').search(contents)
+    if match:
+        if match.group(1) != vers:
+            _abort('The version for the doc in PackageInfo.g is ' +
+                   match.group(1) + ' should be ' + vers)
+        else:
+            _verbose('The version for the doc in PackageInfo.g is ok', verbose)
+    else:
+        _abort('Can\'t find the digraphs version for the doc in PackageInfo.g')
+
+    # check the ArchiveURL
+    match = re.compile(r'ArchiveURL\s+:=\s+"([^"]*)"').search(contents)
+    if match:
+        if not match.group(1).endswith('digraphs-' + vers):
+            _abort('The ArchiveURL is ' + match.group(1).split('/')[-1])
+        else:
+            _verbose('The ArchiveURL is ok', verbose)
+    else:
+        _abort('Can\'t find the ArchiveURL in PackageInfo.g')
+
+    # check GAPVERS
+    match = re.compile(r'<!ENTITY\s+GAPVERS\s*"((\d.*)+)"').search(contents)
+    if not match:
+        _abort('Can\'t find the GAP version for the doc in PackageInfo.g')
+    gapvers = match.group(1)
+    match = re.compile(r'\s*GAP\s*:=\s*">=((\d.)*\d)"').search(contents)
+    if match:
+        if match.group(1) == gapvers:
+            _verbose('The doc GAP version and dependencies GAP version match',
+                     verbose)
+        else:
+            _abort('The doc GAP version is ' + gapvers +
+                    ' and dependencies GAP version is ' + match.group(1))
+    else:
+        _abort('Can\'t find the GAP version in Dependencies')
+
+    # check IOVERS
+    match = re.compile(r'<!ENTITY\s+IOVERS\s*"((\d.*)+)"').search(contents)
+    if not match:
+        _abort('Can\'t find the io version for the doc in PackageInfo.g')
+    iovers = match.group(1)
+    match = re.compile(r'"io"\s*,\s*">=((\d.)*\d)"').search(contents)
+    if match:
+        if match.group(1) == iovers:
+            _verbose('The doc io version and dependencies io version match',
+                     verbose)
+        else:
+            _abort('The doc io version is ' + iovers +
+                    ' and dependencies io version is ' + match.group(1))
+    else:
+        _abort('Can\'t find the io version in Dependencies')
+
+    # check GRAPEVERS
+    match = re.compile(r'<!ENTITY\s+GRAPEVERS\s*"((\d.*)+)"').search(contents)
+    if not match:
+        _abort('Can\'t find the grape version for the doc in PackageInfo.g')
+    grapevers = match.group(1)
+    match = re.compile(r'"grape"\s*,\s*">=((\d.)*\d)"').search(contents)
+    if match:
+        if match.group(1) == grapevers:
+            _verbose('The doc grape version and dependencies grape version match',
+                     verbose)
+        else:
+            _abort('The doc grape version is ' + grapevers +
+                   ' and dependencies grape version is ' + match.group(1))
+    else:
+        _abort('Can\'t find the grape version in Dependencies')
 
 ################################################################################
 # Mercurial stuff
@@ -293,6 +382,8 @@ def _hg_identify():
     'returns the current changeset'
     try:
         hg_identify = subprocess.check_output(['hg', 'identify']).strip()
+    except KeyboardInterrupt:
+        _killed()
     except (OSError, subprocess.CalledProcessError):
         _error('could not determine the version number')
     return hg_identify.split('+')[0]
@@ -352,6 +443,8 @@ def _delete_files_archive(tmpdir):
             _action('Deleting file ' + filename)
             try:
                 os.remove(os.path.join(tmpdir, filename))
+            except KeyboardInterrupt:
+                _killed()
             except:
                 _error('could not delete ' + filename)
 
@@ -359,6 +452,8 @@ def _delete_files_archive(tmpdir):
 
     try:
         shutil.rmtree(os.path.join(tmpdir, 'scripts'))
+    except KeyboardInterrupt:
+        _killed()
     except:
         _error('could not delete scripts/*')
 
@@ -385,7 +480,6 @@ def _stop_mamp():
     os.chdir(_MAMP_DIR + 'bin')
     _exec('./stop.sh', False)
     os.chdir(cwd)
-
 
 ################################################################################
 # The main event
@@ -433,7 +527,7 @@ def main():
         _error('can\'t find package directory!')
 
     # Check for pending commits
-    _hg_pending_commits()
+    #_hg_pending_commits()
 
     # Get the version number
     vers = _version_number_package_info()
@@ -445,6 +539,7 @@ def main():
     _check_change_log(vers, args.verbose)
     _check_version_file(vers, args.verbose)
     _check_versions_file(vers, args.verbose)
+    _check_package_info(vers, args.verbose)
 
     # Compile the doc
     test.digraphs_make_doc(args.gap_root[0])
@@ -489,6 +584,8 @@ def main():
                 if os.path.exists(os.path.join(directory, 'pkg/digraphs')):
                     shutil.move(os.path.join(directory, 'pkg/digraphs'),
                                 tmpdir_base)
+            except KeyboardInterrupt:
+                _killed()
             except Exception as e:
                 sys.exit(_red_string(str(e)))
 
@@ -523,6 +620,8 @@ def main():
         shutil.copy('CHANGELOG.md', _WEBPAGE_DIR)
         shutil.rmtree(_WEBPAGE_DIR + 'doc')
         shutil.copytree('doc', _WEBPAGE_DIR + 'doc')
+    except KeyboardInterrupt:
+        _killed()
     except Exception as e:
         print _red_string(_ERROR + 'could not copy to the webpage!')
         sys.exit(_red_string(str(e)))
