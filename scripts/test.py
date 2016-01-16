@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 '''
 This is a script for checking that the Semigroups package is releasable, i.e.
 that it passes all the tests in all configurations.
@@ -207,7 +208,7 @@ def _man_ex_str(gap_root, name):
             ' RunExamples(ex);')
 
 def pad(string, extra=0):
-    for i in xrange(extra + 35 - len(string)):
+    for i in xrange(extra + 40 - len(string)):
         string += ' '
     return string
 

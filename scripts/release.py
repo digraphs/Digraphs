@@ -65,11 +65,11 @@ def _action(message):
     print _magenta_string(pad(message) + ' . . .')
 
 def _action_no_eol(message):
-    print _magenta_string(pad(message) + ' . . .'),
+    print _magenta_string(pad(message) + ' . . . '),
 
 def _verbose(message, verbose):
     if verbose:
-        print _cyan_string(message)
+        print _cyan_string(pad(message) + ' . . .')
 
 ################################################################################
 # Error strings
@@ -95,11 +95,11 @@ def query_yes_no(question, default="yes"):
     valid = {"yes": True, "y": True, "ye": True,
              "no": False, "n": False}
     if default is None:
-        prompt = " [y/n] "
+        prompt = _magenta_string(" [y/n] ")
     elif default == "yes":
-        prompt = " [Y/n] "
+        prompt = _magenta_string(" [Y/n] ")
     elif default == "no":
-        prompt = " [y/N] "
+        prompt = _magenta_string(" [y/N] ")
     else:
         raise ValueError("invalid default answer: '%s'" % default)
 
@@ -122,13 +122,10 @@ def _killed (pro=None):
 
 def _exec(string, verbose):
     'execute the string in a subprocess.'
-    _verbose(string + ' . . .', verbose)
+    _verbose(string, verbose)
     try:
         if verbose:
-            pro = subprocess.check_call(string,
-                                        stdout=subprocess.STDOUT,
-                                        stderr=subprocess.STDOUT,
-                                        shell=True)
+            pro = subprocess.check_call(string, shell=True)
         else:
             devnull = open(os.devnull, 'w')
             pro = subprocess.check_call(string,
@@ -138,7 +135,7 @@ def _exec(string, verbose):
     except KeyboardInterrupt:
         _killed()
     except (subprocess.CalledProcessError, OSError):
-        sys.exit(_red_string(_ERROR + string + ' failed'))
+        _error(string + ' failed')
 
 ################################################################################
 # Check the version numbers and dates in various files
@@ -211,7 +208,7 @@ def _check_versions_file(vers, verbose):
         if match:
             if match.group(1) != vers:
                 _abort('The version number in VERSIONS is ' + match.group(1)
-                       + 'should be ' + vers)
+                       + ' should be ' + vers)
             if verbose:
                 _verbose('Version in VERSIONS file is ' + match.group(1),
                          verbose)
@@ -243,12 +240,12 @@ def _check_version_file(vers, verbose):
         if match:
             if match.group(1) != vers:
                 _abort('The version number in VERSION is ' + match.group(1)
-                       + 'should be ' + vers)
+                       + ' should be ' + vers)
             if verbose:
                 _verbose('Version in VERSION file is ' + match.group(1),
                          verbose)
         else:
-            _error('could not determine the ' + 'version in VERSIONS')
+            _error('could not determine the version in VERSIONS')
 
 def _check_change_log(vers, verbose):
     ''
@@ -299,7 +296,7 @@ def _check_package_info(vers, verbose):
             _abort('The version for the doc in PackageInfo.g is ' +
                    match.group(1) + ' should be ' + vers)
         else:
-            _verbose('The version for the doc in PackageInfo.g is ok', verbose)
+            _verbose('The version in PackageInfo.g is ok', verbose)
     else:
         _abort('Can\'t find the digraphs version for the doc in PackageInfo.g')
 
@@ -307,11 +304,22 @@ def _check_package_info(vers, verbose):
     match = re.compile(r'ArchiveURL\s+:=\s+"([^"]*)"').search(contents)
     if match:
         if not match.group(1).endswith('digraphs-' + vers):
-            _abort('The ArchiveURL is ' + match.group(1).split('/')[-1])
+            _abort('The ArchiveURL is ' + match.group(1).split('/')[-1]
+                   + ' should be digraphs-' + vers)
         else:
             _verbose('The ArchiveURL is ok', verbose)
     else:
         _abort('Can\'t find the ArchiveURL in PackageInfo.g')
+
+    # check ARCHIVENAME
+    match = re.compile(r'<!ENTITY\s+ARCHIVENAME\s*"([^"]*)"').search(contents)
+    if not match:
+        _abort('Can\'t find the ARCHIVENAME for the doc in PackageInfo.g')
+    if match.group(1) == 'digraphs-' + vers:
+        _verbose('The ARCHIVENAME is ok', verbose)
+    else:
+        _abort('The doc archive name is ' + match.group(1) +
+               ' it should be digraphs-' + vers)
 
     # check GAPVERS
     match = re.compile(r'<!ENTITY\s+GAPVERS\s*"((\d.*)+)"').search(contents)
@@ -321,7 +329,7 @@ def _check_package_info(vers, verbose):
     match = re.compile(r'\s*GAP\s*:=\s*">=((\d.)*\d)"').search(contents)
     if match:
         if match.group(1) == gapvers:
-            _verbose('The doc GAP version and dependencies GAP version match',
+            _verbose('The GAP version is ok',
                      verbose)
         else:
             _abort('The doc GAP version is ' + gapvers +
@@ -337,8 +345,7 @@ def _check_package_info(vers, verbose):
     match = re.compile(r'"io"\s*,\s*">=((\d.)*\d)"').search(contents)
     if match:
         if match.group(1) == iovers:
-            _verbose('The doc io version and dependencies io version match',
-                     verbose)
+            _verbose('The IO version is ok', verbose)
         else:
             _abort('The doc io version is ' + iovers +
                     ' and dependencies io version is ' + match.group(1))
@@ -353,13 +360,13 @@ def _check_package_info(vers, verbose):
     match = re.compile(r'"grape"\s*,\s*">=((\d.)*\d)"').search(contents)
     if match:
         if match.group(1) == grapevers:
-            _verbose('The doc grape version and dependencies grape version match',
-                     verbose)
+            _verbose('The GRAPE version is ok', verbose)
         else:
             _abort('The doc grape version is ' + grapevers +
                    ' and dependencies grape version is ' + match.group(1))
     else:
         _abort('Can\'t find the grape version in Dependencies')
+
 
 ################################################################################
 # Mercurial stuff
@@ -414,7 +421,7 @@ def _copy_doc(dst, verbose):
     for filename in os.listdir('doc'):
         if os.path.splitext(filename)[-1] in ['.html', '.txt', '.pdf', '.css',
                 '.js', '.six']:
-            _verbose('Copying ' + filename + ' to the archive . . .', verbose)
+            _verbose('Copying ' + filename + ' to the archive', verbose)
             shutil.copy('doc/' + filename, dst)
 
 def _create_build_files(dst, verbose):
@@ -426,12 +433,12 @@ def _create_build_files(dst, verbose):
 def _delete_generated_build_files(verbose):
     for filename in ['config.log', 'config.status']:
         if os.path.exists(filename) and os.path.isfile(filename):
-            _verbose('Deleting ' + filename + ' from the archive . . .',
+            _verbose('Deleting ' + filename + ' from the archive',
                      verbose)
             os.remove(filename)
     for directory in ['digraphs-lib']:
         if os.path.exists(directory) and os.path.isdir(directory):
-            _verbose('Deleting ' + directory + ' from the archive . . .',
+            _verbose('Deleting ' + directory + ' from the archive',
                      verbose)
             shutil.rmtree(directory)
 
@@ -459,7 +466,6 @@ def _delete_files_archive(tmpdir):
 
 def _download_digraphs_lib_inner(dst, verbose):
     urllib.urlretrieve(_DIGRAPHS_LIB_URL, _DIGRAPHS_LIB_ARCHIVE)
-    _exec('tar -xzf ' + _DIGRAPHS_LIB_ARCHIVE, verbose)
     shutil.copytree('digraphs-lib', dst + '/digraphs-lib')
 
 def _download_digraphs_lib(tmpdir, verbose):
@@ -467,6 +473,7 @@ def _download_digraphs_lib(tmpdir, verbose):
     sys.stdout.flush()
     dots.dotIt(MAGENTA_DOT, _download_digraphs_lib_inner, tmpdir, verbose)
     print ''
+    _exec('tar -xzf ' + _DIGRAPHS_LIB_ARCHIVE, verbose)
 
 def _start_mamp():
     _exec('open ' + _MAMP_DIR + 'MAMP.app', False)
@@ -573,7 +580,7 @@ def main():
 
     # Run the tests
     if args.skip_tests:
-        _statement('Skipping tests' + ' . . .')
+        _statement('Skipping tests')
     else:
         _action('Running the tests on the archive')
         os.chdir(tmpdir_base)
