@@ -5,9 +5,9 @@ things to the webpage.
 '''
 
 # TODO
-# 1) --skip-extreme
+# 1) --dry-run
 
-import textwrap, os, argparse, tempfile, subprocess, sys, os, re, shutil
+import os, argparse, tempfile, subprocess, sys, os, re, shutil
 import test, time, webbrowser, urllib, dots
 
 from test import *
@@ -24,65 +24,6 @@ _DIGRAPHS_LIB_URL = ('https://bitbucket.org/james-d-mitchell/digraphs/downloads/
                      + _DIGRAPHS_LIB_ARCHIVE)
 _FILES_TO_DELETE_FROM_ARCHIVE = ['.hgignore', '.hgtags', '.gaplint_ignore',
                                  '.hg_archival.txt']
-
-_VERSION = 0
-_VERBOSE = False
-
-################################################################################
-# Strings for printing
-################################################################################
-
-_WRAPPER = textwrap.TextWrapper(break_on_hyphens=False, width=80)
-
-def _red_string(string, wrap=True):
-    'red string'
-    if wrap:
-        return '\n'.join(_WRAPPER.wrap('\033[31m' + string + '\033[0m'))
-    else:
-        return '\033[31m' + string + '\033[0m'
-
-def _green_string(string):
-    'green string'
-    return '\n'.join(_WRAPPER.wrap('\033[32m' + string + '\033[0m'))
-
-def _cyan_string(string):
-    'cyan string'
-    return '\n'.join(_WRAPPER.wrap('\033[36m' + string + '\033[0m'))
-
-def _magenta_string(string):
-    'magenta string'
-    return '\n'.join(_WRAPPER.wrap('\033[35m' + string + '\033[0m'))
-
-def _abort(message):
-    '''Exit the script and print message in red. Use this if something is wrong
-    in the release, i.e. dates or version numbers don't agree.'''
-    sys.exit(_red_string(message + _ABORT))
-
-def _error(message):
-    '''Exit the script and print message in red. Use this if there is an error
-    reading a file etc.'''
-    sys.exit(_red_string(_ERROR + message))
-
-def _statement(message):
-    '''Print the statement <message> in bright green.'''
-    print blue_string(message)
-
-def _action(message):
-    print _magenta_string(pad(message) + ' . . .')
-
-def _action_no_eol(message):
-    print _magenta_string(pad(message) + ' . . . '),
-
-def _verbose(message):
-    if _VERBOSE:
-        print _cyan_string(pad(message) + ' . . .')
-
-################################################################################
-# Error strings
-################################################################################
-
-_ERROR = 'release.py: error: '
-_ABORT = '!\nAborting!'
 
 ################################################################################
 # Helpers
@@ -101,11 +42,11 @@ def query_yes_no(question, default="yes"):
     valid = {"yes": True, "y": True, "ye": True,
              "no": False, "n": False}
     if default is None:
-        prompt = _magenta_string(" [y/n] ")
+        prompt = magenta_string(" [y/n] ")
     elif default == "yes":
-        prompt = _magenta_string(" [Y/n] ")
+        prompt = magenta_string(" [Y/n] ")
     elif default == "no":
-        prompt = _magenta_string(" [y/N] ")
+        prompt = magenta_string(" [y/N] ")
     else:
         raise ValueError("invalid default answer: '%s'" % default)
 
@@ -119,29 +60,6 @@ def query_yes_no(question, default="yes"):
         else:
             sys.stdout.write("Please respond with 'yes' or 'no' "
                              "(or 'y' or 'n').\n")
-def _killed (pro=None):
-    if pro != None:
-        pro.terminate()
-        pro.wait()
-    print _red_string('Killed!')
-    sys.exit(1)
-
-def _exec(string):
-    'execute the string in a subprocess.'
-    _verbose(string)
-    try:
-        if _VERBOSE:
-            subprocess.check_call(string, shell=True)
-        else:
-            devnull = open(os.devnull, 'w')
-            subprocess.check_call(string,
-                                  stdout=devnull,
-                                  stderr=devnull,
-                                  shell=True)
-    except KeyboardInterrupt:
-        _killed()
-    except (subprocess.CalledProcessError, OSError):
-        _error(string + ' failed')
 
 ################################################################################
 # Check the version numbers and dates in various files
@@ -153,115 +71,115 @@ def _version_number_package_info():
 
     if not (os.path.exists('PackageInfo.g') and
             os.path.isfile('PackageInfo.g')):
-        _error('cannot find PackageInfo.g file')
+        exit_error('cannot find PackageInfo.g file')
     else:
         try:
             contents = open('PackageInfo.g', 'r').read()
         except KeyboardInterrupt:
-            _killed()
+            exit_killed()
         except IOError:
-            _error('cannot read PackageInfo.g')
+            exit_error('cannot read PackageInfo.g')
         match = re.compile(r'Version\s*:=\s*"((\d.*)+)"').search(contents)
         if match:
             return match.group(1)
         else:
-            _error('could not determine the' +
-                   ' version number in PackageInfo.g')
+            exit_error('could not determine the' +
+                       ' version number in PackageInfo.g')
 
 def _check_date_package_info():
     '''checks if the date in the PackageInfo.g file is today's date'''
 
     if not (os.path.exists('PackageInfo.g') and
             os.path.isfile('PackageInfo.g')):
-        _error('cannot find PackageInfo.g file')
+        exit_error('cannot find PackageInfo.g file')
     else:
         try:
             contents = open('PackageInfo.g', 'r').read()
         except KeyboardInterrupt:
-            _killed()
+            exit_killed()
         except IOError:
-            _error('cannot read PackageInfo.g')
+            exit_error('cannot read PackageInfo.g')
         regex = re.compile(r'Date\s*:=\s*"(\d\d/\d\d/\d\d\d\d)"')
         match = regex.search(contents)
         if match:
             today = time.strftime("%d/%m/%Y")
             if match.group(1) != today:
-                _abort('Date in PackageInfo.g is ' + match.group(1)
-                       + ' but today is ' + today)
+                exit_abort('Date in PackageInfo.g is ' + match.group(1)
+                           + ' but today is ' + today)
         else:
-            _error('could not determine the ' +
-                   'version number in PackageInfo.g')
+            exit_error('could not determine the ' +
+                       'version number in PackageInfo.g')
 
 def _check_versions_file():
-    ''
+    'check the date and version number in the VERSIONS file'
 
     if not (os.path.exists('VERSIONS') and
             os.path.isfile('VERSIONS')):
-        _error('cannot find VERSIONS file')
+        exit_error('cannot find VERSIONS file')
     else:
         today = time.strftime("%d/%m/%y")
         try:
             contents = open('VERSIONS', 'r').read()
         except KeyboardInterrupt:
-            _killed()
+            exit_killed()
         except IOError:
-            _error('cannot read VERSIONS file')
+            exit_error('cannot read VERSIONS file')
 
-        regex = re.compile(r'release\s+' +
-                r'(\d+.\d+.\d+|\d+.\d+)\s*\-\s*(\d\d/\d\d/\d\d)')
+        regex = re.compile(r'release\s+(\d+.\d+.\d+|\d+.\d+)\s*\-\s*' +
+                           r'(\d\d/\d\d/\d\d)')
         match = regex.search(contents)
 
         if match:
             if match.group(1) != _VERSION:
-                _abort('The version number in VERSIONS is ' + match.group(1)
-                       + ' should be ' + _VERSION)
-            _verbose('Version in VERSIONS file is ' + match.group(1))
+                exit_abort('The version number in VERSIONS is ' + match.group(1)
+                           + ' should be ' + _VERSION)
+            info_verbose('Version in VERSIONS file is ' + match.group(1))
             if match.group(2) != today:
-                _abort('The date in VERSIONS is ' + match.group(2)
-                       + ' but today is ' + today)
+                exit_abort('The date in VERSIONS is ' + match.group(2)
+                           + ' but today is ' + today)
 
             return match.group(1)
         else:
-            _error('could not determine the ' + 'version in VERSIONS')
+            exit_error('could not determine the ' + 'version in VERSIONS')
 
 def _check_version_file():
-    ''
+    'check the version number in the VERSION file'
 
     if not (os.path.exists('VERSION') and
             os.path.isfile('VERSION')):
-        _error('cannot find VERSION file')
+        exit_error('cannot find VERSION file')
     else:
         try:
             contents = open('VERSION', 'r').read()
         except KeyboardInterrupt:
-            _killed()
+            exit_killed()
         except IOError:
-            _error('cannot read VERSION file')
+            exit_error('cannot read VERSION file')
 
         regex = re.compile(r'(\d+.\d+.\d+|\d+.\d+)')
         match = regex.search(contents)
 
         if match:
             if match.group(1) != _VERSION:
-                _abort('The version number in VERSION is ' + match.group(1)
+                exit_abort('The version number in VERSION is ' + match.group(1)
                        + ' should be ' + _VERSION)
-            _verbose('Version in VERSION file is ' + match.group(1))
+            info_verbose('Version in VERSION file is ' + match.group(1))
         else:
-            _error('could not determine the version in VERSIONS')
+            exit_error('could not determine the version in VERSIONS')
 
 def _check_change_log():
     ''
 
     if not (os.path.exists('CHANGELOG.md') and
             os.path.isfile('CHANGELOG.md')):
-        _error('cannot find CHANGELOG.md file')
+        exit_error('cannot find CHANGELOG.md file')
     else:
         try:
             contents = open('CHANGELOG.md', 'r').read()
         except KeyboardInterrupt:
-            _killed()
+            exit_killed()
         except IOError:
-            _error('cannot read CHANGELOG.md file')
+            exit_error('cannot read CHANGELOG.md file')
 
         today = time.strftime("%d/%m/%Y")
         regex = re.compile(r'##\s*Version\s*' + _VERSION +
@@ -270,10 +188,10 @@ def _check_change_log():
 
         if match:
             if match.group(1) != today:
-                _abort('The date in CHANGELOG.md is ' + match.group(1)
+                exit_abort('The date in CHANGELOG.md is ' + match.group(1)
                        + ' but today is ' + today)
         else:
-            _abort('The entry for version ' + _VERSION + ' in CHANGELOG.md'
+            exit_abort('The entry for version ' + _VERSION + ' in CHANGELOG.md'
                    + ' is missing or incorrect')
 
 def _check_package_info():
@@ -282,91 +200,91 @@ def _check_package_info():
 
     if not (os.path.exists('PackageInfo.g') and
             os.path.isfile('PackageInfo.g')):
-        _error('cannot find PackageInfo.g file')
+        exit_error('cannot find PackageInfo.g file')
 
     try:
         contents = open('PackageInfo.g', 'r').read()
     except KeyboardInterrupt:
-        _killed()
+        exit_killed()
     except IOError:
-        _error('cannot read PackageInfo.g')
+        exit_error('cannot read PackageInfo.g')
 
     # get the doc's version number
     match = re.compile(r'<!ENTITY\s+VERSION\s*"((\d.*)+)"').search(contents)
     if match:
         if match.group(1) != _VERSION:
-            _abort('The version for the doc in PackageInfo.g is ' +
-                   match.group(1) + ' should be ' + _VERSION)
+            exit_abort('The version for the doc in PackageInfo.g is ' +
+                        match.group(1) + ' should be ' + _VERSION)
         else:
-            _verbose('The version in PackageInfo.g is ok')
+            info_verbose('The version in PackageInfo.g is ok')
     else:
-        _abort('Can\'t find the digraphs version for the doc in PackageInfo.g')
+        exit_abort('Can\'t find the digraphs version for the doc in PackageInfo.g')
 
     # check the ArchiveURL
     match = re.compile(r'ArchiveURL\s+:=\s+"([^"]*)"').search(contents)
     if match:
         if not match.group(1).endswith('digraphs-' + _VERSION):
-            _abort('The ArchiveURL is ' + match.group(1).split('/')[-1]
+            exit_abort('The ArchiveURL is ' + match.group(1).split('/')[-1]
                    + ' should be digraphs-' + _VERSION)
         else:
-            _verbose('The ArchiveURL is ok')
+            info_verbose('The ArchiveURL is ok')
     else:
-        _abort('Can\'t find the ArchiveURL in PackageInfo.g')
+        exit_abort('Can\'t find the ArchiveURL in PackageInfo.g')
 
     # check ARCHIVENAME
     match = re.compile(r'<!ENTITY\s+ARCHIVENAME\s*"([^"]*)"').search(contents)
     if not match:
-        _abort('Can\'t find the ARCHIVENAME for the doc in PackageInfo.g')
+        exit_abort('Can\'t find the ARCHIVENAME for the doc in PackageInfo.g')
     if match.group(1) == 'digraphs-' + _VERSION:
-        _verbose('The ARCHIVENAME is ok')
+        info_verbose('The ARCHIVENAME is ok')
     else:
-        _abort('The doc archive name is ' + match.group(1) +
+        exit_abort('The doc archive name is ' + match.group(1) +
                ' it should be digraphs-' + _VERSION)
 
     # check GAPVERS
     match = re.compile(r'<!ENTITY\s+GAPVERS\s*"((\d.*)+)"').search(contents)
     if not match:
-        _abort('Can\'t find the GAP version for the doc in PackageInfo.g')
+        exit_abort('Can\'t find the GAP version for the doc in PackageInfo.g')
     gapvers = match.group(1)
     match = re.compile(r'\s*GAP\s*:=\s*">=((\d.)*\d)"').search(contents)
     if match:
         if match.group(1) == gapvers:
-            _verbose('The GAP version is ok')
+            info_verbose('The GAP version is ok')
         else:
-            _abort('The doc GAP version is ' + gapvers +
+            exit_abort('The doc GAP version is ' + gapvers +
                    ' and dependencies GAP version is ' + match.group(1))
     else:
-        _abort('Can\'t find the GAP version in Dependencies')
+        exit_abort('Can\'t find the GAP version in Dependencies')
 
     # check IOVERS
     match = re.compile(r'<!ENTITY\s+IOVERS\s*"((\d.*)+)"').search(contents)
     if not match:
-        _abort('Can\'t find the io version for the doc in PackageInfo.g')
+        exit_abort('Can\'t find the io version for the doc in PackageInfo.g')
     iovers = match.group(1)
     match = re.compile(r'"io"\s*,\s*">=((\d.)*\d)"').search(contents)
     if match:
         if match.group(1) == iovers:
-            _verbose('The IO version is ok')
+            info_verbose('The IO version is ok')
         else:
-            _abort('The doc io version is ' + iovers +
+            exit_abort('The doc io version is ' + iovers +
                    ' and dependencies io version is ' + match.group(1))
     else:
-        _abort('Can\'t find the io version in Dependencies')
+        exit_abort('Can\'t find the io version in Dependencies')
 
     # check GRAPEVERS
     match = re.compile(r'<!ENTITY\s+GRAPEVERS\s*"((\d.*)+)"').search(contents)
     if not match:
-        _abort('Can\'t find the grape version for the doc in PackageInfo.g')
+        exit_abort('Can\'t find the grape version for the doc in PackageInfo.g')
     grapevers = match.group(1)
     match = re.compile(r'"grape"\s*,\s*">=((\d.)*\d)"').search(contents)
     if match:
         if match.group(1) == grapevers:
-            _verbose('The GRAPE version is ok')
+            info_verbose('The GRAPE version is ok')
         else:
-            _abort('The doc grape version is ' + grapevers +
+            exit_abort('The doc grape version is ' + grapevers +
                    ' and dependencies grape version is ' + match.group(1))
     else:
-        _abort('Can\'t find the grape version in Dependencies')
+        exit_abort('Can\'t find the grape version in Dependencies')
 
 ################################################################################
 # Mercurial stuff
@@ -378,11 +296,11 @@ def _check_hg_version():
     try:
         hg_version = subprocess.check_output(['hg', 'branch']).strip()
     except KeyboardInterrupt:
-        _killed()
+        exit_killed()
     except (subprocess.CalledProcessError, OSError):
-        _error('could not determine the hg branch')
+        exit_error('could not determine the hg branch')
     if hg_version != _VERSION:
-        _abort('The version number in the PackageInfo.g file is '
+        exit_abort('The version number in the PackageInfo.g file is '
                + _VERSION + ' but the branch name is ' + hg_version)
 
 def _hg_identify():
@@ -390,12 +308,13 @@ def _hg_identify():
     try:
         hg_identify = subprocess.check_output(['hg', 'identify']).strip()
     except KeyboardInterrupt:
-        _killed()
+        exit_killed()
     except (OSError, subprocess.CalledProcessError):
-        _error('could not determine the version number')
+        exit_error('could not determine the version number')
     return hg_identify.split('+')[0]
 
 def _hg_pending_commits():
+    'check for pending hg commits'
     pro = subprocess.Popen(('hg', 'summary'),
                            stdout=subprocess.PIPE)
     output = subprocess.check_output(('grep', 'commit:'),
@@ -406,12 +325,13 @@ def _hg_pending_commits():
             output = subprocess.check_output(('grep', 'commit:.*clean'),
                                              stdin=pro.stdout).rstrip()
         except KeyboardInterrupt:
-            _killed(pro)
+            exit_killed(pro)
         except:
-            _abort('There are uncommited changes')
+            exit_abort('There are uncommited changes')
 
 def _hg_tag_release():
-    _exec('hg tag -f ' + _VERSION + '-release')
+    'hg tag the repo'
+    exec_string('hg tag -f ' + _VERSION + '-release')
 
 ################################################################################
 # Steps in the release process
@@ -421,23 +341,23 @@ def _copy_doc(dst):
     for filename in os.listdir('doc'):
         if (os.path.splitext(filename)[-1] in
                 ['.html', '.txt', '.pdf', '.css', '.js', '.six']):
-            _verbose('Copying ' + filename + ' to the archive')
+            info_verbose('Copying ' + filename + ' to the archive')
             shutil.copy('doc/' + filename, dst)
 
 def _create_build_files(dst):
     cwd = os.getcwd()
     os.chdir(dst)
-    _exec('./autogen.sh')
+    exec_string('./autogen.sh')
     os.chdir(cwd)
 
 def _delete_generated_build_files():
     for filename in ['config.log', 'config.status']:
         if os.path.exists(filename) and os.path.isfile(filename):
-            _verbose('Deleting ' + filename + ' from the archive')
+            info_verbose('Deleting ' + filename + ' from the archive')
             os.remove(filename)
     for directory in ['digraphs-lib']:
         if os.path.exists(directory) and os.path.isdir(directory):
-            _verbose('Deleting ' + directory + ' from the archive')
+            info_verbose('Deleting ' + directory + ' from the archive')
             shutil.rmtree(directory)
 
 def _delete_files_archive(tmpdir):
@@ -445,45 +365,45 @@ def _delete_files_archive(tmpdir):
     for filename in _FILES_TO_DELETE_FROM_ARCHIVE:
         if (os.path.exists(os.path.join(tmpdir, filename))
                 and os.path.isfile(os.path.join(tmpdir, filename))):
-            _action('Deleting file ' + filename)
+            info_action('Deleting file ' + filename)
             try:
                 os.remove(os.path.join(tmpdir, filename))
             except KeyboardInterrupt:
-                _killed()
+                exit_killed()
             except:
-                _error('could not delete ' + filename)
+                exit_error('could not delete ' + filename)
 
-    _action('Deleting directory scripts')
+    info_action('Deleting directory scripts')
 
     try:
         shutil.rmtree(os.path.join(tmpdir, 'scripts'))
     except KeyboardInterrupt:
-        _killed()
+        exit_killed()
     except:
-        _error('could not delete scripts/*')
-
-def _download_digraphs_lib_inner(dst):
-    urllib.urlretrieve(_DIGRAPHS_LIB_URL, _DIGRAPHS_LIB_ARCHIVE)
-    shutil.copytree('digraphs-lib', dst + '/digraphs-lib')
+        exit_error('could not delete scripts/*')
 
 def _download_digraphs_lib(tmpdir):
-    _action_no_eol('Downloading ' + _DIGRAPHS_LIB_ARCHIVE)
+    def inner(dst):
+        urllib.urlretrieve(_DIGRAPHS_LIB_URL, _DIGRAPHS_LIB_ARCHIVE)
+        shutil.copytree('digraphs-lib', dst + '/digraphs-lib')
+
+    info_action('Downloading ' + _DIGRAPHS_LIB_ARCHIVE, False)
     sys.stdout.flush()
-    dots.dotIt(MAGENTA_DOT, _download_digraphs_lib_inner, tmpdir)
+    dots.dotIt(magenta_string('. '), inner, tmpdir)
     print ''
-    _exec('tar -xzf ' + _DIGRAPHS_LIB_ARCHIVE)
+    exec_string('tar -xzf ' + _DIGRAPHS_LIB_ARCHIVE)
 
 def _start_mamp():
-    _exec('open ' + _MAMP_DIR + 'MAMP.app')
+    exec_string('open ' + _MAMP_DIR + 'MAMP.app')
     cwd = os.getcwd()
     os.chdir(_MAMP_DIR + 'bin')
-    _exec('./start.sh')
+    exec_string('./start.sh')
     os.chdir(cwd)
 
 def _stop_mamp():
     cwd = os.getcwd()
     os.chdir(_MAMP_DIR + 'bin')
-    _exec('./stop.sh')
+    exec_string('./stop.sh')
     os.chdir(cwd)
 
 ################################################################################
@@ -491,7 +411,7 @@ def _stop_mamp():
 ################################################################################
 
 def _main():
-    global _VERBOSE, _VERSION
+    global info_verbose, _VERSION
     # Parse the args
     parser = argparse.ArgumentParser(prog='release.py',
                                      usage='%(prog)s [options]')
@@ -505,6 +425,9 @@ def _main():
     parser.add_argument('--skip-extreme', dest='skip_extreme', action='store_true',
                         help='skip running the extreme tests (default: False)')
     parser.set_defaults(skip_extreme=False)
+    parser.add_argument('--dry-run', dest='dry_run', action='store_true',
+                        help='dry run (default: False)')
+    parser.set_defaults(dry_run=False)
     parser.add_argument('--gap-root', nargs='*', type=str,
                         help='the gap root directory (default: [~/gap])',
                         default=['~/gap/'])
@@ -514,7 +437,8 @@ def _main():
 
     args = parser.parse_args()
 
-    _VERBOSE = args.verbose
+    # set verbose in test.py
+    set_verbose(args.verbose)
 
     if args.skip_tests:
         args.skip_extreme = True
@@ -530,16 +454,17 @@ def _main():
 
     for gap_root_dir in args.gap_root:
         if not (os.path.exists(gap_root_dir) and os.path.isdir(gap_root_dir)):
-            _error('can\'t find GAP root directory' + gap_root_dir + '!')
+            exit_error('can\'t find GAP root directory' + gap_root_dir + '!')
     if not (os.path.exists(args.pkg_dir) or os.path.isdir(args.pkg_dir)):
-        _error('can\'t find package directory!')
+        exit_error('can\'t find package directory!')
 
     # Check for pending commits
-    _hg_pending_commits()
+    if not args.dry_run:
+        _hg_pending_commits()
 
     # Get the version number
     _VERSION = _version_number_package_info()
-    _statement('The version number is: ' + _VERSION)
+    print neon_green_string(pad_string('The version number is:') + _VERSION)
 
     # Check the CHANGELOG.md, VERSIONS, and VERSION
     _check_hg_version()
@@ -555,21 +480,22 @@ def _main():
     # Get the temporary dir
     tmpdir_base = tempfile.mkdtemp()
     tmpdir = tmpdir_base + '/digraphs-' + _VERSION
-    _verbose('Using temporary directory: ' + tmpdir)
+    info_verbose('Using temporary directory: ' + tmpdir)
 
     # Tag . . .
-    _action('Tagging the last commit')
-    _hg_tag_release()
+    if not args.dry_run:
+        info_action('Tagging the last commit')
+        _hg_tag_release()
 
     # Archive
-    _action('Archiving using hg')
-    _exec('hg archive ' + tmpdir)
+    info_action('Archiving using hg')
+    exec_string('hg archive ' + tmpdir)
 
     # Copy the doc . . .
     _copy_doc(tmpdir + '/doc/')
 
     # Run autogen.sh
-    _action('Creating the build files')
+    info_action('Creating the build files')
     _create_build_files(tmpdir)
 
     # Delete unnecessary files from the archive
@@ -581,9 +507,9 @@ def _main():
 
     # Run the tests
     if args.skip_tests:
-        _statement('Skipping tests')
+        info_statement('Skipping tests')
     else:
-        _action('Running the tests on the archive')
+        info_statement('Running test.py')
         os.chdir(tmpdir_base)
         for directory in args.gap_root:
             digraphs_dir = os.path.join(directory, 'pkg/digraphs-' + _VERSION)
@@ -593,16 +519,17 @@ def _main():
                     shutil.move(os.path.join(directory, 'pkg/digraphs'),
                                 tmpdir_base)
             except KeyboardInterrupt:
-                _killed()
+                exit_killed()
             except Exception as e:
-                sys.exit(_red_string(str(e)))
+                sys.exit(red_string(str(e)))
 
-            try:#TODO pass skip-extreme here!
+            try:
                 test.run_digraphs_tests(directory,
                                         directory + '/pkg',
-                                        'digraphs-' + _VERSION)
+                                        'digraphs-' + _VERSION,
+                                        args.skip_extreme)
             except (OSError, IOError) as e:
-                sys.exit(_red_string(str(e)))
+                sys.exit(red_string(str(e)))
             finally:
                 if os.path.exists(os.path.join(tmpdir_base, 'digraphs')):
                     shutil.move(os.path.join(tmpdir_base, 'digraphs'),
@@ -610,15 +537,15 @@ def _main():
                 shutil.rmtree(digraphs_dir)
 
     # Create the archive file
-    _action('Creating the tarball')
+    info_action('Creating the tarball')
     os.chdir(tmpdir)
     _delete_generated_build_files()
     os.chdir(tmpdir_base)
-    _exec('tar -cpf digraphs-' + _VERSION + '.tar digraphs-' + _VERSION)
-    _exec('gzip -9 digraphs-' + _VERSION + '.tar')
+    exec_string('tar -cpf digraphs-' + _VERSION + '.tar digraphs-' + _VERSION)
+    exec_string('gzip -9 digraphs-' + _VERSION + '.tar')
 
     # Copy files to the local copy of the website
-    _action('Copying to webpage' + ' . . .')
+    info_action('Copying to webpage' + ' . . .')
     try:
         os.chdir(tmpdir_base)
         shutil.copy('digraphs-' + _VERSION + '.tar.gz', _WEBPAGE_DIR)
@@ -629,52 +556,57 @@ def _main():
         shutil.rmtree(_WEBPAGE_DIR + 'doc')
         shutil.copytree('doc', _WEBPAGE_DIR + 'doc')
     except KeyboardInterrupt:
-        _killed()
+        exit_killed()
     except Exception as e:
-        print _red_string(_ERROR + 'could not copy to the webpage!')
-        sys.exit(_red_string(str(e)))
+        print red_string(exit_error + 'could not copy to the webpage!')
+        sys.exit(red_string(str(e)))
 
     # hg add and commit files added
     os.chdir(_WEBPAGE_DIR)
-    _action('Adding archive to webpage repo')
-    _exec('hg add digraphs-' + _VERSION + '.tar.gz')
-    _exec('hg addremove')
-    _action('Committing webpage repo')
-    _exec('hg commit -m "Releasing digraphs ' + _VERSION + '"')
+    if not args.dry_run:
+        info_action('Adding archive to webpage repo')
+        exec_string('hg add digraphs-' + _VERSION + '.tar.gz')
+        exec_string('hg addremove')
+        info_action('Committing webpage repo')
+        exec_string('hg commit -m "Releasing digraphs ' + _VERSION + '"')
 
     # open the webpage for inspection
     _start_mamp()
     webbrowser.open('http://localhost:8888/public_html/digraphs.php')
 
     # actually publish?
-    publish = query_yes_no(_magenta_string('Publish the webpage?'))
-    _stop_mamp()
+    if not args.dry_run:
+        publish = query_yes_no(magenta_string('Publish the webpage?'))
+        _stop_mamp()
 
-    if not publish:
-        sys.exit(_red_string('Aborting!'))
+        if not publish:
+            exit_abort()
+    else:
+        print neon_green_string('Dry run succeeded!')
+        exit_abort()
 
     # push the website changes
-    _action('Pushing webpage to server')
-    _exec('hg push')
+    info_action('Pushing webpage to server')
+    exec_string('hg push')
     os.chdir(_DIGRAPHS_REPO_DIR)
 
     # merge the release branch into default
-    _action('Merging ' + _VERSION + ' into default')
-    _exec('hg up -r default')
-    _exec('hg merge -r ' + _VERSION)
-    _exec('hg commit -m "Merge from' + _VERSION + '"')
+    info_action('Merging ' + _VERSION + ' into default')
+    exec_string('hg up -r default')
+    exec_string('hg merge -r ' + _VERSION)
+    exec_string('hg commit -m "Merge from' + _VERSION + '"')
 
     # close the release branch
-    _action('Closing branch ' + _VERSION)
-    _exec('hg up -r ' + _VERSION)
-    _exec('hg commit --close-branch -m "closing branch"')
+    info_action('Closing branch ' + _VERSION)
+    exec_string('hg up -r ' + _VERSION)
+    exec_string('hg commit --close-branch -m "closing branch"')
 
     # go back to default branch
-    _action('Updating to default branch')
-    _exec('hg up -r default')
+    info_action('Updating to default branch')
+    exec_string('hg up -r default')
 
-    _statement('Don\'t forget to check everything is ok at: ' +
-               'http://www.gap-system.org/Packages/Authors/authors.html')
+    info_statement('Don\'t forget to check everything is ok at: ' +
+                   'http://www.gap-system.org/Packages/Authors/authors.html')
     webbrowser.open('http://www.gap-system.org/Packages/Authors/authors.html')
 
     sys.exit(0)
@@ -687,4 +619,4 @@ if __name__ == '__main__':
     try:
         _main()
     except KeyboardInterrupt:
-        _killed()
+        exit_killed()

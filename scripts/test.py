@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 
 '''
-This is a script for checking that the Semigroups package is releasable, i.e.
+This is a script for checking that the Digraphs package is releasable, i.e.
 that it passes all the tests in all configurations.
 '''
-
-#TODO verbose mode
 
 import textwrap, os, argparse, tempfile, subprocess, sys, os, signal, dots
 
@@ -67,7 +65,7 @@ def exit_killed(*arg):
         pro.terminate()
         pro.wait()
     show_cursor()
-    print red_string('Killed!')
+    print red_string('\nKilled!')
     sys.exit(1)
 
 def info_statement(message):
@@ -361,19 +359,19 @@ def run_digraphs_tests(gap_root, pkg_dir, pkg_name, skip_extreme):
 
     info_statement('Semigroups loaded first')
     _run_test(gap_root,
-              'Testing digraphs/tst/testinstall.tst',
+              'Testing ' + pkg_name + '/tst/testinstall.tst',
               True,
               _LOAD_SEMIGROUPS,
               _LOAD,
               _TEST_INSTALL)
     _run_test(gap_root,
-              'Testing digraphs manual examples',
+              'Testing Digraphs manual examples',
               True,
               _LOAD_SEMIGROUPS,
               _LOAD,
               _TEST_MAN_EX)
     _run_test(gap_root,
-              'Testing digraphs/tst/standard/*',
+              'Testing ' + pkg_name + '/tst/standard/*',
               True,
               _LOAD_SEMIGROUPS,
               _LOAD,
@@ -382,23 +380,23 @@ def run_digraphs_tests(gap_root, pkg_dir, pkg_name, skip_extreme):
     info_statement('Grape compiled')
 
     _run_test(gap_root,
-              'Testing digraphs/tst/testinstall.tst',
+              'Testing ' + pkg_name + '/tst/testinstall.tst',
               True,
               _LOAD,
               _TEST_INSTALL)
     _run_test(gap_root,
-              'Testing digraphs manual examples',
+              'Testing Digraphs manual examples',
               True,
               _LOAD,
               _TEST_MAN_EX)
     _run_test(gap_root,
-              'Testing digraphs/tst/standard/*',
+              'Testing ' + pkg_name + '/tst/standard/*',
               True,
               _LOAD,
               _TEST_STANDARD)
     if not skip_extreme:
         _run_test(gap_root,
-                  'Testing digraphs/tst/extreme/*',
+                  'Testing ' + pkg_name + '/tst/extreme/*',
                   True,
                   _LOAD,
                   _TEST_EXTREME)
@@ -414,23 +412,23 @@ def run_digraphs_tests(gap_root, pkg_dir, pkg_name, skip_extreme):
 
     _make_clean(gap_root, pkg_dir, 'grape')
     _run_test(gap_root,
-              'Testing digraphs/tst/testinstall.tst',
+              'Testing ' + pkg_name + '/tst/testinstall.tst',
               True,
               _LOAD,
               _TEST_INSTALL)
     _run_test(gap_root,
-              'Testing digraphs manual examples',
+              'Testing Digraphs manual examples',
               True,
               _LOAD,
               _TEST_MAN_EX)
     _run_test(gap_root,
-              'Testing digraphs/tst/standard/*',
+              'Testing ' + pkg_name + '/tst/standard/*',
               True,
               _LOAD,
               _TEST_STANDARD)
     if not skip_extreme:
         _run_test(gap_root,
-                  'Testing digraphs/tst/extreme/*',
+                  'Testing ' + pkg_name + '/tst/extreme/*',
                   True,
                   _LOAD,
                   _TEST_EXTREME)
@@ -445,23 +443,23 @@ def run_digraphs_tests(gap_root, pkg_dir, pkg_name, skip_extreme):
     info_statement('Only needed packages')
 
     _run_test(gap_root,
-              'Testing digraphs/tst/testinstall.tst',
+              'Testing ' + pkg_name + '/tst/testinstall.tst',
               True,
               _LOAD_ONLY_NEEDED,
               _TEST_INSTALL)
     _run_test(gap_root,
-              'Testing digraphs manual examples',
+              'Testing Digraphs manual examples',
               True,
               _LOAD_ONLY_NEEDED,
               _TEST_MAN_EX)
     _run_test(gap_root,
-              'Testing digraphs/tst/standard/*',
+              'Testing ' + pkg_name + '/tst/standard/*',
               True,
               _LOAD_ONLY_NEEDED,
               _TEST_STANDARD)
     if not skip_extreme:
         _run_test(gap_root,
-                  'Testing digraphs/tst/extreme/*',
+                  'Testing ' + pkg_name + '/tst/extreme/*',
                   True,
                   _LOAD_ONLY_NEEDED,
                   _TEST_EXTREME)
