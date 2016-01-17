@@ -389,7 +389,10 @@ def _download_digraphs_lib(tmpdir):
 
     info_action('Downloading ' + _DIGRAPHS_LIB_ARCHIVE, False)
     sys.stdout.flush()
-    dots.dotIt(magenta_string('. '), inner, tmpdir)
+    if not _VERBOSE:
+        dots.dotIt(magenta_string('. '), inner, tmpdir)
+    else:
+        inner(tmpdir)
     print ''
     exec_string('tar -xzf ' + _DIGRAPHS_LIB_ARCHIVE)
 
