@@ -378,16 +378,14 @@ function(graph)
 
   if IsEmptyDigraph(graph) then
     return true;
-  fi; 
+  elif not IsSymmetricDigraph(graph) or not IsConnectedDigraph(graph) then
+    return false;
+  fi;
 
   reps            := DigraphOrbitReps(graph);
   record          := DIGRAPH_ConnectivityDataForVertex(graph, reps[1]);
   localParameters := record.localParameters;
   localDiameter   := record.localDiameter;
-
-  if not IsSymmetricDigraph(graph) or not IsConnectedDigraph(graph) then
-    return false;
-  fi;
 
   for i in [2 .. Length(reps)] do
      record := DIGRAPH_ConnectivityDataForVertex(graph, reps[2]);

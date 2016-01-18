@@ -701,7 +701,7 @@ false
   <Description>
     If <A>digraph</A> is a symmetric digraph, then this function returns the
     girth of <A>digraph</A> when treated as an undirected graph (i.e. each pair
-    of edges <M>[i,j]</M> and <M>[j,i]</M> is treated as a single edge between
+    of edges <M>[i, j]</M> and <M>[j, i]</M> is treated as a single edge between
     <M>i</M> and <M>j</M>). <P/>
 
     The <E>girth</E> of an undirected graph is the length of its shortest simple
@@ -735,15 +735,18 @@ gap> DigraphUndirectedGirth(gr);
   <Description>
     The <E>girth</E> of a digraph is the length of its shortest simple cycle,
     i.e. the shortest non-trivial directed path starting and ending at the same
-    vertex and passing through no vertex more than once. <P/>
+    vertex and passing through no vertex more than once. 
+    <P/>
 
     If <A>digraph</A> has no cycles, then this function will return
     <C>infinity</C>.  If <A>digraph</A> contains a loop, then this function will
-    return <C>1</C>. <P/>
+    return <C>1</C>. 
+    <P/>
 
     The method used in this function is a version of the Floyd-Warshall
-    algorithm, and has complexity <M>O(n^3)</M>, where <A>n</A> is the number of
-    vertices in <A>digraph</A>. <P/>
+    algorithm, and has complexity <C>O(<A>n</A> ^ 3)</C>, where <A>n</A> is the
+    number of vertices in <A>digraph</A>. 
+    <P/>
 
     For symmetric digraphs, see also <Ref Oper="DigraphUndirectedGirth"/>. <P/>
     <Example><![CDATA[
