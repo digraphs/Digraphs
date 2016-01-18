@@ -81,8 +81,7 @@ false
 gap> IsIndependentSet(gr, [2, 4]);
 true
 gap> IsMaximalIndependentSet(gr, [2, 4]);
-true
-]]></Example>
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -241,7 +240,21 @@ gap> DigraphClique(gr, [], [], 2);
     to avoid repeating computation unnecessarily. <P/>
 
     <Example><![CDATA[
-gap>]]></Example>
+gap> gr := Digraph([[2, 3], [1, 3], [1, 2, 4], [3, 5, 6],
+> [4, 6], [4, 5]]);
+<digraph with 6 vertices, 14 edges>
+gap> AutomorphismGroup(gr);
+Group([ (5,6), (1,2), (1,5)(2,6)(3,4) ])
+gap> DigraphMaximalCliques(gr);
+[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ]
+gap> DigraphMaximalCliquesReps(gr);
+[ [ 1, 2, 3 ], [ 3, 4 ] ]
+gap> DigraphMaximalCliquesReps(gr, [3, 4], [], 1);
+[ [ 3, 4 ] ]
+gap> DigraphMaximalCliques(gr, [1, 2], [5, 6], 1, 2);
+[  ]
+gap> DigraphCliques(gr, [1], [5, 6], infinity, 2);
+[ [ 1, 2 ], [ 1, 3 ] ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -310,7 +323,26 @@ gap>]]></Example>
        </Item>
      </List>
     <Example><![CDATA[
-]]></Example>
+gap> gr := ChainDigraph(6);
+<digraph with 6 vertices, 5 edges>
+gap> DigraphIndependentSet(gr);
+[ 6, 4, 2 ]
+gap> DigraphMaximalIndependentSet(gr);
+[ 6, 4, 2 ]
+gap> DigraphIndependentSet(gr, [2, 4]);
+[ 2, 4, 6 ]
+gap> DigraphMaximalIndependentSet(gr, [1, 3]);
+[ 1, 3, 6 ]
+gap> DigraphIndependentSet(gr, [2, 4], [6]);
+[ 2, 4 ]
+gap> DigraphMaximalIndependentSet(gr, [2, 4], [6]);
+fail
+gap> DigraphIndependentSet(gr, [1], [], 2);
+[ 1, 3 ]
+gap> DigraphMaximalIndependentSet(gr, [1], [], 2);
+fail
+gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
+[ 1, 3, 5 ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -400,8 +432,7 @@ gap> DigraphMaximalIndependentSets(gr, [1]);
 gap> DigraphIndependentSets(gr, [], [4, 5]);
 [ [ 1 ], [ 2 ], [ 3 ], [ 1, 3 ] ]
 gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
-[ [ 1, 3 ] ]
-]]></Example>
+[ [ 1, 3 ] ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -525,8 +556,7 @@ gap> CliquesFinder(gr, fail, [], infinity, [], [], true, 5, false);
 gap> CliquesFinder(gr, fail, [], infinity, [1, 3], [], false, 3, false);
 [ [ 1, 2, 3 ], [ 1, 3, 4 ], [ 1, 3, 5 ] ]
 gap> CliquesFinder(gr, fail, [], infinity, [1, 3], [], true, 3, false);
-[  ]
-]]></Example>
+[  ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>

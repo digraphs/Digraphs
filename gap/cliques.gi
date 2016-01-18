@@ -629,8 +629,8 @@ function(arg)
 
   if IsList(include) and IsEmpty(include) and IsList(exclude)
       and IsEmpty(exclude) and limit = infinity and size = fail
-      and HasDigraphMaximalCliquesAttr(digraph) then
-    return DigraphMaximalCliquesAttr(digraph);
+      and HasDigraphMaximalCliquesRepsAttr(digraph) then
+    return DigraphMaximalCliquesRepsAttr(digraph);
   fi;
 
   out := [];
@@ -1024,20 +1024,16 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
 
       # Is this a better way of choosing a pivot?
       # Strategy 2: choose vertex in orb (try union ban, mod G) with max number
-      #             of neighbours in try_orb (try mod G)
+      #             of neighbours in try (try mod G)
       top := -1;
       piv := 0;
       for v in orb do
-        m := SizeBlist(IntersectionBlist(try_orb, adj[v]));
+        m := SizeBlist(IntersectionBlist(try, adj[v]));
         if m > top then
           piv := v;
           top := m;
         fi;
       od;
-
-      # Strategy 3: choose vertex in orb (try union ban, mod G) with max number
-      #             of neighbours in try
-      # NOT YET IMPLEMENTED OR TESTED
 
       to_try := ShallowCopy(ListBlist(vtx, DifferenceBlist(try_orb,
                                                            adj[piv])));
