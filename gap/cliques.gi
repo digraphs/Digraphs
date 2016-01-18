@@ -167,37 +167,28 @@ function(arg)
   # Validate arg[3]
   if IsBound(arg[3]) then
     include := arg[3];
-    if not IsHomogeneousList(include)
+    if not IsHomogeneousList(include) or not IsDuplicateFreeList(include)
         or not IsSubset(DigraphVertices(gr), include) then
       ErrorMayQuit("Digraphs: DIGRAPHS_Clique: usage,\n",
                    "the optional second argument <include> must be a ",
                    "duplicate-free set of vertices\nof <gr>,");
     fi;
-    include := Unique(include);
   else
     include := [];
   fi;
 
-  if not IsClique(gr, include) then
-    return fail;
-  fi;
 
   # Validate arg[4]
   if IsBound(arg[4]) then
     exclude := arg[4];
-    if not IsHomogeneousList(exclude)
+    if not IsHomogeneousList(exclude) or not IsDuplicateFreeList(exclude)
         or not IsSubset(DigraphVertices(gr), exclude) then
       ErrorMayQuit("Digraphs: DIGRAPHS_Clique: usage,\n",
                    "the optional third argument <exclude> must be a ",
                    "duplicate-free set of verticies\nof <gr>,");
     fi;
-    exclude := Unique(exclude);
   else
     exclude := [];
-  fi;
-
-  if not IsEmpty(Intersection(include, exclude)) then
-    return fail;
   fi;
 
   # Validate arg[5]
@@ -208,30 +199,34 @@ function(arg)
                    "the optional fourth argument <size> must be a positive ",
                    "integer,");
     fi;
-    # Perform 4-argument version of the function
+  fi;
+
+  if not IsClique(gr, include) then
+    return fail;
+  elif not IsEmpty(Intersection(include, exclude)) then
+    return fail;
+  fi;
+
+  # Perform 4-argument version of the function
+  if IsBound(size) then
     if maximal then
       out := DigraphMaximalCliques(gr, include, exclude, 1, size);
-      if IsEmpty(out) then
-        return fail;
-      fi;
-      return out[1];
+    else
+      out := DigraphCliquesOfSize(gr, size, include, exclude, 1);
     fi;
-    out := DigraphCliquesOfSize(gr, size, include, exclude, 1);
     if IsEmpty(out) then
       return fail;
     fi;
     return out[1];
   fi;
 
-  if IsBound(arg[4]) then
-    # Perform 3-argument version of the function
-    if maximal then
-      out := DigraphMaximalCliques(gr, include, exclude, 1);
-      if IsEmpty(out) then
-        return false;
-      fi;
-      return out[1];
+  # Perform 3-argument version if maximal = true
+  if IsBound(arg[4]) and maximal then
+    out := DigraphMaximalCliques(gr, include, exclude, 1);
+    if IsEmpty(out) then
+      return false;
     fi;
+    return out[1];
   fi;
 
   # Do a greedy search to find a clique of <gr> containing <include> and
@@ -240,6 +235,7 @@ function(arg)
   out := OutNeighbours(gr);
   try := Difference(DigraphVertices(gr), Concatenation(include, exclude));
   include_copy := ShallowCopy(include);
+
   while not IsEmpty(include_copy) and not IsEmpty(try) do
     v := Remove(include_copy);
     try := Intersection(try, out[v]);
@@ -266,93 +262,57 @@ end);
 
 InstallGlobalFunction(DigraphMaximalCliquesReps,
 function(arg)
-  local gr, G, include, exclude, limit, size, out;
+  local digraph, include, exclude, limit, size, out;
 
   if IsEmpty(arg) then
     ErrorMayQuit("Digraphs: DigraphMaximalCliquesReps: usage,\n",
                  "this function takes at least one argument,");
   fi;
 
-  # Validate arg[1]: gr
-  gr := arg[1];
-  if not IsDigraph(gr) then
-    ErrorMayQuit("Digraphs: DigraphMaximalCliquesReps: usage,\n",
-                 "the first argument <gr> must be a digraph,");
-  fi;
+  digraph := arg[1];
 
-  G := DigraphGroup(gr);
-
-  # Validate arg[2]: include
   if IsBound(arg[2]) then
     include := arg[2];
-    if not IsHomogeneousList(include)
-        or not IsSubset(DigraphVertices(gr), include)
-        or not ForAll(GeneratorsOfGroup(G),
-                      x -> IsSubset(OnTuples(include, x), include)) then
-      ErrorMayQuit("Digraphs: DigraphMaximalCliquesReps: usage,\n",
-                   "the optional second argument <include> must be a ",
-                   "duplicate-free set of vertices\nof <gr> which is ",
-                   "invariant under the action of the DigraphGroup <G>,");
-    fi;
-    include := Unique(include);
-  elif HasDigraphMaximalCliquesRepsAttr(gr) then
-    return DigraphMaximalCliquesRepsAttr(gr);
   else
     include := [];
   fi;
 
-  # Validate arg[3]: exclude
   if IsBound(arg[3]) then
     exclude := arg[3];
-    if not IsHomogeneousList(exclude)
-        or not IsSubset(DigraphVertices(gr), exclude)
-        or not ForAll(GeneratorsOfGroup(G),
-                      x -> IsSubset(OnTuples(exclude, x), exclude)) then
-      ErrorMayQuit("Digraphs: DigraphMaximalCliquesReps: usage,\n",
-                   "the optional third argument <exclude> must be a ",
-                   "duplicate-free set of verticies\nof <gr> which is ",
-                   "invariant under the action of the DigraphGroup <G>,");
-    fi;
-    exclude := Unique(exclude);
   else
     exclude := [];
   fi;
 
-  # Validate arg[4]: limit
   if IsBound(arg[4]) then
     limit := arg[4];
-    if limit <> infinity and not IsPosInt(limit) then
-      ErrorMayQuit("Digraphs: DigraphMaximalCliquesReps: usage,\n",
-                   "the optional fourth argument <limit> must be a positive ",
-                   "integer or infinity,");
-    fi;
   else
     limit := infinity;
   fi;
 
-  # Validate arg[5]: size
   if IsBound(arg[5]) then
     size := arg[5];
-    if not IsPosInt(size) then
-      ErrorMayQuit("Digraphs: DigraphMaximalCliquesReps: usage,\n",
-                   "the optional fifth argument <size> must be a positive ",
-                   "integer,");
-    fi;
   else
     size := fail;
   fi;
 
-  out := DIGRAPHS_BronKerbosch(gr, include, [], exclude, [], limit, G, false,
-                               size);
-
-  # Store the result if appropriate
-  if IsEmpty(include) and IsEmpty(exclude) and Length(out) < limit then
-    SetDigraphMaximalCliquesRepsAttr(gr, out);
-    if not HasDigraphMaximalCliquesAttr(gr) and IsTrivial(G) then
-      SetDigraphMaximalCliquesAttr(gr, out);
+  if IsList(include) and IsEmpty(include) and IsList(exclude)
+    and IsEmpty(exclude) and limit = infinity and size = fail
+    and HasDigraphMaximalCliquesAttr(digraph) then
+      return DigraphMaximalCliquesAttr(digraph);
     fi;
   fi;
 
+  out := [];
+  CliquesFinder(digraph, fail, out, limit, include, exclude, true, size, true);
+
+  # Store the result if appropriate
+  if IsEmpty(include) and IsEmpty(exclude) and limit = infinity
+      and size = fail then
+    SetDigraphMaximalCliquesRepsAttr(digraph, out);
+    if IsTrivial(DigraphGroup(digraph)) then
+      SetDigraphMaximalCliquesAttr(digraph, out);
+    fi;
+  fi;
   return out;
 end);
 
@@ -369,107 +329,61 @@ end);
 
 InstallGlobalFunction(DigraphMaximalCliques,
 function(arg)
-  local gr, G, include, reps, out, exclude, limit, size, all, c;
+  local digraph, include, exclude, limit, size, out;
 
   if IsEmpty(arg) then
-    ErrorMayQuit("Digraphs: DigraphMaximalCliques: usage,\n",
+    ErrorMayQuit("Digraphs: DigraphMaximalCliquesReps: usage,\n",
                  "this function takes at least one argument,");
   fi;
 
-  # Validate arg[1]: gr
-  gr := arg[1];
-  if not IsDigraph(gr) then
-    ErrorMayQuit("Digraphs: DigraphMaximalCliques: usage,\n",
-                 "the first argument <gr> must be a digraph,");
-  fi;
+  digraph := arg[1];
 
-  G := DigraphGroup(gr);
-
-  # Validate arg[2]: include
   if IsBound(arg[2]) then
     include := arg[2];
-    if not IsHomogeneousList(include)
-        or not IsSubset(DigraphVertices(gr), include) then
-      ErrorMayQuit("Digraphs: DigraphMaximalCliques: usage,\n",
-                   "the optional second argument <include> must be a ",
-                   "duplicate-free set of vertices\nof <gr>,");
-    fi;
-    include := Unique(include);
-  elif HasDigraphMaximalCliquesAttr(gr) then
-    return DigraphMaximalCliquesAttr(gr);
-  elif HasDigraphMaximalCliquesRepsAttr(gr) then
-    reps := DigraphMaximalCliquesRepsAttr(gr);
-    out := Concatenation(List(c, x -> Orbit(G, x, OnSets)));
-    SetDigraphMaximalCliquesAttr(gr, out);
-    return out;
-
   else
     include := [];
   fi;
 
-  # Validate arg[3]: exclude
   if IsBound(arg[3]) then
     exclude := arg[3];
-    if not IsHomogeneousList(exclude)
-        or not IsSubset(DigraphVertices(gr), exclude) then
-      ErrorMayQuit("Digraphs: DigraphMaximalCliques: usage,\n",
-                   "the optional third argument <exclude> must be a ",
-                   "duplicate-free set of verticies\nof <gr>,");
-    fi;
-    exclude := Unique(exclude);
   else
     exclude := [];
   fi;
 
-  # Validate arg[4]: limit
   if IsBound(arg[4]) then
     limit := arg[4];
-    if limit <> infinity and not IsPosInt(limit) then
-      ErrorMayQuit("Digraphs: DigraphMaximalCliquesReps: usage,\n",
-                   "the optional fourth argument <limit> must be a positive ",
-                   "integer or infinity,");
-    fi;
   else
     limit := infinity;
   fi;
 
-  # Validate arg[5]: size
   if IsBound(arg[5]) then
     size := arg[5];
-    if not IsPosInt(size) then
-      ErrorMayQuit("Digraphs: DigraphMaximalCliques: usage,\n",
-                   "the optional fifth argument <size> must be a positive ",
-                   "integer,");
-    fi;
   else
     size := fail;
   fi;
 
-  # Decide whether we need to collect all results as we go
-  # Or just orbit representatives
-  all := limit < infinity
-           or not IsEmpty(include_variant)
-           or not IsEmpty(exclude_variant);
-  c := DIGRAPHS_BronKerbosch(gr, include_invariant, include_variant,
-                             exclude_invariant, exclude_variant, limit, G, all,
-                             size);
-
-  # did we already compute *all* results?
-  if all then
-    out := c;
-  else
-    out := Concatenation(List(c, x -> Orbit(G, x, OnSets)));
+  if IsList(include) and IsEmpty(include) and IsList(exclude) and
+      IsEmpty(exclude) and limit = infinity and size = fail then
+    if HasDigraphMaximalCliquesAttr(digraph) then
+      return DigraphMaximalCliquesAttr(digraph);
+    fi;
+    out := DigraphMaximalCliquesReps(digraph);
+    if IsTrivial(DigraphGroup(digraph)) then
+      return out;
+    fi;
+    G := DigraphGroup(digraph);
+    out := Concatenation(List(out, x -> Orbit(G, x)));
   fi;
 
+  out := [];
+  CliquesFinder(digraph, fail, out, limit, include, exclude, true, size, false);
+
   # Store the result if appropriate
-  if IsEmpty(include_invariant) and IsEmpty(include_variant)
-      and IsEmpty(exclude_invariant) and IsEmpty(exclude_variant)
-      and Length(out) < limit then
-    SetDigraphMaximalCliquesAttr(gr, out);
-    if not all
-        and not HasDigraphMaximalCliquesRepsAttr(gr)
-        and IsTrivial(G) then
-      SetDigraphMaximalCliquesRepsAttr(gr, out);
+  if IsEmpty(include) and IsEmpty(exclude) and limit = infinity
+      and size = fail then
+    SetDigraphMaximalCliquesAttr(digraph, out);
+    if IsTrivial(DigraphGroup(digraph)) then
+      SetDigraphMaximalCliquesRepsAttr(digraph, out);
     fi;
   fi;
   return out;

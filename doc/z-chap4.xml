@@ -68,10 +68,11 @@
     based on the Bron-Kerbosch algorithm.
 
     <#Include Label="IsClique">
+    <#Include Label="IsIndependentSet">
+    <#Include Label="CliquesFinder">
     <#Include Label="DigraphClique">
     <#Include Label="DigraphCliquesOfSize">
     <#Include Label="DigraphMaximalCliques">
-    <#Include Label="IsIndependentSet">
     <#Include Label="DigraphIndependentSet">
     <#Include Label="DigraphIndependentSetsOfSize">
     <#Include Label="DigraphMaximalIndependentSets">

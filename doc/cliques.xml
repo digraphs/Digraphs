@@ -16,10 +16,10 @@
   <Description>
     If <A>digraph</A> is a digraph and <A>l</A> is a duplicate-free list of
     vertices of <A>digraph</A>, then
-    <C>IsClique(</C><A>digraph</A><C>,</C><A>l</A><C>)</C> returns
-    <K>true</K> if and only if <A>l</A> defines a clique of <A>digraph</A>,
-    and <C>IsMaximalClique(</C><A>digraph</A><C>,</C><A>l</A><C>)</C> returns
-    <K>true</K> if and only if <A>l</A> defines a <E>maximal</E> clique of
+    <C>IsClique(</C><A>digraph</A><C>,</C><A>l</A><C>)</C> returns <K>true</K>
+    if and only if <A>l</A> defines a <E>clique</E> of <A>digraph</A>, and
+    <C>IsMaximalClique(</C><A>digraph</A><C>,</C><A>l</A><C>)</C> returns
+    <K>true</K> if and only if <A>l</A> defines a <E>maximal clique</E> of
     <A>digraph</A>. <P/>
 
     A set of vertices of a digraph defines a clique if and only if every
@@ -57,16 +57,16 @@ true]]></Example>
     If <A>digraph</A> is a digraph and <A>l</A> is a duplicate-free list of
     vertices of <A>digraph</A>, then
     <C>IsIndependentSet(</C><A>digraph</A><C>,</C><A>l</A><C>)</C> returns
-    <K>true</K> if and only if <A>l</A> defines an independent set of
+    <K>true</K> if and only if <A>l</A> defines an <E>independent set</E> of
     <A>digraph</A>, and
     <C>IsMaximalIndependentSet(</C><A>digraph</A><C>,</C><A>l</A><C>)</C>
-    returns <K>true</K> if and only if <A>l</A> defines a <E>maximal</E>
-    independent set of <A>digraph</A>. <P/>
+    returns <K>true</K> if and only if <A>l</A> defines a <E>maximal
+      independent set</E> of <A>digraph</A>. <P/>
 
     A set of vertices of a digraph is an independent set if and only if no
-    vertex of the set is an out-neighbour in the digraph of any other
+    vertex of the set is an out-neighbour in the digraph of any different
     vertex of the set. Equivalently, an independent set is a set of vertices
-    of the digraph which induces an empty digraph.<P/>
+    of the digraph which induces an empty digraph (when ignoring loops).<P/>
 
     An independent of a digraph is a <E>maximal</E> independent set if it is
     not properly contained is another independent set of the digraph.
@@ -96,18 +96,18 @@ true
   <Returns>A list of positive integers, or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then these functions returns a clique
-    of <A>digraph</A> if one exists (subject to the arguments), else it returns
-    <K>fail</K>.  A clique is defined by the set of vertices which it
+    of <A>digraph</A> if one exists (and satisfies the arguments), else it
+    returns <K>fail</K>.  A clique is defined by the set of vertices which it
     contains; see <Ref Oper="IsClique"/>.<P/>
     
     The optional arguments <A>include</A> and <A>exclude</A> must each be a
-    (possibly empty) list of vertices of <A>digraph</A>, and the optional
-    argument <A>size</A> must be a positive integer.  By default,
-    <A>include</A> and <A>exclude</A> are empty. The functions
-    will search for a clique of <A>digraph</A> which includes the
-    vertices of <A>include</A> and which does not include any vertices in
-    <A>exclude</A>; if the argument <A>size</A> is supplied, then additionally
-    the clique will be required to contain precisely <A>size</A> vertices.<P/>
+    (possibly empty) duplicate-free list of vertices of <A>digraph</A>, and
+    the optional argument <A>size</A> must be a positive integer.  By default,
+    <A>include</A> and <A>exclude</A> are empty. The functions will search for
+    a clique of <A>digraph</A> which includes the vertices of <A>include</A>
+    and which does not include any vertices in <A>exclude</A>; if the argument
+    <A>size</A> is supplied, then additionally the clique will be required to
+    contain precisely <A>size</A> vertices.<P/>
 
     The functions behave in the following way, depending on the number of
     arguments:
@@ -118,8 +118,8 @@ true
         If one or two arguments are supplied, then <C>DigraphClique</C> and
         <C>DigraphMaximalClique</C> greedily enlarge the clique <A>include</A>
         until it can not continue.  The result is guaranteed to be a maximal
-        clique - see <Ref Oper="IsMaximalClique"/>. This may return an answer
-        more quickly than using <Ref Func="DigraphMaximalCliques"/> directly.
+        clique - see <Ref Oper="IsMaximalClique"/>. This may or may not return
+        an answer more quickly than using <Ref Func="DigraphMaximalCliques"/>.
       </Item>
       <Mark>Three arguments</Mark> 
       <Item>
@@ -147,7 +147,7 @@ true
     </List>
 
     <Example><![CDATA[
-]]></Example>
+gap>]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -160,10 +160,11 @@ true
     limit]]]"/>
   <Returns>A list of lists of positive integers.</Returns>
   <Description>
-    If <A>digraph</A> is digraph, then these functions returns cliques of
-    <A>digraph</A> which contain precisely <A>size</A> vertices. A clique is
-    defined by the set of vertices which it contains; see <Ref
-      Oper="IsMaximalClique"/> and <Ref Oper="IsClique"/>.<P/>
+    If <A>digraph</A> is digraph, then these functions use <Ref
+      Func="CliquesFinder"/> to return cliques of <A>digraph</A> which contain
+    precisely <A>size</A> vertices. A clique is defined by the set of vertices
+    which it contains; see <Ref Oper="IsMaximalClique"/> and <Ref
+      Oper="IsClique"/>.<P/>
 
     The optional arguments <A>include</A> and <A>exclude</A> must each be a
     (possibly empty) list of vertices of <A>digraph</A>, and the optional
@@ -198,7 +199,7 @@ true
       </Item>
     </List>
     <Example><![CDATA[
-]]></Example>
+gap>]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -214,10 +215,10 @@ true
     digraph" Arg="digraph"/>
   <Returns>A list of lists of positive integers.</Returns>
   <Description>
-    If <A>digraph</A> is digraph, then these functions and attributes return
-    maximal cliques of <A>digraph</A>. A clique is defined by the set of vertices
-    which it contains; see <Ref Oper="IsMaximalClique"/> and <Ref
-      Oper="IsClique"/>.<P/>
+    If <A>digraph</A> is digraph, then these functions and attributes use <Ref
+      Func="CliquesFinder"/> to return maximal cliques of <A>digraph</A>. A
+    clique is defined by the set of vertices which it contains; see <Ref
+      Oper="IsMaximalClique"/> and <Ref Oper="IsClique"/>.<P/>
     
     The optional arguments <A>include</A> and <A>exclude</A> must each be a
     (possibly empty) list of vertices of <A>digraph</A>, the optional argument
@@ -262,7 +263,7 @@ true
     to avoid repeating computation. <P/>
 
     <Example><![CDATA[
-]]></Example>
+gap>]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -275,7 +276,7 @@ true
   <Returns>A lists of positive integers, or <K>fail</K>.</Returns>
   <Description>
     <Example><![CDATA[
-]]></Example>
+gap>]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -289,7 +290,7 @@ true
   <Returns>A list of lists of positive integers.</Returns>
   <Description>
     <Example><![CDATA[
-]]></Example>
+gap>]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -304,6 +305,112 @@ true
   <Attr Name="DigraphMaximalIndependentSetsRepsAttr" Arg="digraph"/>
   <Returns>A list of lists of positive integers.</Returns>
   <Description>
+    <Example><![CDATA[
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="CliquesFinder">
+<ManSection>
+  <Func Name="CliquesFinder" Arg="digraph, hook, user_param, limit, include,
+    exclude, max, size, reps"/>
+  <Returns>The argument <A>user_param</A>.</Returns>
+  <Description>
+    This function finds cliques of the digraph <A>digraph</A> subject to the
+    conditions imposed by the other arguments as described below. <P/>
+    This function uses a version of the Bron-Kerbosch algorithm.
+
+    Note that a clique is represented as a list of the vertices which it
+    contains. <P/>
+
+    <List>
+      <Mark><A>hook</A></Mark>
+      <Item>
+        This argument should be a function or <K>fail</K>.<P/>
+        
+        If <A>hook</A> is a function, then it should have two arguments
+        <A>user_param</A> (see below) and a clique <C>c</C>. The function
+        <C><A>hook</A>(<A>user_param</A>, c)</C> is called every time a new
+        clique <C>c</C> is found by <C>CliquesFinder</C>.<P/>
+
+        If <A>hook</A> is <K>fail</K>, then a default function is used which
+        simply adds every new clique found by <C>CliquesFinder</C> to
+        <A>user_param</A>, which must be a list in this case. 
+      </Item>
+
+      <Mark><A>user_param</A></Mark>
+      <Item>
+        If <A>hook</A> is a function, then <A>user_param</A> can be any &GAP;
+        object. The object <A>user_param</A> is used as the first argument for
+        the function <A>hook</A>. For example, <A>user_param</A> might be a
+        list, and <C><A>hook</A>(<A>user_param</A>, c)</C> might add the size
+        of the clique <C>c</C> to the list <A>user_param</A>. <P/>
+
+        If the value of <A>hook</A> is <K>fail</K>, then the value of
+        <A>user_param</A> must be a list. 
+      </Item>
+
+      <Mark><A>limit</A></Mark>
+      <Item> 
+        This argument should be a positive integer or <K>infinity</K>.
+        <C>CliquesFinder</C> will return after it has found
+        <A>limit</A> cliques or the search is complete.
+      </Item>
+
+      <Mark><A>include</A> and <A>exclude</A></Mark>
+      <Item>
+        These arguments should each be a (possibly empty) duplicate-free list
+        of vertices of <A>digraph</A> (i.e. positive integers less than the
+        number of vertices of <A>digraph</A>). <P/>
+
+        <C>CliquesFinder</C> will only look for cliques containing all of the
+        vertices in <A>include</A> and containing none of the vertices in
+        <A>exclude</A>. <P/>
+
+        Note that the search may be much more efficient if each of these lists
+        is invariant under the action of
+        <C>DigraphGroup(</C><A>digraph</A><C>)</C> on sets of vertices of
+        <A>digraph</A>. See <Ref Attr="DigraphGroup"/>.
+      </Item>
+
+      <Mark><A>max</A></Mark>
+      <Item>
+        This argument should be <K>true</K> or <K>false</K>.  If <A>max</A> is
+        true then <C>CliquesFinder</C> will only search for <E>maximal</E>
+        cliques. If <K>max</K> is <K>false</K> then non-maximal cliques may be
+        found.
+      </Item>
+
+      <Mark><A>size</A></Mark>
+      <Item>
+        This argument should be <K>fail</K> or a positive integer.
+        If <A>size</A> is a positive integer then <C>CliquesFinder</C> will
+        only search for cliques which contain precisely <A>size</A> vertices.
+        If <A>size</A> is <K>fail</K> then cliques of any size may be found.
+      </Item>
+
+      <Mark><A>reps</A></Mark>
+      <Item>
+        This argument should be <K>true</K> or <K>false</K>.<P/>
+        
+        If <A>reps</A> is <K>true</K> then the arguments <A>include</A> and
+        <A>exclude</A> are each required to be invariant under the action of
+        <C>DigraphGroup(</C><A>digraph</A><C>)</C> on sets of vertices. See
+        <Ref Attr="DigraphGroup"/>. In this case, <C>CliquesFinder</C> will
+        only find representatives of the orbits of the desired cliques under
+        the action of <C>DigraphGroup(</C><A>digraph</A><C>)</C>.  <P/>
+
+        If <A>reps</A> is false then <C>CliquesFinder</C> may find distinct
+        cliques which are in the same orbit of
+        <C>DigraphGroup(</C><A>digraph</A><C>)</C>.
+        <P/>
+
+        For a digraph with non-trivial <C>DigraphGroup</C>, the search for
+        clique representatives can be much more efficient than the search for
+        all cliques.
+      </Item>
+    </List>
     <Example><![CDATA[
 ]]></Example>
   </Description>
