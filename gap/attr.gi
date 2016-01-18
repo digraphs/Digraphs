@@ -765,10 +765,10 @@ InstallMethod(DigraphLongestSimpleCircuit, "for a digraph",
 [IsDigraph],
 function(digraph)
   local circs, lens, max;
-  circs := DigraphAllSimpleCircuits(digraph);
-  if IsEmpty(circs) then
+  if IsAcyclicDigraph(digraph) then
     return fail;
   fi;
+  circs := DigraphAllSimpleCircuits(digraph);
   lens := List(circs, Length);
   max := Maximum(lens);
   return circs[Position(lens, max)];
