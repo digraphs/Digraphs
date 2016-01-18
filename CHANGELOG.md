@@ -1,8 +1,7 @@
-##CHANGELOG
-### Digraphs package for GAP
+##Digraphs package for GAP - CHANGELOG
+Copyright (C) 2014-16 Julius Jonusas, James D. Mitchell, Michael Torpey & Wilf Wilson
 
-#### Copyright (C) 2014-16 Julius Jonusas, James D. Mitchell, Michael Torpey & Wilf Wilson
-#### Licensing information can be found in the LICENSE file.
+Licensing information can be found in the LICENSE file.
 
 ## Version 0.4 (released 16/01/2016)
 
