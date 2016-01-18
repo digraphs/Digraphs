@@ -1260,7 +1260,7 @@ function(digraph, v)
 
   layers := DIGRAPHS_Layers(digraph);
 
-  if IsBound(layers[v]) then 
+  if IsBound(layers[v]) then
     return layers[v];
   fi;
 
@@ -1269,21 +1269,20 @@ function(digraph, v)
     sch   := DigraphSchreierVector(digraph);
     trace := DIGRAPHS_TraceSchreierVector(gens, sch, v);
     rep   := DigraphOrbitReps(digraph)[trace.representative];
-    word  := DIGRAPHS_EvaluateWord(gens, trace.word);  
+    word  := DIGRAPHS_EvaluateWord(gens, trace.word);
     if rep <> v then
       layers[v] := List(DigraphLayers(digraph, rep),
                         x -> OnTuples(x, word));
-      return layers[v]; 
+      return layers[v];
     fi;
     orbs := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
                             DigraphVertices(digraph)).orbits;
   else
-    rep   := v;
-    orbs  := List(DigraphVertices(digraph), x -> [x] );
+    rep  := v;
+    orbs := List(DigraphVertices(digraph), x -> [x]);
   fi;
 
-  # from now on rep = v 
- 
+  # from now on rep = v
   layers_with_orbnums := DIGRAPH_ConnectivityDataForVertex(digraph, v).layers;
 
   layers_of_v := [[v]];
@@ -1293,7 +1292,7 @@ function(digraph, v)
       Append(layers_of_v[i], orbs[x]);
     od;
   od;
- 
+
   layers[v] := layers_of_v;
   return layers[v];
 end);
@@ -1303,7 +1302,7 @@ end);
 InstallMethod(DIGRAPHS_Layers, "for a digraph",
 [IsDigraph],
 function(digraph)
-  return []; 
+  return [];
 end);
 #
 
@@ -1354,13 +1353,13 @@ function(digraph, u, v)
   if u > DigraphNrVertices(digraph) or v > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphShortestDistance: usage,\n",
                  "the second argument and third argument must be \n",
-		 "vertices of the digraph,");
+                 "vertices of the digraph,");
   fi;
 
   if HasDigraphShortestDistances(digraph) then
     return DigraphShortestDistances[u][v];
-  fi; 
-  
+  fi;
+
   return DIGRAPH_ConnectivityDataForVertex(digraph, u).layerNumbers[v] - 1;
 end);
 
@@ -1371,13 +1370,13 @@ InstallMethod(DigraphShortestDistance,
 [IsDigraph, IsList],
 function(digraph, list)
 
-  if Length(list) <> 2 then 
+  if Length(list) <> 2 then
     ErrorMayQuit("Digraphs: DigraphShortestDistance: usage,\n",
                  "the second argument must be of length 2,");
   fi;
 
   if list[1] > DigraphNrVertices(digraph) or
-     list[2] > DigraphNrVertices(digraph) then
+      list[2] > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphShortestDistance: usage,\n",
                  "elements of the list must be vertices of the digraph,");
   fi;

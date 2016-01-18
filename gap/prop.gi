@@ -378,7 +378,7 @@ function(graph)
 
   if IsEmptyDigraph(graph) then
     return true;
-  fi; 
+  fi;
 
   reps            := DigraphOrbitReps(graph);
   record          := DIGRAPH_ConnectivityDataForVertex(graph, reps[1]);
