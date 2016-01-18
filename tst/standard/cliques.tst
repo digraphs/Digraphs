@@ -176,9 +176,54 @@ gap> CliquesFinder(gr, fail, [], infinity, [1], [], false, 1, false);
 gap> CliquesFinder(gr, fail, [], infinity, [], [], false, 1, false);
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
 
+#T# DIGRAPHS_BronKerbosch: getting code coverage
+gap> gr := CompleteDigraph(5);;
+gap> CliquesFinder(gr, fail, [], infinity, [], [], true, 4, true);
+[  ]
+gap> CliquesFinder(gr, fail, [], infinity, [], [], true, 5, true);
+[ [ 1, 2, 3, 4, 5 ] ]
+gap> CliquesFinder(gr, fail, [], infinity, [], [], true, fail, true);
+[ [ 1, 2, 3, 4, 5 ] ]
+gap> CliquesFinder(gr, fail, [], infinity, [], [], false, fail, true);
+[ [ 1 ], [ 1, 2 ], [ 1, 2, 3 ], [ 1, 2, 3, 4 ], [ 1, 2, 3, 4, 5 ] ]
+gap> out := CliquesFinder(gr, fail, [], infinity, [], [], false, fail, false);
+[ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 3 ], 
+  [ 1, 5 ], [ 2, 4 ], [ 2, 5 ], [ 3, 4 ], [ 3, 5 ], [ 4, 5 ], [ 1, 2, 3 ], 
+  [ 1, 2, 4 ], [ 1, 2, 5 ], [ 1, 3, 4 ], [ 1, 3, 5 ], [ 2, 3, 4 ], 
+  [ 1, 4, 5 ], [ 2, 3, 5 ], [ 2, 4, 5 ], [ 3, 4, 5 ], [ 1, 2, 3, 4 ], 
+  [ 1, 2, 3, 5 ], [ 1, 2, 4, 5 ], [ 1, 3, 4, 5 ], [ 2, 3, 4, 5 ], 
+  [ 1, 2, 3, 4, 5 ] ]
+gap> Length(out);
+31
+gap> lim := 32;;
+gap> CliquesFinder(gr, fail, [], lim, [], [], false, fail, false) = out;
+true
+gap> lim := 12;;
+gap> out := CliquesFinder(gr, fail, [], lim, [], [], false, fail, false);
+[ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 3 ], 
+  [ 1, 5 ], [ 2, 4 ], [ 2, 5 ] ]
+gap> Length(out) = lim;
+true
+gap> out := CliquesFinder(gr, fail, [], lim, [1, 4], [], false, fail, false);
+[ [ 1, 4 ], [ 1, 2, 4 ], [ 1, 3, 4 ], [ 1, 4, 5 ], [ 1, 2, 3, 4 ], 
+  [ 1, 2, 4, 5 ], [ 1, 3, 4, 5 ], [ 1, 2, 3, 4, 5 ] ]
+gap> out := CliquesFinder(gr, fail, [], lim, [1, 4], [], false, 4, false);
+[ [ 1, 2, 3, 4 ], [ 1, 2, 4, 5 ], [ 1, 3, 4, 5 ] ]
+gap> lim := infinity;;
+gap> out := CliquesFinder(gr, fail, [], lim, [2], [4, 5], false, fail, false);
+[ [ 2 ], [ 1, 2 ], [ 2, 3 ], [ 1, 2, 3 ] ]
+gap> out := CliquesFinder(gr, fail, [], lim, [], [3, 4, 5], false, fail, false);
+[ [ 1 ], [ 2 ], [ 1, 2 ] ]
+gap> out := CliquesFinder(gr, fail, [], lim, [], [3, 4, 5], false, 2, false);
+[ [ 1, 2 ] ]
+gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
+gap> out := CliquesFinder(gr, fail, [], lim, [], [], true, 3, true);
+[  ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(f);
+gap> Unbind(out);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/cliques.tst");

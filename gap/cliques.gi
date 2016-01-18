@@ -195,7 +195,7 @@ function(arg)
   else
     exclude := [];
   fi;
-  
+
   if not IsEmpty(Intersection(include, exclude)) then
     return fail;
   fi;
@@ -233,7 +233,7 @@ function(arg)
       return out[1];
     fi;
   fi;
-  
+
   # Do a greedy search to find a clique of <gr> containing <include> and
   # excluding <exclude> (which is necessarily maximal if <exclude> is empty)
   gr := MaximalSymmetricSubdigraph(gr);
@@ -367,31 +367,9 @@ end);
 
 #
 
-#InstallGlobalFunction(DIGRAPHS_Cliques,
-#function(arg)
-#  arg := arg[1];
-#  all := arg[1]; # are we finding all cliques (<all> = true) or orbit reps
-#  gr := arg[2];
-#  grp := DigraphGroup(gr);
-#  inc := arg[3];
-#  if not all then
-#    # check that inc is invariant grp
-#  fi;
-#  exc := arg[4];
-#  if not all then
-#    # check that exc is invariant under grp
-#  fi;
-#  lim := arg[5];
-#  size := arg[6];
-#  calculate cliques
-#  store cliques if applicable
-#  return cliques;
-#end);
-
 InstallGlobalFunction(DigraphMaximalCliques,
 function(arg)
-  local gr, G, include, reps, out, exclude, limit, size, exclude_invariant,
-  exclude_variant, v, orb, int, include_invariant, include_variant, all, c;
+  local gr, G, include, reps, out, exclude, limit, size, all, c;
 
   if IsEmpty(arg) then
     ErrorMayQuit("Digraphs: DigraphMaximalCliques: usage,\n",
@@ -467,7 +445,6 @@ function(arg)
     size := fail;
   fi;
 
-
   # Decide whether we need to collect all results as we go
   # Or just orbit representatives
   all := limit < infinity
@@ -533,8 +510,8 @@ function(gr, hook, user_param, limit, include, exclude, max, size, reps)
           and ForAll(include, x -> IsPosInt(x) and x <= n)
           and IsDuplicateFreeList(include))
       or not (IsHomogeneousList(exclude)
-          and ForAll(exclude, x -> IsPosInt(x) and x <= n)
-          and IsDuplicateFreeList(exclude))
+              and ForAll(exclude, x -> IsPosInt(x) and x <= n)
+              and IsDuplicateFreeList(exclude))
       then
     ErrorMayQuit("Digraphs: CliquesFinder: usage,\n",
                  "the fifth argument <include> and the sixth argument ",
@@ -569,7 +546,7 @@ function(gr, hook, user_param, limit, include, exclude, max, size, reps)
   if not IsTrivial(group) and (not IsEmpty(include) or not IsEmpty(exclude))
       then
     if not ForAll(GeneratorsOfGroup(group),
-                  x -> IsSubset(include, OnTuples(include, x))) then 
+                  x -> IsSubset(include, OnTuples(include, x))) then
       invariant_include := false;
       if not reps then
         x := ShallowCopy(include);
@@ -616,9 +593,8 @@ end);
 
 InstallGlobalFunction(DIGRAPHS_BronKerbosch,
 function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
-  local vtx, grp, invariant_inc, invariant_exc, x, v, o, i, invariant, adj,
-  all, exc_inv, start, possible, add, bk, num;
-
+  local vtx, grp, invariant_inc, invariant_exc, invariant, adj, exc_inv, start,
+  possible, add, bk, num, x;
 
   # Arguments should be:
   # gr   - a digraph
@@ -685,7 +661,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
   for x in inc do
     IntersectBlist(possible, adj[x]);
   od;
-  
+
   # Function to find the valid cliques of an orbit given an orbit rep
   add := function(c)
     local orb, n, i;
@@ -715,7 +691,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       while i < n and num < lim do
         i := i + 1;
         c := BlistList(vtx, orb[i]);
-        if not ForAny(IntersectionBlist(exc_var, c)) then
+        if SizeBlist(IntersectionBlist(exc_var, c)) = 0 then
           hook(user_param, orb[i]);
           num := num + 1;
         fi;
@@ -738,7 +714,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       while i < n and num < lim do
         i := i + 1;
         c := BlistList(vtx, orb[i]);
-        if not ForAny(IntersectionBlist(exc_var, c))
+        if SizeBlist(IntersectionBlist(exc_var, c)) = 0
             and IsSubsetBlist(c, inc_var) then
           hook(user_param, orb[i]);
           num := num + 1;
@@ -761,7 +737,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       fi;
       # we continue if we're looking for all cliques, not just maximal
 
-    elif not ForAny(ban, x -> x) and not ForAny(try, x -> x) then
+    elif SizeBlist(ban) = 0 and SizeBlist(try) = 0 then
       # <c> is a new maximal clique
       if (size = fail or size = d) then
         # <c> is a new maximal clique rep and it has the right size (if req)
