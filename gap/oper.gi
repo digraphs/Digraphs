@@ -1253,6 +1253,7 @@ function(digraph, v)
   local layers, gens, sch, trace, rep, word, orbs, layers_with_orbnums,
         layers_of_v, i, x;
 
+  # TODO: make use of known distances matrix
   if v > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphLayers: usage,\n",
                  "the argument <v> must be a vertex of <digraph>,");
@@ -1366,6 +1367,26 @@ function(digraph, u, v)
     dist := fail;
   fi;
   return dist;
+end);
+
+#
+
+InstallMethod(DigraphShortestDistance,
+"for a digraph, a list, and a list",
+[IsDigraph, IsList, IsList],
+function(digraph, list1, list2)
+  local shortest, u, v;
+
+  # TODO: can this be improved?
+  shortest := infinity;
+  for u in list1 do
+    for v in list2 do
+      if shortest > DigraphShortestDistance(digraph, u, v) then
+        shortest := DigraphShortestDistance(digraph, u, v);
+      fi;
+    od;
+  od;
+  return shortest;
 end);
 
 #

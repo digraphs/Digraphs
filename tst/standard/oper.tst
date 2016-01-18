@@ -1449,6 +1449,28 @@ gap> DigraphLayers(gr, 4);
 gap> DigraphLayers(gr, 10);
 Error, Digraphs: DigraphLayers: usage,
 the argument <v> must be a vertex of <digraph>,
+gap> DigraphShortestDistance(gr, [2,5,6], [3,7]);
+1
+gap> DigraphShortestDistance(gr, [2], DigraphLayers(gr, 2)[3]);
+2
+gap> DigraphShortestDistance(gr, [2,3], [3,4]);                
+0
+gap> gr := CompleteDigraph(64);
+<digraph with 64 vertices, 4032 edges>
+gap> DigraphShortestDistance(gr, [1 .. 10], [20 .. 23]);
+1
+gap> DigraphShortestDistance(gr, [1, 13], [20 .. 23]);  
+1
+gap> DigraphShortestDistance(gr, [1, 13], [38, 41]); 
+1
+gap> gr := ChainDigraph(72);
+<digraph with 72 vertices, 71 edges>
+gap> DigraphShortestDistance(gr, [1 .. 10], [20 .. 23]);
+10
+gap> DigraphShortestDistance(gr, [1, 13], [20 .. 23]);
+7
+gap> DigraphShortestDistance(gr, [1, 13], [38, 41]);
+25
 
 #T# DigraphDistancesSet
 gap> gr := ChainDigraph(10);                                               
