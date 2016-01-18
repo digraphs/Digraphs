@@ -23,7 +23,7 @@
 #include <cstdlib>
 #include "defs.hh"
 
-namespace bliss {
+namespace bliss_digraphs {
 
 /** \internal
  * \brief A very simple implementation of a stack with fixed capacity.
@@ -136,6 +136,6 @@ KStack<Type>::~KStack()
   free(entries);
 }
 
-} // namespace bliss
+} // namespace bliss_digraphs
 
 #endif

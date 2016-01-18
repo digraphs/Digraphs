@@ -21,11 +21,11 @@
 */
 
 /**
- * \namespace bliss
- * The namespace bliss contains all the classes and functions of the bliss
+ * \namespace bliss_digraphs
+ * The namespace bliss_digraphs contains all the classes and functions of the bliss
  * tool except for the C programming language API.
  */
-namespace bliss {
+namespace bliss_digraphs {
   class AbstractGraph;
 }
 
@@ -39,7 +39,7 @@ namespace bliss {
 #include "bignum.hh"
 #include "uintseqhash.hh"
 
-namespace bliss {
+namespace bliss_digraphs {
 
 /**
  * \brief Statistics returned by the bliss search algorithm.

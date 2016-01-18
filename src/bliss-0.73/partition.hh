@@ -20,7 +20,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
   class Partition;
 }
 
@@ -34,7 +34,7 @@ namespace bliss {
 #include "graph.hh"
 
 
-namespace bliss {
+namespace bliss_digraphs {
 
 /** \internal
  * \brief A class for refinable, backtrackable ordered partitions.
@@ -304,6 +304,6 @@ Partition::cr_get_level(const unsigned int cell_index) const
 
 
 
-} // namespace bliss
+} // namespace bliss_digraphs
 
 #endif

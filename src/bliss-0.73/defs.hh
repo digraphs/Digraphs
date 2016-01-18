@@ -23,7 +23,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
 
 /**
  * The version number of bliss.
@@ -56,7 +56,7 @@ void fatal_error(const char* fmt, ...);
 #define BLISS_VERIFY_EQUITABLEDNESS
 #endif
 
-} // namespace bliss
+} // namespace bliss_digraphs
 
 
 

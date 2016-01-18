@@ -20,7 +20,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
 
 /** \internal
  * \brief A capacity bounded heap data structure.
@@ -78,6 +78,6 @@ public:
   unsigned int size() const {return n; }
 };
 
-} // namespace bliss
+} // namespace bliss_digraphs
 
 #endif
