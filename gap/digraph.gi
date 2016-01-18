@@ -302,7 +302,7 @@ function(graph, i)
   fi;
 
   if IsBound(graph!.vertexlabels[i]) then
-    return graph!.vertexlabels[i];
+    return ShallowCopy(graph!.vertexlabels[i]);
   fi;
   #JDM is this a good idea?
   ErrorMayQuit("Digraphs: DigraphVertexLabel: usage,\n", i,
@@ -330,7 +330,7 @@ function(graph)
   if not IsBound(graph!.vertexlabels) then
     graph!.vertexlabels := [1 .. DigraphNrVertices(graph)];
   fi;
-  return graph!.vertexlabels;
+  return StructuralCopy(graph!.vertexlabels);
 end);
 
 # multi means it has at least one multiple edges
