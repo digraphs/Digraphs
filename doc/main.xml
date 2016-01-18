@@ -26,6 +26,7 @@
   <#Include SYSTEM="z-chap5.xml"> <!-- properties --> 
   <#Include SYSTEM="z-chap6.xml"> <!-- homomorphisms --> 
   <#Include SYSTEM="z-chap7.xml"> <!-- visualising, io --> 
+  <#Include SYSTEM="z-appA.xml">  <!-- Grape to Digraphs command map --> 
 </Body>
 
 <Bibliography Databases="digraphs" />
