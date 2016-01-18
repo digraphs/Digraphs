@@ -89,10 +89,9 @@ true
 
 <#GAPDoc Label="DigraphClique">
 <ManSection>
-  <Func Name="DigraphClique" Label="for a digraph and two
-    lists and a number" Arg="digraph[, include[, exclude[, size]]]"/>
-  <Func Name="DigraphMaximalClique" Label="for a digraph and two
-    lists" Arg="digraph[, include[, exclude[, size]]]"/>
+  <Func Name="DigraphClique" Arg="digraph[, include[, exclude[, size]]]"/>
+  <Func Name="DigraphMaximalClique" Arg="digraph[, include[, exclude[,
+    size]]]"/>
   <Returns>A list of positive integers, or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then these functions returns a clique
@@ -135,14 +134,14 @@ true
       <Mark>Four arguments</Mark> 
       <Item>
         If four arguments are supplied, then <C>DigraphClique</C> returns the
-        clique returned by <C>DigraphCliquesOfSize(</C><A>digraph</A><C>,
-        </C><A>size</A><C>, </C><A>include</A><C>,
-        </C><A>exclude</A><C>, 1)</C> if one exists, else <K>fail</K>. This
-        clique may not be maximal.<P/> Given four arguments,
-        <C>DigraphMaximalClique</C> returns the clique returned by
-        <C>DigraphMaximalCliques(</C><A>digraph</A><C>, </C><A>include</A><C>,
-        </C><A>exclude</A><C>, 1, </C><A>size</A><C>)</C> if one exists, else
-        <K>fail</K>.
+        clique returned by <C>DigraphCliques(</C><A>digraph</A><C>,
+        </C><A>include</A><C>, </C><A>exclude</A><C>, 1,
+      </C><A>size</A><C>)</C> if one exists, else <K>fail</K>. This clique may
+      not be maximal.<P/> Given four arguments, <C>DigraphMaximalClique</C>
+      returns the clique returned by
+      <C>DigraphMaximalCliques(</C><A>digraph</A><C>, </C><A>include</A><C>,
+      </C><A>exclude</A><C>, 1, </C><A>size</A><C>)</C> if one exists, else
+      <K>fail</K>.
       </Item>
     </List>
 
@@ -157,12 +156,10 @@ gap>]]></Example>
 <#GAPDoc Label="DigraphMaximalCliques">
 <ManSection>
   <Func Name="DigraphMaximalCliques" Arg="digraph[, include[, exclude[, limit[, size]]]]"/>
-  <Attr Name="DigraphMaximalCliquesAttr" Label="for a digraph"
-    Arg="digraph"/>
-  <Func Name="DigraphMaximalCliquesReps" Label="for a digraph and two
-    lists and a number" Arg="digraph[, include[, exclude[, limit[, size]]]]"/>
-  <Attr Name="DigraphMaximalCliquesRepsAttr" Label="for a
-    digraph" Arg="digraph"/>
+  <Attr Name="DigraphMaximalCliquesAttr" Arg="digraph"/>
+  <Func Name="DigraphMaximalCliquesReps" Arg="digraph[, include[, exclude[,
+    limit[, size]]]]"/>
+  <Attr Name="DigraphMaximalCliquesRepsAttr" Arg="digraph"/>
   <Func Name="DigraphCliques" Arg="digraph[, include[, exclude[,
     limit[, size]]]]"/>
   <Func Name="DigraphCliquesReps" Arg="digraph[, include[,
@@ -211,7 +208,7 @@ gap>]]></Example>
         on sets of vertices.<P/>
         
         If this is the case, then <C>DigraphMaximalCliquesReps</C> and
-        <C>DigraphCliquesRepsOfSize</C> each return a duplicate-free list of at
+        <C>DigraphCliquesReps</C> each return a duplicate-free list of at
         most <A>limit</A> orbits representatives (under the action of the <Ref
           Attr="DigraphGroup"/> of <A>digraph</A>) of cliques of
         <A>digraph</A> which satisfy the arguments.
@@ -237,20 +234,62 @@ gap>]]></Example>
     size]]]"/>
   <Returns>A lists of positive integers, or <K>fail</K>.</Returns>
   <Description>
-    <Example><![CDATA[
-gap>]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
+    If <A>digraph</A> is a digraph, then these functions returns an
+    independent of <A>digraph</A> if one exists (and satisfies the arguments),
+    else it returns <K>fail</K>.  An independent set is defined by the set of
+    vertices which it contains; see <Ref Oper="IsIndependentSet"/>.<P/>
+    
+    The optional arguments <A>include</A> and <A>exclude</A> must each be a
+    (possibly empty) duplicate-free list of vertices of <A>digraph</A>, and
+    the optional argument <A>size</A> must be a positive integer.  By default,
+    <A>include</A> and <A>exclude</A> are empty. The functions will search for
+    an independent set of <A>digraph</A> which includes the vertices of
+    <A>include</A> and which does not include any vertices in <A>exclude</A>;
+    if the argument <A>size</A> is supplied, then additionally the independent
+    set will be required to contain precisely <A>size</A> vertices.<P/>
 
-<#GAPDoc Label="DigraphIndependentSetsOfSize">
-<ManSection>
-  <Func Name="DigraphIndependentSetsOfSize" Arg="digraph, size[, include[,
-    exclude[, limit]]]"/>
-  <Func Name="DigraphIndependentSetsRepsOfSize" Arg="digraph, size[, include[,
-    exclude[, limit]]]"/>
-  <Returns>A list of lists of positive integers.</Returns>
-  <Description>
+    The functions behave in the following way, depending on the number of
+    arguments:
+
+    <List>
+      <Mark>One or two arguments</Mark>
+      <Item>
+        If one or two arguments are supplied, then
+        <C>DigraphIndependentSet</C> and <C>DigraphMaximalIndependentSet</C>
+        greedily enlarge the independent set <A>include</A> until it can not
+        continue.  The result is guaranteed to be a maximal independent set -
+        see <Ref Oper="IsMaximalIndependentSet"/>. This may or may not return
+        an answer more quickly than using <Ref
+          Func="DigraphMaximalIndependentSets"/>.
+      </Item>
+      
+      <Mark>Three arguments</Mark>
+      <Item>
+        If three arguments are supplied, then <C>DigraphIndependentSet</C>
+        greedily enlarges the independent set <A>include</A> until it can not
+        continue, although this independent set may not be maximal.<P/>
+
+        Given three arguments, <C>DigraphMaximalIndependentSet</C> returns the
+        independent set returned by
+        <C>DigraphMaximalIndependentSets(</C><A>digraph</A><C>,
+        </C><A>include</A><C>, </C><A>exclude</A><C>, 1)</C> if one exists,
+        else <K>fail</K>.
+      </Item>
+        
+      <Mark>Four arguments</Mark>
+      <Item>
+        If four arguments are supplied, then <C>DigraphIndependentSet</C>
+        returns the independent set returned by
+        <C>DigraphIndependentSets(</C><A>digraph</A><C>,
+        </C><A>include</A><C>, </C><A>exclude</A><C>, 1,
+        </C><A>size</A><C>)</C> if one exists, else <K>fail</K>. This
+        independent set may not be maximal.<P/> Given four arguments,
+        <C>DigraphMaximalIndependentSet</C> returns the independent set
+        returned by <C>DigraphMaximalIndependentSets(</C><A>digraph</A><C>,
+        </C><A>include</A><C>, </C><A>exclude</A><C>, 1,
+        </C><A>size</A><C>)</C> if one exists, else <K>fail</K>.
+       </Item>
+     </List>
     <Example><![CDATA[
 gap>]]></Example>
   </Description>
@@ -265,9 +304,71 @@ gap>]]></Example>
   <Func Name="DigraphMaximalIndependentSetsReps" Arg="digraph[, include[,
     exclude[, limit[, size]]]]"/>
   <Attr Name="DigraphMaximalIndependentSetsRepsAttr" Arg="digraph"/>
+  <Func Name="DigraphIndependentSets" Arg="digraph[, include[,
+    exclude[, limit[, size]]]]"/>
+  <Func Name="DigraphIndependentSetsReps" Arg="digraph[, include[,
+    exclude[, limit[, size]]]]"/>
   <Returns>A list of lists of positive integers.</Returns>
   <Description>
+    If <A>digraph</A> is digraph, then these functions and attributes use <Ref
+      Func="CliquesFinder"/> to return independent sets of <A>digraph</A>. An
+    independent set is defined by the set of vertices which it contains; see
+    <Ref Oper="IsMaximalIndependentSet"/> and <Ref
+      Oper="IsIndependentSet"/>.<P/>
+    
+    The arguments <A>include</A> and <A>exclude</A> must each be a (possibly
+    empty) list of vertices of <A>digraph</A>, the argument <A>limit</A> must
+    be either a positive integer or <C>infinity</C>, and the argument
+    <A>size</A> must be a positive integer.  By default, <A>include</A> and
+    <A>exclude</A> are empty, and <A>limit</A> is <C>infinity</C>. <P/>
+
+    The argument <A>size</A> will restrict the search to those independent
+    sets which contain precisely <A>size</A> vertices.  The functions will
+    return as many suitable independent sets as it can find, up to the number
+    <A>limit</A>.  These functions will find independent sets (which, if
+    <A>size</A> is specified, contain <A>size</A> vertices) which contain all
+    of the vertices of <A>include</A> and which do not contain any of the
+    vertices of <A>exclude</A>.<P/>
+
+    If the function or attribute has <C>Maximal</C> in its name, then only
+    maximal independent sets will be returned; otherwise non-maximal
+    independent sets may be returned.
+    <P/>
+
+    <List>
+      <Mark>Distinct independent sets</Mark>
+      <Item>
+        <C>DigraphMaximalIndependentSets</C> and <C>DigraphIndependentSets</C>
+        each return a duplicate-free list of at most <A>limit</A> independent
+        sets of <A>digraph</A> which satisfy the arguments.<P/>
+        
+        The computation may be significantly faster if <A>include</A> and
+        <A>exclude</A> are invariant under the action of the <Ref
+          Attr="DigraphGroup"/> of <A>digraph</A> on sets of vertices.
+      </Item>
+
+      <Mark>Representatives of distinct orbits of independent sets</Mark>
+      <Item>
+        To use <C>DigraphMaximalIndependentSetsReps</C> or
+        <C>DigraphIndependentSetsReps</C>, the arguments <A>include</A> and
+        <A>exclude</A> must each be invariant under the action of the <Ref
+          Attr="DigraphGroup"/> of <A>digraph</A> on sets of vertices.<P/>
+        
+        If this is the case, then <C>DigraphMaximalIndependentSetsReps</C> and
+        <C>DigraphIndependentSetsReps</C> each return a duplicate-free list of
+        at most <A>limit</A> orbits representatives (under the action of the
+        <Ref Attr="DigraphGroup"/> of <A>digraph</A>) of independent sets of
+        <A>digraph</A> which satisfy the arguments.
+      </Item>
+    </List>
+
+    The attributes <C>DigraphMaximalIndependentSetsAttr</C> and
+    <C>DigraphMaximalIndependentSetsRepsAttr</C> exist to store the values of
+    <C>DigraphMaximalIndependentSets(</C><A>digraph</A><C>)</C> and
+    <C>DigraphMaximalIndependentSetsReps(</C><A>digraph</A><C>)</C>
+    respectively, to avoid repeating computation unnecessarily. <P/>
     <Example><![CDATA[
+gap>
 ]]></Example>
   </Description>
 </ManSection>
@@ -374,6 +475,7 @@ gap>]]></Example>
       </Item>
     </List>
     <Example><![CDATA[
+gap>
 ]]></Example>
   </Description>
 </ManSection>

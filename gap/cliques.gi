@@ -109,22 +109,10 @@ function(gr, clique)
 end);
 
 ################################################################################
+# Independent sets
+
 ################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
-################################################################################
+# Cliques
 
 InstallGlobalFunction(DigraphMaximalClique,
 function(arg)
@@ -249,7 +237,89 @@ function(arg)
   return include;
 end);
 
-#
+# Cliques orbit representatives
+
+InstallGlobalFunction(DigraphCliquesReps,
+function(arg)
+  local digraph, include, exclude, limit, size;
+
+  if IsEmpty(arg) then
+    ErrorMayQuit("Digraphs: DigraphCliquesReps: usage,\n",
+                 "this function takes at least one argument,");
+  fi;
+
+  digraph := arg[1];
+
+  if IsBound(arg[2]) then
+    include := arg[2];
+  else
+    include := [];
+  fi;
+
+  if IsBound(arg[3]) then
+    exclude := arg[3];
+  else
+    exclude := [];
+  fi;
+
+  if IsBound(arg[4]) then
+    limit := arg[4];
+  else
+    limit := infinity;
+  fi;
+
+  if IsBound(arg[5]) then
+    size := arg[5];
+  else
+    size := fail;
+  fi;
+
+  return CliquesFinder(digraph, fail, [], limit, include, exclude, false, size,
+                       true);
+end);
+
+# Cliques
+
+InstallGlobalFunction(DigraphCliques,
+function(arg)
+  local digraph, include, exclude, limit, size;
+
+  if IsEmpty(arg) then
+    ErrorMayQuit("Digraphs: DigraphCliques: usage,\n",
+                 "this function takes at least one argument,");
+  fi;
+
+  digraph := arg[1];
+
+  if IsBound(arg[2]) then
+    include := arg[2];
+  else
+    include := [];
+  fi;
+
+  if IsBound(arg[3]) then
+    exclude := arg[3];
+  else
+    exclude := [];
+  fi;
+
+  if IsBound(arg[4]) then
+    limit := arg[4];
+  else
+    limit := infinity;
+  fi;
+
+  if IsBound(arg[5]) then
+    size := arg[5];
+  else
+    size := fail;
+  fi;
+
+  return CliquesFinder(digraph, fail, [], limit, include, exclude, false, size,
+                       false);
+end);
+
+# Maximal cliques orbit representatives
 
 InstallMethod(DigraphMaximalCliquesRepsAttr,
 "for a digraph",
@@ -296,10 +366,9 @@ function(arg)
   fi;
 
   if IsList(include) and IsEmpty(include) and IsList(exclude)
-    and IsEmpty(exclude) and limit = infinity and size = fail
-    and HasDigraphMaximalCliquesAttr(digraph) then
-      return DigraphMaximalCliquesAttr(digraph);
-    fi;
+      and IsEmpty(exclude) and limit = infinity and size = fail
+      and HasDigraphMaximalCliquesAttr(digraph) then
+    return DigraphMaximalCliquesAttr(digraph);
   fi;
 
   out := [];
@@ -329,7 +398,7 @@ end);
 
 InstallGlobalFunction(DigraphMaximalCliques,
 function(arg)
-  local digraph, include, exclude, limit, size, out;
+  local digraph, include, exclude, limit, size, out, G;
 
   if IsEmpty(arg) then
     ErrorMayQuit("Digraphs: DigraphMaximalCliquesReps: usage,\n",
