@@ -578,6 +578,19 @@ true
 gap> IsDigraphEdge(gr, [1, 2]);
 false
 
+# Adjacency function
+gap> adj := function(i, j) return i=j*2; end;
+function( i, j ) ... end
+gap> gr := Digraph([1..20], adj);;
+gap> IsDigraphEdge(gr, [1, 4]);
+false
+gap> IsDigraphEdge(gr, 3, 6);
+false
+gap> IsDigraphEdge(gr, 12, 6);
+true
+gap> IsDigraphEdge(gr, 26, 13);
+false
+
 #T# DigraphAddEdges
 gap> gr := RandomDigraph(100);;
 gap> DigraphAddEdges(gr, []);;
