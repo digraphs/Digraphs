@@ -71,10 +71,8 @@
     <#Include Label="IsIndependentSet">
     <#Include Label="CliquesFinder">
     <#Include Label="DigraphClique">
-    <#Include Label="DigraphCliquesOfSize">
     <#Include Label="DigraphMaximalCliques">
     <#Include Label="DigraphIndependentSet">
-    <#Include Label="DigraphIndependentSetsOfSize">
     <#Include Label="DigraphMaximalIndependentSets">
   </Section>
 </Chapter>

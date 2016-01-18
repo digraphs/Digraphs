@@ -152,57 +152,7 @@ gap>]]></Example>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphCliquesOfSize">
-<ManSection>
-  <Func Name="DigraphCliquesOfSize" Arg="digraph, size[, include[, exclude[,
-    limit]]]"/>
-  <Func Name="DigraphCliquesRepsOfSize" Arg="digraph, size[, include[, exclude[,
-    limit]]]"/>
-  <Returns>A list of lists of positive integers.</Returns>
-  <Description>
-    If <A>digraph</A> is digraph, then these functions use <Ref
-      Func="CliquesFinder"/> to return cliques of <A>digraph</A> which contain
-    precisely <A>size</A> vertices. A clique is defined by the set of vertices
-    which it contains; see <Ref Oper="IsMaximalClique"/> and <Ref
-      Oper="IsClique"/>.<P/>
-
-    The optional arguments <A>include</A> and <A>exclude</A> must each be a
-    (possibly empty) list of vertices of <A>digraph</A>, and the optional
-    argument <A>limit</A> must be either a positive integer or <C>infinity</C>.
-    By default, <A>include</A> and <A>exclude</A> are empty, and <A>limit</A>
-    is <C>infinity</C>. The argument <A>limit</A> will provide an upper bound
-    on the number of cliques to be returned.<P/>
-
-    These functions will find cliques which contain precisely <A>size</A>
-    vertices, and which contain all of the vertices of <A>include</A> and do
-    not contain any of the vertices of <A>exclude</A>.<P/>
- 
-    <List>
-      <Mark>Distinct cliques</Mark>
-      <Item>
-        <C>DigraphCliquesOfSize</C> returns a duplicate-free list of at most
-        <A>limit</A> cliques of <A>digraph</A> which satisfy the arguments.
-        The computation may be significantly faster if <A>include</A> and
-        <A>exclude</A> are invariant under the action of the <Ref
-          Attr="DigraphGroup"/> of <A>digraph</A>.
-      </Item>
-
-      <Mark>Representatives of distinct orbits of cliques</Mark>
-      <Item>
-        To use <C>DigraphCliquesRepsOfSize</C>, the arguments <A>include</A>
-        and <A>exclude</A> must each be invariant under the action of the <Ref
-          Attr="DigraphGroup"/> of <A>digraph</A>.  If this is the case, then
-        <C>DigraphCliquesRepsOfSize</C> returns a duplicate-free list of at
-        most <A>limit</A> orbits representatives (under the action of the <Ref
-          Attr="DigraphGroup"/> of <A>digraph</A>) of cliques of <A>digraph</A>
-        which satisfy the arguments.
-      </Item>
-    </List>
-    <Example><![CDATA[
-gap>]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
+#
 
 <#GAPDoc Label="DigraphMaximalCliques">
 <ManSection>
@@ -213,45 +163,57 @@ gap>]]></Example>
     lists and a number" Arg="digraph[, include[, exclude[, limit[, size]]]]"/>
   <Attr Name="DigraphMaximalCliquesRepsAttr" Label="for a
     digraph" Arg="digraph"/>
+  <Func Name="DigraphCliques" Arg="digraph[, include[, exclude[,
+    limit[, size]]]]"/>
+  <Func Name="DigraphCliquesReps" Arg="digraph[, include[,
+    exclude[, limit[, size]]]]"/>
   <Returns>A list of lists of positive integers.</Returns>
   <Description>
     If <A>digraph</A> is digraph, then these functions and attributes use <Ref
-      Func="CliquesFinder"/> to return maximal cliques of <A>digraph</A>. A
+      Func="CliquesFinder"/> to return cliques of <A>digraph</A>. A
     clique is defined by the set of vertices which it contains; see <Ref
       Oper="IsMaximalClique"/> and <Ref Oper="IsClique"/>.<P/>
     
-    The optional arguments <A>include</A> and <A>exclude</A> must each be a
-    (possibly empty) list of vertices of <A>digraph</A>, the optional argument
-    <A>limit</A> must be either a positive integer or <C>infinity</C>, and the
-    optional argument <A>size</A> must be a positive integer.
-    By default, <A>include</A> and <A>exclude</A> are empty, and <A>limit</A>
-    is <C>infinity</C>. The argument <A>limit</A> will provide an upper bound
-    on the number of cliques to be returned and the argument <A>size</A> will
-    restrict the search to those cliques which contain precisely <A>size</A>
-    vertices.<P/>
+    The arguments <A>include</A> and <A>exclude</A> must each be a (possibly
+    empty) list of vertices of <A>digraph</A>, the argument <A>limit</A> must
+    be either a positive integer or <C>infinity</C>, and the argument
+    <A>size</A> must be a positive integer.  By default, <A>include</A> and
+    <A>exclude</A> are empty, and <A>limit</A> is <C>infinity</C>. <P/>
 
-    These functions will find maximal cliques which contain all of the vertices
-    of <A>include</A> and which do not contain any of the vertices of
-    <A>exclude</A>.<P/>
+    The argument <A>size</A> will restrict the search to those cliques which
+    contain precisely <A>size</A> vertices.  The functions will return as many
+    suitable cliques as it can find, up to the number <A>limit</A>.  These
+    functions will find cliques (which, if <A>size</A> is specified, contain
+    <A>size</A> vertices) which contain all of the vertices of <A>include</A>
+    and which do not contain any of the vertices of <A>exclude</A>.<P/>
+
+    If the function or attribute has <C>Maximal</C> in its name, then only
+    maximal cliques will be returned; otherwise non-maximal cliques may be
+    returned. <P/>
 
     <List>
-      <Mark>Distinct maximal cliques</Mark>
+      <Mark>Distinct cliques</Mark>
       <Item>
-        <C>DigraphMaximalCliques</C> returns a duplicate-free list of at most
-        <A>limit</A> maximal cliques of <A>digraph</A> which satisfy the
-        arguments.  The computation may be significantly faster if
-        <A>include</A> and <A>exclude</A> are invariant under the action of the
-        <Ref Attr="DigraphGroup"/> of <A>digraph</A>.
+        <C>DigraphMaximalCliques</C> and <C>DigraphCliques</C> each return a
+        duplicate-free list of at most <A>limit</A> cliques of <A>digraph</A>
+        which satisfy the arguments.<P/>
+        
+        The computation may be significantly faster if <A>include</A> and
+        <A>exclude</A> are invariant under the action of the <Ref
+          Attr="DigraphGroup"/> of <A>digraph</A> on sets of vertices.
       </Item>
 
-      <Mark>Representatives of distinct orbits of maximal cliques</Mark>
+      <Mark>Representatives of distinct orbits of cliques</Mark>
       <Item>
-        To use <C>DigraphMaximalCliquesReps</C>, the arguments <A>include</A>
-        and <A>exclude</A> must each be invariant under the action of the <Ref
-          Attr="DigraphGroup"/> of <A>digraph</A>.  If this is the case, then
-        <C>DigraphMaximalCliquesReps</C> returns a list of at most <A>limit</A>
-        orbits representatives (under the action of the <Ref
-          Attr="DigraphGroup"/> of <A>digraph</A>) of maximal cliques of
+        To use <C>DigraphMaximalCliquesReps</C> or <C>DigraphCliquesReps</C>,
+        the arguments <A>include</A> and <A>exclude</A> must each be invariant
+        under the action of the <Ref Attr="DigraphGroup"/> of <A>digraph</A>
+        on sets of vertices.<P/>
+        
+        If this is the case, then <C>DigraphMaximalCliquesReps</C> and
+        <C>DigraphCliquesRepsOfSize</C> each return a duplicate-free list of at
+        most <A>limit</A> orbits representatives (under the action of the <Ref
+          Attr="DigraphGroup"/> of <A>digraph</A>) of cliques of
         <A>digraph</A> which satisfy the arguments.
       </Item>
     </List>
@@ -260,7 +222,7 @@ gap>]]></Example>
     <C>DigraphMaximalCliquesRepsAttr</C> exist to store the values
     of <C>DigraphMaximalCliques(</C><A>digraph</A><C>)</C> and
     <C>DigraphMaximalCliquesReps(</C><A>digraph</A><C>)</C> respectively,
-    to avoid repeating computation. <P/>
+    to avoid repeating computation unnecessarily. <P/>
 
     <Example><![CDATA[
 gap>]]></Example>

@@ -29,14 +29,16 @@ DeclareOperation("IsClique", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximalClique", [IsDigraph, IsHomogeneousList]);
 
 # Functions to calculate cliques
-DeclareGlobalFunction("DIGRAPHS_Clique");
-DeclareGlobalFunction("DigraphClique");
-DeclareGlobalFunction("DigraphMaximalClique");
-DeclareGlobalFunction("DigraphCliquesOfSize");
-DeclareGlobalFunction("DigraphCliquesRepsOfSize");
-DeclareGlobalFunction("DigraphMaximalCliquesReps");
-DeclareGlobalFunction("DigraphMaximalCliques");
-DeclareAttribute("DigraphMaximalCliquesRepsAttr", IsDigraph);
-DeclareAttribute("DigraphMaximalCliquesAttr", IsDigraph);
 DeclareGlobalFunction("CliquesFinder");
 DeclareGlobalFunction("DIGRAPHS_BronKerbosch");
+
+DeclareGlobalFunction("DigraphClique");
+DeclareGlobalFunction("DigraphMaximalClique");
+DeclareGlobalFunction("DIGRAPHS_Clique");
+
+DeclareGlobalFunction("DigraphCliques");
+DeclareGlobalFunction("DigraphCliquesReps");
+DeclareGlobalFunction("DigraphMaximalCliques");
+DeclareGlobalFunction("DigraphMaximalCliquesReps");
+DeclareAttribute("DigraphMaximalCliquesAttr", IsDigraph);
+DeclareAttribute("DigraphMaximalCliquesRepsAttr", IsDigraph);

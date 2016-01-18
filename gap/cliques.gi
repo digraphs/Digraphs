@@ -212,7 +212,7 @@ function(arg)
     if maximal then
       out := DigraphMaximalCliques(gr, include, exclude, 1, size);
     else
-      out := DigraphCliquesOfSize(gr, size, include, exclude, 1);
+      out := DigraphCliques(gr, size, include, exclude, 1);
     fi;
     if IsEmpty(out) then
       return fail;
