@@ -739,6 +739,8 @@ function(gr, inc, exc, lim, size, max, reps)
     if max then
       # Choose a pivot: choose a vertex with maximum out-degree in try or ban
       # TODO optimise choice of pivot
+
+      # Strategy 1: choose vertex in orb (try union ban, mod G) of max degree
       #top := -1;
       #piv := 0;
       #for v in orb do
@@ -749,6 +751,8 @@ function(gr, inc, exc, lim, size, max, reps)
       #od;
 
       # Is this a better way of choosing a pivot?
+      # Strategy 2: choose vertex in orb (try union ban, mod G) with max number
+      #             of neighbours in try_orb (try mod G)
       top := -1;
       piv := 0;
       for v in orb do
@@ -758,6 +762,11 @@ function(gr, inc, exc, lim, size, max, reps)
           top := m;
         fi;
       od;
+
+      # Strategy 3: choose vertex in orb (try union ban, mod G) with max number
+      #             of neighbours in try
+      # NOT YET IMPLEMENTED OR TESTED
+
       to_try := ShallowCopy(ListBlist(vtx, DifferenceBlist(try_orb,
                                                            adj[piv])));
     else
