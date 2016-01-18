@@ -376,26 +376,16 @@ InstallMethod(IsDistanceRegularDigraph, "for a symmetric digraph",
 function(graph)
   local reps, record, localParameters, localDiameter, i;
 
+  if IsEmptyDigraph(graph) then
+    return true;
+  elif not IsSymmetricDigraph(graph) or not IsConnectedDigraph(graph) then
+    return false;
+  fi;
+
   reps            := DigraphOrbitReps(graph);
   record          := DIGRAPH_ConnectivityDataForVertex(graph, reps[1]);
   localParameters := record.localParameters;
   localDiameter   := record.localDiameter;
-
-  if not IsSymmetricDigraph(graph) or not IsConnectedDigraph(graph) then
-    return false;
-  fi;
-
-  if Length(reps) = 0 then
-    return false;
-  fi;
-
-  if localDiameter = -1 then  # graph is not connected
-     return false;
-  fi;
-
-  if - 1 in Flat(localParameters) then # some of the parameters don't exist
-     return false;
-  fi;
 
   for i in [2 .. Length(reps)] do
      record := DIGRAPH_ConnectivityDataForVertex(graph, reps[2]);

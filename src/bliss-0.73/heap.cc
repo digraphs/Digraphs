@@ -23,7 +23,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
 
 Heap::~Heap()
 {
@@ -91,4 +91,4 @@ unsigned int Heap::remove()
   return v;
 }
 
-} // namespace bliss
+} // namespace bliss_digraphs

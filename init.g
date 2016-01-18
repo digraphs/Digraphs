@@ -8,6 +8,11 @@
 #############################################################################
 ##
 
+# load a method for UserHomeExpand if necessary
+if not IsBound(UserHomeExpand) then
+  BindGlobal("UserHomeExpand", IdFunc);
+fi;
+
 # load kernel function if it is installed:
 if (not IsBound(DIGRAPHS_C)) and ("digraphs" in SHOW_STAT()) then
   # try static module

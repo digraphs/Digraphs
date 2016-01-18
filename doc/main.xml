@@ -28,6 +28,8 @@
   <#Include SYSTEM="z-chap7.xml"> <!-- visualising, io --> 
 </Body>
 
+<#Include SYSTEM="z-appA.xml">  <!-- Grape to Digraphs command map --> 
+
 <Bibliography Databases="digraphs" />
 <TheIndex/>
 

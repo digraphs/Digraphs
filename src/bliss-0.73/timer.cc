@@ -21,7 +21,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
 
 static const double numTicksPerSec = (double)(sysconf(_SC_CLK_TCK));
 
@@ -52,4 +52,4 @@ double Timer::get_duration()
   return intermediate - start_time;
 }
 
-} // namespace bliss
+} // namespace bliss_digraphs

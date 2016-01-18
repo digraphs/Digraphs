@@ -49,4 +49,4 @@ echo "GAP 4.8: Running tests WITHOUT Semigroups or Grape loaded..."
 echo "============================================================"
 echo "LoadPackage(\"digraphs\"); DigraphsTestAll(); quit;" | sh gap4r8/bin/gap.sh | tee -a testlog.txt
 
-grep --colour=always -A 1 -E "########> Diff|$" testlog.txt ; ( ! grep -E "########> Diff" testlog.txt )
+( ! grep -E "########> Diff|brk>|#E|Error" testlog.txt )

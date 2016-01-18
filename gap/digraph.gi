@@ -12,7 +12,7 @@ InstallMethod(Digraph,
 "for a list and function",
 [IsList, IsFunction],
 function(obj, adj)
-  local N, out_nbs, in_nbs, x, digraph, i, j;
+  local N, out_nbs, in_nbs, x, digraph, i, j, adj_func;
 
   N       := Size(obj); # number of vertices
   out_nbs := List([1 ..  N], x -> []);
@@ -28,8 +28,13 @@ function(obj, adj)
     od;
   od;
 
+  # Function that acts on [1..n] rather than obj
+  adj_func := function(u, v)
+    return adj(obj[u], obj[v]);
+  end;
+
   digraph := DigraphNC(out_nbs);
-  SetDigraphAdjacencyFunction(digraph, adj);
+  SetDigraphAdjacencyFunction(digraph, adj_func);
   SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
   SetInNeighbours(digraph, in_nbs);
 
@@ -68,7 +73,7 @@ InstallMethod(Digraph,
 [IsGroup, IsListOrCollection, IsFunction, IsFunction],
 function(G, obj, act, adj)
   local hom, dom, sch, orbits, reps, stabs, rep_out, out, gens, trace, word,
-        digraph, i, o, w, dig_adj;
+  digraph, adj_func, i, o, w;
 
   hom    := ActionHomomorphism(G, obj, act, "surjective");
   dom    := [1 .. Size(obj)];
@@ -104,7 +109,7 @@ function(G, obj, act, adj)
     fi;
 
     trace := DIGRAPHS_TraceSchreierVector(gens, sch, i);
-    out[i] := rep_out[-sch[trace.representative]];
+    out[i] := rep_out[trace.representative];
     word := trace.word;
     for w in word do
        out[i] := OnTuples(out[i], gens[w]);
@@ -113,16 +118,15 @@ function(G, obj, act, adj)
 
   digraph := DigraphNC(out);
 
-  # Create adjacency function that takes integers
-  dig_adj := function(i,j)
-    return adj(obj[i], obj[j]);
+  adj_func := function(u, v)
+    return adj(obj[u], obj[v]);
   end;
 
   SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
-  SetDigraphAdjacencyFunction(digraph, dig_adj);
+  SetDigraphAdjacencyFunction(digraph, adj_func);
   SetDigraphGroup(digraph, Range(hom));
   SetDigraphOrbits(digraph, orbits);
-  SetDigraphStabilizers(digraph, stabs);
+  SetDIGRAPHS_Stabilizers(digraph, stabs);
   SetDigraphSchreierVector(digraph, sch);
   SetRepresentativeOutNeighbours(digraph, rep_out);
 
@@ -164,7 +168,7 @@ end);
 InstallMethod(CayleyDigraph, "for a group with generators",
 [IsGroup, IsHomogeneousList],
 function(G, gens)
-  local adj, cayleydigraph;
+  local adj, digraph;
 
   if not IsFinite(G) then
     ErrorMayQuit("Digraphs: CayleyDigraph: usage,\n",
@@ -180,9 +184,9 @@ function(G, gens)
   adj := function(x, y)
     return x ^ -1 * y in gens;
   end;
-  cayleydigraph := Digraph(G, AsList(G), OnRight, adj);
-  SetFilterObj(cayleydigraph, IsCayleyDigraph);
-  return cayleydigraph;
+  digraph := Digraph(G, AsList(G), OnRight, adj);
+  SetFilterObj(digraph, IsCayleyDigraph);
+  return digraph;
 end);
 
 InstallMethod(CayleyDigraph, "for a group with generators",
@@ -273,6 +277,50 @@ function(digraph)
   return double;
 end);
 
+InstallMethod(DistanceDigraph,
+"for a digraph and a list of distances",
+[IsDigraph, IsList],
+function(digraph, distances)
+  local n, orbitreps, group, sch, g, rep, rem, gens,
+    record, new, x, out, vertices;
+  n := digraph!.nrvertices;
+  new := EmptyDigraph(n);
+  vertices := [1 .. n];
+  out := [];
+  if HasDigraphGroup(digraph) then
+    group := DigraphGroup(digraph);
+    orbitreps := DigraphOrbitReps(digraph);
+    for x in orbitreps do
+      out[x] := DigraphDistanceSet(digraph, x, distances);
+    od;
+    rem := Difference(vertices, orbitreps);
+    sch := DigraphSchreierVector(digraph);
+    group := DigraphGroup(digraph);
+    gens := GeneratorsOfGroup(group);
+    for x in rem do
+      record := DIGRAPHS_TraceSchreierVector(gens, sch, x);
+      rep := record.representative;
+      g := DIGRAPHS_EvaluateWord(gens, record.word);
+      out[x] := List(out[rep], x -> x ^ g);
+    od;
+    new := DigraphNC(out);
+    SetDigraphGroup(new, DigraphGroup(digraph));
+  else
+    for x in vertices do
+      out[x] := DigraphDistanceSet(digraph, x, distances);
+    od;
+    new := DigraphNC(out);
+  fi;
+  return new;
+end);
+
+InstallMethod(DistanceDigraph,
+"for a digraph and a positive integer",
+[IsDigraph, IsPosInt],
+function(digraph, distance)
+  return DistanceDigraph(digraph, [distance]);
+end);
+
 InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
 [IsDigraph, IsPosInt, IsObject],
 function(graph, i, name)
@@ -298,7 +346,7 @@ function(graph, i)
   fi;
 
   if IsBound(graph!.vertexlabels[i]) then
-    return graph!.vertexlabels[i];
+    return ShallowCopy(graph!.vertexlabels[i]);
   fi;
   #JDM is this a good idea?
   ErrorMayQuit("Digraphs: DigraphVertexLabel: usage,\n", i,
@@ -326,7 +374,7 @@ function(graph)
   if not IsBound(graph!.vertexlabels) then
     graph!.vertexlabels := [1 .. DigraphNrVertices(graph)];
   fi;
-  return graph!.vertexlabels;
+  return StructuralCopy(graph!.vertexlabels);
 end);
 
 # multi means it has at least one multiple edges
@@ -1373,4 +1421,22 @@ InstallMethod(String, "for a digraph",
 [IsDigraph],
 function(graph)
   return Concatenation("Digraph( ", String(OutNeighbours(graph)), " )");
+end);
+
+# 
+
+InstallMethod(DigraphAddAllLoops, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out_nbs, adj, v;
+
+  out_nbs  := OutNeighbours(digraph);
+  adj      := [];
+  for v in DigraphVertices(digraph) do
+    adj[v] := ShallowCopy(out_nbs[v]);
+    if not v in adj[v] then 
+      Add(adj[v], v);
+    fi;
+  od;
+  return Digraph(adj);
 end);

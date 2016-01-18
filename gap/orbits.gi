@@ -18,7 +18,7 @@ function(gens, sch, r)
     r := r / gens[w];
     w := sch[r];
   od;
-  return rec(word := Reversed(word), representative := r);
+  return rec(word := Reversed(word), representative := -w);
 end);
 
 InstallGlobalFunction(DIGRAPHS_EvaluateWord,
@@ -69,6 +69,34 @@ function(G, domain)
   return rec(orbits := orbs, schreier := sch, lookup := lookup);
 end);
 
+InstallMethod(RepresentativeOutNeighbours, "for a digraph", [IsDigraph],
+function(digraph)
+  local reps, out, nbs, i;
+
+  if IsTrivial(DigraphGroup(digraph)) then
+    return OutNeighbours(digraph);
+  fi;
+
+  reps  := DigraphOrbitReps(digraph);
+
+  out := EmptyPlist(Length(reps));
+  nbs := OutNeighbours(digraph);
+
+  for i in [1 .. Length(reps)] do
+    out[i] := nbs[reps[i]];
+  od;
+  return out;
+end);
+
+InstallMethod(DigraphGroup, "for a digraph",
+[IsDigraph], AutomorphismGroup);
+
+InstallMethod(DigraphGroup, "for a digraph",
+[IsMultiDigraph],
+function(digraph)
+  return Range(Projection(AutomorphismGroup(digraph), 1));
+end);
+
 InstallMethod(DigraphOrbits, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -103,34 +131,37 @@ end);
 
 InstallMethod(DigraphStabilizer, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-function(digraph, rep)
+function(digraph, v)
   local pos, gens, sch, trace, word, stabs;
 
-  pos := DigraphSchreierVector(digraph)[rep];
-  if pos < 0 then # rep is not one of the orbit reps
+  if v > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphStabilizer: usage,\n",
+                 "the second argument must not exceed ",
+                 DigraphNrVertices(digraph), ",");
+  fi;
+
+  pos := DigraphSchreierVector(digraph)[v];
+  if pos < 0 then # rep is one of the orbit reps
     word := ();
     pos := pos * -1;
   else
-    gens := GeneratorsOfGroup(DigraphGroup(digraph));
-    sch := DigraphSchreierVector(digraph);
-    trace := DIGRAPHS_TraceSchreierVector(gens, sch, pos);
-    pos := trace.representative;
-    word := DIGRAPHS_EvaluateWord(gens, trace.word);
+    gens  := GeneratorsOfGroup(DigraphGroup(digraph));
+    sch   := DigraphSchreierVector(digraph);
+    trace := DIGRAPHS_TraceSchreierVector(gens, sch, v);
+    pos   := trace.representative;
+    word  := DIGRAPHS_EvaluateWord(gens, trace.word);
   fi;
 
-  stabs := DigraphStabilizers(digraph);
+  stabs := DIGRAPHS_Stabilizers(digraph);
 
-  if not IsBound(DigraphStabilizers(digraph)[pos]) then
+  if not IsBound(stabs[pos]) then
     stabs[pos] := Stabilizer(DigraphGroup(digraph),
                              DigraphOrbitReps(digraph)[pos]);
   fi;
-  return DigraphStabilizers(digraph)[pos] ^ word;
+  return stabs[pos] ^ word;
 end);
 
-InstallMethod(DigraphStabilizers, "for a digraph",
-[IsDigraph],
+InstallMethod(DIGRAPHS_Stabilizers, "for a digraph", [IsDigraph],
 function(digraph);
   return [];
 end);
-
-

@@ -174,9 +174,10 @@ true
   <Oper Name="DigraphVertexLabels" Arg="digraph"/>
   <Oper Name="SetDigraphVertexLabels" Arg="digraph, list"/>
   <Description>
-    If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns the
-    labels of the vertices in <A>digraph</A>. <C>SetDigraphVertexLabels</C> can
-    be used to set the labels of the vertices in <A>digraph</A> to the list of
+    If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns a
+    copy of the labels of the vertices in <A>digraph</A>.
+    <C>SetDigraphVertexLabels</C> can be used to set the labels of the vertices
+    in <A>digraph</A> to the list of
     arbitrary &GAP; objects <A>list</A>. <P/>
 
     The label of a vertex can be changed an arbitrary number of times. If no
@@ -280,7 +281,7 @@ true]]></Example>
 <ManSection>
   <Oper Name = "Digraph" Arg = "obj[, source, range]"/>
   <Oper Name = "Digraph" Arg = "list, func" Label = "for a list and function"/>
-  <Oper Name = "Digraph" Arg = "G, list, act, adj" Label = "for a list and function"/>
+  <Oper Name = "Digraph" Arg = "G, list, act, adj" Label = "for a group, list, function, and function"/>
   <Returns>A digraph.</Returns>
   <Description>
     <List>
@@ -338,6 +339,24 @@ true]]></Example>
         <C>i</C> to vertex <C>j</C> if and only if
         <C><A>func</A>(<A>obj</A>[i], <A>obj</A>[j])</C> returns <K>true</K>.
       </Item>
+      
+      <Mark>for a group, a list, and two functions</Mark>
+      <Item>
+        The arguments will be <A>G, list, act, adj</A>. <P/>
+
+        Let <A>G</A> be a group acting on the objects in <A>list</A> via
+        the action <A>act</A>, and let <A>adj</A> be a function taking
+        two objects from <A>list</A> as arguments and returning <C>true</C> or
+        <C>false</C>. The function <A>adj</A> will describe the adjacency
+        between objects from <A>list</A>, which is invariant under the action of
+        <A>G</A>. This variant of the constructor returns a digraph with
+        vertices the objects of <A>list</A> and directed edges <C>[x, y]</C>
+        when <C>f(x, y)</C> is <C>true</C>. <P/>
+
+        The action of the group <A>G</A> on the objects in <A>list</A> is stored
+        in the attribute <Ref Attr="DigraphGroup"/>, and is used to speed up
+        operations like <Ref Oper="DigraphDiameter"/>.
+      </Item>
 
       <Mark>for a Grape package graph</Mark>
       <Item>
@@ -355,22 +374,6 @@ true]]></Example>
         and range <C>j</C> if and only if <C>[i,j]</C> is a pair in
         the binary relation <A>obj</A>.
       </Item>
-
-      <Mark>for a group, a list, a function <A>act</A> and a function <A>adj</A> (i.e. an adjacency list)</Mark>
-      <Item>
-  
-        Let <A>G</A> be a group acting on the objects in <A>list</A> through the action function <A>act</A>,
-        and let <A>adj</A> be a function taking two objects from <A>list</A> as arguments and returning <C>true</C>
-        or <C>false</C>, describing the adjacency between objects from <A>list</A> that is invariant under the action
-        of <A>G</A>. Then this variant of the constructor returns a digraph with vertices the objects of <A>list</A>
-        and directed edges <C>[x,y]</C> when <C>f(x,y)</C> is <C>true</C>. The action of the group <A>G</A> on the
-        objects in <A>list</A> is a permutation group that is stored in the attribute <Ref Attr="DigraphGroup"/>,
-        and this group is used to speed up operations like <Ref Oper="DigraphDiameter"/>.<P/>
-        The second example illustrates the use of the second and third variant of this constructor. The resulting digraph
-        is a strongly regular graph, and it is actually the point graph of the van Lint-Schrijver partial geometry, <Cite Key="vanLintSchrijver1981"/>.
-        The algebraic description is taken from the seminal paper of Calderbank and Kantor <Cite Key="CalderbankKantor1986"/>.
-        </Item>
-
     </List>
   
     <Example><![CDATA[
@@ -392,30 +395,38 @@ Binary Relation on 5 points
 gap> gr := Digraph(b);
 <digraph with 5 vertices, 11 edges>
 gap> gr := Digraph([1 .. 10], ReturnTrue);
-<digraph with 10 vertices, 100 edges>
+<digraph with 10 vertices, 100 edges>]]></Example>
+
+      The next example illustrates the uses of the fourth and fifth variants of
+      this constructor. The resulting digraph is a strongly regular graph, and
+      it is actually the point graph of the van Lint-Schrijver partial
+      geometry, <Cite Key="vanLintSchrijver1981"/>.  The algebraic description
+      is taken from the seminal paper of Calderbank and Kantor <Cite
+        Key="CalderbankKantor1986"/>.
+<Example><![CDATA[
 gap> f := GF(3^4);
 GF(3^4)
-gap> gamma := First(f,x->Order(x)=5);
+gap> gamma := First(f, x -> Order(x) = 5);
 Z(3^4)^64
-gap> L := Union([Zero(f)],List(Group(gamma)));
+gap> L := Union([Zero(f)], List(Group(gamma)));
 [ 0*Z(3), Z(3)^0, Z(3^4)^16, Z(3^4)^32, Z(3^4)^48, Z(3^4)^64 ]
-gap> omega := Union(List(L,x->List(Difference(L,[x]),y->x-y)));
+gap> omega := Union(List(L, x -> List(Difference(L, [x]), y -> x - y)));
 [ Z(3)^0, Z(3), Z(3^4)^5, Z(3^4)^7, Z(3^4)^8, Z(3^4)^13, Z(3^4)^15, 
   Z(3^4)^16, Z(3^4)^21, Z(3^4)^23, Z(3^4)^24, Z(3^4)^29, Z(3^4)^31, 
   Z(3^4)^32, Z(3^4)^37, Z(3^4)^39, Z(3^4)^45, Z(3^4)^47, Z(3^4)^48, 
   Z(3^4)^53, Z(3^4)^55, Z(3^4)^56, Z(3^4)^61, Z(3^4)^63, Z(3^4)^64, 
   Z(3^4)^69, Z(3^4)^71, Z(3^4)^72, Z(3^4)^77, Z(3^4)^79 ]
-gap> adj := function(x,y)
-> return x-y in omega;
+gap> adj := function(x, y)
+> return x - y in omega;
 > end;
 function( x, y ) ... end
-gap> digraph := Digraph(List(f),adj);
+gap> digraph := Digraph(AsList(f), adj);
 <digraph with 81 vertices, 2430 edges>
 gap> group := Group(Z(3));
 <group with 1 generators>
 gap> act := \*;
 <Operation "*">
-gap> digraph := Digraph(group,List(f),act,adj);
+gap> digraph := Digraph(group, List(f), act, adj);
 <digraph with 81 vertices, 2430 edges>
 ]]></Example>
   </Description>
@@ -798,10 +809,10 @@ gap> CayleyDigraph(G, [()]);
   <Oper Name="EdgeUndirectedDigraph" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    Given a symmetric digraph <A>digraph</A>, the operation returns a
+    Given a symmetric digraph <A>digraph</A>, the operation returns the
     symmetric digraph obtained by associating a vertex with each edge of
-    <A>digraph</A>, ignoring directions and multiplicites, and two vertices
-    are adjecent if and only if the corresponding edges have a vertex in
+    <A>digraph</A>, ignoring directions and multiplicites, and adding an edge
+    between two vertices if and only if the corresponding edges have a vertex in
     common. 
     <Example><![CDATA[
 gap> LineUndirectedDigraph(CompleteDigraph(3));
@@ -819,9 +830,9 @@ gap> LineUndirectedDigraph(DigraphSymmetricClosure(ChainDigraph(3)));
   <Oper Name="EdgeDigraph" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    Given a directed digraph <A>digraph</A>, the operation returns a digraph
+    Given a digraph <A>digraph</A>, the operation returns the digraph
     obtained by associating a vertex with each edge of <A>digraph</A>, and
-    there is an edge from a vertex <K>v</K> to a vertex <K>u</K> if and only
+    creating an edge from a vertex <K>v</K> to a vertex <K>u</K> if and only
     if the terminal vertex of the edge associated with <K>v</K> is the start
     vertex of the edge associated with <K>u</K>.  
     <Example><![CDATA[
@@ -876,5 +887,32 @@ gap> BipartiteDoubleDigraph(gamma);
 ]]></Example>
   </Description>
 </ManSection>
+<#/GAPDoc>
 
+
+<#GAPDoc Label="DigraphAddAllLoops">
+<ManSection>
+  <Oper Name="DigraphAddAllLoops" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    For a digraph <A>digraph</A> this operation return a copy of <A>digraph</A>
+    such that a loop is added for every vertex which did not have a loop in 
+    <A>digraph</A>. 
+    <Example><![CDATA[
+gap> gr := EmptyDigraph(13);
+<digraph with 13 vertices, 0 edges>
+gap> gr := DigraphAddAllLoops(gr);    
+<digraph with 13 vertices, 13 edges>
+gap> OutNeighbours(gr);
+[ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], 
+  [ 11 ], [ 12 ], [ 13 ] ]
+gap> gr := Digraph([ [1, 2, 3], [1, 3], [1] ]);
+<digraph with 3 vertices, 6 edges>
+gap> gr := DigraphAddAllLoops(gr);    
+<digraph with 3 vertices, 8 edges>
+gap> OutNeighbours(gr);
+[ [ 1, 2, 3 ], [ 1, 3, 2 ], [ 1, 3 ] ]
+]]></Example>
+  </Description>
+</ManSection>
 <#/GAPDoc>

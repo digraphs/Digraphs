@@ -28,7 +28,7 @@
 #include <cstdio>
 #include "defs.hh"
 
-namespace bliss {
+namespace bliss_digraphs {
 
 /**
  * \brief A very simple class for big integers (or approximation of them).
@@ -100,6 +100,6 @@ public:
 
 #endif
 
-} //namespace bliss
+} //namespace bliss_digraphs
 
 #endif

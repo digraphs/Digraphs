@@ -53,6 +53,25 @@ gap> DigraphVertexLabels(gr);
 [ 1, 2, 3, 5, 7 ]
 gap> DigraphVertices(gr);
 [ 1 .. 5 ]
+gap> gr := Digraph([[4, 8], [4, 9], [5], [9], [6], [3, 5], [], 
+> [6], [1, 3], [10]]);
+<digraph with 10 vertices, 13 edges>
+gap> x := DigraphVertexLabels(gr);
+[ 1 .. 10 ]
+gap> x[1] := "a";
+"a"
+gap> x;
+[ "a", 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> DigraphVertexLabels(gr);
+[ 1 .. 10 ]
+gap> SetDigraphVertexLabel(gr, 2, []);
+gap> x := DigraphVertexLabel(gr, 2);
+[  ]
+gap> Add(x, 1);
+gap> x;
+[ 1 ]
+gap> DigraphVertexLabels(gr);
+[ 1, [  ], 3, 4, 5, 6, 7, 8, 9, 10 ]
 
 #T# Graph
 gap> gr := Digraph([[2, 2], []]);
@@ -1217,6 +1236,10 @@ gap> ddigraph := BipartiteDoubleDigraph(digraph);
 <digraph with 8 vertices, 6 edges>
 gap> DigraphGroup(ddigraph);
 Group([ (2,3)(6,7), (2,4)(6,8), (1,5)(2,6)(3,7)(4,8) ])
+gap> ddigraph := DoubleDigraph(digraph);
+<digraph with 8 vertices, 12 edges>
+gap> DigraphGroup(ddigraph);
+Group([ (2,3)(6,7), (2,4)(6,8), (1,5)(2,6)(3,7)(4,8) ])
 
 #T# (Bipartite)DoubleDigraph with multidigraph
 gap> gr := Digraph([[2,3], [1], []]);;
@@ -1377,6 +1400,42 @@ gap> gr2 := DigraphRemoveEdgeOrbit(gr1, [1,8]);
 <digraph with 8 vertices, 24 edges>
 gap> gr1 = gr2;
 true
+
+#T# Digraph (by list and function)
+gap> f := function(i,j) return i < j; end;
+function( i, j ) ... end
+gap> gr := Digraph([1..4], f);
+<digraph with 4 vertices, 6 edges>
+gap> IsDigraphEdge(gr, [2,1]);
+false
+gap> gr := Digraph([4,3..1], f);
+<digraph with 4 vertices, 6 edges>
+gap> IsDigraphEdge(gr, [2,1]);
+true
+
+#T# DigraphAddAllLoops
+gap> gr := CompleteDigraph(10);
+<digraph with 10 vertices, 90 edges>
+gap> OutNeighbours(gr)[1];
+[ 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> gr2 := DigraphAddAllLoops(gr);
+<digraph with 10 vertices, 100 edges>
+gap> OutNeighbours(gr2)[1];        
+[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 1 ]
+gap> gr3 := DigraphAddAllLoops(gr);
+<digraph with 10 vertices, 100 edges>
+gap> OutNeighbours(gr3)[1];
+[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 1 ]
+gap> gr := EmptyDigraph(100);
+<digraph with 100 vertices, 0 edges>
+gap> DigraphAddAllLoops(gr);
+<digraph with 100 vertices, 100 edges>
+gap> gr := Digraph([ [1,2,3], [2,2,2,2], [5, 1], [1,2,3,4], [5] ]);
+<multidigraph with 5 vertices, 14 edges>
+gap> gr2 := DigraphAddAllLoops(gr);
+<multidigraph with 5 vertices, 15 edges>
+gap> OutNeighbours(gr2);
+[ [ 1, 2, 3 ], [ 2, 2, 2, 2 ], [ 5, 1, 3 ], [ 1, 2, 3, 4 ], [ 5 ] ]
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);

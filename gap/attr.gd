@@ -65,3 +65,4 @@ DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
 DeclareAttribute("AsTransformation", IsDigraph);
+DeclareAttribute("DIGRAPHS_ConnectivityData", IsDigraph, "mutable");

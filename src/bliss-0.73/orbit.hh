@@ -20,7 +20,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
 
 /** \internal
  * \brief A class for representing orbit information.
@@ -106,6 +106,6 @@ public:
   unsigned int nof_orbits() const {return _nof_orbits; }
 };
 
-} // namespace bliss
+} // namespace bliss_digraphs
 
 #endif

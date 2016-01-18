@@ -20,7 +20,6 @@
     <#Include Label="BooleanAdjacencyMatrix">
     <#Include Label="DigraphAdjacencyFunction">
     <#Include Label="RangeSourceDigraph">
-    <#Include Label="RepresentativeOutNeighbours">
     <#Include Label="OutNeighbours">
     <#Include Label="InNeighbours">
     <#Include Label="OutDegrees">
@@ -34,8 +33,10 @@
 
   <Section><Heading>Reachability and connectivity</Heading>
     <#Include Label="DigraphDiameter">
+    <#Include Label="DigraphShortestDistance">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphLongestDistanceFromVertex">
+    <#Include Label="DigraphDistanceSet">
     <#Include Label="DigraphGirth">
     <#Include Label="DigraphUndirectedGirth">
     <#Include Label="DigraphConnectedComponents">
@@ -75,4 +76,5 @@
     <#Include Label="DigraphIndependentSet">
     <#Include Label="DigraphMaximalIndependentSets">
   </Section>
+  
 </Chapter>

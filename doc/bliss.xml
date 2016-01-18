@@ -241,7 +241,8 @@ true]]></Example>
     </List>
 
     If <A>digraph1</A> and <A>digraph2</A> are not isomorphic, then <K>fail</K>
-    is returned. <P/>
+    is returned. 
+    <P/>
 
     This operation uses the canonical labelling of the digraphs found with <URL
     Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
@@ -281,76 +282,3 @@ gap> IsomorphismDigraphs(digraph1, digraph2);
 </Description>
 </ManSection>
 <#/GAPDoc>
-
-<#GAPDoc Label="DigraphGroup">
-<ManSection>
-  <Attr Name="DigraphGroup" Arg="digraph"/>
-  <Returns>A permutation group</Returns>
-  <Description>
-    Let <A>digraph</A> be a digraph. If <A>digraph</A> has been constructed using a group <C>G</C>,
-    a list of vertices, and action function and an adjacency function, see <Ref Oper="Digraph"/>,
-    then <C>DigraphGroup</C> is set upon construction of <A>digraph</A> as the action of <C>G</C>
-    on the set of vertices, which is a permutation group. Note that constructor operations, e.g.
-    <Ref Oper="CayleyDigraph"/>, <Ref Oper="BipartiteDoubleDigraph"/>, and <Ref Oper="DoubleDigraph"/>,
-    may not require a group as one of the arguments, but use the standard constructor method
-    using a group, and hence set the <C>DigraphGroup</C> attribute for the resulting digraph.
-    In all other cases, i.e. when this attribute is not set upon construction of <A>digraph</A>,
-    then <C>DigraphGroup</C> simply returns <C>AutomorphismGroup(digraph)</C>. Note that for
-    large digraphs, this might require a lengthy computation.
-    <Example><![CDATA[
-gap> n := 4;                
-4
-gap> adj := function(x,y)
-> return (((x-y) mod n) = 1) or (((x-y) mod n) = n-1);
-> end;
-function( x, y ) ... end
-gap> group := CyclicGroup(IsPermGroup,n);
-Group([ (1,2,3,4) ])
-gap> digraph := Digraph(group,[1..n],\^,adj);
-<digraph with 4 vertices, 8 edges>
-gap> KnownAttributesOfObject(digraph);
-[ "DigraphNrVertices", "DigraphNrEdges", "OutNeighbours", 
-  "DigraphAdjacencyFunction", "DigraphGroup", "DigraphOrbits", 
-  "DigraphStabilizers", "DigraphSchreierVector", 
-  "RepresentativeOutNeighbours" ]
-gap> DigraphGroup(digraph);
-Group([ (1,2,3,4) ])
-gap> AutomorphismGroup(digraph);
-Group([ (2,4), (1,2,3,4) ])
-gap> ddigraph := DoubleDigraph(digraph);
-<digraph with 8 vertices, 32 edges>
-gap> KnownAttributesOfObject(ddigraph);
-[ "DigraphNrVertices", "DigraphNrEdges", "OutNeighbours", 
-  "DigraphGroup" ]
-gap> DigraphGroup(ddigraph);
-Group([ (1,2,3,4)(5,6,7,8), (1,5)(2,6)(3,7)(4,8) ])
-gap> AutomorphismGroup(ddigraph);
-Group([ (6,8), (5,7), (4,6), (3,5), (2,4), (1,2,3,4)(5,6)(7,8) ])
-gap> out := [[2,3],[],[]];
-[ [ 2, 3 ], [  ], [  ] ]
-gap> digraph := Digraph(out);
-<digraph with 3 vertices, 2 edges>
-gap> KnownAttributesOfObject(digraph);
-[ "DigraphNrVertices", "DigraphNrEdges", "OutNeighbours" ]
-gap> DigraphGroup(digraph);
-Group([ (2,3) ])
-gap> KnownAttributesOfObject(digraph);
-[ "AutomorphismGroup", "DigraphNrVertices", "DigraphNrEdges", 
-  "OutNeighbours", "DigraphCanonicalLabelling", "DigraphGroup" ]
-gap> group := DihedralGroup(8);
-<pc group of size 8 with 3 generators>
-gap> digraph := CayleyDigraph(group);
-<digraph with 8 vertices, 24 edges>
-gap> KnownAttributesOfObject(digraph);
-[ "DigraphNrVertices", "DigraphNrEdges", "OutNeighbours", 
-  "DigraphAdjacencyFunction", "DigraphGroup", "DigraphOrbits", 
-  "DigraphStabilizers", "DigraphSchreierVector", 
-  "RepresentativeOutNeighbours" ]
-gap> DigraphGroup(digraph);
-Group([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)
-(5,8) ])
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-

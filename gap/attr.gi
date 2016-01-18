@@ -8,79 +8,54 @@
 #############################################################################
 ##
 
-InstallMethod(OutNeighbours,
-"for a digraph with representative out neighbours and group",
-[IsDigraph and HasRepresentativeOutNeighbours and HasDigraphGroup],
-function(digraph)
-  local gens, sch, reps, out, trace, word, i, w;
+#
+# The following method is currently useless, as the OutNeighbours are computed
+# and set whenever a digraph is created.  It could be reinstated later if we
+# decide to allow digraphs to exist without known OutNeighbours.
+#
 
-  gens := GeneratorsOfGroup(DigraphGroup(digraph));
-  sch  := DigraphSchreierVector(digraph);
-  reps := RepresentativeOutNeighbours(digraph);
+# InstallMethod(OutNeighbours,
+# "for a digraph with representative out neighbours and group",
+# [IsDigraph and HasRepresentativeOutNeighbours and HasDigraphGroup],
+# function(digraph)
+#   local gens, sch, reps, out, trace, word, i, w;
+#
+#   gens := GeneratorsOfGroup(DigraphGroup(digraph));
+#   sch  := DigraphSchreierVector(digraph);
+#   reps := RepresentativeOutNeighbours(digraph);
+#
+#   out  := EmptyPlist(DigraphNrVertices(digraph));
+#
+#   for i in [1 .. Length(sch)] do
+#     if sch[i] < 0 then
+#       out[i] := reps[-sch[i]];
+#     fi;
+#
+#     trace  := DIGRAPHS_TraceSchreierVector(gens, sch, i);
+#     out[i] := out[trace.representative];
+#     word   := trace.word;
+#     for w in word do
+#        out[i] := OnTuples(out[i], gens[w]);
+#     od;
+#   od;
 
-  out  := EmptyPlist(DigraphNrVertices(digraph));
+#   return out;
+# end);
 
-  for i in [1 .. Length(sch)] do
-    if sch[i] < 0 then
-      out[i] := reps[-sch[i]];
-    fi;
-
-    trace  := DIGRAPHS_TraceSchreierVector(gens, sch, i);
-    out[i] := out[-sch[trace.representative]];
-    word   := trace.word;
-    for w in word do
-       out[i] := OnTuples(out[i], gens[w]);
-    od;
-  od;
-
-  return out;
-end);
-
-InstallMethod(RepresentativeOutNeighbours, "for a digraph", [IsDigraph],
-function(digraph)
-  local reps, out, nbs, i;
-
-  if IsTrivial(DigraphGroup(digraph)) then
-    return OutNeighbours(digraph);
-  fi;
-
-  reps  := DigraphOrbitReps(digraph);
-
-  out := EmptyPlist(Length(reps));
-  nbs := OutNeighbours(digraph);
-
-  for i in [1 .. Length(reps)] do
-    out[i] := nbs[reps[i]];
-  od;
-  return out;
-end);
+#
 
 InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
 function(digraph)
   local func;
 
-  if DigraphVertexLabels(digraph) = [1 .. DigraphNrVertices(digraph)] then
-    func := function(x, y)
-      return IsDigraphEdge(digraph, x, y);
-    end;
-  else
-    func := function(x, y)
-      local labels;
-      labels := DigraphVertexLabels(digraph);
-      return IsDigraphEdge(digraph, Position(labels, x), Position(labels, y));
-    end;
-  fi;
+  func := function(u, v)
+    return IsDigraphEdge(digraph, u, v);
+  end;
+
   return func;
 end);
 
-InstallMethod(DigraphGroup, "for a digraph",
-[IsDigraph], AutomorphismGroup);
-
-InstallMethod(DigraphGroup, "for a digraph",
-[IsMultiDigraph],
-function(digraph)
-  return Range(Projection(AutomorphismGroup(digraph), 1));
-end);
+#
 
 InstallMethod(AsTransformation, "for a digraph",
 [IsDigraph],
@@ -90,6 +65,8 @@ function(digraph)
   fi;
   return Transformation(Concatenation(OutNeighbours(digraph)));
 end);
+
+#
 
 InstallMethod(ReducedDigraph, "for a digraph",
 [IsDigraph],
@@ -146,6 +123,8 @@ function(digraph)
   return gr;
 end);
 
+#
+
 InstallMethod(DigraphDual, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -169,14 +148,6 @@ function(digraph)
     SetDigraphGroup(gr, DigraphGroup(digraph));
   fi;
   return gr;
-end);
-
-#
-
-InstallMethod(DigraphNrVertices, "for a digraph",
-[IsDigraph],
-function(graph)
-  return graph!.nrvertices;
 end);
 
 #
@@ -283,7 +254,37 @@ end);
 #
 
 InstallMethod(DigraphShortestDistances, "for a digraph",
-[IsDigraph], DIGRAPH_SHORTEST_DIST);
+[IsDigraph],
+function(digraph)
+  local vertices, data, sum, distances, v, u;
+
+  if HasDIGRAPHS_ConnectivityData(digraph) then
+    vertices := DigraphVertices(digraph);
+    data := DIGRAPHS_ConnectivityData(digraph);
+    sum := 0;
+    for v in vertices do
+      if IsBound(data[v]) then
+        sum := sum + 1;
+      fi;
+    od;
+    if sum > Int(0.9 * DigraphNrVertices(digraph)) or
+        (HasDigraphGroup(digraph) and
+         not IsTrivial(DigraphGroup(digraph)))  then
+      # adjust the constant 0.9 and possibly make a the decision based on
+      # how big the group is
+      distances := [];
+      for u in vertices do
+        distances[u] := [];
+        for v in vertices do
+          distances[u][v] := DigraphShortestDistance(digraph, u, v);
+        od;
+      od;
+      return distances;
+    fi;
+  fi;
+
+  return DIGRAPH_SHORTEST_DIST(digraph);
+end);
 
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
@@ -586,25 +587,59 @@ end);
 
 #
 
+InstallMethod(DIGRAPHS_ConnectivityData, "for a digraph",
+[IsDigraph],
+function(digraph)
+  return [];
+end);
+
+#
+
 BindGlobal("DIGRAPH_ConnectivityDataForVertex",
 function(digraph, v)
-  local out_nbs, record, orbnum, reps, i, next, laynum, localGirth, layers,
-        localParameters, sum, nprev, nhere, nnext, lnum, localDiameter,
+  local data, out_nbs, record, orbnum, reps, i, next, laynum, localGirth,
+        layers, sum, localParameters, nprev, nhere, nnext, lnum, localDiameter,
         layerNumbers, x, y;
 
+  data := DIGRAPHS_ConnectivityData(digraph);
+
+  if IsBound(data[v]) then
+    return data[v];
+  fi;
+
   out_nbs         := OutNeighbours(digraph);
-  record          := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
-                                     DigraphVertices(digraph));
-  orbnum          := record.lookup;
-  reps            := List(record.orbits, Representative);
-  i               := 1;
-  next            := [orbnum[v]];
-  laynum          := [1 .. Length(reps)] * 0;
-  laynum[next[1]] := 1;
-  localGirth      := -1;
-  layers          := [next];
-  localParameters := [];
-  sum             := 1;
+  if HasDigraphGroup(digraph) then
+    record          := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
+                                       DigraphVertices(digraph));
+    orbnum          := record.lookup;
+    reps            := List(record.orbits, Representative);
+    i               := 1;
+    next            := [orbnum[v]];
+    laynum          := [1 .. Length(reps)] * 0;
+    laynum[next[1]] := 1;
+    localGirth      := -1;
+    layers          := [next];
+    sum             := 1;
+    localParameters := [];
+  else
+    orbnum          := [1 .. DigraphNrVertices(digraph)];
+    reps            := [1 .. DigraphNrVertices(digraph)];
+    i               := 1;
+    next            := [orbnum[v]];
+    laynum          := [1 .. Length(reps)] * 0;
+    laynum[next[1]] := 1;
+    localGirth      := -1;
+    layers          := [next];
+    sum             := 1;
+    localParameters := [];
+  fi;
+
+  # localDiameter is the length of the longest shortest path starting at v
+  #
+  # localParameters is a list of 3-tuples [a_{i - 1}, b_{i - 1}, c_{i - 1}] for
+  # each i between 1 and localDiameter where c_i (respectively a_i and b_i) is
+  # the number of vertices at distance i − 1 (respectively i and i + 1) from v
+  # that are adjacent to a vertex w at distance i from v.
 
   while Length(next) > 0 do
     next := [];
@@ -662,9 +697,10 @@ function(digraph, v)
   for i in [1 .. Length(reps)] do
      layerNumbers[i] := laynum[orbnum[i]];
   od;
-  return rec(layerNumbers := layerNumbers, localDiameter := localDiameter,
-             localGirth := localGirth, localParameters := localParameters,
-             layers := layers);
+  data[v] := rec(layerNumbers := layerNumbers, localDiameter := localDiameter,
+                 localGirth := localGirth, localParameters := localParameters,
+                 layers := layers);
+  return data[v];
 end);
 #
 
@@ -780,12 +816,12 @@ function(digraph)
   fi;
   girth := infinity;
   out := OutNeighbours(digraph);
-  dist := DigraphShortestDistances(digraph);
   for i in verts do
     for j in out[i] do
+      dist := DigraphShortestDistance(digraph, j, i);
       # distance [j,i] + 1 equals the cycle length
-      if dist[j][i] <> fail and dist[j][i] + 1 < girth then
-        girth := dist[j][i] + 1;
+      if dist <> fail and dist + 1 < girth then
+        girth := dist + 1;
         if girth = 2 then
           return girth;
         fi;
@@ -801,10 +837,10 @@ InstallMethod(DigraphLongestSimpleCircuit, "for a digraph",
 [IsDigraph],
 function(digraph)
   local circs, lens, max;
-  circs := DigraphAllSimpleCircuits(digraph);
-  if IsEmpty(circs) then
+  if IsAcyclicDigraph(digraph) then
     return fail;
   fi;
+  circs := DigraphAllSimpleCircuits(digraph);
   lens := List(circs, Length);
   max := Maximum(lens);
   return circs[Position(lens, max)];
@@ -939,7 +975,7 @@ function(digraph)
   local UNBLOCK, CIRCUIT, out, stack, endofstack, gr, scc, n, blocked, B,
   gr_comp, comp, s, loops, i;
 
-  if DigraphNrVertices(digraph) = 0 then
+  if DigraphNrVertices(digraph) = 0 or DigraphNrEdges(digraph) = 0 then
     return [];
   fi;
 

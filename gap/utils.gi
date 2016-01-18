@@ -23,17 +23,18 @@ function(pass)
 end);
 
 BindGlobal("DIGRAPHS_DocXMLFiles", ["attr.xml",
-                                   "bliss.xml",
-                                   "cliques.xml",
-                                   "digraph.xml",
-                                   "display.xml",
-                                   "grahom.xml",
-                                   "grape.xml",
-                                   "io.xml",
-                                   "oper.xml",
-                                   "prop.xml",
-                                   "utils.xml",
-                                   "../PackageInfo.g"]);
+                                    "bliss.xml",
+                                    "cliques.xml",
+                                    "digraph.xml",
+                                    "display.xml",
+                                    "grahom.xml",
+                                    "grape.xml",
+                                    "io.xml",
+                                    "oper.xml",
+                                    "orbits.xml",
+                                    "prop.xml",
+                                    "utils.xml",
+                                    "../PackageInfo.g"]);
 
 BindGlobal("DIGRAPHS_TestRec", rec());
 MakeReadWriteGlobal("DIGRAPHS_TestRec");
