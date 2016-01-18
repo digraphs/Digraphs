@@ -277,6 +277,50 @@ function(digraph)
   return double;
 end);
 
+InstallMethod(DistanceDigraph,
+"for a digraph and a list of distances",
+[IsDigraph, IsList],
+function(digraph, distances)
+  local n, orbitreps, group, sch, g, rep, rem, gens,
+    record, new, x, out, vertices;
+  n := digraph!.nrvertices;
+  new := EmptyDigraph(n);
+  vertices := [1 .. n];
+  out := [];
+  if HasDigraphGroup(digraph) then
+    group := DigraphGroup(digraph);
+    orbitreps := DigraphOrbitReps(digraph);
+    for x in orbitreps do
+      out[x] := DigraphDistanceSet(digraph, x, distances);
+    od;
+    rem := Difference(vertices, orbitreps);
+    sch := DigraphSchreierVector(digraph);
+    group := DigraphGroup(digraph);
+    gens := GeneratorsOfGroup(group);
+    for x in rem do
+      record := DIGRAPHS_TraceSchreierVector(gens, sch, x);
+      rep := record.representative;
+      g := DIGRAPHS_EvaluateWord(gens, record.word);
+      out[x] := List(out[rep], x -> x ^ g);
+    od;
+    new := DigraphNC(out);
+    SetDigraphGroup(new, DigraphGroup(digraph));
+  else
+    for x in vertices do
+      out[x] := DigraphDistanceSet(digraph, x, distances);
+    od;
+    new := DigraphNC(out);
+  fi;
+  return new;
+end);
+
+InstallMethod(DistanceDigraph,
+"for a digraph and a positive integer",
+[IsDigraph, IsPosInt],
+function(digraph, distance)
+  return DistanceDigraph(digraph, [distance]);
+end);
+
 InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
 [IsDigraph, IsPosInt, IsObject],
 function(graph, i, name)
