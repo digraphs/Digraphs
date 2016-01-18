@@ -111,6 +111,269 @@ end);
 ################################################################################
 # Independent sets
 
+# A single maximal independent set
+
+InstallGlobalFunction(DigraphMaximalIndependentSet,
+function(arg)
+  local gr;
+  if IsEmpty(arg) then
+    ErrorMayQuit("Digraphs: DigraphMaximalIndependentSet: usage,\n",
+                 "this function takes a least one argument,");
+  elif not IsDigraph(arg[1]) then
+    ErrorMayQuit("Digraphs: DigraphMaximalIndependentSet: usage,\n",
+                 "the first argument must be a digraph,");
+  fi;
+  gr := DigraphRemoveAllMultipleEdges(arg[1]);
+  gr := DigraphDual(DigraphSymmetricClosure(arg[1]));
+  return DIGRAPHS_Clique(Concatenation([true], [gr] ,arg{[2 .. Length(arg)]}));
+end);
+
+# A single independent set
+
+InstallGlobalFunction(DigraphIndependentSet,
+function(arg)
+  local gr;
+  if IsEmpty(arg) then
+    ErrorMayQuit("Digraphs: DigraphIndependentSet: usage,\n",
+                 "this function takes a least one argument,");
+  elif not IsDigraph(arg[1]) then
+    ErrorMayQuit("Digraphs: DigraphIndependentSet: usage,\n",
+                 "the first argument must be a digraph,");
+  fi;
+  gr := DigraphRemoveAllMultipleEdges(arg[1]);
+  gr := DigraphDual(DigraphSymmetricClosure(arg[1]));
+  return DIGRAPHS_Clique(Concatenation([false], [gr] ,arg{[2 .. Length(arg)]}));
+end);
+
+# Independent sets orbit representatives
+
+InstallGlobalFunction(DigraphIndependentSetsReps,
+function(arg)
+  local digraph, include, exclude, limit, size;
+
+  if IsEmpty(arg) then
+    ErrorMayQuit("Digraphs: DigraphIndependentSetsReps: usage,\n",
+                 "this function takes at least one argument,");
+  fi;
+
+  digraph := arg[1];
+
+  if IsBound(arg[2]) then
+    include := arg[2];
+  else
+    include := [];
+  fi;
+
+  if IsBound(arg[3]) then
+    exclude := arg[3];
+  else
+    exclude := [];
+  fi;
+
+  if IsBound(arg[4]) then
+    limit := arg[4];
+  else
+    limit := infinity;
+  fi;
+
+  if IsBound(arg[5]) then
+    size := arg[5];
+  else
+    size := fail;
+  fi;
+
+  digraph := DigraphRemoveAllMultipleEdges(digraph);
+  digraph := DigraphDual(DigraphSymmetricClosure(digraph));
+  return CliquesFinder(digraph, fail, [], limit, include, exclude, false, size,
+                       true);
+end);
+
+# Independent sets
+
+InstallGlobalFunction(DigraphIndependentSets,
+function(arg)
+  local digraph, include, exclude, limit, size;
+
+  if IsEmpty(arg) then
+    ErrorMayQuit("Digraphs: DigraphIndependentSets: usage,\n",
+                 "this function takes at least one argument,");
+  fi;
+
+  digraph := arg[1];
+
+  if IsBound(arg[2]) then
+    include := arg[2];
+  else
+    include := [];
+  fi;
+
+  if IsBound(arg[3]) then
+    exclude := arg[3];
+  else
+    exclude := [];
+  fi;
+
+  if IsBound(arg[4]) then
+    limit := arg[4];
+  else
+    limit := infinity;
+  fi;
+
+  if IsBound(arg[5]) then
+    size := arg[5];
+  else
+    size := fail;
+  fi;
+
+  digraph := DigraphRemoveAllMultipleEdges(digraph);
+  digraph := DigraphDual(DigraphSymmetricClosure(digraph));
+  return CliquesFinder(digraph, fail, [], limit, include, exclude, false, size,
+                       false);
+end);
+
+# Maximal independent sets orbit representatives
+
+InstallMethod(DigraphMaximalIndependentSetsRepsAttr,
+"for a digraph",
+[IsDigraph],
+function(gr)
+  return DigraphMaximalIndependentSetsReps(gr);
+end);
+
+#
+
+InstallGlobalFunction(DigraphMaximalIndependentSetsReps,
+function(arg)
+  local digraph, include, exclude, limit, size, out, gr;
+
+  if IsEmpty(arg) then
+    ErrorMayQuit("Digraphs: DigraphMaximalIndependentSetsReps: usage,\n",
+                 "this function takes at least one argument,");
+  fi;
+
+  digraph := arg[1];
+
+  if IsBound(arg[2]) then
+    include := arg[2];
+  else
+    include := [];
+  fi;
+
+  if IsBound(arg[3]) then
+    exclude := arg[3];
+  else
+    exclude := [];
+  fi;
+
+  if IsBound(arg[4]) then
+    limit := arg[4];
+  else
+    limit := infinity;
+  fi;
+
+  if IsBound(arg[5]) then
+    size := arg[5];
+  else
+    size := fail;
+  fi;
+
+  if IsList(include) and IsEmpty(include) and IsList(exclude)
+      and IsEmpty(exclude) and limit = infinity and size = fail
+      and HasDigraphMaximalIndependentSetsAttr(digraph) then
+    return DigraphMaximalIndependentSetsAttr(digraph);
+  fi;
+
+  out := [];
+  gr := DigraphRemoveAllMultipleEdges(digraph);
+  gr := DigraphDual(DigraphSymmetricClosure(gr));
+  CliquesFinder(gr, fail, out, limit, include, exclude, true, size, true);
+
+  # Store the result if appropriate
+  if IsEmpty(include) and IsEmpty(exclude) and limit = infinity
+      and size = fail then
+    SetDigraphMaximalIndependentSetsRepsAttr(digraph, out);
+    if IsTrivial(DigraphGroup(digraph)) then
+      SetDigraphMaximalIndependentSetsAttr(digraph, out);
+    fi;
+  fi;
+  return out;
+end);
+
+# Maximal cliques
+
+InstallMethod(DigraphMaximalIndependentSetsAttr,
+"for a digraph",
+[IsDigraph],
+function(gr)
+  return DigraphMaximalIndependentSets(gr);
+end);
+
+#
+
+InstallGlobalFunction(DigraphMaximalIndependentSets,
+function(arg)
+  local digraph, include, exclude, limit, size, out, G, gr;
+
+  if IsEmpty(arg) then
+    ErrorMayQuit("Digraphs: DigraphMaximalIndependentSetsReps: usage,\n",
+                 "this function takes at least one argument,");
+  fi;
+
+  digraph := arg[1];
+
+  if IsBound(arg[2]) then
+    include := arg[2];
+  else
+    include := [];
+  fi;
+
+  if IsBound(arg[3]) then
+    exclude := arg[3];
+  else
+    exclude := [];
+  fi;
+
+  if IsBound(arg[4]) then
+    limit := arg[4];
+  else
+    limit := infinity;
+  fi;
+
+  if IsBound(arg[5]) then
+    size := arg[5];
+  else
+    size := fail;
+  fi;
+
+  if IsList(include) and IsEmpty(include) and IsList(exclude) and
+      IsEmpty(exclude) and limit = infinity and size = fail then
+    if HasDigraphMaximalIndependentSetsAttr(digraph) then
+      return DigraphMaximalIndependentSetsAttr(digraph);
+    fi;
+    out := DigraphMaximalIndependentSetsReps(digraph);
+    if IsTrivial(DigraphGroup(digraph)) then
+      return out;
+    fi;
+    G := DigraphGroup(digraph);
+    out := Concatenation(List(out, x -> Orbit(G, x, OnSets)));
+  fi;
+
+  out := [];
+  gr := DigraphRemoveAllMultipleEdges(digraph);
+  gr := DigraphDual(DigraphSymmetricClosure(gr));
+  CliquesFinder(gr, fail, out, limit, include, exclude, true, size, false);
+
+  # Store the result if appropriate
+  if IsEmpty(include) and IsEmpty(exclude) and limit = infinity
+      and size = fail then
+    SetDigraphMaximalIndependentSetsAttr(digraph, out);
+    if IsTrivial(DigraphGroup(digraph)) then
+      SetDigraphMaximalIndependentSetsRepsAttr(digraph, out);
+    fi;
+  fi;
+  return out;
+end);
+
 ################################################################################
 # Cliques
 
@@ -199,7 +462,7 @@ function(arg)
     if maximal then
       out := DigraphMaximalCliques(gr, include, exclude, 1, size);
     else
-      out := DigraphCliques(gr, size, include, exclude, 1);
+      out := DigraphCliques(gr, include, exclude, 1, size);
     fi;
     if IsEmpty(out) then
       return fail;
@@ -211,7 +474,7 @@ function(arg)
   if IsBound(arg[4]) and maximal then
     out := DigraphMaximalCliques(gr, include, exclude, 1);
     if IsEmpty(out) then
-      return false;
+      return fail;
     fi;
     return out[1];
   fi;
@@ -440,7 +703,7 @@ function(arg)
       return out;
     fi;
     G := DigraphGroup(digraph);
-    out := Concatenation(List(out, x -> Orbit(G, x)));
+    out := Concatenation(List(out, x -> Orbit(G, x, OnSets)));
   fi;
 
   out := [];

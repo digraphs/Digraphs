@@ -33,7 +33,6 @@ DeclareAttribute("DigraphMaximalCliquesRepsAttr", IsDigraph);
 # Functions to calculate independent sets
 DeclareGlobalFunction("DigraphIndependentSet");
 DeclareGlobalFunction("DigraphMaximalIndependentSet");
-DeclareGlobalFunction("DIGRAPHS_IndependentSet");
 
 DeclareGlobalFunction("DigraphIndependentSets");
 DeclareGlobalFunction("DigraphIndependentSetsReps");
