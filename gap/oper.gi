@@ -1250,33 +1250,61 @@ end);
 InstallMethod(DigraphLayers, "for a digraph, and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
-  local layers, layers_with_orbnums, stab, orbs, i, x;
+  local layers, gens, sch, trace, rep, word, orbs, layers_with_orbnums,
+        layers_of_v, i, x;
 
+  # TODO: make use of known distances matrix
   if v > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphLayers: usage,\n",
                  "the argument <v> must be a vertex of <digraph>,");
   fi;
 
-  layers := [[v]];
-  layers_with_orbnums := DIGRAPH_ConnectivityDataForVertex(digraph, v).layers;
-  if HasDigraphGroup(digraph) then 
-    stab := DigraphStabilizer(digraph, v);
-  else
-    stab := Group(());
+  layers := DIGRAPHS_Layers(digraph);
+
+  if IsBound(layers[v]) then
+    return layers[v];
   fi;
 
-  orbs := DIGRAPHS_Orbits(stab, DigraphVertices(digraph)).orbits;
+  if HasDigraphGroup(digraph) then
+    gens  := GeneratorsOfGroup(DigraphGroup(digraph));
+    sch   := DigraphSchreierVector(digraph);
+    trace := DIGRAPHS_TraceSchreierVector(gens, sch, v);
+    rep   := DigraphOrbitReps(digraph)[trace.representative];
+    word  := DIGRAPHS_EvaluateWord(gens, trace.word);
+    if rep <> v then
+      layers[v] := List(DigraphLayers(digraph, rep),
+                        x -> OnTuples(x, word));
+      return layers[v];
+    fi;
+    orbs := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
+                            DigraphVertices(digraph)).orbits;
+  else
+    rep  := v;
+    orbs := List(DigraphVertices(digraph), x -> [x]);
+  fi;
 
+  # from now on rep = v
+  layers_with_orbnums := DIGRAPH_ConnectivityDataForVertex(digraph, v).layers;
+
+  layers_of_v := [[v]];
   for i in [2 .. Length(layers_with_orbnums)] do
-    Add(layers, []);
+    Add(layers_of_v, []);
     for x in layers_with_orbnums[i] do
-      Append(layers[i], orbs[x]);
+      Append(layers_of_v[i], orbs[x]);
     od;
   od;
 
-  return layers;
+  layers[v] := layers_of_v;
+  return layers[v];
 end);
 
+#
+
+InstallMethod(DIGRAPHS_Layers, "for a digraph",
+[IsDigraph],
+function(digraph)
+  return [];
+end);
 #
 
 InstallMethod(DigraphDistanceSet,
@@ -1314,4 +1342,70 @@ function(digraph, vertex, distances)
   layers := DigraphLayers(digraph, vertex);
   distances := Intersection(distances, [1 .. Length(layers)]);
   return Concatenation(layers{distances});
+end);
+
+#
+
+InstallMethod(DigraphShortestDistance,
+"for a digraph, a vertex, and a vertex",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, u, v)
+  local dist;
+
+  if u > DigraphNrVertices(digraph) or v > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphShortestDistance: usage,\n",
+                 "the second argument and third argument must be\n",
+                 "vertices of the digraph,");
+  fi;
+
+  if HasDigraphShortestDistances(digraph) then
+    return DigraphShortestDistances(digraph)[u][v];
+  fi;
+
+  dist := DIGRAPH_ConnectivityDataForVertex(digraph, u).layerNumbers[v] - 1;
+  if dist = -1 then
+    dist := fail;
+  fi;
+  return dist;
+end);
+
+#
+
+InstallMethod(DigraphShortestDistance,
+"for a digraph, a list, and a list",
+[IsDigraph, IsList, IsList],
+function(digraph, list1, list2)
+  local shortest, u, v;
+
+  # TODO: can this be improved?
+  shortest := infinity;
+  for u in list1 do
+    for v in list2 do
+      if shortest > DigraphShortestDistance(digraph, u, v) then
+        shortest := DigraphShortestDistance(digraph, u, v);
+      fi;
+    od;
+  od;
+  return shortest;
+end);
+
+#
+
+InstallMethod(DigraphShortestDistance,
+"for a digraph, and a list",
+[IsDigraph, IsList],
+function(digraph, list)
+
+  if Length(list) <> 2 then
+    ErrorMayQuit("Digraphs: DigraphShortestDistance: usage,\n",
+                 "the second argument must be of length 2,");
+  fi;
+
+  if list[1] > DigraphNrVertices(digraph) or
+      list[2] > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphShortestDistance: usage,\n",
+                 "elements of the list must be vertices of the digraph,");
+  fi;
+
+  return DigraphShortestDistance(digraph, list[1], list[2]);
 end);

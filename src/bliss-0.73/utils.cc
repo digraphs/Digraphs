@@ -21,7 +21,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
 
 void
 print_permutation(FILE* const fp,
@@ -119,4 +119,4 @@ is_permutation(const std::vector<unsigned int>& perm)
 }
 
 
-} // namespace bliss
+} // namespace bliss_digraphs

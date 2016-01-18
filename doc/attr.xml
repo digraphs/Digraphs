@@ -743,9 +743,11 @@ gap> DigraphUndirectedGirth(gr);
     return <C>1</C>. 
     <P/>
 
-    The method used in this function is a version of the Floyd-Warshall
-    algorithm, and has complexity <C>O(<A>n</A> ^ 3)</C>, where <A>n</A> is the
-    number of vertices in <A>digraph</A>. 
+    In the worst case, the method used in this function is a version of the
+    Floyd-Warshall algorithm, and has complexity <C>O(<A>n</A> ^ 3)</C>, where
+    <A>n</A> is the number of vertices in <A>digraph</A>.  If the digraph has
+    known automorphisms [see <Ref Attr="DigraphGroup"/>], then the performance
+    is likely to be better.
     <P/>
 
     For symmetric digraphs, see also <Ref Oper="DigraphUndirectedGirth"/>. <P/>

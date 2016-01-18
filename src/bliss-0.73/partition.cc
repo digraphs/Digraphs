@@ -23,7 +23,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
 
 Partition::Partition()
 {
@@ -1140,4 +1140,4 @@ Partition::cr_create_at_level_trailed(const unsigned int cell_index,
 }
 
 
-} // namespace bliss
+} // namespace bliss_digraphs

@@ -25,34 +25,34 @@ extern "C" {
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-struct bliss_graph_struct {
-  bliss::Graph* g;
+struct bliss_digraphs_graph_struct {
+  bliss_digraphs::Graph* g;
 };
 
 extern "C"
-BlissGraph *bliss_new(const unsigned int n)
+BlissGraph *bliss_digraphs_new(const unsigned int n)
 {
-  BlissGraph *graph = new bliss_graph_struct;
+  BlissGraph *graph = new bliss_digraphs_graph_struct;
   assert(graph);
-  graph->g = new bliss::Graph(n);
+  graph->g = new bliss_digraphs::Graph(n);
   assert(graph->g);
   return graph;
 }
 
 extern "C"
-BlissGraph *bliss_read_dimacs(FILE *fp)
+BlissGraph *bliss_digraphs_read_dimacs(FILE *fp)
 {
-  bliss::Graph *g = bliss::Graph::read_dimacs(fp);
+  bliss_digraphs::Graph *g = bliss_digraphs::Graph::read_dimacs(fp);
   if(!g)
     return 0;
-  BlissGraph *graph = new bliss_graph_struct;
+  BlissGraph *graph = new bliss_digraphs_graph_struct;
   assert(graph);
   graph->g = g;
   return graph;
 }
 
 extern "C"
-void bliss_write_dimacs(BlissGraph *graph, FILE *fp)
+void bliss_digraphs_write_dimacs(BlissGraph *graph, FILE *fp)
 {
   assert(graph);
   assert(graph->g);
@@ -60,7 +60,7 @@ void bliss_write_dimacs(BlissGraph *graph, FILE *fp)
 }
 
 extern "C"
-void bliss_release(BlissGraph *graph)
+void bliss_digraphs_release(BlissGraph *graph)
 {
   assert(graph);
   assert(graph->g);
@@ -69,7 +69,7 @@ void bliss_release(BlissGraph *graph)
 }
 
 extern "C"
-void bliss_write_dot(BlissGraph *graph, FILE *fp)
+void bliss_digraphs_write_dot(BlissGraph *graph, FILE *fp)
 {
   assert(graph);
   assert(graph->g);
@@ -77,7 +77,7 @@ void bliss_write_dot(BlissGraph *graph, FILE *fp)
 }
 
 extern "C"
-unsigned int bliss_get_nof_vertices(BlissGraph *graph)
+unsigned int bliss_digraphs_get_nof_vertices(BlissGraph *graph)
 {
   assert(graph);
   assert(graph->g);
@@ -85,7 +85,7 @@ unsigned int bliss_get_nof_vertices(BlissGraph *graph)
 }
 
 extern "C"
-unsigned int bliss_add_vertex(BlissGraph *graph, unsigned int l)
+unsigned int bliss_digraphs_add_vertex(BlissGraph *graph, unsigned int l)
 {
   assert(graph);
   assert(graph->g);
@@ -93,7 +93,7 @@ unsigned int bliss_add_vertex(BlissGraph *graph, unsigned int l)
 }
 
 extern "C"
-void bliss_add_edge(BlissGraph *graph, unsigned int v1, unsigned int v2)
+void bliss_digraphs_add_edge(BlissGraph *graph, unsigned int v1, unsigned int v2)
 {
   assert(graph);
   assert(graph->g);
@@ -101,7 +101,7 @@ void bliss_add_edge(BlissGraph *graph, unsigned int v1, unsigned int v2)
 }
 
 extern "C"
-int bliss_cmp(BlissGraph *graph1, BlissGraph *graph2)
+int bliss_digraphs_cmp(BlissGraph *graph1, BlissGraph *graph2)
 {
   assert(graph1);
   assert(graph1->g);
@@ -111,7 +111,7 @@ int bliss_cmp(BlissGraph *graph1, BlissGraph *graph2)
 }
 
 extern "C"
-unsigned int bliss_hash(BlissGraph *graph)
+unsigned int bliss_digraphs_hash(BlissGraph *graph)
 {
   assert(graph);
   assert(graph->g);
@@ -119,12 +119,12 @@ unsigned int bliss_hash(BlissGraph *graph)
 }
 
 extern "C"
-BlissGraph *bliss_permute(BlissGraph *graph, const unsigned int *perm)
+BlissGraph *bliss_digraphs_permute(BlissGraph *graph, const unsigned int *perm)
 {
   assert(graph);
   assert(graph->g);
   assert(graph->g->get_nof_vertices() == 0 || perm);
-  BlissGraph *permuted_graph = new bliss_graph_struct;
+  BlissGraph *permuted_graph = new bliss_digraphs_graph_struct;
   assert(permuted_graph);
   permuted_graph->g = graph->g->permute(perm);
   return permuted_graph;
@@ -132,14 +132,14 @@ BlissGraph *bliss_permute(BlissGraph *graph, const unsigned int *perm)
 
 extern "C"
 void
-bliss_find_automorphisms(BlissGraph *graph,
+bliss_digraphs_find_automorphisms(BlissGraph *graph,
 			 void (*hook)(void *user_param,
 				      unsigned int n,
 				      const unsigned int *aut),
 			 void *hook_user_param,
 			 BlissStats *stats)
 {
-  bliss::Stats s;
+  bliss_digraphs::Stats s;
   assert(graph);
   assert(graph->g);
   graph->g->find_automorphisms(s, hook, hook_user_param);
@@ -159,14 +159,14 @@ bliss_find_automorphisms(BlissGraph *graph,
 
 extern "C"
 const unsigned int *
-bliss_find_canonical_labeling(BlissGraph *graph,
+bliss_digraphs_find_canonical_labeling(BlissGraph *graph,
 			      void (*hook)(void *user_param,
 					   unsigned int n,
 					   const unsigned int *aut),
 			      void *hook_user_param,
 			      BlissStats *stats)
 {
-  bliss::Stats s;
+  bliss_digraphs::Stats s;
   const unsigned int *canonical_labeling = 0;
   assert(graph);
   assert(graph->g);

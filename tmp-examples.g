@@ -1,13 +1,3 @@
-#very easy example computing the Cayleygraph of D_8
-group := DihedralGroup(8);
-obj := List(group);
-act := OnRight;
-gens := GeneratorsOfGroup(group);
-adj := function(x, y)
-  return x ^ -1 * y in gens;
-end;
-graph := Digraph(group, obj, act, adj);
-
 #a so called dual polar graph: the vertices are the set of totally isotropic
 #spaces with relation to a sesquilinear form. Two vertices are adjacent iff they
 #have only the zero vector in common.
@@ -100,3 +90,22 @@ adj := function(x, y)
   fi;
 end;
 digraph := Digraph(group, vertices, \^, adj);
+
+#my favorite: a generalized octagon. Girth is a problem for this example.
+LoadPackage( "AtlasRep" );
+titsgroup:=AtlasGroup("2F4(2)'");
+g1:=AtlasSubgroup(titsgroup,3);
+g2:=AtlasSubgroup(titsgroup,5);
+conj:=ConjugacyClassSubgroups(titsgroup,g1);;
+g1:=First(conj, sg -> Size(Intersection(sg,g2))=2048);
+cg:=CosetGeometry(titsgroup,[g1,g2]);;
+pts := Set(ElementsOfIncidenceStructure(cg,1));;
+lines := Set(ElementsOfIncidenceStructure(cg,2));;
+vertices := Union(pts,lines);;
+adj := function(x,y)
+return x * y and x!.type <> y!.type;
+end;
+digraph := Digraph(titsgroup,vertices,OnCosetGeometryElement,adj);
+
+
+
