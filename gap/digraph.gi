@@ -12,7 +12,7 @@ InstallMethod(Digraph,
 "for a list and function",
 [IsList, IsFunction],
 function(obj, adj)
-  local N, out_nbs, in_nbs, x, digraph, i, j;
+  local N, out_nbs, in_nbs, x, digraph, i, j, adj_func;
 
   N       := Size(obj); # number of vertices
   out_nbs := List([1 ..  N], x -> []);
@@ -28,8 +28,13 @@ function(obj, adj)
     od;
   od;
 
+  # Function that acts on [1..n] rather than obj
+  adj_func := function(u, v)
+    return adj(obj[u], obj[v]);
+  end;
+
   digraph := DigraphNC(out_nbs);
-  SetDigraphAdjacencyFunction(digraph, adj);
+  SetDigraphAdjacencyFunction(digraph, adj_func);
   SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
   SetInNeighbours(digraph, in_nbs);
 

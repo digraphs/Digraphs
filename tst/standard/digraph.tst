@@ -1382,6 +1382,18 @@ gap> gr2 := DigraphRemoveEdgeOrbit(gr1, [1,8]);
 gap> gr1 = gr2;
 true
 
+#T# Digraph (by list and function)
+gap> f := function(i,j) return i < j; end;
+function( i, j ) ... end
+gap> gr := Digraph([1..4], f);
+<digraph with 4 vertices, 6 edges>
+gap> IsDigraphEdge(gr, [2,1]);
+false
+gap> gr := Digraph([4,3..1], f);
+<digraph with 4 vertices, 6 edges>
+gap> IsDigraphEdge(gr, [2,1]);
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);
 gap> Unbind(j);
