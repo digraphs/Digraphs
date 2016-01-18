@@ -224,7 +224,7 @@ function(arg)
                  "ReadDigraphs( filename [, decoder][, pos] ),");
   fi;
 
-  file := IO_CompressedFile(name, "r");
+  file := IO_CompressedFile(UserHomeExpand(name), "r");
 
   if file = fail then
     ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
@@ -414,7 +414,7 @@ function(arg)
   if filepath <> name then
     Info(InfoWarning, 1, "Writing to ", filepath);
   fi;
-  file := IO_CompressedFile(filepath, mode);
+  file := IO_CompressedFile(UserHomeExpand(filepath), mode);
 
   if file = fail then
     ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
@@ -863,7 +863,7 @@ function(name, delimiter, offset, ignore)
     ignore := [ignore];
   fi;
 
-  file := IO_CompressedFile(name, "r");
+  file := IO_CompressedFile(UserHomeExpand(name), "r");
 
   if file = fail then
     ErrorMayQuit("Digraphs: ReadPlainTextDigraph:\n",
@@ -1069,7 +1069,7 @@ function(name, digraph, delimiter, offset)
                  "offset),");
   fi;
 
-  file := IO_CompressedFile(name, "w");
+  file := IO_CompressedFile(UserHomeExpand(name), "w");
 
   if file = fail then
     ErrorMayQuit("Digraphs: WritePlainTextDigraph:\n",
