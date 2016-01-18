@@ -174,9 +174,10 @@ true
   <Oper Name="DigraphVertexLabels" Arg="digraph"/>
   <Oper Name="SetDigraphVertexLabels" Arg="digraph, list"/>
   <Description>
-    If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns the
-    labels of the vertices in <A>digraph</A>. <C>SetDigraphVertexLabels</C> can
-    be used to set the labels of the vertices in <A>digraph</A> to the list of
+    If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns a
+    copy of the labels of the vertices in <A>digraph</A>.
+    <C>SetDigraphVertexLabels</C> can be used to set the labels of the vertices
+    in <A>digraph</A> to the list of
     arbitrary &GAP; objects <A>list</A>. <P/>
 
     The label of a vertex can be changed an arbitrary number of times. If no
@@ -886,5 +887,32 @@ gap> BipartiteDoubleDigraph(gamma);
 ]]></Example>
   </Description>
 </ManSection>
+<#/GAPDoc>
 
+
+<#GAPDoc Label="DigraphAddAllLoops">
+<ManSection>
+  <Oper Name="DigraphAddAllLoops" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    For a digraph <A>digraph</A> this operation return a copy of <A>digraph</A>
+    such that a loop is added for every vertex which did not have a loop in 
+    <A>digraph</A>. 
+    <Example><![CDATA[
+gap> gr := EmptyDigraph(13);
+<digraph with 13 vertices, 0 edges>
+gap> gr := DigraphAddAllLoops(gr);    
+<digraph with 13 vertices, 13 edges>
+gap> OutNeighbours(gr);
+[ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], 
+  [ 11 ], [ 12 ], [ 13 ] ]
+gap> gr := Digraph([ [1, 2, 3], [1, 3], [1] ]);
+<digraph with 3 vertices, 6 edges>
+gap> gr := DigraphAddAllLoops(gr);    
+<digraph with 3 vertices, 8 edges>
+gap> OutNeighbours(gr);
+[ [ 1, 2, 3 ], [ 1, 3, 2 ], [ 1, 3 ] ]
+]]></Example>
+  </Description>
+</ManSection>
 <#/GAPDoc>

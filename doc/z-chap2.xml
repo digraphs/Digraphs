@@ -52,6 +52,7 @@
     <#Include Label="LineUndirectedDigraph">
     <#Include Label="DoubleDigraph">
     <#Include Label="BipartiteDoubleDigraph">
+    <#Include Label="DigraphAddAllLoops">
   </Section>
 
   <Section><Heading>Random digraphs</Heading>
