@@ -197,10 +197,11 @@ gap> DigraphClique(gr, [], [], 2);
 
     The argument <A>size</A> will restrict the search to those cliques which
     contain precisely <A>size</A> vertices.  The functions will return as many
-    suitable cliques as it can find, up to the number <A>limit</A>.  These
+    suitable cliques as they can find, up to the number <A>limit</A>.  These
     functions will find cliques (which, if <A>size</A> is specified, contain
-    <A>size</A> vertices) which contain all of the vertices of <A>include</A>
-    and which do not contain any of the vertices of <A>exclude</A>.<P/>
+    precisely <A>size</A> vertices) which contain all of the vertices of
+    <A>include</A> and which do not contain any of the vertices of
+    <A>exclude</A>.<P/>
 
     If the function or attribute has <C>Maximal</C> in its name, then only
     maximal cliques will be returned; otherwise non-maximal cliques may be
@@ -375,11 +376,11 @@ gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
 
     The argument <A>size</A> will restrict the search to those independent
     sets which contain precisely <A>size</A> vertices.  The functions will
-    return as many suitable independent sets as it can find, up to the number
+    return as many suitable independent sets as they can find, up to the number
     <A>limit</A>.  These functions will find independent sets (which, if
-    <A>size</A> is specified, contain <A>size</A> vertices) which contain all
-    of the vertices of <A>include</A> and which do not contain any of the
-    vertices of <A>exclude</A>.<P/>
+    <A>size</A> is specified, contain precisely <A>size</A> vertices) which
+    contain all of the vertices of <A>include</A> and which do not contain any
+    of the vertices of <A>exclude</A>.<P/>
 
     If the function or attribute has <C>Maximal</C> in its name, then only
     maximal independent sets will be returned; otherwise non-maximal
