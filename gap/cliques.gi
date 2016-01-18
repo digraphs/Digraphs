@@ -676,9 +676,6 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
   ##############################################################################
   # Preparation, and processing of variables
 
-  # Decide whether we enumerate clique orbits as we find new results
-  all := not reps and (not invariant or lim < infinity);
-
   inc_var  := BlistList(vtx, inc_var);
   exc_var  := BlistList(vtx, exc_var);
   exc_inv  := DifferenceBlist(BlistList(vtx, exc), exc_var);
@@ -694,7 +691,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     local orb, n, i;
 
     c := ListBlist(vtx, c);
-    if not all then # we are only looking for orbit reps, so add the rep
+    if reps then # we are only looking for orbit reps, so add the rep
       hook(user_param, c);
       num := num + 1;
       return;
@@ -702,8 +699,8 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
 
     orb := Orbit(grp, c, OnSets);
     n := Length(orb);
-    if invariant then # we're not just looking for orbit reps, but there is
-                      # nothing extra to check
+    if invariant then # we're not just looking for orbit reps, but inc and exc
+                      # are invariant so there is nothing extra to check
       n := Minimum(lim - num, n);
       for c in orb{[1 .. n]} do
         hook(user_param, c);
@@ -756,15 +753,18 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     local orb, try_orb, top, piv, m, to_try, C, g, v;
 
     # <c> is a new clique rep
-    if not max and size <> fail and size = d then
-      # <c> has the desired size and we don't care about maximality
+    if d > 0 and not max and (size = fail or size = d) then
+      # <c> has the desired size (if any) and we don't care about maximality
       add(c);
-      return;
-    fi;
+      if max or size <> fail then
+        return;
+      fi;
+      # we continue if we're looking for all cliques, not just maximal
 
-    if not ForAny(ban, x -> x) and not ForAny(try, x -> x) then
+    elif not ForAny(ban, x -> x) and not ForAny(try, x -> x) then
+      # <c> is a new maximal clique
       if (size = fail or size = d) then
-        # <c> is a new maximal clique rep and it has the right size
+        # <c> is a new maximal clique rep and it has the right size (if req)
         add(c);
         return;
       fi;
@@ -852,10 +852,5 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
 
   num := 0;
   bk(start, possible, BlistList(vtx, []), grp, Length(inc));
-
-  # Post-processing of list
-  if not reps and not all then
-    user_param := Concatenation(List(user_param, x -> Orbit(grp, x, OnSets))); 
-  fi;
   return user_param;
 end);
