@@ -1349,6 +1349,7 @@ InstallMethod(DigraphShortestDistance,
 "for a digraph, a vertex, and a vertex",
 [IsDigraph, IsPosInt, IsPosInt],
 function(digraph, u, v)
+  local dist;
 
   if u > DigraphNrVertices(digraph) or v > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphShortestDistance: usage,\n",
@@ -1360,7 +1361,11 @@ function(digraph, u, v)
     return DigraphShortestDistances[u][v];
   fi;
 
-  return DIGRAPH_ConnectivityDataForVertex(digraph, u).layerNumbers[v] - 1;
+  dist := DIGRAPH_ConnectivityDataForVertex(digraph, u).layerNumbers[v] - 1;
+  if dist = -1 then
+    dist := fail;
+  fi;
+  return dist;
 end);
 
 #
