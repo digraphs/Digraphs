@@ -85,3 +85,4 @@ DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphVertexLabels", [IsDigraph]);
 DeclareOperation("SetDigraphVertexLabel", [IsDigraph, IsPosInt, IsObject]);
 DeclareOperation("SetDigraphVertexLabels", [IsDigraph, IsList]);
+DeclareOperation("DigraphAddAllLoops", [IsDigraph]);

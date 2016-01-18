@@ -1378,3 +1378,21 @@ InstallMethod(String, "for a digraph",
 function(graph)
   return Concatenation("Digraph( ", String(OutNeighbours(graph)), " )");
 end);
+
+# 
+
+InstallMethod(DigraphAddAllLoops, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out_nbs, adj, v;
+
+  out_nbs  := OutNeighbours(digraph);
+  adj      := [];
+  for v in DigraphVertices(digraph) do
+    adj[v] := ShallowCopy(out_nbs[v]);
+    if not v in adj[v] then 
+      Add(adj[v], v);
+    fi;
+  od;
+  return Digraph(adj);
+end);
