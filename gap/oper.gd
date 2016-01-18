@@ -77,3 +77,5 @@ DeclareOperation("DigraphLayers", [IsDigraph, IsPosInt]);
 DeclareAttribute("DIGRAPHS_Layers", IsDigraph, "mutable");
 DeclareOperation("DigraphDistanceSet", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphDistanceSet", [IsDigraph, IsPosInt, IsList]);
+DeclareOperation("DigraphShortestDistance", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList]);

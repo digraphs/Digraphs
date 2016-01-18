@@ -1345,3 +1345,44 @@ function(digraph, vertex, distances)
   distances := Intersection(distances, [1 .. Length(layers)]);
   return Concatenation(layers{distances});
 end);
+
+#
+
+InstallMethod(DigraphShortestDistance,
+"for a digraph, a vertex, and a vertex",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, u, v)
+
+  if u > DigraphNrVertices(digraph) or v > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphShortestDistance: usage,\n",
+                 "the second argument and third argument must be \n",
+		 "vertices of the digraph,");
+  fi;
+
+  if HasDigraphShortestDistances(digraph) then
+    return DigraphShortestDistances[u][v];
+  fi; 
+  
+  return DIGRAPH_ConnectivityDataForVertex(digraph, u).layerNumbers[v] - 1;
+end);
+
+#
+
+InstallMethod(DigraphShortestDistance,
+"for a digraph, and a list",
+[IsDigraph, IsList],
+function(digraph, list)
+
+  if Length(list) <> 2 then 
+    ErrorMayQuit("Digraphs: DigraphShortestDistance: usage,\n",
+                 "the second argument must be of length 2,");
+  fi;
+
+  if list[1] > DigraphNrVertices(digraph) or
+     list[2] > DigraphNrVertices(digraph) then
+    ErrorMayQuit("Digraphs: DigraphShortestDistance: usage,\n",
+                 "elements of the list must be vertices of the digraph,");
+  fi;
+
+  return DigraphShortestDistance(digraph, list[1], list[2]);
+end);
