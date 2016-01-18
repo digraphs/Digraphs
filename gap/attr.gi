@@ -797,12 +797,12 @@ function(digraph)
   fi;
   girth := infinity;
   out := OutNeighbours(digraph);
-  dist := DigraphShortestDistances(digraph);
   for i in verts do
     for j in out[i] do
+      dist := DigraphShortestDistance(digraph, j, i);
       # distance [j,i] + 1 equals the cycle length
-      if dist[j][i] <> fail and dist[j][i] + 1 < girth then
-        girth := dist[j][i] + 1;
+      if dist <> fail and dist + 1 < girth then
+        girth := dist + 1;
         if girth = 2 then
           return girth;
         fi;
