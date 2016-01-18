@@ -414,7 +414,7 @@ function(arg)
   if filepath <> name then
     Info(InfoWarning, 1, "Writing to ", filepath);
   fi;
-  file := IO_CompressedFile(filepath, mode);
+  file := IO_CompressedFile(UserHomeExpand(filepath), mode);
 
   if file = fail then
     ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
@@ -905,15 +905,11 @@ function(s)
                  "<s> must be a string in disparse6 format,");
   fi;
 
-<<<<<<< mine
-  file := IO_CompressedFile(UserHomeExpand(name), "w");
-=======
   # Convert ASCII chars to integers
   list := [];
   for i in s do
     Add(list, IntChar(i) - 63);
   od;
->>>>>>> theirs
 
   # Get n the number of vertices of the graph
   if list[2] <> 63 then
@@ -1073,14 +1069,7 @@ function(name, digraph, delimiter, offset)
                  "offset),");
   fi;
 
-<<<<<<< mine
-  if filepath <> name then
-    Info(InfoWarning, 1, "Writing to ", filepath);
-  fi;
-  file := IO_CompressedFile(UserHomeExpand(filepath), "w");
-=======
-  file := IO_CompressedFile(name, "w");
->>>>>>> theirs
+  file := IO_CompressedFile(UserHomeExpand(name), "w");
 
   if file = fail then
     ErrorMayQuit("Digraphs: WritePlainTextDigraph:\n",
