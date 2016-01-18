@@ -109,7 +109,7 @@ function(G, obj, act, adj)
     fi;
 
     trace := DIGRAPHS_TraceSchreierVector(gens, sch, i);
-    out[i] := rep_out[-sch[trace.representative]];
+    out[i] := rep_out[trace.representative];
     word := trace.word;
     for w in word do
        out[i] := OnTuples(out[i], gens[w]);

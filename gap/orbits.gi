@@ -18,7 +18,7 @@ function(gens, sch, r)
     r := r / gens[w];
     w := sch[r];
   od;
-  return rec(word := Reversed(word), representative := r);
+  return rec(word := Reversed(word), representative := -w);
 end);
 
 InstallGlobalFunction(DIGRAPHS_EvaluateWord,
