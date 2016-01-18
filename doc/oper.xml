@@ -1148,3 +1148,36 @@ gap> DigraphDistanceSet(gr, 3 , 1);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphShortestDistance">
+<ManSection>
+  <Oper Name="DigraphShortestDistance" Label="for a digraph and two vertices"
+        Arg="digraph, u, v"/>
+  <Oper Name="DigraphShortestDistance" Label="for a digraph and a list"
+        Arg="digraph, list"/>
+  <Returns>An integer or <K>fail</K></Returns>
+  <Description>
+    If there is a path in the digraph <A>digraph</A> between vertex <A>u</A> and
+    vertex <A>v</A>, then this operation returns the length of the shortest such
+    path.  If no such path exists, then this operation returns <K>fail</K>. <P/>
+
+    If the second form is used, then <A>list</A> should be a list of length two,
+    containing two positive integers which correspond to the vertices <A>u</A>
+    and <A>v</A>. <P/>
+
+    Note that as usual a vertex is considered to be at distance 0 from
+    itself. <P/>
+
+    <Example><![CDATA[
+gap> gr := Digraph([ [2], [3], [1,4], [1,3], [5] ]);
+<digraph with 5 vertices, 7 edges>
+gap> DigraphShortestDistance(gr, 1, 3);
+2
+gap> DigraphShortestDistance(gr, 3, 3);
+0
+gap> DigraphShortestDistance(gr, 5, 2);
+fail
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

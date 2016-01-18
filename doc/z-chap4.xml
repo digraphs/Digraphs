@@ -32,6 +32,7 @@
 
   <Section><Heading>Reachability and connectivity</Heading>
     <#Include Label="DigraphDiameter">
+    <#Include Label="DigraphShortestDistance">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphLongestDistanceFromVertex">
     <#Include Label="DigraphDistanceSet">
