@@ -741,9 +741,11 @@ gap> DigraphUndirectedGirth(gr);
     <C>infinity</C>.  If <A>digraph</A> contains a loop, then this function will
     return <C>1</C>. <P/>
 
-    The method used in this function is a version of the Floyd-Warshall
-    algorithm, and has complexity <M>O(n^3)</M>, where <A>n</A> is the number of
-    vertices in <A>digraph</A>. <P/>
+    In the worst case, the method used in this function is a version of the
+    Floyd-Warshall algorithm, and has complexity <M>O(n^3)</M>, where <A>n</A>
+    is the number of vertices in <A>digraph</A>.  If the graph has known
+    automorphisms [see <Ref Attr="DigraphGroup"/>] then performance is likely to
+    improve.<P/>
 
     For symmetric digraphs, see also <Ref Oper="DigraphUndirectedGirth"/>. <P/>
     <Example><![CDATA[
