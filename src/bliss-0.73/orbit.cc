@@ -22,7 +22,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
 
 Orbit::Orbit()
 {
@@ -141,4 +141,4 @@ unsigned int Orbit::orbit_size(unsigned int element) const
 }
 
 
-} // namespace bliss
+} // namespace bliss_digraphs

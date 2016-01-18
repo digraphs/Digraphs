@@ -21,7 +21,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
 
 void
 fatal_error(const char* fmt, ...)
