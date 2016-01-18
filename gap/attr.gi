@@ -538,12 +538,25 @@ end);
 
 #
 
+InstallMethod(DIGRAPHS_ConnectivityData, "for a digraph",
+[IsDigraph],
+function(digraph)
+  return [];
+end);
+
+#
+
 BindGlobal("DIGRAPH_ConnectivityDataForVertex",
 function(digraph, v)
-  # FIXME: this should be stored
   local out_nbs, record, orbnum, reps, i, next, laynum, localGirth, layers,
         localParameters, sum, nprev, nhere, nnext, lnum, localDiameter,
-        layerNumbers, x, y, stab;
+        layerNumbers, x, y, stab, data;
+
+  data := DIGRAPHS_ConnectivityData(digraph);
+
+  if IsBound(data[v]) then
+    return data[v];
+  fi;
 
   out_nbs         := OutNeighbours(digraph);
   if HasDigraphGroup(digraph) then
@@ -626,9 +639,10 @@ function(digraph, v)
   for i in [1 .. Length(reps)] do
      layerNumbers[i] := laynum[orbnum[i]];
   od;
-  return rec(layerNumbers := layerNumbers, localDiameter := localDiameter,
+  data[v] := rec(layerNumbers := layerNumbers, localDiameter := localDiameter,
              localGirth := localGirth, localParameters := localParameters,
              layers := layers);
+  return data[v];
 end);
 #
 
