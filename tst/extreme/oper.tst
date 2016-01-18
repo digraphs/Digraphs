@@ -108,7 +108,7 @@ gap> DigraphReverseEdge(d, [95000, 4067]);
 
 #T# DigraphLayers
 gap> list := ReadDigraphs(Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/fining.p.gz"));;
-gap> gr := list[5];;
+gap> gr := list[4];;
 gap> gr2 := DigraphCopy(gr);;
 gap> layers1 := List(DigraphLayers(gr,1), x -> Set(x));;
 gap> layers2 := List(DigraphLayers(gr2,1), x -> Set(x));;
@@ -119,8 +119,8 @@ gap> for i in list do
 > Add(layers, DigraphLayers(i, 1));  
 > od;
 gap> List(layers, x -> Size(x));
-[ 3, 3, 3, 5, 5, 7 ]
-gap> gr := list[5];;
+[ 3, 3, 5, 5, 7, 9 ]
+gap> gr := list[4];;
 gap> DigraphLayers(gr, 1);
 [ [ 1 ], [ 41, 50, 59, 68 ], [ 2, 3, 4, 5, 8, 10, 14, 27, 28, 31, 34, 37 ], 
   [ 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 60, 61, 
@@ -151,7 +151,7 @@ gap> DigraphLayers(gr, 28);
       64, 65, 60, 67, 63, 66, 68, 69, 75, 71, 76, 74, 73, 70, 72, 78, 79, 80 ]
     , [ 2, 6, 4, 13, 9, 20, 16, 25, 27, 5, 11, 7, 18, 14, 10, 21, 17, 23, 31, 
       32, 33, 34, 35, 36, 37, 38, 39 ] ]
-gap> gr := list[6];                                               
+gap> gr := list[5];
 <digraph with 2730 vertices, 13650 edges>
 gap> DigraphOrbitReps(gr);                    
 [ 1, 1366 ]
