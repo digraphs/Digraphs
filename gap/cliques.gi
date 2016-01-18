@@ -165,7 +165,6 @@ function(arg)
     include := [];
   fi;
 
-
   # Validate arg[4]
   if IsBound(arg[4]) then
     exclude := arg[4];

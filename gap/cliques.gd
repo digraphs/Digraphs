@@ -10,21 +10,8 @@
 #############################################################################
 ##
 
-## Independent sets
 DeclareOperation("IsIndependentSet", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximalIndependentSet", [IsDigraph, IsHomogeneousList]);
-
-# Functions to calculate independent sets
-DeclareGlobalFunction("DigraphIndependentSet");
-DeclareGlobalFunction("DigraphMaximalIndependentSet");
-DeclareGlobalFunction("DigraphIndependentSetsOfSize");
-DeclareGlobalFunction("DigraphIndependentSetsRepsOfSize");
-DeclareGlobalFunction("DigraphMaximalIndependentSetsReps");
-DeclareGlobalFunction("DigraphMaximalIndependentSets");
-DeclareAttribute("DigraphMaximalIndependentSetsRepsAttr", IsDigraph);
-DeclareAttribute("DigraphMaximalIndependentSetsAttr", IsDigraph);
-
-## Cliques
 DeclareOperation("IsClique", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximalClique", [IsDigraph, IsHomogeneousList]);
 
@@ -42,3 +29,15 @@ DeclareGlobalFunction("DigraphMaximalCliques");
 DeclareGlobalFunction("DigraphMaximalCliquesReps");
 DeclareAttribute("DigraphMaximalCliquesAttr", IsDigraph);
 DeclareAttribute("DigraphMaximalCliquesRepsAttr", IsDigraph);
+
+# Functions to calculate independent sets
+DeclareGlobalFunction("DigraphIndependentSet");
+DeclareGlobalFunction("DigraphMaximalIndependentSet");
+DeclareGlobalFunction("DIGRAPHS_IndependentSet");
+
+DeclareGlobalFunction("DigraphIndependentSets");
+DeclareGlobalFunction("DigraphIndependentSetsReps");
+DeclareGlobalFunction("DigraphMaximalIndependentSets");
+DeclareGlobalFunction("DigraphMaximalIndependentSetsReps");
+DeclareAttribute("DigraphMaximalIndependentSetsAttr", IsDigraph);
+DeclareAttribute("DigraphMaximalIndependentSetsRepsAttr", IsDigraph);

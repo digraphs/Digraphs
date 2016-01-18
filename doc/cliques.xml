@@ -475,7 +475,25 @@ gap>
       </Item>
     </List>
     <Example><![CDATA[
-gap>
+gap> gr := CompleteDigraph(5);
+<digraph with 5 vertices, 20 edges>
+gap> user_param := [];;
+gap> f := function(a, b) # Calculate size of clique
+>   AddSet(user_param, Size(b));
+> end;
+function( a, b ) ... end
+gap> CliquesFinder(gr, f, user_param, infinity, [], [], false, fail, true);
+[ 1, 2, 3, 4, 5 ]
+gap> CliquesFinder(gr, fail, [], 5, [2, 4], [3], false, fail, false);
+[ [ 2, 4 ], [ 1, 2, 4 ], [ 2, 4, 5 ], [ 1, 2, 4, 5 ] ]
+gap> CliquesFinder(gr, fail, [], 2, [2, 4], [3], false, fail, false);
+[ [ 2, 4 ], [ 1, 2, 4 ] ]
+gap> CliquesFinder(gr, fail, [], infinity, [], [], true, 5, false);
+[ [ 1, 2, 3, 4, 5 ] ]
+gap> CliquesFinder(gr, fail, [], infinity, [1, 3], [], false, 3, false);
+[ [ 1, 2, 3 ], [ 1, 3, 4 ], [ 1, 3, 5 ] ]
+gap> CliquesFinder(gr, fail, [], infinity, [1, 3], [], true, 3, false);
+[  ]
 ]]></Example>
   </Description>
 </ManSection>
