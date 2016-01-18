@@ -1354,12 +1354,12 @@ function(digraph, u, v)
 
   if u > DigraphNrVertices(digraph) or v > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphShortestDistance: usage,\n",
-                 "the second argument and third argument must be \n",
+                 "the second argument and third argument must be\n",
                  "vertices of the digraph,");
   fi;
 
   if HasDigraphShortestDistances(digraph) then
-    return DigraphShortestDistances[u][v];
+    return DigraphShortestDistances(digraph)[u][v];
   fi;
 
   dist := DIGRAPH_ConnectivityDataForVertex(digraph, u).layerNumbers[v] - 1;

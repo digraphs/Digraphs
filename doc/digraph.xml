@@ -174,9 +174,10 @@ true
   <Oper Name="DigraphVertexLabels" Arg="digraph"/>
   <Oper Name="SetDigraphVertexLabels" Arg="digraph, list"/>
   <Description>
-    If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns the
-    labels of the vertices in <A>digraph</A>. <C>SetDigraphVertexLabels</C> can
-    be used to set the labels of the vertices in <A>digraph</A> to the list of
+    If <A>digraph</A> is a digraph, then <C>DigraphVertexLabels</C> returns a
+    copy of the labels of the vertices in <A>digraph</A>.
+    <C>SetDigraphVertexLabels</C> can be used to set the labels of the vertices
+    in <A>digraph</A> to the list of
     arbitrary &GAP; objects <A>list</A>. <P/>
 
     The label of a vertex can be changed an arbitrary number of times. If no

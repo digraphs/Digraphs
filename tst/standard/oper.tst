@@ -1485,6 +1485,31 @@ gap> DigraphShortestDistance(gr, [1, 13], [20 .. 23]);
 gap> DigraphShortestDistance(gr, [1, 13], [38, 41]);
 25
 
+#T# DigraphShortestDistance: two inputs
+gap> gr := Digraph([ [2], [3], [1,4], [1,3], [5] ]);
+<digraph with 5 vertices, 7 edges>
+gap> DigraphShortestDistance(gr, 1, 3);
+2
+gap> DigraphShortestDistance(gr, [3, 3]);
+0
+gap> DigraphShortestDistance(gr, 5, 2);
+fail
+gap> DigraphShortestDistances(gr);;
+gap> DigraphShortestDistance(gr, [3, 4]);
+1
+
+#T# DigraphShortestDistance: bad input
+gap> DigraphShortestDistance(gr, 1, 74);
+Error, Digraphs: DigraphShortestDistance: usage,
+the second argument and third argument must be
+vertices of the digraph,
+gap> DigraphShortestDistance(gr, [1, 74]);
+Error, Digraphs: DigraphShortestDistance: usage,
+elements of the list must be vertices of the digraph,
+gap> DigraphShortestDistance(gr, [1, 71, 3]);
+Error, Digraphs: DigraphShortestDistance: usage,
+the second argument must be of length 2,
+
 #T# DigraphDistancesSet
 gap> gr := ChainDigraph(10);                                               
 <digraph with 10 vertices, 9 edges>

@@ -53,6 +53,25 @@ gap> DigraphVertexLabels(gr);
 [ 1, 2, 3, 5, 7 ]
 gap> DigraphVertices(gr);
 [ 1 .. 5 ]
+gap> gr := Digraph([[4, 8], [4, 9], [5], [9], [6], [3, 5], [], 
+> [6], [1, 3], [10]]);
+<digraph with 10 vertices, 13 edges>
+gap> x := DigraphVertexLabels(gr);
+[ 1 .. 10 ]
+gap> x[1] := "a";
+"a"
+gap> x;
+[ "a", 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> DigraphVertexLabels(gr);
+[ 1 .. 10 ]
+gap> SetDigraphVertexLabel(gr, 2, []);
+gap> x := DigraphVertexLabel(gr, 2);
+[  ]
+gap> Add(x, 1);
+gap> x;
+[ 1 ]
+gap> DigraphVertexLabels(gr);
+[ 1, [  ], 3, 4, 5, 6, 7, 8, 9, 10 ]
 
 #T# Graph
 gap> gr := Digraph([[2, 2], []]);
