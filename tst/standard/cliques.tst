@@ -72,7 +72,113 @@ true
 ##T# DigraphMaximalIndependentSets
 #gap>
 #
-##T# DIGRAPHS_UnbindVariables
+
+#T# CliquesFinder: error checking
+gap> CliquesFinder(Group(()), fail, fail, fail, fail, fail, fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the first argument <gr> must be a digraph,
+gap> gr := CompleteDigraph(5);;
+gap> CliquesFinder(gr, [], fail, fail, fail, fail, fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the second argument <hook> has to be either fail, or a function with two
+arguments,
+gap> f := function(a) return; end;;
+gap> CliquesFinder(gr, f, fail, fail, fail, fail, fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the second argument <hook> has to be either fail, or a function with two
+arguments,
+gap> CliquesFinder(gr, fail, fail, fail, fail, fail, fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+when the fourth argument <hook> is fail, the third argument <user_param> has
+to be a list,
+gap> f := function(a, b) return; end;;
+gap> CliquesFinder(gr, f, fail, fail, fail, fail, fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the fourth argument <limit> has to be either infinity, or a positive integer,
+gap> CliquesFinder(gr, fail, [], infinity, fail, fail, fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the fifth argument <include> and the sixth argument <exclude> have to be
+(possibly empty) duplicate-free lists of vertices of the digraph in the first
+argument <gr>,
+gap> CliquesFinder(gr, fail, [], infinity, [0, 'a'], fail, fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the fifth argument <include> and the sixth argument <exclude> have to be
+(possibly empty) duplicate-free lists of vertices of the digraph in the first
+argument <gr>,
+gap> CliquesFinder(gr, fail, [], infinity, [0], fail, fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the fifth argument <include> and the sixth argument <exclude> have to be
+(possibly empty) duplicate-free lists of vertices of the digraph in the first
+argument <gr>,
+gap> CliquesFinder(gr, fail, [], infinity, [1, 1], fail, fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the fifth argument <include> and the sixth argument <exclude> have to be
+(possibly empty) duplicate-free lists of vertices of the digraph in the first
+argument <gr>,
+gap> CliquesFinder(gr, fail, [], infinity, [1], fail, fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the fifth argument <include> and the sixth argument <exclude> have to be
+(possibly empty) duplicate-free lists of vertices of the digraph in the first
+argument <gr>,
+gap> CliquesFinder(gr, fail, [], infinity, [1], [0, 'a'], fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the fifth argument <include> and the sixth argument <exclude> have to be
+(possibly empty) duplicate-free lists of vertices of the digraph in the first
+argument <gr>,
+gap> CliquesFinder(gr, fail, [], infinity, [1], [0], fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the fifth argument <include> and the sixth argument <exclude> have to be
+(possibly empty) duplicate-free lists of vertices of the digraph in the first
+argument <gr>,
+gap> CliquesFinder(gr, fail, [], infinity, [1], [1, 1], fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the fifth argument <include> and the sixth argument <exclude> have to be
+(possibly empty) duplicate-free lists of vertices of the digraph in the first
+argument <gr>,
+gap> CliquesFinder(gr, fail, [], infinity, [1], [1], fail, fail, fail);
+Error, Digraphs: CliquesFinder: usage,
+the seventh argument <max> must be either true or false,
+gap> CliquesFinder(gr, fail, [], infinity, [1], [1], false, 0, fail);
+Error, Digraphs: CliquesFinder: usage,
+the eighth argument <size> has to be either fail, or a positive integer,
+gap> CliquesFinder(gr, fail, [], infinity, [1], [1], false, 1, fail);
+Error, Digraphs: CliquesFinder: usage,
+the ninth argument <reps> must be either true or false,
+gap> CliquesFinder(gr, fail, [], infinity, [1], [], false, 1, true);
+Error, Digraphs: CliquesFinder: usage,
+if the ninth argument <reps> is true then the fourth and fifth arguments
+<include> and <exclude> must be invariant under the action of the DigraphGroup
+of <gr>,
+gap> CliquesFinder(gr, fail, [], infinity, [], [1], false, 1, true);
+Error, Digraphs: CliquesFinder: usage,
+if the ninth argument <reps> is true then the fourth and fifth arguments
+<include> and <exclude> must be invariant under the action of the DigraphGroup
+of <gr>,
+gap> CliquesFinder(gr, fail, [], infinity, [1 .. 5], [1 .. 5], false, 1, true);
+[  ]
+gap> CliquesFinder(gr, fail, [], infinity, [1], [1], false, 1, false);
+[  ]
+
+#T# DIGRAPHS_BronKerbosch: easy cases
+gap> gr := ChainDigraph(5);;
+gap> CliquesFinder(gr, fail, [], infinity, [], [1 .. 4], false, 3, false);
+[  ]
+gap> CliquesFinder(gr, fail, [], infinity, [1, 2], [], false, 3, false);
+[  ]
+gap> gr := CompleteDigraph(5);;
+gap> CliquesFinder(gr, fail, [], infinity, [1 .. 5], [], false, 1, false);
+[  ]
+gap> CliquesFinder(gr, fail, [], infinity, [1 .. 5], [1 .. 5], false, fail,
+> false);
+[  ]
+gap> CliquesFinder(gr, fail, [], infinity, [1], [], false, 1, false);
+[ [ 1 ] ]
+gap> CliquesFinder(gr, fail, [], infinity, [], [], false, 1, false);
+[ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
+
+#T# DIGRAPHS_UnbindVariables
+gap> Unbind(gr);
+gap> Unbind(f);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/cliques.tst");

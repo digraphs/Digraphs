@@ -38,4 +38,5 @@ DeclareGlobalFunction("DigraphMaximalCliquesReps");
 DeclareGlobalFunction("DigraphMaximalCliques");
 DeclareAttribute("DigraphMaximalCliquesRepsAttr", IsDigraph);
 DeclareAttribute("DigraphMaximalCliquesAttr", IsDigraph);
+DeclareGlobalFunction("CliquesFinder");
 DeclareGlobalFunction("DIGRAPHS_BronKerbosch");

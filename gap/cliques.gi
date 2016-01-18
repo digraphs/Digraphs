@@ -500,13 +500,130 @@ end);
 
 ################################################################################
 
+InstallGlobalFunction(CliquesFinder,
+function(gr, hook, user_param, limit, include, exclude, max, size, reps)
+  local n, group, invariant_include, invariant_exclude, include_variant,
+  exclude_variant, x, v, o, i;
+
+  if not IsDigraph(gr) then
+    ErrorMayQuit("Digraphs: CliquesFinder: usage,\n",
+                 "the first argument <gr> must be a digraph,");
+  fi;
+
+  if hook <> fail then
+    if not (IsFunction(hook) and NumberArgumentsFunction(hook) = 2) then
+      ErrorMayQuit("Digraphs: CliquesFinder: usage,\n",
+                   "the second argument <hook> has to be either fail, or a ",
+                   "function with two\narguments,");
+    fi;
+  elif not IsList(user_param) then
+    ErrorMayQuit("Digraphs: CliquesFinder: usage,\n",
+                 "when the fourth argument <hook> is fail, the third ",
+                 "argument <user_param> has\nto be a list,");
+  fi;
+
+  if limit <> infinity and not IsPosInt(limit) then
+    ErrorMayQuit("Digraphs: CliquesFinder: usage,\n",
+                 "the fourth argument <limit> has to be either infinity, or ",
+                 "a positive integer,");
+  fi;
+
+  n := DigraphNrVertices(gr);
+  if not (IsHomogeneousList(include)
+          and ForAll(include, x -> IsPosInt(x) and x <= n)
+          and IsDuplicateFreeList(include))
+      or not (IsHomogeneousList(exclude)
+          and ForAll(exclude, x -> IsPosInt(x) and x <= n)
+          and IsDuplicateFreeList(exclude))
+      then
+    ErrorMayQuit("Digraphs: CliquesFinder: usage,\n",
+                 "the fifth argument <include> and the sixth argument ",
+                 "<exclude> have to be\n(possibly empty) duplicate-free lists ",
+                 "of vertices of the digraph in the first\nargument <gr>,");
+  fi;
+
+  if not max in [true, false] then
+    ErrorMayQuit("Digraphs: CliquesFinder: usage,\n",
+                 "the seventh argument <max> must be either true or false,");
+  fi;
+
+  if size <> fail and not IsPosInt(size) then
+    ErrorMayQuit("Digraphs: CliquesFinder: usage,\n",
+                 "the eighth argument <size> has to be either fail, or a ",
+                 "positive integer,");
+  fi;
+
+  if not reps in [true, false] then
+    ErrorMayQuit("Digraphs: CliquesFinder: usage,\n",
+                 "the ninth argument <reps> must be either true or false,");
+  fi;
+
+  # Investigate whether <include> and <exclude> are invariant under <grp>
+  group := DigraphGroup(gr);
+
+  invariant_include := true;
+  invariant_exclude := true;
+  include_variant := [];
+  exclude_variant := [];
+
+  if not IsTrivial(group) and (not IsEmpty(include) or not IsEmpty(exclude))
+      then
+    if not ForAll(GeneratorsOfGroup(group),
+                  x -> IsSubset(include, OnTuples(include, x))) then 
+      invariant_include := false;
+      if not reps then
+        x := ShallowCopy(include);
+        while not IsEmpty(x) do
+          v := x[1];
+          o := List(Orbit(group, v));
+          i := Intersection(x, o);
+          if not IsSubset(x, o) then
+            Append(include_variant, i);
+          fi;
+          x := Difference(x, i);
+        od;
+      fi;
+    fi;
+    if not ForAll(GeneratorsOfGroup(group),
+                  x -> IsSubset(exclude, OnTuples(exclude, x))) then
+      invariant_exclude := false;
+      if not reps then
+        x := ShallowCopy(exclude);
+        while not IsEmpty(x) do
+          v := x[1];
+          o := List(Orbit(group, v));
+          i := Intersection(x, o);
+          if not IsSubset(x, o) then
+            Append(exclude_variant, i);
+          fi;
+          x := Difference(x, i);
+        od;
+      fi;
+    fi;
+
+    if reps and not (invariant_include and invariant_exclude) then
+      ErrorMayQuit("Digraphs: CliquesFinder: usage,\n",
+                   "if the ninth argument <reps> is true then the fourth and ",
+                   "fifth arguments\n<include> and <exclude> must be ",
+                   "invariant under the action of the DigraphGroup\nof <gr>,");
+    fi;
+  fi;
+
+  return DIGRAPHS_BronKerbosch(gr, hook, user_param, limit, include, exclude,
+                               max, size, reps, include_variant,
+                               exclude_variant);
+end);
+
 InstallGlobalFunction(DIGRAPHS_BronKerbosch,
-function(gr, inc, exc, lim, size, max, reps)
-  local vtx, grp, invariant_inc, invariant_exc, inc_var, exc_var, x, v, o, i,
-  invariant, adj, deg, all, exc_inv, start, possible, add, bk, out, num;
+function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
+  local vtx, grp, invariant_inc, invariant_exc, x, v, o, i, invariant, adj,
+  all, exc_inv, start, possible, add, bk, num;
+
 
   # Arguments should be:
   # gr   - a digraph
+  # hook - fail or a function
+  # user-param - a list or the first argument of hook
   # inc  - a duplicate-free list of vertices of <gr>
   # exc  - a duplicate-free list of vertices of <gr>
   # lim  - a positive integer or infinity
@@ -514,109 +631,41 @@ function(gr, inc, exc, lim, size, max, reps)
   # max  - do we care whether the results are maximal?
   # reps - do we want to return all valid results or orbit representatives?
 
+  # Test for easy cases
+  if size <> fail and Length(inc) > size then
+    return [];
+  elif ForAny(exc, x -> x in inc) then
+    # the clique contains excluded vertices
+    return [];
+  elif size <> fail
+      and size > DigraphNrVertices(gr) - Length(exc) then
+    # the desired clique size is too big
+    return [];
+  elif not IsClique(gr, inc) then
+    # the set we wish to extend is not a clique
+    return [];
+  fi;
 
-  ##############################################################################
-  # Validate arguments
-  if not IsDigraph(gr) then
-    Error("needs to be a digraph");
+  if hook = fail then
+    hook := Add;
   fi;
 
   vtx := DigraphVertices(gr);
   grp := DigraphGroup(gr);
 
-  if not (IsList(inc) and IsDuplicateFreeList(inc) and IsSubset(vtx, inc))
-      or not (IsList(exc) and IsDuplicateFreeList(exc) and IsSubset(vtx, exc))
-      then
-    Error("must be duplicate-free subset of the vertices");
-  fi;
-
-  if not IsClique(gr, inc) then # the set we wish to extend is not a clique
-    return [];
-  elif ForAny(exc, x -> x in inc) then # the clique contains excluded vertices
-    return [];
-  fi;
-
-  if not (lim = infinity or IsPosInt(lim)) then
-    Error("lim must be a posint or inifinity");
-  fi;
-
-  if not (size = fail or IsPosInt(size)) then
-    Error("size must be a posint or fail");
-  fi;
-
-  if not (max = true or max = false) then
-    Error("max must be true or false");
-  fi;
-
-  gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
-
-  # Investigate whether <inc> and <exc> are invariant under <grp>
-  invariant_inc := true;
-  invariant_exc := true;
-  inc_var := [];
-  exc_var := [];
-
-  if IsTrivial(grp) then
-    grp := fail;
-  else
-    if not ForAll(GeneratorsOfGroup(grp), x -> IsSubset(inc, OnTuples(inc, x)))
-        then 
-      invariant_inc := false;
-      if not reps then
-        x := ShallowCopy(inc);
-        while not IsEmpty(x) do
-          v := x[1];
-          o := List(Orbit(grp, v));
-          i := Intersection(x, o);
-          if not IsSubset(x, o) then
-            Append(inc_var, i);
-          fi;
-          x := Difference(x, i);
-        od;
-      fi;
-    fi;
-    if not ForAll(GeneratorsOfGroup(grp), x -> IsSubset(exc, OnTuples(exc, x)))
-         then
-      invariant_exc := false;
-      if not reps then
-        x := ShallowCopy(exc);
-        while not IsEmpty(x) do
-          v := x[1];
-          o := List(Orbit(grp, v));
-          i := Intersection(x, o);
-          if not IsSubset(x, o) then
-            Append(exc_var, i);
-          fi;
-          x := Difference(x, i);
-        od;
-      fi;
-    fi;
-    if reps and not (invariant_inc and invariant_exc) then
-      Error("inv and exc must be invariant if you want reps");
-    fi;
-  fi;
+  invariant_inc := Length(inc_var) = 0;
+  invariant_exc := Length(exc_var) = 0;
   invariant := invariant_inc and invariant_exc;
 
+  gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
   adj := BooleanAdjacencyMatrix(gr);
-  deg := OutDegrees(gr);
-
-  ##############################################################################
-  # Test for easy cases
-  if Length(inc) = DigraphNrVertices(gr) then # the clique is all of <gr>
-    return [inc];
-  elif size <> fail
-      and size > DigraphNrVertices(gr) then # the desired clique size is too big
-    return [];
-  fi;
 
   # Variables
   # gr    - a symmetric digraph without loops and multiple edges whose cliques
   #         coincide with those of the original digraph
   # adj   - boolean adjacency matrix of <gr>
   # vtx   - DigraphVertices(gr)
-  # deg   - OutDegrees(gr)
   # num   - number of results found so far
-  # out   - the list of results
   # grp   - a perm group, a subgroup of the automorphism group of <gr>
   # invariant_inc - is inc invariant under grp?
   # invariant_exc - is exc invariant under grp?
@@ -646,7 +695,7 @@ function(gr, inc, exc, lim, size, max, reps)
 
     c := ListBlist(vtx, c);
     if not all then # we are only looking for orbit reps, so add the rep
-      Add(out, c);
+      hook(user_param, c);
       num := num + 1;
       return;
     fi;
@@ -656,7 +705,9 @@ function(gr, inc, exc, lim, size, max, reps)
     if invariant then # we're not just looking for orbit reps, but there is
                       # nothing extra to check
       n := Minimum(lim - num, n);
-      Append(out, orb{[1 .. n]});
+      for c in orb{[1 .. n]} do
+        hook(user_param, c);
+      od;
       num := num + n;
       return;
     fi;
@@ -668,7 +719,7 @@ function(gr, inc, exc, lim, size, max, reps)
         i := i + 1;
         c := BlistList(vtx, orb[i]);
         if not ForAny(IntersectionBlist(exc_var, c)) then
-          Add(out, orb[i]);
+          hook(user_param, orb[i]);
           num := num + 1;
         fi;
       od;
@@ -679,7 +730,7 @@ function(gr, inc, exc, lim, size, max, reps)
         i := i + 1;
         c := BlistList(vtx, orb[i]);
         if IsSubsetBlist(c, inc_var) then
-          Add(out, orb[i]);
+          hook(user_param, orb[i]);
           num := num + 1;
         fi;
       od;
@@ -692,7 +743,7 @@ function(gr, inc, exc, lim, size, max, reps)
         c := BlistList(vtx, orb[i]);
         if not ForAny(IntersectionBlist(exc_var, c))
             and IsSubsetBlist(c, inc_var) then
-          Add(out, orb[i]);
+          hook(user_param, orb[i]);
           num := num + 1;
         fi;
       od;
@@ -744,7 +795,7 @@ function(gr, inc, exc, lim, size, max, reps)
       #top := -1;
       #piv := 0;
       #for v in orb do
-      #  if deg[v] > top then
+      #  if deg[v] > top then # where #deg = OutDegrees(gr)
       #    piv := v;
       #    top := deg[v];
       #  fi;
@@ -799,12 +850,12 @@ function(gr, inc, exc, lim, size, max, reps)
     od;
   end;
 
-  out := [];
   num := 0;
   bk(start, possible, BlistList(vtx, []), grp, Length(inc));
 
+  # Post-processing of list
   if not reps and not all then
-    out := Concatenation(List(out, x -> Orbit(grp, x, OnSets))); 
+    user_param := Concatenation(List(user_param, x -> Orbit(grp, x, OnSets))); 
   fi;
-  return out;
+  return user_param;
 end);
