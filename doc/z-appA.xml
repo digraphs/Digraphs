@@ -2,5 +2,34 @@
   <Heading>
     Grape to Digraphs Command Map
   </Heading>
-  This appendix contains 
+  Below is a table of &Grape; commands with the &Digraphs; counterparts. 
+  
+  <Table Align="|l|l|l|">
+    <HorLine/>
+    <Row>
+      <Item>
+        &Grape; command
+      </Item>
+      <Item>
+        &Digraphs; command
+      </Item>
+      <Item>
+        Comments
+      </Item>
+    </Row>
+    <HorLine/>
+    <Row>
+      <Item>
+        <C>Graph</C>
+      </Item>
+      <Item>
+        <Ref Func="Digraph"/> 
+      </Item>
+      <Item>
+        Digraphs can also be created using:
+      </Item>
+    </Row>
+    <HorLine/>
+  </Table>
+
 </Appendix>
