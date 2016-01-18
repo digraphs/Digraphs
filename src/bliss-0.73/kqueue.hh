@@ -22,7 +22,7 @@
 
 #include "defs.hh"
 
-namespace bliss {
+namespace bliss_digraphs {
 
 /** \internal
  * \brief A very simple implementation of queues with fixed capacity.
@@ -157,6 +157,6 @@ void KQueue<Type>::push_back(Type e)
     tail = entries;
 }
 
-} // namespace bliss
+} // namespace bliss_digraphs
 
 #endif

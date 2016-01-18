@@ -59,7 +59,7 @@ usage(FILE* const fp, const char* argv0)
   else program_name = argv0;  
   if(!program_name or *program_name == 0) program_name = "bliss";
 
-  fprintf(fp, "bliss version %s (compiled "__DATE__")\n", bliss::version);
+  fprintf(fp, "bliss version %s (compiled "__DATE__")\n", bliss_digraphs::version);
   fprintf(fp, "Copyright 2003-2015 Tommi Junttila\n");
   fprintf(fp,
 "\n"
@@ -120,7 +120,7 @@ parse_options(const int argc, const char** argv)
 	}
       else if(strcmp(argv[i], "-version") == 0)
 	{
-	  fprintf(stdout, "bliss version %s\n", bliss::version);
+	  fprintf(stdout, "bliss version %s\n", bliss_digraphs::version);
 	  exit(0);
 	}
       else if(strcmp(argv[i], "-help") == 0)
@@ -161,7 +161,7 @@ report_aut(void* param, const unsigned int n, const unsigned int* aut)
 {
   assert(param);
   fprintf((FILE*)param, "Generator: ");
-  bliss::print_permutation((FILE*)param, n, aut, 1);
+  bliss_digraphs::print_permutation((FILE*)param, n, aut, 1);
   fprintf((FILE*)param, "\n");
 }
 
@@ -183,45 +183,45 @@ _fatal(const char* fmt, ...)
 int
 main(const int argc, const char** argv)
 {
-  bliss::Timer timer;
-  bliss::AbstractGraph* g = 0;
+  bliss_digraphs::Timer timer;
+  bliss_digraphs::AbstractGraph* g = 0;
 
   parse_options(argc, argv);
   
   /* Parse splitting heuristics */
-  bliss::Digraph::SplittingHeuristic shs_directed = bliss::Digraph::shs_fsm;
-  bliss::Graph::SplittingHeuristic shs_undirected = bliss::Graph::shs_fsm;
+  bliss_digraphs::Digraph::SplittingHeuristic shs_directed = bliss_digraphs::Digraph::shs_fsm;
+  bliss_digraphs::Graph::SplittingHeuristic shs_undirected = bliss_digraphs::Graph::shs_fsm;
   if(opt_directed)
     {
       if(strcmp(opt_splitting_heuristics, "f") == 0)
-	shs_directed = bliss::Digraph::shs_f;
+	shs_directed = bliss_digraphs::Digraph::shs_f;
       else if(strcmp(opt_splitting_heuristics, "fs") == 0)
-	shs_directed = bliss::Digraph::shs_fs;
+	shs_directed = bliss_digraphs::Digraph::shs_fs;
       else if(strcmp(opt_splitting_heuristics, "fl") == 0)
-	shs_directed = bliss::Digraph::shs_fl;
+	shs_directed = bliss_digraphs::Digraph::shs_fl;
       else if(strcmp(opt_splitting_heuristics, "fm") == 0)
-	shs_directed = bliss::Digraph::shs_fm;
+	shs_directed = bliss_digraphs::Digraph::shs_fm;
       else if(strcmp(opt_splitting_heuristics, "fsm") == 0)
-	shs_directed = bliss::Digraph::shs_fsm;
+	shs_directed = bliss_digraphs::Digraph::shs_fsm;
       else if(strcmp(opt_splitting_heuristics, "flm") == 0)
-	shs_directed = bliss::Digraph::shs_flm;
+	shs_directed = bliss_digraphs::Digraph::shs_flm;
       else
 	_fatal("Illegal option -sh=%s, aborting", opt_splitting_heuristics);
     }
   else
     {
       if(strcmp(opt_splitting_heuristics, "f") == 0)
-	shs_undirected = bliss::Graph::shs_f;
+	shs_undirected = bliss_digraphs::Graph::shs_f;
       else if(strcmp(opt_splitting_heuristics, "fs") == 0)
-	shs_undirected = bliss::Graph::shs_fs;
+	shs_undirected = bliss_digraphs::Graph::shs_fs;
       else if(strcmp(opt_splitting_heuristics, "fl") == 0)
-	shs_undirected = bliss::Graph::shs_fl;
+	shs_undirected = bliss_digraphs::Graph::shs_fl;
       else if(strcmp(opt_splitting_heuristics, "fm") == 0)
-	shs_undirected = bliss::Graph::shs_fm;
+	shs_undirected = bliss_digraphs::Graph::shs_fm;
       else if(strcmp(opt_splitting_heuristics, "fsm") == 0)
-	shs_undirected = bliss::Graph::shs_fsm;
+	shs_undirected = bliss_digraphs::Graph::shs_fsm;
       else if(strcmp(opt_splitting_heuristics, "flm") == 0)
-	shs_undirected = bliss::Graph::shs_flm;
+	shs_undirected = bliss_digraphs::Graph::shs_flm;
       else
 	_fatal("Illegal option -sh=%s, aborting", opt_splitting_heuristics);
     }
@@ -239,12 +239,12 @@ main(const int argc, const char** argv)
   if(opt_directed)
     {
       /* Read directed graph in the DIMACS format */
-      g = bliss::Digraph::read_dimacs(infile);
+      g = bliss_digraphs::Digraph::read_dimacs(infile);
     }
   else
     {
       /* Read undirected graph in the DIMACS format */
-      g = bliss::Graph::read_dimacs(infile);
+      g = bliss_digraphs::Graph::read_dimacs(infile);
     }
   
   if(infile != stdin)
@@ -260,13 +260,13 @@ main(const int argc, const char** argv)
     }
 
 
-  bliss::Stats stats;
+  bliss_digraphs::Stats stats;
 
   /* Set splitting heuristics and verbose level */
   if(opt_directed)
-    ((bliss::Digraph*)g)->set_splitting_heuristic(shs_directed);
+    ((bliss_digraphs::Digraph*)g)->set_splitting_heuristic(shs_directed);
   else
-    ((bliss::Graph*)g)->set_splitting_heuristic(shs_undirected);
+    ((bliss_digraphs::Graph*)g)->set_splitting_heuristic(shs_undirected);
   g->set_verbose_level(verbose_level);
   g->set_verbose_file(verbstr);
   g->set_failure_recording(opt_use_failure_recording);
@@ -284,12 +284,12 @@ main(const int argc, const char** argv)
       const unsigned int* cl = g->canonical_form(stats, &report_aut, stdout);
 
       fprintf(stdout, "Canonical labeling: ");
-      bliss::print_permutation(stdout, g->get_nof_vertices(), cl, 1);
+      bliss_digraphs::print_permutation(stdout, g->get_nof_vertices(), cl, 1);
       fprintf(stdout, "\n");
 
       if(opt_output_can_file)
 	{
-	  bliss::AbstractGraph* cf = g->permute(cl);
+	  bliss_digraphs::AbstractGraph* cf = g->permute(cl);
 	  FILE* const fp = fopen(opt_output_can_file, "w");
 	  if(!fp)
 	    _fatal("Cannot open '%s' for outputting the canonical form, aborting", opt_output_can_file);

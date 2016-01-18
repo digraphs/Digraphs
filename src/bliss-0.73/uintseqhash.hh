@@ -22,7 +22,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
 
 /** \internal
  * \brief A hash for sequences of unsigned ints.
@@ -60,6 +60,6 @@ public:
 };
 
 
-} // namespace bliss
+} // namespace bliss_digraphs
 
 #endif
