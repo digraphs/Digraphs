@@ -1264,13 +1264,11 @@ function(digraph, v)
     return layers[v];
   fi;
 
-  layers := DIGRAPHS_Layers(digraph);
-
   if HasDigraphGroup(digraph) then
     gens  := GeneratorsOfGroup(DigraphGroup(digraph));
     sch   := DigraphSchreierVector(digraph);
     trace := DIGRAPHS_TraceSchreierVector(gens, sch, v);
-    rep   := trace.representative;
+    rep   := DigraphOrbitReps(digraph)[trace.representative];
     word  := DIGRAPHS_EvaluateWord(gens, trace.word);  
     if rep <> v then
       layers[v] := List(DigraphLayers(digraph, rep),

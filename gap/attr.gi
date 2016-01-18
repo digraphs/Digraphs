@@ -235,7 +235,37 @@ InstallMethod(AdjacencyMatrix, "for a digraph",
 #
 
 InstallMethod(DigraphShortestDistances, "for a digraph",
-[IsDigraph], DIGRAPH_SHORTEST_DIST);
+[IsDigraph],
+function(digraph)
+  local vertices, data, sum, distances, v, u;
+
+  if HasDIGRAPHS_ConnectivityData(digraph) then
+    vertices := DigraphVertices(digraph);
+    data := DIGRAPHS_ConnectivityData(digraph);
+    sum := 0;
+    for v in vertices do
+      if IsBound(data[v]) then
+        sum := sum + 1;
+      fi;
+    od;
+    if sum > Int(0.9 * DigraphNrVertices(digraph)) or
+        (HasDigraphGroup(digraph) and
+         not IsTrivial(DigraphGroup(digraph)))  then
+      # adjust the constant 0.9 and possibly make a the decision based on
+      # how big the group is
+      distances := [];
+      for u in vertices do
+        distances[u] := [];
+        for v in vertices do
+          distances[u][v] := DigraphShortestDistance(digraph, u, v);
+        od;
+      od;
+      return distances;
+    fi;
+  fi;
+
+  return DIGRAPH_SHORTEST_DIST(digraph);
+end);
 
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
@@ -640,8 +670,8 @@ function(digraph, v)
      layerNumbers[i] := laynum[orbnum[i]];
   od;
   data[v] := rec(layerNumbers := layerNumbers, localDiameter := localDiameter,
-             localGirth := localGirth, localParameters := localParameters,
-             layers := layers);
+                 localGirth := localGirth, localParameters := localParameters,
+                 layers := layers);
   return data[v];
 end);
 #
