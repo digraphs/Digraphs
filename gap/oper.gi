@@ -1250,33 +1250,63 @@ end);
 InstallMethod(DigraphLayers, "for a digraph, and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
-  local layers, layers_with_orbnums, stab, orbs, i, x;
+  local layers, gens, sch, trace, rep, word, orbs, layers_with_orbnums,
+        layers_of_v, i, x;
 
   if v > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphLayers: usage,\n",
                  "the argument <v> must be a vertex of <digraph>,");
   fi;
 
-  layers := [[v]];
-  layers_with_orbnums := DIGRAPH_ConnectivityDataForVertex(digraph, v).layers;
-  if HasDigraphGroup(digraph) then 
-    stab := DigraphStabilizer(digraph, v);
-  else
-    stab := Group(());
+  layers := DIGRAPHS_Layers(digraph);
+
+  if IsBound(layers[v]) then 
+    return layers[v];
   fi;
 
-  orbs := DIGRAPHS_Orbits(stab, DigraphVertices(digraph)).orbits;
+  layers := DIGRAPHS_Layers(digraph);
 
+  if HasDigraphGroup(digraph) then
+    gens  := GeneratorsOfGroup(DigraphGroup(digraph));
+    sch   := DigraphSchreierVector(digraph);
+    trace := DIGRAPHS_TraceSchreierVector(gens, sch, v);
+    rep   := trace.representative;
+    word  := DIGRAPHS_EvaluateWord(gens, trace.word);  
+    if rep <> v then
+      layers[v] := List(DigraphLayers(digraph, rep),
+                        x -> OnTuples(x, word));
+      return layers[v]; 
+    fi;
+    orbs := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
+                            DigraphVertices(digraph)).orbits;
+  else
+    rep   := v;
+    orbs  := List(DigraphVertices(digraph), x -> [x] );
+  fi;
+
+  # from now on rep = v 
+ 
+  layers_with_orbnums := DIGRAPH_ConnectivityDataForVertex(digraph, v).layers;
+
+  layers_of_v := [[v]];
   for i in [2 .. Length(layers_with_orbnums)] do
-    Add(layers, []);
+    Add(layers_of_v, []);
     for x in layers_with_orbnums[i] do
-      Append(layers[i], orbs[x]);
+      Append(layers_of_v[i], orbs[x]);
     od;
   od;
-
-  return layers;
+ 
+  layers[v] := layers_of_v;
+  return layers[v];
 end);
 
+#
+
+InstallMethod(DIGRAPHS_Layers, "for a digraph",
+[IsDigraph],
+function(digraph)
+  return []; 
+end);
 #
 
 InstallMethod(DigraphDistanceSet,

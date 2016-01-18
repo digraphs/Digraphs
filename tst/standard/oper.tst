@@ -1441,11 +1441,11 @@ gap> DigraphOrbitReps(gr);
 gap> DigraphLayers(gr, 1);
 [ [ 1 ], [ 2, 3, 5 ], [ 4, 6, 7, 8 ] ]
 gap> DigraphLayers(gr, 2);
-[ [ 2 ], [ 1, 4, 6 ], [ 3, 5, 7, 8 ] ]
+[ [ 2 ], [ 1, 4, 6 ], [ 3, 5, 8, 7 ] ]
 gap> DigraphLayers(gr, 3);
-[ [ 3 ], [ 2, 4, 7 ], [ 1, 5, 6, 8 ] ]
+[ [ 3 ], [ 4, 2, 7 ], [ 1, 8, 6, 5 ] ]
 gap> DigraphLayers(gr, 4);
-[ [ 4 ], [ 1, 3, 8 ], [ 2, 5, 6, 7 ] ]
+[ [ 4 ], [ 3, 1, 8 ], [ 2, 7, 5, 6 ] ]
 gap> DigraphLayers(gr, 10);
 Error, Digraphs: DigraphLayers: usage,
 the argument <v> must be a vertex of <digraph>,
