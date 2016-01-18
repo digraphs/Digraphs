@@ -578,9 +578,9 @@ end);
 
 BindGlobal("DIGRAPH_ConnectivityDataForVertex",
 function(digraph, v)
-  local out_nbs, record, orbnum, reps, i, next, laynum, localGirth, layers,
-        localParameters, sum, nprev, nhere, nnext, lnum, localDiameter,
-        layerNumbers, x, y, stab, data;
+  local data, out_nbs, record, orbnum, reps, i, next, laynum, localGirth,
+        layers, sum, localParameters, nprev, nhere, nnext, lnum, localDiameter,
+        layerNumbers, x, y;
 
   data := DIGRAPHS_ConnectivityData(digraph);
 
@@ -590,21 +590,30 @@ function(digraph, v)
 
   out_nbs         := OutNeighbours(digraph);
   if HasDigraphGroup(digraph) then
-    stab := DigraphStabilizer(digraph, v);
+    record          := DIGRAPHS_Orbits(DigraphStabilizer(digraph, v),
+                                       DigraphVertices(digraph));
+    orbnum          := record.lookup;
+    reps            := List(record.orbits, Representative);
+    i               := 1;
+    next            := [orbnum[v]];
+    laynum          := [1 .. Length(reps)] * 0;
+    laynum[next[1]] := 1;
+    localGirth      := -1;
+    layers          := [next];
+    sum             := 1;
+    localParameters := [];
   else
-    stab := Group(());
+    orbnum          := [1 .. DigraphNrVertices(digraph)];
+    reps            := [1 .. DigraphNrVertices(digraph)];
+    i               := 1;
+    next            := [orbnum[v]];
+    laynum          := [1 .. Length(reps)] * 0;
+    laynum[next[1]] := 1;
+    localGirth      := -1;
+    layers          := [next];
+    sum             := 1;
+    localParameters := [];
   fi;
-  record          := DIGRAPHS_Orbits(stab, DigraphVertices(digraph));
-  orbnum          := record.lookup;
-  reps            := List(record.orbits, Representative);
-  i               := 1;
-  next            := [orbnum[v]];
-  laynum          := [1 .. Length(reps)] * 0;
-  laynum[next[1]] := 1;
-  localGirth      := -1;
-  layers          := [next];
-  sum             := 1;
-  localParameters := [];
 
   # localDiameter is the length of the longest shortest path starting at v
   #
