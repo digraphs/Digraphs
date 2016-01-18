@@ -768,15 +768,21 @@ gap> QuotientDigraph(EmptyDigraph(0), [ ]);
 
 <#GAPDoc Label="IsDigraphEdge">
 <ManSection>
-  <Oper Name="IsDigraphEdge" Arg="digraph, list"/>
+  <Oper Name="IsDigraphEdge" Arg="digraph, list"
+        Label="for digraph and list"/>
+  <Oper Name="IsDigraphEdge" Arg="digraph, u, v"
+        Label="for digraph and two pos ints"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns true if and only if the list <A>list</A> specifies an edge in
-    the digraph <A>digraph</A>.
-    Specifically, this operation returns true if <A>list</A> is a pair of 
-    positive integers where <A>list</A><C>[1]</C> is the source and 
-    <A>list</A><C>[2]</C> is the range of an edge in <A>digraph</A>, and false 
-    otherwise. <P/>
+    In the first form, this function returns <K>true</K> if and only if the list
+    <A>list</A> specifies an edge in the digraph <A>digraph</A>.  Specifically,
+    this operation returns <K>true</K> if <A>list</A> is a pair of positive
+    integers where <A>list</A><C>[1]</C> is the source and <A>list</A><C>[2]</C>
+    is the range of an edge in <A>digraph</A>, and <K>false</K> otherwise. <P/>
+
+    The second form simply returns <K>true</K> if <C>[<A>u</A>, <A>v</A>]</C> is
+    an edge in <A>digraph</A>, and <K>false</K> otherwise.
+
 <Example><![CDATA[
 gap> gr := Digraph( 6, [ 1, 1, 2, 4, 6 ], [ 2, 2, 6, 3, 1 ] );
 <multidigraph with 6 vertices, 5 edges>
