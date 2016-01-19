@@ -1325,6 +1325,17 @@ gap> OutNeighbours(DistanceDigraph(gr, 1));
 gap> OutNeighbours(DistanceDigraph(gr, 2));
 [ [  ], [  ], [  ] ]
 
+#T# DistanceDigraph on multidigraph with known automorphisms
+gap> gr := Digraph([[1, 2, 2], [], [2, 2, 3]]);;
+gap> DigraphGroup(gr) = Group((1,3));
+true
+gap> OutNeighbours(DistanceDigraph(gr, 0));
+[ [ 1 ], [ 2 ], [ 3 ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 1));
+[ [ 2 ], [  ], [ 2 ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 2));
+[ [  ], [  ], [  ] ]
+
 #T# DistanceDigraph: bad input
 gap> gr := Digraph([[1, 2], [2, 3], [4], [1]]);;
 gap> DistanceDigraph(gr, -2);
