@@ -45,7 +45,7 @@ function(graph)
 
   if not IsSymmetricDigraph(graph) then
     ErrorNoReturn("Digraphs: DotSymmetricDigraph: usage,\n",
-                 "the argument <graph> should be symmetric,");
+                  "the argument <graph> should be symmetric,");
   fi;
 
   verts := DigraphVertices(graph);
@@ -88,13 +88,13 @@ if not IsBound(Splash) then #This function is written by A. Egri-Nagy
 
     if not IsString(arg[1]) then
       ErrorNoReturn("Digraphs: Splash: usage,\n",
-                   "<arg>[1] must be a string,");
+                    "<arg>[1] must be a string,");
     fi;
 
     if IsBound(arg[2]) then
       if not IsRecord(arg[2]) then
         ErrorNoReturn("Digraphs: Splash: usage,\n",
-                     "<arg>[2] must be a record,");
+                      "<arg>[2] must be a record,");
       else
         opt := arg[2];
       fi;
@@ -149,7 +149,7 @@ if not IsBound(Splash) then #This function is written by A. Egri-Nagy
       type := "dot";
     else
       ErrorNoReturn("Digraphs: Splash: usage,\n",
-                   "the option <type> must be \"dot\" or \"latex\",");
+                    "the option <type> must be \"dot\" or \"latex\",");
     fi;
 
     # output type
