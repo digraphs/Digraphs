@@ -32,7 +32,7 @@ Persons := [
 
   rec(
     LastName      := "De Beule",
-    FirstNames    := "Jan",
+    FirstNames    := "J.",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jdebeule@cage.ugent.be",
