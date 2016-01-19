@@ -45,8 +45,6 @@
           <Alt Only="HTML">
           Used with the arguments of <C>Graph</C> in &Grape;, <Ref
             Oper="Digraph"/> will return an equivalent digraph. <P/>
-
-          Digraphs can also be created using: TODO
           </Alt>
         </Item>
       </Row>
@@ -1288,7 +1286,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C></C> in &Grape; is equivalent to
+            <C>AutGroupGraph</C> in &Grape; is equivalent to
             <Ref Attr="AutomorphismGroup" Label="for a digraph"/> in &Digraphs;.
           </Alt>
         </Item>
