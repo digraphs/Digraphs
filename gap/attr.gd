@@ -44,6 +44,9 @@ DeclareAttribute("DigraphUndirectedGirth", IsDigraph);
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
 DeclareAttribute("DigraphLongestSimpleCircuit", IsDigraph);
 DeclareAttribute("DigraphLoops", IsDigraph);
+DeclareAttribute("DigraphDegeneracy", IsDigraph);
+DeclareAttribute("DigraphDegeneracyOrdering", IsDigraph);
+DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
 
 DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
 DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
@@ -53,7 +56,11 @@ DeclareGlobalFunction("DigraphTransitiveClosureNC");
 DeclareAttribute("DigraphAdjacencyFunction", IsDigraph);
 
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
+DeclareAttribute("BooleanAdjacencyMatrix", IsDigraph);
 DeclareAttribute("ReducedDigraph", IsDigraph);
+DeclareAttribute("MaximalSymmetricSubdigraph", IsDigraph);
+DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoops", IsDigraph);
+DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
 
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");

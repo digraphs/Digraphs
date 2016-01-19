@@ -24,6 +24,7 @@ end);
 
 BindGlobal("DIGRAPHS_DocXMLFiles", ["attr.xml",
                                     "bliss.xml",
+                                    "cliques.xml",
                                     "digraph.xml",
                                     "display.xml",
                                     "grahom.xml",
