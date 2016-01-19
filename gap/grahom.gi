@@ -16,37 +16,37 @@ function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
   local colors, gr, list, i, j;
 
   if not (IsDigraph(gr1) and IsDigraph(gr2)) then
-    ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                  "the 1st and 2nd arguments <gr1> and <gr2> must be digraphs,");
   fi;
 
   if hook <> fail then
     if not (IsFunction(hook) and NumberArgumentsFunction(hook) = 2) then
-      ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+      ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                    "the 3rd argument <hook> has to be a function with 2 ",
                    "arguments,");
     fi;
   elif not IsList(user_param) then
-    ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                  "the 4th argument <user_param> must be a list,");
   fi;
 
   if limit = infinity then
     limit := fail;
   elif not IsPosInt(limit) then
-    ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                  "the 5th argument <limit> has to be a positive integer or ",
                  "infinity,");
   fi;
 
   if hint <> fail and not IsPosInt(hint) then
-    ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                   "the 6th argument <hint> has to be a positive integer or ",
                   "fail,");
   fi;
 
   if not (inj in [true, false]) then
-    ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                  "the 7th argument <inj> has to be a true or false,");
   fi;
 
@@ -54,14 +54,14 @@ function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
           and ForAll(image, x -> IsPosInt(x) and x <= DigraphNrVertices(gr2))
           and IsDuplicateFreeList(image))
       then
-    ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                  "the 8th argument <image> has to be a duplicate-free list of ",
                  "vertices of the\n2nd argument <gr2>,");
   fi;
 
   if not (IsList(map) and Length(map) <= DigraphNrVertices(gr1)
           and ForAll(map, x -> x in image)) then
-    ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                  "the 9th argument <map> must be a list of vertices of the 8th",
                  " argument <image>\nwhich is no longer than the number of ",
                  "vertices of the 1st argument <gr1>,");# TODO improve
@@ -78,7 +78,7 @@ function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
         colors[i] := [1 .. DigraphNrVertices(gr[i])];
         if not (IsDuplicateFreeList(Concatenation(list[i])) and
                 Union(list[i]) = colors[i]) then
-          ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+          ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                        "the union of the lists in the ", 9 + i,
                        "th arg should equal ",
                        "[1 .. ", DigraphNrVertices(gr[i]), "],");
@@ -91,7 +91,7 @@ function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
         if not (Length(list[i]) = DigraphNrVertices(gr[i])
                 and ForAll(list[i], c -> IsPosInt(c) and 1 <= c
                                      and c <= DigraphNrVertices(gr[i]))) then
-          ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+          ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                        "the ", 9 + i, "th arg must be a list of length ",
                        DigraphNrVertices(gr[i]), " of integers in [1 .. ",
                        DigraphNrVertices(gr[i]), "],");
@@ -100,7 +100,7 @@ function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
       fi;
     od;
   else
-    ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: usage,\n",
+    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                  "the 10th and 11th arguments <list1> and <list2> must both ",
                  "be fail or neither must be fail,");
   fi;
@@ -125,7 +125,7 @@ function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
     fi;
     return user_param;
   fi;
-  ErrorMayQuit("Digraphs: HomomorphismDigraphsFinder: error,\n",
+  ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: error,\n",
                "not yet implemented for digraphs with more than 512 ",
                "vertices,");
 end);
@@ -137,14 +137,14 @@ function(arg)
   local digraph, limit, colors, G, gens, limit_arg, out;
 
   if IsEmpty(arg) then
-    ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
+    ErrorNoReturn("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
                  "this function takes at least one argument,");
   fi;
 
   digraph := arg[1];
 
   if not IsDigraph(digraph) then
-    ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
+    ErrorNoReturn("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
                  "the 1st argument <digraph> must be a digraph,");
   fi;
 
@@ -158,7 +158,7 @@ function(arg)
       colors := fail;
       G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph));
     else
-      ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
+      ErrorNoReturn("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
                    "<colors> must be a homogenous list,");
     fi;
   else
@@ -171,7 +171,7 @@ function(arg)
 
   if IsBound(arg[3]) then
     if not (IsPosInt(arg[3]) or arg[3] = infinity) then
-      ErrorMayQuit("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
+      ErrorNoReturn("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
                    "<limit> must be a positive integer or infinity,");
     fi;
     limit := arg[3];

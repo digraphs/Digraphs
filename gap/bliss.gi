@@ -32,7 +32,7 @@ function(graph, list)
   if (not IsEmpty(list)) and IsList(list[1]) then # color classes
     colors := [1 .. DigraphNrVertices(graph)];
     if not (ForAll(list, IsDuplicateFreeList) and Union(list) = colors) then
-      ErrorMayQuit("Digraphs: DigraphCanonicalLabelling: usage,\n",
+      ErrorNoReturn("Digraphs: DigraphCanonicalLabelling: usage,\n",
                    "the union of the lists in the second arg should equal ",
                    "[1 .. ", DigraphNrVertices(graph), "],");
     fi;
@@ -44,7 +44,7 @@ function(graph, list)
     if not (Length(list) = DigraphNrVertices(graph)
             and ForAll(list, c -> IsPosInt(c) and 1 <= c
                                   and c <= DigraphNrVertices(graph))) then
-      ErrorMayQuit("Digraphs: DigraphCanonicalLabelling: usage,\n",
+      ErrorNoReturn("Digraphs: DigraphCanonicalLabelling: usage,\n",
                    "the second arg must be a list of length ",
                    DigraphNrVertices(graph), " of integers in [1 .. ",
                    DigraphNrVertices(graph), "],");
@@ -108,7 +108,7 @@ function(graph, list)
   if (not IsEmpty(list)) and IsList(list[1]) then # color classes
     colors := [1 .. DigraphNrVertices(graph)];
     if not (ForAll(list, IsDuplicateFreeList) and Union(list) = colors) then
-      ErrorMayQuit("Digraphs: AutomorphismGroup: usage,\n",
+      ErrorNoReturn("Digraphs: AutomorphismGroup: usage,\n",
                    "the union of the lists in the second arg should equal ",
                    "[1 .. ", DigraphNrVertices(graph), "],");
     fi;
@@ -120,7 +120,7 @@ function(graph, list)
     if not (Length(list) = DigraphNrVertices(graph)
             and ForAll(list, c -> IsPosInt(c) and 1 <= c
                                   and c <= DigraphNrVertices(graph))) then
-      ErrorMayQuit("Digraphs: AutomorphismGroup: usage,\n",
+      ErrorNoReturn("Digraphs: AutomorphismGroup: usage,\n",
                    "the second arg must be a list of length ",
                    DigraphNrVertices(graph), " of integers in [1 .. ",
                    DigraphNrVertices(graph), "],");

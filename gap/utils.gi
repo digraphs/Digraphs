@@ -80,7 +80,7 @@ function(file)
   SetInfoLevel(InfoDigraphs, record.InfoLevelInfoDigraphs);
 
   if not IsBound(GAPInfo.TestData.START_TIME) then
-      ErrorMayQuit("Digraphs: DIGRAPHS_StopTest:\n",
+      ErrorNoReturn("Digraphs: DIGRAPHS_StopTest:\n",
                    "`STOP_TEST' command without `START_TEST' command for `",
                    file, "'");
   fi;
@@ -110,7 +110,7 @@ function(dir, opts)
       opts.parallel := false;
     fi; #TODO add printing of ignored options
   else
-    ErrorMayQuit("Digraphs: DIGRAPHS_TestDir: usage,\n",
+    ErrorNoReturn("Digraphs: DIGRAPHS_TestDir: usage,\n",
                  "the argument must be a record,");
   fi;
 
@@ -214,7 +214,7 @@ function(arg)
   local file, opts, split, print_file, width, test_output;
 
   if Length(arg) = 0 then
-    ErrorMayQuit("Digraphs: DIGRAPHS_Test: usage,\n",
+    ErrorNoReturn("Digraphs: DIGRAPHS_Test: usage,\n",
                  "there should be at least 1 argument,");
   fi;
 
@@ -287,7 +287,7 @@ function()
                    "extreme.d6.gz");
 
   if file = fail then
-    ErrorMayQuit("Digraphs: DigraphsTestExtreme:\n",
+    ErrorNoReturn("Digraphs: DigraphsTestExtreme:\n",
                  "the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
                  "required\nfor these tests to run. Please download the ",
                  "'digraphs-lib.tar.gz'\narchive from:\n\n",
