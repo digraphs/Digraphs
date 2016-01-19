@@ -135,7 +135,7 @@ function(digraph, v)
   local pos, gens, sch, trace, word, stabs;
 
   if v > DigraphNrVertices(digraph) then
-    ErrorMayQuit("Digraphs: DigraphStabilizer: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphStabilizer: usage,\n",
                  "the second argument must not exceed ",
                  DigraphNrVertices(digraph), ",");
   fi;

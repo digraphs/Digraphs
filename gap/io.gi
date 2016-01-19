@@ -214,20 +214,20 @@ function(arg)
     decoder := arg[2];
     nr := arg[3];
   else
-    ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
+    ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
                  "ReadDigraphs( filename [, decoder][, pos] ),");
   fi;
 
   if (not IsString(name)) or (not (IsFunction(decoder) or decoder = fail))
       or (not (IsPosInt(nr) or nr = infinity)) then
-    ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
+    ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
                  "ReadDigraphs( filename [, decoder][, pos] ),");
   fi;
 
   file := IO_CompressedFile(UserHomeExpand(name), "r");
 
   if file = fail then
-    ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
+    ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
                  "cannot open file ", name, ",");
   fi;
 
@@ -241,7 +241,7 @@ function(arg)
 
     if extension in ["gz", "bzip2", "xz"] then
       if Length(splitname) = 2 then
-        ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
+        ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
                      "cannot determine the file format,");
       fi;
       extension := splitname[Length(splitname) - 1];
@@ -263,7 +263,7 @@ function(arg)
       last_item := IO_Nothing;
       all_items := DIGRAPHS_UnpickleAll;
     else
-      ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
+      ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
                    "cannot determine the file format,");
     fi;
   fi;
@@ -301,15 +301,15 @@ function(arg)
     digraphs := arg[2];
     mode := arg[3];
   else
-    ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
+    ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
                  "there must be 2 or 3 arguments,");
   fi;
 
   if not IsString(name) then
-    ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
+    ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
                  "<name> must be a string,");
   elif not ForAll(digraphs, IsDigraph) then
-    ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
+    ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
                  "<digraphs> must be a list of digraphs,");
   fi;
 
@@ -417,7 +417,7 @@ function(arg)
   file := IO_CompressedFile(UserHomeExpand(filepath), mode);
 
   if file = fail then
-    ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
+    ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
                  "cannot open file ", filepath, ",");
   fi;
 
@@ -478,7 +478,7 @@ InstallGlobalFunction(TCodeDecoder,
 function(str)
   local out, i;
   if not IsString(str) then
-    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: TCodeDecoder: usage,\n",
                  "first argument <str> must be a string,");
   fi;
 
@@ -486,22 +486,22 @@ function(str)
   Apply(str, EvalString);
 
   if not ForAll(str, x -> IsInt(x) and x >= 0) then
-    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: TCodeDecoder: usage,\n",
                  "1st argument <str> must be a string of ",
                  "space-separated non-negative integers,");
   fi;
   if not Length(str) >= 2 then
-    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: TCodeDecoder: usage,\n",
                  "first argument <str> must be a string of ",
                  "at least two integers,");
   fi;
   if not ForAll([3 .. Length(str)], i -> str[i] < str[1]) then
-    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: TCodeDecoder: usage,\n",
                  "vertex numbers must be in the range [0..n-1],\n",
                  "where n is the first entry in <str>,");
   fi;
   if Length(str) < 2 * str[2] + 2 then
-    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: TCodeDecoder: usage,\n",
                  "<str> must contain at least 2e+2 entries,\n",
                  "where e is the number of edges (the 2nd entry in <str>),");
   fi;
@@ -548,7 +548,7 @@ function(s)
   end;
 
   if Length(s) = 0 then
-    ErrorMayQuit("Digraphs: DigraphFromGraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromGraph6String: usage,\n",
                  "the input string should be non-empty,");
   fi;
 
@@ -574,7 +574,7 @@ function(s)
       start := 5;
     fi;
   else
-    ErrorMayQuit("Digraphs: DigraphFromGraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromGraph6String: usage,\n",
                  "<s> is not a valid graph6 input,");
   fi;
 
@@ -582,7 +582,7 @@ function(s)
   if list <> [0] and list <> [1] and
       not (Int((maxedges - 1) / 6) + start = Length(list) and
            list[Length(list)] mod 2 ^ ((0 - maxedges) mod 6) = 0) then
-    ErrorMayQuit("Digraphs: DigraphFromGraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromGraph6String: usage,\n",
                  "<s> is not a valid graph6 input,");
   fi;
 
@@ -622,13 +622,13 @@ function(s)
   s := Chomp(s);
   # Check non-emptiness
   if Length(s) = 0 then
-    ErrorMayQuit("Digraphs: DigraphFromDigraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromDigraph6String: usage,\n",
                  "the input string should be non-empty,");
   fi;
 
   # Check for the special '+' character
   if s[1] <> '+' then
-    ErrorMayQuit("Digraphs: DigraphFromDigraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromDigraph6String: usage,\n",
                  "<s> must be a string in Digraph6 format,");
   fi;
 
@@ -654,7 +654,7 @@ function(s)
       start := 6;
     fi;
   else
-    ErrorMayQuit("Digraphs: DigraphFromDigraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromDigraph6String: usage,\n",
                  "<s> must be a string in Digraph6 format,");
   fi;
 
@@ -694,13 +694,13 @@ function(s)
   s := Chomp(s);
   # Check non-emptiness
   if Length(s) = 0 then
-    ErrorMayQuit("Digraphs: DigraphFromSparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromSparse6String: usage,\n",
                  "the input string should be non-empty,");
   fi;
 
   # Check for the special ':' character
   if s[1] <> ':' then
-    ErrorMayQuit("Digraphs: DigraphFromSparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromSparse6String: usage,\n",
                  "<s> must be a string in Sparse6 format,");
   fi;
 
@@ -716,7 +716,7 @@ function(s)
     start := 3;
   elif list[3] = 63 then
     if Length(list) <= 8 then
-      ErrorMayQuit("Digraphs: DigraphFromSparse6String: usage,\n",
+      ErrorNoReturn("Digraphs: DigraphFromSparse6String: usage,\n",
                    "<s> must be a string in Sparse6 format,");
     fi;
     n := 0;
@@ -731,7 +731,7 @@ function(s)
       od;
       start := 6;
   else
-    ErrorMayQuit("Digraphs: DigraphFromSparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromSparse6String: usage,\n",
                  "<s> must be a string in Sparse6 format,");
   fi;
 
@@ -836,7 +836,7 @@ function(arg)
         return DigraphByEdges(edges);
       end;
   else
-    ErrorMayQuit("Digraphs: DigraphPlainTextLineDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphPlainTextLineDecoder: usage,\n",
                  "DigraphPlainTextLineDecoder(delimiter, [,delimiter], ",
                  "offset),");
   fi;
@@ -854,7 +854,7 @@ function(name, delimiter, offset, ignore)
 
   if (not IsString(name)) or (not IsString(delimiter)) or (not IsInt(offset))
       or (not (IsString(ignore) or IsChar(ignore))) then
-    ErrorMayQuit("Digraphs: ReadPlainTextDigraph: usage,\n",
+    ErrorNoReturn("Digraphs: ReadPlainTextDigraph: usage,\n",
                  "ReadPlainTextDigraph(filename, delimiter, offset, ignore",
                  "),");
   fi;
@@ -866,7 +866,7 @@ function(name, delimiter, offset, ignore)
   file := IO_CompressedFile(UserHomeExpand(name), "r");
 
   if file = fail then
-    ErrorMayQuit("Digraphs: ReadPlainTextDigraph:\n",
+    ErrorNoReturn("Digraphs: ReadPlainTextDigraph:\n",
                  "cannot open file ", name, ",");
   fi;
 
@@ -895,13 +895,13 @@ function(s)
 
   # Check non-emptiness
   if Length(s) = 0 then
-    ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromDiSparse6String: usage,\n",
                  "the input string should be non-empty,");
   fi;
 
   # Check for the special ':' character
   if s[1] <> '.' then
-    ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromDiSparse6String: usage,\n",
                  "<s> must be a string in disparse6 format,");
   fi;
 
@@ -917,7 +917,7 @@ function(s)
     start := 3;
   elif list[3] = 63 then
     if Length(list) <= 8 then
-      ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
+      ErrorNoReturn("Digraphs: DigraphFromDiSparse6String: usage,\n",
                    "<s> must be a string in disparse6 format,");
     fi;
     n := 0;
@@ -932,7 +932,7 @@ function(s)
       od;
       start := 6;
   else
-    ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromDiSparse6String: usage,\n",
                  s, " is not a valid disparse6 input,");
   fi;
 
@@ -1064,7 +1064,7 @@ function(name, digraph, delimiter, offset)
 
   if (not IsString(name)) or (not IsString(delimiter))
       or (not IsInt(offset)) then
-    ErrorMayQuit("Digraphs: WritePlainTextDigraph: usage,\n",
+    ErrorNoReturn("Digraphs: WritePlainTextDigraph: usage,\n",
                  "WritePlainTextDigraph(filename, digraph, delimiter, ",
                  "offset),");
   fi;
@@ -1072,7 +1072,7 @@ function(name, digraph, delimiter, offset)
   file := IO_CompressedFile(UserHomeExpand(name), "w");
 
   if file = fail then
-    ErrorMayQuit("Digraphs: WritePlainTextDigraph:\n",
+    ErrorNoReturn("Digraphs: WritePlainTextDigraph:\n",
                  "can not open file ", name, ",");
   fi;
 
@@ -1091,7 +1091,7 @@ function(graph)
   if (IsMultiDigraph(graph)
       or not IsSymmetricDigraph(graph)
       or DigraphHasLoops(graph)) then
-    ErrorMayQuit("Digraphs: Graph6String: usage,\n",
+    ErrorNoReturn("Digraphs: Graph6String: usage,\n",
                  "<graph> must be symmetric and have no loops or multiple ",
                  "edges,");
   fi;
@@ -1103,7 +1103,7 @@ function(graph)
   # First write the number of vertices
   lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorMayQuit("Digraphs: Graph6String: usage,\n",
+    ErrorNoReturn("Digraphs: Graph6String: usage,\n",
                  "<graph> must have between 0 and 68719476736 vertices,");
   fi;
   Append(list, lenlist);
@@ -1153,7 +1153,7 @@ function(graph)
   # Now write the number of vertices
   lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorMayQuit("Digraphs: Digraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: Digraph6String: usage,\n",
                  "<graph> must have between 0 and 68719476736 vertices,");
   fi;
   Append(list, lenlist);
@@ -1190,7 +1190,7 @@ function(graph)
   local list, n, lenlist, adj, nredges, k, blist, v, nextbit, AddBinary, i, j,
         bitstopad, pos, block;
   if not IsSymmetricDigraph(graph) then
-    ErrorMayQuit("Digraphs: Sparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: Sparse6String: usage,\n",
                  "the argument <graph> must be a symmetric digraph,");
   fi;
 
@@ -1203,7 +1203,7 @@ function(graph)
   # Now write the number of vertices
   lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorMayQuit("Digraphs: Sparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: Sparse6String: usage,\n",
                  "<graph> must have between 0 and 68719476736 vertices,");
   fi;
   Append(list, lenlist);
@@ -1308,7 +1308,7 @@ function(graph)
   # Now write the number of vertices
   lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorMayQuit("Digraphs: DiSparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: DiSparse6String: usage,\n",
                  "<graph> must have between 0 and 68719476736 vertices,");
   fi;
   Append(list, lenlist);

@@ -131,7 +131,7 @@ function(digraph)
   local verts, old, new, gr, i;
 
   if IsMultiDigraph(digraph) then
-    ErrorMayQuit("Digraphs: DigraphDual: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphDual: usage,\n",
                  "the argument <graph> must not have multiple edges,");
   fi;
 
@@ -785,7 +785,7 @@ InstallMethod(DigraphUndirectedGirth, "for a digraph",
 function(digraph)
   # This is only defined on undirected graphs (i.e. symmetric digraphs)
   if not IsSymmetricDigraph(digraph) then
-    ErrorMayQuit("Digraphs: DigraphUndirectedGirth: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphUndirectedGirth: usage,\n",
                  "<digraph> must be a symmetric digraph,");
   fi;
   if DigraphHasLoops(digraph) then
@@ -896,7 +896,7 @@ InstallMethod(DigraphTransitiveClosure, "for a digraph",
 [IsDigraph],
 function(graph)
   if IsMultiDigraph(graph) then
-    ErrorMayQuit("Digraphs: DigraphTransitiveClosure: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphTransitiveClosure: usage,\n",
                  "the argument <graph> cannot have multiple edges,");
   fi;
   return DigraphTransitiveClosureNC(graph, false);
@@ -908,7 +908,7 @@ InstallMethod(DigraphReflexiveTransitiveClosure, "for a digraph",
 [IsDigraph],
 function(graph)
   if IsMultiDigraph(graph) then
-    ErrorMayQuit("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
                  "the argument <graph> cannot have multiple edges,");
   fi;
   return DigraphTransitiveClosureNC(graph, true);
@@ -1162,7 +1162,7 @@ InstallMethod(DigraphDegeneracy,
 [IsDigraph],
 function(gr)
   if not IsSymmetricDigraph(gr) or IsMultiDigraph(gr) then
-    ErrorMayQuit("Digraphs: DigraphDegeneracy: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphDegeneracy: usage,\n",
                  "the argument <gr> must be a symmetric digraph without ",
                  "multiple edges,");
   fi;
@@ -1174,7 +1174,7 @@ InstallMethod(DigraphDegeneracyOrdering,
 [IsDigraph],
 function(gr)
   if not IsSymmetricDigraph(gr) or IsMultiDigraph(gr) then
-    ErrorMayQuit("Digraphs: DigraphDegeneracyOrdering: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphDegeneracyOrdering: usage,\n",
                  "the argument <gr> must be a symmetric digraph without ",
                  "multiple edges,");
   fi;

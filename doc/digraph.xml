@@ -335,9 +335,9 @@ true]]></Example>
         if <A>list</A> is a list and <A>func</A> is a function taking 2
         arguments that are elements of <A>list</A>, and <A>func</A> returns
         <K>true</K> or <K>false</K>, then this operation creates a digraph with
-        vertices <C>[1 .. Length(<A>obj</A>)]</C> and an edge from vertex
+        vertices <C>[1 .. Length(<A>list</A>)]</C> and an edge from vertex
         <C>i</C> to vertex <C>j</C> if and only if
-        <C><A>func</A>(<A>obj</A>[i], <A>obj</A>[j])</C> returns <K>true</K>.
+        <C><A>func</A>(<A>list</A>[i], <A>list</A>[j])</C> returns <K>true</K>.
       </Item>
       
       <Mark>for a group, a list, and two functions</Mark>

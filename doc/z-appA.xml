@@ -45,8 +45,6 @@
           <Alt Only="HTML">
           Used with the arguments of <C>Graph</C> in &Grape;, <Ref
             Oper="Digraph"/> will return an equivalent digraph. <P/>
-
-          Digraphs can also be created using: TODO
           </Alt>
         </Item>
       </Row>
@@ -1207,13 +1205,13 @@
           <C>VertexColouring</C>
         </Item>
         <Item>
-          <Ref Oper="DigraphColoring"/>
+          <Ref Oper="DigraphColoring" Label="for a digraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>VertexColouring</C> in &Grape; is equivalent to <Ref
-            Attr="DigraphColoring"/> in &Digraphs;, except it return a
-            transformation rather than a list of vertex colors.
+            Attr="DigraphColoring" Label="for a digraph"/> in &Digraphs;,
+          except it return a transformation rather than a list of vertex colors.
           </Alt>
         </Item>
       </Row>
@@ -1224,12 +1222,13 @@
           <C>CompleteSubgraphs</C>
         </Item>
         <Item>
-          None
+          <Ref Func="DigraphCliques"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            There is no analogous function in &Digraphs;, although this feature
-            will be implemented very soon.
+            The functionality of <C>CompleteSubgraphs</C> in &Grape; is provided
+            by <Ref Func="DigraphCliques"/> and <Ref Func="DigraphMaximalCliques"/>
+            in &Digraphs;.
           </Alt>
         </Item>
       </Row>
@@ -1240,12 +1239,15 @@
           <C>CompleteSubgraphsOfGivenSize</C>
         </Item>
         <Item>
-          None
+          <Ref Func="DigraphCliques"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            There is no analogous function in &Digraphs;, although this feature
-            will be implemented very soon.
+            Much of the functionality of <C>CompleteSubgraphsOfGivenSize</C> in
+            &Grape; is provided by <Ref Func="DigraphCliques"/> and <Ref
+              Func="DigraphMaximalCliques"/> in &Digraphs;, except that the
+            functionality relating to vertex weights and partial colourings is
+            not implemented.
           </Alt>
         </Item>
       </Row>
@@ -1292,7 +1294,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C></C> in &Grape; is equivalent to
+            <C>AutGroupGraph</C> in &Grape; is equivalent to
             <Ref Attr="AutomorphismGroup" Label="for a digraph"/> in &Digraphs;.
           </Alt>
         </Item>

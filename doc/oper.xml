@@ -750,7 +750,7 @@ gap> DigraphVertices(gr);
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 1, 1 ], [ 2, 4 ], [ 3, 1 ], [ 4, 1 ], [ 4, 3 ], 
   [ 4, 4 ] ]
-gap> p := [ [ 1 ], [ 2, 4 ], [ 3 ] ];
+gap> p := [[1], [2, 4], [3]];
 [ [ 1 ], [ 2, 4 ], [ 3 ] ]
 gap> qr := QuotientDigraph(gr, p);
 <multidigraph with 3 vertices, 7 edges>
@@ -784,13 +784,13 @@ gap> QuotientDigraph(EmptyDigraph(0), [ ]);
     an edge in <A>digraph</A>, and <K>false</K> otherwise.
 
 <Example><![CDATA[
-gap> gr := Digraph( 6, [ 1, 1, 2, 4, 6 ], [ 2, 2, 6, 3, 1 ] );
+gap> gr := Digraph(6, [1, 1, 2, 4, 6], [2, 2, 6, 3, 1]);
 <multidigraph with 6 vertices, 5 edges>
-gap> IsDigraphEdge( gr, [ 1, 1 ] );
+gap> IsDigraphEdge(gr, [1, 1]);
 false
-gap> IsDigraphEdge( gr, [ 1, 2 ] );
+gap> IsDigraphEdge(gr, [1, 2]);
 true
-gap> IsDigraphEdge( gr, [ 1, 8 ] );
+gap> IsDigraphEdge(gr, [1, 8]);
 false
 ]]></Example>
   </Description>
