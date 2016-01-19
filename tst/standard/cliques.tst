@@ -388,13 +388,11 @@ the ninth argument <reps> must be either true or false,
 gap> CliquesFinder(gr, fail, [], infinity, [1], [], false, 1, true);
 Error, Digraphs: CliquesFinder: usage,
 if the ninth argument <reps> is true then the fourth and fifth arguments
-<include> and <exclude> must be invariant under the action of the DigraphGroup
-of <gr>,
+<include> and <exclude> must be invariant under the action of <group>,
 gap> CliquesFinder(gr, fail, [], infinity, [], [1], false, 1, true);
 Error, Digraphs: CliquesFinder: usage,
 if the ninth argument <reps> is true then the fourth and fifth arguments
-<include> and <exclude> must be invariant under the action of the DigraphGroup
-of <gr>,
+<include> and <exclude> must be invariant under the action of <group>,
 gap> CliquesFinder(gr, fail, [], infinity, [1 .. 5], [1 .. 5], false, 1, true);
 [  ]
 gap> CliquesFinder(gr, fail, [], infinity, [1], [1], false, 1, false);

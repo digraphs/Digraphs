@@ -698,7 +698,7 @@ function(gr, hook, user_param, limit, include, exclude, max, size, reps)
       ErrorMayQuit("Digraphs: CliquesFinder: usage,\n",
                    "if the ninth argument <reps> is true then the fourth and ",
                    "fifth arguments\n<include> and <exclude> must be ",
-                   "invariant under the action of the DigraphGroup\nof <gr>,");
+                   "invariant under the action of <group>,");
     fi;
   fi;
 
