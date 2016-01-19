@@ -1314,6 +1314,23 @@ gap> OutNeighbours(DistanceDigraph(gr, 1));
 gap> OutNeighbours(DistanceDigraph(gr, 2));
 [ [ 3 ], [  ], [  ] ]
 
+#T# DistanceDigraph with known automorphisms
+gap> gr := Digraph([[1, 2], [], [2, 3]]);;
+gap> DigraphGroup(gr) = Group((1,3));
+true
+gap> OutNeighbours(DistanceDigraph(gr, 0));
+[ [ 1 ], [ 2 ], [ 3 ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 1));
+[ [ 2 ], [  ], [ 2 ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 2));
+[ [  ], [  ], [  ] ]
+
+#T# DistanceDigraph: bad input
+gap> gr := Digraph([[1, 2], [2, 3], [4], [1]]);;
+gap> DistanceDigraph(gr, -2);
+Error, Digraphs: DistanceDigraph: usage,
+second arg <distance> must be a non-negative integer,
+
 #T# DigraphAddEdgeOrbit
 gap> digraph := NullDigraph(4);
 <digraph with 4 vertices, 0 edges>

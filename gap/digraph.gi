@@ -287,7 +287,7 @@ function(digraph, distances)
   new := EmptyDigraph(n);
   vertices := [1 .. n];
   out := [];
-  if HasDigraphGroup(digraph) then
+  if HasDigraphGroup(digraph) and not IsTrivial(DigraphGroup(digraph)) then
     group := DigraphGroup(digraph);
     orbitreps := DigraphOrbitReps(digraph);
     for x in orbitreps do
