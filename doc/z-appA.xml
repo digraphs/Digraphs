@@ -1181,6 +1181,25 @@
       </E>
     </Alt>
 
+    <Table Align="|l|l|l|">
+      <HorLine/>
+      <Row>
+        <Item>
+          <C>VertexColouring</C>
+        </Item>
+        <Item>
+          <Ref Oper="DigraphColoring"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>VertexColouring</C> in &Grape; is equivalent to <Ref
+            Attr="DigraphColoring"/> in &Digraphs;, except it return a
+            transformation rather than a list of vertex colors.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+    </Table>
   </Section>
 
   <Section>
