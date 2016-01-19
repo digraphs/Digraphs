@@ -19,7 +19,7 @@ from test import *
 _WEBPAGE_DIR = os.path.expanduser('~/Sites/public_html/digraphs/')
 _MAMP_DIR = '/Applications/MAMP/'
 _DIGRAPHS_REPO_DIR = os.path.expanduser('~/gap/pkg/digraphs/')
-_DIGRAPHS_LIB_ARCHIVE = 'digraphs-lib-0.3.tar.gz'
+_DIGRAPHS_LIB_ARCHIVE = 'digraphs-lib-0.5.tar.gz'
 _DIGRAPHS_LIB_URL = ('https://bitbucket.org/james-d-mitchell/digraphs/downloads/'
                      + _DIGRAPHS_LIB_ARCHIVE)
 _FILES_TO_DELETE_FROM_ARCHIVE = ['.hgignore', '.hgtags', '.gaplint_ignore',
