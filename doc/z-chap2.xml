@@ -70,7 +70,7 @@
     <#Include Label="CycleDigraph">
     <#Include Label="EmptyDigraph">
     <#Include Label="CayleyDigraph">
-    
+    <#Include Label="JohnsonDigraph">
   </Section>
 
 </Chapter>
