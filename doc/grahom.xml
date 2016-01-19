@@ -340,6 +340,7 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
 <ManSection>
   <Oper Name="DigraphColoring" Arg="digraph, n"/>
   <Oper Name="DigraphColouring" Arg="digraph, n"/>
+  <Oper Name="DigraphColoring" Arg="digraph"/>
   <Returns> A transformation, or <K>fail</K>.</Returns>
   <Description>
     A digraph coloring is a labeling of the vertices (using precisely <A>n</A>
@@ -352,7 +353,10 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
     returns <K>fail</K>. <P/>
 
     Note that a digraph has a 2-coloring if and only if it is bipartite, see
-    <Ref Prop="IsBipartiteDigraph"/>.
+    <Ref Prop="IsBipartiteDigraph"/>.<P/>
+
+    If the third form is used, a greedy algorithm is used to obtain a
+    colouring, which possibly is not minimal.
     <Example><![CDATA[
 gap> DigraphColoring(CompleteDigraph(5), 4);
 fail
@@ -363,6 +367,8 @@ gap> t := DigraphColoring(gr, 2);
 Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 gap> ForAll(DigraphEdges(gr), e -> e[1] ^ t <> e[2] ^ t);
 true
+gap> DigraphColoring(gr);
+Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 ]]></Example>
   </Description>
 </ManSection>
