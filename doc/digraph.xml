@@ -958,7 +958,7 @@ gap> OutNeighbours(gr);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> and <A>k</A> are non-negative integers, then this operation
-    returns a symmetric graph which corresponds to the undirected <E>Johnson
+    returns a symmetric digraph which corresponds to the undirected <E>Johnson
     graph</E> <M>J(n, k)</M>. <P/>
 
     The <E>Johnson graph</E> <M>J(n, k)</M> has vertices given by all the
