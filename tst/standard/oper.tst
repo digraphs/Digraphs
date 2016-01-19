@@ -1548,8 +1548,11 @@ gap> DigraphDistanceSet(gr, 1, [1]);
 [ 2, 3, 5 ]
 gap> DigraphDistanceSet(gr, 1, [1,2]);
 [ 2, 3, 5, 4, 6, 7, 8 ]
-gap> DigraphDistanceSet(gr, 2, [2]);  
+gap> DigraphDistanceSet(gr, 2, 2);
 [ 3, 5, 7, 8 ]
+gap> DigraphDistanceSet(gr, 2, -1);
+Error, Digraphs: DigraphDistanceSet: usage,
+the third argument must be a non-negative integer,
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
