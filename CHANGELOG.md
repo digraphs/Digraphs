@@ -10,7 +10,7 @@ version, we welcomed Jan De Beule to the development team.
 
 ### New Features in Version 0.4
 * Functionality to calculate cliques and independent sets
-* New methods for `Digraph`
+* New methods for the constructor function `Digraph`
 * `ReadDigraphs` and `WriteDigraphs` now have a new output format `.p` or
   `.pickle`, which allows known automorphisms to be stored with the digraph
 * The following functions now use known automorphisms:
