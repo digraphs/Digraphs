@@ -19,8 +19,8 @@ function(gr, set)
   if not IsDuplicateFreeList(set)
       or not ForAll(set, x -> x in DigraphVertices(gr)) then
     ErrorNoReturn("Digraphs: IsIndependentSet: usage,\n",
-                 "the second argument <set> must be a duplicate-free list of ",
-                 "vertices of the\ndigraph <gr>,");
+                  "the second argument <set> must be a duplicate-free list of ",
+                  "vertices of the\ndigraph <gr>,");
   fi;
   return ForAll(set, x -> IsSubset([x],
                                    Intersection(OutNeighboursOfVertex(gr, x),
@@ -68,8 +68,8 @@ function(gr, clique)
   if not IsDuplicateFreeList(clique)
       or not ForAll(clique, x -> x in DigraphVertices(gr)) then
     ErrorNoReturn("Digraphs: IsClique: usage,\n",
-                 "the second argument <clique> must be a duplicate-free list ",
-                 "of vertices of the\ndigraph <gr>,");
+                  "the second argument <clique> must be a duplicate-free list ",
+                  "of vertices of the\ndigraph <gr>,");
   fi;
   nbs := OutNeighbours(gr);
   for v in clique do
@@ -122,10 +122,10 @@ function(arg)
   local gr;
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSet: usage,\n",
-                 "this function requires a least one argument,");
+                  "this function requires a least one argument,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSet: usage,\n",
-                 "the first argument must be a digraph,");
+                  "the first argument must be a digraph,");
   fi;
   gr := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   return CallFuncList(DIGRAPHS_Clique,
@@ -139,10 +139,10 @@ function(arg)
   local gr;
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphIndependentSet: usage,\n",
-                 "this function requires a least one argument,");
+                  "this function requires a least one argument,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("Digraphs: DigraphIndependentSet: usage,\n",
-                 "the first argument must be a digraph,");
+                  "the first argument must be a digraph,");
   fi;
   gr := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   return CallFuncList(DIGRAPHS_Clique,
@@ -153,14 +153,12 @@ end);
 
 InstallGlobalFunction(DigraphIndependentSetsReps,
 function(arg)
-  local digraph, include, exclude, limit, size;
-
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphIndependentSetsReps: usage,\n",
-                 "this function requires at least one argument,");
+                  "this function requires at least one argument,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("Digraphs: DigraphIndependentSetsReps: usage,\n",
-                 "the first argument <digraph> must be a digraph,");
+                  "the first argument <digraph> must be a digraph,");
   fi;
 
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
@@ -173,10 +171,10 @@ InstallGlobalFunction(DigraphIndependentSets,
 function(arg)
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphIndependentSets: usage,\n",
-                 "this function requires at least one argument,");
+                  "this function requires at least one argument,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("Digraphs: DigraphIndependentSets: usage,\n",
-                 "the first argument <digraph> must be a digraph,");
+                  "the first argument <digraph> must be a digraph,");
   fi;
 
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
@@ -200,10 +198,10 @@ function(arg)
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSetsReps: usage,\n",
-                 "this function requires at least one argument,");
+                  "this function requires at least one argument,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSetsReps: usage,\n",
-                 "the first argument <digraph> must be a digraph,");
+                  "the first argument <digraph> must be a digraph,");
   fi;
 
   digraph := arg[1];
@@ -236,14 +234,14 @@ end);
 
 InstallGlobalFunction(DigraphMaximalIndependentSets,
 function(arg)
-  local digraph, include, exclude, limit, size, out, G;
+  local digraph, out;
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSetsReps: usage,\n",
-                 "this function requires at least one argument,");
+                  "this function requires at least one argument,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSets: usage,\n",
-                 "the first argument <digraph> must be a digraph,");
+                  "the first argument <digraph> must be a digraph,");
   fi;
 
   digraph := arg[1];
@@ -270,7 +268,7 @@ InstallGlobalFunction(DigraphMaximalClique,
 function(arg)
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphMaximalClique: usage,\n",
-                 "this function requires at least one argument,");
+                  "this function requires at least one argument,");
   fi;
   return CallFuncList(DIGRAPHS_Clique, Concatenation([true], arg));
 end);
@@ -281,7 +279,7 @@ InstallGlobalFunction(DigraphClique,
 function(arg)
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphClique: usage,\n",
-                 "this function requires at least one argument,");
+                  "this function requires at least one argument,");
   fi;
   return CallFuncList(DIGRAPHS_Clique, Concatenation([false], arg));
 end);
@@ -298,7 +296,7 @@ function(arg)
   gr := arg[2];
   if not IsDigraph(gr) then
     ErrorNoReturn("Digraphs: DIGRAPHS_Clique: usage,\n",
-                 "the first argument <gr> must be a digraph,");
+                  "the first argument <gr> must be a digraph,");
   fi;
 
   # Validate arg[3]
@@ -307,8 +305,8 @@ function(arg)
     if not IsHomogeneousList(include) or not IsDuplicateFreeList(include)
         or not IsSubset(DigraphVertices(gr), include) then
       ErrorNoReturn("Digraphs: DIGRAPHS_Clique: usage,\n",
-                   "the optional second argument <include> must be a ",
-                   "duplicate-free list of\nvertices of <gr>,");
+                    "the optional second argument <include> must be a ",
+                    "duplicate-free list of\nvertices of <gr>,");
     fi;
   else
     include := [];
@@ -320,8 +318,8 @@ function(arg)
     if not IsHomogeneousList(exclude) or not IsDuplicateFreeList(exclude)
         or not IsSubset(DigraphVertices(gr), exclude) then
       ErrorNoReturn("Digraphs: DIGRAPHS_Clique: usage,\n",
-                   "the optional third argument <exclude> must be a ",
-                   "duplicate-free list of\nvertices of <gr>,");
+                    "the optional third argument <exclude> must be a ",
+                    "duplicate-free list of\nvertices of <gr>,");
     fi;
   else
     exclude := [];
@@ -332,8 +330,8 @@ function(arg)
     size := arg[5];
     if not IsPosInt(size) then
       ErrorNoReturn("Digraphs: DIGRAPHS_Clique: usage,\n",
-                   "the optional fourth argument <size> must be a positive ",
-                   "integer,");
+                    "the optional fourth argument <size> must be a positive ",
+                    "integer,");
     fi;
   fi;
 
@@ -393,7 +391,7 @@ function(arg)
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphCliquesReps: usage,\n",
-                 "this function requires at least one argument,");
+                  "this function requires at least one argument,");
   fi;
 
   digraph := arg[1];
@@ -434,7 +432,7 @@ function(arg)
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphCliques: usage,\n",
-                 "this function requires at least one argument,");
+                  "this function requires at least one argument,");
   fi;
 
   digraph := arg[1];
@@ -484,7 +482,7 @@ function(arg)
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphMaximalCliquesReps: usage,\n",
-                 "this function requires at least one argument,");
+                  "this function requires at least one argument,");
   fi;
 
   digraph := arg[1];
@@ -547,7 +545,7 @@ function(arg)
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphMaximalCliquesReps: usage,\n",
-                 "this function requires at least one argument,");
+                  "this function requires at least one argument,");
   fi;
 
   digraph := arg[1];
@@ -600,25 +598,25 @@ function(gr, hook, user_param, limit, include, exclude, max, size, reps)
 
   if not IsDigraph(gr) then
     ErrorNoReturn("Digraphs: CliquesFinder: usage,\n",
-                 "the first argument <gr> must be a digraph,");
+                  "the first argument <gr> must be a digraph,");
   fi;
 
   if hook <> fail then
     if not (IsFunction(hook) and NumberArgumentsFunction(hook) = 2) then
       ErrorNoReturn("Digraphs: CliquesFinder: usage,\n",
-                   "the second argument <hook> has to be either fail, or a ",
-                   "function with two\narguments,");
+                    "the second argument <hook> has to be either fail, or a ",
+                    "function with two\narguments,");
     fi;
   elif not IsList(user_param) then
     ErrorNoReturn("Digraphs: CliquesFinder: usage,\n",
-                 "when the fourth argument <hook> is fail, the third ",
-                 "argument <user_param> has\nto be a list,");
+                  "when the fourth argument <hook> is fail, the third ",
+                  "argument <user_param> has\nto be a list,");
   fi;
 
   if limit <> infinity and not IsPosInt(limit) then
     ErrorNoReturn("Digraphs: CliquesFinder: usage,\n",
-                 "the fourth argument <limit> has to be either infinity, or ",
-                 "a positive integer,");
+                  "the fourth argument <limit> has to be either infinity, or ",
+                  "a positive integer,");
   fi;
 
   n := DigraphNrVertices(gr);
@@ -630,25 +628,26 @@ function(gr, hook, user_param, limit, include, exclude, max, size, reps)
               and IsDuplicateFreeList(exclude))
       then
     ErrorNoReturn("Digraphs: CliquesFinder: usage,\n",
-                 "the fifth argument <include> and the sixth argument ",
-                 "<exclude> have to be\n(possibly empty) duplicate-free lists ",
-                 "of vertices of the digraph in the first\nargument <gr>,");
+                  "the fifth argument <include> and the sixth argument ",
+                  "<exclude> have to be\n(possibly empty) duplicate-free ",
+                  "lists of vertices of the digraph in the first\nargument ",
+                  "<gr>,");
   fi;
 
   if not max in [true, false] then
     ErrorNoReturn("Digraphs: CliquesFinder: usage,\n",
-                 "the seventh argument <max> must be either true or false,");
+                  "the seventh argument <max> must be either true or false,");
   fi;
 
   if size <> fail and not IsPosInt(size) then
     ErrorNoReturn("Digraphs: CliquesFinder: usage,\n",
-                 "the eighth argument <size> has to be either fail, or a ",
-                 "positive integer,");
+                  "the eighth argument <size> has to be either fail, or a ",
+                  "positive integer,");
   fi;
 
   if not reps in [true, false] then
     ErrorNoReturn("Digraphs: CliquesFinder: usage,\n",
-                 "the ninth argument <reps> must be either true or false,");
+                  "the ninth argument <reps> must be either true or false,");
   fi;
 
   # Investigate whether <include> and <exclude> are invariant under <grp>
@@ -696,9 +695,9 @@ function(gr, hook, user_param, limit, include, exclude, max, size, reps)
 
     if reps and not (invariant_include and invariant_exclude) then
       ErrorNoReturn("Digraphs: CliquesFinder: usage,\n",
-                   "if the ninth argument <reps> is true then the fourth and ",
-                   "fifth arguments\n<include> and <exclude> must be ",
-                   "invariant under the action of <group>,");
+                    "if the ninth argument <reps> is true then the fourth and ",
+                    "fifth arguments\n<include> and <exclude> must be ",
+                    "invariant under the action of <group>,");
     fi;
   fi;
 
