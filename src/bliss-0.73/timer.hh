@@ -20,7 +20,7 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace bliss {
+namespace bliss_digraphs {
 
 /** \internal
  * \brief A very simple wrapper class for measuring elapsed user+system time.
@@ -48,6 +48,6 @@ public:
   double get_duration();
 };
 
-} // namespace bliss
+} // namespace bliss_digraphs
 
 #endif

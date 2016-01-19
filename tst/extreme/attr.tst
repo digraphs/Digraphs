@@ -30,7 +30,8 @@ gap> DigraphSymmetricClosure(gr);
 <digraph with 5000 vertices, 7713076 edges>
 
 #T# DigraphAllSimpleCircuits
-gap> gr := DigraphFromDigraph6String("+N{MYG?cJOU}MqNJLoVPHC?tDlcxgFACCDWxDMX?");
+gap> gr := DigraphFromDigraph6String(
+> "+N{MYG?cJOU}MqNJLoVPHC?tDlcxgFACCDWxDMX?");
 <digraph with 15 vertices, 92 edges>
 gap> circs := DigraphAllSimpleCircuits(gr);;
 gap> Length(circs);

@@ -13,6 +13,13 @@
     <#Include Label="IsTournament">
     <#Include Label="IsTransitiveDigraph">
   </Section>
+
+  <Section><Heading>Regularity</Heading>
+    <#Include Label="IsInRegularDigraph">
+    <#Include Label="IsOutRegularDigraph">
+    <#Include Label="IsRegularDigraph">
+    <#Include Label="IsDistanceRegularDigraph">
+  </Section>
   
   <Section><Heading>Connectivity and cycles</Heading>
     <#Include Label="IsAcyclicDigraph">

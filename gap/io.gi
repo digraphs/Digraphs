@@ -8,6 +8,432 @@
 #############################################################################
 ##
 
+#############################################################################
+## This file contains methods for reading and writing digraphs from and to
+## files.
+##
+## It is organized as follows:
+##
+##   0. Internal functions
+##
+##   1. Picklers for IO
+##
+##   2. Read/WriteDigraphs (the main functions)
+##
+##   3. Decoders
+##
+##   4. Encoders
+##
+#############################################################################
+
+#############################################################################
+# 0. Internal functions
+#############################################################################
+
+BindGlobal("DIGRAPHS_SplitStringBySubstring",
+function(string, substring)
+  local m, n, i, j, out, nr;
+
+  if Length(string) = 0 then
+    return [];
+  fi;
+  if Length(substring) = 1 then
+    return SplitString(string, substring);
+  fi;
+
+  m := Length(string);
+  n := Length(substring);
+  i := 1;
+  j := 1;
+  out := [];
+  nr := 0;
+
+  while m - i >= n do
+    if string{[i .. i + n - 1]} = substring then
+      if i <> 1 then
+        nr := nr + 1;
+        out[nr] := string{[j .. i - 1]};
+        j := i + n;
+        i := i + n;
+      fi;
+    else
+      i := i + 1;
+    fi;
+  od;
+  nr := nr + 1;
+  out[nr] := string{[j .. Length(string)]};
+  return out;
+end);
+
+BindGlobal("DIGRAPHS_Graph6Length",
+function(n)
+  local list;
+  list := [];
+  if n < 0 then
+    return fail;
+  elif n < 63 then
+    Add(list, n);
+  elif n < 258248 then
+    Add(list, 63);
+    Add(list, Int(n / 64 ^ 2));
+    Add(list, Int(n / 64) mod 64);
+    Add(list, n mod 64);
+  elif n < 68719476736 then
+    Add(list, 63);
+    Add(list, 63);
+    Add(list, Int(n / 64 ^ 5));
+    Add(list, Int(n / 64 ^ 4) mod 64);
+    Add(list, Int(n / 64 ^ 3) mod 64);
+    Add(list, Int(n / 64 ^ 2) mod 64);
+    Add(list, Int(n / 64 ^ 1) mod 64);
+    Add(list, n mod 64);
+  else
+    return fail;
+  fi;
+  return list;
+end);
+
+################################################################################
+# 1. Picklers
+################################################################################
+
+BindGlobal("DIGRAPHS_UnpickleAll",
+function(file)
+  local out, next;
+
+  out := [];
+  next := IO_Unpickle(file);
+
+  while next <> IO_Nothing do
+    Add(out, next);
+    next := IO_Unpickle(file);
+  od;
+
+  return out;
+end);
+
+InstallMethod(IO_Pickle, "for a digraph with known digraph group",
+[IsFile, IsDigraph and HasDigraphGroup],
+function(file, gr)
+  local g, out;
+  g := DigraphGroup(gr);
+  if IsTrivial(g) then
+    TryNextMethod();
+  fi;
+  if IO_Write(file, "DIGG") = fail then
+    return IO_Error;
+  fi;
+  out := [GeneratorsOfGroup(g),
+          RepresentativeOutNeighbours(gr),
+          DigraphSchreierVector(gr)];
+  if IO_Pickle(file, out) = IO_Error then
+    return IO_Error;
+  fi;
+  return IO_OK;
+end);
+
+IO_Unpicklers.DIGG := function(file)
+  local list, gens, rep_out, sch, out, trace, word, digraph, i, w;
+
+  list := IO_Unpickle(file);
+  if list = IO_Error then
+    return IO_Error;
+  fi;
+
+  gens    := list[1];
+  rep_out := list[2];
+  sch     := list[3];
+
+  out  := [];
+  for i in [1 .. Length(sch)] do
+    if sch[i] < 0 then
+      out[i] := rep_out[-sch[i]];
+    fi;
+
+    trace := DIGRAPHS_TraceSchreierVector(gens, sch, i);
+    out[i] := rep_out[trace.representative];
+    word := trace.word;
+    for w in word do
+       out[i] := OnTuples(out[i], gens[w]);
+    od;
+  od;
+
+  digraph := DigraphNC(out);
+
+  SetDigraphGroup(digraph, Group(gens));
+  SetDigraphSchreierVector(digraph, sch);
+  SetRepresentativeOutNeighbours(digraph, rep_out);
+  return digraph;
+end;
+
+InstallMethod(IO_Pickle, "for a digraph",
+[IsFile, IsDigraph],
+function(file, gr)
+  if IO_Write(file, "DIGT") = fail then
+    return IO_Error;
+  fi;
+  if IO_Pickle(file, OutNeighbours(gr)) = IO_Error then
+    return IO_Error;
+  fi;
+  return IO_OK;
+end);
+
+IO_Unpicklers.DIGT := function(file)
+  local out;
+  out := IO_Unpickle(file);
+  if out = IO_Error then
+    return IO_Error;
+  fi;
+  return DigraphNC(out);
+end;
+
+################################################################################
+# 2. ReadDigraphs and WriteDigraphs
+################################################################################
+
+InstallGlobalFunction(ReadDigraphs,
+function(arg)
+  local name, decoder, nr, file, splitname, extension, next_item, last_item,
+        all_items, i, line, lines;
+
+  if Length(arg) = 1 then
+    name := arg[1];
+    decoder := fail;
+    nr := infinity;
+  elif Length(arg) = 2 then
+    name := arg[1];
+    if IsFunction(arg[2]) then
+      decoder := arg[2];
+      nr := infinity;
+    else
+      decoder := fail;
+      nr := arg[2];
+    fi;
+  elif Length(arg) = 3 then
+    name := arg[1];
+    decoder := arg[2];
+    nr := arg[3];
+  else
+    ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
+                 "ReadDigraphs( filename [, decoder][, pos] ),");
+  fi;
+
+  if (not IsString(name)) or (not (IsFunction(decoder) or decoder = fail))
+      or (not (IsPosInt(nr) or nr = infinity)) then
+    ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
+                 "ReadDigraphs( filename [, decoder][, pos] ),");
+  fi;
+
+  file := IO_CompressedFile(UserHomeExpand(name), "r");
+
+  if file = fail then
+    ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
+                 "cannot open file ", name, ",");
+  fi;
+
+  next_item := IO_ReadLine;
+  last_item := "";
+  all_items := IO_ReadLines;
+
+  if decoder = fail then
+    splitname := SplitString(name, ".");
+    extension := splitname[Length(splitname)];
+
+    if extension in ["gz", "bzip2", "xz"] then
+      if Length(splitname) = 2 then
+        ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
+                     "cannot determine the file format,");
+      fi;
+      extension := splitname[Length(splitname) - 1];
+    fi;
+
+    if extension = "txt" then
+      decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
+    elif extension = "g6" then
+      decoder := DigraphFromGraph6String;
+    elif extension = "s6" then
+      decoder := DigraphFromSparse6String;
+    elif extension = "d6" then
+      decoder := DigraphFromDigraph6String;
+    elif extension = "ds6" then
+      decoder := DigraphFromDiSparse6String;
+    elif extension = "pickle" or extension = "p" then
+      decoder := IdFunc;
+      next_item := IO_Unpickle;
+      last_item := IO_Nothing;
+      all_items := DIGRAPHS_UnpickleAll;
+    else
+      ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
+                   "cannot determine the file format,");
+    fi;
+  fi;
+
+  if nr < infinity then
+    i := 0;
+    repeat
+      i := i + 1;
+      line := next_item(file);
+    until i = nr or line = last_item;
+    IO_Close(file);
+    return decoder(line);
+  fi;
+
+  lines := all_items(file);
+  IO_Close(file);
+  for i in [1 .. Length(lines)] do
+    Info(InfoDigraphs, 1, "Reading graph ", i, " of ", Length(lines));
+    lines[i] := decoder(lines[i]);
+  od;
+  return lines;
+end);
+
+InstallGlobalFunction(WriteDigraphs,
+function(arg)
+  local name, digraphs, mode, splitpath, splitname, ext, compext, encoder,
+  g6sum, s6sum, v, e, dg6sum, ds6sum, line_encoder, filepath, file, digraph, i;
+
+  if Length(arg) = 2 then
+    name := arg[1];
+    digraphs := arg[2];
+    mode := "a";
+  elif Length(arg) = 3 then
+    name := arg[1];
+    digraphs := arg[2];
+    mode := arg[3];
+  else
+    ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
+                 "there must be 2 or 3 arguments,");
+  fi;
+
+  if not IsString(name) then
+    ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
+                 "<name> must be a string,");
+  elif not ForAll(digraphs, IsDigraph) then
+    ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
+                 "<digraphs> must be a list of digraphs,");
+  fi;
+
+  if not IsExistingFile(name) then
+    mode := "w";
+  fi;
+
+  # Look for extension
+  splitpath := SplitString(name, "/");
+  splitname := SplitString(Remove(splitpath), ".");
+
+  if Length(splitname) >= 2 then
+    ext := splitname[Length(splitname)];
+    # Compression extensions
+    if ext in ["gz", "bzip2", "xz"] then
+      compext := Remove(splitname);
+      if Length(splitname) >= 2 then
+        ext := splitname[Length(splitname)];
+      fi;
+    fi;
+    # Format extensions
+    if ext = "g6" then
+      encoder := Graph6String;
+    elif ext = "s6" then
+      encoder := Sparse6String;
+    elif ext = "d6" then
+      encoder := Digraph6String;
+    elif ext = "ds6" then
+      encoder := DiSparse6String;
+    elif ext = "txt" then
+      encoder := DigraphPlainTextLineEncoder("  ", " ", -1);
+    elif ext = "pickle" or ext = "p" then
+      encoder := IO_Pickle;
+    fi;
+  fi;
+
+  if not IsBound(encoder) then
+    # CHOOSE A GOOD ENCODER:
+    # Do we know all the graphs to be symmetric?
+    if ForAll(digraphs, g -> HasIsSymmetricDigraph(g)
+                             and IsSymmetricDigraph(g)) then
+      if ForAny(digraphs, IsMultiDigraph) then
+        encoder := DiSparse6String;
+        Add(splitname, "ds6");
+      else
+        # Find the sum of length estimates using Graph6 and Sparse6
+        g6sum := 0;
+        s6sum := 0;
+        for digraph in digraphs do
+          v := DigraphNrVertices(digraph);
+          e := DigraphNrEdges(digraph);
+          g6sum := g6sum + (v * (v - 1) / 2);
+          s6sum := s6sum + (e / 2 * (Log2Int(v - 1) + 2) * 3 / 2);
+        od;
+        if g6sum < s6sum and not ForAny(digraphs, DigraphHasLoops) then
+          encoder := Graph6String;
+          Add(splitname, "g6");
+        else
+          encoder := Sparse6String;
+          Add(splitname, "s6");
+        fi;
+      fi;
+    else
+      if ForAny(digraphs, IsMultiDigraph) then
+        encoder := DiSparse6String;
+        Add(splitname, "ds6");
+      else
+        # Find the sum of length estimates using Digraph6 and DiSparse6
+        dg6sum := 0;
+        ds6sum := 0;
+        for digraph in digraphs do
+          v := DigraphNrVertices(digraph);
+          e := DigraphNrEdges(digraph);
+          dg6sum := dg6sum + v ^ 2;
+          ds6sum := ds6sum + (e * (Log2Int(v) + 2) * 3 / 2);
+        od;
+        if dg6sum < ds6sum then
+          encoder := Digraph6String;
+          Add(splitname, "d6");
+        else
+          encoder := DiSparse6String;
+          Add(splitname, "ds6");
+        fi;
+      fi;
+    fi;
+  fi;
+
+  if encoder <> IO_Pickle then
+    line_encoder := encoder;
+    encoder := function(file, x)
+      return IO_WriteLine(file, line_encoder(x));
+    end;
+  fi;
+
+  # Rebuild the filename
+  if IsBound(compext) then
+    Add(splitname, compext);
+  fi;
+  Add(splitpath, JoinStringsWithSeparator(splitname, "."));
+  filepath := JoinStringsWithSeparator(splitpath, "/");
+
+  if filepath <> name then
+    Info(InfoWarning, 1, "Writing to ", filepath);
+  fi;
+  file := IO_CompressedFile(UserHomeExpand(filepath), mode);
+
+  if file = fail then
+    ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
+                 "cannot open file ", filepath, ",");
+  fi;
+
+  for i in [1 .. Length(digraphs)] do
+    Info(InfoDigraphs, 1,
+         "Writing graph ", String(i), " of ", String(Length(digraphs)));
+    encoder(file, digraphs[i]);
+  od;
+
+  IO_Close(file);
+end);
+
+################################################################################
+# 3. Decoders
+################################################################################
+
 InstallGlobalFunction(TournamentLineDecoder,
 function(str)
   local out, pos, n, i, j;
@@ -29,12 +455,10 @@ function(str)
   return Digraph(out);
 end);
 
-#
-
 InstallGlobalFunction(AdjacencyMatrixUpperTriangleLineDecoder,
 function(str)
   local out, pos, n, i, j;
-
+  str := Chomp(str);
   pos := 0;
   n := (Sqrt(8 * Length(str) + 1) + 1) / 2;
   out := List([1 .. n], x -> []);
@@ -50,36 +474,34 @@ function(str)
   return Digraph(out);
 end);
 
-#
-
 InstallGlobalFunction(TCodeDecoder,
 function(str)
   local out, i;
   if not IsString(str) then
-    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: TCodeDecoder: usage,\n",
                  "first argument <str> must be a string,");
   fi;
 
-  str := SplitString(str, " ");
+  str := SplitString(Chomp(str), " ");
   Apply(str, EvalString);
 
   if not ForAll(str, x -> IsInt(x) and x >= 0) then
-    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: TCodeDecoder: usage,\n",
                  "1st argument <str> must be a string of ",
                  "space-separated non-negative integers,");
   fi;
   if not Length(str) >= 2 then
-    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: TCodeDecoder: usage,\n",
                  "first argument <str> must be a string of ",
                  "at least two integers,");
   fi;
   if not ForAll([3 .. Length(str)], i -> str[i] < str[1]) then
-    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: TCodeDecoder: usage,\n",
                  "vertex numbers must be in the range [0..n-1],\n",
                  "where n is the first entry in <str>,");
   fi;
   if Length(str) < 2 * str[2] + 2 then
-    ErrorMayQuit("Digraphs: TCodeDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: TCodeDecoder: usage,\n",
                  "<str> must contain at least 2e+2 entries,\n",
                  "where e is the number of edges (the 2nd entry in <str>),");
   fi;
@@ -96,7 +518,7 @@ InstallGlobalFunction(TCodeDecoderNC,
 function(str)
   local out, i;
 
-  str := SplitString(str, " ");
+  str := SplitString(Chomp(str), " ");
   Apply(str, Int);
   out := List([1 .. str[1]], x -> []);
   for i in [1 .. str[2]] do
@@ -105,100 +527,12 @@ function(str)
   return DigraphNC(out);
 end);
 
-#
-
-InstallGlobalFunction(ReadDigraphs,
-function(arg)
-  local name, decoder, nr, file, splitname, extension, i, line, lines;
-
-  if Length(arg) = 1 then
-    name := arg[1];
-    decoder := fail;
-    nr := infinity;
-  elif Length(arg) = 2 then
-    name := arg[1];
-    if IsFunction(arg[2]) then
-      decoder := arg[2];
-      nr := infinity;
-    else
-      decoder := fail;
-      nr := arg[2];
-    fi;
-  elif Length(arg) = 3 then
-    name := arg[1];
-    decoder := arg[2];
-    nr := arg[3];
-  else
-    ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
-                 "ReadDigraphs( filename [, decoder][, pos] ),");
-  fi;
-
-  if (not IsString(name)) or (not (IsFunction(decoder) or decoder = fail))
-      or (not (IsPosInt(nr) or nr = infinity)) then
-    ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
-                 "ReadDigraphs( filename [, decoder][, pos] ),");
-  fi;
-
-  file := IO_CompressedFile(name, "r");
-
-  if file = fail then
-    ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
-                 "cannot open file ", name, ",");
-  fi;
-
-  if decoder = fail then
-    splitname := SplitString(name, ".");
-    extension := splitname[Length(splitname)];
-
-    if extension in ["gz", "bzip2", "xz"] then
-      if Length(splitname) = 2 then
-        ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
-                     "cannot determine the file format,");
-      fi;
-      extension := splitname[Length(splitname) - 1];
-    fi;
-
-    if extension = "txt" then
-      decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
-    elif extension = "g6" then
-      decoder := DigraphFromGraph6String;
-    elif extension = "s6" then
-      decoder := DigraphFromSparse6String;
-    elif extension = "d6" then
-      decoder := DigraphFromDigraph6String;
-    elif extension = "ds6" then
-      decoder := DigraphFromDiSparse6String;
-    else
-      ErrorMayQuit("Digraphs: ReadDigraphs: usage,\n",
-                   "cannot determine the file format,");
-    fi;
-  fi;
-
-  if nr < infinity then
-    i := 0;
-    repeat
-      i := i + 1;
-      line := IO_ReadLine(file);
-    until i = nr or line = "";
-    IO_Close(file);
-    return decoder(Chomp(line));
-  fi;
-
-  lines := IO_ReadLines(file);
-  IO_Close(file);
-  for i in [1 .. Length(lines)] do
-    Info(InfoDigraphs, 1, "Reading graph ", i, " of ", Length(lines));
-    lines[i] := decoder(Chomp(lines[i]));
-  od;
-  return lines;
-end);
-
-#
-
 InstallMethod(DigraphFromGraph6String, "for a string",
 [IsString],
 function(s)
   local FindCoord, list, n, start, maxedges, out, pos, i, bpos, edge, graph, j;
+
+  s := Chomp(s);
 
   # find a position in the adj matrix from the vector
   # knowing a lower bound for pos_y
@@ -214,7 +548,7 @@ function(s)
   end;
 
   if Length(s) = 0 then
-    ErrorMayQuit("Digraphs: DigraphFromGraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromGraph6String: usage,\n",
                  "the input string should be non-empty,");
   fi;
 
@@ -240,7 +574,7 @@ function(s)
       start := 5;
     fi;
   else
-    ErrorMayQuit("Digraphs: DigraphFromGraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromGraph6String: usage,\n",
                  "<s> is not a valid graph6 input,");
   fi;
 
@@ -248,7 +582,7 @@ function(s)
   if list <> [0] and list <> [1] and
       not (Int((maxedges - 1) / 6) + start = Length(list) and
            list[Length(list)] mod 2 ^ ((0 - maxedges) mod 6) = 0) then
-    ErrorMayQuit("Digraphs: DigraphFromGraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromGraph6String: usage,\n",
                  "<s> is not a valid graph6 input,");
   fi;
 
@@ -280,22 +614,21 @@ function(s)
   return graph;
 end);
 
-#
-
 InstallMethod(DigraphFromDigraph6String, "for a string",
 [IsString],
 function(s)
   local list, i, n, start, range, source, pos, len, j, bpos, tabpos;
 
+  s := Chomp(s);
   # Check non-emptiness
   if Length(s) = 0 then
-    ErrorMayQuit("Digraphs: DigraphFromDigraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromDigraph6String: usage,\n",
                  "the input string should be non-empty,");
   fi;
 
   # Check for the special '+' character
   if s[1] <> '+' then
-    ErrorMayQuit("Digraphs: DigraphFromDigraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromDigraph6String: usage,\n",
                  "<s> must be a string in Digraph6 format,");
   fi;
 
@@ -321,7 +654,7 @@ function(s)
       start := 6;
     fi;
   else
-    ErrorMayQuit("Digraphs: DigraphFromDigraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromDigraph6String: usage,\n",
                  "<s> must be a string in Digraph6 format,");
   fi;
 
@@ -352,23 +685,22 @@ function(s)
   return Digraph(rec(nrvertices := n, range := range, source := source));
 end);
 
-#
-
 InstallMethod(DigraphFromSparse6String, "for a string",
 [IsString],
 function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i,
   finish, x, j;
 
+  s := Chomp(s);
   # Check non-emptiness
   if Length(s) = 0 then
-    ErrorMayQuit("Digraphs: DigraphFromSparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromSparse6String: usage,\n",
                  "the input string should be non-empty,");
   fi;
 
   # Check for the special ':' character
   if s[1] <> ':' then
-    ErrorMayQuit("Digraphs: DigraphFromSparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromSparse6String: usage,\n",
                  "<s> must be a string in Sparse6 format,");
   fi;
 
@@ -384,7 +716,7 @@ function(s)
     start := 3;
   elif list[3] = 63 then
     if Length(list) <= 8 then
-      ErrorMayQuit("Digraphs: DigraphFromSparse6String: usage,\n",
+      ErrorNoReturn("Digraphs: DigraphFromSparse6String: usage,\n",
                    "<s> must be a string in Sparse6 format,");
     fi;
     n := 0;
@@ -399,7 +731,7 @@ function(s)
       od;
       start := 6;
   else
-    ErrorMayQuit("Digraphs: DigraphFromSparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFromSparse6String: usage,\n",
                  "<s> must be a string in Sparse6 format,");
   fi;
 
@@ -471,43 +803,6 @@ function(s)
   return Digraph(rec(nrvertices := n, range := range, source := source));
 end);
 
-#
-
-BindGlobal("SplitStringBySubstring",
-function(string, substring)
-  local m, n, i, j, out, nr;
-
-  if Length(string) = 0 then
-    return [];
-  fi;
-  if Length(substring) = 1 then
-    return SplitString(string, substring);
-  fi;
-
-  m := Length(string);
-  n := Length(substring);
-  i := 1;
-  j := 1;
-  out := [];
-  nr := 0;
-
-  while m - i >= n do
-    if string{[i .. i + n - 1]} = substring then
-      if i <> 1 then
-        nr := nr + 1;
-        out[nr] := string{[j .. i - 1]};
-        j := i + n;
-        i := i + n;
-      fi;
-    else
-      i := i + 1;
-    fi;
-  od;
-  nr := nr + 1;
-  out[nr] := string{[j .. Length(string)]};
-  return out;
-end);
-
 # one graph per line
 
 InstallGlobalFunction(DigraphPlainTextLineDecoder,
@@ -519,7 +814,7 @@ function(arg)
     offset := arg[2];    # indexing starts at 0 or 1? or what?
     return
       function(string)
-        string := SplitStringBySubstring(string, delimiter);
+        string := DIGRAPHS_SplitStringBySubstring(Chomp(string), delimiter);
         Apply(string, Int);
         return string + offset;
       end;
@@ -530,8 +825,8 @@ function(arg)
     return
       function(string)
         local edges, x;
-        string := SplitStringBySubstring(string, delimiter1);
-        Apply(string, x -> SplitStringBySubstring(x, delimiter2));
+        string := DIGRAPHS_SplitStringBySubstring(Chomp(string), delimiter1);
+        Apply(string, x -> DIGRAPHS_SplitStringBySubstring(x, delimiter2));
         edges := EmptyPlist(Length(string));
         for x in string do
           Apply(x, Int);
@@ -541,11 +836,202 @@ function(arg)
         return DigraphByEdges(edges);
       end;
   else
-    ErrorMayQuit("Digraphs: DigraphPlainTextLineDecoder: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphPlainTextLineDecoder: usage,\n",
                  "DigraphPlainTextLineDecoder(delimiter, [,delimiter], ",
                  "offset),");
   fi;
 end);
+
+# one edge per line, one graph per file
+
+InstallGlobalFunction(ReadPlainTextDigraph,
+function(name, delimiter, offset, ignore)
+  local file, lines, edges, nr, decoder, line;
+
+  if IsChar(delimiter) then
+    delimiter := [delimiter];
+  fi;
+
+  if (not IsString(name)) or (not IsString(delimiter)) or (not IsInt(offset))
+      or (not (IsString(ignore) or IsChar(ignore))) then
+    ErrorNoReturn("Digraphs: ReadPlainTextDigraph: usage,\n",
+                 "ReadPlainTextDigraph(filename, delimiter, offset, ignore",
+                 "),");
+  fi;
+
+  if IsChar(ignore) then
+    ignore := [ignore];
+  fi;
+
+  file := IO_CompressedFile(UserHomeExpand(name), "r");
+
+  if file = fail then
+    ErrorNoReturn("Digraphs: ReadPlainTextDigraph:\n",
+                 "cannot open file ", name, ",");
+  fi;
+
+  lines := IO_ReadLines(file);
+  edges := EmptyPlist(Length(lines));
+  nr := 0;
+  decoder := DigraphPlainTextLineDecoder(delimiter, offset);
+
+  for line in lines do
+    if Length(line) > 0 and not (line[1] in ignore) then
+      nr := nr + 1;
+      edges[nr] := decoder(Chomp(line));
+    fi;
+  od;
+
+  return DigraphByEdges(edges);
+end);
+
+InstallMethod(DigraphFromDiSparse6String, "for a directed graph",
+[IsString],
+function(s)
+  local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i, x,
+  finish, j;
+
+  s := Chomp(s);
+
+  # Check non-emptiness
+  if Length(s) = 0 then
+    ErrorNoReturn("Digraphs: DigraphFromDiSparse6String: usage,\n",
+                 "the input string should be non-empty,");
+  fi;
+
+  # Check for the special ':' character
+  if s[1] <> '.' then
+    ErrorNoReturn("Digraphs: DigraphFromDiSparse6String: usage,\n",
+                 "<s> must be a string in disparse6 format,");
+  fi;
+
+  # Convert ASCII chars to integers
+  list := [];
+  for i in s do
+    Add(list, IntChar(i) - 63);
+  od;
+
+  # Get n the number of vertices of the graph
+  if list[2] <> 63 then
+    n := list[2];
+    start := 3;
+  elif list[3] = 63 then
+    if Length(list) <= 8 then
+      ErrorNoReturn("Digraphs: DigraphFromDiSparse6String: usage,\n",
+                   "<s> must be a string in disparse6 format,");
+    fi;
+    n := 0;
+    for i in [0 .. 5] do
+      n := n + 2 ^ (6 * i) * list[9 - i];
+    od;
+    start := 10;
+  elif Length(list) > 4 then
+      n := 0;
+      for i in [0 .. 2] do
+        n := n + 2 ^ (6 * i) * list[5 - i];
+      od;
+      start := 6;
+  else
+    ErrorNoReturn("Digraphs: DigraphFromDiSparse6String: usage,\n",
+                 s, " is not a valid disparse6 input,");
+  fi;
+
+  # convert list into a list of bits;
+  blist := BlistList([1 .. (Length(list) - start + 1) * 6], []);
+  pos := 1;
+  for i in [start .. Length(list)] do
+    num := list[i];
+    bpos := 1;
+    while num > 0 do
+      if num mod 2 = 0 then
+        num := num / 2;
+      else
+        num := (num - 1) / 2;
+        blist[pos + 6 - bpos] := true;
+      fi;
+      bpos := bpos + 1;
+    od;
+    pos := pos + 6;
+  od;
+
+  if n > 1 then
+    k := LogInt(n, 2) + 1;
+  else
+    k := 1;
+  fi;
+
+  range := [];
+  source := [];
+  # Get the decreasing edges first
+  len := 1;
+  v := 0;
+  i := 1;
+  while true do
+    if blist[i] then
+      v := v + 1;
+    fi;
+    x := 0;
+    for j in [1 .. k] do
+      if blist[i + j] then
+        x := x + 2 ^ (k - j);
+      fi;
+    od;
+    if x >= n then
+      break;
+    elif x > v then
+      v := x;
+    else
+      range[len] := x;
+      source[len] := v;
+      len  := len + 1;
+    fi;
+    i := i + k + 1;
+  od;
+
+  i := i + k + 1;
+
+  # Get the increasing edges
+  finish := Length(blist) - (Length(blist) mod (k + 1));
+  v := 0;
+  while i <= finish - k do
+    if blist[i] then
+      v := v + 1;
+    fi;
+    x := 0;
+    for j in [1 .. k] do
+      if blist[i + j] then
+        x := x + 2 ^ (k - j);
+      fi;
+    od;
+    if x >= n then
+      break;
+    elif x > v then
+      v := x;
+    else
+      range[len] := v;
+      source[len] := x;
+      len := len + 1;
+    fi;
+    i := i + k + 1;
+  od;
+  # BAD!! JDM
+  range := range + 1;
+  source := source + 1;
+
+  return Digraph(rec(nrvertices := n, range := range, source := source));
+end);
+
+InstallMethod(DigraphFromPlainTextString, "for a string",
+[IsString],
+function(string)
+  local decoder;
+  decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
+  return decoder(Chomp(string));
+end);
+
+################################################################################
+# 4. Encoders
+################################################################################
 
 InstallGlobalFunction(DigraphPlainTextLineEncoder,
 function(delimiter1, delimiter2, offset)
@@ -568,51 +1054,6 @@ function(delimiter1, delimiter2, offset)
   end;
 end);
 
-# one edge per line, one graph per file
-
-InstallGlobalFunction(ReadPlainTextDigraph,
-function(name, delimiter, offset, ignore)
-  local file, lines, edges, nr, decoder, line;
-
-  if IsChar(delimiter) then
-    delimiter := [delimiter];
-  fi;
-
-  if (not IsString(name)) or (not IsString(delimiter)) or (not IsInt(offset))
-      or (not (IsString(ignore) or IsChar(ignore))) then
-    ErrorMayQuit("Digraphs: ReadPlainTextDigraph: usage,\n",
-                 "ReadPlainTextDigraph(filename, delimiter, offset, ignore",
-                 "),");
-  fi;
-
-  if IsChar(ignore) then
-    ignore := [ignore];
-  fi;
-
-  file := IO_CompressedFile(name, "r");
-
-  if file = fail then
-    ErrorMayQuit("Digraphs: ReadPlainTextDigraph:\n",
-                 "cannot open file ", name, ",");
-  fi;
-
-  lines := IO_ReadLines(file);
-  edges := EmptyPlist(Length(lines));
-  nr := 0;
-  decoder := DigraphPlainTextLineDecoder(delimiter, offset);
-
-  for line in lines do
-    if Length(line) > 0 and not (line[1] in ignore) then
-      nr := nr + 1;
-      edges[nr] := decoder(Chomp(line));
-    fi;
-  od;
-
-  return DigraphByEdges(edges);
-end);
-
-#
-
 InstallGlobalFunction(WritePlainTextDigraph,
 function(name, digraph, delimiter, offset)
   local file, edge;
@@ -623,15 +1064,15 @@ function(name, digraph, delimiter, offset)
 
   if (not IsString(name)) or (not IsString(delimiter))
       or (not IsInt(offset)) then
-    ErrorMayQuit("Digraphs: WritePlainTextDigraph: usage,\n",
+    ErrorNoReturn("Digraphs: WritePlainTextDigraph: usage,\n",
                  "WritePlainTextDigraph(filename, digraph, delimiter, ",
                  "offset),");
   fi;
 
-  file := IO_CompressedFile(name, "w");
+  file := IO_CompressedFile(UserHomeExpand(name), "w");
 
   if file = fail then
-    ErrorMayQuit("Digraphs: WritePlainTextDigraph:\n",
+    ErrorNoReturn("Digraphs: WritePlainTextDigraph:\n",
                  "can not open file ", name, ",");
   fi;
 
@@ -643,158 +1084,6 @@ function(name, digraph, delimiter, offset)
   IO_Close(file);
 end);
 
-#
-
-InstallGlobalFunction(WriteDigraphs,
-function(name, digraphs)
-  local splitpath, splitname, compext, ext, encoder, g6sum, s6sum, v, e,
-  dg6sum, ds6sum, filepath, file, s, digraph, i;
-
-  if not IsString(name) then
-    ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
-                 "<name> must be a string,");
-  elif not ForAll(digraphs, IsDigraph) then
-    ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
-                 "<digraphs> must be a list of digraphs,");
-  fi;
-
-  # Look for extension
-  splitpath := SplitString(name, "/");
-  splitname := SplitString(Remove(splitpath), ".");
-
-  if Length(splitname) >= 2 then
-    ext := splitname[Length(splitname)];
-    # Compression extensions
-    if ext in ["gz", "bzip2", "xz"] then
-      compext := Remove(splitname);
-      if Length(splitname) >= 2 then
-        ext := splitname[Length(splitname)];
-      fi;
-    fi;
-    # Format extensions
-    if ext = "g6" then
-      encoder := Graph6String;
-    elif ext = "s6" then
-      encoder := Sparse6String;
-    elif ext = "d6" then
-      encoder := Digraph6String;
-    elif ext = "ds6" then
-      encoder := DiSparse6String;
-    elif ext = "txt" then
-      encoder := DigraphPlainTextLineEncoder("  ", " ", -1);
-    fi;
-  fi;
-
-  if not IsBound(encoder) then
-    # CHOOSE A GOOD ENCODER:
-    # Do we know all the graphs to be symmetric?
-    if ForAll(digraphs, g -> HasIsSymmetricDigraph(g)
-                             and IsSymmetricDigraph(g)) then
-      if ForAny(digraphs, IsMultiDigraph) then
-        encoder := DiSparse6String;
-        Add(splitname, "ds6");
-      else
-        # Find the sum of length estimates using Graph6 and Sparse6
-        g6sum := 0;
-        s6sum := 0;
-        for digraph in digraphs do
-          v := DigraphNrVertices(digraph);
-          e := DigraphNrEdges(digraph);
-          g6sum := g6sum + (v * (v - 1) / 2);
-          s6sum := s6sum + (e / 2 * (Log2Int(v - 1) + 2) * 3 / 2);
-        od;
-        if g6sum < s6sum and not ForAny(digraphs, DigraphHasLoops) then
-          encoder := Graph6String;
-          Add(splitname, "g6");
-        else
-          encoder := Sparse6String;
-          Add(splitname, "s6");
-        fi;
-      fi;
-    else
-      if ForAny(digraphs, IsMultiDigraph) then
-        encoder := DiSparse6String;
-        Add(splitname, "ds6");
-      else
-        # Find the sum of length estimates using Digraph6 and DiSparse6
-        dg6sum := 0;
-        ds6sum := 0;
-        for digraph in digraphs do
-          v := DigraphNrVertices(digraph);
-          e := DigraphNrEdges(digraph);
-          dg6sum := dg6sum + v ^ 2;
-          ds6sum := ds6sum + (e * (Log2Int(v) + 2) * 3 / 2);
-        od;
-        if dg6sum < ds6sum then
-          encoder := Digraph6String;
-          Add(splitname, "d6");
-        else
-          encoder := DiSparse6String;
-          Add(splitname, "ds6");
-        fi;
-      fi;
-    fi;
-  fi;
-
-  # Rebuild the filename
-  if IsBound(compext) then
-    Add(splitname, compext);
-  fi;
-  Add(splitpath, JoinStringsWithSeparator(splitname, "."));
-  filepath := JoinStringsWithSeparator(splitpath, "/");
-
-  if filepath <> name then
-    Info(InfoWarning, 1, "Writing to ", filepath);
-  fi;
-  file := IO_CompressedFile(filepath, "w");
-
-  if file = fail then
-    ErrorMayQuit("Digraphs: WriteDigraphs: usage,\n",
-                 "cannot open file ", filepath, ",");
-  fi;
-
-  for i in [1 .. Length(digraphs)] do
-    Info(InfoDigraphs, 1,
-         "Writing graph ", String(i), " of ", String(Length(digraphs)));
-    s := encoder(digraphs[i]);
-    IO_WriteLine(file, s);
-  od;
-
-  IO_Close(file);
-end);
-
-#
-
-BindGlobal("Graph6Length",
-function(n)
-  local list;
-  list := [];
-  if n < 0 then
-    return fail;
-  elif n < 63 then
-    Add(list, n);
-  elif n < 258248 then
-    Add(list, 63);
-    Add(list, Int(n / 64 ^ 2));
-    Add(list, Int(n / 64) mod 64);
-    Add(list, n mod 64);
-  elif n < 68719476736 then
-    Add(list, 63);
-    Add(list, 63);
-    Add(list, Int(n / 64 ^ 5));
-    Add(list, Int(n / 64 ^ 4) mod 64);
-    Add(list, Int(n / 64 ^ 3) mod 64);
-    Add(list, Int(n / 64 ^ 2) mod 64);
-    Add(list, Int(n / 64 ^ 1) mod 64);
-    Add(list, n mod 64);
-  else
-    return fail;
-  fi;
-  return list;
-end);
-
-#
-
 InstallMethod(Graph6String, "for a digraph",
 [IsDigraph],
 function(graph)
@@ -802,7 +1091,7 @@ function(graph)
   if (IsMultiDigraph(graph)
       or not IsSymmetricDigraph(graph)
       or DigraphHasLoops(graph)) then
-    ErrorMayQuit("Digraphs: Graph6String: usage,\n",
+    ErrorNoReturn("Digraphs: Graph6String: usage,\n",
                  "<graph> must be symmetric and have no loops or multiple ",
                  "edges,");
   fi;
@@ -812,9 +1101,9 @@ function(graph)
   n := Length(DigraphVertices(graph));
 
   # First write the number of vertices
-  lenlist := Graph6Length(n);
+  lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorMayQuit("Digraphs: Graph6String: usage,\n",
+    ErrorNoReturn("Digraphs: Graph6String: usage,\n",
                  "<graph> must have between 0 and 68719476736 vertices,");
   fi;
   Append(list, lenlist);
@@ -850,8 +1139,6 @@ function(graph)
   return List(list, i -> CharInt(i + 63));
 end);
 
-#
-
 InstallMethod(Digraph6String, "for a digraph",
 [IsDigraph],
 function(graph)
@@ -864,9 +1151,9 @@ function(graph)
   Add(list, -20);
 
   # Now write the number of vertices
-  lenlist := Graph6Length(n);
+  lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorMayQuit("Digraphs: Digraph6String: usage,\n",
+    ErrorNoReturn("Digraphs: Digraph6String: usage,\n",
                  "<graph> must have between 0 and 68719476736 vertices,");
   fi;
   Append(list, lenlist);
@@ -897,15 +1184,13 @@ function(graph)
   return List(list, i -> CharInt(i + 63));
 end);
 
-#
-
 InstallMethod(Sparse6String, "for a digraph",
 [IsDigraph],
 function(graph)
   local list, n, lenlist, adj, nredges, k, blist, v, nextbit, AddBinary, i, j,
         bitstopad, pos, block;
   if not IsSymmetricDigraph(graph) then
-    ErrorMayQuit("Digraphs: Sparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: Sparse6String: usage,\n",
                  "the argument <graph> must be a symmetric digraph,");
   fi;
 
@@ -916,9 +1201,9 @@ function(graph)
   Add(list, -5);
 
   # Now write the number of vertices
-  lenlist := Graph6Length(n);
+  lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorMayQuit("Digraphs: Sparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: Sparse6String: usage,\n",
                  "<graph> must have between 0 and 68719476736 vertices,");
   fi;
   Append(list, lenlist);
@@ -1007,8 +1292,6 @@ function(graph)
   return List(list, i -> CharInt(i + 63));
 end);
 
-#
-
 InstallMethod(DiSparse6String, "for a digraph",
 [IsDigraph],
 function(graph)
@@ -1023,9 +1306,9 @@ function(graph)
   list[1] := -17;
 
   # Now write the number of vertices
-  lenlist := Graph6Length(n);
+  lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorMayQuit("Digraphs: DiSparse6String: usage,\n",
+    ErrorNoReturn("Digraphs: DiSparse6String: usage,\n",
                  "<graph> must have between 0 and 68719476736 vertices,");
   fi;
   Append(list, lenlist);
@@ -1167,156 +1450,10 @@ function(graph)
   return List(list, i -> CharInt(i + 63));
 end);
 
-#
-
-InstallMethod(DigraphFromDiSparse6String, "for a directed graph",
-[IsString],
-function(s)
-  local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i, x,
-  finish, j;
-
-  # Check non-emptiness
-  if Length(s) = 0 then
-    ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
-                 "the input string should be non-empty,");
-  fi;
-
-  # Check for the special ':' character
-  if s[1] <> '.' then
-    ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
-                 "<s> must be a string in disparse6 format,");
-  fi;
-
-  # Convert ASCII chars to integers
-  list := [];
-  for i in s do
-    Add(list, IntChar(i) - 63);
-  od;
-
-  # Get n the number of vertices of the graph
-  if list[2] <> 63 then
-    n := list[2];
-    start := 3;
-  elif list[3] = 63 then
-    if Length(list) <= 8 then
-      ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
-                   "<s> must be a string in disparse6 format,");
-    fi;
-    n := 0;
-    for i in [0 .. 5] do
-      n := n + 2 ^ (6 * i) * list[9 - i];
-    od;
-    start := 10;
-  elif Length(list) > 4 then
-      n := 0;
-      for i in [0 .. 2] do
-        n := n + 2 ^ (6 * i) * list[5 - i];
-      od;
-      start := 6;
-  else
-    ErrorMayQuit("Digraphs: DigraphFromDiSparse6String: usage,\n",
-                 s, " is not a valid disparse6 input,");
-  fi;
-
-  # convert list into a list of bits;
-  blist := BlistList([1 .. (Length(list) - start + 1) * 6], []);
-  pos := 1;
-  for i in [start .. Length(list)] do
-    num := list[i];
-    bpos := 1;
-    while num > 0 do
-      if num mod 2 = 0 then
-        num := num / 2;
-      else
-        num := (num - 1) / 2;
-        blist[pos + 6 - bpos] := true;
-      fi;
-      bpos := bpos + 1;
-    od;
-    pos := pos + 6;
-  od;
-
-  if n > 1 then
-    k := LogInt(n, 2) + 1;
-  else
-    k := 1;
-  fi;
-
-  range := [];
-  source := [];
-  # Get the decreasing edges first
-  len := 1;
-  v := 0;
-  i := 1;
-  while true do
-    if blist[i] then
-      v := v + 1;
-    fi;
-    x := 0;
-    for j in [1 .. k] do
-      if blist[i + j] then
-        x := x + 2 ^ (k - j);
-      fi;
-    od;
-    if x >= n then
-      break;
-    elif x > v then
-      v := x;
-    else
-      range[len] := x;
-      source[len] := v;
-      len  := len + 1;
-    fi;
-    i := i + k + 1;
-  od;
-
-  i := i + k + 1;
-
-  # Get the increasing edges
-  finish := Length(blist) - (Length(blist) mod (k + 1));
-  v := 0;
-  while i <= finish - k do
-    if blist[i] then
-      v := v + 1;
-    fi;
-    x := 0;
-    for j in [1 .. k] do
-      if blist[i + j] then
-        x := x + 2 ^ (k - j);
-      fi;
-    od;
-    if x >= n then
-      break;
-    elif x > v then
-      v := x;
-    else
-      range[len] := v;
-      source[len] := x;
-      len := len + 1;
-    fi;
-    i := i + k + 1;
-  od;
-  # BAD!! JDM
-  range := range + 1;
-  source := source + 1;
-
-  return Digraph(rec(nrvertices := n, range := range, source := source));
-end);
-
-#
-
 InstallMethod(PlainTextString, "for a digraph",
 [IsDigraph],
 function(digraph)
   local encoder;
   encoder := DigraphPlainTextLineEncoder("  ", " ", -1);
   return encoder(digraph);
-end);
-
-InstallMethod(DigraphFromPlainTextString, "for a string",
-[IsString],
-function(digraph)
-  local decoder;
-  decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
-  return decoder(digraph);
 end);

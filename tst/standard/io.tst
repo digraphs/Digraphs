@@ -168,7 +168,7 @@ gap> gr[2] := Digraph(1000,
 gap> gr[3] := Digraph([[1, 1, 4], [2, 3, 4], [2, 4], [2], [1, 3, 3, 5]]);
 <multidigraph with 5 vertices, 13 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.ds6");;
-gap> WriteDigraphs(filename, gr);
+gap> WriteDigraphs(filename, gr, "w");
 gap> ReadDigraphs(filename);
 [ <digraph with 65536 vertices, 7 edges>, 
   <digraph with 1000 vertices, 1000 edges>, 
@@ -185,12 +185,12 @@ gap> gr[4] := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],
 > [3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 5, 7, 8, 9], [1, 2, 5], [1, 2]]);
 <digraph with 10 vertices, 47 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.d6");;
-gap> WriteDigraphs(filename, gr);
+gap> WriteDigraphs(filename, gr, "w");
 gap> ReadDigraphs(filename);
 [ <digraph with 5 vertices, 7 edges>, <digraph with 105 vertices, 100 edges>, 
   <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.txt");;
-gap> WriteDigraphs(filename, gr);
+gap> WriteDigraphs(filename, gr, "w");
 gap> ReadDigraphs(filename); # Note that some edges in gr[2] are lost
 [ <digraph with 5 vertices, 7 edges>, <digraph with 100 vertices, 100 edges>, 
   <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
@@ -202,14 +202,14 @@ gap> gr[2] := Digraph([[2], [1, 4], [5], [2], [3]]);
 gap> gr[3] := Digraph([[2], [1]]);
 <digraph with 2 vertices, 2 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.g6");;
-gap> WriteDigraphs(filename, gr);
+gap> WriteDigraphs(filename, gr, "w");
 gap> rdgr := ReadDigraphs(filename);;
 gap> gr = rdgr;
 true
 gap> gr[3] := Digraph([[1, 2], [1, 2]]);
 <digraph with 2 vertices, 4 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.s6.bzip2");;
-gap> WriteDigraphs(filename, gr);
+gap> WriteDigraphs(filename, gr, "w");
 gap> rdgr := ReadDigraphs(filename);;
 gap> gr = rdgr;
 true
@@ -394,10 +394,10 @@ DigraphPlainTextLineDecoder(delimiter, [,delimiter], offset),
 
 #T# WriteDigraphs: bad input
 gap> list := [CompleteDigraph(4), CycleDigraph(8), "hello world"];;
-gap> WriteDigraphs(72, list);
+gap> WriteDigraphs(72, list, "w");
 Error, Digraphs: WriteDigraphs: usage,
 <name> must be a string,
-gap> WriteDigraphs("mylist", list);
+gap> WriteDigraphs("mylist", list, "w");
 Error, Digraphs: WriteDigraphs: usage,
 <digraphs> must be a list of digraphs,
 
@@ -406,7 +406,7 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose.gz");;
 gap> list := [CompleteDigraph(5), EmptyDigraph(100), CompleteDigraph(3)];;
 gap> ForAll(list, IsSymmetricDigraph);
 true
-gap> WriteDigraphs(filename, list);
+gap> WriteDigraphs(filename, list, "w");
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose.s6.gz");;
 gap> list2 := ReadDigraphs(filename);;
 gap> list = list2;
@@ -414,14 +414,14 @@ true
 gap> mult := Digraph([[1, 2], [1, 1, 3], []]);;
 gap> list := [CompleteDigraph(5), EmptyDigraph(100), mult];;
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choosemult.gz");;
-gap> WriteDigraphs(filename, list);
+gap> WriteDigraphs(filename, list, "w");
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choosemult.ds6.gz");;
 gap> list2 := ReadDigraphs(filename);;
 gap> list = list2;
 true
 gap> list := [CompleteDigraph(3), CycleDigraph(100), EmptyDigraph(2)];;
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose");;
-gap> WriteDigraphs(filename, list);
+gap> WriteDigraphs(filename, list, "w");
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose.ds6");;
 gap> list2 := ReadDigraphs(filename);;
 gap> list = list2;
@@ -430,7 +430,7 @@ gap> gr := Digraph([[2, 2], [1, 1]]);;
 gap> IsSymmetricDigraph(gr);
 true
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/alone");;
-gap> WriteDigraphs(filename, [gr]);
+gap> WriteDigraphs(filename, [gr], "w");
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/alone.ds6");;
 gap> list2 := ReadDigraphs(filename);
 [ <multidigraph with 2 vertices, 4 edges> ]
@@ -438,7 +438,7 @@ gap> list2[1] = gr;
 true
 gap> list := [CompleteDigraph(10), CompleteDigraph(15)];;
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.bzip2");;
-gap> WriteDigraphs(filename, list);
+gap> WriteDigraphs(filename, list, "w");
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.g6.bzip2");;
 gap> list2 := ReadDigraphs(filename);;
 gap> list = list2;
@@ -446,13 +446,13 @@ true
 gap> gr := [Digraph([[1, 2, 3, 4], [1, 2, 3, 4], [1, 3, 4], [1, 2, 3, 4]])];
 [ <digraph with 4 vertices, 15 edges> ]
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense");;
-gap> WriteDigraphs(filename, gr);
+gap> WriteDigraphs(filename, gr, "w");
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.d6");;
 gap> list2 := ReadDigraphs(filename);;
 gap> gr = list2;
 true
 gap> filename := "does/not/exist.gz";;
-gap> WriteDigraphs(filename, gr);
+gap> WriteDigraphs(filename, gr, "w");
 Error, Digraphs: WriteDigraphs: usage,
 cannot open file does/not/exist.d6.gz,
 
@@ -460,16 +460,16 @@ cannot open file does/not/exist.d6.gz,
 gap> Graph6String(ChainDigraph(4));
 Error, Digraphs: Graph6String: usage,
 <graph> must be symmetric and have no loops or multiple edges,
-gap> Graph6Length(-1);
+gap> DIGRAPHS_Graph6Length(-1);
 fail
-gap> Graph6Length(68719476737);
+gap> DIGRAPHS_Graph6Length(68719476737);
 fail
-gap> Graph6Length(258748);
+gap> DIGRAPHS_Graph6Length(258748);
 [ 63, 63, 0, 0, 0, 63, 10, 60 ]
-gap> WriteDigraphs(1, 1);
+gap> WriteDigraphs(1, 1, "w");
 Error, Digraphs: WriteDigraphs: usage,
 <name> must be a string,
-gap> WriteDigraphs("string", [1]);
+gap> WriteDigraphs("string", [1], "w");
 Error, Digraphs: WriteDigraphs: usage,
 <digraphs> must be a list of digraphs,
 gap> Sparse6String(EmptyDigraph(2 ^ 20));

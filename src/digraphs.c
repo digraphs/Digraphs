@@ -1047,7 +1047,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
   // Special case for 0-vertex graph
   if (n == 0) {
     if ( diameter ) {
-      return INTOBJ_INT(-1);
+      return Fail;
     }
     if ( copy ) {
       return True;
@@ -1103,7 +1103,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
           maximum = dist[i * n + j];
         } else if ( dist[i * n + j] == -1 ) {
           free(dist);
-          return INTOBJ_INT(-1);
+          return Fail;
         }
       }
     }
@@ -1134,6 +1134,9 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     SET_LEN_PLIST(next, n);
     for (j = 1; j <= n; j++) {
       val = INTOBJ_INT(dist[ (i - 1) * n + (j - 1) ]);
+      if (val == INTOBJ_INT(-1)) {
+        val = Fail;
+      }
       SET_ELM_PLIST(next, j, val);
     }
     SET_ELM_PLIST(out, i, next);
@@ -1465,18 +1468,18 @@ BlissGraph* buildBlissMultiDigraph (Obj digraph) {
   BlissGraph  *graph;
 
   n = DigraphNrVertices(digraph);
-  graph = bliss_new(n);
+  graph = bliss_digraphs_new(n);
 
   adj = OutNeighbours(digraph);
   for (i = 1; i <= n; i++) {
     adji = ELM_PLIST(adj, i);
     nr = LEN_PLIST(adji);
     for (j = 1; j <= nr; j++) {
-      k = bliss_add_vertex(graph, 1);
-      l = bliss_add_vertex(graph, 2);
-      bliss_add_edge(graph, i - 1, k);
-      bliss_add_edge(graph, k, l);
-      bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
+      k = bliss_digraphs_add_vertex(graph, 1);
+      l = bliss_digraphs_add_vertex(graph, 2);
+      bliss_digraphs_add_edge(graph, i - 1, k);
+      bliss_digraphs_add_edge(graph, k, l);
+      bliss_digraphs_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
     }
   }
   return graph;
@@ -1490,10 +1493,10 @@ BlissGraph* buildBlissDigraphWithColors (Obj digraph, Obj colors) {
   n = DigraphNrVertices(digraph);
   assert(n == LEN_LIST(colors));
 
-  graph = bliss_new(0);
+  graph = bliss_digraphs_new(0);
   
   for (i = 1; i <= n; i++) {
-    bliss_add_vertex(graph, INT_INTOBJ(ELM_LIST(colors, i)));
+    bliss_digraphs_add_vertex(graph, INT_INTOBJ(ELM_LIST(colors, i)));
   }
 
   adj = OutNeighbours(digraph);
@@ -1501,11 +1504,11 @@ BlissGraph* buildBlissDigraphWithColors (Obj digraph, Obj colors) {
     adji = ELM_PLIST(adj, i);
     nr = LEN_PLIST(adji);
     for (j = 1; j <= nr; j++) {
-      k = bliss_add_vertex(graph, n + 1);
-      l = bliss_add_vertex(graph, n + 2);
-      bliss_add_edge(graph, i - 1, k);
-      bliss_add_edge(graph, k, l);
-      bliss_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
+      k = bliss_digraphs_add_vertex(graph, n + 1);
+      l = bliss_digraphs_add_vertex(graph, n + 2);
+      bliss_digraphs_add_edge(graph, i - 1, k);
+      bliss_digraphs_add_edge(graph, k, l);
+      bliss_digraphs_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
     }
   }
   return graph;
@@ -1547,7 +1550,7 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   SET_ELM_PLIST(autos, 2, NEW_PLIST(T_PLIST, 0)); // perms of the vertices
   CHANGED_BAG(autos);
   SET_LEN_PLIST(autos, 2);
-  canon = bliss_find_canonical_labeling(graph, digraph_hook_function, autos, 0);
+  canon = bliss_digraphs_find_canonical_labeling(graph, digraph_hook_function, autos, 0);
   
   p   = NEW_PERM4(INT_INTOBJ(n));
   ptr = ADDR_PERM4(p);
@@ -1556,7 +1559,7 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
     ptr[i] = canon[i];
   }
   
-  bliss_release(graph);
+  bliss_digraphs_release(graph);
 
   SET_ELM_PLIST(autos, 1, p);
 
@@ -1585,8 +1588,8 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS_COLORS(Obj self, Obj digraph, Obj colors) {
   SET_ELM_PLIST(autos, 2, NEW_PLIST(T_PLIST, 0)); // perms of the vertices
   CHANGED_BAG(autos);
   SET_LEN_PLIST(autos, 2);
-  canon = bliss_find_canonical_labeling(graph, digraph_hook_function, autos, 0);
-  bliss_release(graph);
+  canon = bliss_digraphs_find_canonical_labeling(graph, digraph_hook_function, autos, 0);
+  bliss_digraphs_release(graph);
 
   if (LEN_PLIST(ELM_PLIST(autos, 2)) == 0) {
     AssPlist(ELM_PLIST(autos, 2), 1, IdentityPerm);
@@ -1654,7 +1657,7 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   SET_ELM_PLIST(autos, 4, NEW_PLIST(T_PLIST, 0)); // perms of the edges
   CHANGED_BAG(autos);
 
-  canon = bliss_find_canonical_labeling(graph, multidigraph_hook_function, autos, 0);
+  canon = bliss_digraphs_find_canonical_labeling(graph, multidigraph_hook_function, autos, 0);
   
   // Get canonical labeling as GAP perms
   m   = DigraphNrVertices(digraph);
@@ -1673,7 +1676,7 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
     ptr[i] = canon[2 * i + m] - m;
   }
 
-  bliss_release(graph);
+  bliss_digraphs_release(graph);
   
   // put the canonical labeling (as a list of two perms) into autos[1]
   out = NEW_PLIST(T_PLIST, 2);
@@ -1718,7 +1721,7 @@ static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
      
   graph = buildBlissMultiDigraph(digraph);
   
-  canon = bliss_find_canonical_labeling(graph, 0, 0, 0); 
+  canon = bliss_digraphs_find_canonical_labeling(graph, 0, 0, 0); 
   
   n   = DigraphNrVertices(digraph);
   p   = NEW_PERM4(n);
@@ -1727,7 +1730,7 @@ static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   for(i = 0; i < n; i++){
       ptr[i] = canon[i];
   }
-  bliss_release(graph);
+  bliss_digraphs_release(graph);
 
   return p;
 } 
@@ -1743,7 +1746,7 @@ static Obj FuncDIGRAPH_CANONICAL_LABELING_COLORS(Obj self,
      
   graph = buildBlissDigraphWithColors(digraph, colors);
   
-  canon = bliss_find_canonical_labeling(graph, 0, 0, 0); 
+  canon = bliss_digraphs_find_canonical_labeling(graph, 0, 0, 0); 
   
   n   = DigraphNrVertices(digraph);
   p   = NEW_PERM4(n);
@@ -1752,7 +1755,7 @@ static Obj FuncDIGRAPH_CANONICAL_LABELING_COLORS(Obj self,
   for(i = 0; i < n; i++){
       ptr[i] = canon[i];
   }
-  bliss_release(graph);
+  bliss_digraphs_release(graph);
 
   return p;
 } 
@@ -1766,7 +1769,7 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
      
   graph = buildBlissMultiDigraph(digraph);
   
-  canon = bliss_find_canonical_labeling(graph, 0, 0, 0); 
+  canon = bliss_digraphs_find_canonical_labeling(graph, 0, 0, 0); 
   
   m   = DigraphNrVertices(digraph);
   p   = NEW_PERM4(m);  // perm of vertices
@@ -1784,7 +1787,7 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
     ptr[i] = canon[2 * i + m] - m;
   }
   
-  bliss_release(graph);
+  bliss_digraphs_release(graph);
   
   out = NEW_PLIST(T_PLIST, 2);
   SET_ELM_PLIST(out, 1, p);
@@ -2388,4 +2391,3 @@ StructInitInfo * Init__graphs ( void )
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-

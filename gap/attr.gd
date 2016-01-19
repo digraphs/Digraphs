@@ -31,24 +31,38 @@ DeclareAttribute("InNeighbours", IsDigraph);
 DeclareSynonymAttr("InNeighbors", InNeighbours);
 DeclareAttribute("OutDegrees", IsDigraph);
 DeclareAttribute("OutDegreeSequence", IsDigraph);
+DeclareAttribute("OutDegreeSet", IsDigraph);
 DeclareAttribute("InDegrees", IsDigraph);
 DeclareAttribute("InDegreeSequence", IsDigraph);
+DeclareAttribute("InDegreeSet", IsDigraph);
 DeclareAttribute("DigraphSources", IsDigraph);
 DeclareAttribute("DigraphSinks", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
+DeclareAttribute("DigraphGirth", IsDigraph);
+DeclareAttribute("DigraphUndirectedGirth", IsDigraph);
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
+DeclareAttribute("DigraphLongestSimpleCircuit", IsDigraph);
 DeclareAttribute("DigraphLoops", IsDigraph);
+DeclareAttribute("DigraphDegeneracy", IsDigraph);
+DeclareAttribute("DigraphDegeneracyOrdering", IsDigraph);
+DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
 
 DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
 DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
 DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
 DeclareGlobalFunction("DigraphTransitiveClosureNC");
 
-DeclareAttribute("AdjacencyMatrix", IsDigraph);
-DeclareAttribute("ReducedDigraph", IsDigraph);
+DeclareAttribute("DigraphAdjacencyFunction", IsDigraph);
 
-DeclareAttribute("AsTransformation", IsDigraph);
+DeclareAttribute("AdjacencyMatrix", IsDigraph);
+DeclareAttribute("BooleanAdjacencyMatrix", IsDigraph);
+DeclareAttribute("ReducedDigraph", IsDigraph);
+DeclareAttribute("MaximalSymmetricSubdigraph", IsDigraph);
+DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoops", IsDigraph);
+DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
 
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
+DeclareAttribute("AsTransformation", IsDigraph);
+DeclareAttribute("DIGRAPHS_ConnectivityData", IsDigraph, "mutable");

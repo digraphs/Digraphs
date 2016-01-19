@@ -62,6 +62,7 @@ DeclareOperation("OutNeighboursOfVertexNC", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphInEdges", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphOutEdges", [IsDigraph, IsPosInt]);
 DeclareOperation("IsDigraphEdge", [IsDigraph, IsList]);
+DeclareOperation("IsDigraphEdge", [IsDigraph, IsPosInt, IsPosInt]);
 
 DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);
@@ -71,3 +72,12 @@ DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);
 
 DeclareOperation("OutNeighboursCopy", [IsDigraph]);
 DeclareSynonym("OutNeighborsCopy", OutNeighboursCopy);
+
+DeclareOperation("DigraphLayers", [IsDigraph, IsPosInt]);
+DeclareAttribute("DIGRAPHS_Layers", IsDigraph, "mutable");
+DeclareOperation("DigraphDistanceSet", [IsDigraph, IsPosInt, IsInt]);
+DeclareOperation("DigraphDistanceSet", [IsDigraph, IsPosInt, IsList]);
+DeclareOperation("DigraphShortestDistance", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList, IsList]);
+DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList]);
+DeclareOperation("DigraphColoring", [IsDigraph]);

@@ -578,6 +578,19 @@ true
 gap> IsDigraphEdge(gr, [1, 2]);
 false
 
+# Adjacency function
+gap> adj := function(i, j) return i = j * 2; end;
+function( i, j ) ... end
+gap> gr := Digraph([1 .. 20], adj);;
+gap> IsDigraphEdge(gr, [1, 4]);
+false
+gap> IsDigraphEdge(gr, 3, 6);
+false
+gap> IsDigraphEdge(gr, 12, 6);
+true
+gap> IsDigraphEdge(gr, 26, 13);
+false
+
 #T# DigraphAddEdges
 gap> gr := RandomDigraph(100);;
 gap> DigraphAddEdges(gr, []);;
@@ -1400,6 +1413,182 @@ gap> DigraphTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
 true
 gap> DigraphReflexiveTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
 true
+
+#T# DigraphLayers
+gap> gr := CompleteDigraph(4);
+<digraph with 4 vertices, 12 edges>
+gap> DigraphLayers(gr, 1);
+[ [ 1 ], [ 2, 3, 4 ] ]
+gap> DigraphLayers(gr, 2);
+[ [ 2 ], [ 1, 3, 4 ] ]
+gap> DigraphLayers(gr, 3);
+[ [ 3 ], [ 1, 2, 4 ] ]
+gap> DigraphLayers(gr, 4);
+[ [ 4 ], [ 1, 2, 3 ] ]
+gap> gr := ChainDigraph(5);;
+gap> DigraphLayers(gr, 2);
+[ [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
+gap> DigraphLayers(gr, 4);
+[ [ 4 ], [ 5 ] ]
+gap> gr := Digraph([[2, 5], [3], [4], [5], [6], [7], [8], [1]]);;
+gap> DigraphLayers(gr, 1);
+[ [ 1 ], [ 2, 5 ], [ 3, 6 ], [ 4, 7 ], [ 8 ] ]
+gap> DigraphLayers(gr, 3);
+[ [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 1 ], [ 2 ] ]
+gap> DigraphLayers(gr, 6);
+[ [ 6 ], [ 7 ], [ 8 ], [ 1 ], [ 2, 5 ], [ 3 ], [ 4 ] ]
+gap> DigraphLayers(gr, 7);
+[ [ 7 ], [ 8 ], [ 1 ], [ 2, 5 ], [ 3, 6 ], [ 4 ] ]
+gap> gr := Digraph([[2, 5], [3], [4], [5], [6], [7], [8], [1], [9, 10, 11],
+> [], []]);;
+gap> DigraphLayers(gr, 1);
+[ [ 1 ], [ 2, 5 ], [ 3, 6 ], [ 4, 7 ], [ 8 ] ]
+gap> DigraphLayers(gr, 9);
+[ [ 9 ], [ 10, 11 ] ]
+gap> DigraphLayers(gr, 10);
+[ [ 10 ] ]
+gap> gr := DigraphFromDigraph6String("+GUIQQWWXHHPg");;
+gap> DigraphGroup(gr);
+Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)(4,7) ])
+gap> DigraphOrbitReps(gr);
+[ 1 ]
+gap> DigraphLayers(gr, 1);
+[ [ 1 ], [ 2, 3, 5 ], [ 4, 6, 7, 8 ] ]
+gap> DigraphLayers(gr, 2);
+[ [ 2 ], [ 1, 4, 6 ], [ 3, 5, 8, 7 ] ]
+gap> DigraphLayers(gr, 3);
+[ [ 3 ], [ 4, 2, 7 ], [ 1, 8, 6, 5 ] ]
+gap> DigraphLayers(gr, 4);
+[ [ 4 ], [ 3, 1, 8 ], [ 2, 7, 5, 6 ] ]
+gap> DigraphLayers(gr, 10);
+Error, Digraphs: DigraphLayers: usage,
+the argument <v> must be a vertex of <digraph>,
+gap> DigraphShortestDistance(gr, [2, 5, 6], [3, 7]);
+1
+gap> DigraphShortestDistance(gr, [2], DigraphLayers(gr, 2)[3]);
+2
+gap> DigraphShortestDistance(gr, [2, 3], [3, 4]);
+0
+gap> gr := CompleteDigraph(64);
+<digraph with 64 vertices, 4032 edges>
+gap> DigraphShortestDistance(gr, [1 .. 10], [20 .. 23]);
+1
+gap> DigraphShortestDistance(gr, [1, 13], [20 .. 23]);
+1
+gap> DigraphShortestDistance(gr, [1, 13], [38, 41]);
+1
+gap> gr := ChainDigraph(72);
+<digraph with 72 vertices, 71 edges>
+gap> DigraphShortestDistance(gr, [1 .. 10], [20 .. 23]);
+10
+gap> DigraphShortestDistance(gr, [1, 13], [20 .. 23]);
+7
+gap> DigraphShortestDistance(gr, [1, 13], [38, 41]);
+25
+gap> gr := DigraphFromDigraph6String("+H^_HRR\P_FWEsio");
+<digraph with 9 vertices, 32 edges>
+gap> DigraphShortestDistance(last, [1, 2], [7]);
+2
+gap> DigraphShortestDistance(gr, [1], DigraphLayers(gr, 1)[3]);
+2
+gap> DigraphShortestDistance(gr, [1, 2], DigraphLayers(gr, 1)[3]);
+0
+gap> DigraphShortestDistance(gr, [1, 3], DigraphLayers(gr, 1)[3]);
+0
+gap> DigraphShortestDistance(gr, [1, 6], DigraphLayers(gr, 1)[3]);
+1
+
+#T# Issue #12
+gap> gr := Digraph([[16, 18, 25], [17, 20, 25], [16, 21, 28],
+> [19, 17, 28], [17, 24, 26], [22, 18, 26], [23, 19, 18],
+> [19, 27, 29], [21, 20, 23], [26, 21, 29], [27, 22, 20],
+> [22, 28, 30], [23, 24, 30], [24, 16, 27], [29, 25, 30],
+> [1, 3, 14], [2, 5, 4], [1, 7, 6], [4, 8, 7], [2, 11, 9],
+> [3, 9, 10], [6, 12, 11], [7, 13, 9], [5, 14, 13],
+> [1, 2, 15], [10, 6, 5], [11, 8, 14], [3, 4, 12], [15, 10, 8],
+> [15, 13, 12]]);
+<digraph with 30 vertices, 90 edges>
+gap> DigraphGroup(gr);
+<permutation group with 6 generators>
+gap> DigraphShortestDistance(gr, 1, 16);
+1
+
+#T# DigraphShortestDistance: two inputs
+gap> gr := Digraph([[2], [3], [1, 4], [1, 3], [5]]);
+<digraph with 5 vertices, 7 edges>
+gap> DigraphShortestDistance(gr, 1, 3);
+2
+gap> DigraphShortestDistance(gr, [3, 3]);
+0
+gap> DigraphShortestDistance(gr, 5, 2);
+fail
+gap> DigraphShortestDistances(gr);;
+gap> DigraphShortestDistance(gr, [3, 4]);
+1
+
+#T# DigraphShortestDistance: bad input
+gap> DigraphShortestDistance(gr, 1, 74);
+Error, Digraphs: DigraphShortestDistance: usage,
+the second argument and third argument must be
+vertices of the digraph,
+gap> DigraphShortestDistance(gr, [1, 74]);
+Error, Digraphs: DigraphShortestDistance: usage,
+elements of the list must be vertices of the digraph,
+gap> DigraphShortestDistance(gr, [1, 71, 3]);
+Error, Digraphs: DigraphShortestDistance: usage,
+the second argument must be of length 2,
+
+#T# DigraphDistancesSet
+gap> gr := ChainDigraph(10);
+<digraph with 10 vertices, 9 edges>
+gap> DigraphDistanceSet(gr, 5, 2);
+[ 7 ]
+gap> gr := DigraphSymmetricClosure(ChainDigraph(10));
+<digraph with 10 vertices, 18 edges>
+gap> DigraphDistanceSet(gr, 5, 2);
+[ 3, 7 ]
+gap> gr := ChainDigraph(10);;
+gap> DigraphDistanceSet(gr, 20, 1);
+Error, Digraphs: DigraphDistanceSet: usage,
+the second argument must be a vertex of the digraph,
+gap> DigraphDistanceSet(gr, 20, [1]);
+Error, Digraphs: DigraphDistanceSet: usage,
+the second argument must be a vertex of the digraph,
+gap> DigraphDistanceSet(gr, 10, ["string", 1]);
+Error, Digraphs: DigraphDistanceSet: usage,
+the third argument must be a list of non-negative integers,
+gap> gr := DigraphFromDigraph6String("+GUIQQWWXHHPg");;
+gap> DigraphDistanceSet(gr, 1, [3, 7]);
+[  ]
+gap> DigraphDistanceSet(gr, 1, [1]);
+[ 2, 3, 5 ]
+gap> DigraphDistanceSet(gr, 1, [1, 2]);
+[ 2, 3, 5, 4, 6, 7, 8 ]
+gap> DigraphDistanceSet(gr, 2, 2);
+[ 3, 5, 7, 8 ]
+gap> DigraphDistanceSet(gr, 2, -1);
+Error, Digraphs: DigraphDistanceSet: usage,
+the third argument must be a non-negative integer,
+
+#T# DigraphColoring
+gap> DigraphColoring(ChainDigraph(10));
+Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
+gap> DigraphColoring(CompleteDigraph(10));
+IdentityTransformation
+gap> gr := Digraph([[16, 18, 25], [17, 20, 25], [16, 21, 28],
+> [19, 17, 28], [17, 24, 26], [22, 18, 26], [23, 19, 18],
+> [19, 27, 29], [21, 20, 23], [26, 21, 29], [27, 22, 20],
+> [22, 28, 30], [23, 24, 30], [24, 16, 27], [29, 25, 30],
+> [1, 3, 14], [2, 5, 4], [1, 7, 6], [4, 8, 7], [2, 11, 9],
+> [3, 9, 10], [6, 12, 11], [7, 13, 9], [5, 14, 13],
+> [1, 2, 15], [10, 6, 5], [11, 8, 14], [3, 4, 12], [15, 10, 8],
+> [15, 13, 12]]);
+<digraph with 30 vertices, 90 edges>
+gap> DigraphColoring(gr);
+Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+  2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
+gap> DigraphColoring(EmptyDigraph(0));
+fail
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);

@@ -1,7 +1,8 @@
 ############################################################################
 ##
 #W  PackageInfo.g
-#Y  Copyright (C) 2016                                   Julius Jonusas
+#Y  Copyright (C) 2015-16                                Jan J De Beule
+##                                                       Julius Jonusas
 ##                                                       James Mitchell
 ##                                                       Michael Torpey
 ##                                                       Wilfred Wilson
@@ -12,22 +13,39 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.3.2">
-##  <!ENTITY GAPVERS        "4.8.1">
+##  <!ENTITY VERSION        "0.4">
+##  <!ENTITY GAPVERS        "4.8.3">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.3.2">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.4">
 ##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
-Subtitle := "Methods for digraphs and multidigraphs",
-Version := "0.3.2",
-Date := "14/01/2016",
-ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.3.2",
+Subtitle := "",
+Version := "0.4",
+Date := "19/01/2016",
+ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.4",
 ArchiveFormats := ".tar.gz",
 Persons := [
+
+  rec(
+    LastName      := "De Beule",
+    FirstNames    := "J.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "jdebeule@cage.ugent.be",
+    WWWHome       := "http://homepages.vub.ac.be/~jdbeule/",
+    PostalAddress := Concatenation([
+                     "Vrije Universiteit Brussel, ",
+                     " Vakgroep Wiskunde, ",
+                     " Pleinlaan 2, ",
+                     " B - 1050 Brussels, ",
+                     " Belgium"]),
+    Place         := "Brussels",
+    Institution   := "Vrije Universiteit Brussel"
+  ),
 
   rec(
     LastName      := "Jonusas",
@@ -111,7 +129,7 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">=4.8.1",
+  GAP := ">=4.8.3",
   NeededOtherPackages := [["io", ">=4.4.4"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"], ["grape", ">=4.5"]],
   ExternalConditions := [],

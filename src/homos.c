@@ -556,46 +556,46 @@ static bool inline is_adjacent_digraph (Digraph* digraph,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// new_bliss_graph: get a new bliss (undirected, vertex coloured) digraph from
+// new_bliss_digraphs_graph: get a new bliss (undirected, vertex coloured) digraph from
 // the Digraph pointed to by <digraph>. 
 ////////////////////////////////////////////////////////////////////////////////
 
-static BlissGraph* new_bliss_graph_from_digraph (Digraph* digraph, UIntS* colors) {
+static BlissGraph* new_bliss_digraphs_graph_from_digraph (Digraph* digraph, UIntS* colors) {
   assert(digraph != NULL);
   
   UIntS       i, j, k, l;
-  BlissGraph* bliss_graph; 
+  BlissGraph* bliss_digraphs_graph; 
   UIntS       n = digraph->nr_vertices;
 
   if (colors == NULL) {
-    bliss_graph = bliss_new(n);
+    bliss_digraphs_graph = bliss_digraphs_new(n);
   } else {
-    bliss_graph = bliss_new(0);
+    bliss_digraphs_graph = bliss_digraphs_new(0);
     for (i = 0; i < n; i++) {
-      bliss_add_vertex(bliss_graph, colors[i]);
+      bliss_digraphs_add_vertex(bliss_digraphs_graph, colors[i]);
     }
   } 
 
   for (i = 0; i < n; i++) {       // loop over vertices
     for (j = 0; j < n; j++) {
       if (is_adjacent_digraph(digraph, i, j)) {
-        k = bliss_add_vertex(bliss_graph, n + 1);
-        l = bliss_add_vertex(bliss_graph, n + 2);
-        bliss_add_edge(bliss_graph, i, k);
-        bliss_add_edge(bliss_graph, k, l);
-        bliss_add_edge(bliss_graph, l, j);
+        k = bliss_digraphs_add_vertex(bliss_digraphs_graph, n + 1);
+        l = bliss_digraphs_add_vertex(bliss_digraphs_graph, n + 2);
+        bliss_digraphs_add_edge(bliss_digraphs_graph, i, k);
+        bliss_digraphs_add_edge(bliss_digraphs_graph, k, l);
+        bliss_digraphs_add_edge(bliss_digraphs_graph, l, j);
       }
     }
   }
-  return bliss_graph;
+  return bliss_digraphs_graph;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// bliss_hook_digraph: the hook function for bliss_find_automorphisms to
+// bliss_digraphs_hook_digraph: the hook function for bliss_digraphs_find_automorphisms to
 // collect the generators of the automorphism group in a PermColl
 ////////////////////////////////////////////////////////////////////////////////
 
-static void bliss_hook_digraph (void               *user_param_arg,  // perm_coll!
+static void bliss_digraphs_hook_digraph (void               *user_param_arg,  // perm_coll!
          	                unsigned int       N,
 	                        const unsigned int *aut            ) {
 
@@ -621,10 +621,10 @@ static void bliss_hook_digraph (void               *user_param_arg,  // perm_col
 static PermColl* automorphisms_digraph (Digraph* digraph, UIntS* colors) {
   assert(digraph != NULL);
 
-  BlissGraph* bliss_graph = new_bliss_graph_from_digraph(digraph, colors);
+  BlissGraph* bliss_digraphs_graph = new_bliss_digraphs_graph_from_digraph(digraph, colors);
   PermColl*   gens  = new_perm_coll(digraph->nr_vertices - 1);
-  bliss_find_automorphisms(bliss_graph, bliss_hook_digraph, gens, 0);
-  bliss_release(bliss_graph);
+  bliss_digraphs_find_automorphisms(bliss_digraphs_graph, bliss_digraphs_hook_digraph, gens, 0);
+  bliss_digraphs_release(bliss_digraphs_graph);
   return gens;
 }
 
@@ -1187,41 +1187,41 @@ static bool inline is_adjacent_graph (Graph* graph,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// new_bliss_graph_from_graph: get a new Bliss graph from the Graph pointed to
+// new_bliss_digraphs_graph_from_graph: get a new Bliss graph from the Graph pointed to
 // by <graph>.
 ////////////////////////////////////////////////////////////////////////////////
 
-static BlissGraph* new_bliss_graph_from_graph (Graph* graph, UIntS* colors) {
+static BlissGraph* new_bliss_digraphs_graph_from_graph (Graph* graph, UIntS* colors) {
   assert(graph != NULL);
   
   UIntS       i, j;
-  BlissGraph* bliss_graph; 
+  BlissGraph* bliss_digraphs_graph; 
   UIntS       n = graph->nr_vertices;
 
   if (colors == NULL) {
-    bliss_graph = bliss_new(n);
+    bliss_digraphs_graph = bliss_digraphs_new(n);
   } else {
-    bliss_graph = bliss_new(0);
+    bliss_digraphs_graph = bliss_digraphs_new(0);
     for (i = 0; i < n; i++) {
-      bliss_add_vertex(bliss_graph, colors[i]);
+      bliss_digraphs_add_vertex(bliss_digraphs_graph, colors[i]);
     }
   } 
 
   for (i = 0; i < n; i++) {       // loop over vertices
     for (j = 0; j < n; j++) {
       if (is_adjacent_graph(graph, i, j)) {
-        bliss_add_edge(bliss_graph, i, j);
+        bliss_digraphs_add_edge(bliss_digraphs_graph, i, j);
       }
     }
   }
-  return bliss_graph;
+  return bliss_digraphs_graph;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// bliss_hook_graph: the HOOK for bliss_find_automorphism. 
+// bliss_digraphs_hook_graph: the HOOK for bliss_digraphs_find_automorphism. 
 ////////////////////////////////////////////////////////////////////////////////
 
-static void bliss_hook_graph (void               *user_param_arg,  // perm_coll!
+static void bliss_digraphs_hook_graph (void               *user_param_arg,  // perm_coll!
                               unsigned int       N,
                               const unsigned int *aut            ) {
   
@@ -1247,10 +1247,10 @@ static void bliss_hook_graph (void               *user_param_arg,  // perm_coll!
 static PermColl* automorphisms_graph (Graph* graph, UIntS* colors) {
   assert(graph != NULL);
   
-  BlissGraph* bliss_graph = new_bliss_graph_from_graph(graph, colors);
+  BlissGraph* bliss_digraphs_graph = new_bliss_digraphs_graph_from_graph(graph, colors);
   PermColl*   gens  = new_perm_coll(graph->nr_vertices - 1);
-  bliss_find_automorphisms(bliss_graph, bliss_hook_graph, gens, 0);
-  bliss_release(bliss_graph);
+  bliss_digraphs_find_automorphisms(bliss_digraphs_graph, bliss_digraphs_hook_graph, gens, 0);
+  bliss_digraphs_release(bliss_digraphs_graph);
   return gens;
 }
 

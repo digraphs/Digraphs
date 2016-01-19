@@ -1,0 +1,106 @@
+<Chapter Label="Finding cliques and independent sets">
+  <Heading>Finding cliques and independent sets</Heading>
+
+    In &Digraphs;, a <E>clique</E> of a digraph is a set of mutually adjacent
+    vertices of the digraph, and an <E>independent set</E> is a set of mutually
+    non-adjacent vertices of the digraph. A <E>maximal clique</E> is a clique
+    which is not properly contained in another clique, and a <E>maximal
+      independent set</E> is an independent set which is not properly contained
+    in another independent set.  Using this definition in &Digraphs;, cliques
+    and independent sets are both permitted, but not required, to contain vertices
+    at which there is a loop.  Another name for a clique is a <E>complete
+      subgraph</E>.
+    <P/>
+
+    &Digraphs; provides extensive functionality for computing cliques and
+    independent sets of a digraph, whether maximal or not.  The fundamental
+    algorithm used in most of the methods in &Digraphs; to calculate cliques
+    and independent sets is a version of the Bron-Kerbosch algorithm.
+    Calculating the cliques and independent sets of a digraph is a well-known
+    and hard problem, and searching for cliques or independent sets in a
+    digraph can be very length, even for a digraph with a small number of
+    vertices.  &Digraphs; uses several strategies to increase the performance
+    of these calculations.
+    <P/>
+
+    From the definition of cliques and independent sets, it follows that the
+    presence of loops and multiple edges in a digraph is irrelevant to the
+    existence of cliques and independent sets in the digraph.  See <Ref
+      Prop="DigraphHasLoops"/> and <Ref Prop="IsMultiDigraph"/> for more
+    information about these properties.  Therefore given a digraph
+    <A>digraph</A>, the cliques and independent sets of <A>digraph</A> are
+    equal to the cliques and indepedents sets of the digraph:
+
+    <List>
+      <Item>
+        <C>DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(</C><A>digraph</A><C>))</C>.
+      </Item>
+    </List>
+
+    See <Ref Attr="DigraphRemoveLoops"/> and <Ref
+      Attr="DigraphRemoveAllMultipleEdges"/> for more information about these
+    attributes.  Furthermore, the cliques of this digraph are equal to the
+    cliques of the digraph formed by removing any edge <C>[u,v]</C> for which
+    the corresponding reverse edge <C>[v,u]</C> is not present.  Therefore,
+    overall, the cliques of <A>digraph</A> are equal to the cliques of the
+    symmetric digraph:
+
+    <List>
+      <Item>
+        <C>MaximalSymmetricSubdigraphWithoutLoops(</C><A>digraph</A><C>)</C>.
+      </Item>
+    </List>
+
+    See <Ref Attr="MaximalSymmetricSubdigraphWithoutLoops"/> for more
+    information about this attribute. The <Ref Attr="AutomorphismGroup"
+      Label="for a digraph" /> of this symmetric digraph contains the
+    automorphism group of <A>digraph</A> as a subgroup.  By performing the
+    search for maximal cliques with the help of this larger automorphism group
+    to reduce the search space, the computation time may be reduced.  The
+    functions and attributes which return representatives of cliques of
+    <A>digraph</A> will return orbit representatives of cliques under the
+    action of the automorphism group of the <E>maximal symmetric subdigraph
+      without loops</E> on sets of vertices.<P/>
+
+    The independent sets of a digraph are equal to the independent sets of the
+    <Ref Attr="DigraphSymmetricClosure"/>.  Therefore, overall, the independent
+    sets of <A>digraph</A> are equal to the independent sets of the symmetric
+    digraph:
+
+    <List>
+      <Item>
+        <C>DigraphSymmetricClosure(DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
+        </C><A>digraph</A><C>)))</C>.
+      </Item>
+    </List>
+
+    Again, the automorphism group of this symmetric digraph contains the
+    automorphism group of <A>digraph</A>. Since a search for independent sets
+    is equal to a search for cliques in the <Ref Attr="DigraphDual"/>, the
+    methods used in &Digraphs; usually transform a search for independent sets
+    into a search for cliques, as described above.  The functions and
+    attributes which return representatives of independent sets of
+    <A>digraph</A> will return orbit representatives of independent sets under
+    the action of the automorphism group of the <E>symmetric closure</E> of the
+    digraph formed by removing loops and multiple edges.<P/>
+
+    Please note that in &Digraphs;, cliques and indepedent sets are not
+    required to be maximal. Some authors use the word clique to mean
+    <E>maximal</E> clique, and some authors use the phrase independent set to
+    mean <E>maximal</E> independent set, but please note that &Digraphs; does
+    not use this definition.
+    <P/>
+
+  <Section><Heading>Finding cliques</Heading>
+    <#Include Label="IsClique">
+    <#Include Label="CliquesFinder">
+    <#Include Label="DigraphClique">
+    <#Include Label="DigraphMaximalCliques">
+  </Section>
+
+  <Section><Heading>Finding independent sets</Heading>
+    <#Include Label="IsIndependentSet">
+    <#Include Label="DigraphIndependentSet">
+    <#Include Label="DigraphMaximalIndependentSets">
+  </Section>
+</Chapter>

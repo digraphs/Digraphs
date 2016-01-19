@@ -53,6 +53,25 @@ gap> DigraphVertexLabels(gr);
 [ 1, 2, 3, 5, 7 ]
 gap> DigraphVertices(gr);
 [ 1 .. 5 ]
+gap> gr := Digraph([[4, 8], [4, 9], [5], [9], [6], [3, 5], [],
+> [6], [1, 3], [10]]);
+<digraph with 10 vertices, 13 edges>
+gap> x := DigraphVertexLabels(gr);
+[ 1 .. 10 ]
+gap> x[1] := "a";
+"a"
+gap> x;
+[ "a", 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> DigraphVertexLabels(gr);
+[ 1 .. 10 ]
+gap> SetDigraphVertexLabel(gr, 2, []);
+gap> x := DigraphVertexLabel(gr, 2);
+[  ]
+gap> Add(x, 1);
+gap> x;
+[ 1 ]
+gap> DigraphVertexLabels(gr);
+[ 1, [  ], 3, 4, 5, 6, 7, 8, 9, 10 ]
 
 #T# Graph
 gap> gr := Digraph([[2, 2], []]);
@@ -265,7 +284,7 @@ gap> divides := function(a, b)
 >   fi;
 >   return false;
 > end;;
-gap> gr := Digraph(12, divides);
+gap> gr := Digraph([1 .. 12], divides);
 <digraph with 12 vertices, 35 edges>
 
 #T# Digraph (by binary relation)
@@ -1067,6 +1086,465 @@ gap> gr = gr2;
 true
 gap> DigraphVertexLabels(gr2);
 [ "a", Group([ (1,2) ]) ]
+
+# Digraph: for a list and a function
+gap> G := DihedralGroup(8);
+<pc group of size 8 with 3 generators>
+gap> digraph := Digraph(G, ReturnTrue);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 2 arguments
+gap> digraph := Digraph(AsSet(G), ReturnTrue);
+<digraph with 8 vertices, 64 edges>
+gap> IsDigraphWithAdjacencyFunction(digraph);
+true
+gap> digraph := DigraphCopy(digraph);
+<digraph with 8 vertices, 64 edges>
+gap> IsDigraphWithAdjacencyFunction(digraph);
+false
+gap> foo := function(x, y)
+> return ForAny(GeneratorsOfGroup(G), z -> x * z = y);
+> end;
+function( x, y ) ... end
+gap> digraph := Digraph(AsSet(G), foo);
+<digraph with 8 vertices, 24 edges>
+gap> G := DihedralGroup(8);
+<pc group of size 8 with 3 generators>
+gap> digraph := Digraph(AsSet(G), ReturnTrue);
+<digraph with 8 vertices, 64 edges>
+gap> HasOutNeighbours(digraph);
+true
+gap> digraph := Digraph("abcd", function(i, j) return i < j; end);
+<digraph with 4 vertices, 6 edges>
+gap> digraph := Digraph([1 .. 10], function(i, j) return i = j + 1; end);
+<digraph with 10 vertices, 9 edges>
+gap> digraph := Digraph(["hello", "world", 13, true, (1, 4, 3)],
+>                  function(i, j) return j = "world"; end);
+<digraph with 5 vertices, 5 edges>
+gap> IsDigraphWithAdjacencyFunction(digraph);
+true
+gap> HasOutNeighbours(digraph);
+true
+
+#T# Digraphs with known automorphisms
+gap> gr := Digraph([[], [], [], [], [1, 2, 3, 4, 5]]);;
+gap> adj := function(x, y)
+> return x = 5;
+> end;;
+gap> gr2 := Digraph(SymmetricGroup([1 .. 4]), [1 .. 5], OnPoints, adj);;
+gap> gr3 := Digraph(Group((1, 2, 3, 4)), [1 .. 5], OnPoints, adj);;
+gap> gr = gr2;
+true
+gap> gr = gr3;
+true
+
+#T# LineDigraph 
+gap> gr := LineUndirectedDigraph(CompleteDigraph(3));
+<digraph with 3 vertices, 6 edges>
+gap> gr = CompleteDigraph(3);
+true
+gap> gr := LineDigraph(CompleteDigraph(3));
+<digraph with 6 vertices, 12 edges>
+gap> OutNeighbours(gr);
+[ [ 3, 4 ], [ 5, 6 ], [ 1, 2 ], [ 5, 6 ], [ 1, 2 ], [ 3, 4 ] ]
+gap> gr := LineUndirectedDigraph(CompleteDigraph(4));;
+gap> OutNeighbours(gr);
+[ [ 2, 3, 4, 5 ], [ 1, 3, 4, 6 ], [ 1, 2, 5, 6 ], [ 1, 2, 5, 6 ], 
+  [ 1, 3, 4, 6 ], [ 2, 3, 4, 5 ] ]
+gap> gr := Digraph([[2, 4], [1, 3, 4], [2, 4], [1, 2, 3]]);
+<digraph with 4 vertices, 10 edges>
+gap> gr2 := LineUndirectedDigraph(gr);
+<digraph with 5 vertices, 16 edges>
+gap> OutNeighbours(gr2);
+[ [ 2, 3, 4 ], [ 1, 4, 5 ], [ 1, 4, 5 ], [ 1, 2, 3, 5 ], [ 2, 3, 4 ] ]
+gap> gr := Digraph([[2, 4], [3], [1, 2, 4], [3]]);
+<digraph with 4 vertices, 7 edges>
+gap> gr2 := LineDigraph(gr);
+<digraph with 7 vertices, 12 edges>
+gap> OutNeighbours(gr2);
+[ [ 3 ], [ 7 ], [ 4, 5, 6 ], [ 1, 2 ], [ 3 ], [ 7 ], [ 4, 5, 6 ] ]
+gap> gr := CompleteDigraph(6);;
+gap> gr2 := LineUndirectedDigraph(gr);
+<digraph with 15 vertices, 120 edges>
+gap> DigraphGroup(gr);
+Group([ (5,6), (4,5), (3,4), (2,3), (1,2) ])
+gap> gr3 := LineUndirectedDigraph(gr);
+<digraph with 15 vertices, 120 edges>
+gap> gr2 = gr3;
+true
+gap> gr := CycleDigraph(8);
+<digraph with 8 vertices, 8 edges>
+gap> gr2 := LineDigraph(gr);
+<digraph with 8 vertices, 8 edges>
+gap> DigraphGroup(gr);
+Group([ (1,2,3,4,5,6,7,8) ])
+gap> gr3 := LineDigraph(gr);
+<digraph with 8 vertices, 8 edges>
+gap> gr2 = gr3;
+true
+gap> gr := ChainDigraph(4);
+<digraph with 4 vertices, 3 edges>
+gap> LineUndirectedDigraph(gr);
+Error, Digraphs: LineUndirectedDigraph: usage,
+the argument <digraph> must be a symmetric digraph,
+
+#T# CayleyDigraph
+gap> group := DihedralGroup(8);
+<pc group of size 8 with 3 generators>
+gap> digraph := CayleyDigraph(group);
+<digraph with 8 vertices, 24 edges>
+gap> group := DihedralGroup(IsPermGroup, 8);
+Group([ (1,2,3,4), (2,4) ])
+gap> digraph := CayleyDigraph(group);
+<digraph with 8 vertices, 16 edges>
+gap> IsCayleyDigraph(digraph);
+true
+gap> IsDigraph(digraph);
+true
+gap> digraph := CayleyDigraph(group, [(1, 2, 3, 4), (2, 5)]);
+Error, Digraphs: CayleyDigraph: usage,
+elements in the 2nd argument <gens> must all belong to the 1st argument <G>,
+gap> group := FreeGroup(2);;
+gap> digraph := CayleyDigraph(group);
+Error, Digraphs: CayleyDigraph: usage,
+the first argument <G> must be a finite group,
+
+#T# BipartiteDoubleDigraph
+gap> n := 5;
+5
+gap> adj := function(x, y)
+> return ((x + 1) mod n) = (y mod n);
+> end;
+function( x, y ) ... end
+gap> group := CyclicGroup(IsPermGroup, n);
+Group([ (1,2,3,4,5) ])
+gap> digraph := Digraph(group, [1 .. n], \^, adj);
+<digraph with 5 vertices, 5 edges>
+gap> bddigraph := BipartiteDoubleDigraph(digraph);
+<digraph with 10 vertices, 10 edges>
+gap> bdgroup := DigraphGroup(bddigraph);
+Group([ (1,2,3,4,5)(6,7,8,9,10), (1,6)(2,7)(3,8)(4,9)(5,10) ])
+
+#T# DoubleDigraph
+gap> out := [[2, 3, 4], [], [], []];
+[ [ 2, 3, 4 ], [  ], [  ], [  ] ]
+gap> group := Group([(2, 3), (2, 4)]);
+Group([ (2,3), (2,4) ])
+gap> digraph := Digraph(out);
+<digraph with 4 vertices, 3 edges>
+gap> SetDigraphGroup(digraph, group);
+gap> ddigraph := BipartiteDoubleDigraph(digraph);
+<digraph with 8 vertices, 6 edges>
+gap> DigraphGroup(ddigraph);
+Group([ (2,3)(6,7), (2,4)(6,8), (1,5)(2,6)(3,7)(4,8) ])
+gap> ddigraph := DoubleDigraph(digraph);
+<digraph with 8 vertices, 12 edges>
+gap> DigraphGroup(ddigraph);
+Group([ (2,3)(6,7), (2,4)(6,8), (1,5)(2,6)(3,7)(4,8) ])
+
+#T# (Bipartite)DoubleDigraph with multidigraph
+gap> gr := Digraph([[2, 3], [1], []]);;
+gap> gr2 := DoubleDigraph(gr);
+<digraph with 6 vertices, 12 edges>
+gap> OutNeighbours(gr2);
+[ [ 2, 3, 5, 6 ], [ 1, 4 ], [  ], [ 5, 6, 2, 3 ], [ 4, 1 ], [  ] ]
+gap> gr2 := BipartiteDoubleDigraph(gr);
+<digraph with 6 vertices, 6 edges>
+gap> OutNeighbours(gr2);
+[ [ 5, 6 ], [ 4 ], [  ], [ 2, 3 ], [ 1 ], [  ] ]
+gap> gr := Digraph([[2, 2, 3], [1], []]);;
+gap> gr2 := DoubleDigraph(gr);
+<multidigraph with 6 vertices, 16 edges>
+gap> OutNeighbours(gr2);
+[ [ 2, 2, 3, 5, 5, 6 ], [ 1, 4 ], [  ], [ 5, 5, 6, 2, 2, 3 ], [ 4, 1 ], [  ] ]
+gap> gr2 := BipartiteDoubleDigraph(gr);
+<multidigraph with 6 vertices, 8 edges>
+gap> OutNeighbours(gr2);
+[ [ 5, 5, 6 ], [ 4 ], [  ], [ 2, 2, 3 ], [ 1 ], [  ] ]
+
+#T# DistanceDigraph
+gap> out := [[70, 79, 103], [76, 92, 116], [77, 93, 117],
+> [78, 94, 118], [66, 71, 88], [89, 106, 107], [89, 108, 125],
+> [90, 109, 126], [91, 109, 110], [64, 67, 98], [104, 115, 119],
+> [100, 104, 114], [76, 120, 124], [81, 86, 113], [81, 105, 120],
+> [87, 94, 121], [86, 93, 122], [64, 65, 72], [118, 123, 124],
+> [99, 102, 105], [85, 99, 101], [88, 117, 126], [77, 102, 121],
+> [72, 75, 97], [91, 96, 123], [72, 108, 119], [96, 102, 108],
+> [101, 107, 110], [75, 79, 111], [65, 68, 80], [65, 66, 81],
+> [67, 69, 82], [112, 125, 126], [103, 113, 125], [67, 93, 106],
+> [98, 103, 118], [70, 110, 115], [90, 105, 111], [80, 85, 112],
+> [82, 87, 112], [80, 100, 123], [82, 115, 120], [100, 106, 111],
+> [114, 116, 121], [85, 92, 122], [68, 73, 74], [69, 74, 95],
+> [68, 70, 77], [69, 71, 96], [95, 113, 114], [97, 117, 124],
+> [71, 79, 92], [64, 109, 116], [78, 119, 122], [95, 97, 101],
+> [74, 78, 90], [66, 94, 107], [73, 83, 84], [75, 84, 87],
+> [73, 76, 89], [84, 86, 91], [83, 98, 99], [83, 88, 104],
+> [10, 18, 53], [18, 30, 31], [5, 31, 57], [10, 32, 35],
+> [30, 46, 48], [32, 47, 49], [1, 37, 48], [5, 49, 52],
+> [18, 24, 26], [46, 58, 60], [46, 47, 56], [24, 29, 59],
+> [2, 13, 60], [3, 23, 48], [4, 54, 56], [1, 29, 52],
+> [30, 39, 41], [14, 15, 31], [32, 40, 42], [58, 62, 63],
+> [58, 59, 61], [21, 39, 45], [14, 17, 61], [16, 40, 59],
+> [5, 22, 63], [6, 7, 60], [8, 38, 56], [9, 25, 61], [2, 45, 52],
+> [3, 17, 35], [4, 16, 57], [47, 50, 55], [25, 27, 49],
+> [24, 51, 55], [10, 36, 62], [20, 21, 62], [12, 41, 43], [21, 28, 55],
+> [20, 23, 27], [1, 34, 36], [11, 12, 63], [15, 20, 38],
+> [6, 35, 43], [6, 28, 57], [7, 26, 27], [8, 9, 53], [9, 28, 37],
+> [29, 38, 43], [33, 39, 40], [14, 34, 50], [12, 44, 50],
+> [11, 37, 42], [2, 44, 53], [3, 22, 51], [4, 19, 36],
+> [11, 26, 54], [13, 15, 42], [16, 23, 44], [17, 45, 54],
+> [19, 25, 41], [13, 19, 51], [7, 33, 34], [8, 22, 33]];;
+gap> digraph := Digraph(out);
+<digraph with 126 vertices, 378 edges>
+gap> DigraphDiameter(digraph);
+6
+gap> DistanceDigraph(digraph, 4);
+<digraph with 126 vertices, 3024 edges>
+gap> DistanceDigraph(digraph, [1, 3, 5]);
+<digraph with 126 vertices, 7938 edges>
+gap> gr := DistanceDigraph(digraph, 0);
+<digraph with 126 vertices, 126 edges>
+gap> OutNeighbours(gr) = List([1 .. 126], x -> [x]);
+true
+gap> gr := Digraph([[2, 2], [3, 3], []]);
+<multidigraph with 3 vertices, 4 edges>
+gap> OutNeighbours(DistanceDigraph(gr, 0));
+[ [ 1 ], [ 2 ], [ 3 ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 1));
+[ [ 2 ], [ 3 ], [  ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 2));
+[ [ 3 ], [  ], [  ] ]
+
+#T# DistanceDigraph with known automorphisms
+gap> gr := Digraph([[1, 2], [], [2, 3]]);;
+gap> DigraphGroup(gr) = Group((1, 3));
+true
+gap> OutNeighbours(DistanceDigraph(gr, 0));
+[ [ 1 ], [ 2 ], [ 3 ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 1));
+[ [ 2 ], [  ], [ 2 ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 2));
+[ [  ], [  ], [  ] ]
+
+#T# DistanceDigraph on multidigraph with known automorphisms
+gap> gr := Digraph([[1, 2, 2], [], [2, 2, 3]]);;
+gap> DigraphGroup(gr) = Group((1, 3));
+true
+gap> OutNeighbours(DistanceDigraph(gr, 0));
+[ [ 1 ], [ 2 ], [ 3 ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 1));
+[ [ 2 ], [  ], [ 2 ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 2));
+[ [  ], [  ], [  ] ]
+
+#T# DistanceDigraph: bad input
+gap> gr := Digraph([[1, 2], [2, 3], [4], [1]]);;
+gap> DistanceDigraph(gr, -2);
+Error, Digraphs: DistanceDigraph: usage,
+second arg <distance> must be a non-negative integer,
+
+#T# DigraphAddEdgeOrbit
+gap> digraph := NullDigraph(4);
+<digraph with 4 vertices, 0 edges>
+gap> SetDigraphGroup(digraph, Group((1, 3), (1, 2)(3, 4)));
+gap> digraph := DigraphAddEdgeOrbit(digraph, [4, 3]);
+<digraph with 4 vertices, 8 edges>
+gap> Graph(digraph);
+rec( adjacencies := [ [ 2, 4 ] ], group := Group([ (1,3), (1,2)(3,4) ]), 
+  isGraph := true, names := [ 1 .. 4 ], order := 4, representatives := [ 1 ], 
+  schreierVector := [ -1, 2, 1, 2 ] )
+gap> IsNullDigraph(DigraphRemoveEdgeOrbit(digraph, [4, 3]));
+true
+
+#T# DigraphRemoveEdgeOrbit
+gap> digraph := CompleteDigraph(4);
+<digraph with 4 vertices, 12 edges>
+gap> SetDigraphGroup(digraph, Group((1, 3), (1, 2)(3, 4)));
+gap> digraph := DigraphRemoveEdgeOrbit(digraph, [1, 3]);
+<digraph with 4 vertices, 8 edges>
+gap> IsCompleteDigraph(DigraphAddEdgeOrbit(digraph, [1, 3]));
+true
+gap> Graph(digraph);
+rec( adjacencies := [ [ 2, 4 ] ], group := Group([ (1,3), (1,2)(3,4) ]), 
+  isGraph := true, names := [ 1 .. 4 ], order := 4, representatives := [ 1 ], 
+  schreierVector := [ -1, 2, 1, 2 ] )
+
+#T# Digraph: copying group from Grape
+gap> g := JohnsonGraph(5, 3);;
+gap> gr := Digraph(g);
+<digraph with 10 vertices, 60 edges>
+gap> HasDigraphGroup(gr);
+true
+gap> DigraphGroup(gr);
+Group([ (1,7,10,6,3)(2,8,4,9,5), (4,7)(5,8)(6,9) ])
+gap> g := CompleteGraph(Group((1, 2, 3), (1, 2)));;
+gap> gr := Digraph(g);
+<digraph with 3 vertices, 6 edges>
+gap> HasDigraphGroup(gr);
+true
+gap> DigraphGroup(gr);
+Group([ (1,2,3), (1,2) ])
+gap> g := Graph(Group([()]), [1, 2, 3], OnPoints,
+> function(x, y) return x < y; end);;
+gap> gr := Digraph(g);
+<digraph with 3 vertices, 3 edges>
+gap> HasDigraphGroup(gr);
+false
+gap> DigraphGroup(gr);
+Group(())
+gap> HasDigraphGroup(gr);
+true
+
+#T# EdgeOrbitsDigraph
+gap> digraph := EdgeOrbitsDigraph(Group((1, 3), (1, 2)(3, 4)),
+>                                 [[1, 2], [4, 5]], 5);
+<digraph with 5 vertices, 12 edges>
+gap> OutNeighbours(digraph);
+[ [ 2, 4, 5 ], [ 1, 3, 5 ], [ 2, 4, 5 ], [ 1, 3, 5 ], [  ] ]
+gap> RepresentativeOutNeighbours(digraph);
+[ [ 2, 4, 5 ], [  ] ]
+gap> HasDigraphGroup(digraph);
+true
+gap> DigraphGroup(digraph) = Group((1, 3), (1, 2)(3, 4));
+true
+gap> digraph := EdgeOrbitsDigraph(Group(()), [3, 2], 3);
+<digraph with 3 vertices, 1 edge>
+gap> OutNeighbours(digraph);
+[ [  ], [  ], [ 2 ] ]
+gap> HasDigraphGroup(digraph);
+true
+gap> HasDigraphGroup(DigraphCopy(digraph));
+false
+gap> digraph := EdgeOrbitsDigraph(Group(()), [3, 2]);
+<digraph with 0 vertices, 0 edges>
+gap> OutNeighbours(digraph);
+[  ]
+gap> HasDigraphGroup(digraph);
+false
+gap> digraph := EdgeOrbitsDigraph(Group((1, 2)), [[1, 2], [3, 6, 5]]);
+Error, Digraphs: EdgeOrbitsDigraph: usage,
+the second argument must be a list of pairs of pos ints,
+gap> digraph := EdgeOrbitsDigraph(Group((1, 2)), [[1, 2], [3, -6]]);
+Error, Digraphs: EdgeOrbitsDigraph: usage,
+the second argument must be a list of pairs of pos ints,
+gap> digraph := EdgeOrbitsDigraph(Group((1, 2)), [[1, 2], [3, 6]], -1);
+Error, Digraphs: EdgeOrbitsDigraph: usage,
+the third argument must be a non-negative integer,
+
+#T# DigraphAdd/RemoveEdgeOrbit
+gap> gr1 := CayleyDigraph(DihedralGroup(8));
+<digraph with 8 vertices, 24 edges>
+gap> gr2 := DigraphAddEdgeOrbit(gr1, [1, 8]);
+<digraph with 8 vertices, 32 edges>
+gap> DigraphEdges(gr1);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], [ 3, 5 ], 
+  [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [ 5, 3 ], [ 5, 2 ], 
+  [ 5, 8 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], 
+  [ 8, 7 ], [ 8, 6 ], [ 8, 5 ] ]
+gap> DigraphEdges(gr2);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 8 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], 
+  [ 2, 3 ], [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 3, 2 ], [ 4, 6 ], [ 4, 7 ], 
+  [ 4, 1 ], [ 4, 5 ], [ 5, 3 ], [ 5, 2 ], [ 5, 8 ], [ 5, 4 ], [ 6, 4 ], 
+  [ 6, 5 ], [ 6, 2 ], [ 6, 7 ], [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 7, 6 ], 
+  [ 8, 7 ], [ 8, 6 ], [ 8, 5 ], [ 8, 1 ] ]
+gap> gr3 := DigraphRemoveEdgeOrbit(gr2, [1, 8]);
+<digraph with 8 vertices, 24 edges>
+gap> gr3 = gr1;
+true
+gap> gr3 := DigraphRemoveEdgeOrbit(gr1, [1, 3]);
+<digraph with 8 vertices, 16 edges>
+gap> gr3 := DigraphRemoveEdgeOrbit(gr3, [1, 2]);
+<digraph with 8 vertices, 8 edges>
+gap> gr3 := DigraphRemoveEdgeOrbit(gr3, [1, 4]);
+<digraph with 8 vertices, 0 edges>
+gap> DigraphAddEdgeOrbit(gr1, [0, 3]);
+Error, Digraphs: DigraphAddEdgeOrbit: usage,
+the second argument must be a pair of pos ints,
+gap> DigraphAddEdgeOrbit(gr1, [1, 2, 3]);
+Error, Digraphs: DigraphAddEdgeOrbit: usage,
+the second argument must be a pair of pos ints,
+gap> DigraphRemoveEdgeOrbit(gr1, [0, 3]);
+Error, Digraphs: DigraphRemoveEdgeOrbit: usage,
+the second argument must be a pair of pos ints,
+gap> DigraphRemoveEdgeOrbit(gr1, [1, 2, 3]);
+Error, Digraphs: DigraphRemoveEdgeOrbit: usage,
+the second argument must be a pair of pos ints,
+gap> gr2 := DigraphAddEdgeOrbit(gr1, [1, 4]);
+<digraph with 8 vertices, 24 edges>
+gap> gr1 = gr2;
+true
+gap> DigraphAddEdgeOrbit(gr1, [3, 9]);
+Error, Digraphs: DigraphAddEdgeOrbit: usage,
+the second argument must be a pair of vertices of the first argument,
+gap> DigraphRemoveEdgeOrbit(gr1, [3, 9]);
+Error, Digraphs: DigraphRemoveEdgeOrbit: usage,
+the second argument must be a pair of vertices of the first argument,
+gap> gr2 := DigraphRemoveEdgeOrbit(gr1, [1, 8]);
+<digraph with 8 vertices, 24 edges>
+gap> gr1 = gr2;
+true
+
+#T# Digraph (by list and function)
+gap> f := function(i, j) return i < j; end;
+function( i, j ) ... end
+gap> gr := Digraph([1 .. 4], f);
+<digraph with 4 vertices, 6 edges>
+gap> IsDigraphEdge(gr, [2, 1]);
+false
+gap> gr := Digraph([4, 3 .. 1], f);
+<digraph with 4 vertices, 6 edges>
+gap> IsDigraphEdge(gr, [2, 1]);
+true
+
+#T# DigraphAddAllLoops
+gap> gr := CompleteDigraph(10);
+<digraph with 10 vertices, 90 edges>
+gap> OutNeighbours(gr)[1];
+[ 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> gr2 := DigraphAddAllLoops(gr);
+<digraph with 10 vertices, 100 edges>
+gap> OutNeighbours(gr2)[1];
+[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 1 ]
+gap> gr3 := DigraphAddAllLoops(gr);
+<digraph with 10 vertices, 100 edges>
+gap> OutNeighbours(gr3)[1];
+[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 1 ]
+gap> gr := EmptyDigraph(100);
+<digraph with 100 vertices, 0 edges>
+gap> DigraphAddAllLoops(gr);
+<digraph with 100 vertices, 100 edges>
+gap> gr := Digraph([[1, 2, 3], [2, 2, 2, 2], [5, 1], [1, 2, 3, 4], [5]]);
+<multidigraph with 5 vertices, 14 edges>
+gap> gr2 := DigraphAddAllLoops(gr);
+<multidigraph with 5 vertices, 15 edges>
+gap> OutNeighbours(gr2);
+[ [ 1, 2, 3 ], [ 2, 2, 2, 2 ], [ 5, 1, 3 ], [ 1, 2, 3, 4 ], [ 5 ] ]
+
+#T# JohnsonDigraph
+gap> JohnsonDigraph(0,4);
+<digraph with 0 vertices, 0 edges>
+gap> JohnsonDigraph(0,0);
+<digraph with 1 vertex, 0 edges>
+gap> JohnsonDigraph(3,0);
+<digraph with 1 vertex, 0 edges>
+gap> JohnsonDigraph(1,0);
+<digraph with 1 vertex, 0 edges>
+gap> gr := JohnsonDigraph(3, 1);
+<digraph with 3 vertices, 6 edges>
+gap> OutNeighbours(gr);
+[ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ]
+gap> gr := JohnsonDigraph(4, 2);
+<digraph with 6 vertices, 24 edges>
+gap> OutNeighbours(gr);
+[ [ 2, 3, 4, 5 ], [ 1, 3, 4, 6 ], [ 1, 2, 5, 6 ], [ 1, 2, 5, 6 ], 
+  [ 1, 3, 4, 6 ], [ 2, 3, 4, 5 ] ]
+gap> JohnsonDigraph(5, 1) = CompleteDigraph(5);
+true
+gap> JohnsonDigraph(3, -2);
+Error, Digraphs: JohnsonDigraph: usage,
+both arguments must be non-negative integers,
+gap> JohnsonDigraph(-1, 2);
+Error, Digraphs: JohnsonDigraph: usage,
+both arguments must be non-negative integers,
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);

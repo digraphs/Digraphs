@@ -11,6 +11,9 @@
 # category, family, type, representations . . .
 
 DeclareCategory("IsDigraph", IsObject);
+DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
+DeclareCategory("IsCayleyDigraph", IsDigraph);
+
 # meaning it really has multiple edges!!
 DeclareProperty("IsMultiDigraph", IsDigraph);
 
@@ -24,10 +27,24 @@ BindGlobal("DigraphType", NewType(DigraphFamily,
 
 DeclareOperation("Digraph", [IsRecord]);
 DeclareOperation("Digraph", [IsList]);
-DeclareOperation("Digraph", [IsPosInt, IsFunction]);
+DeclareOperation("Digraph", [IsList, IsFunction]);
 DeclareOperation("Digraph", [IsInt, IsList, IsList]);
 DeclareOperation("Digraph", [IsList, IsList, IsList]);
 DeclareOperation("Digraph", [IsBinaryRelation]);
+DeclareOperation("Digraph", [IsGroup,
+                             IsListOrCollection,
+                             IsFunction,
+                             IsFunction]);
+DeclareOperation("CayleyDigraph", [IsGroup]);
+DeclareOperation("CayleyDigraph", [IsGroup, IsList]);
+
+DeclareOperation("DoubleDigraph", [IsDigraph]);
+
+DeclareOperation("DistanceDigraph", [IsDigraph, IsInt]);
+DeclareOperation("DistanceDigraph", [IsDigraph, IsList]);
+
+DeclareOperation("BipartiteDoubleDigraph", [IsDigraph]);
+
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsList]);
 DeclareOperation("DigraphNC", [IsList, IsInt]);
@@ -41,6 +58,11 @@ DeclareOperation("DigraphByInNeighbours", [IsList]);
 DeclareOperation("DigraphByInNeighbors", [IsList]);
 DeclareOperation("DigraphByInNeighboursNC", [IsList]);
 DeclareOperation("DigraphByInNeighboursNC", [IsList, IsInt]);
+DeclareOperation("EdgeOrbitsDigraph", [IsPermGroup, IsList, IsInt]);
+DeclareOperation("EdgeOrbitsDigraph", [IsPermGroup, IsList]);
+DeclareOperation("DigraphAddEdgeOrbit", [IsDigraph, IsList]);
+DeclareOperation("DigraphRemoveEdgeOrbit", [IsDigraph, IsList]);
+
 DeclareOperation("Graph", [IsDigraph]);
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
@@ -55,10 +77,18 @@ DeclareOperation("RandomTournament", [IsInt]);
 DeclareOperation("CompleteBipartiteDigraph", [IsPosInt, IsPosInt]);
 DeclareOperation("CompleteDigraph", [IsInt]);
 DeclareOperation("EmptyDigraph", [IsInt]);
+DeclareSynonym("NullDigraph", EmptyDigraph);
 DeclareOperation("CycleDigraph", [IsPosInt]);
 DeclareOperation("ChainDigraph", [IsPosInt]);
+DeclareOperation("LineDigraph", [IsDigraph]);
+DeclareOperation("LineUndirectedDigraph", [IsDigraph]);
+DeclareSynonym("EdgeDigraph", LineDigraph);
+DeclareSynonym("EdgeUndirectedDigraph", LineUndirectedDigraph);
 
 DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphVertexLabels", [IsDigraph]);
 DeclareOperation("SetDigraphVertexLabel", [IsDigraph, IsPosInt, IsObject]);
 DeclareOperation("SetDigraphVertexLabels", [IsDigraph, IsList]);
+DeclareOperation("DigraphAddAllLoops", [IsDigraph]);
+
+DeclareOperation("JohnsonDigraph", [IsInt, IsInt]);
