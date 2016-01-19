@@ -219,9 +219,6 @@ function(arg)
   # Store the result if appropriate
   if not IsBound(arg[2]) then
     SetDigraphMaximalIndependentSetsRepsAttr(digraph, out);
-    if IsTrivial(DigraphGroup(digraph)) then
-      SetDigraphMaximalIndependentSetsAttr(digraph, out);
-    fi;
   fi;
   return out;
 end);
@@ -262,9 +259,6 @@ function(arg)
   # Store the result if appropriate
   if not IsBound(arg[2]) then
     SetDigraphMaximalIndependentSetsAttr(digraph, out);
-    if IsTrivial(DigraphGroup(digraph)) then
-      SetDigraphMaximalIndependentSetsRepsAttr(digraph, out);
-    fi;
   fi;
   return out;
 end);
@@ -296,7 +290,7 @@ end);
 
 InstallGlobalFunction(DIGRAPHS_Clique,
 function(arg)
-  local maximal, gr, G, include, exclude, size, out, try, include_copy, v;
+  local maximal, gr, include, exclude, size, out, try, include_copy, v;
 
   maximal := arg[1];
 
@@ -307,8 +301,6 @@ function(arg)
                  "the first argument <gr> must be a digraph,");
   fi;
 
-  G := DigraphGroup(gr);
-
   # Validate arg[3]
   if IsBound(arg[3]) then
     include := arg[3];
@@ -316,7 +308,7 @@ function(arg)
         or not IsSubset(DigraphVertices(gr), include) then
       ErrorMayQuit("Digraphs: DIGRAPHS_Clique: usage,\n",
                    "the optional second argument <include> must be a ",
-                   "duplicate-free set of\nvertices of <gr>,");
+                   "duplicate-free list of\nvertices of <gr>,");
     fi;
   else
     include := [];
@@ -329,7 +321,7 @@ function(arg)
         or not IsSubset(DigraphVertices(gr), exclude) then
       ErrorMayQuit("Digraphs: DIGRAPHS_Clique: usage,\n",
                    "the optional third argument <exclude> must be a ",
-                   "duplicate-free set of\nverticies of <gr>,");
+                   "duplicate-free list of\nvertices of <gr>,");
     fi;
   else
     exclude := [];
@@ -534,9 +526,6 @@ function(arg)
   if IsEmpty(include) and IsEmpty(exclude) and limit = infinity
       and size = fail then
     SetDigraphMaximalCliquesRepsAttr(digraph, out);
-    if IsTrivial(DigraphGroup(digraph)) then
-      SetDigraphMaximalCliquesAttr(digraph, out);
-    fi;
   fi;
   return out;
 end);
@@ -593,10 +582,7 @@ function(arg)
       return DigraphMaximalCliquesAttr(digraph);
     fi;
     out := DigraphMaximalCliquesReps(digraph);
-    if IsTrivial(DigraphGroup(digraph)) then
-      return out;
-    fi;
-    G := DigraphGroup(digraph);
+    G := AutomorphismGroup(MaximalSymmetricSubdigraphWithoutLoops(digraph));
     return Concatenation(List(out, x -> Orbit(G, x, OnSets)));
   fi;
 
@@ -666,7 +652,7 @@ function(gr, hook, user_param, limit, include, exclude, max, size, reps)
   fi;
 
   # Investigate whether <include> and <exclude> are invariant under <grp>
-  group := DigraphGroup(gr);
+  group := AutomorphismGroup(MaximalSymmetricSubdigraphWithoutLoops(gr));
 
   invariant_include := true;
   invariant_exclude := true;
@@ -756,14 +742,14 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     hook := Add;
   fi;
 
+  gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
   vtx := DigraphVertices(gr);
-  grp := DigraphGroup(gr);
+  grp := AutomorphismGroup(gr);
 
   invariant_inc := Length(inc_var) = 0;
   invariant_exc := Length(exc_var) = 0;
   invariant := invariant_inc and invariant_exc;
 
-  gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
   adj := BooleanAdjacencyMatrix(gr);
 
   # Variables
@@ -944,10 +930,19 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
         bk(C, IntersectionBlist(try, adj[v]), IntersectionBlist(ban, adj[v]),
            g, d); # Recurse
       fi;
-      try[v] := false;
-      ban[v] := true;
       if lim = num then
         return; # The limit of cliques has been reached
+      fi;
+      # need to prune the tree to prevent any repeated work:
+      # do not need to search further for any cliques containing anything in
+      # Orbit(G, v)
+      if G = fail then
+        try[v] := false;
+        ban[v] := true;
+      else
+        orb := BlistList(vtx, Orbit(G, v));
+        UniteBlist(ban, orb);
+        SubtractBlist(try, orb);
       fi;
     od;
   end;

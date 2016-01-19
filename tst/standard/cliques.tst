@@ -222,10 +222,14 @@ gap> DigraphMaximalIndependentSets(gr);
 gap> gr := DigraphFromDigraph6String("+FWSK?[SK_?");
 <digraph with 7 vertices, 14 edges>
 gap> DigraphMaximalIndependentSetsReps(gr);
+[ [ 1, 4 ], [ 1, 5 ], [ 2, 5, 7 ] ]
+gap> DigraphMaximalIndependentSets(gr);
+[ [ 1, 4 ], [ 1, 5 ], [ 2, 4 ], [ 2, 5, 7 ] ]
+gap> DigraphMaximalIndependentSets(gr);
 [ [ 1, 4 ], [ 1, 5 ], [ 2, 4 ], [ 2, 5, 7 ] ]
 gap> DigraphIndependentSetsReps(gr);
 [ [ 1 ], [ 1, 4 ], [ 1, 5 ], [ 2 ], [ 2, 4 ], [ 2, 5 ], [ 2, 5, 7 ], 
-  [ 2, 7 ], [ 4 ], [ 5 ], [ 5, 7 ], [ 7 ] ]
+  [ 2, 7 ], [ 7 ] ]
 
 # DigraphMaximalClique and DigraphClique
 gap> gr := CompleteDigraph(5);;
@@ -247,12 +251,12 @@ gap> DigraphClique(gr);
 [ 5, 4, 3, 2, 1 ]
 gap> DigraphMaximalClique(gr, [1, 1]);
 Error, Digraphs: DIGRAPHS_Clique: usage,
-the optional second argument <include> must be a duplicate-free set of
+the optional second argument <include> must be a duplicate-free list of
 vertices of <gr>,
 gap> DigraphMaximalClique(gr, [1], [1, 1]);
 Error, Digraphs: DIGRAPHS_Clique: usage,
-the optional third argument <exclude> must be a duplicate-free set of
-verticies of <gr>,
+the optional third argument <exclude> must be a duplicate-free list of
+vertices of <gr>,
 gap> DigraphMaximalClique(gr, [1], [1], 0);
 Error, Digraphs: DIGRAPHS_Clique: usage,
 the optional fourth argument <size> must be a positive integer,
@@ -302,7 +306,7 @@ gap> gr := DigraphFromDigraph6String("+D[]]]?");
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 3 ] ]
 gap> DigraphMaximalCliques(gr);
-[ [ 1, 3 ], [ 2, 4 ], [ 3, 5 ], [ 1, 4 ], [ 2, 5 ] ]
+[ [ 1, 3 ], [ 1, 4 ], [ 2, 4 ], [ 2, 5 ], [ 3, 5 ] ]
 
 #T# CliquesFinder: error checking
 gap> CliquesFinder(Group(()), fail, fail, fail, fail, fail, fail, fail, fail);

@@ -17,19 +17,16 @@
     If <A>digraph</A> is a digraph and <A>l</A> is a duplicate-free list of
     vertices of <A>digraph</A>, then
     <C>IsClique(</C><A>digraph</A><C>,</C><A>l</A><C>)</C> returns <K>true</K>
-    if and only if <A>l</A> defines a <E>clique</E> of <A>digraph</A>, and
+    if <A>l</A> is a <E>clique</E> of <A>digraph</A> and <K>false</K> if it is
+    not.  Similarly,
     <C>IsMaximalClique(</C><A>digraph</A><C>,</C><A>l</A><C>)</C> returns
-    <K>true</K> if and only if <A>l</A> defines a <E>maximal clique</E> of
-    <A>digraph</A>. <P/>
+    <K>true</K> if <A>l</A> is a <E>maximal clique</E> of <A>digraph</A> and
+    <K>false</K> if it is not.  <P/>
 
-    A set of vertices of a digraph defines a clique if and only if every
-    vertex of the set is an out-neighbour in the digraph of all of the other
-    vertices of the set.  Note that loops are not necessary for a clique.
-    Equivalently, a clique is a set of vertices of the digraph which induces a
-    complete digraph (when ignoring loops and multiple edges). <P/>
-
-    A clique of a digraph is a <E>maximal</E> clique if it is not properly
-    contained is another clique the digraph.
+    A <E>clique</E> of a digraph is a set of mutually adjacent vertices of the
+    digraph. A <E>maximal clique</E> is a clique which is not properly
+    contained in another clique. A clique is permitted, but not required, to
+    contain vertices at which there is a loop.
     <Example><![CDATA[
 gap> gr := CompleteDigraph(4);;
 gap> IsClique(gr, [1, 3, 2]);
@@ -57,19 +54,17 @@ true]]></Example>
     If <A>digraph</A> is a digraph and <A>l</A> is a duplicate-free list of
     vertices of <A>digraph</A>, then
     <C>IsIndependentSet(</C><A>digraph</A><C>,</C><A>l</A><C>)</C> returns
-    <K>true</K> if and only if <A>l</A> defines an <E>independent set</E> of
-    <A>digraph</A>, and
+    <K>true</K> if <A>l</A> is an <E>independent set</E> of <A>digraph</A> and
+    <K>false</K> if it is not.  Similarly,
     <C>IsMaximalIndependentSet(</C><A>digraph</A><C>,</C><A>l</A><C>)</C>
-    returns <K>true</K> if and only if <A>l</A> defines a <E>maximal
-      independent set</E> of <A>digraph</A>. <P/>
+    returns <K>true</K> if <A>l</A> is a <E>maximal independent set</E> of
+    <A>digraph</A> and <K>false</K> if it is not.  <P/>
 
-    A set of vertices of a digraph is an independent set if and only if no
-    vertex of the set is an out-neighbour in the digraph of any different
-    vertex of the set. Equivalently, an independent set is a set of vertices
-    of the digraph which induces an empty digraph (when ignoring loops).<P/>
-
-    An independent of a digraph is a <E>maximal</E> independent set if it is
-    not properly contained is another independent set of the digraph.
+    An <E>independent set</E> of a digraph is a set of mutually non-adjacent
+    vertices of the digraph. A <E>maximal independent set</E> is an independent
+    set which is not properly contained in another independent set. An
+    independent set is permitted, but not required, to contain vertices at
+    which there is a loop.
     <Example><![CDATA[
 gap> gr := CycleDigraph(4);;
 gap> IsIndependentSet(gr, [1]);
@@ -94,21 +89,22 @@ true]]></Example>
   <Returns>A list of positive integers, or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then these functions returns a clique
-    of <A>digraph</A> if one exists (and satisfies the arguments), else it
+    of <A>digraph</A> if one exists which satisfies the arguments, else it
     returns <K>fail</K>.  A clique is defined by the set of vertices which it
-    contains; see <Ref Oper="IsClique"/>.<P/>
+    contains; see <Ref Oper="IsClique"/> and <Ref Oper="IsMaximalClique"/>.<P/>
     
     The optional arguments <A>include</A> and <A>exclude</A> must each be a
     (possibly empty) duplicate-free list of vertices of <A>digraph</A>, and
     the optional argument <A>size</A> must be a positive integer.  By default,
-    <A>include</A> and <A>exclude</A> are empty. The functions will search for
+    <A>include</A> and <A>exclude</A> are empty. These functions will search for
     a clique of <A>digraph</A> which includes the vertices of <A>include</A>
     and which does not include any vertices in <A>exclude</A>; if the argument
     <A>size</A> is supplied, then additionally the clique will be required to
     contain precisely <A>size</A> vertices.<P/>
 
-    The functions behave in the following way, depending on the number of
-    arguments:
+    If <A>include</A> is not a clique, then these functions return <K>fail</K>.
+    Otherwise, the functions behave in the following way, depending on the
+    number of arguments:
 
     <List>
       <Mark>One or two arguments</Mark> 
@@ -116,17 +112,17 @@ true]]></Example>
         If one or two arguments are supplied, then <C>DigraphClique</C> and
         <C>DigraphMaximalClique</C> greedily enlarge the clique <A>include</A>
         until it can not continue.  The result is guaranteed to be a maximal
-        clique - see <Ref Oper="IsMaximalClique"/>. This may or may not return
-        an answer more quickly than using <Ref Func="DigraphMaximalCliques"/>.
+        clique. This may or may not return an answer more quickly than using
+        <Ref Func="DigraphMaximalCliques"/>.  with a limit of 1.
       </Item>
       <Mark>Three arguments</Mark> 
       <Item>
         If three arguments are supplied, then <C>DigraphClique</C> greedily
-        enlarges the clique <A>include</A> until it can not continue,
-        although this clique may not be maximal.<P/>
+        enlarges the clique <A>include</A> until it can not continue, although
+        this clique may not be maximal.<P/>
 
-        Given three arguments, <C>DigraphMaximalClique</C> returns the clique
-        returned by <C>DigraphMaximalCliques(</C><A>digraph</A><C>,
+        Given three arguments, <C>DigraphMaximalClique</C> returns the maximal
+        clique returned by <C>DigraphMaximalCliques(</C><A>digraph</A><C>,
         </C><A>include</A><C>, </C><A>exclude</A><C>, 1)</C> if one exists,
         else <K>fail</K>.
       </Item>
@@ -134,13 +130,13 @@ true]]></Example>
       <Item>
         If four arguments are supplied, then <C>DigraphClique</C> returns the
         clique returned by <C>DigraphCliques(</C><A>digraph</A><C>,
-        </C><A>include</A><C>, </C><A>exclude</A><C>, 1,
-      </C><A>size</A><C>)</C> if one exists, else <K>fail</K>. This clique may
-      not be maximal.<P/> Given four arguments, <C>DigraphMaximalClique</C>
-      returns the clique returned by
-      <C>DigraphMaximalCliques(</C><A>digraph</A><C>, </C><A>include</A><C>,
-      </C><A>exclude</A><C>, 1, </C><A>size</A><C>)</C> if one exists, else
-      <K>fail</K>.
+          </C><A>include</A><C>, </C><A>exclude</A><C>, 1,
+        </C><A>size</A><C>)</C> if one exists, else <K>fail</K>. This clique may
+        not be maximal.<P/> Given four arguments, <C>DigraphMaximalClique</C>
+        returns the maximal clique returned by
+        <C>DigraphMaximalCliques(</C><A>digraph</A><C>, </C><A>include</A><C>,
+        </C><A>exclude</A><C>, 1, </C><A>size</A><C>)</C> if one exists, else
+        <K>fail</K>.
       </Item>
     </List>
 
@@ -174,38 +170,40 @@ gap> DigraphClique(gr, [], [], 2);
 <#GAPDoc Label="DigraphMaximalCliques">
 <ManSection>
   <Func Name="DigraphMaximalCliques" Arg="digraph[, include[, exclude[, limit[, size]]]]"/>
-  <Attr Name="DigraphMaximalCliquesAttr" Arg="digraph"/>
   <Func Name="DigraphMaximalCliquesReps" Arg="digraph[, include[, exclude[,
     limit[, size]]]]"/>
-  <Attr Name="DigraphMaximalCliquesRepsAttr" Arg="digraph"/>
   <Func Name="DigraphCliques" Arg="digraph[, include[, exclude[,
     limit[, size]]]]"/>
   <Func Name="DigraphCliquesReps" Arg="digraph[, include[,
     exclude[, limit[, size]]]]"/>
+  <Attr Name="DigraphMaximalCliquesAttr" Arg="digraph"/>
+  <Attr Name="DigraphMaximalCliquesRepsAttr" Arg="digraph"/>
   <Returns>A list of lists of positive integers.</Returns>
   <Description>
     If <A>digraph</A> is digraph, then these functions and attributes use <Ref
       Func="CliquesFinder"/> to return cliques of <A>digraph</A>. A
     clique is defined by the set of vertices which it contains; see <Ref
-      Oper="IsMaximalClique"/> and <Ref Oper="IsClique"/>.<P/>
+      Oper="IsClique"/> and <Ref Oper="IsMaximalClique"/>.<P/>
     
-    The arguments <A>include</A> and <A>exclude</A> must each be a (possibly
-    empty) list of vertices of <A>digraph</A>, the argument <A>limit</A> must
-    be either a positive integer or <C>infinity</C>, and the argument
-    <A>size</A> must be a positive integer.  By default, <A>include</A> and
-    <A>exclude</A> are empty, and <A>limit</A> is <C>infinity</C>. <P/>
+    The optional arguments <A>include</A> and <A>exclude</A> must each be a
+    (possibly empty) list of vertices of <A>digraph</A>, the optional argument
+    <A>limit</A> must be either a positive integer or <C>infinity</C>, and the
+    optional argument <A>size</A> must be a positive integer.  If not
+    specified, then  <A>include</A> and <A>exclude</A> are empty
+    lists, and <A>limit</A> is <C>infinity</C>. <P/>
 
-    The argument <A>size</A> will restrict the search to those cliques which
-    contain precisely <A>size</A> vertices.  The functions will return as many
-    suitable cliques as they can find, up to the number <A>limit</A>.  These
-    functions will find cliques (which, if <A>size</A> is specified, contain
-    precisely <A>size</A> vertices) which contain all of the vertices of
-    <A>include</A> and which do not contain any of the vertices of
-    <A>exclude</A>.<P/>
-
+    The functions will return as many suitable cliques as possible, up to the
+    number <A>limit</A>.  These functions will find cliques which contain all
+    of the vertices of <A>include</A> and which do not contain any of the
+    vertices of <A>exclude</A>.  The argument <A>size</A> restricts the search
+    to those cliques which contain precisely <A>size</A> vertices.
     If the function or attribute has <C>Maximal</C> in its name, then only
     maximal cliques will be returned; otherwise non-maximal cliques may be
     returned. <P/>
+
+    Let <C>G</C> denote the <Ref Attr="AutomorphismGroup" Label="for a digraph"/>
+    of the <Ref Attr="MaximalSymmetricSubdigraphWithoutLoops"/> of
+    <A>digraph</A>.
 
     <List>
       <Mark>Distinct cliques</Mark>
@@ -215,41 +213,40 @@ gap> DigraphClique(gr, [], [], 2);
         which satisfy the arguments.<P/>
         
         The computation may be significantly faster if <A>include</A> and
-        <A>exclude</A> are invariant under the action of the <Ref
-          Attr="DigraphGroup"/> of <A>digraph</A> on sets of vertices.
+        <A>exclude</A> are invariant under the action of <C>G</C>
+        on sets of vertices.
       </Item>
 
       <Mark>Representatives of distinct orbits of cliques</Mark>
       <Item>
         To use <C>DigraphMaximalCliquesReps</C> or <C>DigraphCliquesReps</C>,
         the arguments <A>include</A> and <A>exclude</A> must each be invariant
-        under the action of the <Ref Attr="DigraphGroup"/> of <A>digraph</A>
-        on sets of vertices.<P/>
+        under the action of <C>G</C> on sets of vertices.<P/>
         
         If this is the case, then <C>DigraphMaximalCliquesReps</C> and
-        <C>DigraphCliquesReps</C> each return a duplicate-free list of at
-        most <A>limit</A> orbits representatives (under the action of the <Ref
-          Attr="DigraphGroup"/> of <A>digraph</A>) of cliques of
-        <A>digraph</A> which satisfy the arguments.
+        <C>DigraphCliquesReps</C> each return a duplicate-free list of at most
+        <A>limit</A> orbits representatives (under the action of <C>G</C> on
+        sets vertices) of cliques of <A>digraph</A> which satisfy the
+        arguments.
       </Item>
     </List>
-
-    The attributes <C>DigraphMaximalCliquesAttr</C> and
-    <C>DigraphMaximalCliquesRepsAttr</C> exist to store the values
-    of <C>DigraphMaximalCliques(</C><A>digraph</A><C>)</C> and
-    <C>DigraphMaximalCliquesReps(</C><A>digraph</A><C>)</C> respectively,
-    to avoid repeating computation unnecessarily. <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph([[2, 3], [1, 3], [1, 2, 4], [3, 5, 6],
 > [4, 6], [4, 5]]);
 <digraph with 6 vertices, 14 edges>
-gap> AutomorphismGroup(gr);
+gap> IsSymmetricDigraph(gr);
+true
+gap> G := AutomorphismGroup(gr);
 Group([ (5,6), (1,2), (1,5)(2,6)(3,4) ])
 gap> DigraphMaximalCliques(gr);
 [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ]
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 2, 3 ], [ 3, 4 ] ]
+gap> Orbit(G, [1, 2, 3], OnSets);
+[ [ 1, 2, 3 ], [ 4, 5, 6 ] ]
+gap> Orbit(G, [3, 4], OnSets);
+[ [ 3, 4 ] ]
 gap> DigraphMaximalCliquesReps(gr, [3, 4], [], 1);
 [ [ 3, 4 ] ]
 gap> DigraphMaximalCliques(gr, [1, 2], [5, 6], 1, 2);
@@ -267,62 +264,61 @@ gap> DigraphCliques(gr, [1], [5, 6], infinity, 2);
     size]]]"/>
   <Returns>A lists of positive integers, or <K>fail</K>.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, then these functions returns an
-    independent of <A>digraph</A> if one exists (and satisfies the arguments),
-    else it returns <K>fail</K>.  An independent set is defined by the set of
-    vertices which it contains; see <Ref Oper="IsIndependentSet"/>.<P/>
+    If <A>digraph</A> is a digraph, then these functions returns a independent
+    set of <A>digraph</A> if one exists which satisfies the arguments, else it
+    returns <K>fail</K>.  A independent set is defined by the set of vertices
+    which it contains; see <Ref Oper="IsIndependentSet"/> and <Ref
+      Oper="IsMaximalIndependentSet"/>.<P/>
     
     The optional arguments <A>include</A> and <A>exclude</A> must each be a
-    (possibly empty) duplicate-free list of vertices of <A>digraph</A>, and
-    the optional argument <A>size</A> must be a positive integer.  By default,
-    <A>include</A> and <A>exclude</A> are empty. The functions will search for
-    an independent set of <A>digraph</A> which includes the vertices of
+    (possibly empty) duplicate-free list of vertices of <A>digraph</A>, and the
+    optional argument <A>size</A> must be a positive integer.  By default,
+    <A>include</A> and <A>exclude</A> are empty. These functions will search
+    for a independent set of <A>digraph</A> which includes the vertices of
     <A>include</A> and which does not include any vertices in <A>exclude</A>;
     if the argument <A>size</A> is supplied, then additionally the independent
     set will be required to contain precisely <A>size</A> vertices.<P/>
 
-    The functions behave in the following way, depending on the number of
-    arguments:
+    If <A>include</A> is not a independent set, then these functions return
+    <K>fail</K>.  Otherwise, the functions behave in the following way,
+    depending on the number of arguments:
 
     <List>
-      <Mark>One or two arguments</Mark>
+      <Mark>One or two arguments</Mark> 
       <Item>
-        If one or two arguments are supplied, then
-        <C>DigraphIndependentSet</C> and <C>DigraphMaximalIndependentSet</C>
-        greedily enlarge the independent set <A>include</A> until it can not
-        continue.  The result is guaranteed to be a maximal independent set -
-        see <Ref Oper="IsMaximalIndependentSet"/>. This may or may not return
-        an answer more quickly than using <Ref
-          Func="DigraphMaximalIndependentSets"/>.
+        If one or two arguments are supplied, then <C>DigraphIndependentSet</C>
+        and <C>DigraphMaximalIndependentSet</C> greedily enlarge the
+        independent set <A>include</A> until it can not continue.  The result
+        is guaranteed to be a maximal independent set. This may or may not
+        return an answer more quickly than using <Ref
+          Func="DigraphMaximalIndependentSets"/>.  with a limit of 1.
       </Item>
-      
-      <Mark>Three arguments</Mark>
+      <Mark>Three arguments</Mark> 
       <Item>
         If three arguments are supplied, then <C>DigraphIndependentSet</C>
         greedily enlarges the independent set <A>include</A> until it can not
         continue, although this independent set may not be maximal.<P/>
 
         Given three arguments, <C>DigraphMaximalIndependentSet</C> returns the
-        independent set returned by
+        maximal independent set returned by
         <C>DigraphMaximalIndependentSets(</C><A>digraph</A><C>,
         </C><A>include</A><C>, </C><A>exclude</A><C>, 1)</C> if one exists,
         else <K>fail</K>.
       </Item>
-        
-      <Mark>Four arguments</Mark>
+      <Mark>Four arguments</Mark> 
       <Item>
         If four arguments are supplied, then <C>DigraphIndependentSet</C>
         returns the independent set returned by
-        <C>DigraphIndependentSets(</C><A>digraph</A><C>,
-        </C><A>include</A><C>, </C><A>exclude</A><C>, 1,
-        </C><A>size</A><C>)</C> if one exists, else <K>fail</K>. This
-        independent set may not be maximal.<P/> Given four arguments,
-        <C>DigraphMaximalIndependentSet</C> returns the independent set
-        returned by <C>DigraphMaximalIndependentSets(</C><A>digraph</A><C>,
-        </C><A>include</A><C>, </C><A>exclude</A><C>, 1,
+        <C>DigraphIndependentSets(</C><A>digraph</A><C>, </C><A>include</A><C>,
+        </C><A>exclude</A><C>, 1, </C><A>size</A><C>)</C> if one exists, else
+        <K>fail</K>. This independent set may not be maximal.<P/> Given four
+        arguments, <C>DigraphMaximalIndependentSet</C> returns the maximal
+        independent set returned by
+        <C>DigraphMaximalIndependentSets(</C><A>digraph</A><C>,
+          </C><A>include</A><C>, </C><A>exclude</A><C>, 1,
         </C><A>size</A><C>)</C> if one exists, else <K>fail</K>.
-       </Item>
-     </List>
+      </Item>
+    </List>
     <Example><![CDATA[
 gap> gr := ChainDigraph(6);
 <digraph with 6 vertices, 5 edges>
@@ -352,14 +348,14 @@ gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
 <ManSection>
   <Func Name="DigraphMaximalIndependentSets" Arg="digraph[, include[, exclude[,
     limit[, size]]]]"/>
-  <Attr Name="DigraphMaximalIndependentSetsAttr" Arg="digraph"/>
   <Func Name="DigraphMaximalIndependentSetsReps" Arg="digraph[, include[,
     exclude[, limit[, size]]]]"/>
-  <Attr Name="DigraphMaximalIndependentSetsRepsAttr" Arg="digraph"/>
   <Func Name="DigraphIndependentSets" Arg="digraph[, include[,
     exclude[, limit[, size]]]]"/>
   <Func Name="DigraphIndependentSetsReps" Arg="digraph[, include[,
     exclude[, limit[, size]]]]"/>
+  <Attr Name="DigraphMaximalIndependentSetsAttr" Arg="digraph"/>
+  <Attr Name="DigraphMaximalIndependentSetsRepsAttr" Arg="digraph"/>
   <Returns>A list of lists of positive integers.</Returns>
   <Description>
     If <A>digraph</A> is digraph, then these functions and attributes use <Ref
@@ -368,24 +364,26 @@ gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
     <Ref Oper="IsMaximalIndependentSet"/> and <Ref
       Oper="IsIndependentSet"/>.<P/>
     
-    The arguments <A>include</A> and <A>exclude</A> must each be a (possibly
-    empty) list of vertices of <A>digraph</A>, the argument <A>limit</A> must
-    be either a positive integer or <C>infinity</C>, and the argument
-    <A>size</A> must be a positive integer.  By default, <A>include</A> and
-    <A>exclude</A> are empty, and <A>limit</A> is <C>infinity</C>. <P/>
+    The optional arguments <A>include</A> and <A>exclude</A> must each be a
+    (possibly empty) list of vertices of <A>digraph</A>, the optional argument
+    <A>limit</A> must be either a positive integer or <C>infinity</C>, and the
+    optional argument <A>size</A> must be a positive integer.  If not
+    specified, then <A>include</A> and <A>exclude</A> are empty lists, and
+    <A>limit</A> is <C>infinity</C>. <P/>
 
-    The argument <A>size</A> will restrict the search to those independent
-    sets which contain precisely <A>size</A> vertices.  The functions will
-    return as many suitable independent sets as they can find, up to the number
-    <A>limit</A>.  These functions will find independent sets (which, if
-    <A>size</A> is specified, contain precisely <A>size</A> vertices) which
-    contain all of the vertices of <A>include</A> and which do not contain any
-    of the vertices of <A>exclude</A>.<P/>
-
-    If the function or attribute has <C>Maximal</C> in its name, then only
-    maximal independent sets will be returned; otherwise non-maximal
+    The functions will return as many suitable independent sets as possible, up
+    to the number <A>limit</A>.  These functions will find independent sets
+    which contain all of the vertices of <A>include</A> and which do not
+    contain any of the vertices of <A>exclude</A> The argument <A>size</A>
+    restricts the search to those cliques which contain precisely <A>size</A>
+    vertices.  If the function or attribute has <C>Maximal</C> in its name,
+    then only maximal independent sets will be returned; otherwise non-maximal
     independent sets may be returned.
     <P/>
+
+    Let <C>G</C> denote the <Ref Attr="AutomorphismGroup" Label="for a digraph"/>
+    of the <Ref Attr="DigraphSymmetricClosure"/> of the digraph formed from
+    <A>digraph</A> by removing loops and ignoring the multiplicity of edges.
 
     <List>
       <Mark>Distinct independent sets</Mark>
@@ -395,22 +393,22 @@ gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
         sets of <A>digraph</A> which satisfy the arguments.<P/>
         
         The computation may be significantly faster if <A>include</A> and
-        <A>exclude</A> are invariant under the action of the <Ref
-          Attr="DigraphGroup"/> of <A>digraph</A> on sets of vertices.
+        <A>exclude</A> are invariant under the action of <C>G</C> on sets of
+        vertices.
       </Item>
 
       <Mark>Representatives of distinct orbits of independent sets</Mark>
       <Item>
         To use <C>DigraphMaximalIndependentSetsReps</C> or
         <C>DigraphIndependentSetsReps</C>, the arguments <A>include</A> and
-        <A>exclude</A> must each be invariant under the action of the <Ref
-          Attr="DigraphGroup"/> of <A>digraph</A> on sets of vertices.<P/>
+        <A>exclude</A> must each be invariant under the action of <C>G</C> on
+        sets of vertices.<P/>
         
         If this is the case, then <C>DigraphMaximalIndependentSetsReps</C> and
         <C>DigraphIndependentSetsReps</C> each return a duplicate-free list of
-        at most <A>limit</A> orbits representatives (under the action of the
-        <Ref Attr="DigraphGroup"/> of <A>digraph</A>) of independent sets of
-        <A>digraph</A> which satisfy the arguments.
+        at most <A>limit</A> orbits representatives (under the action of
+        <C>G</C> on sets of vertices) of independent sets of <A>digraph</A>
+        which satisfy the arguments.
       </Item>
     </List>
 
@@ -445,11 +443,13 @@ gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
   <Returns>The argument <A>user_param</A>.</Returns>
   <Description>
     This function finds cliques of the digraph <A>digraph</A> subject to the
-    conditions imposed by the other arguments as described below. <P/>
-    This function uses a version of the Bron-Kerbosch algorithm.
+    conditions imposed by the other arguments as described below. Note
+    that a clique is represented by a list of the vertices which it contains.
+    <P/>
 
-    Note that a clique is represented as a list of the vertices which it
-    contains. <P/>
+    Let <C>G</C> denote the <Ref Attr="AutomorphismGroup" Label="for a digraph"/>
+    of the <Ref Attr="MaximalSymmetricSubdigraphWithoutLoops"/> of
+    <A>digraph</A>.
 
     <List>
       <Mark><A>hook</A></Mark>
@@ -496,9 +496,7 @@ gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
         <A>exclude</A>. <P/>
 
         Note that the search may be much more efficient if each of these lists
-        is invariant under the action of
-        <C>DigraphGroup(</C><A>digraph</A><C>)</C> on sets of vertices of
-        <A>digraph</A>. See <Ref Attr="DigraphGroup"/>.
+        is invariant under the action of <C>G</C> on sets of vertices.
       </Item>
 
       <Mark><A>max</A></Mark>
@@ -523,21 +521,22 @@ gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
         
         If <A>reps</A> is <K>true</K> then the arguments <A>include</A> and
         <A>exclude</A> are each required to be invariant under the action of
-        <C>DigraphGroup(</C><A>digraph</A><C>)</C> on sets of vertices. See
-        <Ref Attr="DigraphGroup"/>. In this case, <C>CliquesFinder</C> will
-        only find representatives of the orbits of the desired cliques under
-        the action of <C>DigraphGroup(</C><A>digraph</A><C>)</C>.  <P/>
+        <C>G</C> on sets of vertices.
+        In this case, <C>CliquesFinder</C> will only find
+        representatives of the orbits of the desired cliques under the action
+        of <C>G</C>.
 
         If <A>reps</A> is false then <C>CliquesFinder</C> may find distinct
-        cliques which are in the same orbit of
-        <C>DigraphGroup(</C><A>digraph</A><C>)</C>.
+        cliques which are in the same orbit of <C>G</C>.
         <P/>
 
-        For a digraph with non-trivial <C>DigraphGroup</C>, the search for
+        For a digraph such that <C>G</C> is non-trivial, the search for
         clique representatives can be much more efficient than the search for
         all cliques.
       </Item>
     </List>
+
+    This function uses a version of the Bron-Kerbosch algorithm.
     <Example><![CDATA[
 gap> gr := CompleteDigraph(5);
 <digraph with 5 vertices, 20 edges>
