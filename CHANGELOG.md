@@ -1,12 +1,69 @@
-##Digraphs package for GAP - CHANGELOG
-Copyright (C) 2014-16 Julius Jonusas, James D. Mitchell, Michael Torpey & Wilf Wilson
+#Digraphs package for GAP - CHANGELOG
+Copyright (C) 2014-16 Jan De Beule, Julius Jonusas, James D. Mitchell, Michael Torpey & Wilf Wilson
 
 Licensing information can be found in the LICENSE file.
 
 ## Version 0.4 (released 19/01/2016)
+This is a major release, primarily aimed at incorporating more of the
+functionality of Grape into Digraphs, as well as fixing some bugs.  In this
+version, we welcomed Jan De Beule to the development team.
 
-###New Features in Version 0.4
+### New Features in Version 0.4
+* Functionality to calculate cliques and independent sets
+* New methods for `Digraph`
+* `ReadDigraphs` and `WriteDigraphs` now have a new output format `.p` or
+  `.pickle`, which allows known automorphisms to be stored with the digraph
+* The following functions now use known automorphisms:
+  - `DigraphDiameter`
+  - `DigraphDual`
+  - `DigraphShortestDistances`
+  - `Digraph` method for a Grape graph
+  - `Graph`
+  - `InDegreeSequence`
+  - `OutDegreeSequence`
+* The following new functions were added:
+  - `BipartiteDoubleDigraph`
+  - `BooleanAdjacencyMatrix`
+  - `CayleyDigraph`
+  - `DigraphAddAllLoops`
+  - `DigraphAddEdgeOrbit`
+  - `DigraphAdjacencyFunction`
+  - `DigraphColoring` for a digraph
+  - `DigraphDegeneracyOrdering`
+  - `DigraphDegeneracy`
+  - `DigraphDistanceSet`
+  - `DigraphGirth`
+  - `DigraphGroup`
+  - `DigraphLayers`
+  - `DigraphLongestSimpleCircuit`
+  - `DigraphOrbitReps`
+  - `DigraphOrbits`
+  - `DigraphRemoveEdgeOrbit`
+  - `DigraphSchreierVector`
+  - `DigraphShortestDistance`
+  - `DigraphStabilizer`
+  - `DigraphUndirectedGirth`
+  - `DistanceDigraph`
+  - `DoubleDigraph`
+  - `EdgeOrbitsDigraph`
+  - `InDegreeSet`
+  - `IsDigraphEdge` for a digraph and a list
+  - `IsDistanceRegularDigraph`
+  - `IsInRegularDigraph`
+  - `IsOutRegularDigraph`
+  - `IsRegularDigraph`
+  - `JohnsonDigraph`
+  - `LineDigraph`
+  - `LineUndirectedDigraph`
+  - `MaximalSymmetricSubdigraphWithoutLoops`
+  - `MaximalSymmetricSubdigraph`
+  - `OutDegreeSet`
+  - `RepresentativeOutNeighbours`
 
+[[Jan De Beule](http://homepages.vub.ac.be/~jdbeule/), [Julius Jonusas](http://www-circa.mcs.st-and.ac.uk/~julius),
+[James D. Mitchell](http://tinyurl.com/jdmitchell),
+[Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25),
+[Wilf Wilson](http://wilf.me)]
 
 ## Version 0.3.2 (released 14/01/2016)
 This is another minor release due to some missing build files in the Version
@@ -16,7 +73,7 @@ This is another minor release due to some missing build files in the Version
 This is a minor release due to some missing build files in the Version 0.3 archive.
 
 ## Version 0.3 (released 12/01/2016)
-This release contains a number of bugfixes and performance improvements. 
+This release contains a number of bugfixes and performance improvements.
 
 ###New Features in Version 0.3
 * The attribute `DigraphAllSimpleCircuits` based
@@ -36,5 +93,5 @@ on the algorithm in [this paper](http://epubs.siam.org/doi/abs/10.1137/0204007?j
 ## Version 0.2 (released 04/09/2015)
 The first release.
 
-## Version 0.1 ##
+## Version 0.1
 Pre-release version that was not made publicly available.
