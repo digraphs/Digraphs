@@ -89,12 +89,12 @@ function(digraph)
 end);
 
 InstallMethod(DigraphGroup, "for a digraph",
-[IsDigraph], AutomorphismGroup);
-
-InstallMethod(DigraphGroup, "for a digraph",
-[IsMultiDigraph],
+[IsDigraph],
 function(digraph)
-  return Range(Projection(AutomorphismGroup(digraph), 1));
+  if IsMultiDigraph(digraph) then
+    return Range(Projection(AutomorphismGroup(digraph), 1));
+  fi;
+  return AutomorphismGroup(digraph);
 end);
 
 InstallMethod(DigraphOrbits, "for a digraph",

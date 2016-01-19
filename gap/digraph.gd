@@ -40,7 +40,7 @@ DeclareOperation("CayleyDigraph", [IsGroup, IsList]);
 
 DeclareOperation("DoubleDigraph", [IsDigraph]);
 
-DeclareOperation("DistanceDigraph", [IsDigraph, IsPosInt]);
+DeclareOperation("DistanceDigraph", [IsDigraph, IsInt]);
 DeclareOperation("DistanceDigraph", [IsDigraph, IsList]);
 
 DeclareOperation("BipartiteDoubleDigraph", [IsDigraph]);
