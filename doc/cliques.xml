@@ -201,9 +201,10 @@ gap> DigraphClique(gr, [], [], 2);
     maximal cliques will be returned; otherwise non-maximal cliques may be
     returned. <P/>
 
-    Let <C>G</C> denote the <Ref Attr="AutomorphismGroup" Label="for a digraph"/>
-    of the <Ref Attr="MaximalSymmetricSubdigraphWithoutLoops"/> of
-    <A>digraph</A>.
+    Let <C>G</C> denote the automorphism group of maximal symmetric subdigraph
+    of <A>digraph</A> without loops (see <Ref Attr="AutomorphismGroup"
+      Label="for a digraph"/> and <Ref
+      Attr="MaximalSymmetricSubdigraphWithoutLoops"/>).
 
     <List>
       <Mark>Distinct cliques</Mark>
@@ -412,11 +413,6 @@ gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
       </Item>
     </List>
 
-    The attributes <C>DigraphMaximalIndependentSetsAttr</C> and
-    <C>DigraphMaximalIndependentSetsRepsAttr</C> exist to store the values of
-    <C>DigraphMaximalIndependentSets(</C><A>digraph</A><C>)</C> and
-    <C>DigraphMaximalIndependentSetsReps(</C><A>digraph</A><C>)</C>
-    respectively, to avoid repeating computation unnecessarily. <P/>
     <Example><![CDATA[
 gap> gr := CycleDigraph(5);
 <digraph with 5 vertices, 5 edges>
@@ -447,9 +443,10 @@ gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
     that a clique is represented by a list of the vertices which it contains.
     <P/>
 
-    Let <C>G</C> denote the <Ref Attr="AutomorphismGroup" Label="for a digraph"/>
-    of the <Ref Attr="MaximalSymmetricSubdigraphWithoutLoops"/> of
-    <A>digraph</A>.
+    Let <C>G</C> denote the automorphism group of maximal symmetric subdigraph
+    of <A>digraph</A> without loops (see <Ref Attr="AutomorphismGroup"
+      Label="for a digraph"/> and <Ref
+      Attr="MaximalSymmetricSubdigraphWithoutLoops"/>).
 
     <List>
       <Mark><A>hook</A></Mark>

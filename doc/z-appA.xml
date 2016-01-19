@@ -1218,7 +1218,7 @@
           <C>CompleteSubgraphs</C>
         </Item>
         <Item>
-          <Ref Func="DigraphCliques"/> and <Ref Func="DigraphMaximalCliques"/>
+          <Ref Func="DigraphCliques"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -1235,7 +1235,7 @@
           <C>CompleteSubgraphsOfGivenSize</C>
         </Item>
         <Item>
-          <Ref Func="DigraphCliques"/> and <Ref Func="DigraphMaximalCliques"/>
+          <Ref Func="DigraphCliques"/>
         </Item>
         <Item>
           <Alt Only="HTML">
