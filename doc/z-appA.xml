@@ -1180,6 +1180,7 @@
       </E>
     </Alt>
 
+<<<<<<< local
     <Table Align="|l|l|l|">
       <HorLine/>
 
@@ -1203,12 +1204,13 @@
           <C>VertexColouring</C>
         </Item>
         <Item>
-          None
+          <Ref Oper="DigraphColoring"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            There is no analogous function in &Digraphs;, although this feature
-            might be implemented in the future.
+            <C>VertexColouring</C> in &Grape; is equivalent to <Ref
+            Attr="DigraphColoring"/> in &Digraphs;, except it return a
+            transformation rather than a list of vertex colors.
           </Alt>
         </Item>
       </Row>

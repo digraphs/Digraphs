@@ -1569,6 +1569,26 @@ gap> DigraphDistanceSet(gr, 2, -1);
 Error, Digraphs: DigraphDistanceSet: usage,
 the third argument must be a non-negative integer,
 
+#T# DigraphColoring
+gap> DigraphColoring(ChainDigraph(10));
+Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
+gap> DigraphColoring(CompleteDigraph(10));
+IdentityTransformation
+gap> gr := Digraph([ [ 16, 18, 25 ], [ 17, 20, 25 ], [ 16, 21, 28 ],
+> [ 19, 17, 28 ], [ 17, 24, 26 ], [ 22, 18, 26 ], [ 23, 19, 18 ],
+> [ 19, 27, 29 ], [ 21, 20, 23 ], [ 26, 21, 29 ], [ 27, 22, 20 ],
+> [ 22, 28, 30 ], [ 23, 24, 30 ], [ 24, 16, 27 ], [ 29, 25, 30 ],
+> [ 1, 3, 14 ], [ 2, 5, 4 ], [ 1, 7, 6 ], [ 4, 8, 7 ], [ 2, 11, 9 ],
+> [ 3, 9, 10 ], [ 6, 12, 11 ], [ 7, 13, 9 ], [ 5, 14, 13 ],
+> [ 1, 2, 15 ], [ 10, 6, 5 ], [ 11, 8, 14 ], [ 3, 4, 12 ], [ 15, 10, 8 ],
+> [ 15, 13, 12 ] ]);
+<digraph with 30 vertices, 90 edges>
+gap> DigraphColoring(gr);
+Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+  2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
+gap> DigraphColoring(EmptyDigraph(0));
+fail
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
 gap> Unbind(nrvertices);
