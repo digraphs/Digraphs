@@ -23,16 +23,18 @@ function(pass)
 end);
 
 BindGlobal("DIGRAPHS_DocXMLFiles", ["attr.xml",
-                                   "bliss.xml",
-                                   "digraph.xml",
-                                   "display.xml",
-                                   "grahom.xml",
-                                   "grape.xml",
-                                   "io.xml",
-                                   "oper.xml",
-                                   "prop.xml",
-                                   "utils.xml",
-                                   "../PackageInfo.g"]);
+                                    "bliss.xml",
+                                    "cliques.xml",
+                                    "digraph.xml",
+                                    "display.xml",
+                                    "grahom.xml",
+                                    "grape.xml",
+                                    "io.xml",
+                                    "oper.xml",
+                                    "orbits.xml",
+                                    "prop.xml",
+                                    "utils.xml",
+                                    "../PackageInfo.g"]);
 
 BindGlobal("DIGRAPHS_TestRec", rec());
 MakeReadWriteGlobal("DIGRAPHS_TestRec");
@@ -78,9 +80,9 @@ function(file)
   SetInfoLevel(InfoDigraphs, record.InfoLevelInfoDigraphs);
 
   if not IsBound(GAPInfo.TestData.START_TIME) then
-      ErrorMayQuit("Digraphs: DIGRAPHS_StopTest:\n",
-                   "`STOP_TEST' command without `START_TEST' command for `",
-                   file, "'");
+      ErrorNoReturn("Digraphs: DIGRAPHS_StopTest:\n",
+                    "`STOP_TEST' command without `START_TEST' command for `",
+                    file, "'");
   fi;
   Print(GAPInfo.TestData.START_NAME, "\n");
 
@@ -108,8 +110,8 @@ function(dir, opts)
       opts.parallel := false;
     fi; #TODO add printing of ignored options
   else
-    ErrorMayQuit("Digraphs: DIGRAPHS_TestDir: usage,\n",
-                 "the argument must be a record,");
+    ErrorNoReturn("Digraphs: DIGRAPHS_TestDir: usage,\n",
+                  "the argument must be a record,");
   fi;
 
   Print("\n");
@@ -212,8 +214,8 @@ function(arg)
   local file, opts, split, print_file, width, test_output;
 
   if Length(arg) = 0 then
-    ErrorMayQuit("Digraphs: DIGRAPHS_Test: usage,\n",
-                 "there should be at least 1 argument,");
+    ErrorNoReturn("Digraphs: DIGRAPHS_Test: usage,\n",
+                  "there should be at least 1 argument,");
   fi;
 
   file := arg[1];
@@ -285,12 +287,12 @@ function()
                    "extreme.d6.gz");
 
   if file = fail then
-    ErrorMayQuit("Digraphs: DigraphsTestExtreme:\n",
-                 "the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
-                 "required\nfor these tests to run. Please download the ",
-                 "'digraphs-lib.tar.gz'\narchive from:\n\n",
-                 "http://bitbucket.org/james-d-mitchell/digraphs/downloads",
-                 "\n\nand try again,");
+    ErrorNoReturn("Digraphs: DigraphsTestExtreme:\n",
+                  "the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
+                  "required\nfor these tests to run. Please download the ",
+                  "'digraphs-lib.tar.gz'\narchive from:\n\n",
+                  "http://bitbucket.org/james-d-mitchell/digraphs/downloads",
+                  "\n\nand try again,");
   fi;
 
   return DIGRAPHS_TestDir("extreme", rec());

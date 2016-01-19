@@ -31,7 +31,7 @@
 */
 
 
-namespace bliss {
+namespace bliss_digraphs {
 
 #define _INTERNAL_ERROR() fatal_error("%s:%d: internal error",__FILE__,__LINE__)
 #define _OUT_OF_MEMORY() fatal_error("%s:%d: out of memory",__FILE__,__LINE__)
@@ -1379,7 +1379,7 @@ AbstractGraph::search(const bool canonical, Stats& stats)
                         if(old_info.fp_on)
                           goto handle_first_path_automorphism;
                         /* Should never get here because of CR:FP */
-                        _INTERNAL_ERROR();
+                        //_INTERNAL_ERROR();
                       }
                   }
 

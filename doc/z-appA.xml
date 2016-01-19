@@ -1,0 +1,1361 @@
+<Appendix>
+  <Heading>
+    Grape to Digraphs Command Map
+  </Heading>
+  Below is a table of &Grape; commands with the &Digraphs; counterparts.
+  The sections in this chapter correspond to the chapters in the &Grape;
+  manual.
+
+  <Section>
+    <Heading>
+      Functions to construct and modify graphs
+    </Heading>
+    <Alt Not="HTML">
+      <E>
+        The table in this section contains more information when viewed in
+        html format.
+      </E>
+    </Alt>
+
+    <Table Align="|l|l|l|">
+      <HorLine/>
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>Graph</C>
+        </Item>
+        <Item>
+          <Ref Oper="Digraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+          Used with the arguments of <C>Graph</C> in &Grape;, <Ref
+            Oper="Digraph"/> will return an equivalent digraph. <P/>
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>EdgeOrbitsGraph</C>
+        </Item>
+        <Item>
+          <Ref Oper="EdgeOrbitsDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+          The operation <Ref Oper="EdgeOrbitsDigraph"/> behaves the same as
+          <C>EdgeOrbitsDigraph</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>NullGraph</C>
+        </Item>
+        <Item>
+          <Ref Oper="NullDigraph"/>
+          <Alt Only="HTML">
+            or
+            <Ref Oper="EmptyDigraph"/>
+          </Alt>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Note that, unlike in &Grape;, the arguments of  <Ref
+              Oper="NullDigraph"/> and <Ref Oper="EmptyDigraph"/> are just
+            non-negative integers. Since digraphs in &Digraphs; are immutable,
+            there is no reason (although it is possible) to create a null digraph
+            and then add edges, as you might be used to doing in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CompleteGraph</C>
+        </Item>
+        <Item>
+          <Ref Oper="CompleteDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Note that, unlike in &Grape;, the argument to <Ref
+              Oper="CompleteDigraph"/> is simply a non-negative integer
+            indicating the number of vertices. By default a complete digraph in
+            &Digraphs; does not have any loops. If you want a complete digraph
+            with loops at every vertex, then use <Ref
+              Oper="DigraphAddAllLoops"/>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>JohnsonGraph</C>
+        </Item>
+        <Item>
+          <Ref Oper="JohnsonDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The &Grape; function <C>JohnsonGraph</C> is equivalent to
+            <Ref Oper="JohnsonDigraph"/>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CayleyGraph</C>
+        </Item>
+        <Item>
+          <Ref Oper="CayleyDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The operation <Ref Oper="CayleyDigraph"/> behaves the same as
+            <C>CayleyGraph</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>AddEdgeOrbit</C>
+        </Item>
+        <Item>
+          <Ref Oper="DigraphAddEdgeOrbit"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Note that, unlike in &Grape;, digraphs in &Digraphs; are immutable,
+            and this operation returns a new digraph, i.e. it does not modify the
+            digraph given as an argument.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>RemoveEdgeOrbit</C>
+        </Item>
+        <Item>
+          <Ref Oper="DigraphRemoveEdgeOrbit"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Note that, unlike in &Grape;, digraphs in &Digraphs; are immutable,
+            and this operation returns a new digraph, i.e. it does not modify the
+            digraph given as an argument.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>AssignVertexNames</C>
+        </Item>
+        <Item>
+          <Ref Oper="SetDigraphVertexLabels"/>
+          <Alt Only="HTML">
+            and
+            <Ref Oper="SetDigraphVertexLabel"/>
+          </Alt>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Use  <Ref Oper="SetDigraphVertexLabel"/> to set an individual
+            vertex label and <Ref Oper="SetDigraphVertexLabels"/> to set all of
+            the vertex labels.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+    </Table>
+  </Section>
+
+  <Section>
+    <Heading>
+      Functions to inspect graphs, vertices and edges
+    </Heading>
+    <Alt Not="HTML">
+      <E>
+        The table in this section contains more information when viewed in
+        html format.
+      </E>
+    </Alt>
+
+    <Table Align="|l|l|l|">
+      <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsGraph</C>
+        </Item>
+        <Item>
+          <Ref Func="IsDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <Ref Func="IsDigraph"/> is a category and not a function like
+            <C>IsGraph</C>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>OrderGraph</C>
+        </Item>
+        <Item>
+          <Ref Func="DigraphNrVertices"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The operation <Ref Oper="DigraphNrVertices"/> behaves the same as
+            <C>OrderGraph</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsVertex(<A>graph</A>, <A>v</A>)</C>
+        </Item>
+        <Item>
+          <C><A>v</A> in DigraphVertices(<A>digraph</A>)</C>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The attribute <Ref Oper="DigraphVertices"/> can be used to return
+            the list of vertices of a digraph, or if <A>v</A> is known to be
+            a positive integer, then you can simply do
+            <C><A>v</A> &lt;= DigraphNrVertices(<A>digraph</A>)</C>
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>VertexName</C>
+        </Item>
+        <Item>
+          <Ref Oper="DigraphVertexLabel"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Unlike <C>VertexName</C> in &Grape;, the return value of
+            <Ref Oper="DigraphVertexLabel"/> is mutable.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>VertexNames</C>
+        </Item>
+        <Item>
+          <Ref Oper="DigraphVertexLabels"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Unlike <C>VertexNames</C> in &Grape;, the return value of
+            <Ref Oper="DigraphVertexLabels"/> is mutable.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>Vertices</C>
+        </Item>
+        <Item>
+          <Ref Oper="DigraphVertices"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The vertices of a digraph in &Digraphs; is always the range
+            <C>[1 .. n]</C> where <C>n</C> is the number of vertices of the
+            digraph.
+            The operation <Ref Oper="DigraphVertices"/> behaves the same as
+            <C>Vertices</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>VertexDegree</C>
+        </Item>
+        <Item>
+          <Ref Oper="OutDegreeOfVertex"/>
+          <Alt Only="HTML">
+            (see also: <Ref Oper="InDegreeOfVertex"/>)
+          </Alt>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The operation <Ref Oper="OutDegreeOfVertex"/> behaves the same as
+            <C>VertexDegree</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>VertexDegrees</C>
+        </Item>
+        <Item>
+          <Ref Oper="OutDegreeSet"/>
+          <Alt Only="HTML">
+            (see also:
+            <Ref Oper="OutDegreeSequence"/>,
+            <Ref Oper="OutDegrees"/>,
+            <Ref Oper="InDegrees"/>,
+            <Ref Oper="InDegreeSequence"/>,
+            <Ref Oper="InDegreeSet"/>)
+          </Alt>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The operation <Ref Oper="OutDegreeSet"/> behaves the same as
+            <C>VertexDegrees</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsLoopy</C>
+        </Item>
+        <Item>
+          <Ref Oper="DigraphHasLoops"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The operation <Ref Oper="DigraphHasLoops"/> behaves the same as
+            <C>IsLoopy</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsSimpleGraph</C>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <Ref Oper="IsSymmetricDigraph"/>
+            and not  <Ref Oper="DigraphHasLoops"/>
+          </Alt>
+          <Alt Not="HTML">
+            <Ref Oper="IsSymmetricDigraph"/>
+          </Alt>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The &Grape; function <C>IsSimpleGraph</C> is equivalent to
+            <Ref Oper="IsSymmetricDigraph"/>
+            and not  <Ref Oper="DigraphHasLoops"/>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>Adjacency</C>
+        </Item>
+        <Item>
+          <Ref Func="OutNeighboursOfVertex"/>
+          <Alt Only="HTML">
+            (see also <Ref Func="InNeighboursOfVertex"/>)
+          </Alt>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The operation <Ref Oper="OutNeighboursOfVertex"/> behaves the same
+            as <C>Adjacency</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsEdge</C>
+        </Item>
+        <Item>
+          <Ref Func="IsDigraphEdge" Label="for digraph and list"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The arguments of
+            <Ref Func="IsDigraphEdge" Label="for digraph and list"/>
+            can be a digraph and an edge, or a digraph and two vertices. In the
+            first form the operation
+            <Ref Oper="IsDigraphEdge" Label="for digraph and list"/>
+            behaves the same as <C>IsEdge</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>DirectedEdges</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphEdges"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The attribute <Ref Oper="DigraphEdges"/> behaves the same
+            as <C>DirectedEdges</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>UndirectedEdges</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>Distance</C>
+        </Item>
+        <Item>
+          <Ref Oper="DigraphShortestDistance"
+               Label="for a digraph and two vertices"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The operation <Ref Oper="DigraphShortestDistance"
+            Label="for a digraph and two vertices"/> behaves the same as
+            <C>Distance</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>Diameter</C>
+        </Item>
+        <Item>
+          <Ref Oper="DigraphDiameter"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The attribute <Ref Oper="DigraphDiameter"/> behaves the same
+            as <C>Diameter</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>Girth</C>
+        </Item>
+        <Item>
+          <Ref Func="DigraphUndirectedGirth"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The attribute <Ref Oper="DigraphUndirectedGirth"/> behaves the same
+            as <C>Girth</C> in &Grape; except that in the case that the
+            argument is a forest, <K>infinity</K> is returned by &Digraphs;
+            whereas <C>-1</C> is returned by &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsConnectedGraph</C>
+        </Item>
+        <Item>
+          <Ref Func="IsStronglyConnectedDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The attribute <Ref Oper="IsStronglyConnectedDigraph"/> behaves the
+            same as <C>IsConnectedGraph</C> in &Grape;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsBipartite</C>
+        </Item>
+        <Item>
+          <Ref Prop="IsBipartiteDigraph"/>
+          <Alt Only="HTML">
+            and <Ref Prop="IsSymmetricDigraph"/>
+          </Alt>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The &Grape; function <C>IsBipartite</C> is equivalent to
+            <Ref Prop="IsBipartiteDigraph"/> and <Ref
+              Prop="IsSymmetricDigraph"/>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsNullGraph</C>
+        </Item>
+        <Item>
+          <Ref Prop="IsNullDigraph"/>
+          <Alt Only="HTML">
+            or <Ref Prop="IsEmptyDigraph"/>
+          </Alt>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The &Grape; function <C>IsNullGraph</C> is equivalent to
+            <Ref Prop="IsEmptyDigraph"/> and its synonym <Ref
+              Prop="IsNullDigraph"/>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsCompleteGraph</C>
+        </Item>
+        <Item>
+          <Ref Prop="IsCompleteDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The &Grape; function <C>IsCompleteGraph</C> is roughly
+            equivalent to
+            <Ref Prop="IsCompleteDigraph"/> except that in &Digraphs;
+            a complete digraph has <E>no loops</E>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+
+  </Table>
+  </Section>
+
+  <Section>
+    <Heading>
+      Functions to determine regularity properties of graphs
+    </Heading>
+    <Alt Not="HTML">
+      <E>
+        The table in this section contains more information when viewed in
+        html format.
+      </E>
+    </Alt>
+
+    <Table Align="|l|l|l|">
+      <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsRegularGraph</C>
+        </Item>
+        <Item>
+          <Ref Func="IsOutRegularDigraph"/>
+          <Alt Only="HTML">
+            (see also
+            <Ref Func="IsInRegularDigraph"/>
+            and
+            <Ref Func="IsRegularDigraph"/>)
+          </Alt>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The &Grape; function <C>IsRegularGraph</C> is
+            equivalent to <Ref Prop="IsOutRegularDigraph"/>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>LocalParameters</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+         <Alt Only="HTML">
+            The &Grape; function <C>LocalParameters</C> has no equivalent
+            function in &Digraphs;, although this might change in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>GlobalParameters</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+         <Alt Only="HTML">
+            The &Grape; function <C>GlobalParameters</C> has no equivalent
+            function in &Digraphs;, although this might change in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsDistanceRegular</C>
+        </Item>
+        <Item>
+          <Ref Func="IsDistanceRegularDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The &Grape; function <C>IsDistanceRegular</C> is
+            equivalent to <Ref Prop="IsDistanceRegularDigraph"/>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CollapsedAdjacencyMat</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+         <Alt Only="HTML">
+            The &Grape; function <C>CollapsedAdjacencyMat</C> has no equivalent
+            function in &Digraphs;, although this might change in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>OrbitalGraphColadjMats</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+         <Alt Only="HTML">
+            The &Grape; function <C>OrbitalGraphColadjMats</C> has no equivalent
+            function in &Digraphs;, although this might change in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>VertexTransitiveDRGs</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+         <Alt Only="HTML">
+            The &Grape; function <C>VertexTransitiveDRGs</C> has no equivalent
+            function in &Digraphs;, although this might change in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+    </Table>
+
+  </Section>
+
+  <Section>
+    <Heading>
+      Some special vertex subsets of a graph
+    </Heading>
+    <Alt Not="HTML">
+      <E>
+        The table in this section contains more information when viewed in
+        html format.
+      </E>
+    </Alt>
+
+    <Table Align="|l|l|l|">
+      <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>ConnectedComponent</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphConnectedComponent"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            When applied to a simple di/graph and a vertex,
+            <C>ConnectedComponent</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphConnectedComponent"/>.
+            <Ref Attr="DigraphConnectedComponent"/> can also be applied to
+            non-simple graphs (in the language of &Grape;).
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>ConnectedComponents</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphConnectedComponents"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            When applied to a simple di/graph,
+            <C>ConnectedComponents</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphConnectedComponents"/>.
+            <Ref Attr="DigraphConnectedComponents"/> can also be applied to
+            non-simple graphs (in the language of &Grape;).
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>Bicomponents</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphBicomponents"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            When applied to a simple bipartite di/graph,
+            <C>Bicomponents</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphBicomponents"/>.
+            The definition of <Ref Prop="IsBipartiteDigraph"/> does not require
+            its argument to be simple (in the language of &Grape;), i.e. the
+            bipartite graphs in &Grape; are a proper subset of the bipartite
+            digraphs in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>DistanceSet</C>
+        </Item>
+        <Item>
+            <Ref Attr="DigraphDistanceSet"
+              Label="for a digraph, a pos int, and an int"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>DistanceSet</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphDistanceSet"
+              Label="for a digraph, a pos int, and an int"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>Layers</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphLayers"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>Layers</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphLayers"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IndependentSet</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphIndependentSet"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>IndependentSet</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphIndependentSet"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+    </Table>
+
+  </Section>
+
+  <Section>
+    <Heading>
+      Functions to construct new graphs from old
+    </Heading>
+    <Alt Not="HTML">
+      <E>
+        The table in this section contains more information when viewed in
+        html format.
+      </E>
+    </Alt>
+
+    <Table Align="|l|l|l|">
+      <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>InducedSubgraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="InducedSubdigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <Ref Attr="InducedSubdigraph"/> in &Digraphs; does not allow a third
+            argument <C>G</C> specifying a group of automorphisms on the
+            resultant graph. This may be included in a future release.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>DistanceSetInduced</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>DistanceGraph</C>
+        </Item>
+        <Item>
+          <Ref Oper="DistanceDigraph" Label="for digraph and list"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>DistanceGraph</C> in &Grape; is equivalent to
+            <Ref Oper="DistanceDigraph" Label="for digraph and list"/> in
+            &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>ComplementGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphDual"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <Ref Attr="DigraphDual"/> in &Digraphs; is equivalent to
+            <C>ComplementGraph</C> in &Grape; with the optional argument
+            <A>comploops</A> set to <K>true</K> (loops/nonloops are
+            complemented).
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>PointGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>EdgeGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="EdgeUndirectedDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>EdgeGraph</C> in &Grape; is equivalent to
+            <Ref Attr="EdgeUndirectedDigraph"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>SwitchedGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>UnderlyingGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphSymmetricClosure"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>UnderlyingGraph</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphSymmetricClosure"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>QuotientGraph</C>
+        </Item>
+        <Item>
+          <Ref Oper="QuotientDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <Ref Oper="QuotientDigraph"/> in &Digraphs; takes a partition
+            <C>p</C> of the vertices of the digraph, rather than a set of
+            generating pairs.  Hence, the equivalence might not be
+            group-invariant.  Also note that in &Digraphs; multiple edges may be
+            created, whereas in &Grape; they are effectively combined into a
+            single edge.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>BipartiteDouble</C>
+        </Item>
+        <Item>
+          <Ref Attr="BipartiteDoubleDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>BipartiteDouble</C> in &Grape; is equivalent to
+            <Ref Attr="BipartiteDoubleDigraph"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>GeodesicsGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CollapsedIndependentOrbitsGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            might be implemented in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CollapsedCompleteOrbitsGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            might be implemented in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>NewGroupGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;.  However, the same
+            results would be possible by calling <Ref Attr="DigraphCopy"/> on
+            the digraph to produce a copy <C>gr</C>, and then applying
+            <C>SetDigraphGroup(gr, G)</C>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+    </Table>
+
+  </Section>
+
+  <Section>
+    <Heading>
+      Vertex-Colouring and Complete Subgraphs
+    </Heading>
+    <Alt Not="HTML">
+      <E>
+        The table in this section contains more information when viewed in
+        html format.
+      </E>
+    </Alt>
+
+    <Table Align="|l|l|l|">
+      <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>VertexColouring</C>
+        </Item>
+        <Item>
+          <Ref Oper="DigraphColoring" Label="for a digraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>VertexColouring</C> in &Grape; is equivalent to <Ref
+            Attr="DigraphColoring" Label="for a digraph"/> in &Digraphs;,
+          except it return a transformation rather than a list of vertex colors.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CompleteSubgraphs</C>
+        </Item>
+        <Item>
+          <Ref Func="DigraphCliques"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            The functionality of <C>CompleteSubgraphs</C> in &Grape; is provided
+            by <Ref Func="DigraphCliques"/> and <Ref Func="DigraphMaximalCliques"/>
+            in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CompleteSubgraphsOfGivenSize</C>
+        </Item>
+        <Item>
+          <Ref Func="DigraphCliques"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Much of the functionality of <C>CompleteSubgraphsOfGivenSize</C> in
+            &Grape; is provided by <Ref Func="DigraphCliques"/> and <Ref
+              Func="DigraphMaximalCliques"/> in &Digraphs;, except that the
+            functionality relating to vertex weights and partial colourings is
+            not implemented.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+    </Table>
+  </Section>
+
+  <Section>
+    <Heading>
+      Automorphism groups and isomorphism testing for graphs
+    </Heading>
+    <Alt Not="HTML">
+      <E>
+        The table in this section contains more information when viewed in
+        html format.
+      </E>
+    </Alt>
+
+    <Table Align="|l|l|l|">
+      <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>AutGroupGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="AutomorphismGroup" Label="for a digraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>AutGroupGraph</C> in &Grape; is equivalent to
+            <Ref Attr="AutomorphismGroup" Label="for a digraph"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>GraphIsomorphism</C>
+        </Item>
+        <Item>
+          <Ref Attr="IsomorphismDigraphs" Label="for digraphs"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>GraphIsomorphism</C> in &Grape; is equivalent to <Ref
+            Attr="IsomorphismDigraphs" Label="for digraphs"/> in &Digraphs;.
+            Note however that <C>GraphIsomorphism</C>'s optional argument
+            <A>firstunbindcanon</A> is not applicable, since the canonical
+            labellings of a digraph are not portable between sessions.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsIsomorphicGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="IsIsomorphicDigraph" Label="for digraphs"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>IsIsomorphicGraph</C> in &Grape; is equivalent to <Ref
+            Attr="IsIsomorphicDigraph" Label="for digraphs"/> in &Digraphs;.
+            Note however that <C>IsIsomorphicGraph</C>'s optional argument
+            <A>firstunbindcanon</A> is not applicable, since the canonical
+            labellings of a digraph are not portable between sessions.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>GraphIsomorphismClassRepresentatives</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            might be implemented in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+    </Table>
+  </Section>
+
+</Appendix>

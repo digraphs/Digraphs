@@ -32,9 +32,9 @@ function(graph, list)
   if (not IsEmpty(list)) and IsList(list[1]) then # color classes
     colors := [1 .. DigraphNrVertices(graph)];
     if not (ForAll(list, IsDuplicateFreeList) and Union(list) = colors) then
-      ErrorMayQuit("Digraphs: DigraphCanonicalLabelling: usage,\n",
-                   "the union of the lists in the second arg should equal ",
-                   "[1 .. ", DigraphNrVertices(graph), "],");
+      ErrorNoReturn("Digraphs: DigraphCanonicalLabelling: usage,\n",
+                    "the union of the lists in the second arg should equal ",
+                    "[1 .. ", DigraphNrVertices(graph), "],");
     fi;
 
     for i in [1 .. Length(list)] do
@@ -44,10 +44,10 @@ function(graph, list)
     if not (Length(list) = DigraphNrVertices(graph)
             and ForAll(list, c -> IsPosInt(c) and 1 <= c
                                   and c <= DigraphNrVertices(graph))) then
-      ErrorMayQuit("Digraphs: DigraphCanonicalLabelling: usage,\n",
-                   "the second arg must be a list of length ",
-                   DigraphNrVertices(graph), " of integers in [1 .. ",
-                   DigraphNrVertices(graph), "],");
+      ErrorNoReturn("Digraphs: DigraphCanonicalLabelling: usage,\n",
+                    "the second arg must be a list of length ",
+                    DigraphNrVertices(graph), " of integers in [1 .. ",
+                    DigraphNrVertices(graph), "],");
     fi;
     colors := list;
   fi;
@@ -91,6 +91,9 @@ function(graph)
 
   x := DIGRAPH_AUTOMORPHISMS(graph);
   SetDigraphCanonicalLabelling(graph, x[1]);
+  if not HasDigraphGroup(graph) then
+    SetDigraphGroup(graph, Group(x[2]));
+  fi;
   return Group(x[2]);
 end);
 
@@ -105,9 +108,9 @@ function(graph, list)
   if (not IsEmpty(list)) and IsList(list[1]) then # color classes
     colors := [1 .. DigraphNrVertices(graph)];
     if not (ForAll(list, IsDuplicateFreeList) and Union(list) = colors) then
-      ErrorMayQuit("Digraphs: AutomorphismGroup: usage,\n",
-                   "the union of the lists in the second arg should equal ",
-                   "[1 .. ", DigraphNrVertices(graph), "],");
+      ErrorNoReturn("Digraphs: AutomorphismGroup: usage,\n",
+                    "the union of the lists in the second arg should equal ",
+                    "[1 .. ", DigraphNrVertices(graph), "],");
     fi;
 
     for i in [1 .. Length(list)] do
@@ -117,10 +120,10 @@ function(graph, list)
     if not (Length(list) = DigraphNrVertices(graph)
             and ForAll(list, c -> IsPosInt(c) and 1 <= c
                                   and c <= DigraphNrVertices(graph))) then
-      ErrorMayQuit("Digraphs: AutomorphismGroup: usage,\n",
-                   "the second arg must be a list of length ",
-                   DigraphNrVertices(graph), " of integers in [1 .. ",
-                   DigraphNrVertices(graph), "],");
+      ErrorNoReturn("Digraphs: AutomorphismGroup: usage,\n",
+                    "the second arg must be a list of length ",
+                    DigraphNrVertices(graph), " of integers in [1 .. ",
+                    DigraphNrVertices(graph), "],");
     fi;
     colors := list;
   fi;

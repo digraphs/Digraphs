@@ -1,7 +1,8 @@
 ############################################################################
 ##
 #W  PackageInfo.g
-#Y  Copyright (C) 2016                                   Julius Jonusas
+#Y  Copyright (C) 2015-16                                Jan J De Beule
+##                                                       Julius Jonusas
 ##                                                       James Mitchell
 ##                                                       Michael Torpey
 ##                                                       Wilfred Wilson
@@ -28,6 +29,23 @@ Date := "16/01/2016",
 ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.4",
 ArchiveFormats := ".tar.gz",
 Persons := [
+
+  rec(
+    LastName      := "De Beule",
+    FirstNames    := "J.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "jdebeule@cage.ugent.be",
+    WWWHome       := "http://homepages.vub.ac.be/~jdbeule/",
+    PostalAddress := Concatenation([
+                     "Vrije Universiteit Brussel, ",
+                     " Vakgroep Wiskunde, ",
+                     " Pleinlaan 2, ",
+                     " B - 1050 Brussels, ",
+                     " Belgium"]),
+    Place         := "Brussels",
+    Institution   := "Vrije Universiteit Brussel"
+  ),
 
   rec(
     LastName      := "Jonusas",

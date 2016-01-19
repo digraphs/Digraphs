@@ -1,0 +1,229 @@
+#############################################################################
+##
+#W  orbits.xml
+#Y  Copyright (C) 2016                                       Jan De Beule
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
+
+
+<#GAPDoc Label="DigraphGroup">
+<ManSection>
+  <Attr Name="DigraphGroup" Arg="digraph"/>
+  <Returns>A permutation group.</Returns>
+  <Description>
+    If <A>digraph</A> was created knowing a subgroup of its automorphism group,
+    then this group is stored in the attribute <C>DigraphGroup</C>. If
+    <A>digraph</A> is not created knowing a subgroup of it automorphism group,
+    then <C>DigraphGroup</C> returns the entire automorphism group of
+    <A>digraph</A>.
+    <P/>
+
+    Note that certain other constructor operations such as  <Ref
+      Oper="CayleyDigraph"/>, <Ref Oper="BipartiteDoubleDigraph"/>, and <Ref
+      Oper="DoubleDigraph"/>, may not require a group as one of the arguments,
+    but use the standard constructor method using a group, and hence set the
+    <C>DigraphGroup</C> attribute for the resulting digraph. 
+
+    <Example><![CDATA[
+gap> n := 4;;
+gap> adj := function(x, y)
+>      return (((x-y) mod n) = 1) or (((x-y) mod n) = n-1);
+>    end;;
+gap> group := CyclicGroup(IsPermGroup, n);
+Group([ (1,2,3,4) ])
+gap> digraph := Digraph(group, [1..n], \^, adj);
+<digraph with 4 vertices, 8 edges>
+gap> HasDigraphGroup(digraph);
+true
+gap> DigraphGroup(digraph);
+Group([ (1,2,3,4) ])
+gap> AutomorphismGroup(digraph);
+Group([ (2,4), (1,2,3,4) ])
+gap> ddigraph := DoubleDigraph(digraph);
+<digraph with 8 vertices, 32 edges>
+gap> HasDigraphGroup(ddigraph);
+true
+gap> DigraphGroup(ddigraph);
+Group([ (1,2,3,4)(5,6,7,8), (1,5)(2,6)(3,7)(4,8) ])
+gap> AutomorphismGroup(ddigraph);
+Group([ (6,8), (5,7), (4,6), (3,5), (2,4), (1,2,3,4)(5,6)(7,8) ])
+gap> digraph := Digraph([[2, 3], [], []]);
+<digraph with 3 vertices, 2 edges>
+gap> HasDigraphGroup(digraph);
+false
+gap> HasAutomorphismGroup(digraph);
+false
+gap> DigraphGroup(digraph);
+Group([ (2,3) ])
+gap> HasAutomorphismGroup(digraph);
+true
+gap> group := DihedralGroup(8);
+<pc group of size 8 with 3 generators>
+gap> digraph := CayleyDigraph(group);
+<digraph with 8 vertices, 24 edges>
+gap> HasDigraphGroup(digraph);
+true
+gap> DigraphGroup(digraph);
+Group([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)
+(5,8) ])
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphSchreierVector">
+<ManSection>
+  <Attr Name="DigraphSchreierVector" Arg="digraph"/>
+  <Returns>
+    A list of integers.
+  </Returns>
+  <Description>
+    <C>DigraphSchreierVector</C> returns the so-called <E>Schreier vector</E>
+    of the action of the <Ref Attr="DigraphGroup"/> on the set of vertices of
+    <A>digraph</A>. The Schreier vector is a list <C>sch</C> of integers with 
+    with length <C>DigraphNrVertices(<A>digraph</A>)</C> where:
+    <List>
+      <Mark><C>sch[i] &lt; 0:</C></Mark>
+      <Item>
+        implies that <C>i</C> is an orbit representative and
+        <C>DigraphOrbitReps(<A>digraph</A>)[-sch[i]] = i</C>.
+      </Item>
+
+      <Mark><C>sch[i] &gt; 0:</C></Mark>
+      <Item>
+        implies that <C>i / gens[sch[i]]</C>
+        is one step closer to the root (or representative) of the tree, where
+        <C>gens</C> is the generators of <C>DigraphGroup(<A>digraph</A>)</C>. 
+      </Item>
+    </List>
+
+    <Example><![CDATA[
+gap> digraph := CayleyDigraph(AlternatingGroup(4));
+<digraph with 12 vertices, 24 edges>
+gap> sch := DigraphSchreierVector(digraph);
+[ -1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1 ]
+gap> DigraphOrbitReps(digraph);
+[ 1 ]
+gap> gens := GeneratorsOfGroup(DigraphGroup(digraph)); 
+[ (1,5,7)(2,4,8)(3,6,9)(10,11,12), (1,2,3)(4,7,10)(5,9,11)(6,8,12) ]
+gap> 10 / gens[sch[10]];
+7
+gap> 7 / gens[sch[7]];
+5
+gap> 5 / gens[sch[5]];
+1]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphOrbitReps">
+<ManSection>
+  <Attr Name="DigraphOrbitReps" Arg="digraph"/>
+  <Returns>
+    A list of integers.
+  </Returns>
+  <Description>
+    <C>DigraphOrbitReps</C> returns a list of orbit representatives 
+    of the action of the <Ref Attr="DigraphGroup"/> on the set of vertices of
+    <A>digraph</A>. 
+    
+    <Example><![CDATA[
+gap> digraph := CayleyDigraph(AlternatingGroup(4));
+<digraph with 12 vertices, 24 edges>
+gap> DigraphOrbitReps(digraph);
+[ 1 ]
+gap> digraph := Digraph([[3, 8], [], [6, 8], [7], [2, 9], [10], [7], [1], 
+>                        [2, 7, 8], [8]]);
+<digraph with 10 vertices, 14 edges>
+gap> DigraphOrbitReps(digraph); 
+[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphStabilizer">
+<ManSection>
+  <Oper Name="DigraphStabilizer" Arg="digraph, v"/>
+  <Returns>
+    A permutation group.
+  </Returns>
+  <Description>
+    <C>DigraphStabilizer</C> returns the stabilizer of the vertex <A>v</A>
+    under of the action of the <Ref Attr="DigraphGroup"/> on the set of
+    vertices of <A>digraph</A>. 
+    
+    <Example><![CDATA[
+gap> digraph := Digraph([[2, 3, 5], [1, 4, 6], [4, 2, 7], [3, 1, 8], [6, 8, 1],
+>                        [5, 7, 2], [8, 5, 3], [7, 6, 4]]);
+<digraph with 8 vertices, 24 edges>
+gap> DigraphStabilizer(digraph, 8);
+Group(())
+gap> DigraphStabilizer(digraph, 2);
+Group(())
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphOrbits">
+<ManSection>
+  <Attr Name="DigraphOrbits" Arg="digraph"/>
+  <Returns>
+    A list of lists of integers.
+  </Returns>
+  <Description>
+    <C>DigraphOrbits</C> returns the orbits of the action of the 
+    <Ref Attr="DigraphGroup"/> on the set of vertices of <A>digraph</A>. 
+    
+    <Example><![CDATA[
+gap> G := Group((1,2,3), (1,2), (4,5,6), (7,8,9), (7,8));;
+gap> gr := EdgeOrbitsDigraph(G, [1, 2]);
+<digraph with 9 vertices, 6 edges>
+gap> DigraphOrbits(gr);
+[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="RepresentativeOutNeighbours">
+<ManSection>
+  <Attr Name="RepresentativeOutNeighbours" Arg="digraph"/>
+  <Returns>An immutable list of immutable lists.</Returns>
+  <Description>
+    This function returns the list <C>out</C> of <E>out-neighbours</E> of each
+    representative of the orbits of the action of <Ref Attr="DigraphGroup"/> on
+    the vertex set of the digraph <A>digraph</A>. <P/>
+    
+    More specifically, if <C>reps</C> is the list of orbit representatives,
+    then a vertex <C>j</C> appears in <C>out[i]</C> each time
+    there exists an edge with source <C>reps[i]</C> and range <C>j</C> in 
+    <A>digraph</A>.
+    <P/>
+
+    If <Ref Attr="DigraphGroup"/> is trivial, then <Ref Attr="OutNeighbours"/>
+    is returned.
+    
+    <Example><![CDATA[
+gap> digraph := Digraph([[1, 2, 3, 4, 5], [3, 5], [2], [1, 2, 3, 5], 
+>                        [1, 2, 3, 4]]);
+<digraph with 5 vertices, 16 edges>
+gap> DigraphGroup(digraph);
+Group(())
+gap> RepresentativeOutNeighbours(digraph);
+[ [ 1, 2, 3, 4, 5 ], [ 3, 5 ], [ 2 ], [ 1, 2, 3, 5 ], [ 1, 2, 3, 4 ] ]
+gap> digraph := Digraph([[2, 3, 5], [1, 4, 6], [4, 2, 7], [3, 1, 8], [6, 8, 1],
+>                        [5, 7, 2], [8, 5, 3], [7, 6, 4]]);
+<digraph with 8 vertices, 24 edges>
+gap> DigraphGroup(digraph);
+Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)
+(4,7) ])
+gap> RepresentativeOutNeighbours(digraph);
+[ [ 2, 3, 5 ] ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

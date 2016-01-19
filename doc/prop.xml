@@ -101,21 +101,28 @@ false
 <#GAPDoc Label="IsEmptyDigraph">
 <ManSection>
   <Prop Name="IsEmptyDigraph" Arg="digraph"/>
+  <Prop Name="IsNullDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     Returns <K>true</K> if the digraph <A>digraph</A> is empty, and
-    <K>false</K> if it is not. A digraph is <E>empty</E> if it has no edges.
+    <K>false</K> if it is not. A digraph is <E>empty</E> if it has no
+    edges.<P/>
+
+    <C>IsNullDigraph</C> is a synonym for <C>IsEmptyDigraph</C>.
 
     <Example><![CDATA[
 gap> gr := Digraph( [ [  ], [  ] ] );
 <digraph with 2 vertices, 0 edges>
 gap> IsEmptyDigraph(gr);
 true
+gap> IsNullDigraph(gr);
+true
 gap> gr := Digraph( [ [  ], [ 1 ] ] );
 <digraph with 2 vertices, 1 edge>
 gap> IsEmptyDigraph(gr);
 false
-]]></Example>
+gap> IsNullDigraph(gr);
+false]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -407,7 +414,7 @@ true
   vertices of <A>digraph</A> can be partitioned into two non-empty sets such
   that the source and range of any edge of <A>digraph</A> lie in distinct sets.
   Equivalently, a digraph is bipartite if and only if it is 2-colorable; see
-  <Ref Oper="DigraphColoring"/>. <P/>
+  <Ref Oper="DigraphColoring" Label="for a digraph"/>. <P/>
 
   See also <Ref Attr="DigraphBicomponents"/>.
     <Example><![CDATA[
@@ -419,6 +426,108 @@ gap> gr := CycleDigraph(3);
 <digraph with 3 vertices, 3 edges>
 gap> IsBipartiteDigraph(gr);
 false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsInRegularDigraph">
+<ManSection>
+  <Prop Name="IsInRegularDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if there is an integer <C>n</C> such that
+    for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
+    <C>n</C> edges terminating in <C>v</C>. 
+
+    See also <Ref Attr="IsOutRegularDigraph"/> and <Ref
+	    Attr="IsRegularDigraph"/>.
+    <Example><![CDATA[
+gap> IsInRegularDigraph(CompleteDigraph(4));
+true
+gap> IsInRegularDigraph(ChainDigraph(4));
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsOutRegularDigraph">
+<ManSection>
+  <Prop Name="IsOutRegularDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if there is an integer <C>n</C> such that
+    for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
+    <C>n</C> edges starting at <C>v</C>. 
+
+    See also <Ref Attr="IsInRegularDigraph"/> and <Ref
+	    Attr="IsRegularDigraph"/>.
+    <Example><![CDATA[
+gap> IsOutRegularDigraph(CompleteDigraph(4));
+true
+gap> IsOutRegularDigraph(ChainDigraph(4));
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsRegularDigraph">
+<ManSection>
+  <Prop Name="IsRegularDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if there is an integer <C>n</C> such that
+    for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
+    <C>n</C> edges starting and terminating at <C>v</C>. In other words,
+    the property is <K>true</K> if <A>digraph</A> is both in-regular and
+    and out-regular.
+
+    See also <Ref Attr="IsInRegularDigraph"/> and <Ref
+	    Attr="IsOutRegularDigraph"/>.
+    <Example><![CDATA[
+gap> IsRegularDigraph(CompleteDigraph(4));
+true
+gap> IsRegularDigraph(ChainDigraph(4));
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsDistanceRegularDigraph">
+<ManSection>
+  <Prop Name="IsDistanceRegularDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a connected symmetric graph, this property returns
+    <K>true</K> if for any two vertices <C>u</C> and <C>v</C> of <A>digraph</A>
+    and any two integers <C>i</C> and <C>j</C> between <C>0</C> and the
+    diameter of <A>digraph</A>, the number of vertices at distance <C>i</C>
+    from <C>u</C> and distance <C>j</C> from <C>v</C> depends only on
+    <C>i</C>, <C>j</C>, and the distance between vertices <C>u</C> and
+    <C>v</C>.<P/>
+
+    Alternatively, a distance regular graph is a graph for which there exist
+    integers <C>b_i</C>, <C>c_i</C>, and <C>i</C> such that for any two
+    vertices <C>u</C>, <C>v</C> in <A>digraph</A> which are distance <C>i</C>
+    apart, there are exactly <C>b_i</C> neighbors of <C>v</C> which are at
+    distance <C>i - 1</C> away from <C>u</C>, and <C>c_i</C> neighbors of
+    <C>v</C> which are at distance <C>i + 1</C> away from <C>u</C>. This
+    definition is used to check whether <A>digraph</A> is distance regular.<P/>
+
+    In the case where <A>digraph</A> is not symmetric or not connected, the
+    property is <K>false</K>.
+
+    <Example><![CDATA[
+gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
+gap> IsDistanceRegularDigraph(gr);
+false
+gap> gr := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);
+<digraph with 4 vertices, 12 edges>
+gap> IsDistanceRegularDigraph(gr);
+true
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
