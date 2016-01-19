@@ -315,9 +315,13 @@ function(digraph, distances)
 end);
 
 InstallMethod(DistanceDigraph,
-"for a digraph and a positive integer",
-[IsDigraph, IsPosInt],
+"for a digraph and an integer",
+[IsDigraph, IsInt],
 function(digraph, distance)
+  if distance < 0 then
+    ErrorMayQuit("Digraphs: DistanceDigraph: usage,\n",
+                 "second arg <distance> must be a non-negative integer,");
+  fi;
   return DistanceDigraph(digraph, [distance]);
 end);
 

@@ -1540,7 +1540,7 @@ Error, Digraphs: DigraphDistanceSet: usage,
 the second argument must be a vertex of the digraph,
 gap> DigraphDistanceSet(gr, 10, ["string", 1]);
 Error, Digraphs: DigraphDistanceSet: usage,
-the third argument must be a list of non negative integers,
+the third argument must be a list of non-negative integers,
 gap> gr := DigraphFromDigraph6String("+GUIQQWWXHHPg");;
 gap> DigraphDistanceSet(gr, 1, [3,7]);
 [  ]

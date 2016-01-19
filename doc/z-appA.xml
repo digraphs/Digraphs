@@ -854,13 +854,13 @@
         </Item>
         <Item>
             <Ref Attr="DigraphDistanceSet"
-              Label="for a digraph and two pos ints"/>
+              Label="for a digraph, a pos int, and an int"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>DistanceSet</C> in &Grape; is equivalent to
             <Ref Attr="DigraphDistanceSet"
-              Label="for a digraph and two pos ints"/> in &Digraphs;.
+              Label="for a digraph, a pos int, and an int"/> in &Digraphs;.
           </Alt>
         </Item>
       </Row>

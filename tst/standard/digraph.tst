@@ -1301,6 +1301,18 @@ gap> DistanceDigraph(digraph,4);
 <digraph with 126 vertices, 3024 edges>
 gap> DistanceDigraph(digraph,[1,3,5]);
 <digraph with 126 vertices, 7938 edges>
+gap> gr := DistanceDigraph(digraph, 0);
+<digraph with 126 vertices, 126 edges>
+gap> OutNeighbours(gr) = List([1..126], x-> [x]);
+true
+gap> gr := Digraph([[2,2], [3,3], []]);
+<multidigraph with 3 vertices, 4 edges>
+gap> OutNeighbours(DistanceDigraph(gr, 0));
+[ [ 1 ], [ 2 ], [ 3 ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 1));
+[ [ 2 ], [ 3 ], [  ] ]
+gap> OutNeighbours(DistanceDigraph(gr, 2));
+[ [ 3 ], [  ], [  ] ]
 
 #T# DigraphAddEdgeOrbit
 gap> digraph := NullDigraph(4);
