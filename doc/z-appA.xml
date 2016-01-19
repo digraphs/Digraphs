@@ -468,7 +468,7 @@
           <C>UndirectedEdges</C>
         </Item>
         <Item>
-            None
+          None
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -489,9 +489,9 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            Currently, <Ref Oper="DigraphShortestDistance"
-            Label="for a digraph and two vertices"/> only works for pairs of
-            vertices, and not sets of vertices, like in &Grape;.
+            The operation <Ref Oper="DigraphShortestDistance"
+            Label="for a digraph and two vertices"/> behaves the same as
+            <C>Distance</C> in &Grape;.
           </Alt>
         </Item>
       </Row>
@@ -912,6 +912,261 @@
         html format.
       </E>
     </Alt>
+
+    <Table Align="|l|l|l|">
+      <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>InducedSubgraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="InducedSubdigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <Ref Attr="InducedSubdigraph"/> in &Digraphs; does not allow a third
+            argument <C>G</C> specifying a group of automorphisms on the
+            resultant graph. This may be included in a future release.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>DistanceSetInduced</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>DistanceGraph</C>
+        </Item>
+        <Item>
+          <Ref Oper="DistanceDigraph" Label="for digraph and list"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>DistanceGraph</C> in &Grape; is equivalent to
+            <Ref Oper="DistanceDigraph" Label="for digraph and list"/> in
+            &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>ComplementGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphDual"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <Ref Attr="DigraphDual"/> in &Digraphs; is equivalent to
+            <C>ComplementGraph</C> in &Grape; with the optional argument
+            <A>comploops</A> set to <K>true</K> (loops/nonloops are
+            complemented).
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>PointGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>EdgeGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="EdgeUndirectedDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>EdgeGraph</C> in &Grape; is equivalent to
+            <Ref Attr="EdgeUndirectedDigraph"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>SwitchedGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>UnderlyingGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphSymmetricClosure"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>UnderlyingGraph</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphSymmetricClosure"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>QuotientGraph</C>
+        </Item>
+        <Item>
+          <Ref Oper="QuotientDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <Ref Oper="QuotientDigraph"/> in &Digraphs; takes a partition
+            <C>p</C> of the vertices of the digraph, rather than a set of
+            generating pairs.  Hence, the equivalence might not be
+            group-invariant.  Also note that in &Digraphs; multiple edges may be
+            created, whereas in &Grape; they are effectively combined into a
+            single edge.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+
+      <Row>
+        <Item>
+          <C>BipartiteDouble</C>
+        </Item>
+        <Item>
+          <Ref Attr="BipartiteDoubleDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>BipartiteDouble</C> in &Grape; is equivalent to
+            <Ref Attr="BipartiteDoubleDigraph"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>GeodesicsGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CollapsedIndependentOrbitsGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            might be implemented in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CollapsedCompleteOrbitsGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            might be implemented in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>NewGroupGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;.  However, the same
+            results would be possible by calling <Ref Attr="DigraphCopy"/> on
+            the digraph to produce a copy <C>gr</C>, and then applying
+            <C>SetDigraphGroup(gr, G)</C>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+    </Table>
 
   </Section>
 
