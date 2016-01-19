@@ -1083,7 +1083,6 @@
       </Row>
       <HorLine/>
 
-
       <Row>
         <Item>
           <C>BipartiteDouble</C>
@@ -1181,6 +1180,73 @@
       </E>
     </Alt>
 
+    <Table Align="|l|l|l|">
+      <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>VertexColouring</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            might be implemented in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CompleteSubgraphs</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            will be implemented very soon.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CompleteSubgraphsOfGivenSize</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            will be implemented very soon.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+    </Table>
   </Section>
 
   <Section>
@@ -1194,6 +1260,41 @@
       </E>
     </Alt>
 
+    <Table Align="|l|l|l|">
+      <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C></C>
+        </Item>
+        <Item>
+          <Ref Attr=""/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C></C> in &Grape; is equivalent to
+            <Ref Attr=""/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+    </Table>
   </Section>
 
 </Appendix>
