@@ -116,9 +116,13 @@
           <C>JohnsonGraph</C>
         </Item>
         <Item>
-          None
+          <Ref Oper="JohnsonDigraph"/>
         </Item>
         <Item>
+          <Alt Only="HTML">
+            The &Grape; function <C>JohnsonGraph</C> is equivalent to
+            <Ref Oper="JohnsonDigraph"/>.
+          </Alt>
         </Item>
       </Row>
       <HorLine/>

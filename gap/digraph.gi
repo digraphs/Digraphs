@@ -1444,3 +1444,28 @@ function(digraph)
   od;
   return Digraph(adj);
 end);
+
+#
+
+InstallMethod(JohnsonDigraph, "for two ints",
+[IsInt, IsInt],
+function(n, k)
+  local verts, adj, digraph;
+  if n < 0 or k < 0 then
+    ErrorMayQuit("Digraphs: JohnsonDigraph: usage,\n",
+                 "both arguments must be non-negative integers,");
+  fi;
+
+  # Vertices are all the k-subsets of [1 .. n]
+  verts := Combinations([1 .. n], k);
+  adj := function(u, v)
+    return Length(Intersection(u, v)) = k-1;
+  end;
+
+  digraph := Digraph(verts, adj);
+
+  # Known properties
+  SetIsMultiDigraph(digraph, false);
+  SetIsSymmetricDigraph(digraph, true);
+  return digraph;
+end);
