@@ -22,3 +22,4 @@ ReadPackage("digraphs/gap/bliss.gi");
 ReadPackage("digraphs/gap/io.gi");
 ReadPackage("digraphs/gap/grahom.gi");
 ReadPackage("digraphs/gap/orbits.gi");
+ReadPackage("digraphs/gap/cliques.gi");

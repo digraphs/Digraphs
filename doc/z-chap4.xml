@@ -17,6 +17,7 @@
 
   <Section><Heading>Neighbours and degree</Heading>
     <#Include Label="AdjacencyMatrix">
+    <#Include Label="BooleanAdjacencyMatrix">
     <#Include Label="DigraphAdjacencyFunction">
     <#Include Label="RangeSourceDigraph">
     <#Include Label="OutNeighbours">
@@ -48,6 +49,7 @@
     <#Include Label="DigraphAllSimpleCircuits">
     <#Include Label="DigraphLongestSimpleCircuit">
     <#Include Label="DigraphLayers">
+    <#Include Label="DigraphDegeneracy">
+    <#Include Label="DigraphDegeneracyOrdering">
   </Section>
-  
 </Chapter>

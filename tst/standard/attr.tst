@@ -1013,6 +1013,49 @@ infinity
 gap> DigraphDiameter(gr);
 fail
 
+#T# DigraphBooleanAdjacencyMatrix
+gap> gr := CompleteDigraph(4);;
+gap> mat := BooleanAdjacencyMatrix(gr);
+[ [ false, true, true, true ], [ true, false, true, true ], 
+  [ true, true, false, true ], [ true, true, true, false ] ]
+gap> IsSymmetricDigraph(gr) and mat = TransposedMat(mat);
+true
+gap> gr := EmptyDigraph(5);;
+gap> mat := BooleanAdjacencyMatrix(gr);
+[ [ false, false, false, false, false ], [ false, false, false, false, false ]
+    , [ false, false, false, false, false ], 
+  [ false, false, false, false, false ], 
+  [ false, false, false, false, false ] ]
+gap> IsSymmetricDigraph(gr) and mat = TransposedMat(mat);
+true
+gap> gr := CycleDigraph(4);;
+gap> mat := BooleanAdjacencyMatrix(gr);
+[ [ false, true, false, false ], [ false, false, true, false ], 
+  [ false, false, false, true ], [ true, false, false, false ] ]
+gap> not (IsSymmetricDigraph(gr) or mat = TransposedMat(mat));
+true
+gap> gr := ChainDigraph(4);;
+gap> mat := BooleanAdjacencyMatrix(gr);
+[ [ false, true, false, false ], [ false, false, true, false ], 
+  [ false, false, false, true ], [ false, false, false, false ] ]
+gap> not (IsSymmetricDigraph(gr) or mat = TransposedMat(mat));
+true
+gap> gr := Digraph([[1, 4, 6, 8], [2, 8, 10], [4], [1, 6], [6, 7], [1, 2, 4, 10],
+> [3], [3], [1, 8], [2, 5]]);;
+gap> mat := BooleanAdjacencyMatrix(gr);
+[ [ true, false, false, true, false, true, false, true, false, false ], 
+  [ false, true, false, false, false, false, false, true, false, true ], 
+  [ false, false, false, true, false, false, false, false, false, false ], 
+  [ true, false, false, false, false, true, false, false, false, false ], 
+  [ false, false, false, false, false, true, true, false, false, false ], 
+  [ true, true, false, true, false, false, false, false, false, true ], 
+  [ false, false, true, false, false, false, false, false, false, false ], 
+  [ false, false, true, false, false, false, false, false, false, false ], 
+  [ true, false, false, false, false, false, false, true, false, false ], 
+  [ false, true, false, false, true, false, false, false, false, false ] ]
+gap> gr = DigraphByAdjacencyMatrix(mat);
+true
+
 #T# DigraphUndirectedGirth: easy cases
 gap> gr := Digraph([[2], [3], []]);;
 gap> DigraphUndirectedGirth(gr);
@@ -1056,6 +1099,49 @@ gap> DigraphUndirectedGirth(gr);
 Error, Digraphs: DigraphUndirectedGirth: usage,
 <digraph> must be a symmetric digraph,
 
+#T# DigraphDegeneracy and DigraphDegeneracyOrdering
+gap> gr := Digraph([[2, 2], [1, 1]]);;
+gap> IsMultiDigraph(gr) and IsSymmetricDigraph(gr);
+true
+gap> DigraphDegeneracy(gr);
+Error, Digraphs: DigraphDegeneracy: usage,
+the argument <gr> must be a symmetric digraph without multiple edges,
+gap> DigraphDegeneracyOrdering(gr);
+Error, Digraphs: DigraphDegeneracyOrdering: usage,
+the argument <gr> must be a symmetric digraph without multiple edges,
+gap> gr := Digraph([[2], []]);
+<digraph with 2 vertices, 1 edge>
+gap> not IsMultiDigraph(gr) and not IsSymmetricDigraph(gr);
+true
+gap> DigraphDegeneracy(gr);
+Error, Digraphs: DigraphDegeneracy: usage,
+the argument <gr> must be a symmetric digraph without multiple edges,
+gap> DigraphDegeneracyOrdering(gr);
+Error, Digraphs: DigraphDegeneracyOrdering: usage,
+the argument <gr> must be a symmetric digraph without multiple edges,
+gap> gr := CompleteDigraph(5);;
+gap> DigraphDegeneracy(gr);
+4
+gap> DigraphDegeneracyOrdering(gr);
+[ 5, 4, 3, 2, 1 ]
+gap> gr := DigraphSymmetricClosure(ChainDigraph(4));
+<digraph with 4 vertices, 6 edges>
+gap> DigraphDegeneracy(gr);
+1
+gap> DigraphDegeneracyOrdering(gr);
+[ 4, 3, 2, 1 ]
+gap> gr := Digraph([[3], [], [1]]);
+<digraph with 3 vertices, 2 edges>
+gap> DigraphDegeneracy(gr);
+1
+gap> gr := DigraphSymmetricClosure(Digraph(
+> [[2, 5], [3, 5], [4], [5, 6], [], []]));
+<digraph with 6 vertices, 14 edges>
+gap> DigraphDegeneracy(gr);
+2
+gap> DigraphDegeneracyOrdering(gr);
+[ 6, 4, 3, 2, 5, 1 ]
+
 #T# DigraphGirth with known automorphisms
 gap> gr := Digraph([[2,3,4,5], [6, 3], [6, 2], [6], [6], [1]]);;
 gap> DigraphGirth(gr);
@@ -1075,6 +1161,52 @@ gap> DigraphGroup(gr);
 Group([ (6,10)(7,11)(8,12)(9,13), (2,6)(3,7)(4,8)(5,9) ])
 gap> DigraphGirth(gr);
 5
+
+#T# MaximalSymmetricSubdigraph and MaximalSymmetricSubdigraphWithoutLoops
+gap> gr := Digraph([[2], [1]]);;
+gap> IsSymmetricDigraph(gr);
+true
+gap> MaximalSymmetricSubdigraph(gr) = gr;
+true
+gap> gr2 := Digraph([[2, 2], [1, 1]]);;
+gap> IsSymmetricDigraph(gr2) and IsMultiDigraph(gr2);
+true
+gap> MaximalSymmetricSubdigraph(gr2) = gr;
+true
+gap> gr := Digraph([[2, 3], [1, 3], [4], [4]]);
+<digraph with 4 vertices, 6 edges>
+gap> IsSymmetricDigraph(gr);
+false
+gap> gr2 := MaximalSymmetricSubdigraph(gr);
+<digraph with 4 vertices, 3 edges>
+gap> OutNeighbours(gr2);
+[ [ 2 ], [ 1 ], [  ], [ 4 ] ]
+gap> gr2 := MaximalSymmetricSubdigraphWithoutLoops(gr);
+<digraph with 4 vertices, 2 edges>
+gap> OutNeighbours(gr2);
+[ [ 2 ], [ 1 ], [  ], [  ] ]
+gap> gr := Digraph([[2, 2], [1, 1]]);
+<multidigraph with 2 vertices, 4 edges>
+gap> gr2 := MaximalSymmetricSubdigraphWithoutLoops(gr);
+<digraph with 2 vertices, 2 edges>
+gap> OutNeighbours(gr2);
+[ [ 2 ], [ 1 ] ]
+gap> gr := Digraph([[1, 2, 2], [1, 1]]);
+<multidigraph with 2 vertices, 5 edges>
+gap> IsSymmetricDigraph(gr);
+true
+gap> gr3 := MaximalSymmetricSubdigraphWithoutLoops(gr);
+<digraph with 2 vertices, 2 edges>
+gap> gr2 = gr3;
+true
+gap> gr := Digraph([[2, 3], [1], [1, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> IsSymmetricDigraph(gr);
+true
+gap> gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
+<digraph with 3 vertices, 4 edges>
+gap> OutNeighbours(gr);
+[ [ 2, 3 ], [ 1 ], [ 1 ] ]
 
 #T# RepresentativeOutNeighbours
 gap> gr := CycleDigraph(5);
