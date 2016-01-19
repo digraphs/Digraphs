@@ -1218,12 +1218,13 @@
           <C>CompleteSubgraphs</C>
         </Item>
         <Item>
-          None
+          <Ref Func="DigraphCliques"/> and <Ref Func="DigraphMaximalCliques"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            There is no analogous function in &Digraphs;, although this feature
-            will be implemented very soon.
+            The functionality of <C>CompleteSubgraphs</C> in &Grape; is provided
+            by <Ref Func="DigraphCliques"/> and <Ref Func="DigraphMaximalCliques"/>
+            in &Digraphs;.
           </Alt>
         </Item>
       </Row>
@@ -1234,12 +1235,15 @@
           <C>CompleteSubgraphsOfGivenSize</C>
         </Item>
         <Item>
-          None
+          <Ref Func="DigraphCliques"/> and <Ref Func="DigraphMaximalCliques"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            There is no analogous function in &Digraphs;, although this feature
-            will be implemented very soon.
+            Much of the functionality of <C>CompleteSubgraphsOfGivenSize</C> in
+            &Grape; is provided by <Ref Func="DigraphCliques"/> and <Ref
+              Func="DigraphMaximalCliques"/> in &Digraphs;, except that the
+            functionality relating to vertex weights and partial colourings is
+            not implemented.
           </Alt>
         </Item>
       </Row>
