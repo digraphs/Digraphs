@@ -338,9 +338,11 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
 
 <#GAPDoc Label="DigraphColoring">
 <ManSection>
-  <Oper Name="DigraphColoring" Arg="digraph, n"/>
+  <Oper Name="DigraphColoring" Arg="digraph, n" 
+    Label="for a digraph and number of colors"/>
   <Oper Name="DigraphColouring" Arg="digraph, n"/>
-  <Oper Name="DigraphColoring" Arg="digraph"/>
+  <Oper Name="DigraphColoring" Arg="digraph" 
+    Label="for a digraph"/>
   <Returns> A transformation, or <K>fail</K>.</Returns>
   <Description>
     A digraph coloring is a labeling of the vertices (using precisely <A>n</A>
