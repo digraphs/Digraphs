@@ -1308,13 +1308,17 @@ end);
 #
 
 InstallMethod(DigraphDistanceSet,
-"for a digraph, a vertex, and a non negative integer",
-[IsDigraph, IsPosInt, IsPosInt],
+"for a digraph, a vertex, and a non-negative integers",
+[IsDigraph, IsPosInt, IsInt],
 function(digraph, vertex, distance)
 
   if vertex > DigraphNrVertices(digraph) then
     ErrorMayQuit("Digraphs: DigraphDistanceSet: usage,\n",
                  "the second argument must be a vertex of the digraph,");
+  fi;
+  if distance < 0 then
+    ErrorMayQuit("Digraphs: DigraphDistanceSet: usage,\n",
+                 "the third argument must be a non-negative integer,");
   fi;
 
   return DigraphDistanceSet(digraph, vertex, [distance]);
@@ -1323,7 +1327,7 @@ end);
 #
 
 InstallMethod(DigraphDistanceSet,
-"for a digraph, a vertex, and a list of non negative integer",
+"for a digraph, a vertex, and a list of non-negative integers",
 [IsDigraph, IsPosInt, IsList],
 function(digraph, vertex, distances)
   local layers;
@@ -1333,9 +1337,9 @@ function(digraph, vertex, distances)
                  "the second argument must be a vertex of the digraph,");
   fi;
 
-  if not ForAll(distances, x -> IsPosInt(x)) then
+  if not ForAll(distances, x -> IsInt(x) and x >= 0) then
     ErrorMayQuit("Digraphs: DigraphDistanceSet: usage,\n",
-                 "the third argument must be a list of non negative integers,");
+                 "the third argument must be a list of non-negative integers,");
   fi;
 
   distances := distances + 1;
@@ -1408,4 +1412,48 @@ function(digraph, list)
   fi;
 
   return DigraphShortestDistance(digraph, list[1], list[2]);
+end);
+
+# 
+
+InstallMethod(DigraphColoring, "for a digraph", [IsDigraph],
+function(digraph)
+  local vertices, maxcolour, out_nbs, in_nbs, colouring, usedcolours,
+        nextcolour, v, u;
+
+
+  if DigraphNrVertices(digraph) = 0  then
+    return fail;
+  fi;
+
+  vertices := DigraphVertices(digraph); 
+  maxcolour := 0;
+  out_nbs   := OutNeighbours(digraph);
+  in_nbs    := InNeighbours(digraph);
+
+  colouring := [];
+
+  for v in vertices do
+    usedcolours := BlistList([1 .. maxcolour + 1], []);
+    for u in out_nbs[v] do
+      if IsBound(colouring[u]) then
+        usedcolours[colouring[u]] := true;
+      fi;
+    od; 
+    for u in in_nbs[v] do
+      if IsBound(colouring[u]) then
+        usedcolours[colouring[u]] := true;
+      fi;
+    od; 
+    nextcolour := 1;
+    while usedcolours[nextcolour] do
+      nextcolour := nextcolour + 1;
+    od;
+    colouring[v] := nextcolour;
+    if colouring[v] > maxcolour then
+      maxcolour := colouring[v];
+    fi;
+  od;
+
+  return Transformation(colouring);
 end);

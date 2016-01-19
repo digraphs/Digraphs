@@ -2,7 +2,7 @@
   <Heading>
     Grape to Digraphs Command Map
   </Heading>
-  Below is a table of &Grape; commands with the &Digraphs; counterparts. 
+  Below is a table of &Grape; commands with the &Digraphs; counterparts.
   The sections in this chapter correspond to the chapters in the &Grape;
   manual.
 
@@ -39,7 +39,7 @@
           <C>Graph</C>
         </Item>
         <Item>
-          <Ref Oper="Digraph"/> 
+          <Ref Oper="Digraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -51,13 +51,13 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>EdgeOrbitsGraph</C>
         </Item>
         <Item>
-          <Ref Oper="EdgeOrbitsDigraph"/> 
+          <Ref Oper="EdgeOrbitsDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -67,16 +67,16 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>NullGraph</C>
         </Item>
         <Item>
-          <Ref Oper="NullDigraph"/> 
-          <Alt Only="HTML"> 
-            or 
-            <Ref Oper="EmptyDigraph"/> 
+          <Ref Oper="NullDigraph"/>
+          <Alt Only="HTML">
+            or
+            <Ref Oper="EmptyDigraph"/>
           </Alt>
         </Item>
         <Item>
@@ -90,13 +90,13 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>CompleteGraph</C>
         </Item>
         <Item>
-          <Ref Oper="CompleteDigraph"/> 
+          <Ref Oper="CompleteDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -110,7 +110,7 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>JohnsonGraph</C>
@@ -122,13 +122,13 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>CayleyGraph</C>
         </Item>
         <Item>
-          <Ref Oper="CayleyDigraph"/> 
+          <Ref Oper="CayleyDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -138,13 +138,13 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>AddEdgeOrbit</C>
         </Item>
         <Item>
-          <Ref Oper="DigraphAddEdgeOrbit"/> 
+          <Ref Oper="DigraphAddEdgeOrbit"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -161,7 +161,7 @@
           <C>RemoveEdgeOrbit</C>
         </Item>
         <Item>
-          <Ref Oper="DigraphRemoveEdgeOrbit"/> 
+          <Ref Oper="DigraphRemoveEdgeOrbit"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -172,16 +172,16 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>AssignVertexNames</C>
         </Item>
         <Item>
-          <Ref Oper="SetDigraphVertexLabels"/> 
+          <Ref Oper="SetDigraphVertexLabels"/>
           <Alt Only="HTML">
-            and 
-            <Ref Oper="SetDigraphVertexLabel"/> 
+            and
+            <Ref Oper="SetDigraphVertexLabel"/>
           </Alt>
         </Item>
         <Item>
@@ -224,13 +224,13 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>IsGraph</C>
         </Item>
         <Item>
-          <Ref Func="IsDigraph"/> 
+          <Ref Func="IsDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -240,13 +240,13 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>OrderGraph</C>
         </Item>
         <Item>
-          <Ref Func="DigraphNrVertices"/> 
+          <Ref Func="DigraphNrVertices"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -256,7 +256,7 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>IsVertex(<A>graph</A>, <A>v</A>)</C>
@@ -267,14 +267,14 @@
         <Item>
           <Alt Only="HTML">
             The attribute <Ref Oper="DigraphVertices"/> can be used to return
-            the list of vertices of a digraph, or if <A>v</A> is known to be 
-            a positive integer, then you can simply do 
+            the list of vertices of a digraph, or if <A>v</A> is known to be
+            a positive integer, then you can simply do
             <C><A>v</A> &lt;= DigraphNrVertices(<A>digraph</A>)</C>
           </Alt>
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>VertexName</C>
@@ -301,7 +301,7 @@
         <Item>
           <Alt Only="HTML">
             Unlike <C>VertexNames</C> in &Grape;, the return value of
-            <Ref Oper="DigraphVertexLabels"/> is mutable.  
+            <Ref Oper="DigraphVertexLabels"/> is mutable.
           </Alt>
         </Item>
       </Row>
@@ -316,16 +316,16 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The vertices of a digraph in &Digraphs; is always the range 
+            The vertices of a digraph in &Digraphs; is always the range
             <C>[1 .. n]</C> where <C>n</C> is the number of vertices of the
-            digraph. 
+            digraph.
             The operation <Ref Oper="DigraphVertices"/> behaves the same as
             <C>Vertices</C> in &Grape;.
           </Alt>
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>VertexDegree</C>
@@ -344,7 +344,7 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>VertexDegrees</C>
@@ -352,11 +352,11 @@
         <Item>
           <Ref Oper="OutDegreeSet"/>
           <Alt Only="HTML">
-            (see also: 
-            <Ref Oper="OutDegreeSequence"/>, 
-            <Ref Oper="OutDegrees"/>, 
-            <Ref Oper="InDegrees"/>, 
-            <Ref Oper="InDegreeSequence"/>, 
+            (see also:
+            <Ref Oper="OutDegreeSequence"/>,
+            <Ref Oper="OutDegrees"/>,
+            <Ref Oper="InDegrees"/>,
+            <Ref Oper="InDegreeSequence"/>,
             <Ref Oper="InDegreeSet"/>)
           </Alt>
         </Item>
@@ -368,7 +368,7 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>IsLoopy</C>
@@ -400,7 +400,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsSimpleGraph</C> is equivalent to 
+            The &Grape; function <C>IsSimpleGraph</C> is equivalent to
             <Ref Oper="IsSymmetricDigraph"/>
             and not  <Ref Oper="DigraphHasLoops"/>.
           </Alt>
@@ -413,7 +413,7 @@
           <C>Adjacency</C>
         </Item>
         <Item>
-          <Ref Func="OutNeighboursOfVertex"/> 
+          <Ref Func="OutNeighboursOfVertex"/>
           <Alt Only="HTML">
             (see also <Ref Func="InNeighboursOfVertex"/>)
           </Alt>
@@ -426,31 +426,33 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>IsEdge</C>
         </Item>
         <Item>
-          <Ref Func="IsDigraphEdge"/> 
+          <Ref Func="IsDigraphEdge" Label="for digraph and list"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The arguments of <Ref Func="IsDigraphEdge"/> can be a digraph and
-            an edge or a digraph, a vertex, and a vertex. In the first form 
-            the operation <Ref Oper="IsDigraphEdge"/> behaves the same
-            as <C>IsEdge</C> in &Grape;.
+            The arguments of
+            <Ref Func="IsDigraphEdge" Label="for digraph and list"/>
+            can be a digraph and an edge, or a digraph and two vertices. In the
+            first form the operation
+            <Ref Oper="IsDigraphEdge" Label="for digraph and list"/>
+            behaves the same as <C>IsEdge</C> in &Grape;.
           </Alt>
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>DirectedEdges</C>
         </Item>
         <Item>
-          <Ref Attr="DigraphEdges"/> 
+          <Ref Attr="DigraphEdges"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -460,18 +462,18 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>UndirectedEdges</C>
         </Item>
         <Item>
-            None
+          None
         </Item>
         <Item>
           <Alt Only="HTML">
             There is no analogous function in &Digraphs;, and no plans to
-            include one. 
+            include one.
           </Alt>
         </Item>
       </Row>
@@ -482,12 +484,14 @@
           <C>Distance</C>
         </Item>
         <Item>
-          <Ref Oper="DigraphShortestDistance"/>
+          <Ref Oper="DigraphShortestDistance"
+               Label="for a digraph and two vertices"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            Currently, <Ref Oper="DigraphShortestDistance"/> only works for
-            pairs of vertices, and not sets of vertices, like in &Grape;.
+            The operation <Ref Oper="DigraphShortestDistance"
+            Label="for a digraph and two vertices"/> behaves the same as
+            <C>Distance</C> in &Grape;.
           </Alt>
         </Item>
       </Row>
@@ -514,7 +518,7 @@
           <C>Girth</C>
         </Item>
         <Item>
-          <Ref Func="DigraphUndirectedGirth"/> 
+          <Ref Func="DigraphUndirectedGirth"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -532,7 +536,7 @@
           <C>IsConnectedGraph</C>
         </Item>
         <Item>
-          <Ref Func="IsStronglyConnectedDigraph"/> 
+          <Ref Func="IsStronglyConnectedDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -542,59 +546,59 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>IsBipartite</C>
         </Item>
         <Item>
-          <Ref Prop="IsBipartiteDigraph"/> 
+          <Ref Prop="IsBipartiteDigraph"/>
           <Alt Only="HTML">
             and <Ref Prop="IsSymmetricDigraph"/>
           </Alt>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsBipartite</C> is equivalent to 
+            The &Grape; function <C>IsBipartite</C> is equivalent to
             <Ref Prop="IsBipartiteDigraph"/> and <Ref
               Prop="IsSymmetricDigraph"/>.
           </Alt>
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>IsNullGraph</C>
         </Item>
         <Item>
-          <Ref Prop="IsNullDigraph"/> 
+          <Ref Prop="IsNullDigraph"/>
           <Alt Only="HTML">
             or <Ref Prop="IsEmptyDigraph"/>
           </Alt>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsNullGraph</C> is equivalent to 
+            The &Grape; function <C>IsNullGraph</C> is equivalent to
             <Ref Prop="IsEmptyDigraph"/> and its synonym <Ref
               Prop="IsNullDigraph"/>.
           </Alt>
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>IsCompleteGraph</C>
         </Item>
         <Item>
-          <Ref Prop="IsCompleteDigraph"/> 
+          <Ref Prop="IsCompleteDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsCompleteGraph</C> is roughly 
-            equivalent to 
-            <Ref Prop="IsCompleteDigraph"/> except that in &Digraphs; 
+            The &Grape; function <C>IsCompleteGraph</C> is roughly
+            equivalent to
+            <Ref Prop="IsCompleteDigraph"/> except that in &Digraphs;
             a complete digraph has <E>no loops</E>.
           </Alt>
         </Item>
@@ -639,17 +643,17 @@
           <C>IsRegularGraph</C>
         </Item>
         <Item>
-          <Ref Func="IsOutRegularDigraph"/> 
+          <Ref Func="IsOutRegularDigraph"/>
           <Alt Only="HTML">
-            (see also 
-            <Ref Func="IsInRegularDigraph"/> 
-            and 
+            (see also
+            <Ref Func="IsInRegularDigraph"/>
+            and
             <Ref Func="IsRegularDigraph"/>)
           </Alt>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsRegularGraph</C> is 
+            The &Grape; function <C>IsRegularGraph</C> is
             equivalent to <Ref Prop="IsOutRegularDigraph"/>.
           </Alt>
         </Item>
@@ -671,7 +675,7 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>GlobalParameters</C>
@@ -687,23 +691,23 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>IsDistanceRegular</C>
         </Item>
         <Item>
-          <Ref Func="IsDistanceRegularDigraph"/> 
+          <Ref Func="IsDistanceRegularDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsDistanceRegular</C> is 
+            The &Grape; function <C>IsDistanceRegular</C> is
             equivalent to <Ref Prop="IsDistanceRegularDigraph"/>.
           </Alt>
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>CollapsedAdjacencyMat</C>
@@ -719,7 +723,7 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>OrbitalGraphColadjMats</C>
@@ -735,7 +739,7 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>VertexTransitiveDRGs</C>
@@ -755,7 +759,7 @@
     </Table>
 
   </Section>
-  
+
   <Section>
     <Heading>
       Some special vertex subsets of a graph
@@ -766,7 +770,7 @@
         html format.
       </E>
     </Alt>
-    
+
     <Table Align="|l|l|l|">
       <HorLine/>
 
@@ -784,7 +788,7 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>ConnectedComponent</C>
@@ -795,15 +799,15 @@
         <Item>
           <Alt Only="HTML">
             When applied to a simple di/graph and a vertex,
-            <C>ConnectedComponent</C> in &Grape; is equivalent to 
-            <Ref Attr="DigraphConnectedComponent"/>. 
+            <C>ConnectedComponent</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphConnectedComponent"/>.
             <Ref Attr="DigraphConnectedComponent"/> can also be applied to
             non-simple graphs (in the language of &Grape;).
           </Alt>
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>ConnectedComponents</C>
@@ -814,15 +818,15 @@
         <Item>
           <Alt Only="HTML">
             When applied to a simple di/graph,
-            <C>ConnectedComponents</C> in &Grape; is equivalent to 
-            <Ref Attr="DigraphConnectedComponents"/>. 
+            <C>ConnectedComponents</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphConnectedComponents"/>.
             <Ref Attr="DigraphConnectedComponents"/> can also be applied to
             non-simple graphs (in the language of &Grape;).
           </Alt>
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>Bicomponents</C>
@@ -833,9 +837,9 @@
         <Item>
           <Alt Only="HTML">
             When applied to a simple bipartite di/graph,
-            <C>Bicomponents</C> in &Grape; is equivalent to 
-            <Ref Attr="DigraphBicomponents"/>. 
-            The definition of <Ref Prop="IsBipartiteDigraph"/> does not require 
+            <C>Bicomponents</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphBicomponents"/>.
+            The definition of <Ref Prop="IsBipartiteDigraph"/> does not require
             its argument to be simple (in the language of &Grape;), i.e. the
             bipartite graphs in &Grape; are a proper subset of the bipartite
             digraphs in &Digraphs;.
@@ -843,25 +847,25 @@
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>DistanceSet</C>
         </Item>
         <Item>
-            <Ref Attr="DigraphDistanceSet" 
-              Label="for a digraph and two pos ints"/>
+            <Ref Attr="DigraphDistanceSet"
+              Label="for a digraph, a pos int, and an int"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>DistanceSet</C> in &Grape; is equivalent to 
-            <Ref Attr="DigraphDistanceSet" 
-              Label="for a digraph and two pos ints"/> in &Digraphs;. 
+            <C>DistanceSet</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphDistanceSet"
+              Label="for a digraph, a pos int, and an int"/> in &Digraphs;.
           </Alt>
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>Layers</C>
@@ -871,13 +875,13 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>Layers</C> in &Grape; is equivalent to 
+            <C>Layers</C> in &Grape; is equivalent to
             <Ref Attr="DigraphLayers"/> in &Digraphs;.
           </Alt>
         </Item>
       </Row>
       <HorLine/>
-      
+
       <Row>
         <Item>
           <C>IndependentSet</C>
@@ -887,7 +891,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>IndependentSet</C> in &Grape; is equivalent to 
+            <C>IndependentSet</C> in &Grape; is equivalent to
             <Ref Attr="DigraphIndependentSet"/> in &Digraphs;.
           </Alt>
         </Item>
@@ -897,7 +901,7 @@
     </Table>
 
   </Section>
-  
+
   <Section>
     <Heading>
       Functions to construct new graphs from old
@@ -909,8 +913,263 @@
       </E>
     </Alt>
 
+    <Table Align="|l|l|l|">
+      <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>InducedSubgraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="InducedSubdigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <Ref Attr="InducedSubdigraph"/> in &Digraphs; does not allow a third
+            argument <C>G</C> specifying a group of automorphisms on the
+            resultant graph. This may be included in a future release.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>DistanceSetInduced</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>DistanceGraph</C>
+        </Item>
+        <Item>
+          <Ref Oper="DistanceDigraph" Label="for digraph and list"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>DistanceGraph</C> in &Grape; is equivalent to
+            <Ref Oper="DistanceDigraph" Label="for digraph and list"/> in
+            &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>ComplementGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphDual"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <Ref Attr="DigraphDual"/> in &Digraphs; is equivalent to
+            <C>ComplementGraph</C> in &Grape; with the optional argument
+            <A>comploops</A> set to <K>true</K> (loops/nonloops are
+            complemented).
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>PointGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>EdgeGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="EdgeUndirectedDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>EdgeGraph</C> in &Grape; is equivalent to
+            <Ref Attr="EdgeUndirectedDigraph"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>SwitchedGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>UnderlyingGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="DigraphSymmetricClosure"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>UnderlyingGraph</C> in &Grape; is equivalent to
+            <Ref Attr="DigraphSymmetricClosure"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>QuotientGraph</C>
+        </Item>
+        <Item>
+          <Ref Oper="QuotientDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <Ref Oper="QuotientDigraph"/> in &Digraphs; takes a partition
+            <C>p</C> of the vertices of the digraph, rather than a set of
+            generating pairs.  Hence, the equivalence might not be
+            group-invariant.  Also note that in &Digraphs; multiple edges may be
+            created, whereas in &Grape; they are effectively combined into a
+            single edge.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+
+      <Row>
+        <Item>
+          <C>BipartiteDouble</C>
+        </Item>
+        <Item>
+          <Ref Attr="BipartiteDoubleDigraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>BipartiteDouble</C> in &Grape; is equivalent to
+            <Ref Attr="BipartiteDoubleDigraph"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>GeodesicsGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, and no plans to
+            include one.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CollapsedIndependentOrbitsGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            might be implemented in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CollapsedCompleteOrbitsGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            might be implemented in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>NewGroupGraph</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;.  However, the same
+            results would be possible by calling <Ref Attr="DigraphCopy"/> on
+            the digraph to produce a copy <C>gr</C>, and then applying
+            <C>SetDigraphGroup(gr, G)</C>.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+    </Table>
+
   </Section>
-  
+
   <Section>
     <Heading>
       Vertex-Colouring and Complete Subgraphs
@@ -923,7 +1182,7 @@
     </Alt>
 
   </Section>
-  
+
   <Section>
     <Heading>
       Automorphism groups and isomorphism testing for graphs
