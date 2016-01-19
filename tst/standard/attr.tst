@@ -120,9 +120,9 @@ gap> DigraphVertexLabels(gr2);
 [ 4, 3, 2, 1 ]
 gap> DigraphNrVertices(gr2);
 4
-gap> gr := Digraph([[1], [1,3], [1,2]]);
+gap> gr := Digraph([[1], [1, 3], [1, 2]]);
 <digraph with 3 vertices, 5 edges>
-gap> DigraphGroup(gr) = Group( ( 2, 3 ) );
+gap> DigraphGroup(gr) = Group((2, 3));
 true
 gap> gr2 := DigraphDual(gr);
 <digraph with 3 vertices, 4 edges>
@@ -130,7 +130,7 @@ gap> OutNeighbours(gr2);
 [ [ 2, 3 ], [ 2 ], [ 3 ] ]
 gap> HasDigraphGroup(gr2);
 true
-gap> DigraphGroup(gr2) = Group( ( 2, 3 ) );
+gap> DigraphGroup(gr2) = Group((2, 3));
 true
 gap> DigraphGroup(gr2) = DigraphGroup(gr);
 true
@@ -883,12 +883,12 @@ fail
 gap> gr := Digraph([[3], [1], [1, 4], [1, 1]]);;
 gap> DigraphLongestSimpleCircuit(gr);
 [ 1, 3, 4 ]
-gap> gr := Digraph([[2,6,10],[3],[4],[5],[1],
->                   [7],[8],[9],[1],[11],[12],[13],[1]]);;
+gap> gr := Digraph([[2, 6, 10], [3], [4], [5], [1],
+>                   [7], [8], [9], [1], [11], [12], [13], [1]]);;
 gap> DigraphLongestSimpleCircuit(gr);
 [ 1, 2, 3, 4, 5 ]
-gap> gr := Digraph([[2,6,10],[3],[4],[5],[1],
->                   [7],[8],[9],[1],[11],[12],[1,13],[14],[1]]);;
+gap> gr := Digraph([[2, 6, 10], [3], [4], [5], [1],
+>                   [7], [8], [9], [1], [11], [12], [1, 13], [14], [1]]);;
 gap> DigraphLongestSimpleCircuit(gr);
 [ 1, 10, 11, 12, 13, 14 ]
 
@@ -937,7 +937,7 @@ gap> DigraphLoops(gr);
 [ 1, 3, 4 ]
 
 #T# Out/InDegreeSequence with known automorphsims and sets
-gap> gr := Digraph([[2,3,4,5], [], [], [], []]);;
+gap> gr := Digraph([[2, 3, 4, 5], [], [], [], []]);;
 gap> OutDegrees(gr);
 [ 4, 0, 0, 0, 0 ]
 gap> InDegrees(gr);
@@ -948,7 +948,7 @@ gap> OutDegrees(gr);
 [ 4, 0, 0, 0, 0 ]
 gap> OutDegreeSet(gr);
 [ 0, 4 ]
-gap> gr := Digraph([[2,3,4,5], [], [], [], []]);;
+gap> gr := Digraph([[2, 3, 4, 5], [], [], [], []]);;
 gap> InNeighbours(gr);;
 gap> DigraphGroup(gr);
 Group([ (4,5), (3,4), (2,3) ])
@@ -963,12 +963,12 @@ gap> OutDegreeSequence(gr);
 [ 2, 2, 1, 1 ]
 
 #T# Diameter and UndirectedGirth with known automorphisms
-gap> gr := Digraph([[2,3,4,5], [], [], [], []]);;
+gap> gr := Digraph([[2, 3, 4, 5], [], [], [], []]);;
 gap> DigraphGroup(gr);
 Group([ (4,5), (3,4), (2,3) ])
 gap> DigraphDiameter(gr);
 fail
-gap> gr := Digraph([[2,3,4,5], [6], [6], [6], [6], [1]]);;
+gap> gr := Digraph([[2, 3, 4, 5], [6], [6], [6], [6], [1]]);;
 gap> DigraphGroup(gr);
 Group([ (4,5), (3,4), (2,3) ])
 gap> DigraphDiameter(gr);
@@ -1040,7 +1040,8 @@ gap> mat := BooleanAdjacencyMatrix(gr);
   [ false, false, false, true ], [ false, false, false, false ] ]
 gap> not (IsSymmetricDigraph(gr) or mat = TransposedMat(mat));
 true
-gap> gr := Digraph([[1, 4, 6, 8], [2, 8, 10], [4], [1, 6], [6, 7], [1, 2, 4, 10],
+gap> gr := Digraph([
+> [1, 4, 6, 8], [2, 8, 10], [4], [1, 6], [6, 7], [1, 2, 4, 10],
 > [3], [3], [1, 8], [2, 5]]);;
 gap> mat := BooleanAdjacencyMatrix(gr);
 [ [ true, false, false, true, false, true, false, true, false, false ], 
@@ -1092,7 +1093,7 @@ gap> DigraphGirth(gr);
 2
 gap> DigraphUndirectedGirth(gr);
 infinity
-gap> gr := Digraph([[2], [1], [4], [5,6], [], []]);;
+gap> gr := Digraph([[2], [1], [4], [5, 6], [], []]);;
 gap> DigraphGirth(gr);
 2
 gap> DigraphUndirectedGirth(gr);
@@ -1143,20 +1144,20 @@ gap> DigraphDegeneracyOrdering(gr);
 [ 6, 4, 3, 2, 5, 1 ]
 
 #T# DigraphGirth with known automorphisms
-gap> gr := Digraph([[2,3,4,5], [6, 3], [6, 2], [6], [6], [1]]);;
+gap> gr := Digraph([[2, 3, 4, 5], [6, 3], [6, 2], [6], [6], [1]]);;
 gap> DigraphGirth(gr);
 2
-gap> gr := Digraph([[2,3,4,5], [6, 3], [6, 2], [6], [6], [1]]);;
+gap> gr := Digraph([[2, 3, 4, 5], [6, 3], [6, 2], [6], [6], [1]]);;
 gap> DigraphGroup(gr);
 Group([ (4,5), (2,3) ])
 gap> DigraphGirth(gr);
 2
-gap> gr := Digraph([[2,6,10],[3],[4],[5],[1],
->                   [7],[8],[9],[1],[11],[12],[13],[1]]);;
+gap> gr := Digraph([[2, 6, 10], [3], [4], [5], [1],
+>                   [7], [8], [9], [1], [11], [12], [13], [1]]);;
 gap> DigraphGirth(gr);
 5
-gap> gr := Digraph([[2,6,10],[3],[4],[5],[1],
->                   [7],[8],[9],[1],[11],[12],[13],[1]]);;
+gap> gr := Digraph([[2, 6, 10], [3], [4], [5], [1],
+>                   [7], [8], [9], [1], [11], [12], [13], [1]]);;
 gap> DigraphGroup(gr);
 Group([ (6,10)(7,11)(8,12)(9,13), (2,6)(3,7)(4,8)(5,9) ])
 gap> DigraphGirth(gr);
