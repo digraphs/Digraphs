@@ -1083,7 +1083,6 @@
       </Row>
       <HorLine/>
 
-
       <Row>
         <Item>
           <C>BipartiteDouble</C>
@@ -1183,6 +1182,22 @@
 
     <Table Align="|l|l|l|">
       <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
       <Row>
         <Item>
           <C>VertexColouring</C>
@@ -1199,6 +1214,39 @@
         </Item>
       </Row>
       <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CompleteSubgraphs</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            will be implemented very soon.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>CompleteSubgraphsOfGivenSize</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            will be implemented very soon.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
     </Table>
   </Section>
 
@@ -1213,6 +1261,95 @@
       </E>
     </Alt>
 
+    <Table Align="|l|l|l|">
+      <HorLine/>
+
+      <Row>
+        <Item>
+          &Grape; command
+        </Item>
+        <Item>
+          &Digraphs; command
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            Comments
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>AutGroupGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="AutomorphismGroup" Label="for a digraph"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C></C> in &Grape; is equivalent to
+            <Ref Attr="AutomorphismGroup" Label="for a digraph"/> in &Digraphs;.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>GraphIsomorphism</C>
+        </Item>
+        <Item>
+          <Ref Attr="IsomorphismDigraphs" Label="for digraphs"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>GraphIsomorphism</C> in &Grape; is equivalent to <Ref
+            Attr="IsomorphismDigraphs" Label="for digraphs"/> in &Digraphs;.
+            Note however that <C>GraphIsomorphism</C>'s optional argument
+            <A>firstunbindcanon</A> is not applicable, since the canonical
+            labellings of a digraph are not portable between sessions.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>IsIsomorphicGraph</C>
+        </Item>
+        <Item>
+          <Ref Attr="IsIsomorphicDigraph" Label="for digraphs"/>
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            <C>IsIsomorphicGraph</C> in &Grape; is equivalent to <Ref
+            Attr="IsIsomorphicDigraph" Label="for digraphs"/> in &Digraphs;.
+            Note however that <C>IsIsomorphicGraph</C>'s optional argument
+            <A>firstunbindcanon</A> is not applicable, since the canonical
+            labellings of a digraph are not portable between sessions.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+      <Row>
+        <Item>
+          <C>GraphIsomorphismClassRepresentatives</C>
+        </Item>
+        <Item>
+          None
+        </Item>
+        <Item>
+          <Alt Only="HTML">
+            There is no analogous function in &Digraphs;, although this feature
+            might be implemented in the future.
+          </Alt>
+        </Item>
+      </Row>
+      <HorLine/>
+
+    </Table>
   </Section>
 
 </Appendix>
