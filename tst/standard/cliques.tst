@@ -224,12 +224,18 @@ gap> gr := DigraphFromDigraph6String("+FWSK?[SK_?");
 gap> DigraphMaximalIndependentSetsReps(gr);
 [ [ 1, 4 ], [ 1, 5 ], [ 2, 5, 7 ] ]
 gap> DigraphMaximalIndependentSets(gr);
-[ [ 1, 4 ], [ 1, 5 ], [ 2, 4 ], [ 2, 5, 7 ] ]
+[ [ 1, 4 ], [ 1, 5 ], [ 1, 6 ], [ 2, 4 ], [ 3, 4 ], [ 2, 5, 7 ], [ 2, 6, 7 ], 
+  [ 3, 5, 7 ], [ 3, 6, 7 ] ]
 gap> DigraphMaximalIndependentSets(gr);
-[ [ 1, 4 ], [ 1, 5 ], [ 2, 4 ], [ 2, 5, 7 ] ]
+[ [ 1, 4 ], [ 1, 5 ], [ 1, 6 ], [ 2, 4 ], [ 3, 4 ], [ 2, 5, 7 ], [ 2, 6, 7 ], 
+  [ 3, 5, 7 ], [ 3, 6, 7 ] ]
 gap> DigraphIndependentSetsReps(gr);
-[ [ 1 ], [ 1, 4 ], [ 1, 5 ], [ 2 ], [ 2, 4 ], [ 2, 5 ], [ 2, 5, 7 ], 
-  [ 2, 7 ], [ 7 ] ]
+[ [ 1 ], [ 1, 4 ], [ 1, 5 ], [ 2 ], [ 2, 5 ], [ 2, 5, 7 ], [ 2, 7 ], [ 7 ] ]
+gap> DigraphIndependentSets(gr);
+[ [ 1 ], [ 4 ], [ 1, 4 ], [ 1, 5 ], [ 1, 6 ], [ 2, 4 ], [ 3, 4 ], [ 2 ], 
+  [ 3 ], [ 5 ], [ 6 ], [ 2, 5 ], [ 2, 6 ], [ 3, 5 ], [ 3, 6 ], [ 2, 5, 7 ], 
+  [ 2, 6, 7 ], [ 3, 5, 7 ], [ 3, 6, 7 ], [ 2, 7 ], [ 3, 7 ], [ 5, 7 ], 
+  [ 6, 7 ], [ 7 ] ]
 
 # DigraphMaximalClique and DigraphClique
 gap> gr := CompleteDigraph(5);;
