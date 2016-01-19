@@ -414,7 +414,7 @@ def _stop_mamp():
 ################################################################################
 
 def _main():
-    global info_verbose, _VERSION
+    global _VERBOSE, _VERSION
     # Parse the args
     parser = argparse.ArgumentParser(prog='release.py',
                                      usage='%(prog)s [options]')
@@ -442,6 +442,7 @@ def _main():
 
     # set verbose in test.py
     set_verbose(args.verbose)
+    _VERBOSE = args.verbose
 
     if args.skip_tests:
         args.skip_extreme = True

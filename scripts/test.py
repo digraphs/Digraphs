@@ -48,9 +48,9 @@ def exit_abort(message=''):
     in the release, i.e. dates or version numbers don't agree.'''
     show_cursor()
     if message != '':
-        sys.exit(red_string(message + '!\nAborting!'))
+        sys.exit(red_string(message + '! Aborting!'))
     else:
-        sys.exit(red_string('\nAborting!'))
+        sys.exit(red_string('Aborting!'))
 
 def exit_error_func(script_name):
     def exit_error(message):
