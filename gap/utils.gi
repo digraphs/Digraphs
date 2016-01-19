@@ -111,7 +111,7 @@ function(dir, opts)
     fi; #TODO add printing of ignored options
   else
     ErrorNoReturn("Digraphs: DIGRAPHS_TestDir: usage,\n",
-                 "the argument must be a record,");
+                  "the argument must be a record,");
   fi;
 
   Print("\n");
@@ -215,7 +215,7 @@ function(arg)
 
   if Length(arg) = 0 then
     ErrorNoReturn("Digraphs: DIGRAPHS_Test: usage,\n",
-                 "there should be at least 1 argument,");
+                  "there should be at least 1 argument,");
   fi;
 
   file := arg[1];
@@ -288,11 +288,11 @@ function()
 
   if file = fail then
     ErrorNoReturn("Digraphs: DigraphsTestExtreme:\n",
-                 "the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
-                 "required\nfor these tests to run. Please download the ",
-                 "'digraphs-lib.tar.gz'\narchive from:\n\n",
-                 "http://bitbucket.org/james-d-mitchell/digraphs/downloads",
-                 "\n\nand try again,");
+                  "the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
+                  "required\nfor these tests to run. Please download the ",
+                  "'digraphs-lib.tar.gz'\narchive from:\n\n",
+                  "http://bitbucket.org/james-d-mitchell/digraphs/downloads",
+                  "\n\nand try again,");
   fi;
 
   return DIGRAPHS_TestDir("extreme", rec());

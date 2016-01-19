@@ -136,14 +136,14 @@ function(digraph, v)
 
   if v > DigraphNrVertices(digraph) then
     ErrorNoReturn("Digraphs: DigraphStabilizer: usage,\n",
-                 "the second argument must not exceed ",
-                 DigraphNrVertices(digraph), ",");
+                  "the second argument must not exceed ",
+                  DigraphNrVertices(digraph), ",");
   fi;
 
   pos := DigraphSchreierVector(digraph)[v];
   if pos < 0 then # rep is one of the orbit reps
     word := ();
-    pos := pos * -1;
+    pos := pos * - 1;
   else
     gens  := GeneratorsOfGroup(DigraphGroup(digraph));
     sch   := DigraphSchreierVector(digraph);
