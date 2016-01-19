@@ -1519,6 +1519,33 @@ gap> gr2 := DigraphAddAllLoops(gr);
 gap> OutNeighbours(gr2);
 [ [ 1, 2, 3 ], [ 2, 2, 2, 2 ], [ 5, 1, 3 ], [ 1, 2, 3, 4 ], [ 5 ] ]
 
+#T# JohnsonDigraph
+gap> JohnsonDigraph(0,4);
+<digraph with 0 vertices, 0 edges>
+gap> JohnsonDigraph(0,0);
+<digraph with 1 vertex, 0 edges>
+gap> JohnsonDigraph(3,0);
+<digraph with 1 vertex, 0 edges>
+gap> JohnsonDigraph(1,0);
+<digraph with 1 vertex, 0 edges>
+gap> gr := JohnsonDigraph(3, 1);
+<digraph with 3 vertices, 6 edges>
+gap> OutNeighbours(gr);
+[ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ]
+gap> gr := JohnsonDigraph(4, 2);
+<digraph with 6 vertices, 24 edges>
+gap> OutNeighbours(gr);
+[ [ 2, 3, 4, 5 ], [ 1, 3, 4, 6 ], [ 1, 2, 5, 6 ], [ 1, 2, 5, 6 ], 
+  [ 1, 3, 4, 6 ], [ 2, 3, 4, 5 ] ]
+gap> JohnsonDigraph(5, 1) = CompleteDigraph(5);
+true
+gap> JohnsonDigraph(3, -2);
+Error, Digraphs: JohnsonDigraph: usage,
+both arguments must be non-negative integers,
+gap> JohnsonDigraph(-1, 2);
+Error, Digraphs: JohnsonDigraph: usage,
+both arguments must be non-negative integers,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(r1);
 gap> Unbind(j);

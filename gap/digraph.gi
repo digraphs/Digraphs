@@ -141,8 +141,8 @@ function(rel)
   d := GeneratorsOfDomain(UnderlyingDomainOfBinaryRelation(rel));
   if not IsRange(d) or d[1] <> 1 then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the argument <rel> must be a binary relation\n",
-                 "on the domain [ 1 .. n ] for some positive integer n,");
+                  "the argument <rel> must be a binary relation\n",
+                  "on the domain [ 1 .. n ] for some positive integer n,");
   fi;
   out := EmptyPlist(Length(d));
   for i in d do
@@ -172,13 +172,13 @@ function(G, gens)
 
   if not IsFinite(G) then
     ErrorNoReturn("Digraphs: CayleyDigraph: usage,\n",
-                 "the first argument <G> must be a finite group,");
+                  "the first argument <G> must be a finite group,");
   fi;
 
   if not ForAll(gens, x -> x in G) then
     ErrorNoReturn("Digraphs: CayleyDigraph: usage,\n",
-                 "elements in the 2nd argument <gens> must ",
-                 "all belong to the 1st argument <G>,");
+                  "elements in the 2nd argument <gens> must ",
+                  "all belong to the 1st argument <G>,");
   fi;
 
   adj := function(x, y)
@@ -320,7 +320,7 @@ InstallMethod(DistanceDigraph,
 function(digraph, distance)
   if distance < 0 then
     ErrorNoReturn("Digraphs: DistanceDigraph: usage,\n",
-                 "second arg <distance> must be a non-negative integer,");
+                  "second arg <distance> must be a non-negative integer,");
   fi;
   return DistanceDigraph(digraph, [distance]);
 end);
@@ -335,7 +335,7 @@ function(graph, i, name)
 
   if i > DigraphNrVertices(graph) then
     ErrorNoReturn("Digraphs: SetDigraphVertexLabel: usage,\n",
-                 "there are only ", DigraphNrVertices(graph), " vertices,");
+                  "there are only ", DigraphNrVertices(graph), " vertices,");
   fi;
   graph!.vertexlabels[i] := name;
   return;
@@ -354,7 +354,7 @@ function(graph, i)
   fi;
   #JDM is this a good idea?
   ErrorNoReturn("Digraphs: DigraphVertexLabel: usage,\n", i,
-               " is nameless or not a vertex,");
+                " is nameless or not a vertex,");
 end);
 
 InstallMethod(SetDigraphVertexLabels, "for a digraph and list",
@@ -363,8 +363,8 @@ function(graph, names)
 
   if not Length(names) = DigraphNrVertices(graph) then
     ErrorNoReturn("Digraphs: SetDigraphVertexLabels: usage,\n",
-                 "the 2nd arument <names> must be a list with length equal ",
-                 "to the number of\nvertices of the digraph,");
+                  "the 2nd arument <names> must be a list with length equal ",
+                  "to the number of\nvertices of the digraph,");
   fi;
 
   graph!.vertexlabels := names;
@@ -403,7 +403,7 @@ function(trans, int)
 
   if int < 0 then
     ErrorNoReturn("Digraphs: AsDigraph: usage,\n",
-                 "the second argument should be a non-negative integer,");
+                  "the second argument should be a non-negative integer,");
   fi;
 
   ran := ListTransformation(trans, int);
@@ -473,7 +473,7 @@ function(n, p)
 
   if p < 0.0 or 1.0 < p then
     ErrorNoReturn("Digraphs: RandomDigraph: usage,\n",
-                 "the second argument <p> must be a float between 0 and 1,");
+                  "the second argument <p> must be a float between 0 and 1,");
   fi;
   out := DigraphNC(RANDOM_DIGRAPH(n, Int(p * 10000)));
   SetIsMultiDigraph(out, false);
@@ -503,7 +503,7 @@ function(n)
 
   if n < 0 then
     ErrorNoReturn("Digraphs: RandomTournament: usage,\n",
-                 "the argument <n> must be a non-negative integer,");
+                  "the argument <n> must be a non-negative integer,");
   elif n = 0 then
     gr := EmptyDigraph(0);
   else
@@ -536,7 +536,7 @@ function(n)
 
   if n < 0 then
     ErrorNoReturn("Digraphs: CompleteDigraph: usage,\n",
-                 "the argument <n> must be a non-negative integer,");
+                  "the argument <n> must be a non-negative integer,");
   elif n = 0 then
     gr := EmptyDigraph(0);
   else
@@ -566,7 +566,7 @@ function(n)
 
   if n < 0 then
     ErrorNoReturn("Digraphs: EmptyDigraph: usage,\n",
-                 "the argument <n> must be a non-negative integer,");
+                  "the argument <n> must be a non-negative integer,");
   fi;
   gr := DigraphNC(List([1 .. n], x -> []));
   SetIsEmptyDigraph(gr, true);
@@ -685,20 +685,20 @@ function(graph)
   if not (IsBound(graph.source) and IsBound(graph.range) and
           (IsBound(graph.vertices) or IsBound(graph.nrvertices))) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the argument must be a record with components:\n",
-                 "'source', 'range', and either 'vertices' or 'nrvertices',");
+                  "the argument must be a record with components:\n",
+                  "'source', 'range', and either 'vertices' or 'nrvertices',");
   fi;
 
   if not (IsList(graph.source) and IsList(graph.range)) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the graph components 'source' and 'range' should be lists,");
+                  "the graph components 'source' and 'range' should be lists,");
   fi;
 
   m := Length(graph.source);
   if m <> Length(graph.range) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the record components ",
-                 "'source' and 'range' should have equal length,");
+                  "the record components ",
+                  "'source' and 'range' should have equal length,");
   fi;
   graph!.nredges := m;
 
@@ -707,15 +707,15 @@ function(graph)
   if IsBound(graph.nrvertices) then
     if not (IsInt(graph.nrvertices) and graph.nrvertices >= 0) then
       ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                   "the record component 'nrvertices' ",
-                   "should be a non-negative integer,");
+                    "the record component 'nrvertices' ",
+                    "should be a non-negative integer,");
     fi;
     if IsBound(graph.vertices) and not
         (IsList(graph.vertices) and
          Length(graph.vertices) = graph.nrvertices) then
       ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                   "the record components 'nrvertices' and 'vertices' are ",
-                   "inconsistent,");
+                    "the record components 'nrvertices' and 'vertices' are ",
+                    "inconsistent,");
     fi;
     cmp := LT;
     obj := graph.nrvertices + 1;
@@ -725,7 +725,7 @@ function(graph)
           (graph.source[1] < 1 or
            graph.source[Length(graph.source)] > graph.nrvertices) then
         ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                     "the record component 'source' is invalid,");
+                      "the record component 'source' is invalid,");
       fi;
       check_source := false;
     fi;
@@ -733,7 +733,7 @@ function(graph)
   elif IsBound(graph.vertices) then
     if not IsList(graph.vertices) then
       ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                   "the record component 'vertices' should be a list,");
+                    "the record component 'vertices' should be a list,");
     fi;
     cmp := \in;
     obj := graph.vertices;
@@ -742,12 +742,12 @@ function(graph)
 
   if check_source and not ForAll(graph.source, x -> cmp(x, obj)) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the record component 'source' is invalid,");
+                  "the record component 'source' is invalid,");
   fi;
 
   if not ForAll(graph.range, x -> cmp(x, obj)) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the record component 'range' is invalid,");
+                  "the record component 'range' is invalid,");
   fi;
 
   graph := StructuralCopy(graph);
@@ -756,7 +756,7 @@ function(graph)
   if IsBound(graph.vertices) then
     if not IsDuplicateFreeList(graph.vertices) then
       ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                   "the record component 'vertices' must be duplicate-free,");
+                    "the record component 'vertices' must be duplicate-free,");
     fi;
     if graph.vertices <> [1 .. graph.nrvertices] then
       for i in [1 .. m] do
@@ -802,9 +802,9 @@ function(adj)
     for y in x do
       if not IsPosInt(y) or y > nrvertices then
         ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                     "the argument must be a list of lists of positive ",
-                     "integers\n",
-                     "not exceeding the length of the argument,");
+                      "the argument must be a list of lists of positive ",
+                      "integers\n",
+                      "not exceeding the length of the argument,");
       fi;
       nredges := nredges + 1;
     od;
@@ -852,14 +852,14 @@ function(nrvertices, source, range)
 
   if nrvertices < 0 then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the first argument <nrvertices> must be a non-negative",
-                 " integer,");
+                  "the first argument <nrvertices> must be a non-negative",
+                  " integer,");
   fi;
   m := Length(source);
   if m <> Length(range) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the second and third arguments <source> and <range> ",
-                 "must be lists\nof equal length,");
+                  "the second and third arguments <source> and <range> ",
+                  "must be lists\nof equal length,");
   fi;
 
   source := ShallowCopy(source);
@@ -871,9 +871,9 @@ function(nrvertices, source, range)
         or ForAny(source, x -> x < 1 or x > nrvertices)
         or ForAny(range, x -> x < 1 or x > nrvertices) then
       ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                   "the second and third arguments <source> and <range> must ",
-                   "be lists\nof positive integers no greater than the first ",
-                   "argument <nrvertices>,");
+                    "the second and third arguments <source> and <range> must ",
+                    "be lists\nof positive integers no greater than the first ",
+                    "argument <nrvertices>,");
     fi;
     range := Permuted(range, Sortex(source));
   fi;
@@ -891,26 +891,26 @@ function(vertices, source, range)
   m := Length(source);
   if m <> Length(range) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the second and third arguments <source> and <range> ",
-                 "must be lists of\nequal length,");
+                  "the second and third arguments <source> and <range> ",
+                  "must be lists of\nequal length,");
   fi;
 
   if not IsDuplicateFreeList(vertices) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the first argument <vertices> must be a duplicate-free ",
-                 "list,");
+                  "the first argument <vertices> must be a duplicate-free ",
+                  "list,");
   fi;
 
   if ForAny(source, x -> not x in vertices) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the second argument <source> must be a list of elements of ",
-                 "<vertices>,");
+                  "the second argument <source> must be a list of elements of ",
+                  "<vertices>,");
   fi;
 
   if ForAny(range, x -> not x in vertices) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
-                 "the third argument <range> must be a list of elements of ",
-                 "<vertices>,");
+                  "the third argument <range> must be a list of elements of ",
+                  "<vertices>,");
   fi;
 
   vertices := StructuralCopy(vertices);
@@ -944,7 +944,7 @@ function(mat)
   n := Length(mat);
   if not IsRectangularTable(mat) or Length(mat[1]) <> n then
     ErrorNoReturn("Digraphs: DigraphByAdjacencyMatrix: usage,\n",
-                 "the matrix is not square,");
+                  "the matrix is not square,");
   fi;
 
   if IsBool(mat[1][1]) then
@@ -959,8 +959,8 @@ function(mat)
     for j in verts do
       if not (IsPosInt(mat[i][j]) or mat[i][j] = 0) then
         ErrorNoReturn("Digraphs: DigraphByAdjacencyMatrix: usage,\n",
-                     "the argument must be a matrix of non-negative integers,",
-                     " or a boolean matrix,");
+                      "the argument must be a matrix of non-negative integers,",
+                      " or a boolean matrix,");
       fi;
       for k in [1 .. mat[i][j]] do
         count := count + 1;
@@ -1044,12 +1044,12 @@ function(edges)
 
   if not Length(edges[1]) = 2 then
     ErrorNoReturn("Digraphs: DigraphByEdges: usage,\n",
-                 "the argument <edges> must be a list of pairs,");
+                  "the argument <edges> must be a list of pairs,");
   fi;
 
   if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then
     ErrorNoReturn("Digraphs: DigraphByEdges: usage,\n",
-                 "the argument <edges> must be a list of pairs of pos ints,");
+                  "the argument <edges> must be a list of pairs of pos ints,");
   fi;
 
   adj := [];
@@ -1084,12 +1084,12 @@ function(edges, n)
 
   if not Length(edges[1]) = 2 then
     ErrorNoReturn("Digraphs: DigraphByEdges: usage,\n",
-                 "the argument <edges> must be a list of pairs,");
+                  "the argument <edges> must be a list of pairs,");
   fi;
 
   if not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then
     ErrorNoReturn("Digraphs: DigraphByEdges: usage,\n",
-                 "the argument <edges> must be a list of pairs of pos ints,");
+                  "the argument <edges> must be a list of pairs of pos ints,");
   fi;
 
   adj := List([1 .. n], x -> []);
@@ -1097,8 +1097,8 @@ function(edges, n)
   for edge in edges do
     if edge[1] > n or edge[2] > n then
       ErrorNoReturn("Digraphs: DigraphByEdges: usage,\n",
-                   "the specified edges must not contain values greater than ",
-                   n, ",");
+                    "the specified edges must not contain values greater than ",
+                    n, ",");
     fi;
     Add(adj[edge[1]], edge[2]);
   od;
@@ -1140,8 +1140,8 @@ function(nbs)
   for x in nbs do
     if not ForAll(x, i -> IsPosInt(i) and i <= n) then
       ErrorNoReturn("Digraphs: DigraphByInNeighbours: usage,\n",
-                   "the argument must be a list of lists of positive ",
-                   "integers\nnot exceeding the length of the argument,");
+                    "the argument must be a list of lists of positive ",
+                    "integers\nnot exceeding the length of the argument,");
     fi;
     m := m + Length(x);
   od;
@@ -1229,7 +1229,7 @@ function(digraph)
 
   if not IsSymmetricDigraph(digraph) then
     ErrorNoReturn("Digraphs: LineUndirectedDigraph: usage,\n",
-                 "the argument <digraph> must be a symmetric digraph,");
+                  "the argument <digraph> must be a symmetric digraph,");
   fi;
 
   edges := Set(List(DigraphEdges(digraph), x -> Set(x)));
@@ -1265,7 +1265,7 @@ function(G, edges, n)
 
   if n < 0 then
     ErrorNoReturn("Digraphs: EdgeOrbitsDigraph: usage,\n",
-                 "the third argument must be a non-negative integer,");
+                  "the third argument must be a non-negative integer,");
   elif n = 0 then
     return EmptyDigraph(0);
   fi;
@@ -1276,7 +1276,7 @@ function(G, edges, n)
 
   if not ForAll(edges, e -> Length(e) = 2 and ForAll(e, IsPosInt)) then
     ErrorNoReturn("Digraphs: EdgeOrbitsDigraph: usage,\n",
-                 "the second argument must be a list of pairs of pos ints,");
+                  "the second argument must be a list of pairs of pos ints,");
   fi;
 
   out := List([1 .. n], x -> []);
@@ -1309,12 +1309,12 @@ function(digraph, edge)
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
     ErrorNoReturn("Digraphs: DigraphAddEdgeOrbit: usage,\n",
-                 "the second argument must be a pair of pos ints,");
+                  "the second argument must be a pair of pos ints,");
   elif not (edge[1] in DigraphVertices(digraph)
             and edge[2] in DigraphVertices(digraph)) then
     ErrorNoReturn("Digraphs: DigraphAddEdgeOrbit: usage,\n",
-                 "the second argument must be a ",
-                 "pair of vertices of the first argument,");
+                  "the second argument must be a ",
+                  "pair of vertices of the first argument,");
   elif IsDigraphEdge(digraph, edge) then
     return digraph;
   fi;
@@ -1343,12 +1343,12 @@ function(digraph, edge)
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
     ErrorNoReturn("Digraphs: DigraphRemoveEdgeOrbit: usage,\n",
-                 "the second argument must be a pair of pos ints,");
+                  "the second argument must be a pair of pos ints,");
   elif not (edge[1] in DigraphVertices(digraph)
             and edge[2] in DigraphVertices(digraph)) then
     ErrorNoReturn("Digraphs: DigraphRemoveEdgeOrbit: usage,\n",
-                 "the second argument must be a ",
-                 "pair of vertices of the first argument,");
+                  "the second argument must be a ",
+                  "pair of vertices of the first argument,");
   elif not IsDigraphEdge(digraph, edge) then
     return digraph;
   fi;
@@ -1427,7 +1427,7 @@ function(graph)
   return Concatenation("Digraph( ", String(OutNeighbours(graph)), " )");
 end);
 
-# 
+#
 
 InstallMethod(DigraphAddAllLoops, "for a digraph",
 [IsDigraph],
@@ -1438,9 +1438,34 @@ function(digraph)
   adj      := [];
   for v in DigraphVertices(digraph) do
     adj[v] := ShallowCopy(out_nbs[v]);
-    if not v in adj[v] then 
+    if not v in adj[v] then
       Add(adj[v], v);
     fi;
   od;
   return Digraph(adj);
+end);
+
+#
+
+InstallMethod(JohnsonDigraph, "for two ints",
+[IsInt, IsInt],
+function(n, k)
+  local verts, adj, digraph;
+  if n < 0 or k < 0 then
+    ErrorMayQuit("Digraphs: JohnsonDigraph: usage,\n",
+                 "both arguments must be non-negative integers,");
+  fi;
+
+  # Vertices are all the k-subsets of [1 .. n]
+  verts := Combinations([1 .. n], k);
+  adj := function(u, v)
+    return Length(Intersection(u, v)) = k-1;
+  end;
+
+  digraph := Digraph(verts, adj);
+
+  # Known properties
+  SetIsMultiDigraph(digraph, false);
+  SetIsSymmetricDigraph(digraph, true);
+  return digraph;
 end);

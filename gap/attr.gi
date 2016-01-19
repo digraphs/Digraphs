@@ -132,7 +132,7 @@ function(digraph)
 
   if IsMultiDigraph(digraph) then
     ErrorNoReturn("Digraphs: DigraphDual: usage,\n",
-                 "the argument <graph> must not have multiple edges,");
+                  "the argument <graph> must not have multiple edges,");
   fi;
 
   verts := DigraphVertices(digraph);
@@ -786,7 +786,7 @@ function(digraph)
   # This is only defined on undirected graphs (i.e. symmetric digraphs)
   if not IsSymmetricDigraph(digraph) then
     ErrorNoReturn("Digraphs: DigraphUndirectedGirth: usage,\n",
-                 "<digraph> must be a symmetric digraph,");
+                  "<digraph> must be a symmetric digraph,");
   fi;
   if DigraphHasLoops(digraph) then
     # A loop is a cycle of length 1
@@ -897,7 +897,7 @@ InstallMethod(DigraphTransitiveClosure, "for a digraph",
 function(graph)
   if IsMultiDigraph(graph) then
     ErrorNoReturn("Digraphs: DigraphTransitiveClosure: usage,\n",
-                 "the argument <graph> cannot have multiple edges,");
+                  "the argument <graph> cannot have multiple edges,");
   fi;
   return DigraphTransitiveClosureNC(graph, false);
 end);
@@ -909,7 +909,7 @@ InstallMethod(DigraphReflexiveTransitiveClosure, "for a digraph",
 function(graph)
   if IsMultiDigraph(graph) then
     ErrorNoReturn("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
-                 "the argument <graph> cannot have multiple edges,");
+                  "the argument <graph> cannot have multiple edges,");
   fi;
   return DigraphTransitiveClosureNC(graph, true);
 end);
@@ -1163,8 +1163,8 @@ InstallMethod(DigraphDegeneracy,
 function(gr)
   if not IsSymmetricDigraph(gr) or IsMultiDigraph(gr) then
     ErrorNoReturn("Digraphs: DigraphDegeneracy: usage,\n",
-                 "the argument <gr> must be a symmetric digraph without ",
-                 "multiple edges,");
+                  "the argument <gr> must be a symmetric digraph without ",
+                  "multiple edges,");
   fi;
   return DIGRAPHS_Degeneracy(DigraphRemoveLoops(gr))[1];
 end);
@@ -1175,8 +1175,8 @@ InstallMethod(DigraphDegeneracyOrdering,
 function(gr)
   if not IsSymmetricDigraph(gr) or IsMultiDigraph(gr) then
     ErrorNoReturn("Digraphs: DigraphDegeneracyOrdering: usage,\n",
-                 "the argument <gr> must be a symmetric digraph without ",
-                 "multiple edges,");
+                  "the argument <gr> must be a symmetric digraph without ",
+                  "multiple edges,");
   fi;
   return DIGRAPHS_Degeneracy(DigraphRemoveLoops(gr))[2];
 end);

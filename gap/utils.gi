@@ -81,8 +81,8 @@ function(file)
 
   if not IsBound(GAPInfo.TestData.START_TIME) then
       ErrorNoReturn("Digraphs: DIGRAPHS_StopTest:\n",
-                   "`STOP_TEST' command without `START_TEST' command for `",
-                   file, "'");
+                    "`STOP_TEST' command without `START_TEST' command for `",
+                    file, "'");
   fi;
   Print(GAPInfo.TestData.START_NAME, "\n");
 

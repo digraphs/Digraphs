@@ -33,8 +33,8 @@ function(graph, list)
     colors := [1 .. DigraphNrVertices(graph)];
     if not (ForAll(list, IsDuplicateFreeList) and Union(list) = colors) then
       ErrorNoReturn("Digraphs: DigraphCanonicalLabelling: usage,\n",
-                   "the union of the lists in the second arg should equal ",
-                   "[1 .. ", DigraphNrVertices(graph), "],");
+                    "the union of the lists in the second arg should equal ",
+                    "[1 .. ", DigraphNrVertices(graph), "],");
     fi;
 
     for i in [1 .. Length(list)] do
@@ -45,9 +45,9 @@ function(graph, list)
             and ForAll(list, c -> IsPosInt(c) and 1 <= c
                                   and c <= DigraphNrVertices(graph))) then
       ErrorNoReturn("Digraphs: DigraphCanonicalLabelling: usage,\n",
-                   "the second arg must be a list of length ",
-                   DigraphNrVertices(graph), " of integers in [1 .. ",
-                   DigraphNrVertices(graph), "],");
+                    "the second arg must be a list of length ",
+                    DigraphNrVertices(graph), " of integers in [1 .. ",
+                    DigraphNrVertices(graph), "],");
     fi;
     colors := list;
   fi;
@@ -109,8 +109,8 @@ function(graph, list)
     colors := [1 .. DigraphNrVertices(graph)];
     if not (ForAll(list, IsDuplicateFreeList) and Union(list) = colors) then
       ErrorNoReturn("Digraphs: AutomorphismGroup: usage,\n",
-                   "the union of the lists in the second arg should equal ",
-                   "[1 .. ", DigraphNrVertices(graph), "],");
+                    "the union of the lists in the second arg should equal ",
+                    "[1 .. ", DigraphNrVertices(graph), "],");
     fi;
 
     for i in [1 .. Length(list)] do
@@ -121,9 +121,9 @@ function(graph, list)
             and ForAll(list, c -> IsPosInt(c) and 1 <= c
                                   and c <= DigraphNrVertices(graph))) then
       ErrorNoReturn("Digraphs: AutomorphismGroup: usage,\n",
-                   "the second arg must be a list of length ",
-                   DigraphNrVertices(graph), " of integers in [1 .. ",
-                   DigraphNrVertices(graph), "],");
+                    "the second arg must be a list of length ",
+                    DigraphNrVertices(graph), " of integers in [1 .. ",
+                    DigraphNrVertices(graph), "],");
     fi;
     colors := list;
   fi;

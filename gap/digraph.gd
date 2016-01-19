@@ -90,3 +90,5 @@ DeclareOperation("DigraphVertexLabels", [IsDigraph]);
 DeclareOperation("SetDigraphVertexLabel", [IsDigraph, IsPosInt, IsObject]);
 DeclareOperation("SetDigraphVertexLabels", [IsDigraph, IsList]);
 DeclareOperation("DigraphAddAllLoops", [IsDigraph]);
+
+DeclareOperation("JohnsonDigraph", [IsInt, IsInt]);
