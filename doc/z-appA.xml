@@ -489,9 +489,9 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            Currently, <Ref Oper="DigraphShortestDistance"
-            Label="for a digraph and two vertices"/> only works for pairs of
-            vertices, and not sets of vertices, like in &Grape;.
+            The operation <Ref Oper="DigraphShortestDistance"
+            Label="for a digraph and two vertices"/> behaves the same as
+            <C>Distance</C> in &Grape;.
           </Alt>
         </Item>
       </Row>
