@@ -1339,7 +1339,7 @@ function(digraph, vertex, distances)
 
   if not ForAll(distances, x -> IsInt(x) and x >= 0) then
     ErrorNoReturn("Digraphs: DigraphDistanceSet: usage,\n",
-                  "the third argument must be a list of non-negative\n",
+                  "the third argument must be a list of non-negative ",
                   "integers,");
   fi;
 
