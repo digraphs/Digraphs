@@ -1484,6 +1484,18 @@ gap> DigraphShortestDistance(gr, [1, 13], [20 .. 23]);
 7
 gap> DigraphShortestDistance(gr, [1, 13], [38, 41]);
 25
+gap> gr := DigraphFromDigraph6String("+H^_HRR\P_FWEsio");
+<digraph with 9 vertices, 32 edges>
+gap> DigraphShortestDistance(last, [1,2], [7]);
+2
+gap> DigraphShortestDistance(gr, [1], DigraphLayers(gr, 1)[3]);  
+2
+gap> DigraphShortestDistance(gr, [1,2], DigraphLayers(gr, 1)[3]);
+0
+gap> DigraphShortestDistance(gr, [1,3], DigraphLayers(gr, 1)[3]);
+0
+gap> DigraphShortestDistance(gr, [1,6], DigraphLayers(gr, 1)[3]);
+1
 
 #T# DigraphShortestDistance: two inputs
 gap> gr := Digraph([ [2], [3], [1,4], [1,3], [5] ]);
