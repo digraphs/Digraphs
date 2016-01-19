@@ -1497,6 +1497,21 @@ gap> DigraphShortestDistance(gr, [1,3], DigraphLayers(gr, 1)[3]);
 gap> DigraphShortestDistance(gr, [1,6], DigraphLayers(gr, 1)[3]);
 1
 
+#T# Issue #12
+gap> gr := Digraph([ [ 16, 18, 25 ], [ 17, 20, 25 ], [ 16, 21, 28 ], 
+> [ 19, 17, 28 ], [ 17, 24, 26 ], [ 22, 18, 26 ], [ 23, 19, 18 ], 
+> [ 19, 27, 29 ], [ 21, 20, 23 ], [ 26, 21, 29 ], [ 27, 22, 20 ], 
+> [ 22, 28, 30 ], [ 23, 24, 30 ], [ 24, 16, 27 ], [ 29, 25, 30 ], 
+> [ 1, 3, 14 ], [ 2, 5, 4 ], [ 1, 7, 6 ], [ 4, 8, 7 ], [ 2, 11, 9 ], 
+> [ 3, 9, 10 ], [ 6, 12, 11 ], [ 7, 13, 9 ], [ 5, 14, 13 ], 
+> [ 1, 2, 15 ], [ 10, 6, 5 ], [ 11, 8, 14 ], [ 3, 4, 12 ], [ 15, 10, 8 ], 
+> [ 15, 13, 12 ] ]);
+<digraph with 30 vertices, 90 edges>
+gap> DigraphGroup(gr);
+<permutation group with 6 generators>
+gap> DigraphShortestDistance(gr, 1, 16);
+1
+
 #T# DigraphShortestDistance: two inputs
 gap> gr := Digraph([ [2], [3], [1,4], [1,3], [5] ]);
 <digraph with 5 vertices, 7 edges>

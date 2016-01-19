@@ -674,8 +674,8 @@ function(digraph, v)
      localDiameter := -1;
   fi;
 
-  layerNumbers := orbnum;
-  for i in [1 .. Length(reps)] do
+  layerNumbers := [];
+  for i in [1 .. DigraphNrVertices(digraph)] do
      layerNumbers[i] := laynum[orbnum[i]];
   od;
   data[v] := rec(layerNumbers := layerNumbers, localDiameter := localDiameter,
