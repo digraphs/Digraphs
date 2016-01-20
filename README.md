@@ -1,4 +1,4 @@
-# GitHubgPagesForGAP
+# GitHubPagesForGAP
 
 This repository can be used to quickly set up a website hosted by
 [GitHub](https://github.com/) for GAP packages using a GitHub repository.

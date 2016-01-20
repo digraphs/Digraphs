@@ -1,5 +1,5 @@
 #
-# GitHubgPagesForGAP - a template for using GitHub Pages within GAP packages
+# GitHubPagesForGAP - a template for using GitHub Pages within GAP packages
 #
 # Copyright (c) 2013-2014 Max Horn
 #
