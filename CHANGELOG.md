@@ -3,6 +3,9 @@ Copyright (C) 2014-16 Jan De Beule, Julius Jonusas, James D. Mitchell, Michael T
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.4.1 (released 22/01/2016)
+This is a very minor release to change the version of GAP required.
+
 ## Version 0.4 (released 19/01/2016)
 This is a major release, primarily aimed at incorporating more of the
 functionality of Grape into Digraphs, as well as fixing some bugs.  In this
