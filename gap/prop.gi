@@ -173,7 +173,6 @@ function(digraph)
   fi;
 
   return IsAntisymmetricDigraph(digraph);
-
 end);
 
 #
