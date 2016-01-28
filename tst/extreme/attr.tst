@@ -35,7 +35,7 @@ gap> gr := DigraphFromDigraph6String(
 <digraph with 15 vertices, 92 edges>
 gap> circs := DigraphAllSimpleCircuits(gr);;
 gap> Length(circs);
-1291790
+1291792
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr);
