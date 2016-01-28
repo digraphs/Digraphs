@@ -88,6 +88,14 @@ function(digraph)
   return out;
 end);
 
+InstallImmediateMethod(DigraphGroup, IsDigraph and HasAutomorphismGroup, 
+0, function(digraph)
+  if IsMultiDigraph(digraph) then
+    return Range(Projection(AutomorphismGroup(digraph), 1));
+  fi;
+  return AutomorphismGroup(digraph);
+end);
+
 InstallMethod(DigraphGroup, "for a digraph",
 [IsDigraph],
 function(digraph)
