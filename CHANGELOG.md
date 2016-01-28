@@ -4,7 +4,7 @@ Copyright (C) 2014-16 Jan De Beule, Julius Jonusas, James D. Mitchell, Michael T
 Licensing information can be found in the LICENSE file.
 
 ## Version 0.4.2 (released 28/01/2016)
-This is a minor release to fix a bug is `DigraphAllSimpleCircuits` that failed to
+This is a minor release to fix a bug in `DigraphAllSimpleCircuits` that failed to
 return all simple circuits in some cases. Some documentation was also updated.
 
 ## Version 0.4.1 (released 22/01/2016)
