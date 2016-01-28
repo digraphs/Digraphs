@@ -4,9 +4,6 @@ Create the archive of the Digraphs package for release, and copy the relevant
 things to the webpage.
 '''
 
-# TODO
-# 1) --dry-run
-
 import os, argparse, tempfile, subprocess, sys, os, re, shutil
 import test, time, webbrowser, urllib, dots
 
@@ -598,7 +595,7 @@ def _main():
     info_action('Merging ' + _VERSION + ' into default')
     exec_string('hg up -r default')
     exec_string('hg merge -r ' + _VERSION)
-    exec_string('hg commit -m "Merge from' + _VERSION + '"')
+    exec_string('hg commit -m "Merge from ' + _VERSION + '"')
 
     # close the release branch
     info_action('Closing branch ' + _VERSION)
