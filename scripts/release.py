@@ -549,7 +549,7 @@ def _main():
     exec_string('gzip -9 digraphs-' + _VERSION + '.tar')
 
     # Copy files to the local copy of the website
-    info_action('Copying to webpage' + ' . . .')
+    info_action('Copying to webpage')
     try:
         os.chdir(tmpdir_base)
         shutil.copy('digraphs-' + _VERSION + '.tar.gz', _WEBPAGE_DIR)

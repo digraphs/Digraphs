@@ -223,6 +223,12 @@ gap> out := OutNeighbours(gr);
 gap> InNeighbours(gr) = out;
 true
 
+#T# Issue 13: DigraphAllSimpleCircuits, reported by JDM
+gap> gr := Digraph([[3], [4], [5], [1, 5], [1, 2]]);
+<digraph with 5 vertices, 7 edges>
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 1, 3, 5 ], [ 1, 3, 5, 2, 4 ], [ 5, 2, 4 ] ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);

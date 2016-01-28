@@ -10,6 +10,16 @@
 
 # graph algorithms
 
+InstallMethod(IsSubdigraph, "for a digraph and digraph",
+[IsDigraph, IsDigraph],
+function(super, sub)
+  if DigraphNrVertices(super) <> DigraphNrVertices(sub) then
+    return false;
+  fi;
+  return ForAll([1 .. DigraphNrVertices(super)], i ->
+                IsSubset(OutNeighbours(super)[i], OutNeighbours(sub)[i]));
+end);
+
 #
 
 InstallGlobalFunction(DigraphEdgeUnion, "for digraphs or a list of digraphs",

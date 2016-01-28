@@ -7,6 +7,7 @@
 ##
 #############################################################################
 ##
+DeclareOperation("IsSubdigraph", [IsDigraph, IsDigraph]);
 
 DeclareOperation("AsBinaryRelation", [IsDigraph]);
 DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);
