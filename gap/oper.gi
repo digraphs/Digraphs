@@ -11,9 +11,9 @@
 # graph algorithms
 
 InstallMethod(IsSubdigraph, "for a digraph and digraph",
-[IsDigraph, IsDigraph], 
+[IsDigraph, IsDigraph],
 function(super, sub)
-  if DigraphNrVertices(super) <> DigraphNrVertices(sub) then 
+  if DigraphNrVertices(super) <> DigraphNrVertices(sub) then
     return false;
   fi;
   return ForAll([1 .. DigraphNrVertices(super)], i ->

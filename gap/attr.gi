@@ -1070,10 +1070,8 @@ function(digraph)
           B[i] := [];
         od;
         CIRCUIT(1, comp);
-        s := s + 1;
-      else
-        s := n;
       fi;
+      s := s + 1;
     od;
   od;
   loops := List(DigraphLoops(digraph), x -> [x]);
