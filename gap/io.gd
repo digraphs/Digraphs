@@ -33,3 +33,4 @@ DeclareGlobalFunction("WritePlainTextDigraph");
 
 DeclareGlobalFunction("DigraphPlainTextLineEncoder");
 DeclareGlobalFunction("DigraphFile");
+DeclareGlobalFunction("IteratorFromDigraphFile");

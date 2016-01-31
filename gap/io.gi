@@ -176,44 +176,63 @@ end;
 # 2. ReadDigraphs and WriteDigraphs
 ################################################################################
 
-#InstallGlobalFunction(IteratorFromDigraphsFile,
-#function(str)
-#  local file, record;
-#
-#  file := IO_CompressedFile(UserHomeExpand(str), "r");
-#
-#  if file = fail then
-#    return fail;
-#  fi;
-#
-#  record := rec(file := file, current := IO_Unpickle(file));
-#
-#  record.NextIterator := function(iter)
-#    local next, line;
-#    next := iter!.current;
-#    iter!.current := IO_Unpickle(iter!.file);
-#    return next;
-#  end;
-#
-#  record.IsDoneIterator := function(iter)
-#    if iter!.current = IO_Nothing then
-#      if not iter!.file!.closed then
-#        IO_Close(iter!.file);
-#      fi;
-#      return true;
-#    else
-#      return false;
-#    fi;
-#  end;
-#
-#  record.ShallowCopy := function(iter)
-#    local file;
-#    file := IO_CompressedFile(str, "r");
-#    return rec(file := file, current := IO_Unpickle(file));
-#  end;
-#
-#  return IteratorByFunctions(record);
-#end);
+InstallGlobalFunction(IteratorFromDigraphFile,
+function(arg)
+  local filename, decoder, file, record;
+
+  if Length(arg) = 1 then 
+    filename := arg[1];
+    decoder := fail;
+  elif Length(arg) = 2 then 
+    filename := arg[1];
+    decoder := arg[2];
+  else 
+    ErrorNoReturn("Digraphs: IteratorFromDigraphFile: usage,\n", 
+                  "there should be 1 or 2 arguments,");
+  fi;
+
+  if not IsString(filename) then 
+    ErrorNoReturn("Digraphs: IteratorFromDigraphFile: usage,\n", 
+                  "the first argument must be a string,");
+  elif decoder <> fail and not IsFunction(decoder) then 
+    ErrorNoReturn("Digraphs: IteratorFromDigraphFile: usage,\n", 
+                  "the second argument must be a function,");
+  fi;
+
+  file := DigraphFile(UserHomeExpand(filename), decoder, "r");
+
+  if file = fail then
+    return fail;
+  fi;
+
+  record := rec(file := file, current := file!.coder(file));
+
+  record.NextIterator := function(iter)
+    local next, line;
+    next := iter!.current;
+    iter!.current := iter!.file!.coder(iter!.file);
+    return next;
+  end;
+
+  record.IsDoneIterator := function(iter)
+    if iter!.current = IO_Nothing then
+      if not iter!.file!.closed then
+        IO_Close(iter!.file);
+      fi;
+      return true;
+    else
+      return false;
+    fi;
+  end;
+
+  record.ShallowCopy := function(iter)
+    local file;
+    file := DigraphFile(UserHomeExpand(filename), decoder, "r");
+    return rec(file := file, current := file!.coder(file));
+  end;
+
+  return IteratorByFunctions(record);
+end);
 
 # these functions wrap the various line encoders/decoders in this file so that
 # they behave like IO_Pickle.
