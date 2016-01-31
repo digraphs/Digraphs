@@ -97,21 +97,6 @@ end);
 # 1. Picklers
 ################################################################################
 
-BindGlobal("DIGRAPHS_UnpickleAll",
-function(file)
-  local out, next;
-
-  out := [];
-  next := IO_Unpickle(file);
-
-  while next <> IO_Nothing do
-    Add(out, next);
-    next := IO_Unpickle(file);
-  od;
-
-  return out;
-end);
-
 InstallMethod(IO_Pickle, "for a digraph with known digraph group",
 [IsFile, IsDigraph and HasDigraphGroup],
 function(file, gr)
@@ -191,10 +176,210 @@ end;
 # 2. ReadDigraphs and WriteDigraphs
 ################################################################################
 
+#InstallGlobalFunction(IteratorFromDigraphsFile,
+#function(str)
+#  local file, record;
+#
+#  file := IO_CompressedFile(UserHomeExpand(str), "r");
+#
+#  if file = fail then
+#    return fail;
+#  fi;
+#
+#  record := rec(file := file, current := IO_Unpickle(file));
+#
+#  record.NextIterator := function(iter)
+#    local next, line;
+#    next := iter!.current;
+#    iter!.current := IO_Unpickle(iter!.file);
+#    return next;
+#  end;
+#
+#  record.IsDoneIterator := function(iter)
+#    if iter!.current = IO_Nothing then
+#      if not iter!.file!.closed then
+#        IO_Close(iter!.file);
+#      fi;
+#      return true;
+#    else
+#      return false;
+#    fi;
+#  end;
+#
+#  record.ShallowCopy := function(iter)
+#    local file;
+#    file := IO_CompressedFile(str, "r");
+#    return rec(file := file, current := IO_Unpickle(file));
+#  end;
+#
+#  return IteratorByFunctions(record);
+#end);
+
+# these functions wrap the various line encoders/decoders in this file so that
+# they behave like IO_Pickle.
+
+BindGlobal("DIGRAPHS_EncoderWrapper",
+function(encoder)
+  if encoder = IO_Pickle then
+    return IO_Pickle;
+  fi;
+  return
+    function(file, digraph)
+      return IO_WriteLine(file, encoder(digraph));
+    end;
+end);
+
+BindGlobal("DIGRAPHS_DecoderWrapper",
+function(decoder)
+  if decoder = IO_Unpickle then
+    return IO_Unpickle;
+  fi;
+  return
+    function(file)
+      local line;
+      line := IO_ReadLine(file);
+      if line = "" then
+        return IO_Nothing;
+      fi;
+      return decoder(line);
+    end;
+end);
+
+# if we are choosing the decoder, then the file extension is used.
+
+BindGlobal("DIGRAPHS_ChooseFileDecoder",
+function(filename)
+  local splitname, extension;
+
+  if not IsString(filename) then
+    ErrorNoReturn("Digraphs: DIGRAPHS_ChooseFileDecoder: usage,\n",
+                  "the argument must be a string,");
+  fi;
+
+  splitname := SplitString(filename, ".");
+  extension := splitname[Length(splitname)];
+
+  if extension in ["gz", "bzip2", "xz"] then
+    extension := splitname[Length(splitname) - 1];
+  fi;
+
+  if extension = "txt" then
+    return DigraphPlainTextLineDecoder("  ", " ", 1);
+  elif extension = "g6" then
+    return DigraphFromGraph6String;
+  elif extension = "s6" then
+    return DigraphFromSparse6String;
+  elif extension = "d6" then
+    return DigraphFromDigraph6String;
+  elif extension = "ds6" then
+    return DigraphFromDiSparse6String;
+  elif extension = "p" or extension = "pickle" then
+    return IO_Unpickle;
+  fi;
+
+  return fail;
+end);
+
+# if we are choosing the decoder, then the file extension is used.
+
+BindGlobal("DIGRAPHS_ChooseFileEncoder",
+function(filename)
+  local splitname, extension;
+
+  if not IsString(filename) then
+    ErrorNoReturn("Digraphs: DIGRAPHS_ChooseFileEncoder: usage,\n",
+                  "the argument must be a string,");
+  fi;
+
+  splitname := SplitString(filename, ".");
+  extension := splitname[Length(splitname)];
+
+  if extension in ["gz", "bzip2", "xz"] then
+    extension := splitname[Length(splitname) - 1];
+  fi;
+
+  if extension = "txt" then
+    return DigraphPlainTextLineEncoder("  ", " ", -1);
+  elif extension = "g6" then
+    return Graph6String;
+  elif extension = "s6" then
+    return Sparse6String;
+  elif extension = "d6" then
+    return Digraph6String;
+  elif extension = "ds6" then
+    return DiSparse6String;
+  elif extension = "p" or extension = "pickle" then
+    return IO_Pickle;
+  fi;
+  return fail;
+end);
+
+InstallGlobalFunction(DigraphFile,
+function(arg)
+  local name, coder, mode, file;
+
+  if Length(arg) = 1 then
+    name := arg[1];
+    coder := fail;
+    mode := "r";
+  elif Length(arg) = 2 then
+    name := arg[1];
+    if IsFunction(arg[2]) then
+      coder := arg[2];
+      mode := "r";
+    else
+      coder := fail;
+      mode := arg[2];
+    fi;
+  elif Length(arg) = 3 then
+    name := arg[1];
+    coder := arg[2];
+    mode := arg[3];
+  else
+    ErrorNoReturn("Digraphs: DigraphFile: usage,\n",
+                  "DigraphFile( filename [, coder][, mode] ),");
+  fi;
+
+  # TODO check that the mode and the coder are compatible
+
+  if not IsString(name) or (not (IsFunction(coder) or coder = fail))
+      or (not mode in ["a", "w", "r"]) then
+    ErrorNoReturn("Digraphs: DigraphFile: usage,\n",
+                  "DigraphFile( filename [, coder][, mode] ),");
+  fi;
+
+  if coder = fail then # <coder> not specified by the user
+    if mode = "r" then
+      coder := DIGRAPHS_ChooseFileDecoder(name);
+    else
+      coder := DIGRAPHS_ChooseFileEncoder(name);
+    fi;
+  fi;
+
+  if coder = fail then
+    ErrorNoReturn("Digraphs: DigraphFile: usage,\n",
+                  "cannot determine the file format,");
+  elif mode = "r" then
+    coder := DIGRAPHS_DecoderWrapper(coder);
+  else
+    coder := DIGRAPHS_EncoderWrapper(coder);
+  fi;
+
+  file := IO_CompressedFile(UserHomeExpand(name), mode);
+
+  if file = fail then
+    ErrorNoReturn("Digraphs: DigraphFile: usage,\n",
+                  "cannot open file ", name, ",");
+  fi;
+
+  file!.coder := coder;
+
+  return file;
+end);
+
 InstallGlobalFunction(ReadDigraphs,
 function(arg)
-  local name, decoder, nr, file, splitname, extension, next_item, last_item,
-        all_items, i, line, lines;
+  local name, decoder, nr, file, i, next, out;
 
   if Length(arg) = 1 then
     name := arg[1];
@@ -218,216 +403,185 @@ function(arg)
                  "ReadDigraphs( filename [, decoder][, pos] ),");
   fi;
 
-  if (not IsString(name)) or (not (IsFunction(decoder) or decoder = fail))
+  if (not (IsString(name) or IsFile(name)))
+      or (not (IsFunction(decoder) or decoder = fail))
       or (not (IsPosInt(nr) or nr = infinity)) then
     ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
                  "ReadDigraphs( filename [, decoder][, pos] ),");
   fi;
 
-  file := IO_CompressedFile(UserHomeExpand(name), "r");
+  if IsString(name) then
+    file := DigraphFile(name, decoder, "r");
+  else
+    file := name;
+  fi;
 
   if file = fail then
     ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
-                 "cannot open file ", name, ",");
+                  "cannot open file ", name, ",");
   fi;
 
-  next_item := IO_ReadLine;
-  last_item := "";
-  all_items := IO_ReadLines;
-
-  if decoder = fail then
-    splitname := SplitString(name, ".");
-    extension := splitname[Length(splitname)];
-
-    if extension in ["gz", "bzip2", "xz"] then
-      if Length(splitname) = 2 then
-        ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
-                     "cannot determine the file format,");
-      fi;
-      extension := splitname[Length(splitname) - 1];
-    fi;
-
-    if extension = "txt" then
-      decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
-    elif extension = "g6" then
-      decoder := DigraphFromGraph6String;
-    elif extension = "s6" then
-      decoder := DigraphFromSparse6String;
-    elif extension = "d6" then
-      decoder := DigraphFromDigraph6String;
-    elif extension = "ds6" then
-      decoder := DigraphFromDiSparse6String;
-    elif extension = "pickle" or extension = "p" then
-      decoder := IdFunc;
-      next_item := IO_Unpickle;
-      last_item := IO_Nothing;
-      all_items := DIGRAPHS_UnpickleAll;
-    else
-      ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
-                   "cannot determine the file format,");
-    fi;
-  fi;
+  decoder := file!.coder;
 
   if nr < infinity then
     i := 0;
     repeat
       i := i + 1;
-      line := next_item(file);
-    until i = nr or line = last_item;
-    IO_Close(file);
-    return decoder(line);
+      next := decoder(file);
+    until i = nr or next = IO_Nothing;
+    if IsString(arg[1]) then
+      IO_Close(file);
+    fi;
+    return next;
   fi;
 
-  lines := all_items(file);
-  IO_Close(file);
-  for i in [1 .. Length(lines)] do
-    Info(InfoDigraphs, 1, "Reading graph ", i, " of ", Length(lines));
-    lines[i] := decoder(lines[i]);
+  out := [];
+  next := decoder(file);
+
+  while next <> IO_Nothing do
+    Add(out, next);
+    next := decoder(file);
   od;
-  return lines;
+
+  if IsString(arg[1]) then
+    IO_Close(file);
+  fi;
+
+  return out;
 end);
 
 InstallGlobalFunction(WriteDigraphs,
 function(arg)
-  local name, digraphs, mode, splitpath, splitname, ext, compext, encoder,
-  g6sum, s6sum, v, e, dg6sum, ds6sum, line_encoder, filepath, file, digraph, i;
+  local name, digraphs, encoder, mode, splitname, compext, g6sum, s6sum, v, e,
+  dg6sum, ds6sum, file, digraph, i;
 
   if Length(arg) = 2 then
     name := arg[1];
     digraphs := arg[2];
+    encoder := fail;
     mode := "a";
   elif Length(arg) = 3 then
     name := arg[1];
     digraphs := arg[2];
-    mode := arg[3];
+    if IsFunction(arg[3]) then
+      encoder := arg[3];
+      mode := "a";
+    else
+      encoder := fail;
+      mode := arg[3];
+    fi;
+  elif Length(arg) = 4 then
+    name := arg[1];
+    digraphs := arg[2];
+    encoder := arg[3];
+    mode := arg[4];
   else
     ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
-                 "there must be 2 or 3 arguments,");
+                  "there must be 2, 3, or 4 arguments,");
   fi;
 
-  if not IsString(name) then
+  if not IsList(digraphs) then
+    digraphs := [digraphs];
+  fi;
+
+  if not (IsString(name) or IsFile(name)) then
     ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
-                 "<name> must be a string,");
+                  "<name> must be a string or a file,");
   elif not ForAll(digraphs, IsDigraph) then
     ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
-                 "<digraphs> must be a list of digraphs,");
+                  "<digraphs> must be a list of digraphs,");
+  elif not (IsFunction(encoder) or encoder = fail) then
+    ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
+                  "<encoder> must be a function,");
+  elif not mode in ["a", "w"] then
+    ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
+                  "<mode> must be \"a\" or \"w\",");
   fi;
 
-  if not IsExistingFile(name) then
+  if IsString(name) and not IsExistingFile(name) then
     mode := "w";
   fi;
 
-  # Look for extension
-  splitpath := SplitString(name, "/");
-  splitname := SplitString(Remove(splitpath), ".");
-
-  if Length(splitname) >= 2 then
-    ext := splitname[Length(splitname)];
-    # Compression extensions
-    if ext in ["gz", "bzip2", "xz"] then
-      compext := Remove(splitname);
-      if Length(splitname) >= 2 then
-        ext := splitname[Length(splitname)];
+  if IsString(name) then
+    if encoder = fail and DIGRAPHS_ChooseFileEncoder(name) = fail then
+      # the file encoder was not specified and cannot be deduced from the
+      # filename, so we try to make a guess based on the digraphs themselves
+      splitname := SplitString(name, ".");
+      if splitname[Length(splitname)] in ["xz", "gz", "bz"] then
+        compext := splitname[Length(splitname)];
+        splitname := splitname{[1 .. Length(splitname) - 1]};
       fi;
-    fi;
-    # Format extensions
-    if ext = "g6" then
-      encoder := Graph6String;
-    elif ext = "s6" then
-      encoder := Sparse6String;
-    elif ext = "d6" then
-      encoder := Digraph6String;
-    elif ext = "ds6" then
-      encoder := DiSparse6String;
-    elif ext = "txt" then
-      encoder := DigraphPlainTextLineEncoder("  ", " ", -1);
-    elif ext = "pickle" or ext = "p" then
-      encoder := IO_Pickle;
-    fi;
-  fi;
 
-  if not IsBound(encoder) then
-    # CHOOSE A GOOD ENCODER:
-    # Do we know all the graphs to be symmetric?
-    if ForAll(digraphs, g -> HasIsSymmetricDigraph(g)
-                             and IsSymmetricDigraph(g)) then
-      if ForAny(digraphs, IsMultiDigraph) then
-        encoder := DiSparse6String;
-        Add(splitname, "ds6");
-      else
-        # Find the sum of length estimates using Graph6 and Sparse6
-        g6sum := 0;
-        s6sum := 0;
-        for digraph in digraphs do
-          v := DigraphNrVertices(digraph);
-          e := DigraphNrEdges(digraph);
-          g6sum := g6sum + (v * (v - 1) / 2);
-          s6sum := s6sum + (e / 2 * (Log2Int(v - 1) + 2) * 3 / 2);
-        od;
-        if g6sum < s6sum and not ForAny(digraphs, DigraphHasLoops) then
-          encoder := Graph6String;
-          Add(splitname, "g6");
-        else
-          encoder := Sparse6String;
-          Add(splitname, "s6");
-        fi;
-      fi;
-    else
-      if ForAny(digraphs, IsMultiDigraph) then
-        encoder := DiSparse6String;
-        Add(splitname, "ds6");
-      else
-        # Find the sum of length estimates using Digraph6 and DiSparse6
-        dg6sum := 0;
-        ds6sum := 0;
-        for digraph in digraphs do
-          v := DigraphNrVertices(digraph);
-          e := DigraphNrEdges(digraph);
-          dg6sum := dg6sum + v ^ 2;
-          ds6sum := ds6sum + (e * (Log2Int(v) + 2) * 3 / 2);
-        od;
-        if dg6sum < ds6sum then
-          encoder := Digraph6String;
-          Add(splitname, "d6");
-        else
+      # Do we know all the graphs to be symmetric?
+      if ForAll(digraphs, g -> HasIsSymmetricDigraph(g)
+                               and IsSymmetricDigraph(g)) then
+        if ForAny(digraphs, IsMultiDigraph) then
           encoder := DiSparse6String;
           Add(splitname, "ds6");
+        else
+          # Find the sum of length estimates using Graph6 and Sparse6
+          g6sum := 0;
+          s6sum := 0;
+          for digraph in digraphs do
+            v := DigraphNrVertices(digraph);
+            e := DigraphNrEdges(digraph);
+            g6sum := g6sum + (v * (v - 1) / 2);
+            s6sum := s6sum + (e / 2 * (Log2Int(v - 1) + 2) * 3 / 2);
+          od;
+          if g6sum < s6sum and not ForAny(digraphs, DigraphHasLoops) then
+            encoder := Graph6String;
+            Add(splitname, "g6");
+          else
+            encoder := Sparse6String;
+            Add(splitname, "s6");
+          fi;
+        fi;
+      else
+        if ForAny(digraphs, IsMultiDigraph) then
+          encoder := DiSparse6String;
+          Add(splitname, "ds6");
+        else
+          # Find the sum of length estimates using Digraph6 and DiSparse6
+          dg6sum := 0;
+          ds6sum := 0;
+          for digraph in digraphs do
+            v := DigraphNrVertices(digraph);
+            e := DigraphNrEdges(digraph);
+            dg6sum := dg6sum + v ^ 2;
+            ds6sum := ds6sum + (e * (Log2Int(v) + 2) * 3 / 2);
+          od;
+          if dg6sum < ds6sum then
+            encoder := Digraph6String;
+            Add(splitname, "d6");
+          else
+            encoder := DiSparse6String;
+            Add(splitname, "ds6");
+          fi;
         fi;
       fi;
+      name := JoinStringsWithSeparator(splitname, ".");
+      if IsBound(compext) then
+        Append(name, ".");
+        Append(name, compext);
+      fi;
+      Info(InfoWarning, 1, "Writing to ", name);
     fi;
+    file := DigraphFile(name, encoder, mode);
+  else
+    file := name;
   fi;
 
-  if encoder <> IO_Pickle then
-    line_encoder := encoder;
-    encoder := function(file, x)
-      return IO_WriteLine(file, line_encoder(x));
-    end;
-  fi;
-
-  # Rebuild the filename
-  if IsBound(compext) then
-    Add(splitname, compext);
-  fi;
-  Add(splitpath, JoinStringsWithSeparator(splitname, "."));
-  filepath := JoinStringsWithSeparator(splitpath, "/");
-
-  if filepath <> name then
-    Info(InfoWarning, 1, "Writing to ", filepath);
-  fi;
-  file := IO_CompressedFile(UserHomeExpand(filepath), mode);
-
-  if file = fail then
-    ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
-                 "cannot open file ", filepath, ",");
-  fi;
+  encoder := file!.coder;
 
   for i in [1 .. Length(digraphs)] do
-    Info(InfoDigraphs, 1,
-         "Writing graph ", String(i), " of ", String(Length(digraphs)));
     encoder(file, digraphs[i]);
   od;
 
-  IO_Close(file);
+  if IsString(arg[1]) then
+    IO_Close(file);
+  fi;
+
+  return IO_OK;
 end);
 
 ################################################################################
@@ -820,7 +974,7 @@ function(arg)
       end;
   elif Length(arg) = 3 then
     delimiter1 := arg[1]; # what delineates one edge from the next
-    delimiter2 := arg[2];# what delineates the range of an edge from its source
+    delimiter2 := arg[2]; # what delineates the range of an edge from its source
     offset := arg[3];     # indexing starts at 0 or 1? or what?
     return
       function(string)
