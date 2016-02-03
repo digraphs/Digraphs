@@ -433,7 +433,7 @@ function(arg)
     file := DigraphFile(name, decoder, "r");
   else
     file := name;
-    if IsClosed(file) then
+    if file!.closed then
       ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
                     "the file is closed,");
     elif file!.rbufsize = false then
@@ -605,7 +605,7 @@ function(arg)
     file := DigraphFile(name, encoder, mode);
   else
     file := name;
-    if IsClosed(file) then
+    if file!.closed then
       ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
                     "the file is closed,");
     elif file!.wbufsize = false then
