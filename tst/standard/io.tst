@@ -74,7 +74,7 @@ Error, Digraphs: ReadDigraphs: usage,
 ReadDigraphs( filename [, decoder][, pos] ),
 gap> badfilename := "path/to/some/madeupfile.g6.gz";;
 gap> ReadDigraphs(badfilename, 3);
-Error, Digraphs: DigraphFile: usage,
+Error, Digraphs: DigraphFile:
 cannot open file path/to/some/madeupfile.g6.gz,
 
 #T# DigraphFromSparse6String and Sparse6String
@@ -212,23 +212,23 @@ gap> gr = rdgr;
 true
 gap> gr[3] := Digraph([[1, 2], [1, 2]]);
 <digraph with 2 vertices, 4 edges>
-gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.s6.bzip2");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.s6.bz2");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
 gap> rdgr := ReadDigraphs(filename);;
 gap> gr = rdgr;
 true
-gap> newfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.bzip2");;
+gap> newfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.bz2");;
 gap> IO_rename(filename, newfilename);
 true
 gap> rdgr := ReadDigraphs(newfilename);
-Error, Digraphs: DigraphFile: usage,
+Error, Digraphs: DigraphFile:
 cannot determine the file format,
-gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.h6.bzip2");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.h6.bz2");;
 gap> IO_rename(newfilename, filename);
 true
 gap> rdgr := ReadDigraphs(filename);
-Error, Digraphs: DigraphFile: usage,
+Error, Digraphs: DigraphFile:
 cannot determine the file format,
 
 #T# WritePlainTextDigraph and ReadPlainTextDigraph
@@ -446,10 +446,10 @@ gap> list2 := ReadDigraphs(filename);
 gap> list2[1] = gr;
 true
 gap> list := [CompleteDigraph(10), CompleteDigraph(15)];;
-gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.bzip2");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.bz2");;
 gap> WriteDigraphs(filename, list, "w");
 IO_OK
-gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.g6.bzip2");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense.g6.bz2");;
 gap> list2 := ReadDigraphs(filename);;
 gap> list = list2;
 true
@@ -464,7 +464,7 @@ gap> gr = list2;
 true
 gap> filename := "does/not/exist.gz";;
 gap> WriteDigraphs(filename, gr, "w");
-Error, Digraphs: DigraphFile: usage,
+Error, Digraphs: DigraphFile:
 cannot open file does/not/exist.d6.gz,
 
 #T# DigraphPlainTextLineDecoder: bad input

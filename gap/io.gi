@@ -180,22 +180,22 @@ InstallGlobalFunction(IteratorFromDigraphFile,
 function(arg)
   local filename, decoder, file, record;
 
-  if Length(arg) = 1 then 
+  if Length(arg) = 1 then
     filename := arg[1];
     decoder := fail;
-  elif Length(arg) = 2 then 
+  elif Length(arg) = 2 then
     filename := arg[1];
     decoder := arg[2];
-  else 
-    ErrorNoReturn("Digraphs: IteratorFromDigraphFile: usage,\n", 
+  else
+    ErrorNoReturn("Digraphs: IteratorFromDigraphFile: usage,\n",
                   "there should be 1 or 2 arguments,");
   fi;
 
-  if not IsString(filename) then 
-    ErrorNoReturn("Digraphs: IteratorFromDigraphFile: usage,\n", 
+  if not IsString(filename) then
+    ErrorNoReturn("Digraphs: IteratorFromDigraphFile: usage,\n",
                   "the first argument must be a string,");
-  elif decoder <> fail and not IsFunction(decoder) then 
-    ErrorNoReturn("Digraphs: IteratorFromDigraphFile: usage,\n", 
+  elif decoder <> fail and not IsFunction(decoder) then
+    ErrorNoReturn("Digraphs: IteratorFromDigraphFile: usage,\n",
                   "the second argument must be a function,");
   fi;
 
@@ -208,7 +208,7 @@ function(arg)
   record := rec(file := file, current := file!.coder(file));
 
   record.NextIterator := function(iter)
-    local next, line;
+    local next;
     next := iter!.current;
     iter!.current := iter!.file!.coder(iter!.file);
     return next;
@@ -278,7 +278,7 @@ function(filename)
   splitname := SplitString(filename, ".");
   extension := splitname[Length(splitname)];
 
-  if extension in ["gz", "bzip2", "xz"] then
+  if extension in ["gz", "bz2", "xz"] then
     extension := splitname[Length(splitname) - 1];
   fi;
 
@@ -313,7 +313,7 @@ function(filename)
   splitname := SplitString(filename, ".");
   extension := splitname[Length(splitname)];
 
-  if extension in ["gz", "bzip2", "xz"] then
+  if extension in ["gz", "bz2", "xz"] then
     extension := splitname[Length(splitname) - 1];
   fi;
 
@@ -376,7 +376,7 @@ function(arg)
   fi;
 
   if coder = fail then
-    ErrorNoReturn("Digraphs: DigraphFile: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFile:\n",
                   "cannot determine the file format,");
   elif mode = "r" then
     coder := DIGRAPHS_DecoderWrapper(coder);
@@ -387,7 +387,7 @@ function(arg)
   file := IO_CompressedFile(UserHomeExpand(name), mode);
 
   if file = fail then
-    ErrorNoReturn("Digraphs: DigraphFile: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphFile:\n",
                   "cannot open file ", name, ",");
   fi;
 
@@ -419,14 +419,14 @@ function(arg)
     nr := arg[3];
   else
     ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
-                 "ReadDigraphs( filename [, decoder][, pos] ),");
+                  "ReadDigraphs( filename [, decoder][, pos] ),");
   fi;
 
   if (not (IsString(name) or IsFile(name)))
       or (not (IsFunction(decoder) or decoder = fail))
       or (not (IsPosInt(nr) or nr = infinity)) then
     ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
-                 "ReadDigraphs( filename [, decoder][, pos] ),");
+                  "ReadDigraphs( filename [, decoder][, pos] ),");
   fi;
 
   if IsString(name) then
@@ -526,7 +526,7 @@ function(arg)
       # the file encoder was not specified and cannot be deduced from the
       # filename, so we try to make a guess based on the digraphs themselves
       splitname := SplitString(name, ".");
-      if splitname[Length(splitname)] in ["xz", "gz", "bz"] then
+      if splitname[Length(splitname)] in ["xz", "gz", "bz2"] then
         compext := splitname[Length(splitname)];
         splitname := splitname{[1 .. Length(splitname) - 1]};
       fi;
