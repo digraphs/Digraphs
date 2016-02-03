@@ -58,6 +58,7 @@
     <#Include Label="DigraphFile">
     <#Include Label="ReadDigraphs">
     <#Include Label="WriteDigraphs">
+    <#Include Label="IteratorFromDigraphFile">
     <#Include Label="DigraphPlainTextLineEncoder">
     <#Include Label="TournamentLineDecoder">
     <#Include Label="AdjacencyMatrixUpperTriangleLineDecoder">
