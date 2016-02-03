@@ -26,8 +26,10 @@
 
     The purpose of this function is to easily allow looping over digraphs
     encoded in a file when loading all of the encoded digraphs would require
-    too much memory.
-  
+    too much memory. <P/>
+
+    To see what file types are available, see <Ref Oper="WriteDigraphs"/>.
+
     <Example><![CDATA[
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;
 gap> file := DigraphFile(filename, "w");;
@@ -315,7 +317,7 @@ gap> ReadDigraphs(
     size.
     <P/>
 
-    TODO: encode and mode.
+    <!-- TODO: encode and mode. -->
 
     For more verbose information on the progress of the function, set the info
     level of <A>InfoDigraphs</A> to 1 or higher, using <C>SetInfoLevel</C>.<P/>
