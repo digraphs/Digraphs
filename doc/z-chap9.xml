@@ -55,6 +55,7 @@
     </List>
     <#Include Label="DigraphFromGraph6String">
     <#Include Label="Graph6String">
+    <#Include Label="DigraphFile">
     <#Include Label="ReadDigraphs">
     <#Include Label="WriteDigraphs">
     <#Include Label="DigraphPlainTextLineEncoder">

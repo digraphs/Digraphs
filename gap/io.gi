@@ -433,6 +433,13 @@ function(arg)
     file := DigraphFile(name, decoder, "r");
   else
     file := name;
+    if IsClosed(file) then 
+      ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n", 
+                    "the file is closed,");
+    elif file!.rbufsize = false then 
+      ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n", 
+                    "the mode of the file must be \"r\",");
+    fi;
   fi;
 
   if file = fail then
@@ -488,12 +495,22 @@ function(arg)
     else
       encoder := fail;
       mode := arg[3];
+      if IsFile(name) then 
+        ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
+                      "the mode is specified by the file in the first ",
+                      "argument\nand cannot be given as an argument,");
+      fi;
     fi;
   elif Length(arg) = 4 then
     name := arg[1];
     digraphs := arg[2];
     encoder := arg[3];
     mode := arg[4];
+    if IsFile(name) then 
+      ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
+                    "the mode is specified by the file in the first ",
+                    "argument\nand cannot be given as an argument,");
+    fi;
   else
     ErrorNoReturn("Digraphs: WriteDigraphs: usage,\n",
                   "there must be 2, 3, or 4 arguments,");
@@ -588,6 +605,13 @@ function(arg)
     file := DigraphFile(name, encoder, mode);
   else
     file := name;
+    if IsClosed(file) then
+      ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n", 
+                    "the file is closed,");
+    elif file!.wbufsize = false then 
+      ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n", 
+                    "the mode of the file must be \"w\" or \"a\",");
+    fi;
   fi;
 
   encoder := file!.coder;
