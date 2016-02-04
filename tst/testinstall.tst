@@ -229,6 +229,23 @@ gap> gr := Digraph([[3], [4], [5], [1, 5], [1, 2]]);
 gap> DigraphAllSimpleCircuits(gr);
 [ [ 1, 3, 5 ], [ 1, 3, 5, 2, 4 ], [ 5, 2, 4 ] ]
 
+#T# DigraphMaximalCliquesReps was returning too few results, since the choice
+# of a pivot vertex was not necessarily valid when the stabilizer was
+# non-trivial
+gap> gr := DigraphFromGraph6String("L~~~ySrJ[N{NT^");
+<digraph with 13 vertices, 108 edges>
+gap> gr = MaximalSymmetricSubdigraphWithoutLoops(gr);
+true
+gap> DigraphMaximalCliquesReps(gr);
+[ [ 1, 2, 3, 4, 5, 6, 7 ], [ 1, 2, 3, 12 ], [ 1, 11, 12 ], [ 2, 8, 12, 13 ], 
+  [ 8, 9, 10, 11, 12, 13 ] ]
+gap> gr := DigraphFromGraph6String("I~~wzfJhw");
+<digraph with 10 vertices, 66 edges>
+gap> gr = MaximalSymmetricSubdigraphWithoutLoops(gr);
+true
+gap> DigraphMaximalCliquesReps(gr);
+[ [ 1, 2, 3, 4, 5, 6 ], [ 1, 2, 5, 9 ], [ 1, 9, 10 ], [ 7, 8, 9, 10 ] ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);

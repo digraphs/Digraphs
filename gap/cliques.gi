@@ -878,7 +878,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     fi;
 
     # If we are searching for *maximal* cliques then choose a pivot
-    if max then
+    if max and G = fail then
       # Choose a pivot: choose a vertex with maximum out-degree in try or ban
       # TODO optimise choice of pivot
 

@@ -313,6 +313,18 @@ gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 3 ] ]
 gap> DigraphMaximalCliques(gr);
 [ [ 1, 3 ], [ 1, 4 ], [ 2, 4 ], [ 2, 5 ], [ 3, 5 ] ]
+gap> gr := DigraphFromGraph6String("N~~~~~~~wzmxufyZsvw");
+<digraph with 15 vertices, 170 edges>
+gap> DigraphMaximalCliquesReps(gr);
+[ [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], [ 1, 2, 3, 5, 8, 9, 14 ], 
+  [ 1, 2, 5, 13, 14 ], [ 1, 13, 14, 15 ], [ 11, 12, 13, 14, 15 ] ]
+gap> gr := DigraphFromGraph6String(
+> "X~~~~~~~~~~~~~~~~~wvaSD{iLzBU{JJ}B]^FQn|gq~~Gb~TjF~");
+gap> DigraphMaximalCliquesReps(gr);
+[ [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ], 
+  [ 1, 2, 3, 4, 5, 8, 12, 24 ], [ 1, 3, 4, 6, 10, 11, 14, 23 ], 
+  [ 1, 3, 4, 23, 24 ], [ 1, 8, 12, 20, 21, 24 ], [ 1, 20, 21, 23, 24 ], 
+  [ 4, 16, 17, 22, 23, 24, 25 ], [ 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 ] ]
 
 #T# CliquesFinder: error checking
 gap> CliquesFinder(Group(()), fail, fail, fail, fail, fail, fail, fail, fail);
