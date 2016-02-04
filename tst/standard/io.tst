@@ -188,6 +188,8 @@ gap> ReadDigraphs(filename);
 [ <digraph with 5 vertices, 7 edges>, <digraph with 105 vertices, 100 edges>, 
   <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
 gap> gr[1] := Digraph([[5], [1, 2, 5], [1], [2], [4]]);;
+gap> DigraphGroup(gr[1]);
+Group(())
 gap> gr[2] := Digraph(rec(nrvertices := 105, source := [1 .. 100],
 > range := [1 .. 100] * 0 + 52));;
 gap> gr[3] := EmptyDigraph(0);;
@@ -273,6 +275,39 @@ gap> ReadDigraphs(f);
 [ <digraph with 1 vertex, 0 edges>, <digraph with 2 vertices, 2 edges>, 
   <digraph with 3 vertices, 6 edges>, <digraph with 4 vertices, 12 edges>, 
   <digraph with 5 vertices, 20 edges>, <digraph with 20 vertices, 180 edges> ]
+gap> newfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/hello2.g6");;
+gap> IO_rename(filename, newfilename);
+true
+gap> ReadDigraphs(f);
+[  ]
+gap> it := IteratorFromDigraphFile(newfilename);
+<iterator>
+gap> NextIterator(it);
+<digraph with 1 vertex, 0 edges>
+gap> NextIterator(it);
+<digraph with 2 vertices, 2 edges>
+gap> it := IteratorFromDigraphFile(newfilename, DigraphFromGraph6String);
+<iterator>
+gap> NextIterator(it);
+<digraph with 1 vertex, 0 edges>
+gap> NextIterator(it);
+<digraph with 2 vertices, 2 edges>
+gap> NextIterator(it);
+<digraph with 3 vertices, 6 edges>
+gap> NextIterator(it);
+<digraph with 4 vertices, 12 edges>
+gap> NextIterator(it);
+<digraph with 5 vertices, 20 edges>
+gap> NextIterator(it);
+<digraph with 20 vertices, 180 edges>
+gap> NextIterator(it);
+IO_Nothing
+gap> NextIterator(it);
+IO_Nothing
+gap> it := ShallowCopy(it);
+<iterator>
+gap> NextIterator(it);
+<digraph with 1 vertex, 0 edges>
 
 #T# WritePlainTextDigraph and ReadPlainTextDigraph
 gap> gr := Digraph([[1, 2], [2, 3], []]);
@@ -543,6 +578,7 @@ gap> Unbind(range);
 gap> Unbind(str);
 gap> Unbind(rdgr);
 gap> Unbind(f);
+gap> Unbind(it);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/io.tst");
