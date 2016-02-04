@@ -187,6 +187,19 @@ IO_OK
 gap> ReadDigraphs(filename);
 [ <digraph with 5 vertices, 7 edges>, <digraph with 105 vertices, 100 edges>, 
   <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
+gap> gr[1] := Digraph([[5], [1, 2, 5], [1], [2], [4]]);;
+gap> gr[2] := Digraph(rec(nrvertices := 105, source := [1 .. 100],
+> range := [1 .. 100] * 0 + 52));;
+gap> gr[3] := EmptyDigraph(0);;
+gap> gr[4] := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],
+> [1, 2, 3, 4, 5, 6, 7, 10], [1, 5, 6, 7, 10], [2, 4, 5, 9, 10],
+> [3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 5, 7, 8, 9], [1, 2, 5], [1, 2]]);;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
+gap> WriteDigraphs(filename, gr, "w");
+IO_OK
+gap> ReadDigraphs(filename);
+[ <digraph with 5 vertices, 7 edges>, <digraph with 105 vertices, 100 edges>, 
+  <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.txt");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -197,6 +210,14 @@ IO_OK
 gap> ReadDigraphs(filename);
 [ <digraph with 5 vertices, 7 edges>, <digraph with 100 vertices, 100 edges>, 
   <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
+gap> gr := [CompleteDigraph(30)];;
+gap> DigraphGroup(gr[1]) = SymmetricGroup(30);
+true
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
+gap> WriteDigraphs(filename, gr, "w");
+IO_OK
+gap> ReadDigraphs(filename);
+[ <digraph with 30 vertices, 870 edges> ]
 gap> gr := [];;
 gap> gr[1] := Digraph(30, [1, 2], [2, 1]);
 <digraph with 30 vertices, 2 edges>
@@ -230,6 +251,28 @@ true
 gap> rdgr := ReadDigraphs(filename);
 Error, Digraphs: DigraphFile:
 cannot determine the file format,
+
+#T# DigraphFile
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/helloworld.g6");;
+gap> f := DigraphFile(filename, "w");;
+gap> WriteDigraphs(f, List([1..5], CompleteDigraph));
+IO_OK
+gap> f := DigraphFile(filename, "r");;
+gap> ReadDigraphs(f);
+[ <digraph with 1 vertex, 0 edges>, <digraph with 2 vertices, 2 edges>, 
+  <digraph with 3 vertices, 6 edges>, <digraph with 4 vertices, 12 edges>, 
+  <digraph with 5 vertices, 20 edges> ]
+gap> f := DigraphFile(filename, "a");;
+gap> WriteDigraphs(f, CycleDigraph(5));
+Error, Digraphs: Graph6String: usage,
+<graph> must be symmetric and have no loops or multiple edges,
+gap> WriteDigraphs(f, JohnsonDigraph(6,3));
+IO_OK
+gap> f := DigraphFile(filename, "r");;
+gap> ReadDigraphs(f);
+[ <digraph with 1 vertex, 0 edges>, <digraph with 2 vertices, 2 edges>, 
+  <digraph with 3 vertices, 6 edges>, <digraph with 4 vertices, 12 edges>, 
+  <digraph with 5 vertices, 20 edges>, <digraph with 20 vertices, 180 edges> ]
 
 #T# WritePlainTextDigraph and ReadPlainTextDigraph
 gap> gr := Digraph([[1, 2], [2, 3], []]);
@@ -499,6 +542,7 @@ gap> Unbind(source);
 gap> Unbind(range);
 gap> Unbind(str);
 gap> Unbind(rdgr);
+gap> Unbind(f);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/io.tst");
