@@ -13,20 +13,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.4.2">
+##  <!ENTITY VERSION        "0.4.3">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.4.2">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.4.3">
 ##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
-Version := "0.4.2",
-Date := "28/01/2016",
-ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.4.2",
+Version := "0.4.3",
+Date := "03/02/2016",
+ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.4.3",
 ArchiveFormats := ".tar.gz",
 Persons := [
 
