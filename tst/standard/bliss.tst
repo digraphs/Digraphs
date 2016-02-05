@@ -395,21 +395,18 @@ gap> DigraphCanonicalLabelling(gr, [1, 2]);
 fail
 
 #T# DIGRAPHS_UnbindVariables
+gap> Unbind(G);
+gap> Unbind(canon);
+gap> Unbind(gr);
+gap> Unbind(gr1);
+gap> Unbind(gr2);
+gap> Unbind(gr3);
 gap> Unbind(gr4);
 gap> Unbind(gr5);
-gap> Unbind(gr2);
-gap> Unbind(gr);
-gap> Unbind(G);
-gap> Unbind(gr1);
-gap> Unbind(i);
-gap> Unbind(canon);
-gap> Unbind(j);
+gap> Unbind(iso);
 gap> Unbind(m);
 gap> Unbind(n);
 gap> Unbind(p);
-gap> Unbind(iso);
-gap> Unbind(new);
-gap> Unbind(gr3);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/bliss.tst");

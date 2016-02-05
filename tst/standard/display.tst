@@ -91,14 +91,12 @@ the argument <graph> should be symmetric,
 #the option <type> must be "dot" or "latex",
 
 #T# DIGRAPHS_UnbindVariables
-gap> Unbind(gr2);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(source);
-gap> Unbind(range);
-gap> Unbind(r);
 gap> Unbind(adj);
 gap> Unbind(dot);
+gap> Unbind(gr);
+gap> Unbind(gr1);
+gap> Unbind(gr2);
+gap> Unbind(r);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/display.tst");

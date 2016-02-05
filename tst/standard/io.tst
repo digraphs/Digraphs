@@ -567,18 +567,19 @@ gap> DigraphFromSparse6String(":~~??C???");
 <digraph with 1048576 vertices, 0 edges>
 
 #T# DIGRAPHS_UnbindVariables
+gap> Unbind(badfilename);
+gap> Unbind(f);
+gap> Unbind(filename);
 gap> Unbind(gr);
+gap> Unbind(gr2);
+gap> Unbind(it);
+gap> Unbind(l);
 gap> Unbind(list);
 gap> Unbind(list2);
-gap> Unbind(l);
-gap> Unbind(filename);
+gap> Unbind(mult);
 gap> Unbind(newfilename);
-gap> Unbind(source);
-gap> Unbind(range);
-gap> Unbind(str);
 gap> Unbind(rdgr);
-gap> Unbind(f);
-gap> Unbind(it);
+gap> Unbind(str);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/io.tst");

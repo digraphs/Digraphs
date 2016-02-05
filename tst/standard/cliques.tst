@@ -473,8 +473,9 @@ gap> out := CliquesFinder(gr, fail, [], lim, [], [], true, 3, true);
 [  ]
 
 #T# DIGRAPHS_UnbindVariables
-gap> Unbind(gr);
 gap> Unbind(f);
+gap> Unbind(gr);
+gap> Unbind(lim);
 gap> Unbind(out);
 
 #E#
