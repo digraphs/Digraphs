@@ -15,7 +15,7 @@ echo "GAP DEV: Running tests with Grape loaded (but NOT Semigroups)..."
 echo "================================================================"
 echo "LoadPackage(\"digraphs\"); DigraphsTestAll(); quit;" | sh gap/bin/gap.sh | tee -a testlog.txt
 
-cd gap/pkg/digraphs
+cd gap/pkg/clone
 make clean
 ./configure CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32
 make
@@ -39,7 +39,7 @@ echo "LoadPackage(\"digraphs\"); DigraphsTestAll(); quit;" | sh gap/bin/gap.sh |
 
 rm -r gap/pkg/grape
 
-cd gap/pkg/digraphs
+cd gap/pkg/clone
 make clean
 ./configure
 make
@@ -54,7 +54,7 @@ echo "GAP DEV: Running tests WITHOUT Semigroups or Grape loaded..."
 echo "============================================================"
 echo "LoadPackage(\"digraphs\"); DigraphsTestAll(); quit;" | sh gap/bin/gap.sh | tee -a testlog.txt
 
-cd gap/pkg/digraphs
+cd gap/pkg/clone
 make clean
 ./configure CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32
 make
