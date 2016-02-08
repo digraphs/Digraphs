@@ -787,6 +787,8 @@ gap> Unbind(gr4);
 gap> Unbind(gr5);
 gap> Unbind(gr6);
 gap> Unbind(grid);
+gap> Unbind(i);
+gap> Unbind(j);
 gap> Unbind(loop);
 gap> Unbind(mat);
 gap> Unbind(multiple);

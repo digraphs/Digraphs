@@ -1574,6 +1574,7 @@ gap> Unbind(grnc);
 gap> Unbind(group);
 gap> Unbind(grrt);
 gap> Unbind(h);
+gap> Unbind(i);
 gap> Unbind(im);
 gap> Unbind(inn);
 gap> Unbind(mat);

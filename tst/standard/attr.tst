@@ -1245,6 +1245,8 @@ gap> Unbind(gr1);
 gap> Unbind(gr2);
 gap> Unbind(gr3);
 gap> Unbind(grid);
+gap> Unbind(i);
+gap> Unbind(j);
 gap> Unbind(mat);
 gap> Unbind(multiple);
 gap> Unbind(nbs);
