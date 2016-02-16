@@ -1341,6 +1341,30 @@ false
 gap> IsReachable(gr, 1, 4);
 true
 
+#T# DigraphPath
+gap> gr := ChainDigraph(10);
+<digraph with 10 vertices, 9 edges>
+gap> DigraphPath(gr, 1, 2);
+[ 1, 2 ]
+gap> DigraphPath(gr, 1, 1);
+fail
+gap> DigraphPath(gr, 2, 1);
+fail
+gap> DigraphPath(gr, 3, 8);
+[ 3, 4, 5, 6, 7, 8 ]
+gap> DigraphPath(gr, 11, 1);
+Error, Digraphs: DigraphPath: usage,
+the second and third arguments <u> and <v> must be
+vertices of the first argument <digraph>,
+gap> DigraphPath(gr, 1, 11);
+Error, Digraphs: DigraphPath: usage,
+the second and third arguments <u> and <v> must be
+vertices of the first argument <digraph>,
+gap> DigraphPath(gr, 11, 11);
+Error, Digraphs: DigraphPath: usage,
+the second and third arguments <u> and <v> must be
+vertices of the first argument <digraph>,
+
 #T# DigraphLongestDistanceFromVertex
 gap> nbs := [[2, 8, 10, 11], [3, 5], [4], [], [6], [7], [], [9], [5], [6],
 > [12], [13], [14], [6], [15, 1]];;

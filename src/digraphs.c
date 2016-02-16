@@ -551,15 +551,15 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
 
 //TODO use generic DFS, when we have one.
 
-static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) { 
+static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) { 
   UInt  nr, i, j, k, level, target;
-  Obj   nbs;
+  Obj   nbs, out;
   UInt  *stack, *ptr;
 
   i      = INT_INTOBJ(u);
   nbs    = ELM_PLIST(adj, i);
   if (LEN_LIST(nbs) == 0) {
-    return False;
+    return Fail;
   }
   target = INT_INTOBJ(v);
   nr     = LEN_PLIST(adj);
@@ -595,17 +595,23 @@ static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) {
       stack += 2;
       stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
       if (stack[0] == target) {
+        out = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, level);
+        SET_LEN_PLIST(out, level);
         free(ptr);
-        stack -= (2 * level) - 2; // put the stack back to the start
+        stack += 2;
+        for (; level > 0; level--) {
+          stack -= 2;
+          SET_ELM_PLIST(out, level, INTOBJ_INT(stack[0]));
+        }
         free(stack);
-        return True;
+        return out;
       }
       stack[1] = 1;
     }
   }
   free(ptr);
   free(stack);
-  return False;
+  return Fail;
 }
 
 static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
@@ -2262,9 +2268,9 @@ static StructGVarFunc GVarFuncs [] = {
     FuncDIGRAPH_LT,
     "src/digraphs.c:FuncDIGRAPH_LT" },
 
-  { "DIGRAPHS_IS_REACHABLE", 3, "digraph, u, v",
-    FuncDIGRAPHS_IS_REACHABLE,
-    "src/digraphs.c:FuncDIGRAPHS_IS_REACHABLE" },
+  { "DIGRAPH_PATH", 3, "digraph, u, v",
+    FuncDIGRAPH_PATH,
+    "src/digraphs.c:FuncDIGRAPH_PATH" },
 
   { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncDIGRAPH_AUTOMORPHISMS, 

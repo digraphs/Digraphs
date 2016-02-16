@@ -1123,19 +1123,9 @@ function(digraph, u, v)
     ErrorNoReturn("Digraphs: IsReachable: usage,\n",
                   "the second and third arguments <u> and <v> must be\n",
                   "vertices of the first argument <digraph>,");
-  fi;
-
-  if IsDigraphEdge(digraph, [u, v]) then
-    return true;
-  elif HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
-    # If it's a known transitive digraph, just check whether the edge exists
-    return false;
-    # Glean information from WCC if we have it
-  elif HasDigraphConnectedComponents(digraph)
-      and DigraphConnectedComponents(digraph).id[u] <>
-          DigraphConnectedComponents(digraph).id[v] then
-    return false;
     # Glean information from SCC if we have it
+  elif IsDigraphEdge(digraph, [u, v]) then
+    return true;
   elif HasDigraphStronglyConnectedComponents(digraph) then
     scc := DigraphStronglyConnectedComponents(digraph);
     if u <> v then
@@ -1146,8 +1136,35 @@ function(digraph, u, v)
       return Length(scc.comps[scc.id[u]]) > 1;
     fi;
   fi;
+  return DigraphPath(digraph, u, v) <> fail;
+end);
 
-  return DIGRAPHS_IS_REACHABLE(OutNeighbours(digraph), u, v);
+#
+
+InstallMethod(DigraphPath, "for a digraph and two pos ints",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, u, v)
+  local verts;
+
+  verts := DigraphVertices(digraph);
+  if not (u in verts and v in verts) then
+    ErrorNoReturn("Digraphs: DigraphPath: usage,\n",
+                  "the second and third arguments <u> and <v> must be\n",
+                  "vertices of the first argument <digraph>,");
+  fi;
+
+  if IsDigraphEdge(digraph, [u, v]) then
+    return [u, v];
+  elif HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
+    # If it's a known transitive digraph, just check whether the edge exists
+    return fail;
+    # Glean information from WCC if we have it
+  elif HasDigraphConnectedComponents(digraph)
+      and DigraphConnectedComponents(digraph).id[u] <>
+          DigraphConnectedComponents(digraph).id[v] then
+    return fail;
+  fi;
+  return DIGRAPH_PATH(OutNeighbours(digraph), u, v);
 end);
 
 #

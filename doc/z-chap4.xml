@@ -46,6 +46,7 @@
     <#Include Label="DigraphPeriod">
     <#Include Label="DigraphFloydWarshall">
     <#Include Label="IsReachable">
+    <#Include Label="DigraphPath">
     <#Include Label="DigraphAllSimpleCircuits">
     <#Include Label="DigraphLongestSimpleCircuit">
     <#Include Label="DigraphLayers">

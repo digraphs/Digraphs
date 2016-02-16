@@ -1054,6 +1054,42 @@ false
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphPath">
+<ManSection>
+  <Oper Name="DigraphPath" Arg="digraph, u, v"/>
+  <Returns>A list of vertices, or <K>fail</K>.</Returns>
+  <Description>
+    If there exists a directed path of non-zero length from vertex <A>u</A> to
+    vertex <A>v</A> in the digraph <A>digraph</A>, then this operation returns
+    such a path. Otherwise, this operation returns <K>fail</K>. <P/>
+    
+    A path is represented as a list <C>p</C> of <C>n</C> vertices (which are
+    distinct, except possibly for the first and last) in the order in which
+    they form a path.  That is, the list <C>p</C> satisfies <C>p[1] =
+    </C><A>u</A>, <C>p[n] = </C><A>v</A>, and <C>[p[i], p[i+1]]</C> is an edge
+    of <A>digraph</A> for each <C>i &lt; n</C>.
+    <P/>
+
+    The method for <C>DigraphPath</C> has worst case complexity of <M>O(m +
+      n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
+    vertices in <A>digraph</A>. 
+
+<Example><![CDATA[
+gap> gr := Digraph( [ [ 2 ], [ 3 ], [ 2, 3 ] ] );
+<digraph with 3 vertices, 4 edges>
+gap> DigraphPath(gr, 1, 3);
+[ 1, 2, 3 ]
+gap> DigraphPath(gr, 2, 1);
+fail
+gap> DigraphPath(gr, 3, 3);
+[ 3, 3 ]
+gap> DigraphPath(gr, 1, 1);
+fail
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphLongestDistanceFromVertex">
 <ManSection>
   <Oper Name="DigraphLongestDistanceFromVertex" Arg="digraph, v"/>
