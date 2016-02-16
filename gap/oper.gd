@@ -68,6 +68,7 @@ DeclareOperation("IsDigraphEdge", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphPath", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("IteratorOfPaths", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("IsReachable", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphLongestDistanceFromVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);

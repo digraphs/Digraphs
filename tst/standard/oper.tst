@@ -1365,6 +1365,54 @@ Error, Digraphs: DigraphPath: usage,
 the second and third arguments <u> and <v> must be
 vertices of the first argument <digraph>,
 
+#T# IteratorOfPaths
+gap> gr := CompleteDigraph(5);;
+gap> iter := IteratorOfPaths(gr, 2, 6);
+Error, Digraphs: IteratorOfPaths: usage,
+the second and third arguments <u> and <v> must be vertices of the first
+argument, <digraph>,
+gap> iter := IteratorOfPaths(gr, 6, 6);
+Error, Digraphs: IteratorOfPaths: usage,
+the second and third arguments <u> and <v> must be vertices of the first
+argument, <digraph>,
+gap> iter := IteratorOfPaths(gr, 6, 2);
+Error, Digraphs: IteratorOfPaths: usage,
+the second and third arguments <u> and <v> must be vertices of the first
+argument, <digraph>,
+gap> iter := IteratorOfPaths(gr, 2, 5);
+<iterator>
+gap> for a in iter do
+>   Print(a, "\n");
+> od;
+[ 2, 1, 3, 4, 5 ]
+[ 2, 1, 3, 5 ]
+[ 2, 1, 4, 3, 5 ]
+[ 2, 1, 4, 5 ]
+[ 2, 1, 5 ]
+[ 2, 3, 1, 4, 5 ]
+[ 2, 3, 1, 5 ]
+[ 2, 3, 4, 1, 5 ]
+[ 2, 3, 4, 5 ]
+[ 2, 3, 5 ]
+[ 2, 4, 1, 3, 5 ]
+[ 2, 4, 1, 5 ]
+[ 2, 4, 3, 1, 5 ]
+[ 2, 4, 3, 5 ]
+[ 2, 4, 5 ]
+[ 2, 5 ]
+gap> iter := IteratorOfPaths(gr, 4, 3);
+<iterator>
+gap> NextIterator(iter);
+[ 4, 1, 2, 3 ]
+gap> NextIterator(iter);
+[ 4, 1, 2, 5, 3 ]
+gap> copy := ShallowCopy(iter);
+<iterator>
+gap> NextIterator(copy);
+[ 4, 1, 3 ]
+gap> NextIterator(iter);
+[ 4, 1, 3 ]
+
 #T# DigraphLongestDistanceFromVertex
 gap> nbs := [[2, 8, 10, 11], [3, 5], [4], [], [6], [7], [], [9], [5], [6],
 > [12], [13], [14], [6], [15, 1]];;
@@ -1635,6 +1683,7 @@ gap> Unbind(grt);
 gap> Unbind(h);
 gap> Unbind(i1);
 gap> Unbind(i2);
+gap> Unbind(iter);
 gap> Unbind(j1);
 gap> Unbind(j2);
 gap> Unbind(m);

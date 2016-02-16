@@ -1169,6 +1169,106 @@ end);
 
 #
 
+InstallMethod(IteratorOfPaths, "for a digraph and two pos ints",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, u, v)
+  local verts, record, n;
+
+  verts := DigraphVertices(digraph);
+  if not (u in verts and v in verts) then
+    ErrorNoReturn("Digraphs: IteratorOfPaths: usage,\n",
+                  "the second and third arguments <u> and <v> must be ",
+                  "vertices of the first\nargument, <digraph>,");
+  fi;
+
+  n := DigraphNrVertices(digraph);
+  # can assume that n >= 1 since u and v are extant vertices of digraph
+
+  record := rec(digraph := DigraphRemoveAllMultipleEdges(digraph),
+                start := u,
+                stop := v,
+                ptr := BlistList(verts, []),
+                nbs := [1]);
+
+  record.NextIterator := function(iter)
+    local adj, path, ptr, nbs, level, j, k, current, next;
+
+    adj := OutNeighbours(iter!.digraph);
+    path := iter!.path;
+    ptr := iter!.ptr;
+    nbs := iter!.nbs;
+    level := Length(iter!.path);
+
+    while true do
+      j := path[level];
+      k := nbs[level];
+
+      # Backtrack if vertex j is already in path, or it has not k^th neighbour
+      if (ptr[j] or k > Length(adj[j])) then
+        level := level - 1;
+        if level = 0 then
+          # No more paths to be found
+          current := fail;
+          break;
+        fi;
+        # Backtrack and choose next available branch
+        Remove(path);
+        ptr[path[level]] := false;
+        nbs[level] := nbs[level] + 1;
+        continue;
+      fi;
+
+      # Otherwise move into next available branch
+
+      # Check if new branch is a valid complete path
+      if adj[j][k] = iter!.stop then
+        current := ShallowCopy(path);
+        Add(current, adj[j][k]);
+        nbs[level] := nbs[level] + 1;
+        break;
+      fi;
+      ptr[j] := true;
+      level := level + 1;
+      path[level] := adj[j][k];
+      nbs[level] := 1;
+    od;
+
+    #next := iter!.current;
+    #iter!.current := iter!.file!.coder(iter!.file);
+    if not IsBound(iter!.current) then
+      return current;
+    fi;
+
+    next := iter!.current;
+    iter!.current := current;
+    return next;
+  end;
+
+  record.path := [u];
+  record.current := record.NextIterator(record);
+
+  record.IsDoneIterator := function(iter)
+    if iter!.current = fail then
+      return true;
+    fi;
+    return false;
+  end;
+
+  record.ShallowCopy := function(iter)
+    return rec(digraph := iter!.digraph,
+               start := iter!.start,
+               stop := iter!.stop,
+               ptr := ShallowCopy(iter!.ptr),
+               path := ShallowCopy(iter!.path),
+               nbs := ShallowCopy(iter!.nbs),
+               current := ShallowCopy(iter!.current));
+  end;
+
+  return IteratorByFunctions(record);
+end);
+
+#
+
 InstallMethod(DigraphRemoveAllMultipleEdges, "for a digraph",
 [IsDigraph],
 function(digraph)
