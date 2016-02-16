@@ -257,7 +257,7 @@ cannot determine the file format,
 #T# DigraphFile
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/helloworld.g6");;
 gap> f := DigraphFile(filename, "w");;
-gap> WriteDigraphs(f, List([1..5], CompleteDigraph));
+gap> WriteDigraphs(f, List([1 .. 5], CompleteDigraph));
 IO_OK
 gap> f := DigraphFile(filename, "r");;
 gap> ReadDigraphs(f);
@@ -268,7 +268,7 @@ gap> f := DigraphFile(filename, "a");;
 gap> WriteDigraphs(f, CycleDigraph(5));
 Error, Digraphs: Graph6String: usage,
 <graph> must be symmetric and have no loops or multiple edges,
-gap> WriteDigraphs(f, JohnsonDigraph(6,3));
+gap> WriteDigraphs(f, JohnsonDigraph(6, 3));
 IO_OK
 gap> f := DigraphFile(filename, "r");;
 gap> ReadDigraphs(f);
