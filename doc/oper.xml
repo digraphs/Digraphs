@@ -1057,19 +1057,34 @@ false
 <#GAPDoc Label="DigraphPath">
 <ManSection>
   <Oper Name="DigraphPath" Arg="digraph, u, v"/>
-  <Returns>A list of vertices, or <K>fail</K>.</Returns>
+  <Returns>A pair of lists, or <K>fail</K>.</Returns>
   <Description>
-    If there exists a directed path (or cycle) of non-zero length from vertex
-    <A>u</A> to vertex <A>v</A> in the digraph <A>digraph</A>, then this
-    operation returns such a directed path (or cycle). Otherwise, this operation
-    returns <K>fail</K>. <P/>
+    If there exists a directed path (or a cycle, in the case that <A>u</A>
+    <C>=</C> <A>v</A>) of non-zero length from vertex <A>u</A> to vertex
+    <A>v</A> in the digraph <A>digraph</A>, then this operation returns such a
+    directed path (or cycle). Otherwise, this operation returns <K>fail</K>.
+    See Chapter <Ref Chap="The Digraphs package"/> for the definition of a path
+    and a cycle.
+    <P/>
     
-    A directed path (or cycle) is represented by a list <C>p</C> of <C>n &gt;
-      1</C> vertices (which are distinct, except for a cycle, where the first
-    and last vertices coincide) in the order in which they form a path (or
-    cycle).  That is, the list <C>p</C> satisfies <C>p[1] = </C><A>u</A>,
-    <C>p[n] = </C><A>v</A>, and <C>[p[i], p[i+1]]</C> is an edge of
-    <A>digraph</A> for each <C>i &lt; n</C>.  <P/>
+    A directed path (or cycle) of non-zero length <C>n-1</C>,
+    <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M>,
+    is represented by a pair of lists <C>[v,a]</C> as follows:
+
+    <List>
+      <Item>
+        <C>v</C> is the list <M>[v_1, v_2, ..., v_n]</M>.
+      </Item>
+      <Item>
+        <C>a</C> is the list of positive integers <M>[a_1, a_2, ..., a_{n-1}]</M>
+        where for each each <M>i &lt; n</M>, <M>a_i</M> is the position of
+        <M>v_{i+1}</M> in
+        <C>OutNeighboursOfVertex(</C><A>digraph</A><C>,</C><M>v_i</M><C>)</C>
+        corresponding to the edge <M>e_i</M>.  This is can be useful if the
+        position of a vertex in a list of out-neighours is significant, for
+        example in orbit digraphs.
+      </Item>
+    </List>
 
     The method for <C>DigraphPath</C> has worst case complexity of <M>O(m +
       n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
@@ -1079,11 +1094,11 @@ false
 gap> gr := Digraph([[2], [3], [2, 3]]);
 <digraph with 3 vertices, 4 edges>
 gap> DigraphPath(gr, 1, 3);
-[ 1, 2, 3 ]
+[ [ 1, 2, 3 ], [ 1, 1 ] ]
 gap> DigraphPath(gr, 2, 1);
 fail
 gap> DigraphPath(gr, 3, 3);
-[ 3, 3 ]
+[ [ 3, 3 ], [ 2 ] ]
 gap> DigraphPath(gr, 1, 1);
 fail
 ]]></Example>
@@ -1096,33 +1111,35 @@ fail
   <Oper Name="IteratorOfPaths" Arg="digraph, u, v"/>
   <Returns>An iterator.</Returns>
   <Description>
-    This operation returns an iterator of the directed paths (or cycles) of
-    non-zero length in the digraph <A>digraph</A> from the vertex <A>u</A> to
-    the vertex <A>v</A>.  See <Ref Sect="Iterators" BookName="ref"/> for more
-    information about iterators.  <P/>
-
-    A directed path (or cycle) is represented by a list <C>p</C> of <C>n &gt;
-      1</C> vertices (which are distinct, except for a cycle, where the first
-    and last vertices coincide) in the order in which they form a path (or
-    cycle).  That is, the list <C>p</C> satisfies <C>p[1] = </C><A>u</A>,
-    <C>p[n] = </C><A>v</A>, and <C>[p[i], p[i+1]]</C> is an edge of
-    <A>digraph</A> for each <C>i &lt; n</C>.  <P/>
+    If <A>digraph</A> is a digraph or a list of adjacencies which defines a
+    digraph - see <Ref Attr="OutNeighbours"/> - then this operation returns an
+    iterator of the directed paths (or cycles, in the case that <A>u</A>
+    <C>=</C> <A>v</A>) of non-zero length in <A>digraph</A> from the vertex
+    <A>u</A> to the vertex <A>v</A>.
+    <P/>
+    
+    See <Ref Oper="DigraphPath"/> for more information about the repesentation
+    of a directed path or cycle which is used, and see <Ref Sect="Iterators"
+      BookName="ref"/> for more information about iterators.
+    <P/>
 
 <Example><![CDATA[
-gap> gr := Digraph([[1, 2, 4], [3, 5], [2, 3], [1, 2], [4]]);
-<digraph with 5 vertices, 10 edges>
+gap> gr := Digraph([[1, 4, 4, 2], [3, 5], [2, 3], [1, 2], [4]]);
+<multidigraph with 5 vertices, 11 edges>
 gap> iter := IteratorOfPaths(gr, 1, 4);
 <iterator>
 gap> NextIterator(iter);
-[ 1, 2, 5, 4 ]
+[ [ 1, 4 ], [ 2 ] ]
 gap> NextIterator(iter);
-[ 1, 4 ]
+[ [ 1, 4 ], [ 3 ] ]
+gap> NextIterator(iter);
+[ [ 1, 2, 5, 4 ], [ 4, 2, 1 ] ]
 gap> IsDoneIterator(iter);
 true
-gap> iter := IteratorOfPaths(gr, 4, 4);
+gap> iter := IteratorOfPaths(gr, 4, 3);
 <iterator>
 gap> NextIterator(iter);
-[ 4, 1, 2, 5, 4 ]
+[ [ 4, 1, 2, 3 ], [ 1, 4, 1 ] ]
 ]]></Example>
   </Description>
 </ManSection>

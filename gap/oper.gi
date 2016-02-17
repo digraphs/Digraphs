@@ -1154,7 +1154,7 @@ function(digraph, u, v)
   fi;
 
   if IsDigraphEdge(digraph, [u, v]) then
-    return [u, v];
+    return [[u, v], [Position(OutNeighboursOfVertex(digraph, u), v)]];
   elif HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
     # If it's a known transitive digraph, just check whether the edge exists
     return fail;
@@ -1167,12 +1167,12 @@ function(digraph, u, v)
   return DIGRAPH_PATH(OutNeighbours(digraph), u, v);
 end);
 
-#
+# IteratorOfPaths: for a digraph and two pos ints
 
 InstallMethod(IteratorOfPaths, "for a digraph and two pos ints",
 [IsDigraph, IsPosInt, IsPosInt],
 function(digraph, u, v)
-  local verts, record, n;
+  local verts;
 
   verts := DigraphVertices(digraph);
   if not (u in verts and v in verts) then
@@ -1180,20 +1180,50 @@ function(digraph, u, v)
                   "the second and third arguments <u> and <v> must be ",
                   "vertices of the first\nargument, <digraph>,");
   fi;
+  return IteratorOfPathsNC(OutNeighbours(digraph), u, v);
+end);
 
-  n := DigraphNrVertices(digraph);
+# IteratorOfPaths: for a list of out-neighbours and two pos ints
+
+InstallMethod(IteratorOfPaths, "for a list and two pos ints",
+[IsList, IsPosInt, IsPosInt],
+function(out, u, v)
+  local n;
+
+  n := Length(out);
+  if not ForAll(out, x -> IsHomogeneousList(x)
+                          and ForAll(x, y -> IsPosInt(y) and y <= n))
+      then
+    ErrorNoReturn("Digraphs: IteratorOfPaths: usage,\n",
+                  "the first argument <out> must be a list of out-neighbours ",
+                  "of a digraph,");
+  elif not (u <= n and v <= n) then
+    ErrorNoReturn("Digraphs: IteratorOfPaths: usage,\n",
+                  "the second and third arguments <u> and <v> must be ",
+                  "vertices of the digraph\ndefined by the first argument, ",
+                  "<digraph>,");
+  fi;
+  return IteratorOfPathsNC(out, u, v);
+end);
+
+InstallMethod(IteratorOfPathsNC, "for a list and two pos ints",
+[IsList, IsPosInt, IsPosInt],
+function(digraph, u, v)
+  local n, record;
+
+  n := Length(digraph);
   # can assume that n >= 1 since u and v are extant vertices of digraph
 
-  record := rec(digraph := DigraphRemoveAllMultipleEdges(digraph),
+  record := rec(adj := digraph,
                 start := u,
                 stop := v,
-                ptr := BlistList(verts, []),
+                ptr := BlistList([1 .. n], []),
                 nbs := [1]);
 
   record.NextIterator := function(iter)
     local adj, path, ptr, nbs, level, j, k, current, next;
 
-    adj := OutNeighbours(iter!.digraph);
+    adj := iter!.adj;
     path := iter!.path;
     ptr := iter!.ptr;
     nbs := iter!.nbs;
@@ -1203,7 +1233,7 @@ function(digraph, u, v)
       j := path[level];
       k := nbs[level];
 
-      # Backtrack if vertex j is already in path, or it has not k^th neighbour
+      # Backtrack if vertex j is already in path, or it has no k^th neighbour
       if (ptr[j] or k > Length(adj[j])) then
         level := level - 1;
         if level = 0 then
@@ -1222,8 +1252,7 @@ function(digraph, u, v)
 
       # Check if new branch is a valid complete path
       if adj[j][k] = iter!.stop then
-        current := ShallowCopy(path);
-        Add(current, adj[j][k]);
+        current := [Concatenation(path, [adj[j][k]]), nbs{[1 .. level]}];
         nbs[level] := nbs[level] + 1;
         break;
       fi;
@@ -1233,8 +1262,6 @@ function(digraph, u, v)
       nbs[level] := 1;
     od;
 
-    #next := iter!.current;
-    #iter!.current := iter!.file!.coder(iter!.file);
     if not IsBound(iter!.current) then
       return current;
     fi;
@@ -1255,7 +1282,7 @@ function(digraph, u, v)
   end;
 
   record.ShallowCopy := function(iter)
-    return rec(digraph := iter!.digraph,
+    return rec(adj := iter!.adj,
                start := iter!.start,
                stop := iter!.stop,
                ptr := ShallowCopy(iter!.ptr),

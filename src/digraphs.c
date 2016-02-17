@@ -553,7 +553,7 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
 
 static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) { 
   UInt  nr, i, j, k, level, target;
-  Obj   nbs, out;
+  Obj   nbs, out, path, edge;
   UInt  *stack, *ptr;
 
   i      = INT_INTOBJ(u);
@@ -580,8 +580,7 @@ static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) {
     nbs = ELM_PLIST(adj, j);
     if (ptr[j] != 0 || k > (UInt) LEN_LIST(nbs)) {
       ptr[j] = 1;
-      level--;
-      if (level == 0) { 
+      if (--level == 0) {
         break;
       }
       // Backtrack and choose next available branch
@@ -595,14 +594,24 @@ static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) {
       stack += 2;
       stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
       if (stack[0] == target) {
-        out = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, level);
-        SET_LEN_PLIST(out, level);
-        free(ptr);
-        stack += 2;
-        for (; level > 0; level--) {
+        // Create output lists
+        path = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, level);
+        SET_LEN_PLIST(path, level);
+        SET_ELM_PLIST(path, level--, INTOBJ_INT(stack[0]));
+        edge = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, level);
+        SET_LEN_PLIST(edge, level);
+        out = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, 2);
+        SET_LEN_PLIST(out, 2);
+
+        // Fill output lists
+        while (level > 0) {
           stack -= 2;
-          SET_ELM_PLIST(out, level, INTOBJ_INT(stack[0]));
+          SET_ELM_PLIST(edge, level,   INTOBJ_INT(stack[1]));
+          SET_ELM_PLIST(path, level--, INTOBJ_INT(stack[0]));
         }
+        SET_ELM_PLIST(out, 1, path);
+        SET_ELM_PLIST(out, 2, edge);
+        free(ptr);
         free(stack);
         return out;
       }
