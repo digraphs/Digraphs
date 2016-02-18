@@ -1443,6 +1443,16 @@ gap> for a in iter do
 >   Print(a, "\n");
 > od;
 [ [ 1, 1 ], [ 1 ] ]
+gap> gr := DigraphFromDigraph6String("+E?_OHCO");
+<digraph with 6 vertices, 6 edges>
+gap> iter := IteratorOfPaths(gr, 1, 5);
+<iterator>
+gap> NextIterator(iter);
+[ [ 1, 2, 3, 4, 5 ], [ 1, 1, 1, 1 ] ]
+gap> NextIterator(iter);
+[ [ 1, 2, 6, 4, 5 ], [ 1, 2, 1, 1 ] ]
+gap> IsDoneIterator(iter);
+true
 
 #T# DigraphLongestDistanceFromVertex
 gap> nbs := [[2, 8, 10, 11], [3, 5], [4], [], [6], [7], [], [9], [5], [6],
