@@ -1603,7 +1603,10 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS_COLORS(Obj self, Obj digraph, Obj colors) {
   SET_ELM_PLIST(autos, 2, NEW_PLIST(T_PLIST, 0)); // perms of the vertices
   CHANGED_BAG(autos);
   SET_LEN_PLIST(autos, 2);
-  canon = bliss_digraphs_find_canonical_labeling(graph, digraph_hook_function, autos, 0);
+  canon = bliss_digraphs_find_canonical_labeling(graph, 
+                                                 digraph_hook_function,
+                                                 autos, 
+                                                 0);
   bliss_digraphs_release(graph);
 
   if (LEN_PLIST(ELM_PLIST(autos, 2)) == 0) {
@@ -1672,8 +1675,10 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   SET_ELM_PLIST(autos, 4, NEW_PLIST(T_PLIST, 0)); // perms of the edges
   CHANGED_BAG(autos);
 
-  canon = bliss_digraphs_find_canonical_labeling(graph, multidigraph_hook_function, autos, 0);
-  
+  canon = bliss_digraphs_find_canonical_labeling(graph,
+                                                 multidigraph_hook_function, 
+                                                 autos, 
+                                                 0);
   // Get canonical labeling as GAP perms
   m   = DigraphNrVertices(digraph);
   p   = NEW_PERM4(m);  // perm of vertices
