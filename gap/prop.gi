@@ -44,6 +44,25 @@ end);
 
 #
 
+InstallMethod(IsCompleteBipartiteDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local bicomps;
+
+  if IsMultiDigraph(digraph) then
+    return false;
+  fi;
+
+  bicomps := DigraphBicomponents(digraph);
+  if bicomps = fail then
+    return false;
+  fi;
+
+  return DigraphNrEdges(digraph) = 2 * Length(bicomps[1]) * Length(bicomps[2]);
+end);
+
+#
+
 InstallMethod(IsConnectedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
