@@ -22,12 +22,12 @@ Persons := [
     PostalAddress := Concatenation(
                        "AG Algebra\n",
                        "Mathematisches Institut\n",
-                       "Justus-Liebig-Universit‰t Gieﬂen\n",
-                       "Arndtstraﬂe 2\n",
-                       "35392 Gieﬂen\n",
+                       "Justus-Liebig-Universit√§t Gie√üen\n",
+                       "Arndtstra√üe 2\n",
+                       "35392 Gie√üen\n",
                        "Germany" ),
-    Place         := "Gieﬂen",
-    Institution   := "Justus-Liebig-Universit‰t Gieﬂen"
+    Place         := "Gie√üen",
+    Institution   := "Justus-Liebig-Universit√§t Gie√üen"
   ),
 
   rec(
