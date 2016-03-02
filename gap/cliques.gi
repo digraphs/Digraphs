@@ -541,7 +541,7 @@ end);
 
 InstallGlobalFunction(DigraphMaximalCliques,
 function(arg)
-  local digraph, include, exclude, limit, size, out, G;
+  local digraph, include, exclude, limit, size, cliques, G, orbits, out, orb, c;
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphMaximalCliques: usage,\n",
@@ -580,9 +580,19 @@ function(arg)
       return DigraphMaximalCliquesAttr(digraph);
     fi;
     # Act on the representatives to find all
-    out := DigraphMaximalCliquesReps(digraph);
+    cliques := DigraphMaximalCliquesReps(digraph);
     G := AutomorphismGroup(MaximalSymmetricSubdigraphWithoutLoops(digraph));
-    return Concatenation(List(out, x -> Orbit(G, x, OnSets)));
+    orbits := [];
+    out := [];
+    for c in cliques do
+      if not ForAny(orbits, x -> c in x) then
+        orb := Orb(G, c, OnSets);
+        Enumerate(orb);
+        Add(orbits, orb);
+        out := Concatenation(out, orb);
+      fi;
+    od;
+    return out;
   fi;
 
   out := [];
@@ -710,7 +720,7 @@ end);
 InstallGlobalFunction(DIGRAPHS_BronKerbosch,
 function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
   local vtx, grp, invariant_inc, invariant_exc, invariant, adj, exc_inv, start,
-  possible, add, bk, num, x;
+  possible, found_orbits, add, bk, num, x;
 
   # Arguments must be:
   # gr   - a digraph
@@ -778,6 +788,8 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     IntersectBlist(possible, adj[x]);
   od;
 
+  found_orbits := [];
+
   # Function to find the valid cliques of an orbit given an orbit rep
   add := function(c)
     local orb, n, i;
@@ -789,8 +801,14 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       return;
     fi;
 
-    orb := Orbit(grp, c, OnSets); # this is not right
+    if ForAny(found_orbits, x -> c in x) then
+      return;
+    fi;
+    orb := Orb(grp, c, OnSets);
+    Enumerate(orb);
+    Add(found_orbits, orb);
     n := Length(orb);
+
     if invariant then # we're not just looking for orbit reps, but inc and exc
                       # are invariant so there is nothing extra to check
       n := Minimum(lim - num, n);
