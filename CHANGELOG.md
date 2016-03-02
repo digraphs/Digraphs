@@ -3,7 +3,7 @@ Copyright (C) 2014-16 Jan De Beule, Julius Jonusas, James D. Mitchell, Michael T
 
 Licensing information can be found in the LICENSE file.
 
-## Version 0.4.3 (released 03/02/2016)
+## Version 0.4.3 (released 02/03/2016)
 This is a minor release with some minor bugfixes and changes to functionality.
 `DigraphFile` and `IteratorFromDigraphFile` are introduced, and `WriteDigraphs`
 and `ReadDigraphs` can now take a file as a first argument. Files with

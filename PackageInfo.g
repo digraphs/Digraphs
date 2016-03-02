@@ -26,8 +26,8 @@ SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
 Version := "0.4.3",
-Date := "03/02/2016",
-ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.4.3",
+Date := "02/03/2016",
+ArchiveURL := "http://goo.gl/CYcX8D/digraphs-0.4.3",
 ArchiveFormats := ".tar.gz",
 Persons := [
 
@@ -69,7 +69,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "jdm3@st-and.ac.uk",
-    WWWHome       := "tinyurl.com/jdmitchell",
+    WWWHome       := "http://goo.gl/ZtViV6",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
