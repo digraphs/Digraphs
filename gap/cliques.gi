@@ -541,10 +541,10 @@ end);
 
 InstallGlobalFunction(DigraphMaximalCliques,
 function(arg)
-  local digraph, include, exclude, limit, size, out, G;
+  local digraph, include, exclude, limit, size, cliques, G, orbits, out, orb, c;
 
   if IsEmpty(arg) then
-    ErrorNoReturn("Digraphs: DigraphMaximalCliquesReps: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphMaximalCliques: usage,\n",
                   "this function requires at least one argument,");
   fi;
 
@@ -579,9 +579,20 @@ function(arg)
     if HasDigraphMaximalCliquesAttr(digraph) then
       return DigraphMaximalCliquesAttr(digraph);
     fi;
-    out := DigraphMaximalCliquesReps(digraph);
+    # Act on the representatives to find all
+    cliques := DigraphMaximalCliquesReps(digraph);
     G := AutomorphismGroup(MaximalSymmetricSubdigraphWithoutLoops(digraph));
-    return Concatenation(List(out, x -> Orbit(G, x, OnSets)));
+    orbits := [];
+    out := [];
+    for c in cliques do
+      if not ForAny(orbits, x -> c in x) then
+        orb := Orb(G, c, OnSets);
+        Enumerate(orb);
+        Add(orbits, orb);
+        out := Concatenation(out, orb);
+      fi;
+    od;
+    return out;
   fi;
 
   out := [];
@@ -709,9 +720,9 @@ end);
 InstallGlobalFunction(DIGRAPHS_BronKerbosch,
 function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
   local vtx, grp, invariant_inc, invariant_exc, invariant, adj, exc_inv, start,
-  possible, add, bk, num, x;
+  possible, found_orbits, add, bk, num, x;
 
-  # Arguments should be:
+  # Arguments must be:
   # gr   - a digraph
   # hook - fail or a function
   # user-param - a list or the first argument of hook
@@ -725,7 +736,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
   # Test for easy cases
   if size <> fail and Length(inc) > size then
     return [];
-  elif ForAny(exc, x -> x in inc) then
+  elif not IsEmpty(Intersection(exc, inc)) then
     # the clique contains excluded vertices
     return [];
   elif size <> fail
@@ -741,7 +752,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     hook := Add;
   fi;
 
-  gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
+  gr  := MaximalSymmetricSubdigraphWithoutLoops(gr);
   vtx := DigraphVertices(gr);
   grp := AutomorphismGroup(gr);
 
@@ -777,6 +788,8 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     IntersectBlist(possible, adj[x]);
   od;
 
+  found_orbits := [];
+
   # Function to find the valid cliques of an orbit given an orbit rep
   add := function(c)
     local orb, n, i;
@@ -786,55 +799,58 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       hook(user_param, c);
       num := num + 1;
       return;
-    fi;
+    elif not ForAny(found_orbits, x -> c in x) then
+      orb := Orb(grp, c, OnSets);
+      Enumerate(orb);
+      Add(found_orbits, orb);
+      n := Length(orb);
 
-    orb := Orbit(grp, c, OnSets);
-    n := Length(orb);
-    if invariant then # we're not just looking for orbit reps, but inc and exc
-                      # are invariant so there is nothing extra to check
-      n := Minimum(lim - num, n);
-      for c in orb{[1 .. n]} do
-        hook(user_param, c);
-      od;
-      num := num + n;
-      return;
-    fi;
+      if invariant then # we're not just looking for orbit reps, but inc and exc
+                        # are invariant so there is nothing extra to check
+        n := Minimum(lim - num, n);
+        for c in orb{[1 .. n]} do
+          hook(user_param, c);
+        od;
+        num := num + n;
+        return;
+      fi;
 
-    if invariant_inc then
-      # Cliques in the orbit might contain forbidden vertices
-      i := 0;
-      while i < n and num < lim do
-        i := i + 1;
-        c := BlistList(vtx, orb[i]);
-        if SizeBlist(IntersectionBlist(exc_var, c)) = 0 then
-          hook(user_param, orb[i]);
-          num := num + 1;
-        fi;
-      od;
-    elif invariant_exc then
-      # Cliques in the orbit might not contain all required vertices
-      i := 0;
-      while i < n and num < lim do
-        i := i + 1;
-        c := BlistList(vtx, orb[i]);
-        if IsSubsetBlist(c, inc_var) then
-          hook(user_param, orb[i]);
-          num := num + 1;
-        fi;
-      od;
-    else
-      # Cliques in the orbit might contain forbidden vertices
-      # Cliques in the orbit might not contain all required vertices
-      i := 0;
-      while i < n and num < lim do
-        i := i + 1;
-        c := BlistList(vtx, orb[i]);
-        if SizeBlist(IntersectionBlist(exc_var, c)) = 0
-            and IsSubsetBlist(c, inc_var) then
-          hook(user_param, orb[i]);
-          num := num + 1;
-        fi;
-      od;
+      if invariant_inc then
+        # Cliques in the orbit might contain forbidden vertices
+        i := 0;
+        while i < n and num < lim do
+          i := i + 1;
+          c := BlistList(vtx, orb[i]);
+          if SizeBlist(IntersectionBlist(exc_var, c)) = 0 then
+            hook(user_param, orb[i]);
+            num := num + 1;
+          fi;
+        od;
+      elif invariant_exc then
+        # Cliques in the orbit might not contain all required vertices
+        i := 0;
+        while i < n and num < lim do
+          i := i + 1;
+          c := BlistList(vtx, orb[i]);
+          if IsSubsetBlist(c, inc_var) then
+            hook(user_param, orb[i]);
+            num := num + 1;
+          fi;
+        od;
+      else
+        # Cliques in the orbit might contain forbidden vertices
+        # Cliques in the orbit might not contain all required vertices
+        i := 0;
+        while i < n and num < lim do
+          i := i + 1;
+          c := BlistList(vtx, orb[i]);
+          if SizeBlist(IntersectionBlist(exc_var, c)) = 0
+              and IsSubsetBlist(c, inc_var) then
+            hook(user_param, orb[i]);
+            num := num + 1;
+          fi;
+        od;
+      fi;
     fi;
     return;
   end;
@@ -868,17 +884,17 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     fi;
 
     # TODO should this come after choosing the pivot or before?
-    orb := ListBlist(vtx, UnionBlist(try, ban));
-    if not G = fail then # Use the group <G> to prune the vertices to try
-      orb := Orbits(G, orb);
-      orb := List(orb, x -> x[1]);
-      try_orb := IntersectionBlist(BlistList(vtx, orb), try);
-    else
-      try_orb := ShallowCopy(try);
-    fi;
+    #orb := ListBlist(vtx, UnionBlist(try, ban));
+    #if not G = fail then
+    #  orb := Orbits(G, orb);
+    #  orb := List(orb, x -> x[1]);
+    #  try_orb := IntersectionBlist(BlistList(vtx, orb), try);
+    #else
+    #  try_orb := ShallowCopy(try);
+    #fi;
 
     # If we are searching for *maximal* cliques then choose a pivot
-    if max and G = fail then
+    if max then
       # Choose a pivot: choose a vertex with maximum out-degree in try or ban
       # TODO optimise choice of pivot
 
@@ -897,7 +913,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       #             of neighbours in try (try mod G)
       top := -1;
       piv := 0;
-      for v in orb do
+      for v in ListBlist(vtx, UnionBlist(try, ban)) do
         m := SizeBlist(IntersectionBlist(try, adj[v]));
         if m > top then
           piv := v;
@@ -905,12 +921,15 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
         fi;
       od;
 
-      to_try := ShallowCopy(ListBlist(vtx, DifferenceBlist(try_orb,
-                                                           adj[piv])));
+      to_try := ShallowCopy(ListBlist(vtx, DifferenceBlist(try, adj[piv])));
     else
       # If we are searching for cliques (not necessarily maximal) of a given
       # size then the logic of using a pivot doesn't work
-      to_try := ListBlist(vtx, try_orb);
+      to_try := ListBlist(vtx, try);
+    fi;
+
+    if not G = fail then
+      to_try := List(Orbits(G, to_try), x -> x[1]);
     fi;
 
     # Try to extend <c> and recurse

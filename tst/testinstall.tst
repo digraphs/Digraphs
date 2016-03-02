@@ -237,7 +237,7 @@ gap> gr := DigraphFromGraph6String("L~~~ySrJ[N{NT^");
 gap> gr = MaximalSymmetricSubdigraphWithoutLoops(gr);
 true
 gap> DigraphMaximalCliquesReps(gr);
-[ [ 1, 2, 3, 4, 5, 6, 7 ], [ 1, 2, 3, 12 ], [ 1, 11, 12 ], [ 2, 8, 12, 13 ], 
+[ [ 1, 2, 3, 4, 5, 6, 7 ], [ 1, 2, 3, 12 ], [ 2, 8, 12, 13 ], [ 4, 9, 13 ], 
   [ 8, 9, 10, 11, 12, 13 ] ]
 gap> gr := DigraphFromGraph6String("I~~wzfJhw");
 <digraph with 10 vertices, 66 edges>

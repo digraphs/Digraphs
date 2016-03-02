@@ -659,6 +659,7 @@ function(m, n)
   gr := DigraphNC(r);
   SetIsSymmetricDigraph(gr, true);
   SetDigraphNrEdges(gr, 2 * m * n);
+  SetIsCompleteBipartiteDigraph(gr, true);
   return gr;
 end);
 

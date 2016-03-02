@@ -300,7 +300,7 @@ gap> DigraphMaximalCliquesReps(gr);
 gap> DigraphMaximalCliquesAttr(gr);
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
 gap> DigraphMaximalCliques();
-Error, Digraphs: DigraphMaximalCliquesReps: usage,
+Error, Digraphs: DigraphMaximalCliques: usage,
 this function requires at least one argument,
 gap> DigraphMaximalCliques(gr);
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
@@ -323,9 +323,9 @@ gap> gr := DigraphFromGraph6String(
 <digraph with 25 vertices, 440 edges>
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ], 
-  [ 1, 2, 3, 4, 5, 8, 12, 24 ], [ 1, 3, 4, 6, 10, 11, 14, 23 ], 
-  [ 1, 3, 4, 23, 24 ], [ 1, 8, 12, 20, 21, 24 ], [ 1, 20, 21, 23, 24 ], 
-  [ 4, 16, 17, 22, 23, 24, 25 ], [ 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 ] ]
+  [ 1, 2, 3, 4, 5, 8, 12, 24 ], [ 2, 4, 12, 17, 24, 25 ], 
+  [ 4, 16, 17, 22, 23, 24, 25 ], [ 4, 7, 9, 16, 25 ], [ 3, 18, 19, 23, 24 ], 
+  [ 5, 16, 18, 22, 24 ], [ 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 ] ]
 
 #T# CliquesFinder: error checking
 gap> CliquesFinder(Group(()), fail, fail, fail, fail, fail, fail, fail, fail);
@@ -472,8 +472,40 @@ gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
 gap> out := CliquesFinder(gr, fail, [], lim, [], [], true, 3, true);
 [  ]
 
+#T# DigraphMaximalCliques: examples that had been giving duplicate results
+gap> gr := DigraphFromGraph6String(
+> "X~~~~~~~~~~~~~~~~~}EkpJK_vyRUwvH{fL^FFfzdo~tmB~cU^~");
+<digraph with 25 vertices, 440 edges>
+gap> AutomorphismGroup(gr);;
+gap> c := DigraphMaximalCliques(gr);;
+gap> Length(c);
+52
+gap> gr := DigraphFromGraph6String(Concatenation(
+> "b~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bx[^fbY^zbMznyvej^AX~",
+> "v|Zf\\r~jXmr~}|LD~t}iF~ztlNV~_"));
+<digraph with 35 vertices, 1010 edges>
+gap> AutomorphismGroup(gr);;
+gap> c := DigraphMaximalCliques(gr);;
+gap> Length(c);
+302
+gap> gr := DigraphFromGraph6String(Concatenation(
+> "~?@O~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+> "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+> "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+> "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+> "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}NrN}}~~[F",
+> "~X}H}jr~~t]~zwvmv\\zzy}n~y~m~Tzjy}M~{Jr^YZ~V|~~~V|uuu|^^Z|^w^emV|n~^}z~j",
+> "uYz\\u~l~zz~~T|nllvb}~Z~~~~it~a}zvD~~j}tY~f~x~qn~~z~Z||{V]Sn~~~~z~jnfzod",
+> "V~}nzn}}}~MFVn~z|F|F~|tNx~~~{"));
+<digraph with 80 vertices, 5840 edges>
+gap> AutomorphismGroup(gr);;
+gap> c := DigraphMaximalCliques(gr);;
+gap> Length(c);
+12815
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(f);
+gap> Unbind(c);
 gap> Unbind(gr);
 gap> Unbind(lim);
 gap> Unbind(out);

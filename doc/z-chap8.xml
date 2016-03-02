@@ -29,7 +29,7 @@
       Prop="DigraphHasLoops"/> and <Ref Prop="IsMultiDigraph"/> for more
     information about these properties.  Therefore given a digraph
     <A>digraph</A>, the cliques and independent sets of <A>digraph</A> are
-    equal to the cliques and indepedents sets of the digraph:
+    equal to the cliques and independent sets of the digraph:
 
     <List>
       <Item>

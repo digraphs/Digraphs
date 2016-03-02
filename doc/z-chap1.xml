@@ -20,6 +20,13 @@
         ensure that the &IO; package version &IOVERS; or higher is available.
         &IO; must be compiled before &Digraphs; can be loaded.
       </Item>
+
+      <Item> 
+        ensure that the &Orb; package version &ORBVERS; or higher is available.
+        &Orb; has better performance when compiled, but although compilation is
+        recommended, it is not required to be compiled for &Digraphs; to be
+        loaded.
+      </Item>
       
       <Item>  
         <B>This step is optional:</B> certain functions in &Digraphs; require

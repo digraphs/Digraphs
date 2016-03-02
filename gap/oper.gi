@@ -1217,25 +1217,38 @@ function(digraph, u, v)
   record := rec(adj := digraph,
                 start := u,
                 stop := v,
-                ptr := BlistList([1 .. n], []),
-                nbs := [1]);
+                onpath := BlistList([1 .. n], []),
+                nbs := ListWithIdenticalEntries(n, 1));
 
   record.NextIterator := function(iter)
-    local adj, path, ptr, nbs, level, j, k, current, next;
+    local adj, path, ptr, nbs, level, stop, onpath, backtracked, j, k, current,
+    new, next, x;
 
     adj := iter!.adj;
-    path := iter!.path;
-    ptr := iter!.ptr;
+    path := [iter!.start];
+    ptr := ListWithIdenticalEntries(n, 0);
     nbs := iter!.nbs;
-    level := Length(iter!.path);
+    level := 1;
+    stop := iter!.stop;
+    onpath := iter!.onpath;
 
+    backtracked := false;
     while true do
       j := path[level];
-      k := nbs[level];
+      k := nbs[j];
 
       # Backtrack if vertex j is already in path, or it has no k^th neighbour
-      if (ptr[j] or k > Length(adj[j])) then
+      if (not ptr[j] = 0 or k > Length(adj[j])) then
+        if k > Length(adj[j]) then
+          nbs[j] := 1;
+        fi;
+        if k > Length(adj[j]) and onpath[j] then
+          ptr[j] := 0;
+        else
+          ptr[j] := 1;
+        fi;
         level := level - 1;
+        backtracked := true;
         if level = 0 then
           # No more paths to be found
           current := fail;
@@ -1243,23 +1256,35 @@ function(digraph, u, v)
         fi;
         # Backtrack and choose next available branch
         Remove(path);
-        ptr[path[level]] := false;
-        nbs[level] := nbs[level] + 1;
+        ptr[path[level]] := 0;
+        nbs[path[level]] := nbs[path[level]] + 1;
         continue;
       fi;
 
       # Otherwise move into next available branch
 
       # Check if new branch is a valid complete path
-      if adj[j][k] = iter!.stop then
-        current := [Concatenation(path, [adj[j][k]]), nbs{[1 .. level]}];
-        nbs[level] := nbs[level] + 1;
+      if adj[j][k] = stop then
+        current := [Concatenation(path, [adj[j][k]]), List(path, x -> nbs[x])];
+        nbs[j] := nbs[j] + 1;
+        # Everything in the path should keep its nbs
+        # but everything else should be back to 1
+        new := ListWithIdenticalEntries(n, 1);
+        for x in path do
+          onpath[x] := true;
+          new[x] := nbs[x];
+        od;
+        iter!.nbs := new;
+        iter!.onpath := onpath;
         break;
       fi;
-      ptr[j] := true;
+      ptr[j] := 2;
       level := level + 1;
       path[level] := adj[j][k];
-      nbs[level] := 1;
+      # this is the troublesome line
+      if ptr[path[level]] = 0 and backtracked then
+        nbs[path[level]] := 1;
+      fi;
     od;
 
     if not IsBound(iter!.current) then
@@ -1271,7 +1296,6 @@ function(digraph, u, v)
     return next;
   end;
 
-  record.path := [u];
   record.current := record.NextIterator(record);
 
   record.IsDoneIterator := function(iter)
@@ -1285,9 +1309,8 @@ function(digraph, u, v)
     return rec(adj := iter!.adj,
                start := iter!.start,
                stop := iter!.stop,
-               ptr := ShallowCopy(iter!.ptr),
-               path := ShallowCopy(iter!.path),
                nbs := ShallowCopy(iter!.nbs),
+               onpath := ShallowCopy(iter!.onpath),
                current := ShallowCopy(iter!.current));
   end;
 

@@ -769,6 +769,28 @@ gap> gr := Digraph([[], [3], [2]]);
 gap> IsDistanceRegularDigraph(gr);
 false
 
+#T# IsCompleteBipartiteDigraph
+gap> gr := CompleteBipartiteDigraph(4, 5);
+<digraph with 9 vertices, 40 edges>
+gap> IsCompleteBipartiteDigraph(gr);
+true
+gap> gr := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> IsCompleteBipartiteDigraph(gr);
+false
+gap> gr := CycleDigraph(3);
+<digraph with 3 vertices, 3 edges>
+gap> IsCompleteBipartiteDigraph(gr);
+false
+gap> gr := CycleDigraph(4);
+<digraph with 4 vertices, 4 edges>
+gap> IsCompleteBipartiteDigraph(gr);
+false
+gap> gr := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsCompleteBipartiteDigraph(gr);
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(circuit);
