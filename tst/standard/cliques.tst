@@ -472,8 +472,40 @@ gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
 gap> out := CliquesFinder(gr, fail, [], lim, [], [], true, 3, true);
 [  ]
 
+#T# DigraphMaximalCliques: examples that had been giving duplicate results
+gap> gr := DigraphFromGraph6String(
+> "X~~~~~~~~~~~~~~~~~}EkpJK_vyRUwvH{fL^FFfzdo~tmB~cU^~");
+<digraph with 25 vertices, 440 edges>
+gap> AutomorphismGroup(gr);;
+gap> c := DigraphMaximalCliques(gr);;
+gap> Length(c);
+52
+gap> gr := DigraphFromGraph6String(Concatenation(
+> "b~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bx[^fbY^zbMznyvej^AX~",
+> "v|Zf\\r~jXmr~}|LD~t}iF~ztlNV~_"));
+<digraph with 35 vertices, 1010 edges>
+gap> AutomorphismGroup(gr);;
+gap> c := DigraphMaximalCliques(gr);;
+gap> Length(c);
+302
+gap> gr := DigraphFromGraph6String(Concatenation(
+> "~?@O~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+> "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+> "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+> "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+> "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}NrN}}~~[F",
+> "~X}H}jr~~t]~zwvmv\\zzy}n~y~m~Tzjy}M~{Jr^YZ~V|~~~V|uuu|^^Z|^w^emV|n~^}z~j",
+> "uYz\\u~l~zz~~T|nllvb}~Z~~~~it~a}zvD~~j}tY~f~x~qn~~z~Z||{V]Sn~~~~z~jnfzod",
+> "V~}nzn}}}~MFVn~z|F|F~|tNx~~~{"));
+<digraph with 80 vertices, 5840 edges>
+gap> AutomorphismGroup(gr);;
+gap> c := DigraphMaximalCliques(gr);;
+gap> Length(c);
+12815
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(f);
+gap> Unbind(c);
 gap> Unbind(gr);
 gap> Unbind(lim);
 gap> Unbind(out);
