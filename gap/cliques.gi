@@ -869,17 +869,17 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     fi;
 
     # TODO should this come after choosing the pivot or before?
-    orb := ListBlist(vtx, UnionBlist(try, ban));
-    if not G = fail then # Use the group <G> to prune the vertices to try
-      orb := Orbits(G, orb);
-      orb := List(orb, x -> x[1]);
-      try_orb := IntersectionBlist(BlistList(vtx, orb), try);
-    else
-      try_orb := ShallowCopy(try);
-    fi;
+    #orb := ListBlist(vtx, UnionBlist(try, ban));
+    #if not G = fail then
+    #  orb := Orbits(G, orb);
+    #  orb := List(orb, x -> x[1]);
+    #  try_orb := IntersectionBlist(BlistList(vtx, orb), try);
+    #else
+    #  try_orb := ShallowCopy(try);
+    #fi;
 
     # If we are searching for *maximal* cliques then choose a pivot
-    if max and G = fail then
+    if max then
       # Choose a pivot: choose a vertex with maximum out-degree in try or ban
       # TODO optimise choice of pivot
 
@@ -898,7 +898,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       #             of neighbours in try (try mod G)
       top := -1;
       piv := 0;
-      for v in orb do
+      for v in ListBlist(vtx, UnionBlist(try, ban)) do
         m := SizeBlist(IntersectionBlist(try, adj[v]));
         if m > top then
           piv := v;
@@ -906,12 +906,15 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
         fi;
       od;
 
-      to_try := ShallowCopy(ListBlist(vtx, DifferenceBlist(try_orb,
-                                                           adj[piv])));
+      to_try := ShallowCopy(ListBlist(vtx, DifferenceBlist(try, adj[piv])));
     else
       # If we are searching for cliques (not necessarily maximal) of a given
       # size then the logic of using a pivot doesn't work
-      to_try := ListBlist(vtx, try_orb);
+      to_try := ListBlist(vtx, try);
+    fi;
+
+    if not G = fail then
+      to_try := List(Orbits(G, to_try), x -> x[1]);
     fi;
 
     # Try to extend <c> and recurse

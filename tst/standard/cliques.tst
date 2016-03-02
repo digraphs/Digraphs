@@ -300,7 +300,7 @@ gap> DigraphMaximalCliquesReps(gr);
 gap> DigraphMaximalCliquesAttr(gr);
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
 gap> DigraphMaximalCliques();
-Error, Digraphs: DigraphMaximalCliquesReps: usage,
+Error, Digraphs: DigraphMaximalCliques: usage,
 this function requires at least one argument,
 gap> DigraphMaximalCliques(gr);
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
