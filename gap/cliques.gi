@@ -544,7 +544,7 @@ function(arg)
   local digraph, include, exclude, limit, size, out, G;
 
   if IsEmpty(arg) then
-    ErrorNoReturn("Digraphs: DigraphMaximalCliquesReps: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphMaximalCliques: usage,\n",
                   "this function requires at least one argument,");
   fi;
 
@@ -579,6 +579,7 @@ function(arg)
     if HasDigraphMaximalCliquesAttr(digraph) then
       return DigraphMaximalCliquesAttr(digraph);
     fi;
+    # Act on the representatives to find all
     out := DigraphMaximalCliquesReps(digraph);
     G := AutomorphismGroup(MaximalSymmetricSubdigraphWithoutLoops(digraph));
     return Concatenation(List(out, x -> Orbit(G, x, OnSets)));
@@ -711,7 +712,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
   local vtx, grp, invariant_inc, invariant_exc, invariant, adj, exc_inv, start,
   possible, add, bk, num, x;
 
-  # Arguments should be:
+  # Arguments must be:
   # gr   - a digraph
   # hook - fail or a function
   # user-param - a list or the first argument of hook
@@ -725,7 +726,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
   # Test for easy cases
   if size <> fail and Length(inc) > size then
     return [];
-  elif ForAny(exc, x -> x in inc) then
+  elif not IsEmpty(Intersection(exc, inc)) then
     # the clique contains excluded vertices
     return [];
   elif size <> fail
@@ -741,7 +742,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     hook := Add;
   fi;
 
-  gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
+  gr  := MaximalSymmetricSubdigraphWithoutLoops(gr);
   vtx := DigraphVertices(gr);
   grp := AutomorphismGroup(gr);
 
@@ -788,7 +789,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       return;
     fi;
 
-    orb := Orbit(grp, c, OnSets);
+    orb := Orbit(grp, c, OnSets); # this is not right
     n := Length(orb);
     if invariant then # we're not just looking for orbit reps, but inc and exc
                       # are invariant so there is nothing extra to check

@@ -218,7 +218,7 @@ gap> DigraphClique(gr, [], [], 2);
         on sets of vertices.
       </Item>
 
-      <Mark>Representatives of distinct orbits of cliques</Mark>
+      <Mark>Orbit representatives of cliques</Mark>
       <Item>
         To use <C>DigraphMaximalCliquesReps</C> or <C>DigraphCliquesReps</C>,
         the arguments <A>include</A> and <A>exclude</A> must each be invariant
@@ -228,7 +228,12 @@ gap> DigraphClique(gr, [], [], 2);
         <C>DigraphCliquesReps</C> each return a duplicate-free list of at most
         <A>limit</A> orbits representatives (under the action of <C>G</C> on
         sets vertices) of cliques of <A>digraph</A> which satisfy the
-        arguments.
+        arguments.<P/>
+
+        The representatives are not guaranteed to be in distinct orbits.
+        However, if <A>lim</A> is not specified, or fewer than <A>lim</A> results
+        are returned, then there will be at least one representative from each
+        orbit of maximal cliques.
       </Item>
     </List>
 
@@ -406,10 +411,15 @@ gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
         sets of vertices.<P/>
         
         If this is the case, then <C>DigraphMaximalIndependentSetsReps</C> and
-        <C>DigraphIndependentSetsReps</C> each return a duplicate-free list of
+        <C>DigraphIndependentSetsReps</C> each return a list of
         at most <A>limit</A> orbits representatives (under the action of
         <C>G</C> on sets of vertices) of independent sets of <A>digraph</A>
-        which satisfy the arguments.
+        which satisfy the arguments. <P/>
+
+        The representatives are not guaranteed to be in distinct orbits.
+        However, if <A>lim</A> is not specified, or fewer than <A>lim</A>
+        results are returned, then there will be at least one representative
+        from each orbit of maximal independent sets.
       </Item>
     </List>
 
@@ -443,9 +453,9 @@ gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
     that a clique is represented by a list of the vertices which it contains.
     <P/>
 
-    Let <C>G</C> denote the automorphism group of maximal symmetric subdigraph
-    of <A>digraph</A> without loops (see <Ref Attr="AutomorphismGroup"
-      Label="for a digraph"/> and <Ref
+    Let <C>G</C> denote the automorphism group of the maximal symmetric
+    subdigraph of <A>digraph</A> without loops (see <Ref
+      Attr="AutomorphismGroup" Label="for a digraph"/> and <Ref
       Attr="MaximalSymmetricSubdigraphWithoutLoops"/>).
 
     <List>
@@ -518,14 +528,12 @@ gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
         
         If <A>reps</A> is <K>true</K> then the arguments <A>include</A> and
         <A>exclude</A> are each required to be invariant under the action of
-        <C>G</C> on sets of vertices.
-        In this case, <C>CliquesFinder</C> will only find
-        representatives of the orbits of the desired cliques under the action
-        of <C>G</C>.
-
-        If <A>reps</A> is false then <C>CliquesFinder</C> may find distinct
-        cliques which are in the same orbit of <C>G</C>.
-        <P/>
+        <C>G</C> on sets of vertices.  In this case, <C>CliquesFinder</C> will
+        find representatives of the orbits of the desired cliques under the
+        action of <C>G</C>, <E>although representatives may be returned which
+          are in the same orbit</E>.
+        If <A>reps</A> is false then <C>CliquesFinder</C> will not take this into
+        consideration.<P/>
 
         For a digraph such that <C>G</C> is non-trivial, the search for
         clique representatives can be much more efficient than the search for
