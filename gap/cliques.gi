@@ -799,61 +799,58 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       hook(user_param, c);
       num := num + 1;
       return;
-    fi;
+    elif not ForAny(found_orbits, x -> c in x) then
+      orb := Orb(grp, c, OnSets);
+      Enumerate(orb);
+      Add(found_orbits, orb);
+      n := Length(orb);
 
-    if ForAny(found_orbits, x -> c in x) then
-      return;
-    fi;
-    orb := Orb(grp, c, OnSets);
-    Enumerate(orb);
-    Add(found_orbits, orb);
-    n := Length(orb);
+      if invariant then # we're not just looking for orbit reps, but inc and exc
+                        # are invariant so there is nothing extra to check
+        n := Minimum(lim - num, n);
+        for c in orb{[1 .. n]} do
+          hook(user_param, c);
+        od;
+        num := num + n;
+        return;
+      fi;
 
-    if invariant then # we're not just looking for orbit reps, but inc and exc
-                      # are invariant so there is nothing extra to check
-      n := Minimum(lim - num, n);
-      for c in orb{[1 .. n]} do
-        hook(user_param, c);
-      od;
-      num := num + n;
-      return;
-    fi;
-
-    if invariant_inc then
-      # Cliques in the orbit might contain forbidden vertices
-      i := 0;
-      while i < n and num < lim do
-        i := i + 1;
-        c := BlistList(vtx, orb[i]);
-        if SizeBlist(IntersectionBlist(exc_var, c)) = 0 then
-          hook(user_param, orb[i]);
-          num := num + 1;
-        fi;
-      od;
-    elif invariant_exc then
-      # Cliques in the orbit might not contain all required vertices
-      i := 0;
-      while i < n and num < lim do
-        i := i + 1;
-        c := BlistList(vtx, orb[i]);
-        if IsSubsetBlist(c, inc_var) then
-          hook(user_param, orb[i]);
-          num := num + 1;
-        fi;
-      od;
-    else
-      # Cliques in the orbit might contain forbidden vertices
-      # Cliques in the orbit might not contain all required vertices
-      i := 0;
-      while i < n and num < lim do
-        i := i + 1;
-        c := BlistList(vtx, orb[i]);
-        if SizeBlist(IntersectionBlist(exc_var, c)) = 0
-            and IsSubsetBlist(c, inc_var) then
-          hook(user_param, orb[i]);
-          num := num + 1;
-        fi;
-      od;
+      if invariant_inc then
+        # Cliques in the orbit might contain forbidden vertices
+        i := 0;
+        while i < n and num < lim do
+          i := i + 1;
+          c := BlistList(vtx, orb[i]);
+          if SizeBlist(IntersectionBlist(exc_var, c)) = 0 then
+            hook(user_param, orb[i]);
+            num := num + 1;
+          fi;
+        od;
+      elif invariant_exc then
+        # Cliques in the orbit might not contain all required vertices
+        i := 0;
+        while i < n and num < lim do
+          i := i + 1;
+          c := BlistList(vtx, orb[i]);
+          if IsSubsetBlist(c, inc_var) then
+            hook(user_param, orb[i]);
+            num := num + 1;
+          fi;
+        od;
+      else
+        # Cliques in the orbit might contain forbidden vertices
+        # Cliques in the orbit might not contain all required vertices
+        i := 0;
+        while i < n and num < lim do
+          i := i + 1;
+          c := BlistList(vtx, orb[i]);
+          if SizeBlist(IntersectionBlist(exc_var, c)) = 0
+              and IsSubsetBlist(c, inc_var) then
+            hook(user_param, orb[i]);
+            num := num + 1;
+          fi;
+        od;
+      fi;
     fi;
     return;
   end;
