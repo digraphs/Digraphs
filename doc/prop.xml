@@ -98,6 +98,42 @@ false
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsCompleteBipartiteDigraph">
+<ManSection>
+  <Prop Name="IsCompleteBipartiteDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    Returns <K>true</K> if the digraph <A>digraph</A> is a complete bipartite
+    digraph, and <K>false</K> if it is not. <P/>
+    
+    A digraph is a <E>complete bipartite digraph</E> if it is bipartite, see
+    <Ref Prop="IsBipartiteDigraph"/>, and there exists a unique edge with
+    source <C>i</C> and range <C>j</C> if and only if <C>i</C> and <C>j</C> lie
+    in different bicomponents of <A>digraph</A>, see <Ref
+      Attr="DigraphBicomponents"/>. <P/>
+    
+    Equivalently, a bipartite digraph with bicomponents of size <M>m</M> and
+    <M>n</M> is complete precisely when it has <M>2mn</M> edges, none of which
+    are multiple edges. <P/>
+
+    See also <Ref Oper="CompleteBipartiteDigraph"/>.
+
+    <Example><![CDATA[
+gap> gr := CycleDigraph(2);
+<digraph with 2 vertices, 2 edges>
+gap> IsCompleteBipartiteDigraph(gr);
+true
+gap> gr := CycleDigraph(4);
+<digraph with 4 vertices, 4 edges>
+gap> IsBipartiteDigraph(gr);
+true
+gap> IsCompleteBipartiteDigraph(gr);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsEmptyDigraph">
 <ManSection>
   <Prop Name="IsEmptyDigraph" Arg="digraph"/>

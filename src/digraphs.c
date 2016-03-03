@@ -551,15 +551,15 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
 
 //TODO use generic DFS, when we have one.
 
-static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) { 
+static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) { 
   UInt  nr, i, j, k, level, target;
-  Obj   nbs;
+  Obj   nbs, out, path, edge;
   UInt  *stack, *ptr;
 
   i      = INT_INTOBJ(u);
   nbs    = ELM_PLIST(adj, i);
   if (LEN_LIST(nbs) == 0) {
-    return False;
+    return Fail;
   }
   target = INT_INTOBJ(v);
   nr     = LEN_PLIST(adj);
@@ -580,8 +580,7 @@ static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) {
     nbs = ELM_PLIST(adj, j);
     if (ptr[j] != 0 || k > (UInt) LEN_LIST(nbs)) {
       ptr[j] = 1;
-      level--;
-      if (level == 0) { 
+      if (--level == 0) {
         break;
       }
       // Backtrack and choose next available branch
@@ -595,17 +594,33 @@ static Obj FuncDIGRAPHS_IS_REACHABLE(Obj self, Obj adj, Obj u, Obj v) {
       stack += 2;
       stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
       if (stack[0] == target) {
+        // Create output lists
+        path = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, level);
+        SET_LEN_PLIST(path, level);
+        SET_ELM_PLIST(path, level--, INTOBJ_INT(stack[0]));
+        edge = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, level);
+        SET_LEN_PLIST(edge, level);
+        out = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, 2);
+        SET_LEN_PLIST(out, 2);
+
+        // Fill output lists
+        while (level > 0) {
+          stack -= 2;
+          SET_ELM_PLIST(edge, level,   INTOBJ_INT(stack[1]));
+          SET_ELM_PLIST(path, level--, INTOBJ_INT(stack[0]));
+        }
+        SET_ELM_PLIST(out, 1, path);
+        SET_ELM_PLIST(out, 2, edge);
         free(ptr);
-        stack -= (2 * level) - 2; // put the stack back to the start
         free(stack);
-        return True;
+        return out;
       }
       stack[1] = 1;
     }
   }
   free(ptr);
   free(stack);
-  return False;
+  return Fail;
 }
 
 static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
@@ -1588,7 +1603,10 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS_COLORS(Obj self, Obj digraph, Obj colors) {
   SET_ELM_PLIST(autos, 2, NEW_PLIST(T_PLIST, 0)); // perms of the vertices
   CHANGED_BAG(autos);
   SET_LEN_PLIST(autos, 2);
-  canon = bliss_digraphs_find_canonical_labeling(graph, digraph_hook_function, autos, 0);
+  canon = bliss_digraphs_find_canonical_labeling(graph, 
+                                                 digraph_hook_function,
+                                                 autos, 
+                                                 0);
   bliss_digraphs_release(graph);
 
   if (LEN_PLIST(ELM_PLIST(autos, 2)) == 0) {
@@ -1657,8 +1675,10 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   SET_ELM_PLIST(autos, 4, NEW_PLIST(T_PLIST, 0)); // perms of the edges
   CHANGED_BAG(autos);
 
-  canon = bliss_digraphs_find_canonical_labeling(graph, multidigraph_hook_function, autos, 0);
-  
+  canon = bliss_digraphs_find_canonical_labeling(graph,
+                                                 multidigraph_hook_function, 
+                                                 autos, 
+                                                 0);
   // Get canonical labeling as GAP perms
   m   = DigraphNrVertices(digraph);
   p   = NEW_PERM4(m);  // perm of vertices
@@ -2262,9 +2282,9 @@ static StructGVarFunc GVarFuncs [] = {
     FuncDIGRAPH_LT,
     "src/digraphs.c:FuncDIGRAPH_LT" },
 
-  { "DIGRAPHS_IS_REACHABLE", 3, "digraph, u, v",
-    FuncDIGRAPHS_IS_REACHABLE,
-    "src/digraphs.c:FuncDIGRAPHS_IS_REACHABLE" },
+  { "DIGRAPH_PATH", 3, "digraph, u, v",
+    FuncDIGRAPH_PATH,
+    "src/digraphs.c:FuncDIGRAPH_PATH" },
 
   { "DIGRAPH_AUTOMORPHISMS", 1, "digraph",
     FuncDIGRAPH_AUTOMORPHISMS, 

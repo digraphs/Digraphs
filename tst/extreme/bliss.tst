@@ -300,19 +300,19 @@ gap> OnMultiDigraphs(gr1, iso) = gr1;
 true
 
 #T# DIGRAPHS_UnbindVariables
-gap> Unbind(gr4);
-gap> Unbind(gr2);
+gap> Unbind(H);
 gap> Unbind(gr);
+gap> Unbind(gr1);
+gap> Unbind(gr2);
+gap> Unbind(gr3);
+gap> Unbind(gr4);
+gap> Unbind(graph5);
+gap> Unbind(group5);
+gap> Unbind(iso);
 gap> Unbind(p);
 gap> Unbind(perms);
-gap> Unbind(H);
-gap> Unbind(gr1);
-gap> Unbind(trees);
-gap> Unbind(group5);
 gap> Unbind(treeAuts);
-gap> Unbind(iso);
-gap> Unbind(graph5);
-gap> Unbind(gr3);
+gap> Unbind(trees);
 
 #E#
 gap> STOP_TEST("Digraphs package: extreme/bliss.tst");

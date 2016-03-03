@@ -843,13 +843,16 @@ gap> DigraphEmbedding(gr1, gr1);
 IdentityTransformation
 
 #T# DIGRAPHS_UnbindVariables
-gap> Unbind(homos);
-gap> Unbind(monos);
+gap> Unbind(edges);
+gap> Unbind(epis);
+gap> Unbind(gens);
 gap> Unbind(gr);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
+gap> Unbind(homos);
+gap> Unbind(mat);
+gap> Unbind(monos);
 gap> Unbind(x);
-gap> Unbind(epis);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/grahom.tst");

@@ -38,8 +38,8 @@ gap> Length(circs);
 1291792
 
 #T# DIGRAPHS_UnbindVariables
-gap> Unbind(gr);
 gap> Unbind(circs);
+gap> Unbind(gr);
 
 #E#
 gap> STOP_TEST("Digraphs package: extreme/attr.tst");

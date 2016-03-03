@@ -13,20 +13,21 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.4.2">
+##  <!ENTITY VERSION        "0.5">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.4.2">
+##  <!ENTITY ORBVERS        "4.7.5">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.5">
 ##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
-Version := "0.4.2",
-Date := "28/01/2016",
-ArchiveURL := "http://tinyurl.com/jdmitchell/digraphs/digraphs-0.4.2",
+Version := "0.5",
+Date := "03/03/2016",
+ArchiveURL := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/digraphs-0.5",
 ArchiveFormats := ".tar.gz",
 Persons := [
 
@@ -68,7 +69,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "jdm3@st-and.ac.uk",
-    WWWHome       := "tinyurl.com/jdmitchell",
+    WWWHome       := "http://goo.gl/ZtViV6",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -130,7 +131,7 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">=4.8.2",
-  NeededOtherPackages := [["io", ">=4.4.4"]],
+  NeededOtherPackages := [["io", ">=4.4.4"], ["orb", ">=4.7.5"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"], ["grape", ">=4.5"]],
   ExternalConditions := [],
 ),

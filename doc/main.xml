@@ -7,8 +7,11 @@
    Text='bliss'>http://www.tcs.tkk.fi/Software/bliss/</URL></Alt><Alt
    Only='Text'><Package>bliss</Package></Alt>">
      <!ENTITY IO "<Alt Not='Text'><URL Text='IO'>
-     http://www-groups.mcs.st-and.ac.uk/~neunhoef/Computer/Software/Gap/io.html
+     http://gap-packages.github.io/io/
 </URL></Alt><Alt Only='Text'><Package>IO</Package></Alt>">
+     <!ENTITY Orb "<Alt Not='Text'><URL Text='Orb'>
+     http://http://gap-packages.github.io/orb/</URL>
+     </Alt><Alt Only='Text'><Package>Orb</Package></Alt>">
      <#Include Label="PKGVERSIONDATA">
    ]>
 

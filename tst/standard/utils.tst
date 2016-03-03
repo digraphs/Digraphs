@@ -20,7 +20,6 @@ gap> DIGRAPHS_PF(false);
 "\033[1;31mFAILED!\033[0m\n"
 
 #T# DIGRAPHS_UnbindVariables
-gap> Unbind(gr2);
 
 #E#
 gap> STOP_TEST("Digraphs package: utils.tst");

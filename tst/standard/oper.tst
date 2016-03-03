@@ -1341,6 +1341,119 @@ false
 gap> IsReachable(gr, 1, 4);
 true
 
+#T# DigraphPath
+gap> gr := ChainDigraph(10);
+<digraph with 10 vertices, 9 edges>
+gap> DigraphPath(gr, 1, 2);
+[ [ 1, 2 ], [ 1 ] ]
+gap> DigraphPath(gr, 1, 1);
+fail
+gap> DigraphPath(gr, 2, 1);
+fail
+gap> DigraphPath(gr, 3, 8);
+[ [ 3, 4, 5, 6, 7, 8 ], [ 1, 1, 1, 1, 1 ] ]
+gap> DigraphPath(gr, 11, 1);
+Error, Digraphs: DigraphPath: usage,
+the second and third arguments <u> and <v> must be
+vertices of the first argument <digraph>,
+gap> DigraphPath(gr, 1, 11);
+Error, Digraphs: DigraphPath: usage,
+the second and third arguments <u> and <v> must be
+vertices of the first argument <digraph>,
+gap> DigraphPath(gr, 11, 11);
+Error, Digraphs: DigraphPath: usage,
+the second and third arguments <u> and <v> must be
+vertices of the first argument <digraph>,
+
+#T# IteratorOfPaths
+gap> gr := CompleteDigraph(5);;
+gap> iter := IteratorOfPaths(gr, 2, 6);
+Error, Digraphs: IteratorOfPaths: usage,
+the second and third arguments <u> and <v> must be vertices of the first
+argument, <digraph>,
+gap> iter := IteratorOfPaths(gr, 6, 6);
+Error, Digraphs: IteratorOfPaths: usage,
+the second and third arguments <u> and <v> must be vertices of the first
+argument, <digraph>,
+gap> iter := IteratorOfPaths(gr, 6, 2);
+Error, Digraphs: IteratorOfPaths: usage,
+the second and third arguments <u> and <v> must be vertices of the first
+argument, <digraph>,
+gap> iter := IteratorOfPaths(gr, 2, 5);
+<iterator>
+gap> for a in iter do
+>   Print(a, "\n");
+> od;
+[ [ 2, 1, 3, 4, 5 ], [ 1, 2, 3, 4 ] ]
+[ [ 2, 1, 3, 5 ], [ 1, 2, 4 ] ]
+[ [ 2, 1, 4, 3, 5 ], [ 1, 3, 3, 4 ] ]
+[ [ 2, 1, 4, 5 ], [ 1, 3, 4 ] ]
+[ [ 2, 1, 5 ], [ 1, 4 ] ]
+[ [ 2, 3, 1, 4, 5 ], [ 2, 1, 3, 4 ] ]
+[ [ 2, 3, 1, 5 ], [ 2, 1, 4 ] ]
+[ [ 2, 3, 4, 1, 5 ], [ 2, 3, 1, 4 ] ]
+[ [ 2, 3, 4, 5 ], [ 2, 3, 4 ] ]
+[ [ 2, 3, 5 ], [ 2, 4 ] ]
+[ [ 2, 4, 1, 3, 5 ], [ 3, 1, 2, 4 ] ]
+[ [ 2, 4, 1, 5 ], [ 3, 1, 4 ] ]
+[ [ 2, 4, 3, 1, 5 ], [ 3, 3, 1, 4 ] ]
+[ [ 2, 4, 3, 5 ], [ 3, 3, 4 ] ]
+[ [ 2, 4, 5 ], [ 3, 4 ] ]
+[ [ 2, 5 ], [ 4 ] ]
+gap> iter := IteratorOfPaths(gr, 2, 5);;
+gap> for a in iter do
+>   if not ForAll([1 .. Length(a[1]) - 1], x ->
+>       OutNeighboursOfVertex(gr, a[1][x])[a[2][x]] = a[1][x + 1]) then
+>     Print("fail\n");
+>   fi;
+> od;
+gap> iter := IteratorOfPaths(gr, 4, 3);
+<iterator>
+gap> NextIterator(iter);
+[ [ 4, 1, 2, 3 ], [ 1, 1, 2 ] ]
+gap> NextIterator(iter);
+[ [ 4, 1, 2, 5, 3 ], [ 1, 1, 4, 3 ] ]
+gap> copy := ShallowCopy(iter);
+<iterator>
+gap> NextIterator(copy);
+[ [ 4, 1, 3 ], [ 1, 2 ] ]
+gap> NextIterator(iter);
+[ [ 4, 1, 3 ], [ 1, 2 ] ]
+gap> gr := [];;
+gap> IteratorOfPaths(gr, 1, 1);;
+Error, Digraphs: IteratorOfPaths: usage,
+the second and third arguments <u> and <v> must be vertices of the digraph
+defined by the first argument, <digraph>,
+gap> gr := [[2]];;
+gap> IteratorOfPaths(gr, 1, 1);;
+Error, Digraphs: IteratorOfPaths: usage,
+the first argument <out> must be a list of out-neighbours of a digraph,
+gap> gr := [[0]];;
+gap> IteratorOfPaths(gr, 1, 1);;
+Error, Digraphs: IteratorOfPaths: usage,
+the first argument <out> must be a list of out-neighbours of a digraph,
+gap> gr := [[1], [3]];;
+gap> IteratorOfPaths(gr, 1, 1);;
+Error, Digraphs: IteratorOfPaths: usage,
+the first argument <out> must be a list of out-neighbours of a digraph,
+gap> gr := [[1], [3], [2, 2]];;
+gap> iter := IteratorOfPaths(gr, 1, 1);
+<iterator>
+gap> for a in iter do
+>   Print(a, "\n");
+> od;
+[ [ 1, 1 ], [ 1 ] ]
+gap> gr := DigraphFromDigraph6String("+E?_OHCO");
+<digraph with 6 vertices, 6 edges>
+gap> iter := IteratorOfPaths(gr, 1, 5);
+<iterator>
+gap> NextIterator(iter);
+[ [ 1, 2, 3, 4, 5 ], [ 1, 1, 1, 1 ] ]
+gap> NextIterator(iter);
+[ [ 1, 2, 6, 4, 5 ], [ 1, 2, 1, 1 ] ]
+gap> IsDoneIterator(iter);
+true
+
 #T# DigraphLongestDistanceFromVertex
 gap> nbs := [[2, 8, 10, 11], [3, 5], [4], [], [6], [7], [], [9], [5], [6],
 > [12], [13], [14], [6], [15, 1]];;
@@ -1591,58 +1704,56 @@ gap> DigraphColoring(EmptyDigraph(0));
 fail
 
 #T# DIGRAPHS_UnbindVariables
-gap> Unbind(gr);
-gap> Unbind(nrvertices);
-gap> Unbind(nbs);
-gap> Unbind(u1);
-gap> Unbind(j1);
-gap> Unbind(j2);
-gap> Unbind(grrt);
-gap> Unbind(rtclosure);
-gap> Unbind(id);
-gap> Unbind(out);
-gap> Unbind(rgr);
-gap> Unbind(erev);
-gap> Unbind(rev);
-gap> Unbind(edges);
-gap> Unbind(u2);
-gap> Unbind(source);
-gap> Unbind(m1);
-gap> Unbind(edges2);
-gap> Unbind(m2);
-gap> Unbind(b);
-gap> Unbind(adj);
-gap> Unbind(gri);
 gap> Unbind(a);
-gap> Unbind(mat);
-gap> Unbind(i1);
-gap> Unbind(i2);
-gap> Unbind(grt);
-gap> Unbind(comps);
-gap> Unbind(qr);
+gap> Unbind(adj);
+gap> Unbind(b);
+gap> Unbind(e);
+gap> Unbind(edges);
+gap> Unbind(edges2);
+gap> Unbind(erev);
 gap> Unbind(func);
+gap> Unbind(g);
+gap> Unbind(gr);
+gap> Unbind(gr1);
 gap> Unbind(gr2);
 gap> Unbind(gr3);
-gap> Unbind(p2);
-gap> Unbind(out1);
 gap> Unbind(gr4);
-gap> Unbind(p1);
-gap> Unbind(e);
-gap> Unbind(g);
-gap> Unbind(temp);
-gap> Unbind(gr1);
-gap> Unbind(rel3);
+gap> Unbind(gri);
+gap> Unbind(grrt);
+gap> Unbind(grt);
 gap> Unbind(h);
-gap> Unbind(rel1);
+gap> Unbind(i1);
+gap> Unbind(i2);
+gap> Unbind(iter);
+gap> Unbind(j1);
+gap> Unbind(j2);
 gap> Unbind(m);
+gap> Unbind(m1);
+gap> Unbind(m2);
+gap> Unbind(mat);
 gap> Unbind(n);
-gap> Unbind(range);
-gap> Unbind(r);
-gap> Unbind(t);
-gap> Unbind(rel2);
-gap> Unbind(out3);
+gap> Unbind(nbs);
+gap> Unbind(out);
+gap> Unbind(out1);
 gap> Unbind(out2);
+gap> Unbind(out3);
+gap> Unbind(p1);
+gap> Unbind(p2);
+gap> Unbind(qr);
+gap> Unbind(r);
+gap> Unbind(range);
+gap> Unbind(rel1);
+gap> Unbind(rel2);
+gap> Unbind(rel3);
+gap> Unbind(rev);
+gap> Unbind(rgr);
+gap> Unbind(rtclosure);
+gap> Unbind(source);
+gap> Unbind(t);
 gap> Unbind(tclosure);
+gap> Unbind(temp);
+gap> Unbind(u1);
+gap> Unbind(u2);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/oper.tst");

@@ -769,37 +769,56 @@ gap> gr := Digraph([[], [3], [2]]);
 gap> IsDistanceRegularDigraph(gr);
 false
 
+#T# IsCompleteBipartiteDigraph
+gap> gr := CompleteBipartiteDigraph(4, 5);
+<digraph with 9 vertices, 40 edges>
+gap> IsCompleteBipartiteDigraph(gr);
+true
+gap> gr := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> IsCompleteBipartiteDigraph(gr);
+false
+gap> gr := CycleDigraph(3);
+<digraph with 3 vertices, 3 edges>
+gap> IsCompleteBipartiteDigraph(gr);
+false
+gap> gr := CycleDigraph(4);
+<digraph with 4 vertices, 4 edges>
+gap> IsCompleteBipartiteDigraph(gr);
+false
+gap> gr := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsCompleteBipartiteDigraph(gr);
+true
+
 #T# DIGRAPHS_UnbindVariables
-gap> Unbind(gr);
-gap> Unbind(nrvertices);
-gap> Unbind(multiple);
-gap> Unbind(id);
-gap> Unbind(mat);
-gap> Unbind(source);
-gap> Unbind(nottrans);
 gap> Unbind(adj);
-gap> Unbind(g6);
-gap> Unbind(g5);
-gap> Unbind(g4);
-gap> Unbind(g3);
-gap> Unbind(g2);
+gap> Unbind(circuit);
+gap> Unbind(complete100);
 gap> Unbind(g1);
-gap> Unbind(comps);
-gap> Unbind(grid);
-gap> Unbind(gr6);
-gap> Unbind(gr4);
-gap> Unbind(gr5);
+gap> Unbind(g2);
+gap> Unbind(g3);
+gap> Unbind(g4);
+gap> Unbind(g5);
+gap> Unbind(g6);
+gap> Unbind(gr);
+gap> Unbind(gr1);
 gap> Unbind(gr2);
 gap> Unbind(gr3);
-gap> Unbind(gr1);
+gap> Unbind(gr4);
+gap> Unbind(gr5);
+gap> Unbind(gr6);
+gap> Unbind(grid);
 gap> Unbind(i);
 gap> Unbind(j);
-gap> Unbind(complete100);
-gap> Unbind(range);
-gap> Unbind(r);
-gap> Unbind(circuit);
-gap> Unbind(trans);
 gap> Unbind(loop);
+gap> Unbind(mat);
+gap> Unbind(multiple);
+gap> Unbind(nottrans);
+gap> Unbind(r);
+gap> Unbind(range);
+gap> Unbind(source);
+gap> Unbind(trans);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/prop.tst");

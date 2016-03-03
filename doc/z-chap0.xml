@@ -54,8 +54,9 @@
   repeated.  A <E>cycle</E> is defined similarly to a directed path, except that
   <M>v_1 = v_n</M>.
   
-  The <E>length</E> of a directed path or cycle <M>(v_1, e_1, v_2, e_2, ...,
-  e_{n-1}, v_n)</M> is equal to <M>n-1</M>, the number of edges it contains.
+  The <E>length</E> of a directed path, walk, or cycle <M>(v_1, e_1, v_2, e_2,
+    ..., e_{n-1}, v_n)</M> is equal to <M>n-1</M>, the number of edges it
+  contains.
 
   </Section>
 </Chapter>

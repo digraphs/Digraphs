@@ -5,7 +5,7 @@ This is a script for checking that the Digraphs package is releasable, i.e.
 that it passes all the tests in all configurations.
 '''
 
-import textwrap, os, argparse, tempfile, subprocess, sys, os, signal, dots
+import textwrap, os, argparse, tempfile, subprocess, sys, os, signal, dots, shutil
 
 from dots import dotIt
 
@@ -242,10 +242,13 @@ def _make_clean(gap_root, directory, name):
         _get_ready_to_make(directory, name)
         if name == 'grape':
             exec_string('./configure ' + gap_root)
+            exec_string('make clean')
         else:
             exec_string('./configure --with-gaproot=' + gap_root)
+            exec_string('make dist clean')
 
-        exec_string('make clean')
+        if os.path.exists('bin'):
+            shutil.rmtree('bin')
         os.chdir(cwd)
         print ''
         show_cursor()

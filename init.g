@@ -10,7 +10,7 @@
 
 # load a method for UserHomeExpand if necessary
 if not IsBound(UserHomeExpand) then
-  BindGlobal("UserHomeExpand", IdFunc);
+  BindGlobal("UserHomeExpand", USER_HOME_EXPAND);
 fi;
 
 # load kernel function if it is installed:

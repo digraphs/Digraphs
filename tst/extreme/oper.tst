@@ -175,10 +175,11 @@ gap> DigraphLayers(gr, 1500)[2];
 gap> Unbind(d);
 gap> Unbind(gr);
 gap> Unbind(gr2);
-gap> Unbind(list);
+gap> Unbind(i);
 gap> Unbind(layers);
 gap> Unbind(layers1);
 gap> Unbind(layers2);
+gap> Unbind(list);
 gap> Unbind(out);
 
 #E#

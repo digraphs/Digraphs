@@ -14044,22 +14044,20 @@ gap> HomomorphismDigraphsFinder(gr2, gr1, fail, [], 1, fail, false, [1 .. 30],
 [  ]
 
 #T# DIGRAPHS_UnbindVariables
-gap> Unbind(gr);
 gap> Unbind(G);
 gap> Unbind(H);
-gap> Unbind(gens);
 gap> Unbind(S);
-gap> Unbind(t);
-gap> Unbind(str);
-gap> Unbind(graph);
-gap> Unbind(homos);
+gap> Unbind(adj);
+gap> Unbind(func);
+gap> Unbind(gens);
+gap> Unbind(gr);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
-gap> Unbind(adj);
-gap> Unbind(endos1);
-gap> Unbind(endos2);
 gap> Unbind(graph5);
-gap> Unbind(graphs);
+gap> Unbind(homos);
+gap> Unbind(n);
+gap> Unbind(str);
+gap> Unbind(t);
 
 #E#
 gap> STOP_TEST("Digraphs package: extreme/grahom.tst");
