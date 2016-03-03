@@ -12,7 +12,7 @@ extension `bz2` are now actually compressed when used with `ReadDigraphs` and
 
 ## Version 0.4.2 (released 28/01/2016)
 This is a minor release to fix a bug in `DigraphAllSimpleCircuits` that failed to
-return all simple circuits in some cases [Issue 13]https://bitbucket.org/james-d-mitchell/digraphs/issues/13). Some documentation was also updated.
+return all simple circuits in some cases [Issue 13](https://bitbucket.org/james-d-mitchell/digraphs/issues/13). Some documentation was also updated.
 
 ## Version 0.4.1 (released 22/01/2016)
 This is a very minor release to change the version of GAP required.
