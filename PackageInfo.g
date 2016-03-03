@@ -27,7 +27,7 @@ PackageName := "Digraphs",
 Subtitle := "",
 Version := "0.5",
 Date := "03/03/2016",
-ArchiveURL := "http://goo.gl/CYcX8D/digraphs-0.5",
+ArchiveURL := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/digraphs-0.5",
 ArchiveFormats := ".tar.gz",
 Persons := [
 
