@@ -11,8 +11,6 @@ version 4.7.5 or higher.
 ###New Features in Version 0.5
 * `DigraphFile` and `IteratorFromDigraphFile` are introduced. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
 * `WriteDigraphs` and `ReadDigraphs` can now take a file as a first argument. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
-* Files with extension `bz2` are now actually compressed when used with
-  `ReadDigraphs` and `WriteDigraphs`. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
 * The operation `DigraphPath` is introduced to find a path between two vertices
   in a digraph. [[Wilf Wilson](http://wilf.me)]
 * The operation `IteratorOfPaths` is introduced to iterate over the paths
@@ -22,9 +20,10 @@ version 4.7.5 or higher.
 ###Issues Resolved in Version 0.5
 Several bugs related to clique finding have been resolved. [[Wilf
 Wilson](http://wilf.me)]
-
+* Files with extension `bz2` were previously not (un)compressed when used with
+  `ReadDigraphs` and `WriteDigraphs`. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
 * The documentation in Chapter 8 "Finding cliques and independent sets" has been
-  corrected to accurately reflect the functionality of Digraphs.
+  corrected to accurately reflect the functionality of the package.
 * A bug which led to too few cliques and independent sets being found for some
   digraphs has been resolved.
 * A bug which led to duplicate cliques and independent sets being found for some
