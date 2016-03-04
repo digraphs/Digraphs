@@ -54,7 +54,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jj252@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~julius",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~julius/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -84,7 +84,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mct25@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~mct25",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~mct25/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -99,7 +99,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "waw7@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~waw7",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~waw7/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
