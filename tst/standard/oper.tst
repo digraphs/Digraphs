@@ -42,6 +42,11 @@ gap> IsSymmetricDigraph(gr);
 true
 gap> DigraphReverse(gr) = gr;
 true
+gap> gr := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> SetIsSymmetricDigraph(gr, true);
+gap> gr = DigraphReverse(gr);
+true
 
 #T# DigraphRemoveLoops
 gap> adj := [[1, 2], [3, 2], [1, 2], [4], [], [1, 2, 3, 6]];

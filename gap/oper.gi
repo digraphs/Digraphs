@@ -94,6 +94,12 @@ end);
 
 #
 
+InstallMethod(DigraphReverse, "for a digraph with in-neighbours",
+[IsDigraph and HasInNeighbours],
+function(digraph)
+  return DigraphNC(InNeighbours(digraph));
+end);
+
 InstallMethod(DigraphReverse, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -103,16 +109,7 @@ function(digraph)
     return DigraphCopy(digraph);
   fi;
 
-  old := OutNeighbours(digraph);
-  new := List(DigraphVertices(digraph), x -> []);
-
-  for i in DigraphVertices(digraph) do
-    for j in old[i] do
-      Add(new[j], i);
-    od;
-  od;
-
-  return DigraphNC(new);
+  return DigraphNC(DIGRAPH_IN_OUT_NBS(OutNeighbours(digraph)));
 end);
 
 #
