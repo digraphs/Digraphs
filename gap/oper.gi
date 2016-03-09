@@ -94,22 +94,19 @@ end);
 
 #
 
-InstallMethod(DigraphReverse, "for a digraph with in-neighbours",
-[IsDigraph and HasInNeighbours],
-function(digraph)
-  return DigraphNC(InNeighbours(digraph));
-end);
-
 InstallMethod(DigraphReverse, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local old, new, i, j;
+  local nbs, out;
 
   if HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph) then
     return DigraphCopy(digraph);
   fi;
 
-  return DigraphNC(DIGRAPH_IN_OUT_NBS(OutNeighbours(digraph)));
+  nbs := OutNeighbours(digraph);
+  out := DigraphNC(InNeighbours(digraph));
+  SetInNeighbours(out, nbs);
+  return out;
 end);
 
 #
