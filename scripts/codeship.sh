@@ -94,4 +94,4 @@ echo "LoadPackage(\"digraphs\"); DigraphsTestAll(); quit;" | sh gap4r8/bin/gap.s
 #echo "============================================================"
 #echo "LoadPackage(\"digraphs\"); DigraphsTestAll(); quit;" | sh gap32/bin/gap.sh | tee -a testlog.txt
 
-( ! grep -E "########> Diff|brk>|#E|Error" testlog.txt )
+( ! grep -E "########> Diff|brk>|#E|Error|Syntax warning" testlog.txt )
