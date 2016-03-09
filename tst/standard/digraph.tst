@@ -586,6 +586,8 @@ the argument <n> must be a non-negative integer,
 #T# CompleteDigraph
 gap> gr := CompleteDigraph(5);
 <digraph with 5 vertices, 20 edges>
+gap> AutomorphismGroup(gr) = SymmetricGroup(5);
+true
 gap> CompleteDigraph(1) = EmptyDigraph(1);
 true
 gap> CompleteDigraph(0);
@@ -597,6 +599,8 @@ the argument <n> must be a non-negative integer,
 #T# EmptyDigraph
 gap> gr := EmptyDigraph(5);
 <digraph with 5 vertices, 0 edges>
+gap> AutomorphismGroup(gr) = SymmetricGroup(5);
+true
 gap> EmptyDigraph(0);
 <digraph with 0 vertices, 0 edges>
 gap> EmptyDigraph(-1);
@@ -609,7 +613,11 @@ Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `CycleDigraph' on 1 arguments
 gap> gr := CycleDigraph(1);
 <digraph with 1 vertex, 1 edge>
+gap> AutomorphismGroup(gr) = Group(());
+true
 gap> gr := CycleDigraph(6);;
+gap> AutomorphismGroup(gr) = Group((1,2,3,4,5,6));
+true
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 4, 5 ], [ 5, 6 ], [ 6, 1 ] ]
 gap> gr := CycleDigraph(1000);
@@ -627,6 +635,8 @@ gap> gr = EmptyDigraph(1);
 true
 gap> gr := ChainDigraph(2);
 <digraph with 2 vertices, 1 edge>
+gap> AutomorphismGroup(gr) = Group(());
+true
 gap> HasIsTransitiveDigraph(gr);
 true
 gap> IsTransitiveDigraph(gr);
@@ -635,6 +645,8 @@ gap> gr := ChainDigraph(10);
 <digraph with 10 vertices, 9 edges>
 gap> OutNeighbours(gr);
 [ [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], [  ] ]
+gap> AutomorphismGroup(gr) = Group(());
+true
 gap> grrt := DigraphReflexiveTransitiveClosure(gr);
 <digraph with 10 vertices, 55 edges>
 gap> IsPartialOrderBinaryRelation(AsBinaryRelation(grrt));
@@ -653,11 +665,18 @@ Error, no 1st choice method found for `CompleteBipartiteDigraph' on 2 argument\
 s
 gap> gr := CompleteBipartiteDigraph(4, 3);
 <digraph with 7 vertices, 24 edges>
+gap> AutomorphismGroup(gr) = Group((1,2,3,4), (1,2), (5,6,7), (5,6));
+true
 gap> DigraphEdges(gr);
 [ [ 1, 5 ], [ 1, 6 ], [ 1, 7 ], [ 2, 5 ], [ 2, 6 ], [ 2, 7 ], [ 3, 5 ], 
   [ 3, 6 ], [ 3, 7 ], [ 4, 5 ], [ 4, 6 ], [ 4, 7 ], [ 5, 1 ], [ 5, 2 ], 
   [ 5, 3 ], [ 5, 4 ], [ 6, 1 ], [ 6, 2 ], [ 6, 3 ], [ 6, 4 ], [ 7, 1 ], 
   [ 7, 2 ], [ 7, 3 ], [ 7, 4 ] ]
+gap> gr := CompleteBipartiteDigraph(4, 4);
+<digraph with 7 vertices, 24 edges>
+gap> AutomorphismGroup(gr) = Group((1,2,3,4), (1,2), (5,6,7,8), (5,6),
+>                                  (1,5)(2,6)(3,7)(4,8));
+true
 
 #T# Equals (\=) for two digraphs
 gap> r1 := rec(nrvertices := 2, source := [1, 1, 2], range := [1, 2, 2]);;
