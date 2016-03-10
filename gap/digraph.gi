@@ -554,6 +554,7 @@ function(n)
   fi;
   SetIsMultiDigraph(gr, false);
   SetIsCompleteDigraph(gr, true);
+  SetAutomorphismGroup(gr, SymmetricGroup(n));
   return gr;
 end);
 
@@ -571,6 +572,7 @@ function(n)
   gr := DigraphNC(List([1 .. n], x -> []));
   SetIsEmptyDigraph(gr, true);
   SetIsMultiDigraph(gr, false);
+  SetAutomorphismGroup(gr, SymmetricGroup(n));
   return gr;
 end);
 
@@ -600,6 +602,7 @@ function(n)
   SetDigraphNrEdges(gr, n);
   SetIsFunctionalDigraph(gr, true);
   SetIsStronglyConnectedDigraph(gr, true);
+  SetAutomorphismGroup(gr, CyclicGroup(IsPermGroup, n));
   return gr;
 end);
 
@@ -632,6 +635,7 @@ function(n)
   SetIsConnectedDigraph(gr, true);
   SetIsStronglyConnectedDigraph(gr, false);
   SetIsFunctionalDigraph(gr, false);
+  SetAutomorphismGroup(gr, Group(()));
   return gr;
 end);
 
@@ -640,7 +644,7 @@ end);
 InstallMethod(CompleteBipartiteDigraph, "for two positive integers",
 [IsPosInt, IsPosInt],
 function(m, n)
-  local source, range, count, k, r, gr, i, j;
+  local source, range, count, i, j, k, r, gr, aut;
 
   source := EmptyPlist(2 * m * n);
   range := EmptyPlist(2 * m * n);
@@ -660,6 +664,12 @@ function(m, n)
   SetIsSymmetricDigraph(gr, true);
   SetDigraphNrEdges(gr, 2 * m * n);
   SetIsCompleteBipartiteDigraph(gr, true);
+  if m = n then
+    aut := WreathProduct(SymmetricGroup(m), Group((1,2)));
+  else
+    aut := DirectProduct(SymmetricGroup(m), SymmetricGroup(n));
+  fi;
+  SetAutomorphismGroup(gr, aut);
   return gr;
 end);
 
