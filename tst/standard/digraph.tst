@@ -1164,11 +1164,11 @@ true
 gap> gr := LineDigraph(CompleteDigraph(3));
 <digraph with 6 vertices, 12 edges>
 gap> OutNeighbours(gr);
-[ [ 3, 4 ], [ 5, 6 ], [ 1, 2 ], [ 5, 6 ], [ 1, 2 ], [ 3, 4 ] ]
+[ [ 3, 4 ], [ 5, 6 ], [ 1, 2 ], [ 6, 5 ], [ 2, 1 ], [ 4, 3 ] ]
 gap> gr := LineUndirectedDigraph(CompleteDigraph(4));;
 gap> OutNeighbours(gr);
-[ [ 2, 3, 4, 5 ], [ 1, 3, 4, 6 ], [ 1, 2, 5, 6 ], [ 1, 2, 5, 6 ], 
-  [ 1, 3, 4, 6 ], [ 2, 3, 4, 5 ] ]
+[ [ 2, 4, 5, 3 ], [ 3, 6, 4, 1 ], [ 5, 1, 2, 6 ], [ 5, 6, 2, 1 ], 
+  [ 1, 3, 6, 4 ], [ 2, 3, 5, 4 ] ]
 gap> gr := Digraph([[2, 4], [1, 3, 4], [2, 4], [1, 2, 3]]);
 <digraph with 4 vertices, 10 edges>
 gap> gr2 := LineUndirectedDigraph(gr);
@@ -1184,8 +1184,8 @@ gap> OutNeighbours(gr2);
 gap> gr := CompleteDigraph(6);;
 gap> gr2 := LineUndirectedDigraph(gr);
 <digraph with 15 vertices, 120 edges>
-gap> DigraphGroup(gr);
-Group([ (5,6), (4,5), (3,4), (2,3), (1,2) ])
+gap> DigraphGroup(gr) = SymmetricGroup(6);
+true
 gap> gr3 := LineUndirectedDigraph(gr);
 <digraph with 15 vertices, 120 edges>
 gap> gr2 = gr3;
@@ -1364,6 +1364,12 @@ second arg <distance> must be a non-negative integer,
 #T# DigraphAddEdgeOrbit
 gap> digraph := NullDigraph(4);
 <digraph with 4 vertices, 0 edges>
+gap> HasDigraphGroup(digraph);
+true
+gap> digraph := DigraphCopy(digraph);
+<digraph with 4 vertices, 0 edges>
+gap> HasDigraphGroup(digraph);
+false
 gap> SetDigraphGroup(digraph, Group((1, 3), (1, 2)(3, 4)));
 gap> digraph := DigraphAddEdgeOrbit(digraph, [4, 3]);
 <digraph with 4 vertices, 8 edges>
@@ -1377,6 +1383,12 @@ true
 #T# DigraphRemoveEdgeOrbit
 gap> digraph := CompleteDigraph(4);
 <digraph with 4 vertices, 12 edges>
+gap> HasDigraphGroup(digraph);
+true
+gap> digraph := DigraphCopy(digraph);
+<digraph with 4 vertices, 12 edges>
+gap> HasDigraphGroup(digraph);
+false
 gap> SetDigraphGroup(digraph, Group((1, 3), (1, 2)(3, 4)));
 gap> digraph := DigraphRemoveEdgeOrbit(digraph, [1, 3]);
 <digraph with 4 vertices, 8 edges>
@@ -1438,7 +1450,7 @@ gap> digraph := EdgeOrbitsDigraph(Group(()), [3, 2]);
 gap> OutNeighbours(digraph);
 [  ]
 gap> HasDigraphGroup(digraph);
-false
+true
 gap> digraph := EdgeOrbitsDigraph(Group((1, 2)), [[1, 2], [3, 6, 5]]);
 Error, Digraphs: EdgeOrbitsDigraph: usage,
 the second argument must be a list of pairs of pos ints,

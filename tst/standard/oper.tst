@@ -1538,9 +1538,9 @@ gap> gr := CompleteDigraph(4);
 gap> DigraphLayers(gr, 1);
 [ [ 1 ], [ 2, 3, 4 ] ]
 gap> DigraphLayers(gr, 2);
-[ [ 2 ], [ 1, 3, 4 ] ]
+[ [ 2 ], [ 3, 4, 1 ] ]
 gap> DigraphLayers(gr, 3);
-[ [ 3 ], [ 1, 2, 4 ] ]
+[ [ 3 ], [ 4, 1, 2 ] ]
 gap> DigraphLayers(gr, 4);
 [ [ 4 ], [ 1, 2, 3 ] ]
 gap> gr := ChainDigraph(5);;
