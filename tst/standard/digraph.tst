@@ -673,7 +673,7 @@ gap> DigraphEdges(gr);
   [ 5, 3 ], [ 5, 4 ], [ 6, 1 ], [ 6, 2 ], [ 6, 3 ], [ 6, 4 ], [ 7, 1 ], 
   [ 7, 2 ], [ 7, 3 ], [ 7, 4 ] ]
 gap> gr := CompleteBipartiteDigraph(4, 4);
-<digraph with 7 vertices, 24 edges>
+<digraph with 8 vertices, 32 edges>
 gap> AutomorphismGroup(gr) = Group((1,2,3,4), (1,2), (5,6,7,8), (5,6),
 >                                  (1,5)(2,6)(3,7)(4,8));
 true
