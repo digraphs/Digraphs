@@ -246,6 +246,15 @@ true
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 2, 3, 4, 5, 6 ], [ 1, 2, 5, 9 ], [ 1, 9, 10 ], [ 7, 8, 9, 10 ] ]
 
+#T# Fix seg fault cause by wrong handling of no edges in
+# FuncDIGRAPH_SOURCE_RANGE
+gap> gr := Digraph([[]]);
+<digraph with 1 vertex, 0 edges>
+gap> DigraphSource(gr);
+[  ]
+gap> DigraphRange(gr);
+[  ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);

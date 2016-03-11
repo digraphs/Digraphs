@@ -850,21 +850,27 @@ static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
   m      = DigraphNrEdges(digraph);
   n      = DigraphNrVertices(digraph);
   adj    = OutNeighbours(digraph); 
-  source = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, m);
-  range  = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, m);
-  SET_LEN_PLIST(source, m);
-  SET_LEN_PLIST(range, m);
 
-  k = 0;
-  for ( i = 1; i <= n; i++ ) {
-    adji = ELM_PLIST( adj, i );
-    len    = LEN_LIST( adji );
-    for ( j = 1; j <= len; j++ ) {
-      k++;
-      SET_ELM_PLIST( source, k, INTOBJ_INT( i ) );
-      SET_ELM_PLIST( range,  k, ELM_LIST( adji, j ) );
+  if (m == 0) {
+    source = NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, m);
+    range  = NEW_PLIST(T_PLIST_EMPTY+IMMUTABLE, m);
+  } else {
+    source = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, m);
+    range  = NEW_PLIST(T_PLIST_CYC+IMMUTABLE, m);
+    k = 0;
+    for (i = 1; i <= n; i++) {
+      adji = ELM_PLIST(adj, i);
+      len = LEN_LIST(adji);
+      for (j = 1; j <= len; j++) {
+        k++;
+        SET_ELM_PLIST(source, k, INTOBJ_INT(i));
+        SET_ELM_PLIST(range,  k, ELM_LIST(adji, j));
+      }
     }
   }
+
+  SET_LEN_PLIST(source, m);
+  SET_LEN_PLIST(range, m);
   AssPRec(digraph, RNamName("source"), source);
   AssPRec(digraph, RNamName("range"),  range);
   return True;
