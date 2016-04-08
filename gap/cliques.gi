@@ -579,19 +579,24 @@ function(arg)
     if HasDigraphMaximalCliquesAttr(digraph) then
       return DigraphMaximalCliquesAttr(digraph);
     fi;
-    # Act on the representatives to find all
     cliques := DigraphMaximalCliquesReps(digraph);
     G := AutomorphismGroup(MaximalSymmetricSubdigraphWithoutLoops(digraph));
-    orbits := [];
-    out := [];
-    for c in cliques do
-      if not ForAny(orbits, x -> c in x) then
-        orb := Orb(G, c, OnSets);
-        Enumerate(orb);
-        Add(orbits, orb);
-        out := Concatenation(out, orb);
-      fi;
-    od;
+    if IsTrivial(G) then
+      out := cliques;
+    else
+      # Act on the representatives to find all
+      orbits := [];
+      out := [];
+      for c in cliques do
+        if not ForAny(orbits, x -> c in x) then
+          orb := Orb(G, c, OnSets);
+          Enumerate(orb);
+          Add(orbits, orb);
+          out := Concatenation(out, orb);
+        fi;
+      od;
+    fi;
+    SetDigraphMaximalCliquesAttr(digraph, out);
     return out;
   fi;
 
