@@ -1348,6 +1348,12 @@ function(digraph)
   return List(OutNeighbours(digraph), ShallowCopy);
 end);
 
+InstallMethod(AdjacencyMatrixMutableCopy, "for a digraph",
+[IsDigraph], 
+function(digraph)
+  return List(AdjacencyMatrix(digraph), ShallowCopy);
+end);
+
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],
 function(digraph, v)

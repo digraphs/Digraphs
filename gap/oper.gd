@@ -77,6 +77,7 @@ DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);
 
 DeclareOperation("OutNeighboursCopy", [IsDigraph]);
 DeclareSynonym("OutNeighborsCopy", OutNeighboursCopy);
+DeclareOperation("AdjacencyMatrixMutableCopy", [IsDigraph]);
 
 DeclareOperation("DigraphLayers", [IsDigraph, IsPosInt]);
 DeclareAttribute("DIGRAPHS_Layers", IsDigraph, "mutable");
