@@ -13,6 +13,7 @@
 *******************************************************************************/
 
 #include "src/digraphs.h"
+#include <stdio.h>
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -1507,32 +1508,44 @@ BlissGraph* buildBlissMultiDigraph (Obj digraph) {
 }
 
 BlissGraph* buildBlissDigraphWithColors (Obj digraph, Obj colors) {
-  UInt        n, i, j, k, l, nr;
+  UInt        n, i, j, nr;
   Obj         adji, adj;
   BlissGraph  *graph;
 
   n = DigraphNrVertices(digraph);
-  assert(n == LEN_LIST(colors));
-
+  if(colors) {
+  	assert(n == LEN_LIST(colors));
+	}
   graph = bliss_digraphs_new(0);
-  
-  for (i = 1; i <= n; i++) {
-    bliss_digraphs_add_vertex(graph, INT_INTOBJ(ELM_LIST(colors, i)));
-  }
-
   adj = OutNeighbours(digraph);
-  for (i = 1; i <= n; i++) {
-    adji = ELM_PLIST(adj, i);
-    nr = LEN_PLIST(adji);
-    for (j = 1; j <= nr; j++) {
-      k = bliss_digraphs_add_vertex(graph, n + 1);
-      l = bliss_digraphs_add_vertex(graph, n + 2);
-      bliss_digraphs_add_edge(graph, i - 1, k);
-      bliss_digraphs_add_edge(graph, k, l);
-      bliss_digraphs_add_edge(graph, l, INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
-    }
+  
+  if(colors){
+  	for (i = 1; i <= n; i++) {
+  		bliss_digraphs_add_vertex(graph, INT_INTOBJ(ELM_LIST(colors, i)));
+  	}
+  } else{
+  	for (i = 1; i <= n; i++) {
+  		bliss_digraphs_add_vertex(graph, 1);
+  	}
   }
-  return graph;
+  for (i = 1; i <= n; i++) {
+  	bliss_digraphs_add_vertex(graph, n+1);
+  }
+  for (i = 1; i <= n; i++) {
+  	bliss_digraphs_add_vertex(graph, n+2);
+  }
+ 
+	for(i = 1; i <= n; i++){
+		bliss_digraphs_add_edge(graph, i - 1, n + i - 1);
+  	bliss_digraphs_add_edge(graph, i - 1, 2*n + i - 1);
+  	adji = ELM_PLIST(adj, i);
+  	nr = LEN_PLIST(adji);
+  	for(j = 1; j <= nr; j++) {
+  		bliss_digraphs_add_edge(graph, n + i - 1, 2*n + INT_INTOBJ(ELM_PLIST(adji,j)) - 1);
+  	}
+  }
+  
+  return graph; 
 }
 
 void digraph_hook_function(void               *user_param,
@@ -1562,7 +1575,7 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   const unsigned int  *canon;
   Int                 i;
   
-  graph = buildBlissMultiDigraph(digraph);
+  graph = buildBlissDigraphWithColors(digraph,NULL);
   
   autos = NEW_PLIST(T_PLIST, 2);
   n = INTOBJ_INT(DigraphNrVertices(digraph));
@@ -1745,7 +1758,7 @@ static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   Int   n, i; 
   const unsigned int *canon;
      
-  graph = buildBlissMultiDigraph(digraph);
+  graph = buildBlissDigraphWithColors(digraph,NULL);
   
   canon = bliss_digraphs_find_canonical_labeling(graph, 0, 0, 0); 
   
