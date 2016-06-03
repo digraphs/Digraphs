@@ -24,7 +24,7 @@ gap> gr := DigraphFromDigraph6String(Concatenation(
 <digraph with 45 vertices, 180 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> Length(gens);
-330
+329
 gap> Size(Semigroup(gens));
 105120
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, false,
