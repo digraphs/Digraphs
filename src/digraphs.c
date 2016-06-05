@@ -13,7 +13,6 @@
 *******************************************************************************/
 
 #include "src/digraphs.h"
-#include <stdio.h>
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
