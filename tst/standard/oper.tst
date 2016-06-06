@@ -1627,7 +1627,7 @@ gap> gr := Digraph([[16, 18, 25], [17, 20, 25], [16, 21, 28],
 > [15, 13, 12]]);
 <digraph with 30 vertices, 90 edges>
 gap> DigraphGroup(gr);
-<permutation group with 6 generators>
+<permutation group with 5 generators>
 gap> DigraphShortestDistance(gr, 1, 16);
 1
 
