@@ -312,7 +312,7 @@ gap> gr := DigraphFromDigraph6String("+D[]]]?");
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 3 ] ]
 gap> DigraphMaximalCliques(gr);
-[ [ 1, 3 ], [ 1, 4 ], [ 2, 4 ], [ 2, 5 ], [ 3, 5 ] ]
+[ [ 1, 3 ], [ 1, 4 ], [ 2, 5 ], [ 2, 4 ], [ 3, 5 ] ]
 gap> gr := DigraphFromGraph6String("N~~~~~~~wzmxufyZsvw");
 <digraph with 15 vertices, 170 edges>
 gap> DigraphMaximalCliquesReps(gr);
