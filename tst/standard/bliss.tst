@@ -278,9 +278,9 @@ true
 gap> gr := Digraph([[2], [3, 5, 6], [3], [4, 6], [1, 4], [4]]);
 <digraph with 6 vertices, 10 edges>
 gap> DigraphCanonicalLabelling(gr);
-(2,5,4,6,3)
+(1,2,4,6,5,3)
 gap> canon := OutNeighbours(OnDigraphs(gr, last));
-[ [ 5 ], [ 2 ], [ 6 ], [ 1, 6 ], [ 2, 4, 3 ], [ 6, 3 ] ]
+[ [ 1 ], [ 4 ], [ 2, 6 ], [ 1, 3, 5 ], [ 6 ], [ 6, 5 ] ]
 gap> for i in SymmetricGroup(DigraphNrVertices(gr)) do
 >   new := OnDigraphs(gr, i);
 >   if not OutNeighbours(OnDigraphs(new, DigraphCanonicalLabelling(new))) =
@@ -326,9 +326,9 @@ false
 #T# DigraphCanonicalLabelling: with colours
 gap> G := Digraph(10, [1, 1, 3, 4, 4, 5, 8, 8], [6, 3, 3, 9, 10, 9, 4, 10]);;
 gap> DigraphCanonicalLabelling(G, [[1 .. 5], [6 .. 10]]);
-(1,3,5,2)(6,7)(8,9,10)
+(1,4,3,5)(6,8)(7,9,10)
 gap> DigraphCanonicalLabelling(G, [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]);
-(1,3,5,2)(6,7)(8,9,10)
+(1,4,3,5)(6,8)(7,9,10)
 
 #T# AutomorphismGroup: for a digraph with colored vertices
 gap> gr := CompleteBipartiteDigraph(4, 4);
@@ -367,7 +367,7 @@ fail
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <digraph with 8 vertices, 32 edges>
 gap> DigraphCanonicalLabelling(gr);
-(1,8)(2,6,3,5,7)
+(1,8)(2,7)(3,6)(4,5)
 gap> DigraphCanonicalLabelling(gr, [1 .. 8]);
 ()
 gap> DigraphCanonicalLabelling(gr, [[1 .. 4], [5 .. 8]]);
