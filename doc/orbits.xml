@@ -41,7 +41,7 @@ true
 gap> DigraphGroup(digraph);
 Group([ (1,2,3,4) ])
 gap> AutomorphismGroup(digraph);
-Group([ (2,4), (1,2,3,4) ])
+Group([ (2,4), (1,2)(3,4) ])
 gap> ddigraph := DoubleDigraph(digraph);
 <digraph with 8 vertices, 32 edges>
 gap> HasDigraphGroup(ddigraph);
@@ -49,7 +49,7 @@ true
 gap> DigraphGroup(ddigraph);
 Group([ (1,2,3,4)(5,6,7,8), (1,5)(2,6)(3,7)(4,8) ])
 gap> AutomorphismGroup(ddigraph);
-Group([ (6,8), (5,7), (4,6), (3,5), (2,4), (1,2,3,4)(5,6)(7,8) ])
+Group([ (6,8), (5,7), (4,6), (3,5), (2,4), (1,2)(3,4)(5,6)(7,8) ])
 gap> digraph := Digraph([[2, 3], [], []]);
 <digraph with 3 vertices, 2 edges>
 gap> HasDigraphGroup(digraph);
