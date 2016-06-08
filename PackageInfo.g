@@ -13,21 +13,21 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.5">
+##  <!ENTITY VERSION        "0.5.1.1">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
 ##  <!ENTITY ORBVERS        "4.7.5">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.5">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.5.1">
 ##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
-Version := "0.5",
+Version := "0.5.1",
 Date := "03/03/2016",
-ArchiveURL := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/digraphs-0.5",
+ArchiveURL := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/digraphs-0.5.1",
 ArchiveFormats := ".tar.gz",
 Persons := [
 
@@ -54,7 +54,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jj252@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~julius",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~julius/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -84,7 +84,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mct25@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~mct25",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~mct25/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -99,7 +99,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "waw7@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~waw7",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~waw7/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
