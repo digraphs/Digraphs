@@ -24,6 +24,11 @@ The following additional GAP packages are not required, but suggested:
 - {% if pkg.url %}<a href="{{ pkg.url }}">{{ pkg.name }}</a>{% else %}{{ pkg.name }}{% endif %} {{ pkg.version }}{% endfor %}
 {% endif %}
 
+## Digraphs library
+
+There is a library of various digraphs available for testing purposes
+[here](digraphs-lib-0.5.tar.gz). More information is available
+[here](lib-README.html).
 
 ## Author{% if site.data.package.authors.size != 1 %}s{% endif %}
 {% for person in site.data.package.authors %}
