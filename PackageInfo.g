@@ -13,7 +13,7 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.5.1.1">
+##  <!ENTITY VERSION        "0.5.1">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
