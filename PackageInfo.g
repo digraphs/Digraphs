@@ -26,9 +26,14 @@ SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
 Version := "0.5.1",
-Date := "03/03/2016",
-ArchiveURL := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/digraphs-0.5.1",
+Date := "08/06/2016",
 ArchiveFormats := ".tar.gz",
+
+SourceRepository := rec(
+    Type := "git",
+    URL := Concatenation( "https://github.com/gap-packages/", ~.PackageName ),
+),
+
 Persons := [
 
   rec(
@@ -110,14 +115,16 @@ Persons := [
 
 Status := "dev",
 
-README_URL :=
-  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README.md",
-PackageInfoURL :=
-  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/PackageInfo.g",
+IssueTrackerURL := Concatenation(~.SourceRepository.URL, "/issues"),
+PackageWWWHome  := Concatenation("https://gap-packages.github.io/",
+                                 ~.PackageName),
+README_URL      := Concatenation(~.PackageWWWHome, "/README.md"),
+PackageInfoURL  := Concatenation(~.PackageWWWHome, "/PackageInfo.g"),
+ArchiveURL      := Concatenation(~.SourceRepository.URL,
+                                 "/releases/download/v", ~.Version,
+                                 "/", "semigroups-", ~.Version),
 
 AbstractHTML := "The <b>Digraphs</b> package is a <b>GAP</b> package containing methods for digraphs and multidigraphs.",
-
-PackageWWWHome := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php",
 
 PackageDoc := rec(
   BookName  := "Digraphs",
