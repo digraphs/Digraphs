@@ -6,7 +6,7 @@ Licensing information can be found in the LICENSE file.
 
 ## Version 0.5.1 (released 08/06/2016)
 This release contains some bugfixes, some minor new features, and some
-performance improvements. The package has moved to GitHub and we welcom Finn
+performance improvements. The package has moved to GitHub and we welcome Finn
 Smith as an author.
 
 This release contains a new technique for encoding a vertex-coloured digraph as a vertex-coloured (undirected) graph while preserving the automorphism group, in order to calculate the automorphism group using bliss. These changes were made by Finn Smith. The previous technique involved adding two intermediate vertices for every edge; on a digraph with `n` vertices this could add `2n(n-1)` new vertices. The new technique encodes a digraph with `n` vertices as a graph with `3n` vertices. In certain cases, this can lead to a dramatic improvement in the time taken to calculate the automorphism group.
@@ -29,12 +29,6 @@ Minor changes include:
 digraphs are set at creation [Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25)
 * a minor improvement in performance in the `DigraphMaximalCliques` [[Wilf Wilson](http://wilf.me)]
 * a new operation `AdjacencyMatrixMutableCopy` [[James D. Mitchell](http://goo.gl/ZtViV6)]
-* a major improvement in the performance of the computation of the
- automorphism group of some digraphs, due to a superior encoding of vertex coloured digraphs in vertex coloured (undirected) graphs wh. 
- 
-
- 
-
 
 ## Version 0.5 (released 03/03/2016)
 This release contains some bugfixes, as well as new and changed functionality.
