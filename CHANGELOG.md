@@ -1,11 +1,13 @@
 # Digraphs package for GAP - CHANGELOG
-Copyright (C) 2014-16 Jan De Beule, Julius Jonusas, James D. Mitchell, Michael Torpey & Wilf Wilson
+Copyright (C) 2014-16 Jan De Beule, Julius Jonusas, James D. Mitchell, Finn
+Smith, Michael Torpey & Wilf Wilson
 
 Licensing information can be found in the LICENSE file.
 
 ## Version 0.5.1 (released 08/06/2016)
 This release contains some bugfixes, some minor new features, and some
-performance improvements. The package has moved to GitHub. 
+performance improvements. The package has moved to GitHub and we welcom Finn
+Smith as an author.
 
 This release contains a new technique for encoding a vertex-coloured digraph as a vertex-coloured (undirected) graph while preserving the automorphism group, in order to calculate the automorphism group using bliss. These changes were made by Finn Smith. The previous technique involved adding two intermediate vertices for every edge; on a digraph with `n` vertices this could add `2n(n-1)` new vertices. The new technique encodes a digraph with `n` vertices as a graph with `3n` vertices. In certain cases, this can lead to a dramatic improvement in the time taken to calculate the automorphism group.
 
@@ -26,7 +28,7 @@ Minor changes include:
 * automorphism groups of complete, empty, cycle, chain, and complete bipartite
 digraphs are set at creation [Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25)
 * a minor improvement in performance in the `DigraphMaximalCliques` [[Wilf Wilson](http://wilf.me)]
-* a new operation `AdjacencyMatrixMutableCopy` [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
+* a new operation `AdjacencyMatrixMutableCopy` [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * a major improvement in the performance of the computation of the
  automorphism group of some digraphs, due to a superior encoding of vertex coloured digraphs in vertex coloured (undirected) graphs wh. 
  
@@ -40,8 +42,8 @@ Digraphs now requires the [Orb package](http://gap-packages.github.io/orb/),
 version 4.7.5 or higher.
 
 ### New Features in Version 0.5
-* `DigraphFile` and `IteratorFromDigraphFile` are introduced. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
-* `WriteDigraphs` and `ReadDigraphs` can now take a file as a first argument. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
+* `DigraphFile` and `IteratorFromDigraphFile` are introduced. [[James D. Mitchell](http://goo.gl/ZtViV6)]
+* `WriteDigraphs` and `ReadDigraphs` can now take a file as a first argument. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * The operation `DigraphPath` is introduced to find a path between two vertices
   in a digraph. [[Wilf Wilson](http://wilf.me)]
 * The operation `IteratorOfPaths` is introduced to iterate over the paths
@@ -53,7 +55,7 @@ Several bugs related to clique finding have been resolved. [[Wilf
 Wilson](http://wilf.me)]
 
 * Files with extension `bz2` were previously not (un)compressed when used with
-  `ReadDigraphs` and `WriteDigraphs`. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
+  `ReadDigraphs` and `WriteDigraphs`. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * The documentation in Chapter 8 "Finding cliques and independent sets" has been
   corrected to accurately reflect the functionality of the package.
 * A bug which led to too few cliques and independent sets being found for some
@@ -126,7 +128,7 @@ version, we welcomed Jan De Beule to the development team.
   - `RepresentativeOutNeighbours`
 
 [[Jan De Beule](http://homepages.vub.ac.be/~jdbeule/), [Julius Jonusas](http://www-circa.mcs.st-and.ac.uk/~julius),
-[James D. Mitchell](http://tinyurl.com/jdmitchell),
+[James D. Mitchell](http://goo.gl/ZtViV6),
 [Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25),
 [Wilf Wilson](http://wilf.me)]
 
@@ -144,14 +146,14 @@ This release contains a number of bugfixes and performance improvements.
 * The attribute `DigraphAllSimpleCircuits` based
 on the algorithm in [this paper](http://epubs.siam.org/doi/abs/10.1137/0204007?journalCode=smjcat) by Donald B. Johnson. [Stuart Burrell and [Wilf Wilson](http://wilf.me)]
 * Improve efficiency of the algorithm for coloring a graph with 2 colours, a method for `IsBipartiteDigraph` and `DigraphBicomponents`. [Isabella Scott and [Wilf Wilson](http://wilf.me)]
-* `AutomorphismGroup` and `DigraphCanonicalLabelling` can now be used with color classes that are preserved by the permutations acting on a digraph. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
-* The `TCodeDecoder` was made more efficient. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
-* `AsTransformation` is introduced for digraphs in `IsFunctionalDigraph`. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
+* `AutomorphismGroup` and `DigraphCanonicalLabelling` can now be used with color classes that are preserved by the permutations acting on a digraph. [[James D. Mitchell](http://goo.gl/ZtViV6)]
+* The `TCodeDecoder` was made more efficient. [[James D. Mitchell](http://goo.gl/ZtViV6)]
+* `AsTransformation` is introduced for digraphs in `IsFunctionalDigraph`. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * The tests and their code coverage were improved.
 
 ### Issues Resolved in Version 0.3
-* There was a memory leak in bliss-0.73, which is fixed in the copy of bliss included with Digraphs, but not in the official release of bliss. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
-* Some bits of code that caused compiler warnings were improved. [[James D. Mitchell](http://tinyurl.com/jdmitchell)]
+* There was a memory leak in bliss-0.73, which is fixed in the copy of bliss included with Digraphs, but not in the official release of bliss. [[James D. Mitchell](http://goo.gl/ZtViV6)]
+* Some bits of code that caused compiler warnings were improved. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * Some memory leaks were resolved in the Digraphs kernel module. [[Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25)]
 
 ## Version 0.2 (released 04/09/2015)

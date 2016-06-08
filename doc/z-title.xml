@@ -9,27 +9,32 @@
   </Author>
 
   <Author>Julius Jonu&#353;as
-    <Email>jj252@st-and.ac.uk</Email>
-    <Homepage>http://www-circa.mcs.st-and.ac.uk/~julius</Homepage>
+    <Email>jj252@st-andrews.ac.uk</Email>
+    <Homepage>http://www-circa.mcs.st-andrews.ac.uk/~julius</Homepage>
   </Author>
 
   <Author>James D. Mitchell
-    <Email>jdm3@st-and.ac.uk</Email>
-    <Homepage>http://tinyurl.com/jdmitchell</Homepage>
+    <Email>jdm3@st-andrews.ac.uk</Email>
+    <Homepage>http://goo.gl/ZtViV6</Homepage>
+  </Author>
+  
+  <Author>Finn Smith
+    <Email>fls3@st-andrews.ac.uk</Email>
   </Author>
 
   <Author>Michael Torpey
-    <Email>mct25@st-and.ac.uk</Email>
-    <Homepage>http://www-circa.mcs.st-and.ac.uk/~mct25</Homepage>
+    <Email>mct25@st-andrews.ac.uk</Email>
+    <Homepage>http://www-circa.mcs.st-andrews.ac.uk/~mct25</Homepage>
   </Author>
 
   <Author>Wilf Wilson
-    <Email>waw7@st-and.ac.uk</Email>
-    <Homepage>http://www-circa.mcs.st-and.ac.uk/~waw7</Homepage>
+    <Email>waw7@st-andrews.ac.uk</Email>
+    <Homepage>http://www-circa.mcs.st-andrews.ac.uk/~waw7</Homepage>
   </Author>
 
-  <Copyright>&copyright; &COPYRIGHTYEARS; by Julius Jonu&#353;as, J.D. Mitchell,
-  Michael Torpey, Wilf Wilson.<P/>
+  <Copyright>&copyright; &COPYRIGHTYEARS; by
+    Jan De Beule, Julius Jonu&#353;as, James D. Mitchell, Finn Smith, Michael
+    Torpey, Wilf Wilson.<P/>
 
     &Digraphs; is free software; you can redistribute it and/or modify it
     under the terms of the <URL Text="GNU General Public License">

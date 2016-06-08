@@ -58,8 +58,8 @@ Persons := [
     FirstNames    := "J.",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "jj252@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~julius/",
+    Email         := "jj252@st-andrews.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~julius/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -73,8 +73,22 @@ Persons := [
     FirstNames    := "J. D.",
     IsAuthor      := true,
     IsMaintainer  := true,
-    Email         := "jdm3@st-and.ac.uk",
+    Email         := "jdm3@st-andrews.ac.uk",
     WWWHome       := "http://goo.gl/ZtViV6",
+    PostalAddress := Concatenation( [
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
+  ),
+  
+  rec(
+    LastName      := "Smith",
+    FirstNames    := "F.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "fls3@st-andrews.ac.uk",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -88,8 +102,8 @@ Persons := [
     FirstNames    := "M.",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "mct25@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~mct25/",
+    Email         := "mct25@st-andrews.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~mct25/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -103,8 +117,8 @@ Persons := [
     FirstNames    := "W.",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "waw7@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~waw7/",
+    Email         := "waw7@st-andrews.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~waw7/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
