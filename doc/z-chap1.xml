@@ -41,7 +41,7 @@
 
       <Item> 
         download the package archive <F>&ARCHIVENAME;.tar.gz</F> from
-        <URL Text="the Digraph package webpage">http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php</URL>.
+        <URL Text="the Digraph package webpage">http://gap-packages.github.io/Digraphs/</URL>.
       </Item>
     
       <Item> 
