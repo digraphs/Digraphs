@@ -1349,7 +1349,7 @@ function(digraph)
 end);
 
 InstallMethod(AdjacencyMatrixMutableCopy, "for a digraph",
-[IsDigraph], 
+[IsDigraph],
 function(digraph)
   return List(AdjacencyMatrix(digraph), ShallowCopy);
 end);

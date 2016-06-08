@@ -151,7 +151,7 @@ function(digraph, v)
   pos := DigraphSchreierVector(digraph)[v];
   if pos < 0 then # rep is one of the orbit reps
     word := ();
-    pos := pos * - 1;
+    pos := pos * -1;
   else
     gens  := GeneratorsOfGroup(DigraphGroup(digraph));
     sch   := DigraphSchreierVector(digraph);

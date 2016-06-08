@@ -665,7 +665,7 @@ function(m, n)
   SetDigraphNrEdges(gr, 2 * m * n);
   SetIsCompleteBipartiteDigraph(gr, true);
   if m = n then
-    aut := WreathProduct(SymmetricGroup(m), Group((1,2)));
+    aut := WreathProduct(SymmetricGroup(m), Group((1, 2)));
   else
     aut := DirectProduct(SymmetricGroup(m), SymmetricGroup(n));
   fi;

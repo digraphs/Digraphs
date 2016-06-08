@@ -862,7 +862,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
 
   # Main recursive function
   bk := function(c, try, ban, G, d)
-    local orb, try_orb, top, piv, m, to_try, C, g, v;
+    local orb, top, piv, m, to_try, C, g, v;
 
     # <c> is a new clique rep
     if d > 0 and not max and (size = fail or size = d) then
