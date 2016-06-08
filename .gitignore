@@ -79,3 +79,4 @@ src/stamp-h1
 tags
 tst/out/*
 wilf-coverage.py
+data/digraphs-lib-0.5
