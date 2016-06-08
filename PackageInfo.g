@@ -122,9 +122,9 @@ README_URL      := Concatenation(~.PackageWWWHome, "/README.md"),
 PackageInfoURL  := Concatenation(~.PackageWWWHome, "/PackageInfo.g"),
 ArchiveURL      := Concatenation(~.SourceRepository.URL,
                                  "/releases/download/v", ~.Version,
-                                 "/", "semigroups-", ~.Version),
+                                 "/", "digraphs-", ~.Version),
 
-AbstractHTML := "The <b>Digraphs</b> package is a <b>GAP</b> package containing methods for digraphs and multidigraphs.",
+AbstractHTML := "The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.",
 
 PackageDoc := rec(
   BookName  := "Digraphs",
