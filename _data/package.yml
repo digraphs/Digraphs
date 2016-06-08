@@ -1,5 +1,5 @@
 name: Digraphs
-version: 0.5
+version: 0.5.1
 date: 03/03/2016
 description: 
 
@@ -7,13 +7,13 @@ authors:
     - name: J. De Beule
       url: http://homepages.vub.ac.be/~jdbeule/
     - name: J. Jonusas
-      url: http://www-circa.mcs.st-and.ac.uk/~julius
+      url: http://www-circa.mcs.st-and.ac.uk/~julius/
     - name: J. D. Mitchell
       url: http://goo.gl/ZtViV6
     - name: M. Torpey
-      url: http://www-circa.mcs.st-and.ac.uk/~mct25
+      url: http://www-circa.mcs.st-and.ac.uk/~mct25/
     - name: W. Wilson
-      url: http://www-circa.mcs.st-and.ac.uk/~waw7
+      url: http://www-circa.mcs.st-and.ac.uk/~waw7/
 
 maintainers:
     - name: J. D. Mitchell
@@ -43,7 +43,7 @@ packageinfo: http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/PackageInfo
 
 downloads:
     - name: .tar.gz
-      url: http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/digraphs-0.5.tar.gz
+      url: http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/digraphs-0.5.1.tar.gz
 
 abstract: The <b>Digraphs</b> package is a <b>GAP</b> package containing methods for digraphs and multidigraphs.
 

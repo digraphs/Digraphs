@@ -1,23 +1,25 @@
-##README
+## README
+
 ### Digraphs package for GAP
+
 #### Copyright (C) 2014-16 Jan De Beule, Julius Jonusas, James D. Mitchell, Michael Torpey, Wilf Wilson
 
 ## Getting Digraphs
 
 To get the latest version of the package, download the archive file
-`digraphs-x.x.tar.gz` from the
-[Digraphs](http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php) webpage, and inside
-the `pkg` subdirectory of your GAP installation unpack `digraphs-x.x.tar.gz`
+`digraphs-x.x.x.tar.gz` from the
+[Digraphs](https://gap-packages.github.io/Digraphs) webpage, and inside
+the `pkg` subdirectory of your GAP installation unpack `digraphs-x.x.x.tar.gz`
 using, for example:
 
-    gunzip digraphs-x.x.tar.gz; tar xvf digraphs-x.x.tar
+    gunzip digraphs-x.x.x.tar.gz; tar xvf digraphs-x.x.x.tar
 
-This will create a subdirectory `digraphs-x.x`.
+This will create a subdirectory `digraphs-x.x.x`.
 
 ## Issues
 
 For questions, remarks, suggestions, and issues please use the
-[issue tracker](http://bitbucket.org/james-d-mitchell/digraphs/issues).
+[issue tracker](https://github.com/gap-packages/Digraphs/issues).
 
 ## Installation
 
@@ -27,23 +29,23 @@ with version number 4.7.8 or higher.  The most up-to-date version of
 obtained from the [main GAP webpage](http://www.gap-system.org).
 
 The following is a summary of the steps that should lead to a successful
-installation of [Digraphs](http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php):
+installation of [Digraphs](https://gap-packages.github.io/Digraphs):
 
 * get the [IO](http://gap-system.github.io/io/) package version 4.4.4 or higher
 
-* **this step is optional:** certain methods in [Digraphs](http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php) require the [Grape](http://www.maths.qmul.ac.uk/~leonard/grape/) package to be available; a full list of these functions can be found in the first chapter of the manual.  To use these functions make sure that the [Grape](http://www.maths.qmul.ac.uk/~leonard/grape/) package version 4.5 or higher is available.
+* **this step is optional:** certain methods in [Digraphs](https://gap-packages.github.io/Digraphs) require the [Grape](http://www.maths.qmul.ac.uk/~leonard/grape/) package to be available; a full list of these functions can be found in the first chapter of the manual.  To use these functions make sure that the [Grape](http://www.maths.qmul.ac.uk/~leonard/grape/) package version 4.5 or higher is available.
 
-* download the package archive `digraphs-x.x.tar.gz` from the
-  [Digraphs](http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php) webpage.
+* download the package archive `digraphs-x.x.x.tar.gz` from the
+  [Digraphs](https://gap-packages.github.io/Digraphs) webpage.
 
-* unzip and untar the file `digraphs-x.x.tar.gz` using, for example,
+* unzip and untar the file `digraphs-x.x.x.tar.gz` using, for example,
   ```
-    gunzip digraphs-x.x.tar.gz; tar xvf digraphs-x.x.tar
+    gunzip digraphs-x.x.x.tar.gz; tar xvf digraphs-x.x.x.tar
   ```
-  which should create a directory called `digraphs-x.x`.
+  which should create a directory called `digraphs-x.x.x`.
 
 * locate the `pkg` directory of your GAP directory, which contains the
-  directories `lib`, `doc` and so on. Move the directory `digraphs-x.x` into the
+  directories `lib`, `doc` and so on. Move the directory `digraphs-x.x.x` into the
   `pkg` directory (if it is not there already).
   
 * compile the kernel module; more details below.
@@ -54,14 +56,14 @@ installation of [Digraphs](http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digrap
 
 ## Compiling the kernel module
 
-The [Digraphs](http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php)
+The [Digraphs](https://gap-packages.github.io/Digraphs)
 package has a [GAP](http://www.gap-system.org) kernel component written in 
 C which has to be compiled for the package to work.  This component contains
-certain low-level functions required by [Digraphs](http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php).
+certain low-level functions required by [Digraphs](https://gap-packages.github.io/Digraphs).
 
-It is not possible to use the [Digraphs](http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php) package without compiling it.
+It is not possible to use the [Digraphs](https://gap-packages.github.io/Digraphs) package without compiling it.
 
-To compile the kernel component inside the `digraphs-x.x` directory, type
+To compile the kernel component inside the `digraphs-x.x.x` directory, type
 
     ./configure
     make
