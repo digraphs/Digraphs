@@ -16,7 +16,7 @@ Getting digraphs-lib
 --------------------
 The latest version of this library is available at the following link:
 
-https://bitbucket.org/james-d-mitchell/digraphs/downloads
+http://gap-packages.github.io/Digraphs/
 
 Simply download it and extract the archive into the root directory of your
 Digraphs installation.  This should result in a `digraphs-lib` directory inside
