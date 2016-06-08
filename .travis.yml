@@ -1,0 +1,30 @@
+language: cpp
+compiler:
+  - gcc
+env:
+  global:
+    - IO=io-4.4.6
+    - GAPDOC=GAPDoc-1.5.1
+    - ORB=orb-4.7.6
+    - GENSS=genss-1.6.4
+    - GRAPE=grape4r7
+    - DIGRAPHS_LIB=digraphs-lib-0.5
+  matrix:
+    - GAP_BRANCH=master GAP_FORK=gap-system
+    - GAP_BRANCH=stable-4.8 GAP_FORK=gap-system
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-5-multilib
+before_script:
+  - echo "deb http://us.archive.ubuntu.com/ubuntu/ vivid main" | sudo tee -a /etc/apt/sources.list
+  - sudo apt-get update -qq
+  - sudo apt-get install libgmp-dev
+  - sudo apt-get install libgmp-dev:i386
+install:
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+script:
+  - scripts/travis-build.sh
+  - scripts/travis-test.sh
