@@ -1,0 +1,27 @@
+  
+  [1X4 [33X[0;0YOperators[133X[101X
+  
+  
+  [1X4.1 [33X[0;0YOperators for digraphs[133X[101X
+  
+  [8X[10X[3Xdigraph1[103X[10X = [3Xdigraph2[103X[10X[110X[108X
+        [33X[0;6Yreturns  [9Xtrue[109X  if  [3Xdigraph1[103X  and  [3Xdigraph2[103X have the same vertices, and
+        [10XDigraphEdges([3Xdigraph1[103X[10X)    =   DigraphEdges([3Xdigraph2[103X[10X)[110X,   up   to   some
+        re-ordering of the edge lists.[133X
+  
+        [33X[0;6YNote that this operator does not compare the vertex labels of [3Xdigraph1[103X
+        and [3Xdigraph2[103X.[133X
+  
+  [8X[10X[3Xdigraph1[103X[10X < [3Xdigraph2[103X[10X[110X[108X
+        [33X[0;6YThis operator returns [9Xtrue[109X if one of the following holds:[133X
+  
+        [30X    [33X[0;12YThe  number  [22Xn_1[122X of vertices in [3Xdigraph1[103X is less than the number
+              [22Xn_2[122X of vertices in [3Xdigraph2[103X;[133X
+  
+        [30X    [33X[0;12Y[22Xn_1  = n_2[122X, and the number [22Xm_1[122X of edges in [3Xdigraph1[103X is less than
+              the number [22Xm_2[122X of edges in [3Xdigraph2[103X;[133X
+  
+        [30X    [33X[0;12Y[22Xn_1  =  n_2[122X,  [22Xm_1 = m_2[122X, and [10XDigraphEdges([3Xdigraph1[103X[10X)[110X is less than
+              [10XDigraphEdges([3Xdigraph2[103X[10X)[110X after having both of these sets have been
+              sorted with respect to the lexicographical order.[133X
+  

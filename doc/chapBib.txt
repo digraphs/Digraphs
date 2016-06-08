@@ -1,0 +1,24 @@
+  
+  
+  [1XReferences[101X
+  
+  [[20XCK86[120X]  [16XCalderbank,  R. and Kantor, W. M.[116X, [17XThe geometry of two-weight codes[117X,
+  [18XBull. London Math. Soc.[118X, [19X18[119X, 2 (1986), 97--122.
+  
+  [[20XGab00[120X]   [16XGabow,  H.  N.[116X,  [17XPath-based  depth-first  search  for  strong  and
+  biconnected components[117X, [18XInformation Processing Letters[118X, [19X74[119X, 34 (2000), 107 -
+  114.
+  
+  [[20XJK07[120X] [16XJunttila, T. and Kaski, P.[116X ([1m[31mApplegate, D., Brodal, G. S., Panario, D.
+  and  Sedgewick,  R.[15X, Eds.), [17XEngineering an efficient canonical labeling tool
+  for  large  and  sparse  graphs[117X,  in  Proceedings  of  the Ninth Workshop on
+  Algorithm  Engineering  and  Experiments and the Fourth Workshop on Analytic
+  Algorithms and Combinatorics, SIAM (2007), 135--149.
+  
+  [[20XLS81[120X]  [16Xvan  Lint, J. H. and Schrijver, A.[116X, [17XConstruction of strongly regular
+  graphs,   two-weight   codes   and  partial  geometries  by  finite  fields[117X,
+  [18XCombinatorica[118X, [19X1[119X, 1 (1981), 63--73.
+  
+  
+  
+  [32X

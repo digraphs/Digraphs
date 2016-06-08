@@ -1,0 +1,841 @@
+  
+  [1X7 [33X[0;0YHomomorphisms[133X[101X
+  
+  
+  [1X7.1 [33X[0;0YActing on digraphs[133X[101X
+  
+  [1X7.1-1 OnDigraphs[101X
+  
+  [29X[2XOnDigraphs[102X( [3Xdigraph[103X, [3Xperm[103X ) [32X operation
+  [29X[2XOnDigraphs[102X( [3Xdigraph[103X, [3Xtrans[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a digraph, and the second argument [3Xperm[103X is a [13Xpermutation[113X of
+  the  vertices  of [3Xdigraph[103X, then this operation returns a digraph constructed
+  by  relabelling  the vertices of [3Xdigraph[103X according to [3Xperm[103X. Note that for an
+  automorphism [10Xf[110X of a digraph, we have [10XOnDigraphs([110X[3Xdigraph[103X, [10Xf) = [110X[3Xdigraph[103X.[133X
+  
+  [33X[0;0YIf the second argument is a [13Xtransformation[113X [3Xtrans[103X of the vertices of [3Xdigraph[103X,
+  then this operation returns a digraph constructed by transforming the source
+  and  range  of  each edge according to [3Xtrans[103X, and then removing any multiple
+  edges.  If  [3Xtrans[103X  is  indeed  a permutation, then the result coincides with
+  relabelling the vertices of [3Xdigraph[103X according to [3Xtrans[103X.[133X
+  
+  [33X[0;0YThe  [2XDigraphVertexLabels[102X  ([14X5.1-10[114X)  of  [3Xdigraph[103X  will not be retained in the
+  returned digraph.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [127X[104X
+    [4X[25X>[125X [27X[2, 3, 5]]);[127X[104X
+    [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := OnDigraphs(gr, (1,2));[127X[104X
+    [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(new);[127X[104X
+    [4X[28X[ [ 2, 3, 5 ], [ 3 ], [ 2 ], [ 2, 1, 4 ], [ 1, 3, 5 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [], [2]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xt := Transformation([1, 2, 1]);;[127X[104X
+    [4X[25Xgap>[125X [27Xnew := OnDigraphs(gr, t);[127X[104X
+    [4X[28X<digraph with 3 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(new);[127X[104X
+    [4X[28X[ [ 2 ], [  ], [  ] ][128X[104X
+    [4X[25Xgap>[125X [27XForAll(DigraphEdges(gr),[127X[104X
+    [4X[25X>[125X [27X e -> IsDigraphEdge(new, [e[1] ^ t, e[2] ^ t]));[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X7.1-2 OnMultiDigraphs[101X
+  
+  [29X[2XOnMultiDigraphs[102X( [3Xdigraph[103X, [3Xpair[103X ) [32X operation
+  [29X[2XOnMultiDigraphs[102X( [3Xdigraph[103X, [3Xperm1[103X, [3Xperm2[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is a digraph, and [3Xpair[103X is a pair consisting of a permutation of
+  the  vertices and a permutation of the edges of [3Xdigraph[103X, then this operation
+  returns  a  digraph  constructed  by  relabelling  the vertices and edges of
+  [3Xdigraph[103X according to [3Xperm[1][103X and [3Xperm[2][103X, respectively.[133X
+  
+  [33X[0;0YIn  its  second  form,  [10XOnMultiDigraphs[110X  returns a digraph with vertices and
+  edges permuted by [3Xperm1[103X and [3Xperm2[103X, respectively.[133X
+  
+  [33X[0;0YNote  that  [10XOnDigraphs([3Xdigraph[103X[10X,  perm)=OnMultiDigraphs([3Xdigraph[103X[10X,  [perm, ()])[110X
+  where  [10Xperm[110X  is  a  permutation  of the vertices of [3Xdigraph[103X. If you are only
+  interested in the action of a permutation on the vertices of a digraph, then
+  you can use [10XOnDigraphs[110X instead of [10XOnMultiDigraphs[110X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr1 := Digraph([[3, 6, 3], [], [3], [9, 10], [9], [127X[104X
+    [4X[25X>[125X [27X[],  [], [10, 4, 10], [], []]);[127X[104X
+    [4X[28X<multidigraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xp := DigraphCanonicalLabelling(gr1);[127X[104X
+    [4X[28X[ (1,9,5,3,10,6,4,7), (1,7,9,5,2,8,4,10,3,6) ][128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := OnMultiDigraphs(gr1, p);[127X[104X
+    [4X[28X<multidigraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(gr2);[127X[104X
+    [4X[28X[ [  ], [  ], [ 5 ], [  ], [  ], [  ], [ 5, 6 ], [ 6, 7, 6 ], [128X[104X
+    [4X[28X  [ 10, 4, 10 ], [ 10 ] ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X7.2 [33X[0;0YIsomorphisms, and Canonical labellings[133X[101X
+  
+  [1X7.2-1 AutomorphismGroup[101X
+  
+  [29X[2XAutomorphismGroup[102X( [3Xdigraph[103X ) [32X attribute
+  [29X[2XAutomorphismGroup[102X( [3Xdigraph[103X, [3Xcolors[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA permutation group.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is a digraph without multiple edges, then this function returns
+  the  automorphism  group  of  [3Xdigraph[103X,  as  a  group  of permutations on the
+  vertices of [3Xdigraph[103X.[133X
+  
+  [33X[0;0YIf  the  [3Xcolors[103X  argument  is specified, then the group will consist of only
+  those  automorphisms which respect the given colouring. The colouring [3Xcolors[103X
+  can be in one of two forms:[133X
+  
+  [30X    [33X[0;6YA list of positive integers of size the number of vertices of [3Xdigraph[103X,
+        where [3Xcolors[103X[10X[i][110X is the colour of vertex [10Xi[110X.[133X
+  
+  [30X    [33X[0;6YA  list  of  lists, such that [3Xcolors[103X[10X[i][110X is a list of all vertices with
+        colour [10Xi[110X.[133X
+  
+  [33X[0;0YThe       automorphism       group       is      found      using      bliss
+  ([7Xhttp://www.tcs.tkk.fi/Software/bliss/index.html[107X)   by  Tommi  Junttila  and
+  Petteri Kaski.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xjohnson := Digraph([[2, 3, 4, 5], [1, 3, 4, 6], [127X[104X
+    [4X[25X>[125X [27X[1, 2, 5, 6], [1, 2, 5, 6], [1, 3, 4, 6], [127X[104X
+    [4X[25X>[125X [27X[2, 3, 4, 5]]);[127X[104X
+    [4X[28X<digraph with 6 vertices, 24 edges>[128X[104X
+    [4X[25Xgap>[125X [27XAutomorphismGroup(johnson);[127X[104X
+    [4X[28XGroup([ (3,4), (2,3)(4,5), (1,2)(5,6) ])[128X[104X
+    [4X[25Xgap>[125X [27XSize(last);[127X[104X
+    [4X[28X48[128X[104X
+    [4X[25Xgap>[125X [27Xcycle := CycleDigraph(9);[127X[104X
+    [4X[28X<digraph with 9 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xa := AutomorphismGroup(cycle);;[127X[104X
+    [4X[25Xgap>[125X [27XStructureDescription(a);[127X[104X
+    [4X[28X"C9"[128X[104X
+    [4X[25Xgap>[125X [27Xa := AutomorphismGroup(cycle, [1, 2, 3, 1, 2, 3, 1, 2, 3]);;[127X[104X
+    [4X[25Xgap>[125X [27XStructureDescription(a);[127X[104X
+    [4X[28X"C3"[128X[104X
+    [4X[25Xgap>[125X [27Xa := AutomorphismGroup(cycle, [[1, 4, 7], [2, 5, 8], [3, 6, 9]]);;[127X[104X
+    [4X[25Xgap>[125X [27XStructureDescription(a);[127X[104X
+    [4X[28X"C3"[128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-2 AutomorphismGroup[101X
+  
+  [29X[2XAutomorphismGroup[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA direct product of permutation groups.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a multidigraph, then this function returns the automorphism
+  group  of  [3Xdigraph[103X,  as a group of permutations on the vertices and edges of
+  [3Xdigraph[103X.[133X
+  
+  [33X[0;0YFor  convenience,  the  returned group is the direct product of the group of
+  automorphisms of the vertices of [3Xdigraph[103X with the stabiliser of the vertices
+  in  the  automorphism  group  of the edges. These two groups can be accessed
+  using  the  [2XProjection[102X ([14XReference: Projection[114X) with second argument [10X1[110X and [10X2[110X,
+  respectively.[133X
+  
+  [33X[0;0YThe  permutations  in the automorphism group of the edges act on the indices
+  of the edges of [3Xdigraph[103X.[133X
+  
+  [33X[0;0YThe       automorphism       group       is      found      using      bliss
+  ([7Xhttp://www.tcs.tkk.fi/Software/bliss/index.html[107X)   by  Tommi  Junttila  and
+  Petteri Kaski.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));          [127X[104X
+    [4X[28X<multidigraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XG := AutomorphismGroup(gr);[127X[104X
+    [4X[28XGroup([ (1,2,3), (8,9), (6,7), (4,5) ])[128X[104X
+    [4X[25Xgap>[125X [27XRange(Projection(G, 1));[127X[104X
+    [4X[28XGroup([ (1,2,3) ])[128X[104X
+    [4X[25Xgap>[125X [27XRange(Projection(G, 2));[127X[104X
+    [4X[28XGroup([ (5,6), (3,4), (1,2) ])[128X[104X
+    [4X[25Xgap>[125X [27XSize(G);[127X[104X
+    [4X[28X24[128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-3 DigraphGroup[101X
+  
+  [29X[2XDigraphGroup[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA permutation group.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  was  created knowing a subgroup of its automorphism group, then
+  this  group  is  stored  in  the  attribute  [10XDigraphGroup[110X. If [3Xdigraph[103X is not
+  created  knowing  a  subgroup  of  it  automorphism group, then [10XDigraphGroup[110X
+  returns the entire automorphism group of [3Xdigraph[103X.[133X
+  
+  [33X[0;0YNote  that  certain  other  constructor  operations  such  as  [2XCayleyDigraph[102X
+  ([14X3.5-6[114X),  [2XBipartiteDoubleDigraph[102X  ([14X3.3-30[114X),  and [2XDoubleDigraph[102X ([14X3.3-29[114X), may
+  not  require  a  group  as  one  of  the  arguments,  but  use  the standard
+  constructor  method  using a group, and hence set the [10XDigraphGroup[110X attribute
+  for the resulting digraph.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xn := 4;;[127X[104X
+    [4X[25Xgap>[125X [27Xadj := function(x, y)[127X[104X
+    [4X[25X>[125X [27X     return (((x-y) mod n) = 1) or (((x-y) mod n) = n-1);[127X[104X
+    [4X[25X>[125X [27X   end;;[127X[104X
+    [4X[25Xgap>[125X [27Xgroup := CyclicGroup(IsPermGroup, n);[127X[104X
+    [4X[28XGroup([ (1,2,3,4) ])[128X[104X
+    [4X[25Xgap>[125X [27Xdigraph := Digraph(group, [1..n], \^, adj);[127X[104X
+    [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XHasDigraphGroup(digraph);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XDigraphGroup(digraph);[127X[104X
+    [4X[28XGroup([ (1,2,3,4) ])[128X[104X
+    [4X[25Xgap>[125X [27XAutomorphismGroup(digraph);[127X[104X
+    [4X[28XGroup([ (2,4), (1,2)(3,4) ])[128X[104X
+    [4X[25Xgap>[125X [27Xddigraph := DoubleDigraph(digraph);[127X[104X
+    [4X[28X<digraph with 8 vertices, 32 edges>[128X[104X
+    [4X[25Xgap>[125X [27XHasDigraphGroup(ddigraph);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XDigraphGroup(ddigraph);[127X[104X
+    [4X[28XGroup([ (1,2,3,4)(5,6,7,8), (1,5)(2,6)(3,7)(4,8) ])[128X[104X
+    [4X[25Xgap>[125X [27XAutomorphismGroup(ddigraph);[127X[104X
+    [4X[28XGroup([ (6,8), (5,7), (4,6), (3,5), (2,4), (1,2)(3,4)(5,6)(7,8) ])[128X[104X
+    [4X[25Xgap>[125X [27Xdigraph := Digraph([[2, 3], [], []]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XHasDigraphGroup(digraph);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XHasAutomorphismGroup(digraph);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XDigraphGroup(digraph);[127X[104X
+    [4X[28XGroup([ (2,3) ])[128X[104X
+    [4X[25Xgap>[125X [27XHasAutomorphismGroup(digraph);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgroup := DihedralGroup(8);[127X[104X
+    [4X[28X<pc group of size 8 with 3 generators>[128X[104X
+    [4X[25Xgap>[125X [27Xdigraph := CayleyDigraph(group);[127X[104X
+    [4X[28X<digraph with 8 vertices, 24 edges>[128X[104X
+    [4X[25Xgap>[125X [27XHasDigraphGroup(digraph);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XDigraphGroup(digraph);[127X[104X
+    [4X[28XGroup([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)[128X[104X
+    [4X[28X(5,8) ])[128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-4 DigraphSchreierVector[101X
+  
+  [29X[2XDigraphSchreierVector[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA list of integers.[133X
+  
+  [33X[0;0Y[10XDigraphSchreierVector[110X returns the so-called [13XSchreier vector[113X of the action of
+  the  [2XDigraphGroup[102X  ([14X7.2-3[114X)  on  the set of vertices of [3Xdigraph[103X. The Schreier
+  vector is a list [10Xsch[110X of integers with with length [10XDigraphNrVertices([3Xdigraph[103X[10X)[110X
+  where:[133X
+  
+  [8X[10Xsch[i] < 0:[110X[108X
+        [33X[0;6Yimplies     that     [10Xi[110X     is     an    orbit    representative    and
+        [10XDigraphOrbitReps([3Xdigraph[103X[10X)[-sch[i]] = i[110X.[133X
+  
+  [8X[10Xsch[i] > 0:[110X[108X
+        [33X[0;6Yimplies  that  [10Xi  /  gens[sch[i]][110X  is  one step closer to the root (or
+        representative)   of  the  tree,  where  [10Xgens[110X  is  the  generators  of
+        [10XDigraphGroup([3Xdigraph[103X[10X)[110X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xdigraph := CayleyDigraph(AlternatingGroup(4));[127X[104X
+    [4X[28X<digraph with 12 vertices, 24 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xsch := DigraphSchreierVector(digraph);[127X[104X
+    [4X[28X[ -1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphOrbitReps(digraph);[127X[104X
+    [4X[28X[ 1 ][128X[104X
+    [4X[25Xgap>[125X [27Xgens := GeneratorsOfGroup(DigraphGroup(digraph)); [127X[104X
+    [4X[28X[ (1,5,7)(2,4,8)(3,6,9)(10,11,12), (1,2,3)(4,7,10)(5,9,11)(6,8,12) ][128X[104X
+    [4X[25Xgap>[125X [27X10 / gens[sch[10]];[127X[104X
+    [4X[28X7[128X[104X
+    [4X[25Xgap>[125X [27X7 / gens[sch[7]];[127X[104X
+    [4X[28X5[128X[104X
+    [4X[25Xgap>[125X [27X5 / gens[sch[5]];[127X[104X
+    [4X[28X1[128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-5 DigraphOrbitReps[101X
+  
+  [29X[2XDigraphOrbitReps[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA list of integers.[133X
+  
+  [33X[0;0Y[10XDigraphOrbitReps[110X  returns  a  list of orbit representatives of the action of
+  the [2XDigraphGroup[102X ([14X7.2-3[114X) on the set of vertices of [3Xdigraph[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xdigraph := CayleyDigraph(AlternatingGroup(4));[127X[104X
+    [4X[28X<digraph with 12 vertices, 24 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphOrbitReps(digraph);[127X[104X
+    [4X[28X[ 1 ][128X[104X
+    [4X[25Xgap>[125X [27Xdigraph := Digraph([[3, 8], [], [6, 8], [7], [2, 9], [10], [7], [1], [127X[104X
+    [4X[25X>[125X [27X                       [2, 7, 8], [8]]);[127X[104X
+    [4X[28X<digraph with 10 vertices, 14 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphOrbitReps(digraph); [127X[104X
+    [4X[28X[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-6 DigraphStabilizer[101X
+  
+  [29X[2XDigraphStabilizer[102X( [3Xdigraph[103X, [3Xv[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA permutation group.[133X
+  
+  [33X[0;0Y[10XDigraphStabilizer[110X returns the stabilizer of the vertex [3Xv[103X under of the action
+  of the [2XDigraphGroup[102X ([14X7.2-3[114X) on the set of vertices of [3Xdigraph[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xdigraph := Digraph([[2, 3, 5], [1, 4, 6], [4, 2, 7], [3, 1, 8], [6, 8, 1],[127X[104X
+    [4X[25X>[125X [27X                       [5, 7, 2], [8, 5, 3], [7, 6, 4]]);[127X[104X
+    [4X[28X<digraph with 8 vertices, 24 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphStabilizer(digraph, 8);[127X[104X
+    [4X[28XGroup(())[128X[104X
+    [4X[25Xgap>[125X [27XDigraphStabilizer(digraph, 2);[127X[104X
+    [4X[28XGroup(())[128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-7 DigraphOrbits[101X
+  
+  [29X[2XDigraphOrbits[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA list of lists of integers.[133X
+  
+  [33X[0;0Y[10XDigraphOrbits[110X  returns  the orbits of the action of the [2XDigraphGroup[102X ([14X7.2-3[114X)
+  on the set of vertices of [3Xdigraph[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := Group((1,2,3), (1,2), (4,5,6), (7,8,9), (7,8));;[127X[104X
+    [4X[25Xgap>[125X [27Xgr := EdgeOrbitsDigraph(G, [1, 2]);[127X[104X
+    [4X[28X<digraph with 9 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphOrbits(gr);[127X[104X
+    [4X[28X[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-8 RepresentativeOutNeighbours[101X
+  
+  [29X[2XRepresentativeOutNeighbours[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YAn immutable list of immutable lists.[133X
+  
+  [33X[0;0YThis  function returns the list [10Xout[110X of [13Xout-neighbours[113X of each representative
+  of the orbits of the action of [2XDigraphGroup[102X ([14X7.2-3[114X) on the vertex set of the
+  digraph [3Xdigraph[103X.[133X
+  
+  [33X[0;0YMore  specifically,  if  [10Xreps[110X  is  the list of orbit representatives, then a
+  vertex  [10Xj[110X  appears  in  [10Xout[i][110X  each  time  there exists an edge with source
+  [10Xreps[i][110X and range [10Xj[110X in [3Xdigraph[103X.[133X
+  
+  [33X[0;0YIf [2XDigraphGroup[102X ([14X7.2-3[114X) is trivial, then [2XOutNeighbours[102X ([14X5.2-5[114X) is returned.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xdigraph := Digraph([[1, 2, 3, 4, 5], [3, 5], [2], [1, 2, 3, 5], [127X[104X
+    [4X[25X>[125X [27X                       [1, 2, 3, 4]]);[127X[104X
+    [4X[28X<digraph with 5 vertices, 16 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphGroup(digraph);[127X[104X
+    [4X[28XGroup(())[128X[104X
+    [4X[25Xgap>[125X [27XRepresentativeOutNeighbours(digraph);[127X[104X
+    [4X[28X[ [ 1, 2, 3, 4, 5 ], [ 3, 5 ], [ 2 ], [ 1, 2, 3, 5 ], [ 1, 2, 3, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xdigraph := Digraph([[2, 3, 5], [1, 4, 6], [4, 2, 7], [3, 1, 8], [6, 8, 1],[127X[104X
+    [4X[25X>[125X [27X                       [5, 7, 2], [8, 5, 3], [7, 6, 4]]);[127X[104X
+    [4X[28X<digraph with 8 vertices, 24 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphGroup(digraph);[127X[104X
+    [4X[28XGroup([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)[128X[104X
+    [4X[28X(4,7) ])[128X[104X
+    [4X[25Xgap>[125X [27XRepresentativeOutNeighbours(digraph);[127X[104X
+    [4X[28X[ [ 2, 3, 5 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-9 DigraphCanonicalLabelling[101X
+  
+  [29X[2XDigraphCanonicalLabelling[102X( [3Xdigraph[103X ) [32X attribute
+  [29X[2XDigraphCanonicalLabelling[102X( [3Xdigraph[103X, [3Xcolors[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA permutation.[133X
+  
+  [33X[0;0YA  function  [22Xρ[122X from a digraph to a digraph is a [13Xcanonical representative map[113X
+  if the following two conditions hold:[133X
+  
+  [30X    [33X[0;6Y[22Xρ(G)[122X and [22XG[122X are isomorphic; and[133X
+  
+  [30X    [33X[0;6Y[22Xρ(G)=ρ(H)[122X if and only if [22XG[122X and [22XH[122X are isomorphic.[133X
+  
+  [33X[0;0YA  canonical  labelling  of a digraph [3Xdigraph[103X (under [22Xρ[122X) is an isomorphism of
+  [3Xdigraph[103X  onto its canonical representative [22Xρ([122X[3Xdigraph[103X[22X)[122X given as a permutation
+  of the vertices (and the edges in case [3Xdigraph[103X has multiple edges).[133X
+  
+  [33X[0;0YIf  the  [3Xcolors[103X  argument  is  specified,  then the canonical labelling will
+  respect  the  given  colouring.  The  colouring  [3Xcolors[103X can be in one of two
+  forms:[133X
+  
+  [30X    [33X[0;6YA list of positive integers of size the number of vertices of [3Xdigraph[103X,
+        where [3Xcolors[103X[10X[i][110X is the colour of vertex [10Xi[110X.[133X
+  
+  [30X    [33X[0;6YA  list  of  lists, such that [3Xcolors[103X[10X[i][110X is a list of all vertices with
+        colour [10Xi[110X.[133X
+  
+  [33X[0;0YThe       canonical       labelling      is      found      using      bliss
+  ([7Xhttp://www.tcs.tkk.fi/Software/bliss/index.html[107X)   by  Tommi  Junttila  and
+  Petteri Kaski.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := Digraph(10, [1, 1, 3, 4, 4, 5, 8, 8], [6, 3, 3, 9, 10, 9, 4, 10]);[127X[104X
+    [4X[28X<digraph with 10 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphCanonicalLabelling(G);[127X[104X
+    [4X[28X(1,3,4)(2,10,6,7,9,8)[128X[104X
+    [4X[25Xgap>[125X [27XDigraphCanonicalLabelling(G, [[1 .. 5], [6 .. 10]]);[127X[104X
+    [4X[28X(1,4,3,5)(6,8)(7,9,10)[128X[104X
+    [4X[25Xgap>[125X [27XDigraphCanonicalLabelling(G, [1, 1, 1, 1, 2, 3, 1, 3, 2, 1]);[127X[104X
+    [4X[28X(2,3,4,6,10,5,8,9,7)[128X[104X
+    [4X[25Xgap>[125X [27Xp := (1,2,7,5)(3,9)(6,10,8);;[127X[104X
+    [4X[25Xgap>[125X [27XH := Digraph([127X[104X
+    [4X[25X>[125X [27X 10,[127X[104X
+    [4X[25X>[125X [27X OnTuples([1, 1, 3, 4, 4, 5, 8, 8], p),[127X[104X
+    [4X[25X>[125X [27X OnTuples([6, 3, 3, 9, 10, 9, 4, 10], p)[127X[104X
+    [4X[25X>[125X [27X);[127X[104X
+    [4X[28X<digraph with 10 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XG = H;[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XOnDigraphs(G, DigraphCanonicalLabelling(G)) =[127X[104X
+    [4X[25X>[125X [27X   OnDigraphs(H, DigraphCanonicalLabelling(H));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[7, 2, 8, 2], [7, 6], [9], [], [127X[104X
+    [4X[25X>[125X [27X[], [], [], [2], [6], [4]]);[127X[104X
+    [4X[28X<multidigraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphCanonicalLabelling(gr);[127X[104X
+    [4X[28X[ (1,9,7,5)(2,10,3), (1,7,3,8,2,6,10,4,5,9) ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-10 IsIsomorphicDigraph[101X
+  
+  [29X[2XIsIsomorphicDigraph[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  operation  returns  [9Xtrue[109X  if the digraph [3Xdigraph1[103X is isomorphic to the
+  digraph [3Xdigraph2[103X.[133X
+  
+  [33X[0;0YThis operation uses the canonical labelling of the digraphs found with bliss
+  ([7Xhttp://www.tcs.tkk.fi/Software/bliss/index.html[107X)   by  Tommi  Junttila  and
+  Petteri Kaski.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xdigraph1 := CycleDigraph(4);[127X[104X
+    [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xdigraph2 := CycleDigraph(5);[127X[104X
+    [4X[28X<digraph with 5 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsIsomorphicDigraph(digraph1, digraph2);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xdigraph2 := DigraphReverse(digraph1);[127X[104X
+    [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsIsomorphicDigraph(digraph1, digraph2);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xdigraph1 := Digraph([[], [9, 8, 9], [7], [127X[104X
+    [4X[25X>[125X [27X[], [], [5, 3], [8], [6], [4, 5], []]);[127X[104X
+    [4X[28X<multidigraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xdigraph2 := Digraph([[], [4], [], [7], [], [127X[104X
+    [4X[25X>[125X [27X[4, 5, 10, 5], [], [9], [4, 2], [2]]);[127X[104X
+    [4X[28X<multidigraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsIsomorphicDigraph(digraph1, digraph2);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xdigraph1 := Digraph([[3], [], []]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27Xdigraph2 := Digraph([[], [], [2]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27XIsIsomorphicDigraph(digraph1, digraph2);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-11 IsomorphismDigraphs[101X
+  
+  [29X[2XIsomorphismDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA permutation or [9Xfail[109X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph1[103X  and  [3Xdigraph2[103X  are  isomorphic  digraphs,  then this operation
+  returns an isomorphism from [3Xdigraph1[103X to [3Xdigraphs2[103X. More precisely,[133X
+  
+  [8Xfor multidigraphs[108X
+        [33X[0;6Ythis   operation   returns   a   pair  of  permutations  [10XP[110X  such  that
+        [10XOnMultiDigraphs([3Xdigraph1[103X[10X,  P)  =  digraph2[110X.  The  first permutation is
+        defined on the vertices of [3Xdigraph1[103X and the second on the edges.[133X
+  
+  [8Xfor digraphs without multiple edges[108X
+        [33X[0;6Ythis  operation returns a permutation [10Xp[110X such that [10XOnDigraphs([3Xdigraph1[103X[10X,
+        p) = digraph2[110X.[133X
+  
+  [33X[0;0YIf [3Xdigraph1[103X and [3Xdigraph2[103X are not isomorphic, then [9Xfail[109X is returned.[133X
+  
+  [33X[0;0YThis operation uses the canonical labelling of the digraphs found with bliss
+  ([7Xhttp://www.tcs.tkk.fi/Software/bliss/index.html[107X)   by  Tommi  Junttila  and
+  Petteri Kaski.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xdigraph1 := CycleDigraph(4);          [127X[104X
+    [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xdigraph2 := CycleDigraph(5);[127X[104X
+    [4X[28X<digraph with 5 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsomorphismDigraphs(digraph1, digraph2);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27Xgr1 := CompleteBipartiteDigraph(10, 5);[127X[104X
+    [4X[28X<digraph with 15 vertices, 100 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := CompleteBipartiteDigraph(5, 10);[127X[104X
+    [4X[28X<digraph with 15 vertices, 100 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xp := IsomorphismDigraphs(gr1, gr2);[127X[104X
+    [4X[28X(1,6,11)(2,7,12)(3,8,13)(4,9,14)(5,10,15)[128X[104X
+    [4X[25Xgap>[125X [27XOnDigraphs(gr1, p) = gr2;[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr1 := Digraph([[3, 6, 3], [], [3], [9, 10], [9], [], [127X[104X
+    [4X[25X>[125X [27X[], [10, 4, 10], [], []]);[127X[104X
+    [4X[28X<multidigraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph([[], [], [5], [], [], [], [127X[104X
+    [4X[25X>[125X [27X[5, 6], [6, 7, 6], [10, 4, 10], [10]]);[127X[104X
+    [4X[28X<multidigraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsomorphismDigraphs(gr1, gr2);[127X[104X
+    [4X[28X[ (1,9,5,3,10,6,4,7,2), (1,7)(2,8,4,10,6,3,9,5) ][128X[104X
+    [4X[25Xgap>[125X [27Xdigraph1 := Digraph([[], [], [], [], [], [], [127X[104X
+    [4X[25X>[125X [27X[10, 10], [], [], []]);[127X[104X
+    [4X[28X<multidigraph with 10 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xdigraph2 := Digraph([[], [3, 3], [], [], [], [],[127X[104X
+    [4X[25X>[125X [27X[], [], [], []]);[127X[104X
+    [4X[28X<multidigraph with 10 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsomorphismDigraphs(digraph1, digraph2);[127X[104X
+    [4X[28X[ (2,4,6,8,9,10,3,5,7), () ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X7.3 [33X[0;0YHomomorphisms of digraphs[133X[101X
+  
+  [33X[0;0YThe  following  methods  exist to find homomorphisms between digraphs. If an
+  argument  to one of these methods is a digraph with multiple edges, then the
+  multiplicity  of  edges will be ignored in order to perform the calculation;
+  the digraph will be treated as if it has no multiple edges.[133X
+  
+  [1X7.3-1 HomomorphismDigraphsFinder[101X
+  
+  [29X[2XHomomorphismDigraphsFinder[102X( [3Xgr1[103X, [3Xgr2[103X, [3Xhook[103X, [3Xuser_param[103X, [3Xlimit[103X, [3Xhint[103X, [3Xinjective[103X, [3Ximage[103X, [3Xmap[103X ) [32X function
+  [6XReturns:[106X  [33X[0;10YThe argument [3Xuser_param[103X.[133X
+  
+  [33X[0;0YThis  function  finds  homomorphisms  from  the  graph  [3Xgr1[103X to the graph [3Xgr2[103X
+  subject to the conditions imposed by the other arguments as described below.[133X
+  
+  [33X[0;0YIf  [10Xf[110X  and  [10Xg[110X  are  homomorphisms  found by [10XHomomorphismGraphsFinder[110X, then [10Xf[110X
+  cannot be obtained from [10Xg[110X by right multiplying by an automorphism of [3Xgr2[103X.[133X
+  
+  [8X[3Xhook[103X[108X
+        [33X[0;6YThis argument should be a function or [9Xfail[109X.[133X
+  
+        [33X[0;6YIf  [3Xhook[103X  is  a function, then it should have two arguments [3Xuser_param[103X
+        (see  below)  and a transformation [10Xt[110X. The function [10X[3Xhook[103X[10X([3Xuser_param[103X[10X, t)[110X
+        is   called   every   time   a   new   homomorphism   [10Xt[110X  is  found  by
+        [10XHomomorphismGraphsFinder[110X.[133X
+  
+        [33X[0;6YIf  [3Xhook[103X  is  [9Xfail[109X,  then a default function is used which simply adds
+        every   new   homomorphism   found   by   [10XHomomorphismGraphsFinder[110X  to
+        [3Xuser_param[103X, which must be a list in this case.[133X
+  
+  [8X[3Xuser_param[103X[108X
+        [33X[0;6YIf  [3Xhook[103X  is  a  function,  then [3Xuser_param[103X can be any [5XGAP[105X object. The
+        object [3Xuser_param[103X is used as the first argument for the function [3Xhook[103X.
+        For  example,  [3Xuser_param[103X  might  be  a  transformation semigroup, and
+        [10X[3Xhook[103X[10X([3Xuser_param[103X[10X,  t)[110X  might  set  [3Xuser_param[103X  to  be  the  closure  of
+        [3Xuser_param[103X and [10Xt[110X.[133X
+  
+        [33X[0;6YIf  the  value of [3Xhook[103X is [9Xfail[109X, then the value of [3Xuser_param[103X must be a
+        list.[133X
+  
+  [8X[3Xlimit[103X[108X
+        [33X[0;6YThis   argument   should   be   a   positive   integer   or  [9Xinfinity[109X.
+        [10XHomomorphismGraphsFinder[110X   will   return  after  it  has  found  [3Xlimit[103X
+        homomorphisms or the search is complete.[133X
+  
+  [8X[3Xhint[103X[108X
+        [33X[0;6YThis argument should be a positive integer or [9Xfail[109X.[133X
+  
+        [33X[0;6YIf  [3Xhint[103X is a positive integer, then only homorphisms of rank [3Xhint[103X are
+        found.[133X
+  
+        [33X[0;6YIf  [3Xhint[103X  is  [9Xfail[109X,  then  no  restriction  is  put  on  the  rank  of
+        homomorphisms found.[133X
+  
+  [8X[3Xinjective[103X[108X
+        [33X[0;6YThis  argument  should  be  [9Xtrue[109X  or  [9Xfalse[109X.  If it is [9Xtrue[109X, then only
+        injective  homomorphisms  are  found,  and if it is [9Xfalse[109X there are no
+        restrictions imposed by this argument.[133X
+  
+  [8X[3Ximage[103X[108X
+        [33X[0;6YThis  argument  should  be  a subset of the vertices of the graph [3Xgr2[103X.
+        [10XHomomorphismGraphsFinder[110X  only  finds  homomorphisms  from  [3Xgr1[103X to the
+        subgraph of [3Xgr2[103X induced by the vertices [3Ximage[103X.[133X
+  
+  [8X[3Xmap[103X[108X
+        [33X[0;6YThis argument should be a partial map from [3Xgr1[103X to [3Xgr2[103X, that is, a (not
+        necessarily  dense)  list  of  vertices  of the graph [3Xgr2[103X of length no
+        greater    than    the    number    vertices   in   the   graph   [3Xgr1[103X.
+        [10XHomomorphismGraphsFinder[110X  only  finds  homomorphisms extending [3Xmap[103X (if
+        any).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := ChainDigraph(10);[127X[104X
+    [4X[28X<digraph with 10 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphSymmetricClosure(gr);[127X[104X
+    [4X[28X<digraph with 10 vertices, 18 edges>[128X[104X
+    [4X[25Xgap>[125X [27XHomomorphismDigraphsFinder(gr, gr, fail, [], infinity, 2, false,[127X[104X
+    [4X[25X>[125X [27X[3, 4], [], fail, fail);[127X[104X
+    [4X[28X[ Transformation( [ 3, 4, 3, 4, 3, 4, 3, 4, 3, 4 ] ), [128X[104X
+    [4X[28X  Transformation( [ 4, 3, 4, 3, 4, 3, 4, 3, 4, 3 ] ) ][128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := CompleteDigraph(6);;[127X[104X
+    [4X[25Xgap>[125X [27XHomomorphismDigraphsFinder(gr, gr2, fail, [], 1, fail, false,[127X[104X
+    [4X[25X>[125X [27X[1 .. 6], [1, 2, 1], fail, fail);[127X[104X
+    [4X[28X[ Transformation( [ 1, 2, 1, 3, 4, 5, 6, 1, 2, 1 ] ) ][128X[104X
+    [4X[25Xgap>[125X [27Xfunc := function(user_param, t)[127X[104X
+    [4X[25X>[125X [27XAdd(user_param, t * user_param[1]);[127X[104X
+    [4X[25X>[125X [27Xend;;[127X[104X
+    [4X[25Xgap>[125X [27XHomomorphismDigraphsFinder(gr, gr2, func, [Transformation([2, 2])],[127X[104X
+    [4X[25X>[125X [27X3, fail, false, [1 .. 6], [1, 2, 1], fail, fail);[127X[104X
+    [4X[28X[ Transformation( [ 2, 2 ] ), [128X[104X
+    [4X[28X  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 2 ] ), [128X[104X
+    [4X[28X  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 3 ] ), [128X[104X
+    [4X[28X  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 4 ] ) ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-2 DigraphHomomorphism[101X
+  
+  [29X[2XDigraphHomomorphism[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
+  
+  [33X[0;0YA homomorphism from [3Xdigraph1[103X to [3Xdigraph2[103X is a mapping from the vertex set of
+  [3Xdigraph1[103X  to  a  subset of the vertices of [3Xdigraph2[103X, such that every pair of
+  vertices  [10X[i,j][110X which has an edge [10Xi->j[110X is mapped to a pair of vertices [10X[a,b][110X
+  which  has an edge [10Xa->b[110X. Note that non adjacent vertices can still be mapped
+  onto adjacent ones.[133X
+  
+  [33X[0;0Y[10XDigraphHomomorphism[110X  returns  a  single  homomorphism  between  [3Xdigraph1[103X and
+  [3Xdigraph2[103X if it exists, otherwise it returns [9Xfail[109X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr1 := ChainDigraph(3);;[127X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);[127X[104X
+    [4X[28X<digraph with 5 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphHomomorphism(gr1, gr1);[127X[104X
+    [4X[28XIdentityTransformation[128X[104X
+    [4X[25Xgap>[125X [27XDigraphHomomorphism(gr1, gr2);[127X[104X
+    [4X[28XTransformation( [ 1, 3, 1 ] )[128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-3 HomomorphismsDigraphs[101X
+  
+  [29X[2XHomomorphismsDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [29X[2XHomomorphismsDigraphsRepresentatives[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
+  
+  [33X[0;0Y[10XHomomorphismsDigraphsRepresentatives[110X finds every [2XDigraphHomomorphism[102X ([14X7.3-2[114X)
+  between  [3Xdigraph1[103X  and [3Xdigraph2[103X, up to right multiplication by an element of
+  the   [2XAutomorphismGroup[102X   ([14X7.2-1[114X)   of   [3Xdigraph2[103X.  In  other  words,  every
+  homomorphism  [10Xf[110X  between  [3Xdigraph1[103X  and  [3Xdigraph2[103X  can  be  written  as  the
+  composition    [10Xf    =    g    *    x[110X,    where    [10Xg[110X    is    one    of   the
+  [10XHomomorphismsDigraphsRepresentatives[110X and [10Xx[110X is an automorphism of [3Xdigraph2[103X.[133X
+  
+  [33X[0;0Y[10XHomomorphismsDigraphs[110X   returns   all  homomorphisms  between  [3Xdigraph1[103X  and
+  [3Xdigraph2[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr1 := ChainDigraph(3);;[127X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);[127X[104X
+    [4X[28X<digraph with 5 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XHomomorphismsDigraphs(gr1, gr2);[127X[104X
+    [4X[28X[ Transformation( [ 1, 3, 1 ] ), Transformation( [ 1, 3, 3 ] ), [128X[104X
+    [4X[28X  Transformation( [ 1, 5, 4, 4, 5 ] ), Transformation( [ 2, 2, 2 ] ), [128X[104X
+    [4X[28X  Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 1, 5, 4, 5 ] ), [128X[104X
+    [4X[28X  Transformation( [ 3, 3, 1 ] ), Transformation( [ 3, 3, 3 ] ) ][128X[104X
+    [4X[25Xgap>[125X [27XHomomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));[127X[104X
+    [4X[28X[ IdentityTransformation, Transformation( [ 1, 2, 1 ] ) ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-4 DigraphMonomorphism[101X
+  
+  [29X[2XDigraphMonomorphism[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
+  
+  [33X[0;0Y[10XDigraphMonomorphism[110X  returns  a single [13Xinjective[113X [2XDigraphHomomorphism[102X ([14X7.3-2[114X)
+  between [3Xdigraph1[103X and [3Xdigraph2[103X if one exists, otherwise it returns [9Xfail[109X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr1 := ChainDigraph(3);;[127X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);[127X[104X
+    [4X[28X<digraph with 5 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphMonomorphism(gr1, gr1);[127X[104X
+    [4X[28XIdentityTransformation[128X[104X
+    [4X[25Xgap>[125X [27XDigraphMonomorphism(gr1, gr2);[127X[104X
+    [4X[28XTransformation( [ 1, 5, 4, 4, 5 ] )[128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-5 MonomorphismsDigraphs[101X
+  
+  [29X[2XMonomorphismsDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [29X[2XMonomorphismsDigraphsRepresentatives[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
+  
+  [33X[0;0YThese  operations  behave  the  same  as  [2XHomomorphismsDigraphs[102X  ([14X7.3-3[114X) and
+  [2XHomomorphismsDigraphsRepresentatives[102X   ([14X7.3-3[114X),   expect  they  only  return
+  [13Xinjective[113X homomorphisms.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr1 := ChainDigraph(3);;[127X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);[127X[104X
+    [4X[28X<digraph with 5 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XMonomorphismsDigraphs(gr1, gr2);[127X[104X
+    [4X[28X[ Transformation( [ 1, 5, 4, 4, 5 ] ), [128X[104X
+    [4X[28X  Transformation( [ 3, 1, 5, 4, 5 ] ) ][128X[104X
+    [4X[25Xgap>[125X [27XMonomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));[127X[104X
+    [4X[28X[ IdentityTransformation ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-6 DigraphEpimorphism[101X
+  
+  [29X[2XDigraphEpimorphism[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
+  
+  [33X[0;0Y[10XDigraphEpimorphism[110X  returns  a single [13Xsurjective[113X [2XDigraphHomomorphism[102X ([14X7.3-2[114X)
+  between [3Xdigraph1[103X and [3Xdigraph2[103X if one exists, otherwise it returns [9Xfail[109X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr1 := DigraphReverse(ChainDigraph(4));[127X[104X
+    [4X[28X<digraph with 4 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := DigraphRemoveEdge(CompleteDigraph(3), [1, 2]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEpimorphism(gr2, gr1);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEpimorphism(gr1, gr2);[127X[104X
+    [4X[28XTransformation( [ 1, 2, 3, 1 ] )[128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-7 EpimorphismsDigraphs[101X
+  
+  [29X[2XEpimorphismsDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [29X[2XEpimorphismsDigraphsRepresentatives[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
+  
+  [33X[0;0YThese  operations  behave  the  same  as  [2XHomomorphismsDigraphs[102X  ([14X7.3-3[114X) and
+  [2XHomomorphismsDigraphsRepresentatives[102X   ([14X7.3-3[114X),   expect  they  only  return
+  [13Xsurjective[113X homomorphisms.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr1 := DigraphReverse(ChainDigraph(4));[127X[104X
+    [4X[28X<digraph with 4 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := DigraphSymmetricClosure(CycleDigraph(3));[127X[104X
+    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XEpimorphismsDigraphsRepresentatives(gr1, gr2);[127X[104X
+    [4X[28X[ Transformation( [ 1, 2, 3, 1 ] ), Transformation( [ 1, 2, 3, 2 ] ), [128X[104X
+    [4X[28X  Transformation( [ 1, 2, 1, 3 ] ) ][128X[104X
+    [4X[25Xgap>[125X [27XEpimorphismsDigraphs(gr1, gr2);[127X[104X
+    [4X[28X[ Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 3, 1 ] ), [128X[104X
+    [4X[28X  Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 3, 1, 2 ] ), [128X[104X
+    [4X[28X  Transformation( [ 1, 3, 2, 1 ] ), Transformation( [ 1, 3, 2, 3 ] ), [128X[104X
+    [4X[28X  Transformation( [ 2, 1, 2, 3 ] ), Transformation( [ 2, 1, 3, 1 ] ), [128X[104X
+    [4X[28X  Transformation( [ 2, 1, 3, 2 ] ), Transformation( [ 2, 3, 1, 2 ] ), [128X[104X
+    [4X[28X  Transformation( [ 2, 3, 1, 3 ] ), Transformation( [ 2, 3, 2, 1 ] ), [128X[104X
+    [4X[28X  Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ), [128X[104X
+    [4X[28X  Transformation( [ 3, 1, 3, 2 ] ), Transformation( [ 3, 2, 1, 2 ] ), [128X[104X
+    [4X[28X  Transformation( [ 3, 2, 1, 3 ] ), Transformation( [ 3, 2, 3, 1 ] ) ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-8 GeneratorsOfEndomorphismMonoid[101X
+  
+  [29X[2XGeneratorsOfEndomorphismMonoid[102X( [3Xdigraph[103X[, [3Xcolors[103X][, [3Xlimit[103X] ) [32X function
+  [29X[2XGeneratorsOfEndomorphismMonoidAttr[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
+  
+  [33X[0;0YAn  endomorphism  of  [3Xdigraph[103X  is a homomorphism [2XDigraphHomomorphism[102X ([14X7.3-2[114X)
+  from  [3Xdigraph[103X  back to itself. [10XGeneratorsOfEndomorphismMonoid[110X, called with a
+  single   argument,   returns   a  generating  set  for  the  monoid  of  all
+  endomorphisms of [3Xdigraph[103X.[133X
+  
+  [33X[0;0YIf  the  [3Xcolors[103X  argument is specified, then it will return a generating set
+  for  the  monoid  of  endomorphisms  which  respect the given colouring. The
+  colouring [3Xcolors[103X can be in one of two forms:[133X
+  
+  [30X    [33X[0;6YA list of positive integers of size the number of vertices of [3Xdigraph[103X,
+        where [3Xcolors[103X[10X[i][110X is the colour of vertex [10Xi[110X.[133X
+  
+  [30X    [33X[0;6YA  list  of  lists, such that [3Xcolors[103X[10X[i][110X is a list of all vertices with
+        colour [10Xi[110X.[133X
+  
+  [33X[0;0YIf the [3Xlimit[103X argument is specified, then it will return only the first [3Xlimit[103X
+  homomorphisms, where [3Xlimit[103X must be a positive integer or [10Xinfinity[110X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph(List([1 .. 3], x -> [1 .. 3]));;[127X[104X
+    [4X[25Xgap>[125X [27XGeneratorsOfEndomorphismMonoid(gr);[127X[104X
+    [4X[28X[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), [128X[104X
+    [4X[28X  IdentityTransformation, Transformation( [ 1, 2, 1 ] ), [128X[104X
+    [4X[28X  Transformation( [ 1, 2, 2 ] ), Transformation( [ 1, 1, 2 ] ), [128X[104X
+    [4X[28X  Transformation( [ 1, 1, 1 ] ) ][128X[104X
+    [4X[25Xgap>[125X [27XGeneratorsOfEndomorphismMonoid(gr, 3);[127X[104X
+    [4X[28X[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), [128X[104X
+    [4X[28X  IdentityTransformation ][128X[104X
+    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(3);;[127X[104X
+    [4X[25Xgap>[125X [27XGeneratorsOfEndomorphismMonoid(gr);[127X[104X
+    [4X[28X[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), [128X[104X
+    [4X[28X  IdentityTransformation ][128X[104X
+    [4X[25Xgap>[125X [27XGeneratorsOfEndomorphismMonoid(gr, [1, 2, 2]);[127X[104X
+    [4X[28X[ Transformation( [ 1, 3, 2 ] ), IdentityTransformation ][128X[104X
+    [4X[25Xgap>[125X [27XGeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);[127X[104X
+    [4X[28X[ Transformation( [ 1, 3, 2 ] ), IdentityTransformation ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-9 DigraphColoring[101X
+  
+  [29X[2XDigraphColoring[102X( [3Xdigraph[103X, [3Xn[103X ) [32X operation
+  [29X[2XDigraphColouring[102X( [3Xdigraph[103X, [3Xn[103X ) [32X operation
+  [29X[2XDigraphColoring[102X( [3Xdigraph[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
+  
+  [33X[0;0YA  digraph coloring is a labeling of the vertices (using precisely [3Xn[103X colors)
+  in  such  a  way  that  two  adjacent  vertices can not have the same label.
+  Alternatively,  it  can  be  defined to be a [2XDigraphEpimorphism[102X ([14X7.3-6[114X) from
+  [3Xdigraph[103X onto a complete digraph with [3Xn[103X vertices.[133X
+  
+  [33X[0;0Y[10XDigraphColoring[110X  returns  such an epimorphism if one exists, else it returns
+  [9Xfail[109X.[133X
+  
+  [33X[0;0YNote  that  a  digraph  has a 2-coloring if and only if it is bipartite, see
+  [2XIsBipartiteDigraph[102X ([14X6.1-3[114X).[133X
+  
+  [33X[0;0YIf the third form is used, a greedy algorithm is used to obtain a colouring,
+  which possibly is not minimal.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XDigraphColoring(CompleteDigraph(5), 4);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XDigraphColoring(ChainDigraph(10), 1);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27Xgr := ChainDigraph(10);;[127X[104X
+    [4X[25Xgap>[125X [27Xt := DigraphColoring(gr, 2);[127X[104X
+    [4X[28XTransformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )[128X[104X
+    [4X[25Xgap>[125X [27XForAll(DigraphEdges(gr), e -> e[1] ^ t <> e[2] ^ t);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XDigraphColoring(gr);[127X[104X
+    [4X[28XTransformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )[128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-10 DigraphEmbedding[101X
+  
+  [29X[2XDigraphEmbedding[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
+  
+  [33X[0;0YAn  embedding  of  a  digraph  [3Xdigraph1[103X  into  another digraph [3Xdigraph2[103X is a
+  [2XDigraphMonomorphism[102X   ([14X7.3-4[114X)  from  [3Xdigraph1[103X  to  [3Xdigraph2[103X  which  has  the
+  additional property that a pair of vertices [10X[i,j][110X which have no edge [10Xi->j[110X in
+  [3Xdigraph1[103X  are  mapped to a pair of vertices [10X[a,b][110X which have no edge [10Xa->b[110X in
+  [3Xdigraph2[103X.[133X
+  
+  [33X[0;0YIn  other  words,  an  embedding  [10Xt[110X  is  an isomorphism from [3Xdigraph1[103X to the
+  [2XInducedSubdigraph[102X ([14X3.3-2[114X) of [3Xdigraph2[103X on the image of [10Xt[110X.[133X
+  
+  [33X[0;0Y[10XDigraphEmbedding[110X  returns  a  single  embedding  if one exists, otherwise it
+  returns [9Xfail[109X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := ChainDigraph(3);[127X[104X
+    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEmbedding(gr, CompleteDigraph(4));[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEmbedding(gr, Digraph([[3], [1, 4], [1], [3]]));[127X[104X
+    [4X[28XTransformation( [ 2, 4, 3, 4 ] )[128X[104X
+  [4X[32X[104X
+  

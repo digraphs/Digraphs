@@ -1,0 +1,510 @@
+  
+  [1X6 [33X[0;0YProperties of digraphs[133X[101X
+  
+  
+  [1X6.1 [33X[0;0YEdge properties[133X[101X
+  
+  [1X6.1-1 DigraphHasLoops[101X
+  
+  [29X[2XDigraphHasLoops[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YReturns  [9Xtrue[109X if the digraph [3Xdigraph[103X is has loops, and [9Xfalse[109X if it does not.
+  A loop is an edge with equal source and range.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1, 2 ], [ 2 ] ] );[127X[104X
+    [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
+    [4X[28X[ [ 1, 1 ], [ 1, 2 ], [ 2, 2 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphHasLoops(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2, 3 ], [ 1 ], [ 2 ] ] );[127X[104X
+    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
+    [4X[28X[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 3, 2 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphHasLoops(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-2 IsAntisymmetricDigraph[101X
+  
+  [29X[2XIsAntisymmetricDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property is [9Xtrue[109X if the digraph [3Xdigraph[103X is antisymmetric, and [9Xfalse[109X if
+  it is not.[133X
+  
+  [33X[0;0YA  digraph  is  [13Xantisymmetric[113X if whenever there is an edge with source [10Xu[110X and
+  range  [10Xv[110X,  and  an edge with source [10Xv[110X and range [10Xu[110X, then the vertices [10Xu[110X and [10Xv[110X
+  are equal.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr1 := Digraph( [ [ 2 ], [ 1, 3 ], [ 2, 3 ] ] );[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsAntisymmetricDigraph(gr1);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(gr1){[ 1, 2 ]};[127X[104X
+    [4X[28X[ [ 1, 2 ], [ 2, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph( [ [ 1, 2 ], [ 3, 3 ], [ 1 ] ] );[127X[104X
+    [4X[28X<multidigraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsAntisymmetricDigraph(gr2);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(gr2);[127X[104X
+    [4X[28X[ [ 1, 1 ], [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 1 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-3 IsBipartiteDigraph[101X
+  
+  [29X[2XIsBipartiteDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is bipartite, and [9Xfalse[109X if it
+  is not. A digraph is bipartite if and only if the vertices of [3Xdigraph[103X can be
+  partitioned  into  two  non-empty sets such that the source and range of any
+  edge  of  [3Xdigraph[103X lie in distinct sets. Equivalently, a digraph is bipartite
+  if and only if it is 2-colorable; see [2XDigraphColoring[102X ([14X7.3-9[114X).[133X
+  
+  [33X[0;0YSee also [2XDigraphBicomponents[102X ([14X5.1-8[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := ChainDigraph(4);[127X[104X
+    [4X[28X<digraph with 4 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsBipartiteDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := CycleDigraph(3);[127X[104X
+    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsBipartiteDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-4 IsCompleteBipartiteDigraph[101X
+  
+  [29X[2XIsCompleteBipartiteDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YReturns  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is a complete bipartite digraph, and
+  [9Xfalse[109X if it is not.[133X
+  
+  [33X[0;0YA  digraph  is  a  [13Xcomplete  bipartite  digraph[113X  if  it  is  bipartite,  see
+  [2XIsBipartiteDigraph[102X ([14X6.1-3[114X), and there exists a unique edge with source [10Xi[110X and
+  range [10Xj[110X if and only if [10Xi[110X and [10Xj[110X lie in different bicomponents of [3Xdigraph[103X, see
+  [2XDigraphBicomponents[102X ([14X5.1-8[114X).[133X
+  
+  [33X[0;0YEquivalently,  a  bipartite  digraph  with  bicomponents  of size [22Xm[122X and [22Xn[122X is
+  complete precisely when it has [22X2mn[122X edges, none of which are multiple edges.[133X
+  
+  [33X[0;0YSee also [2XCompleteBipartiteDigraph[102X ([14X3.5-3[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := CycleDigraph(2);[127X[104X
+    [4X[28X<digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteBipartiteDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := CycleDigraph(4);[127X[104X
+    [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsBipartiteDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteBipartiteDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-5 IsCompleteDigraph[101X
+  
+  [29X[2XIsCompleteDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YReturns [9Xtrue[109X if the digraph [3Xdigraph[103X is complete, and [9Xfalse[109X if it is not.[133X
+  
+  [33X[0;0YA  digraph  is  [13Xcomplete[113X if it has no loops, and for all [13Xdistinct[113X vertices [10Xi[110X
+  and  [10Xj[110X, there is exactly one edge with source [10Xi[110X and range [10Xj[110X. Equivalently, a
+  digraph with [22Xn[122X vertices is complete precisely when it has [22Xn(n - 1)[122X edges, no
+  loops, and no multiple edges.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ] );[127X[104X
+    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2, 2 ], [ 1 ] ] );[127X[104X
+    [4X[28X<multidigraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-6 IsEmptyDigraph[101X
+  
+  [29X[2XIsEmptyDigraph[102X( [3Xdigraph[103X ) [32X property
+  [29X[2XIsNullDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YReturns  [9Xtrue[109X  if  the  digraph  [3Xdigraph[103X is empty, and [9Xfalse[109X if it is not. A
+  digraph is [13Xempty[113X if it has no edges.[133X
+  
+  [33X[0;0Y[10XIsNullDigraph[110X is a synonym for [10XIsEmptyDigraph[110X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [  ], [  ] ] );[127X[104X
+    [4X[28X<digraph with 2 vertices, 0 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsEmptyDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsNullDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [  ], [ 1 ] ] );[127X[104X
+    [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27XIsEmptyDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsNullDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-7 IsFunctionalDigraph[101X
+  
+  [29X[2XIsFunctionalDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis property is [9Xtrue[109X if the digraph [3Xdigraph[103X is functional.[133X
+  
+  [33X[0;0YA digraph is [13Xfunctional[113X if every vertex is the source of a unique edge.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr1 := Digraph( [ [ 3 ], [ 2 ], [ 2 ], [ 1 ], [ 6 ], [ 5 ] ] );[127X[104X
+    [4X[28X<digraph with 6 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsFunctionalDigraph(gr1);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph( [ [ 1, 2 ], [ 1 ] ] );[127X[104X
+    [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsFunctionalDigraph(gr2);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xgr3 := Digraph( 3, [ 1, 2, 3 ], [ 2, 3, 1 ] );[127X[104X
+    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsFunctionalDigraph(gr3);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-8 IsMultiDigraph[101X
+  
+  [29X[2XIsMultiDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YA  [13Xmultidigraph[113X  is  one  that  has at least two edges with equal source and
+  range.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"], ["a", "b", "b"], ["b", "c", "a"]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMultiDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph(3, [1, 2, 3, 1, 1, 2], [1, 2, 3, 2, 3, 1]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMultiDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph(3, [1, 2, 3, 1, 1, 2, 1], [1, 2, 3, 2, 3, 1, 2]);[127X[104X
+    [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMultiDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-9 IsReflexiveDigraph[101X
+  
+  [29X[2XIsReflexiveDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is reflexive, and [9Xfalse[109X if it
+  is not. A digraph is [13Xreflexive[113X if it has a loop at every vertex.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1, 2 ], [ 2 ] ] );[127X[104X
+    [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsReflexiveDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( rec ( nrvertices := 4,[127X[104X
+    [4X[25X>[125X [27Xsource := [ 1, 1, 2, 2, 3, 4, 4 ],[127X[104X
+    [4X[25X>[125X [27Xrange := [ 3, 1, 4, 2, 3, 2, 1 ] )  );[127X[104X
+    [4X[28X<digraph with 4 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsReflexiveDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-10 IsSymmetricDigraph[101X
+  
+  [29X[2XIsSymmetricDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is symmetric, and [9Xfalse[109X if it
+  is not.[133X
+  
+  [33X[0;0YA [13Xsymmetric digraph[113X is one where for each non-loop edge, having source [22Xu[122X and
+  range  [22Xv[122X,  there is a corresponding edge with source v and range u. If there
+  are  [22Xn[122X edges with source [22Xu[122X and range [22Xv[122X, then there must be precisely [22Xn[122X edges
+  with  source  [22Xv[122X  and  range  [22Xu[122X.  In other words, an undirected digraph has a
+  symmetric adjacency matrix [2XAdjacencyMatrix[102X ([14X5.2-1[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr1 := Digraph( [ [ 2 ], [ 1, 3 ], [ 2, 3 ] ] );[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr1);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xadj1 := AdjacencyMatrix(gr1);;[127X[104X
+    [4X[25Xgap>[125X [27XDisplay(adj1);[127X[104X
+    [4X[28X[ [  0,  1,  0 ],[128X[104X
+    [4X[28X  [  1,  0,  1 ],[128X[104X
+    [4X[28X  [  0,  1,  1 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xadj1 = TransposedMat(adj1);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr1 = DigraphReverse(gr1);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph( [ [ 2, 3 ], [ 1, 3 ], [ 2, 3 ] ] );[127X[104X
+    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr2);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xadj2 := AdjacencyMatrix(gr2);;[127X[104X
+    [4X[25Xgap>[125X [27XDisplay(adj2);[127X[104X
+    [4X[28X[ [  0,  1,  1 ],[128X[104X
+    [4X[28X  [  1,  0,  1 ],[128X[104X
+    [4X[28X  [  0,  1,  1 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xadj2 = TransposedMat(adj2);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-11 IsTournament[101X
+  
+  [29X[2XIsTournament[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is a tournament, and [9Xfalse[109X if
+  it is not.[133X
+  
+  [33X[0;0YA   tournament   is   an  orientation  of  a  complete  (undirected)  graph.
+  Specifically, a tournament is a digraph which has a unique directed edge (of
+  some orientation) between any pair of distinct vertices, and no loops.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ] );[127X[104X
+    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsTournament(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );[127X[104X
+    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsTournament(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-12 IsTransitiveDigraph[101X
+  
+  [29X[2XIsTransitiveDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property is [9Xtrue[109X if the digraph [3Xdigraph[103X is transitive, and [9Xfalse[109X if it
+  is  not. A digraph is [13Xtransitive[113X if whenever [10X[ i, j ][110X and [10X[ j, k ][110X are edges
+  of the digraph, then [10X[ i, k ][110X is also an edge of the digraph.[133X
+  
+  [33X[0;0YLet  [22Xn[122X  be  the number of vertices of an arbitrary digraph, and let [22Xm[122X be the
+  number  of  edges.  For general digraphs, the methods used for this property
+  use  a  version of the Floyd-Warshall algorithm, and have complexity [22XO(n^3)[122X.
+  However     for     digraphs     which     are     topologically    sortable
+  [[2XDigraphTopologicalSort[102X ([14X5.1-7[114X)], then methods with complexity [22XO(m + n + m ⋅
+  n)[122X will be used when appropriate.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1, 2 ], [ 3 ], [ 3 ] ] );[127X[104X
+    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsTransitiveDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph( [ [ 1, 2, 3 ], [ 3 ], [ 3 ] ] );[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsTransitiveDigraph(gr2);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr2 = DigraphTransitiveClosure(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr3 := Digraph( [ [ 1, 2, 2, 3 ], [ 3, 3 ], [ 3 ] ] );[127X[104X
+    [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsTransitiveDigraph(gr3);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X6.2 [33X[0;0YRegularity[133X[101X
+  
+  [1X6.2-1 IsInRegularDigraph[101X
+  
+  [29X[2XIsInRegularDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property is [9Xtrue[109X if there is an integer [10Xn[110X such that for every vertex [10Xv[110X
+  of  digraph  [3Xdigraph[103X  there  are  exactly [10Xn[110X edges terminating in [10Xv[110X. See also
+  [2XIsOutRegularDigraph[102X ([14X6.2-2[114X) and [2XIsRegularDigraph[102X ([14X6.2-3[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XIsInRegularDigraph(CompleteDigraph(4));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsInRegularDigraph(ChainDigraph(4));[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.2-2 IsOutRegularDigraph[101X
+  
+  [29X[2XIsOutRegularDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property is [9Xtrue[109X if there is an integer [10Xn[110X such that for every vertex [10Xv[110X
+  of  digraph  [3Xdigraph[103X  there  are  exactly  [10Xn[110X  edges  starting at [10Xv[110X. See also
+  [2XIsInRegularDigraph[102X ([14X6.2-1[114X) and [2XIsRegularDigraph[102X ([14X6.2-3[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XIsOutRegularDigraph(CompleteDigraph(4));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsOutRegularDigraph(ChainDigraph(4));[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.2-3 IsRegularDigraph[101X
+  
+  [29X[2XIsRegularDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property is [9Xtrue[109X if there is an integer [10Xn[110X such that for every vertex [10Xv[110X
+  of  digraph [3Xdigraph[103X there are exactly [10Xn[110X edges starting and terminating at [10Xv[110X.
+  In  other  words, the property is [9Xtrue[109X if [3Xdigraph[103X is both in-regular and and
+  out-regular.  See  also  [2XIsInRegularDigraph[102X  ([14X6.2-1[114X) and [2XIsOutRegularDigraph[102X
+  ([14X6.2-2[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XIsRegularDigraph(CompleteDigraph(4));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsRegularDigraph(ChainDigraph(4));[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.2-4 IsDistanceRegularDigraph[101X
+  
+  [29X[2XIsDistanceRegularDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YIf [3Xdigraph[103X is a connected symmetric graph, this property returns [9Xtrue[109X if for
+  any  two  vertices [10Xu[110X and [10Xv[110X of [3Xdigraph[103X and any two integers [10Xi[110X and [10Xj[110X between [10X0[110X
+  and the diameter of [3Xdigraph[103X, the number of vertices at distance [10Xi[110X from [10Xu[110X and
+  distance  [10Xj[110X from [10Xv[110X depends only on [10Xi[110X, [10Xj[110X, and the distance between vertices [10Xu[110X
+  and [10Xv[110X.[133X
+  
+  [33X[0;0YAlternatively,  a  distance  regular  graph is a graph for which there exist
+  integers  [10Xb_i[110X,  [10Xc_i[110X,  and  [10Xi[110X  such that for any two vertices [10Xu[110X, [10Xv[110X in [3Xdigraph[103X
+  which  are  distance [10Xi[110X apart, there are exactly [10Xb_i[110X neighbors of [10Xv[110X which are
+  at  distance [10Xi - 1[110X away from [10Xu[110X, and [10Xc_i[110X neighbors of [10Xv[110X which are at distance
+  [10Xi  +  1[110X  away  from  [10Xu[110X.  This definition is used to check whether [3Xdigraph[103X is
+  distance regular.[133X
+  
+  [33X[0;0YIn the case where [3Xdigraph[103X is not symmetric or not connected, the property is
+  [9Xfalse[109X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphSymmetricClosure(ChainDigraph(5));;[127X[104X
+    [4X[25Xgap>[125X [27XIsDistanceRegularDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);[127X[104X
+    [4X[28X<digraph with 4 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDistanceRegularDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X6.3 [33X[0;0YConnectivity and cycles[133X[101X
+  
+  [1X6.3-1 IsAcyclicDigraph[101X
+  
+  [29X[2XIsAcyclicDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YReturns  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is acyclic and [9Xfalse[109X if it is not. A
+  digraph  is  [13Xacyclic[113X  if  there are no cycles, i.e. if there are no directed
+  walks which start and end at the same vertex.[133X
+  
+  [33X[0;0YThe  method  used  in  this  operation  has complexity [22XO(m+n)[122X where [22Xm[122X is the
+  number  of  edges  (counting  multiple  edges as one) and [22Xn[122X is the number of
+  vertices in the digraph.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XPetersen := Graph( SymmetricGroup(5), [ [ 1, 2 ] ], OnSets,           [127X[104X
+    [4X[25X>[125X [27Xfunction(x, y) return IsEmpty(Intersection(x, y)); end );;[127X[104X
+    [4X[25Xgap>[125X [27Xgr:=Digraph(Petersen);                    [127X[104X
+    [4X[28X<digraph with 10 vertices, 30 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsAcyclicDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xgr:=Digraph( [ [  ], [ 1 ], [ 1 ], [ 1 ], [ 3 ], [ 3 ], [127X[104X
+    [4X[25X>[125X [27X[ 4 ], [ 4 ], [ 5 ], [ 5 ], [ 5 ], [ 6 ], [ 6 ], [ 7 ], [ 7 ], [127X[104X
+    [4X[25X>[125X [27X[ 7 ], [ 8 ], [ 9 ], [ 9 ], [ 11 ], [ 11 ], [ 12 ], [ 12 ], [ 13 ], [127X[104X
+    [4X[25X>[125X [27X[ 14 ], [ 15 ], [ 15 ], [ 16 ], [ 16 ], [ 17 ], [ 17 ], [ 18 ], [127X[104X
+    [4X[25X>[125X [27X[ 18 ], [ 19 ], [ 20 ], [ 20 ], [ 21 ], [ 22 ], [ 22 ], [ 23 ], [127X[104X
+    [4X[25X>[125X [27X[ 23 ], [ 24 ], [ 28 ], [ 29 ], [ 30 ], [ 30 ], [ 31 ], [ 32 ], [127X[104X
+    [4X[25X>[125X [27X[ 32 ], [ 33 ], [ 34 ], [ 41 ], [ 46 ], [ 47 ], [ 51 ] ] );;[127X[104X
+    [4X[25Xgap>[125X [27XIsAcyclicDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-2 IsConnectedDigraph[101X
+  
+  [29X[2XIsConnectedDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is weakly connected and [9Xfalse[109X
+  if  it  is  not.  A digraph [3Xdigraph[103X is [13Xweakly connected[113X if it is possible to
+  travel  from  any  vertex  to any other vertex by traversing edges in either
+  direction (possibly against the orientation of some of them).[133X
+  
+  [33X[0;0YThe  method  used  in  this  function  has  complexity [22XO(m)[122X if the digraph's
+  [2XDigraphSource[102X  ([14X5.2-4[114X)  attribute is set, otherwise it has complexity [22XO(m+n)[122X
+  (where  [22Xm[122X  is  the  number  of  edges and [22Xn[122X is the number of vertices of the
+  digraph).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2 ], [ 3 ], [  ] ] );;[127X[104X
+    [4X[25Xgap>[125X [27XIsConnectedDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1, 3 ], [ 4 ], [ 3 ], [  ] ] );;[127X[104X
+    [4X[25Xgap>[125X [27XIsConnectedDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-3 IsStronglyConnectedDigraph[101X
+  
+  [29X[2XIsStronglyConnectedDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis property is [9Xtrue[109X if the digraph [3Xdigraph[103X is strongly connected and [9Xfalse[109X
+  if it is not. A digraph [3Xdigraph[103X is [13Xstrongly connected[113X if there is a directed
+  path from every vertex to every other vertex.[133X
+  
+  [33X[0;0YThe  method used in this operation is based on Gabow's Algorithm [Gab00] and
+  has  complexity  [22XO(m+n)[122X,  where  [22Xm[122X is the number of edges (counting multiple
+  edges as one) and [22Xn[122X is the number of vertices in the digraph.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := CycleDigraph(250000);[127X[104X
+    [4X[28X<digraph with 250000 vertices, 250000 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsStronglyConnectedDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr:=DigraphRemoveEdges(gr, [ [ 250000, 1 ] ]);[127X[104X
+    [4X[28X<digraph with 250000 vertices, 249999 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsStronglyConnectedDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-4 IsAperiodicDigraph[101X
+  
+  [29X[2XIsAperiodicDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property  is  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is aperiodic, i.e. if its
+  [2XDigraphPeriod[102X ([14X5.3-12[114X) is equal to 1. Otherwise, the property is [9Xfalse[109X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );[127X[104X
+    [4X[28X<multidigraph with 6 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsAperiodicDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );[127X[104X
+    [4X[28X<digraph with 5 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsAperiodicDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  

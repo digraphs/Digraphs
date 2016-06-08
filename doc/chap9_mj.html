@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<title>GAP (digraphs) - Chapter 9: Visualising and IO</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+<script src="manual.js" type="text/javascript"></script>
+<script type="text/javascript">overwriteStyle();</script>
+</head>
+<body class="chap9"  onload="jscontent()">
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0_mj.html">Top</a>  <a href="chap1_mj.html">1</a>  <a href="chap2_mj.html">2</a>  <a href="chap3_mj.html">3</a>  <a href="chap4_mj.html">4</a>  <a href="chap5_mj.html">5</a>  <a href="chap6_mj.html">6</a>  <a href="chap7_mj.html">7</a>  <a href="chap8_mj.html">8</a>  <a href="chap9_mj.html">9</a>  <a href="chapA_mj.html">A</a>  <a href="chapBib_mj.html">Bib</a>  <a href="chapInd_mj.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap8_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapA_mj.html">[Next Chapter]</a>&nbsp;  </div>
+
+<p id="mathjaxlink" class="pcenter"><a href="chap9.html">[MathJax off]</a></p>
+<p><a id="X81714DBC80CC4BCB" name="X81714DBC80CC4BCB"></a></p>
+<div class="ChapSects"><a href="chap9_mj.html#X81714DBC80CC4BCB">9 <span class="Heading">Visualising and IO</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap9_mj.html#X7CF67F8278D9469C">9.1 <span class="Heading">Visualising a digraph</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X83B3318784E78415">9.1-1 Splash</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7F9B99C478EE093A">9.1-2 DotDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X78DA31D1869D2F94">9.1-3 DotSymmetricDigraph</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap9_mj.html#X7D4923A882ABA808">9.2 <span class="Heading">Reading and writing graphs to a file</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X873D6EB8836A3C61">9.2-1 DigraphFromGraph6String</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X782A052979EA2376">9.2-2 Graph6String</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7845ACDA7D4D333D">9.2-3 DigraphFile</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7E8142007ED0CB9F">9.2-4 ReadDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X82A4F0767C9EFC87">9.2-5 WriteDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X86D531B287733561">9.2-6 IteratorFromDigraphFile</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7AAA35867B5D8BF4">9.2-7 DigraphPlainTextLineEncoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7808D99079295C22">9.2-8 TournamentLineDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7DF22D1687D096D6">9.2-9 AdjacencyMatrixUpperTriangleLineDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X875393338486D77D">9.2-10 TCodeDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X8540FC21796A793F">9.2-11 PlainTextString</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X81BD23697857B244">9.2-12 WritePlainTextDigraph</a></span>
+</div></div>
+</div>
+
+<h3>9 <span class="Heading">Visualising and IO</span></h3>
+
+<p><a id="X7CF67F8278D9469C" name="X7CF67F8278D9469C"></a></p>
+
+<h4>9.1 <span class="Heading">Visualising a digraph</span></h4>
+
+<p><a id="X83B3318784E78415" name="X83B3318784E78415"></a></p>
+
+<h5>9.1-1 Splash</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Splash</code>( <var class="Arg">str</var>[, <var class="Arg">opts</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: Nothing.</p>
+
+<p>This function attempts to convert the string <var class="Arg">str</var> into a pdf document and open this document, i.e. to splash it all over your monitor.</p>
+
+<p>The string <var class="Arg">str</var> must correspond to a valid <code class="code">dot</code> or <code class="code">LaTeX</code> text file and you must have have <code class="code">GraphViz</code> and <code class="code">pdflatex</code> installed on your computer. For details about these file formats, see <span class="URL"><a href="http://www.latex-project.org">http://www.latex-project.org</a></span> and <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
+
+<p>This function is provided to allow convenient, immediate viewing of the pictures produced by the function <code class="func">DotDigraph</code> (<a href="chap9_mj.html#X7F9B99C478EE093A"><span class="RefLink">9.1-2</span></a>).</p>
+
+<p>The optional second argument <var class="Arg">opts</var> should be a record with components corresponding to various options, given below.</p>
+
+
+<dl>
+<dt><strong class="Mark">path</strong></dt>
+<dd><p>this should be a string representing the path to the directory where you want <code class="code">Splash</code> to do its work. The default value of this option is <code class="code">"~/"</code>.</p>
+
+</dd>
+<dt><strong class="Mark">directory</strong></dt>
+<dd><p>this should be a string representing the name of the directory in <code class="code">path</code> where you want <code class="code">Splash</code> to do its work. This function will create this directory if does not already exist.</p>
+
+<p>The default value of this option is <code class="code">"tmp.viz"</code> if the option <code class="code">path</code> is present, and the result of <code class="func">DirectoryTemporary</code> (<a href="../../../doc/ref/chap9_mj.html#X8222B1A886E6195E"><span class="RefLink">Reference: DirectoryTemporary</span></a>) is used otherwise.</p>
+
+</dd>
+<dt><strong class="Mark">filename</strong></dt>
+<dd><p>this should be a string representing the name of the file where <var class="Arg">str</var> will be written. The default value of this option is <code class="code">"vizpicture"</code>.</p>
+
+</dd>
+<dt><strong class="Mark">viewer</strong></dt>
+<dd><p>this should be a string representing the name of the program which should open the files produced by <code class="code">GraphViz</code> or <code class="code">pdflatex</code>.</p>
+
+</dd>
+<dt><strong class="Mark">type</strong></dt>
+<dd><p>this option can be used to specify that the string <var class="Arg">str</var> contains a LaTeX or <code class="code">dot</code> document. You can specify this option in <var class="Arg">str</var> directly by making the first line <code class="code">"%latex"</code> or <code class="code">"//dot"</code>. There is no default value for this option, this option must be specified in <var class="Arg">str</var> or in <var class="Arg">opt.type</var>.</p>
+
+</dd>
+<dt><strong class="Mark">filetype</strong></dt>
+<dd><p>this should be a string representing the type of file which <code class="code">Splash</code> should produce. For LaTeX files, this option is ignored and the default value <code class="code">"pdf"</code> is used.</p>
+
+</dd>
+</dl>
+<p>This function was written by Attila Egri-Nagy and Manuel Delgado with some minor changes by J. D. Mitchell.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Splash(DotDigraph(RandomDigraph(4)));</span></pre></div>
+
+<p><a id="X7F9B99C478EE093A" name="X7F9B99C478EE093A"></a></p>
+
+<h5>9.1-2 DotDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A string.</p>
+
+<p>This function produces a graphical representation of the digraph <var class="Arg">digraph</var>. Vertices are displayed as circles, numbered consistently with <var class="Arg">digraph</var>. Edges are displayed as arrowed lines between vertices, with the arrowhead of each line pointing towards the range of the edge.</p>
+
+<p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
+
+<p>The string returned by <code class="code">DotDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.5.1/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj := List( [ 1 .. 4 ], x -&gt; List( [ 1 .. 4 ], y -&gt; 1 ));</span>
+[ [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj[1][1] := 1;   </span>
+2
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj[1][3] := 0;</span>
+0
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphByAdjacencyMatrix(adj);</span>
+&lt;digraph with 4 vertices, 16 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">FileString("dot/k4.dot", DotDigraph(gr));</span>
+146</pre></div>
+
+<p><a id="X78DA31D1869D2F94" name="X78DA31D1869D2F94"></a></p>
+
+<h5>9.1-3 DotSymmetricDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotSymmetricDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A string.</p>
+
+<p>This function produces a graphical representation of the symmetric digraph <var class="Arg">digraph</var>. <code class="code">DotSymmetricDigraph</code> will return an error if <var class="Arg">digraph</var> is not a symmetric digraph. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>).</p>
+
+<p>Vertices are displayed as circles, numbered consistently with <var class="Arg">digraph</var>. Since <var class="Arg">digraph</var> is symmetric, for every non-loop edge there is a complementary edge with opposite source and range. <code class="code">DotSymmetricDigraph</code> displays each pair of complementary edges as a single line between the relevant vertices, with no arrowhead.</p>
+
+<p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
+
+<p>The string returned by <code class="code">DotSymmetricDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.5.1/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">r := rec ( vertices := [ 1 .. 4 ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">source := [ 1, 1, 1, 1, 2, 2, 3, 4, 4 ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">range := [ 2, 2, 3, 4, 1, 1, 1, 1, 4 ] );;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">star := Digraph(r);</span>
+&lt;digraph with 4 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSymmetricDigraph(star);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">FileString("dot/star.dot", DotSymmetricDigraph(gr));;</span>
+</pre></div>
+
+<p><a id="X7D4923A882ABA808" name="X7D4923A882ABA808"></a></p>
+
+<h4>9.2 <span class="Heading">Reading and writing graphs to a file</span></h4>
+
+<p>This section describes different ways to store and read graphs from a file in the <strong class="pkg">Digraphs</strong> package.</p>
+
+
+<dl>
+<dt><strong class="Mark"> Graph6 </strong></dt>
+<dd><p><em> Graph6 </em> is a graph data format for storing undirected graphs with no multiple edges nor loops of size up to <span class="SimpleMath">\( 2^{36} - 1 \)</span> in printable chracters. The format consists of two parts. The first part uses one to eight bytes to store the number of vertices. And the second part is the upper half of the adjacency matrix converted into ASCII characters. For a more detail description see <span class="URL"><a href=" http://cs.anu.edu.au/~bdm/data/formats.txt">Graph6</a></span>.</p>
+
+</dd>
+<dt><strong class="Mark"> Sparse6 </strong></dt>
+<dd><p><em> Sparse6 </em> is a graph data format for storing undirected graphs with possibly multiple edges or loops. The maximal number of vertices allowed is <span class="SimpleMath">\( 2^{36} - 1 \)</span>. The format consists of two parts. The first part uses one to eight bytes to store the number of vertices. And the second part only stores information about the edges. Therefore, the <em> Sparse6 </em> format return a more compact encoding then <em> Graph6 </em> for sparse graph, i.e. graphs where the number of edges is much less than the number of vertices squared. For a more detail description see <span class="URL"><a href=" http://cs.anu.edu.au/~bdm/data/formats.txt">Sparse6</a></span>.</p>
+
+</dd>
+<dt><strong class="Mark"> Digraph6 </strong></dt>
+<dd><p><em>Digraph6</em> is a new format based on <em> Graph6 </em>, but designed for digraphs. The entire adjacency matrix is stored, and therefore there is support for directed edges and single-vertex loops. However, multiple edges are not supported.</p>
+
+</dd>
+<dt><strong class="Mark"> DiSparse6 </strong></dt>
+<dd><p><em>DiSparse6</em> is a new format based on <em> Sparse6 </em>, but designed for digraphs. In this format the list of edges is partitioned into inceasing and decreasing edges, depending whether the edge has it's source bigger than the range. Then both sets of edges are written separetly in <em> Sparse6 </em> format with a separation symbol in between.</p>
+
+</dd>
+</dl>
+<p><a id="X873D6EB8836A3C61" name="X873D6EB8836A3C61"></a></p>
+
+<h5>9.2-1 DigraphFromGraph6String</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromGraph6String</code>( <var class="Arg">str</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromDigraph6String</code>( <var class="Arg">str</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromSparse6String</code>( <var class="Arg">str</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromDiSparse6String</code>( <var class="Arg">str</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A digraph.</p>
+
+<p>If <var class="Arg">str</var> is a string encoding a graph in Graph6, Digraph6, Sparse6 or DiSparse6 format, then the corresponging function returns a digraph. In the case of either Graph6 or Sparse6, formats which do not support directed edges, this will be a digraph such that for every edge, the edge going in the opposite direction is also present.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphFromGraph6String("?");</span>
+&lt;digraph with 0 vertices, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphFromGraph6String("C]");</span>
+&lt;digraph with 4 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphFromGraph6String("H?AAEM{");</span>
+&lt;digraph with 9 vertices, 22 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphFromDigraph6String("+?");</span>
+&lt;digraph with 0 vertices, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphFromDigraph6String("+CQFG");</span>
+&lt;digraph with 4 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphFromDigraph6String("+IM[SrKLc~lhesbU[F_");</span>
+&lt;digraph with 10 vertices, 51 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphFromDiSparse6String(".CaWBGA?b");</span>
+&lt;multidigraph with 4 vertices, 9 edges&gt;
+</pre></div>
+
+<p><a id="X782A052979EA2376" name="X782A052979EA2376"></a></p>
+
+<h5>9.2-2 Graph6String</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Graph6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Digraph6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Sparse6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DiSparse6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A string.</p>
+
+<p>These four functions return a highly compressed string fully describing the digraph <var class="Arg">digraph</var>.</p>
+
+<p>Graph6 and Digraph6 are formats best used on small, dense graphs, if applicable. For larger, sparse graphs use <em>Sparse6</em> and <em>Disparse6</em> (this latter also preserves multiple edges).</p>
+
+<p>See <code class="func">WriteDigraphs</code> (<a href="chap9_mj.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-5</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2,3], [1], [1]]);</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Sparse6String(gr);</span>
+":Bc"
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DiSparse6String(gr);</span>
+".Bc{f"
+</pre></div>
+
+<p><a id="X7845ACDA7D4D333D" name="X7845ACDA7D4D333D"></a></p>
+
+<h5>9.2-3 DigraphFile</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">coder</var>][, <var class="Arg">mode</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: An IO file object.</p>
+
+<p>If <var class="Arg">filename</var> is a string representing the name of a file, then <code class="code">DigraphFile</code> returns an <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> package file object for that file.</p>
+
+<p>If the optional argument <var class="Arg">coder</var> is specified and is a function which either encodes a digraph as a string, or decodes a string into a digraph, then this function will be used when reading or writing to the returned file object. If the optional argument <var class="Arg">coder</var> is not specified, then the encoding of the digraphs in the returned file object must be specified in the the file extension. The file extension must be one of: <code class="code">.g6</code>, <code class="code">.s6</code>, <code class="code">.d6</code>, <code class="code">.ds6</code>, <code class="code">.txt</code>, <code class="code">.p</code>, or <code class="code">.pickle</code>; more details of these file formats is given below.</p>
+
+<p>If the optional argument <var class="Arg">mode</var> is specified, then it must be one of: <code class="code">"w"</code> (for write), <code class="code">"a"</code> (for append), or <code class="code">"r"</code> (for read). If <var class="Arg">mode</var> is not specified, then <code class="code">"r"</code> is used by default.</p>
+
+<p>If <var class="Arg">filename</var> is ends in one of: <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the digraphs which are read from, or written to, the returned file object are decompressed, or compressed, appropriately.</p>
+
+<p>The file object returned by <code class="code">DigraphFile</code> can be given as the first argument for either of the functions <code class="func">ReadDigraphs</code> (<a href="chap9_mj.html#X7E8142007ED0CB9F"><span class="RefLink">9.2-4</span></a>) or <code class="func">WriteDigraphs</code> (<a href="chap9_mj.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-5</span></a>). The purpose of this is to reduce the overhead of recreating the file object inside the functions <code class="func">ReadDigraphs</code> (<a href="chap9_mj.html#X7E8142007ED0CB9F"><span class="RefLink">9.2-4</span></a>) or <code class="func">WriteDigraphs</code> (<a href="chap9_mj.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-5</span></a>) when, for example, reading or writing many digraphs in a loop.</p>
+
+<p>The currently supported file formats, and associated filename extensions, are:</p>
+
+
+<dl>
+<dt><strong class="Mark">graph6 (.g6)</strong></dt>
+<dd><p>A standard and widely-used format for undirected graphs, with no support for loops or multiple edges. Only symmetric graphs are allowed -- each edge is combined with its converse edge to produce a single undirected edge. This format is best used for "dense" graphs -- those with many edges per vertex.</p>
+
+</dd>
+<dt><strong class="Mark">sparse6 (.s6)</strong></dt>
+<dd><p>Unlike graph6, sparse6 has support for loops and multiple edges. However, its use is still limited to symmetric graphs. This format is better-suited to "sparse" graphs -- those with few edges per vertex.</p>
+
+</dd>
+<dt><strong class="Mark">digraph6 (.d6)</strong></dt>
+<dd><p>This format is based on graph6, but stores direction information - therefore is not limited to symmetric graphs. Loops are allowed, but multiple edges are not. Best compression with "dense" graphs.</p>
+
+</dd>
+<dt><strong class="Mark">disparse6 (.ds6)</strong></dt>
+<dd><p>Any type of digraph can be encoded in disparse6: directions, loops, and multiple edges are all allowed. Similar to sparse6, this has the best compression rate with "sparse" graphs.</p>
+
+</dd>
+<dt><strong class="Mark">plain text (.txt)</strong></dt>
+<dd><p>This is a human-readable format which stores graphs in the form <code class="code">0 7 0 8 1 7 2 8 3 8 4 8 5 8 6 8</code> i.e. pairs of vertices describing edges in a graph. More specifically, the vertices making up one edge must be separated by a single space, and pairs of vertices must be separated by two spaces.</p>
+
+<p>See <code class="func">ReadPlainTextDigraph</code> (<a href="chap9_mj.html#X81BD23697857B244"><span class="RefLink">9.2-12</span></a>) for a more flexible way to store digraphs in a plain text file.</p>
+
+</dd>
+<dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
+<dd><p>Digraphs are pickled using the <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) is non-trivial.</p>
+
+</dd>
+</dl>
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">file := DigraphFile(filename, "w");;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">for i in [1 .. 10] do </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">WriteDigraphs(file, Digraph([[1, 3], [2], [1, 2]]));</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">od;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IO_Close(file);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">file := DigraphFile(filename, "r");;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadDigraphs(file, 9);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;</pre></div>
+
+<p><a id="X7E8142007ED0CB9F" name="X7E8142007ED0CB9F"></a></p>
+
+<h5>9.2-4 ReadDigraphs</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadDigraphs</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>][, <var class="Arg">n</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: A digraph, or a list of digraphs.</p>
+
+<p>If <var class="Arg">filename</var> is a string containing the name of a file containing encoded digraphs or an <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> file object created using <code class="func">DigraphFile</code> (<a href="chap9_mj.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-3</span></a>), then <code class="code">ReadDigraphs</code> returns the digraphs encoded in the file as a list. Note that if <var class="Arg">filename</var> is a compressed file, which has been compressed appropriately to give a filename extension of <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then <code class="code">ReadDigraphs</code> can read <var class="Arg">filename</var> without it first needing to be decompressed.</p>
+
+<p>If the optional argument <var class="Arg">n</var> is specified, then <code class="code">ReadDigraphs</code> returns the <var class="Arg">n</var>th digraph encoded in the file <var class="Arg">filename</var>.</p>
+
+<p>If the optional argument <var class="Arg">decoder</var> is specified and is a function which decodes a string into a digraph, then <code class="code">ReadDigraphs</code> will use <var class="Arg">decoder</var> to decode the digraphs contained in <var class="Arg">filename</var>. If the optional argument <var class="Arg">decoder</var> is not specified, then <code class="code">ReadDigraphs</code> will deduce which decoder to use based on the filename extension of <var class="Arg">filename</var> (after removing the compression-related filename extensions <code class="code">.gz</code>, <code class="code">.bz2</code>, and <code class="code">.xz</code>). For example, if the filename extension if <code class="code">.g6</code>, then <code class="code">ReadDigraphs</code> will use the graph6 decoder <code class="func">DigraphFromGraph6String</code> (<a href="chap9_mj.html#X873D6EB8836A3C61"><span class="RefLink">9.2-1</span></a>).</p>
+
+<p>The currently supported file formats, and associated filename extensions, are:</p>
+
+
+<dl>
+<dt><strong class="Mark">graph6 (.g6)</strong></dt>
+<dd><p>A standard and widely-used format for undirected graphs, with no support for loops or multiple edges. Only symmetric graphs are allowed -- each edge is combined with its converse edge to produce a single undirected edge. This format is best used for "dense" graphs -- those with many edges per vertex.</p>
+
+</dd>
+<dt><strong class="Mark">sparse6 (.s6)</strong></dt>
+<dd><p>Unlike graph6, sparse6 has support for loops and multiple edges. However, its use is still limited to symmetric graphs. This format is better-suited to "sparse" graphs -- those with few edges per vertex.</p>
+
+</dd>
+<dt><strong class="Mark">digraph6 (.d6)</strong></dt>
+<dd><p>This format is based on graph6, but stores direction information - therefore is not limited to symmetric graphs. Loops are allowed, but multiple edges are not. Best compression with "dense" graphs.</p>
+
+</dd>
+<dt><strong class="Mark">disparse6 (.ds6)</strong></dt>
+<dd><p>Any type of digraph can be encoded in disparse6: directions, loops, and multiple edges are all allowed. Similar to sparse6, this has the best compression rate with "sparse" graphs.</p>
+
+</dd>
+<dt><strong class="Mark">plain text (.txt)</strong></dt>
+<dd><p>This is a human-readable format which stores graphs in the form <code class="code">0 7 0 8 1 7 2 8 3 8 4 8 5 8 6 8</code> i.e. pairs of vertices describing edges in a graph. More specifically, the vertices making up one edge must be separated by a single space, and pairs of vertices must be separated by two spaces.</p>
+
+<p>See <code class="func">ReadPlainTextDigraph</code> (<a href="chap9_mj.html#X81BD23697857B244"><span class="RefLink">9.2-12</span></a>) for a more flexible way to store digraphs in a plain text file.</p>
+
+</dd>
+<dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
+<dd><p>Digraphs are pickled using the <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) is non-trivial.</p>
+
+</dd>
+</dl>
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadDigraphs(</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 10);</span>
+&lt;digraph with 5 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadDigraphs(</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 17);</span>
+&lt;digraph with 5 vertices, 12 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadDigraphs(</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">Concatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt"));</span>
+[ &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt;, 
+  &lt;digraph with 9 vertices, 8 edges&gt; ]</pre></div>
+
+<p><a id="X82A4F0767C9EFC87" name="X82A4F0767C9EFC87"></a></p>
+
+<h5>9.2-5 WriteDigraphs</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WriteDigraphs</code>( <var class="Arg">filename</var>, <var class="Arg">digraphs</var>[, <var class="Arg">encoder</var>][, <var class="Arg">mode</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<p>If <var class="Arg">digraphs</var> is a list of digraphs or a digraph and <var class="Arg">filename</var> is a string or an <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> file object created using <code class="func">DigraphFile</code> (<a href="chap9_mj.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-3</span></a>), then <code class="code">WriteDigraphs</code> writes the digraphs to the file represented by <var class="Arg">filename</var>. If the supplied filename ends in one of the extensions <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the file will be compressed appropriately. Excluding these extensions, if the file ends with an extension in the list below, the corresponding graph format will be used to encode it. If such an extension is not included, an appropriate format will be chosen intelligently, and an extension appended, to minimise file size.</p>
+
+<p>For more verbose information on the progress of the function, set the info level of <var class="Arg">InfoDigraphs</var> to 1 or higher, using <code class="code">SetInfoLevel</code>.</p>
+
+<p>The currently supported file formats are:</p>
+
+
+<dl>
+<dt><strong class="Mark">graph6 (.g6)</strong></dt>
+<dd><p>A standard and widely-used format for undirected graphs, with no support for loops or multiple edges. Only symmetric graphs are allowed -- each edge is combined with its converse edge to produce a single undirected edge. This format is best used for "dense" graphs -- those with many edges per vertex.</p>
+
+</dd>
+<dt><strong class="Mark">sparse6 (.s6)</strong></dt>
+<dd><p>Unlike graph6, sparse6 has support for loops and multiple edges. However, its use is still limited to symmetric graphs. This format is better-suited to "sparse" graphs -- those with few edges per vertex.</p>
+
+</dd>
+<dt><strong class="Mark">digraph6 (.d6)</strong></dt>
+<dd><p>This format is based on graph6, but stores direction information - therefore is not limited to symmetric graphs. Loops are allowed, but multiple edges are not. Best compression with "dense" graphs.</p>
+
+</dd>
+<dt><strong class="Mark">disparse6 (.ds6)</strong></dt>
+<dd><p>Any type of digraph can be encoded in disparse6: directions, loops, and multiple edges are all allowed. Similar to sparse6, this has the best compression rate with "sparse" graphs.</p>
+
+</dd>
+<dt><strong class="Mark">plain text (.txt)</strong></dt>
+<dd><p>This is a human-readable format which stores graphs in the form <code class="code">0 7 0 8 1 7 2 8 3 8 4 8 5 8 6 8</code> i.e. pairs of vertices describing edges in a graph. More specifically, the vertices making up one edge must be separated by a single space, and pairs of vertices must be separated by two spaces.</p>
+
+<p>See <code class="func">ReadPlainTextDigraph</code> (<a href="chap9_mj.html#X81BD23697857B244"><span class="RefLink">9.2-12</span></a>) for a more flexible way to store digraphs in a plain text file.</p>
+
+</dd>
+<dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
+<dd><p>Digraphs are pickled using the <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) is non-trivial.</p>
+
+</dd>
+</dl>
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">grs := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">grs[1] := Digraph([]);</span>
+&lt;digraph with 0 vertices, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">grs[2] := Digraph([[1, 3], [2], [1, 2]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">grs[3] := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 4, 5, 6, 7, 10], [1, 5, 6, 7, 10], [2, 4, 5, 9, 10],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 5, 7, 8, 9], [1, 2, 5],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 4, 6, 7, 8]]);</span>
+&lt;digraph with 10 vertices, 51 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">WriteDigraphs(filename, grs, "w");</span>
+IO_OK
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadDigraphs(filename);</span>
+[ &lt;digraph with 0 vertices, 0 edges&gt;, 
+  &lt;digraph with 3 vertices, 5 edges&gt;, 
+  &lt;digraph with 10 vertices, 51 edges&gt; ]</pre></div>
+
+<p><a id="X86D531B287733561" name="X86D531B287733561"></a></p>
+
+<h5>9.2-6 IteratorFromDigraphFile</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorFromDigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: An iterator.</p>
+
+<p>If <var class="Arg">filename</var> is a string representing the name of a file containing encoded digraphs, then <code class="code">IteratorFromDigraphFile</code> returns an iterator for which the value of <code class="func">NextIterator</code> (<a href="../../../doc/ref/chap30_mj.html#X879F62F77D1D1179"><span class="RefLink">Reference: NextIterator</span></a>) is the next digraph encoded in the file.</p>
+
+<p>If the optional argument <var class="Arg">decoder</var> is specified and is a function which decodes a string into a digraph, then <code class="code">IteratorFromDigraphFile</code> will use <var class="Arg">decoder</var> to decode the digraphs contained in <var class="Arg">filename</var>.</p>
+
+<p>The purpose of this function is to easily allow looping over digraphs encoded in a file when loading all of the encoded digraphs would require too much memory.</p>
+
+<p>To see what file types are available, see <code class="func">WriteDigraphs</code> (<a href="chap9_mj.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-5</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">file := DigraphFile(filename, "w");;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">for i in [1 .. 10] do </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">WriteDigraphs(file, Digraph([[1, 3], [2], [1, 2]]));</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">od;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IO_Close(file);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">iter := IteratorFromDigraphFile(filename);</span>
+&lt;iterator&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">for x in iter do od;</span></pre></div>
+
+<p><a id="X7AAA35867B5D8BF4" name="X7AAA35867B5D8BF4"></a></p>
+
+<h5>9.2-7 DigraphPlainTextLineEncoder</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPlainTextLineEncoder</code>( <var class="Arg">delimiter1</var>[, <var class="Arg">delimiter2</var>], <var class="Arg">offset</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPlainTextLineDecoder</code>( <var class="Arg">delimiter1</var>[, <var class="Arg">delimiter2</var>], <var class="Arg">offset</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: A string.</p>
+
+<p>These two functions return a function which encodes or decodes a digraph in a plain text format.</p>
+
+<p><var class="Arg">DigraphPlainTextLineEncoder</var> returns a function which takes a single digraph as an argument. The function returns a string describing the edges of that digraph; each edge is written as a pair of integers separated by the string <var class="Arg">delimiter2</var>, and the edges themselves are separated by the string <var class="Arg">delimiter1</var>. <var class="Arg">DigraphPlainTextLineDecoder</var> returns the corresponding decoder function, which takes a string argument in this format and returns a digraph.</p>
+
+<p>If only one delimiter is passed as an argument to <var class="Arg">DigraphPlainTextLineDecoder</var>, it will return a function which decodes a single edge, returning its contents as a list of integers.</p>
+
+<p>The argument <var class="Arg">offset</var> should be an integer, which will describe a number to be added to each vertex before it is encoded, or after it is decoded. This may be used, for example, to label vertices starting at 0 instead of 1.</p>
+
+<p>Note that the number of vertices of a digraph is not stored, and so vertices which are not connected to any edge may be lost.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2,3], [1], [1]]);</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">enc := DigraphPlainTextLineEncoder("  ", " ", -1);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">dec := DigraphPlainTextLineDecoder("  ", " ",  1);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">enc(gr);</span>
+"0 1  0 2  1 0  2 0"
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">dec(last);</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+</pre></div>
+
+<p><a id="X7808D99079295C22" name="X7808D99079295C22"></a></p>
+
+<h5>9.2-8 TournamentLineDecoder</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; TournamentLineDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: A digraph.</p>
+
+<p>This function takes a string <var class="Arg">str</var>, decodes it, and then returns the tournament [see <code class="func">IsTournament</code> (<a href="chap6_mj.html#X7DD8D1A185EBE865"><span class="RefLink">6.1-11</span></a>)] which it defines, according to the following rules.</p>
+
+<p>The characters of the string <var class="Arg">str</var> represent the entries in the upper triangle of a tournament's adjacency matrix. The number of vertices <code class="code">n</code> will be detected from the length of the string and will be as large as possible.</p>
+
+<p>The first character represents the possible edge <code class="code">1 -&gt; 2</code>, the second represents <code class="code">1 -&gt; 3</code> and so on until <code class="code">1 -&gt; n</code>; then the following character represents <code class="code">2 -&gt; 3</code>, and so on up to the character which represents the edge <code class="code">n-1 -&gt; n</code>.</p>
+
+<p>If a character of the string with corresponding edge <code class="code">i -&gt; j</code> is equal to <code class="code">1</code>, then the edge <code class="code">i -&gt; j</code> is present in the tournament. Otherwise, the edge <code class="code">i -&gt; j</code> is present instead. In this way, all the possible edges are encoded one-by-one.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := TournamentLineDecoder("100001");</span>
+&lt;digraph with 4 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
+[ [ 2 ], [  ], [ 1, 2, 4 ], [ 1, 2 ] ]
+</pre></div>
+
+<p><a id="X7DF22D1687D096D6" name="X7DF22D1687D096D6"></a></p>
+
+<h5>9.2-9 AdjacencyMatrixUpperTriangleLineDecoder</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrixUpperTriangleLineDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: A digraph.</p>
+
+<p>This function takes a string <var class="Arg">str</var>, decodes it, and then returns the topologically sorted digraph [see <code class="func">DigraphTopologicalSort</code> (<a href="chap5_mj.html#X785C30378064CF47"><span class="RefLink">5.1-7</span></a>)] which it defines, according to the following rules.</p>
+
+<p>The characters of the string <var class="Arg">str</var> represent the entries in the upper triangle of a digraph's adjacency matrix. The number of vertices <code class="code">n</code> will be detected from the length of the string and will be as large as possible.</p>
+
+<p>The first character represents the possible edge <code class="code">1 -&gt; 2</code>, the second represents <code class="code">1 -&gt; 3</code> and so on until <code class="code">1 -&gt; n</code>; then the following character represents <code class="code">2 -&gt; 3</code>, and so on up to the character which represents the edge <code class="code">n-1 -&gt; n</code>. If a character of the string with corresponding edge <code class="code">i -&gt; j</code> is equal to <code class="code">1</code>, then this edge is present in the digraph. Otherwise, it is not present. In this way, all the possible edges are encoded one-by-one.</p>
+
+<p>In particular, note that there exists no edge <code class="code">[i, j]</code> if <span class="SimpleMath">\(j \leq i\)</span>. In order words, the digraph will be topologically sorted.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := AdjacencyMatrixUpperTriangleLineDecoder("100001");</span>
+&lt;digraph with 4 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
+[ [ 2 ], [  ], [ 4 ], [  ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := AdjacencyMatrixUpperTriangleLineDecoder("111111x111");</span>
+&lt;digraph with 5 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
+[ [ 2, 3, 4, 5 ], [ 3, 4 ], [ 4, 5 ], [ 5 ], [  ] ]
+</pre></div>
+
+<p><a id="X875393338486D77D" name="X875393338486D77D"></a></p>
+
+<h5>9.2-10 TCodeDecoder</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; TCodeDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: A digraph.</p>
+
+<p>If <var class="Arg">str</var> is a string consisting of at least two non-negative integers separated by spaces, then this function will attempt to return the digraph which it defines as a TCode string.</p>
+
+<p>The first integer of the string defines the number of vertices <code class="code">v</code> in the digraph, and the second defines the number of edges <code class="code">e</code>. The following <code class="code">2e</code> integers should be vertex numbers in the range <code class="code">[0 .. v-1]</code>. These integers are read in pairs and define the digraph's edges. This function will return an error if <var class="Arg">str</var> has fewer than <code class="code">2e+2</code> entries.</p>
+
+<p>Note that the vertex numbers will be incremented by 1 in the digraph returned. Hence the string fragment <code class="code">0 6</code> will describe the edge <code class="code">[1,7]</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := TCodeDecoder("3 2 0 2 2 1");</span>
+&lt;digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
+[ [ 3 ], [  ], [ 2 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := TCodeDecoder("12 3 0 10 5 2 8 8");</span>
+&lt;digraph with 12 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
+[ [ 11 ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [  ], [ 9 ], [  ], 
+  [  ], [  ] ]
+</pre></div>
+
+<p><a id="X8540FC21796A793F" name="X8540FC21796A793F"></a></p>
+
+<h5>9.2-11 PlainTextString</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PlainTextString</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromPlainTextString</code>( <var class="Arg">s</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A string.</p>
+
+<p><var class="Arg">PlainTextString</var> takes a single digraph, and returns a string describing the edges of that digraph. <var class="Arg">DigraphFromPlainTextString</var> takes such a string and returns the digraph which it describes. Each edge is written as a pair of integers separated by a single space. The edges themselves are separated by a double space. Vertex numbers are reduced by 1 when they are encoded, so that vertices in the string are labelled starting at 0.</p>
+
+<p>Note that the number of vertices of a digraph is not stored, and so vertices which are not connected to any edge may be lost.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2,3], [1], [1]]);</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PlainTextString(gr);</span>
+"0 1  0 2  1 0  2 0"
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphFromPlainTextString(last);</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+</pre></div>
+
+<p><a id="X81BD23697857B244" name="X81BD23697857B244"></a></p>
+
+<h5>9.2-12 WritePlainTextDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WritePlainTextDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">digraph</var>, <var class="Arg">delimiter</var>, <var class="Arg">offset</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadPlainTextDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">delimiter</var>, <var class="Arg">offset</var>, <var class="Arg">ignore</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>These functions write and read a single digraph in a human-readable plain text format as follows: each line contains a single edge, and each edge is written as a pair of integers separated by the string <var class="Arg">delimiter</var>.</p>
+
+<p><var class="Arg">filename</var> should be the name of a file which will be written to or read from, and <var class="Arg">offset</var> should be an integer which is added to each vertex number as it is written or read. For example, if <code class="code">WritePlainTextDigraph</code> is called with <var class="Arg">offset</var> <code class="code">-1</code>, then the vertices will be numbered in the file starting from 0 instead of 1 - <code class="code">ReadPlainTextDigraph</code> would then need to be called with <var class="Arg">offset</var> <code class="code">1</code> to convert back to the original graph.</p>
+
+<p><var class="Arg">ignore</var> should be a list of characters which will be ignored when reading the graph.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1,2,3], [1,1], [2]]);</span>
+&lt;multidigraph with 3 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/plain.txt");;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">WritePlainTextDigraph(filename, gr, ",", -1);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadPlainTextDigraph(filename, ",", 1, ['/','%']);</span>
+&lt;multidigraph with 3 vertices, 6 edges&gt;
+</pre></div>
+
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap8_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapA_mj.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0_mj.html">Top</a>  <a href="chap1_mj.html">1</a>  <a href="chap2_mj.html">2</a>  <a href="chap3_mj.html">3</a>  <a href="chap4_mj.html">4</a>  <a href="chap5_mj.html">5</a>  <a href="chap6_mj.html">6</a>  <a href="chap7_mj.html">7</a>  <a href="chap8_mj.html">8</a>  <a href="chap9_mj.html">9</a>  <a href="chapA_mj.html">A</a>  <a href="chapBib_mj.html">Bib</a>  <a href="chapInd_mj.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>GAP (digraphs) - Chapter 6: Properties of digraphs</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+<script src="manual.js" type="text/javascript"></script>
+<script type="text/javascript">overwriteStyle();</script>
+</head>
+<body class="chap6"  onload="jscontent()">
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap5.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap7.html">[Next Chapter]</a>&nbsp;  </div>
+
+<p id="mathjaxlink" class="pcenter"><a href="chap6_mj.html">[MathJax on]</a></p>
+<p><a id="X7ADDEFD478D470D5" name="X7ADDEFD478D470D5"></a></p>
+<div class="ChapSects"><a href="chap6.html#X7ADDEFD478D470D5">6 <span class="Heading">Properties of digraphs</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6.html#X7F49388F8245F0E9">6.1 <span class="Heading">Edge properties</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7D92935C7D535187">6.1-1 DigraphHasLoops</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7DB1BC2286FC08E2">6.1-2 IsAntisymmetricDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X860CFB0C8665F356">6.1-3 IsBipartiteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X790A4DBF8533516E">6.1-4 IsCompleteBipartiteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X81F28D4D879FE3B2">6.1-5 IsCompleteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7E894CCF7B1C27AE">6.1-6 IsEmptyDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7E8F37E585DAED52">6.1-7 IsFunctionalDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7BB84CFC7E8B2B26">6.1-8 IsMultiDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X8462D8E2792B23F6">6.1-9 IsReflexiveDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X81B3EA7887219860">6.1-10 IsSymmetricDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7DD8D1A185EBE865">6.1-11 IsTournament</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7F0835667F29F0C0">6.1-12 IsTransitiveDigraph</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6.html#X7AAF896982EC22FA">6.2 <span class="Heading">Regularity</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7A3F78B37E31D9E1">6.2-1 IsInRegularDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7F0A806E7BCB413C">6.2-2 IsOutRegularDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7AF9DB1E7DB12306">6.2-3 IsRegularDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7E2082AC7CAE59CD">6.2-4 IsDistanceRegularDigraph</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6.html#X780DAEB37C5E07FD">6.3 <span class="Heading">Connectivity and cycles</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7BD08D4478218F77">6.3-1 IsAcyclicDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X83C08C0B7EC1A91F">6.3-2 IsConnectedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7B37B9467C68C208">6.3-3 IsStronglyConnectedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X80E883967EBE839E">6.3-4 IsAperiodicDigraph</a></span>
+</div></div>
+</div>
+
+<h3>6 <span class="Heading">Properties of digraphs</span></h3>
+
+<p><a id="X7F49388F8245F0E9" name="X7F49388F8245F0E9"></a></p>
+
+<h4>6.1 <span class="Heading">Edge properties</span></h4>
+
+<p><a id="X7D92935C7D535187" name="X7D92935C7D535187"></a></p>
+
+<h5>6.1-1 DigraphHasLoops</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphHasLoops</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is has loops, and <code class="keyw">false</code> if it does not. A loop is an edge with equal source and range.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 1, 2 ], [ 2 ] ] );</span>
+&lt;digraph with 2 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr);</span>
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 2 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphHasLoops(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2, 3 ], [ 1 ], [ 2 ] ] );</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr);</span>
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 3, 2 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphHasLoops(gr);</span>
+false
+</pre></div>
+
+<p><a id="X7DB1BC2286FC08E2" name="X7DB1BC2286FC08E2"></a></p>
+
+<h5>6.1-2 IsAntisymmetricDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsAntisymmetricDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is antisymmetric, and <code class="keyw">false</code> if it is not.</p>
+
+<p>A digraph is <em>antisymmetric</em> if whenever there is an edge with source <code class="code">u</code> and range <code class="code">v</code>, and an edge with source <code class="code">v</code> and range <code class="code">u</code>, then the vertices <code class="code">u</code> and <code class="code">v</code> are equal.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := Digraph( [ [ 2 ], [ 1, 3 ], [ 2, 3 ] ] );</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsAntisymmetricDigraph(gr1);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr1){[ 1, 2 ]};</span>
+[ [ 1, 2 ], [ 2, 1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := Digraph( [ [ 1, 2 ], [ 3, 3 ], [ 1 ] ] );</span>
+&lt;multidigraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsAntisymmetricDigraph(gr2);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr2);</span>
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 1 ] ]
+</pre></div>
+
+<p><a id="X860CFB0C8665F356" name="X860CFB0C8665F356"></a></p>
+
+<h5>6.1-3 IsBipartiteDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsBipartiteDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is bipartite, and <code class="keyw">false</code> if it is not. A digraph is bipartite if and only if the vertices of <var class="Arg">digraph</var> can be partitioned into two non-empty sets such that the source and range of any edge of <var class="Arg">digraph</var> lie in distinct sets. Equivalently, a digraph is bipartite if and only if it is 2-colorable; see <code class="func">DigraphColoring</code> (<a href="chap7.html#X780D26F082572325"><span class="RefLink">7.3-9</span></a>).</p>
+
+<p>See also <code class="func">DigraphBicomponents</code> (<a href="chap5.html#X7F1B5A2782F598B1"><span class="RefLink">5.1-8</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(4);</span>
+&lt;digraph with 4 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsBipartiteDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(3);</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsBipartiteDigraph(gr);</span>
+false</pre></div>
+
+<p><a id="X790A4DBF8533516E" name="X790A4DBF8533516E"></a></p>
+
+<h5>6.1-4 IsCompleteBipartiteDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsCompleteBipartiteDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a complete bipartite digraph, and <code class="keyw">false</code> if it is not.</p>
+
+<p>A digraph is a <em>complete bipartite digraph</em> if it is bipartite, see <code class="func">IsBipartiteDigraph</code> (<a href="chap6.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>), and there exists a unique edge with source <code class="code">i</code> and range <code class="code">j</code> if and only if <code class="code">i</code> and <code class="code">j</code> lie in different bicomponents of <var class="Arg">digraph</var>, see <code class="func">DigraphBicomponents</code> (<a href="chap5.html#X7F1B5A2782F598B1"><span class="RefLink">5.1-8</span></a>).</p>
+
+<p>Equivalently, a bipartite digraph with bicomponents of size <span class="SimpleMath">m</span> and <span class="SimpleMath">n</span> is complete precisely when it has <span class="SimpleMath">2mn</span> edges, none of which are multiple edges.</p>
+
+<p>See also <code class="func">CompleteBipartiteDigraph</code> (<a href="chap3.html#X8795B0AD856014FA"><span class="RefLink">3.5-3</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(2);</span>
+&lt;digraph with 2 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCompleteBipartiteDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(4);</span>
+&lt;digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsBipartiteDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCompleteBipartiteDigraph(gr);</span>
+false
+</pre></div>
+
+<p><a id="X81F28D4D879FE3B2" name="X81F28D4D879FE3B2"></a></p>
+
+<h5>6.1-5 IsCompleteDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsCompleteDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is complete, and <code class="keyw">false</code> if it is not.</p>
+
+<p>A digraph is <em>complete</em> if it has no loops, and for all <em>distinct</em> vertices <code class="code">i</code> and <code class="code">j</code>, there is exactly one edge with source <code class="code">i</code> and range <code class="code">j</code>. Equivalently, a digraph with <span class="SimpleMath">n</span> vertices is complete precisely when it has <span class="SimpleMath">n(n - 1)</span> edges, no loops, and no multiple edges.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ] );</span>
+&lt;digraph with 3 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCompleteDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2, 2 ], [ 1 ] ] );</span>
+&lt;multidigraph with 2 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCompleteDigraph(gr);</span>
+false
+</pre></div>
+
+<p><a id="X7E894CCF7B1C27AE" name="X7E894CCF7B1C27AE"></a></p>
+
+<h5>6.1-6 IsEmptyDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsEmptyDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsNullDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is empty, and <code class="keyw">false</code> if it is not. A digraph is <em>empty</em> if it has no edges.</p>
+
+<p><code class="code">IsNullDigraph</code> is a synonym for <code class="code">IsEmptyDigraph</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [  ], [  ] ] );</span>
+&lt;digraph with 2 vertices, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsEmptyDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsNullDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [  ], [ 1 ] ] );</span>
+&lt;digraph with 2 vertices, 1 edge&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsEmptyDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsNullDigraph(gr);</span>
+false</pre></div>
+
+<p><a id="X7E8F37E585DAED52" name="X7E8F37E585DAED52"></a></p>
+
+<h5>6.1-7 IsFunctionalDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsFunctionalDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is functional.</p>
+
+<p>A digraph is <em>functional</em> if every vertex is the source of a unique edge.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := Digraph( [ [ 3 ], [ 2 ], [ 2 ], [ 1 ], [ 6 ], [ 5 ] ] );</span>
+&lt;digraph with 6 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsFunctionalDigraph(gr1);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := Digraph( [ [ 1, 2 ], [ 1 ] ] );</span>
+&lt;digraph with 2 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsFunctionalDigraph(gr2);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr3 := Digraph( 3, [ 1, 2, 3 ], [ 2, 3, 1 ] );</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsFunctionalDigraph(gr3);</span>
+true
+</pre></div>
+
+<p><a id="X7BB84CFC7E8B2B26" name="X7BB84CFC7E8B2B26"></a></p>
+
+<h5>6.1-8 IsMultiDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMultiDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>A <em>multidigraph</em> is one that has at least two edges with equal source and range.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"], ["a", "b", "b"], ["b", "c", "a"]);</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMultiDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(3, [1, 2, 3, 1, 1, 2], [1, 2, 3, 2, 3, 1]);</span>
+&lt;digraph with 3 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMultiDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(3, [1, 2, 3, 1, 1, 2, 1], [1, 2, 3, 2, 3, 1, 2]);</span>
+&lt;multidigraph with 3 vertices, 7 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMultiDigraph(gr);</span>
+true</pre></div>
+
+<p><a id="X8462D8E2792B23F6" name="X8462D8E2792B23F6"></a></p>
+
+<h5>6.1-9 IsReflexiveDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsReflexiveDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is reflexive, and <code class="keyw">false</code> if it is not. A digraph is <em>reflexive</em> if it has a loop at every vertex.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 1, 2 ], [ 2 ] ] );</span>
+&lt;digraph with 2 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsReflexiveDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( rec ( nrvertices := 4,</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">source := [ 1, 1, 2, 2, 3, 4, 4 ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">range := [ 3, 1, 4, 2, 3, 2, 1 ] )  );</span>
+&lt;digraph with 4 vertices, 7 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsReflexiveDigraph(gr);</span>
+false
+</pre></div>
+
+<p><a id="X81B3EA7887219860" name="X81B3EA7887219860"></a></p>
+
+<h5>6.1-10 IsSymmetricDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsSymmetricDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is symmetric, and <code class="keyw">false</code> if it is not.</p>
+
+<p>A <em>symmetric digraph</em> is one where for each non-loop edge, having source <span class="SimpleMath">u</span> and range <span class="SimpleMath">v</span>, there is a corresponding edge with source v and range u. If there are <span class="SimpleMath">n</span> edges with source <span class="SimpleMath">u</span> and range <span class="SimpleMath">v</span>, then there must be precisely <span class="SimpleMath">n</span> edges with source <span class="SimpleMath">v</span> and range <span class="SimpleMath">u</span>. In other words, an undirected digraph has a symmetric adjacency matrix <code class="func">AdjacencyMatrix</code> (<a href="chap5.html#X7DC2CD70830BEE60"><span class="RefLink">5.2-1</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := Digraph( [ [ 2 ], [ 1, 3 ], [ 2, 3 ] ] );</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSymmetricDigraph(gr1);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj1 := AdjacencyMatrix(gr1);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Display(adj1);</span>
+[ [  0,  1,  0 ],
+  [  1,  0,  1 ],
+  [  0,  1,  1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj1 = TransposedMat(adj1);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 = DigraphReverse(gr1);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := Digraph( [ [ 2, 3 ], [ 1, 3 ], [ 2, 3 ] ] );</span>
+&lt;digraph with 3 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSymmetricDigraph(gr2);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj2 := AdjacencyMatrix(gr2);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Display(adj2);</span>
+[ [  0,  1,  1 ],
+  [  1,  0,  1 ],
+  [  0,  1,  1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj2 = TransposedMat(adj2);</span>
+false
+</pre></div>
+
+<p><a id="X7DD8D1A185EBE865" name="X7DD8D1A185EBE865"></a></p>
+
+<h5>6.1-11 IsTournament</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsTournament</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a tournament, and <code class="keyw">false</code> if it is not.</p>
+
+<p>A tournament is an orientation of a complete (undirected) graph. Specifically, a tournament is a digraph which has a unique directed edge (of some orientation) between any pair of distinct vertices, and no loops.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ] );</span>
+&lt;digraph with 4 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsTournament(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsTournament(gr);</span>
+false
+</pre></div>
+
+<p><a id="X7F0835667F29F0C0" name="X7F0835667F29F0C0"></a></p>
+
+<h5>6.1-12 IsTransitiveDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsTransitiveDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is transitive, and <code class="keyw">false</code> if it is not. A digraph is <em>transitive</em> if whenever <code class="code">[ i, j ]</code> and <code class="code">[ j, k ]</code> are edges of the digraph, then <code class="code">[ i, k ]</code> is also an edge of the digraph.</p>
+
+<p>Let <span class="SimpleMath">n</span> be the number of vertices of an arbitrary digraph, and let <span class="SimpleMath">m</span> be the number of edges. For general digraphs, the methods used for this property use a version of the Floyd-Warshall algorithm, and have complexity <span class="SimpleMath">O(n^3)</span>. However for digraphs which are topologically sortable [<code class="func">DigraphTopologicalSort</code> (<a href="chap5.html#X785C30378064CF47"><span class="RefLink">5.1-7</span></a>)], then methods with complexity <span class="SimpleMath">O(m + n + m ⋅ n)</span> will be used when appropriate.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 3 ] ] );</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsTransitiveDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := Digraph( [ [ 1, 2, 3 ], [ 3 ], [ 3 ] ] );</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsTransitiveDigraph(gr2);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 = DigraphTransitiveClosure(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr3 := Digraph( [ [ 1, 2, 2, 3 ], [ 3, 3 ], [ 3 ] ] );</span>
+&lt;multidigraph with 3 vertices, 7 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsTransitiveDigraph(gr3);</span>
+true
+</pre></div>
+
+<p><a id="X7AAF896982EC22FA" name="X7AAF896982EC22FA"></a></p>
+
+<h4>6.2 <span class="Heading">Regularity</span></h4>
+
+<p><a id="X7A3F78B37E31D9E1" name="X7A3F78B37E31D9E1"></a></p>
+
+<h5>6.2-1 IsInRegularDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsInRegularDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if there is an integer <code class="code">n</code> such that for every vertex <code class="code">v</code> of digraph <var class="Arg">digraph</var> there are exactly <code class="code">n</code> edges terminating in <code class="code">v</code>. See also <code class="func">IsOutRegularDigraph</code> (<a href="chap6.html#X7F0A806E7BCB413C"><span class="RefLink">6.2-2</span></a>) and <code class="func">IsRegularDigraph</code> (<a href="chap6.html#X7AF9DB1E7DB12306"><span class="RefLink">6.2-3</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsInRegularDigraph(CompleteDigraph(4));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsInRegularDigraph(ChainDigraph(4));</span>
+false
+</pre></div>
+
+<p><a id="X7F0A806E7BCB413C" name="X7F0A806E7BCB413C"></a></p>
+
+<h5>6.2-2 IsOutRegularDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsOutRegularDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if there is an integer <code class="code">n</code> such that for every vertex <code class="code">v</code> of digraph <var class="Arg">digraph</var> there are exactly <code class="code">n</code> edges starting at <code class="code">v</code>. See also <code class="func">IsInRegularDigraph</code> (<a href="chap6.html#X7A3F78B37E31D9E1"><span class="RefLink">6.2-1</span></a>) and <code class="func">IsRegularDigraph</code> (<a href="chap6.html#X7AF9DB1E7DB12306"><span class="RefLink">6.2-3</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOutRegularDigraph(CompleteDigraph(4));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOutRegularDigraph(ChainDigraph(4));</span>
+false
+</pre></div>
+
+<p><a id="X7AF9DB1E7DB12306" name="X7AF9DB1E7DB12306"></a></p>
+
+<h5>6.2-3 IsRegularDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsRegularDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if there is an integer <code class="code">n</code> such that for every vertex <code class="code">v</code> of digraph <var class="Arg">digraph</var> there are exactly <code class="code">n</code> edges starting and terminating at <code class="code">v</code>. In other words, the property is <code class="keyw">true</code> if <var class="Arg">digraph</var> is both in-regular and and out-regular. See also <code class="func">IsInRegularDigraph</code> (<a href="chap6.html#X7A3F78B37E31D9E1"><span class="RefLink">6.2-1</span></a>) and <code class="func">IsOutRegularDigraph</code> (<a href="chap6.html#X7F0A806E7BCB413C"><span class="RefLink">6.2-2</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsRegularDigraph(CompleteDigraph(4));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsRegularDigraph(ChainDigraph(4));</span>
+false
+</pre></div>
+
+<p><a id="X7E2082AC7CAE59CD" name="X7E2082AC7CAE59CD"></a></p>
+
+<h5>6.2-4 IsDistanceRegularDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDistanceRegularDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a connected symmetric graph, this property returns <code class="keyw">true</code> if for any two vertices <code class="code">u</code> and <code class="code">v</code> of <var class="Arg">digraph</var> and any two integers <code class="code">i</code> and <code class="code">j</code> between <code class="code">0</code> and the diameter of <var class="Arg">digraph</var>, the number of vertices at distance <code class="code">i</code> from <code class="code">u</code> and distance <code class="code">j</code> from <code class="code">v</code> depends only on <code class="code">i</code>, <code class="code">j</code>, and the distance between vertices <code class="code">u</code> and <code class="code">v</code>.</p>
+
+<p>Alternatively, a distance regular graph is a graph for which there exist integers <code class="code">b_i</code>, <code class="code">c_i</code>, and <code class="code">i</code> such that for any two vertices <code class="code">u</code>, <code class="code">v</code> in <var class="Arg">digraph</var> which are distance <code class="code">i</code> apart, there are exactly <code class="code">b_i</code> neighbors of <code class="code">v</code> which are at distance <code class="code">i - 1</code> away from <code class="code">u</code>, and <code class="code">c_i</code> neighbors of <code class="code">v</code> which are at distance <code class="code">i + 1</code> away from <code class="code">u</code>. This definition is used to check whether <var class="Arg">digraph</var> is distance regular.</p>
+
+<p>In the case where <var class="Arg">digraph</var> is not symmetric or not connected, the property is <code class="keyw">false</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphSymmetricClosure(ChainDigraph(5));;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDistanceRegularDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);</span>
+&lt;digraph with 4 vertices, 12 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDistanceRegularDigraph(gr);</span>
+true
+</pre></div>
+
+<p><a id="X780DAEB37C5E07FD" name="X780DAEB37C5E07FD"></a></p>
+
+<h4>6.3 <span class="Heading">Connectivity and cycles</span></h4>
+
+<p><a id="X7BD08D4478218F77" name="X7BD08D4478218F77"></a></p>
+
+<h5>6.3-1 IsAcyclicDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsAcyclicDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is acyclic and <code class="keyw">false</code> if it is not. A digraph is <em>acyclic</em> if there are no cycles, i.e. if there are no directed walks which start and end at the same vertex.</p>
+
+<p>The method used in this operation has complexity <span class="SimpleMath">O(m+n)</span> where <span class="SimpleMath">m</span> is the number of edges (counting multiple edges as one) and <span class="SimpleMath">n</span> is the number of vertices in the digraph.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Petersen := Graph( SymmetricGroup(5), [ [ 1, 2 ] ], OnSets,           </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">function(x, y) return IsEmpty(Intersection(x, y)); end );;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr:=Digraph(Petersen);                    </span>
+&lt;digraph with 10 vertices, 30 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsAcyclicDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr:=Digraph( [ [  ], [ 1 ], [ 1 ], [ 1 ], [ 3 ], [ 3 ], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 4 ], [ 4 ], [ 5 ], [ 5 ], [ 5 ], [ 6 ], [ 6 ], [ 7 ], [ 7 ], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 7 ], [ 8 ], [ 9 ], [ 9 ], [ 11 ], [ 11 ], [ 12 ], [ 12 ], [ 13 ], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 14 ], [ 15 ], [ 15 ], [ 16 ], [ 16 ], [ 17 ], [ 17 ], [ 18 ], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 18 ], [ 19 ], [ 20 ], [ 20 ], [ 21 ], [ 22 ], [ 22 ], [ 23 ], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 23 ], [ 24 ], [ 28 ], [ 29 ], [ 30 ], [ 30 ], [ 31 ], [ 32 ], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 32 ], [ 33 ], [ 34 ], [ 41 ], [ 46 ], [ 47 ], [ 51 ] ] );;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsAcyclicDigraph(gr);</span>
+true
+</pre></div>
+
+<p><a id="X83C08C0B7EC1A91F" name="X83C08C0B7EC1A91F"></a></p>
+
+<h5>6.3-2 IsConnectedDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsConnectedDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is weakly connected and <code class="keyw">false</code> if it is not. A digraph <var class="Arg">digraph</var> is <em>weakly connected</em> if it is possible to travel from any vertex to any other vertex by traversing edges in either direction (possibly against the orientation of some of them).</p>
+
+<p>The method used in this function has complexity <span class="SimpleMath">O(m)</span> if the digraph's <code class="func">DigraphSource</code> (<a href="chap5.html#X7FDEBF3279759961"><span class="RefLink">5.2-4</span></a>) attribute is set, otherwise it has complexity <span class="SimpleMath">O(m+n)</span> (where <span class="SimpleMath">m</span> is the number of edges and <span class="SimpleMath">n</span> is the number of vertices of the digraph).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [ 3 ], [  ] ] );;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsConnectedDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 1, 3 ], [ 4 ], [ 3 ], [  ] ] );;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsConnectedDigraph(gr);</span>
+false</pre></div>
+
+<p><a id="X7B37B9467C68C208" name="X7B37B9467C68C208"></a></p>
+
+<h5>6.3-3 IsStronglyConnectedDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsStronglyConnectedDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is strongly connected and <code class="keyw">false</code> if it is not. A digraph <var class="Arg">digraph</var> is <em>strongly connected</em> if there is a directed path from every vertex to every other vertex.</p>
+
+<p>The method used in this operation is based on Gabow's Algorithm <a href="chapBib.html#biBGabow2000aa">[Gab00]</a> and has complexity <span class="SimpleMath">O(m+n)</span>, where <span class="SimpleMath">m</span> is the number of edges (counting multiple edges as one) and <span class="SimpleMath">n</span> is the number of vertices in the digraph.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(250000);</span>
+&lt;digraph with 250000 vertices, 250000 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsStronglyConnectedDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr:=DigraphRemoveEdges(gr, [ [ 250000, 1 ] ]);</span>
+&lt;digraph with 250000 vertices, 249999 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsStronglyConnectedDigraph(gr);</span>
+false
+</pre></div>
+
+<p><a id="X80E883967EBE839E" name="X80E883967EBE839E"></a></p>
+
+<h5>6.3-4 IsAperiodicDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsAperiodicDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is aperiodic, i.e. if its <code class="func">DigraphPeriod</code> (<a href="chap5.html#X853D0B0981A33433"><span class="RefLink">5.3-12</span></a>) is equal to 1. Otherwise, the property is <code class="keyw">false</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );</span>
+&lt;multidigraph with 6 vertices, 7 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsAperiodicDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );</span>
+&lt;digraph with 5 vertices, 7 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsAperiodicDigraph(gr);</span>
+true
+</pre></div>
+
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap5.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap7.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+</body>
+</html>

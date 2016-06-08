@@ -1,102 +1,152 @@
+############################################################################
+##
+#W  PackageInfo.g
+#Y  Copyright (C) 2015-16                                Jan J De Beule
+##                                                       Julius Jonusas
+##                                                       James Mitchell
+##                                                       Michael Torpey
+##                                                       Wilfred Wilson
+##
+##  Licensing information can be found in the README.md file of this package.
+##
 #############################################################################
-##  
-##  Demo PackageInfo.g for the GitHubPagesForGAP
 ##
 
-SetPackageInfo( rec(
+##  <#GAPDoc Label="PKGVERSIONDATA">
+##  <!ENTITY VERSION        "0.5">
+##  <!ENTITY GAPVERS        "4.8.2">
+##  <!ENTITY GRAPEVERS      "4.5">
+##  <!ENTITY IOVERS         "4.4.4">
+##  <!ENTITY ORBVERS        "4.7.5">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.5">
+##  <!ENTITY COPYRIGHTYEARS "2014-16">
+##  <#/GAPDoc>
 
-PackageName := "GitHubPagesForGAP",
-
-Subtitle := "A GitHubPages generator for GAP packages",
-Version := "0.1",
-Date := "21/03/2014", # dd/mm/yyyy format
-
+SetPackageInfo(rec(
+PackageName := "Digraphs",
+Subtitle := "",
+Version := "0.5",
+Date := "03/03/2016",
+ArchiveURL := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/digraphs-0.5",
+ArchiveFormats := ".tar.gz",
 Persons := [
-  rec(
-    LastName      := "Horn",
-    FirstNames    := "Max",
-    IsAuthor      := true,
-    IsMaintainer  := true,
-    Email         := "max.horn@math.uni-giessen.de",
-    WWWHome       := "http://www.quendi.de/math",
-    PostalAddress := Concatenation(
-                       "AG Algebra\n",
-                       "Mathematisches Institut\n",
-                       "Justus-Liebig-Universität Gießen\n",
-                       "Arndtstraße 2\n",
-                       "35392 Gießen\n",
-                       "Germany" ),
-    Place         := "Gießen",
-    Institution   := "Justus-Liebig-Universität Gießen"
-  ),
 
   rec(
-    LastName      := "Thor",
-    FirstNames    := "A. U.",
+    LastName      := "De Beule",
+    FirstNames    := "J.",
     IsAuthor      := true,
     IsMaintainer  := false,
-    #Email         := "author@example.com",
+    Email         := "jdebeule@cage.ugent.be",
+    WWWHome       := "http://homepages.vub.ac.be/~jdbeule/",
+    PostalAddress := Concatenation([
+                     "Vrije Universiteit Brussel, ",
+                     " Vakgroep Wiskunde, ",
+                     " Pleinlaan 2, ",
+                     " B - 1050 Brussels, ",
+                     " Belgium"]),
+    Place         := "Brussels",
+    Institution   := "Vrije Universiteit Brussel"
   ),
 
   rec(
-    LastName      := "Itor",
-    FirstNames    := "Jan",
-    IsAuthor      := false,
-    IsMaintainer  := true,
-    #Email         := "janitor@example.com",
+    LastName      := "Jonusas",
+    FirstNames    := "J.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "jj252@st-and.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~julius",
+    PostalAddress := Concatenation( [
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
   ),
-],
 
-Status := "other",
+  rec(
+    LastName      := "Mitchell",
+    FirstNames    := "J. D.",
+    IsAuthor      := true,
+    IsMaintainer  := true,
+    Email         := "jdm3@st-and.ac.uk",
+    WWWHome       := "http://goo.gl/ZtViV6",
+    PostalAddress := Concatenation( [
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
+  ),
 
-# The following are not strictly necessary in your own PackageInfo.g
-# (in the sense that update.g only looks at the usual fields
-# like PackageWWWHome, ArchiveURL etc.). But they are convenient
-# if you use exactly the scheme for your package website that we propose.
-GithubUser := "fingolfin",
-GithubRepository := ~.PackageName,
-GithubWWW := Concatenation("https://github.com/", ~.GithubUser, "/", ~.GithubRepository),
+  rec(
+    LastName      := "Torpey",
+    FirstNames    := "M.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "mct25@st-and.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~mct25",
+    PostalAddress := Concatenation( [
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
+  ),
 
-PackageWWWHome := Concatenation("http://", ~.GithubUser, ".github.io/", ~.GithubRepository, "/"),
-README_URL     := Concatenation( ~.PackageWWWHome, "README" ),
-PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
-# The following assumes you are using the Github releases system. If not, adjust
-# it accordingly.
-ArchiveURL     := Concatenation(~.GithubWWW,
-                    "/releases/download/v", ~.Version, "/",
-                    ~.GithubRepository, "-", ~.Version),
+  rec(
+    LastName      := "Wilson",
+    FirstNames    := "W.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "waw7@st-and.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~waw7",
+    PostalAddress := Concatenation( [
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
+  )],
 
-ArchiveFormats := ".tar.gz .tar.bz2",
+Status := "dev",
 
-AbstractHTML := 
-  "This is a pseudo package that contains no actual\
-  <span class=\"pkgname\">GAP</span> code. Instead, it is a template for other\
-  GAP packages that allows to quickly setup GitHub pages.",
+README_URL :=
+  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README.md",
+PackageInfoURL :=
+  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/PackageInfo.g",
+
+AbstractHTML := "The <b>Digraphs</b> package is a <b>GAP</b> package containing methods for digraphs and multidigraphs.",
+
+PackageWWWHome := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php",
 
 PackageDoc := rec(
-  BookName  := "GitHubPagesForGAP",
+  BookName  := "Digraphs",
   ArchiveURLSubset := ["doc"],
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "A GitHubPages generator for GAP packages",
+  LongTitle := "Digraphs - Methods for digraphs",
+  Autoload  := true,
 ),
 
-# The following dependencies are fake and for testing / demo purposes
 Dependencies := rec(
-  GAP := ">=4.5.5",
-  NeededOtherPackages := [
-    ["GAPDoc", ">= 1.2"],
-    ["IO", ">= 4.1"],
-  ],
-  SuggestedOtherPackages := [["orb", ">= 4.2"]],
-  ExternalConditions := []
+  GAP := ">=4.8.2",
+  NeededOtherPackages := [["io", ">=4.4.4"], ["orb", ">=4.7.5"]],
+  SuggestedOtherPackages := [["gapdoc", ">=1.5.1"], ["grape", ">=4.5"]],
+  ExternalConditions := [],
 ),
 
-AvailabilityTest := ReturnTrue,
-
-Keywords := ["GitHub pages", "GAP"]
-
+  AvailabilityTest := function()
+    if (not "digraphs" in SHOW_STAT()) and
+      (Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") = fail)
+     then
+      Info(InfoWarning, 1, "Digraphs: the kernel module is not compiled, ",
+           "the package cannot be loaded.");
+      return fail;
+    fi;
+    return true;
+  end,
+  Autoload := false,
+  TestFile := "tst/testinstall.tst",
+  Keywords := []
 ));
-
-

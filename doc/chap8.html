@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>GAP (digraphs) - Chapter 8: Finding cliques and independent sets</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+<script src="manual.js" type="text/javascript"></script>
+<script type="text/javascript">overwriteStyle();</script>
+</head>
+<body class="chap8"  onload="jscontent()">
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap7.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap9.html">[Next Chapter]</a>&nbsp;  </div>
+
+<p id="mathjaxlink" class="pcenter"><a href="chap8_mj.html">[MathJax on]</a></p>
+<p><a id="X7A7E0B957932DF44" name="X7A7E0B957932DF44"></a></p>
+<div class="ChapSects"><a href="chap8.html#X7A7E0B957932DF44">8 <span class="Heading">Finding cliques and independent sets</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap8.html#X788474E38446039B">8.1 <span class="Heading">Finding cliques</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8.html#X80670E3E7C36183F">8.1-1 IsClique</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8.html#X7A3BC9FF8169ABCD">8.1-2 CliquesFinder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8.html#X789854AC7B466402">8.1-3 DigraphClique</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8.html#X84EA2F9482B8D4AF">8.1-4 DigraphMaximalCliques</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap8.html#X7E31253287708348">8.2 <span class="Heading">Finding independent sets</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8.html#X790733B67B0BC894">8.2-1 IsIndependentSet</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8.html#X84350678782BFAB7">8.2-2 DigraphIndependentSet</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8.html#X7D2C78EB81A798A9">8.2-3 DigraphMaximalIndependentSets</a></span>
+</div></div>
+</div>
+
+<h3>8 <span class="Heading">Finding cliques and independent sets</span></h3>
+
+<p>In <strong class="pkg">Digraphs</strong>, a <em>clique</em> of a digraph is a set of mutually adjacent vertices of the digraph, and an <em>independent set</em> is a set of mutually non-adjacent vertices of the digraph. A <em>maximal clique</em> is a clique which is not properly contained in another clique, and a <em>maximal independent set</em> is an independent set which is not properly contained in another independent set. Using this definition in <strong class="pkg">Digraphs</strong>, cliques and independent sets are both permitted, but not required, to contain vertices at which there is a loop. Another name for a clique is a <em>complete subgraph</em>.</p>
+
+<p><strong class="pkg">Digraphs</strong> provides extensive functionality for computing cliques and independent sets of a digraph, whether maximal or not. The fundamental algorithm used in most of the methods in <strong class="pkg">Digraphs</strong> to calculate cliques and independent sets is a version of the Bron-Kerbosch algorithm. Calculating the cliques and independent sets of a digraph is a well-known and hard problem, and searching for cliques or independent sets in a digraph can be very length, even for a digraph with a small number of vertices. <strong class="pkg">Digraphs</strong> uses several strategies to increase the performance of these calculations.</p>
+
+<p>From the definition of cliques and independent sets, it follows that the presence of loops and multiple edges in a digraph is irrelevant to the existence of cliques and independent sets in the digraph. See <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>) and <code class="func">IsMultiDigraph</code> (<a href="chap6.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.1-8</span></a>) for more information about these properties. Therefore given a digraph <var class="Arg">digraph</var>, the cliques and independent sets of <var class="Arg">digraph</var> are equal to the cliques and independent sets of the digraph:</p>
+
+
+<ul>
+<li><p><code class="code">DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(</code><var class="Arg">digraph</var><code class="code">))</code>.</p>
+
+</li>
+</ul>
+<p>See <code class="func">DigraphRemoveLoops</code> (<a href="chap3.html#X79324AF7818C0C02"><span class="RefLink">3.3-21</span></a>) and <code class="func">DigraphRemoveAllMultipleEdges</code> (<a href="chap3.html#X7DCCD0247897A3DE"><span class="RefLink">3.3-22</span></a>) for more information about these attributes. Furthermore, the cliques of this digraph are equal to the cliques of the digraph formed by removing any edge <code class="code">[u,v]</code> for which the corresponding reverse edge <code class="code">[v,u]</code> is not present. Therefore, overall, the cliques of <var class="Arg">digraph</var> are equal to the cliques of the symmetric digraph:</p>
+
+
+<ul>
+<li><p><code class="code">MaximalSymmetricSubdigraphWithoutLoops(</code><var class="Arg">digraph</var><code class="code">)</code>.</p>
+
+</li>
+</ul>
+<p>See <code class="func">MaximalSymmetricSubdigraphWithoutLoops</code> (<a href="chap3.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>) for more information about this attribute. The <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X858C32127A190175"><span class="RefLink">7.2-1</span></a>) of this symmetric digraph contains the automorphism group of <var class="Arg">digraph</var> as a subgroup. By performing the search for maximal cliques with the help of this larger automorphism group to reduce the search space, the computation time may be reduced. The functions and attributes which return representatives of cliques of <var class="Arg">digraph</var> will return orbit representatives of cliques under the action of the automorphism group of the <em>maximal symmetric subdigraph without loops</em> on sets of vertices.</p>
+
+<p>The independent sets of a digraph are equal to the independent sets of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3.html#X874883DD7DD450C4"><span class="RefLink">3.3-8</span></a>). Therefore, overall, the independent sets of <var class="Arg">digraph</var> are equal to the independent sets of the symmetric digraph:</p>
+
+
+<ul>
+<li><p><code class="code">DigraphSymmetricClosure(DigraphRemoveLoops(DigraphRemoveAllMultipleEdges( </code><var class="Arg">digraph</var><code class="code">)))</code>.</p>
+
+</li>
+</ul>
+<p>Again, the automorphism group of this symmetric digraph contains the automorphism group of <var class="Arg">digraph</var>. Since a search for independent sets is equal to a search for cliques in the <code class="func">DigraphDual</code> (<a href="chap3.html#X7F71D99D852B130F"><span class="RefLink">3.3-7</span></a>), the methods used in <strong class="pkg">Digraphs</strong> usually transform a search for independent sets into a search for cliques, as described above. The functions and attributes which return representatives of independent sets of <var class="Arg">digraph</var> will return orbit representatives of independent sets under the action of the automorphism group of the <em>symmetric closure</em> of the digraph formed by removing loops and multiple edges.</p>
+
+<p>Please note that in <strong class="pkg">Digraphs</strong>, cliques and indepedent sets are not required to be maximal. Some authors use the word clique to mean <em>maximal</em> clique, and some authors use the phrase independent set to mean <em>maximal</em> independent set, but please note that <strong class="pkg">Digraphs</strong> does not use this definition.</p>
+
+<p><a id="X788474E38446039B" name="X788474E38446039B"></a></p>
+
+<h4>8.1 <span class="Heading">Finding cliques</span></h4>
+
+<p><a id="X80670E3E7C36183F" name="X80670E3E7C36183F"></a></p>
+
+<h5>8.1-1 IsClique</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsClique</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaximalClique</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">l</var> is a duplicate-free list of vertices of <var class="Arg">digraph</var>, then <code class="code">IsClique(</code><var class="Arg">digraph</var><code class="code">,</code><var class="Arg">l</var><code class="code">)</code> returns <code class="keyw">true</code> if <var class="Arg">l</var> is a <em>clique</em> of <var class="Arg">digraph</var> and <code class="keyw">false</code> if it is not. Similarly, <code class="code">IsMaximalClique(</code><var class="Arg">digraph</var><code class="code">,</code><var class="Arg">l</var><code class="code">)</code> returns <code class="keyw">true</code> if <var class="Arg">l</var> is a <em>maximal clique</em> of <var class="Arg">digraph</var> and <code class="keyw">false</code> if it is not.</p>
+
+<p>A <em>clique</em> of a digraph is a set of mutually adjacent vertices of the digraph. A <em>maximal clique</em> is a clique which is not properly contained in another clique. A clique is permitted, but not required, to contain vertices at which there is a loop.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CompleteDigraph(4);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsClique(gr, [1, 3, 2]);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximalClique(gr, [1, 3, 2]);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximalClique(gr, DigraphVertices(gr));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);</span>
+&lt;multidigraph with 4 vertices, 11 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsClique(gr, [2, 3, 4]);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximalClique(gr, [1, 2, 4]);</span>
+true</pre></div>
+
+<p><a id="X7A3BC9FF8169ABCD" name="X7A3BC9FF8169ABCD"></a></p>
+
+<h5>8.1-2 CliquesFinder</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CliquesFinder</code>( <var class="Arg">digraph</var>, <var class="Arg">hook</var>, <var class="Arg">user_param</var>, <var class="Arg">limit</var>, <var class="Arg">include</var>, <var class="Arg">exclude</var>, <var class="Arg">max</var>, <var class="Arg">size</var>, <var class="Arg">reps</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: The argument <var class="Arg">user_param</var>.</p>
+
+<p>This function finds cliques of the digraph <var class="Arg">digraph</var> subject to the conditions imposed by the other arguments as described below. Note that a clique is represented by a list of the vertices which it contains.</p>
+
+<p>Let <code class="code">G</code> denote the automorphism group of the maximal symmetric subdigraph of <var class="Arg">digraph</var> without loops (see <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X858C32127A190175"><span class="RefLink">7.2-1</span></a>) and <code class="func">MaximalSymmetricSubdigraphWithoutLoops</code> (<a href="chap3.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>)).</p>
+
+
+<dl>
+<dt><strong class="Mark"><var class="Arg">hook</var></strong></dt>
+<dd><p>This argument should be a function or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">hook</var> is a function, then it should have two arguments <var class="Arg">user_param</var> (see below) and a clique <code class="code">c</code>. The function <code class="code"><var class="Arg">hook</var>(<var class="Arg">user_param</var>, c)</code> is called every time a new clique <code class="code">c</code> is found by <code class="code">CliquesFinder</code>.</p>
+
+<p>If <var class="Arg">hook</var> is <code class="keyw">fail</code>, then a default function is used which simply adds every new clique found by <code class="code">CliquesFinder</code> to <var class="Arg">user_param</var>, which must be a list in this case.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">user_param</var></strong></dt>
+<dd><p>If <var class="Arg">hook</var> is a function, then <var class="Arg">user_param</var> can be any <strong class="pkg">GAP</strong> object. The object <var class="Arg">user_param</var> is used as the first argument for the function <var class="Arg">hook</var>. For example, <var class="Arg">user_param</var> might be a list, and <code class="code"><var class="Arg">hook</var>(<var class="Arg">user_param</var>, c)</code> might add the size of the clique <code class="code">c</code> to the list <var class="Arg">user_param</var>.</p>
+
+<p>If the value of <var class="Arg">hook</var> is <code class="keyw">fail</code>, then the value of <var class="Arg">user_param</var> must be a list.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">limit</var></strong></dt>
+<dd><p>This argument should be a positive integer or <code class="keyw">infinity</code>. <code class="code">CliquesFinder</code> will return after it has found <var class="Arg">limit</var> cliques or the search is complete.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">include</var> and <var class="Arg">exclude</var></strong></dt>
+<dd><p>These arguments should each be a (possibly empty) duplicate-free list of vertices of <var class="Arg">digraph</var> (i.e. positive integers less than the number of vertices of <var class="Arg">digraph</var>).</p>
+
+<p><code class="code">CliquesFinder</code> will only look for cliques containing all of the vertices in <var class="Arg">include</var> and containing none of the vertices in <var class="Arg">exclude</var>.</p>
+
+<p>Note that the search may be much more efficient if each of these lists is invariant under the action of <code class="code">G</code> on sets of vertices.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">max</var></strong></dt>
+<dd><p>This argument should be <code class="keyw">true</code> or <code class="keyw">false</code>. If <var class="Arg">max</var> is true then <code class="code">CliquesFinder</code> will only search for <em>maximal</em> cliques. If <code class="keyw">max</code> is <code class="keyw">false</code> then non-maximal cliques may be found.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">size</var></strong></dt>
+<dd><p>This argument should be <code class="keyw">fail</code> or a positive integer. If <var class="Arg">size</var> is a positive integer then <code class="code">CliquesFinder</code> will only search for cliques which contain precisely <var class="Arg">size</var> vertices. If <var class="Arg">size</var> is <code class="keyw">fail</code> then cliques of any size may be found.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">reps</var></strong></dt>
+<dd><p>This argument should be <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>If <var class="Arg">reps</var> is <code class="keyw">true</code> then the arguments <var class="Arg">include</var> and <var class="Arg">exclude</var> are each required to be invariant under the action of <code class="code">G</code> on sets of vertices. In this case, <code class="code">CliquesFinder</code> will find representatives of the orbits of the desired cliques under the action of <code class="code">G</code>, <em>although representatives may be returned which are in the same orbit</em>. If <var class="Arg">reps</var> is false then <code class="code">CliquesFinder</code> will not take this into consideration.</p>
+
+<p>For a digraph such that <code class="code">G</code> is non-trivial, the search for clique representatives can be much more efficient than the search for all cliques.</p>
+
+</dd>
+</dl>
+<p>This function uses a version of the Bron-Kerbosch algorithm.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CompleteDigraph(5);</span>
+&lt;digraph with 5 vertices, 20 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">user_param := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">f := function(a, b) # Calculate size of clique</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">  AddSet(user_param, Size(b));</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">end;</span>
+function( a, b ) ... end
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CliquesFinder(gr, f, user_param, infinity, [], [], false, fail, true);</span>
+[ 1, 2, 3, 4, 5 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CliquesFinder(gr, fail, [], 5, [2, 4], [3], false, fail, false);</span>
+[ [ 2, 4 ], [ 1, 2, 4 ], [ 2, 4, 5 ], [ 1, 2, 4, 5 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CliquesFinder(gr, fail, [], 2, [2, 4], [3], false, fail, false);</span>
+[ [ 2, 4 ], [ 1, 2, 4 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CliquesFinder(gr, fail, [], infinity, [], [], true, 5, false);</span>
+[ [ 1, 2, 3, 4, 5 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CliquesFinder(gr, fail, [], infinity, [1, 3], [], false, 3, false);</span>
+[ [ 1, 2, 3 ], [ 1, 3, 4 ], [ 1, 3, 5 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CliquesFinder(gr, fail, [], infinity, [1, 3], [], true, 3, false);</span>
+[  ]</pre></div>
+
+<p><a id="X789854AC7B466402" name="X789854AC7B466402"></a></p>
+
+<h5>8.1-3 DigraphClique</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphClique</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalClique</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: A list of positive integers, or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph, then these functions returns a clique of <var class="Arg">digraph</var> if one exists which satisfies the arguments, else it returns <code class="keyw">fail</code>. A clique is defined by the set of vertices which it contains; see <code class="func">IsClique</code> (<a href="chap8.html#X80670E3E7C36183F"><span class="RefLink">8.1-1</span></a>) and <code class="func">IsMaximalClique</code> (<a href="chap8.html#X80670E3E7C36183F"><span class="RefLink">8.1-1</span></a>).</p>
+
+<p>The optional arguments <var class="Arg">include</var> and <var class="Arg">exclude</var> must each be a (possibly empty) duplicate-free list of vertices of <var class="Arg">digraph</var>, and the optional argument <var class="Arg">size</var> must be a positive integer. By default, <var class="Arg">include</var> and <var class="Arg">exclude</var> are empty. These functions will search for a clique of <var class="Arg">digraph</var> which includes the vertices of <var class="Arg">include</var> and which does not include any vertices in <var class="Arg">exclude</var>; if the argument <var class="Arg">size</var> is supplied, then additionally the clique will be required to contain precisely <var class="Arg">size</var> vertices.</p>
+
+<p>If <var class="Arg">include</var> is not a clique, then these functions return <code class="keyw">fail</code>. Otherwise, the functions behave in the following way, depending on the number of arguments:</p>
+
+
+<dl>
+<dt><strong class="Mark">One or two arguments</strong></dt>
+<dd><p>If one or two arguments are supplied, then <code class="code">DigraphClique</code> and <code class="code">DigraphMaximalClique</code> greedily enlarge the clique <var class="Arg">include</var> until it can not continue. The result is guaranteed to be a maximal clique. This may or may not return an answer more quickly than using <code class="func">DigraphMaximalCliques</code> (<a href="chap8.html#X84EA2F9482B8D4AF"><span class="RefLink">8.1-4</span></a>). with a limit of 1.</p>
+
+</dd>
+<dt><strong class="Mark">Three arguments</strong></dt>
+<dd><p>If three arguments are supplied, then <code class="code">DigraphClique</code> greedily enlarges the clique <var class="Arg">include</var> until it can not continue, although this clique may not be maximal.</p>
+
+<p>Given three arguments, <code class="code">DigraphMaximalClique</code> returns the maximal clique returned by <code class="code">DigraphMaximalCliques(</code><var class="Arg">digraph</var><code class="code">, </code><var class="Arg">include</var><code class="code">, </code><var class="Arg">exclude</var><code class="code">, 1)</code> if one exists, else <code class="keyw">fail</code>.</p>
+
+</dd>
+<dt><strong class="Mark">Four arguments</strong></dt>
+<dd><p>If four arguments are supplied, then <code class="code">DigraphClique</code> returns the clique returned by <code class="code">DigraphCliques(</code><var class="Arg">digraph</var><code class="code">, </code><var class="Arg">include</var><code class="code">, </code><var class="Arg">exclude</var><code class="code">, 1, </code><var class="Arg">size</var><code class="code">)</code> if one exists, else <code class="keyw">fail</code>. This clique may not be maximal.</p>
+
+<p>Given four arguments, <code class="code">DigraphMaximalClique</code> returns the maximal clique returned by <code class="code">DigraphMaximalCliques(</code><var class="Arg">digraph</var><code class="code">, </code><var class="Arg">include</var><code class="code">, </code><var class="Arg">exclude</var><code class="code">, 1, </code><var class="Arg">size</var><code class="code">)</code> if one exists, else <code class="keyw">fail</code>.</p>
+
+</dd>
+</dl>
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3, 4], [1, 3], [1, 2], [1, 5], []]);</span>
+&lt;digraph with 5 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSymmetricDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphClique(gr);</span>
+[ 5 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalClique(gr);</span>
+[ 5 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphClique(gr, [1, 2]);</span>
+[ 1, 2, 3 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalClique(gr, [1, 3]);</span>
+[ 1, 3, 2 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphClique(gr, [1], [2]);</span>
+[ 1, 4 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalClique(gr, [1], [3, 4]);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphClique(gr, [1, 5]);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphClique(gr, [], [], 2);</span>
+[ 1, 2 ]</pre></div>
+
+<p><a id="X84EA2F9482B8D4AF" name="X84EA2F9482B8D4AF"></a></p>
+
+<h5>8.1-4 DigraphMaximalCliques</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliques</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliquesReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphCliques</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphCliquesReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliquesAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliquesRepsAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of lists of positive integers.</p>
+
+<p>If <var class="Arg">digraph</var> is digraph, then these functions and attributes use <code class="func">CliquesFinder</code> (<a href="chap8.html#X7A3BC9FF8169ABCD"><span class="RefLink">8.1-2</span></a>) to return cliques of <var class="Arg">digraph</var>. A clique is defined by the set of vertices which it contains; see <code class="func">IsClique</code> (<a href="chap8.html#X80670E3E7C36183F"><span class="RefLink">8.1-1</span></a>) and <code class="func">IsMaximalClique</code> (<a href="chap8.html#X80670E3E7C36183F"><span class="RefLink">8.1-1</span></a>).</p>
+
+<p>The optional arguments <var class="Arg">include</var> and <var class="Arg">exclude</var> must each be a (possibly empty) list of vertices of <var class="Arg">digraph</var>, the optional argument <var class="Arg">limit</var> must be either a positive integer or <code class="code">infinity</code>, and the optional argument <var class="Arg">size</var> must be a positive integer. If not specified, then <var class="Arg">include</var> and <var class="Arg">exclude</var> are empty lists, and <var class="Arg">limit</var> is <code class="code">infinity</code>.</p>
+
+<p>The functions will return as many suitable cliques as possible, up to the number <var class="Arg">limit</var>. These functions will find cliques which contain all of the vertices of <var class="Arg">include</var> and which do not contain any of the vertices of <var class="Arg">exclude</var>. The argument <var class="Arg">size</var> restricts the search to those cliques which contain precisely <var class="Arg">size</var> vertices. If the function or attribute has <code class="code">Maximal</code> in its name, then only maximal cliques will be returned; otherwise non-maximal cliques may be returned.</p>
+
+<p>Let <code class="code">G</code> denote the automorphism group of maximal symmetric subdigraph of <var class="Arg">digraph</var> without loops (see <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X858C32127A190175"><span class="RefLink">7.2-1</span></a>) and <code class="func">MaximalSymmetricSubdigraphWithoutLoops</code> (<a href="chap3.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>)).</p>
+
+
+<dl>
+<dt><strong class="Mark">Distinct cliques</strong></dt>
+<dd><p><code class="code">DigraphMaximalCliques</code> and <code class="code">DigraphCliques</code> each return a duplicate-free list of at most <var class="Arg">limit</var> cliques of <var class="Arg">digraph</var> which satisfy the arguments.</p>
+
+<p>The computation may be significantly faster if <var class="Arg">include</var> and <var class="Arg">exclude</var> are invariant under the action of <code class="code">G</code> on sets of vertices.</p>
+
+</dd>
+<dt><strong class="Mark">Orbit representatives of cliques</strong></dt>
+<dd><p>To use <code class="code">DigraphMaximalCliquesReps</code> or <code class="code">DigraphCliquesReps</code>, the arguments <var class="Arg">include</var> and <var class="Arg">exclude</var> must each be invariant under the action of <code class="code">G</code> on sets of vertices.</p>
+
+<p>If this is the case, then <code class="code">DigraphMaximalCliquesReps</code> and <code class="code">DigraphCliquesReps</code> each return a duplicate-free list of at most <var class="Arg">limit</var> orbits representatives (under the action of <code class="code">G</code> on sets vertices) of cliques of <var class="Arg">digraph</var> which satisfy the arguments.</p>
+
+<p>The representatives are not guaranteed to be in distinct orbits. However, if <var class="Arg">lim</var> is not specified, or fewer than <var class="Arg">lim</var> results are returned, then there will be at least one representative from each orbit of maximal cliques.</p>
+
+</dd>
+</dl>
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3], [1, 3], [1, 2, 4], [3, 5, 6],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[4, 6], [4, 5]]);</span>
+&lt;digraph with 6 vertices, 14 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSymmetricDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := AutomorphismGroup(gr);</span>
+Group([ (5,6), (1,2), (1,5)(2,6)(3,4) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalCliques(gr);</span>
+[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalCliquesReps(gr);</span>
+[ [ 1, 2, 3 ], [ 3, 4 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Orbit(G, [1, 2, 3], OnSets);</span>
+[ [ 1, 2, 3 ], [ 4, 5, 6 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Orbit(G, [3, 4], OnSets);</span>
+[ [ 3, 4 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalCliquesReps(gr, [3, 4], [], 1);</span>
+[ [ 3, 4 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalCliques(gr, [1, 2], [5, 6], 1, 2);</span>
+[  ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphCliques(gr, [1], [5, 6], infinity, 2);</span>
+[ [ 1, 2 ], [ 1, 3 ] ]</pre></div>
+
+<p><a id="X7E31253287708348" name="X7E31253287708348"></a></p>
+
+<h4>8.2 <span class="Heading">Finding independent sets</span></h4>
+
+<p><a id="X790733B67B0BC894" name="X790733B67B0BC894"></a></p>
+
+<h5>8.2-1 IsIndependentSet</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsIndependentSet</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaximalIndependentSet</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">l</var> is a duplicate-free list of vertices of <var class="Arg">digraph</var>, then <code class="code">IsIndependentSet(</code><var class="Arg">digraph</var><code class="code">,</code><var class="Arg">l</var><code class="code">)</code> returns <code class="keyw">true</code> if <var class="Arg">l</var> is an <em>independent set</em> of <var class="Arg">digraph</var> and <code class="keyw">false</code> if it is not. Similarly, <code class="code">IsMaximalIndependentSet(</code><var class="Arg">digraph</var><code class="code">,</code><var class="Arg">l</var><code class="code">)</code> returns <code class="keyw">true</code> if <var class="Arg">l</var> is a <em>maximal independent set</em> of <var class="Arg">digraph</var> and <code class="keyw">false</code> if it is not.</p>
+
+<p>An <em>independent set</em> of a digraph is a set of mutually non-adjacent vertices of the digraph. A <em>maximal independent set</em> is an independent set which is not properly contained in another independent set. An independent set is permitted, but not required, to contain vertices at which there is a loop.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(4);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsIndependentSet(gr, [1]);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximalIndependentSet(gr, [1]);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsIndependentSet(gr, [1, 4, 3]);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsIndependentSet(gr, [2, 4]);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximalIndependentSet(gr, [2, 4]);</span>
+true</pre></div>
+
+<p><a id="X84350678782BFAB7" name="X84350678782BFAB7"></a></p>
+
+<h5>8.2-2 DigraphIndependentSet</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphIndependentSet</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSet</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: A lists of positive integers, or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph, then these functions returns a independent set of <var class="Arg">digraph</var> if one exists which satisfies the arguments, else it returns <code class="keyw">fail</code>. A independent set is defined by the set of vertices which it contains; see <code class="func">IsIndependentSet</code> (<a href="chap8.html#X790733B67B0BC894"><span class="RefLink">8.2-1</span></a>) and <code class="func">IsMaximalIndependentSet</code> (<a href="chap8.html#X790733B67B0BC894"><span class="RefLink">8.2-1</span></a>).</p>
+
+<p>The optional arguments <var class="Arg">include</var> and <var class="Arg">exclude</var> must each be a (possibly empty) duplicate-free list of vertices of <var class="Arg">digraph</var>, and the optional argument <var class="Arg">size</var> must be a positive integer. By default, <var class="Arg">include</var> and <var class="Arg">exclude</var> are empty. These functions will search for a independent set of <var class="Arg">digraph</var> which includes the vertices of <var class="Arg">include</var> and which does not include any vertices in <var class="Arg">exclude</var>; if the argument <var class="Arg">size</var> is supplied, then additionally the independent set will be required to contain precisely <var class="Arg">size</var> vertices.</p>
+
+<p>If <var class="Arg">include</var> is not a independent set, then these functions return <code class="keyw">fail</code>. Otherwise, the functions behave in the following way, depending on the number of arguments:</p>
+
+
+<dl>
+<dt><strong class="Mark">One or two arguments</strong></dt>
+<dd><p>If one or two arguments are supplied, then <code class="code">DigraphIndependentSet</code> and <code class="code">DigraphMaximalIndependentSet</code> greedily enlarge the independent set <var class="Arg">include</var> until it can not continue. The result is guaranteed to be a maximal independent set. This may or may not return an answer more quickly than using <code class="func">DigraphMaximalIndependentSets</code> (<a href="chap8.html#X7D2C78EB81A798A9"><span class="RefLink">8.2-3</span></a>). with a limit of 1.</p>
+
+</dd>
+<dt><strong class="Mark">Three arguments</strong></dt>
+<dd><p>If three arguments are supplied, then <code class="code">DigraphIndependentSet</code> greedily enlarges the independent set <var class="Arg">include</var> until it can not continue, although this independent set may not be maximal.</p>
+
+<p>Given three arguments, <code class="code">DigraphMaximalIndependentSet</code> returns the maximal independent set returned by <code class="code">DigraphMaximalIndependentSets(</code><var class="Arg">digraph</var><code class="code">, </code><var class="Arg">include</var><code class="code">, </code><var class="Arg">exclude</var><code class="code">, 1)</code> if one exists, else <code class="keyw">fail</code>.</p>
+
+</dd>
+<dt><strong class="Mark">Four arguments</strong></dt>
+<dd><p>If four arguments are supplied, then <code class="code">DigraphIndependentSet</code> returns the independent set returned by <code class="code">DigraphIndependentSets(</code><var class="Arg">digraph</var><code class="code">, </code><var class="Arg">include</var><code class="code">, </code><var class="Arg">exclude</var><code class="code">, 1, </code><var class="Arg">size</var><code class="code">)</code> if one exists, else <code class="keyw">fail</code>. This independent set may not be maximal.</p>
+
+<p>Given four arguments, <code class="code">DigraphMaximalIndependentSet</code> returns the maximal independent set returned by <code class="code">DigraphMaximalIndependentSets(</code><var class="Arg">digraph</var><code class="code">, </code><var class="Arg">include</var><code class="code">, </code><var class="Arg">exclude</var><code class="code">, 1, </code><var class="Arg">size</var><code class="code">)</code> if one exists, else <code class="keyw">fail</code>.</p>
+
+</dd>
+</dl>
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(6);</span>
+&lt;digraph with 6 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphIndependentSet(gr);</span>
+[ 6, 4, 2 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalIndependentSet(gr);</span>
+[ 6, 4, 2 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphIndependentSet(gr, [2, 4]);</span>
+[ 2, 4, 6 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalIndependentSet(gr, [1, 3]);</span>
+[ 1, 3, 6 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphIndependentSet(gr, [2, 4], [6]);</span>
+[ 2, 4 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalIndependentSet(gr, [2, 4], [6]);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphIndependentSet(gr, [1], [], 2);</span>
+[ 1, 3 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalIndependentSet(gr, [1], [], 2);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalIndependentSet(gr, [1], [], 3);</span>
+[ 1, 3, 5 ]</pre></div>
+
+<p><a id="X7D2C78EB81A798A9" name="X7D2C78EB81A798A9"></a></p>
+
+<h5>8.2-3 DigraphMaximalIndependentSets</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSets</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSetsReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphIndependentSets</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphIndependentSetsReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSetsAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSetsRepsAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of lists of positive integers.</p>
+
+<p>If <var class="Arg">digraph</var> is digraph, then these functions and attributes use <code class="func">CliquesFinder</code> (<a href="chap8.html#X7A3BC9FF8169ABCD"><span class="RefLink">8.1-2</span></a>) to return independent sets of <var class="Arg">digraph</var>. An independent set is defined by the set of vertices which it contains; see <code class="func">IsMaximalIndependentSet</code> (<a href="chap8.html#X790733B67B0BC894"><span class="RefLink">8.2-1</span></a>) and <code class="func">IsIndependentSet</code> (<a href="chap8.html#X790733B67B0BC894"><span class="RefLink">8.2-1</span></a>).</p>
+
+<p>The optional arguments <var class="Arg">include</var> and <var class="Arg">exclude</var> must each be a (possibly empty) list of vertices of <var class="Arg">digraph</var>, the optional argument <var class="Arg">limit</var> must be either a positive integer or <code class="code">infinity</code>, and the optional argument <var class="Arg">size</var> must be a positive integer. If not specified, then <var class="Arg">include</var> and <var class="Arg">exclude</var> are empty lists, and <var class="Arg">limit</var> is <code class="code">infinity</code>.</p>
+
+<p>The functions will return as many suitable independent sets as possible, up to the number <var class="Arg">limit</var>. These functions will find independent sets which contain all of the vertices of <var class="Arg">include</var> and which do not contain any of the vertices of <var class="Arg">exclude</var> The argument <var class="Arg">size</var> restricts the search to those cliques which contain precisely <var class="Arg">size</var> vertices. If the function or attribute has <code class="code">Maximal</code> in its name, then only maximal independent sets will be returned; otherwise non-maximal independent sets may be returned.</p>
+
+<p>Let <code class="code">G</code> denote the <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X858C32127A190175"><span class="RefLink">7.2-1</span></a>) of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3.html#X874883DD7DD450C4"><span class="RefLink">3.3-8</span></a>) of the digraph formed from <var class="Arg">digraph</var> by removing loops and ignoring the multiplicity of edges.</p>
+
+
+<dl>
+<dt><strong class="Mark">Distinct independent sets</strong></dt>
+<dd><p><code class="code">DigraphMaximalIndependentSets</code> and <code class="code">DigraphIndependentSets</code> each return a duplicate-free list of at most <var class="Arg">limit</var> independent sets of <var class="Arg">digraph</var> which satisfy the arguments.</p>
+
+<p>The computation may be significantly faster if <var class="Arg">include</var> and <var class="Arg">exclude</var> are invariant under the action of <code class="code">G</code> on sets of vertices.</p>
+
+</dd>
+<dt><strong class="Mark">Representatives of distinct orbits of independent sets</strong></dt>
+<dd><p>To use <code class="code">DigraphMaximalIndependentSetsReps</code> or <code class="code">DigraphIndependentSetsReps</code>, the arguments <var class="Arg">include</var> and <var class="Arg">exclude</var> must each be invariant under the action of <code class="code">G</code> on sets of vertices.</p>
+
+<p>If this is the case, then <code class="code">DigraphMaximalIndependentSetsReps</code> and <code class="code">DigraphIndependentSetsReps</code> each return a list of at most <var class="Arg">limit</var> orbits representatives (under the action of <code class="code">G</code> on sets of vertices) of independent sets of <var class="Arg">digraph</var> which satisfy the arguments.</p>
+
+<p>The representatives are not guaranteed to be in distinct orbits. However, if <var class="Arg">lim</var> is not specified, or fewer than <var class="Arg">lim</var> results are returned, then there will be at least one representative from each orbit of maximal independent sets.</p>
+
+</dd>
+</dl>
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(5);</span>
+&lt;digraph with 5 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalIndependentSetsReps(gr);</span>
+[ [ 1, 3 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphIndependentSetsReps(gr);</span>
+[ [ 1 ], [ 1, 3 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalIndependentSets(gr);</span>
+[ [ 1, 3 ], [ 1, 4 ], [ 2, 5 ], [ 2, 4 ], [ 3, 5 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalIndependentSets(gr, [1]);</span>
+[ [ 1, 3 ], [ 1, 4 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphIndependentSets(gr, [], [4, 5]);</span>
+[ [ 1 ], [ 2 ], [ 3 ], [ 1, 3 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphIndependentSets(gr, [], [4, 5], 1, 2);</span>
+[ [ 1, 3 ] ]</pre></div>
+
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap7.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap9.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+</body>
+</html>

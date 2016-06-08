@@ -1,0 +1,52 @@
+  
+  [1X1 [33X[0;0YThe [5XDigraphs[105X[101X[1X package[133X[101X
+  
+  
+  [1X1.1 [33X[0;0YIntroduction[133X[101X
+  
+  [33X[0;0YThis  is  the  manual for the [5XDigraphs[105X package version 0.5.1.1. This package
+  was developed at the University of St Andrews by:[133X
+  
+  [30X    [33X[0;6YJan De Beule[133X
+  
+  [30X    [33X[0;6YJulius Jonusas[133X
+  
+  [30X    [33X[0;6YJames D. Mitchell[133X
+  
+  [30X    [33X[0;6YMichael C. Torpey[133X
+  
+  [30X    [33X[0;6YWilf A. Wilson[133X
+  
+  [33X[0;0YThe  [5XDigraphs[105X package contains a variety of methods for efficiently creating
+  and storing digraphs and computing information about them. Full explanations
+  of all the functions contained in the package are provided below.[133X
+  
+  [33X[0;0YIf the [5XGrape[105X package is available, it will be loaded automatically. Digraphs
+  created  with  the  [5XDigraphs[105X  package  can be converted to [5XGrape[105X graphs with
+  [2XGraph[102X  ([14X3.2-3[114X),  and  conversely  [5XGrape[105X  graphs can be converted to [5XDigraphs[105X
+  objects with [2XDigraph[102X ([14X3.1-5[114X). [5XGrape[105X is not required for [5XDigraphs[105X to run.[133X
+  
+  [33X[0;0YThe [5Xbliss[105X tool [JK07] is included in this package. It is an open-source tool
+  for  computing automorphism groups and canonical forms of graphs, written by
+  Tommi  Junttila  and  Petteri  Kaski. Several of the methods in the [5XDigraphs[105X
+  package rely on [5Xbliss[105X.[133X
+  
+  [33X[0;0YFor  the  purposes  of  this  package  and  its documentation, the following
+  definitions apply:[133X
+  
+  [33X[0;0YA [13Xdigraph[113X [22XE=(E^0,E^1,r,s)[122X, also known as a [13Xdirected graph[113X, consists of a set
+  of  vertices [22XE^0[122X and a set of edges [22XE^1[122X together with functions [22Xs, r: E^1 ->
+  E^0[122X,  called  the [13Xsource[113X and [13Xrange[113X, respectively. The source and range of an
+  edge  is  respectively  the values of [22Xs, r[122X at that edge. An edge is called a
+  [13Xloop[113X  if  its  source  and  range  are  the  same.  A  digraph  is  called a
+  [13Xmultidigraph[113X  if  there exist two or more edges with the same source and the
+  same range.[133X
+  
+  [33X[0;0YA [13Xdirected path[113X on a digraph is a sequence of alternating vertices and edges
+  [22X(v_1, e_1, v_2, e_2, ..., e_n-1, v_n)[122X such that each edge [22Xe_i[122X has source [22Xv_i[122X
+  and  range  [22Xv_i+1[122X,  and  no  vertex  is repeated. A [13Xdirected walk[113X is defined
+  similarly,  but  vertices may be repeated. A [13Xcycle[113X is defined similarly to a
+  directed  path,  except that [22Xv_1 = v_n[122X. The [13Xlength[113X of a directed path, walk,
+  or  cycle  [22X(v_1, e_1, v_2, e_2, ..., e_n-1, v_n)[122X is equal to [22Xn-1[122X, the number
+  of edges it contains.[133X
+  

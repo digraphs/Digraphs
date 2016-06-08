@@ -1,0 +1,535 @@
+  
+  [1X8 [33X[0;0YFinding cliques and independent sets[133X[101X
+  
+  [33X[0;0YIn [5XDigraphs[105X, a [13Xclique[113X of a digraph is a set of mutually adjacent vertices of
+  the  digraph,  and  an  [13Xindependent  set[113X  is  a set of mutually non-adjacent
+  vertices  of the digraph. A [13Xmaximal clique[113X is a clique which is not properly
+  contained in another clique, and a [13Xmaximal independent set[113X is an independent
+  set  which  is not properly contained in another independent set. Using this
+  definition in [5XDigraphs[105X, cliques and independent sets are both permitted, but
+  not required, to contain vertices at which there is a loop. Another name for
+  a clique is a [13Xcomplete subgraph[113X.[133X
+  
+  [33X[0;0Y[5XDigraphs[105X   provides   extensive  functionality  for  computing  cliques  and
+  independent  sets  of  a  digraph,  whether  maximal or not. The fundamental
+  algorithm  used  in most of the methods in [5XDigraphs[105X to calculate cliques and
+  independent  sets  is  a version of the Bron-Kerbosch algorithm. Calculating
+  the  cliques  and  independent  sets  of  a digraph is a well-known and hard
+  problem,  and  searching for cliques or independent sets in a digraph can be
+  very  length,  even  for a digraph with a small number of vertices. [5XDigraphs[105X
+  uses several strategies to increase the performance of these calculations.[133X
+  
+  [33X[0;0YFrom  the  definition  of  cliques and independent sets, it follows that the
+  presence  of  loops  and  multiple  edges  in a digraph is irrelevant to the
+  existence   of   cliques   and   independent   sets   in  the  digraph.  See
+  [2XDigraphHasLoops[102X  ([14X6.1-1[114X)  and  [2XIsMultiDigraph[102X  ([14X6.1-8[114X)  for more information
+  about  these  properties. Therefore given a digraph [3Xdigraph[103X, the cliques and
+  independent sets of [3Xdigraph[103X are equal to the cliques and independent sets of
+  the digraph:[133X
+  
+  [30X    [33X[0;6Y[10XDigraphRemoveLoops(DigraphRemoveAllMultipleEdges([110X[3Xdigraph[103X[10X))[110X.[133X
+  
+  [33X[0;0YSee  [2XDigraphRemoveLoops[102X  ([14X3.3-21[114X) and [2XDigraphRemoveAllMultipleEdges[102X ([14X3.3-22[114X)
+  for  more  information  about  these attributes. Furthermore, the cliques of
+  this  digraph are equal to the cliques of the digraph formed by removing any
+  edge  [10X[u,v][110X  for  which the corresponding reverse edge [10X[v,u][110X is not present.
+  Therefore,  overall,  the cliques of [3Xdigraph[103X are equal to the cliques of the
+  symmetric digraph:[133X
+  
+  [30X    [33X[0;6Y[10XMaximalSymmetricSubdigraphWithoutLoops([110X[3Xdigraph[103X[10X)[110X.[133X
+  
+  [33X[0;0YSee  [2XMaximalSymmetricSubdigraphWithoutLoops[102X  ([14X3.3-4[114X)  for  more  information
+  about  this  attribute.  The  [2XAutomorphismGroup[102X  ([14X7.2-1[114X)  of  this symmetric
+  digraph  contains  the  automorphism  group  of  [3Xdigraph[103X  as  a subgroup. By
+  performing  the  search  for  maximal  cliques  with the help of this larger
+  automorphism  group  to reduce the search space, the computation time may be
+  reduced.  The  functions  and  attributes  which  return  representatives of
+  cliques  of  [3Xdigraph[103X  will return orbit representatives of cliques under the
+  action of the automorphism group of the [13Xmaximal symmetric subdigraph without
+  loops[113X on sets of vertices.[133X
+  
+  [33X[0;0YThe  independent  sets of a digraph are equal to the independent sets of the
+  [2XDigraphSymmetricClosure[102X ([14X3.3-8[114X). Therefore, overall, the independent sets of
+  [3Xdigraph[103X are equal to the independent sets of the symmetric digraph:[133X
+  
+  [30X    [33X[0;6Y[10XDigraphSymmetricClosure(DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
+        [110X[3Xdigraph[103X[10X)))[110X.[133X
+  
+  [33X[0;0YAgain,  the  automorphism  group  of  this  symmetric  digraph  contains the
+  automorphism  group of [3Xdigraph[103X. Since a search for independent sets is equal
+  to  a  search  for  cliques  in the [2XDigraphDual[102X ([14X3.3-7[114X), the methods used in
+  [5XDigraphs[105X  usually  transform a search for independent sets into a search for
+  cliques,  as  described  above.  The  functions  and attributes which return
+  representatives   of   independent   sets   of  [3Xdigraph[103X  will  return  orbit
+  representatives  of  independent  sets  under the action of the automorphism
+  group  of  the [13Xsymmetric closure[113X of the digraph formed by removing loops and
+  multiple edges.[133X
+  
+  [33X[0;0YPlease  note  that in [5XDigraphs[105X, cliques and indepedent sets are not required
+  to  be maximal. Some authors use the word clique to mean [13Xmaximal[113X clique, and
+  some authors use the phrase independent set to mean [13Xmaximal[113X independent set,
+  but please note that [5XDigraphs[105X does not use this definition.[133X
+  
+  
+  [1X8.1 [33X[0;0YFinding cliques[133X[101X
+  
+  [1X8.1-1 IsClique[101X
+  
+  [29X[2XIsClique[102X( [3Xdigraph[103X, [3Xl[103X ) [32X operation
+  [29X[2XIsMaximalClique[102X( [3Xdigraph[103X, [3Xl[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph  and  [3Xl[103X  is a duplicate-free list of vertices of
+  [3Xdigraph[103X,  then  [10XIsClique([110X[3Xdigraph[103X[10X,[110X[3Xl[103X[10X)[110X returns [9Xtrue[109X if [3Xl[103X is a [13Xclique[113X of [3Xdigraph[103X
+  and  [9Xfalse[109X  if it is not. Similarly, [10XIsMaximalClique([110X[3Xdigraph[103X[10X,[110X[3Xl[103X[10X)[110X returns [9Xtrue[109X
+  if [3Xl[103X is a [13Xmaximal clique[113X of [3Xdigraph[103X and [9Xfalse[109X if it is not.[133X
+  
+  [33X[0;0YA [13Xclique[113X of a digraph is a set of mutually adjacent vertices of the digraph.
+  A  [13Xmaximal  clique[113X  is  a  clique which is not properly contained in another
+  clique.  A  clique  is  permitted,  but not required, to contain vertices at
+  which there is a loop.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(4);;[127X[104X
+    [4X[25Xgap>[125X [27XIsClique(gr, [1, 3, 2]);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsMaximalClique(gr, [1, 3, 2]);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsMaximalClique(gr, DigraphVertices(gr));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);[127X[104X
+    [4X[28X<multidigraph with 4 vertices, 11 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsClique(gr, [2, 3, 4]);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsMaximalClique(gr, [1, 2, 4]);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X8.1-2 CliquesFinder[101X
+  
+  [29X[2XCliquesFinder[102X( [3Xdigraph[103X, [3Xhook[103X, [3Xuser_param[103X, [3Xlimit[103X, [3Xinclude[103X, [3Xexclude[103X, [3Xmax[103X, [3Xsize[103X, [3Xreps[103X ) [32X function
+  [6XReturns:[106X  [33X[0;10YThe argument [3Xuser_param[103X.[133X
+  
+  [33X[0;0YThis function finds cliques of the digraph [3Xdigraph[103X subject to the conditions
+  imposed  by  the  other  arguments as described below. Note that a clique is
+  represented by a list of the vertices which it contains.[133X
+  
+  [33X[0;0YLet  [10XG[110X  denote the automorphism group of the maximal symmetric subdigraph of
+  [3Xdigraph[103X     without     loops    (see    [2XAutomorphismGroup[102X    ([14X7.2-1[114X)    and
+  [2XMaximalSymmetricSubdigraphWithoutLoops[102X ([14X3.3-4[114X)).[133X
+  
+  [8X[3Xhook[103X[108X
+        [33X[0;6YThis argument should be a function or [9Xfail[109X.[133X
+  
+        [33X[0;6YIf  [3Xhook[103X  is  a function, then it should have two arguments [3Xuser_param[103X
+        (see below) and a clique [10Xc[110X. The function [10X[3Xhook[103X[10X([3Xuser_param[103X[10X, c)[110X is called
+        every time a new clique [10Xc[110X is found by [10XCliquesFinder[110X.[133X
+  
+        [33X[0;6YIf  [3Xhook[103X  is  [9Xfail[109X,  then a default function is used which simply adds
+        every new clique found by [10XCliquesFinder[110X to [3Xuser_param[103X, which must be a
+        list in this case.[133X
+  
+  [8X[3Xuser_param[103X[108X
+        [33X[0;6YIf  [3Xhook[103X  is  a  function,  then [3Xuser_param[103X can be any [5XGAP[105X object. The
+        object [3Xuser_param[103X is used as the first argument for the function [3Xhook[103X.
+        For example, [3Xuser_param[103X might be a list, and [10X[3Xhook[103X[10X([3Xuser_param[103X[10X, c)[110X might
+        add the size of the clique [10Xc[110X to the list [3Xuser_param[103X.[133X
+  
+        [33X[0;6YIf  the  value of [3Xhook[103X is [9Xfail[109X, then the value of [3Xuser_param[103X must be a
+        list.[133X
+  
+  [8X[3Xlimit[103X[108X
+        [33X[0;6YThis  argument should be a positive integer or [9Xinfinity[109X. [10XCliquesFinder[110X
+        will  return  after  it  has  found  [3Xlimit[103X  cliques  or  the search is
+        complete.[133X
+  
+  [8X[3Xinclude[103X and [3Xexclude[103X[108X
+        [33X[0;6YThese  arguments should each be a (possibly empty) duplicate-free list
+        of vertices of [3Xdigraph[103X (i.e. positive integers less than the number of
+        vertices of [3Xdigraph[103X).[133X
+  
+        [33X[0;6Y[10XCliquesFinder[110X  will  only  look  for  cliques  containing  all  of the
+        vertices in [3Xinclude[103X and containing none of the vertices in [3Xexclude[103X.[133X
+  
+        [33X[0;6YNote that the search may be much more efficient if each of these lists
+        is invariant under the action of [10XG[110X on sets of vertices.[133X
+  
+  [8X[3Xmax[103X[108X
+        [33X[0;6YThis   argument  should  be  [9Xtrue[109X  or  [9Xfalse[109X.  If  [3Xmax[103X  is  true  then
+        [10XCliquesFinder[110X  will  only  search for [13Xmaximal[113X cliques. If [9Xmax[109X is [9Xfalse[109X
+        then non-maximal cliques may be found.[133X
+  
+  [8X[3Xsize[103X[108X
+        [33X[0;6YThis  argument  should  be  [9Xfail[109X  or  a positive integer. If [3Xsize[103X is a
+        positive integer then [10XCliquesFinder[110X will only search for cliques which
+        contain  precisely  [3Xsize[103X vertices. If [3Xsize[103X is [9Xfail[109X then cliques of any
+        size may be found.[133X
+  
+  [8X[3Xreps[103X[108X
+        [33X[0;6YThis argument should be [9Xtrue[109X or [9Xfalse[109X.[133X
+  
+        [33X[0;6YIf  [3Xreps[103X  is  [9Xtrue[109X  then  the  arguments  [3Xinclude[103X and [3Xexclude[103X are each
+        required to be invariant under the action of [10XG[110X on sets of vertices. In
+        this  case,  [10XCliquesFinder[110X  will find representatives of the orbits of
+        the  desired  cliques  under the action of [10XG[110X, [13Xalthough representatives
+        may  be  returned  which  are in the same orbit[113X. If [3Xreps[103X is false then
+        [10XCliquesFinder[110X will not take this into consideration.[133X
+  
+        [33X[0;6YFor  a  digraph  such  that  [10XG[110X  is  non-trivial, the search for clique
+        representatives  can  be  much  more efficient than the search for all
+        cliques.[133X
+  
+  [33X[0;0YThis function uses a version of the Bron-Kerbosch algorithm.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(5);[127X[104X
+    [4X[28X<digraph with 5 vertices, 20 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xuser_param := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xf := function(a, b) # Calculate size of clique[127X[104X
+    [4X[25X>[125X [27X  AddSet(user_param, Size(b));[127X[104X
+    [4X[25X>[125X [27Xend;[127X[104X
+    [4X[28Xfunction( a, b ) ... end[128X[104X
+    [4X[25Xgap>[125X [27XCliquesFinder(gr, f, user_param, infinity, [], [], false, fail, true);[127X[104X
+    [4X[28X[ 1, 2, 3, 4, 5 ][128X[104X
+    [4X[25Xgap>[125X [27XCliquesFinder(gr, fail, [], 5, [2, 4], [3], false, fail, false);[127X[104X
+    [4X[28X[ [ 2, 4 ], [ 1, 2, 4 ], [ 2, 4, 5 ], [ 1, 2, 4, 5 ] ][128X[104X
+    [4X[25Xgap>[125X [27XCliquesFinder(gr, fail, [], 2, [2, 4], [3], false, fail, false);[127X[104X
+    [4X[28X[ [ 2, 4 ], [ 1, 2, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XCliquesFinder(gr, fail, [], infinity, [], [], true, 5, false);[127X[104X
+    [4X[28X[ [ 1, 2, 3, 4, 5 ] ][128X[104X
+    [4X[25Xgap>[125X [27XCliquesFinder(gr, fail, [], infinity, [1, 3], [], false, 3, false);[127X[104X
+    [4X[28X[ [ 1, 2, 3 ], [ 1, 3, 4 ], [ 1, 3, 5 ] ][128X[104X
+    [4X[25Xgap>[125X [27XCliquesFinder(gr, fail, [], infinity, [1, 3], [], true, 3, false);[127X[104X
+    [4X[28X[  ][128X[104X
+  [4X[32X[104X
+  
+  [1X8.1-3 DigraphClique[101X
+  
+  [29X[2XDigraphClique[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xsize[103X]]] ) [32X function
+  [29X[2XDigraphMaximalClique[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xsize[103X]]] ) [32X function
+  [6XReturns:[106X  [33X[0;10YA list of positive integers, or [9Xfail[109X.[133X
+  
+  [33X[0;0YIf [3Xdigraph[103X is a digraph, then these functions returns a clique of [3Xdigraph[103X if
+  one  exists which satisfies the arguments, else it returns [9Xfail[109X. A clique is
+  defined  by  the set of vertices which it contains; see [2XIsClique[102X ([14X8.1-1[114X) and
+  [2XIsMaximalClique[102X ([14X8.1-1[114X).[133X
+  
+  [33X[0;0YThe  optional  arguments [3Xinclude[103X and [3Xexclude[103X must each be a (possibly empty)
+  duplicate-free  list  of vertices of [3Xdigraph[103X, and the optional argument [3Xsize[103X
+  must be a positive integer. By default, [3Xinclude[103X and [3Xexclude[103X are empty. These
+  functions will search for a clique of [3Xdigraph[103X which includes the vertices of
+  [3Xinclude[103X  and which does not include any vertices in [3Xexclude[103X; if the argument
+  [3Xsize[103X  is  supplied, then additionally the clique will be required to contain
+  precisely [3Xsize[103X vertices.[133X
+  
+  [33X[0;0YIf [3Xinclude[103X is not a clique, then these functions return [9Xfail[109X. Otherwise, the
+  functions behave in the following way, depending on the number of arguments:[133X
+  
+  [8XOne or two arguments[108X
+        [33X[0;6YIf   one  or  two  arguments  are  supplied,  then  [10XDigraphClique[110X  and
+        [10XDigraphMaximalClique[110X  greedily enlarge the clique [3Xinclude[103X until it can
+        not  continue.  The  result is guaranteed to be a maximal clique. This
+        may   or   may   not   return   an  answer  more  quickly  than  using
+        [2XDigraphMaximalCliques[102X ([14X8.1-4[114X). with a limit of 1.[133X
+  
+  [8XThree arguments[108X
+        [33X[0;6YIf  three arguments are supplied, then [10XDigraphClique[110X greedily enlarges
+        the clique [3Xinclude[103X until it can not continue, although this clique may
+        not be maximal.[133X
+  
+        [33X[0;6YGiven three arguments, [10XDigraphMaximalClique[110X returns the maximal clique
+        returned by [10XDigraphMaximalCliques([110X[3Xdigraph[103X[10X, [110X[3Xinclude[103X[10X, [110X[3Xexclude[103X[10X, 1)[110X if one
+        exists, else [9Xfail[109X.[133X
+  
+  [8XFour arguments[108X
+        [33X[0;6YIf  four arguments are supplied, then [10XDigraphClique[110X returns the clique
+        returned  by [10XDigraphCliques([110X[3Xdigraph[103X[10X, [110X[3Xinclude[103X[10X, [110X[3Xexclude[103X[10X, 1, [110X[3Xsize[103X[10X)[110X if one
+        exists, else [9Xfail[109X. This clique may not be maximal.[133X
+  
+        [33X[0;6YGiven  four arguments, [10XDigraphMaximalClique[110X returns the maximal clique
+        returned  by [10XDigraphMaximalCliques([110X[3Xdigraph[103X[10X, [110X[3Xinclude[103X[10X, [110X[3Xexclude[103X[10X, 1, [110X[3Xsize[103X[10X)[110X
+        if one exists, else [9Xfail[109X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3, 4], [1, 3], [1, 2], [1, 5], []]);[127X[104X
+    [4X[28X<digraph with 5 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XDigraphClique(gr);[127X[104X
+    [4X[28X[ 5 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalClique(gr);[127X[104X
+    [4X[28X[ 5 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphClique(gr, [1, 2]);[127X[104X
+    [4X[28X[ 1, 2, 3 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalClique(gr, [1, 3]);[127X[104X
+    [4X[28X[ 1, 3, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphClique(gr, [1], [2]);[127X[104X
+    [4X[28X[ 1, 4 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalClique(gr, [1], [3, 4]);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XDigraphClique(gr, [1, 5]);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XDigraphClique(gr, [], [], 2);[127X[104X
+    [4X[28X[ 1, 2 ][128X[104X
+  [4X[32X[104X
+  
+  [1X8.1-4 DigraphMaximalCliques[101X
+  
+  [29X[2XDigraphMaximalCliques[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xlimit[103X[, [3Xsize[103X]]]] ) [32X function
+  [29X[2XDigraphMaximalCliquesReps[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xlimit[103X[, [3Xsize[103X]]]] ) [32X function
+  [29X[2XDigraphCliques[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xlimit[103X[, [3Xsize[103X]]]] ) [32X function
+  [29X[2XDigraphCliquesReps[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xlimit[103X[, [3Xsize[103X]]]] ) [32X function
+  [29X[2XDigraphMaximalCliquesAttr[102X( [3Xdigraph[103X ) [32X attribute
+  [29X[2XDigraphMaximalCliquesRepsAttr[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA list of lists of positive integers.[133X
+  
+  [33X[0;0YIf [3Xdigraph[103X is digraph, then these functions and attributes use [2XCliquesFinder[102X
+  ([14X8.1-2[114X)  to  return  cliques  of  [3Xdigraph[103X. A clique is defined by the set of
+  vertices  which  it  contains;  see  [2XIsClique[102X  ([14X8.1-1[114X)  and  [2XIsMaximalClique[102X
+  ([14X8.1-1[114X).[133X
+  
+  [33X[0;0YThe  optional  arguments [3Xinclude[103X and [3Xexclude[103X must each be a (possibly empty)
+  list  of  vertices  of [3Xdigraph[103X, the optional argument [3Xlimit[103X must be either a
+  positive  integer  or  [10Xinfinity[110X,  and  the  optional argument [3Xsize[103X must be a
+  positive  integer.  If  not  specified,  then  [3Xinclude[103X and [3Xexclude[103X are empty
+  lists, and [3Xlimit[103X is [10Xinfinity[110X.[133X
+  
+  [33X[0;0YThe  functions  will  return as many suitable cliques as possible, up to the
+  number  [3Xlimit[103X.  These  functions  will find cliques which contain all of the
+  vertices of [3Xinclude[103X and which do not contain any of the vertices of [3Xexclude[103X.
+  The  argument  [3Xsize[103X  restricts  the  search  to  those cliques which contain
+  precisely  [3Xsize[103X  vertices.  If  the function or attribute has [10XMaximal[110X in its
+  name,  then  only  maximal  cliques  will be returned; otherwise non-maximal
+  cliques may be returned.[133X
+  
+  [33X[0;0YLet  [10XG[110X  denote  the  automorphism  group  of maximal symmetric subdigraph of
+  [3Xdigraph[103X     without     loops    (see    [2XAutomorphismGroup[102X    ([14X7.2-1[114X)    and
+  [2XMaximalSymmetricSubdigraphWithoutLoops[102X ([14X3.3-4[114X)).[133X
+  
+  [8XDistinct cliques[108X
+        [33X[0;6Y[10XDigraphMaximalCliques[110X  and [10XDigraphCliques[110X each return a duplicate-free
+        list of at most [3Xlimit[103X cliques of [3Xdigraph[103X which satisfy the arguments.[133X
+  
+        [33X[0;6YThe computation may be significantly faster if [3Xinclude[103X and [3Xexclude[103X are
+        invariant under the action of [10XG[110X on sets of vertices.[133X
+  
+  [8XOrbit representatives of cliques[108X
+        [33X[0;6YTo  use [10XDigraphMaximalCliquesReps[110X or [10XDigraphCliquesReps[110X, the arguments
+        [3Xinclude[103X  and  [3Xexclude[103X  must each be invariant under the action of [10XG[110X on
+        sets of vertices.[133X
+  
+        [33X[0;6YIf    this   is   the   case,   then   [10XDigraphMaximalCliquesReps[110X   and
+        [10XDigraphCliquesReps[110X  each return a duplicate-free list of at most [3Xlimit[103X
+        orbits  representatives  (under  the  action of [10XG[110X on sets vertices) of
+        cliques of [3Xdigraph[103X which satisfy the arguments.[133X
+  
+        [33X[0;6YThe  representatives  are  not  guaranteed  to  be in distinct orbits.
+        However,  if  [3Xlim[103X  is  not  specified,  or  fewer than [3Xlim[103X results are
+        returned,  then  there  will  be at least one representative from each
+        orbit of maximal cliques.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [1, 3], [1, 2, 4], [3, 5, 6],[127X[104X
+    [4X[25X>[125X [27X[4, 6], [4, 5]]);[127X[104X
+    [4X[28X<digraph with 6 vertices, 14 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XG := AutomorphismGroup(gr);[127X[104X
+    [4X[28XGroup([ (5,6), (1,2), (1,5)(2,6)(3,4) ])[128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalCliques(gr);[127X[104X
+    [4X[28X[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalCliquesReps(gr);[127X[104X
+    [4X[28X[ [ 1, 2, 3 ], [ 3, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XOrbit(G, [1, 2, 3], OnSets);[127X[104X
+    [4X[28X[ [ 1, 2, 3 ], [ 4, 5, 6 ] ][128X[104X
+    [4X[25Xgap>[125X [27XOrbit(G, [3, 4], OnSets);[127X[104X
+    [4X[28X[ [ 3, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalCliquesReps(gr, [3, 4], [], 1);[127X[104X
+    [4X[28X[ [ 3, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalCliques(gr, [1, 2], [5, 6], 1, 2);[127X[104X
+    [4X[28X[  ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphCliques(gr, [1], [5, 6], infinity, 2);[127X[104X
+    [4X[28X[ [ 1, 2 ], [ 1, 3 ] ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X8.2 [33X[0;0YFinding independent sets[133X[101X
+  
+  [1X8.2-1 IsIndependentSet[101X
+  
+  [29X[2XIsIndependentSet[102X( [3Xdigraph[103X, [3Xl[103X ) [32X operation
+  [29X[2XIsMaximalIndependentSet[102X( [3Xdigraph[103X, [3Xl[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph  and  [3Xl[103X  is a duplicate-free list of vertices of
+  [3Xdigraph[103X,   then   [10XIsIndependentSet([110X[3Xdigraph[103X[10X,[110X[3Xl[103X[10X)[110X   returns  [9Xtrue[109X  if  [3Xl[103X  is  an
+  [13Xindependent   set[113X   of   [3Xdigraph[103X   and   [9Xfalse[109X  if  it  is  not.  Similarly,
+  [10XIsMaximalIndependentSet([110X[3Xdigraph[103X[10X,[110X[3Xl[103X[10X)[110X   returns   [9Xtrue[109X   if   [3Xl[103X  is  a  [13Xmaximal
+  independent set[113X of [3Xdigraph[103X and [9Xfalse[109X if it is not.[133X
+  
+  [33X[0;0YAn  [13Xindependent  set[113X of a digraph is a set of mutually non-adjacent vertices
+  of the digraph. A [13Xmaximal independent set[113X is an independent set which is not
+  properly  contained  in  another  independent  set.  An  independent  set is
+  permitted, but not required, to contain vertices at which there is a loop.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := CycleDigraph(4);;[127X[104X
+    [4X[25Xgap>[125X [27XIsIndependentSet(gr, [1]);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsMaximalIndependentSet(gr, [1]);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsIndependentSet(gr, [1, 4, 3]);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsIndependentSet(gr, [2, 4]);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsMaximalIndependentSet(gr, [2, 4]);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X8.2-2 DigraphIndependentSet[101X
+  
+  [29X[2XDigraphIndependentSet[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xsize[103X]]] ) [32X function
+  [29X[2XDigraphMaximalIndependentSet[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xsize[103X]]] ) [32X function
+  [6XReturns:[106X  [33X[0;10YA lists of positive integers, or [9Xfail[109X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is a digraph, then these functions returns a independent set of
+  [3Xdigraph[103X if one exists which satisfies the arguments, else it returns [9Xfail[109X. A
+  independent  set  is  defined  by the set of vertices which it contains; see
+  [2XIsIndependentSet[102X ([14X8.2-1[114X) and [2XIsMaximalIndependentSet[102X ([14X8.2-1[114X).[133X
+  
+  [33X[0;0YThe  optional  arguments [3Xinclude[103X and [3Xexclude[103X must each be a (possibly empty)
+  duplicate-free  list  of vertices of [3Xdigraph[103X, and the optional argument [3Xsize[103X
+  must be a positive integer. By default, [3Xinclude[103X and [3Xexclude[103X are empty. These
+  functions  will  search  for a independent set of [3Xdigraph[103X which includes the
+  vertices  of  [3Xinclude[103X and which does not include any vertices in [3Xexclude[103X; if
+  the argument [3Xsize[103X is supplied, then additionally the independent set will be
+  required to contain precisely [3Xsize[103X vertices.[133X
+  
+  [33X[0;0YIf  [3Xinclude[103X  is  not  a  independent  set, then these functions return [9Xfail[109X.
+  Otherwise,  the  functions  behave  in  the  following way, depending on the
+  number of arguments:[133X
+  
+  [8XOne or two arguments[108X
+        [33X[0;6YIf  one  or two arguments are supplied, then [10XDigraphIndependentSet[110X and
+        [10XDigraphMaximalIndependentSet[110X  greedily  enlarge  the  independent  set
+        [3Xinclude[103X  until  it  can not continue. The result is guaranteed to be a
+        maximal  independent  set.  This  may or may not return an answer more
+        quickly than using [2XDigraphMaximalIndependentSets[102X ([14X8.2-3[114X). with a limit
+        of 1.[133X
+  
+  [8XThree arguments[108X
+        [33X[0;6YIf  three  arguments are supplied, then [10XDigraphIndependentSet[110X greedily
+        enlarges  the  independent  set  [3Xinclude[103X  until  it  can not continue,
+        although this independent set may not be maximal.[133X
+  
+        [33X[0;6YGiven   three   arguments,  [10XDigraphMaximalIndependentSet[110X  returns  the
+        maximal          independent          set          returned         by
+        [10XDigraphMaximalIndependentSets([110X[3Xdigraph[103X[10X,  [110X[3Xinclude[103X[10X,  [110X[3Xexclude[103X[10X,  1)[110X  if one
+        exists, else [9Xfail[109X.[133X
+  
+  [8XFour arguments[108X
+        [33X[0;6YIf four arguments are supplied, then [10XDigraphIndependentSet[110X returns the
+        independent  set  returned by [10XDigraphIndependentSets([110X[3Xdigraph[103X[10X, [110X[3Xinclude[103X[10X,
+        [110X[3Xexclude[103X[10X,  1,  [110X[3Xsize[103X[10X)[110X if one exists, else [9Xfail[109X. This independent set may
+        not be maximal.[133X
+  
+        [33X[0;6YGiven four arguments, [10XDigraphMaximalIndependentSet[110X returns the maximal
+        independent  set  returned  by  [10XDigraphMaximalIndependentSets([110X[3Xdigraph[103X[10X,
+        [110X[3Xinclude[103X[10X, [110X[3Xexclude[103X[10X, 1, [110X[3Xsize[103X[10X)[110X if one exists, else [9Xfail[109X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := ChainDigraph(6);[127X[104X
+    [4X[28X<digraph with 6 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphIndependentSet(gr);[127X[104X
+    [4X[28X[ 6, 4, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalIndependentSet(gr);[127X[104X
+    [4X[28X[ 6, 4, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphIndependentSet(gr, [2, 4]);[127X[104X
+    [4X[28X[ 2, 4, 6 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalIndependentSet(gr, [1, 3]);[127X[104X
+    [4X[28X[ 1, 3, 6 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphIndependentSet(gr, [2, 4], [6]);[127X[104X
+    [4X[28X[ 2, 4 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalIndependentSet(gr, [2, 4], [6]);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XDigraphIndependentSet(gr, [1], [], 2);[127X[104X
+    [4X[28X[ 1, 3 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalIndependentSet(gr, [1], [], 2);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalIndependentSet(gr, [1], [], 3);[127X[104X
+    [4X[28X[ 1, 3, 5 ][128X[104X
+  [4X[32X[104X
+  
+  [1X8.2-3 DigraphMaximalIndependentSets[101X
+  
+  [29X[2XDigraphMaximalIndependentSets[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xlimit[103X[, [3Xsize[103X]]]] ) [32X function
+  [29X[2XDigraphMaximalIndependentSetsReps[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xlimit[103X[, [3Xsize[103X]]]] ) [32X function
+  [29X[2XDigraphIndependentSets[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xlimit[103X[, [3Xsize[103X]]]] ) [32X function
+  [29X[2XDigraphIndependentSetsReps[102X( [3Xdigraph[103X[, [3Xinclude[103X[, [3Xexclude[103X[, [3Xlimit[103X[, [3Xsize[103X]]]] ) [32X function
+  [29X[2XDigraphMaximalIndependentSetsAttr[102X( [3Xdigraph[103X ) [32X attribute
+  [29X[2XDigraphMaximalIndependentSetsRepsAttr[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA list of lists of positive integers.[133X
+  
+  [33X[0;0YIf [3Xdigraph[103X is digraph, then these functions and attributes use [2XCliquesFinder[102X
+  ([14X8.1-2[114X) to return independent sets of [3Xdigraph[103X. An independent set is defined
+  by  the  set  of  vertices  which  it  contains; see [2XIsMaximalIndependentSet[102X
+  ([14X8.2-1[114X) and [2XIsIndependentSet[102X ([14X8.2-1[114X).[133X
+  
+  [33X[0;0YThe  optional  arguments [3Xinclude[103X and [3Xexclude[103X must each be a (possibly empty)
+  list  of  vertices  of [3Xdigraph[103X, the optional argument [3Xlimit[103X must be either a
+  positive  integer  or  [10Xinfinity[110X,  and  the  optional argument [3Xsize[103X must be a
+  positive  integer.  If  not  specified,  then  [3Xinclude[103X and [3Xexclude[103X are empty
+  lists, and [3Xlimit[103X is [10Xinfinity[110X.[133X
+  
+  [33X[0;0YThe  functions will return as many suitable independent sets as possible, up
+  to  the  number  [3Xlimit[103X.  These  functions  will  find independent sets which
+  contain  all  of the vertices of [3Xinclude[103X and which do not contain any of the
+  vertices  of [3Xexclude[103X The argument [3Xsize[103X restricts the search to those cliques
+  which  contain  precisely  [3Xsize[103X  vertices.  If the function or attribute has
+  [10XMaximal[110X  in  its  name, then only maximal independent sets will be returned;
+  otherwise non-maximal independent sets may be returned.[133X
+  
+  [33X[0;0YLet  [10XG[110X  denote  the [2XAutomorphismGroup[102X ([14X7.2-1[114X) of the [2XDigraphSymmetricClosure[102X
+  ([14X3.3-8[114X)  of  the  digraph formed from [3Xdigraph[103X by removing loops and ignoring
+  the multiplicity of edges.[133X
+  
+  [8XDistinct independent sets[108X
+        [33X[0;6Y[10XDigraphMaximalIndependentSets[110X and [10XDigraphIndependentSets[110X each return a
+        duplicate-free list of at most [3Xlimit[103X independent sets of [3Xdigraph[103X which
+        satisfy the arguments.[133X
+  
+        [33X[0;6YThe computation may be significantly faster if [3Xinclude[103X and [3Xexclude[103X are
+        invariant under the action of [10XG[110X on sets of vertices.[133X
+  
+  [8XRepresentatives of distinct orbits of independent sets[108X
+        [33X[0;6YTo          use          [10XDigraphMaximalIndependentSetsReps[110X          or
+        [10XDigraphIndependentSetsReps[110X,  the  arguments  [3Xinclude[103X  and [3Xexclude[103X must
+        each be invariant under the action of [10XG[110X on sets of vertices.[133X
+  
+        [33X[0;6YIf  this  is  the  case,  then  [10XDigraphMaximalIndependentSetsReps[110X  and
+        [10XDigraphIndependentSetsReps[110X  each return a list of at most [3Xlimit[103X orbits
+        representatives  (under  the  action  of  [10XG[110X  on  sets  of vertices) of
+        independent sets of [3Xdigraph[103X which satisfy the arguments.[133X
+  
+        [33X[0;6YThe  representatives  are  not  guaranteed  to  be in distinct orbits.
+        However,  if  [3Xlim[103X  is  not  specified,  or  fewer than [3Xlim[103X results are
+        returned,  then  there  will  be at least one representative from each
+        orbit of maximal independent sets.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := CycleDigraph(5);[127X[104X
+    [4X[28X<digraph with 5 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalIndependentSetsReps(gr);[127X[104X
+    [4X[28X[ [ 1, 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphIndependentSetsReps(gr);[127X[104X
+    [4X[28X[ [ 1 ], [ 1, 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalIndependentSets(gr);[127X[104X
+    [4X[28X[ [ 1, 3 ], [ 1, 4 ], [ 2, 5 ], [ 2, 4 ], [ 3, 5 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphMaximalIndependentSets(gr, [1]);[127X[104X
+    [4X[28X[ [ 1, 3 ], [ 1, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphIndependentSets(gr, [], [4, 5]);[127X[104X
+    [4X[28X[ [ 1 ], [ 2 ], [ 3 ], [ 1, 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphIndependentSets(gr, [], [4, 5], 1, 2);[127X[104X
+    [4X[28X[ [ 1, 3 ] ][128X[104X
+  [4X[32X[104X
+  

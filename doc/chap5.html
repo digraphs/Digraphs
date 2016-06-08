@@ -1,0 +1,1368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>GAP (digraphs) - Chapter 5: Attributes and operations</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+<script src="manual.js" type="text/javascript"></script>
+<script type="text/javascript">overwriteStyle();</script>
+</head>
+<body class="chap5"  onload="jscontent()">
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap4.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap6.html">[Next Chapter]</a>&nbsp;  </div>
+
+<p id="mathjaxlink" class="pcenter"><a href="chap5_mj.html">[MathJax on]</a></p>
+<p><a id="X8739F6CD78C90B14" name="X8739F6CD78C90B14"></a></p>
+<div class="ChapSects"><a href="chap5.html#X8739F6CD78C90B14">5 <span class="Heading">Attributes and operations</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X7E814B6478F7D015">5.1 <span class="Heading">Vertices and edges</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C45F7D878D896AC">5.1-1 DigraphVertices</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C6F19B57CB2E882">5.1-2 DigraphNrVertices</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7D1C6A4D7ECEC317">5.1-3 DigraphEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X85E1CFDD7E164AD0">5.1-4 DigraphNrEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X85D5E08280914EE4">5.1-5 DigraphSinks</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7F5C6268839BE98C">5.1-6 DigraphSources</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X785C30378064CF47">5.1-7 DigraphTopologicalSort</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7F1B5A2782F598B1">5.1-8 DigraphBicomponents</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7CA91E4B7904F793">5.1-9 DigraphVertexLabel</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7E51F2FE87140B32">5.1-10 DigraphVertexLabels</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7EFAF01B7A155157">5.1-11 DigraphInEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7BECFE6687ECD028">5.1-12 DigraphOutEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7BB8ED88835F07B4">5.1-13 IsDigraphEdge</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X7D7CE8328187D0DF">5.2 <span class="Heading">Neighbours and degree</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7DC2CD70830BEE60">5.2-1 AdjacencyMatrix</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X8507DC4F794780C1">5.2-2 BooleanAdjacencyMatrix</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7AFCE34A7A04D5C1">5.2-3 DigraphAdjacencyFunction</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7FDEBF3279759961">5.2-4 DigraphRange</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7E9880767AE68E00">5.2-5 OutNeighbours</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X85C7AA5A81DA6E11">5.2-6 InNeighbours</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7F5ACE807D1BC2E2">5.2-7 OutDegrees</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7ADDFBFD7A365775">5.2-8 InDegrees</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7A09EB648070276D">5.2-9 OutDegreeOfVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X83315B0186850806">5.2-10 OutNeighboursOfVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C9CD0527CB9E6EF">5.2-11 InDegreeOfVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C0DA18B8291F302">5.2-12 InNeighboursOfVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X83271F607BD809CF">5.2-13 DigraphLoops</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X8537F4088400DC48">5.3 <span class="Heading">Reachability and connectivity</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7F16B9EB8398459C">5.3-1 DigraphDiameter</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X8104A9D37BCD8A05">5.3-2 DigraphShortestDistance</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X81F99BC67E9D050F">5.3-3 DigraphShortestDistances</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X8223718079D98A82">5.3-4 DigraphLongestDistanceFromVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7CB7DDCD84621D38">5.3-5 DigraphDistanceSet</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X79A3DA4078CF3C90">5.3-6 DigraphGirth</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X84688B337BDDBB09">5.3-7 DigraphUndirectedGirth</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X842FAD6A7B835977">5.3-8 DigraphConnectedComponents</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X8484EC557810CD31">5.3-9 DigraphConnectedComponent</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X833ECD6B7A84944C">5.3-10 DigraphStronglyConnectedComponents</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7EFCB5017D662254">5.3-11 DigraphStronglyConnectedComponent</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X853D0B0981A33433">5.3-12 DigraphPeriod</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X864A31A8809F61C2">5.3-13 DigraphFloydWarshall</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7FBAB09E7C0BE5CF">5.3-14 IsReachable</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X8039170B82A32257">5.3-15 DigraphPath</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C0416FE7A69CA2C">5.3-16 IteratorOfPaths</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7ECD16838704FAAA">5.3-17 DigraphAllSimpleCircuits</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C735C4E86BDD5F6">5.3-18 DigraphLongestSimpleCircuit</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X870E04307C5F213F">5.3-19 DigraphLayers</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7B2E42327DA118E0">5.3-20 DigraphDegeneracy</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X827C2BD17A4547E3">5.3-21 DigraphDegeneracyOrdering</a></span>
+</div></div>
+</div>
+
+<h3>5 <span class="Heading">Attributes and operations</span></h3>
+
+<p><a id="X7E814B6478F7D015" name="X7E814B6478F7D015"></a></p>
+
+<h4>5.1 <span class="Heading">Vertices and edges</span></h4>
+
+<p><a id="X7C45F7D878D896AC" name="X7C45F7D878D896AC"></a></p>
+
+<h5>5.1-1 DigraphVertices</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphVertices</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of integers.</p>
+
+<p>Returns the vertices of the digraph <var class="Arg">digraph</var>.</p>
+
+<p>Note that the vertices of a digraph are always a range of positive integers from <code class="code">1</code> to the number of vertices of the graph.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ "a", "b", "c" ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "a", "b", "b" ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "b", "c", "a" ] );</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertices(gr);</span>
+[ 1 .. 3 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ 1, 2, 3, 4, 5, 7 ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 1, 2, 2, 4, 4 ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 2, 3, 5, 3, 5 ] );</span>
+&lt;digraph with 6 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertices(gr);</span>
+[ 1 .. 6 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertices(RandomDigraph(100));</span>
+[ 1 .. 100 ]
+</pre></div>
+
+<p><a id="X7C6F19B57CB2E882" name="X7C6F19B57CB2E882"></a></p>
+
+<h5>5.1-2 DigraphNrVertices</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphNrVertices</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: An integer.</p>
+
+<p>Returns the number of vertices of the digraph <var class="Arg">digraph</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ "a", "b", "c" ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "a", "b", "b" ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "b", "c", "a" ] );</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphNrVertices(gr);</span>
+3
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ 1, 2, 3, 4, 5, 7 ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 1, 2, 2, 4, 4 ], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 2, 3, 5, 3, 5 ] );</span>
+&lt;digraph with 6 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphNrVertices(gr);</span>
+6
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphNrVertices(RandomDigraph(100));</span>
+100</pre></div>
+
+<p><a id="X7D1C6A4D7ECEC317" name="X7D1C6A4D7ECEC317"></a></p>
+
+<h5>5.1-3 DigraphEdges</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEdges</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of lists.</p>
+
+<p><code class="code">DigraphEdges</code> returns a list of edges of the digraph <var class="Arg">digraph</var>, where each edge is a pair of elements of <code class="func">DigraphVertices</code> (<a href="chap5.html#X7C45F7D878D896AC"><span class="RefLink">5.1-1</span></a>) of the form <code class="code">[source,range]</code>.</p>
+
+<p>The entries of <code class="code">DigraphEdges(</code><var class="Arg">digraph</var><code class="code">)</code> are in one-to-one corresponence with the edges of <var class="Arg">digraph</var>. Hence <code class="code">DigraphEdges(</code><var class="Arg">digraph</var><code class="code">)</code> is duplicate-free if and only if <var class="Arg">digraph</var> contains no multiple edges.</p>
+
+<p>The entries of <code class="code">DigraphEdges</code> are guaranteed to be sorted by their first component (i.e. by the source of each edge), but they are not necessarily then sorted by the second component.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 3, 4, 3, 5], [1, 2, 3, 5], [2, 4, 5], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 4, 5], [1]]);</span>
+&lt;multidigraph with 5 vertices, 16 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr);</span>
+[ [ 1, 1 ], [ 1, 3 ], [ 1, 4 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], 
+  [ 2, 2 ], [ 2, 3 ], [ 2, 5 ], [ 3, 2 ], [ 3, 4 ], [ 3, 5 ], 
+  [ 4, 2 ], [ 4, 4 ], [ 4, 5 ], [ 5, 1 ] ]
+</pre></div>
+
+<p><a id="X85E1CFDD7E164AD0" name="X85E1CFDD7E164AD0"></a></p>
+
+<h5>5.1-4 DigraphNrEdges</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphNrEdges</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: An integer.</p>
+
+<p>This function returns the number of edges of the digraph <var class="Arg">digraph</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 4, 5], [1]]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphNrEdges(gr);</span>
+15
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">["a", "b", "b"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">["b", "a", "a"]);</span>
+&lt;multidigraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphNrEdges(gr);</span>
+3</pre></div>
+
+<p><a id="X85D5E08280914EE4" name="X85D5E08280914EE4"></a></p>
+
+<h5>5.1-5 DigraphSinks</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSinks</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of vertices.</p>
+
+<p>This function returns a list of the sinks of the digraph <var class="Arg">digraph</var>. A sink of a digraph is a vertex with out-degree zero. See <code class="func">OutDegreeOfVertex</code> (<a href="chap5.html#X7A09EB648070276D"><span class="RefLink">5.2-9</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 3, 5, 2, 2 ], [ 3 ], [  ], [ 5, 2, 5, 3 ], [  ] ] );</span>
+&lt;multidigraph with 5 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphSinks(gr);</span>
+[ 3, 5 ]
+</pre></div>
+
+<p><a id="X7F5C6268839BE98C" name="X7F5C6268839BE98C"></a></p>
+
+<h5>5.1-6 DigraphSources</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSources</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of vertices.</p>
+
+<p>This function returns a list of the sources of the digraph <var class="Arg">digraph</var>. A source of a digraph is a vertex with in-degree zero. See <code class="func">InDegreeOfVertex</code> (<a href="chap5.html#X7C9CD0527CB9E6EF"><span class="RefLink">5.2-11</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 3, 5, 2, 2 ], [ 3 ], [  ], [ 5, 2, 5, 3 ], [  ] ] );</span>
+&lt;multidigraph with 5 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphSources(gr);</span>
+[ 1, 4 ]
+</pre></div>
+
+<p><a id="X785C30378064CF47" name="X785C30378064CF47"></a></p>
+
+<h5>5.1-7 DigraphTopologicalSort</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphTopologicalSort</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of positive integers, or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph with no cycles of length greater than <span class="SimpleMath">1</span>, then <code class="code">DigraphTopologicalSort</code> returns the vertices of <var class="Arg">digraph</var> ordered so that every edge's source appears no earlier in the list than its range. If the digraph <var class="Arg">digraph</var> contains cycles of length greater than <span class="SimpleMath">1</span>, then this operation returns <code class="keyw">fail</code>.</p>
+
+<p>The method used for this attribute has complexity <span class="SimpleMath">O(m+n)</span> where <span class="SimpleMath">m</span> is the number of edges (counting multiple edges as one) and <span class="SimpleMath">n</span> is the number of vertices in the digraph.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3], [], [4, 6], [5], [], [7, 8, 9], [],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[], []]);</span>
+&lt;digraph with 9 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphTopologicalSort(gr);</span>
+[ 2, 5, 4, 7, 8, 9, 6, 3, 1 ]
+</pre></div>
+
+<p><a id="X7F1B5A2782F598B1" name="X7F1B5A2782F598B1"></a></p>
+
+<h5>5.1-8 DigraphBicomponents</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphBicomponents</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A pair of lists of vertices, or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a bipartite digraph, i.e. if it satisfies <code class="func">IsBipartiteDigraph</code> (<a href="chap6.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>), then <code class="code">DigraphBicomponents</code> returns a pair of bicomponents of <var class="Arg">digraph</var>. Otherwise, <code class="code">DigraphBicomponents</code> returns <code class="keyw">fail</code>.</p>
+
+<p>For a bipartite digraph, the vertices can be partitioned into two non-empty sets such that the source and range of any edge are in distinct sets. The parts of this partition are called <em>bicomponents</em> of <var class="Arg">digraph</var>. Equivalently, a pair of bicomponents of <var class="Arg">digraph</var> consists of the color-classes of a 2-coloring of <var class="Arg">digraph</var>.</p>
+
+<p>For a bipartite digraph with at least 3 vertices, there is a unique pair of bicomponents of bipartite if and only if the digraph is connected. See <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.3-2</span></a>) for more information.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(3);</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphBicomponents(gr);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(5);</span>
+&lt;digraph with 5 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphBicomponents(gr);</span>
+[ [ 1, 3, 5 ], [ 2, 4 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[5], [1, 4], [5], [5], []]);</span>
+&lt;digraph with 5 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphBicomponents(gr);</span>
+[ [ 1, 3, 4 ], [ 2, 5 ] ]</pre></div>
+
+<p><a id="X7CA91E4B7904F793" name="X7CA91E4B7904F793"></a></p>
+
+<h5>5.1-9 DigraphVertexLabel</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphVertexLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphVertexLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var>, <var class="Arg">obj</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>If <var class="Arg">digraph</var> is a digraph, then the first operation returns the label of the vertex <var class="Arg">i</var>. The second operation can be used to set the label of the vertex <var class="Arg">i</var> in <var class="Arg">digraph</var> to the arbitrary <strong class="pkg">GAP</strong> object <var class="Arg">obj</var>.</p>
+
+<p>The label of a vertex can be changed an arbitrary number of times. If no label has been set for the vertex <var class="Arg">i</var>, then the default value is <var class="Arg">i</var>.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph created from a record with a component <code class="code">vertices</code>, then the labels of the vertices are set to the value of this component.</p>
+
+<p>Induced subdigraphs, and other operations which create new digraphs from old ones, inherit their labels from their parents.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);</span>
+&lt;digraph with 5 vertices, 11 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabel(gr, 3);</span>
+3
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"], [], []);</span>
+&lt;digraph with 3 vertices, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabel(gr, 2);</span>
+"b"
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">SetDigraphVertexLabel(gr, 2, "d");</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabel(gr, 2);</span>
+"d"
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := InducedSubdigraph(gr, [1, 2]);</span>
+&lt;digraph with 2 vertices, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabel(gr, 2);</span>
+"d"</pre></div>
+
+<p><a id="X7E51F2FE87140B32" name="X7E51F2FE87140B32"></a></p>
+
+<h5>5.1-10 DigraphVertexLabels</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphVertexLabels</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphVertexLabels</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphVertexLabels</code> returns a copy of the labels of the vertices in <var class="Arg">digraph</var>. <code class="code">SetDigraphVertexLabels</code> can be used to set the labels of the vertices in <var class="Arg">digraph</var> to the list of arbitrary <strong class="pkg">GAP</strong> objects <var class="Arg">list</var>.</p>
+
+<p>The label of a vertex can be changed an arbitrary number of times. If no label has been set for the vertex <var class="Arg">i</var>, then the default value is <var class="Arg">i</var>.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph created from a record with a component <code class="code">vertices</code>, then the labels of the vertices are set to the value of this component.</p>
+
+<p>Induced subdigraphs, and other operations which create new digraphs from old ones, inherit their labels from their parents.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);</span>
+&lt;digraph with 5 vertices, 11 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabels(gr);</span>
+[ 1 .. 5 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"], [], []);</span>
+&lt;digraph with 3 vertices, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabels(gr);</span>
+[ "a", "b", "c" ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">SetDigraphVertexLabel(gr, 2, "d");</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabels(gr);</span>
+[ "a", "d", "c" ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := InducedSubdigraph(gr, [1, 3]);</span>
+&lt;digraph with 2 vertices, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabels(gr);</span>
+[ "a", "c" ]</pre></div>
+
+<p><a id="X7EFAF01B7A155157" name="X7EFAF01B7A155157"></a></p>
+
+<h5>5.1-11 DigraphInEdges</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphInEdges</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A list of edges.</p>
+
+<p><code class="code">DigraphInEdges</code> returns the list of all edges of <var class="Arg">digraph</var> which have <var class="Arg">vertex</var> as their range.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2], [3, 3], [4, 4], [1, 1]]);</span>
+&lt;multidigraph with 4 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphInEdges(gr, 2);</span>
+[ [ 1, 2 ], [ 1, 2 ] ]
+</pre></div>
+
+<p><a id="X7BECFE6687ECD028" name="X7BECFE6687ECD028"></a></p>
+
+<h5>5.1-12 DigraphOutEdges</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphOutEdges</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A list of edges.</p>
+
+<p><code class="code">DigraphOutEdges</code> returns the list of all edges of <var class="Arg">digraph</var> which have <var class="Arg">vertex</var> as their source.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2], [3, 3], [4, 4], [1, 1]]);</span>
+&lt;multidigraph with 4 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphOutEdges(gr, 2);</span>
+[ [ 2, 3 ], [ 2, 3 ] ]
+</pre></div>
+
+<p><a id="X7BB8ED88835F07B4" name="X7BB8ED88835F07B4"></a></p>
+
+<h5>5.1-13 IsDigraphEdge</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEdge</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEdge</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>In the first form, this function returns <code class="keyw">true</code> if and only if the list <var class="Arg">list</var> specifies an edge in the digraph <var class="Arg">digraph</var>. Specifically, this operation returns <code class="keyw">true</code> if <var class="Arg">list</var> is a pair of positive integers where <var class="Arg">list</var><code class="code">[1]</code> is the source and <var class="Arg">list</var><code class="code">[2]</code> is the range of an edge in <var class="Arg">digraph</var>, and <code class="keyw">false</code> otherwise.</p>
+
+<p>The second form simply returns <code class="keyw">true</code> if <code class="code">[<var class="Arg">u</var>, <var class="Arg">v</var>]</code> is an edge in <var class="Arg">digraph</var>, and <code class="keyw">false</code> otherwise.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(6, [1, 1, 2, 4, 6], [2, 2, 6, 3, 1]);</span>
+&lt;multidigraph with 6 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEdge(gr, [1, 1]);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEdge(gr, [1, 2]);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEdge(gr, [1, 8]);</span>
+false
+</pre></div>
+
+<p><a id="X7D7CE8328187D0DF" name="X7D7CE8328187D0DF"></a></p>
+
+<h4>5.2 <span class="Heading">Neighbours and degree</span></h4>
+
+<p><a id="X7DC2CD70830BEE60" name="X7DC2CD70830BEE60"></a></p>
+
+<h5>5.2-1 AdjacencyMatrix</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrix</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A square matrix of non-negative integers.</p>
+
+<p>This function returns the adjacency matrix <code class="code">mat</code> of the digraph <var class="Arg">digraph</var>. The value of the matrix entry <code class="code">mat[i][j]</code> is the number of edges in <var class="Arg">digraph</var> with source <code class="code">i</code> and range <code class="code">j</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2, 2], [1, 3, 6, 8, 9, 10], [4, 6, 8],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 9], [3, 3], [3, 5, 6, 10], [1, 2, 7],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 10, 5, 6, 10], [1, 3, 4, 5, 8, 10], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 3, 4, 6, 7, 10]]);</span>
+&lt;multidigraph with 10 vertices, 44 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">mat := AdjacencyMatrix(gr);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Display(mat);</span>
+[ [  0,  3,  0,  0,  0,  0,  0,  0,  0,  0 ],
+  [  1,  0,  1,  0,  0,  1,  0,  1,  1,  1 ],
+  [  0,  0,  0,  1,  0,  1,  0,  1,  0,  0 ],
+  [  1,  1,  1,  0,  0,  0,  0,  0,  1,  0 ],
+  [  0,  0,  2,  0,  0,  0,  0,  0,  0,  0 ],
+  [  0,  0,  1,  0,  1,  1,  0,  0,  0,  1 ],
+  [  1,  1,  0,  0,  0,  0,  1,  0,  0,  0 ],
+  [  1,  1,  1,  0,  1,  1,  0,  0,  0,  2 ],
+  [  1,  0,  1,  1,  1,  0,  0,  1,  0,  1 ],
+  [  0,  1,  1,  1,  0,  1,  1,  0,  0,  1 ] ]</pre></div>
+
+<p><a id="X8507DC4F794780C1" name="X8507DC4F794780C1"></a></p>
+
+<h5>5.2-2 BooleanAdjacencyMatrix</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BooleanAdjacencyMatrix</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A square matrix of booleans.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph with a positive number of vertices <code class="code">n</code>, then <code class="code">BooleanAdjacencyMatrix(</code><var class="Arg">digraph</var><code class="code">)</code> returns the boolean adjacency matrix <code class="code">mat</code> of <var class="Arg">digraph</var>. The value of the matrix entry <code class="code">mat[j][i]</code> is <code class="keyw">true</code> if and only if there exists an edge in <var class="Arg">digraph</var> with source <code class="code">j</code> and range <code class="code">i</code>.</p>
+
+<p>Note this the boolean adjacency loses information about multiple edges.</p>
+
+<p>If <var class="Arg">digraph</var> has no vertices, then this attribute returns the empty list.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3, 4], [2, 3], [1, 2, 4], [4]]);</span>
+&lt;digraph with 4 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">BooleanAdjacencyMatrix(gr);</span>
+[ [ false, false, true, true ], [ false, true, true, false ], 
+  [ true, true, false, true ], [ false, false, false, true ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(4);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">BooleanAdjacencyMatrix(gr);</span>
+[ [ false, true, false, false ], [ false, false, true, false ], 
+  [ false, false, false, true ], [ true, false, false, false ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">BooleanAdjacencyMatrix(EmptyDigraph(0));</span>
+[  ]</pre></div>
+
+<p><a id="X7AFCE34A7A04D5C1" name="X7AFCE34A7A04D5C1"></a></p>
+
+<h5>5.2-3 DigraphAdjacencyFunction</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphAdjacencyFunction</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A function.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphAdjacencyFunction</code> returns a function which takes two integer parameters <code class="code">x, y</code> and returns <code class="keyw">true</code> if there exists an edge from vertex <code class="code">x</code> to vertex <code class="code">y</code> in <var class="Arg">digraph</var> and <code class="keyw">false</code> if not.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := Digraph([[1, 2], [3], []]);</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">foo := DigraphAdjacencyFunction(digraph);</span>
+function( u, v ) ... end
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">foo(1, 1);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">foo(1, 2);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">foo(1, 3);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">foo(3, 1);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["a", "b", "b"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["b", "a", "a"]);</span>
+&lt;multidigraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">foo := DigraphAdjacencyFunction(gr);</span>
+function( u, v ) ... end
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">foo(1, 2);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">foo(3, 2);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">foo(3, 1);</span>
+false</pre></div>
+
+<p><a id="X7FDEBF3279759961" name="X7FDEBF3279759961"></a></p>
+
+<h5>5.2-4 DigraphRange</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphRange</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSource</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of positive integers.</p>
+
+<p><code class="code">DigraphRange</code> and <code class="code">DigraphSource</code> return the range and source of the digraph <var class="Arg">digraph</var>. More precisely, position <code class="code">i</code> in <code class="code">DigraphRange(<var class="Arg">digraph</var>)</code> is the range of the <code class="code">i</code>th edge of <var class="Arg">digraph</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 2, 3, 5], [1, 3, 4], [2, 3], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2], [1, 2, 3, 4]]);</span>
+&lt;digraph with 5 vertices, 14 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphRange(gr);</span>
+[ 1, 2, 3, 5, 1, 3, 4, 2, 3, 2, 1, 2, 3, 4 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphSource(gr);</span>
+[ 1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 5, 5, 5 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr);</span>
+[ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], 
+  [ 2, 4 ], [ 3, 2 ], [ 3, 3 ], [ 4, 2 ], [ 5, 1 ], [ 5, 2 ], 
+  [ 5, 3 ], [ 5, 4 ] ]
+</pre></div>
+
+<p><a id="X7E9880767AE68E00" name="X7E9880767AE68E00"></a></p>
+
+<h5>5.2-5 OutNeighbours</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighbours</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighbors</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighboursCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighborsCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: The adjacencies of a digraph.</p>
+
+<p>This function returns the list <code class="code">out</code> of out-neighbours of each vertex of the digraph <var class="Arg">digraph</var>. More specifically, a vertex <code class="code">j</code> appears in <code class="code">out[i]</code> each time there exists an edge with source <code class="code">i</code> and range <code class="code">j</code> in <var class="Arg">digraph</var>.</p>
+
+<p>The function <code class="code">OutNeighbours</code> returns an immutable list of immutable lists, whereas the function <code class="code">OutNeighboursCopy</code> returns a copy of <code class="code">OutNeighbours</code> which is a mutable list of mutable lists.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">["a", "b", "b"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">["b", "a", "c"]);</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
+[ [ 2 ], [ 1, 3 ], [  ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(3, </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 1, 1, 2],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 2, 3, 1]);</span>
+&lt;digraph with 3 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
+[ [ 1, 2, 3 ], [ 2, 1 ], [ 3 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(3,</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 1, 1, 2, 1],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 2, 3, 1, 2]);</span>
+&lt;multidigraph with 3 vertices, 7 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
+[ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighboursCopy(gr);</span>
+[ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ]
+</pre></div>
+
+<p><a id="X85C7AA5A81DA6E11" name="X85C7AA5A81DA6E11"></a></p>
+
+<h5>5.2-6 InNeighbours</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighbours</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighbors</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of lists of vertices.</p>
+
+<p>This function returns the list <code class="code">inn</code> of in-neighbours of each vertex of the digraph <var class="Arg">digraph</var>. More specifically, a vertex <code class="code">j</code> appears in <code class="code">inn[i]</code> each time there exists an edge with source <code class="code">j</code> and range <code class="code">i</code> in <var class="Arg">digraph</var>.</p>
+
+<p>Note that each entry of <code class="code">inn</code> is sorted into ascending order.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">["a", "b", "b"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">["b", "a", "c"]);</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InNeighbours(gr);</span>
+[ [ 2 ], [ 1 ], [ 2 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(3, </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 1, 1, 2],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 2, 3, 1]);</span>
+&lt;digraph with 3 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InNeighbours(gr);</span>
+[ [ 1, 2 ], [ 1, 2 ], [ 1, 3 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(3,</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 1, 1, 2, 1],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 2, 3, 1, 2]);</span>
+&lt;multidigraph with 3 vertices, 7 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InNeighbours(gr);</span>
+[ [ 1, 2 ], [ 1, 1, 2 ], [ 1, 3 ] ]
+</pre></div>
+
+<p><a id="X7F5ACE807D1BC2E2" name="X7F5ACE807D1BC2E2"></a></p>
+
+<h5>5.2-7 OutDegrees</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegrees</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegreeSequence</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegreeSet</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of non-negative integers.</p>
+
+<p>Given a digraph <var class="Arg">digraph</var> with <span class="SimpleMath">n</span> vertices, the function <code class="code">OutDegrees</code> returns a list <code class="code">out</code> of length <span class="SimpleMath">n</span>, such that for a vertex <code class="code">i</code> in <var class="Arg">digraph</var>, the value of <code class="code">out[i]</code> is the out-degree of vertex <code class="code">i</code>. See <code class="func">OutDegreeOfVertex</code> (<a href="chap5.html#X7A09EB648070276D"><span class="RefLink">5.2-9</span></a>).</p>
+
+<p>The function <code class="code">OutDegreeSequence</code> returns the same list, after it has been sorted into non-increasing order.</p>
+
+<p>The function <code class="code">OutDegreeSet</code> returns the same list, sorted into increasing order with duplicate entries removed.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 3, 2, 2], [], [2, 1], []]);</span>
+&lt;multidigraph with 4 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutDegrees(gr);</span>
+[ 4, 0, 2, 0 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutDegreeSequence(gr);</span>
+[ 4, 2, 0, 0 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutDegreeSet(gr);</span>
+[ 0, 2, 4 ]
+</pre></div>
+
+<p><a id="X7ADDFBFD7A365775" name="X7ADDFBFD7A365775"></a></p>
+
+<h5>5.2-8 InDegrees</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegrees</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegreeSequence</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegreeSet</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of non-negative integers.</p>
+
+<p>Given a digraph <var class="Arg">digraph</var> with <span class="SimpleMath">n</span> vertices, the function <code class="code">InDegrees</code> returns a list <code class="code">inn</code> of length <span class="SimpleMath">n</span>, such that for a vertex <code class="code">i</code> in <var class="Arg">digraph</var>, the value of <code class="code">inn[i]</code> is the in-degree of vertex <code class="code">i</code>. See <code class="func">InDegreeOfVertex</code> (<a href="chap5.html#X7C9CD0527CB9E6EF"><span class="RefLink">5.2-11</span></a>).</p>
+
+<p>The function <code class="code">InDegreeSequence</code> returns the same list, after it has been sorted into non-increasing order.</p>
+
+<p>The function <code class="code">InDegreeSet</code> returns the same list, sorted into increasing order with duplicate entries removed.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 1, 3, 2, 2, 4 ], [ ], [ 2, 1, 4 ], [ ] ] );</span>
+&lt;multidigraph with 4 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InDegrees(gr);</span>
+[ 2, 3, 1, 2 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InDegreeSequence(gr);</span>
+[ 3, 2, 2, 1 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InDegreeSet(gr);</span>
+[ 1, 2, 3 ]
+</pre></div>
+
+<p><a id="X7A09EB648070276D" name="X7A09EB648070276D"></a></p>
+
+<h5>5.2-9 OutDegreeOfVertex</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegreeOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: The non-negative integer.</p>
+
+<p>This operation returns the out-degree of the vertex <var class="Arg">vertex</var> in the digraph <var class="Arg">digraph</var>. The out-degree of <var class="Arg">vertex</var> is the number of edges in <var class="Arg">digraph</var> whose source is <var class="Arg">vertex</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2, 1], [1, 4], [2, 2, 4, 2], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 1, 2, 2, 1, 2, 2]]);</span>
+&lt;multidigraph with 4 vertices, 16 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutDegreeOfVertex(gr, 1);</span>
+3
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutDegreeOfVertex(gr, 2);</span>
+2
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutDegreeOfVertex(gr, 3);</span>
+4
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutDegreeOfVertex(gr, 4);</span>
+7
+</pre></div>
+
+<p><a id="X83315B0186850806" name="X83315B0186850806"></a></p>
+
+<h5>5.2-10 OutNeighboursOfVertex</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighboursOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighborsOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A list of vertices.</p>
+
+<p>This operation returns the list <code class="code">out</code> of vertices of the digraph <var class="Arg">digraph</var>. A vertex <code class="code">i</code> appears in the list <code class="code">out</code> each time there exists an edge with source <var class="Arg">vertex</var> and range <code class="code">i</code> in <var class="Arg">digraph</var>; in particular, this means that <code class="code">out</code> may contain duplicates.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2, 3], [1, 3, 4], [2, 2, 3], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 1, 2, 2, 1, 2, 2]]);</span>
+&lt;multidigraph with 4 vertices, 16 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighboursOfVertex(gr, 1);</span>
+[ 2, 2, 3 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighboursOfVertex(gr, 3);</span>
+[ 2, 2, 3 ]
+</pre></div>
+
+<p><a id="X7C9CD0527CB9E6EF" name="X7C9CD0527CB9E6EF"></a></p>
+
+<h5>5.2-11 InDegreeOfVertex</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegreeOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A non-negative integer.</p>
+
+<p>This operation returns the in-degree of the vertex <var class="Arg">vertex</var> in the digraph <var class="Arg">digraph</var>. The in-degree of <var class="Arg">vertex</var> is the number of edges in <var class="Arg">digraph</var> whose range is <var class="Arg">vertex</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2, 1], [1, 4], [2, 2, 4, 2], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 1, 2, 2, 1, 2, 2]]);</span>
+&lt;multidigraph with 4 vertices, 16 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InDegreeOfVertex(gr, 1);</span>
+5
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InDegreeOfVertex(gr, 2);</span>
+9
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InDegreeOfVertex(gr, 3);</span>
+0
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InDegreeOfVertex(gr, 4);</span>
+2
+</pre></div>
+
+<p><a id="X7C0DA18B8291F302" name="X7C0DA18B8291F302"></a></p>
+
+<h5>5.2-12 InNeighboursOfVertex</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighboursOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighborsOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A list of postitive vertices.</p>
+
+<p>This operation returns the list <code class="code">inn</code> of vertices of the digraph <var class="Arg">digraph</var>. A vertex <code class="code">i</code> appears in the list <code class="code">inn</code> each time there exists an edge with source <code class="code">i</code> and range <var class="Arg">vertex</var> in <var class="Arg">digraph</var>; in particular, this means that <code class="code">inn</code> may contain duplicates.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2, 3], [1, 3, 4], [2, 2, 3], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 1, 2, 2, 1, 2, 2]]);</span>
+&lt;multidigraph with 4 vertices, 16 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InNeighboursOfVertex(gr, 1);</span>
+[ 2, 4, 4, 4 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InNeighboursOfVertex(gr, 2);</span>
+[ 1, 1, 3, 3, 4, 4, 4, 4 ]
+</pre></div>
+
+<p><a id="X83271F607BD809CF" name="X83271F607BD809CF"></a></p>
+
+<h5>5.2-13 DigraphLoops</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLoops</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of vertices.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphLoops</code> returns the list consisting of the <code class="func">DigraphVertices</code> (<a href="chap5.html#X7C45F7D878D896AC"><span class="RefLink">5.1-1</span></a>) of <var class="Arg">digraph</var> at which there is a loop. See <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3], []]);</span>
+&lt;digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphHasLoops(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphLoops(gr);</span>
+[  ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3, 5], [1], [2, 4, 3], [4], [2, 1]]);</span>
+&lt;digraph with 5 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphLoops(gr);</span>
+[ 3, 4 ]</pre></div>
+
+<p><a id="X8537F4088400DC48" name="X8537F4088400DC48"></a></p>
+
+<h4>5.3 <span class="Heading">Reachability and connectivity</span></h4>
+
+<p><a id="X7F16B9EB8398459C" name="X7F16B9EB8398459C"></a></p>
+
+<h5>5.3-1 DigraphDiameter</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDiameter</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: An integer or <code class="code">fail</code>.</p>
+
+<p>This function returns the diameter of the digraph <var class="Arg">digraph</var>.</p>
+
+<p>If a digraph <var class="Arg">digraph</var> is strongly connected and has at least 1 vertex, then the <em>diameter</em> is the maximum shortest distance between any pair of distinct vertices. Otherwise then the diameter of <var class="Arg">digraph</var> is undefined, and this function returns the value <code class="code">fail</code>.</p>
+
+<p>See <code class="func">DigraphShortestDistances</code> (<a href="chap5.html#X81F99BC67E9D050F"><span class="RefLink">5.3-3</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [ 3 ], [ 4, 5 ], [ 5 ], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 1, 2, 3, 4, 5 ] ] );</span>
+&lt;digraph with 5 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDiameter(gr);</span>
+3
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [  ] ] );</span>
+&lt;digraph with 2 vertices, 1 edge&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDiameter(gr);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsStronglyConnectedDigraph(gr);</span>
+false
+</pre></div>
+
+<p><a id="X8104A9D37BCD8A05" name="X8104A9D37BCD8A05"></a></p>
+
+<h5>5.3-2 DigraphShortestDistance</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistance</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistance</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistance</code>( <var class="Arg">digraph</var>, <var class="Arg">list1</var>, <var class="Arg">list2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: An integer or <code class="keyw">fail</code></p>
+
+<p>If there is a path in the digraph <var class="Arg">digraph</var> between vertex <var class="Arg">u</var> and vertex <var class="Arg">v</var>, then this operation returns the length of the shortest such path. If no such path exists, then this operation returns <code class="keyw">fail</code>.</p>
+
+<p>If the second form is used, then <var class="Arg">list</var> should be a list of length two, containing two positive integers which correspond to the vertices <var class="Arg">u</var> and <var class="Arg">v</var>.</p>
+
+<p>Note that as usual a vertex is considered to be at distance 0 from itself.</p>
+
+<p>If the third form is used, then <var class="Arg">list1</var> and <var class="Arg">list2</var> are both lists of vertices. The shortest path between <var class="Arg">list1</var> and <var class="Arg">list2</var> is then the length of the shortest path which starts with a vertex in <var class="Arg">list1</var> and terminates at a vertex in <var class="Arg">list2</var>, if such path exists. If <var class="Arg">list1</var> and <var class="Arg">list2</var> have non-empty intersection, the operation returns <code class="code">0</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3], [1, 4], [1, 3], [5]]);</span>
+&lt;digraph with 5 vertices, 7 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphShortestDistance(gr, 1, 3);</span>
+2
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphShortestDistance(gr, [3, 3]);</span>
+0
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphShortestDistance(gr, 5, 2);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphShortestDistance(gr, [1, 2], [4, 5]);</span>
+2
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphShortestDistance(gr, [1, 3], [3, 5]);</span>
+0
+</pre></div>
+
+<p><a id="X81F99BC67E9D050F" name="X81F99BC67E9D050F"></a></p>
+
+<h5>5.3-3 DigraphShortestDistances</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistances</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A square matrix.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph with <span class="SimpleMath">n</span> vertices, then this function returns an <span class="SimpleMath">n × n</span> matrix <code class="code">mat</code>, where each entry is either a non-negative integer or <code class="code">fail</code>. If <span class="SimpleMath">n = 0</span>, then an empty list is returned.</p>
+
+<p>If there is a directed path from vertex <code class="code">i</code> to vertex <code class="code">j</code>, then the value of <code class="code">mat[i][j]</code> is the length of the shortest such path. If no such path exists, then the value of <code class="code">mat[i][j]</code> is <code class="code">fail</code>. We use the convention that the distance from every vertex to itself is <code class="code">0</code>, i.e. <code class="code">mat[i][i] = 0</code> for all vertices <code class="code">i</code>.</p>
+
+<p>The method used in this function is a version of the Floyd-Warshall algorithm, and has complexity <span class="SimpleMath">O(n^3)</span>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 1, 2 ], [ 4 ] ] );</span>
+&lt;digraph with 4 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">mat := DigraphShortestDistances(gr);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Display(mat);</span>
+[ [     0,     1,     2,  fail ],
+  [     2,     0,     1,  fail ],
+  [     1,     1,     0,  fail ],
+  [  fail,  fail,  fail,     0 ] ]
+</pre></div>
+
+<p><a id="X8223718079D98A82" name="X8223718079D98A82"></a></p>
+
+<h5>5.3-4 DigraphLongestDistanceFromVertex</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLongestDistanceFromVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: An integer.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">v</var> is a vertex in <var class="Arg">digraph</var>, then this operation returns the length of the longest directed walk in <var class="Arg">digraph</var> which begins at vertex <var class="Arg">v</var>.</p>
+
+
+<ul>
+<li><p>If there exists a directed walk starting at vertex <var class="Arg">v</var> which traverses a cycle or a loop, then we consider there to be a walk of infinite length from <var class="Arg">v</var> (realised by repeatedly traversing the loop/cycle), and so the result is <code class="code">infinity</code>. To disallow walks using loops, try using <code class="func">DigraphRemoveLoops</code> (<a href="chap3.html#X79324AF7818C0C02"><span class="RefLink">3.3-21</span></a>):</p>
+
+<p><code class="code">DigraphLongestDistanceFromVertex(DigraphRemoveLoops(<var class="Arg">digraph</var>,<var class="Arg">v</var>))</code>.</p>
+
+</li>
+<li><p>If no walk from vertex <var class="Arg">v</var> exists, i.e. if <var class="Arg">v</var> is a sink of the digraph (<code class="func">DigraphSinks</code> (<a href="chap5.html#X85D5E08280914EE4"><span class="RefLink">5.1-5</span></a>)), then the result is <code class="code">0</code>.</p>
+
+</li>
+<li><p>Otherwise, if all directed walks starting at vertex <var class="Arg">v</var> have finite length, then the length of the longest such walk is returned.</p>
+
+</li>
+</ul>
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3, 4], [], [5], [], [6]]);</span>
+&lt;digraph with 6 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphLongestDistanceFromVertex(gr, 1);</span>
+3
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphLongestDistanceFromVertex(gr, 3);</span>
+0
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">3 in DigraphSinks(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphLongestDistanceFromVertex(gr, 6);</span>
+infinity
+</pre></div>
+
+<p><a id="X7CB7DDCD84621D38" name="X7CB7DDCD84621D38"></a></p>
+
+<h5>5.3-5 DigraphDistanceSet</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDistanceSet</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var>, <var class="Arg">distance</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDistanceSet</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var>, <var class="Arg">distances</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A list of vertices</p>
+
+<p>This operation returns the list of all vertices in digraph <var class="Arg">digraph</var> such that the shortest distance to a vertex <var class="Arg">vertex</var> is <var class="Arg">distance</var> or is in the list <var class="Arg">distances</var>.</p>
+
+<p><var class="Arg">digraph</var> should be a digraph, <var class="Arg">vertex</var> should be a positive integer, <var class="Arg">distance</var> should be a non-negative integer, and <var class="Arg">distances</var> should be a list of non-negative integers.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3], [1, 4], [1, 3]]);</span>
+&lt;digraph with 4 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDistanceSet(gr, 2, [1, 2]);</span>
+[ 3, 1, 4 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDistanceSet(gr, 3, 1);</span>
+[ 1, 4 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDistanceSet(gr, 2, 0);</span>
+[ 2 ]
+</pre></div>
+
+<p><a id="X79A3DA4078CF3C90" name="X79A3DA4078CF3C90"></a></p>
+
+<h5>5.3-6 DigraphGirth</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGirth</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: An integer or <code class="code">infinity</code>.</p>
+
+<p>The <em>girth</em> of a digraph is the length of its shortest simple cycle, i.e. the shortest non-trivial directed path starting and ending at the same vertex and passing through no vertex more than once.</p>
+
+<p>If <var class="Arg">digraph</var> has no cycles, then this function will return <code class="code">infinity</code>. If <var class="Arg">digraph</var> contains a loop, then this function will return <code class="code">1</code>.</p>
+
+<p>In the worst case, the method used in this function is a version of the Floyd-Warshall algorithm, and has complexity <code class="code">O(<var class="Arg">n</var> ^ 3)</code>, where <var class="Arg">n</var> is the number of vertices in <var class="Arg">digraph</var>. If the digraph has known automorphisms [see <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>)], then the performance is likely to be better.</p>
+
+<p>For symmetric digraphs, see also <code class="func">DigraphUndirectedGirth</code> (<a href="chap5.html#X84688B337BDDBB09"><span class="RefLink">5.3-7</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1], [1]]);</span>
+&lt;digraph with 2 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGirth(gr);</span>
+1
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3], [3], [4], []]);</span>
+&lt;digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGirth(gr);</span>
+infinity
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3], [3], [4], [1]]);</span>
+&lt;digraph with 4 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGirth(gr);</span>
+3
+</pre></div>
+
+<p><a id="X84688B337BDDBB09" name="X84688B337BDDBB09"></a></p>
+
+<h5>5.3-7 DigraphUndirectedGirth</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphUndirectedGirth</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: An integer or <code class="code">infinity</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a symmetric digraph, then this function returns the girth of <var class="Arg">digraph</var> when treated as an undirected graph (i.e. each pair of edges <span class="SimpleMath">[i, j]</span> and <span class="SimpleMath">[j, i]</span> is treated as a single edge between <span class="SimpleMath">i</span> and <span class="SimpleMath">j</span>).</p>
+
+<p>The <em>girth</em> of an undirected graph is the length of its shortest simple cycle, i.e. the shortest non-trivial path starting and ending at the same vertex and passing through no vertex more than once.</p>
+
+<p>If <var class="Arg">digraph</var> has no cycles, then this function will return <code class="code">infinity</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2,4], [1,3], [2,4], [1,3]]);</span>
+&lt;digraph with 4 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphUndirectedGirth(gr);</span>
+4
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [1,3], [2]]);</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphUndirectedGirth(gr);      </span>
+infinity
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1], [], [4], [3]]);</span>
+&lt;digraph with 4 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphUndirectedGirth(gr);</span>
+1
+</pre></div>
+
+<p><a id="X842FAD6A7B835977" name="X842FAD6A7B835977"></a></p>
+
+<h5>5.3-8 DigraphConnectedComponents</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphConnectedComponents</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A record.</p>
+
+<p>This function returns the record <code class="code">wcc</code> corresponding to the weakly connected components of the digraph <var class="Arg">digraph</var>. Two vertices of <var class="Arg">digraph</var> are in the same weakly connected component whenever they are equal, or there exists a path (ignoring the orientation of edges) between them. In other words, two vertices are in the same weakly connected component of <var class="Arg">digraph</var> if and only if they are in the same strongly connected component (see <code class="func">DigraphStronglyConnectedComponents</code> (<a href="chap5.html#X833ECD6B7A84944C"><span class="RefLink">5.3-10</span></a>)) of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3.html#X874883DD7DD450C4"><span class="RefLink">3.3-8</span></a>) of <var class="Arg">digraph</var>.</p>
+
+<p>The set of weakly connected components is a partition of the vertex set of <var class="Arg">digraph</var>.</p>
+
+<p>The record <code class="code">wcc</code> has 2 components: <code class="code">comps</code> and <code class="code">id</code>. The component <code class="code">comps</code> is a list of the weakly connected components of <var class="Arg">digraph</var> (each of which is a list of vertices). The component <code class="code">id</code> is a list such that the vertex <code class="code">i</code> is an element of the weakly connected component <code class="code">comps[id[i]]</code>.</p>
+
+<p>The method used in this function has complexity <span class="SimpleMath">O(m+n)</span>, where <span class="SimpleMath">m</span> is the number of edges and <span class="SimpleMath">n</span> is the number of vertices in the digraph.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ "a", "b", "c" ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "a", "b", "b" ], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "b", "c", "a" ] );</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphConnectedComponents(gr);</span>
+rec( comps := [ [ 1, 2, 3 ] ], id := [ 1, 1, 1 ] )
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 1 ], [ 1, 2 ], [  ] ] );</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphConnectedComponents(gr);</span>
+rec( comps := [ [ 1, 2 ], [ 3 ] ], id := [ 1, 1, 2 ] )
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ ] );</span>
+&lt;digraph with 0 vertices, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphConnectedComponents(gr);</span>
+rec( comps := [  ], id := [  ] )
+</pre></div>
+
+<p><a id="X8484EC557810CD31" name="X8484EC557810CD31"></a></p>
+
+<h5>5.3-9 DigraphConnectedComponent</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphConnectedComponent</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A list of vertices.</p>
+
+<p>If <var class="Arg">vertex</var> is a vertex in the digraph <var class="Arg">digraph</var>, then this operation returns the connected component of <var class="Arg">vertex</var> in <var class="Arg">digraph</var>. See <code class="func">DigraphConnectedComponents</code> (<a href="chap5.html#X842FAD6A7B835977"><span class="RefLink">5.3-8</span></a>) for more information.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [2], [1, 2], [4]]);</span>
+&lt;digraph with 4 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphConnectedComponent(gr, 3);</span>
+[ 1, 2, 3 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphConnectedComponent(gr, 2);</span>
+[ 1, 2, 3 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphConnectedComponent(gr, 4);</span>
+[ 4 ]
+</pre></div>
+
+<p><a id="X833ECD6B7A84944C" name="X833ECD6B7A84944C"></a></p>
+
+<h5>5.3-10 DigraphStronglyConnectedComponents</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphStronglyConnectedComponents</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A record.</p>
+
+<p>This function returns the record <code class="code">scc</code> corresponding to the strongly connected components of the digraph <var class="Arg">digraph</var>. Two vertices of <var class="Arg">digraph</var> are in the same strongly connected component whenever they are equal, or there is a directed path from each vertex to the other. The set of strongly connected components is a partition of the vertex set of <var class="Arg">digraph</var>.</p>
+
+<p>The record <code class="code">scc</code> has 2 components: <code class="code">comps</code> and <code class="code">id</code>. The component <code class="code">comps</code> is a list of the strongly connected components of <var class="Arg">digraph</var> (each of which is a list of vertices). The component <code class="code">id</code> is a list such that the vertex <code class="code">i</code> is an element of the strongly connected component <code class="code">comps[id[i]]</code>.</p>
+
+<p>The method used in this function is a non-recursive version of Gabow's Algorithm <a href="chapBib.html#biBGabow2000aa">[Gab00]</a> and has complexity <span class="SimpleMath">O(m+n)</span> where <span class="SimpleMath">m</span> is the number of edges (counting multiple edges as one) and <span class="SimpleMath">n</span> is the number of vertices in the digraph.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ "a", "b", "c" ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "a", "b", "b" ],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "b", "c", "a" ] );</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphStronglyConnectedComponents(gr);</span>
+rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
+</pre></div>
+
+<p><a id="X7EFCB5017D662254" name="X7EFCB5017D662254"></a></p>
+
+<h5>5.3-11 DigraphStronglyConnectedComponent</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphStronglyConnectedComponent</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A list of vertices.</p>
+
+<p>If <var class="Arg">vertex</var> is a vertex in the digraph <var class="Arg">digraph</var>, then this operation returns the strongly connected component of <var class="Arg">vertex</var> in <var class="Arg">digraph</var>. See <code class="func">DigraphStronglyConnectedComponents</code> (<a href="chap5.html#X833ECD6B7A84944C"><span class="RefLink">5.3-10</span></a>) for more information.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [2], [1, 2], [3]]);</span>
+&lt;digraph with 4 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphStronglyConnectedComponent(gr, 3);</span>
+[ 1, 3 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphStronglyConnectedComponent(gr, 2);</span>
+[ 2 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphStronglyConnectedComponent(gr, 4);</span>
+[ 4 ]
+</pre></div>
+
+<p><a id="X853D0B0981A33433" name="X853D0B0981A33433"></a></p>
+
+<h5>5.3-12 DigraphPeriod</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPeriod</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: An integer.</p>
+
+<p>This function returns the period of the digraph <var class="Arg">digraph</var>.</p>
+
+<p>If a digraph <var class="Arg">digraph</var> has at least one cycle, then the period is the greatest positive integer which divides the lengths of all cycles of <var class="Arg">digraph</var>. If <var class="Arg">digraph</var> has no cycles, then this function returns <span class="SimpleMath">0</span>.</p>
+
+<p>A digraph with a period of <span class="SimpleMath">1</span> is said to be <em>aperiodic</em>. See <code class="func">IsAperiodicDigraph</code> (<a href="chap6.html#X80E883967EBE839E"><span class="RefLink">6.3-4</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );</span>
+&lt;multidigraph with 6 vertices, 7 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphPeriod(gr);</span>
+6
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );</span>
+&lt;digraph with 5 vertices, 7 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphPeriod(gr);</span>
+1
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [ ] ] );</span>
+&lt;digraph with 2 vertices, 1 edge&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphPeriod(gr);</span>
+0
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsAcyclicDigraph(gr);</span>
+true
+</pre></div>
+
+<p><a id="X864A31A8809F61C2" name="X864A31A8809F61C2"></a></p>
+
+<h5>5.3-13 DigraphFloydWarshall</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFloydWarshall</code>( <var class="Arg">digraph</var>, <var class="Arg">func</var>, <var class="Arg">nopath</var>, <var class="Arg">edge</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A matrix.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph with <span class="SimpleMath">n</span> vertices, then this operation returns an <span class="SimpleMath">n × n</span> matrix <code class="code">mat</code> containing the output of a generalised version of the Floyd-Warshall algorithm, applied to <var class="Arg">digraph</var>.</p>
+
+<p>The operation <code class="code">DigraphFloydWarshall</code> is customised by the arguments <var class="Arg">func</var>, <var class="Arg">nopath</var>, and <var class="Arg">edge</var>. The arguments <var class="Arg">nopath</var> and <var class="Arg">edge</var> can be arbitrary <strong class="pkg">GAP</strong> objects. The argument <var class="Arg">func</var> must be a function which accepts 4 arguments: the matrix <code class="code">mat</code>, followed by 3 postive integers. The function <var class="Arg">func</var> is where the work to calculate the desired outcome must be performed.</p>
+
+<p>This method initialises the matrix <code class="code">mat</code> by setting entry <code class="code">mat[i][j]</code> to equal <var class="Arg">edge</var> if there is an edge with source <code class="code">i</code> and range <code class="code">j</code>, and by setting entry <code class="code">mat[i][j]</code> to equal <var class="Arg">nopath</var> otherwise. The final part of <code class="code">DigraphFloydWarshall</code> then calls the function <var class="Arg">func</var> inside three nested for loops, over the vertices of <var class="Arg">digraph</var>:</p>
+
+
+<div class="example"><pre>
+for i in DigraphsVertices(digraph) do
+  for j in DigraphsVertices(digraph) do
+    for k in DigraphsVertices(digraph) do
+      func(mat, i, j, k);
+    od;
+  od;
+od;
+</pre></div>
+
+<p>The matrix <code class="code">mat</code> is then returned as the result. An example of using <code class="code">DigraphFloydWarshall</code> to calculate the shortest (non-zero) distances between the vertices of a digraph is shown below:</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[5], [3, 6], [2, 5], [1, 4, 5],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[4, 6], [5, 6]]);</span>
+&lt;digraph with 6 vertices, 12 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">func := function(mat, i, j, k)</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">  if mat[i][k] &lt;&gt; -1 and mat[k][j] &lt;&gt; -1 then</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">    if (mat[i][j] = -1) or (mat[i][j] &gt; mat[i][k] + mat[k][j]) then</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">      mat[i][j] := mat[i][k] + mat[k][j];</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">    fi;</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">  fi;</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">end;</span>
+function( mat, i, j, k ) ... end
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">shortest_distances := DigraphFloydWarshall(gr, func, -1, 1);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Display(shortest_distances);</span>
+[ [   3,  -1,  -1,   2,   1,   2 ],
+  [   4,   2,   1,   3,   2,   1 ],
+  [   3,   1,   2,   2,   1,   2 ],
+  [   1,  -1,  -1,   1,   1,   2 ],
+  [   2,  -1,  -1,   1,   2,   1 ],
+  [   3,  -1,  -1,   2,   1,   1 ] ]
+</pre></div>
+
+<p><a id="X7FBAB09E7C0BE5CF" name="X7FBAB09E7C0BE5CF"></a></p>
+
+<h5>5.3-14 IsReachable</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsReachable</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This operation returns <code class="keyw">true</code> if there exists a directed walk (of non-zero length) from vertex <var class="Arg">u</var> to vertex <var class="Arg">v</var> in the digraph <var class="Arg">digraph</var>, and <code class="keyw">false</code> if there does not exist such a walk.</p>
+
+<p>The method for <code class="code">IsReachable</code> has worst case complexity of <span class="SimpleMath">O(m + n)</span> where <span class="SimpleMath">m</span> is the number of edges and <span class="SimpleMath">n</span> the number of vertices in <var class="Arg">digraph</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3], [2, 3]]);</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsReachable(gr, 1, 3);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsReachable(gr, 2, 1);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsReachable(gr, 3, 3);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsReachable(gr, 1, 1);</span>
+false
+</pre></div>
+
+<p><a id="X8039170B82A32257" name="X8039170B82A32257"></a></p>
+
+<h5>5.3-15 DigraphPath</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPath</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A pair of lists, or <code class="keyw">fail</code>.</p>
+
+<p>If there exists a directed path (or a cycle, in the case that <var class="Arg">u</var> <code class="code">=</code> <var class="Arg">v</var>) of non-zero length from vertex <var class="Arg">u</var> to vertex <var class="Arg">v</var> in the digraph <var class="Arg">digraph</var>, then this operation returns such a directed path (or cycle). Otherwise, this operation returns <code class="keyw">fail</code>. See Chapter <a href="chap1.html#X7DA617417D78957D"><span class="RefLink">1</span></a> for the definition of a path and a cycle.</p>
+
+<p>A directed path (or cycle) of non-zero length <code class="code">n-1</code>, <span class="SimpleMath">(v_1, e_1, v_2, e_2, ..., e_n-1, v_n)</span>, is represented by a pair of lists <code class="code">[v,a]</code> as follows:</p>
+
+
+<ul>
+<li><p><code class="code">v</code> is the list <span class="SimpleMath">[v_1, v_2, ..., v_n]</span>.</p>
+
+</li>
+<li><p><code class="code">a</code> is the list of positive integers <span class="SimpleMath">[a_1, a_2, ..., a_n-1]</span> where for each each <span class="SimpleMath">i &lt; n</span>, <span class="SimpleMath">a_i</span> is the position of <span class="SimpleMath">v_i+1</span> in <code class="code">OutNeighboursOfVertex(</code><var class="Arg">digraph</var><code class="code">,</code><span class="SimpleMath">v_i</span><code class="code">)</code> corresponding to the edge <span class="SimpleMath">e_i</span>. This is can be useful if the position of a vertex in a list of out-neighours is significant, for example in orbit digraphs.</p>
+
+</li>
+</ul>
+<p>The method for <code class="code">DigraphPath</code> has worst case complexity of <span class="SimpleMath">O(m + n)</span> where <span class="SimpleMath">m</span> is the number of edges and <span class="SimpleMath">n</span> the number of vertices in <var class="Arg">digraph</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3], [2, 3]]);</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphPath(gr, 1, 3);</span>
+[ [ 1, 2, 3 ], [ 1, 1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphPath(gr, 2, 1);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphPath(gr, 3, 3);</span>
+[ [ 3, 3 ], [ 2 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphPath(gr, 1, 1);</span>
+fail
+</pre></div>
+
+<p><a id="X7C0416FE7A69CA2C" name="X7C0416FE7A69CA2C"></a></p>
+
+<h5>5.3-16 IteratorOfPaths</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorOfPaths</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: An iterator.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph or a list of adjacencies which defines a digraph - see <code class="func">OutNeighbours</code> (<a href="chap5.html#X7E9880767AE68E00"><span class="RefLink">5.2-5</span></a>) - then this operation returns an iterator of the directed paths (or cycles, in the case that <var class="Arg">u</var> <code class="code">=</code> <var class="Arg">v</var>) of non-zero length in <var class="Arg">digraph</var> from the vertex <var class="Arg">u</var> to the vertex <var class="Arg">v</var>.</p>
+
+<p>See <code class="func">DigraphPath</code> (<a href="chap5.html#X8039170B82A32257"><span class="RefLink">5.3-15</span></a>) for more information about the repesentation of a directed path or cycle which is used, and see <a href="../../../doc/ref/chap30_mj.html#X85A3F00985453F95"><span class="RefLink">Reference: Iterators</span></a> for more information about iterators.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 4, 4, 2], [3, 5], [2, 3], [1, 2], [4]]);</span>
+&lt;multidigraph with 5 vertices, 11 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">iter := IteratorOfPaths(gr, 1, 4);</span>
+&lt;iterator&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">NextIterator(iter);</span>
+[ [ 1, 4 ], [ 2 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">NextIterator(iter);</span>
+[ [ 1, 4 ], [ 3 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">NextIterator(iter);</span>
+[ [ 1, 2, 5, 4 ], [ 4, 2, 1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDoneIterator(iter);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">iter := IteratorOfPaths(gr, 4, 3);</span>
+&lt;iterator&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">NextIterator(iter);</span>
+[ [ 4, 1, 2, 3 ], [ 1, 4, 1 ] ]
+</pre></div>
+
+<p><a id="X7ECD16838704FAAA" name="X7ECD16838704FAAA"></a></p>
+
+<h5>5.3-17 DigraphAllSimpleCircuits</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphAllSimpleCircuits</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of lists of vertices.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphAllSimpleCircuits</code> returns a list of the <em>simple circuits</em> in <var class="Arg">digraph</var>.</p>
+
+<p>A <em>simple circuit</em> in <var class="Arg">digraph</var> is a non-trivial directed path in <var class="Arg">digraph</var> from a vertex <code class="code">v</code> back to <code class="code">v</code>, in which no vertex is visited more than once. Since a circuit of length <code class="code">n</code> is determined by its first <code class="code">n</code> vertices, a circuit <span class="SimpleMath">v_1 → ⋯ → v_n → v_1</span> can be represented as the list <span class="SimpleMath">[v_1, ..., v_n]</span>. For each simple circuit of <var class="Arg">digraph</var>, <code class="code">DigraphAllSimpleCircuits(</code><var class="Arg">digraph</var><code class="code">)</code> will include precisely one such list to represents the circuit (cyclic permutations of such a list describe the same circuit).</p>
+
+<p>Note that a loop is a simple circuit.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);</span>
+&lt;digraph with 5 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphAllSimpleCircuits(gr);</span>
+[ [ 4 ], [ 4, 5 ], [ 2, 3 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(10);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphAllSimpleCircuits(gr);</span>
+[  ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1], [1]]);</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphAllSimpleCircuits(gr);</span>
+[ [ 1, 3 ] ]</pre></div>
+
+<p><a id="X7C735C4E86BDD5F6" name="X7C735C4E86BDD5F6"></a></p>
+
+<h5>5.3-18 DigraphLongestSimpleCircuit</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLongestSimpleCircuit</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of vertices or <code class="code">fail</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphLongestSimpleCircuit</code> returns the longest <em>simple circuit</em> in <var class="Arg">digraph</var>.</p>
+
+<p>A <em>simple circuit</em> in <var class="Arg">digraph</var> is a non-trivial directed path in <var class="Arg">digraph</var> from a vertex <code class="code">v</code> back to <code class="code">v</code>, in which no vertex is visited more than once. Since a circuit of length <code class="code">n</code> is determined by its first <code class="code">n</code> vertices, a circuit <span class="SimpleMath">v_1 → ⋯ → v_n → v_1</span> can be represented as the list <span class="SimpleMath">[v_1, ..., v_n]</span>. Note that a loop is a simple circuit.</p>
+
+<p>If <var class="Arg">digraph</var> has no simple circuits, then this attribute returns <code class="code">fail</code>. If <var class="Arg">digraph</var> has multiple simple circuits of maximum length, then this attribute returns one of them.</p>
+
+<p>See <code class="func">DigraphAllSimpleCircuits</code> (<a href="chap5.html#X7ECD16838704FAAA"><span class="RefLink">5.3-17</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphLongestSimpleCircuit(gr);</span>
+[ 4, 5 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(10);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphLongestSimpleCircuit(gr);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1], [1, 4], [1, 1]]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphLongestSimpleCircuit(gr);</span>
+[ 1, 3, 4 ]</pre></div>
+
+<p><a id="X870E04307C5F213F" name="X870E04307C5F213F"></a></p>
+
+<h5>5.3-19 DigraphLayers</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLayers</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A list.</p>
+
+<p>This operation returns a list <code class="keyw">list</code> such that <code class="keyw">list[i]</code> is the list of vertices whose minimum distance from the vertex <var class="Arg">vertex</var> in <var class="Arg">digraph</var> is <code class="keyw">i - 1</code>. Vertex <var class="Arg">vertex</var> is assumed to be at distance <code class="keyw">0</code> from itself.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CompleteDigraph(4);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphLayers(gr,1);</span>
+[ [ 1 ], [ 2, 3, 4 ] ]
+</pre></div>
+
+<p><a id="X7B2E42327DA118E0" name="X7B2E42327DA118E0"></a></p>
+
+<h5>5.3-20 DigraphDegeneracy</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDegeneracy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A non-negative integer, or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a symmetric digraph without multiple edges - see <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>) and <code class="func">IsMultiDigraph</code> (<a href="chap6.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.1-8</span></a>) - then this attribute returns the degeneracy of <var class="Arg">digraph</var>.</p>
+
+<p>The degeneracy of a digraph is the least integer <code class="code">k</code> such that every induced of <var class="Arg">digraph</var> contains a vertex whose number of neighbours (excluding itself) is at most <code class="code">k</code>. Note that this means that loops are ignored.</p>
+
+<p>If <var class="Arg">digraph</var> is not symmetric or has multiple edges then this attribute returns <code class="keyw">fail</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphSymmetricClosure(ChainDigraph(5));;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDegeneracy(gr);</span>
+1
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CompleteDigraph(5);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDegeneracy(gr);</span>
+4
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);</span>
+&lt;digraph with 6 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDegeneracy(gr);</span>
+1</pre></div>
+
+<p><a id="X827C2BD17A4547E3" name="X827C2BD17A4547E3"></a></p>
+
+<h5>5.3-21 DigraphDegeneracyOrdering</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDegeneracyOrdering</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of integers, or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph for which <code class="code">DigraphDegeneracy(</code><var class="Arg">digraph</var><code class="code">)</code> is a non-negative integer <code class="code">k</code> - see <code class="func">DigraphDegeneracy</code> (<a href="chap5.html#X7B2E42327DA118E0"><span class="RefLink">5.3-20</span></a>) - then this attribute returns a degeneracy ordering of the vertices of the vertices of <var class="Arg">digraph</var>.</p>
+
+<p>A degeneracy ordering of <var class="Arg">digraph</var> is a list <code class="code">ordering</code> of the vertices of <var class="Arg">digraph</var> ordered such that for any position <code class="code">i</code> of the list, the vertex <code class="code">ordering[i]</code> has at most <code class="code">k</code> neighbours in later position of the list.</p>
+
+<p>If <code class="code">DigraphDegeneracy(</code><var class="Arg">digraph</var><code class="code">)</code> returns <code class="keyw">fail</code>, then this attribute returns <code class="keyw">fail</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphSymmetricClosure(ChainDigraph(5));;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDegeneracyOrdering(gr);</span>
+[ 5, 4, 3, 2, 1 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CompleteDigraph(5);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDegeneracyOrdering(gr);</span>
+[ 5, 4, 3, 2, 1 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);</span>
+&lt;digraph with 6 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDegeneracyOrdering(gr);</span>
+[ 1, 6, 5, 2, 4, 3 ]</pre></div>
+
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap4.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap6.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+</body>
+</html>

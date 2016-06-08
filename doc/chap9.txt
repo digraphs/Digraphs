@@ -1,0 +1,685 @@
+  
+  [1X9 [33X[0;0YVisualising and IO[133X[101X
+  
+  
+  [1X9.1 [33X[0;0YVisualising a digraph[133X[101X
+  
+  [1X9.1-1 Splash[101X
+  
+  [29X[2XSplash[102X( [3Xstr[103X[, [3Xopts[103X] ) [32X function
+  [6XReturns:[106X  [33X[0;10YNothing.[133X
+  
+  [33X[0;0YThis  function  attempts  to  convert the string [3Xstr[103X into a pdf document and
+  open this document, i.e. to splash it all over your monitor.[133X
+  
+  [33X[0;0YThe  string  [3Xstr[103X  must  correspond to a valid [10Xdot[110X or [10XLaTeX[110X text file and you
+  must have have [10XGraphViz[110X and [10Xpdflatex[110X installed on your computer. For details
+  about    these    file   formats,   see   [7Xhttp://www.latex-project.org[107X   and
+  [7Xhttp://www.graphviz.org[107X.[133X
+  
+  [33X[0;0YThis  function  is  provided  to  allow convenient, immediate viewing of the
+  pictures produced by the function [2XDotDigraph[102X ([14X9.1-2[114X).[133X
+  
+  [33X[0;0YThe  optional  second  argument  [3Xopts[103X  should  be  a  record with components
+  corresponding to various options, given below.[133X
+  
+  [8Xpath[108X
+        [33X[0;6Ythis  should  be a string representing the path to the directory where
+        you  want  [10XSplash[110X  to do its work. The default value of this option is
+        [10X"~/"[110X.[133X
+  
+  [8Xdirectory[108X
+        [33X[0;6Ythis should be a string representing the name of the directory in [10Xpath[110X
+        where  you  want [10XSplash[110X to do its work. This function will create this
+        directory if does not already exist.[133X
+  
+        [33X[0;6YThe  default  value  of this option is [10X"tmp.viz"[110X if the option [10Xpath[110X is
+        present,    and   the   result   of   [2XDirectoryTemporary[102X   ([14XReference:
+        DirectoryTemporary[114X) is used otherwise.[133X
+  
+  [8Xfilename[108X
+        [33X[0;6Ythis  should  be  a string representing the name of the file where [3Xstr[103X
+        will be written. The default value of this option is [10X"vizpicture"[110X.[133X
+  
+  [8Xviewer[108X
+        [33X[0;6Ythis  should  be  a  string representing the name of the program which
+        should open the files produced by [10XGraphViz[110X or [10Xpdflatex[110X.[133X
+  
+  [8Xtype[108X
+        [33X[0;6Ythis  option  can  be  used  to specify that the string [3Xstr[103X contains a
+        LaTeX  or [10Xdot[110X document. You can specify this option in [3Xstr[103X directly by
+        making  the  first line [10X"%latex"[110X or [10X"//dot"[110X. There is no default value
+        for this option, this option must be specified in [3Xstr[103X or in [3Xopt.type[103X.[133X
+  
+  [8Xfiletype[108X
+        [33X[0;6Ythis  should  be  a  string representing the type of file which [10XSplash[110X
+        should  produce.  For  LaTeX  files,  this  option  is ignored and the
+        default value [10X"pdf"[110X is used.[133X
+  
+  [33X[0;0YThis  function  was written by Attila Egri-Nagy and Manuel Delgado with some
+  minor changes by J. D. Mitchell.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XSplash(DotDigraph(RandomDigraph(4)));[127X[104X
+  [4X[32X[104X
+  
+  [1X9.1-2 DotDigraph[101X
+  
+  [29X[2XDotDigraph[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA string.[133X
+  
+  [33X[0;0YThis  function  produces  a graphical representation of the digraph [3Xdigraph[103X.
+  Vertices are displayed as circles, numbered consistently with [3Xdigraph[103X. Edges
+  are  displayed as arrowed lines between vertices, with the arrowhead of each
+  line pointing towards the range of the edge.[133X
+  
+  [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
+  about  this  file  format, and information about how to display or edit this
+  format see [7Xhttp://www.graphviz.org[107X.[133X
+  
+  [33X[0;0YThe string returned by [10XDotDigraph[110X can be written to a file using the command
+  [2XFileString[102X ([14XGAPDoc: FileString[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xadj := List( [ 1 .. 4 ], x -> List( [ 1 .. 4 ], y -> 1 ));[127X[104X
+    [4X[28X[ [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xadj[1][1] := 1;   [127X[104X
+    [4X[28X2[128X[104X
+    [4X[25Xgap>[125X [27Xadj[1][3] := 0;[127X[104X
+    [4X[28X0[128X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphByAdjacencyMatrix(adj);[127X[104X
+    [4X[28X<digraph with 4 vertices, 16 edges>[128X[104X
+    [4X[25Xgap>[125X [27XFileString("dot/k4.dot", DotDigraph(gr));[127X[104X
+    [4X[28X146[128X[104X
+  [4X[32X[104X
+  
+  [1X9.1-3 DotSymmetricDigraph[101X
+  
+  [29X[2XDotSymmetricDigraph[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA string.[133X
+  
+  [33X[0;0YThis  function  produces a graphical representation of the symmetric digraph
+  [3Xdigraph[103X.  [10XDotSymmetricDigraph[110X  will  return  an  error  if  [3Xdigraph[103X is not a
+  symmetric digraph. See [2XIsSymmetricDigraph[102X ([14X6.1-10[114X).[133X
+  
+  [33X[0;0YVertices are displayed as circles, numbered consistently with [3Xdigraph[103X. Since
+  [3Xdigraph[103X  is symmetric, for every non-loop edge there is a complementary edge
+  with  opposite  source  and range. [10XDotSymmetricDigraph[110X displays each pair of
+  complementary  edges as a single line between the relevant vertices, with no
+  arrowhead.[133X
+  
+  [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
+  about  this  file  format, and information about how to display or edit this
+  format see [7Xhttp://www.graphviz.org[107X.[133X
+  
+  [33X[0;0YThe  string  returned  by [10XDotSymmetricDigraph[110X can be written to a file using
+  the command [2XFileString[102X ([14XGAPDoc: FileString[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xr := rec ( vertices := [ 1 .. 4 ],[127X[104X
+    [4X[25X>[125X [27Xsource := [ 1, 1, 1, 1, 2, 2, 3, 4, 4 ],[127X[104X
+    [4X[25X>[125X [27Xrange := [ 2, 2, 3, 4, 1, 1, 1, 1, 4 ] );;[127X[104X
+    [4X[25Xgap>[125X [27Xstar := Digraph(r);[127X[104X
+    [4X[28X<digraph with 4 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricDigraph(star);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XFileString("dot/star.dot", DotSymmetricDigraph(gr));;[127X[104X
+  [4X[32X[104X
+  
+  
+  [1X9.2 [33X[0;0YReading and writing graphs to a file[133X[101X
+  
+  [33X[0;0YThis  section  describes different ways to store and read graphs from a file
+  in the [5XDigraphs[105X package.[133X
+  
+  [8X Graph6 [108X
+        [33X[0;6Y[13X  Graph6 [113X is a graph data format for storing undirected graphs with no
+        multiple  edges  nor  loops  of  size  up  to  [22X2^36  -  1[122X in printable
+        chracters.  The  format consists of two parts. The first part uses one
+        to eight bytes to store the number of vertices. And the second part is
+        the   upper   half  of  the  adjacency  matrix  converted  into  ASCII
+        characters.    For    a    more    detail   description   see   Graph6
+        ([7Xhttp://cs.anu.edu.au/~bdm/data/formats.txt[107X).[133X
+  
+  [8X Sparse6 [108X
+        [33X[0;6Y[13X  Sparse6  [113X  is a graph data format for storing undirected graphs with
+        possibly  multiple  edges  or  loops.  The  maximal number of vertices
+        allowed  is [22X2^36 - 1[122X. The format consists of two parts. The first part
+        uses  one  to  eight  bytes  to  store the number of vertices. And the
+        second  part  only stores information about the edges. Therefore, the [13X
+        Sparse6  [113X  format  return  a  more  compact encoding then [13X Graph6 [113X for
+        sparse  graph, i.e. graphs where the number of edges is much less than
+        the  number  of  vertices  squared.  For a more detail description see
+        Sparse6 ([7Xhttp://cs.anu.edu.au/~bdm/data/formats.txt[107X).[133X
+  
+  [8X Digraph6 [108X
+        [33X[0;6Y[13XDigraph6[113X is a new format based on [13X Graph6 [113X, but designed for digraphs.
+        The  entire adjacency matrix is stored, and therefore there is support
+        for  directed  edges  and single-vertex loops. However, multiple edges
+        are not supported.[133X
+  
+  [8X DiSparse6 [108X
+        [33X[0;6Y[13XDiSparse6[113X  is  a  new  format  based  on  [13X  Sparse6 [113X, but designed for
+        digraphs.  In  this  format  the  list  of  edges  is partitioned into
+        inceasing  and  decreasing  edges, depending whether the edge has it's
+        source  bigger  than  the  range.  Then both sets of edges are written
+        separetly in [13X Sparse6 [113X format with a separation symbol in between.[133X
+  
+  [1X9.2-1 DigraphFromGraph6String[101X
+  
+  [29X[2XDigraphFromGraph6String[102X( [3Xstr[103X ) [32X operation
+  [29X[2XDigraphFromDigraph6String[102X( [3Xstr[103X ) [32X operation
+  [29X[2XDigraphFromSparse6String[102X( [3Xstr[103X ) [32X operation
+  [29X[2XDigraphFromDiSparse6String[102X( [3Xstr[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf  [3Xstr[103X  is  a  string  encoding  a  graph  in  Graph6, Digraph6, Sparse6 or
+  DiSparse6  format, then the corresponging function returns a digraph. In the
+  case  of  either  Graph6  or  Sparse6, formats which do not support directed
+  edges,  this  will  be a digraph such that for every edge, the edge going in
+  the opposite direction is also present.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XDigraphFromGraph6String("?");[127X[104X
+    [4X[28X<digraph with 0 vertices, 0 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphFromGraph6String("C]");[127X[104X
+    [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphFromGraph6String("H?AAEM{");[127X[104X
+    [4X[28X<digraph with 9 vertices, 22 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphFromDigraph6String("+?");[127X[104X
+    [4X[28X<digraph with 0 vertices, 0 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphFromDigraph6String("+CQFG");[127X[104X
+    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphFromDigraph6String("+IM[SrKLc~lhesbU[F_");[127X[104X
+    [4X[28X<digraph with 10 vertices, 51 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphFromDiSparse6String(".CaWBGA?b");[127X[104X
+    [4X[28X<multidigraph with 4 vertices, 9 edges>[128X[104X
+  [4X[32X[104X
+  
+  [1X9.2-2 Graph6String[101X
+  
+  [29X[2XGraph6String[102X( [3Xdigraph[103X ) [32X operation
+  [29X[2XDigraph6String[102X( [3Xdigraph[103X ) [32X operation
+  [29X[2XSparse6String[102X( [3Xdigraph[103X ) [32X operation
+  [29X[2XDiSparse6String[102X( [3Xdigraph[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA string.[133X
+  
+  [33X[0;0YThese  four functions return a highly compressed string fully describing the
+  digraph [3Xdigraph[103X.[133X
+  
+  [33X[0;0YGraph6  and  Digraph6  are  formats  best  used  on  small, dense graphs, if
+  applicable. For larger, sparse graphs use [13XSparse6[113X and [13XDisparse6[113X (this latter
+  also preserves multiple edges).[133X
+  
+  [33X[0;0YSee [2XWriteDigraphs[102X ([14X9.2-5[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2,3], [1], [1]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XSparse6String(gr);[127X[104X
+    [4X[28X":Bc"[128X[104X
+    [4X[25Xgap>[125X [27XDiSparse6String(gr);[127X[104X
+    [4X[28X".Bc{f"[128X[104X
+  [4X[32X[104X
+  
+  [1X9.2-3 DigraphFile[101X
+  
+  [29X[2XDigraphFile[102X( [3Xfilename[103X[, [3Xcoder[103X][, [3Xmode[103X] ) [32X function
+  [6XReturns:[106X  [33X[0;10YAn IO file object.[133X
+  
+  [33X[0;0YIf  [3Xfilename[103X  is  a string representing the name of a file, then [10XDigraphFile[110X
+  returns an [5XIO[105X package file object for that file.[133X
+  
+  [33X[0;0YIf  the  optional argument [3Xcoder[103X is specified and is a function which either
+  encodes a digraph as a string, or decodes a string into a digraph, then this
+  function  will  be used when reading or writing to the returned file object.
+  If  the  optional  argument [3Xcoder[103X is not specified, then the encoding of the
+  digraphs  in  the  returned  file  object  must be specified in the the file
+  extension. The file extension must be one of: [10X.g6[110X, [10X.s6[110X, [10X.d6[110X, [10X.ds6[110X, [10X.txt[110X, [10X.p[110X,
+  or [10X.pickle[110X; more details of these file formats is given below.[133X
+  
+  [33X[0;0YIf the optional argument [3Xmode[103X is specified, then it must be one of: [10X"w"[110X (for
+  write),  [10X"a"[110X (for append), or [10X"r"[110X (for read). If [3Xmode[103X is not specified, then
+  [10X"r"[110X is used by default.[133X
+  
+  [33X[0;0YIf  [3Xfilename[103X  is  ends in one of: [10X.gz[110X, [10X.bz2[110X, or [10X.xz[110X, then the digraphs which
+  are  read from, or written to, the returned file object are decompressed, or
+  compressed, appropriately.[133X
+  
+  [33X[0;0YThe  file  object returned by [10XDigraphFile[110X can be given as the first argument
+  for  either  of the functions [2XReadDigraphs[102X ([14X9.2-4[114X) or [2XWriteDigraphs[102X ([14X9.2-5[114X).
+  The  purpose of this is to reduce the overhead of recreating the file object
+  inside the functions [2XReadDigraphs[102X ([14X9.2-4[114X) or [2XWriteDigraphs[102X ([14X9.2-5[114X) when, for
+  example, reading or writing many digraphs in a loop.[133X
+  
+  [33X[0;0YThe  currently  supported  file formats, and associated filename extensions,
+  are:[133X
+  
+  [8Xgraph6 (.g6)[108X
+        [33X[0;6YA  standard  and  widely-used  format  for  undirected graphs, with no
+        support for loops or multiple edges. Only symmetric graphs are allowed
+        --  each  edge  is combined with its converse edge to produce a single
+        undirected  edge. This format is best used for "dense" graphs -- those
+        with many edges per vertex.[133X
+  
+  [8Xsparse6 (.s6)[108X
+        [33X[0;6YUnlike  graph6,  sparse6  has  support  for  loops and multiple edges.
+        However,  its use is still limited to symmetric graphs. This format is
+        better-suited to "sparse" graphs -- those with few edges per vertex.[133X
+  
+  [8Xdigraph6 (.d6)[108X
+        [33X[0;6YThis  format  is  based  on graph6, but stores direction information -
+        therefore  is  not limited to symmetric graphs. Loops are allowed, but
+        multiple edges are not. Best compression with "dense" graphs.[133X
+  
+  [8Xdisparse6 (.ds6)[108X
+        [33X[0;6YAny  type  of  digraph can be encoded in disparse6: directions, loops,
+        and  multiple  edges are all allowed. Similar to sparse6, this has the
+        best compression rate with "sparse" graphs.[133X
+  
+  [8Xplain text (.txt)[108X
+        [33X[0;6YThis  is a human-readable format which stores graphs in the form [10X0 7 0
+        8 1 7 2 8 3 8 4 8 5 8 6 8[110X i.e. pairs of vertices describing edges in a
+        graph.  More  specifically,  the  vertices  making up one edge must be
+        separated  by  a single space, and pairs of vertices must be separated
+        by two spaces.[133X
+  
+        [33X[0;6YSee  [2XReadPlainTextDigraph[102X  ([14X9.2-12[114X)  for  a more flexible way to store
+        digraphs in a plain text file.[133X
+  
+  [8Xpickled ([11X.p[111X or [11X.pickle[111X)[108X
+        [33X[0;6YDigraphs  are  pickled using the [5XIO[105X package. This is particularly good
+        when the [2XDigraphGroup[102X ([14X7.2-3[114X) is non-trivial.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;[127X[104X
+    [4X[25Xgap>[125X [27Xfile := DigraphFile(filename, "w");;[127X[104X
+    [4X[25Xgap>[125X [27Xfor i in [1 .. 10] do [127X[104X
+    [4X[25X>[125X [27XWriteDigraphs(file, Digraph([[1, 3], [2], [1, 2]]));[127X[104X
+    [4X[25X>[125X [27Xod;[127X[104X
+    [4X[25Xgap>[125X [27XIO_Close(file);;[127X[104X
+    [4X[25Xgap>[125X [27Xfile := DigraphFile(filename, "r");;[127X[104X
+    [4X[25Xgap>[125X [27XReadDigraphs(file, 9);[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+  [4X[32X[104X
+  
+  [1X9.2-4 ReadDigraphs[101X
+  
+  [29X[2XReadDigraphs[102X( [3Xfilename[103X[, [3Xdecoder[103X][, [3Xn[103X] ) [32X function
+  [6XReturns:[106X  [33X[0;10YA digraph, or a list of digraphs.[133X
+  
+  [33X[0;0YIf  [3Xfilename[103X  is  a  string containing the name of a file containing encoded
+  digraphs  or  an  [5XIO[105X  file  object  created  using [2XDigraphFile[102X ([14X9.2-3[114X), then
+  [10XReadDigraphs[110X  returns  the digraphs encoded in the file as a list. Note that
+  if [3Xfilename[103X is a compressed file, which has been compressed appropriately to
+  give  a  filename extension of [10X.gz[110X, [10X.bz2[110X, or [10X.xz[110X, then [10XReadDigraphs[110X can read
+  [3Xfilename[103X without it first needing to be decompressed.[133X
+  
+  [33X[0;0YIf  the  optional argument [3Xn[103X is specified, then [10XReadDigraphs[110X returns the [3Xn[103Xth
+  digraph encoded in the file [3Xfilename[103X.[133X
+  
+  [33X[0;0YIf  the  optional  argument  [3Xdecoder[103X  is  specified  and is a function which
+  decodes  a  string  into  a  digraph,  then [10XReadDigraphs[110X will use [3Xdecoder[103X to
+  decode  the digraphs contained in [3Xfilename[103X. If the optional argument [3Xdecoder[103X
+  is  not  specified, then [10XReadDigraphs[110X will deduce which decoder to use based
+  on    the    filename    extension   of   [3Xfilename[103X   (after   removing   the
+  compression-related filename extensions [10X.gz[110X, [10X.bz2[110X, and [10X.xz[110X). For example, if
+  the filename extension if [10X.g6[110X, then [10XReadDigraphs[110X will use the graph6 decoder
+  [2XDigraphFromGraph6String[102X ([14X9.2-1[114X).[133X
+  
+  [33X[0;0YThe  currently  supported  file formats, and associated filename extensions,
+  are:[133X
+  
+  [8Xgraph6 (.g6)[108X
+        [33X[0;6YA  standard  and  widely-used  format  for  undirected graphs, with no
+        support for loops or multiple edges. Only symmetric graphs are allowed
+        --  each  edge  is combined with its converse edge to produce a single
+        undirected  edge. This format is best used for "dense" graphs -- those
+        with many edges per vertex.[133X
+  
+  [8Xsparse6 (.s6)[108X
+        [33X[0;6YUnlike  graph6,  sparse6  has  support  for  loops and multiple edges.
+        However,  its use is still limited to symmetric graphs. This format is
+        better-suited to "sparse" graphs -- those with few edges per vertex.[133X
+  
+  [8Xdigraph6 (.d6)[108X
+        [33X[0;6YThis  format  is  based  on graph6, but stores direction information -
+        therefore  is  not limited to symmetric graphs. Loops are allowed, but
+        multiple edges are not. Best compression with "dense" graphs.[133X
+  
+  [8Xdisparse6 (.ds6)[108X
+        [33X[0;6YAny  type  of  digraph can be encoded in disparse6: directions, loops,
+        and  multiple  edges are all allowed. Similar to sparse6, this has the
+        best compression rate with "sparse" graphs.[133X
+  
+  [8Xplain text (.txt)[108X
+        [33X[0;6YThis  is a human-readable format which stores graphs in the form [10X0 7 0
+        8 1 7 2 8 3 8 4 8 5 8 6 8[110X i.e. pairs of vertices describing edges in a
+        graph.  More  specifically,  the  vertices  making up one edge must be
+        separated  by  a single space, and pairs of vertices must be separated
+        by two spaces.[133X
+  
+        [33X[0;6YSee  [2XReadPlainTextDigraph[102X  ([14X9.2-12[114X)  for  a more flexible way to store
+        digraphs in a plain text file.[133X
+  
+  [8Xpickled ([11X.p[111X or [11X.pickle[111X)[108X
+        [33X[0;6YDigraphs  are  pickled using the [5XIO[105X package. This is particularly good
+        when the [2XDigraphGroup[102X ([14X7.2-3[114X) is non-trivial.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XReadDigraphs([127X[104X
+    [4X[25X>[125X [27XConcatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 10);[127X[104X
+    [4X[28X<digraph with 5 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XReadDigraphs([127X[104X
+    [4X[25X>[125X [27XConcatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 17);[127X[104X
+    [4X[28X<digraph with 5 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XReadDigraphs([127X[104X
+    [4X[25X>[125X [27XConcatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt"));[127X[104X
+    [4X[28X[ <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <digraph with 9 vertices, 8 edges> ][128X[104X
+  [4X[32X[104X
+  
+  [1X9.2-5 WriteDigraphs[101X
+  
+  [29X[2XWriteDigraphs[102X( [3Xfilename[103X, [3Xdigraphs[103X[, [3Xencoder[103X][, [3Xmode[103X] ) [32X function
+  
+  [33X[0;0YIf  [3Xdigraphs[103X  is a list of digraphs or a digraph and [3Xfilename[103X is a string or
+  an  [5XIO[105X  file  object  created  using [2XDigraphFile[102X ([14X9.2-3[114X), then [10XWriteDigraphs[110X
+  writes  the  digraphs  to  the file represented by [3Xfilename[103X. If the supplied
+  filename ends in one of the extensions [10X.gz[110X, [10X.bz2[110X, or [10X.xz[110X, then the file will
+  be  compressed  appropriately.  Excluding these extensions, if the file ends
+  with  an extension in the list below, the corresponding graph format will be
+  used  to  encode  it.  If  such an extension is not included, an appropriate
+  format  will be chosen intelligently, and an extension appended, to minimise
+  file size.[133X
+  
+  [33X[0;0YFor  more  verbose information on the progress of the function, set the info
+  level of [3XInfoDigraphs[103X to 1 or higher, using [10XSetInfoLevel[110X.[133X
+  
+  [33X[0;0YThe currently supported file formats are:[133X
+  
+  [8Xgraph6 (.g6)[108X
+        [33X[0;6YA  standard  and  widely-used  format  for  undirected graphs, with no
+        support for loops or multiple edges. Only symmetric graphs are allowed
+        --  each  edge  is combined with its converse edge to produce a single
+        undirected  edge. This format is best used for "dense" graphs -- those
+        with many edges per vertex.[133X
+  
+  [8Xsparse6 (.s6)[108X
+        [33X[0;6YUnlike  graph6,  sparse6  has  support  for  loops and multiple edges.
+        However,  its use is still limited to symmetric graphs. This format is
+        better-suited to "sparse" graphs -- those with few edges per vertex.[133X
+  
+  [8Xdigraph6 (.d6)[108X
+        [33X[0;6YThis  format  is  based  on graph6, but stores direction information -
+        therefore  is  not limited to symmetric graphs. Loops are allowed, but
+        multiple edges are not. Best compression with "dense" graphs.[133X
+  
+  [8Xdisparse6 (.ds6)[108X
+        [33X[0;6YAny  type  of  digraph can be encoded in disparse6: directions, loops,
+        and  multiple  edges are all allowed. Similar to sparse6, this has the
+        best compression rate with "sparse" graphs.[133X
+  
+  [8Xplain text (.txt)[108X
+        [33X[0;6YThis  is a human-readable format which stores graphs in the form [10X0 7 0
+        8 1 7 2 8 3 8 4 8 5 8 6 8[110X i.e. pairs of vertices describing edges in a
+        graph.  More  specifically,  the  vertices  making up one edge must be
+        separated  by  a single space, and pairs of vertices must be separated
+        by two spaces.[133X
+  
+        [33X[0;6YSee  [2XReadPlainTextDigraph[102X  ([14X9.2-12[114X)  for  a more flexible way to store
+        digraphs in a plain text file.[133X
+  
+  [8Xpickled ([11X.p[111X or [11X.pickle[111X)[108X
+        [33X[0;6YDigraphs  are  pickled using the [5XIO[105X package. This is particularly good
+        when the [2XDigraphGroup[102X ([14X7.2-3[114X) is non-trivial.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgrs := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xgrs[1] := Digraph([]);[127X[104X
+    [4X[28X<digraph with 0 vertices, 0 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xgrs[2] := Digraph([[1, 3], [2], [1, 2]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xgrs[3] := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],[127X[104X
+    [4X[25X>[125X [27X[1, 2, 3, 4, 5, 6, 7, 10], [1, 5, 6, 7, 10], [2, 4, 5, 9, 10],[127X[104X
+    [4X[25X>[125X [27X[3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 5, 7, 8, 9], [1, 2, 5],[127X[104X
+    [4X[25X>[125X [27X[1, 2, 4, 6, 7, 8]]);[127X[104X
+    [4X[28X<digraph with 10 vertices, 51 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;[127X[104X
+    [4X[25Xgap>[125X [27XWriteDigraphs(filename, grs, "w");[127X[104X
+    [4X[28XIO_OK[128X[104X
+    [4X[25Xgap>[125X [27XReadDigraphs(filename);[127X[104X
+    [4X[28X[ <digraph with 0 vertices, 0 edges>, [128X[104X
+    [4X[28X  <digraph with 3 vertices, 5 edges>, [128X[104X
+    [4X[28X  <digraph with 10 vertices, 51 edges> ][128X[104X
+  [4X[32X[104X
+  
+  [1X9.2-6 IteratorFromDigraphFile[101X
+  
+  [29X[2XIteratorFromDigraphFile[102X( [3Xfilename[103X[, [3Xdecoder[103X] ) [32X function
+  [6XReturns:[106X  [33X[0;10YAn iterator.[133X
+  
+  [33X[0;0YIf  [3Xfilename[103X  is a string representing the name of a file containing encoded
+  digraphs,  then  [10XIteratorFromDigraphFile[110X  returns  an iterator for which the
+  value  of [2XNextIterator[102X ([14XReference: NextIterator[114X) is the next digraph encoded
+  in the file.[133X
+  
+  [33X[0;0YIf  the  optional  argument  [3Xdecoder[103X  is  specified  and is a function which
+  decodes  a  string  into  a  digraph,  then [10XIteratorFromDigraphFile[110X will use
+  [3Xdecoder[103X to decode the digraphs contained in [3Xfilename[103X.[133X
+  
+  [33X[0;0YThe  purpose  of  this  function  is  to  easily allow looping over digraphs
+  encoded in a file when loading all of the encoded digraphs would require too
+  much memory.[133X
+  
+  [33X[0;0YTo see what file types are available, see [2XWriteDigraphs[102X ([14X9.2-5[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;[127X[104X
+    [4X[25Xgap>[125X [27Xfile := DigraphFile(filename, "w");;[127X[104X
+    [4X[25Xgap>[125X [27Xfor i in [1 .. 10] do [127X[104X
+    [4X[25X>[125X [27XWriteDigraphs(file, Digraph([[1, 3], [2], [1, 2]]));[127X[104X
+    [4X[25X>[125X [27Xod;[127X[104X
+    [4X[25Xgap>[125X [27XIO_Close(file);;[127X[104X
+    [4X[25Xgap>[125X [27Xiter := IteratorFromDigraphFile(filename);[127X[104X
+    [4X[28X<iterator>[128X[104X
+    [4X[25Xgap>[125X [27Xfor x in iter do od;[127X[104X
+  [4X[32X[104X
+  
+  [1X9.2-7 DigraphPlainTextLineEncoder[101X
+  
+  [29X[2XDigraphPlainTextLineEncoder[102X( [3Xdelimiter1[103X[, [3Xdelimiter2[103X], [3Xoffset[103X ) [32X function
+  [29X[2XDigraphPlainTextLineDecoder[102X( [3Xdelimiter1[103X[, [3Xdelimiter2[103X], [3Xoffset[103X ) [32X function
+  [6XReturns:[106X  [33X[0;10YA string.[133X
+  
+  [33X[0;0YThese  two functions return a function which encodes or decodes a digraph in
+  a plain text format.[133X
+  
+  [33X[0;0Y[3XDigraphPlainTextLineEncoder[103X  returns a function which takes a single digraph
+  as  an  argument. The function returns a string describing the edges of that
+  digraph;  each edge is written as a pair of integers separated by the string
+  [3Xdelimiter2[103X, and the edges themselves are separated by the string [3Xdelimiter1[103X.
+  [3XDigraphPlainTextLineDecoder[103X  returns  the  corresponding  decoder  function,
+  which takes a string argument in this format and returns a digraph.[133X
+  
+  [33X[0;0YIf    only    one    delimiter    is    passed    as    an    argument    to
+  [3XDigraphPlainTextLineDecoder[103X,  it  will  return  a  function  which decodes a
+  single edge, returning its contents as a list of integers.[133X
+  
+  [33X[0;0YThe argument [3Xoffset[103X should be an integer, which will describe a number to be
+  added  to each vertex before it is encoded, or after it is decoded. This may
+  be used, for example, to label vertices starting at 0 instead of 1.[133X
+  
+  [33X[0;0YNote that the number of vertices of a digraph is not stored, and so vertices
+  which are not connected to any edge may be lost.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2,3], [1], [1]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xenc := DigraphPlainTextLineEncoder("  ", " ", -1);;[127X[104X
+    [4X[25Xgap>[125X [27Xdec := DigraphPlainTextLineDecoder("  ", " ",  1);;[127X[104X
+    [4X[25Xgap>[125X [27Xenc(gr);[127X[104X
+    [4X[28X"0 1  0 2  1 0  2 0"[128X[104X
+    [4X[25Xgap>[125X [27Xdec(last);[127X[104X
+    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+  [4X[32X[104X
+  
+  [1X9.2-8 TournamentLineDecoder[101X
+  
+  [29X[2XTournamentLineDecoder[102X( [3Xstr[103X ) [32X function
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YThis  function  takes  a  string  [3Xstr[103X,  decodes  it,  and  then  returns the
+  tournament  [see  [2XIsTournament[102X  ([14X6.1-11[114X)] which it defines, according to the
+  following rules.[133X
+  
+  [33X[0;0YThe characters of the string [3Xstr[103X represent the entries in the upper triangle
+  of  a  tournament's  adjacency  matrix.  The  number  of  vertices [10Xn[110X will be
+  detected from the length of the string and will be as large as possible.[133X
+  
+  [33X[0;0YThe  first  character  represents  the  possible  edge  [10X1  ->  2[110X, the second
+  represents  [10X1  ->  3[110X  and  so  on until [10X1 -> n[110X; then the following character
+  represents  [10X2  -> 3[110X, and so on up to the character which represents the edge
+  [10Xn-1 -> n[110X.[133X
+  
+  [33X[0;0YIf  a  character of the string with corresponding edge [10Xi -> j[110X is equal to [10X1[110X,
+  then  the edge [10Xi -> j[110X is present in the tournament. Otherwise, the edge [10Xi ->
+  j[110X  is  present  instead.  In  this  way,  all the possible edges are encoded
+  one-by-one.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := TournamentLineDecoder("100001");[127X[104X
+    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
+    [4X[28X[ [ 2 ], [  ], [ 1, 2, 4 ], [ 1, 2 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X9.2-9 AdjacencyMatrixUpperTriangleLineDecoder[101X
+  
+  [29X[2XAdjacencyMatrixUpperTriangleLineDecoder[102X( [3Xstr[103X ) [32X function
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YThis  function  takes  a  string  [3Xstr[103X,  decodes  it,  and  then  returns the
+  topologically  sorted  digraph [see [2XDigraphTopologicalSort[102X ([14X5.1-7[114X)] which it
+  defines, according to the following rules.[133X
+  
+  [33X[0;0YThe characters of the string [3Xstr[103X represent the entries in the upper triangle
+  of  a  digraph's adjacency matrix. The number of vertices [10Xn[110X will be detected
+  from the length of the string and will be as large as possible.[133X
+  
+  [33X[0;0YThe  first  character  represents  the  possible  edge  [10X1  ->  2[110X, the second
+  represents  [10X1  ->  3[110X  and  so  on until [10X1 -> n[110X; then the following character
+  represents  [10X2  -> 3[110X, and so on up to the character which represents the edge
+  [10Xn-1  ->  n[110X.  If  a character of the string with corresponding edge [10Xi -> j[110X is
+  equal  to  [10X1[110X, then this edge is present in the digraph. Otherwise, it is not
+  present. In this way, all the possible edges are encoded one-by-one.[133X
+  
+  [33X[0;0YIn  particular,  note  that  there  exists no edge [10X[i, j][110X if [22Xj ≤ i[122X. In order
+  words, the digraph will be topologically sorted.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := AdjacencyMatrixUpperTriangleLineDecoder("100001");[127X[104X
+    [4X[28X<digraph with 4 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
+    [4X[28X[ [ 2 ], [  ], [ 4 ], [  ] ][128X[104X
+    [4X[25Xgap>[125X [27Xgr := AdjacencyMatrixUpperTriangleLineDecoder("111111x111");[127X[104X
+    [4X[28X<digraph with 5 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
+    [4X[28X[ [ 2, 3, 4, 5 ], [ 3, 4 ], [ 4, 5 ], [ 5 ], [  ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X9.2-10 TCodeDecoder[101X
+  
+  [29X[2XTCodeDecoder[102X( [3Xstr[103X ) [32X function
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf  [3Xstr[103X  is  a  string  consisting  of  at  least  two non-negative integers
+  separated  by  spaces, then this function will attempt to return the digraph
+  which it defines as a TCode string.[133X
+  
+  [33X[0;0YThe  first  integer  of  the  string defines the number of vertices [10Xv[110X in the
+  digraph,  and  the  second  defines  the number of edges [10Xe[110X. The following [10X2e[110X
+  integers  should  be  vertex numbers in the range [10X[0 .. v-1][110X. These integers
+  are  read in pairs and define the digraph's edges. This function will return
+  an error if [3Xstr[103X has fewer than [10X2e+2[110X entries.[133X
+  
+  [33X[0;0YNote  that  the  vertex  numbers  will  be  incremented  by 1 in the digraph
+  returned. Hence the string fragment [10X0 6[110X will describe the edge [10X[1,7][110X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := TCodeDecoder("3 2 0 2 2 1");[127X[104X
+    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
+    [4X[28X[ [ 3 ], [  ], [ 2 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xgr := TCodeDecoder("12 3 0 10 5 2 8 8");[127X[104X
+    [4X[28X<digraph with 12 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
+    [4X[28X[ [ 11 ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [  ], [ 9 ], [  ], [128X[104X
+    [4X[28X  [  ], [  ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X9.2-11 PlainTextString[101X
+  
+  [29X[2XPlainTextString[102X( [3Xdigraph[103X ) [32X operation
+  [29X[2XDigraphFromPlainTextString[102X( [3Xs[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA string.[133X
+  
+  [33X[0;0Y[3XPlainTextString[103X  takes a single digraph, and returns a string describing the
+  edges  of  that  digraph. [3XDigraphFromPlainTextString[103X takes such a string and
+  returns  the  digraph  which it describes. Each edge is written as a pair of
+  integers  separated by a single space. The edges themselves are separated by
+  a  double  space.  Vertex numbers are reduced by 1 when they are encoded, so
+  that vertices in the string are labelled starting at 0.[133X
+  
+  [33X[0;0YNote that the number of vertices of a digraph is not stored, and so vertices
+  which are not connected to any edge may be lost.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2,3], [1], [1]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XPlainTextString(gr);[127X[104X
+    [4X[28X"0 1  0 2  1 0  2 0"[128X[104X
+    [4X[25Xgap>[125X [27XDigraphFromPlainTextString(last);[127X[104X
+    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+  [4X[32X[104X
+  
+  [1X9.2-12 WritePlainTextDigraph[101X
+  
+  [29X[2XWritePlainTextDigraph[102X( [3Xfilename[103X, [3Xdigraph[103X, [3Xdelimiter[103X, [3Xoffset[103X ) [32X function
+  [29X[2XReadPlainTextDigraph[102X( [3Xfilename[103X, [3Xdelimiter[103X, [3Xoffset[103X, [3Xignore[103X ) [32X function
+  
+  [33X[0;0YThese  functions  write  and read a single digraph in a human-readable plain
+  text  format  as follows: each line contains a single edge, and each edge is
+  written as a pair of integers separated by the string [3Xdelimiter[103X.[133X
+  
+  [33X[0;0Y[3Xfilename[103X should be the name of a file which will be written to or read from,
+  and  [3Xoffset[103X  should be an integer which is added to each vertex number as it
+  is  written  or  read.  For example, if [10XWritePlainTextDigraph[110X is called with
+  [3Xoffset[103X  [10X-1[110X,  then  the vertices will be numbered in the file starting from 0
+  instead of 1 - [10XReadPlainTextDigraph[110X would then need to be called with [3Xoffset[103X
+  [10X1[110X to convert back to the original graph.[133X
+  
+  [33X[0;0Y[3Xignore[103X should be a list of characters which will be ignored when reading the
+  graph.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1,2,3], [1,1], [2]]);[127X[104X
+    [4X[28X<multidigraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/plain.txt");;[127X[104X
+    [4X[25Xgap>[125X [27XWritePlainTextDigraph(filename, gr, ",", -1);[127X[104X
+    [4X[25Xgap>[125X [27XReadPlainTextDigraph(filename, ",", 1, ['/','%']);[127X[104X
+    [4X[28X<multidigraph with 3 vertices, 6 edges>[128X[104X
+  [4X[32X[104X
+  

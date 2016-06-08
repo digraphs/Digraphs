@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>GAP (digraphs) - Chapter 1: 
+    The Digraphs package
+  </title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+<script src="manual.js" type="text/javascript"></script>
+<script type="text/javascript">overwriteStyle();</script>
+</head>
+<body class="chap1"  onload="jscontent()">
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap0.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap2.html">[Next Chapter]</a>&nbsp;  </div>
+
+<p id="mathjaxlink" class="pcenter"><a href="chap1_mj.html">[MathJax on]</a></p>
+<p><a id="X7DA617417D78957D" name="X7DA617417D78957D"></a></p>
+<div class="ChapSects"><a href="chap1.html#X7DA617417D78957D">1 <span class="Heading">
+    The <strong class="pkg">Digraphs</strong> package
+  </span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1.html#X7DFB63A97E67C0A1">1.1 <span class="Heading">Introduction</span></a>
+</span>
+</div>
+</div>
+
+<h3>1 <span class="Heading">
+    The <strong class="pkg">Digraphs</strong> package
+  </span></h3>
+
+<p><a id="X7DFB63A97E67C0A1" name="X7DFB63A97E67C0A1"></a></p>
+
+<h4>1.1 <span class="Heading">Introduction</span></h4>
+
+<p>This is the manual for the <strong class="pkg">Digraphs</strong> package version 0.5.1.1. This package was developed at the University of St Andrews by:</p>
+
+
+<ul>
+<li><p>Jan De Beule</p>
+
+</li>
+<li><p>Julius Jonusas</p>
+
+</li>
+<li><p>James D. Mitchell</p>
+
+</li>
+<li><p>Michael C. Torpey</p>
+
+</li>
+<li><p>Wilf A. Wilson</p>
+
+</li>
+</ul>
+<p>The <strong class="pkg">Digraphs</strong> package contains a variety of methods for efficiently creating and storing digraphs and computing information about them. Full explanations of all the functions contained in the package are provided below.</p>
+
+<p>If the <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> package is available, it will be loaded automatically. Digraphs created with the <strong class="pkg">Digraphs</strong> package can be converted to <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> graphs with <code class="func">Graph</code> (<a href="chap3.html#X7B335342839E5146"><span class="RefLink">3.2-3</span></a>), and conversely <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> graphs can be converted to <strong class="pkg">Digraphs</strong> objects with <code class="func">Digraph</code> (<a href="chap3.html#X834843057CE86655"><span class="RefLink">3.1-5</span></a>). <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is not required for <strong class="pkg">Digraphs</strong> to run.</p>
+
+<p>The <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> tool <a href="chapBib.html#biBJunttilaKaski">[JK07]</a> is included in this package. It is an open-source tool for computing automorphism groups and canonical forms of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods in the <strong class="pkg">Digraphs</strong> package rely on <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span>.</p>
+
+<p>For the purposes of this package and its documentation, the following definitions apply:</p>
+
+<p>A <em>digraph</em> <span class="SimpleMath">E=(E^0,E^1,r,s)</span>, also known as a <em>directed graph</em>, consists of a set of vertices <span class="SimpleMath">E^0</span> and a set of edges <span class="SimpleMath">E^1</span> together with functions <span class="SimpleMath">s, r: E^1 -&gt; E^0</span>, called the <em>source</em> and <em>range</em>, respectively. The source and range of an edge is respectively the values of <span class="SimpleMath">s, r</span> at that edge. An edge is called a <em>loop</em> if its source and range are the same. A digraph is called a <em>multidigraph</em> if there exist two or more edges with the same source and the same range.</p>
+
+<p>A <em>directed path</em> on a digraph is a sequence of alternating vertices and edges <span class="SimpleMath">(v_1, e_1, v_2, e_2, ..., e_n-1, v_n)</span> such that each edge <span class="SimpleMath">e_i</span> has source <span class="SimpleMath">v_i</span> and range <span class="SimpleMath">v_i+1</span>, and no vertex is repeated. A <em>directed walk</em> is defined similarly, but vertices may be repeated. A <em>cycle</em> is defined similarly to a directed path, except that <span class="SimpleMath">v_1 = v_n</span>. The <em>length</em> of a directed path, walk, or cycle <span class="SimpleMath">(v_1, e_1, v_2, e_2, ..., e_n-1, v_n)</span> is equal to <span class="SimpleMath">n-1</span>, the number of edges it contains.</p>
+
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap0.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap2.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+</body>
+</html>

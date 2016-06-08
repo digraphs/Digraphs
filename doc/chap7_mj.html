@@ -1,0 +1,884 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<title>GAP (digraphs) - Chapter 7: Homomorphisms</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+<script src="manual.js" type="text/javascript"></script>
+<script type="text/javascript">overwriteStyle();</script>
+</head>
+<body class="chap7"  onload="jscontent()">
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0_mj.html">Top</a>  <a href="chap1_mj.html">1</a>  <a href="chap2_mj.html">2</a>  <a href="chap3_mj.html">3</a>  <a href="chap4_mj.html">4</a>  <a href="chap5_mj.html">5</a>  <a href="chap6_mj.html">6</a>  <a href="chap7_mj.html">7</a>  <a href="chap8_mj.html">8</a>  <a href="chap9_mj.html">9</a>  <a href="chapA_mj.html">A</a>  <a href="chapBib_mj.html">Bib</a>  <a href="chapInd_mj.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap6_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap8_mj.html">[Next Chapter]</a>&nbsp;  </div>
+
+<p id="mathjaxlink" class="pcenter"><a href="chap7.html">[MathJax off]</a></p>
+<p><a id="X84975388859F203D" name="X84975388859F203D"></a></p>
+<div class="ChapSects"><a href="chap7_mj.html#X84975388859F203D">7 <span class="Heading">Homomorphisms</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7_mj.html#X8200192B80AD2071">7.1 <span class="Heading">Acting on digraphs</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X808972017C486F1F">7.1-1 OnDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7AFBA7608498F9CE">7.1-2 OnMultiDigraphs</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7_mj.html#X7E48B9F87A0F22D4">7.2 <span class="Heading">Isomorphisms, and Canonical labellings</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X858C32127A190175">7.2-1 AutomorphismGroup</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7B4F427983E25A66">7.2-2 AutomorphismGroup</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X803ACEDA7BBAC5B3">7.2-3 DigraphGroup</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X8657604E87A25E5F">7.2-4 DigraphSchreierVector</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X8386028782F2D3FF">7.2-5 DigraphOrbitReps</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X78913684795FB256">7.2-6 DigraphStabilizer</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X8096C5287E459279">7.2-7 DigraphOrbits</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E1C806D81DFE15E">7.2-8 RepresentativeOutNeighbours</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7984D48F7F78C50E">7.2-9 DigraphCanonicalLabelling</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7B4F24B283C9EE28">7.2-10 IsIsomorphicDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X8219FE6C839D9457">7.2-11 IsomorphismDigraphs</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7_mj.html#X7E1A02FE8384C03C">7.3 <span class="Heading">Homomorphisms of digraphs</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X79ABF0E783FD67C7">7.3-1 HomomorphismDigraphsFinder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X85E9B019877AD7FE">7.3-2 DigraphHomomorphism</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X8653EDA183E06D05">7.3-3 HomomorphismsDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X82D0FCD87D47ACA8">7.3-4 DigraphMonomorphism</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X84B4BDB984C2A9A8">7.3-5 MonomorphismsDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7CB5AD9F861684FD">7.3-6 DigraphEpimorphism</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7DFB1F5D873937B3">7.3-7 EpimorphismsDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E93B268823F6478">7.3-8 GeneratorsOfEndomorphismMonoid</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X780D26F082572325">7.3-9 DigraphColoring</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7AD04CC186E86CCA">7.3-10 DigraphEmbedding</a></span>
+</div></div>
+</div>
+
+<h3>7 <span class="Heading">Homomorphisms</span></h3>
+
+<p><a id="X8200192B80AD2071" name="X8200192B80AD2071"></a></p>
+
+<h4>7.1 <span class="Heading">Acting on digraphs</span></h4>
+
+<p><a id="X808972017C486F1F" name="X808972017C486F1F"></a></p>
+
+<h5>7.1-1 OnDigraphs</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">perm</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">trans</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A digraph.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph, and the second argument <var class="Arg">perm</var> is a <em>permutation</em> of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by relabelling the vertices of <var class="Arg">digraph</var> according to <var class="Arg">perm</var>. Note that for an automorphism <code class="code">f</code> of a digraph, we have <code class="code">OnDigraphs(</code><var class="Arg">digraph</var>, <code class="code">f) = </code><var class="Arg">digraph</var>.</p>
+
+<p>If the second argument is a <em>transformation</em> <var class="Arg">trans</var> of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by transforming the source and range of each edge according to <var class="Arg">trans</var>, and then removing any multiple edges. If <var class="Arg">trans</var> is indeed a permutation, then the result coincides with relabelling the vertices of <var class="Arg">digraph</var> according to <var class="Arg">trans</var>.</p>
+
+<p>The <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) of <var class="Arg">digraph</var> will not be retained in the returned digraph.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 3, 5]]);</span>
+&lt;digraph with 5 vertices, 11 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">new := OnDigraphs(gr, (1,2));</span>
+&lt;digraph with 5 vertices, 11 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(new);</span>
+[ [ 2, 3, 5 ], [ 3 ], [ 2 ], [ 2, 1, 4 ], [ 1, 3, 5 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [], [2]]);</span>
+&lt;digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">t := Transformation([1, 2, 1]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">new := OnDigraphs(gr, t);</span>
+&lt;digraph with 3 vertices, 1 edge&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(new);</span>
+[ [ 2 ], [  ], [  ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ForAll(DigraphEdges(gr),</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput"> e -&gt; IsDigraphEdge(new, [e[1] ^ t, e[2] ^ t]));</span>
+true
+</pre></div>
+
+<p><a id="X7AFBA7608498F9CE" name="X7AFBA7608498F9CE"></a></p>
+
+<h5>7.1-2 OnMultiDigraphs</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnMultiDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">pair</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnMultiDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">perm1</var>, <var class="Arg">perm2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A digraph.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph, and <var class="Arg">pair</var> is a pair consisting of a permutation of the vertices and a permutation of the edges of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by relabelling the vertices and edges of <var class="Arg">digraph</var> according to <var class="Arg">perm[1]</var> and <var class="Arg">perm[2]</var>, respectively.</p>
+
+<p>In its second form, <code class="code">OnMultiDigraphs</code> returns a digraph with vertices and edges permuted by <var class="Arg">perm1</var> and <var class="Arg">perm2</var>, respectively.</p>
+
+<p>Note that <code class="code">OnDigraphs(<var class="Arg">digraph</var>, perm)=OnMultiDigraphs(<var class="Arg">digraph</var>, [perm, ()])</code> where <code class="code">perm</code> is a permutation of the vertices of <var class="Arg">digraph</var>. If you are only interested in the action of a permutation on the vertices of a digraph, then you can use <code class="code">OnDigraphs</code> instead of <code class="code">OnMultiDigraphs</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := Digraph([[3, 6, 3], [], [3], [9, 10], [9], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[],  [], [10, 4, 10], [], []]);</span>
+&lt;multidigraph with 10 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">p := DigraphCanonicalLabelling(gr1);</span>
+[ (1,9,5,3,10,6,4,7), (1,7,9,5,2,8,4,10,3,6) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := OnMultiDigraphs(gr1, p);</span>
+&lt;multidigraph with 10 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr2);</span>
+[ [  ], [  ], [ 5 ], [  ], [  ], [  ], [ 5, 6 ], [ 6, 7, 6 ], 
+  [ 10, 4, 10 ], [ 10 ] ]</pre></div>
+
+<p><a id="X7E48B9F87A0F22D4" name="X7E48B9F87A0F22D4"></a></p>
+
+<h4>7.2 <span class="Heading">Isomorphisms, and Canonical labellings</span></h4>
+
+<p><a id="X858C32127A190175" name="X858C32127A190175"></a></p>
+
+<h5>7.2-1 AutomorphismGroup</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AutomorphismGroup</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AutomorphismGroup</code>( <var class="Arg">digraph</var>, <var class="Arg">colors</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A permutation group.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then this function returns the automorphism group of <var class="Arg">digraph</var>, as a group of permutations on the vertices of <var class="Arg">digraph</var>.</p>
+
+<p>If the <var class="Arg">colors</var> argument is specified, then the group will consist of only those automorphisms which respect the given colouring. The colouring <var class="Arg">colors</var> can be in one of two forms:</p>
+
+
+<ul>
+<li><p>A list of positive integers of size the number of vertices of <var class="Arg">digraph</var>, where <var class="Arg">colors</var><code class="code">[i]</code> is the colour of vertex <code class="code">i</code>.</p>
+
+</li>
+<li><p>A list of lists, such that <var class="Arg">colors</var><code class="code">[i]</code> is a list of all vertices with colour <code class="code">i</code>.</p>
+
+</li>
+</ul>
+<p>The automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/index.html">bliss</a></span> by Tommi Junttila and Petteri Kaski.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">johnson := Digraph([[2, 3, 4, 5], [1, 3, 4, 6], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 5, 6], [1, 2, 5, 6], [1, 3, 4, 6], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 3, 4, 5]]);</span>
+&lt;digraph with 6 vertices, 24 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">AutomorphismGroup(johnson);</span>
+Group([ (3,4), (2,3)(4,5), (1,2)(5,6) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Size(last);</span>
+48
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">cycle := CycleDigraph(9);</span>
+&lt;digraph with 9 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">a := AutomorphismGroup(cycle);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">StructureDescription(a);</span>
+"C9"
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">a := AutomorphismGroup(cycle, [1, 2, 3, 1, 2, 3, 1, 2, 3]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">StructureDescription(a);</span>
+"C3"
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">a := AutomorphismGroup(cycle, [[1, 4, 7], [2, 5, 8], [3, 6, 9]]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">StructureDescription(a);</span>
+"C3"
+</pre></div>
+
+<p><a id="X7B4F427983E25A66" name="X7B4F427983E25A66"></a></p>
+
+<h5>7.2-2 AutomorphismGroup</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AutomorphismGroup</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A direct product of permutation groups.</p>
+
+<p>If <var class="Arg">digraph</var> is a multidigraph, then this function returns the automorphism group of <var class="Arg">digraph</var>, as a group of permutations on the vertices and edges of <var class="Arg">digraph</var>.</p>
+
+<p>For convenience, the returned group is the direct product of the group of automorphisms of the vertices of <var class="Arg">digraph</var> with the stabiliser of the vertices in the automorphism group of the edges. These two groups can be accessed using the <code class="func">Projection</code> (<a href="../../../doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection</span></a>) with second argument <code class="code">1</code> and <code class="code">2</code>, respectively.</p>
+
+<p>The permutations in the automorphism group of the edges act on the indices of the edges of <var class="Arg">digraph</var>.</p>
+
+<p>The automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/index.html">bliss</a></span> by Tommi Junttila and Petteri Kaski.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));          </span>
+&lt;multidigraph with 3 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := AutomorphismGroup(gr);</span>
+Group([ (1,2,3), (8,9), (6,7), (4,5) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Range(Projection(G, 1));</span>
+Group([ (1,2,3) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Range(Projection(G, 2));</span>
+Group([ (5,6), (3,4), (1,2) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Size(G);</span>
+24</pre></div>
+
+<p><a id="X803ACEDA7BBAC5B3" name="X803ACEDA7BBAC5B3"></a></p>
+
+<h5>7.2-3 DigraphGroup</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGroup</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A permutation group.</p>
+
+<p>If <var class="Arg">digraph</var> was created knowing a subgroup of its automorphism group, then this group is stored in the attribute <code class="code">DigraphGroup</code>. If <var class="Arg">digraph</var> is not created knowing a subgroup of it automorphism group, then <code class="code">DigraphGroup</code> returns the entire automorphism group of <var class="Arg">digraph</var>.</p>
+
+<p>Note that certain other constructor operations such as <code class="func">CayleyDigraph</code> (<a href="chap3_mj.html#X7FCADADC7EC28478"><span class="RefLink">3.5-6</span></a>), <code class="func">BipartiteDoubleDigraph</code> (<a href="chap3_mj.html#X7C6E6CB284982C7A"><span class="RefLink">3.3-30</span></a>), and <code class="func">DoubleDigraph</code> (<a href="chap3_mj.html#X7FB8B48C87C0ED16"><span class="RefLink">3.3-29</span></a>), may not require a group as one of the arguments, but use the standard constructor method using a group, and hence set the <code class="code">DigraphGroup</code> attribute for the resulting digraph.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">n := 4;;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj := function(x, y)</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">     return (((x-y) mod n) = 1) or (((x-y) mod n) = n-1);</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">   end;;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">group := CyclicGroup(IsPermGroup, n);</span>
+Group([ (1,2,3,4) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := Digraph(group, [1..n], \^, adj);</span>
+&lt;digraph with 4 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HasDigraphGroup(digraph);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGroup(digraph);</span>
+Group([ (1,2,3,4) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">AutomorphismGroup(digraph);</span>
+Group([ (2,4), (1,2)(3,4) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ddigraph := DoubleDigraph(digraph);</span>
+&lt;digraph with 8 vertices, 32 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HasDigraphGroup(ddigraph);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGroup(ddigraph);</span>
+Group([ (1,2,3,4)(5,6,7,8), (1,5)(2,6)(3,7)(4,8) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">AutomorphismGroup(ddigraph);</span>
+Group([ (6,8), (5,7), (4,6), (3,5), (2,4), (1,2)(3,4)(5,6)(7,8) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := Digraph([[2, 3], [], []]);</span>
+&lt;digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HasDigraphGroup(digraph);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HasAutomorphismGroup(digraph);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGroup(digraph);</span>
+Group([ (2,3) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HasAutomorphismGroup(digraph);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">group := DihedralGroup(8);</span>
+&lt;pc group of size 8 with 3 generators&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := CayleyDigraph(group);</span>
+&lt;digraph with 8 vertices, 24 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HasDigraphGroup(digraph);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGroup(digraph);</span>
+Group([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)
+(5,8) ])
+</pre></div>
+
+<p><a id="X8657604E87A25E5F" name="X8657604E87A25E5F"></a></p>
+
+<h5>7.2-4 DigraphSchreierVector</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSchreierVector</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of integers.</p>
+
+<p><code class="code">DigraphSchreierVector</code> returns the so-called <em>Schreier vector</em> of the action of the <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) on the set of vertices of <var class="Arg">digraph</var>. The Schreier vector is a list <code class="code">sch</code> of integers with with length <code class="code">DigraphNrVertices(<var class="Arg">digraph</var>)</code> where:</p>
+
+
+<dl>
+<dt><strong class="Mark"><code class="code">sch[i] &lt; 0:</code></strong></dt>
+<dd><p>implies that <code class="code">i</code> is an orbit representative and <code class="code">DigraphOrbitReps(<var class="Arg">digraph</var>)[-sch[i]] = i</code>.</p>
+
+</dd>
+<dt><strong class="Mark"><code class="code">sch[i] &gt; 0:</code></strong></dt>
+<dd><p>implies that <code class="code">i / gens[sch[i]]</code> is one step closer to the root (or representative) of the tree, where <code class="code">gens</code> is the generators of <code class="code">DigraphGroup(<var class="Arg">digraph</var>)</code>.</p>
+
+</dd>
+</dl>
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := CayleyDigraph(AlternatingGroup(4));</span>
+&lt;digraph with 12 vertices, 24 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">sch := DigraphSchreierVector(digraph);</span>
+[ -1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphOrbitReps(digraph);</span>
+[ 1 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gens := GeneratorsOfGroup(DigraphGroup(digraph)); </span>
+[ (1,5,7)(2,4,8)(3,6,9)(10,11,12), (1,2,3)(4,7,10)(5,9,11)(6,8,12) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">10 / gens[sch[10]];</span>
+7
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">7 / gens[sch[7]];</span>
+5
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">5 / gens[sch[5]];</span>
+1</pre></div>
+
+<p><a id="X8386028782F2D3FF" name="X8386028782F2D3FF"></a></p>
+
+<h5>7.2-5 DigraphOrbitReps</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphOrbitReps</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of integers.</p>
+
+<p><code class="code">DigraphOrbitReps</code> returns a list of orbit representatives of the action of the <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) on the set of vertices of <var class="Arg">digraph</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := CayleyDigraph(AlternatingGroup(4));</span>
+&lt;digraph with 12 vertices, 24 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphOrbitReps(digraph);</span>
+[ 1 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := Digraph([[3, 8], [], [6, 8], [7], [2, 9], [10], [7], [1], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                       [2, 7, 8], [8]]);</span>
+&lt;digraph with 10 vertices, 14 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphOrbitReps(digraph); </span>
+[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+</pre></div>
+
+<p><a id="X78913684795FB256" name="X78913684795FB256"></a></p>
+
+<h5>7.2-6 DigraphStabilizer</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphStabilizer</code>( <var class="Arg">digraph</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A permutation group.</p>
+
+<p><code class="code">DigraphStabilizer</code> returns the stabilizer of the vertex <var class="Arg">v</var> under of the action of the <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) on the set of vertices of <var class="Arg">digraph</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := Digraph([[2, 3, 5], [1, 4, 6], [4, 2, 7], [3, 1, 8], [6, 8, 1],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                       [5, 7, 2], [8, 5, 3], [7, 6, 4]]);</span>
+&lt;digraph with 8 vertices, 24 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphStabilizer(digraph, 8);</span>
+Group(())
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphStabilizer(digraph, 2);</span>
+Group(())
+</pre></div>
+
+<p><a id="X8096C5287E459279" name="X8096C5287E459279"></a></p>
+
+<h5>7.2-7 DigraphOrbits</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphOrbits</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of lists of integers.</p>
+
+<p><code class="code">DigraphOrbits</code> returns the orbits of the action of the <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) on the set of vertices of <var class="Arg">digraph</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := Group((1,2,3), (1,2), (4,5,6), (7,8,9), (7,8));;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := EdgeOrbitsDigraph(G, [1, 2]);</span>
+&lt;digraph with 9 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphOrbits(gr);</span>
+[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ]
+</pre></div>
+
+<p><a id="X7E1C806D81DFE15E" name="X7E1C806D81DFE15E"></a></p>
+
+<h5>7.2-8 RepresentativeOutNeighbours</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; RepresentativeOutNeighbours</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: An immutable list of immutable lists.</p>
+
+<p>This function returns the list <code class="code">out</code> of <em>out-neighbours</em> of each representative of the orbits of the action of <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) on the vertex set of the digraph <var class="Arg">digraph</var>.</p>
+
+<p>More specifically, if <code class="code">reps</code> is the list of orbit representatives, then a vertex <code class="code">j</code> appears in <code class="code">out[i]</code> each time there exists an edge with source <code class="code">reps[i]</code> and range <code class="code">j</code> in <var class="Arg">digraph</var>.</p>
+
+<p>If <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) is trivial, then <code class="func">OutNeighbours</code> (<a href="chap5_mj.html#X7E9880767AE68E00"><span class="RefLink">5.2-5</span></a>) is returned.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := Digraph([[1, 2, 3, 4, 5], [3, 5], [2], [1, 2, 3, 5], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                       [1, 2, 3, 4]]);</span>
+&lt;digraph with 5 vertices, 16 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGroup(digraph);</span>
+Group(())
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RepresentativeOutNeighbours(digraph);</span>
+[ [ 1, 2, 3, 4, 5 ], [ 3, 5 ], [ 2 ], [ 1, 2, 3, 5 ], [ 1, 2, 3, 4 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := Digraph([[2, 3, 5], [1, 4, 6], [4, 2, 7], [3, 1, 8], [6, 8, 1],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                       [5, 7, 2], [8, 5, 3], [7, 6, 4]]);</span>
+&lt;digraph with 8 vertices, 24 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGroup(digraph);</span>
+Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)
+(4,7) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RepresentativeOutNeighbours(digraph);</span>
+[ [ 2, 3, 5 ] ]</pre></div>
+
+<p><a id="X7984D48F7F78C50E" name="X7984D48F7F78C50E"></a></p>
+
+<h5>7.2-9 DigraphCanonicalLabelling</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphCanonicalLabelling</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphCanonicalLabelling</code>( <var class="Arg">digraph</var>, <var class="Arg">colors</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A permutation.</p>
+
+<p>A function <span class="SimpleMath">\(\rho\)</span> from a digraph to a digraph is a <em>canonical representative map</em> if the following two conditions hold:</p>
+
+
+<ul>
+<li><p><span class="SimpleMath">\(\rho(G)\)</span> and <span class="SimpleMath">\(G\)</span> are isomorphic; and</p>
+
+</li>
+<li><p><span class="SimpleMath">\(\rho(G)=\rho(H)\)</span> if and only if <span class="SimpleMath">\(G\)</span> and <span class="SimpleMath">\(H\)</span> are isomorphic.</p>
+
+</li>
+</ul>
+<p>A canonical labelling of a digraph <var class="Arg">digraph</var> (under <span class="SimpleMath">\(\rho\)</span>) is an isomorphism of <var class="Arg">digraph</var> onto its canonical representative <span class="SimpleMath">\(\rho(\)</span><var class="Arg">digraph</var><span class="SimpleMath">\()\)</span> given as a permutation of the vertices (and the edges in case <var class="Arg">digraph</var> has multiple edges).</p>
+
+<p>If the <var class="Arg">colors</var> argument is specified, then the canonical labelling will respect the given colouring. The colouring <var class="Arg">colors</var> can be in one of two forms:</p>
+
+
+<ul>
+<li><p>A list of positive integers of size the number of vertices of <var class="Arg">digraph</var>, where <var class="Arg">colors</var><code class="code">[i]</code> is the colour of vertex <code class="code">i</code>.</p>
+
+</li>
+<li><p>A list of lists, such that <var class="Arg">colors</var><code class="code">[i]</code> is a list of all vertices with colour <code class="code">i</code>.</p>
+
+</li>
+</ul>
+<p>The canonical labelling is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/index.html">bliss</a></span> by Tommi Junttila and Petteri Kaski.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := Digraph(10, [1, 1, 3, 4, 4, 5, 8, 8], [6, 3, 3, 9, 10, 9, 4, 10]);</span>
+&lt;digraph with 10 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphCanonicalLabelling(G);</span>
+(1,3,4)(2,10,6,7,9,8)
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphCanonicalLabelling(G, [[1 .. 5], [6 .. 10]]);</span>
+(1,4,3,5)(6,8)(7,9,10)
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphCanonicalLabelling(G, [1, 1, 1, 1, 2, 3, 1, 3, 2, 1]);</span>
+(2,3,4,6,10,5,8,9,7)
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">p := (1,2,7,5)(3,9)(6,10,8);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">H := Digraph(</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput"> 10,</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput"> OnTuples([1, 1, 3, 4, 4, 5, 8, 8], p),</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput"> OnTuples([6, 3, 3, 9, 10, 9, 4, 10], p)</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">);</span>
+&lt;digraph with 10 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G = H;</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OnDigraphs(G, DigraphCanonicalLabelling(G)) =</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">   OnDigraphs(H, DigraphCanonicalLabelling(H));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[7, 2, 8, 2], [7, 6], [9], [], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[], [], [], [2], [6], [4]]);</span>
+&lt;multidigraph with 10 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphCanonicalLabelling(gr);</span>
+[ (1,9,7,5)(2,10,3), (1,7,3,8,2,6,10,4,5,9) ]</pre></div>
+
+<p><a id="X7B4F24B283C9EE28" name="X7B4F24B283C9EE28"></a></p>
+
+<h5>7.2-10 IsIsomorphicDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsIsomorphicDigraph</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This operation returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph1</var> is isomorphic to the digraph <var class="Arg">digraph2</var>.</p>
+
+<p>This operation uses the canonical labelling of the digraphs found with <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/index.html">bliss</a></span> by Tommi Junttila and Petteri Kaski.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph1 := CycleDigraph(4);</span>
+&lt;digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph2 := CycleDigraph(5);</span>
+&lt;digraph with 5 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsIsomorphicDigraph(digraph1, digraph2);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph2 := DigraphReverse(digraph1);</span>
+&lt;digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsIsomorphicDigraph(digraph1, digraph2);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph1 := Digraph([[], [9, 8, 9], [7], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[], [], [5, 3], [8], [6], [4, 5], []]);</span>
+&lt;multidigraph with 10 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph2 := Digraph([[], [4], [], [7], [], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[4, 5, 10, 5], [], [9], [4, 2], [2]]);</span>
+&lt;multidigraph with 10 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsIsomorphicDigraph(digraph1, digraph2);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph1 := Digraph([[3], [], []]);</span>
+&lt;digraph with 3 vertices, 1 edge&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph2 := Digraph([[], [], [2]]);</span>
+&lt;digraph with 3 vertices, 1 edge&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsIsomorphicDigraph(digraph1, digraph2);</span>
+true</pre></div>
+
+<p><a id="X8219FE6C839D9457" name="X8219FE6C839D9457"></a></p>
+
+<h5>7.2-11 IsomorphismDigraphs</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsomorphismDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A permutation or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> are isomorphic digraphs, then this operation returns an isomorphism from <var class="Arg">digraph1</var> to <var class="Arg">digraphs2</var>. More precisely,</p>
+
+
+<dl>
+<dt><strong class="Mark">for multidigraphs</strong></dt>
+<dd><p>this operation returns a pair of permutations <code class="code">P</code> such that <code class="code">OnMultiDigraphs(<var class="Arg">digraph1</var>, P) = digraph2</code>. The first permutation is defined on the vertices of <var class="Arg">digraph1</var> and the second on the edges.</p>
+
+</dd>
+<dt><strong class="Mark">for digraphs without multiple edges</strong></dt>
+<dd><p>this operation returns a permutation <code class="code">p</code> such that <code class="code">OnDigraphs(<var class="Arg">digraph1</var>, p) = digraph2</code>.</p>
+
+</dd>
+</dl>
+<p>If <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> are not isomorphic, then <code class="keyw">fail</code> is returned.</p>
+
+<p>This operation uses the canonical labelling of the digraphs found with <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/index.html">bliss</a></span> by Tommi Junttila and Petteri Kaski.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph1 := CycleDigraph(4);          </span>
+&lt;digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph2 := CycleDigraph(5);</span>
+&lt;digraph with 5 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsomorphismDigraphs(digraph1, digraph2);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := CompleteBipartiteDigraph(10, 5);</span>
+&lt;digraph with 15 vertices, 100 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := CompleteBipartiteDigraph(5, 10);</span>
+&lt;digraph with 15 vertices, 100 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">p := IsomorphismDigraphs(gr1, gr2);</span>
+(1,6,11)(2,7,12)(3,8,13)(4,9,14)(5,10,15)
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OnDigraphs(gr1, p) = gr2;</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := Digraph([[3, 6, 3], [], [3], [9, 10], [9], [], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[], [10, 4, 10], [], []]);</span>
+&lt;multidigraph with 10 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := Digraph([[], [], [5], [], [], [], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[5, 6], [6, 7, 6], [10, 4, 10], [10]]);</span>
+&lt;multidigraph with 10 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsomorphismDigraphs(gr1, gr2);</span>
+[ (1,9,5,3,10,6,4,7,2), (1,7)(2,8,4,10,6,3,9,5) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph1 := Digraph([[], [], [], [], [], [], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[10, 10], [], [], []]);</span>
+&lt;multidigraph with 10 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph2 := Digraph([[], [3, 3], [], [], [], [],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[], [], [], []]);</span>
+&lt;multidigraph with 10 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsomorphismDigraphs(digraph1, digraph2);</span>
+[ (2,4,6,8,9,10,3,5,7), () ]</pre></div>
+
+<p><a id="X7E1A02FE8384C03C" name="X7E1A02FE8384C03C"></a></p>
+
+<h4>7.3 <span class="Heading">Homomorphisms of digraphs</span></h4>
+
+<p>The following methods exist to find homomorphisms between digraphs. If an argument to one of these methods is a digraph with multiple edges, then the multiplicity of edges will be ignored in order to perform the calculation; the digraph will be treated as if it has no multiple edges.</p>
+
+<p><a id="X79ABF0E783FD67C7" name="X79ABF0E783FD67C7"></a></p>
+
+<h5>7.3-1 HomomorphismDigraphsFinder</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismDigraphsFinder</code>( <var class="Arg">gr1</var>, <var class="Arg">gr2</var>, <var class="Arg">hook</var>, <var class="Arg">user_param</var>, <var class="Arg">limit</var>, <var class="Arg">hint</var>, <var class="Arg">injective</var>, <var class="Arg">image</var>, <var class="Arg">map</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns: The argument <var class="Arg">user_param</var>.</p>
+
+<p>This function finds homomorphisms from the graph <var class="Arg">gr1</var> to the graph <var class="Arg">gr2</var> subject to the conditions imposed by the other arguments as described below.</p>
+
+<p>If <code class="code">f</code> and <code class="code">g</code> are homomorphisms found by <code class="code">HomomorphismGraphsFinder</code>, then <code class="code">f</code> cannot be obtained from <code class="code">g</code> by right multiplying by an automorphism of <var class="Arg">gr2</var>.</p>
+
+
+<dl>
+<dt><strong class="Mark"><var class="Arg">hook</var></strong></dt>
+<dd><p>This argument should be a function or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">hook</var> is a function, then it should have two arguments <var class="Arg">user_param</var> (see below) and a transformation <code class="code">t</code>. The function <code class="code"><var class="Arg">hook</var>(<var class="Arg">user_param</var>, t)</code> is called every time a new homomorphism <code class="code">t</code> is found by <code class="code">HomomorphismGraphsFinder</code>.</p>
+
+<p>If <var class="Arg">hook</var> is <code class="keyw">fail</code>, then a default function is used which simply adds every new homomorphism found by <code class="code">HomomorphismGraphsFinder</code> to <var class="Arg">user_param</var>, which must be a list in this case.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">user_param</var></strong></dt>
+<dd><p>If <var class="Arg">hook</var> is a function, then <var class="Arg">user_param</var> can be any <strong class="pkg">GAP</strong> object. The object <var class="Arg">user_param</var> is used as the first argument for the function <var class="Arg">hook</var>. For example, <var class="Arg">user_param</var> might be a transformation semigroup, and <code class="code"><var class="Arg">hook</var>(<var class="Arg">user_param</var>, t)</code> might set <var class="Arg">user_param</var> to be the closure of <var class="Arg">user_param</var> and <code class="code">t</code>.</p>
+
+<p>If the value of <var class="Arg">hook</var> is <code class="keyw">fail</code>, then the value of <var class="Arg">user_param</var> must be a list.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">limit</var></strong></dt>
+<dd><p>This argument should be a positive integer or <code class="keyw">infinity</code>. <code class="code">HomomorphismGraphsFinder</code> will return after it has found <var class="Arg">limit</var> homomorphisms or the search is complete.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">hint</var></strong></dt>
+<dd><p>This argument should be a positive integer or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">hint</var> is a positive integer, then only homorphisms of rank <var class="Arg">hint</var> are found.</p>
+
+<p>If <var class="Arg">hint</var> is <code class="keyw">fail</code>, then no restriction is put on the rank of homomorphisms found.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">injective</var></strong></dt>
+<dd><p>This argument should be <code class="keyw">true</code> or <code class="keyw">false</code>. If it is <code class="keyw">true</code>, then only injective homomorphisms are found, and if it is <code class="keyw">false</code> there are no restrictions imposed by this argument.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">image</var></strong></dt>
+<dd><p>This argument should be a subset of the vertices of the graph <var class="Arg">gr2</var>. <code class="code">HomomorphismGraphsFinder</code> only finds homomorphisms from <var class="Arg">gr1</var> to the subgraph of <var class="Arg">gr2</var> induced by the vertices <var class="Arg">image</var>.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">map</var></strong></dt>
+<dd><p>This argument should be a partial map from <var class="Arg">gr1</var> to <var class="Arg">gr2</var>, that is, a (not necessarily dense) list of vertices of the graph <var class="Arg">gr2</var> of length no greater than the number vertices in the graph <var class="Arg">gr1</var>. <code class="code">HomomorphismGraphsFinder</code> only finds homomorphisms extending <var class="Arg">map</var> (if any).</p>
+
+</dd>
+</dl>
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(10);</span>
+&lt;digraph with 10 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphSymmetricClosure(gr);</span>
+&lt;digraph with 10 vertices, 18 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, 2, false,</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[3, 4], [], fail, fail);</span>
+[ Transformation( [ 3, 4, 3, 4, 3, 4, 3, 4, 3, 4 ] ), 
+  Transformation( [ 4, 3, 4, 3, 4, 3, 4, 3, 4, 3 ] ) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := CompleteDigraph(6);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(gr, gr2, fail, [], 1, fail, false,</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1 .. 6], [1, 2, 1], fail, fail);</span>
+[ Transformation( [ 1, 2, 1, 3, 4, 5, 6, 1, 2, 1 ] ) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">func := function(user_param, t)</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">Add(user_param, t * user_param[1]);</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">end;;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(gr, gr2, func, [Transformation([2, 2])],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">3, fail, false, [1 .. 6], [1, 2, 1], fail, fail);</span>
+[ Transformation( [ 2, 2 ] ), 
+  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 2 ] ), 
+  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 3 ] ), 
+  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 4 ] ) ]</pre></div>
+
+<p><a id="X85E9B019877AD7FE" name="X85E9B019877AD7FE"></a></p>
+
+<h5>7.3-2 DigraphHomomorphism</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphHomomorphism</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
+
+<p>A homomorphism from <var class="Arg">digraph1</var> to <var class="Arg">digraph2</var> is a mapping from the vertex set of <var class="Arg">digraph1</var> to a subset of the vertices of <var class="Arg">digraph2</var>, such that every pair of vertices <code class="code">[i,j]</code> which has an edge <code class="code">i-&gt;j</code> is mapped to a pair of vertices <code class="code">[a,b]</code> which has an edge <code class="code">a-&gt;b</code>. Note that non adjacent vertices can still be mapped onto adjacent ones.</p>
+
+<p><code class="code">DigraphHomomorphism</code> returns a single homomorphism between <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> if it exists, otherwise it returns <code class="keyw">fail</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := ChainDigraph(3);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);</span>
+&lt;digraph with 5 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphHomomorphism(gr1, gr1);</span>
+IdentityTransformation
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphHomomorphism(gr1, gr2);</span>
+Transformation( [ 1, 3, 1 ] )
+</pre></div>
+
+<p><a id="X8653EDA183E06D05" name="X8653EDA183E06D05"></a></p>
+
+<h5>7.3-3 HomomorphismsDigraphs</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismsDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismsDigraphsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A list of transformations.</p>
+
+<p><code class="code">HomomorphismsDigraphsRepresentatives</code> finds every <code class="func">DigraphHomomorphism</code> (<a href="chap7_mj.html#X85E9B019877AD7FE"><span class="RefLink">7.3-2</span></a>) between <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var>, up to right multiplication by an element of the <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-1</span></a>) of <var class="Arg">digraph2</var>. In other words, every homomorphism <code class="code">f</code> between <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> can be written as the composition <code class="code">f = g * x</code>, where <code class="code">g</code> is one of the <code class="code">HomomorphismsDigraphsRepresentatives</code> and <code class="code">x</code> is an automorphism of <var class="Arg">digraph2</var>.</p>
+
+<p><code class="code">HomomorphismsDigraphs</code> returns all homomorphisms between <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := ChainDigraph(3);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);</span>
+&lt;digraph with 5 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismsDigraphs(gr1, gr2);</span>
+[ Transformation( [ 1, 3, 1 ] ), Transformation( [ 1, 3, 3 ] ), 
+  Transformation( [ 1, 5, 4, 4, 5 ] ), Transformation( [ 2, 2, 2 ] ), 
+  Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 1, 5, 4, 5 ] ), 
+  Transformation( [ 3, 3, 1 ] ), Transformation( [ 3, 3, 3 ] ) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));</span>
+[ IdentityTransformation, Transformation( [ 1, 2, 1 ] ) ]
+</pre></div>
+
+<p><a id="X82D0FCD87D47ACA8" name="X82D0FCD87D47ACA8"></a></p>
+
+<h5>7.3-4 DigraphMonomorphism</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMonomorphism</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
+
+<p><code class="code">DigraphMonomorphism</code> returns a single <em>injective</em> <code class="func">DigraphHomomorphism</code> (<a href="chap7_mj.html#X85E9B019877AD7FE"><span class="RefLink">7.3-2</span></a>) between <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> if one exists, otherwise it returns <code class="keyw">fail</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := ChainDigraph(3);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);</span>
+&lt;digraph with 5 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMonomorphism(gr1, gr1);</span>
+IdentityTransformation
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMonomorphism(gr1, gr2);</span>
+Transformation( [ 1, 5, 4, 4, 5 ] )
+</pre></div>
+
+<p><a id="X84B4BDB984C2A9A8" name="X84B4BDB984C2A9A8"></a></p>
+
+<h5>7.3-5 MonomorphismsDigraphs</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; MonomorphismsDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; MonomorphismsDigraphsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A list of transformations.</p>
+
+<p>These operations behave the same as <code class="func">HomomorphismsDigraphs</code> (<a href="chap7_mj.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>) and <code class="func">HomomorphismsDigraphsRepresentatives</code> (<a href="chap7_mj.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>), expect they only return <em>injective</em> homomorphisms.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := ChainDigraph(3);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);</span>
+&lt;digraph with 5 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MonomorphismsDigraphs(gr1, gr2);</span>
+[ Transformation( [ 1, 5, 4, 4, 5 ] ), 
+  Transformation( [ 3, 1, 5, 4, 5 ] ) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MonomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));</span>
+[ IdentityTransformation ]
+</pre></div>
+
+<p><a id="X7CB5AD9F861684FD" name="X7CB5AD9F861684FD"></a></p>
+
+<h5>7.3-6 DigraphEpimorphism</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEpimorphism</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
+
+<p><code class="code">DigraphEpimorphism</code> returns a single <em>surjective</em> <code class="func">DigraphHomomorphism</code> (<a href="chap7_mj.html#X85E9B019877AD7FE"><span class="RefLink">7.3-2</span></a>) between <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> if one exists, otherwise it returns <code class="keyw">fail</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := DigraphReverse(ChainDigraph(4));</span>
+&lt;digraph with 4 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := DigraphRemoveEdge(CompleteDigraph(3), [1, 2]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEpimorphism(gr2, gr1);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEpimorphism(gr1, gr2);</span>
+Transformation( [ 1, 2, 3, 1 ] )
+</pre></div>
+
+<p><a id="X7DFB1F5D873937B3" name="X7DFB1F5D873937B3"></a></p>
+
+<h5>7.3-7 EpimorphismsDigraphs</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EpimorphismsDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EpimorphismsDigraphsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A list of transformations.</p>
+
+<p>These operations behave the same as <code class="func">HomomorphismsDigraphs</code> (<a href="chap7_mj.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>) and <code class="func">HomomorphismsDigraphsRepresentatives</code> (<a href="chap7_mj.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>), expect they only return <em>surjective</em> homomorphisms.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr1 := DigraphReverse(ChainDigraph(4));</span>
+&lt;digraph with 4 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := DigraphSymmetricClosure(CycleDigraph(3));</span>
+&lt;digraph with 3 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EpimorphismsDigraphsRepresentatives(gr1, gr2);</span>
+[ Transformation( [ 1, 2, 3, 1 ] ), Transformation( [ 1, 2, 3, 2 ] ), 
+  Transformation( [ 1, 2, 1, 3 ] ) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EpimorphismsDigraphs(gr1, gr2);</span>
+[ Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 3, 1 ] ), 
+  Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 3, 1, 2 ] ), 
+  Transformation( [ 1, 3, 2, 1 ] ), Transformation( [ 1, 3, 2, 3 ] ), 
+  Transformation( [ 2, 1, 2, 3 ] ), Transformation( [ 2, 1, 3, 1 ] ), 
+  Transformation( [ 2, 1, 3, 2 ] ), Transformation( [ 2, 3, 1, 2 ] ), 
+  Transformation( [ 2, 3, 1, 3 ] ), Transformation( [ 2, 3, 2, 1 ] ), 
+  Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ), 
+  Transformation( [ 3, 1, 3, 2 ] ), Transformation( [ 3, 2, 1, 2 ] ), 
+  Transformation( [ 3, 2, 1, 3 ] ), Transformation( [ 3, 2, 3, 1 ] ) ]
+</pre></div>
+
+<p><a id="X7E93B268823F6478" name="X7E93B268823F6478"></a></p>
+
+<h5>7.3-8 GeneratorsOfEndomorphismMonoid</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfEndomorphismMonoid</code>( <var class="Arg">digraph</var>[, <var class="Arg">colors</var>][, <var class="Arg">limit</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfEndomorphismMonoidAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list of transformations.</p>
+
+<p>An endomorphism of <var class="Arg">digraph</var> is a homomorphism <code class="func">DigraphHomomorphism</code> (<a href="chap7_mj.html#X85E9B019877AD7FE"><span class="RefLink">7.3-2</span></a>) from <var class="Arg">digraph</var> back to itself. <code class="code">GeneratorsOfEndomorphismMonoid</code>, called with a single argument, returns a generating set for the monoid of all endomorphisms of <var class="Arg">digraph</var>.</p>
+
+<p>If the <var class="Arg">colors</var> argument is specified, then it will return a generating set for the monoid of endomorphisms which respect the given colouring. The colouring <var class="Arg">colors</var> can be in one of two forms:</p>
+
+
+<ul>
+<li><p>A list of positive integers of size the number of vertices of <var class="Arg">digraph</var>, where <var class="Arg">colors</var><code class="code">[i]</code> is the colour of vertex <code class="code">i</code>.</p>
+
+</li>
+<li><p>A list of lists, such that <var class="Arg">colors</var><code class="code">[i]</code> is a list of all vertices with colour <code class="code">i</code>.</p>
+
+</li>
+</ul>
+<p>If the <var class="Arg">limit</var> argument is specified, then it will return only the first <var class="Arg">limit</var> homomorphisms, where <var class="Arg">limit</var> must be a positive integer or <code class="code">infinity</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(List([1 .. 3], x -&gt; [1 .. 3]));;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GeneratorsOfEndomorphismMonoid(gr);</span>
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
+  IdentityTransformation, Transformation( [ 1, 2, 1 ] ), 
+  Transformation( [ 1, 2, 2 ] ), Transformation( [ 1, 1, 2 ] ), 
+  Transformation( [ 1, 1, 1 ] ) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GeneratorsOfEndomorphismMonoid(gr, 3);</span>
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
+  IdentityTransformation ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CompleteDigraph(3);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GeneratorsOfEndomorphismMonoid(gr);</span>
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
+  IdentityTransformation ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GeneratorsOfEndomorphismMonoid(gr, [1, 2, 2]);</span>
+[ Transformation( [ 1, 3, 2 ] ), IdentityTransformation ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);</span>
+[ Transformation( [ 1, 3, 2 ] ), IdentityTransformation ]
+</pre></div>
+
+<p><a id="X780D26F082572325" name="X780D26F082572325"></a></p>
+
+<h5>7.3-9 DigraphColoring</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColoring</code>( <var class="Arg">digraph</var>, <var class="Arg">n</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">n</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColoring</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
+
+<p>A digraph coloring is a labeling of the vertices (using precisely <var class="Arg">n</var> colors) in such a way that two adjacent vertices can not have the same label. Alternatively, it can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7_mj.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from <var class="Arg">digraph</var> onto a complete digraph with <var class="Arg">n</var> vertices.</p>
+
+<p><code class="code">DigraphColoring</code> returns such an epimorphism if one exists, else it returns <code class="keyw">fail</code>.</p>
+
+<p>Note that a digraph has a 2-coloring if and only if it is bipartite, see <code class="func">IsBipartiteDigraph</code> (<a href="chap6_mj.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>).</p>
+
+<p>If the third form is used, a greedy algorithm is used to obtain a colouring, which possibly is not minimal.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphColoring(CompleteDigraph(5), 4);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphColoring(ChainDigraph(10), 1);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(10);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">t := DigraphColoring(gr, 2);</span>
+Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ForAll(DigraphEdges(gr), e -&gt; e[1] ^ t &lt;&gt; e[2] ^ t);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphColoring(gr);</span>
+Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
+</pre></div>
+
+<p><a id="X7AD04CC186E86CCA" name="X7AD04CC186E86CCA"></a></p>
+
+<h5>7.3-10 DigraphEmbedding</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEmbedding</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
+
+<p>An embedding of a digraph <var class="Arg">digraph1</var> into another digraph <var class="Arg">digraph2</var> is a <code class="func">DigraphMonomorphism</code> (<a href="chap7_mj.html#X82D0FCD87D47ACA8"><span class="RefLink">7.3-4</span></a>) from <var class="Arg">digraph1</var> to <var class="Arg">digraph2</var> which has the additional property that a pair of vertices <code class="code">[i,j]</code> which have no edge <code class="code">i-&gt;j</code> in <var class="Arg">digraph1</var> are mapped to a pair of vertices <code class="code">[a,b]</code> which have no edge <code class="code">a-&gt;b</code> in <var class="Arg">digraph2</var>.</p>
+
+<p>In other words, an embedding <code class="code">t</code> is an isomorphism from <var class="Arg">digraph1</var> to the <code class="func">InducedSubdigraph</code> (<a href="chap3_mj.html#X83C51DA182CCEA2F"><span class="RefLink">3.3-2</span></a>) of <var class="Arg">digraph2</var> on the image of <code class="code">t</code>.</p>
+
+<p><code class="code">DigraphEmbedding</code> returns a single embedding if one exists, otherwise it returns <code class="keyw">fail</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(3);</span>
+&lt;digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEmbedding(gr, CompleteDigraph(4));</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEmbedding(gr, Digraph([[3], [1, 4], [1], [3]]));</span>
+Transformation( [ 2, 4, 3, 4 ] )
+</pre></div>
+
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap6_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap8_mj.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0_mj.html">Top</a>  <a href="chap1_mj.html">1</a>  <a href="chap2_mj.html">2</a>  <a href="chap3_mj.html">3</a>  <a href="chap4_mj.html">4</a>  <a href="chap5_mj.html">5</a>  <a href="chap6_mj.html">6</a>  <a href="chap7_mj.html">7</a>  <a href="chap8_mj.html">8</a>  <a href="chap9_mj.html">9</a>  <a href="chapA_mj.html">A</a>  <a href="chapBib_mj.html">Bib</a>  <a href="chapInd_mj.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+</body>
+</html>

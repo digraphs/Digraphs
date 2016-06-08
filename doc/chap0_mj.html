@@ -1,11 +1,429 @@
-<!DOCTYPE html>
-<html lang="en">
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-	<meta charset="UTF-8" />
-	<title>Placeholder</title>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<title>GAP (digraphs) - Contents</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+<script src="manual.js" type="text/javascript"></script>
+<script type="text/javascript">overwriteStyle();</script>
 </head>
-<body>
-<h1>Placeholder!</h1>
-<a href="..">Back</a>
+<body class="chap0"  onload="jscontent()">
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0_mj.html">Top</a>  <a href="chap1_mj.html">1</a>  <a href="chap2_mj.html">2</a>  <a href="chap3_mj.html">3</a>  <a href="chap4_mj.html">4</a>  <a href="chap5_mj.html">5</a>  <a href="chap6_mj.html">6</a>  <a href="chap7_mj.html">7</a>  <a href="chap8_mj.html">8</a>  <a href="chap9_mj.html">9</a>  <a href="chapA_mj.html">A</a>  <a href="chapBib_mj.html">Bib</a>  <a href="chapInd_mj.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap1_mj.html">[Next Chapter]</a>&nbsp;  </div>
+
+<p id="mathjaxlink" class="pcenter"><a href="chap0.html">[MathJax off]</a></p>
+<p><a id="X7D2C85EC87DD46E5" name="X7D2C85EC87DD46E5"></a></p>
+<div class="pcenter">
+
+<h1><strong class="pkg">Digraphs</strong></h1>
+
+
+<h2>Methods for digraphs</h2>
+
+<p>Version 0.5.1.1</p>
+
+</div>
+<p><b>Jan De Beule
+    
+    
+  </b>
+<br />Email: <span class="URL"><a href="mailto:jdebeule@cage.ugent.be">jdebeule@cage.ugent.be</a></span>
+<br />Homepage: <span class="URL"><a href="http://homepages.vub.ac.be/~jdbeule/">http://homepages.vub.ac.be/~jdbeule/</a></span>
+</p><p><b>Julius Jonušas
+    
+    
+  </b>
+<br />Email: <span class="URL"><a href="mailto:jj252@st-and.ac.uk">jj252@st-and.ac.uk</a></span>
+<br />Homepage: <span class="URL"><a href="http://www-circa.mcs.st-and.ac.uk/~julius">http://www-circa.mcs.st-and.ac.uk/~julius</a></span>
+</p><p><b>James D. Mitchell
+    
+    
+  </b>
+<br />Email: <span class="URL"><a href="mailto:jdm3@st-and.ac.uk">jdm3@st-and.ac.uk</a></span>
+<br />Homepage: <span class="URL"><a href="http://tinyurl.com/jdmitchell">http://tinyurl.com/jdmitchell</a></span>
+</p><p><b>Michael Torpey
+    
+    
+  </b>
+<br />Email: <span class="URL"><a href="mailto:mct25@st-and.ac.uk">mct25@st-and.ac.uk</a></span>
+<br />Homepage: <span class="URL"><a href="http://www-circa.mcs.st-and.ac.uk/~mct25">http://www-circa.mcs.st-and.ac.uk/~mct25</a></span>
+</p><p><b>Wilf Wilson
+    
+    
+  </b>
+<br />Email: <span class="URL"><a href="mailto:waw7@st-and.ac.uk">waw7@st-and.ac.uk</a></span>
+<br />Homepage: <span class="URL"><a href="http://www-circa.mcs.st-and.ac.uk/~waw7">http://www-circa.mcs.st-and.ac.uk/~waw7</a></span>
+</p>
+
+<p><a id="X7AA6C5737B711C89" name="X7AA6C5737B711C89"></a></p>
+<h3>Abstract</h3>
+<p>The <strong class="pkg">Digraphs</strong> package is a <strong class="pkg">GAP</strong> package containing methods for graphs, digraphs, and multidigraphs.</p>
+
+<p><a id="X81488B807F2A1CF1" name="X81488B807F2A1CF1"></a></p>
+<h3>Copyright</h3>
+<p>© 2014-16 by Julius Jonušas, J.D. Mitchell, Michael Torpey, Wilf Wilson.</p>
+
+<p><strong class="pkg">Digraphs</strong> is free software; you can redistribute it and/or modify it under the terms of the <span class="URL"><a href=" http://www.fsf.org/licenses/gpl.html">GNU General Public License</a></span> as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.</p>
+
+<p><a id="X82A988D47DFAFCFA" name="X82A988D47DFAFCFA"></a></p>
+<h3>Acknowledgements</h3>
+<p>We would like to thank Chris Jefferson for his help in including the <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> tool in the package. This package's methods for computing digraph homomorphisms are based on work by Max Neunhöffer, and independently Artur Schäfer.</p>
+
+<p><a id="X8537FEB07AF2BEC8" name="X8537FEB07AF2BEC8"></a></p>
+
+<div class="contents">
+<h3>Contents<a id="contents" name="contents"></a></h3>
+
+<div class="ContChap"><a href="chap1_mj.html#X7DA617417D78957D">1 <span class="Heading">
+    The <strong class="pkg">Digraphs</strong> package
+  </span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1_mj.html#X7DFB63A97E67C0A1">1.1 <span class="Heading">Introduction</span></a>
+</span>
+</div>
+</div>
+<div class="ContChap"><a href="chap2_mj.html#X7A167E257B137E9A">2 <span class="Heading">Installing <strong class="pkg">Digraphs</strong></span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap2_mj.html#X7DA3059C79842BF3">2.1 <span class="Heading">For those in a hurry</span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap2_mj.html#X780AA9D97EBCA95D">2.2 <span class="Heading">Optional package dependencies</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X8493C7587FCF6D8B">2.2-1 <span class="Heading">The Grape package</span></a>
+</span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap2_mj.html#X849F6196875A6DF5">2.3 <span class="Heading">Compiling the kernel module</span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap2_mj.html#X857CBE5484CF703A">2.4 <span class="Heading">Rebuilding the documentation</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X870631C38610AC25">2.4-1 DigraphsMakeDoc</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap2_mj.html#X7862D3F37C5BBDEF">2.5 <span class="Heading">Testing your installation</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X86AF4DAE80B978DA">2.5-1 DigraphsTestInstall</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X7A20088B7C406C4A">2.5-2 DigraphsTestStandard</a></span>
+</div></div>
+</div>
+<div class="ContChap"><a href="chap3_mj.html#X7D34861E863A5D93">3 <span class="Heading">Creating digraphs</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3_mj.html#X7D34861E863A5D93">3.1 <span class="Heading">Creating digraphs</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7877ADC77F85E630">3.1-1 IsDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7E749324800B38A5">3.1-2 IsCayleyDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X80F1B6D28478D8B9">3.1-3 IsDigraphWithAdjacencyFunction</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7841BAC987B1F269">3.1-4 DigraphType</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X834843057CE86655">3.1-5 Digraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X8023FE387A3AB609">3.1-6 DigraphByAdjacencyMatrix</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7F37B6768349E269">3.1-7 DigraphByEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7B75C1D680757D6F">3.1-8 EdgeOrbitsDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X81BC49B57EAADEFB">3.1-9 DigraphByInNeighbours</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3_mj.html#X83608C407CC8836D">3.2 <span class="Heading">Changing representations</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7FBC4BDB82FBEDD2">3.2-1 AsBinaryRelation</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X83CA27E67F685EB3">3.2-2 AsDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7B335342839E5146">3.2-3 Graph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7C4F13E080EC16B0">3.2-4 AsGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7C5360B2799943F3">3.2-5 AsTransformation</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3_mj.html#X85126078848B420A">3.3 <span class="Heading">New digraphs from old</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X8457F40387657735">3.3-1 DigraphCopy</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X83C51DA182CCEA2F">3.3-2 InducedSubdigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7CAF093B85A93D2F">3.3-3 ReducedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X829E3EAC7C4B3B1E">3.3-4 MaximalSymmetricSubdigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7D1D26D27F5B56C2">3.3-5 QuotientDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X78DECD26811EFD7C">3.3-6 DigraphReverse</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7F71D99D852B130F">3.3-7 DigraphDual</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X874883DD7DD450C4">3.3-8 DigraphSymmetricClosure</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X85117C48805566ED">3.3-9 DigraphReflexiveTransitiveClosure</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X838F20FA8033466F">3.3-10 DigraphReflexiveTransitiveReduction</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X83B2506D79453208">3.3-11 DigraphAddVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X78714D248551FFC3">3.3-12 DigraphAddVertices</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X83CA34BE8406020C">3.3-13 DigraphAddEdge</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7BE5C7028760B053">3.3-14 DigraphAddEdgeOrbit</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X8693A61B7F752C76">3.3-15 DigraphAddEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7B634A2B83C08B16">3.3-16 DigraphRemoveVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7E290E847A5A299A">3.3-17 DigraphRemoveVertices </a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7F9092577F9DC706">3.3-18 DigraphRemoveEdge</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X85981D9187F49018">3.3-19 DigraphRemoveEdgeOrbit</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X87093FDA7F88E732">3.3-20 DigraphRemoveEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X79324AF7818C0C02">3.3-21 DigraphRemoveLoops</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7DCCD0247897A3DE">3.3-22 DigraphRemoveAllMultipleEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X8059249E85754C69">3.3-23 DigraphReverseEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X814F1DFC83DB273F">3.3-24 DigraphDisjointUnion</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7FD047DE87B38947">3.3-25 DigraphEdgeUnion</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X8563B49B81D79539">3.3-26 DigraphJoin</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X8595BF937B749F22">3.3-27 LineDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X8364C6F17A1680CB">3.3-28 LineUndirectedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7FB8B48C87C0ED16">3.3-29 DoubleDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7C6E6CB284982C7A">3.3-30 BipartiteDoubleDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X8167A50A83256ED1">3.3-31 DigraphAddAllLoops</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X865436437DF95FEF">3.3-32 DistanceDigraph</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3_mj.html#X85B5D9B97F5187B7">3.4 <span class="Heading">Random digraphs</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X86CF9F66788B2A24">3.4-1 RandomDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X78FE275E7E77D56F">3.4-2 RandomMultiDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7D36B5E57F055051">3.4-3 RandomTournament</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3_mj.html#X7C76D1DC7DAF03D3">3.5 <span class="Heading">Standard examples</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X870594FC866AC88E">3.5-1 ChainDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X812417E278198D9C">3.5-2 CompleteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X8795B0AD856014FA">3.5-3 CompleteBipartiteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X80C29DDE876FFBEB">3.5-4 CycleDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X80DAE31A79FEFD40">3.5-5 EmptyDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7FCADADC7EC28478">3.5-6 CayleyDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X80ED9CE785819607">3.5-7 JohnsonDigraph</a></span>
+</div></div>
+</div>
+<div class="ContChap"><a href="chap4_mj.html#X7AD6F77E7D95C996">4 <span class="Heading">Operators</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap4_mj.html#X84E0B5B88358C96B">4.1 <span class="Heading">Operators for digraphs</span></a>
+</span>
+</div>
+</div>
+<div class="ContChap"><a href="chap5_mj.html#X8739F6CD78C90B14">5 <span class="Heading">Attributes and operations</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5_mj.html#X7E814B6478F7D015">5.1 <span class="Heading">Vertices and edges</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7C45F7D878D896AC">5.1-1 DigraphVertices</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7C6F19B57CB2E882">5.1-2 DigraphNrVertices</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7D1C6A4D7ECEC317">5.1-3 DigraphEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X85E1CFDD7E164AD0">5.1-4 DigraphNrEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X85D5E08280914EE4">5.1-5 DigraphSinks</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7F5C6268839BE98C">5.1-6 DigraphSources</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X785C30378064CF47">5.1-7 DigraphTopologicalSort</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7F1B5A2782F598B1">5.1-8 DigraphBicomponents</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7CA91E4B7904F793">5.1-9 DigraphVertexLabel</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7E51F2FE87140B32">5.1-10 DigraphVertexLabels</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7EFAF01B7A155157">5.1-11 DigraphInEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7BECFE6687ECD028">5.1-12 DigraphOutEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7BB8ED88835F07B4">5.1-13 IsDigraphEdge</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5_mj.html#X7D7CE8328187D0DF">5.2 <span class="Heading">Neighbours and degree</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7DC2CD70830BEE60">5.2-1 AdjacencyMatrix</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X8507DC4F794780C1">5.2-2 BooleanAdjacencyMatrix</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7AFCE34A7A04D5C1">5.2-3 DigraphAdjacencyFunction</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7FDEBF3279759961">5.2-4 DigraphRange</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7E9880767AE68E00">5.2-5 OutNeighbours</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X85C7AA5A81DA6E11">5.2-6 InNeighbours</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7F5ACE807D1BC2E2">5.2-7 OutDegrees</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7ADDFBFD7A365775">5.2-8 InDegrees</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7A09EB648070276D">5.2-9 OutDegreeOfVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X83315B0186850806">5.2-10 OutNeighboursOfVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7C9CD0527CB9E6EF">5.2-11 InDegreeOfVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7C0DA18B8291F302">5.2-12 InNeighboursOfVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X83271F607BD809CF">5.2-13 DigraphLoops</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5_mj.html#X8537F4088400DC48">5.3 <span class="Heading">Reachability and connectivity</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7F16B9EB8398459C">5.3-1 DigraphDiameter</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X8104A9D37BCD8A05">5.3-2 DigraphShortestDistance</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X81F99BC67E9D050F">5.3-3 DigraphShortestDistances</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X8223718079D98A82">5.3-4 DigraphLongestDistanceFromVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7CB7DDCD84621D38">5.3-5 DigraphDistanceSet</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X79A3DA4078CF3C90">5.3-6 DigraphGirth</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X84688B337BDDBB09">5.3-7 DigraphUndirectedGirth</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X842FAD6A7B835977">5.3-8 DigraphConnectedComponents</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X8484EC557810CD31">5.3-9 DigraphConnectedComponent</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X833ECD6B7A84944C">5.3-10 DigraphStronglyConnectedComponents</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7EFCB5017D662254">5.3-11 DigraphStronglyConnectedComponent</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X853D0B0981A33433">5.3-12 DigraphPeriod</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X864A31A8809F61C2">5.3-13 DigraphFloydWarshall</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7FBAB09E7C0BE5CF">5.3-14 IsReachable</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X8039170B82A32257">5.3-15 DigraphPath</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7C0416FE7A69CA2C">5.3-16 IteratorOfPaths</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7ECD16838704FAAA">5.3-17 DigraphAllSimpleCircuits</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7C735C4E86BDD5F6">5.3-18 DigraphLongestSimpleCircuit</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X870E04307C5F213F">5.3-19 DigraphLayers</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7B2E42327DA118E0">5.3-20 DigraphDegeneracy</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X827C2BD17A4547E3">5.3-21 DigraphDegeneracyOrdering</a></span>
+</div></div>
+</div>
+<div class="ContChap"><a href="chap6_mj.html#X7ADDEFD478D470D5">6 <span class="Heading">Properties of digraphs</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6_mj.html#X7F49388F8245F0E9">6.1 <span class="Heading">Edge properties</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7D92935C7D535187">6.1-1 DigraphHasLoops</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7DB1BC2286FC08E2">6.1-2 IsAntisymmetricDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X860CFB0C8665F356">6.1-3 IsBipartiteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X790A4DBF8533516E">6.1-4 IsCompleteBipartiteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X81F28D4D879FE3B2">6.1-5 IsCompleteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7E894CCF7B1C27AE">6.1-6 IsEmptyDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7E8F37E585DAED52">6.1-7 IsFunctionalDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7BB84CFC7E8B2B26">6.1-8 IsMultiDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X8462D8E2792B23F6">6.1-9 IsReflexiveDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X81B3EA7887219860">6.1-10 IsSymmetricDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7DD8D1A185EBE865">6.1-11 IsTournament</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7F0835667F29F0C0">6.1-12 IsTransitiveDigraph</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6_mj.html#X7AAF896982EC22FA">6.2 <span class="Heading">Regularity</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7A3F78B37E31D9E1">6.2-1 IsInRegularDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7F0A806E7BCB413C">6.2-2 IsOutRegularDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7AF9DB1E7DB12306">6.2-3 IsRegularDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7E2082AC7CAE59CD">6.2-4 IsDistanceRegularDigraph</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6_mj.html#X780DAEB37C5E07FD">6.3 <span class="Heading">Connectivity and cycles</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7BD08D4478218F77">6.3-1 IsAcyclicDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X83C08C0B7EC1A91F">6.3-2 IsConnectedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B37B9467C68C208">6.3-3 IsStronglyConnectedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80E883967EBE839E">6.3-4 IsAperiodicDigraph</a></span>
+</div></div>
+</div>
+<div class="ContChap"><a href="chap7_mj.html#X84975388859F203D">7 <span class="Heading">Homomorphisms</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7_mj.html#X8200192B80AD2071">7.1 <span class="Heading">Acting on digraphs</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X808972017C486F1F">7.1-1 OnDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7AFBA7608498F9CE">7.1-2 OnMultiDigraphs</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7_mj.html#X7E48B9F87A0F22D4">7.2 <span class="Heading">Isomorphisms, and Canonical labellings</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X858C32127A190175">7.2-1 AutomorphismGroup</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7B4F427983E25A66">7.2-2 AutomorphismGroup</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X803ACEDA7BBAC5B3">7.2-3 DigraphGroup</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X8657604E87A25E5F">7.2-4 DigraphSchreierVector</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X8386028782F2D3FF">7.2-5 DigraphOrbitReps</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X78913684795FB256">7.2-6 DigraphStabilizer</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X8096C5287E459279">7.2-7 DigraphOrbits</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E1C806D81DFE15E">7.2-8 RepresentativeOutNeighbours</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7984D48F7F78C50E">7.2-9 DigraphCanonicalLabelling</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7B4F24B283C9EE28">7.2-10 IsIsomorphicDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X8219FE6C839D9457">7.2-11 IsomorphismDigraphs</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7_mj.html#X7E1A02FE8384C03C">7.3 <span class="Heading">Homomorphisms of digraphs</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X79ABF0E783FD67C7">7.3-1 HomomorphismDigraphsFinder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X85E9B019877AD7FE">7.3-2 DigraphHomomorphism</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X8653EDA183E06D05">7.3-3 HomomorphismsDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X82D0FCD87D47ACA8">7.3-4 DigraphMonomorphism</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X84B4BDB984C2A9A8">7.3-5 MonomorphismsDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7CB5AD9F861684FD">7.3-6 DigraphEpimorphism</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7DFB1F5D873937B3">7.3-7 EpimorphismsDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E93B268823F6478">7.3-8 GeneratorsOfEndomorphismMonoid</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X780D26F082572325">7.3-9 DigraphColoring</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7AD04CC186E86CCA">7.3-10 DigraphEmbedding</a></span>
+</div></div>
+</div>
+<div class="ContChap"><a href="chap8_mj.html#X7A7E0B957932DF44">8 <span class="Heading">Finding cliques and independent sets</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap8_mj.html#X788474E38446039B">8.1 <span class="Heading">Finding cliques</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8_mj.html#X80670E3E7C36183F">8.1-1 IsClique</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8_mj.html#X7A3BC9FF8169ABCD">8.1-2 CliquesFinder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8_mj.html#X789854AC7B466402">8.1-3 DigraphClique</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8_mj.html#X84EA2F9482B8D4AF">8.1-4 DigraphMaximalCliques</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap8_mj.html#X7E31253287708348">8.2 <span class="Heading">Finding independent sets</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8_mj.html#X790733B67B0BC894">8.2-1 IsIndependentSet</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8_mj.html#X84350678782BFAB7">8.2-2 DigraphIndependentSet</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap8_mj.html#X7D2C78EB81A798A9">8.2-3 DigraphMaximalIndependentSets</a></span>
+</div></div>
+</div>
+<div class="ContChap"><a href="chap9_mj.html#X81714DBC80CC4BCB">9 <span class="Heading">Visualising and IO</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap9_mj.html#X7CF67F8278D9469C">9.1 <span class="Heading">Visualising a digraph</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X83B3318784E78415">9.1-1 Splash</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7F9B99C478EE093A">9.1-2 DotDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X78DA31D1869D2F94">9.1-3 DotSymmetricDigraph</a></span>
+</div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap9_mj.html#X7D4923A882ABA808">9.2 <span class="Heading">Reading and writing graphs to a file</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X873D6EB8836A3C61">9.2-1 DigraphFromGraph6String</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X782A052979EA2376">9.2-2 Graph6String</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7845ACDA7D4D333D">9.2-3 DigraphFile</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7E8142007ED0CB9F">9.2-4 ReadDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X82A4F0767C9EFC87">9.2-5 WriteDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X86D531B287733561">9.2-6 IteratorFromDigraphFile</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7AAA35867B5D8BF4">9.2-7 DigraphPlainTextLineEncoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7808D99079295C22">9.2-8 TournamentLineDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7DF22D1687D096D6">9.2-9 AdjacencyMatrixUpperTriangleLineDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X875393338486D77D">9.2-10 TCodeDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X8540FC21796A793F">9.2-11 PlainTextString</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X81BD23697857B244">9.2-12 WritePlainTextDigraph</a></span>
+</div></div>
+</div>
+<div class="ContChap"><a href="chapA_mj.html#X800DAF137BA8E25B">A <span class="Heading">
+    Grape to Digraphs Command Map
+  </span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7CC8A9DB86F9F0F4">A.1 <span class="Heading">
+      Functions to construct and modify graphs
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7C38A6397D2770FB">A.2 <span class="Heading">
+      Functions to inspect graphs, vertices and edges
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X78A5A34783C70CD7">A.3 <span class="Heading">
+      Functions to determine regularity properties of graphs
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7C74978D85F7AF5C">A.4 <span class="Heading">
+      Some special vertex subsets of a graph
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7E51B92F7E89E266">A.5 <span class="Heading">
+      Functions to construct new graphs from old
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7A61E3FC7A2BB50E">A.6 <span class="Heading">
+      Vertex-Colouring and Complete Subgraphs
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7DFC61EC7CBDBC7E">A.7 <span class="Heading">
+      Automorphism groups and isomorphism testing for graphs
+    </span></a>
+</span>
+</div>
+</div>
+<div class="ContChap"><a href="chapBib_mj.html"><span class="Heading">References</span></a></div>
+<div class="ContChap"><a href="chapInd_mj.html"><span class="Heading">Index</span></a></div>
+<br />
+</div>
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap1_mj.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0_mj.html">Top</a>  <a href="chap1_mj.html">1</a>  <a href="chap2_mj.html">2</a>  <a href="chap3_mj.html">3</a>  <a href="chap4_mj.html">4</a>  <a href="chap5_mj.html">5</a>  <a href="chap6_mj.html">6</a>  <a href="chap7_mj.html">7</a>  <a href="chap8_mj.html">8</a>  <a href="chap9_mj.html">9</a>  <a href="chapA_mj.html">A</a>  <a href="chapBib_mj.html">Bib</a>  <a href="chapInd_mj.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
 </body>
 </html>

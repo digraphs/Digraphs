@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<title>GAP (digraphs) - Appendix A: 
+    Grape to Digraphs Command Map
+  </title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+<script src="manual.js" type="text/javascript"></script>
+<script type="text/javascript">overwriteStyle();</script>
+</head>
+<body class="chapA"  onload="jscontent()">
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0_mj.html">Top</a>  <a href="chap1_mj.html">1</a>  <a href="chap2_mj.html">2</a>  <a href="chap3_mj.html">3</a>  <a href="chap4_mj.html">4</a>  <a href="chap5_mj.html">5</a>  <a href="chap6_mj.html">6</a>  <a href="chap7_mj.html">7</a>  <a href="chap8_mj.html">8</a>  <a href="chap9_mj.html">9</a>  <a href="chapA_mj.html">A</a>  <a href="chapBib_mj.html">Bib</a>  <a href="chapInd_mj.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap9_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapBib_mj.html">[Next Chapter]</a>&nbsp;  </div>
+
+<p id="mathjaxlink" class="pcenter"><a href="chapA.html">[MathJax off]</a></p>
+<p><a id="X800DAF137BA8E25B" name="X800DAF137BA8E25B"></a></p>
+<div class="ChapSects"><a href="chapA_mj.html#X800DAF137BA8E25B">A <span class="Heading">
+    Grape to Digraphs Command Map
+  </span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7CC8A9DB86F9F0F4">A.1 <span class="Heading">
+      Functions to construct and modify graphs
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7C38A6397D2770FB">A.2 <span class="Heading">
+      Functions to inspect graphs, vertices and edges
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X78A5A34783C70CD7">A.3 <span class="Heading">
+      Functions to determine regularity properties of graphs
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7C74978D85F7AF5C">A.4 <span class="Heading">
+      Some special vertex subsets of a graph
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7E51B92F7E89E266">A.5 <span class="Heading">
+      Functions to construct new graphs from old
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7A61E3FC7A2BB50E">A.6 <span class="Heading">
+      Vertex-Colouring and Complete Subgraphs
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapA_mj.html#X7DFC61EC7CBDBC7E">A.7 <span class="Heading">
+      Automorphism groups and isomorphism testing for graphs
+    </span></a>
+</span>
+</div>
+</div>
+
+<h3>A <span class="Heading">
+    Grape to Digraphs Command Map
+  </span></h3>
+
+<p>Below is a table of <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> commands with the <strong class="pkg">Digraphs</strong> counterparts. The sections in this chapter correspond to the chapters in the <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> manual.</p>
+
+<p><a id="X7CC8A9DB86F9F0F4" name="X7CC8A9DB86F9F0F4"></a></p>
+
+<h4>A.1 <span class="Heading">
+      Functions to construct and modify graphs
+    </span></h4>
+
+<div class="pcenter"><table class="GAPDocTable">
+<tr>
+<td class="tdleft"><span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> command</td>
+<td class="tdleft"><strong class="pkg">Digraphs</strong> command</td>
+<td class="tdleft">Comments</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">Graph</code></td>
+<td class="tdleft"><code class="func">Digraph</code> (<a href="chap3_mj.html#X834843057CE86655"><span class="RefLink">3.1-5</span></a>)</td>
+<td class="tdleft">Used with the arguments of <code class="code">Graph</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>, <code class="func">Digraph</code> (<a href="chap3_mj.html#X834843057CE86655"><span class="RefLink">3.1-5</span></a>) will return an equivalent digraph.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">EdgeOrbitsGraph</code></td>
+<td class="tdleft"><code class="func">EdgeOrbitsDigraph</code> (<a href="chap3_mj.html#X7B75C1D680757D6F"><span class="RefLink">3.1-8</span></a>)</td>
+<td class="tdleft">The operation <code class="func">EdgeOrbitsDigraph</code> (<a href="chap3_mj.html#X7B75C1D680757D6F"><span class="RefLink">3.1-8</span></a>) behaves the same as <code class="code">EdgeOrbitsDigraph</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">NullGraph</code></td>
+<td class="tdleft"><code class="func">NullDigraph</code> (<a href="chap3_mj.html#X80DAE31A79FEFD40"><span class="RefLink">3.5-5</span></a>) or <code class="func">EmptyDigraph</code> (<a href="chap3_mj.html#X80DAE31A79FEFD40"><span class="RefLink">3.5-5</span></a>)</td>
+<td class="tdleft">Note that, unlike in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>, the arguments of <code class="func">NullDigraph</code> (<a href="chap3_mj.html#X80DAE31A79FEFD40"><span class="RefLink">3.5-5</span></a>) and <code class="func">EmptyDigraph</code> (<a href="chap3_mj.html#X80DAE31A79FEFD40"><span class="RefLink">3.5-5</span></a>) are just non-negative integers. Since digraphs in <strong class="pkg">Digraphs</strong> are immutable, there is no reason (although it is possible) to create a null digraph and then add edges, as you might be used to doing in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">CompleteGraph</code></td>
+<td class="tdleft"><code class="func">CompleteDigraph</code> (<a href="chap3_mj.html#X812417E278198D9C"><span class="RefLink">3.5-2</span></a>)</td>
+<td class="tdleft">Note that, unlike in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>, the argument to <code class="func">CompleteDigraph</code> (<a href="chap3_mj.html#X812417E278198D9C"><span class="RefLink">3.5-2</span></a>) is simply a non-negative integer indicating the number of vertices. By default a complete digraph in <strong class="pkg">Digraphs</strong> does not have any loops. If you want a complete digraph with loops at every vertex, then use <code class="func">DigraphAddAllLoops</code> (<a href="chap3_mj.html#X8167A50A83256ED1"><span class="RefLink">3.3-31</span></a>).</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">JohnsonGraph</code></td>
+<td class="tdleft"><code class="func">JohnsonDigraph</code> (<a href="chap3_mj.html#X80ED9CE785819607"><span class="RefLink">3.5-7</span></a>)</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">JohnsonGraph</code> is equivalent to <code class="func">JohnsonDigraph</code> (<a href="chap3_mj.html#X80ED9CE785819607"><span class="RefLink">3.5-7</span></a>).</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">CayleyGraph</code></td>
+<td class="tdleft"><code class="func">CayleyDigraph</code> (<a href="chap3_mj.html#X7FCADADC7EC28478"><span class="RefLink">3.5-6</span></a>)</td>
+<td class="tdleft">The operation <code class="func">CayleyDigraph</code> (<a href="chap3_mj.html#X7FCADADC7EC28478"><span class="RefLink">3.5-6</span></a>) behaves the same as <code class="code">CayleyGraph</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">AddEdgeOrbit</code></td>
+<td class="tdleft"><code class="func">DigraphAddEdgeOrbit</code> (<a href="chap3_mj.html#X7BE5C7028760B053"><span class="RefLink">3.3-14</span></a>)</td>
+<td class="tdleft">Note that, unlike in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>, digraphs in <strong class="pkg">Digraphs</strong> are immutable, and this operation returns a new digraph, i.e. it does not modify the digraph given as an argument.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">RemoveEdgeOrbit</code></td>
+<td class="tdleft"><code class="func">DigraphRemoveEdgeOrbit</code> (<a href="chap3_mj.html#X85981D9187F49018"><span class="RefLink">3.3-19</span></a>)</td>
+<td class="tdleft">Note that, unlike in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>, digraphs in <strong class="pkg">Digraphs</strong> are immutable, and this operation returns a new digraph, i.e. it does not modify the digraph given as an argument.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">AssignVertexNames</code></td>
+<td class="tdleft"><code class="func">SetDigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) and <code class="func">SetDigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-9</span></a>)</td>
+<td class="tdleft">Use <code class="func">SetDigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-9</span></a>) to set an individual vertex label and <code class="func">SetDigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) to set all of the vertex labels.</td>
+</tr>
+</table><br /><p>&nbsp;</p><br />
+</div>
+
+<p><a id="X7C38A6397D2770FB" name="X7C38A6397D2770FB"></a></p>
+
+<h4>A.2 <span class="Heading">
+      Functions to inspect graphs, vertices and edges
+    </span></h4>
+
+<div class="pcenter"><table class="GAPDocTable">
+<tr>
+<td class="tdleft"><span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> command</td>
+<td class="tdleft"><strong class="pkg">Digraphs</strong> command</td>
+<td class="tdleft">Comments</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsGraph</code></td>
+<td class="tdleft"><code class="func">IsDigraph</code> (<a href="chap3_mj.html#X7877ADC77F85E630"><span class="RefLink">3.1-1</span></a>)</td>
+<td class="tdleft"><code class="func">IsDigraph</code> (<a href="chap3_mj.html#X7877ADC77F85E630"><span class="RefLink">3.1-1</span></a>) is a category and not a function like <code class="code">IsGraph</code>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">OrderGraph</code></td>
+<td class="tdleft"><code class="func">DigraphNrVertices</code> (<a href="chap5_mj.html#X7C6F19B57CB2E882"><span class="RefLink">5.1-2</span></a>)</td>
+<td class="tdleft">The operation <code class="func">DigraphNrVertices</code> (<a href="chap5_mj.html#X7C6F19B57CB2E882"><span class="RefLink">5.1-2</span></a>) behaves the same as <code class="code">OrderGraph</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsVertex(<var class="Arg">graph</var>, <var class="Arg">v</var>)</code></td>
+<td class="tdleft"><code class="code"><var class="Arg">v</var> in DigraphVertices(<var class="Arg">digraph</var>)</code></td>
+<td class="tdleft">The attribute <code class="func">DigraphVertices</code> (<a href="chap5_mj.html#X7C45F7D878D896AC"><span class="RefLink">5.1-1</span></a>) can be used to return the list of vertices of a digraph, or if <var class="Arg">v</var> is known to be a positive integer, then you can simply do <code class="code"><var class="Arg">v</var> <= DigraphNrVertices(<var class="Arg">digraph</var>)</code></td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">VertexName</code></td>
+<td class="tdleft"><code class="func">DigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-9</span></a>)</td>
+<td class="tdleft">Unlike <code class="code">VertexName</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>, the return value of <code class="func">DigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-9</span></a>) is mutable.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">VertexNames</code></td>
+<td class="tdleft"><code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>)</td>
+<td class="tdleft">Unlike <code class="code">VertexNames</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>, the return value of <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) is mutable.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">Vertices</code></td>
+<td class="tdleft"><code class="func">DigraphVertices</code> (<a href="chap5_mj.html#X7C45F7D878D896AC"><span class="RefLink">5.1-1</span></a>)</td>
+<td class="tdleft">The vertices of a digraph in <strong class="pkg">Digraphs</strong> is always the range <code class="code">[1 .. n]</code> where <code class="code">n</code> is the number of vertices of the digraph. The operation <code class="func">DigraphVertices</code> (<a href="chap5_mj.html#X7C45F7D878D896AC"><span class="RefLink">5.1-1</span></a>) behaves the same as <code class="code">Vertices</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">VertexDegree</code></td>
+<td class="tdleft"><code class="func">OutDegreeOfVertex</code> (<a href="chap5_mj.html#X7A09EB648070276D"><span class="RefLink">5.2-9</span></a>) (see also: <code class="func">InDegreeOfVertex</code> (<a href="chap5_mj.html#X7C9CD0527CB9E6EF"><span class="RefLink">5.2-11</span></a>))</td>
+<td class="tdleft">The operation <code class="func">OutDegreeOfVertex</code> (<a href="chap5_mj.html#X7A09EB648070276D"><span class="RefLink">5.2-9</span></a>) behaves the same as <code class="code">VertexDegree</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">VertexDegrees</code></td>
+<td class="tdleft"><code class="func">OutDegreeSet</code> (<a href="chap5_mj.html#X7F5ACE807D1BC2E2"><span class="RefLink">5.2-7</span></a>) (see also: <code class="func">OutDegreeSequence</code> (<a href="chap5_mj.html#X7F5ACE807D1BC2E2"><span class="RefLink">5.2-7</span></a>), <code class="func">OutDegrees</code> (<a href="chap5_mj.html#X7F5ACE807D1BC2E2"><span class="RefLink">5.2-7</span></a>), <code class="func">InDegrees</code> (<a href="chap5_mj.html#X7ADDFBFD7A365775"><span class="RefLink">5.2-8</span></a>), <code class="func">InDegreeSequence</code> (<a href="chap5_mj.html#X7ADDFBFD7A365775"><span class="RefLink">5.2-8</span></a>), <code class="func">InDegreeSet</code> (<a href="chap5_mj.html#X7ADDFBFD7A365775"><span class="RefLink">5.2-8</span></a>))</td>
+<td class="tdleft">The operation <code class="func">OutDegreeSet</code> (<a href="chap5_mj.html#X7F5ACE807D1BC2E2"><span class="RefLink">5.2-7</span></a>) behaves the same as <code class="code">VertexDegrees</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsLoopy</code></td>
+<td class="tdleft"><code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>)</td>
+<td class="tdleft">The operation <code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>) behaves the same as <code class="code">IsLoopy</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsSimpleGraph</code></td>
+<td class="tdleft"><code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>) and not <code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>)</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">IsSimpleGraph</code> is equivalent to <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>) and not <code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>).</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">Adjacency</code></td>
+<td class="tdleft"><code class="func">OutNeighboursOfVertex</code> (<a href="chap5_mj.html#X83315B0186850806"><span class="RefLink">5.2-10</span></a>) (see also <code class="func">InNeighboursOfVertex</code> (<a href="chap5_mj.html#X7C0DA18B8291F302"><span class="RefLink">5.2-12</span></a>))</td>
+<td class="tdleft">The operation <code class="func">OutNeighboursOfVertex</code> (<a href="chap5_mj.html#X83315B0186850806"><span class="RefLink">5.2-10</span></a>) behaves the same as <code class="code">Adjacency</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsEdge</code></td>
+<td class="tdleft"><code class="func">IsDigraphEdge</code> (<a href="chap5_mj.html#X7BB8ED88835F07B4"><span class="RefLink">5.1-13</span></a>)</td>
+<td class="tdleft">The arguments of <code class="func">IsDigraphEdge</code> (<a href="chap5_mj.html#X7BB8ED88835F07B4"><span class="RefLink">5.1-13</span></a>) can be a digraph and an edge, or a digraph and two vertices. In the first form the operation <code class="func">IsDigraphEdge</code> (<a href="chap5_mj.html#X7BB8ED88835F07B4"><span class="RefLink">5.1-13</span></a>) behaves the same as <code class="code">IsEdge</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">DirectedEdges</code></td>
+<td class="tdleft"><code class="func">DigraphEdges</code> (<a href="chap5_mj.html#X7D1C6A4D7ECEC317"><span class="RefLink">5.1-3</span></a>)</td>
+<td class="tdleft">The attribute <code class="func">DigraphEdges</code> (<a href="chap5_mj.html#X7D1C6A4D7ECEC317"><span class="RefLink">5.1-3</span></a>) behaves the same as <code class="code">DirectedEdges</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">UndirectedEdges</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">There is no analogous function in <strong class="pkg">Digraphs</strong>, and no plans to include one.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">Distance</code></td>
+<td class="tdleft"><code class="func">DigraphShortestDistance</code> (<a href="chap5_mj.html#X8104A9D37BCD8A05"><span class="RefLink">5.3-2</span></a>)</td>
+<td class="tdleft">The operation <code class="func">DigraphShortestDistance</code> (<a href="chap5_mj.html#X8104A9D37BCD8A05"><span class="RefLink">5.3-2</span></a>) behaves the same as <code class="code">Distance</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">Diameter</code></td>
+<td class="tdleft"><code class="func">DigraphDiameter</code> (<a href="chap5_mj.html#X7F16B9EB8398459C"><span class="RefLink">5.3-1</span></a>)</td>
+<td class="tdleft">The attribute <code class="func">DigraphDiameter</code> (<a href="chap5_mj.html#X7F16B9EB8398459C"><span class="RefLink">5.3-1</span></a>) behaves the same as <code class="code">Diameter</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">Girth</code></td>
+<td class="tdleft"><code class="func">DigraphUndirectedGirth</code> (<a href="chap5_mj.html#X84688B337BDDBB09"><span class="RefLink">5.3-7</span></a>)</td>
+<td class="tdleft">The attribute <code class="func">DigraphUndirectedGirth</code> (<a href="chap5_mj.html#X84688B337BDDBB09"><span class="RefLink">5.3-7</span></a>) behaves the same as <code class="code">Girth</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> except that in the case that the argument is a forest, <code class="keyw">infinity</code> is returned by <strong class="pkg">Digraphs</strong> whereas <code class="code">-1</code> is returned by <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsConnectedGraph</code></td>
+<td class="tdleft"><code class="func">IsStronglyConnectedDigraph</code> (<a href="chap6_mj.html#X7B37B9467C68C208"><span class="RefLink">6.3-3</span></a>)</td>
+<td class="tdleft">The attribute <code class="func">IsStronglyConnectedDigraph</code> (<a href="chap6_mj.html#X7B37B9467C68C208"><span class="RefLink">6.3-3</span></a>) behaves the same as <code class="code">IsConnectedGraph</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsBipartite</code></td>
+<td class="tdleft"><code class="func">IsBipartiteDigraph</code> (<a href="chap6_mj.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>) and <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>)</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">IsBipartite</code> is equivalent to <code class="func">IsBipartiteDigraph</code> (<a href="chap6_mj.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>) and <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>).</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsNullGraph</code></td>
+<td class="tdleft"><code class="func">IsNullDigraph</code> (<a href="chap6_mj.html#X7E894CCF7B1C27AE"><span class="RefLink">6.1-6</span></a>) or <code class="func">IsEmptyDigraph</code> (<a href="chap6_mj.html#X7E894CCF7B1C27AE"><span class="RefLink">6.1-6</span></a>)</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">IsNullGraph</code> is equivalent to <code class="func">IsEmptyDigraph</code> (<a href="chap6_mj.html#X7E894CCF7B1C27AE"><span class="RefLink">6.1-6</span></a>) and its synonym <code class="func">IsNullDigraph</code> (<a href="chap6_mj.html#X7E894CCF7B1C27AE"><span class="RefLink">6.1-6</span></a>).</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsCompleteGraph</code></td>
+<td class="tdleft"><code class="func">IsCompleteDigraph</code> (<a href="chap6_mj.html#X81F28D4D879FE3B2"><span class="RefLink">6.1-5</span></a>)</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">IsCompleteGraph</code> is roughly equivalent to <code class="func">IsCompleteDigraph</code> (<a href="chap6_mj.html#X81F28D4D879FE3B2"><span class="RefLink">6.1-5</span></a>) except that in <strong class="pkg">Digraphs</strong> a complete digraph has <em>no loops</em>.</td>
+</tr>
+</table><br /><p>&nbsp;</p><br />
+</div>
+
+<p><a id="X78A5A34783C70CD7" name="X78A5A34783C70CD7"></a></p>
+
+<h4>A.3 <span class="Heading">
+      Functions to determine regularity properties of graphs
+    </span></h4>
+
+<div class="pcenter"><table class="GAPDocTable">
+<tr>
+<td class="tdleft"><span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> command</td>
+<td class="tdleft"><strong class="pkg">Digraphs</strong> command</td>
+<td class="tdleft">Comments</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsRegularGraph</code></td>
+<td class="tdleft"><code class="func">IsOutRegularDigraph</code> (<a href="chap6_mj.html#X7F0A806E7BCB413C"><span class="RefLink">6.2-2</span></a>) (see also <code class="func">IsInRegularDigraph</code> (<a href="chap6_mj.html#X7A3F78B37E31D9E1"><span class="RefLink">6.2-1</span></a>) and <code class="func">IsRegularDigraph</code> (<a href="chap6_mj.html#X7AF9DB1E7DB12306"><span class="RefLink">6.2-3</span></a>))</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">IsRegularGraph</code> is equivalent to <code class="func">IsOutRegularDigraph</code> (<a href="chap6_mj.html#X7F0A806E7BCB413C"><span class="RefLink">6.2-2</span></a>).</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">LocalParameters</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">LocalParameters</code> has no equivalent function in <strong class="pkg">Digraphs</strong>, although this might change in the future.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">GlobalParameters</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">GlobalParameters</code> has no equivalent function in <strong class="pkg">Digraphs</strong>, although this might change in the future.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsDistanceRegular</code></td>
+<td class="tdleft"><code class="func">IsDistanceRegularDigraph</code> (<a href="chap6_mj.html#X7E2082AC7CAE59CD"><span class="RefLink">6.2-4</span></a>)</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">IsDistanceRegular</code> is equivalent to <code class="func">IsDistanceRegularDigraph</code> (<a href="chap6_mj.html#X7E2082AC7CAE59CD"><span class="RefLink">6.2-4</span></a>).</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">CollapsedAdjacencyMat</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">CollapsedAdjacencyMat</code> has no equivalent function in <strong class="pkg">Digraphs</strong>, although this might change in the future.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">OrbitalGraphColadjMats</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">OrbitalGraphColadjMats</code> has no equivalent function in <strong class="pkg">Digraphs</strong>, although this might change in the future.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">VertexTransitiveDRGs</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">The <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> function <code class="code">VertexTransitiveDRGs</code> has no equivalent function in <strong class="pkg">Digraphs</strong>, although this might change in the future.</td>
+</tr>
+</table><br /><p>&nbsp;</p><br />
+</div>
+
+<p><a id="X7C74978D85F7AF5C" name="X7C74978D85F7AF5C"></a></p>
+
+<h4>A.4 <span class="Heading">
+      Some special vertex subsets of a graph
+    </span></h4>
+
+<div class="pcenter"><table class="GAPDocTable">
+<tr>
+<td class="tdleft"><span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> command</td>
+<td class="tdleft"><strong class="pkg">Digraphs</strong> command</td>
+<td class="tdleft">Comments</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">ConnectedComponent</code></td>
+<td class="tdleft"><code class="func">DigraphConnectedComponent</code> (<a href="chap5_mj.html#X8484EC557810CD31"><span class="RefLink">5.3-9</span></a>)</td>
+<td class="tdleft">When applied to a simple di/graph and a vertex, <code class="code">ConnectedComponent</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">DigraphConnectedComponent</code> (<a href="chap5_mj.html#X8484EC557810CD31"><span class="RefLink">5.3-9</span></a>). <code class="func">DigraphConnectedComponent</code> (<a href="chap5_mj.html#X8484EC557810CD31"><span class="RefLink">5.3-9</span></a>) can also be applied to non-simple graphs (in the language of <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>).</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">ConnectedComponents</code></td>
+<td class="tdleft"><code class="func">DigraphConnectedComponents</code> (<a href="chap5_mj.html#X842FAD6A7B835977"><span class="RefLink">5.3-8</span></a>)</td>
+<td class="tdleft">When applied to a simple di/graph, <code class="code">ConnectedComponents</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">DigraphConnectedComponents</code> (<a href="chap5_mj.html#X842FAD6A7B835977"><span class="RefLink">5.3-8</span></a>). <code class="func">DigraphConnectedComponents</code> (<a href="chap5_mj.html#X842FAD6A7B835977"><span class="RefLink">5.3-8</span></a>) can also be applied to non-simple graphs (in the language of <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>).</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">Bicomponents</code></td>
+<td class="tdleft"><code class="func">DigraphBicomponents</code> (<a href="chap5_mj.html#X7F1B5A2782F598B1"><span class="RefLink">5.1-8</span></a>)</td>
+<td class="tdleft">When applied to a simple bipartite di/graph, <code class="code">Bicomponents</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">DigraphBicomponents</code> (<a href="chap5_mj.html#X7F1B5A2782F598B1"><span class="RefLink">5.1-8</span></a>). The definition of <code class="func">IsBipartiteDigraph</code> (<a href="chap6_mj.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>) does not require its argument to be simple (in the language of <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>), i.e. the bipartite graphs in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> are a proper subset of the bipartite digraphs in <strong class="pkg">Digraphs</strong>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">DistanceSet</code></td>
+<td class="tdleft"><code class="func">DigraphDistanceSet</code> (<a href="chap5_mj.html#X7CB7DDCD84621D38"><span class="RefLink">5.3-5</span></a>)</td>
+<td class="tdleft"><code class="code">DistanceSet</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">DigraphDistanceSet</code> (<a href="chap5_mj.html#X7CB7DDCD84621D38"><span class="RefLink">5.3-5</span></a>) in <strong class="pkg">Digraphs</strong>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">Layers</code></td>
+<td class="tdleft"><code class="func">DigraphLayers</code> (<a href="chap5_mj.html#X870E04307C5F213F"><span class="RefLink">5.3-19</span></a>)</td>
+<td class="tdleft"><code class="code">Layers</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">DigraphLayers</code> (<a href="chap5_mj.html#X870E04307C5F213F"><span class="RefLink">5.3-19</span></a>) in <strong class="pkg">Digraphs</strong>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IndependentSet</code></td>
+<td class="tdleft"><code class="func">DigraphIndependentSet</code> (<a href="chap8_mj.html#X84350678782BFAB7"><span class="RefLink">8.2-2</span></a>)</td>
+<td class="tdleft"><code class="code">IndependentSet</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">DigraphIndependentSet</code> (<a href="chap8_mj.html#X84350678782BFAB7"><span class="RefLink">8.2-2</span></a>) in <strong class="pkg">Digraphs</strong>.</td>
+</tr>
+</table><br /><p>&nbsp;</p><br />
+</div>
+
+<p><a id="X7E51B92F7E89E266" name="X7E51B92F7E89E266"></a></p>
+
+<h4>A.5 <span class="Heading">
+      Functions to construct new graphs from old
+    </span></h4>
+
+<div class="pcenter"><table class="GAPDocTable">
+<tr>
+<td class="tdleft"><span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> command</td>
+<td class="tdleft"><strong class="pkg">Digraphs</strong> command</td>
+<td class="tdleft">Comments</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">InducedSubgraph</code></td>
+<td class="tdleft"><code class="func">InducedSubdigraph</code> (<a href="chap3_mj.html#X83C51DA182CCEA2F"><span class="RefLink">3.3-2</span></a>)</td>
+<td class="tdleft"><code class="func">InducedSubdigraph</code> (<a href="chap3_mj.html#X83C51DA182CCEA2F"><span class="RefLink">3.3-2</span></a>) in <strong class="pkg">Digraphs</strong> does not allow a third argument <code class="code">G</code> specifying a group of automorphisms on the resultant graph. This may be included in a future release.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">DistanceSetInduced</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">There is no analogous function in <strong class="pkg">Digraphs</strong>, and no plans to include one.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">DistanceGraph</code></td>
+<td class="tdleft"><code class="func">DistanceDigraph</code> (<a href="chap3_mj.html#X865436437DF95FEF"><span class="RefLink">3.3-32</span></a>)</td>
+<td class="tdleft"><code class="code">DistanceGraph</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">DistanceDigraph</code> (<a href="chap3_mj.html#X865436437DF95FEF"><span class="RefLink">3.3-32</span></a>) in <strong class="pkg">Digraphs</strong>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">ComplementGraph</code></td>
+<td class="tdleft"><code class="func">DigraphDual</code> (<a href="chap3_mj.html#X7F71D99D852B130F"><span class="RefLink">3.3-7</span></a>)</td>
+<td class="tdleft"><code class="func">DigraphDual</code> (<a href="chap3_mj.html#X7F71D99D852B130F"><span class="RefLink">3.3-7</span></a>) in <strong class="pkg">Digraphs</strong> is equivalent to <code class="code">ComplementGraph</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> with the optional argument <var class="Arg">comploops</var> set to <code class="keyw">true</code> (loops/nonloops are complemented).</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">PointGraph</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">There is no analogous function in <strong class="pkg">Digraphs</strong>, and no plans to include one.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">EdgeGraph</code></td>
+<td class="tdleft"><code class="func">EdgeUndirectedDigraph</code> (<a href="chap3_mj.html#X8364C6F17A1680CB"><span class="RefLink">3.3-28</span></a>)</td>
+<td class="tdleft"><code class="code">EdgeGraph</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">EdgeUndirectedDigraph</code> (<a href="chap3_mj.html#X8364C6F17A1680CB"><span class="RefLink">3.3-28</span></a>) in <strong class="pkg">Digraphs</strong>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">SwitchedGraph</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">There is no analogous function in <strong class="pkg">Digraphs</strong>, and no plans to include one.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">UnderlyingGraph</code></td>
+<td class="tdleft"><code class="func">DigraphSymmetricClosure</code> (<a href="chap3_mj.html#X874883DD7DD450C4"><span class="RefLink">3.3-8</span></a>)</td>
+<td class="tdleft"><code class="code">UnderlyingGraph</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">DigraphSymmetricClosure</code> (<a href="chap3_mj.html#X874883DD7DD450C4"><span class="RefLink">3.3-8</span></a>) in <strong class="pkg">Digraphs</strong>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">QuotientGraph</code></td>
+<td class="tdleft"><code class="func">QuotientDigraph</code> (<a href="chap3_mj.html#X7D1D26D27F5B56C2"><span class="RefLink">3.3-5</span></a>)</td>
+<td class="tdleft"><code class="func">QuotientDigraph</code> (<a href="chap3_mj.html#X7D1D26D27F5B56C2"><span class="RefLink">3.3-5</span></a>) in <strong class="pkg">Digraphs</strong> takes a partition <code class="code">p</code> of the vertices of the digraph, rather than a set of generating pairs. Hence, the equivalence might not be group-invariant. Also note that in <strong class="pkg">Digraphs</strong> multiple edges may be created, whereas in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> they are effectively combined into a single edge.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">BipartiteDouble</code></td>
+<td class="tdleft"><code class="func">BipartiteDoubleDigraph</code> (<a href="chap3_mj.html#X7C6E6CB284982C7A"><span class="RefLink">3.3-30</span></a>)</td>
+<td class="tdleft"><code class="code">BipartiteDouble</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">BipartiteDoubleDigraph</code> (<a href="chap3_mj.html#X7C6E6CB284982C7A"><span class="RefLink">3.3-30</span></a>) in <strong class="pkg">Digraphs</strong>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">GeodesicsGraph</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">There is no analogous function in <strong class="pkg">Digraphs</strong>, and no plans to include one.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">CollapsedIndependentOrbitsGraph</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">There is no analogous function in <strong class="pkg">Digraphs</strong>, although this feature might be implemented in the future.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">CollapsedCompleteOrbitsGraph</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">There is no analogous function in <strong class="pkg">Digraphs</strong>, although this feature might be implemented in the future.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">NewGroupGraph</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">There is no analogous function in <strong class="pkg">Digraphs</strong>. However, the same results would be possible by calling <code class="func">DigraphCopy</code> (<a href="chap3_mj.html#X8457F40387657735"><span class="RefLink">3.3-1</span></a>) on the digraph to produce a copy <code class="code">gr</code>, and then applying <code class="code">SetDigraphGroup(gr, G)</code>.</td>
+</tr>
+</table><br /><p>&nbsp;</p><br />
+</div>
+
+<p><a id="X7A61E3FC7A2BB50E" name="X7A61E3FC7A2BB50E"></a></p>
+
+<h4>A.6 <span class="Heading">
+      Vertex-Colouring and Complete Subgraphs
+    </span></h4>
+
+<div class="pcenter"><table class="GAPDocTable">
+<tr>
+<td class="tdleft"><span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> command</td>
+<td class="tdleft"><strong class="pkg">Digraphs</strong> command</td>
+<td class="tdleft">Comments</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">VertexColouring</code></td>
+<td class="tdleft"><code class="func">DigraphColoring</code> (<a href="chap7_mj.html#X780D26F082572325"><span class="RefLink">7.3-9</span></a>)</td>
+<td class="tdleft"><code class="code">VertexColouring</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">DigraphColoring</code> (<a href="chap7_mj.html#X780D26F082572325"><span class="RefLink">7.3-9</span></a>) in <strong class="pkg">Digraphs</strong>, except it return a transformation rather than a list of vertex colors.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">CompleteSubgraphs</code></td>
+<td class="tdleft"><code class="func">DigraphCliques</code> (<a href="chap8_mj.html#X84EA2F9482B8D4AF"><span class="RefLink">8.1-4</span></a>)</td>
+<td class="tdleft">The functionality of <code class="code">CompleteSubgraphs</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is provided by <code class="func">DigraphCliques</code> (<a href="chap8_mj.html#X84EA2F9482B8D4AF"><span class="RefLink">8.1-4</span></a>) and <code class="func">DigraphMaximalCliques</code> (<a href="chap8_mj.html#X84EA2F9482B8D4AF"><span class="RefLink">8.1-4</span></a>) in <strong class="pkg">Digraphs</strong>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">CompleteSubgraphsOfGivenSize</code></td>
+<td class="tdleft"><code class="func">DigraphCliques</code> (<a href="chap8_mj.html#X84EA2F9482B8D4AF"><span class="RefLink">8.1-4</span></a>)</td>
+<td class="tdleft">Much of the functionality of <code class="code">CompleteSubgraphsOfGivenSize</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is provided by <code class="func">DigraphCliques</code> (<a href="chap8_mj.html#X84EA2F9482B8D4AF"><span class="RefLink">8.1-4</span></a>) and <code class="func">DigraphMaximalCliques</code> (<a href="chap8_mj.html#X84EA2F9482B8D4AF"><span class="RefLink">8.1-4</span></a>) in <strong class="pkg">Digraphs</strong>, except that the functionality relating to vertex weights and partial colourings is not implemented.</td>
+</tr>
+</table><br /><p>&nbsp;</p><br />
+</div>
+
+<p><a id="X7DFC61EC7CBDBC7E" name="X7DFC61EC7CBDBC7E"></a></p>
+
+<h4>A.7 <span class="Heading">
+      Automorphism groups and isomorphism testing for graphs
+    </span></h4>
+
+<div class="pcenter"><table class="GAPDocTable">
+<tr>
+<td class="tdleft"><span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> command</td>
+<td class="tdleft"><strong class="pkg">Digraphs</strong> command</td>
+<td class="tdleft">Comments</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">AutGroupGraph</code></td>
+<td class="tdleft"><code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-1</span></a>)</td>
+<td class="tdleft"><code class="code">AutGroupGraph</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-1</span></a>) in <strong class="pkg">Digraphs</strong>.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">GraphIsomorphism</code></td>
+<td class="tdleft"><code class="func">IsomorphismDigraphs</code> (<a href="chap7_mj.html#X8219FE6C839D9457"><span class="RefLink">7.2-11</span></a>)</td>
+<td class="tdleft"><code class="code">GraphIsomorphism</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">IsomorphismDigraphs</code> (<a href="chap7_mj.html#X8219FE6C839D9457"><span class="RefLink">7.2-11</span></a>) in <strong class="pkg">Digraphs</strong>. Note however that <code class="code">GraphIsomorphism</code>'s optional argument <var class="Arg">firstunbindcanon</var> is not applicable, since the canonical labellings of a digraph are not portable between sessions.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">IsIsomorphicGraph</code></td>
+<td class="tdleft"><code class="func">IsIsomorphicDigraph</code> (<a href="chap7_mj.html#X7B4F24B283C9EE28"><span class="RefLink">7.2-10</span></a>)</td>
+<td class="tdleft"><code class="code">IsIsomorphicGraph</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">IsIsomorphicDigraph</code> (<a href="chap7_mj.html#X7B4F24B283C9EE28"><span class="RefLink">7.2-10</span></a>) in <strong class="pkg">Digraphs</strong>. Note however that <code class="code">IsIsomorphicGraph</code>'s optional argument <var class="Arg">firstunbindcanon</var> is not applicable, since the canonical labellings of a digraph are not portable between sessions.</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">GraphIsomorphismClassRepresentatives</code></td>
+<td class="tdleft">None</td>
+<td class="tdleft">There is no analogous function in <strong class="pkg">Digraphs</strong>, although this feature might be implemented in the future.</td>
+</tr>
+</table><br /><p>&nbsp;</p><br />
+</div>
+
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap9_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapBib_mj.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0_mj.html">Top</a>  <a href="chap1_mj.html">1</a>  <a href="chap2_mj.html">2</a>  <a href="chap3_mj.html">3</a>  <a href="chap4_mj.html">4</a>  <a href="chap5_mj.html">5</a>  <a href="chap6_mj.html">6</a>  <a href="chap7_mj.html">7</a>  <a href="chap8_mj.html">8</a>  <a href="chap9_mj.html">9</a>  <a href="chapA_mj.html">A</a>  <a href="chapBib_mj.html">Bib</a>  <a href="chapInd_mj.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+</body>
+</html>
