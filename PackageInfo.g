@@ -13,7 +13,7 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.5.1.1">
+##  <!ENTITY VERSION        "0.5.1">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
@@ -26,9 +26,14 @@ SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
 Version := "0.5.1",
-Date := "03/03/2016",
-ArchiveURL := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/digraphs-0.5.1",
+Date := "08/06/2016",
 ArchiveFormats := ".tar.gz",
+
+SourceRepository := rec(
+    Type := "git",
+    URL := Concatenation( "https://github.com/gap-packages/", ~.PackageName ),
+),
+
 Persons := [
 
   rec(
@@ -53,8 +58,8 @@ Persons := [
     FirstNames    := "J.",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "jj252@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~julius/",
+    Email         := "jj252@st-andrews.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~julius/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -68,8 +73,22 @@ Persons := [
     FirstNames    := "J. D.",
     IsAuthor      := true,
     IsMaintainer  := true,
-    Email         := "jdm3@st-and.ac.uk",
+    Email         := "jdm3@st-andrews.ac.uk",
     WWWHome       := "http://goo.gl/ZtViV6",
+    PostalAddress := Concatenation( [
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
+  ),
+  
+  rec(
+    LastName      := "Smith",
+    FirstNames    := "F.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "fls3@st-andrews.ac.uk",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -83,8 +102,8 @@ Persons := [
     FirstNames    := "M.",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "mct25@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~mct25/",
+    Email         := "mct25@st-andrews.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~mct25/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -98,8 +117,8 @@ Persons := [
     FirstNames    := "W.",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "waw7@st-and.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-and.ac.uk/~waw7/",
+    Email         := "waw7@st-andrews.ac.uk",
+    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~waw7/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -110,14 +129,16 @@ Persons := [
 
 Status := "dev",
 
-README_URL :=
-  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README.md",
-PackageInfoURL :=
-  "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/PackageInfo.g",
+IssueTrackerURL := Concatenation(~.SourceRepository.URL, "/issues"),
+PackageWWWHome  := Concatenation("https://gap-packages.github.io/",
+                                 ~.PackageName),
+README_URL      := Concatenation(~.PackageWWWHome, "/README.md"),
+PackageInfoURL  := Concatenation(~.PackageWWWHome, "/PackageInfo.g"),
+ArchiveURL      := Concatenation(~.SourceRepository.URL,
+                                 "/releases/download/v", ~.Version,
+                                 "/", "digraphs-", ~.Version),
 
-AbstractHTML := "The <b>Digraphs</b> package is a <b>GAP</b> package containing methods for digraphs and multidigraphs.",
-
-PackageWWWHome := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php",
+AbstractHTML := "The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.",
 
 PackageDoc := rec(
   BookName  := "Digraphs",

@@ -4,14 +4,16 @@
   
   [1X1.1 [33X[0;0YIntroduction[133X[101X
   
-  [33X[0;0YThis  is  the  manual for the [5XDigraphs[105X package version 0.5.1.1. This package
-  was developed at the University of St Andrews by:[133X
+  [33X[0;0YThis  is the manual for the [5XDigraphs[105X package version 0.5.1. This package was
+  developed at the University of St Andrews by:[133X
   
   [30X    [33X[0;6YJan De Beule[133X
   
   [30X    [33X[0;6YJulius Jonusas[133X
   
   [30X    [33X[0;6YJames D. Mitchell[133X
+  
+  [30X    [33X[0;6YFinn Smith[133X
   
   [30X    [33X[0;6YMichael C. Torpey[133X
   

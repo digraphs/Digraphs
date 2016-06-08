@@ -1,19 +1,21 @@
 name: Digraphs
 version: 0.5.1
-date: 03/03/2016
+date: 08/06/2016
 description: 
 
 authors:
     - name: J. De Beule
       url: http://homepages.vub.ac.be/~jdbeule/
     - name: J. Jonusas
-      url: http://www-circa.mcs.st-and.ac.uk/~julius/
+      url: http://www-circa.mcs.st-andrews.ac.uk/~julius/
     - name: J. D. Mitchell
       url: http://goo.gl/ZtViV6
+    - name: F. Smith
+      url: mailto:fls3@st-andrews.ac.uk
     - name: M. Torpey
-      url: http://www-circa.mcs.st-and.ac.uk/~mct25/
+      url: http://www-circa.mcs.st-andrews.ac.uk/~mct25/
     - name: W. Wilson
-      url: http://www-circa.mcs.st-and.ac.uk/~waw7/
+      url: http://www-circa.mcs.st-andrews.ac.uk/~waw7/
 
 maintainers:
     - name: J. D. Mitchell
@@ -37,15 +39,15 @@ suggested-pkgs:
       version: ">=4.5"
       url: "http://www.maths.qmul.ac.uk/~leonard/grape/"
 
-www: http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php
-readme: http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/README.md
-packageinfo: http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/PackageInfo.g
+www: https://gap-packages.github.io/Digraphs
+readme: https://gap-packages.github.io/Digraphs/README.md
+packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: http://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs/digraphs-0.5.1.tar.gz
+      url: https://github.com/gap-packages/Digraphs/releases/download/v0.5.1/digraphs-0.5.1.tar.gz
 
-abstract: The <b>Digraphs</b> package is a <b>GAP</b> package containing methods for digraphs and multidigraphs.
+abstract: The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
 
 status: dev
 doc-html: doc/chap0.html

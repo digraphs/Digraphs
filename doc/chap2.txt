@@ -30,8 +30,7 @@
         [14X2.2-1[114X will not work.[133X
   
   [30X    [33X[0;6Ydownload  the  package  archive [11Xdigraphs-0.5.1.tar.gz[111X from the Digraph
-        package                                                        webpage
-        ([7Xhttp://www-groups.mcs.st-andrews.ac.uk/~jamesm/digraphs.php[107X).[133X
+        package webpage ([7Xhttp://gap-packages.github.io/Digraphs/[107X).[133X
   
   [30X    [33X[0;6Yunzip  and  untar  the  file,  this  should  create a directory called
         [11Xdigraphs-0.5.1[111X.[133X

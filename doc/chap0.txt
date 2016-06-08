@@ -6,7 +6,7 @@
                               [1XMethods for digraphs[101X
   
   
-                                Version 0.5.1.1
+                                 Version 0.5.1
   
   
                                   Jan De Beule
@@ -14,6 +14,8 @@
                                  Julius Jonušas
   
                                James D. Mitchell
+  
+                                   Finn Smith
   
                                  Michael Torpey
   
@@ -25,17 +27,19 @@
       Email:    [7Xmailto:jdebeule@cage.ugent.be[107X
       Homepage: [7Xhttp://homepages.vub.ac.be/~jdbeule/[107X
   Julius Jonušas
-      Email:    [7Xmailto:jj252@st-and.ac.uk[107X
-      Homepage: [7Xhttp://www-circa.mcs.st-and.ac.uk/~julius[107X
+      Email:    [7Xmailto:jj252@st-andrews.ac.uk[107X
+      Homepage: [7Xhttp://www-circa.mcs.st-andrews.ac.uk/~julius[107X
   James D. Mitchell
-      Email:    [7Xmailto:jdm3@st-and.ac.uk[107X
-      Homepage: [7Xhttp://tinyurl.com/jdmitchell[107X
+      Email:    [7Xmailto:jdm3@st-andrews.ac.uk[107X
+      Homepage: [7Xhttp://goo.gl/ZtViV6[107X
+  Finn Smith
+      Email:    [7Xmailto:fls3@st-andrews.ac.uk[107X
   Michael Torpey
-      Email:    [7Xmailto:mct25@st-and.ac.uk[107X
-      Homepage: [7Xhttp://www-circa.mcs.st-and.ac.uk/~mct25[107X
+      Email:    [7Xmailto:mct25@st-andrews.ac.uk[107X
+      Homepage: [7Xhttp://www-circa.mcs.st-andrews.ac.uk/~mct25[107X
   Wilf Wilson
-      Email:    [7Xmailto:waw7@st-and.ac.uk[107X
-      Homepage: [7Xhttp://www-circa.mcs.st-and.ac.uk/~waw7[107X
+      Email:    [7Xmailto:waw7@st-andrews.ac.uk[107X
+      Homepage: [7Xhttp://www-circa.mcs.st-andrews.ac.uk/~waw7[107X
   
   -------------------------------------------------------
   [1XAbstract[101X
@@ -45,7 +49,8 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y© 2014-16 by Julius Jonušas, J.D. Mitchell, Michael Torpey, Wilf Wilson.[133X
+  [33X[0;0Y©  2014-16  by  Jan De Beule, Julius Jonušas, James D. Mitchell, Finn Smith,
+  Michael Torpey, Wilf Wilson.[133X
   
   [33X[0;0Y[5XDigraphs[105X  is  free  software; you can redistribute it and/or modify it under
   the      terms      of      the      GNU      General     Public     License
