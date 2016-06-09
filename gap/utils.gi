@@ -289,9 +289,9 @@ function()
   if file = fail then
     ErrorNoReturn("Digraphs: DigraphsTestExtreme:\n",
                   "the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
-                  "required\nfor these tests to run. Please download the ",
-                  "'digraphs-lib.tar.gz'\narchive from:\n\n",
-                  "http://bitbucket.org/james-d-mitchell/digraphs/downloads",
+                  "required\nfor these tests to run. Please install the ",
+                  "'digraphs-lib'\narchive from:\n\n",
+                  "http://gap-packages.github.io/Digraphs/",
                   "\n\nand try again,");
   fi;
 
