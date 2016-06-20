@@ -1,21 +1,22 @@
 /*******************************************************************************
 **
 *A  perms.h                  permutations                     Julius Jonusas
-**                                                            James Mitchell 
+**                                                            James Mitchell
 **                                                            Michael Torpey
 **                                                            Wilfred Wilson
 **
-**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey, 
-**  Wilfred Wilson 
+**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey,
+**  Wilfred Wilson
 **
 **  This file is free software, see the digraphs/LICENSE.
-**  
+**
 *******************************************************************************/
 
 #ifndef HOMOS_PERMS_H
 #define HOMOS_PERMS_H 1
 
 #define NDEBUG
+#define DEBUG false
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -25,12 +26,16 @@
 
 #define MAXVERTS 512
 #define UNDEFINED MAXVERTS + 1
-typedef unsigned long int UIntL;
+
+#if SIZEOF_VOID_P == 8
 #define SMALLINTLIMIT 1152921504606846976
-#define DEBUG false
+#else
+#define SMALLINTLIMIT 268435456
+#endif
 
 typedef unsigned short int UIntS;
 typedef UIntS* Perm;
+typedef unsigned long int UIntL;
 
 struct perm_coll {
   Perm* gens;
