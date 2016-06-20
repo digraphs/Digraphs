@@ -15,6 +15,7 @@ cd gap
 ./configure --with-gmp=system $GAP_FLAGS
 make
 mkdir pkg
+cd ..
 echo -en 'travis_fold:end:InstallGAP\r'
 
 # Compile the Digraphs package
