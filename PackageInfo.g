@@ -13,20 +13,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.5.1">
+##  <!ENTITY VERSION        "0.5.2">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
 ##  <!ENTITY ORBVERS        "4.7.5">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.5.1">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.5.2">
 ##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
-Version := "0.5.1",
-Date := "08/06/2016",
+Version := "0.5.2",
+Date := "20/06/2016",
 ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(
