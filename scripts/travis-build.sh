@@ -16,6 +16,19 @@ cd gap
 make
 echo -en 'travis_fold:end:InstallGAP\r'
 
+# Compile the Digraphs package
+echo -en 'travis_fold:start:BuildDigraphs\r'
+mv $DIGRAPHSDIR gap/pkg/digraphs
+cd gap/pkg/digraphs
+curl -L -O http://gap-packages.github.io/Digraphs/$DIGRAPHS_LIB.tar.gz
+tar xf $DIGRAPHS_LIB.tar.gz
+rm $DIGRAPHS_LIB.tar.gz
+./autogen.sh
+./configure $PKG_FLAGS
+make
+cd ../..
+echo -en 'travis_fold:end:BuildDigraphs\r'
+
 # Get the packages
 echo -en 'travis_fold:start:InstallPackages\r'
 mkdir pkg
@@ -48,16 +61,3 @@ cd grape
 make
 cd ../../..
 echo -en 'travis_fold:end:InstallPackages\r'
-
-# Compile the Digraphs package
-echo -en 'travis_fold:start:BuildDigraphs\r'
-mv $DIGRAPHSDIR gap/pkg/digraphs
-cd gap/pkg/digraphs
-curl -L -O http://gap-packages.github.io/Digraphs/$DIGRAPHS_LIB.tar.gz
-tar xf $DIGRAPHS_LIB.tar.gz
-rm $DIGRAPHS_LIB.tar.gz
-./autogen.sh
-./configure $PKG_FLAGS
-make
-cd ../..
-echo -en 'travis_fold:end:BuildDigraphs\r'

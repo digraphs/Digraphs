@@ -12,6 +12,8 @@ env:
   matrix:
     - GAP_BRANCH=master GAP_FORK=gap-system
     - GAP_BRANCH=stable-4.8 GAP_FORK=gap-system
+    - GAP_BRANCH=master GAP_FORK=gap-system GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
+    - GAP_BRANCH=stable-4.8 GAP_FORK=gap-system GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
 addons:
   apt:
     sources:
