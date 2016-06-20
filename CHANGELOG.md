@@ -4,6 +4,10 @@ Smith, Michael Torpey & Wilf Wilson
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.5.2 (released 20/06/2016)
+This is a minor release containing one bugfix and several other minor changes.
+Digraphs now works when it and GAP are compiled in 32 bit mode.
+
 ## Version 0.5.1 (released 08/06/2016)
 This release contains some bugfixes, some minor new features, and some
 performance improvements. The package has moved to GitHub and we welcome Finn
