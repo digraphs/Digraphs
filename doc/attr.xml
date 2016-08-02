@@ -8,6 +8,37 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="ChromaticNumber">
+<ManSection>
+  <Oper Name="ChromaticNumber" Arg="digraph" />
+  <Returns> A positive integer.</Returns>
+  <Description>
+    A digraph coloring is a labeling of the vertices (using precisely <A>n</A>
+    colors) in such a way that two adjacent vertices can not have the same
+    label.  Alternatively, it can be defined to be a <Ref
+      Oper="DigraphEpimorphism"/> from <A>digraph</A> onto a complete digraph
+    with <A>n</A> vertices.<P/>
+
+    <C>ChromaticNumber</C> returns the least positive integer <C>n</C> such
+    that there is a coloring of the loopless digraph <A>digraph</A> with
+    <C>n</C> colors.  In other words, <C>ChromaticNumber</C> returns the least
+    value <C>n</C> such that <C>DigraphColoring(<A>digraph</A>, n)</C> does not
+    return <K>fail</K>. 
+
+    <Example><![CDATA[
+gap> ChromaticNumber(NullDigraph(10));
+1
+gap> ChromaticNumber(CompleteDigraph(10));
+10
+gap> ChromaticNumber(CompleteBipartiteDigraph(5, 5));
+2
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1), 
+>                      Digraph([[2], [4], [1, 2], [3]])));
+3]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphAdjacencyFunction">
 <ManSection>
   <Attr Name="DigraphAdjacencyFunction" Arg="digraph"/>

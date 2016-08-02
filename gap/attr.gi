@@ -8,6 +8,62 @@
 #############################################################################
 ##
 
+InstallMethod(ChromaticNumber, "for a digraph", [IsDigraph],
+function(digraph)
+  local comps, chrom, n, subdigraph, comp, i;
+
+  if DigraphHasLoops(digraph) then
+    ErrorNoReturn("Digraphs: ChromaticNumber: usage,\n",
+                  "the digraph (1st argument) must not have loops,");
+  elif IsNullDigraph(digraph) then
+    return 1;
+  elif IsBipartiteDigraph(digraph) then
+    return 2;
+  fi;
+
+  digraph := DigraphRemoveAllMultipleEdges(digraph);
+  n := DigraphNrVertices(digraph);
+
+  if DigraphNrEdges(digraph) > n * (n - 1) - 2 then
+    return n;
+  fi;
+
+  comps := DigraphConnectedComponents(digraph).comps;
+  chrom := 3;
+
+  for comp in comps do
+    n := Length(comp);
+
+    if n < DigraphNrVertices(digraph) then
+      subdigraph := InducedSubdigraph(digraph, comp);
+    else
+      subdigraph := digraph;
+    fi;
+
+    if not IsNullDigraph(subdigraph)
+        and not IsBipartiteDigraph(subdigraph) then
+      if DigraphNrEdges(subdigraph) > n * (n - 1) - 2 then
+        if n > chrom then
+          chrom := n;
+        fi;
+      else
+        for i in [3 .. n - 1] do
+          if DigraphColoring(subdigraph, i) <> fail then
+            if i > chrom then
+              chrom := i;
+              if chrom = n - 1 then
+                return chrom;
+              fi;
+            fi;
+            break;
+          fi;
+        od;
+      fi;
+    fi;
+  od;
+  return chrom;
+end);
+
 #
 # The following method is currently useless, as the OutNeighbours are computed
 # and set whenever a digraph is created.  It could be reinstated later if we

@@ -1233,6 +1233,56 @@ false
 gap> adj(2, 7);
 false
 
+#T# Test ChromaticNumber
+gap> ChromaticNumber(Digraph([[1]]));
+Error, Digraphs: ChromaticNumber: usage,
+the digraph (1st argument) must not have loops,
+gap> ChromaticNumber(NullDigraph(10));
+1
+gap> ChromaticNumber(CompleteDigraph(10));
+10
+gap> ChromaticNumber(CompleteBipartiteDigraph(5, 5));
+2
+gap> ChromaticNumber(DigraphRemoveEdge(CompleteDigraph(10), [1, 2]));
+10
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(10),
+> CompleteBipartiteDigraph(50, 50)));
+10
+gap> ChromaticNumber(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [], 
+> [3], [4], [6], [], [5, 7]]));
+3
+gap> DigraphColouring(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [], 
+> [3], [4], [6], [], [5, 7]]), 2);
+fail
+gap> DigraphColouring(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [], 
+> [3], [4], [6], [], [5, 7]]), 3);
+Transformation( [ 1, 3, 1, 2, 1, 2, 1, 3, 3, 2 ] )
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1), 
+> Digraph([[2], [4], [1, 2], [3]])));
+3
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1), 
+> Digraph([[2], [4], [1, 2], [3], [1, 2, 3]])));
+4
+gap> gr := DigraphFromDigraph6String(Concatenation(
+> "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?",
+> "A?S???OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO",
+> "??`?_O??G?@?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W",
+> "?????K???__O[??????O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G",
+> "?O??A@??D??G?C_?A??O?_GA??@@?_?G???E?IW??????_@G?C??"));
+<digraph with 45 vertices, 180 edges>
+gap> ChromaticNumber(gr);
+3
+gap> DigraphColoring(gr, 3);
+Transformation( [ 1, 2, 2, 1, 2, 1, 3, 1, 1, 2, 2, 2, 1, 2, 1, 2, 1, 1, 3, 3,
+  3, 2, 3, 3, 2, 2, 1, 3, 1, 3, 3, 3, 2, 1, 3, 1, 3, 1, 1, 2, 2, 3, 3, 3,
+  2 ] )
+gap> DigraphColoring(gr, 2);
+fail
+gap> DigraphColoring(gr);
+Transformation( [ 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 3,
+  3, 2, 3, 3, 3, 2, 1, 4, 4, 3, 3, 3, 3, 1, 3, 1, 3, 4, 4, 2, 2, 5, 3, 3,
+  4 ] )
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);

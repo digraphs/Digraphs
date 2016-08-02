@@ -53,6 +53,8 @@ DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
 DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
 DeclareGlobalFunction("DigraphTransitiveClosureNC");
 
+DeclareAttribute("ChromaticNumber", IsDigraph);
+
 DeclareAttribute("DigraphAdjacencyFunction", IsDigraph);
 
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
