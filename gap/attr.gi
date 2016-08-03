@@ -10,23 +10,31 @@
 
 InstallMethod(ChromaticNumber, "for a digraph", [IsDigraph],
 function(digraph)
-  local comps, chrom, n, subdigraph, comp, i;
+  local nr, comps, chrom, n, subdigraph, comp, i;
+
+  nr := DigraphNrVertices(digraph);
 
   if DigraphHasLoops(digraph) then
     ErrorNoReturn("Digraphs: ChromaticNumber: usage,\n",
                   "the digraph (1st argument) must not have loops,");
+  elif nr = 0 then
+    return 0; # chromatic number = 0 iff <digraph> has 0 verts
   elif IsNullDigraph(digraph) then
-    return 1;
+    return 1; # chromatic number = 1 iff <digraph> has >= 1 verts & no edges
   elif IsBipartiteDigraph(digraph) then
-    return 2;
+    return 2; # chromatic number = 2 iff <digraph> has >= 2 verts & is bipartite
+              # <digraph> has at least 2 vertices at this stage
   fi;
 
   digraph := DigraphRemoveAllMultipleEdges(digraph);
-  n := DigraphNrVertices(digraph);
 
-  if DigraphNrEdges(digraph) > n * (n - 1) - 2 then
-    return n;
+  if IsCompleteDigraph(DigraphSymmetricClosure(digraph)) then
+    return nr; # chromatic number = nr iff <digraph> has >= 2 verts & this cond.
+  elif nr = 4 then
+    return 3; # if nr = 4, then 3 is only remaining possible chromatic number
   fi;
+
+  # The chromatic number of <digraph> is at least 3 and at most n - 1
 
   comps := DigraphConnectedComponents(digraph).comps;
   chrom := 3;
@@ -34,7 +42,7 @@ function(digraph)
   for comp in comps do
     n := Length(comp);
 
-    if n < DigraphNrVertices(digraph) then
+    if n < nr then
       subdigraph := InducedSubdigraph(digraph, comp);
     else
       subdigraph := digraph;
@@ -42,7 +50,7 @@ function(digraph)
 
     if not IsNullDigraph(subdigraph)
         and not IsBipartiteDigraph(subdigraph) then
-      if DigraphNrEdges(subdigraph) > n * (n - 1) - 2 then
+      if IsCompleteDigraph(DigraphSymmetricClosure(subdigraph)) then
         if n > chrom then
           chrom := n;
         fi;
@@ -51,14 +59,14 @@ function(digraph)
           if DigraphColoring(subdigraph, i) <> fail then
             if i > chrom then
               chrom := i;
-              if chrom = n - 1 then
-                return chrom;
-              fi;
             fi;
             break;
           fi;
         od;
       fi;
+    fi;
+    if chrom = nr - 1 then
+      return chrom;
     fi;
   od;
   return chrom;

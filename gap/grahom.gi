@@ -215,8 +215,21 @@ end);
 # COLOURING
 
 InstallMethod(DigraphColoring, "for a digraph and pos int",
-[IsDigraph, IsPosInt],
+[IsDigraph, IsInt],
 function(digraph, n)
+  if n < 0 then
+    ErrorNoReturn("Digraphs: DigraphColoring: usage,\n",
+                  "the second argument <n> must be a non-negative integer,");
+  fi;
+
+  # Only the null digraph with 0 vertices can be coloured with 0 vertices
+  if n = 0 then
+    if DigraphNrVertices(digraph) = 0 then
+      return IdentityTransformation;
+    fi;
+    return fail;
+  fi;
+
   # Special case for bipartite testing; works for large graphs
   if n = 2 then
     if not IsBipartiteDigraph(digraph) then
@@ -224,6 +237,7 @@ function(digraph, n)
     fi;
     return DIGRAPHS_Bipartite(digraph)[2];
   fi;
+
   # General case for n > 2; works for small graphs
   return DigraphEpimorphism(digraph, CompleteDigraph(n));
 end);

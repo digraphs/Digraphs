@@ -1706,7 +1706,7 @@ gap> DigraphColoring(gr);
 Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
   2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
 gap> DigraphColoring(EmptyDigraph(0));
-fail
+IdentityTransformation
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(a);

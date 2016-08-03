@@ -1600,7 +1600,7 @@ function(digraph)
         nextcolour, v, u;
 
   if DigraphNrVertices(digraph) = 0  then
-    return fail;
+    return IdentityTransformation;
   fi;
 
   vertices  := DigraphVertices(digraph);

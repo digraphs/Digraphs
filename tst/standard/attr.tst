@@ -1282,6 +1282,16 @@ gap> DigraphColoring(gr);
 Transformation( [ 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 3,
   3, 2, 3, 3, 3, 2, 1, 4, 4, 3, 3, 3, 3, 1, 3, 1, 3, 4, 4, 2, 2, 5, 3, 3,
   4 ] )
+gap> gr := Digraph([[2, 3, 4], [3], [], []]);
+<digraph with 4 vertices, 4 edges>
+gap> ChromaticNumber(gr);
+3
+gap> ChromaticNumber(EmptyDigraph(0));
+0
+gap> gr := CompleteDigraph(4);;
+gap> gr := DigraphAddVertex(gr);;
+gap> ChromaticNumber(gr);
+4
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
