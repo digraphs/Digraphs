@@ -252,6 +252,53 @@ gap> DigraphVertexLabel(gr, 2);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphEdgeLabels">
+<ManSection>
+  <Oper Name="DigraphEdgeLabels" Arg="digraph"/>
+  <Oper Name="SetDigraphEdgeLabels" Arg="digraph, list"/>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphEdgeLabels</C> returns a
+    copy of the labels of the edges in <A>digraph</A>.
+    <C>SetDigraphEdgeLabels</C> can be used to set the labels of the vertices
+    in <A>digraph</A> to the list of lists of arbitrary &GAP; objects
+    <A>list</A>. <P/>
+
+    The label of an edge can be changed an arbitrary number of times. If no
+    label has been set for the edge <A>(i,j)</A>, then the default value is
+    <A>1</A>. <P/>
+
+    Induced subdigraphs, and other operations which create new digraphs from
+    old ones, inherit their labels from their parents. 
+
+    <Example><![CDATA[
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphEdgeLabel">
+<ManSection>
+  <Oper Name = "DigraphEdgeLabel" Arg="digraph, i, j"/>
+  <Oper Name ="SetDigraphEdgeLabel" Arg="digraph, i, j, obj"/>
+  <Description>
+    If <A>digraph</A> is a digraph, then the first operation returns the label
+    of the edge between vertex <A>i</A> and <A>j</A>. The second operation
+    can be used to set the label of the edge between vertex <A>i</A> and <A>j</A>
+    to the arbitrary &GAP; object <A>obj</A>.  <P/>
+
+    The label of an edge can be changed an arbitrary number of times. If no
+    label has been set for the edge <A>(i,j)</A>, then the default value is
+    <A>1</A>. <P/>
+
+    Induced subdigraphs, and other operations which create new digraphs from
+    old ones, inherit their edgelabels from their parents. 
+
+    <Example><![CDATA[
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsMultiDigraph">
 <ManSection>
   <Prop Name="IsMultiDigraph" Arg="digraph"/>

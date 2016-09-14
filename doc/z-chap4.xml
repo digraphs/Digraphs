@@ -10,6 +10,8 @@
     <#Include Label="DigraphBicomponents">
     <#Include Label="DigraphVertexLabel">
     <#Include Label="DigraphVertexLabels">
+    <#Include Label="DigraphEdgeLabel">
+    <#Include Label="DigraphEdgeLabels">
     <#Include Label="DigraphInEdges">
     <#Include Label="DigraphOutEdges">
     <#Include Label="IsDigraphEdge">
