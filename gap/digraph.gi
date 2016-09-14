@@ -381,6 +381,77 @@ function(graph)
   return StructuralCopy(graph!.vertexlabels);
 end);
 
+# edge labels
+InstallMethod(DigraphEdgeLabel, "for a digraph, a pos int, and a pos int",
+[IsDigraph, IsPosInt, IsPosInt],
+function(graph, i, j)
+    local p;
+
+    if not IsBound(graph!.edgelabels) then
+        return fail;
+    fi;
+
+    p := PositionProperty(graph!.adj[i], j);
+    return ShallowCopy(graph!.edgelabels[i][p]);
+end);
+
+InstallMethod(DigraphEdgeLabels, "for a digraph",
+[IsDigraph],
+function(graph)
+    if not IsBound(graph!.edgeLabels) then
+        graph!.edgelabels := StructuralCopy(graph!.adj);
+        graph!.edgelabels := List(graph!.edgelabels, l->List(l, n->1));
+    fi;
+    return StructuralCopy(graph!.edgelabels);
+end);
+
+InstallMethod(SetDigraphEdgeLabel,
+              "for a digraph, a pos int, a pos int, and an object",
+[IsDigraph, IsPosInt, IsPosInt, IsObject],
+function(graph, i, j, label)
+    local p;
+
+    if not IsBound(graph!.edgeLabels) then
+        graph!.edgelabels := StructuralCopy(graph!.adj);
+        graph!.edgelabels := List(graph!.edgelabels, l->List(l, n->1));
+    fi;
+    p := PositionProperty(graph!.adj[i], j);
+    if p <> fail then
+        graph!.edgelabels[i][p] := label;
+    else
+        ErrorNoReturn("SetDigraphEdgeLabel: not an edge");
+    fi;
+end);
+
+InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a list",
+[IsDigraph, IsList],
+function(graph, labels)
+    local i;
+    if Length(labels) = Length(graph!.adj) and
+       ForAll([1..Length(labels)], i -> Length(labels[i]) = Length(graph!.adj[i])) then
+        graph!.edgelabels := labels;
+    else
+        ErrorNoReturn("SetDigraphEdgeLabels: labels list has wrong shape");
+    fi;
+end);
+
+InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a function",
+[IsDigraph, IsFunction],
+function(graph, wtf)
+    local i,j;
+
+    if not IsBound(graph!.edgeLabels) then
+        graph!.edgelabels := StructuralCopy(graph!.adj);
+        graph!.edgelabels := List(graph!.edgelabels, l->List(l, n->1));
+    fi;
+
+    for i in [1..Length(graph!.adj)] do
+        for j in [1..Length(graph!.adj[i])] do
+            graph!.edgelabels[i][j] := wtf(i, graph!.adj[j]);
+        od;
+    od;
+end);
+
 # multi means it has at least one multiple edges
 
 InstallMethod(IsMultiDigraph, "for a digraph",
