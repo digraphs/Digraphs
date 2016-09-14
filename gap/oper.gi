@@ -690,7 +690,8 @@ InstallMethod(InducedSubdigraph,
 "for a digraph and a homogeneous list",
 [IsDigraph, IsHomogeneousList],
 function(digraph, subverts)
-  local nr, n, old_adj, new_adj, lookup, adji, j, l, gr, i, k;
+  local nr, n, old_adj, new_adj, old_edl, new_edl, lookup,
+        adji, adjl, j, l, gr, i, k;
 
   nr := Length(subverts);
   if nr = 0 then
@@ -710,25 +711,31 @@ function(digraph, subverts)
 
   old_adj := OutNeighbours(digraph);
   new_adj := EmptyPlist(nr);
+  old_edl := DigraphEdgeLabels(digraph);
+  new_edl := EmptyPlist(nr);
 
   lookup := [1 .. n] * 0;
   lookup{subverts} := [1 .. nr];
 
   for i in [1 .. nr] do
     adji := [];
+    adjl := [];
     j := 0;
     for k in [1 .. Length(old_adj[subverts[i]])] do
       l := lookup[old_adj[subverts[i]][k]];
       if l <> 0 then
         j := j + 1;
         adji[j] := l;
+        adjl[j] := old_edl[subverts[i]][k];
       fi;
     od;
     new_adj[i] := adji;
+    new_edl[i] := adjl;
   od;
 
   gr := DigraphNC(new_adj);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){subverts});
+  SetDigraphEdgeLabels(gr, new_edl);
   return gr;
 end);
 
