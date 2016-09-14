@@ -256,12 +256,14 @@ gap> DigraphVertexLabel(gr, 2);
 <ManSection>
   <Oper Name="DigraphEdgeLabels" Arg="digraph"/>
   <Oper Name="SetDigraphEdgeLabels" Arg="digraph, list"/>
+  <Oper Name="SetDigraphEdgeLabels" Arg="digraph, func"/>
   <Description>
     If <A>digraph</A> is a digraph, then <C>DigraphEdgeLabels</C> returns a
     copy of the labels of the edges in <A>digraph</A>.
     <C>SetDigraphEdgeLabels</C> can be used to set the labels of the vertices
     in <A>digraph</A> to the list of lists of arbitrary &GAP; objects
-    <A>list</A>. <P/>
+    <A>list</A>, or to the return value of a binayr function <A>func</A>. <P/>
+    
 
     The label of an edge can be changed an arbitrary number of times. If no
     label has been set for the edge <A>(i,j)</A>, then the default value is
