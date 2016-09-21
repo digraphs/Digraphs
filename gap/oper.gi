@@ -374,7 +374,8 @@ end);
 InstallMethod(DigraphRemoveEdgesNC, "for a digraph and a list",
 [IsDigraph, IsHomogeneousList],
 function(digraph, edges)
-  local m, n, old_adj, new_adj, edge_count, degree_count, gr, i, j;
+  local m, n, old_adj, new_adj, old_lbl, new_lbl, edge_count,
+        degree_count, gr, i, j;
 
   if IsEmpty(edges) then
     return DigraphCopy(digraph);
@@ -383,23 +384,28 @@ function(digraph, edges)
   m := DigraphNrEdges(digraph);
   n := DigraphNrVertices(digraph);
   old_adj := OutNeighbours(digraph);
+  old_lbl := DigraphEdgeLabels(digraph);
   new_adj := EmptyPlist(n);
+  new_lbl := EmptyPlist(n);
   edges := BlistList([1 .. m], edges);
   edge_count := 0;
   degree_count := 0;
   for i in DigraphVertices(digraph) do # Loop over each vertex
     new_adj[i] := [];
+    new_lbl[i] := [];
     degree_count := 0;
-    for j in old_adj[i] do
+    for j in [1..Length(old_adj[i])] do
       edge_count := edge_count + 1;
       if not edges[edge_count] then # Keep this edge
         degree_count := degree_count + 1;
-        new_adj[i][degree_count] := j;
+          new_adj[i][degree_count] := old_adj[i][j];
+          new_lbl[i][degree_count] := old_lbl[i][j];
       fi;
     od;
   od;
   gr := DigraphNC(new_adj);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
+  SetDigraphEdgeLabels(gr, new_lbl);
   return gr;
 end);
 
