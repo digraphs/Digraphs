@@ -247,19 +247,23 @@ end);
 InstallMethod(DigraphRemoveLoops, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local old, new, nr, out, i, j, tot;
+  local old, old_lbl, new, new_lbl, nr, out, i, j, tot;
 
   old := OutNeighbours(digraph);
+  old_lbl := DigraphEdgeLabels(digraph);
   new := [];
+  new_lbl := [];
   tot := 0;
 
   for i in DigraphVertices(digraph) do
     new[i] := [];
+    new_lbl[i] := [];
     nr := 0;
-    for j in old[i] do
-      if i <> j then
+    for j in [1..Length(old[i])] do
+      if i <> old[i][j] then
         nr := nr + 1;
-        new[i][nr] := j;
+        new[i][nr] := old[i][j];
+        new_lbl[i][nr] := old_lbl[i][j];
       fi;
     od;
     tot := tot + nr;
@@ -269,6 +273,7 @@ function(digraph)
   SetDigraphHasLoops(out, false);
   SetDigraphNrEdges(out, tot);
   SetDigraphVertexLabels(out, DigraphVertexLabels(digraph));
+  SetDigraphEdgeLabels(out, new_lbl);
   return out;
 end);
 
@@ -1345,6 +1350,7 @@ function(digraph)
   od;
   gr := DigraphNC(new_adj, tot);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
+  # Multidigraphs did not have edge labels
   SetIsMultiDigraph(gr, false);
   return gr;
 end);
