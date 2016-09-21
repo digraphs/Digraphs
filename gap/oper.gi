@@ -464,14 +464,18 @@ end);
 InstallMethod(DigraphAddEdgesNC, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edges)
-  local new, verts, edge;
+  local gr, new, new_lbl, verts, edge;
 
   new := OutNeighboursCopy(digraph);
+  new_lbl := StructuralCopy(DigraphEdgeLabels(digraph));
   verts := DigraphVertices(digraph);
   for edge in edges do
     Add(new[edge[1]], edge[2]);
+    Add(new_lbl[edge[1]], 1);
   od;
-  return DigraphNC(new);
+  gr := DigraphNC(new);
+  SetDigraphEdgeLabels(gr, new_lbl);
+  return gr;
 end);
 #
 
