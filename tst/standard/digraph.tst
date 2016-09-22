@@ -73,6 +73,32 @@ gap> x;
 gap> DigraphVertexLabels(gr);
 [ 1, [  ], 3, 4, 5, 6, 7, 8, 9, 10 ]
 
+#T# DigraphEdgeLabels
+gap> gr := Digraph([[2,3],[3],[1,5],[],[4]]);
+<digraph with 5 vertices, 6 edges>
+gap> DigraphEdgeLabels(gr);
+[ [ 1, 1 ], [ 1 ], [ 1, 1 ], [  ], [ 1 ] ]
+gap> SetDigraphEdgeLabels(gr, [1,2]);
+Error, SetDigraphEdgeLabels: labels list has wrong shape
+gap> SetDigraphEdgeLabels(gr, [ [ "a", "b" ], [ "c" ], [ 42, [] ],
+> [  ], [ 1 ] ] );
+gap> DigraphEdgeLabels(gr);
+[ [ "a", "b" ], [ "c" ], [ 42, [  ] ], [  ], [ 1 ] ]
+gap> DigraphEdgeLabel(gr, 1, 2);
+"a"
+gap> SetDigraphEdgeLabel(gr, 1, 2, "23");
+gap> DigraphEdgeLabel(gr, 1, 2);         
+"23"
+gap> DigraphEdgeLabels(gr);
+[ [ "23", "b" ], [ "c" ], [ 42, [  ] ], [  ], [ 1 ] ]
+gap> x := DigraphEdgeLabel(gr, 3, 5);
+[  ]
+gap> Add(x, "hello, world");
+gap> x;
+[ "hello, world" ]
+gap> DigraphEdgeLabels(gr);
+[ [ "23", "b" ], [ "c" ], [ 42, [  ] ], [  ], [ 1 ] ]
+
 #T# Graph
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
