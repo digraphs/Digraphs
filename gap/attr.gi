@@ -135,55 +135,53 @@ end);
 InstallMethod(ReducedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local old, adj, len, map, labels, i, sinkmap, sinklen, x, pos, gr;
+  local v, niv, old, vlabels, elabels, old_elabels, i, len, adj, map, gr;
 
   if IsConnectedDigraph(digraph) then
     return digraph;
   fi;
 
+  v := DigraphVertices(digraph);
+  niv := BlistList(v, []);
   old := OutNeighbours(digraph);
 
-  # Extract all the non-empty lists of out-neighbours
-  adj := [];
-  len := 0;
-  map := [];
-  labels := [];
-  for i in DigraphVertices(digraph) do
+  # First find the non-isolated vertices
+  for i in [1..Length(old)] do
     if not IsEmpty(old[i]) then
-      len := len + 1;
-      adj[len] := ShallowCopy(old[i]);
-      map[len] := i;
-      labels[len] := DigraphVertexLabel(digraph, i);
+      niv[i] := true;
+      UniteBlistList(v, niv, old[i]);
     fi;
   od;
 
-  # Renumber the contents
-  sinkmap := [];
-  sinklen := 0;
-  for x in adj do
-    for i in [1 .. Length(x)] do
-      pos := PositionSet(map, x[i]);
-      if pos = fail then
-        # x[i] has no out-neighbours
-        pos := Position(sinkmap, x[i]);
-        if pos = fail then
-          # x[i] has not yet been encountered
-          sinklen := sinklen + 1;
-          sinkmap[sinklen] := x[i];
-          pos := sinklen + len;
-          adj[pos] := EmptyPlist(0);
-          labels[pos] := DigraphVertexLabel(digraph, x[i]);
-        else
-          pos := pos + len;
-        fi;
-      fi;
-      x[i] := pos;
-    od;
+  # Compress, store map oldvertex -> newvertex, order invariant
+  map := [];
+  len := 1;
+  for i in [1..Length(niv)] do
+    if niv[i] then
+        map[i] := len;
+        len := len + 1;
+    fi;
+  od;
+
+  # Vertex labels
+  vlabels := ListBlist(DigraphVertexLabels(digraph), niv);
+  vlabels := StructuralCopy(vlabels);
+
+  # Adjacencies and edge labels
+  old_elabels := DigraphEdgeLabels(digraph);
+  adj := [];
+  elabels := [];
+  for i in [1..Length(niv)] do
+    if niv[i] then
+      Add(adj, List(old[i], x -> map[x]));
+      Add(elabels, StructuralCopy(old_elabels[i]));
+    fi;
   od;
 
   # Return the reduced graph, with labels preserved
   gr := DigraphNC(adj);
-  SetDigraphVertexLabels(gr, labels);
+  SetDigraphVertexLabels(gr, vlabels);
+  SetDigraphEdgeLabels(gr, elabels);
   return gr;
 end);
 
