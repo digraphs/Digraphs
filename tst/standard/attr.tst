@@ -810,7 +810,7 @@ gap> gr := Digraph([[2, 4, 2, 6, 1], [], [], [2, 1, 4], [],
 gap> rd := ReducedDigraph(gr);
 <multidigraph with 5 vertices, 14 edges>
 gap> DigraphVertexLabels(rd);
-[ 1, 4, 6, 7, 2 ]
+[ 1, 2, 4, 6, 7 ]
 gap> gr := CompleteDigraph(10);
 <digraph with 10 vertices, 90 edges>
 gap> rd := ReducedDigraph(gr);
@@ -827,7 +827,7 @@ gap> rd := ReducedDigraph(gr);
 gap> DigraphVertexLabels(gr);
 [ "one", "two", "three", "four" ]
 gap> DigraphVertexLabels(rd);
-[ "two", "four", "three" ]
+[ "two", "three", "four" ]
 
 #T# DigraphAllSimpleCircuits
 gap> gr := Digraph([]);;
