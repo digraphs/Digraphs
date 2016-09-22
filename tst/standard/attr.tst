@@ -828,6 +828,15 @@ gap> DigraphVertexLabels(gr);
 [ "one", "two", "three", "four" ]
 gap> DigraphVertexLabels(rd);
 [ "two", "three", "four" ]
+gap> gr := Digraph([[], [4, 2], [], [3]]);
+<digraph with 4 vertices, 3 edges>
+gap> SetDigraphEdgeLabels(gr, [[], ["a", "b"], [], ["c"]]);
+gap> rd := ReducedDigraph(gr);
+<digraph with 3 vertices, 3 edges>
+gap> DigraphEdgeLabels(gr);
+[ [  ], [ "a", "b" ], [  ], [ "c" ] ]
+gap> DigraphEdgeLabels(rd);
+[ [ "a", "b" ], [  ], [ "c" ] ]
 
 #T# DigraphAllSimpleCircuits
 gap> gr := Digraph([]);;
