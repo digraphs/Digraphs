@@ -418,3 +418,31 @@ function(graph)
 
   return true;
 end);
+
+InstallMethod(IsTree, "for a digraph",
+[IsDigraph],
+function(g)
+  local incount,zerocount,out,i,j,k;
+  zerocount := 0;
+  out := OutNeighbours(g);  
+  incount := ListWithIdenticalEntries(Length(out),0);
+  for i in [1 .. Length(out)] do
+    for j in [1 .. Length(out[i])] do
+      incount[out[i][j]] := incount[out[i][j]] + 1;
+    od;  
+  od;
+  for k in [1 .. Length(out)] do
+    if incount[k] > 1 then
+      return false;
+    fi;
+    if incount[k] = 0 then 
+      zerocount := zerocount + 1;
+    fi;
+  od;
+  if not zerocount = 1 then
+    return false;
+  fi;
+
+  return true;
+
+end);
