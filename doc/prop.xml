@@ -13,7 +13,7 @@
   <Prop Name="DigraphHasLoops" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns <K>true</K> if the digraph <A>digraph</A> is has loops, and
+    Returns <K>true</K> if the digraph <A>digraph</A> has loops, and
     <K>false</K> if it does not. A loop is an edge with equal source and range.
 
     <Example><![CDATA[
