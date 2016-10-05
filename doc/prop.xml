@@ -567,3 +567,40 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsDirectedTree">
+<ManSection>
+  <Prop Name="IsDirectedTree" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    Returns <K>true</K> if the digraph <A>digraph</A> is a directed tree, and 
+    <K>false</K> if it is not. <P/>
+    
+    A <E>directed tree</E> is an acyclic digraph with precisely 1 source,
+    such that no two vertices share an out-neighbour.
+    Note the empty digraph is not considered a directed 
+    tree as it has no source. <P/>
+
+    See also <Ref Attr="DigraphSources"/>.
+
+    <Example><![CDATA[
+gap> g := Digraph([[], [2]]);
+<digraph with 2 vertices, 1 edge>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[3], [3], []]);
+<digraph with 3 vertices, 2 edges>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[2], [3], []]);
+<digraph with 4 vertices, 2 edges>
+gap> IsDirectedTree(g);
+true
+gap> g := Digraph([[2,3], [6], [4,5], [], [], []]);
+<digraph with 6 vertices, 5 edges>
+gap> IsDirectedTree(g);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
