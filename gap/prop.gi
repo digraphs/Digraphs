@@ -419,7 +419,7 @@ function(graph)
   return true;
 end);
 
-InstallMethod(IsTree, "for a digraph",
+InstallMethod(IsDirectedTree, "for a digraph",
 [IsDigraph],
 function(g)
   local incount,zerocount,out,i,j,k;
