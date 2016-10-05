@@ -429,6 +429,9 @@ function(g)
   for i in [1 .. Length(out)] do
     for j in [1 .. Length(out[i])] do
       incount[out[i][j]] := incount[out[i][j]] + 1;
+      if out[i][j] = i then
+	return false;
+      fi;
     od;  
   od;
   for k in [1 .. Length(out)] do
