@@ -820,5 +820,67 @@ gap> Unbind(range);
 gap> Unbind(source);
 gap> Unbind(trans);
 
+#T# IsDirectedTree
+gap> g := Digraph([]);
+<digraph with 0 vertices, 0 edges>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[]]);
+<digraph with 1 vertex, 0 edges>
+gap> IsDirectedTree(g);
+true
+gap> g := Digraph([[], []]);
+<digraph with 2 vertices, 0 edges>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[1]]);
+<digraph with 1 vertex, 1 edge>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[2,2],[]]);
+<multidigraph with 2 vertices, 2 edges>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[], [2]]);
+<digraph with 2 vertices, 1 edge>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[3], [3], []]);
+<digraph with 3 vertices, 2 edges>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[2], [3], []]);
+<digraph with 3 vertices, 2 edges>
+gap> IsDirectedTree(g);
+true
+gap> g := Digraph([[2], [3], [], []]);
+<digraph with 4 vertices, 2 edges>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[2,3], [6], [4,5], [], [], []]);
+<digraph with 6 vertices, 5 edges>
+gap> IsDirectedTree(g);
+true
+gap> g := Digraph([[2,3], [6], [4,5], [], [], [], []]);
+<digraph with 7 vertices, 5 edges>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[2,3], [6], [4,5], [7], [], [7], []]);
+<digraph with 7 vertices, 7 edges>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[2,3], [1,3], [1,2]]);
+<digraph with 3 vertices, 6 edges>
+gap> IsDirectedTree(g);
+false
+gap> g := Digraph([[2,3,4], [1,3,4], [1,2,4], [1,2,3]]);
+<digraph with 4 vertices, 12 edges>
+gap> IsDirectedTree(g);
+false
+
 #E#
 gap> STOP_TEST("Digraphs package: standard/prop.tst");
