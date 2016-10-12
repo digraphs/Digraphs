@@ -854,7 +854,7 @@ gap> g := Digraph([[3], [3], []]);
 gap> IsDirectedTree(g);
 false
 gap> g := Digraph([[2], [3], []]);
-<digraph with 4 vertices, 2 edges>
+<digraph with 3 vertices, 2 edges>
 gap> IsDirectedTree(g);
 true
 gap> g := Digraph([[2], [3], [], []]);
