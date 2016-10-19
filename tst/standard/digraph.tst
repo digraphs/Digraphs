@@ -1583,9 +1583,9 @@ gap> CompleteMultibipartiteDigraph([5,4,2]);
 gap> CompleteMultibipartiteDigraph([5,4,2, 10, 1000]);
 <digraph with 1021 vertices, 42296 edges>
 gap> CompleteMultibipartiteDigraph([5,0,2]);
-Error, Invalid parition size: must be greater than zero
+Error, Invalid partition size: must be greater than zero
 gap> CompleteMultibipartiteDigraph([5,4,2, 10, -5]);
-Error, Invalid parition size: must be greater than zero
+Error, Invalid partition size: must be greater than zero
 gap> CompleteMultibipartiteDigraph([5]);
 Error, Invalid input: length of list must be greater than one
 

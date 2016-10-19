@@ -1502,7 +1502,7 @@ function(l)
   
   for p_size in l do
     if p_size < 1 then
-      Error("Invalid parition size: must be greater than zero");
+      Error("Invalid partition size: must be greater than zero");
     fi;
   od;
   
