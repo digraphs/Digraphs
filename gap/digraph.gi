@@ -1480,3 +1480,59 @@ function(n, k)
   SetIsSymmetricDigraph(digraph, true);
   return digraph;
 end);
+
+#############################################################################
+##  
+##  CompleteMultibipartiteDigraph( <list> ) 
+## 
+##  For input l of size n, CompleteMultibipartiteDigraph returns the digraph 
+##  containing parts 1, 2, .. , n of orders L[1], L[2], ... , L[n], where 
+##  each vertex is adjacent to every other not contained in the same part.
+##  
+InstallMethod(CompleteMultibipartiteDigraph,
+"for a digraph",
+[IsList],
+function(l)
+  local p_size, n, b, out, i, j;    
+  n := Length(l);
+  
+  if Length(l) < 2 then 
+    Error("Invalid input: length of list must be greater than one");
+  fi;
+  
+  for p_size in l do
+    if p_size < 1 then
+      Error("Invalid parition size: must be greater than zero");
+    fi;
+  od;
+  
+  # Assume vertex labels [1..Sum(l)] distributed across partitions [1..n]
+  # and compute list b := [i_1,i_2, i_3,..,i_n] 
+  # where i_j is the label of the vertex in partition Position(b, i_j) of 
+  # greatest value.
+  b := ShallowCopy(l);
+  for i in [ 2.. Length(l)] do
+    b[i] := b[i - 1] + l[i];
+  od;
+  
+  # Initialise output adjacency list
+  out := List([1 .. b[n]], x -> []);
+  
+  # Adjacency lists for part 1
+  for i in [1 .. b[1]] do
+    out[i] := [b[1] + 1 .. b[n]];
+  od;
+  # Adjacency lists for parts 2 .. n - 1
+  for i in [2 .. n - 1] do
+    for j in [(b[i - 1]) + 1 .. b[i]] do
+      out[j] := Concatenation([1 .. b[i - 1]], [b[i] + 1 .. b[n]]);
+    od;
+  od;
+  # Adjacency list for part n
+  for i in [b[n - 1] + 1 .. b[n]] do
+    out[i] := [1 .. b[n - 1]];
+  od;
+  
+  # Convert adjacency list to digraph and return
+  return Digraph(out);
+end);
