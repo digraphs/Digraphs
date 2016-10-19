@@ -1583,24 +1583,11 @@ gap> CompleteMultibipartiteDigraph([5,4,2]);
 gap> CompleteMultibipartiteDigraph([5,4,2, 10, 1000]);
 <digraph with 1021 vertices, 42296 edges>
 gap> CompleteMultibipartiteDigraph([5,0,2]);
-Error, Invalid parition size: must be greater than zero at *stdin*:196 called from
-<function "unknown">( <arguments> )
- called from read-eval loop at *stdin*:231
-you can 'quit;' to quit to outer loop, or
-you can 'return;' to continue
+Error, Invalid parition size: must be greater than zero
 gap> CompleteMultibipartiteDigraph([5,4,2, 10, -5]);
-Error, Invalid parition size: must be greater than zero at *stdin*:196 called from
-Error( "Invalid parition size: must be greater than zero" ); at *stdin*:196 called from
-<function "unknown">( <arguments> )
- called from read-eval loop at *errin*:3
-you can 'quit;' to quit to outer loop, or
-you can 'return;' to continue
+Error, Invalid parition size: must be greater than zero
 gap> CompleteMultibipartiteDigraph([5]);
-Error, Invalid input: length of list must be greater than one at *stdin*:191 called from
-<function "unknown">( <arguments> )
- called from read-eval loop at *stdin*:231
-you can 'quit;' to quit to outer loop, or
-you can 'return;' to continue
+Error, Invalid input: length of list must be greater than one
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);
