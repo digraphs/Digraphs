@@ -1483,11 +1483,12 @@ end);
 
 #############################################################################
 ##  
-##  CompleteMultibipartiteDigraph( <list> ) 
+##  CompleteMultipartiteDigraph( <list> ) 
 ## 
-##  For input l of size n, CompleteMultibipartiteDigraph returns the digraph 
-##  containing parts 1, 2, .. , n of orders l[1], l[2], ... , l[n], where 
-##  each vertex is adjacent to every other not contained in the same part.
+##  For input l of size n, CompleteMultipartiteDigraph returns the digraph 
+##  containing independent sets 1, 2, .. , n of orders l[1], l[2], ... , l[n], 
+##  where each vertex is adjacent to every other not contained in the 
+##  same independent set.
 ##  
 InstallMethod(CompleteMultipartiteDigraph,
 "for a digraph",
@@ -1507,10 +1508,9 @@ function(l)
     return EmptyDigraph(n);
   fi;
   
-  # Assume vertex labels [1..Sum(l)] distributed across partitions [1..n]
-  # and compute list b := [i_1,i_2, i_3,..,i_n] 
-  # where i_j is the label of the vertex in partition Position(b, i_j) of 
-  # greatest value.
+  # Assume vertex labels [1..Sum(l)] distributed across independent sets [1..n]
+  # and compute the list b := [i_1,i_2, i_3,..,i_n] where i_j is the label of
+  # the vertex in partition Position(b, i_j) of greatest value.
   b := ShallowCopy(l);
   for i in [2 .. Length(l)] do
     b[i] := b[i - 1] + l[i];
@@ -1519,17 +1519,17 @@ function(l)
   # Initialise output adjacency list
   out := List([1 .. b[n]], x -> []);
   
-  # Adjacency lists for part 1
+  # Adjacency lists for independent set 1
   for i in [1 .. b[1]] do
     out[i] := [b[1] + 1 .. b[n]];
   od;
-  # Adjacency lists for parts 2 .. n - 1
+  # Adjacency lists for independent sets 2 .. n - 1
   for i in [2 .. n - 1] do
     for j in [(b[i - 1]) + 1 .. b[i]] do
       out[j] := Concatenation([1 .. b[i - 1]], [b[i] + 1 .. b[n]]);
     od;
   od;
-  # Adjacency list for part n
+  # Adjacency list for independent set n
   for i in [b[n - 1] + 1 .. b[n]] do
     out[i] := [1 .. b[n - 1]];
   od;
