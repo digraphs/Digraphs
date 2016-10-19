@@ -1489,7 +1489,7 @@ end);
 ##  containing parts 1, 2, .. , n of orders l[1], l[2], ... , l[n], where 
 ##  each vertex is adjacent to every other not contained in the same part.
 ##  
-InstallMethod(CompleteMultibipartiteDigraph,
+InstallMethod(CompleteMultipartiteDigraph,
 "for a digraph",
 [IsList],
 function(l)
