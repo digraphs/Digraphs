@@ -1486,7 +1486,7 @@ end);
 ##  CompleteMultibipartiteDigraph( <list> ) 
 ## 
 ##  For input l of size n, CompleteMultibipartiteDigraph returns the digraph 
-##  containing parts 1, 2, .. , n of orders L[1], L[2], ... , L[n], where 
+##  containing parts 1, 2, .. , n of orders l[1], l[2], ... , l[n], where 
 ##  each vertex is adjacent to every other not contained in the same part.
 ##  
 InstallMethod(CompleteMultibipartiteDigraph,
