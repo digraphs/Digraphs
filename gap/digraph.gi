@@ -1493,25 +1493,26 @@ InstallMethod(CompleteMultipartiteDigraph,
 "for a digraph",
 [IsList],
 function(l)
-  local p_size, n, b, out, i, j;    
-  n := Length(l);
-  
-  if Length(l) < 2 then 
-    Error("Invalid input: length of list must be greater than one");
-  fi;
-  
+  local p_size, n, b, out, i, j;   
   for p_size in l do
-    if p_size < 1 then
-      Error("Invalid partition size: must be greater than zero");
+    if not IsPosInt(p_size) then
+      ErrorNoReturn("Digraphs: CompleteMultibipartiteDigraph: usage, \n",
+                    "the first argument <l> must be a list of positive \n",
+                    "integers,");
     fi;
   od;
+   
+  n := Length(l);
+  if n < 2 then
+    return EmptyDigraph(n);
+  fi;
   
   # Assume vertex labels [1..Sum(l)] distributed across partitions [1..n]
   # and compute list b := [i_1,i_2, i_3,..,i_n] 
   # where i_j is the label of the vertex in partition Position(b, i_j) of 
   # greatest value.
   b := ShallowCopy(l);
-  for i in [ 2.. Length(l)] do
+  for i in [2 .. Length(l)] do
     b[i] := b[i - 1] + l[i];
   od;
   
