@@ -1577,6 +1577,18 @@ gap> JohnsonDigraph(-1, 2);
 Error, Digraphs: JohnsonDigraph: usage,
 both arguments must be non-negative integers,
 
+#T# CompleteMultibipartiteDigraph
+gap> CompleteMultibipartiteDigraph([5,4,2]);
+<digraph with 11 vertices, 76 edges>
+gap> CompleteMultibipartiteDigraph([5,4,2, 10, 1000]);
+<digraph with 1021 vertices, 42296 edges>
+gap> CompleteMultibipartiteDigraph([5,0,2]);
+Error, Invalid partition size: must be greater than zero
+gap> CompleteMultibipartiteDigraph([5,4,2, 10, -5]);
+Error, Invalid partition size: must be greater than zero
+gap> CompleteMultibipartiteDigraph([5]);
+Error, Invalid input: length of list must be greater than one
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
