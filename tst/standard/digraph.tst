@@ -1625,11 +1625,6 @@ gap> DigraphEdges(CompleteMultipartiteDigraph([7,8,2]));
   [ 17, 3 ], [ 17, 4 ], [ 17, 5 ], [ 17, 6 ], [ 17, 7 ], [ 17, 8 ], [ 17, 9 ], 
   [ 17, 10 ], [ 17, 11 ], [ 17, 12 ], [ 17, 13 ], [ 17, 14 ], [ 17, 15 ] ]
 
-
-
-
-
-
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
