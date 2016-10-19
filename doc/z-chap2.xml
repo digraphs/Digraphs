@@ -67,6 +67,7 @@
     <#Include Label="ChainDigraph">
     <#Include Label="CompleteDigraph">
     <#Include Label="CompleteBipartiteDigraph">
+    <#Include Label="CompleteMultibipartiteDigraph">
     <#Include Label="CycleDigraph">
     <#Include Label="EmptyDigraph">
     <#Include Label="CayleyDigraph">

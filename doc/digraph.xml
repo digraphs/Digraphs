@@ -733,6 +733,23 @@ gap> CompleteBipartiteDigraph(2, 3);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="CompleteMultibipartiteDigraph">
+  <ManSection>
+    <Oper Name="CompleteMultibipartiteDigraph" Arg = "orders[n, ]"/>
+    <Returns>A digraph.</Returns>
+    <Description>
+        For a list <A>orders</A> of <C>n</C> positive integers,
+        this function returns the digraph containing parts <C>[1 .. n]</C>
+        of orders <C>[<A>l</A>[1] .. <A>l</A>[n]]</C>, where each vertex is 
+        adjacent to every other not contained in the same part.
+      <Example><![CDATA[
+gap> CompleteMultibipartiteDigraph([5,4,2]);
+<digraph with 11 vertices, 76 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="EmptyDigraph">
 <ManSection>
   <Oper Name="EmptyDigraph" Arg="n"/>
