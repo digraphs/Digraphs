@@ -255,19 +255,28 @@ gap> DigraphVertexLabel(gr, 2);
 <#GAPDoc Label="DigraphEdgeLabels">
 <ManSection>
   <Oper Name="DigraphEdgeLabels" Arg="digraph"/>
-  <Oper Name="SetDigraphEdgeLabels" Arg="digraph, list"/>
+  <Oper Name="SetDigraphEdgeLabels" Arg="digraph, labels"/>
   <Oper Name="SetDigraphEdgeLabels" Arg="digraph, func"/>
   <Description>
     If <A>digraph</A> is a digraph, then <C>DigraphEdgeLabels</C> returns a
-    copy of the labels of the edges in <A>digraph</A>.
-    <C>SetDigraphEdgeLabels</C> can be used to set the labels of the vertices
-    in <A>digraph</A> to the list of lists of arbitrary &GAP; objects
-    <A>list</A>, or to the return value of a binayr function <A>func</A>. <P/>
+    copy of the labels of the edges in <A>digraph</A> as a list of lists
+    <C>labels</C> such that <C>labels[i][j]</C> is the label on the edge
+    from vertex <A>i</A> to vertex <A>j</A>.
+
+    <C>SetDigraphEdgeLabels</C> can be used to set the labels of the edges
+    in <A>digraph</A> to the list <A>labels</A> of lists of arbitrary &GAP;
+    objects such that <C>list[i][j]</C> is the label on the edge
+    <C>OutNeighbours(i)[j]</C> for vertices <A>i</A> and <A>j</A>.
+
+    Alternatively <C>SetDigraphEdgeLabels</C> can be called with binary function
+    <A>func</A> that as its second argument that when passed two vertices <A>i</A>
+    and <A>j</A> returns the label for the edge between vertex <A>i</A> and vertex
+    <A>j</A>. <P/>
     
 
     The label of an edge can be changed an arbitrary number of times. If no
-    label has been set for the edge <A>(i,j)</A>, then the default value is
-    <A>1</A>. <P/>
+    label has been set for the edge between vertex <A>i</A> and vertex <A>j</A>,
+    then the default value is <A>1</A>. <P/>
 
     Induced subdigraphs, and other operations which create new digraphs from
     old ones, inherit their labels from their parents. 
@@ -284,6 +293,8 @@ gap> gr := InducedSubdigraph(gr, [1, 2, 3]);
 <digraph with 3 vertices, 4 edges>
 gap> DigraphEdgeLabels(gr);
 [ [ 1 ], [ "d", 1 ], [ 1 ] ]
+gap> OutNeighbours(gr);
+[ [ 3 ], [ 1, 3 ], [ 1 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -295,17 +306,19 @@ gap> DigraphEdgeLabels(gr);
   <Oper Name ="SetDigraphEdgeLabel" Arg="digraph, i, j, obj"/>
   <Description>
     If <A>digraph</A> is a digraph, then the first operation returns the label
-    of the edge between vertex <A>i</A> and <A>j</A>. The second operation
+    of the edge from vertex <A>i</A> and <A>j</A>. The second operation
     can be used to set the label of the edge between vertex <A>i</A> and <A>j</A>
     to the arbitrary &GAP; object <A>obj</A>.  <P/>
 
     The label of an edge can be changed an arbitrary number of times. If no
-    label has been set for the edge <A>(i,j)</A>, then the default value is
-    <A>1</A>. <P/>
+    label has been set for the edge from vertex <A>i</A> to vertex <A>j</A>,
+    then the default value is <A>1</A>. <P/>
 
     Induced subdigraphs, and other operations which create new digraphs from
     old ones, inherit their edgelabels from their parents. 
 
+    See also <Ref Oper="DigraphEdgeLabels"/>.
+ 
     <Example><![CDATA[
 gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
 <digraph with 5 vertices, 11 edges>
