@@ -1504,8 +1504,10 @@ function(l)
   od;
    
   n := Length(l);
-  if n < 2 then
-    return EmptyDigraph(n);
+  if n = 0 then
+    return EmptyDigraph(0);
+  elif n = 1 then
+    return EmptyDigraph(l[1]);
   fi;
   
   # Assume vertex labels [1..Sum(l)] distributed across independent sets [1..n]
