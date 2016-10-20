@@ -79,7 +79,8 @@ gap> gr := Digraph([[2,3],[3],[1,5],[],[4]]);
 gap> DigraphEdgeLabels(gr);
 [ [ 1, 1 ], [ 1 ], [ 1, 1 ], [  ], [ 1 ] ]
 gap> SetDigraphEdgeLabels(gr, [1,2]);
-Error, SetDigraphEdgeLabels: labels list has wrong shape
+Error, SetDigraphEdgeLabels: labels list has wrong shape, it is required to ha\
+ve the same shape as the return value of OutNeighbours(<graph>)
 gap> SetDigraphEdgeLabels(gr, [ [ "a", "b" ], [ "c" ], [ 42, [] ],
 > [  ], [ 1 ] ] );
 gap> DigraphEdgeLabels(gr);

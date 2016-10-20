@@ -392,7 +392,7 @@ function(graph, i, j)
         return ShallowCopy(graph!.edgelabels[i][p]);
     else
         ErrorNoReturn("DigraphEdgeLabel: vertex"
-                     , i, " is not adjacent to vertex ", "j");
+                     , "[ ", i, ", ", j, " ] is not and edge,");
     fi;
 end);
 
@@ -414,7 +414,8 @@ function(graph, i, j, label)
     if p <> fail then
         graph!.edgelabels[i][p] := label;
     else
-        ErrorNoReturn("SetDigraphEdgeLabel: not an edge");
+        ErrorNoReturn("SetDigraphEdgeLabel: [ ",i,", ", j, " ] is"
+                     , " not an edge");
     fi;
 end);
 
@@ -426,7 +427,9 @@ function(graph, labels)
        ForAll([1..Length(labels)], i -> Length(labels[i]) = Length(graph!.adj[i])) then
         graph!.edgelabels := labels;
     else
-        ErrorNoReturn("SetDigraphEdgeLabels: labels list has wrong shape");
+        ErrorNoReturn("SetDigraphEdgeLabels: labels list has wrong shape,"
+                     ," it is required to have the same shape as the"
+                     ," return value of OutNeighbours(<graph>)");
     fi;
 end);
 
