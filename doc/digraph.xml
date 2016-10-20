@@ -696,7 +696,7 @@ gap> ChainDigraph(42);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="Digraph">
+<#GAPDoc Label="CompleteDigraph">
 <ManSection>
   <Oper Name="CompleteDigraph" Arg="n"/>
   <Returns>A digraph.</Returns>
