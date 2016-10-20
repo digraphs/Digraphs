@@ -422,7 +422,7 @@ InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a list",
 [IsDigraph, IsList],
 function(graph, labels)
     local i;
-    if Length(labels) = Length(graph!.adj) and
+    if Length(labels) = DigraphNrVertices(graph) and
        ForAll([1..Length(labels)], i -> Length(labels[i]) = Length(graph!.adj[i])) then
         graph!.edgelabels := labels;
     else
