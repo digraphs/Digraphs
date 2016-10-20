@@ -386,10 +386,7 @@ InstallMethod(DigraphEdgeLabel, "for a digraph, a pos int, and a pos int",
 [IsDigraph, IsPosInt, IsPosInt],
 function(graph, i, j)
     local p;
-    if not IsBound(graph!.edgelabels) then
-        graph!.edgelabels := StructuralCopy(graph!.adj);
-        graph!.edgelabels := List(graph!.edgelabels, l->List(l, n->1));
-    fi;
+    DIGRAPHS_InitEdgeLabels(graph);
     p := Position(graph!.adj[i], j);
     if p <> fail then
         return ShallowCopy(graph!.edgelabels[i][p]);
@@ -402,10 +399,7 @@ end);
 InstallMethod(DigraphEdgeLabels, "for a digraph",
 [IsDigraph],
 function(graph)
-    if not IsBound(graph!.edgelabels) then
-        graph!.edgelabels := StructuralCopy(graph!.adj);
-        graph!.edgelabels := List(graph!.edgelabels, l->List(l, n->1));
-    fi;
+    DIGRAPHS_InitEdgeLabels(graph);
     return StructuralCopy(graph!.edgelabels);
 end);
 
@@ -415,10 +409,7 @@ InstallMethod(SetDigraphEdgeLabel,
 function(graph, i, j, label)
     local p;
 
-    if not IsBound(graph!.edgelabels) then
-        graph!.edgelabels := StructuralCopy(graph!.adj);
-        graph!.edgelabels := List(graph!.edgelabels, l->List(l, n->1));
-    fi;
+    DIGRAPHS_InitEdgeLabels(graph);
     p := Position(graph!.adj[i], j);
     if p <> fail then
         graph!.edgelabels[i][p] := label;
@@ -444,10 +435,7 @@ InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a function",
 function(graph, wtf)
     local i,j;
 
-    if not IsBound(graph!.edgelabels) then
-        graph!.edgelabels := StructuralCopy(graph!.adj);
-        graph!.edgelabels := List(graph!.edgelabels, l->List(l, n->1));
-    fi;
+    DIGRAPHS_InitEdgeLabels(graph);
 
     for i in [1..Length(graph!.adj)] do
         for j in [1..Length(graph!.adj[i])] do
