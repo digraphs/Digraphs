@@ -1587,11 +1587,11 @@ gap> CompleteMultipartiteDigraph([5]);
 gap> CompleteMultipartiteDigraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> CompleteMultipartiteDigraph([5,4,2, 10, -5]);
-Error, Digraphs: CompleteMultibipartiteDigraph: usage, 
+Error, Digraphs: CompleteMultipartiteDigraph: usage, 
 the first argument <l> must be a list of positive 
 integers,
 gap> CompleteMultipartiteDigraph([5,0,2]);
-Error, Digraphs: CompleteMultibipartiteDigraph: usage, 
+Error, Digraphs: CompleteMultipartiteDigraph: usage, 
 the first argument <l> must be a list of positive 
 integers,
 gap> DigraphEdges(CompleteMultipartiteDigraph([3, 2]));

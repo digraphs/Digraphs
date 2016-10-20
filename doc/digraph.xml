@@ -735,7 +735,7 @@ gap> CompleteBipartiteDigraph(2, 3);
 
 <#GAPDoc Label="CompleteMultipartiteDigraph">
   <ManSection>
-    <Oper Name="CompleteMultipartiteDigraph" Arg = "orders[ ]"/>
+    <Oper Name="CompleteMultipartiteDigraph" Arg = "orders"/>
     <Returns>A digraph.</Returns>
     <Description>
         For a list <A>orders</A> of <C>n</C> positive integers,

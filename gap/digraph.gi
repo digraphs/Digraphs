@@ -1497,7 +1497,7 @@ function(l)
   local p_size, n, b, out, i, j;   
   for p_size in l do
     if not IsPosInt(p_size) then
-      ErrorNoReturn("Digraphs: CompleteMultibipartiteDigraph: usage, \n",
+      ErrorNoReturn("Digraphs: CompleteMultipartiteDigraph: usage, \n",
                     "the first argument <l> must be a list of positive \n",
                     "integers,");
     fi;
