@@ -696,7 +696,7 @@ gap> ChainDigraph(42);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="CompleteDigraph">
+<#GAPDoc Label="Digraph">
 <ManSection>
   <Oper Name="CompleteDigraph" Arg="n"/>
   <Returns>A digraph.</Returns>
@@ -733,9 +733,9 @@ gap> CompleteBipartiteDigraph(2, 3);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="CompleteMultibipartiteDigraph">
+<#GAPDoc Label="CompleteMultipartiteDigraph">
   <ManSection>
-    <Oper Name="CompleteMultibipartiteDigraph" Arg = "orders[ ]"/>
+    <Oper Name="CompleteMultipartiteDigraph" Arg = "orders[ ]"/>
     <Returns>A digraph.</Returns>
     <Description>
         For a list <A>orders</A> of <C>n</C> positive integers,
