@@ -1583,7 +1583,7 @@ gap> CompleteMultipartiteDigraph([5,4,2]);
 gap> CompleteMultipartiteDigraph([5,4,2, 10, 1000]);
 <digraph with 1021 vertices, 42296 edges>
 gap> CompleteMultipartiteDigraph([5]);
-<digraph with 5 vertex, 0 edges>
+<digraph with 5 vertices, 0 edges>
 gap> CompleteMultipartiteDigraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> CompleteMultipartiteDigraph([5,4,2, 10, -5]);
