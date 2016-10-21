@@ -733,6 +733,24 @@ gap> CompleteBipartiteDigraph(2, 3);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="CompleteMultipartiteDigraph">
+  <ManSection>
+    <Oper Name="CompleteMultipartiteDigraph" Arg = "orders"/>
+    <Returns>A digraph.</Returns>
+    <Description>
+        For a list <A>orders</A> of <C>n</C> positive integers,
+        this function returns the digraph containing <C>n</C> independent sets 
+        of vertices of orders <C>[<A>l</A>[1] .. <A>l</A>[n]]</C>. Moreover, 
+        each vertex is adjacent to every other not contained in the 
+        same independent set.
+      <Example><![CDATA[
+gap> CompleteMultipartiteDigraph([5,4,2]);
+<digraph with 11 vertices, 76 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="EmptyDigraph">
 <ManSection>
   <Oper Name="EmptyDigraph" Arg="n"/>

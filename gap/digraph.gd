@@ -75,6 +75,7 @@ DeclareOperation("RandomMultiDigraph", [IsPosInt, IsPosInt]);
 DeclareOperation("RandomTournament", [IsInt]);
 
 DeclareOperation("CompleteBipartiteDigraph", [IsPosInt, IsPosInt]);
+DeclareOperation("CompleteMultipartiteDigraph", [IsList]);
 DeclareOperation("CompleteDigraph", [IsInt]);
 DeclareOperation("EmptyDigraph", [IsInt]);
 DeclareSynonym("NullDigraph", EmptyDigraph);
