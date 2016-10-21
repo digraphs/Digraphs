@@ -99,6 +99,16 @@ gap> x;
 [ "hello, world" ]
 gap> DigraphEdgeLabels(gr);
 [ [ "23", "b" ], [ "c" ], [ 42, [  ] ], [  ], [ 1 ] ]
+gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
+<digraph with 5 vertices, 11 edges>
+gap> l := DigraphEdgeLabels(gr);
+[ [ 1 ], [ 1, 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
+gap> MakeImmutable(l);
+[ [ 1 ], [ 1, 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
+gap> SetDigraphEdgeLabels(gr, l);
+gap> SetDigraphEdgeLabel(gr, 2, 1, "Hello, banana");
+gap> DigraphEdgeLabels(gr);
+[ [ 1 ], [ "Hello, banana", 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
 
 #T# Graph
 gap> gr := Digraph([[2, 2], []]);

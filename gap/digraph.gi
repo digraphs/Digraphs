@@ -424,8 +424,9 @@ InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a list",
 function(graph, labels)
     local i;
     if Length(labels) = DigraphNrVertices(graph) and
-       ForAll([1..Length(labels)], i -> Length(labels[i]) = Length(graph!.adj[i])) then
-        graph!.edgelabels := labels;
+       ForAll([1..Length(labels)]
+             , i -> Length(labels[i]) = OutDegreeOfVertex(graph, i)) then
+        graph!.edgelabels := List(labels, ShallowCopy);
     else
         ErrorNoReturn("SetDigraphEdgeLabels: labels list has wrong shape,"
                      ," it is required to have the same shape as the"
