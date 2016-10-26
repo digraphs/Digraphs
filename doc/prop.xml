@@ -604,3 +604,34 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsUndirectedTree">
+<ManSection>
+  <Prop Name="IsUndirectedTree" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is an undirected tree, this property returns
+    <K>true</K>.<P/>
+
+    An undirected tree is an undirected graph in which any 2 distinct
+    vertices are connected by exactly 1 path (this construction never
+    contains loops).<P/>
+
+    Please note that in this package an undirected graph is simulated by
+    replacing each undirected edge with a pair of opposing directed edges.
+    Please note also that a graph with no vertices is not considered an
+    undirected tree.<P/>
+
+    <Example><![CDATA[
+gap> g := Digraph([[3], [3], [1,2]]);
+<digraph with 3 vertices, 4 edges>
+gap> IsUndirectedTree(g);
+true
+gap> g := Digraph([[], [1]]);
+<digraph with 2 vertices, 1 edge>
+gap> IsUndirectedTree(g);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
