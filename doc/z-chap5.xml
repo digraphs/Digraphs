@@ -28,5 +28,6 @@
     <#Include Label="IsStronglyConnectedDigraph">
     <#Include Label="IsAperiodicDigraph">
     <#Include Label="IsDirectedTree">
+    <#Include Label="IsUndirectedTree">
   </Section>
 </Chapter>

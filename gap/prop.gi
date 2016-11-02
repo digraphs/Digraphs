@@ -389,6 +389,26 @@ end);
 
 #
 
+InstallMethod(IsUndirectedTree, "for a digraph", [IsDigraph],
+function(digraph)
+
+  if not DigraphNrEdges(digraph) = 2 * (DigraphNrVertices(digraph) - 1) then 
+    return false;
+  fi;
+
+  if not IsSymmetricDigraph(digraph) then
+    return false;
+  fi;
+
+  if not IsConnectedDigraph(digraph) then
+    return false;
+  fi;
+
+  return true;
+end);
+
+#
+
 InstallMethod(IsDistanceRegularDigraph, "for a symmetric digraph",
 [IsDigraph],
 function(graph)
