@@ -489,3 +489,27 @@ function(g)
   return true;
 
 end);
+
+
+
+InstallMethod(IsEulerianDigraph, "for a digraph",
+[IsDigraph],
+function(g)
+  local out,into,i;
+
+  if not IsStronglyConnectedDigraph(ReducedDigraph(g)) then
+     return false;
+  fi;
+
+  out := OutNeighbours(g);
+  into := InNeighbours(g);
+
+  for i in [1 .. Length(out)] do
+     if not Length(out[i]) = Length(into[i]) then
+	return false;
+     fi;
+  od;
+
+  return true;
+
+end);

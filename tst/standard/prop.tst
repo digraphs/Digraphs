@@ -928,7 +928,11 @@ gap> g := Digraph([[1]]);
 <digraph with 1 vertex, 1 edge>
 gap> IsEulerianDigraph(g);
 true
+<<<<<<< 933176004839e4b101b21cbc6d9a3c8bd14f8b2e
 gap> g := Digraph([[2, 2], []]);
+=======
+gap> g := Digraph([[2,2],[]]);
+>>>>>>> IsEulerianDigraph
 <multidigraph with 2 vertices, 2 edges>
 gap> IsEulerianDigraph(g);
 false
@@ -952,27 +956,27 @@ gap> g := Digraph([[2], [3], [1]]);
 <digraph with 3 vertices, 3 edges>
 gap> IsEulerianDigraph(g);
 true
-gap> g := Digraph([[2], [3], [1], []]);
+gap> g := Digraph([[2], [3], [1],[]]);
 <digraph with 4 vertices, 3 edges>
 gap> IsEulerianDigraph(g);
 true
-gap> g := Digraph([[2], [3], [1, 4], []]);
+gap> g := Digraph([[2], [3], [1,4],[]]);
 <digraph with 4 vertices, 4 edges>
 gap> IsEulerianDigraph(g);
 false
-gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4]]);
+gap> g := Digraph([[3,6], [4], [2,1], [5,1], [3], [4]]);
 <digraph with 6 vertices, 9 edges>
 gap> IsEulerianDigraph(g);
 true
-gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4], []]);
+gap> g := Digraph([[3,6], [4], [2,1], [5,1], [3], [4],[]]);
 <digraph with 7 vertices, 9 edges>
 gap> IsEulerianDigraph(g);
 true
-gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], []]);
+gap> g := Digraph([[3,6], [4], [2,1], [5,1], [3], [4,7],[]]);
 <digraph with 7 vertices, 10 edges>
 gap> IsEulerianDigraph(g);
 false
-gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], [6]]);
+gap> g := Digraph([[3,6], [4], [2,1], [5,1], [3], [4,7],[6]]);
 <digraph with 7 vertices, 11 edges>
 gap> IsEulerianDigraph(g);
 true
