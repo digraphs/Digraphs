@@ -635,3 +635,38 @@ false
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+
+<#GAPDoc Label="IsEulerianDigraph">
+<ManSection>
+  <Prop Name="IsEulerianDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is eulerian, this property returns
+    <K>true</K>.<P/>
+
+    An eulerian digraph is a digraph which has a circuit visiting 
+    every edge exactly once<P/>
+
+    <Example><![CDATA[
+gap> g := Digraph([[]]);
+<digraph with 1 vertex, 0 edges>
+gap> IsEulerianDigraph(g);
+true
+gap> g := Digraph([[], []]);
+<digraph with 2 vertices, 0 edges>
+gap> IsEulerianDigraph(g);
+false
+gap> g := Digraph([[3], [3], [1,2]]);
+<digraph with 3 vertices, 4 edges>
+gap> IsEulerianDigraph(g);
+false
+gap> g := Digraph([[2], [3], [1]]);
+<digraph with 3 vertices, 3 edges>
+gap> IsEulerianDigraph(g);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+

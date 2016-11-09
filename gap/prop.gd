@@ -30,6 +30,8 @@ DeclareProperty("IsRegularDigraph", IsDigraph);
 DeclareProperty("IsDistanceRegularDigraph", IsDigraph);
 DeclareProperty("IsDirectedTree", IsDigraph);
 DeclareProperty("IsUndirectedTree", IsDigraph);
+DeclareProperty("IsEulerianDigraph", IsDigraph);
+
 
 InstallTrueMethod(IsAntisymmetricDigraph, IsTournament);
 InstallTrueMethod(IsAntisymmetricDigraph, IsAcyclicDigraph);
