@@ -441,9 +441,9 @@ function(graph, wtf)
 
     DIGRAPHS_InitEdgeLabels(graph);
 
-    for i in [1..Length(graph!.adj)] do
-        for j in [1..Length(graph!.adj[i])] do
-            graph!.edgelabels[i][j] := wtf(i, graph!.adj[j]);
+    for i in [1..Length(OutNeighbours(graph))] do
+        for j in [1..Length(OutNeighbours(graph)[i])] do
+            graph!.edgelabels[i][j] := wtf(i, OutNeighbours(graph)[j]);
         od;
     od;
 end);
