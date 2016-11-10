@@ -250,7 +250,7 @@ function(digraph)
   local old, old_lbl, new, new_lbl, nr, out, i, j, tot;
 
   old := OutNeighbours(digraph);
-  old_lbl := DigraphEdgeLabels(digraph);
+  old_lbl := DigraphEdgeLabelsNC(digraph);
   new := [];
   new_lbl := [];
   tot := 0;
@@ -273,7 +273,7 @@ function(digraph)
   SetDigraphHasLoops(out, false);
   SetDigraphNrEdges(out, tot);
   SetDigraphVertexLabels(out, DigraphVertexLabels(digraph));
-  SetDigraphEdgeLabels(out, new_lbl);
+  SetDigraphEdgeLabelsNC(out, new_lbl);
   return out;
 end);
 
@@ -384,8 +384,8 @@ function(digraph, edges)
   m := DigraphNrEdges(digraph);
   n := DigraphNrVertices(digraph);
   old_adj := OutNeighbours(digraph);
-  old_lbl := DigraphEdgeLabels(digraph);
   new_adj := EmptyPlist(n);
+  old_lbl := DigraphEdgeLabelsNC(digraph);
   new_lbl := EmptyPlist(n);
   edges := BlistList([1 .. m], edges);
   edge_count := 0;
@@ -405,7 +405,7 @@ function(digraph, edges)
   od;
   gr := DigraphNC(new_adj);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
-  SetDigraphEdgeLabels(gr, new_lbl);
+  SetDigraphEdgeLabelsNC(gr, new_lbl);
   return gr;
 end);
 
@@ -467,14 +467,14 @@ function(digraph, edges)
   local gr, new, new_lbl, verts, edge;
 
   new := OutNeighboursCopy(digraph);
-  new_lbl := StructuralCopy(DigraphEdgeLabels(digraph));
+  new_lbl := StructuralCopy(DigraphEdgeLabelsNC(digraph));
   verts := DigraphVertices(digraph);
   for edge in edges do
     Add(new[edge[1]], edge[2]);
     Add(new_lbl[edge[1]], 1);
   od;
   gr := DigraphNC(new);
-  SetDigraphEdgeLabels(gr, new_lbl);
+  SetDigraphEdgeLabelsNC(gr, new_lbl);
   return gr;
 end);
 #
@@ -726,7 +726,7 @@ function(digraph, subverts)
 
   old_adj := OutNeighbours(digraph);
   new_adj := EmptyPlist(nr);
-  old_edl := DigraphEdgeLabels(digraph);
+  old_edl := DigraphEdgeLabelsNC(digraph);
   new_edl := EmptyPlist(nr);
 
   lookup := [1 .. n] * 0;
@@ -750,7 +750,7 @@ function(digraph, subverts)
 
   gr := DigraphNC(new_adj);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){subverts});
-  SetDigraphEdgeLabels(gr, new_edl);
+  SetDigraphEdgeLabelsNC(gr, new_edl);
   return gr;
 end);
 

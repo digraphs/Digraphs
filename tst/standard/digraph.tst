@@ -81,6 +81,9 @@ gap> DigraphEdgeLabels(gr);
 gap> SetDigraphEdgeLabels(gr, [1,2]);
 Error, SetDigraphEdgeLabels: labels list has wrong shape, it is required to ha\
 ve the same shape as the return value of OutNeighbours(<graph>)
+gap> SetDigraphEdgeLabels(gr, function(x,y) return x + y; end);
+gap> DigraphEdgeLabels(gr);
+[ [ [ 3, 4 ], [ 4 ] ], [ [ 4, 5 ] ], [ [ 5, 6 ], [ 6 ] ], [  ], [ [ 7, 8 ] ] ]
 gap> SetDigraphEdgeLabels(gr, [ [ "a", "b" ], [ "c" ], [ 42, [] ],
 > [  ], [ 1 ] ] );
 gap> DigraphEdgeLabels(gr);
@@ -109,6 +112,16 @@ gap> SetDigraphEdgeLabels(gr, l);
 gap> SetDigraphEdgeLabel(gr, 2, 1, "Hello, banana");
 gap> DigraphEdgeLabels(gr);
 [ [ 1 ], [ "Hello, banana", 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
+gap> gr := Digraph([[2,2],[]]);;
+gap> SetDigraphEdgeLabels(gr, [[5, infinity],[]]);
+Error, SetDigraphEdgeLabels: edge labels not supported on digraphs with multip\
+le edges
+gap> DigraphEdgeLabels(gr);
+Error, DigraphEdgeLabels: edge labels not supported on digraphs with multiple \
+edges
+gap> SetDigraphEdgeLabel(gr, 1, 2, infinity);
+Error, SetDigraphEdgeLabel: edge labels not supported on digraphs with multipl\
+e edges
 
 #T# Graph
 gap> gr := Digraph([[2, 2], []]);

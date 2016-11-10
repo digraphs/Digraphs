@@ -94,8 +94,10 @@ DeclareOperation("SetDigraphVertexLabels", [IsDigraph, IsList]);
 
 # Edge labels
 DeclareOperation("DigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphEdgeLabelsNC", [IsDigraph]);
 DeclareOperation("DigraphEdgeLabels", [IsDigraph]);
 DeclareOperation("SetDigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt, IsObject]);
+DeclareOperation("SetDigraphEdgeLabelsNC", [IsDigraph, IsList]);
 DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsList]);
 DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsFunction]);
 

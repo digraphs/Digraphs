@@ -168,7 +168,7 @@ function(digraph)
   vlabels := StructuralCopy(vlabels);
 
   # Adjacencies and edge labels
-  old_elabels := DigraphEdgeLabels(digraph);
+  old_elabels := DigraphEdgeLabelsNC(digraph);
   adj := [];
   elabels := [];
   for i in [1..Length(niv)] do
@@ -181,7 +181,7 @@ function(digraph)
   # Return the reduced graph, with labels preserved
   gr := DigraphNC(adj);
   SetDigraphVertexLabels(gr, vlabels);
-  SetDigraphEdgeLabels(gr, elabels);
+  SetDigraphEdgeLabelsNC(gr, elabels);
   return gr;
 end);
 
