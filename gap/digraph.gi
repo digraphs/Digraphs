@@ -391,7 +391,7 @@ function(graph, i, j)
     if p <> fail then
         return ShallowCopy(graph!.edgelabels[i][p]);
     else
-        ErrorNoReturn("DigraphEdgeLabel: vertex"
+        ErrorNoReturn("DigraphEdgeLabel: vertex "
                      , "[ ", i, ", ", j, " ] is not and edge,");
     fi;
 end);
