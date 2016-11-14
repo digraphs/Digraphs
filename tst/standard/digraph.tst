@@ -74,14 +74,15 @@ gap> DigraphVertexLabels(gr);
 [ 1, [  ], 3, 4, 5, 6, 7, 8, 9, 10 ]
 
 #T# DigraphEdgeLabels
-gap> gr := Digraph([[2,3],[3],[1,5],[],[4]]);
+gap> gr := Digraph([[2, 3], [3], [1, 5], [], [4]]);
 <digraph with 5 vertices, 6 edges>
 gap> DigraphEdgeLabels(gr);
 [ [ 1, 1 ], [ 1 ], [ 1, 1 ], [  ], [ 1 ] ]
-gap> SetDigraphEdgeLabels(gr, [1,2]);
-Error, SetDigraphEdgeLabels: labels list has wrong shape, it is required to ha\
-ve the same shape as the return value of OutNeighbours(<graph>)
-gap> SetDigraphEdgeLabels(gr, function(x,y) return x + y; end);
+gap> SetDigraphEdgeLabels(gr, [1, 2]);
+Error, Digraphs: SetDigraphEdgeLabels: usage,
+the list <labels> has the wrong shape, it is required to have the same shape
+as the return value of OutNeighbours(<graph>),
+gap> SetDigraphEdgeLabels(gr, function(x, y) return x + y; end);
 gap> DigraphEdgeLabels(gr);
 [ [ 3, 4 ], [ 5 ], [ 4, 8 ], [  ], [ 9 ] ]
 gap> SetDigraphEdgeLabels(gr, [["a", "b"], ["c"], [42, []],
@@ -112,16 +113,16 @@ gap> SetDigraphEdgeLabels(gr, l);
 gap> SetDigraphEdgeLabel(gr, 2, 1, "Hello, banana");
 gap> DigraphEdgeLabels(gr);
 [ [ 1 ], [ "Hello, banana", 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
-gap> gr := Digraph([[2,2],[]]);;
-gap> SetDigraphEdgeLabels(gr, [[5, infinity],[]]);
-Error, SetDigraphEdgeLabels: edge labels not supported on digraphs with multip\
-le edges
+gap> gr := Digraph([[2, 2], []]);;
+gap> SetDigraphEdgeLabels(gr, [[5, infinity], []]);
+Error, Digraphs: SetDigraphEdgeLabels: usage,
+edge labels are not supported on digraphs with multiple edges,
 gap> DigraphEdgeLabels(gr);
-Error, DigraphEdgeLabels: edge labels not supported on digraphs with multiple \
-edges
+Error, Digraphs: DigraphEdgeLabels: usage,
+edge labels are not supported on digraphs with multiple edges,
 gap> SetDigraphEdgeLabel(gr, 1, 2, infinity);
-Error, SetDigraphEdgeLabel: edge labels not supported on digraphs with multipl\
-e edges
+Error, Digraphs: SetDigraphEdgeLabel: usage,
+edge labels are not supported on digraphs with multiple edges,
 
 #T# Graph
 gap> gr := Digraph([[2, 2], []]);

@@ -264,10 +264,10 @@ gap> DigraphVertexLabel(gr, 2);
     <C>labels[i][j]</C> is the label on the edge from vertex <C>i</C>
     to vertex <C>OutNeighbours(digraph)[i][j]</C>.
 
-    <C>SetDigraphEdgeLabels</C> can be used to set the labels of the edges
-    in <A>digraph</A> without multiple edges to the list <A>labels</A> of
-    lists of arbitrary &GAP; objects such that <C>list[i][j]</C> is the
-    label on the edge from vertex <C>i</C> to the vertex <C>OutNeighbours(i)[j]</C>.
+    <C>SetDigraphEdgeLabels</C> can be used to set the labels of the edges in
+    <A>digraph</A> without multiple edges to the list <A>labels</A> of lists of
+    arbitrary &GAP; objects such that <C>list[i][j]</C> is the label on the edge
+    from vertex <C>i</C> to the vertex <C>OutNeighbours(digraph>[i][j]</C>.
 
     Alternatively <C>SetDigraphEdgeLabels</C> can be called with binary function
     <A>func</A> that as its second argument that when passed two vertices <C>i</C>
@@ -305,9 +305,10 @@ gap> OutNeighbours(gr);
   <Oper Name ="SetDigraphEdgeLabel" Arg="digraph, i, j, obj"/>
   <Description>
     If <A>digraph</A> is a digraph without multiple edges, then the first
-    operation returns the label of the edge from vertex <A>i</A> to vertex <A>j</A>.
-    The second operation can be used to set the label of the edge between
-    vertex <A>i</A> and vertex <A>j</A> to the arbitrary &GAP; object <A>obj</A>. <P/>
+    operation returns the label of the edge from vertex <A>i</A> to vertex
+    <A>j</A>.  The second operation can be used to set the label of the edge
+    between vertex <A>i</A> and vertex <A>j</A> to the arbitrary &GAP; object
+    <A>obj</A>. <P/>
 
     The label of an edge can be changed an arbitrary number of times. If no
     label has been set for the edge, then the default value is <A>1</A>. <P/>
