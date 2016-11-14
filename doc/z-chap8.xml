@@ -37,8 +37,8 @@
       </Item>
     </List>
 
-    See <Ref Attr="DigraphRemoveLoops"/> and <Ref
-      Attr="DigraphRemoveAllMultipleEdges"/> for more information about these
+    See <Ref Oper="DigraphRemoveLoops"/> and <Ref
+      Oper="DigraphRemoveAllMultipleEdges"/> for more information about these
     attributes.  Furthermore, the cliques of this digraph are equal to the
     cliques of the digraph formed by removing any edge <C>[u,v]</C> for which
     the corresponding reverse edge <C>[v,u]</C> is not present.  Therefore,

@@ -101,7 +101,7 @@ make]]></Listing>
       
       <List>
         <Item><Ref Oper="Graph"/> with a digraph argument</Item>
-        <Item><Ref Oper="AsGraph"/> with a digraph argument</Item>
+        <Item><Ref Attr="AsGraph"/> with a digraph argument</Item>
         <Item><Ref Oper="Digraph"/> with a &Grape; graph argument</Item>
       </List>
 

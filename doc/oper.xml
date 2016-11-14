@@ -79,7 +79,7 @@ gap> DigraphSource(gr);
         the source and the range of an edge, respectively),
       </Item>
       <Item>
-        a list of positions of elements in the list <Ref Oper="DigraphEdges"/>,
+        a list of positions of elements in the list <Ref Attr="DigraphEdges"/>,
       </Item>
     </List>
     
@@ -134,7 +134,7 @@ true
     indeed a permutation, then the result coincides with relabelling the
     vertices of <A>digraph</A> according to <A>trans</A>. <P/>
 
-    The <Ref Attr="DigraphVertexLabels"/> of <A>digraph</A> will not be
+    The <Ref Oper="DigraphVertexLabels"/> of <A>digraph</A> will not be
     retained in the returned digraph. <P/>
 
     <Example><![CDATA[
@@ -494,7 +494,7 @@ gap> gr := DigraphRemoveEdge(gr, 10);
     The (reflexive) transitive reduction of such a digraph is the unique
     least subgraph such that the (reflexive) transitive closure of the
     subgraph is equal to the (reflexive) transitive closure of <A>digraph</A>
-    [see <Ref Oper="DigraphReflexiveTransitiveClosure"/>].
+    [see <Ref Attr="DigraphReflexiveTransitiveClosure"/>].
     In order words, it is the least subgraph of <A>digraph</A> which
     retains the same reachability as <A>digraph</A>. <P/>
 
@@ -928,7 +928,7 @@ Binary Relation on 4 points
     digraphs, whilst the number of edges of the edge union will equal the
     <E>sum</E> of the number of edges of each digraph. <P/>
 
-    Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
+    Note that previously set <Ref Oper="DigraphVertexLabels"/> will be lost.
     
 <Example><![CDATA[
 gap> gr := CycleDigraph(10);
@@ -983,7 +983,7 @@ true
 
     <P/>
 
-    Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
+    Note that previously set <Ref Oper="DigraphVertexLabels"/> will be lost.
     
 <Example><![CDATA[
 gap> gr1 := CycleDigraph(3);
@@ -1033,7 +1033,7 @@ gap> OutNeighbours(union);
     
     <P/>
 
-    Note that previously set <Ref Attr="DigraphVertexLabels"/> will be lost.
+    Note that previously set <Ref Oper="DigraphVertexLabels"/> will be lost.
 
 <Example><![CDATA[
 gap> gr := CompleteDigraph(3);

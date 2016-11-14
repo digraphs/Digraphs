@@ -76,8 +76,10 @@ gap> StructureDescription(a);
     For convenience, the returned group is the direct product of the group of
     automorphisms of the vertices of <A>digraph</A> with the stabiliser of the
     vertices in the automorphism group of the edges. These two groups can be
-    accessed using the <Ref Oper="Projection" BookName="ref"/> with second
-    argument <C>1</C> and <C>2</C>, respectively. 
+    accessed using the <Ref Oper="Projection" 
+      Label="for a domain and a positive integer" BookName="ref"/> with second
+    argument <C>1</C> and <C>2</C>,
+    respectively. 
     <P/>
 
     The permutations in the automorphism group of the edges act on the indices

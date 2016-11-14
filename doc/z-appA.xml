@@ -232,11 +232,11 @@
           <C>IsGraph</C>
         </Item>
         <Item>
-          <Ref Func="IsDigraph"/>
+          <Ref Filt="IsDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            <Ref Func="IsDigraph"/> is a category and not a function like
+            <Ref Filt="IsDigraph"/> is a category and not a function like
             <C>IsGraph</C>.
           </Alt>
         </Item>
@@ -248,11 +248,11 @@
           <C>OrderGraph</C>
         </Item>
         <Item>
-          <Ref Func="DigraphNrVertices"/>
+          <Ref Attr="DigraphNrVertices"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The operation <Ref Oper="DigraphNrVertices"/> behaves the same as
+            The operation <Ref Attr="DigraphNrVertices"/> behaves the same as
             <C>OrderGraph</C> in &Grape;.
           </Alt>
         </Item>
@@ -268,7 +268,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The attribute <Ref Oper="DigraphVertices"/> can be used to return
+            The attribute <Ref Attr="DigraphVertices"/> can be used to return
             the list of vertices of a digraph, or if <A>v</A> is known to be
             a positive integer, then you can simply do
             <C><A>v</A> &lt;= DigraphNrVertices(<A>digraph</A>)</C>
@@ -314,15 +314,14 @@
           <C>Vertices</C>
         </Item>
         <Item>
-          <Ref Oper="DigraphVertices"/>
+          <Ref Attr="DigraphVertices"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The vertices of a digraph in &Digraphs; is always the range
-            <C>[1 .. n]</C> where <C>n</C> is the number of vertices of the
-            digraph.
-            The operation <Ref Oper="DigraphVertices"/> behaves the same as
-            <C>Vertices</C> in &Grape;.
+            The vertices of a digraph in &Digraphs; is always the range <C>[1
+              .. n]</C> where <C>n</C> is the number of vertices of the
+            digraph.  The operation <Ref Attr="DigraphVertices"/> behaves the
+            same as <C>Vertices</C> in &Grape;.
           </Alt>
         </Item>
       </Row>
@@ -352,19 +351,19 @@
           <C>VertexDegrees</C>
         </Item>
         <Item>
-          <Ref Oper="OutDegreeSet"/>
+          <Ref Attr="OutDegreeSet"/>
           <Alt Only="HTML">
             (see also:
-            <Ref Oper="OutDegreeSequence"/>,
-            <Ref Oper="OutDegrees"/>,
-            <Ref Oper="InDegrees"/>,
-            <Ref Oper="InDegreeSequence"/>,
-            <Ref Oper="InDegreeSet"/>)
+            <Ref Attr="OutDegreeSequence"/>,
+            <Ref Attr="OutDegrees"/>,
+            <Ref Attr="InDegrees"/>,
+            <Ref Attr="InDegreeSequence"/>,
+            <Ref Attr="InDegreeSet"/>)
           </Alt>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The operation <Ref Oper="OutDegreeSet"/> behaves the same as
+            The operation <Ref Attr="OutDegreeSet"/> behaves the same as
             <C>VertexDegrees</C> in &Grape;.
           </Alt>
         </Item>
@@ -376,11 +375,11 @@
           <C>IsLoopy</C>
         </Item>
         <Item>
-          <Ref Oper="DigraphHasLoops"/>
+          <Ref Prop="DigraphHasLoops"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The operation <Ref Oper="DigraphHasLoops"/> behaves the same as
+            The operation <Ref Prop="DigraphHasLoops"/> behaves the same as
             <C>IsLoopy</C> in &Grape;.
           </Alt>
         </Item>
@@ -393,18 +392,18 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <Ref Oper="IsSymmetricDigraph"/>
-            and not  <Ref Oper="DigraphHasLoops"/>
+            <Ref Prop="IsSymmetricDigraph"/>
+            and not  <Ref Prop="DigraphHasLoops"/>
           </Alt>
           <Alt Not="HTML">
-            <Ref Oper="IsSymmetricDigraph"/>
+            <Ref Prop="IsSymmetricDigraph"/>
           </Alt>
         </Item>
         <Item>
           <Alt Only="HTML">
             The &Grape; function <C>IsSimpleGraph</C> is equivalent to
-            <Ref Oper="IsSymmetricDigraph"/>
-            and not  <Ref Oper="DigraphHasLoops"/>.
+            <Ref Prop="IsSymmetricDigraph"/>
+            and not  <Ref Prop="DigraphHasLoops"/>.
           </Alt>
         </Item>
       </Row>
@@ -415,9 +414,9 @@
           <C>Adjacency</C>
         </Item>
         <Item>
-          <Ref Func="OutNeighboursOfVertex"/>
+          <Ref Oper="OutNeighboursOfVertex"/>
           <Alt Only="HTML">
-            (see also <Ref Func="InNeighboursOfVertex"/>)
+            (see also <Ref Oper="InNeighboursOfVertex"/>)
           </Alt>
         </Item>
         <Item>
@@ -434,12 +433,12 @@
           <C>IsEdge</C>
         </Item>
         <Item>
-          <Ref Func="IsDigraphEdge" Label="for digraph and list"/>
+          <Ref Oper="IsDigraphEdge" Label="for digraph and list"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             The arguments of
-            <Ref Func="IsDigraphEdge" Label="for digraph and list"/>
+            <Ref Oper="IsDigraphEdge" Label="for digraph and list"/>
             can be a digraph and an edge, or a digraph and two vertices. In the
             first form the operation
             <Ref Oper="IsDigraphEdge" Label="for digraph and list"/>
@@ -458,7 +457,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The attribute <Ref Oper="DigraphEdges"/> behaves the same
+            The attribute <Ref Attr="DigraphEdges"/> behaves the same
             as <C>DirectedEdges</C> in &Grape;.
           </Alt>
         </Item>
@@ -504,11 +503,11 @@
           <C>Diameter</C>
         </Item>
         <Item>
-          <Ref Oper="DigraphDiameter"/>
+          <Ref Attr="DigraphDiameter"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The attribute <Ref Oper="DigraphDiameter"/> behaves the same
+            The attribute <Ref Attr="DigraphDiameter"/> behaves the same
             as <C>Diameter</C> in &Grape;.
           </Alt>
         </Item>
@@ -520,11 +519,11 @@
           <C>Girth</C>
         </Item>
         <Item>
-          <Ref Func="DigraphUndirectedGirth"/>
+          <Ref Attr="DigraphUndirectedGirth"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The attribute <Ref Oper="DigraphUndirectedGirth"/> behaves the same
+            The attribute <Ref Attr="DigraphUndirectedGirth"/> behaves the same
             as <C>Girth</C> in &Grape; except that in the case that the
             argument is a forest, <K>infinity</K> is returned by &Digraphs;
             whereas <C>-1</C> is returned by &Grape;.
@@ -538,11 +537,11 @@
           <C>IsConnectedGraph</C>
         </Item>
         <Item>
-          <Ref Func="IsStronglyConnectedDigraph"/>
+          <Ref Prop="IsStronglyConnectedDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            The attribute <Ref Oper="IsStronglyConnectedDigraph"/> behaves the
+            The attribute <Ref Prop="IsStronglyConnectedDigraph"/> behaves the
             same as <C>IsConnectedGraph</C> in &Grape;.
           </Alt>
         </Item>
@@ -645,12 +644,12 @@
           <C>IsRegularGraph</C>
         </Item>
         <Item>
-          <Ref Func="IsOutRegularDigraph"/>
+          <Ref Prop="IsOutRegularDigraph"/>
           <Alt Only="HTML">
             (see also
-            <Ref Func="IsInRegularDigraph"/>
+            <Ref Prop="IsInRegularDigraph"/>
             and
-            <Ref Func="IsRegularDigraph"/>)
+            <Ref Prop="IsRegularDigraph"/>)
           </Alt>
         </Item>
         <Item>
@@ -699,7 +698,7 @@
           <C>IsDistanceRegular</C>
         </Item>
         <Item>
-          <Ref Func="IsDistanceRegularDigraph"/>
+          <Ref Prop="IsDistanceRegularDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
@@ -796,14 +795,14 @@
           <C>ConnectedComponent</C>
         </Item>
         <Item>
-          <Ref Attr="DigraphConnectedComponent"/>
+          <Ref Oper="DigraphConnectedComponent"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             When applied to a simple di/graph and a vertex,
             <C>ConnectedComponent</C> in &Grape; is equivalent to
-            <Ref Attr="DigraphConnectedComponent"/>.
-            <Ref Attr="DigraphConnectedComponent"/> can also be applied to
+            <Ref Oper="DigraphConnectedComponent"/>.
+            <Ref Oper="DigraphConnectedComponent"/> can also be applied to
             non-simple graphs (in the language of &Grape;).
           </Alt>
         </Item>
@@ -855,13 +854,13 @@
           <C>DistanceSet</C>
         </Item>
         <Item>
-            <Ref Attr="DigraphDistanceSet"
+            <Ref Oper="DigraphDistanceSet"
               Label="for a digraph, a pos int, and an int"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>DistanceSet</C> in &Grape; is equivalent to
-            <Ref Attr="DigraphDistanceSet"
+            <Ref Oper="DigraphDistanceSet"
               Label="for a digraph, a pos int, and an int"/> in &Digraphs;.
           </Alt>
         </Item>
@@ -873,12 +872,12 @@
           <C>Layers</C>
         </Item>
         <Item>
-          <Ref Attr="DigraphLayers"/>
+          <Ref Oper="DigraphLayers"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>Layers</C> in &Grape; is equivalent to
-            <Ref Attr="DigraphLayers"/> in &Digraphs;.
+            <Ref Oper="DigraphLayers"/> in &Digraphs;.
           </Alt>
         </Item>
       </Row>
@@ -889,12 +888,12 @@
           <C>IndependentSet</C>
         </Item>
         <Item>
-          <Ref Attr="DigraphIndependentSet"/>
+          <Ref Func="DigraphIndependentSet"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>IndependentSet</C> in &Grape; is equivalent to
-            <Ref Attr="DigraphIndependentSet"/> in &Digraphs;.
+            <Ref Func="DigraphIndependentSet"/> in &Digraphs;.
           </Alt>
         </Item>
       </Row>
@@ -938,11 +937,11 @@
           <C>InducedSubgraph</C>
         </Item>
         <Item>
-          <Ref Attr="InducedSubdigraph"/>
+          <Ref Oper="InducedSubdigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            <Ref Attr="InducedSubdigraph"/> in &Digraphs; does not allow a third
+            <Ref Oper="InducedSubdigraph"/> in &Digraphs; does not allow a third
             argument <C>G</C> specifying a group of automorphisms on the
             resultant graph. This may be included in a future release.
           </Alt>
@@ -1022,12 +1021,12 @@
           <C>EdgeGraph</C>
         </Item>
         <Item>
-          <Ref Attr="EdgeUndirectedDigraph"/>
+          <Ref Oper="EdgeUndirectedDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>EdgeGraph</C> in &Grape; is equivalent to
-            <Ref Attr="EdgeUndirectedDigraph"/> in &Digraphs;.
+            <Ref Oper="EdgeUndirectedDigraph"/> in &Digraphs;.
           </Alt>
         </Item>
       </Row>
@@ -1090,12 +1089,12 @@
           <C>BipartiteDouble</C>
         </Item>
         <Item>
-          <Ref Attr="BipartiteDoubleDigraph"/>
+          <Ref Oper="BipartiteDoubleDigraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>BipartiteDouble</C> in &Grape; is equivalent to
-            <Ref Attr="BipartiteDoubleDigraph"/> in &Digraphs;.
+            <Ref Oper="BipartiteDoubleDigraph"/> in &Digraphs;.
           </Alt>
         </Item>
       </Row>
@@ -1159,7 +1158,7 @@
         <Item>
           <Alt Only="HTML">
             There is no analogous function in &Digraphs;.  However, the same
-            results would be possible by calling <Ref Attr="DigraphCopy"/> on
+            results would be possible by calling <Ref Oper="DigraphCopy"/> on
             the digraph to produce a copy <C>gr</C>, and then applying
             <C>SetDigraphGroup(gr, G)</C>.
           </Alt>
@@ -1210,8 +1209,9 @@
         <Item>
           <Alt Only="HTML">
             <C>VertexColouring</C> in &Grape; is equivalent to <Ref
-            Attr="DigraphColoring" Label="for a digraph"/> in &Digraphs;,
-          except it return a transformation rather than a list of vertex colors.
+            Oper="DigraphColoring" Label="for a digraph"/> in &Digraphs;,
+            except it return a transformation rather than a list of vertex
+            colors.
           </Alt>
         </Item>
       </Row>
@@ -1306,12 +1306,12 @@
           <C>GraphIsomorphism</C>
         </Item>
         <Item>
-          <Ref Attr="IsomorphismDigraphs" Label="for digraphs"/>
+          <Ref Oper="IsomorphismDigraphs" Label="for digraphs"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>GraphIsomorphism</C> in &Grape; is equivalent to <Ref
-            Attr="IsomorphismDigraphs" Label="for digraphs"/> in &Digraphs;.
+            Oper="IsomorphismDigraphs" Label="for digraphs"/> in &Digraphs;.
             Note however that <C>GraphIsomorphism</C>'s optional argument
             <A>firstunbindcanon</A> is not applicable, since the canonical
             labellings of a digraph are not portable between sessions.
@@ -1325,12 +1325,12 @@
           <C>IsIsomorphicGraph</C>
         </Item>
         <Item>
-          <Ref Attr="IsIsomorphicDigraph" Label="for digraphs"/>
+          <Ref Oper="IsIsomorphicDigraph" Label="for digraphs"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>IsIsomorphicGraph</C> in &Grape; is equivalent to <Ref
-            Attr="IsIsomorphicDigraph" Label="for digraphs"/> in &Digraphs;.
+            Oper="IsIsomorphicDigraph" Label="for digraphs"/> in &Digraphs;.
             Note however that <C>IsIsomorphicGraph</C>'s optional argument
             <A>firstunbindcanon</A> is not applicable, since the canonical
             labellings of a digraph are not portable between sessions.
@@ -1357,5 +1357,6 @@
 
     </Table>
   </Section>
+
 
 </Appendix>

@@ -28,7 +28,7 @@
     encoded in a file when loading all of the encoded digraphs would require
     too much memory. <P/>
 
-    To see what file types are available, see <Ref Oper="WriteDigraphs"/>.
+    To see what file types are available, see <Ref Func="WriteDigraphs"/>.
 
     <Example><![CDATA[
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;
@@ -410,7 +410,7 @@ gap> ReadDigraphs(filename);
     applicable. For larger, sparse graphs use <E>Sparse6</E> and
     <E>Disparse6</E> (this latter also preserves multiple edges). <P/>
 
-    See <Ref Oper="WriteDigraphs"/>.
+    See <Ref Func="WriteDigraphs"/>.
     <Example><![CDATA[
 gap> gr := Digraph([[2,3], [1], [1]]);
 <digraph with 3 vertices, 4 edges>
@@ -642,7 +642,7 @@ gap> OutNeighbours(gr);
   <Returns>A digraph.</Returns>
   <Description>
     This function takes a string <A>str</A>, decodes it, and then returns the
-    topologically sorted digraph [see <Ref Prop="DigraphTopologicalSort"/>]
+    topologically sorted digraph [see <Ref Attr="DigraphTopologicalSort"/>]
     which it defines, according to the following rules. <P/>
 
     The characters of the string <A>str</A> represent the entries in the upper

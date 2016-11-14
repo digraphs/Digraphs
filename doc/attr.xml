@@ -10,7 +10,7 @@
 
 <#GAPDoc Label="ChromaticNumber">
 <ManSection>
-  <Attr Name="ChromaticNumber" Arg="digraph" />
+  <Attr Name="ChromaticNumber" Arg="digraph"/>
   <Returns> A non-negative integer.</Returns>
   <Description>
     A digraph coloring is a labeling of the vertices (using precisely <A>n</A>
@@ -294,7 +294,7 @@ gap> DigraphEdges(gr);
   <Returns>A list of lists.</Returns>
   <Description>
     <C>DigraphEdges</C> returns a list of edges of the digraph <A>digraph</A>,
-    where each edge is a pair of elements of <Ref Oper="DigraphVertices"/> of
+    where each edge is a pair of elements of <Ref Attr="DigraphVertices"/> of
     the form <C>[source,range]</C>.
     <P/>
 
@@ -829,7 +829,7 @@ gap> DigraphUndirectedGirth(gr);
     is likely to be better.
     <P/>
 
-    For symmetric digraphs, see also <Ref Oper="DigraphUndirectedGirth"/>. <P/>
+    For symmetric digraphs, see also <Ref Attr="DigraphUndirectedGirth"/>. <P/>
     <Example><![CDATA[
 gap> gr := Digraph([[1], [1]]);
 <digraph with 2 vertices, 2 edges>

@@ -130,7 +130,7 @@ true
   <Description>
     Every  digraph in  &Digraphs;  belongs  to  the  category
     <C>IsDigraph</C>.  Basic attributes and operations for digraphs
-    are: <Ref Oper="DigraphVertices"/>, <Ref Attr="DigraphRange"/>, <Ref
+    are: <Ref Attr="DigraphVertices"/>, <Ref Attr="DigraphRange"/>, <Ref
       Attr="DigraphSource"/>, <Ref Attr="OutNeighbours"/>, and <Ref
       Attr="DigraphEdges"/>.
     </Description>
@@ -161,7 +161,7 @@ true
 <#GAPDoc Label="DigraphType">
 <ManSection>
   <Var Name="DigraphType"/>
-  <Var Name="DigraphFamily"/>
+  <Fam Name="DigraphFamily"/>
   <Description>
     The type of all digraphs is <C>DigraphType</C>.
     The family of all digraphs is <C>DigraphFamily</C>.
@@ -439,7 +439,7 @@ true]]></Example>
 
         The action of the group <A>G</A> on the objects in <A>list</A> is stored
         in the attribute <Ref Attr="DigraphGroup"/>, and is used to speed up
-        operations like <Ref Oper="DigraphDiameter"/>.
+        operations like <Ref Attr="DigraphDiameter"/>.
       </Item>
 
       <Mark>for a Grape package graph</Mark>
@@ -770,7 +770,7 @@ gap> RandomTournament(10);
     for each vertex <C>i</C> (with <C>i</C> &lt; <C>n</C>), there is a directed 
     edge with source <C>i</C> and range <C>i + 1</C>. <P/>
     
-    The <Ref Oper="DigraphReflexiveTransitiveClosure"/> of a chain represents a
+    The <Ref Attr="DigraphReflexiveTransitiveClosure"/> of a chain represents a
     total order.<P/>
     <Example><![CDATA[
 gap> ChainDigraph(42);
