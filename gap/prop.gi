@@ -394,13 +394,9 @@ function(digraph)
 
   if not DigraphNrEdges(digraph) = 2 * (DigraphNrVertices(digraph) - 1) then
     return false;
-  fi;
-
-  if not IsSymmetricDigraph(digraph) then
+  elif not IsSymmetricDigraph(digraph) then
     return false;
-  fi;
-
-  if not IsConnectedDigraph(digraph) then
+  elif not IsConnectedDigraph(digraph) then
     return false;
   fi;
 
@@ -459,8 +455,7 @@ function(g)
   for k in [1 .. Length(out)] do
     if incount[k] > 1 then
       return false;
-    fi;
-    if incount[k] = 0 then
+    elif incount[k] = 0 then
       zerocount := zerocount + 1;
     fi;
   od;
@@ -469,7 +464,6 @@ function(g)
   fi;
 
   return true;
-
 end);
 
 #
