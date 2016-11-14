@@ -83,8 +83,8 @@ Error, SetDigraphEdgeLabels: labels list has wrong shape, it is required to ha\
 ve the same shape as the return value of OutNeighbours(<graph>)
 gap> SetDigraphEdgeLabels(gr, function(x,y) return x + y; end);
 gap> DigraphEdgeLabels(gr);
-[ [ [ 3, 4 ], [ 4 ] ], [ [ 4, 5 ] ], [ [ 5, 6 ], [ 6 ] ], [  ], [ [ 7, 8 ] ] ]
-gap> SetDigraphEdgeLabels(gr, [ [ "a", "b" ], [ "c" ], [ 42, [] ],
+[ [ 3, 4 ], [ 5 ], [ 4, 8 ], [  ], [ 9 ] ]
+gap> SetDigraphEdgeLabels(gr, [["a", "b"], ["c"], [42, []],
 > [  ], [ 1 ] ] );
 gap> DigraphEdgeLabels(gr);
 [ [ "a", "b" ], [ "c" ], [ 42, [  ] ], [  ], [ 1 ] ]

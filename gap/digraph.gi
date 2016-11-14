@@ -478,19 +478,22 @@ end);
 InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a function",
 [IsDigraph, IsFunction],
 function(graph, wtf)
-    local i,j;
+  local adj, i, j;
 
-    if IsMultiDigraph(graph) then
-        ErrorNoReturn("SetDigraphEdgeLabels: cannot set edge labels on "
-                     ,"digraph with multiple edges");
-    fi;
-    DIGRAPHS_InitEdgeLabels(graph);
+  if IsMultiDigraph(graph) then
+    ErrorNoReturn("Digraphs: SetDigraphEdgeLabels: usage,\n",
+                  "edge labels are not supported on digraphs with ",
+                  "multiple edges,");
+  fi;
 
-    for i in [1..Length(OutNeighbours(graph))] do
-        for j in [1..Length(OutNeighbours(graph)[i])] do
-            graph!.edgelabels[i][j] := wtf(i, OutNeighbours(graph)[j]);
-        od;
+  DIGRAPHS_InitEdgeLabels(graph);
+
+  adj := OutNeighbours(graph);
+  for i in DigraphVertices(graph) do
+    for j in [1 .. Length(adj[i])] do
+      graph!.edgelabels[i][j] := wtf(i, adj[i][j]);
     od;
+  od;
 end);
 
 # multi means it has at least one multiple edges
