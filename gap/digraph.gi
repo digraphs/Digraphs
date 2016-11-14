@@ -381,6 +381,118 @@ function(graph)
   return StructuralCopy(graph!.vertexlabels);
 end);
 
+# edge labels
+InstallMethod(DigraphEdgeLabel, "for a digraph, a pos int, and a pos int",
+[IsDigraph, IsPosInt, IsPosInt],
+function(graph, i, j)
+    local p;
+
+    if IsMultiDigraph(graph) then
+        ErrorNoReturn("DigraphEdgeLabel: edge labels not supported on "
+                     ,"digraphs with multiple edges");
+    fi;
+
+    DIGRAPHS_InitEdgeLabels(graph);
+    p := Position(graph!.adj[i], j);
+    if p <> fail then
+        return ShallowCopy(graph!.edgelabels[i][p]);
+    else
+        ErrorNoReturn("DigraphEdgeLabel: vertex "
+                     , "[ ", i, ", ", j, " ] is not and edge,");
+    fi;
+end);
+
+InstallMethod(DigraphEdgeLabelsNC, "for a digraph",
+[IsDigraph],
+function(graph)
+    DIGRAPHS_InitEdgeLabels(graph);
+    return StructuralCopy(graph!.edgelabels);
+end);
+
+InstallMethod(DigraphEdgeLabels, "for a digraph",
+[IsDigraph],
+function(graph)
+    if IsMultiDigraph(graph) then
+        ErrorNoReturn("DigraphEdgeLabels: edge labels not supported on "
+                     ,"digraphs with multiple edges");
+    fi;
+
+    DIGRAPHS_InitEdgeLabels(graph);
+    return StructuralCopy(graph!.edgelabels);
+end);
+
+InstallMethod(SetDigraphEdgeLabel,
+              "for a digraph, a pos int, a pos int, and an object",
+[IsDigraph, IsPosInt, IsPosInt, IsObject],
+function(graph, i, j, label)
+    local p;
+
+    if IsMultiDigraph(graph) then
+        ErrorNoReturn("SetDigraphEdgeLabel: edge labels not supported on "
+                     ,"digraphs with multiple edges");
+    fi;
+
+    DIGRAPHS_InitEdgeLabels(graph);
+    p := Position(graph!.adj[i], j);
+    if p <> fail then
+        graph!.edgelabels[i][p] := label;
+    else
+        ErrorNoReturn("SetDigraphEdgeLabel: [ ",i,", ", j, " ] is"
+                     , " not an edge");
+    fi;
+end);
+
+# markuspf: this is mainly because we do not support edge labels
+# on multidigraphs and need the SetDigraphEdgeLabels function
+# to fail silently in some places
+InstallMethod(SetDigraphEdgeLabelsNC, "for a digraph, and a list",
+[IsDigraph, IsList],
+function(graph, labels)
+
+    if not IsMultiDigraph(graph) then
+        graph!.edgelabels := List(labels, ShallowCopy);
+    fi;
+end);
+
+InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a list",
+[IsDigraph, IsList],
+function(graph, labels)
+    local i;
+
+    if IsMultiDigraph(graph) then
+        ErrorNoReturn("SetDigraphEdgeLabels: edge labels not supported on "
+                     ,"digraphs with multiple edges");
+    fi;
+
+    if Length(labels) = DigraphNrVertices(graph) and
+       ForAll([1..Length(labels)]
+             , i -> Length(labels[i]) = OutDegreeOfVertex(graph, i)) then
+        SetDigraphEdgeLabelsNC(graph, labels);
+    else
+        ErrorNoReturn("SetDigraphEdgeLabels: labels list has wrong shape,"
+                     ," it is required to have the same shape as the"
+                     ," return value of OutNeighbours(<graph>)");
+    fi;
+end);
+
+InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a function",
+[IsDigraph, IsFunction],
+function(graph, wtf)
+    local i,j;
+
+    if IsMultiDigraph(graph) then
+        ErrorNoReturn("SetDigraphEdgeLabels: cannot set edge labels on "
+                     ,"digraph with multiple edges");
+    fi;
+    DIGRAPHS_InitEdgeLabels(graph);
+
+    for i in [1..Length(OutNeighbours(graph))] do
+        for j in [1..Length(OutNeighbours(graph)[i])] do
+            graph!.edgelabels[i][j] := wtf(i, OutNeighbours(graph)[j]);
+        od;
+    od;
+end);
+
 # multi means it has at least one multiple edges
 
 InstallMethod(IsMultiDigraph, "for a digraph",
@@ -1202,6 +1314,7 @@ function(digraph)
   out := List(OutNeighbours(digraph), ShallowCopy);
   gr := DigraphNC(out);
   SetDigraphVertexLabels(gr, StructuralCopy(DigraphVertexLabels(digraph)));
+  SetDigraphEdgeLabelsNC(gr, StructuralCopy(DigraphEdgeLabelsNC(digraph)));
   return gr;
 end);
 

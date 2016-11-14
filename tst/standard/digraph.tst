@@ -73,6 +73,56 @@ gap> x;
 gap> DigraphVertexLabels(gr);
 [ 1, [  ], 3, 4, 5, 6, 7, 8, 9, 10 ]
 
+#T# DigraphEdgeLabels
+gap> gr := Digraph([[2,3],[3],[1,5],[],[4]]);
+<digraph with 5 vertices, 6 edges>
+gap> DigraphEdgeLabels(gr);
+[ [ 1, 1 ], [ 1 ], [ 1, 1 ], [  ], [ 1 ] ]
+gap> SetDigraphEdgeLabels(gr, [1,2]);
+Error, SetDigraphEdgeLabels: labels list has wrong shape, it is required to ha\
+ve the same shape as the return value of OutNeighbours(<graph>)
+gap> SetDigraphEdgeLabels(gr, function(x,y) return x + y; end);
+gap> DigraphEdgeLabels(gr);
+[ [ [ 3, 4 ], [ 4 ] ], [ [ 4, 5 ] ], [ [ 5, 6 ], [ 6 ] ], [  ], [ [ 7, 8 ] ] ]
+gap> SetDigraphEdgeLabels(gr, [ [ "a", "b" ], [ "c" ], [ 42, [] ],
+> [  ], [ 1 ] ] );
+gap> DigraphEdgeLabels(gr);
+[ [ "a", "b" ], [ "c" ], [ 42, [  ] ], [  ], [ 1 ] ]
+gap> DigraphEdgeLabel(gr, 1, 2);
+"a"
+gap> SetDigraphEdgeLabel(gr, 1, 2, "23");
+gap> DigraphEdgeLabel(gr, 1, 2);         
+"23"
+gap> DigraphEdgeLabels(gr);
+[ [ "23", "b" ], [ "c" ], [ 42, [  ] ], [  ], [ 1 ] ]
+gap> x := DigraphEdgeLabel(gr, 3, 5);
+[  ]
+gap> Add(x, "hello, world");
+gap> x;
+[ "hello, world" ]
+gap> DigraphEdgeLabels(gr);
+[ [ "23", "b" ], [ "c" ], [ 42, [  ] ], [  ], [ 1 ] ]
+gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
+<digraph with 5 vertices, 11 edges>
+gap> l := DigraphEdgeLabels(gr);
+[ [ 1 ], [ 1, 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
+gap> MakeImmutable(l);
+[ [ 1 ], [ 1, 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
+gap> SetDigraphEdgeLabels(gr, l);
+gap> SetDigraphEdgeLabel(gr, 2, 1, "Hello, banana");
+gap> DigraphEdgeLabels(gr);
+[ [ 1 ], [ "Hello, banana", 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
+gap> gr := Digraph([[2,2],[]]);;
+gap> SetDigraphEdgeLabels(gr, [[5, infinity],[]]);
+Error, SetDigraphEdgeLabels: edge labels not supported on digraphs with multip\
+le edges
+gap> DigraphEdgeLabels(gr);
+Error, DigraphEdgeLabels: edge labels not supported on digraphs with multiple \
+edges
+gap> SetDigraphEdgeLabel(gr, 1, 2, infinity);
+Error, SetDigraphEdgeLabel: edge labels not supported on digraphs with multipl\
+e edges
+
 #T# Graph
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>

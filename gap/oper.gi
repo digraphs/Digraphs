@@ -247,19 +247,23 @@ end);
 InstallMethod(DigraphRemoveLoops, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local old, new, nr, out, i, j, tot;
+  local old, old_lbl, new, new_lbl, nr, out, i, j, tot;
 
   old := OutNeighbours(digraph);
+  old_lbl := DigraphEdgeLabelsNC(digraph);
   new := [];
+  new_lbl := [];
   tot := 0;
 
   for i in DigraphVertices(digraph) do
     new[i] := [];
+    new_lbl[i] := [];
     nr := 0;
-    for j in old[i] do
-      if i <> j then
+    for j in [1..Length(old[i])] do
+      if i <> old[i][j] then
         nr := nr + 1;
-        new[i][nr] := j;
+        new[i][nr] := old[i][j];
+        new_lbl[i][nr] := old_lbl[i][j];
       fi;
     od;
     tot := tot + nr;
@@ -269,6 +273,7 @@ function(digraph)
   SetDigraphHasLoops(out, false);
   SetDigraphNrEdges(out, tot);
   SetDigraphVertexLabels(out, DigraphVertexLabels(digraph));
+  SetDigraphEdgeLabelsNC(out, new_lbl);
   return out;
 end);
 
@@ -369,7 +374,8 @@ end);
 InstallMethod(DigraphRemoveEdgesNC, "for a digraph and a list",
 [IsDigraph, IsHomogeneousList],
 function(digraph, edges)
-  local m, n, old_adj, new_adj, edge_count, degree_count, gr, i, j;
+  local m, n, old_adj, new_adj, old_lbl, new_lbl, edge_count,
+        degree_count, gr, i, j;
 
   if IsEmpty(edges) then
     return DigraphCopy(digraph);
@@ -379,22 +385,27 @@ function(digraph, edges)
   n := DigraphNrVertices(digraph);
   old_adj := OutNeighbours(digraph);
   new_adj := EmptyPlist(n);
+  old_lbl := DigraphEdgeLabelsNC(digraph);
+  new_lbl := EmptyPlist(n);
   edges := BlistList([1 .. m], edges);
   edge_count := 0;
   degree_count := 0;
   for i in DigraphVertices(digraph) do # Loop over each vertex
     new_adj[i] := [];
+    new_lbl[i] := [];
     degree_count := 0;
-    for j in old_adj[i] do
+    for j in [1..Length(old_adj[i])] do
       edge_count := edge_count + 1;
       if not edges[edge_count] then # Keep this edge
         degree_count := degree_count + 1;
-        new_adj[i][degree_count] := j;
+          new_adj[i][degree_count] := old_adj[i][j];
+          new_lbl[i][degree_count] := old_lbl[i][j];
       fi;
     od;
   od;
   gr := DigraphNC(new_adj);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
+  SetDigraphEdgeLabelsNC(gr, new_lbl);
   return gr;
 end);
 
@@ -453,14 +464,18 @@ end);
 InstallMethod(DigraphAddEdgesNC, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edges)
-  local new, verts, edge;
+  local gr, new, new_lbl, verts, edge;
 
   new := OutNeighboursCopy(digraph);
+  new_lbl := StructuralCopy(DigraphEdgeLabelsNC(digraph));
   verts := DigraphVertices(digraph);
   for edge in edges do
     Add(new[edge[1]], edge[2]);
+    Add(new_lbl[edge[1]], 1);
   od;
-  return DigraphNC(new);
+  gr := DigraphNC(new);
+  SetDigraphEdgeLabelsNC(gr, new_lbl);
+  return gr;
 end);
 #
 
@@ -690,7 +705,8 @@ InstallMethod(InducedSubdigraph,
 "for a digraph and a homogeneous list",
 [IsDigraph, IsHomogeneousList],
 function(digraph, subverts)
-  local nr, n, old_adj, new_adj, lookup, adji, j, l, gr, i, k;
+  local nr, n, old_adj, new_adj, old_edl, new_edl, lookup,
+        adji, adjl, j, l, gr, i, k;
 
   nr := Length(subverts);
   if nr = 0 then
@@ -710,25 +726,31 @@ function(digraph, subverts)
 
   old_adj := OutNeighbours(digraph);
   new_adj := EmptyPlist(nr);
+  old_edl := DigraphEdgeLabelsNC(digraph);
+  new_edl := EmptyPlist(nr);
 
   lookup := [1 .. n] * 0;
   lookup{subverts} := [1 .. nr];
 
   for i in [1 .. nr] do
     adji := [];
+    adjl := [];
     j := 0;
     for k in [1 .. Length(old_adj[subverts[i]])] do
       l := lookup[old_adj[subverts[i]][k]];
       if l <> 0 then
         j := j + 1;
         adji[j] := l;
+        adjl[j] := old_edl[subverts[i]][k];
       fi;
     od;
     new_adj[i] := adji;
+    new_edl[i] := adjl;
   od;
 
   gr := DigraphNC(new_adj);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph){subverts});
+  SetDigraphEdgeLabelsNC(gr, new_edl);
   return gr;
 end);
 
@@ -1338,6 +1360,7 @@ function(digraph)
   od;
   gr := DigraphNC(new_adj, tot);
   SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
+  # Multidigraphs did not have edge labels
   SetIsMultiDigraph(gr, false);
   return gr;
 end);
