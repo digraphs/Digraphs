@@ -1603,60 +1603,43 @@ function(n, k)
 end);
 
 #############################################################################
-##  
-##  CompleteMultipartiteDigraph( <list> ) 
-## 
-##  For input l of size n, CompleteMultipartiteDigraph returns the digraph 
-##  containing independent sets 1, 2, .. , n of orders l[1], l[2], ... , l[n], 
-##  where each vertex is adjacent to every other not contained in the 
-##  same independent set.
-##  
-InstallMethod(CompleteMultipartiteDigraph,
-"for a digraph",
-[IsList],
-function(l)
-  local p_size, n, b, out, i, j;   
-  for p_size in l do
-    if not IsPosInt(p_size) then
-      ErrorNoReturn("Digraphs: CompleteMultipartiteDigraph: usage, \n",
-                    "the first argument <l> must be a list of positive \n",
-                    "integers,");
-    fi;
-  od;
-   
-  n := Length(l);
-  if n = 0 then
-    return EmptyDigraph(0);
-  elif n = 1 then
-    return EmptyDigraph(l[1]);
+##
+##  CompleteMultipartiteDigraph(<sizes>)
+##
+##  For input list <sizes> of length nr_parts, CompleteMultipartiteDigraph
+##  returns the complete multipartite digraph containing parts 1, 2, ..., n
+##  of orders sizes[1], sizes[2], ..., sizes[n], where each vertex is adjacent
+##  to every other not contained in the same part.
+
+InstallMethod(CompleteMultipartiteDigraph, "for a digraph", [IsList],
+function(sizes)
+  local nr_parts, nr_vertices, out, start, nbs, i, v;
+
+  if not ForAll(sizes, IsPosInt) then
+    ErrorNoReturn("Digraphs: CompleteMultipartiteDigraph: usage,\n",
+                  "the argument <sizes> must be a list of positive integers,");
   fi;
-  
-  # Assume vertex labels [1..Sum(l)] distributed across independent sets [1..n]
-  # and compute the list b := [i_1,i_2, i_3,..,i_n] where i_j is the label of
-  # the vertex in partition Position(b, i_j) of greatest value.
-  b := ShallowCopy(l);
-  for i in [2 .. Length(l)] do
-    b[i] := b[i - 1] + l[i];
-  od;
-  
-  # Initialise output adjacency list
-  out := List([1 .. b[n]], x -> []);
-  
-  # Adjacency lists for independent set 1
-  for i in [1 .. b[1]] do
-    out[i] := [b[1] + 1 .. b[n]];
-  od;
-  # Adjacency lists for independent sets 2 .. n - 1
-  for i in [2 .. n - 1] do
-    for j in [(b[i - 1]) + 1 .. b[i]] do
-      out[j] := Concatenation([1 .. b[i - 1]], [b[i] + 1 .. b[n]]);
+
+  nr_parts := Length(sizes);
+  nr_vertices := Sum(sizes);
+
+  if nr_parts <= 1 then
+    return EmptyDigraph(nr_vertices);
+  fi;
+
+  out := EmptyPlist(nr_vertices);
+
+  start := 1;
+  for i in [1 .. nr_parts] do
+    nbs := Concatenation([1 .. start - 1], [start + sizes[i] .. nr_vertices]);
+    for v in [start .. start + sizes[i] - 1] do
+      out[v] := nbs;
     od;
+    start := start + sizes[i];
   od;
-  # Adjacency list for independent set n
-  for i in [b[n - 1] + 1 .. b[n]] do
-    out[i] := [1 .. b[n - 1]];
-  od;
-  
-  # Convert adjacency list to digraph and return
-  return Digraph(out);
+
+  out := Digraph(out);
+  SetIsSymmetricDigraph(out, true);
+  SetIsBipartiteDigraph(out, nr_parts = 2);
+  return out;
 end);

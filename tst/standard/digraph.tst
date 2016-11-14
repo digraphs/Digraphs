@@ -1629,28 +1629,26 @@ Error, Digraphs: JohnsonDigraph: usage,
 both arguments must be non-negative integers,
 
 #T# CompleteMultipartiteDigraph
-gap> CompleteMultipartiteDigraph([5,4,2]);
+gap> CompleteMultipartiteDigraph([5, 4, 2]);
 <digraph with 11 vertices, 76 edges>
-gap> CompleteMultipartiteDigraph([5,4,2, 10, 1000]);
+gap> CompleteMultipartiteDigraph([5, 4, 2, 10, 1000]);
 <digraph with 1021 vertices, 42296 edges>
 gap> CompleteMultipartiteDigraph([5]);
 <digraph with 5 vertices, 0 edges>
 gap> CompleteMultipartiteDigraph([]);
 <digraph with 0 vertices, 0 edges>
-gap> CompleteMultipartiteDigraph([5,4,2, 10, -5]);
-Error, Digraphs: CompleteMultipartiteDigraph: usage, 
-the first argument <l> must be a list of positive 
-integers,
-gap> CompleteMultipartiteDigraph([5,0,2]);
-Error, Digraphs: CompleteMultipartiteDigraph: usage, 
-the first argument <l> must be a list of positive 
-integers,
+gap> CompleteMultipartiteDigraph([5, 4, 2, 10, -5]);
+Error, Digraphs: CompleteMultipartiteDigraph: usage,
+the argument <sizes> must be a list of positive integers,
+gap> CompleteMultipartiteDigraph([5, 0, 2]);
+Error, Digraphs: CompleteMultipartiteDigraph: usage,
+the argument <sizes> must be a list of positive integers,
 gap> DigraphEdges(CompleteMultipartiteDigraph([3, 2]));
 [ [ 1, 4 ], [ 1, 5 ], [ 2, 4 ], [ 2, 5 ], [ 3, 4 ], [ 3, 5 ], [ 4, 1 ], 
   [ 4, 2 ], [ 4, 3 ], [ 5, 1 ], [ 5, 2 ], [ 5, 3 ] ]
 gap> DigraphVertices(CompleteMultipartiteDigraph([2, 1, 2]));
 [ 1 .. 5 ]
-gap> DigraphEdges(CompleteMultipartiteDigraph([7,8,2]));
+gap> DigraphEdges(CompleteMultipartiteDigraph([7, 8, 2]));
 [ [ 1, 8 ], [ 1, 9 ], [ 1, 10 ], [ 1, 11 ], [ 1, 12 ], [ 1, 13 ], [ 1, 14 ], 
   [ 1, 15 ], [ 1, 16 ], [ 1, 17 ], [ 2, 8 ], [ 2, 9 ], [ 2, 10 ], [ 2, 11 ], 
   [ 2, 12 ], [ 2, 13 ], [ 2, 14 ], [ 2, 15 ], [ 2, 16 ], [ 2, 17 ], [ 3, 8 ], 
