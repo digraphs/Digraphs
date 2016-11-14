@@ -290,6 +290,8 @@ gap> it := IteratorFromDigraphFile(newfilename, DigraphFromGraph6String);
 <iterator>
 gap> NextIterator(it);
 <digraph with 1 vertex, 0 edges>
+gap> IsDoneIterator(it);
+false
 gap> NextIterator(it);
 <digraph with 2 vertices, 2 edges>
 gap> NextIterator(it);
@@ -304,10 +306,45 @@ gap> NextIterator(it);
 IO_Nothing
 gap> NextIterator(it);
 IO_Nothing
+gap> IsDoneIterator(it);
+true
 gap> it := ShallowCopy(it);
 <iterator>
 gap> NextIterator(it);
 <digraph with 1 vertex, 0 edges>
+gap> IteratorFromDigraphFile(1, 2, 3);
+Error, Digraphs: IteratorFromDigraphFile: usage,
+there should be 1 or 2 arguments,
+gap> IteratorFromDigraphFile(1, 2);
+Error, Digraphs: IteratorFromDigraphFile: usage,
+the first argument must be a string,
+gap> IteratorFromDigraphFile("happy", "happy");
+Error, Digraphs: IteratorFromDigraphFile: usage,
+the second argument must be a function,
+gap> f := DigraphFile(Concatenation(DIGRAPHS_Dir(), "/data/test-1.d6"));;
+gap> IO_Close(f);
+true
+gap> f := DigraphFile(Concatenation(DIGRAPHS_Dir(), "/data/test-1.d6"),
+>                     Digraph6String);;
+gap> IO_Close(f);
+true
+gap> f := DigraphFile(1, 2, 3, 4);
+Error, Digraphs: DigraphFile: usage,
+DigraphFile( filename [, coder][, mode] ),
+gap> DigraphFile(Concatenation(DIGRAPHS_Dir(), "/data/test-1.d6"),
+>                Digraph6String, "wtf");;
+Error, Digraphs: DigraphFile: usage,
+DigraphFile( filename [, coder][, mode] ),
+gap> ReadDigraphs(f);
+Error, Digraphs: ReadDigraphs: usage,
+the file is closed,
+gap> f := DigraphFile(Concatenation(DIGRAPHS_Dir(), "/tst/out/test.d6"),
+>                     Digraph6String, "w");;
+gap> ReadDigraphs(f);
+Error, Digraphs: ReadDigraphs: usage,
+the mode of the file must be "r",
+gap> IO_Close(f);
+true
 
 #T# WritePlainTextDigraph and ReadPlainTextDigraph
 gap> gr := Digraph([[1, 2], [2, 3], []]);
@@ -567,7 +604,6 @@ gap> DigraphFromSparse6String(":~~??C???");
 <digraph with 1048576 vertices, 0 edges>
 
 #T# WriteDIMACSFile
-
 # Error testing
 gap> gr := EmptyDigraph(0);;
 gap> filename := "does/not/exist.gz";;
@@ -799,6 +835,14 @@ gap> gr = read;
 true
 gap> DigraphVertexLabels(gr);
 [ 1 .. 3 ]
+
+# Test DIGRAPHS_ChooseFileDecoder
+gap> DIGRAPHS_ChooseFileDecoder(1);
+Error, Digraphs: DIGRAPHS_ChooseFileDecoder: usage,
+the argument must be a string,
+gap> DIGRAPHS_ChooseFileEncoder(1);
+Error, Digraphs: DIGRAPHS_ChooseFileEncoder: usage,
+the argument must be a string,
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(badfilename);

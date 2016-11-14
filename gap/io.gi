@@ -201,10 +201,6 @@ function(arg)
 
   file := DigraphFile(UserHomeExpand(filename), decoder, "r");
 
-  if file = fail then
-    return fail;
-  fi;
-
   record := rec(file := file, current := file!.coder(file));
 
   record.NextIterator := function(iter)
@@ -440,11 +436,6 @@ function(arg)
       ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
                     "the mode of the file must be \"r\",");
     fi;
-  fi;
-
-  if file = fail then
-    ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
-                  "cannot open file ", name, ",");
   fi;
 
   decoder := file!.coder;
