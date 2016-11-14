@@ -255,8 +255,10 @@ gap> DigraphVertexLabel(gr, 2);
 <#GAPDoc Label="DigraphEdgeLabels">
 <ManSection>
   <Oper Name="DigraphEdgeLabels" Arg="digraph"/>
-  <Oper Name="SetDigraphEdgeLabels" Arg="digraph, labels" Label="for a digraph, and a list of lists"/>
-  <Oper Name="SetDigraphEdgeLabels" Arg="digraph, func" Label="for a digraph, and a function"/>
+  <Oper Name="SetDigraphEdgeLabels" Arg="digraph, labels" 
+    Label="for a digraph and a list of lists"/>
+  <Oper Name="SetDigraphEdgeLabels" Arg="digraph, func" 
+    Label="for a digraph and a function"/>
   <Description>
     If <A>digraph</A> is a digraph without multiple edges, then
     <C>DigraphEdgeLabels</C> returns a copy of the labels of the edges

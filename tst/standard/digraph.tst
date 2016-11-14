@@ -1677,6 +1677,24 @@ gap> DigraphEdges(CompleteMultipartiteDigraph([7, 8, 2]));
   [ 17, 5 ], [ 17, 6 ], [ 17, 7 ], [ 17, 8 ], [ 17, 9 ], [ 17, 10 ], 
   [ 17, 11 ], [ 17, 12 ], [ 17, 13 ], [ 17, 14 ], [ 17, 15 ] ]
 
+# Test errors in DigraphEdgeLabel
+gap> gr := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> DigraphEdgeLabel(gr, 1, 2);
+Error, Digraphs: DigraphEdgeLabel: usage,
+edge labels are not supported on digraphs with multiple edges,
+gap> SetDigraphEdgeLabels(gr, ReturnFalse);
+Error, Digraphs: SetDigraphEdgeLabels: usage,
+edge labels are not supported on digraphs with multiple edges,
+gap> gr := Digraph([[2, 1], []]);
+<digraph with 2 vertices, 2 edges>
+gap> DigraphEdgeLabel(gr, 2, 2);
+Error, Digraphs: DigraphEdgeLabel:
+[2, 2] is not an edge of <graph>,
+gap> SetDigraphEdgeLabel(gr, 2, 2, "a");
+Error, Digraphs: SetDigraphEdgeLabel:
+[2, 2] is not an edge of <graph>,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
