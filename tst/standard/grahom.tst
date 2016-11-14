@@ -282,6 +282,16 @@ gap> DigraphColoring(gr, 1);
 IdentityTransformation
 gap> DigraphColoring(gr, 2);
 fail
+gap> gr := Digraph([[1, 2], []]);;
+gap> DigraphColouring(gr, -1);
+Error, Digraphs: DigraphColoring: usage,
+the second argument <n> must be a non-negative integer,
+gap> DigraphColoring(NullDigraph(0), 1);
+fail
+gap> DigraphColoring(NullDigraph(0), 0);
+IdentityTransformation
+gap> DigraphColoring(CompleteDigraph(1), 0);
+fail
 
 #T# HomomorphismDigraphsFinder 1
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);;
