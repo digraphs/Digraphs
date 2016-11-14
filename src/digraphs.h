@@ -13,7 +13,7 @@
 *******************************************************************************/
 
 #ifndef DIGRAPHS_SRC_DIGRAPHS_H_
-#define DIGRAPHS_SRC_DIGRAPHS_H_ 1
+#define DIGRAPHS_SRC_DIGRAPHS_H_
 
 #include <assert.h>
 #include <stdbool.h>

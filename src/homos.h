@@ -10,7 +10,7 @@
 ********************************************************************************/
 
 #ifndef DIGRAPHS_SRC_HOMOS_H_
-#define DIGRAPHS_SRC_HOMOS_H_ 1
+#define DIGRAPHS_SRC_HOMOS_H_
 
 #include <config.h>
 #include <limits.h>
