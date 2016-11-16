@@ -17,6 +17,11 @@
     <Email>jdm3@st-andrews.ac.uk</Email>
     <Homepage>http://goo.gl/ZtViV6</Homepage>
   </Author>
+
+  <Author>Markus Pfeiffer
+    <Email>markus.pfeiffer@st-andrews.ac.uk</Email>
+    <Homepage>https://www.morphism.de/~markusp</Homepage>
+  </Author>
   
   <Author>Finn Smith
     <Email>fls3@st-andrews.ac.uk</Email>
@@ -33,8 +38,8 @@
   </Author>
 
   <Copyright>&copyright; &COPYRIGHTYEARS; by
-    Jan De Beule, Julius Jonu&#353;as, James D. Mitchell, Finn Smith, Michael
-    Torpey, Wilf Wilson.<P/>
+    Jan De Beule, Julius Jonu&#353;as, James D. Mitchell, Markus Pfeiffer,
+    Finn Smith, Michael Torpey, Wilf Wilson.<P/>
 
     &Digraphs; is free software; you can redistribute it and/or modify it
     under the terms of the <URL Text="GNU General Public License">

@@ -82,6 +82,21 @@ Persons := [
     Place         := "St Andrews",
     Institution   := "University of St Andrews"
   ),
+
+  rec(
+    LastName      := "Pfeiffer",
+    FirstNames    := "M.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "markus.pfeiffer@morphism.de",
+    WWWHome       := "http://www.morphism.de/~markusp/",
+    PostalAddress := Concatenation( [
+                       "School of Computer Science,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SX,",
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
+  ),
   
   rec(
     LastName      := "Smith",
