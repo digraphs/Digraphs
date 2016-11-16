@@ -8,7 +8,7 @@
 ##                                                       Markus Pfeiffer
 ##                                                       Finn Smith
 ##                                                       Michael Torpey
-##                                                       Wilfred Wilson
+##                                                       Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README.md file of this package.
 ##
@@ -146,7 +146,7 @@ Persons := [
 
   rec(
     LastName      := "Wilson",
-    FirstNames    := "W.",
+    FirstNames    := "W. A.",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "waw7@st-andrews.ac.uk",
