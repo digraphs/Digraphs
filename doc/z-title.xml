@@ -8,6 +8,10 @@
     <Homepage>http://homepages.vub.ac.be/~jdbeule/</Homepage>
   </Author>
 
+  <Author>Luke Elliott
+    <Email>le27@st-andrews.ac.uk</Email>
+  </Author>
+
   <Author>Julius Jonu&#353;as
     <Email>jj252@st-andrews.ac.uk</Email>
     <Homepage>http://www-circa.mcs.st-andrews.ac.uk/~julius</Homepage>
@@ -38,8 +42,8 @@
   </Author>
 
   <Copyright>&copyright; &COPYRIGHTYEARS; by
-    Jan De Beule, Julius Jonu&#353;as, James D. Mitchell, Markus Pfeiffer,
-    Finn Smith, Michael Torpey, Wilf Wilson.<P/>
+    Jan De Beule, Luke Elliott, Julius Jonu&#353;as, James D. Mitchell, Markus
+    Pfeiffer, Finn Smith, Michael Torpey, Wilf A. Wilson.<P/>
 
     &Digraphs; is free software; you can redistribute it and/or modify it
     under the terms of the <URL Text="GNU General Public License">

@@ -2,8 +2,11 @@
 ##
 #W  PackageInfo.g
 #Y  Copyright (C) 2015-16                                Jan J De Beule
+##                                                       Luke Elliott
 ##                                                       Julius Jonusas
 ##                                                       James Mitchell
+##                                                       Markus Pfeiffer
+##                                                       Finn Smith
 ##                                                       Michael Torpey
 ##                                                       Wilfred Wilson
 ##
@@ -51,6 +54,20 @@ Persons := [
                      " Belgium"]),
     Place         := "Brussels",
     Institution   := "Vrije Universiteit Brussel"
+  ),
+
+  rec(
+    LastName      := "Elliott",
+    FirstNames    := "L.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "le27@st-andrews.ac.uk",
+    PostalAddress := Concatenation( [
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
   ),
 
   rec(
