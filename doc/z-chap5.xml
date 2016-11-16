@@ -29,5 +29,6 @@
     <#Include Label="IsAperiodicDigraph">
     <#Include Label="IsDirectedTree">
     <#Include Label="IsUndirectedTree">
+    <#Include Label="IsEulerianDigraph">
   </Section>
 </Chapter>
