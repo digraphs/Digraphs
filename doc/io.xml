@@ -526,6 +526,83 @@ gap> ReadPlainTextDigraph(filename, ",", 1, ['/','%']);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="WriteDIMACSDigraph">
+<ManSection>
+  <Oper Name="WriteDIMACSDigraph" Arg="filename, digraph"/>
+  <Oper Name="ReadDIMACSDigraph" Arg="filename"/>
+  <Description>
+    These operations write or read the single symmetric digraph <A>digraph</A>
+    to or from a file in DIMACS format, as appropriate. The operation
+    <C>WriteDIMACSDigraph</C> records the vertices and edges of <A>digraph</A>.
+    The vertex labels of <A>digraph</A> will be recorded only if they are
+    integers. See <Ref Prop="IsSymmetricDigraph"/> and <Ref
+      Attr="DigraphVertexLabels"/>.<P/> 
+
+    The first argument <A>filename</A> should be the name of the file which will
+    be written to or read from. A  file can contain at most one symmetric
+    digraph in DIMACS format. If <A>filename</A> is ends in one of <C>.gz</C>,
+    <C>.bz2</C>, or <C>.xz</C>, then the digraph which is written to, or read
+    from, the file is compressed, or decompressed, appropriately.
+    <P/>
+
+    The DIMACS format is described as follows.  Each line in the DIMACS file has
+    one of four types:
+    <List>
+      <Item>
+        A line beginning with <C>c</C> and followed by any number of characters
+        is a comment line, and is ignored.
+      </Item>
+      <Item>
+        A line beginning with <C>p</C> defines the numbers of vertices and edges
+        the digraph.  This line has the format <C>p edge &lt;nr_vertices&gt;
+          &lt;nr_edges&gt;</C>, where <C>&lt;nr_vertices&gt;</C> and
+        <C>&lt;nr_edges&gt;</C> are replaced by the relevant integers. There
+        must be exactly one such line in the file, and it must occur before any
+        of the following kinds of line.<P/>
+
+        Although it is required to be present, the value of
+        <C>&lt;nr_edges&gt;</C> will be ignored. The correct number of edges
+        will be deduced from the rest of the information in the file.
+      </Item>
+      <Item>
+        A line of the form <C>e &lt;v&gt; &lt;w&gt;</C>, where <C>&lt;v&gt;</C>
+        and <C>&lt;w&gt;</C> are integers in the range <C>[1 ..
+          &lt;nr_vertices&gt;]</C>, specifies that there is a (symmetric) edge
+        in the digraph between the vertices <C>&lt;v&gt;</C> and
+        <C>&lt;w&gt;</C>. A symmetric edge only needs to be defined one; an
+        additional line <C>e &lt;v&gt; &lt;w&gt;</C>, or <C>e &lt;w&gt;
+          &lt;v&gt;</C>, will be interpreted as an additional, multiple, edge.
+        Loops are permitted.
+      </Item>
+      <Item>
+        A line of the form <C>n &lt;v&gt; &lt;label&gt;</C>, where
+        <C>&lt;v&gt;</C> is an integer in the range <C>[1 ..
+          &lt;nr_vertices&gt;]</C> and <C>&lt;label&gt;</C> is an integer,
+        signifies that the vertex <C>&lt;v&gt;</C> has the label
+        <C>&lt;label&gt;</C> in the digraph. If a label is not specified for a
+        vertex, then <C>ReadDIMACSDigraph</C> will asigned that vertex the label
+        <C>1</C>.
+      </Item>
+    </List>
+
+    A detailed definition of the DIMACS format can be found at
+    <URL>http://mat.gsia.cmu.edu/COLOR/general/ccformat.ps</URL>, in Section
+    2.1. Note that optional descriptor lines, as described in Section 2.1, will
+    be ignored.
+    <P/>
+
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);
+<digraph with 4 vertices, 8 edges>
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dimacs.dimacs");;
+gap> WriteDIMACSDigraph(filename, gr);;
+gap> ReadDIMACSDigraph(filename);
+<digraph with 4 vertices, 8 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="TournamentLineDecoder">
 <ManSection>
   <Func Name="TournamentLineDecoder" Arg="str"/>
