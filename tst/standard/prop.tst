@@ -928,11 +928,7 @@ gap> g := Digraph([[1]]);
 <digraph with 1 vertex, 1 edge>
 gap> IsEulerianDigraph(g);
 true
-<<<<<<< 933176004839e4b101b21cbc6d9a3c8bd14f8b2e
 gap> g := Digraph([[2, 2], []]);
-=======
-gap> g := Digraph([[2,2],[]]);
->>>>>>> IsEulerianDigraph
 <multidigraph with 2 vertices, 2 edges>
 gap> IsEulerianDigraph(g);
 false

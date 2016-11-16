@@ -490,12 +490,12 @@ function(g)
 
 end);
 
-
+#
 
 InstallMethod(IsEulerianDigraph, "for a digraph",
 [IsDigraph],
 function(g)
-  local out,into,i;
+  local out, into, i;
 
   if not IsStronglyConnectedDigraph(ReducedDigraph(g)) then
      return false;
