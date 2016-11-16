@@ -1157,7 +1157,7 @@ function(name)
 
   if not nr_edges in [directed_edges, 2 * directed_edges, symmetric_edges] then
     Info(InfoDigraphs, 1,
-         "A different number of edges than expected was found,");
+         "An unexpected number of edges was found,");
   fi;
 
   IO_Close(file);
@@ -1181,7 +1181,7 @@ function(name, digraph)
   file := IO_CompressedFile(UserHomeExpand(name), "w");
   if file = fail then
     ErrorNoReturn("Digraphs: WriteDIMACSDigraph:\n",
-                  "can not open the file ", name, ",");
+                  "cannot open the file ", name, ",");
   fi;
 
   n := DigraphNrVertices(digraph);
@@ -1465,7 +1465,7 @@ function(name, digraph, delimiter, offset)
 
   if file = fail then
     ErrorNoReturn("Digraphs: WritePlainTextDigraph:\n",
-                 "can not open file ", name, ",");
+                 "cannot open file ", name, ",");
   fi;
 
   for edge in DigraphEdges(digraph) do

@@ -67,7 +67,7 @@ gap> for x in iter do od;]]></Example>
     <C>"w"</C> (for write), <C>"a"</C> (for append), or <C>"r"</C> (for read). 
     If <A>mode</A> is not specified, then <C>"r"</C> is used by default. <P/>
 
-    If <A>filename</A> is ends in one of: <C>.gz</C>, <C>.bz2</C>, or
+    If <A>filename</A> ends in one of: <C>.gz</C>, <C>.bz2</C>, or
     <C>.xz</C>, then the digraphs which are read from, or written to, the
     returned file object are decompressed, or compressed, appropriately.
     <P/>
@@ -539,10 +539,9 @@ gap> ReadPlainTextDigraph(filename, ",", 1, ['/','%']);
       Attr="DigraphVertexLabels"/>.<P/> 
 
     The first argument <A>filename</A> should be the name of the file which will
-    be written to or read from. A  file can contain at most one symmetric
-    digraph in DIMACS format. If <A>filename</A> is ends in one of <C>.gz</C>,
-    <C>.bz2</C>, or <C>.xz</C>, then the digraph which is written to, or read
-    from, the file is compressed, or decompressed, appropriately.
+    be written to or read from.  A file can contain one symmetric digraph in
+    DIMACS format. If <A>filename</A> ends in one of <C>.gz</C>, <C>.bz2</C>,
+    or <C>.xz</C>, then the file is compressed, or decompressed, appropriately.
     <P/>
 
     The DIMACS format is described as follows.  Each line in the DIMACS file has
@@ -580,8 +579,8 @@ gap> ReadPlainTextDigraph(filename, ",", 1, ['/','%']);
           &lt;nr_vertices&gt;]</C> and <C>&lt;label&gt;</C> is an integer,
         signifies that the vertex <C>&lt;v&gt;</C> has the label
         <C>&lt;label&gt;</C> in the digraph. If a label is not specified for a
-        vertex, then <C>ReadDIMACSDigraph</C> will asigned that vertex the label
-        <C>1</C>.
+        vertex, then <C>ReadDIMACSDigraph</C> will assign the label
+        <C>1</C>, according to the DIMACS specification.
       </Item>
     </List>
 
