@@ -660,12 +660,12 @@ gap> g := Digraph([[]]);
 <digraph with 1 vertex, 0 edges>
 gap> IsEulerianDigraph(g);
 true
-gap> g := Digraph([[], []]);
-<digraph with 2 vertices, 0 edges>
+gap> g := Digraph([[2], []]);
+<digraph with 2 vertices, 1 edge>
 gap> IsEulerianDigraph(g);
 false
-gap> g := Digraph([[3], [3], [1,2]]);
-<digraph with 3 vertices, 4 edges>
+gap> g := Digraph([[3], [], [2]]);
+<digraph with 3 vertices, 2 edges>
 gap> IsEulerianDigraph(g);
 false
 gap> g := Digraph([[2], [3], [1]]);
