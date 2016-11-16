@@ -1039,6 +1039,201 @@ function(arg)
   fi;
 end);
 
+# DIMACS format: for symmetric digraphs, one per file.
+#                Can have loops and multiple edges.
+
+InstallMethod(ReadDIMACSDigraph, "for a string", [IsString],
+function(name)
+  local file, malformed_file, int_from_string, next, split, first_char,
+  nr_vertices, vertices, vertex_labels, nr_edges, directed_edges,
+  symmetric_edges, nbs, vertex, label, i, j, digraph;
+
+  file := IO_CompressedFile(UserHomeExpand(name), "r");
+  if file = fail then
+    ErrorNoReturn("Digraphs: ReadDIMACSDigraph:\n",
+                  "cannot open the file ", name, ",");
+  fi;
+
+  # Helper function for when an error is found in the file's formatting
+  malformed_file := function()
+    IO_Close(file);
+    ErrorNoReturn("Digraphs: ReadDIMACSDigraph:\n",
+                  "the format of the file <name> cannot be understood,");
+  end;
+
+  # Helper function to read a string into a non-negative integer
+  int_from_string := function(string)
+    local int;
+    int := Int(string);
+    if int = fail or int < 0 then
+      malformed_file();
+    fi;
+    return int;
+  end;
+
+  next := IO_ReadLine(file);
+  while not IsEmpty(next) do
+    NormalizeWhitespace(next);
+
+    # the line is entirely whitespace or a comment
+    if IsEmpty(next) or next[1] = 'c' then
+      next := IO_ReadLine(file);
+      continue;
+    fi;
+
+    split := SplitString(next, " ");
+
+    # the line doesn't have a `type'
+    if Length(split[1]) <> 1 then
+      malformed_file();
+    fi;
+
+    first_char := next[1];
+
+    # digraph definition line
+    if first_char = 'p' then
+      if IsBound(vertices) or Length(split) <> 4 or split[2] <> "edge" then
+        malformed_file();
+      fi;
+      nr_vertices     := int_from_string(split[3]);
+      vertices        := [1 .. nr_vertices];
+      vertex_labels   := vertices * 0 + 1;
+      nr_edges        := int_from_string(split[4]);
+      directed_edges  := 0;
+      symmetric_edges := 0;
+      nbs := List(vertices, x -> []);
+      next := IO_ReadLine(file);
+      continue;
+    fi;
+
+    if not IsBound(vertices) then
+      # the problem definition line must precede all other types
+      malformed_file();
+    elif first_char = 'n' then
+      # type: vertex label
+      if Length(split) <> 3 then
+        malformed_file();
+      fi;
+      vertex := int_from_string(split[2]);
+      if not vertex in vertices then
+        malformed_file();
+      fi;
+      label := Int(split[3]);
+      if label = fail then
+        malformed_file();
+      fi;
+      vertex_labels[vertex] := label;
+    elif first_char = 'e' then
+      # type: edge
+      if Length(split) <> 3 then
+        malformed_file();
+      fi;
+      i := int_from_string(split[2]);
+      j := int_from_string(split[3]);
+      if not (i in vertices and j in vertices) then
+        malformed_file();
+      fi;
+      Add(nbs[i], j);
+      directed_edges := directed_edges + 1;
+      symmetric_edges := symmetric_edges + 1;
+      if i <> j then
+        Add(nbs[j], i);
+        directed_edges := directed_edges + 1;
+      fi;
+    elif first_char in "dvx" then
+      # type: unsupported lines
+      Info(InfoDigraphs, 1,
+           "Lines beginning with 'd', 'v', or 'x' are not supported,");
+    else
+      # type: unknown
+      malformed_file();
+    fi;
+    next := IO_ReadLine(file);
+  od;
+
+  if not IsBound(vertices) then
+    malformed_file();
+  fi;
+
+  if not nr_edges in [directed_edges, 2 * directed_edges, symmetric_edges] then
+    Info(InfoDigraphs, 1,
+         "An unexpected number of edges was found,");
+  fi;
+
+  IO_Close(file);
+
+  digraph := Digraph(nbs);
+  SetDigraphNrEdges(digraph, nr_edges);
+  SetIsSymmetricDigraph(digraph, true);
+  SetDigraphVertexLabels(digraph, vertex_labels);
+  return digraph;
+end);
+
+InstallMethod(WriteDIMACSDigraph, "for a digraph", [IsString, IsDigraph],
+function(name, digraph)
+  local file, n, verts, nbs, nr_loops, m, labels, i, j;
+
+  if not IsSymmetricDigraph(digraph) then
+    ErrorNoReturn("Digraphs: WriteDIMACSDigraph: usage,\n",
+                  "the digraph <digraph> must be symmetric,");
+  fi;
+
+  file := IO_CompressedFile(UserHomeExpand(name), "w");
+  if file = fail then
+    ErrorNoReturn("Digraphs: WriteDIMACSDigraph:\n",
+                  "cannot open the file ", name, ",");
+  fi;
+
+  n := DigraphNrVertices(digraph);
+  verts := DigraphVertices(digraph);
+  nbs := OutNeighbours(digraph);
+
+  nr_loops := 0;
+  if not HasDigraphHasLoops(digraph) or DigraphHasLoops(digraph) then
+    for i in verts do
+      for j in nbs[i] do
+        if i = j then
+          nr_loops := nr_loops + 1;
+        fi;
+      od;
+    od;
+    SetDigraphHasLoops(digraph, not nr_loops = 0);
+  fi;
+  m := ((DigraphNrEdges(digraph) - nr_loops) / 2) + nr_loops;
+
+  # Problem definition
+  IO_WriteLine(file, Concatenation("p edge ", String(n), " ", String(m)));
+
+  # Edges
+  for i in verts do
+    for j in nbs[i] do
+      if i <= j then
+        IO_WriteLine(file, Concatenation("e ", String(i), " ", String(j)));
+      fi;
+      # In the case that j < i, the edge will be written elsewhere in the file
+    od;
+  od;
+
+  # Vertex labels
+  if n > 0 then
+    labels := DigraphVertexLabels(digraph);
+    if not (IsHomogeneousList(labels) and IsInt(labels[1])) then
+      Info(InfoDigraphs, 1,
+           "Only integer vertex labels are supported by the DIMACS format.");
+      Info(InfoDigraphs, 1,
+           "The vertex labels of <digraph> will not be saved.");
+    else
+      for i in verts do
+        IO_WriteLine(file,
+                     Concatenation("n ", String(i), " ", String(labels[i])));
+      od;
+    fi;
+  fi;
+
+  IO_Close(file);
+  return IO_OK;
+end);
+
 # one edge per line, one graph per file
 
 InstallGlobalFunction(ReadPlainTextDigraph,
@@ -1270,7 +1465,7 @@ function(name, digraph, delimiter, offset)
 
   if file = fail then
     ErrorNoReturn("Digraphs: WritePlainTextDigraph:\n",
-                 "can not open file ", name, ",");
+                 "cannot open file ", name, ",");
   fi;
 
   for edge in DigraphEdges(digraph) do

@@ -138,7 +138,7 @@ gap> str := DiSparse6String(gr);;
 gap> DigraphFromDiSparse6String(str) = gr;
 true
 gap> gr := Digraph(rec(nrvertices := 2 ^ 17, source := [1 .. 100],
-> range := Concatenation([50 .. 98], [-1050 .. -1000] * - 1)));
+> range := Concatenation([50 .. 98], [-1050 .. -1000] * -1)));
 <digraph with 131072 vertices, 100 edges>
 gap> str := DiSparse6String(gr);;
 gap> DigraphFromDiSparse6String(str) = gr;
@@ -318,7 +318,7 @@ Error, Digraphs: WritePlainTextDigraph: usage,
 WritePlainTextDigraph(filename, digraph, delimiter, offset),
 gap> WritePlainTextDigraph(".", gr, ",", -2);
 Error, Digraphs: WritePlainTextDigraph:
-can not open file .,
+cannot open file .,
 gap> WritePlainTextDigraph(filename, gr, ',', -3);
 gap> WritePlainTextDigraph(filename, gr, ",", -1);
 gap> ReadPlainTextDigraph(1, 2, 3, 4);
@@ -566,9 +566,244 @@ gap> Sparse6String(EmptyDigraph(2 ^ 20));
 gap> DigraphFromSparse6String(":~~??C???");
 <digraph with 1048576 vertices, 0 edges>
 
+#T# WriteDIMACSFile
+
+# Error testing
+gap> gr := EmptyDigraph(0);;
+gap> filename := "does/not/exist.gz";;
+gap> WriteDIMACSDigraph(filename, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `WriteDIMACSDigraph' on 2 arguments
+gap> WriteDIMACSDigraph(0, gr);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `WriteDIMACSDigraph' on 2 arguments
+gap> WriteDIMACSDigraph(gr, filename);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `WriteDIMACSDigraph' on 2 arguments
+gap> WriteDIMACSDigraph("file", ChainDigraph(2));
+Error, Digraphs: WriteDIMACSDigraph: usage,
+the digraph <digraph> must be symmetric,
+gap> WriteDIMACSDigraph(filename, gr);
+Error, Digraphs: WriteDIMACSDigraph:
+cannot open the file does/not/exist.gz,
+
+# Handling loops
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/loops.dimacs");;
+gap> gr := EmptyDigraph(1);
+<digraph with 1 vertex, 0 edges>
+gap> DigraphHasLoops(gr);
+false
+gap> HasDigraphHasLoops(gr);
+true
+gap> WriteDIMACSDigraph(filename, gr);
+IO_OK
+gap> gr := Digraph([[1]]);
+<digraph with 1 vertex, 1 edge>
+gap> DigraphHasLoops(gr);
+true
+gap> HasDigraphHasLoops(gr);
+true
+gap> WriteDIMACSDigraph(filename, gr);
+IO_OK
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/loops.dimacs.gz");;
+gap> gr := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> HasDigraphHasLoops(gr);
+false
+gap> WriteDIMACSDigraph(filename, gr);
+IO_OK
+
+# Non-standard vertex labels
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/labels.dimacs");;
+gap> gr := Digraph([[2], [1, 3], [2]]);;
+gap> SetDigraphVertexLabels(gr, Elements(CyclicGroup(3)));
+gap> WriteDIMACSDigraph(filename, gr);
+IO_OK
+
+#T# ReadDIMACSDigraph
+gap> ReadDIMACSDigraph("does/not/exist.gz");
+Error, Digraphs: ReadDIMACSDigraph:
+cannot open the file does/not/exist.gz,
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/bad.dimacs");;
+
+# Bad line type
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "file for testing purposes");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+
+# Bad vertices and edges definition
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "c file for testing purposes");;
+gap> IO_WriteLine(file, "p edge 'a' 1");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 -1");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 1 1");;
+gap> IO_WriteLine(file, "p edge 1 1");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 1");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p fail 1 1");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "c empty file");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+
+# Vertices and edges undefined
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "e 1 1");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+
+# Bad node label
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 1");;
+gap> IO_WriteLine(file, "n 2");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 1");;
+gap> IO_WriteLine(file, "n 3 1");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 1");;
+gap> IO_WriteLine(file, "n 2 a");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+
+# Bad edge
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 1");;
+gap> IO_WriteLine(file, "e 2 1 3");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 1");;
+gap> IO_WriteLine(file, "e 2 a");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 1");;
+gap> IO_WriteLine(file, "e 3 1");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 1");;
+gap> IO_WriteLine(file, "e 1 3");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+
+# Unsupported types
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 1");;
+gap> IO_WriteLine(file, "d");;
+gap> IO_WriteLine(file, "v");;
+gap> IO_WriteLine(file, "x");;
+gap> IO_WriteLine(file, "j");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+Error, Digraphs: ReadDIMACSDigraph:
+the format of the file <name> cannot be understood,
+
+# Bad number of edges
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 1");;
+gap> IO_WriteLine(file, "e 1 2");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+<digraph with 2 vertices, 2 edges>
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 2");;
+gap> IO_WriteLine(file, "e 1 2");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+<digraph with 2 vertices, 2 edges>
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 3");;
+gap> IO_WriteLine(file, "e 1 2");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+<digraph with 2 vertices, 2 edges>
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "p edge 2 6");;
+gap> IO_WriteLine(file, "e 1 1");;
+gap> IO_WriteLine(file, "e 1 2");;
+gap> IO_Close(file);;
+gap> ReadDIMACSDigraph(filename);
+<digraph with 2 vertices, 3 edges>
+
+# Examples which work
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/good.dimacs");;
+gap> gr := Digraph([[2], [1, 3, 4], [2, 3], [2], [5], []]);
+<digraph with 6 vertices, 8 edges>
+gap> SetDigraphVertexLabels(gr, [2, 3, 5, 7, 11, 13]);;
+gap> WriteDIMACSDigraph(filename, gr);
+IO_OK
+gap> read := ReadDIMACSDigraph(filename);
+<digraph with 6 vertices, 8 edges>
+gap> gr = read;
+true
+gap> DigraphVertexLabels(read);
+[ 2, 3, 5, 7, 11, 13 ]
+gap> gr := Digraph([[2], [1, 3, 3], [2, 3, 2]]);
+<multidigraph with 3 vertices, 7 edges>
+gap> DigraphVertexLabels(gr);
+[ 1 .. 3 ]
+gap> WriteDIMACSDigraph(filename, gr);
+IO_OK
+gap> read := ReadDIMACSDigraph(filename);
+<multidigraph with 3 vertices, 7 edges>
+gap> gr = read;
+true
+gap> DigraphVertexLabels(gr);
+[ 1 .. 3 ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(badfilename);
 gap> Unbind(f);
+gap> Unbind(read);
 gap> Unbind(filename);
 gap> Unbind(gr);
 gap> Unbind(gr2);
@@ -580,6 +815,7 @@ gap> Unbind(mult);
 gap> Unbind(newfilename);
 gap> Unbind(rdgr);
 gap> Unbind(str);
+gap> Unbind(file);
 
 #E#
 gap> STOP_TEST("Digraphs package: standard/io.tst");
