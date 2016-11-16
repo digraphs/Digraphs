@@ -1029,9 +1029,11 @@ gap> DigraphJoin(gr, gr2);
   <Oper Name="IsReachable" Arg="digraph, u, v"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This operation returns <K>true</K> if there exists a directed walk (of 
-    non-zero length) from vertex <A>u</A> to vertex <A>v</A> in the digraph
-    <A>digraph</A>, and <K>false</K> if there does not exist such a walk.
+    This operation returns <K>true</K> if there exists a non-trivial directed
+    walk from vertex <A>u</A> to vertex <A>v</A> in the digraph <A>digraph</A>,
+    and <K>false</K> if there does not exist such a directed walk.  See section
+    <Ref Subsect="Definitions" Style="Number" /> for the definition of a
+    non-trivial directed walk.
     <P/>
 
     The method for <C>IsReachable</C> has worst case complexity of <M>O(m +
@@ -1059,15 +1061,15 @@ false
   <Oper Name="DigraphPath" Arg="digraph, u, v"/>
   <Returns>A pair of lists, or <K>fail</K>.</Returns>
   <Description>
-    If there exists a directed path (or a cycle, in the case that <A>u</A>
-    <C>=</C> <A>v</A>) of non-zero length from vertex <A>u</A> to vertex
+    If there exists a non-trivial directed path (or a non-trivial cycle, in the
+    case that <A>u</A> <C>=</C> <A>v</A>) from vertex <A>u</A> to vertex
     <A>v</A> in the digraph <A>digraph</A>, then this operation returns such a
-    directed path (or cycle). Otherwise, this operation returns <K>fail</K>.
-    See Chapter <Ref Chap="The Digraphs package"/> for the definition of a path
-    and a cycle.
+    directed path (or directed cycle). Otherwise, this operation returns
+    <K>fail</K>.  See Section <Ref Subsect="Definitions" Style="Text"/> for the
+    definition of a directed path and a directed cycle.
     <P/>
     
-    A directed path (or cycle) of non-zero length <C>n-1</C>,
+    A directed path (or directed cycle) of non-zero length <C>n-1</C>,
     <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M>,
     is represented by a pair of lists <C>[v,a]</C> as follows:
 
@@ -1113,14 +1115,16 @@ fail
   <Description>
     If <A>digraph</A> is a digraph or a list of adjacencies which defines a
     digraph - see <Ref Attr="OutNeighbours"/> - then this operation returns an
-    iterator of the directed paths (or cycles, in the case that <A>u</A>
-    <C>=</C> <A>v</A>) of non-zero length in <A>digraph</A> from the vertex
-    <A>u</A> to the vertex <A>v</A>.
+    iterator of the non-trivial directed paths (or directed cycles, in the case
+    that <A>u</A> <C>=</C> <A>v</A>) in <A>digraph</A> from the vertex <A>u</A>
+    to the vertex <A>v</A>.
     <P/>
     
     See <Ref Oper="DigraphPath"/> for more information about the repesentation
-    of a directed path or cycle which is used, and see <Ref Sect="Iterators"
-      BookName="ref"/> for more information about iterators.
+    of a directed path or directed cycle which is used, and see <Ref
+      Sect="Iterators" BookName="ref"/> for more information about iterators.
+    See Section <Ref Subsect="Definitions" Style="Text"/> for the definition of
+    a directed path and a directed cycle.
     <P/>
 
 <Example><![CDATA[
@@ -1148,29 +1152,26 @@ gap> NextIterator(iter);
 <#GAPDoc Label="DigraphLongestDistanceFromVertex">
 <ManSection>
   <Oper Name="DigraphLongestDistanceFromVertex" Arg="digraph, v"/>
-  <Returns>An integer.</Returns>
+  <Returns>An integer, or <K>infinity</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph and <A>v</A> is a vertex in <A>digraph</A>,
     then this operation returns the length of the longest directed walk in
-    <A>digraph</A> which begins at vertex <A>v</A>. <P/>
+    <A>digraph</A> which begins at vertex <A>v</A>.  See section <Ref
+      Subsect="Definitions" Style="Number" /> for the definitions of directed
+    walk, directed cycle, and loop.
+    <P/>
 
     <List>
       <Item>
         If there exists a directed walk starting at vertex <A>v</A>
-        which traverses a cycle or a loop,
+        which traverses a loop or a directed cycle,
         then we consider there to be a walk of infinite length from <A>v</A>
-        (realised by repeatedly traversing the loop/cycle),
-        and so the result is <C>infinity</C>.
+        (realised by repeatedly traversing the loop/directed cycle),
+        and so the result is <K>infinity</K>.
         To disallow walks using loops, try using
         <Ref Oper="DigraphRemoveLoops"/>:<P/>
 
         <C>DigraphLongestDistanceFromVertex(DigraphRemoveLoops(<A>digraph</A>,<A>v</A>))</C>.
-      </Item>
-
-      <Item>
-        If no walk from vertex <A>v</A> exists,
-        i.e. if <A>v</A> is a sink of the digraph
-        (<Ref Attr="DigraphSinks"/>), then the result is <C>0</C>.
       </Item>
 
       <Item>
@@ -1179,6 +1180,9 @@ gap> NextIterator(iter);
         then the length of the longest such walk is returned.
       </Item>
     </List>
+
+    Note that the result is <C>0</C> if and only if <A>v</A> is a sink of
+    <A>digraph</A>.  See <Ref Attr="DigraphSinks"/>.
 
 <Example><![CDATA[
 gap> gr := Digraph([[2], [3, 4], [], [5], [], [6]]);
@@ -1252,23 +1256,25 @@ gap> DigraphDistanceSet(gr, 2, 0);
         Arg="digraph, list1, list2"/>
   <Returns>An integer or <K>fail</K></Returns>
   <Description>
-    If there is a path in the digraph <A>digraph</A> between vertex <A>u</A> and
-    vertex <A>v</A>, then this operation returns the length of the shortest such
-    path.  If no such path exists, then this operation returns <K>fail</K>. <P/>
+    If there is a directed path in the digraph <A>digraph</A> between vertex
+    <A>u</A> and vertex <A>v</A>, then this operation returns the length of the
+    shortest such directed path.  If no such directed path exists, then this
+    operation returns <K>fail</K>. See section <Ref Subsect="Definitions"
+      Style="Number" /> for the definition of a directed path. <P/>
 
     If the second form is used, then <A>list</A> should be a list of length two,
     containing two positive integers which correspond to the vertices <A>u</A>
     and <A>v</A>. <P/>
 
-    Note that as usual a vertex is considered to be at distance 0 from
-    itself. <P/>
+    Note that as usual, a vertex is considered to be at distance 0 from
+    itself .<P/>
 
-    If the third form is used, then <A>list1</A> and <A>list2</A> are both
-    lists of vertices. The shortest path between <A>list1</A> and <A>list2</A>
-    is then the length of the shortest path which starts with a vertex in
-    <A>list1</A> and terminates at a vertex in <A>list2</A>, if such path
-    exists. If <A>list1</A> and <A>list2</A> have non-empty intersection, the
-    operation returns <C>0</C>.<P/>
+    If the third form is used, then <A>list1</A> and <A>list2</A> are both lists
+    of vertices. The shortest directed path between <A>list1</A> and
+    <A>list2</A> is then the length of the shortest directed path which starts
+    with a vertex in <A>list1</A> and terminates at a vertex in <A>list2</A>, if
+    such directed path exists. If <A>list1</A> and <A>list2</A> have non-empty
+    intersection, the operation returns <C>0</C>.<P/>
     <Example><![CDATA[
 gap> gr := Digraph([[2], [3], [1, 4], [1, 3], [5]]);
 <digraph with 5 vertices, 7 edges>

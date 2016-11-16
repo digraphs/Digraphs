@@ -34,32 +34,42 @@
   of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods
   in the &Digraphs; package rely on &bliss;. <P/>
 
-  For the purposes of this package and its documentation, the following
-  definitions apply: <P/>
+  <Subsection Label="Definitions"><Heading>Definitions</Heading>
 
-  A <E>digraph</E> <M>E=(E^0,E^1,r,s)</M>, also known as a 
-  <E>directed graph</E>, consists of a set of vertices <M>E^0</M> and a set of 
-  edges <M>E^1</M> together with functions <M>s, r: E^1 \to E^0</M>, called 
-  the <E>source</E> and <E>range</E>, respectively.
+    For the purposes of this package and its documentation, the following
+    definitions apply: <P/>
 
-  The source and range of an edge is respectively the values of <M>s, r</M>
-  at that edge.
+    A <E>digraph</E> <M>E=(E^0,E^1,r,s)</M>, also known as a <E>directed
+      graph</E>, consists of a set of vertices <M>E^0</M> and a set of edges
+    <M>E^1</M> together with functions <M>s, r: E^1 \to E^0</M>, called the
+    <E>source</E> and <E>range</E>, respectively.
 
-  An edge is called a <E>loop</E> if its source and range are the same.
+    The source and range of an edge is respectively the values of <M>s, r</M> at
+    that edge.
 
-  A digraph is called a <E>multidigraph</E> if there exist two or more edges
-  with the same source and the same range. <P/>
+    An edge is called a <E>loop</E> if its source and range are the same.
 
-  A <E>directed path</E> on a digraph is a sequence of alternating vertices and
-  edges <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M> such that each edge
-  <M>e_i</M> has source <M>v_i</M> and range <M>v_{i+1}</M>, and no vertex is
-  repeated.  A <E>directed walk</E> is defined similarly, but vertices may be
-  repeated.  A <E>cycle</E> is defined similarly to a directed path, except that
-  <M>v_1 = v_n</M>.
-  
-  The <E>length</E> of a directed path, walk, or cycle <M>(v_1, e_1, v_2, e_2,
-    ..., e_{n-1}, v_n)</M> is equal to <M>n-1</M>, the number of edges it
-  contains.
+    A digraph is called a <E>multidigraph</E> if there exist two or more edges
+    with the same source and the same range. <P/>
 
+    A <E>directed walk</E> on a digraph is a sequence of alternating vertices
+    and edges <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M> such that each edge
+    <M>e_i</M> has source <M>v_i</M> and range <M>v_{i+1}</M>. A <E>directed
+      path</E> is a directed walk where no vertex (and hence no edge) is
+    repeated.  A <E>directed circuit</E> is a directed walk where <M>v_1 =
+      v_n</M>, and a <E>directed cycle</E> is a directed circuit where where no
+    vertex is repeated, except for <M>v_1 = v_n</M>.  <P/>
+    
+    The <E>length</E> of a directed walk <M>(v_1, e_1, v_2, e_2, ..., e_{n-1},
+      v_n)</M> is equal to <M>n-1</M>, the number of edges it contains.  A
+    directed walk (or path) <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M> is
+    sometimes called a directed walk (or path) <E>from vertex <M>v_1</M> to
+      vertex <M>v_n</M></E>.  A directed walk of zero length, i.e. a sequence
+    <M>(v)</M> for some vertex <M>v</M>, is called <E>trivial</E>. A trivial
+    directed walk is considered to be both a circuit and a cycle, as is the
+    empty directed walk <M>()</M>. A <E>simple circuit</E> is another name for a
+    non-trivial and non-empty directed cycle.<P/>
+
+  </Subsection>
   </Section>
 </Chapter>

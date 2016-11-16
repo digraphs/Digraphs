@@ -39,14 +39,15 @@ false
   <Prop Name="IsAcyclicDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns <K>true</K> if the digraph <A>digraph</A> is acyclic and
-    <K>false</K> if it is not. A digraph is <E>acyclic</E> if there are no
-    cycles, i.e. if there are no directed walks which start and end at the same
-    vertex. <P/>
+    This property is <K>true</K> if the digraph <A>digraph</A> is acyclic, and
+    <K>false</K> if it is not. A digraph is <E>acyclic</E> if every directed
+    cycle on the digraph is trivial. See section <Ref Subsect="Definitions"
+      Style="Number" /> for the definition of a directed cycle, and of a trivial
+    directed cycle.<P/>
 
     The method used in this operation has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
-    <M>n</M> is the number of vertices in the digraph. 
+    <M>n</M> is the number of vertices in the digraph.
 
     <Example><![CDATA[
 gap> Petersen := Graph( SymmetricGroup(5), [ [ 1, 2 ] ], OnSets,           
@@ -249,15 +250,18 @@ false]]></Example>
   <Prop Name="IsStronglyConnectedDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A> 
-    is strongly connected and <K>false</K> if it is not.
-    A digraph <A>digraph</A> is <E>strongly connected</E> if there 
-    is a directed path from every vertex to every other vertex. <P/>
+    This property is <K>true</K> if the digraph <A>digraph</A> is strongly
+    connected and <K>false</K> if it is not. <P/>
+    
+    A digraph <A>digraph</A> is <E>strongly connected</E> if there is a directed
+    path from every vertex to every other vertex.  See section <Ref
+      Subsect="Definitions" Style="Number" /> for the definition of a directed
+    path.    <P/>
 
-    The method used in this operation is based on Gabow's Algorithm
-    <Cite Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M>,
-    where <M>m</M> is the number of edges (counting multiple edges as one) 
-    and <M>n</M> is the number of vertices in the digraph. 
+    The method used in this operation is based on Gabow's Algorithm <Cite
+      Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M>, where <M>m</M> is
+    the number of edges (counting multiple edges as one) and <M>n</M> is the
+    number of vertices in the digraph. 
   
     <Example><![CDATA[
 gap> gr := CycleDigraph(250000);
@@ -610,17 +614,18 @@ true
   <Prop Name="IsUndirectedTree" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    If <A>digraph</A> is an undirected tree, this property returns
-    <K>true</K>.<P/>
-
-    An undirected tree is an undirected graph in which any 2 distinct
-    vertices are connected by exactly 1 path (this construction never
-    contains loops).<P/>
-
-    Please note that in this package an undirected graph is simulated by
-    replacing each undirected edge with a pair of opposing directed edges.
-    Please note also that a graph with no vertices is not considered an
+    This property returns <K>true</K> if the digraph <A>digraph</A> is an
     undirected tree.<P/>
+
+    An undirected tree is a symmetric digraph without loops, in which for any
+    pair of distinct vertices <C>u</C> and <C>v</C>, there is exactly one
+    directed path from <C>u</C> to <C>v</C>. See <Ref
+      Prop="IsSymmetricDigraph"/> and <Ref Prop="DigraphHasLoops"/>, and see
+    section <Ref Subsect="Definitions" Style="Number" /> for the definition of
+    directed path. <P/>
+
+    Please note that the digraph with zero vertices is not considered to be an
+    undirected tree. <P/>
 
     <Example><![CDATA[
 gap> g := Digraph([[3], [3], [1,2]]);
@@ -642,11 +647,13 @@ false
   <Prop Name="IsEulerianDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    If <A>digraph</A> is Eulerian, this property returns
-    <K>true</K>.<P/>
+    This property returns true if the digraph <A>digraph</A> is Eulerian.
+    <P/>
 
-    An Eulerian digraph is a digraph which has a circuit visiting 
-    each edge exactly once.<P/>
+    A digraph is called <E>Eulerian</E> if there exists a directed circuit on
+    the digraph which includes every edge exactly once.  See section <Ref
+      Subsect="Definitions" Style="Number" /> for the definition of a directed
+    circuit.
 
     <Example><![CDATA[
 gap> g := Digraph([[]]);

@@ -164,12 +164,17 @@ gap> DigraphDual(gr);
   <Attr Name="DigraphTopologicalSort" Arg="digraph"/>
   <Returns>A list of positive integers, or <K>fail</K>.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph with no cycles of length greater than
-    <M>1</M>, then <C>DigraphTopologicalSort</C> returns the vertices of
-    <A>digraph</A> ordered so that every edge's source appears no earlier in
-    the list than its range.  If the digraph <A>digraph</A> contains cycles
-    of length greater than <M>1</M>, then this operation returns
-    <K>fail</K>.  <P/>
+    If <A>digraph</A> is a digraph whose only directed cycles are loops, then
+    <C>DigraphTopologicalSort</C> returns the vertices of <A>digraph</A> ordered
+    so that every edge's source appears no earlier in the list than its range.
+    If the digraph <A>digraph</A> contains directed cycles of length greater
+    than <M>1</M>, then this operation returns <K>fail</K>.
+    <P/>
+
+    See section <Ref Subsect="Definitions" Style="Number" /> for the definition
+    of a directed cycle, and the definition of a loop.
+    
+    <P/>
 
     The method used for this attribute has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
@@ -580,8 +585,8 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
     This function returns the record <C>wcc</C> corresponding to the weakly
     connected components of the digraph <A>digraph</A>.  Two vertices of
     <A>digraph</A> are in the same weakly connected component whenever they are
-    equal, or there exists a path (ignoring the orientation of edges) between
-    them.  In other words, two vertices are in the same weakly connected
+    equal, or there exists a directed path (ignoring the orientation of edges)
+    between them.  More formally, two vertices are in the same weakly connected
     component of <A>digraph</A> if and only if they are in the same strongly
     connected component (see <Ref Attr="DigraphStronglyConnectedComponents"/>)
     of the <Ref Attr="DigraphSymmetricClosure"/> of <A>digraph</A>.  <P/>
@@ -628,14 +633,15 @@ rec( comps := [  ], id := [  ] )
   <Description>
     If <A>digraph</A> is a digraph with <M>n</M> vertices, then this 
     function returns an <M>n \times n</M> matrix <C>mat</C>, where each entry is
-    either a non-negative integer or <C>fail</C>.  If <M>n = 0</M>, then an
+    either a non-negative integer, or <K>fail</K>.  If <M>n = 0</M>, then an
     empty list is returned. <P/>
     
     If there is a directed path from vertex <C>i</C> to vertex <C>j</C>, then
-    the value of <C>mat[i][j]</C> is the length of the shortest such path. If
-    no such path exists, then the value of <C>mat[i][j]</C> is <C>fail</C>.
-    We use the convention that the distance from every vertex to itself is
-    <C>0</C>, i.e. <C>mat[i][i] = 0</C> for all vertices <C>i</C>. <P/>
+    the value of <C>mat[i][j]</C> is the length of the shortest such directed
+    path. If no such directed path exists, then the value of <C>mat[i][j]</C> is
+    <C>fail</C>.  We use the convention that the distance from every vertex to
+    itself is <C>0</C>, i.e. <C>mat[i][i] = 0</C> for all vertices <C>i</C>.
+    <P/>
 
     The method used in this function is a version of the Floyd-Warshall 
     algorithm, and has complexity <M>O(n^3)</M>.
@@ -701,13 +707,14 @@ gap> DigraphSources(gr);
   <Description>
     This function returns the period of the digraph <A>digraph</A>.<P/>
 
-    If a digraph <A>digraph</A> has at least one cycle, then the
-    period is the greatest positive integer which divides the lengths of all 
-    cycles of <A>digraph</A>.
-    If <A>digraph</A> has no cycles, then this function returns <M>0</M>.<P/>
-    
-    A digraph with a period of <M>1</M> is said to be <E>aperiodic</E>.
-    See <Ref Prop="IsAperiodicDigraph"/>. <P/>
+    If a digraph <A>digraph</A> has at least one directed cycle, then the period
+    is the greatest positive integer which divides the lengths of all directed
+    cycles of <A>digraph</A>.  If <A>digraph</A> has no directed cycles, then
+    this function returns <M>0</M>.  See section <Ref Subsect="Definitions"
+      Style="Number" /> for the definition of a directed cycle. <P/>
+
+    A digraph with a period of <M>1</M> is said to be <E>aperiodic</E>.  See
+    <Ref Prop="IsAperiodicDigraph"/>. <P/>
     <Example><![CDATA[
 gap> gr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );
 <multidigraph with 6 vertices, 7 edges>
@@ -763,7 +770,7 @@ false
 <#GAPDoc Label="DigraphUndirectedGirth">
 <ManSection>
   <Attr Name="DigraphUndirectedGirth" Arg="digraph"/>
-  <Returns>An integer or <C>infinity</C>.</Returns>
+  <Returns>An integer or <K>infinity</K>.</Returns>
   <Description>
     If <A>digraph</A> is a symmetric digraph, then this function returns the
     girth of <A>digraph</A> when treated as an undirected graph (i.e. each pair
@@ -772,10 +779,10 @@ false
 
     The <E>girth</E> of an undirected graph is the length of its shortest simple
     cycle, i.e. the shortest non-trivial path starting and ending at the same
-    vertex and passing through no vertex more than once. <P/>
+    vertex and passing through no vertex or edge more than once. <P/>
 
     If <A>digraph</A> has no cycles, then this function will return
-    <C>infinity</C>. <P/>
+    <K>infinity</K>. <P/>
     <Example><![CDATA[
 gap> gr := Digraph([[2,4], [1,3], [2,4], [1,3]]);
 <digraph with 4 vertices, 8 edges>
@@ -797,15 +804,16 @@ gap> DigraphUndirectedGirth(gr);
 <#GAPDoc Label="DigraphGirth">
 <ManSection>
   <Attr Name="DigraphGirth" Arg="digraph"/>
-  <Returns>An integer or <C>infinity</C>.</Returns>
+  <Returns>An integer, or <K>infinity</K>.</Returns>
   <Description>
-    The <E>girth</E> of a digraph is the length of its shortest simple cycle,
-    i.e. the shortest non-trivial directed path starting and ending at the same
-    vertex and passing through no vertex more than once. 
+    This attribute returns the <E>girth</E> of the digraph <A>digraph</A>.
+    The <E>girth</E> of a digraph is the length of its shortest simple circuit.
+    See section <Ref Subsect="Definitions" Style="Number" /> for the definitions
+    of simple circuit, directed cycle, and loop.
     <P/>
 
-    If <A>digraph</A> has no cycles, then this function will return
-    <C>infinity</C>.  If <A>digraph</A> contains a loop, then this function will
+    If <A>digraph</A> has no directed cycles, then this function will return
+    <K>infinity</K>.  If <A>digraph</A> contains a loop, then this function will
     return <C>1</C>. 
     <P/>
 
@@ -989,18 +997,26 @@ gap> DigraphBicomponents(gr);
     If <A>digraph</A> is a digraph, then <C>DigraphAllSimpleCircuits</C>
     returns a list of the <E>simple circuits</E> in <A>digraph</A>. <P/>
     
-    A <E>simple circuit</E> in <A>digraph</A> is a non-trivial directed path
-    in <A>digraph</A> from a vertex <C>v</C> back to <C>v</C>, in which no
-    vertex is visited more than once. Since a circuit of length <C>n</C> is
-    determined by its first <C>n</C> vertices, a circuit <M>v_{1} \rightarrow
-      \cdots \rightarrow v_{n} \rightarrow v_{1}</M> can be represented as
-    the list <M>[v_{1}, \ldots, v_{n}]</M>. For each simple circuit of
-    <A>digraph</A>, <C>DigraphAllSimpleCircuits(</C><A>digraph</A><C>)</C>
-    will include precisely one such list to represents the circuit (cyclic
-    permutations of such a list describe the same circuit).
-    <P/>
+    See section <Ref Subsect="Definitions" Style="Number" /> for the definition
+    of a simple circuit, and related notions. Note that a loop is a simple
+    circuit. <P/>
 
-    Note that a loop is a simple circuit.
+    For a digraph without multiple edges, a simple circuit is uniquely
+    determined by its subsequence of vertices. However this is not the case for
+    a multidigraph.  The attribute <C>DigraphAllSimpleCircuits</C> ignores
+    multiple edges, and identifies a simple circuit using only its subsequence
+    of vertices. For example, although the simple circuits <M>(v, e, v)</M> and
+    <M>(v, e', v)</M> (for distinct edges <M>e</M> and <M>e'</M>) are
+    mathematically distinct, <C>DigraphAllSimpleCircuits</C> considers them to
+    be the same. <P/>
+    
+    With this approach, a directed circuit of length <C>n</C> can be determined
+    by a list of its first <C>n</C> vertices. Thus a simple circuit <M>(v_1,
+      e_1, v_2, e_2, ..., e_{n-1}, v_n, e_{n+1}, v_1)</M> can be represented as
+    the list <M>[v_1, \ldots, v_n]</M>, or any cyclic permutation thereof.  For
+    each simple circuit of <A>digraph</A>,
+    <C>DigraphAllSimpleCircuits(<A>digraph</A>)</C> includes precisely one such
+    list to represent the circuit.  <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);
@@ -1013,7 +1029,11 @@ gap> DigraphAllSimpleCircuits(gr);
 gap> gr := Digraph([[3], [1], [1]]);
 <digraph with 3 vertices, 3 edges>
 gap> DigraphAllSimpleCircuits(gr);
-[ [ 1, 3 ] ]]]></Example>
+[ [ 1, 3 ] ]
+gap> gr := Digraph([[1, 1]]);
+<multidigraph with 1 vertex, 2 edges>
+gap> DigraphAllSimpleCircuits(gr);
+[ [ 1 ] ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1021,24 +1041,22 @@ gap> DigraphAllSimpleCircuits(gr);
 <#GAPDoc Label="DigraphLongestSimpleCircuit">
 <ManSection>
   <Attr Name="DigraphLongestSimpleCircuit" Arg="digraph"/>
-  <Returns>A list of vertices or <C>fail</C>.</Returns>
+  <Returns>A list of vertices, or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then <C>DigraphLongestSimpleCircuit</C>
-    returns the longest <E>simple circuit</E> in <A>digraph</A>. <P/>
+    returns the longest <E>simple circuit</E> in <A>digraph</A>. See section
+    <Ref Subsect="Definitions" Style="Number" /> for the definition of simple
+    circuit, and the definition of length for a simple circuit.<P/>
 
-    A <E>simple circuit</E> in <A>digraph</A> is a non-trivial directed path
-    in <A>digraph</A> from a vertex <C>v</C> back to <C>v</C>, in which no
-    vertex is visited more than once. Since a circuit of length <C>n</C> is
-    determined by its first <C>n</C> vertices, a circuit <M>v_{1} \rightarrow
-      \cdots \rightarrow v_{n} \rightarrow v_{1}</M> can be represented as
-    the list <M>[v_{1}, \ldots, v_{n}]</M>. Note that a loop is a simple
-    circuit. <P/>
+    This attribute computes
+    <C>DigraphAllSimpleCircuits(</C><A>digraph</A><C>)</C> to find all the
+    simple circuits of <A>digraph</A>, and returns one of maximal length.  A
+    simple circuit is represented as a list of vertices, in the same way as
+    described in <Ref Attr="DigraphAllSimpleCircuits"/>.<P/>
 
     If <A>digraph</A> has no simple circuits, then this attribute returns
-    <C>fail</C>.  If <A>digraph</A> has multiple simple circuits of maximum
+    <K>fail</K>.  If <A>digraph</A> has multiple simple circuits of maximal
     length, then this attribute returns one of them.<P/>
-
-    See <Ref Attr="DigraphAllSimpleCircuits"/>. <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);;
