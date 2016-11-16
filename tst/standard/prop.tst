@@ -943,6 +943,10 @@ false
 gap> g := Digraph([[3], [3], [1,2]]);
 <digraph with 3 vertices, 4 edges>
 gap> IsEulerianDigraph(g);
+true
+gap> g := Digraph([[3], [], [2]]);
+<digraph with 3 vertices, 2 edges>
+gap> IsEulerianDigraph(g);
 false
 gap> g := Digraph([[2], [3], [1]]);
 <digraph with 3 vertices, 3 edges>
