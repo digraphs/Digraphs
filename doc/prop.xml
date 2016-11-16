@@ -642,11 +642,11 @@ false
   <Prop Name="IsEulerianDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    If <A>digraph</A> is eulerian, this property returns
+    If <A>digraph</A> is Eulerian, this property returns
     <K>true</K>.<P/>
 
-    An eulerian digraph is a digraph which has a circuit visiting 
-    every edge exactly once<P/>
+    An Eulerian digraph is a digraph which has a circuit visiting 
+    each edge exactly once.<P/>
 
     <Example><![CDATA[
 gap> g := Digraph([[]]);
