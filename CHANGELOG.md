@@ -5,8 +5,7 @@ Smith, Michael Torpey & Wilf Wilson
 Licensing information can be found in the LICENSE file.
 
 ## Version 0.6.0 ()
-
-* This release adds the ability to label the edges of graphs.  [[Markus Pfeiffer](https://www.morphism.de/~markusp)]
+* This release adds the ability to label the edges of digraphs. [[Markus Pfeiffer](https://www.morphism.de/~markusp)]
 
 ## Version 0.5.2 (released 20/06/2016)
 This is a minor release containing one bugfix and several other minor changes.
