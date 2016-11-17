@@ -39,5 +39,7 @@
        </List>
      </Item>
    </List>
+
+   <#Include Label="IsSubdigraph">
   </Section>
 </Chapter>

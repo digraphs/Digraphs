@@ -8,6 +8,31 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="IsSubdigraph">
+<ManSection>
+  <Oper Name="IsSubdigraph" Arg="super, sub"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>super</A> and <A>sub</A> are digraphs with the same number of
+    vertices, then this operation returns <K>true</K> if all the edges of
+    <A>sub</A> are edges in <A>super</A>, and <K>false</K> otherwise. <P/>
+
+    If the two digraphs have different numbers of vertices, this operation
+    returns <K>false</K>. <P/>
+    <Example><![CDATA[
+gap> g := Digraph([[2, 3], [1], [2, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> h := Digraph([[2, 3], [], [2]]);
+<digraph with 3 vertices, 3 edges>
+gap> IsSubdigraph(g, h);
+true
+gap> IsSubdigraph(h, g);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphReverse">
 <ManSection>
   <Oper Name="DigraphReverse" Arg="digraph"/>
