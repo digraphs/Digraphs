@@ -6,7 +6,7 @@ Licensing information can be found in the LICENSE file.
 
 ## Version 0.6.0 ()
 * This release adds the ability to label the edges of digraphs. [[Markus Pfeiffer](https://www.morphism.de/~markusp)]
-* The operation `CompleteMultipartiteDigraph` is introduced.
+* The operation `CompleteMultipartiteDigraph` is introduced. [Stuart Burrell and [Wilf A. Wilson](https://wilf.me)]
 * The operations `ReadDIMACSDigraph` and `WriteDIMACSDigraph` are introduced.
   [[Wilf A. Wilson](https://wilf.me)]
 
