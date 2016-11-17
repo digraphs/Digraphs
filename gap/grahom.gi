@@ -214,7 +214,7 @@ end);
 ################################################################################
 # COLOURING
 
-InstallMethod(DigraphColoring, "for a digraph and pos int",
+InstallMethod(DigraphColoring, "for a digraph and an integer",
 [IsDigraph, IsInt],
 function(digraph, n)
   if n < 0 then
@@ -222,7 +222,7 @@ function(digraph, n)
                   "the second argument <n> must be a non-negative integer,");
   fi;
 
-  # Only the null digraph with 0 vertices can be coloured with 0 vertices
+  # Only the null digraph with 0 vertices can be coloured with 0 colours
   if n = 0 then
     if DigraphNrVertices(digraph) = 0 then
       return IdentityTransformation;
