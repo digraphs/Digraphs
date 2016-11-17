@@ -193,13 +193,18 @@ gap> DigraphTopologicalSort(gr);
 <#GAPDoc Label="AdjacencyMatrix">
 <ManSection>
   <Attr Name="AdjacencyMatrix" Arg="digraph"/>
+  <Oper Name="AdjacencyMatrixMutableCopy" Arg="digraph"/>
   <Returns>A square matrix of non-negative integers.</Returns>
   <Description>
     This function returns the adjacency matrix <C>mat</C> of the digraph 
     <A>digraph</A>.
     The value of the matrix entry <C>mat[i][j]</C> is the number of edges 
-    in <A>digraph</A> with source <C>i</C> and range <C>j</C>.
-    
+    in <A>digraph</A> with source <C>i</C> and range <C>j</C>. <P/>
+
+    The function <C>AdjacencyMatrix</C> returns an immutable list of immutable
+    lists, whereas the function <C>AdjacencyMatrixMutableCopy</C> returns a copy
+    of <C>AdjacencyMatrix</C> which is a mutable list of mutable lists. <P/>
+
     <Example><![CDATA[
 gap> gr := Digraph([[2, 2, 2], [1, 3, 6, 8, 9, 10], [4, 6, 8],
 > [1, 2, 3, 9], [3, 3], [3, 5, 6, 10], [1, 2, 7],
