@@ -808,7 +808,7 @@ gap> g := Digraph([[1]]);
 <digraph with 1 vertex, 1 edge>
 gap> IsDirectedTree(g);
 false
-gap> g := Digraph([[2,2],[]]);
+gap> g := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
 gap> IsDirectedTree(g);
 false
@@ -832,23 +832,23 @@ gap> g := Digraph([[2], [3], [], []]);
 <digraph with 4 vertices, 2 edges>
 gap> IsDirectedTree(g);
 false
-gap> g := Digraph([[2,3], [6], [4,5], [], [], []]);
+gap> g := Digraph([[2, 3], [6], [4, 5], [], [], []]);
 <digraph with 6 vertices, 5 edges>
 gap> IsDirectedTree(g);
 true
-gap> g := Digraph([[2,3], [6], [4,5], [], [], [], []]);
+gap> g := Digraph([[2, 3], [6], [4, 5], [], [], [], []]);
 <digraph with 7 vertices, 5 edges>
 gap> IsDirectedTree(g);
 false
-gap> g := Digraph([[2,3], [6], [4,5], [7], [], [7], []]);
+gap> g := Digraph([[2, 3], [6], [4, 5], [7], [], [7], []]);
 <digraph with 7 vertices, 7 edges>
 gap> IsDirectedTree(g);
 false
-gap> g := Digraph([[2,3], [1,3], [1,2]]);
+gap> g := Digraph([[2, 3], [1, 3], [1, 2]]);
 <digraph with 3 vertices, 6 edges>
 gap> IsDirectedTree(g);
 false
-gap> g := Digraph([[2,3,4], [1,3,4], [1,2,4], [1,2,3]]);
+gap> g := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);
 <digraph with 4 vertices, 12 edges>
 gap> IsDirectedTree(g);
 false
@@ -870,7 +870,7 @@ gap> g := Digraph([[1]]);
 <digraph with 1 vertex, 1 edge>
 gap> IsUndirectedTree(g);
 false
-gap> g := Digraph([[2,2],[]]);
+gap> g := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
 gap> IsUndirectedTree(g);
 false
@@ -886,27 +886,27 @@ gap> g := Digraph([[3], [3], []]);
 <digraph with 3 vertices, 2 edges>
 gap> IsUndirectedTree(g);
 false
-gap> g := Digraph([[3], [3], [1,2]]);
+gap> g := Digraph([[3], [3], [1, 2]]);
 <digraph with 3 vertices, 4 edges>
 gap> IsUndirectedTree(g);
 true
-gap> g := Digraph([[3], [3], [1,2],[]]);
+gap> g := Digraph([[3], [3], [1, 2], []]);
 <digraph with 4 vertices, 4 edges>
 gap> IsUndirectedTree(g);
 false
-gap> g := Digraph([[2,3], [6], [4,5], [], [], []]);
+gap> g := Digraph([[2, 3], [6], [4, 5], [], [], []]);
 <digraph with 6 vertices, 5 edges>
 gap> IsUndirectedTree(g);
 false
-gap> g := Digraph([[2,3], [6,1], [4,5,1], [3], [3], [2]]);
+gap> g := Digraph([[2, 3], [6, 1], [4, 5, 1], [3], [3], [2]]);
 <digraph with 6 vertices, 10 edges>
 gap> IsUndirectedTree(g);
 true
-gap> g := Digraph([[2,3], [1,3], [1,2]]);
+gap> g := Digraph([[2, 3], [1, 3], [1, 2]]);
 <digraph with 3 vertices, 6 edges>
 gap> IsUndirectedTree(g);
 false
-gap> g := Digraph([[2,3,4], [1,3,4], [1,2,4], [1,2,3]]);
+gap> g := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);
 <digraph with 4 vertices, 12 edges>
 gap> IsUndirectedTree(g);
 false
@@ -928,7 +928,7 @@ gap> g := Digraph([[1]]);
 <digraph with 1 vertex, 1 edge>
 gap> IsEulerianDigraph(g);
 true
-gap> g := Digraph([[2,2],[]]);
+gap> g := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
 gap> IsEulerianDigraph(g);
 false
@@ -940,7 +940,7 @@ gap> g := Digraph([[3], [3], []]);
 <digraph with 3 vertices, 2 edges>
 gap> IsEulerianDigraph(g);
 false
-gap> g := Digraph([[3], [3], [1,2]]);
+gap> g := Digraph([[3], [3], [1, 2]]);
 <digraph with 3 vertices, 4 edges>
 gap> IsEulerianDigraph(g);
 true
@@ -952,27 +952,27 @@ gap> g := Digraph([[2], [3], [1]]);
 <digraph with 3 vertices, 3 edges>
 gap> IsEulerianDigraph(g);
 true
-gap> g := Digraph([[2], [3], [1],[]]);
+gap> g := Digraph([[2], [3], [1], []]);
 <digraph with 4 vertices, 3 edges>
 gap> IsEulerianDigraph(g);
 true
-gap> g := Digraph([[2], [3], [1,4],[]]);
+gap> g := Digraph([[2], [3], [1, 4], []]);
 <digraph with 4 vertices, 4 edges>
 gap> IsEulerianDigraph(g);
 false
-gap> g := Digraph([[3,6], [4], [2,1], [5,1], [3], [4]]);
+gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4]]);
 <digraph with 6 vertices, 9 edges>
 gap> IsEulerianDigraph(g);
 true
-gap> g := Digraph([[3,6], [4], [2,1], [5,1], [3], [4],[]]);
+gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4], []]);
 <digraph with 7 vertices, 9 edges>
 gap> IsEulerianDigraph(g);
 true
-gap> g := Digraph([[3,6], [4], [2,1], [5,1], [3], [4,7],[]]);
+gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], []]);
 <digraph with 7 vertices, 10 edges>
 gap> IsEulerianDigraph(g);
 false
-gap> g := Digraph([[3,6], [4], [2,1], [5,1], [3], [4,7],[6]]);
+gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], [6]]);
 <digraph with 7 vertices, 11 edges>
 gap> IsEulerianDigraph(g);
 true

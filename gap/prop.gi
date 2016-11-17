@@ -392,7 +392,7 @@ end);
 InstallMethod(IsUndirectedTree, "for a digraph", [IsDigraph],
 function(digraph)
 
-  if not DigraphNrEdges(digraph) = 2 * (DigraphNrVertices(digraph) - 1) then 
+  if not DigraphNrEdges(digraph) = 2 * (DigraphNrVertices(digraph) - 1) then
     return false;
   fi;
 
@@ -444,23 +444,23 @@ end);
 InstallMethod(IsDirectedTree, "for a digraph",
 [IsDigraph],
 function(g)
-  local incount,zerocount,out,i,j,k;
+  local incount, zerocount, out, i, j, k;
   zerocount := 0;
-  out := OutNeighbours(g);  
-  incount := ListWithIdenticalEntries(Length(out),0);
+  out := OutNeighbours(g);
+  incount := ListWithIdenticalEntries(Length(out), 0);
   for i in [1 .. Length(out)] do
     for j in [1 .. Length(out[i])] do
       incount[out[i][j]] := incount[out[i][j]] + 1;
       if out[i][j] = i then
-	return false;
+        return false;
       fi;
-    od;  
+    od;
   od;
   for k in [1 .. Length(out)] do
     if incount[k] > 1 then
       return false;
     fi;
-    if incount[k] = 0 then 
+    if incount[k] = 0 then
       zerocount := zerocount + 1;
     fi;
   od;
@@ -488,7 +488,7 @@ function(g)
 
   for i in [1 .. Length(out)] do
      if not Length(out[i]) = Length(into[i]) then
-	return false;
+       return false;
      fi;
   od;
 

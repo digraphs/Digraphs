@@ -86,13 +86,13 @@ gap> SetDigraphEdgeLabels(gr, function(x, y) return x + y; end);
 gap> DigraphEdgeLabels(gr);
 [ [ 3, 4 ], [ 5 ], [ 4, 8 ], [  ], [ 9 ] ]
 gap> SetDigraphEdgeLabels(gr, [["a", "b"], ["c"], [42, []],
-> [  ], [ 1 ] ] );
+> [], [1]]);
 gap> DigraphEdgeLabels(gr);
 [ [ "a", "b" ], [ "c" ], [ 42, [  ] ], [  ], [ 1 ] ]
 gap> DigraphEdgeLabel(gr, 1, 2);
 "a"
 gap> SetDigraphEdgeLabel(gr, 1, 2, "23");
-gap> DigraphEdgeLabel(gr, 1, 2);         
+gap> DigraphEdgeLabel(gr, 1, 2);
 "23"
 gap> DigraphEdgeLabels(gr);
 [ [ "23", "b" ], [ "c" ], [ 42, [  ] ], [  ], [ 1 ] ]
@@ -1207,7 +1207,7 @@ true
 gap> gr = gr3;
 true
 
-#T# LineDigraph 
+#T# LineDigraph
 gap> gr := LineUndirectedDigraph(CompleteDigraph(3));
 <digraph with 3 vertices, 6 edges>
 gap> gr = CompleteDigraph(3);

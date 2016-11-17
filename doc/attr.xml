@@ -10,7 +10,7 @@
 
 <#GAPDoc Label="ChromaticNumber">
 <ManSection>
-  <Oper Name="ChromaticNumber" Arg="digraph" />
+  <Attr Name="ChromaticNumber" Arg="digraph" />
   <Returns> A non-negative integer.</Returns>
   <Description>
     A digraph coloring is a labeling of the vertices (using precisely <A>n</A>

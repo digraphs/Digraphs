@@ -1257,19 +1257,19 @@ gap> ChromaticNumber(DigraphRemoveEdge(CompleteDigraph(10), [1, 2]));
 gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(10),
 > CompleteBipartiteDigraph(50, 50)));
 10
-gap> ChromaticNumber(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [], 
+gap> ChromaticNumber(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [],
 > [3], [4], [6], [], [5, 7]]));
 3
-gap> DigraphColouring(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [], 
+gap> DigraphColouring(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [],
 > [3], [4], [6], [], [5, 7]]), 2);
 fail
-gap> DigraphColouring(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [], 
+gap> DigraphColouring(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [],
 > [3], [4], [6], [], [5, 7]]), 3);
 Transformation( [ 1, 3, 1, 2, 1, 2, 1, 3, 3, 2 ] )
-gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1), 
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1),
 > Digraph([[2], [4], [1, 2], [3]])));
 3
-gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1), 
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1),
 > Digraph([[2], [4], [1, 2], [3], [1, 2, 3]])));
 4
 gap> gr := DigraphFromDigraph6String(Concatenation(
