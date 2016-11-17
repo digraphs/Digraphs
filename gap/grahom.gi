@@ -242,6 +242,49 @@ function(digraph, n)
   return DigraphEpimorphism(digraph, CompleteDigraph(n));
 end);
 
+#
+
+InstallMethod(DigraphColoring, "for a digraph", [IsDigraph],
+function(digraph)
+  local vertices, maxcolour, out_nbs, in_nbs, colouring, usedcolours,
+        nextcolour, v, u;
+
+  if DigraphNrVertices(digraph) = 0  then
+    return IdentityTransformation;
+  fi;
+
+  vertices  := DigraphVertices(digraph);
+  maxcolour := 0;
+  out_nbs   := OutNeighbours(digraph);
+  in_nbs    := InNeighbours(digraph);
+
+  colouring := [];
+
+  for v in vertices do
+    usedcolours := BlistList([1 .. maxcolour + 1], []);
+    for u in out_nbs[v] do
+      if IsBound(colouring[u]) then
+        usedcolours[colouring[u]] := true;
+      fi;
+    od;
+    for u in in_nbs[v] do
+      if IsBound(colouring[u]) then
+        usedcolours[colouring[u]] := true;
+      fi;
+    od;
+    nextcolour := 1;
+    while usedcolours[nextcolour] do
+      nextcolour := nextcolour + 1;
+    od;
+    colouring[v] := nextcolour;
+    if colouring[v] > maxcolour then
+      maxcolour := colouring[v];
+    fi;
+  od;
+
+  return Transformation(colouring);
+end);
+
 ################################################################################
 # HOMOMORPHISMS
 
