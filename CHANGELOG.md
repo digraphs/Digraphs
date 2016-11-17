@@ -5,11 +5,20 @@ Mitchell, Markus Pfeiffer, Finn Smith, Michael Torpey & Wilf A. Wilson
 Licensing information can be found in the LICENSE file.
 
 ## Version 0.6.0 ()
-* This release adds the ability to label the edges of digraphs. [[Markus Pfeiffer](https://www.morphism.de/~markusp)]
+This is a major release, adding a variety of new operations and attributes
+for Digraphs, as well as improving some functions and improving the
+package's documentation.  In this version, we welcome Luke Elliott and
+Markus Pfeiffer as new authors.
+
+### New Features in Version 0.6
+* The ability to label the edges of digraphs is introduced. [[Markus Pfeiffer](https://www.morphism.de/~markusp)]
 * The operation `CompleteMultipartiteDigraph` is introduced. [Stuart Burrell and [Wilf A. Wilson](https://wilf.me)]
 * The operations `ReadDIMACSDigraph` and `WriteDIMACSDigraph` are introduced.
   [[Wilf A. Wilson](https://wilf.me)]
-
+* The operation `ChromaticNumber` is introduced. [[James D. Mitchell](http://goo.gl/ZtViV6) and [Wilf A. Wilson](https://wilf.me)]
+* The operations `IsDirectedTree` and `IsUndirectedTree` are introduced. [Luke Elliott]
+* The operation `IsEulerianDigraph`is introduced. [Luke Elliott]
+	
 ## Version 0.5.2 (released 20/06/2016)
 This is a minor release containing one bugfix and several other minor changes.
 Digraphs now works when it and GAP are compiled in 32 bit mode.
