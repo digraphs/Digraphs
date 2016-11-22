@@ -1647,3 +1647,84 @@ function(sizes)
   SetIsBipartiteDigraph(out, nr_parts = 2);
   return out;
 end);
+
+#
+
+InstallMethod(DigraphNumber,
+"for a positive integer and an integer",
+[IsPosInt, IsInt],
+function(nr, v)
+  local out, i, j, bit;
+  if v < 0 then
+    ErrorNoReturn("Digraphs: DigraphNumber: usage,\n",
+                  "second arg <v> must be a non-negative integer,");
+  fi;
+  # Number of digraphs on <v> vertices
+  if nr > 2 ^ (v ^ 2) then
+    return fail;
+  fi;
+  # Use the bits of <nr> as an adjacency matrix
+  nr := nr - 1;
+  out := [];
+  for i in [1 .. v] do
+    out[i] := [];
+    for j in [1 .. v] do
+      bit := nr mod 2;
+      if bit = 1 then
+        Add(out[i], j);
+      fi;
+      nr := (nr - bit) / 2;
+    od;
+  od;
+  return Digraph(out);;
+end);
+
+#
+
+InstallMethod(DigraphNumber,
+"for a positive integer",
+[IsPosInt],
+function(nr)
+  local v, limit;
+  v := -1;
+  limit := 0;
+  repeat
+    nr := nr - limit;
+    v := v + 1;
+    limit := 2 ^ (v ^ 2);
+  until nr <= limit;
+  return DigraphNumber(nr, v);
+end);
+
+#
+
+InstallMethod(NumberDigraph,
+"for a digraph",
+[IsDigraph],
+function(gr)
+  local nr, out, v, i, j;
+  if IsMultiDigraph(gr) then
+    ErrorNoReturn("Digraphs: NumberDigraph: usage,\n",
+                  "first arg <gr> must not have multiple edges,");
+  fi;
+  nr := 0;
+  out := OutNeighbours(gr);
+  v := DigraphNrVertices(gr);
+  # Flip a bit in <nr> for each active edge
+  for i in [1 .. v] do
+    for j in out[i] do
+      nr := nr + 2 ^ ((i-1)*v + (j-1));
+    od;
+  od;
+  # Initialise at 1 instead of 0
+  nr := nr + 1;
+  # Return if option "v" is specified
+  if ValueOption("v") = true then
+    return nr;
+  fi;
+  # Put <nr> in the right range for <v> vertices
+  for i in [0 .. v-1] do
+    nr := nr + 2 ^ (i ^ 2);
+  od;
+  return nr;
+end);

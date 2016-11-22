@@ -1083,3 +1083,72 @@ gap> JohnsonDigraph(1,0);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphNumber">
+<ManSection>
+  <Oper Name="DigraphNumber" Arg="nr[, v]"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    This operation defines a bijection between the positive integers and the set
+    of all digraphs without multiple edges.  If <A>nr</A> is a positive integer,
+    then this operation returns the unique digraph which corresponds to that
+    number.  This result will be consistent across sessions and systems. <P/>
+
+    If the optional argument <A>v</A> is specified and is a non-negative
+    integer, then this operation will use a different mapping which only assigns
+    numbers to digraphs with <A>v</A> vertices (with no multiple edges).  If
+    <A>nr</A> is higher than <C>2 ^ (<A>v</A> ^ 2)</C> then <C>fail</C> will be
+    returned. <P/>
+
+    See also <Ref Oper="NumberDigraph" Label="for a digraph"/>. <P/>
+
+    <Example><![CDATA[
+gap> gr := DigraphNumber(23);
+<digraph with 3 vertices, 2 edges>
+gap> gr := DigraphNumber(7 ^ 7);
+<digraph with 5 vertices, 12 edges>
+gap> gr := DigraphNumber(123456789, 200);
+<digraph with 200 vertices, 15 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="NumberDigraph">
+<ManSection>
+  <Oper Name="NumberDigraph" Arg="digraph"
+        Label="for a digraph"/>
+  <Oper Name="NumberDigraph" Arg="digraph:v"
+        Label="for a digraph, with the &quot;v&quot; option"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    This operation defines a bijection between the positive integers and the set
+    of all digraphs without multiple edges.  If <A>digraph</A> is a digraph
+    without multiple edges, then this operation returns the unique positive
+    integer which corresponds to that digraph.  This result will be consistent
+    across sessions and systems. <P/>
+
+    If the option <A>v</A> is specified, then this operation will use a
+    different mapping which only assigns numbers to digraphs with the same
+    number of vertices as <A>digraph</A>.  See <Ref Oper="DigraphNumber"/> for
+    more information. <P/>
+
+    <Example><![CDATA[
+gap> gr := Digraph([[1,2], [3], []]);
+<digraph with 3 vertices, 3 edges>
+gap> NumberDigraph(gr);
+55
+gap> NumberDigraph(gr:v);
+36
+gap> gr := DigraphNumber(104);
+<digraph with 3 vertices, 3 edges>
+gap> NumberDigraph(gr);
+104
+gap> gr := DigraphNumber(42, 12);
+<digraph with 12 vertices, 3 edges>
+gap> NumberDigraph(gr:v);
+42
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

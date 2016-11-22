@@ -57,6 +57,11 @@
     <#Include Label="DistanceDigraph">
   </Section>
 
+  <Section><Heading>Enumerating digraphs</Heading>
+    <#Include Label="DigraphNumber">
+    <#Include Label="NumberDigraph">
+  </Section>
+
   <Section><Heading>Random digraphs</Heading>
     <#Include Label="RandomDigraph">
     <#Include Label="RandomMultiDigraph">

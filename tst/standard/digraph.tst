@@ -1695,6 +1695,83 @@ gap> SetDigraphEdgeLabel(gr, 2, 2, "a");
 Error, Digraphs: SetDigraphEdgeLabel:
 [2, 2] is not an edge of <graph>,
 
+#T# NumberDigraph
+gap> NumberDigraph(Digraph([]));
+1
+gap> NumberDigraph(Digraph([[1]]));
+3
+gap> NumberDigraph(Digraph([[], [1]]));
+8
+gap> NumberDigraph(Digraph([[1, 2, 4, 6, 7], [3, 5, 6], [1, 2, 3, 4],
+>                           [4], [3, 6, 7], [1, 2, 3, 7], [5]]));
+72903899274367
+gap> List([0 .. 100], n-> NumberDigraph(EmptyDigraph(n))) =
+>    List([0 .. 100], n-> Sum([0 .. n-1], i-> 2 ^ (i ^ 2)) + 1);
+true
+gap> ForAll([0 .. 100], n-> NumberDigraph(EmptyDigraph(n):v) = 1);
+true
+gap> NumberDigraph(CompleteDigraph(6));
+34122809746
+gap> NumberDigraph(ChainDigraph(6));
+574718742
+gap> NumberDigraph(EmptyDigraph(6));
+33620500
+gap> NumberDigraph(Digraph([[1, 2, 2], []]));
+Error, Digraphs: NumberDigraph: usage,
+first arg <gr> must not have multiple edges,
+gap> gr := Digraph([[1,2], [3], []]);
+<digraph with 3 vertices, 3 edges>
+gap> NumberDigraph(gr);
+55
+gap> NumberDigraph(gr:v);
+36
+gap> gr := DigraphNumber(104);
+<digraph with 3 vertices, 3 edges>
+gap> NumberDigraph(gr);
+104
+gap> gr := DigraphNumber(42, 12);
+<digraph with 12 vertices, 3 edges>
+gap> NumberDigraph(gr:v);
+42
+
+#T# DigraphNumber(nr)
+gap> DigraphNumber(1);
+<digraph with 0 vertices, 0 edges>
+gap> DigraphNumber(3 ^ 30);
+<digraph with 7 vertices, 25 edges>
+gap> DigraphNumber(3 ^ 300);
+<digraph with 22 vertices, 239 edges>
+gap> OutNeighbours(DigraphNumber(113));
+[ [ 1, 3 ], [ 1, 2 ], [ 1 ] ]
+gap> OutNeighbours(DigraphNumber(+ 447800540966));
+[ [ 2, 5 ], [ 2, 4, 5, 6, 7 ], [ 1, 2, 5, 6, 7 ], [ 1, 2, 3 ], [ 3 ], 
+  [ 1, 2, 4 ], [  ] ]
+gap> OutNeighbours(DigraphNumber(10 ^ 10));
+[ [ 3, 4, 6 ], [ 1, 2, 3 ], [ 2, 3, 4, 6 ], [ 2 ], [ 2, 5 ], [ 1, 4 ] ]
+
+#T# DigraphNumber(nr, v)
+gap> DigraphNumber(1, 0);
+<digraph with 0 vertices, 0 edges>
+gap> ForAll([1 .. 10], v-> DigraphNumber(1, v) = EmptyDigraph(v));
+true
+gap> nr := NumberDigraph(EmptyDigraph(22));;
+gap> DigraphNumber(3 ^ 300) = DigraphNumber(3 ^ 300 - nr + 1, 22);
+true
+gap> DigraphNumber(42, 0);
+fail
+gap> DigraphNumber(512, 3);
+<digraph with 3 vertices, 9 edges>
+gap> DigraphNumber(513, 3);
+fail
+gap> DigraphNumber(2, 132);
+<digraph with 132 vertices, 1 edge>
+gap> DigraphNumber(17, -3);
+Error, Digraphs: DigraphNumber: usage,
+second arg <v> must be a non-negative integer,
+gap> DigraphNumber(999, -1);
+Error, Digraphs: DigraphNumber: usage,
+second arg <v> must be a non-negative integer,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
@@ -1726,9 +1803,11 @@ gap> Unbind(h);
 gap> Unbind(i);
 gap> Unbind(im);
 gap> Unbind(inn);
+gap> Unbind(l);
 gap> Unbind(mat);
 gap> Unbind(n);
 gap> Unbind(new);
+gap> Unbind(nr);
 gap> Unbind(out);
 gap> Unbind(r);
 gap> Unbind(r1);
