@@ -41,12 +41,6 @@ gap> List(l, x -> DigraphFromGraph6String(x));
 gap> DigraphFromGraph6String(ListWithIdenticalEntries(500, '~'));
 Error, Digraphs: DigraphFromGraph6String: usage,
 the input string <s> is not in valid graph6 format,
-gap> gr := EmptyDigraph(0);;
-gap> SetDigraphVertices(gr, [1 .. 68719476737]);
-gap> SetDigraphHasLoops(gr, false);
-gap> Graph6String(gr);
-Error, Digraphs: Graph6String: usage,
-the argument <graph> must have between 0 and 68719476736 vertices,
 
 # ReadDigraphs
 gap> str := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;
@@ -132,11 +126,6 @@ gap> gr := Digraph(231, [1 .. 100], [1 .. 100] * 0 + 200);
 gap> str := Digraph6String(gr);;
 gap> DigraphFromDigraph6String(str);
 <digraph with 231 vertices, 100 edges>
-gap> gr := EmptyDigraph(0);;
-gap> SetDigraphVertices(gr, [1 .. 68719476737]);
-gap> Digraph6String(gr);
-Error, Digraphs: Digraph6String: usage,
-the argument <digraph> must have between 0 and 68719476736 vertices,
 
 #T# DigraphFromDiSparse6String and DiSparse6String
 gap> gr := Digraph([[1, 4], [2, 3, 4], [2, 4], [2]]);
@@ -480,11 +469,6 @@ gap> DigraphFromDiSparse6String(".@~");
 gap> gr := Digraph([[], [], [1, 2]]);;
 gap> DiSparse6String(gr);
 ".BoN"
-gap> gr := EmptyDigraph(0);;
-gap> SetDigraphVertices(gr, [1 .. 68719476737]);
-gap> DiSparse6String(gr);
-Error, Digraphs: DiSparse6String: usage,
-<graph> must have between 0 and 68719476736 vertices,
 
 #T# Plain text encoding  
 gap> gr := CompleteDigraph(3);
@@ -539,11 +523,6 @@ gap> DigraphFromSparse6String(":TdBkJ`Kq?x");
 <digraph with 21 vertices, 10 edges>
 gap> Sparse6String(last);
 ":TdBkJ`Kq?"
-gap> gr := EmptyDigraph(0);;
-gap> SetDigraphVertices(gr, [1 .. 68719476737]);
-gap> Sparse6String(gr);
-Error, Digraphs: Sparse6String: usage,
-the argument <graph> must have between 0 and 68719476736 vertices,
 
 #T# DigraphPlainTextLineDecoder: bad input
 gap> DigraphPlainTextLineDecoder(" ", "  ", 1, ".");
