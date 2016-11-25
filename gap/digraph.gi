@@ -1728,3 +1728,82 @@ function(gr)
   od;
   return nr;
 end);
+
+#
+
+InstallGlobalFunction(EnumeratorOfDigraphs,
+function(arg)
+  local fam, elm_nr, nr_elm, len, view, print;
+  if Length(arg) >= 2 then
+    ErrorNoReturn("Digraphs: EnumeratorOfDigraphs: usage,\n",
+                  "this function takes no more than 1 argument,");
+  fi;
+
+  fam := CollectionsFamily(DigraphFamily);
+
+  if Length(arg) = 0 then
+
+    elm_nr := function(enum, pos)
+      return DigraphNumber(pos);
+    end;
+
+    nr_elm := function(enum, elm)
+      if not (IsDigraph(elm) and not IsMultiDigraph(elm)) then
+        return fail;
+      fi;
+      return NumberDigraph(elm);
+    end;
+
+    len := enum -> infinity;
+
+    view := function(enum)
+      Print("<enumerator of digraphs>");
+    end;
+
+    print := function(enum)
+      Print("EnumeratorOfDigraphs(  )");
+    end;
+
+  elif Length(arg) = 1 then
+    if not (IsInt(arg[1]) and arg[1] >= 0) then
+      ErrorNoReturn("Digraphs: EnumeratorOfDigraphs: usage,\n",
+                    "<nr_vertices> must be a non-negative integer,");
+    fi;
+
+    elm_nr := function(enum, pos)
+      return DigraphNumber(pos, arg[1]);
+    end;
+
+    nr_elm := function(enum, elm)
+      if not (IsDigraph(elm) and
+              DigraphNrVertices(elm) = arg[1] and
+              not IsMultiDigraph(elm)) then
+        return fail;
+      fi;
+      return NumberDigraph(elm:v);
+    end;
+
+    len := enum -> 2 ^ (arg[1] ^ 2);
+
+    if arg[1] = 1 then
+      view := function(enum)
+        Print("<enumerator of digraphs with 1 vertex>");
+      end;
+    else
+      view := function(enum)
+        Print("<enumerator of digraphs with ", arg[1], " vertices>");
+      end;
+    fi;
+
+    print := function(enum)
+      Print("EnumeratorOfDigraphs( ", arg[1], " )");
+    end;
+
+  fi;
+
+  return EnumeratorByFunctions(fam, rec(ElementNumber := elm_nr,
+                                        NumberElement := nr_elm,
+                                        Length := len,
+                                        ViewObj := view,
+                                        PrintObj := print));
+end);

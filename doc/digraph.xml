@@ -1152,3 +1152,38 @@ gap> NumberDigraph(gr:v);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="EnumeratorOfDigraphs">
+<ManSection>
+  <Func Name="EnumeratorOfDigraphs" Arg="[nr_vertices]"/>
+  <Returns>An enumerator.</Returns>
+  <Description>
+    This function returns an enumerator containing all digraphs without multiple
+    edges.  This enumerator can be used in exactly the same way as a list of
+    digraphs; the only difference is that the entries are not stored in memory,
+    but are created on demand using <Ref Oper="DigraphNumber"/>
+    and <Ref Oper="NumberDigraph" Label="for a digraph"/>. <P/>
+
+    If the optional argument <A>nr_vertices</A> is specified and is a
+    non-negative integer, then the enumerator will only contain digraphs with
+    this number of vertices. <P/>
+
+    See also <Ref Func="IteratorOfDigraphs"/>. <P/>
+
+    <Example><![CDATA[
+gap> digraphs := EnumeratorOfDigraphs();
+<enumerator of digraphs>
+gap> digraphs[30];
+<digraph with 3 vertices, 2 edges>
+gap> Position(digraphs, Digraph([[1], [1, 2]]));
+17
+gap> digraphs := EnumeratorOfDigraphs(42);
+<enumerator of digraphs with 42 vertices>
+gap> digraphs[1];
+<digraph with 42 vertices, 0 edges>
+gap> digraphs[200];
+<digraph with 42 vertices, 5 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

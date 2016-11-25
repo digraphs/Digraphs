@@ -1772,6 +1772,83 @@ gap> DigraphNumber(999, -1);
 Error, Digraphs: DigraphNumber: usage,
 second arg <v> must be a non-negative integer,
 
+#T# EnumeratorOfDigraphs with no arg
+gap> enum := EnumeratorOfDigraphs();
+<enumerator of digraphs>
+gap> enum[1];
+<digraph with 0 vertices, 0 edges>
+gap> enum[30];
+<digraph with 3 vertices, 2 edges>
+gap> enum[20^20];
+<digraph with 10 vertices, 55 edges>
+gap> ForAll([1, 35, 7^100, 10^1000], i -> enum[i] = DigraphNumber(i));
+true
+gap> Position(enum, ChainDigraph(7));
+2276399973398
+gap> ForAll([1, 85, 5^300, 10^999+1], i -> i = Position(enum, enum[i]));
+true
+gap> Position(enum, Digraph([[1,2], [3,4], [], []]));
+727
+gap> Position(enum, Digraph([[1,2,2], [3,4], [], []]));
+fail
+gap> Position(enum, "hello world");
+fail
+gap> Position(enum, [[1,2,2], [], []]);
+fail
+gap> Length(enum);
+infinity
+
+#T# EnumeratorOfDigraphs with nr_vertices
+gap> enum := EnumeratorOfDigraphs(5);
+<enumerator of digraphs with 5 vertices>
+gap> Length(enum);
+33554432
+gap> enum[123];
+<digraph with 5 vertices, 5 edges>
+gap> enum[1];
+<digraph with 5 vertices, 0 edges>
+gap> enum[2 ^ (5 ^ 2)];
+<digraph with 5 vertices, 25 edges>
+gap> enum[2 ^ (5 ^ 2) + 1];
+fail
+gap> ForAll([1, 35, 7^100, 10^1000], i -> enum[i] = DigraphNumber(i, 5));
+true
+gap> Position(enum, CompleteDigraph(5));
+16510911
+gap> ChainDigraph(5) in enum;
+true
+gap> ForAll([1, 85, 2 ^ 25, 3 ^ 10], i -> i = Position(enum, enum[i]));
+true
+gap> Position(enum, CompleteDigraph(4));
+fail
+gap> Position(enum, CompleteDigraph(6));
+fail
+gap> enum := EnumeratorOfDigraphs(0);
+<enumerator of digraphs with 0 vertices>
+gap> Length(enum);
+1
+gap> AsList(enum);
+[ <digraph with 0 vertices, 0 edges> ]
+gap> enum := EnumeratorOfDigraphs(2);
+<enumerator of digraphs with 2 vertices>
+gap> AsList(enum);
+[ <digraph with 2 vertices, 0 edges>, <digraph with 2 vertices, 1 edge>, 
+  <digraph with 2 vertices, 1 edge>, <digraph with 2 vertices, 2 edges>, 
+  <digraph with 2 vertices, 1 edge>, <digraph with 2 vertices, 2 edges>, 
+  <digraph with 2 vertices, 2 edges>, <digraph with 2 vertices, 3 edges>, 
+  <digraph with 2 vertices, 1 edge>, <digraph with 2 vertices, 2 edges>, 
+  <digraph with 2 vertices, 2 edges>, <digraph with 2 vertices, 3 edges>, 
+  <digraph with 2 vertices, 2 edges>, <digraph with 2 vertices, 3 edges>, 
+  <digraph with 2 vertices, 3 edges>, <digraph with 2 vertices, 4 edges> ]
+gap> enum := EnumeratorOfDigraphs(-1);
+Error, Digraphs: EnumeratorOfDigraphs: usage,
+<nr_vertices> must be a non-negative integer,
+gap> enum := EnumeratorOfDigraphs(2, 2);
+Error, Digraphs: EnumeratorOfDigraphs: usage,
+this function takes no more than 1 argument,
+gap> enum := EnumeratorOfDigraphs(1);
+<enumerator of digraphs with 1 vertex>
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
@@ -1784,6 +1861,7 @@ gap> Unbind(ddigraph);
 gap> Unbind(digraph);
 gap> Unbind(divides);
 gap> Unbind(elms);
+gap> Unbind(enum);
 gap> Unbind(error);
 gap> Unbind(f);
 gap> Unbind(foo);
