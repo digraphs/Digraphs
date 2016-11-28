@@ -59,6 +59,7 @@
 
   <Section><Heading>Enumerating digraphs</Heading>
     <#Include Label="EnumeratorOfDigraphs">
+    <#Include Label="IteratorOfDigraphs">
     <#Include Label="DigraphNumber">
     <#Include Label="NumberDigraph">
   </Section>

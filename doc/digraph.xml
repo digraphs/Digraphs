@@ -1187,3 +1187,34 @@ gap> digraphs[200];
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IteratorOfDigraphs">
+<ManSection>
+  <Func Name="IteratorOfDigraphs" Arg="[nr_vertices]"/>
+  <Returns>An iterator.</Returns>
+  <Description>
+    This function returns an iterator for all digraphs without multiple edges.
+    If the optional argument <A>nr_vertices</A> is specified and is a
+    non-negative integer, then the iterator will only contain digraphs with this
+    number of vertices. <P/>
+
+    See <Ref Sect="Iterators" BookName="ref"/> for more information about
+    iterators. <P/>
+
+    <Example><![CDATA[
+gap> iter := IteratorOfDigraphs();
+<iterator of digraphs>
+gap> NextIterator(iter);
+<digraph with 0 vertices, 0 edges>
+gap> NextIterator(iter);
+<digraph with 1 vertex, 0 edges>
+gap> iter := IteratorOfDigraphs(42);
+<iterator of digraphs with 42 vertices>
+gap> NextIterator(iter);
+<digraph with 42 vertices, 0 edges>
+gap> IsDoneIterator(iter);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

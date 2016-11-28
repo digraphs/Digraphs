@@ -1807,3 +1807,41 @@ function(arg)
                                         ViewObj := view,
                                         PrintObj := print));
 end);
+
+#
+
+InstallGlobalFunction(IteratorOfDigraphs,
+function(arg)
+  local iter;
+  if Length(arg) >= 2 then
+    ErrorNoReturn("Digraphs: IteratorOfDigraphs: usage,\n",
+                  "this function takes no more than 1 argument,");
+  elif Length(arg) = 0 then
+    iter := Iterator(EnumeratorOfDigraphs());
+    iter!.ViewObj := function(iter)
+      Print("<iterator of digraphs>");
+    end;
+    iter!.PrintObj := function(iter)
+      Print("IteratorOfDigraphs(  )");
+    end;
+  elif Length(arg) = 1 then
+    if not (IsInt(arg[1]) and arg[1] >= 0) then
+      ErrorNoReturn("Digraphs: IteratorOfDigraphs: usage,\n",
+                    "<nr_vertices> must be a non-negative integer,");
+    fi;
+    iter := Iterator(EnumeratorOfDigraphs(arg[1]));
+    if arg[1] = 1 then
+      iter!.ViewObj := function(iter)
+        Print("<iterator of digraphs with 1 vertex>");
+      end;
+    else
+      iter!.ViewObj := function(iter)
+        Print("<iterator of digraphs with ", arg[1], " vertices>");
+      end;
+    fi;
+    iter!.PrintObj := function(iter)
+      Print("IteratorOfDigraphs( ", arg[1], " )");
+    end;
+  fi;
+  return iter;
+end);

@@ -1849,6 +1849,61 @@ this function takes no more than 1 argument,
 gap> enum := EnumeratorOfDigraphs(1);
 <enumerator of digraphs with 1 vertex>
 
+#T# IteratorOfDigraphs
+gap> iter := IteratorOfDigraphs(12);
+<iterator of digraphs with 12 vertices>
+gap> NextIterator(iter);
+<digraph with 12 vertices, 0 edges>
+gap> NextIterator(iter);
+<digraph with 12 vertices, 1 edge>
+gap> NextIterator(iter);
+<digraph with 12 vertices, 1 edge>
+gap> NextIterator(iter);
+<digraph with 12 vertices, 2 edges>
+gap> NextIterator(iter);
+<digraph with 12 vertices, 1 edge>
+gap> iter := IteratorOfDigraphs(2);
+<iterator of digraphs with 2 vertices>
+gap> iter := IteratorOfDigraphs(2);
+<iterator of digraphs with 2 vertices>
+gap> repeat Print(NextIterator(iter), "\n"); until IsDoneIterator(iter);
+Digraph( [ [ ], [ ] ] )
+Digraph( [ [ 1 ], [ ] ] )
+Digraph( [ [ 2 ], [ ] ] )
+Digraph( [ [ 1, 2 ], [ ] ] )
+Digraph( [ [ ], [ 1 ] ] )
+Digraph( [ [ 1 ], [ 1 ] ] )
+Digraph( [ [ 2 ], [ 1 ] ] )
+Digraph( [ [ 1, 2 ], [ 1 ] ] )
+Digraph( [ [ ], [ 2 ] ] )
+Digraph( [ [ 1 ], [ 2 ] ] )
+Digraph( [ [ 2 ], [ 2 ] ] )
+Digraph( [ [ 1, 2 ], [ 2 ] ] )
+Digraph( [ [ ], [ 1, 2 ] ] )
+Digraph( [ [ 1 ], [ 1, 2 ] ] )
+Digraph( [ [ 2 ], [ 1, 2 ] ] )
+Digraph( [ [ 1, 2 ], [ 1, 2 ] ] )
+gap> iter := IteratorOfDigraphs();
+<iterator of digraphs>
+gap> NextIterator(iter);
+<digraph with 0 vertices, 0 edges>
+gap> NextIterator(iter);
+<digraph with 1 vertex, 0 edges>
+gap> NextIterator(iter);
+<digraph with 1 vertex, 1 edge>
+gap> NextIterator(iter);
+<digraph with 2 vertices, 0 edges>
+gap> IsDoneIterator(iter);
+false
+gap> iter := IteratorOfDigraphs(-1);
+Error, Digraphs: IteratorOfDigraphs: usage,
+<nr_vertices> must be a non-negative integer,
+gap> iter := IteratorOfDigraphs(2, 2);
+Error, Digraphs: IteratorOfDigraphs: usage,
+this function takes no more than 1 argument,
+gap> iter := IteratorOfDigraphs(1);
+<iterator of digraphs with 1 vertex>
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
@@ -1881,6 +1936,7 @@ gap> Unbind(h);
 gap> Unbind(i);
 gap> Unbind(im);
 gap> Unbind(inn);
+gap> Unbind(iter);
 gap> Unbind(l);
 gap> Unbind(mat);
 gap> Unbind(n);

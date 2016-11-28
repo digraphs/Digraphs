@@ -110,3 +110,4 @@ DeclareOperation("DigraphNumber", [IsPosInt, IsInt]);
 DeclareOperation("DigraphNumber", [IsPosInt]);
 DeclareOperation("NumberDigraph", [IsDigraph]);
 DeclareGlobalFunction("EnumeratorOfDigraphs");
+DeclareGlobalFunction("IteratorOfDigraphs");
