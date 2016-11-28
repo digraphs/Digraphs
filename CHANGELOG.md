@@ -18,6 +18,9 @@ Markus Pfeiffer as new authors.
 * The operation `ChromaticNumber` is introduced. [[James D. Mitchell](http://goo.gl/ZtViV6) and [Wilf A. Wilson](https://wilf.me)]
 * The operations `IsDirectedTree` and `IsUndirectedTree` are introduced. [Luke Elliott]
 * The operation `IsEulerianDigraph`is introduced. [Luke Elliott]
+* The functions `EnumeratorOfDigraphs` and `IteratorOfDigraphs` are
+  introduced, along with helper functions `DigraphNumber` and
+  `NumberDigraph`. [[Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25)]
 	
 ## Version 0.5.2 (released 20/06/2016)
 This is a minor release containing one bugfix and several other minor changes.
