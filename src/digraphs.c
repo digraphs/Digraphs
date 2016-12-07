@@ -25,6 +25,13 @@
 static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
 static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 
+Obj FuncDIGRAPHS_IS_OPTIMIZED(Obj self) {
+  UInt i;
+  for (i = 0; i < 500000000; i++) {
+  }
+  return INTOBJ_INT(5);
+}
+
 /*************************************************************************/
 
 Int DigraphNrVertices(Obj digraph) {
@@ -2283,6 +2290,12 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
 */
 
 static StructGVarFunc GVarFuncs[] = {
+    {"DIGRAPHS_IS_OPTIMIZED",
+     0,
+     "digraph",
+     FuncDIGRAPHS_IS_OPTIMIZED,
+     "src/digraphs.c:DIGRAPHS_IS_OPTIMIZED"},
+
     {"DIGRAPH_NREDGES",
      1,
      "digraph",
