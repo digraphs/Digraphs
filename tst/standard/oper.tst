@@ -232,9 +232,9 @@ the 2nd argument <trans> must transform the vertices of the 1st argument
 <digraph>,
 gap> t := Transformation([1, 2, 1]);;
 gap> gr := OnDigraphs(gr, t);
-<digraph with 3 vertices, 2 edges>
+<multidigraph with 3 vertices, 3 edges>
 gap> OutNeighbours(gr);
-[ [ 2 ], [ 1 ], [  ] ]
+[ [ 2 ], [ 1, 1 ], [  ] ]
 
 #T# OnMultiDigraphs: for a pair of permutations
 gap> gr1 := CompleteDigraph(3);
