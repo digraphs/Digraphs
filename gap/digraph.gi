@@ -1676,7 +1676,7 @@ function(nr, v)
       nr := (nr - bit) / 2;
     od;
   od;
-  return Digraph(out);;
+  return Digraph(out);
 end);
 
 #
@@ -1713,7 +1713,7 @@ function(gr)
   # Flip a bit in <nr> for each active edge
   for i in [1 .. v] do
     for j in out[i] do
-      nr := nr + 2 ^ ((i-1)*v + (j-1));
+      nr := nr + 2 ^ ((i - 1) * v + (j - 1));
     od;
   od;
   # Initialise at 1 instead of 0
@@ -1723,7 +1723,7 @@ function(gr)
     return nr;
   fi;
   # Put <nr> in the right range for <v> vertices
-  for i in [0 .. v-1] do
+  for i in [0 .. v - 1] do
     nr := nr + 2 ^ (i ^ 2);
   od;
   return nr;

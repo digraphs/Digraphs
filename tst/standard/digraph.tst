@@ -1743,7 +1743,7 @@ gap> DigraphNumber(3 ^ 300);
 <digraph with 22 vertices, 239 edges>
 gap> OutNeighbours(DigraphNumber(113));
 [ [ 1, 3 ], [ 1, 2 ], [ 1 ] ]
-gap> OutNeighbours(DigraphNumber(+ 447800540966));
+gap> OutNeighbours(DigraphNumber(447800540966));
 [ [ 2, 5 ], [ 2, 4, 5, 6, 7 ], [ 1, 2, 5, 6, 7 ], [ 1, 2, 3 ], [ 3 ], 
   [ 1, 2, 4 ], [  ] ]
 gap> OutNeighbours(DigraphNumber(10 ^ 10));
