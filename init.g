@@ -34,16 +34,16 @@ if not DIGRAPHS_IsGrapeLoaded then
   Adjacency := IdFunc;
 fi;
 
-ReadPackage("digraphs/gap/digraph.gd");
-ReadPackage("digraphs/gap/attr.gd");
-ReadPackage("digraphs/gap/prop.gd");
-ReadPackage("digraphs/gap/oper.gd");
-ReadPackage("digraphs/gap/display.gd");
-ReadPackage("digraphs/gap/bliss.gd");
-ReadPackage("digraphs/gap/utils.gd");
-ReadPackage("digraphs/gap/io.gd");
-ReadPackage("digraphs/gap/grahom.gd");
-ReadPackage("digraphs/gap/orbits.gd");
-ReadPackage("digraphs/gap/cliques.gd");
+ReadPackage("digraphs", "gap/digraph.gd");
+ReadPackage("digraphs", "gap/attr.gd");
+ReadPackage("digraphs", "gap/prop.gd");
+ReadPackage("digraphs", "gap/oper.gd");
+ReadPackage("digraphs", "gap/display.gd");
+ReadPackage("digraphs", "gap/bliss.gd");
+ReadPackage("digraphs", "gap/utils.gd");
+ReadPackage("digraphs", "gap/io.gd");
+ReadPackage("digraphs", "gap/grahom.gd");
+ReadPackage("digraphs", "gap/orbits.gd");
+ReadPackage("digraphs", "gap/cliques.gd");
 
 DeclareInfoClass("InfoDigraphs");
