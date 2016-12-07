@@ -449,8 +449,8 @@ DIGRAPHS_CheckManSectionTypes := function(doc, verbose...)
         man := DIGRAPHS_ManSectionType(obj);
         # we allow to use "Meth" for "Oper" but probably should issue a warning
         # if there is no at least one "Oper" for any "Meth"
-        if (man <> elt.name) and not (man in ["Attr", "Prop", "Oper"] and
-            elt.name = "Meth") then
+        if (man <> elt.name)
+            and not (man in ["Attr", "Prop", "Oper"] and elt.name = "Meth") then
           pos := OriginalPositionDocument(doc[2], elt.start);
           Print(pos[1], ":", pos[2], " : ", name, " uses ", elt.name,
                 " instead of ", man, "\n");
@@ -466,8 +466,9 @@ DIGRAPHS_CheckManSectionTypes := function(doc, verbose...)
   y := XMLElements(r, ["Ref"]);
   Print("Found ", Length(y), " Ref elements ");
   yint := Filtered(y, elt ->
-          not IsBound(elt.attributes.BookName) or
-          (IsBound(elt.attributes.BookName) and elt.attributes.BookName="ref"));
+                      not IsBound(elt.attributes.BookName)
+                      or (IsBound(elt.attributes.BookName)
+                          and elt.attributes.BookName="ref"));
   Print("including ", Length(yint), " within the Reference manual\n");
   y := Filtered(yint, elt -> ForAny(types, t -> IsBound(elt.attributes.(t))));
 
@@ -565,10 +566,10 @@ DIGRAPHS_CheckDocCoverage := function(doc)
     y := XMLElements(mansect, ["Example"]);
     if Length(y) = 0 then
       if IsBound(mansect.content[1].attributes) and
-        IsBound(mansect.content[1].attributes.Name) then
+          IsBound(mansect.content[1].attributes.Name) then
         Print(pos[1], ":", pos[2], " : ", mansect.content[1].attributes.Name);
       elif IsBound(mansect.content[2].attributes) and
-        IsBound(mansect.content[2].attributes.Name) then
+          IsBound(mansect.content[2].attributes.Name) then
         Print(pos[1], ":", pos[2], " : ", mansect.content[2].attributes.Name);
       else
         Print(pos[1], ":", pos[2], " : ",
