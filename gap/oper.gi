@@ -668,9 +668,9 @@ function(digraph, trans)
   adj := OutNeighbours(digraph);
   new := List(DigraphVertices(digraph), i -> []);
   for i in DigraphVertices(digraph) do
-    new[i ^ trans] := Unique(Concatenation(new[i ^ trans], adj[i]));
+    new[i ^ trans] := Concatenation(new[i ^ trans], adj[i]);
   od;
-  return DigraphNC(List(new, x -> Unique(OnTuples(x, trans))));
+  return DigraphNC(List(new, x -> OnTuples(x, trans)));
 end);
 
 #

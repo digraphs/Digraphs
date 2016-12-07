@@ -255,6 +255,14 @@ gap> DigraphSource(gr);
 gap> DigraphRange(gr);
 [  ]
 
+#T# Issue 17: Bug in OnDigraphs for a digraph and a transformation
+gap> d := Digraph([[2], [3], [1, 1]]);
+<multidigraph with 3 vertices, 4 edges>
+gap> OutNeighbours(OnDigraphs(d, PermList([2, 3, 1])));
+[ [ 2, 2 ], [ 3 ], [ 1 ] ]
+gap> OutNeighbours(OnDigraphs(d, Transformation([2, 3, 1])));
+[ [ 2, 2 ], [ 3 ], [ 1 ] ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);

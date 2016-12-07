@@ -115,27 +115,32 @@ true
 
 <#GAPDoc Label="OnDigraphs">
 <ManSection>
-  <Oper Name="OnDigraphs" Arg="digraph, perm" Label="for a digraph and a perm"/>
-  <Oper Name="OnDigraphs" Arg="digraph, trans" Label="for a digraph and a transformation"/>
+  <Oper Name="OnDigraphs" Arg="digraph, perm"
+    Label="for a digraph and a perm"/>
+  <Oper Name="OnDigraphs" Arg="digraph, trans"
+    Label="for a digraph and a transformation"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, and the second argument <A>perm</A> is a
     <E>permutation</E> of the vertices of <A>digraph</A>, then this operation
     returns a digraph constructed by relabelling the vertices of
     <A>digraph</A> according to <A>perm</A>.  Note that for an automorphism
-    <C>f</C> of a digraph, we have <C>OnDigraphs(</C><A>digraph</A>, <C>f) =
+    <C>f</C> of a digraph, we have <C>OnDigraphs(<A>digraph</A>, f) =
     </C><A>digraph</A>.
     <P/>
 
     If the second argument is a <E>transformation</E> <A>trans</A> of the
     vertices of <A>digraph</A>, then this operation returns a digraph
     constructed by transforming the source and range of each edge according to
-    <A>trans</A>, and then removing any multiple edges. If <A>trans</A> is
-    indeed a permutation, then the result coincides with relabelling the
-    vertices of <A>digraph</A> according to <A>trans</A>. <P/>
+    <A>trans</A>. Thus a vertex which does not appear in the image of
+    <A>trans</A> will be isolated in the returned digraph, and the returned
+    digraph may contain multiple edges, even if <A>digraph</A> does not. 
+    If <A>trans</A> is mathematically a permutation, then the result coincides
+    with <C>OnDigraphs(<A>digraph</A>, AsPermutation(<A>trans</A>))</C>.
+    <P/>
 
-    The <Ref Oper="DigraphVertexLabels"/> of <A>digraph</A> will not be
-    retained in the returned digraph. <P/>
+    The <Ref Oper="DigraphVertexLabels"/> of <A>digraph</A> will not be retained
+    in the returned digraph. <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], 
@@ -149,9 +154,9 @@ gap> gr := Digraph([[2], [], [2]]);
 <digraph with 3 vertices, 2 edges>
 gap> t := Transformation([1, 2, 1]);;
 gap> new := OnDigraphs(gr, t);
-<digraph with 3 vertices, 1 edge>
+<multidigraph with 3 vertices, 2 edges>
 gap> OutNeighbours(new);
-[ [ 2 ], [  ], [  ] ]
+[ [ 2, 2 ], [  ], [  ] ]
 gap> ForAll(DigraphEdges(gr),
 >  e -> IsDigraphEdge(new, [e[1] ^ t, e[2] ^ t]));
 true
