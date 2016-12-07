@@ -277,6 +277,7 @@ function(digraph)
   out := DIGRAPH_OUT_NBS(DigraphNrVertices(digraph),
                          DigraphSource(digraph),
                          DigraphRange(digraph));
+  Perform(out, IsSet);
   digraph!.adj := out;
   return out;
 end);

@@ -948,12 +948,14 @@ end);
 
 InstallMethod(DigraphNC, "for a list", [IsList],
 function(adj)
-  local graph;
+  local adj_copy, graph;
 
-  graph := rec(adj := StructuralCopy(adj), nrvertices := Length(adj));
+  adj_copy := StructuralCopy(adj);
+  graph := rec(adj := adj_copy, nrvertices := Length(adj));
+  Perform(adj_copy, IsSet);
 
   ObjectifyWithAttributes(graph, DigraphType,
-                          OutNeighbours, adj,
+                          OutNeighbours, adj_copy,
                           DigraphNrVertices, graph.nrvertices);
   return graph;
 end);
@@ -961,14 +963,16 @@ end);
 InstallMethod(DigraphNC, "for a list and an integer",
 [IsList, IsInt],
 function(adj, nredges)
-  local graph;
+  local adj_copy, graph;
 
-  graph := rec(adj        := StructuralCopy(adj),
+  adj_copy := StructuralCopy(adj);
+  graph := rec(adj        := adj_copy,
                nredges    := nredges,
-               nrvertices := Length(adj)         );
+               nrvertices := Length(adj));
+  Perform(adj_copy, IsSet);
 
   ObjectifyWithAttributes(graph, DigraphType,
-                          OutNeighbours, adj,
+                          OutNeighbours, adj_copy,
                           DigraphNrVertices, graph.nrvertices,
                           DigraphNrEdges, graph.nredges);
   return graph;
