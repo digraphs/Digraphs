@@ -723,9 +723,9 @@ function(gr, hook, user_param, limit, include, exclude, max, size, reps)
 end);
 
 InstallGlobalFunction(DIGRAPHS_BronKerbosch,
-function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
-  local vtx, grp, invariant_inc, invariant_exc, invariant, adj, exc_inv, start,
-  possible, found_orbits, add, bk, num, x;
+function(gr, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
+  local vtx, invariant_inc, invariant_exc, invariant, adj, exc_inv, start,
+  possible, isolated, grp, found_orbits, add, bk, num, x, gen;
 
   # Arguments must be:
   # gr   - a digraph
@@ -759,7 +759,6 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
 
   gr  := MaximalSymmetricSubdigraphWithoutLoops(gr);
   vtx := DigraphVertices(gr);
-  grp := AutomorphismGroup(gr);
 
   invariant_inc := Length(inc_var) = 0;
   invariant_exc := Length(exc_var) = 0;
@@ -793,6 +792,22 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     IntersectBlist(possible, adj[x]);
   od;
 
+  isolated := DigraphSources(gr); # sources = sinks = isolated vertices
+  if reps and not IsEmpty(isolated) then
+    # Optimisation for when there are isolated vertices
+    grp := Group(());
+    for gen in GeneratorsOfGroup(AutomorphismGroup(gr)) do
+      # Discard generators which act on the isolated points
+      if not SmallestMovedPoint(gen) in isolated then
+        grp := ClosureGroup(grp, gen);
+      fi;
+    od;
+    SubtractBlist(possible, BlistList(vtx, isolated));
+    possible[isolated[1]] := true;
+  else
+    grp := AutomorphismGroup(gr);
+  fi;
+
   found_orbits := [];
 
   # Function to find the valid cliques of an orbit given an orbit rep
@@ -801,7 +816,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
 
     c := ListBlist(vtx, c);
     if reps then # we are only looking for orbit reps, so add the rep
-      hook(user_param, c);
+      hook(param, c);
       num := num + 1;
       return;
     elif not ForAny(found_orbits, x -> c in x) then
@@ -814,7 +829,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
                         # are invariant so there is nothing extra to check
         n := Minimum(lim - num, n);
         for c in orb{[1 .. n]} do
-          hook(user_param, c);
+          hook(param, c);
         od;
         num := num + n;
         return;
@@ -827,7 +842,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
           i := i + 1;
           c := BlistList(vtx, orb[i]);
           if SizeBlist(IntersectionBlist(exc_var, c)) = 0 then
-            hook(user_param, orb[i]);
+            hook(param, orb[i]);
             num := num + 1;
           fi;
         od;
@@ -838,7 +853,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
           i := i + 1;
           c := BlistList(vtx, orb[i]);
           if IsSubsetBlist(c, inc_var) then
-            hook(user_param, orb[i]);
+            hook(param, orb[i]);
             num := num + 1;
           fi;
         od;
@@ -851,7 +866,7 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
           c := BlistList(vtx, orb[i]);
           if SizeBlist(IntersectionBlist(exc_var, c)) = 0
               and IsSubsetBlist(c, inc_var) then
-            hook(user_param, orb[i]);
+            hook(param, orb[i]);
             num := num + 1;
           fi;
         od;
@@ -973,5 +988,5 @@ function(gr, hook, user_param, lim, inc, exc, max, size, reps, inc_var, exc_var)
   num := 0;
 
   bk(start, possible, BlistList(vtx, []), grp, Length(inc));
-  return user_param;
+  return param;
 end);
