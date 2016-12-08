@@ -29,7 +29,7 @@ SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
 Version := "0.6.0",
-Date := "14/11/2016",
+Date := "09/12/2016",
 ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(

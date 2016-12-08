@@ -4,7 +4,7 @@ Mitchell, Markus Pfeiffer, Finn Smith, Michael Torpey & Wilf A. Wilson
 
 Licensing information can be found in the LICENSE file.
 
-## Version 0.6.0 ()
+## Version 0.6.0 (released 09/12/2016)
 This is a major release, adding a variety of new operations and attributes
 for Digraphs, as well as improving some functions and improving the
 package's documentation.  In this version, we welcome Luke Elliott and
