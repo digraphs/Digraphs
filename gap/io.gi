@@ -718,7 +718,8 @@ end);
 InstallMethod(DigraphFromGraph6String, "for a string",
 [IsString],
 function(s)
-  local FindCoord, list, n, start, maxedges, out, pos, i, bpos, edge, graph, j;
+  local FindCoord, list, n, start, maxedges, out, pos, nredges, i, bpos, edge,
+  gr, j;
 
   s := Chomp(s);
 
@@ -774,13 +775,11 @@ function(s)
                   "the input string <s> is not in valid graph6 format,");
   fi;
 
-  out := EmptyPlist(n);
-  for i in [1 .. n] do
-    out[i] := [];
-  od;
+  out := List([1 .. n], x -> []);
 
   # Obtaining the adjacency vector
   pos := 1;
+  nredges := 0;
   for j in [start .. Length(list)] do # Every integer corresponds to 6 bits
     i := list[j];
     bpos := 1;
@@ -791,15 +790,18 @@ function(s)
         edge := FindCoord(pos + 6 - bpos, 0);
         out[edge[1]][LEN_LIST(out[edge[1]]) + 1] := edge[2];
         out[edge[2]][LEN_LIST(out[edge[2]]) + 1] := edge[1];
+        nredges := nredges + 1;
         i := (i - 1) / 2;
       fi;
       bpos := bpos + 1;
     od;
     pos := pos + 6;
   od;
-  graph := DigraphNC(out);
-  SetIsSymmetricDigraph(graph, true);
-  return graph;
+  gr := DigraphNC(out, 2 * nredges);
+  SetIsSymmetricDigraph(gr, true);
+  SetIsMultiDigraph(gr, false);
+  SetDigraphHasLoops(gr, false);
+  return gr;
 end);
 
 InstallMethod(DigraphFromDigraph6String, "for a string",
@@ -877,7 +879,7 @@ InstallMethod(DigraphFromSparse6String, "for a string",
 [IsString],
 function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i,
-  finish, x, j;
+  finish, x, gr, j;
 
   s := Chomp(s);
   # Check non-emptiness
@@ -984,11 +986,17 @@ function(s)
     fi;
     i := i + k + 1;
   od;
-
+  
   # JDM bad!
   range := range + 1;
   source := source + 1;
-  return Digraph(rec(nrvertices := n, range := range, source := source));
+  gr := Digraph(rec(nrvertices := n,
+                    nredges := len - 1,
+                    range := range,
+                    source := source));
+  SetIsSymmetricDigraph(gr, true);
+  SetIsMultiDigraph(gr, false);
+  return gr;
 end);
 
 # one graph per line
