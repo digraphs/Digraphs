@@ -986,7 +986,7 @@ function(s)
     fi;
     i := i + k + 1;
   od;
-  
+
   # JDM bad!
   range := range + 1;
   source := source + 1;
