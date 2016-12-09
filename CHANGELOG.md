@@ -10,7 +10,7 @@ for Digraphs, as well as improving some functions and improving the
 package's documentation.  In this version, we welcome Luke Elliott and
 Markus Pfeiffer as new authors.
 
-### New Features in Version 0.6
+### New Features in Version 0.6.0
 * The ability to label the edges of digraphs is introduced. [[Markus Pfeiffer](https://www.morphism.de/~markusp)]
 * The operation `CompleteMultipartiteDigraph` is introduced. [Stuart Burrell and [Wilf A. Wilson](https://wilf.me)]
 * The operations `ReadDIMACSDigraph` and `WriteDIMACSDigraph` are introduced.
