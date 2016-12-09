@@ -4,14 +4,18 @@
   
   [1X1.1 [33X[0;0YIntroduction[133X[101X
   
-  [33X[0;0YThis  is the manual for the [5XDigraphs[105X package version 0.5.2. This package was
+  [33X[0;0YThis  is the manual for the [5XDigraphs[105X package version 0.6.0. This package was
   developed at the University of St Andrews by:[133X
   
   [30X    [33X[0;6YJan De Beule[133X
   
+  [30X    [33X[0;6YLuke Elliot[133X
+  
   [30X    [33X[0;6YJulius Jonusas[133X
   
   [30X    [33X[0;6YJames D. Mitchell[133X
+  
+  [30X    [33X[0;6YMarkus Pfeiffer[133X
   
   [30X    [33X[0;6YFinn Smith[133X
   
@@ -33,6 +37,9 @@
   Tommi  Junttila  and  Petteri  Kaski. Several of the methods in the [5XDigraphs[105X
   package rely on [5Xbliss[105X.[133X
   
+  
+  [1X1.1-1 [33X[0;0YDefinitions[133X[101X
+  
   [33X[0;0YFor  the  purposes  of  this  package  and  its documentation, the following
   definitions apply:[133X
   
@@ -44,11 +51,19 @@
   [13Xmultidigraph[113X  if  there exist two or more edges with the same source and the
   same range.[133X
   
-  [33X[0;0YA [13Xdirected path[113X on a digraph is a sequence of alternating vertices and edges
+  [33X[0;0YA [13Xdirected walk[113X on a digraph is a sequence of alternating vertices and edges
   [22X(v_1, e_1, v_2, e_2, ..., e_n-1, v_n)[122X such that each edge [22Xe_i[122X has source [22Xv_i[122X
-  and  range  [22Xv_i+1[122X,  and  no  vertex  is repeated. A [13Xdirected walk[113X is defined
-  similarly,  but  vertices may be repeated. A [13Xcycle[113X is defined similarly to a
-  directed  path,  except that [22Xv_1 = v_n[122X. The [13Xlength[113X of a directed path, walk,
-  or  cycle  [22X(v_1, e_1, v_2, e_2, ..., e_n-1, v_n)[122X is equal to [22Xn-1[122X, the number
-  of edges it contains.[133X
+  and  range  [22Xv_i+1[122X.  A  [13Xdirected path[113X is a directed walk where no vertex (and
+  hence  no edge) is repeated. A [13Xdirected circuit[113X is a directed walk where [22Xv_1
+  =  v_n[122X,  and a [13Xdirected cycle[113X is a directed circuit where where no vertex is
+  repeated, except for [22Xv_1 = v_n[122X.[133X
+  
+  [33X[0;0YThe [13Xlength[113X of a directed walk [22X(v_1, e_1, v_2, e_2, ..., e_n-1, v_n)[122X is equal
+  to  [22Xn-1[122X,  the  number  of edges it contains. A directed walk (or path) [22X(v_1,
+  e_1,  v_2,  e_2,  ...,  e_n-1,  v_n)[122X is sometimes called a directed walk (or
+  path)  [13Xfrom vertex [22Xv_1[122X to vertex [22Xv_n[122X[113X. A directed walk of zero length, i.e. a
+  sequence  [22X(v)[122X  for some vertex [22Xv[122X, is called [13Xtrivial[113X. A trivial directed walk
+  is  considered  to  be  both a circuit and a cycle, as is the empty directed
+  walk  [22X()[122X.  A  [13Xsimple circuit[113X is another name for a non-trivial and non-empty
+  directed cycle.[133X
   

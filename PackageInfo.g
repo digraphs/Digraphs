@@ -2,10 +2,13 @@
 ##
 #W  PackageInfo.g
 #Y  Copyright (C) 2015-16                                Jan J De Beule
+##                                                       Luke Elliott
 ##                                                       Julius Jonusas
 ##                                                       James Mitchell
+##                                                       Markus Pfeiffer
+##                                                       Finn Smith
 ##                                                       Michael Torpey
-##                                                       Wilfred Wilson
+##                                                       Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README.md file of this package.
 ##
@@ -13,20 +16,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.5.2">
+##  <!ENTITY VERSION        "0.6.0">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
 ##  <!ENTITY ORBVERS        "4.7.5">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.5.2">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.6.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-16">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
-Version := "0.5.2",
-Date := "20/06/2016",
+Version := "0.6.0",
+Date := "09/12/2016",
 ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(
@@ -54,6 +57,20 @@ Persons := [
   ),
 
   rec(
+    LastName      := "Elliott",
+    FirstNames    := "L.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "le27@st-andrews.ac.uk",
+    PostalAddress := Concatenation( [
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
+  ),
+
+  rec(
     LastName      := "Jonusas",
     FirstNames    := "J.",
     IsAuthor      := true,
@@ -78,6 +95,21 @@ Persons := [
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
+  ),
+
+  rec(
+    LastName      := "Pfeiffer",
+    FirstNames    := "M.",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "markus.pfeiffer@morphism.de",
+    WWWHome       := "http://www.morphism.de/~markusp/",
+    PostalAddress := Concatenation( [
+                       "School of Computer Science,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SX,",
                        " Scotland"] ),
     Place         := "St Andrews",
     Institution   := "University of St Andrews"
@@ -114,7 +146,7 @@ Persons := [
 
   rec(
     LastName      := "Wilson",
-    FirstNames    := "W.",
+    FirstNames    := "W. A.",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "waw7@st-andrews.ac.uk",

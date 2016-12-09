@@ -28,7 +28,7 @@
 
 <h2>Methods for digraphs</h2>
 
-<p>Version 0.5.2</p>
+<p>Version 0.6.0</p>
 
 </div>
 <p><b>Jan De Beule
@@ -37,6 +37,10 @@
   </b>
 <br />Email: <span class="URL"><a href="mailto:jdebeule@cage.ugent.be">jdebeule@cage.ugent.be</a></span>
 <br />Homepage: <span class="URL"><a href="http://homepages.vub.ac.be/~jdbeule/">http://homepages.vub.ac.be/~jdbeule/</a></span>
+</p><p><b>Luke Elliott
+    
+  </b>
+<br />Email: <span class="URL"><a href="mailto:le27@st-andrews.ac.uk">le27@st-andrews.ac.uk</a></span>
 </p><p><b>Julius Jonušas
     
     
@@ -49,6 +53,12 @@
   </b>
 <br />Email: <span class="URL"><a href="mailto:jdm3@st-andrews.ac.uk">jdm3@st-andrews.ac.uk</a></span>
 <br />Homepage: <span class="URL"><a href="http://goo.gl/ZtViV6">http://goo.gl/ZtViV6</a></span>
+</p><p><b>Markus Pfeiffer
+    
+    
+  </b>
+<br />Email: <span class="URL"><a href="mailto:markus.pfeiffer@st-andrews.ac.uk">markus.pfeiffer@st-andrews.ac.uk</a></span>
+<br />Homepage: <span class="URL"><a href="https://www.morphism.de/~markusp">https://www.morphism.de/~markusp</a></span>
 </p><p><b>Finn Smith
     
   </b>
@@ -59,7 +69,7 @@
   </b>
 <br />Email: <span class="URL"><a href="mailto:mct25@st-andrews.ac.uk">mct25@st-andrews.ac.uk</a></span>
 <br />Homepage: <span class="URL"><a href="http://www-circa.mcs.st-andrews.ac.uk/~mct25">http://www-circa.mcs.st-andrews.ac.uk/~mct25</a></span>
-</p><p><b>Wilf Wilson
+</p><p><b>Wilf A. Wilson
     
     
   </b>
@@ -73,7 +83,7 @@
 
 <p><a id="X81488B807F2A1CF1" name="X81488B807F2A1CF1"></a></p>
 <h3>Copyright</h3>
-<p>© 2014-16 by Jan De Beule, Julius Jonušas, James D. Mitchell, Finn Smith, Michael Torpey, Wilf Wilson.</p>
+<p>© 2014-16 by Jan De Beule, Luke Elliott, Julius Jonušas, James D. Mitchell, Markus Pfeiffer, Finn Smith, Michael Torpey, Wilf A. Wilson.</p>
 
 <p><strong class="pkg">Digraphs</strong> is free software; you can redistribute it and/or modify it under the terms of the <span class="URL"><a href=" http://www.fsf.org/licenses/gpl.html">GNU General Public License</a></span> as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.</p>
 
@@ -91,7 +101,10 @@
   </span></a>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1.html#X7DFB63A97E67C0A1">1.1 <span class="Heading">Introduction</span></a>
 </span>
-</div>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1.html#X84541F61810C741D">1.1-1 <span class="Heading">Definitions</span></a>
+</span>
+</div></div>
 </div>
 <div class="ContChap"><a href="chap2.html#X7A167E257B137E9A">2 <span class="Heading">Installing <strong class="pkg">Digraphs</strong></span></a>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap2.html#X7DA3059C79842BF3">2.1 <span class="Heading">For those in a hurry</span></a>
@@ -190,16 +203,19 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X870594FC866AC88E">3.5-1 ChainDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X812417E278198D9C">3.5-2 CompleteDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8795B0AD856014FA">3.5-3 CompleteBipartiteDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80C29DDE876FFBEB">3.5-4 CycleDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80DAE31A79FEFD40">3.5-5 EmptyDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7FCADADC7EC28478">3.5-6 CayleyDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80ED9CE785819607">3.5-7 JohnsonDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X873F29CC863241F8">3.5-4 CompleteMultipartiteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80C29DDE876FFBEB">3.5-5 CycleDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80DAE31A79FEFD40">3.5-6 EmptyDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7FCADADC7EC28478">3.5-7 CayleyDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80ED9CE785819607">3.5-8 JohnsonDigraph</a></span>
 </div></div>
 </div>
 <div class="ContChap"><a href="chap4.html#X7AD6F77E7D95C996">4 <span class="Heading">Operators</span></a>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap4.html#X84E0B5B88358C96B">4.1 <span class="Heading">Operators for digraphs</span></a>
 </span>
-</div>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4.html#X829B911D7EFD2D85">4.1-1 IsSubdigraph</a></span>
+</div></div>
 </div>
 <div class="ContChap"><a href="chap5.html#X8739F6CD78C90B14">5 <span class="Heading">Attributes and operations</span></a>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X7E814B6478F7D015">5.1 <span class="Heading">Vertices and edges</span></a>
@@ -215,9 +231,11 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7F1B5A2782F598B1">5.1-8 DigraphBicomponents</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7CA91E4B7904F793">5.1-9 DigraphVertexLabel</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7E51F2FE87140B32">5.1-10 DigraphVertexLabels</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7EFAF01B7A155157">5.1-11 DigraphInEdges</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7BECFE6687ECD028">5.1-12 DigraphOutEdges</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7BB8ED88835F07B4">5.1-13 IsDigraphEdge</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X79FAEACC7F438C2F">5.1-11 DigraphEdgeLabel</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C24851087D4A8FB">5.1-12 DigraphEdgeLabels</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7EFAF01B7A155157">5.1-13 DigraphInEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7BECFE6687ECD028">5.1-14 DigraphOutEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7BB8ED88835F07B4">5.1-15 IsDigraphEdge</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X7D7CE8328187D0DF">5.2 <span class="Heading">Neighbours and degree</span></a>
 </span>
@@ -294,6 +312,9 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X83C08C0B7EC1A91F">6.3-2 IsConnectedDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7B37B9467C68C208">6.3-3 IsStronglyConnectedDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X80E883967EBE839E">6.3-4 IsAperiodicDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7B46EA6C7B2DF2FB">6.3-5 IsDirectedTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X80FC20FA7AC4BC2A">6.3-6 IsUndirectedTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X79DFBB198525544E">6.3-7 IsEulerianDigraph</a></span>
 </div></div>
 </div>
 <div class="ContChap"><a href="chap7.html#X84975388859F203D">7 <span class="Heading">Homomorphisms</span></a>
@@ -331,6 +352,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7E93B268823F6478">7.3-8 GeneratorsOfEndomorphismMonoid</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X780D26F082572325">7.3-9 DigraphColoring</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7AD04CC186E86CCA">7.3-10 DigraphEmbedding</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X807D49358529A37C">7.3-11 ChromaticNumber</a></span>
 </div></div>
 </div>
 <div class="ContChap"><a href="chap8.html#X7A7E0B957932DF44">8 <span class="Heading">Finding cliques and independent sets</span></a>
@@ -373,6 +395,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X875393338486D77D">9.2-10 TCodeDecoder</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X8540FC21796A793F">9.2-11 PlainTextString</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X81BD23697857B244">9.2-12 WritePlainTextDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X804FDF6A7ED64049">9.2-13 WriteDIMACSDigraph</a></span>
 </div></div>
 </div>
 <div class="ContChap"><a href="chapA.html#X800DAF137BA8E25B">A <span class="Heading">

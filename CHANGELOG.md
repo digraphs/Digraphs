@@ -1,9 +1,24 @@
 # Digraphs package for GAP - CHANGELOG
-Copyright (C) 2014-16 Jan De Beule, Julius Jonusas, James D. Mitchell, Finn
-Smith, Michael Torpey & Wilf Wilson
+Copyright (C) 2014-16 Jan De Beule, Luke Elliott, Julius Jonusas, James D.
+Mitchell, Markus Pfeiffer, Finn Smith, Michael Torpey & Wilf A. Wilson
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.6.0 (released 09/12/2016)
+This is a major release, adding a variety of new operations and attributes
+for Digraphs, as well as improving some functions and improving the
+package's documentation.  In this version, we welcome Luke Elliott and
+Markus Pfeiffer as new authors.
+
+### New Features in Version 0.6
+* The ability to label the edges of digraphs is introduced. [[Markus Pfeiffer](https://www.morphism.de/~markusp)]
+* The operation `CompleteMultipartiteDigraph` is introduced. [Stuart Burrell and [Wilf A. Wilson](https://wilf.me)]
+* The operations `ReadDIMACSDigraph` and `WriteDIMACSDigraph` are introduced.
+  [[Wilf A. Wilson](https://wilf.me)]
+* The operation `ChromaticNumber` is introduced. [[James D. Mitchell](http://goo.gl/ZtViV6) and [Wilf A. Wilson](https://wilf.me)]
+* The operations `IsDirectedTree` and `IsUndirectedTree` are introduced. [Luke Elliott]
+* The operation `IsEulerianDigraph`is introduced. [Luke Elliott]
+	
 ## Version 0.5.2 (released 20/06/2016)
 This is a minor release containing one bugfix and several other minor changes.
 Digraphs now works when it and GAP are compiled in 32 bit mode.
@@ -28,10 +43,10 @@ The performance improvements are most noticeable on large, quite dense digraphs.
 
 Minor changes include:
 
-* a better method for `DigraphReverse` [[Wilf Wilson](http://wilf.me)]
+* a better method for `DigraphReverse` [[Wilf A. Wilson](http://wilf.me)]
 * automorphism groups of complete, empty, cycle, chain, and complete bipartite
 digraphs are set at creation [Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25)
-* a minor improvement in performance in the `DigraphMaximalCliques` [[Wilf Wilson](http://wilf.me)]
+* a minor improvement in performance in the `DigraphMaximalCliques` [[Wilf A. Wilson](http://wilf.me)]
 * a new operation `AdjacencyMatrixMutableCopy` [[James D. Mitchell](http://goo.gl/ZtViV6)]
 
 ## Version 0.5 (released 03/03/2016)
@@ -43,10 +58,10 @@ version 4.7.5 or higher.
 * `DigraphFile` and `IteratorFromDigraphFile` are introduced. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * `WriteDigraphs` and `ReadDigraphs` can now take a file as a first argument. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * The operation `DigraphPath` is introduced to find a path between two vertices
-  in a digraph. [[Wilf Wilson](http://wilf.me)]
+  in a digraph. [[Wilf A. Wilson](http://wilf.me)]
 * The operation `IteratorOfPaths` is introduced to iterate over the paths
-  between two vertices in a digraph. [[Wilf Wilson](http://wilf.me)]
-* The property `IsCompleteBipartiteDigraph` is introduced. [[Wilf Wilson](http://wilf.me)]
+  between two vertices in a digraph. [[Wilf A. Wilson](http://wilf.me)]
+* The property `IsCompleteBipartiteDigraph` is introduced. [[Wilf A. Wilson](http://wilf.me)]
 
 ### Issues Resolved in Version 0.5
 Several bugs related to clique finding have been resolved. [[Wilf
@@ -128,7 +143,7 @@ version, we welcomed Jan De Beule to the development team.
 [[Jan De Beule](http://homepages.vub.ac.be/~jdbeule/), [Julius Jonusas](http://www-circa.mcs.st-and.ac.uk/~julius),
 [James D. Mitchell](http://goo.gl/ZtViV6),
 [Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25),
-[Wilf Wilson](http://wilf.me)]
+[Wilf A. Wilson](http://wilf.me)]
 
 ## Version 0.3.2 (released 14/01/2016)
 This is another minor release due to some missing build files in the Version
@@ -142,8 +157,8 @@ This release contains a number of bugfixes and performance improvements.
 
 ### New Features in Version 0.3
 * The attribute `DigraphAllSimpleCircuits` based
-on the algorithm in [this paper](http://epubs.siam.org/doi/abs/10.1137/0204007?journalCode=smjcat) by Donald B. Johnson. [Stuart Burrell and [Wilf Wilson](http://wilf.me)]
-* Improve efficiency of the algorithm for coloring a graph with 2 colours, a method for `IsBipartiteDigraph` and `DigraphBicomponents`. [Isabella Scott and [Wilf Wilson](http://wilf.me)]
+on the algorithm in [this paper](http://epubs.siam.org/doi/abs/10.1137/0204007?journalCode=smjcat) by Donald B. Johnson. [Stuart Burrell and [Wilf A. Wilson](http://wilf.me)]
+* Improve efficiency of the algorithm for coloring a graph with 2 colours, a method for `IsBipartiteDigraph` and `DigraphBicomponents`. [Isabella Scott and [Wilf A. Wilson](http://wilf.me)]
 * `AutomorphismGroup` and `DigraphCanonicalLabelling` can now be used with color classes that are preserved by the permutations acting on a digraph. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * The `TCodeDecoder` was made more efficient. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * `AsTransformation` is introduced for digraphs in `IsFunctionalDigraph`. [[James D. Mitchell](http://goo.gl/ZtViV6)]

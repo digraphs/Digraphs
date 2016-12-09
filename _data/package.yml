@@ -1,20 +1,24 @@
 name: Digraphs
-version: 0.5.2
-date: 20/06/2016
+version: 0.6.0
+date: 09/12/2016
 description: 
 
 authors:
     - name: J. De Beule
       url: http://homepages.vub.ac.be/~jdbeule/
+    - name: L. Elliott
+      url: mailto:le27@st-andrews.ac.uk
     - name: J. Jonusas
       url: http://www-circa.mcs.st-andrews.ac.uk/~julius/
     - name: J. D. Mitchell
       url: http://goo.gl/ZtViV6
+    - name: M. Pfeiffer
+      url: http://www.morphism.de/~markusp/
     - name: F. Smith
       url: mailto:fls3@st-andrews.ac.uk
     - name: M. Torpey
       url: http://www-circa.mcs.st-andrews.ac.uk/~mct25/
-    - name: W. Wilson
+    - name: W. A. Wilson
       url: http://www-circa.mcs.st-andrews.ac.uk/~waw7/
 
 maintainers:
@@ -26,7 +30,7 @@ GAP: ">=4.8.2"
 needed-pkgs:
     - name: "io"
       version: ">=4.4.4"
-      url: "http://gap-packages.github.io/io/"
+      url: "http://gap-system.github.io/io/"
     - name: "orb"
       version: ">=4.7.5"
       url: "https://gap-packages.github.io/orb"
@@ -45,7 +49,7 @@ packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/Digraphs/releases/download/v0.5.2/digraphs-0.5.2.tar.gz
+      url: https://github.com/gap-packages/Digraphs/releases/download/v0.6.0/digraphs-0.6.0.tar.gz
 
 abstract: The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
 

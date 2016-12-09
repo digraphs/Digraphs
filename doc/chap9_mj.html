@@ -47,6 +47,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X875393338486D77D">9.2-10 TCodeDecoder</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X8540FC21796A793F">9.2-11 PlainTextString</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X81BD23697857B244">9.2-12 WritePlainTextDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X804FDF6A7ED64049">9.2-13 WriteDIMACSDigraph</a></span>
 </div></div>
 </div>
 
@@ -253,7 +254,7 @@ true
 
 <p>If the optional argument <var class="Arg">mode</var> is specified, then it must be one of: <code class="code">"w"</code> (for write), <code class="code">"a"</code> (for append), or <code class="code">"r"</code> (for read). If <var class="Arg">mode</var> is not specified, then <code class="code">"r"</code> is used by default.</p>
 
-<p>If <var class="Arg">filename</var> is ends in one of: <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the digraphs which are read from, or written to, the returned file object are decompressed, or compressed, appropriately.</p>
+<p>If <var class="Arg">filename</var> ends in one of: <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the digraphs which are read from, or written to, the returned file object are decompressed, or compressed, appropriately.</p>
 
 <p>The file object returned by <code class="code">DigraphFile</code> can be given as the first argument for either of the functions <code class="func">ReadDigraphs</code> (<a href="chap9_mj.html#X7E8142007ED0CB9F"><span class="RefLink">9.2-4</span></a>) or <code class="func">WriteDigraphs</code> (<a href="chap9_mj.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-5</span></a>). The purpose of this is to reduce the overhead of recreating the file object inside the functions <code class="func">ReadDigraphs</code> (<a href="chap9_mj.html#X7E8142007ED0CB9F"><span class="RefLink">9.2-4</span></a>) or <code class="func">WriteDigraphs</code> (<a href="chap9_mj.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-5</span></a>) when, for example, reading or writing many digraphs in a loop.</p>
 
@@ -605,6 +606,46 @@ IO_OK
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadPlainTextDigraph(filename, ",", 1, ['/','%']);</span>
 &lt;multidigraph with 3 vertices, 6 edges&gt;
 </pre></div>
+
+<p><a id="X804FDF6A7ED64049" name="X804FDF6A7ED64049"></a></p>
+
+<h5>9.2-13 WriteDIMACSDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WriteDIMACSDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadDIMACSDigraph</code>( <var class="Arg">filename</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>These operations write or read the single symmetric digraph <var class="Arg">digraph</var> to or from a file in DIMACS format, as appropriate. The operation <code class="code">WriteDIMACSDigraph</code> records the vertices and edges of <var class="Arg">digraph</var>. The vertex labels of <var class="Arg">digraph</var> will be recorded only if they are integers. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>) and <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>).</p>
+
+<p>The first argument <var class="Arg">filename</var> should be the name of the file which will be written to or read from. A file can contain one symmetric digraph in DIMACS format. If <var class="Arg">filename</var> ends in one of <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the file is compressed, or decompressed, appropriately.</p>
+
+<p>The DIMACS format is described as follows. Each line in the DIMACS file has one of four types:</p>
+
+
+<ul>
+<li><p>A line beginning with <code class="code">c</code> and followed by any number of characters is a comment line, and is ignored.</p>
+
+</li>
+<li><p>A line beginning with <code class="code">p</code> defines the numbers of vertices and edges the digraph. This line has the format <code class="code">p edge &lt;nr_vertices&gt; &lt;nr_edges&gt;</code>, where <code class="code">&lt;nr_vertices&gt;</code> and <code class="code">&lt;nr_edges&gt;</code> are replaced by the relevant integers. There must be exactly one such line in the file, and it must occur before any of the following kinds of line.</p>
+
+<p>Although it is required to be present, the value of <code class="code">&lt;nr_edges&gt;</code> will be ignored. The correct number of edges will be deduced from the rest of the information in the file.</p>
+
+</li>
+<li><p>A line of the form <code class="code">e &lt;v&gt; &lt;w&gt;</code>, where <code class="code">&lt;v&gt;</code> and <code class="code">&lt;w&gt;</code> are integers in the range <code class="code">[1 .. &lt;nr_vertices&gt;]</code>, specifies that there is a (symmetric) edge in the digraph between the vertices <code class="code">&lt;v&gt;</code> and <code class="code">&lt;w&gt;</code>. A symmetric edge only needs to be defined one; an additional line <code class="code">e &lt;v&gt; &lt;w&gt;</code>, or <code class="code">e &lt;w&gt; &lt;v&gt;</code>, will be interpreted as an additional, multiple, edge. Loops are permitted.</p>
+
+</li>
+<li><p>A line of the form <code class="code">n &lt;v&gt; &lt;label&gt;</code>, where <code class="code">&lt;v&gt;</code> is an integer in the range <code class="code">[1 .. &lt;nr_vertices&gt;]</code> and <code class="code">&lt;label&gt;</code> is an integer, signifies that the vertex <code class="code">&lt;v&gt;</code> has the label <code class="code">&lt;label&gt;</code> in the digraph. If a label is not specified for a vertex, then <code class="code">ReadDIMACSDigraph</code> will assign the label <code class="code">1</code>, according to the DIMACS specification.</p>
+
+</li>
+</ul>
+<p>A detailed definition of the DIMACS format can be found at <span class="URL"><a href="http://mat.gsia.cmu.edu/COLOR/general/ccformat.ps">http://mat.gsia.cmu.edu/COLOR/general/ccformat.ps</a></span>, in Section 2.1. Note that optional descriptor lines, as described in Section 2.1, will be ignored.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);</span>
+&lt;digraph with 4 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dimacs.dimacs");;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">WriteDIMACSDigraph(filename, gr);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadDIMACSDigraph(filename);</span>
+&lt;digraph with 4 vertices, 8 edges&gt;</pre></div>
 
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap8_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapA_mj.html">[Next Chapter]</a>&nbsp;  </div>

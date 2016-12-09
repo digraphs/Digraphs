@@ -31,7 +31,10 @@
   </span></a>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1_mj.html#X7DFB63A97E67C0A1">1.1 <span class="Heading">Introduction</span></a>
 </span>
-</div>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap1_mj.html#X84541F61810C741D">1.1-1 <span class="Heading">Definitions</span></a>
+</span>
+</div></div>
 </div>
 
 <h3>1 <span class="Heading">
@@ -42,17 +45,23 @@
 
 <h4>1.1 <span class="Heading">Introduction</span></h4>
 
-<p>This is the manual for the <strong class="pkg">Digraphs</strong> package version 0.5.2. This package was developed at the University of St Andrews by:</p>
+<p>This is the manual for the <strong class="pkg">Digraphs</strong> package version 0.6.0. This package was developed at the University of St Andrews by:</p>
 
 
 <ul>
 <li><p>Jan De Beule</p>
 
 </li>
+<li><p>Luke Elliot</p>
+
+</li>
 <li><p>Julius Jonusas</p>
 
 </li>
 <li><p>James D. Mitchell</p>
+
+</li>
+<li><p>Markus Pfeiffer</p>
 
 </li>
 <li><p>Finn Smith</p>
@@ -71,11 +80,17 @@
 
 <p>The <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> tool <a href="chapBib_mj.html#biBJunttilaKaski">[JK07]</a> is included in this package. It is an open-source tool for computing automorphism groups and canonical forms of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods in the <strong class="pkg">Digraphs</strong> package rely on <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span>.</p>
 
+<p><a id="X84541F61810C741D" name="X84541F61810C741D"></a></p>
+
+<h5>1.1-1 <span class="Heading">Definitions</span></h5>
+
 <p>For the purposes of this package and its documentation, the following definitions apply:</p>
 
 <p>A <em>digraph</em> <span class="SimpleMath">\(E=(E^0,E^1,r,s)\)</span>, also known as a <em>directed graph</em>, consists of a set of vertices <span class="SimpleMath">\(E^0\)</span> and a set of edges <span class="SimpleMath">\(E^1\)</span> together with functions <span class="SimpleMath">\(s, r: E^1 \to E^0\)</span>, called the <em>source</em> and <em>range</em>, respectively. The source and range of an edge is respectively the values of <span class="SimpleMath">\(s, r\)</span> at that edge. An edge is called a <em>loop</em> if its source and range are the same. A digraph is called a <em>multidigraph</em> if there exist two or more edges with the same source and the same range.</p>
 
-<p>A <em>directed path</em> on a digraph is a sequence of alternating vertices and edges <span class="SimpleMath">\((v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)\)</span> such that each edge <span class="SimpleMath">\(e_i\)</span> has source <span class="SimpleMath">\(v_i\)</span> and range <span class="SimpleMath">\(v_{i+1}\)</span>, and no vertex is repeated. A <em>directed walk</em> is defined similarly, but vertices may be repeated. A <em>cycle</em> is defined similarly to a directed path, except that <span class="SimpleMath">\(v_1 = v_n\)</span>. The <em>length</em> of a directed path, walk, or cycle <span class="SimpleMath">\((v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)\)</span> is equal to <span class="SimpleMath">\(n-1\)</span>, the number of edges it contains.</p>
+<p>A <em>directed walk</em> on a digraph is a sequence of alternating vertices and edges <span class="SimpleMath">\((v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)\)</span> such that each edge <span class="SimpleMath">\(e_i\)</span> has source <span class="SimpleMath">\(v_i\)</span> and range <span class="SimpleMath">\(v_{i+1}\)</span>. A <em>directed path</em> is a directed walk where no vertex (and hence no edge) is repeated. A <em>directed circuit</em> is a directed walk where <span class="SimpleMath">\(v_1 = v_n\)</span>, and a <em>directed cycle</em> is a directed circuit where where no vertex is repeated, except for <span class="SimpleMath">\(v_1 = v_n\)</span>.</p>
+
+<p>The <em>length</em> of a directed walk <span class="SimpleMath">\((v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)\)</span> is equal to <span class="SimpleMath">\(n-1\)</span>, the number of edges it contains. A directed walk (or path) <span class="SimpleMath">\((v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)\)</span> is sometimes called a directed walk (or path) <em>from vertex <span class="SimpleMath">\(v_1\)</span> to vertex <span class="SimpleMath">\(v_n\)</span></em>. A directed walk of zero length, i.e. a sequence <span class="SimpleMath">\((v)\)</span> for some vertex <span class="SimpleMath">\(v\)</span>, is called <em>trivial</em>. A trivial directed walk is considered to be both a circuit and a cycle, as is the empty directed walk <span class="SimpleMath">\(()\)</span>. A <em>simple circuit</em> is another name for a non-trivial and non-empty directed cycle.</p>
 
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap0_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap2_mj.html">[Next Chapter]</a>&nbsp;  </div>

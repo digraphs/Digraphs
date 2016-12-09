@@ -25,3 +25,26 @@
               [10XDigraphEdges([3Xdigraph2[103X[10X)[110X after having both of these sets have been
               sorted with respect to the lexicographical order.[133X
   
+  [1X4.1-1 IsSubdigraph[101X
+  
+  [29X[2XIsSubdigraph[102X( [3Xsuper[103X, [3Xsub[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YIf  [3Xsuper[103X  and  [3Xsub[103X are digraphs with the same number of vertices, then this
+  operation returns [9Xtrue[109X if all the edges of [3Xsub[103X are edges in [3Xsuper[103X, and [9Xfalse[109X
+  otherwise.[133X
+  
+  [33X[0;0YIf  the  two  digraphs  have  different  numbers of vertices, this operation
+  returns [9Xfalse[109X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[2, 3], [1], [2, 3]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xh := Digraph([[2, 3], [], [2]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSubdigraph(g, h);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsSubdigraph(h, g);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  

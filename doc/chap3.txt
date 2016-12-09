@@ -21,7 +21,7 @@
   
   [33X[0;0Y[10XIsCayleyDigraph[110X  is  a  subcategory  of  [10XIsDigraph[110X. Digraphs that are Cayley
   digraphs  of a group and that are constructed by the operation [2XCayleyDigraph[102X
-  ([14X3.5-6[114X) are constructed in this category.[133X
+  ([14X3.5-7[114X) are constructed in this category.[133X
   
   [1X3.1-3 IsDigraphWithAdjacencyFunction[101X
   
@@ -33,7 +33,7 @@
   [1X3.1-4 DigraphType[101X
   
   [29X[2XDigraphType[102X[32X global variable
-  [29X[2XDigraphFamily[102X[32X global variable
+  [29X[2XDigraphFamily[102X[32X family
   
   [33X[0;0YThe  type  of  all  digraphs  is  [10XDigraphType[110X. The family of all digraphs is
   [10XDigraphFamily[110X.[133X
@@ -443,8 +443,11 @@
   of  [3Xdigraph[103X  which  are  the  source  or  range of some edge in [3Xdigraph[103X. See
   [2XInducedSubdigraph[102X ([14X3.3-2[114X).[133X
   
-  [33X[0;0YThe  vertex  labels  of the graph are preserved, so that a vertex in the new
-  digraph can be matched to the corresponding vertex in [3Xdigraph[103X.[133X
+  [33X[0;0YThe  vertex  and edge labels of the graph are preserved. A vertex in the new
+  digraph  can  be matched to the corresponding vertex in [3Xdigraph[103X by using the
+  label.[133X
+  
+  [33X[0;0YThe ordering of the vertices is preserved.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xd := Digraph([ [ 1, 2 ], [  ], [  ], [ 1, 4 ], [  ] ]);[127X[104X
@@ -452,14 +455,14 @@
     [4X[25Xgap>[125X [27Xr := ReducedDigraph(d);[127X[104X
     [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(r);[127X[104X
-    [4X[28X[ [ 1, 3 ], [ 1, 2 ], [  ] ][128X[104X
+    [4X[28X[ [ 1, 2 ], [  ], [ 1, 3 ] ][128X[104X
     [4X[25Xgap>[125X [27XDigraphEdges(r); DigraphEdges(d);[127X[104X
-    [4X[28X[ [ 1, 1 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ] ][128X[104X
+    [4X[28X[ [ 1, 1 ], [ 1, 2 ], [ 3, 1 ], [ 3, 3 ] ][128X[104X
     [4X[28X[ [ 1, 1 ], [ 1, 2 ], [ 4, 1 ], [ 4, 4 ] ][128X[104X
     [4X[25Xgap>[125X [27XDigraphVertexLabel(r, 3);[127X[104X
-    [4X[28X2[128X[104X
-    [4X[25Xgap>[125X [27XDigraphVertexLabel(r, 2);[127X[104X
     [4X[28X4[128X[104X
+    [4X[25Xgap>[125X [27XDigraphVertexLabel(r, 2);[127X[104X
+    [4X[28X2[128X[104X
   [4X[32X[104X
   
   [1X3.3-4 MaximalSymmetricSubdigraph[101X
@@ -1393,7 +1396,22 @@
     [4X[28X<digraph with 5 vertices, 12 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.5-4 CycleDigraph[101X
+  [1X3.5-4 CompleteMultipartiteDigraph[101X
+  
+  [29X[2XCompleteMultipartiteDigraph[102X( [3Xorders[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YFor  a list [3Xorders[103X of [10Xn[110X positive integers, this function returns the digraph
+  containing  [10Xn[110X  independent  sets  of  vertices  of  orders  [10X[[3Xl[103X[10X[1]  .. [3Xl[103X[10X[n]][110X.
+  Moreover,  each  vertex is adjacent to every other not contained in the same
+  independent set.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XCompleteMultipartiteDigraph([5,4,2]);[127X[104X
+    [4X[28X<digraph with 11 vertices, 76 edges>[128X[104X
+  [4X[32X[104X
+  
+  [1X3.5-5 CycleDigraph[101X
   
   [29X[2XCycleDigraph[102X( [3Xn[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -1410,7 +1428,7 @@
     [4X[28X<digraph with 123 vertices, 123 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.5-5 EmptyDigraph[101X
+  [1X3.5-6 EmptyDigraph[101X
   
   [29X[2XEmptyDigraph[102X( [3Xn[103X ) [32X operation
   [29X[2XNullDigraph[102X( [3Xn[103X ) [32X operation
@@ -1428,7 +1446,7 @@
     [4X[28X<digraph with 10 vertices, 0 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.5-6 CayleyDigraph[101X
+  [1X3.5-7 CayleyDigraph[101X
   
   [29X[2XCayleyDigraph[102X( [3XG[103X[, [3Xgens[103X] ) [32X operation
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -1454,7 +1472,7 @@
     [4X[28X<digraph with 8 vertices, 8 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.5-7 JohnsonDigraph[101X
+  [1X3.5-8 JohnsonDigraph[101X
   
   [29X[2XJohnsonDigraph[102X( [3Xn[103X, [3Xk[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA digraph.[133X

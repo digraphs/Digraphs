@@ -136,11 +136,14 @@
   [29X[2XDigraphTopologicalSort[102X( [3Xdigraph[103X ) [32X attribute
   [6XReturns:[106X  [33X[0;10YA list of positive integers, or [9Xfail[109X.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph  with  no  cycles of length greater than [22X1[122X, then
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph  whose  only  directed  cycles  are  loops, then
   [10XDigraphTopologicalSort[110X returns the vertices of [3Xdigraph[103X ordered so that every
   edge's  source appears no earlier in the list than its range. If the digraph
-  [3Xdigraph[103X  contains  cycles  of  length  greater  than  [22X1[122X, then this operation
-  returns [9Xfail[109X.[133X
+  [3Xdigraph[103X  contains  directed  cycles  of  length  greater  than  [22X1[122X, then this
+  operation returns [9Xfail[109X.[133X
+  
+  [33X[0;0YSee section [14X1.1-1[114X for the definition of a directed cycle, and the definition
+  of a loop.[133X
   
   [33X[0;0YThe  method  used  for  this  attribute has complexity [22XO(m+n)[122X where [22Xm[122X is the
   number  of  edges  (counting  multiple  edges as one) and [22Xn[122X is the number of
@@ -261,7 +264,77 @@
     [4X[28X[ "a", "c" ][128X[104X
   [4X[32X[104X
   
-  [1X5.1-11 DigraphInEdges[101X
+  [1X5.1-11 DigraphEdgeLabel[101X
+  
+  [29X[2XDigraphEdgeLabel[102X( [3Xdigraph[103X, [3Xi[103X, [3Xj[103X ) [32X operation
+  [29X[2XSetDigraphEdgeLabel[102X( [3Xdigraph[103X, [3Xi[103X, [3Xj[103X, [3Xobj[103X ) [32X operation
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph without multiple edges, then the first operation
+  returns  the  label  of  the  edge  from  vertex  [3Xi[103X  to vertex [3Xj[103X. The second
+  operation  can  be  used  to  set the label of the edge between vertex [3Xi[103X and
+  vertex [3Xj[103X to the arbitrary [5XGAP[105X object [3Xobj[103X.[133X
+  
+  [33X[0;0YThe  label  of  an  edge  can be changed an arbitrary number of times. If no
+  label has been set for the edge, then the default value is [3X1[103X.[133X
+  
+  [33X[0;0YInduced  subdigraphs,  and  some  other operations which create new digraphs
+  from  old  ones,  inherit  their  edge  labels  from their parents. See also
+  [2XDigraphEdgeLabels[102X ([14X5.1-12[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
+    [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdgeLabel(gr, 3, 1);[127X[104X
+    [4X[28X1[128X[104X
+    [4X[25Xgap>[125X [27XSetDigraphEdgeLabel(gr, 2, 5, [42]);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphEdgeLabel(gr, 2, 5);[127X[104X
+    [4X[28X[ 42 ][128X[104X
+    [4X[25Xgap>[125X [27Xgr := InducedSubdigraph(gr, [2, 5]);[127X[104X
+    [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdgeLabel(gr, 1, 2);[127X[104X
+    [4X[28X[ 42 ][128X[104X
+  [4X[32X[104X
+  
+  [1X5.1-12 DigraphEdgeLabels[101X
+  
+  [29X[2XDigraphEdgeLabels[102X( [3Xdigraph[103X ) [32X operation
+  [29X[2XSetDigraphEdgeLabels[102X( [3Xdigraph[103X, [3Xlabels[103X ) [32X operation
+  [29X[2XSetDigraphEdgeLabels[102X( [3Xdigraph[103X, [3Xfunc[103X ) [32X operation
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph  without  multiple edges, then [10XDigraphEdgeLabels[110X
+  returns  a  copy  of  the  labels of the edges in [3Xdigraph[103X as a list of lists
+  [10Xlabels[110X  such  that  [10Xlabels[i][j][110X  is  the label on the edge from vertex [10Xi[110X to
+  vertex [10XOutNeighbours(digraph)[i][j][110X. [10XSetDigraphEdgeLabels[110X can be used to set
+  the labels of the edges in [3Xdigraph[103X without multiple edges to the list [3Xlabels[103X
+  of  lists  of arbitrary [5XGAP[105X objects such that [10Xlist[i][j][110X is the label on the
+  edge from vertex [10Xi[110X to the vertex [10XOutNeighbours(digraph>[i][j][110X. Alternatively
+  [10XSetDigraphEdgeLabels[110X  can  be  called  with binary function [3Xfunc[103X that as its
+  second  argument that when passed two vertices [10Xi[110X and [10Xj[110X returns the label for
+  the edge between vertex [10Xi[110X and vertex [10Xj[110X.[133X
+  
+  [33X[0;0YThe  label  of  an  edge  can be changed an arbitrary number of times. If no
+  label has been set for an edge, then the default value is [10X1[110X.[133X
+  
+  [33X[0;0YInduced  subdigraphs,  and  some  other operations which create new digraphs
+  from old ones, inherit their labels from their parents.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
+    [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdgeLabels(gr);[127X[104X
+    [4X[28X[ [ 1 ], [ 1, 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XSetDigraphEdgeLabel(gr, 2, 1, "d");[127X[104X
+    [4X[25Xgap>[125X [27XDigraphEdgeLabels(gr);[127X[104X
+    [4X[28X[ [ 1 ], [ "d", 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xgr := InducedSubdigraph(gr, [1, 2, 3]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdgeLabels(gr);[127X[104X
+    [4X[28X[ [ 1 ], [ "d", 1 ], [ 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
+    [4X[28X[ [ 3 ], [ 1, 3 ], [ 1 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X5.1-13 DigraphInEdges[101X
   
   [29X[2XDigraphInEdges[102X( [3Xdigraph[103X, [3Xvertex[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA list of edges.[133X
@@ -276,7 +349,7 @@
     [4X[28X[ [ 1, 2 ], [ 1, 2 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.1-12 DigraphOutEdges[101X
+  [1X5.1-14 DigraphOutEdges[101X
   
   [29X[2XDigraphOutEdges[102X( [3Xdigraph[103X, [3Xvertex[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA list of edges.[133X
@@ -291,7 +364,7 @@
     [4X[28X[ [ 2, 3 ], [ 2, 3 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.1-13 IsDigraphEdge[101X
+  [1X5.1-15 IsDigraphEdge[101X
   
   [29X[2XIsDigraphEdge[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation
   [29X[2XIsDigraphEdge[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation
@@ -322,11 +395,16 @@
   [1X5.2-1 AdjacencyMatrix[101X
   
   [29X[2XAdjacencyMatrix[102X( [3Xdigraph[103X ) [32X attribute
+  [29X[2XAdjacencyMatrixMutableCopy[102X( [3Xdigraph[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA square matrix of non-negative integers.[133X
   
   [33X[0;0YThis  function  returns the adjacency matrix [10Xmat[110X of the digraph [3Xdigraph[103X. The
   value  of  the matrix entry [10Xmat[i][j][110X is the number of edges in [3Xdigraph[103X with
   source [10Xi[110X and range [10Xj[110X.[133X
+  
+  [33X[0;0YThe  function  [10XAdjacencyMatrix[110X returns an immutable list of immutable lists,
+  whereas   the   function   [10XAdjacencyMatrixMutableCopy[110X   returns  a  copy  of
+  [10XAdjacencyMatrix[110X which is a mutable list of mutable lists.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[2, 2, 2], [1, 3, 6, 8, 9, 10], [4, 6, 8],[127X[104X
@@ -712,20 +790,21 @@
   [29X[2XDigraphShortestDistance[102X( [3Xdigraph[103X, [3Xlist1[103X, [3Xlist2[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YAn integer or [9Xfail[109X[133X
   
-  [33X[0;0YIf  there  is  a  path in the digraph [3Xdigraph[103X between vertex [3Xu[103X and vertex [3Xv[103X,
-  then this operation returns the length of the shortest such path. If no such
-  path exists, then this operation returns [9Xfail[109X.[133X
+  [33X[0;0YIf  there  is  a  directed  path in the digraph [3Xdigraph[103X between vertex [3Xu[103X and
+  vertex  [3Xv[103X,  then  this  operation  returns  the  length of the shortest such
+  directed  path. If no such directed path exists, then this operation returns
+  [9Xfail[109X. See section [14X1.1-1[114X for the definition of a directed path.[133X
   
   [33X[0;0YIf  the  second  form  is  used,  then  [3Xlist[103X should be a list of length two,
   containing two positive integers which correspond to the vertices [3Xu[103X and [3Xv[103X.[133X
   
-  [33X[0;0YNote that as usual a vertex is considered to be at distance 0 from itself.[133X
+  [33X[0;0YNote that as usual, a vertex is considered to be at distance 0 from itself .[133X
   
   [33X[0;0YIf  the third form is used, then [3Xlist1[103X and [3Xlist2[103X are both lists of vertices.
-  The shortest path between [3Xlist1[103X and [3Xlist2[103X is then the length of the shortest
-  path  which  starts  with  a  vertex  in [3Xlist1[103X and terminates at a vertex in
-  [3Xlist2[103X,  if such path exists. If [3Xlist1[103X and [3Xlist2[103X have non-empty intersection,
-  the operation returns [10X0[110X.[133X
+  The shortest directed path between [3Xlist1[103X and [3Xlist2[103X is then the length of the
+  shortest directed path which starts with a vertex in [3Xlist1[103X and terminates at
+  a  vertex  in  [3Xlist2[103X,  if such directed path exists. If [3Xlist1[103X and [3Xlist2[103X have
+  non-empty intersection, the operation returns [10X0[110X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3], [1, 4], [1, 3], [5]]);[127X[104X
@@ -748,13 +827,14 @@
   [6XReturns:[106X  [33X[0;10YA square matrix.[133X
   
   [33X[0;0YIf [3Xdigraph[103X is a digraph with [22Xn[122X vertices, then this function returns an [22Xn × n[122X
-  matrix  [10Xmat[110X, where each entry is either a non-negative integer or [10Xfail[110X. If [22Xn
+  matrix [10Xmat[110X, where each entry is either a non-negative integer, or [9Xfail[109X. If [22Xn
   = 0[122X, then an empty list is returned.[133X
   
   [33X[0;0YIf  there  is  a  directed path from vertex [10Xi[110X to vertex [10Xj[110X, then the value of
-  [10Xmat[i][j][110X  is  the length of the shortest such path. If no such path exists,
-  then the value of [10Xmat[i][j][110X is [10Xfail[110X. We use the convention that the distance
-  from every vertex to itself is [10X0[110X, i.e. [10Xmat[i][i] = 0[110X for all vertices [10Xi[110X.[133X
+  [10Xmat[i][j][110X  is  the  length  of  the  shortest such directed path. If no such
+  directed  path  exists,  then  the  value  of  [10Xmat[i][j][110X is [10Xfail[110X. We use the
+  convention  that  the  distance  from  every  vertex  to  itself  is [10X0[110X, i.e.
+  [10Xmat[i][i] = 0[110X for all vertices [10Xi[110X.[133X
   
   [33X[0;0YThe  method  used  in  this  function  is  a  version  of the Floyd-Warshall
   algorithm, and has complexity [22XO(n^3)[122X.[133X
@@ -773,25 +853,26 @@
   [1X5.3-4 DigraphLongestDistanceFromVertex[101X
   
   [29X[2XDigraphLongestDistanceFromVertex[102X( [3Xdigraph[103X, [3Xv[103X ) [32X operation
-  [6XReturns:[106X  [33X[0;10YAn integer.[133X
+  [6XReturns:[106X  [33X[0;10YAn integer, or [9Xinfinity[109X.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a digraph and [3Xv[103X is a vertex in [3Xdigraph[103X, then this operation
   returns  the  length of the longest directed walk in [3Xdigraph[103X which begins at
-  vertex [3Xv[103X.[133X
+  vertex  [3Xv[103X.  See section [14X1.1-1[114X for the definitions of directed walk, directed
+  cycle, and loop.[133X
   
   [30X    [33X[0;6YIf there exists a directed walk starting at vertex [3Xv[103X which traverses a
-        cycle  or  a  loop,  then  we  consider there to be a walk of infinite
-        length  from [3Xv[103X (realised by repeatedly traversing the loop/cycle), and
-        so  the  result  is [10Xinfinity[110X. To disallow walks using loops, try using
-        [2XDigraphRemoveLoops[102X ([14X3.3-21[114X):[133X
+        loop  or  a  directed  cycle,  then  we consider there to be a walk of
+        infinite   length  from  [3Xv[103X  (realised  by  repeatedly  traversing  the
+        loop/directed cycle), and so the result is [9Xinfinity[109X. To disallow walks
+        using loops, try using [2XDigraphRemoveLoops[102X ([14X3.3-21[114X):[133X
   
         [33X[0;6Y[10XDigraphLongestDistanceFromVertex(DigraphRemoveLoops([3Xdigraph[103X[10X,[3Xv[103X[10X))[110X.[133X
   
-  [30X    [33X[0;6YIf  no  walk  from vertex [3Xv[103X exists, i.e. if [3Xv[103X is a sink of the digraph
-        ([2XDigraphSinks[102X ([14X5.1-5[114X)), then the result is [10X0[110X.[133X
-  
   [30X    [33X[0;6YOtherwise,  if  all  directed  walks  starting at vertex [3Xv[103X have finite
         length, then the length of the longest such walk is returned.[133X
+  
+  [33X[0;0YNote  that  the  result  is  [10X0[110X  if  and  only if [3Xv[103X is a sink of [3Xdigraph[103X. See
+  [2XDigraphSinks[102X ([14X5.1-5[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3, 4], [], [5], [], [6]]);[127X[104X
@@ -834,14 +915,14 @@
   [1X5.3-6 DigraphGirth[101X
   
   [29X[2XDigraphGirth[102X( [3Xdigraph[103X ) [32X attribute
-  [6XReturns:[106X  [33X[0;10YAn integer or [10Xinfinity[110X.[133X
+  [6XReturns:[106X  [33X[0;10YAn integer, or [9Xinfinity[109X.[133X
   
-  [33X[0;0YThe  [13Xgirth[113X of a digraph is the length of its shortest simple cycle, i.e. the
-  shortest  non-trivial  directed  path starting and ending at the same vertex
-  and passing through no vertex more than once.[133X
+  [33X[0;0YThis  attribute  returns  the  [13Xgirth[113X  of the digraph [3Xdigraph[103X. The [13Xgirth[113X of a
+  digraph  is the length of its shortest simple circuit. See section [14X1.1-1[114X for
+  the definitions of simple circuit, directed cycle, and loop.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  has  no  cycles,  then  this  function will return [10Xinfinity[110X. If
-  [3Xdigraph[103X contains a loop, then this function will return [10X1[110X.[133X
+  [33X[0;0YIf  [3Xdigraph[103X has no directed cycles, then this function will return [9Xinfinity[109X.
+  If [3Xdigraph[103X contains a loop, then this function will return [10X1[110X.[133X
   
   [33X[0;0YIn  the  worst  case,  the  method used in this function is a version of the
   Floyd-Warshall algorithm, and has complexity [10XO([3Xn[103X[10X ^ 3)[110X, where [3Xn[103X is the number
@@ -868,7 +949,7 @@
   [1X5.3-7 DigraphUndirectedGirth[101X
   
   [29X[2XDigraphUndirectedGirth[102X( [3Xdigraph[103X ) [32X attribute
-  [6XReturns:[106X  [33X[0;10YAn integer or [10Xinfinity[110X.[133X
+  [6XReturns:[106X  [33X[0;10YAn integer or [9Xinfinity[109X.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is a symmetric digraph, then this function returns the girth of
   [3Xdigraph[103X  when treated as an undirected graph (i.e. each pair of edges [22X[i, j][122X
@@ -876,9 +957,9 @@
   
   [33X[0;0YThe [13Xgirth[113X of an undirected graph is the length of its shortest simple cycle,
   i.e.  the  shortest  non-trivial path starting and ending at the same vertex
-  and passing through no vertex more than once.[133X
+  and passing through no vertex or edge more than once.[133X
   
-  [33X[0;0YIf [3Xdigraph[103X has no cycles, then this function will return [10Xinfinity[110X.[133X
+  [33X[0;0YIf [3Xdigraph[103X has no cycles, then this function will return [9Xinfinity[109X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[2,4], [1,3], [2,4], [1,3]]);[127X[104X
@@ -902,10 +983,10 @@
   
   [33X[0;0YThis  function  returns the record [10Xwcc[110X corresponding to the weakly connected
   components  of  the digraph [3Xdigraph[103X. Two vertices of [3Xdigraph[103X are in the same
-  weakly  connected  component whenever they are equal, or there exists a path
-  (ignoring  the  orientation  of  edges)  between  them.  In other words, two
-  vertices  are  in the same weakly connected component of [3Xdigraph[103X if and only
-  if    they   are   in   the   same   strongly   connected   component   (see
+  weakly  connected  component  whenever  they  are  equal,  or there exists a
+  directed  path  (ignoring  the  orientation  of  edges)  between  them. More
+  formally, two vertices are in the same weakly connected component of [3Xdigraph[103X
+  if  and  only  if  they  are  in  the same strongly connected component (see
   [2XDigraphStronglyConnectedComponents[102X  ([14X5.3-10[114X)) of the [2XDigraphSymmetricClosure[102X
   ([14X3.3-8[114X) of [3Xdigraph[103X.[133X
   
@@ -1014,9 +1095,10 @@
   
   [33X[0;0YThis function returns the period of the digraph [3Xdigraph[103X.[133X
   
-  [33X[0;0YIf a digraph [3Xdigraph[103X has at least one cycle, then the period is the greatest
-  positive  integer  which  divides  the  lengths of all cycles of [3Xdigraph[103X. If
-  [3Xdigraph[103X has no cycles, then this function returns [22X0[122X.[133X
+  [33X[0;0YIf a digraph [3Xdigraph[103X has at least one directed cycle, then the period is the
+  greatest  positive  integer which divides the lengths of all directed cycles
+  of [3Xdigraph[103X. If [3Xdigraph[103X has no directed cycles, then this function returns [22X0[122X.
+  See section [14X1.1-1[114X for the definition of a directed cycle.[133X
   
   [33X[0;0YA digraph with a period of [22X1[122X is said to be [13Xaperiodic[113X. See [2XIsAperiodicDigraph[102X
   ([14X6.3-4[114X).[133X
@@ -1100,9 +1182,10 @@
   [29X[2XIsReachable[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
-  [33X[0;0YThis  operation  returns  [9Xtrue[109X  if there exists a directed walk (of non-zero
-  length) from vertex [3Xu[103X to vertex [3Xv[103X in the digraph [3Xdigraph[103X, and [9Xfalse[109X if there
-  does not exist such a walk.[133X
+  [33X[0;0YThis operation returns [9Xtrue[109X if there exists a non-trivial directed walk from
+  vertex  [3Xu[103X  to  vertex  [3Xv[103X in the digraph [3Xdigraph[103X, and [9Xfalse[109X if there does not
+  exist  such  a  directed  walk.  See  section  [14X1.1-1[114X for the definition of a
+  non-trivial directed walk.[133X
   
   [33X[0;0YThe  method for [10XIsReachable[110X has worst case complexity of [22XO(m + n)[122X where [22Xm[122X is
   the number of edges and [22Xn[122X the number of vertices in [3Xdigraph[103X.[133X
@@ -1125,13 +1208,14 @@
   [29X[2XDigraphPath[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA pair of lists, or [9Xfail[109X.[133X
   
-  [33X[0;0YIf  there  exists  a  directed  path (or a cycle, in the case that [3Xu[103X [10X=[110X [3Xv[103X) of
-  non-zero  length from vertex [3Xu[103X to vertex [3Xv[103X in the digraph [3Xdigraph[103X, then this
-  operation returns such a directed path (or cycle). Otherwise, this operation
-  returns [9Xfail[109X. See Chapter [14X1[114X for the definition of a path and a cycle.[133X
+  [33X[0;0YIf  there exists a non-trivial directed path (or a non-trivial cycle, in the
+  case that [3Xu[103X [10X=[110X [3Xv[103X) from vertex [3Xu[103X to vertex [3Xv[103X in the digraph [3Xdigraph[103X, then this
+  operation  returns such a directed path (or directed cycle). Otherwise, this
+  operation  returns  [9Xfail[109X.  See Section [14X'[33X[0;0YDefinitions[133X'[114X for the definition of a
+  directed path and a directed cycle.[133X
   
-  [33X[0;0YA directed path (or cycle) of non-zero length [10Xn-1[110X, [22X(v_1, e_1, v_2, e_2, ...,
-  e_n-1, v_n)[122X, is represented by a pair of lists [10X[v,a][110X as follows:[133X
+  [33X[0;0YA  directed path (or directed cycle) of non-zero length [10Xn-1[110X, [22X(v_1, e_1, v_2,
+  e_2, ..., e_n-1, v_n)[122X, is represented by a pair of lists [10X[v,a][110X as follows:[133X
   
   [30X    [33X[0;6Y[10Xv[110X is the list [22X[v_1, v_2, ..., v_n][122X.[133X
   
@@ -1164,12 +1248,13 @@
   
   [33X[0;0YIf  [3Xdigraph[103X  is a digraph or a list of adjacencies which defines a digraph -
   see  [2XOutNeighbours[102X  ([14X5.2-5[114X) - then this operation returns an iterator of the
-  directed  paths  (or  cycles,  in the case that [3Xu[103X [10X=[110X [3Xv[103X) of non-zero length in
+  non-trivial  directed  paths (or directed cycles, in the case that [3Xu[103X [10X=[110X [3Xv[103X) in
   [3Xdigraph[103X from the vertex [3Xu[103X to the vertex [3Xv[103X.[133X
   
   [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.3-15[114X) for more information about the repesentation of a
-  directed  path  or  cycle  which is used, and see [14X'Reference: Iterators'[114X for
-  more information about iterators.[133X
+  directed  path  or  directed  cycle  which  is  used,  and  see  [14X'Reference:
+  Iterators'[114X  for  more information about iterators. See Section [14X'[33X[0;0YDefinitions[133X'[114X
+  for the definition of a directed path and a directed cycle.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[1, 4, 4, 2], [3, 5], [2, 3], [1, 2], [4]]);[127X[104X
@@ -1198,15 +1283,23 @@
   [33X[0;0YIf [3Xdigraph[103X is a digraph, then [10XDigraphAllSimpleCircuits[110X returns a list of the
   [13Xsimple circuits[113X in [3Xdigraph[103X.[133X
   
-  [33X[0;0YA [13Xsimple circuit[113X in [3Xdigraph[103X is a non-trivial directed path in [3Xdigraph[103X from a
-  vertex  [10Xv[110X  back  to [10Xv[110X, in which no vertex is visited more than once. Since a
-  circuit of length [10Xn[110X is determined by its first [10Xn[110X vertices, a circuit [22Xv_1 → ⋯
-  →  v_n → v_1[122X can be represented as the list [22X[v_1, ..., v_n][122X. For each simple
-  circuit of [3Xdigraph[103X, [10XDigraphAllSimpleCircuits([110X[3Xdigraph[103X[10X)[110X will include precisely
-  one  such list to represents the circuit (cyclic permutations of such a list
-  describe the same circuit).[133X
+  [33X[0;0YSee  section  [14X1.1-1[114X  for  the  definition  of  a simple circuit, and related
+  notions. Note that a loop is a simple circuit.[133X
   
-  [33X[0;0YNote that a loop is a simple circuit.[133X
+  [33X[0;0YFor  a  digraph  without  multiple  edges,  a  simple  circuit  is  uniquely
+  determined  by its subsequence of vertices. However this is not the case for
+  a  multidigraph.  The  attribute  [10XDigraphAllSimpleCircuits[110X  ignores multiple
+  edges,  and  identifies  a  simple  circuit  using  only  its subsequence of
+  vertices. For example, although the simple circuits [22X(v, e, v)[122X and [22X(v, e', v)[122X
+  (for    distinct    edges   [22Xe[122X   and   [22Xe'[122X)   are   mathematically   distinct,
+  [10XDigraphAllSimpleCircuits[110X considers them to be the same.[133X
+  
+  [33X[0;0YWith  this  approach,  a directed circuit of length [10Xn[110X can be determined by a
+  list  of  its  first  [10Xn[110X vertices. Thus a simple circuit [22X(v_1, e_1, v_2, e_2,
+  ..., e_n-1, v_n, e_n+1, v_1)[122X can be represented as the list [22X[v_1, ..., v_n][122X,
+  or  any  cyclic  permutation  thereof.  For  each simple circuit of [3Xdigraph[103X,
+  [10XDigraphAllSimpleCircuits([3Xdigraph[103X[10X)[110X   includes  precisely  one  such  list  to
+  represent the circuit.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[], [3], [2, 4], [5, 4], [4]]);[127X[104X
@@ -1220,27 +1313,29 @@
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphAllSimpleCircuits(gr);[127X[104X
     [4X[28X[ [ 1, 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 1]]);[127X[104X
+    [4X[28X<multidigraph with 1 vertex, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphAllSimpleCircuits(gr);[127X[104X
+    [4X[28X[ [ 1 ] ][128X[104X
   [4X[32X[104X
   
   [1X5.3-18 DigraphLongestSimpleCircuit[101X
   
   [29X[2XDigraphLongestSimpleCircuit[102X( [3Xdigraph[103X ) [32X attribute
-  [6XReturns:[106X  [33X[0;10YA list of vertices or [10Xfail[110X.[133X
+  [6XReturns:[106X  [33X[0;10YA list of vertices, or [9Xfail[109X.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then  [10XDigraphLongestSimpleCircuit[110X  returns the
-  longest [13Xsimple circuit[113X in [3Xdigraph[103X.[133X
+  longest  [13Xsimple  circuit[113X in [3Xdigraph[103X. See section [14X1.1-1[114X for the definition of
+  simple circuit, and the definition of length for a simple circuit.[133X
   
-  [33X[0;0YA [13Xsimple circuit[113X in [3Xdigraph[103X is a non-trivial directed path in [3Xdigraph[103X from a
-  vertex  [10Xv[110X  back  to [10Xv[110X, in which no vertex is visited more than once. Since a
-  circuit of length [10Xn[110X is determined by its first [10Xn[110X vertices, a circuit [22Xv_1 → ⋯
-  → v_n → v_1[122X can be represented as the list [22X[v_1, ..., v_n][122X. Note that a loop
-  is a simple circuit.[133X
+  [33X[0;0YThis  attribute  computes  [10XDigraphAllSimpleCircuits([110X[3Xdigraph[103X[10X)[110X to find all the
+  simple  circuits  of  [3Xdigraph[103X,  and  returns one of maximal length. A simple
+  circuit  is  represented as a list of vertices, in the same way as described
+  in [2XDigraphAllSimpleCircuits[102X ([14X5.3-17[114X).[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  has  no  simple  circuits, then this attribute returns [10Xfail[110X. If
-  [3Xdigraph[103X  has multiple simple circuits of maximum length, then this attribute
+  [33X[0;0YIf  [3Xdigraph[103X  has  no  simple  circuits, then this attribute returns [9Xfail[109X. If
+  [3Xdigraph[103X  has multiple simple circuits of maximal length, then this attribute
   returns one of them.[133X
-  
-  [33X[0;0YSee [2XDigraphAllSimpleCircuits[102X ([14X5.3-17[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[], [3], [2, 4], [5, 4], [4]]);;[127X[104X

@@ -9,8 +9,8 @@
   [29X[2XDigraphHasLoops[102X( [3Xdigraph[103X ) [32X property
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
-  [33X[0;0YReturns  [9Xtrue[109X if the digraph [3Xdigraph[103X is has loops, and [9Xfalse[109X if it does not.
-  A loop is an edge with equal source and range.[133X
+  [33X[0;0YReturns  [9Xtrue[109X  if the digraph [3Xdigraph[103X has loops, and [9Xfalse[109X if it does not. A
+  loop is an edge with equal source and range.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1, 2 ], [ 2 ] ] );[127X[104X
@@ -415,9 +415,10 @@
   [29X[2XIsAcyclicDigraph[102X( [3Xdigraph[103X ) [32X property
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
-  [33X[0;0YReturns  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is acyclic and [9Xfalse[109X if it is not. A
-  digraph  is  [13Xacyclic[113X  if  there are no cycles, i.e. if there are no directed
-  walks which start and end at the same vertex.[133X
+  [33X[0;0YThis  property is [9Xtrue[109X if the digraph [3Xdigraph[103X is acyclic, and [9Xfalse[109X if it is
+  not. A digraph is [13Xacyclic[113X if every directed cycle on the digraph is trivial.
+  See  section  [14X1.1-1[114X for the definition of a directed cycle, and of a trivial
+  directed cycle.[133X
   
   [33X[0;0YThe  method  used  in  this  operation  has complexity [22XO(m+n)[122X where [22Xm[122X is the
   number  of  edges  (counting  multiple  edges as one) and [22Xn[122X is the number of
@@ -471,8 +472,11 @@
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis property is [9Xtrue[109X if the digraph [3Xdigraph[103X is strongly connected and [9Xfalse[109X
-  if it is not. A digraph [3Xdigraph[103X is [13Xstrongly connected[113X if there is a directed
-  path from every vertex to every other vertex.[133X
+  if it is not.[133X
+  
+  [33X[0;0YA  digraph  [3Xdigraph[103X  is  [13Xstrongly connected[113X if there is a directed path from
+  every  vertex to every other vertex. See section [14X1.1-1[114X for the definition of
+  a directed path.[133X
   
   [33X[0;0YThe  method used in this operation is based on Gabow's Algorithm [Gab00] and
   has  complexity  [22XO(m+n)[122X,  where  [22Xm[122X is the number of edges (counting multiple
@@ -505,6 +509,95 @@
     [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );[127X[104X
     [4X[28X<digraph with 5 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsAperiodicDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-5 IsDirectedTree[101X
+  
+  [29X[2XIsDirectedTree[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YReturns  [9Xtrue[109X  if the digraph [3Xdigraph[103X is a directed tree, and [9Xfalse[109X if it is
+  not.[133X
+  
+  [33X[0;0YA  [13Xdirected tree[113X is an acyclic digraph with precisely 1 source, such that no
+  two  vertices  share  an  out-neighbour.  Note  the  empty  digraph  is  not
+  considered a directed tree as it has no source.[133X
+  
+  [33X[0;0YSee also [2XDigraphSources[102X ([14X5.1-6[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[], [2]]);[127X[104X
+    [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(g);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[3], [3], []]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(g);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[2], [3], []]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(g);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[2,3], [6], [4,5], [], [], []]);[127X[104X
+    [4X[28X<digraph with 6 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(g);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-6 IsUndirectedTree[101X
+  
+  [29X[2XIsUndirectedTree[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis property returns [9Xtrue[109X if the digraph [3Xdigraph[103X is an undirected tree.[133X
+  
+  [33X[0;0YAn  undirected  tree  is a symmetric digraph without loops, in which for any
+  pair of distinct vertices [10Xu[110X and [10Xv[110X, there is exactly one directed path from [10Xu[110X
+  to  [10Xv[110X.  See [2XIsSymmetricDigraph[102X ([14X6.1-10[114X) and [2XDigraphHasLoops[102X ([14X6.1-1[114X), and see
+  section [14X1.1-1[114X for the definition of directed path.[133X
+  
+  [33X[0;0YPlease  note  that the digraph with zero vertices is not considered to be an
+  undirected tree.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[3], [3], [1,2]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedTree(g);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[], [1]]);[127X[104X
+    [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedTree(g);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-7 IsEulerianDigraph[101X
+  
+  [29X[2XIsEulerianDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis property returns true if the digraph [3Xdigraph[103X is Eulerian.[133X
+  
+  [33X[0;0YA  digraph  is  called  [13XEulerian[113X  if  there exists a directed circuit on the
+  digraph  which  includes  every edge exactly once. See section [14X1.1-1[114X for the
+  definition of a directed circuit.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[]]);[127X[104X
+    [4X[28X<digraph with 1 vertex, 0 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(g);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[2], []]);[127X[104X
+    [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(g);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[3], [], [2]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(g);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[2], [3], [1]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(g);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   

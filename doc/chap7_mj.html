@@ -59,6 +59,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E93B268823F6478">7.3-8 GeneratorsOfEndomorphismMonoid</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X780D26F082572325">7.3-9 DigraphColoring</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7AD04CC186E86CCA">7.3-10 DigraphEmbedding</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X807D49358529A37C">7.3-11 ChromaticNumber</a></span>
 </div></div>
 </div>
 
@@ -76,9 +77,9 @@
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">trans</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph, and the second argument <var class="Arg">perm</var> is a <em>permutation</em> of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by relabelling the vertices of <var class="Arg">digraph</var> according to <var class="Arg">perm</var>. Note that for an automorphism <code class="code">f</code> of a digraph, we have <code class="code">OnDigraphs(</code><var class="Arg">digraph</var>, <code class="code">f) = </code><var class="Arg">digraph</var>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph, and the second argument <var class="Arg">perm</var> is a <em>permutation</em> of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by relabelling the vertices of <var class="Arg">digraph</var> according to <var class="Arg">perm</var>. Note that for an automorphism <code class="code">f</code> of a digraph, we have <code class="code">OnDigraphs(<var class="Arg">digraph</var>, f) = </code><var class="Arg">digraph</var>.</p>
 
-<p>If the second argument is a <em>transformation</em> <var class="Arg">trans</var> of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by transforming the source and range of each edge according to <var class="Arg">trans</var>, and then removing any multiple edges. If <var class="Arg">trans</var> is indeed a permutation, then the result coincides with relabelling the vertices of <var class="Arg">digraph</var> according to <var class="Arg">trans</var>.</p>
+<p>If the second argument is a <em>transformation</em> <var class="Arg">trans</var> of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by transforming the source and range of each edge according to <var class="Arg">trans</var>. Thus a vertex which does not appear in the image of <var class="Arg">trans</var> will be isolated in the returned digraph, and the returned digraph may contain multiple edges, even if <var class="Arg">digraph</var> does not. If <var class="Arg">trans</var> is mathematically a permutation, then the result coincides with <code class="code">OnDigraphs(<var class="Arg">digraph</var>, AsPermutation(<var class="Arg">trans</var>))</code>.</p>
 
 <p>The <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) of <var class="Arg">digraph</var> will not be retained in the returned digraph.</p>
 
@@ -95,9 +96,9 @@
 &lt;digraph with 3 vertices, 2 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">t := Transformation([1, 2, 1]);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">new := OnDigraphs(gr, t);</span>
-&lt;digraph with 3 vertices, 1 edge&gt;
+&lt;multidigraph with 3 vertices, 2 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(new);</span>
-[ [ 2 ], [  ], [  ] ]
+[ [ 2, 2 ], [  ], [  ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ForAll(DigraphEdges(gr),</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput"> e -&gt; IsDigraphEdge(new, [e[1] ^ t, e[2] ^ t]));</span>
 true
@@ -189,7 +190,7 @@ Group([ (3,4), (2,3)(4,5), (1,2)(5,6) ])
 
 <p>If <var class="Arg">digraph</var> is a multidigraph, then this function returns the automorphism group of <var class="Arg">digraph</var>, as a group of permutations on the vertices and edges of <var class="Arg">digraph</var>.</p>
 
-<p>For convenience, the returned group is the direct product of the group of automorphisms of the vertices of <var class="Arg">digraph</var> with the stabiliser of the vertices in the automorphism group of the edges. These two groups can be accessed using the <code class="func">Projection</code> (<a href="../../../doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection</span></a>) with second argument <code class="code">1</code> and <code class="code">2</code>, respectively.</p>
+<p>For convenience, the returned group is the direct product of the group of automorphisms of the vertices of <var class="Arg">digraph</var> with the stabiliser of the vertices in the automorphism group of the edges. These two groups can be accessed using the <code class="func">Projection</code> (<a href="../../../doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection (for a domain and a positive integer)</span></a>) with second argument <code class="code">1</code> and <code class="code">2</code>, respectively.</p>
 
 <p>The permutations in the automorphism group of the edges act on the indices of the edges of <var class="Arg">digraph</var>.</p>
 
@@ -217,7 +218,7 @@ Group([ (5,6), (3,4), (1,2) ])
 
 <p>If <var class="Arg">digraph</var> was created knowing a subgroup of its automorphism group, then this group is stored in the attribute <code class="code">DigraphGroup</code>. If <var class="Arg">digraph</var> is not created knowing a subgroup of it automorphism group, then <code class="code">DigraphGroup</code> returns the entire automorphism group of <var class="Arg">digraph</var>.</p>
 
-<p>Note that certain other constructor operations such as <code class="func">CayleyDigraph</code> (<a href="chap3_mj.html#X7FCADADC7EC28478"><span class="RefLink">3.5-6</span></a>), <code class="func">BipartiteDoubleDigraph</code> (<a href="chap3_mj.html#X7C6E6CB284982C7A"><span class="RefLink">3.3-30</span></a>), and <code class="func">DoubleDigraph</code> (<a href="chap3_mj.html#X7FB8B48C87C0ED16"><span class="RefLink">3.3-29</span></a>), may not require a group as one of the arguments, but use the standard constructor method using a group, and hence set the <code class="code">DigraphGroup</code> attribute for the resulting digraph.</p>
+<p>Note that certain other constructor operations such as <code class="func">CayleyDigraph</code> (<a href="chap3_mj.html#X7FCADADC7EC28478"><span class="RefLink">3.5-7</span></a>), <code class="func">BipartiteDoubleDigraph</code> (<a href="chap3_mj.html#X7C6E6CB284982C7A"><span class="RefLink">3.3-30</span></a>), and <code class="func">DoubleDigraph</code> (<a href="chap3_mj.html#X7FB8B48C87C0ED16"><span class="RefLink">3.3-29</span></a>), may not require a group as one of the arguments, but use the standard constructor method using a group, and hence set the <code class="code">DigraphGroup</code> attribute for the resulting digraph.</p>
 
 
 <div class="example"><pre>
@@ -830,7 +831,7 @@ Transformation( [ 1, 2, 3, 1 ] )
 
 <p><code class="code">DigraphColoring</code> returns such an epimorphism if one exists, else it returns <code class="keyw">fail</code>.</p>
 
-<p>Note that a digraph has a 2-coloring if and only if it is bipartite, see <code class="func">IsBipartiteDigraph</code> (<a href="chap6_mj.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>).</p>
+<p>Note that a digraph with at least two vertices has a 2-coloring if and only if it is bipartite, see <code class="func">IsBipartiteDigraph</code> (<a href="chap6_mj.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>).</p>
 
 <p>If the third form is used, a greedy algorithm is used to obtain a colouring, which possibly is not minimal.</p>
 
@@ -871,6 +872,31 @@ fail
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEmbedding(gr, Digraph([[3], [1, 4], [1], [3]]));</span>
 Transformation( [ 2, 4, 3, 4 ] )
 </pre></div>
+
+<p><a id="X807D49358529A37C" name="X807D49358529A37C"></a></p>
+
+<h5>7.3-11 ChromaticNumber</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ChromaticNumber</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A non-negative integer.</p>
+
+<p>A digraph coloring is a labeling of the vertices (using precisely <var class="Arg">n</var> colors) in such a way that two adjacent vertices can not have the same label. Alternatively, it can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7_mj.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from <var class="Arg">digraph</var> onto a complete digraph with <var class="Arg">n</var> vertices.</p>
+
+<p><code class="code">ChromaticNumber</code> returns the least non-negative integer <code class="code">n</code> such that there is a coloring of the loopless digraph <var class="Arg">digraph</var> with <code class="code">n</code> colors. In other words, <code class="code">ChromaticNumber</code> returns the least value <code class="code">n</code> such that <code class="code">DigraphColoring(<var class="Arg">digraph</var>, n)</code> does not return <code class="keyw">fail</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ChromaticNumber(NullDigraph(10));</span>
+1
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ChromaticNumber(CompleteDigraph(10));</span>
+10
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ChromaticNumber(CompleteBipartiteDigraph(5, 5));</span>
+2
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1), </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                     Digraph([[2], [4], [1, 2], [3]])));</span>
+3
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ChromaticNumber(NullDigraph(0));</span>
+0</pre></div>
 
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap6_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap8_mj.html">[Next Chapter]</a>&nbsp;  </div>

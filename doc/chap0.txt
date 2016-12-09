@@ -6,38 +6,47 @@
                               [1XMethods for digraphs[101X
   
   
-                                 Version 0.5.2
+                                 Version 0.6.0
   
   
                                   Jan De Beule
+  
+                                  Luke Elliott
   
                                  Julius Jonušas
   
                                James D. Mitchell
   
+                                Markus Pfeiffer
+  
                                    Finn Smith
   
                                  Michael Torpey
   
-                                  Wilf Wilson
+                                 Wilf A. Wilson
   
   
   
   Jan De Beule
       Email:    [7Xmailto:jdebeule@cage.ugent.be[107X
       Homepage: [7Xhttp://homepages.vub.ac.be/~jdbeule/[107X
+  Luke Elliott
+      Email:    [7Xmailto:le27@st-andrews.ac.uk[107X
   Julius Jonušas
       Email:    [7Xmailto:jj252@st-andrews.ac.uk[107X
       Homepage: [7Xhttp://www-circa.mcs.st-andrews.ac.uk/~julius[107X
   James D. Mitchell
       Email:    [7Xmailto:jdm3@st-andrews.ac.uk[107X
       Homepage: [7Xhttp://goo.gl/ZtViV6[107X
+  Markus Pfeiffer
+      Email:    [7Xmailto:markus.pfeiffer@st-andrews.ac.uk[107X
+      Homepage: [7Xhttps://www.morphism.de/~markusp[107X
   Finn Smith
       Email:    [7Xmailto:fls3@st-andrews.ac.uk[107X
   Michael Torpey
       Email:    [7Xmailto:mct25@st-andrews.ac.uk[107X
       Homepage: [7Xhttp://www-circa.mcs.st-andrews.ac.uk/~mct25[107X
-  Wilf Wilson
+  Wilf A. Wilson
       Email:    [7Xmailto:waw7@st-andrews.ac.uk[107X
       Homepage: [7Xhttp://www-circa.mcs.st-andrews.ac.uk/~waw7[107X
   
@@ -49,8 +58,8 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y©  2014-16  by  Jan De Beule, Julius Jonušas, James D. Mitchell, Finn Smith,
-  Michael Torpey, Wilf Wilson.[133X
+  [33X[0;0Y©  2014-16 by Jan De Beule, Luke Elliott, Julius Jonušas, James D. Mitchell,
+  Markus Pfeiffer, Finn Smith, Michael Torpey, Wilf A. Wilson.[133X
   
   [33X[0;0Y[5XDigraphs[105X  is  free  software; you can redistribute it and/or modify it under
   the      terms      of      the      GNU      General     Public     License
@@ -74,6 +83,7 @@
   
   1 [33X[0;0YThe [5XDigraphs[105X package[133X
     1.1 [33X[0;0YIntroduction[133X
+      1.1-1 [33X[0;0YDefinitions[133X
   2 [33X[0;0YInstalling [5XDigraphs[105X[133X
     2.1 [33X[0;0YFor those in a hurry[133X
     2.2 [33X[0;0YOptional package dependencies[133X
@@ -142,12 +152,14 @@
       3.5-1 ChainDigraph
       3.5-2 CompleteDigraph
       3.5-3 CompleteBipartiteDigraph
-      3.5-4 CycleDigraph
-      3.5-5 EmptyDigraph
-      3.5-6 CayleyDigraph
-      3.5-7 JohnsonDigraph
+      3.5-4 CompleteMultipartiteDigraph
+      3.5-5 CycleDigraph
+      3.5-6 EmptyDigraph
+      3.5-7 CayleyDigraph
+      3.5-8 JohnsonDigraph
   4 [33X[0;0YOperators[133X
     4.1 [33X[0;0YOperators for digraphs[133X
+      4.1-1 IsSubdigraph
   5 [33X[0;0YAttributes and operations[133X
     5.1 [33X[0;0YVertices and edges[133X
       5.1-1 DigraphVertices
@@ -160,9 +172,11 @@
       5.1-8 DigraphBicomponents
       5.1-9 DigraphVertexLabel
       5.1-10 DigraphVertexLabels
-      5.1-11 DigraphInEdges
-      5.1-12 DigraphOutEdges
-      5.1-13 IsDigraphEdge
+      5.1-11 DigraphEdgeLabel
+      5.1-12 DigraphEdgeLabels
+      5.1-13 DigraphInEdges
+      5.1-14 DigraphOutEdges
+      5.1-15 IsDigraphEdge
     5.2 [33X[0;0YNeighbours and degree[133X
       5.2-1 AdjacencyMatrix
       5.2-2 BooleanAdjacencyMatrix
@@ -223,6 +237,9 @@
       6.3-2 IsConnectedDigraph
       6.3-3 IsStronglyConnectedDigraph
       6.3-4 IsAperiodicDigraph
+      6.3-5 IsDirectedTree
+      6.3-6 IsUndirectedTree
+      6.3-7 IsEulerianDigraph
   7 [33X[0;0YHomomorphisms[133X
     7.1 [33X[0;0YActing on digraphs[133X
       7.1-1 OnDigraphs
@@ -250,6 +267,7 @@
       7.3-8 GeneratorsOfEndomorphismMonoid
       7.3-9 DigraphColoring
       7.3-10 DigraphEmbedding
+      7.3-11 ChromaticNumber
   8 [33X[0;0YFinding cliques and independent sets[133X
     8.1 [33X[0;0YFinding cliques[133X
       8.1-1 IsClique
@@ -278,6 +296,7 @@
       9.2-10 TCodeDecoder
       9.2-11 PlainTextString
       9.2-12 WritePlainTextDigraph
+      9.2-13 WriteDIMACSDigraph
   A [33X[0;0YGrape to Digraphs Command Map[133X
     A.1 [33X[0;0YFunctions to construct and modify graphs[133X
     A.2 [33X[0;0YFunctions to inspect graphs, vertices and edges[133X

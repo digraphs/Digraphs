@@ -93,10 +93,11 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X870594FC866AC88E">3.5-1 ChainDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X812417E278198D9C">3.5-2 CompleteDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8795B0AD856014FA">3.5-3 CompleteBipartiteDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80C29DDE876FFBEB">3.5-4 CycleDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80DAE31A79FEFD40">3.5-5 EmptyDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7FCADADC7EC28478">3.5-6 CayleyDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80ED9CE785819607">3.5-7 JohnsonDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X873F29CC863241F8">3.5-4 CompleteMultipartiteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80C29DDE876FFBEB">3.5-5 CycleDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80DAE31A79FEFD40">3.5-6 EmptyDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7FCADADC7EC28478">3.5-7 CayleyDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80ED9CE785819607">3.5-8 JohnsonDigraph</a></span>
 </div></div>
 </div>
 
@@ -120,7 +121,7 @@
 <h5>3.1-2 IsCayleyDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsCayleyDigraph</code></td><td class="tdright">( category )</td></tr></table></div>
-<p><code class="code">IsCayleyDigraph</code> is a subcategory of <code class="code">IsDigraph</code>. Digraphs that are Cayley digraphs of a group and that are constructed by the operation <code class="func">CayleyDigraph</code> (<a href="chap3.html#X7FCADADC7EC28478"><span class="RefLink">3.5-6</span></a>) are constructed in this category.</p>
+<p><code class="code">IsCayleyDigraph</code> is a subcategory of <code class="code">IsDigraph</code>. Digraphs that are Cayley digraphs of a group and that are constructed by the operation <code class="func">CayleyDigraph</code> (<a href="chap3.html#X7FCADADC7EC28478"><span class="RefLink">3.5-7</span></a>) are constructed in this category.</p>
 
 <p><a id="X80F1B6D28478D8B9" name="X80F1B6D28478D8B9"></a></p>
 
@@ -134,7 +135,7 @@
 <h5>3.1-4 DigraphType</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphType</code></td><td class="tdright">( global variable )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFamily</code></td><td class="tdright">( global variable )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFamily</code></td><td class="tdright">( family )</td></tr></table></div>
 <p>The type of all digraphs is <code class="code">DigraphType</code>. The family of all digraphs is <code class="code">DigraphFamily</code>.</p>
 
 <p><a id="X834843057CE86655" name="X834843057CE86655"></a></p>
@@ -509,7 +510,9 @@ true
 
 <p>This function returns a digraph isomorphic to the subdigraph of <var class="Arg">digraph</var> induced by the set of non-isolated vertices, i.e. the set of those vertices of <var class="Arg">digraph</var> which are the source or range of some edge in <var class="Arg">digraph</var>. See <code class="func">InducedSubdigraph</code> (<a href="chap3.html#X83C51DA182CCEA2F"><span class="RefLink">3.3-2</span></a>).</p>
 
-<p>The vertex labels of the graph are preserved, so that a vertex in the new digraph can be matched to the corresponding vertex in <var class="Arg">digraph</var>.</p>
+<p>The vertex and edge labels of the graph are preserved. A vertex in the new digraph can be matched to the corresponding vertex in <var class="Arg">digraph</var> by using the label.</p>
+
+<p>The ordering of the vertices is preserved.</p>
 
 
 <div class="example"><pre>
@@ -518,14 +521,14 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">r := ReducedDigraph(d);</span>
 &lt;digraph with 3 vertices, 4 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(r);</span>
-[ [ 1, 3 ], [ 1, 2 ], [  ] ]
+[ [ 1, 2 ], [  ], [ 1, 3 ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(r); DigraphEdges(d);</span>
-[ [ 1, 1 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ] ]
+[ [ 1, 1 ], [ 1, 2 ], [ 3, 1 ], [ 3, 3 ] ]
 [ [ 1, 1 ], [ 1, 2 ], [ 4, 1 ], [ 4, 4 ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabel(r, 3);</span>
-2
+4
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabel(r, 2);</span>
-4</pre></div>
+2</pre></div>
 
 <p><a id="X829E3EAC7C4B3B1E" name="X829E3EAC7C4B3B1E"></a></p>
 
@@ -1432,9 +1435,24 @@ true
 &lt;digraph with 5 vertices, 12 edges&gt;
 </pre></div>
 
+<p><a id="X873F29CC863241F8" name="X873F29CC863241F8"></a></p>
+
+<h5>3.5-4 CompleteMultipartiteDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CompleteMultipartiteDigraph</code>( <var class="Arg">orders</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A digraph.</p>
+
+<p>For a list <var class="Arg">orders</var> of <code class="code">n</code> positive integers, this function returns the digraph containing <code class="code">n</code> independent sets of vertices of orders <code class="code">[<var class="Arg">l</var>[1] .. <var class="Arg">l</var>[n]]</code>. Moreover, each vertex is adjacent to every other not contained in the same independent set.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CompleteMultipartiteDigraph([5,4,2]);</span>
+&lt;digraph with 11 vertices, 76 edges&gt;
+</pre></div>
+
 <p><a id="X80C29DDE876FFBEB" name="X80C29DDE876FFBEB"></a></p>
 
-<h5>3.5-4 CycleDigraph</h5>
+<h5>3.5-5 CycleDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CycleDigraph</code>( <var class="Arg">n</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A digraph.</p>
@@ -1451,7 +1469,7 @@ true
 
 <p><a id="X80DAE31A79FEFD40" name="X80DAE31A79FEFD40"></a></p>
 
-<h5>3.5-5 EmptyDigraph</h5>
+<h5>3.5-6 EmptyDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EmptyDigraph</code>( <var class="Arg">n</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NullDigraph</code>( <var class="Arg">n</var> )</td><td class="tdright">( operation )</td></tr></table></div>
@@ -1470,7 +1488,7 @@ true
 
 <p><a id="X7FCADADC7EC28478" name="X7FCADADC7EC28478"></a></p>
 
-<h5>3.5-6 CayleyDigraph</h5>
+<h5>3.5-7 CayleyDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CayleyDigraph</code>( <var class="Arg">G</var>[, <var class="Arg">gens</var>] )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A digraph.</p>
@@ -1494,7 +1512,7 @@ Group([ (1,2,3,4), (2,4) ])
 
 <p><a id="X80ED9CE785819607" name="X80ED9CE785819607"></a></p>
 
-<h5>3.5-7 JohnsonDigraph</h5>
+<h5>3.5-8 JohnsonDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; JohnsonDigraph</code>( <var class="Arg">n</var>, <var class="Arg">k</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A digraph.</p>

@@ -27,7 +27,9 @@
 <div class="ChapSects"><a href="chap4_mj.html#X7AD6F77E7D95C996">4 <span class="Heading">Operators</span></a>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap4_mj.html#X84E0B5B88358C96B">4.1 <span class="Heading">Operators for digraphs</span></a>
 </span>
-</div>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4_mj.html#X829B911D7EFD2D85">4.1-1 IsSubdigraph</a></span>
+</div></div>
 </div>
 
 <h3>4 <span class="Heading">Operators</span></h3>
@@ -61,6 +63,29 @@
 </ul>
 </dd>
 </dl>
+<p><a id="X829B911D7EFD2D85" name="X829B911D7EFD2D85"></a></p>
+
+<h5>4.1-1 IsSubdigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsSubdigraph</code>( <var class="Arg">super</var>, <var class="Arg">sub</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>If <var class="Arg">super</var> and <var class="Arg">sub</var> are digraphs with the same number of vertices, then this operation returns <code class="keyw">true</code> if all the edges of <var class="Arg">sub</var> are edges in <var class="Arg">super</var>, and <code class="keyw">false</code> otherwise.</p>
+
+<p>If the two digraphs have different numbers of vertices, this operation returns <code class="keyw">false</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[2, 3], [1], [2, 3]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">h := Digraph([[2, 3], [], [2]]);</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSubdigraph(g, h);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSubdigraph(h, g);</span>
+false
+</pre></div>
+
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap3_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap5_mj.html">[Next Chapter]</a>&nbsp;  </div>
 

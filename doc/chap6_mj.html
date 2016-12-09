@@ -56,6 +56,9 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X83C08C0B7EC1A91F">6.3-2 IsConnectedDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B37B9467C68C208">6.3-3 IsStronglyConnectedDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80E883967EBE839E">6.3-4 IsAperiodicDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B46EA6C7B2DF2FB">6.3-5 IsDirectedTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80FC20FA7AC4BC2A">6.3-6 IsUndirectedTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X79DFBB198525544E">6.3-7 IsEulerianDigraph</a></span>
 </div></div>
 </div>
 
@@ -72,7 +75,7 @@
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphHasLoops</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is has loops, and <code class="keyw">false</code> if it does not. A loop is an edge with equal source and range.</p>
+<p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> has loops, and <code class="keyw">false</code> if it does not. A loop is an edge with equal source and range.</p>
 
 
 <div class="example"><pre>
@@ -473,7 +476,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsAcyclicDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is acyclic and <code class="keyw">false</code> if it is not. A digraph is <em>acyclic</em> if there are no cycles, i.e. if there are no directed walks which start and end at the same vertex.</p>
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is acyclic, and <code class="keyw">false</code> if it is not. A digraph is <em>acyclic</em> if every directed cycle on the digraph is trivial. See section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a directed cycle, and of a trivial directed cycle.</p>
 
 <p>The method used in this operation has complexity <span class="SimpleMath">\(O(m+n)\)</span> where <span class="SimpleMath">\(m\)</span> is the number of edges (counting multiple edges as one) and <span class="SimpleMath">\(n\)</span> is the number of vertices in the digraph.</p>
 
@@ -523,7 +526,9 @@ false</pre></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsStronglyConnectedDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is strongly connected and <code class="keyw">false</code> if it is not. A digraph <var class="Arg">digraph</var> is <em>strongly connected</em> if there is a directed path from every vertex to every other vertex.</p>
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is strongly connected and <code class="keyw">false</code> if it is not.</p>
+
+<p>A digraph <var class="Arg">digraph</var> is <em>strongly connected</em> if there is a directed path from every vertex to every other vertex. See section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a directed path.</p>
 
 <p>The method used in this operation is based on Gabow's Algorithm <a href="chapBib_mj.html#biBGabow2000aa">[Gab00]</a> and has complexity <span class="SimpleMath">\(O(m+n)\)</span>, where <span class="SimpleMath">\(m\)</span> is the number of edges (counting multiple edges as one) and <span class="SimpleMath">\(n\)</span> is the number of vertices in the digraph.</p>
 
@@ -557,6 +562,95 @@ false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );</span>
 &lt;digraph with 5 vertices, 7 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsAperiodicDigraph(gr);</span>
+true
+</pre></div>
+
+<p><a id="X7B46EA6C7B2DF2FB" name="X7B46EA6C7B2DF2FB"></a></p>
+
+<h5>6.3-5 IsDirectedTree</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDirectedTree</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a directed tree, and <code class="keyw">false</code> if it is not.</p>
+
+<p>A <em>directed tree</em> is an acyclic digraph with precisely 1 source, such that no two vertices share an out-neighbour. Note the empty digraph is not considered a directed tree as it has no source.</p>
+
+<p>See also <code class="func">DigraphSources</code> (<a href="chap5_mj.html#X7F5C6268839BE98C"><span class="RefLink">5.1-6</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[], [2]]);</span>
+&lt;digraph with 2 vertices, 1 edge&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDirectedTree(g);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[3], [3], []]);</span>
+&lt;digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDirectedTree(g);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[2], [3], []]);</span>
+&lt;digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDirectedTree(g);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[2,3], [6], [4,5], [], [], []]);</span>
+&lt;digraph with 6 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDirectedTree(g);</span>
+true
+</pre></div>
+
+<p><a id="X80FC20FA7AC4BC2A" name="X80FC20FA7AC4BC2A"></a></p>
+
+<h5>6.3-6 IsUndirectedTree</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsUndirectedTree</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is an undirected tree.</p>
+
+<p>An undirected tree is a symmetric digraph without loops, in which for any pair of distinct vertices <code class="code">u</code> and <code class="code">v</code>, there is exactly one directed path from <code class="code">u</code> to <code class="code">v</code>. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>) and <code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>), and see section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of directed path.</p>
+
+<p>Please note that the digraph with zero vertices is not considered to be an undirected tree.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[3], [3], [1,2]]);</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsUndirectedTree(g);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[], [1]]);</span>
+&lt;digraph with 2 vertices, 1 edge&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsUndirectedTree(g);</span>
+false
+</pre></div>
+
+<p><a id="X79DFBB198525544E" name="X79DFBB198525544E"></a></p>
+
+<h5>6.3-7 IsEulerianDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsEulerianDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This property returns true if the digraph <var class="Arg">digraph</var> is Eulerian.</p>
+
+<p>A digraph is called <em>Eulerian</em> if there exists a directed circuit on the digraph which includes every edge exactly once. See section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a directed circuit.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[]]);</span>
+&lt;digraph with 1 vertex, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsEulerianDigraph(g);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[2], []]);</span>
+&lt;digraph with 2 vertices, 1 edge&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsEulerianDigraph(g);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[3], [], [2]]);</span>
+&lt;digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsEulerianDigraph(g);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[2], [3], [1]]);</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsEulerianDigraph(g);</span>
 true
 </pre></div>
 

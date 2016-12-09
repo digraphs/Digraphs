@@ -38,9 +38,11 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7F1B5A2782F598B1">5.1-8 DigraphBicomponents</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7CA91E4B7904F793">5.1-9 DigraphVertexLabel</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7E51F2FE87140B32">5.1-10 DigraphVertexLabels</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7EFAF01B7A155157">5.1-11 DigraphInEdges</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7BECFE6687ECD028">5.1-12 DigraphOutEdges</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7BB8ED88835F07B4">5.1-13 IsDigraphEdge</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X79FAEACC7F438C2F">5.1-11 DigraphEdgeLabel</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7C24851087D4A8FB">5.1-12 DigraphEdgeLabels</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7EFAF01B7A155157">5.1-13 DigraphInEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7BECFE6687ECD028">5.1-14 DigraphOutEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7BB8ED88835F07B4">5.1-15 IsDigraphEdge</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5_mj.html#X7D7CE8328187D0DF">5.2 <span class="Heading">Neighbours and degree</span></a>
 </span>
@@ -234,7 +236,9 @@
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphTopologicalSort</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
 <p>Returns: A list of positive integers, or <code class="keyw">fail</code>.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph with no cycles of length greater than <span class="SimpleMath">\(1\)</span>, then <code class="code">DigraphTopologicalSort</code> returns the vertices of <var class="Arg">digraph</var> ordered so that every edge's source appears no earlier in the list than its range. If the digraph <var class="Arg">digraph</var> contains cycles of length greater than <span class="SimpleMath">\(1\)</span>, then this operation returns <code class="keyw">fail</code>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph whose only directed cycles are loops, then <code class="code">DigraphTopologicalSort</code> returns the vertices of <var class="Arg">digraph</var> ordered so that every edge's source appears no earlier in the list than its range. If the digraph <var class="Arg">digraph</var> contains directed cycles of length greater than <span class="SimpleMath">\(1\)</span>, then this operation returns <code class="keyw">fail</code>.</p>
+
+<p>See section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a directed cycle, and the definition of a loop.</p>
 
 <p>The method used for this attribute has complexity <span class="SimpleMath">\(O(m+n)\)</span> where <span class="SimpleMath">\(m\)</span> is the number of edges (counting multiple edges as one) and <span class="SimpleMath">\(n\)</span> is the number of vertices in the digraph.</p>
 
@@ -339,9 +343,65 @@ fail
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabels(gr);</span>
 [ "a", "c" ]</pre></div>
 
+<p><a id="X79FAEACC7F438C2F" name="X79FAEACC7F438C2F"></a></p>
+
+<h5>5.1-11 DigraphEdgeLabel</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEdgeLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var>, <var class="Arg">j</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphEdgeLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var>, <var class="Arg">j</var>, <var class="Arg">obj</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then the first operation returns the label of the edge from vertex <var class="Arg">i</var> to vertex <var class="Arg">j</var>. The second operation can be used to set the label of the edge between vertex <var class="Arg">i</var> and vertex <var class="Arg">j</var> to the arbitrary <strong class="pkg">GAP</strong> object <var class="Arg">obj</var>.</p>
+
+<p>The label of an edge can be changed an arbitrary number of times. If no label has been set for the edge, then the default value is <var class="Arg">1</var>.</p>
+
+<p>Induced subdigraphs, and some other operations which create new digraphs from old ones, inherit their edge labels from their parents. See also <code class="func">DigraphEdgeLabels</code> (<a href="chap5_mj.html#X7C24851087D4A8FB"><span class="RefLink">5.1-12</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);</span>
+&lt;digraph with 5 vertices, 11 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdgeLabel(gr, 3, 1);</span>
+1
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">SetDigraphEdgeLabel(gr, 2, 5, [42]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdgeLabel(gr, 2, 5);</span>
+[ 42 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := InducedSubdigraph(gr, [2, 5]);</span>
+&lt;digraph with 2 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdgeLabel(gr, 1, 2);</span>
+[ 42 ]</pre></div>
+
+<p><a id="X7C24851087D4A8FB" name="X7C24851087D4A8FB"></a></p>
+
+<h5>5.1-12 DigraphEdgeLabels</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEdgeLabels</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphEdgeLabels</code>( <var class="Arg">digraph</var>, <var class="Arg">labels</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphEdgeLabels</code>( <var class="Arg">digraph</var>, <var class="Arg">func</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then <code class="code">DigraphEdgeLabels</code> returns a copy of the labels of the edges in <var class="Arg">digraph</var> as a list of lists <code class="code">labels</code> such that <code class="code">labels[i][j]</code> is the label on the edge from vertex <code class="code">i</code> to vertex <code class="code">OutNeighbours(digraph)[i][j]</code>. <code class="code">SetDigraphEdgeLabels</code> can be used to set the labels of the edges in <var class="Arg">digraph</var> without multiple edges to the list <var class="Arg">labels</var> of lists of arbitrary <strong class="pkg">GAP</strong> objects such that <code class="code">list[i][j]</code> is the label on the edge from vertex <code class="code">i</code> to the vertex <code class="code">OutNeighbours(digraph&gt;[i][j]</code>. Alternatively <code class="code">SetDigraphEdgeLabels</code> can be called with binary function <var class="Arg">func</var> that as its second argument that when passed two vertices <code class="code">i</code> and <code class="code">j</code> returns the label for the edge between vertex <code class="code">i</code> and vertex <code class="code">j</code>.</p>
+
+<p>The label of an edge can be changed an arbitrary number of times. If no label has been set for an edge, then the default value is <code class="code">1</code>.</p>
+
+<p>Induced subdigraphs, and some other operations which create new digraphs from old ones, inherit their labels from their parents.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);</span>
+&lt;digraph with 5 vertices, 11 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdgeLabels(gr);</span>
+[ [ 1 ], [ 1, 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">SetDigraphEdgeLabel(gr, 2, 1, "d");</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdgeLabels(gr);</span>
+[ [ 1 ], [ "d", 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := InducedSubdigraph(gr, [1, 2, 3]);</span>
+&lt;digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdgeLabels(gr);</span>
+[ [ 1 ], [ "d", 1 ], [ 1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
+[ [ 3 ], [ 1, 3 ], [ 1 ] ]
+</pre></div>
+
 <p><a id="X7EFAF01B7A155157" name="X7EFAF01B7A155157"></a></p>
 
-<h5>5.1-11 DigraphInEdges</h5>
+<h5>5.1-13 DigraphInEdges</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphInEdges</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A list of edges.</p>
@@ -358,7 +418,7 @@ fail
 
 <p><a id="X7BECFE6687ECD028" name="X7BECFE6687ECD028"></a></p>
 
-<h5>5.1-12 DigraphOutEdges</h5>
+<h5>5.1-14 DigraphOutEdges</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphOutEdges</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A list of edges.</p>
@@ -375,7 +435,7 @@ fail
 
 <p><a id="X7BB8ED88835F07B4" name="X7BB8ED88835F07B4"></a></p>
 
-<h5>5.1-13 IsDigraphEdge</h5>
+<h5>5.1-15 IsDigraphEdge</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEdge</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEdge</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
@@ -406,9 +466,12 @@ false
 <h5>5.2-1 AdjacencyMatrix</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrix</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrixMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A square matrix of non-negative integers.</p>
 
 <p>This function returns the adjacency matrix <code class="code">mat</code> of the digraph <var class="Arg">digraph</var>. The value of the matrix entry <code class="code">mat[i][j]</code> is the number of edges in <var class="Arg">digraph</var> with source <code class="code">i</code> and range <code class="code">j</code>.</p>
+
+<p>The function <code class="code">AdjacencyMatrix</code> returns an immutable list of immutable lists, whereas the function <code class="code">AdjacencyMatrixMutableCopy</code> returns a copy of <code class="code">AdjacencyMatrix</code> which is a mutable list of mutable lists.</p>
 
 
 <div class="example"><pre>
@@ -797,13 +860,13 @@ false
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistance</code>( <var class="Arg">digraph</var>, <var class="Arg">list1</var>, <var class="Arg">list2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: An integer or <code class="keyw">fail</code></p>
 
-<p>If there is a path in the digraph <var class="Arg">digraph</var> between vertex <var class="Arg">u</var> and vertex <var class="Arg">v</var>, then this operation returns the length of the shortest such path. If no such path exists, then this operation returns <code class="keyw">fail</code>.</p>
+<p>If there is a directed path in the digraph <var class="Arg">digraph</var> between vertex <var class="Arg">u</var> and vertex <var class="Arg">v</var>, then this operation returns the length of the shortest such directed path. If no such directed path exists, then this operation returns <code class="keyw">fail</code>. See section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a directed path.</p>
 
 <p>If the second form is used, then <var class="Arg">list</var> should be a list of length two, containing two positive integers which correspond to the vertices <var class="Arg">u</var> and <var class="Arg">v</var>.</p>
 
-<p>Note that as usual a vertex is considered to be at distance 0 from itself.</p>
+<p>Note that as usual, a vertex is considered to be at distance 0 from itself .</p>
 
-<p>If the third form is used, then <var class="Arg">list1</var> and <var class="Arg">list2</var> are both lists of vertices. The shortest path between <var class="Arg">list1</var> and <var class="Arg">list2</var> is then the length of the shortest path which starts with a vertex in <var class="Arg">list1</var> and terminates at a vertex in <var class="Arg">list2</var>, if such path exists. If <var class="Arg">list1</var> and <var class="Arg">list2</var> have non-empty intersection, the operation returns <code class="code">0</code>.</p>
+<p>If the third form is used, then <var class="Arg">list1</var> and <var class="Arg">list2</var> are both lists of vertices. The shortest directed path between <var class="Arg">list1</var> and <var class="Arg">list2</var> is then the length of the shortest directed path which starts with a vertex in <var class="Arg">list1</var> and terminates at a vertex in <var class="Arg">list2</var>, if such directed path exists. If <var class="Arg">list1</var> and <var class="Arg">list2</var> have non-empty intersection, the operation returns <code class="code">0</code>.</p>
 
 
 <div class="example"><pre>
@@ -828,9 +891,9 @@ fail
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistances</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
 <p>Returns: A square matrix.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph with <span class="SimpleMath">\(n\)</span> vertices, then this function returns an <span class="SimpleMath">\(n \times n\)</span> matrix <code class="code">mat</code>, where each entry is either a non-negative integer or <code class="code">fail</code>. If <span class="SimpleMath">\(n = 0\)</span>, then an empty list is returned.</p>
+<p>If <var class="Arg">digraph</var> is a digraph with <span class="SimpleMath">\(n\)</span> vertices, then this function returns an <span class="SimpleMath">\(n \times n\)</span> matrix <code class="code">mat</code>, where each entry is either a non-negative integer, or <code class="keyw">fail</code>. If <span class="SimpleMath">\(n = 0\)</span>, then an empty list is returned.</p>
 
-<p>If there is a directed path from vertex <code class="code">i</code> to vertex <code class="code">j</code>, then the value of <code class="code">mat[i][j]</code> is the length of the shortest such path. If no such path exists, then the value of <code class="code">mat[i][j]</code> is <code class="code">fail</code>. We use the convention that the distance from every vertex to itself is <code class="code">0</code>, i.e. <code class="code">mat[i][i] = 0</code> for all vertices <code class="code">i</code>.</p>
+<p>If there is a directed path from vertex <code class="code">i</code> to vertex <code class="code">j</code>, then the value of <code class="code">mat[i][j]</code> is the length of the shortest such directed path. If no such directed path exists, then the value of <code class="code">mat[i][j]</code> is <code class="code">fail</code>. We use the convention that the distance from every vertex to itself is <code class="code">0</code>, i.e. <code class="code">mat[i][i] = 0</code> for all vertices <code class="code">i</code>.</p>
 
 <p>The method used in this function is a version of the Floyd-Warshall algorithm, and has complexity <span class="SimpleMath">\(O(n^3)\)</span>.</p>
 
@@ -851,24 +914,23 @@ fail
 <h5>5.3-4 DigraphLongestDistanceFromVertex</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLongestDistanceFromVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<p>Returns: An integer.</p>
+<p>Returns: An integer, or <code class="keyw">infinity</code>.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">v</var> is a vertex in <var class="Arg">digraph</var>, then this operation returns the length of the longest directed walk in <var class="Arg">digraph</var> which begins at vertex <var class="Arg">v</var>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">v</var> is a vertex in <var class="Arg">digraph</var>, then this operation returns the length of the longest directed walk in <var class="Arg">digraph</var> which begins at vertex <var class="Arg">v</var>. See section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definitions of directed walk, directed cycle, and loop.</p>
 
 
 <ul>
-<li><p>If there exists a directed walk starting at vertex <var class="Arg">v</var> which traverses a cycle or a loop, then we consider there to be a walk of infinite length from <var class="Arg">v</var> (realised by repeatedly traversing the loop/cycle), and so the result is <code class="code">infinity</code>. To disallow walks using loops, try using <code class="func">DigraphRemoveLoops</code> (<a href="chap3_mj.html#X79324AF7818C0C02"><span class="RefLink">3.3-21</span></a>):</p>
+<li><p>If there exists a directed walk starting at vertex <var class="Arg">v</var> which traverses a loop or a directed cycle, then we consider there to be a walk of infinite length from <var class="Arg">v</var> (realised by repeatedly traversing the loop/directed cycle), and so the result is <code class="keyw">infinity</code>. To disallow walks using loops, try using <code class="func">DigraphRemoveLoops</code> (<a href="chap3_mj.html#X79324AF7818C0C02"><span class="RefLink">3.3-21</span></a>):</p>
 
 <p><code class="code">DigraphLongestDistanceFromVertex(DigraphRemoveLoops(<var class="Arg">digraph</var>,<var class="Arg">v</var>))</code>.</p>
-
-</li>
-<li><p>If no walk from vertex <var class="Arg">v</var> exists, i.e. if <var class="Arg">v</var> is a sink of the digraph (<code class="func">DigraphSinks</code> (<a href="chap5_mj.html#X85D5E08280914EE4"><span class="RefLink">5.1-5</span></a>)), then the result is <code class="code">0</code>.</p>
 
 </li>
 <li><p>Otherwise, if all directed walks starting at vertex <var class="Arg">v</var> have finite length, then the length of the longest such walk is returned.</p>
 
 </li>
 </ul>
+<p>Note that the result is <code class="code">0</code> if and only if <var class="Arg">v</var> is a sink of <var class="Arg">digraph</var>. See <code class="func">DigraphSinks</code> (<a href="chap5_mj.html#X85D5E08280914EE4"><span class="RefLink">5.1-5</span></a>).</p>
+
 
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3, 4], [], [5], [], [6]]);</span>
@@ -912,11 +974,11 @@ infinity
 <h5>5.3-6 DigraphGirth</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGirth</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<p>Returns: An integer or <code class="code">infinity</code>.</p>
+<p>Returns: An integer, or <code class="keyw">infinity</code>.</p>
 
-<p>The <em>girth</em> of a digraph is the length of its shortest simple cycle, i.e. the shortest non-trivial directed path starting and ending at the same vertex and passing through no vertex more than once.</p>
+<p>This attribute returns the <em>girth</em> of the digraph <var class="Arg">digraph</var>. The <em>girth</em> of a digraph is the length of its shortest simple circuit. See section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definitions of simple circuit, directed cycle, and loop.</p>
 
-<p>If <var class="Arg">digraph</var> has no cycles, then this function will return <code class="code">infinity</code>. If <var class="Arg">digraph</var> contains a loop, then this function will return <code class="code">1</code>.</p>
+<p>If <var class="Arg">digraph</var> has no directed cycles, then this function will return <code class="keyw">infinity</code>. If <var class="Arg">digraph</var> contains a loop, then this function will return <code class="code">1</code>.</p>
 
 <p>In the worst case, the method used in this function is a version of the Floyd-Warshall algorithm, and has complexity <code class="code">O(<var class="Arg">n</var> ^ 3)</code>, where <var class="Arg">n</var> is the number of vertices in <var class="Arg">digraph</var>. If the digraph has known automorphisms [see <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>)], then the performance is likely to be better.</p>
 
@@ -943,13 +1005,13 @@ infinity
 <h5>5.3-7 DigraphUndirectedGirth</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphUndirectedGirth</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<p>Returns: An integer or <code class="code">infinity</code>.</p>
+<p>Returns: An integer or <code class="keyw">infinity</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a symmetric digraph, then this function returns the girth of <var class="Arg">digraph</var> when treated as an undirected graph (i.e. each pair of edges <span class="SimpleMath">\([i, j]\)</span> and <span class="SimpleMath">\([j, i]\)</span> is treated as a single edge between <span class="SimpleMath">\(i\)</span> and <span class="SimpleMath">\(j\)</span>).</p>
 
-<p>The <em>girth</em> of an undirected graph is the length of its shortest simple cycle, i.e. the shortest non-trivial path starting and ending at the same vertex and passing through no vertex more than once.</p>
+<p>The <em>girth</em> of an undirected graph is the length of its shortest simple cycle, i.e. the shortest non-trivial path starting and ending at the same vertex and passing through no vertex or edge more than once.</p>
 
-<p>If <var class="Arg">digraph</var> has no cycles, then this function will return <code class="code">infinity</code>.</p>
+<p>If <var class="Arg">digraph</var> has no cycles, then this function will return <code class="keyw">infinity</code>.</p>
 
 
 <div class="example"><pre>
@@ -974,7 +1036,7 @@ infinity
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphConnectedComponents</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
 <p>Returns: A record.</p>
 
-<p>This function returns the record <code class="code">wcc</code> corresponding to the weakly connected components of the digraph <var class="Arg">digraph</var>. Two vertices of <var class="Arg">digraph</var> are in the same weakly connected component whenever they are equal, or there exists a path (ignoring the orientation of edges) between them. In other words, two vertices are in the same weakly connected component of <var class="Arg">digraph</var> if and only if they are in the same strongly connected component (see <code class="func">DigraphStronglyConnectedComponents</code> (<a href="chap5_mj.html#X833ECD6B7A84944C"><span class="RefLink">5.3-10</span></a>)) of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3_mj.html#X874883DD7DD450C4"><span class="RefLink">3.3-8</span></a>) of <var class="Arg">digraph</var>.</p>
+<p>This function returns the record <code class="code">wcc</code> corresponding to the weakly connected components of the digraph <var class="Arg">digraph</var>. Two vertices of <var class="Arg">digraph</var> are in the same weakly connected component whenever they are equal, or there exists a directed path (ignoring the orientation of edges) between them. More formally, two vertices are in the same weakly connected component of <var class="Arg">digraph</var> if and only if they are in the same strongly connected component (see <code class="func">DigraphStronglyConnectedComponents</code> (<a href="chap5_mj.html#X833ECD6B7A84944C"><span class="RefLink">5.3-10</span></a>)) of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3_mj.html#X874883DD7DD450C4"><span class="RefLink">3.3-8</span></a>) of <var class="Arg">digraph</var>.</p>
 
 <p>The set of weakly connected components is a partition of the vertex set of <var class="Arg">digraph</var>.</p>
 
@@ -1074,7 +1136,7 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
 
 <p>This function returns the period of the digraph <var class="Arg">digraph</var>.</p>
 
-<p>If a digraph <var class="Arg">digraph</var> has at least one cycle, then the period is the greatest positive integer which divides the lengths of all cycles of <var class="Arg">digraph</var>. If <var class="Arg">digraph</var> has no cycles, then this function returns <span class="SimpleMath">\(0\)</span>.</p>
+<p>If a digraph <var class="Arg">digraph</var> has at least one directed cycle, then the period is the greatest positive integer which divides the lengths of all directed cycles of <var class="Arg">digraph</var>. If <var class="Arg">digraph</var> has no directed cycles, then this function returns <span class="SimpleMath">\(0\)</span>. See section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a directed cycle.</p>
 
 <p>A digraph with a period of <span class="SimpleMath">\(1\)</span> is said to be <em>aperiodic</em>. See <code class="func">IsAperiodicDigraph</code> (<a href="chap6_mj.html#X80E883967EBE839E"><span class="RefLink">6.3-4</span></a>).</p>
 
@@ -1152,7 +1214,7 @@ function( mat, i, j, k ) ... end
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsReachable</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>This operation returns <code class="keyw">true</code> if there exists a directed walk (of non-zero length) from vertex <var class="Arg">u</var> to vertex <var class="Arg">v</var> in the digraph <var class="Arg">digraph</var>, and <code class="keyw">false</code> if there does not exist such a walk.</p>
+<p>This operation returns <code class="keyw">true</code> if there exists a non-trivial directed walk from vertex <var class="Arg">u</var> to vertex <var class="Arg">v</var> in the digraph <var class="Arg">digraph</var>, and <code class="keyw">false</code> if there does not exist such a directed walk. See section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a non-trivial directed walk.</p>
 
 <p>The method for <code class="code">IsReachable</code> has worst case complexity of <span class="SimpleMath">\(O(m + n)\)</span> where <span class="SimpleMath">\(m\)</span> is the number of edges and <span class="SimpleMath">\(n\)</span> the number of vertices in <var class="Arg">digraph</var>.</p>
 
@@ -1177,9 +1239,9 @@ false
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPath</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A pair of lists, or <code class="keyw">fail</code>.</p>
 
-<p>If there exists a directed path (or a cycle, in the case that <var class="Arg">u</var> <code class="code">=</code> <var class="Arg">v</var>) of non-zero length from vertex <var class="Arg">u</var> to vertex <var class="Arg">v</var> in the digraph <var class="Arg">digraph</var>, then this operation returns such a directed path (or cycle). Otherwise, this operation returns <code class="keyw">fail</code>. See Chapter <a href="chap1_mj.html#X7DA617417D78957D"><span class="RefLink">1</span></a> for the definition of a path and a cycle.</p>
+<p>If there exists a non-trivial directed path (or a non-trivial cycle, in the case that <var class="Arg">u</var> <code class="code">=</code> <var class="Arg">v</var>) from vertex <var class="Arg">u</var> to vertex <var class="Arg">v</var> in the digraph <var class="Arg">digraph</var>, then this operation returns such a directed path (or directed cycle). Otherwise, this operation returns <code class="keyw">fail</code>. See Section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink"><span class="Heading">Definitions</span></span></a> for the definition of a directed path and a directed cycle.</p>
 
-<p>A directed path (or cycle) of non-zero length <code class="code">n-1</code>, <span class="SimpleMath">\((v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)\)</span>, is represented by a pair of lists <code class="code">[v,a]</code> as follows:</p>
+<p>A directed path (or directed cycle) of non-zero length <code class="code">n-1</code>, <span class="SimpleMath">\((v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)\)</span>, is represented by a pair of lists <code class="code">[v,a]</code> as follows:</p>
 
 
 <ul>
@@ -1213,9 +1275,9 @@ fail
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorOfPaths</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: An iterator.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph or a list of adjacencies which defines a digraph - see <code class="func">OutNeighbours</code> (<a href="chap5_mj.html#X7E9880767AE68E00"><span class="RefLink">5.2-5</span></a>) - then this operation returns an iterator of the directed paths (or cycles, in the case that <var class="Arg">u</var> <code class="code">=</code> <var class="Arg">v</var>) of non-zero length in <var class="Arg">digraph</var> from the vertex <var class="Arg">u</var> to the vertex <var class="Arg">v</var>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph or a list of adjacencies which defines a digraph - see <code class="func">OutNeighbours</code> (<a href="chap5_mj.html#X7E9880767AE68E00"><span class="RefLink">5.2-5</span></a>) - then this operation returns an iterator of the non-trivial directed paths (or directed cycles, in the case that <var class="Arg">u</var> <code class="code">=</code> <var class="Arg">v</var>) in <var class="Arg">digraph</var> from the vertex <var class="Arg">u</var> to the vertex <var class="Arg">v</var>.</p>
 
-<p>See <code class="func">DigraphPath</code> (<a href="chap5_mj.html#X8039170B82A32257"><span class="RefLink">5.3-15</span></a>) for more information about the repesentation of a directed path or cycle which is used, and see <a href="../../../doc/ref/chap30_mj.html#X85A3F00985453F95"><span class="RefLink">Reference: Iterators</span></a> for more information about iterators.</p>
+<p>See <code class="func">DigraphPath</code> (<a href="chap5_mj.html#X8039170B82A32257"><span class="RefLink">5.3-15</span></a>) for more information about the repesentation of a directed path or directed cycle which is used, and see <a href="../../../doc/ref/chap30_mj.html#X85A3F00985453F95"><span class="RefLink">Reference: Iterators</span></a> for more information about iterators. See Section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink"><span class="Heading">Definitions</span></span></a> for the definition of a directed path and a directed cycle.</p>
 
 
 <div class="example"><pre>
@@ -1246,9 +1308,11 @@ true
 
 <p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphAllSimpleCircuits</code> returns a list of the <em>simple circuits</em> in <var class="Arg">digraph</var>.</p>
 
-<p>A <em>simple circuit</em> in <var class="Arg">digraph</var> is a non-trivial directed path in <var class="Arg">digraph</var> from a vertex <code class="code">v</code> back to <code class="code">v</code>, in which no vertex is visited more than once. Since a circuit of length <code class="code">n</code> is determined by its first <code class="code">n</code> vertices, a circuit <span class="SimpleMath">\(v_{1} \rightarrow \cdots \rightarrow v_{n} \rightarrow v_{1}\)</span> can be represented as the list <span class="SimpleMath">\([v_{1}, \ldots, v_{n}]\)</span>. For each simple circuit of <var class="Arg">digraph</var>, <code class="code">DigraphAllSimpleCircuits(</code><var class="Arg">digraph</var><code class="code">)</code> will include precisely one such list to represents the circuit (cyclic permutations of such a list describe the same circuit).</p>
+<p>See section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a simple circuit, and related notions. Note that a loop is a simple circuit.</p>
 
-<p>Note that a loop is a simple circuit.</p>
+<p>For a digraph without multiple edges, a simple circuit is uniquely determined by its subsequence of vertices. However this is not the case for a multidigraph. The attribute <code class="code">DigraphAllSimpleCircuits</code> ignores multiple edges, and identifies a simple circuit using only its subsequence of vertices. For example, although the simple circuits <span class="SimpleMath">\((v, e, v)\)</span> and <span class="SimpleMath">\((v, e', v)\)</span> (for distinct edges <span class="SimpleMath">\(e\)</span> and <span class="SimpleMath">\(e'\)</span>) are mathematically distinct, <code class="code">DigraphAllSimpleCircuits</code> considers them to be the same.</p>
+
+<p>With this approach, a directed circuit of length <code class="code">n</code> can be determined by a list of its first <code class="code">n</code> vertices. Thus a simple circuit <span class="SimpleMath">\((v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n, e_{n+1}, v_1)\)</span> can be represented as the list <span class="SimpleMath">\([v_1, \ldots, v_n]\)</span>, or any cyclic permutation thereof. For each simple circuit of <var class="Arg">digraph</var>, <code class="code">DigraphAllSimpleCircuits(<var class="Arg">digraph</var>)</code> includes precisely one such list to represent the circuit.</p>
 
 
 <div class="example"><pre>
@@ -1262,22 +1326,24 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1], [1]]);</span>
 &lt;digraph with 3 vertices, 3 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphAllSimpleCircuits(gr);</span>
-[ [ 1, 3 ] ]</pre></div>
+[ [ 1, 3 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 1]]);</span>
+&lt;multidigraph with 1 vertex, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphAllSimpleCircuits(gr);</span>
+[ [ 1 ] ]</pre></div>
 
 <p><a id="X7C735C4E86BDD5F6" name="X7C735C4E86BDD5F6"></a></p>
 
 <h5>5.3-18 DigraphLongestSimpleCircuit</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLongestSimpleCircuit</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<p>Returns: A list of vertices or <code class="code">fail</code>.</p>
+<p>Returns: A list of vertices, or <code class="keyw">fail</code>.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphLongestSimpleCircuit</code> returns the longest <em>simple circuit</em> in <var class="Arg">digraph</var>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphLongestSimpleCircuit</code> returns the longest <em>simple circuit</em> in <var class="Arg">digraph</var>. See section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of simple circuit, and the definition of length for a simple circuit.</p>
 
-<p>A <em>simple circuit</em> in <var class="Arg">digraph</var> is a non-trivial directed path in <var class="Arg">digraph</var> from a vertex <code class="code">v</code> back to <code class="code">v</code>, in which no vertex is visited more than once. Since a circuit of length <code class="code">n</code> is determined by its first <code class="code">n</code> vertices, a circuit <span class="SimpleMath">\(v_{1} \rightarrow \cdots \rightarrow v_{n} \rightarrow v_{1}\)</span> can be represented as the list <span class="SimpleMath">\([v_{1}, \ldots, v_{n}]\)</span>. Note that a loop is a simple circuit.</p>
+<p>This attribute computes <code class="code">DigraphAllSimpleCircuits(</code><var class="Arg">digraph</var><code class="code">)</code> to find all the simple circuits of <var class="Arg">digraph</var>, and returns one of maximal length. A simple circuit is represented as a list of vertices, in the same way as described in <code class="func">DigraphAllSimpleCircuits</code> (<a href="chap5_mj.html#X7ECD16838704FAAA"><span class="RefLink">5.3-17</span></a>).</p>
 
-<p>If <var class="Arg">digraph</var> has no simple circuits, then this attribute returns <code class="code">fail</code>. If <var class="Arg">digraph</var> has multiple simple circuits of maximum length, then this attribute returns one of them.</p>
-
-<p>See <code class="func">DigraphAllSimpleCircuits</code> (<a href="chap5_mj.html#X7ECD16838704FAAA"><span class="RefLink">5.3-17</span></a>).</p>
+<p>If <var class="Arg">digraph</var> has no simple circuits, then this attribute returns <code class="keyw">fail</code>. If <var class="Arg">digraph</var> has multiple simple circuits of maximal length, then this attribute returns one of them.</p>
 
 
 <div class="example"><pre>
