@@ -41,3 +41,23 @@ There is a library of various digraphs available for testing purposes
 For bug reports, feature requests and suggestions, please use the
 [issue tracker]({{site.github.issues_url}}).
 {% endif %}
+
+## How to cite {{site.data.package.name}}
+If you are using BibTeX, you can use the following BibTeX entry for the current 
+version of {{site.data.package.name}}:
+
+<pre style="white-space: pre-wrap;">@misc{james_d_mitchell_2016_198140,
+  author       = {James D. Mitchell and
+                  Wilf Wilson and
+                  Michael Torpey and
+                  Markus Pfeiffer and
+                  Jan De Beule and
+                  Christopher Jefferson and
+                  Luke Elliot and
+                  Finlay Smith},
+  title        = {gap-packages/Digraphs: 0.6.0},
+  month        = dec,
+  year         = 2016,
+  doi          = {10.5281/zenodo.198140},
+  url          = {https://doi.org/10.5281/zenodo.198140}
+}</pre>
