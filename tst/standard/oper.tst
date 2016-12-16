@@ -1230,7 +1230,7 @@ gap> DigraphJoin(EmptyDigraph(3), EmptyDigraph(2)) =
 > CompleteBipartiteDigraph(3, 2);
 true
 
-#T# OutNeighboursCopy
+#T# OutNeighboursMutableCopy
 gap> gr := Digraph([[3], [10], [6], [3], [10], [], [6], [3], [], [3]]);
 <digraph with 10 vertices, 8 edges>
 gap> out1 := OutNeighbours(gr);
@@ -1239,17 +1239,42 @@ gap> IsMutable(out1);
 false
 gap> IsMutable(out1[1]);
 false
-gap> out2 := OutNeighboursCopy(gr);
+gap> out2 := OutNeighboursMutableCopy(gr);
 [ [ 3 ], [ 10 ], [ 6 ], [ 3 ], [ 10 ], [  ], [ 6 ], [ 3 ], [  ], [ 3 ] ]
 gap> IsMutable(out2);
 true
 gap> IsMutable(out2[1]);
 true
-gap> out3 := OutNeighborsCopy(gr);
+gap> out3 := OutNeighborsMutableCopy(gr);
 [ [ 3 ], [ 10 ], [ 6 ], [ 3 ], [ 10 ], [  ], [ 6 ], [ 3 ], [  ], [ 3 ] ]
 gap> IsMutable(out3);
 true
 gap> IsMutable(out3[1]);
+true
+
+#T# InNeighboursMutableCopy
+gap> gr := Digraph([[3], [10], [6], [3], [10], [], [6], [3], [], [3]]);
+<digraph with 10 vertices, 8 edges>
+gap> in1 := InNeighbours(gr);
+[ [  ], [  ], [ 1, 4, 8, 10 ], [  ], [  ], [ 3, 7 ], [  ], [  ], [  ], 
+  [ 2, 5 ] ]
+gap> IsMutable(in1);
+false
+gap> IsMutable(in1[1]);
+false
+gap> in2 := InNeighboursMutableCopy(gr);
+[ [  ], [  ], [ 1, 4, 8, 10 ], [  ], [  ], [ 3, 7 ], [  ], [  ], [  ], 
+  [ 2, 5 ] ]
+gap> IsMutable(in2);
+true
+gap> IsMutable(in2[1]);
+true
+gap> in3 := InNeighborsMutableCopy(gr);
+[ [  ], [  ], [ 1, 4, 8, 10 ], [  ], [  ], [ 3, 7 ], [  ], [  ], [  ], 
+  [ 2, 5 ] ]
+gap> IsMutable(in3);
+true
+gap> IsMutable(in3[1]);
 true
 
 #T# DigraphRemoveAllMultipleEdges

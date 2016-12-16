@@ -75,8 +75,10 @@ DeclareOperation("IsReachable", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphLongestDistanceFromVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);
 
-DeclareOperation("OutNeighboursCopy", [IsDigraph]);
-DeclareSynonym("OutNeighborsCopy", OutNeighboursCopy);
+DeclareOperation("OutNeighboursMutableCopy", [IsDigraph]);
+DeclareSynonym("OutNeighborsMutableCopy", OutNeighboursMutableCopy);
+DeclareOperation("InNeighboursMutableCopy", [IsDigraph]);
+DeclareSynonym("InNeighborsMutableCopy", InNeighboursMutableCopy);
 DeclareOperation("AdjacencyMatrixMutableCopy", [IsDigraph]);
 
 DeclareOperation("DigraphLayers", [IsDigraph, IsPosInt]);
