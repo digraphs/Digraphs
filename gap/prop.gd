@@ -40,3 +40,5 @@ InstallTrueMethod(IsSymmetricDigraph, IsCompleteDigraph);
 InstallTrueMethod(IsTransitiveDigraph, IsCompleteDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsEmptyDigraph);
 InstallTrueMethod(IsRegularDigraph, IsInRegularDigraph and IsOutRegularDigraph);
+InstallTrueMethod(IsStronglyConnectedDigraph,
+                  IsConnectedDigraph and IsSymmetricDigraph);
