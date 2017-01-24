@@ -29,7 +29,7 @@
 *.txt
 .libs/digraphs.la
 .libs/digraphs.lai
-.libs/digraphs.so
+.libs/**/digraphs.so
 .libs/graphs.la
 .libs/graphs.lai
 .libs/graphs.so
@@ -83,3 +83,4 @@ data/digraphs-lib-0.5
 gh-pages/
 manual.lab
 ltmain.sh
+.libs/**/Info.plist
