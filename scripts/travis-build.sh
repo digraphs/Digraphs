@@ -22,7 +22,7 @@ echo -en 'travis_fold:end:InstallGAP\r'
 echo -en 'travis_fold:start:BuildDigraphs\r'
 mv $DIGRAPHSDIR gap/pkg/digraphs
 cd gap/pkg/digraphs
-curl -L -O http://gap-packages.github.io/Digraphs/$DIGRAPHS_LIB.tar.gz
+curl -L -O https://gap-packages.github.io/Digraphs/$DIGRAPHS_LIB.tar.gz
 tar xf $DIGRAPHS_LIB.tar.gz
 rm $DIGRAPHS_LIB.tar.gz
 ./autogen.sh
@@ -34,27 +34,27 @@ echo -en 'travis_fold:end:BuildDigraphs\r'
 # Get the packages
 echo -en 'travis_fold:start:InstallPackages\r'
 cd pkg
-curl -O http://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$GAPDOC.tar.gz
+curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$GAPDOC.tar.gz
 tar xzf $GAPDOC.tar.gz
 rm $GAPDOC.tar.gz
-curl -O http://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$IO.tar.gz
+curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$IO.tar.gz
 tar xzf $IO.tar.gz
 rm $IO.tar.gz
 cd $IO
 ./configure $PKG_FLAGS
 make
 cd ..
-curl -O http://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$ORB.tar.gz
+curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$ORB.tar.gz
 tar xzf $ORB.tar.gz
 rm $ORB.tar.gz
 cd $ORB
 ./configure $PKG_FLAGS
 make
 cd ..
-curl -O http://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$GENSS.tar.gz
+curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$GENSS.tar.gz
 tar xzf $GENSS.tar.gz
 rm $GENSS.tar.gz
-curl -O http://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$GRAPE.tar.gz
+curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$GRAPE.tar.gz
 tar xzf $GRAPE.tar.gz
 rm $GRAPE.tar.gz
 cd grape
