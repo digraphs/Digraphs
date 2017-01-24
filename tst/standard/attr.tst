@@ -1,7 +1,8 @@
 #############################################################################
 ##
 #W  standard/attr.tst
-#Y  Copyright (C) 2014-15                                James D. Mitchell
+#Y  Copyright (C) 2014-17                                James D. Mitchell
+##                                                          Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -1313,6 +1314,48 @@ gap> gr := DigraphAddVertex(gr);;
 gap> ChromaticNumber(gr);
 4
 
+#T# UndirectedSpanningTree and UndirectedSpanningForest
+gap> gr := EmptyDigraph(0);
+<digraph with 0 vertices, 0 edges>
+gap> tree := UndirectedSpanningTree(gr);
+fail
+gap> forest := UndirectedSpanningForest(gr);
+fail
+gap> gr := EmptyDigraph(1);
+<digraph with 1 vertex, 0 edges>
+gap> tree := UndirectedSpanningTree(gr);
+<digraph with 1 vertex, 0 edges>
+gap> forest := UndirectedSpanningForest(gr);
+<digraph with 1 vertex, 0 edges>
+gap> IsUndirectedSpanningTree(gr, gr);
+true
+gap> IsUndirectedSpanningTree(gr, forest);
+true
+gap> gr = forest;
+true
+gap> gr := EmptyDigraph(2);
+<digraph with 2 vertices, 0 edges>
+gap> tree := UndirectedSpanningTree(gr);
+fail
+gap> forest := UndirectedSpanningForest(gr);
+<digraph with 2 vertices, 0 edges>
+gap> IsUndirectedTree(forest);
+false
+gap> IsUndirectedSpanningForest(gr, forest);
+true
+gap> gr = forest;
+true
+gap> gr := DigraphFromDigraph6String("+I?PIMAQc@A?W?ADPP?");
+<digraph with 10 vertices, 23 edges>
+gap> IsStronglyConnectedDigraph(gr);
+true
+gap> UndirectedSpanningTree(gr);
+fail
+gap> DigraphEdges(UndirectedSpanningForest(gr));
+[ [ 2, 7 ], [ 7, 2 ] ]
+gap> IsUndirectedSpanningForest(gr, UndirectedSpanningForest(gr));
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);
@@ -1320,6 +1363,7 @@ gap> Unbind(adj2);
 gap> Unbind(circuit);
 gap> Unbind(complete15);
 gap> Unbind(cycle12);
+gap> Unbind(forest);
 gap> Unbind(gr);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
@@ -1341,6 +1385,7 @@ gap> Unbind(topo);
 gap> Unbind(trans);
 gap> Unbind(trans1);
 gap> Unbind(trans2);
+gap> Unbind(tree);
 gap> Unbind(wcc);
 
 #E#

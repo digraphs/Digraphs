@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  attr.gi
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014-17                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -1347,4 +1347,39 @@ function(gr, loops)
   SetIsSymmetricDigraph(new_gr, true);
   SetDigraphVertexLabels(new_gr, DigraphVertexLabels(gr));
   return new_gr;
+end);
+
+#
+
+InstallMethod(UndirectedSpanningForest,
+"for a digraph",
+[IsDigraph],
+function(gr)
+  local out;
+  if DigraphNrVertices(gr) = 0 then
+    return fail;
+  fi;
+
+  gr := MaximalSymmetricSubdigraph(gr);
+  out := Digraph(DIGRAPH_SYMMETRIC_SPANNING_FOREST(OutNeighbours(gr)));
+  SetIsUndirectedForest(out, true);
+  SetIsMultiDigraph(out, false);
+  SetDigraphHasLoops(out, false);
+  return out;
+end);
+
+#
+
+InstallMethod(UndirectedSpanningTree,
+"for a digraph",
+[IsDigraph],
+function(gr)
+  local out;
+  if DigraphNrVertices(gr) = 0
+      or not IsStronglyConnectedDigraph(MaximalSymmetricSubdigraph(gr)) then
+    return fail;
+  fi;
+  out := UndirectedSpanningForest(gr);
+  SetIsUndirectedTree(out, true);
+  return out;
 end);

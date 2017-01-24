@@ -1211,3 +1211,58 @@ gap> OutNeighbours(sym);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="UndirectedSpanningTree">
+<ManSection>
+  <Attr Name="UndirectedSpanningTree" Arg="digraph"/>
+  <Attr Name="UndirectedSpanningForest" Arg="digraph"/>
+  <Returns>A digraph, or <K>fail</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph with at least one vertex, then
+    <C>UndirectedSpanningForest</C> returns an undirected spanning forest of
+    <A>digraph</A>, otherwise this attribute returns <K>fail</K>. See <Ref
+      Oper="IsUndirectedSpanningForest" /> for the definition of an undirected
+    spanning forest. <P/>
+
+    If <A>digraph</A> is a digraph with at least one vertex and whose <Ref
+      Attr="MaximalSymmetricSubdigraph"/> is connected (see <Ref
+      Prop="IsConnectedDigraph" />), then <C>UndirectedSpanningTree</C> returns
+    an undirected spanning tree of <A>digraph</A>, otherwise this attribute
+    returns <K>fail</K>.  See <Ref Oper="IsUndirectedSpanningTree" /> for the
+    definition of an undirected spanning tree. <P/>
+
+    Note that for a digraph that has an undirected spanning tree, the attribute
+    <C>UndirectedSpanningTree</C> returns the same digraph as the attribute
+    <C>UndirectedSpanningForest</C>.
+
+    <Example><![CDATA[
+gap> gr := Digraph([[1, 2, 1, 3], [1], [4], [3, 4, 3]]);
+<multidigraph with 4 vertices, 9 edges>
+gap> UndirectedSpanningTree(gr);
+fail
+gap> forest := UndirectedSpanningForest(gr);
+<digraph with 4 vertices, 4 edges>
+gap> OutNeighbours(forest);
+[ [ 2 ], [ 1 ], [ 4 ], [ 3 ] ]
+gap> IsUndirectedSpanningForest(gr, forest);
+true
+gap> DigraphConnectedComponents(forest).comps;
+[ [ 1, 2 ], [ 3, 4 ] ]
+gap> DigraphConnectedComponents(MaximalSymmetricSubdigraph(gr)).comps;
+[ [ 1, 2 ], [ 3, 4 ] ]
+gap> UndirectedSpanningForest(MaximalSymmetricSubdigraph(gr))
+> = forest;
+true
+gap> gr := CompleteDigraph(4);
+<digraph with 4 vertices, 12 edges>
+gap> tree := UndirectedSpanningTree(gr);
+<digraph with 4 vertices, 6 edges>
+gap> IsUndirectedSpanningTree(gr, tree);
+true
+gap> tree = UndirectedSpanningForest(gr);
+true
+gap> UndirectedSpanningForest(EmptyDigraph(0));
+fail]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

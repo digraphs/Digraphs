@@ -854,6 +854,96 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   return out;
 }
 
+// WW. This function performs a depth first search on the digraph defined by
+// <adj> and returns the adjacency list <out> of a spanning forest. This is a
+// forest rather than a tree since <adj> is not required to be connected. Each
+// time a new vertex <j> is discovered (from the previous vertex <i>), the edges
+// i <-> j are added to <out>.
+
+// TODO(*) use generic DFS, when we have one.
+
+// Assumes that <adj> is the list of adjacencies of a symmetric digraph
+// Multiple edges and loops are allowed
+static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
+  UInt  nr, i, j, k, next, len, level;
+  Obj   nbs, out, out_j, new;
+  UInt  *stack, *ptr;
+
+  nr = LEN_PLIST(adj);
+
+  if (nr == 0) {
+    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+  }
+
+  // init the adjacencies of the spanning forest
+  out = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, nr);
+  SET_LEN_PLIST(out, nr);
+  for (i = 1; i <= nr; i++) {
+    SET_ELM_PLIST(out, i, NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
+    SET_LEN_PLIST(ELM_PLIST(out, i), 0);
+    CHANGED_BAG(out);
+  }
+
+  // init the buffer
+  ptr   = calloc(nr + 1, sizeof(UInt));
+  stack = malloc((2 * nr + 2) * sizeof(UInt));
+
+  for (i = 1; i <= nr; i++) {
+    // perform DFS only on still-undiscovered non-trivial connected components
+    if (!ptr[i] && LEN_LIST(ELM_PLIST(adj, i)) > 0) {
+      level    = 1;
+      stack[0] = i;
+      stack[1] = 1;
+
+      while (1) {
+        j = stack[0];
+        k = stack[1];
+        nbs = ELM_PLIST(adj, j);
+
+        // idea: is <nbs[k]> a new vertex? add edges <j> <-> <nbs[k]> if so
+
+        // if we're finished with <j>, or <nbs[k]> doesn't exist, then backtrack
+        if (ptr[j] || k > (UInt) LEN_LIST(nbs)) {
+          ptr[j] = 1; // vertex <j> and its descendents are now fully explored
+          if (--level == 0) {
+            break; // we've explored the whole connected component
+          }
+          stack -= 2;
+          ptr[stack[0]] = 0;
+          stack[1]++;
+        } else {
+          ptr[j] = 1;
+          next = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          level++;
+          stack += 2;
+          stack[0] = next;
+          stack[1] = 1;
+          // if <next> is a brand new vertex, add it to the spanning tree
+          if (ptr[next] == 0) {
+            // create the edge <j> -> <next>
+            out_j = ELM_PLIST(out, j);
+            len   = LEN_PLIST(out_j);
+            if (len == 0) {
+              RetypeBag(out_j, T_PLIST_CYC + IMMUTABLE);
+              CHANGED_BAG(out);
+            }
+            AssPlist(out_j, len + 1, INTOBJ_INT(next));
+            // create the edge <next> -> <j>
+            // since <next> is new, <out[next]> is still a T_PLIST_EMPTY
+            new = ELM_PLIST(out, next);
+            RetypeBag(new, T_PLIST_CYC + IMMUTABLE);
+            AssPlist(new, 1, INTOBJ_INT(j));
+            CHANGED_BAG(out);
+          }
+        }
+      }
+    }
+  }
+  free(ptr);
+  free(stack);
+  return out;
+}
+
 static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
   Obj source, range, adj, adji;
   Int i, j, k, m, n, len;
@@ -2345,6 +2435,12 @@ static StructGVarFunc GVarFuncs[] = {
      "adj",
      FuncDIGRAPH_TOPO_SORT,
      "src/digraphs.c:FuncDIGRAPH_TOPO_SORT"},
+
+    {"DIGRAPH_SYMMETRIC_SPANNING_FOREST",
+     1,
+     "adj",
+     FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST,
+     "src/digraphs.c:FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST"},
 
     {"DIGRAPH_SOURCE_RANGE",
      1,

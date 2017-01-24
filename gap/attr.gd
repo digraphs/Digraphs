@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  attr.gd
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014-17                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -63,6 +63,9 @@ DeclareAttribute("ReducedDigraph", IsDigraph);
 DeclareAttribute("MaximalSymmetricSubdigraph", IsDigraph);
 DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoops", IsDigraph);
 DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
+
+DeclareAttribute("UndirectedSpanningTree", IsDigraph);
+DeclareAttribute("UndirectedSpanningForest", IsDigraph);
 
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
