@@ -677,3 +677,36 @@ true
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsHamiltonianDigraph">
+<ManSection>
+  <Prop Name="IsHamiltonianDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is Hamiltonian, this property returns
+    <K>true</K>.<P/>
+
+    A Hamiltonian digraph is a digraph which has a circuit visiting 
+    each Vertex exactly once.<P/>
+
+    <Example><![CDATA[
+gap> g := Digraph([[]]);
+<digraph with 1 vertex, 0 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := Digraph([[3], [], [2]]);
+<digraph with 3 vertices, 2 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[2], [3], [1]]);
+<digraph with 3 vertices, 3 edges>
+gap> IsHamiltonianDigraph(g);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+

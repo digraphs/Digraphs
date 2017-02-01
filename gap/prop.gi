@@ -513,3 +513,47 @@ function(g)
   return true;
 
 end);
+
+#
+
+InstallMethod(IsHamiltonianDigraph, "for a digraph",
+[IsDigraph],
+function(g)
+  local j, k, l, i, paths, paths2, out, sto;
+
+  if g = Digraph([]) or g= Digraph([[]]) then
+     return true;
+  fi;
+
+  if not IsStronglyConnectedDigraph(g) then
+     return false;
+  fi;
+
+  out := OutNeighbours(g);
+
+  paths:=[[1]];
+  paths2:=[];
+
+  for j in [1.. (Length(out)-1)] do
+	for k in paths do
+		for l in out[k[Length(k)]] do
+			if not l in k then
+				sto:=ShallowCopy(k);
+				Add(sto,l);
+				Add(paths2,sto);
+			fi;
+		od;
+	od;
+	paths:=paths2;
+	paths2:=[];
+  od;
+
+  for i in paths do
+    if 1 in out[i[Length(out)]] then
+       return true;
+    fi;
+  od;
+
+  return false;
+
+end);
