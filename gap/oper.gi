@@ -142,7 +142,7 @@ function(digraph, edges)
   current := 1;
   nredges := Length(edges);
   out := OutNeighbours(digraph);
-  new := OutNeighboursCopy(digraph);
+  new := OutNeighboursMutableCopy(digraph);
   for i in DigraphVertices(digraph) do
     while current <= nredges and edges[current][1] = i do
       Remove(new[i], Position(new[i], edges[current][2]));
@@ -466,7 +466,7 @@ InstallMethod(DigraphAddEdgesNC, "for a digraph and a list",
 function(digraph, edges)
   local gr, new, new_lbl, verts, edge;
 
-  new := OutNeighboursCopy(digraph);
+  new := OutNeighboursMutableCopy(digraph);
   new_lbl := StructuralCopy(DigraphEdgeLabelsNC(digraph));
   verts := DigraphVertices(digraph);
   for edge in edges do
@@ -528,7 +528,7 @@ function(digraph, m, names)
   local n, new, newverts, out, nam, i;
 
   n := DigraphNrVertices(digraph);
-  new := OutNeighboursCopy(digraph);
+  new := OutNeighboursMutableCopy(digraph);
   newverts := [(n + 1) .. (n + m)];
   for i in newverts do
     new[i] := [];
@@ -644,7 +644,7 @@ function(graph, perm)
                   "of the 1st argument <graph>,");
   fi;
 
-  adj := OutNeighboursCopy(graph);
+  adj := OutNeighboursMutableCopy(graph);
   adj := Permuted(adj, perm);
   Apply(adj, x -> OnTuples(x, perm));
 
@@ -1365,10 +1365,16 @@ function(digraph)
   return gr;
 end);
 
-InstallMethod(OutNeighboursCopy, "for a digraph",
+InstallMethod(OutNeighboursMutableCopy, "for a digraph",
 [IsDigraph],
 function(digraph)
   return List(OutNeighbours(digraph), ShallowCopy);
+end);
+
+InstallMethod(InNeighboursMutableCopy, "for a digraph",
+[IsDigraph],
+function(digraph)
+  return List(InNeighbours(digraph), ShallowCopy);
 end);
 
 InstallMethod(AdjacencyMatrixMutableCopy, "for a digraph",

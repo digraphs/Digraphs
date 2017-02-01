@@ -921,7 +921,7 @@ function(digraph)
       and n > 1 then
     verts := [1 .. n]; # We don't want DigraphVertices as that's immutable
     mat := List(verts, x -> verts * 0);
-    new := OutNeighboursCopy(digraph);
+    new := OutNeighboursMutableCopy(digraph);
     for i in verts do
       for j in new[i] do
         if j < i then

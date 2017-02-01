@@ -1455,7 +1455,7 @@ function(digraph, edge)
     return digraph;
   fi;
 
-  out := OutNeighboursCopy(digraph);
+  out := OutNeighboursMutableCopy(digraph);
   G   := DigraphGroup(digraph);
   o   := Orbit(G, edge, OnTuples);
 
@@ -1489,7 +1489,7 @@ function(digraph, edge)
     return digraph;
   fi;
 
-  out := OutNeighboursCopy(digraph);
+  out := OutNeighboursMutableCopy(digraph);
   G   := DigraphGroup(digraph);
   o   := Orbit(G, edge, OnTuples);
 
