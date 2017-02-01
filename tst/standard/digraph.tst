@@ -576,13 +576,19 @@ gap> AsDigraph(g);
 <digraph with 8 vertices, 8 edges>
 gap> AsDigraph(g, -1);
 Error, Digraphs: AsDigraph: usage,
-the second argument should be a non-negative integer,
+the second argument <n> should be a non-negative integer,
 gap> AsDigraph(g, 10);
 <digraph with 10 vertices, 10 edges>
+gap> AsDigraph(g, 6);
+fail
+gap> AsDigraph(g, 7);
+<digraph with 7 vertices, 7 edges>
 gap> h := Transformation([2, 4, 1, 3, 5]);
 Transformation( [ 2, 4, 1, 3 ] )
 gap> AsDigraph(h);
 <digraph with 4 vertices, 4 edges>
+gap> AsDigraph(h, 2);
+fail
 
 #T# RandomDigraph
 gap> DigraphNrVertices(RandomDigraph(10));
