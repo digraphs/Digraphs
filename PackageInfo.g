@@ -7,9 +7,9 @@ SetPackageInfo( rec(
 
 PackageName := "GitHubPagesForGAP",
 
-Subtitle := "A GitHubPages generator for GAP packages",
-Version := "0.1",
-Date := "21/03/2014", # dd/mm/yyyy format
+Subtitle := "A GitHub Pages generator for GAP packages",
+Version := "0.2",
+Date := "04/02/2017", # dd/mm/yyyy format
 
 Persons := [
   rec(
@@ -71,7 +71,7 @@ ArchiveFormats := ".tar.gz .tar.bz2",
 AbstractHTML := 
   "This is a pseudo package that contains no actual\
   <span class=\"pkgname\">GAP</span> code. Instead, it is a template for other\
-  GAP packages that allows to quickly setup GitHub pages.",
+  GAP packages that allows to quickly setup GitHub Pages.",
 
 PackageDoc := rec(
   BookName  := "GitHubPagesForGAP",
@@ -79,12 +79,12 @@ PackageDoc := rec(
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "A GitHubPages generator for GAP packages",
+  LongTitle := "A GitHub Pages generator for GAP packages",
 ),
 
 # The following dependencies are fake and for testing / demo purposes
 Dependencies := rec(
-  GAP := ">=4.5.5",
+  GAP := ">=4.8.1",
   NeededOtherPackages := [
     ["GAPDoc", ">= 1.2"],
     ["IO", ">= 4.1"],
@@ -95,7 +95,7 @@ Dependencies := rec(
 
 AvailabilityTest := ReturnTrue,
 
-Keywords := ["GitHub pages", "GAP"]
+Keywords := ["GitHub Pages", "GAP"]
 
 ));
 
