@@ -173,17 +173,17 @@ much you tweaked the site after initially cloning GitHubPagesForGAP.
 ## Packages using GitHubPagesForGAP
 Packages using GitHubPagesForGAP include the following:
 
-* https://gap-packages.github.io/anupq
-* https://gap-packages.github.io/cvec
-* https://gap-packages.github.io/genss
-* https://gap-packages.github.io/io
-* https://gap-packages.github.io/NormalizInterface
-* https://gap-packages.github.io/nq
-* https://gap-packages.github.io/orb
-* https://gap-packages.github.io/polenta
-* https://gap-packages.github.io/recog
-* https://gap-packages.github.io/recogbase
-* https://gap-packages.github.io/SingularInterface
+* <https://gap-packages.github.io/anupq>
+* <https://gap-packages.github.io/cvec>
+* <https://gap-packages.github.io/genss>
+* <https://gap-packages.github.io/io>
+* <https://gap-packages.github.io/NormalizInterface>
+* <https://gap-packages.github.io/nq>
+* <https://gap-packages.github.io/orb>
+* <https://gap-packages.github.io/polenta>
+* <https://gap-packages.github.io/recog>
+* <https://gap-packages.github.io/recogbase>
+* <https://gap-packages.github.io/SingularInterface>
 
 
 ## Contact
