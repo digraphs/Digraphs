@@ -650,27 +650,35 @@ gap> gr := DigraphByInNeighbours([[2, 3, 2], [1], [1, 2, 3]]);
 <#GAPDoc Label="AsDigraph">
 <ManSection>
   <Oper Name="AsDigraph" Arg="trans[, n]"/>
-  <Returns>A digraph.</Returns>
+  <Returns>A digraph, or <K>fail</K>.</Returns>
   <Description>
-    If <A>trans</A> is a transformation and <A>n</A> is a non-negative integer,
-    then this function returns the functional digraph with <A>n</A> 
-    vertices defined by <A>trans</A>. See <Ref Prop="IsFunctionalDigraph"/>.
+    If <A>trans</A> is a transformation, and <A>n</A> is a non-negative integer
+    such that the restriction of <A>trans</A> to <C>[1 .. <A>n</A>]</C> defines
+    a transformation of <C>[1 .. <A>n</A>]</C>, then <C>AsDigraph</C>
+    returns the functional digraph with <A>n</A> vertices defined by
+    <A>trans</A>. See <Ref Prop="IsFunctionalDigraph"/>.
+    <P/>
     
-    Specifically, the graph has  <A>n</A> edges: for each vertex <M>x</M>, 
-    there is a unique edge with source <M>x</M>; this edge has range 
-    <M>x</M>^<A>trans</A>.
+    Specifically, the digraph returned by <C>AsDigraph</C> has  <A>n</A> edges:
+    for each vertex <C>x</C> in <C>[1 .. <A>n</A>]</C>, there is a unique edge
+    with source <C>x</C>; this edge has range <C>x^<A>trans</A></C>.
     <P/>
 
-    If the optional second argument <A>n</A> is not supplied, then the degree
-    of the transformation <A>trans</A> is used by default.
+    If the optional second argument <A>n</A> is not supplied, then the degree of
+    the transformation <A>trans</A> is used by default.  If the restriction of
+    <A>trans</A> to <C>[1 .. <A>n</A>]</C> does not define a transformation of
+    <C>[1 .. <A>n</A>]</C>, then <C>AsDigraph(<A>trans</A>, <A>n</A>)</C>
+    returns <K>fail</K>.
     
     <Example><![CDATA[
-gap> f := Transformation([7, 10, 10, 1, 7, 9, 10, 4, 2, 3]);
-Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] )
-gap> AsDigraph(f); 
+gap> f := Transformation([4, 3, 3, 1, 7, 9, 10, 4, 2, 3]);
+Transformation( [ 4, 3, 3, 1, 7, 9, 10, 4, 2, 3 ] )
+gap> AsDigraph(f);
 <digraph with 10 vertices, 10 edges>
-gap> AsDigraph(f, 4); 
+gap> AsDigraph(f, 4);
 <digraph with 4 vertices, 4 edges>
+gap> AsDigraph(f, 5);
+fail
 ]]></Example>
   </Description>
 </ManSection>

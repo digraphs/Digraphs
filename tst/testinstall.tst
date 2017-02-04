@@ -263,6 +263,14 @@ gap> OutNeighbours(OnDigraphs(d, PermList([2, 3, 1])));
 gap> OutNeighbours(OnDigraphs(d, Transformation([2, 3, 1])));
 [ [ 2, 2 ], [ 3 ], [ 1 ] ]
 
+#T# Issue 42: Bug in AsDigraph for a transformation and an integer
+gap> f := Transformation([7, 10, 10, 1, 7, 9, 10, 4, 2, 3]);
+Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] )
+gap> AsDigraph(f); 
+<digraph with 10 vertices, 10 edges>
+gap> AsDigraph(f, 4); 
+fail
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);

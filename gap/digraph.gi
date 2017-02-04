@@ -518,20 +518,23 @@ end);
 
 InstallMethod(AsDigraph, "for a transformation and an integer",
 [IsTransformation, IsInt],
-function(trans, int)
-  local ran, out, gr, i;
+function(f, n)
+  local out, x, gr, i;
 
-  if int < 0 then
+  if n < 0 then
     ErrorNoReturn("Digraphs: AsDigraph: usage,\n",
-                  "the second argument should be a non-negative integer,");
+                  "the second argument <n> should be a non-negative integer,");
   fi;
 
-  ran := ListTransformation(trans, int);
-  out := EmptyPlist(int);
-  for i in [1 .. int] do
-    out[i] := [ran[i]];
+  out := EmptyPlist(n);
+  for i in [1 .. n] do
+    x := i ^ f;
+    if x > n then
+      return fail;
+    fi;
+    out[i] := [x];
   od;
-  gr := DigraphNC(out);
+  gr := DigraphNC(out, n);
   SetIsMultiDigraph(gr, false);
   SetIsFunctionalDigraph(gr, true);
   return gr;
