@@ -47,7 +47,8 @@ PrintPackageList := function(stream, pkgs)
 end;
 
 GeneratePackageYML:=function(pkg)
-    local stream, authors, maintainers, formats, f;
+    local stream, authors, maintainers, formats, f, tmp;
+
     stream := OutputTextFile("_data/package.yml", false);
     SetPrintFormattingStatus(stream, false);
     
@@ -86,7 +87,9 @@ GeneratePackageYML:=function(pkg)
     fi;
 
     AppendTo(stream, "www: ", pkg.PackageWWWHome, "\n");
-    AppendTo(stream, "readme: ", pkg.README_URL, "\n");
+    tmp := SplitString(pkg.README_URL,"/");
+    tmp := tmp[Length(tmp)];  # extract README filename (typically "README" or "README.md")
+    AppendTo(stream, "readme: ", tmp, "\n");
     AppendTo(stream, "packageinfo: ", pkg.PackageInfoURL, "\n");
     if IsBound(pkg.GithubWWW) then
         AppendTo(stream, "github: ", pkg.GithubWWW, "\n");
