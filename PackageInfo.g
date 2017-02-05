@@ -159,7 +159,7 @@ Persons := [
     Institution   := "University of St Andrews"
   )],
 
-Status := "dev",
+Status := "deposited",
 
 IssueTrackerURL := Concatenation(~.SourceRepository.URL, "/issues"),
 PackageWWWHome  := Concatenation("https://gap-packages.github.io/",
