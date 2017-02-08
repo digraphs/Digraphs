@@ -686,7 +686,9 @@ true
     <K>true</K>.<P/>
 
     A Hamiltonian digraph is a digraph which has a circuit visiting 
-    each Vertex exactly once.<P/>
+    each vertex exactly once.
+    Note the empty digraphs on 0 and 1 vertices are considered 
+    Hamiltonian.<P/>
 
     <Example><![CDATA[
 gap> g := Digraph([[]]);

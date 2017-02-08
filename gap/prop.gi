@@ -492,36 +492,12 @@ end);
 
 #
 
-InstallMethod(IsEulerianDigraph, "for a digraph",
-[IsDigraph],
-function(g)
-  local out, into, i;
-
-  if not IsStronglyConnectedDigraph(ReducedDigraph(g)) then
-     return false;
-  fi;
-
-  out := OutNeighbours(g);
-  into := InNeighbours(g);
-
-  for i in [1 .. Length(out)] do
-     if not Length(out[i]) = Length(into[i]) then
-	return false;
-     fi;
-  od;
-
-  return true;
-
-end);
-
-#
-
 InstallMethod(IsHamiltonianDigraph, "for a digraph",
 [IsDigraph],
 function(g)
   local j, k, l, i, paths, paths2, out, sto;
 
-  if g = Digraph([]) or g= Digraph([[]]) then
+  if DigraphNrVertices(g) <= 1 and IsEmptyDigraph(g) then
      return true;
   fi;
 
@@ -534,7 +510,9 @@ function(g)
   paths:=[[1]];
   paths2:=[];
 
-  for j in [1.. (Length(out)-1)] do
+  n := DigraphNrVertices(g);
+
+  for j in [1.. (n-1)] do
 	for k in paths do
 		for l in out[k[Length(k)]] do
 			if not l in k then
@@ -549,7 +527,7 @@ function(g)
   od;
 
   for i in paths do
-    if 1 in out[i[Length(out)]] then
+    if 1 in out[i[n]] then
        return true;
     fi;
   od;
