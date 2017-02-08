@@ -495,7 +495,7 @@ end);
 InstallMethod(IsHamiltonianDigraph, "for a digraph",
 [IsDigraph],
 function(g)
-  local j, k, l, i, paths, paths2, out, sto;
+  local j, k, l, i, paths, paths2, out, sto, n;
 
   if DigraphNrVertices(g) <= 1 and IsEmptyDigraph(g) then
      return true;
