@@ -105,3 +105,9 @@ DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsFunction]);
 DeclareOperation("DigraphAddAllLoops", [IsDigraph]);
 
 DeclareOperation("JohnsonDigraph", [IsInt, IsInt]);
+
+DeclareOperation("DigraphNumber", [IsPosInt, IsInt]);
+DeclareOperation("DigraphNumber", [IsPosInt]);
+DeclareOperation("NumberDigraph", [IsDigraph]);
+DeclareGlobalFunction("EnumeratorOfDigraphs");
+DeclareGlobalFunction("IteratorOfDigraphs");

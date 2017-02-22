@@ -1650,3 +1650,201 @@ function(sizes)
   SetIsBipartiteDigraph(out, nr_parts = 2);
   return out;
 end);
+
+#
+
+InstallMethod(DigraphNumber,
+"for a positive integer and an integer",
+[IsPosInt, IsInt],
+function(nr, v)
+  local out, i, j, bit;
+  if v < 0 then
+    ErrorNoReturn("Digraphs: DigraphNumber: usage,\n",
+                  "second arg <v> must be a non-negative integer,");
+  fi;
+  # Number of digraphs on <v> vertices
+  if nr > 2 ^ (v ^ 2) then
+    return fail;
+  fi;
+  # Use the bits of <nr> as an adjacency matrix
+  nr := nr - 1;
+  out := [];
+  for i in [1 .. v] do
+    out[i] := [];
+    for j in [1 .. v] do
+      bit := nr mod 2;
+      if bit = 1 then
+        Add(out[i], j);
+      fi;
+      nr := (nr - bit) / 2;
+    od;
+  od;
+  return Digraph(out);
+end);
+
+#
+
+InstallMethod(DigraphNumber,
+"for a positive integer",
+[IsPosInt],
+function(nr)
+  local v, limit;
+  v := -1;
+  limit := 0;
+  repeat
+    nr := nr - limit;
+    v := v + 1;
+    limit := 2 ^ (v ^ 2);
+  until nr <= limit;
+  return DigraphNumber(nr, v);
+end);
+
+#
+
+InstallMethod(NumberDigraph,
+"for a digraph",
+[IsDigraph],
+function(gr)
+  local nr, out, v, i, j;
+  if IsMultiDigraph(gr) then
+    ErrorNoReturn("Digraphs: NumberDigraph: usage,\n",
+                  "first arg <gr> must not have multiple edges,");
+  fi;
+  nr := 0;
+  out := OutNeighbours(gr);
+  v := DigraphNrVertices(gr);
+  # Flip a bit in <nr> for each active edge
+  for i in [1 .. v] do
+    for j in out[i] do
+      nr := nr + 2 ^ ((i - 1) * v + (j - 1));
+    od;
+  od;
+  # Initialise at 1 instead of 0
+  nr := nr + 1;
+  # Return if option "v" is specified
+  if ValueOption("v") = true then
+    return nr;
+  fi;
+  # Put <nr> in the right range for <v> vertices
+  for i in [0 .. v - 1] do
+    nr := nr + 2 ^ (i ^ 2);
+  od;
+  return nr;
+end);
+
+#
+
+InstallGlobalFunction(EnumeratorOfDigraphs,
+function(arg)
+  local fam, elm_nr, nr_elm, len, view, print;
+  if Length(arg) >= 2 then
+    ErrorNoReturn("Digraphs: EnumeratorOfDigraphs: usage,\n",
+                  "this function takes no more than 1 argument,");
+  fi;
+
+  fam := CollectionsFamily(DigraphFamily);
+
+  if Length(arg) = 0 then
+
+    elm_nr := function(enum, pos)
+      return DigraphNumber(pos);
+    end;
+
+    nr_elm := function(enum, elm)
+      if not (IsDigraph(elm) and not IsMultiDigraph(elm)) then
+        return fail;
+      fi;
+      return NumberDigraph(elm);
+    end;
+
+    len := enum -> infinity;
+
+    view := function(enum)
+      Print("<enumerator of digraphs>");
+    end;
+
+    print := function(enum)
+      Print("EnumeratorOfDigraphs(  )");
+    end;
+
+  elif Length(arg) = 1 then
+    if not (IsInt(arg[1]) and arg[1] >= 0) then
+      ErrorNoReturn("Digraphs: EnumeratorOfDigraphs: usage,\n",
+                    "<nr_vertices> must be a non-negative integer,");
+    fi;
+
+    elm_nr := function(enum, pos)
+      return DigraphNumber(pos, arg[1]);
+    end;
+
+    nr_elm := function(enum, elm)
+      if not (IsDigraph(elm) and
+              DigraphNrVertices(elm) = arg[1] and
+              not IsMultiDigraph(elm)) then
+        return fail;
+      fi;
+      return NumberDigraph(elm:v);
+    end;
+
+    len := enum -> 2 ^ (arg[1] ^ 2);
+
+    if arg[1] = 1 then
+      view := function(enum)
+        Print("<enumerator of digraphs with 1 vertex>");
+      end;
+    else
+      view := function(enum)
+        Print("<enumerator of digraphs with ", arg[1], " vertices>");
+      end;
+    fi;
+
+    print := function(enum)
+      Print("EnumeratorOfDigraphs( ", arg[1], " )");
+    end;
+
+  fi;
+
+  return EnumeratorByFunctions(fam, rec(ElementNumber := elm_nr,
+                                        NumberElement := nr_elm,
+                                        Length := len,
+                                        ViewObj := view,
+                                        PrintObj := print));
+end);
+
+#
+
+InstallGlobalFunction(IteratorOfDigraphs,
+function(arg)
+  local iter;
+  if Length(arg) >= 2 then
+    ErrorNoReturn("Digraphs: IteratorOfDigraphs: usage,\n",
+                  "this function takes no more than 1 argument,");
+  elif Length(arg) = 0 then
+    iter := Iterator(EnumeratorOfDigraphs());
+    iter!.ViewObj := function(iter)
+      Print("<iterator of digraphs>");
+    end;
+    iter!.PrintObj := function(iter)
+      Print("IteratorOfDigraphs(  )");
+    end;
+  elif Length(arg) = 1 then
+    if not (IsInt(arg[1]) and arg[1] >= 0) then
+      ErrorNoReturn("Digraphs: IteratorOfDigraphs: usage,\n",
+                    "<nr_vertices> must be a non-negative integer,");
+    fi;
+    iter := Iterator(EnumeratorOfDigraphs(arg[1]));
+    if arg[1] = 1 then
+      iter!.ViewObj := function(iter)
+        Print("<iterator of digraphs with 1 vertex>");
+      end;
+    else
+      iter!.ViewObj := function(iter)
+        Print("<iterator of digraphs with ", arg[1], " vertices>");
+      end;
+    fi;
+    iter!.PrintObj := function(iter)
+      Print("IteratorOfDigraphs( ", arg[1], " )");
+    end;
+  fi;
+  return iter;
+end);
