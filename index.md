@@ -48,8 +48,9 @@ version of {{site.data.package.name}}:
 
 <pre style="white-space: pre-wrap;">@misc{james_d_mitchell_2016_198140,
   author       = {James D. Mitchell and
-                  Wilf Wilson and
+                  Wilf A. Wilson and
                   Michael Torpey and
+                  Julius Jonu{\v s}as and
                   Markus Pfeiffer and
                   Jan De Beule and
                   Christopher Jefferson and
