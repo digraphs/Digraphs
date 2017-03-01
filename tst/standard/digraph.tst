@@ -673,7 +673,7 @@ gap> gr := CycleDigraph(1);
 gap> AutomorphismGroup(gr) = Group(());
 true
 gap> gr := CycleDigraph(6);;
-gap> AutomorphismGroup(gr) = Group((1,2,3,4,5,6));
+gap> AutomorphismGroup(gr) = Group((1, 2, 3, 4, 5, 6));
 true
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 4, 5 ], [ 5, 6 ], [ 6, 1 ] ]
@@ -722,7 +722,7 @@ Error, no 1st choice method found for `CompleteBipartiteDigraph' on 2 argument\
 s
 gap> gr := CompleteBipartiteDigraph(4, 3);
 <digraph with 7 vertices, 24 edges>
-gap> AutomorphismGroup(gr) = Group((1,2,3,4), (1,2), (5,6,7), (5,6));
+gap> AutomorphismGroup(gr) = Group((1, 2, 3, 4), (1, 2), (5, 6, 7), (5, 6));
 true
 gap> DigraphEdges(gr);
 [ [ 1, 5 ], [ 1, 6 ], [ 1, 7 ], [ 2, 5 ], [ 2, 6 ], [ 2, 7 ], [ 3, 5 ], 
@@ -731,8 +731,8 @@ gap> DigraphEdges(gr);
   [ 7, 2 ], [ 7, 3 ], [ 7, 4 ] ]
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <digraph with 8 vertices, 32 edges>
-gap> AutomorphismGroup(gr) = Group((1,2,3,4), (1,2), (5,6,7,8), (5,6),
->                                  (1,5)(2,6)(3,7)(4,8));
+gap> AutomorphismGroup(gr) = Group((1, 2, 3, 4), (1, 2), (5, 6, 7, 8), (5, 6),
+>                                  (1, 5)(2, 6)(3, 7)(4, 8));
 true
 
 #T# Equals (\=) for two digraphs

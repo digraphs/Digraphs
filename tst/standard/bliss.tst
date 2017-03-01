@@ -333,8 +333,8 @@ gap> DigraphCanonicalLabelling(G, [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]);
 #T# AutomorphismGroup: for a digraph with colored vertices
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <digraph with 8 vertices, 32 edges>
-gap> AutomorphismGroup(gr) =
->    Group([(7,8), (6,7), (5,6), (3,4), (2,3), (1,2), (1,5)(2,6)(3,7)(4,8)]);
+gap> AutomorphismGroup(gr) = Group([
+> (7, 8), (6, 7), (5, 6), (3, 4), (2, 3), (1, 2), (1, 5)(2, 6)(3, 7)(4, 8)]);
 true
 gap> AutomorphismGroup(gr, [[1 .. 4], [5 .. 8]]);
 Group([ (7,8), (6,7), (5,6), (3,4), (2,3), (1,2) ])

@@ -536,7 +536,7 @@ gap> ReadPlainTextDigraph(filename, ",", 1, ['/','%']);
     <C>WriteDIMACSDigraph</C> records the vertices and edges of <A>digraph</A>.
     The vertex labels of <A>digraph</A> will be recorded only if they are
     integers. See <Ref Prop="IsSymmetricDigraph"/> and <Ref
-      Attr="DigraphVertexLabels"/>.<P/> 
+      Oper="DigraphVertexLabels"/>.<P/> 
 
     The first argument <A>filename</A> should be the name of the file which will
     be written to or read from.  A file can contain one symmetric digraph in
