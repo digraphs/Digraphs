@@ -1,8 +1,15 @@
 # Digraphs package for GAP - CHANGELOG
-Copyright (C) 2014-16 Jan De Beule, Luke Elliott, Julius Jonusas, James D.
+Copyright (C) 2014-17 Jan De Beule, Luke Elliott, Julius Jonusas, James D.
 Mitchell, Markus Pfeiffer, Finn Smith, Michael Torpey & Wilf A. Wilson
 
 Licensing information can be found in the LICENSE file.
+
+## Version 0.6.1 (released 01/03/2017)
+This is a minor release. This release fixes a bug in `AsDigraph` for a
+transformation and an integer. The operations `OutNeighboursCopy` and
+`OutNeighborsCopy` are renamed to `OutNeighboursMutableCopy` and
+`OutNeighborsMutableCopy`, respectively, and new operations
+`InNeighboursMutableCopy` and `InNeighborsMutableCopy` are introduced.
 
 ## Version 0.6.0 (released 09/12/2016)
 This is a major release, adding a variety of new operations and attributes

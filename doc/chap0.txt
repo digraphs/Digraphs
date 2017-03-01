@@ -6,7 +6,7 @@
                               [1XMethods for digraphs[101X
   
   
-                                 Version 0.6.0
+                                 Version 0.6.1
   
   
                                   Jan De Beule
@@ -58,7 +58,7 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y©  2014-16 by Jan De Beule, Luke Elliott, Julius Jonušas, James D. Mitchell,
+  [33X[0;0Y©  2014-17 by Jan De Beule, Luke Elliott, Julius Jonušas, James D. Mitchell,
   Markus Pfeiffer, Finn Smith, Michael Torpey, Wilf A. Wilson.[133X
   
   [33X[0;0Y[5XDigraphs[105X  is  free  software; you can redistribute it and/or modify it under

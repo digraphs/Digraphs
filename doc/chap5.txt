@@ -518,8 +518,8 @@
   
   [29X[2XOutNeighbours[102X( [3Xdigraph[103X ) [32X attribute
   [29X[2XOutNeighbors[102X( [3Xdigraph[103X ) [32X attribute
-  [29X[2XOutNeighboursCopy[102X( [3Xdigraph[103X ) [32X operation
-  [29X[2XOutNeighborsCopy[102X( [3Xdigraph[103X ) [32X operation
+  [29X[2XOutNeighboursMutableCopy[102X( [3Xdigraph[103X ) [32X operation
+  [29X[2XOutNeighborsMutableCopy[102X( [3Xdigraph[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YThe adjacencies of a digraph.[133X
   
   [33X[0;0YThis  function  returns the list [10Xout[110X of out-neighbours of each vertex of the
@@ -527,8 +527,8 @@
   there exists an edge with source [10Xi[110X and range [10Xj[110X in [3Xdigraph[103X.[133X
   
   [33X[0;0YThe  function  [10XOutNeighbours[110X  returns  an immutable list of immutable lists,
-  whereas the function [10XOutNeighboursCopy[110X returns a copy of [10XOutNeighbours[110X which
-  is a mutable list of mutable lists.[133X
+  whereas   the   function   [10XOutNeighboursMutableCopy[110X   returns   a   copy  of
+  [10XOutNeighbours[110X which is a mutable list of mutable lists.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"],[127X[104X
@@ -549,7 +549,7 @@
     [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
     [4X[28X[ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ][128X[104X
-    [4X[25Xgap>[125X [27XOutNeighboursCopy(gr);[127X[104X
+    [4X[25Xgap>[125X [27XOutNeighboursMutableCopy(gr);[127X[104X
     [4X[28X[ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ][128X[104X
   [4X[32X[104X
   
@@ -557,11 +557,17 @@
   
   [29X[2XInNeighbours[102X( [3Xdigraph[103X ) [32X attribute
   [29X[2XInNeighbors[102X( [3Xdigraph[103X ) [32X attribute
+  [29X[2XInNeighboursMutableCopy[102X( [3Xdigraph[103X ) [32X operation
+  [29X[2XInNeighborsMutableCopy[102X( [3Xdigraph[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA list of lists of vertices.[133X
   
   [33X[0;0YThis  function  returns  the list [10Xinn[110X of in-neighbours of each vertex of the
   digraph  [3Xdigraph[103X.  More specifically, a vertex [10Xj[110X appears in [10Xinn[i][110X each time
   there exists an edge with source [10Xj[110X and range [10Xi[110X in [3Xdigraph[103X.[133X
+  
+  [33X[0;0YThe  function  [10XInNeighbours[110X  returns  an  immutable list of immutable lists,
+  whereas  the function [10XInNeighboursMutableCopy[110X returns a copy of [10XInNeighbours[110X
+  which is a mutable list of mutable lists.[133X
   
   [33X[0;0YNote that each entry of [10Xinn[110X is sorted into ascending order.[133X
   
@@ -583,6 +589,8 @@
     [4X[25X>[125X [27X[1, 2, 3, 2, 3, 1, 2]);[127X[104X
     [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XInNeighbours(gr);[127X[104X
+    [4X[28X[ [ 1, 2 ], [ 1, 1, 2 ], [ 1, 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27XInNeighboursMutableCopy(gr);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 1, 2 ], [ 1, 3 ] ][128X[104X
   [4X[32X[104X
   

@@ -290,24 +290,31 @@
   [1X3.2-2 AsDigraph[101X
   
   [29X[2XAsDigraph[102X( [3Xtrans[103X[, [3Xn[103X] ) [32X operation
-  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  [6XReturns:[106X  [33X[0;10YA digraph, or [9Xfail[109X.[133X
   
-  [33X[0;0YIf  [3Xtrans[103X  is  a  transformation  and [3Xn[103X is a non-negative integer, then this
-  function  returns  the  functional digraph with [3Xn[103X vertices defined by [3Xtrans[103X.
-  See  [2XIsFunctionalDigraph[102X  ([14X6.1-7[114X).  Specifically, the graph has [3Xn[103X edges: for
-  each  vertex  [22Xx[122X,  there  is a unique edge with source [22Xx[122X; this edge has range
-  [22Xx[122X^[3Xtrans[103X.[133X
+  [33X[0;0YIf  [3Xtrans[103X is a transformation, and [3Xn[103X is a non-negative integer such that the
+  restriction  of [3Xtrans[103X to [10X[1 .. [3Xn[103X[10X][110X defines a transformation of [10X[1 .. [3Xn[103X[10X][110X, then
+  [10XAsDigraph[110X  returns  the functional digraph with [3Xn[103X vertices defined by [3Xtrans[103X.
+  See [2XIsFunctionalDigraph[102X ([14X6.1-7[114X).[133X
+  
+  [33X[0;0YSpecifically, the digraph returned by [10XAsDigraph[110X has [3Xn[103X edges: for each vertex
+  [10Xx[110X  in  [10X[1  ..  [3Xn[103X[10X][110X, there is a unique edge with source [10Xx[110X; this edge has range
+  [10Xx^[3Xtrans[103X[10X[110X.[133X
   
   [33X[0;0YIf  the  optional  second argument [3Xn[103X is not supplied, then the degree of the
-  transformation [3Xtrans[103X is used by default.[133X
+  transformation  [3Xtrans[103X  is used by default. If the restriction of [3Xtrans[103X to [10X[1
+  .. [3Xn[103X[10X][110X does not define a transformation of [10X[1 .. [3Xn[103X[10X][110X, then [10XAsDigraph([3Xtrans[103X[10X, [3Xn[103X[10X)[110X
+  returns [9Xfail[109X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xf := Transformation([7, 10, 10, 1, 7, 9, 10, 4, 2, 3]);[127X[104X
-    [4X[28XTransformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] )[128X[104X
-    [4X[25Xgap>[125X [27XAsDigraph(f); [127X[104X
+    [4X[25Xgap>[125X [27Xf := Transformation([4, 3, 3, 1, 7, 9, 10, 4, 2, 3]);[127X[104X
+    [4X[28XTransformation( [ 4, 3, 3, 1, 7, 9, 10, 4, 2, 3 ] )[128X[104X
+    [4X[25Xgap>[125X [27XAsDigraph(f);[127X[104X
     [4X[28X<digraph with 10 vertices, 10 edges>[128X[104X
-    [4X[25Xgap>[125X [27XAsDigraph(f, 4); [127X[104X
+    [4X[25Xgap>[125X [27XAsDigraph(f, 4);[127X[104X
     [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XAsDigraph(f, 5);[127X[104X
+    [4X[28Xfail[128X[104X
   [4X[32X[104X
   
   [1X3.2-3 Graph[101X

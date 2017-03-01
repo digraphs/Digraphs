@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.198140.svg)](https://doi.org/10.5281/zenodo.198140)
+[![Build Status](https://travis-ci.org/gap-packages/Digraphs.svg?branch=stable-0.6)](https://travis-ci.org/gap-packages/Digraphs)
+
 ## README
 
 ### Digraphs package for GAP

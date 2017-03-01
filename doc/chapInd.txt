@@ -174,8 +174,10 @@
   [2XInDegreeSet[102X  5.2-8
   [2XInducedSubdigraph[102X  3.3-2
   [2XInNeighbors[102X  5.2-6
+  [2XInNeighborsMutableCopy[102X  5.2-6
   [2XInNeighborsOfVertex[102X  5.2-12
   [2XInNeighbours[102X  5.2-6
+  [2XInNeighboursMutableCopy[102X  5.2-6
   [2XInNeighboursOfVertex[102X  5.2-12
   [2XIsAcyclicDigraph[102X  6.3-1
   [2XIsAntisymmetricDigraph[102X  6.1-2
@@ -232,10 +234,10 @@
   [2XOutDegreeSequence[102X  5.2-7
   [2XOutDegreeSet[102X  5.2-7
   [2XOutNeighbors[102X  5.2-5
-  [2XOutNeighborsCopy[102X  5.2-5
+  [2XOutNeighborsMutableCopy[102X  5.2-5
   [2XOutNeighborsOfVertex[102X  5.2-10
   [2XOutNeighbours[102X  5.2-5
-  [2XOutNeighboursCopy[102X  5.2-5
+  [2XOutNeighboursMutableCopy[102X  5.2-5
   [2XOutNeighboursOfVertex[102X  5.2-10
   [2XPlainTextString[102X  9.2-11
   [2XQuotientDigraph[102X  3.3-5

@@ -367,20 +367,24 @@ Binary Relation on 4 points
 <h5>3.2-2 AsDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AsDigraph</code>( <var class="Arg">trans</var>[, <var class="Arg">n</var>] )</td><td class="tdright">( operation )</td></tr></table></div>
-<p>Returns: A digraph.</p>
+<p>Returns: A digraph, or <code class="keyw">fail</code>.</p>
 
-<p>If <var class="Arg">trans</var> is a transformation and <var class="Arg">n</var> is a non-negative integer, then this function returns the functional digraph with <var class="Arg">n</var> vertices defined by <var class="Arg">trans</var>. See <code class="func">IsFunctionalDigraph</code> (<a href="chap6_mj.html#X7E8F37E585DAED52"><span class="RefLink">6.1-7</span></a>). Specifically, the graph has <var class="Arg">n</var> edges: for each vertex <span class="SimpleMath">\(x\)</span>, there is a unique edge with source <span class="SimpleMath">\(x\)</span>; this edge has range <span class="SimpleMath">\(x\)</span>^<var class="Arg">trans</var>.</p>
+<p>If <var class="Arg">trans</var> is a transformation, and <var class="Arg">n</var> is a non-negative integer such that the restriction of <var class="Arg">trans</var> to <code class="code">[1 .. <var class="Arg">n</var>]</code> defines a transformation of <code class="code">[1 .. <var class="Arg">n</var>]</code>, then <code class="code">AsDigraph</code> returns the functional digraph with <var class="Arg">n</var> vertices defined by <var class="Arg">trans</var>. See <code class="func">IsFunctionalDigraph</code> (<a href="chap6_mj.html#X7E8F37E585DAED52"><span class="RefLink">6.1-7</span></a>).</p>
 
-<p>If the optional second argument <var class="Arg">n</var> is not supplied, then the degree of the transformation <var class="Arg">trans</var> is used by default.</p>
+<p>Specifically, the digraph returned by <code class="code">AsDigraph</code> has <var class="Arg">n</var> edges: for each vertex <code class="code">x</code> in <code class="code">[1 .. <var class="Arg">n</var>]</code>, there is a unique edge with source <code class="code">x</code>; this edge has range <code class="code">x^<var class="Arg">trans</var></code>.</p>
+
+<p>If the optional second argument <var class="Arg">n</var> is not supplied, then the degree of the transformation <var class="Arg">trans</var> is used by default. If the restriction of <var class="Arg">trans</var> to <code class="code">[1 .. <var class="Arg">n</var>]</code> does not define a transformation of <code class="code">[1 .. <var class="Arg">n</var>]</code>, then <code class="code">AsDigraph(<var class="Arg">trans</var>, <var class="Arg">n</var>)</code> returns <code class="keyw">fail</code>.</p>
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">f := Transformation([7, 10, 10, 1, 7, 9, 10, 4, 2, 3]);</span>
-Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] )
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">AsDigraph(f); </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">f := Transformation([4, 3, 3, 1, 7, 9, 10, 4, 2, 3]);</span>
+Transformation( [ 4, 3, 3, 1, 7, 9, 10, 4, 2, 3 ] )
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">AsDigraph(f);</span>
 &lt;digraph with 10 vertices, 10 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">AsDigraph(f, 4); </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">AsDigraph(f, 4);</span>
 &lt;digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">AsDigraph(f, 5);</span>
+fail
 </pre></div>
 
 <p><a id="X7B335342839E5146" name="X7B335342839E5146"></a></p>
