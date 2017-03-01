@@ -6,11 +6,12 @@ env:
     - IO=io-4.4.6
     - GAPDOC=GAPDoc-1.5.1
     - ORB=orb-4.7.6
+    - PROFILING=1.3.0
     - GENSS=genss-1.6.4
     - GRAPE=grape4r7
     - DIGRAPHS_LIB=digraphs-lib-0.5
   matrix:
-    - GAP_BRANCH=master GAP_FORK=gap-system
+    - GAP_BRANCH=master GAP_FORK=gap-system COVERAGE=1
     - GAP_BRANCH=stable-4.8 GAP_FORK=gap-system
     - GAP_BRANCH=master GAP_FORK=gap-system GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
     - GAP_BRANCH=stable-4.8 GAP_FORK=gap-system GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
