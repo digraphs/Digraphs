@@ -9,17 +9,14 @@ DIGRAPHSDIR=$(pwd)
 
 # Download and compile GAP
 cd ..
-echo -en 'travis_fold:start:InstallGAP\r'
 git clone -b $GAP_BRANCH --depth=1 https://github.com/$GAP_FORK/gap.git
 cd gap
 ./configure --with-gmp=system $GAP_FLAGS
 make
 mkdir pkg
 cd ..
-echo -en 'travis_fold:end:InstallGAP\r'
 
 # Compile the Digraphs package
-echo -en 'travis_fold:start:BuildDigraphs\r'
 mv $DIGRAPHSDIR gap/pkg/digraphs
 cd gap/pkg/digraphs
 curl -L -O https://gap-packages.github.io/Digraphs/$DIGRAPHS_LIB.tar.gz
@@ -29,10 +26,8 @@ rm $DIGRAPHS_LIB.tar.gz
 ./configure $PKG_FLAGS
 make
 cd ../..
-echo -en 'travis_fold:end:BuildDigraphs\r'
 
 # Get the packages
-echo -en 'travis_fold:start:InstallPackages\r'
 cd pkg
 curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$GAPDOC.tar.gz
 tar xzf $GAPDOC.tar.gz
@@ -61,4 +56,3 @@ cd grape
 ./configure $PKG_FLAGS
 make
 cd ../../..
-echo -en 'travis_fold:end:InstallPackages\r'
