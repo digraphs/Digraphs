@@ -1,7 +1,7 @@
 ############################################################################
 ##
 #W  PackageInfo.g
-#Y  Copyright (C) 2015-16                                Jan J De Beule
+#Y  Copyright (C) 2015-17                                Jan J De Beule
 ##                                                       Luke Elliott
 ##                                                       Julius Jonusas
 ##                                                       James Mitchell
@@ -16,20 +16,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.6.0">
+##  <!ENTITY VERSION        "0.6.1">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
 ##  <!ENTITY ORBVERS        "4.7.5">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.6.0">
-##  <!ENTITY COPYRIGHTYEARS "2014-16">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.6.1">
+##  <!ENTITY COPYRIGHTYEARS "2014-17">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
-Version := "0.6.0",
-Date := "09/12/2016",
+Version := "0.6.1",
+Date := "01/03/2017",
 ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(

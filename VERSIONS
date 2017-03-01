@@ -1,7 +1,7 @@
 ############################################################################
 ##
 #W  VERSIONS
-#Y  Copyright (C) 2016                                   Jan J De Beule
+#Y  Copyright (C) 2015-17                                Jan J De Beule
 ##                                                       Luke Elliott
 ##                                                       Julius Jonusas
 ##                                                       James Mitchell
@@ -15,6 +15,7 @@
 #############################################################################
 ##
 
+release 0.6.1 - 01/03/2017
 release 0.6.0 - 09/12/2016
 release 0.5.2 - 20/03/2016
 release 0.5.1 - 08/03/2016
