@@ -165,7 +165,7 @@ gap> ReadDigraphs(file, 9);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>str</A> is a string encoding a graph in Graph6, Digraph6, Sparse6 or
-    DiSparse6 format, then the corresponging function returns a digraph. In the
+    DiSparse6 format, then the corresponding function returns a digraph. In the
     case of either Graph6 or Sparse6, formats which do not support directed
     edges, this will be a digraph such that for every edge, the edge going in
     the opposite direction is also present.
@@ -568,7 +568,7 @@ gap> ReadPlainTextDigraph(filename, ",", 1, ['/','%']);
         and <C>&lt;w&gt;</C> are integers in the range <C>[1 ..
           &lt;nr_vertices&gt;]</C>, specifies that there is a (symmetric) edge
         in the digraph between the vertices <C>&lt;v&gt;</C> and
-        <C>&lt;w&gt;</C>. A symmetric edge only needs to be defined one; an
+        <C>&lt;w&gt;</C>. A symmetric edge only needs to be defined once; an
         additional line <C>e &lt;v&gt; &lt;w&gt;</C>, or <C>e &lt;w&gt;
           &lt;v&gt;</C>, will be interpreted as an additional, multiple, edge.
         Loops are permitted.
