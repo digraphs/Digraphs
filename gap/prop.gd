@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  props.gd
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014-17                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -30,6 +30,7 @@ DeclareProperty("IsRegularDigraph", IsDigraph);
 DeclareProperty("IsDistanceRegularDigraph", IsDigraph);
 DeclareProperty("IsDirectedTree", IsDigraph);
 DeclareProperty("IsUndirectedTree", IsDigraph);
+DeclareProperty("IsUndirectedForest", IsDigraph);
 DeclareProperty("IsEulerianDigraph", IsDigraph);
 
 InstallTrueMethod(IsAntisymmetricDigraph, IsTournament);
@@ -37,8 +38,11 @@ InstallTrueMethod(IsAntisymmetricDigraph, IsAcyclicDigraph);
 InstallTrueMethod(IsTransitiveDigraph, IsTournament and IsAcyclicDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsTournament and IsTransitiveDigraph);
 InstallTrueMethod(IsSymmetricDigraph, IsCompleteDigraph);
+InstallTrueMethod(IsSymmetricDigraph, IsUndirectedForest);
 InstallTrueMethod(IsTransitiveDigraph, IsCompleteDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsEmptyDigraph);
 InstallTrueMethod(IsRegularDigraph, IsInRegularDigraph and IsOutRegularDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph,
                   IsConnectedDigraph and IsSymmetricDigraph);
+InstallTrueMethod(IsStronglyConnectedDigraph, IsUndirectedTree);
+InstallTrueMethod(IsUndirectedForest, IsUndirectedTree);

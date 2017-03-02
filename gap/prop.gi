@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  prop.gi
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014-17                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -393,6 +393,24 @@ InstallMethod(IsUndirectedTree, "for a digraph", [IsDigraph],
 function(gr)
   return DigraphNrEdges(gr) = 2 * (DigraphNrVertices(gr) - 1)
            and IsSymmetricDigraph(gr) and IsConnectedDigraph(gr);
+end);
+
+InstallMethod(IsUndirectedForest, "for a digraph", [IsDigraph],
+function(gr)
+  local comps, comp;
+
+  if not IsSymmetricDigraph(gr) or DigraphNrVertices(gr) = 0
+      or IsMultiDigraph(gr) then
+    return false;
+  fi;
+  comps := DigraphConnectedComponents(gr).comps;
+  for comp in comps do
+    comp := InducedSubdigraph(gr, comp);
+    if DigraphNrEdges(comp) <> 2 * (DigraphNrVertices(comp) - 1) then
+      return false;
+    fi;
+  od;
+  return true;
 end);
 
 #

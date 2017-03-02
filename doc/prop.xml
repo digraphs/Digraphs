@@ -611,31 +611,53 @@ true
 <#GAPDoc Label="IsUndirectedTree">
 <ManSection>
   <Prop Name="IsUndirectedTree" Arg="digraph"/>
+  <Prop Name="IsUndirectedForest" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This property returns <K>true</K> if the digraph <A>digraph</A> is an
-    undirected tree.<P/>
+    The property <C>IsUndirectedTree</C> returns <K>true</K> if the digraph
+    <A>digraph</A> is an undirected tree, and the property
+    <C>IsUndirectedForest</C> returns <K>true</K> if <A>digraph</A> is an
+    undirected forest; otherwise, these properties return <K>false</K>. <P/>
 
-    An undirected tree is a symmetric digraph without loops, in which for any
-    pair of distinct vertices <C>u</C> and <C>v</C>, there is exactly one
+    An <E>undirected tree</E> is a symmetric digraph without loops, in which for
+    any pair of distinct vertices <C>u</C> and <C>v</C>, there is exactly one
     directed path from <C>u</C> to <C>v</C>. See <Ref
       Prop="IsSymmetricDigraph"/> and <Ref Prop="DigraphHasLoops"/>, and see
     section <Ref Subsect="Definitions" Style="Number" /> for the definition of
-    directed path. <P/>
+    directed path. This definition implies that an undirected tree has
+    no multiple edges. <P/>
 
-    Please note that the digraph with zero vertices is not considered to be an
-    undirected tree. <P/>
+    An <E>undirected forest</E> is a digraph, each of whose connected components
+    is an undirected tree. In other words, an undirected forest is isomorphic to
+    a disjoint union of undirected trees. See <Ref
+      Attr="DigraphConnectedComponents" /> and <Ref Func="DigraphDisjointUnion"
+      Label="for a list of digraphs" />. In particular, every
+    undirected tree is an undirected forest. <P/>
+
+    Please note that the digraph with zero vertices is considered to be neither
+    an undirected tree nor an undirected forest.
 
     <Example><![CDATA[
 gap> gr := Digraph([[3], [3], [1, 2]]);
 <digraph with 3 vertices, 4 edges>
 gap> IsUndirectedTree(gr);
 true
-gap> gr := Digraph([[], [1]]);
-<digraph with 2 vertices, 1 edge>
+gap> IsSymmetricDigraph(gr) and not DigraphHasLoops(gr);
+true
+gap> gr := Digraph([[3], [5], [1, 4], [3], [2]]);
+<digraph with 5 vertices, 6 edges>
+gap> IsConnectedDigraph(gr);
+false
 gap> IsUndirectedTree(gr);
 false
-]]></Example>
+gap> IsUndirectedForest(gr);
+true
+gap> gr := Digraph([[1, 2], [1], [2]]);
+<digraph with 3 vertices, 4 edges>
+gap> IsUndirectedTree(gr) or IsUndirectedForest(gr);
+false
+gap> IsSymmetricDigraph(gr) or not DigraphHasLoops(gr);
+false]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>

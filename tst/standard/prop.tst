@@ -1,7 +1,8 @@
 #############################################################################
 ##
 #W  standard/prop.tst
-#Y  Copyright (C) 2014-15                                James D. Mitchell
+#Y  Copyright (C) 2014-17                                James D. Mitchell
+##                                                          Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -913,6 +914,48 @@ false
 gap> g := Digraph([[1], [2]]);
 <digraph with 2 vertices, 2 edges>
 gap> IsConnectedDigraph(g);
+false
+
+#T# IsUndirectedForest
+gap> gr := ChainDigraph(10);
+<digraph with 10 vertices, 9 edges>
+gap> IsUndirectedForest(gr);
+false
+gap> gr := EmptyDigraph(0);
+<digraph with 0 vertices, 0 edges>
+gap> IsUndirectedForest(gr);
+false
+gap> gr := EmptyDigraph(1);
+<digraph with 1 vertex, 0 edges>
+gap> IsUndirectedForest(gr);
+true
+gap> gr := Digraph([[1, 1]]);
+<multidigraph with 1 vertex, 2 edges>
+gap> IsUndirectedForest(gr);
+false
+gap> gr := Digraph([[1]]);
+<digraph with 1 vertex, 1 edge>
+gap> IsUndirectedForest(gr);
+false
+gap> gr := DigraphSymmetricClosure(ChainDigraph(4));
+<digraph with 4 vertices, 6 edges>
+gap> HasIsUndirectedTree(gr) or HasIsUndirectedForest(gr);
+false
+gap> IsUndirectedTree(gr);
+true
+gap> HasIsUndirectedForest(gr);
+true
+gap> IsUndirectedForest(gr);
+true
+gap> gr := DigraphDisjointUnion(gr, gr, gr);
+<digraph with 12 vertices, 18 edges>
+gap> IsUndirectedTree(gr);
+false
+gap> IsUndirectedForest(gr);
+true
+gap> gr := DigraphDisjointUnion(CompleteDigraph(2), CycleDigraph(3));
+<digraph with 5 vertices, 5 edges>
+gap> IsUndirectedForest(gr);
 false
 
 #T# IsEulerianDigraph
