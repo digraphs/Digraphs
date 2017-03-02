@@ -13,11 +13,39 @@
 InstallMethod(IsSubdigraph, "for a digraph and digraph",
 [IsDigraph, IsDigraph],
 function(super, sub)
-  if DigraphNrVertices(super) <> DigraphNrVertices(sub) then
+  local n, x, y, i, j;
+
+  n := DigraphNrVertices(super);
+  if n <> DigraphNrVertices(sub)
+      or DigraphNrEdges(super) < DigraphNrEdges(sub) then
+    return false;
+  elif not IsMultiDigraph(sub) then
+    return ForAll(DigraphVertices(super), i ->
+                  IsSubset(OutNeighboursOfVertex(super, i),
+                           OutNeighboursOfVertex(sub, i)));
+  elif not IsMultiDigraph(super) then
     return false;
   fi;
-  return ForAll([1 .. DigraphNrVertices(super)], i ->
-                IsSubset(OutNeighbours(super)[i], OutNeighbours(sub)[i]));
+
+  x := [1 .. n];
+  y := [1 .. n];
+  for i in DigraphVertices(super) do
+    if OutDegreeOfVertex(super, i) < OutDegreeOfVertex(sub, i) then
+      return false;
+    fi;
+    x := x * 0;
+    y := y * 0;
+    for j in OutNeighboursOfVertex(super, i) do
+      x[j] := x[j] + 1;
+    od;
+    for j in OutNeighboursOfVertex(sub, i) do
+      y[j] := y[j] + 1;
+    od;
+    if not ForAll(DigraphVertices(super), k -> y[k] <= x[k]) then
+      return false;
+    fi;
+  od;
+  return true;
 end);
 
 #

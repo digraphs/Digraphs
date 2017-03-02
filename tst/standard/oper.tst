@@ -1733,6 +1733,50 @@ Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
 gap> DigraphColoring(EmptyDigraph(0));
 IdentityTransformation
 
+#T# IsSubdigraph: Issue #46
+gap> gr1 := Digraph([[2], []]);;
+gap> gr2 := Digraph([[2, 2], []]);;
+gap> IsSubdigraph(gr1, gr2);
+false
+gap> IsSubdigraph(gr2, gr1);
+true
+gap> gr1 = gr2;
+false
+
+#T# IsSubdigraph: for two digraphs, 1
+gap> gr1 := CompleteDigraph(3);;
+gap> gr2 := CompleteDigraph(4);;
+gap> IsSubdigraph(gr1, gr2) or IsSubdigraph(gr1, gr2);
+false
+gap> gr3 := CycleDigraph(3);;
+gap> IsSubdigraph(gr3, gr1);
+false
+gap> IsSubdigraph(gr1, gr3);
+true
+gap> gr4 := Digraph([[1, 1], [2, 2], [3, 3]]);;
+gap> IsSubdigraph(gr1, gr4) or IsSubdigraph(gr4, gr1);
+false
+gap> gr1 := DigraphEdgeUnion(CompleteDigraph(3), CompleteDigraph(3));
+<multidigraph with 3 vertices, 12 edges>
+gap> gr2 := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
+<multidigraph with 3 vertices, 6 edges>
+gap> IsSubdigraph(gr1, gr2);
+true
+gap> IsSubdigraph(gr2, gr1);
+false
+gap> gr3 := Digraph([[2, 2, 3], [3], []]);
+<multidigraph with 3 vertices, 4 edges>
+gap> gr4 := Digraph([[2, 3, 3], [3], []]);
+<multidigraph with 3 vertices, 4 edges>
+gap> IsSubdigraph(gr3, gr4) or IsSubdigraph(gr4, gr3);
+false
+gap> gr1 := Digraph([[1, 1], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> gr2 := Digraph([[], [2, 2]]);
+<multidigraph with 2 vertices, 2 edges>
+gap> IsSubdigraph(gr1, gr2) or IsSubdigraph(gr2, gr1);
+false
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);
