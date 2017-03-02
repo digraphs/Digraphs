@@ -22,7 +22,9 @@ gap> OutNeighbours(rgr);
 [ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ]
 gap> gr = DigraphReverse(rgr);
 true
-gap> gr := DigraphFromDiSparse6String(".DaoI?JOcWchN");
+gap> gr := Digraph(rec(nrvertices := 5,
+> source := [1, 1, 2, 2, 2, 2, 2, 3, 4, 4, 4, 5, 5, 5],
+> range  := [1, 3, 1, 2, 2, 4, 5, 4, 1, 3, 5, 1, 1, 3]));
 <multidigraph with 5 vertices, 14 edges>
 gap> e := DigraphEdges(gr);
 [ [ 1, 1 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 2 ], [ 2, 4 ], [ 2, 5 ], 
@@ -300,7 +302,10 @@ gap> OutDegreeOfVertex(gr, 1);
 4
 
 #T# InducedSubdigraph
-gap> gr := DigraphFromDiSparse6String(".G_A_@BF_?GO?E?hCkR");
+gap> r := rec(nrvertices := 8,
+> source := [1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 5, 5, 5, 5, 5, 5],
+> range  := [1, 1, 2, 3, 3, 4, 1, 1, 3, 4, 5, 1, 3, 4, 4, 5, 7]);;
+gap> gr := Digraph(r);
 <multidigraph with 8 vertices, 17 edges>
 gap> InducedSubdigraph(gr, [-1]);
 Error, Digraphs: InducedSubdigraph: usage,
@@ -324,7 +329,9 @@ gap> i2 := InducedSubdigraph(gr, [3, 4, 3, 1]);
 Error, Digraphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
-gap> gr := DigraphFromDiSparse6String(".G_?CpOACOpu@aC?oAI?Pc_?`GC");
+gap> adj := [[2, 3, 4, 5, 6, 6, 7], [1, 1, 1, 3, 4, 5], [4], [3, 5],
+> [1, 2, 2, 3, 4, 4, 6, 5, 6, 7], [], [1], []];;
+gap> gr := Digraph(adj);
 <multidigraph with 8 vertices, 27 edges>
 gap> InducedSubdigraph(gr, ["a"]);
 Error, Digraphs: InducedSubdigraph: usage,
@@ -343,7 +350,7 @@ gap> InducedSubdigraph(gr, []);
 gap> i1 := InducedSubdigraph(gr, [1, 3, 5, 7]);
 <digraph with 4 vertices, 8 edges>
 gap> OutNeighbours(i1);
-[ [ 2, 4, 3 ], [  ], [ 2, 3, 1, 4 ], [ 1 ] ]
+[ [ 2, 3, 4 ], [  ], [ 1, 2, 3, 4 ], [ 1 ] ]
 gap> i2 := InducedSubdigraph(gr, [7, 5, 3, 1]);
 <digraph with 4 vertices, 8 edges>
 gap> i1 = i2;
