@@ -427,6 +427,17 @@ gap> Display(DigraphShortestDistances(gr));
   [  fail,  fail,  fail,  fail,  fail,     0,  fail ],
   [  fail,     1,     3,     2,     4,     2,     0 ] ]
 
+#T# DigraphShortestDistances, using connectivity data
+gap> gr := CycleDigraph(3);;
+gap> DIGRAPHS_ConnectivityData(gr);
+[  ]
+gap> DigraphShortestDistances(gr);
+[ [ 0, 1, 2 ], [ 2, 0, 1 ], [ 1, 2, 0 ] ]
+gap> gr := CompleteDigraph(3);;
+gap> DIGRAPH_ConnectivityDataForVertex(gr, 2);;
+gap> DigraphShortestDistances(gr);
+[ [ 0, 1, 1 ], [ 1, 0, 1 ], [ 1, 1, 0 ] ]
+
 #T# OutNeighbours and InNeighbours
 gap> gr := Digraph(rec(nrvertices := 10, source := [1, 1, 5, 5, 7, 10],
 > range := [3, 3, 1, 10, 7, 1]));
