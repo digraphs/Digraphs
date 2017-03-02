@@ -562,6 +562,13 @@ true
 gap> WriteDigraphs(filename, gr);
 Error, Digraphs: WriteDigraphs: usage,
 the argument <file> is closed,
+gap> f := DigraphFile(Concatenation(DIGRAPHS_Dir(), "/tst/out/test.d6"),
+>                     Digraph6String, "r");;
+gap> WriteDigraphs(f, EmptyDigraph(4));
+Error, Digraphs: WriteDigraphs: usage,
+the mode of the argument <file> must be "w" or "a",
+gap> IO_Close(f);
+true
 
 #T# WriteDigraphs: automatic format selection
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/choose.gz");;

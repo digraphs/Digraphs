@@ -111,10 +111,7 @@ function(file, gr)
   out := [GeneratorsOfGroup(g),
           RepresentativeOutNeighbours(gr),
           DigraphSchreierVector(gr)];
-  if IO_Pickle(file, out) = IO_Error then
-    return IO_Error;
-  fi;
-  return IO_OK;
+  return IO_Pickle(file, out);
 end);
 
 IO_Unpicklers.DIGG := function(file)
@@ -157,10 +154,7 @@ function(file, gr)
   if IO_Write(file, "DIGT") = fail then
     return IO_Error;
   fi;
-  if IO_Pickle(file, OutNeighbours(gr)) = IO_Error then
-    return IO_Error;
-  fi;
-  return IO_OK;
+  return IO_Pickle(file, OutNeighbours(gr));
 end);
 
 IO_Unpicklers.DIGT := function(file)

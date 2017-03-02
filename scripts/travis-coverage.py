@@ -55,7 +55,7 @@ if search == None:
 percentage = search.group(1)
 print _BLUE_PREFIX + gi_file + ' has ' + percentage + '% coverage: ' + search.group(2) + '/' + search.group(3) + ' lines\033[0m'
 
-if int(percentage) < 95:
+if int(percentage) < 98:
     print _WARN_PREFIX + percentage + '% is insufficient code coverage for ' + gi_file + ' \033[0m'
 
 sys.exit(0)
