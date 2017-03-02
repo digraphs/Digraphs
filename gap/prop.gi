@@ -390,17 +390,9 @@ end);
 #
 
 InstallMethod(IsUndirectedTree, "for a digraph", [IsDigraph],
-function(digraph)
-
-  if not DigraphNrEdges(digraph) = 2 * (DigraphNrVertices(digraph) - 1) then
-    return false;
-  elif not IsSymmetricDigraph(digraph) then
-    return false;
-  elif not IsConnectedDigraph(digraph) then
-    return false;
-  fi;
-
-  return true;
+function(gr)
+  return DigraphNrEdges(gr) = 2 * (DigraphNrVertices(gr) - 1)
+           and IsSymmetricDigraph(gr) and IsConnectedDigraph(gr);
 end);
 
 #
@@ -470,20 +462,17 @@ end);
 
 InstallMethod(IsEulerianDigraph, "for a digraph",
 [IsDigraph],
-function(g)
-  local out, into, i;
+function(gr)
+  local i;
 
-  if not IsStronglyConnectedDigraph(ReducedDigraph(g)) then
+  if not IsStronglyConnectedDigraph(ReducedDigraph(gr)) then
      return false;
   fi;
 
-  out := OutNeighbours(g);
-  into := InNeighbours(g);
-
-  for i in [1 .. Length(out)] do
-     if not Length(out[i]) = Length(into[i]) then
-       return false;
-     fi;
+  for i in DigraphVertices(gr) do
+    if not OutDegreeOfVertex(gr, i) = InDegreeOfVertex(gr, i) then
+      return false;
+    fi;
   od;
 
   return true;

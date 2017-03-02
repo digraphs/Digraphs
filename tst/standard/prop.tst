@@ -910,6 +910,10 @@ gap> g := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);
 <digraph with 4 vertices, 12 edges>
 gap> IsUndirectedTree(g);
 false
+gap> g := Digraph([[1], [2]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsConnectedDigraph(g);
+false
 
 #T# IsEulerianDigraph
 gap> g := Digraph([]);
@@ -976,6 +980,10 @@ gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], [6]]);
 <digraph with 7 vertices, 11 edges>
 gap> IsEulerianDigraph(g);
 true
+gap> g := Digraph([[2, 3], [3], [1]]);
+<digraph with 3 vertices, 4 edges>
+gap> IsEulerianDigraph(g);
+false
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
