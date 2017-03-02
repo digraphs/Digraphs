@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  oper.xml
-#Y  Copyright (C) 2014                                  James D. Mitchell
+#Y  Copyright (C) 2014-17                               James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -13,12 +13,21 @@
   <Oper Name="IsSubdigraph" Arg="super, sub"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    If <A>super</A> and <A>sub</A> are digraphs with the same number of
-    vertices, then this operation returns <K>true</K> if all the edges of
-    <A>sub</A> are edges in <A>super</A>, and <K>false</K> otherwise. <P/>
+    If <A>super</A> and <A>sub</A> are digraphs, then this operation returns
+    <K>true</K> if <A>sub</A> is a subdigraph of <A>super</A>, and <K>false</K>
+    if it is not. <P/>
 
-    If the two digraphs have different numbers of vertices, this operation
-    returns <K>false</K>. <P/>
+    A digraph <A>sub</A> is a <E>subdigraph</E> of a digraph <A>super</A> if
+    <A>sub</A> and <A>super</A> share the same number of vertices, and the
+    collection of edges of <A>super</A> (including repeats) contains the
+    collection of edges of <A>sub</A> (including repeats).  <P/>
+    
+    In other words, <A>sub</A> is a subdigraph of <A>super</A> if and only if
+    <C>DigraphNrVertices(<A>sub</A>) = DigraphNrVertices(<A>super</A>)</C>, and
+    for each pair of vertices <C>i</C> and <C>j</C>, there are at least as many
+    edges of the form <C>[i, j]</C> in <A>super</A> as there are in <A>sub</A>.
+    <P/>
+    
     <Example><![CDATA[
 gap> g := Digraph([[2, 3], [1], [2, 3]]);
 <digraph with 3 vertices, 5 edges>
@@ -28,7 +37,18 @@ gap> IsSubdigraph(g, h);
 true
 gap> IsSubdigraph(h, g);
 false
-]]></Example>
+gap> IsSubdigraph(CompleteDigraph(4), CycleDigraph(4));
+true
+gap> IsSubdigraph(CycleDigraph(4), ChainDigraph(4));
+true
+gap> g := Digraph([[2, 2], [1]]);
+<multidigraph with 2 vertices, 3 edges>
+gap> h := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsSubdigraph(g, h);
+true
+gap> IsSubdigraph(h, g);
+false]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
