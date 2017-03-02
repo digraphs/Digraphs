@@ -14,7 +14,7 @@ gap> LoadPackage("digraphs", false);;
 gap> DIGRAPHS_StartTest();
 
 #T# DigraphReverse
-gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
+gap> gr := DigraphFromDigraph6String("+D[NGc_");
 <digraph with 5 vertices, 11 edges>
 gap> rgr := DigraphReverse(gr);
 <digraph with 5 vertices, 11 edges>
@@ -22,9 +22,7 @@ gap> OutNeighbours(rgr);
 [ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ]
 gap> gr = DigraphReverse(rgr);
 true
-gap> gr := Digraph(rec(nrvertices := 5,
-> source := [1, 1, 2, 2, 2, 2, 2, 3, 4, 4, 4, 5, 5, 5],
-> range  := [1, 3, 1, 2, 2, 4, 5, 4, 1, 3, 5, 1, 1, 3]));
+gap> gr := DigraphFromDiSparse6String(".DaoI?JOcWchN");
 <multidigraph with 5 vertices, 14 edges>
 gap> e := DigraphEdges(gr);
 [ [ 1, 1 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 2 ], [ 2, 4 ], [ 2, 5 ], 
@@ -49,16 +47,11 @@ gap> gr = DigraphReverse(gr);
 true
 
 #T# DigraphRemoveLoops
-gap> adj := [[1, 2], [3, 2], [1, 2], [4], [], [1, 2, 3, 6]];
-[ [ 1, 2 ], [ 3, 2 ], [ 1, 2 ], [ 4 ], [  ], [ 1, 2, 3, 6 ] ]
-gap> gr := Digraph(adj);
+gap> gr := DigraphFromDigraph6String("+EhxPC?@");
 <digraph with 6 vertices, 11 edges>
 gap> DigraphRemoveLoops(gr);
 <digraph with 6 vertices, 7 edges>
-gap> source := [1, 1, 2, 2, 3, 3, 4, 6, 6, 6, 6];;
-gap> range  := [1, 2, 3, 2, 1, 2, 4, 1, 2, 3, 6];;
-gap> gr := Digraph(
-> rec (nrvertices := 6, source := source, range := range));
+gap> gr := DigraphFromDigraph6String("+EhxPC?@");
 <digraph with 6 vertices, 11 edges>
 gap> HasDigraphHasLoops(gr);
 false
@@ -81,17 +74,14 @@ gap> gr := Digraph([[2], []]);
 <digraph with 2 vertices, 1 edge>
 gap> DigraphRemoveEdges(gr, [1]);
 <digraph with 2 vertices, 0 edges>
-gap> r := rec(nrvertices := 5,
-> source := [1, 1, 1, 2, 2, 3, 4, 5, 5, 5],
-> range  := [1, 2, 2, 1, 3, 5, 3, 5, 5, 3]);;
-gap> gr := Digraph(r);
+gap> gr := DigraphFromDiSparse6String(".DaqjO_HocR");
 <multidigraph with 5 vertices, 10 edges>
 gap> gr1 := DigraphRemoveEdges(gr, [2, 4, 5, 6]);
 <multidigraph with 5 vertices, 6 edges>
 gap> DigraphSource(gr1);
 [ 1, 1, 4, 5, 5, 5 ]
 gap> DigraphRange(gr1);
-[ 1, 2, 3, 5, 5, 3 ]
+[ 1, 2, 3, 3, 5, 5 ]
 gap> DigraphRemoveEdges(gr1, []);
 <multidigraph with 5 vertices, 6 edges>
 gap> last = gr1;
@@ -106,15 +96,15 @@ gap> last = gr;
 true
 gap> DigraphRemoveEdges(gr, [[1, 2]]);
 <digraph with 2 vertices, 0 edges>
-gap> gr := Digraph([[1, 2, 4], [1, 4], [3, 4], [1, 4, 5], [1, 5]]);
+gap> gr := DigraphFromDigraph6String("+Dv?f`_");
 <digraph with 5 vertices, 12 edges>
 gap> DigraphEdges(gr);
-[ [ 1, 1 ], [ 1, 2 ], [ 1, 4 ], [ 2, 1 ], [ 2, 4 ], [ 3, 3 ], [ 3, 4 ], 
-  [ 4, 1 ], [ 4, 4 ], [ 4, 5 ], [ 5, 1 ], [ 5, 5 ] ]
+[ [ 1, 2 ], [ 1, 1 ], [ 1, 4 ], [ 2, 1 ], [ 2, 4 ], [ 3, 4 ], [ 3, 3 ], 
+  [ 4, 1 ], [ 4, 5 ], [ 4, 4 ], [ 5, 1 ], [ 5, 5 ] ]
 gap> gr1 := DigraphRemoveEdges(gr, [[1, 4], [4, 5], [5, 5]]);
 <digraph with 5 vertices, 9 edges>
 gap> DigraphEdges(gr1);
-[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 4 ], [ 3, 3 ], [ 3, 4 ], [ 4, 1 ], 
+[ [ 1, 2 ], [ 1, 1 ], [ 2, 1 ], [ 2, 4 ], [ 3, 4 ], [ 3, 3 ], [ 4, 1 ], 
   [ 4, 4 ], [ 5, 1 ] ]
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
@@ -199,14 +189,11 @@ gap> OnDigraphs(gr, p2);
 gap> DigraphEdges(last);
 [ [ 2, 1 ], [ 2, 5 ], [ 3, 3 ], [ 3, 3 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], 
   [ 4, 4 ], [ 4, 1 ], [ 4, 2 ], [ 4, 5 ], [ 5, 3 ], [ 5, 1 ], [ 5, 3 ] ]
-gap> r := rec (nrvertices := 4,
-> source := [1, 1, 2, 2, 2, 3, 4, 4],
-> range  := [2, 3, 1, 4, 4, 3, 3, 1]);;
-gap> gr := Digraph(r);
+gap> gr := DigraphFromDiSparse6String(".CaoJG_hF");
 <multidigraph with 4 vertices, 8 edges>
 gap> DigraphEdges(gr);
-[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 4 ], [ 2, 4 ], [ 3, 3 ], [ 4, 3 ], 
-  [ 4, 1 ] ]
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 4 ], [ 2, 4 ], [ 3, 3 ], [ 4, 1 ], 
+  [ 4, 3 ] ]
 gap> p1 := (1, 5, 4, 2, 3);
 (1,5,4,2,3)
 gap> OnDigraphs(gr, p1);
@@ -217,7 +204,7 @@ gap> p2 := (1, 4)(2, 3);
 gap> OnDigraphs(gr, p2);
 <multidigraph with 4 vertices, 8 edges>
 gap> DigraphEdges(last);
-[ [ 1, 2 ], [ 1, 4 ], [ 2, 2 ], [ 3, 4 ], [ 3, 1 ], [ 3, 1 ], [ 4, 3 ], 
+[ [ 1, 4 ], [ 1, 2 ], [ 2, 2 ], [ 3, 4 ], [ 3, 1 ], [ 3, 1 ], [ 4, 3 ], 
   [ 4, 2 ] ]
 
 #T# OnDigraphs: for a digraph and a transformation
@@ -251,8 +238,7 @@ Error, Digraphs: OnMultiDigraphs: usage,
 the argument <perms[2]> must permute the edges of the 1st argument <graph>,
 
 #T# InNeighboursOfVertex and InDegreeOfVertex
-gap> gr := Digraph(rec(nrvertices := 10, source := [1, 1, 5, 5, 7, 10],
-> range := [3, 3, 1, 10, 7, 1]));
+gap> gr := DigraphFromDiSparse6String(".IgBGLQ?Apkc");
 <multidigraph with 10 vertices, 6 edges>
 gap> InNeighborsOfVertex(gr, 7);
 [ 7 ]
@@ -266,7 +252,7 @@ the 2nd argument <v> is not a vertex of the first, <digraph>,
 gap> InDegreeOfVertex(gr, 11);
 Error, Digraphs: InDegreeOfVertex: usage,
 the 2nd argument <v> is not a vertex of the 1st, <digraph>,
-gap> gr := Digraph([[1, 1, 4], [2, 3, 4], [2, 4, 4, 4], [2]]);
+gap> gr := DigraphFromDiSparse6String(".CgXo?eWCaJ");
 <multidigraph with 4 vertices, 11 edges>
 gap> InNeighboursOfVertex(gr, 3);
 [ 2 ]
@@ -284,8 +270,7 @@ gap> InDegreeOfVertex(gr, 2);
 3
 
 #T# OutNeighboursOfVertex and OutDegreeOfVertex
-gap> gr := Digraph(rec(nrvertices := 10, source := [1, 5, 5, 5, 5, 5, 5, 6],
-> range := [1, 1, 2, 3, 1, 2, 3, 6]));
+gap> gr := DigraphFromDiSparse6String(".Ig??OaDgDQ~");
 <multidigraph with 10 vertices, 8 edges>
 gap> OutNeighborsOfVertex(gr, 2);
 [  ]
@@ -294,7 +279,7 @@ gap> OutNeighboursOfVertex(gr, 2);
 gap> OutDegreeOfVertex(gr, 2);
 0
 gap> OutNeighboursOfVertex(gr, 5);
-[ 1, 2, 3, 1, 2, 3 ]
+[ 1, 1, 2, 2, 3, 3 ]
 gap> OutDegreeOfVertex(gr, 5);
 6
 gap> OutNeighboursOfVertex(gr, 12);
@@ -315,10 +300,7 @@ gap> OutDegreeOfVertex(gr, 1);
 4
 
 #T# InducedSubdigraph
-gap> r := rec(nrvertices := 8,
-> source := [1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 5, 5, 5, 5, 5, 5],
-> range  := [1, 1, 2, 3, 3, 4, 1, 1, 3, 4, 5, 1, 3, 4, 4, 5, 7]);;
-gap> gr := Digraph(r);
+gap> gr := DigraphFromDiSparse6String(".G_A_@BF_?GO?E?hCkR");
 <multidigraph with 8 vertices, 17 edges>
 gap> InducedSubdigraph(gr, [-1]);
 Error, Digraphs: InducedSubdigraph: usage,
@@ -342,16 +324,7 @@ gap> i2 := InducedSubdigraph(gr, [3, 4, 3, 1]);
 Error, Digraphs: InducedSubdigraph: usage,
 the second argument <subverts> must be a duplicate-free subset
 of the vertices of the first argument <digraph>,
-gap> adj := [
-> [2, 3, 4, 5, 6, 6, 7],
-> [1, 1, 1, 3, 4, 5],
-> [4],
-> [3, 5],
-> [1, 2, 2, 3, 4, 4, 6, 5, 6, 7],
-> [],
-> [1],
-> []];;
-gap> gr := Digraph(adj);
+gap> gr := DigraphFromDiSparse6String(".G_?CpOACOpu@aC?oAI?Pc_?`GC");
 <multidigraph with 8 vertices, 27 edges>
 gap> InducedSubdigraph(gr, ["a"]);
 Error, Digraphs: InducedSubdigraph: usage,
@@ -370,7 +343,7 @@ gap> InducedSubdigraph(gr, []);
 gap> i1 := InducedSubdigraph(gr, [1, 3, 5, 7]);
 <digraph with 4 vertices, 8 edges>
 gap> OutNeighbours(i1);
-[ [ 2, 3, 4 ], [  ], [ 1, 2, 3, 4 ], [ 1 ] ]
+[ [ 2, 4, 3 ], [  ], [ 2, 3, 1, 4 ], [ 1 ] ]
 gap> i2 := InducedSubdigraph(gr, [7, 5, 3, 1]);
 <digraph with 4 vertices, 8 edges>
 gap> i1 = i2;
@@ -812,11 +785,7 @@ gap> DigraphVertexLabels(gr2);
 [ 1, Sym( [ 1 .. 2 ] ) ]
 
 #T# DigraphRemoveVertex
-gap> gr := Digraph([
-> [2, 4, 5], [1, 9, 11], [1, 10, 12], [4, 6, 10],
-> [2, 3, 4, 6, 8, 11, 12, 14], [2, 5, 6, 9, 14], [], [5, 8, 10],
-> [8, 11, 12, 14], [2, 3, 8, 13, 14], [3, 6, 7, 8, 11, 12, 13, 14],
-> [6, 8, 12, 13], [4, 8], [6, 8, 9]]);
+gap> gr := DigraphFromDigraph6String("+MW?Gp?GWe?gS?[L?A?f|C@KOCa_gk?F?r_");
 <digraph with 14 vertices, 54 edges>
 gap> DigraphRemoveVertex(gr, "a");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
@@ -1061,10 +1030,7 @@ gap> func := function(mat, i, j, k)
 >   fi;
 > end;
 function( mat, i, j, k ) ... end
-gap> gr := Digraph(rec(
-> nrvertices := 10,
-> source := [1, 2, 2, 3, 4, 5, 6, 7, 10, 10, 10],
-> range := [6, 9, 5, 7, 3, 4, 8, 4, 7, 9, 8]));
+gap> gr := DigraphFromDigraph6String("+I???@?A`?G?GCCS@??");
 <digraph with 10 vertices, 11 edges>
 gap> tclosure := DigraphFloydWarshall(gr, func, 0, 1);;
 gap> grt := DigraphByAdjacencyMatrix(tclosure);
@@ -1123,13 +1089,9 @@ gap> gr = ChainDigraph(14);
 true
 
 #T# DigraphEdgeUnion
-gap> gr1 := Digraph(
-> 10,
-> [3, 4, 4, 6, 6, 9, 9, 9, 9],
-> [10, 5, 7, 3, 9, 4, 5, 8, 10]);
+gap> gr1 := DigraphFromDigraph6String("+I????O?GO_?C??_OGG");
 <digraph with 10 vertices, 9 edges>
-gap> gr2 := Digraph([[9], [9, 1, 6, 3], [], [], [9, 3, 9],
-> [1, 4, 3, 2, 9, 4], [1, 7], [1, 2, 4], [8]]);
+gap> gr2 := DigraphFromDiSparse6String(".H`OS?aEMC?bneOY`l_?QCJ");
 <multidigraph with 9 vertices, 20 edges>
 gap> DigraphEdgeUnion(gr1) = gr1;
 true
@@ -1277,6 +1239,19 @@ true
 gap> IsMutable(in3[1]);
 true
 
+#T# AdjacencyMatrixMutableCopy
+gap> gr := CycleDigraph(3);;
+gap> adj := AdjacencyMatrixMutableCopy(gr);;
+gap> PrintArray(adj);
+[ [  0,  1,  0 ],
+  [  0,  0,  1 ],
+  [  1,  0,  0 ] ]
+gap> adj[3][2] := 1;;
+gap> PrintArray(adj);
+[ [  0,  1,  0 ],
+  [  0,  0,  1 ],
+  [  1,  1,  0 ] ]
+
 #T# DigraphRemoveAllMultipleEdges
 gap> gr1 := Digraph([[1, 1, 2, 1], [1]]);
 <multidigraph with 2 vertices, 5 edges>
@@ -1355,8 +1330,7 @@ gap> IsReachable(gr1, 1, 3);
 false
 gap> IsReachable(gr1, 4, 4);
 false
-gap> gr := Digraph(
-> [[1, 3, 4, 5], [], [1, 3, 4, 5], [1, 3, 4, 5], [1, 3, 4, 5]]);
+gap> gr := DigraphFromSparse6String(":DA_IAMALN");
 <digraph with 5 vertices, 16 edges>
 gap> IsReachable(gr, 1, 2);
 false
@@ -1642,14 +1616,8 @@ gap> DigraphShortestDistance(gr, [1, 6], DigraphLayers(gr, 1)[3]);
 1
 
 #T# Issue #12
-gap> gr := Digraph([[16, 18, 25], [17, 20, 25], [16, 21, 28],
-> [19, 17, 28], [17, 24, 26], [22, 18, 26], [23, 19, 18],
-> [19, 27, 29], [21, 20, 23], [26, 21, 29], [27, 22, 20],
-> [22, 28, 30], [23, 24, 30], [24, 16, 27], [29, 25, 30],
-> [1, 3, 14], [2, 5, 4], [1, 7, 6], [4, 8, 7], [2, 11, 9],
-> [3, 9, 10], [6, 12, 11], [7, 13, 9], [5, 14, 13],
-> [1, 2, 15], [10, 6, 5], [11, 8, 14], [3, 4, 12], [15, 10, 8],
-> [15, 13, 12]]);
+gap> gr := DigraphFromSparse6String(
+> ":]n?AL`CB_EDbFE`IGaGHdJIeKGcLK_@MhDCiFLaBJmHFmKJ");
 <digraph with 30 vertices, 90 edges>
 gap> DigraphGroup(gr);
 <permutation group with 5 generators>
@@ -1718,14 +1686,8 @@ gap> DigraphColoring(ChainDigraph(10));
 Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 gap> DigraphColoring(CompleteDigraph(10));
 IdentityTransformation
-gap> gr := Digraph([[16, 18, 25], [17, 20, 25], [16, 21, 28],
-> [19, 17, 28], [17, 24, 26], [22, 18, 26], [23, 19, 18],
-> [19, 27, 29], [21, 20, 23], [26, 21, 29], [27, 22, 20],
-> [22, 28, 30], [23, 24, 30], [24, 16, 27], [29, 25, 30],
-> [1, 3, 14], [2, 5, 4], [1, 7, 6], [4, 8, 7], [2, 11, 9],
-> [3, 9, 10], [6, 12, 11], [7, 13, 9], [5, 14, 13],
-> [1, 2, 15], [10, 6, 5], [11, 8, 14], [3, 4, 12], [15, 10, 8],
-> [15, 13, 12]]);
+gap> gr := DigraphFromSparse6String(
+> ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
 <digraph with 30 vertices, 90 edges>
 gap> DigraphColoring(gr);
 Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
