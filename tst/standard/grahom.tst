@@ -293,6 +293,24 @@ IdentityTransformation
 gap> DigraphColoring(CompleteDigraph(1), 0);
 fail
 
+#T# DigraphColoring
+gap> DigraphColoring(EmptyDigraph(0));
+IdentityTransformation
+gap> DigraphColouring(Digraph([[1]]));
+IdentityTransformation
+gap> DigraphColouring(CycleDigraph(2));
+IdentityTransformation
+gap> DigraphColouring(CycleDigraph(3));
+IdentityTransformation
+gap> DigraphColouring(CycleDigraph(4));
+Transformation( [ 1, 2, 1, 2 ] )
+gap> DigraphColouring(CycleDigraph(5));
+Transformation( [ 1, 2, 1, 2, 3 ] )
+gap> DigraphColouring(CycleDigraph(6));
+Transformation( [ 1, 2, 1, 2, 1, 2 ] )
+gap> DigraphColouring(CompleteDigraph(10));
+IdentityTransformation
+
 #T# HomomorphismDigraphsFinder 1
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);;
 gap> gr := DigraphSymmetricClosure(gr);;
