@@ -41,5 +41,6 @@
    </List>
 
    <#Include Label="IsSubdigraph">
+   <#Include Label="IsUndirectedSpanningTree">
   </Section>
 </Chapter>

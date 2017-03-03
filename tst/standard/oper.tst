@@ -1,7 +1,8 @@
 #############################################################################
 ##
 #W  standard/oper.tst
-#Y  Copyright (C) 2014-15                                James D. Mitchell
+#Y  Copyright (C) 2014-17                                James D. Mitchell
+##                                                          Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -1745,6 +1746,50 @@ gap> gr2 := Digraph([[], [2, 2]]);
 <multidigraph with 2 vertices, 2 edges>
 gap> IsSubdigraph(gr1, gr2) or IsSubdigraph(gr2, gr1);
 false
+
+#T# IsUndirectedSpanningForest
+gap> gr1 := CompleteDigraph(10);
+<digraph with 10 vertices, 90 edges>
+gap> gr2 := EmptyDigraph(9);
+<digraph with 9 vertices, 0 edges>
+gap> IsUndirectedSpanningForest(gr1, gr2);
+false
+gap> gr2 := DigraphAddEdge(EmptyDigraph(10), [1, 2]);
+<digraph with 10 vertices, 1 edge>
+gap> IsUndirectedSpanningForest(gr1, gr2);
+false
+gap> gr2 := DigraphAddEdge(gr2, [2, 1]);
+<digraph with 10 vertices, 2 edges>
+gap> IsUndirectedSpanningForest(gr1, gr2);
+false
+gap> IsUndirectedSpanningForest(gr1, DigraphFromSparse6String(":I`ESyTl^F"));
+true
+gap> gr := DigraphFromDigraph6String("+I?PIMAQc@A?W?ADPP?");
+<digraph with 10 vertices, 23 edges>
+gap> IsUndirectedSpanningForest(gr, DigraphByEdges([[2, 7], [7, 2]], 10));
+true
+
+#T# IsUndirectedSpanningTree
+gap> IsUndirectedSpanningTree(EmptyDigraph(1), EmptyDigraph(1));
+true
+gap> IsUndirectedSpanningTree(EmptyDigraph(2), EmptyDigraph(2));
+false
+gap> gr := DigraphFromDigraph6String("+I?PIMAQc@A?W?ADPP?");
+<digraph with 10 vertices, 23 edges>
+gap> IsUndirectedSpanningTree(gr, EmptyDigraph(10));
+false
+gap> gr := DigraphFromGraph6String("INB`cZoQ_");
+<digraph with 10 vertices, 38 edges>
+gap> IsUndirectedSpanningTree(gr, gr);
+false
+gap> gr1 := DigraphEdgeUnion(CycleDigraph(5), DigraphReverse(CycleDigraph(5)));
+<digraph with 5 vertices, 10 edges>
+gap> gr2 := DigraphEdgeUnion(ChainDigraph(5), DigraphReverse(ChainDigraph(5)));
+<digraph with 5 vertices, 8 edges>
+gap> IsUndirectedSpanningTree(gr1, gr2);
+true
+gap> IsUndirectedSpanningTree(gr2, gr2);
+true
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(a);

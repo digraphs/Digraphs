@@ -1,13 +1,15 @@
 #############################################################################
 ##
 #W  oper.gd
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014-17                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
 DeclareOperation("IsSubdigraph", [IsDigraph, IsDigraph]);
+DeclareOperation("IsUndirectedSpanningTree", [IsDigraph, IsDigraph]);
+DeclareOperation("IsUndirectedSpanningForest", [IsDigraph, IsDigraph]);
 
 DeclareOperation("AsBinaryRelation", [IsDigraph]);
 DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);

@@ -53,6 +53,63 @@ false]]></Example>
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsUndirectedSpanningTree">
+<ManSection>
+  <Oper Name="IsUndirectedSpanningTree" Arg="super, sub"/>
+  <Oper Name="IsUndirectedSpanningForest" Arg="super, sub"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    The operation <C>IsUndirectedSpanningTree</C> returns <K>true</K> if the
+    digraph <A>sub</A> is an undirected spanning tree of the digraph
+    <A>super</A>, and the operation <C>IsUndirectedSpanningForest</C> returns
+    <K>true</K> if the digraph <A>sub</A> is an undirected spanning forest of
+    the digraph <A>super</A>. <P/>
+
+    An <E>undirected spanning tree</E> of a digraph <A>super</A> is a subdigraph
+    of <A>super</A> that is an undirected tree (see <Ref Oper="IsSubdigraph" />
+    and <Ref Prop="IsUndirectedTree" />). Note that a digraph whose <Ref
+      Attr="MaximalSymmetricSubdigraph"/> is not connected has no undirected
+    spanning trees (see <Ref Prop="IsConnectedDigraph"/>). <P/>
+
+    An <E>undirected spanning forest</E> of a digraph <A>super</A> is a
+    subdigraph of <A>super</A> that is an undirected forest (see <Ref
+      Oper="IsSubdigraph"/> and <Ref Oper="IsUndirectedForest"/>), and is not
+    contained in any larger such subdigraph of <A>super</A>.  Equivalently, an
+    undirected spanning forest is a subdigraph of <A>super</A> whose connected
+    components coincide with those of the <Ref
+      Attr="MaximalSymmetricSubdigraph"/> of <A>super</A> (see <Ref
+      Attr="DigraphConnectedComponents"/>). <P/>
+
+    Note that an undirected spanning tree is an undirected spanning forest that
+    is connected.
+
+    <Example><![CDATA[
+gap> gr := CompleteDigraph(4);
+<digraph with 4 vertices, 12 edges>
+gap> tree := Digraph([[3], [4], [1, 4], [2, 3]]);
+<digraph with 4 vertices, 6 edges>
+gap> IsSubdigraph(gr, tree) and IsUndirectedTree(tree);
+true
+gap> IsUndirectedSpanningTree(gr, tree);
+true
+gap> forest := EmptyDigraph(4);
+<digraph with 4 vertices, 0 edges>
+gap> IsSubdigraph(gr, forest) and IsUndirectedForest(forest);
+true
+gap> IsUndirectedSpanningForest(gr, forest);
+false
+gap> IsSubdigraph(tree, forest);
+true
+gap> gr := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(2));
+<digraph with 4 vertices, 4 edges>
+gap> IsUndirectedTree(gr);
+false
+gap> IsUndirectedForest(gr) and IsUndirectedSpanningForest(gr, gr);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphReverse">
 <ManSection>
   <Oper Name="DigraphReverse" Arg="digraph"/>
