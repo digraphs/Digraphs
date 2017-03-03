@@ -17,7 +17,7 @@ if [ ! -z "$COVERAGE" ]; then
   for testfile in tst/standard/*.tst; do
     filename=${testfile##*/}
     if [ ! `grep -E "$filename" .covignore` ]; then
-      scripts/travis-coverage.py $testfile | tee -a ../../testlog.txt
+      scripts/travis-coverage.py $testfile 98 | tee -a ../../testlog.txt
     else
       echo -e "\033[35mignoring $filename, since it is listed in .covignore\033[0m"
     fi

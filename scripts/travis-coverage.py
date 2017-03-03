@@ -12,6 +12,8 @@ f = str(sys.argv[1])
 if not (exists(f) and isfile(f)):
     sys.exit(_ERR_PREFIX + f + ' does not exist!\033[0m')
 
+threshold = int(sys.argv[2])
+
 _DIR = tempfile.mkdtemp()
 _COMMANDS = 'echo "Test(\\"' + f + '\\");;\n'
 _COMMANDS += '''UncoverageLineByLine();;
@@ -55,7 +57,7 @@ if search == None:
 percentage = search.group(1)
 print _BLUE_PREFIX + gi_file + ' has ' + percentage + '% coverage: ' + search.group(2) + '/' + search.group(3) + ' lines\033[0m'
 
-if int(percentage) < 98:
+if int(percentage) < threshold:
     print _WARN_PREFIX + percentage + '% is insufficient code coverage for ' + gi_file + ' \033[0m'
 
 sys.exit(0)
