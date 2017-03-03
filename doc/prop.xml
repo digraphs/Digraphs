@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  prop.xml
-#Y  Copyright (C) 2014                                  James D. Mitchell
+#Y  Copyright (C) 2014-17                               James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -17,13 +17,13 @@
     <K>false</K> if it does not. A loop is an edge with equal source and range.
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 2 ], [ 2 ] ] );
+gap> gr := Digraph([[1, 2], [2]]);
 <digraph with 2 vertices, 3 edges>
 gap> DigraphEdges(gr);
 [ [ 1, 1 ], [ 1, 2 ], [ 2, 2 ] ]
 gap> DigraphHasLoops(gr);
 true
-gap> gr := Digraph( [ [ 2, 3 ], [ 1 ], [ 2 ] ] );
+gap> gr := Digraph([[2, 3], [1], [2]]);
 <digraph with 3 vertices, 4 edges>
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 3, 2 ] ]
@@ -50,22 +50,23 @@ false
     <M>n</M> is the number of vertices in the digraph.
 
     <Example><![CDATA[
-gap> Petersen := Graph( SymmetricGroup(5), [ [ 1, 2 ] ], OnSets,           
-> function(x, y) return IsEmpty(Intersection(x, y)); end );;
-gap> gr:=Digraph(Petersen);                    
+gap> Petersen := Graph(SymmetricGroup(5), [[1, 2]], OnSets,
+> function(x, y)
+>   return IsEmpty(Intersection(x, y));
+> end);;
+gap> gr := Digraph(Petersen);
 <digraph with 10 vertices, 30 edges>
 gap> IsAcyclicDigraph(gr);
 false
-gap> gr:=Digraph( [ [  ], [ 1 ], [ 1 ], [ 1 ], [ 3 ], [ 3 ], 
-> [ 4 ], [ 4 ], [ 5 ], [ 5 ], [ 5 ], [ 6 ], [ 6 ], [ 7 ], [ 7 ], 
-> [ 7 ], [ 8 ], [ 9 ], [ 9 ], [ 11 ], [ 11 ], [ 12 ], [ 12 ], [ 13 ], 
-> [ 14 ], [ 15 ], [ 15 ], [ 16 ], [ 16 ], [ 17 ], [ 17 ], [ 18 ], 
-> [ 18 ], [ 19 ], [ 20 ], [ 20 ], [ 21 ], [ 22 ], [ 22 ], [ 23 ], 
-> [ 23 ], [ 24 ], [ 28 ], [ 29 ], [ 30 ], [ 30 ], [ 31 ], [ 32 ], 
-> [ 32 ], [ 33 ], [ 34 ], [ 41 ], [ 46 ], [ 47 ], [ 51 ] ] );;
+gap> gr := DigraphFromDiSparse6String(
+> ".b_OGCIDBaPGkULEbQHCeRIdrHcuZMfRyDAbPhTi|zF");
+<digraph with 35 vertices, 34 edges>
 gap> IsAcyclicDigraph(gr);
 true
-]]></Example>
+gap> IsAcyclicDigraph(ChainDigraph(10));
+true
+gap> IsAcyclicDigraph(CycleDigraph(10));
+false]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -75,22 +76,22 @@ true
   <Prop Name="IsCompleteDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns <K>true</K> if the digraph <A>digraph</A> is complete, and 
+    Returns <K>true</K> if the digraph <A>digraph</A> is complete, and
     <K>false</K> if it is not. <P/>
-    
+
     A digraph is <E>complete</E> if it has no loops, and for all
     <E>distinct</E> vertices <C>i</C> and <C>j</C>,
     there is exactly one edge with source <C>i</C> and range <C>j</C>.
-    
+
     Equivalently, a digraph with <M>n</M> vertices is complete precisely when
     it has <M>n(n - 1)</M> edges, no loops, and no multiple edges.
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ] );
+gap> gr := Digraph([[2, 3], [1, 3], [1, 2]]);
 <digraph with 3 vertices, 6 edges>
 gap> IsCompleteDigraph(gr);
 true
-gap> gr := Digraph( [ [ 2, 2 ], [ 1 ] ] );
+gap> gr := Digraph([[2, 2], [1]]);
 <multidigraph with 2 vertices, 3 edges>
 gap> IsCompleteDigraph(gr);
 false
@@ -106,13 +107,13 @@ false
   <Description>
     Returns <K>true</K> if the digraph <A>digraph</A> is a complete bipartite
     digraph, and <K>false</K> if it is not. <P/>
-    
+
     A digraph is a <E>complete bipartite digraph</E> if it is bipartite, see
     <Ref Prop="IsBipartiteDigraph"/>, and there exists a unique edge with
     source <C>i</C> and range <C>j</C> if and only if <C>i</C> and <C>j</C> lie
     in different bicomponents of <A>digraph</A>, see <Ref
       Attr="DigraphBicomponents"/>. <P/>
-    
+
     Equivalently, a bipartite digraph with bicomponents of size <M>m</M> and
     <M>n</M> is complete precisely when it has <M>2mn</M> edges, none of which
     are multiple edges. <P/>
@@ -148,13 +149,13 @@ false
     <C>IsNullDigraph</C> is a synonym for <C>IsEmptyDigraph</C>.
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [  ], [  ] ] );
+gap> gr := Digraph([[], []]);
 <digraph with 2 vertices, 0 edges>
 gap> IsEmptyDigraph(gr);
 true
 gap> IsNullDigraph(gr);
 true
-gap> gr := Digraph( [ [  ], [ 1 ] ] );
+gap> gr := Digraph([[], [1]]);
 <digraph with 2 vertices, 1 edge>
 gap> IsEmptyDigraph(gr);
 false
@@ -171,19 +172,19 @@ false]]></Example>
   <Description>
     This property is <K>true</K> if the digraph <A>digraph</A> is
     functional. <P/>
-    
+
     A digraph is <E>functional</E> if every vertex is the source of a
-    unique edge. 
+    unique edge.
     <Example><![CDATA[
-gap> gr1 := Digraph( [ [ 3 ], [ 2 ], [ 2 ], [ 1 ], [ 6 ], [ 5 ] ] );
+gap> gr1 := Digraph([[3], [2], [2], [1], [6], [5]]);
 <digraph with 6 vertices, 6 edges>
 gap> IsFunctionalDigraph(gr1);
 true
-gap> gr2 := Digraph( [ [ 1, 2 ], [ 1 ] ] );
+gap> gr2 := Digraph([[1, 2], [1]]);
 <digraph with 2 vertices, 3 edges>
 gap> IsFunctionalDigraph(gr2);
 false
-gap> gr3 := Digraph( 3, [ 1, 2, 3 ], [ 2, 3, 1 ] );
+gap> gr3 := Digraph(3, [1, 2, 3], [2, 3, 1]);
 <digraph with 3 vertices, 3 edges>
 gap> IsFunctionalDigraph(gr3);
 true
@@ -198,17 +199,15 @@ true
   <Prop Name="IsReflexiveDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A> is 
+    This property is <K>true</K> if the digraph <A>digraph</A> is
     reflexive, and <K>false</K> if it is not.
     A digraph is <E>reflexive</E> if it has a loop at every vertex. <P/>
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 2 ], [ 2 ] ] );
+gap> gr := Digraph([[1, 2], [2]]);
 <digraph with 2 vertices, 3 edges>
 gap> IsReflexiveDigraph(gr);
 true
-gap> gr := Digraph( rec ( nrvertices := 4,
-> source := [ 1, 1, 2, 2, 3, 4, 4 ],
-> range := [ 3, 1, 4, 2, 3, 2, 1 ] )  );
+gap> gr := Digraph([[3, 1], [4, 2], [3], [2, 1]]);
 <digraph with 4 vertices, 7 edges>
 gap> IsReflexiveDigraph(gr);
 false
@@ -224,21 +223,21 @@ false
   <Description>
     This property is <K>true</K> if the digraph <A>digraph</A>
     is weakly connected and <K>false</K> if it is not.  A digraph
-    <A>digraph</A> is <E>weakly connected</E> if it is possible to travel 
+    <A>digraph</A> is <E>weakly connected</E> if it is possible to travel
     from any vertex to any other vertex by traversing edges in either
     direction (possibly against the orientation of some of them). <P/>
 
-    The method used in this function has complexity <M>O(m)</M> if the 
+    The method used in this function has complexity <M>O(m)</M> if the
     digraph's <Ref Attr="DigraphSource"/> attribute is set, otherwise it has
-    complexity <M>O(m+n)</M> (where 
+    complexity <M>O(m+n)</M> (where
     <M>m</M> is the number of edges and
     <M>n</M> is the number of vertices of the digraph).
 
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 2 ], [ 3 ], [  ] ] );;
+gap> gr := Digraph([[2], [3], []]);;
 gap> IsConnectedDigraph(gr);
 true
-gap> gr := Digraph( [ [ 1, 3 ], [ 4 ], [ 3 ], [  ] ] );;
+gap> gr := Digraph([[1, 3], [4], [3], []]);;
 gap> IsConnectedDigraph(gr);
 false]]></Example>
   </Description>
@@ -252,7 +251,7 @@ false]]></Example>
   <Description>
     This property is <K>true</K> if the digraph <A>digraph</A> is strongly
     connected and <K>false</K> if it is not. <P/>
-    
+
     A digraph <A>digraph</A> is <E>strongly connected</E> if there is a directed
     path from every vertex to every other vertex.  See section <Ref
       Subsect="Definitions" Style="Number" /> for the definition of a directed
@@ -261,14 +260,14 @@ false]]></Example>
     The method used in this operation is based on Gabow's Algorithm <Cite
       Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M>, where <M>m</M> is
     the number of edges (counting multiple edges as one) and <M>n</M> is the
-    number of vertices in the digraph. 
-  
+    number of vertices in the digraph.
+
     <Example><![CDATA[
 gap> gr := CycleDigraph(250000);
 <digraph with 250000 vertices, 250000 edges>
 gap> IsStronglyConnectedDigraph(gr);
 true
-gap> gr:=DigraphRemoveEdges(gr, [ [ 250000, 1 ] ]);
+gap> gr := DigraphRemoveEdges(gr, [[250000, 1]]);
 <digraph with 250000 vertices, 249999 edges>
 gap> IsStronglyConnectedDigraph(gr);
 false
@@ -282,19 +281,19 @@ false
   <Prop Name="IsSymmetricDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A> 
+    This property is <K>true</K> if the digraph <A>digraph</A>
     is symmetric, and <K>false</K> if it is not.<P/>
 
     A <E>symmetric digraph</E> is one where for each non-loop edge,
     having source <M>u</M> and range <M>v</M>, there is a corresponding edge
     with source v and range u.
     If there are <M>n</M> edges with source <M>u</M>
-    and range <M>v</M>, then there must be precisely <M>n</M> edges with 
+    and range <M>v</M>, then there must be precisely <M>n</M> edges with
     source <M>v</M> and range <M>u</M>.
-    In other words, an undirected digraph has a symmetric adjacency 
+    In other words, an undirected digraph has a symmetric adjacency
     matrix <Ref Attr="AdjacencyMatrix"/>.<P/>
     <Example><![CDATA[
-gap> gr1 := Digraph( [ [ 2 ], [ 1, 3 ], [ 2, 3 ] ] );
+gap> gr1 := Digraph([[2], [1, 3], [2, 3]]);
 <digraph with 3 vertices, 5 edges>
 gap> IsSymmetricDigraph(gr1);
 true
@@ -307,7 +306,7 @@ gap> adj1 = TransposedMat(adj1);
 true
 gap> gr1 = DigraphReverse(gr1);
 true
-gap> gr2 := Digraph( [ [ 2, 3 ], [ 1, 3 ], [ 2, 3 ] ] );
+gap> gr2 := Digraph([[2, 3], [1, 3], [2, 3]]);
 <digraph with 3 vertices, 6 edges>
 gap> IsSymmetricDigraph(gr2);
 false
@@ -328,7 +327,7 @@ false
   <Prop Name="IsAntisymmetricDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A> 
+    This property is <K>true</K> if the digraph <A>digraph</A>
     is antisymmetric, and <K>false</K> if it is not.
     <P/>
 
@@ -338,13 +337,13 @@ false
     <P/>
 
     <Example><![CDATA[
-gap> gr1 := Digraph( [ [ 2 ], [ 1, 3 ], [ 2, 3 ] ] );
+gap> gr1 := Digraph([[2], [1, 3], [2, 3]]);
 <digraph with 3 vertices, 5 edges>
 gap> IsAntisymmetricDigraph(gr1);
 false
-gap> DigraphEdges(gr1){[ 1, 2 ]};
+gap> DigraphEdges(gr1){[1, 2]};
 [ [ 1, 2 ], [ 2, 1 ] ]
-gap> gr2 := Digraph( [ [ 1, 2 ], [ 3, 3 ], [ 1 ] ] );
+gap> gr2 := Digraph([[1, 2], [3, 3], [1]]);
 <multidigraph with 3 vertices, 5 edges>
 gap> IsAntisymmetricDigraph(gr2);
 true
@@ -362,8 +361,8 @@ gap> DigraphEdges(gr2);
   <Description>
     This property is <K>true</K> if the digraph <A>digraph</A>
     is transitive, and <K>false</K> if it is not.
-    
-    A digraph is <E>transitive</E> if whenever <C>[ i, j ]</C> and 
+
+    A digraph is <E>transitive</E> if whenever <C>[ i, j ]</C> and
     <C>[ j, k ]</C> are edges of the digraph, then <C>[ i, k ]</C> is also an
     edge of the digraph. <P/>
 
@@ -377,17 +376,17 @@ gap> DigraphEdges(gr2);
     complexity <M>O(m + n + m \cdot n)</M> will be used when appropriate.
     <P/>
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 3 ] ] );
+gap> gr := Digraph([[1, 2], [3], [3]]);
 <digraph with 3 vertices, 4 edges>
 gap> IsTransitiveDigraph(gr);
 false
-gap> gr2 := Digraph( [ [ 1, 2, 3 ], [ 3 ], [ 3 ] ] );
+gap> gr2 := Digraph([[1, 2, 3], [3], [3]]);
 <digraph with 3 vertices, 5 edges>
 gap> IsTransitiveDigraph(gr2);
 true
 gap> gr2 = DigraphTransitiveClosure(gr);
 true
-gap> gr3 := Digraph( [ [ 1, 2, 2, 3 ], [ 3, 3 ], [ 3 ] ] );
+gap> gr3 := Digraph([[1, 2, 2, 3], [3, 3], [3]]);
 <multidigraph with 3 vertices, 7 edges>
 gap> IsTransitiveDigraph(gr3);
 true
@@ -403,17 +402,17 @@ true
   <Description>
     This property is <K>true</K> if the digraph <A>digraph</A> is a tournament,
     and <K>false</K> if it is not. <P/>
-    
+
     A tournament is an orientation of a complete (undirected) graph.
     Specifically, a tournament is a digraph which has a unique directed edge
     (of some orientation) between any pair of distinct vertices, and no loops.
     <P/>
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ] );
+gap> gr := Digraph([[2, 3, 4], [3, 4], [4], []]);
 <digraph with 4 vertices, 6 edges>
 gap> IsTournament(gr);
 true
-gap> gr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );
+gap> gr := Digraph([[2], [1], [3]]);
 <digraph with 3 vertices, 3 edges>
 gap> IsTournament(gr);
 false
@@ -431,11 +430,11 @@ false
     is aperiodic, i.e. if its <Ref Attr = "DigraphPeriod"/> is equal to 1.
     Otherwise, the property is <K>false</K>.
     <Example><![CDATA[
-gap> gr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );
+gap> gr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);
 <multidigraph with 6 vertices, 7 edges>
 gap> IsAperiodicDigraph(gr);
 false
-gap> gr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );
+gap> gr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
 <digraph with 5 vertices, 7 edges>
 gap> IsAperiodicDigraph(gr);
 true
@@ -477,9 +476,9 @@ false]]></Example>
   <Description>
     This property is <K>true</K> if there is an integer <C>n</C> such that
     for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
-    <C>n</C> edges terminating in <C>v</C>. 
+    <C>n</C> edges terminating in <C>v</C>.
 
-    See also <Ref Prop="IsOutRegularDigraph"/> and 
+    See also <Ref Prop="IsOutRegularDigraph"/> and
     <Ref Prop="IsRegularDigraph"/>.
     <Example><![CDATA[
 gap> IsInRegularDigraph(CompleteDigraph(4));
@@ -498,9 +497,9 @@ false
   <Description>
     This property is <K>true</K> if there is an integer <C>n</C> such that
     for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
-    <C>n</C> edges starting at <C>v</C>. 
+    <C>n</C> edges starting at <C>v</C>.
 
-    See also <Ref Prop="IsInRegularDigraph"/> and 
+    See also <Ref Prop="IsInRegularDigraph"/> and
     <Ref Prop="IsRegularDigraph"/>.
     <Example><![CDATA[
 gap> IsOutRegularDigraph(CompleteDigraph(4));
@@ -523,7 +522,7 @@ false
     the property is <K>true</K> if <A>digraph</A> is both in-regular and
     and out-regular.
 
-    See also <Ref Prop="IsInRegularDigraph"/> and 
+    See also <Ref Prop="IsInRegularDigraph"/> and
     <Ref Prop="IsOutRegularDigraph"/>.
     <Example><![CDATA[
 gap> IsRegularDigraph(CompleteDigraph(4));
@@ -577,32 +576,32 @@ true
   <Prop Name="IsDirectedTree" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns <K>true</K> if the digraph <A>digraph</A> is a directed tree, and 
+    Returns <K>true</K> if the digraph <A>digraph</A> is a directed tree, and
     <K>false</K> if it is not. <P/>
-    
+
     A <E>directed tree</E> is an acyclic digraph with precisely 1 source,
     such that no two vertices share an out-neighbour.
-    Note the empty digraph is not considered a directed 
+    Note the empty digraph is not considered a directed
     tree as it has no source. <P/>
 
     See also <Ref Attr="DigraphSources"/>.
 
     <Example><![CDATA[
-gap> g := Digraph([[], [2]]);
+gap> gr := Digraph([[], [2]]);
 <digraph with 2 vertices, 1 edge>
-gap> IsDirectedTree(g);
+gap> IsDirectedTree(gr);
 false
-gap> g := Digraph([[3], [3], []]);
+gap> gr := Digraph([[3], [3], []]);
 <digraph with 3 vertices, 2 edges>
-gap> IsDirectedTree(g);
+gap> IsDirectedTree(gr);
 false
-gap> g := Digraph([[2], [3], []]);
+gap> gr := Digraph([[2], [3], []]);
 <digraph with 3 vertices, 2 edges>
-gap> IsDirectedTree(g);
+gap> IsDirectedTree(gr);
 true
-gap> g := Digraph([[2,3], [6], [4,5], [], [], []]);
+gap> gr := Digraph([[2, 3], [6], [4, 5], [], [], []]);
 <digraph with 6 vertices, 5 edges>
-gap> IsDirectedTree(g);
+gap> IsDirectedTree(gr);
 true
 ]]></Example>
   </Description>
@@ -628,13 +627,13 @@ true
     undirected tree. <P/>
 
     <Example><![CDATA[
-gap> g := Digraph([[3], [3], [1,2]]);
+gap> gr := Digraph([[3], [3], [1, 2]]);
 <digraph with 3 vertices, 4 edges>
-gap> IsUndirectedTree(g);
+gap> IsUndirectedTree(gr);
 true
-gap> g := Digraph([[], [1]]);
+gap> gr := Digraph([[], [1]]);
 <digraph with 2 vertices, 1 edge>
-gap> IsUndirectedTree(g);
+gap> IsUndirectedTree(gr);
 false
 ]]></Example>
   </Description>
@@ -656,21 +655,21 @@ false
     circuit.
 
     <Example><![CDATA[
-gap> g := Digraph([[]]);
+gap> gr := Digraph([[]]);
 <digraph with 1 vertex, 0 edges>
-gap> IsEulerianDigraph(g);
+gap> IsEulerianDigraph(gr);
 true
-gap> g := Digraph([[2], []]);
+gap> gr := Digraph([[2], []]);
 <digraph with 2 vertices, 1 edge>
-gap> IsEulerianDigraph(g);
+gap> IsEulerianDigraph(gr);
 false
-gap> g := Digraph([[3], [], [2]]);
+gap> gr := Digraph([[3], [], [2]]);
 <digraph with 3 vertices, 2 edges>
-gap> IsEulerianDigraph(g);
+gap> IsEulerianDigraph(gr);
 false
-gap> g := Digraph([[2], [3], [1]]);
+gap> gr := Digraph([[2], [3], [1]]);
 <digraph with 3 vertices, 3 edges>
-gap> IsEulerianDigraph(g);
+gap> IsEulerianDigraph(gr);
 true
 ]]></Example>
   </Description>

@@ -26,7 +26,7 @@
     <Email>markus.pfeiffer@st-andrews.ac.uk</Email>
     <Homepage>https://www.morphism.de/~markusp</Homepage>
   </Author>
-  
+
   <Author>Finn Smith
     <Email>fls3@st-andrews.ac.uk</Email>
   </Author>
@@ -54,7 +54,7 @@
 
   <Abstract>
     The &Digraphs; package is a &GAP; package containing methods for graphs,
-    digraphs, and multidigraphs. 
+    digraphs, and multidigraphs.
   </Abstract>
 
   <Acknowledgements>

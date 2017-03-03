@@ -8,7 +8,7 @@
 
   <Section><Heading>Reading and writing graphs to a file</Heading>
     This section describes different ways to store and read graphs
-    from a file in the &Digraphs; package. 
+    from a file in the &Digraphs; package.
     <List>
       <Mark> Graph6 </Mark>
       <Item>

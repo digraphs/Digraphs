@@ -2,7 +2,7 @@
   <Heading>
     The &Digraphs; package
   </Heading>
-  <Index Key="Digraphs">&Digraphs; package overview</Index>	
+  <Index Key="Digraphs">&Digraphs; package overview</Index>
 
 <Section><Heading>Introduction</Heading>
 
@@ -59,7 +59,7 @@
     repeated.  A <E>directed circuit</E> is a directed walk where <M>v_1 =
       v_n</M>, and a <E>directed cycle</E> is a directed circuit where where no
     vertex is repeated, except for <M>v_1 = v_n</M>.  <P/>
-    
+
     The <E>length</E> of a directed walk <M>(v_1, e_1, v_2, e_2, ..., e_{n-1},
       v_n)</M> is equal to <M>n-1</M>, the number of edges it contains.  A
     directed walk (or path) <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M> is

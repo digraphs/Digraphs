@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  grahom.xml
-#Y  Copyright (C) 2014
+#Y  Copyright (C) 2014-17
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -25,7 +25,7 @@
       <Mark><A>hook</A></Mark>
       <Item>
         This argument should be a function or <K>fail</K>.<P/>
-        
+
         If <A>hook</A> is a function, then it should have two arguments
         <A>user_param</A> (see below) and a transformation <C>t</C>. The
         function <C><A>hook</A>(<A>user_param</A>, t)</C> is called every time
@@ -35,7 +35,7 @@
         If <A>hook</A> is <K>fail</K>, then a default function is used which
         simply adds every new homomorphism found by
         <C>HomomorphismGraphsFinder</C> to <A>user_param</A>, which must be a
-        list in this case. 
+        list in this case.
       </Item>
 
       <Mark><A>user_param</A></Mark>
@@ -48,36 +48,36 @@
         <C>t</C>. <P/>
 
         If the value of <A>hook</A> is <K>fail</K>, then the value of
-        <A>user_param</A> must be a list. 
+        <A>user_param</A> must be a list.
       </Item>
 
       <Mark><A>limit</A></Mark>
-      <Item> 
+      <Item>
         This argument should be a positive integer or <K>infinity</K>.
         <C>HomomorphismGraphsFinder</C> will return after it has found
         <A>limit</A> homomorphisms or the search is complete.
       </Item>
-      
+
       <Mark><A>hint</A></Mark>
-      <Item> 
+      <Item>
         This argument should be a positive integer or <K>fail</K>. <P/>
 
         If <A>hint</A> is a positive integer, then only homorphisms of rank
         <A>hint</A> are found.<P/>
 
         If <A>hint</A> is <K>fail</K>, then no restriction is put on the rank
-        of homomorphisms found. 
+        of homomorphisms found.
       </Item>
-      
+
       <Mark><A>injective</A></Mark>
-      <Item> 
+      <Item>
         This argument should be <K>true</K> or <K>false</K>. If it is
         <K>true</K>, then only injective homomorphisms are found, and if it is
         <K>false</K> there are no restrictions imposed by this argument.
       </Item>
 
       <Mark><A>image</A></Mark>
-      <Item> 
+      <Item>
         This argument should be a subset of the vertices of the graph <A>gr2</A>.
         <C>HomomorphismGraphsFinder</C> only finds homomorphisms from
         <A>gr1</A> to the subgraph of <A>gr2</A> induced by the vertices <A>image</A>.
@@ -89,7 +89,7 @@
         that is, a (not necessarily dense) list of vertices of the graph
         <A>gr2</A> of length no greater than the number vertices in the graph
         <A>gr1</A>. <C>HomomorphismGraphsFinder</C> only finds homomorphisms
-        extending <A>map</A> (if any). 
+        extending <A>map</A> (if any).
       </Item>
 
     </List>
@@ -163,7 +163,7 @@ Transformation( [ 1, 3, 1 ] )
     where <C>g</C> is one of the <C>HomomorphismsDigraphsRepresentatives</C>
     and <C>x</C> is an automorphism of <A>digraph2</A>.
     <P/>
-    
+
     <C>HomomorphismsDigraphs</C> returns all homomorphisms between
     <A>digraph1</A> and <A>digraph2</A>.
     <Example><![CDATA[
@@ -338,10 +338,10 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
 
 <#GAPDoc Label="DigraphColoring">
 <ManSection>
-  <Oper Name="DigraphColoring" Arg="digraph, n" 
+  <Oper Name="DigraphColoring" Arg="digraph, n"
     Label="for a digraph and number of colors"/>
   <Oper Name="DigraphColouring" Arg="digraph, n"/>
-  <Oper Name="DigraphColoring" Arg="digraph" 
+  <Oper Name="DigraphColoring" Arg="digraph"
     Label="for a digraph"/>
   <Returns> A transformation, or <K>fail</K>.</Returns>
   <Description>

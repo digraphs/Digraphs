@@ -1,5 +1,5 @@
 <Chapter Label="Properties of digraphs"><Heading>Properties of digraphs</Heading>
-  
+
   <Section><Heading>Edge properties</Heading>
     <#Include Label="DigraphHasLoops">
     <#Include Label="IsAntisymmetricDigraph">
@@ -21,7 +21,7 @@
     <#Include Label="IsRegularDigraph">
     <#Include Label="IsDistanceRegularDigraph">
   </Section>
-  
+
   <Section><Heading>Connectivity and cycles</Heading>
     <#Include Label="IsAcyclicDigraph">
     <#Include Label="IsConnectedDigraph">

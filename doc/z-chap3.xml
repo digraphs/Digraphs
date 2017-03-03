@@ -10,7 +10,7 @@
          DigraphEdges(<A>digraph2</A>)</C>, up to some re-ordering of the edge
        lists. <P/>
 
-       Note that this operator does not compare the vertex labels 
+       Note that this operator does not compare the vertex labels
        of <A>digraph1</A> and <A>digraph2</A>.
      </Item>
 
