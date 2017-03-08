@@ -60,7 +60,7 @@ following these instructions.
    ```
 
 That's it. You can now see your new package website under
-http://USERNAME.github.io/REPOSITORY/ (of course after
+https://USERNAME.github.io/REPOSITORY/ (of course after
 adjusting USERNAME and REPOSITORY suitably).
 
 
@@ -130,7 +130,7 @@ it manually. The steps for doing it are quite similar to the above:
    ```
 
 A few seconds after you have done this, your changes will be online
-under http://USERNAME.github.io/REPOSITORY/ .
+under https://USERNAME.github.io/REPOSITORY/ .
 
 
 ## Updating to a newer version of GitHubPagesForGAP

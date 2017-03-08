@@ -28,9 +28,9 @@ suggested-pkgs:
       version: ">= 4.2"
       url: "https://gap-packages.github.io/orb"
 
-www: http://fingolfin.github.io/GitHubPagesForGAP/
+www: https://fingolfin.github.io/GitHubPagesForGAP/
 readme: README.md
-packageinfo: http://fingolfin.github.io/GitHubPagesForGAP/PackageInfo.g
+packageinfo: https://fingolfin.github.io/GitHubPagesForGAP/PackageInfo.g
 github: https://github.com/fingolfin/GitHubPagesForGAP
 
 downloads:
