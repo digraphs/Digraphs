@@ -14,3 +14,5 @@ DeclareAttribute("DigraphCanonicalLabelling", IsDigraph);
 DeclareOperation("DigraphCanonicalLabelling", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsIsomorphicDigraph", [IsDigraph, IsDigraph]);
 DeclareOperation("IsomorphismDigraphs", [IsDigraph, IsDigraph]);
+
+DeclareGlobalFunction("DIGRAPHS_ValidateVertexColouring");

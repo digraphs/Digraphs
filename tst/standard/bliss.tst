@@ -395,6 +395,98 @@ gap> gr := Digraph([[2, 2], []]);
 gap> DigraphCanonicalLabelling(gr, [1, 2]);
 fail
 
+#T# DIGRAPHS_ValidateVertexColouring, 1, errors
+gap> DIGRAPHS_ValidateVertexColouring();
+Error, Function: number of arguments must be 3 (not 0)
+gap> DIGRAPHS_ValidateVertexColouring(fail);
+Error, Function: number of arguments must be 3 (not 1)
+gap> DIGRAPHS_ValidateVertexColouring(fail, fail);
+Error, Function: number of arguments must be 3 (not 2)
+gap> DIGRAPHS_ValidateVertexColouring(0, fail, "TestFunction");
+Error, Digraphs: TestFunction: usage,
+in order to define a colouring, the argument <partition> must be a homogeneous
+list,
+gap> DIGRAPHS_ValidateVertexColouring(fail, [], "TestFunction");
+Error, Digraphs: DIGRAPHS_ValidateVertexColouring: usage,
+the first argument <n> must be a non-negative integer,
+gap> DIGRAPHS_ValidateVertexColouring(0, [], fail);
+Error, Digraphs: DIGRAPHS_ValidateVertexColouring: usage,
+the third argument <method> must be a string,
+
+#T# DIGRAPHS_ValidateVertexColouring, 2
+gap> DIGRAPHS_ValidateVertexColouring(0, [], "TestFunction");
+[  ]
+gap> DIGRAPHS_ValidateVertexColouring(0, [2], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the only valid partition of the vertices of the digraph with 0 vertices is the
+empty list,
+gap> DIGRAPHS_ValidateVertexColouring(1, [], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the argument <partition> does not define a colouring of the vertices [1 .. 1].
+The list <partition> must have one of the following forms:
+1. <partition> is a list of length 1 consisting of every integer in the range
+   [1 .. m], for some m <= 1;
+2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 1].
+In the first form, <partition[i]> is the colour of vertex i; in the second
+form, <partition[i]> is the list of vertices with colour i,
+gap> DIGRAPHS_ValidateVertexColouring(1, [fail], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the argument <partition> does not define a colouring of the vertices [1 .. 1].
+The list <partition> must have one of the following forms:
+1. <partition> is a list of length 1 consisting of every integer in the range
+   [1 .. m], for some m <= 1;
+2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 1].
+In the first form, <partition[i]> is the colour of vertex i; in the second
+form, <partition[i]> is the list of vertices with colour i,
+gap> DIGRAPHS_ValidateVertexColouring(1, [1, 1], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the argument <partition> does not define a colouring of the vertices [1 .. 1].
+The list <partition> must have one of the following forms:
+1. <partition> is a list of length 1 consisting of every integer in the range
+   [1 .. m], for some m <= 1;
+2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 1].
+In the first form, <partition[i]> is the colour of vertex i; in the second
+form, <partition[i]> is the list of vertices with colour i,
+gap> DIGRAPHS_ValidateVertexColouring(2, [1, -1], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the argument <partition> does not define a colouring of the vertices [1 .. 2],
+since it contains the element <i>, which is not a positive integer,
+gap> DIGRAPHS_ValidateVertexColouring(2, [2, 3], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the argument <partition> does not define a colouring of the vertices [1 .. 2],
+since it contains the integer 3, which is greater than 2,
+gap> DIGRAPHS_ValidateVertexColouring(2, [2, 0], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the argument <partition> does not define a colouring of the vertices [1 .. 2],
+since it contains the element <i>, which is not a positive integer,
+gap> DIGRAPHS_ValidateVertexColouring(2, [[]], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the argument <partition> does not define a colouring of the vertices [1 .. 2],
+since it does not assign a colour to the vertex 1,
+gap> DIGRAPHS_ValidateVertexColouring(1, [[1, 1]], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the argument <partition> does not define a colouring of the vertices [1 .. 1],
+since it contains the vertex 1 more than once,
+gap> DIGRAPHS_ValidateVertexColouring(1, [[0, 1]], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the argument <partition> does not define a colouring of the vertices [1 .. 1],
+since <partition[i]> contains <x>, which is not an integer in the range
+[1 .. 1],
+gap> DIGRAPHS_ValidateVertexColouring(1, [[2]], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the argument <partition> does not define a colouring of the vertices [1 .. 1],
+since <partition[i]> contains <x>, which is not an integer in the range
+[1 .. 1],
+gap> DIGRAPHS_ValidateVertexColouring(4, [[3], [2, 1], [4]], "TestFunction");
+[ 2, 2, 1, 3 ]
+gap> DIGRAPHS_ValidateVertexColouring(4, [1, 1, 3, 4], "TestFunction");
+Error, Digraphs: TestFunction: usage,
+the argument <partition> does not define a colouring of the vertices [1 .. 4],
+since it contains the colour 4, but it lacks the colour 2. A colouring must
+use precisely the colours [1 .. m], for some positive integer m <= 4,
+gap> DIGRAPHS_ValidateVertexColouring(4, [1, 1, 3, 2], "TestFunction");
+[ 1, 1, 3, 2 ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(canon);
