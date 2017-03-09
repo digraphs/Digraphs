@@ -1204,12 +1204,12 @@
           <C>VertexColouring</C>
         </Item>
         <Item>
-          <Ref Oper="DigraphColoring" Label="for a digraph"/>
+          <Ref Attr="DigraphColoring" Label="for a digraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>VertexColouring</C> in &Grape; is equivalent to <Ref
-            Oper="DigraphColoring" Label="for a digraph"/> in &Digraphs;,
+            Attr="DigraphColoring" Label="for a digraph"/> in &Digraphs;,
             except it return a transformation rather than a list of vertex
             colors.
           </Alt>
