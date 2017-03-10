@@ -465,8 +465,9 @@ function(g)
 
   return true;
 end);
-
 #
+
+
 
 InstallMethod(IsEulerianDigraph, "for a digraph",
 [IsDigraph],
@@ -490,12 +491,13 @@ function(g)
 
 end);
 
-#
 
+
+#
 InstallMethod(IsHamiltonianDigraph, "for a digraph",
 [IsDigraph],
 function(g)
-  local j, k, l, i, paths, paths2, out, sto, n;
+  local g2, out, Indegs, Outdegs, Degrees, n, check, dominatedcheck, dominatingordominatedcheck, i, j, k, dp;
 
   if DigraphNrVertices(g) <= 1 and IsEmptyDigraph(g) then
      return true;
@@ -505,33 +507,97 @@ function(g)
      return false;
   fi;
 
-  out := OutNeighbours(g);
-
-  paths:=[[1]];
-  paths2:=[];
-
+  g2 := DigraphRemoveLoops(g);
+  out := OutNeighbours(g2);
+  Indegs := InDegrees(g2);
+  Outdegs := OutDegrees(g2);
+  Degrees := Indegs+Outdegs;
   n := DigraphNrVertices(g);
+  check := true;
 
-  for j in [1.. (n-1)] do
-	for k in paths do
-		for l in out[k[Length(k)]] do
-			if not l in k then
-				sto:=ShallowCopy(k);
-				Add(sto,l);
-				Add(paths2,sto);
-			fi;
-		od;
-	od;
-	paths:=paths2;
-	paths2:=[];
+  for i in [1 .. n] do
+     for j in [1 .. n] do
+        if not i in out[j] and not j in out[i] and not i=j then
+           dominatedcheck:=false;
+           for k in [1 .. n] do
+             if i in out[k] and j in out[k] then
+                dominatedcheck:=true;
+             fi;
+           od;
+           if dominatedcheck then
+              if Degrees[i]<n-1 or Degrees[j]<n-1 or Degrees[i]=n-1 and Degrees[j]=n-1 then
+                check:=false;
+                break;
+              fi;
+           fi;
+        fi;
+    od;
   od;
 
-  for i in paths do
-    if 1 in out[i[n]] then
-       return true;
-    fi;
+  if check then
+    return true;
+  fi;
+
+ for i in [1 .. n] do
+     for j in [1 .. n] do
+        if not i in out[j] and not j in out[i] and not i=j then
+           dominatingordominatedcheck:=false;
+           for k in [1 .. n] do
+            if (i in out[k] and j in out[k]) or (k in out[i] and k in out[j]) then
+                dominatingordominatedcheck:=true;
+                break;
+             fi;
+
+           od;
+           if dominatedcheck=true then
+              if Indegs[i]+Outdegs[j]<n or Indegs[j]+Outdegs[i]<n then
+                check:=false;
+              fi;
+           fi;
+        fi;
+     od;
   od;
 
-  return false;
+  if check then
+    return true;
+  fi;
+
+
+  dp:=EmptyPlist(n);
+  
+  for j in [1 .. n] do
+      dp[j]:=EmptyPlist(2^n);
+      for i in [1 .. 2^n] do
+          dp[j][i]:= false;
+      od;
+  od;
+
+  for i in [1 .. n] do
+      dp[i][2^(i-1)+1]:= true;
+  od;
+
+  for i in [0 .. (2^n)-1] do
+      for j in [0 .. n-1] do
+          if IsOddInt(Int(i/(2^j))) then
+              for k in [0 .. n-1] do
+                   if not j = k and IsOddInt(Int(i/(2^k))) and (j+1) in out[k+1] then
+                       if dp[k+1][(i-2^j)+1] then
+                           dp[j+1][i+1]:=true;
+                           break;
+                       fi;
+                   fi;
+              od;
+          fi;
+      od;
+  od;
+  check := true;
+  for i in [1 .. n] do
+      if dp[i][2^n] = false then
+          check:=false;
+      fi;
+  od;
+
+  return check;
 
 end);
+#
