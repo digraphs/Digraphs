@@ -15,8 +15,8 @@ function(obj, adj)
   local N, out_nbs, in_nbs, x, digraph, i, j, adj_func;
 
   N       := Size(obj); # number of vertices
-  out_nbs := List([1 ..  N], x -> []);
-  in_nbs  := List([1 ..  N], x -> []);
+  out_nbs := List([1 .. N], x -> []);
+  in_nbs  := List([1 .. N], x -> []);
 
   for i in [1 .. N] do
     x := obj[i];

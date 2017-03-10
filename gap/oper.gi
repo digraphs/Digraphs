@@ -287,7 +287,7 @@ function(digraph)
     new[i] := [];
     new_lbl[i] := [];
     nr := 0;
-    for j in [1..Length(old[i])] do
+    for j in [1 .. Length(old[i])] do
       if i <> old[i][j] then
         nr := nr + 1;
         new[i][nr] := old[i][j];
@@ -422,7 +422,7 @@ function(digraph, edges)
     new_adj[i] := [];
     new_lbl[i] := [];
     degree_count := 0;
-    for j in [1..Length(old_adj[i])] do
+    for j in [1 .. Length(old_adj[i])] do
       edge_count := edge_count + 1;
       if not edges[edge_count] then # Keep this edge
         degree_count := degree_count + 1;

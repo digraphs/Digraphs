@@ -146,7 +146,7 @@ function(digraph)
   old := OutNeighbours(digraph);
 
   # First find the non-isolated vertices
-  for i in [1..Length(old)] do
+  for i in [1 .. Length(old)] do
     if not IsEmpty(old[i]) then
       niv[i] := true;
       UniteBlistList(v, niv, old[i]);
@@ -156,7 +156,7 @@ function(digraph)
   # Compress, store map oldvertex -> newvertex, order invariant
   map := [];
   len := 1;
-  for i in [1..Length(niv)] do
+  for i in [1 .. Length(niv)] do
     if niv[i] then
         map[i] := len;
         len := len + 1;
@@ -171,7 +171,7 @@ function(digraph)
   old_elabels := DigraphEdgeLabelsNC(digraph);
   adj := [];
   elabels := [];
-  for i in [1..Length(niv)] do
+  for i in [1 .. Length(niv)] do
     if niv[i] then
       Add(adj, List(old[i], x -> map[x]));
       Add(elabels, StructuralCopy(old_elabels[i]));
