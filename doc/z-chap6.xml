@@ -15,16 +15,19 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
 
   <Section><Heading>Isomorphisms, and Canonical labellings</Heading>
     <#Include Label="AutomorphismGroupDigraph">
-    <#Include Label="AutomorphismGroupMultiDigraph">
-    <#Include Label="DigraphGroup">
-    <#Include Label="DigraphSchreierVector">
-    <#Include Label="DigraphOrbitReps">
-    <#Include Label="DigraphStabilizer">
-    <#Include Label="DigraphOrbits">
-    <#Include Label="RepresentativeOutNeighbours">
+    <#Include Label="AutomorphismGroupDigraphColours">
     <#Include Label="DigraphCanonicalLabelling">
+    <#Include Label="DigraphCanonicalLabellingColours">
+    <#Include Label="DigraphGroup">
+    <#Include Label="DigraphOrbits">
+    <#Include Label="DigraphOrbitReps">
+    <#Include Label="DigraphSchreierVector">
+    <#Include Label="DigraphStabilizer">
     <#Include Label="IsIsomorphicDigraph">
+    <#Include Label="IsIsomorphicDigraphColours">
     <#Include Label="IsomorphismDigraphs">
+    <#Include Label="IsomorphismDigraphsColours">
+    <#Include Label="RepresentativeOutNeighbours">
   </Section>
 
   <Section><Heading>Homomorphisms of digraphs</Heading>

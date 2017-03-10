@@ -1,7 +1,8 @@
 #############################################################################
 ##
 #W  bliss.gi
-#Y  Copyright (C) 2014-15                                James D. Mitchell
+#Y  Copyright (C) 2014-17                                James D. Mitchell
+##                                                          Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -13,141 +14,219 @@
 InstallMethod(DigraphCanonicalLabelling, "for a digraph",
 [IsDigraph],
 function(digraph)
-
   if IsMultiDigraph(digraph) then
     return MULTIDIGRAPH_CANONICAL_LABELLING(digraph, fail);
   fi;
   return DIGRAPH_CANONICAL_LABELLING(digraph, fail);
 end);
 
-InstallMethod(DigraphCanonicalLabelling,
-"for a digraph and homogeneous list",
+#
+
+InstallMethod(DigraphCanonicalLabelling, "for a digraph and homogeneous list",
 [IsDigraph, IsHomogeneousList],
-function(graph, list)
-  local colors, i;
+function(digraph, list)
+  local n, colours;
 
-  if IsMultiDigraph(graph) then
-    return fail;
+  n := DigraphNrVertices(digraph);
+  colours := DIGRAPHS_ValidateVertexColouring(n, list,
+                                              "DigraphCanonicalLabelling");
+  if IsMultiDigraph(digraph) then
+    return MULTIDIGRAPH_CANONICAL_LABELLING(digraph, colours);
   fi;
-  if (not IsEmpty(list)) and IsList(list[1]) then # color classes
-    colors := [1 .. DigraphNrVertices(graph)];
-    if not (ForAll(list, IsDuplicateFreeList) and Union(list) = colors) then
-      ErrorNoReturn("Digraphs: DigraphCanonicalLabelling: usage,\n",
-                    "the union of the lists in the second arg should equal ",
-                    "[1 .. ", DigraphNrVertices(graph), "],");
-    fi;
-
-    for i in [1 .. Length(list)] do
-      colors{list[i]} := [1 .. Length(list[i])] * 0 + i;
-    od;
-  else
-    if not (Length(list) = DigraphNrVertices(graph)
-            and ForAll(list, c -> IsPosInt(c) and 1 <= c
-                                  and c <= DigraphNrVertices(graph))) then
-      ErrorNoReturn("Digraphs: DigraphCanonicalLabelling: usage,\n",
-                    "the second arg must be a list of length ",
-                    DigraphNrVertices(graph), " of integers in [1 .. ",
-                    DigraphNrVertices(graph), "],");
-    fi;
-    colors := list;
-  fi;
-
-  return DIGRAPH_CANONICAL_LABELLING(graph, colors);
+  return DIGRAPH_CANONICAL_LABELLING(digraph, colours);
 end);
 
 #
 
 InstallMethod(IsIsomorphicDigraph, "for digraphs",
 [IsDigraph, IsDigraph],
-function(g1, g2)
+function(gr1, gr2)
+  local act;
+
+  if gr1 = gr2 then
+    return true;
+  fi;
 
   # check some invariants
-  if DigraphNrVertices(g1) <> DigraphNrVertices(g2)
-      or DigraphNrEdges(g1) <> DigraphNrEdges(g2)
-      or IsMultiDigraph(g1) <> IsMultiDigraph(g2) then
+  if DigraphNrVertices(gr1) <> DigraphNrVertices(gr2)
+      or DigraphNrEdges(gr1) <> DigraphNrEdges(gr2)
+      or IsMultiDigraph(gr1) <> IsMultiDigraph(gr2) then
     return false;
   fi; #JDM more!
 
-  if IsMultiDigraph(g1) then
-    return OnMultiDigraphs(g1, DigraphCanonicalLabelling(g1))
-      = OnMultiDigraphs(g2, DigraphCanonicalLabelling(g2));
+  if IsMultiDigraph(gr1) then
+    act := OnMultiDigraphs;
+  else
+    act := OnDigraphs;
   fi;
-  return OnDigraphs(g1, DigraphCanonicalLabelling(g1))
-    = OnDigraphs(g2, DigraphCanonicalLabelling(g2));
+
+  return act(gr1, DigraphCanonicalLabelling(gr1))
+    = act(gr2, DigraphCanonicalLabelling(gr2));
+end);
+
+#
+
+InstallMethod(IsIsomorphicDigraph, "for digraphs and homogeneous lists",
+[IsDigraph, IsDigraph, IsHomogeneousList, IsHomogeneousList],
+function(gr1, gr2, c1, c2)
+  local m, colour1, n, colour2, max, class_sizes, act, i;
+
+  m := DigraphNrVertices(gr1);
+  colour1 := DIGRAPHS_ValidateVertexColouring(m, c1, "IsIsomorphicDigraph");
+  n := DigraphNrVertices(gr2);
+  colour2 := DIGRAPHS_ValidateVertexColouring(n, c2, "IsIsomorphicDigraph");
+
+  max := Maximum(colour1);
+  if max <> Maximum(colour2) then
+    return false;
+  fi;
+
+  # check some invariants
+  if m <> n
+      or DigraphNrEdges(gr1) <> DigraphNrEdges(gr2)
+      or IsMultiDigraph(gr1) <> IsMultiDigraph(gr2) then
+    return false;
+  fi; #JDM more!
+
+  class_sizes := ListWithIdenticalEntries(max, 0);
+  for i in DigraphVertices(gr1) do
+    class_sizes[colour1[i]] := class_sizes[colour1[i]] + 1;
+    class_sizes[colour2[i]] := class_sizes[colour2[i]] - 1;
+  od;
+  if not ForAll(class_sizes, x -> x = 0) then
+    return false;
+  elif gr1 = gr2 and colour1 = colour2 then
+    return true;
+  fi;
+
+  if IsMultiDigraph(gr1) then
+    act := OnMultiDigraphs;
+  else
+    act := OnDigraphs;
+  fi;
+
+  return act(gr1, DigraphCanonicalLabelling(gr1, colour1))
+    = act(gr2, DigraphCanonicalLabelling(gr2, colour2));
 end);
 
 #
 
 InstallMethod(AutomorphismGroup, "for a digraph",
 [IsDigraph],
-function(graph)
-  local x;
+function(digraph)
+  local x, G;
 
-  if IsMultiDigraph(graph) then
-    x := MULTIDIGRAPH_AUTOMORPHISMS(graph, fail);
-    SetDigraphCanonicalLabelling(graph, x[1]);
-    return DirectProduct(Group(x[2]), Group(x[3]));
+  if IsMultiDigraph(digraph) then
+    x := MULTIDIGRAPH_AUTOMORPHISMS(digraph, fail);
+  else
+    x := DIGRAPH_AUTOMORPHISMS(digraph, fail);
   fi;
 
-  x := DIGRAPH_AUTOMORPHISMS(graph, fail);
-  SetDigraphCanonicalLabelling(graph, x[1]);
-  if not HasDigraphGroup(graph) then
-    SetDigraphGroup(graph, Group(x[2]));
+  SetDigraphCanonicalLabelling(digraph, x[1]);
+  G := Group(x[2]);
+  if not HasDigraphGroup(digraph) then
+    SetDigraphGroup(digraph, G);
   fi;
-  return Group(x[2]);
+
+  if IsMultiDigraph(digraph) then
+    return DirectProduct(G, Group(x[3]));
+  fi;
+  return G;
 end);
 
 InstallMethod(AutomorphismGroup, "for a digraph and homogeneous list",
 [IsDigraph, IsHomogeneousList],
-function(graph, list)
-  local colors, i;
+function(digraph, list)
+  local n, colours, x;
 
-  if IsMultiDigraph(graph) then
-    return fail;
-  fi;
-  if (not IsEmpty(list)) and IsList(list[1]) then # color classes
-    colors := [1 .. DigraphNrVertices(graph)];
-    if not (ForAll(list, IsDuplicateFreeList) and Union(list) = colors) then
-      ErrorNoReturn("Digraphs: AutomorphismGroup: usage,\n",
-                    "the union of the lists in the second arg should equal ",
-                    "[1 .. ", DigraphNrVertices(graph), "],");
-    fi;
+  n := DigraphNrVertices(digraph);
+  colours := DIGRAPHS_ValidateVertexColouring(n, list, "AutomorphismGroup");
 
-    for i in [1 .. Length(list)] do
-      colors{list[i]} := [1 .. Length(list[i])] * 0 + i;
-    od;
-  else
-    if not (Length(list) = DigraphNrVertices(graph)
-            and ForAll(list, c -> IsPosInt(c) and 1 <= c
-                                  and c <= DigraphNrVertices(graph))) then
-      ErrorNoReturn("Digraphs: AutomorphismGroup: usage,\n",
-                    "the second arg must be a list of length ",
-                    DigraphNrVertices(graph), " of integers in [1 .. ",
-                    DigraphNrVertices(graph), "],");
-    fi;
-    colors := list;
+  if IsMultiDigraph(digraph) then
+    x := MULTIDIGRAPH_AUTOMORPHISMS(digraph, colours);
+    return DirectProduct(Group(x[2]), Group(x[3]));
   fi;
-  return Group(DIGRAPH_AUTOMORPHISMS(graph, colors)[2]);
+  return Group(DIGRAPH_AUTOMORPHISMS(digraph, colours)[2]);
 end);
 
 #
 
 InstallMethod(IsomorphismDigraphs, "for digraphs",
 [IsDigraph, IsDigraph],
-function(g1, g2)
+function(gr1, gr2)
   local label1, label2;
 
-  if not IsIsomorphicDigraph(g1, g2) then
+  if not IsIsomorphicDigraph(gr1, gr2) then
     return fail;
   fi;
 
-  if IsMultiDigraph(g1) then
-    label1 := DigraphCanonicalLabelling(g1);
-    label2 := DigraphCanonicalLabelling(g2);
+  if IsMultiDigraph(gr1) then
+    if gr1 = gr2 then
+      return [(), ()];
+    fi;
+    label1 := DigraphCanonicalLabelling(gr1);
+    label2 := DigraphCanonicalLabelling(gr2);
     return [label1[1] / label2[1], label1[2] / label2[2]];
   fi;
 
-  return DigraphCanonicalLabelling(g1) / DigraphCanonicalLabelling(g2);
+  if gr1 = gr2 then
+    return ();
+  fi;
+  return DigraphCanonicalLabelling(gr1) / DigraphCanonicalLabelling(gr2);
+end);
+
+#
+
+InstallMethod(IsomorphismDigraphs, "for digraphs and homogeneous lists",
+[IsDigraph, IsDigraph, IsHomogeneousList, IsHomogeneousList],
+function(gr1, gr2, c1, c2)
+  local m, colour1, n, colour2, max, class_sizes, label1, label2, i;
+
+  m := DigraphNrVertices(gr1);
+  colour1 := DIGRAPHS_ValidateVertexColouring(m, c1, "IsomorphismDigraphs");
+  n := DigraphNrVertices(gr2);
+  colour2 := DIGRAPHS_ValidateVertexColouring(n, c2, "IsomorphismDigraphs");
+
+  max := Maximum(colour1);
+  if max <> Maximum(colour2) then
+    return fail;
+  fi;
+
+  # check some invariants
+  if m <> n
+      or DigraphNrEdges(gr1) <> DigraphNrEdges(gr2)
+      or IsMultiDigraph(gr1) <> IsMultiDigraph(gr2) then
+    return fail;
+  fi;
+
+  class_sizes := ListWithIdenticalEntries(max, 0);
+  for i in DigraphVertices(gr1) do
+    class_sizes[colour1[i]] := class_sizes[colour1[i]] + 1;
+    class_sizes[colour2[i]] := class_sizes[colour2[i]] - 1;
+  od;
+  if not ForAll(class_sizes, x -> x = 0) then
+    return fail;
+  elif gr1 = gr2 and colour1 = colour2 then
+    if IsMultiDigraph(gr1) then
+      return [(), ()];
+    fi;
+    return ();
+  fi;
+
+  label1 := DigraphCanonicalLabelling(gr1, colour1);
+  label2 := DigraphCanonicalLabelling(gr2, colour2);
+
+  if IsMultiDigraph(gr1) then
+    if OnMultiDigraphs(gr1, label1) <> OnMultiDigraphs(gr2, label2) then
+      return fail;
+    fi;
+    return [label1[1] / label2[1], label1[2] / label2[2]];
+  fi;
+
+  if OnDigraphs(gr1, label1) <> OnDigraphs(gr2, label2) then
+    return fail;
+  fi;
+  return label1 / label2;
 end);
 
 # Given a non-negative integer <n> and a homogeneous list <partition>,
