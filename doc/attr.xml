@@ -13,17 +13,19 @@
   <Attr Name="ChromaticNumber" Arg="digraph"/>
   <Returns> A non-negative integer.</Returns>
   <Description>
-    A digraph coloring is a labeling of the vertices (using precisely <A>n</A>
-    colors) in such a way that two adjacent vertices can not have the same
-    label.  Alternatively, it can be defined to be a <Ref
-      Oper="DigraphEpimorphism"/> from <A>digraph</A> onto a complete digraph
-    with <A>n</A> vertices.<P/>
+    A <E>proper colouring</E> of a digraph is a labelling of its
+    vertices in such a way that adjacent vertices have different labels.
+    Equivalently, a proper digraph colouring can be defined to be a <Ref
+      Oper="DigraphEpimorphism"/> from a digraph onto a complete digraph. <P/>
 
-    <C>ChromaticNumber</C> returns the least non-negative integer <C>n</C> such
-    that there is a coloring of the loopless digraph <A>digraph</A> with
-    <C>n</C> colors.  In other words, <C>ChromaticNumber</C> returns the least
-    value <C>n</C> such that <C>DigraphColoring(<A>digraph</A>, n)</C> does not
-    return <K>fail</K>.
+    If <A>digraph</A> is a digraph without loops (see <Ref
+      Prop="DigraphHasLoops"/>, then <C>ChromaticNumber</C> returns the least
+    non-negative integer <C>n</C> such that there is a proper colouring of
+    <A>digraph</A> with <C>n</C> colours.  In other words, for a digraph with at
+    least one vertex, <C>ChromaticNumber</C> returns the least number <C>n</C>
+    such that <C>DigraphColouring(<A>digraph</A>, n)</C> does not return
+    <K>fail</K>. See <Ref Oper="DigraphColouring"
+      Label="for a digraph and a number of colours"/>.
 
     <Example><![CDATA[
 gap> ChromaticNumber(NullDigraph(10));

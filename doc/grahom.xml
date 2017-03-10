@@ -336,43 +336,49 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphColoring">
+<#GAPDoc Label="DigraphColouring">
 <ManSection>
-  <Oper Name="DigraphColoring" Arg="digraph, n"
-    Label="for a digraph and a number of colors"/>
   <Oper Name="DigraphColouring" Arg="digraph, n"
-    Label="for a digraph and a number of colors"/>
-  <Attr Name="DigraphColoring" Arg="digraph"
-    Label="for a digraph"/>
+    Label="for a digraph and a number of colours"/>
+  <Oper Name="DigraphColoring" Arg="digraph, n"
+    Label="for a digraph and a number of colours"/>
   <Attr Name="DigraphColouring" Arg="digraph"
+    Label="for a digraph"/>
+  <Attr Name="DigraphColoring" Arg="digraph"
     Label="for a digraph"/>
   <Returns> A transformation, or <K>fail</K>.</Returns>
   <Description>
-    A digraph coloring is a labeling of the vertices (using precisely <A>n</A>
-    colors) in such a way that two adjacent vertices can not have the same
-    label.  Alternatively, it can be defined to be a <Ref
-      Oper="DigraphEpimorphism"/> from <A>digraph</A> onto a complete digraph
-    with <A>n</A> vertices.<P/>
+    A <E>proper colouring</E> of a digraph is a labelling of its vertices in
+    such a way that adjacent vertices have different labels. A <E>proper
+      <C>n</C>-colouring</E> is a proper colouring that uses exactly <C>n</C>
+    colours.  Equivalently, a proper (<C>n</C>-)colouring of a digraph can be
+    defined to be a <Ref Oper="DigraphEpimorphism"/> from a digraph onto the
+    complete digraph (with <C>n</C> vertices); see <Ref Oper="CompleteDigraph"/>.
+    <P/>
 
-    <C>DigraphColoring</C> returns such an epimorphism if one exists, else it
-    returns <K>fail</K>. <P/>
+    <C>DigraphColouring(<A>digraph</A>, <A>n</A>)</C> returns an epimorphism
+    from <A>digraph</A> onto the complete digraph with <A>n</A> vertices, if one
+    exists, else it returns <K>fail</K>. <P/>
 
-    Note that a digraph with at least two vertices has a 2-coloring if and only
-    if it is bipartite, see <Ref Prop="IsBipartiteDigraph"/>.<P/>
+    If the optional second argument <A>n</A> is not provided, then
+    <C>DigraphColouring</C> uses a greedy algorithm to obtain some proper
+    colouring of <A>digraph</A>, which may not use the minimal number of
+    colours. <P/>
 
-    If the third form is used, a greedy algorithm is used to obtain a
-    colouring, which possibly is not minimal.
+    Note that a digraph with at least two vertices has a 2-colouring if and only
+    if it is bipartite, see <Ref Prop="IsBipartiteDigraph"/>.
+
     <Example><![CDATA[
-gap> DigraphColoring(CompleteDigraph(5), 4);
+gap> DigraphColouring(CompleteDigraph(5), 4);
 fail
-gap> DigraphColoring(ChainDigraph(10), 1);
+gap> DigraphColouring(ChainDigraph(10), 1);
 fail
 gap> gr := ChainDigraph(10);;
-gap> t := DigraphColoring(gr, 2);
+gap> t := DigraphColouring(gr, 2);
 Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 gap> ForAll(DigraphEdges(gr), e -> e[1] ^ t <> e[2] ^ t);
 true
-gap> DigraphColoring(gr);
+gap> DigraphColouring(gr);
 Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 ]]></Example>
   </Description>
@@ -387,8 +393,9 @@ Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
     An embedding of a digraph <A>digraph1</A> into another digraph
     <A>digraph2</A> is a <Ref Oper="DigraphMonomorphism"/> from <A>digraph1</A>
     to <A>digraph2</A> which has the additional property that a pair of
-    vertices <C>[i,j]</C> which have no edge <C>i->j</C> in <A>digraph1</A> are
-    mapped to a pair of vertices <C>[a,b]</C> which have no edge <C>a->b</C> in
+    vertices <C>[i, j]</C> which have no edge <C>i -> j</C> in <A>digraph1</A> are
+
+    mapped to a pair of vertices <C>[a, b]</C> which have no edge <C>a->b</C> in
     <A>digraph2</A>.<P/>
 
     In other words, an embedding <C>t</C> is an isomorphism from
