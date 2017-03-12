@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  standard/grahom.tst
-#Y  Copyright (C) 2015                                      Wilf A. Wilson
+#Y  Copyright (C) 2015-17                                   Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -145,7 +145,8 @@ gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
 > [], [[1, 2], [2]], [[1, 2]]);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
-the union of the lists in the 10th arg should equal [1 .. 2],
+the argument <partition> does not define a colouring of the vertices [1 .. 2],
+since it contains the vertex 2 more than once,
 gap> gr := CompleteDigraph(513);;
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, false, [1 .. 513],
 > [], fail, fail);
@@ -157,15 +158,23 @@ gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
 > [], [1, 2, 3], [2, 1]);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
-the 10th arg must be a list of length 2 of integers in [1 .. 2],
+the argument <partition> does not define a colouring of the vertices [1 .. 2].
+The list <partition> must have one of the following forms:
+1. <partition> is a list of length 2 consisting of every integer in the range
+   [1 .. m], for some m <= 2;
+2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 2].
+In the first form, <partition[i]> is the colour of vertex i; in the second
+form, <partition[i]> is the list of vertices with colour i,
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
 > [], [1, 3], [2, 1]);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
-the 10th arg must be a list of length 2 of integers in [1 .. 2],
+the argument <partition> does not define a colouring of the vertices [1 .. 2],
+since it contains the integer 3, which is greater than 2,
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, false, [1, 2],
 > [], [1, fail], [2, 1]);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
-the 10th arg must be a list of length 2 of integers in [1 .. 2],
+in order to define a colouring, the argument <partition> must be a homogeneous
+list,
 gap> gr := ChainDigraph(2);
 <digraph with 2 vertices, 1 edge>
 gap> GeneratorsOfEndomorphismMonoid();
@@ -187,11 +196,11 @@ gap> gr := EmptyDigraph(2);
 <digraph with 2 vertices, 0 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr, Group(()), Group((1, 2)));
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
-<colors> must be a homogenous list,
+<colours> must be a homogenous list,
 gap> gr := EmptyDigraph(2);;
 gap> GeneratorsOfEndomorphismMonoid(gr, Group(()));
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
-<colors> must be a homogenous list,
+<colours> must be a homogenous list,
 gap> gr := EmptyDigraph(2);;
 gap> GeneratorsOfEndomorphismMonoid(gr, 1);
 [ Transformation( [ 2, 1 ] ) ]
@@ -245,56 +254,56 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 3, 3, 3 ] ) ]
 
-#T# DigraphColoring and DigraphColouring: checking errors and robustness
+#T# DigraphColouring and DigraphColouring: checking errors and robustness
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphColouring(gr, 1);
 fail
 gap> gr := EmptyDigraph(3);
 <digraph with 3 vertices, 0 edges>
-gap> DigraphColoring(gr, 4);
+gap> DigraphColouring(gr, 4);
 fail
-gap> DigraphColoring(gr, 3);
+gap> DigraphColouring(gr, 3);
 IdentityTransformation
-gap> DigraphColoring(gr, 2);
+gap> DigraphColouring(gr, 2);
 Transformation( [ 1, 1, 2 ] )
-gap> DigraphColoring(gr, 1);
+gap> DigraphColouring(gr, 1);
 Transformation( [ 1, 1, 1 ] )
 gap> gr := CompleteDigraph(3);
 <digraph with 3 vertices, 6 edges>
-gap> DigraphColoring(gr, 1);
+gap> DigraphColouring(gr, 1);
 fail
-gap> DigraphColoring(gr, 2);
+gap> DigraphColouring(gr, 2);
 fail
-gap> DigraphColoring(gr, 3);
+gap> DigraphColouring(gr, 3);
 IdentityTransformation
 gap> gr := EmptyDigraph(0);
 <digraph with 0 vertices, 0 edges>
-gap> DigraphColoring(gr, 1);
+gap> DigraphColouring(gr, 1);
 fail
-gap> DigraphColoring(gr, 2);
+gap> DigraphColouring(gr, 2);
 fail
-gap> DigraphColoring(gr, 3);
+gap> DigraphColouring(gr, 3);
 fail
 gap> gr := EmptyDigraph(1);
 <digraph with 1 vertex, 0 edges>
-gap> DigraphColoring(gr, 1);
+gap> DigraphColouring(gr, 1);
 IdentityTransformation
-gap> DigraphColoring(gr, 2);
+gap> DigraphColouring(gr, 2);
 fail
 gap> gr := Digraph([[1, 2], []]);;
 gap> DigraphColouring(gr, -1);
-Error, Digraphs: DigraphColoring: usage,
+Error, Digraphs: DigraphColouring: usage,
 the second argument <n> must be a non-negative integer,
-gap> DigraphColoring(NullDigraph(0), 1);
+gap> DigraphColouring(NullDigraph(0), 1);
 fail
-gap> DigraphColoring(NullDigraph(0), 0);
+gap> DigraphColouring(NullDigraph(0), 0);
 IdentityTransformation
-gap> DigraphColoring(CompleteDigraph(1), 0);
+gap> DigraphColouring(CompleteDigraph(1), 0);
 fail
 
-#T# DigraphColoring
-gap> DigraphColoring(EmptyDigraph(0));
+#T# DigraphColouring
+gap> DigraphColouring(EmptyDigraph(0));
 IdentityTransformation
 gap> DigraphColouring(Digraph([[1]]));
 IdentityTransformation
@@ -310,6 +319,20 @@ gap> DigraphColouring(CycleDigraph(6));
 Transformation( [ 1, 2, 1, 2, 1, 2 ] )
 gap> DigraphColouring(CompleteDigraph(10));
 IdentityTransformation
+gap> gr := CompleteDigraph(4);;
+gap> HasDigraphColoring(gr) or HasDigraphColouring(gr);
+false
+gap> DigraphColoring(gr);
+IdentityTransformation
+gap> HasDigraphColoring(gr) and HasDigraphColouring(gr);
+true
+gap> gr := CycleDigraph(4);;
+gap> HasDigraphColoring(gr) or HasDigraphColouring(gr);
+false
+gap> DigraphColouring(gr);
+Transformation( [ 1, 2, 1, 2 ] )
+gap> HasDigraphColoring(gr) and HasDigraphColouring(gr);
+true
 
 #T# HomomorphismDigraphsFinder 1
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);;
