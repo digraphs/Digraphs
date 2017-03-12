@@ -15,9 +15,9 @@ InstallMethod(DigraphCanonicalLabelling, "for a digraph",
 function(digraph)
 
   if IsMultiDigraph(digraph) then
-    return MULTIDIGRAPH_CANONICAL_LABELLING(digraph);
+    return MULTIDIGRAPH_CANONICAL_LABELLING(digraph, fail);
   fi;
-  return DIGRAPH_CANONICAL_LABELLING(digraph);
+  return DIGRAPH_CANONICAL_LABELLING(digraph, fail);
 end);
 
 InstallMethod(DigraphCanonicalLabelling,
@@ -52,7 +52,7 @@ function(graph, list)
     colors := list;
   fi;
 
-  return DIGRAPH_CANONICAL_LABELLING_COLOURS(graph, colors);
+  return DIGRAPH_CANONICAL_LABELLING(graph, colors);
 end);
 
 #
@@ -84,12 +84,12 @@ function(graph)
   local x;
 
   if IsMultiDigraph(graph) then
-    x := MULTIDIGRAPH_AUTOMORPHISMS(graph);
+    x := MULTIDIGRAPH_AUTOMORPHISMS(graph, fail);
     SetDigraphCanonicalLabelling(graph, x[1]);
     return DirectProduct(Group(x[2]), Group(x[3]));
   fi;
 
-  x := DIGRAPH_AUTOMORPHISMS(graph);
+  x := DIGRAPH_AUTOMORPHISMS(graph, fail);
   SetDigraphCanonicalLabelling(graph, x[1]);
   if not HasDigraphGroup(graph) then
     SetDigraphGroup(graph, Group(x[2]));
@@ -127,7 +127,7 @@ function(graph, list)
     fi;
     colors := list;
   fi;
-  return Group(DIGRAPH_AUTOMORPHISMS_COLOURS(graph, colors));
+  return Group(DIGRAPH_AUTOMORPHISMS(graph, colors)[2]);
 end);
 
 #
