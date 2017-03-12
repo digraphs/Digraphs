@@ -27,6 +27,7 @@
     <#Include Label="InducedSubdigraph">
     <#Include Label="ReducedDigraph">
     <#Include Label="MaximalSymmetricSubdigraph">
+    <#Include Label="UndirectedSpanningTree">
     <#Include Label="QuotientDigraph">
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">

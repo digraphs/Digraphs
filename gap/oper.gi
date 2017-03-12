@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  oper.gi
-#Y  Copyright (C) 2014                                   James D. Mitchell
+#Y  Copyright (C) 2014-17                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -46,6 +46,42 @@ function(super, sub)
     fi;
   od;
   return true;
+end);
+
+#
+
+InstallMethod(IsUndirectedSpanningForest, "for a digraph and a digraph",
+[IsDigraph, IsDigraph],
+function(super, sub)
+  local sym, comps1, comps2;
+
+  if not IsUndirectedForest(sub) then
+    return false;
+  fi;
+
+  sym := MaximalSymmetricSubdigraph(super);
+
+  if not IsSubdigraph(sym, sub) then
+    return false;
+  fi;
+
+  comps1 := DigraphConnectedComponents(sym).comps;
+  comps2 := DigraphConnectedComponents(sub).comps;
+
+  if Length(comps1) <> Length(comps2) then
+    return false;
+  fi;
+
+  return Set(comps1, SortedList) = Set(comps2, SortedList);
+end);
+
+#
+
+InstallMethod(IsUndirectedSpanningTree, "for a digraph and a digraph",
+[IsDigraph, IsDigraph],
+function(super, sub)
+  return IsConnectedDigraph(MaximalSymmetricSubdigraph(super))
+    and IsUndirectedSpanningForest(super, sub);
 end);
 
 #
