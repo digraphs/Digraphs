@@ -1018,7 +1018,7 @@ function(nrvertices, source, range)
   return DigraphNC(rec(nrvertices := nrvertices,
                        source := source,
                        range := range,
-                       nredges := m ) );
+                       nredges := m));
 end);
 
 InstallMethod(Digraph, "for three lists",
@@ -1069,7 +1069,7 @@ function(vertices, source, range)
                        nredges      := m,
                        vertexlabels := vertices,
                        source       := source,
-                       range        := range ) );
+                       range        := range));
 end);
 
 # JDM: could set IsMultigraph here if we check if mat[i][j] > 1

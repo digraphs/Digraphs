@@ -1653,8 +1653,8 @@ function(graph)
       (n = 4 and k = 2) or
       (n = 8 and k = 3) or
       (n = 16 and k = 4)) and
-     (v = n - 2) and
-     (bitstopad > k) then
+      (v = n - 2) and
+      (bitstopad > k) then
     blist[nextbit] := false;
     bitstopad := bitstopad - 1;
   fi;
