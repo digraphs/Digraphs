@@ -29,7 +29,7 @@
   
   [30X    [33X[0;6Y[10XDigraphRemoveLoops(DigraphRemoveAllMultipleEdges([110X[3Xdigraph[103X[10X))[110X.[133X
   
-  [33X[0;0YSee  [2XDigraphRemoveLoops[102X  ([14X3.3-21[114X) and [2XDigraphRemoveAllMultipleEdges[102X ([14X3.3-22[114X)
+  [33X[0;0YSee  [2XDigraphRemoveLoops[102X  ([14X3.3-22[114X) and [2XDigraphRemoveAllMultipleEdges[102X ([14X3.3-23[114X)
   for  more  information  about  these attributes. Furthermore, the cliques of
   this  digraph are equal to the cliques of the digraph formed by removing any
   edge  [10X[u,v][110X  for  which the corresponding reverse edge [10X[v,u][110X is not present.
@@ -49,7 +49,7 @@
   loops[113X on sets of vertices.[133X
   
   [33X[0;0YThe  independent  sets of a digraph are equal to the independent sets of the
-  [2XDigraphSymmetricClosure[102X ([14X3.3-8[114X). Therefore, overall, the independent sets of
+  [2XDigraphSymmetricClosure[102X ([14X3.3-9[114X). Therefore, overall, the independent sets of
   [3Xdigraph[103X are equal to the independent sets of the symmetric digraph:[133X
   
   [30X    [33X[0;6Y[10XDigraphSymmetricClosure(DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
@@ -57,7 +57,7 @@
   
   [33X[0;0YAgain,  the  automorphism  group  of  this  symmetric  digraph  contains the
   automorphism  group of [3Xdigraph[103X. Since a search for independent sets is equal
-  to  a  search  for  cliques  in the [2XDigraphDual[102X ([14X3.3-7[114X), the methods used in
+  to  a  search  for  cliques  in the [2XDigraphDual[102X ([14X3.3-8[114X), the methods used in
   [5XDigraphs[105X  usually  transform a search for independent sets into a search for
   cliques,  as  described  above.  The  functions  and attributes which return
   representatives   of   independent   sets   of  [3Xdigraph[103X  will  return  orbit
@@ -187,8 +187,7 @@
     [4X[25Xgap>[125X [27Xuser_param := [];;[127X[104X
     [4X[25Xgap>[125X [27Xf := function(a, b) # Calculate size of clique[127X[104X
     [4X[25X>[125X [27X  AddSet(user_param, Size(b));[127X[104X
-    [4X[25X>[125X [27Xend;[127X[104X
-    [4X[28Xfunction( a, b ) ... end[128X[104X
+    [4X[25X>[125X [27Xend;;[127X[104X
     [4X[25Xgap>[125X [27XCliquesFinder(gr, f, user_param, infinity, [], [], false, fail, true);[127X[104X
     [4X[28X[ 1, 2, 3, 4, 5 ][128X[104X
     [4X[25Xgap>[125X [27XCliquesFinder(gr, fail, [], 5, [2, 4], [3], false, fail, false);[127X[104X
@@ -329,8 +328,8 @@
         orbit of maximal cliques.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [1, 3], [1, 2, 4], [3, 5, 6],[127X[104X
-    [4X[25X>[125X [27X[4, 6], [4, 5]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
+    [4X[25X>[125X [27X[2, 3], [1, 3], [1, 2, 4], [3, 5, 6], [4, 6], [4, 5]]);[127X[104X
     [4X[28X<digraph with 6 vertices, 14 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
@@ -490,7 +489,7 @@
   otherwise non-maximal independent sets may be returned.[133X
   
   [33X[0;0YLet  [10XG[110X  denote  the [2XAutomorphismGroup[102X ([14X7.2-1[114X) of the [2XDigraphSymmetricClosure[102X
-  ([14X3.3-8[114X)  of  the  digraph formed from [3Xdigraph[103X by removing loops and ignoring
+  ([14X3.3-9[114X)  of  the  digraph formed from [3Xdigraph[103X by removing loops and ignoring
   the multiplicity of edges.[133X
   
   [8XDistinct independent sets[108X

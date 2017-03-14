@@ -13,13 +13,13 @@
   loop is an edge with equal source and range.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1, 2 ], [ 2 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2], [2]]);[127X[104X
     [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
     [4X[28X[ [ 1, 1 ], [ 1, 2 ], [ 2, 2 ] ][128X[104X
     [4X[25Xgap>[125X [27XDigraphHasLoops(gr);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2, 3 ], [ 1 ], [ 2 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [1], [2]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 3, 2 ] ][128X[104X
@@ -40,13 +40,13 @@
   are equal.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr1 := Digraph( [ [ 2 ], [ 1, 3 ], [ 2, 3 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr1 := Digraph([[2], [1, 3], [2, 3]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsAntisymmetricDigraph(gr1);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(gr1){[ 1, 2 ]};[127X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(gr1){[1, 2]};[127X[104X
     [4X[28X[ [ 1, 2 ], [ 2, 1 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := Digraph( [ [ 1, 2 ], [ 3, 3 ], [ 1 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph([[1, 2], [3, 3], [1]]);[127X[104X
     [4X[28X<multidigraph with 3 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsAntisymmetricDigraph(gr2);[127X[104X
     [4X[28Xtrue[128X[104X
@@ -63,7 +63,7 @@
   is not. A digraph is bipartite if and only if the vertices of [3Xdigraph[103X can be
   partitioned  into  two  non-empty sets such that the source and range of any
   edge  of  [3Xdigraph[103X lie in distinct sets. Equivalently, a digraph is bipartite
-  if and only if it is 2-colorable; see [2XDigraphColoring[102X ([14X7.3-9[114X).[133X
+  if and only if it is 2-colorable; see [2XDigraphColouring[102X ([14X7.3-9[114X).[133X
   
   [33X[0;0YSee also [2XDigraphBicomponents[102X ([14X5.1-8[114X).[133X
   
@@ -122,11 +122,11 @@
   loops, and no multiple edges.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [1, 3], [1, 2]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsCompleteDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2, 2 ], [ 1 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 2], [1]]);[127X[104X
     [4X[28X<multidigraph with 2 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsCompleteDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
@@ -144,13 +144,13 @@
   [33X[0;0Y[10XIsNullDigraph[110X is a synonym for [10XIsEmptyDigraph[110X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [  ], [  ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[], []]);[127X[104X
     [4X[28X<digraph with 2 vertices, 0 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsEmptyDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XIsNullDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [  ], [ 1 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[], [1]]);[127X[104X
     [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
     [4X[25Xgap>[125X [27XIsEmptyDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
@@ -168,15 +168,15 @@
   [33X[0;0YA digraph is [13Xfunctional[113X if every vertex is the source of a unique edge.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr1 := Digraph( [ [ 3 ], [ 2 ], [ 2 ], [ 1 ], [ 6 ], [ 5 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr1 := Digraph([[3], [2], [2], [1], [6], [5]]);[127X[104X
     [4X[28X<digraph with 6 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsFunctionalDigraph(gr1);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := Digraph( [ [ 1, 2 ], [ 1 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph([[1, 2], [1]]);[127X[104X
     [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsFunctionalDigraph(gr2);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr3 := Digraph( 3, [ 1, 2, 3 ], [ 2, 3, 1 ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr3 := Digraph(3, [1, 2, 3], [2, 3, 1]);[127X[104X
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsFunctionalDigraph(gr3);[127X[104X
     [4X[28Xtrue[128X[104X
@@ -195,12 +195,16 @@
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsMultiDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph(3, [1, 2, 3, 1, 1, 2], [1, 2, 3, 2, 3, 1]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphFromDigraph6String("+Bug");[127X[104X
     [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDuplicateFree(DigraphEdges(gr));[127X[104X
+    [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XIsMultiDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph(3, [1, 2, 3, 1, 1, 2, 1], [1, 2, 3, 2, 3, 1, 2]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 3, 2], [2, 1], [3]] );[127X[104X
     [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDuplicateFree(DigraphEdges(gr));[127X[104X
+    [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27XIsMultiDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
@@ -214,13 +218,11 @@
   is not. A digraph is [13Xreflexive[113X if it has a loop at every vertex.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1, 2 ], [ 2 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2], [2]]);[127X[104X
     [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsReflexiveDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( rec ( nrvertices := 4,[127X[104X
-    [4X[25X>[125X [27Xsource := [ 1, 1, 2, 2, 3, 4, 4 ],[127X[104X
-    [4X[25X>[125X [27Xrange := [ 3, 1, 4, 2, 3, 2, 1 ] )  );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[3, 1], [4, 2], [3], [2, 1]]);[127X[104X
     [4X[28X<digraph with 4 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsReflexiveDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
@@ -241,7 +243,7 @@
   symmetric adjacency matrix [2XAdjacencyMatrix[102X ([14X5.2-1[114X).[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr1 := Digraph( [ [ 2 ], [ 1, 3 ], [ 2, 3 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr1 := Digraph([[2], [1, 3], [2, 3]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr1);[127X[104X
     [4X[28Xtrue[128X[104X
@@ -254,7 +256,7 @@
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27Xgr1 = DigraphReverse(gr1);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := Digraph( [ [ 2, 3 ], [ 1, 3 ], [ 2, 3 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph([[2, 3], [1, 3], [2, 3]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr2);[127X[104X
     [4X[28Xfalse[128X[104X
@@ -280,11 +282,11 @@
   some orientation) between any pair of distinct vertices, and no loops.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3, 4], [3, 4], [4], []]);[127X[104X
     [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsTournament(gr);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2 ], [ 1 ], [ 3 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [1], [3]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsTournament(gr);[127X[104X
     [4X[28Xfalse[128X[104X
@@ -307,17 +309,17 @@
   n)[122X will be used when appropriate.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1, 2 ], [ 3 ], [ 3 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2], [3], [3]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsTransitiveDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := Digraph( [ [ 1, 2, 3 ], [ 3 ], [ 3 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr2 := Digraph([[1, 2, 3], [3], [3]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsTransitiveDigraph(gr2);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27Xgr2 = DigraphTransitiveClosure(gr);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr3 := Digraph( [ [ 1, 2, 2, 3 ], [ 3, 3 ], [ 3 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr3 := Digraph([[1, 2, 2, 3], [3, 3], [3]]);[127X[104X
     [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsTransitiveDigraph(gr3);[127X[104X
     [4X[28Xtrue[128X[104X
@@ -425,21 +427,23 @@
   vertices in the digraph.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27XPetersen := Graph( SymmetricGroup(5), [ [ 1, 2 ] ], OnSets,           [127X[104X
-    [4X[25X>[125X [27Xfunction(x, y) return IsEmpty(Intersection(x, y)); end );;[127X[104X
-    [4X[25Xgap>[125X [27Xgr:=Digraph(Petersen);                    [127X[104X
+    [4X[25Xgap>[125X [27XPetersen := Graph(SymmetricGroup(5), [[1, 2]], OnSets,[127X[104X
+    [4X[25X>[125X [27Xfunction(x, y)[127X[104X
+    [4X[25X>[125X [27X  return IsEmpty(Intersection(x, y));[127X[104X
+    [4X[25X>[125X [27Xend);;[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph(Petersen);[127X[104X
     [4X[28X<digraph with 10 vertices, 30 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsAcyclicDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr:=Digraph( [ [  ], [ 1 ], [ 1 ], [ 1 ], [ 3 ], [ 3 ], [127X[104X
-    [4X[25X>[125X [27X[ 4 ], [ 4 ], [ 5 ], [ 5 ], [ 5 ], [ 6 ], [ 6 ], [ 7 ], [ 7 ], [127X[104X
-    [4X[25X>[125X [27X[ 7 ], [ 8 ], [ 9 ], [ 9 ], [ 11 ], [ 11 ], [ 12 ], [ 12 ], [ 13 ], [127X[104X
-    [4X[25X>[125X [27X[ 14 ], [ 15 ], [ 15 ], [ 16 ], [ 16 ], [ 17 ], [ 17 ], [ 18 ], [127X[104X
-    [4X[25X>[125X [27X[ 18 ], [ 19 ], [ 20 ], [ 20 ], [ 21 ], [ 22 ], [ 22 ], [ 23 ], [127X[104X
-    [4X[25X>[125X [27X[ 23 ], [ 24 ], [ 28 ], [ 29 ], [ 30 ], [ 30 ], [ 31 ], [ 32 ], [127X[104X
-    [4X[25X>[125X [27X[ 32 ], [ 33 ], [ 34 ], [ 41 ], [ 46 ], [ 47 ], [ 51 ] ] );;[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphFromDiSparse6String([127X[104X
+    [4X[25X>[125X [27X".b_OGCIDBaPGkULEbQHCeRIdrHcuZMfRyDAbPhTi|zF");[127X[104X
+    [4X[28X<digraph with 35 vertices, 34 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsAcyclicDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsAcyclicDigraph(ChainDigraph(10));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsAcyclicDigraph(CycleDigraph(10));[127X[104X
+    [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
   [1X6.3-2 IsConnectedDigraph[101X
@@ -458,10 +462,10 @@
   digraph).[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2 ], [ 3 ], [  ] ] );;[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3], []]);;[127X[104X
     [4X[25Xgap>[125X [27XIsConnectedDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1, 3 ], [ 4 ], [ 3 ], [  ] ] );;[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3], [4], [3], []]);;[127X[104X
     [4X[25Xgap>[125X [27XIsConnectedDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
@@ -487,7 +491,7 @@
     [4X[28X<digraph with 250000 vertices, 250000 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsStronglyConnectedDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr:=DigraphRemoveEdges(gr, [ [ 250000, 1 ] ]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphRemoveEdges(gr, [[250000, 1]]);[127X[104X
     [4X[28X<digraph with 250000 vertices, 249999 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsStronglyConnectedDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
@@ -502,11 +506,11 @@
   [2XDigraphPeriod[102X ([14X5.3-12[114X) is equal to 1. Otherwise, the property is [9Xfalse[109X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);[127X[104X
     [4X[28X<multidigraph with 6 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsAperiodicDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);[127X[104X
     [4X[28X<digraph with 5 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsAperiodicDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
@@ -527,47 +531,69 @@
   [33X[0;0YSee also [2XDigraphSources[102X ([14X5.1-6[114X).[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xg := Digraph([[], [2]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[], [2]]);[127X[104X
     [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
-    [4X[25Xgap>[125X [27XIsDirectedTree(g);[127X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(gr);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xg := Digraph([[3], [3], []]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [3], []]);[127X[104X
     [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsDirectedTree(g);[127X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(gr);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xg := Digraph([[2], [3], []]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3], []]);[127X[104X
     [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsDirectedTree(g);[127X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(gr);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xg := Digraph([[2,3], [6], [4,5], [], [], []]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [6], [4, 5], [], [], []]);[127X[104X
     [4X[28X<digraph with 6 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsDirectedTree(g);[127X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(gr);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
   [1X6.3-6 IsUndirectedTree[101X
   
   [29X[2XIsUndirectedTree[102X( [3Xdigraph[103X ) [32X property
+  [29X[2XIsUndirectedForest[102X( [3Xdigraph[103X ) [32X property
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
-  [33X[0;0YThis property returns [9Xtrue[109X if the digraph [3Xdigraph[103X is an undirected tree.[133X
+  [33X[0;0YThe  property  [10XIsUndirectedTree[110X  returns  [9Xtrue[109X  if the digraph [3Xdigraph[103X is an
+  undirected tree, and the property [10XIsUndirectedForest[110X returns [9Xtrue[109X if [3Xdigraph[103X
+  is an undirected forest; otherwise, these properties return [9Xfalse[109X.[133X
   
-  [33X[0;0YAn  undirected  tree  is a symmetric digraph without loops, in which for any
+  [33X[0;0YAn  [13Xundirected  tree[113X  is a symmetric digraph without loops, in which for any
   pair of distinct vertices [10Xu[110X and [10Xv[110X, there is exactly one directed path from [10Xu[110X
   to  [10Xv[110X.  See [2XIsSymmetricDigraph[102X ([14X6.1-10[114X) and [2XDigraphHasLoops[102X ([14X6.1-1[114X), and see
-  section [14X1.1-1[114X for the definition of directed path.[133X
+  section  [14X1.1-1[114X  for the definition of directed path. This definition implies
+  that an undirected tree has no multiple edges.[133X
   
-  [33X[0;0YPlease  note  that the digraph with zero vertices is not considered to be an
-  undirected tree.[133X
+  [33X[0;0YAn  [13Xundirected forest[113X is a digraph, each of whose connected components is an
+  undirected  tree.  In  other  words, an undirected forest is isomorphic to a
+  disjoint  union  of undirected trees. See [2XDigraphConnectedComponents[102X ([14X5.3-8[114X)
+  and  [2XDigraphDisjointUnion[102X  ([14X3.3-25[114X). In particular, every undirected tree is
+  an undirected forest.[133X
+  
+  [33X[0;0YPlease  note that the digraph with zero vertices is considered to be neither
+  an undirected tree nor an undirected forest.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xg := Digraph([[3], [3], [1,2]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [3], [1, 2]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedTree(g);[127X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedTree(gr);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xg := Digraph([[], [1]]);[127X[104X
-    [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedTree(g);[127X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr) and not DigraphHasLoops(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [5], [1, 4], [3], [2]]);[127X[104X
+    [4X[28X<digraph with 5 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsConnectedDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedTree(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedForest(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2], [1], [2]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedTree(gr) or IsUndirectedForest(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr) or not DigraphHasLoops(gr);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
@@ -583,21 +609,21 @@
   definition of a directed circuit.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xg := Digraph([[]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[]]);[127X[104X
     [4X[28X<digraph with 1 vertex, 0 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsEulerianDigraph(g);[127X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xg := Digraph([[2], []]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], []]);[127X[104X
     [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
-    [4X[25Xgap>[125X [27XIsEulerianDigraph(g);[127X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xg := Digraph([[3], [], [2]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [], [2]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsEulerianDigraph(g);[127X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xg := Digraph([[2], [3], [1]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3], [1]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsEulerianDigraph(g);[127X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   

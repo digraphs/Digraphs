@@ -119,16 +119,14 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj := List( [ 1 .. 4 ], x -&gt; List( [ 1 .. 4 ], y -&gt; 1 ));</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj := List([1 .. 4], x -&gt; [1, 1, 1, 1]);</span>
 [ [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ] ]
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj[1][1] := 1;   </span>
-2
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj[1][3] := 0;</span>
 0
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphByAdjacencyMatrix(adj);</span>
-&lt;digraph with 4 vertices, 16 edges&gt;
+&lt;digraph with 4 vertices, 15 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">FileString("dot/k4.dot", DotDigraph(gr));</span>
-146</pre></div>
+154</pre></div>
 
 <p><a id="X78DA31D1869D2F94" name="X78DA31D1869D2F94"></a></p>
 
@@ -147,15 +145,12 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">r := rec ( vertices := [ 1 .. 4 ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">source := [ 1, 1, 1, 1, 2, 2, 3, 4, 4 ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">range := [ 2, 2, 3, 4, 1, 1, 1, 1, 4 ] );;</span>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">star := Digraph(r);</span>
-&lt;digraph with 4 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">star := Digraph([[2, 2, 3, 4], [1, 1], [1], [1, 4]]);</span>
+&lt;multidigraph with 4 vertices, 9 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSymmetricDigraph(star);</span>
 true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">FileString("dot/star.dot", DotSymmetricDigraph(gr));;</span>
-</pre></div>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">FileString("dot/star.dot", DotSymmetricDigraph(gr));</span>
+83</pre></div>
 
 <p><a id="X7D4923A882ABA808" name="X7D4923A882ABA808"></a></p>
 
@@ -178,7 +173,7 @@ true
 
 </dd>
 <dt><strong class="Mark"> DiSparse6 </strong></dt>
-<dd><p><em>DiSparse6</em> is a new format based on <em> Sparse6 </em>, but designed for digraphs. In this format the list of edges is partitioned into inceasing and decreasing edges, depending whether the edge has it's source bigger than the range. Then both sets of edges are written separetly in <em> Sparse6 </em> format with a separation symbol in between.</p>
+<dd><p><em>DiSparse6</em> is a new format based on <em> Sparse6 </em>, but designed for digraphs. In this format the list of edges is partitioned into inceasing and decreasing edges, depending whether the edge has its source bigger than the range. Then both sets of edges are written separetly in <em> Sparse6 </em> format with a separation symbol in between.</p>
 
 </dd>
 </dl>
@@ -192,7 +187,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromDiSparse6String</code>( <var class="Arg">str</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
-<p>If <var class="Arg">str</var> is a string encoding a graph in Graph6, Digraph6, Sparse6 or DiSparse6 format, then the corresponging function returns a digraph. In the case of either Graph6 or Sparse6, formats which do not support directed edges, this will be a digraph such that for every edge, the edge going in the opposite direction is also present.</p>
+<p>If <var class="Arg">str</var> is a string encoding a graph in Graph6, Digraph6, Sparse6 or DiSparse6 format, then the corresponding function returns a digraph. In the case of either Graph6 or Sparse6, formats which do not support directed edges, this will be a digraph such that for every edge, the edge going in the opposite direction is also present.</p>
 
 
 <div class="example"><pre>
@@ -230,7 +225,7 @@ true
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2,3], [1], [1]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3], [1], [1]]);</span>
 &lt;digraph with 3 vertices, 4 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Sparse6String(gr);</span>
 ":Bc"
@@ -282,7 +277,7 @@ true
 
 </dd>
 <dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
-<dd><p>Digraphs are pickled using the <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) is non-trivial.</p>
+<dd><p>Digraphs are pickled using the <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-5</span></a>) is non-trivial.</p>
 
 </dd>
 </dl>
@@ -290,7 +285,7 @@ true
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">file := DigraphFile(filename, "w");;</span>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">for i in [1 .. 10] do </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">for i in [1 .. 10] do</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">WriteDigraphs(file, Digraph([[1, 3], [2], [1, 2]]));</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">od;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IO_Close(file);;</span>
@@ -338,7 +333,7 @@ true
 
 </dd>
 <dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
-<dd><p>Digraphs are pickled using the <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) is non-trivial.</p>
+<dd><p>Digraphs are pickled using the <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-5</span></a>) is non-trivial.</p>
 
 </dd>
 </dl>
@@ -403,7 +398,7 @@ true
 
 </dd>
 <dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
-<dd><p>Digraphs are pickled using the <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>) is non-trivial.</p>
+<dd><p>Digraphs are pickled using the <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-5</span></a>) is non-trivial.</p>
 
 </dd>
 </dl>
@@ -414,7 +409,8 @@ true
 &lt;digraph with 0 vertices, 0 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">grs[2] := Digraph([[1, 3], [2], [1, 2]]);</span>
 &lt;digraph with 3 vertices, 5 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">grs[3] := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">grs[3] := Digraph([</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 4, 5, 6, 7, 10], [1, 5, 6, 7, 10], [2, 4, 5, 9, 10],</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">[3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 5, 7, 8, 9], [1, 2, 5],</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 4, 6, 7, 8]]);</span>
@@ -446,8 +442,8 @@ IO_OK
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">file := DigraphFile(filename, "w");;</span>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">for i in [1 .. 10] do </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">WriteDigraphs(file, Digraph([[1, 3], [2], [1, 2]]));</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">for i in [1 .. 10] do</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">  WriteDigraphs(file, Digraph([[1, 3], [2], [1, 2]]));</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">od;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IO_Close(file);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">iter := IteratorFromDigraphFile(filename);</span>
@@ -474,7 +470,7 @@ IO_OK
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2,3], [1], [1]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3], [1], [1]]);</span>
 &lt;digraph with 3 vertices, 4 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">enc := DigraphPlainTextLineEncoder("  ", " ", -1);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">dec := DigraphPlainTextLineDecoder("  ", " ",  1);;</span>
@@ -574,7 +570,7 @@ IO_OK
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2,3], [1], [1]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3], [1], [1]]);</span>
 &lt;digraph with 3 vertices, 4 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PlainTextString(gr);</span>
 "0 1  0 2  1 0  2 0"
@@ -596,11 +592,11 @@ IO_OK
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1,2,3], [1,1], [2]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 2, 3], [1, 1], [2]]);</span>
 &lt;multidigraph with 3 vertices, 6 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/plain.txt");;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">WritePlainTextDigraph(filename, gr, ",", -1);</span>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadPlainTextDigraph(filename, ",", 1, ['/','%']);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadPlainTextDigraph(filename, ",", 1, ['/', '%']);</span>
 &lt;multidigraph with 3 vertices, 6 edges&gt;
 </pre></div>
 
@@ -626,7 +622,7 @@ IO_OK
 <p>Although it is required to be present, the value of <code class="code">&lt;nr_edges&gt;</code> will be ignored. The correct number of edges will be deduced from the rest of the information in the file.</p>
 
 </li>
-<li><p>A line of the form <code class="code">e &lt;v&gt; &lt;w&gt;</code>, where <code class="code">&lt;v&gt;</code> and <code class="code">&lt;w&gt;</code> are integers in the range <code class="code">[1 .. &lt;nr_vertices&gt;]</code>, specifies that there is a (symmetric) edge in the digraph between the vertices <code class="code">&lt;v&gt;</code> and <code class="code">&lt;w&gt;</code>. A symmetric edge only needs to be defined one; an additional line <code class="code">e &lt;v&gt; &lt;w&gt;</code>, or <code class="code">e &lt;w&gt; &lt;v&gt;</code>, will be interpreted as an additional, multiple, edge. Loops are permitted.</p>
+<li><p>A line of the form <code class="code">e &lt;v&gt; &lt;w&gt;</code>, where <code class="code">&lt;v&gt;</code> and <code class="code">&lt;w&gt;</code> are integers in the range <code class="code">[1 .. &lt;nr_vertices&gt;]</code>, specifies that there is a (symmetric) edge in the digraph between the vertices <code class="code">&lt;v&gt;</code> and <code class="code">&lt;w&gt;</code>. A symmetric edge only needs to be defined once; an additional line <code class="code">e &lt;v&gt; &lt;w&gt;</code>, or <code class="code">e &lt;w&gt; &lt;v&gt;</code>, will be interpreted as an additional, multiple, edge. Loops are permitted.</p>
 
 </li>
 <li><p>A line of the form <code class="code">n &lt;v&gt; &lt;label&gt;</code>, where <code class="code">&lt;v&gt;</code> is an integer in the range <code class="code">[1 .. &lt;nr_vertices&gt;]</code> and <code class="code">&lt;label&gt;</code> is an integer, signifies that the vertex <code class="code">&lt;v&gt;</code> has the label <code class="code">&lt;label&gt;</code> in the digraph. If a label is not specified for a vertex, then <code class="code">ReadDIMACSDigraph</code> will assign the label <code class="code">1</code>, according to the DIMACS specification.</p>

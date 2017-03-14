@@ -26,6 +26,7 @@
 </span>
 <div class="ContSSBlock">
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4.html#X829B911D7EFD2D85">4.1-1 IsSubdigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap4.html#X833C3299787E2309">4.1-2 IsUndirectedSpanningTree</a></span>
 </div></div>
 </div>
 
@@ -67,9 +68,11 @@
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsSubdigraph</code>( <var class="Arg">super</var>, <var class="Arg">sub</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>If <var class="Arg">super</var> and <var class="Arg">sub</var> are digraphs with the same number of vertices, then this operation returns <code class="keyw">true</code> if all the edges of <var class="Arg">sub</var> are edges in <var class="Arg">super</var>, and <code class="keyw">false</code> otherwise.</p>
+<p>If <var class="Arg">super</var> and <var class="Arg">sub</var> are digraphs, then this operation returns <code class="keyw">true</code> if <var class="Arg">sub</var> is a subdigraph of <var class="Arg">super</var>, and <code class="keyw">false</code> if it is not.</p>
 
-<p>If the two digraphs have different numbers of vertices, this operation returns <code class="keyw">false</code>.</p>
+<p>A digraph <var class="Arg">sub</var> is a <em>subdigraph</em> of a digraph <var class="Arg">super</var> if <var class="Arg">sub</var> and <var class="Arg">super</var> share the same number of vertices, and the collection of edges of <var class="Arg">super</var> (including repeats) contains the collection of edges of <var class="Arg">sub</var> (including repeats).</p>
+
+<p>In other words, <var class="Arg">sub</var> is a subdigraph of <var class="Arg">super</var> if and only if <code class="code">DigraphNrVertices(<var class="Arg">sub</var>) = DigraphNrVertices(<var class="Arg">super</var>)</code>, and for each pair of vertices <code class="code">i</code> and <code class="code">j</code>, there are at least as many edges of the form <code class="code">[i, j]</code> in <var class="Arg">super</var> as there are in <var class="Arg">sub</var>.</p>
 
 
 <div class="example"><pre>
@@ -81,7 +84,59 @@
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSubdigraph(h, g);</span>
 false
-</pre></div>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSubdigraph(CompleteDigraph(4), CycleDigraph(4));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSubdigraph(CycleDigraph(4), ChainDigraph(4));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[2, 2], [1]]);</span>
+&lt;multidigraph with 2 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">h := Digraph([[2], [1]]);</span>
+&lt;digraph with 2 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSubdigraph(g, h);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSubdigraph(h, g);</span>
+false</pre></div>
+
+<p><a id="X833C3299787E2309" name="X833C3299787E2309"></a></p>
+
+<h5>4.1-2 IsUndirectedSpanningTree</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsUndirectedSpanningTree</code>( <var class="Arg">super</var>, <var class="Arg">sub</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsUndirectedSpanningForest</code>( <var class="Arg">super</var>, <var class="Arg">sub</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>The operation <code class="code">IsUndirectedSpanningTree</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">sub</var> is an undirected spanning tree of the digraph <var class="Arg">super</var>, and the operation <code class="code">IsUndirectedSpanningForest</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">sub</var> is an undirected spanning forest of the digraph <var class="Arg">super</var>.</p>
+
+<p>An <em>undirected spanning tree</em> of a digraph <var class="Arg">super</var> is a subdigraph of <var class="Arg">super</var> that is an undirected tree (see <code class="func">IsSubdigraph</code> (<a href="chap4.html#X829B911D7EFD2D85"><span class="RefLink">4.1-1</span></a>) and <code class="func">IsUndirectedTree</code> (<a href="chap6.html#X80FC20FA7AC4BC2A"><span class="RefLink">6.3-6</span></a>)). Note that a digraph whose <code class="func">MaximalSymmetricSubdigraph</code> (<a href="chap3.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>) is not connected has no undirected spanning trees (see <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.3-2</span></a>)).</p>
+
+<p>An <em>undirected spanning forest</em> of a digraph <var class="Arg">super</var> is a subdigraph of <var class="Arg">super</var> that is an undirected forest (see <code class="func">IsSubdigraph</code> (<a href="chap4.html#X829B911D7EFD2D85"><span class="RefLink">4.1-1</span></a>) and <code class="func">IsUndirectedForest</code> (<a href="chap6.html#X80FC20FA7AC4BC2A"><span class="RefLink">6.3-6</span></a>)), and is not contained in any larger such subdigraph of <var class="Arg">super</var>. Equivalently, an undirected spanning forest is a subdigraph of <var class="Arg">super</var> whose connected components coincide with those of the <code class="func">MaximalSymmetricSubdigraph</code> (<a href="chap3.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>) of <var class="Arg">super</var> (see <code class="func">DigraphConnectedComponents</code> (<a href="chap5.html#X842FAD6A7B835977"><span class="RefLink">5.3-8</span></a>)).</p>
+
+<p>Note that an undirected spanning tree is an undirected spanning forest that is connected.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CompleteDigraph(4);</span>
+&lt;digraph with 4 vertices, 12 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">tree := Digraph([[3], [4], [1, 4], [2, 3]]);</span>
+&lt;digraph with 4 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSubdigraph(gr, tree) and IsUndirectedTree(tree);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsUndirectedSpanningTree(gr, tree);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">forest := EmptyDigraph(4);</span>
+&lt;digraph with 4 vertices, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSubdigraph(gr, forest) and IsUndirectedForest(forest);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsUndirectedSpanningForest(gr, forest);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSubdigraph(tree, forest);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(2));</span>
+&lt;digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsUndirectedTree(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsUndirectedForest(gr) and IsUndirectedSpanningForest(gr, gr);</span>
+true</pre></div>
 
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap3.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap5.html">[Next Chapter]</a>&nbsp;  </div>

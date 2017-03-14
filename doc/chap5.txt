@@ -15,15 +15,15 @@
   from [10X1[110X to the number of vertices of the graph.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ "a", "b", "c" ],[127X[104X
-    [4X[25X>[125X [27X[ "a", "b", "b" ],[127X[104X
-    [4X[25X>[125X [27X[ "b", "c", "a" ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"],[127X[104X
+    [4X[25X>[125X [27X                 ["a", "b", "b"],[127X[104X
+    [4X[25X>[125X [27X                 ["b", "c", "a"]);[127X[104X
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphVertices(gr);[127X[104X
     [4X[28X[ 1 .. 3 ][128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ 1, 2, 3, 4, 5, 7 ],[127X[104X
-    [4X[25X>[125X [27X[ 1, 2, 2, 4, 4 ],[127X[104X
-    [4X[25X>[125X [27X[ 2, 3, 5, 3, 5 ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([1, 2, 3, 4, 5, 7],[127X[104X
+    [4X[25X>[125X [27X                 [1, 2, 2, 4, 4],[127X[104X
+    [4X[25X>[125X [27X                 [2, 7, 5, 3, 7]);[127X[104X
     [4X[28X<digraph with 6 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphVertices(gr);[127X[104X
     [4X[28X[ 1 .. 6 ][128X[104X
@@ -39,15 +39,15 @@
   [33X[0;0YReturns the number of vertices of the digraph [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ "a", "b", "c" ],[127X[104X
-    [4X[25X>[125X [27X[ "a", "b", "b" ],[127X[104X
-    [4X[25X>[125X [27X[ "b", "c", "a" ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"],[127X[104X
+    [4X[25X>[125X [27X                 ["a", "b", "b"],[127X[104X
+    [4X[25X>[125X [27X                 ["b", "c", "a"]);[127X[104X
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphNrVertices(gr);[127X[104X
     [4X[28X3[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ 1, 2, 3, 4, 5, 7 ],[127X[104X
-    [4X[25X>[125X [27X[ 1, 2, 2, 4, 4 ], [127X[104X
-    [4X[25X>[125X [27X[ 2, 3, 5, 3, 5 ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([1, 2, 3, 4, 5, 7],[127X[104X
+    [4X[25X>[125X [27X                 [1, 2, 2, 4, 4],[127X[104X
+    [4X[25X>[125X [27X                 [2, 7, 5, 3, 7]);[127X[104X
     [4X[28X<digraph with 6 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphNrVertices(gr);[127X[104X
     [4X[28X6[128X[104X
@@ -72,11 +72,11 @@
   then sorted by the second component.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3, 4, 3, 5], [1, 2, 3, 5], [2, 4, 5], [127X[104X
-    [4X[25X>[125X [27X[2, 4, 5], [1]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphFromDiSparse6String(".DaXbOe?EAM@G~");[127X[104X
     [4X[28X<multidigraph with 5 vertices, 16 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
-    [4X[28X[ [ 1, 1 ], [ 1, 3 ], [ 1, 4 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], [128X[104X
+    [4X[25Xgap>[125X [27Xedges := ShallowCopy(DigraphEdges(gr));; Sort(edges);[127X[104X
+    [4X[25Xgap>[125X [27Xedges;[127X[104X
+    [4X[28X[ [ 1, 1 ], [ 1, 3 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 2, 1 ], [128X[104X
     [4X[28X  [ 2, 2 ], [ 2, 3 ], [ 2, 5 ], [ 3, 2 ], [ 3, 4 ], [ 3, 5 ], [128X[104X
     [4X[28X  [ 4, 2 ], [ 4, 4 ], [ 4, 5 ], [ 5, 1 ] ][128X[104X
   [4X[32X[104X
@@ -89,13 +89,13 @@
   [33X[0;0YThis function returns the number of edges of the digraph [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], [127X[104X
-    [4X[25X>[125X [27X[2, 4, 5], [1]]);;[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
+    [4X[25X>[125X [27X[1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], [2, 4, 5], [1]]);;[127X[104X
     [4X[25Xgap>[125X [27XDigraphNrEdges(gr);[127X[104X
     [4X[28X15[128X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"],[127X[104X
-    [4X[25X>[125X [27X["a", "b", "b"],[127X[104X
-    [4X[25X>[125X [27X["b", "a", "a"]);[127X[104X
+    [4X[25X>[125X [27X                 ["a", "b", "b"],[127X[104X
+    [4X[25X>[125X [27X                 ["b", "a", "a"]);[127X[104X
     [4X[28X<multidigraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphNrEdges(gr);[127X[104X
     [4X[28X3[128X[104X
@@ -110,7 +110,7 @@
   a digraph is a vertex with out-degree zero. See [2XOutDegreeOfVertex[102X ([14X5.2-9[114X).[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 3, 5, 2, 2 ], [ 3 ], [  ], [ 5, 2, 5, 3 ], [  ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[3, 5, 2, 2], [3], [], [5, 2, 5, 3], []]);[127X[104X
     [4X[28X<multidigraph with 5 vertices, 9 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphSinks(gr);[127X[104X
     [4X[28X[ 3, 5 ][128X[104X
@@ -125,7 +125,7 @@
   of a digraph is a vertex with in-degree zero. See [2XInDegreeOfVertex[102X ([14X5.2-11[114X).[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 3, 5, 2, 2 ], [ 3 ], [  ], [ 5, 2, 5, 3 ], [  ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[3, 5, 2, 2], [3], [], [5, 2, 5, 3], []]);[127X[104X
     [4X[28X<multidigraph with 5 vertices, 9 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphSources(gr);[127X[104X
     [4X[28X[ 1, 4 ][128X[104X
@@ -150,8 +150,8 @@
   vertices in the digraph.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [], [4, 6], [5], [], [7, 8, 9], [],[127X[104X
-    [4X[25X>[125X [27X[], []]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
+    [4X[25X>[125X [27X[2, 3], [], [4, 6], [5], [], [7, 8, 9], [], [], []]);[127X[104X
     [4X[28X<digraph with 9 vertices, 8 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphTopologicalSort(gr);[127X[104X
     [4X[28X[ 2, 5, 4, 7, 8, 9, 6, 3, 1 ][128X[104X
@@ -210,7 +210,7 @@
   ones, inherit their labels from their parents.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphFromDigraph6String("+D[NGc_");[127X[104X
     [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphVertexLabel(gr, 3);[127X[104X
     [4X[28X3[128X[104X
@@ -247,7 +247,7 @@
   ones, inherit their labels from their parents.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphFromDigraph6String("+D[NGc_");[127X[104X
     [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphVertexLabels(gr);[127X[104X
     [4X[28X[ 1 .. 5 ][128X[104X
@@ -282,7 +282,7 @@
   [2XDigraphEdgeLabels[102X ([14X5.1-12[114X).[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphFromDigraph6String("+D[NGc_");[127X[104X
     [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphEdgeLabel(gr, 3, 1);[127X[104X
     [4X[28X1[128X[104X
@@ -319,7 +319,7 @@
   from old ones, inherit their labels from their parents.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphFromDigraph6String("+D[NGc_");[127X[104X
     [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphEdgeLabels(gr);[127X[104X
     [4X[28X[ [ 1 ], [ 1, 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ][128X[104X
@@ -379,7 +379,7 @@
   [9Xfalse[109X otherwise.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph(6, [1, 1, 2, 4, 6], [2, 2, 6, 3, 1]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 2], [6], [], [3], [], [1]]);[127X[104X
     [4X[28X<multidigraph with 6 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsDigraphEdge(gr, [1, 1]);[127X[104X
     [4X[28Xfalse[128X[104X
@@ -407,9 +407,10 @@
   [10XAdjacencyMatrix[110X which is a mutable list of mutable lists.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 2, 2], [1, 3, 6, 8, 9, 10], [4, 6, 8],[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
+    [4X[25X>[125X [27X[2, 2, 2], [1, 3, 6, 8, 9, 10], [4, 6, 8],[127X[104X
     [4X[25X>[125X [27X[1, 2, 3, 9], [3, 3], [3, 5, 6, 10], [1, 2, 7],[127X[104X
-    [4X[25X>[125X [27X[1, 2, 3, 10, 5, 6, 10], [1, 3, 4, 5, 8, 10], [127X[104X
+    [4X[25X>[125X [27X[1, 2, 3, 10, 5, 6, 10], [1, 3, 4, 5, 8, 10],[127X[104X
     [4X[25X>[125X [27X[2, 3, 4, 6, 7, 10]]);[127X[104X
     [4X[28X<multidigraph with 10 vertices, 44 edges>[128X[104X
     [4X[25Xgap>[125X [27Xmat := AdjacencyMatrix(gr);;[127X[104X
@@ -443,13 +444,17 @@
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[3, 4], [2, 3], [1, 2, 4], [4]]);[127X[104X
     [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X
-    [4X[25Xgap>[125X [27XBooleanAdjacencyMatrix(gr);[127X[104X
-    [4X[28X[ [ false, false, true, true ], [ false, true, true, false ], [128X[104X
-    [4X[28X  [ true, true, false, true ], [ false, false, false, true ] ][128X[104X
+    [4X[25Xgap>[125X [27XPrintArray(BooleanAdjacencyMatrix(gr));[127X[104X
+    [4X[28X[ [  false,  false,   true,   true ],[128X[104X
+    [4X[28X  [  false,   true,   true,  false ],[128X[104X
+    [4X[28X  [   true,   true,  false,   true ],[128X[104X
+    [4X[28X  [  false,  false,  false,   true ] ][128X[104X
     [4X[25Xgap>[125X [27Xgr := CycleDigraph(4);;[127X[104X
-    [4X[25Xgap>[125X [27XBooleanAdjacencyMatrix(gr);[127X[104X
-    [4X[28X[ [ false, true, false, false ], [ false, false, true, false ], [128X[104X
-    [4X[28X  [ false, false, false, true ], [ true, false, false, false ] ][128X[104X
+    [4X[25Xgap>[125X [27XPrintArray(BooleanAdjacencyMatrix(gr));[127X[104X
+    [4X[28X[ [  false,   true,  false,  false ],[128X[104X
+    [4X[28X  [  false,  false,   true,  false ],[128X[104X
+    [4X[28X  [  false,  false,  false,   true ],[128X[104X
+    [4X[28X  [   true,  false,  false,  false ] ][128X[104X
     [4X[25Xgap>[125X [27XBooleanAdjacencyMatrix(EmptyDigraph(0));[127X[104X
     [4X[28X[  ][128X[104X
   [4X[32X[104X
@@ -501,15 +506,15 @@
   the [10Xi[110Xth edge of [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 3, 5], [1, 3, 4], [2, 3], [127X[104X
-    [4X[25X>[125X [27X[2], [1, 2, 3, 4]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
+    [4X[25X>[125X [27X[2, 1, 3, 5], [1, 3, 4], [2, 3], [2], [1, 2, 3, 4]]);[127X[104X
     [4X[28X<digraph with 5 vertices, 14 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphRange(gr);[127X[104X
-    [4X[28X[ 1, 2, 3, 5, 1, 3, 4, 2, 3, 2, 1, 2, 3, 4 ][128X[104X
+    [4X[28X[ 2, 1, 3, 5, 1, 3, 4, 2, 3, 2, 1, 2, 3, 4 ][128X[104X
     [4X[25Xgap>[125X [27XDigraphSource(gr);[127X[104X
     [4X[28X[ 1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 5, 5, 5 ][128X[104X
     [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
-    [4X[28X[ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], [128X[104X
+    [4X[28X[ [ 1, 2 ], [ 1, 1 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], [128X[104X
     [4X[28X  [ 2, 4 ], [ 3, 2 ], [ 3, 3 ], [ 4, 2 ], [ 5, 1 ], [ 5, 2 ], [128X[104X
     [4X[28X  [ 5, 3 ], [ 5, 4 ] ][128X[104X
   [4X[32X[104X
@@ -532,25 +537,24 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"],[127X[104X
-    [4X[25X>[125X [27X["a", "b", "b"],[127X[104X
-    [4X[25X>[125X [27X["b", "a", "c"]);[127X[104X
+    [4X[25X>[125X [27X                 ["a", "b", "b"],[127X[104X
+    [4X[25X>[125X [27X                 ["b", "a", "c"]);[127X[104X
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
     [4X[28X[ [ 2 ], [ 1, 3 ], [  ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph(3, [127X[104X
-    [4X[25X>[125X [27X[1, 2, 3, 1, 1, 2],[127X[104X
-    [4X[25X>[125X [27X[1, 2, 3, 2, 3, 1]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 3], [2, 1], [3]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
     [4X[28X[ [ 1, 2, 3 ], [ 2, 1 ], [ 3 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph(3,[127X[104X
-    [4X[25X>[125X [27X[1, 2, 3, 1, 1, 2, 1],[127X[104X
-    [4X[25X>[125X [27X[1, 2, 3, 2, 3, 1, 2]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphByAdjacencyMatrix([[127X[104X
+    [4X[25X>[125X [27X [1, 2, 1],[127X[104X
+    [4X[25X>[125X [27X [1, 1, 0],[127X[104X
+    [4X[25X>[125X [27X [0, 0, 1]]);[127X[104X
     [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
-    [4X[28X[ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ][128X[104X
+    [4X[28X[ [ 1, 2, 2, 3 ], [ 1, 2 ], [ 3 ] ][128X[104X
     [4X[25Xgap>[125X [27XOutNeighboursMutableCopy(gr);[127X[104X
-    [4X[28X[ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ][128X[104X
+    [4X[28X[ [ 1, 2, 2, 3 ], [ 1, 2 ], [ 3 ] ][128X[104X
   [4X[32X[104X
   
   [1X5.2-6 InNeighbours[101X
@@ -573,20 +577,19 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"],[127X[104X
-    [4X[25X>[125X [27X["a", "b", "b"],[127X[104X
-    [4X[25X>[125X [27X["b", "a", "c"]);[127X[104X
+    [4X[25X>[125X [27X                 ["a", "b", "b"],[127X[104X
+    [4X[25X>[125X [27X                 ["b", "a", "c"]);[127X[104X
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XInNeighbours(gr);[127X[104X
     [4X[28X[ [ 2 ], [ 1 ], [ 2 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph(3, [127X[104X
-    [4X[25X>[125X [27X[1, 2, 3, 1, 1, 2],[127X[104X
-    [4X[25X>[125X [27X[1, 2, 3, 2, 3, 1]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 3], [2, 1], [3]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XInNeighbours(gr);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 2 ], [ 1, 3 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph(3,[127X[104X
-    [4X[25X>[125X [27X[1, 2, 3, 1, 1, 2, 1],[127X[104X
-    [4X[25X>[125X [27X[1, 2, 3, 2, 3, 1, 2]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphByAdjacencyMatrix([[127X[104X
+    [4X[25X>[125X [27X [1, 2, 1],[127X[104X
+    [4X[25X>[125X [27X [1, 1, 0],[127X[104X
+    [4X[25X>[125X [27X [0, 0, 1]]);[127X[104X
     [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XInNeighbours(gr);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 1, 2 ], [ 1, 3 ] ][128X[104X
@@ -640,7 +643,7 @@
   with duplicate entries removed.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1, 3, 2, 2, 4 ], [ ], [ 2, 1, 4 ], [ ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3, 2, 2, 4], [], [2, 1, 4], []]);[127X[104X
     [4X[28X<multidigraph with 4 vertices, 8 edges>[128X[104X
     [4X[25Xgap>[125X [27XInDegrees(gr);[127X[104X
     [4X[28X[ 2, 3, 1, 2 ][128X[104X
@@ -660,8 +663,8 @@
   source is [3Xvertex[103X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 2, 1], [1, 4], [2, 2, 4, 2], [127X[104X
-    [4X[25X>[125X [27X[1, 1, 2, 2, 1, 2, 2]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
+    [4X[25X>[125X [27X[2, 2, 1], [1, 4], [2, 2, 4, 2], [1, 1, 2, 2, 1, 2, 2]]);[127X[104X
     [4X[28X<multidigraph with 4 vertices, 16 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutDegreeOfVertex(gr, 1);[127X[104X
     [4X[28X3[128X[104X
@@ -685,8 +688,8 @@
   contain duplicates.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 2, 3], [1, 3, 4], [2, 2, 3], [127X[104X
-    [4X[25X>[125X [27X[1, 1, 2, 2, 1, 2, 2]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
+    [4X[25X>[125X [27X[2, 2, 3], [1, 3, 4], [2, 2, 3], [1, 1, 2, 2, 1, 2, 2]]);[127X[104X
     [4X[28X<multidigraph with 4 vertices, 16 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighboursOfVertex(gr, 1);[127X[104X
     [4X[28X[ 2, 2, 3 ][128X[104X
@@ -704,8 +707,8 @@
   range is [3Xvertex[103X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 2, 1], [1, 4], [2, 2, 4, 2], [127X[104X
-    [4X[25X>[125X [27X[1, 1, 2, 2, 1, 2, 2]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
+    [4X[25X>[125X [27X[2, 2, 1], [1, 4], [2, 2, 4, 2], [1, 1, 2, 2, 1, 2, 2]]);[127X[104X
     [4X[28X<multidigraph with 4 vertices, 16 edges>[128X[104X
     [4X[25Xgap>[125X [27XInDegreeOfVertex(gr, 1);[127X[104X
     [4X[28X5[128X[104X
@@ -729,8 +732,8 @@
   contain duplicates.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 2, 3], [1, 3, 4], [2, 2, 3], [127X[104X
-    [4X[25X>[125X [27X[1, 1, 2, 2, 1, 2, 2]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
+    [4X[25X>[125X [27X[2, 2, 3], [1, 3, 4], [2, 2, 3], [1, 1, 2, 2, 1, 2, 2]]);[127X[104X
     [4X[28X<multidigraph with 4 vertices, 16 edges>[128X[104X
     [4X[25Xgap>[125X [27XInNeighboursOfVertex(gr, 1);[127X[104X
     [4X[28X[ 2, 4, 4, 4 ][128X[104X
@@ -778,12 +781,11 @@
   [33X[0;0YSee [2XDigraphShortestDistances[102X ([14X5.3-3[114X).[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2 ], [ 3 ], [ 4, 5 ], [ 5 ], [127X[104X
-    [4X[25X>[125X [27X[ 1, 2, 3, 4, 5 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3], [4, 5], [5], [1, 2, 3, 4, 5]]);[127X[104X
     [4X[28X<digraph with 5 vertices, 10 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphDiameter(gr);[127X[104X
     [4X[28X3[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2 ], [  ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := ChainDigraph(2);[127X[104X
     [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
     [4X[25Xgap>[125X [27XDigraphDiameter(gr);[127X[104X
     [4X[28Xfail[128X[104X
@@ -848,10 +850,10 @@
   algorithm, and has complexity [22XO(n^3)[122X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1, 2 ], [ 3 ], [ 1, 2 ], [ 4 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2], [3], [1, 2], [4]]);[127X[104X
     [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27Xmat := DigraphShortestDistances(gr);;[127X[104X
-    [4X[25Xgap>[125X [27XDisplay(mat);[127X[104X
+    [4X[25Xgap>[125X [27XPrintArray(mat);[127X[104X
     [4X[28X[ [     0,     1,     2,  fail ],[128X[104X
     [4X[28X  [     2,     0,     1,  fail ],[128X[104X
     [4X[28X  [     1,     1,     0,  fail ],[128X[104X
@@ -872,7 +874,7 @@
         loop  or  a  directed  cycle,  then  we consider there to be a walk of
         infinite   length  from  [3Xv[103X  (realised  by  repeatedly  traversing  the
         loop/directed cycle), and so the result is [9Xinfinity[109X. To disallow walks
-        using loops, try using [2XDigraphRemoveLoops[102X ([14X3.3-21[114X):[133X
+        using loops, try using [2XDigraphRemoveLoops[102X ([14X3.3-22[114X):[133X
   
         [33X[0;6Y[10XDigraphLongestDistanceFromVertex(DigraphRemoveLoops([3Xdigraph[103X[10X,[3Xv[103X[10X))[110X.[133X
   
@@ -935,7 +937,7 @@
   [33X[0;0YIn  the  worst  case,  the  method used in this function is a version of the
   Floyd-Warshall algorithm, and has complexity [10XO([3Xn[103X[10X ^ 3)[110X, where [3Xn[103X is the number
   of  vertices  in  [3Xdigraph[103X.  If  the  digraph  has  known  automorphisms [see
-  [2XDigraphGroup[102X ([14X7.2-3[114X)], then the performance is likely to be better.[133X
+  [2XDigraphGroup[102X ([14X7.2-5[114X)], then the performance is likely to be better.[133X
   
   [33X[0;0YFor symmetric digraphs, see also [2XDigraphUndirectedGirth[102X ([14X5.3-7[114X).[133X
   
@@ -970,13 +972,13 @@
   [33X[0;0YIf [3Xdigraph[103X has no cycles, then this function will return [9Xinfinity[109X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2,4], [1,3], [2,4], [1,3]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 4], [1, 3], [2, 4], [1, 3]]);[127X[104X
     [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphUndirectedGirth(gr);[127X[104X
     [4X[28X4[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [1,3], [2]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [1, 3], [2]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphUndirectedGirth(gr);      [127X[104X
+    [4X[25Xgap>[125X [27XDigraphUndirectedGirth(gr);[127X[104X
     [4X[28Xinfinity[128X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[1], [], [4], [3]]);[127X[104X
     [4X[28X<digraph with 4 vertices, 3 edges>[128X[104X
@@ -996,7 +998,7 @@
   formally, two vertices are in the same weakly connected component of [3Xdigraph[103X
   if  and  only  if  they  are  in  the same strongly connected component (see
   [2XDigraphStronglyConnectedComponents[102X  ([14X5.3-10[114X)) of the [2XDigraphSymmetricClosure[102X
-  ([14X3.3-8[114X) of [3Xdigraph[103X.[133X
+  ([14X3.3-9[114X) of [3Xdigraph[103X.[133X
   
   [33X[0;0YThe  set  of weakly connected components is a partition of the vertex set of
   [3Xdigraph[103X.[133X
@@ -1010,17 +1012,15 @@
   number of edges and [22Xn[122X is the number of vertices in the digraph.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ "a", "b", "c" ],[127X[104X
-    [4X[25X>[125X [27X[ "a", "b", "b" ], [127X[104X
-    [4X[25X>[125X [27X[ "b", "c", "a" ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3, 1], []]);[127X[104X
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphConnectedComponents(gr);[127X[104X
     [4X[28Xrec( comps := [ [ 1, 2, 3 ] ], id := [ 1, 1, 1 ] )[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 1 ], [ 1, 2 ], [  ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1], [1, 2], []]);[127X[104X
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphConnectedComponents(gr);[127X[104X
     [4X[28Xrec( comps := [ [ 1, 2 ], [ 3 ] ], id := [ 1, 1, 2 ] )[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := EmptyDigraph(0);[127X[104X
     [4X[28X<digraph with 0 vertices, 0 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphConnectedComponents(gr);[127X[104X
     [4X[28Xrec( comps := [  ], id := [  ] )[128X[104X
@@ -1068,9 +1068,7 @@
   digraph.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ "a", "b", "c" ],[127X[104X
-    [4X[25X>[125X [27X[ "a", "b", "b" ],[127X[104X
-    [4X[25X>[125X [27X[ "b", "c", "a" ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3, 1], []]);[127X[104X
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphStronglyConnectedComponents(gr);[127X[104X
     [4X[28Xrec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )[128X[104X
@@ -1112,15 +1110,15 @@
   ([14X6.3-4[114X).[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);[127X[104X
     [4X[28X<multidigraph with 6 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphPeriod(gr);[127X[104X
     [4X[28X6[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);[127X[104X
     [4X[28X<digraph with 5 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphPeriod(gr);[127X[104X
     [4X[28X1[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph( [ [ 2 ], [ ] ] );[127X[104X
+    [4X[25Xgap>[125X [27Xgr := ChainDigraph(2);[127X[104X
     [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
     [4X[25Xgap>[125X [27XDigraphPeriod(gr);[127X[104X
     [4X[28X0[128X[104X
@@ -1164,8 +1162,7 @@
   the vertices of a digraph is shown below:[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[5], [3, 6], [2, 5], [1, 4, 5],[127X[104X
-    [4X[25X>[125X [27X[4, 6], [5, 6]]);[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphFromDigraph6String("+ECGOElR");[127X[104X
     [4X[28X<digraph with 6 vertices, 12 edges>[128X[104X
     [4X[25Xgap>[125X [27Xfunc := function(mat, i, j, k)[127X[104X
     [4X[25X>[125X [27X  if mat[i][k] <> -1 and mat[k][j] <> -1 then[127X[104X

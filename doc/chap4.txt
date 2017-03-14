@@ -30,12 +30,17 @@
   [29X[2XIsSubdigraph[102X( [3Xsuper[103X, [3Xsub[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
-  [33X[0;0YIf  [3Xsuper[103X  and  [3Xsub[103X are digraphs with the same number of vertices, then this
-  operation returns [9Xtrue[109X if all the edges of [3Xsub[103X are edges in [3Xsuper[103X, and [9Xfalse[109X
-  otherwise.[133X
+  [33X[0;0YIf  [3Xsuper[103X and [3Xsub[103X are digraphs, then this operation returns [9Xtrue[109X if [3Xsub[103X is a
+  subdigraph of [3Xsuper[103X, and [9Xfalse[109X if it is not.[133X
   
-  [33X[0;0YIf  the  two  digraphs  have  different  numbers of vertices, this operation
-  returns [9Xfalse[109X.[133X
+  [33X[0;0YA  digraph [3Xsub[103X is a [13Xsubdigraph[113X of a digraph [3Xsuper[103X if [3Xsub[103X and [3Xsuper[103X share the
+  same  number  of  vertices,  and the collection of edges of [3Xsuper[103X (including
+  repeats) contains the collection of edges of [3Xsub[103X (including repeats).[133X
+  
+  [33X[0;0YIn   other   words,   [3Xsub[103X   is   a  subdigraph  of  [3Xsuper[103X  if  and  only  if
+  [10XDigraphNrVertices([3Xsub[103X[10X)  =  DigraphNrVertices([3Xsuper[103X[10X)[110X,  and  for  each pair of
+  vertices  [10Xi[110X  and  [10Xj[110X,  there are at least as many edges of the form [10X[i, j][110X in
+  [3Xsuper[103X as there are in [3Xsub[103X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xg := Digraph([[2, 3], [1], [2, 3]]);[127X[104X
@@ -46,5 +51,70 @@
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XIsSubdigraph(h, g);[127X[104X
     [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsSubdigraph(CompleteDigraph(4), CycleDigraph(4));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsSubdigraph(CycleDigraph(4), ChainDigraph(4));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[2, 2], [1]]);[127X[104X
+    [4X[28X<multidigraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xh := Digraph([[2], [1]]);[127X[104X
+    [4X[28X<digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSubdigraph(g, h);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsSubdigraph(h, g);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X4.1-2 IsUndirectedSpanningTree[101X
+  
+  [29X[2XIsUndirectedSpanningTree[102X( [3Xsuper[103X, [3Xsub[103X ) [32X operation
+  [29X[2XIsUndirectedSpanningForest[102X( [3Xsuper[103X, [3Xsub[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThe operation [10XIsUndirectedSpanningTree[110X returns [9Xtrue[109X if the digraph [3Xsub[103X is an
+  undirected   spanning   tree   of  the  digraph  [3Xsuper[103X,  and  the  operation
+  [10XIsUndirectedSpanningForest[110X  returns [9Xtrue[109X if the digraph [3Xsub[103X is an undirected
+  spanning forest of the digraph [3Xsuper[103X.[133X
+  
+  [33X[0;0YAn [13Xundirected spanning tree[113X of a digraph [3Xsuper[103X is a subdigraph of [3Xsuper[103X that
+  is  an  undirected  tree  (see  [2XIsSubdigraph[102X  ([14X4.1-1[114X)  and  [2XIsUndirectedTree[102X
+  ([14X6.3-6[114X)).  Note  that  a digraph whose [2XMaximalSymmetricSubdigraph[102X ([14X3.3-4[114X) is
+  not  connected  has  no  undirected  spanning  trees (see [2XIsConnectedDigraph[102X
+  ([14X6.3-2[114X)).[133X
+  
+  [33X[0;0YAn  [13Xundirected  spanning  forest[113X of a digraph [3Xsuper[103X is a subdigraph of [3Xsuper[103X
+  that    is    an   undirected   forest   (see   [2XIsSubdigraph[102X   ([14X4.1-1[114X)   and
+  [2XIsUndirectedForest[102X  ([14X6.3-6[114X)),  and  is  not  contained  in  any  larger such
+  subdigraph  of  [3Xsuper[103X.  Equivalently,  an  undirected  spanning  forest is a
+  subdigraph  of  [3Xsuper[103X  whose connected components coincide with those of the
+  [2XMaximalSymmetricSubdigraph[102X  ([14X3.3-4[114X) of [3Xsuper[103X (see [2XDigraphConnectedComponents[102X
+  ([14X5.3-8[114X)).[133X
+  
+  [33X[0;0YNote  that an undirected spanning tree is an undirected spanning forest that
+  is connected.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(4);[127X[104X
+    [4X[28X<digraph with 4 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xtree := Digraph([[3], [4], [1, 4], [2, 3]]);[127X[104X
+    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSubdigraph(gr, tree) and IsUndirectedTree(tree);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedSpanningTree(gr, tree);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xforest := EmptyDigraph(4);[127X[104X
+    [4X[28X<digraph with 4 vertices, 0 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSubdigraph(gr, forest) and IsUndirectedForest(forest);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedSpanningForest(gr, forest);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsSubdigraph(tree, forest);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(2));[127X[104X
+    [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedTree(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedForest(gr) and IsUndirectedSpanningForest(gr, gr);[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   

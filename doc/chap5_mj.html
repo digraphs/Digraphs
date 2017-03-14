@@ -107,15 +107,15 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ "a", "b", "c" ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "a", "b", "b" ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "b", "c", "a" ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["a", "b", "b"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["b", "c", "a"]);</span>
 &lt;digraph with 3 vertices, 3 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertices(gr);</span>
 [ 1 .. 3 ]
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ 1, 2, 3, 4, 5, 7 ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 1, 2, 2, 4, 4 ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 2, 3, 5, 3, 5 ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([1, 2, 3, 4, 5, 7],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 [1, 2, 2, 4, 4],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 [2, 7, 5, 3, 7]);</span>
 &lt;digraph with 6 vertices, 5 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertices(gr);</span>
 [ 1 .. 6 ]
@@ -134,15 +134,15 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ "a", "b", "c" ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "a", "b", "b" ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "b", "c", "a" ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["a", "b", "b"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["b", "c", "a"]);</span>
 &lt;digraph with 3 vertices, 3 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphNrVertices(gr);</span>
 3
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ 1, 2, 3, 4, 5, 7 ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 1, 2, 2, 4, 4 ], </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 2, 3, 5, 3, 5 ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([1, 2, 3, 4, 5, 7],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 [1, 2, 2, 4, 4],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 [2, 7, 5, 3, 7]);</span>
 &lt;digraph with 6 vertices, 5 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphNrVertices(gr);</span>
 6
@@ -164,14 +164,13 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 3, 4, 3, 5], [1, 2, 3, 5], [2, 4, 5], </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 4, 5], [1]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphFromDiSparse6String(".DaXbOe?EAM@G~");</span>
 &lt;multidigraph with 5 vertices, 16 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr);</span>
-[ [ 1, 1 ], [ 1, 3 ], [ 1, 4 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], 
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edges := ShallowCopy(DigraphEdges(gr));; Sort(edges);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edges;</span>
+[ [ 1, 1 ], [ 1, 3 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 2, 1 ], 
   [ 2, 2 ], [ 2, 3 ], [ 2, 5 ], [ 3, 2 ], [ 3, 4 ], [ 3, 5 ], 
-  [ 4, 2 ], [ 4, 4 ], [ 4, 5 ], [ 5, 1 ] ]
-</pre></div>
+  [ 4, 2 ], [ 4, 4 ], [ 4, 5 ], [ 5, 1 ] ]</pre></div>
 
 <p><a id="X85E1CFDD7E164AD0" name="X85E1CFDD7E164AD0"></a></p>
 
@@ -184,13 +183,13 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 4, 5], [1]]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], [2, 4, 5], [1]]);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphNrEdges(gr);</span>
 15
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">["a", "b", "b"],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">["b", "a", "a"]);</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["a", "b", "b"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["b", "a", "a"]);</span>
 &lt;multidigraph with 3 vertices, 3 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphNrEdges(gr);</span>
 3</pre></div>
@@ -206,7 +205,7 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 3, 5, 2, 2 ], [ 3 ], [  ], [ 5, 2, 5, 3 ], [  ] ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3, 5, 2, 2], [3], [], [5, 2, 5, 3], []]);</span>
 &lt;multidigraph with 5 vertices, 9 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphSinks(gr);</span>
 [ 3, 5 ]
@@ -223,7 +222,7 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 3, 5, 2, 2 ], [ 3 ], [  ], [ 5, 2, 5, 3 ], [  ] ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3, 5, 2, 2], [3], [], [5, 2, 5, 3], []]);</span>
 &lt;multidigraph with 5 vertices, 9 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphSources(gr);</span>
 [ 1, 4 ]
@@ -244,8 +243,8 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3], [], [4, 6], [5], [], [7, 8, 9], [],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[], []]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 3], [], [4, 6], [5], [], [7, 8, 9], [], [], []]);</span>
 &lt;digraph with 9 vertices, 8 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphTopologicalSort(gr);</span>
 [ 2, 5, 4, 7, 8, 9, 6, 3, 1 ]
@@ -295,7 +294,7 @@ fail
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphFromDigraph6String("+D[NGc_");</span>
 &lt;digraph with 5 vertices, 11 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabel(gr, 3);</span>
 3
@@ -327,7 +326,7 @@ fail
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphFromDigraph6String("+D[NGc_");</span>
 &lt;digraph with 5 vertices, 11 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexLabels(gr);</span>
 [ 1 .. 5 ]
@@ -357,7 +356,7 @@ fail
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphFromDigraph6String("+D[NGc_");</span>
 &lt;digraph with 5 vertices, 11 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdgeLabel(gr, 3, 1);</span>
 1
@@ -384,7 +383,7 @@ fail
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphFromDigraph6String("+D[NGc_");</span>
 &lt;digraph with 5 vertices, 11 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdgeLabels(gr);</span>
 [ [ 1 ], [ 1, 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
@@ -447,7 +446,7 @@ fail
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(6, [1, 1, 2, 4, 6], [2, 2, 6, 3, 1]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2], [6], [], [3], [], [1]]);</span>
 &lt;multidigraph with 6 vertices, 5 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEdge(gr, [1, 1]);</span>
 false
@@ -475,9 +474,10 @@ false
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2, 2], [1, 3, 6, 8, 9, 10], [4, 6, 8],</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 2, 2], [1, 3, 6, 8, 9, 10], [4, 6, 8],</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 9], [3, 3], [3, 5, 6, 10], [1, 2, 7],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 10, 5, 6, 10], [1, 3, 4, 5, 8, 10], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 10, 5, 6, 10], [1, 3, 4, 5, 8, 10],</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 3, 4, 6, 7, 10]]);</span>
 &lt;multidigraph with 10 vertices, 44 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">mat := AdjacencyMatrix(gr);;</span>
@@ -510,13 +510,17 @@ false
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3, 4], [2, 3], [1, 2, 4], [4]]);</span>
 &lt;digraph with 4 vertices, 8 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">BooleanAdjacencyMatrix(gr);</span>
-[ [ false, false, true, true ], [ false, true, true, false ], 
-  [ true, true, false, true ], [ false, false, false, true ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PrintArray(BooleanAdjacencyMatrix(gr));</span>
+[ [  false,  false,   true,   true ],
+  [  false,   true,   true,  false ],
+  [   true,   true,  false,   true ],
+  [  false,  false,  false,   true ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(4);;</span>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">BooleanAdjacencyMatrix(gr);</span>
-[ [ false, true, false, false ], [ false, false, true, false ], 
-  [ false, false, false, true ], [ true, false, false, false ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PrintArray(BooleanAdjacencyMatrix(gr));</span>
+[ [  false,   true,  false,  false ],
+  [  false,  false,   true,  false ],
+  [  false,  false,  false,   true ],
+  [   true,  false,  false,  false ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">BooleanAdjacencyMatrix(EmptyDigraph(0));</span>
 [  ]</pre></div>
 
@@ -568,15 +572,15 @@ false</pre></div>
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 2, 3, 5], [1, 3, 4], [2, 3], </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2], [1, 2, 3, 4]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 1, 3, 5], [1, 3, 4], [2, 3], [2], [1, 2, 3, 4]]);</span>
 &lt;digraph with 5 vertices, 14 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphRange(gr);</span>
-[ 1, 2, 3, 5, 1, 3, 4, 2, 3, 2, 1, 2, 3, 4 ]
+[ 2, 1, 3, 5, 1, 3, 4, 2, 3, 2, 1, 2, 3, 4 ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphSource(gr);</span>
 [ 1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 5, 5, 5 ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr);</span>
-[ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], 
+[ [ 1, 2 ], [ 1, 1 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], 
   [ 2, 4 ], [ 3, 2 ], [ 3, 3 ], [ 4, 2 ], [ 5, 1 ], [ 5, 2 ], 
   [ 5, 3 ], [ 5, 4 ] ]
 </pre></div>
@@ -598,25 +602,24 @@ false</pre></div>
 
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">["a", "b", "b"],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">["b", "a", "c"]);</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["a", "b", "b"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["b", "a", "c"]);</span>
 &lt;digraph with 3 vertices, 3 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
 [ [ 2 ], [ 1, 3 ], [  ] ]
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(3, </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 1, 1, 2],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 2, 3, 1]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 2, 3], [2, 1], [3]]);</span>
 &lt;digraph with 3 vertices, 6 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
 [ [ 1, 2, 3 ], [ 2, 1 ], [ 3 ] ]
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(3,</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 1, 1, 2, 1],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 2, 3, 1, 2]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphByAdjacencyMatrix([</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput"> [1, 2, 1],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput"> [1, 1, 0],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput"> [0, 0, 1]]);</span>
 &lt;multidigraph with 3 vertices, 7 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
-[ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ]
+[ [ 1, 2, 2, 3 ], [ 1, 2 ], [ 3 ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighboursMutableCopy(gr);</span>
-[ [ 1, 2, 3, 2 ], [ 2, 1 ], [ 3 ] ]
+[ [ 1, 2, 2, 3 ], [ 1, 2 ], [ 3 ] ]
 </pre></div>
 
 <p><a id="X85C7AA5A81DA6E11" name="X85C7AA5A81DA6E11"></a></p>
@@ -638,20 +641,19 @@ false</pre></div>
 
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(["a", "b", "c"],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">["a", "b", "b"],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">["b", "a", "c"]);</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["a", "b", "b"],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 ["b", "a", "c"]);</span>
 &lt;digraph with 3 vertices, 3 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InNeighbours(gr);</span>
 [ [ 2 ], [ 1 ], [ 2 ] ]
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(3, </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 1, 1, 2],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 2, 3, 1]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 2, 3], [2, 1], [3]]);</span>
 &lt;digraph with 3 vertices, 6 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InNeighbours(gr);</span>
 [ [ 1, 2 ], [ 1, 2 ], [ 1, 3 ] ]
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(3,</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 1, 1, 2, 1],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 2, 3, 2, 3, 1, 2]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphByAdjacencyMatrix([</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput"> [1, 2, 1],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput"> [1, 1, 0],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput"> [0, 0, 1]]);</span>
 &lt;multidigraph with 3 vertices, 7 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InNeighbours(gr);</span>
 [ [ 1, 2 ], [ 1, 1, 2 ], [ 1, 3 ] ]
@@ -703,7 +705,7 @@ false</pre></div>
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 1, 3, 2, 2, 4 ], [ ], [ 2, 1, 4 ], [ ] ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 3, 2, 2, 4], [], [2, 1, 4], []]);</span>
 &lt;multidigraph with 4 vertices, 8 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InDegrees(gr);</span>
 [ 2, 3, 1, 2 ]
@@ -724,8 +726,8 @@ false</pre></div>
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2, 1], [1, 4], [2, 2, 4, 2], </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 1, 2, 2, 1, 2, 2]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 2, 1], [1, 4], [2, 2, 4, 2], [1, 1, 2, 2, 1, 2, 2]]);</span>
 &lt;multidigraph with 4 vertices, 16 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutDegreeOfVertex(gr, 1);</span>
 3
@@ -749,8 +751,8 @@ false</pre></div>
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2, 3], [1, 3, 4], [2, 2, 3], </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 1, 2, 2, 1, 2, 2]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 2, 3], [1, 3, 4], [2, 2, 3], [1, 1, 2, 2, 1, 2, 2]]);</span>
 &lt;multidigraph with 4 vertices, 16 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighboursOfVertex(gr, 1);</span>
 [ 2, 2, 3 ]
@@ -769,8 +771,8 @@ false</pre></div>
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2, 1], [1, 4], [2, 2, 4, 2], </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 1, 2, 2, 1, 2, 2]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 2, 1], [1, 4], [2, 2, 4, 2], [1, 1, 2, 2, 1, 2, 2]]);</span>
 &lt;multidigraph with 4 vertices, 16 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InDegreeOfVertex(gr, 1);</span>
 5
@@ -794,8 +796,8 @@ false</pre></div>
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 2, 3], [1, 3, 4], [2, 2, 3], </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[1, 1, 2, 2, 1, 2, 2]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[2, 2, 3], [1, 3, 4], [2, 2, 3], [1, 1, 2, 2, 1, 2, 2]]);</span>
 &lt;multidigraph with 4 vertices, 16 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">InNeighboursOfVertex(gr, 1);</span>
 [ 2, 4, 4, 4 ]
@@ -844,12 +846,11 @@ false
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [ 3 ], [ 4, 5 ], [ 5 ], </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ 1, 2, 3, 4, 5 ] ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3], [4, 5], [5], [1, 2, 3, 4, 5]]);</span>
 &lt;digraph with 5 vertices, 10 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDiameter(gr);</span>
 3
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [  ] ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(2);</span>
 &lt;digraph with 2 vertices, 1 edge&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDiameter(gr);</span>
 fail
@@ -905,10 +906,10 @@ fail
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 1, 2 ], [ 3 ], [ 1, 2 ], [ 4 ] ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 2], [3], [1, 2], [4]]);</span>
 &lt;digraph with 4 vertices, 6 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">mat := DigraphShortestDistances(gr);;</span>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Display(mat);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PrintArray(mat);</span>
 [ [     0,     1,     2,  fail ],
   [     2,     0,     1,  fail ],
   [     1,     1,     0,  fail ],
@@ -926,7 +927,7 @@ fail
 
 
 <ul>
-<li><p>If there exists a directed walk starting at vertex <var class="Arg">v</var> which traverses a loop or a directed cycle, then we consider there to be a walk of infinite length from <var class="Arg">v</var> (realised by repeatedly traversing the loop/directed cycle), and so the result is <code class="keyw">infinity</code>. To disallow walks using loops, try using <code class="func">DigraphRemoveLoops</code> (<a href="chap3_mj.html#X79324AF7818C0C02"><span class="RefLink">3.3-21</span></a>):</p>
+<li><p>If there exists a directed walk starting at vertex <var class="Arg">v</var> which traverses a loop or a directed cycle, then we consider there to be a walk of infinite length from <var class="Arg">v</var> (realised by repeatedly traversing the loop/directed cycle), and so the result is <code class="keyw">infinity</code>. To disallow walks using loops, try using <code class="func">DigraphRemoveLoops</code> (<a href="chap3_mj.html#X79324AF7818C0C02"><span class="RefLink">3.3-22</span></a>):</p>
 
 <p><code class="code">DigraphLongestDistanceFromVertex(DigraphRemoveLoops(<var class="Arg">digraph</var>,<var class="Arg">v</var>))</code>.</p>
 
@@ -986,7 +987,7 @@ infinity
 
 <p>If <var class="Arg">digraph</var> has no directed cycles, then this function will return <code class="keyw">infinity</code>. If <var class="Arg">digraph</var> contains a loop, then this function will return <code class="code">1</code>.</p>
 
-<p>In the worst case, the method used in this function is a version of the Floyd-Warshall algorithm, and has complexity <code class="code">O(<var class="Arg">n</var> ^ 3)</code>, where <var class="Arg">n</var> is the number of vertices in <var class="Arg">digraph</var>. If the digraph has known automorphisms [see <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-3</span></a>)], then the performance is likely to be better.</p>
+<p>In the worst case, the method used in this function is a version of the Floyd-Warshall algorithm, and has complexity <code class="code">O(<var class="Arg">n</var> ^ 3)</code>, where <var class="Arg">n</var> is the number of vertices in <var class="Arg">digraph</var>. If the digraph has known automorphisms [see <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-5</span></a>)], then the performance is likely to be better.</p>
 
 <p>For symmetric digraphs, see also <code class="func">DigraphUndirectedGirth</code> (<a href="chap5_mj.html#X84688B337BDDBB09"><span class="RefLink">5.3-7</span></a>).</p>
 
@@ -1021,13 +1022,13 @@ infinity
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2,4], [1,3], [2,4], [1,3]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 4], [1, 3], [2, 4], [1, 3]]);</span>
 &lt;digraph with 4 vertices, 8 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphUndirectedGirth(gr);</span>
 4
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [1,3], [2]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [1, 3], [2]]);</span>
 &lt;digraph with 3 vertices, 4 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphUndirectedGirth(gr);      </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphUndirectedGirth(gr);</span>
 infinity
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1], [], [4], [3]]);</span>
 &lt;digraph with 4 vertices, 3 edges&gt;
@@ -1042,7 +1043,7 @@ infinity
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphConnectedComponents</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
 <p>Returns: A record.</p>
 
-<p>This function returns the record <code class="code">wcc</code> corresponding to the weakly connected components of the digraph <var class="Arg">digraph</var>. Two vertices of <var class="Arg">digraph</var> are in the same weakly connected component whenever they are equal, or there exists a directed path (ignoring the orientation of edges) between them. More formally, two vertices are in the same weakly connected component of <var class="Arg">digraph</var> if and only if they are in the same strongly connected component (see <code class="func">DigraphStronglyConnectedComponents</code> (<a href="chap5_mj.html#X833ECD6B7A84944C"><span class="RefLink">5.3-10</span></a>)) of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3_mj.html#X874883DD7DD450C4"><span class="RefLink">3.3-8</span></a>) of <var class="Arg">digraph</var>.</p>
+<p>This function returns the record <code class="code">wcc</code> corresponding to the weakly connected components of the digraph <var class="Arg">digraph</var>. Two vertices of <var class="Arg">digraph</var> are in the same weakly connected component whenever they are equal, or there exists a directed path (ignoring the orientation of edges) between them. More formally, two vertices are in the same weakly connected component of <var class="Arg">digraph</var> if and only if they are in the same strongly connected component (see <code class="func">DigraphStronglyConnectedComponents</code> (<a href="chap5_mj.html#X833ECD6B7A84944C"><span class="RefLink">5.3-10</span></a>)) of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3_mj.html#X874883DD7DD450C4"><span class="RefLink">3.3-9</span></a>) of <var class="Arg">digraph</var>.</p>
 
 <p>The set of weakly connected components is a partition of the vertex set of <var class="Arg">digraph</var>.</p>
 
@@ -1052,17 +1053,15 @@ infinity
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ "a", "b", "c" ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "a", "b", "b" ], </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "b", "c", "a" ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3, 1], []]);</span>
 &lt;digraph with 3 vertices, 3 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphConnectedComponents(gr);</span>
 rec( comps := [ [ 1, 2, 3 ] ], id := [ 1, 1, 1 ] )
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 1 ], [ 1, 2 ], [  ] ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1], [1, 2], []]);</span>
 &lt;digraph with 3 vertices, 3 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphConnectedComponents(gr);</span>
 rec( comps := [ [ 1, 2 ], [ 3 ] ], id := [ 1, 1, 2 ] )
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := EmptyDigraph(0);</span>
 &lt;digraph with 0 vertices, 0 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphConnectedComponents(gr);</span>
 rec( comps := [  ], id := [  ] )
@@ -1104,9 +1103,7 @@ rec( comps := [  ], id := [  ] )
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ "a", "b", "c" ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "a", "b", "b" ],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[ "b", "c", "a" ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3, 1], []]);</span>
 &lt;digraph with 3 vertices, 3 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphStronglyConnectedComponents(gr);</span>
 rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
@@ -1148,15 +1145,15 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 6 ], [ 1 ], [ 2 ], [ 3 ], [ 4, 4 ], [ 5 ] ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);</span>
 &lt;multidigraph with 6 vertices, 7 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphPeriod(gr);</span>
 6
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [ 3, 5 ], [ 4 ], [ 5 ], [ 1, 2 ] ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);</span>
 &lt;digraph with 5 vertices, 7 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphPeriod(gr);</span>
 1
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph( [ [ 2 ], [ ] ] );</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(2);</span>
 &lt;digraph with 2 vertices, 1 edge&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphPeriod(gr);</span>
 0
@@ -1192,8 +1189,7 @@ od;
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[5], [3, 6], [2, 5], [1, 4, 5],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">[4, 6], [5, 6]]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphFromDigraph6String("+ECGOElR");</span>
 &lt;digraph with 6 vertices, 12 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">func := function(mat, i, j, k)</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">  if mat[i][k] &lt;&gt; -1 and mat[k][j] &lt;&gt; -1 then</span>
