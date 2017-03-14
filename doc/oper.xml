@@ -73,7 +73,7 @@ false]]></Example>
 
     An <E>undirected spanning forest</E> of a digraph <A>super</A> is a
     subdigraph of <A>super</A> that is an undirected forest (see <Ref
-      Oper="IsSubdigraph"/> and <Ref Oper="IsUndirectedForest"/>), and is not
+      Oper="IsSubdigraph"/> and <Ref Prop="IsUndirectedForest"/>), and is not
     contained in any larger such subdigraph of <A>super</A>.  Equivalently, an
     undirected spanning forest is a subdigraph of <A>super</A> whose connected
     components coincide with those of the <Ref
