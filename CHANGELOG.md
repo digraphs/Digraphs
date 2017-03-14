@@ -4,6 +4,36 @@ Mitchell, Markus Pfeiffer, Finn Smith, Michael Torpey & Wilf A. Wilson
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.7.0 (released 14/03/2017)
+This release introduces several new features, changes some existing
+functionality, and improves the documentation. The changes in this release were
+made by [Wilf A. Wilson](https://wilf.me).
+
+### New Features in Version 0.7.0
+* This release contains a new technique for encoding a vertex-coloured
+  *multidigraph* as a vertex-coloured (undirected) graph while preserving the
+  automorphism group, in order to calculate the automorphism group and canonical
+  labelling using bliss. This enables the following functionality:
+  * the operations `AutomorphismGroup` and `DigraphCanonicalLabelling` for a
+    digraph and a vertex-colouring now accept a multidigraph as their first
+    argument;
+  * the operations `IsIsomorphicDigraph` and `IsomorphismDigraphs` now accept
+    multidigraphs, and they also accept vertex-colourings as optional arguments.
+  
+* This release add new functionality related to undirected spanning trees and
+  undirected spanning forests:
+  * the property `IsUndirectedForest` is introduced;
+  * the attributes `UndirectedSpanningTree` and `UndirectedSpanningForest` are
+    introduced; and
+  * the operations `IsUndirectedSpanningTree` and `IsUndirectedSpanningForest`
+    are introduced.
+
+### Altered Behaviour in Version 0.7.0
+* The behaviour of `IsSubdigraph` is changed in the case that it is given one or
+  two multidigraphs.
+* The one-argument version of the operation `DigraphColouring` (and its synonym,
+  `DigraphColoring`) is now an attribute.
+
 ## Version 0.6.1 (released 01/03/2017)
 This is a minor release. This release fixes a bug in `AsDigraph` for a
 transformation and an integer. The operations `OutNeighboursCopy` and
@@ -52,16 +82,16 @@ Minor changes include:
 
 * a better method for `DigraphReverse` [[Wilf A. Wilson](http://wilf.me)]
 * automorphism groups of complete, empty, cycle, chain, and complete bipartite
-digraphs are set at creation [Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25)
+digraphs are set at creation [[Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25)]
 * a minor improvement in performance in the `DigraphMaximalCliques` [[Wilf A. Wilson](http://wilf.me)]
 * a new operation `AdjacencyMatrixMutableCopy` [[James D. Mitchell](http://goo.gl/ZtViV6)]
 
-## Version 0.5 (released 03/03/2016)
+## Version 0.5.0 (released 03/03/2016)
 This release contains some bugfixes, as well as new and changed functionality.
 Digraphs now requires the [Orb package](http://gap-packages.github.io/orb/),
 version 4.7.5 or higher.
 
-### New Features in Version 0.5
+### New Features in Version 0.5.0
 * `DigraphFile` and `IteratorFromDigraphFile` are introduced. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * `WriteDigraphs` and `ReadDigraphs` can now take a file as a first argument. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * The operation `DigraphPath` is introduced to find a path between two vertices
@@ -70,7 +100,7 @@ version 4.7.5 or higher.
   between two vertices in a digraph. [[Wilf A. Wilson](http://wilf.me)]
 * The property `IsCompleteBipartiteDigraph` is introduced. [[Wilf A. Wilson](http://wilf.me)]
 
-### Issues Resolved in Version 0.5
+### Issues Resolved in Version 0.5.0
 Several bugs related to clique finding have been resolved. [[Wilf
 Wilson](http://wilf.me)]
 
@@ -90,12 +120,12 @@ return all simple circuits in some cases [Issue 13](https://bitbucket.org/james-
 ## Version 0.4.1 (released 22/01/2016)
 This is a very minor release to change the version of GAP required.
 
-## Version 0.4 (released 19/01/2016)
+## Version 0.4.0 (released 19/01/2016)
 This is a major release, primarily aimed at incorporating more of the
 functionality of Grape into Digraphs, as well as fixing some bugs.  In this
 version, we welcomed Jan De Beule to the development team.
 
-### New Features in Version 0.4
+### New Features in Version 0.4.0
 * Functionality to calculate cliques and independent sets
 * New methods for the constructor function `Digraph`
 * `ReadDigraphs` and `WriteDigraphs` now have a new output format `.p` or
@@ -159,10 +189,10 @@ This is another minor release due to some missing build files in the Version
 ## Version 0.3.1 (released 13/01/2016)
 This is a minor release due to some missing build files in the Version 0.3 archive.
 
-## Version 0.3 (released 12/01/2016)
+## Version 0.3.0 (released 12/01/2016)
 This release contains a number of bugfixes and performance improvements.
 
-### New Features in Version 0.3
+### New Features in Version 0.3.0
 * The attribute `DigraphAllSimpleCircuits` based
 on the algorithm in [this paper](http://epubs.siam.org/doi/abs/10.1137/0204007?journalCode=smjcat) by Donald B. Johnson. [Stuart Burrell and [Wilf A. Wilson](http://wilf.me)]
 * Improve efficiency of the algorithm for coloring a graph with 2 colours, a method for `IsBipartiteDigraph` and `DigraphBicomponents`. [Isabella Scott and [Wilf A. Wilson](http://wilf.me)]
@@ -171,13 +201,13 @@ on the algorithm in [this paper](http://epubs.siam.org/doi/abs/10.1137/0204007?j
 * `AsTransformation` is introduced for digraphs in `IsFunctionalDigraph`. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * The tests and their code coverage were improved.
 
-### Issues Resolved in Version 0.3
+### Issues Resolved in Version 0.3.0
 * There was a memory leak in bliss-0.73, which is fixed in the copy of bliss included with Digraphs, but not in the official release of bliss. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * Some bits of code that caused compiler warnings were improved. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * Some memory leaks were resolved in the Digraphs kernel module. [[Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25)]
 
-## Version 0.2 (released 04/09/2015)
+## Version 0.2.0 (released 04/09/2015)
 The first release.
 
-## Version 0.1
+## Version 0.1.0
 Pre-release version that was not made publicly available.
