@@ -158,8 +158,8 @@ function(digraph)
   len := 1;
   for i in [1 .. Length(niv)] do
     if niv[i] then
-        map[i] := len;
-        len := len + 1;
+      map[i] := len;
+      len := len + 1;
     fi;
   od;
 

@@ -34,7 +34,8 @@ ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(
     Type := "git",
-    URL := Concatenation( "https://github.com/gap-packages/", ~.PackageName ),
+    URL := Concatenation("https://github.com/gap-packages/",
+                         ~.PackageName),
 ),
 
 Persons := [
@@ -53,8 +54,7 @@ Persons := [
                      " B - 1050 Brussels, ",
                      " Belgium"]),
     Place         := "Brussels",
-    Institution   := "Vrije Universiteit Brussel"
-  ),
+    Institution   := "Vrije Universiteit Brussel"),
 
   rec(
     LastName      := "Elliott",
@@ -62,13 +62,12 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "le27@st-andrews.ac.uk",
-    PostalAddress := Concatenation( [
+    PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
-                       " Scotland"] ),
+                       " Scotland"]),
     Place         := "St Andrews",
-    Institution   := "University of St Andrews"
-  ),
+    Institution   := "University of St Andrews"),
 
   rec(
     LastName      := "Jonusas",
@@ -77,13 +76,12 @@ Persons := [
     IsMaintainer  := false,
     Email         := "jj252@st-andrews.ac.uk",
     WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~julius/",
-    PostalAddress := Concatenation( [
+    PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
-                       " Scotland"] ),
+                       " Scotland"]),
     Place         := "St Andrews",
-    Institution   := "University of St Andrews"
-  ),
+    Institution   := "University of St Andrews"),
 
   rec(
     LastName      := "Mitchell",
@@ -92,13 +90,12 @@ Persons := [
     IsMaintainer  := true,
     Email         := "jdm3@st-andrews.ac.uk",
     WWWHome       := "http://goo.gl/ZtViV6",
-    PostalAddress := Concatenation( [
+    PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
-                       " Scotland"] ),
+                       " Scotland"]),
     Place         := "St Andrews",
-    Institution   := "University of St Andrews"
-  ),
+    Institution   := "University of St Andrews"),
 
   rec(
     LastName      := "Pfeiffer",
@@ -107,27 +104,25 @@ Persons := [
     IsMaintainer  := false,
     Email         := "markus.pfeiffer@morphism.de",
     WWWHome       := "http://www.morphism.de/~markusp/",
-    PostalAddress := Concatenation( [
+    PostalAddress := Concatenation([
                        "School of Computer Science,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SX,",
-                       " Scotland"] ),
+                       " Scotland"]),
     Place         := "St Andrews",
-    Institution   := "University of St Andrews"
-  ),
-  
+    Institution   := "University of St Andrews"),
+
   rec(
     LastName      := "Smith",
     FirstNames    := "F.",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "fls3@st-andrews.ac.uk",
-    PostalAddress := Concatenation( [
+    PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
-                       " Scotland"] ),
+                       " Scotland"]),
     Place         := "St Andrews",
-    Institution   := "University of St Andrews"
-  ),
+    Institution   := "University of St Andrews"),
 
   rec(
     LastName      := "Torpey",
@@ -136,13 +131,12 @@ Persons := [
     IsMaintainer  := false,
     Email         := "mct25@st-andrews.ac.uk",
     WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~mct25/",
-    PostalAddress := Concatenation( [
+    PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
-                       " Scotland"] ),
+                       " Scotland"]),
     Place         := "St Andrews",
-    Institution   := "University of St Andrews"
-  ),
+    Institution   := "University of St Andrews"),
 
   rec(
     LastName      := "Wilson",
@@ -151,13 +145,12 @@ Persons := [
     IsMaintainer  := false,
     Email         := "waw7@st-andrews.ac.uk",
     WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~waw7/",
-    PostalAddress := Concatenation( [
+    PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
-                       " Scotland"] ),
+                       " Scotland"]),
     Place         := "St Andrews",
-    Institution   := "University of St Andrews"
-  )],
+    Institution   := "University of St Andrews")],
 
 Status := "deposited",
 
@@ -170,7 +163,8 @@ ArchiveURL      := Concatenation(~.SourceRepository.URL,
                                  "/releases/download/v", ~.Version,
                                  "/", "digraphs-", ~.Version),
 
-AbstractHTML := "The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.",
+AbstractHTML := """The <b>Digraphs</b> package is a <b>GAP</b> package for
+digraphs and multidigraphs.""",
 
 PackageDoc := rec(
   BookName  := "Digraphs",
@@ -189,17 +183,19 @@ Dependencies := rec(
   ExternalConditions := [],
 ),
 
-  AvailabilityTest := function()
-    if (not "digraphs" in SHOW_STAT()) and
-      (Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") = fail)
-     then
-      Info(InfoWarning, 1, "Digraphs: the kernel module is not compiled, ",
-           "the package cannot be loaded.");
-      return fail;
-    fi;
-    return true;
-  end,
-  Autoload := false,
-  TestFile := "tst/testinstall.tst",
-  Keywords := []
+AvailabilityTest := function()
+  local digraphs_so;
+  digraphs_so := Filename(DirectoriesPackagePrograms("digraphs"),
+                          "digraphs.so");
+  if (not "digraphs" in SHOW_STAT()) and digraphs_so = fail then
+    Info(InfoWarning, 1, "Digraphs: the kernel module is not compiled, ",
+         "the package cannot be loaded.");
+    return fail;
+  fi;
+  return true;
+end,
+
+Autoload := false,
+TestFile := "tst/testinstall.tst",
+Keywords := []
 ));
