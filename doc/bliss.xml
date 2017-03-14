@@ -2,6 +2,7 @@
 ##
 #W  bliss.xml
 #Y  Copyright (C) 2014-17                               James D. Mitchell
+##                                                         Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -11,83 +12,59 @@
 <#GAPDoc Label="AutomorphismGroupDigraph">
 <ManSection>
   <Attr Name="AutomorphismGroup" Label="for a digraph" Arg="digraph"/>
-  <Oper Name="AutomorphismGroup" Label="for a digraph and a homogeneous list"
-    Arg="digraph, colors"/>
   <Returns>A permutation group.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph without multiple edges, then this function
-    returns the automorphism group of <A>digraph</A>, as a group of
-    permutations on the vertices of <A>digraph</A>. <P/>
+    If <A>digraph</A> is a digraph, then this attribute contains the group of
+    automorphisms of <A>digraph</A>.  An <E>automorphism</E> of <A>digraph</A>
+    is an isomorphism from <A>digraph</A> to itself. See <Ref
+      Oper="IsomorphismDigraphs" Label="for digraphs" /> for more information
+    about isomorphisms of digraphs. <P/>
 
-    If the <A>colors</A> argument is specified, then the group will consist of
-    only those automorphisms which respect the given colouring.  The colouring
-    <A>colors</A> can be in one of two forms: <P/>
+    The form in which the automorphism group is returned depends on whether
+    <A>digraph</A> has multiple edges; see <Ref Prop="IsMultiDigraph" />. <P/>
 
     <List>
+      <Mark>for a digraph without multiple edges</Mark>
       <Item>
-        A list of positive integers of size the number of vertices of
-        <A>digraph</A>, where <A>colors</A><C>[i]</C> is the colour of vertex
-        <C>i</C>.
+        If <A>digraph</A> has no multiple edges, then the automorphism group is
+        returned as a group of permutations on the vertices of <A>digraph</A>.
       </Item>
+      <Mark>for a multidigraph</Mark>
       <Item>
-        A list of lists, such that <A>colors</A><C>[i]</C> is a list of all
-        vertices with colour <C>i</C>.
+        If <A>digraph</A> is a multidigraph, then the automorphism group is
+        a group of permutations on the vertices and edges of <A>digraph</A>.
+        <P/>
+
+        For convenience, the group is returned as the direct product <C>G</C> of
+        the group of automorphisms of the vertices of <A>digraph</A> with the
+        stabiliser of the vertices in the automorphism group of the edges. These
+        two groups can be accessed using the operation <Ref Oper="Projection"
+          Label="for a domain and a positive integer" BookName="ref"/>, with the
+        second argument being <C>1</C> or <C>2</C>, respectively. <P/>
+
+        The permutations in the group <C>Projection(G, 1)</C> act on the
+        vertices of <A>digraph</A>, and the permutations in the group
+        <C>Projection(G, 2)</C> act on the indices of
+        <C>DigraphEdges(<A>digraph</A>)</C>.
       </Item>
     </List>
 
-    The automorphism group is found using <URL
-      Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
-    Tommi Junttila and Petteri Kaski.
+    The automorphism group is found using &bliss; by Tommi Junttila and Petteri
+    Kaski.
 
     <Example><![CDATA[
 gap> johnson := DigraphFromGraph6String("E}lw");
 <digraph with 6 vertices, 24 edges>
-gap> AutomorphismGroup(johnson);
+gap> G := AutomorphismGroup(johnson);
 Group([ (3,4), (2,3)(4,5), (1,2)(5,6) ])
-gap> Size(last);
-48
+gap> StructureDescription(G);
+"C2 x S4"
 gap> cycle := CycleDigraph(9);
 <digraph with 9 vertices, 9 edges>
-gap> a := AutomorphismGroup(cycle);;
-gap> StructureDescription(a);
+gap> G := AutomorphismGroup(cycle);
+Group([ (1,2,3,4,5,6,7,8,9) ])
+gap> StructureDescription(G);
 "C9"
-gap> a := AutomorphismGroup(cycle, [1, 2, 3, 1, 2, 3, 1, 2, 3]);;
-gap> StructureDescription(a);
-"C3"
-gap> a := AutomorphismGroup(cycle, [[1, 4, 7], [2, 5, 8], [3, 6, 9]]);;
-gap> StructureDescription(a);
-"C3"
-]]></Example>
-    </Description>
-  </ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="AutomorphismGroupMultiDigraph">
-  <ManSection>
-    <Attr Name="AutomorphismGroup" Label="for a multidigraph" Arg="digraph"/>
-    <Returns>A direct product of permutation groups.</Returns>
-    <Description>
-    If <A>digraph</A> is a multidigraph, then this function returns the
-    automorphism group of <A>digraph</A>, as a group of permutations on the
-    vertices and edges of <A>digraph</A>.<P/>
-
-    For convenience, the returned group is the direct product of the group of
-    automorphisms of the vertices of <A>digraph</A> with the stabiliser of the
-    vertices in the automorphism group of the edges. These two groups can be
-    accessed using the <Ref Oper="Projection"
-      Label="for a domain and a positive integer" BookName="ref"/> with second
-    argument <C>1</C> and <C>2</C>,
-    respectively.
-    <P/>
-
-    The permutations in the automorphism group of the edges act on the indices
-    of the edges of <A>digraph</A>.<P/>
-
-    The automorphism group is found using <URL
-      Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
-    Tommi Junttila and Petteri Kaski.
-
-    <Example><![CDATA[
 gap> gr := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
 <multidigraph with 3 vertices, 6 edges>
 gap> G := AutomorphismGroup(gr);
@@ -97,78 +74,324 @@ Group([ (1,2,3) ])
 gap> Range(Projection(G, 2));
 Group([ (5,6), (3,4), (1,2) ])
 gap> Size(G);
-24]]></Example>
-  </Description>
+24
+gap> gr := Digraph([[2], [3, 3], [3], [2]]);
+<multidigraph with 4 vertices, 5 edges>
+gap> G := AutomorphismGroup(gr);
+Group([ (1,2), (3,4) ])
+gap> P1 := Projection(G, 1); 
+1st projection of Group([ (1,2), (3,4) ])
+gap> P2 := Projection(G, 2);
+2nd projection of Group([ (1,2), (3,4) ])
+gap> DigraphVertices(gr);
+[ 1 .. 4 ]
+gap> Range(P1);
+Group([ (1,4) ])
+gap> DigraphEdges(gr);
+[ [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 3 ], [ 4, 2 ] ]
+gap> Range(P2);
+Group([ (2,3) ])]]></Example>
+    </Description>
   </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AutomorphismGroupDigraphColours">
+<ManSection>
+  <Oper Name="AutomorphismGroup" Label="for a digraph and a homogeneous list"
+    Arg="digraph, colours"/>
+  <Returns>A permutation group.</Returns>
+  <Description>
+
+    This operation computes the automorphism group of a coloured digraph.
+    A coloured digraph can be specified by its underlying digraph
+    <A>digraph</A> and its colouring <A>colours</A>. Let <C>n</C> be the
+    number of vertices of <A>digraph</A>. The colouring <A>colours</A> may
+    have one of the following two forms:
+
+    <List>
+      <Item>
+        a list of <C>n</C> integers, where <A>colours</A><C>[i]</C> is the
+        colour of vertex <C>i</C>, using the colours <C>[1 .. m]</C> for some
+        <C>m &lt;= n</C>; or
+      </Item>
+      <Item>
+        a list of non-empty disjoint lists whose union is
+        <C>DigraphVertices(<A>digraph</A>)</C>, such that
+        <A>colours</A><C>[i]</C> is the list of all vertices with colour
+        <C>i</C>.
+      </Item>
+    </List>
+
+    The <E>automorphism group</E> of a coloured digraph <A>digraph</A> with
+    colouring <A>colours</A> is the group consisting of its automorphisms; an
+    <E>automorphism</E> of <A>digraph</A> is an isomorphism of coloured
+    digraphs from <A>digraph</A> to itself.  This group is equal to the
+    subgroup of <C>AutomorphismGroup(<A>digraph</A>)</C> consisting of those
+    automorphisms that preserve the colouring specified by <A>colours</A>. See
+    <Ref Attr="AutomorphismGroup" Label="for a digraph" />, and see <Ref
+      Oper="IsomorphismDigraphs" Label="for digraphs and homogeneous lists" />
+    for more information about isomorphisms of coloured digraphs. <P/>
+
+    The form in which the automorphism group is returned depends on whether
+    <A>digraph</A> has multiple edges; see <Ref Prop="IsMultiDigraph" />.
+
+    <List>
+      <Mark>for a digraph without multiple edges</Mark>
+      <Item>
+        If <A>digraph</A> has no multiple edges, then the automorphism group
+        is returned as a group of permutations on the vertices of
+        <A>digraph</A>.
+      </Item>
+      <Mark>for a multidigraph</Mark>
+      <Item>
+        If <A>digraph</A> is a multidigraph, then the automorphism group is
+        a group of permutations on the vertices and edges of <A>digraph</A>.
+        <P/>
+
+        For convenience, the group is returned as the direct product <C>G</C> of
+        the group of automorphisms of the vertices of <A>digraph</A> with the
+        stabiliser of the vertices in the automorphism group of the edges. These
+        two groups can be accessed using the operation <Ref Oper="Projection"
+          Label="for a domain and a positive integer" BookName="ref"/>, with the
+        second argument being <C>1</C> or <C>2</C>, respectively. <P/>
+
+        The permutations in the group <C>Projection(G, 1)</C> act on the
+        vertices of <A>digraph</A>, and the permutations in the group
+        <C>Projection(G, 2)</C> act on the indices of
+        <C>DigraphEdges(<A>digraph</A>)</C>.
+      </Item>
+    </List>
+
+    The automorphism group is found using &bliss; by Tommi Junttila and Petteri
+    Kaski.
+
+  <Example><![CDATA[
+gap> cycle := CycleDigraph(9);
+<digraph with 9 vertices, 9 edges>
+gap> G := AutomorphismGroup(cycle);;
+gap> StructureDescription(G);
+"C9"
+gap> colours := [[1, 4, 7], [2, 5, 8], [3, 6, 9]];;
+gap> H := AutomorphismGroup(cycle, colours);;
+gap> StructureDescription(H);
+"C3"
+gap> H = AutomorphismGroup(cycle, [1, 2, 3, 1, 2, 3, 1, 2, 3]);
+true
+gap> H = SubgroupByProperty(G, p -> OnTuplesSets(colours, p) = colours);
+true
+gap> IsTrivial(AutomorphismGroup(cycle, [1, 1, 2, 2, 2, 2, 2, 2, 2]));
+true
+gap> gr := Digraph([[2], [3, 3], [3], [2], [2]]);
+<multidigraph with 5 vertices, 6 edges>
+gap> G := AutomorphismGroup(gr, [1, 1, 2, 3, 1]);
+Group([ (1,2), (3,4) ])
+gap> P1 := Projection(G, 1); 
+1st projection of Group([ (1,2), (3,4) ])
+gap> P2 := Projection(G, 2);
+2nd projection of Group([ (1,2), (3,4) ])
+gap> DigraphVertices(gr);
+[ 1 .. 5 ]
+gap> Range(P1);
+Group([ (1,5) ])
+gap> DigraphEdges(gr);
+[ [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 3 ], [ 4, 2 ], [ 5, 2 ] ]
+gap> Range(P2);
+Group([ (2,3) ])]]></Example>
+  </Description>
+</ManSection>
 <#/GAPDoc>
 
 <#GAPDoc Label="DigraphCanonicalLabelling">
 <ManSection>
   <Attr Name="DigraphCanonicalLabelling" Label="for a digraph" Arg="digraph"/>
-  <Oper Name="DigraphCanonicalLabelling" Label="for a digraph and a list"
-    Arg="digraph, colors"/>
-  <Returns> A permutation.</Returns>
+  <Returns>A permutation, or a list of two permutations.</Returns>
   <Description>
-    A function <M>\rho</M> from a digraph to a digraph is a <E>canonical
-    representative map</E> if the following two conditions hold:
-    <List>
-      <Item>
-        <M>\rho(G)</M> and <M>G</M> are isomorphic; and
-      </Item>
-      <Item>
-        <M>\rho(G)=\rho(H)</M> if and only if <M>G</M> and <M>H</M> are isomorphic.
-      </Item>
-    </List>
-
-    A canonical labelling of a digraph <A>digraph</A> (under <M>\rho</M>) is
-    an isomorphism of <A>digraph</A> onto its canonical representative
-    <M>\rho(</M><A>digraph</A><M>)</M> given as a permutation of the vertices
-    (and the edges in case <A>digraph</A> has multiple edges). <P/>
-
-    If the <A>colors</A> argument is specified, then the canonical labelling
-    will respect the given colouring.  The colouring
-    <A>colors</A> can be in one of two forms: <P/>
+    A function <M>\rho</M> that maps a digraph to a digraph is a <E>canonical
+      representative map</E> if the following two conditions hold for all
+    digraphs <M>G</M> and <M>H</M>: <P/>
 
     <List>
       <Item>
-        A list of positive integers of size the number of vertices of
-        <A>digraph</A>, where <A>colors</A><C>[i]</C> is the colour of vertex
-        <C>i</C>.
+        <M>\rho(G)</M> and <M>G</M> are isomorphic as digraphs; and
       </Item>
       <Item>
-        A list of lists, such that <A>colors</A><C>[i]</C> is a list of all
-        vertices with colour <C>i</C>.
+        <M>\rho(G)=\rho(H)</M> if and only if <M>G</M> and <M>H</M> are
+        isomorphic as digraphs.
       </Item>
     </List>
 
-    The canonical labelling is found using <URL
-      Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
-    Tommi Junttila and Petteri Kaski.
+    A <E>canonical labelling</E> of a digraph <M>G</M> (under <M>\rho</M>) is an
+    isomorphism of <M>G</M> onto its <E>canonical representative</E>,
+    <M>\rho(G)</M>.  See <Ref Oper="IsomorphismDigraphs" Label="for digraphs" />
+    for more information about isomorphisms of digraphs. <P/>
+
+    The attribute <C>DigraphCanonicalLabelling</C> returns a canonical labelling
+    of the digraph <A>digraph</A>.  The form of the canonical labelling returned
+    by <C>DigraphCanonicalLabelling</C> depends on whether <A>digraph</A> has
+    multiple edges; see <Ref Prop="IsMultiDigraph" />. <P/>
+
+    <List>
+      <Mark>for a digraph without multiple edges</Mark>
+      <Item>
+        If the digraph <A>digraph</A> has no multiple edges, then the canonical
+        labelling of <A>digraph</A> is given as a permutation of its vertices.
+        The canonical representative of <A>digraph</A> can be created from
+        <A>digraph</A> and its canonical labelling <C>p</C> by using the
+        operation <Ref Oper="OnDigraphs" Label="for a digraph and a perm" />:
+        <Log>gap> OnDigraphs(digraph, p);</Log>
+      </Item>
+      <Mark>for a multidigraph</Mark>
+      <Item>
+        The canonical labelling of the multidigraph <A>digraph</A> is given as a
+        pair <C>P</C> of permutations. The first, <C>P[1]</C>, is a permutation
+        of the vertices of <A>digraph</A>. The second, <C>P[2]</C>, is a
+        permutation of the edges of <A>digraph</A>; it acts on the indices of
+        the list <C>DigraphEdges(<A>digraph</A>)</C>.  The canonical
+        representative of <A>digraph</A> can be created from <A>digraph</A> and
+        its canonical labelling <C>P</C> by using the operation <Ref
+          Oper="OnMultiDigraphs" />:
+        <Log>gap> OnMultiDigraphs(digraph, P);</Log>
+      </Item>
+    </List>
+
+    The canonical labelling is found using &bliss; by Tommi Junttila and Petteri
+    Kaski.
     <Example><![CDATA[
-gap> G := DigraphFromDiSparse6String(".ImNS_AiB?qRN");
+gap> digraph1 := DigraphFromDiSparse6String(".ImNS_AiB?qRN");
 <digraph with 10 vertices, 8 edges>
-gap> DigraphCanonicalLabelling(G);
+gap> DigraphCanonicalLabelling(digraph1);
 (1,3,4)(2,10,6,7,9,8)
-gap> DigraphCanonicalLabelling(G, [[1 .. 5], [6 .. 10]]);
-(1,4,3,5)(6,8)(7,9,10)
-gap> DigraphCanonicalLabelling(G, [1, 1, 1, 1, 2, 3, 1, 3, 2, 1]);
-(2,3,4,6,10,5,8,9,7)
 gap> p := (1, 2, 7, 5)(3, 9)(6, 10, 8);;
-gap> H := Digraph(
->  10,
->  OnTuples([1, 1, 3, 4, 4, 5, 8, 8], p),
->  OnTuples([6, 3, 3, 9, 10, 9, 4, 10], p)
-> );
+gap> digraph2 := OnDigraphs(digraph1, p);
 <digraph with 10 vertices, 8 edges>
-gap> G = H;
+gap> digraph1 = digraph2;
 false
-gap> OnDigraphs(G, DigraphCanonicalLabelling(G)) =
->    OnDigraphs(H, DigraphCanonicalLabelling(H));
+gap> OnDigraphs(digraph1, DigraphCanonicalLabelling(digraph1)) =
+>    OnDigraphs(digraph2, DigraphCanonicalLabelling(digraph2));
 true
 gap> gr := DigraphFromDiSparse6String(".ImEk|O@SK?od");
 <multidigraph with 10 vertices, 10 edges>
 gap> DigraphCanonicalLabelling(gr);
-[ (1,9,7,5)(2,10,3), (1,6,9)(2,5,10,4,8)(3,7) ]]]></Example>
+[ (1,9,7,5)(2,10,3), (1,6,9)(2,5,10,4,8)(3,7) ]
+gap> gr := Digraph([[2], [3, 3], [3], [2], [2]]);
+<multidigraph with 5 vertices, 6 edges>
+gap> DigraphCanonicalLabelling(gr, [1, 2, 2, 1, 3]);
+[ (1,2,4), (1,2,6,4,3,5) ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphCanonicalLabellingColours">
+<ManSection>
+  <Oper Name="DigraphCanonicalLabelling" Label="for a digraph and a list"
+    Arg="digraph, colours"/>
+  <Returns>A permutation.</Returns>
+  <Description>
+    A function <M>\rho</M> that maps a coloured digraph to a coloured digraph is
+    a <E>canonical representative map</E> if the following two conditions hold
+    for all coloured digraphs <M>G</M> and <M>H</M>:
+
+    <List>
+      <Item>
+        <M>\rho(G)</M> and <M>G</M> are isomorphic as coloured digraphs; and
+      </Item>
+      <Item>
+        <M>\rho(G)=\rho(H)</M> if and only if <M>G</M> and <M>H</M> are
+        isomorphic as coloured digraphs.
+      </Item>
+    </List>
+
+    A <E>canonical labelling</E> of a coloured digraph <M>G</M> (under
+    <M>\rho</M>) is an isomorphism of <M>G</M> onto its <E>canonical
+      representative</E>, <M>\rho(G)</M>.  See <Ref Oper="IsomorphismDigraphs"
+      Label="for digraphs and homogeneous lists" /> for more information about
+    isomorphisms of coloured digraphs. <P/>
+
+    A coloured digraph can be specified by its underlying digraph <A>digraph</A>
+    and its colouring <A>colours</A>.  Let <C>n</C> be the number of vertices of
+    <A>digraph</A>. The colouring <A>colours</A> may have one of the following
+    two forms: <P/>
+
+    <List>
+      <Item>
+        a list of <C>n</C> integers, where <A>colours</A><C>[i]</C> is the
+        colour of vertex <C>i</C>, using the colours <C>[1 .. m]</C> for some
+        <C>m &lt;= n</C>; or
+      </Item>
+      <Item>
+        a list of non-empty disjoint lists whose union is
+        <C>DigraphVertices(<A>digraph</A>)</C>, such that
+        <A>colours</A><C>[i]</C> is the list of all vertices with colour
+        <C>i</C>.
+      </Item>
+    </List>
+
+    If <A>digraph</A> and <A>colours</A> together form a coloured digraph, then
+    the operation <C>DigraphCanonicalLabelling</C> returns a canonical labelling
+    of the coloured digraph. The form of the canonical labelling returned
+    by <C>DigraphCanonicalLabelling</C> depends on whether <A>digraph</A> has
+    multiple edges; see <Ref Prop="IsMultiDigraph" />. <P/>
+
+    <List>
+      <Mark>for a digraph without multiple edges</Mark>
+      <Item>
+        If the digraph <A>digraph</A> has no multiple edges, then the canonical
+        labelling of <A>digraph</A> is given as a permutation of its vertices.
+        The canonical representative of <A>digraph</A> can be created from
+        <A>digraph</A> and its canonical labelling <C>p</C> by using the
+        operation <Ref Oper="OnDigraphs" Label="for a digraph and a perm" />:
+        <Log>gap> OnDigraphs(digraph, p);</Log>
+      </Item>
+      <Mark>for a multidigraph</Mark>
+      <Item>
+        The canonical labelling of the multidigraph <A>digraph</A> is given as a
+        pair <C>P</C> of permutations. The first, <C>P[1]</C>, is a permutation
+        of the vertices of <A>digraph</A>. The second, <C>P[2]</C>, is a
+        permutation of the edges of <A>digraph</A>; it acts on the indices of
+        the list <C>DigraphEdges(<A>digraph</A>)</C>.  The canonical
+        representative of <A>digraph</A> can be created from <A>digraph</A> and
+        its canonical labelling <C>P</C> by using the operation <Ref
+          Oper="OnMultiDigraphs" />:
+        <Log>gap> OnMultiDigraphs(digraph, P);</Log>
+      </Item>
+    </List>
+    
+    In either case, the colouring of the canonical representative can easily be
+    constructed. A vertex <C>v</C> (in <A>digraph</A>) has colour <C>i</C> if
+    and only if the vertex <C>v ^ p</C> (in the canonical representative) has
+    colour <C>i</C>, where <C>p</C> is the permutation of the canonical
+    labelling that acts on the vertices of <A>digraph</A>. In particular, if
+    <A>colours</A> has the first form that is described above, then the
+    colouring of the canonical representative is given by:
+
+    <Log>gap> List(DigraphVertices(digraph), i -> colours[i / p]);</Log>
+
+    On the other hand, if <A>colours</A> has the second form above, then the
+    canonical representative has colouring:
+
+    <Log>gap> OnTuplesSets(colours, p);</Log>
+
+    <P/>
+
+    The canonical labelling is found using &bliss; by Tommi Junttila and Petteri
+    Kaski.
+    <Example><![CDATA[
+gap> digraph := DigraphFromDiSparse6String(".ImNS_AiB?qRN");
+<digraph with 10 vertices, 8 edges>
+gap> colours := [[1, 2, 8, 9, 10], [3, 4, 5, 6, 7]];;
+gap> p := DigraphCanonicalLabelling(digraph, colours);
+(2,3,7,10)(4,6,9,5,8)
+gap> OnDigraphs(digraph, p);
+<digraph with 10 vertices, 8 edges>
+gap> OnTuplesSets(colours, p);
+[ [ 1, 2, 3, 4, 5 ], [ 6, 7, 8, 9, 10 ] ]
+gap> colours := [1, 1, 1, 1, 2, 3, 1, 3, 2, 1];;
+gap> p := DigraphCanonicalLabelling(digraph, colours);
+(2,3,4,6,10,5,8,9,7)
+gap> OnDigraphs(digraph, p);
+<digraph with 10 vertices, 8 edges>
+gap> List(DigraphVertices(digraph), i -> colours[i / p]);
+[ 1, 1, 1, 1, 1, 1, 2, 2, 3, 3 ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -178,12 +401,13 @@ gap> DigraphCanonicalLabelling(gr);
   <Oper Name="IsIsomorphicDigraph" Label="for digraphs" Arg="digraph1, digraph2"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This operation returns <K>true</K> if the digraph <A>digraph1</A> is
-    isomorphic to the digraph <A>digraph2</A>.<P/>
+    This operation returns <K>true</K> if there exists an isomorphism from the
+    digraph <A>digraph1</A> to the digraph <A>digraph2</A>.  See <Ref
+      Oper="IsomorphismDigraphs" Label="for digraphs" /> for more information
+    about isomorphisms of digraphs. <P/>
 
-    This operation uses the canonical labelling of the digraphs found with <URL
-      Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
-    Tommi Junttila and Petteri Kaski.
+    This operation uses the canonical labelling of the digraphs found with
+    &bliss; by Tommi Junttila and Petteri Kaski.
 
     <Example><![CDATA[
 gap> digraph1 := CycleDigraph(4);
@@ -212,38 +436,119 @@ true]]></Example>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsomorphismDigraphs">
+<#GAPDoc Label="IsIsomorphicDigraphColours">
 <ManSection>
-  <Oper Name="IsomorphismDigraphs" Label="for digraphs" Arg="digraph1, digraph2"/>
-  <Returns> A permutation or <K>fail</K>.</Returns>
+  <Oper Name="IsIsomorphicDigraph" Label="for digraphs and homogeneous lists"
+    Arg="digraph1, digraph2, colours1, colours2"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    If <A>digraph1</A> and <A>digraph2</A> are isomorphic digraphs, then this
-    operation returns an isomorphism from <A>digraph1</A> to <A>digraphs2</A>.
-
-    More precisely,
+    This operation tests for isomorphism of coloured digraphs.  A coloured
+    digraph can be specified by its underlying digraph <A>digraph1</A> and its
+    colouring <A>colours1</A>.  Let <C>n</C> be the number of vertices of
+    <A>digraph1</A>. The colouring <A>colours1</A> may have one of the following
+    two forms:
 
     <List>
-      <Mark>for multidigraphs</Mark>
       <Item>
-        this operation returns a pair of permutations <C>P</C> such that
-        <C>OnMultiDigraphs(<A>digraph1</A>, P) = digraph2</C>. The first
-        permutation is defined on the vertices of <A>digraph1</A> and the second
-        on the edges.
+        a list of <C>n</C> integers, where <A>colours</A><C>[i]</C> is the
+        colour of vertex <C>i</C>, using the colours <C>[1 .. m]</C> for some
+        <C>m &lt;= n</C>; or
       </Item>
-      <Mark>for digraphs without multiple edges</Mark>
       <Item>
-        this operation returns a permutation <C>p</C> such that
-        <C>OnDigraphs(<A>digraph1</A>, p) = digraph2</C>.
+        a list of non-empty disjoint lists whose union is
+        <C>DigraphVertices(<A>digraph</A>)</C>, such that
+        <A>colours</A><C>[i]</C> is the list of all vertices with colour
+        <C>i</C>.
       </Item>
     </List>
 
-    If <A>digraph1</A> and <A>digraph2</A> are not isomorphic, then <K>fail</K>
-    is returned.
+    If <A>digraph1</A> and <A>digraph2</A> are digraphs without multiple edges,
+    and <A>colours1</A> and <A>colours2</A> are colourings of <A>digraph1</A>
+    and <A>digraph2</A>, respectively, then this operation returns <K>true</K>
+    if there exists an isomorphism between these two coloured digraphs.  See
+    <Ref Oper="IsomorphismDigraphs" Label="for digraphs and homogeneous lists"
+      /> for more information about isomorphisms of coloured digraphs. <P/>
+
+    This operation uses the canonical labelling of the digraphs found with
+    &bliss; by Tommi Junttila and Petteri Kaski.
+
+    <Example><![CDATA[
+gap> digraph1 := ChainDigraph(4);
+<digraph with 4 vertices, 3 edges>
+gap> digraph2 := ChainDigraph(3);
+<digraph with 3 vertices, 2 edges>
+gap> IsIsomorphicDigraph(digraph1, digraph2,
+>  [[1, 4], [2, 3]], [[1, 2], [3]]);
+false
+gap> digraph2 := DigraphReverse(digraph1);
+<digraph with 4 vertices, 3 edges>
+gap> IsIsomorphicDigraph(digraph1, digraph2,
+>  [1, 1, 1, 1], [1, 1, 1, 1]);
+true
+gap> IsIsomorphicDigraph(digraph1, digraph2,
+>  [1, 2, 2, 1], [1, 2, 2, 1]);
+true
+gap> IsIsomorphicDigraph(digraph1, digraph2,
+>  [1, 1, 2, 2], [1, 1, 2, 2]);
+false
+gap> digraph1 := Digraph([[2, 1, 2], [1, 2, 1]]);
+<multidigraph with 2 vertices, 6 edges>
+gap> IsIsomorphicDigraph(digraph1, digraph1, [2, 1], [1, 2]);
+true
+gap> IsIsomorphicDigraph(digraph1, digraph1, [1, 1], [1, 2]);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsomorphismDigraphs">
+<ManSection>
+  <Oper Name="IsomorphismDigraphs" Label="for digraphs" Arg="digraph1, digraph2"/>
+  <Returns> A permutation, or a pair of permutations, or <K>fail</K>.</Returns>
+  <Description>
+    This operation returns an isomorphism between the digraphs <A>digraph1</A>
+    and <A>digraph2</A> if one exists, else this operation returns <K>fail</K>.
     <P/>
 
-    This operation uses the canonical labelling of the digraphs found with <URL
-    Text="bliss">http://www.tcs.tkk.fi/Software/bliss/index.html</URL> by
-    Tommi Junttila and Petteri Kaski.
+    <List>
+      <Mark>for digraphs without multiple edges</Mark>
+      <Item>
+        An <E>isomorphism</E> from a digraph <A>digraph1</A> to a digraph
+        <A>digraph2</A> is a bijection <C>p</C> from the vertices of
+        <A>digraph1</A> to the vertices of <A>digraph2</A> with the following
+        property: for all vertices <C>i</C> and <C>j</C> of <A>digraph1</A>,
+        <C>[i, j]</C> is an edge of <A>digraph1</A> if and only if <C>[i ^ p, j
+          ^ p]</C> is an edge of <A>digraph2</A>. <P/>
+
+        If there exists such an isomorphism, then this operation returns one.
+        The form of this isomorphism is a permutation <C>p</C> of the vertices of
+        <A>digraph1</A> such that <P/>
+
+        <C>OnDigraphs(<A>digraph1</A>, p) = digraph2</C>.
+      </Item>
+      <Mark>for multidigraphs</Mark>
+      <Item>
+        An <E>isomorphism</E> from a multidigraph <A>digraph1</A> to a
+        multidigraph <A>digraph2</A> is a bijection <C>P[1]</C> from the
+        vertices of <A>digraph1</A> to the vertices of <A>digraph2</A> and a
+        bijection <C>P[2]</C> from the indices of edges of <A>digraph1</A> to
+        the indices of edges of <A>digraph2</A> with the following property:
+        <C>[i, j]</C> is the <C>k</C>th edge of <A>digraph1</A> if and only if
+        <C>[i ^ P[1], j ^ P[1]]</C> is the <C>(k ^ P[2])</C>th edge of
+        <A>digraph2</A>. <P/>
+
+        If there exists such an isomorphism, then this operation returns one.
+        The form of this isomorphism is a pair of permutations <C>P</C> -– where
+        the first is a permutation of the vertices of <A>digraph1</A> and the
+        second is a permutation of the indices of
+        <C>DigraphEdges(<A>digraph1</A>)</C> –- such that <P/>
+
+        <C>OnMultiDigraphs(<A>digraph1</A>, P) = <A>digraph2</A></C>.
+      </Item>
+    </List>
+
+    This operation uses the canonical labelling of the digraphs found with
+    &bliss; by Tommi Junttila and Petteri Kaski.
 
     <Example><![CDATA[
 gap> digraph1 := CycleDigraph(4);
@@ -252,19 +557,19 @@ gap> digraph2 := CycleDigraph(5);
 <digraph with 5 vertices, 5 edges>
 gap> IsomorphismDigraphs(digraph1, digraph2);
 fail
-gap> gr1 := CompleteBipartiteDigraph(10, 5);
+gap> digraph1 := CompleteBipartiteDigraph(10, 5);
 <digraph with 15 vertices, 100 edges>
-gap> gr2 := CompleteBipartiteDigraph(5, 10);
+gap> digraph2 := CompleteBipartiteDigraph(5, 10);
 <digraph with 15 vertices, 100 edges>
-gap> p := IsomorphismDigraphs(gr1, gr2);
+gap> p := IsomorphismDigraphs(digraph1, digraph2);
 (1,6,11)(2,7,12)(3,8,13)(4,9,14)(5,10,15)
-gap> OnDigraphs(gr1, p) = gr2;
+gap> OnDigraphs(digraph1, p) = digraph2;
 true
-gap> gr1 := DigraphFromDiSparse6String(".ImNS_?DSE@ce[~");
+gap> digraph1 := DigraphFromDiSparse6String(".ImNS_?DSE@ce[~");
 <multidigraph with 10 vertices, 10 edges>
-gap> gr2 := DigraphFromDiSparse6String(".IkOlQefi_kgOf");
+gap> digraph2 := DigraphFromDiSparse6String(".IkOlQefi_kgOf");
 <multidigraph with 10 vertices, 10 edges>
-gap> IsomorphismDigraphs(gr1, gr2);
+gap> IsomorphismDigraphs(digraph1, digraph2);
 [ (1,9,5,3,10,6,4,7,2), (1,8,6,3,7)(2,9,4,10,5) ]
 gap> digraph1 := DigraphByEdges([[7, 10], [7, 10]], 10);
 <multidigraph with 10 vertices, 2 edges>
@@ -272,6 +577,90 @@ gap> digraph2 := DigraphByEdges([[2, 3], [2, 3]], 10);
 <multidigraph with 10 vertices, 2 edges>
 gap> IsomorphismDigraphs(digraph1, digraph2);
 [ (2,4,6,8,9,10,3,5,7), () ]]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsomorphismDigraphsColours">
+<ManSection>
+  <Oper Name="IsomorphismDigraphs" Label="for digraphs and homogeneous lists"
+    Arg="digraph1, digraph2, colours1, colours2"/>
+  <Returns> A permutation, or <K>fail</K>.</Returns>
+  <Description>
+    This operation searches for an isomorphism between coloured digraphs.  A
+    coloured digraph can be specified by its underlying digraph <A>digraph1</A>
+    and its colouring <A>colours1</A>.  Let <C>n</C> be the number of vertices
+    of <A>digraph1</A>. The colouring <A>colours1</A> may have one of the
+    following two forms:
+
+    <List>
+      <Item>
+        a list of <C>n</C> integers, where <A>colours</A><C>[i]</C> is the
+        colour of vertex <C>i</C>, using the colours <C>[1 .. m]</C> for some
+        <C>m &lt;= n</C>; or
+      </Item>
+      <Item>
+        a list of non-empty disjoint lists whose union is
+        <C>DigraphVertices(<A>digraph</A>)</C>, such that
+        <A>colours</A><C>[i]</C> is the list of all vertices with colour
+        <C>i</C>.
+      </Item>
+    </List>
+
+    An <E>isomorphism</E> between coloured digraphs is an isomorphism between
+    the underlying digraphs that preserves the colourings.  See <Ref
+      Oper="IsomorphismDigraphs" Label="for digraphs"/> for more information
+    about isomorphisms of digraphs. More precisely, let <C>f</C> be an
+    isomorphism of digraphs from the digraph <A>digraph1</A> (with colouring
+    <A>colours1</A>) to the digraph <A>digraph2</A> (with colouring
+    <A>colours2</A>), and let <C>p</C> be the permutation of the vertices of
+    <A>digraph1</A> that corresponds to <C>f</C>.  Then <C>f</C> preserves the
+    colourings of <A>digraph1</A> and <A>digraph2</A> – and hence is an
+    isomorphism of coloured digraphs – if <C><A>colours1</A>[i] =
+      <A>colours2</A>[i ^ p]</C> for all vertices <C>i</C> in <A>digraph1</A>.
+    <P/>
+
+    This operation returns such an isomorphism if one exists, else it returns
+    <K>fail</K>. <P/>
+
+    This operation uses the canonical labelling of the digraphs found with
+    &bliss; by Tommi Junttila and Petteri Kaski.
+
+    <Example><![CDATA[
+gap> digraph1 := ChainDigraph(4);
+<digraph with 4 vertices, 3 edges>
+gap> digraph2 := ChainDigraph(3);
+<digraph with 3 vertices, 2 edges>
+gap> IsomorphismDigraphs(digraph1, digraph2,
+>  [[1, 4], [2, 3]], [[1, 2], [3]]);
+fail
+gap> digraph2 := DigraphReverse(digraph1);
+<digraph with 4 vertices, 3 edges>
+gap> colours1 := [1, 1, 1, 1];;
+gap> colours2 := [1, 1, 1, 1];;
+gap> p := IsomorphismDigraphs(digraph1, digraph2, colours1, colours2);
+(1,4)(2,3)
+gap> OnDigraphs(digraph1, p) = digraph2;
+true
+gap> List(DigraphVertices(digraph1), i -> colours1[i ^ p]) = colours2;
+true
+gap> colours1 := [1, 1, 2, 2];;
+gap> colours2 := [2, 2, 1, 1];;
+gap> p := IsomorphismDigraphs(digraph1, digraph2, colours1, colours2);
+(1,4)(2,3)
+gap> OnDigraphs(digraph1, p) = digraph2;
+true
+gap> List(DigraphVertices(digraph1), i -> colours1[i ^ p]) = colours2;
+true
+gap> IsomorphismDigraphs(digraph1, digraph2,
+>  [1, 1, 2, 2], [1, 1, 2, 2]);
+fail
+gap> digraph1 := Digraph([[2, 2], [2], [1]]);
+<multidigraph with 3 vertices, 4 edges>
+gap> digraph2 := Digraph([[1], [1, 1], [2]]);
+<multidigraph with 3 vertices, 4 edges>
+gap> IsomorphismDigraphs(digraph1, digraph2, [1, 2, 2], [2, 1, 2]);
+[ (1,2), (1,2,3) ]]]></Example>
 </Description>
 </ManSection>
 <#/GAPDoc>

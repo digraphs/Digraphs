@@ -5,7 +5,7 @@
 **                                                            Michael Torpey
 **                                                            Wilf A. Wilson
 **
-**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey,
+**  Copyright (C) 2014-17 - Julius Jonusas, James Mitchell, Michael Torpey,
 **  Wilf A. Wilson
 **
 **  This file is free software, see the digraphs/LICENSE.
@@ -1609,21 +1609,21 @@ BlissGraph* buildBlissMultiDigraph(Obj digraph) {
   return graph;
 }
 
-BlissGraph* buildBlissDigraphWithColors(Obj digraph, Obj colors) {
+BlissGraph* buildBlissDigraphWithColours(Obj digraph, Obj colours) {
   UInt        n, i, j, nr;
   Obj         adji, adj;
   BlissGraph* graph;
 
   n = DigraphNrVertices(digraph);
-  if (colors) {
-    assert(n == LEN_LIST(colors));
+  if (colours) {
+    assert(n == LEN_LIST(colours));
   }
   graph = bliss_digraphs_new(0);
   adj   = OutNeighbours(digraph);
 
-  if (colors) {
+  if (colours) {
     for (i = 1; i <= n; i++) {
-      bliss_digraphs_add_vertex(graph, INT_INTOBJ(ELM_LIST(colors, i)));
+      bliss_digraphs_add_vertex(graph, INT_INTOBJ(ELM_LIST(colours, i)));
     }
   } else {
     for (i = 1; i <= n; i++) {
@@ -1651,6 +1651,43 @@ BlissGraph* buildBlissDigraphWithColors(Obj digraph, Obj colors) {
   return graph;
 }
 
+BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
+  UInt        n, i, j, k, l, nr;
+  Obj         adji, adj;
+  BlissGraph* graph;
+
+  n = DigraphNrVertices(digraph);
+  assert(n == LEN_LIST(colours));
+  graph = bliss_digraphs_new(0);
+  adj   = OutNeighbours(digraph);
+
+  for (i = 1; i <= n; i++) {
+    bliss_digraphs_add_vertex(graph, INT_INTOBJ(ELM_LIST(colours, i)));
+  }
+  for (i = 1; i <= n; i++) {
+    bliss_digraphs_add_vertex(graph, n + 1);
+  }
+  for (i = 1; i <= n; i++) {
+    bliss_digraphs_add_vertex(graph, n + 2);
+  }
+
+  for (i = 1; i <= n; i++) {
+    bliss_digraphs_add_edge(graph, i - 1, n + i - 1);
+    bliss_digraphs_add_edge(graph, i - 1, 2 * n + i - 1);
+    adji = ELM_PLIST(adj, i);
+    nr   = LEN_PLIST(adji);
+    for (j = 1; j <= nr; j++) {
+      k = bliss_digraphs_add_vertex(graph, n + 3);
+      l = bliss_digraphs_add_vertex(graph, n + 4);
+      bliss_digraphs_add_edge(graph, n + i - 1, k);
+      bliss_digraphs_add_edge(graph, k, l);
+      bliss_digraphs_add_edge(graph, l, 2 * n + INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
+    }
+  }
+
+  return graph;
+}
+
 void digraph_hook_function(void*               user_param,
                            unsigned int        N,
                            const unsigned int* aut) {
@@ -1671,14 +1708,18 @@ void digraph_hook_function(void*               user_param,
   CHANGED_BAG(user_param);
 }
 
-static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
+static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   Obj                 autos, p, n;
   BlissGraph*         graph;
   UInt4*              ptr;
   const unsigned int* canon;
   Int                 i;
 
-  graph = buildBlissDigraphWithColors(digraph, NULL);
+  if (colours == Fail) {
+    graph = buildBlissDigraphWithColours(digraph, NULL);
+  } else {
+    graph = buildBlissDigraphWithColours(digraph, colours);
+  }
 
   autos = NEW_PLIST(T_PLIST, 2);
   n     = INTOBJ_INT(DigraphNrVertices(digraph));
@@ -1696,10 +1737,9 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   for (i = 0; i < INT_INTOBJ(n); i++) {
     ptr[i] = canon[i];
   }
+  SET_ELM_PLIST(autos, 1, p);
 
   bliss_digraphs_release(graph);
-
-  SET_ELM_PLIST(autos, 1, p);
 
   if (LEN_PLIST(ELM_PLIST(autos, 2)) == 0) {
     AssPlist(ELM_PLIST(autos, 2), 1, IdentityPerm);
@@ -1710,35 +1750,6 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   CHANGED_BAG(autos);
 
   return autos;
-}
-
-static Obj FuncDIGRAPH_AUTOMORPHISMS_COLORS(Obj self, Obj digraph, Obj colors) {
-  Obj                 autos, n;
-  BlissGraph*         graph;
-  const unsigned int* canon;
-
-  graph = buildBlissDigraphWithColors(digraph, colors);
-
-  autos = NEW_PLIST(T_PLIST, 2);
-  n     = INTOBJ_INT(DigraphNrVertices(digraph));
-
-  SET_ELM_PLIST(autos, 1, n);
-  SET_ELM_PLIST(autos, 2, NEW_PLIST(T_PLIST, 0));  // perms of the vertices
-  CHANGED_BAG(autos);
-  SET_LEN_PLIST(autos, 2);
-  canon = bliss_digraphs_find_canonical_labeling(
-      graph, digraph_hook_function, autos, 0);
-  bliss_digraphs_release(graph);
-
-  if (LEN_PLIST(ELM_PLIST(autos, 2)) == 0) {
-    AssPlist(ELM_PLIST(autos, 2), 1, IdentityPerm);
-  } else {
-    SortDensePlist(ELM_PLIST(autos, 2));
-    RemoveDupsDensePlist(ELM_PLIST(autos, 2));
-  }
-  CHANGED_BAG(autos);
-
-  return ELM_PLIST(autos, 2);
 }
 
 void multidigraph_hook_function(void*               user_param,
@@ -1778,14 +1789,55 @@ void multidigraph_hook_function(void*               user_param,
   CHANGED_BAG(user_param);
 }
 
-static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
+void multidigraph_colours_hook_function(void*               user_param,
+                                        unsigned int        N,
+                                        const unsigned int* aut) {
+  UInt4* ptr;
+  Obj    p, gens;
+  UInt   i, n, m;
+  bool   stab;
+
+  m = INT_INTOBJ(ELM_PLIST(user_param, 1));  // the nr of vertices
+
+  stab = true;
+  for (i = 0; i < m; i++) {
+    if (aut[i] != i) {
+      stab = false;
+    }
+  }
+  if (stab) {                                    // permutation of the edges
+    n   = INT_INTOBJ(ELM_PLIST(user_param, 2));  // the nr of edges
+    p   = NEW_PERM4(n);
+    ptr = ADDR_PERM4(p);
+    for (i = 0; i < n; i++) {
+      ptr[i] = (aut[2 * i + 3 * m] - 3 * m) / 2;
+    }
+    gens = ELM_PLIST(user_param, 4);
+  } else {  // permutation of the vertices
+    p   = NEW_PERM4(m);
+    ptr = ADDR_PERM4(p);
+    for (i = 0; i < m; i++) {
+      ptr[i] = aut[i];
+    }
+    gens = ELM_PLIST(user_param, 3);
+  }
+
+  AssPlist(gens, LEN_PLIST(gens) + 1, p);
+  CHANGED_BAG(user_param);
+}
+
+static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   Obj                 autos, p, q, out;
   BlissGraph*         graph;
   UInt4*              ptr;
   const unsigned int* canon;
   Int                 i, m, n;
 
-  graph = buildBlissMultiDigraph(digraph);
+  if (colours == Fail) {
+    graph = buildBlissMultiDigraph(digraph);
+  } else {
+    graph = buildBlissMultiDigraphWithColours(digraph, colours);
+  }
 
   autos = NEW_PLIST(T_PLIST, 4);
   SET_ELM_PLIST(autos, 1, INTOBJ_INT(DigraphNrVertices(digraph)));
@@ -1796,8 +1848,14 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   SET_ELM_PLIST(autos, 4, NEW_PLIST(T_PLIST, 0));  // perms of the edges
   CHANGED_BAG(autos);
 
-  canon = bliss_digraphs_find_canonical_labeling(
+  if (colours == Fail) {
+    canon = bliss_digraphs_find_canonical_labeling(
       graph, multidigraph_hook_function, autos, 0);
+  } else {
+    canon = bliss_digraphs_find_canonical_labeling(
+      graph, multidigraph_colours_hook_function, autos, 0);
+  }
+
   // Get canonical labeling as GAP perms
   m   = DigraphNrVertices(digraph);
   p   = NEW_PERM4(m);  // perm of vertices
@@ -1811,8 +1869,14 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   q   = NEW_PERM4(n);  // perm of edges
   ptr = ADDR_PERM4(q);
 
-  for (i = 0; i < n; i++) {
-    ptr[i] = canon[2 * i + m] - m;
+  if (colours == Fail) {
+    for (i = 0; i < n; i++) {
+      ptr[i] = canon[2 * i + m] - m;
+    }
+  } else {
+    for (i = 0; i < n; i++) {
+      ptr[i] = canon[2 * i + 3 * m] - 3 * m;
+    }
   }
 
   bliss_digraphs_release(graph);
@@ -1851,38 +1915,19 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph) {
   return autos;
 }
 
-static Obj FuncDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
-  Obj                 p;
-  UInt4*              ptr;
-  BlissGraph*         graph;
-  Int                 n, i;
-  const unsigned int* canon;
-
-  graph = buildBlissDigraphWithColors(digraph, NULL);
-
-  canon = bliss_digraphs_find_canonical_labeling(graph, 0, 0, 0);
-
-  n   = DigraphNrVertices(digraph);
-  p   = NEW_PERM4(n);
-  ptr = ADDR_PERM4(p);
-
-  for (i = 0; i < n; i++) {
-    ptr[i] = canon[i];
-  }
-  bliss_digraphs_release(graph);
-
-  return p;
-}
-
 static Obj
-FuncDIGRAPH_CANONICAL_LABELING_COLORS(Obj self, Obj digraph, Obj colors) {
+FuncDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   Obj                 p;
   UInt4*              ptr;
   BlissGraph*         graph;
   Int                 n, i;
   const unsigned int* canon;
 
-  graph = buildBlissDigraphWithColors(digraph, colors);
+  if (colours == Fail) {
+    graph = buildBlissDigraphWithColours(digraph, NULL);
+  } else {
+    graph = buildBlissDigraphWithColours(digraph, colours);
+  }
 
   canon = bliss_digraphs_find_canonical_labeling(graph, 0, 0, 0);
 
@@ -1898,14 +1943,18 @@ FuncDIGRAPH_CANONICAL_LABELING_COLORS(Obj self, Obj digraph, Obj colors) {
   return p;
 }
 
-static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
+static Obj FuncMULTIDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   Obj                 p, q, out;
   UInt4*              ptr;
   BlissGraph*         graph;
   Int                 m, n, i;
   const unsigned int* canon;
 
-  graph = buildBlissMultiDigraph(digraph);
+  if (colours == Fail) {
+    graph = buildBlissMultiDigraph(digraph);
+  } else {
+    graph = buildBlissMultiDigraphWithColours(digraph, colours);
+  }
 
   canon = bliss_digraphs_find_canonical_labeling(graph, 0, 0, 0);
 
@@ -1921,8 +1970,14 @@ static Obj FuncMULTIDIGRAPH_CANONICAL_LABELING(Obj self, Obj digraph) {
   q   = NEW_PERM4(n);  // perm of edges
   ptr = ADDR_PERM4(q);
 
-  for (i = 0; i < n; i++) {
-    ptr[i] = canon[2 * i + m] - m;
+  if (colours == Fail) {
+    for (i = 0; i < n; i++) {
+      ptr[i] = canon[2 * i + m] - m;
+    }
+  } else {
+    for (i = 0; i < n; i++) {
+      ptr[i] = canon[2 * i + 3 * m] - 3 * m;
+    }
   }
 
   bliss_digraphs_release(graph);
@@ -2000,7 +2055,7 @@ Obj FuncGRAPH_HOMOS(Obj self, Obj args) {
   unsigned int i, hint_arg, nr1, nr2;
   UInt8        max_results_arg;
   Obj          user_param_arg;
-  UIntS *      partial_map, *colors1, *colors2;
+  UIntS *      partial_map, *colours1, *colours2;
 
   // get the args . . .
 
@@ -2020,9 +2075,9 @@ Obj FuncGRAPH_HOMOS(Obj self, Obj args) {
   // kernel <kernel>
   Obj partial_map_gap =
       ELM_PLIST(args, 10);  // only look for extensions of <partial_map_gap>
-  Obj colors1_gap =
+  Obj colours1_gap =
       ELM_PLIST(args, 11);  // only look for extensions of <partial_map_gap>
-  Obj colors2_gap =
+  Obj colours2_gap =
       ELM_PLIST(args, 12);  // only look for extensions of <partial_map_gap>
 
   // get the c graph objects . . .
@@ -2087,19 +2142,19 @@ Obj FuncGRAPH_HOMOS(Obj self, Obj args) {
     }
   }
 
-  // process the vertex colors . . .
-  if (colors1_gap == Fail || colors2_gap == Fail || !IS_LIST(colors1_gap)
-      || !IS_LIST(colors2_gap)) {
-    colors1 = NULL;
-    colors2 = NULL;
+  // process the vertex colours . . .
+  if (colours1_gap == Fail || colours2_gap == Fail || !IS_LIST(colours1_gap)
+      || !IS_LIST(colours2_gap)) {
+    colours1 = NULL;
+    colours2 = NULL;
   } else {
-    colors1 = malloc(nr1 * sizeof(UIntS));
-    colors2 = malloc(nr2 * sizeof(UIntS));
+    colours1 = malloc(nr1 * sizeof(UIntS));
+    colours2 = malloc(nr2 * sizeof(UIntS));
     for (i = 0; i < nr1; i++) {
-      colors1[i] = INT_INTOBJ(ELM_LIST(colors1_gap, i + 1)) - 1;
+      colours1[i] = INT_INTOBJ(ELM_LIST(colours1_gap, i + 1)) - 1;
     }
     for (i = 0; i < nr2; i++) {
-      colors2[i] = INT_INTOBJ(ELM_LIST(colors2_gap, i + 1)) - 1;
+      colours2[i] = INT_INTOBJ(ELM_LIST(colours2_gap, i + 1)) - 1;
     }
   }
 
@@ -2114,8 +2169,8 @@ Obj FuncGRAPH_HOMOS(Obj self, Obj args) {
                          hint_arg,
                          image,
                          partial_map,
-                         colors1,
-                         colors2);
+                         colours1,
+                         colours2);
     } else {
       GAP_FUNC = hook_gap;
       GraphHomomorphisms(graph1,
@@ -2126,8 +2181,8 @@ Obj FuncGRAPH_HOMOS(Obj self, Obj args) {
                          hint_arg,
                          image,
                          partial_map,
-                         colors1,
-                         colors2);
+                         colours1,
+                         colours2);
     }
   } else {
     if (hook_gap == Fail) {
@@ -2138,8 +2193,8 @@ Obj FuncGRAPH_HOMOS(Obj self, Obj args) {
                          max_results_arg,
                          image,
                          partial_map,
-                         colors1,
-                         colors2);
+                         colours1,
+                         colours2);
     } else {
       GAP_FUNC = hook_gap;
       GraphMonomorphisms(graph1,
@@ -2149,8 +2204,8 @@ Obj FuncGRAPH_HOMOS(Obj self, Obj args) {
                          max_results_arg,
                          image,
                          partial_map,
-                         colors1,
-                         colors2);
+                         colours1,
+                         colours2);
     }
   }
 
@@ -2162,11 +2217,11 @@ Obj FuncGRAPH_HOMOS(Obj self, Obj args) {
   if (image != NULL) {
     free_bit_array(image);
   }
-  if (colors1 != NULL) {
-    free(colors1);
+  if (colours1 != NULL) {
+    free(colours1);
   }
-  if (colors2 != NULL) {
-    free(colors2);
+  if (colours2 != NULL) {
+    free(colours2);
   }
   free(partial_map);
   free_graph(graph1);
@@ -2196,7 +2251,7 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
   unsigned int i, hint_arg, nr1, nr2;
   UInt8        max_results_arg;
   Obj          user_param_arg;
-  UIntS *      partial_map, *colors1, *colors2;
+  UIntS *      partial_map, *colours1, *colours2;
 
   // get the args . . .
 
@@ -2217,9 +2272,9 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
   // kernel <kernel>
   Obj partial_map_gap =
       ELM_PLIST(args, 10);  // only look for extensions of <partial_map_gap>
-  Obj colors1_gap =
+  Obj colours1_gap =
       ELM_PLIST(args, 11);  // only look for extensions of <partial_map_gap>
-  Obj colors2_gap =
+  Obj colours2_gap =
       ELM_PLIST(args, 12);  // only look for extensions of <partial_map_gap>
 
   // get the c digraph objects . . .
@@ -2284,19 +2339,19 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
     }
   }
 
-  // process the vertex colors . . .
-  if (colors1_gap == Fail || colors2_gap == Fail || !IS_LIST(colors1_gap)
-      || !IS_LIST(colors2_gap)) {
-    colors1 = NULL;
-    colors2 = NULL;
+  // process the vertex colours . . .
+  if (colours1_gap == Fail || colours2_gap == Fail || !IS_LIST(colours1_gap)
+      || !IS_LIST(colours2_gap)) {
+    colours1 = NULL;
+    colours2 = NULL;
   } else {
-    colors1 = malloc(nr1 * sizeof(UIntS));
-    colors2 = malloc(nr2 * sizeof(UIntS));
+    colours1 = malloc(nr1 * sizeof(UIntS));
+    colours2 = malloc(nr2 * sizeof(UIntS));
     for (i = 0; i < nr1; i++) {
-      colors1[i] = INT_INTOBJ(ELM_LIST(colors1_gap, i + 1)) - 1;
+      colours1[i] = INT_INTOBJ(ELM_LIST(colours1_gap, i + 1)) - 1;
     }
     for (i = 0; i < nr2; i++) {
-      colors2[i] = INT_INTOBJ(ELM_LIST(colors2_gap, i + 1)) - 1;
+      colours2[i] = INT_INTOBJ(ELM_LIST(colours2_gap, i + 1)) - 1;
     }
   }
 
@@ -2311,8 +2366,8 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
                            hint_arg,
                            image,
                            partial_map,
-                           colors1,
-                           colors2);
+                           colours1,
+                           colours2);
     } else {
       GAP_FUNC = hook_gap;
       DigraphHomomorphisms(digraph1,
@@ -2323,8 +2378,8 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
                            hint_arg,
                            image,
                            partial_map,
-                           colors1,
-                           colors2);
+                           colours1,
+                           colours2);
     }
   } else {
     if (hook_gap == Fail) {
@@ -2335,8 +2390,8 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
                            max_results_arg,
                            image,
                            partial_map,
-                           colors1,
-                           colors2);
+                           colours1,
+                           colours2);
     } else {
       GAP_FUNC = hook_gap;
       DigraphMonomorphisms(digraph1,
@@ -2346,8 +2401,8 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
                            max_results_arg,
                            image,
                            partial_map,
-                           colors1,
-                           colors2);
+                           colours1,
+                           colours2);
     }
   }
 
@@ -2359,11 +2414,11 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
   if (image != NULL) {
     free_bit_array(image);
   }
-  if (colors1 != NULL) {
-    free(colors1);
+  if (colours1 != NULL) {
+    free(colours1);
   }
-  if (colors2 != NULL) {
-    free(colors2);
+  if (colours2 != NULL) {
+    free(colours2);
   }
 
   free(partial_map);
@@ -2533,40 +2588,28 @@ static StructGVarFunc GVarFuncs[] = {
      "src/digraphs.c:FuncDIGRAPH_PATH"},
 
     {"DIGRAPH_AUTOMORPHISMS",
-     1,
-     "digraph",
+     2,
+     "digraph, colours",
      FuncDIGRAPH_AUTOMORPHISMS,
      "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS"},
 
-    {"DIGRAPH_AUTOMORPHISMS_COLORS",
-     2,
-     "digraph, colors",
-     FuncDIGRAPH_AUTOMORPHISMS_COLORS,
-     "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS_COLORS"},
-
     {"MULTIDIGRAPH_AUTOMORPHISMS",
-     1,
-     "digraph",
+     2,
+     "digraph, colours",
      FuncMULTIDIGRAPH_AUTOMORPHISMS,
      "src/digraphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS"},
 
-    {"DIGRAPH_CANONICAL_LABELING",
-     1,
-     "digraph",
-     FuncDIGRAPH_CANONICAL_LABELING,
-     "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELING"},
-
-    {"DIGRAPH_CANONICAL_LABELING_COLORS",
+    {"DIGRAPH_CANONICAL_LABELLING",
      2,
-     "digraph, colors",
-     FuncDIGRAPH_CANONICAL_LABELING_COLORS,
-     "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELING_COLORS"},
+     "digraph, colours",
+     FuncDIGRAPH_CANONICAL_LABELLING,
+     "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELLING"},
 
-    {"MULTIDIGRAPH_CANONICAL_LABELING",
-     1,
-     "digraph",
-     FuncMULTIDIGRAPH_CANONICAL_LABELING,
-     "src/digraphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELING"},
+    {"MULTIDIGRAPH_CANONICAL_LABELLING",
+     2,
+     "digraph, colours",
+     FuncMULTIDIGRAPH_CANONICAL_LABELLING,
+     "src/digraphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELLING"},
 
     {"GRAPH_HOMOS",
      10,

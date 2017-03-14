@@ -1,8 +1,9 @@
 #############################################################################
 ##
 #W  grahom.gi
-#Y  Copyright (C) 2014-15                                  Julius Jonusas
+#Y  Copyright (C) 2014-17                                  Julius Jonusas
 ##                                                         James Mitchell
+##                                                         Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -13,7 +14,7 @@
 
 InstallGlobalFunction(HomomorphismDigraphsFinder,
 function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
-  local colors, gr, list, i, j;
+  local colours, gr, list;
 
   if not (IsDigraph(gr1) and IsDigraph(gr2)) then
     ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
@@ -69,37 +70,16 @@ function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
   fi;
 
   if list1 = fail and list2 = fail then
-    colors := [fail, fail];
+    colours := [fail, fail];
   elif list1 <> fail and list2 <> fail then
-    gr     := [gr1, gr2];
-    list   := [list1, list2];
-    colors := [];
-    for i in [1, 2] do
-      if (not IsEmpty(list[i])) and IsList(list[i][1]) then # color classes
-        colors[i] := [1 .. DigraphNrVertices(gr[i])];
-        if not (IsDuplicateFreeList(Concatenation(list[i])) and
-                Union(list[i]) = colors[i]) then
-          ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                        "the union of the lists in the ", 9 + i,
-                        "th arg should equal ",
-                        "[1 .. ", DigraphNrVertices(gr[i]), "],");
-        fi;
-
-        for j in [1 .. Length(list[i])] do
-          colors[i]{list[i][j]} := [1 .. Length(list[i][j])] * 0 + j;
-        od;
-      else
-        if not (Length(list[i]) = DigraphNrVertices(gr[i])
-                and ForAll(list[i], c -> IsPosInt(c) and 1 <= c
-                                     and c <= DigraphNrVertices(gr[i]))) then
-          ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                        "the ", 9 + i, "th arg must be a list of length ",
-                        DigraphNrVertices(gr[i]), " of integers in [1 .. ",
-                        DigraphNrVertices(gr[i]), "],");
-        fi;
-        colors[i] := list[i];
-      fi;
-    od;
+    gr      := [gr1, gr2];
+    list    := [list1, list2];
+    colours := [DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(gr1),
+                                                 list[1],
+                                                 "HomomorphismDigraphsFinder"),
+                DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(gr2),
+                                                 list[2],
+                                                 "HomomorphismDigraphsFinder")];
   else
     ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                   "the 10th and 11th arguments <list1> and <list2> must both ",
@@ -119,10 +99,10 @@ function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
   if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
     if IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2) then
       GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, inj, image,
-                  fail, map, colors[1], colors[2]);
+                  fail, map, colours[1], colours[2]);
     else
       DIGRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, inj, image,
-                    fail, map, colors[1], colors[2]);
+                    fail, map, colours[1], colours[2]);
     fi;
     return user_param;
   fi;
@@ -135,7 +115,7 @@ end);
 
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid,
 function(arg)
-  local digraph, limit, colors, G, gens, limit_arg, out;
+  local digraph, limit, colours, G, gens, limit_arg, out;
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
@@ -151,22 +131,22 @@ function(arg)
 
   if IsBound(arg[2]) then
     if IsHomogeneousList(arg[2]) then
-      colors := arg[2];
-      G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph), colors);
+      colours := arg[2];
+      G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph), colours);
     elif not IsBound(arg[3]) and (IsPosInt(arg[2]) or arg[2] = infinity) then
       # arg[2] is <limit>
       arg[3] := arg[2];
-      colors := fail;
+      colours := fail;
       G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph));
     else
       ErrorNoReturn("Digraphs: GeneratorsOfEndomorphismMonoid: usage,\n",
-                    "<colors> must be a homogenous list,");
+                    "<colours> must be a homogenous list,");
     fi;
   else
     if HasGeneratorsOfEndomorphismMonoidAttr(digraph) then
       return GeneratorsOfEndomorphismMonoidAttr(digraph);
     fi;
-    colors := fail;
+    colours := fail;
     G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(digraph));
   fi;
 
@@ -196,8 +176,8 @@ function(arg)
   fi;
 
   out := HomomorphismDigraphsFinder(digraph, digraph, fail, gens, limit, fail,
-                                    false, DigraphVertices(digraph), [], colors,
-                                    colors);
+                                    false, DigraphVertices(digraph), [],
+                                    colours, colours);
 
   if limit = infinity or Length(gens) < limit_arg then
     SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
@@ -214,11 +194,11 @@ end);
 ################################################################################
 # COLOURING
 
-InstallMethod(DigraphColoring, "for a digraph and an integer",
+InstallMethod(DigraphColouring, "for a digraph and an integer",
 [IsDigraph, IsInt],
 function(digraph, n)
   if n < 0 then
-    ErrorNoReturn("Digraphs: DigraphColoring: usage,\n",
+    ErrorNoReturn("Digraphs: DigraphColouring: usage,\n",
                   "the second argument <n> must be a non-negative integer,");
   fi;
 
@@ -244,7 +224,7 @@ end);
 
 #
 
-InstallMethod(DigraphColoring, "for a digraph", [IsDigraph],
+InstallMethod(DigraphColouring, "for a digraph", [IsDigraph],
 function(digraph)
   local vertices, maxcolour, out_nbs, in_nbs, colouring, usedcolours,
         nextcolour, v, u;
