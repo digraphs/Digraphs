@@ -271,6 +271,12 @@ gap> AsDigraph(f);
 gap> AsDigraph(f, 4);
 fail
 
+#T# Issue 55: Bug in FuncDIGRAPH_TOPO_SORT
+gap> gr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);
+<digraph with 4 vertices, 9 edges>
+gap> DigraphTopologicalSort(gr);
+[ 4, 2, 3, 1 ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);

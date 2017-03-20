@@ -779,7 +779,7 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   nr = LEN_PLIST(adj);
 
   if (nr == 0) {
-    return adj;
+    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
   }
   out = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, nr);
   SET_LEN_PLIST(out, nr);
@@ -843,7 +843,7 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
           level++;
           nbs = ELM_PLIST(adj, j);
           stack += 2;
-          stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          stack[0] = INT_INTOBJ(ELM_LIST(nbs, k));
           stack[1] = 1;
         }
       }
