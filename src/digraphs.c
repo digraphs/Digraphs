@@ -22,8 +22,13 @@
 #undef PACKAGE_URL
 #undef PACKAGE_VERSION
 
-static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
-static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
+// Prevent compilation if the DEBUG and NDEBUG flags are both set
+#if defined(DEBUG) && defined(NDEBUG)
+#error When compiling with -DDEBUG you must also use -UNDEBUG
+#endif
+
+#ifdef DEBUG
+#include "gap-debug.h"
 
 Obj FuncDIGRAPHS_IS_OPTIMIZED(Obj self) {
   UInt i;
@@ -31,6 +36,10 @@ Obj FuncDIGRAPHS_IS_OPTIMIZED(Obj self) {
   }
   return INTOBJ_INT(5);
 }
+#endif
+
+static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
+static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 
 /*************************************************************************/
 
@@ -1616,7 +1625,7 @@ BlissGraph* buildBlissDigraphWithColours(Obj digraph, Obj colours) {
 
   n = DigraphNrVertices(digraph);
   if (colours) {
-    assert(n == LEN_LIST(colours));
+    assert(n == (UInt) LEN_LIST(colours));
   }
   graph = bliss_digraphs_new(0);
   adj   = OutNeighbours(digraph);
@@ -1657,7 +1666,7 @@ BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
   BlissGraph* graph;
 
   n = DigraphNrVertices(digraph);
-  assert(n == LEN_LIST(colours));
+  assert(n == (UInt) LEN_LIST(colours));
   graph = bliss_digraphs_new(0);
   adj   = OutNeighbours(digraph);
 
@@ -2029,7 +2038,7 @@ void homo_hook_collect(void* user_param, const UIntS nr, const UIntS* map) {
 
   AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
   CHANGED_BAG(user_param);
-#if DEBUG
+#if DEBUG_HOMOS
   Pr("found %d homomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
 #endif
 }
@@ -2435,11 +2444,14 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
 */
 
 static StructGVarFunc GVarFuncs[] = {
+
+#ifdef DEBUG
     {"DIGRAPHS_IS_OPTIMIZED",
      0,
      "digraph",
      FuncDIGRAPHS_IS_OPTIMIZED,
      "src/digraphs.c:DIGRAPHS_IS_OPTIMIZED"},
+#endif
 
     {"DIGRAPH_NREDGES",
      1,
