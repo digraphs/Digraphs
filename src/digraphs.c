@@ -876,7 +876,7 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
 static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
   UInt  nr, i, j, k, next, len, level;
   Obj   nbs, out, out_j, new;
-  UInt  *stack, *ptr;
+  UInt *stack, *ptr;
 
   nr = LEN_PLIST(adj);
 
@@ -905,24 +905,24 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
       stack[1] = 1;
 
       while (1) {
-        j = stack[0];
-        k = stack[1];
+        j   = stack[0];
+        k   = stack[1];
         nbs = ELM_PLIST(adj, j);
 
         // idea: is <nbs[k]> a new vertex? add edges <j> <-> <nbs[k]> if so
 
         // if we're finished with <j>, or <nbs[k]> doesn't exist, then backtrack
         if (ptr[j] || k > (UInt) LEN_LIST(nbs)) {
-          ptr[j] = 1; // vertex <j> and its descendents are now fully explored
+          ptr[j] = 1;  // vertex <j> and its descendents are now fully explored
           if (--level == 0) {
-            break; // we've explored the whole connected component
+            break;  // we've explored the whole connected component
           }
           stack -= 2;
           ptr[stack[0]] = 0;
           stack[1]++;
         } else {
           ptr[j] = 1;
-          next = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          next   = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
           level++;
           stack += 2;
           stack[0] = next;
@@ -1690,7 +1690,8 @@ BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
       l = bliss_digraphs_add_vertex(graph, n + 4);
       bliss_digraphs_add_edge(graph, n + i - 1, k);
       bliss_digraphs_add_edge(graph, k, l);
-      bliss_digraphs_add_edge(graph, l, 2 * n + INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
+      bliss_digraphs_add_edge(
+          graph, l, 2 * n + INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
     }
   }
 
@@ -1859,10 +1860,10 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
 
   if (colours == Fail) {
     canon = bliss_digraphs_find_canonical_labeling(
-      graph, multidigraph_hook_function, autos, 0);
+        graph, multidigraph_hook_function, autos, 0);
   } else {
     canon = bliss_digraphs_find_canonical_labeling(
-      graph, multidigraph_colours_hook_function, autos, 0);
+        graph, multidigraph_colours_hook_function, autos, 0);
   }
 
   // Get canonical labeling as GAP perms
@@ -1924,8 +1925,7 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   return autos;
 }
 
-static Obj
-FuncDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
+static Obj FuncDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   Obj                 p;
   UInt4*              ptr;
   BlissGraph*         graph;
@@ -1952,7 +1952,8 @@ FuncDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   return p;
 }
 
-static Obj FuncMULTIDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
+static Obj
+FuncMULTIDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   Obj                 p, q, out;
   UInt4*              ptr;
   BlissGraph*         graph;
