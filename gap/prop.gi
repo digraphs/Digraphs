@@ -8,7 +8,47 @@
 #############################################################################
 ##
 
-#
+InstallMethod(IsMeetSemilatticeDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local out_nbrs, i, j, intr;
+  if IsPartialOrderDigraph(digraph) then
+    out_nbrs := OutNeighbours(digraph);
+    for i in [1 .. Size(out_nbrs)] do
+      for j in [i + 1 .. Size(out_nbrs)] do
+        # Is there a better way of doing this? JDM
+        intr := Intersection(out_nbrs[i], out_nbrs[j]);
+        if not intr in out_nbrs then
+          return false;
+        fi;
+      od;
+    od;
+    return true;
+  else
+    return false;
+  fi;
+end);
+
+InstallMethod(IsJoinSemilatticeDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local in_nbrs, intr, i, j;
+  if IsPartialOrderDigraph(digraph) then
+    in_nbrs := InNeighbours(digraph);
+    for i in [1 .. Size(in_nbrs)] do
+      for j in [i + 1 .. Size(in_nbrs)] do
+        # Is there a better way of doing this? JDM
+        intr := Intersection(in_nbrs[i], in_nbrs[j]);
+        if not intr in in_nbrs then
+          return false;
+        fi;
+      od;
+    od;
+    return true;
+  else
+    return false;
+  fi;
+end);
 
 #InstallImmediateMethod(IsStronglyConnectedDigraph, "for an acyclic digraph",
 #IsAcyclicDigraph,
