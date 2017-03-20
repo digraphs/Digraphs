@@ -701,7 +701,7 @@ static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
           level++;
           nbs = ELM_PLIST(adj, j);
           stack += 4;
-          stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          stack[0] = INT_INTOBJ(ELM_LIST(nbs, k));
           stack[1] = 1;
           stack[2] = j;  // I am wasting memory here, duplicating info
           stack[3] = last1;

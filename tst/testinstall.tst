@@ -271,6 +271,11 @@ gap> AsDigraph(f);
 gap> AsDigraph(f, 4);
 fail
 
+# Issue 52: Bug in FuncIS_ANTISYMMETRIC_DIGRAPH causing seg fault
+gap> gr := Digraph([[1], [2], [1 .. 3]]);;
+gap> IsAntisymmetricDigraph(gr);
+true
+
 #T# Issue 55: Bug in FuncDIGRAPH_TOPO_SORT
 gap> gr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);
 <digraph with 4 vertices, 9 edges>
