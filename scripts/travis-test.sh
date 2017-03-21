@@ -27,4 +27,4 @@ else
 fi
 
 # Check the logs for invalid phrases
-( ! grep -E "########> Diff|brk>|#E|Error|error|fail|Syntax warning|insufficient|# WARNING|FAILED!" ../../testlog.txt )
+( ! grep -E "########> Diff|brk>|#E|Error|error|fail|Syntax warning|insufficient|# WARNING|FAILED" ../../testlog.txt )
