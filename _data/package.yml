@@ -51,8 +51,7 @@ downloads:
     - name: .tar.gz
       url: https://github.com/gap-packages/Digraphs/releases/download/v0.7.1/digraphs-0.7.1.tar.gz
 
-abstract: The <b>Digraphs</b> package is a <b>GAP</b> package for
-digraphs and multidigraphs.
+abstract: The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
 
 status: deposited
 doc-html: doc/chap0.html
