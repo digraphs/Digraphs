@@ -46,19 +46,18 @@ For bug reports, feature requests and suggestions, please use the
 If you are using BibTeX, you can use the following BibTeX entry for the current 
 version of {{site.data.package.name}}:
 
-<pre style="white-space: pre-wrap;">@misc{james_d_mitchell_2016_198140,
-  author       = {James D. Mitchell and
-                  Wilf A. Wilson and
-                  Michael Torpey and
-                  Julius Jonu{\v s}as and
-                  Markus Pfeiffer and
-                  Jan De Beule and
-                  Christopher Jefferson and
+<pre style="white-space: pre-wrap;">@misc{DeBeule2017aa,
+  author       = {Jan De Beule and
                   Luke Elliot and
-                  Finlay Smith},
-  title        = {gap-packages/Digraphs: 0.6.0},
-  month        = dec,
-  year         = 2016,
-  doi          = {10.5281/zenodo.198140},
-  url          = {https://doi.org/10.5281/zenodo.198140}
+                  Christopher Jefferson and
+                  Julius Jonu{\v s}as and
+                  James D. Mitchell and
+                  Markus Pfeiffer and
+                  Finlay Smith and
+                  Michael Torpey and
+                  Wilf A. Wilson},
+  title        = {gap-packages/Digraphs: 0.7.1},
+  month        = March,
+  year         = 2017,
+  url          = {https://gap-packages.github.io/Digraphs}
 }</pre>
