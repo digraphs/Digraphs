@@ -1859,6 +1859,27 @@ fail
 gap> PartialOrderDigraphJoinOfVertices(gr1, 3, 4);
 fail
 
+#T# DigraphClosure
+gap> gr := Digraph([[4, 5, 6, 7, 9], [7, 3], [2, 6, 7, 9, 10],
+> [5, 6, 7, 1, 9], [1, 4, 6, 7], [7, 1, 3, 4, 5],
+> [1, 4, 9, 2, 3, 5, 6, 8], [7], [1, 4, 7, 3, 10], [9, 3]]);;
+gap> DigraphNrEdges(gr);
+42
+gap> DigraphNrEdges(DigraphClosure(gr, 10));
+54
+gap> DigraphNrEdges(DigraphClosure(gr, 9));
+90
+gap> DigraphNrEdges(DigraphClosure(gr, 11));
+42
+gap> gr := Digraph([[1], [2], [3]]);;
+gap> DigraphClosure(gr, 2);
+Error, Digraphs: DigraphClosure: usage,
+the digraph must by symmetric, without loops, and no multiple edges,
+gap> gr := Digraph([[2], [3], [1]]);;
+gap> DigraphClosure(gr, 2);
+Error, Digraphs: DigraphClosure: usage,
+the digraph must by symmetric, without loops, and no multiple edges,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);

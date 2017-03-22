@@ -246,6 +246,19 @@ true
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 2, 3, 4, 5, 6 ], [ 1, 2, 5, 9 ], [ 1, 9, 10 ], [ 7, 8, 9, 10 ] ]
 
+#T# DigraphClosure 
+gap> gr := CompleteDigraph(7);; 
+gap> gr2 := DigraphClosure(gr, 7);;
+gap> gr = gr2;
+true
+gap> gr := DigraphRemoveEdge(gr, [1, 2]);;
+gap> gr := DigraphRemoveEdges(gr, [[1, 2], [2, 1]]);;
+gap> DigraphNrEdges(gr);
+40
+gap> gr2 := DigraphClosure(gr, 7);;                   
+gap> DigraphNrEdges(gr2);                          
+42
+
 #T# Fix seg fault cause by wrong handling of no edges in
 # FuncDIGRAPH_SOURCE_RANGE
 gap> gr := Digraph([[]]);
