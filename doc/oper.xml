@@ -1406,7 +1406,7 @@ gap> DigraphShortestDistance(gr, [1, 3], [3, 5]);
 gap> gr := CompleteDigraph(6);;
 gap> DigraphRemoveEdges(gr, [[1,2],[2,1]]);;
 gap> DigraphClosure(gr,6);                                                    
-<digraph with 6 vertices, 30 edges> 
+<digraph with 6 vertices, 30 edges>
 ]]></Example>
   </Description>
 </ManSection>

@@ -1685,7 +1685,7 @@ function(digraph, list)
   return DigraphShortestDistance(digraph, list[1], list[2]);
 end);
 
-# 
+#
 
 InstallMethod(DigraphClosure,
 "for a digraph and an integer",
@@ -1703,7 +1703,7 @@ function(digraph, k)
   for row in adj_mat do
     Add(out, ShallowCopy(row));
   od;
-  degs:= ShallowCopy(InDegrees(digraph));
+  degs := ShallowCopy(InDegrees(digraph));
   n   := DigraphNrVertices(digraph);
   while true do
     new_edge := false;
@@ -1718,10 +1718,10 @@ function(digraph, k)
         fi;
       od;
     od;
- 
-  if not new_edge then
-    break;
-  fi;
+
+    if not new_edge then
+      break;
+    fi;
   od;
 
   return DigraphByAdjacencyMatrix(out);
