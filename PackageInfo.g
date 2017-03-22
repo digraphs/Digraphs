@@ -163,8 +163,8 @@ ArchiveURL      := Concatenation(~.SourceRepository.URL,
                                  "/releases/download/v", ~.Version,
                                  "/", "digraphs-", ~.Version),
 
-AbstractHTML := """The <b>Digraphs</b> package is a <b>GAP</b> package for
-digraphs and multidigraphs.""",
+AbstractHTML := Concatenation("The <b>Digraphs</b> package is a <b>GAP</b> ",
+                              "package for digraphs and multidigraphs."),
 
 PackageDoc := rec(
   BookName  := "Digraphs",
