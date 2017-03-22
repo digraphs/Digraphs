@@ -1806,11 +1806,11 @@ gap> DigraphNrEdges(DigraphClosure(gr, 11));
 gap> gr := Digraph([[1],[2],[3]]);;
 gap> DigraphClosure(gr, 2);
 Error, Digraphs: DigraphClosure: usage,
-the graph must by symmetric and without loops,
+the graph must by symmetric, without loops, and no multiple edges,
 gap> gr := Digraph([[2], [3], [1]]);;
 gap> DigraphClosure(gr, 2);
 Error, Digraphs: DigraphClosure: usage,
-the graph must by symmetric and without loops,
+the graph must by symmetric, without loops, and no multiple edges,
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(a);

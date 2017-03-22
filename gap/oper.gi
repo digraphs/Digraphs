@@ -1693,9 +1693,11 @@ InstallMethod(DigraphClosure,
 function(digraph, k)
   local out, adj_mat, degs, n, new_edge, row, i, j;
 
-  if not IsSymmetricDigraph(digraph) or DigraphHasLoops(digraph) then
+  if not IsSymmetricDigraph(digraph) or DigraphHasLoops(digraph) 
+     or IsMultiDigraph(digraph)
+  then
     ErrorNoReturn("Digraphs: DigraphClosure: usage,\n",
-                  "the graph must by symmetric and without loops,");
+                  "the digraph must by symmetric, without loops, and no multiple edges,");
   fi;
 
   out := [];
@@ -1705,7 +1707,8 @@ function(digraph, k)
   od;
   degs := ShallowCopy(InDegrees(digraph));
   n   := DigraphNrVertices(digraph);
-  while true do
+  new_edge := true;
+  while new_edge do
     new_edge := false;
     for i in [1 .. n] do
       for j in [1 .. n] do
@@ -1718,10 +1721,6 @@ function(digraph, k)
         fi;
       od;
     od;
-
-    if not new_edge then
-      break;
-    fi;
   od;
 
   return DigraphByAdjacencyMatrix(out);
