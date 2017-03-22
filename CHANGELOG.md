@@ -4,6 +4,10 @@ Mitchell, Markus Pfeiffer, Finn Smith, Michael Torpey & Wilf A. Wilson
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.7.1 (released 22/03/2017)
+This is a minor release, which fixes bugs in `DigraphTopologicalSort` and
+`IsAntisymmetricDigraph` that could trigger segmentation faults.
+
 ## Version 0.7.0 (released 14/03/2017)
 This release introduces several new features, changes some existing
 functionality, and improves the documentation. The changes in this release were
