@@ -18,7 +18,7 @@ function(digraph)
   fi;
 
   topo := DigraphTopologicalSort(digraph);
-  gr := OnDigraphs(digraph, PermList(topo));
+  gr := OnDigraphs(digraph, PermList(topo) ^ -1);
   nbs := OutNeighboursMutableCopy(gr);
   Apply(nbs, Set);
   n := DigraphNrVertices(gr);
@@ -52,7 +52,7 @@ function(digraph)
   fi;
 
   topo := DigraphTopologicalSort(digraph);
-  gr := OnDigraphs(digraph, PermList(topo));
+  gr := OnDigraphs(digraph, PermList(topo) ^ -1);
   nbs := InNeighboursMutableCopy(gr);
   Apply(nbs, Set);
   n := DigraphNrVertices(gr);
