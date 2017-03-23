@@ -16,20 +16,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.7.0">
+##  <!ENTITY VERSION        "0.7.1">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
 ##  <!ENTITY ORBVERS        "4.7.5">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.7.0">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.7.1">
 ##  <!ENTITY COPYRIGHTYEARS "2014-17">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
-Version := "0.7.0",
-Date := "14/03/2017",
+Version := "0.7.1",
+Date := "22/03/2017",
 ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(
@@ -163,8 +163,8 @@ ArchiveURL      := Concatenation(~.SourceRepository.URL,
                                  "/releases/download/v", ~.Version,
                                  "/", "digraphs-", ~.Version),
 
-AbstractHTML := """The <b>Digraphs</b> package is a <b>GAP</b> package for
-digraphs and multidigraphs.""",
+AbstractHTML := Concatenation("The <b>Digraphs</b> package is a <b>GAP</b> ",
+                              "package for digraphs and multidigraphs."),
 
 PackageDoc := rec(
   BookName  := "Digraphs",
