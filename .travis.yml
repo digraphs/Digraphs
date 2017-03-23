@@ -10,9 +10,11 @@ env:
     - GENSS=genss-1.6.4
     - GRAPE=grape4r7
     - DIGRAPHS_LIB=digraphs-lib-0.5
+    - PACKAGE=digraphs
+    - THRESHOLD=98
   matrix:
-    - GAP_BRANCH=master GAP_FORK=gap-system COVERAGE=1
-    - GAP_BRANCH=stable-4.8 GAP_FORK=gap-system
+    - GAP_BRANCH=master GAP_FORK=gap-system RUNCOVERAGE=1
+    - GAP_BRANCH=stable-4.8 GAP_FORK=gap-system RUNGAPLINT=1
     - GAP_BRANCH=master GAP_FORK=gap-system GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
     - GAP_BRANCH=stable-4.8 GAP_FORK=gap-system GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
 addons:
@@ -26,6 +28,7 @@ before_script:
   - sudo apt-get update -qq
   - sudo apt-get install libgmp-dev
   - sudo apt-get install libgmp-dev:i386
+  - sudo pip install cpplint
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 script:
