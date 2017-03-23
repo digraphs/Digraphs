@@ -1791,6 +1791,60 @@ true
 gap> IsUndirectedSpanningTree(gr2, gr2);
 true
 
+#T# PartialOrderDigraphMeetOfVertices
+gap> gr := CycleDigraph(5);
+<digraph with 5 vertices, 5 edges>
+gap> PartialOrderDigraphJoinOfVertices(gr, 1, 4);
+Error, Digraphs: PartialOrderDigraphJoinOfVertices: usage, 
+the first argument must be a partial order digraph,
+
+#Join semilattice on 9 vertices
+gap> gr := DigraphFromDiSparse6String(".HiR@AeNcC?oD?G`oAGXIoAGXAe_COqDK^F");
+<digraph with 9 vertices, 36 edges>
+gap> PartialOrderDigraphMeetOfVertices(gr, 2, 3);
+1
+gap> PartialOrderDigraphJoinOfVertices(gr, 2, 3);
+4
+gap> PartialOrderDigraphJoinOfVertices(gr, 3, 9);
+5
+gap> PartialOrderDigraphMeetOfVertices(gr, 3, 9);
+Error, Digraphs: PartialOrderDigraphMeetOfVertices: 
+Meet not found, either it does not exist or it is not unqiue,
+gap> gr := DigraphReverse(gr);
+<digraph with 9 vertices, 36 edges>
+gap> PartialOrderDigraphMeetOfVertices(gr, 2, 3);
+4
+gap> PartialOrderDigraphJoinOfVertices(gr, 2, 3);
+1
+gap> PartialOrderDigraphMeetOfVertices(gr, 3, 9);
+5
+
+# Testing error messages
+gap> gr1 := Digraph([[1],[2],[1,2,3],[1,2,4]]);
+<digraph with 4 vertices, 8 edges>
+gap> gr2 := DigraphReverse(gr1);
+<digraph with 4 vertices, 8 edges>
+
+# Meet does not exist
+gap> PartialOrderDigraphMeetOfVertices(gr1, 3, 4);
+Error, Digraphs: PartialOrderDigraphMeetOfVertices: 
+Meet not found, either it does not exist or it is not unqiue,
+
+# Meet is not unique
+gap> PartialOrderDigraphMeetOfVertices(gr2, 3, 4);
+Error, Digraphs: PartialOrderDigraphMeetOfVertices: 
+Meet not found, either it does not exist or it is not unqiue,
+
+# Join does not exist
+gap> PartialOrderDigraphJoinOfVertices(gr2, 3, 4);
+Error, Digraphs: PartialOrderDigraphJoinOfVertices: 
+Join not found, either it does not exist or it is not unqiue,
+
+# Join is not unique
+gap> PartialOrderDigraphJoinOfVertices(gr1, 3, 4);
+Error, Digraphs: PartialOrderDigraphJoinOfVertices: 
+Join not found, either it does not exist or it is not unqiue,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);

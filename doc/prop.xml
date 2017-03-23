@@ -14,9 +14,9 @@
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     This is a synonym for <Ref Prop="IsReflexiveDigraph"/> and
-    <Ref Prop="IsAntisymmetricDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.    We will consider a digraph as a partial order by with relation defined by
-    <A>x</A> <M>\leq</M> <A>y</A> if and only if <A>(x,y)</A> is an edge. If
-    it exists, then we will
+    <Ref Prop="IsAntisymmetricDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
+    We will consider a digraph as a partial order with relation defined by
+    <A>x</A> <M>\leq</M> <A>y</A> if and only if <A>(x,y)</A> is an edge.
 
     <Example><![CDATA[
 gap> gr := Digraph([[1, 3], [2, 3], [3]]);
@@ -47,26 +47,29 @@ false
     <A>digraph</A> is both a meet and a join semilattice.
     <P/>
 
-    A digraph is a <E>meet semilattice</E> if it is a partial order and every
-    pair of vertices has a unique greatest lower bound (meet) with respect to
-    that partial order. A <E>join semilattice</E> is a partial order where
-    every pair of vertices has a unique least upper bound (join).
+    We consider a partial order digraph <Ref Prop="IsPartialOrderDigraph"/>
+    to be a digraph with the relation <A>x</A> <M>\leq</M> <A>y</A> if and only
+    if <A>(x,y)</A> is an edge. A digraph is a <E>meet semilattice</E> if it is
+    a partial order and every pair of vertices has a unique greatest lower bound
+    (meet) with respect to the aforementioned relation. A <E>join semilattice</E>
+    is a partial order where every pair of vertices has a unique least upper
+    bound (join) with respect to the relation.
 
     <Example><![CDATA[
 gap> gr := Digraph([[1, 3], [2, 3], [3]]);
 <digraph with 3 vertices, 5 edges>
 gap> IsMeetSemilatticeDigraph(gr);
-true
-gap> IsJoinSemilatticeDigraph(gr);
 false
+gap> IsJoinSemilatticeDigraph(gr);
+true
 gap> IsLatticeDigraph(gr);
 false
 gap> gr := Digraph([[1], [2], [1 .. 3]]);
 <digraph with 3 vertices, 5 edges>
 gap> IsJoinSemilatticeDigraph(gr);
-true
-gap> IsMeetSemilatticeDigraph(gr);
 false
+gap> IsMeetSemilatticeDigraph(gr);
+true
 gap> IsLatticeDigraph(gr);
 false
 gap> gr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);

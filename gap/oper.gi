@@ -1684,3 +1684,53 @@ function(digraph, list)
 
   return DigraphShortestDistance(digraph, list[1], list[2]);
 end);
+
+# Partial Order Digraphs
+
+InstallMethod(PartialOrderDigraphJoinOfVertices,
+"for a digraph and two positive integers",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, i, j)
+  local x, nbs, intr;
+
+  if not IsPartialOrderDigraph(digraph) then
+    ErrorNoReturn("Digraphs: PartialOrderDigraphJoinOfVertices: usage, \n",
+                  "the first argument must be a partial order digraph,");
+  fi;
+
+  nbs := OutNeighboursMutableCopy(digraph);
+  intr := Intersection(nbs[i], nbs[j]);
+  for x in intr do
+    if intr = Set(nbs[x]) then
+      return x;
+    fi;
+  od;
+
+  ErrorNoReturn("Digraphs: PartialOrderDigraphJoinOfVertices: \n",
+                "Join not found, either it does not exist",
+                " or it is not unqiue,");
+end);
+
+InstallMethod(PartialOrderDigraphMeetOfVertices,
+"for a digraph and two positive integers",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, i, j)
+  local x, nbs, intr;
+
+  if not IsPartialOrderDigraph(digraph) then
+    ErrorNoReturn("Digraphs: PartialOrderDigraphMeetOfVertices: usage, \n",
+                  "the first argument must be a partial order digraph,");
+  fi;
+
+  nbs := InNeighboursMutableCopy(digraph);
+  intr := Intersection(nbs[i], nbs[j]);
+  for x in intr do
+    if intr = Set(nbs[x]) then
+      return x;
+    fi;
+  od;
+
+  ErrorNoReturn("Digraphs: PartialOrderDigraphMeetOfVertices: \n",
+                "Meet not found, either it does not exist",
+                " or it is not unqiue,");
+end);

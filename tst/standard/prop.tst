@@ -1044,6 +1044,24 @@ false
 gap> IsJoinSemilatticeDigraph(gr);
 false
 
+# Join semilattice on 9 vertices
+gap> gr := DigraphFromDiSparse6String(".HiR@AeNcC?oD?G`oAGXIoAGXAe_COqDK^F");
+<digraph with 9 vertices, 36 edges>
+gap> IsMeetSemilatticeDigraph(gr);
+false
+gap> IsJoinSemilatticeDigraph(gr);
+true
+gap> IsLatticeDigraph(gr);
+false
+gap> gr := DigraphReverse(gr);
+<digraph with 9 vertices, 36 edges>
+gap> IsMeetSemilatticeDigraph(gr);
+true
+gap> IsJoinSemilatticeDigraph(gr);
+false
+gap> IsLatticeDigraph(gr);
+false
+
 # IsPartialOrderDigraph
 gap> gr := NullDigraph(5);
 <digraph with 5 vertices, 0 edges>
@@ -1053,6 +1071,8 @@ gap> gr := Digraph([[1], [2], [3]]);
 <digraph with 3 vertices, 3 edges>
 gap> IsPartialOrderDigraph(gr);
 true
+
+# Big partial order digraph
 gap> gr := DigraphFromDiSparse6String(
 > ".~?CI_A?WA_M@G@_G@gB?]@?G_SAWA?Y@oJ__BGH?uA_M_IAoO_oCWL@IB_R_{DGB?mB?U_sDwM@a\
 > BoX_KCGP@WEwQ@[FGR@_FWS@cFgT@gFwB@A?oO_KCGZACGwZAGGw[AUFOcAYF_f`{IG_Ae@?U`[IwW\

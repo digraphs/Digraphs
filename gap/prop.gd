@@ -35,6 +35,9 @@ DeclareProperty("IsEulerianDigraph", IsDigraph);
 DeclareProperty("IsMeetSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsJoinSemilatticeDigraph", IsDigraph);
 
+DeclareOperation("DIGRAPHS_IsMeetJoinSemilatticeDigraph",
+                 [IsHomogeneousList]);
+
 InstallTrueMethod(IsAntisymmetricDigraph, IsTournament);
 InstallTrueMethod(IsAntisymmetricDigraph, IsAcyclicDigraph);
 InstallTrueMethod(IsTransitiveDigraph, IsTournament and IsAcyclicDigraph);
