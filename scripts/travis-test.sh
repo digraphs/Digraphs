@@ -9,7 +9,7 @@ echo "LoadPackage(\"digraphs\"); DigraphsTestAll(); DigraphsTestExtreme(); quit;
 # Run gaplint
 cd pkg/digraphs
 echo -e "\nRunning gaplint..."
-../../../gaplint/gaplint.py gap/*.gi | tee -a ../../testlog.txt
+../../../gaplint/gaplint.py *.g gap/* doc/*.xml | tee -a ../../testlog.txt
 
 # Run coverage checks
 if [ ! -z "$COVERAGE" ]; then
