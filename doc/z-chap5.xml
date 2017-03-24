@@ -31,4 +31,9 @@
     <#Include Label="IsUndirectedTree">
     <#Include Label="IsEulerianDigraph">
   </Section>
+  
+  <Section><Heading>Order</Heading>
+    <#Include Label="IsMeetSemilatticeDigraph">
+    <#Include Label="IsPartialOrderDigraph">
+  </Section>
 </Chapter>
