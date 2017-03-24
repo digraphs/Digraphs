@@ -81,7 +81,8 @@
       minor changes by J. D. Mitchell.<P/>
 
       <Log><![CDATA[
-gap> Splash(DotDigraph(RandomDigraph(4)));]]></Log>
+gap> Splash(DotDigraph(RandomDigraph(4)));
+]]></Log>
     </Description>
   </ManSection>
 <#/GAPDoc>

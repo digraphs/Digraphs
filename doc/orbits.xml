@@ -30,7 +30,7 @@
     <Example><![CDATA[
 gap> n := 4;;
 gap> adj := function(x, y)
->      return (((x - y) mod n) = 1) or (((x - y) mod n) = n-1);
+>      return (((x - y) mod n) = 1) or (((x - y) mod n) = n - 1);
 >    end;;
 gap> group := CyclicGroup(IsPermGroup, n);
 Group([ (1,2,3,4) ])
