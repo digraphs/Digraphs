@@ -32,8 +32,8 @@
     <#Include Label="IsEulerianDigraph">
   </Section>
   
-  <Section><Heading>Order</Heading>
-    <#Include Label="IsMeetSemilatticeDigraph">
+  <Section><Heading>Partial Orders</Heading>
     <#Include Label="IsPartialOrderDigraph">
+    <#Include Label="IsMeetSemilatticeDigraph">
   </Section>
 </Chapter>

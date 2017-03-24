@@ -1694,8 +1694,9 @@ function(digraph, i, j)
   local x, nbs, intr;
 
   if not IsPartialOrderDigraph(digraph) then
-    ErrorNoReturn("Digraphs: PartialOrderDigraphJoinOfVertices: usage, \n",
-                  "the first argument must be a partial order digraph,");
+    ErrorNoReturn("Digraphs: PartialOrderDigraphJoinOfVertices: usage,\n",
+                  "the first argument <digraph> must be a partial order",
+                  "digraph,");
   fi;
 
   nbs := OutNeighboursMutableCopy(digraph);
@@ -1706,9 +1707,7 @@ function(digraph, i, j)
     fi;
   od;
 
-  ErrorNoReturn("Digraphs: PartialOrderDigraphJoinOfVertices: \n",
-                "Join not found, either it does not exist",
-                " or it is not unqiue,");
+  return fail;
 end);
 
 InstallMethod(PartialOrderDigraphMeetOfVertices,
@@ -1718,8 +1717,9 @@ function(digraph, i, j)
   local x, nbs, intr;
 
   if not IsPartialOrderDigraph(digraph) then
-    ErrorNoReturn("Digraphs: PartialOrderDigraphMeetOfVertices: usage, \n",
-                  "the first argument must be a partial order digraph,");
+    ErrorNoReturn("Digraphs: PartialOrderDigraphMeetOfVertices: usage,\n",
+                  "the first argument <digraph> must be a partial order",
+                  "digraph,");
   fi;
 
   nbs := InNeighboursMutableCopy(digraph);
@@ -1730,7 +1730,5 @@ function(digraph, i, j)
     fi;
   od;
 
-  ErrorNoReturn("Digraphs: PartialOrderDigraphMeetOfVertices: \n",
-                "Meet not found, either it does not exist",
-                " or it is not unqiue,");
+  return fail;
 end);
