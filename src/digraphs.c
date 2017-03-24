@@ -2445,7 +2445,6 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
 */
 
 static StructGVarFunc GVarFuncs[] = {
-
 #ifdef DEBUG
     {"DIGRAPHS_IS_OPTIMIZED",
      0,

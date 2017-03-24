@@ -50,3 +50,9 @@ debug: clean all
 
 lint: 
 	gaplint *.g gap/* doc/*.xml
+	cpplint src/*.h src/*.c
+
+format: 
+	clang-format -i src/*.h src/*.c
+
+.PHONY: debug, lint, format
