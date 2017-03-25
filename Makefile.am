@@ -48,9 +48,15 @@ doc/manual.six: doc/*.xml PackageInfo.g
 debug: CFLAGS = -g3 -O0 -Wall -Wextra -Wpedantic -Wold-style-declaration -Wno-unused-parameter -Wtype-limits -Wformat-security -Wpointer-arith -Wno-div-by-zero -Wreturn-type -Wswitch -Wsizeof-array-argument -Wunused-label -fno-omit-frame-pointer -fno-omit-frame-pointer -Wno-c++11-extensions -UNDEBUG -DDEBUG
 debug: clean all
 
-lint: 
-	gaplint *.g gap/* doc/*.xml
+gaplint: 
+	gaplint *.g gap/* 
+	gaplint doc/*.xml 
+	gaplint tst/testinstall.tst tst/standard/*.tst tst/extreme/*.tst tst/workspaces/*.tst
+
+cpplint:
 	cpplint src/*.h src/*.c
+
+lint: gaplint cpplint
 
 format: 
 	clang-format -i src/*.h src/*.c
