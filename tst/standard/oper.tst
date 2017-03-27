@@ -1819,7 +1819,7 @@ gap> PartialOrderDigraphMeetOfVertices(gr, 3, 9);
 5
 
 # Testing invalid input
-gap> gr := Digraph([[1,2,3],[1,2,3],[1,2,3]]);
+gap> gr := Digraph([[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
 <digraph with 3 vertices, 9 edges>
 gap> PartialOrderDigraphMeetOfVertices(gr, 2, 3);
 Error, Digraphs: PartialOrderDigraphMeetOfVertices: usage,
@@ -1827,7 +1827,7 @@ the first argument <digraph> must be a partial order digraph,
 gap> PartialOrderDigraphJoinOfVertices(gr, 2, 3);
 Error, Digraphs: PartialOrderDigraphJoinOfVertices: usage,
 the first argument <digraph> must be a partial order digraph,
-gap> gr1 := Digraph([[1],[2],[1,2,3],[1,2,4]]);
+gap> gr1 := Digraph([[1], [2], [1, 2, 3], [1, 2, 4]]);
 <digraph with 4 vertices, 8 edges>
 gap> gr2 := DigraphReverse(gr1);
 <digraph with 4 vertices, 8 edges>
