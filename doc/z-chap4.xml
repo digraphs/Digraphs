@@ -56,4 +56,11 @@
     <#Include Label="DigraphDegeneracy">
     <#Include Label="DigraphDegeneracyOrdering">
   </Section>
+
+  
+  <Section><Heading>Partial Orders</Heading>
+    <#Include Label="PartialOrderDigraphMeetOfVertices">
+  </Section>
+
+
 </Chapter>

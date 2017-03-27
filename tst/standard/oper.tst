@@ -1791,6 +1791,59 @@ true
 gap> IsUndirectedSpanningTree(gr2, gr2);
 true
 
+#T# PartialOrderDigraphMeetOfVertices
+gap> gr := CycleDigraph(5);
+<digraph with 5 vertices, 5 edges>
+gap> PartialOrderDigraphJoinOfVertices(gr, 1, 4);
+Error, Digraphs: PartialOrderDigraphJoinOfVertices: usage,
+the first argument <digraph> must be a partial order digraph,
+
+#Join semilattice on 9 vertices
+gap> gr := DigraphFromDiSparse6String(".HiR@AeNcC?oD?G`oAGXIoAGXAe_COqDK^F");
+<digraph with 9 vertices, 36 edges>
+gap> PartialOrderDigraphMeetOfVertices(gr, 2, 3);
+1
+gap> PartialOrderDigraphJoinOfVertices(gr, 2, 3);
+4
+gap> PartialOrderDigraphJoinOfVertices(gr, 3, 9);
+5
+gap> PartialOrderDigraphMeetOfVertices(gr, 3, 9);
+fail
+gap> gr := DigraphReverse(gr);
+<digraph with 9 vertices, 36 edges>
+gap> PartialOrderDigraphMeetOfVertices(gr, 2, 3);
+4
+gap> PartialOrderDigraphJoinOfVertices(gr, 2, 3);
+1
+gap> PartialOrderDigraphMeetOfVertices(gr, 3, 9);
+5
+
+# Testing invalid input
+gap> gr := Digraph([[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
+<digraph with 3 vertices, 9 edges>
+gap> PartialOrderDigraphMeetOfVertices(gr, 2, 3);
+Error, Digraphs: PartialOrderDigraphMeetOfVertices: usage,
+the first argument <digraph> must be a partial order digraph,
+gap> PartialOrderDigraphJoinOfVertices(gr, 2, 3);
+Error, Digraphs: PartialOrderDigraphJoinOfVertices: usage,
+the first argument <digraph> must be a partial order digraph,
+gap> gr1 := Digraph([[1], [2], [1, 2, 3], [1, 2, 4]]);
+<digraph with 4 vertices, 8 edges>
+gap> gr2 := DigraphReverse(gr1);
+<digraph with 4 vertices, 8 edges>
+
+# Meet does not exist
+gap> PartialOrderDigraphMeetOfVertices(gr1, 3, 4);
+fail
+gap> PartialOrderDigraphMeetOfVertices(gr2, 3, 4);
+fail
+
+# Join does not exist
+gap> PartialOrderDigraphJoinOfVertices(gr2, 3, 4);
+fail
+gap> PartialOrderDigraphJoinOfVertices(gr1, 3, 4);
+fail
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);

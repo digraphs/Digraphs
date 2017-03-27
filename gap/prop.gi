@@ -8,7 +8,66 @@
 #############################################################################
 ##
 
-#
+InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph,
+"for a homogeneous list and a positive integer",
+[IsHomogeneousList],
+function(nbs)
+  local i, j, k, n, x, len;
+
+  n := Length(nbs);
+  for i in [1 .. n] do
+    for j in [i + 1 .. n] do
+      if j in nbs[i] or i in nbs[j] then
+        continue;
+      fi;
+      x := Intersection(nbs[i], nbs[j]);
+      if IsEmpty(x) then
+        return false;
+      fi;
+      len := Length(x);
+      k := x[len]; # Check whether <k> is the meet of <i> and <j>
+      if Length(nbs[k]) < len then
+        return false;
+      fi;
+    od;
+  od;
+
+  return true;
+end);
+
+InstallMethod(IsJoinSemilatticeDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local topo, gr, nbs, n;
+
+  if not IsPartialOrderDigraph(digraph) then
+    return false;
+  fi;
+
+  topo := DigraphTopologicalSort(digraph);
+  gr := OnDigraphs(digraph, PermList(topo) ^ -1);
+  nbs := OutNeighboursMutableCopy(gr);
+  Apply(nbs, Set);
+
+  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(nbs);
+end);
+
+InstallMethod(IsMeetSemilatticeDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local topo, gr, nbs, n;
+
+  if not IsPartialOrderDigraph(digraph) then
+    return false;
+  fi;
+
+  topo := Reversed(DigraphTopologicalSort(digraph));
+  gr := OnDigraphs(digraph, PermList(topo) ^ -1);
+  nbs := InNeighboursMutableCopy(gr);
+  Apply(nbs, Set);
+
+  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(nbs);
+end);
 
 #InstallImmediateMethod(IsStronglyConnectedDigraph, "for an acyclic digraph",
 #IsAcyclicDigraph,

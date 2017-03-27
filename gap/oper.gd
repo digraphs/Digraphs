@@ -90,3 +90,8 @@ DeclareOperation("DigraphDistanceSet", [IsDigraph, IsPosInt, IsList]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList, IsList]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList]);
+
+DeclareOperation("PartialOrderDigraphJoinOfVertices",
+[IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("PartialOrderDigraphMeetOfVertices",
+[IsDigraph, IsPosInt, IsPosInt]);
