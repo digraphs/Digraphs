@@ -30,6 +30,8 @@ gap> IsPartialOrderDigraph(gr);
 false
 gap> gr := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);
 <multidigraph with 4 vertices, 10 edges>
+gap> IsPartialOrderDigraph(gr);
+true
 ]]></Example>
   </Description>
 </ManSection>

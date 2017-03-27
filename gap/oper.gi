@@ -1695,7 +1695,7 @@ function(digraph, i, j)
 
   if not IsPartialOrderDigraph(digraph) then
     ErrorNoReturn("Digraphs: PartialOrderDigraphJoinOfVertices: usage,\n",
-                  "the first argument <digraph> must be a partial order",
+                  "the first argument <digraph> must be a partial order ",
                   "digraph,");
   fi;
 
@@ -1718,7 +1718,7 @@ function(digraph, i, j)
 
   if not IsPartialOrderDigraph(digraph) then
     ErrorNoReturn("Digraphs: PartialOrderDigraphMeetOfVertices: usage,\n",
-                  "the first argument <digraph> must be a partial order",
+                  "the first argument <digraph> must be a partial order ",
                   "digraph,");
   fi;
 
