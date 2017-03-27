@@ -39,7 +39,8 @@ gap> for i in [1 .. 10] do
 gap> IO_Close(file);;
 gap> iter := IteratorFromDigraphFile(filename);
 <iterator>
-gap> for x in iter do od;]]></Example>
+gap> for x in iter do od;
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -457,7 +458,7 @@ gap> DiSparse6String(gr);
 gap> gr := Digraph([[2, 3], [1], [1]]);
 <digraph with 3 vertices, 4 edges>
 gap> enc := DigraphPlainTextLineEncoder("  ", " ", -1);;
-gap> dec := DigraphPlainTextLineDecoder("  ", " ",  1);;
+gap> dec := DigraphPlainTextLineDecoder("  ", " ", 1);;
 gap> enc(gr);
 "0 1  0 2  1 0  2 0"
 gap> dec(last);

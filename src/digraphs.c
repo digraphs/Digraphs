@@ -22,8 +22,13 @@
 #undef PACKAGE_URL
 #undef PACKAGE_VERSION
 
-static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
-static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
+// Prevent compilation if the DEBUG and NDEBUG flags are both set
+#if defined(DEBUG) && defined(NDEBUG)
+#error When compiling with -DDEBUG you must also use -UNDEBUG
+#endif
+
+#ifdef DEBUG
+#include "gap-debug.h"
 
 Obj FuncDIGRAPHS_IS_OPTIMIZED(Obj self) {
   UInt i;
@@ -31,6 +36,10 @@ Obj FuncDIGRAPHS_IS_OPTIMIZED(Obj self) {
   }
   return INTOBJ_INT(5);
 }
+#endif
+
+static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
+static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 
 /*************************************************************************/
 
@@ -867,7 +876,7 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
 static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
   UInt  nr, i, j, k, next, len, level;
   Obj   nbs, out, out_j, new;
-  UInt  *stack, *ptr;
+  UInt *stack, *ptr;
 
   nr = LEN_PLIST(adj);
 
@@ -896,24 +905,24 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
       stack[1] = 1;
 
       while (1) {
-        j = stack[0];
-        k = stack[1];
+        j   = stack[0];
+        k   = stack[1];
         nbs = ELM_PLIST(adj, j);
 
         // idea: is <nbs[k]> a new vertex? add edges <j> <-> <nbs[k]> if so
 
         // if we're finished with <j>, or <nbs[k]> doesn't exist, then backtrack
         if (ptr[j] || k > (UInt) LEN_LIST(nbs)) {
-          ptr[j] = 1; // vertex <j> and its descendents are now fully explored
+          ptr[j] = 1;  // vertex <j> and its descendents are now fully explored
           if (--level == 0) {
-            break; // we've explored the whole connected component
+            break;  // we've explored the whole connected component
           }
           stack -= 2;
           ptr[stack[0]] = 0;
           stack[1]++;
         } else {
           ptr[j] = 1;
-          next = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          next   = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
           level++;
           stack += 2;
           stack[0] = next;
@@ -1616,7 +1625,7 @@ BlissGraph* buildBlissDigraphWithColours(Obj digraph, Obj colours) {
 
   n = DigraphNrVertices(digraph);
   if (colours) {
-    assert(n == LEN_LIST(colours));
+    assert(n == (UInt) LEN_LIST(colours));
   }
   graph = bliss_digraphs_new(0);
   adj   = OutNeighbours(digraph);
@@ -1657,7 +1666,7 @@ BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
   BlissGraph* graph;
 
   n = DigraphNrVertices(digraph);
-  assert(n == LEN_LIST(colours));
+  assert(n == (UInt) LEN_LIST(colours));
   graph = bliss_digraphs_new(0);
   adj   = OutNeighbours(digraph);
 
@@ -1681,7 +1690,8 @@ BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
       l = bliss_digraphs_add_vertex(graph, n + 4);
       bliss_digraphs_add_edge(graph, n + i - 1, k);
       bliss_digraphs_add_edge(graph, k, l);
-      bliss_digraphs_add_edge(graph, l, 2 * n + INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
+      bliss_digraphs_add_edge(
+          graph, l, 2 * n + INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
     }
   }
 
@@ -1850,10 +1860,10 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
 
   if (colours == Fail) {
     canon = bliss_digraphs_find_canonical_labeling(
-      graph, multidigraph_hook_function, autos, 0);
+        graph, multidigraph_hook_function, autos, 0);
   } else {
     canon = bliss_digraphs_find_canonical_labeling(
-      graph, multidigraph_colours_hook_function, autos, 0);
+        graph, multidigraph_colours_hook_function, autos, 0);
   }
 
   // Get canonical labeling as GAP perms
@@ -1915,8 +1925,7 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   return autos;
 }
 
-static Obj
-FuncDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
+static Obj FuncDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   Obj                 p;
   UInt4*              ptr;
   BlissGraph*         graph;
@@ -1943,7 +1952,8 @@ FuncDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   return p;
 }
 
-static Obj FuncMULTIDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
+static Obj
+FuncMULTIDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   Obj                 p, q, out;
   UInt4*              ptr;
   BlissGraph*         graph;
@@ -2029,7 +2039,7 @@ void homo_hook_collect(void* user_param, const UIntS nr, const UIntS* map) {
 
   AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
   CHANGED_BAG(user_param);
-#if DEBUG
+#if DEBUG_HOMOS
   Pr("found %d homomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
 #endif
 }
@@ -2435,11 +2445,13 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
 */
 
 static StructGVarFunc GVarFuncs[] = {
+#ifdef DEBUG
     {"DIGRAPHS_IS_OPTIMIZED",
      0,
      "digraph",
      FuncDIGRAPHS_IS_OPTIMIZED,
      "src/digraphs.c:DIGRAPHS_IS_OPTIMIZED"},
+#endif
 
     {"DIGRAPH_NREDGES",
      1,

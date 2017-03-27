@@ -184,7 +184,7 @@ inline void init_bit_array(BitArray* bit_array, bool val) {
 // to the value <val>.
 ////////////////////////////////////////////////////////////////////////////////
 
-inline void set_bit_array(BitArray* bit_array, UIntS pos, bool val) {
+void set_bit_array(BitArray* bit_array, UIntS pos, bool val) {
   assert(bit_array != NULL);
   assert(pos < bit_array->nr_bits);
 
@@ -202,7 +202,7 @@ inline void set_bit_array(BitArray* bit_array, UIntS pos, bool val) {
 // <bit_array>.
 ////////////////////////////////////////////////////////////////////////////////
 
-inline bool get_bit_array(BitArray* bit_array, UIntS pos) {
+inline static bool get_bit_array(BitArray* bit_array, UIntS pos) {
   assert(bit_array != NULL);
   assert(pos < bit_array->nr_bits);
 
@@ -547,11 +547,10 @@ void add_edge_digraph(Digraph* digraph, Vertex i, Vertex j) {
 
 ////////////////////////////////////////////////////////////////////////////////
 // is_adjacent_digraph: returns <true> if there is an edge from <i> to <j> in
-// the
-// Digraph pointed to by <digraph> and returns <false> if there is not.
+// the Digraph pointed to by <digraph> and returns <false> if there is not.
 ////////////////////////////////////////////////////////////////////////////////
 
-static bool inline is_adjacent_digraph(Digraph* digraph, Vertex i, Vertex j) {
+inline static bool is_adjacent_digraph(Digraph* digraph, Vertex i, Vertex j) {
   assert(digraph != NULL);
   assert(i < digraph->nr_vertices && j < digraph->nr_vertices);
 
@@ -1207,7 +1206,7 @@ void add_edge_graph(Graph* graph, Vertex i, Vertex j) {
 // Graph pointed to by <graph> and returns <false> if there is not.
 ////////////////////////////////////////////////////////////////////////////////
 
-static bool inline is_adjacent_graph(Graph* graph, Vertex i, Vertex j) {
+inline static bool is_adjacent_graph(Graph* graph, Vertex i, Vertex j) {
   assert(graph != NULL);
   assert(i < graph->nr_vertices && j < graph->nr_vertices);
 

@@ -977,6 +977,7 @@ Partition::zplit_cell(Partition::Cell* const cell,
 	{
 	  /* Generic sorting and splitting */
 	  const bool sorted = shellsort_cell(cell);
+          (void)sorted;
 	  assert(sorted);
 	  last_new_cell = split_cell(cell);
 	}

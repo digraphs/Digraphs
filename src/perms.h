@@ -15,9 +15,6 @@
 #ifndef DIGRAPHS_SRC_PERMS_H_
 #define DIGRAPHS_SRC_PERMS_H_
 
-#define NDEBUG
-#define DEBUG false
-
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
