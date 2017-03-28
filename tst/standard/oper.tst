@@ -1260,6 +1260,21 @@ gap> PrintArray(adj);
   [  0,  0,  1 ],
   [  1,  1,  0 ] ]
 
+#T# BooleanAdjacencyMatrixMutableCopy
+gap> gr := Digraph([[3], [2, 3], [3], [2, 4]]);;
+gap> adj := BooleanAdjacencyMatrixMutableCopy(gr);;
+gap> PrintArray(adj);
+[ [  false,  false,   true,  false ],
+  [  false,   true,   true,  false ],
+  [  false,  false,   true,  false ],
+  [  false,   true,  false,   true ] ]
+gap> adj[3][1] := true;;
+gap> PrintArray(adj);
+[ [  false,  false,   true,  false ],
+  [  false,   true,   true,  false ],
+  [   true,  false,   true,  false ],
+  [  false,   true,  false,   true ] ]
+
 #T# DigraphRemoveAllMultipleEdges
 gap> gr1 := Digraph([[1, 1, 2, 1], [1]]);
 <multidigraph with 2 vertices, 5 edges>
