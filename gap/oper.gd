@@ -82,6 +82,7 @@ DeclareSynonym("OutNeighborsMutableCopy", OutNeighboursMutableCopy);
 DeclareOperation("InNeighboursMutableCopy", [IsDigraph]);
 DeclareSynonym("InNeighborsMutableCopy", InNeighboursMutableCopy);
 DeclareOperation("AdjacencyMatrixMutableCopy", [IsDigraph]);
+DeclareOperation("BooleanAdjacencyMatrixMutableCopy", [IsDigraph]);
 
 DeclareOperation("DigraphLayers", [IsDigraph, IsPosInt]);
 DeclareAttribute("DIGRAPHS_Layers", IsDigraph, "mutable");

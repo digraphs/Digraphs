@@ -1431,21 +1431,19 @@ end);
 
 InstallMethod(OutNeighboursMutableCopy, "for a digraph",
 [IsDigraph],
-function(digraph)
-  return List(OutNeighbours(digraph), ShallowCopy);
-end);
+digraph -> List(OutNeighbours(digraph), ShallowCopy));
 
 InstallMethod(InNeighboursMutableCopy, "for a digraph",
 [IsDigraph],
-function(digraph)
-  return List(InNeighbours(digraph), ShallowCopy);
-end);
+digraph -> List(InNeighbours(digraph), ShallowCopy));
 
 InstallMethod(AdjacencyMatrixMutableCopy, "for a digraph",
 [IsDigraph],
-function(digraph)
-  return List(AdjacencyMatrix(digraph), ShallowCopy);
-end);
+digraph -> List(AdjacencyMatrix(digraph), ShallowCopy));
+
+InstallMethod(BooleanAdjacencyMatrixMutableCopy, "for a digraph",
+[IsDigraph],
+digraph -> List(BooleanAdjacencyMatrix(digraph), ShallowCopy));
 
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],
