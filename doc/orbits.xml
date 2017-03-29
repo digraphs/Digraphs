@@ -16,7 +16,7 @@
   <Description>
     If <A>digraph</A> was created knowing a subgroup of its automorphism group,
     then this group is stored in the attribute <C>DigraphGroup</C>. If
-    <A>digraph</A> is not created knowing a subgroup of it automorphism group,
+    <A>digraph</A> is not created knowing a subgroup of its automorphism group,
     then <C>DigraphGroup</C> returns the entire automorphism group of
     <A>digraph</A>.
     <P/>
