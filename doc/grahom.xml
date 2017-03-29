@@ -353,11 +353,15 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
       <C>n</C>-colouring</E> is a proper colouring that uses exactly <C>n</C>
     colours.  Equivalently, a proper (<C>n</C>-)colouring of a digraph can be
     defined to be a <Ref Oper="DigraphEpimorphism"/> from a digraph onto the
-    complete digraph (with <C>n</C> vertices); see <Ref Oper="CompleteDigraph"/>.
+    complete digraph (with <C>n</C> vertices); see <Ref
+      Oper="CompleteDigraph"/>.  Note that a digraph with loops (<Ref
+      Prop="DigraphHasLoops"/>) does not have a proper <C>n</C>-colouring for
+    any value <C>n</C>.
     <P/>
 
+    If <A>digraph</A> is a digraph and <A>n</A> is a non-negative integer, then
     <C>DigraphColouring(<A>digraph</A>, <A>n</A>)</C> returns an epimorphism
-    from <A>digraph</A> onto the complete digraph with <A>n</A> vertices, if one
+    from <A>digraph</A> onto the complete digraph with <A>n</A> vertices if one
     exists, else it returns <K>fail</K>. <P/>
 
     If the optional second argument <A>n</A> is not provided, then
