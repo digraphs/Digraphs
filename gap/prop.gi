@@ -38,7 +38,7 @@ end);
 InstallMethod(IsJoinSemilatticeDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local topo, gr, nbs, n;
+  local topo, gr, nbs;
 
   if not IsPartialOrderDigraph(digraph) then
     return false;
@@ -55,7 +55,7 @@ end);
 InstallMethod(IsMeetSemilatticeDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local topo, gr, nbs, n;
+  local topo, gr, nbs;
 
   if not IsPartialOrderDigraph(digraph) then
     return false;
