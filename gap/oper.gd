@@ -97,3 +97,7 @@ DeclareOperation("PartialOrderDigraphJoinOfVertices",
 DeclareOperation("PartialOrderDigraphMeetOfVertices",
 [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphClosure", [IsDigraph, IsPosInt]);
+
+DeclareOperation("IsMatching", [IsDigraph, IsList]);
+DeclareOperation("IsPerfectMatching", [IsDigraph, IsList]);
+DeclareOperation("IsMaximalMatching", [IsDigraph, IsList]);

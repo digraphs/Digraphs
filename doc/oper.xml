@@ -1457,3 +1457,53 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsMatching">
+<ManSection>
+  <Oper Name="IsMatching" Arg="digraph, edges"/>
+  <Oper Name="IsMaximalMatching" Arg="digraph, edges"/>
+  <Oper Name="IsPerfectMatching" Arg="digraph, edges"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+
+    A matching <C>M</C> on a digraph <C>G</C> is a
+    subset of the edges of the symmetric closure of G, such that no two 
+    distinct edges are adjacent.  Note that this definition allows matchings with loops,
+    and matchings with edges that are not themselves in the edge set of G,
+    but whose reverse is in the edge set of G. See <Ref Attr="DigraphSymmetricClosure" /> and
+    <Ref Prop="DigraphHasLoops" />. <P/>
+
+    A maximal matching N of a digraph G is a matching of G such that adding
+    any edge of G to N means that N is no longer a matching.  A perfect
+    matching P of a digraph G is a matching of G such that every vertex of
+    G is included in some edge in P. Every perfect matching is maximal. <P/>
+
+    If <A>digraph</A> is a digraph and <A>edges</A> is a list of pairs of vertices of digraph,
+    then <C>IsMatching(<A>digraph</A>, <A>edges</A>)</C> returns <K>true</K> if <A>edges</A>
+    defines a matching of <A>digraph</A>, and <K>false</K> 
+    otherwise.  Similarly, <C>IsMaximalMatching</C> returns <K>true</K> if <A>edges</A> defines a maximal
+    matching of <A>digraph</A>, and <C>IsPerfectMatching</C> returns 
+    <K>true</K> if <A>edges</A> defines a perfect matching of <A>digraph</A>.
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [1], [2, 3, 4], [3, 5], [1]]);
+<digraph with 5 vertices, 8 edges>
+gap> IsMatching(gr, [[2, 1], [3, 2]]);
+false
+gap> edges := [[3, 2]];;
+gap> IsMatching(gr, edges);
+true
+gap> IsMaximalMatching(gr, edges);
+false
+gap> edges := [[1, 5], [3, 3]];;
+gap> IsMaximalMatching(gr, edges);
+true
+gap> IsPerfectMatching(gr, edges);
+false
+gap> edges := [[1, 2], [3, 3], [4, 5]];;
+gap> IsPerfectMatching(gr, edges);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
