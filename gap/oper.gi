@@ -1771,3 +1771,73 @@ function(digraph, k)
 
   return DigraphByAdjacencyMatrix(out);
 end);
+
+# The following function performs almost all of the calculations necessary for
+# IsMatching, IsPerfectMatching, and IsMaximalMatching, without duplicating work
+
+InstallMethod(DIGRAPHS_Matching,
+"for a digraph and a list",
+[IsDigraph, IsHomogeneousList],
+function(gr, edges)
+  local seen, e;
+
+  if not IsDuplicateFreeList(edges)
+      or not ForAll(edges, e -> IsDigraphEdge(gr, e)) then
+    return false;
+  fi;
+
+  seen := BlistList(DigraphVertices(gr), []);
+
+  for e in edges do
+    if seen[e[1]] or seen[e[2]] then
+      return false;
+    fi;
+    seen[e[1]] := true;
+    seen[e[2]] := true;
+  od;
+
+  return seen;
+end);
+
+InstallMethod(IsMatching,
+"for a digraph and a list",
+[IsDigraph, IsHomogeneousList],
+function(gr, edges)
+  return DIGRAPHS_Matching(gr, edges) <> false;
+end);
+
+InstallMethod(IsPerfectMatching,
+"for a digraph and a list",
+[IsDigraph, IsHomogeneousList],
+function(gr, edges)
+  local seen;
+
+  seen := DIGRAPHS_Matching(gr, edges);
+  if seen = false then
+    return false;
+  fi;
+  return SizeBlist(seen) = DigraphNrVertices(gr);
+end);
+
+InstallMethod(IsMaximalMatching,
+"for a digraph and a list",
+[IsDigraph, IsHomogeneousList],
+function(gr, edges)
+  local seen, nbs, i, j;
+
+  seen := DIGRAPHS_Matching(gr, edges);
+  if seen = false then
+    return false;
+  fi;
+  nbs := OutNeighbours(gr);
+  for i in DigraphVertices(gr) do
+    if not seen[i] then
+      for j in nbs[i] do
+        if not seen[j] then
+          return false;
+        fi;
+      od;
+    fi;
+  od;
+  return true;
+end);
