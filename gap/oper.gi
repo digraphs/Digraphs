@@ -1730,3 +1730,44 @@ function(digraph, i, j)
 
   return fail;
 end);
+
+#
+
+InstallMethod(DigraphClosure,
+"for a digraph and an integer",
+[IsDigraph, IsPosInt],
+function(digraph, k)
+  local out, adj_mat, degs, n, new_edge, row, i, j;
+
+  if not IsSymmetricDigraph(digraph) or DigraphHasLoops(digraph)
+      or IsMultiDigraph(digraph) then
+    ErrorNoReturn("Digraphs: DigraphClosure: usage,\n",
+                  "the digraph must by symmetric, without loops, and no ",
+                  "multiple edges,");
+  fi;
+
+  out := [];
+  adj_mat := BooleanAdjacencyMatrixMutableCopy(digraph);
+  for row in adj_mat do
+    Add(out, ShallowCopy(row));
+  od;
+  degs := ShallowCopy(InDegrees(digraph));
+  n   := DigraphNrVertices(digraph);
+  new_edge := true;
+  while new_edge do
+    new_edge := false;
+    for i in [1 .. n] do
+      for j in [1 .. n] do
+        if j <> i and not out[i][j] and degs[i] + degs[j] >= k then
+          new_edge := true;
+          out[i][j] := true;
+          out[j][i] := true;
+          degs[i] := degs[i] + 1;
+          degs[j] := degs[j] + 1;
+        fi;
+      od;
+    od;
+  od;
+
+  return DigraphByAdjacencyMatrix(out);
+end);

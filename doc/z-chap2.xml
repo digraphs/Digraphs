@@ -56,6 +56,7 @@
     <#Include Label="BipartiteDoubleDigraph">
     <#Include Label="DigraphAddAllLoops">
     <#Include Label="DistanceDigraph">
+    <#Include Label="DigraphClosure">
   </Section>
 
   <Section><Heading>Random digraphs</Heading>

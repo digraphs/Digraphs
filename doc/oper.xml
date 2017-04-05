@@ -1429,3 +1429,31 @@ fail
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphClosure">
+<ManSection>
+  <Oper Name="DigraphClosure" Label="for a digraph and positive integer"
+        Arg="digraph, k"/>
+  <Returns>A digraph</Returns>
+  <Description>
+    Given a symmetric loopless digraph with no multiple edges <A>digraph</A>,
+    the <E><A>k</A>-closure of <A>digraph</A></E> is defined to be the unique
+    smallest symmetric loopless digraph <C>C</C> with no multiple edges on the
+    vertices of <A>digraph</A> that contains all the edges of <A>digraph</A>
+    and satsifies the property that the sum of the degrees of every two
+    non-adjacenct vertices in <C>C</C> is less than <A>k</A>. See <Ref
+    Oper="IsSymmetricDigraph"/>, <Ref Oper="DigraphHasLoops"/>, <Ref
+    Oper="IsMultiDigraph"/>, and <Ref Oper="OutDegreeOfVertex"/>. <P/>
+
+    The operation <C>DigraphClosure</C> returns the <A>k</A>-closure of <A>digraph</A>.
+    <Example><![CDATA[
+gap> gr := CompleteDigraph(6);;
+gap> DigraphRemoveEdges(gr, [[1, 2], [2, 1]]);;
+gap> closure := DigraphClosure(gr, 6);
+<digraph with 6 vertices, 30 edges>
+gap> IsCompleteDigraph(closure);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

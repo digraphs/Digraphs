@@ -96,3 +96,4 @@ DeclareOperation("PartialOrderDigraphJoinOfVertices",
 [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("PartialOrderDigraphMeetOfVertices",
 [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphClosure", [IsDigraph, IsPosInt]);
