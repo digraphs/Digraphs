@@ -1449,7 +1449,7 @@ fail
     <Example><![CDATA[
 gap> gr := CompleteDigraph(6);;
 gap> DigraphRemoveEdges(gr, [[1, 2], [2, 1]]);;
-gap> closure := DigraphClosure(gr, 6);                                                    
+gap> closure := DigraphClosure(gr, 6);
 <digraph with 6 vertices, 30 edges>
 gap> IsCompleteDigraph(closure);
 true
