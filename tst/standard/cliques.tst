@@ -343,7 +343,7 @@ the second argument <hook> has to be either fail, or a function with two
 arguments,
 gap> CliquesFinder(gr, fail, fail, fail, fail, fail, fail, fail, fail);
 Error, Digraphs: CliquesFinder: usage,
-when the fourth argument <hook> is fail, the third argument <user_param> has
+when the second argument <hook> is fail, the third argument <user_param> has
 to be a list,
 gap> f := function(a, b) return; end;;
 gap> CliquesFinder(gr, f, fail, fail, fail, fail, fail, fail, fail);
