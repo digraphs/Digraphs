@@ -625,7 +625,7 @@ function(gr, hook, user_param, limit, include, exclude, max, size, reps)
     fi;
   elif not IsList(user_param) then
     ErrorNoReturn("Digraphs: CliquesFinder: usage,\n",
-                  "when the fourth argument <hook> is fail, the third ",
+                  "when the second argument <hook> is fail, the third ",
                   "argument <user_param> has\nto be a list,");
   fi;
 
