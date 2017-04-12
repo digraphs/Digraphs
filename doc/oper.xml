@@ -1467,16 +1467,16 @@ true
   <Description>
 
     A matching <C>M</C> on a digraph <C>G</C> is a
-    subset of the edges of the symmetric closure of G, such that no two 
+    subset of the edges of the symmetric closure of <C>G</C>, such that no two 
     distinct edges are adjacent.  Note that this definition allows matchings with loops,
-    and matchings with edges that are not themselves in the edge set of G,
+    and matchings with edges that are not themselves in the edge set of <C>G</C>,
     but whose reverse is in the edge set of G. See <Ref Attr="DigraphSymmetricClosure" /> and
     <Ref Prop="DigraphHasLoops" />. <P/>
 
-    A maximal matching N of a digraph G is a matching of G such that adding
-    any edge of G to N means that N is no longer a matching.  A perfect
-    matching P of a digraph G is a matching of G such that every vertex of
-    G is included in some edge in P. Every perfect matching is maximal. <P/>
+    A maximal matching <C>N</C> of a digraph <C>G</C> is a matching of <C>G</C> such that adding
+    any edge of<C>G</C> to <C>N</C> means that <C>N</C> is no longer a matching.  A perfect
+    matching <C>P</C> of a digraph <C>G</C> is a matching of <C>G</C> such that every vertex of
+    <C>G</C> is included in some edge in <C>P</C>. Every perfect matching is maximal. <P/>
 
     If <A>digraph</A> is a digraph and <A>edges</A> is a list of pairs of vertices of digraph,
     then <C>IsMatching(<A>digraph</A>, <A>edges</A>)</C> returns <K>true</K> if <A>edges</A>
