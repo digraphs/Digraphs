@@ -1946,7 +1946,7 @@ true
 gap> gr := Digraph([[2], [3], [4, 3], [5], [1]]);
 <digraph with 5 vertices, 6 edges>
 gap> edges := [[1, 2], [4, 5], [3, 3]];;
-gap> IsPerfectMatching(gr,edges);
+gap> IsPerfectMatching(gr, edges);
 true
 
 #T# IsMaximalMatching
@@ -1955,7 +1955,7 @@ gap> gr := Digraph([[2], [3], [4], [5], [1]]);
 gap> edges := [[1, 2], [4, 3]];;
 gap> IsMaximalMatching(gr, edges);
 true
-gap> gr := Digraph([[2], [3], [4], [5], [1,5]]);
+gap> gr := Digraph([[2], [3], [4], [5], [1, 5]]);
 <digraph with 5 vertices, 6 edges>
 gap> edges := [[1, 2], [3, 4]];;
 gap> IsMaximalMatching(gr, edges);
