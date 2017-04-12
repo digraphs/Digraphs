@@ -2655,19 +2655,11 @@ static Int InitKernel(StructInitInfo* module) {
 *F  InitLibrary( <module> ) . . . . . . .  initialise library data structures
 */
 static Int InitLibrary(StructInitInfo* module) {
-  Int i, gvar;
+  Int gvar;
   Obj tmp;
 
   /* init filters and functions */
-  for (i = 0; GVarFuncs[i].name != 0; i++) {
-    gvar = GVarName(GVarFuncs[i].name);
-    AssGVar(gvar,
-            NewFunctionC(GVarFuncs[i].name,
-                         GVarFuncs[i].nargs,
-                         GVarFuncs[i].args,
-                         GVarFuncs[i].handler));
-    MakeReadOnlyGVar(gvar);
-  }
+  InitGVarFuncsFromTable(GVarFuncs);
 
   tmp  = NEW_PREC(0);
   gvar = GVarName("GRAPHS_C");
