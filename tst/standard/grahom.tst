@@ -305,8 +305,12 @@ fail
 #T# DigraphColouring
 gap> DigraphColouring(EmptyDigraph(0));
 IdentityTransformation
-gap> DigraphColouring(Digraph([[1]]));
+gap> DigraphColouring(Digraph([[]]));
 IdentityTransformation
+gap> DigraphColouring(Digraph([[1]]));
+fail
+gap> DigraphColouring(Digraph([[1]]), 1);
+fail
 gap> DigraphColouring(CycleDigraph(2));
 IdentityTransformation
 gap> DigraphColouring(CycleDigraph(3));

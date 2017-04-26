@@ -231,6 +231,8 @@ function(digraph)
 
   if DigraphNrVertices(digraph) = 0  then
     return IdentityTransformation;
+  elif DigraphHasLoops(digraph) then
+    return fail;
   fi;
 
   vertices  := DigraphVertices(digraph);
