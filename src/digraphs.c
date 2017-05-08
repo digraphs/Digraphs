@@ -2689,9 +2689,8 @@ static StructInitInfo module = {
     /* checkInit   = */ 0,
     /* preSave     = */ 0,
     /* postSave    = */ 0,
-    /* postRestore = */ 0,
-    /* filename    = */ (char*) "pkg/digraphs/digraphs.c",
-    /* isGapRootR  = */ true};
+    /* postRestore = */ 0
+};
 
 #ifndef GRAPHSSTATIC
 StructInitInfo* Init__Dynamic(void) {
