@@ -4,87 +4,83 @@ set -e
 # Display version of compiler
 $CXX --version
 
-INITIALDIR=`pwd`
-
-# Download and compile GAP
-cd ..
-git clone -b $GAP_BRANCH --depth=1 https://github.com/$GAP_FORK/gap.git gap
-cd gap
-if [ -f autogen.sh ]; then
-  ./autogen.sh
-fi
-./configure --with-gmp=system $GAP_FLAGS
-make
-mkdir pkg
 cd ..
 
-# Move the package itself to the correct location
-mv $INITIALDIR gap/pkg/$PACKAGE
-cd gap/pkg/$PACKAGE
+# Assume: linting and running GAP are mutually-exclusive test suites
 
-if [ "$PACKAGE" == "semigroups" ] && [ -d src ]; then
-  cd src
-  git clone -b $LIBSEMIGROUPS_BR --depth=1 https://github.com/james-d-mitchell/libsemigroups.git libsemigroups
-  cd ..
-  ./autogen.sh
-  ./configure $PKG_FLAGS
-  make
-fi
+if [ ! -z "$LINT" ]; then
 
-if [ "$PACKAGE" == "digraphs" ]; then
+  sudo pip install cpplint
+  git clone -b master --depth=1 https://github.com/james-d-mitchell/gaplint gaplint
+  mkdir gap gap/.git gap/pkg
+  mv Digraphs gap/pkg/digraphs
+
+elif [ ! -z "$GAP_BRANCH" ]; then
+
+  echo -e "\nInstalling GAP..."
+  if [ "$GAP_BRANCH" == "required" ]; then
+    cd Digraphs
+    GAP_BRANCH=v`grep "GAPVERS" PackageInfo.g | awk -F'"' '{print $2}'`
+    cd ..
+  fi
+  git clone -b $GAP_BRANCH --depth=1 https://github.com/gap-system/gap.git gap
+  cd gap
+  if [ -f autogen.sh ]; then
+    ./autogen.sh
+  fi
+  ./configure --with-gmp=system $GAP_FLAGS
+  make -j4
+  mkdir pkg
+  cd pkg
+  PKG_DIR=`pwd`
+  mv ../../Digraphs digraphs
+  cd digraphs
+
+  echo -e "\nDownloading $DIGRAPHS_LIB..."
   curl -L -O https://gap-packages.github.io/Digraphs/$DIGRAPHS_LIB.tar.gz
   tar xf $DIGRAPHS_LIB.tar.gz
   rm $DIGRAPHS_LIB.tar.gz
-fi
 
-cd ..
+  echo -e "\nCompiling the Digraphs package..."
+  ./autogen.sh
+  ./configure $PKG_FLAGS
+  make
 
-# Download and install dependencies and tools...
+  if [ ! -z "$COVERAGE" ]; then
+    echo -e "\nDownloading the profiling package..."
+    cd $PKG_DIR
+    git clone https://github.com/gap-packages/profiling.git profiling
+    cd profiling
+    PROFILING_VERS=`git tag | grep "v\d\+\(.\d\+\)\+" | tail -n 1`
+    echo "Checking out profiling version $PROFILING_VERS..."
+    git checkout $PROFILING_VERS
+    ./autogen.sh
+    ./configure $PKG_FLAGS
+    make
+    cd ..
+  fi
 
-# Compile Digraphs
-if [ "$PACKAGE" == "semigroups" ]; then
-  git clone -b $DIGRAPHS_BR --depth=1 https://github.com/gap-packages/Digraphs.git digraphs
-fi
-cd digraphs
-./autogen.sh
-./configure $PKG_FLAGS
-make
-cd ..
+  INSTALL_PKG () {
+    echo -e "\nDownloading $1..."
+    cd $PKG_DIR
+    git clone https://github.com/gap-packages/$1.git $1
+    cd $1
+    if [ ! -z "$NEWEST" ]; then
+      VERSION=`git tag | grep "v\d\+\(.\d\+\)\+" | tail -n 1`
+    else
+      VERSION=v`grep "\"$1\"" ../digraphs/PackageInfo.g | awk -F'"' '{print $4}' | cut -c3-`
+    fi
+    echo "Checking out $1 $VERSION..."
+    git checkout $VERSION
+    ./autogen.sh
+    ./configure $PKG_FLAGS
+    make
+    cd ..
+  }
 
-# GAPDoc
-echo "Downloading $GAPDOC..."
-curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$GAPDOC.tar.gz
-tar xzf $GAPDOC.tar.gz
-rm $GAPDOC.tar.gz
+  INSTALL_PKG "io"
+  INSTALL_PKG "orb"
 
-# GenSS
-echo "Downloading $GENSS..."
-curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$GENSS.tar.gz
-tar xzf $GENSS.tar.gz
-rm $GENSS.tar.gz
-
-# IO
-echo "Downloading $IO..."
-curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$IO.tar.gz
-tar xzf $IO.tar.gz
-rm $IO.tar.gz
-cd $IO
-./configure $PKG_FLAGS
-make
-cd ..
-
-# Orb
-echo "Downloading $ORB..."
-curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$ORB.tar.gz
-tar xzf $ORB.tar.gz
-rm $ORB.tar.gz
-cd $ORB
-./configure $PKG_FLAGS
-make
-cd ..
-
-# Grape: only install if we're testing the digraphs package
-if [ "$PACKAGE" == "digraphs" ]; then
   echo "Downloading $GRAPE..."
   curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$GRAPE.tar.gz
   tar xzf $GRAPE.tar.gz
@@ -93,25 +89,10 @@ if [ "$PACKAGE" == "digraphs" ]; then
   ./configure $PKG_FLAGS
   make
   cd ..
-fi
 
-# Only install profiling package if we'll run coverage checks
-if [ ! -z "$RUNCOVERAGE" ]; then
-  echo "Downloading $PROFILING..."
-  curl -LO https://github.com/gap-packages/profiling/releases/download/v$PROFILING/profiling-$PROFILING.tar.gz
-  tar xzf profiling-$PROFILING.tar.gz
-  rm profiling-$PROFILING.tar.gz
-  mv profiling-$PROFILING profiling
-  cd profiling
-  ./autogen.sh
-  ./configure $PKG_FLAGS
-  make
-  cd ..
-fi
-
-# Only install gaplint if we'll run the linting checks
-if [ ! -z "$RUNGAPLINT" ]; then
-  echo "Downloading gaplint..."
-  git clone -b master --depth=1 https://github.com/james-d-mitchell/gaplint gaplint
-  cd ..
+  echo -e "\nDownloading $GAPDOC..."
+  cd $PKG_DIR
+  curl -O https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$GAPDOC.tar.gz
+  tar xzf $GAPDOC.tar.gz
+  rm $GAPDOC.tar.gz
 fi

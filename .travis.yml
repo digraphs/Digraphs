@@ -3,20 +3,33 @@ compiler:
   - gcc
 env:
   global:
-    - IO=io-4.4.6
     - GAPDOC=GAPDoc-1.5.1
-    - ORB=orb-4.7.6
-    - PROFILING=1.3.0
-    - GENSS=genss-1.6.4
     - GRAPE=grape4r7
     - DIGRAPHS_LIB=digraphs-lib-0.5
-    - PACKAGE=digraphs
-    - THRESHOLD=98
   matrix:
-    - GAP_BRANCH=master GAP_FORK=gap-system RUNCOVERAGE=1
-    - GAP_BRANCH=stable-4.8 GAP_FORK=gap-system RUNGAPLINT=1
-    - GAP_BRANCH=master GAP_FORK=gap-system GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
-    - GAP_BRANCH=stable-4.8 GAP_FORK=gap-system GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
+    # Run only `make lint'
+    - LINT=1
+
+    # Run Digraphs tests and manual examples
+    # 64-bit, master
+    - GAP_BRANCH=master
+    # 32-bit, master
+    - GAP_BRANCH=master GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
+    # 64-bit, stable-4.8
+    - GAP_BRANCH=stable-4.8
+    # 32-bit, stable-4.8
+    - GAP_BRANCH=stable-4.8 GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
+
+    # Run with the required version of GAP
+    - GAP_BRANCH=required
+    # Run with newest version of each dependency
+    - GAP_BRANCH=master NEWEST=1
+
+    # Run code coverage
+    - COVERAGE=1 THRESHOLD=98 GAP_BRANCH=master
+
+    # TODO: Run Valgrind
+    #- VALGRIND=1 GAP_BRANCH=master
 addons:
   apt:
     sources:
@@ -28,7 +41,6 @@ before_script:
   - sudo apt-get update -qq
   - sudo apt-get install libgmp-dev
   - sudo apt-get install libgmp-dev:i386
-  - sudo pip install cpplint
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 script:
