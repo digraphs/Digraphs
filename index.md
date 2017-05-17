@@ -56,8 +56,8 @@ version of {{site.data.package.name}}:
                   Finlay Smith and
                   Michael Torpey and
                   Wilf A. Wilson},
-  title        = {gap-packages/Digraphs: 0.7.1},
-  month        = March,
+  title        = {gap-packages/Digraphs: 0.8.0},
+  month        = May,
   year         = 2017,
   url          = {https://gap-packages.github.io/Digraphs}
 }</pre>
