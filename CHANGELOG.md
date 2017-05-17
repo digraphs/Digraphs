@@ -4,6 +4,26 @@ Mitchell, Markus Pfeiffer, Finn Smith, Michael Torpey & Wilf A. Wilson
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.8.0 (released 17/05/2017)
+This release contains new features, several minor bugfixes, and minor
+improvements to the documentation of the package.
+
+### New Features in Version 0.8.0
+
+This release introduces the new operations `DigraphClosure`
+[[Julius Jonusas](http://www-circa.mcs.st-and.ac.uk/~julius)]
+and `BooleanAdjacencyMatrixMutableCopy`
+[[Wilf A. Wilson](http://wilf.me)],
+along with the following properties and operations related to semilattices
+[Chris Russell]:
+
+* `IsPartialOrderDigraph`
+* `IsMeetSemilatticeDigraph`
+* `IsJoinSemilatticeDigraph`
+* `IsLatticeDigraph`
+* `PartialOrderDigraphMeetOfVertices`
+* `PartialOrderDigraphJoinOfVertices`
+
 ## Version 0.7.1 (released 22/03/2017)
 This is a minor release, which fixes bugs in `DigraphTopologicalSort` and
 `IsAntisymmetricDigraph` that could trigger segmentation faults.
