@@ -1431,21 +1431,19 @@ end);
 
 InstallMethod(OutNeighboursMutableCopy, "for a digraph",
 [IsDigraph],
-function(digraph)
-  return List(OutNeighbours(digraph), ShallowCopy);
-end);
+digraph -> List(OutNeighbours(digraph), ShallowCopy));
 
 InstallMethod(InNeighboursMutableCopy, "for a digraph",
 [IsDigraph],
-function(digraph)
-  return List(InNeighbours(digraph), ShallowCopy);
-end);
+digraph -> List(InNeighbours(digraph), ShallowCopy));
 
 InstallMethod(AdjacencyMatrixMutableCopy, "for a digraph",
 [IsDigraph],
-function(digraph)
-  return List(AdjacencyMatrix(digraph), ShallowCopy);
-end);
+digraph -> List(AdjacencyMatrix(digraph), ShallowCopy));
+
+InstallMethod(BooleanAdjacencyMatrixMutableCopy, "for a digraph",
+[IsDigraph],
+digraph -> List(BooleanAdjacencyMatrix(digraph), ShallowCopy));
 
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],
@@ -1683,4 +1681,93 @@ function(digraph, list)
   fi;
 
   return DigraphShortestDistance(digraph, list[1], list[2]);
+end);
+
+# Partial Order Digraphs
+
+InstallMethod(PartialOrderDigraphJoinOfVertices,
+"for a digraph and two positive integers",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, i, j)
+  local x, nbs, intr;
+
+  if not IsPartialOrderDigraph(digraph) then
+    ErrorNoReturn("Digraphs: PartialOrderDigraphJoinOfVertices: usage,\n",
+                  "the first argument <digraph> must be a partial order ",
+                  "digraph,");
+  fi;
+
+  nbs := OutNeighboursMutableCopy(digraph);
+  intr := Intersection(nbs[i], nbs[j]);
+  for x in intr do
+    if intr = Set(nbs[x]) then
+      return x;
+    fi;
+  od;
+
+  return fail;
+end);
+
+InstallMethod(PartialOrderDigraphMeetOfVertices,
+"for a digraph and two positive integers",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, i, j)
+  local x, nbs, intr;
+
+  if not IsPartialOrderDigraph(digraph) then
+    ErrorNoReturn("Digraphs: PartialOrderDigraphMeetOfVertices: usage,\n",
+                  "the first argument <digraph> must be a partial order ",
+                  "digraph,");
+  fi;
+
+  nbs := InNeighboursMutableCopy(digraph);
+  intr := Intersection(nbs[i], nbs[j]);
+  for x in intr do
+    if intr = Set(nbs[x]) then
+      return x;
+    fi;
+  od;
+
+  return fail;
+end);
+
+#
+
+InstallMethod(DigraphClosure,
+"for a digraph and an integer",
+[IsDigraph, IsPosInt],
+function(digraph, k)
+  local out, adj_mat, degs, n, new_edge, row, i, j;
+
+  if not IsSymmetricDigraph(digraph) or DigraphHasLoops(digraph)
+      or IsMultiDigraph(digraph) then
+    ErrorNoReturn("Digraphs: DigraphClosure: usage,\n",
+                  "the digraph must by symmetric, without loops, and no ",
+                  "multiple edges,");
+  fi;
+
+  out := [];
+  adj_mat := BooleanAdjacencyMatrixMutableCopy(digraph);
+  for row in adj_mat do
+    Add(out, ShallowCopy(row));
+  od;
+  degs := ShallowCopy(InDegrees(digraph));
+  n   := DigraphNrVertices(digraph);
+  new_edge := true;
+  while new_edge do
+    new_edge := false;
+    for i in [1 .. n] do
+      for j in [1 .. n] do
+        if j <> i and not out[i][j] and degs[i] + degs[j] >= k then
+          new_edge := true;
+          out[i][j] := true;
+          out[j][i] := true;
+          degs[i] := degs[i] + 1;
+          degs[j] := degs[j] + 1;
+        fi;
+      od;
+    od;
+  od;
+
+  return DigraphByAdjacencyMatrix(out);
 end);

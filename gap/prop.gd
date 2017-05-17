@@ -32,6 +32,11 @@ DeclareProperty("IsDirectedTree", IsDigraph);
 DeclareProperty("IsUndirectedTree", IsDigraph);
 DeclareProperty("IsUndirectedForest", IsDigraph);
 DeclareProperty("IsEulerianDigraph", IsDigraph);
+DeclareProperty("IsMeetSemilatticeDigraph", IsDigraph);
+DeclareProperty("IsJoinSemilatticeDigraph", IsDigraph);
+
+DeclareOperation("DIGRAPHS_IsMeetJoinSemilatticeDigraph",
+                 [IsHomogeneousList]);
 
 InstallTrueMethod(IsAntisymmetricDigraph, IsTournament);
 InstallTrueMethod(IsAntisymmetricDigraph, IsAcyclicDigraph);
@@ -46,3 +51,9 @@ InstallTrueMethod(IsStronglyConnectedDigraph,
                   IsConnectedDigraph and IsSymmetricDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph, IsUndirectedTree);
 InstallTrueMethod(IsUndirectedForest, IsUndirectedTree);
+
+DeclareSynonymAttr("IsPartialOrderDigraph",
+                   IsReflexiveDigraph and IsAntisymmetricDigraph
+                   and IsTransitiveDigraph);
+DeclareSynonymAttr("IsLatticeDigraph",
+                    IsMeetSemilatticeDigraph and IsJoinSemilatticeDigraph);

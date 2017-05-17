@@ -82,6 +82,7 @@ DeclareSynonym("OutNeighborsMutableCopy", OutNeighboursMutableCopy);
 DeclareOperation("InNeighboursMutableCopy", [IsDigraph]);
 DeclareSynonym("InNeighborsMutableCopy", InNeighboursMutableCopy);
 DeclareOperation("AdjacencyMatrixMutableCopy", [IsDigraph]);
+DeclareOperation("BooleanAdjacencyMatrixMutableCopy", [IsDigraph]);
 
 DeclareOperation("DigraphLayers", [IsDigraph, IsPosInt]);
 DeclareAttribute("DIGRAPHS_Layers", IsDigraph, "mutable");
@@ -90,3 +91,9 @@ DeclareOperation("DigraphDistanceSet", [IsDigraph, IsPosInt, IsList]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList, IsList]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList]);
+
+DeclareOperation("PartialOrderDigraphJoinOfVertices",
+[IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("PartialOrderDigraphMeetOfVertices",
+[IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphClosure", [IsDigraph, IsPosInt]);

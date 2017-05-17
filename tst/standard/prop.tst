@@ -1028,6 +1028,85 @@ gap> g := Digraph([[2, 3], [3], [1]]);
 gap> IsEulerianDigraph(g);
 false
 
+# IsJoinSemilatticeDigraph, IsMeetSemilatticeDigraph, and IsLatticeDigraph
+gap> gr := Digraph([[1, 2], [2]]);
+<digraph with 2 vertices, 3 edges>
+gap> IsMeetSemilatticeDigraph(gr);
+true
+gap> IsJoinSemilatticeDigraph(gr);
+true
+gap> IsLatticeDigraph(gr);
+true
+gap> gr := CycleDigraph(5);
+<digraph with 5 vertices, 5 edges>
+gap> IsMeetSemilatticeDigraph(gr);
+false
+gap> IsJoinSemilatticeDigraph(gr);
+false
+
+# Join semilattice on 9 vertices
+gap> gr := DigraphFromDiSparse6String(".HiR@AeNcC?oD?G`oAGXIoAGXAe_COqDK^F");
+<digraph with 9 vertices, 36 edges>
+gap> IsMeetSemilatticeDigraph(gr);
+false
+gap> IsJoinSemilatticeDigraph(gr);
+true
+gap> IsLatticeDigraph(gr);
+false
+gap> gr := DigraphReverse(gr);
+<digraph with 9 vertices, 36 edges>
+gap> IsMeetSemilatticeDigraph(gr);
+true
+gap> IsJoinSemilatticeDigraph(gr);
+false
+gap> IsLatticeDigraph(gr);
+false
+
+# IsPartialOrderDigraph
+gap> gr := NullDigraph(5);
+<digraph with 5 vertices, 0 edges>
+gap> IsPartialOrderDigraph(gr);
+false
+gap> gr := Digraph([[1], [2], [3]]);
+<digraph with 3 vertices, 3 edges>
+gap> IsPartialOrderDigraph(gr);
+true
+
+# Big partial order digraph
+gap> gr := DigraphFromDiSparse6String(Concatenation(
+> ".~?CI_A?WA_M@G@_G@gB?]@?G_SAWA?Y@oJ__BGH?uA_M_IAoO_oCWL@IB_R_{DGB?mB?U_sDwM@",
+> "aBoX_KCGP@WEwQ@[FGR@_FWS@cFgT@gFwB@A?oO_KCGZACGwZAGGw[AUFOcAYF_f`{IG_Ae@?U`[",
+> "IwWAqEOl`gJgC@mF?jBAFOkBEF_lBIFomBMG?nBQ@?ZAE@?ZAI@?ZAMH?oBWMGdB?LowaWKOya[K",
+> "_xBmI?rBqIOsBuI_tBy@?`AMH?uCA@?aaOHOuB[OgCAIHOvCQ@?baOM@?CYMP@C]HOwCYMOyCKPp",
+> "HbgPPHbkQw{CgRG|C_RW}CyNpN_SIwkDEJPQawSwnDQ@OobCSPUbGS`VbKSpWbOT@XbSTPY_SK?u",
+> "_SK?v_SK?wbcT`[DyM`UDsVgzD[WG{D_Vp`bsUPabwU`bb{Upc_SL`?bcOP[EY@OvCIMOyCKV@\\",
+> "Ea@OvCQM`DDsYgDB_PgxC[V`kc_VpfEuM`HDwZHID{W@hEsZxJE?YpncoWPpcsW`oFIR`bEw[xNE",
+> "O\\HOES\\WDC?Ph@C[X`vc_Xpw_SOhBEWY@yc_Q`fEc]wDCQH@DE_Y`|cgQphEk^gDCQPPiGAQpj",
+> "GE@PEc[Z@vGMQ@lF_`HmFc`XHEo_xIEsZqCG]Z`oFo`QGckZqFf?[P~G_ahpGGahqGq[qJGu\\AH",
+> "Gy\\QEG}\\aO_G@gF@?cgGAKcwHCWdGIGKdWA_KCAV`CeGQACeWRAOegSC[ewTGOfG`AGeGBH]Ga",
+> "WH}@?bHaH?dC?Oa]IEHQ_IEHaba[gaca_OQdacQAeag`QfcCOqa_OeA^aCO`CI?ihBCSgabIm@A^",
+> "cOgAlcSgqm_SPa`c[QPvFggaoc_Q`wFkiQpccgqocgQqkJCkxJI{kxKJURQsJYRaqJ]RpxJaSAEJ",
+> "e?qQaGcqzaSdA{ccdQ|g[da}hcigQCGoHBHkoXIHooiGHsoy^i?ialKU@Q`IiH@yFsgqjK]grEK]",
+> "hBHa[oRGKiI@zISobJfohrKgciBL_OmxCJorxDJssHJJwsYIJ{sgDIgjZ?LQC`|LU^aZKCth~KKt",
+> "yJKOuGDK}_BOLi_RPLm_bQLqbBRLu@gPHKvweJswHKLGwYLLwwgDIuCaVMAHqZH{wRdcsjRBMGxi",
+> "MLcwrcM]GP|G?jbELQ_AmMQjRDkWtBcMmxBja_fa_KSxhMI[iqmKWxrjMybrMM_yRiMozRncC]p}",
+> "IoqH}GCganMeOamKYOqnK_qRhNMjbEMmO`|MgzBtmgzRti{qRkNUyzkMs|Rxms}XNIcjAnM{{rtN",
+> "e_QnMg|YOJg{BpNG|BuN[}ByNk~B|fc^Aqfo^qqJO{XzNG|H~GGlAtNG|H}K_|bwNu^RvNi_atN_",
+> "~ZvN_}b|n[}bznmcR}N|?C@OH?sCOT@cFObAiQ@ECgR`QDWaaSOgea]IGhaiOxCcUQPycg]xJcqR",
+> "XMc}SH{fsgx}f}_I@gI`yGgeaiJgqbYMg}cIPheeiZhqfYciUhifiajinjMlItjYlywjemj?kEoj",
+> "BkQqZIkmrJLkytZUl]uJXmkyjrNI}Rv"));
+<digraph with 266 vertices, 919 edges>
+gap> gr := DigraphReflexiveTransitiveClosure(gr);
+<digraph with 266 vertices, 10772 edges>
+gap> IsPartialOrderDigraph(gr);
+true
+gap> IsMeetSemilatticeDigraph(gr);
+false
+gap> IsJoinSemilatticeDigraph(gr);
+false
+gap> IsLatticeDigraph(gr);
+false
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(circuit);

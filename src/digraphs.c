@@ -2655,19 +2655,11 @@ static Int InitKernel(StructInitInfo* module) {
 *F  InitLibrary( <module> ) . . . . . . .  initialise library data structures
 */
 static Int InitLibrary(StructInitInfo* module) {
-  Int i, gvar;
+  Int gvar;
   Obj tmp;
 
   /* init filters and functions */
-  for (i = 0; GVarFuncs[i].name != 0; i++) {
-    gvar = GVarName(GVarFuncs[i].name);
-    AssGVar(gvar,
-            NewFunctionC(GVarFuncs[i].name,
-                         GVarFuncs[i].nargs,
-                         GVarFuncs[i].args,
-                         GVarFuncs[i].handler));
-    MakeReadOnlyGVar(gvar);
-  }
+  InitGVarFuncsFromTable(GVarFuncs);
 
   tmp  = NEW_PREC(0);
   gvar = GVarName("GRAPHS_C");
@@ -2697,9 +2689,8 @@ static StructInitInfo module = {
     /* checkInit   = */ 0,
     /* preSave     = */ 0,
     /* postSave    = */ 0,
-    /* postRestore = */ 0,
-    /* filename    = */ (char*) "pkg/digraphs/digraphs.c",
-    /* isGapRootR  = */ true};
+    /* postRestore = */ 0
+};
 
 #ifndef GRAPHSSTATIC
 StructInitInfo* Init__Dynamic(void) {
