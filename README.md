@@ -5,7 +5,7 @@
 
 ### Digraphs package for GAP
 
-#### Copyright (C) 2014-16 Jan De Beule, Julius Jonusas, James D. Mitchell, Finn Smith, Michael Torpey, Wilf Wilson
+#### Copyright (C) 2014-17 Jan De Beule, Julius Jonusas, James D. Mitchell, Finn Smith, Michael Torpey, Wilf A. Wilson
 
 ## Getting Digraphs
 
@@ -27,14 +27,17 @@ For questions, remarks, suggestions, and issues please use the
 ## Installation
 
 It is assumed that you have a working copy of [GAP](http://www.gap-system.org)
-with version number 4.7.8 or higher.  The most up-to-date version of
+with version number 4.8.2 or higher.  The most up-to-date version of
 [GAP](http://www.gap-system.org) and instructions on how to install it can be
 obtained from the [main GAP webpage](http://www.gap-system.org).
 
 The following is a summary of the steps that should lead to a successful
 installation of [Digraphs](https://gap-packages.github.io/Digraphs):
 
-* get the [IO](http://gap-system.github.io/io/) package version 4.4.4 or higher
+* get the [IO](http://gap-system.github.io/io) package version 4.4.4 or higher.
+
+* get the [orb](http://gap-system.github.io/orb) package version 4.7.5 or
+  higher.
 
 * **this step is optional:** certain methods in [Digraphs](https://gap-packages.github.io/Digraphs) require the [Grape](http://www.maths.qmul.ac.uk/~leonard/grape/) package to be available; a full list of these functions can be found in the first chapter of the manual.  To use these functions make sure that the [Grape](http://www.maths.qmul.ac.uk/~leonard/grape/) package version 4.5 or higher is available.
 
@@ -75,7 +78,7 @@ If you installed the package in a `pkg` directory other than the standard `pkg`
 directory in your [GAP](http://www.gap-system.org) installation, then you have
 to do two things. Firstly during compilation you have to use the option
 `--with-gaproot=PATH` of the `configure` script where `PATH` is a path to the
-main [GAP](http://www.gap-system.org) root directory (if not given the default
+main [GAP](http://www.gap-system.org) root directory (if not given, the default
 `../..` is assumed).
 
 If you installed [GAP](http://www.gap-system.org) on several architectures, you
