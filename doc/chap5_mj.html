@@ -86,6 +86,11 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7B2E42327DA118E0">5.3-20 DigraphDegeneracy</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X827C2BD17A4547E3">5.3-21 DigraphDegeneracyOrdering</a></span>
 </div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5_mj.html#X85492D15781F1A2A">5.4 <span class="Heading">Partial Orders</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X815436FA86A6B427">5.4-1 PartialOrderDigraphMeetOfVertices</a></span>
+</div></div>
 </div>
 
 <h3>5 <span class="Heading">Attributes and operations</span></h3>
@@ -468,9 +473,9 @@ false
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrixMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A square matrix of non-negative integers.</p>
 
-<p>This function returns the adjacency matrix <code class="code">mat</code> of the digraph <var class="Arg">digraph</var>. The value of the matrix entry <code class="code">mat[i][j]</code> is the number of edges in <var class="Arg">digraph</var> with source <code class="code">i</code> and range <code class="code">j</code>.</p>
+<p>This function returns the adjacency matrix <code class="code">mat</code> of the digraph <var class="Arg">digraph</var>. The value of the matrix entry <code class="code">mat[i][j]</code> is the number of edges in <var class="Arg">digraph</var> with source <code class="code">i</code> and range <code class="code">j</code>. If <var class="Arg">digraph</var> has no vertices, then the empty list is returned.</p>
 
-<p>The function <code class="code">AdjacencyMatrix</code> returns an immutable list of immutable lists, whereas the function <code class="code">AdjacencyMatrixMutableCopy</code> returns a copy of <code class="code">AdjacencyMatrix</code> which is a mutable list of mutable lists.</p>
+<p>The function <code class="code">AdjacencyMatrix</code> returns an immutable list of immutable lists, whereas the function <code class="code">AdjacencyMatrixMutableCopy</code> returns a copy of <code class="code">AdjacencyMatrix</code> that is a mutable list of mutable lists.</p>
 
 
 <div class="example"><pre>
@@ -498,13 +503,14 @@ false
 <h5>5.2-2 BooleanAdjacencyMatrix</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BooleanAdjacencyMatrix</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BooleanAdjacencyMatrixMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A square matrix of booleans.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph with a positive number of vertices <code class="code">n</code>, then <code class="code">BooleanAdjacencyMatrix(</code><var class="Arg">digraph</var><code class="code">)</code> returns the boolean adjacency matrix <code class="code">mat</code> of <var class="Arg">digraph</var>. The value of the matrix entry <code class="code">mat[j][i]</code> is <code class="keyw">true</code> if and only if there exists an edge in <var class="Arg">digraph</var> with source <code class="code">j</code> and range <code class="code">i</code>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph with a positive number of vertices <code class="code">n</code>, then <code class="code">BooleanAdjacencyMatrix(</code><var class="Arg">digraph</var><code class="code">)</code> returns the boolean adjacency matrix <code class="code">mat</code> of <var class="Arg">digraph</var>. The value of the matrix entry <code class="code">mat[j][i]</code> is <code class="keyw">true</code> if and only if there exists an edge in <var class="Arg">digraph</var> with source <code class="code">j</code> and range <code class="code">i</code>. If <var class="Arg">digraph</var> has no vertices, then the empty list is returned.</p>
 
-<p>Note this the boolean adjacency loses information about multiple edges.</p>
+<p>Note that the boolean adjacency matrix loses information about multiple edges.</p>
 
-<p>If <var class="Arg">digraph</var> has no vertices, then this attribute returns the empty list.</p>
+<p>The attribute <code class="code">BooleanAdjacencyMatrix</code> returns an immutable list of immutable lists, whereas the function <code class="code">BooleanAdjacencyMatrixMutableCopy</code> returns a copy of the <code class="code">BooleanAdjacencyMatrix</code> that is a mutable list of mutable lists.</p>
 
 
 <div class="example"><pre>
@@ -1371,7 +1377,7 @@ fail
 
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CompleteDigraph(4);;</span>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphLayers(gr,1);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphLayers(gr, 1);</span>
 [ [ 1 ], [ 2, 3, 4 ] ]
 </pre></div>
 
@@ -1426,6 +1432,44 @@ fail
 &lt;digraph with 6 vertices, 10 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDegeneracyOrdering(gr);</span>
 [ 1, 6, 5, 2, 4, 3 ]</pre></div>
+
+<p><a id="X85492D15781F1A2A" name="X85492D15781F1A2A"></a></p>
+
+<h4>5.4 <span class="Heading">Partial Orders</span></h4>
+
+<p><a id="X815436FA86A6B427" name="X815436FA86A6B427"></a></p>
+
+<h5>5.4-1 PartialOrderDigraphMeetOfVertices</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PartialOrderDigraphMeetOfVertices</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PartialOrderDigraphJoinOfVertices</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A positive integer or <code class="keyw">fail</code></p>
+
+<p>If the first argument is a partial order digraph <code class="func">IsPartialOrderDigraph</code> (<a href="chap6_mj.html#X82BAE6D37D49A145"><span class="RefLink">6.4-1</span></a>) then these operations return the meet, or the join, of the two input vertices. If the meet (or join) is does not exist then <code class="keyw">fail</code> is returned. The meet (or join) is guaranteed to exist when the first argument satisfies <code class="func">IsMeetSemilatticeDigraph</code> (<a href="chap6_mj.html#X78D3E17B7F737516"><span class="RefLink">6.4-2</span></a>) (or <code class="func">IsJoinSemilatticeDigraph</code> (<a href="chap6_mj.html#X78D3E17B7F737516"><span class="RefLink">6.4-2</span></a>)) - see the documentation for these properties for the definition of the meet (or the join).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1], [1, 2], [1, 3], [1, 2, 3, 4]]);</span>
+&lt;digraph with 4 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PartialOrderDigraphMeetOfVertices(gr, 2, 3);</span>
+4
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PartialOrderDigraphJoinOfVertices(gr, 2, 3);</span>
+1
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PartialOrderDigraphMeetOfVertices(gr, 1, 2);</span>
+2
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PartialOrderDigraphJoinOfVertices(gr, 3, 4);</span>
+3
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1], [2], [1, 2, 3], [1, 2, 4]]);</span>
+&lt;digraph with 4 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PartialOrderDigraphMeetOfVertices(gr, 3, 4);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PartialOrderDigraphJoinOfVertices(gr, 3, 4);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PartialOrderDigraphMeetOfVertices(gr, 1, 2);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">PartialOrderDigraphJoinOfVertices(gr, 1, 2);</span>
+fail
+</pre></div>
 
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap4_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap6_mj.html">[Next Chapter]</a>&nbsp;  </div>

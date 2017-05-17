@@ -1329,6 +1329,30 @@
     [4X[28X<digraph with 30 vertices, 270 edges>[128X[104X
   [4X[32X[104X
   
+  [1X3.3-34 DigraphClosure[101X
+  
+  [29X[2XDigraphClosure[102X( [3Xdigraph[103X, [3Xk[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA digraph[133X
+  
+  [33X[0;0YGiven  a  symmetric  loopless  digraph  with  no multiple edges [3Xdigraph[103X, the
+  [13X[3Xk[103X-closure of [3Xdigraph[103X[113X is defined to be the unique smallest symmetric loopless
+  digraph  [10XC[110X  with  no multiple edges on the vertices of [3Xdigraph[103X that contains
+  all  the  edges  of  [3Xdigraph[103X  and satsifies the property that the sum of the
+  degrees  of  every  two  non-adjacenct  vertices  in  [10XC[110X  is less than [3Xk[103X. See
+  [2XIsSymmetricDigraph[102X   ([14X6.1-10[114X),   [2XDigraphHasLoops[102X   ([14X6.1-1[114X),   [2XIsMultiDigraph[102X
+  ([14X6.1-8[114X), and [2XOutDegreeOfVertex[102X ([14X5.2-9[114X).[133X
+  
+  [33X[0;0YThe operation [10XDigraphClosure[110X returns the [3Xk[103X-closure of [3Xdigraph[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(6);;[127X[104X
+    [4X[25Xgap>[125X [27XDigraphRemoveEdges(gr, [[1, 2], [2, 1]]);;[127X[104X
+    [4X[25Xgap>[125X [27Xclosure := DigraphClosure(gr, 6);[127X[104X
+    [4X[28X<digraph with 6 vertices, 30 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteDigraph(closure);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
   
   [1X3.4 [33X[0;0YRandom digraphs[133X[101X
   
@@ -1537,7 +1561,7 @@
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
     [4X[28X[ [ 2, 3, 4, 5 ], [ 1, 3, 4, 6 ], [ 1, 2, 5, 6 ], [ 1, 2, 5, 6 ], [128X[104X
     [4X[28X  [ 1, 3, 4, 6 ], [ 2, 3, 4, 5 ] ][128X[104X
-    [4X[25Xgap>[125X [27XJohnsonDigraph(1,0);[127X[104X
+    [4X[25Xgap>[125X [27XJohnsonDigraph(1, 0);[127X[104X
     [4X[28X<digraph with 1 vertex, 0 edges>[128X[104X
   [4X[32X[104X
   

@@ -6,7 +6,7 @@
                               [1XMethods for digraphs[101X
   
   
-                                 Version 0.7.1
+                                 Version 0.8.0
   
   
                                   Jan De Beule
@@ -145,6 +145,7 @@
       3.3-31 BipartiteDoubleDigraph
       3.3-32 DigraphAddAllLoops
       3.3-33 DistanceDigraph
+      3.3-34 DigraphClosure
     3.4 [33X[0;0YRandom digraphs[133X
       3.4-1 RandomDigraph
       3.4-2 RandomMultiDigraph
@@ -215,6 +216,8 @@
       5.3-19 DigraphLayers
       5.3-20 DigraphDegeneracy
       5.3-21 DigraphDegeneracyOrdering
+    5.4 [33X[0;0YPartial Orders[133X
+      5.4-1 PartialOrderDigraphMeetOfVertices
   6 [33X[0;0YProperties of digraphs[133X
     6.1 [33X[0;0YEdge properties[133X
       6.1-1 DigraphHasLoops
@@ -242,6 +245,9 @@
       6.3-5 IsDirectedTree
       6.3-6 IsUndirectedTree
       6.3-7 IsEulerianDigraph
+    6.4 [33X[0;0YPartial Orders[133X
+      6.4-1 IsPartialOrderDigraph
+      6.4-2 IsMeetSemilatticeDigraph
   7 [33X[0;0YHomomorphisms[133X
     7.1 [33X[0;0YActing on digraphs[133X
       7.1-1 OnDigraphs

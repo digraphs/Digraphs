@@ -90,7 +90,7 @@
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);</span>
 &lt;digraph with 5 vertices, 11 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">new := OnDigraphs(gr, (1,2));</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">new := OnDigraphs(gr, (1, 2));</span>
 &lt;digraph with 5 vertices, 11 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(new);</span>
 [ [ 2, 3, 5 ], [ 3 ], [ 2 ], [ 2, 1, 4 ], [ 1, 3, 5 ] ]
@@ -431,7 +431,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGroup</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
 <p>Returns: A permutation group.</p>
 
-<p>If <var class="Arg">digraph</var> was created knowing a subgroup of its automorphism group, then this group is stored in the attribute <code class="code">DigraphGroup</code>. If <var class="Arg">digraph</var> is not created knowing a subgroup of it automorphism group, then <code class="code">DigraphGroup</code> returns the entire automorphism group of <var class="Arg">digraph</var>.</p>
+<p>If <var class="Arg">digraph</var> was created knowing a subgroup of its automorphism group, then this group is stored in the attribute <code class="code">DigraphGroup</code>. If <var class="Arg">digraph</var> is not created knowing a subgroup of its automorphism group, then <code class="code">DigraphGroup</code> returns the entire automorphism group of <var class="Arg">digraph</var>.</p>
 
 <p>Note that certain other constructor operations such as <code class="func">CayleyDigraph</code> (<a href="chap3_mj.html#X7FCADADC7EC28478"><span class="RefLink">3.5-7</span></a>), <code class="func">BipartiteDoubleDigraph</code> (<a href="chap3_mj.html#X7C6E6CB284982C7A"><span class="RefLink">3.3-31</span></a>), and <code class="func">DoubleDigraph</code> (<a href="chap3_mj.html#X7FB8B48C87C0ED16"><span class="RefLink">3.3-30</span></a>), may not require a group as one of the arguments, but use the standard constructor method using a group, and hence set the <code class="code">DigraphGroup</code> attribute for the resulting digraph.</p>
 
@@ -439,7 +439,7 @@ true
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">n := 4;;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">adj := function(x, y)</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">     return (((x - y) mod n) = 1) or (((x - y) mod n) = n-1);</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">     return (((x - y) mod n) = 1) or (((x - y) mod n) = n - 1);</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">   end;;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">group := CyclicGroup(IsPermGroup, n);</span>
 Group([ (1,2,3,4) ])
@@ -1088,9 +1088,9 @@ Transformation( [ 1, 2, 3, 1 ] )
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColoring</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
 
-<p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. A <em>proper <code class="code">n</code>-colouring</em> is a proper colouring that uses exactly <code class="code">n</code> colours. Equivalently, a proper (<code class="code">n</code>-)colouring of a digraph can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7_mj.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from a digraph onto the complete digraph (with <code class="code">n</code> vertices); see <code class="func">CompleteDigraph</code> (<a href="chap3_mj.html#X812417E278198D9C"><span class="RefLink">3.5-2</span></a>).</p>
+<p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. A <em>proper <code class="code">n</code>-colouring</em> is a proper colouring that uses exactly <code class="code">n</code> colours. Equivalently, a proper (<code class="code">n</code>-)colouring of a digraph can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7_mj.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from a digraph onto the complete digraph (with <code class="code">n</code> vertices); see <code class="func">CompleteDigraph</code> (<a href="chap3_mj.html#X812417E278198D9C"><span class="RefLink">3.5-2</span></a>). Note that a digraph with loops (<code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>)) does not have a proper <code class="code">n</code>-colouring for any value <code class="code">n</code>.</p>
 
-<p><code class="code">DigraphColouring(<var class="Arg">digraph</var>, <var class="Arg">n</var>)</code> returns an epimorphism from <var class="Arg">digraph</var> onto the complete digraph with <var class="Arg">n</var> vertices, if one exists, else it returns <code class="keyw">fail</code>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">n</var> is a non-negative integer, then <code class="code">DigraphColouring(<var class="Arg">digraph</var>, <var class="Arg">n</var>)</code> returns an epimorphism from <var class="Arg">digraph</var> onto the complete digraph with <var class="Arg">n</var> vertices if one exists, else it returns <code class="keyw">fail</code>.</p>
 
 <p>If the optional second argument <var class="Arg">n</var> is not provided, then <code class="code">DigraphColouring</code> uses a greedy algorithm to obtain some proper colouring of <var class="Arg">digraph</var>, which may not use the minimal number of colours.</p>
 

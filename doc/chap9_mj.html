@@ -105,7 +105,8 @@
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Splash(DotDigraph(RandomDigraph(4)));</span></pre></div>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Splash(DotDigraph(RandomDigraph(4)));</span>
+</pre></div>
 
 <p><a id="X7F9B99C478EE093A" name="X7F9B99C478EE093A"></a></p>
 
@@ -451,7 +452,8 @@ IO_OK
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IO_Close(file);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">iter := IteratorFromDigraphFile(filename);</span>
 &lt;iterator&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">for x in iter do od;</span></pre></div>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">for x in iter do od;</span>
+</pre></div>
 
 <p><a id="X7AAA35867B5D8BF4" name="X7AAA35867B5D8BF4"></a></p>
 
@@ -476,7 +478,7 @@ IO_OK
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3], [1], [1]]);</span>
 &lt;digraph with 3 vertices, 4 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">enc := DigraphPlainTextLineEncoder("  ", " ", -1);;</span>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">dec := DigraphPlainTextLineDecoder("  ", " ",  1);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">dec := DigraphPlainTextLineDecoder("  ", " ", 1);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">enc(gr);</span>
 "0 1  0 2  1 0  2 0"
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">dec(last);</span>

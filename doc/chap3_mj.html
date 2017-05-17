@@ -83,6 +83,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7C6E6CB284982C7A">3.3-31 BipartiteDoubleDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X8167A50A83256ED1">3.3-32 DigraphAddAllLoops</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X865436437DF95FEF">3.3-33 DistanceDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7CCD7B4F819552AD">3.3-34 DigraphClosure</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3_mj.html#X85B5D9B97F5187B7">3.4 <span class="Heading">Random digraphs</span></a>
 </span>
@@ -1362,6 +1363,27 @@ true
 &lt;digraph with 30 vertices, 270 edges&gt;
 </pre></div>
 
+<p><a id="X7CCD7B4F819552AD" name="X7CCD7B4F819552AD"></a></p>
+
+<h5>3.3-34 DigraphClosure</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphClosure</code>( <var class="Arg">digraph</var>, <var class="Arg">k</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A digraph</p>
+
+<p>Given a symmetric loopless digraph with no multiple edges <var class="Arg">digraph</var>, the <em><var class="Arg">k</var>-closure of <var class="Arg">digraph</var></em> is defined to be the unique smallest symmetric loopless digraph <code class="code">C</code> with no multiple edges on the vertices of <var class="Arg">digraph</var> that contains all the edges of <var class="Arg">digraph</var> and satsifies the property that the sum of the degrees of every two non-adjacenct vertices in <code class="code">C</code> is less than <var class="Arg">k</var>. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>), <code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>), <code class="func">IsMultiDigraph</code> (<a href="chap6_mj.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.1-8</span></a>), and <code class="func">OutDegreeOfVertex</code> (<a href="chap5_mj.html#X7A09EB648070276D"><span class="RefLink">5.2-9</span></a>).</p>
+
+<p>The operation <code class="code">DigraphClosure</code> returns the <var class="Arg">k</var>-closure of <var class="Arg">digraph</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CompleteDigraph(6);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphRemoveEdges(gr, [[1, 2], [2, 1]]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">closure := DigraphClosure(gr, 6);</span>
+&lt;digraph with 6 vertices, 30 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCompleteDigraph(closure);</span>
+true
+</pre></div>
+
 <p><a id="X85B5D9B97F5187B7" name="X85B5D9B97F5187B7"></a></p>
 
 <h4>3.4 <span class="Heading">Random digraphs</span></h4>
@@ -1569,7 +1591,7 @@ Group([ (1,2,3,4), (2,4) ])
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(gr);</span>
 [ [ 2, 3, 4, 5 ], [ 1, 3, 4, 6 ], [ 1, 2, 5, 6 ], [ 1, 2, 5, 6 ], 
   [ 1, 3, 4, 6 ], [ 2, 3, 4, 5 ] ]
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">JohnsonDigraph(1,0);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">JohnsonDigraph(1, 0);</span>
 &lt;digraph with 1 vertex, 0 edges&gt;
 </pre></div>
 

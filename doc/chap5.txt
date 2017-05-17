@@ -400,11 +400,12 @@
   
   [33X[0;0YThis  function  returns the adjacency matrix [10Xmat[110X of the digraph [3Xdigraph[103X. The
   value  of  the matrix entry [10Xmat[i][j][110X is the number of edges in [3Xdigraph[103X with
-  source [10Xi[110X and range [10Xj[110X.[133X
+  source  [10Xi[110X  and  range  [10Xj[110X. If [3Xdigraph[103X has no vertices, then the empty list is
+  returned.[133X
   
   [33X[0;0YThe  function  [10XAdjacencyMatrix[110X returns an immutable list of immutable lists,
   whereas   the   function   [10XAdjacencyMatrixMutableCopy[110X   returns  a  copy  of
-  [10XAdjacencyMatrix[110X which is a mutable list of mutable lists.[133X
+  [10XAdjacencyMatrix[110X that is a mutable list of mutable lists.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
@@ -430,16 +431,21 @@
   [1X5.2-2 BooleanAdjacencyMatrix[101X
   
   [29X[2XBooleanAdjacencyMatrix[102X( [3Xdigraph[103X ) [32X attribute
+  [29X[2XBooleanAdjacencyMatrixMutableCopy[102X( [3Xdigraph[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA square matrix of booleans.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph  with  a  positive  number  of  vertices [10Xn[110X, then
   [10XBooleanAdjacencyMatrix([110X[3Xdigraph[103X[10X)[110X  returns the boolean adjacency matrix [10Xmat[110X of
   [3Xdigraph[103X.  The  value  of  the  matrix entry [10Xmat[j][i][110X is [9Xtrue[109X if and only if
-  there exists an edge in [3Xdigraph[103X with source [10Xj[110X and range [10Xi[110X.[133X
+  there exists an edge in [3Xdigraph[103X with source [10Xj[110X and range [10Xi[110X. If [3Xdigraph[103X has no
+  vertices, then the empty list is returned.[133X
   
-  [33X[0;0YNote this the boolean adjacency loses information about multiple edges.[133X
+  [33X[0;0YNote  that  the  boolean  adjacency  matrix loses information about multiple
+  edges.[133X
   
-  [33X[0;0YIf [3Xdigraph[103X has no vertices, then this attribute returns the empty list.[133X
+  [33X[0;0YThe  attribute [10XBooleanAdjacencyMatrix[110X returns an immutable list of immutable
+  lists, whereas the function [10XBooleanAdjacencyMatrixMutableCopy[110X returns a copy
+  of the [10XBooleanAdjacencyMatrix[110X that is a mutable list of mutable lists.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[3, 4], [2, 3], [1, 2, 4], [4]]);[127X[104X
@@ -1365,7 +1371,7 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := CompleteDigraph(4);;[127X[104X
-    [4X[25Xgap>[125X [27XDigraphLayers(gr,1);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphLayers(gr, 1);[127X[104X
     [4X[28X[ [ 1 ], [ 2, 3, 4 ] ][128X[104X
   [4X[32X[104X
   
@@ -1426,5 +1432,45 @@
     [4X[28X<digraph with 6 vertices, 10 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphDegeneracyOrdering(gr);[127X[104X
     [4X[28X[ 1, 6, 5, 2, 4, 3 ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X5.4 [33X[0;0YPartial Orders[133X[101X
+  
+  [1X5.4-1 PartialOrderDigraphMeetOfVertices[101X
+  
+  [29X[2XPartialOrderDigraphMeetOfVertices[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation
+  [29X[2XPartialOrderDigraphJoinOfVertices[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10YA positive integer or [9Xfail[109X[133X
+  
+  [33X[0;0YIf  the  first  argument  is  a  partial order digraph [2XIsPartialOrderDigraph[102X
+  ([14X6.4-1[114X) then these operations return the meet, or the join, of the two input
+  vertices. If the meet (or join) is does not exist then [9Xfail[109X is returned. The
+  meet  (or  join)  is  guaranteed  to exist when the first argument satisfies
+  [2XIsMeetSemilatticeDigraph[102X ([14X6.4-2[114X) (or [2XIsJoinSemilatticeDigraph[102X ([14X6.4-2[114X)) - see
+  the  documentation  for  these properties for the definition of the meet (or
+  the join).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1], [1, 2], [1, 3], [1, 2, 3, 4]]);[127X[104X
+    [4X[28X<digraph with 4 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(gr, 2, 3);[127X[104X
+    [4X[28X4[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(gr, 2, 3);[127X[104X
+    [4X[28X1[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(gr, 1, 2);[127X[104X
+    [4X[28X2[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(gr, 3, 4);[127X[104X
+    [4X[28X3[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1], [2], [1, 2, 3], [1, 2, 4]]);[127X[104X
+    [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(gr, 3, 4);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(gr, 3, 4);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(gr, 1, 2);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(gr, 1, 2);[127X[104X
+    [4X[28Xfail[128X[104X
   [4X[32X[104X
   

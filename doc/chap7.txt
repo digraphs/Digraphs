@@ -29,7 +29,7 @@
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
     [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xnew := OnDigraphs(gr, (1,2));[127X[104X
+    [4X[25Xgap>[125X [27Xnew := OnDigraphs(gr, (1, 2));[127X[104X
     [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(new);[127X[104X
     [4X[28X[ [ 2, 3, 5 ], [ 3 ], [ 2 ], [ 2, 1, 4 ], [ 1, 3, 5 ] ][128X[104X
@@ -414,7 +414,7 @@
   
   [33X[0;0YIf  [3Xdigraph[103X  was  created knowing a subgroup of its automorphism group, then
   this  group  is  stored  in  the  attribute  [10XDigraphGroup[110X. If [3Xdigraph[103X is not
-  created  knowing  a  subgroup  of  it  automorphism group, then [10XDigraphGroup[110X
+  created  knowing  a  subgroup  of  its automorphism group, then [10XDigraphGroup[110X
   returns the entire automorphism group of [3Xdigraph[103X.[133X
   
   [33X[0;0YNote  that  certain  other  constructor  operations  such  as  [2XCayleyDigraph[102X
@@ -426,7 +426,7 @@
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xn := 4;;[127X[104X
     [4X[25Xgap>[125X [27Xadj := function(x, y)[127X[104X
-    [4X[25X>[125X [27X     return (((x - y) mod n) = 1) or (((x - y) mod n) = n-1);[127X[104X
+    [4X[25X>[125X [27X     return (((x - y) mod n) = 1) or (((x - y) mod n) = n - 1);[127X[104X
     [4X[25X>[125X [27X   end;;[127X[104X
     [4X[25Xgap>[125X [27Xgroup := CyclicGroup(IsPermGroup, n);[127X[104X
     [4X[28XGroup([ (1,2,3,4) ])[128X[104X
@@ -1109,10 +1109,12 @@
   proper  colouring  that  uses  exactly  [10Xn[110X  colours.  Equivalently,  a proper
   ([10Xn[110X-)colouring of a digraph can be defined to be a [2XDigraphEpimorphism[102X ([14X7.3-6[114X)
   from   a   digraph   onto  the  complete  digraph  (with  [10Xn[110X  vertices);  see
-  [2XCompleteDigraph[102X ([14X3.5-2[114X).[133X
+  [2XCompleteDigraph[102X  ([14X3.5-2[114X).  Note  that  a digraph with loops ([2XDigraphHasLoops[102X
+  ([14X6.1-1[114X)) does not have a proper [10Xn[110X-colouring for any value [10Xn[110X.[133X
   
-  [33X[0;0Y[10XDigraphColouring([3Xdigraph[103X[10X,  [3Xn[103X[10X)[110X  returns  an epimorphism from [3Xdigraph[103X onto the
-  complete digraph with [3Xn[103X vertices, if one exists, else it returns [9Xfail[109X.[133X
+  [33X[0;0YIf   [3Xdigraph[103X   is   a   digraph  and  [3Xn[103X  is  a  non-negative  integer,  then
+  [10XDigraphColouring([3Xdigraph[103X[10X,  [3Xn[103X[10X)[110X  returns  an epimorphism from [3Xdigraph[103X onto the
+  complete digraph with [3Xn[103X vertices if one exists, else it returns [9Xfail[109X.[133X
   
   [33X[0;0YIf  the  optional  second  argument [3Xn[103X is not provided, then [10XDigraphColouring[110X
   uses  a  greedy  algorithm to obtain some proper colouring of [3Xdigraph[103X, which

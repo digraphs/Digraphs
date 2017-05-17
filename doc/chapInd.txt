@@ -15,6 +15,7 @@
   [2XAutomorphismGroup[102X (for a digraph and a homogeneous list)  7.2-2
   [2XBipartiteDoubleDigraph[102X  3.3-31
   [2XBooleanAdjacencyMatrix[102X  5.2-2
+  [2XBooleanAdjacencyMatrixMutableCopy[102X  5.2-2
   [2XCayleyDigraph[102X  3.5-7
   [2XChainDigraph[102X  3.5-1
   [2XChromaticNumber[102X  7.3-11
@@ -45,6 +46,7 @@
   [2XDigraphClique[102X  8.1-3
   [2XDigraphCliques[102X  8.1-4
   [2XDigraphCliquesReps[102X  8.1-4
+  [2XDigraphClosure[102X (for a digraph and positive integer)  3.3-34
   [2XDigraphColoring[102X (for a digraph and a number of colours)  7.3-9
   [2XDigraphColoring[102X (for a digraph)  7.3-9
   [2XDigraphColouring[102X (for a digraph and a number of colours)  7.3-9
@@ -201,13 +203,17 @@
   [2XIsInRegularDigraph[102X  6.2-1
   [2XIsIsomorphicDigraph[102X (for digraphs)  7.2-10
   [2XIsIsomorphicDigraph[102X (for digraphs and homogeneous lists)  7.2-11
+  [2XIsJoinSemilatticeDigraph[102X  6.4-2
+  [2XIsLatticeDigraph[102X  6.4-2
   [2XIsMaximalClique[102X  8.1-1
   [2XIsMaximalIndependentSet[102X  8.2-1
+  [2XIsMeetSemilatticeDigraph[102X  6.4-2
   [2XIsMultiDigraph[102X  6.1-8
   [2XIsNullDigraph[102X  6.1-6
   [2XIsomorphismDigraphs[102X (for digraphs)  7.2-12
   [2XIsomorphismDigraphs[102X (for digraphs and homogeneous lists)  7.2-13
   [2XIsOutRegularDigraph[102X  6.2-2
+  [2XIsPartialOrderDigraph[102X  6.4-1
   [2XIsReachable[102X  5.3-14
   [2XIsReflexiveDigraph[102X  6.1-9
   [2XIsRegularDigraph[102X  6.2-3
@@ -244,6 +250,8 @@
   [2XOutNeighbours[102X  5.2-5
   [2XOutNeighboursMutableCopy[102X  5.2-5
   [2XOutNeighboursOfVertex[102X  5.2-10
+  [2XPartialOrderDigraphJoinOfVertices[102X (for a digraph and two vertices)  5.4-1
+  [2XPartialOrderDigraphMeetOfVertices[102X (for a digraph and two vertices)  5.4-1
   [2XPlainTextString[102X  9.2-11
   [2XQuotientDigraph[102X  3.3-6
   [2XRandomDigraph[102X  3.4-1
