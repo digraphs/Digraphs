@@ -4,6 +4,10 @@ Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.8.1 (released 18/05/2017)
+This is a minor release, which updates the README file and updates the list of
+package authors and contributors.
+
 ## Version 0.8.0 (released 17/05/2017)
 This release contains new features, several minor bugfixes, and minor
 improvements to the documentation of the package.

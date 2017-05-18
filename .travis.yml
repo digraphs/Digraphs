@@ -11,19 +11,17 @@ env:
     - LINT=1
 
     # Run Digraphs tests and manual examples
-    # 64-bit, master
-    - GAP_BRANCH=master
-    # 32-bit, master
+    # 64-bit, master (and the newest package versions, where possible)
+    - GAP_BRANCH=master NEWEST=1
+    # 32-bit, master (and the required package versions, where possible)
     - GAP_BRANCH=master GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
-    # 64-bit, stable-4.8
+    # 64-bit, stable-4.8 (and the required package versions, where possible)
     - GAP_BRANCH=stable-4.8
-    # 32-bit, stable-4.8
+    # 32-bit, stable-4.8 (and the required package versions, where possible)
     - GAP_BRANCH=stable-4.8 GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
 
-    # Run with the required version of GAP
+    # Run with the required version of GAP and packages, where possible
     - GAP_BRANCH=required
-    # Run with newest version of each dependency
-    - GAP_BRANCH=master NEWEST=1
 
     # Run code coverage
     - COVERAGE=1 THRESHOLD=98 GAP_BRANCH=master
