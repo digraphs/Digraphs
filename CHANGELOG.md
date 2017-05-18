@@ -1,6 +1,6 @@
 # Digraphs package for GAP - CHANGELOG
-Copyright (C) 2014-17 Jan De Beule, Luke Elliott, Julius Jonusas, James D.
-Mitchell, Markus Pfeiffer, Finn Smith, Michael Torpey & Wilf A. Wilson
+Copyright (C) 2014-17 by Jan De Beule, Julius Jonušas, James D. Mitchell,
+Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
 

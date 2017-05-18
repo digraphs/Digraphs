@@ -1,14 +1,7 @@
-############################################################################
+#############################################################################
 ##
 #W  PackageInfo.g
-#Y  Copyright (C) 2015-17                                Jan J De Beule
-##                                                       Luke Elliott
-##                                                       Julius Jonusas
-##                                                       James Mitchell
-##                                                       Markus Pfeiffer
-##                                                       Finn Smith
-##                                                       Michael Torpey
-##                                                       Wilf A. Wilson
+#Y  Copyright (C) 2015-17                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README.md file of this package.
 ##
@@ -57,6 +50,19 @@ Persons := [
     Institution   := "Vrije Universiteit Brussel"),
 
   rec(
+    LastName      := "Burrell",
+    FirstNames    := "S.",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "sb235@st-andrews.ac.uk",
+    PostalAddress := Concatenation([
+                       "CREEM,", " The Observatory,",
+                       " Buchanan Gardens,", " St Andrews,", " Fife,",
+                       " KY16 9LZ,", " Scotland"]),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
     LastName      := "Elliott",
     FirstNames    := "L.",
     IsAuthor      := false,
@@ -65,6 +71,20 @@ Persons := [
     PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"]),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Jefferson",
+    FirstNames    := "C.",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "caj21@st-andrews.ac.uk",
+    WWWHome       := "http://caj.host.cs.st-andrews.ac.uk",
+    PostalAddress := Concatenation([
+                       "Jack Cole Building,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SX,",
                        " Scotland"]),
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -191,8 +211,10 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">=4.8.2",
-  NeededOtherPackages := [["io", ">=4.4.4"], ["orb", ">=4.7.5"]],
-  SuggestedOtherPackages := [["gapdoc", ">=1.5.1"], ["grape", ">=4.5"]],
+  NeededOtherPackages := [["io", ">=4.4.4"],
+                          ["orb", ">=4.7.5"]],
+  SuggestedOtherPackages := [["gapdoc", ">=1.5.1"],
+                             ["grape", ">=4.5"]],
   ExternalConditions := [],
 ),
 
