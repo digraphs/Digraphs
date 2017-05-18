@@ -35,6 +35,11 @@ There is a library of various digraphs available for testing purposes
 {% if person.url %}<a href="{{ person.url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% unless forloop.last %}, {% endunless %}{% else %}
 {% endfor %}
 
+## Contributor{% if site.data.package.authors.size != 1 %}s{% endif %}
+{% for person in site.data.package.contributors %}
+{% if person.url %}<a href="{{ person.url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% unless forloop.last %}, {% endunless %}{% else %}
+{% endfor %}
+
 {% if site.github.issues_url %}
 ## Feedback
 
@@ -48,12 +53,8 @@ version of {{site.data.package.name}}:
 
 <pre style="white-space: pre-wrap;">@misc{DeBeule2017aa,
   author       = {Jan De Beule and
-                  Luke Elliot and
-                  Christopher Jefferson and
                   Julius Jonu{\v s}as and
                   James D. Mitchell and
-                  Markus Pfeiffer and
-                  Finlay Smith and
                   Michael Torpey and
                   Wilf A. Wilson},
   title        = {gap-packages/Digraphs: 0.8.0},

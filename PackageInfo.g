@@ -59,7 +59,7 @@ Persons := [
   rec(
     LastName      := "Elliott",
     FirstNames    := "L.",
-    IsAuthor      := true,
+    IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "le27@st-andrews.ac.uk",
     PostalAddress := Concatenation([
@@ -100,7 +100,7 @@ Persons := [
   rec(
     LastName      := "Pfeiffer",
     FirstNames    := "M.",
-    IsAuthor      := true,
+    IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "markus.pfeiffer@morphism.de",
     WWWHome       := "http://www.morphism.de/~markusp/",
@@ -112,9 +112,22 @@ Persons := [
     Institution   := "University of St Andrews"),
 
   rec(
+    LastName      := "Russell",
+    FirstNames    := "C.",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "cr66@st-andrews.ac.uk",
+    PostalAddress := Concatenation([
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"]),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
     LastName      := "Smith",
     FirstNames    := "F.",
-    IsAuthor      := true,
+    IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "fls3@st-andrews.ac.uk",
     PostalAddress := Concatenation([

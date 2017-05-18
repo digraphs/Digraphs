@@ -6,20 +6,24 @@ description:
 authors:
     - name: J. De Beule
       url: http://homepages.vub.ac.be/~jdbeule/
-    - name: L. Elliott
-      url: mailto:le27@st-andrews.ac.uk
     - name: J. Jonusas
       url: http://www-circa.mcs.st-andrews.ac.uk/~julius/
     - name: J. D. Mitchell
       url: http://goo.gl/ZtViV6
-    - name: M. Pfeiffer
-      url: http://www.morphism.de/~markusp/
-    - name: F. Smith
-      url: mailto:fls3@st-andrews.ac.uk
     - name: M. Torpey
       url: http://www-circa.mcs.st-andrews.ac.uk/~mct25/
     - name: W. A. Wilson
       url: http://www-circa.mcs.st-andrews.ac.uk/~waw7/
+
+contributors:
+    - name: L. Elliott
+      url: mailto:le27@st-andrews.ac.uk
+    - name: M. Pfeiffer
+      url: http://www.morphism.de/~markusp/
+    - name: C. Russell
+      url: mailto:cr66@st-andrews.ac.uk
+    - name: F. Smith
+      url: mailto:fls3@st-andrews.ac.uk
 
 maintainers:
     - name: J. D. Mitchell
