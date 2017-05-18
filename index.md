@@ -32,12 +32,12 @@ There is a library of various digraphs available for testing purposes
 
 ## Author{% if site.data.package.authors.size != 1 %}s{% endif %}
 {% for person in site.data.package.authors %}
-{% if person.url %}<a href="{{ person.url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% unless forloop.last %}, {% endunless %}{% else %}
+{% if person.url %}<a href="{{ person.url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% if forloop.last %}.{% else %}, {% endif %}{% else %}
 {% endfor %}
 
 ## Contributor{% if site.data.package.authors.size != 1 %}s{% endif %}
 {% for person in site.data.package.contributors %}
-{% if person.url %}<a href="{{ person.url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% unless forloop.last %}, {% endunless %}{% else %}
+{% if person.url %}<a href="{{ person.url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% if forloop.last %}.{% else %}, {% endif %}{% else %}
 {% endfor %}
 
 {% if site.github.issues_url %}
