@@ -51,14 +51,14 @@ For bug reports, feature requests and suggestions, please use the
 If you are using BibTeX, you can use the following BibTeX entry for the current 
 version of {{site.data.package.name}}:
 
-<pre style="white-space: pre-wrap;">@misc{DeBeule2017aa,
+<pre style="white-space: pre-wrap;">@misc{DeBeule{{site.data.package.year}}aa,
   author       = {Jan De Beule and
                   Julius Jonu{\v s}as and
                   James D. Mitchell and
                   Michael Torpey and
                   Wilf A. Wilson},
-  title        = {gap-packages/Digraphs: 0.8.0},
-  month        = May,
-  year         = 2017,
+  title        = {gap-packages/Digraphs: {{site.data.package.version}}},
+  month        = {{site.data.package.month}},
+  year         = {{site.data.package.year}},
   url          = {https://gap-packages.github.io/Digraphs}
 }</pre>

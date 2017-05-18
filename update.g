@@ -47,13 +47,16 @@ PrintPackageList := function(stream, pkgs)
 end;
 
 GeneratePackageYML:=function(pkg)
-    local stream, authors, contributors, maintainers, formats, attin, f;
+    local stream, date, authors, contributors, maintainers, formats, attin, f;
     stream := OutputTextFile("_data/package.yml", false);
     SetPrintFormattingStatus(stream, false);
     
     AppendTo(stream, "name: ", pkg.PackageName, "\n");
     AppendTo(stream, "version: ", pkg.Version, "\n");
     AppendTo(stream, "date: ", pkg.Date, "\n"); # TODO: convert to ISO 8601?
+    date := SplitString(StringDate(List(SplitString(pkg.Date, "/"), Int)), "-");
+    AppendTo(stream, "month: ", date[2], "\n");
+    AppendTo(stream, "year: ", date[3], "\n");
     AppendTo(stream, "description: ", pkg.Subtitle, "\n");
     AppendTo(stream, "\n");
 
