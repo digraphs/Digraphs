@@ -47,16 +47,13 @@ PrintPackageList := function(stream, pkgs)
 end;
 
 GeneratePackageYML:=function(pkg)
-    local stream, date, authors, contributors, maintainers, formats, attin, f;
+    local stream, authors, maintainers, formats, date, contributors, attin, f;
     stream := OutputTextFile("_data/package.yml", false);
     SetPrintFormattingStatus(stream, false);
     
     AppendTo(stream, "name: ", pkg.PackageName, "\n");
     AppendTo(stream, "version: ", pkg.Version, "\n");
     AppendTo(stream, "date: ", pkg.Date, "\n"); # TODO: convert to ISO 8601?
-    date := SplitString(StringDate(List(SplitString(pkg.Date, "/"), Int)), "-");
-    AppendTo(stream, "month: ", date[2], "\n");
-    AppendTo(stream, "year: ", date[3], "\n");
     AppendTo(stream, "description: ", pkg.Subtitle, "\n");
     AppendTo(stream, "\n");
 
@@ -64,12 +61,6 @@ GeneratePackageYML:=function(pkg)
     if Length(authors) > 0 then
         AppendTo(stream, "authors:\n");
         PrintPeopleList(stream, authors);
-    fi;
-
-    contributors := Filtered(pkg.Persons, p -> not p.IsAuthor);
-    if Length(contributors) > 0 then
-        AppendTo(stream, "contributors:\n");
-        PrintPeopleList(stream, contributors);
     fi;
 
     maintainers := Filtered(pkg.Persons, p -> p.IsMaintainer);
@@ -117,9 +108,22 @@ GeneratePackageYML:=function(pkg)
     AppendTo(stream, "status: ", pkg.Status, "\n");
     AppendTo(stream, "doc-html: ", pkg.PackageDoc.HTMLStart, "\n");
     AppendTo(stream, "doc-pdf: ", pkg.PackageDoc.PDFFile, "\n");
+    AppendTo(stream, "\n");
 
     # TODO: use AbstractHTML?
     # TODO: use Keywords?
+
+    # added by WW
+    date := SplitString(StringDate(List(SplitString(pkg.Date, "/"), Int)), "-");
+    AppendTo(stream, "month: ", date[2], "\n");
+    AppendTo(stream, "year: ", date[3], "\n");
+    AppendTo(stream, "\n");
+
+    contributors := Filtered(pkg.Persons, p -> not p.IsAuthor);
+    if Length(contributors) > 0 then
+        AppendTo(stream, "contributors:\n");
+        PrintPeopleList(stream, contributors);
+    fi;
 
     CloseStream(stream);
 end;

@@ -1,8 +1,6 @@
 name: Digraphs
 version: 0.8.1
 date: 18/05/2017
-month: May
-year: 2017
 description: 
 
 authors:
@@ -16,20 +14,6 @@ authors:
       url: http://www-circa.mcs.st-andrews.ac.uk/~mct25/
     - name: W. A. Wilson
       url: http://www-circa.mcs.st-andrews.ac.uk/~waw7/
-
-contributors:
-    - name: S. Burrell
-      url: mailto:sb235@st-andrews.ac.uk
-    - name: L. Elliott
-      url: mailto:le27@st-andrews.ac.uk
-    - name: C. Jefferson
-      url: http://caj.host.cs.st-andrews.ac.uk
-    - name: M. Pfeiffer
-      url: http://www.morphism.de/~markusp/
-    - name: C. Russell
-      url: mailto:cr66@st-andrews.ac.uk
-    - name: F. Smith
-      url: mailto:fls3@st-andrews.ac.uk
 
 maintainers:
     - name: J. D. Mitchell
@@ -66,3 +50,21 @@ abstract: The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and m
 status: deposited
 doc-html: doc/chap0.html
 doc-pdf: doc/manual.pdf
+
+month: May
+year: 2017
+
+contributors:
+    - name: S. Burrell
+      url: mailto:sb235@st-andrews.ac.uk
+    - name: L. Elliott
+      url: mailto:le27@st-andrews.ac.uk
+    - name: C. Jefferson
+      url: http://caj.host.cs.st-andrews.ac.uk
+    - name: M. Pfeiffer
+      url: http://www.morphism.de/~markusp/
+    - name: C. Russell
+      url: mailto:cr66@st-andrews.ac.uk
+    - name: F. Smith
+      url: mailto:fls3@st-andrews.ac.uk
+
