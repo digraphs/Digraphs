@@ -35,7 +35,7 @@ There is a library of various digraphs available for testing purposes
 {% if person.url %}<a href="{{ person.url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% if forloop.last %}.{% else %}, {% endif %}{% else %}
 {% endfor %}
 
-## Contributor{% if site.data.package.authors.size != 1 %}s{% endif %}
+## Contributor{% if site.data.package.contributors.size != 1 %}s{% endif %}
 {% for person in site.data.package.contributors %}
 {% if person.url %}<a href="{{ person.url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% if forloop.last %}.{% else %}, {% endif %}{% else %}
 {% endfor %}
@@ -52,13 +52,13 @@ If you are using BibTeX, you can use the following BibTeX entry for the current
 version of {{site.data.package.name}}:
 
 <pre style="white-space: pre-wrap;">@misc{DeBeule{{site.data.package.year}}aa,
-  author       = {Jan De Beule and
-                  Julius Jonu{\v s}as and
-                  James D. Mitchell and
-                  Michael Torpey and
-                  Wilf A. Wilson},
-  title        = {gap-packages/Digraphs: {{site.data.package.version}}},
-  month        = {{site.data.package.month}},
-  year         = {{site.data.package.year}},
-  url          = {https://gap-packages.github.io/Digraphs}
+      Author = { Jan De Beule and
+                 Julius Jonu{\v s}as and
+                 James D. Mitchell and
+                 Michael Torpey and
+                 Wilf A. Wilson },
+      Title  = { gap-packages/Digraphs: {{site.data.package.version}} },
+      Month  = { {{site.data.package.month}} },
+      Year   = { {{site.data.package.year}} },
+      Url    = { https://gap-packages.github.io/Digraphs }
 }</pre>
