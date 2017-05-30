@@ -51,7 +51,7 @@ elif [ ! -z "$GAP_BRANCH" ]; then
     cd $PKG_DIR
     git clone https://github.com/gap-packages/profiling.git profiling
     cd profiling
-    PROFILING_VERS=`git tag | grep "v\d\+\(.\d\+\)\+" | tail -n 1`
+    PROFILING_VERS=`git tag | grep -E "^v[0-9]" | tail -n 1`
     echo "Checking out profiling version $PROFILING_VERS..."
     git checkout $PROFILING_VERS
     ./autogen.sh
@@ -66,7 +66,7 @@ elif [ ! -z "$GAP_BRANCH" ]; then
     git clone https://github.com/gap-packages/$1.git $1
     cd $1
     if [ ! -z "$NEWEST" ]; then
-      VERSION=`git tag | grep "v\d\+\(.\d\+\)\+" | tail -n 1`
+      VERSION=`git tag | grep -E "^v[0-9]" | tail -n 1`
     else
       VERSION=v`grep "\"$1\"" ../digraphs/PackageInfo.g | awk -F'"' '{print $4}' | cut -c3-`
     fi
