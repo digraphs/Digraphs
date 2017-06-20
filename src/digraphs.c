@@ -165,7 +165,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
       SET_ELM_PLIST(id, v, INTOBJ_INT(end1));
 
       while (1) {
-        if (frames[1] > (UInt) LEN_PLIST(frames[2])) {
+        if (frames[1] > (UInt) LEN_PLIST((Obj) frames[2])) {
           if (stack2[end2] == (UInt) INT_INTOBJ(ELM_PLIST(id, frames[0]))) {
             end2--;
             count++;
