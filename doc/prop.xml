@@ -8,6 +8,38 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="IsCycleDigraph">
+<ManSection>
+  <Prop Name="IsCycleDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    <C>IsCycleDigraph</C> returns <K>true</K> if the digraph <A>digraph</A> is
+    isomorphic to the cycle graph with the same number of vertices as
+    <A>digraph</A>, and <K>false</K> if it is not; see <Ref
+      Oper="CycleDigraph"/>.<P/>
+
+    A digraph is a <E>cycle</E> if and only if it is strongly connected and has
+    the same number of edges as vertices. 
+
+<Example><![CDATA[
+gap> gr := Digraph([[1, 3], [2, 3], [3]]);
+<digraph with 3 vertices, 5 edges>
+gap> IsCycleDigraph(gr);
+false
+gap> gr := CycleDigraph(5);
+<digraph with 5 vertices, 5 edges>
+gap> IsCycleDigraph(gr);
+true
+gap> gr := OnDigraphs(gr, (1, 2, 3));
+<digraph with 5 vertices, 5 edges>
+gap> gr = CycleDigraph(5);
+false
+gap> IsCycleDigraph(gr);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsPartialOrderDigraph">
 <ManSection>
   <Prop Name="IsPartialOrderDigraph" Arg="digraph"/>

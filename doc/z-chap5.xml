@@ -23,6 +23,7 @@
   </Section>
 
   <Section><Heading>Connectivity and cycles</Heading>
+
     <#Include Label="IsAcyclicDigraph">
     <#Include Label="IsConnectedDigraph">
     <#Include Label="IsStronglyConnectedDigraph">
@@ -30,6 +31,7 @@
     <#Include Label="IsDirectedTree">
     <#Include Label="IsUndirectedTree">
     <#Include Label="IsEulerianDigraph">
+    <#Include Label="IsCycleDigraph">
   </Section>
   
   <Section><Heading>Partial Orders</Heading>
