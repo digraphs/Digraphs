@@ -8,6 +8,36 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="IsBiconnectedDigraph">
+<ManSection>
+  <Prop Name="IsBiconnectedDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A connected digraph is <E>biconnected</E> if it is still connected (in the
+    sense of <Ref Prop="IsConnectedDigraph"/>) when any vertex is removed. 
+    <C>IsBiconnectedDigraph</C> returns <K>true</K> if the digraph
+    <A>digraph</A> is biconnected, and <K>false</K> if it is not. In
+    particular, <C>IsBiconnectedDigraph</C> returns <K>false</K> if
+    <A>digraph</A> is not connected. <P/>
+
+    Multiple edges and loops are ignored by this method. <P/>
+
+    The method used in this operation has complexity <M>O(m+n)</M> where
+    <M>m</M> is the number of edges (counting multiple edges as one, and not
+    counting loops) and <M>n</M> is the number of vertices in the digraph.
+
+    See also <Ref Attr="ArticulationPoints"/>.
+<Example><![CDATA[
+gap> IsBiconnectedDigraph(Digraph([[1, 3], [2, 3], [3]]));
+false
+gap> IsBiconnectedDigraph(CycleDigraph(5));
+true
+gap> IsBiconnectedDigraph(Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]));
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsPartialOrderDigraph">
 <ManSection>
   <Prop Name="IsPartialOrderDigraph" Arg="digraph"/>

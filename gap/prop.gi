@@ -8,6 +8,12 @@
 #############################################################################
 ##
 
+InstallMethod(IsBiconnectedDigraph, "for a digraph", [IsDigraph],
+function(digraph)
+  return IsEmpty(ArticulationPoints(digraph))
+         and IsConnectedDigraph(digraph);
+end);
+
 InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph,
 "for a homogeneous list and a positive integer",
 [IsHomogeneousList],

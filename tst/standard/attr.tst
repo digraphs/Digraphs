@@ -1356,6 +1356,74 @@ gap> DigraphEdges(UndirectedSpanningForest(gr));
 gap> IsUndirectedSpanningForest(gr, UndirectedSpanningForest(gr));
 true
 
+# ArticulationPoints
+gap> ArticulationPoints(CycleDigraph(5));
+[  ]
+gap> ArticulationPoints(Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]));
+[ 2, 1 ]
+gap> ArticulationPoints(ChainDigraph(5));
+[ 4, 3, 2 ]
+gap> ArticulationPoints(NullDigraph(5));
+[  ]
+gap> gr :=
+> Digraph([[35, 55, 87], [38], [6, 53], [], [66], [56], [36], []
+> , [], [19], [23], [], [40, 76], [72, 79], [46, 48], [22, 68], [
+> 26], [17, 60], [17], [42], [34, 91], [68, 87], [14, 46], [23, 80
+> ], [6, 8], [], [], [], [], [], [28, 35], [], [18, 40, 94], [], [
+>  27, 44, 78], [], [25], [71], [72], [2, 33], [87], [], [42], [
+> ], [43], [63], [], [58, 89], [68, 97], [24, 40], [13], [9], [
+> 44], [80], [], [40], [78], [9], [], [35, 44, 57], [], [], [67, 
+> 74, 81], [], [86], [], [54, 93], [66, 79], [], [], [], [], [100 
+> ], [19], [62, 68], [87], [4, 15, 89], [61, 86], [], [41], [21, 
+> 41], [59, 64], [], [53], [59], [14, 33], [], [], [37, 71, 92], [
+> 3, 20], [56], [56], [], [89], [], [1, 14, 38, 85], [], [19], [
+> 30], [56, 98]]);
+<digraph with 100 vertices, 110 edges>
+gap> IsConnectedDigraph(gr);
+false
+gap> ArticulationPoints(gr);
+[  ]
+gap> gr := DigraphCopy(gr);
+<digraph with 100 vertices, 110 edges>
+gap> ArticulationPoints(gr);
+[  ]
+gap> IsConnectedDigraph(gr);
+false
+gap> ArticulationPoints(Digraph([[1, 2], [2]]));
+[  ]
+gap> gr := Digraph([[1, 1, 2, 2, 2, 2, 2], [2, 2, 3, 3], []]); # path 
+<multidigraph with 3 vertices, 11 edges>
+gap> ArticulationPoints(gr);
+[ 2 ]
+gap> gr := Digraph([[1, 1, 2, 2, 2, 2, 2], [2, 2, 3, 3], [1, 1, 1]]); # cycle
+<multidigraph with 3 vertices, 14 edges>
+gap> ArticulationPoints(gr);
+[  ]
+gap> gr := Digraph([[2], [3], [], [3]]);
+<digraph with 4 vertices, 3 edges>
+gap> ArticulationPoints(gr);
+[ 3, 2 ]
+gap> IsConnectedDigraph(DigraphRemoveVertex(gr, 3));
+false
+gap> IsConnectedDigraph(DigraphRemoveVertex(gr, 2));
+false
+gap> IsConnectedDigraph(DigraphRemoveVertex(gr, 1));
+true
+gap> IsConnectedDigraph(DigraphRemoveVertex(gr, 4));
+true
+gap> ArticulationPoints(Digraph([]));
+[  ]
+gap> ArticulationPoints(Digraph([[]]));
+[  ]
+gap> ArticulationPoints(Digraph([[1]]));
+[  ]
+gap> ArticulationPoints(Digraph([[1, 1]]));
+[  ]
+gap> ArticulationPoints(Digraph([[1], [2]]));
+[  ]
+gap> ArticulationPoints(Digraph([[2], [1]]));
+[  ]
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);

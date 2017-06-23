@@ -48,6 +48,9 @@ DeclareAttribute("DigraphDegeneracy", IsDigraph);
 DeclareAttribute("DigraphDegeneracyOrdering", IsDigraph);
 DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
 
+DeclareAttribute("ArticulationPoints", IsDigraph);
+DeclareSynonymAttr("CutVertices", ArticulationPoints);
+
 DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
 DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
 DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
