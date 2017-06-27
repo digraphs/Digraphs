@@ -14,24 +14,37 @@ following these instructions.
 
 1. Go into your clone of your package repository.
 
-2. In there, create a fresh clone of your package in a subdirectory `gh-pages`:
+2. Setup a `gh-pages` branch in a `gh-pages` subdirectory.
+
+   Users with a recent enough git version (recommended is >= 2.11)
+   can do this using a "worktree", via the following commands:
 
    ```
-   git clone https://github.com/USERNAME/REPOSITORY gh-pages
-   ```
-
-3. Change into the fresh clone and add a new remote pointing to the
-   [GitHubPagesForGAP repository](https://github.com/fingolfin/GitHubPagesForGAP):
-
-   ```
-   cd gh-pages
+   # Add a new remote pointing to the GitHubPagesForGAP repository
    git remote add gh-gap https://github.com/fingolfin/GitHubPagesForGAP
    git fetch gh-gap
+
+   # Create a fresh gh-pages branch from the new remote
+   git branch gh-pages gh-gap/gh-pages --no-track
+
+   # Create a new worktree and change into it
+   git worktree add gh-pages gh-pages
+   cd gh-pages
    ```
 
-4. Create a fresh gh-pages branch from the new remote:
+   Everybody else should instead do the following, with the URL
+   in the initial clone command suitably adjusted:
 
    ```
+   # Create a fresh clone of your repository, and change into it
+   git clone https://github.com/USERNAME/REPOSITORY gh-pages
+   cd gh-pages
+
+   # Add a new remote pointing to the GitHubPagesForGAP repository
+   git remote add gh-gap https://github.com/fingolfin/GitHubPagesForGAP
+   git fetch gh-gap
+
+   # Create a fresh gh-pages branch from the new remote
    git checkout -b gh-pages gh-gap/gh-pages --no-track
    ```
 
