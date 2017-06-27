@@ -1,7 +1,8 @@
 name: GitHubPagesForGAP
 version: 0.2
 date: 04/02/2017
-description: A GitHub Pages generator for GAP packages
+description: |
+    A GitHub Pages generator for GAP packages
 
 authors:
     - name: Max Horn
@@ -29,7 +30,7 @@ suggested-pkgs:
       url: "https://gap-packages.github.io/orb"
 
 www: https://fingolfin.github.io/GitHubPagesForGAP/
-readme: README.md
+readme: README
 packageinfo: https://fingolfin.github.io/GitHubPagesForGAP/PackageInfo.g
 github: https://github.com/fingolfin/GitHubPagesForGAP
 
@@ -39,7 +40,8 @@ downloads:
     - name: .tar.bz2
       url: https://github.com/fingolfin/GitHubPagesForGAP/releases/download/v0.2/GitHubPagesForGAP-0.2.tar.bz2
 
-abstract: This is a pseudo package that contains no actual  <span class="pkgname">GAP</span> code. Instead, it is a template for other  GAP packages that allows to quickly setup GitHub Pages.
+abstract: |
+    This is a pseudo package that contains no actual  <span class="pkgname">GAP</span> code. Instead, it is a template for other  GAP packages that allows to quickly setup GitHub Pages.
 
 status: other
 doc-html: doc/chap0.html

@@ -55,7 +55,8 @@ GeneratePackageYML:=function(pkg)
     AppendTo(stream, "name: ", pkg.PackageName, "\n");
     AppendTo(stream, "version: ", pkg.Version, "\n");
     AppendTo(stream, "date: ", pkg.Date, "\n"); # TODO: convert to ISO 8601?
-    AppendTo(stream, "description: ", pkg.Subtitle, "\n");
+    AppendTo(stream, "description: |\n");
+    AppendTo(stream, "    ", pkg.Subtitle, "\n");
     AppendTo(stream, "\n");
 
     authors := Filtered(pkg.Persons, p -> p.IsAuthor);
@@ -106,7 +107,8 @@ GeneratePackageYML:=function(pkg)
         AppendTo(stream, "\n");
     fi;
 
-    AppendTo(stream, "abstract: ", pkg.AbstractHTML, "\n\n");
+    AppendTo(stream, "abstract: |\n");
+    AppendTo(stream, "    ", pkg.AbstractHTML, "\n\n");
 
     AppendTo(stream, "status: ", pkg.Status, "\n");
     AppendTo(stream, "doc-html: ", pkg.PackageDoc.HTMLStart, "\n");
