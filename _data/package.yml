@@ -30,7 +30,7 @@ suggested-pkgs:
       url: "https://gap-packages.github.io/orb"
 
 www: https://fingolfin.github.io/GitHubPagesForGAP/
-readme: README
+readme: README.md
 packageinfo: https://fingolfin.github.io/GitHubPagesForGAP/PackageInfo.g
 github: https://github.com/fingolfin/GitHubPagesForGAP
 
