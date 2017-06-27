@@ -19,7 +19,7 @@ following these instructions.
    Users with a recent enough git version (recommended is >= 2.11)
    can do this using a "worktree", via the following commands:
 
-   ```
+   ```sh
    # Add a new remote pointing to the GitHubPagesForGAP repository
    git remote add gh-gap https://github.com/fingolfin/GitHubPagesForGAP
    git fetch gh-gap
@@ -35,7 +35,7 @@ following these instructions.
    Everybody else should instead do the following, with the URL
    in the initial clone command suitably adjusted:
 
-   ```
+   ```sh
    # Create a fresh clone of your repository, and change into it
    git clone https://github.com/USERNAME/REPOSITORY gh-pages
    cd gh-pages
