@@ -1771,3 +1771,106 @@ function(digraph, k)
 
   return DigraphByAdjacencyMatrix(out);
 end);
+
+#
+
+InstallMethod(IsMatching,
+"for a digraph, and a list",
+[IsDigraph, IsList],
+function(gr, edges)
+  # Note this will return false if you have entered the same edge twice,
+  # and considers edges as undirected.  Thus [e_1,e_2] = [e_2,e_1].
+  # Similarly, the function considers the symmetric closure of the input
+  # graph. Loops are not considered adjacent to themselves.
+  # Thus a matching may exist with loops.
+
+  local e, f, prob, gredges;
+
+  #gredges will contain the edges of gr
+  gredges := DigraphEdges(gr);
+
+  # Prob will hold the edges in our edge set we haven't yet checked
+  # (ie the potential problem edges)
+  prob := ShallowCopy(edges);
+
+  for e in edges do
+    #If edge set is not a subset of graph, not a matching
+    if not e in gredges and not Reversed(e) in gredges then
+      return false;
+    fi;
+    #Take e from prob
+    Remove(prob, Position(prob, e));
+    # Make sure intersection of edge with all other edges not yet checked is
+    # empty
+    for f in prob do;
+      if Intersection(e, f) <> [] then
+        return false;
+      fi;
+    od;
+  od;
+
+  return true;
+
+end);
+
+#
+
+InstallMethod(IsPerfectMatching,
+"for a digraph, and a list",
+[IsDigraph, IsList],
+function(gr, edges)
+
+  local e, eset;
+
+  #If the edge set is not a matching, it's not a perfect matching
+  if not IsMatching(gr, edges) then
+    return false;
+  fi;
+
+  # Edge set will contain all vertices covered by an edge in the potential
+  # matching
+  eset := [];
+
+  for e in edges do
+    Append(eset, e);
+  od;
+  if IsEqualSet(eset, DigraphVertices(gr)) then
+    return true;
+  fi;
+  return false;
+end);
+
+#
+
+InstallMethod(IsMaximalMatching,
+"for a digraph, and a list",
+[IsDigraph, IsList],
+function(gr, edges)
+
+  local e, graph_less_matching, revedges;
+
+  #Check it's a matching
+  if not IsMatching(gr, edges) then
+    return false;
+  fi;
+
+  #Form the symmetric closure of the edge set
+  revedges := [];
+  for e in revedges do
+    Append(revedges, [Reversed(e)]);
+  od;
+
+  #This the graph without the edges corresponding to the matching
+  graph_less_matching := DigraphRemoveEdges(gr, edges);
+  graph_less_matching := DigraphRemoveEdges(graph_less_matching, revedges);
+
+  #Check to see that each edge, when added to the matching, results in a
+  #non-matching
+  for e in DigraphEdges(graph_less_matching) do
+    if IsMatching(gr, Concatenation(edges, [e])) then
+      return false;
+    fi;
+  od;
+  return true;
+
+end);
