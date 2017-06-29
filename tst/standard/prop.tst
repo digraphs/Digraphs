@@ -1107,6 +1107,18 @@ false
 gap> IsLatticeDigraph(gr);
 false
 
+#T# IsCycleDigraph
+gap> IsCycleDigraph(NullDigraph(10));
+false
+gap> IsCycleDigraph(CycleDigraph(10));
+true
+gap> IsCycleDigraph(NullDigraph(0));
+false
+gap> IsCycleDigraph(NullDigraph(1));
+false
+gap> IsCycleDigraph(CycleDigraph(1));
+true
+
 #T# IsBiconnectedDigraph
 gap> gr := Digraph([]);
 <digraph with 0 vertices, 0 edges>

@@ -35,6 +35,7 @@ DeclareProperty("IsUndirectedForest", IsDigraph);
 DeclareProperty("IsEulerianDigraph", IsDigraph);
 DeclareProperty("IsMeetSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsJoinSemilatticeDigraph", IsDigraph);
+DeclareProperty("IsCycleDigraph", IsDigraph);
 
 DeclareOperation("DIGRAPHS_IsMeetJoinSemilatticeDigraph",
                  [IsHomogeneousList]);
