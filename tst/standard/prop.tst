@@ -1107,7 +1107,7 @@ false
 gap> IsLatticeDigraph(gr);
 false
 
-# Test IsCycleDigraph
+#T# IsCycleDigraph
 gap> IsCycleDigraph(NullDigraph(10));
 false
 gap> IsCycleDigraph(CycleDigraph(10));
@@ -1118,6 +1118,40 @@ gap> IsCycleDigraph(NullDigraph(1));
 false
 gap> IsCycleDigraph(CycleDigraph(1));
 true
+
+#T# IsBiconnectedDigraph
+gap> gr := Digraph([]);
+<digraph with 0 vertices, 0 edges>
+gap> IsBiconnectedDigraph(gr);
+true
+gap> gr := Digraph([[]]);
+<digraph with 1 vertex, 0 edges>
+gap> IsBiconnectedDigraph(gr);
+true
+gap> gr := Digraph([[1]]);
+<digraph with 1 vertex, 1 edge>
+gap> IsBiconnectedDigraph(gr);
+true
+gap> gr := Digraph([[1, 1]]);
+<multidigraph with 1 vertex, 2 edges>
+gap> IsBiconnectedDigraph(gr);
+true
+gap> gr := Digraph([[1], [2]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsBiconnectedDigraph(gr);
+false
+gap> gr := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsBiconnectedDigraph(gr);
+true
+gap> gr := Digraph([[2], [3], [], []]);
+<digraph with 4 vertices, 2 edges>
+gap> IsBiconnectedDigraph(gr);
+false
+gap> gr := Digraph([[2], [3], [], [3]]);
+<digraph with 4 vertices, 3 edges>
+gap> IsBiconnectedDigraph(gr);
+false
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);

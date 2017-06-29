@@ -8,11 +8,16 @@
 #############################################################################
 ##
 
-InstallMethod(IsCycleDigraph, "for a digraph",
-[IsDigraph],
+InstallMethod(IsCycleDigraph, "for a digraph", [IsDigraph],
 function(digraph)
   return DigraphNrVertices(digraph) > 0 and IsStronglyConnectedDigraph(digraph)
          and DigraphNrEdges(digraph) = DigraphNrVertices(digraph);
+end);
+
+InstallMethod(IsBiconnectedDigraph, "for a digraph", [IsDigraph],
+function(digraph)
+  return IsEmpty(ArticulationPoints(digraph))
+         and IsConnectedDigraph(digraph);
 end);
 
 InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph,

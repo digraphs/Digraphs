@@ -8,6 +8,42 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="ArticulationPoints">
+<ManSection>
+  <Attr Name="ArticulationPoints" Arg="digraph"/>
+  <Returns>A list of vertices.</Returns>
+  <Description>
+
+    A connected digraph is <E>biconnected</E> if it is still connected (in the
+    sense of <Ref Prop="IsConnectedDigraph"/>) when any vertex is removed. 
+    If the digraph <A>digraph</A> is not biconnected but is connected, then any
+    vertex <C>v</C> of <A>digraph</A> whose removal makes the resulting digraph
+    disconnected is called an <E>articulation point</E>.<P/>
+
+    <C>ArticulationPoints</C> returns a list of the articulation points of
+    <A>digraph</A>, if any, and, in particular, returns the empty list if
+    <A>digraph</A> is not connected. <P/>
+
+    Multiple edges and loops are ignored by this method. <P/>
+    
+    The method used in this operation has complexity <M>O(m+n)</M> where
+    <M>m</M> is the number of edges (counting multiple edges as one, and not
+    counting loops) and <M>n</M> is the number of vertices in the digraph.
+
+    See also <Ref Attr="IsBiconnectedDigraph"/>.
+<Example><![CDATA[
+gap> ArticulationPoints(CycleDigraph(5));
+[  ]
+gap> ArticulationPoints(Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]));
+[ 2, 1 ]
+gap> ArticulationPoints(ChainDigraph(5));
+[ 4, 3, 2 ]
+gap> ArticulationPoints(NullDigraph(5));
+[  ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="ChromaticNumber">
 <ManSection>
   <Attr Name="ChromaticNumber" Arg="digraph"/>
