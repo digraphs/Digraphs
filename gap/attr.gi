@@ -8,6 +8,83 @@
 #############################################################################
 ##
 
+# The next method is (yet another) DFS as described in
+# http://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
+
+InstallMethod(ArticulationPoints, "for a digraph", [IsDigraph],
+function(digraph)
+  local copy, nbs, counter, visited, num, low, parent, points, v_stack,
+  w_stack, depth, 1st_root_nb, v, w, i;
+
+  if (HasIsConnectedDigraph(digraph) and not IsConnectedDigraph(digraph))
+      or DigraphNrVertices(digraph) <= 1 then
+    return [];
+  elif not IsSymmetricDigraph(digraph) then
+    copy := DigraphSymmetricClosure(digraph);
+  else
+    copy := digraph;
+  fi;
+  nbs := OutNeighbours(copy);
+
+  counter     := 0;
+  visited     := BlistList([1 .. DigraphNrVertices(copy)], []);
+  num         := [];
+  low         := [];
+  parent      := [1];
+  points      := [];
+  v_stack     := [1];
+  w_stack     := [0];
+  depth       := 1;
+  1st_root_nb := First(nbs[1], x -> not x = 1);
+
+  while depth > 1 or not visited[1] do
+    if visited[v_stack[depth]] then
+      depth := depth - 1;
+      v     := v_stack[depth];
+      w     := nbs[v][w_stack[depth]];
+      if v = 1 then
+        if w <> 1st_root_nb then
+          Add(points, v);
+        fi;
+      elif low[w] >= num[v] then
+        Add(points, v);
+      fi;
+      if low[w] < low[v] then
+        low[v] := low[w];
+      fi;
+    else
+      v          := v_stack[depth];
+      visited[v] := true;
+      counter    := counter + 1;
+      num[v]     := counter;
+      low[v]     := counter;
+    fi;
+    for i in [w_stack[depth] + 1 .. Length(nbs[v])] do
+      w := nbs[v][i];
+      if w <> v then
+        if not visited[w] then
+          parent[w]      := v;
+          w_stack[depth] := i;
+          depth          := depth + 1;
+          v_stack[depth] := w;
+          w_stack[depth] := 0;
+          break;
+        elif parent[v] <> w and num[w] < low[v] then
+          low[v] := low[w];
+        fi;
+      fi;
+    od;
+  od;
+
+  if counter = DigraphNrVertices(digraph) then
+    SetIsConnectedDigraph(digraph, true);
+    return points;
+  else
+    SetIsConnectedDigraph(digraph, false);
+    return [];
+  fi;
+end);
+
 InstallMethod(ChromaticNumber, "for a digraph", [IsDigraph],
 function(digraph)
   local nr, comps, chrom, n, subdigraph, comp, i;
