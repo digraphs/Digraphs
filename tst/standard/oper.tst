@@ -1880,6 +1880,119 @@ gap> DigraphClosure(gr, 2);
 Error, Digraphs: DigraphClosure: usage,
 the digraph must by symmetric, without loops, and no multiple edges,
 
+#T# IsMatching
+gap>  gr := Digraph([[2], [3], [4], []]);;
+gap>  edges := [[1, 4], [2, 3]];;
+gap>  IsMatching(gr, edges);
+false
+gap>  gr := Digraph([[2], [3], [4], []]);;
+gap>  edges := [[1, 2], [4, 3]];;
+gap>  IsMatching(gr, edges);
+false
+gap>  edges := [[1, 2], [3, 4]];;
+gap>  IsMatching(gr, edges);
+true
+gap>  gr := Digraph([[2], [3], [4], []]);;
+gap>  edges := [[1, 4], [4, 1], [2, 3]];;
+gap>  IsMatching(gr, edges);
+false
+gap>  gr := Digraph([[2], [3], [4], []]);;
+gap>  edges := [[1, 1], [2, 3]];;
+gap>  IsMatching(gr, edges);
+false
+gap>  gr := Digraph([[1, 2], [3], [4], []]);;
+gap>  edges := [[1, 1], [2, 3]];;
+gap>  IsMatching(gr, edges);
+true
+gap>  gr := Digraph([[2], [3], [4], []]);;
+gap>  edges := [[1, 2], [3, 4]];;
+gap>  IsMatching(gr, edges);
+true
+gap>  gr := Digraph([[2], [3], [4], []]);;
+gap>  edges := [[1, 2], [2, 3]];;
+gap>  IsMatching(gr, edges);
+false
+gap>  gr := CompleteDigraph(999);;
+gap>  edges := [[1, 2], [4, 5], [6, 7]];;
+gap>  IsMatching(gr, edges);
+true
+gap> gr := CompleteDigraph(999);;
+gap>  edges := [];;
+gap>  for i in [1 .. 499] do Append(edges, [[2 * i, 2 * i + 1]]); od;;
+gap>  IsMatching(gr, edges);
+true
+gap> gr := CompleteDigraph(999);;
+gap> edges := [[1, 2], [3, 4], [4, 5], [6, 7]];;
+gap>  IsMatching(gr, edges);
+false
+
+#T# IsPerfectMatching
+gap> gr := Digraph([[2], [3], [4], [5], [1]]);
+<digraph with 5 vertices, 5 edges>
+gap> IsPerfectMatching(gr, [[1, 3]]);
+false
+gap> edges := [[1, 2], [4, 5]];;
+gap> IsMatching(gr, edges);
+true
+gap> IsPerfectMatching(gr, edges);
+false
+gap> gr := CompleteDigraph(500);
+<digraph with 500 vertices, 249500 edges>
+gap> edges := [];;
+gap> for i in [0 .. 249] do
+>   Append(edges, [[2 * i + 1, 2 * i + 2]]);
+> od;;
+gap> IsPerfectMatching(gr, edges);
+true
+gap> gr := Digraph([[2], [3, 4], [], [5], [1, 6], [1]]);
+<digraph with 6 vertices, 7 edges>
+gap> edges := [[1, 6], [2, 3], [5, 4]];;
+gap> IsMatching(gr, edges);
+false
+gap> edges := [[6, 1], [2, 3], [4, 5]];;
+gap> IsPerfectMatching(gr, edges);
+true
+gap> gr := Digraph([[2], [3], [4, 3], [5], [1]]);
+<digraph with 5 vertices, 6 edges>
+gap> edges := [[1, 2], [4, 5], [3, 3]];;
+gap> IsPerfectMatching(gr, edges);
+true
+
+#T# IsMaximalMatching
+gap> gr := Digraph([[2], [3], [4], [5], [1]]);
+<digraph with 5 vertices, 5 edges>
+gap> edges := [[1, 2], [4, 3]];;
+gap> IsMatching(gr, edges);
+false
+gap> edges := [[1, 2], [3, 4]];;
+gap> IsMaximalMatching(gr, edges);
+true
+gap> gr := Digraph([[2], [3], [4], [5], [1, 5]]);
+<digraph with 5 vertices, 6 edges>
+gap> edges := [[1, 2], [3, 4]];;
+gap> IsMaximalMatching(gr, edges);
+false
+gap> gr := CompleteDigraph(5);;
+gap> edges := [[1, 2], [1, 3]];;
+gap> IsMaximalMatching(gr, edges);
+false
+gap> gr := Digraph([[2], [3], [4], [1]]);;
+gap> edges := [[2, 1], [4, 3]];;
+gap> IsMatching(gr, edges);
+false
+gap> edges := [[1, 2], [3, 4]];;
+gap> IsMaximalMatching(gr, edges);
+true
+gap> gr := Digraph([[2], [3], [1], [5], [6], [4]]);;
+gap> edges := [[1, 2], [4, 5]];;
+gap> IsMaximalMatching(gr, edges);
+true
+gap> gr := Digraph([[1, 2], [3], [4], [1]]);;
+gap> edges := [[1, 1], [2, 3]];
+[ [ 1, 1 ], [ 2, 3 ] ]
+gap> IsMaximalMatching(gr, edges);
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);

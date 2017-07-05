@@ -1457,3 +1457,49 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsMatching">
+<ManSection>
+  <Oper Name="IsMatching" Arg="digraph, list"/>
+  <Oper Name="IsMaximalMatching" Arg="digraph, list"/>
+  <Oper Name="IsPerfectMatching" Arg="digraph, list"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph and <A>list</A> is a list of pairs of
+    vertices of <A>digraph</A>, then <C>IsMatching</C> returns <K>true</K> if
+    <A>list</A> is a matching of <A>digraph</A>.  The operations
+    <C>IsMaximalMatching</C> and <C>IsPerfectMatching</C> return <K>true</K> if
+    <A>list</A> is a maximal, or perfect, matching of <A>digraph</A>,
+    respectively.  Otherwise, these operations return <K>false</K>. <P/>
+
+    A <E>matching</E> <C>M</C> of a digraph <A>digraph</A> is a subset of the
+    edges of <A>digraph</A>, i.e. <C>DigraphEdges(<A>digraph</A>)</C>, such
+    that no pair of distinct edges in <C>M</C> are incident to the same vertex
+    of <A>digraph</A>.  Note that this definition allows a matching to contain
+    loops.  See <Ref Prop="DigraphHasLoops" />.  The matching <C>M</C> is
+    <E>maximal</E> if it is contained in no larger matching of the digraph, and
+    is <E>perfect</E> if every vertex of the digraph is incident to an edge in
+    the matching.  Every perfect matching is maximal.
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [1], [2, 3, 4], [3, 5], [1]]);
+<digraph with 5 vertices, 8 edges>
+gap> IsMatching(gr, [[2, 1], [3, 2]]);
+false
+gap> edges := [[3, 2]];;
+gap> IsMatching(gr, edges);
+true
+gap> IsMaximalMatching(gr, edges);
+false
+gap> edges := [[5, 1], [3, 3]];;
+gap> IsMaximalMatching(gr, edges);
+true
+gap> IsPerfectMatching(gr, edges);
+false
+gap> edges := [[1, 2], [3, 3], [4, 5]];;
+gap> IsPerfectMatching(gr, edges);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
