@@ -59,4 +59,10 @@
     <#Include Label="DigraphDegeneracy">
     <#Include Label="DigraphDegeneracyOrdering">
   </Section>
+  
+  <Section><Heading>Cayley graphs of groups</Heading>
+    <#Include Label="GroupOfCayleyDigraph">
+    <#Include Label="GeneratorsOfCayleyDigraph">
+  </Section>
+
 </Chapter>
