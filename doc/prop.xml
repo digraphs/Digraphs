@@ -14,7 +14,7 @@
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     <C>IsCycleDigraph</C> returns <K>true</K> if the digraph <A>digraph</A> is
-    isomorphic to the cycle graph with the same number of vertices as
+    isomorphic to the cycle digraph with the same number of vertices as
     <A>digraph</A>, and <K>false</K> if it is not; see <Ref
       Oper="CycleDigraph"/>.<P/>
 
