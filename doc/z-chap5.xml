@@ -13,6 +13,8 @@
     <#Include Label="IsSymmetricDigraph">
     <#Include Label="IsTournament">
     <#Include Label="IsTransitiveDigraph">
+    <#Include Label="IsPartialOrderDigraph">
+    <#Include Label="IsMeetSemilatticeDigraph">
   </Section>
 
   <Section><Heading>Regularity</Heading>
@@ -23,7 +25,6 @@
   </Section>
 
   <Section><Heading>Connectivity and cycles</Heading>
-
     <#Include Label="IsAcyclicDigraph">
     <#Include Label="IsConnectedDigraph">
     <#Include Label="IsBiconnectedDigraph">
@@ -35,8 +36,4 @@
     <#Include Label="IsCycleDigraph">
   </Section>
   
-  <Section><Heading>Partial Orders</Heading>
-    <#Include Label="IsPartialOrderDigraph">
-    <#Include Label="IsMeetSemilatticeDigraph">
-  </Section>
 </Chapter>

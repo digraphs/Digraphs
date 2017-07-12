@@ -30,7 +30,7 @@
     <M>m</M> is the number of edges (counting multiple edges as one, and not
     counting loops) and <M>n</M> is the number of vertices in the digraph.
 
-    See also <Ref Attr="IsBiconnectedDigraph"/>.
+    See also <Ref Prop="IsBiconnectedDigraph"/>.
 <Example><![CDATA[
 gap> ArticulationPoints(CycleDigraph(5));
 [  ]
