@@ -1442,8 +1442,8 @@ fail
     vertices of <A>digraph</A> that contains all the edges of <A>digraph</A>
     and satsifies the property that the sum of the degrees of every two
     non-adjacenct vertices in <C>C</C> is less than <A>k</A>. See <Ref
-    Oper="IsSymmetricDigraph"/>, <Ref Oper="DigraphHasLoops"/>, <Ref
-    Oper="IsMultiDigraph"/>, and <Ref Oper="OutDegreeOfVertex"/>. <P/>
+    Prop="IsSymmetricDigraph"/>, <Ref Prop="DigraphHasLoops"/>, <Ref
+    Prop="IsMultiDigraph"/>, and <Ref Oper="OutDegreeOfVertex"/>. <P/>
 
     The operation <C>DigraphClosure</C> returns the <A>k</A>-closure of <A>digraph</A>.
     <Example><![CDATA[

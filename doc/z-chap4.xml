@@ -7,7 +7,6 @@
     <#Include Label="DigraphSinks">
     <#Include Label="DigraphSources">
     <#Include Label="DigraphTopologicalSort">
-    <#Include Label="DigraphBicomponents">
     <#Include Label="DigraphVertexLabel">
     <#Include Label="DigraphVertexLabels">
     <#Include Label="DigraphEdgeLabel">
@@ -32,6 +31,7 @@
     <#Include Label="InDegreeOfVertex">
     <#Include Label="InNeighboursOfVertex">
     <#Include Label="DigraphLoops">
+    <#Include Label="PartialOrderDigraphMeetOfVertices">
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>
@@ -46,6 +46,7 @@
     <#Include Label="DigraphConnectedComponent">
     <#Include Label="DigraphStronglyConnectedComponents">
     <#Include Label="DigraphStronglyConnectedComponent">
+    <#Include Label="DigraphBicomponents">
     <#Include Label="ArticulationPoints">
     <#Include Label="DigraphPeriod">
     <#Include Label="DigraphFloydWarshall">
@@ -58,11 +59,4 @@
     <#Include Label="DigraphDegeneracy">
     <#Include Label="DigraphDegeneracyOrdering">
   </Section>
-
-  
-  <Section><Heading>Partial Orders</Heading>
-    <#Include Label="PartialOrderDigraphMeetOfVertices">
-  </Section>
-
-
 </Chapter>
