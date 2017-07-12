@@ -54,11 +54,13 @@
 <div class="ContSSBlock">
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7BD08D4478218F77">6.3-1 IsAcyclicDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X83C08C0B7EC1A91F">6.3-2 IsConnectedDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B37B9467C68C208">6.3-3 IsStronglyConnectedDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80E883967EBE839E">6.3-4 IsAperiodicDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B46EA6C7B2DF2FB">6.3-5 IsDirectedTree</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80FC20FA7AC4BC2A">6.3-6 IsUndirectedTree</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X79DFBB198525544E">6.3-7 IsEulerianDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X838FAF2D825977BE">6.3-3 IsBiconnectedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B37B9467C68C208">6.3-4 IsStronglyConnectedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80E883967EBE839E">6.3-5 IsAperiodicDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B46EA6C7B2DF2FB">6.3-6 IsDirectedTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80FC20FA7AC4BC2A">6.3-7 IsUndirectedTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X79DFBB198525544E">6.3-8 IsEulerianDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7E91320B8028F5D8">6.3-9 IsCycleDigraph</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6_mj.html#X85492D15781F1A2A">6.4 <span class="Heading">Partial Orders</span></a>
 </span>
@@ -528,9 +530,31 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsConnectedDigraph(gr);</span>
 false</pre></div>
 
+<p><a id="X838FAF2D825977BE" name="X838FAF2D825977BE"></a></p>
+
+<h5>6.3-3 IsBiconnectedDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsBiconnectedDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>A connected digraph is <em>biconnected</em> if it is still connected (in the sense of <code class="func">IsConnectedDigraph</code> (<a href="chap6_mj.html#X83C08C0B7EC1A91F"><span class="RefLink">6.3-2</span></a>)) when any vertex is removed. <code class="code">IsBiconnectedDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is biconnected, and <code class="keyw">false</code> if it is not. In particular, <code class="code">IsBiconnectedDigraph</code> returns <code class="keyw">false</code> if <var class="Arg">digraph</var> is not connected.</p>
+
+<p>Multiple edges and loops are ignored by this method.</p>
+
+<p>The method used in this operation has complexity <span class="SimpleMath">\(O(m+n)\)</span> where <span class="SimpleMath">\(m\)</span> is the number of edges (counting multiple edges as one, and not counting loops) and <span class="SimpleMath">\(n\)</span> is the number of vertices in the digraph. See also <code class="func">ArticulationPoints</code> (<a href="chap5_mj.html#X7DDE06E47E605DD7"><span class="RefLink">5.3-12</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsBiconnectedDigraph(Digraph([[1, 3], [2, 3], [3]]));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsBiconnectedDigraph(CycleDigraph(5));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsBiconnectedDigraph(Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]));</span>
+false</pre></div>
+
 <p><a id="X7B37B9467C68C208" name="X7B37B9467C68C208"></a></p>
 
-<h5>6.3-3 IsStronglyConnectedDigraph</h5>
+<h5>6.3-4 IsStronglyConnectedDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsStronglyConnectedDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
@@ -555,12 +579,12 @@ false
 
 <p><a id="X80E883967EBE839E" name="X80E883967EBE839E"></a></p>
 
-<h5>6.3-4 IsAperiodicDigraph</h5>
+<h5>6.3-5 IsAperiodicDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsAperiodicDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is aperiodic, i.e. if its <code class="func">DigraphPeriod</code> (<a href="chap5_mj.html#X853D0B0981A33433"><span class="RefLink">5.3-12</span></a>) is equal to 1. Otherwise, the property is <code class="keyw">false</code>.</p>
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is aperiodic, i.e. if its <code class="func">DigraphPeriod</code> (<a href="chap5_mj.html#X853D0B0981A33433"><span class="RefLink">5.3-13</span></a>) is equal to 1. Otherwise, the property is <code class="keyw">false</code>.</p>
 
 
 <div class="example"><pre>
@@ -576,7 +600,7 @@ true
 
 <p><a id="X7B46EA6C7B2DF2FB" name="X7B46EA6C7B2DF2FB"></a></p>
 
-<h5>6.3-5 IsDirectedTree</h5>
+<h5>6.3-6 IsDirectedTree</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDirectedTree</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
@@ -609,7 +633,7 @@ true
 
 <p><a id="X80FC20FA7AC4BC2A" name="X80FC20FA7AC4BC2A"></a></p>
 
-<h5>6.3-6 IsUndirectedTree</h5>
+<h5>6.3-7 IsUndirectedTree</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsUndirectedTree</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsUndirectedForest</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
@@ -648,7 +672,7 @@ false</pre></div>
 
 <p><a id="X79DFBB198525544E" name="X79DFBB198525544E"></a></p>
 
-<h5>6.3-7 IsEulerianDigraph</h5>
+<h5>6.3-8 IsEulerianDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsEulerianDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
@@ -676,6 +700,34 @@ false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsEulerianDigraph(gr);</span>
 true
 </pre></div>
+
+<p><a id="X7E91320B8028F5D8" name="X7E91320B8028F5D8"></a></p>
+
+<h5>6.3-9 IsCycleDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsCycleDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p><code class="code">IsCycleDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is isomorphic to the cycle digraph with the same number of vertices as <var class="Arg">digraph</var>, and <code class="keyw">false</code> if it is not; see <code class="func">CycleDigraph</code> (<a href="chap3_mj.html#X80C29DDE876FFBEB"><span class="RefLink">3.5-5</span></a>).</p>
+
+<p>A digraph is a <em>cycle</em> if and only if it is strongly connected and has the same number of edges as vertices.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 3], [2, 3], [3]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCycleDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(5);</span>
+&lt;digraph with 5 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCycleDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := OnDigraphs(gr, (1, 2, 3));</span>
+&lt;digraph with 5 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr = CycleDigraph(5);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCycleDigraph(gr);</span>
+true</pre></div>
 
 <p><a id="X85492D15781F1A2A" name="X85492D15781F1A2A"></a></p>
 

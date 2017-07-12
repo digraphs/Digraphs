@@ -389,6 +389,47 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
+  [1X5.1-16 IsMatching[101X
+  
+  [29X[2XIsMatching[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation
+  [29X[2XIsMaximalMatching[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation
+  [29X[2XIsPerfectMatching[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X is a digraph and [3Xlist[103X is a list of pairs of vertices of [3Xdigraph[103X,
+  then  [10XIsMatching[110X  returns  [9Xtrue[109X  if  [3Xlist[103X  is  a  matching  of  [3Xdigraph[103X. The
+  operations  [10XIsMaximalMatching[110X and [10XIsPerfectMatching[110X return [9Xtrue[109X if [3Xlist[103X is a
+  maximal,  or  perfect,  matching  of [3Xdigraph[103X, respectively. Otherwise, these
+  operations return [9Xfalse[109X.[133X
+  
+  [33X[0;0YA  [13Xmatching[113X [10XM[110X of a digraph [3Xdigraph[103X is a subset of the edges of [3Xdigraph[103X, i.e.
+  [10XDigraphEdges([3Xdigraph[103X[10X)[110X, such that no pair of distinct edges in [10XM[110X are incident
+  to  the  same vertex of [3Xdigraph[103X. Note that this definition allows a matching
+  to  contain loops. See [2XDigraphHasLoops[102X ([14X6.1-1[114X). The matching [10XM[110X is [13Xmaximal[113X if
+  it  is  contained  in  no  larger matching of the digraph, and is [13Xperfect[113X if
+  every  vertex  of  the digraph is incident to an edge in the matching. Every
+  perfect matching is maximal.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [1], [2, 3, 4], [3, 5], [1]]);[127X[104X
+    [4X[28X<digraph with 5 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMatching(gr, [[2, 1], [3, 2]]);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xedges := [[3, 2]];;[127X[104X
+    [4X[25Xgap>[125X [27XIsMatching(gr, edges);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsMaximalMatching(gr, edges);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xedges := [[5, 1], [3, 3]];;[127X[104X
+    [4X[25Xgap>[125X [27XIsMaximalMatching(gr, edges);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsPerfectMatching(gr, edges);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xedges := [[1, 2], [3, 3], [4, 5]];;[127X[104X
+    [4X[25Xgap>[125X [27XIsPerfectMatching(gr, edges);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
   
   [1X5.2 [33X[0;0YNeighbours and degree[133X[101X
   
@@ -1100,7 +1141,39 @@
     [4X[28X[ 4 ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-12 DigraphPeriod[101X
+  [1X5.3-12 ArticulationPoints[101X
+  
+  [29X[2XArticulationPoints[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA list of vertices.[133X
+  
+  [33X[0;0YA connected digraph is [13Xbiconnected[113X if it is still connected (in the sense of
+  [2XIsConnectedDigraph[102X  ([14X6.3-2[114X))  when  any  vertex  is  removed. If the digraph
+  [3Xdigraph[103X  is  not  biconnected but is connected, then any vertex [10Xv[110X of [3Xdigraph[103X
+  whose  removal  makes  the  resulting  digraph  disconnected  is  called  an
+  [13Xarticulation point[113X.[133X
+  
+  [33X[0;0Y[10XArticulationPoints[110X  returns a list of the articulation points of [3Xdigraph[103X, if
+  any, and, in particular, returns the empty list if [3Xdigraph[103X is not connected.[133X
+  
+  [33X[0;0YMultiple edges and loops are ignored by this method.[133X
+  
+  [33X[0;0YThe  method  used  in  this  operation  has complexity [22XO(m+n)[122X where [22Xm[122X is the
+  number of edges (counting multiple edges as one, and not counting loops) and
+  [22Xn[122X  is  the  number of vertices in the digraph. See also [2XIsBiconnectedDigraph[102X
+  ([14X6.3-3[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XArticulationPoints(CycleDigraph(5));[127X[104X
+    [4X[28X[  ][128X[104X
+    [4X[25Xgap>[125X [27XArticulationPoints(Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]));[127X[104X
+    [4X[28X[ 2, 1 ][128X[104X
+    [4X[25Xgap>[125X [27XArticulationPoints(ChainDigraph(5));[127X[104X
+    [4X[28X[ 4, 3, 2 ][128X[104X
+    [4X[25Xgap>[125X [27XArticulationPoints(NullDigraph(5));[127X[104X
+    [4X[28X[  ][128X[104X
+  [4X[32X[104X
+  
+  [1X5.3-13 DigraphPeriod[101X
   
   [29X[2XDigraphPeriod[102X( [3Xdigraph[103X ) [32X attribute
   [6XReturns:[106X  [33X[0;10YAn integer.[133X
@@ -1113,7 +1186,7 @@
   See section [14X1.1-1[114X for the definition of a directed cycle.[133X
   
   [33X[0;0YA digraph with a period of [22X1[122X is said to be [13Xaperiodic[113X. See [2XIsAperiodicDigraph[102X
-  ([14X6.3-4[114X).[133X
+  ([14X6.3-5[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);[127X[104X
@@ -1132,7 +1205,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X5.3-13 DigraphFloydWarshall[101X
+  [1X5.3-14 DigraphFloydWarshall[101X
   
   [29X[2XDigraphFloydWarshall[102X( [3Xdigraph[103X, [3Xfunc[103X, [3Xnopath[103X, [3Xedge[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA matrix.[133X
@@ -1188,7 +1261,7 @@
     [4X[28X  [   3,  -1,  -1,   2,   1,   1 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-14 IsReachable[101X
+  [1X5.3-15 IsReachable[101X
   
   [29X[2XIsReachable[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1214,7 +1287,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X5.3-15 DigraphPath[101X
+  [1X5.3-16 DigraphPath[101X
   
   [29X[2XDigraphPath[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA pair of lists, or [9Xfail[109X.[133X
@@ -1252,7 +1325,7 @@
     [4X[28Xfail[128X[104X
   [4X[32X[104X
   
-  [1X5.3-16 IteratorOfPaths[101X
+  [1X5.3-17 IteratorOfPaths[101X
   
   [29X[2XIteratorOfPaths[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YAn iterator.[133X
@@ -1262,7 +1335,7 @@
   non-trivial  directed  paths (or directed cycles, in the case that [3Xu[103X [10X=[110X [3Xv[103X) in
   [3Xdigraph[103X from the vertex [3Xu[103X to the vertex [3Xv[103X.[133X
   
-  [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.3-15[114X) for more information about the repesentation of a
+  [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.3-16[114X) for more information about the repesentation of a
   directed  path  or  directed  cycle  which  is  used,  and  see  [14X'Reference:
   Iterators'[114X  for  more information about iterators. See Section [14X'[33X[0;0YDefinitions[133X'[114X
   for the definition of a directed path and a directed cycle.[133X
@@ -1286,7 +1359,7 @@
     [4X[28X[ [ 4, 1, 2, 3 ], [ 1, 4, 1 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-17 DigraphAllSimpleCircuits[101X
+  [1X5.3-18 DigraphAllSimpleCircuits[101X
   
   [29X[2XDigraphAllSimpleCircuits[102X( [3Xdigraph[103X ) [32X attribute
   [6XReturns:[106X  [33X[0;10YA list of lists of vertices.[133X
@@ -1330,7 +1403,7 @@
     [4X[28X[ [ 1 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-18 DigraphLongestSimpleCircuit[101X
+  [1X5.3-19 DigraphLongestSimpleCircuit[101X
   
   [29X[2XDigraphLongestSimpleCircuit[102X( [3Xdigraph[103X ) [32X attribute
   [6XReturns:[106X  [33X[0;10YA list of vertices, or [9Xfail[109X.[133X
@@ -1342,7 +1415,7 @@
   [33X[0;0YThis  attribute  computes  [10XDigraphAllSimpleCircuits([110X[3Xdigraph[103X[10X)[110X to find all the
   simple  circuits  of  [3Xdigraph[103X,  and  returns one of maximal length. A simple
   circuit  is  represented as a list of vertices, in the same way as described
-  in [2XDigraphAllSimpleCircuits[102X ([14X5.3-17[114X).[133X
+  in [2XDigraphAllSimpleCircuits[102X ([14X5.3-18[114X).[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  has  no  simple  circuits, then this attribute returns [9Xfail[109X. If
   [3Xdigraph[103X  has multiple simple circuits of maximal length, then this attribute
@@ -1360,7 +1433,7 @@
     [4X[28X[ 1, 3, 4 ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-19 DigraphLayers[101X
+  [1X5.3-20 DigraphLayers[101X
   
   [29X[2XDigraphLayers[102X( [3Xdigraph[103X, [3Xvertex[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA list.[133X
@@ -1375,7 +1448,7 @@
     [4X[28X[ [ 1 ], [ 2, 3, 4 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-20 DigraphDegeneracy[101X
+  [1X5.3-21 DigraphDegeneracy[101X
   
   [29X[2XDigraphDegeneracy[102X( [3Xdigraph[103X ) [32X attribute
   [6XReturns:[106X  [33X[0;10YA non-negative integer, or [9Xfail[109X.[133X
@@ -1404,13 +1477,13 @@
     [4X[28X1[128X[104X
   [4X[32X[104X
   
-  [1X5.3-21 DigraphDegeneracyOrdering[101X
+  [1X5.3-22 DigraphDegeneracyOrdering[101X
   
   [29X[2XDigraphDegeneracyOrdering[102X( [3Xdigraph[103X ) [32X attribute
   [6XReturns:[106X  [33X[0;10YA list of integers, or [9Xfail[109X.[133X
   
   [33X[0;0YIf   [3Xdigraph[103X   is  a  digraph  for  which  [10XDigraphDegeneracy([110X[3Xdigraph[103X[10X)[110X  is  a
-  non-negative  integer  [10Xk[110X  -  see  [2XDigraphDegeneracy[102X  ([14X5.3-20[114X)  -  then  this
+  non-negative  integer  [10Xk[110X  -  see  [2XDigraphDegeneracy[102X  ([14X5.3-21[114X)  -  then  this
   attribute  returns  a degeneracy ordering of the vertices of the vertices of
   [3Xdigraph[103X.[133X
   

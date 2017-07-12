@@ -470,7 +470,34 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.3-3 IsStronglyConnectedDigraph[101X
+  [1X6.3-3 IsBiconnectedDigraph[101X
+  
+  [29X[2XIsBiconnectedDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YA connected digraph is [13Xbiconnected[113X if it is still connected (in the sense of
+  [2XIsConnectedDigraph[102X ([14X6.3-2[114X)) when any vertex is removed. [10XIsBiconnectedDigraph[110X
+  returns  [9Xtrue[109X if the digraph [3Xdigraph[103X is biconnected, and [9Xfalse[109X if it is not.
+  In   particular,  [10XIsBiconnectedDigraph[110X  returns  [9Xfalse[109X  if  [3Xdigraph[103X  is  not
+  connected.[133X
+  
+  [33X[0;0YMultiple edges and loops are ignored by this method.[133X
+  
+  [33X[0;0YThe  method  used  in  this  operation  has complexity [22XO(m+n)[122X where [22Xm[122X is the
+  number of edges (counting multiple edges as one, and not counting loops) and
+  [22Xn[122X  is  the  number  of  vertices in the digraph. See also [2XArticulationPoints[102X
+  ([14X5.3-12[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XIsBiconnectedDigraph(Digraph([[1, 3], [2, 3], [3]]));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsBiconnectedDigraph(CycleDigraph(5));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsBiconnectedDigraph(Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]));[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-4 IsStronglyConnectedDigraph[101X
   
   [29X[2XIsStronglyConnectedDigraph[102X( [3Xdigraph[103X ) [32X property
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -497,13 +524,13 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.3-4 IsAperiodicDigraph[101X
+  [1X6.3-5 IsAperiodicDigraph[101X
   
   [29X[2XIsAperiodicDigraph[102X( [3Xdigraph[103X ) [32X property
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property  is  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is aperiodic, i.e. if its
-  [2XDigraphPeriod[102X ([14X5.3-12[114X) is equal to 1. Otherwise, the property is [9Xfalse[109X.[133X
+  [2XDigraphPeriod[102X ([14X5.3-13[114X) is equal to 1. Otherwise, the property is [9Xfalse[109X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);[127X[104X
@@ -516,7 +543,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.3-5 IsDirectedTree[101X
+  [1X6.3-6 IsDirectedTree[101X
   
   [29X[2XIsDirectedTree[102X( [3Xdigraph[103X ) [32X property
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -549,7 +576,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.3-6 IsUndirectedTree[101X
+  [1X6.3-7 IsUndirectedTree[101X
   
   [29X[2XIsUndirectedTree[102X( [3Xdigraph[103X ) [32X property
   [29X[2XIsUndirectedForest[102X( [3Xdigraph[103X ) [32X property
@@ -597,7 +624,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.3-7 IsEulerianDigraph[101X
+  [1X6.3-8 IsEulerianDigraph[101X
   
   [29X[2XIsEulerianDigraph[102X( [3Xdigraph[103X ) [32X property
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -624,6 +651,35 @@
     [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3], [1]]);[127X[104X
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsEulerianDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-9 IsCycleDigraph[101X
+  
+  [29X[2XIsCycleDigraph[102X( [3Xdigraph[103X ) [32X property
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0Y[10XIsCycleDigraph[110X  returns  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is isomorphic to the
+  cycle  digraph  with the same number of vertices as [3Xdigraph[103X, and [9Xfalse[109X if it
+  is not; see [2XCycleDigraph[102X ([14X3.5-5[114X).[133X
+  
+  [33X[0;0YA  digraph  is  a  [13Xcycle[113X if and only if it is strongly connected and has the
+  same number of edges as vertices.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCycleDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xgr := CycleDigraph(5);[127X[104X
+    [4X[28X<digraph with 5 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCycleDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := OnDigraphs(gr, (1, 2, 3));[127X[104X
+    [4X[28X<digraph with 5 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xgr = CycleDigraph(5);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsCycleDigraph(gr);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   

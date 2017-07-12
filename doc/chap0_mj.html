@@ -31,7 +31,7 @@
 
 <h2>Methods for digraphs</h2>
 
-<p>Version 0.8.1</p>
+<p>Version 0.9.0</p>
 
 </div>
 <p><b>Jan De Beule
@@ -234,6 +234,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7EFAF01B7A155157">5.1-13 DigraphInEdges</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7BECFE6687ECD028">5.1-14 DigraphOutEdges</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7BB8ED88835F07B4">5.1-15 IsDigraphEdge</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X848FED0B7B4ACD1F">5.1-16 IsMatching</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5_mj.html#X7D7CE8328187D0DF">5.2 <span class="Heading">Neighbours and degree</span></a>
 </span>
@@ -266,16 +267,17 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X8484EC557810CD31">5.3-9 DigraphConnectedComponent</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X833ECD6B7A84944C">5.3-10 DigraphStronglyConnectedComponents</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7EFCB5017D662254">5.3-11 DigraphStronglyConnectedComponent</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X853D0B0981A33433">5.3-12 DigraphPeriod</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X864A31A8809F61C2">5.3-13 DigraphFloydWarshall</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7FBAB09E7C0BE5CF">5.3-14 IsReachable</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X8039170B82A32257">5.3-15 DigraphPath</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7C0416FE7A69CA2C">5.3-16 IteratorOfPaths</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7ECD16838704FAAA">5.3-17 DigraphAllSimpleCircuits</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7C735C4E86BDD5F6">5.3-18 DigraphLongestSimpleCircuit</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X870E04307C5F213F">5.3-19 DigraphLayers</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7B2E42327DA118E0">5.3-20 DigraphDegeneracy</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X827C2BD17A4547E3">5.3-21 DigraphDegeneracyOrdering</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7DDE06E47E605DD7">5.3-12 ArticulationPoints</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X853D0B0981A33433">5.3-13 DigraphPeriod</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X864A31A8809F61C2">5.3-14 DigraphFloydWarshall</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7FBAB09E7C0BE5CF">5.3-15 IsReachable</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X8039170B82A32257">5.3-16 DigraphPath</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7C0416FE7A69CA2C">5.3-17 IteratorOfPaths</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7ECD16838704FAAA">5.3-18 DigraphAllSimpleCircuits</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7C735C4E86BDD5F6">5.3-19 DigraphLongestSimpleCircuit</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X870E04307C5F213F">5.3-20 DigraphLayers</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7B2E42327DA118E0">5.3-21 DigraphDegeneracy</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X827C2BD17A4547E3">5.3-22 DigraphDegeneracyOrdering</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5_mj.html#X85492D15781F1A2A">5.4 <span class="Heading">Partial Orders</span></a>
 </span>
@@ -313,11 +315,13 @@
 <div class="ContSSBlock">
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7BD08D4478218F77">6.3-1 IsAcyclicDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X83C08C0B7EC1A91F">6.3-2 IsConnectedDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B37B9467C68C208">6.3-3 IsStronglyConnectedDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80E883967EBE839E">6.3-4 IsAperiodicDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B46EA6C7B2DF2FB">6.3-5 IsDirectedTree</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80FC20FA7AC4BC2A">6.3-6 IsUndirectedTree</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X79DFBB198525544E">6.3-7 IsEulerianDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X838FAF2D825977BE">6.3-3 IsBiconnectedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B37B9467C68C208">6.3-4 IsStronglyConnectedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80E883967EBE839E">6.3-5 IsAperiodicDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B46EA6C7B2DF2FB">6.3-6 IsDirectedTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80FC20FA7AC4BC2A">6.3-7 IsUndirectedTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X79DFBB198525544E">6.3-8 IsEulerianDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7E91320B8028F5D8">6.3-9 IsCycleDigraph</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6_mj.html#X85492D15781F1A2A">6.4 <span class="Heading">Partial Orders</span></a>
 </span>
