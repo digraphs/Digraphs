@@ -4,6 +4,24 @@ Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.9.0 (released 12/07/2017)
+This release introduces several new features.
+
+### New Features in Version 0.9.0
+The following attributes and properties were added by
+[James D. Mitchell](http://goo.gl/ZtViV6):
+
+* `ArticulationPoints` (and its synonym `CutVertices`)
+* `IsBiconnectedDigraph`
+* `IsCycleDigraph`
+
+The following operations related to matchings were added by Isabella Scott and
+[Wilf A. Wilson](http://wilf.me):
+
+* `IsMatching`
+* `IsPerfectMatching`
+* `IsMaximalMatching`
+
 ## Version 0.8.1 (released 18/05/2017)
 This is a minor release, which updates the README file and updates the list of
 package authors and contributors.
