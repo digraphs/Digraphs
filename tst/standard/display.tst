@@ -71,6 +71,19 @@ gap> DotSymmetricDigraph(gr1);
 Error, Digraphs: DotSymmetricDigraph: usage,
 the argument <graph> should be symmetric,
 
+# DotVertexLabelledDigraph
+gap> r := rec(vertices := [1 .. 3], source := [1, 1, 1, 1],
+> range := [1, 2, 2, 3]);;
+gap> gr := Digraph(r);
+<multidigraph with 3 vertices, 4 edges>
+gap> dot := DotVertexLabelledDigraph(gr);;
+gap> dot{[1 .. 50]};
+"//dot\ndigraph hgn{\nnode [shape=circle]\n1 [label=\"1"
+gap> SetDigraphVertexLabel(gr, 1, 2);
+gap> dot := DotVertexLabelledDigraph(gr);;
+gap> dot{[1 .. 50]};
+"//dot\ndigraph hgn{\nnode [shape=circle]\n1 [label=\"2"
+
 # The following tests can't be run because they fail if Semigroups is loaded
 # first
 #T# Splash 

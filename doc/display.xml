@@ -90,19 +90,26 @@ gap> Splash(DotDigraph(RandomDigraph(4)));
 <#GAPDoc Label="DotDigraph">
   <ManSection>
     <Attr Name="DotDigraph" Arg="digraph"/>
+    <Oper Name="DotVertexLabelledDigraph" Arg="digraph"/>
     <Returns>A string.</Returns>
     <Description>
-      This function produces a graphical representation of the digraph
+      <C>DotDigraph</C> produces a graphical representation of the digraph
       <A>digraph</A>. Vertices are displayed as circles, numbered consistently
       with <A>digraph</A>. Edges are displayed as arrowed lines between
       vertices, with the arrowhead of each line pointing towards the range
       of the edge.<P/>
 
+      <C>DotVertexLabelledDigraph</C> differs from <C>DotDigraph</C> only in
+      that the values in <Ref Oper="DigraphVertexLabels"/> are used to label
+      the vertices in the produced picture rather than the numbers <C>1</C> to
+      the number of vertices of the digraph. <P/>
+
       The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
       format. For details about this file format, and information about how to
       display or edit this format see <URL>http://www.graphviz.org</URL>. <P/>
 
-      The string returned by <C>DotDigraph</C> can be written to a file using
+      The string returned by <C>DotDigraph</C> or
+      <C>DotVertexLabelledDigraph</C> can be written to a file using
       the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
       <Log><![CDATA[
