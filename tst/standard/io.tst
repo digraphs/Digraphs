@@ -929,4 +929,5 @@ gap> Unbind(str);
 gap> Unbind(file);
 
 #E#
-gap> STOP_TEST("Digraphs package: standard/io.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: standard/io.tst", 0);

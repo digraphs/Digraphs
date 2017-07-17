@@ -43,4 +43,4 @@ true
 gap> Unbind(gr);
 
 #E#
-gap> STOP_TEST("Digraphs package: workspaces/save-workspace.tst");
+gap> STOP_TEST("Digraphs package: workspaces/save-workspace.tst", 0);

@@ -1744,4 +1744,5 @@ gap> Unbind(v);
 gap> Unbind(x);
 
 #E#
-gap> STOP_TEST("Digraphs package: standard/digraph.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: standard/digraph.tst", 0);

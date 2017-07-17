@@ -529,4 +529,5 @@ gap> Unbind(lim);
 gap> Unbind(out);
 
 #E#
-gap> STOP_TEST("Digraphs package: standard/cliques.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: standard/cliques.tst", 0);

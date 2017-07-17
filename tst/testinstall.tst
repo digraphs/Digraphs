@@ -311,4 +311,5 @@ gap> Unbind(adj);
 gap> Unbind(d);
 
 #E#
-gap> STOP_TEST("Digraphs package: testinstall.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: testinstall.tst", 0);

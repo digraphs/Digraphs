@@ -1457,4 +1457,5 @@ gap> Unbind(tree);
 gap> Unbind(wcc);
 
 #E#
-gap> STOP_TEST("Digraphs package: standard/attr.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: standard/attr.tst", 0);

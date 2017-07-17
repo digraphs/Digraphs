@@ -13,15 +13,6 @@
 # Internal stuff
 #############################################################################
 
-BindGlobal("DIGRAPHS_PF",
-function(pass)
-  if pass then
-    return "\033[1;32mPASSED!\033[0m\n";
-  else
-    return "\033[1;31mFAILED!\033[0m\n";
-  fi;
-end);
-
 BindGlobal("DIGRAPHS_DocXMLFiles", ["attr.xml",
                                     "bliss.xml",
                                     "cliques.xml",
@@ -41,80 +32,28 @@ MakeReadWriteGlobal("DIGRAPHS_TestRec");
 
 InstallGlobalFunction(DIGRAPHS_StartTest,
 function()
-  local record;
-
-  record := DIGRAPHS_TestRec;
-
-  record.timeofday := IO_gettimeofday();
-  record.InfoLevelInfoWarning := InfoLevel(InfoWarning);
-  record.InfoLevelInfoDigraphs := InfoLevel(InfoDigraphs);
+  DIGRAPHS_TestRec.InfoLevelInfoWarning  := InfoLevel(InfoWarning);
+  DIGRAPHS_TestRec.InfoLevelInfoDigraphs := InfoLevel(InfoDigraphs);
 
   SetInfoLevel(InfoWarning, 0);
   SetInfoLevel(InfoDigraphs, 0);
-
-  record.STOP_TEST := STOP_TEST;
-
-  MakeReadWriteGlobal("STOP_TEST");
-  UnbindGlobal("STOP_TEST");
-  BindGlobal("STOP_TEST", DIGRAPHS_StopTest);
-
   return;
 end);
 
 InstallGlobalFunction(DIGRAPHS_StopTest,
-function(file)
-  local timeofday, record, elapsed, str;
-
-  timeofday := IO_gettimeofday();
-
-  record := DIGRAPHS_TestRec;
-
-  elapsed := (timeofday.tv_sec - record.timeofday.tv_sec) * 1000
-              + Int((timeofday.tv_usec - record.timeofday.tv_usec) / 1000);
-
-  str := "elapsed time: ";
-  Append(str, String(elapsed));
-  Append(str, "ms\n");
-
-  SetInfoLevel(InfoWarning, record.InfoLevelInfoWarning);
-  SetInfoLevel(InfoDigraphs, record.InfoLevelInfoDigraphs);
-
-  if not IsBound(GAPInfo.TestData.START_TIME) then
-      ErrorNoReturn("Digraphs: DIGRAPHS_StopTest:\n",
-                    "`STOP_TEST' command without `START_TEST' command for `",
-                    file, "'");
-  fi;
-  Print(GAPInfo.TestData.START_NAME, "\n");
-
-  SetAssertionLevel(GAPInfo.TestData.AssertionLevel);
-  Unbind(GAPInfo.TestData.AssertionLevel);
-  Unbind(GAPInfo.TestData.START_TIME);
-  Unbind(GAPInfo.TestData.START_NAME);
-  Print(str);
-  MakeReadWriteGlobal("STOP_TEST");
-  UnbindGlobal("STOP_TEST");
-  BindGlobal("STOP_TEST", record.STOP_TEST);
-  MakeReadWriteGlobal("STOP_TEST");
+function()
+  SetInfoLevel(InfoWarning, DIGRAPHS_TestRec.InfoLevelInfoWarning);
+  SetInfoLevel(InfoDigraphs, DIGRAPHS_TestRec.InfoLevelInfoDigraphs);
   return;
 end);
 
 InstallGlobalFunction(DIGRAPHS_TestDir,
-function(dir, opts)
-  local start_time, file_ext, is_testable, tst_dir, contents, farm, nr_tests,
-    out, stop_time, elapsed, str, filename;
+function(arg)
+  local dir, args, file_ext, is_testable, contents, passed, elapsed, filename,
+  split, print_file, pos, range, opts, start, str;
 
-  start_time := IO_gettimeofday();
-
-  if IsRecord(opts) then
-    if not IsBound(opts.parallel) or not IsBool(opts.parallel) then
-      opts.parallel := false;
-    fi; #TODO add printing of ignored options
-  else
-    ErrorNoReturn("Digraphs: DIGRAPHS_TestDir: usage,\n",
-                  "the argument must be a record,");
-  fi;
-
-  Print("\n");
+  dir  := arg[1];
+  args := arg{[2 .. Length(arg)]};
 
   file_ext := function(str)
     local split;
@@ -148,54 +87,41 @@ function(dir, opts)
     Print(PRINT_STRINGIFY(" . . .\n\n"));
   fi;
 
-  tst_dir  := Concatenation(PackageInfo("digraphs")[1]!.InstallationPath,
-                            "/tst/", dir);
-  contents := DirectoryContents(tst_dir);
+  contents := ["../testinstall.tst"];
+  Append(contents, DirectoryContents(dir));
 
-  DigraphsTestInstall(rec(silent := false));
-
-  if opts.parallel then
-    farm := ParWorkerFarmByFork(DIGRAPHS_Test,
-                                rec(NumberJobs := 3));
-    nr_tests := 0;
-  else
-    out := true;
-  fi;
-
+  passed := true;
+  elapsed := 0;
   for filename in contents do
-    if file_ext(filename) = "tst" and is_testable(tst_dir, filename) then
-      if opts.parallel then
-          nr_tests := nr_tests + 1;
-          Submit(farm, [Filename(Directory(tst_dir), filename),
-                        rec(silent := false)]);
-      else
-        if not DIGRAPHS_Test(Filename(Directory(tst_dir), filename),
-                                      rec(silent := false)) then
-          out := false;
+    if file_ext(filename) = "tst" and is_testable(dir, filename) then
+      filename := Filename(Directory(dir), filename);
+      if Length(args) > 0 and IsBool(args[1]) and args[1] then
+        split  := SplitString(filename, "/");
+        if split[Length(split)] = "testinstall.tst" then
+          print_file := "tst/testinstall.tst";
+        else
+          pos    := Position(split, "tst");
+          if pos <> fail then
+            range := [pos .. Length(split)];
+          else
+            range := [Length(split) - 2 .. Length(split)];
+          fi;
+          print_file := JoinStringsWithSeparator(split{range}, "/");
         fi;
+        opts := rec(showProgress := "some");
+        Print("Testing file: ", print_file, " . . .\n");
+      else
+        opts := rec(showProgress := false);
       fi;
+      start := Runtime();
+      if not Test(filename, opts) then
+        passed := false;
+      fi;
+      elapsed := elapsed + Runtime() - start;
     fi;
   od;
-
-  if opts.parallel then
-    while Length(farm!.outqueue) < nr_tests do
-      DoQueues(farm, false);
-    od;
-
-    out := Pickup(farm);
-    Kill(farm);
-  fi;
-
-  stop_time := IO_gettimeofday();
-  elapsed := (stop_time.tv_sec - start_time.tv_sec) * 1000
-              + Int((stop_time.tv_usec - start_time.tv_usec) / 1000);
-
-  str := "TOTAL elapsed time: ";
-  Append(str, String(elapsed));
-  Append(str, "ms\n\n");
-  Print(str);
-
-  return out;
+  Print("Total: ", String(elapsed), " msecs\n");
+  return passed;
 end);
 
 InstallGlobalFunction(DIGRAPHS_ManualExamples,
@@ -207,52 +133,6 @@ end);
 InstallGlobalFunction(DIGRAPHS_Dir,
 function()
   return PackageInfo("digraphs")[1]!.InstallationPath;
-end);
-
-InstallGlobalFunction(DIGRAPHS_Test,
-function(arg)
-  local file, opts, split, print_file, width, test_output;
-
-  if Length(arg) = 0 then
-    ErrorNoReturn("Digraphs: DIGRAPHS_Test: usage,\n",
-                  "there should be at least 1 argument,");
-  fi;
-
-  file := arg[1];
-
-  if Length(arg) = 1 then
-    opts := rec();
-  else
-    opts := arg[2];
-  fi;
-
-  # TODO process opts
-  if not IsBound(opts.silent) then
-    opts.silent := true;
-  fi;
-
-  split := SplitString(file, "/");
-  print_file := JoinStringsWithSeparator(split{[Length(split) - 2 ..
-                                                Length(split)]}, "/");
-  width := SizeScreen()[1] - 3;
-
-  if not opts.silent then
-    Print(Concatenation(ListWithIdenticalEntries(width, "#")), "\n");
-  fi;
-
-  Print(PRINT_STRINGIFY("testing ", print_file, " . . ."), "\n");
-
-  if not opts.silent then
-    Print(Concatenation(ListWithIdenticalEntries(width, "#")), "\n\n");
-  fi;
-
-  test_output := Test(file);
-  if not opts.silent then
-    Print("\n", DIGRAPHS_PF(test_output));
-  fi;
-  Print("\n");
-
-  return test_output;
 end);
 
 #############################################################################
@@ -274,18 +154,22 @@ function()
   return;
 end);
 
+InstallGlobalFunction(DigraphsTestInstall,
+function(arg)
+  return Test(Filename(DirectoriesPackageLibrary("digraphs", "tst"),
+              "testinstall.tst"));
+end);
+
 InstallGlobalFunction(DigraphsTestStandard,
 function()
-  return DIGRAPHS_TestDir("standard", rec());
+  return DIGRAPHS_TestDir(Concatenation(DIGRAPHS_Dir(), "/tst/standard"));
 end);
 
 InstallGlobalFunction(DigraphsTestExtreme,
 function()
-  local file;
-
+  local file, dir;
   file := Filename(DirectoriesPackageLibrary("digraphs", "digraphs-lib"),
                    "extreme.d6.gz");
-
   if file = fail then
     ErrorNoReturn("Digraphs: DigraphsTestExtreme:\n",
                   "the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
@@ -294,8 +178,9 @@ function()
                   "http://gap-packages.github.io/Digraphs/",
                   "\n\nand try again,");
   fi;
-
-  return DIGRAPHS_TestDir("extreme", rec());
+  dir  := Concatenation(PackageInfo("digraphs")[1]!.InstallationPath,
+                                    "/tst/extreme");
+  return DIGRAPHS_TestDir(Concatenation(DIGRAPHS_Dir(), "/tst/extreme"), true);
 end);
 
 InstallGlobalFunction(DigraphsMakeDoc,
@@ -307,47 +192,100 @@ function()
   return;
 end);
 
-InstallGlobalFunction(DigraphsTestInstall,
-function(arg)
-  local opts;
-
-  if Length(arg) = 0 then
-    opts := rec();
-  else
-    opts := arg[1];
-  fi;
-  #TODO check args
-  return DIGRAPHS_Test(Filename(DirectoriesPackageLibrary("digraphs", "tst"),
-                       "testinstall.tst"), opts);
-end);
-
 InstallGlobalFunction(DigraphsTestManualExamples,
-function()
-  local ex, omit, str;
+function(arg)
+  local exlists, indices, omit, oldscr, passed, pad, total, l, sp, bad, s,
+  start_time, test, end_time, elapsed, pex, str, j, ex, i;
 
-  ex := DIGRAPHS_ManualExamples();
-  omit := DIGRAPHS_OmitFromTests;
-  if Length(omit) > 0 then
-    Print("# not testing examples containing the strings:");
-    for str in omit do
-      ex := Filtered(ex, x -> PositionSublist(x[1][1], str) = fail);
-      Print(", \"", str, "\"");
-    od;
-    Print(" . . .\n");
+  exlists := DIGRAPHS_ManualExamples();
+  if Length(arg) > 0 then
+    if Length(arg) = 1 and IsList(arg[1]) then
+      return CallFuncList(DigraphsTestManualExamples, arg[1]);
+    elif ForAll(arg, x -> IsPosInt(x) and x <= Length(exlists)) then
+      indices := arg;
+    else
+      ErrorNoReturn("DigraphsTestManualExamples: the arguments must be ",
+                    "positive integers or a list of positive integers ",
+                    "not greater than ", Length(exlists), ",");
+    fi;
+  else
+    omit := DIGRAPHS_OmitFromTests;
+    if Length(omit) > 0 then
+      Print("# not testing examples containing the strings:");
+      for str in omit do
+        exlists := Filtered(exlists,
+                            x -> PositionSublist(x[1][1], str) = fail);
+        Print(", \"", str, "\"");
+      od;
+      Print(" . . .\n");
+    fi;
+    indices := [1 .. Length(exlists)];
   fi;
 
   DIGRAPHS_StartTest();
-  RunExamples(ex);
-  DIGRAPHS_StopTest("");
-  return;
-end);
 
-InstallGlobalFunction(DIGRAPHS_InitEdgeLabels,
-function(graph)
-  if not IsBound(graph!.edgelabels) then
-    graph!.edgelabels := StructuralCopy(OutNeighbours(graph));
-    graph!.edgelabels := List(graph!.edgelabels, l -> List(l, n -> 1));
+  oldscr := SizeScreen();
+  SizeScreen([72, oldscr[2]]);
+  passed := true;
+  pad := function(nr)
+    nr := Length(String(Length(exlists))) - Length(String(nr)) + 1;
+    return List([1 .. nr], x -> ' ');
+  end;
+  total := 0;
+  for j in indices do
+    l := exlists[j];
+    Print("# Running example ", j, pad(j), " . . .");
+    START_TEST("");
+    for ex in l do
+      sp := SplitString(ex[1], "\n", "");
+      bad := Filtered([1 .. Length(sp)], i -> Length(sp[i]) > 72);
+      s := InputTextString(ex[1]);
+
+      start_time := IO_gettimeofday();
+      test := Test(s, rec(ignoreComments := false,
+                          width := 72,
+                          EQ := EQ,
+                          reportDiff := Ignore,
+                          showProgress := false));
+      end_time := IO_gettimeofday();
+      CloseStream(s);
+      elapsed := (end_time.tv_sec - start_time.tv_sec) * 1000
+                 + Int((end_time.tv_usec - start_time.tv_usec) / 1000);
+      total := total + elapsed;
+      pex := TEST.lastTestData;
+
+      Print(" msecs: ", elapsed, "\n");
+
+      if Length(bad) > 0 then
+        Print("\033[31m# WARNING: Overlong lines ", bad, " in\n",
+              ex[2][1], ":", ex[2][2], "\033[0m\n");
+        passed := false;
+      fi;
+
+      if test = false then
+        for i in [1 .. Length(pex[1])] do
+          if EQ(pex[2][i], pex[4][i]) <> true then
+            Print("\033[31m########> Diff in:\n",
+                  "# ", ex[2][1], ":", ex[2][2],
+                  "\n# Input is:\n");
+            PrintFormattedString(pex[1][i]);
+            Print("# Expected output:\n");
+            PrintFormattedString(pex[2][i]);
+            Print("# But found:\n");
+            PrintFormattedString(pex[4][i]);
+            Print("########\033[0m\n");
+            passed := false;
+          fi;
+        od;
+      fi;
+    od;
+  od;
+  SizeScreen(oldscr);
+  DIGRAPHS_StopTest();
+  if Length(indices) > 1 then
+    Print("Total: ", total, " msecs\n");
   fi;
+  return passed;
 end);
 
 # The following is based on doc/ref/testconsistency.g
