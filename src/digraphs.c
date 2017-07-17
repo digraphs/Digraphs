@@ -2655,16 +2655,8 @@ static Int InitKernel(StructInitInfo* module) {
 *F  InitLibrary( <module> ) . . . . . . .  initialise library data structures
 */
 static Int InitLibrary(StructInitInfo* module) {
-  Int gvar;
-  Obj tmp;
-
   /* init filters and functions */
   InitGVarFuncsFromTable(GVarFuncs);
-
-  tmp  = NEW_PREC(0);
-  gvar = GVarName("GRAPHS_C");
-  AssGVar(gvar, tmp);
-  MakeReadOnlyGVar(gvar);
 
   /* return success                                                      */
   return 0;
