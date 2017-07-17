@@ -1704,20 +1704,6 @@ gap> DigraphDistanceSet(gr, 2, -1);
 Error, Digraphs: DigraphDistanceSet: usage,
 the third argument must be a non-negative integer,
 
-#T# DigraphColoring
-gap> DigraphColoring(ChainDigraph(10));
-Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
-gap> DigraphColoring(CompleteDigraph(10));
-IdentityTransformation
-gap> gr := DigraphFromSparse6String(
-> ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
-<digraph with 30 vertices, 90 edges>
-gap> DigraphColoring(gr);
-Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
-  2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
-gap> DigraphColoring(EmptyDigraph(0));
-IdentityTransformation
-
 #T# IsSubdigraph: Issue #46
 gap> gr1 := Digraph([[2], []]);;
 gap> gr2 := Digraph([[2, 2], []]);;

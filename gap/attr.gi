@@ -117,16 +117,17 @@ function(digraph)
 
   # The chromatic number of <digraph> is at least 3 and at most nr - 1
 
+  # The variable <chrom> is the current best known lower bound for the
+  # chromatic number of <digraph>.
+  chrom := 3;
+
   # Prepare a list of connected components of digraph whose chromatic number we
   # do not yet know.
   if IsConnectedDigraph(digraph) then
     comps := [digraph];
     upper := [RankOfTransformation(DigraphColoring(digraph), nr)];
-    # The variable <chrom> is the current best known lower bound for the
-    # chromatic number of <digraph>.
-    chrom := CliqueNumber(digraph);
+    chrom := Maximum(CliqueNumber(digraph), chrom);
   else
-    chrom := 3;
     tmp_comps := [];
     tmp_upper := [];
     for comp in DigraphConnectedComponents(digraph).comps do

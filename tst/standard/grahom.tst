@@ -337,6 +337,14 @@ gap> DigraphColouring(gr);
 Transformation( [ 1, 2, 1, 2 ] )
 gap> HasDigraphColoring(gr) and HasDigraphColouring(gr);
 true
+gap> DigraphColoring(ChainDigraph(10));;
+gap> DigraphColoring(CompleteDigraph(10));;
+gap> gr := DigraphFromSparse6String(
+> ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
+<digraph with 30 vertices, 90 edges>
+gap> DigraphColoring(gr);;
+gap> DigraphColoring(EmptyDigraph(0));
+IdentityTransformation
 
 #T# HomomorphismDigraphsFinder 1
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);;
