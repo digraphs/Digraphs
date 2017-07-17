@@ -87,7 +87,8 @@ end);
 
 InstallMethod(ChromaticNumber, "for a digraph", [IsDigraph],
 function(digraph)
-  local nr, comps, chrom, n, subdigraph, comp, i;
+  local nr, comps, upper, chrom, tmp_comps, tmp_upper, n, comp, bound, clique,
+  cmp, c, i;
 
   nr := DigraphNrVertices(digraph);
 
@@ -103,47 +104,99 @@ function(digraph)
               # <digraph> has at least 2 vertices at this stage
   fi;
 
-  digraph := DigraphRemoveAllMultipleEdges(digraph);
+  # The chromatic number of <digraph> is at least 3 and at most nr
+  digraph := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(digraph));
 
-  if IsCompleteDigraph(DigraphSymmetricClosure(digraph)) then
-    return nr; # chromatic number = nr iff <digraph> has >= 2 verts & this cond.
+  if IsCompleteDigraph(digraph) then
+    # chromatic number = nr iff <digraph> has >= 2 verts & this cond.
+    return nr;
   elif nr = 4 then
-    return 3; # if nr = 4, then 3 is only remaining possible chromatic number
+    # if nr = 4, then 3 is only remaining possible chromatic number
+    return 3;
   fi;
 
-  # The chromatic number of <digraph> is at least 3 and at most n - 1
+  # The chromatic number of <digraph> is at least 3 and at most nr - 1
 
-  comps := DigraphConnectedComponents(digraph).comps;
-  chrom := 3;
+  # Prepare a list of connected components of digraph whose chromatic number we
+  # do not yet know.
+  if IsConnectedDigraph(digraph) then
+    comps := [digraph];
+    upper := [RankOfTransformation(DigraphColoring(digraph), nr)];
+    # The variable <chrom> is the current best known lower bound for the
+    # chromatic number of <digraph>.
+    chrom := CliqueNumber(digraph);
+  else
+    chrom := 3;
+    tmp_comps := [];
+    tmp_upper := [];
+    for comp in DigraphConnectedComponents(digraph).comps do
+      n := Length(comp);
+      if chrom < n then
+        # If chrom >= n, then we can colour the vertices of comp using any n of
+        # the required (at least) chrom colours, and we do not have to consider
+        # comp.
 
-  for comp in comps do
-    n := Length(comp);
-
-    if n < nr then
-      subdigraph := InducedSubdigraph(digraph, comp);
-    else
-      subdigraph := digraph;
-    fi;
-
-    if not IsNullDigraph(subdigraph)
-        and not IsBipartiteDigraph(subdigraph) then
-      if IsCompleteDigraph(DigraphSymmetricClosure(subdigraph)) then
-        if n > chrom then
+        # Note that n > chrom >= 3 and so comp is not null, so no need to check
+        # for that.
+        comp := InducedSubdigraph(digraph, comp);
+        if IsCompleteDigraph(comp) then
+          # Since n > chrom, this is an improved lower bound for the overall
+          # chromatic number.
           chrom := n;
-        fi;
-      else
-        for i in [3 .. n - 1] do
-          if DigraphColoring(subdigraph, i) <> fail then
-            if i > chrom then
-              chrom := i;
+        elif not IsBipartiteDigraph(comp) then
+          # If comp is bipartite, then its chromatic number is 2, and, since
+          # the chromatic number of digraph is >= 3, this component can be
+          # ignored.
+          bound := RankOfTransformation(DigraphColoring(comp),
+                                        DigraphNrVertices(comp));
+          if bound > chrom then
+            # If bound <= chrom, then comp can be coloured by at most chrom
+            # colours, and so we can ignore comp.
+            clique := CliqueNumber(comp);
+            if clique = bound then
+              # The chromatic number of this component is known, and it can be
+              # ignored, and clique = bound > chrom, and so clique is an
+              # improved lower bound for the chromatic number of digraph.
+              chrom := clique;
+            else
+              Add(tmp_comps, comp);
+              Add(tmp_upper, bound);
+              if clique > chrom then
+                chrom := clique;
+              fi;
             fi;
-            break;
           fi;
-        od;
+        fi;
       fi;
-    fi;
-    if chrom = nr - 1 then
-      return chrom;
+    od;
+
+    # Remove the irrelevant components since we have a possibly improved value
+    # of chrom.
+    comps := [];
+    upper := [];
+
+    for i in [1 .. Length(tmp_comps)] do
+      if chrom < DigraphNrVertices(tmp_comps[i]) and chrom < tmp_upper[i] then
+        Add(comps, tmp_comps[i]);
+        Add(upper, tmp_upper[i]);
+      fi;
+    od;
+
+    # Sort by size, since smaller components are easier to colour
+    # TODO replace by 2-arg lambda
+    cmp := function(x, y)
+      return Size(x) < Size(y);
+    end;
+    SortParallel(comps, upper, cmp);
+  fi;
+  for i in [1 .. Length(comps)] do
+    # <c> is the current best upper bound for the chromatic number of comps[i]
+    c := upper[i];
+    while c > chrom and DigraphColoring(comps[i], c - 1) <> fail do
+      c := c - 1;
+    od;
+    if c > chrom then
+      chrom := c;
     fi;
   od;
   return chrom;

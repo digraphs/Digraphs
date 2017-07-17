@@ -10,7 +10,7 @@
 #############################################################################
 ##
 
-InstallMethod(CliqueNumber, "for a digraph", [IsDigraph], 
+InstallMethod(CliqueNumber, "for a digraph", [IsDigraph],
 function(digraph)
   return Maximum(List(DigraphMaximalCliquesReps(digraph), Length));
 end);
