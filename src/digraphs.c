@@ -2666,12 +2666,12 @@ static Int InitLibrary(StructInitInfo* module) {
 *F  InitInfopl()  . . . . . . . . . . . . . . . . . table of init functions
 */
 static StructInitInfo module = {
-#ifdef GRAPHSSTATIC
+#ifdef DIGRAPHSSTATIC
     /* type        = */ MODULE_STATIC,
 #else
     /* type        = */ MODULE_DYNAMIC,
 #endif
-    /* name        = */ "graphs",
+    /* name        = */ "digraphs",
     /* revision_c  = */ 0,
     /* revision_h  = */ 0,
     /* version     = */ 0,
@@ -2681,16 +2681,15 @@ static StructInitInfo module = {
     /* checkInit   = */ 0,
     /* preSave     = */ 0,
     /* postSave    = */ 0,
-    /* postRestore = */ 0
-};
+    /* postRestore = */ 0};
 
-#ifndef GRAPHSSTATIC
+#ifndef DIGRAPHSSTATIC
 StructInitInfo* Init__Dynamic(void) {
   return &module;
 }
 #endif
 
-StructInitInfo* Init__graphs(void) {
+StructInitInfo* Init__digraphs(void) {
   return &module;
 }
 
