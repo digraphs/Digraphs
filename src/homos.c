@@ -307,7 +307,7 @@ typedef struct conditions_struct Conditions;
 static Conditions* new_conditions(UIntS nr1, UIntS nr2) {
   assert(nr1 != 0 && nr2 != 0);
 
-  UIntS       i;
+  UIntL       i;
   Conditions* conditions = malloc(sizeof(Conditions));
 
   conditions->bit_array = malloc(sizeof(BitArray*) * nr1 * nr1);
@@ -339,7 +339,7 @@ static Conditions* new_conditions(UIntS nr1, UIntS nr2) {
 static void free_conditions(Conditions* conditions) {
   assert(conditions != NULL);
 
-  UIntS i;
+  UIntL i;
   for (i = 0; i < conditions->nr1 * conditions->nr1; i++) {
     free_bit_array(conditions->bit_array[i]);
   }

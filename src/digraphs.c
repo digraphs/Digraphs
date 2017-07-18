@@ -2655,16 +2655,8 @@ static Int InitKernel(StructInitInfo* module) {
 *F  InitLibrary( <module> ) . . . . . . .  initialise library data structures
 */
 static Int InitLibrary(StructInitInfo* module) {
-  Int gvar;
-  Obj tmp;
-
   /* init filters and functions */
   InitGVarFuncsFromTable(GVarFuncs);
-
-  tmp  = NEW_PREC(0);
-  gvar = GVarName("GRAPHS_C");
-  AssGVar(gvar, tmp);
-  MakeReadOnlyGVar(gvar);
 
   /* return success                                                      */
   return 0;
@@ -2674,12 +2666,12 @@ static Int InitLibrary(StructInitInfo* module) {
 *F  InitInfopl()  . . . . . . . . . . . . . . . . . table of init functions
 */
 static StructInitInfo module = {
-#ifdef GRAPHSSTATIC
+#ifdef DIGRAPHSSTATIC
     /* type        = */ MODULE_STATIC,
 #else
     /* type        = */ MODULE_DYNAMIC,
 #endif
-    /* name        = */ "graphs",
+    /* name        = */ "digraphs",
     /* revision_c  = */ 0,
     /* revision_h  = */ 0,
     /* version     = */ 0,
@@ -2689,32 +2681,14 @@ static StructInitInfo module = {
     /* checkInit   = */ 0,
     /* preSave     = */ 0,
     /* postSave    = */ 0,
-    /* postRestore = */ 0
-};
+    /* postRestore = */ 0};
 
-#ifndef GRAPHSSTATIC
+#ifndef DIGRAPHSSTATIC
 StructInitInfo* Init__Dynamic(void) {
   return &module;
 }
 #endif
 
-StructInitInfo* Init__graphs(void) {
+StructInitInfo* Init__digraphs(void) {
   return &module;
 }
-
-/*
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; version 2 of the License.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
