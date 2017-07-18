@@ -36,6 +36,34 @@ function(graph)
   return str;
 end);
 
+InstallMethod(DotVertexLabelledDigraph, "for a digraph", [IsDigraph],
+function(digraph)
+  local verts, out, m, str, i, j;
+
+  verts := DigraphVertices(digraph);
+  out   := OutNeighbours(digraph);
+  m     := DigraphNrVertices(digraph);
+  str   := "//dot\n";
+
+  Append(str, "digraph hgn{\n");
+  Append(str, "node [shape=circle]\n");
+
+  for i in verts do
+    Append(str, String(i));
+    Append(str, " [label=\"");
+    Append(str, String(DigraphVertexLabel(digraph, i)));
+    Append(str, "\"]\n");
+  od;
+
+  for i in verts do
+    for j in out[i] do
+      Append(str, Concatenation(String(i), " -> ", String(j), "\n"));
+    od;
+  od;
+  Append(str, "}\n");
+  return str;
+end);
+
 #
 
 InstallMethod(DotSymmetricDigraph, "for an 'undirected' digraph",
