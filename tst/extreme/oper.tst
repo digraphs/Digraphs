@@ -185,4 +185,5 @@ gap> Unbind(list);
 gap> Unbind(out);
 
 #E#
-gap> STOP_TEST("Digraphs package: extreme/oper.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: extreme/oper.tst", 0);

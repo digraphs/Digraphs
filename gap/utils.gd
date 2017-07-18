@@ -11,12 +11,10 @@
 BindGlobal("DIGRAPHS_OmitFromTests", []);
 
 DeclareGlobalFunction("DIGRAPHS_Dir");
-DeclareGlobalFunction("DIGRAPHS_Test");
 DeclareGlobalFunction("DIGRAPHS_ManualExamples");
 DeclareGlobalFunction("DIGRAPHS_StartTest");
 DeclareGlobalFunction("DIGRAPHS_StopTest");
 DeclareGlobalFunction("DIGRAPHS_TestDir");
-DeclareGlobalFunction("DIGRAPHS_InitEdgeLabels");
 
 DeclareGlobalFunction("DigraphsMakeDoc");
 DeclareGlobalFunction("DigraphsTestAll");

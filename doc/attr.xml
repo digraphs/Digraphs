@@ -34,7 +34,8 @@
 <Example><![CDATA[
 gap> ArticulationPoints(CycleDigraph(5));
 [  ]
-gap> ArticulationPoints(Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]));
+gap> digraph := Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]);;
+gap> ArticulationPoints(digraph);
 [ 2, 1 ]
 gap> ArticulationPoints(ChainDigraph(5));
 [ 4, 3, 2 ]

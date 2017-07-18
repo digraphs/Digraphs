@@ -36,4 +36,4 @@ gap> DigraphNrVertices(gr);
 gap> Unbind(gr);
 
 #E#
-gap> STOP_TEST("Digraphs package: workspaces/load-workspace.tst");
+gap> STOP_TEST("Digraphs package: workspaces/load-workspace.tst", 0);

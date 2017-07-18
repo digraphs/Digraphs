@@ -8,6 +8,14 @@
 #############################################################################
 ##
 
+BindGlobal("DIGRAPHS_InitEdgeLabels",
+function(graph)
+  if not IsBound(graph!.edgelabels) then
+    graph!.edgelabels := StructuralCopy(OutNeighbours(graph));
+    graph!.edgelabels := List(graph!.edgelabels, l -> List(l, n -> 1));
+  fi;
+end);
+
 InstallMethod(Digraph,
 "for a list and function",
 [IsList, IsFunction],

@@ -61,4 +61,5 @@ gap> RepresentativeOutNeighbours(gr);
 [ [ 2 ] ]
 
 #E#
-gap> STOP_TEST("Digraphs package: standard/orbits.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: standard/orbits.tst", 0);

@@ -910,4 +910,5 @@ gap> Unbind(monos);
 gap> Unbind(x);
 
 #E#
-gap> STOP_TEST("Digraphs package: standard/grahom.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: standard/grahom.tst", 0);

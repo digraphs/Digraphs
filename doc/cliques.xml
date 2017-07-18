@@ -549,7 +549,8 @@ gap> user_param := [];;
 gap> f := function(a, b) # Calculate size of clique
 >   AddSet(user_param, Size(b));
 > end;;
-gap> CliquesFinder(gr, f, user_param, infinity, [], [], false, fail, true);
+gap> CliquesFinder(gr, f, user_param, infinity, [], [], false, fail, 
+>                  true);
 [ 1, 2, 3, 4, 5 ]
 gap> CliquesFinder(gr, fail, [], 5, [2, 4], [3], false, fail, false);
 [ [ 2, 4 ], [ 1, 2, 4 ], [ 2, 4, 5 ], [ 1, 2, 4, 5 ] ]

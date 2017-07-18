@@ -64,7 +64,8 @@ gap> IsBiconnectedDigraph(Digraph([[1, 3], [2, 3], [3]]));
 false
 gap> IsBiconnectedDigraph(CycleDigraph(5));
 true
-gap> IsBiconnectedDigraph(Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]));
+gap> digraph := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);;
+gap> IsBiconnectedDigraph(digraph);
 false]]></Example>
   </Description>
 </ManSection>
@@ -147,7 +148,8 @@ gap> IsJoinSemilatticeDigraph(gr);
 true
 gap> IsLatticeDigraph(gr);
 true
-gap> gr := Digraph([[1, 1, 1], [1, 1, 2, 2], [1, 3, 3], [1, 2, 3, 3, 4]]);
+gap> gr := Digraph([[1, 1, 1], [1, 1, 2, 2], 
+>                   [1, 3, 3], [1, 2, 3, 3, 4]]);
 <multidigraph with 4 vertices, 15 edges>
 gap> IsMeetSemilatticeDigraph(gr);
 true

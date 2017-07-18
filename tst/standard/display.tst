@@ -112,4 +112,5 @@ gap> Unbind(gr2);
 gap> Unbind(r);
 
 #E#
-gap> STOP_TEST("Digraphs package: standard/display.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: standard/display.tst", 0);

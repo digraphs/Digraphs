@@ -14060,4 +14060,5 @@ gap> Unbind(str);
 gap> Unbind(t);
 
 #E#
-gap> STOP_TEST("Digraphs package: extreme/grahom.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: extreme/grahom.tst", 0);

@@ -42,4 +42,5 @@ gap> Unbind(circs);
 gap> Unbind(gr);
 
 #E#
-gap> STOP_TEST("Digraphs package: extreme/attr.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: extreme/attr.tst", 0);

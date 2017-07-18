@@ -312,4 +312,5 @@ gap> Unbind(treeAuts);
 gap> Unbind(trees);
 
 #E#
-gap> STOP_TEST("Digraphs package: extreme/bliss.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: extreme/bliss.tst", 0);

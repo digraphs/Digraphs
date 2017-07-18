@@ -660,4 +660,5 @@ gap> Unbind(n);
 gap> Unbind(p);
 
 #E#
-gap> STOP_TEST("Digraphs package: standard/bliss.tst");
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: standard/bliss.tst", 0);
