@@ -12,6 +12,7 @@
     <#Include Label="DigraphByEdges">
     <#Include Label="EdgeOrbitsDigraph">
     <#Include Label="DigraphByInNeighbours">
+    <#Include Label="CayleyDigraph">
   </Section>
 
   <Section><Heading>Changing representations</Heading>
@@ -72,7 +73,6 @@
     <#Include Label="CompleteMultipartiteDigraph">
     <#Include Label="CycleDigraph">
     <#Include Label="EmptyDigraph">
-    <#Include Label="CayleyDigraph">
     <#Include Label="JohnsonDigraph">
   </Section>
 

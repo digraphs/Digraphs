@@ -181,9 +181,7 @@ function(G, gens)
   if not IsFinite(G) then
     ErrorNoReturn("Digraphs: CayleyDigraph: usage,\n",
                   "the first argument <G> must be a finite group,");
-  fi;
-
-  if not ForAll(gens, x -> x in G) then
+  elif not ForAll(gens, x -> x in G) then
     ErrorNoReturn("Digraphs: CayleyDigraph: usage,\n",
                   "elements in the 2nd argument <gens> must ",
                   "all belong to the 1st argument <G>,");
@@ -194,6 +192,9 @@ function(G, gens)
   end;
   digraph := Digraph(G, AsList(G), OnRight, adj);
   SetFilterObj(digraph, IsCayleyDigraph);
+  SetGroupOfCayleyDigraph(digraph, G);
+  SetGeneratorsOfCayleyDigraph(digraph, gens);
+
   return digraph;
 end);
 
@@ -201,6 +202,12 @@ InstallMethod(CayleyDigraph, "for a group with generators",
 [IsGroup and HasGeneratorsOfGroup],
 function(G)
   return CayleyDigraph(G, GeneratorsOfGroup(G));
+end);
+
+InstallImmediateMethod(SemigroupOfCayleyDigraph,
+IsCayleyDigraph and HasGroupOfCayleyDigraph, 0,
+function(digraph)
+  return GroupOfCayleyDigraph(digraph);
 end);
 
 InstallMethod(DoubleDigraph, "for a digraph",

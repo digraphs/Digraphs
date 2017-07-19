@@ -1276,6 +1276,12 @@ gap> IsCayleyDigraph(digraph);
 true
 gap> IsDigraph(digraph);
 true
+gap> digraph := CayleyDigraph(group, [()]);
+<digraph with 8 vertices, 8 edges>
+gap> GroupOfCayleyDigraph(digraph) = group;
+true
+gap> GeneratorsOfCayleyDigraph(digraph);
+[ () ]
 gap> digraph := CayleyDigraph(group, [(1, 2, 3, 4), (2, 5)]);
 Error, Digraphs: CayleyDigraph: usage,
 elements in the 2nd argument <gens> must all belong to the 1st argument <G>,
