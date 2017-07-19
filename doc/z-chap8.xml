@@ -96,6 +96,7 @@
     <#Include Label="CliquesFinder">
     <#Include Label="DigraphClique">
     <#Include Label="DigraphMaximalCliques">
+    <#Include Label="CliqueNumber">
   </Section>
 
   <Section><Heading>Finding independent sets</Heading>

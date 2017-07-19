@@ -40,3 +40,5 @@ DeclareGlobalFunction("DigraphMaximalIndependentSets");
 DeclareGlobalFunction("DigraphMaximalIndependentSetsReps");
 DeclareAttribute("DigraphMaximalIndependentSetsAttr", IsDigraph);
 DeclareAttribute("DigraphMaximalIndependentSetsRepsAttr", IsDigraph);
+
+DeclareAttribute("CliqueNumber", IsDigraph);

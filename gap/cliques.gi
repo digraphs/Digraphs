@@ -10,6 +10,11 @@
 #############################################################################
 ##
 
+InstallMethod(CliqueNumber, "for a digraph", [IsDigraph],
+function(digraph)
+  return Maximum(List(DigraphMaximalCliquesReps(digraph), Length));
+end);
+
 # IsIndependentSet: Check that the set is a duplicate-free subset of vertices
 #                   and that no vertex is an out-neighbour of another.
 

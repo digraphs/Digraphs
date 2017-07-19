@@ -521,6 +521,28 @@ gap> DigraphMaximalCliques(gr);
   [ 86 ], [ 87 ], [ 88 ], [ 89 ], [ 90 ], [ 91 ], [ 92 ], [ 93 ], [ 94 ], 
   [ 95 ], [ 96 ], [ 97 ], [ 98 ], [ 99 ], [ 100 ], [ 2, 3, 5 ] ]
 
+# Test CliqueNumber
+gap> CliqueNumber(NullDigraph(10));
+1
+gap> CliqueNumber(NullDigraph(0));
+0
+gap> CliqueNumber(CompleteDigraph(10));
+10
+gap> CliqueNumber(DigraphRemoveEdge(CompleteDigraph(10), [1, 2]));
+9
+gap> CliqueNumber(JohnsonDigraph(10, 2));
+9
+gap> CliqueNumber(ChainDigraph(10));
+1
+gap> CliqueNumber(ChainDigraph(9));
+1
+gap> CliqueNumber(CycleDigraph(9));
+1
+gap> CliqueNumber(CycleDigraph(8));
+1
+gap> CliqueNumber(DigraphSymmetricClosure(CycleDigraph(8)));
+2
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(f);
 gap> Unbind(c);

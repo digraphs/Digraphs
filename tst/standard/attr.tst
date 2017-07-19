@@ -1313,6 +1313,78 @@ gap> gr := CompleteDigraph(4);;
 gap> gr := DigraphAddVertex(gr);;
 gap> ChromaticNumber(gr);
 4
+gap> gr := DigraphFromDiSparse6String(Concatenation(
+> ".~?C?_O?WF?MD?L`[DgX?}@oX`o?W^?}Fgb@mHOTa_?Od`ODOd`}EGnA?HW]`?IGfaULOLak",
+> "LGA?sBoYAiMOt`[Lw_AGJWP`WHGs_gNWSBIMGF@oKhCASIWxc[BWUAgLGY@uFhKAY?OBBuRp",
+> "EdGH_i_cDOaDEHGf_{COdcQNw|DEV?MCuPG`ASUhH`[I@ADqKOqEAHOiCiTgT`gNPSaWSgNB",
+> "iSGTAeLpIcwS@SD[YGeE]L@UbGVGNBwSGE@_M@^`SHotBi[oBBOXH^_SEou_oG?sB[UGeA{\\",
+> "Gq_CBo`AgK@WDeHPNE_[wXeq@oXDuGP\\aSIo{bK^hC`WJp`fMC_bEW\\G`AOK`[E_^iFF}IOy",
+> "CMapZ_?BoWAw[@vGeN?~CKZGNBcPPwaOH_rD{ax?DKXAD_[P`u_CLISCsUgaAkbwKAKMGTAK",
+> "O`BCgZQO_oT@T_oB_kB?[YTHaCoYA?OPkF?dGKEk\\ACHmAodAcL`RHiJPYDmW`jFYFpba_Pq",
+> "MH[gGE@CJovE[aH}HUXa^e?ZWFA_I`jb?PpOF}?OODwXqRa?MGQCSRq___CoiCoVgOAcKOvE",
+> "qQGBA{UQh`gG@YEkZh|akU@XGofaeIaYpsF{fwB?wCPKC{^q]_I@piJAMphEk_aB_KF`[D{X",
+> "PngMJaCjkL`FHcgAw`{MPMDWkghB_W@sIAH`oH{jAzc{TPwHOjA|_WD_yC?TQ^ew[AQHwhap",
+> "bKda`JUDo_G[hw[@{_aMc?P@JGOewPECXq[IGobB_cNbBa[XQBICjqs_gO`NDWhqoJMC_SAM",
+> "CoYAWKpUIYFqj_?BpXEG[q?JCoycdygw|FGgqpaKK_vCC]A@Gskr@ao^AP_sG@EEwZqZISjw",
+> "CIU?_iDOXP}JCogsKKpBEdKdxWE]V`gJksbS_?@_JGGaaxLiGOcBWTAt_KJ_tBoeXzG{oI?H",
+> "[iRTL]GwK@STqLIoqG\\AwKp`ESfwaCOVPyGK`BK_GHowFoabPc[YPuGkmbR`?ZrIm_BOOFIA",
+> "_\\HGjgKBGP`QEGWqjJ_nBSdwYrXMeK@mGweg?CCPG?FobrDMaEPUFo`bl`sQ`qHMU@^EC[aT",
+> "HsrWFCCQ@IDSbROLWugPKOsW?Akhr[akL`\\FK`aFKmGQq`wS`dF_]apKeCp`Fg`qRL_yRl`S",
+> "|goGG`h@JOlrnaSXq_LWwrs_oJ`?CKSqMIu^ry_WOqGHWtk?_G?GF?EB?B_{AgB_MD?A`MDo",
+> "U`kAgG@KEwK?sCOR`]AOQaW?gU_kBGiAaDOX_CH_gawD_hb???SbGEGWbMCgG@cE__AaM?v_",
+> "oE_paSHwV_SDw}?sHgF@]OOW@cLgCcOCOdAaC?kc_JhJByBgec{F_i_cD_l_ARwI?kDpPawK",
+> "@J`?TG??SEomd_NxY?C@h[A?KgcASI`Yce?OF?cFOgbWSGi_gIPPDYQGdacI_yEINpWcGPPK",
+> "__AO^BsRwL?{MwmB?QPR`yR`QEiRxH`SE?^`CC_l`oPgMA?Uhs?}A`j`KD?bCOXW`Ck[@ueA",
+> "B?vDMJ_vEeM@kEyNp@fwCpi`OD`beYKPlFeK@WEk^IC?gBoRBoWHiFaKqBfmMpCDOVg`CORg",
+> "KB?Xa@_SYP{fC`x`EW]GbaeYiQAaHhVEq[AOh[M@PF[]QF_WBogB?NpoFUA?pBOYgMD_VaP_",
+> "WGpFE?`HGEmV``aCKpLDmPpjGmgPDDGUPz_oD`CHY?PK`cF@CaC`GRCOS@~bcW@xF}B?mGKa",
+> "WK@oNO~CWU`wdKV@kGAB_VASKpgFoeWC?sD@gEkaAa_sEO~EW]`}IUK?{H{hH?D_^qHGkbQf",
+> "_oJ@kGCdQdf[_wpBwRpRE?Z`x`GGpXDg^gL?wL@FGOiWRAOXAUJEIPgFQI@rGiN`OFcex|HW",
+> "eqv`WE?_AsU`}fi@oZAOSa@__]QQJ]C@LGocWbA[RPMDO^qBa[O@NDUVQBGWhGZF?`aHIsjw",
+> "HCGdXkFKaQwa?L@hGWjwqC?Yq[KUAPyGK`aqe[cyw_oH@GD{\\xjF}C`]EkbaPJAI?tC?YQ@_",
+> "KO@bKm??RE_^Q}_WRAAHULpCC_\\AGKm?PeFS\\qyKmBoOIopBEKqAQCHSsi^LEMgF@olQuLQC",
+> "@OHotwUEEuoPA{^A_K?pw`CG[@tHYH`a_sO`BCo`a__SCp]IspxGI?nrSdCdbILiCOsJStiZ",
+> "JeDOqC?PaPHYC?jDSXR^hOpwTA_UQOHggG?@yK@@C_\\rEbwRQHKYG?aA[N`HK}A?gCKVwSAQ",
+> "??mFEIpLFoiHZGWgqiLaK`wFsrILLmSQ[KC{XhGyVPnHoubdaoS`]D{lrl`WG?nB?QPPEwyg",
+> "JD?Ta@Io|GX@wG@lHkkbYaCHOoJgrWqGkmRCL_wWIBo[AFIgpbZ_kQ`~IKlrD`GD_sGoewiB",
+> "?QaKJr"));
+<digraph with 256 vertices, 1371 edges>
+gap> gr := DigraphDisjointUnion(gr, CompleteDigraph(5));
+<digraph with 261 vertices, 1391 edges>
+gap> ChromaticNumber(gr);
+5
+gap> gr := Digraph([[2, 4, 7, 3], [3, 5, 8, 1], [1, 6, 9, 2], 
+> [5, 7, 1, 6], [6, 8, 2, 4], [4, 9, 3, 5], [8, 1, 4, 9], [9, 2, 5, 7], 
+> [7, 3, 6, 8]]);;
+gap> ChromaticNumber(gr);
+3
+gap> gr := DigraphSymmetricClosure(ChainDigraph(5));
+<digraph with 5 vertices, 8 edges>
+gap> DigraphColoring(gr);;
+gap> ChromaticNumber(gr);
+2
+gap> gr := DigraphFromGraph6String("KmKk~K??G@_@");
+<digraph with 12 vertices, 42 edges>
+gap> ChromaticNumber(gr);
+4
+gap> gr := CycleDigraph(7);
+<digraph with 7 vertices, 7 edges>
+gap> ChromaticNumber(gr);
+3
+gap> gr := CycleDigraph(71);
+<digraph with 71 vertices, 71 edges>
+gap> ChromaticNumber(gr);
+3
+gap> gr := CycleDigraph(1001);
+<digraph with 1001 vertices, 1001 edges>
+gap> ChromaticNumber(gr);
+3
+gap> a := DigraphRemoveEdges(CompleteDigraph(50), [[1, 2], [2, 1]]);;
+gap> b := DigraphAddVertex(a);;
+gap> ChromaticNumber(a);
+49
+gap> ChromaticNumber(b);
+49
 
 #T# UndirectedSpanningTree and UndirectedSpanningForest
 gap> gr := EmptyDigraph(0);
