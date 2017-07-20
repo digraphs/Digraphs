@@ -1045,12 +1045,18 @@ end);
 InstallMethod(DigraphSymmetricClosure, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local n, verts, mat, new, x, gr, i, j, k;
-
+  local n, m, verts, mat, new, x, i, j, k;
   n := DigraphNrVertices(digraph);
-  if not (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph))
-      and n > 1 then
-    verts := [1 .. n]; # We don't want DigraphVertices as that's immutable
+  if n = 1
+      or (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph)) then
+    return digraph;
+  fi;
+
+  # The average degree
+  m := Float(Sum(OutDegreeSequence(digraph)) / n);
+  verts := [1 .. n]; # We don't want DigraphVertices as that's immutable
+
+  if IsMultiDigraph(digraph) then
     mat := List(verts, x -> verts * 0);
     new := OutNeighboursMutableCopy(digraph);
     for i in verts do
@@ -1076,12 +1082,36 @@ function(digraph)
         fi;
       od;
     od;
-    gr := DigraphNC(new);
+    # The approximate complexity of using the adjacency matrix (first method)
+    # is n * (n - 1) / 2, and that of repeatedly calling AddSet (second method)
+    # is n * m * log2(m) where m is the mean degree of any vertex. Some
+    # experimenting showed that the comparison below is a reasonable way to
+    # decide which method to use.
+  elif Float(n * (n - 1) / 2) < n * m * Log2(m) then
+    # If we have no multiple edges, then we use a Boolean matrix because it
+    # uses less space.
+    mat := BooleanAdjacencyMatrixMutableCopy(digraph);
+    for i in verts do
+      for j in [i + 1 .. n] do
+        if mat[i][j] <> mat[j][i] then
+          mat[i][j] := true;
+          mat[j][i] := true;
+        fi;
+      od;
+    od;
+    new := List(mat, row -> ListBlist(verts, row));
   else
-    gr := DigraphCopy(digraph);
+    new := OutNeighboursMutableCopy(digraph);
+    Perform(new, Sort);
+    for i in [1 .. n] do
+      for j in new[i] do
+        AddSet(new[j], i);
+      od;
+    od;
   fi;
-  SetIsSymmetricDigraph(gr, true);
-  return gr;
+  digraph := DigraphNC(new);
+  SetIsSymmetricDigraph(digraph, true);
+  return digraph;
 end);
 
 #

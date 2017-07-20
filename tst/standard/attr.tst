@@ -702,7 +702,7 @@ true
 gap> gr2 := DigraphSymmetricClosure(gr1);
 <digraph with 2 vertices, 2 edges>
 gap> IsIdenticalObj(gr1, gr2);
-false
+true
 gap> gr1 = gr2;
 true
 gap> gr1 := Digraph([[1, 1, 1, 1]]);
@@ -710,7 +710,7 @@ gap> gr1 := Digraph([[1, 1, 1, 1]]);
 gap> gr2 := DigraphSymmetricClosure(gr1);
 <multidigraph with 1 vertex, 4 edges>
 gap> IsIdenticalObj(gr1, gr2);
-false
+true
 gap> gr1 = gr2;
 true
 gap> gr1 := Digraph(
@@ -730,6 +730,14 @@ gap> gr3 := Digraph(
 > [8, 10, 12, 2, 11], [5, 11], [11, 12, 6], [12], [5, 6, 12],
 > [7, 6, 2, 5, 8], [10, 5, 3, 8, 6, 9]]);;
 gap> gr2 = gr3;
+true
+gap> gr := DigraphSymmetricClosure(ChainDigraph(10000));
+<digraph with 10000 vertices, 19998 edges>
+gap> IsSymmetricDigraph(gr);
+true
+gap> gr := DigraphCopy(gr);
+<digraph with 10000 vertices, 19998 edges>
+gap> IsSymmetricDigraph(gr);
 true
 
 #T# Digraph(Reflexive)TransitiveClosure
