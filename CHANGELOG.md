@@ -4,6 +4,27 @@ Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.10.0 (released 20/07/2017)
+This release contains new features, bugfixes, and minor improvements to the
+documentation.  There is a new method for `ChromaticNumber`, which has better
+performance than the previous method
+[[Julius Jonusas](http://www-circa.mcs.st-and.ac.uk/~julius)
+and [James D.  Mitchell](http://goo.gl/ZtViV6)].
+A bug in the code for calculating homomorphisms of digraphs, which could cause
+a crash, was resolved [[James D.  Mitchell](http://goo.gl/ZtViV6)].
+
+### New Features in Version 0.10.0
+
+* Vertex labelled digraphs can now be visualised in a way that displays vertex
+labels, by using the new operation `DotVertexLabelledDigraph`.
+* The attribute `CliqueNumber` is introduced.
+*  The following new attributes for Cayley digraphs are introduced:
+    * `GroupOfCayleyDigraph`
+    * `SemigroupOfCayleyDigraph`
+    * `GeneratorsOfCayleyDigraph`
+
+All of the new features were added by [James D. Mitchell](http://goo.gl/ZtViV6).
+
 ## Version 0.9.0 (released 12/07/2017)
 This release introduces several new features.
 
