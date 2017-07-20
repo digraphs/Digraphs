@@ -66,19 +66,24 @@
   [1X9.1-2 DotDigraph[101X
   
   [29X[2XDotDigraph[102X( [3Xdigraph[103X ) [32X attribute
+  [29X[2XDotVertexLabelledDigraph[102X( [3Xdigraph[103X ) [32X operation
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
-  [33X[0;0YThis  function  produces  a graphical representation of the digraph [3Xdigraph[103X.
+  [33X[0;0Y[10XDotDigraph[110X  produces  a  graphical  representation  of  the digraph [3Xdigraph[103X.
   Vertices are displayed as circles, numbered consistently with [3Xdigraph[103X. Edges
   are  displayed as arrowed lines between vertices, with the arrowhead of each
   line pointing towards the range of the edge.[133X
+  
+  [33X[0;0Y[10XDotVertexLabelledDigraph[110X  differs from [10XDotDigraph[110X only in that the values in
+  [2XDigraphVertexLabels[102X  ([14X5.1-9[114X)  are used to label the vertices in the produced
+  picture rather than the numbers [10X1[110X to the number of vertices of the digraph.[133X
   
   [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
   about  this  file  format, and information about how to display or edit this
   format see [7Xhttp://www.graphviz.org[107X.[133X
   
-  [33X[0;0YThe string returned by [10XDotDigraph[110X can be written to a file using the command
-  [2XFileString[102X ([14XGAPDoc: FileString[114X).[133X
+  [33X[0;0YThe string returned by [10XDotDigraph[110X or [10XDotVertexLabelledDigraph[110X can be written
+  to a file using the command [2XFileString[102X ([14XGAPDoc: FileString[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xadj := List([1 .. 4], x -> [1, 1, 1, 1]);[127X[104X
@@ -689,7 +694,7 @@
   from   a   file   in   DIMACS   format,   as   appropriate.   The  operation
   [10XWriteDIMACSDigraph[110X  records  the  vertices  and edges of [3Xdigraph[103X. The vertex
   labels  of  [3Xdigraph[103X  will  be  recorded  only  if  they  are  integers.  See
-  [2XIsSymmetricDigraph[102X ([14X6.1-10[114X) and [2XDigraphVertexLabels[102X ([14X5.1-10[114X).[133X
+  [2XIsSymmetricDigraph[102X ([14X6.1-10[114X) and [2XDigraphVertexLabels[102X ([14X5.1-9[114X).[133X
   
   [33X[0;0YThe  first  argument  [3Xfilename[103X  should be the name of the file which will be
   written  to or read from. A file can contain one symmetric digraph in DIMACS
@@ -732,7 +737,8 @@
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);[127X[104X
     [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dimacs.dimacs");;[127X[104X
+    [4X[25Xgap>[125X [27Xfilename := Concatenation(DIGRAPHS_Dir(), [127X[104X
+    [4X[25X>[125X [27X                             "/tst/out/dimacs.dimacs");;[127X[104X
     [4X[25Xgap>[125X [27XWriteDIMACSDigraph(filename, gr);;[127X[104X
     [4X[25Xgap>[125X [27XReadDIMACSDigraph(filename);[127X[104X
     [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X

@@ -188,7 +188,8 @@
     [4X[25Xgap>[125X [27Xf := function(a, b) # Calculate size of clique[127X[104X
     [4X[25X>[125X [27X  AddSet(user_param, Size(b));[127X[104X
     [4X[25X>[125X [27Xend;;[127X[104X
-    [4X[25Xgap>[125X [27XCliquesFinder(gr, f, user_param, infinity, [], [], false, fail, true);[127X[104X
+    [4X[25Xgap>[125X [27XCliquesFinder(gr, f, user_param, infinity, [], [], false, fail, [127X[104X
+    [4X[25X>[125X [27X                 true);[127X[104X
     [4X[28X[ 1, 2, 3, 4, 5 ][128X[104X
     [4X[25Xgap>[125X [27XCliquesFinder(gr, fail, [], 5, [2, 4], [3], false, fail, false);[127X[104X
     [4X[28X[ [ 2, 4 ], [ 1, 2, 4 ], [ 2, 4, 5 ], [ 1, 2, 4, 5 ] ][128X[104X
@@ -349,6 +350,29 @@
     [4X[28X[  ][128X[104X
     [4X[25Xgap>[125X [27XDigraphCliques(gr, [1], [5, 6], infinity, 2);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 3 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X8.1-5 CliqueNumber[101X
+  
+  [29X[2XCliqueNumber[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA non-negative integer.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then [10XCliqueNumber([3Xdigraph[103X[10X)[110X returns the largest
+  integer  [10Xn[110X such that [3Xdigraph[103X contains a clique with [10Xn[110X vertices as an induced
+  subdigraph.[133X
+  
+  [33X[0;0YA [13Xclique[113X of a digraph is a set of mutually adjacent vertices of the digraph.
+  Loops  and  multiple  edges  are  ignored for the purpose of determining the
+  clique number of a digraph.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(4);;[127X[104X
+    [4X[25Xgap>[125X [27XCliqueNumber(gr); [127X[104X
+    [4X[28X4[128X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);[127X[104X
+    [4X[28X<multidigraph with 4 vertices, 11 edges>[128X[104X
+    [4X[25Xgap>[125X [27XCliqueNumber(gr); [127X[104X
+    [4X[28X3[128X[104X
   [4X[32X[104X
   
   

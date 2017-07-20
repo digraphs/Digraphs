@@ -23,7 +23,7 @@
   If  [3Xtrans[103X  is  mathematically  a permutation, then the result coincides with
   [10XOnDigraphs([3Xdigraph[103X[10X, AsPermutation([3Xtrans[103X[10X))[110X.[133X
   
-  [33X[0;0YThe  [2XDigraphVertexLabels[102X  ([14X5.1-10[114X)  of  [3Xdigraph[103X  will not be retained in the
+  [33X[0;0YThe  [2XDigraphVertexLabels[102X  ([14X5.1-9[114X)  of  [3Xdigraph[103X  will  not be retained in the
   returned digraph.[133X
   
   [4X[32X  Example  [32X[104X
@@ -418,7 +418,7 @@
   returns the entire automorphism group of [3Xdigraph[103X.[133X
   
   [33X[0;0YNote  that  certain  other  constructor  operations  such  as  [2XCayleyDigraph[102X
-  ([14X3.5-7[114X),  [2XBipartiteDoubleDigraph[102X  ([14X3.3-31[114X),  and [2XDoubleDigraph[102X ([14X3.3-30[114X), may
+  ([14X3.1-10[114X),  [2XBipartiteDoubleDigraph[102X  ([14X3.3-31[114X), and [2XDoubleDigraph[102X ([14X3.3-30[114X), may
   not  require  a  group  as  one  of  the  arguments,  but  use  the standard
   constructor  method  using a group, and hence set the [10XDigraphGroup[110X attribute
   for the resulting digraph.[133X

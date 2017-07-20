@@ -37,6 +37,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7F37B6768349E269">3.1-7 DigraphByEdges</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7B75C1D680757D6F">3.1-8 EdgeOrbitsDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X81BC49B57EAADEFB">3.1-9 DigraphByInNeighbours</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7FCADADC7EC28478">3.1-10 CayleyDigraph</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3_mj.html#X83608C407CC8836D">3.2 <span class="Heading">Changing representations</span></a>
 </span>
@@ -101,8 +102,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X873F29CC863241F8">3.5-4 CompleteMultipartiteDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X80C29DDE876FFBEB">3.5-5 CycleDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X80DAE31A79FEFD40">3.5-6 EmptyDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X7FCADADC7EC28478">3.5-7 CayleyDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X80ED9CE785819607">3.5-8 JohnsonDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3_mj.html#X80ED9CE785819607">3.5-7 JohnsonDigraph</a></span>
 </div></div>
 </div>
 
@@ -126,7 +126,7 @@
 <h5>3.1-2 IsCayleyDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsCayleyDigraph</code></td><td class="tdright">( category )</td></tr></table></div>
-<p><code class="code">IsCayleyDigraph</code> is a subcategory of <code class="code">IsDigraph</code>. Digraphs that are Cayley digraphs of a group and that are constructed by the operation <code class="func">CayleyDigraph</code> (<a href="chap3_mj.html#X7FCADADC7EC28478"><span class="RefLink">3.5-7</span></a>) are constructed in this category.</p>
+<p><code class="code">IsCayleyDigraph</code> is a subcategory of <code class="code">IsDigraph</code>. Digraphs that are Cayley digraphs of a group and that are constructed by the operation <code class="func">CayleyDigraph</code> (<a href="chap3_mj.html#X7FCADADC7EC28478"><span class="RefLink">3.1-10</span></a>) are constructed in this category.</p>
 
 <p><a id="X80F1B6D28478D8B9" name="X80F1B6D28478D8B9"></a></p>
 
@@ -344,6 +344,34 @@ function( x, y ) ... end
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphByInNeighbours([[2, 3, 2], [1], [1, 2, 3]]);</span>
 &lt;multidigraph with 3 vertices, 7 edges&gt;</pre></div>
 
+<p><a id="X7FCADADC7EC28478" name="X7FCADADC7EC28478"></a></p>
+
+<h5>3.1-10 CayleyDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CayleyDigraph</code>( <var class="Arg">G</var>[, <var class="Arg">gens</var>] )</td><td class="tdright">( operation )</td></tr></table></div>
+<p>Returns: A digraph.</p>
+
+<p>Let <var class="Arg">G</var> be any group and let <var class="Arg">gens</var> be a list of elements of <var class="Arg">G</var>. This function returns the Cayley graph of the group with respect <var class="Arg">gens</var>. The vertices are the elements of <var class="Arg">G</var>. There exists an edge from the vertex <code class="code">u</code> to the vertex <code class="code">v</code> if and only if there exists a generator <code class="code">g</code> in <var class="Arg">gens</var> such that <code class="code">x * g = y</code>.</p>
+
+<p>If the optional second argument <var class="Arg">gens</var> is not present, then the generators of <var class="Arg">G</var> are used by default. The digraph created by this operation belongs to the category <code class="func">IsCayleyDigraph</code> (<a href="chap3_mj.html#X7E749324800B38A5"><span class="RefLink">3.1-2</span></a>), the group <var class="Arg">G</var> can be recovered from the digraph using <code class="func">GroupOfCayleyDigraph</code> (<a href="chap5_mj.html#X7A000B1D7CCF7093"><span class="RefLink">5.4-1</span></a>), and the generators <var class="Arg">gens</var> can be obtained using <code class="func">GeneratorsOfCayleyDigraph</code> (<a href="chap5_mj.html#X8528455987D7D2BF"><span class="RefLink">5.4-2</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := DihedralGroup(8);</span>
+&lt;pc group of size 8 with 3 generators&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CayleyDigraph(G);</span>
+&lt;digraph with 8 vertices, 24 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := DihedralGroup(IsPermGroup, 8);</span>
+Group([ (1,2,3,4), (2,4) ])
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CayleyDigraph(G);</span>
+&lt;digraph with 8 vertices, 16 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := CayleyDigraph(G, [()]);</span>
+&lt;digraph with 8 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GroupOfCayleyDigraph(digraph) = G;</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GeneratorsOfCayleyDigraph(digraph);</span>
+[ () ]</pre></div>
+
 <p><a id="X83608C407CC8836D" name="X83608C407CC8836D"></a></p>
 
 <h4>3.2 <span class="Heading">Changing representations</span></h4>
@@ -498,7 +526,7 @@ true
 
 <p>If <var class="Arg">digraph</var> is a digraph, and <var class="Arg">verts</var> is a subset of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed from <var class="Arg">digraph</var> by retaining precisely those vertices in <var class="Arg">verts</var>, and those edges whose source and range vertices are both contained in <var class="Arg">verts</var>.</p>
 
-<p>The vertices of the induced subdigraph are <code class="code">[1..Length(verts)]</code> but the original vertex labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>).</p>
+<p>The vertices of the induced subdigraph are <code class="code">[1..Length(verts)]</code> but the original vertex labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -944,7 +972,7 @@ true
 
 <p>If <var class="Arg">v</var> is a vertex of <var class="Arg">digraph</var>, then this operation returns a new digraph constructed from <var class="Arg">digraph</var> by removing vertex <var class="Arg">v</var>, along with any edge whose source or range vertex is <var class="Arg">v</var>.</p>
 
-<p>If <var class="Arg">digraph</var> has <code class="code">n</code> vertices, then the vertices of the new digraph are <code class="code">[1..n-1]</code>, but the original labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>).</p>
+<p>If <var class="Arg">digraph</var> has <code class="code">n</code> vertices, then the vertices of the new digraph are <code class="code">[1..n-1]</code>, but the original labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -971,7 +999,7 @@ true
 
 <p>If <var class="Arg">verts</var> is a (possibly empty) duplicate-free list of vertices of <var class="Arg">digraph</var>, then this operation returns a new digraph constructed from <var class="Arg">digraph</var> by removing every vertex in <var class="Arg">verts</var>, along with any edge whose source or range vertex is in <var class="Arg">verts</var>.</p>
 
-<p>If <var class="Arg">digraph</var> has <code class="code">n</code> vertices, then the vertices of the new digraph are <code class="code">[1 .. n-Length(<var class="Arg">verts</var>)]</code>, but the original labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>).</p>
+<p>If <var class="Arg">digraph</var> has <code class="code">n</code> vertices, then the vertices of the new digraph are <code class="code">[1 .. n-Length(<var class="Arg">verts</var>)]</code>, but the original labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -1167,7 +1195,7 @@ true
 
 <p>More specifically, for a collection of digraphs <var class="Arg">gr1</var>, <var class="Arg">gr2</var>, <code class="code">...</code>, the disjoint union with have <code class="code">DigraphNrVertices(</code><var class="Arg">gr1</var><code class="code">)</code> <code class="code">+</code> <code class="code">DigraphNrVertices(</code><var class="Arg">gr2</var><code class="code">)</code> <code class="code">+</code> <code class="code">...</code> vertices. The edges of <var class="Arg">gr1</var> will remain unchanged, whilst the edges of the <code class="code">i</code>th digraph, <var class="Arg">gr</var><code class="code">[i]</code>, will be changed so that they belong to the vertices of the disjoint union corresponding to <var class="Arg">gr</var><code class="code">[i]</code>. In particular, the edges of <var class="Arg">gr</var><code class="code">[i]</code> will have their source and range increased by <code class="code">DigraphNrVertices(</code><var class="Arg">gr1</var><code class="code">)</code> <code class="code">+</code> <code class="code">...</code> <code class="code">+</code> <code class="code">DigraphNrVertices(</code><var class="Arg">gr</var><code class="code">[i-1])</code>.</p>
 
-<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) will be lost.</p>
+<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) will be lost.</p>
 
 
 <div class="example"><pre>
@@ -1197,7 +1225,7 @@ true
 
 <p>The vertex set of the edge union of a collection of digraphs is the <em>union</em> of the vertex sets, whilst the edge list of the edge union is the <em>concatenation</em> of the edge lists. The number of vertices of the edge union is equal to the <em>maximum</em> number of vertices of one of the digraphs, whilst the number of edges of the edge union will equal the <em>sum</em> of the number of edges of each digraph.</p>
 
-<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) will be lost.</p>
+<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) will be lost.</p>
 
 
 <div class="example"><pre>
@@ -1232,7 +1260,7 @@ true
 
 <p>For example, the join of two empty digraphs is a complete bipartite digraph.</p>
 
-<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) will be lost.</p>
+<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) will be lost.</p>
 
 
 <div class="example"><pre>
@@ -1545,33 +1573,9 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">NullDigraph(10);</span>
 &lt;digraph with 10 vertices, 0 edges&gt;</pre></div>
 
-<p><a id="X7FCADADC7EC28478" name="X7FCADADC7EC28478"></a></p>
-
-<h5>3.5-7 CayleyDigraph</h5>
-
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CayleyDigraph</code>( <var class="Arg">G</var>[, <var class="Arg">gens</var>] )</td><td class="tdright">( operation )</td></tr></table></div>
-<p>Returns: A digraph.</p>
-
-<p>Let <var class="Arg">G</var> be any group and let <var class="Arg">gens</var> be a list of elements of <var class="Arg">G</var>. This function returns the Cayley graph of the group with respect <var class="Arg">gens</var>. The vertices are the elements of <var class="Arg">G</var>. There exists an edge from the vertex <code class="code">u</code> to the vertex <code class="code">v</code> if and only if there exists a generator <code class="code">g</code> in <var class="Arg">gens</var> such that <code class="code">x * g = y</code>.</p>
-
-<p>If the optional second argument <var class="Arg">gens</var> is not present, then the generators of <var class="Arg">G</var> are used by default.</p>
-
-
-<div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := DihedralGroup(8);</span>
-&lt;pc group of size 8 with 3 generators&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CayleyDigraph(G);</span>
-&lt;digraph with 8 vertices, 24 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := DihedralGroup(IsPermGroup, 8);</span>
-Group([ (1,2,3,4), (2,4) ])
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CayleyDigraph(G);</span>
-&lt;digraph with 8 vertices, 16 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">CayleyDigraph(G, [()]);</span>
-&lt;digraph with 8 vertices, 8 edges&gt;</pre></div>
-
 <p><a id="X80ED9CE785819607" name="X80ED9CE785819607"></a></p>
 
-<h5>3.5-8 JohnsonDigraph</h5>
+<h5>3.5-7 JohnsonDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; JohnsonDigraph</code>( <var class="Arg">n</var>, <var class="Arg">k</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A digraph.</p>

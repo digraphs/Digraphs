@@ -6,7 +6,7 @@
                               [1XMethods for digraphs[101X
   
   
-                                 Version 0.9.0
+                                 Version 0.10.0
   
   
                                   Jan De Beule
@@ -104,6 +104,7 @@
       3.1-7 DigraphByEdges
       3.1-8 EdgeOrbitsDigraph
       3.1-9 DigraphByInNeighbours
+      3.1-10 CayleyDigraph
     3.2 [33X[0;0YChanging representations[133X
       3.2-1 AsBinaryRelation
       3.2-2 AsDigraph
@@ -156,8 +157,7 @@
       3.5-4 CompleteMultipartiteDigraph
       3.5-5 CycleDigraph
       3.5-6 EmptyDigraph
-      3.5-7 CayleyDigraph
-      3.5-8 JohnsonDigraph
+      3.5-7 JohnsonDigraph
   4 [33X[0;0YOperators[133X
     4.1 [33X[0;0YOperators for digraphs[133X
       4.1-1 IsSubdigraph
@@ -171,15 +171,14 @@
       5.1-5 DigraphSinks
       5.1-6 DigraphSources
       5.1-7 DigraphTopologicalSort
-      5.1-8 DigraphBicomponents
-      5.1-9 DigraphVertexLabel
-      5.1-10 DigraphVertexLabels
-      5.1-11 DigraphEdgeLabel
-      5.1-12 DigraphEdgeLabels
-      5.1-13 DigraphInEdges
-      5.1-14 DigraphOutEdges
-      5.1-15 IsDigraphEdge
-      5.1-16 IsMatching
+      5.1-8 DigraphVertexLabel
+      5.1-9 DigraphVertexLabels
+      5.1-10 DigraphEdgeLabel
+      5.1-11 DigraphEdgeLabels
+      5.1-12 DigraphInEdges
+      5.1-13 DigraphOutEdges
+      5.1-14 IsDigraphEdge
+      5.1-15 IsMatching
     5.2 [33X[0;0YNeighbours and degree[133X
       5.2-1 AdjacencyMatrix
       5.2-2 BooleanAdjacencyMatrix
@@ -194,6 +193,7 @@
       5.2-11 InDegreeOfVertex
       5.2-12 InNeighboursOfVertex
       5.2-13 DigraphLoops
+      5.2-14 PartialOrderDigraphMeetOfVertices
     5.3 [33X[0;0YReachability and connectivity[133X
       5.3-1 DigraphDiameter
       5.3-2 DigraphShortestDistance
@@ -206,19 +206,21 @@
       5.3-9 DigraphConnectedComponent
       5.3-10 DigraphStronglyConnectedComponents
       5.3-11 DigraphStronglyConnectedComponent
-      5.3-12 ArticulationPoints
-      5.3-13 DigraphPeriod
-      5.3-14 DigraphFloydWarshall
-      5.3-15 IsReachable
-      5.3-16 DigraphPath
-      5.3-17 IteratorOfPaths
-      5.3-18 DigraphAllSimpleCircuits
-      5.3-19 DigraphLongestSimpleCircuit
-      5.3-20 DigraphLayers
-      5.3-21 DigraphDegeneracy
-      5.3-22 DigraphDegeneracyOrdering
-    5.4 [33X[0;0YPartial Orders[133X
-      5.4-1 PartialOrderDigraphMeetOfVertices
+      5.3-12 DigraphBicomponents
+      5.3-13 ArticulationPoints
+      5.3-14 DigraphPeriod
+      5.3-15 DigraphFloydWarshall
+      5.3-16 IsReachable
+      5.3-17 DigraphPath
+      5.3-18 IteratorOfPaths
+      5.3-19 DigraphAllSimpleCircuits
+      5.3-20 DigraphLongestSimpleCircuit
+      5.3-21 DigraphLayers
+      5.3-22 DigraphDegeneracy
+      5.3-23 DigraphDegeneracyOrdering
+    5.4 [33X[0;0YCayley graphs of groups[133X
+      5.4-1 GroupOfCayleyDigraph
+      5.4-2 GeneratorsOfCayleyDigraph
   6 [33X[0;0YProperties of digraphs[133X
     6.1 [33X[0;0YEdge properties[133X
       6.1-1 DigraphHasLoops
@@ -233,6 +235,8 @@
       6.1-10 IsSymmetricDigraph
       6.1-11 IsTournament
       6.1-12 IsTransitiveDigraph
+      6.1-13 IsPartialOrderDigraph
+      6.1-14 IsMeetSemilatticeDigraph
     6.2 [33X[0;0YRegularity[133X
       6.2-1 IsInRegularDigraph
       6.2-2 IsOutRegularDigraph
@@ -248,9 +252,6 @@
       6.3-7 IsUndirectedTree
       6.3-8 IsEulerianDigraph
       6.3-9 IsCycleDigraph
-    6.4 [33X[0;0YPartial Orders[133X
-      6.4-1 IsPartialOrderDigraph
-      6.4-2 IsMeetSemilatticeDigraph
   7 [33X[0;0YHomomorphisms[133X
     7.1 [33X[0;0YActing on digraphs[133X
       7.1-1 OnDigraphs
@@ -288,6 +289,7 @@
       8.1-2 CliquesFinder
       8.1-3 DigraphClique
       8.1-4 DigraphMaximalCliques
+      8.1-5 CliqueNumber
     8.2 [33X[0;0YFinding independent sets[133X
       8.2-1 IsIndependentSet
       8.2-2 DigraphIndependentSet

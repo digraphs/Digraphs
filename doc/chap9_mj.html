@@ -113,13 +113,16 @@
 <h5>9.1-2 DotDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotVertexLabelledDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A string.</p>
 
-<p>This function produces a graphical representation of the digraph <var class="Arg">digraph</var>. Vertices are displayed as circles, numbered consistently with <var class="Arg">digraph</var>. Edges are displayed as arrowed lines between vertices, with the arrowhead of each line pointing towards the range of the edge.</p>
+<p><code class="code">DotDigraph</code> produces a graphical representation of the digraph <var class="Arg">digraph</var>. Vertices are displayed as circles, numbered consistently with <var class="Arg">digraph</var>. Edges are displayed as arrowed lines between vertices, with the arrowhead of each line pointing towards the range of the edge.</p>
+
+<p><code class="code">DotVertexLabelledDigraph</code> differs from <code class="code">DotDigraph</code> only in that the values in <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) are used to label the vertices in the produced picture rather than the numbers <code class="code">1</code> to the number of vertices of the digraph.</p>
 
 <p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
 
-<p>The string returned by <code class="code">DotDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.5.1/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+<p>The string returned by <code class="code">DotDigraph</code> or <code class="code">DotVertexLabelledDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.5.1/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -611,7 +614,7 @@ IO_OK
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WriteDIMACSDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadDIMACSDigraph</code>( <var class="Arg">filename</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<p>These operations write or read the single symmetric digraph <var class="Arg">digraph</var> to or from a file in DIMACS format, as appropriate. The operation <code class="code">WriteDIMACSDigraph</code> records the vertices and edges of <var class="Arg">digraph</var>. The vertex labels of <var class="Arg">digraph</var> will be recorded only if they are integers. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>) and <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>).</p>
+<p>These operations write or read the single symmetric digraph <var class="Arg">digraph</var> to or from a file in DIMACS format, as appropriate. The operation <code class="code">WriteDIMACSDigraph</code> records the vertices and edges of <var class="Arg">digraph</var>. The vertex labels of <var class="Arg">digraph</var> will be recorded only if they are integers. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>) and <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>).</p>
 
 <p>The first argument <var class="Arg">filename</var> should be the name of the file which will be written to or read from. A file can contain one symmetric digraph in DIMACS format. If <var class="Arg">filename</var> ends in one of <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the file is compressed, or decompressed, appropriately.</p>
 
@@ -640,7 +643,8 @@ IO_OK
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);</span>
 &lt;digraph with 4 vertices, 8 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dimacs.dimacs");;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(), </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                             "/tst/out/dimacs.dimacs");;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">WriteDIMACSDigraph(filename, gr);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadDIMACSDigraph(filename);</span>
 &lt;digraph with 4 vertices, 8 edges&gt;</pre></div>

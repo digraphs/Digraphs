@@ -40,6 +40,8 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X81B3EA7887219860">6.1-10 IsSymmetricDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7DD8D1A185EBE865">6.1-11 IsTournament</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7F0835667F29F0C0">6.1-12 IsTransitiveDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X82BAE6D37D49A145">6.1-13 IsPartialOrderDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X78D3E17B7F737516">6.1-14 IsMeetSemilatticeDigraph</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6_mj.html#X7AAF896982EC22FA">6.2 <span class="Heading">Regularity</span></a>
 </span>
@@ -61,12 +63,6 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80FC20FA7AC4BC2A">6.3-7 IsUndirectedTree</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X79DFBB198525544E">6.3-8 IsEulerianDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7E91320B8028F5D8">6.3-9 IsCycleDigraph</a></span>
-</div></div>
-<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6_mj.html#X85492D15781F1A2A">6.4 <span class="Heading">Partial Orders</span></a>
-</span>
-<div class="ContSSBlock">
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X82BAE6D37D49A145">6.4-1 IsPartialOrderDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X78D3E17B7F737516">6.4-2 IsMeetSemilatticeDigraph</a></span>
 </div></div>
 </div>
 
@@ -137,7 +133,7 @@ true
 
 <p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is bipartite, and <code class="keyw">false</code> if it is not. A digraph is bipartite if and only if the vertices of <var class="Arg">digraph</var> can be partitioned into two non-empty sets such that the source and range of any edge of <var class="Arg">digraph</var> lie in distinct sets. Equivalently, a digraph is bipartite if and only if it is 2-colorable; see <code class="func">DigraphColouring</code> (<a href="chap7_mj.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-9</span></a>).</p>
 
-<p>See also <code class="func">DigraphBicomponents</code> (<a href="chap5_mj.html#X7F1B5A2782F598B1"><span class="RefLink">5.1-8</span></a>).</p>
+<p>See also <code class="func">DigraphBicomponents</code> (<a href="chap5_mj.html#X7F1B5A2782F598B1"><span class="RefLink">5.3-12</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -159,7 +155,7 @@ false</pre></div>
 
 <p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a complete bipartite digraph, and <code class="keyw">false</code> if it is not.</p>
 
-<p>A digraph is a <em>complete bipartite digraph</em> if it is bipartite, see <code class="func">IsBipartiteDigraph</code> (<a href="chap6_mj.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>), and there exists a unique edge with source <code class="code">i</code> and range <code class="code">j</code> if and only if <code class="code">i</code> and <code class="code">j</code> lie in different bicomponents of <var class="Arg">digraph</var>, see <code class="func">DigraphBicomponents</code> (<a href="chap5_mj.html#X7F1B5A2782F598B1"><span class="RefLink">5.1-8</span></a>).</p>
+<p>A digraph is a <em>complete bipartite digraph</em> if it is bipartite, see <code class="func">IsBipartiteDigraph</code> (<a href="chap6_mj.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>), and there exists a unique edge with source <code class="code">i</code> and range <code class="code">j</code> if and only if <code class="code">i</code> and <code class="code">j</code> lie in different bicomponents of <var class="Arg">digraph</var>, see <code class="func">DigraphBicomponents</code> (<a href="chap5_mj.html#X7F1B5A2782F598B1"><span class="RefLink">5.3-12</span></a>).</p>
 
 <p>Equivalently, a bipartite digraph with bicomponents of size <span class="SimpleMath">\(m\)</span> and <span class="SimpleMath">\(n\)</span> is complete precisely when it has <span class="SimpleMath">\(2mn\)</span> edges, none of which are multiple edges.</p>
 
@@ -396,6 +392,81 @@ true
 true
 </pre></div>
 
+<p><a id="X82BAE6D37D49A145" name="X82BAE6D37D49A145"></a></p>
+
+<h5>6.1-13 IsPartialOrderDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsPartialOrderDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This is a synonym for <code class="func">IsReflexiveDigraph</code> (<a href="chap6_mj.html#X8462D8E2792B23F6"><span class="RefLink">6.1-9</span></a>) and <code class="func">IsAntisymmetricDigraph</code> (<a href="chap6_mj.html#X7DB1BC2286FC08E2"><span class="RefLink">6.1-2</span></a>) and <code class="func">IsTransitiveDigraph</code> (<a href="chap6_mj.html#X7F0835667F29F0C0"><span class="RefLink">6.1-12</span></a>). For a partial order digraph <var class="Arg">digraph</var>, the corresponding partial order is the relation <span class="SimpleMath">\(\leq\)</span>, defined by <span class="SimpleMath">\(x \leq y\)</span> if and only if <code class="code">[x, y]</code> is an edge of <var class="Arg">digraph</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 3], [2, 3], [3]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPartialOrderDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(5);</span>
+&lt;digraph with 5 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPartialOrderDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);</span>
+&lt;multidigraph with 4 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPartialOrderDigraph(gr);</span>
+true
+</pre></div>
+
+<p><a id="X78D3E17B7F737516" name="X78D3E17B7F737516"></a></p>
+
+<h5>6.1-14 IsMeetSemilatticeDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMeetSemilatticeDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsJoinSemilatticeDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLatticeDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p><code class="code">IsMeetSemilatticeDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a meet semilattice; <code class="code">IsJoinSemilatticeDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a join semilattice; and <code class="code">IsLatticeDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is both a meet and a join semilattice.</p>
+
+<p>For a partial order digraph <code class="func">IsPartialOrderDigraph</code> (<a href="chap6_mj.html#X82BAE6D37D49A145"><span class="RefLink">6.1-13</span></a>) the corresponding partial order is the relation <span class="SimpleMath">\(\leq\)</span>, defined by <span class="SimpleMath">\(x \leq y\)</span> if and only if <code class="code">[x, y]</code> is an edge. A digraph is a <em>meet semilattice</em> if it is a partial order and every pair of vertices has a greatest lower bound (meet) with respect to the aforementioned relation. A <em>join semilattice</em> is a partial order where every pair of vertices has a least upper bound (join) with respect to the relation.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 3], [2, 3], [3]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMeetSemilatticeDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsJoinSemilatticeDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1], [2], [1 .. 3]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsJoinSemilatticeDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMeetSemilatticeDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeDigraph(gr);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);</span>
+&lt;digraph with 4 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMeetSemilatticeDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsJoinSemilatticeDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 1, 1], [1, 1, 2, 2], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                  [1, 3, 3], [1, 2, 3, 3, 4]]);</span>
+&lt;multidigraph with 4 vertices, 15 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMeetSemilatticeDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsJoinSemilatticeDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeDigraph(gr);</span>
+true
+</pre></div>
+
 <p><a id="X7AAF896982EC22FA" name="X7AAF896982EC22FA"></a></p>
 
 <h4>6.2 <span class="Heading">Regularity</span></h4>
@@ -541,7 +612,7 @@ false</pre></div>
 
 <p>Multiple edges and loops are ignored by this method.</p>
 
-<p>The method used in this operation has complexity <span class="SimpleMath">\(O(m+n)\)</span> where <span class="SimpleMath">\(m\)</span> is the number of edges (counting multiple edges as one, and not counting loops) and <span class="SimpleMath">\(n\)</span> is the number of vertices in the digraph. See also <code class="func">ArticulationPoints</code> (<a href="chap5_mj.html#X7DDE06E47E605DD7"><span class="RefLink">5.3-12</span></a>).</p>
+<p>The method used in this operation has complexity <span class="SimpleMath">\(O(m+n)\)</span> where <span class="SimpleMath">\(m\)</span> is the number of edges (counting multiple edges as one, and not counting loops) and <span class="SimpleMath">\(n\)</span> is the number of vertices in the digraph. See also <code class="func">ArticulationPoints</code> (<a href="chap5_mj.html#X7DDE06E47E605DD7"><span class="RefLink">5.3-13</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -549,7 +620,8 @@ false</pre></div>
 false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsBiconnectedDigraph(CycleDigraph(5));</span>
 true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsBiconnectedDigraph(Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]));</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsBiconnectedDigraph(digraph);</span>
 false</pre></div>
 
 <p><a id="X7B37B9467C68C208" name="X7B37B9467C68C208"></a></p>
@@ -584,7 +656,7 @@ false
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsAperiodicDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is aperiodic, i.e. if its <code class="func">DigraphPeriod</code> (<a href="chap5_mj.html#X853D0B0981A33433"><span class="RefLink">5.3-13</span></a>) is equal to 1. Otherwise, the property is <code class="keyw">false</code>.</p>
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is aperiodic, i.e. if its <code class="func">DigraphPeriod</code> (<a href="chap5_mj.html#X853D0B0981A33433"><span class="RefLink">5.3-14</span></a>) is equal to 1. Otherwise, the property is <code class="keyw">false</code>.</p>
 
 
 <div class="example"><pre>
@@ -728,84 +800,6 @@ true
 false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCycleDigraph(gr);</span>
 true</pre></div>
-
-<p><a id="X85492D15781F1A2A" name="X85492D15781F1A2A"></a></p>
-
-<h4>6.4 <span class="Heading">Partial Orders</span></h4>
-
-<p><a id="X82BAE6D37D49A145" name="X82BAE6D37D49A145"></a></p>
-
-<h5>6.4-1 IsPartialOrderDigraph</h5>
-
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsPartialOrderDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
-<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
-
-<p>This is a synonym for <code class="func">IsReflexiveDigraph</code> (<a href="chap6_mj.html#X8462D8E2792B23F6"><span class="RefLink">6.1-9</span></a>) and <code class="func">IsAntisymmetricDigraph</code> (<a href="chap6_mj.html#X7DB1BC2286FC08E2"><span class="RefLink">6.1-2</span></a>) and <code class="func">IsTransitiveDigraph</code> (<a href="chap6_mj.html#X7F0835667F29F0C0"><span class="RefLink">6.1-12</span></a>). For a partial order digraph <var class="Arg">digraph</var>, the corresponding partial order is the relation <span class="SimpleMath">\(\leq\)</span>, defined by <span class="SimpleMath">\(x \leq y\)</span> if and only if <code class="code">[x, y]</code> is an edge of <var class="Arg">digraph</var>.</p>
-
-
-<div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 3], [2, 3], [3]]);</span>
-&lt;digraph with 3 vertices, 5 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPartialOrderDigraph(gr);</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CycleDigraph(5);</span>
-&lt;digraph with 5 vertices, 5 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPartialOrderDigraph(gr);</span>
-false
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);</span>
-&lt;multidigraph with 4 vertices, 10 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPartialOrderDigraph(gr);</span>
-true
-</pre></div>
-
-<p><a id="X78D3E17B7F737516" name="X78D3E17B7F737516"></a></p>
-
-<h5>6.4-2 IsMeetSemilatticeDigraph</h5>
-
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMeetSemilatticeDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsJoinSemilatticeDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLatticeDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
-<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
-
-<p><code class="code">IsMeetSemilatticeDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a meet semilattice; <code class="code">IsJoinSemilatticeDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a join semilattice; and <code class="code">IsLatticeDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is both a meet and a join semilattice.</p>
-
-<p>For a partial order digraph <code class="func">IsPartialOrderDigraph</code> (<a href="chap6_mj.html#X82BAE6D37D49A145"><span class="RefLink">6.4-1</span></a>) the corresponding partial order is the relation <span class="SimpleMath">\(\leq\)</span>, defined by <span class="SimpleMath">\(x \leq y\)</span> if and only if <code class="code">[x, y]</code> is an edge. A digraph is a <em>meet semilattice</em> if it is a partial order and every pair of vertices has a greatest lower bound (meet) with respect to the aforementioned relation. A <em>join semilattice</em> is a partial order where every pair of vertices has a least upper bound (join) with respect to the relation.</p>
-
-
-<div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 3], [2, 3], [3]]);</span>
-&lt;digraph with 3 vertices, 5 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMeetSemilatticeDigraph(gr);</span>
-false
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsJoinSemilatticeDigraph(gr);</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeDigraph(gr);</span>
-false
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1], [2], [1 .. 3]]);</span>
-&lt;digraph with 3 vertices, 5 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsJoinSemilatticeDigraph(gr);</span>
-false
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMeetSemilatticeDigraph(gr);</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeDigraph(gr);</span>
-false
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);</span>
-&lt;digraph with 4 vertices, 9 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMeetSemilatticeDigraph(gr);</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsJoinSemilatticeDigraph(gr);</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeDigraph(gr);</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[1, 1, 1], [1, 1, 2, 2], [1, 3, 3], [1, 2, 3, 3, 4]]);</span>
-&lt;multidigraph with 4 vertices, 15 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMeetSemilatticeDigraph(gr);</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsJoinSemilatticeDigraph(gr);</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeDigraph(gr);</span>
-true
-</pre></div>
 
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap5_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap7_mj.html">[Next Chapter]</a>&nbsp;  </div>
