@@ -388,7 +388,7 @@ end);
 
 InstallGlobalFunction(ReadDigraphs,
 function(arg)
-  local name, decoder, nr, file, i, next, out;
+  local name, decoder, nr, file, read, i, next, out;
 
   if Length(arg) = 1 then
     name := arg[1];
@@ -435,15 +435,26 @@ function(arg)
   decoder := file!.coder;
 
   if nr < infinity then
+    if decoder = IO_Unpickle then
+      read := IO_Unpickle;
+    else
+      read := IO_ReadLine;
+    fi;
     i := 0;
-    repeat
+    next := fail;
+    while i < nr - 1 and next <> IO_Nothing do
       i := i + 1;
-      next := decoder(file);
-    until i = nr or next = IO_Nothing;
+      next := read(file);
+    od;
+    if next <> IO_Nothing then
+      out := decoder(file);
+    else
+      out := IO_Nothing;
+    fi;
     if IsString(arg[1]) then
       IO_Close(file);
     fi;
-    return next;
+    return out;
   fi;
 
   out := [];
