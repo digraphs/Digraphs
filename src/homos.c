@@ -109,6 +109,13 @@ static void init_mask(void) {
 // bits in a block which are set to 1.
 ////////////////////////////////////////////////////////////////////////////////
 
+#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
+#if SIZEOF_VOID_P == 8
+#define COUNT_TRUES_BLOCK(block) _mm_popcnt_u64(block)
+#else
+#define COUNT_TRUES_BLOCK(block) _mm_popcnt_u32(block)
+#endif
+#else
 #if SIZEOF_VOID_P == 8
 #define COUNT_TRUES_BLOCK(block)                                 \
   do {                                                           \
@@ -121,9 +128,7 @@ static void init_mask(void) {
     (block) = ((block) + ((block) >> 16));                       \
     (block) = ((block) + ((block) >> 32)) & 0x00000000000000ffL; \
   } while (0)
-
 #else
-
 #define COUNT_TRUES_BLOCK(block)                                     \
   do {                                                               \
     (block) = ((block) &0x55555555) + (((block) >> 1) & 0x55555555); \
@@ -132,6 +137,7 @@ static void init_mask(void) {
     (block) = ((block) + ((block) >> 8));                            \
     (block) = ((block) + ((block) >> 16)) & 0x000000ff;              \
   } while (0)
+#endif
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -242,10 +248,8 @@ static inline UIntS size_bit_array(BitArray* bit_array) {
   n = 0;
   for (i = 1; i <= nrb; i++) {
     m = *blocks++;
-    COUNT_TRUES_BLOCK(m);
-    n += m;
+    n += COUNT_TRUES_BLOCK(m);
   }
-
   return n;
 }
 

@@ -17,8 +17,8 @@ digraphs_la_SOURCES += src/bliss-0.73/partition.cc src/bliss-0.73/orbit.cc
 digraphs_la_SOURCES += src/bliss-0.73/uintseqhash.cc src/bliss-0.73/heap.cc
 digraphs_la_SOURCES += src/bliss-0.73/timer.cc src/bliss-0.73/utils.cc 
 digraphs_la_SOURCES += src/bliss-0.73/bliss_C.cc
-digraphs_la_CXXFLAGS = -O3 -DNDEBUG
-digraphs_la_CFLAGS = -O3 -DNDEBUG
+digraphs_la_CXXFLAGS = -O3 -DNDEBUG -march=native -mpopcnt
+digraphs_la_CFLAGS = -O3 -DNDEBUG -march=native -mpopcnt
 
 digraphs_la_CPPFLAGS = $(GAP_CPPFLAGS) -DCONFIG_H
 # Note that the latter is only for GAP 4.4.12
