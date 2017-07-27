@@ -58,6 +58,7 @@
     <#Include Label="DigraphLayers">
     <#Include Label="DigraphDegeneracy">
     <#Include Label="DigraphDegeneracyOrdering">
+    <#Include Label="HamiltonianPath">
   </Section>
   
   <Section><Heading>Cayley graphs of groups</Heading>

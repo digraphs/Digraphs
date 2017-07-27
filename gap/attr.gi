@@ -1544,3 +1544,42 @@ function(gr)
   SetIsUndirectedTree(out, true);
   return out;
 end);
+
+#
+
+InstallMethod(HamiltonianPath,
+"for a digraph",
+[IsDigraph],
+function(gr)
+  local path, out, iter, n;
+
+  if DigraphNrVertices(gr) <= 1 and IsEmptyDigraph(gr) then
+    if DigraphNrVertices(gr) = 0 then
+      return [];
+    else
+      return [1];
+    fi;
+  elif not IsStronglyConnectedDigraph(gr) then
+    return fail;
+  fi;
+
+  out := OutNeighbours(gr);
+
+  if DigraphNrVertices(gr) < 256 then
+    path := DigraphMonomorphism(CycleDigraph(DigraphNrVertices(gr)), gr);
+    if path = fail then
+      return fail;
+    fi;
+    return ImageListOfTransformation(path, DigraphNrVertices(gr));
+  fi;
+
+  iter := IteratorOfPaths(gr, 1, 1);
+  n := DigraphNrVertices(gr) + 1;
+  while not IsDoneIterator(iter) do
+    path := NextIterator(iter)[1];
+    if Length(path) = n then
+      return path;
+    fi;
+  od;
+  return fail;
+end);
