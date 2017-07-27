@@ -567,3 +567,111 @@ function(gr)
   return true;
 
 end);
+
+# Meyniel's Theorem: a strongly connected digraph with n vertices, in which
+# any two non-adjacent vertices have full degree sum at least 2n − 1, is
+# Hamiltonian.
+# This function uses theorems 4.1 and 4.2 from the following paper:
+# Sufficient conditions for a digraph to be Hamiltonian
+# http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.99.4560&rep=rep1
+# &type=pdf
+# A vertex z dominates a pair of vertices {x, y} if z->x and z->y
+# A pair of vertices {x, y} dominates a vertex z if x->z and y->z
+# Theorem 4.1: a strongly connected digraph with n vertices in which every pair
+# of non-adjacent dominated vertices {x,y} satifies either of:
+# 1.(full degree of x) ≥ n and (full degree of y) ≥ n - 1
+# 2.(full degree of y) ≥ n and (full degree of x) ≥ n - 1
+# Is Hamiltonian.
+# Theorem 4.2: a strongly connected digraph with n vertices in which every pair
+# of non-adjacent vertices {x,y} which is dominated or dominating satifies:
+# 1. (out degree of x) + (in degree of y) ≥ n
+# 2. (out degree of y) + (in degree of x) ≥ n
+# Is Hamiltonian.
+InstallMethod(IsHamiltonianDigraph, "for a digraph",
+[IsDigraph],
+function(gr)
+  local out, indegs, fulldegs, outdegs, n, checkMT, check41, check42, iter,
+        dominatedcheck, dominatingcheck, adjmatrix, i, j, k, tempblist;
+
+  if DigraphNrVertices(gr) <= 1 and IsEmptyDigraph(gr) then
+    return true;
+  elif not IsStronglyConnectedDigraph(gr) then
+    return false;
+  fi;
+
+  if IsMultiDigraph(gr) then
+    gr := DigraphRemoveAllMultipleEdges(gr);
+  fi;
+  if DigraphHasLoops(gr) then
+    gr := DigraphRemoveLoops(gr);
+  fi;
+
+  n := DigraphNrVertices(gr);
+
+  if n <= 512 then
+    out := OutNeighbours(gr);
+    indegs := InDegrees(gr);
+    outdegs := OutDegrees(gr);
+    fulldegs := indegs + outdegs;
+    adjmatrix := BooleanAdjacencyMatrix(gr);
+    #checks if Meyniel's theorem, Theorem 4.1 or Theorem 4.2 are applicable.
+    checkMT := true;
+    check41 := true;
+    check42 := true;
+    for i in [1 .. n] do
+       for j in [1 .. n] do
+          if i <> j and not adjmatrix[j][i] and not adjmatrix[i][j] then
+              #Meyniel's theorem
+              if checkMT and fulldegs[i] + fulldegs[j] < 2 * n - 1 then
+                  checkMT := false;
+              fi;
+
+              if check41 or check42 then
+                dominatedcheck := false;
+                dominatingcheck := false;
+                for k in [1 .. n] do
+                  if adjmatrix[k][i] and adjmatrix[k][j] then
+                     dominatedcheck := true;
+                     break;
+                  fi;
+                od;
+                tempblist := adjmatrix[i];
+                IntersectBlist(tempblist, adjmatrix[j]);
+                dominatingcheck := true in tempblist;
+              fi;
+
+              #Theorem 4.1
+              if check41 and dominatedcheck then
+                 if fulldegs[i] < n - 1 or fulldegs[j] < n - 1 or
+                    (fulldegs[i] = n - 1 and fulldegs[j] = n - 1) then
+                   check41 := false;
+                 fi;
+              fi;
+
+              #Theorem 4.2
+              if check42 and (dominatingcheck or dominatedcheck) then
+                 if (indegs[i] + outdegs[j]) < n or
+                    (indegs[j] + outdegs[i]) < n then
+                   check42 := false;
+                 fi;
+              fi;
+          fi;
+          if not (checkMT or check41 or check42) then
+            break;
+          fi;
+      od;
+      if not (checkMT or check41 or check42) then
+        break;
+      fi;
+    od;
+    if checkMT or check41 or check42 then
+      return true;
+    fi;
+  fi;
+
+  return HamiltonianPath(gr) <> fail;
+end);
+
+InstallMethod(IsHamiltonianDigraph, "for a digraph with hamiltonian path",
+[IsDigraph and HasHamiltonianPath],
+x -> HamiltonianPath(x) <> fail);

@@ -33,6 +33,7 @@ DeclareProperty("IsDirectedTree", IsDigraph);
 DeclareProperty("IsUndirectedTree", IsDigraph);
 DeclareProperty("IsUndirectedForest", IsDigraph);
 DeclareProperty("IsEulerianDigraph", IsDigraph);
+DeclareProperty("IsHamiltonianDigraph", IsDigraph);
 DeclareProperty("IsMeetSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsJoinSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsCycleDigraph", IsDigraph);

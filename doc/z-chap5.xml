@@ -33,6 +33,7 @@
     <#Include Label="IsDirectedTree">
     <#Include Label="IsUndirectedTree">
     <#Include Label="IsEulerianDigraph">
+    <#Include Label="IsHamiltonianDigraph">
     <#Include Label="IsCycleDigraph">
   </Section>
   

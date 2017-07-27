@@ -850,3 +850,41 @@ true
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsHamiltonianDigraph">
+<ManSection>
+  <Prop Name="IsHamiltonianDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is Hamiltonian, then this property returns
+    <K>true</K>, and <K>false</K> if it is not. <P/>
+
+    A digraph with <C>n</C> vertices is <E>Hamiltonian</E> if it has a
+    directed cycle of length <C>n</C>. See Section <Ref Subsect="Definitions"
+     Style="Number" /> for the definition of a directed cycle.
+    Note the empty digraphs on 0 and 1 vertices are considered to be
+    Hamiltonian.<P/>
+
+    The method used in this operation has the worst case complexity as
+    <Ref Oper="DigraphMonomorphism"/>.
+
+    <Example><![CDATA[
+gap> g := Digraph([[]]);
+<digraph with 1 vertex, 0 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := Digraph([[3], [], [2]]);
+<digraph with 3 vertices, 2 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[2], [3], [1]]);
+<digraph with 3 vertices, 3 edges>
+gap> IsHamiltonianDigraph(g);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
