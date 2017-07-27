@@ -28,6 +28,13 @@ gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 <digraph with 5000 vertices, 4211332 edges>
 gap> DigraphSymmetricClosure(gr);
 <digraph with 5000 vertices, 7713076 edges>
+gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
+>                                     "/data/symmetric-closure.ds6.gz"),
+>                       DigraphFromDiSparse6String,
+>                       1);
+<digraph with 46656 vertices, 120245 edges>
+gap> DigraphSymmetricClosure(gr);
+<digraph with 46656 vertices, 197930 edges>
 
 #T# DigraphAllSimpleCircuits
 gap> gr := DigraphFromDigraph6String(
