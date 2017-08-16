@@ -4,6 +4,10 @@ Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.10.1 (released 16/08/2017)
+This is a minor release, which contains performance improvements, and fixes a
+bug in `Digraph` that could cause a segmentation fault.
+
 ## Version 0.10.0 (released 20/07/2017)
 This release contains new features, bugfixes, and minor improvements to the
 documentation.  There is a new method for `ChromaticNumber`, which has better
