@@ -295,6 +295,15 @@ gap> gr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);
 gap> DigraphTopologicalSort(gr);
 [ 4, 2, 3, 1 ]
 
+#T# Issue 81: Bug in Digraph for a malformed list of out-neighbours
+gap> gr := Digraph([[1],, [2]]);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 1 arguments
+gap> gr := Digraph([[1], 2, [2]]);
+Error, Digraphs: Digraph: usage,
+the argument must be a list of lists of positive integers not exceeding the
+length of the argument,
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);

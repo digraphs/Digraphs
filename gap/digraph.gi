@@ -939,8 +939,7 @@ end);
 
 #
 
-InstallMethod(Digraph, "for a list of lists of pos ints",
-[IsList],
+InstallMethod(Digraph, "for a dense list", [IsDenseList],
 function(adj)
   local nrvertices, nredges, x, y;
 
@@ -948,12 +947,16 @@ function(adj)
   nredges := 0;
 
   for x in adj do
+    if not IsHomogeneousList(x) then
+      ErrorNoReturn("Digraphs: Digraph: usage,\n",
+                    "the argument must be a list of lists of positive ",
+                    "integers not exceeding the\nlength of the argument,");
+    fi;
     for y in x do
       if not IsPosInt(y) or y > nrvertices then
         ErrorNoReturn("Digraphs: Digraph: usage,\n",
                       "the argument must be a list of lists of positive ",
-                      "integers\n",
-                      "not exceeding the length of the argument,");
+                      "integers not exceeding the\nlength of the argument,");
       fi;
       nredges := nredges + 1;
     od;
@@ -964,7 +967,7 @@ end);
 
 #
 
-InstallMethod(DigraphNC, "for a list", [IsList],
+InstallMethod(DigraphNC, "for a dense list", [IsDenseList],
 function(adj)
   local adj_copy, graph;
 
@@ -978,8 +981,8 @@ function(adj)
   return graph;
 end);
 
-InstallMethod(DigraphNC, "for a list and an integer",
-[IsList, IsInt],
+InstallMethod(DigraphNC, "for a dense list and an integer",
+[IsDenseList, IsInt],
 function(adj, nredges)
   local adj_copy, graph;
 
@@ -1036,8 +1039,8 @@ function(nrvertices, source, range)
                        nredges := m));
 end);
 
-InstallMethod(Digraph, "for three lists",
-[IsList, IsList, IsList],
+InstallMethod(Digraph, "for three dense lists",
+[IsDenseList, IsDenseList, IsDenseList],
 function(vertices, source, range)
   local m, n, i;
 
