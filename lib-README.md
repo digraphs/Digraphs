@@ -6,7 +6,7 @@
 
 In this directory is a collection of various types of digraphs, which can be
 loaded into the GAP computational algebra system using the [Digraphs
-package](http://www-circa.mcs.st-and.ac.uk/~jamesm/digraphs.php).  It is a
+package](https://gap-packages.github.io/Digraphs).  It is a
 completely optional addition to the package, which can be used to produce
 examples of digraphs for use in the package.
 
