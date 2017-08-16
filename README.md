@@ -33,8 +33,8 @@ obtained from the [main GAP webpage](http://www.gap-system.org).
 The following is a summary of the steps that should lead to a successful
 installation of [Digraphs](https://gap-packages.github.io/Digraphs):
 
-* get the [IO](http://gap-system.github.io/io) package version 4.4.4 or higher.
-* get the [orb](http://gap-system.github.io/orb) package version 4.7.5 or
+* get the [IO](http://gap-packages.github.io/io) package version 4.4.4 or higher.
+* get the [orb](http://gap-packages.github.io/orb) package version 4.7.5 or
   higher.
 * **this step is optional:** certain methods in [Digraphs](https://gap-packages.github.io/Digraphs) require the [Grape](http://www.maths.qmul.ac.uk/~leonard/grape/) package to be available; a full list of these functions can be found in the first chapter of the manual.  To use these functions make sure that the [Grape](http://www.maths.qmul.ac.uk/~leonard/grape/) package version 4.5 or higher is available.
 * download the package archive `digraphs-x.x.x.tar.gz` from the

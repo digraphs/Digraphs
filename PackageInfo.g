@@ -95,7 +95,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jj252@st-andrews.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~julius/",
+    WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~julius/",
     PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -123,7 +123,7 @@ Persons := [
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "markus.pfeiffer@morphism.de",
-    WWWHome       := "http://www.morphism.de/~markusp/",
+    WWWHome       := "https://www.morphism.de/~markusp/",
     PostalAddress := Concatenation([
                        "School of Computer Science,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SX,",
@@ -163,7 +163,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mct25@st-andrews.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~mct25/",
+    WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~mct25/",
     PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -177,7 +177,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "waw7@st-andrews.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~waw7/",
+    WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~waw7/",
     PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
