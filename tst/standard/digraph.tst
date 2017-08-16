@@ -134,12 +134,19 @@ gap> if DIGRAPHS_IsGrapeLoaded then
 #T# Digraph (by OutNeighbours)
 gap> Digraph([[0, 1]]);
 Error, Digraphs: Digraph: usage,
-the argument must be a list of lists of positive integers
-not exceeding the length of the argument,
+the argument must be a list of lists of positive integers not exceeding the
+length of the argument,
 gap> Digraph([[2], [3]]);
 Error, Digraphs: Digraph: usage,
-the argument must be a list of lists of positive integers
-not exceeding the length of the argument,
+the argument must be a list of lists of positive integers not exceeding the
+length of the argument,
+gap> Digraph([[1],, [2]]);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `Digraph' on 1 arguments
+gap> Digraph([[1], 2, [3]]);
+Error, Digraphs: Digraph: usage,
+the argument must be a list of lists of positive integers not exceeding the
+length of the argument,
 
 #T# Digraph (by record)
 gap> n := 3;;
