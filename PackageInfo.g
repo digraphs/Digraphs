@@ -9,20 +9,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.10.0">
+##  <!ENTITY VERSION        "0.10.1">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.4">
 ##  <!ENTITY ORBVERS        "4.7.5">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.10.0">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.10.1">
 ##  <!ENTITY COPYRIGHTYEARS "2014-17">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "",
-Version := "0.10.0",
-Date := "20/07/2017",
+Version := "0.10.1",
+Date := "16/08/2017",
 ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(
@@ -95,7 +95,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jj252@st-andrews.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~julius/",
+    WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~julius/",
     PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -123,7 +123,7 @@ Persons := [
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "markus.pfeiffer@morphism.de",
-    WWWHome       := "http://www.morphism.de/~markusp/",
+    WWWHome       := "https://www.morphism.de/~markusp/",
     PostalAddress := Concatenation([
                        "School of Computer Science,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SX,",
@@ -163,7 +163,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mct25@st-andrews.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~mct25/",
+    WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~mct25/",
     PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
@@ -177,7 +177,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "waw7@st-andrews.ac.uk",
-    WWWHome       := "http://www-circa.mcs.st-andrews.ac.uk/~waw7/",
+    WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~waw7/",
     PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",

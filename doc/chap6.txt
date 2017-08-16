@@ -236,10 +236,10 @@
   [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is symmetric, and [9Xfalse[109X if it
   is not.[133X
   
-  [33X[0;0YA [13Xsymmetric digraph[113X is one where for each non-loop edge, having source [22Xu[122X and
-  range  [22Xv[122X,  there is a corresponding edge with source v and range u. If there
-  are  [22Xn[122X edges with source [22Xu[122X and range [22Xv[122X, then there must be precisely [22Xn[122X edges
-  with  source  [22Xv[122X  and  range  [22Xu[122X.  In other words, an undirected digraph has a
+  [33X[0;0YA [13Xsymmetric digraph[113X is one where for each non-loop edge, having source [10Xu[110X and
+  range  [10Xv[110X,  there is a corresponding edge with source [10Xv[110X and range [10Xu[110X. If there
+  are  [10Xn[110X edges with source [10Xu[110X and range [10Xv[110X, then there must be precisely [10Xn[110X edges
+  with  source  [10Xv[110X  and  range  [10Xu[110X.  In  other  words, a symmetric digraph has a
   symmetric adjacency matrix [2XAdjacencyMatrix[102X ([14X5.2-1[114X).[133X
   
   [4X[32X  Example  [32X[104X

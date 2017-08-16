@@ -4,11 +4,15 @@ Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.10.1 (released 16/08/2017)
+This is a minor release, which contains performance improvements, and fixes a
+bug in `Digraph` that could cause a segmentation fault.
+
 ## Version 0.10.0 (released 20/07/2017)
 This release contains new features, bugfixes, and minor improvements to the
 documentation.  There is a new method for `ChromaticNumber`, which has better
 performance than the previous method
-[[Julius Jonusas](http://www-circa.mcs.st-and.ac.uk/~julius)
+[[Julius Jonusas](http://www-groups.mcs.st-and.ac.uk/~julius)
 and [James D.  Mitchell](http://goo.gl/ZtViV6)].
 A bug in the code for calculating homomorphisms of digraphs, which could cause
 a crash, was resolved [[James D.  Mitchell](http://goo.gl/ZtViV6)].
@@ -54,7 +58,7 @@ improvements to the documentation of the package.
 ### New Features in Version 0.8.0
 
 This release introduces the new operations `DigraphClosure`
-[[Julius Jonusas](http://www-circa.mcs.st-and.ac.uk/~julius)]
+[[Julius Jonusas](http://www-groups.mcs.st-and.ac.uk/~julius)]
 and `BooleanAdjacencyMatrixMutableCopy`
 [[Wilf A. Wilson](http://wilf.me)],
 along with the following properties and operations related to semilattices
@@ -74,7 +78,7 @@ This is a minor release, which fixes bugs in `DigraphTopologicalSort` and
 ## Version 0.7.0 (released 14/03/2017)
 This release introduces several new features, changes some existing
 functionality, and improves the documentation. The changes in this release were
-made by [Wilf A. Wilson](https://wilf.me).
+made by [Wilf A. Wilson](http://wilf.me).
 
 ### New Features in Version 0.7.0
 * This release contains a new technique for encoding a vertex-coloured
@@ -116,10 +120,10 @@ Markus Pfeiffer as new authors.
 
 ### New Features in Version 0.6.0
 * The ability to label the edges of digraphs is introduced. [[Markus Pfeiffer](https://www.morphism.de/~markusp)]
-* The operation `CompleteMultipartiteDigraph` is introduced. [Stuart Burrell and [Wilf A. Wilson](https://wilf.me)]
+* The operation `CompleteMultipartiteDigraph` is introduced. [Stuart Burrell and [Wilf A. Wilson](http://wilf.me)]
 * The operations `ReadDIMACSDigraph` and `WriteDIMACSDigraph` are introduced.
-  [[Wilf A. Wilson](https://wilf.me)]
-* The operation `ChromaticNumber` is introduced. [[James D. Mitchell](http://goo.gl/ZtViV6) and [Wilf A. Wilson](https://wilf.me)]
+  [[Wilf A. Wilson](http://wilf.me)]
+* The operation `ChromaticNumber` is introduced. [[James D. Mitchell](http://goo.gl/ZtViV6) and [Wilf A. Wilson](http://wilf.me)]
 * The operations `IsDirectedTree` and `IsUndirectedTree` are introduced. [Luke Elliott]
 * The operation `IsEulerianDigraph`is introduced. [Luke Elliott]
 	
@@ -149,7 +153,7 @@ Minor changes include:
 
 * a better method for `DigraphReverse` [[Wilf A. Wilson](http://wilf.me)]
 * automorphism groups of complete, empty, cycle, chain, and complete bipartite
-digraphs are set at creation [[Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25)]
+digraphs are set at creation [[Michael Torpey](http://www-groups.mcs.st-and.ac.uk/~mct25)]
 * a minor improvement in performance in the `DigraphMaximalCliques` [[Wilf A. Wilson](http://wilf.me)]
 * a new operation `AdjacencyMatrixMutableCopy` [[James D. Mitchell](http://goo.gl/ZtViV6)]
 
@@ -168,7 +172,7 @@ version 4.7.5 or higher.
 * The property `IsCompleteBipartiteDigraph` is introduced. [[Wilf A. Wilson](http://wilf.me)]
 
 ### Issues Resolved in Version 0.5.0
-Several bugs related to clique finding have been resolved. [[Wilf
+Several bugs related to clique finding have been resolved. [[Wilf A.
 Wilson](http://wilf.me)]
 
 * Files with extension `bz2` were previously not (un)compressed when used with
@@ -182,7 +186,7 @@ Wilson](http://wilf.me)]
 
 ## Version 0.4.2 (released 28/01/2016)
 This is a minor release to fix a bug in `DigraphAllSimpleCircuits` that failed to
-return all simple circuits in some cases [Issue 13](https://bitbucket.org/james-d-mitchell/digraphs/issues/13). Some documentation was also updated.
+return all simple circuits in some cases [Issue 13](https://github.com/gap-packages/Digraphs/issues/13). Some documentation was also updated.
 
 ## Version 0.4.1 (released 22/01/2016)
 This is a very minor release to change the version of GAP required.
@@ -244,9 +248,9 @@ version, we welcomed Jan De Beule to the development team.
   - `OutDegreeSet`
   - `RepresentativeOutNeighbours`
 
-[[Jan De Beule](http://homepages.vub.ac.be/~jdbeule/), [Julius Jonusas](http://www-circa.mcs.st-and.ac.uk/~julius),
+[[Jan De Beule](http://homepages.vub.ac.be/~jdbeule/), [Julius Jonusas](http://www-groups.mcs.st-and.ac.uk/~julius),
 [James D. Mitchell](http://goo.gl/ZtViV6),
-[Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25),
+[Michael Torpey](http://www-groups.mcs.st-and.ac.uk/~mct25),
 [Wilf A. Wilson](http://wilf.me)]
 
 ## Version 0.3.2 (released 14/01/2016)
@@ -271,7 +275,7 @@ on the algorithm in [this paper](http://epubs.siam.org/doi/abs/10.1137/0204007?j
 ### Issues Resolved in Version 0.3.0
 * There was a memory leak in bliss-0.73, which is fixed in the copy of bliss included with Digraphs, but not in the official release of bliss. [[James D. Mitchell](http://goo.gl/ZtViV6)]
 * Some bits of code that caused compiler warnings were improved. [[James D. Mitchell](http://goo.gl/ZtViV6)]
-* Some memory leaks were resolved in the Digraphs kernel module. [[Michael Torpey](http://www-circa.mcs.st-and.ac.uk/~mct25)]
+* Some memory leaks were resolved in the Digraphs kernel module. [[Michael Torpey](http://www-groups.mcs.st-and.ac.uk/~mct25)]
 
 ## Version 0.2.0 (released 04/09/2015)
 The first release.

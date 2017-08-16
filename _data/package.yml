@@ -1,19 +1,19 @@
 name: Digraphs
-version: 0.10.0
-date: 20/07/2017
+version: 0.10.1
+date: 16/08/2017
 description: 
 
 authors:
     - name: J. De Beule
       url: http://homepages.vub.ac.be/~jdbeule/
     - name: J. Jonusas
-      url: http://www-circa.mcs.st-andrews.ac.uk/~julius/
+      url: http://www-groups.mcs.st-andrews.ac.uk/~julius/
     - name: J. D. Mitchell
       url: http://goo.gl/ZtViV6
     - name: M. Torpey
-      url: http://www-circa.mcs.st-andrews.ac.uk/~mct25/
+      url: http://www-groups.mcs.st-andrews.ac.uk/~mct25/
     - name: W. A. Wilson
-      url: http://www-circa.mcs.st-andrews.ac.uk/~waw7/
+      url: http://www-groups.mcs.st-andrews.ac.uk/~waw7/
 
 maintainers:
     - name: J. D. Mitchell
@@ -43,7 +43,7 @@ packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/Digraphs/releases/download/v0.10.0/digraphs-0.10.0.tar.gz
+      url: https://github.com/gap-packages/Digraphs/releases/download/v0.10.1/digraphs-0.10.1.tar.gz
 
 abstract: The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
 
@@ -51,7 +51,7 @@ status: deposited
 doc-html: doc/chap0.html
 doc-pdf: doc/manual.pdf
 
-month: Jul
+month: Aug
 year: 2017
 
 contributors:
@@ -62,7 +62,7 @@ contributors:
     - name: C. Jefferson
       url: http://caj.host.cs.st-andrews.ac.uk
     - name: M. Pfeiffer
-      url: http://www.morphism.de/~markusp/
+      url: https://www.morphism.de/~markusp/
     - name: C. Russell
       url: mailto:cr66@st-andrews.ac.uk
     - name: F. Smith
