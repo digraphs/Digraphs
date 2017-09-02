@@ -32,7 +32,7 @@ The following additional GAP packages are not required, but suggested:
 ## Author{% if site.data.package.authors.size != 1 %}s{% endif %}
 {% for person in site.data.package.authors %}
  {% if person.url %}<a href="{{ person.url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}
- {%- unless forloop.last -%}, {%- endunless -%}
+ {%- if forloop.last -%}.{% else %}, {%- endif -%}
 {% endfor %}
 
 {% if site.github.issues_url %}
