@@ -47,7 +47,7 @@ PrintPackageList := function(stream, pkgs)
 end;
 
 GeneratePackageYML:=function(pkg)
-    local stream, authors, maintainers, formats, f, tmp;
+    local stream, authors, maintainers, contributors, formats, f, tmp;
 
     stream := OutputTextFile("_data/package.yml", false);
     SetPrintFormattingStatus(stream, false);
@@ -69,6 +69,12 @@ GeneratePackageYML:=function(pkg)
     if Length(maintainers) > 0 then
         AppendTo(stream, "maintainers:\n");
         PrintPeopleList(stream, maintainers);
+    fi;
+
+    contributors := Filtered(pkg.Persons, p -> not p.IsMaintainer and not p.IsAuthor);
+    if Length(contributors) > 0 then
+        AppendTo(stream, "contributors:\n");
+        PrintPeopleList(stream, contributors);
     fi;
 
     if IsBound(pkg.Dependencies.GAP) then
