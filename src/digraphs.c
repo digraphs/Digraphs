@@ -195,7 +195,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
           }
           frames -= 3;
         } else {
-          w   = INT_INTOBJ(ELM_PLIST(frames[2], frames[1]++));
+          w   = INT_INTOBJ(ELM_PLIST((Obj) frames[2], frames[1]++));
           idw = INT_INTOBJ(ELM_PLIST(id, w));
 
           if (idw == 0) {
