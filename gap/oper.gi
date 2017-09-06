@@ -182,12 +182,7 @@ function(digraph, edges)
   if IsMultiDigraph(digraph) then
     ErrorNoReturn("Digraphs: DigraphReverseEdges: usage,\n",
                   "the first argument <digraph> must not be a multigraph,");
-  fi;
-
-  # A rectangular table is always non-empty so
-
-  if not IsPosInt(edges[1][1]) or
-      not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
+  elif not ForAll(edges, x -> IsDigraphEdge(digraph, x)) then
     ErrorNoReturn("Digraphs: DigraphReverseEdges: usage,\n",
                   "the second argument <edges> must be a list of edges of ",
                   "<digraph>,");
