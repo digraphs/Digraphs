@@ -21,7 +21,7 @@ following these instructions.
 
    ```sh
    # Add a new remote pointing to the GitHubPagesForGAP repository
-   git remote add gh-gap https://github.com/fingolfin/GitHubPagesForGAP
+   git remote add gh-gap https://github.com/gap-system/GitHubPagesForGAP
    git fetch gh-gap
 
    # Create a fresh gh-pages branch from the new remote
@@ -41,7 +41,7 @@ following these instructions.
    cd gh-pages
 
    # Add a new remote pointing to the GitHubPagesForGAP repository
-   git remote add gh-gap https://github.com/fingolfin/GitHubPagesForGAP
+   git remote add gh-gap https://github.com/gap-system/GitHubPagesForGAP
    git fetch gh-gap
 
    # Create a fresh gh-pages branch from the new remote
@@ -202,10 +202,10 @@ Packages using GitHubPagesForGAP include the following:
 ## Contact
 
 Please submit bug reports, suggestions for improvements and patches via
-the [issue tracker](https://github.com/fingolfin/GitHubPagesForGAP/issues).
+the [issue tracker](https://github.com/gap-system/GitHubPagesForGAP/issues).
 
 You can also contact me directly via [email](max@quendi.de).
 
 Copyright (c) 2013-2016 Max Horn
 
-[ReleaseTools]: https://github.com/fingolfin/ReleaseTools
+[ReleaseTools]: https://github.com/gap-system/ReleaseTools

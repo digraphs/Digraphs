@@ -53,7 +53,7 @@ Status := "other",
 # (in the sense that update.g only looks at the usual fields
 # like PackageWWWHome, ArchiveURL etc.). But they are convenient
 # if you use exactly the scheme for your package website that we propose.
-GithubUser := "fingolfin",
+GithubUser := "gap-system",
 GithubRepository := ~.PackageName,
 GithubWWW := Concatenation("https://github.com/", ~.GithubUser, "/", ~.GithubRepository),
 
