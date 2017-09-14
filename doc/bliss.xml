@@ -57,14 +57,12 @@ gap> johnson := DigraphFromGraph6String("E}lw");
 <digraph with 6 vertices, 24 edges>
 gap> G := AutomorphismGroup(johnson);
 Group([ (3,4), (2,3)(4,5), (1,2)(5,6) ])
-gap> StructureDescription(G);
-"C2 x S4"
 gap> cycle := CycleDigraph(9);
 <digraph with 9 vertices, 9 edges>
 gap> G := AutomorphismGroup(cycle);
 Group([ (1,2,3,4,5,6,7,8,9) ])
-gap> StructureDescription(G);
-"C9"
+gap> IsCyclic(G) and Size(G) = 9;
+true
 gap> gr := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
 <multidigraph with 3 vertices, 6 edges>
 gap> G := AutomorphismGroup(gr);
@@ -169,12 +167,12 @@ Group([ (2,3) ])]]></Example>
 gap> cycle := CycleDigraph(9);
 <digraph with 9 vertices, 9 edges>
 gap> G := AutomorphismGroup(cycle);;
-gap> StructureDescription(G);
-"C9"
+gap> IsCyclic(G) and Size(G) = 9;
+true
 gap> colours := [[1, 4, 7], [2, 5, 8], [3, 6, 9]];;
 gap> H := AutomorphismGroup(cycle, colours);;
-gap> StructureDescription(H);
-"C3"
+gap> Size(H);
+3
 gap> H = AutomorphismGroup(cycle, [1, 2, 3, 1, 2, 3, 1, 2, 3]);
 true
 gap> H = SubgroupByProperty(G, p -> OnTuplesSets(colours, p) = colours);

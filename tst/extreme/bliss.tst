@@ -85,7 +85,16 @@ gap> gr := DigraphFromDigraph6String(Concatenation(
 <digraph with 45 vertices, 180 edges>
 gap> H := AutomorphismGroup(gr);
 <permutation group with 4 generators>
-gap> IsomorphismGroups(PrimitiveGroup(45, 3), H) <> fail;
+
+# G = PrimitiveGroup(45, 3);
+gap> G := Group([
+> (1, 2, 18, 20)(3, 40, 25, 19)(4, 33, 35, 30)(5, 29, 43, 9)(6, 36, 12, 26)
+> (7, 27, 39, 13)(8, 17)(10, 41, 31, 32)(14, 37, 45, 22)(15, 28, 38, 21)
+> (16, 34, 24, 42)(23, 44), 
+> (1, 44, 16, 25, 33, 40, 31, 39, 34, 38)(2, 14, 12, 37, 28, 6, 13, 9, 42, 30)
+> (3, 45, 5, 41, 11, 36, 4, 27, 15, 10)(7, 19, 43, 8, 35)
+> (17, 23, 26, 24, 22, 20, 29, 21, 18, 32)]);;
+gap> IsomorphismGroups(G, H) <> fail;
 true
 
 #T# AutomorphismGroup: for a digraph, 3
