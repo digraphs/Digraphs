@@ -35,7 +35,7 @@ The following additional GAP packages are not required, but suggested:
  {%- if forloop.last -%}.{% else %}, {%- endif -%}
 {% endfor %}
 
-{% if site.data.package.contributors.size != 0 %}
+{% if site.data.package.contributors.size > 0 %}
 ## Contributor{% if site.data.package.contributors.size != 1 %}s{% endif %}
  {% for person in site.data.package.contributors %}
   {% if person.url %}{{ person.name }}{% else %}{{ person.name }}{% endif %}
