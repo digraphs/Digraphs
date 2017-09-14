@@ -155,7 +155,11 @@ much you tweaked the site after initially cloning GitHubPagesForGAP.
 
 1. Go to the `gh-pages` directory we created above.
    Make sure that there are no uncommitted changes, as they will be lost
-   when following these instructions.
+   when following these instructions. Also make sure the `gh-gap` remote
+   still exists, if not, add it again via
+   ```
+   git remote add gh-gap https://github.com/gap-system/GitHubPagesForGAP
+   ```
 
 2. Fetch changes made to GitHubPagesForGAP.
    ```
@@ -163,24 +167,31 @@ much you tweaked the site after initially cloning GitHubPagesForGAP.
    ```
 
 3. Attempt to merge these changes. This may produce multiple merge conflicts,
-   so ideally, you should be familiar with dealing with such merge conflicts.
+   so ideally, you should be familiar with dealing with such merge conflicts;
+   but we will describe how to easily deal with the most common ones below.
+   First, initiate the merge.
    ```
    git pull gh-gap gh-pages
    ```
-   If at any point you don't know how to continue, you can abort the merge
+   Before you continue: If at any point you get tuck, you can abort the merge
    process and revert to the original state by issuing this command:
    ```
    git merge --abort
    ```
 
-4. This may produce merge conflicts. Most likely you will have conflicts in
-   the file `_data/package.yml`, but these are easy to resolve as follows:
+4. The earlier `git pull` may produce merge conflicts. Most likely you will
+   have conflicts in the file `_data/package.yml`, or in your `README` or `PackageInfo.g`.
+   Many of these can be resolved by entering this:
    ```
+   cp ../PackageInfo.g ../README* .
    gap update.g
-   git add _data/package.yml
+   git add PackageInfo.g README* _data/package.yml
    ```
    If you are lucky, this is the only conflict (check with `git status`).
-
+   If no merge conflicts remain, finish with this command:
+   ```
+   git merge --continue
+   ```
 
 
 ## Packages using GitHubPagesForGAP
