@@ -157,8 +157,8 @@ much you tweaked the site after initially cloning GitHubPagesForGAP.
    Make sure that there are no uncommitted changes, as they will be lost
    when following these instructions.
 
-2. Make sure the `gh-gap` remote exists and is in doubt. If in doubt, just
-   re-add it:
+2. Make sure the `gh-gap` remote exists and has the correct URL. If in doubt,
+   just re-add it:
    ```
    git remote remove gh-gap
    git remote add gh-gap https://github.com/gap-system/GitHubPagesForGAP
