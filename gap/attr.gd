@@ -69,6 +69,7 @@ DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
 
 DeclareAttribute("UndirectedSpanningTree", IsDigraph);
 DeclareAttribute("UndirectedSpanningForest", IsDigraph);
+DeclareAttribute("HamiltonianPath", IsDigraph);
 
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");

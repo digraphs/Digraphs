@@ -1313,3 +1313,42 @@ fail]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
+  
+<#GAPDoc Label="HamiltonianPath">
+<ManSection>
+  <Attr Name="HamiltonianPath" Arg="digraph"/>
+  <Returns>A list or <K>fail</K>.</Returns>
+  <Description>
+    Returns a Hamiltonian path if one exists, <K>fail</K> if not.<P/>
+
+    A <E>Hamiltonian path</E> of a digraph with <C>n</C> vertices is directed
+    cycle of length <C>n</C>. If <A>digraph</A> is a digraph that contains a
+    Hamiltonian path, then this function returns one, described in the form
+    used by <Ref Attr="DigraphAllSimpleCircuits"/>. Note if <A>digraph</A> has
+    0 or 1 vertices, then <C>HamiltonianPath</C> returns <C>[]</C> or
+    <C>[1]</C>, respectively.<P/>
+
+    The method used in this attribute has the same worst case complexity as
+    <Ref Oper="DigraphMonomorphism"/>.
+
+    <Example><![CDATA[
+gap> g := Digraph([[]]);
+<digraph with 1 vertex, 0 edges>
+gap> HamiltonianPath(g);
+[ 1 ]
+gap> g := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> HamiltonianPath(g);
+[ 1, 2 ]
+gap> g := Digraph([[3], [], [2]]);
+<digraph with 3 vertices, 2 edges>
+gap> HamiltonianPath(g);
+fail
+gap> g := Digraph([[2], [3], [1]]);
+<digraph with 3 vertices, 3 edges>
+gap> HamiltonianPath(g);
+[ 1, 2, 3 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

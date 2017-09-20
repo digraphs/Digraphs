@@ -1153,6 +1153,145 @@ gap> gr := Digraph([[2], [3], [], [3]]);
 gap> IsBiconnectedDigraph(gr);
 false
 
+#T# IsHamiltonianDigraph
+gap> g := Digraph([]);
+<digraph with 0 vertices, 0 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := Digraph([[]]);
+<digraph with 1 vertex, 0 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := Digraph([[], []]);
+<digraph with 2 vertices, 0 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[1]]);
+<digraph with 1 vertex, 1 edge>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := Digraph([[2, 2], []]);
+<multidigraph with 2 vertices, 2 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[2], [1]]);
+<digraph with 2 vertices, 2 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := Digraph([[3], [3], []]);
+<digraph with 3 vertices, 2 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[3], [3], [1, 2]]);
+<digraph with 3 vertices, 4 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[3], [], [2]]);
+<digraph with 3 vertices, 2 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[2], [3], [1]]);
+<digraph with 3 vertices, 3 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := Digraph([[2], [3], [1], []]);
+<digraph with 4 vertices, 3 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[2], [3], [1, 4], []]);
+<digraph with 4 vertices, 4 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4]]);
+<digraph with 6 vertices, 9 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[3, 6], [4, 1], [2, 1], [5, 1], [3], [4]]);
+<digraph with 6 vertices, 10 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], []]);
+<digraph with 7 vertices, 10 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[3, 6, 7], [4, 1], [2, 1], [5, 1], [3], [4, 7], [6]]);
+<digraph with 7 vertices, 13 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], [6]]);
+<digraph with 7 vertices, 11 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[5, 6, 10], [2, 9], [3, 7], [2, 3], [9, 10], [2, 9], [1],
+>                  [2, 3, 4, 7, 9], [3, 10], [4, 5, 6, 8]]);
+<digraph with 10 vertices, 25 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := Digraph([[2, 4, 6, 10], [1, 3, 4, 5, 6, 7, 9, 10], [1, 5, 7, 8],
+>                  [6, 10], [1, 7], [3, 4, 6, 7, 9], [2, 3, 4, 7],
+>                  [2, 4, 5, 6], [2, 3, 5, 6, 7, 9, 10], [2, 3, 5]]);
+<digraph with 10 vertices, 43 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := CompleteMultipartiteDigraph([1, 30]);
+<digraph with 31 vertices, 60 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := CompleteMultipartiteDigraph([16, 15]);
+<digraph with 31 vertices, 480 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := CompleteMultipartiteDigraph([1, 1, 2, 3, 5, 8, 13, 21]);
+<digraph with 54 vertices, 2202 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := CompleteMultipartiteDigraph([1, 1, 2, 3, 5, 8, 13, 21, 34]);
+<digraph with 88 vertices, 5874 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := CompleteBipartiteDigraph(50, 50);
+<digraph with 100 vertices, 5000 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := CompleteMultipartiteDigraph([1, 15, 1, 1, 1, 1, 1, 1]);
+<digraph with 22 vertices, 252 edges>
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := CompleteDigraph(50);
+<digraph with 50 vertices, 2450 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := CycleDigraph(1000000);
+<digraph with 1000000 vertices, 1000000 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := CompleteDigraph(100);
+<digraph with 100 vertices, 9900 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := CycleDigraph(513);
+<digraph with 513 vertices, 513 edges>
+gap> g := DigraphAddEdges(g, [[6, 8], [8, 7], [7, 9]]);
+<digraph with 513 vertices, 516 edges>
+gap> g := DigraphRemoveEdge(g, [6, 7]);
+<digraph with 513 vertices, 515 edges>
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := CompleteMultipartiteDigraph([1, 15, 1, 1, 2, 1, 1, 1]);
+<digraph with 23 vertices, 294 edges>
+gap> HamiltonianPath(g);
+fail
+gap> IsHamiltonianDigraph(g);
+false
+gap> g := CompleteDigraph(50);
+<digraph with 50 vertices, 2450 edges>
+gap> HamiltonianPath(g);
+[ 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 
+  40, 42, 44, 46, 48, 50, 49, 47, 45, 43, 41, 39, 37, 35, 33, 31, 29, 27, 25, 
+  23, 21, 19, 17, 15, 13, 11, 9, 7, 5, 3 ]
+gap> IsHamiltonianDigraph(g);
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(circuit);
