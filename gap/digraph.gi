@@ -1627,6 +1627,17 @@ function(n, k)
   return digraph;
 end);
 
+#
+
+InstallMethod(CanonicalDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if IsMultiDigraph(digraph) then
+    return OnMultiDigraphs(digraph, DigraphCanonicalLabelling(digraph));
+  fi;
+  return OnDigraphs(digraph, DigraphCanonicalLabelling(digraph));
+end);
+
 #############################################################################
 ##
 ##  CompleteMultipartiteDigraph(<sizes>)

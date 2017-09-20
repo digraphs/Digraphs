@@ -1155,3 +1155,36 @@ gap> JohnsonDigraph(1, 0);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="CanonicalDigraph">
+<ManSection>
+  <Attr Name="CanonicalDigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    This returns the canonical representative found by applying
+    <Ref Attr="DigraphCanonicalLabelling"/>. The digraph returned is canonical
+    in the sense that
+
+    <List>
+      <Item>
+        <C>CanonicalDigraph(<A>digraph</A>)</C> and <A>digraph</A> are isomorphic
+        as digraphs; and
+      </Item>
+      <Item>
+        If <C>gr</C> is any digraph then <C>CanonicalDigraph(gr)</C>
+        and <C>CanonicalDigraph(<A>digraph</A>)</C> are equal if and only if
+        <C>gr</C> and <A>digraph</A> are isomorphic as digraphs.
+      </Item>
+    </List>
+
+    <Example><![CDATA[
+gap> digraph := Digraph([[1], [2, 3], [3], [1, 2, 3]]);
+<digraph with 4 vertices, 7 edges>
+gap> canon := CanonicalDigraph(digraph);
+<digraph with 4 vertices, 7 edges>
+gap> Print(canon);
+Digraph( [ [ 1 ], [ 2, 4 ], [ 1, 2, 4 ], [ 4 ] ] )
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
