@@ -3,28 +3,32 @@ set -e
 set -o pipefail
 
 # Create the testlog and remember its location
-cd ../..
+cd $HOME
 touch testlog.txt
 TESTLOG="`pwd`/testlog.txt"
 
-if [ ! -z "$LINT" ]; then
+if [ "$SUITE" == "lint" ]; then
 
-  cd ../gaplint
-  export PATH=$PATH:`pwd`
-  cd ../gap/pkg/digraphs
-  # Can't use make lint since it requires compilation
-  for FILE in `grep "^\s\+gaplint" Makefile.am`; do
-    if [ $FILE != "gaplint" ]; then
-      gaplint $FILE
-    fi
+  cd $HOME/lint/gaplint
+  GAPLINT="`pwd`/gaplint.py"
+  cd $HOME/lint/cpplint
+  CPPLINT="`pwd`/cpplint.py"
+
+  cd $HOME/gap/pkg/digraphs
+
+  for FILE in `grep "^\s\+gaplint" Makefile.am | cut -d " " -f2-`; do
+    $GAPLINT $FILE
   done
-  `grep "^\s\+cpplint" Makefile.am`
+  for FILE in `grep "^\s\+cpplint" Makefile.am | cut -d " " -f2-`; do
+    $CPPLINT --extensions=c,cc,h $FILE
+  done
 
-elif [ ! -z "$GAP_BRANCH" ]; then
+elif [ ! -z "$GAP" ]; then
 
+  cd $HOME/gap
   GAP_DIR=`pwd`
-  cd pkg/digraphs
-  if [ ! -z "$COVERAGE" ]; then
+  cd $GAP_DIR/pkg/digraphs
+  if [ "$SUITE" == "coverage" ]; then
 
     echo -e "\nPerforming code coverage tests..."
     for TESTFILE in tst/standard/*.tst; do

@@ -1,47 +1,97 @@
-language: cpp
-dist: precise
+dist:
+  trusty
+
+language:
+  c
+
 compiler:
-  - gcc
+  gcc
+
 env:
   global:
     - GAPDOC=GAPDoc-1.6
     - GRAPE=grape4r7
     - DIGRAPHS_LIB=digraphs-lib-0.5
-  matrix:
-    # Run only `make lint'
-    - LINT=1
 
-    # Run Digraphs tests and manual examples
-    # 64-bit, master (and the newest package versions, where possible)
-    - GAP_BRANCH=master NEWEST=1
-    # 32-bit, master (and the required package versions, where possible)
-    - GAP_BRANCH=master GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
-    # 64-bit, stable-4.8 (and the required package versions, where possible)
-    - GAP_BRANCH=stable-4.8
-    # 32-bit, stable-4.8 (and the required package versions, where possible)
-    - GAP_BRANCH=stable-4.8 GAP_FLAGS="ABI=32 --host=i686-linux-gnumake" PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 --host=i686-linux-gnu"
-
-    # Run with the required version of GAP and packages, where possible
-    - GAP_BRANCH=required
-
-    # Run code coverage
-    - COVERAGE=1 THRESHOLD=98 GAP_BRANCH=master
-
-    # TODO: Run Valgrind
-    #- VALGRIND=1 GAP_BRANCH=master
 addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-5-multilib
+  apt_packages:
+    - g++-multilib
+
+# Matrix
+#                    | GAP: master  | GAP: stable-4.8 | GAP: required |
+#--------------------+--------------+-----------------+---------------+
+# packages:   newest | 64- & 32-bit |          64-bit |             - |
+# packages: required |   (coverage) |    64- & 32-bit |        64-bit |
+
+# Plus: linting, and code coverage
+
+matrix:
+  include:
+    - env:
+      - SUITE=lint
+      addons:
+
+    - env:
+      - SUITE=coverage
+      - ABI=64
+      - GAP=master
+      - PACKAGES=required
+      - THRESHOLD=98
+
+    - env:
+      - SUITE=test
+      - ABI=64
+      - GAP=master
+      - PACKAGES=newest
+
+    - env:
+      - SUITE=test
+      - ABI=64
+      - GAP=stable-4.8
+      - PACKAGES=required
+
+    - env:
+      - SUITE=test
+      - ABI=64
+      - GAP=stable-4.8
+      - PACKAGES=newest
+
+    - env:
+      - SUITE=test
+      - ABI=64
+      - GAP=required
+      - PACKAGES=required
+
+    - env:
+      - SUITE=test
+      - ABI=32
+      - GAP=master
+      - PACKAGES=newest
+      addons:
+        apt_packages:
+          - libgmp-dev:i386
+          - libreadline-dev:i386
+          - gcc-multilib
+          - g++-multilib
+
+    - env:
+      - SUITE=test
+      - ABI=32
+      - GAP=stable-4.8
+      - PACKAGES=required
+      addons:
+        apt_packages:
+          - libgmp-dev:i386
+          - libreadline-dev:i386
+          - gcc-multilib
+          - g++-multilib
+
 before_script:
-  - echo "deb http://us.archive.ubuntu.com/ubuntu/ vivid main" | sudo tee -a /etc/apt/sources.list
-  - sudo apt-get update -qq
-  - sudo apt-get install libgmp-dev
-  - sudo apt-get install libgmp-dev:i386
-install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+  - export GAPROOT="$HOME/gap"
+  - if [ "$ABI" == "32" ]; then export GAP_FLAGS="ABI=32 --host=i686-linux-gnu"; fi
+  - if [ "$ABI" == "32" ]; then export PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 LOPTS=-m32 --host=i686-linux-gnu"; fi
+  - scripts/travis-build-dependencies.sh
+
 script:
-  - scripts/travis-build.sh
+  - scripts/travis-build-digraphs.sh
   - scripts/travis-test.sh

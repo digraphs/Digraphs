@@ -54,11 +54,11 @@ gaplint:
 	gaplint tst/testinstall.tst tst/standard/*.tst tst/extreme/*.tst tst/workspaces/*.tst
 
 cpplint:
-	cpplint src/*.h src/*.c
+	cpplint src/*.[ch]
 
 lint: gaplint cpplint
 
 format: 
-	clang-format -i src/*.h src/*.c
+	clang-format -i src/*.[hc]
 
 .PHONY: debug, lint, format
