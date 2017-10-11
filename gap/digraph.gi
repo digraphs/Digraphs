@@ -8,6 +8,11 @@
 #############################################################################
 ##
 
+BindGlobal("DigraphType", NewType(DigraphFamily,
+                                  IsDigraph and IsComponentObjectRep
+                                  and IsAttributeStoringRep
+                                  and HasDigraphNrVertices));
+
 BindGlobal("DIGRAPHS_InitEdgeLabels",
 function(graph)
   if not IsBound(graph!.edgelabels) then

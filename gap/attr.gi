@@ -345,13 +345,7 @@ end);
 
 #
 
-InstallMethod(DigraphNrEdges, "for a digraph", [IsDigraph],
-function(gr)
-  if IsBound(gr!.DigraphNrEdges) then
-    return gr!.DigraphNrEdges;
-  fi;
-  return DIGRAPH_NREDGES(gr);
-end);
+InstallMethod(DigraphNrEdges, "for a digraph", [IsDigraph], DIGRAPH_NREDGES);
 
 #
 
