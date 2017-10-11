@@ -927,14 +927,20 @@ end);
 
 InstallMethod(DigraphNC, "for a record", [IsRecord],
 function(graph)
-  ObjectifyWithAttributes(graph, DigraphType,
+  local new;
+
+  new := rec();
+  ObjectifyWithAttributes(new, DigraphType,
                           DigraphRange, graph.range,
                           DigraphSource, graph.source,
                           DigraphNrVertices, graph.nrvertices);
   if IsBound(graph!.nredges) then
-    SetDigraphNrEdges(graph, graph!.nredges);
+    SetDigraphNrEdges(new, graph!.nredges);
   fi;
-  return graph;
+  if IsBound(graph!.vertexlabels) then
+    SetDigraphVertexLabels(new, graph!.vertexlabels);
+  fi;
+  return new;
 end);
 
 #
@@ -969,33 +975,23 @@ end);
 
 InstallMethod(DigraphNC, "for a dense list", [IsDenseList],
 function(adj)
-  local adj_copy, graph;
+  local graph, adj_copy;
 
+  graph := rec();
   adj_copy := StructuralCopy(adj);
-  graph := rec(adj := adj_copy, nrvertices := Length(adj));
   Perform(adj_copy, IsSet);
-
   ObjectifyWithAttributes(graph, DigraphType,
                           OutNeighbours, adj_copy,
-                          DigraphNrVertices, graph.nrvertices);
+                          DigraphNrVertices, Length(adj_copy));
   return graph;
 end);
 
 InstallMethod(DigraphNC, "for a dense list and an integer",
 [IsDenseList, IsInt],
 function(adj, nredges)
-  local adj_copy, graph;
-
-  adj_copy := StructuralCopy(adj);
-  graph := rec(adj        := adj_copy,
-               nredges    := nredges,
-               nrvertices := Length(adj));
-  Perform(adj_copy, IsSet);
-
-  ObjectifyWithAttributes(graph, DigraphType,
-                          OutNeighbours, adj_copy,
-                          DigraphNrVertices, graph.nrvertices,
-                          DigraphNrEdges, graph.nredges);
+  local graph;
+  graph := DigraphNC(adj);
+  SetDigraphNrEdges(graph, nredges);
   return graph;
 end);
 

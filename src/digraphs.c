@@ -44,12 +44,13 @@ static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 /*************************************************************************/
 
 Int DigraphNrVertices(Obj digraph) {
-  if (IsbPRec(digraph, RNamName("nrvertices"))) {
-    return INT_INTOBJ(ElmPRec(digraph, RNamName("nrvertices")));
+  if (IsbPRec(digraph, RNamName("DigraphNrVertices"))) {
+    return INT_INTOBJ(ElmPRec(digraph, RNamName("DigraphNrVertices")));
   }
   // The record comp should always be set so this should never be triggered
   ErrorQuit(
-      "Digraphs: DigraphNrVertices (C):\nrec comp <nrvertices> is not set,",
+      "Digraphs: DigraphNrVertices (C):\nrec comp <DigraphNrVertices> is not "
+      "set,",
       0L,
       0L);
   return 0;
@@ -58,8 +59,8 @@ Int DigraphNrVertices(Obj digraph) {
 Int DigraphNrEdges(Obj digraph) {
   Obj adj;
   Int nr, i, n;
-  if (IsbPRec(digraph, RNamName("nredges"))) {
-    return INT_INTOBJ(ElmPRec(digraph, RNamName("nredges")));
+  if (IsbPRec(digraph, RNamName("DigraphNrEdges"))) {
+    return INT_INTOBJ(ElmPRec(digraph, RNamName("DigraphNrEdges")));
   }
   n   = DigraphNrVertices(digraph);
   adj = OutNeighbours(digraph);
@@ -67,7 +68,7 @@ Int DigraphNrEdges(Obj digraph) {
   for (i = 1; i <= n; i++) {
     nr += LEN_PLIST(ELM_PLIST(adj, i));
   }
-  AssPRec(digraph, RNamName("nredges"), INTOBJ_INT(nr));
+  AssPRec(digraph, RNamName("DigraphNrEdges"), INTOBJ_INT(nr));
   return nr;
 }
 
@@ -79,15 +80,15 @@ static Obj FuncDIGRAPH_NREDGES(Obj self, Obj digraph) {
 Obj OutNeighbours(Obj digraph) {
   Obj adj;
 
-  if (IsbPRec(digraph, RNamName("adj"))) {
-    return ElmPRec(digraph, RNamName("adj"));
-  } else if (IsbPRec(digraph, RNamName("source"))
-             && IsbPRec(digraph, RNamName("range"))) {
+  if (IsbPRec(digraph, RNamName("OutNeighbours"))) {
+    return ElmPRec(digraph, RNamName("OutNeighbours"));
+  } else if (IsbPRec(digraph, RNamName("DigraphSource"))
+             && IsbPRec(digraph, RNamName("DigraphRange"))) {
     adj = FuncDIGRAPH_OUT_NBS(NULL,
-                              ElmPRec(digraph, RNamName("nrvertices")),
-                              ElmPRec(digraph, RNamName("source")),
-                              ElmPRec(digraph, RNamName("range")));
-    AssPRec(digraph, RNamName("adj"), adj);
+                              ElmPRec(digraph, RNamName("DigraphNrVertices")),
+                              ElmPRec(digraph, RNamName("DigraphSource")),
+                              ElmPRec(digraph, RNamName("DigraphRange")));
+    AssPRec(digraph, RNamName("OutNeighbours"), adj);
     return adj;
   }
   ErrorQuit(
@@ -981,8 +982,8 @@ static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
 
   SET_LEN_PLIST(source, m);
   SET_LEN_PLIST(range, m);
-  AssPRec(digraph, RNamName("source"), source);
-  AssPRec(digraph, RNamName("range"), range);
+  AssPRec(digraph, RNamName("DigraphSource"), source);
+  AssPRec(digraph, RNamName("DigraphRange"), range);
   return True;
 }
 
@@ -1031,7 +1032,7 @@ FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) {
     }
   }
 
-  // AssPRec(digraph, RNamName("adj"), adj);
+  // AssPRec(digraph, RNamName("OutNeighbours"), adj);
   return adj;
 }
 

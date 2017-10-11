@@ -345,8 +345,13 @@ end);
 
 #
 
-InstallMethod(DigraphNrEdges, "for a digraph",
-[IsDigraph], DIGRAPH_NREDGES);
+InstallMethod(DigraphNrEdges, "for a digraph", [IsDigraph],
+function(gr)
+  if IsBound(gr!.DigraphNrEdges) then
+    return gr!.DigraphNrEdges;
+  fi;
+  return DIGRAPH_NREDGES(gr);
+end);
 
 #
 
@@ -384,16 +389,16 @@ InstallMethod(DigraphRange, "for a digraph",
 [IsDigraph],
 function(digraph)
   DIGRAPH_SOURCE_RANGE(digraph);
-  SetDigraphSource(digraph, digraph!.source);
-  return digraph!.range;
+  SetDigraphSource(digraph, digraph!.DigraphSource);
+  return digraph!.DigraphRange;
 end);
 
 InstallMethod(DigraphSource, "for a digraph",
 [IsDigraph],
 function(digraph)
   DIGRAPH_SOURCE_RANGE(digraph);
-  SetDigraphRange(digraph, digraph!.range);
-  return digraph!.source;
+  SetDigraphRange(digraph, digraph!.DigraphRange);
+  return digraph!.DigraphSource;
 end);
 
 #
