@@ -1277,19 +1277,15 @@ gap> g := DigraphRemoveEdge(g, [6, 7]);
 <digraph with 513 vertices, 515 edges>
 gap> IsHamiltonianDigraph(g);
 true
-gap> g := CompleteMultipartiteDigraph([1, 15, 1, 1, 2, 1, 1, 1]);
-<digraph with 23 vertices, 294 edges>
-gap> HamiltonianPath(g);
+gap> gr := DigraphAddEdges(DigraphAddVertex(CycleDigraph(600)),
+>                          [[600, 601], [601, 600]]);
+<digraph with 601 vertices, 602 edges>
+gap> HamiltonianPath(gr);
 fail
-gap> IsHamiltonianDigraph(g);
+gap> IsHamiltonianDigraph(gr);
 false
-gap> g := CompleteDigraph(50);
-<digraph with 50 vertices, 2450 edges>
-gap> HamiltonianPath(g);
-[ 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 
-  40, 42, 44, 46, 48, 50, 49, 47, 45, 43, 41, 39, 37, 35, 33, 31, 29, 27, 25, 
-  23, 21, 19, 17, 15, 13, 11, 9, 7, 5, 3 ]
-gap> IsHamiltonianDigraph(g);
+gap> gr := Digraph([[2, 2], [1, 1]]);;
+gap> IsMultiDigraph(gr) and IsHamiltonianDigraph(gr);
 true
 
 #T# DIGRAPHS_UnbindVariables

@@ -44,6 +44,20 @@ gap> circs := DigraphAllSimpleCircuits(gr);;
 gap> Length(circs);
 1291792
 
+#T# HamiltonianPath and IsHamiltonianDigraph
+gap> g := CompleteDigraph(20);
+<digraph with 20 vertices, 380 edges>
+gap> HamiltonianPath(g);
+[ 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 19, 17, 15, 13, 11, 9, 7, 5, 3 ]
+gap> IsHamiltonianDigraph(g);
+true
+gap> g := CompleteMultipartiteDigraph([1, 9, 1, 1, 2, 1, 1, 1]);
+<digraph with 17 vertices, 198 edges>
+gap> HamiltonianPath(g);
+fail
+gap> IsHamiltonianDigraph(g);
+false
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(circs);
 gap> Unbind(gr);

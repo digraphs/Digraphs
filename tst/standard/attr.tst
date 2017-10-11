@@ -1601,12 +1601,6 @@ gap> g := CompleteMultipartiteDigraph([1, 15, 1, 1, 1, 1, 1, 1]);
 <digraph with 22 vertices, 252 edges>
 gap> HamiltonianPath(g);
 fail
-gap> g := CompleteDigraph(50);
-<digraph with 50 vertices, 2450 edges>
-gap> HamiltonianPath(g);
-[ 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 
-  40, 42, 44, 46, 48, 50, 49, 47, 45, 43, 41, 39, 37, 35, 33, 31, 29, 27, 25, 
-  23, 21, 19, 17, 15, 13, 11, 9, 7, 5, 3 ]
 gap> g := CycleDigraph(100);
 <digraph with 100 vertices, 100 edges>
 gap> HamiltonianPath(g);
@@ -1656,6 +1650,11 @@ gap> HamiltonianPath(g);
   473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487, 
   488, 489, 490, 491, 492, 493, 494, 495, 496, 497, 498, 499, 500, 501, 502, 
   503, 504, 505, 506, 507, 508, 509, 510, 511, 512, 513, 1 ]
+gap> gr := DigraphAddEdges(DigraphAddVertex(CycleDigraph(600)),
+>                          [[600, 601], [601, 600]]);
+<digraph with 601 vertices, 602 edges>
+gap> HamiltonianPath(gr);
+fail
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
