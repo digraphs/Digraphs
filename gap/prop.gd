@@ -46,7 +46,6 @@ InstallTrueMethod(IsTransitiveDigraph, IsTournament and IsAcyclicDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsTournament and IsTransitiveDigraph);
 InstallTrueMethod(IsSymmetricDigraph, IsCompleteDigraph);
 InstallTrueMethod(IsSymmetricDigraph, IsUndirectedForest);
-InstallTrueMethod(IsTransitiveDigraph, IsCompleteDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsEmptyDigraph);
 InstallTrueMethod(IsRegularDigraph, IsInRegularDigraph and IsOutRegularDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph,
