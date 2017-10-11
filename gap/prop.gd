@@ -1,6 +1,6 @@
 #############################################################################
 ##
-#W  props.gd
+#W  prop.gd
 #Y  Copyright (C) 2014-17                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
@@ -47,7 +47,6 @@ InstallTrueMethod(IsTransitiveDigraph, IsTournament and IsAcyclicDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsTournament and IsTransitiveDigraph);
 InstallTrueMethod(IsSymmetricDigraph, IsCompleteDigraph);
 InstallTrueMethod(IsSymmetricDigraph, IsUndirectedForest);
-InstallTrueMethod(IsTransitiveDigraph, IsCompleteDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsEmptyDigraph);
 InstallTrueMethod(IsRegularDigraph, IsInRegularDigraph and IsOutRegularDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph,
