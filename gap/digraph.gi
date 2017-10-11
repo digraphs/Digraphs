@@ -226,10 +226,10 @@ function(digraph)
   #if DigraphGroup is set, a subgroup of the automoraphism group
   #of the bipartite double is computed and set.
   out := OutNeighbours(digraph);
-  vertices := [1 .. digraph!.nrvertices];
-  shift := Length(vertices);
-  newvertices := [shift + 1 .. 2 * digraph!.nrvertices];
-  allvertices := [1 .. 2 * digraph!.nrvertices];
+  vertices := DigraphVertices(digraph);
+  shift := DigraphNrVertices(digraph);
+  newvertices := [shift + 1 .. 2 * DigraphNrVertices(digraph)];
+  allvertices := [1 .. 2 * DigraphNrVertices(digraph)];
   #"duplicate" of the outs for the new vertices:
   shiftedout := List(out, x -> List(x, y -> y + shift));
   newout1 := List(vertices, x -> List(out[x], y -> y + shift));
@@ -272,10 +272,10 @@ function(digraph)
   #if DigraphGroup is set, a subgroup of the automoraphism group
   #of the bipartite double is computed and set.
   out := OutNeighbours(digraph);
-  vertices := [1 .. digraph!.nrvertices];
-  shift := Length(vertices);
-  newvertices := [shift + 1 .. 2 * digraph!.nrvertices];
-  allvertices := [1 .. 2 * digraph!.nrvertices];
+  vertices := DigraphVertices(digraph);
+  shift := DigraphNrVertices(digraph);
+  newvertices := [shift + 1 .. 2 * DigraphNrVertices(digraph)];
+  allvertices := [1 .. 2 * DigraphNrVertices(digraph)];
   newout1 := List(vertices, x -> List(out[x], y -> y + shift));
   newout2 := List(newvertices, x -> out[x - shift]);
   crossedouts := Concatenation(newout1, newout2);
@@ -298,7 +298,7 @@ InstallMethod(DistanceDigraph,
 function(digraph, distances)
   local n, orbitreps, group, sch, g, rep, rem, gens,
     record, new, x, out, vertices;
-  n := digraph!.nrvertices;
+  n := DigraphNrVertices(digraph);
   new := EmptyDigraph(n);
   vertices := [1 .. n];
   out := [];
