@@ -216,10 +216,14 @@ true
 #T# DIGRAPH_IN_OUT_NBS: for a list containing ranges
 # A segfault was caused by assuming that an element of OutNeighbours was a
 # PLIST. This is solved by using PLAIN_LIST on each entry of OutNeighbours.
-gap> gr := Digraph(List([1 .. 5], x -> [1 .. 5]));
-<digraph with 5 vertices, 25 edges>
+gap> gr := Digraph(List([1 .. 5], x -> [1 .. 5]));;
 gap> out := OutNeighbours(gr);
 [ [ 1 .. 5 ], [ 1 .. 5 ], [ 1 .. 5 ], [ 1 .. 5 ], [ 1 .. 5 ] ]
+gap> IsMultiDigraph(gr);
+false
+gap> out;
+[ [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 4, 5 ], 
+  [ 1, 2, 3, 4, 5 ] ]
 gap> InNeighbours(gr) = out;
 true
 

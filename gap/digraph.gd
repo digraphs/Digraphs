@@ -24,10 +24,6 @@ DeclareProperty("IsMultiDigraph", IsDigraph);
 
 BindGlobal("DigraphFamily", NewFamily("DigraphFamily", IsDigraph));
 
-BindGlobal("DigraphType", NewType(DigraphFamily,
-                                  IsDigraph and IsComponentObjectRep
-                                  and IsAttributeStoringRep));
-
 # constructors . . .
 
 DeclareOperation("Digraph", [IsRecord]);
