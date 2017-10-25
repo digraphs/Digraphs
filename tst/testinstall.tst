@@ -308,6 +308,11 @@ Error, Digraphs: Digraph: usage,
 the argument must be a list of lists of positive integers not exceeding the
 length of the argument,
 
+#T# Symmetric closure of a digraph with no vertices
+gap> gr := EmptyDigraph(0);;
+gap> DigraphSymmetricClosure(gr);
+<digraph with 0 vertices, 0 edges>
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);
