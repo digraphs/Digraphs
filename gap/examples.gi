@@ -296,6 +296,11 @@ function(_, n, k)
   D := MakeImmutable(JohnsonDigraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
+  if k > n then
+    SetVertexConnectivity(D, 0);
+  else
+    SetVertexConnectivity(D, (n - k) * k);
+  fi;
   return D;
 end);
 
