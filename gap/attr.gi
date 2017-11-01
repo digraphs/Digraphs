@@ -1046,7 +1046,7 @@ InstallMethod(DigraphSymmetricClosure, "for a digraph",
 function(digraph)
   local n, m, verts, mat, new, x, i, j, k;
   n := DigraphNrVertices(digraph);
-  if n = 1
+  if n <= 1
       or (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph)) then
     return digraph;
   fi;
