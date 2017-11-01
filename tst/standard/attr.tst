@@ -3105,6 +3105,44 @@ gap> D := DigraphRemoveEdge(D, 1, 3);
 gap> D := DigraphRemoveEdge(D, 1, 3);
 <immutable digraph with 6 vertices, 11 edges>
 
+# VertexConnectivity
+gap> D := CompleteDigraph(10);
+<immutable complete digraph with 10 vertices>
+gap> VertexConnectivity(D);
+9
+gap> D := JohnsonDigraph(9, 2);
+<immutable symmetric digraph with 36 vertices, 504 edges>
+gap> VertexConnectivity(D);
+14
+gap> D := Digraph([]);
+<immutable empty digraph with 0 vertices>
+gap> VertexConnectivity(D);
+0
+gap> D := Digraph([[]]);
+<immutable empty digraph with 1 vertex>
+gap> VertexConnectivity(D);
+0
+gap> D := Digraph([[2, 4, 5], [1, 4], [4, 7], [1, 2, 3, 5, 6, 7],
+>                  [1, 4], [4, 7], [3, 4, 6]]);
+<immutable digraph with 7 vertices, 20 edges>
+gap> VertexConnectivity(D);
+1
+gap> D := Digraph([[2, 4, 5], [1, 3, 4], [4, 7], [1, 2, 3, 5, 6, 7],
+>                  [1, 4], [4, 7], [3, 4, 6]]);
+<immutable digraph with 7 vertices, 21 edges>
+gap> VertexConnectivity(D);
+2
+gap> D := Digraph([[2, 3], [3, 5], [1, 2, 4], [2, 3], [3]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> VertexConnectivity(D);
+2
+gap> D := DigraphFromGraph6String("NoCQ@?EAS_C`QA?c_Kg");;
+gap> VertexConnectivity(D);
+3
+gap> D := DigraphFromGraph6String("HoStIv{");;
+gap> VertexConnectivity(D);
+4
+
 # Semimodular lattices
 gap> D := DigraphFromDigraph6String("&C[o?");
 <immutable digraph with 4 vertices, 5 edges>
