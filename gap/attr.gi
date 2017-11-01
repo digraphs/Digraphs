@@ -3358,6 +3358,150 @@ function(D)
   return Union(M, DIGRAPHS_MateToMatching(D, mateD));
 end);
 
+InstallMethod(VertexConnectivity, "for a digraph", [IsDigraph],
+function(digraph)
+  local kappas, newnetw, edmondskarp, mat, degs, mindegv, mindeg, Nv, outn, k,
+        i, j, x, y;
+
+  if DigraphNrVertices(digraph) <= 1 or not IsConnectedDigraph(digraph) then
+    return 0;
+  fi;
+
+  if IsMultiDigraph(digraph) then
+    digraph := DigraphRemoveAllMultipleEdges(digraph);
+  fi;
+
+  kappas := [DigraphNrVertices(digraph) - 1];
+
+  # The function newnetw is an implementation of Algorithm Nine from
+  # Abdol-Hossein Esfahanian's ``Connectivity Algorithms'' which can be found at
+  # https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
+  newnetw := function(digraph, source, sink)
+    local n, mat, outn, x, y;
+    n := DigraphNrVertices(digraph);
+    mat := List([1 .. 2 * n], x -> BlistList([1 .. 2 * n], []));
+    outn := OutNeighbours(digraph);
+    for x in [1 .. DigraphNrVertices(digraph)] do
+      if x <> source and x <> sink then
+        mat[x + n][x] := true;
+      fi;
+      for y in outn[x] do
+        if x = source or x = sink then
+          mat[x][y + n] := true;
+          mat[y][x]     := true;
+        elif y = source or y = sink then
+          mat[y][x + n] := true;
+          mat[x][y]     := true;
+        else
+          mat[y][x + n] := true;
+          mat[x][y + n] := true;
+        fi;
+      od;
+    od;
+    return List(mat, x -> ListBlist([1 .. 2 * n], x));
+  end;
+
+  # The following function is an implementation of the Edmonds-Karp algorithm
+  # with some minor adjustments that take into account the fact that the
+  # capacity of all edges is 1.
+  edmondskarp := function(netw, source, sink)
+    local flow, capacity, queue, m, predecessor, edgeindex, stop, current, n, v;
+
+    flow := 0;
+    capacity := List(netw, x -> BlistList(x, x));
+    # nredges := Sum(List(netw, Length));
+
+    while true do
+      queue       := [source];
+      m           := 1;
+      predecessor := List(netw, x -> 0);
+      edgeindex   := List(netw, x -> 0);
+      stop := false;
+      while m <= Size(queue) and not stop do
+        current := queue[m];
+        n := 0;
+        for v in netw[current] do
+          n := n + 1;
+          if predecessor[v] = 0 and v <> source and capacity[current][n] then
+            predecessor[v] := current;
+            edgeindex[v]   := n;
+            Add(queue, v);
+          fi;
+          if v = sink then
+            stop := true;
+            break;
+          fi;
+        od;
+        m := m + 1;
+      od;
+
+      if predecessor[sink] <> 0 then
+        v := predecessor[sink];
+        n := edgeindex[sink];
+        while v <> 0 do
+          capacity[v][n] := false;
+          n := edgeindex[v];
+          v := predecessor[v];
+        od;
+        flow := flow + 1;
+      else
+        return flow;
+      fi;
+    od;
+  end;
+
+  # Referring once again to Abdol-Hossein Esfahanian's paper
+  # (see newnetw, above).
+  # The following lines implement Algorithm Eleven of that paper.
+  mat  := BooleanAdjacencyMatrix(digraph);
+  degs := ListWithIdenticalEntries(DigraphNrVertices(digraph), 0);
+  for i in DigraphVertices(digraph) do
+    for j in [i + 1 .. DigraphNrVertices(digraph)] do
+      if mat[i][j] or mat[j][i] then
+        degs[i] := degs[i] + 1;
+        degs[j] := degs[j] + 1;
+      fi;
+    od;
+  od;
+
+  mindegv := 0;
+  mindeg  := DigraphNrVertices(digraph) + 1;
+  for i in DigraphVertices(digraph) do
+    if degs[i] < mindeg then
+      mindeg  := degs[i];
+      mindegv := i;
+    fi;
+  od;
+
+  Nv := OutNeighboursOfVertex(digraph, mindegv);
+  outn := OutNeighbours(digraph);
+
+  for x in DigraphVertices(digraph) do
+    if x <> mindegv and not mat[x][mindegv] and not mat[mindegv][x] then
+      k := edmondskarp(newnetw(digraph, mindegv, x), mindegv, x);
+      if k = 0 then
+        return 0;
+      else
+        AddSet(kappas, k);
+      fi;
+    fi;
+  od;
+
+  for x in [1 .. Size(Nv) - 1] do
+    for y in [x + 1 .. Size(Nv)] do
+      if not mat[Nv[x]][Nv[y]] and not mat[Nv[y]][Nv[x]] then
+        k := edmondskarp(newnetw(digraph, Nv[x], Nv[y]), Nv[x], Nv[y]);
+        if k = 0 then
+          return 0;
+        else
+          AddSet(kappas, k);
+        fi;
+      fi;
+    od;
+  od;
+  return kappas[1];
+end);
+
 # The following function is a transliteration from python to GAP of
 # the function find_nonsemimodular_pair
 # in sage/src/sage/combinat/posets/hasse_diagram.py
