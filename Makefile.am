@@ -62,3 +62,7 @@ format:
 	clang-format -i src/*.[hc]
 
 .PHONY: debug, lint, format
+
+superclean: distclean
+	git clean -xdf --exclude *.swp --exclude *.swo
+.PHONY: superclean
