@@ -10,6 +10,7 @@
 ********************************************************************************/
 
 #include "src/homos.h"
+#include "src/digraphs-config.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -109,36 +110,27 @@ static void init_mask(void) {
 // bits in a block which are set to 1.
 ////////////////////////////////////////////////////////////////////////////////
 
-#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
-#if SIZEOF_VOID_P == 8
-#define COUNT_TRUES_BLOCK(block) _mm_popcnt_u64(block)
+static inline UInt COUNT_TRUES_BLOCK(UInt block) {
+#if USE_POPCNT && defined(HAVE___BUILTIN_POPCOUNTL)
+  return __builtin_popcountl(block);
 #else
-#define COUNT_TRUES_BLOCK(block) _mm_popcnt_u32(block)
-#endif
+#ifdef SIZEOF_VOID_P == 8
+  block = (block & 0x5555555555555555L) + ((block >> 1) & 0x5555555555555555L);
+  block = (block & 0x3333333333333333L) + ((block >> 2) & 0x3333333333333333L);
+  block = (block + (block >> 4)) & 0x0f0f0f0f0f0f0f0fL;
+  block = (block + (block >> 8));
+  block = (block + (block >> 16));
+  block = (block + (block >> 32)) & 0x00000000000000ffL;
 #else
-#if SIZEOF_VOID_P == 8
-#define COUNT_TRUES_BLOCK(block)                                 \
-  do {                                                           \
-    (block) = ((block) &0x5555555555555555L)                     \
-              + (((block) >> 1) & 0x5555555555555555L);          \
-    (block) = ((block) &0x3333333333333333L)                     \
-              + (((block) >> 2) & 0x3333333333333333L);          \
-    (block) = ((block) + ((block) >> 4)) & 0x0f0f0f0f0f0f0f0fL;  \
-    (block) = ((block) + ((block) >> 8));                        \
-    (block) = ((block) + ((block) >> 16));                       \
-    (block) = ((block) + ((block) >> 32)) & 0x00000000000000ffL; \
-  } while (0)
-#else
-#define COUNT_TRUES_BLOCK(block)                                     \
-  do {                                                               \
-    (block) = ((block) &0x55555555) + (((block) >> 1) & 0x55555555); \
-    (block) = ((block) &0x33333333) + (((block) >> 2) & 0x33333333); \
-    (block) = ((block) + ((block) >> 4)) & 0x0f0f0f0f;               \
-    (block) = ((block) + ((block) >> 8));                            \
-    (block) = ((block) + ((block) >> 16)) & 0x000000ff;              \
-  } while (0)
+  block = (block & 0x55555555) + ((block >> 1) & 0x55555555);
+  block = (block & 0x33333333) + ((block >> 2) & 0x33333333);
+  block = (block + (block >> 4)) & 0x0f0f0f0f;
+  block = (block + (block >> 8));
+  block = (block + (block >> 16)) & 0x000000ff;
 #endif
+  return block;
 #endif
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // new_bit_array: get a pointer to a new BitArray with space for <nr_bits>
