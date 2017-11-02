@@ -28,7 +28,6 @@
 #endif
 
 #ifdef DEBUG
-#include "gap-debug.h"
 
 Obj FuncDIGRAPHS_IS_OPTIMIZED(Obj self) {
   UInt i;
