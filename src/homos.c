@@ -86,7 +86,7 @@ static UIntL last_report = 0;  // the last value of calls1 when we reported
 ////////////////////////////////////////////////////////////////////////////////
 
 static void init_mask(void) {
-  // assert(false);
+  // DIGRAPHS_ASSERT(false);
   if (!IS_MASK_INITIALIZED) {
     UIntS i;
     Block w = 1;
@@ -159,7 +159,7 @@ BitArray* new_bit_array(UIntS nr_bits) {
 ////////////////////////////////////////////////////////////////////////////////
 
 void free_bit_array(BitArray* bit_array) {
-  assert(bit_array != NULL);
+  DIGRAPHS_ASSERT(bit_array != NULL);
 
   free(bit_array->blocks);
   free(bit_array);
@@ -171,7 +171,7 @@ void free_bit_array(BitArray* bit_array) {
 ////////////////////////////////////////////////////////////////////////////////
 
 inline void init_bit_array(BitArray* bit_array, bool val) {
-  assert(bit_array != NULL);
+  DIGRAPHS_ASSERT(bit_array != NULL);
 
   UIntS i;
   if (val) {
@@ -191,8 +191,8 @@ inline void init_bit_array(BitArray* bit_array, bool val) {
 ////////////////////////////////////////////////////////////////////////////////
 
 void set_bit_array(BitArray* bit_array, UIntS pos, bool val) {
-  assert(bit_array != NULL);
-  assert(pos < bit_array->nr_bits);
+  DIGRAPHS_ASSERT(bit_array != NULL);
+  DIGRAPHS_ASSERT(pos < bit_array->nr_bits);
 
   if (val) {
     bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] |=
@@ -209,8 +209,8 @@ void set_bit_array(BitArray* bit_array, UIntS pos, bool val) {
 ////////////////////////////////////////////////////////////////////////////////
 
 inline static bool get_bit_array(BitArray* bit_array, UIntS pos) {
-  assert(bit_array != NULL);
-  assert(pos < bit_array->nr_bits);
+  DIGRAPHS_ASSERT(bit_array != NULL);
+  DIGRAPHS_ASSERT(pos < bit_array->nr_bits);
 
   return bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK]
          & MASK[pos % NUMBER_BITS_PER_BLOCK];
@@ -224,9 +224,9 @@ inline static bool get_bit_array(BitArray* bit_array, UIntS pos) {
 
 static inline BitArray* intersect_bit_arrays(BitArray* bit_array1,
                                              BitArray* bit_array2) {
-  assert(bit_array1 != NULL && bit_array2 != NULL);
-  assert(bit_array1->nr_bits == bit_array2->nr_bits);
-  assert(bit_array1->nr_blocks == bit_array2->nr_blocks);
+  DIGRAPHS_ASSERT(bit_array1 != NULL && bit_array2 != NULL);
+  DIGRAPHS_ASSERT(bit_array1->nr_bits == bit_array2->nr_bits);
+  DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
 
   UIntS i;
   for (i = 0; i < bit_array1->nr_blocks; i++) {
@@ -309,7 +309,7 @@ typedef struct conditions_struct Conditions;
 ////////////////////////////////////////////////////////////////////////////////
 
 static Conditions* new_conditions(UIntS nr1, UIntS nr2) {
-  assert(nr1 != 0 && nr2 != 0);
+  DIGRAPHS_ASSERT(nr1 != 0 && nr2 != 0);
 
   UIntL       i;
   Conditions* conditions = malloc(sizeof(Conditions));
@@ -341,7 +341,7 @@ static Conditions* new_conditions(UIntS nr1, UIntS nr2) {
 ////////////////////////////////////////////////////////////////////////////////
 
 static void free_conditions(Conditions* conditions) {
-  assert(conditions != NULL);
+  DIGRAPHS_ASSERT(conditions != NULL);
 
   UIntL i;
   for (i = 0; i < conditions->nr1 * conditions->nr1; i++) {
@@ -359,8 +359,8 @@ static void free_conditions(Conditions* conditions) {
 ////////////////////////////////////////////////////////////////////////////////
 
 static inline BitArray* get_conditions(Conditions* conditions, Vertex const i) {
-  assert(conditions != NULL);
-  assert(i < conditions->nr1);
+  DIGRAPHS_ASSERT(conditions != NULL);
+  DIGRAPHS_ASSERT(i < conditions->nr1);
 
   return conditions
       ->bit_array[conditions->nr1 * (conditions->height[i] - 1) + i];
@@ -373,8 +373,8 @@ static inline BitArray* get_conditions(Conditions* conditions, Vertex const i) {
 
 static inline void store_size_conditions(Conditions*  conditions,
                                          Vertex const i) {
-  assert(conditions != NULL);
-  assert(i < conditions->nr1);
+  DIGRAPHS_ASSERT(conditions != NULL);
+  DIGRAPHS_ASSERT(i < conditions->nr1);
 
   UIntS nr1 = conditions->nr1;
   conditions->sizes[nr1 * (conditions->height[i] - 1) + i] =
@@ -391,9 +391,9 @@ static inline void push_conditions(Conditions*  conditions,
                                    UIntS const  depth,
                                    Vertex const i,
                                    BitArray*    bit_array) {
-  assert(conditions != NULL);
-  assert(i < conditions->nr1);
-  assert(depth < conditions->nr1);
+  DIGRAPHS_ASSERT(conditions != NULL);
+  DIGRAPHS_ASSERT(i < conditions->nr1);
+  DIGRAPHS_ASSERT(depth < conditions->nr1);
 
   UIntS nr1 = conditions->nr1;
 
@@ -420,8 +420,8 @@ static inline void push_conditions(Conditions*  conditions,
 ////////////////////////////////////////////////////////////////////////////////
 
 static inline void pop_conditions(Conditions* conditions, UIntS const depth) {
-  assert(conditions != NULL);
-  assert(depth < conditions->nr1);
+  DIGRAPHS_ASSERT(conditions != NULL);
+  DIGRAPHS_ASSERT(depth < conditions->nr1);
 
   UIntS i;
   UIntS nr1 = conditions->nr1;
@@ -438,8 +438,8 @@ static inline void pop_conditions(Conditions* conditions, UIntS const depth) {
 ////////////////////////////////////////////////////////////////////////////////
 
 static inline UIntS size_conditions(Conditions* conditions, Vertex const i) {
-  assert(conditions != NULL);
-  assert(i < conditions->nr1);
+  DIGRAPHS_ASSERT(conditions != NULL);
+  DIGRAPHS_ASSERT(i < conditions->nr1);
 
   return conditions->sizes[conditions->nr1 * (conditions->height[i] - 1) + i];
 }
@@ -523,7 +523,7 @@ Digraph* new_digraph(UIntS const nr_verts) {
 ////////////////////////////////////////////////////////////////////////////////
 
 void free_digraph(Digraph* digraph) {
-  assert(digraph != NULL);
+  DIGRAPHS_ASSERT(digraph != NULL);
 
   UIntS i, nr = digraph->nr_vertices;
 
@@ -542,8 +542,8 @@ void free_digraph(Digraph* digraph) {
 ////////////////////////////////////////////////////////////////////////////////
 
 void add_edge_digraph(Digraph* digraph, Vertex i, Vertex j) {
-  assert(digraph != NULL);
-  assert(i < digraph->nr_vertices && j < digraph->nr_vertices);
+  DIGRAPHS_ASSERT(digraph != NULL);
+  DIGRAPHS_ASSERT(i < digraph->nr_vertices && j < digraph->nr_vertices);
 
   set_bit_array(digraph->out_neighbours[i], j, true);
   set_bit_array(digraph->in_neighbours[j], i, true);
@@ -555,8 +555,8 @@ void add_edge_digraph(Digraph* digraph, Vertex i, Vertex j) {
 ////////////////////////////////////////////////////////////////////////////////
 
 inline static bool is_adjacent_digraph(Digraph* digraph, Vertex i, Vertex j) {
-  assert(digraph != NULL);
-  assert(i < digraph->nr_vertices && j < digraph->nr_vertices);
+  DIGRAPHS_ASSERT(digraph != NULL);
+  DIGRAPHS_ASSERT(i < digraph->nr_vertices && j < digraph->nr_vertices);
 
   return get_bit_array(digraph->out_neighbours[i], j);
 }
@@ -569,7 +569,7 @@ inline static bool is_adjacent_digraph(Digraph* digraph, Vertex i, Vertex j) {
 
 static BlissGraph* new_bliss_digraphs_graph_from_digraph(Digraph* digraph,
                                                          UIntS*   colors) {
-  assert(digraph != NULL);
+  DIGRAPHS_ASSERT(digraph != NULL);
 
   UIntS       i, j, k, l;
   BlissGraph* bliss_digraphs_graph;
@@ -627,7 +627,7 @@ static void bliss_digraphs_hook_digraph(void* user_param_arg,  // perm_coll!
 ////////////////////////////////////////////////////////////////////////////////
 
 static PermColl* automorphisms_digraph(Digraph* digraph, UIntS* colors) {
-  assert(digraph != NULL);
+  DIGRAPHS_ASSERT(digraph != NULL);
 
   BlissGraph* bliss_digraphs_graph =
       new_bliss_digraphs_graph_from_digraph(digraph, colors);
@@ -787,7 +787,7 @@ void DigraphHomomorphisms(Digraph* digraph1,
                           UIntS*    partial_map_arg,
                           UIntS*    colors1,
                           UIntS*    colors2) {
-  assert(digraph1 != NULL && digraph2 != NULL);
+  DIGRAPHS_ASSERT(digraph1 != NULL && digraph2 != NULL);
 
   UIntS     i, j;
   BitArray* bit_array;
@@ -796,7 +796,7 @@ void DigraphHomomorphisms(Digraph* digraph1,
   NR2         = digraph2->nr_vertices;
   MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
 
-  assert(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
+  DIGRAPHS_ASSERT(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
 
   // initialise the conditions . . .
   Conditions* conditions = new_conditions(NR1, NR2);
@@ -1020,7 +1020,7 @@ void DigraphMonomorphisms(Digraph* digraph1,
                           UIntS*    partial_map_arg,
                           UIntS*    colors1,
                           UIntS*    colors2) {
-  assert(digraph1 != NULL && digraph2 != NULL);
+  DIGRAPHS_ASSERT(digraph1 != NULL && digraph2 != NULL);
 
   UIntS     i, j;
   BitArray* bit_array;
@@ -1029,7 +1029,7 @@ void DigraphMonomorphisms(Digraph* digraph1,
   NR2         = digraph2->nr_vertices;
   MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
 
-  assert(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
+  DIGRAPHS_ASSERT(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
 
   // initialise the conditions . . .
   Conditions* conditions = new_conditions(NR1, NR2);
@@ -1181,7 +1181,7 @@ Graph* new_graph(UIntS const nr_verts) {
 ////////////////////////////////////////////////////////////////////////////////
 
 void free_graph(Graph* graph) {
-  assert(graph != NULL);
+  DIGRAPHS_ASSERT(graph != NULL);
 
   UIntS i, nr = graph->nr_vertices;
 
@@ -1198,8 +1198,8 @@ void free_graph(Graph* graph) {
 ////////////////////////////////////////////////////////////////////////////////
 
 void add_edge_graph(Graph* graph, Vertex i, Vertex j) {
-  assert(graph != NULL);
-  assert(i < graph->nr_vertices && j < graph->nr_vertices);
+  DIGRAPHS_ASSERT(graph != NULL);
+  DIGRAPHS_ASSERT(i < graph->nr_vertices && j < graph->nr_vertices);
 
   set_bit_array(graph->neighbours[i], j, true);
   set_bit_array(graph->neighbours[j], i, true);
@@ -1211,8 +1211,8 @@ void add_edge_graph(Graph* graph, Vertex i, Vertex j) {
 ////////////////////////////////////////////////////////////////////////////////
 
 inline static bool is_adjacent_graph(Graph* graph, Vertex i, Vertex j) {
-  assert(graph != NULL);
-  assert(i < graph->nr_vertices && j < graph->nr_vertices);
+  DIGRAPHS_ASSERT(graph != NULL);
+  DIGRAPHS_ASSERT(i < graph->nr_vertices && j < graph->nr_vertices);
 
   return get_bit_array(graph->neighbours[i], j);
 }
@@ -1225,7 +1225,7 @@ inline static bool is_adjacent_graph(Graph* graph, Vertex i, Vertex j) {
 
 static BlissGraph* new_bliss_digraphs_graph_from_graph(Graph* graph,
                                                        UIntS* colors) {
-  assert(graph != NULL);
+  DIGRAPHS_ASSERT(graph != NULL);
 
   UIntS       i, j;
   BlissGraph* bliss_digraphs_graph;
@@ -1257,7 +1257,7 @@ static BlissGraph* new_bliss_digraphs_graph_from_graph(Graph* graph,
 static void bliss_digraphs_hook_graph(void* user_param_arg,  // perm_coll!
                                       unsigned int        N,
                                       const unsigned int* aut) {
-  assert(N <= deg);
+  DIGRAPHS_ASSERT(N <= deg);
 
   UIntS i;
   Perm  p = new_perm();
@@ -1277,7 +1277,7 @@ static void bliss_digraphs_hook_graph(void* user_param_arg,  // perm_coll!
 ////////////////////////////////////////////////////////////////////////////////
 
 static PermColl* automorphisms_graph(Graph* graph, UIntS* colors) {
-  assert(graph != NULL);
+  DIGRAPHS_ASSERT(graph != NULL);
 
   BlissGraph* bliss_digraphs_graph =
       new_bliss_digraphs_graph_from_graph(graph, colors);
@@ -1423,7 +1423,7 @@ void GraphHomomorphisms(Graph* graph1,
                         UIntS*    partial_map_arg,
                         UIntS*    colors1,
                         UIntS*    colors2) {
-  assert(graph1 != NULL && graph2 != NULL);
+  DIGRAPHS_ASSERT(graph1 != NULL && graph2 != NULL);
 
   UIntS     i, j;
   BitArray* bit_array;
@@ -1432,7 +1432,7 @@ void GraphHomomorphisms(Graph* graph1,
   NR2         = graph2->nr_vertices;
   MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
 
-  assert(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
+  DIGRAPHS_ASSERT(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
 
   // initialise the conditions . . .
   Conditions* conditions = new_conditions(NR1, NR2);
@@ -1651,7 +1651,7 @@ void GraphMonomorphisms(Graph* graph1,
                         UIntS*    partial_map_arg,
                         UIntS*    colors1,
                         UIntS*    colors2) {
-  assert(graph1 != NULL && graph2 != NULL);
+  DIGRAPHS_ASSERT(graph1 != NULL && graph2 != NULL);
 
   UIntS     i, j;
   BitArray* bit_array;
@@ -1660,7 +1660,7 @@ void GraphMonomorphisms(Graph* graph1,
   NR2         = graph2->nr_vertices;
   MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
 
-  assert(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
+  DIGRAPHS_ASSERT(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
 
   // initialise the conditions . . .
   Conditions* conditions = new_conditions(NR1, NR2);

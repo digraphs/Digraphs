@@ -74,7 +74,7 @@ src/.libs/digraphs_la-digraphs.o
 src/bliss-0.72/.deps/.dirstamp
 src/bliss-0.72/.dirstamp
 src/digraphs_la-digraphs.lo
-src/pkgconfig.h
+src/_pkgconfig.h
 src/stamp-h1
 tags
 tst/out/*
@@ -84,3 +84,4 @@ gh-pages/
 manual.lab
 ltmain.sh
 .libs/**/Info.plist
+digraphs-config.h

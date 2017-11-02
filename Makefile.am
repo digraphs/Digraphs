@@ -17,8 +17,8 @@ digraphs_la_SOURCES += src/bliss-0.73/partition.cc src/bliss-0.73/orbit.cc
 digraphs_la_SOURCES += src/bliss-0.73/uintseqhash.cc src/bliss-0.73/heap.cc
 digraphs_la_SOURCES += src/bliss-0.73/timer.cc src/bliss-0.73/utils.cc 
 digraphs_la_SOURCES += src/bliss-0.73/bliss_C.cc
-digraphs_la_CXXFLAGS = -O3 -DNDEBUG -march=native -mpopcnt
-digraphs_la_CFLAGS = -O3 -DNDEBUG -march=native -mpopcnt
+digraphs_la_CXXFLAGS = -O3 -march=native -mpopcnt
+digraphs_la_CFLAGS = -O3 -march=native -mpopcnt
 
 digraphs_la_CPPFLAGS = $(GAP_CPPFLAGS) -DCONFIG_H
 # Note that the latter is only for GAP 4.4.12
@@ -34,19 +34,19 @@ if SYS_IS_CYGWIN
 else
 	cp .libs/digraphs.so $(GAPINSTALLLIB)
 endif
+if KERNEL_DEBUG
+	@echo "SUCCESS (debug mode enabled)!"
+else
 	@echo "SUCCESS!"
+endif
 
 distclean-local:
 	rm -rf bin/*
-	(cd doc ; ./clean)
 
 doc: doc/manual.six
 
 doc/manual.six: doc/*.xml PackageInfo.g
 	($(GAPROOT)/bin/gap.sh -A makedoc.g)
-
-debug: CFLAGS = -g3 -O0 -Wall -Wextra -Wpedantic -Wno-unused-parameter -Wtype-limits -Wformat-security -Wpointer-arith -Wno-div-by-zero -Wreturn-type -Wswitch -Wsizeof-array-argument -Wunused-label -fno-omit-frame-pointer -fno-omit-frame-pointer -Wno-c++11-extensions -UNDEBUG -DDEBUG
-debug: clean all
 
 gaplint: 
 	gaplint *.g gap/* 
