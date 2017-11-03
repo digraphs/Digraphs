@@ -135,7 +135,7 @@ static void orbit_stab_chain(UIntS const depth, UIntS const init_pt) {
   UIntS i, j, pt, img;
   Perm  x;
 
-  assert(depth <= size_base);  // Should this be strict?
+  DIGRAPHS_ASSERT(depth <= size_base);  // Should this be strict?
 
   for (i = 0; i < size_orbits[depth]; i++) {
     pt = orbits[depth * deg + i];
@@ -156,7 +156,7 @@ static void add_gen_orbit_stab_chain(UIntS const depth, Perm const gen) {
   UIntS i, j, pt, img;
   Perm  x;
 
-  assert(depth <= size_base);
+  DIGRAPHS_ASSERT(depth <= size_base);
 
   // apply the new generator to existing points in orbits[depth]
   UIntS nr = size_orbits[depth];
@@ -189,7 +189,7 @@ static void add_gen_orbit_stab_chain(UIntS const depth, Perm const gen) {
 static void sift_stab_chain(Perm* g, UIntS* depth) {
   UIntS beta;
 
-  assert(*depth == 0);
+  DIGRAPHS_ASSERT(*depth == 0);
 
   for (; *depth < size_base; (*depth)++) {
     beta = (*g)[base[*depth]];
