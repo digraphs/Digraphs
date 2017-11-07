@@ -9,7 +9,6 @@ compiler:
 
 env:
   global:
-    - GAPDOC=GAPDoc-1.6
     - GRAPE=grape4r7
     - DIGRAPHS_LIB=digraphs-lib-0.5
 

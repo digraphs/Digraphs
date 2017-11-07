@@ -39,7 +39,7 @@ PermColl* new_perm_coll(UIntS upper_bound) {
 
 // the generator is now controlled by the PermColl
 void add_perm_coll(PermColl* coll, Perm gen) {
-  assert(coll->nr_gens <= coll->alloc_size);
+  DIGRAPHS_ASSERT(coll->nr_gens <= coll->alloc_size);
 
   if (coll->nr_gens == coll->alloc_size) {
     coll->gens = realloc(coll->gens, (coll->nr_gens + 1) * sizeof(Perm));

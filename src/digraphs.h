@@ -15,7 +15,7 @@
 #ifndef DIGRAPHS_SRC_DIGRAPHS_H_
 #define DIGRAPHS_SRC_DIGRAPHS_H_
 
-#include <assert.h>
+#include <digraphs-debug.h>
 #include <stdbool.h>
 #include <stdlib.h>
 

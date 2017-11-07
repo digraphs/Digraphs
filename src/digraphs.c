@@ -22,22 +22,6 @@
 #undef PACKAGE_URL
 #undef PACKAGE_VERSION
 
-// Prevent compilation if the DEBUG and NDEBUG flags are both set
-#if defined(DEBUG) && defined(NDEBUG)
-#error When compiling with -DDEBUG you must also use -UNDEBUG
-#endif
-
-#ifdef DEBUG
-#include "gap-debug.h"
-
-Obj FuncDIGRAPHS_IS_OPTIMIZED(Obj self) {
-  UInt i;
-  for (i = 0; i < 500000000; i++) {
-  }
-  return INTOBJ_INT(5);
-}
-#endif
-
 static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
 static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 
@@ -1626,7 +1610,7 @@ BlissGraph* buildBlissDigraphWithColours(Obj digraph, Obj colours) {
 
   n = DigraphNrVertices(digraph);
   if (colours) {
-    assert(n == (UInt) LEN_LIST(colours));
+    DIGRAPHS_ASSERT(n == (UInt) LEN_LIST(colours));
   }
   graph = bliss_digraphs_new(0);
   adj   = OutNeighbours(digraph);
@@ -1667,7 +1651,7 @@ BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
   BlissGraph* graph;
 
   n = DigraphNrVertices(digraph);
-  assert(n == (UInt) LEN_LIST(colours));
+  DIGRAPHS_ASSERT(n == (UInt) LEN_LIST(colours));
   graph = bliss_digraphs_new(0);
   adj   = OutNeighbours(digraph);
 
