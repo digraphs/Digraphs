@@ -74,13 +74,15 @@ for PKG in "${PKGS[@]}"; do
   tar xf $PKG-$VERSION.tar.gz
   rm $PKG-$VERSION.tar.gz
   cd $PKG-$VERSION
-  ./configure $PKG_FLAGS
-  make
+  if [ -f configure ]; then
+    ./configure $PKG_FLAGS
+    make
+  fi
 done
 
 ################################################################################
 # Install GRAPE and GAPDoc
-PKGS=( $GRAPE $GAPDOC )
+PKGS=( $GRAPE )
 for PKG in "${PKGS[@]}"; do
   echo -e "\nDownloading $PKG..."
   cd $GAPROOT/pkg
@@ -94,3 +96,10 @@ for PKG in "${PKGS[@]}"; do
     make
   fi
 done
+
+################################################################################
+# Install required GAP packages
+cd $GAPROOT/pkg
+curl -L -O http://www.gap-system.org/pub/gap/gap4pkgs/packages-required-master.tar.gz
+tar xf packages-required-master.tar.gz
+rm packages-required-master.tar.gz
