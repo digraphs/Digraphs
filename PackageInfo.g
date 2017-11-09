@@ -223,8 +223,9 @@ AvailabilityTest := function()
   digraphs_so := Filename(DirectoriesPackagePrograms("digraphs"),
                           "digraphs.so");
   if (not "digraphs" in SHOW_STAT()) and digraphs_so = fail then
-    Info(InfoWarning, 1, "Digraphs: the kernel module is not compiled, ",
-         "the package cannot be loaded.");
+     LogPackageLoadingMessage(PACKAGE_WARNING,
+                              ["the kernel module is not compiled, ", 
+                               "the package cannot be loaded."] );
     return fail;
   fi;
   return true;
