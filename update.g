@@ -117,8 +117,17 @@ GeneratePackageYML:=function(pkg)
     AppendTo(stream, "    ", pkg.AbstractHTML, "\n\n");
 
     AppendTo(stream, "status: ", pkg.Status, "\n");
-    AppendTo(stream, "doc-html: ", pkg.PackageDoc.HTMLStart, "\n");
-    AppendTo(stream, "doc-pdf: ", pkg.PackageDoc.PDFFile, "\n");
+    if IsRecord(pkg.PackageDoc) then
+        AppendTo(stream, "doc-html: ", pkg.PackageDoc.HTMLStart, "\n");
+        AppendTo(stream, "doc-pdf: ", pkg.PackageDoc.PDFFile, "\n");
+    else
+        Assert(0, IsList(pkg.PackageDoc));
+        AppendTo(stream, "doc-html: ", pkg.PackageDoc[1].HTMLStart, "\n");
+        AppendTo(stream, "doc-pdf: ", pkg.PackageDoc[1].PDFFile, "\n");
+        if Length(pkg.PackageDoc) > 1 then
+            Print("Warning, this package has more than one help book!\n");
+        fi;
+    fi;
 
     # TODO: use AbstractHTML?
     # TODO: use Keywords?
