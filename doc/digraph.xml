@@ -1162,7 +1162,7 @@ gap> JohnsonDigraph(1, 0);
   <Returns>A digraph.</Returns>
   <Description>
     This returns the canonical representative found by applying
-    <Ref Attr="DigraphCanonicalLabelling"/>. The digraph returned is canonical
+    <Ref Attr="BlissCanonicalLabelling"/>. The digraph returned is canonical
     in the sense that
 
     <List>

@@ -195,7 +195,7 @@ gap> DigraphTopologicalSort(gr1) = DigraphVertices(gr1);
 true
 
 #T# AutomorphismGroup: for a multidigraph
-# DigraphCanonicalLabelling was being set incorrectly by AutomorphismGroup for
+# CanonicalLabelling was being set incorrectly by AutomorphismGroup for
 # a multidigraph
 gap> gr := Digraph([
 >   [5, 7, 8, 4, 6, 1], [3, 1, 7, 2, 7, 9], [1, 5, 2, 3, 9],
@@ -204,13 +204,13 @@ gap> gr := Digraph([
 >   [1, 5, 2, 3, 9]]);
 <multidigraph with 9 vertices, 52 edges>
 gap> G := AutomorphismGroup(gr);;
-gap> HasDigraphCanonicalLabelling(gr);
+gap> HasBlissCanonicalLabelling(gr);
 true
-gap> DigraphCanonicalLabelling(gr);
+gap> BlissCanonicalLabelling(gr);
 [ (1,5,4,2,3,7,9,6), (1,30,49)(2,34,47,35,45,39,38,51,8,12,18,24,21,28,23,13,
     4,29,22,27,20,25,14)(3,33,48)(5,31,52,7,19,26,17,9,16,10,11,15,6,32,
     50)(36,44)(37,46,40,41)(42,43) ]
-gap> last = DigraphCanonicalLabelling(DigraphCopy(gr));
+gap> BlissCanonicalLabelling(gr) = BlissCanonicalLabelling(DigraphCopy(gr));
 true
 
 #T# DIGRAPH_IN_OUT_NBS: for a list containing ranges

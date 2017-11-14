@@ -17,7 +17,6 @@ DeclareCategory("IsCayleyDigraph", IsDigraph);
 DeclareAttribute("GroupOfCayleyDigraph", IsCayleyDigraph);
 DeclareAttribute("SemigroupOfCayleyDigraph", IsCayleyDigraph);
 DeclareAttribute("GeneratorsOfCayleyDigraph", IsCayleyDigraph);
-DeclareAttribute("CanonicalDigraph", IsDigraph);
 
 # meaning it really has multiple edges!!
 DeclareProperty("IsMultiDigraph", IsDigraph);

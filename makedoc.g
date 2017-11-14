@@ -11,13 +11,13 @@ PrintTo("VERSION", PackageInfo(PACKAGE)[1].Version);
 LoadPackage("GAPDoc");
 
 _DocXMLFiles := ["attr.xml",
-                 "bliss.xml",
                  "cliques.xml",
                  "digraph.xml",
                  "display.xml",
                  "grahom.xml",
                  "grape.xml",
                  "io.xml",
+                 "isomorph.xml",
                  "oper.xml",
                  "orbits.xml",
                  "prop.xml",

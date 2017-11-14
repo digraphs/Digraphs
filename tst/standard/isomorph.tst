@@ -1,13 +1,13 @@
 #############################################################################
 ##
-#W  standard/bliss.tst
+#W  standard/isomorph.tst
 #Y  Copyright (C) 2015-17                                   Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: standard/bliss.tst");
+gap> START_TEST("Digraphs package: standard/isomorph.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -21,6 +21,9 @@ gap> gr := CompleteDigraph(n);
 <digraph with 5 vertices, 20 edges>
 gap> AutomorphismGroup(gr) = SymmetricGroup(n);
 true
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyAutomorphismGroup(gr) = SymmetricGroup(n);
+true
 
 # Empty digraph on n vertices should have automorphism group S_n
 gap> n := 10;;
@@ -28,12 +31,23 @@ gap> gr := EmptyDigraph(n);
 <digraph with 10 vertices, 0 edges>
 gap> AutomorphismGroup(gr) = SymmetricGroup(n);
 true
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyAutomorphismGroup(gr) = SymmetricGroup(n);
+true
 
 # Chain digraph on n vertices should have trivial automorphism group
 gap> n := 5;;
 gap> gr := ChainDigraph(n);
 <digraph with 5 vertices, 4 edges>
 gap> IsTrivial(AutomorphismGroup(gr));
+true
+gap> not DIGRAPHS_NautyAvailable or IsTrivial(NautyAutomorphismGroup(gr));
+true
+gap> gr := DigraphCopy(ChainDigraph(n));;
+gap> not DIGRAPHS_NautyAvailable or IsTrivial(NautyAutomorphismGroup(gr));
+true
+gap> not DIGRAPHS_NautyAvailable 
+> or IsTrivial(NautyAutomorphismGroup(gr, [1, 2, 3, 1, 2]));
 true
 
 # Cycle digraph on n vertices should have cyclic automorphism group C_n
@@ -44,6 +58,9 @@ gap> IsCyclic(AutomorphismGroup(gr));
 true
 gap> Size(AutomorphismGroup(gr)) = n;
 true
+gap> not DIGRAPHS_NautyAvailable or 
+> Size(NautyAutomorphismGroup(gr)) = n;
+true
 
 # Complete bipartitite graph with parts of size m and n
 # shoud have automorphism group S_m x S_n
@@ -53,11 +70,18 @@ gap> gr := CompleteBipartiteDigraph(m, n);
 gap> G := AutomorphismGroup(gr);;
 gap> G = DirectProduct(SymmetricGroup(m), SymmetricGroup(n));
 true
+gap> G := NautyAutomorphismGroup(gr);;
+gap> not DIGRAPHS_NautyAvailable or 
+> G = DirectProduct(SymmetricGroup(m), SymmetricGroup(n));
+true
 
 # A small example
 gap> gr := Digraph([[2], [], [2], [2]]);
 <digraph with 4 vertices, 3 edges>
 gap> AutomorphismGroup(gr) = SymmetricGroup([1, 3, 4]);
+true
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyAutomorphismGroup(gr) = SymmetricGroup([1, 3, 4]);
 true
 
 #T# AutomorphismGroup: for a digraph with multiple edges
@@ -96,8 +120,8 @@ true
 gap> Image(Projection(G, 2)) = Group([(21, 22), (34, 37), (35, 36), (39, 41),
 > (44, 47), (9, 11)(33, 37, 34), (19, 20)(30, 34)(33, 37)]);
 true
-gap> DigraphCanonicalLabelling(gr)
-> = DigraphCanonicalLabelling(DigraphCopy(gr));
+gap> BlissCanonicalLabelling(gr)
+> = BlissCanonicalLabelling(DigraphCopy(gr));
 true
 
 #T# IsIsomorphicDigraph: for digraphs without multiple edges
@@ -117,6 +141,8 @@ gap> IsIsomorphicDigraph(gr, gr1);
 true
 gap> gr2 := OnDigraphs(gr, (1, 3)(2, 4));
 <digraph with 4 vertices, 3 edges>
+gap> not DIGRAPHS_NautyAvailable or NautyCanonicalLabelling(gr2) = (1, 2, 3, 4);
+true
 gap> gr = gr2;
 false
 gap> IsIsomorphicDigraph(gr, gr2);
@@ -287,6 +313,8 @@ gap> gr := Digraph([[3], [2, 3, 4], [1, 3], [], [1, 4]]);
 <digraph with 5 vertices, 8 edges>
 gap> IsomorphismDigraphs(gr, gr);
 ()
+gap> not DIGRAPHS_NautyAvailable or NautyCanonicalLabelling(gr) = (1, 2, 5, 4);
+true
 gap> for i in SymmetricGroup(DigraphNrVertices(gr)) do
 >   new := OnDigraphs(gr, i);
 >   if not IsomorphismDigraphs(gr, new) = i
@@ -294,6 +322,37 @@ gap> for i in SymmetricGroup(DigraphNrVertices(gr)) do
 >     Print("fail");
 >   fi;
 > od;
+
+# A small example: check that all isomorphic copies give correct answer
+gap> gr := Digraph([[3], [2, 3, 4], [1, 3], [], [1, 4]]);
+<digraph with 5 vertices, 8 edges>
+gap> IsomorphismDigraphs(gr, gr);
+()
+gap> for i in SymmetricGroup(DigraphNrVertices(gr)) do
+>   new := OnDigraphs(gr, i);
+>   if not IsomorphismDigraphs(gr, new) = i
+>       and IsomorphismDigraphs(new, gr) = i ^ -1 then
+>     Print("fail");
+>   fi;
+> od;
+
+# Test for line 376 of isomorph.gi
+gap> gr1 := Digraph([[], [2, 3, 4], [1, 3], []]);;
+gap> gr2 := OnDigraphs(gr1, (1, 2, 3));;
+gap> gr1 <> gr2;
+true
+gap> IsMultiDigraph(gr1);
+false
+gap> not DIGRAPHS_NautyAvailable or NautyCanonicalLabelling(gr1) = (1, 2, 4);
+true
+gap> HasBlissCanonicalLabelling(gr1) and HasBlissCanonicalLabelling(gr2);
+false
+gap> not DIGRAPHS_NautyAvailable or HasNautyCanonicalLabelling(gr1) and
+> NautyCanonicalLabelling(gr1) <> fail;
+true
+gap> not DIGRAPHS_NautyAvailable or not HasNautyCanonicalLabelling(gr2);
+true
+gap> IsomorphismDigraphs(gr1, gr2);;
 
 #T# IsomorphismDigraphs: for digraphs with multiple edges
 
@@ -306,10 +365,12 @@ gap> gr := Digraph([
 <multidigraph with 9 vertices, 52 edges>
 gap> IsomorphismDigraphs(gr, gr);
 [ (), () ]
-gap> DigraphCanonicalLabelling(gr);
+gap> BlissCanonicalLabelling(gr);
 [ (1,5,4,2,3,7,9,6), (1,30,49)(2,34,47,35,45,39,38,51,8,12,18,24,21,28,23,13,
     4,29,22,27,20,25,14)(3,33,48)(5,31,52,7,19,26,17,9,16,10,11,15,6,32,
     50)(36,44)(37,46,40,41)(42,43) ]
+gap> NautyCanonicalLabelling(gr);
+fail
 gap> AutomorphismGroup(gr);
 <permutation group with 10 generators>
 gap> p := (1, 8, 2)(3, 5, 4, 9, 7);;
@@ -396,20 +457,23 @@ fail
 gap> IsomorphismDigraphs(gr1, gr2, [1, 1], [1, 1]);
 [ (1,2), (1,2) ]
 
-#T# DigraphCanonicalLabelling: for a digraph without multiple edges
+#T# CanonicalLabelling: for a digraph without multiple edges
 
 # A small example: check that all isomorphic copies have same canonical image
 gap> gr := Digraph([[2], [3, 5, 6], [3], [4, 6], [1, 4], [4]]);
 <digraph with 6 vertices, 10 edges>
-gap> DigraphCanonicalLabelling(gr);
+gap> BlissCanonicalLabelling(gr);
 (1,2,4,6,5,3)
-gap> canon := OutNeighbours(OnDigraphs(gr, last));
+gap> not DIGRAPHS_NautyAvailable or NautyCanonicalLabelling(gr) =
+> (1, 3, 2, 6)(4, 5);
+true
+gap> canon := OutNeighbours(BlissCanonicalDigraph(gr));
 [ [ 1 ], [ 4 ], [ 2, 6 ], [ 1, 3, 5 ], [ 6 ], [ 6, 5 ] ]
 gap> for i in SymmetricGroup(DigraphNrVertices(gr)) do
 >   new := OnDigraphs(gr, i);
->   if not OutNeighbours(OnDigraphs(new, DigraphCanonicalLabelling(new))) =
+>   if not OutNeighbours(OnDigraphs(new, BlissCanonicalLabelling(new))) =
 >       canon then
->     Print("fail");
+>     Print("fail\n");
 >   fi;
 > od;
 gap> gr1 := DigraphReverseEdge(gr, [2, 5]);
@@ -418,15 +482,27 @@ gap> gr = gr1;
 false
 gap> IsIsomorphicDigraph(gr, gr1);
 false
-gap> canon = OnDigraphs(gr1, DigraphCanonicalLabelling(gr1));
+gap> canon = OnDigraphs(gr1, BlissCanonicalLabelling(gr1));
 false
+gap> canon := NautyCanonicalDigraph(gr);;
+gap> canon = fail or OutNeighbours(canon) 
+>    = [[5], [2], [6], [3, 5], [5, 1], [2, 4, 1]];
+true
+gap> if canon <> fail then 
+>   for i in SymmetricGroup(DigraphNrVertices(gr)) do
+>     new := OnDigraphs(gr, i);
+>     if OnDigraphs(new, NautyCanonicalLabelling(new)) <> canon then
+>       Print("fail\n");
+>     fi;
+>   od;
+> fi;
 
-#T# DigraphCanonicalLabelling: for a digraph with multiple edges
+#T# CanonicalLabelling: for a digraph with multiple edges
 
 # A small example: check that all isomorphic copies have same canonical image
 gap> gr := Digraph([[2, 2], [1, 1], [2]]);
 <multidigraph with 3 vertices, 5 edges>
-gap> DigraphCanonicalLabelling(gr);
+gap> BlissCanonicalLabelling(gr);
 [ (1,2,3), (1,3,5) ]
 gap> canon := OutNeighbours(OnMultiDigraphs(gr, last));
 [ [ 3 ], [ 3, 3 ], [ 2, 2 ] ]
@@ -434,7 +510,7 @@ gap> for i in SymmetricGroup(DigraphNrVertices(gr)) do
 > for j in SymmetricGroup(DigraphNrEdges(gr)) do
 >   new := OnMultiDigraphs(gr, [i, j]);
 >   if not OutNeighbours(OnMultiDigraphs(new,
->       DigraphCanonicalLabelling(new))) = canon then
+>       BlissCanonicalLabelling(new))) = canon then
 >     Print("fail");
 >   fi;
 > od; od;
@@ -444,15 +520,25 @@ gap> gr = gr1;
 false
 gap> IsIsomorphicDigraph(gr, gr1);
 false
-gap> canon = OnMultiDigraphs(gr1, DigraphCanonicalLabelling(gr1));
+gap> canon = OnMultiDigraphs(gr1, BlissCanonicalLabelling(gr1));
 false
+gap> NautyCanonicalLabelling(gr);
+fail
 
-#T# DigraphCanonicalLabelling: with colours
+#T# CanonicalLabelling: with colours
 gap> G := Digraph(10, [1, 1, 3, 4, 4, 5, 8, 8], [6, 3, 3, 9, 10, 9, 4, 10]);;
-gap> DigraphCanonicalLabelling(G, [[1 .. 5], [6 .. 10]]);
+gap> BlissCanonicalLabelling(G, [[1 .. 5], [6 .. 10]]);
 (1,4,3,5)(6,8)(7,9,10)
-gap> DigraphCanonicalLabelling(G, [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]);
+gap> not DIGRAPHS_NautyAvailable or
+> NautyCanonicalLabelling(G, [[1 .. 5], [6 .. 10]])
+> = (1, 5, 3, 4)(6, 8, 10)(7, 9);
+true
+gap> BlissCanonicalLabelling(G, [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]);
 (1,4,3,5)(6,8)(7,9,10)
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyCanonicalLabelling(G, [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]) 
+> = (1, 5, 3, 4)(6, 8, 10)(7, 9);
+true
 
 #T# AutomorphismGroup: for a digraph with colored vertices
 gap> gr := CompleteBipartiteDigraph(4, 4);
@@ -502,32 +588,45 @@ gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
 gap> AutomorphismGroup(gr, [1, 2]);
 Group([ (), (1,2) ])
+gap> NautyAutomorphismGroup(gr);
+fail
+gap> NautyAutomorphismGroup(gr, [1, 2]);
+fail
 
-#T# DigraphCanonicalLabelling: for a digraph with colored vertices
+#T# CanonicalLabelling: for a digraph with colored vertices
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <digraph with 8 vertices, 32 edges>
-gap> DigraphCanonicalLabelling(gr);
+gap> BlissCanonicalLabelling(gr);
 (1,8)(2,7)(3,6)(4,5)
-gap> DigraphCanonicalLabelling(gr, [1 .. 8]);
+gap> not DIGRAPHS_NautyAvailable 
+> or NautyCanonicalLabelling(gr) = (2, 6, 3, 7, 4, 8, 5);
+true
+gap> BlissCanonicalLabelling(gr, [1 .. 8]);
 ()
-gap> DigraphCanonicalLabelling(gr, [[1 .. 4], [5 .. 8]]);
+gap> not DIGRAPHS_NautyAvailable 
+> or NautyCanonicalLabelling(gr, [1 .. 8]) = ();
+true
+gap> BlissCanonicalLabelling(gr, [[1 .. 4], [5 .. 8]]);
 (1,4)(2,3)(5,8)(6,7)
+gap> not DIGRAPHS_NautyAvailable 
+> or NautyCanonicalLabelling(gr, [[1 .. 4], [5 .. 8]]) = ();
+true
 
-#T# DigraphCanonicalLabelling: for a digraph with incorrect colors
+#T# CanonicalLabelling: for a digraph with incorrect colors
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <digraph with 8 vertices, 32 edges>
-gap> DigraphCanonicalLabelling(gr, [[1 .. 4], [5 .. 9]]);
-Error, Digraphs: DigraphCanonicalLabelling: usage,
+gap> BlissCanonicalLabelling(gr, [[1 .. 4], [5 .. 9]]);
+Error, Digraphs: BlissCanonicalLabelling: usage,
 the argument <partition> does not define a colouring of the vertices [1 .. 8],
 since <partition[i]> contains <x>, which is not an integer in the range
 [1 .. 8],
-gap> DigraphCanonicalLabelling(gr, ["a", "b"]);
-Error, Digraphs: DigraphCanonicalLabelling: usage,
+gap> BlissCanonicalLabelling(gr, ["a", "b"]);
+Error, Digraphs: BlissCanonicalLabelling: usage,
 the argument <partition> does not define a colouring of the vertices [1 .. 8],
 since <partition[i]> contains <x>, which is not an integer in the range
 [1 .. 8],
-gap> DigraphCanonicalLabelling(gr, [1 .. 10]);
-Error, Digraphs: DigraphCanonicalLabelling: usage,
+gap> BlissCanonicalLabelling(gr, [1 .. 10]);
+Error, Digraphs: BlissCanonicalLabelling: usage,
 the argument <partition> does not define a colouring of the vertices [1 .. 8].
 The list <partition> must have one of the following forms:
 1. <partition> is a list of length 8 consisting of every integer in the range
@@ -535,8 +634,8 @@ The list <partition> must have one of the following forms:
 2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 8].
 In the first form, <partition[i]> is the colour of vertex i; in the second
 form, <partition[i]> is the list of vertices with colour i,
-gap> DigraphCanonicalLabelling(gr, [-1 .. -10]);
-Error, Digraphs: DigraphCanonicalLabelling: usage,
+gap> BlissCanonicalLabelling(gr, [-1 .. -10]);
+Error, Digraphs: BlissCanonicalLabelling: usage,
 the argument <partition> does not define a colouring of the vertices [1 .. 8].
 The list <partition> must have one of the following forms:
 1. <partition> is a list of length 8 consisting of every integer in the range
@@ -545,11 +644,13 @@ The list <partition> must have one of the following forms:
 In the first form, <partition[i]> is the colour of vertex i; in the second
 form, <partition[i]> is the list of vertices with colour i,
 
-#T# DigraphCanonicalLabelling: for a multidigraph
+#T# CanonicalLabelling: for a multidigraph
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
-gap> DigraphCanonicalLabelling(gr, [1, 2]);
+gap> BlissCanonicalLabelling(gr, [1, 2]);
 [ (), (1,2) ]
+gap> NautyCanonicalLabelling(gr, [1, 2]);
+fail
 
 #T# DIGRAPHS_ValidateVertexColouring, 1, errors
 gap> DIGRAPHS_ValidateVertexColouring();
@@ -643,6 +744,77 @@ use precisely the colours [1 .. m], for some positive integer m <= 4,
 gap> DIGRAPHS_ValidateVertexColouring(4, [1, 1, 3, 2], "TestFunction");
 [ 1, 1, 3, 2 ]
 
+#T# CanonicalDigraph
+gap> gr1 := Digraph([[1, 2], [1, 2], [2, 3], [1, 2, 3], [5]]);;
+gap> gr2 := Digraph([[1, 3], [2, 3], [2, 3], [1, 2, 3], [5]]);;
+gap> BlissCanonicalDigraph(gr1) = BlissCanonicalDigraph(gr2);
+true
+gap> gr3 := Digraph([[2, 3], [2, 3], [1, 3], [1, 2, 3], [5]]);;
+gap> BlissCanonicalDigraph(gr1) = BlissCanonicalDigraph(gr3);
+false
+gap> BlissCanonicalDigraph(gr3, [1, 1, 1, 1, 1]);
+<digraph with 5 vertices, 10 edges>
+gap> BlissCanonicalDigraph(Digraph([[1], [2], [3], [3], [2], [1]])) 
+> = BlissCanonicalDigraph(Digraph([[1], [2], [3], [1], [2], [3]]));
+true
+gap> gr4 := Digraph([[3, 4], [2, 2, 3], [2, 2, 4], [2, 2, 3]]);;
+gap> gr5 := BlissCanonicalDigraph(gr4);;
+gap> gr5 = gr4;
+false
+gap> IsIsomorphicDigraph(gr4, gr5);
+true
+gap> gr5 = BlissCanonicalDigraph(gr4, [1, 1, 1, 1]);
+true
+gap> BlissCanonicalDigraph(gr4, [1, 2, 1, 2]) 
+> = BlissCanonicalDigraph(gr4, [[1, 3], [2, 4]]);
+true
+gap> gr5 = BlissCanonicalDigraph(gr5);
+true
+gap> gr6 := OnMultiDigraphs(gr4, [(1, 2), (5, 6)]);;
+gap> IsIsomorphicDigraph(gr4, gr6);
+true
+gap> gr5 = BlissCanonicalDigraph(gr6);
+true
+
+#T# CanonicalDigraph
+gap> gr1 := Digraph([[1, 2], [1, 2], [2, 3], [1, 2, 3], [5]]);;
+gap> gr2 := Digraph([[1, 3], [2, 3], [2, 3], [1, 2, 3], [5]]);;
+gap> NautyCanonicalDigraph(gr1) = NautyCanonicalDigraph(gr2);
+true
+gap> gr3 := Digraph([[2, 3], [2, 3], [1, 3], [1, 2, 3], [5]]);;
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyCanonicalDigraph(gr1) <> NautyCanonicalDigraph(gr3);
+true
+gap> gr7 := NautyCanonicalDigraph(gr3, [1, 1, 1, 1, 1]);;
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyCanonicalDigraph(gr3, [1, 2, 1, 2, 1]) 
+> = NautyCanonicalDigraph(gr3, [[1, 3, 5], [2, 4]]);
+true
+gap> gr7 = fail or gr7 = NautyCanonicalDigraph(gr7);
+true
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyCanonicalDigraph(Digraph([[1], [2], [3], [3], [2], [1]])) 
+> = NautyCanonicalDigraph(Digraph([[1], [2], [3], [1], [2], [3]]));
+true
+gap> gr4 := Digraph([[3, 4], [2, 2, 3], [2, 2, 4], [2, 2, 3]]);;
+gap> gr5 := NautyCanonicalDigraph(gr4);
+fail
+gap> gr5 := NautyCanonicalDigraph(gr4, [1, 2, 3, 4]);
+fail
+
+# DigraphsUseBliss/Nauty
+gap> nauty := not DIGRAPHS_UsingBliss;;
+gap> DigraphsUseNauty();
+gap> DigraphsUseBliss();
+gap> MakeReadWriteGlobal("DIGRAPHS_NautyAvailable");
+gap> DIGRAPHS_NautyAvailable := false;;
+gap> DigraphsUseNauty();
+gap> DIGRAPHS_NautyAvailable := true;;
+gap> MakeReadOnlyGlobal("DIGRAPHS_NautyAvailable");
+gap> if not nauty then 
+>      DigraphsUseBliss();
+>    fi;
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(canon);
@@ -661,4 +833,4 @@ gap> Unbind(p);
 
 #E#
 gap> DIGRAPHS_StopTest();
-gap> STOP_TEST("Digraphs package: standard/bliss.tst", 0);
+gap> STOP_TEST("Digraphs package: standard/isomorph.tst", 0);

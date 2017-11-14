@@ -1177,8 +1177,8 @@ gap> gr := Digraph([[2, 3, 4, 5], [6, 3], [6, 2], [6], [6], [1]]);;
 gap> DigraphGirth(gr);
 2
 gap> gr := Digraph([[2, 3, 4, 5], [6, 3], [6, 2], [6], [6], [1]]);;
-gap> DigraphGroup(gr);
-Group([ (4,5), (2,3) ])
+gap> DigraphGroup(gr) = Group([(4, 5), (2, 3)]);
+true
 gap> DigraphGirth(gr);
 2
 gap> gr := Digraph([[2, 6, 10], [3], [4], [5], [1],

@@ -214,7 +214,8 @@ Dependencies := rec(
   NeededOtherPackages := [["io", ">=4.4.6"],
                           ["orb", ">=4.7.5"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"],
-                             ["grape", ">=4.5"]],
+                             ["grape", ">=4.5"],
+                             ["nautytracesinterface", ">=0.1"]],
   ExternalConditions := [],
 ),
 
@@ -224,8 +225,8 @@ AvailabilityTest := function()
                           "digraphs.so");
   if (not "digraphs" in SHOW_STAT()) and digraphs_so = fail then
      LogPackageLoadingMessage(PACKAGE_WARNING,
-                              ["the kernel module is not compiled, ", 
-                               "the package cannot be loaded."] );
+                              ["the kernel module is not compiled, ",
+                               "the package cannot be loaded."]);
     return fail;
   fi;
   return true;

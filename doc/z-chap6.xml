@@ -13,11 +13,21 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="OnMultiDigraphs">
   </Section>
 
-  <Section><Heading>Isomorphisms, and Canonical labellings</Heading>
+  <Section Label="Isomorphisms and canonical labellings">
+    <Heading>Isomorphisms and canonical labellings</Heading>
+    From version 0.11.0 of &Digraphs; it is possible to use either &bliss; or
+    &nauty; (via &NautyTracesInterface;) to calculate canonical labellings and
+    automorphism groups of digraphs; see <Cite Key="JunttilaKaski"/> and <Cite
+      Key="McKay201494"/> for more details about &bliss; and &nauty;,
+    respectively. 
+
+    <#Include Label="DigraphsUseNauty">
     <#Include Label="AutomorphismGroupDigraph">
+    <#Include Label="BlissAutomorphismGroup">
+    <#Include Label="NautyAutomorphismGroup">
     <#Include Label="AutomorphismGroupDigraphColours">
-    <#Include Label="DigraphCanonicalLabelling">
-    <#Include Label="DigraphCanonicalLabellingColours">
+    <#Include Label="BlissCanonicalLabelling">
+    <#Include Label="BlissCanonicalLabellingColours">
     <#Include Label="DigraphGroup">
     <#Include Label="DigraphOrbits">
     <#Include Label="DigraphOrbitReps">

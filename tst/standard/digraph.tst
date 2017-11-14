@@ -1714,31 +1714,6 @@ gap> SetDigraphEdgeLabel(gr, 2, 2, "a");
 Error, Digraphs: SetDigraphEdgeLabel:
 [2, 2] is not an edge of <graph>,
 
-#T# CanonicalDigraph
-gap> gr1 := Digraph([[1, 2], [1, 2], [2, 3], [1, 2, 3], [5]]);;
-gap> gr2 := Digraph([[1, 3], [2, 3], [2, 3], [1, 2, 3], [5]]);;
-gap> CanonicalDigraph(gr1) = CanonicalDigraph(gr2);
-true
-gap> gr3 := Digraph([[2, 3], [2, 3], [1, 3], [1, 2, 3], [5]]);;
-gap> CanonicalDigraph(gr1) = CanonicalDigraph(gr3);
-false
-gap> CanonicalDigraph(Digraph([[1], [2], [3], [3], [2], [1]])) 
-> = Digraph([[1], [2], [3], [1], [2], [3]]);
-true
-gap> gr4 := Digraph([[3, 4], [2, 2, 3], [2, 2, 4], [2, 2, 3]]);;
-gap> gr5 := CanonicalDigraph(gr4);;
-gap> gr5 = gr4;
-false
-gap> IsIsomorphicDigraph(gr4, gr5);
-true
-gap> gr5 = CanonicalDigraph(gr5);
-true
-gap> gr6 := OnMultiDigraphs(gr4, [(1, 2), (5, 6)]);;
-gap> IsIsomorphicDigraph(gr4, gr6);
-true
-gap> gr5 = CanonicalDigraph(gr6);
-true
-
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
