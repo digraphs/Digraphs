@@ -81,6 +81,14 @@ for PKG in "${PKGS[@]}"; do
 done
 
 ################################################################################
+# Install NautyTracesInterface
+cd $GAPROOT/pkg
+echo -e "\nGetting master version of NautyTracesInterface"
+git clone -b master --depth=1 https://github.com/sebasguts/NautyTracesInterface.git nautytracesinterface
+cd nautytracesinterface
+./install.sh --gaproot $GAPROOT
+
+################################################################################
 # Install GRAPE and GAPDoc
 PKGS=( $GRAPE )
 for PKG in "${PKGS[@]}"; do
