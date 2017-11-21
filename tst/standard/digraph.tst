@@ -1470,24 +1470,38 @@ rec( adjacencies := [ [ 2, 4 ] ], group := Group([ (1,3), (1,2)(3,4) ]),
   schreierVector := [ -1, 2, 1, 2 ] )
 
 #T# Digraph: copying group from Grape
-gap> g := JohnsonGraph(5, 3);;
-gap> gr := Digraph(g);
-<digraph with 10 vertices, 60 edges>
+gap> if DIGRAPHS_IsGrapeLoaded then 
+>   gr := Digraph(JohnsonGraph(5, 3));
+> else 
+>   gr := JohnsonDigraph(5, 3);
+>   SetDigraphGroup(gr, Group((1, 7, 10, 6, 3)(2, 8, 4, 9, 5), 
+>                             (4, 7)(5, 8)(6, 9)));
+> fi;
 gap> HasDigraphGroup(gr);
 true
 gap> DigraphGroup(gr);
 Group([ (1,7,10,6,3)(2,8,4,9,5), (4,7)(5,8)(6,9) ])
-gap> g := CompleteGraph(Group((1, 2, 3), (1, 2)));;
-gap> gr := Digraph(g);
-<digraph with 3 vertices, 6 edges>
+gap> 
+> if DIGRAPHS_IsGrapeLoaded then 
+>   gr := Digraph(CompleteGraph(Group((1, 2, 3), (1, 2))));
+> else 
+>   gr := Digraph([[2, 3], [1, 3], [1, 2]]);
+>   SetDigraphGroup(gr, Group((1, 2, 3), (1, 2)));
+> fi;
 gap> HasDigraphGroup(gr);
 true
 gap> DigraphGroup(gr);
 Group([ (1,2,3), (1,2) ])
-gap> g := Graph(Group([()]), [1, 2, 3], OnPoints,
-> function(x, y) return x < y; end);;
-gap> gr := Digraph(g);
-<digraph with 3 vertices, 3 edges>
+gap> if DIGRAPHS_IsGrapeLoaded then 
+>   gr := Digraph(Graph(Group([()]), 
+>                       [1, 2, 3], 
+>                       OnPoints,
+>                       function(x, y) 
+>                         return x < y;
+>                       end));
+> else 
+>   gr := Digraph([[2, 3], [3], []]);
+> fi;
 gap> HasDigraphGroup(gr);
 false
 gap> DigraphGroup(gr);
@@ -1713,31 +1727,6 @@ Error, Digraphs: DigraphEdgeLabel:
 gap> SetDigraphEdgeLabel(gr, 2, 2, "a");
 Error, Digraphs: SetDigraphEdgeLabel:
 [2, 2] is not an edge of <graph>,
-
-#T# CanonicalDigraph
-gap> gr1 := Digraph([[1, 2], [1, 2], [2, 3], [1, 2, 3], [5]]);;
-gap> gr2 := Digraph([[1, 3], [2, 3], [2, 3], [1, 2, 3], [5]]);;
-gap> CanonicalDigraph(gr1) = CanonicalDigraph(gr2);
-true
-gap> gr3 := Digraph([[2, 3], [2, 3], [1, 3], [1, 2, 3], [5]]);;
-gap> CanonicalDigraph(gr1) = CanonicalDigraph(gr3);
-false
-gap> CanonicalDigraph(Digraph([[1], [2], [3], [3], [2], [1]])) 
-> = Digraph([[1], [2], [3], [1], [2], [3]]);
-true
-gap> gr4 := Digraph([[3, 4], [2, 2, 3], [2, 2, 4], [2, 2, 3]]);;
-gap> gr5 := CanonicalDigraph(gr4);;
-gap> gr5 = gr4;
-false
-gap> IsIsomorphicDigraph(gr4, gr5);
-true
-gap> gr5 = CanonicalDigraph(gr5);
-true
-gap> gr6 := OnMultiDigraphs(gr4, [(1, 2), (5, 6)]);;
-gap> IsIsomorphicDigraph(gr4, gr6);
-true
-gap> gr5 = CanonicalDigraph(gr6);
-true
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);

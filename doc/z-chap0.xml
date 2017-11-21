@@ -38,7 +38,12 @@
   The &bliss; tool <Cite Key="JunttilaKaski"/> is included in this package.  It
   is an open-source tool for computing automorphism groups and canonical forms
   of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods
-  in the &Digraphs; package rely on &bliss;. <P/>
+  in the &Digraphs; package rely on &bliss;. If the &NautyTracesInterface;
+  package for GAP is available then it is also possible to use &nauty; <Cite
+    Key="McKay201494"/> for computing automorphism groups and canonical forms
+  in &Digraphs;. See Section 
+  <Ref Sect="Isomorphisms and canonical labellings"/> for more details.  
+  <P/>
 
   <Subsection Label="Definitions"><Heading>Definitions</Heading>
 

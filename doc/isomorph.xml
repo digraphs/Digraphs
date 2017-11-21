@@ -1,13 +1,94 @@
 #############################################################################
 ##
-#W  bliss.xml
-#Y  Copyright (C) 2014-17                               James D. Mitchell
-##                                                         Wilf A. Wilson
+#W  isomorph.xml                                        James D. Mitchell
+#Y  Copyright (C) 2014-17                                  Wilf A. Wilson 
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
+
+<#GAPDoc Label="DigraphsUseNauty">
+<ManSection>
+  <Func Name="DigraphsUseNauty" Arg=""/>
+  <Func Name="DigraphsUseBliss" Arg=""/>
+  <Returns>Nothing.</Returns>
+  <Description>
+    These functions can be used to specify whether &nauty; or &bliss; should be
+    used by default by &Digraphs;. If &NautyTracesInterface; is not available,
+    then these functions do nothing. Otherwise, by calling
+    <C>DigraphsUseNauty</C> subsequent computations will default to using
+    &nauty; rather than &bliss;, where possible.
+    <P/>
+
+    You can call these functions at any point in a &GAP; session, as many
+    times as you like, it is guaranteed that existing digraphs remain
+    valid, and that comparison of existing digraphs and newly created digraphs
+    via 
+    <Ref Oper="IsIsomorphicDigraph" Label="for digraphs"/>,
+    <Ref Oper="IsIsomorphicDigraph" 
+      Label="for digraphs and homogeneous lists"/>, 
+    <Ref Oper="IsomorphismDigraphs" Label="for digraphs"/>, and
+    <Ref Oper="IsomorphismDigraphs" 
+      Label="for digraphs and homogeneous lists"/> are also valid.<P/>
+
+    It is also possible to compute the automorphism group of a specific digraph
+    using both &nauty; and &bliss; using <Ref Attr="NautyAutomorphismGroup"/>
+    and <Ref Attr="BlissAutomorphismGroup"/>, respectively.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BlissAutomorphismGroup">
+<ManSection>
+  <Attr Name="BlissAutomorphismGroup" Arg="digraph[, colours]"/>
+  <Returns>A permutation group.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then this attribute contains the group of
+    automorphisms of <A>digraph</A> as calculated using &bliss; by Tommi Junttila
+    and Petteri Kaski. <P/>
+
+    The attribute <Ref Attr="AutomorphismGroup" Label="for a digraph"/> and
+    operation <Ref Attr="AutomorphismGroup" 
+      Label="for a digraph and a homogeneous list"/> returns
+    the value of either <C>BlissAutomorphismGroup</C> or  <Ref
+      Attr="NautyAutomorphismGroup"/>. These groups are, of course, equal but
+    their generating sets may differ. <P/>
+
+    See also <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
+
+    <Example><![CDATA[
+gap> BlissAutomorphismGroup(JohnsonDigraph(5, 2));
+Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7), (1,2)(6,8)
+(7,9) ])]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="NautyAutomorphismGroup">
+<ManSection>
+  <Attr Name="NautyAutomorphismGroup" Arg="digraph[, colours]"/>
+  <Returns>A permutation group.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then this attribute contains the group of
+    automorphisms of <A>digraph</A> as calculated using &nauty; by 
+    Brendan Mckay and Adolfo Piperno via &NautyTracesInterface;. 
+
+    The attribute <Ref Attr="AutomorphismGroup" Label="for a digraph"/> and
+    operation <Ref Attr="AutomorphismGroup" 
+      Label="for a digraph and a homogeneous list"/> returns
+    the value of either <C>NautyAutomorphismGroup</C> or  <Ref
+      Attr="BlissAutomorphismGroup"/>. These groups are, of course, equal but
+    their generating sets may differ. <P/>
+
+    See also <Ref Func="DigraphsUseNauty"/>, and <Ref Func="DigraphsUseNauty"/>.
+
+    <Log><![CDATA[
+gap> NautyAutomorphismGroup(JohnsonDigraph(5, 2));
+Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7), (1,2)(6,8)(7,9) ])]]></Log>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
 
 <#GAPDoc Label="AutomorphismGroupDigraph">
 <ManSection>
@@ -49,8 +130,11 @@
       </Item>
     </List>
 
-    The automorphism group is found using &bliss; by Tommi Junttila and Petteri
-    Kaski.
+    By default, the automorphism group is found using &bliss; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    Brendan Mckay and Adolfo Piperno can be used instead; see 
+    <Ref Attr="BlissAutomorphismGroup"/>, <Ref Attr="NautyAutomorphismGroup"/>, 
+    <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
     <Example><![CDATA[
 gap> johnson := DigraphFromGraph6String("E}lw");
@@ -160,8 +244,11 @@ Group([ (2,3) ])]]></Example>
       </Item>
     </List>
 
-    The automorphism group is found using &bliss; by Tommi Junttila and Petteri
-    Kaski.
+    By default, the automorphism group is found using &bliss; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    Brendan Mckay and Adolfo Piperno can be used instead; see 
+    <Ref Attr="BlissAutomorphismGroup"/>, <Ref Attr="NautyAutomorphismGroup"/>, 
+    <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
   <Example><![CDATA[
 gap> cycle := CycleDigraph(9);
@@ -199,9 +286,10 @@ Group([ (2,3) ])]]></Example>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphCanonicalLabelling">
+<#GAPDoc Label="BlissCanonicalLabelling">
 <ManSection>
-  <Attr Name="DigraphCanonicalLabelling" Label="for a digraph" Arg="digraph"/>
+  <Attr Name="BlissCanonicalLabelling" Label="for a digraph" Arg="digraph"/>
+  <Attr Name="NautyCanonicalLabelling" Label="for a digraph" Arg="digraph"/>
   <Returns>A permutation, or a list of two permutations.</Returns>
   <Description>
     A function <M>\rho</M> that maps a digraph to a digraph is a <E>canonical
@@ -223,9 +311,15 @@ Group([ (2,3) ])]]></Example>
     <M>\rho(G)</M>.  See <Ref Oper="IsomorphismDigraphs" Label="for digraphs" />
     for more information about isomorphisms of digraphs. <P/>
 
-    The attribute <C>DigraphCanonicalLabelling</C> returns a canonical labelling
-    of the digraph <A>digraph</A>.  The form of the canonical labelling returned
-    by <C>DigraphCanonicalLabelling</C> depends on whether <A>digraph</A> has
+    <C>BlissCanonicalLabelling</C> returns a canonical labelling of the digraph
+    <A>digraph</A> found using &bliss; by Tommi Junttila and Petteri Kaski.
+    <C>NautyCanonicalLabelling</C> returns a canonical labelling of the digraph
+    <A>digraph</A> found using &nauty; by Brendan McKay and Adolfo Piperno.
+    Note that the canonical labellings returned by &bliss; and &nauty; are not
+    usually the same (and may depend of the version used).<P/>
+
+    The form of the canonical labelling returned
+    by <C>BlissCanonicalLabelling</C> depends on whether <A>digraph</A> has
     multiple edges; see <Ref Prop="IsMultiDigraph" />. <P/>
 
     <List>
@@ -252,36 +346,36 @@ Group([ (2,3) ])]]></Example>
       </Item>
     </List>
 
-    The canonical labelling is found using &bliss; by Tommi Junttila and Petteri
-    Kaski.
     <Example><![CDATA[
 gap> digraph1 := DigraphFromDiSparse6String(".ImNS_AiB?qRN");
 <digraph with 10 vertices, 8 edges>
-gap> DigraphCanonicalLabelling(digraph1);
+gap> BlissCanonicalLabelling(digraph1);
 (1,3,4)(2,10,6,7,9,8)
 gap> p := (1, 2, 7, 5)(3, 9)(6, 10, 8);;
 gap> digraph2 := OnDigraphs(digraph1, p);
 <digraph with 10 vertices, 8 edges>
 gap> digraph1 = digraph2;
 false
-gap> OnDigraphs(digraph1, DigraphCanonicalLabelling(digraph1)) =
->    OnDigraphs(digraph2, DigraphCanonicalLabelling(digraph2));
+gap> OnDigraphs(digraph1, BlissCanonicalLabelling(digraph1)) =
+>    OnDigraphs(digraph2, BlissCanonicalLabelling(digraph2));
 true
 gap> gr := DigraphFromDiSparse6String(".ImEk|O@SK?od");
 <multidigraph with 10 vertices, 10 edges>
-gap> DigraphCanonicalLabelling(gr);
+gap> BlissCanonicalLabelling(gr);
 [ (1,9,7,5)(2,10,3), (1,6,9)(2,5,10,4,8)(3,7) ]
 gap> gr := Digraph([[2], [3, 3], [3], [2], [2]]);
 <multidigraph with 5 vertices, 6 edges>
-gap> DigraphCanonicalLabelling(gr, [1, 2, 2, 1, 3]);
+gap> BlissCanonicalLabelling(gr, [1, 2, 2, 1, 3]);
 [ (1,2,4), (1,2,6,4,3,5) ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphCanonicalLabellingColours">
+<#GAPDoc Label="BlissCanonicalLabellingColours">
 <ManSection>
-  <Oper Name="DigraphCanonicalLabelling" Label="for a digraph and a list"
+  <Oper Name="BlissCanonicalLabelling" Label="for a digraph and a list"
+    Arg="digraph, colours"/>
+  <Oper Name="NautyCanonicalLabelling" Label="for a digraph and a list"
     Arg="digraph, colours"/>
   <Returns>A permutation.</Returns>
   <Description>
@@ -323,11 +417,17 @@ gap> DigraphCanonicalLabelling(gr, [1, 2, 2, 1, 3]);
         <C>i</C>.
       </Item>
     </List>
+  
+    If <A>digraph</A> and <A>colours</A> together form a coloured digraph,
+    <C>BlissCanonicalLabelling</C> returns a canonical labelling of the digraph
+    <A>digraph</A> found using &bliss; by Tommi Junttila and Petteri Kaski.
+    Similarly, <C>NautyCanonicalLabelling</C> returns a canonical labelling of
+    the digraph <A>digraph</A> found using &nauty; by Brendan McKay and Adolfo
+    Piperno.  Note that the canonical labellings returned by &bliss; and
+    &nauty; are not usually the same (and may depend of the version used).<P/>
 
-    If <A>digraph</A> and <A>colours</A> together form a coloured digraph, then
-    the operation <C>DigraphCanonicalLabelling</C> returns a canonical labelling
-    of the coloured digraph. The form of the canonical labelling returned
-    by <C>DigraphCanonicalLabelling</C> depends on whether <A>digraph</A> has
+    The form of the canonical labelling returned
+    by <C>BlissCanonicalLabelling</C> depends on whether <A>digraph</A> has
     multiple edges; see <Ref Prop="IsMultiDigraph" />. <P/>
 
     <List>
@@ -371,20 +471,18 @@ gap> DigraphCanonicalLabelling(gr, [1, 2, 2, 1, 3]);
 
     <P/>
 
-    The canonical labelling is found using &bliss; by Tommi Junttila and Petteri
-    Kaski.
     <Example><![CDATA[
 gap> digraph := DigraphFromDiSparse6String(".ImNS_AiB?qRN");
 <digraph with 10 vertices, 8 edges>
 gap> colours := [[1, 2, 8, 9, 10], [3, 4, 5, 6, 7]];;
-gap> p := DigraphCanonicalLabelling(digraph, colours);
+gap> p := BlissCanonicalLabelling(digraph, colours);
 (2,3,7,10)(4,6,9,5,8)
 gap> OnDigraphs(digraph, p);
 <digraph with 10 vertices, 8 edges>
 gap> OnTuplesSets(colours, p);
 [ [ 1, 2, 3, 4, 5 ], [ 6, 7, 8, 9, 10 ] ]
 gap> colours := [1, 1, 1, 1, 2, 3, 1, 3, 2, 1];;
-gap> p := DigraphCanonicalLabelling(digraph, colours);
+gap> p := BlissCanonicalLabelling(digraph, colours);
 (2,3,4,6,10,5,8,9,7)
 gap> OnDigraphs(digraph, p);
 <digraph with 10 vertices, 8 edges>
@@ -404,8 +502,11 @@ gap> List(DigraphVertices(digraph), i -> colours[i / p]);
       Oper="IsomorphismDigraphs" Label="for digraphs" /> for more information
     about isomorphisms of digraphs. <P/>
 
-    This operation uses the canonical labelling of the digraphs found with
-    &bliss; by Tommi Junttila and Petteri Kaski.
+    By default, an isomorphism is found using the canonical labellings of the
+    digraphs obtained from &bliss; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    Brendan Mckay and Adolfo Piperno can be used instead; see 
+    <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
     <Example><![CDATA[
 gap> digraph1 := CycleDigraph(4);
@@ -467,8 +568,11 @@ true]]></Example>
     <Ref Oper="IsomorphismDigraphs" Label="for digraphs and homogeneous lists"
       /> for more information about isomorphisms of coloured digraphs. <P/>
 
-    This operation uses the canonical labelling of the digraphs found with
-    &bliss; by Tommi Junttila and Petteri Kaski.
+    By default, an isomorphism is found using the canonical labellings of the
+    digraphs obtained from &bliss; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    Brendan Mckay and Adolfo Piperno can be used instead; see 
+    <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
     <Example><![CDATA[
 gap> digraph1 := ChainDigraph(4);
@@ -545,8 +649,11 @@ false]]></Example>
       </Item>
     </List>
 
-    This operation uses the canonical labelling of the digraphs found with
-    &bliss; by Tommi Junttila and Petteri Kaski.
+    By default, an isomorphism is found using the canonical labellings of the
+    digraphs obtained from &bliss; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    Brendan Mckay and Adolfo Piperno can be used instead; see 
+    <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
     <Example><![CDATA[
 gap> digraph1 := CycleDigraph(4);
@@ -621,8 +728,11 @@ gap> IsomorphismDigraphs(digraph1, digraph2);
     This operation returns such an isomorphism if one exists, else it returns
     <K>fail</K>. <P/>
 
-    This operation uses the canonical labelling of the digraphs found with
-    &bliss; by Tommi Junttila and Petteri Kaski.
+    By default, an isomorphism is found using the canonical labellings of the
+    digraphs obtained from &bliss; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    Brendan Mckay and Adolfo Piperno can be used instead; see 
+    <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
     <Example><![CDATA[
 gap> digraph1 := ChainDigraph(4);

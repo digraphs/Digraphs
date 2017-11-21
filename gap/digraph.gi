@@ -266,16 +266,16 @@ function(digraph)
   local out, vertices, newvertices, allvertices, newout1,
     newout2, crossedouts, shift, double, group, conj, gens,
     newgens;
-  #note that this method is also applicable for digraphs with
-  #an adjacency function. however, the resulting double graph
-  #will not have an adjacency function anymore, since the
-  #original function may take arbitrary objects as argument,
-  #while the double graph has simply integers as vertices.
-  #So relying on the original adjacency function is meaningless
-  #unless this function would also be a function on integers.
-  #compared with DoubleDigraph, we only need the "crossed adjacencies".
-  #if DigraphGroup is set, a subgroup of the automoraphism group
-  #of the bipartite double is computed and set.
+  # Note that this method is also applicable for digraphs with
+  # an adjacency function. However, the resulting double graph
+  # will not have an adjacency function anymore, since the
+  # original function may take arbitrary objects as argument,
+  # while the double graph has simply integers as vertices.
+  # So relying on the original adjacency function is meaningless
+  # unless this function would also be a function on integers.
+  # compared with DoubleDigraph, we only need the "crossed adjacencies".
+  # if DigraphGroup is set, a subgroup of the automoraphism group
+  # of the bipartite double is computed and set.
   out := OutNeighbours(digraph);
   vertices := DigraphVertices(digraph);
   shift := DigraphNrVertices(digraph);
@@ -526,15 +526,13 @@ end);
 InstallMethod(IsMultiDigraph, "for a digraph",
 [IsDigraph], IS_MULTI_DIGRAPH);
 
-# constructors . . .
+# Constructors . . .
 
 InstallMethod(AsDigraph, "for a transformation",
 [IsTransformation],
 function(trans)
   return AsDigraph(trans, DegreeOfTransformation(trans));
 end);
-
-#
 
 InstallMethod(AsDigraph, "for a transformation and an integer",
 [IsTransformation, IsInt],
@@ -559,8 +557,6 @@ function(f, n)
   SetIsFunctionalDigraph(gr, true);
   return gr;
 end);
-
-#
 
 InstallMethod(Graph, "for a digraph", [IsDigraph],
 function(digraph)
@@ -601,8 +597,6 @@ function(digraph)
   return gamma;
 end);
 
-#
-
 InstallMethod(RandomDigraph, "for a pos int",
 [IsPosInt],
 function(n)
@@ -623,8 +617,6 @@ function(n, p)
   return out;
 end);
 
-#
-
 InstallMethod(RandomMultiDigraph, "for a pos int",
 [IsPosInt],
 function(n)
@@ -636,8 +628,6 @@ InstallMethod(RandomMultiDigraph, "for two pos ints",
 function(n, m)
   return DigraphNC(RANDOM_MULTI_DIGRAPH(n, m));
 end);
-
-#
 
 InstallMethod(RandomTournament, "for an integer",
 [IsInt],
@@ -670,8 +660,6 @@ function(n)
   return gr;
 end);
 
-#
-
 InstallMethod(CompleteDigraph, "for an integer",
 [IsInt],
 function(n)
@@ -701,8 +689,6 @@ function(n)
   return gr;
 end);
 
-#
-
 InstallMethod(EmptyDigraph, "for an integer",
 [IsInt],
 function(n)
@@ -718,8 +704,6 @@ function(n)
   SetAutomorphismGroup(gr, SymmetricGroup(n));
   return gr;
 end);
-
-#
 
 InstallMethod(CycleDigraph, "for a positive integer",
 [IsPosInt],
@@ -748,8 +732,6 @@ function(n)
   SetAutomorphismGroup(gr, CyclicGroup(IsPermGroup, n));
   return gr;
 end);
-
-#
 
 InstallMethod(ChainDigraph, "for a positive integer",
 [IsPosInt],
@@ -782,8 +764,6 @@ function(n)
   return gr;
 end);
 
-#
-
 InstallMethod(CompleteBipartiteDigraph, "for two positive integers",
 [IsPosInt, IsPosInt],
 function(m, n)
@@ -815,8 +795,6 @@ function(m, n)
   SetAutomorphismGroup(gr, aut);
   return gr;
 end);
-
-#
 
 InstallMethod(Digraph, "for a record", [IsRecord],
 function(graph)
@@ -928,8 +906,6 @@ function(graph)
   return DigraphNC(graph);
 end);
 
-#
-
 InstallMethod(DigraphNC, "for a record", [IsRecord],
 function(graph)
   local new;
@@ -947,8 +923,6 @@ function(graph)
   fi;
   return new;
 end);
-
-#
 
 InstallMethod(Digraph, "for a dense list", [IsDenseList],
 function(adj)
@@ -976,8 +950,6 @@ function(adj)
   return DigraphNC(adj, nredges);
 end);
 
-#
-
 InstallMethod(DigraphNC, "for a dense list", [IsDenseList],
 function(adj)
   local graph, adj_copy;
@@ -999,8 +971,6 @@ function(adj, nredges)
   SetDigraphNrEdges(graph, nredges);
   return graph;
 end);
-
-#
 
 InstallMethod(Digraph, "for an int and two homogeneous lists",
 [IsInt, IsHomogeneousList, IsHomogeneousList],
@@ -1131,15 +1101,11 @@ function(mat)
   return out;
 end);
 
-#
-
 InstallMethod(DigraphByAdjacencyMatrix, "for an empty list",
 [IsList and IsEmpty],
 function(mat)
   return DigraphByAdjacencyMatrixNC(mat);
 end);
-
-#
 
 InstallMethod(DigraphByAdjacencyMatrixNC, "for a rectangular table",
 [IsHomogeneousList],
@@ -1184,15 +1150,11 @@ function(mat)
   return out;
 end);
 
-#
-
 InstallMethod(DigraphByAdjacencyMatrixNC, "for an empty list",
 [IsList and IsEmpty],
 function(mat)
   return EmptyDigraph(0);
 end);
-
-#
 
 InstallMethod(DigraphByEdges, "for a rectangular table",
 [IsRectangularTable],
@@ -1265,23 +1227,17 @@ function(edges, n)
   return gr;
 end);
 
-#
-
 InstallMethod(DigraphByEdges, "for an empty list",
 [IsList and IsEmpty],
 function(edges)
   return EmptyDigraph(0);
 end);
 
-#
-
 InstallMethod(DigraphByEdges, "for an empty list, and a pos int",
 [IsList and IsEmpty, IsPosInt],
 function(edges, n)
   return EmptyDigraph(n);
 end);
-
-#
 
 InstallMethod(DigraphByInNeighbors, "for a list", [IsList],
 DigraphByInNeighbours);
@@ -1333,12 +1289,8 @@ InstallMethod(\=, "for two digraphs",
 [IsDigraph, IsDigraph],
 DIGRAPH_EQUALS);
 
-#
-
 InstallMethod(\<, "for two digraphs",
 [IsDigraph, IsDigraph], DIGRAPH_LT);
-
-#
 
 InstallMethod(DigraphCopy, "for a digraph",
 [IsDigraph],
@@ -1351,8 +1303,6 @@ function(digraph)
   SetDigraphEdgeLabelsNC(gr, StructuralCopy(DigraphEdgeLabelsNC(digraph)));
   return gr;
 end);
-
-#
 
 InstallMethod(LineDigraph, "for a symmetric digraph",
 [IsDigraph],
@@ -1377,8 +1327,6 @@ function(digraph)
 
   return Digraph(G, edges, OnPairs, adj);
 end);
-
-#
 
 InstallMethod(LineUndirectedDigraph, "for a symmetric digraph",
 [IsDigraph],
@@ -1560,7 +1508,6 @@ function(graph)
   return str;
 end);
 
-#
 InstallMethod(PrintString, "for a digraph",
 [IsDigraph],
 function(graph)
@@ -1577,15 +1524,11 @@ end);
 #                       PrintString(RepresentativeOutNeighbours(digraph)), ")");
 #end);
 
-#
-
 InstallMethod(String, "for a digraph",
 [IsDigraph],
 function(graph)
   return Concatenation("Digraph( ", String(OutNeighbours(graph)), " )");
 end);
-
-#
 
 InstallMethod(DigraphAddAllLoops, "for a digraph",
 [IsDigraph],
@@ -1602,8 +1545,6 @@ function(digraph)
   od;
   return Digraph(adj);
 end);
-
-#
 
 InstallMethod(JohnsonDigraph, "for two ints",
 [IsInt, IsInt],
@@ -1628,25 +1569,10 @@ function(n, k)
   return digraph;
 end);
 
-#
-
-InstallMethod(CanonicalDigraph, "for a digraph",
-[IsDigraph],
-function(digraph)
-  if IsMultiDigraph(digraph) then
-    return OnMultiDigraphs(digraph, DigraphCanonicalLabelling(digraph));
-  fi;
-  return OnDigraphs(digraph, DigraphCanonicalLabelling(digraph));
-end);
-
-#############################################################################
-##
-##  CompleteMultipartiteDigraph(<sizes>)
-##
-##  For input list <sizes> of length nr_parts, CompleteMultipartiteDigraph
-##  returns the complete multipartite digraph containing parts 1, 2, ..., n
-##  of orders sizes[1], sizes[2], ..., sizes[n], where each vertex is adjacent
-##  to every other not contained in the same part.
+# For input list <sizes> of length nr_parts, CompleteMultipartiteDigraph
+# returns the complete multipartite digraph containing parts 1, 2, ..., n
+# of orders sizes[1], sizes[2], ..., sizes[n], where each vertex is adjacent
+# to every other not contained in the same part.
 
 InstallMethod(CompleteMultipartiteDigraph, "for a digraph", [IsList],
 function(sizes)

@@ -86,7 +86,13 @@ cd $GAPROOT/pkg
 echo -e "\nGetting master version of NautyTracesInterface"
 git clone -b master --depth=1 https://github.com/sebasguts/NautyTracesInterface.git nautytracesinterface
 cd nautytracesinterface
-./install.sh --gaproot $GAPROOT
+cd nauty26r7
+./configure $PKG_FLAGS
+make
+cd ..
+./autogen.sh
+./configure  $PKG_FLAGS
+make
 
 ################################################################################
 # Install GRAPE and GAPDoc

@@ -1690,7 +1690,7 @@ void digraph_hook_function(void*               user_param,
   Obj    p, gens;
   UInt   i, n;
 
-  n   = INT_INTOBJ(ELM_PLIST(user_param, 1));  // the degree
+  n   = INT_INTOBJ(ELM_PLIST(user_param, 2));  // the degree
   p   = NEW_PERM4(n);
   ptr = ADDR_PERM4(p);
 
@@ -1698,7 +1698,7 @@ void digraph_hook_function(void*               user_param,
     ptr[i] = aut[i];
   }
 
-  gens = ELM_PLIST(user_param, 2);
+  gens = ELM_PLIST(user_param, 1);
   AssPlist(gens, LEN_PLIST(gens) + 1, p);
   CHANGED_BAG(user_param);
 }
@@ -1710,7 +1710,7 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   const unsigned int* canon;
   Int                 i;
 
-  if (colours == Fail) {
+  if (colours == False) {
     graph = buildBlissDigraphWithColours(digraph, NULL);
   } else {
     graph = buildBlissDigraphWithColours(digraph, colours);
@@ -1719,10 +1719,11 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   autos = NEW_PLIST(T_PLIST, 2);
   n     = INTOBJ_INT(DigraphNrVertices(digraph));
 
-  SET_ELM_PLIST(autos, 1, n);
-  SET_ELM_PLIST(autos, 2, NEW_PLIST(T_PLIST, 0));  // perms of the vertices
+  SET_ELM_PLIST(autos, 1, NEW_PLIST(T_PLIST, 0));  // perms of the vertices
   CHANGED_BAG(autos);
+  SET_ELM_PLIST(autos, 2, n);
   SET_LEN_PLIST(autos, 2);
+
   canon = bliss_digraphs_find_canonical_labeling(
       graph, digraph_hook_function, autos, 0);
 
@@ -1732,21 +1733,19 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   for (i = 0; i < INT_INTOBJ(n); i++) {
     ptr[i] = canon[i];
   }
-  SET_ELM_PLIST(autos, 1, p);
+  SET_ELM_PLIST(autos, 2, p);
 
   bliss_digraphs_release(graph);
-
-  if (LEN_PLIST(ELM_PLIST(autos, 2)) == 0) {
-    AssPlist(ELM_PLIST(autos, 2), 1, IdentityPerm);
-  } else {
-    SortDensePlist(ELM_PLIST(autos, 2));
-    RemoveDupsDensePlist(ELM_PLIST(autos, 2));
+  if (LEN_PLIST(ELM_PLIST(autos, 1)) != 0) {
+    SortDensePlist(ELM_PLIST(autos, 1));
+    RemoveDupsDensePlist(ELM_PLIST(autos, 1));
   }
   CHANGED_BAG(autos);
 
   return autos;
 }
 
+// user_param = [vertex perms, nr vertices, edge perms, nr edges]
 void multidigraph_hook_function(void*               user_param,
                                 unsigned int        N,
                                 const unsigned int* aut) {
@@ -1755,7 +1754,7 @@ void multidigraph_hook_function(void*               user_param,
   UInt   i, n, m;
   bool   stab;
 
-  m = INT_INTOBJ(ELM_PLIST(user_param, 1));  // the nr of vertices
+  m = INT_INTOBJ(ELM_PLIST(user_param, 2));  // the nr of vertices
 
   stab = true;
   for (i = 0; i < m; i++) {
@@ -1764,26 +1763,27 @@ void multidigraph_hook_function(void*               user_param,
     }
   }
   if (stab) {                                    // permutation of the edges
-    n   = INT_INTOBJ(ELM_PLIST(user_param, 2));  // the nr of edges
+    n   = INT_INTOBJ(ELM_PLIST(user_param, 4));  // the nr of edges
     p   = NEW_PERM4(n);
     ptr = ADDR_PERM4(p);
     for (i = 0; i < n; i++) {
       ptr[i] = (aut[2 * i + m] - m) / 2;
     }
-    gens = ELM_PLIST(user_param, 4);
+    gens = ELM_PLIST(user_param, 3);
   } else {  // permutation of the vertices
     p   = NEW_PERM4(m);
     ptr = ADDR_PERM4(p);
     for (i = 0; i < m; i++) {
       ptr[i] = aut[i];
     }
-    gens = ELM_PLIST(user_param, 3);
+    gens = ELM_PLIST(user_param, 1);
   }
 
   AssPlist(gens, LEN_PLIST(gens) + 1, p);
   CHANGED_BAG(user_param);
 }
 
+// user_param = [vertex perms, nr vertices, edge perms, nr edges]
 void multidigraph_colours_hook_function(void*               user_param,
                                         unsigned int        N,
                                         const unsigned int* aut) {
@@ -1792,7 +1792,7 @@ void multidigraph_colours_hook_function(void*               user_param,
   UInt   i, n, m;
   bool   stab;
 
-  m = INT_INTOBJ(ELM_PLIST(user_param, 1));  // the nr of vertices
+  m = INT_INTOBJ(ELM_PLIST(user_param, 2));  // the nr of vertices
 
   stab = true;
   for (i = 0; i < m; i++) {
@@ -1801,20 +1801,20 @@ void multidigraph_colours_hook_function(void*               user_param,
     }
   }
   if (stab) {                                    // permutation of the edges
-    n   = INT_INTOBJ(ELM_PLIST(user_param, 2));  // the nr of edges
+    n   = INT_INTOBJ(ELM_PLIST(user_param, 4));  // the nr of edges
     p   = NEW_PERM4(n);
     ptr = ADDR_PERM4(p);
     for (i = 0; i < n; i++) {
       ptr[i] = (aut[2 * i + 3 * m] - 3 * m) / 2;
     }
-    gens = ELM_PLIST(user_param, 4);
+    gens = ELM_PLIST(user_param, 3);
   } else {  // permutation of the vertices
     p   = NEW_PERM4(m);
     ptr = ADDR_PERM4(p);
     for (i = 0; i < m; i++) {
       ptr[i] = aut[i];
     }
-    gens = ELM_PLIST(user_param, 3);
+    gens = ELM_PLIST(user_param, 1);
   }
 
   AssPlist(gens, LEN_PLIST(gens) + 1, p);
@@ -1828,22 +1828,21 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   const unsigned int* canon;
   Int                 i, m, n;
 
-  if (colours == Fail) {
+  if (colours == False) {
     graph = buildBlissMultiDigraph(digraph);
   } else {
     graph = buildBlissMultiDigraphWithColours(digraph, colours);
   }
-
   autos = NEW_PLIST(T_PLIST, 4);
-  SET_ELM_PLIST(autos, 1, INTOBJ_INT(DigraphNrVertices(digraph)));
+  SET_ELM_PLIST(autos, 1, NEW_PLIST(T_PLIST, 0));  // perms of the vertices
   CHANGED_BAG(autos);
-  SET_ELM_PLIST(autos, 2, INTOBJ_INT(DigraphNrEdges(digraph)));
-  SET_ELM_PLIST(autos, 3, NEW_PLIST(T_PLIST, 0));  // perms of the vertices
+  SET_ELM_PLIST(autos, 2, INTOBJ_INT(DigraphNrVertices(digraph)));
   CHANGED_BAG(autos);
-  SET_ELM_PLIST(autos, 4, NEW_PLIST(T_PLIST, 0));  // perms of the edges
+  SET_ELM_PLIST(autos, 3, NEW_PLIST(T_PLIST, 0));  // perms of the edges
+  SET_ELM_PLIST(autos, 4, INTOBJ_INT(DigraphNrEdges(digraph)));
   CHANGED_BAG(autos);
 
-  if (colours == Fail) {
+  if (colours == False) {
     canon = bliss_digraphs_find_canonical_labeling(
         graph, multidigraph_hook_function, autos, 0);
   } else {
@@ -1864,7 +1863,7 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   q   = NEW_PERM4(n);  // perm of edges
   ptr = ADDR_PERM4(q);
 
-  if (colours == Fail) {
+  if (colours == False) {
     for (i = 0; i < n; i++) {
       ptr[i] = canon[2 * i + m] - m;
     }
@@ -1876,37 +1875,29 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
 
   bliss_digraphs_release(graph);
 
-  // put the canonical labeling (as a list of two perms) into autos[1]
+  // put the canonical labeling (as a list of two perms) into autos[2]
   out = NEW_PLIST(T_PLIST, 2);
   SET_ELM_PLIST(out, 1, p);
   SET_ELM_PLIST(out, 2, q);
   SET_LEN_PLIST(out, 2);
   CHANGED_BAG(out);
 
-  SET_ELM_PLIST(autos, 1, out);
+  SET_ELM_PLIST(autos, 2, out);
   CHANGED_BAG(autos);
 
-  // remove 2nd entry of autos . . .
-  memmove((void*) (ADDR_OBJ(autos) + 2),  // destination
-          (void*) (ADDR_OBJ(autos) + 3),  // source
-          (size_t) 2 * sizeof(Obj));
+  // remove 4th entry of autos (the number of edges) . . .
   SET_LEN_PLIST(autos, 3);
   CHANGED_BAG(autos);
 
-  if (LEN_PLIST(ELM_PLIST(autos, 2)) == 0) {
-    AssPlist(ELM_PLIST(autos, 2), 1, IdentityPerm);
-  } else {
-    SortDensePlist(ELM_PLIST(autos, 2));
-    RemoveDupsDensePlist(ELM_PLIST(autos, 2));
+  if (LEN_PLIST(ELM_PLIST(autos, 1)) != 0) {
+    SortDensePlist(ELM_PLIST(autos, 1));
+    RemoveDupsDensePlist(ELM_PLIST(autos, 1));
   }
-  if (LEN_PLIST(ELM_PLIST(autos, 3)) == 0) {
-    AssPlist(ELM_PLIST(autos, 3), 1, IdentityPerm);
-  } else {
+  if (LEN_PLIST(ELM_PLIST(autos, 3)) != 0) {
     SortDensePlist(ELM_PLIST(autos, 3));
     RemoveDupsDensePlist(ELM_PLIST(autos, 3));
   }
   CHANGED_BAG(autos);
-
   return autos;
 }
 
