@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 <title>GAP (digraphs) - Chapter 5: Attributes and operations</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -88,6 +88,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X870E04307C5F213F">5.3-21 DigraphLayers</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7B2E42327DA118E0">5.3-22 DigraphDegeneracy</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X827C2BD17A4547E3">5.3-23 DigraphDegeneracyOrdering</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X863FDFC4839A3B82">5.3-24 HamiltonianPath</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5_mj.html#X82F900777D677F55">5.4 <span class="Heading">Cayley graphs of groups</span></a>
 </span>
@@ -1037,7 +1038,7 @@ infinity
 
 <p>If <var class="Arg">digraph</var> has no directed cycles, then this function will return <code class="keyw">infinity</code>. If <var class="Arg">digraph</var> contains a loop, then this function will return <code class="code">1</code>.</p>
 
-<p>In the worst case, the method used in this function is a version of the Floyd-Warshall algorithm, and has complexity <code class="code">O(<var class="Arg">n</var> ^ 3)</code>, where <var class="Arg">n</var> is the number of vertices in <var class="Arg">digraph</var>. If the digraph has known automorphisms [see <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-5</span></a>)], then the performance is likely to be better.</p>
+<p>In the worst case, the method used in this function is a version of the Floyd-Warshall algorithm, and has complexity <code class="code">O(<var class="Arg">n</var> ^ 3)</code>, where <var class="Arg">n</var> is the number of vertices in <var class="Arg">digraph</var>. If the digraph has known automorphisms [see <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-9</span></a>)], then the performance is likely to be better.</p>
 
 <p>For symmetric digraphs, see also <code class="func">DigraphUndirectedGirth</code> (<a href="chap5_mj.html#X84688B337BDDBB09"><span class="RefLink">5.3-7</span></a>).</p>
 
@@ -1531,6 +1532,39 @@ fail
 &lt;digraph with 6 vertices, 10 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDegeneracyOrdering(gr);</span>
 [ 1, 6, 5, 2, 4, 3 ]</pre></div>
+
+<p><a id="X863FDFC4839A3B82" name="X863FDFC4839A3B82"></a></p>
+
+<h5>5.3-24 HamiltonianPath</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HamiltonianPath</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<p>Returns: A list or <code class="keyw">fail</code>.</p>
+
+<p>Returns a Hamiltonian path if one exists, <code class="keyw">fail</code> if not.</p>
+
+<p>A <em>Hamiltonian path</em> of a digraph with <code class="code">n</code> vertices is directed cycle of length <code class="code">n</code>. If <var class="Arg">digraph</var> is a digraph that contains a Hamiltonian path, then this function returns one, described in the form used by <code class="func">DigraphAllSimpleCircuits</code> (<a href="chap5_mj.html#X7ECD16838704FAAA"><span class="RefLink">5.3-19</span></a>). Note if <var class="Arg">digraph</var> has 0 or 1 vertices, then <code class="code">HamiltonianPath</code> returns <code class="code">[]</code> or <code class="code">[1]</code>, respectively.</p>
+
+<p>The method used in this attribute has the same worst case complexity as <code class="func">DigraphMonomorphism</code> (<a href="chap7_mj.html#X82D0FCD87D47ACA8"><span class="RefLink">7.3-4</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[]]);</span>
+&lt;digraph with 1 vertex, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HamiltonianPath(g);</span>
+[ 1 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[2], [1]]);</span>
+&lt;digraph with 2 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HamiltonianPath(g);</span>
+[ 1, 2 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[3], [], [2]]);</span>
+&lt;digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HamiltonianPath(g);</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[2], [3], [1]]);</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HamiltonianPath(g);</span>
+[ 1, 2, 3 ]
+</pre></div>
 
 <p><a id="X82F900777D677F55" name="X82F900777D677F55"></a></p>
 

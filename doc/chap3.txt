@@ -92,7 +92,7 @@
         objects of [3Xlist[103X and directed edges [10X[x, y][110X when [10Xf(x, y)[110X is [10Xtrue[110X.[133X
   
         [33X[0;6YThe  action  of  the  group  [3XG[103X on the objects in [3Xlist[103X is stored in the
-        attribute  [2XDigraphGroup[102X  ([14X7.2-5[114X),  and  is used to speed up operations
+        attribute  [2XDigraphGroup[102X  ([14X7.2-9[114X),  and  is used to speed up operations
         like [2XDigraphDiameter[102X ([14X5.3-1[114X).[133X
   
   [8Xfor a Grape package graph[108X
@@ -133,7 +133,7 @@
   [33X[0;0YThe  next  example  illustrates the uses of the fourth and fifth variants of
   this  constructor. The resulting digraph is a strongly regular graph, and it
   is  actually  the  point  graph  of the van Lint-Schrijver partial geometry,
-  [LS81].  The  algebraic  description  is  taken  from  the  seminal paper of
+  [vLS81].  The  algebraic  description  is  taken  from  the seminal paper of
   Calderbank and Kantor [CK86].[133X
   
   [4X[32X  Example  [32X[104X
@@ -868,7 +868,7 @@
   
   [33X[0;0YThis  operation  returns  a  new digraph with the same vertices and edges as
   [3Xdigraph[103X  and  with additional edges consisting of the orbit of the edge [3Xedge[103X
-  under  the action of the [2XDigraphGroup[102X ([14X7.2-5[114X) of [3Xdigraph[103X. If [3Xedge[103X is already
+  under  the action of the [2XDigraphGroup[102X ([14X7.2-9[114X) of [3Xdigraph[103X. If [3Xedge[103X is already
   an edge in [3Xdigraph[103X, then [3Xdigraph[103X is returns unchanged.[133X
   
   [33X[0;0YAn edge is simply a pair of vertices of [3Xdigraph[103X.[133X
@@ -1012,7 +1012,7 @@
   
   [33X[0;0YThis  operation  returns a new digraph with the same vertices as [3Xdigraph[103X and
   with  the  orbit  of  the  edge  [3Xedge[103X  (under the action of the [2XDigraphGroup[102X
-  ([14X7.2-5[114X) of [3Xdigraph[103X) removed. If [3Xedge[103X is not an edge in [3Xdigraph[103X, then [3Xdigraph[103X
+  ([14X7.2-9[114X) of [3Xdigraph[103X) removed. If [3Xedge[103X is not an edge in [3Xdigraph[103X, then [3Xdigraph[103X
   is returned unchanged.[133X
   
   [33X[0;0YAn edge is simply a pair of vertices of [3Xdigraph[103X.[133X

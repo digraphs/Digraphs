@@ -290,7 +290,7 @@
   
   [8Xpickled ([11X.p[111X or [11X.pickle[111X)[108X
         [33X[0;6YDigraphs  are  pickled using the [5XIO[105X package. This is particularly good
-        when the [2XDigraphGroup[102X ([14X7.2-5[114X) is non-trivial.[133X
+        when the [2XDigraphGroup[102X ([14X7.2-9[114X) is non-trivial.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;[127X[104X
@@ -365,7 +365,7 @@
   
   [8Xpickled ([11X.p[111X or [11X.pickle[111X)[108X
         [33X[0;6YDigraphs  are  pickled using the [5XIO[105X package. This is particularly good
-        when the [2XDigraphGroup[102X ([14X7.2-5[114X) is non-trivial.[133X
+        when the [2XDigraphGroup[102X ([14X7.2-9[114X) is non-trivial.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XReadDigraphs([127X[104X
@@ -445,7 +445,7 @@
   
   [8Xpickled ([11X.p[111X or [11X.pickle[111X)[108X
         [33X[0;6YDigraphs  are  pickled using the [5XIO[105X package. This is particularly good
-        when the [2XDigraphGroup[102X ([14X7.2-5[114X) is non-trivial.[133X
+        when the [2XDigraphGroup[102X ([14X7.2-9[114X) is non-trivial.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgrs := [];;[127X[104X

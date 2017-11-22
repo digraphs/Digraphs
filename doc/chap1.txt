@@ -4,7 +4,7 @@
   
   [1X1.1 [33X[0;0YIntroduction[133X[101X
   
-  [33X[0;0YThis is the manual for the [5XDigraphs[105X package version 0.10.1. This package was
+  [33X[0;0YThis is the manual for the [5XDigraphs[105X package version 0.11.0. This package was
   developed at the University of St Andrews by:[133X
   
   [30X    [33X[0;6YJan De Beule,[133X
@@ -43,7 +43,10 @@
   [33X[0;0YThe [5Xbliss[105X tool [JK07] is included in this package. It is an open-source tool
   for  computing automorphism groups and canonical forms of graphs, written by
   Tommi  Junttila  and  Petteri  Kaski. Several of the methods in the [5XDigraphs[105X
-  package rely on [5Xbliss[105X.[133X
+  package  rely  on  [5Xbliss[105X.  If  the  [5XNautyTracesInterface[105X  package for GAP is
+  available  then  it  is  also  possible  to  use  [5Xnauty[105X [MP14] for computing
+  automorphism  groups  and  canonical  forms in [5XDigraphs[105X. See Section [14X7.2[114X for
+  more details.[133X
   
   
   [1X1.1-1 [33X[0;0YDefinitions[133X[101X

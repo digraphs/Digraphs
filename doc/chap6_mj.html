@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 <title>GAP (digraphs) - Chapter 6: Properties of digraphs</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -62,7 +62,8 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B46EA6C7B2DF2FB">6.3-6 IsDirectedTree</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80FC20FA7AC4BC2A">6.3-7 IsUndirectedTree</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X79DFBB198525544E">6.3-8 IsEulerianDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7E91320B8028F5D8">6.3-9 IsCycleDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X79EFEBC37C2D262D">6.3-9 IsHamiltonianDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7E91320B8028F5D8">6.3-10 IsCycleDigraph</a></span>
 </div></div>
 </div>
 
@@ -773,9 +774,42 @@ false
 true
 </pre></div>
 
+<p><a id="X79EFEBC37C2D262D" name="X79EFEBC37C2D262D"></a></p>
+
+<h5>6.3-9 IsHamiltonianDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsHamiltonianDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is Hamiltonian, then this property returns <code class="keyw">true</code>, and <code class="keyw">false</code> if it is not.</p>
+
+<p>A digraph with <code class="code">n</code> vertices is <em>Hamiltonian</em> if it has a directed cycle of length <code class="code">n</code>. See Section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a directed cycle. Note the empty digraphs on 0 and 1 vertices are considered to be Hamiltonian.</p>
+
+<p>The method used in this operation has the worst case complexity as <code class="func">DigraphMonomorphism</code> (<a href="chap7_mj.html#X82D0FCD87D47ACA8"><span class="RefLink">7.3-4</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[]]);</span>
+&lt;digraph with 1 vertex, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsHamiltonianDigraph(g);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[2], [1]]);</span>
+&lt;digraph with 2 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsHamiltonianDigraph(g);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[3], [], [2]]);</span>
+&lt;digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsHamiltonianDigraph(g);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">g := Digraph([[2], [3], [1]]);</span>
+&lt;digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsHamiltonianDigraph(g);</span>
+true
+</pre></div>
+
 <p><a id="X7E91320B8028F5D8" name="X7E91320B8028F5D8"></a></p>
 
-<h5>6.3-9 IsCycleDigraph</h5>
+<h5>6.3-10 IsCycleDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsCycleDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( property )</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>

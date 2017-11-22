@@ -176,7 +176,7 @@
 
 <p>Let <var class="Arg">G</var> be a group acting on the objects in <var class="Arg">list</var> via the action <var class="Arg">act</var>, and let <var class="Arg">adj</var> be a function taking two objects from <var class="Arg">list</var> as arguments and returning <code class="code">true</code> or <code class="code">false</code>. The function <var class="Arg">adj</var> will describe the adjacency between objects from <var class="Arg">list</var>, which is invariant under the action of <var class="Arg">G</var>. This variant of the constructor returns a digraph with vertices the objects of <var class="Arg">list</var> and directed edges <code class="code">[x, y]</code> when <code class="code">f(x, y)</code> is <code class="code">true</code>.</p>
 
-<p>The action of the group <var class="Arg">G</var> on the objects in <var class="Arg">list</var> is stored in the attribute <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-5</span></a>), and is used to speed up operations like <code class="func">DigraphDiameter</code> (<a href="chap5.html#X7F16B9EB8398459C"><span class="RefLink">5.3-1</span></a>).</p>
+<p>The action of the group <var class="Arg">G</var> on the objects in <var class="Arg">list</var> is stored in the attribute <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-9</span></a>), and is used to speed up operations like <code class="func">DigraphDiameter</code> (<a href="chap5.html#X7F16B9EB8398459C"><span class="RefLink">5.3-1</span></a>).</p>
 
 </dd>
 <dt><strong class="Mark">for a Grape package graph</strong></dt>
@@ -211,7 +211,7 @@ Binary Relation on 5 points
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([1 .. 10], ReturnTrue);</span>
 &lt;digraph with 10 vertices, 100 edges&gt;</pre></div>
 
-<p>The next example illustrates the uses of the fourth and fifth variants of this constructor. The resulting digraph is a strongly regular graph, and it is actually the point graph of the van Lint-Schrijver partial geometry, <a href="chapBib.html#biBvanLintSchrijver1981">[LS81]</a>. The algebraic description is taken from the seminal paper of Calderbank and Kantor <a href="chapBib.html#biBCalderbankKantor1986">[CK86]</a>.</p>
+<p>The next example illustrates the uses of the fourth and fifth variants of this constructor. The resulting digraph is a strongly regular graph, and it is actually the point graph of the van Lint-Schrijver partial geometry, <a href="chapBib.html#biBvanLintSchrijver1981">[vLS81]</a>. The algebraic description is taken from the seminal paper of Calderbank and Kantor <a href="chapBib.html#biBCalderbankKantor1986">[CK86]</a>.</p>
 
 
 <div class="example"><pre>
@@ -905,7 +905,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphAddEdgeOrbit</code>( <var class="Arg">digraph</var>, <var class="Arg">edge</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A new digraph.</p>
 
-<p>This operation returns a new digraph with the same vertices and edges as <var class="Arg">digraph</var> and with additional edges consisting of the orbit of the edge <var class="Arg">edge</var> under the action of the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-5</span></a>) of <var class="Arg">digraph</var>. If <var class="Arg">edge</var> is already an edge in <var class="Arg">digraph</var>, then <var class="Arg">digraph</var> is returns unchanged.</p>
+<p>This operation returns a new digraph with the same vertices and edges as <var class="Arg">digraph</var> and with additional edges consisting of the orbit of the edge <var class="Arg">edge</var> under the action of the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-9</span></a>) of <var class="Arg">digraph</var>. If <var class="Arg">edge</var> is already an edge in <var class="Arg">digraph</var>, then <var class="Arg">digraph</var> is returns unchanged.</p>
 
 <p>An edge is simply a pair of vertices of <var class="Arg">digraph</var>.</p>
 
@@ -1047,7 +1047,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphRemoveEdgeOrbit</code>( <var class="Arg">digraph</var>, <var class="Arg">edge</var> )</td><td class="tdright">( operation )</td></tr></table></div>
 <p>Returns: A new digraph.</p>
 
-<p>This operation returns a new digraph with the same vertices as <var class="Arg">digraph</var> and with the orbit of the edge <var class="Arg">edge</var> (under the action of the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-5</span></a>) of <var class="Arg">digraph</var>) removed. If <var class="Arg">edge</var> is not an edge in <var class="Arg">digraph</var>, then <var class="Arg">digraph</var> is returned unchanged.</p>
+<p>This operation returns a new digraph with the same vertices as <var class="Arg">digraph</var> and with the orbit of the edge <var class="Arg">edge</var> (under the action of the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-9</span></a>) of <var class="Arg">digraph</var>) removed. If <var class="Arg">edge</var> is not an edge in <var class="Arg">digraph</var>, then <var class="Arg">digraph</var> is returned unchanged.</p>
 
 <p>An edge is simply a pair of vertices of <var class="Arg">digraph</var>.</p>
 

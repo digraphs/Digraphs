@@ -6,7 +6,7 @@
                               [1XMethods for digraphs[101X
   
   
-                                 Version 0.10.1
+                                 Version 0.11.0
   
   
                                   Jan De Beule
@@ -218,6 +218,7 @@
       5.3-21 DigraphLayers
       5.3-22 DigraphDegeneracy
       5.3-23 DigraphDegeneracyOrdering
+      5.3-24 HamiltonianPath
     5.4 [33X[0;0YCayley graphs of groups[133X
       5.4-1 GroupOfCayleyDigraph
       5.4-2 GeneratorsOfCayleyDigraph
@@ -251,26 +252,31 @@
       6.3-6 IsDirectedTree
       6.3-7 IsUndirectedTree
       6.3-8 IsEulerianDigraph
-      6.3-9 IsCycleDigraph
+      6.3-9 IsHamiltonianDigraph
+      6.3-10 IsCycleDigraph
   7 [33X[0;0YHomomorphisms[133X
     7.1 [33X[0;0YActing on digraphs[133X
       7.1-1 OnDigraphs
       7.1-2 OnMultiDigraphs
-    7.2 [33X[0;0YIsomorphisms, and Canonical labellings[133X
-      7.2-1 AutomorphismGroup
+    7.2 [33X[0;0YIsomorphisms and canonical labellings[133X
+      7.2-1 DigraphsUseNauty
       7.2-2 AutomorphismGroup
-      7.2-3 DigraphCanonicalLabelling
-      7.2-4 DigraphCanonicalLabelling
-      7.2-5 DigraphGroup
-      7.2-6 DigraphOrbits
-      7.2-7 DigraphOrbitReps
-      7.2-8 DigraphSchreierVector
-      7.2-9 DigraphStabilizer
-      7.2-10 IsIsomorphicDigraph
-      7.2-11 IsIsomorphicDigraph
-      7.2-12 IsomorphismDigraphs
-      7.2-13 IsomorphismDigraphs
-      7.2-14 RepresentativeOutNeighbours
+      7.2-3 BlissAutomorphismGroup
+      7.2-4 NautyAutomorphismGroup
+      7.2-5 AutomorphismGroup
+      7.2-6 BlissCanonicalLabelling
+      7.2-7 BlissCanonicalLabelling
+      7.2-8 BlissCanonicalDigraph
+      7.2-9 DigraphGroup
+      7.2-10 DigraphOrbits
+      7.2-11 DigraphOrbitReps
+      7.2-12 DigraphSchreierVector
+      7.2-13 DigraphStabilizer
+      7.2-14 IsIsomorphicDigraph
+      7.2-15 IsIsomorphicDigraph
+      7.2-16 IsomorphismDigraphs
+      7.2-17 IsomorphismDigraphs
+      7.2-18 RepresentativeOutNeighbours
     7.3 [33X[0;0YHomomorphisms of digraphs[133X
       7.3-1 HomomorphismDigraphsFinder
       7.3-2 DigraphHomomorphism

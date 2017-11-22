@@ -28,7 +28,7 @@
 
 <h2>Methods for digraphs</h2>
 
-<p>Version 0.10.1</p>
+<p>Version 0.11.0</p>
 
 </div>
 <p><b>Jan De Beule
@@ -88,7 +88,7 @@
 <div class="contents">
 <h3>Contents<a id="contents" name="contents"></a></h3>
 
-<div class="ContChap"><a href="chap1.html#X7DA617417D78957D">1 <span class="Heading">
+<div class="ContChap"><a href="chap1.html#X7F202ABA780E595D">1 <span class="Heading">
     The <strong class="pkg">Digraphs</strong> package
   </span></a>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap1.html#X7DFB63A97E67C0A1">1.1 <span class="Heading">Introduction</span></a>
@@ -98,7 +98,7 @@
 </span>
 </div></div>
 </div>
-<div class="ContChap"><a href="chap2.html#X7A167E257B137E9A">2 <span class="Heading">Installing <strong class="pkg">Digraphs</strong></span></a>
+<div class="ContChap"><a href="chap2.html#X817088B27F90D596">2 <span class="Heading">Installing <strong class="pkg">Digraphs</strong></span></a>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap2.html#X7DA3059C79842BF3">2.1 <span class="Heading">For those in a hurry</span></a>
 </span>
 </div>
@@ -276,6 +276,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X870E04307C5F213F">5.3-21 DigraphLayers</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7B2E42327DA118E0">5.3-22 DigraphDegeneracy</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X827C2BD17A4547E3">5.3-23 DigraphDegeneracyOrdering</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X863FDFC4839A3B82">5.3-24 HamiltonianPath</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X82F900777D677F55">5.4 <span class="Heading">Cayley graphs of groups</span></a>
 </span>
@@ -322,7 +323,8 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7B46EA6C7B2DF2FB">6.3-6 IsDirectedTree</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X80FC20FA7AC4BC2A">6.3-7 IsUndirectedTree</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X79DFBB198525544E">6.3-8 IsEulerianDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7E91320B8028F5D8">6.3-9 IsCycleDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X79EFEBC37C2D262D">6.3-9 IsHamiltonianDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7E91320B8028F5D8">6.3-10 IsCycleDigraph</a></span>
 </div></div>
 </div>
 <div class="ContChap"><a href="chap7.html#X84975388859F203D">7 <span class="Heading">Homomorphisms</span></a>
@@ -332,23 +334,27 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X808972017C486F1F">7.1-1 OnDigraphs</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7AFBA7608498F9CE">7.1-2 OnMultiDigraphs</a></span>
 </div></div>
-<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7.html#X7E48B9F87A0F22D4">7.2 <span class="Heading">Isomorphisms, and Canonical labellings</span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7.html#X7E48B9F87A0F22D4">7.2 <span class="Heading">Isomorphisms and canonical labellings</span></a>
 </span>
 <div class="ContSSBlock">
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X858C32127A190175">7.2-1 AutomorphismGroup</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X877732B1783C391B">7.2-2 AutomorphismGroup</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7984D48F7F78C50E">7.2-3 DigraphCanonicalLabelling</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X85581B9A80B3F7D8">7.2-4 DigraphCanonicalLabelling</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X803ACEDA7BBAC5B3">7.2-5 DigraphGroup</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X8096C5287E459279">7.2-6 DigraphOrbits</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X8386028782F2D3FF">7.2-7 DigraphOrbitReps</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X8657604E87A25E5F">7.2-8 DigraphSchreierVector</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X78913684795FB256">7.2-9 DigraphStabilizer</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7B4F24B283C9EE28">7.2-10 IsIsomorphicDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7D4A1FA8868DA930">7.2-11 IsIsomorphicDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X8219FE6C839D9457">7.2-12 IsomorphismDigraphs</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7ED93C0F86D9D34F">7.2-13 IsomorphismDigraphs</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7E1C806D81DFE15E">7.2-14 RepresentativeOutNeighbours</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X83E593F3855B122E">7.2-1 DigraphsUseNauty</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X858C32127A190175">7.2-2 AutomorphismGroup</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X8710D68486A0F44B">7.2-3 BlissAutomorphismGroup</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X857758B18144C0CD">7.2-4 NautyAutomorphismGroup</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X877732B1783C391B">7.2-5 AutomorphismGroup</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7D676FE67A6684FF">7.2-6 BlissCanonicalLabelling</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X87DA265D803DB337">7.2-7 BlissCanonicalLabelling</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X877B1D377EC197D7">7.2-8 BlissCanonicalDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X803ACEDA7BBAC5B3">7.2-9 DigraphGroup</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X8096C5287E459279">7.2-10 DigraphOrbits</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X8386028782F2D3FF">7.2-11 DigraphOrbitReps</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X8657604E87A25E5F">7.2-12 DigraphSchreierVector</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X78913684795FB256">7.2-13 DigraphStabilizer</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7B4F24B283C9EE28">7.2-14 IsIsomorphicDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7D4A1FA8868DA930">7.2-15 IsIsomorphicDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X8219FE6C839D9457">7.2-16 IsomorphismDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7ED93C0F86D9D34F">7.2-17 IsomorphismDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7E1C806D81DFE15E">7.2-18 RepresentativeOutNeighbours</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7.html#X7E1A02FE8384C03C">7.3 <span class="Heading">Homomorphisms of digraphs</span></a>
 </span>

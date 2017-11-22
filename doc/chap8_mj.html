@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 <title>GAP (digraphs) - Chapter 8: Finding cliques and independent sets</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -65,7 +65,7 @@
 
 </li>
 </ul>
-<p>See <code class="func">MaximalSymmetricSubdigraphWithoutLoops</code> (<a href="chap3_mj.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>) for more information about this attribute. The <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-1</span></a>) of this symmetric digraph contains the automorphism group of <var class="Arg">digraph</var> as a subgroup. By performing the search for maximal cliques with the help of this larger automorphism group to reduce the search space, the computation time may be reduced. The functions and attributes which return representatives of cliques of <var class="Arg">digraph</var> will return orbit representatives of cliques under the action of the automorphism group of the <em>maximal symmetric subdigraph without loops</em> on sets of vertices.</p>
+<p>See <code class="func">MaximalSymmetricSubdigraphWithoutLoops</code> (<a href="chap3_mj.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>) for more information about this attribute. The <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) of this symmetric digraph contains the automorphism group of <var class="Arg">digraph</var> as a subgroup. By performing the search for maximal cliques with the help of this larger automorphism group to reduce the search space, the computation time may be reduced. The functions and attributes which return representatives of cliques of <var class="Arg">digraph</var> will return orbit representatives of cliques under the action of the automorphism group of the <em>maximal symmetric subdigraph without loops</em> on sets of vertices.</p>
 
 <p>The independent sets of a digraph are equal to the independent sets of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3_mj.html#X874883DD7DD450C4"><span class="RefLink">3.3-9</span></a>). Therefore, overall, the independent sets of <var class="Arg">digraph</var> are equal to the independent sets of the symmetric digraph:</p>
 
@@ -120,7 +120,7 @@ true</pre></div>
 
 <p>This function finds cliques of the digraph <var class="Arg">digraph</var> subject to the conditions imposed by the other arguments as described below. Note that a clique is represented by a list of the vertices which it contains.</p>
 
-<p>Let <code class="code">G</code> denote the automorphism group of the maximal symmetric subdigraph of <var class="Arg">digraph</var> without loops (see <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-1</span></a>) and <code class="func">MaximalSymmetricSubdigraphWithoutLoops</code> (<a href="chap3_mj.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>)).</p>
+<p>Let <code class="code">G</code> denote the automorphism group of the maximal symmetric subdigraph of <var class="Arg">digraph</var> without loops (see <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) and <code class="func">MaximalSymmetricSubdigraphWithoutLoops</code> (<a href="chap3_mj.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>)).</p>
 
 
 <dl>
@@ -265,7 +265,7 @@ fail
 
 <p>The functions will return as many suitable cliques as possible, up to the number <var class="Arg">limit</var>. These functions will find cliques which contain all of the vertices of <var class="Arg">include</var> and which do not contain any of the vertices of <var class="Arg">exclude</var>. The argument <var class="Arg">size</var> restricts the search to those cliques which contain precisely <var class="Arg">size</var> vertices. If the function or attribute has <code class="code">Maximal</code> in its name, then only maximal cliques will be returned; otherwise non-maximal cliques may be returned.</p>
 
-<p>Let <code class="code">G</code> denote the automorphism group of maximal symmetric subdigraph of <var class="Arg">digraph</var> without loops (see <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-1</span></a>) and <code class="func">MaximalSymmetricSubdigraphWithoutLoops</code> (<a href="chap3_mj.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>)).</p>
+<p>Let <code class="code">G</code> denote the automorphism group of maximal symmetric subdigraph of <var class="Arg">digraph</var> without loops (see <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) and <code class="func">MaximalSymmetricSubdigraphWithoutLoops</code> (<a href="chap3_mj.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>)).</p>
 
 
 <dl>
@@ -433,7 +433,7 @@ fail
 
 <p>The functions will return as many suitable independent sets as possible, up to the number <var class="Arg">limit</var>. These functions will find independent sets which contain all of the vertices of <var class="Arg">include</var> and which do not contain any of the vertices of <var class="Arg">exclude</var> The argument <var class="Arg">size</var> restricts the search to those cliques which contain precisely <var class="Arg">size</var> vertices. If the function or attribute has <code class="code">Maximal</code> in its name, then only maximal independent sets will be returned; otherwise non-maximal independent sets may be returned.</p>
 
-<p>Let <code class="code">G</code> denote the <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-1</span></a>) of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3_mj.html#X874883DD7DD450C4"><span class="RefLink">3.3-9</span></a>) of the digraph formed from <var class="Arg">digraph</var> by removing loops and ignoring the multiplicity of edges.</p>
+<p>Let <code class="code">G</code> denote the <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3_mj.html#X874883DD7DD450C4"><span class="RefLink">3.3-9</span></a>) of the digraph formed from <var class="Arg">digraph</var> by removing loops and ignoring the multiplicity of edges.</p>
 
 
 <dl>
@@ -460,8 +460,8 @@ fail
 [ [ 1, 3 ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphIndependentSetsReps(gr);</span>
 [ [ 1 ], [ 1, 3 ] ]
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalIndependentSets(gr);</span>
-[ [ 1, 3 ], [ 1, 4 ], [ 2, 5 ], [ 2, 4 ], [ 3, 5 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Set(DigraphMaximalIndependentSets(gr));</span>
+[ [ 1, 3 ], [ 1, 4 ], [ 2, 4 ], [ 2, 5 ], [ 3, 5 ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMaximalIndependentSets(gr, [1]);</span>
 [ [ 1, 3 ], [ 1, 4 ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphIndependentSets(gr, [], [4, 5]);</span>

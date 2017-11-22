@@ -15,7 +15,10 @@
   Algorithm  Engineering  and  Experiments and the Fourth Workshop on Analytic
   Algorithms and Combinatorics, SIAM (2007), 135--149.
   
-  [[20XLS81[120X]  [16Xvan  Lint, J. H. and Schrijver, A.[116X, [17XConstruction of strongly regular
+  [[20XMP14[120X]  [16XMcKay,  B.  D.  and Piperno, A.[116X, [17XPractical graph isomorphism, \II\ [117X,
+  [18XJournal of Symbolic Computation [118X, [19X60[119X, 0 (2014), 94 - 112, (()).
+  
+  [[20XvLS81[120X]  [16Xvan Lint, J. H. and Schrijver, A.[116X, [17XConstruction of strongly regular
   graphs,   two-weight   codes   and  partial  geometries  by  finite  fields[117X,
   [18XCombinatorica[118X, [19X1[119X, 1 (1981), 63--73.
   

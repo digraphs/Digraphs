@@ -4,7 +4,7 @@
   
   [1X4.1 [33X[0;0YOperators for digraphs[133X[101X
   
-  [8X[10X[3Xdigraph1[103X[10X = [3Xdigraph2[103X[10X[110X[108X
+  [8X[10X[3Xdigraph1[103X[8X[10X = [3Xdigraph2[103X[8X[10X[110X[8X[108X
         [33X[0;6Yreturns  [9Xtrue[109X  if  [3Xdigraph1[103X  and  [3Xdigraph2[103X have the same vertices, and
         [10XDigraphEdges([3Xdigraph1[103X[10X)    =   DigraphEdges([3Xdigraph2[103X[10X)[110X,   up   to   some
         re-ordering of the edge lists.[133X
@@ -12,7 +12,7 @@
         [33X[0;6YNote that this operator does not compare the vertex labels of [3Xdigraph1[103X
         and [3Xdigraph2[103X.[133X
   
-  [8X[10X[3Xdigraph1[103X[10X < [3Xdigraph2[103X[10X[110X[108X
+  [8X[10X[3Xdigraph1[103X[8X[10X < [3Xdigraph2[103X[8X[10X[110X[8X[108X
         [33X[0;6YThis operator returns [9Xtrue[109X if one of the following holds:[133X
   
         [30X    [33X[0;12YThe  number  [22Xn_1[122X of vertices in [3Xdigraph1[103X is less than the number

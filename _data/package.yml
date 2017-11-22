@@ -1,7 +1,7 @@
 name: Digraphs
-version: 0.10.1
-date: 16/08/2017
-description: 
+version: 0.11.0
+date: 22/11/2017
+description: Graphs, digraphs, and multidigraphs in GAP
 
 authors:
     - name: J. De Beule
@@ -23,7 +23,7 @@ GAP: ">=4.8.2"
 
 needed-pkgs:
     - name: "io"
-      version: ">=4.4.4"
+      version: ">=4.4.6"
       url: "https://gap-packages.github.io/io"
     - name: "orb"
       version: ">=4.7.5"
@@ -36,6 +36,9 @@ suggested-pkgs:
     - name: "grape"
       version: ">=4.5"
       url: "http://www.maths.qmul.ac.uk/~leonard/grape/"
+    - name: "nautytracesinterface"
+      version: ">=0.2"
+      url: "http://TODO/"
 
 www: https://gap-packages.github.io/Digraphs
 readme: https://gap-packages.github.io/Digraphs/README.md
@@ -43,7 +46,7 @@ packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/Digraphs/releases/download/v0.10.1/digraphs-0.10.1.tar.gz
+      url: https://github.com/gap-packages/Digraphs/releases/download/v0.11.0/digraphs-0.11.0.tar.gz
 
 abstract: The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
 
@@ -51,7 +54,7 @@ status: deposited
 doc-html: doc/chap0.html
 doc-pdf: doc/manual.pdf
 
-month: Aug
+month: Nov
 year: 2017
 
 contributors:

@@ -9,20 +9,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.10.1">
+##  <!ENTITY VERSION        "0.11.0">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
-##  <!ENTITY IOVERS         "4.4.4">
+##  <!ENTITY IOVERS         "4.4.6">
 ##  <!ENTITY ORBVERS        "4.7.5">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.10.1">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.11.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-17">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
-Subtitle := "",
-Version := "0.10.1",
-Date := "16/08/2017",
+Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
+Version := "0.11.0",
+Date := "22/11/2017",
 ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(
@@ -211,10 +211,11 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">=4.8.2",
-  NeededOtherPackages := [["io", ">=4.4.4"],
+  NeededOtherPackages := [["io", ">=4.4.6"],
                           ["orb", ">=4.7.5"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"],
-                             ["grape", ">=4.5"]],
+                             ["grape", ">=4.5"],
+                             ["nautytracesinterface", ">=0.2"]],
   ExternalConditions := [],
 ),
 
@@ -223,8 +224,9 @@ AvailabilityTest := function()
   digraphs_so := Filename(DirectoriesPackagePrograms("digraphs"),
                           "digraphs.so");
   if (not "digraphs" in SHOW_STAT()) and digraphs_so = fail then
-    Info(InfoWarning, 1, "Digraphs: the kernel module is not compiled, ",
-         "the package cannot be loaded.");
+     LogPackageLoadingMessage(PACKAGE_WARNING,
+                              ["the kernel module is not compiled, ",
+                               "the package cannot be loaded."]);
     return fail;
   fi;
   return true;

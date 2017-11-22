@@ -987,7 +987,7 @@
   [33X[0;0YIn  the  worst  case,  the  method used in this function is a version of the
   Floyd-Warshall algorithm, and has complexity [10XO([3Xn[103X[10X ^ 3)[110X, where [3Xn[103X is the number
   of  vertices  in  [3Xdigraph[103X.  If  the  digraph  has  known  automorphisms [see
-  [2XDigraphGroup[102X ([14X7.2-5[114X)], then the performance is likely to be better.[133X
+  [2XDigraphGroup[102X ([14X7.2-9[114X)], then the performance is likely to be better.[133X
   
   [33X[0;0YFor symmetric digraphs, see also [2XDigraphUndirectedGirth[102X ([14X5.3-7[114X).[133X
   
@@ -1543,6 +1543,41 @@
     [4X[28X<digraph with 6 vertices, 10 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphDegeneracyOrdering(gr);[127X[104X
     [4X[28X[ 1, 6, 5, 2, 4, 3 ][128X[104X
+  [4X[32X[104X
+  
+  [1X5.3-24 HamiltonianPath[101X
+  
+  [29X[2XHamiltonianPath[102X( [3Xdigraph[103X ) [32X attribute
+  [6XReturns:[106X  [33X[0;10YA list or [9Xfail[109X.[133X
+  
+  [33X[0;0YReturns a Hamiltonian path if one exists, [9Xfail[109X if not.[133X
+  
+  [33X[0;0YA  [13XHamiltonian path[113X of a digraph with [10Xn[110X vertices is directed cycle of length
+  [10Xn[110X.  If  [3Xdigraph[103X  is  a  digraph  that contains a Hamiltonian path, then this
+  function returns one, described in the form used by [2XDigraphAllSimpleCircuits[102X
+  ([14X5.3-19[114X).  Note if [3Xdigraph[103X has 0 or 1 vertices, then [10XHamiltonianPath[110X returns
+  [10X[][110X or [10X[1][110X, respectively.[133X
+  
+  [33X[0;0YThe  method  used  in  this  attribute has the same worst case complexity as
+  [2XDigraphMonomorphism[102X ([14X7.3-4[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[]]);[127X[104X
+    [4X[28X<digraph with 1 vertex, 0 edges>[128X[104X
+    [4X[25Xgap>[125X [27XHamiltonianPath(g);[127X[104X
+    [4X[28X[ 1 ][128X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[2], [1]]);[127X[104X
+    [4X[28X<digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XHamiltonianPath(g);[127X[104X
+    [4X[28X[ 1, 2 ][128X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[3], [], [2]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XHamiltonianPath(g);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27Xg := Digraph([[2], [3], [1]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XHamiltonianPath(g);[127X[104X
+    [4X[28X[ 1, 2, 3 ][128X[104X
   [4X[32X[104X
   
   

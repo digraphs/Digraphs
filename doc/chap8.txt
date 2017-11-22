@@ -39,7 +39,7 @@
   [30X    [33X[0;6Y[10XMaximalSymmetricSubdigraphWithoutLoops([110X[3Xdigraph[103X[10X)[110X.[133X
   
   [33X[0;0YSee  [2XMaximalSymmetricSubdigraphWithoutLoops[102X  ([14X3.3-4[114X)  for  more  information
-  about  this  attribute.  The  [2XAutomorphismGroup[102X  ([14X7.2-1[114X)  of  this symmetric
+  about  this  attribute.  The  [2XAutomorphismGroup[102X  ([14X7.2-2[114X)  of  this symmetric
   digraph  contains  the  automorphism  group  of  [3Xdigraph[103X  as  a subgroup. By
   performing  the  search  for  maximal  cliques  with the help of this larger
   automorphism  group  to reduce the search space, the computation time may be
@@ -115,10 +115,10 @@
   represented by a list of the vertices which it contains.[133X
   
   [33X[0;0YLet  [10XG[110X  denote the automorphism group of the maximal symmetric subdigraph of
-  [3Xdigraph[103X     without     loops    (see    [2XAutomorphismGroup[102X    ([14X7.2-1[114X)    and
+  [3Xdigraph[103X     without     loops    (see    [2XAutomorphismGroup[102X    ([14X7.2-2[114X)    and
   [2XMaximalSymmetricSubdigraphWithoutLoops[102X ([14X3.3-4[114X)).[133X
   
-  [8X[3Xhook[103X[108X
+  [8X[3Xhook[103X[8X[108X
         [33X[0;6YThis argument should be a function or [9Xfail[109X.[133X
   
         [33X[0;6YIf  [3Xhook[103X  is  a function, then it should have two arguments [3Xuser_param[103X
@@ -129,7 +129,7 @@
         every new clique found by [10XCliquesFinder[110X to [3Xuser_param[103X, which must be a
         list in this case.[133X
   
-  [8X[3Xuser_param[103X[108X
+  [8X[3Xuser_param[103X[8X[108X
         [33X[0;6YIf  [3Xhook[103X  is  a  function,  then [3Xuser_param[103X can be any [5XGAP[105X object. The
         object [3Xuser_param[103X is used as the first argument for the function [3Xhook[103X.
         For example, [3Xuser_param[103X might be a list, and [10X[3Xhook[103X[10X([3Xuser_param[103X[10X, c)[110X might
@@ -138,12 +138,12 @@
         [33X[0;6YIf  the  value of [3Xhook[103X is [9Xfail[109X, then the value of [3Xuser_param[103X must be a
         list.[133X
   
-  [8X[3Xlimit[103X[108X
+  [8X[3Xlimit[103X[8X[108X
         [33X[0;6YThis  argument should be a positive integer or [9Xinfinity[109X. [10XCliquesFinder[110X
         will  return  after  it  has  found  [3Xlimit[103X  cliques  or  the search is
         complete.[133X
   
-  [8X[3Xinclude[103X and [3Xexclude[103X[108X
+  [8X[3Xinclude[103X[8X and [3Xexclude[103X[8X[108X
         [33X[0;6YThese  arguments should each be a (possibly empty) duplicate-free list
         of vertices of [3Xdigraph[103X (i.e. positive integers less than the number of
         vertices of [3Xdigraph[103X).[133X
@@ -154,18 +154,18 @@
         [33X[0;6YNote that the search may be much more efficient if each of these lists
         is invariant under the action of [10XG[110X on sets of vertices.[133X
   
-  [8X[3Xmax[103X[108X
+  [8X[3Xmax[103X[8X[108X
         [33X[0;6YThis   argument  should  be  [9Xtrue[109X  or  [9Xfalse[109X.  If  [3Xmax[103X  is  true  then
         [10XCliquesFinder[110X  will  only  search for [13Xmaximal[113X cliques. If [9Xmax[109X is [9Xfalse[109X
         then non-maximal cliques may be found.[133X
   
-  [8X[3Xsize[103X[108X
+  [8X[3Xsize[103X[8X[108X
         [33X[0;6YThis  argument  should  be  [9Xfail[109X  or  a positive integer. If [3Xsize[103X is a
         positive integer then [10XCliquesFinder[110X will only search for cliques which
         contain  precisely  [3Xsize[103X vertices. If [3Xsize[103X is [9Xfail[109X then cliques of any
         size may be found.[133X
   
-  [8X[3Xreps[103X[108X
+  [8X[3Xreps[103X[8X[108X
         [33X[0;6YThis argument should be [9Xtrue[109X or [9Xfalse[109X.[133X
   
         [33X[0;6YIf  [3Xreps[103X  is  [9Xtrue[109X  then  the  arguments  [3Xinclude[103X and [3Xexclude[103X are each
@@ -303,7 +303,7 @@
   cliques may be returned.[133X
   
   [33X[0;0YLet  [10XG[110X  denote  the  automorphism  group  of maximal symmetric subdigraph of
-  [3Xdigraph[103X     without     loops    (see    [2XAutomorphismGroup[102X    ([14X7.2-1[114X)    and
+  [3Xdigraph[103X     without     loops    (see    [2XAutomorphismGroup[102X    ([14X7.2-2[114X)    and
   [2XMaximalSymmetricSubdigraphWithoutLoops[102X ([14X3.3-4[114X)).[133X
   
   [8XDistinct cliques[108X
@@ -512,7 +512,7 @@
   [10XMaximal[110X  in  its  name, then only maximal independent sets will be returned;
   otherwise non-maximal independent sets may be returned.[133X
   
-  [33X[0;0YLet  [10XG[110X  denote  the [2XAutomorphismGroup[102X ([14X7.2-1[114X) of the [2XDigraphSymmetricClosure[102X
+  [33X[0;0YLet  [10XG[110X  denote  the [2XAutomorphismGroup[102X ([14X7.2-2[114X) of the [2XDigraphSymmetricClosure[102X
   ([14X3.3-9[114X)  of  the  digraph formed from [3Xdigraph[103X by removing loops and ignoring
   the multiplicity of edges.[133X
   
@@ -546,8 +546,8 @@
     [4X[28X[ [ 1, 3 ] ][128X[104X
     [4X[25Xgap>[125X [27XDigraphIndependentSetsReps(gr);[127X[104X
     [4X[28X[ [ 1 ], [ 1, 3 ] ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphMaximalIndependentSets(gr);[127X[104X
-    [4X[28X[ [ 1, 3 ], [ 1, 4 ], [ 2, 5 ], [ 2, 4 ], [ 3, 5 ] ][128X[104X
+    [4X[25Xgap>[125X [27XSet(DigraphMaximalIndependentSets(gr));[127X[104X
+    [4X[28X[ [ 1, 3 ], [ 1, 4 ], [ 2, 4 ], [ 2, 5 ], [ 3, 5 ] ][128X[104X
     [4X[25Xgap>[125X [27XDigraphMaximalIndependentSets(gr, [1]);[127X[104X
     [4X[28X[ [ 1, 3 ], [ 1, 4 ] ][128X[104X
     [4X[25Xgap>[125X [27XDigraphIndependentSets(gr, [], [4, 5]);[127X[104X
