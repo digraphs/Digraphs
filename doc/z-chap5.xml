@@ -26,6 +26,7 @@
 
   <Section><Heading>Connectivity and cycles</Heading>
     <#Include Label="IsAcyclicDigraph">
+    <#Include Label="IsChainDigraph">
     <#Include Label="IsConnectedDigraph">
     <#Include Label="IsBiconnectedDigraph">
     <#Include Label="IsStronglyConnectedDigraph">
