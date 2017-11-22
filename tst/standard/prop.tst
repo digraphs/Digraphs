@@ -14,6 +14,32 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
+#T# IsChainDigraph
+gap> IsChainDigraph(ChainDigraph(1));
+true
+gap> IsChainDigraph(ChainDigraph(7));
+true
+gap> IsChainDigraph(CycleDigraph(1));
+false
+gap> IsChainDigraph(CycleDigraph(7));
+false
+gap> IsChainDigraph(Digraph([[2],[3],[4],[5],[5]]));
+false
+gap> IsChainDigraph(Digraph([[2,3],[4],[5],[],[]]));
+false
+gap> IsChainDigraph(Digraph([[2],[3,4],[],[]]));
+false
+gap> G := QuaternionGroup(8);
+<pc group of size 8 with 3 generators>
+gap> IsChainDigraph(CayleyDigraph(G));
+false
+gap> IsChainDigraph(DigraphReverse(ChainDigraph(21)));
+true
+gap> IsChainDigraph(Digraph([[],[3],[4],[]]));
+false
+gap> IsChainDigraph(Digraph([[2],[3],[4],[]]));
+true
+
 #T# IsMultiDigraph
 gap> gr1 := Digraph([]);
 <digraph with 0 vertices, 0 edges>
@@ -1292,6 +1318,7 @@ true
 gap> Unbind(adj);
 gap> Unbind(circuit);
 gap> Unbind(complete100);
+gap> Unbind(G);
 gap> Unbind(g1);
 gap> Unbind(g2);
 gap> Unbind(g3);
