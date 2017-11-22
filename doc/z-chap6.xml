@@ -28,6 +28,7 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="AutomorphismGroupDigraphColours">
     <#Include Label="BlissCanonicalLabelling">
     <#Include Label="BlissCanonicalLabellingColours">
+    <#Include Label="BlissCanonicalDigraph">
     <#Include Label="DigraphGroup">
     <#Include Label="DigraphOrbits">
     <#Include Label="DigraphOrbitReps">

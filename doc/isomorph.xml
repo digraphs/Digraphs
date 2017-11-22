@@ -81,7 +81,7 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7), (1,2)(6,8)
       Attr="BlissAutomorphismGroup"/>. These groups are, of course, equal but
     their generating sets may differ. <P/>
 
-    See also <Ref Func="DigraphsUseNauty"/>, and <Ref Func="DigraphsUseNauty"/>.
+    See also <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
     <Log><![CDATA[
 gap> NautyAutomorphismGroup(JohnsonDigraph(5, 2));
@@ -770,5 +770,44 @@ gap> digraph2 := Digraph([[1], [1, 1], [2]]);
 gap> IsomorphismDigraphs(digraph1, digraph2, [1, 2, 2], [2, 1, 2]);
 [ (1,2), (1,2,3) ]]]></Example>
 </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BlissCanonicalDigraph">
+<ManSection>
+  <Attr Name="BlissCanonicalDigraph" Arg="digraph"/>
+  <Attr Name="NautyCanonicalDigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    The attribute <C>BlissCanonicalLabelling</C> returns the canonical
+    representative found by applying <Ref Attr="BlissCanonicalLabelling"
+      Label="for a digraph"/>. The digraph returned is canonical in the sense
+    that
+
+    <List>
+      <Item>
+        <C>BlissCanonicalDigraph(<A>digraph</A>)</C> and <A>digraph</A> are
+        isomorphic as digraphs; and
+      </Item>
+      <Item>
+        If <C>gr</C> is any digraph then <C>BlissCanonicalDigraph(gr)</C>
+        and <C>BlissCanonicalDigraph(<A>digraph</A>)</C> are equal if and only
+        if <C>gr</C> and <A>digraph</A> are isomorphic as digraphs.
+      </Item>
+    </List>
+
+    Analogously, the attribute <C>NautyCanonicalLabelling</C> returns the
+    canonical representative found by applying <Ref
+      Attr="NautyCanonicalLabelling" Label="for a digraph"/>.
+
+    <Example><![CDATA[
+gap> digraph := Digraph([[1], [2, 3], [3], [1, 2, 3]]);
+<digraph with 4 vertices, 7 edges>
+gap> canon := BlissCanonicalDigraph(digraph);
+<digraph with 4 vertices, 7 edges>
+gap> OutNeighbours(canon);
+[ [ 1 ], [ 2, 4 ], [ 1, 2, 4 ], [ 4 ] ]
+]]></Example>
+  </Description>
 </ManSection>
 <#/GAPDoc>
