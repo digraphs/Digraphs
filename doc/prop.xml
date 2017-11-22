@@ -8,6 +8,7 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="IsChainDigraph">
 <ManSection>
   <Prop Name="IsChainDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
