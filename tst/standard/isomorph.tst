@@ -806,10 +806,11 @@ fail
 gap> nauty := not DIGRAPHS_UsingBliss;;
 gap> DigraphsUseNauty();
 gap> DigraphsUseBliss();
+gap> p := DIGRAPHS_NautyAvailable;;
 gap> MakeReadWriteGlobal("DIGRAPHS_NautyAvailable");
 gap> DIGRAPHS_NautyAvailable := false;;
 gap> DigraphsUseNauty();
-gap> DIGRAPHS_NautyAvailable := true;;
+gap> DIGRAPHS_NautyAvailable := p;;
 gap> MakeReadOnlyGlobal("DIGRAPHS_NautyAvailable");
 gap> if not nauty then 
 >      DigraphsUseBliss();
