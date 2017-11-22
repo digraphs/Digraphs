@@ -4,6 +4,33 @@ Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.11.0 (released 22/11/2017)
+
+The principal change in Digraphs version 0.11.0 is the addition of 
+support for computing automorphisms, canonical labellings, and isomorphisms of
+digraphs with [nauty](http://pallini.di.uniroma1.it/). This
+functionality requires the [NautyTracesInterface
+package](https://github.com/sebasguts/NautyTracesInterface) for GAP, version 0.2
+or newer. However, this is not a required package, and the default engine
+remains [bliss](http://www.tcs.hut.fi/Software/bliss/). It is possible to
+specify the engine that is used by Digraphs. These changes to Digraphs were made
+by [James D. Mitchell](http://goo.gl/ZtViV6)].
+
+In particular, version 0.11.0 includes the following changes:
+
+* `BlissAutomorphismGroup` and `NautyAutomorphismGroup` are introduced.
+* `DigraphCanonicalLabelling` is replaced by `BlissCanonicalLabelling` and
+  `NautyCanonicalLabelling`.
+* `BlissCanonicalDigraph` and `NautyCanonicalDigraph` are introduced [Chris
+  Russell and [James D. Mitchell](http://goo.gl/ZtViV6)].
+* `DigraphsUseNauty` and `DigraphsUseBliss` are introduced.
+
+The property `IsHamiltonianDigraph` and the attribute `HamiltonianPath` were
+added by Luke Elliott.  Additionally, this release fixes several bugs, including
+one in `DigraphSymmetricClosure` and one in `CompleteDigraph`.
+
+Digraphs now requires version 4.4.6 of the IO package.
+
 ## Version 0.10.1 (released 16/08/2017)
 This is a minor release, which contains performance improvements, and fixes a
 bug in `Digraph` that could cause a segmentation fault.

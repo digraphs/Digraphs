@@ -9,19 +9,19 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.10.1">
+##  <!ENTITY VERSION        "0.11.0">
 ##  <!ENTITY GAPVERS        "4.8.2">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.4.6">
 ##  <!ENTITY ORBVERS        "4.7.5">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.10.1">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.11.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-17">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "0.10.1",
+Version := "0.11.0",
 Date := "16/08/2017",
 ArchiveFormats := ".tar.gz",
 
@@ -215,7 +215,7 @@ Dependencies := rec(
                           ["orb", ">=4.7.5"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"],
                              ["grape", ">=4.5"],
-                             ["nautytracesinterface", ">=0.1"]],
+                             ["nautytracesinterface", ">=0.2"]],
   ExternalConditions := [],
 ),
 
