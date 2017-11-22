@@ -11,6 +11,7 @@
 DeclareProperty("IsAcyclicDigraph", IsDigraph);
 DeclareProperty("IsBipartiteDigraph", IsDigraph);
 DeclareProperty("IsBiconnectedDigraph", IsDigraph);
+DeclareProperty("IsChainDigraph", IsDigraph);
 DeclareProperty("IsCompleteDigraph", IsDigraph);
 DeclareProperty("IsCompleteBipartiteDigraph", IsDigraph);
 DeclareProperty("IsConnectedDigraph", IsDigraph);

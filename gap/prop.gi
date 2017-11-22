@@ -8,6 +8,11 @@
 #############################################################################
 ##
 
+InstallMethod(IsChainDigraph, "for a digraph", [IsDigraph],
+function(digraph)
+  return IsDirectedTree(digraph) and IsSubset([0, 1], OutDegreeSet(digraph));
+end);
+
 InstallMethod(IsCycleDigraph, "for a digraph", [IsDigraph],
 function(digraph)
   return DigraphNrVertices(digraph) > 0 and IsStronglyConnectedDigraph(digraph)
