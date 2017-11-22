@@ -25,9 +25,9 @@ gap> IsChainDigraph(CycleDigraph(7));
 false
 gap> IsChainDigraph(Digraph([[2], [3], [4], [5], [5]]));
 false
-gap> IsChainDigraph(Digraph([[2,3], [4], [5], [], []]));
+gap> IsChainDigraph(Digraph([[2, 3], [4], [5], [], []]));
 false
-gap> IsChainDigraph(Digraph([[2], [3,4], [], []]));
+gap> IsChainDigraph(Digraph([[2], [3, 4], [], []]));
 false
 gap> G := QuaternionGroup(8);
 <pc group of size 8 with 3 generators>
