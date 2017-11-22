@@ -58,11 +58,11 @@ end);
 # false.
 InstallGlobalFunction(DIGRAPHS_RunTest,
 function(func)
-  local nauty, Reset, pass;
+  local nauty, reset, pass;
 
   nauty := not DIGRAPHS_UsingBliss;
 
-  Reset := function()
+  reset := function()
     if nauty then
       DigraphsUseNauty();
     else
@@ -74,7 +74,7 @@ function(func)
   DigraphsUseBliss();
   Print("\033[0m");
   if not func() then
-    Reset();
+    reset();
     return false;
   fi;
 
@@ -83,7 +83,7 @@ function(func)
     DigraphsUseNauty();
     Print("\033[0m");
     if not func() then
-      Reset();
+      reset();
       return false;
     fi;
 
@@ -101,11 +101,11 @@ function(func)
     DIGRAPHS_NautyAvailable := true;
     MakeReadOnlyGlobal("DIGRAPHS_NautyAvailable");
     if not pass then
-      Reset();
+      reset();
       return false;
     fi;
   fi;
-  Reset();
+  reset();
   return true;
 end);
 
