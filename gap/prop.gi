@@ -19,8 +19,9 @@ function(digraph)
   if DigraphNrEdges(digraph) = 0 and DigraphNrVertices(digraph) = 1 then
     return true;
   else
-    return IsConnectedDigraph(digraph) and InDegreeSet(digraph) = [0,1] 
-           and OutDegreeSet(digraph) = [0,1] and IsCycleDigraph(digraph) = false;
+    return IsConnectedDigraph(digraph) and InDegreeSet(digraph) = [0,1]
+    and OutDegreeSet(digraph) = [0,1]
+    and IsCycleDigraph(digraph) = false;
   fi;
 end);
 
