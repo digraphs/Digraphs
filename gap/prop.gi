@@ -15,7 +15,7 @@ function(digraph)
   else
     return IsConnectedDigraph(digraph) and InDegreeSet(digraph) = [0, 1]
            and OutDegreeSet(digraph) = [0, 1]
-           and IsCycleDigraph(digraph) = false;
+           and not IsCycleDigraph(digraph);
   fi;
 end);
 
