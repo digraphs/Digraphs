@@ -10,13 +10,7 @@
 
 InstallMethod(IsChainDigraph, "for a digraph", [IsDigraph],
 function(digraph)
-  if DigraphNrEdges(digraph) = 0 and DigraphNrVertices(digraph) = 1 then
-    return true;
-  else
-    return IsConnectedDigraph(digraph) and InDegreeSet(digraph) = [0, 1]
-           and OutDegreeSet(digraph) = [0, 1]
-           and not IsCycleDigraph(digraph);
-  fi;
+  return IsDirectedTree(digraph) and IsSubset([0, 1], OutDegreeSet(digraph));
 end);
 
 InstallMethod(IsCycleDigraph, "for a digraph", [IsDigraph],

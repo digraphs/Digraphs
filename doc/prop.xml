@@ -18,10 +18,8 @@
     <A>digraph</A>, and <K>false</K> if it is not; see <Ref
       Oper="ChainDigraph"/>.<P/>
 
-    A digraph is a <E>chain</E> if and only if it is either a digraph with
-    one vertex and no edges, or it is connected, not a cycle, and the set of
-    the in degrees and the set of the out degrees of the digraph are both 
-    <M>\{0, 1\}</M>.
+    A digraph is a <E>chain</E> if and only if it is a directed tree, in which
+    every vertex has out degree at most one..
 
 <Example><![CDATA[
 gap> gr := Digraph([[1, 3], [2, 3], [3]]);
