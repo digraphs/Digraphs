@@ -19,8 +19,8 @@
       Oper="ChainDigraph"/>.<P/>
 
     A digraph is a <E>chain</E> if and only if it is a directed tree, in which
-    every vertex has out degree at most one; see <Ref Oper="IsDirectedTree"/>
-    and <Ref Oper="OutDegrees"/>.
+    every vertex has out degree at most one; see <Ref Prop="IsDirectedTree"/>
+    and <Ref Attr="OutDegrees"/>.
 
 <Example><![CDATA[
 gap> gr := Digraph([[1, 3], [2, 3], [3]]);
