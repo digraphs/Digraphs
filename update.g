@@ -114,7 +114,10 @@ GeneratePackageYML:=function(pkg)
     fi;
 
     AppendTo(stream, "abstract: |\n");
-    AppendTo(stream, "    ", pkg.AbstractHTML, "\n\n");
+    for tmp in SplitString(pkg.AbstractHTML,"\n") do
+        AppendTo(stream, "    ", tmp, "\n");
+    od;
+    AppendTo(stream, "\n");
 
     AppendTo(stream, "status: ", pkg.Status, "\n");
     if IsRecord(pkg.PackageDoc) then
@@ -129,7 +132,6 @@ GeneratePackageYML:=function(pkg)
         fi;
     fi;
 
-    # TODO: use AbstractHTML?
     # TODO: use Keywords?
 
     CloseStream(stream);
