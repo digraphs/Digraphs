@@ -43,3 +43,5 @@ DeclareGlobalFunction("DigraphsUseNauty");
 BindGlobal("DIGRAPHS_UsingBliss", true);
 
 DeclareGlobalFunction("DIGRAPHS_ValidateVertexColouring");
+
+DeclareOperation("IsDigraphAutomorphism", [IsDigraph, IsPerm]);

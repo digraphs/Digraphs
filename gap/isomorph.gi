@@ -554,3 +554,14 @@ function(n, partition, method)
                 "<partition[i]> is the colour of vertex i; in the second\n",
                 "form, <partition[i]> is the list of vertices with colour i,");
 end);
+
+InstallMethod(IsDigraphAutomorphism,
+"for a digraph and a permutation",
+[IsDigraph, IsPerm],
+function(gr, x)
+  if IsMultiDigraph(gr) then
+    ErrorNoReturn("Digraphs: IsDigraphAutomorphism: usage,\n",
+                  "the first argument <gr> must not have multiple edges,");
+  fi;
+  return OnDigraphs(gr, x) = gr;
+end);
