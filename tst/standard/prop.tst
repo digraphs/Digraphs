@@ -1178,6 +1178,11 @@ gap> gr := Digraph([[2], [3], [], [3]]);
 <digraph with 4 vertices, 3 edges>
 gap> IsBiconnectedDigraph(gr);
 false
+gap> IsBiconnectedDigraph(DigraphFromGraph6String("FlCX?"));
+false
+gap> IsBiconnectedDigraph(Digraph([[2, 4, 5], [1, 4], [4, 7], [1, 2, 3, 5, 6,
+>                                   7], [1, 4], [4, 7], [3, 4, 6]]));
+false
 
 #T# IsHamiltonianDigraph
 gap> g := Digraph([]);

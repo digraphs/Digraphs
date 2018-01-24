@@ -70,7 +70,7 @@ function(digraph)
           w_stack[depth] := 0;
           break;
         elif parent[v] <> w and num[w] < low[v] then
-          low[v] := low[w];
+          low[v] := num[w];
         fi;
       fi;
     od;
