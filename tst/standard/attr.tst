@@ -1503,6 +1503,11 @@ gap> ArticulationPoints(Digraph([[1], [2]]));
 [  ]
 gap> ArticulationPoints(Digraph([[2], [1]]));
 [  ]
+gap> ArticulationPoints(DigraphFromGraph6String("FlCX?"));
+[ 3, 4 ]
+gap> ArticulationPoints(Digraph([[2, 4, 5], [1, 4], [4, 7], [1, 2, 3, 5, 6, 7],
+>                                [1, 4], [4, 7], [3, 4, 6]]));
+[ 4 ]
 
 #T# HamiltonianPath
 gap> g := Digraph([]);
