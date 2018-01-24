@@ -822,7 +822,7 @@ gap> OutNeighbours(canon);
     of the digraph <A>digraph</A>. An permutation <C>g</C> on the vertices of a
     digraph <C>gr</C> is an automorphism if it satisfies: <C>(u, v)</C> is an
     edge of <C>gr</C> if and only if <C>(g(u), g(v))</C> is an edge of <C>gr</C>
-    for all vertices <C>u</C> and <C>v</C> in digraph. See also <Ref
+    for all vertices <C>u</C> and <C>v</C> in <C>gr</C>. See also <Ref
       Attr="AutomorphismGroup" Label="for a digraph" />.
     <Example><![CDATA[
 gap> digraph := Digraph([[1], [1, 2], [1, 3]]);
