@@ -327,9 +327,6 @@ DIGRAPHS_ManSectionType := function(op)
     class := "Oper";
     if IS_IDENTICAL_OBJ(op, IS_OBJECT) then
       class := "Filt";
-    elif op in CONSTRUCTORS then
-      class := "Constructor";
-      # seem to never get one
     elif IsFilter(op) then
       class := "Filt";
       flags := TRUES_FLAGS(FLAGS_FILTER(op));
