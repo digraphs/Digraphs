@@ -61,7 +61,7 @@
 
 <h5>9.1-1 Splash</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Splash</code>( <var class="Arg">str</var>[, <var class="Arg">opts</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Splash</code>( <var class="Arg">str</var>[, <var class="Arg">opts</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: Nothing.</p>
 
 <p>This function attempts to convert the string <var class="Arg">str</var> into a pdf document and open this document, i.e. to splash it all over your monitor.</p>
@@ -112,8 +112,8 @@
 
 <h5>9.1-2 DotDigraph</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotVertexLabelledDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotVertexLabelledDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A string.</p>
 
 <p><code class="code">DotDigraph</code> produces a graphical representation of the digraph <var class="Arg">digraph</var>. Vertices are displayed as circles, numbered consistently with <var class="Arg">digraph</var>. Edges are displayed as arrowed lines between vertices, with the arrowhead of each line pointing towards the range of the edge.</p>
@@ -139,7 +139,7 @@
 
 <h5>9.1-3 DotSymmetricDigraph</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotSymmetricDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotSymmetricDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A string.</p>
 
 <p>This function produces a graphical representation of the symmetric digraph <var class="Arg">digraph</var>. <code class="code">DotSymmetricDigraph</code> will return an error if <var class="Arg">digraph</var> is not a symmetric digraph. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>).</p>
@@ -188,10 +188,10 @@ true
 
 <h5>9.2-1 DigraphFromGraph6String</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromGraph6String</code>( <var class="Arg">str</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromDigraph6String</code>( <var class="Arg">str</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromSparse6String</code>( <var class="Arg">str</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromDiSparse6String</code>( <var class="Arg">str</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromGraph6String</code>( <var class="Arg">str</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromDigraph6String</code>( <var class="Arg">str</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromSparse6String</code>( <var class="Arg">str</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromDiSparse6String</code>( <var class="Arg">str</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
 <p>If <var class="Arg">str</var> is a string encoding a graph in Graph6, Digraph6, Sparse6 or DiSparse6 format, then the corresponding function returns a digraph. In the case of either Graph6 or Sparse6, formats which do not support directed edges, this will be a digraph such that for every edge, the edge going in the opposite direction is also present.</p>
@@ -218,10 +218,10 @@ true
 
 <h5>9.2-2 Graph6String</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Graph6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Digraph6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Sparse6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DiSparse6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Graph6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Digraph6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Sparse6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DiSparse6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A string.</p>
 
 <p>These four functions return a highly compressed string fully describing the digraph <var class="Arg">digraph</var>.</p>
@@ -244,7 +244,7 @@ true
 
 <h5>9.2-3 DigraphFile</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">coder</var>][, <var class="Arg">mode</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">coder</var>][, <var class="Arg">mode</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: An IO file object.</p>
 
 <p>If <var class="Arg">filename</var> is a string representing the name of a file, then <code class="code">DigraphFile</code> returns an <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> package file object for that file.</p>
@@ -304,7 +304,7 @@ true
 
 <h5>9.2-4 ReadDigraphs</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadDigraphs</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>][, <var class="Arg">n</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadDigraphs</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>][, <var class="Arg">n</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph, or a list of digraphs.</p>
 
 <p>If <var class="Arg">filename</var> is a string containing the name of a file containing encoded digraphs or an <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> file object created using <code class="func">DigraphFile</code> (<a href="chap9_mj.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-3</span></a>), then <code class="code">ReadDigraphs</code> returns the digraphs encoded in the file as a list. Note that if <var class="Arg">filename</var> is a compressed file, which has been compressed appropriately to give a filename extension of <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then <code class="code">ReadDigraphs</code> can read <var class="Arg">filename</var> without it first needing to be decompressed.</p>
@@ -373,7 +373,7 @@ true
 
 <h5>9.2-5 WriteDigraphs</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WriteDigraphs</code>( <var class="Arg">filename</var>, <var class="Arg">digraphs</var>[, <var class="Arg">encoder</var>][, <var class="Arg">mode</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WriteDigraphs</code>( <var class="Arg">filename</var>, <var class="Arg">digraphs</var>[, <var class="Arg">encoder</var>][, <var class="Arg">mode</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>If <var class="Arg">digraphs</var> is a list of digraphs or a digraph and <var class="Arg">filename</var> is a string or an <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> file object created using <code class="func">DigraphFile</code> (<a href="chap9_mj.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-3</span></a>), then <code class="code">WriteDigraphs</code> writes the digraphs to the file represented by <var class="Arg">filename</var>. If the supplied filename ends in one of the extensions <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the file will be compressed appropriately. Excluding these extensions, if the file ends with an extension in the list below, the corresponding graph format will be used to encode it. If such an extension is not included, an appropriate format will be chosen intelligently, and an extension appended, to minimise file size.</p>
 
 <p>For more verbose information on the progress of the function, set the info level of <var class="Arg">InfoDigraphs</var> to 1 or higher, using <code class="code">SetInfoLevel</code>.</p>
@@ -434,7 +434,7 @@ IO_OK
 
 <h5>9.2-6 IteratorFromDigraphFile</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorFromDigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorFromDigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: An iterator.</p>
 
 <p>If <var class="Arg">filename</var> is a string representing the name of a file containing encoded digraphs, then <code class="code">IteratorFromDigraphFile</code> returns an iterator for which the value of <code class="func">NextIterator</code> (<a href="../../../doc/ref/chap30_mj.html#X879F62F77D1D1179"><span class="RefLink">Reference: NextIterator</span></a>) is the next digraph encoded in the file.</p>
@@ -462,8 +462,8 @@ IO_OK
 
 <h5>9.2-7 DigraphPlainTextLineEncoder</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPlainTextLineEncoder</code>( <var class="Arg">delimiter1</var>[, <var class="Arg">delimiter2</var>], <var class="Arg">offset</var> )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPlainTextLineDecoder</code>( <var class="Arg">delimiter1</var>[, <var class="Arg">delimiter2</var>], <var class="Arg">offset</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPlainTextLineEncoder</code>( <var class="Arg">delimiter1</var>[, <var class="Arg">delimiter2</var>], <var class="Arg">offset</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPlainTextLineDecoder</code>( <var class="Arg">delimiter1</var>[, <var class="Arg">delimiter2</var>], <var class="Arg">offset</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: A string.</p>
 
 <p>These two functions return a function which encodes or decodes a digraph in a plain text format.</p>
@@ -492,7 +492,7 @@ IO_OK
 
 <h5>9.2-8 TournamentLineDecoder</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; TournamentLineDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; TournamentLineDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
 <p>This function takes a string <var class="Arg">str</var>, decodes it, and then returns the tournament [see <code class="func">IsTournament</code> (<a href="chap6_mj.html#X7DD8D1A185EBE865"><span class="RefLink">6.1-11</span></a>)] which it defines, according to the following rules.</p>
@@ -515,7 +515,7 @@ IO_OK
 
 <h5>9.2-9 AdjacencyMatrixUpperTriangleLineDecoder</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrixUpperTriangleLineDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrixUpperTriangleLineDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
 <p>This function takes a string <var class="Arg">str</var>, decodes it, and then returns the topologically sorted digraph [see <code class="func">DigraphTopologicalSort</code> (<a href="chap5_mj.html#X785C30378064CF47"><span class="RefLink">5.1-7</span></a>)] which it defines, according to the following rules.</p>
@@ -542,7 +542,7 @@ IO_OK
 
 <h5>9.2-10 TCodeDecoder</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; TCodeDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; TCodeDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
 <p>If <var class="Arg">str</var> is a string consisting of at least two non-negative integers separated by spaces, then this function will attempt to return the digraph which it defines as a TCode string.</p>
@@ -568,8 +568,8 @@ IO_OK
 
 <h5>9.2-11 PlainTextString</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PlainTextString</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromPlainTextString</code>( <var class="Arg">s</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PlainTextString</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromPlainTextString</code>( <var class="Arg">s</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A string.</p>
 
 <p><var class="Arg">PlainTextString</var> takes a single digraph, and returns a string describing the edges of that digraph. <var class="Arg">DigraphFromPlainTextString</var> takes such a string and returns the digraph which it describes. Each edge is written as a pair of integers separated by a single space. The edges themselves are separated by a double space. Vertex numbers are reduced by 1 when they are encoded, so that vertices in the string are labelled starting at 0.</p>
@@ -590,8 +590,8 @@ IO_OK
 
 <h5>9.2-12 WritePlainTextDigraph</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WritePlainTextDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">digraph</var>, <var class="Arg">delimiter</var>, <var class="Arg">offset</var> )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadPlainTextDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">delimiter</var>, <var class="Arg">offset</var>, <var class="Arg">ignore</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WritePlainTextDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">digraph</var>, <var class="Arg">delimiter</var>, <var class="Arg">offset</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadPlainTextDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">delimiter</var>, <var class="Arg">offset</var>, <var class="Arg">ignore</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>These functions write and read a single digraph in a human-readable plain text format as follows: each line contains a single edge, and each edge is written as a pair of integers separated by the string <var class="Arg">delimiter</var>.</p>
 
 <p><var class="Arg">filename</var> should be the name of a file which will be written to or read from, and <var class="Arg">offset</var> should be an integer which is added to each vertex number as it is written or read. For example, if <code class="code">WritePlainTextDigraph</code> is called with <var class="Arg">offset</var> <code class="code">-1</code>, then the vertices will be numbered in the file starting from 0 instead of 1 - <code class="code">ReadPlainTextDigraph</code> would then need to be called with <var class="Arg">offset</var> <code class="code">1</code> to convert back to the original graph.</p>
@@ -612,8 +612,8 @@ IO_OK
 
 <h5>9.2-13 WriteDIMACSDigraph</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WriteDIMACSDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadDIMACSDigraph</code>( <var class="Arg">filename</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WriteDIMACSDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadDIMACSDigraph</code>( <var class="Arg">filename</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>These operations write or read the single symmetric digraph <var class="Arg">digraph</var> to or from a file in DIMACS format, as appropriate. The operation <code class="code">WriteDIMACSDigraph</code> records the vertices and edges of <var class="Arg">digraph</var>. The vertex labels of <var class="Arg">digraph</var> will be recorded only if they are integers. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>) and <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>).</p>
 
 <p>The first argument <var class="Arg">filename</var> should be the name of the file which will be written to or read from. A file can contain one symmetric digraph in DIMACS format. If <var class="Arg">filename</var> ends in one of <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the file is compressed, or decompressed, appropriately.</p>

@@ -8,7 +8,7 @@
   
   [1X3.1-1 IsDigraph[101X
   
-  [29X[2XIsDigraph[102X[32X Category
+  [33X[1;0Y[29X[2XIsDigraph[102X[32X Category[133X
   
   [33X[0;0YEvery   digraph  in  [5XDigraphs[105X  belongs  to  the  category  [10XIsDigraph[110X.  Basic
   attributes   and  operations  for  digraphs  are:  [2XDigraphVertices[102X  ([14X5.1-1[114X),
@@ -17,7 +17,7 @@
   
   [1X3.1-2 IsCayleyDigraph[101X
   
-  [29X[2XIsCayleyDigraph[102X[32X Category
+  [33X[1;0Y[29X[2XIsCayleyDigraph[102X[32X Category[133X
   
   [33X[0;0Y[10XIsCayleyDigraph[110X  is  a  subcategory  of  [10XIsDigraph[110X. Digraphs that are Cayley
   digraphs  of a group and that are constructed by the operation [2XCayleyDigraph[102X
@@ -25,24 +25,24 @@
   
   [1X3.1-3 IsDigraphWithAdjacencyFunction[101X
   
-  [29X[2XIsDigraphWithAdjacencyFunction[102X[32X Category
+  [33X[1;0Y[29X[2XIsDigraphWithAdjacencyFunction[102X[32X Category[133X
   
   [33X[0;0Y[10XIsDigraphWithAdjacencyFunction[110X  is a subcategory of [10XIsDigraph[110X. Digraphs that
   are [13Xcreated[113X using an adjacency function are constructed in this category.[133X
   
   [1X3.1-4 DigraphType[101X
   
-  [29X[2XDigraphType[102X[32X global variable
-  [29X[2XDigraphFamily[102X[32X family
+  [33X[1;0Y[29X[2XDigraphType[102X[32X global variable[133X
+  [33X[1;0Y[29X[2XDigraphFamily[102X[32X family[133X
   
   [33X[0;0YThe  type  of  all  digraphs  is  [10XDigraphType[110X. The family of all digraphs is
   [10XDigraphFamily[110X.[133X
   
   [1X3.1-5 Digraph[101X
   
-  [29X[2XDigraph[102X( [3Xobj[103X[, [3Xsource[103X, [3Xrange[103X] ) [32X operation
-  [29X[2XDigraph[102X( [3Xlist[103X, [3Xfunc[103X ) [32X operation
-  [29X[2XDigraph[102X( [3XG[103X, [3Xlist[103X, [3Xact[103X, [3Xadj[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraph[102X( [3Xobj[103X[, [3Xsource[103X, [3Xrange[103X] ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraph[102X( [3Xlist[103X, [3Xfunc[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraph[102X( [3XG[103X, [3Xlist[103X, [3Xact[103X, [3Xadj[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [8Xfor a list (i.e. an adjacency list)[108X
@@ -165,7 +165,7 @@
   
   [1X3.1-6 DigraphByAdjacencyMatrix[101X
   
-  [29X[2XDigraphByAdjacencyMatrix[102X( [3Xadj[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphByAdjacencyMatrix[102X( [3Xadj[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xadj[103X is the adjacency matrix of a digraph in the sense of [2XAdjacencyMatrix[102X
@@ -194,7 +194,7 @@
   
   [1X3.1-7 DigraphByEdges[101X
   
-  [29X[2XDigraphByEdges[102X( [3Xedges[103X[, [3Xn[103X] ) [32X operation
+  [33X[1;0Y[29X[2XDigraphByEdges[102X( [3Xedges[103X[, [3Xn[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xedges[103X  is list of pairs of positive integers, then this function returns
@@ -220,7 +220,7 @@
   
   [1X3.1-8 EdgeOrbitsDigraph[101X
   
-  [29X[2XEdgeOrbitsDigraph[102X( [3XG[103X, [3Xedges[103X[, [3Xn[103X] ) [32X operation
+  [33X[1;0Y[29X[2XEdgeOrbitsDigraph[102X( [3XG[103X, [3Xedges[103X[, [3Xn[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA new digraph.[133X
   
   [33X[0;0YIf  [3XG[103X  is a permutation group, [3Xedges[103X is an edge or list of edges, and [3Xn[103X is a
@@ -244,8 +244,8 @@
   
   [1X3.1-9 DigraphByInNeighbours[101X
   
-  [29X[2XDigraphByInNeighbours[102X( [3Xin[103X ) [32X operation
-  [29X[2XDigraphByInNeighbors[102X( [3Xin[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphByInNeighbours[102X( [3Xin[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphByInNeighbors[102X( [3Xin[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xin[103X  is  a  list  of  lists  of  positive  integers  in  the  range [10X[1 ..
@@ -270,7 +270,7 @@
   
   [1X3.1-10 CayleyDigraph[101X
   
-  [29X[2XCayleyDigraph[102X( [3XG[103X[, [3Xgens[103X] ) [32X operation
+  [33X[1;0Y[29X[2XCayleyDigraph[102X( [3XG[103X[, [3Xgens[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YLet  [3XG[103X  be  any group and let [3Xgens[103X be a list of elements of [3XG[103X. This function
@@ -306,7 +306,7 @@
   
   [1X3.2-1 AsBinaryRelation[101X
   
-  [29X[2XAsBinaryRelation[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XAsBinaryRelation[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA binary relation.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph  with  a  positive  number of vertices [22Xn[122X, and no
@@ -323,7 +323,7 @@
   
   [1X3.2-2 AsDigraph[101X
   
-  [29X[2XAsDigraph[102X( [3Xtrans[103X[, [3Xn[103X] ) [32X operation
+  [33X[1;0Y[29X[2XAsDigraph[102X( [3Xtrans[103X[, [3Xn[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph, or [9Xfail[109X.[133X
   
   [33X[0;0YIf  [3Xtrans[103X is a transformation, and [3Xn[103X is a non-negative integer such that the
@@ -353,7 +353,7 @@
   
   [1X3.2-3 Graph[101X
   
-  [29X[2XGraph[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XGraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA [5XGrape[105X package graph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X is a digraph without multiple edges, then this operation returns
@@ -386,7 +386,7 @@
   
   [1X3.2-4 AsGraph[101X
   
-  [29X[2XAsGraph[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XAsGraph[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA [5XGrape[105X package graph.[133X
   
   [33X[0;0YIf [3Xdigraph[103X is a digraph, then this method returns the same as [2XGraph[102X ([14X3.2-3[114X),
@@ -406,7 +406,7 @@
   
   [1X3.2-5 AsTransformation[101X
   
-  [29X[2XAsTransformation[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XAsTransformation[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  functional  digraph,  then  [10XAsTransformation[110X returns the
@@ -438,7 +438,7 @@
   
   [1X3.3-1 DigraphCopy[101X
   
-  [29X[2XDigraphCopy[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphCopy[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThis  function  returns  a  new  copy  of  [3Xdigraph[103X,  retaining  none  of the
@@ -453,7 +453,7 @@
   
   [1X3.3-2 InducedSubdigraph[101X
   
-  [29X[2XInducedSubdigraph[102X( [3Xdigraph[103X, [3Xverts[103X ) [32X operation
+  [33X[1;0Y[29X[2XInducedSubdigraph[102X( [3Xdigraph[103X, [3Xverts[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is a digraph, and [3Xverts[103X is a subset of the vertices of [3Xdigraph[103X,
@@ -475,7 +475,7 @@
   
   [1X3.3-3 ReducedDigraph[101X
   
-  [29X[2XReducedDigraph[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XReducedDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThis  function  returns  a  digraph  isomorphic to the subdigraph of [3Xdigraph[103X
@@ -508,8 +508,8 @@
   
   [1X3.3-4 MaximalSymmetricSubdigraph[101X
   
-  [29X[2XMaximalSymmetricSubdigraph[102X( [3Xdigraph[103X ) [32X attribute
-  [29X[2XMaximalSymmetricSubdigraphWithoutLoops[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XMaximalSymmetricSubdigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XMaximalSymmetricSubdigraphWithoutLoops[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf [3Xdigraph[103X is a digraph, then [10XMaximalSymmetricSubdigraph[110X returns a symmetric
@@ -541,8 +541,8 @@
   
   [1X3.3-5 UndirectedSpanningTree[101X
   
-  [29X[2XUndirectedSpanningTree[102X( [3Xdigraph[103X ) [32X attribute
-  [29X[2XUndirectedSpanningForest[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XUndirectedSpanningTree[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XUndirectedSpanningForest[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph, or [9Xfail[109X.[133X
   
   [33X[0;0YIf    [3Xdigraph[103X    is   a   digraph   with   at   least   one   vertex,   then
@@ -552,7 +552,7 @@
   
   [33X[0;0YIf   [3Xdigraph[103X   is   a   digraph   with   at   least  one  vertex  and  whose
   [2XMaximalSymmetricSubdigraph[102X  ([14X3.3-4[114X)  is  connected  (see  [2XIsConnectedDigraph[102X
-  ([14X6.3-2[114X)), then [10XUndirectedSpanningTree[110X returns an undirected spanning tree of
+  ([14X6.3-3[114X)), then [10XUndirectedSpanningTree[110X returns an undirected spanning tree of
   [3Xdigraph[103X, otherwise this attribute returns [9Xfail[109X. See [2XIsUndirectedSpanningTree[102X
   ([14X4.1-2[114X) for the definition of an undirected spanning tree.[133X
   
@@ -592,7 +592,7 @@
   
   [1X3.3-6 QuotientDigraph[101X
   
-  [29X[2XQuotientDigraph[102X( [3Xdigraph[103X, [3Xp[103X ) [32X operation
+  [33X[1;0Y[29X[2XQuotientDigraph[102X( [3Xdigraph[103X, [3Xp[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a digraph, and [3Xp[103X is a partition of the vertices of [3Xdigraph[103X,
@@ -632,7 +632,7 @@
   
   [1X3.3-7 DigraphReverse[101X
   
-  [29X[2XDigraphReverse[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphReverse[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is a digraph, then this operation returns a digraph constructed
@@ -655,7 +655,7 @@
   
   [1X3.3-8 DigraphDual[101X
   
-  [29X[2XDigraphDual[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XDigraphDual[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is a digraph without multiple edges, then this returns the [13Xdual[113X
@@ -674,7 +674,7 @@
   
   [1X3.3-9 DigraphSymmetricClosure[101X
   
-  [29X[2XDigraphSymmetricClosure[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XDigraphSymmetricClosure[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph, then this attribute gives the minimal symmetric
@@ -704,8 +704,8 @@
   
   [1X3.3-10 DigraphReflexiveTransitiveClosure[101X
   
-  [29X[2XDigraphReflexiveTransitiveClosure[102X( [3Xdigraph[103X ) [32X attribute
-  [29X[2XDigraphTransitiveClosure[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XDigraphReflexiveTransitiveClosure[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XDigraphTransitiveClosure[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf [3Xdigraph[103X is a digraph with no multiple edges, then these attributes return
@@ -745,8 +745,8 @@
   
   [1X3.3-11 DigraphReflexiveTransitiveReduction[101X
   
-  [29X[2XDigraphReflexiveTransitiveReduction[102X( [3Xdigraph[103X ) [32X operation
-  [29X[2XDigraphTransitiveReduction[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphReflexiveTransitiveReduction[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphTransitiveReduction[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is a topologically sortable digraph [see [2XDigraphTopologicalSort[102X
@@ -789,7 +789,7 @@
   
   [1X3.3-12 DigraphAddVertex[101X
   
-  [29X[2XDigraphAddVertex[102X( [3Xdigraph[103X[, [3Xlabel[103X] ) [32X operation
+  [33X[1;0Y[29X[2XDigraphAddVertex[102X( [3Xdigraph[103X[, [3Xlabel[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThe  operation  returns  a  new digraph constructed from [3Xdigraph[103X by adding a
@@ -813,7 +813,7 @@
   
   [1X3.3-13 DigraphAddVertices[101X
   
-  [29X[2XDigraphAddVertices[102X( [3Xdigraph[103X, [3Xm[103X[, [3Xlabels[103X] ) [32X operation
+  [33X[1;0Y[29X[2XDigraphAddVertices[102X( [3Xdigraph[103X, [3Xm[103X[, [3Xlabels[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YFor  a  non-negative  integer  [3Xm[103X,  this  operation  returns  a  new  digraph
@@ -839,7 +839,7 @@
   
   [1X3.3-14 DigraphAddEdge[101X
   
-  [29X[2XDigraphAddEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphAddEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf [3Xedge[103X is a pairs of vertices of [3Xdigraph[103X, then this operation returns a new
@@ -863,7 +863,7 @@
   
   [1X3.3-15 DigraphAddEdgeOrbit[101X
   
-  [29X[2XDigraphAddEdgeOrbit[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphAddEdgeOrbit[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA new digraph.[133X
   
   [33X[0;0YThis  operation  returns  a  new digraph with the same vertices and edges as
@@ -898,7 +898,7 @@
   
   [1X3.3-16 DigraphAddEdges[101X
   
-  [29X[2XDigraphAddEdges[102X( [3Xdigraph[103X, [3Xedges[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphAddEdges[102X( [3Xdigraph[103X, [3Xedges[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xedges[103X  is  a (possibly empty) list of pairs of vertices of [3Xdigraph[103X, then
@@ -929,7 +929,7 @@
   
   [1X3.3-17 DigraphRemoveVertex[101X
   
-  [29X[2XDigraphRemoveVertex[102X( [3Xdigraph[103X, [3Xv[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphRemoveVertex[102X( [3Xdigraph[103X, [3Xv[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xv[103X  is  a  vertex  of  [3Xdigraph[103X, then this operation returns a new digraph
@@ -957,7 +957,7 @@
   
   [1X3.3-18 DigraphRemoveVertices [101X
   
-  [29X[2XDigraphRemoveVertices [102X( [3Xdigraph[103X, [3Xverts[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphRemoveVertices [102X( [3Xdigraph[103X, [3Xverts[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xverts[103X  is a (possibly empty) duplicate-free list of vertices of [3Xdigraph[103X,
@@ -981,7 +981,7 @@
   
   [1X3.3-19 DigraphRemoveEdge[101X
   
-  [29X[2XDigraphRemoveEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphRemoveEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf one of the following holds:[133X
@@ -1007,7 +1007,7 @@
   
   [1X3.3-20 DigraphRemoveEdgeOrbit[101X
   
-  [29X[2XDigraphRemoveEdgeOrbit[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphRemoveEdgeOrbit[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA new digraph.[133X
   
   [33X[0;0YThis  operation  returns a new digraph with the same vertices as [3Xdigraph[103X and
@@ -1042,7 +1042,7 @@
   
   [1X3.3-21 DigraphRemoveEdges[101X
   
-  [29X[2XDigraphRemoveEdges[102X( [3Xdigraph[103X, [3Xedges[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphRemoveEdges[102X( [3Xdigraph[103X, [3Xedges[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf one of the following holds:[133X
@@ -1068,7 +1068,7 @@
   
   [1X3.3-22 DigraphRemoveLoops[101X
   
-  [29X[2XDigraphRemoveLoops[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphRemoveLoops[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then  this  operation  returns  a  new digraph
@@ -1084,7 +1084,7 @@
   
   [1X3.3-23 DigraphRemoveAllMultipleEdges[101X
   
-  [29X[2XDigraphRemoveAllMultipleEdges[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphRemoveAllMultipleEdges[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then  this  operation  returns  a  new digraph
@@ -1102,8 +1102,8 @@
   
   [1X3.3-24 DigraphReverseEdges[101X
   
-  [29X[2XDigraphReverseEdges[102X( [3Xdigraph[103X, [3Xedges[103X ) [32X operation
-  [29X[2XDigraphReverseEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphReverseEdges[102X( [3Xdigraph[103X, [3Xedges[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphReverseEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf [3Xdigraph[103X is a digraph without multiple edges, and [3Xedges[103X is either:[133X
@@ -1140,8 +1140,8 @@
   
   [1X3.3-25 DigraphDisjointUnion[101X
   
-  [29X[2XDigraphDisjointUnion[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function
-  [29X[2XDigraphDisjointUnion[102X( [3Xlist[103X ) [32X function
+  [33X[1;0Y[29X[2XDigraphDisjointUnion[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XDigraphDisjointUnion[102X( [3Xlist[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIn the first form, if [3Xgr1[103X, [3Xgr2[103X, etc. are digraphs, then [10XDigraphDisjointUnion[110X
@@ -1179,8 +1179,8 @@
   
   [1X3.3-26 DigraphEdgeUnion[101X
   
-  [29X[2XDigraphEdgeUnion[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function
-  [29X[2XDigraphEdgeUnion[102X( [3Xlist[103X ) [32X function
+  [33X[1;0Y[29X[2XDigraphEdgeUnion[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XDigraphEdgeUnion[102X( [3Xlist[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIn  the  first  form,  if [3Xgr1[103X, [3Xgr2[103X, etc. are digraphs, then [10XDigraphEdgeUnion[110X
@@ -1217,8 +1217,8 @@
   
   [1X3.3-27 DigraphJoin[101X
   
-  [29X[2XDigraphJoin[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function
-  [29X[2XDigraphJoin[102X( [3Xlist[103X ) [32X function
+  [33X[1;0Y[29X[2XDigraphJoin[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XDigraphJoin[102X( [3Xlist[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIn  the first form, if [3Xgr1[103X, [3Xgr2[103X, etc. are digraphs, then [10XDigraphJoin[110X returns
@@ -1248,8 +1248,8 @@
   
   [1X3.3-28 LineDigraph[101X
   
-  [29X[2XLineDigraph[102X( [3Xdigraph[103X ) [32X operation
-  [29X[2XEdgeDigraph[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XLineDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XEdgeDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YGiven  a  digraph  [3Xdigraph[103X,  the  operation  returns the digraph obtained by
@@ -1266,8 +1266,8 @@
   
   [1X3.3-29 LineUndirectedDigraph[101X
   
-  [29X[2XLineUndirectedDigraph[102X( [3Xdigraph[103X ) [32X operation
-  [29X[2XEdgeUndirectedDigraph[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XLineUndirectedDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XEdgeUndirectedDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YGiven  a  symmetric  digraph  [3Xdigraph[103X,  the  operation returns the symmetric
@@ -1284,7 +1284,7 @@
   
   [1X3.3-30 DoubleDigraph[101X
   
-  [29X[2XDoubleDigraph[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XDoubleDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YLet [3Xdigraph[103X be a digraph with vertex set [10XV[110X. This function returns the double
@@ -1302,7 +1302,7 @@
   
   [1X3.3-31 BipartiteDoubleDigraph[101X
   
-  [29X[2XBipartiteDoubleDigraph[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XBipartiteDoubleDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YLet  [3Xdigraph[103X  be  a  digraph  with  vertex  set [10XV[110X. This function returns the
@@ -1321,7 +1321,7 @@
   
   [1X3.3-32 DigraphAddAllLoops[101X
   
-  [29X[2XDigraphAddAllLoops[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphAddAllLoops[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YFor  a  digraph  [3Xdigraph[103X this operation return a copy of [3Xdigraph[103X such that a
@@ -1345,8 +1345,8 @@
   
   [1X3.3-33 DistanceDigraph[101X
   
-  [29X[2XDistanceDigraph[102X( [3Xdigraph[103X, [3Xi[103X ) [32X operation
-  [29X[2XDistanceDigraph[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation
+  [33X[1;0Y[29X[2XDistanceDigraph[102X( [3Xdigraph[103X, [3Xi[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDistanceDigraph[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThe  first  argument  is  a  digraph,  the second argument is a non-negative
@@ -1367,7 +1367,7 @@
   
   [1X3.3-34 DigraphClosure[101X
   
-  [29X[2XDigraphClosure[102X( [3Xdigraph[103X, [3Xk[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphClosure[102X( [3Xdigraph[103X, [3Xk[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph[133X
   
   [33X[0;0YGiven  a  symmetric  loopless  digraph  with  no multiple edges [3Xdigraph[103X, the
@@ -1394,7 +1394,7 @@
   
   [1X3.4-1 RandomDigraph[101X
   
-  [29X[2XRandomDigraph[102X( [3Xn[103X[, [3Xp[103X] ) [32X operation
+  [33X[1;0Y[29X[2XRandomDigraph[102X( [3Xn[103X[, [3Xp[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf [3Xn[103X is a positive integer, then this function returns a random digraph with
@@ -1414,7 +1414,7 @@
   
   [1X3.4-2 RandomMultiDigraph[101X
   
-  [29X[2XRandomMultiDigraph[102X( [3Xn[103X[, [3Xm[103X] ) [32X operation
+  [33X[1;0Y[29X[2XRandomMultiDigraph[102X( [3Xn[103X[, [3Xm[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf [3Xn[103X is a positive integer, then this function returns a random digraph with
@@ -1437,7 +1437,7 @@
   
   [1X3.4-3 RandomTournament[101X
   
-  [29X[2XRandomTournament[102X( [3Xn[103X ) [32X operation
+  [33X[1;0Y[29X[2XRandomTournament[102X( [3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  is  a non-negative integer, this function returns a random tournament
@@ -1453,7 +1453,7 @@
   
   [1X3.5-1 ChainDigraph[101X
   
-  [29X[2XChainDigraph[102X( [3Xn[103X ) [32X operation
+  [33X[1;0Y[29X[2XChainDigraph[102X( [3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  is  a positive integer, this function returns a chain with [3Xn[103X vertices
@@ -1470,7 +1470,7 @@
   
   [1X3.5-2 CompleteDigraph[101X
   
-  [29X[2XCompleteDigraph[102X( [3Xn[103X ) [32X operation
+  [33X[1;0Y[29X[2XCompleteDigraph[102X( [3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  is a non-negative integer, this function returns the complete digraph
@@ -1483,7 +1483,7 @@
   
   [1X3.5-3 CompleteBipartiteDigraph[101X
   
-  [29X[2XCompleteBipartiteDigraph[102X( [3Xm[103X, [3Xn[103X ) [32X operation
+  [33X[1;0Y[29X[2XCompleteBipartiteDigraph[102X( [3Xm[103X, [3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YA  complete bipartite digraph is a digraph whose vertices can be partitioned
@@ -1501,7 +1501,7 @@
   
   [1X3.5-4 CompleteMultipartiteDigraph[101X
   
-  [29X[2XCompleteMultipartiteDigraph[102X( [3Xorders[103X ) [32X operation
+  [33X[1;0Y[29X[2XCompleteMultipartiteDigraph[102X( [3Xorders[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YFor  a list [3Xorders[103X of [10Xn[110X positive integers, this function returns the digraph
@@ -1516,7 +1516,7 @@
   
   [1X3.5-5 CycleDigraph[101X
   
-  [29X[2XCycleDigraph[102X( [3Xn[103X ) [32X operation
+  [33X[1;0Y[29X[2XCycleDigraph[102X( [3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  is  a  positive integer, this function returns a [13Xcycle[113X digraph with [3Xn[103X
@@ -1533,8 +1533,8 @@
   
   [1X3.5-6 EmptyDigraph[101X
   
-  [29X[2XEmptyDigraph[102X( [3Xn[103X ) [32X operation
-  [29X[2XNullDigraph[102X( [3Xn[103X ) [32X operation
+  [33X[1;0Y[29X[2XEmptyDigraph[102X( [3Xn[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XNullDigraph[102X( [3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  is  a  non-negative  integer, this function returns the [13Xempty[113X or [13Xnull[113X
@@ -1551,7 +1551,7 @@
   
   [1X3.5-7 JohnsonDigraph[101X
   
-  [29X[2XJohnsonDigraph[102X( [3Xn[103X, [3Xk[103X ) [32X operation
+  [33X[1;0Y[29X[2XJohnsonDigraph[102X( [3Xn[103X, [3Xk[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  and  [3Xk[103X  are  non-negative  integers,  then  this  operation returns a

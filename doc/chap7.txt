@@ -6,8 +6,8 @@
   
   [1X7.1-1 OnDigraphs[101X
   
-  [29X[2XOnDigraphs[102X( [3Xdigraph[103X, [3Xperm[103X ) [32X operation
-  [29X[2XOnDigraphs[102X( [3Xdigraph[103X, [3Xtrans[103X ) [32X operation
+  [33X[1;0Y[29X[2XOnDigraphs[102X( [3Xdigraph[103X, [3Xperm[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XOnDigraphs[102X( [3Xdigraph[103X, [3Xtrans[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a digraph, and the second argument [3Xperm[103X is a [13Xpermutation[113X of
@@ -47,8 +47,8 @@
   
   [1X7.1-2 OnMultiDigraphs[101X
   
-  [29X[2XOnMultiDigraphs[102X( [3Xdigraph[103X, [3Xpair[103X ) [32X operation
-  [29X[2XOnMultiDigraphs[102X( [3Xdigraph[103X, [3Xperm1[103X, [3Xperm2[103X ) [32X operation
+  [33X[1;0Y[29X[2XOnMultiDigraphs[102X( [3Xdigraph[103X, [3Xpair[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XOnMultiDigraphs[102X( [3Xdigraph[103X, [3Xperm1[103X, [3Xperm2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is a digraph, and [3Xpair[103X is a pair consisting of a permutation of
@@ -87,8 +87,8 @@
   
   [1X7.2-1 DigraphsUseNauty[101X
   
-  [29X[2XDigraphsUseNauty[102X(  ) [32X function
-  [29X[2XDigraphsUseBliss[102X(  ) [32X function
+  [33X[1;0Y[29X[2XDigraphsUseNauty[102X(  ) [32X function[133X
+  [33X[1;0Y[29X[2XDigraphsUseBliss[102X(  ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YNothing.[133X
   
   [33X[0;0YThese functions can be used to specify whether [5Xnauty[105X or [5Xbliss[105X should be used
@@ -109,7 +109,7 @@
   
   [1X7.2-2 AutomorphismGroup[101X
   
-  [29X[2XAutomorphismGroup[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XAutomorphismGroup[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA permutation group.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then  this  attribute  contains  the  group of
@@ -186,7 +186,7 @@
   
   [1X7.2-3 BlissAutomorphismGroup[101X
   
-  [29X[2XBlissAutomorphismGroup[102X( [3Xdigraph[103X[, [3Xcolours[103X] ) [32X attribute
+  [33X[1;0Y[29X[2XBlissAutomorphismGroup[102X( [3Xdigraph[103X[, [3Xcolours[103X] ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA permutation group.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then  this  attribute  contains  the  group of
@@ -208,7 +208,7 @@
   
   [1X7.2-4 NautyAutomorphismGroup[101X
   
-  [29X[2XNautyAutomorphismGroup[102X( [3Xdigraph[103X[, [3Xcolours[103X] ) [32X attribute
+  [33X[1;0Y[29X[2XNautyAutomorphismGroup[102X( [3Xdigraph[103X[, [3Xcolours[103X] ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA permutation group.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then  this  attribute  contains  the  group of
@@ -227,7 +227,7 @@
   
   [1X7.2-5 AutomorphismGroup[101X
   
-  [29X[2XAutomorphismGroup[102X( [3Xdigraph[103X, [3Xcolours[103X ) [32X operation
+  [33X[1;0Y[29X[2XAutomorphismGroup[102X( [3Xdigraph[103X, [3Xcolours[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA permutation group.[133X
   
   [33X[0;0YThis  operation  computes  the  automorphism  group of a coloured digraph. A
@@ -314,8 +314,8 @@
   
   [1X7.2-6 BlissCanonicalLabelling[101X
   
-  [29X[2XBlissCanonicalLabelling[102X( [3Xdigraph[103X ) [32X attribute
-  [29X[2XNautyCanonicalLabelling[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XBlissCanonicalLabelling[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XNautyCanonicalLabelling[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA permutation, or a list of two permutations.[133X
   
   [33X[0;0YA  function [22Xρ[122X that maps a digraph to a digraph is a [13Xcanonical representative
@@ -387,8 +387,8 @@
   
   [1X7.2-7 BlissCanonicalLabelling[101X
   
-  [29X[2XBlissCanonicalLabelling[102X( [3Xdigraph[103X, [3Xcolours[103X ) [32X operation
-  [29X[2XNautyCanonicalLabelling[102X( [3Xdigraph[103X, [3Xcolours[103X ) [32X operation
+  [33X[1;0Y[29X[2XBlissCanonicalLabelling[102X( [3Xdigraph[103X, [3Xcolours[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XNautyCanonicalLabelling[102X( [3Xdigraph[103X, [3Xcolours[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA permutation.[133X
   
   [33X[0;0YA  function  [22Xρ[122X  that  maps  a  coloured  digraph  to a coloured digraph is a
@@ -487,8 +487,8 @@
   
   [1X7.2-8 BlissCanonicalDigraph[101X
   
-  [29X[2XBlissCanonicalDigraph[102X( [3Xdigraph[103X ) [32X attribute
-  [29X[2XNautyCanonicalDigraph[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XBlissCanonicalDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XNautyCanonicalDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThe  attribute  [10XBlissCanonicalLabelling[110X returns the canonical representative
@@ -516,7 +516,7 @@
   
   [1X7.2-9 DigraphGroup[101X
   
-  [29X[2XDigraphGroup[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XDigraphGroup[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA permutation group.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  was  created knowing a subgroup of its automorphism group, then
@@ -578,7 +578,7 @@
   
   [1X7.2-10 DigraphOrbits[101X
   
-  [29X[2XDigraphOrbits[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XDigraphOrbits[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of lists of integers.[133X
   
   [33X[0;0Y[10XDigraphOrbits[110X  returns  the orbits of the action of the [2XDigraphGroup[102X ([14X7.2-9[114X)
@@ -594,7 +594,7 @@
   
   [1X7.2-11 DigraphOrbitReps[101X
   
-  [29X[2XDigraphOrbitReps[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XDigraphOrbitReps[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of integers.[133X
   
   [33X[0;0Y[10XDigraphOrbitReps[110X  returns  a  list of orbit representatives of the action of
@@ -613,7 +613,7 @@
   
   [1X7.2-12 DigraphSchreierVector[101X
   
-  [29X[2XDigraphSchreierVector[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XDigraphSchreierVector[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of integers.[133X
   
   [33X[0;0Y[10XDigraphSchreierVector[110X returns the so-called [13XSchreier vector[113X of the action of
@@ -649,7 +649,7 @@
   
   [1X7.2-13 DigraphStabilizer[101X
   
-  [29X[2XDigraphStabilizer[102X( [3Xdigraph[103X, [3Xv[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphStabilizer[102X( [3Xdigraph[103X, [3Xv[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA permutation group.[133X
   
   [33X[0;0Y[10XDigraphStabilizer[110X returns the stabilizer of the vertex [3Xv[103X under of the action
@@ -666,7 +666,7 @@
   
   [1X7.2-14 IsIsomorphicDigraph[101X
   
-  [29X[2XIsIsomorphicDigraph[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [33X[1;0Y[29X[2XIsIsomorphicDigraph[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  operation returns [9Xtrue[109X if there exists an isomorphism from the digraph
@@ -706,7 +706,7 @@
   
   [1X7.2-15 IsIsomorphicDigraph[101X
   
-  [29X[2XIsIsomorphicDigraph[102X( [3Xdigraph1[103X, [3Xdigraph2[103X, [3Xcolours1[103X, [3Xcolours2[103X ) [32X operation
+  [33X[1;0Y[29X[2XIsIsomorphicDigraph[102X( [3Xdigraph1[103X, [3Xdigraph2[103X, [3Xcolours1[103X, [3Xcolours2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  operation  tests  for  isomorphism  of  coloured  digraphs. A coloured
@@ -762,7 +762,7 @@
   
   [1X7.2-16 IsomorphismDigraphs[101X
   
-  [29X[2XIsomorphismDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [33X[1;0Y[29X[2XIsomorphismDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA permutation, or a pair of permutations, or [9Xfail[109X.[133X
   
   [33X[0;0YThis  operation  returns  an  isomorphism  between the digraphs [3Xdigraph1[103X and
@@ -833,7 +833,7 @@
   
   [1X7.2-17 IsomorphismDigraphs[101X
   
-  [29X[2XIsomorphismDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X, [3Xcolours1[103X, [3Xcolours2[103X ) [32X operation
+  [33X[1;0Y[29X[2XIsomorphismDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X, [3Xcolours1[103X, [3Xcolours2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA permutation, or [9Xfail[109X.[133X
   
   [33X[0;0YThis  operation  searches  for  an  isomorphism between coloured digraphs. A
@@ -906,7 +906,7 @@
   
   [1X7.2-18 RepresentativeOutNeighbours[101X
   
-  [29X[2XRepresentativeOutNeighbours[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XRepresentativeOutNeighbours[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YAn immutable list of immutable lists.[133X
   
   [33X[0;0YThis  function returns the list [10Xout[110X of [13Xout-neighbours[113X of each representative
@@ -946,7 +946,7 @@
   
   [1X7.3-1 HomomorphismDigraphsFinder[101X
   
-  [29X[2XHomomorphismDigraphsFinder[102X( [3Xgr1[103X, [3Xgr2[103X, [3Xhook[103X, [3Xuser_param[103X, [3Xlimit[103X, [3Xhint[103X, [3Xinjective[103X, [3Ximage[103X, [3Xmap[103X ) [32X function
+  [33X[1;0Y[29X[2XHomomorphismDigraphsFinder[102X( [3Xgr1[103X, [3Xgr2[103X, [3Xhook[103X, [3Xuser_param[103X, [3Xlimit[103X, [3Xhint[103X, [3Xinjective[103X, [3Ximage[103X, [3Xmap[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YThe argument [3Xuser_param[103X.[133X
   
   [33X[0;0YThis  function  finds  homomorphisms  from  the  graph  [3Xgr1[103X to the graph [3Xgr2[103X
@@ -1034,7 +1034,7 @@
   
   [1X7.3-2 DigraphHomomorphism[101X
   
-  [29X[2XDigraphHomomorphism[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphHomomorphism[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
   
   [33X[0;0YA homomorphism from [3Xdigraph1[103X to [3Xdigraph2[103X is a mapping from the vertex set of
@@ -1058,8 +1058,8 @@
   
   [1X7.3-3 HomomorphismsDigraphs[101X
   
-  [29X[2XHomomorphismsDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
-  [29X[2XHomomorphismsDigraphsRepresentatives[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [33X[1;0Y[29X[2XHomomorphismsDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XHomomorphismsDigraphsRepresentatives[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
   
   [33X[0;0Y[10XHomomorphismsDigraphsRepresentatives[110X finds every [2XDigraphHomomorphism[102X ([14X7.3-2[114X)
@@ -1087,7 +1087,7 @@
   
   [1X7.3-4 DigraphMonomorphism[101X
   
-  [29X[2XDigraphMonomorphism[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphMonomorphism[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
   
   [33X[0;0Y[10XDigraphMonomorphism[110X  returns  a single [13Xinjective[113X [2XDigraphHomomorphism[102X ([14X7.3-2[114X)
@@ -1105,8 +1105,8 @@
   
   [1X7.3-5 MonomorphismsDigraphs[101X
   
-  [29X[2XMonomorphismsDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
-  [29X[2XMonomorphismsDigraphsRepresentatives[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [33X[1;0Y[29X[2XMonomorphismsDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XMonomorphismsDigraphsRepresentatives[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
   
   [33X[0;0YThese  operations  behave  the  same  as  [2XHomomorphismsDigraphs[102X  ([14X7.3-3[114X) and
@@ -1126,7 +1126,7 @@
   
   [1X7.3-6 DigraphEpimorphism[101X
   
-  [29X[2XDigraphEpimorphism[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphEpimorphism[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
   
   [33X[0;0Y[10XDigraphEpimorphism[110X  returns  a single [13Xsurjective[113X [2XDigraphHomomorphism[102X ([14X7.3-2[114X)
@@ -1145,8 +1145,8 @@
   
   [1X7.3-7 EpimorphismsDigraphs[101X
   
-  [29X[2XEpimorphismsDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
-  [29X[2XEpimorphismsDigraphsRepresentatives[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [33X[1;0Y[29X[2XEpimorphismsDigraphs[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XEpimorphismsDigraphsRepresentatives[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
   
   [33X[0;0YThese  operations  behave  the  same  as  [2XHomomorphismsDigraphs[102X  ([14X7.3-3[114X) and
@@ -1175,8 +1175,8 @@
   
   [1X7.3-8 GeneratorsOfEndomorphismMonoid[101X
   
-  [29X[2XGeneratorsOfEndomorphismMonoid[102X( [3Xdigraph[103X[, [3Xcolors[103X][, [3Xlimit[103X] ) [32X function
-  [29X[2XGeneratorsOfEndomorphismMonoidAttr[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XGeneratorsOfEndomorphismMonoid[102X( [3Xdigraph[103X[, [3Xcolors[103X][, [3Xlimit[103X] ) [32X function[133X
+  [33X[1;0Y[29X[2XGeneratorsOfEndomorphismMonoidAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
   
   [33X[0;0YAn  endomorphism  of  [3Xdigraph[103X  is a homomorphism [2XDigraphHomomorphism[102X ([14X7.3-2[114X)
@@ -1219,10 +1219,10 @@
   
   [1X7.3-9 DigraphColouring[101X
   
-  [29X[2XDigraphColouring[102X( [3Xdigraph[103X, [3Xn[103X ) [32X operation
-  [29X[2XDigraphColoring[102X( [3Xdigraph[103X, [3Xn[103X ) [32X operation
-  [29X[2XDigraphColouring[102X( [3Xdigraph[103X ) [32X attribute
-  [29X[2XDigraphColoring[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XDigraphColouring[102X( [3Xdigraph[103X, [3Xn[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphColoring[102X( [3Xdigraph[103X, [3Xn[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphColouring[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XDigraphColoring[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
   
   [33X[0;0YA [13Xproper colouring[113X of a digraph is a labelling of its vertices in such a way
@@ -1260,7 +1260,7 @@
   
   [1X7.3-10 DigraphEmbedding[101X
   
-  [29X[2XDigraphEmbedding[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphEmbedding[102X( [3Xdigraph1[103X, [3Xdigraph2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
   
   [33X[0;0YAn  embedding  of  a  digraph  [3Xdigraph1[103X  into  another digraph [3Xdigraph2[103X is a
@@ -1286,7 +1286,7 @@
   
   [1X7.3-11 ChromaticNumber[101X
   
-  [29X[2XChromaticNumber[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XChromaticNumber[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA non-negative integer.[133X
   
   [33X[0;0YA [13Xproper colouring[113X of a digraph is a labelling of its vertices in such a way

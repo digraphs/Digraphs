@@ -1,8 +1,18 @@
 # Digraphs package for GAP - CHANGELOG
-Copyright (C) 2014-17 by Jan De Beule, Julius Jonušas, James D. Mitchell,
+Copyright (C) 2014-18 by Jan De Beule, Julius Jonušas, James D. Mitchell,
 Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
+
+## Version 0.12.0 (released 31/01/2018)
+
+This release contains bugfixes and new features. In particular, it:
+
+* fixes [a bug in `ArticulationPoints` and `IsBiconnectedDigraph`](https://github.com/gap-packages/Digraphs/issues/102) [[Wilf A. Wilson](http://wilf.me)];
+* adds the property `IsChainDigraph` [Ashley Clayton]; and
+* adds the operation `IsDigraphAutomorphism` [Chris Russell].
+
+Digraphs now requires version 4.5.1 of the IO package.
 
 ## Version 0.11.0 (released 22/11/2017)
 

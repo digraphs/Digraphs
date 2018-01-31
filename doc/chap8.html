@@ -84,8 +84,8 @@
 
 <h5>8.1-1 IsClique</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsClique</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaximalClique</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsClique</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaximalClique</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">l</var> is a duplicate-free list of vertices of <var class="Arg">digraph</var>, then <code class="code">IsClique(</code><var class="Arg">digraph</var><code class="code">,</code><var class="Arg">l</var><code class="code">)</code> returns <code class="keyw">true</code> if <var class="Arg">l</var> is a <em>clique</em> of <var class="Arg">digraph</var> and <code class="keyw">false</code> if it is not. Similarly, <code class="code">IsMaximalClique(</code><var class="Arg">digraph</var><code class="code">,</code><var class="Arg">l</var><code class="code">)</code> returns <code class="keyw">true</code> if <var class="Arg">l</var> is a <em>maximal clique</em> of <var class="Arg">digraph</var> and <code class="keyw">false</code> if it is not.</p>
@@ -112,7 +112,7 @@ true</pre></div>
 
 <h5>8.1-2 CliquesFinder</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CliquesFinder</code>( <var class="Arg">digraph</var>, <var class="Arg">hook</var>, <var class="Arg">user_param</var>, <var class="Arg">limit</var>, <var class="Arg">include</var>, <var class="Arg">exclude</var>, <var class="Arg">max</var>, <var class="Arg">size</var>, <var class="Arg">reps</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CliquesFinder</code>( <var class="Arg">digraph</var>, <var class="Arg">hook</var>, <var class="Arg">user_param</var>, <var class="Arg">limit</var>, <var class="Arg">include</var>, <var class="Arg">exclude</var>, <var class="Arg">max</var>, <var class="Arg">size</var>, <var class="Arg">reps</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: The argument <var class="Arg">user_param</var>.</p>
 
 <p>This function finds cliques of the digraph <var class="Arg">digraph</var> subject to the conditions imposed by the other arguments as described below. Note that a clique is represented by a list of the vertices which it contains.</p>
@@ -192,8 +192,8 @@ true</pre></div>
 
 <h5>8.1-3 DigraphClique</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphClique</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalClique</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphClique</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalClique</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: A list of positive integers, or <code class="keyw">fail</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then these functions returns a clique of <var class="Arg">digraph</var> if one exists which satisfies the arguments, else it returns <code class="keyw">fail</code>. A clique is defined by the set of vertices which it contains; see <code class="func">IsClique</code> (<a href="chap8.html#X80670E3E7C36183F"><span class="RefLink">8.1-1</span></a>) and <code class="func">IsMaximalClique</code> (<a href="chap8.html#X80670E3E7C36183F"><span class="RefLink">8.1-1</span></a>).</p>
@@ -248,12 +248,12 @@ fail
 
 <h5>8.1-4 DigraphMaximalCliques</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliques</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliquesReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphCliques</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphCliquesReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliquesAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliquesRepsAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliques</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliquesReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphCliques</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphCliquesReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliquesAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalCliquesRepsAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of lists of positive integers.</p>
 
 <p>If <var class="Arg">digraph</var> is digraph, then these functions and attributes use <code class="func">CliquesFinder</code> (<a href="chap8.html#X7A3BC9FF8169ABCD"><span class="RefLink">8.1-2</span></a>) to return cliques of <var class="Arg">digraph</var>. A clique is defined by the set of vertices which it contains; see <code class="func">IsClique</code> (<a href="chap8.html#X80670E3E7C36183F"><span class="RefLink">8.1-1</span></a>) and <code class="func">IsMaximalClique</code> (<a href="chap8.html#X80670E3E7C36183F"><span class="RefLink">8.1-1</span></a>).</p>
@@ -309,7 +309,7 @@ Group([ (5,6), (1,2), (1,5)(2,6)(3,4) ])
 
 <h5>8.1-5 CliqueNumber</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CliqueNumber</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CliqueNumber</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A non-negative integer.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">CliqueNumber(<var class="Arg">digraph</var>)</code> returns the largest integer <code class="code">n</code> such that <var class="Arg">digraph</var> contains a clique with <code class="code">n</code> vertices as an induced subdigraph.</p>
@@ -334,8 +334,8 @@ Group([ (5,6), (1,2), (1,5)(2,6)(3,4) ])
 
 <h5>8.2-1 IsIndependentSet</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsIndependentSet</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaximalIndependentSet</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsIndependentSet</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaximalIndependentSet</code>( <var class="Arg">digraph</var>, <var class="Arg">l</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">l</var> is a duplicate-free list of vertices of <var class="Arg">digraph</var>, then <code class="code">IsIndependentSet(</code><var class="Arg">digraph</var><code class="code">,</code><var class="Arg">l</var><code class="code">)</code> returns <code class="keyw">true</code> if <var class="Arg">l</var> is an <em>independent set</em> of <var class="Arg">digraph</var> and <code class="keyw">false</code> if it is not. Similarly, <code class="code">IsMaximalIndependentSet(</code><var class="Arg">digraph</var><code class="code">,</code><var class="Arg">l</var><code class="code">)</code> returns <code class="keyw">true</code> if <var class="Arg">l</var> is a <em>maximal independent set</em> of <var class="Arg">digraph</var> and <code class="keyw">false</code> if it is not.</p>
@@ -360,8 +360,8 @@ true</pre></div>
 
 <h5>8.2-2 DigraphIndependentSet</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphIndependentSet</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSet</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphIndependentSet</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSet</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">size</var>]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: A lists of positive integers, or <code class="keyw">fail</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then these functions returns a independent set of <var class="Arg">digraph</var> if one exists which satisfies the arguments, else it returns <code class="keyw">fail</code>. A independent set is defined by the set of vertices which it contains; see <code class="func">IsIndependentSet</code> (<a href="chap8.html#X790733B67B0BC894"><span class="RefLink">8.2-1</span></a>) and <code class="func">IsMaximalIndependentSet</code> (<a href="chap8.html#X790733B67B0BC894"><span class="RefLink">8.2-1</span></a>).</p>
@@ -416,12 +416,12 @@ fail
 
 <h5>8.2-3 DigraphMaximalIndependentSets</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSets</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSetsReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphIndependentSets</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphIndependentSetsReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSetsAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSetsRepsAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSets</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSetsReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphIndependentSets</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphIndependentSetsReps</code>( <var class="Arg">digraph</var>[, <var class="Arg">include</var>[, <var class="Arg">exclude</var>[, <var class="Arg">limit</var>[, <var class="Arg">size</var>]]]] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSetsAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalIndependentSetsRepsAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of lists of positive integers.</p>
 
 <p>If <var class="Arg">digraph</var> is digraph, then these functions and attributes use <code class="func">CliquesFinder</code> (<a href="chap8.html#X7A3BC9FF8169ABCD"><span class="RefLink">8.1-2</span></a>) to return independent sets of <var class="Arg">digraph</var>. An independent set is defined by the set of vertices which it contains; see <code class="func">IsMaximalIndependentSet</code> (<a href="chap8.html#X790733B67B0BC894"><span class="RefLink">8.2-1</span></a>) and <code class="func">IsIndependentSet</code> (<a href="chap8.html#X790733B67B0BC894"><span class="RefLink">8.2-1</span></a>).</p>

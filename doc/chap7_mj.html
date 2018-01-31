@@ -80,8 +80,8 @@
 
 <h5>7.1-1 OnDigraphs</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">perm</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">trans</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">perm</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">trans</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, and the second argument <var class="Arg">perm</var> is a <em>permutation</em> of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by relabelling the vertices of <var class="Arg">digraph</var> according to <var class="Arg">perm</var>. Note that for an automorphism <code class="code">f</code> of a digraph, we have <code class="code">OnDigraphs(<var class="Arg">digraph</var>, f) = </code><var class="Arg">digraph</var>.</p>
@@ -114,8 +114,8 @@ true
 
 <h5>7.1-2 OnMultiDigraphs</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnMultiDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">pair</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnMultiDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">perm1</var>, <var class="Arg">perm2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnMultiDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">pair</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnMultiDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">perm1</var>, <var class="Arg">perm2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, and <var class="Arg">pair</var> is a pair consisting of a permutation of the vertices and a permutation of the edges of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by relabelling the vertices and edges of <var class="Arg">digraph</var> according to <var class="Arg">perm[1]</var> and <var class="Arg">perm[2]</var>, respectively.</p>
@@ -147,8 +147,8 @@ true
 
 <h5>7.2-1 DigraphsUseNauty</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphsUseNauty</code>(  )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphsUseBliss</code>(  )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphsUseNauty</code>(  )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphsUseBliss</code>(  )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: Nothing.</p>
 
 <p>These functions can be used to specify whether <span class="URL"><a href="http://pallini.di.uniroma1.it/">nauty</a></span> or <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> should be used by default by <strong class="pkg">Digraphs</strong>. If <span class="URL"><a href="https://github.com/sebasguts/NautyTracesInterface">NautyTracesInterface</a></span> is not available, then these functions do nothing. Otherwise, by calling <code class="code">DigraphsUseNauty</code> subsequent computations will default to using <span class="URL"><a href="http://pallini.di.uniroma1.it/">nauty</a></span> rather than <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span>, where possible.</p>
@@ -161,7 +161,7 @@ true
 
 <h5>7.2-2 AutomorphismGroup</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AutomorphismGroup</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AutomorphismGroup</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation group.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then this attribute contains the group of automorphisms of <var class="Arg">digraph</var>. An <em>automorphism</em> of <var class="Arg">digraph</var> is an isomorphism from <var class="Arg">digraph</var> to itself. See <code class="func">IsomorphismDigraphs</code> (<a href="chap7_mj.html#X8219FE6C839D9457"><span class="RefLink">7.2-16</span></a>) for more information about isomorphisms of digraphs.</p>
@@ -228,7 +228,7 @@ Group([ (2,3) ])</pre></div>
 
 <h5>7.2-3 BlissAutomorphismGroup</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BlissAutomorphismGroup</code>( <var class="Arg">digraph</var>[, <var class="Arg">colours</var>] )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BlissAutomorphismGroup</code>( <var class="Arg">digraph</var>[, <var class="Arg">colours</var>] )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation group.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then this attribute contains the group of automorphisms of <var class="Arg">digraph</var> as calculated using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski.</p>
@@ -247,7 +247,7 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7), (1,2)(6,8)
 
 <h5>7.2-4 NautyAutomorphismGroup</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NautyAutomorphismGroup</code>( <var class="Arg">digraph</var>[, <var class="Arg">colours</var>] )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NautyAutomorphismGroup</code>( <var class="Arg">digraph</var>[, <var class="Arg">colours</var>] )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation group.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then this attribute contains the group of automorphisms of <var class="Arg">digraph</var> as calculated using <span class="URL"><a href="http://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno via <span class="URL"><a href="https://github.com/sebasguts/NautyTracesInterface">NautyTracesInterface</a></span>. The attribute <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) and operation <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) returns the value of either <code class="code">NautyAutomorphismGroup</code> or <code class="func">BlissAutomorphismGroup</code> (<a href="chap7_mj.html#X8710D68486A0F44B"><span class="RefLink">7.2-3</span></a>). These groups are, of course, equal but their generating sets may differ.</p>
@@ -263,7 +263,7 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7), (1,2)(6,8)(7,9) ])</
 
 <h5>7.2-5 AutomorphismGroup</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AutomorphismGroup</code>( <var class="Arg">digraph</var>, <var class="Arg">colours</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AutomorphismGroup</code>( <var class="Arg">digraph</var>, <var class="Arg">colours</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation group.</p>
 
 <p>This operation computes the automorphism group of a coloured digraph. A coloured digraph can be specified by its underlying digraph <var class="Arg">digraph</var> and its colouring <var class="Arg">colours</var>. Let <code class="code">n</code> be the number of vertices of <var class="Arg">digraph</var>. The colouring <var class="Arg">colours</var> may have one of the following two forms:</p>
@@ -336,8 +336,8 @@ Group([ (2,3) ])</pre></div>
 
 <h5>7.2-6 BlissCanonicalLabelling</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BlissCanonicalLabelling</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NautyCanonicalLabelling</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BlissCanonicalLabelling</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NautyCanonicalLabelling</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation, or a list of two permutations.</p>
 
 <p>A function <span class="SimpleMath">\(\rho\)</span> that maps a digraph to a digraph is a <em>canonical representative map</em> if the following two conditions hold for all digraphs <span class="SimpleMath">\(G\)</span> and <span class="SimpleMath">\(H\)</span>:</p>
@@ -401,8 +401,8 @@ true
 
 <h5>7.2-7 BlissCanonicalLabelling</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BlissCanonicalLabelling</code>( <var class="Arg">digraph</var>, <var class="Arg">colours</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NautyCanonicalLabelling</code>( <var class="Arg">digraph</var>, <var class="Arg">colours</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BlissCanonicalLabelling</code>( <var class="Arg">digraph</var>, <var class="Arg">colours</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NautyCanonicalLabelling</code>( <var class="Arg">digraph</var>, <var class="Arg">colours</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation.</p>
 
 <p>A function <span class="SimpleMath">\(\rho\)</span> that maps a coloured digraph to a coloured digraph is a <em>canonical representative map</em> if the following two conditions hold for all coloured digraphs <span class="SimpleMath">\(G\)</span> and <span class="SimpleMath">\(H\)</span>:</p>
@@ -483,8 +483,8 @@ true
 
 <h5>7.2-8 BlissCanonicalDigraph</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BlissCanonicalDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NautyCanonicalDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BlissCanonicalDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NautyCanonicalDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
 <p>The attribute <code class="code">BlissCanonicalLabelling</code> returns the canonical representative found by applying <code class="func">BlissCanonicalLabelling</code> (<a href="chap7_mj.html#X7D676FE67A6684FF"><span class="RefLink">7.2-6</span></a>). The digraph returned is canonical in the sense that</p>
@@ -514,7 +514,7 @@ true
 
 <h5>7.2-9 DigraphGroup</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGroup</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGroup</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation group.</p>
 
 <p>If <var class="Arg">digraph</var> was created knowing a subgroup of its automorphism group, then this group is stored in the attribute <code class="code">DigraphGroup</code>. If <var class="Arg">digraph</var> is not created knowing a subgroup of its automorphism group, then <code class="code">DigraphGroup</code> returns the entire automorphism group of <var class="Arg">digraph</var>.</p>
@@ -572,7 +572,7 @@ Group([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)
 
 <h5>7.2-10 DigraphOrbits</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphOrbits</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphOrbits</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of lists of integers.</p>
 
 <p><code class="code">DigraphOrbits</code> returns the orbits of the action of the <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-9</span></a>) on the set of vertices of <var class="Arg">digraph</var>.</p>
@@ -590,7 +590,7 @@ Group([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)
 
 <h5>7.2-11 DigraphOrbitReps</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphOrbitReps</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphOrbitReps</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of integers.</p>
 
 <p><code class="code">DigraphOrbitReps</code> returns a list of orbit representatives of the action of the <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-9</span></a>) on the set of vertices of <var class="Arg">digraph</var>.</p>
@@ -611,7 +611,7 @@ Group([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)
 
 <h5>7.2-12 DigraphSchreierVector</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSchreierVector</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSchreierVector</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of integers.</p>
 
 <p><code class="code">DigraphSchreierVector</code> returns the so-called <em>Schreier vector</em> of the action of the <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-9</span></a>) on the set of vertices of <var class="Arg">digraph</var>. The Schreier vector is a list <code class="code">sch</code> of integers with length <code class="code">DigraphNrVertices(<var class="Arg">digraph</var>)</code> where:</p>
@@ -648,7 +648,7 @@ Group([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)
 
 <h5>7.2-13 DigraphStabilizer</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphStabilizer</code>( <var class="Arg">digraph</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphStabilizer</code>( <var class="Arg">digraph</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation group.</p>
 
 <p><code class="code">DigraphStabilizer</code> returns the stabilizer of the vertex <var class="Arg">v</var> under of the action of the <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-9</span></a>) on the set of vertices of <var class="Arg">digraph</var>.</p>
@@ -667,7 +667,7 @@ Group(())
 
 <h5>7.2-14 IsIsomorphicDigraph</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsIsomorphicDigraph</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsIsomorphicDigraph</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
 <p>This operation returns <code class="keyw">true</code> if there exists an isomorphism from the digraph <var class="Arg">digraph1</var> to the digraph <var class="Arg">digraph2</var>. See <code class="func">IsomorphismDigraphs</code> (<a href="chap7_mj.html#X8219FE6C839D9457"><span class="RefLink">7.2-16</span></a>) for more information about isomorphisms of digraphs.</p>
@@ -703,7 +703,7 @@ true</pre></div>
 
 <h5>7.2-15 IsIsomorphicDigraph</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsIsomorphicDigraph</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var>, <var class="Arg">colours1</var>, <var class="Arg">colours2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsIsomorphicDigraph</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var>, <var class="Arg">colours1</var>, <var class="Arg">colours2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
 <p>This operation tests for isomorphism of coloured digraphs. A coloured digraph can be specified by its underlying digraph <var class="Arg">digraph1</var> and its colouring <var class="Arg">colours1</var>. Let <code class="code">n</code> be the number of vertices of <var class="Arg">digraph1</var>. The colouring <var class="Arg">colours1</var> may have one of the following two forms:</p>
@@ -752,7 +752,7 @@ false</pre></div>
 
 <h5>7.2-16 IsomorphismDigraphs</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsomorphismDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsomorphismDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation, or a pair of permutations, or <code class="keyw">fail</code>.</p>
 
 <p>This operation returns an isomorphism between the digraphs <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> if one exists, else this operation returns <code class="keyw">fail</code>.</p>
@@ -811,7 +811,7 @@ true
 
 <h5>7.2-17 IsomorphismDigraphs</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsomorphismDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var>, <var class="Arg">colours1</var>, <var class="Arg">colours2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsomorphismDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var>, <var class="Arg">colours1</var>, <var class="Arg">colours2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation, or <code class="keyw">fail</code>.</p>
 
 <p>This operation searches for an isomorphism between coloured digraphs. A coloured digraph can be specified by its underlying digraph <var class="Arg">digraph1</var> and its colouring <var class="Arg">colours1</var>. Let <code class="code">n</code> be the number of vertices of <var class="Arg">digraph1</var>. The colouring <var class="Arg">colours1</var> may have one of the following two forms:</p>
@@ -872,7 +872,7 @@ fail
 
 <h5>7.2-18 RepresentativeOutNeighbours</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; RepresentativeOutNeighbours</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; RepresentativeOutNeighbours</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: An immutable list of immutable lists.</p>
 
 <p>This function returns the list <code class="code">out</code> of <em>out-neighbours</em> of each representative of the orbits of the action of <code class="func">DigraphGroup</code> (<a href="chap7_mj.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-9</span></a>) on the vertex set of the digraph <var class="Arg">digraph</var>.</p>
@@ -908,7 +908,7 @@ Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)
 
 <h5>7.3-1 HomomorphismDigraphsFinder</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismDigraphsFinder</code>( <var class="Arg">gr1</var>, <var class="Arg">gr2</var>, <var class="Arg">hook</var>, <var class="Arg">user_param</var>, <var class="Arg">limit</var>, <var class="Arg">hint</var>, <var class="Arg">injective</var>, <var class="Arg">image</var>, <var class="Arg">map</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismDigraphsFinder</code>( <var class="Arg">gr1</var>, <var class="Arg">gr2</var>, <var class="Arg">hook</var>, <var class="Arg">user_param</var>, <var class="Arg">limit</var>, <var class="Arg">hint</var>, <var class="Arg">injective</var>, <var class="Arg">image</var>, <var class="Arg">map</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: The argument <var class="Arg">user_param</var>.</p>
 
 <p>This function finds homomorphisms from the graph <var class="Arg">gr1</var> to the graph <var class="Arg">gr2</var> subject to the conditions imposed by the other arguments as described below.</p>
@@ -984,7 +984,7 @@ Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)
 
 <h5>7.3-2 DigraphHomomorphism</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphHomomorphism</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphHomomorphism</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
 
 <p>A homomorphism from <var class="Arg">digraph1</var> to <var class="Arg">digraph2</var> is a mapping from the vertex set of <var class="Arg">digraph1</var> to a subset of the vertices of <var class="Arg">digraph2</var>, such that every pair of vertices <code class="code">[i,j]</code> which has an edge <code class="code">i-&gt;j</code> is mapped to a pair of vertices <code class="code">[a,b]</code> which has an edge <code class="code">a-&gt;b</code>. Note that non adjacent vertices can still be mapped onto adjacent ones.</p>
@@ -1006,8 +1006,8 @@ Transformation( [ 1, 3, 1 ] )
 
 <h5>7.3-3 HomomorphismsDigraphs</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismsDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismsDigraphsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismsDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismsDigraphsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of transformations.</p>
 
 <p><code class="code">HomomorphismsDigraphsRepresentatives</code> finds every <code class="func">DigraphHomomorphism</code> (<a href="chap7_mj.html#X85E9B019877AD7FE"><span class="RefLink">7.3-2</span></a>) between <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var>, up to right multiplication by an element of the <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) of <var class="Arg">digraph2</var>. In other words, every homomorphism <code class="code">f</code> between <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> can be written as the composition <code class="code">f = g * x</code>, where <code class="code">g</code> is one of the <code class="code">HomomorphismsDigraphsRepresentatives</code> and <code class="code">x</code> is an automorphism of <var class="Arg">digraph2</var>.</p>
@@ -1032,7 +1032,7 @@ Transformation( [ 1, 3, 1 ] )
 
 <h5>7.3-4 DigraphMonomorphism</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMonomorphism</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMonomorphism</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
 
 <p><code class="code">DigraphMonomorphism</code> returns a single <em>injective</em> <code class="func">DigraphHomomorphism</code> (<a href="chap7_mj.html#X85E9B019877AD7FE"><span class="RefLink">7.3-2</span></a>) between <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> if one exists, otherwise it returns <code class="keyw">fail</code>.</p>
@@ -1052,8 +1052,8 @@ Transformation( [ 1, 5, 4, 4, 5 ] )
 
 <h5>7.3-5 MonomorphismsDigraphs</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; MonomorphismsDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; MonomorphismsDigraphsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; MonomorphismsDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; MonomorphismsDigraphsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of transformations.</p>
 
 <p>These operations behave the same as <code class="func">HomomorphismsDigraphs</code> (<a href="chap7_mj.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>) and <code class="func">HomomorphismsDigraphsRepresentatives</code> (<a href="chap7_mj.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>), expect they only return <em>injective</em> homomorphisms.</p>
@@ -1074,7 +1074,7 @@ Transformation( [ 1, 5, 4, 4, 5 ] )
 
 <h5>7.3-6 DigraphEpimorphism</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEpimorphism</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEpimorphism</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
 
 <p><code class="code">DigraphEpimorphism</code> returns a single <em>surjective</em> <code class="func">DigraphHomomorphism</code> (<a href="chap7_mj.html#X85E9B019877AD7FE"><span class="RefLink">7.3-2</span></a>) between <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> if one exists, otherwise it returns <code class="keyw">fail</code>.</p>
@@ -1095,8 +1095,8 @@ Transformation( [ 1, 2, 3, 1 ] )
 
 <h5>7.3-7 EpimorphismsDigraphs</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EpimorphismsDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EpimorphismsDigraphsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EpimorphismsDigraphs</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EpimorphismsDigraphsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of transformations.</p>
 
 <p>These operations behave the same as <code class="func">HomomorphismsDigraphs</code> (<a href="chap7_mj.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>) and <code class="func">HomomorphismsDigraphsRepresentatives</code> (<a href="chap7_mj.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>), expect they only return <em>surjective</em> homomorphisms.</p>
@@ -1126,8 +1126,8 @@ Transformation( [ 1, 2, 3, 1 ] )
 
 <h5>7.3-8 GeneratorsOfEndomorphismMonoid</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfEndomorphismMonoid</code>( <var class="Arg">digraph</var>[, <var class="Arg">colors</var>][, <var class="Arg">limit</var>] )</td><td class="tdright">( function )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfEndomorphismMonoidAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfEndomorphismMonoid</code>( <var class="Arg">digraph</var>[, <var class="Arg">colors</var>][, <var class="Arg">limit</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfEndomorphismMonoidAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of transformations.</p>
 
 <p>An endomorphism of <var class="Arg">digraph</var> is a homomorphism <code class="func">DigraphHomomorphism</code> (<a href="chap7_mj.html#X85E9B019877AD7FE"><span class="RefLink">7.3-2</span></a>) from <var class="Arg">digraph</var> back to itself. <code class="code">GeneratorsOfEndomorphismMonoid</code>, called with a single argument, returns a generating set for the monoid of all endomorphisms of <var class="Arg">digraph</var>.</p>
@@ -1170,10 +1170,10 @@ Transformation( [ 1, 2, 3, 1 ] )
 
 <h5>7.3-9 DigraphColouring</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">n</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColoring</code>( <var class="Arg">digraph</var>, <var class="Arg">n</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColouring</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColoring</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">n</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColoring</code>( <var class="Arg">digraph</var>, <var class="Arg">n</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColouring</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColoring</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
 
 <p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. A <em>proper <code class="code">n</code>-colouring</em> is a proper colouring that uses exactly <code class="code">n</code> colours. Equivalently, a proper (<code class="code">n</code>-)colouring of a digraph can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7_mj.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from a digraph onto the complete digraph (with <code class="code">n</code> vertices); see <code class="func">CompleteDigraph</code> (<a href="chap3_mj.html#X812417E278198D9C"><span class="RefLink">3.5-2</span></a>). Note that a digraph with loops (<code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>)) does not have a proper <code class="code">n</code>-colouring for any value <code class="code">n</code>.</p>
@@ -1203,7 +1203,7 @@ Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 
 <h5>7.3-10 DigraphEmbedding</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEmbedding</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEmbedding</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
 
 <p>An embedding of a digraph <var class="Arg">digraph1</var> into another digraph <var class="Arg">digraph2</var> is a <code class="func">DigraphMonomorphism</code> (<a href="chap7_mj.html#X82D0FCD87D47ACA8"><span class="RefLink">7.3-4</span></a>) from <var class="Arg">digraph1</var> to <var class="Arg">digraph2</var> which has the additional property that a pair of vertices <code class="code">[i, j]</code> which have no edge <code class="code">i -&gt; j</code> in <var class="Arg">digraph1</var> are mapped to a pair of vertices <code class="code">[a, b]</code> which have no edge <code class="code">a-&gt;b</code> in <var class="Arg">digraph2</var>.</p>
@@ -1226,7 +1226,7 @@ Transformation( [ 2, 4, 3, 4 ] )
 
 <h5>7.3-11 ChromaticNumber</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ChromaticNumber</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ChromaticNumber</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A non-negative integer.</p>
 
 <p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. Equivalently, a proper digraph colouring can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7_mj.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from a digraph onto a complete digraph.</p>

@@ -6,7 +6,7 @@
                               [1XMethods for digraphs[101X
   
   
-                                 Version 0.11.0
+                                 Version 0.12.0
   
   
                                   Jan De Beule
@@ -57,7 +57,7 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y©  2014-17  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Michael
+  [33X[0;0Y©  2014-18  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Michael
   Torpey, Wilf A. Wilson et al.[133X
   
   [33X[0;0Y[5XDigraphs[105X  is  free  software; you can redistribute it and/or modify it under
@@ -245,15 +245,16 @@
       6.2-4 IsDistanceRegularDigraph
     6.3 [33X[0;0YConnectivity and cycles[133X
       6.3-1 IsAcyclicDigraph
-      6.3-2 IsConnectedDigraph
-      6.3-3 IsBiconnectedDigraph
-      6.3-4 IsStronglyConnectedDigraph
-      6.3-5 IsAperiodicDigraph
-      6.3-6 IsDirectedTree
-      6.3-7 IsUndirectedTree
-      6.3-8 IsEulerianDigraph
-      6.3-9 IsHamiltonianDigraph
-      6.3-10 IsCycleDigraph
+      6.3-2 IsChainDigraph
+      6.3-3 IsConnectedDigraph
+      6.3-4 IsBiconnectedDigraph
+      6.3-5 IsStronglyConnectedDigraph
+      6.3-6 IsAperiodicDigraph
+      6.3-7 IsDirectedTree
+      6.3-8 IsUndirectedTree
+      6.3-9 IsEulerianDigraph
+      6.3-10 IsHamiltonianDigraph
+      6.3-11 IsCycleDigraph
   7 [33X[0;0YHomomorphisms[133X
     7.1 [33X[0;0YActing on digraphs[133X
       7.1-1 OnDigraphs

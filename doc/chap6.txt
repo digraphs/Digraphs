@@ -6,7 +6,7 @@
   
   [1X6.1-1 DigraphHasLoops[101X
   
-  [29X[2XDigraphHasLoops[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XDigraphHasLoops[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YReturns  [9Xtrue[109X  if the digraph [3Xdigraph[103X has loops, and [9Xfalse[109X if it does not. A
@@ -29,7 +29,7 @@
   
   [1X6.1-2 IsAntisymmetricDigraph[101X
   
-  [29X[2XIsAntisymmetricDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsAntisymmetricDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property is [9Xtrue[109X if the digraph [3Xdigraph[103X is antisymmetric, and [9Xfalse[109X if
@@ -56,7 +56,7 @@
   
   [1X6.1-3 IsBipartiteDigraph[101X
   
-  [29X[2XIsBipartiteDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsBipartiteDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is bipartite, and [9Xfalse[109X if it
@@ -80,7 +80,7 @@
   
   [1X6.1-4 IsCompleteBipartiteDigraph[101X
   
-  [29X[2XIsCompleteBipartiteDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsCompleteBipartiteDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YReturns  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is a complete bipartite digraph, and
@@ -111,7 +111,7 @@
   
   [1X6.1-5 IsCompleteDigraph[101X
   
-  [29X[2XIsCompleteDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsCompleteDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YReturns [9Xtrue[109X if the digraph [3Xdigraph[103X is complete, and [9Xfalse[109X if it is not.[133X
@@ -134,8 +134,8 @@
   
   [1X6.1-6 IsEmptyDigraph[101X
   
-  [29X[2XIsEmptyDigraph[102X( [3Xdigraph[103X ) [32X property
-  [29X[2XIsNullDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsEmptyDigraph[102X( [3Xdigraph[103X ) [32X property[133X
+  [33X[1;0Y[29X[2XIsNullDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YReturns  [9Xtrue[109X  if  the  digraph  [3Xdigraph[103X is empty, and [9Xfalse[109X if it is not. A
@@ -160,7 +160,7 @@
   
   [1X6.1-7 IsFunctionalDigraph[101X
   
-  [29X[2XIsFunctionalDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsFunctionalDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis property is [9Xtrue[109X if the digraph [3Xdigraph[103X is functional.[133X
@@ -184,7 +184,7 @@
   
   [1X6.1-8 IsMultiDigraph[101X
   
-  [29X[2XIsMultiDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsMultiDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YA  [13Xmultidigraph[113X  is  one  that  has at least two edges with equal source and
@@ -211,7 +211,7 @@
   
   [1X6.1-9 IsReflexiveDigraph[101X
   
-  [29X[2XIsReflexiveDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsReflexiveDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is reflexive, and [9Xfalse[109X if it
@@ -230,7 +230,7 @@
   
   [1X6.1-10 IsSymmetricDigraph[101X
   
-  [29X[2XIsSymmetricDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsSymmetricDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is symmetric, and [9Xfalse[109X if it
@@ -271,7 +271,7 @@
   
   [1X6.1-11 IsTournament[101X
   
-  [29X[2XIsTournament[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsTournament[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is a tournament, and [9Xfalse[109X if
@@ -294,7 +294,7 @@
   
   [1X6.1-12 IsTransitiveDigraph[101X
   
-  [29X[2XIsTransitiveDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsTransitiveDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property is [9Xtrue[109X if the digraph [3Xdigraph[103X is transitive, and [9Xfalse[109X if it
@@ -327,7 +327,7 @@
   
   [1X6.1-13 IsPartialOrderDigraph[101X
   
-  [29X[2XIsPartialOrderDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsPartialOrderDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  is a synonym for [2XIsReflexiveDigraph[102X ([14X6.1-9[114X) and [2XIsAntisymmetricDigraph[102X
@@ -352,9 +352,9 @@
   
   [1X6.1-14 IsMeetSemilatticeDigraph[101X
   
-  [29X[2XIsMeetSemilatticeDigraph[102X( [3Xdigraph[103X ) [32X property
-  [29X[2XIsJoinSemilatticeDigraph[102X( [3Xdigraph[103X ) [32X property
-  [29X[2XIsLatticeDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsMeetSemilatticeDigraph[102X( [3Xdigraph[103X ) [32X property[133X
+  [33X[1;0Y[29X[2XIsJoinSemilatticeDigraph[102X( [3Xdigraph[103X ) [32X property[133X
+  [33X[1;0Y[29X[2XIsLatticeDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0Y[10XIsMeetSemilatticeDigraph[110X  returns  [9Xtrue[109X  if  the  digraph  [3Xdigraph[103X is a meet
@@ -411,7 +411,7 @@
   
   [1X6.2-1 IsInRegularDigraph[101X
   
-  [29X[2XIsInRegularDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsInRegularDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property is [9Xtrue[109X if there is an integer [10Xn[110X such that for every vertex [10Xv[110X
@@ -427,7 +427,7 @@
   
   [1X6.2-2 IsOutRegularDigraph[101X
   
-  [29X[2XIsOutRegularDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsOutRegularDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property is [9Xtrue[109X if there is an integer [10Xn[110X such that for every vertex [10Xv[110X
@@ -443,7 +443,7 @@
   
   [1X6.2-3 IsRegularDigraph[101X
   
-  [29X[2XIsRegularDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsRegularDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property is [9Xtrue[109X if there is an integer [10Xn[110X such that for every vertex [10Xv[110X
@@ -461,7 +461,7 @@
   
   [1X6.2-4 IsDistanceRegularDigraph[101X
   
-  [29X[2XIsDistanceRegularDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsDistanceRegularDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YIf [3Xdigraph[103X is a connected symmetric graph, this property returns [9Xtrue[109X if for
@@ -495,7 +495,7 @@
   
   [1X6.3-1 IsAcyclicDigraph[101X
   
-  [29X[2XIsAcyclicDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsAcyclicDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property is [9Xtrue[109X if the digraph [3Xdigraph[103X is acyclic, and [9Xfalse[109X if it is
@@ -527,9 +527,37 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.3-2 IsConnectedDigraph[101X
+  [1X6.3-2 IsChainDigraph[101X
   
-  [29X[2XIsConnectedDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsChainDigraph[102X( [3Xdigraph[103X ) [32X property[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0Y[10XIsChainDigraph[110X  returns  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is isomorphic to the
+  chain  digraph  with the same number of vertices as [3Xdigraph[103X, and [9Xfalse[109X if it
+  is not; see [2XChainDigraph[102X ([14X3.5-1[114X).[133X
+  
+  [33X[0;0YA  digraph  is  a [13Xchain[113X if and only if it is a directed tree, in which every
+  vertex has out degree at most one; see [2XIsDirectedTree[102X ([14X6.3-7[114X) and [2XOutDegrees[102X
+  ([14X5.2-7[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsChainDigraph(gr);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xgr := ChainDigraph(5);[127X[104X
+    [4X[28X<digraph with 5 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsChainDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphReverse(gr);[127X[104X
+    [4X[28X<digraph with 5 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsChainDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-3 IsConnectedDigraph[101X
+  
+  [33X[1;0Y[29X[2XIsConnectedDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is weakly connected and [9Xfalse[109X
@@ -551,13 +579,13 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.3-3 IsBiconnectedDigraph[101X
+  [1X6.3-4 IsBiconnectedDigraph[101X
   
-  [29X[2XIsBiconnectedDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsBiconnectedDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YA connected digraph is [13Xbiconnected[113X if it is still connected (in the sense of
-  [2XIsConnectedDigraph[102X ([14X6.3-2[114X)) when any vertex is removed. [10XIsBiconnectedDigraph[110X
+  [2XIsConnectedDigraph[102X ([14X6.3-3[114X)) when any vertex is removed. [10XIsBiconnectedDigraph[110X
   returns  [9Xtrue[109X if the digraph [3Xdigraph[103X is biconnected, and [9Xfalse[109X if it is not.
   In   particular,  [10XIsBiconnectedDigraph[110X  returns  [9Xfalse[109X  if  [3Xdigraph[103X  is  not
   connected.[133X
@@ -579,9 +607,9 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.3-4 IsStronglyConnectedDigraph[101X
+  [1X6.3-5 IsStronglyConnectedDigraph[101X
   
-  [29X[2XIsStronglyConnectedDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsStronglyConnectedDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis property is [9Xtrue[109X if the digraph [3Xdigraph[103X is strongly connected and [9Xfalse[109X
@@ -606,9 +634,9 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.3-5 IsAperiodicDigraph[101X
+  [1X6.3-6 IsAperiodicDigraph[101X
   
-  [29X[2XIsAperiodicDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsAperiodicDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property  is  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is aperiodic, i.e. if its
@@ -625,9 +653,9 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.3-6 IsDirectedTree[101X
+  [1X6.3-7 IsDirectedTree[101X
   
-  [29X[2XIsDirectedTree[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsDirectedTree[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YReturns  [9Xtrue[109X  if the digraph [3Xdigraph[103X is a directed tree, and [9Xfalse[109X if it is
@@ -658,10 +686,10 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.3-7 IsUndirectedTree[101X
+  [1X6.3-8 IsUndirectedTree[101X
   
-  [29X[2XIsUndirectedTree[102X( [3Xdigraph[103X ) [32X property
-  [29X[2XIsUndirectedForest[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsUndirectedTree[102X( [3Xdigraph[103X ) [32X property[133X
+  [33X[1;0Y[29X[2XIsUndirectedForest[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThe  property  [10XIsUndirectedTree[110X  returns  [9Xtrue[109X  if the digraph [3Xdigraph[103X is an
@@ -706,9 +734,9 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.3-8 IsEulerianDigraph[101X
+  [1X6.3-9 IsEulerianDigraph[101X
   
-  [29X[2XIsEulerianDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsEulerianDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis property returns true if the digraph [3Xdigraph[103X is Eulerian.[133X
@@ -736,9 +764,9 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.3-9 IsHamiltonianDigraph[101X
+  [1X6.3-10 IsHamiltonianDigraph[101X
   
-  [29X[2XIsHamiltonianDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsHamiltonianDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X is Hamiltonian, then this property returns [9Xtrue[109X, and [9Xfalse[109X if it
@@ -770,9 +798,9 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.3-10 IsCycleDigraph[101X
+  [1X6.3-11 IsCycleDigraph[101X
   
-  [29X[2XIsCycleDigraph[102X( [3Xdigraph[103X ) [32X property
+  [33X[1;0Y[29X[2XIsCycleDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0Y[10XIsCycleDigraph[110X  returns  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is isomorphic to the

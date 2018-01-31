@@ -105,7 +105,7 @@
 
 <h5>5.1-1 DigraphVertices</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphVertices</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphVertices</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of integers.</p>
 
 <p>Returns the vertices of the digraph <var class="Arg">digraph</var>.</p>
@@ -134,7 +134,7 @@
 
 <h5>5.1-2 DigraphNrVertices</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphNrVertices</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphNrVertices</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: An integer.</p>
 
 <p>Returns the number of vertices of the digraph <var class="Arg">digraph</var>.</p>
@@ -160,7 +160,7 @@
 
 <h5>5.1-3 DigraphEdges</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEdges</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEdges</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of lists.</p>
 
 <p><code class="code">DigraphEdges</code> returns a list of edges of the digraph <var class="Arg">digraph</var>, where each edge is a pair of elements of <code class="func">DigraphVertices</code> (<a href="chap5.html#X7C45F7D878D896AC"><span class="RefLink">5.1-1</span></a>) of the form <code class="code">[source,range]</code>.</p>
@@ -183,7 +183,7 @@
 
 <h5>5.1-4 DigraphNrEdges</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphNrEdges</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphNrEdges</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: An integer.</p>
 
 <p>This function returns the number of edges of the digraph <var class="Arg">digraph</var>.</p>
@@ -205,7 +205,7 @@
 
 <h5>5.1-5 DigraphSinks</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSinks</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSinks</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of vertices.</p>
 
 <p>This function returns a list of the sinks of the digraph <var class="Arg">digraph</var>. A sink of a digraph is a vertex with out-degree zero. See <code class="func">OutDegreeOfVertex</code> (<a href="chap5.html#X7A09EB648070276D"><span class="RefLink">5.2-9</span></a>).</p>
@@ -222,7 +222,7 @@
 
 <h5>5.1-6 DigraphSources</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSources</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSources</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of vertices.</p>
 
 <p>This function returns a list of the sources of the digraph <var class="Arg">digraph</var>. A source of a digraph is a vertex with in-degree zero. See <code class="func">InDegreeOfVertex</code> (<a href="chap5.html#X7C9CD0527CB9E6EF"><span class="RefLink">5.2-11</span></a>).</p>
@@ -239,7 +239,7 @@
 
 <h5>5.1-7 DigraphTopologicalSort</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphTopologicalSort</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphTopologicalSort</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of positive integers, or <code class="keyw">fail</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph whose only directed cycles are loops, then <code class="code">DigraphTopologicalSort</code> returns the vertices of <var class="Arg">digraph</var> ordered so that every edge's source appears no earlier in the list than its range. If the digraph <var class="Arg">digraph</var> contains directed cycles of length greater than <span class="SimpleMath">1</span>, then this operation returns <code class="keyw">fail</code>.</p>
@@ -261,8 +261,8 @@
 
 <h5>5.1-8 DigraphVertexLabel</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphVertexLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphVertexLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var>, <var class="Arg">obj</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphVertexLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphVertexLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var>, <var class="Arg">obj</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>If <var class="Arg">digraph</var> is a digraph, then the first operation returns the label of the vertex <var class="Arg">i</var>. The second operation can be used to set the label of the vertex <var class="Arg">i</var> in <var class="Arg">digraph</var> to the arbitrary <strong class="pkg">GAP</strong> object <var class="Arg">obj</var>.</p>
 
 <p>The label of a vertex can be changed an arbitrary number of times. If no label has been set for the vertex <var class="Arg">i</var>, then the default value is <var class="Arg">i</var>.</p>
@@ -293,8 +293,8 @@
 
 <h5>5.1-9 DigraphVertexLabels</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphVertexLabels</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphVertexLabels</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphVertexLabels</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphVertexLabels</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphVertexLabels</code> returns a copy of the labels of the vertices in <var class="Arg">digraph</var>. <code class="code">SetDigraphVertexLabels</code> can be used to set the labels of the vertices in <var class="Arg">digraph</var> to the list of arbitrary <strong class="pkg">GAP</strong> objects <var class="Arg">list</var>.</p>
 
 <p>The label of a vertex can be changed an arbitrary number of times. If no label has been set for the vertex <var class="Arg">i</var>, then the default value is <var class="Arg">i</var>.</p>
@@ -325,8 +325,8 @@
 
 <h5>5.1-10 DigraphEdgeLabel</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEdgeLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var>, <var class="Arg">j</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphEdgeLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var>, <var class="Arg">j</var>, <var class="Arg">obj</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEdgeLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var>, <var class="Arg">j</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphEdgeLabel</code>( <var class="Arg">digraph</var>, <var class="Arg">i</var>, <var class="Arg">j</var>, <var class="Arg">obj</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then the first operation returns the label of the edge from vertex <var class="Arg">i</var> to vertex <var class="Arg">j</var>. The second operation can be used to set the label of the edge between vertex <var class="Arg">i</var> and vertex <var class="Arg">j</var> to the arbitrary <strong class="pkg">GAP</strong> object <var class="Arg">obj</var>.</p>
 
 <p>The label of an edge can be changed an arbitrary number of times. If no label has been set for the edge, then the default value is <var class="Arg">1</var>.</p>
@@ -351,9 +351,9 @@
 
 <h5>5.1-11 DigraphEdgeLabels</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEdgeLabels</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphEdgeLabels</code>( <var class="Arg">digraph</var>, <var class="Arg">labels</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphEdgeLabels</code>( <var class="Arg">digraph</var>, <var class="Arg">func</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEdgeLabels</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphEdgeLabels</code>( <var class="Arg">digraph</var>, <var class="Arg">labels</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SetDigraphEdgeLabels</code>( <var class="Arg">digraph</var>, <var class="Arg">func</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then <code class="code">DigraphEdgeLabels</code> returns a copy of the labels of the edges in <var class="Arg">digraph</var> as a list of lists <code class="code">labels</code> such that <code class="code">labels[i][j]</code> is the label on the edge from vertex <code class="code">i</code> to vertex <code class="code">OutNeighbours(digraph)[i][j]</code>. <code class="code">SetDigraphEdgeLabels</code> can be used to set the labels of the edges in <var class="Arg">digraph</var> without multiple edges to the list <var class="Arg">labels</var> of lists of arbitrary <strong class="pkg">GAP</strong> objects such that <code class="code">list[i][j]</code> is the label on the edge from vertex <code class="code">i</code> to the vertex <code class="code">OutNeighbours(digraph&gt;[i][j]</code>. Alternatively <code class="code">SetDigraphEdgeLabels</code> can be called with binary function <var class="Arg">func</var> that as its second argument that when passed two vertices <code class="code">i</code> and <code class="code">j</code> returns the label for the edge between vertex <code class="code">i</code> and vertex <code class="code">j</code>.</p>
 
 <p>The label of an edge can be changed an arbitrary number of times. If no label has been set for an edge, then the default value is <code class="code">1</code>.</p>
@@ -381,7 +381,7 @@
 
 <h5>5.1-12 DigraphInEdges</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphInEdges</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphInEdges</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of edges.</p>
 
 <p><code class="code">DigraphInEdges</code> returns the list of all edges of <var class="Arg">digraph</var> which have <var class="Arg">vertex</var> as their range.</p>
@@ -398,7 +398,7 @@
 
 <h5>5.1-13 DigraphOutEdges</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphOutEdges</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphOutEdges</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of edges.</p>
 
 <p><code class="code">DigraphOutEdges</code> returns the list of all edges of <var class="Arg">digraph</var> which have <var class="Arg">vertex</var> as their source.</p>
@@ -415,8 +415,8 @@
 
 <h5>5.1-14 IsDigraphEdge</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEdge</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEdge</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEdge</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEdge</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
 <p>In the first form, this function returns <code class="keyw">true</code> if and only if the list <var class="Arg">list</var> specifies an edge in the digraph <var class="Arg">digraph</var>. Specifically, this operation returns <code class="keyw">true</code> if <var class="Arg">list</var> is a pair of positive integers where <var class="Arg">list</var><code class="code">[1]</code> is the source and <var class="Arg">list</var><code class="code">[2]</code> is the range of an edge in <var class="Arg">digraph</var>, and <code class="keyw">false</code> otherwise.</p>
@@ -439,9 +439,9 @@ false
 
 <h5>5.1-15 IsMatching</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMatching</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaximalMatching</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsPerfectMatching</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMatching</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaximalMatching</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsPerfectMatching</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">list</var> is a list of pairs of vertices of <var class="Arg">digraph</var>, then <code class="code">IsMatching</code> returns <code class="keyw">true</code> if <var class="Arg">list</var> is a matching of <var class="Arg">digraph</var>. The operations <code class="code">IsMaximalMatching</code> and <code class="code">IsPerfectMatching</code> return <code class="keyw">true</code> if <var class="Arg">list</var> is a maximal, or perfect, matching of <var class="Arg">digraph</var>, respectively. Otherwise, these operations return <code class="keyw">false</code>.</p>
@@ -477,8 +477,8 @@ true
 
 <h5>5.2-1 AdjacencyMatrix</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrix</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrixMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrix</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrixMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A square matrix of non-negative integers.</p>
 
 <p>This function returns the adjacency matrix <code class="code">mat</code> of the digraph <var class="Arg">digraph</var>. The value of the matrix entry <code class="code">mat[i][j]</code> is the number of edges in <var class="Arg">digraph</var> with source <code class="code">i</code> and range <code class="code">j</code>. If <var class="Arg">digraph</var> has no vertices, then the empty list is returned.</p>
@@ -510,8 +510,8 @@ true
 
 <h5>5.2-2 BooleanAdjacencyMatrix</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BooleanAdjacencyMatrix</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BooleanAdjacencyMatrixMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BooleanAdjacencyMatrix</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BooleanAdjacencyMatrixMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A square matrix of booleans.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph with a positive number of vertices <code class="code">n</code>, then <code class="code">BooleanAdjacencyMatrix(</code><var class="Arg">digraph</var><code class="code">)</code> returns the boolean adjacency matrix <code class="code">mat</code> of <var class="Arg">digraph</var>. The value of the matrix entry <code class="code">mat[j][i]</code> is <code class="keyw">true</code> if and only if there exists an edge in <var class="Arg">digraph</var> with source <code class="code">j</code> and range <code class="code">i</code>. If <var class="Arg">digraph</var> has no vertices, then the empty list is returned.</p>
@@ -542,7 +542,7 @@ true
 
 <h5>5.2-3 DigraphAdjacencyFunction</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphAdjacencyFunction</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphAdjacencyFunction</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A function.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphAdjacencyFunction</code> returns a function which takes two integer parameters <code class="code">x, y</code> and returns <code class="keyw">true</code> if there exists an edge from vertex <code class="code">x</code> to vertex <code class="code">y</code> in <var class="Arg">digraph</var> and <code class="keyw">false</code> if not.</p>
@@ -578,8 +578,8 @@ false</pre></div>
 
 <h5>5.2-4 DigraphRange</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphRange</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSource</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphRange</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphSource</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of positive integers.</p>
 
 <p><code class="code">DigraphRange</code> and <code class="code">DigraphSource</code> return the range and source of the digraph <var class="Arg">digraph</var>. More precisely, position <code class="code">i</code> in <code class="code">DigraphRange(<var class="Arg">digraph</var>)</code> is the range of the <code class="code">i</code>th edge of <var class="Arg">digraph</var>.</p>
@@ -603,10 +603,10 @@ false</pre></div>
 
 <h5>5.2-5 OutNeighbours</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighbours</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighbors</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighboursMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighborsMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighbours</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighbors</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighboursMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighborsMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: The adjacencies of a digraph.</p>
 
 <p>This function returns the list <code class="code">out</code> of out-neighbours of each vertex of the digraph <var class="Arg">digraph</var>. More specifically, a vertex <code class="code">j</code> appears in <code class="code">out[i]</code> each time there exists an edge with source <code class="code">i</code> and range <code class="code">j</code> in <var class="Arg">digraph</var>.</p>
@@ -640,10 +640,10 @@ false</pre></div>
 
 <h5>5.2-6 InNeighbours</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighbours</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighbors</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighboursMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighborsMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighbours</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighbors</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighboursMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighborsMutableCopy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of lists of vertices.</p>
 
 <p>This function returns the list <code class="code">inn</code> of in-neighbours of each vertex of the digraph <var class="Arg">digraph</var>. More specifically, a vertex <code class="code">j</code> appears in <code class="code">inn[i]</code> each time there exists an edge with source <code class="code">j</code> and range <code class="code">i</code> in <var class="Arg">digraph</var>.</p>
@@ -679,9 +679,9 @@ false</pre></div>
 
 <h5>5.2-7 OutDegrees</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegrees</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegreeSequence</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegreeSet</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegrees</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegreeSequence</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegreeSet</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of non-negative integers.</p>
 
 <p>Given a digraph <var class="Arg">digraph</var> with <span class="SimpleMath">n</span> vertices, the function <code class="code">OutDegrees</code> returns a list <code class="code">out</code> of length <span class="SimpleMath">n</span>, such that for a vertex <code class="code">i</code> in <var class="Arg">digraph</var>, the value of <code class="code">out[i]</code> is the out-degree of vertex <code class="code">i</code>. See <code class="func">OutDegreeOfVertex</code> (<a href="chap5.html#X7A09EB648070276D"><span class="RefLink">5.2-9</span></a>).</p>
@@ -706,9 +706,9 @@ false</pre></div>
 
 <h5>5.2-8 InDegrees</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegrees</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegreeSequence</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegreeSet</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegrees</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegreeSequence</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegreeSet</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of non-negative integers.</p>
 
 <p>Given a digraph <var class="Arg">digraph</var> with <span class="SimpleMath">n</span> vertices, the function <code class="code">InDegrees</code> returns a list <code class="code">inn</code> of length <span class="SimpleMath">n</span>, such that for a vertex <code class="code">i</code> in <var class="Arg">digraph</var>, the value of <code class="code">inn[i]</code> is the in-degree of vertex <code class="code">i</code>. See <code class="func">InDegreeOfVertex</code> (<a href="chap5.html#X7C9CD0527CB9E6EF"><span class="RefLink">5.2-11</span></a>).</p>
@@ -733,7 +733,7 @@ false</pre></div>
 
 <h5>5.2-9 OutDegreeOfVertex</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegreeOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutDegreeOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: The non-negative integer.</p>
 
 <p>This operation returns the out-degree of the vertex <var class="Arg">vertex</var> in the digraph <var class="Arg">digraph</var>. The out-degree of <var class="Arg">vertex</var> is the number of edges in <var class="Arg">digraph</var> whose source is <var class="Arg">vertex</var>.</p>
@@ -757,8 +757,8 @@ false</pre></div>
 
 <h5>5.2-10 OutNeighboursOfVertex</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighboursOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighborsOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighboursOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OutNeighborsOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of vertices.</p>
 
 <p>This operation returns the list <code class="code">out</code> of vertices of the digraph <var class="Arg">digraph</var>. A vertex <code class="code">i</code> appears in the list <code class="code">out</code> each time there exists an edge with source <var class="Arg">vertex</var> and range <code class="code">i</code> in <var class="Arg">digraph</var>; in particular, this means that <code class="code">out</code> may contain duplicates.</p>
@@ -778,7 +778,7 @@ false</pre></div>
 
 <h5>5.2-11 InDegreeOfVertex</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegreeOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InDegreeOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A non-negative integer.</p>
 
 <p>This operation returns the in-degree of the vertex <var class="Arg">vertex</var> in the digraph <var class="Arg">digraph</var>. The in-degree of <var class="Arg">vertex</var> is the number of edges in <var class="Arg">digraph</var> whose range is <var class="Arg">vertex</var>.</p>
@@ -802,8 +802,8 @@ false</pre></div>
 
 <h5>5.2-12 InNeighboursOfVertex</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighboursOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighborsOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighboursOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; InNeighborsOfVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of postitive vertices.</p>
 
 <p>This operation returns the list <code class="code">inn</code> of vertices of the digraph <var class="Arg">digraph</var>. A vertex <code class="code">i</code> appears in the list <code class="code">inn</code> each time there exists an edge with source <code class="code">i</code> and range <var class="Arg">vertex</var> in <var class="Arg">digraph</var>; in particular, this means that <code class="code">inn</code> may contain duplicates.</p>
@@ -823,7 +823,7 @@ false</pre></div>
 
 <h5>5.2-13 DigraphLoops</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLoops</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLoops</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of vertices.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphLoops</code> returns the list consisting of the <code class="func">DigraphVertices</code> (<a href="chap5.html#X7C45F7D878D896AC"><span class="RefLink">5.1-1</span></a>) of <var class="Arg">digraph</var> at which there is a loop. See <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>).</p>
@@ -845,8 +845,8 @@ false
 
 <h5>5.2-14 PartialOrderDigraphMeetOfVertices</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PartialOrderDigraphMeetOfVertices</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PartialOrderDigraphJoinOfVertices</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PartialOrderDigraphMeetOfVertices</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PartialOrderDigraphJoinOfVertices</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A positive integer or <code class="keyw">fail</code></p>
 
 <p>If the first argument is a partial order digraph <code class="func">IsPartialOrderDigraph</code> (<a href="chap6.html#X82BAE6D37D49A145"><span class="RefLink">6.1-13</span></a>) then these operations return the meet, or the join, of the two input vertices. If the meet (or join) is does not exist then <code class="keyw">fail</code> is returned. The meet (or join) is guaranteed to exist when the first argument satisfies <code class="func">IsMeetSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.1-14</span></a>) (or <code class="func">IsJoinSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.1-14</span></a>)) - see the documentation for these properties for the definition of the meet (or the join).</p>
@@ -883,7 +883,7 @@ fail
 
 <h5>5.3-1 DigraphDiameter</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDiameter</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDiameter</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: An integer or <code class="code">fail</code>.</p>
 
 <p>This function returns the diameter of the digraph <var class="Arg">digraph</var>.</p>
@@ -910,9 +910,9 @@ false
 
 <h5>5.3-2 DigraphShortestDistance</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistance</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistance</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistance</code>( <var class="Arg">digraph</var>, <var class="Arg">list1</var>, <var class="Arg">list2</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistance</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistance</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistance</code>( <var class="Arg">digraph</var>, <var class="Arg">list1</var>, <var class="Arg">list2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: An integer or <code class="keyw">fail</code></p>
 
 <p>If there is a directed path in the digraph <var class="Arg">digraph</var> between vertex <var class="Arg">u</var> and vertex <var class="Arg">v</var>, then this operation returns the length of the shortest such directed path. If no such directed path exists, then this operation returns <code class="keyw">fail</code>. See section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a directed path.</p>
@@ -943,7 +943,7 @@ fail
 
 <h5>5.3-3 DigraphShortestDistances</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistances</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestDistances</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A square matrix.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph with <span class="SimpleMath">n</span> vertices, then this function returns an <span class="SimpleMath">n × n</span> matrix <code class="code">mat</code>, where each entry is either a non-negative integer, or <code class="keyw">fail</code>. If <span class="SimpleMath">n = 0</span>, then an empty list is returned.</p>
@@ -968,7 +968,7 @@ fail
 
 <h5>5.3-4 DigraphLongestDistanceFromVertex</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLongestDistanceFromVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLongestDistanceFromVertex</code>( <var class="Arg">digraph</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: An integer, or <code class="keyw">infinity</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">v</var> is a vertex in <var class="Arg">digraph</var>, then this operation returns the length of the longest directed walk in <var class="Arg">digraph</var> which begins at vertex <var class="Arg">v</var>. See section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definitions of directed walk, directed cycle, and loop.</p>
@@ -1004,8 +1004,8 @@ infinity
 
 <h5>5.3-5 DigraphDistanceSet</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDistanceSet</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var>, <var class="Arg">distance</var> )</td><td class="tdright">( operation )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDistanceSet</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var>, <var class="Arg">distances</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDistanceSet</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var>, <var class="Arg">distance</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDistanceSet</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var>, <var class="Arg">distances</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of vertices</p>
 
 <p>This operation returns the list of all vertices in digraph <var class="Arg">digraph</var> such that the shortest distance to a vertex <var class="Arg">vertex</var> is <var class="Arg">distance</var> or is in the list <var class="Arg">distances</var>.</p>
@@ -1028,7 +1028,7 @@ infinity
 
 <h5>5.3-6 DigraphGirth</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGirth</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGirth</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: An integer, or <code class="keyw">infinity</code>.</p>
 
 <p>This attribute returns the <em>girth</em> of the digraph <var class="Arg">digraph</var>. The <em>girth</em> of a digraph is the length of its shortest simple circuit. See section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definitions of simple circuit, directed cycle, and loop.</p>
@@ -1059,7 +1059,7 @@ infinity
 
 <h5>5.3-7 DigraphUndirectedGirth</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphUndirectedGirth</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphUndirectedGirth</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: An integer or <code class="keyw">infinity</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a symmetric digraph, then this function returns the girth of <var class="Arg">digraph</var> when treated as an undirected graph (i.e. each pair of edges <span class="SimpleMath">[i, j]</span> and <span class="SimpleMath">[j, i]</span> is treated as a single edge between <span class="SimpleMath">i</span> and <span class="SimpleMath">j</span>).</p>
@@ -1088,7 +1088,7 @@ infinity
 
 <h5>5.3-8 DigraphConnectedComponents</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphConnectedComponents</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphConnectedComponents</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A record.</p>
 
 <p>This function returns the record <code class="code">wcc</code> corresponding to the weakly connected components of the digraph <var class="Arg">digraph</var>. Two vertices of <var class="Arg">digraph</var> are in the same weakly connected component whenever they are equal, or there exists a directed path (ignoring the orientation of edges) between them. More formally, two vertices are in the same weakly connected component of <var class="Arg">digraph</var> if and only if they are in the same strongly connected component (see <code class="func">DigraphStronglyConnectedComponents</code> (<a href="chap5.html#X833ECD6B7A84944C"><span class="RefLink">5.3-10</span></a>)) of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3.html#X874883DD7DD450C4"><span class="RefLink">3.3-9</span></a>) of <var class="Arg">digraph</var>.</p>
@@ -1119,7 +1119,7 @@ rec( comps := [  ], id := [  ] )
 
 <h5>5.3-9 DigraphConnectedComponent</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphConnectedComponent</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphConnectedComponent</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of vertices.</p>
 
 <p>If <var class="Arg">vertex</var> is a vertex in the digraph <var class="Arg">digraph</var>, then this operation returns the connected component of <var class="Arg">vertex</var> in <var class="Arg">digraph</var>. See <code class="func">DigraphConnectedComponents</code> (<a href="chap5.html#X842FAD6A7B835977"><span class="RefLink">5.3-8</span></a>) for more information.</p>
@@ -1140,7 +1140,7 @@ rec( comps := [  ], id := [  ] )
 
 <h5>5.3-10 DigraphStronglyConnectedComponents</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphStronglyConnectedComponents</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphStronglyConnectedComponents</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A record.</p>
 
 <p>This function returns the record <code class="code">scc</code> corresponding to the strongly connected components of the digraph <var class="Arg">digraph</var>. Two vertices of <var class="Arg">digraph</var> are in the same strongly connected component whenever they are equal, or there is a directed path from each vertex to the other. The set of strongly connected components is a partition of the vertex set of <var class="Arg">digraph</var>.</p>
@@ -1161,7 +1161,7 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
 
 <h5>5.3-11 DigraphStronglyConnectedComponent</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphStronglyConnectedComponent</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphStronglyConnectedComponent</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of vertices.</p>
 
 <p>If <var class="Arg">vertex</var> is a vertex in the digraph <var class="Arg">digraph</var>, then this operation returns the strongly connected component of <var class="Arg">vertex</var> in <var class="Arg">digraph</var>. See <code class="func">DigraphStronglyConnectedComponents</code> (<a href="chap5.html#X833ECD6B7A84944C"><span class="RefLink">5.3-10</span></a>) for more information.</p>
@@ -1182,14 +1182,14 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
 
 <h5>5.3-12 DigraphBicomponents</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphBicomponents</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphBicomponents</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A pair of lists of vertices, or <code class="keyw">fail</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a bipartite digraph, i.e. if it satisfies <code class="func">IsBipartiteDigraph</code> (<a href="chap6.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>), then <code class="code">DigraphBicomponents</code> returns a pair of bicomponents of <var class="Arg">digraph</var>. Otherwise, <code class="code">DigraphBicomponents</code> returns <code class="keyw">fail</code>.</p>
 
 <p>For a bipartite digraph, the vertices can be partitioned into two non-empty sets such that the source and range of any edge are in distinct sets. The parts of this partition are called <em>bicomponents</em> of <var class="Arg">digraph</var>. Equivalently, a pair of bicomponents of <var class="Arg">digraph</var> consists of the color-classes of a 2-coloring of <var class="Arg">digraph</var>.</p>
 
-<p>For a bipartite digraph with at least 3 vertices, there is a unique pair of bicomponents of bipartite if and only if the digraph is connected. See <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.3-2</span></a>) for more information.</p>
+<p>For a bipartite digraph with at least 3 vertices, there is a unique pair of bicomponents of bipartite if and only if the digraph is connected. See <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.3-3</span></a>) for more information.</p>
 
 
 <div class="example"><pre>
@@ -1210,16 +1210,16 @@ fail
 
 <h5>5.3-13 ArticulationPoints</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ArticulationPoints</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ArticulationPoints</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of vertices.</p>
 
-<p>A connected digraph is <em>biconnected</em> if it is still connected (in the sense of <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.3-2</span></a>)) when any vertex is removed. If the digraph <var class="Arg">digraph</var> is not biconnected but is connected, then any vertex <code class="code">v</code> of <var class="Arg">digraph</var> whose removal makes the resulting digraph disconnected is called an <em>articulation point</em>.</p>
+<p>A connected digraph is <em>biconnected</em> if it is still connected (in the sense of <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.3-3</span></a>)) when any vertex is removed. If the digraph <var class="Arg">digraph</var> is not biconnected but is connected, then any vertex <code class="code">v</code> of <var class="Arg">digraph</var> whose removal makes the resulting digraph disconnected is called an <em>articulation point</em>.</p>
 
 <p><code class="code">ArticulationPoints</code> returns a list of the articulation points of <var class="Arg">digraph</var>, if any, and, in particular, returns the empty list if <var class="Arg">digraph</var> is not connected.</p>
 
 <p>Multiple edges and loops are ignored by this method.</p>
 
-<p>The method used in this operation has complexity <span class="SimpleMath">O(m+n)</span> where <span class="SimpleMath">m</span> is the number of edges (counting multiple edges as one, and not counting loops) and <span class="SimpleMath">n</span> is the number of vertices in the digraph. See also <code class="func">IsBiconnectedDigraph</code> (<a href="chap6.html#X838FAF2D825977BE"><span class="RefLink">6.3-3</span></a>).</p>
+<p>The method used in this operation has complexity <span class="SimpleMath">O(m+n)</span> where <span class="SimpleMath">m</span> is the number of edges (counting multiple edges as one, and not counting loops) and <span class="SimpleMath">n</span> is the number of vertices in the digraph. See also <code class="func">IsBiconnectedDigraph</code> (<a href="chap6.html#X838FAF2D825977BE"><span class="RefLink">6.3-4</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -1237,14 +1237,14 @@ fail
 
 <h5>5.3-14 DigraphPeriod</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPeriod</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPeriod</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: An integer.</p>
 
 <p>This function returns the period of the digraph <var class="Arg">digraph</var>.</p>
 
 <p>If a digraph <var class="Arg">digraph</var> has at least one directed cycle, then the period is the greatest positive integer which divides the lengths of all directed cycles of <var class="Arg">digraph</var>. If <var class="Arg">digraph</var> has no directed cycles, then this function returns <span class="SimpleMath">0</span>. See section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a directed cycle.</p>
 
-<p>A digraph with a period of <span class="SimpleMath">1</span> is said to be <em>aperiodic</em>. See <code class="func">IsAperiodicDigraph</code> (<a href="chap6.html#X80E883967EBE839E"><span class="RefLink">6.3-5</span></a>).</p>
+<p>A digraph with a period of <span class="SimpleMath">1</span> is said to be <em>aperiodic</em>. See <code class="func">IsAperiodicDigraph</code> (<a href="chap6.html#X80E883967EBE839E"><span class="RefLink">6.3-6</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -1268,7 +1268,7 @@ true
 
 <h5>5.3-15 DigraphFloydWarshall</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFloydWarshall</code>( <var class="Arg">digraph</var>, <var class="Arg">func</var>, <var class="Arg">nopath</var>, <var class="Arg">edge</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFloydWarshall</code>( <var class="Arg">digraph</var>, <var class="Arg">func</var>, <var class="Arg">nopath</var>, <var class="Arg">edge</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A matrix.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph with <span class="SimpleMath">n</span> vertices, then this operation returns an <span class="SimpleMath">n × n</span> matrix <code class="code">mat</code> containing the output of a generalised version of the Floyd-Warshall algorithm, applied to <var class="Arg">digraph</var>.</p>
@@ -1316,7 +1316,7 @@ function( mat, i, j, k ) ... end
 
 <h5>5.3-16 IsReachable</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsReachable</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsReachable</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
 <p>This operation returns <code class="keyw">true</code> if there exists a non-trivial directed walk from vertex <var class="Arg">u</var> to vertex <var class="Arg">v</var> in the digraph <var class="Arg">digraph</var>, and <code class="keyw">false</code> if there does not exist such a directed walk. See section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a non-trivial directed walk.</p>
@@ -1341,7 +1341,7 @@ false
 
 <h5>5.3-17 DigraphPath</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPath</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPath</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A pair of lists, or <code class="keyw">fail</code>.</p>
 
 <p>If there exists a non-trivial directed path (or a non-trivial cycle, in the case that <var class="Arg">u</var> <code class="code">=</code> <var class="Arg">v</var>) from vertex <var class="Arg">u</var> to vertex <var class="Arg">v</var> in the digraph <var class="Arg">digraph</var>, then this operation returns such a directed path (or directed cycle). Otherwise, this operation returns <code class="keyw">fail</code>. See Section <a href="chap1.html#X84541F61810C741D"><span class="RefLink"><span class="Heading">Definitions</span></span></a> for the definition of a directed path and a directed cycle.</p>
@@ -1377,7 +1377,7 @@ fail
 
 <h5>5.3-18 IteratorOfPaths</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorOfPaths</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorOfPaths</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: An iterator.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph or a list of adjacencies which defines a digraph - see <code class="func">OutNeighbours</code> (<a href="chap5.html#X7E9880767AE68E00"><span class="RefLink">5.2-5</span></a>) - then this operation returns an iterator of the non-trivial directed paths (or directed cycles, in the case that <var class="Arg">u</var> <code class="code">=</code> <var class="Arg">v</var>) in <var class="Arg">digraph</var> from the vertex <var class="Arg">u</var> to the vertex <var class="Arg">v</var>.</p>
@@ -1408,7 +1408,7 @@ true
 
 <h5>5.3-19 DigraphAllSimpleCircuits</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphAllSimpleCircuits</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphAllSimpleCircuits</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of lists of vertices.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphAllSimpleCircuits</code> returns a list of the <em>simple circuits</em> in <var class="Arg">digraph</var>.</p>
@@ -1441,7 +1441,7 @@ true
 
 <h5>5.3-20 DigraphLongestSimpleCircuit</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLongestSimpleCircuit</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLongestSimpleCircuit</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of vertices, or <code class="keyw">fail</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphLongestSimpleCircuit</code> returns the longest <em>simple circuit</em> in <var class="Arg">digraph</var>. See section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of simple circuit, and the definition of length for a simple circuit.</p>
@@ -1466,7 +1466,7 @@ fail
 
 <h5>5.3-21 DigraphLayers</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLayers</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">( operation )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLayers</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list.</p>
 
 <p>This operation returns a list <code class="keyw">list</code> such that <code class="keyw">list[i]</code> is the list of vertices whose minimum distance from the vertex <var class="Arg">vertex</var> in <var class="Arg">digraph</var> is <code class="keyw">i - 1</code>. Vertex <var class="Arg">vertex</var> is assumed to be at distance <code class="keyw">0</code> from itself.</p>
@@ -1482,7 +1482,7 @@ fail
 
 <h5>5.3-22 DigraphDegeneracy</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDegeneracy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDegeneracy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A non-negative integer, or <code class="keyw">fail</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a symmetric digraph without multiple edges - see <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>) and <code class="func">IsMultiDigraph</code> (<a href="chap6.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.1-8</span></a>) - then this attribute returns the degeneracy of <var class="Arg">digraph</var>.</p>
@@ -1508,7 +1508,7 @@ fail
 
 <h5>5.3-23 DigraphDegeneracyOrdering</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDegeneracyOrdering</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDegeneracyOrdering</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of integers, or <code class="keyw">fail</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph for which <code class="code">DigraphDegeneracy(</code><var class="Arg">digraph</var><code class="code">)</code> is a non-negative integer <code class="code">k</code> - see <code class="func">DigraphDegeneracy</code> (<a href="chap5.html#X7B2E42327DA118E0"><span class="RefLink">5.3-22</span></a>) - then this attribute returns a degeneracy ordering of the vertices of the vertices of <var class="Arg">digraph</var>.</p>
@@ -1534,7 +1534,7 @@ fail
 
 <h5>5.3-24 HamiltonianPath</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HamiltonianPath</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HamiltonianPath</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list or <code class="keyw">fail</code>.</p>
 
 <p>Returns a Hamiltonian path if one exists, <code class="keyw">fail</code> if not.</p>
@@ -1571,8 +1571,8 @@ fail
 
 <h5>5.4-1 GroupOfCayleyDigraph</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GroupOfCayleyDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SemigroupOfCayleyDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GroupOfCayleyDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SemigroupOfCayleyDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A group or semigroup.</p>
 
 <p>If <var class="Arg">digraph</var> is a Cayley graph of a group <code class="code">G</code> and <var class="Arg">digraph</var> belongs to the category <code class="func">IsCayleyDigraph</code> (<a href="chap3.html#X7E749324800B38A5"><span class="RefLink">3.1-2</span></a>), then <code class="code">GroupOfCayleyDigraph</code> returns <code class="code">G</code>.</p>
@@ -1595,7 +1595,7 @@ true
 
 <h5>5.4-2 GeneratorsOfCayleyDigraph</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfCayleyDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">( attribute )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfCayleyDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of generators.</p>
 
 <p>If <var class="Arg">digraph</var> is a Cayley graph of a group or semigroup with respect to a set of generators <code class="code">gens</code> and <var class="Arg">digraph</var> belongs to the category <code class="func">IsCayleyDigraph</code> (<a href="chap3.html#X7E749324800B38A5"><span class="RefLink">3.1-2</span></a>), then <code class="code">GeneratorsOfCayleyDigraph</code> return the list of generators <code class="code">gens</code> over which <var class="Arg">digraph</var> is defined.</p>

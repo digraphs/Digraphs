@@ -6,7 +6,7 @@
   
   [1X9.1-1 Splash[101X
   
-  [29X[2XSplash[102X( [3Xstr[103X[, [3Xopts[103X] ) [32X function
+  [33X[1;0Y[29X[2XSplash[102X( [3Xstr[103X[, [3Xopts[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YNothing.[133X
   
   [33X[0;0YThis  function  attempts  to  convert the string [3Xstr[103X into a pdf document and
@@ -65,8 +65,8 @@
   
   [1X9.1-2 DotDigraph[101X
   
-  [29X[2XDotDigraph[102X( [3Xdigraph[103X ) [32X attribute
-  [29X[2XDotVertexLabelledDigraph[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XDotDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XDotVertexLabelledDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
   [33X[0;0Y[10XDotDigraph[110X  produces  a  graphical  representation  of  the digraph [3Xdigraph[103X.
@@ -98,7 +98,7 @@
   
   [1X9.1-3 DotSymmetricDigraph[101X
   
-  [29X[2XDotSymmetricDigraph[102X( [3Xdigraph[103X ) [32X attribute
+  [33X[1;0Y[29X[2XDotSymmetricDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
   [33X[0;0YThis  function  produces a graphical representation of the symmetric digraph
@@ -168,10 +168,10 @@
   
   [1X9.2-1 DigraphFromGraph6String[101X
   
-  [29X[2XDigraphFromGraph6String[102X( [3Xstr[103X ) [32X operation
-  [29X[2XDigraphFromDigraph6String[102X( [3Xstr[103X ) [32X operation
-  [29X[2XDigraphFromSparse6String[102X( [3Xstr[103X ) [32X operation
-  [29X[2XDigraphFromDiSparse6String[102X( [3Xstr[103X ) [32X operation
+  [33X[1;0Y[29X[2XDigraphFromGraph6String[102X( [3Xstr[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphFromDigraph6String[102X( [3Xstr[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphFromSparse6String[102X( [3Xstr[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphFromDiSparse6String[102X( [3Xstr[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xstr[103X  is  a  string  encoding  a  graph  in  Graph6, Digraph6, Sparse6 or
@@ -199,10 +199,10 @@
   
   [1X9.2-2 Graph6String[101X
   
-  [29X[2XGraph6String[102X( [3Xdigraph[103X ) [32X operation
-  [29X[2XDigraph6String[102X( [3Xdigraph[103X ) [32X operation
-  [29X[2XSparse6String[102X( [3Xdigraph[103X ) [32X operation
-  [29X[2XDiSparse6String[102X( [3Xdigraph[103X ) [32X operation
+  [33X[1;0Y[29X[2XGraph6String[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraph6String[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XSparse6String[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDiSparse6String[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
   [33X[0;0YThese  four functions return a highly compressed string fully describing the
@@ -225,7 +225,7 @@
   
   [1X9.2-3 DigraphFile[101X
   
-  [29X[2XDigraphFile[102X( [3Xfilename[103X[, [3Xcoder[103X][, [3Xmode[103X] ) [32X function
+  [33X[1;0Y[29X[2XDigraphFile[102X( [3Xfilename[103X[, [3Xcoder[103X][, [3Xmode[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YAn IO file object.[133X
   
   [33X[0;0YIf  [3Xfilename[103X  is  a string representing the name of a file, then [10XDigraphFile[110X
@@ -306,7 +306,7 @@
   
   [1X9.2-4 ReadDigraphs[101X
   
-  [29X[2XReadDigraphs[102X( [3Xfilename[103X[, [3Xdecoder[103X][, [3Xn[103X] ) [32X function
+  [33X[1;0Y[29X[2XReadDigraphs[102X( [3Xfilename[103X[, [3Xdecoder[103X][, [3Xn[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YA digraph, or a list of digraphs.[133X
   
   [33X[0;0YIf  [3Xfilename[103X  is  a  string containing the name of a file containing encoded
@@ -394,7 +394,7 @@
   
   [1X9.2-5 WriteDigraphs[101X
   
-  [29X[2XWriteDigraphs[102X( [3Xfilename[103X, [3Xdigraphs[103X[, [3Xencoder[103X][, [3Xmode[103X] ) [32X function
+  [33X[1;0Y[29X[2XWriteDigraphs[102X( [3Xfilename[103X, [3Xdigraphs[103X[, [3Xencoder[103X][, [3Xmode[103X] ) [32X function[133X
   
   [33X[0;0YIf  [3Xdigraphs[103X  is a list of digraphs or a digraph and [3Xfilename[103X is a string or
   an  [5XIO[105X  file  object  created  using [2XDigraphFile[102X ([14X9.2-3[114X), then [10XWriteDigraphs[110X
@@ -470,7 +470,7 @@
   
   [1X9.2-6 IteratorFromDigraphFile[101X
   
-  [29X[2XIteratorFromDigraphFile[102X( [3Xfilename[103X[, [3Xdecoder[103X] ) [32X function
+  [33X[1;0Y[29X[2XIteratorFromDigraphFile[102X( [3Xfilename[103X[, [3Xdecoder[103X] ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YAn iterator.[133X
   
   [33X[0;0YIf  [3Xfilename[103X  is a string representing the name of a file containing encoded
@@ -502,8 +502,8 @@
   
   [1X9.2-7 DigraphPlainTextLineEncoder[101X
   
-  [29X[2XDigraphPlainTextLineEncoder[102X( [3Xdelimiter1[103X[, [3Xdelimiter2[103X], [3Xoffset[103X ) [32X function
-  [29X[2XDigraphPlainTextLineDecoder[102X( [3Xdelimiter1[103X[, [3Xdelimiter2[103X], [3Xoffset[103X ) [32X function
+  [33X[1;0Y[29X[2XDigraphPlainTextLineEncoder[102X( [3Xdelimiter1[103X[, [3Xdelimiter2[103X], [3Xoffset[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XDigraphPlainTextLineDecoder[102X( [3Xdelimiter1[103X[, [3Xdelimiter2[103X], [3Xoffset[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
   [33X[0;0YThese  two functions return a function which encodes or decodes a digraph in
@@ -540,7 +540,7 @@
   
   [1X9.2-8 TournamentLineDecoder[101X
   
-  [29X[2XTournamentLineDecoder[102X( [3Xstr[103X ) [32X function
+  [33X[1;0Y[29X[2XTournamentLineDecoder[102X( [3Xstr[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThis  function  takes  a  string  [3Xstr[103X,  decodes  it,  and  then  returns the
@@ -570,7 +570,7 @@
   
   [1X9.2-9 AdjacencyMatrixUpperTriangleLineDecoder[101X
   
-  [29X[2XAdjacencyMatrixUpperTriangleLineDecoder[102X( [3Xstr[103X ) [32X function
+  [33X[1;0Y[29X[2XAdjacencyMatrixUpperTriangleLineDecoder[102X( [3Xstr[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThis  function  takes  a  string  [3Xstr[103X,  decodes  it,  and  then  returns the
@@ -604,7 +604,7 @@
   
   [1X9.2-10 TCodeDecoder[101X
   
-  [29X[2XTCodeDecoder[102X( [3Xstr[103X ) [32X function
+  [33X[1;0Y[29X[2XTCodeDecoder[102X( [3Xstr[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xstr[103X  is  a  string  consisting  of  at  least  two non-negative integers
@@ -634,8 +634,8 @@
   
   [1X9.2-11 PlainTextString[101X
   
-  [29X[2XPlainTextString[102X( [3Xdigraph[103X ) [32X operation
-  [29X[2XDigraphFromPlainTextString[102X( [3Xs[103X ) [32X operation
+  [33X[1;0Y[29X[2XPlainTextString[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphFromPlainTextString[102X( [3Xs[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
   [33X[0;0Y[3XPlainTextString[103X  takes a single digraph, and returns a string describing the
@@ -659,8 +659,8 @@
   
   [1X9.2-12 WritePlainTextDigraph[101X
   
-  [29X[2XWritePlainTextDigraph[102X( [3Xfilename[103X, [3Xdigraph[103X, [3Xdelimiter[103X, [3Xoffset[103X ) [32X function
-  [29X[2XReadPlainTextDigraph[102X( [3Xfilename[103X, [3Xdelimiter[103X, [3Xoffset[103X, [3Xignore[103X ) [32X function
+  [33X[1;0Y[29X[2XWritePlainTextDigraph[102X( [3Xfilename[103X, [3Xdigraph[103X, [3Xdelimiter[103X, [3Xoffset[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XReadPlainTextDigraph[102X( [3Xfilename[103X, [3Xdelimiter[103X, [3Xoffset[103X, [3Xignore[103X ) [32X function[133X
   
   [33X[0;0YThese  functions  write  and read a single digraph in a human-readable plain
   text  format  as follows: each line contains a single edge, and each edge is
@@ -687,8 +687,8 @@
   
   [1X9.2-13 WriteDIMACSDigraph[101X
   
-  [29X[2XWriteDIMACSDigraph[102X( [3Xfilename[103X, [3Xdigraph[103X ) [32X operation
-  [29X[2XReadDIMACSDigraph[102X( [3Xfilename[103X ) [32X operation
+  [33X[1;0Y[29X[2XWriteDIMACSDigraph[102X( [3Xfilename[103X, [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XReadDIMACSDigraph[102X( [3Xfilename[103X ) [32X operation[133X
   
   [33X[0;0YThese  operations  write  or read the single symmetric digraph [3Xdigraph[103X to or
   from   a   file   in   DIMACS   format,   as   appropriate.   The  operation
