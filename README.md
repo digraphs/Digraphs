@@ -48,10 +48,10 @@ following these instructions.
    git checkout -b gh-pages gh-gap/gh-pages --no-track
    ```
 
-5. Add in copies of your PackageInfo.g, README and manual:
+5. Add in copies of your `PackageInfo.g`, `README` (or `README.md`) and manual:
 
    ```
-   cp -f ../PackageInfo.g ../README .
+   cp -f ../PackageInfo.g ../README* .
    cp -f ../doc/*.{css,html,js,txt} doc/
    ```
 
@@ -67,7 +67,7 @@ following these instructions.
 7. Commit and push everything.
 
    ```
-   git add PackageInfo.g README doc/ _data/package.yml
+   git add PackageInfo.g README* doc/ _data/package.yml
    git commit -m "Setup gh-pages based on GitHubPagesForGAP"
    git push --set-upstream origin gh-pages
    ```
@@ -125,10 +125,10 @@ it manually. The steps for doing it are quite similar to the above:
 
 1. Go to the `gh-pages` directory we created above.
 
-2. Add in copies of your PackageInfo.g, README and manual:
+2. Add in copies of your `PackageInfo.g`, `README` (or `README.md`) and manual:
 
    ```
-   cp -f ../PackageInfo.g ../README .
+   cp -f ../PackageInfo.g ../README* .
    cp -f ../doc/*.{css,html,js,txt} doc/
    ```
 
@@ -137,7 +137,7 @@ it manually. The steps for doing it are quite similar to the above:
 4. Commit and push the work we have just done.
 
    ```
-   git add PackageInfo.g README doc/ _data/package.yml
+   git add PackageInfo.g README* doc/ _data/package.yml
    git commit -m "Update web pages"
    git push
    ```
