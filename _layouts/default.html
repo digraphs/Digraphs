@@ -23,7 +23,8 @@
       <header>
         <h1 class="header">{{ site.data.package.name }}</h1>
         <p class="header">{{ site.data.package.description }}</p>
-        <p class="header">Version {{site.data.package.version}}</p>
+        <p class="header">Version {{site.data.package.version}}<br>
+                          Released {{site.data.package.date}}</p>
 
         <ul>
           {% for item in site.data.package.downloads %}
