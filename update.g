@@ -46,15 +46,51 @@ PrintPackageList := function(stream, pkgs)
     AppendTo(stream, "\n");
 end;
 
+# verify date is of the form YYYY-MM-DD
+IsValidISO8601Date := function(date)
+    local day, month, year;
+    if Length(date) <> 10 then return false; fi;
+    if date[5] <> '-' or date[8] <> '-' then return false; fi;
+    if not ForAll(date{[1,2,3,4,6,7,9,10]}, IsDigitChar) then
+        return false;
+    fi;
+    date := List(SplitString(date, "-"), Int);
+    day := date[3];
+    month := date[2];
+    year := date[1];
+    return month in [1..12] and day in [1..DaysInMonth(month, year)];
+end;
+
 GeneratePackageYML:=function(pkg)
-    local stream, authors, maintainers, contributors, formats, f, tmp;
+    local stream, date, authors, maintainers, contributors, formats, f, tmp;
 
     stream := OutputTextFile("_data/package.yml", false);
     SetPrintFormattingStatus(stream, false);
     
     AppendTo(stream, "name: ", pkg.PackageName, "\n");
     AppendTo(stream, "version: ", pkg.Version, "\n");
-    AppendTo(stream, "date: ", pkg.Date, "\n"); # TODO: convert to ISO 8601?
+
+    # convert date from DD/MM/YYYY to ISO 8601, i.e. YYYY-MM-DD
+    #
+    # in the future, GAP might support ISO 8601 dates in PackageInfo.g,
+    # so be prepared to accept that
+    date := pkg.Date;
+    tmp := SplitString(pkg.Date, "/");
+    if Length(tmp) = 3 then
+        # pad month and date if necessary
+        if Length(tmp[1]) = 1 then
+          tmp[1] := Concatenation("0", tmp[1]);
+        fi;
+        if Length(tmp[2]) = 1 then
+          tmp[2] := Concatenation("0", tmp[2]);
+        fi;
+        date := Concatenation(tmp[3], "-", tmp[2], "-", tmp[1]);
+    fi;
+    if not IsValidISO8601Date(date) then
+        Error("malformed release date ", pkg.Date);
+    fi;
+
+    AppendTo(stream, "date: ", date, "\n");
     AppendTo(stream, "description: |\n");
     AppendTo(stream, "    ", pkg.Subtitle, "\n");
     AppendTo(stream, "\n");
