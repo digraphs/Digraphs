@@ -217,6 +217,6 @@ the [issue tracker](https://github.com/gap-system/GitHubPagesForGAP/issues).
 
 You can also contact me directly via [email](max@quendi.de).
 
-Copyright (c) 2013-2016 Max Horn
+Copyright (c) 2013-2018 Max Horn
 
 [ReleaseTools]: https://github.com/gap-system/ReleaseTools
