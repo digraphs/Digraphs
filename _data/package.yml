@@ -1,7 +1,8 @@
 name: Digraphs
 version: 0.12.0
-date: 31/01/2018
-description: Graphs, digraphs, and multidigraphs in GAP
+date: 2018-01-31
+description: |
+    Graphs, digraphs, and multidigraphs in GAP
 
 authors:
     - name: J. De Beule
@@ -18,6 +19,20 @@ authors:
 maintainers:
     - name: J. D. Mitchell
       url: http://goo.gl/ZtViV6
+
+contributors:
+    - name: S. Burrell
+      url: mailto:sb235@st-andrews.ac.uk
+    - name: L. Elliott
+      url: mailto:le27@st-andrews.ac.uk
+    - name: C. Jefferson
+      url: http://caj.host.cs.st-andrews.ac.uk
+    - name: M. Pfeiffer
+      url: https://www.morphism.de/~markusp/
+    - name: C. Russell
+      url: mailto:cr66@st-andrews.ac.uk
+    - name: F. Smith
+      url: mailto:fls3@st-andrews.ac.uk
 
 GAP: ">=4.8.2"
 
@@ -41,33 +56,16 @@ suggested-pkgs:
       url: "http://TODO/"
 
 www: https://gap-packages.github.io/Digraphs
-readme: https://gap-packages.github.io/Digraphs/README.md
+readme: README.md
 packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
       url: https://github.com/gap-packages/Digraphs/releases/download/v0.12.0/digraphs-0.12.0.tar.gz
 
-abstract: The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
+abstract: |
+    The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
 
 status: deposited
 doc-html: doc/chap0.html
 doc-pdf: doc/manual.pdf
-
-month: Jan
-year: 2018
-
-contributors:
-    - name: S. Burrell
-      url: mailto:sb235@st-andrews.ac.uk
-    - name: L. Elliott
-      url: mailto:le27@st-andrews.ac.uk
-    - name: C. Jefferson
-      url: http://caj.host.cs.st-andrews.ac.uk
-    - name: M. Pfeiffer
-      url: https://www.morphism.de/~markusp/
-    - name: C. Russell
-      url: mailto:cr66@st-andrews.ac.uk
-    - name: F. Smith
-      url: mailto:fls3@st-andrews.ac.uk
-

@@ -23,7 +23,8 @@
       <header>
         <h1 class="header">{{ site.data.package.name }}</h1>
         <p class="header">{{ site.data.package.description }}</p>
-        <p class="header">Version {{site.data.package.version}}</p>
+        <p class="header">Version {{site.data.package.version}}<br>
+                          Released {{site.data.package.date}}</p>
 
         <ul>
           {% for item in site.data.package.downloads %}
@@ -40,7 +41,9 @@
           {% for person in site.data.package.maintainers %}
             {% if person.url %}
               <a class="header name" href="{{ person.url }}">{{ person.name }}</a>{% else %}
-              {{ person.name }}{% endif %}{% unless forloop.last %}, {% endunless %}
+              {{ person.name }}
+            {% endif %}
+            {%- unless forloop.last -%}, {%- endunless -%}
           {% endfor %}
         </p>
 
@@ -53,6 +56,7 @@
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+        <p><small><em>Last updated: {{ 'now' | date: "%Y-%m-%d %H:%M" }}</em></small></p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
