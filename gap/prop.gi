@@ -595,7 +595,7 @@ end);
 InstallMethod(IsHamiltonianDigraph, "for a digraph",
 [IsDigraph],
 function(gr)
-  local out, indegs, fulldegs, outdegs, n, checkMT, check41, check42, iter,
+  local indegs, fulldegs, outdegs, n, checkMT, check41, check42,
         dominatedcheck, dominatingcheck, adjmatrix, i, j, k, tempblist;
 
   if DigraphNrVertices(gr) <= 1 and IsEmptyDigraph(gr) then
@@ -614,7 +614,6 @@ function(gr)
   n := DigraphNrVertices(gr);
 
   if n <= 512 then
-    out := OutNeighbours(gr);
     indegs := InDegrees(gr);
     outdegs := OutDegrees(gr);
     fulldegs := indegs + outdegs;

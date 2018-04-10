@@ -14,7 +14,7 @@
 
 InstallGlobalFunction(HomomorphismDigraphsFinder,
 function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
-  local colours, gr, list;
+  local colours, list;
 
   if not (IsDigraph(gr1) and IsDigraph(gr2)) then
     ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
@@ -72,7 +72,6 @@ function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
   if list1 = fail and list2 = fail then
     colours := [fail, fail];
   elif list1 <> fail and list2 <> fail then
-    gr      := [gr1, gr2];
     list    := [list1, list2];
     colours := [DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(gr1),
                                                  list[1],

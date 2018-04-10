@@ -263,7 +263,7 @@ end);
 InstallMethod(BipartiteDoubleDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local out, vertices, newvertices, allvertices, newout1,
+  local out, vertices, newvertices, newout1,
     newout2, crossedouts, shift, double, group, conj, gens,
     newgens;
   # Note that this method is also applicable for digraphs with
@@ -280,7 +280,6 @@ function(digraph)
   vertices := DigraphVertices(digraph);
   shift := DigraphNrVertices(digraph);
   newvertices := [shift + 1 .. 2 * DigraphNrVertices(digraph)];
-  allvertices := [1 .. 2 * DigraphNrVertices(digraph)];
   newout1 := List(vertices, x -> List(out[x], y -> y + shift));
   newout2 := List(newvertices, x -> out[x - shift]);
   crossedouts := Concatenation(newout1, newout2);

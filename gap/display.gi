@@ -13,11 +13,10 @@
 InstallMethod(DotDigraph, "for a digraph",
 [IsDigraph],
 function(graph)
-  local verts, out, m, str, i, j;
+  local verts, out, str, i, j;
 
   verts := DigraphVertices(graph);
   out   := OutNeighbours(graph);
-  m     := DigraphNrVertices(graph);
   str   := "//dot\n";
 
   Append(str, "digraph hgn{\n");
@@ -38,11 +37,10 @@ end);
 
 InstallMethod(DotVertexLabelledDigraph, "for a digraph", [IsDigraph],
 function(digraph)
-  local verts, out, m, str, i, j;
+  local verts, out, str, i, j;
 
   verts := DigraphVertices(digraph);
   out   := OutNeighbours(digraph);
-  m     := DigraphNrVertices(digraph);
   str   := "//dot\n";
 
   Append(str, "digraph hgn{\n");
@@ -69,7 +67,7 @@ end);
 InstallMethod(DotSymmetricDigraph, "for an 'undirected' digraph",
 [IsDigraph],
 function(graph)
-  local verts, out, m, str, i, j;
+  local verts, out, str, i, j;
 
   if not IsSymmetricDigraph(graph) then
     ErrorNoReturn("Digraphs: DotSymmetricDigraph: usage,\n",
@@ -78,7 +76,6 @@ function(graph)
 
   verts := DigraphVertices(graph);
   out   := OutNeighbours(graph);
-  m     := DigraphNrEdges(graph);
   str   := "//dot\n";
 
   Append(str, "graph hgn{\n");
