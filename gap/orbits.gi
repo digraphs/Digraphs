@@ -37,12 +37,11 @@ end);
 
 InstallGlobalFunction(DIGRAPHS_Orbits,
 function(G, domain)
-  local N, sch, orbs, reps, lookup, gens, genstoapply, o, l, i, j, k;
+  local N, sch, orbs, lookup, gens, genstoapply, o, l, i, j, k;
 
   N      := Length(domain);
   sch    := [1 .. N] * 0;
   orbs   := [];
-  reps   := []; #maybe not necessary
   lookup := [];
 
   gens        := GeneratorsOfGroup(G);

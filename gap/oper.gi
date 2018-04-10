@@ -194,13 +194,12 @@ end);
 InstallMethod(DigraphReverseEdgesNC, "for a digraph and a rectangular table",
 [IsDigraph, IsRectangularTable],
 function(digraph, edges)
-  local current, nredges, out, new, i;
+  local current, nredges, new, i;
 
   Sort(edges); # Why are we sorting these edges?
 
   current := 1;
   nredges := Length(edges);
-  out := OutNeighbours(digraph);
   new := OutNeighboursMutableCopy(digraph);
   for i in DigraphVertices(digraph) do
     while current <= nredges and edges[current][1] = i do
@@ -248,9 +247,8 @@ end);
 InstallMethod(DigraphReverseEdgesNC, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edges)
-  local nredges, current, out, new, pos_l, pos_h, toadd, pos, temp, i, edge;
+  local current, out, new, pos_l, pos_h, toadd, pos, temp, i, edge;
 
-  nredges := DigraphNrEdges(digraph);
   Sort(edges); # Why are we sorting the edges?
   current := edges[1];
   out := OutNeighbours(digraph);
@@ -523,11 +521,10 @@ end);
 InstallMethod(DigraphAddEdgesNC, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, edges)
-  local gr, new, new_lbl, verts, edge;
+  local gr, new, new_lbl, edge;
 
   new := OutNeighboursMutableCopy(digraph);
   new_lbl := StructuralCopy(DigraphEdgeLabelsNC(digraph));
-  verts := DigraphVertices(digraph);
   for edge in edges do
     Add(new[edge[1]], edge[2]);
     Add(new_lbl[edge[1]], 1);

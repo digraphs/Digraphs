@@ -899,7 +899,7 @@ end);
 
 BindGlobal("DIGRAPHS_DiameterAndUndirectedGirth",
 function(digraph)
-  local outer_reps, out_nbs, diameter, girth, v, record, localGirth,
+  local outer_reps, diameter, girth, v, record, localGirth,
         localDiameter, i;
 
   #
@@ -921,7 +921,6 @@ function(digraph)
   #the usual algorithm impossible.
 
   outer_reps := DigraphOrbitReps(digraph);
-  out_nbs    := OutNeighbours(digraph);
   diameter   := 0;
   girth      := infinity;
 
@@ -1550,7 +1549,7 @@ InstallMethod(HamiltonianPath,
 "for a digraph",
 [IsDigraph],
 function(gr)
-  local path, out, iter, n;
+  local path, iter, n;
 
   if DigraphNrVertices(gr) <= 1 and IsEmptyDigraph(gr) then
     if DigraphNrVertices(gr) = 0 then
@@ -1561,8 +1560,6 @@ function(gr)
   elif not IsStronglyConnectedDigraph(gr) then
     return fail;
   fi;
-
-  out := OutNeighbours(gr);
 
   if DigraphNrVertices(gr) < 256 then
     path := DigraphMonomorphism(CycleDigraph(DigraphNrVertices(gr)), gr);
