@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  orbits.gi
-#Y  Copyright (C) 2016                                   James D. Mitchell
+##  orbits.gi
+##  Copyright (C) 2016                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -48,7 +48,7 @@ function(G, domain)
   genstoapply := [1 .. Length(gens)];
 
   for i in domain do
-    if sch[i] = 0 then # new orbit
+    if sch[i] = 0 then  # new orbit
       o := [i];
       Add(orbs, o);
       sch[i] := -Length(orbs);
@@ -56,7 +56,7 @@ function(G, domain)
       for j in o do
         for k in genstoapply do
           l := j ^ gens[k];
-          if sch[l] = 0 then # new point in the orbit
+          if sch[l] = 0 then  # new point in the orbit
             Add(o, l);
             sch[l] := k;
             lookup[l] := Length(orbs);
@@ -148,7 +148,7 @@ function(digraph, v)
   fi;
 
   pos := DigraphSchreierVector(digraph)[v];
-  if pos < 0 then # rep is one of the orbit reps
+  if pos < 0 then  # rep is one of the orbit reps
     word := ();
     pos := pos * -1;
   else

@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  attr.gi
-#Y  Copyright (C) 2014-17                                James D. Mitchell
+##  attr.gi
+##  Copyright (C) 2014-17                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -96,12 +96,12 @@ function(digraph)
     ErrorNoReturn("Digraphs: ChromaticNumber: usage,\n",
                   "the digraph (1st argument) must not have loops,");
   elif nr = 0 then
-    return 0; # chromatic number = 0 iff <digraph> has 0 verts
+    return 0;  # chromatic number = 0 iff <digraph> has 0 verts
   elif IsNullDigraph(digraph) then
-    return 1; # chromatic number = 1 iff <digraph> has >= 1 verts & no edges
+    return 1;  # chromatic number = 1 iff <digraph> has >= 1 verts & no edges
   elif IsBipartiteDigraph(digraph) then
-    return 2; # chromatic number = 2 iff <digraph> has >= 2 verts & is bipartite
-              # <digraph> has at least 2 vertices at this stage
+    return 2;  # chromatic number = 2 iff <digraph> has >= 2 verts & is bipartite
+               # <digraph> has at least 2 vertices at this stage
   fi;
 
   # The chromatic number of <digraph> is at least 3 and at most nr
@@ -916,9 +916,9 @@ function(digraph)
     return rec(diameter := fail, girth := infinity);
   fi;
 
-  #TODO improve this, really check if the complexity is better with the group
-  #or without, or if the group is not known, but the number of vertices makes
-  #the usual algorithm impossible.
+  # TODO improve this, really check if the complexity is better with the group
+  # or without, or if the group is not known, but the number of vertices makes
+  # the usual algorithm impossible.
 
   outer_reps := DigraphOrbitReps(digraph);
   diameter   := 0;
@@ -1052,7 +1052,7 @@ function(digraph)
 
   # The average degree
   m := Float(Sum(OutDegreeSequence(digraph)) / n);
-  verts := [1 .. n]; # We don't want DigraphVertices as that's immutable
+  verts := [1 .. n];  # We don't want DigraphVertices as that's immutable
 
   if IsMultiDigraph(digraph) then
     mat := List(verts, x -> verts * 0);
@@ -1153,7 +1153,7 @@ function(graph, reflexive)
   # Try correct method vis-a-vis complexity
   if m + n + (m * n) < (n * n * n) then
     sorted := DigraphTopologicalSort(graph);
-    if sorted <> fail then # Method for big acyclic digraphs (loops allowed)
+    if sorted <> fail then  # Method for big acyclic digraphs (loops allowed)
       out   := EmptyPlist(n);
       trans := EmptyPlist(n);
       for v in sorted do
@@ -1321,21 +1321,22 @@ function(digraph)
   digraph := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(digraph));
   colour := ListWithIdenticalEntries(n, 0);
 
-  #This means there is a vertex we haven't visited yet
+  # This means there is a vertex we haven't visited yet
   while 0 in colour do
     root := Position(colour, 0);
     colour[root] := 1;
     queue := [root];
     Append(queue, OutNeighboursOfVertex(digraph, root));
     while queue <> [] do
-      #Explore the first element of queue
+      # Explore the first element of queue
       node := queue[1];
       node_neighbours := OutNeighboursOfVertex(digraph, node);
       for i in node_neighbours do
-        #If node and its neighbour have the same colour, graph is not bipartite
+        # If node and its neighbour have the same colour, graph is not
+        # bipartite
         if colour[node] = colour[i] then
           return [false, fail, fail];
-        elif colour[i] = 0 then # Give i opposite colour to node
+        elif colour[i] = 0 then  # Give i opposite colour to node
           if colour[node] = 1 then
             colour[i] := 2;
           else

@@ -179,7 +179,7 @@ gap> IsJoinSemilatticeDigraph(gr);
 true
 gap> IsLatticeDigraph(gr);
 true
-gap> gr := Digraph([[1, 1, 1], [1, 1, 2, 2], 
+gap> gr := Digraph([[1, 1, 1], [1, 1, 2, 2],
 >                   [1, 3, 3], [1, 2, 3, 3, 4]]);
 <multidigraph with 4 vertices, 15 edges>
 gap> IsMeetSemilatticeDigraph(gr);

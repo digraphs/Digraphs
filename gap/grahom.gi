@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  grahom.gi
-#Y  Copyright (C) 2014-17                                  Julius Jonusas
+##  grahom.gi
+##  Copyright (C) 2014-17                                  Julius Jonusas
 ##                                                         James Mitchell
 ##                                                         Wilf A. Wilson
 ##
@@ -66,7 +66,8 @@ function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
     ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
                   "the 9th argument <map> must be a list of vertices of the 8t",
                   "h argument <image>\nwhich is no longer than the number of ",
-                  "vertices of the 1st argument <gr1>,");# TODO improve
+                  "vertices of the 1st argument <gr1>,");
+                  # TODO improve
   fi;
 
   if list1 = fail and list2 = fail then

@@ -838,35 +838,35 @@ gap> gr1 = gr1;
 true
 gap> gr1 := Digraph([[2], []]);;
 gap> gr2 := Digraph(rec(nrvertices := 1, source := [], range := []));;
-gap> gr1 = gr2; # Different number of vertices
+gap> gr1 = gr2;  # Different number of vertices
 false
 gap> gr2 := Digraph(rec(
 > nrvertices := 2, source := [1, 2], range := [1, 2]));;
-gap> gr1 = gr2; # Different number of edges
+gap> gr1 = gr2;  # Different number of edges
 false
 gap> EmptyDigraph(2) =
-> Digraph(rec(nrvertices := 2, source := [], range := [])); # Both empty
+> Digraph(rec(nrvertices := 2, source := [], range := []));  # Both empty
 true
 gap> gr1 := Digraph([[], [1, 2]]);;
-gap> gr1 = gr2; # |out1[1]| = 0, |out2[1]| <> =
+gap> gr1 = gr2;  # |out1[1]| = 0, |out2[1]| <> =
 false
 gap> gr1 := Digraph([[1, 1], [2, 2]]);;
 gap> gr2 := Digraph(rec(
 > nrvertices := 2, source := [1, 2, 2, 2], range := [1, 2, 2, 2]));;
-gap> gr1 = gr2; # |out1[1]| = 2, |out2[1]| = 1
+gap> gr1 = gr2;  # |out1[1]| = 2, |out2[1]| = 1
 false
 gap> gr2 := Digraph(rec(
 > nrvertices := 2, source := [1, 1, 1, 2], range := [1, 1, 1, 2]));;
-gap> gr1 = gr2; # |out1[1]| = 2, |out2[1]| = 3
+gap> gr1 = gr2;  # |out1[1]| = 2, |out2[1]| = 3
 false
 gap> gr1 := Digraph([[1, 2], [2, 1]]);;
 gap> gr2 := Digraph(rec(
 > nrvertices := 2, source := [1, 1, 2, 2], range := [1, 2, 2, 2]));;
-gap> gr1 = gr2; # Different contents of out[2]
+gap> gr1 = gr2;  # Different contents of out[2]
 false
 gap> gr2 := Digraph(rec(
 > nrvertices := 2, source := [1, 1, 2, 2], range := [1, 2, 1, 2]));;
-gap> gr1 = gr2; # out[2] sorted differently
+gap> gr1 = gr2;  # out[2] sorted differently
 true
 gap> gr1 := Digraph(
 > [[10, 8, 4, 6, 7, 2, 9, 5, 3], [10, 9, 2, 1, 4, 7, 6, 8, 3],
@@ -889,33 +889,33 @@ gap> gr1 = gr2;
 true
 gap> gr1 := Digraph([[2], []]);;
 gap> gr2 := Digraph([[1]]);;
-gap> gr1 = gr2; # Different number of vertices
+gap> gr1 = gr2;  # Different number of vertices
 false
 gap> gr2 := Digraph([[1], [2]]);;
-gap> gr1 = gr2; # Different number of edges
+gap> gr1 = gr2;  # Different number of edges
 false
-gap> EmptyDigraph(2) = Digraph([[], []]); # Both empty digraphs
+gap> EmptyDigraph(2) = Digraph([[], []]);  # Both empty digraphs
 true
 gap> gr1 := Digraph(rec(
 > nrvertices := 2, source := [1, 2], range := [1, 2]));;
 gap> OutNeighbours(gr1);;
-gap> gr1 = gr2; # Equal outneighbours
+gap> gr1 = gr2;  # Equal outneighbours
 true
 gap> gr1 := Digraph([[], [1, 2]]);;
-gap> gr1 = gr2; # Different lengths of out[1]
+gap> gr1 = gr2;  # Different lengths of out[1]
 false
 gap> gr1 := Digraph([[1, 1], []]);;
-gap> gr1 = gr2; # Different lengths of out[1]
+gap> gr1 = gr2;  # Different lengths of out[1]
 false
 gap> gr1 := Digraph([[1], [1]]);;
-gap> gr1 = gr2; # Different contents of out[2]
+gap> gr1 = gr2;  # Different contents of out[2]
 false
 gap> gr1 := Digraph([[1], [1, 2]]);;
 gap> gr2 := Digraph([[1], [1, 1]]);;
-gap> gr1 = gr2; # Different contents of out[2]
+gap> gr1 = gr2;  # Different contents of out[2]
 false
 gap> gr2 := Digraph([[1], [2, 1]]);;
-gap> gr1 = gr2; # out[2] sorted differently
+gap> gr1 = gr2;  # out[2] sorted differently
 true
 gap> gr1 := Digraph(
 > [[10, 8, 4, 6, 7, 2, 9, 5, 3], [10, 9, 2, 1, 4, 7, 6, 8, 3],
@@ -939,34 +939,34 @@ gap> gr2 := Digraph(List(ShallowCopy(OutNeighbours(gr1)), Reversed));;
 gap> gr1 = gr2;
 true
 gap> gr1 := Digraph(rec(nrvertices := 0, source := [], range := []));;
-gap> gr1 = gr1; # IsIdenticalObj
+gap> gr1 = gr1;  # IsIdenticalObj
 true
 gap> gr2 := Digraph(rec(nrvertices := 1, source := [], range := []));;
-gap> gr1 = gr2; # Different number of vertices
+gap> gr1 = gr2;  # Different number of vertices
 false
 gap> gr1 := Digraph(rec(nrvertices := 1, source := [1], range := [1]));;
-gap> gr1 = gr2; # Different sources
+gap> gr1 = gr2;  # Different sources
 false
 gap> gr2 := Digraph(rec(nrvertices := 1, source := [1], range := [1]));;
-gap> gr1 = gr2; # Equal range
+gap> gr1 = gr2;  # Equal range
 true
 gap> gr1 := Digraph(rec(
 > nrvertices := 3, source := [1, 2, 2, 3, 3], range := [1, 1, 2, 2, 3]));;
 gap> gr2 := Digraph(rec(
 > nrvertices := 3, source := [1, 2, 2, 3, 3], range := [1, 2, 2, 3, 2]));;
-gap> gr1 = gr2; # Different contents of out[2]
+gap> gr1 = gr2;  # Different contents of out[2]
 false
 gap> gr1 := Digraph(rec(
 > nrvertices := 3, source := [1, 2, 2, 3, 3], range := [1, 1, 2, 2, 3]));;
 gap> gr2 := Digraph(rec(
 > nrvertices := 3, source := [1, 2, 2, 3, 3], range := [1, 2, 1, 3, 3]));;
-gap> gr1 = gr2; # Different contents of out[3]
+gap> gr1 = gr2;  # Different contents of out[3]
 false
 gap> gr1 := Digraph(rec(
 > nrvertices := 3, source := [1, 2, 2, 3, 3], range := [1, 1, 2, 2, 3]));;
 gap> gr2 := Digraph(rec(
 > nrvertices := 3, source := [1, 2, 2, 3, 3], range := [1, 2, 1, 3, 2]));;
-gap> gr1 = gr2; # out[2] and out[3] sorted differently
+gap> gr1 = gr2;  # out[2] and out[3] sorted differently
 true
 gap> s :=
 > [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3,
@@ -991,16 +991,16 @@ true
 #T# Less than (\<) for two digraphs
 gap> gr1 := RandomMultiDigraph(10, 20);;
 gap> gr2 := RandomMultiDigraph(11, 21);;
-gap> gr1 < gr2; # Different NrVertices
+gap> gr1 < gr2;  # Different NrVertices
 true
 gap> gr2 < gr1;
 false
 gap> gr2 := RandomMultiDigraph(10, 21);;
-gap> gr1 < gr2; # Different NrEdges
+gap> gr1 < gr2;  # Different NrEdges
 true
 gap> gr2 < gr1;
 false
-gap> error := false;; # Test lots randomly with equal vertices & edges
+gap> error := false;;  # Test lots randomly with equal vertices & edges
 > for i in [1 .. 20] do
 >   j := Random([10 .. 100]);
 >   k := Random([j .. j ^ 2]);
@@ -1022,7 +1022,7 @@ gap> gr1 := Digraph([[1], [1, 1]]);
 <multidigraph with 2 vertices, 3 edges>
 gap> gr2 := Digraph([[2, 2], [1]]);
 <multidigraph with 2 vertices, 3 edges>
-gap> gr1 < gr2; #
+gap> gr1 < gr2;
 true
 gap> gr2 < gr1;
 false
@@ -1030,7 +1030,7 @@ gap> gr1 := Digraph([[1], [1, 1]]);
 <multidigraph with 2 vertices, 3 edges>
 gap> gr2 := Digraph([[1, 1], [2]]);
 <multidigraph with 2 vertices, 3 edges>
-gap> gr1 < gr2; #
+gap> gr1 < gr2;
 false
 gap> gr2 < gr1;
 true
@@ -1038,7 +1038,7 @@ gap> gr1 := Digraph([[2], [1, 2]]);
 <digraph with 2 vertices, 3 edges>
 gap> gr2 := Digraph([[1, 2], [2]]);
 <digraph with 2 vertices, 3 edges>
-gap> gr1 < gr2; #
+gap> gr1 < gr2;
 false
 gap> gr2 < gr1;
 true
@@ -1470,21 +1470,20 @@ rec( adjacencies := [ [ 2, 4 ] ], group := Group([ (1,3), (1,2)(3,4) ]),
   schreierVector := [ -1, 2, 1, 2 ] )
 
 #T# Digraph: copying group from Grape
-gap> if DIGRAPHS_IsGrapeLoaded then 
+gap> if DIGRAPHS_IsGrapeLoaded then
 >   gr := Digraph(JohnsonGraph(5, 3));
-> else 
+> else
 >   gr := JohnsonDigraph(5, 3);
->   SetDigraphGroup(gr, Group((1, 7, 10, 6, 3)(2, 8, 4, 9, 5), 
+>   SetDigraphGroup(gr, Group((1, 7, 10, 6, 3)(2, 8, 4, 9, 5),
 >                             (4, 7)(5, 8)(6, 9)));
 > fi;
 gap> HasDigraphGroup(gr);
 true
 gap> DigraphGroup(gr);
 Group([ (1,7,10,6,3)(2,8,4,9,5), (4,7)(5,8)(6,9) ])
-gap> 
-> if DIGRAPHS_IsGrapeLoaded then 
+gap> if DIGRAPHS_IsGrapeLoaded then
 >   gr := Digraph(CompleteGraph(Group((1, 2, 3), (1, 2))));
-> else 
+> else
 >   gr := Digraph([[2, 3], [1, 3], [1, 2]]);
 >   SetDigraphGroup(gr, Group((1, 2, 3), (1, 2)));
 > fi;
@@ -1492,14 +1491,14 @@ gap> HasDigraphGroup(gr);
 true
 gap> DigraphGroup(gr);
 Group([ (1,2,3), (1,2) ])
-gap> if DIGRAPHS_IsGrapeLoaded then 
->   gr := Digraph(Graph(Group([()]), 
->                       [1, 2, 3], 
+gap> if DIGRAPHS_IsGrapeLoaded then
+>   gr := Digraph(Graph(Group([()]),
+>                       [1, 2, 3],
 >                       OnPoints,
->                       function(x, y) 
+>                       function(x, y)
 >                         return x < y;
 >                       end));
-> else 
+> else
 >   gr := Digraph([[2, 3], [3], []]);
 > fi;
 gap> HasDigraphGroup(gr);

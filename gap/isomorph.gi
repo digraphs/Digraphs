@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  isomorph.gi
-#Y  Copyright (C) 2014-17                                James D. Mitchell
+##  isomorph.gi
+##  Copyright (C) 2014-17                                James D. Mitchell
 ##                                                          Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
@@ -286,7 +286,7 @@ function(gr1, gr2)
       or DigraphNrEdges(gr1) <> DigraphNrEdges(gr2)
       or IsMultiDigraph(gr1) <> IsMultiDigraph(gr2) then
     return false;
-  fi; #JDM more!
+  fi;  # JDM more!
 
   if IsMultiDigraph(gr1) then
     act := OnMultiDigraphs;
@@ -330,7 +330,7 @@ function(gr1, gr2, c1, c2)
       or DigraphNrEdges(gr1) <> DigraphNrEdges(gr2)
       or IsMultiDigraph(gr1) <> IsMultiDigraph(gr2) then
     return false;
-  fi; #JDM more!
+  fi;  # JDM more!
 
   class_sizes := ListWithIdenticalEntries(max, 0);
   for i in DigraphVertices(gr1) do

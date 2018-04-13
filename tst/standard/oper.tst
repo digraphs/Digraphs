@@ -1529,9 +1529,9 @@ gap> gr1 := ChainDigraph(6);
 <digraph with 6 vertices, 5 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr1);
 <digraph with 6 vertices, 21 edges>
-gap> DigraphTransitiveReduction(gr2) = gr1; # trans reduction contains loops
+gap> DigraphTransitiveReduction(gr2) = gr1;  # trans reduction contains loops
 false
-gap> DigraphReflexiveTransitiveReduction(gr2) = gr1; # ref trans reduct doesnt
+gap> DigraphReflexiveTransitiveReduction(gr2) = gr1;  # ref trans reduct doesnt
 true
 gap> gr3 := DigraphAddEdge(gr1, [3, 3]);
 <digraph with 6 vertices, 6 edges>

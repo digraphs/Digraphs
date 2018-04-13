@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  io.gi
-#Y  Copyright (C) 2014                                   James D. Mitchell
+##  io.gi
+##  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -357,7 +357,7 @@ function(arg)
                   "DigraphFile( filename [, coder][, mode] ),");
   fi;
 
-  if coder = fail then # <coder> not specified by the user
+  if coder = fail then  # <coder> not specified by the user
     if mode = "r" then
       coder := DIGRAPHS_ChooseFileDecoder(name);
     else
@@ -785,7 +785,7 @@ function(s)
   # Obtaining the adjacency vector
   pos := 1;
   nredges := 0;
-  for j in [start .. Length(list)] do # Every integer corresponds to 6 bits
+  for j in [start .. Length(list)] do  # Every integer corresponds to 6 bits
     i := list[j];
     bpos := 1;
     while i > 0 do
@@ -859,7 +859,7 @@ function(s)
   # Obtaining the adjacency vector
   pos := 1;
   len := 1;
-  for j in [start .. Length(list)] do # Every integer corresponds to 6 bits
+  for j in [start .. Length(list)] do  # Every integer corresponds to 6 bits
     i := list[j];
     bpos := 1;
     while i > 0 do
@@ -965,7 +965,7 @@ function(s)
   while i <= finish - k do
     if blist[i] then
       v := v + 1;
-      if v = n then # We have reached the end
+      if v = n then  # We have reached the end
         break;
       fi;
     fi;
@@ -975,7 +975,7 @@ function(s)
         x := x + 2 ^ (k - j);
       fi;
     od;
-    if x = n then # We have reached the end
+    if x = n then  # We have reached the end
       break;
     elif x > v then
       v := x;
@@ -1011,8 +1011,8 @@ function(arg)
   local delimiter, offset, delimiter1, delimiter2;
 
   if Length(arg) = 2 then
-    delimiter := arg[1]; # what delineates the range of an edge from its source
-    offset := arg[2];    # indexing starts at 0 or 1? or what?
+    delimiter := arg[1];  # what delineates the range of an edge from its source
+    offset := arg[2];     # indexing starts at 0 or 1? or what?
     return
       function(string)
         string := DIGRAPHS_SplitStringBySubstring(Chomp(string), delimiter);
@@ -1020,9 +1020,9 @@ function(arg)
         return string + offset;
       end;
   elif Length(arg) = 3 then
-    delimiter1 := arg[1]; # what delineates one edge from the next
-    delimiter2 := arg[2]; # what delineates the range of an edge from its source
-    offset := arg[3];     # indexing starts at 0 or 1? or what?
+    delimiter1 := arg[1];  # what delineates one edge from the next
+    delimiter2 := arg[2];  # what delineates the range of an edge from its source
+    offset := arg[3];      # indexing starts at 0 or 1? or what?
     return
       function(string)
         local edges, x;
@@ -1788,7 +1788,7 @@ function(graph)
       blist[nextbit] := true;
       nextbit := nextbit + 1;
       v := v + 1;
-    elif source_d[i] > v + 1 then # is this check necessary
+    elif source_d[i] > v + 1 then  # is this check necessary
       blist[nextbit] := true;
       nextbit := nextbit + 1;
       AddBinary(blist, source_d[i]);
@@ -1814,7 +1814,7 @@ function(graph)
       blist[nextbit] := true;
       nextbit := nextbit + 1;
       v := v + 1;
-    elif range_i[i] > v + 1 then # is this check necessary
+    elif range_i[i] > v + 1 then  # is this check necessary
       blist[nextbit] := true;
       nextbit := nextbit + 1;
       AddBinary(blist, range_i[i]);

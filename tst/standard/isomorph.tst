@@ -21,7 +21,7 @@ gap> gr := CompleteDigraph(n);
 <digraph with 5 vertices, 20 edges>
 gap> AutomorphismGroup(gr) = SymmetricGroup(n);
 true
-gap> not DIGRAPHS_NautyAvailable or 
+gap> not DIGRAPHS_NautyAvailable or
 > NautyAutomorphismGroup(gr) = SymmetricGroup(n);
 true
 
@@ -31,7 +31,7 @@ gap> gr := EmptyDigraph(n);
 <digraph with 10 vertices, 0 edges>
 gap> AutomorphismGroup(gr) = SymmetricGroup(n);
 true
-gap> not DIGRAPHS_NautyAvailable or 
+gap> not DIGRAPHS_NautyAvailable or
 > NautyAutomorphismGroup(gr) = SymmetricGroup(n);
 true
 
@@ -46,7 +46,7 @@ true
 gap> gr := DigraphCopy(ChainDigraph(n));;
 gap> not DIGRAPHS_NautyAvailable or IsTrivial(NautyAutomorphismGroup(gr));
 true
-gap> not DIGRAPHS_NautyAvailable 
+gap> not DIGRAPHS_NautyAvailable
 > or IsTrivial(NautyAutomorphismGroup(gr, [1, 2, 3, 1, 2]));
 true
 
@@ -58,7 +58,7 @@ gap> IsCyclic(AutomorphismGroup(gr));
 true
 gap> Size(AutomorphismGroup(gr)) = n;
 true
-gap> not DIGRAPHS_NautyAvailable or 
+gap> not DIGRAPHS_NautyAvailable or
 > Size(NautyAutomorphismGroup(gr)) = n;
 true
 
@@ -71,7 +71,7 @@ gap> G := AutomorphismGroup(gr);;
 gap> G = DirectProduct(SymmetricGroup(m), SymmetricGroup(n));
 true
 gap> G := NautyAutomorphismGroup(gr);;
-gap> not DIGRAPHS_NautyAvailable or 
+gap> not DIGRAPHS_NautyAvailable or
 > G = DirectProduct(SymmetricGroup(m), SymmetricGroup(n));
 true
 
@@ -80,7 +80,7 @@ gap> gr := Digraph([[2], [], [2], [2]]);
 <digraph with 4 vertices, 3 edges>
 gap> AutomorphismGroup(gr) = SymmetricGroup([1, 3, 4]);
 true
-gap> not DIGRAPHS_NautyAvailable or 
+gap> not DIGRAPHS_NautyAvailable or
 > NautyAutomorphismGroup(gr) = SymmetricGroup([1, 3, 4]);
 true
 
@@ -485,10 +485,10 @@ false
 gap> canon = OnDigraphs(gr1, BlissCanonicalLabelling(gr1));
 false
 gap> canon := NautyCanonicalDigraph(gr);;
-gap> canon = fail or OutNeighbours(canon) 
+gap> canon = fail or OutNeighbours(canon)
 >    = [[5], [2], [6], [3, 5], [5, 1], [2, 4, 1]];
 true
-gap> if canon <> fail then 
+gap> if canon <> fail then
 >   for i in SymmetricGroup(DigraphNrVertices(gr)) do
 >     new := OnDigraphs(gr, i);
 >     if OnDigraphs(new, NautyCanonicalLabelling(new)) <> canon then
@@ -535,8 +535,8 @@ gap> not DIGRAPHS_NautyAvailable or
 true
 gap> BlissCanonicalLabelling(G, [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]);
 (1,4,3,5)(6,8)(7,9,10)
-gap> not DIGRAPHS_NautyAvailable or 
-> NautyCanonicalLabelling(G, [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]) 
+gap> not DIGRAPHS_NautyAvailable or
+> NautyCanonicalLabelling(G, [1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
 > = (1, 5, 3, 4)(6, 8, 10)(7, 9);
 true
 
@@ -598,17 +598,17 @@ gap> gr := CompleteBipartiteDigraph(4, 4);
 <digraph with 8 vertices, 32 edges>
 gap> BlissCanonicalLabelling(gr);
 (1,8)(2,7)(3,6)(4,5)
-gap> not DIGRAPHS_NautyAvailable 
+gap> not DIGRAPHS_NautyAvailable
 > or NautyCanonicalLabelling(gr) = (2, 6, 3, 7, 4, 8, 5);
 true
 gap> BlissCanonicalLabelling(gr, [1 .. 8]);
 ()
-gap> not DIGRAPHS_NautyAvailable 
+gap> not DIGRAPHS_NautyAvailable
 > or NautyCanonicalLabelling(gr, [1 .. 8]) = ();
 true
 gap> BlissCanonicalLabelling(gr, [[1 .. 4], [5 .. 8]]);
 (1,4)(2,3)(5,8)(6,7)
-gap> not DIGRAPHS_NautyAvailable 
+gap> not DIGRAPHS_NautyAvailable
 > or NautyCanonicalLabelling(gr, [[1 .. 4], [5 .. 8]]) = ();
 true
 
@@ -754,7 +754,7 @@ gap> BlissCanonicalDigraph(gr1) = BlissCanonicalDigraph(gr3);
 false
 gap> BlissCanonicalDigraph(gr3, [1, 1, 1, 1, 1]);
 <digraph with 5 vertices, 10 edges>
-gap> BlissCanonicalDigraph(Digraph([[1], [2], [3], [3], [2], [1]])) 
+gap> BlissCanonicalDigraph(Digraph([[1], [2], [3], [3], [2], [1]]))
 > = BlissCanonicalDigraph(Digraph([[1], [2], [3], [1], [2], [3]]));
 true
 gap> gr4 := Digraph([[3, 4], [2, 2, 3], [2, 2, 4], [2, 2, 3]]);;
@@ -765,7 +765,7 @@ gap> IsIsomorphicDigraph(gr4, gr5);
 true
 gap> gr5 = BlissCanonicalDigraph(gr4, [1, 1, 1, 1]);
 true
-gap> BlissCanonicalDigraph(gr4, [1, 2, 1, 2]) 
+gap> BlissCanonicalDigraph(gr4, [1, 2, 1, 2])
 > = BlissCanonicalDigraph(gr4, [[1, 3], [2, 4]]);
 true
 gap> gr5 = BlissCanonicalDigraph(gr5);
@@ -782,18 +782,18 @@ gap> gr2 := Digraph([[1, 3], [2, 3], [2, 3], [1, 2, 3], [5]]);;
 gap> NautyCanonicalDigraph(gr1) = NautyCanonicalDigraph(gr2);
 true
 gap> gr3 := Digraph([[2, 3], [2, 3], [1, 3], [1, 2, 3], [5]]);;
-gap> not DIGRAPHS_NautyAvailable or 
+gap> not DIGRAPHS_NautyAvailable or
 > NautyCanonicalDigraph(gr1) <> NautyCanonicalDigraph(gr3);
 true
 gap> gr7 := NautyCanonicalDigraph(gr3, [1, 1, 1, 1, 1]);;
-gap> not DIGRAPHS_NautyAvailable or 
-> NautyCanonicalDigraph(gr3, [1, 2, 1, 2, 1]) 
+gap> not DIGRAPHS_NautyAvailable or
+> NautyCanonicalDigraph(gr3, [1, 2, 1, 2, 1])
 > = NautyCanonicalDigraph(gr3, [[1, 3, 5], [2, 4]]);
 true
 gap> gr7 = fail or gr7 = NautyCanonicalDigraph(gr7);
 true
-gap> not DIGRAPHS_NautyAvailable or 
-> NautyCanonicalDigraph(Digraph([[1], [2], [3], [3], [2], [1]])) 
+gap> not DIGRAPHS_NautyAvailable or
+> NautyCanonicalDigraph(Digraph([[1], [2], [3], [3], [2], [1]]))
 > = NautyCanonicalDigraph(Digraph([[1], [2], [3], [1], [2], [3]]));
 true
 gap> gr4 := Digraph([[3, 4], [2, 2, 3], [2, 2, 4], [2, 2, 3]]);;
@@ -812,7 +812,7 @@ gap> DIGRAPHS_NautyAvailable := false;;
 gap> DigraphsUseNauty();
 gap> DIGRAPHS_NautyAvailable := p;;
 gap> MakeReadOnlyGlobal("DIGRAPHS_NautyAvailable");
-gap> if not nauty then 
+gap> if not nauty then
 >      DigraphsUseBliss();
 >    fi;
 

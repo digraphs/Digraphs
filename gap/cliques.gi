@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  cliques.gi
-#Y  Copyright (C) 2015-16                                Markus Pfeiffer
+##  cliques.gi
+##  Copyright (C) 2015-16                                Markus Pfeiffer
 ##                                                       Raghav Mehra
 ##                                                       Wilf A. Wilson
 ##
@@ -797,7 +797,7 @@ function(gr, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     IntersectBlist(possible, adj[x]);
   od;
 
-  isolated := DigraphSources(gr); # sources = sinks = isolated vertices
+  isolated := DigraphSources(gr);  # sources = sinks = isolated vertices
   if reps and not IsEmpty(isolated) then
     # Optimisation for when there are isolated vertices
     grp := Group(());
@@ -820,7 +820,7 @@ function(gr, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     local orb, n, i;
 
     c := ListBlist(vtx, c);
-    if reps then # we are only looking for orbit reps, so add the rep
+    if reps then  # we are only looking for orbit reps, so add the rep
       hook(param, c);
       num := num + 1;
       return;
@@ -830,8 +830,8 @@ function(gr, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       Add(found_orbits, orb);
       n := Length(orb);
 
-      if invariant then # we're not just looking for orbit reps, but inc and exc
-                        # are invariant so there is nothing extra to check
+      if invariant then  # we're not just looking for orbit reps, but inc and
+                         # exc are invariant so there is nothing extra to check
         n := Minimum(lim - num, n);
         for c in orb{[1 .. n]} do
           hook(param, c);
@@ -909,14 +909,14 @@ function(gr, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     fi;
 
     # TODO should this come after choosing the pivot or before?
-    #orb := ListBlist(vtx, UnionBlist(try, ban));
-    #if not G = fail then
-    #  orb := Orbits(G, orb);
-    #  orb := List(orb, x -> x[1]);
-    #  try_orb := IntersectionBlist(BlistList(vtx, orb), try);
-    #else
-    #  try_orb := ShallowCopy(try);
-    #fi;
+    # orb := ListBlist(vtx, UnionBlist(try, ban));
+    # if not G = fail then
+    #   orb := Orbits(G, orb);
+    #   orb := List(orb, x -> x[1]);
+    #   try_orb := IntersectionBlist(BlistList(vtx, orb), try);
+    # else
+    #   try_orb := ShallowCopy(try);
+    # fi;
 
     # If we are searching for *maximal* cliques then choose a pivot
     if max then
@@ -924,14 +924,14 @@ function(gr, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       # TODO optimise choice of pivot
 
       # Strategy 1: choose vertex in orb (try union ban, mod G) of max degree
-      #top := -1;
-      #piv := 0;
-      #for v in orb do
-      #  if deg[v] > top then # where #deg = OutDegrees(gr)
-      #    piv := v;
-      #    top := deg[v];
-      #  fi;
-      #od;
+      # top := -1;
+      # piv := 0;
+      # for v in orb do
+      #   if deg[v] > top then # where #deg = OutDegrees(gr)
+      #     piv := v;
+      #     top := deg[v];
+      #   fi;
+      # od;
 
       # Is this a better way of choosing a pivot?
       # Strategy 2: choose vertex in orb (try union ban, mod G) with max number
@@ -959,22 +959,22 @@ function(gr, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
 
     # Try to extend <c> and recurse
     for v in to_try do
-      if not exc_inv[v] then # We are allowed to add <v> to <c>
+      if not exc_inv[v] then  # We are allowed to add <v> to <c>
         C := ShallowCopy(c);
         C[v] := true;
         if G = fail then
           g := fail;
         else
-          g := Stabilizer(G, v); # Calculate the stabilizer of <v> in <G>
+          g := Stabilizer(G, v);  # Calculate the stabilizer of <v> in <G>
           if IsTrivial(g) then
-            g := fail; # Discard the group from this point as it is trivial
+            g := fail;  # Discard the group from this point as it is trivial
           fi;
         fi;
         bk(C, IntersectionBlist(try, adj[v]), IntersectionBlist(ban, adj[v]),
-           g, d); # Recurse
+           g, d);  # Recurse
       fi;
       if lim = num then
-        return; # The limit of cliques has been reached
+        return;  # The limit of cliques has been reached
       fi;
       # need to prune the tree to prevent any repeated work:
       # do not need to search further for any cliques containing anything in

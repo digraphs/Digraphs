@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  cliques.gd
-#Y  Copyright (C) 2015-16                                Markus Pfeiffer
+##  cliques.gd
+##  Copyright (C) 2015-16                                Markus Pfeiffer
 ##                                                       Raghav Mehra
 ##                                                       Wilf A. Wilson
 ##

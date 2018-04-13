@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  display.gd
-#Y  Copyright (C) 2017                                   James D. Mitchell
+##  display.gd
+##  Copyright (C) 2017                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
