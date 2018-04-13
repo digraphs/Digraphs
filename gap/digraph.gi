@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  digraph.gi
-#Y  Copyright (C) 2014                                   James D. Mitchell
+##  digraph.gi
+##  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -27,7 +27,7 @@ InstallMethod(Digraph,
 function(obj, adj)
   local N, out_nbs, in_nbs, x, digraph, i, j, adj_func;
 
-  N       := Size(obj); # number of vertices
+  N       := Size(obj);  # number of vertices
   out_nbs := List([1 .. N], x -> []);
   in_nbs  := List([1 .. N], x -> []);
 
@@ -56,26 +56,26 @@ end);
 
 # for a group and representative out neighbours
 
-#InstallMethod(Digraph, "for a group, list, and list",
-#[IsGroup, IsList, IsList],
-#function(G, vertices, rep)
-#  local digraph;
+# InstallMethod(Digraph, "for a group, list, and list",
+# [IsGroup, IsList, IsList],
+# function(G, vertices, rep)
+#   local digraph;
 #
-#  #TODO add checks!
+#   #TODO add checks!
 #
-#  digraph := Objectify(DigraphType, rec());
+#   digraph := Objectify(DigraphType, rec());
 #
-#  SetDigraphGroup(digraph, G);
-#  SetRepresentativeOutNeighbours(digraph, rep);
-#  SetDigraphVertices(digraph, vertices);
-#  SetDigraphNrVertices(digraph, Length(vertices));
-#  #TODO remove this, requires changing the OutNeighbours C function
+#   SetDigraphGroup(digraph, G);
+#   SetRepresentativeOutNeighbours(digraph, rep);
+#   SetDigraphVertices(digraph, vertices);
+#   SetDigraphNrVertices(digraph, Length(vertices));
+#   #TODO remove this, requires changing the OutNeighbours C function
 #
-#  digraph!.adj := OutNeighbours(digraph);
-#  digraph!.nrvertices := DigraphNrVertices(digraph);
+#   digraph!.adj := OutNeighbours(digraph);
+#   digraph!.nrvertices := DigraphNrVertices(digraph);
 #
-#  return digraph;
-#end);
+#   return digraph;
+# end);
 
 # <G> is a group, <obj> a set of points on which <act> acts, and <adj> is a
 # function which for 2 elements u, v of <obj> returns <true> if and only if
@@ -111,8 +111,8 @@ function(G, obj, act, adj)
       od;
     fi;
   od;
-  #TODO comment this out, use method for OutNeighbours for digraph with group
-  #instead.
+  # TODO comment this out, use method for OutNeighbours for digraph with group
+  # instead.
   out  := EmptyPlist(Size(obj));
   gens := GeneratorsOfGroup(Range(hom));
 
@@ -221,31 +221,30 @@ function(digraph)
   local out, vertices, newvertices, allvertices, shiftedout, newout1,
   newout2, newout, crossedouts, doubleout, shift, double, group,
   newgens, gens, conj;
-  #note that this method is also applicable for digraphs with
-  #an adjacency function. however, the resulting double graph
-  #will not have an adjacency function anymore, since the
-  #original function may take arbitrary objects as argument,
-  #while the double graph has simply integers as vertices.
-  #So relying on the original adjacency function is meaningless
-  #unless this function would also be a function on integers.
-  #if DigraphGroup is set, a subgroup of the automoraphism group
-  #of the bipartite double is computed and set.
+  # Note that this method is also applicable for digraphs with an adjacency
+  # function. however, the resulting double graph will not have an adjacency
+  # function anymore, since the original function may take arbitrary objects as
+  # argument,  while the double graph has simply integers as vertices. So
+  # relying on the original adjacency function is meaningless  unless this
+  # function would also be a function on integers.   if DigraphGroup is set, a
+  # subgroup of the automoraphism group  of the bipartite double is computed and
+  # set.
   out := OutNeighbours(digraph);
   vertices := DigraphVertices(digraph);
   shift := DigraphNrVertices(digraph);
   newvertices := [shift + 1 .. 2 * DigraphNrVertices(digraph)];
   allvertices := [1 .. 2 * DigraphNrVertices(digraph)];
-  #"duplicate" of the outs for the new vertices:
+  # "duplicate" of the outs for the new vertices:
   shiftedout := List(out, x -> List(x, y -> y + shift));
   newout1 := List(vertices, x -> List(out[x], y -> y + shift));
-  #new out neighbours for vertices
+  # new out neighbours for vertices
   newout2 := List(newvertices, x -> out[x - shift]);
-  #out neighbours for new vertices
+  # out neighbours for new vertices
   newout := Concatenation(out, shiftedout);
-  #collec out neighbours between vertices and new vertices
+  # collect out neighbours between vertices and new vertices
   crossedouts := Concatenation(newout1, newout2);
   doubleout := List(allvertices, x -> Concatenation(newout[x], crossedouts[x]));
-  #collect all out neighbours.
+  # collect all out neighbours.
   double := DigraphNC(doubleout);
   if HasDigraphGroup(digraph) then
     group := DigraphGroup(digraph);
@@ -371,7 +370,7 @@ function(graph, i)
   if IsBound(graph!.vertexlabels[i]) then
     return ShallowCopy(graph!.vertexlabels[i]);
   fi;
-  #JDM is this a good idea?
+  # JDM is this a good idea?
   ErrorNoReturn("Digraphs: DigraphVertexLabel: usage,\n", i,
                 " is nameless or not a vertex,");
 end);
@@ -776,7 +775,7 @@ function(m, n)
       count := count + 1;
       source[count] := i;
       range[count] := m + j;
-      k := (m * n) + ((j - 1) * m) + i; # Ensures that source is sorted
+      k := (m * n) + ((j - 1) * m) + i;  # Ensures that source is sorted
       source[k] := m + j;
       range[k] := i;
     od;
@@ -1119,7 +1118,7 @@ function(mat)
         out[i][count] := j;
       od;
     end;
-  else # boolean matrix
+  else  # boolean matrix
     create_func := function(i, j)
       if mat[i][j] then
         count := count + 1;
@@ -1142,7 +1141,7 @@ function(mat)
   out := DigraphNC(out);
   if IsInt(mat[1][1]) then
     SetAdjacencyMatrix(out, mat);
-  else # boolean matrix
+  else  # boolean matrix
     SetIsMultiDigraph(out, false);
   fi;
 
@@ -1246,8 +1245,8 @@ InstallMethod(DigraphByInNeighbours, "for a list",
 function(nbs)
   local n, m, x;
 
-  n := Length(nbs); # number of vertices
-  m := 0;           # number of edges
+  n := Length(nbs);  # number of vertices
+  m := 0;            # number of edges
 
   for x in nbs do
     if not ForAll(x, i -> IsPosInt(i) and i <= n) then
@@ -1513,15 +1512,15 @@ function(graph)
   return Concatenation("Digraph( ", PrintString(OutNeighbours(graph)), " )");
 end);
 
-#InstallMethod(PrintString,
-#"for a digraph with group and representative out neighbours",
-#[IsDigraph and HasDigraphGroup and HasRepresentativeOutNeighbours],
-#function(digraph)
-#  return Concatenation("Digraph( ",
-#                       PrintString(DigraphGroup(digraph)), ", ",
-#                       PrintString(DigraphVertices(digraph)), ", ",
-#                       PrintString(RepresentativeOutNeighbours(digraph)), ")");
-#end);
+# InstallMethod(PrintString,
+# "for a digraph with group and representative out neighbours",
+# [IsDigraph and HasDigraphGroup and HasRepresentativeOutNeighbours],
+# function(digraph)
+#   return Concatenation("Digraph( ",
+#                        PrintString(DigraphGroup(digraph)), ", ",
+#                        PrintString(DigraphVertices(digraph)), ", ",
+#                        PrintString(RepresentativeOutNeighbours(digraph)), ")");
+# end);
 
 InstallMethod(String, "for a digraph",
 [IsDigraph],

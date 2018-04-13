@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  display.gi
-#Y  Copyright (C) 2014                                   James D. Mitchell
+##  display.gi
+##  Copyright (C) 2014                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -98,7 +98,7 @@ end);
 
 # AN's code
 
-if not IsBound(Splash) then #This function is written by A. Egri-Nagy
+if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
   if ARCH_IS_MAC_OS_X() then
     BindGlobal("VizViewers", ["xpdf", "open", "evince", "okular", "gv"]);
   elif ARCH_IS_UNIX() then

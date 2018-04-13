@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  isomorph.gd
-#Y  Copyright (C) 2014-17                                James D. Mitchell
+##  isomorph.gd
+##  Copyright (C) 2014-17                                James D. Mitchell
 ##                                                          Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.

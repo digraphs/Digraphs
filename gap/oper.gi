@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  oper.gi
-#Y  Copyright (C) 2014-17                                James D. Mitchell
+##  oper.gi
+##  Copyright (C) 2014-17                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -196,7 +196,7 @@ InstallMethod(DigraphReverseEdgesNC, "for a digraph and a rectangular table",
 function(digraph, edges)
   local current, nredges, new, i;
 
-  Sort(edges); # Why are we sorting these edges?
+  Sort(edges);  # Why are we sorting these edges?
 
   current := 1;
   nredges := Length(edges);
@@ -249,7 +249,7 @@ InstallMethod(DigraphReverseEdgesNC, "for a digraph and a list",
 function(digraph, edges)
   local current, out, new, pos_l, pos_h, toadd, pos, temp, i, edge;
 
-  Sort(edges); # Why are we sorting the edges?
+  Sort(edges);  # Why are we sorting the edges?
   current := edges[1];
   out := OutNeighbours(digraph);
   new := [];
@@ -447,13 +447,13 @@ function(digraph, edges)
   edges := BlistList([1 .. m], edges);
   edge_count := 0;
   degree_count := 0;
-  for i in DigraphVertices(digraph) do # Loop over each vertex
+  for i in DigraphVertices(digraph) do  # Loop over each vertex
     new_adj[i] := [];
     new_lbl[i] := [];
     degree_count := 0;
     for j in [1 .. Length(old_adj[i])] do
       edge_count := edge_count + 1;
-      if not edges[edge_count] then # Keep this edge
+      if not edges[edge_count] then  # Keep this edge
         degree_count := degree_count + 1;
           new_adj[i][degree_count] := old_adj[i][j];
           new_lbl[i][degree_count] := old_lbl[i][j];
@@ -652,7 +652,7 @@ function(digraph, verts)
   fi;
   m := DigraphNrEdges(digraph);
   log := LogInt(len, 2);
-  if (2 * m * log) + (len * log) < (2 * m * len) then # Sort verts if sensible
+  if (2 * m * log) + (len * log) < (2 * m * len) then  # Sort verts if sensible
     Sort(verts);
   fi;
   diff := Difference(DigraphVertices(digraph), verts);
@@ -673,7 +673,7 @@ function(digraph, verts)
       new_nbs[new_vertex_count] := [];
       j := 0;
       for x in old_nbs[i] do
-        if not x in verts then # Can search through diff if |diff| < |verts|
+        if not x in verts then  # Can search through diff if |diff| < |verts|
           j := j + 1;
           new_nbs[new_vertex_count][j] := lookup[x];
         fi;

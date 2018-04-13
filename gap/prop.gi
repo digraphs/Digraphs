@@ -1,7 +1,7 @@
 #############################################################################
 ##
-#W  prop.gi
-#Y  Copyright (C) 2014-17                                James D. Mitchell
+##  prop.gi
+##  Copyright (C) 2014-17                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -42,7 +42,7 @@ function(nbs)
         return false;
       fi;
       len := Length(x);
-      k := x[len]; # Check whether <k> is the meet of <i> and <j>
+      k := x[len];  # Check whether <k> is the meet of <i> and <j>
       if Length(nbs[k]) < len then
         return false;
       fi;
@@ -86,13 +86,13 @@ function(digraph)
   return DIGRAPHS_IsMeetJoinSemilatticeDigraph(nbs);
 end);
 
-#InstallImmediateMethod(IsStronglyConnectedDigraph, "for an acyclic digraph",
-#IsAcyclicDigraph,
-#function(digraph)
-#  if DigraphNrVertices(digraph) > 1 then
-#    return false;
-#  fi;
-#end);
+# InstallImmediateMethod(IsStronglyConnectedDigraph, "for an acyclic digraph",
+# IsAcyclicDigraph,
+# function(digraph)
+#   if DigraphNrVertices(digraph) > 1 then
+#     return false;
+#   fi;
+# end);
 
 InstallMethod(IsStronglyConnectedDigraph, "for a digraph",
 [IsDigraph],
@@ -292,18 +292,16 @@ function(digraph)
   return true;
 end);
 
-#
-
-#InstallImmediateMethod(IsReflexiveDigraph,
-#"for a digraph with HasDigraphHasLoops",
-#HasDigraphHasLoops,
-#function(digraph)
-#  if DigraphNrVertices(digraph) = 0 then
-#    return true;
-#  elif not DigraphHasLoops(digraph) then
-#    return false;
-#  fi;
-#end);
+# InstallImmediateMethod(IsReflexiveDigraph,
+# "for a digraph with HasDigraphHasLoops",
+# HasDigraphHasLoops,
+# function(digraph)
+#   if DigraphNrVertices(digraph) = 0 then
+#     return true;
+#   elif not DigraphHasLoops(digraph) then
+#     return false;
+#   fi;
+# end);
 
 InstallMethod(IsReflexiveDigraph, "for a digraph with adjacency matrix",
 [IsDigraph and HasAdjacencyMatrix],
@@ -618,14 +616,14 @@ function(gr)
     outdegs := OutDegrees(gr);
     fulldegs := indegs + outdegs;
     adjmatrix := BooleanAdjacencyMatrix(gr);
-    #checks if Meyniel's theorem, Theorem 4.1 or Theorem 4.2 are applicable.
+    # checks if Meyniel's theorem, Theorem 4.1 or Theorem 4.2 are applicable.
     checkMT := true;
     check41 := true;
     check42 := true;
     for i in [1 .. n] do
        for j in [1 .. n] do
           if i <> j and not adjmatrix[j][i] and not adjmatrix[i][j] then
-              #Meyniel's theorem
+              # Meyniel's theorem
               if checkMT and fulldegs[i] + fulldegs[j] < 2 * n - 1 then
                   checkMT := false;
               fi;
@@ -644,7 +642,7 @@ function(gr)
                 dominatingcheck := true in tempblist;
               fi;
 
-              #Theorem 4.1
+              # Theorem 4.1
               if check41 and dominatedcheck then
                  if fulldegs[i] < n - 1 or fulldegs[j] < n - 1 or
                     (fulldegs[i] = n - 1 and fulldegs[j] = n - 1) then
@@ -652,7 +650,7 @@ function(gr)
                  fi;
               fi;
 
-              #Theorem 4.2
+              # Theorem 4.2
               if check42 and (dominatingcheck or dominatedcheck) then
                  if (indegs[i] + outdegs[j]) < n or
                     (indegs[j] + outdegs[i]) < n then

@@ -23,11 +23,11 @@
     determining the clique number of a digraph. 
     <Example><![CDATA[
 gap> gr := CompleteDigraph(4);;
-gap> CliqueNumber(gr); 
+gap> CliqueNumber(gr);
 4
 gap> gr := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);
 <multidigraph with 4 vertices, 11 edges>
-gap> CliqueNumber(gr); 
+gap> CliqueNumber(gr);
 3]]></Example>
 </Description>
 </ManSection>
@@ -571,10 +571,10 @@ gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
 gap> gr := CompleteDigraph(5);
 <digraph with 5 vertices, 20 edges>
 gap> user_param := [];;
-gap> f := function(a, b) # Calculate size of clique
+gap> f := function(a, b)  # Calculate size of clique
 >   AddSet(user_param, Size(b));
 > end;;
-gap> CliquesFinder(gr, f, user_param, infinity, [], [], false, fail, 
+gap> CliquesFinder(gr, f, user_param, infinity, [], [], false, fail,
 >                  true);
 [ 1, 2, 3, 4, 5 ]
 gap> CliquesFinder(gr, fail, [], 5, [2, 4], [3], false, fail, false);

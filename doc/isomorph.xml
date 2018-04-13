@@ -161,7 +161,7 @@ gap> gr := Digraph([[2], [3, 3], [3], [2]]);
 <multidigraph with 4 vertices, 5 edges>
 gap> G := AutomorphismGroup(gr);
 Group([ (1,2), (3,4) ])
-gap> P1 := Projection(G, 1); 
+gap> P1 := Projection(G, 1);
 1st projection of Group([ (1,2), (3,4) ])
 gap> P2 := Projection(G, 2);
 2nd projection of Group([ (1,2), (3,4) ])
@@ -270,7 +270,7 @@ gap> gr := Digraph([[2], [3, 3], [3], [2], [2]]);
 <multidigraph with 5 vertices, 6 edges>
 gap> G := AutomorphismGroup(gr, [1, 1, 2, 3, 1]);
 Group([ (1,2), (3,4) ])
-gap> P1 := Projection(G, 1); 
+gap> P1 := Projection(G, 1);
 1st projection of Group([ (1,2), (3,4) ])
 gap> P2 := Projection(G, 2);
 2nd projection of Group([ (1,2), (3,4) ])
