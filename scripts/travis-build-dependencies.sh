@@ -10,18 +10,14 @@ mv Digraphs $HOME/digraphs
 
 if [ "$SUITE" == "lint" ]; then
 
-  # Check-out most recent release of cpplint from GitHub
+  # Install cpplint using pip
   cd $HOME
-  git clone -b master https://github.com/cpplint/cpplint.git lint/cpplint
-  cd lint/cpplint
-  git checkout `git tag | tail -1`
+  sudo pip install cpplint
 
-  # Check out most recent commit of gaplint from GitHub
-  cd $HOME
-  git clone -b master --depth=1 https://github.com/james-d-mitchell/gaplint lint/gaplint
+  # Install gaplint using pip
+  sudo pip install gaplint
 
   # Move Digraphs package into a GAP folder structure, so that cpplint is happy
-  cd $HOME
   mkdir gap gap/.git gap/pkg
   mv digraphs $HOME/gap/pkg/digraphs
 

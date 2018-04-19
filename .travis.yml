@@ -28,6 +28,8 @@ matrix:
   include:
     - env:
       - SUITE=lint
+      sudo:
+        true
       addons:
 
     - env:

@@ -8,19 +8,14 @@ touch testlog.txt
 TESTLOG="`pwd`/testlog.txt"
 
 if [ "$SUITE" == "lint" ]; then
-
-  cd $HOME/lint/gaplint
-  GAPLINT="`pwd`/gaplint.py"
-  cd $HOME/lint/cpplint
-  CPPLINT="`pwd`/cpplint.py"
-
+  
   cd $HOME/gap/pkg/digraphs
 
   for FILE in `grep "^\s\+gaplint" Makefile.am | cut -d " " -f2-`; do
-    $GAPLINT $FILE
+    gaplint $FILE
   done
   for FILE in `grep "^\s\+cpplint" Makefile.am | cut -d " " -f2-`; do
-    $CPPLINT --extensions=c,cc,h $FILE
+    cpplint --extensions=c,cc,h $FILE
   done
 
 elif [ ! -z "$GAP" ]; then
