@@ -313,6 +313,20 @@ gap> gr := EmptyDigraph(0);;
 gap> DigraphSymmetricClosure(gr);
 <digraph with 0 vertices, 0 edges>
 
+# Issue 114: Bug in NautyTracesInterface for graphs with 0 vertices
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyAutomorphismGroup(NullDigraph(0)) = Group(());
+true
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyAutomorphismGroup(NullDigraph(0), []) = Group(());
+true
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyCanonicalLabelling(NullDigraph(0)) = ();
+true
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyCanonicalLabelling(NullDigraph(0), []) = ();
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);

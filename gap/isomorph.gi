@@ -103,11 +103,16 @@ if DIGRAPHS_NautyAvailable then
                                                  calling_function_name);
       colors := NautyColorData(colors);
     fi;
+    if DigraphNrVertices(digraph) = 0 then
+      # This circumvents Issue #17 in NautyTracesInterface, whereby a graph
+      # with 0 vertices causes a seg fault.
+      return [Group(()), ()];
+    fi;
     data := NautyDense(DigraphSource(digraph),
-            DigraphRange(digraph),
-            DigraphNrVertices(digraph),
-            not IsSymmetricDigraph(digraph),
-            colors);
+                       DigraphRange(digraph),
+                       DigraphNrVertices(digraph),
+                       not IsSymmetricDigraph(digraph),
+                       colors);
     if IsEmpty(data[1]) then
       data[1] := [()];
     fi;
@@ -232,6 +237,7 @@ function(digraph)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
+
   data := NAUTY_DATA_NO_COLORS(digraph);
   SetNautyCanonicalLabelling(digraph, data[2]);
   if not HasDigraphGroup(digraph) then
