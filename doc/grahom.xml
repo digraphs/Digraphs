@@ -10,7 +10,7 @@
 
 <#GAPDoc Label="HomomorphismDigraphsFinder">
 <ManSection>
-  <Func Name="HomomorphismDigraphsFinder" Arg="gr1, gr2, hook, user_param, limit, hint, injective, image, map"/>
+  <Func Name="HomomorphismDigraphsFinder" Arg="gr1, gr2, hook, user_param, limit, hint, injective, image, map, list1, list2"/>
   <Returns>The argument <A>user_param</A>.</Returns>
   <Description>
     This function finds homomorphisms from the graph <A>gr1</A> to the graph
@@ -18,7 +18,7 @@
     described below.<P/>
 
     If <C>f</C> and <C>g</C> are homomorphisms found by
-    <C>HomomorphismGraphsFinder</C>, then <C>f</C> cannot be obtained from
+    <C>HomomorphismDigraphsFinder</C>, then <C>f</C> cannot be obtained from
     <C>g</C> by right multiplying by an automorphism of <A>gr2</A>.
 
     <List>
@@ -30,11 +30,11 @@
         <A>user_param</A> (see below) and a transformation <C>t</C>. The
         function <C><A>hook</A>(<A>user_param</A>, t)</C> is called every time
         a new homomorphism <C>t</C> is found by
-        <C>HomomorphismGraphsFinder</C>.<P/>
+        <C>HomomorphismDigraphsFinder</C>.<P/>
 
         If <A>hook</A> is <K>fail</K>, then a default function is used which
         simply adds every new homomorphism found by
-        <C>HomomorphismGraphsFinder</C> to <A>user_param</A>, which must be a
+        <C>HomomorphismDigraphsFinder</C> to <A>user_param</A>, which must be a
         list in this case.
       </Item>
 
@@ -54,7 +54,7 @@
       <Mark><A>limit</A></Mark>
       <Item>
         This argument should be a positive integer or <K>infinity</K>.
-        <C>HomomorphismGraphsFinder</C> will return after it has found
+        <C>HomomorphismDigraphsFinder</C> will return after it has found
         <A>limit</A> homomorphisms or the search is complete.
       </Item>
 
@@ -79,8 +79,9 @@
       <Mark><A>image</A></Mark>
       <Item>
         This argument should be a subset of the vertices of the graph <A>gr2</A>.
-        <C>HomomorphismGraphsFinder</C> only finds homomorphisms from
-        <A>gr1</A> to the subgraph of <A>gr2</A> induced by the vertices <A>image</A>.
+        <C>HomomorphismDigraphsFinder</C> only finds homomorphisms from
+        <A>gr1</A> to the subgraph of <A>gr2</A> induced by the vertices
+        <A>image</A>.
       </Item>
 
       <Mark><A>map</A></Mark>
@@ -88,10 +89,25 @@
         This argument should be a partial map from <A>gr1</A> to <A>gr2</A>,
         that is, a (not necessarily dense) list of vertices of the graph
         <A>gr2</A> of length no greater than the number vertices in the graph
-        <A>gr1</A>. <C>HomomorphismGraphsFinder</C> only finds homomorphisms
+        <A>gr1</A>. <C>HomomorphismDigraphsFinder</C> only finds homomorphisms
         extending <A>map</A> (if any).
       </Item>
-
+      
+      <Mark><A>list1</A></Mark>
+      <Item>
+        This should be a list representing possible colours of vertices in the
+        digraph <A>gr1</A>; see 
+        <Ref Oper="AutomorphismGroup" Label="for a digraph and a homogeneous list"/> 
+        for details of the permissible values for this argument.
+      </Item>
+      
+      <Mark><A>list2</A></Mark>
+      <Item>
+        This should be a list representing possible colours of vertices in the
+        digraph <A>gr2</A>; see 
+        <Ref Oper="AutomorphismGroup" Label="for a digraph and a homogeneous list"/> 
+        for details of the permissible values for this argument.
+      </Item>
     </List>
 
     <Example><![CDATA[
@@ -293,7 +309,8 @@ gap> EpimorphismsDigraphs(gr1, gr2);
     returns a generating set for the monoid of all endomorphisms of
     <A>digraph</A>. <P/>
 
-    If the <A>colors</A> argument is specified, then it will return a generating
+    If the <A>colors</A> argument is specified, then
+    <C>GeneratorsOfEndomorphismMonoid</C> will return a generating
     set for the monoid of endomorphisms which respect the given colouring.
     The colouring <A>colors</A> can be in one of two forms: <P/>
 
