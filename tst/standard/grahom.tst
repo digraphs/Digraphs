@@ -905,6 +905,18 @@ fail
 gap> DigraphEmbedding(gr1, gr1);
 IdentityTransformation
 
+# From GR, Issue #111, bug in homomorphism finding code for restricted images.
+gap> gr := DigraphFromDigraph6String(Concatenation(
+> "+U^{?A?BrwAHv_CNu@SMwHQm`GpyGbUYLAbfGTO?Enool[WrI",
+> "HBSatQlC[TIC{iSBlo_VrO@u[_Eyk?]YS?"));
+<digraph with 22 vertices, 198 edges>
+gap> t := HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, false, 
+> [2, 6, 7, 11, 12, 13, 14, 15, 19, 20, 21], [], fail, fail)[1];
+Transformation( [ 2, 13, 20, 19, 21, 19, 14, 13, 15, 14, 20, 6, 15, 21, 11,
+  12, 6, 7, 7, 12, 2, 11 ] )
+gap> ForAll(DigraphEdges(gr), e -> IsDigraphEdge(gr, e[1] ^ t, e[2] ^ t));
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
 gap> Unbind(epis);
