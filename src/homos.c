@@ -47,6 +47,10 @@ void (*HOOK)(void*,              // HOOK function applied to every homo found
 static jmp_buf outofhere;  // so we can jump out of the deepest
                            // level of recursion
 
+// Values in MAP are restricted to those positions in IMAGE_RESTRICT which are
+// set to true.
+static BitArray* IMAGE_RESTRICT;
+
 ////////////////////////////////////////////////////////////////////////////////
 // For the orbit reps calculation, and stabiliser chain . . .
 ////////////////////////////////////////////////////////////////////////////////
@@ -244,6 +248,26 @@ static inline UIntS size_bit_array(BitArray* bit_array) {
   }
   return n;
 }
+
+#ifdef DIGRAPHS_KERNEL_DEBUG
+static inline void print_bit_array(BitArray* bit_array) {
+  printf("<bit array {");
+  for (UIntS i = 0; i < bit_array->nr_bits; i++) {
+    if (get_bit_array(bit_array, i)) {
+      printf(" %d", i);
+    }
+  }
+  printf(" }>");
+}
+
+static inline void print_array(UIntS* array, UIntS len) {
+  printf("<array {");
+  for (UIntS i = 0; i < len; i++) {
+    printf(" %d", array[i]);
+  }
+  printf(" }>");
+}
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -458,8 +482,17 @@ static void orbit_reps(UIntS rep_depth) {
   }
 
   fst = 0;
-  while (fst < deg && !get_bit_array(DOMAIN, fst))
-    fst++;
+  if (IMAGE_RESTRICT != NULL) {
+    while (fst < deg
+           && (!get_bit_array(DOMAIN, fst)
+               || !get_bit_array(IMAGE_RESTRICT, fst))) {
+      fst++;
+    }
+  } else {
+    while (fst < deg && !get_bit_array(DOMAIN, fst)) {
+      fst++;
+    }
+  }
 
   while (fst < deg) {
     ORB[0] = fst;
@@ -480,8 +513,17 @@ static void orbit_reps(UIntS rep_depth) {
         }
       }
     }
-    while (fst < deg && !get_bit_array(DOMAIN, fst))
-      fst++;
+    if (IMAGE_RESTRICT != NULL) {
+      while (fst < deg
+             && (!get_bit_array(DOMAIN, fst)
+                 || !get_bit_array(IMAGE_RESTRICT, fst))) {
+        fst++;
+      }
+    } else {
+      while (fst < deg && !get_bit_array(DOMAIN, fst)) {
+        fst++;
+      }
+    }
   }
 }
 
@@ -646,7 +688,8 @@ find_digraph_homos(Digraph*    digraph1,
                    UIntS       pos,    // the last position filled
                    UIntS       rep_depth,
                    bool        has_trivial_stab,
-                   UIntS rank) {  // current number of distinct values in MAP
+                   // current number of distinct values in MAP
+                   UIntS rank) {
   UIntS i, min, next;
   bool  is_trivial;
 
@@ -801,6 +844,9 @@ void DigraphHomomorphisms(Digraph* digraph1,
       // intersect everything in the first row of conditions with <image>
     }
   }
+  // Used by orbit_reps, so that orbit reps are chosen from among the
+  // restricted values of the image.
+  IMAGE_RESTRICT = image_arg;
 
   // partial_map_arg is an array of UIntS's partially defining a map from
   // digraph1 to digraph2.
@@ -1038,6 +1084,10 @@ void DigraphMonomorphisms(Digraph* digraph1,
       // intersect everything in the first row of conditions with <image>
     }
   }
+
+  // Used by orbit_reps, so that orbit reps are chosen from among the
+  // restricted values of the image.
+  IMAGE_RESTRICT = image_arg;
 
   // partial_map_arg is an array of UIntS's partially defining a map from
   // digraph1 to digraph2.
@@ -1296,7 +1346,8 @@ find_graph_homos(Graph*      graph1,
                  UIntS       pos,    // the last position filled
                  UIntS       rep_depth,
                  bool        has_trivial_stab,
-                 UIntS rank) {  // current number of distinct values in MAP
+                 // current number of distinct values in MAP
+                 UIntS rank) {
   UIntS i, min, next;
   bool  is_trivial;
 
@@ -1437,6 +1488,9 @@ void GraphHomomorphisms(Graph* graph1,
       // intersect everything in the first row of conditions with <image_arg>
     }
   }
+  // Used by orbit_reps, so that orbit reps are chosen from among the
+  // restricted values of the image.
+  IMAGE_RESTRICT = image_arg;
 
   // partial_map_arg is an array of UIntS's partially defining a map from graph1
   // to graph2.
@@ -1470,6 +1524,7 @@ void GraphHomomorphisms(Graph* graph1,
   }
 
   if (colors1 != NULL) {  // colors1 and colors2 specified
+    DIGRAPHS_ASSERT(colors2 != NULL);
     for (i = 0; i < NR1; i++) {
       init_bit_array(bit_array, false);
       for (j = 0; j < NR2; j++) {
@@ -1669,6 +1724,9 @@ void GraphMonomorphisms(Graph* graph1,
       // intersect everything in the first row of conditions with <image>
     }
   }
+  // Used by orbit_reps, so that orbit reps are chosen from among the
+  // restricted values of the image.
+  IMAGE_RESTRICT = image_arg;
 
   // partial_map_arg is an array of UIntS's partially defining a map from
   // graph1 to graph2.
