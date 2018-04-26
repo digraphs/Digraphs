@@ -818,12 +818,18 @@ gap> OutNeighbours(canon);
     Arg="digraph, x"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description> 
-    This operation returns true if the permutation <A>x</A> is an automorphism
-    of the digraph <A>digraph</A>. An permutation <C>g</C> on the vertices of a
-    digraph <C>gr</C> is an automorphism if it satisfies: <C>(u, v)</C> is an
-    edge of <C>gr</C> if and only if <C>(g(u), g(v))</C> is an edge of <C>gr</C>
-    for all vertices <C>u</C> and <C>v</C> in <C>gr</C>. See also <Ref
-      Attr="AutomorphismGroup" Label="for a digraph" />.
+    This operation returns <K>true</K> if the permutation <A>x</A> is an
+    automorphism of the digraph <A>digraph</A>. <P/>
+    
+    A permutation <A>x</A> on the vertices of a digraph <A>digraph</A> is an
+    <E>automorphism</E> if: <C>[u, v]</C> is an edge of <A>digraph</A> if and
+    only if <C>[u ^ <A>x</A>, v ^ <A>x</A>]</C> is also an edge
+    for all vertices <C>u</C> and <C>v</C> in <A>digraph</A>. See also <Ref
+      Attr="AutomorphismGroup" Label="for a digraph" />.<P/>
+
+    For some digraphs, it can be faster to use <C>IsDigraphAutomorphism</C>
+    than to test membership in the automorphism group of <A>digraph</A>. 
+
     <Example><![CDATA[
 gap> digraph := Digraph([[1], [1, 2], [1, 3]]);
 <digraph with 3 vertices, 5 edges>
