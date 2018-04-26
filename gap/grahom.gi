@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  grahom.gi
-##  Copyright (C) 2014-17                                  Julius Jonusas
+##  Copyright (C) 2014-18                                  Julius Jonusas
 ##                                                         James Mitchell
 ##                                                         Wilf A. Wilson
 ##
@@ -429,4 +429,54 @@ function(gr1, gr2)
     fi;
   od;
   return fail;
+end);
+
+InstallMethod(IsDigraphHomomorphism, "for digraph, digraph, and perm",
+[IsDigraph, IsDigraph, IsPerm],
+function(src, ran, x)
+  local i, j;
+  if IsMultiDigraph(src) or IsMultiDigraph(ran) then
+    ErrorNoReturn("Digraphs: IsDigraphHomomorphism: usage,\n",
+                  "the first 2 arguments must not have multiple edges,");
+  elif LargestMovedPoint(x) > DigraphNrVertices(src) then
+    return false;
+  fi;
+  for i in DigraphVertices(src) do
+    for j in OutNeighbours(src)[i] do
+      if not IsDigraphEdge(ran, i ^ x, j ^ x) then
+        return false;
+      fi;
+    od;
+  od;
+  return true;
+end);
+
+InstallMethod(IsDigraphEndomorphism, "for a digraph and a perm",
+[IsDigraph, IsPerm], IsDigraphAutomorphism);
+
+InstallMethod(IsDigraphHomomorphism,
+"for digraph, digraph, and transformation",
+[IsDigraph, IsDigraph, IsTransformation],
+function(src, ran, x)
+  local i, j;
+  if IsMultiDigraph(src) or IsMultiDigraph(ran) then
+    ErrorNoReturn("Digraphs: IsDigraphHomomorphism: usage,\n",
+                  "the first 2 arguments must not have multiple edges,");
+  elif LargestMovedPoint(x) > DigraphNrVertices(src) then
+    return false;
+  fi;
+  for i in DigraphVertices(src) do
+    for j in OutNeighbours(src)[i] do
+      if not IsDigraphEdge(ran, i ^ x, j ^ x) then
+        return false;
+      fi;
+    od;
+  od;
+  return true;
+end);
+
+InstallMethod(IsDigraphEndomorphism, "for a digraph and a transformation",
+[IsDigraph, IsTransformation],
+function(gr, x)
+  return IsDigraphHomomorphism(gr, gr, x);
 end);

@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  standard/grahom.tst
-#Y  Copyright (C) 2015-17                                   Wilf A. Wilson
+#Y  Copyright (C) 2015-18                                   Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -915,6 +915,55 @@ gap> t := HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, false,
 Transformation( [ 2, 13, 20, 19, 21, 19, 14, 13, 15, 14, 20, 6, 15, 21, 11,
   12, 6, 7, 7, 12, 2, 11 ] )
 gap> ForAll(DigraphEdges(gr), e -> IsDigraphEdge(gr, e[1] ^ t, e[2] ^ t));
+true
+
+# IsDigraphEndomorphism and IsDigraphHomomorphism
+gap> gr := Digraph([[3, 4], [1, 3], [4], [1, 2, 3, 5], [2]]);
+<digraph with 5 vertices, 10 edges>
+gap> ForAll(GeneratorsOfEndomorphismMonoid(gr),
+>           x -> IsDigraphEndomorphism(gr, x));
+true
+gap> x := Transformation([3, 3, 4, 4]);
+Transformation( [ 3, 3, 4, 4 ] )
+gap> IsDigraphEndomorphism(gr, x);
+false
+gap> IsDigraphHomomorphism(gr, gr, (1, 2));
+false
+gap> gr := Digraph([[1, 1]]);
+<multidigraph with 1 vertex, 2 edges>
+gap> x := Transformation([3, 3, 4, 4]);
+Transformation( [ 3, 3, 4, 4 ] )
+gap> IsDigraphEndomorphism(gr, x);
+Error, Digraphs: IsDigraphHomomorphism: usage,
+the first 2 arguments must not have multiple edges,
+gap> IsDigraphEndomorphism(gr, ());
+Error, Digraphs: IsDigraphIsomorphism: usage,
+the first 2 arguments must not have multiple edges,
+gap> IsDigraphHomomorphism(gr, gr, ());
+Error, Digraphs: IsDigraphHomomorphism: usage,
+the first 2 arguments must not have multiple edges,
+gap> gr := DigraphTransitiveClosure(CompleteDigraph(2));
+<digraph with 2 vertices, 4 edges>
+gap> ForAll(GeneratorsOfEndomorphismMonoid(gr),
+>           x -> IsDigraphEndomorphism(gr, x));
+true
+gap> x := Transformation([2, 1, 3, 3]);;
+gap> IsDigraphEndomorphism(gr, x);
+false
+gap> x := Transformation([3, 1, 3, 3]);;
+gap> IsDigraphEndomorphism(gr, x);
+false
+gap> IsDigraphEndomorphism(gr, ());
+true
+gap> IsDigraphEndomorphism(gr, (1, 2));
+true
+gap> IsDigraphEndomorphism(gr, (1, 2)(3, 4));
+false
+gap> IsDigraphEndomorphism(gr, (1, 2, 3, 4));
+false
+gap> IsDigraphHomomorphism(NullDigraph(1), 
+>                          NullDigraph(3), 
+>                          Transformation([2, 2]));
 true
 
 #T# DIGRAPHS_UnbindVariables
