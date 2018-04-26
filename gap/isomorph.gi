@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  isomorph.gi
-##  Copyright (C) 2014-17                                James D. Mitchell
+##  Copyright (C) 2014-18                                James D. Mitchell
 ##                                                          Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
@@ -561,13 +561,37 @@ function(n, partition, method)
                 "form, <partition[i]> is the list of vertices with colour i,");
 end);
 
-InstallMethod(IsDigraphAutomorphism,
-"for a digraph and a permutation",
+InstallMethod(IsDigraphIsomorphism, "for digraph, digraph, and permutation",
+[IsDigraph, IsDigraph, IsPerm],
+function(src, ran, x)
+  if IsMultiDigraph(src) or IsMultiDigraph(ran) then
+    ErrorNoReturn("Digraphs: IsDigraphIsomorphism: usage,\n",
+                  "the first 2 arguments must not have multiple edges,");
+  fi;
+  return IsDigraphHomomorphism(src, ran, x)
+    and IsDigraphHomomorphism(ran, src, x ^ -1);
+end);
+
+InstallMethod(IsDigraphAutomorphism, "for a digraph and a permutation",
 [IsDigraph, IsPerm],
 function(gr, x)
-  if IsMultiDigraph(gr) then
-    ErrorNoReturn("Digraphs: IsDigraphAutomorphism: usage,\n",
-                  "the first argument <gr> must not have multiple edges,");
-  fi;
-  return OnDigraphs(gr, x) = gr;
+  return IsDigraphIsomorphism(gr, gr, x);
 end);
+
+InstallMethod(IsDigraphIsomorphism, "for digraph, digraph, and transformation",
+[IsDigraph, IsDigraph, IsTransformation],
+function(src, ran, x)
+  local y;
+  y := AsPermutation(RestrictedTransformation(x, DigraphVertices(src)));
+  if y = fail then
+    return false;
+  fi;
+  return IsDigraphIsomorphism(src, ran, y);
+end);
+
+InstallMethod(IsDigraphAutomorphism, "for a digraph and a transformation",
+[IsDigraph, IsTransformation],
+function(gr, x)
+  return IsDigraphIsomorphism(gr, gr, x);
+end);
+

@@ -802,6 +802,11 @@ fail
 gap> gr5 := NautyCanonicalDigraph(gr4, [1, 2, 3, 4]);
 fail
 
+# Issue 111
+gap> not DIGRAPHS_NautyAvailable or 
+> NautyAutomorphismGroup(NullDigraph(0)) = Group(());
+true
+
 # DigraphsUseBliss/Nauty
 gap> nauty := not DIGRAPHS_UsingBliss;;
 gap> DigraphsUseNauty();
@@ -816,7 +821,7 @@ gap> if not nauty then
 >      DigraphsUseBliss();
 >    fi;
 
-# IsDigraphAutomorphism
+# IsDigraphAutomorphism, for digraph and permutation
 gap> gr1 := Digraph([[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1]]);
 <digraph with 4 vertices, 13 edges>
 gap> IsDigraphAutomorphism(gr1, (1, 2, 3));
@@ -834,8 +839,32 @@ false
 gap> IsDigraphAutomorphism(gr2, (2, 3, 6));
 false
 gap> IsDigraphAutomorphism(Digraph([[1, 1], [1, 1, 2], [1, 2, 2, 3]]), ());
-Error, Digraphs: IsDigraphAutomorphism: usage,
-the first argument <gr> must not have multiple edges,
+Error, Digraphs: IsDigraphIsomorphism: usage,
+the first 2 arguments must not have multiple edges,
+
+# IsDigraphAutomorphism, for digraph and transformation
+gap> gr1 := Digraph([[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1]]);
+<digraph with 4 vertices, 13 edges>
+gap> IsDigraphAutomorphism(gr1, AsTransformation((1, 2, 3)));
+false
+gap> IsDigraphAutomorphism(gr1, AsTransformation((2, 3)));
+true
+gap> IsDigraphAutomorphism(gr1, AsTransformation(()));
+true
+gap> gr2 := Digraph([[1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 2, 3, 4, 5, 6]]);
+<digraph with 6 vertices, 15 edges>
+gap> IsDigraphAutomorphism(gr2, AsTransformation((2, 3, 4, 5)));
+true
+gap> IsDigraphAutomorphism(gr2, AsTransformation((1, 6)));
+false
+gap> IsDigraphAutomorphism(gr2, AsTransformation((2, 3, 6)));
+false
+gap> IsDigraphAutomorphism(gr2, Transformation([1, 1, 2, 3]));
+false
+gap> IsDigraphAutomorphism(Digraph([[1, 1], [1, 1, 2], [1, 2, 2, 3]]),
+> AsTransformation(()));
+Error, Digraphs: IsDigraphIsomorphism: usage,
+the first 2 arguments must not have multiple edges,
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(G);
