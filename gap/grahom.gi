@@ -480,3 +480,72 @@ InstallMethod(IsDigraphEndomorphism, "for a digraph and a transformation",
 function(gr, x)
   return IsDigraphHomomorphism(gr, gr, x);
 end);
+
+InstallMethod(IsDigraphEpimorphism, "for digraph, digraph, and transformation",
+[IsDigraph, IsDigraph, IsTransformation],
+function(src, ran, x)
+  return IsDigraphHomomorphism(src, ran, x)
+    and OnSets(DigraphVertices(src), x) = DigraphVertices(ran);
+end);
+
+InstallMethod(IsDigraphEpimorphism, "for digraph, digraph, and perm",
+[IsDigraph, IsDigraph, IsPerm],
+function(src, ran, x)
+  return IsDigraphHomomorphism(src, ran, x)
+    and OnSets(DigraphVertices(src), x) = DigraphVertices(ran);
+end);
+
+InstallMethod(IsDigraphMonomorphism,
+"for digraph, digraph, and transformation",
+[IsDigraph, IsDigraph, IsTransformation],
+function(src, ran, x)
+  return IsDigraphHomomorphism(src, ran, x)
+    and IsInjectiveListTrans(DigraphVertices(src), x);
+end);
+
+InstallMethod(IsDigraphMonomorphism, "for digraph, digraph, and perm",
+[IsDigraph, IsDigraph, IsPerm], IsDigraphHomomorphism);
+
+InstallMethod(IsDigraphEmbedding,
+"for digraph, digraph, and transformation",
+[IsDigraph, IsDigraph, IsTransformation],
+function(src, ran, x)
+  local y, induced, i, j;
+  if not IsDigraphMonomorphism(src, ran, x) then
+    return false;
+  fi;
+  y := MappingPermListList(OnTuples(DigraphVertices(src), x),
+                           DigraphVertices(src));
+  induced := BlistList(DigraphVertices(ran), OnSets(DigraphVertices(src), x));
+  for i in DigraphVertices(ran) do
+    if induced[i] then
+      for j in OutNeighbours(ran)[i] do
+        if induced[j] and not IsDigraphEdge(src, i ^ y, j ^ y) then
+          return false;
+        fi;
+      od;
+    fi;
+  od;
+  return true;
+end);
+
+InstallMethod(IsDigraphEmbedding, "for digraph, digraph, and perm",
+[IsDigraph, IsDigraph, IsPerm],
+function(src, ran, x)
+  local y, induced, i, j;
+  if not IsDigraphHomomorphism(src, ran, x) then
+    return false;
+  fi;
+  y := x ^ -1;
+  induced := BlistList(DigraphVertices(ran), OnSets(DigraphVertices(src), x));
+  for i in DigraphVertices(ran) do
+    if induced[i] then
+      for j in OutNeighbours(ran)[i] do
+        if induced[j] and not IsDigraphEdge(src, i ^ y, j ^ y) then
+          return false;
+        fi;
+      od;
+    fi;
+  od;
+  return true;
+end);

@@ -40,3 +40,17 @@ DeclareOperation("IsDigraphHomomorphism",
 DeclareOperation("IsDigraphEndomorphism", [IsDigraph, IsPerm]);
 DeclareOperation("IsDigraphHomomorphism",
                  [IsDigraph, IsDigraph, IsPerm]);
+
+DeclareOperation("IsDigraphEpimorphism",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+DeclareOperation("IsDigraphMonomorphism",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+DeclareOperation("IsDigraphEmbedding",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+
+DeclareOperation("IsDigraphEpimorphism",
+                 [IsDigraph, IsDigraph, IsPerm]);
+DeclareOperation("IsDigraphMonomorphism",
+                 [IsDigraph, IsDigraph, IsPerm]);
+DeclareOperation("IsDigraphEmbedding",
+                 [IsDigraph, IsDigraph, IsPerm]);
