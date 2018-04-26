@@ -4,6 +4,17 @@ Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.12.1 (released 26/04/2018)
+
+This is a minor release, which contains several bugfixes. The following problems
+were resolved by [James D. Mitchell](http://goo.gl/ZtViV6):
+
+* `HomomorphismDigraphFinder` sometimes failed to find a homomorphism when one existsed [[Issue #111](https://github.com/gap-packages/Digraphs/issues/111), reported by Gordon Royle];
+* the documentation for `HomomorphismDigraphFinder` was
+  incomplete [[Issue #112](https://github.com/gap-packages/Digraphs/issues/112)]; and
+* a segmentation fault could be caused when using Digraphs with
+  NautyTracesInterface, in certain cases [[Issue #114](https://github.com/gap-packages/Digraphs/issues/114)].
+
 ## Version 0.12.0 (released 31/01/2018)
 
 This release contains bugfixes and new features. In particular, it:
