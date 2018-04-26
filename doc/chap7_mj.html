@@ -211,7 +211,7 @@ Group([ (5,6), (3,4), (1,2) ])
 &lt;multidigraph with 4 vertices, 5 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := AutomorphismGroup(gr);</span>
 Group([ (1,2), (3,4) ])
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">P1 := Projection(G, 1); </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">P1 := Projection(G, 1);</span>
 1st projection of Group([ (1,2), (3,4) ])
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">P2 := Projection(G, 2);</span>
 2nd projection of Group([ (1,2), (3,4) ])
@@ -319,7 +319,7 @@ true
 &lt;multidigraph with 5 vertices, 6 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := AutomorphismGroup(gr, [1, 1, 2, 3, 1]);</span>
 Group([ (1,2), (3,4) ])
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">P1 := Projection(G, 1); </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">P1 := Projection(G, 1);</span>
 1st projection of Group([ (1,2), (3,4) ])
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">P2 := Projection(G, 2);</span>
 2nd projection of Group([ (1,2), (3,4) ])
@@ -544,7 +544,7 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGroup(ddigraph);</span>
 Group([ (1,2,3,4)(5,6,7,8), (1,5)(2,6)(3,7)(4,8) ])
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">AutomorphismGroup(ddigraph) =</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">Group([(6, 8), (5, 7), (4, 6), (3, 5), (2, 4), </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">Group([(6, 8), (5, 7), (4, 6), (3, 5), (2, 4),</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">       (1, 2)(3, 4)(5, 6)(7, 8)]);</span>
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := Digraph([[2, 3], [], []]);</span>
@@ -908,21 +908,21 @@ Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)
 
 <h5>7.3-1 HomomorphismDigraphsFinder</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismDigraphsFinder</code>( <var class="Arg">gr1</var>, <var class="Arg">gr2</var>, <var class="Arg">hook</var>, <var class="Arg">user_param</var>, <var class="Arg">limit</var>, <var class="Arg">hint</var>, <var class="Arg">injective</var>, <var class="Arg">image</var>, <var class="Arg">map</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismDigraphsFinder</code>( <var class="Arg">gr1</var>, <var class="Arg">gr2</var>, <var class="Arg">hook</var>, <var class="Arg">user_param</var>, <var class="Arg">limit</var>, <var class="Arg">hint</var>, <var class="Arg">injective</var>, <var class="Arg">image</var>, <var class="Arg">map</var>, <var class="Arg">list1</var>, <var class="Arg">list2</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: The argument <var class="Arg">user_param</var>.</p>
 
 <p>This function finds homomorphisms from the graph <var class="Arg">gr1</var> to the graph <var class="Arg">gr2</var> subject to the conditions imposed by the other arguments as described below.</p>
 
-<p>If <code class="code">f</code> and <code class="code">g</code> are homomorphisms found by <code class="code">HomomorphismGraphsFinder</code>, then <code class="code">f</code> cannot be obtained from <code class="code">g</code> by right multiplying by an automorphism of <var class="Arg">gr2</var>.</p>
+<p>If <code class="code">f</code> and <code class="code">g</code> are homomorphisms found by <code class="code">HomomorphismDigraphsFinder</code>, then <code class="code">f</code> cannot be obtained from <code class="code">g</code> by right multiplying by an automorphism of <var class="Arg">gr2</var>.</p>
 
 
 <dl>
 <dt><strong class="Mark"><var class="Arg">hook</var></strong></dt>
 <dd><p>This argument should be a function or <code class="keyw">fail</code>.</p>
 
-<p>If <var class="Arg">hook</var> is a function, then it should have two arguments <var class="Arg">user_param</var> (see below) and a transformation <code class="code">t</code>. The function <code class="code"><var class="Arg">hook</var>(<var class="Arg">user_param</var>, t)</code> is called every time a new homomorphism <code class="code">t</code> is found by <code class="code">HomomorphismGraphsFinder</code>.</p>
+<p>If <var class="Arg">hook</var> is a function, then it should have two arguments <var class="Arg">user_param</var> (see below) and a transformation <code class="code">t</code>. The function <code class="code"><var class="Arg">hook</var>(<var class="Arg">user_param</var>, t)</code> is called every time a new homomorphism <code class="code">t</code> is found by <code class="code">HomomorphismDigraphsFinder</code>.</p>
 
-<p>If <var class="Arg">hook</var> is <code class="keyw">fail</code>, then a default function is used which simply adds every new homomorphism found by <code class="code">HomomorphismGraphsFinder</code> to <var class="Arg">user_param</var>, which must be a list in this case.</p>
+<p>If <var class="Arg">hook</var> is <code class="keyw">fail</code>, then a default function is used which simply adds every new homomorphism found by <code class="code">HomomorphismDigraphsFinder</code> to <var class="Arg">user_param</var>, which must be a list in this case.</p>
 
 </dd>
 <dt><strong class="Mark"><var class="Arg">user_param</var></strong></dt>
@@ -932,7 +932,7 @@ Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)
 
 </dd>
 <dt><strong class="Mark"><var class="Arg">limit</var></strong></dt>
-<dd><p>This argument should be a positive integer or <code class="keyw">infinity</code>. <code class="code">HomomorphismGraphsFinder</code> will return after it has found <var class="Arg">limit</var> homomorphisms or the search is complete.</p>
+<dd><p>This argument should be a positive integer or <code class="keyw">infinity</code>. <code class="code">HomomorphismDigraphsFinder</code> will return after it has found <var class="Arg">limit</var> homomorphisms or the search is complete.</p>
 
 </dd>
 <dt><strong class="Mark"><var class="Arg">hint</var></strong></dt>
@@ -948,11 +948,19 @@ Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)
 
 </dd>
 <dt><strong class="Mark"><var class="Arg">image</var></strong></dt>
-<dd><p>This argument should be a subset of the vertices of the graph <var class="Arg">gr2</var>. <code class="code">HomomorphismGraphsFinder</code> only finds homomorphisms from <var class="Arg">gr1</var> to the subgraph of <var class="Arg">gr2</var> induced by the vertices <var class="Arg">image</var>.</p>
+<dd><p>This argument should be a subset of the vertices of the graph <var class="Arg">gr2</var>. <code class="code">HomomorphismDigraphsFinder</code> only finds homomorphisms from <var class="Arg">gr1</var> to the subgraph of <var class="Arg">gr2</var> induced by the vertices <var class="Arg">image</var>.</p>
 
 </dd>
 <dt><strong class="Mark"><var class="Arg">map</var></strong></dt>
-<dd><p>This argument should be a partial map from <var class="Arg">gr1</var> to <var class="Arg">gr2</var>, that is, a (not necessarily dense) list of vertices of the graph <var class="Arg">gr2</var> of length no greater than the number vertices in the graph <var class="Arg">gr1</var>. <code class="code">HomomorphismGraphsFinder</code> only finds homomorphisms extending <var class="Arg">map</var> (if any).</p>
+<dd><p>This argument should be a partial map from <var class="Arg">gr1</var> to <var class="Arg">gr2</var>, that is, a (not necessarily dense) list of vertices of the graph <var class="Arg">gr2</var> of length no greater than the number vertices in the graph <var class="Arg">gr1</var>. <code class="code">HomomorphismDigraphsFinder</code> only finds homomorphisms extending <var class="Arg">map</var> (if any).</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">list1</var></strong></dt>
+<dd><p>This should be a list representing possible colours of vertices in the digraph <var class="Arg">gr1</var>; see <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) for details of the permissible values for this argument.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">list2</var></strong></dt>
+<dd><p>This should be a list representing possible colours of vertices in the digraph <var class="Arg">gr2</var>; see <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) for details of the permissible values for this argument.</p>
 
 </dd>
 </dl>
@@ -1132,7 +1140,7 @@ Transformation( [ 1, 2, 3, 1 ] )
 
 <p>An endomorphism of <var class="Arg">digraph</var> is a homomorphism <code class="func">DigraphHomomorphism</code> (<a href="chap7_mj.html#X85E9B019877AD7FE"><span class="RefLink">7.3-2</span></a>) from <var class="Arg">digraph</var> back to itself. <code class="code">GeneratorsOfEndomorphismMonoid</code>, called with a single argument, returns a generating set for the monoid of all endomorphisms of <var class="Arg">digraph</var>.</p>
 
-<p>If the <var class="Arg">colors</var> argument is specified, then it will return a generating set for the monoid of endomorphisms which respect the given colouring. The colouring <var class="Arg">colors</var> can be in one of two forms:</p>
+<p>If the <var class="Arg">colors</var> argument is specified, then <code class="code">GeneratorsOfEndomorphismMonoid</code> will return a generating set for the monoid of endomorphisms which respect the given colouring. The colouring <var class="Arg">colors</var> can be in one of two forms:</p>
 
 
 <ul>

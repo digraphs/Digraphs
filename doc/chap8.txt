@@ -185,10 +185,10 @@
     [4X[25Xgap>[125X [27Xgr := CompleteDigraph(5);[127X[104X
     [4X[28X<digraph with 5 vertices, 20 edges>[128X[104X
     [4X[25Xgap>[125X [27Xuser_param := [];;[127X[104X
-    [4X[25Xgap>[125X [27Xf := function(a, b) # Calculate size of clique[127X[104X
+    [4X[25Xgap>[125X [27Xf := function(a, b)  # Calculate size of clique[127X[104X
     [4X[25X>[125X [27X  AddSet(user_param, Size(b));[127X[104X
     [4X[25X>[125X [27Xend;;[127X[104X
-    [4X[25Xgap>[125X [27XCliquesFinder(gr, f, user_param, infinity, [], [], false, fail, [127X[104X
+    [4X[25Xgap>[125X [27XCliquesFinder(gr, f, user_param, infinity, [], [], false, fail,[127X[104X
     [4X[25X>[125X [27X                 true);[127X[104X
     [4X[28X[ 1, 2, 3, 4, 5 ][128X[104X
     [4X[25Xgap>[125X [27XCliquesFinder(gr, fail, [], 5, [2, 4], [3], false, fail, false);[127X[104X
@@ -367,11 +367,11 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := CompleteDigraph(4);;[127X[104X
-    [4X[25Xgap>[125X [27XCliqueNumber(gr); [127X[104X
+    [4X[25Xgap>[125X [27XCliqueNumber(gr);[127X[104X
     [4X[28X4[128X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);[127X[104X
     [4X[28X<multidigraph with 4 vertices, 11 edges>[128X[104X
-    [4X[25Xgap>[125X [27XCliqueNumber(gr); [127X[104X
+    [4X[25Xgap>[125X [27XCliqueNumber(gr);[127X[104X
     [4X[28X3[128X[104X
   [4X[32X[104X
   

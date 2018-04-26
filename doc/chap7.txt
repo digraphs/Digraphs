@@ -170,7 +170,7 @@
     [4X[28X<multidigraph with 4 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XG := AutomorphismGroup(gr);[127X[104X
     [4X[28XGroup([ (1,2), (3,4) ])[128X[104X
-    [4X[25Xgap>[125X [27XP1 := Projection(G, 1); [127X[104X
+    [4X[25Xgap>[125X [27XP1 := Projection(G, 1);[127X[104X
     [4X[28X1st projection of Group([ (1,2), (3,4) ])[128X[104X
     [4X[25Xgap>[125X [27XP2 := Projection(G, 2);[127X[104X
     [4X[28X2nd projection of Group([ (1,2), (3,4) ])[128X[104X
@@ -298,7 +298,7 @@
     [4X[28X<multidigraph with 5 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XG := AutomorphismGroup(gr, [1, 1, 2, 3, 1]);[127X[104X
     [4X[28XGroup([ (1,2), (3,4) ])[128X[104X
-    [4X[25Xgap>[125X [27XP1 := Projection(G, 1); [127X[104X
+    [4X[25Xgap>[125X [27XP1 := Projection(G, 1);[127X[104X
     [4X[28X1st projection of Group([ (1,2), (3,4) ])[128X[104X
     [4X[25Xgap>[125X [27XP2 := Projection(G, 2);[127X[104X
     [4X[28X2nd projection of Group([ (1,2), (3,4) ])[128X[104X
@@ -552,7 +552,7 @@
     [4X[25Xgap>[125X [27XDigraphGroup(ddigraph);[127X[104X
     [4X[28XGroup([ (1,2,3,4)(5,6,7,8), (1,5)(2,6)(3,7)(4,8) ])[128X[104X
     [4X[25Xgap>[125X [27XAutomorphismGroup(ddigraph) =[127X[104X
-    [4X[25X>[125X [27XGroup([(6, 8), (5, 7), (4, 6), (3, 5), (2, 4), [127X[104X
+    [4X[25X>[125X [27XGroup([(6, 8), (5, 7), (4, 6), (3, 5), (2, 4),[127X[104X
     [4X[25X>[125X [27X       (1, 2)(3, 4)(5, 6)(7, 8)]);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27Xdigraph := Digraph([[2, 3], [], []]);[127X[104X
@@ -946,13 +946,13 @@
   
   [1X7.3-1 HomomorphismDigraphsFinder[101X
   
-  [33X[1;0Y[29X[2XHomomorphismDigraphsFinder[102X( [3Xgr1[103X, [3Xgr2[103X, [3Xhook[103X, [3Xuser_param[103X, [3Xlimit[103X, [3Xhint[103X, [3Xinjective[103X, [3Ximage[103X, [3Xmap[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XHomomorphismDigraphsFinder[102X( [3Xgr1[103X, [3Xgr2[103X, [3Xhook[103X, [3Xuser_param[103X, [3Xlimit[103X, [3Xhint[103X, [3Xinjective[103X, [3Ximage[103X, [3Xmap[103X, [3Xlist1[103X, [3Xlist2[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YThe argument [3Xuser_param[103X.[133X
   
   [33X[0;0YThis  function  finds  homomorphisms  from  the  graph  [3Xgr1[103X to the graph [3Xgr2[103X
   subject to the conditions imposed by the other arguments as described below.[133X
   
-  [33X[0;0YIf  [10Xf[110X  and  [10Xg[110X  are  homomorphisms  found by [10XHomomorphismGraphsFinder[110X, then [10Xf[110X
+  [33X[0;0YIf  [10Xf[110X  and  [10Xg[110X  are homomorphisms found by [10XHomomorphismDigraphsFinder[110X, then [10Xf[110X
   cannot be obtained from [10Xg[110X by right multiplying by an automorphism of [3Xgr2[103X.[133X
   
   [8X[3Xhook[103X[8X[108X
@@ -961,10 +961,10 @@
         [33X[0;6YIf  [3Xhook[103X  is  a function, then it should have two arguments [3Xuser_param[103X
         (see  below)  and a transformation [10Xt[110X. The function [10X[3Xhook[103X[10X([3Xuser_param[103X[10X, t)[110X
         is   called   every   time   a   new   homomorphism   [10Xt[110X  is  found  by
-        [10XHomomorphismGraphsFinder[110X.[133X
+        [10XHomomorphismDigraphsFinder[110X.[133X
   
         [33X[0;6YIf  [3Xhook[103X  is  [9Xfail[109X,  then a default function is used which simply adds
-        every   new   homomorphism   found   by   [10XHomomorphismGraphsFinder[110X  to
+        every   new   homomorphism   found  by  [10XHomomorphismDigraphsFinder[110X  to
         [3Xuser_param[103X, which must be a list in this case.[133X
   
   [8X[3Xuser_param[103X[8X[108X
@@ -979,7 +979,7 @@
   
   [8X[3Xlimit[103X[8X[108X
         [33X[0;6YThis   argument   should   be   a   positive   integer   or  [9Xinfinity[109X.
-        [10XHomomorphismGraphsFinder[110X   will   return  after  it  has  found  [3Xlimit[103X
+        [10XHomomorphismDigraphsFinder[110X  will  return  after  it  has  found  [3Xlimit[103X
         homomorphisms or the search is complete.[133X
   
   [8X[3Xhint[103X[8X[108X
@@ -998,15 +998,25 @@
   
   [8X[3Ximage[103X[8X[108X
         [33X[0;6YThis  argument  should  be  a subset of the vertices of the graph [3Xgr2[103X.
-        [10XHomomorphismGraphsFinder[110X  only  finds  homomorphisms  from  [3Xgr1[103X to the
+        [10XHomomorphismDigraphsFinder[110X  only  finds  homomorphisms from [3Xgr1[103X to the
         subgraph of [3Xgr2[103X induced by the vertices [3Ximage[103X.[133X
   
   [8X[3Xmap[103X[8X[108X
         [33X[0;6YThis argument should be a partial map from [3Xgr1[103X to [3Xgr2[103X, that is, a (not
         necessarily  dense)  list  of  vertices  of the graph [3Xgr2[103X of length no
         greater    than    the    number    vertices   in   the   graph   [3Xgr1[103X.
-        [10XHomomorphismGraphsFinder[110X  only  finds  homomorphisms extending [3Xmap[103X (if
+        [10XHomomorphismDigraphsFinder[110X  only finds homomorphisms extending [3Xmap[103X (if
         any).[133X
+  
+  [8X[3Xlist1[103X[8X[108X
+        [33X[0;6YThis should be a list representing possible colours of vertices in the
+        digraph   [3Xgr1[103X;  see  [2XAutomorphismGroup[102X  ([14X7.2-5[114X)  for  details  of  the
+        permissible values for this argument.[133X
+  
+  [8X[3Xlist2[103X[8X[108X
+        [33X[0;6YThis should be a list representing possible colours of vertices in the
+        digraph   [3Xgr2[103X;  see  [2XAutomorphismGroup[102X  ([14X7.2-5[114X)  for  details  of  the
+        permissible values for this argument.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := ChainDigraph(10);[127X[104X
@@ -1184,9 +1194,9 @@
   single   argument,   returns   a  generating  set  for  the  monoid  of  all
   endomorphisms of [3Xdigraph[103X.[133X
   
-  [33X[0;0YIf  the  [3Xcolors[103X  argument is specified, then it will return a generating set
-  for  the  monoid  of  endomorphisms  which  respect the given colouring. The
-  colouring [3Xcolors[103X can be in one of two forms:[133X
+  [33X[0;0YIf  the  [3Xcolors[103X  argument  is specified, then [10XGeneratorsOfEndomorphismMonoid[110X
+  will  return  a generating set for the monoid of endomorphisms which respect
+  the given colouring. The colouring [3Xcolors[103X can be in one of two forms:[133X
   
   [30X    [33X[0;6YA list of positive integers of size the number of vertices of [3Xdigraph[103X,
         where [3Xcolors[103X[10X[i][110X is the colour of vertex [10Xi[110X.[133X

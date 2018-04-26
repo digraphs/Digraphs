@@ -6,7 +6,7 @@
                               [1XMethods for digraphs[101X
   
   
-                                 Version 0.12.0
+                                 Version 0.12.1
   
   
                                   Jan De Beule

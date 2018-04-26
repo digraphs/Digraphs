@@ -643,7 +643,7 @@ IO_OK
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);</span>
 &lt;digraph with 4 vertices, 8 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(), </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">filename := Concatenation(DIGRAPHS_Dir(),</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">                             "/tst/out/dimacs.dimacs");;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">WriteDIMACSDigraph(filename, gr);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadDIMACSDigraph(filename);</span>
