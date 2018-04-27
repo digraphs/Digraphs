@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  grahom.gd
-##  Copyright (C) 2014-17                                James D. Mitchell
+##  Copyright (C) 2014-18                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -32,3 +32,25 @@ DeclareAttribute("DigraphColouring", IsDigraph);
 DeclareSynonymAttr("DigraphColoring", DigraphColouring);
 
 DeclareGlobalFunction("HomomorphismDigraphsFinder");
+
+DeclareOperation("IsDigraphEndomorphism", [IsDigraph, IsTransformation]);
+DeclareOperation("IsDigraphHomomorphism",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+
+DeclareOperation("IsDigraphEndomorphism", [IsDigraph, IsPerm]);
+DeclareOperation("IsDigraphHomomorphism",
+                 [IsDigraph, IsDigraph, IsPerm]);
+
+DeclareOperation("IsDigraphEpimorphism",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+DeclareOperation("IsDigraphMonomorphism",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+DeclareOperation("IsDigraphEmbedding",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+
+DeclareOperation("IsDigraphEpimorphism",
+                 [IsDigraph, IsDigraph, IsPerm]);
+DeclareOperation("IsDigraphMonomorphism",
+                 [IsDigraph, IsDigraph, IsPerm]);
+DeclareOperation("IsDigraphEmbedding",
+                 [IsDigraph, IsDigraph, IsPerm]);

@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  isomorph.xml                                        James D. Mitchell
-#Y  Copyright (C) 2014-17                                  Wilf A. Wilson 
+#Y  Copyright (C) 2014-18                                  Wilf A. Wilson 
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -814,27 +814,64 @@ gap> OutNeighbours(canon);
 
 <#GAPDoc Label="IsDigraphAutomorphism">
 <ManSection>
-  <Oper Name="IsDigraphAutomorphism" Label="for a digraph and permutation"
-    Arg="digraph, x"/>
+  <Oper Name="IsDigraphIsomorphism" Arg="src, ran, x"/>
+  <Oper Name="IsDigraphAutomorphism" Arg="digraph, x"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description> 
-    This operation returns true if the permutation <A>x</A> is an automorphism
-    of the digraph <A>digraph</A>. An permutation <C>g</C> on the vertices of a
-    digraph <C>gr</C> is an automorphism if it satisfies: <C>(u, v)</C> is an
-    edge of <C>gr</C> if and only if <C>(g(u), g(v))</C> is an edge of <C>gr</C>
-    for all vertices <C>u</C> and <C>v</C> in <C>gr</C>. See also <Ref
-      Attr="AutomorphismGroup" Label="for a digraph" />.
+    <C>IsDigraphIsomorphism</C> returns <K>true</K> if the permutation or
+    transformation <A>x</A> is an isomorphism from the digraph <A>src</A> to
+    the digraph <A>ran</A>.
+    <P/>
+    
+    <C>IsDigraphAutomorphism</C> returns <K>true</K> if the permutation or
+    transformation <A>x</A> is an automorphism of the digraph <A>digraph</A>.
+    <P/>
+    
+    A permutation or transformation <A>x</A> is an <E>isomorphism</E> from a
+    digraph <A>src</A> to a digraph <A>ran</A> if the following hold:
+    <List>
+      <Item>
+        <A>x</A> is a bijection from the vertices of <A>src</A> to those of
+        <A>ran</A>; 
+      </Item>
+      <Item>
+        <C>[u ^ <A>x</A>, v ^ <A>x</A>]</C> is an edge of
+        <A>ran</A> if and only if <C>[u, v]</C> is an
+        edge of <A>src</A>; and 
+      </Item>
+      <Item> 
+        <A>x</A> fixes every <C>i</C> which is not a vertex of <A>src</A>.
+      </Item>
+    </List>
+    See also <Ref Attr="AutomorphismGroup" Label="for a digraph"
+      />.<P/>
+
+    For some digraphs, it can be faster to use <C>IsDigraphAutomorphism</C>
+    than to test membership in the automorphism group of <A>digraph</A>. 
+
     <Example><![CDATA[
-gap> digraph := Digraph([[1], [1, 2], [1, 3]]);
+gap> src := Digraph([[1], [1, 2], [1, 3]]);
 <digraph with 3 vertices, 5 edges>
-gap> IsDigraphAutomorphism(digraph, (1, 2, 3));
+gap> IsDigraphAutomorphism(src, (1, 2, 3));
 false
-gap> IsDigraphAutomorphism(digraph, (2, 3));
+gap> IsDigraphAutomorphism(src, (2, 3));
 true
-gap> IsDigraphAutomorphism(digraph, (1, 4));
+gap> IsDigraphAutomorphism(src, (2, 3)(4, 5));
 false
-gap> IsDigraphAutomorphism(digraph, ());
+gap> IsDigraphAutomorphism(src, (1, 4));
+false
+gap> IsDigraphAutomorphism(src, ());
 true
+gap> ran := Digraph([[2, 1], [2], [2, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> IsDigraphIsomorphism(src, ran, (1, 2));
+true
+gap> IsDigraphIsomorphism(ran, src, (1, 2));
+true
+gap> IsDigraphIsomorphism(ran, src, (1, 2));
+true
+gap> IsDigraphIsomorphism(src, Digraph([[3], [1, 3], [2]]), (1, 2, 3));
+false
 ]]></Example>
   </Description>
 </ManSection>

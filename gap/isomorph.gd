@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  isomorph.gd
-##  Copyright (C) 2014-17                                James D. Mitchell
+##  Copyright (C) 2014-18                                James D. Mitchell
 ##                                                          Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
@@ -45,3 +45,7 @@ BindGlobal("DIGRAPHS_UsingBliss", true);
 DeclareGlobalFunction("DIGRAPHS_ValidateVertexColouring");
 
 DeclareOperation("IsDigraphAutomorphism", [IsDigraph, IsPerm]);
+DeclareOperation("IsDigraphIsomorphism", [IsDigraph, IsDigraph, IsPerm]);
+DeclareOperation("IsDigraphAutomorphism", [IsDigraph, IsTransformation]);
+DeclareOperation("IsDigraphIsomorphism",
+                 [IsDigraph, IsDigraph, IsTransformation]);

@@ -39,6 +39,7 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="IsomorphismDigraphs">
     <#Include Label="IsomorphismDigraphsColours">
     <#Include Label="RepresentativeOutNeighbours">
+    <#Include Label="IsDigraphAutomorphism">
   </Section>
 
   <Section><Heading>Homomorphisms of digraphs</Heading>
@@ -59,6 +60,8 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="DigraphColouring">
     <#Include Label="DigraphEmbedding">
     <#Include Label="ChromaticNumber">
+    <#Include Label="IsDigraphHomomorphism">
+    <#Include Label="IsDigraphEmbedding">
   </Section>
 
 </Chapter>

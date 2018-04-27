@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  standard/grahom.tst
-#Y  Copyright (C) 2015-17                                   Wilf A. Wilson
+#Y  Copyright (C) 2015-18                                   Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -916,6 +916,175 @@ Transformation( [ 2, 13, 20, 19, 21, 19, 14, 13, 15, 14, 20, 6, 15, 21, 11,
   12, 6, 7, 7, 12, 2, 11 ] )
 gap> ForAll(DigraphEdges(gr), e -> IsDigraphEdge(gr, e[1] ^ t, e[2] ^ t));
 true
+
+# IsDigraphEndomorphism and IsDigraphHomomorphism
+gap> gr := Digraph([[3, 4], [1, 3], [4], [1, 2, 3, 5], [2]]);
+<digraph with 5 vertices, 10 edges>
+gap> ForAll(GeneratorsOfEndomorphismMonoid(gr),
+>           x -> IsDigraphEndomorphism(gr, x));
+true
+gap> x := Transformation([3, 3, 4, 4]);
+Transformation( [ 3, 3, 4, 4 ] )
+gap> IsDigraphEndomorphism(gr, x);
+false
+gap> IsDigraphHomomorphism(gr, gr, (1, 2));
+false
+gap> gr := Digraph([[1, 1]]);
+<multidigraph with 1 vertex, 2 edges>
+gap> x := Transformation([3, 3, 4, 4]);
+Transformation( [ 3, 3, 4, 4 ] )
+gap> IsDigraphEndomorphism(gr, x);
+Error, Digraphs: IsDigraphHomomorphism: usage,
+the first 2 arguments must not have multiple edges,
+gap> IsDigraphEndomorphism(gr, ());
+Error, Digraphs: IsDigraphIsomorphism: usage,
+the first 2 arguments must not have multiple edges,
+gap> IsDigraphHomomorphism(gr, gr, ());
+Error, Digraphs: IsDigraphHomomorphism: usage,
+the first 2 arguments must not have multiple edges,
+gap> gr := DigraphTransitiveClosure(CompleteDigraph(2));
+<digraph with 2 vertices, 4 edges>
+gap> ForAll(GeneratorsOfEndomorphismMonoid(gr),
+>           x -> IsDigraphEndomorphism(gr, x));
+true
+gap> x := Transformation([2, 1, 3, 3]);;
+gap> IsDigraphEndomorphism(gr, x);
+false
+gap> x := Transformation([3, 1, 3, 3]);;
+gap> IsDigraphEndomorphism(gr, x);
+false
+gap> IsDigraphEndomorphism(gr, ());
+true
+gap> IsDigraphEndomorphism(gr, (1, 2));
+true
+gap> IsDigraphEndomorphism(gr, (1, 2)(3, 4));
+false
+gap> IsDigraphEndomorphism(gr, (1, 2, 3, 4));
+false
+gap> IsDigraphHomomorphism(NullDigraph(1), 
+>                          NullDigraph(3), 
+>                          Transformation([2, 2]));
+true
+
+# IsDigraphEpimorphism, for transformations
+gap> src := Digraph([[1], [1, 2], [1, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> ran := Digraph([[1], [1, 2]]);
+<digraph with 2 vertices, 3 edges>
+gap> IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]));
+true
+gap> IsDigraphEpimorphism(src, ran, Transformation([1, 2, 3]));
+false
+gap> IsDigraphEpimorphism(src, src, Transformation([1, 2, 3]));
+true
+gap> IsDigraphEpimorphism(src, src, Transformation([2, 2, 2]));
+false
+gap> IsDigraphEpimorphism(src, ran, Transformation([2, 2, 2]));
+false
+
+# IsDigraphEpimorphism, for perms
+gap> src := Digraph([[1], [1, 2], [1, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> ran := Digraph([[1], [1, 2]]);
+<digraph with 2 vertices, 3 edges>
+gap> IsDigraphEpimorphism(src, ran, ());
+false
+gap> IsDigraphEpimorphism(src, ran, (1, 2));
+false
+gap> IsDigraphEpimorphism(src, src, ());
+true
+gap> IsDigraphEpimorphism(src, src, (2, 3));
+true
+gap> IsDigraphEpimorphism(ran, src, ());
+false
+
+# IsDigraphMonomorphism, for transformations
+gap> src := Digraph([[1], [1, 2], [1, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> ran := Digraph([[1], [1, 2]]);
+<digraph with 2 vertices, 3 edges>
+gap> IsDigraphMonomorphism(src, ran, Transformation([1, 2, 2]));
+false
+gap> IsDigraphMonomorphism(src, ran, Transformation([1, 2, 3]));
+false
+gap> IsDigraphMonomorphism(src, src, Transformation([1, 2, 3]));
+true
+gap> IsDigraphMonomorphism(src, src, Transformation([2, 2, 2]));
+false
+gap> IsDigraphMonomorphism(src, ran, Transformation([2, 2, 2]));
+false
+gap> IsDigraphMonomorphism(ran, src, Transformation([2, 1]));
+false
+gap> IsDigraphMonomorphism(ran, src, Transformation([1, 2]));
+true
+
+# IsDigraphMonomorphism, for perms
+gap> src := Digraph([[1], [1, 2], [1, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> ran := Digraph([[1], [1, 2]]);
+<digraph with 2 vertices, 3 edges>
+gap> IsDigraphMonomorphism(src, ran, (1, 2));
+false
+gap> IsDigraphMonomorphism(src, ran, ());
+false
+gap> IsDigraphMonomorphism(src, src, ());
+true
+gap> IsDigraphMonomorphism(ran, src, (1, 2));
+false
+gap> IsDigraphMonomorphism(ran, src, ());
+true
+
+# IsDigraphEmbedding, for transformations
+gap> src := Digraph([[1], [1, 2], [1, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> ran := Digraph([[1], [1, 2]]);
+<digraph with 2 vertices, 3 edges>
+gap> IsDigraphEmbedding(src, ran, Transformation([1, 2, 2]));
+false
+gap> IsDigraphEmbedding(src, ran, Transformation([1, 2, 3]));
+false
+gap> IsDigraphEmbedding(src, src, Transformation([1, 2, 3]));
+true
+gap> IsDigraphEmbedding(src, src, Transformation([2, 2, 2]));
+false
+gap> IsDigraphEmbedding(src, ran, Transformation([2, 2, 2]));
+false
+gap> IsDigraphEmbedding(ran, src, Transformation([2, 1]));
+false
+gap> IsDigraphEmbedding(ran, src, Transformation([1, 2]));
+true
+gap> src := Digraph([[1], [1, 2]]);
+<digraph with 2 vertices, 3 edges>
+gap> ran := Digraph([[1, 2], [1, 2], [1, 3]]);
+<digraph with 3 vertices, 6 edges>
+gap> IsDigraphMonomorphism(src, ran, Transformation([1, 2]));
+true
+gap> IsDigraphEmbedding(src, ran, Transformation([1, 2]));
+false
+
+# IsDigraphEmbedding, for perms
+gap> src := Digraph([[1], [1, 2], [1, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> ran := Digraph([[1], [1, 2]]);
+<digraph with 2 vertices, 3 edges>
+gap> IsDigraphEmbedding(src, ran, (1, 2));
+false
+gap> IsDigraphEmbedding(src, ran, ());
+false
+gap> IsDigraphEmbedding(src, src, ());
+true
+gap> IsDigraphEmbedding(ran, src, (1, 2));
+false
+gap> IsDigraphEmbedding(ran, src, ());
+true
+gap> src := Digraph([[1], [1, 2]]);
+<digraph with 2 vertices, 3 edges>
+gap> ran := Digraph([[1, 2], [1, 2], [1, 3]]);
+<digraph with 3 vertices, 6 edges>
+gap> IsDigraphMonomorphism(src, ran, ());
+true
+gap> IsDigraphEmbedding(src, ran, ());
+false
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
