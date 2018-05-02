@@ -217,3 +217,59 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
     return;
   end);
 fi;
+
+# CR's code
+
+InstallMethod(DotPartialOrderDigraph, "for a partial order digraph",
+[IsDigraph],
+function(digraph)
+  if not IsPartialOrderDigraph(digraph) then
+    ErrorNoReturn("Digraphs: DotPartialOrderDigraph: usage,\n",
+                  "the argument <digraph> should be a partial order digraph,");
+  fi;
+  return DotDigraph(DigraphReflexiveTransitiveReduction(digraph));
+end);
+
+InstallMethod(DotPreorderDigraph, "for a preorder digraph",
+[IsDigraph],
+function(digraph)
+  local comps, quo, red, str, c, x, e;
+
+  if not IsPreorderDigraph(digraph) then
+    ErrorNoReturn("Digraphs: DotPreorderDigraph: usage,\n",
+                  "the argument <digraph> should be a preorder digraph,");
+  fi;
+
+  # Quotient by the strongly connected components to get a partial order
+  # digraph and draw this without loops or edges implied by transitivity.
+  comps  := DigraphStronglyConnectedComponents(digraph).comps;
+  quo    := DigraphRemoveAllMultipleEdges(QuotientDigraph(digraph, comps));
+  red    := DigraphReflexiveTransitiveReduction(quo);
+
+  str   := "//dot\n";
+  Append(str, "digraph graphname {\n");
+  Append(str, "node [shape=Mrecord, height=0.5, fixedsize=true]");
+  Append(str, "ranksep=1;\n");
+
+  # Each vertex of the quotient digraph is labelled by its preimage.
+  for c in [1 .. Length(comps)] do
+    Append(str, String(c));
+    Append(str, " [label=\"");
+    Append(str, String(comps[c][1]));
+    for x in comps[c]{[2 .. Length(comps[c])]} do
+      Append(str, "|");
+      Append(str, String(x));
+    od;
+    Append(str, "\", width=");
+    Append(str, String(Float(Length(comps[c]) / 2)));
+    Append(str, "]\n");
+  od;
+
+  # Add the edges of the quotient digraph.
+  for e in DigraphEdges(red) do
+    Append(str, Concatenation(String(e[1]), " -> ", String(e[2]), "\n"));
+  od;
+
+  Append(str, "}");
+  return str;
+end);

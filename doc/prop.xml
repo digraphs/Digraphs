@@ -107,11 +107,12 @@ false]]></Example>
   <Prop Name="IsPartialOrderDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This is a synonym for <Ref Prop="IsReflexiveDigraph"/> and
+    A digraph is a partial order digraph if and only if the digraph satisifies
+    all of <Ref Prop="IsReflexiveDigraph"/>,
     <Ref Prop="IsAntisymmetricDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
-    For a partial order digraph <A>digraph</A>, the corresponding partial order
-    is the relation <M>\leq</M>, defined by <M>x \leq y</M> if and only if
-    <C>[x, y]</C> is an edge of <A>digraph</A>.    
+    A partial order <A>digraph</A> corresponds
+    to the partial order relation <M>\leq</M> defined by <M>x \leq y</M> if and
+    only if <C>[x, y]</C> is an edge of <A>digraph</A>.
 
 <Example><![CDATA[
 gap> gr := Digraph([[1, 3], [2, 3], [3]]);
@@ -126,6 +127,40 @@ gap> gr := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);
 <multidigraph with 4 vertices, 10 edges>
 gap> IsPartialOrderDigraph(gr);
 true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsPreorderDigraph">
+<ManSection>
+  <Prop Name="IsPreorderDigraph" Arg="digraph"/>
+  <Prop Name="IsQuasiorderDigraph" Arg="digraph"/>  
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A digraph is a preorder digraph if and only if the digraph satisifies both
+    <Ref Prop="IsReflexiveDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
+    A preorder digraph (or quasiorder digraph) <A>digraph</A> corresponds to
+    the preorder relation <M>\leq</M> defined by <M>x \leq y</M> if and only
+    if <C>[x, y]</C> is an edge of <A>digraph</A>.
+
+<Example><![CDATA[
+gap> gr := Digraph([[1], [2, 3], [2, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> IsPreorderDigraph(gr);
+true
+gap> gr := Digraph([[1 .. 4], [1 .. 4], [1 .. 4], [1 .. 4]]);
+<digraph with 4 vertices, 16 edges>
+gap> IsPreorderDigraph(gr);
+true
+gap> gr := Digraph([[2], [3], [4], [5], [1]]);
+<digraph with 5 vertices, 5 edges>
+gap> IsPreorderDigraph(gr);
+false
+gap> gr := Digraph([[1], [1, 2], [2, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> IsPreorderDigraph(gr);
+false
 ]]></Example>
   </Description>
 </ManSection>

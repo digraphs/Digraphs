@@ -170,3 +170,77 @@ gap> FileString("dot/star.dot", DotSymmetricDigraph(gr));
     </Description>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DotPartialOrderDigraph">
+  <ManSection>
+    <Attr Name="DotPartialOrderDigraph" Arg="digraph"/>
+    <Returns>A string.</Returns>
+    <Description>
+      This function produces a graphical representation of a partial order
+      digraph <A>digraph</A>. <C>DotPartialOrderDigraph</C> will return an error
+      if <A>digraph</A> is not a partial order digraph. See <Ref
+        Prop="IsPartialOrderDigraph"/>.<P/>
+
+      Since <A>digraph</A> is a partial order, it is both reflexive and
+      transitive. The output of <C>DotPartialOrderDigraph</C> is the
+      <Ref Attr="DotDigraph"/> of the
+      <Ref Oper="DigraphReflexiveTransitiveReduction"/> of <A>digraph</A>.<P/>
+
+      The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
+      format. For details about this file format, and information about how
+      to display or edit this format see
+      <URL>http://www.graphviz.org</URL>. <P/>
+
+      The string returned by <C>DotPartialOrderDigraph</C> can be written to a
+      file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
+
+      <Log><![CDATA[
+gap> poset := Digraph([[1, 4], [2], [2, 3, 4], [4]);
+gap> IsPartialOrderDigraph(gr);
+true
+gap> FileString("dot/poset.dot", DotPartialOrderDigraph(gr));
+83]]></Log>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DotPreorderDigraph">
+  <ManSection>
+    <Attr Name="DotPreorderDigraph" Arg="digraph"/>
+    <Attr Name="DotQuasiorderDigraph" Arg="digraph"/>
+    <Returns>A string.</Returns>
+    <Description>
+      This function produces a graphical representation of a preorder
+      digraph <A>digraph</A>. <C>DotPreorderDigraph</C> will return an error
+      if <A>digraph</A> is not a preorder digraph. See <Ref
+        Prop="IsPreorderDigraph"/>.<P/>
+
+      A preorder digraph is reflexive and transitive but in general it is
+      not anti-symmetric and may have strongly connected components
+      containing more than one vertex. The <Ref Oper="QuotientDigraph"/>
+      <A>Q</A> obtained by forming the quotient of <A>digraph</A> by the
+      partition of its vertices into the strongly connected components
+      satisfies <Ref Prop="IsPartialOrderDigraph"/>. Thus every vertex of
+      <A>Q</A> corresponds to a strongly connected component of <A>digraph</A>.
+      The output of <C>DotPreorderDigraph</C> displays the 
+      <Ref Oper="DigraphReflexiveTransitiveReduction"/> of <A>Q</A> with
+      vertices displayed as rounded rectangles labelled by all of the vertices
+      of <A>digraph</A> in the corresponding strongly connected component. <P/>
+
+      The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
+      format. For details about this file format, and information about how
+      to display or edit this format see
+      <URL>http://www.graphviz.org</URL>. <P/>
+
+      The string returned by <C>DotPreorderDigraph</C> can be written to a
+      file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
+
+      <Log><![CDATA[
+gap> preset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4], [1, 2, 4, 5]);
+gap> IsPreorderDigraph(gr);
+true
+gap> FileString("dot/preset.dot", DotProrderDigraph(gr));
+83]]></Log>
+    </Description>
+  </ManSection>
+<#/GAPDoc>

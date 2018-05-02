@@ -4,6 +4,9 @@
     <#Include Label="Splash">
     <#Include Label="DotDigraph">
     <#Include Label="DotSymmetricDigraph">
+    <#Include Label="DotPartialOrderDigraph">
+    <#Include Label="DotPreorderDigraph">
+    
   </Section>
 
   <Section><Heading>Reading and writing graphs to a file</Heading>

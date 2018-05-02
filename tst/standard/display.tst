@@ -106,6 +106,101 @@ gap> dot{[1 .. 50]};
 #Error, Digraphs: Splash: usage,
 #the option <engine> must be "dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
 
+# DotPartialOrderDigraph
+gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 4], [1 .. 5], [1 .. 6],
+> [1, 2, 3, 4, 5, 7], [1, 8]]);;
+gap> Print(DotPartialOrderDigraph(gr));
+//dot
+digraph hgn{
+node [shape=circle]
+1
+2
+3
+4
+5
+6
+7
+8
+2 -> 1
+3 -> 1
+4 -> 1
+5 -> 2
+5 -> 3
+5 -> 4
+6 -> 5
+7 -> 5
+8 -> 1
+}
+gap> gr := Digraph([[1], [2], [1, 3], [2, 4], [1, 2, 3, 4, 5], [1, 2, 3, 6]]);;
+gap> Print(DotPartialOrderDigraph(gr));
+//dot
+digraph hgn{
+node [shape=circle]
+1
+2
+3
+4
+5
+6
+3 -> 1
+4 -> 2
+5 -> 3
+5 -> 4
+6 -> 3
+6 -> 2
+}
+gap> gr := Digraph([[1], []]);;
+gap> DotPartialOrderDigraph(gr);
+Error, Digraphs: DotPartialOrderDigraph: usage,
+the argument <digraph> should be a partial order digraph,
+
+# DotPreorderDigraph and DotQuasiorderDigraph
+gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 4], [1 .. 5], [1 .. 6],
+> [1, 2, 3, 4, 5, 7], [1, 8]]);;
+gap> Print(DotPreorderDigraph(gr), "\n");
+//dot
+digraph graphname {
+node [shape=Mrecord, height=0.5, fixedsize=true]ranksep=1;
+1 [label="1", width=0.5]
+2 [label="2", width=0.5]
+3 [label="3", width=0.5]
+4 [label="4", width=0.5]
+5 [label="5", width=0.5]
+6 [label="6", width=0.5]
+7 [label="7", width=0.5]
+8 [label="8", width=0.5]
+2 -> 1
+3 -> 1
+4 -> 1
+5 -> 2
+5 -> 3
+5 -> 4
+6 -> 5
+7 -> 5
+8 -> 1
+}
+gap> gr := Concatenation("+XqD?OG???FbueZpzRKGC@?}]sr]nYXnNl[saOEGOgA@w|he?A?",
+> "?}NyxnFlKvbueZpzrLGcHa??A?]NYx_?_GC??AJpzrnw~jm{]srO???_");;
+gap> gr := DigraphFromDigraph6String(gr);;
+gap> Print(DotPreorderDigraph(gr){[1 .. 94]}, "\n");
+//dot
+digraph graphname {
+node [shape=Mrecord, height=0.5, fixedsize=true]ranksep=1;
+1 [label=
+gap> gr := DigraphDisjointUnion(CompleteDigraph(10), CompleteDigraph(5), CycleDigraph(2));;
+gap> gr := DigraphReflexiveTransitiveClosure(DigraphAddEdge(gr, [10, 11]));;
+gap> IsPreorderDigraph(gr);
+true
+gap> Print(DotPreorderDigraph(gr), "\n");
+//dot
+digraph graphname {
+node [shape=Mrecord, height=0.5, fixedsize=true]ranksep=1;
+1 [label="11|12|13|14|15", width=2.5]
+2 [label="1|2|3|4|5|6|7|8|9|10", width=5.]
+3 [label="16|17", width=1.]
+2 -> 1
+}
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(dot);
