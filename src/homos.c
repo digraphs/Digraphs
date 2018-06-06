@@ -118,7 +118,7 @@ static inline UInt COUNT_TRUES_BLOCK(UInt block) {
 #if USE_POPCNT && defined(HAVE___BUILTIN_POPCOUNTL)
   return __builtin_popcountl(block);
 #else
-#ifdef SIZEOF_VOID_P == 8
+#if SIZEOF_VOID_P == 8
   block = (block & 0x5555555555555555L) + ((block >> 1) & 0x5555555555555555L);
   block = (block & 0x3333333333333333L) + ((block >> 2) & 0x3333333333333333L);
   block = (block + (block >> 4)) & 0x0f0f0f0f0f0f0f0fL;
