@@ -75,6 +75,7 @@ src/bliss-0.72/.deps/.dirstamp
 src/bliss-0.72/.dirstamp
 src/digraphs_la-digraphs.lo
 src/_pkgconfig.h
+src/pkgconfig.h
 src/stamp-h1
 tags
 tst/out/*
