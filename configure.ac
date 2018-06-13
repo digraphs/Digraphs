@@ -47,11 +47,6 @@ dnl ##
 AC_FIND_GAP
 
 dnl ##
-dnl ## Detect pointer size to distinguish 32 and 64 bit builds
-dnl ##
-AC_CHECK_SIZEOF([void **])
-
-dnl ##
 dnl ## Detect Windows resp. Cygwin
 dnl ##
 case $host_os in
