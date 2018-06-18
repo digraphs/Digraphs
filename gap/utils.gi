@@ -254,6 +254,7 @@ function(arg)
     l := exlists[j];
     Print("# Running example ", j, pad(j), " . . .");
     START_TEST("");
+    l[1][1] := StripBeginEnd(l[1][1], "\n");
     for ex in l do
       sp := SplitString(ex[1], "\n", "");
       bad := Filtered([1 .. Length(sp)], i -> Length(sp[i]) > 72);
