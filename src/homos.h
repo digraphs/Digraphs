@@ -12,7 +12,6 @@
 #ifndef DIGRAPHS_SRC_HOMOS_H_
 #define DIGRAPHS_SRC_HOMOS_H_
 
-#include <config.h>
 #include <limits.h>
 #include <setjmp.h>
 #include <x86intrin.h>
