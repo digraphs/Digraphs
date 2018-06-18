@@ -17,12 +17,12 @@ digraphs_la_SOURCES += src/bliss-0.73/partition.cc src/bliss-0.73/orbit.cc
 digraphs_la_SOURCES += src/bliss-0.73/uintseqhash.cc src/bliss-0.73/heap.cc
 digraphs_la_SOURCES += src/bliss-0.73/timer.cc src/bliss-0.73/utils.cc 
 digraphs_la_SOURCES += src/bliss-0.73/bliss_C.cc
-digraphs_la_CXXFLAGS = -O3 -march=native -mpopcnt
-digraphs_la_CFLAGS = -O3 -march=native -mpopcnt
 
 digraphs_la_CPPFLAGS = $(GAP_CPPFLAGS)
-digraphs_la_CFLAGS = $(GAP_CFLAGS)
+digraphs_la_CXXFLAGS = -O3 -march=native -mpopcnt
+digraphs_la_CFLAGS = -O3 -march=native -mpopcnt $(GAP_CFLAGS)
 digraphs_la_LDFLAGS = $(GAP_LDFLAGS) -module -avoid-version
+
 if SYS_IS_CYGWIN
 digraphs_la_LDFLAGS += -no-undefined -version-info 0:0:0 -Wl,$(GAPROOT)/bin/$(GAPARCH)/gap.dll
 endif
