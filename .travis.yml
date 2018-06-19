@@ -17,7 +17,7 @@ addons:
     - g++-multilib
 
 # Matrix
-#                    | GAP: master  | GAP: stable-4.8 | GAP: required |
+#                    | GAP: master  | GAP: stable-4.9 | GAP: required |
 #--------------------+--------------+-----------------+---------------+
 # packages:   newest | 64- & 32-bit |          64-bit |             - |
 # packages: required |   (coverage) |    64- & 32-bit |        64-bit |
@@ -48,13 +48,13 @@ matrix:
     - env:
       - SUITE=test
       - ABI=64
-      - GAP=stable-4.8
+      - GAP=stable-4.9
       - PACKAGES=required
 
     - env:
       - SUITE=test
       - ABI=64
-      - GAP=stable-4.8
+      - GAP=stable-4.9
       - PACKAGES=newest
 
     - env:
@@ -78,7 +78,7 @@ matrix:
     - env:
       - SUITE=test
       - ABI=32
-      - GAP=stable-4.8
+      - GAP=stable-4.9
       - PACKAGES=required
       addons:
         apt_packages:
