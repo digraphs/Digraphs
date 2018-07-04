@@ -956,6 +956,17 @@ gap> Display(shortest_distances);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphDijkstraS">
+<ManSection>
+  <Oper Name="DigraphDijkstraS" Arg="digraph, source"/>
+  <Oper Name="DigraphDijkstraST" Arg="digraph, source, target"/>
+  <Returns></Returns>
+  <Description>
+
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="AsBinaryRelation">
 <ManSection>
   <Oper Name="AsBinaryRelation" Arg="digraph"/>
