@@ -69,6 +69,17 @@
           option must be specified in <A>str</A> or in <A>opt.type</A>.
         </Item>
 
+        <Mark>engine</Mark>
+        <Item>
+          this option can be used to specify the GraphViz engine to use
+          to render a <C>dot</C> document. The valid choices are <C>"dot"</C>,
+          <C>"neato"</C>, <C>"circo"</C>, <C>"twopi"</C>, <C>"fdp"</C>,
+          <C>"sfdp"</C>, and <C>"patchwork"</C>. Please refer to the
+          GraphViz documentation for details on these engines.
+          The default value for this option is <C>"dot"</C>, and it
+          must be specified in <A>opt.engine</A>.
+        </Item>
+
         <Mark>filetype</Mark>
         <Item>
           this should be a string representing the type of file which

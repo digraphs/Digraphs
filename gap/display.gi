@@ -109,7 +109,7 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
 
   BindGlobal("Splash",
   function(arg)
-    local opt, path, dir, tdir, file, viewer, type, filetype;
+    local opt, path, dir, tdir, file, engine, viewer, type, filetype;
 
     if not IsString(arg[1]) then
       ErrorNoReturn("Digraphs: Splash: usage,\n",
@@ -184,6 +184,21 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
       filetype := "pdf";
     fi;
 
+    # engine
+    if IsBound(opt.engine) then
+      if opt.engine in ["dot", "neato", "twopi", "circo",
+                        "fdp", "sfdp", "patchwork"] then
+        engine := opt.engine;
+      else
+        ErrorNoReturn("Digraphs: Splash: usage,\n",
+                      "the option <engine> must be \"dot\", \"neato\", ",
+                      "\"twopi\", \"circo\", \"fdp\", \"sfdp\", ",
+                      "or \"patchwork\"");
+      fi;
+    else
+      engine := "dot";
+    fi;
+
     #
 
     if type = "latex" then
@@ -194,9 +209,9 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
                          ".pdf 2>/dev/null 1>/dev/null &"));
     elif type = "dot" then
       FileString(Concatenation(dir, file, ".dot"), arg[1]);
-      Exec(Concatenation("dot -T", filetype, " ", dir, file, ".dot", " -o ",
+      Exec(Concatenation(engine, " -T", filetype, " ", dir, file, ".dot", " -o ",
                          dir, file, ".", filetype));
-      Exec (Concatenation(viewer, " ", dir, file, ".", filetype,
+      Exec(Concatenation(viewer, " ", dir, file, ".", filetype,
                           " 2>/dev/null 1>/dev/null &"));
     fi;
     return;
