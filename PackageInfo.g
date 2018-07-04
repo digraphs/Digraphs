@@ -212,7 +212,8 @@ PackageDoc := rec(
 Dependencies := rec(
   GAP := ">=4.8.2",
   NeededOtherPackages := [["io", ">=4.5.1"],
-                          ["orb", ">=4.7.5"]],
+                          ["orb", ">=4.7.5"],
+                          ["datastructures", ">=0.2.1"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"],
                              ["grape", ">=4.5"],
                              ["nautytracesinterface", ">=0.2"]],

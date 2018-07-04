@@ -37,6 +37,10 @@ DeclareOperation("DigraphAddVerticesNC", [IsDigraph, IsInt, IsList]);
 
 DeclareOperation("DigraphFloydWarshall",
                  [IsDigraph, IsFunction, IsObject, IsObject]);
+DeclareOperation("DigraphDijkstraS",
+                 [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphDijkstraST",
+                 [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphReflexiveTransitiveReduction", [IsDigraph]);
 DeclareOperation("DigraphTransitiveReduction", [IsDigraph]);
 DeclareOperation("DigraphTransitiveReductionNC", [IsDigraph, IsBool]);
