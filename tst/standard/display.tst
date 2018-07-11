@@ -102,6 +102,9 @@ gap> dot{[1 .. 50]};
 #gap> Splash("string", rec(viewer := "xpdf"));
 #Error, Digraphs: Splash: usage,
 #the option <type> must be "dot" or "latex",
+#gap> Splash("string", rec(type := "dot", engine := "dott"));
+#Error, Digraphs: Splash: usage,
+#the option <engine> must be "dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
 
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
