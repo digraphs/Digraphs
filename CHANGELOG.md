@@ -4,7 +4,7 @@ Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
 
-## Version 0.12.2 (released 23/08/2018)
+## Version 0.12.2 (released 24/08/2018)
 
 This is a minor release which contains some small adjustments to the build
 system of the package.

@@ -22,7 +22,7 @@ SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
 Version := "0.12.2",
-Date := "23/08/2018",
+Date := "24/08/2018",
 ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(
