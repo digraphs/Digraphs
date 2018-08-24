@@ -110,6 +110,6 @@ done
 ################################################################################
 # Install required GAP packages
 cd $GAPROOT/pkg
-curl -L -O http://www.gap-system.org/pub/gap/gap4pkgs/packages-required-master.tar.gz
+curl -L -O https://www.gap-system.org/pub/gap/gap4pkgs/packages-required-master.tar.gz
 tar xf packages-required-master.tar.gz
 rm packages-required-master.tar.gz
