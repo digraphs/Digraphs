@@ -65,7 +65,7 @@ version of {{site.data.package.name}}:
                  James D. Mitchell and
                  Michael Torpey and
                  Wilf A. Wilson },
-      Title  = { Digraphs - GAP package, Version {{site.data.package.version}} },
+      Title  = { Digraphs - {GAP} package, Version {{site.data.package.version}} },
       Month  = { {{site.data.package.date | date: "%b"}} },
       Year   = { {{site.data.package.date | date: "%Y"}} },
       Url    = { https://gap-packages.github.io/Digraphs }
