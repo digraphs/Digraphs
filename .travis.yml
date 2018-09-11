@@ -17,12 +17,12 @@ addons:
     - g++-multilib
 
 # Matrix
-#                    | GAP: master  | GAP: stable-4.9 | GAP: required |
-#--------------------+--------------+-----------------+---------------+
-# packages:   newest | 64- & 32-bit |          64-bit |             - |
-# packages: required |   (coverage) |    64- & 32-bit |        64-bit |
+#       GAP version: |       master |  stable-4.10 | stable-4.9 |required |
+#--------------------+--------------+--------------+------------+---------+
+# packages:   newest | 64- & 32-bit |       64-bit |          - |       - |
+# packages: required |   (coverage) |       32-bit |     64-bit |  64-bit |
 
-# Plus: linting, and code coverage
+# Plus: linting
 
 matrix:
   include:
@@ -33,13 +33,6 @@ matrix:
       addons:
 
     - env:
-      - SUITE=coverage
-      - ABI=64
-      - GAP=master
-      - PACKAGES=required
-      - THRESHOLD=98
-
-    - env:
       - SUITE=test
       - ABI=64
       - GAP=master
@@ -47,45 +40,52 @@ matrix:
 
     - env:
       - SUITE=test
+      - ABI=32
+      - GAP=master
+      - PACKAGES=newest
+      addons:
+        apt_packages:
+          - libgmp-dev:i386
+          - libreadline-dev:i386
+          - gcc-multilib
+          - g++-multilib
+
+    - env:
+      - SUITE=test
       - ABI=64
-      - GAP=stable-4.9
+      - GAP=stable-4.10
+      - PACKAGES=newest
+
+    - env:
+      - SUITE=test
+      - ABI=32
+      - GAP=stable-4.10
       - PACKAGES=required
+      addons:
+        apt_packages:
+          - libgmp-dev:i386
+          - libreadline-dev:i386
+          - gcc-multilib
+          - g++-multilib
 
     - env:
       - SUITE=test
       - ABI=64
       - GAP=stable-4.9
-      - PACKAGES=newest
+      - PACKAGES=required
 
     - env:
       - SUITE=test
       - ABI=64
       - GAP=required
       - PACKAGES=required
-
+       
     - env:
-      - SUITE=test
-      - ABI=32
+      - SUITE=coverage
+      - ABI=64
       - GAP=master
-      - PACKAGES=newest
-      addons:
-        apt_packages:
-          - libgmp-dev:i386
-          - libreadline-dev:i386
-          - gcc-multilib
-          - g++-multilib
-
-    - env:
-      - SUITE=test
-      - ABI=32
-      - GAP=stable-4.9
       - PACKAGES=required
-      addons:
-        apt_packages:
-          - libgmp-dev:i386
-          - libreadline-dev:i386
-          - gcc-multilib
-          - g++-multilib
+      - THRESHOLD=98
 
 before_script:
   - export GAPROOT="$HOME/gap"
