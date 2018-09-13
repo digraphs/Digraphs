@@ -35,7 +35,7 @@ Persons := [
 
   rec(
     LastName      := "De Beule",
-    FirstNames    := "J.",
+    FirstNames    := "Jan",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jdebeule@cage.ugent.be",
@@ -51,7 +51,7 @@ Persons := [
 
   rec(
     LastName      := "Burrell",
-    FirstNames    := "S.",
+    FirstNames    := "Stuart",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "sb235@st-andrews.ac.uk",
@@ -64,7 +64,7 @@ Persons := [
 
   rec(
     LastName      := "Elliott",
-    FirstNames    := "L.",
+    FirstNames    := "Luke",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "le27@st-andrews.ac.uk",
@@ -77,7 +77,7 @@ Persons := [
 
   rec(
     LastName      := "Jefferson",
-    FirstNames    := "C.",
+    FirstNames    := "Christopher",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "caj21@st-andrews.ac.uk",
@@ -91,7 +91,7 @@ Persons := [
 
   rec(
     LastName      := "Jonusas",
-    FirstNames    := "J.",
+    FirstNames    := "Julius",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jj252@st-andrews.ac.uk",
@@ -105,7 +105,7 @@ Persons := [
 
   rec(
     LastName      := "Mitchell",
-    FirstNames    := "J. D.",
+    FirstNames    := "James",
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "jdm3@st-andrews.ac.uk",
@@ -119,7 +119,7 @@ Persons := [
 
   rec(
     LastName      := "Pfeiffer",
-    FirstNames    := "M.",
+    FirstNames    := "Markus",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "markus.pfeiffer@morphism.de",
@@ -133,7 +133,7 @@ Persons := [
 
   rec(
     LastName      := "Russell",
-    FirstNames    := "C.",
+    FirstNames    := "Christopher",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "cr66@st-andrews.ac.uk",
@@ -146,7 +146,7 @@ Persons := [
 
   rec(
     LastName      := "Smith",
-    FirstNames    := "F.",
+    FirstNames    := "Finn",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "fls3@st-andrews.ac.uk",
@@ -159,7 +159,7 @@ Persons := [
 
   rec(
     LastName      := "Torpey",
-    FirstNames    := "M.",
+    FirstNames    := "Michael",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mct25@st-andrews.ac.uk",
@@ -173,7 +173,7 @@ Persons := [
 
   rec(
     LastName      := "Wilson",
-    FirstNames    := "W. A.",
+    FirstNames    := "Wilf",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "waw7@st-andrews.ac.uk",
