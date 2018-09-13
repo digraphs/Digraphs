@@ -594,4 +594,3 @@ InstallMethod(IsDigraphAutomorphism, "for a digraph and a transformation",
 function(gr, x)
   return IsDigraphIsomorphism(gr, gr, x);
 end);
-

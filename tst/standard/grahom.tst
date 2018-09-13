@@ -961,8 +961,8 @@ gap> IsDigraphEndomorphism(gr, (1, 2)(3, 4));
 false
 gap> IsDigraphEndomorphism(gr, (1, 2, 3, 4));
 false
-gap> IsDigraphHomomorphism(NullDigraph(1), 
->                          NullDigraph(3), 
+gap> IsDigraphHomomorphism(NullDigraph(1),
+>                          NullDigraph(3),
 >                          Transformation([2, 2]));
 true
 

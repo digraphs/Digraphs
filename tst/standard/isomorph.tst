@@ -803,7 +803,7 @@ gap> gr5 := NautyCanonicalDigraph(gr4, [1, 2, 3, 4]);
 fail
 
 # Issue 111
-gap> not DIGRAPHS_NautyAvailable or 
+gap> not DIGRAPHS_NautyAvailable or
 > NautyAutomorphismGroup(NullDigraph(0)) = Group(());
 true
 

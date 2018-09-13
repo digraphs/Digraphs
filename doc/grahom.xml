@@ -444,17 +444,17 @@ Transformation( [ 2, 4, 3, 4 ] )
   <Oper Name="IsDigraphMonomorphism" Arg="src, ran, x"/>
   <Oper Name="IsDigraphEndomorphism" Arg="digraph, x"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description> 
+  <Description>
     <C>IsDigraphHomomorphism</C> returns <K>true</K> if the permutation
     or transformation <A>x</A> is a homomorphism from the digraph
     <A>src</A> to the digraph <A>ran</A>.
     <P/>
-    
+
     <C>IsDigraphEpimorphism</C> returns <K>true</K> if the permutation
     or transformation <A>x</A> is a surjective homomorphism from the digraph
     <A>src</A> to the digraph <A>ran</A>.
     <P/>
-    
+
     <C>IsDigraphMonomorphism</C> returns <K>true</K> if the permutation
     or transformation <A>x</A> is an injective homomorphism from the digraph
     <A>src</A> to the digraph <A>ran</A>.
@@ -472,7 +472,7 @@ Transformation( [ 2, 4, 3, 4 ] )
         <C>[u ^ <A>x</A>, v ^ <A>x</A>]</C> is an edge of
         <A>ran</A> whenever <C>[u, v]</C> is an
         edge of <A>src</A>; and </Item>
-      <Item> 
+      <Item>
         <A>x</A> fixes every <C>i</C> which is not a vertex of <A>src</A>.
       </Item>
     </List>
@@ -509,18 +509,18 @@ true]]></Example>
 <ManSection>
   <Oper Name="IsDigraphEmbedding" Arg="src, ran, x"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description> 
+  <Description>
     <C>IsDigraphEmbedding</C> returns <K>true</K> if the permutation
     or transformation <A>x</A> is a embedding of the digraph
     <A>src</A> into the digraph <A>ran</A>.
     <P/>
-    
+
     A permutation or transformation <A>x</A> is a <E>embedding</E> of a digraph
     <A>src</A> into a digraph <A>ran</A> if <A>x</A> is a monomorphism from
     <A>src</A> to <A>ran</A> and the inverse of <A>x</A> is a monomorphism from
     the subdigraph of <A>ran</A> induced by the image of <A>x</A> to
     <A>src</A>.
-    
+
     See also <Ref Oper="IsDigraphHomomorphism"/>.<P/>
 
     <Example><![CDATA[

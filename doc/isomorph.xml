@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  isomorph.xml                                        James D. Mitchell
-#Y  Copyright (C) 2014-18                                  Wilf A. Wilson 
+#Y  Copyright (C) 2014-18                                  Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -822,24 +822,24 @@ gap> OutNeighbours(canon);
     transformation <A>x</A> is an isomorphism from the digraph <A>src</A> to
     the digraph <A>ran</A>.
     <P/>
-    
+
     <C>IsDigraphAutomorphism</C> returns <K>true</K> if the permutation or
     transformation <A>x</A> is an automorphism of the digraph <A>digraph</A>.
     <P/>
-    
+
     A permutation or transformation <A>x</A> is an <E>isomorphism</E> from a
     digraph <A>src</A> to a digraph <A>ran</A> if the following hold:
     <List>
       <Item>
         <A>x</A> is a bijection from the vertices of <A>src</A> to those of
-        <A>ran</A>; 
+        <A>ran</A>;
       </Item>
       <Item>
         <C>[u ^ <A>x</A>, v ^ <A>x</A>]</C> is an edge of
         <A>ran</A> if and only if <C>[u, v]</C> is an
-        edge of <A>src</A>; and 
+        edge of <A>src</A>; and
       </Item>
-      <Item> 
+      <Item>
         <A>x</A> fixes every <C>i</C> which is not a vertex of <A>src</A>.
       </Item>
     </List>
@@ -847,7 +847,7 @@ gap> OutNeighbours(canon);
       />.<P/>
 
     For some digraphs, it can be faster to use <C>IsDigraphAutomorphism</C>
-    than to test membership in the automorphism group of <A>digraph</A>. 
+    than to test membership in the automorphism group of <A>digraph</A>.
 
     <Example><![CDATA[
 gap> src := Digraph([[1], [1, 2], [1, 3]]);
