@@ -176,14 +176,13 @@ Persons := [
     FirstNames    := "Wilf",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "waw7@st-andrews.ac.uk",
-    WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~waw7/",
-    PostalAddress := Concatenation([
-                       "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
-                       " Scotland"]),
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews")],
+    Email         := "gap@wilf-wilson.net",
+    WWWHome       := "http://wilf.me",
+    PostalAddress := Concatenation(["Theodor-Lieser-Straße 5, ",
+                                    "06120 Halle (Saale), ",
+                                    "Germany"]),
+    Place         := "Halle (Saale), Germany",
+    Institution   := "University of Halle-Wittenberg")],
 
 Status := "deposited",
 
