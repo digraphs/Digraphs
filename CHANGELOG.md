@@ -6,7 +6,7 @@ Licensing information can be found in the LICENSE file.
 
 ## Version 0.13.0 (released ??/09/2018)
 
-TODO
+Digraphs now requires GAP 4.9.0.
 
 ## Version 0.12.2 (released 24/08/2018)
 

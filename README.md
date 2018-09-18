@@ -26,7 +26,7 @@ For questions, remarks, suggestions, and issues please use the
 ## Installation
 
 It is assumed that you have a working copy of [GAP](http://www.gap-system.org)
-with version number 4.8.2 or higher.  The most up-to-date version of
+with version number 4.9.0 or higher.  The most up-to-date version of
 [GAP](http://www.gap-system.org) and instructions on how to install it can be
 obtained from the [main GAP webpage](http://www.gap-system.org).
 
