@@ -161,6 +161,9 @@
   [2XDistanceDigraph[102X, for digraph and int 3.3-33 
       for digraph and list 3.3-33 
   [2XDotDigraph[102X 9.1-2 
+  [2XDotPartialOrderDigraph[102X 9.1-4 
+  [2XDotPreorderDigraph[102X 9.1-5 
+  [2XDotQuasiorderDigraph[102X 9.1-5 
   [2XDotSymmetricDigraph[102X 9.1-3 
   [2XDotVertexLabelledDigraph[102X 9.1-2 
   [2XDoubleDigraph[102X 3.3-30 
@@ -204,8 +207,15 @@
   [2XIsConnectedDigraph[102X 6.3-3 
   [2XIsCycleDigraph[102X 6.3-11 
   [2XIsDigraph[102X 3.1-1 
+  [2XIsDigraphAutomorphism[102X 7.2-19 
   [2XIsDigraphEdge[102X, for digraph and list 5.1-14 
       for digraph and two pos ints 5.1-14 
+  [2XIsDigraphEmbedding[102X 7.3-13 
+  [2XIsDigraphEndomorphism[102X 7.3-12 
+  [2XIsDigraphEpimorphism[102X 7.3-12 
+  [2XIsDigraphHomomorphism[102X 7.3-12 
+  [2XIsDigraphIsomorphism[102X 7.2-19 
+  [2XIsDigraphMonomorphism[102X 7.3-12 
   [2XIsDigraphWithAdjacencyFunction[102X 3.1-3 
   [2XIsDirectedTree[102X 6.3-7 
   [2XIsDistanceRegularDigraph[102X 6.2-4 
@@ -217,20 +227,22 @@
   [2XIsInRegularDigraph[102X 6.2-1 
   [2XIsIsomorphicDigraph[102X, for digraphs 7.2-14 
       for digraphs and homogeneous lists 7.2-15 
-  [2XIsJoinSemilatticeDigraph[102X 6.1-14 
-  [2XIsLatticeDigraph[102X 6.1-14 
+  [2XIsJoinSemilatticeDigraph[102X 6.1-15 
+  [2XIsLatticeDigraph[102X 6.1-15 
   [2XIsMatching[102X 5.1-15 
   [2XIsMaximalClique[102X 8.1-1 
   [2XIsMaximalIndependentSet[102X 8.2-1 
   [2XIsMaximalMatching[102X 5.1-15 
-  [2XIsMeetSemilatticeDigraph[102X 6.1-14 
+  [2XIsMeetSemilatticeDigraph[102X 6.1-15 
   [2XIsMultiDigraph[102X 6.1-8 
   [2XIsNullDigraph[102X 6.1-6 
   [2XIsomorphismDigraphs[102X, for digraphs 7.2-16 
       for digraphs and homogeneous lists 7.2-17 
   [2XIsOutRegularDigraph[102X 6.2-2 
-  [2XIsPartialOrderDigraph[102X 6.1-13 
+  [2XIsPartialOrderDigraph[102X 6.1-14 
   [2XIsPerfectMatching[102X 5.1-15 
+  [2XIsPreorderDigraph[102X 6.1-13 
+  [2XIsQuasiorderDigraph[102X 6.1-13 
   [2XIsReachable[102X 5.3-16 
   [2XIsReflexiveDigraph[102X 6.1-9 
   [2XIsRegularDigraph[102X 6.2-3 

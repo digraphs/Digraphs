@@ -52,6 +52,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X8219FE6C839D9457">7.2-16 IsomorphismDigraphs</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7ED93C0F86D9D34F">7.2-17 IsomorphismDigraphs</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E1C806D81DFE15E">7.2-18 RepresentativeOutNeighbours</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X785358E9822DF199">7.2-19 IsDigraphIsomorphism</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7_mj.html#X7E1A02FE8384C03C">7.3 <span class="Heading">Homomorphisms of digraphs</span></a>
 </span>
@@ -67,6 +68,8 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X86D0A74B83D6B9A7">7.3-9 DigraphColouring</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7AD04CC186E86CCA">7.3-10 DigraphEmbedding</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X807D49358529A37C">7.3-11 ChromaticNumber</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X78C4ADC67F8E2BCA">7.3-12 IsDigraphHomomorphism</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X819021B883E9FCDB">7.3-13 IsDigraphEmbedding</a></span>
 </div></div>
 </div>
 
@@ -177,7 +180,7 @@ true
 <dt><strong class="Mark">for a multidigraph</strong></dt>
 <dd><p>If <var class="Arg">digraph</var> is a multidigraph, then the automorphism group is a group of permutations on the vertices and edges of <var class="Arg">digraph</var>.</p>
 
-<p>For convenience, the group is returned as the direct product <code class="code">G</code> of the group of automorphisms of the vertices of <var class="Arg">digraph</var> with the stabiliser of the vertices in the automorphism group of the edges. These two groups can be accessed using the operation <code class="func">Projection</code> (<a href="../../../doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>), with the second argument being <code class="code">1</code> or <code class="code">2</code>, respectively.</p>
+<p>For convenience, the group is returned as the direct product <code class="code">G</code> of the group of automorphisms of the vertices of <var class="Arg">digraph</var> with the stabiliser of the vertices in the automorphism group of the edges. These two groups can be accessed using the operation <code class="func">Projection</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>), with the second argument being <code class="code">1</code> or <code class="code">2</code>, respectively.</p>
 
 <p>The permutations in the group <code class="code">Projection(G, 1)</code> act on the vertices of <var class="Arg">digraph</var>, and the permutations in the group <code class="code">Projection(G, 2)</code> act on the indices of <code class="code">DigraphEdges(<var class="Arg">digraph</var>)</code>.</p>
 
@@ -290,7 +293,7 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7), (1,2)(6,8)(7,9) ])</
 <dt><strong class="Mark">for a multidigraph</strong></dt>
 <dd><p>If <var class="Arg">digraph</var> is a multidigraph, then the automorphism group is a group of permutations on the vertices and edges of <var class="Arg">digraph</var>.</p>
 
-<p>For convenience, the group is returned as the direct product <code class="code">G</code> of the group of automorphisms of the vertices of <var class="Arg">digraph</var> with the stabiliser of the vertices in the automorphism group of the edges. These two groups can be accessed using the operation <code class="func">Projection</code> (<a href="../../../doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>), with the second argument being <code class="code">1</code> or <code class="code">2</code>, respectively.</p>
+<p>For convenience, the group is returned as the direct product <code class="code">G</code> of the group of automorphisms of the vertices of <var class="Arg">digraph</var> with the stabiliser of the vertices in the automorphism group of the edges. These two groups can be accessed using the operation <code class="func">Projection</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>), with the second argument being <code class="code">1</code> or <code class="code">2</code>, respectively.</p>
 
 <p>The permutations in the group <code class="code">Projection(G, 1)</code> act on the vertices of <var class="Arg">digraph</var>, and the permutations in the group <code class="code">Projection(G, 2)</code> act on the indices of <code class="code">DigraphEdges(<var class="Arg">digraph</var>)</code>.</p>
 
@@ -898,6 +901,62 @@ Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RepresentativeOutNeighbours(digraph);</span>
 [ [ 2, 3, 5 ] ]</pre></div>
 
+<p><a id="X785358E9822DF199" name="X785358E9822DF199"></a></p>
+
+<h5>7.2-19 IsDigraphIsomorphism</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphIsomorphism</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphAutomorphism</code>( <var class="Arg">digraph</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p><code class="code">IsDigraphIsomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is an isomorphism from the digraph <var class="Arg">src</var> to the digraph <var class="Arg">ran</var>.</p>
+
+<p><code class="code">IsDigraphAutomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is an automorphism of the digraph <var class="Arg">digraph</var>.</p>
+
+<p>A permutation or transformation <var class="Arg">x</var> is an <em>isomorphism</em> from a digraph <var class="Arg">src</var> to a digraph <var class="Arg">ran</var> if the following hold:</p>
+
+
+<ul>
+<li><p><var class="Arg">x</var> is a bijection from the vertices of <var class="Arg">src</var> to those of <var class="Arg">ran</var>;</p>
+
+</li>
+<li><p><code class="code">[u ^ <var class="Arg">x</var>, v ^ <var class="Arg">x</var>]</code> is an edge of <var class="Arg">ran</var> if and only if <code class="code">[u, v]</code> is an edge of <var class="Arg">src</var>; and</p>
+
+</li>
+<li><p><var class="Arg">x</var> fixes every <code class="code">i</code> which is not a vertex of <var class="Arg">src</var>.</p>
+
+</li>
+</ul>
+<p>See also <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>).</p>
+
+<p>For some digraphs, it can be faster to use <code class="code">IsDigraphAutomorphism</code> than to test membership in the automorphism group of <var class="Arg">digraph</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">src := Digraph([[1], [1, 2], [1, 3]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphAutomorphism(src, (1, 2, 3));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphAutomorphism(src, (2, 3));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphAutomorphism(src, (2, 3)(4, 5));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphAutomorphism(src, (1, 4));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphAutomorphism(src, ());</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ran := Digraph([[2, 1], [2], [2, 3]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphIsomorphism(src, ran, (1, 2));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphIsomorphism(ran, src, (1, 2));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphIsomorphism(ran, src, (1, 2));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphIsomorphism(src, Digraph([[3], [1, 3], [2]]), (1, 2, 3));</span>
+false
+</pre></div>
+
 <p><a id="X7E1A02FE8384C03C" name="X7E1A02FE8384C03C"></a></p>
 
 <h4>7.3 <span class="Heading">Homomorphisms of digraphs</span></h4>
@@ -1253,6 +1312,90 @@ Transformation( [ 2, 4, 3, 4 ] )
 3
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ChromaticNumber(NullDigraph(0));</span>
 0</pre></div>
+
+<p><a id="X78C4ADC67F8E2BCA" name="X78C4ADC67F8E2BCA"></a></p>
+
+<h5>7.3-12 IsDigraphHomomorphism</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphHomomorphism</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEpimorphism</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphMonomorphism</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEndomorphism</code>( <var class="Arg">digraph</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p><code class="code">IsDigraphHomomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is a homomorphism from the digraph <var class="Arg">src</var> to the digraph <var class="Arg">ran</var>.</p>
+
+<p><code class="code">IsDigraphEpimorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is a surjective homomorphism from the digraph <var class="Arg">src</var> to the digraph <var class="Arg">ran</var>.</p>
+
+<p><code class="code">IsDigraphMonomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is an injective homomorphism from the digraph <var class="Arg">src</var> to the digraph <var class="Arg">ran</var>.</p>
+
+<p><code class="code">IsDigraphEndomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is an endomorphism of the digraph <var class="Arg">digraph</var>.</p>
+
+<p>A permutation or transformation <var class="Arg">x</var> is a <em>homomorphism</em> from a digraph <var class="Arg">src</var> to a digraph <var class="Arg">ran</var> if the following hold:</p>
+
+
+<ul>
+<li><p><code class="code">[u ^ <var class="Arg">x</var>, v ^ <var class="Arg">x</var>]</code> is an edge of <var class="Arg">ran</var> whenever <code class="code">[u, v]</code> is an edge of <var class="Arg">src</var>; and</p>
+
+</li>
+<li><p><var class="Arg">x</var> fixes every <code class="code">i</code> which is not a vertex of <var class="Arg">src</var>.</p>
+
+</li>
+</ul>
+<p>See also <code class="func">GeneratorsOfEndomorphismMonoid</code> (<a href="chap7_mj.html#X7E93B268823F6478"><span class="RefLink">7.3-8</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">src := Digraph([[1], [1, 2], [1, 3]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ran := Digraph([[1], [1, 2]]);</span>
+&lt;digraph with 2 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, ran, Transformation([1, 2, 2]));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, ran, Transformation([2, 1, 2]));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, ran, Transformation([3, 3, 3]));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, src, Transformation([3, 3, 3]));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEndomorphism(src, Transformation([3, 3, 3]));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEpimorphism(src, ran, Transformation([3, 3, 3]));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(src, ran, Transformation([1, 2, 2]));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(ran, src, ());</span>
+true</pre></div>
+
+<p><a id="X819021B883E9FCDB" name="X819021B883E9FCDB"></a></p>
+
+<h5>7.3-13 IsDigraphEmbedding</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEmbedding</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p><code class="code">IsDigraphEmbedding</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is a embedding of the digraph <var class="Arg">src</var> into the digraph <var class="Arg">ran</var>.</p>
+
+<p>A permutation or transformation <var class="Arg">x</var> is a <em>embedding</em> of a digraph <var class="Arg">src</var> into a digraph <var class="Arg">ran</var> if <var class="Arg">x</var> is a monomorphism from <var class="Arg">src</var> to <var class="Arg">ran</var> and the inverse of <var class="Arg">x</var> is a monomorphism from the subdigraph of <var class="Arg">ran</var> induced by the image of <var class="Arg">x</var> to <var class="Arg">src</var>. See also <code class="func">IsDigraphHomomorphism</code> (<a href="chap7_mj.html#X78C4ADC67F8E2BCA"><span class="RefLink">7.3-12</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">src := Digraph([[1], [1, 2]]);</span>
+&lt;digraph with 2 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ran := Digraph([[1], [1, 2], [1, 3]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(src, ran, ());</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEmbedding(src, ran, ());</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ran := Digraph([[1, 2], [1, 2], [1, 3]]);</span>
+&lt;digraph with 3 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(src, ran, IdentityTransformation);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEmbedding(src, ran, IdentityTransformation);</span>
+false</pre></div>
 
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap6_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap8_mj.html">[Next Chapter]</a>&nbsp;  </div>

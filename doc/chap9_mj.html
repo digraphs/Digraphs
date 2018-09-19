@@ -31,6 +31,8 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X83B3318784E78415">9.1-1 Splash</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7F9B99C478EE093A">9.1-2 DotDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X78DA31D1869D2F94">9.1-3 DotSymmetricDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X84120D447E2CAC23">9.1-4 DotPartialOrderDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9_mj.html#X7F5653C8854FAEA6">9.1-5 DotPreorderDigraph</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap9_mj.html#X7D4923A882ABA808">9.2 <span class="Heading">Reading and writing graphs to a file</span></a>
 </span>
@@ -81,7 +83,7 @@
 <dt><strong class="Mark">directory</strong></dt>
 <dd><p>this should be a string representing the name of the directory in <code class="code">path</code> where you want <code class="code">Splash</code> to do its work. This function will create this directory if does not already exist.</p>
 
-<p>The default value of this option is <code class="code">"tmp.viz"</code> if the option <code class="code">path</code> is present, and the result of <code class="func">DirectoryTemporary</code> (<a href="../../../doc/ref/chap9_mj.html#X8222B1A886E6195E"><span class="RefLink">Reference: DirectoryTemporary</span></a>) is used otherwise.</p>
+<p>The default value of this option is <code class="code">"tmp.viz"</code> if the option <code class="code">path</code> is present, and the result of <code class="func">DirectoryTemporary</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap9_mj.html#X8222B1A886E6195E"><span class="RefLink">Reference: DirectoryTemporary</span></a>) is used otherwise.</p>
 
 </dd>
 <dt><strong class="Mark">filename</strong></dt>
@@ -94,6 +96,10 @@
 </dd>
 <dt><strong class="Mark">type</strong></dt>
 <dd><p>this option can be used to specify that the string <var class="Arg">str</var> contains a LaTeX or <code class="code">dot</code> document. You can specify this option in <var class="Arg">str</var> directly by making the first line <code class="code">"%latex"</code> or <code class="code">"//dot"</code>. There is no default value for this option, this option must be specified in <var class="Arg">str</var> or in <var class="Arg">opt.type</var>.</p>
+
+</dd>
+<dt><strong class="Mark">engine</strong></dt>
+<dd><p>this option can be used to specify the GraphViz engine to use to render a <code class="code">dot</code> document. The valid choices are <code class="code">"dot"</code>, <code class="code">"neato"</code>, <code class="code">"circo"</code>, <code class="code">"twopi"</code>, <code class="code">"fdp"</code>, <code class="code">"sfdp"</code>, and <code class="code">"patchwork"</code>. Please refer to the GraphViz documentation for details on these engines. The default value for this option is <code class="code">"dot"</code>, and it must be specified in <var class="Arg">opt.engine</var>.</p>
 
 </dd>
 <dt><strong class="Mark">filetype</strong></dt>
@@ -122,7 +128,7 @@
 
 <p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
 
-<p>The string returned by <code class="code">DotDigraph</code> or <code class="code">DotVertexLabelledDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/gapdoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+<p>The string returned by <code class="code">DotDigraph</code> or <code class="code">DotVertexLabelledDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -148,7 +154,7 @@
 
 <p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
 
-<p>The string returned by <code class="code">DotSymmetricDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/gapdoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+<p>The string returned by <code class="code">DotSymmetricDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -157,6 +163,53 @@
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSymmetricDigraph(star);</span>
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">FileString("dot/star.dot", DotSymmetricDigraph(gr));</span>
+83</pre></div>
+
+<p><a id="X84120D447E2CAC23" name="X84120D447E2CAC23"></a></p>
+
+<h5>9.1-4 DotPartialOrderDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotPartialOrderDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<p>Returns: A string.</p>
+
+<p>This function produces a graphical representation of a partial order digraph <var class="Arg">digraph</var>. <code class="code">DotPartialOrderDigraph</code> will return an error if <var class="Arg">digraph</var> is not a partial order digraph. See <code class="func">IsPartialOrderDigraph</code> (<a href="chap6_mj.html#X82BAE6D37D49A145"><span class="RefLink">6.1-14</span></a>).</p>
+
+<p>Since <var class="Arg">digraph</var> is a partial order, it is both reflexive and transitive. The output of <code class="code">DotPartialOrderDigraph</code> is the <code class="func">DotDigraph</code> (<a href="chap9_mj.html#X7F9B99C478EE093A"><span class="RefLink">9.1-2</span></a>) of the <code class="func">DigraphReflexiveTransitiveReduction</code> (<a href="chap3_mj.html#X838F20FA8033466F"><span class="RefLink">3.3-11</span></a>) of <var class="Arg">digraph</var>.</p>
+
+<p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
+
+<p>The string returned by <code class="code">DotPartialOrderDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">poset := Digraph([[1, 4], [2], [2, 3, 4], [4]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPartialOrderDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">FileString("dot/poset.dot", DotPartialOrderDigraph(gr));</span>
+83</pre></div>
+
+<p><a id="X7F5653C8854FAEA6" name="X7F5653C8854FAEA6"></a></p>
+
+<h5>9.1-5 DotPreorderDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotPreorderDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotQuasiorderDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<p>Returns: A string.</p>
+
+<p>This function produces a graphical representation of a preorder digraph <var class="Arg">digraph</var>. <code class="code">DotPreorderDigraph</code> will return an error if <var class="Arg">digraph</var> is not a preorder digraph. See <code class="func">IsPreorderDigraph</code> (<a href="chap6_mj.html#X8617726C7829F796"><span class="RefLink">6.1-13</span></a>).</p>
+
+<p>A preorder digraph is reflexive and transitive but in general it is not anti-symmetric and may have strongly connected components containing more than one vertex. The <code class="func">QuotientDigraph</code> (<a href="chap3_mj.html#X7D1D26D27F5B56C2"><span class="RefLink">3.3-6</span></a>) <var class="Arg">Q</var> obtained by forming the quotient of <var class="Arg">digraph</var> by the partition of its vertices into the strongly connected components satisfies <code class="func">IsPartialOrderDigraph</code> (<a href="chap6_mj.html#X82BAE6D37D49A145"><span class="RefLink">6.1-14</span></a>). Thus every vertex of <var class="Arg">Q</var> corresponds to a strongly connected component of <var class="Arg">digraph</var>. The output of <code class="code">DotPreorderDigraph</code> displays the <code class="func">DigraphReflexiveTransitiveReduction</code> (<a href="chap3_mj.html#X838F20FA8033466F"><span class="RefLink">3.3-11</span></a>) of <var class="Arg">Q</var> with vertices displayed as rounded rectangles labelled by all of the vertices of <var class="Arg">digraph</var> in the corresponding strongly connected component.</p>
+
+<p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
+
+<p>The string returned by <code class="code">DotPreorderDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">preset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4], [1, 2, 4, 5]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPreorderDigraph(gr);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">FileString("dot/preset.dot", DotProrderDigraph(gr));</span>
 83</pre></div>
 
 <p><a id="X7D4923A882ABA808" name="X7D4923A882ABA808"></a></p>
@@ -437,7 +490,7 @@ IO_OK
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorFromDigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: An iterator.</p>
 
-<p>If <var class="Arg">filename</var> is a string representing the name of a file containing encoded digraphs, then <code class="code">IteratorFromDigraphFile</code> returns an iterator for which the value of <code class="func">NextIterator</code> (<a href="../../../doc/ref/chap30_mj.html#X879F62F77D1D1179"><span class="RefLink">Reference: NextIterator</span></a>) is the next digraph encoded in the file.</p>
+<p>If <var class="Arg">filename</var> is a string representing the name of a file containing encoded digraphs, then <code class="code">IteratorFromDigraphFile</code> returns an iterator for which the value of <code class="func">NextIterator</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap30_mj.html#X879F62F77D1D1179"><span class="RefLink">Reference: NextIterator</span></a>) is the next digraph encoded in the file.</p>
 
 <p>If the optional argument <var class="Arg">decoder</var> is specified and is a function which decodes a string into a digraph, then <code class="code">IteratorFromDigraphFile</code> will use <var class="Arg">decoder</var> to decode the digraphs contained in <var class="Arg">filename</var>.</p>
 

@@ -783,11 +783,11 @@
   [6XReturns:[106X  [33X[0;10YA positive integer or [9Xfail[109X[133X
   
   [33X[0;0YIf  the  first  argument  is  a  partial order digraph [2XIsPartialOrderDigraph[102X
-  ([14X6.1-13[114X)  then  these  operations  return  the meet, or the join, of the two
+  ([14X6.1-14[114X)  then  these  operations  return  the meet, or the join, of the two
   input  vertices.  If  the  meet  (or  join)  is  does not exist then [9Xfail[109X is
   returned.  The meet (or join) is guaranteed to exist when the first argument
-  satisfies  [2XIsMeetSemilatticeDigraph[102X  ([14X6.1-14[114X)  (or  [2XIsJoinSemilatticeDigraph[102X
-  ([14X6.1-14[114X)) - see the documentation for these properties for the definition of
+  satisfies  [2XIsMeetSemilatticeDigraph[102X  ([14X6.1-15[114X)  (or  [2XIsJoinSemilatticeDigraph[102X
+  ([14X6.1-15[114X)) - see the documentation for these properties for the definition of
   the meet (or the join).[133X
   
   [4X[32X  Example  [32X[104X

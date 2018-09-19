@@ -6,7 +6,7 @@
                               [1XMethods for digraphs[101X
   
   
-                                 Version 0.12.2
+                                 Version 0.13.0
   
   
                                   Jan De Beule
@@ -46,8 +46,8 @@
       Email:    [7Xmailto:mct25@st-andrews.ac.uk[107X
       Homepage: [7Xhttp://www-circa.mcs.st-andrews.ac.uk/~mct25[107X
   Wilf A. Wilson
-      Email:    [7Xmailto:waw7@st-andrews.ac.uk[107X
-      Homepage: [7Xhttp://www-circa.mcs.st-andrews.ac.uk/~waw7[107X
+      Email:    [7Xmailto:gap@wilf-wilson.net[107X
+      Homepage: [7Xhttp://wilf.me[107X
   
   -------------------------------------------------------
   [1XAbstract[101X
@@ -236,8 +236,9 @@
       6.1-10 IsSymmetricDigraph
       6.1-11 IsTournament
       6.1-12 IsTransitiveDigraph
-      6.1-13 IsPartialOrderDigraph
-      6.1-14 IsMeetSemilatticeDigraph
+      6.1-13 IsPreorderDigraph
+      6.1-14 IsPartialOrderDigraph
+      6.1-15 IsMeetSemilatticeDigraph
     6.2 [33X[0;0YRegularity[133X
       6.2-1 IsInRegularDigraph
       6.2-2 IsOutRegularDigraph
@@ -278,6 +279,7 @@
       7.2-16 IsomorphismDigraphs
       7.2-17 IsomorphismDigraphs
       7.2-18 RepresentativeOutNeighbours
+      7.2-19 IsDigraphIsomorphism
     7.3 [33X[0;0YHomomorphisms of digraphs[133X
       7.3-1 HomomorphismDigraphsFinder
       7.3-2 DigraphHomomorphism
@@ -290,6 +292,8 @@
       7.3-9 DigraphColouring
       7.3-10 DigraphEmbedding
       7.3-11 ChromaticNumber
+      7.3-12 IsDigraphHomomorphism
+      7.3-13 IsDigraphEmbedding
   8 [33X[0;0YFinding cliques and independent sets[133X
     8.1 [33X[0;0YFinding cliques[133X
       8.1-1 IsClique
@@ -306,6 +310,8 @@
       9.1-1 Splash
       9.1-2 DotDigraph
       9.1-3 DotSymmetricDigraph
+      9.1-4 DotPartialOrderDigraph
+      9.1-5 DotPreorderDigraph
     9.2 [33X[0;0YReading and writing graphs to a file[133X
       9.2-1 DigraphFromGraph6String
       9.2-2 Graph6String

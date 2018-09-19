@@ -936,6 +936,58 @@
     [4X[28X[ [ 2, 3, 5 ] ][128X[104X
   [4X[32X[104X
   
+  [1X7.2-19 IsDigraphIsomorphism[101X
+  
+  [33X[1;0Y[29X[2XIsDigraphIsomorphism[102X( [3Xsrc[103X, [3Xran[103X, [3Xx[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsDigraphAutomorphism[102X( [3Xdigraph[103X, [3Xx[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0Y[10XIsDigraphIsomorphism[110X  returns [9Xtrue[109X if the permutation or transformation [3Xx[103X is
+  an isomorphism from the digraph [3Xsrc[103X to the digraph [3Xran[103X.[133X
+  
+  [33X[0;0Y[10XIsDigraphAutomorphism[110X returns [9Xtrue[109X if the permutation or transformation [3Xx[103X is
+  an automorphism of the digraph [3Xdigraph[103X.[133X
+  
+  [33X[0;0YA  permutation or transformation [3Xx[103X is an [13Xisomorphism[113X from a digraph [3Xsrc[103X to a
+  digraph [3Xran[103X if the following hold:[133X
+  
+  [30X    [33X[0;6Y[3Xx[103X is a bijection from the vertices of [3Xsrc[103X to those of [3Xran[103X;[133X
+  
+  [30X    [33X[0;6Y[10X[u  ^  [3Xx[103X[10X, v ^ [3Xx[103X[10X][110X is an edge of [3Xran[103X if and only if [10X[u, v][110X is an edge of
+        [3Xsrc[103X; and[133X
+  
+  [30X    [33X[0;6Y[3Xx[103X fixes every [10Xi[110X which is not a vertex of [3Xsrc[103X.[133X
+  
+  [33X[0;0YSee also [2XAutomorphismGroup[102X ([14X7.2-2[114X).[133X
+  
+  [33X[0;0YFor  some  digraphs,  it  can be faster to use [10XIsDigraphAutomorphism[110X than to
+  test membership in the automorphism group of [3Xdigraph[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xsrc := Digraph([[1], [1, 2], [1, 3]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphAutomorphism(src, (1, 2, 3));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphAutomorphism(src, (2, 3));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphAutomorphism(src, (2, 3)(4, 5));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphAutomorphism(src, (1, 4));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphAutomorphism(src, ());[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xran := Digraph([[2, 1], [2], [2, 3]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphIsomorphism(src, ran, (1, 2));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphIsomorphism(ran, src, (1, 2));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphIsomorphism(ran, src, (1, 2));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphIsomorphism(src, Digraph([[3], [1, 3], [2]]), (1, 2, 3));[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
   
   [1X7.3 [33X[0;0YHomomorphisms of digraphs[133X[101X
   
@@ -1322,5 +1374,90 @@
     [4X[28X3[128X[104X
     [4X[25Xgap>[125X [27XChromaticNumber(NullDigraph(0));[127X[104X
     [4X[28X0[128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-12 IsDigraphHomomorphism[101X
+  
+  [33X[1;0Y[29X[2XIsDigraphHomomorphism[102X( [3Xsrc[103X, [3Xran[103X, [3Xx[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsDigraphEpimorphism[102X( [3Xsrc[103X, [3Xran[103X, [3Xx[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsDigraphMonomorphism[102X( [3Xsrc[103X, [3Xran[103X, [3Xx[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsDigraphEndomorphism[102X( [3Xdigraph[103X, [3Xx[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0Y[10XIsDigraphHomomorphism[110X returns [9Xtrue[109X if the permutation or transformation [3Xx[103X is
+  a homomorphism from the digraph [3Xsrc[103X to the digraph [3Xran[103X.[133X
+  
+  [33X[0;0Y[10XIsDigraphEpimorphism[110X  returns [9Xtrue[109X if the permutation or transformation [3Xx[103X is
+  a surjective homomorphism from the digraph [3Xsrc[103X to the digraph [3Xran[103X.[133X
+  
+  [33X[0;0Y[10XIsDigraphMonomorphism[110X returns [9Xtrue[109X if the permutation or transformation [3Xx[103X is
+  an injective homomorphism from the digraph [3Xsrc[103X to the digraph [3Xran[103X.[133X
+  
+  [33X[0;0Y[10XIsDigraphEndomorphism[110X returns [9Xtrue[109X if the permutation or transformation [3Xx[103X is
+  an endomorphism of the digraph [3Xdigraph[103X.[133X
+  
+  [33X[0;0YA  permutation or transformation [3Xx[103X is a [13Xhomomorphism[113X from a digraph [3Xsrc[103X to a
+  digraph [3Xran[103X if the following hold:[133X
+  
+  [30X    [33X[0;6Y[10X[u  ^  [3Xx[103X[10X,  v ^ [3Xx[103X[10X][110X is an edge of [3Xran[103X whenever [10X[u, v][110X is an edge of [3Xsrc[103X;
+        and[133X
+  
+  [30X    [33X[0;6Y[3Xx[103X fixes every [10Xi[110X which is not a vertex of [3Xsrc[103X.[133X
+  
+  [33X[0;0YSee also [2XGeneratorsOfEndomorphismMonoid[102X ([14X7.3-8[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xsrc := Digraph([[1], [1, 2], [1, 3]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xran := Digraph([[1], [1, 2]]);[127X[104X
+    [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphHomomorphism(src, ran, Transformation([1, 2, 2]));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphHomomorphism(src, ran, Transformation([2, 1, 2]));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphHomomorphism(src, ran, Transformation([3, 3, 3]));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphHomomorphism(src, src, Transformation([3, 3, 3]));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphEndomorphism(src, Transformation([3, 3, 3]));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphEpimorphism(src, ran, Transformation([3, 3, 3]));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphMonomorphism(src, ran, Transformation([1, 2, 2]));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphMonomorphism(ran, src, ());[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-13 IsDigraphEmbedding[101X
+  
+  [33X[1;0Y[29X[2XIsDigraphEmbedding[102X( [3Xsrc[103X, [3Xran[103X, [3Xx[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0Y[10XIsDigraphEmbedding[110X  returns [9Xtrue[109X if the permutation or transformation [3Xx[103X is a
+  embedding of the digraph [3Xsrc[103X into the digraph [3Xran[103X.[133X
+  
+  [33X[0;0YA  permutation  or  transformation  [3Xx[103X is a [13Xembedding[113X of a digraph [3Xsrc[103X into a
+  digraph [3Xran[103X if [3Xx[103X is a monomorphism from [3Xsrc[103X to [3Xran[103X and the inverse of [3Xx[103X is a
+  monomorphism  from  the  subdigraph of [3Xran[103X induced by the image of [3Xx[103X to [3Xsrc[103X.
+  See also [2XIsDigraphHomomorphism[102X ([14X7.3-12[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xsrc := Digraph([[1], [1, 2]]);[127X[104X
+    [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xran := Digraph([[1], [1, 2], [1, 3]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphMonomorphism(src, ran, ());[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphEmbedding(src, ran, ());[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xran := Digraph([[1, 2], [1, 2], [1, 3]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphMonomorphism(src, ran, IdentityTransformation);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphEmbedding(src, ran, IdentityTransformation);[127X[104X
+    [4X[28Xfalse[128X[104X
   [4X[32X[104X
   

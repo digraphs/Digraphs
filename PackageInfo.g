@@ -9,20 +9,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.12.2">
-##  <!ENTITY GAPVERS        "4.8.2">
+##  <!ENTITY VERSION        "0.13.0">
+##  <!ENTITY GAPVERS        "4.9.0">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.5.1">
 ##  <!ENTITY ORBVERS        "4.7.5">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.12.2">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.13.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-18">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "0.12.2",
-Date := "24/08/2018",
+Version := "0.13.0",
+Date := "19/09/2018",
 ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(
@@ -35,7 +35,7 @@ Persons := [
 
   rec(
     LastName      := "De Beule",
-    FirstNames    := "J.",
+    FirstNames    := "Jan",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jdebeule@cage.ugent.be",
@@ -51,7 +51,7 @@ Persons := [
 
   rec(
     LastName      := "Burrell",
-    FirstNames    := "S.",
+    FirstNames    := "Stuart",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "sb235@st-andrews.ac.uk",
@@ -64,7 +64,7 @@ Persons := [
 
   rec(
     LastName      := "Elliott",
-    FirstNames    := "L.",
+    FirstNames    := "Luke",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "le27@st-andrews.ac.uk",
@@ -77,7 +77,7 @@ Persons := [
 
   rec(
     LastName      := "Jefferson",
-    FirstNames    := "C.",
+    FirstNames    := "Christopher",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "caj21@st-andrews.ac.uk",
@@ -91,7 +91,7 @@ Persons := [
 
   rec(
     LastName      := "Jonusas",
-    FirstNames    := "J.",
+    FirstNames    := "Julius",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jj252@st-andrews.ac.uk",
@@ -105,7 +105,7 @@ Persons := [
 
   rec(
     LastName      := "Mitchell",
-    FirstNames    := "J. D.",
+    FirstNames    := "James",
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "jdm3@st-andrews.ac.uk",
@@ -119,7 +119,7 @@ Persons := [
 
   rec(
     LastName      := "Pfeiffer",
-    FirstNames    := "M.",
+    FirstNames    := "Markus",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "markus.pfeiffer@morphism.de",
@@ -133,7 +133,7 @@ Persons := [
 
   rec(
     LastName      := "Russell",
-    FirstNames    := "C.",
+    FirstNames    := "Christopher",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "cr66@st-andrews.ac.uk",
@@ -146,7 +146,7 @@ Persons := [
 
   rec(
     LastName      := "Smith",
-    FirstNames    := "F.",
+    FirstNames    := "Finn",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "fls3@st-andrews.ac.uk",
@@ -159,7 +159,7 @@ Persons := [
 
   rec(
     LastName      := "Torpey",
-    FirstNames    := "M.",
+    FirstNames    := "Michael",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mct25@st-andrews.ac.uk",
@@ -173,17 +173,16 @@ Persons := [
 
   rec(
     LastName      := "Wilson",
-    FirstNames    := "W. A.",
+    FirstNames    := "Wilf",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "waw7@st-andrews.ac.uk",
-    WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~waw7/",
-    PostalAddress := Concatenation([
-                       "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
-                       " Scotland"]),
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews")],
+    Email         := "gap@wilf-wilson.net",
+    WWWHome       := "http://wilf.me",
+    PostalAddress := Concatenation(["Theodor-Lieser-Straße 5, ",
+                                    "06120 Halle (Saale), ",
+                                    "Germany"]),
+    Place         := "Halle (Saale), Germany",
+    Institution   := "University of Halle-Wittenberg")],
 
 Status := "deposited",
 
@@ -210,7 +209,7 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">=4.8.2",
+  GAP := ">=4.9.0",
   NeededOtherPackages := [["io", ">=4.5.1"],
                           ["orb", ">=4.7.5"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"],

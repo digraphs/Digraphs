@@ -51,6 +51,13 @@
         making  the  first line [10X"%latex"[110X or [10X"//dot"[110X. There is no default value
         for this option, this option must be specified in [3Xstr[103X or in [3Xopt.type[103X.[133X
   
+  [8Xengine[108X
+        [33X[0;6Ythis  option  can  be  used  to  specify the GraphViz engine to use to
+        render  a [10Xdot[110X document. The valid choices are [10X"dot"[110X, [10X"neato"[110X, [10X"circo"[110X,
+        [10X"twopi"[110X,  [10X"fdp"[110X, [10X"sfdp"[110X, and [10X"patchwork"[110X. Please refer to the GraphViz
+        documentation for details on these engines. The default value for this
+        option is [10X"dot"[110X, and it must be specified in [3Xopt.engine[103X.[133X
+  
   [8Xfiletype[108X
         [33X[0;6Ythis  should  be  a  string representing the type of file which [10XSplash[110X
         should  produce.  For  LaTeX  files,  this  option  is ignored and the
@@ -124,6 +131,70 @@
     [4X[25Xgap>[125X [27XIsSymmetricDigraph(star);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XFileString("dot/star.dot", DotSymmetricDigraph(gr));[127X[104X
+    [4X[28X83[128X[104X
+  [4X[32X[104X
+  
+  [1X9.1-4 DotPartialOrderDigraph[101X
+  
+  [33X[1;0Y[29X[2XDotPartialOrderDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [6XReturns:[106X  [33X[0;10YA string.[133X
+  
+  [33X[0;0YThis function produces a graphical representation of a partial order digraph
+  [3Xdigraph[103X.  [10XDotPartialOrderDigraph[110X  will  return  an error if [3Xdigraph[103X is not a
+  partial order digraph. See [2XIsPartialOrderDigraph[102X ([14X6.1-14[114X).[133X
+  
+  [33X[0;0YSince  [3Xdigraph[103X  is a partial order, it is both reflexive and transitive. The
+  output   of   [10XDotPartialOrderDigraph[110X   is  the  [2XDotDigraph[102X  ([14X9.1-2[114X)  of  the
+  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-11[114X) of [3Xdigraph[103X.[133X
+  
+  [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
+  about  this  file  format, and information about how to display or edit this
+  format see [7Xhttp://www.graphviz.org[107X.[133X
+  
+  [33X[0;0YThe string returned by [10XDotPartialOrderDigraph[110X can be written to a file using
+  the command [2XFileString[102X ([14XGAPDoc: FileString[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xposet := Digraph([[1, 4], [2], [2, 3, 4], [4]);[127X[104X
+    [4X[25Xgap>[125X [27XIsPartialOrderDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XFileString("dot/poset.dot", DotPartialOrderDigraph(gr));[127X[104X
+    [4X[28X83[128X[104X
+  [4X[32X[104X
+  
+  [1X9.1-5 DotPreorderDigraph[101X
+  
+  [33X[1;0Y[29X[2XDotPreorderDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XDotQuasiorderDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [6XReturns:[106X  [33X[0;10YA string.[133X
+  
+  [33X[0;0YThis  function  produces  a  graphical  representation of a preorder digraph
+  [3Xdigraph[103X.  [10XDotPreorderDigraph[110X  will  return  an  error  if  [3Xdigraph[103X  is not a
+  preorder digraph. See [2XIsPreorderDigraph[102X ([14X6.1-13[114X).[133X
+  
+  [33X[0;0YA  preorder  digraph  is  reflexive  and transitive but in general it is not
+  anti-symmetric  and  may  have strongly connected components containing more
+  than  one  vertex.  The  [2XQuotientDigraph[102X  ([14X3.3-6[114X)  [3XQ[103X obtained by forming the
+  quotient  of  [3Xdigraph[103X  by  the  partition  of its vertices into the strongly
+  connected  components  satisfies  [2XIsPartialOrderDigraph[102X ([14X6.1-14[114X). Thus every
+  vertex  of  [3XQ[103X  corresponds to a strongly connected component of [3Xdigraph[103X. The
+  output          of          [10XDotPreorderDigraph[110X          displays         the
+  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-11[114X) of [3XQ[103X with vertices displayed as
+  rounded  rectangles  labelled  by  all  of  the  vertices  of [3Xdigraph[103X in the
+  corresponding strongly connected component.[133X
+  
+  [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
+  about  this  file  format, and information about how to display or edit this
+  format see [7Xhttp://www.graphviz.org[107X.[133X
+  
+  [33X[0;0YThe string returned by [10XDotPreorderDigraph[110X can be written to a file using the
+  command [2XFileString[102X ([14XGAPDoc: FileString[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xpreset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4], [1, 2, 4, 5]);[127X[104X
+    [4X[25Xgap>[125X [27XIsPreorderDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XFileString("dot/preset.dot", DotProrderDigraph(gr));[127X[104X
     [4X[28X83[128X[104X
   [4X[32X[104X
   

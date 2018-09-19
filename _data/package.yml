@@ -1,40 +1,40 @@
 name: Digraphs
-version: 0.12.2
-date: 2018-08-24
+version: 0.13.0
+date: 2018-09-19
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
 authors:
-    - name: J. De Beule
+    - name: Jan De Beule
       url: http://homepages.vub.ac.be/~jdbeule/
-    - name: J. Jonusas
+    - name: Julius Jonusas
       url: http://www-groups.mcs.st-andrews.ac.uk/~julius/
-    - name: J. D. Mitchell
+    - name: James Mitchell
       url: http://goo.gl/ZtViV6
-    - name: M. Torpey
+    - name: Michael Torpey
       url: http://www-groups.mcs.st-andrews.ac.uk/~mct25/
-    - name: W. A. Wilson
-      url: http://www-groups.mcs.st-andrews.ac.uk/~waw7/
+    - name: Wilf Wilson
+      url: http://wilf.me
 
 maintainers:
-    - name: J. D. Mitchell
+    - name: James Mitchell
       url: http://goo.gl/ZtViV6
 
 contributors:
-    - name: S. Burrell
+    - name: Stuart Burrell
       url: mailto:sb235@st-andrews.ac.uk
-    - name: L. Elliott
+    - name: Luke Elliott
       url: mailto:le27@st-andrews.ac.uk
-    - name: C. Jefferson
+    - name: Christopher Jefferson
       url: http://caj.host.cs.st-andrews.ac.uk
-    - name: M. Pfeiffer
+    - name: Markus Pfeiffer
       url: https://www.morphism.de/~markusp/
-    - name: C. Russell
+    - name: Christopher Russell
       url: mailto:cr66@st-andrews.ac.uk
-    - name: F. Smith
+    - name: Finn Smith
       url: mailto:fls3@st-andrews.ac.uk
 
-GAP: ">=4.8.2"
+GAP: ">=4.9.0"
 
 needed-pkgs:
     - name: "io"
@@ -50,7 +50,7 @@ suggested-pkgs:
       url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
     - name: "grape"
       version: ">=4.5"
-      url: "http://www.maths.qmul.ac.uk/~leonard/grape/"
+      url: "http://www.maths.qmul.ac.uk/~lsoicher/grape/"
     - name: "nautytracesinterface"
       version: ">=0.2"
       url: "http://TODO/"
@@ -61,7 +61,7 @@ packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/Digraphs/releases/download/v0.12.2/digraphs-0.12.2.tar.gz
+      url: https://github.com/gap-packages/Digraphs/releases/download/v0.13.0/digraphs-0.13.0.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
