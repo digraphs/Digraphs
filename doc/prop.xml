@@ -135,7 +135,7 @@ true
 <#GAPDoc Label="IsPreorderDigraph">
 <ManSection>
   <Prop Name="IsPreorderDigraph" Arg="digraph"/>
-  <Prop Name="IsQuasiorderDigraph" Arg="digraph"/>  
+  <Prop Name="IsQuasiorderDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     A digraph is a preorder digraph if and only if the digraph satisifies both

@@ -25,7 +25,7 @@
     <A>digraph</A> is not connected. <P/>
 
     Multiple edges and loops are ignored by this method. <P/>
-    
+
     The method used in this operation has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one, and not
     counting loops) and <M>n</M> is the number of vertices in the digraph.

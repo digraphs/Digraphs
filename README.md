@@ -54,7 +54,7 @@ installation of [Digraphs](https://gap-packages.github.io/Digraphs):
 ## Compiling the kernel module
 
 The [Digraphs](https://gap-packages.github.io/Digraphs)
-package has a [GAP](http://www.gap-system.org) kernel component written in 
+package has a [GAP](http://www.gap-system.org) kernel component written in
 C which has to be compiled for the package to work.  This component contains
 certain low-level functions required by [Digraphs](https://gap-packages.github.io/Digraphs).
 

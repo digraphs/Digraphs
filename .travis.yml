@@ -79,7 +79,7 @@ matrix:
       - ABI=64
       - GAP=required
       - PACKAGES=required
-       
+
     - env:
       - SUITE=coverage
       - ABI=64
