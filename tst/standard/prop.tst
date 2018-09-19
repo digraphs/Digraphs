@@ -1319,6 +1319,29 @@ gap> gr := Digraph([[2, 2], [1, 1]]);;
 gap> IsMultiDigraph(gr) and IsHamiltonianDigraph(gr);
 true
 
+# IsPreorderDigraph and IsQuasiorderDigraph
+gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 4], [1 .. 5], [1 .. 6],
+> [1, 2, 3, 4, 5, 7], [1, 8]]);;
+gap> IsPreorderDigraph(gr) and IsQuasiorderDigraph(gr);
+true
+gap> gr := Concatenation("+XqD?OG???FbueZpzRKGC@?}]sr]nYXnNl[saOEGOgA@w|he?A?",
+> "?}NyxnFlKvbueZpzrLGcHa??A?]NYx_?_GC??AJpzrnw~jm{]srO???_");;
+gap> gr := DigraphFromDigraph6String(gr);;
+gap> IsPreorderDigraph(gr) and IsQuasiorderDigraph(gr);
+true
+gap> gr := Concatenation("+]KO??G_CP??G?A?AGGC?_Di_H__O?gT?E@A`a@?O?D@?ACCA_?",
+> "PAOg@O?CHe?G__gK?_??__Oa???QGC@?AG???`O@??O?@??O?W?U_I?A_?DOOOBoG@P_CGp?Cw",
+> "?A??C_W?_??P_?s@??Bi?G@?O?a");;
+gap> gr := DigraphFromDigraph6String(gr);;
+gap> IsPreorderDigraph(gr) or IsQuasiorderDigraph(gr);
+false
+gap> gr := Digraph([[], [2], [1, 2, 3]]);;
+gap> IsPreorderDigraph(gr) or IsQuasiorderDigraph(gr);
+false
+gap> gr := Digraph([[1], [1, 2], [2, 3]]);;
+gap> IsPreorderDigraph(gr) or IsQuasiorderDigraph(gr);
+false
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(circuit);

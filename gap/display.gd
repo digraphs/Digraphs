@@ -11,3 +11,6 @@
 DeclareAttribute("DotDigraph", IsDigraph);
 DeclareOperation("DotVertexLabelledDigraph", [IsDigraph]);
 DeclareAttribute("DotSymmetricDigraph", IsDigraph);
+DeclareAttribute("DotPartialOrderDigraph", IsDigraph);
+DeclareAttribute("DotPreorderDigraph", IsDigraph);
+DeclareSynonym("DotQuasiorderDigraph", DotPreorderDigraph);

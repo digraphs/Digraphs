@@ -13,6 +13,7 @@
     <#Include Label="IsSymmetricDigraph">
     <#Include Label="IsTournament">
     <#Include Label="IsTransitiveDigraph">
+    <#Include Label="IsPreorderDigraph">
     <#Include Label="IsPartialOrderDigraph">
     <#Include Label="IsMeetSemilatticeDigraph">
   </Section>

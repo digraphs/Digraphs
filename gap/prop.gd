@@ -60,3 +60,6 @@ DeclareSynonymAttr("IsPartialOrderDigraph",
                    and IsTransitiveDigraph);
 DeclareSynonymAttr("IsLatticeDigraph",
                     IsMeetSemilatticeDigraph and IsJoinSemilatticeDigraph);
+DeclareSynonymAttr("IsPreorderDigraph",
+                   IsReflexiveDigraph and IsTransitiveDigraph);
+DeclareSynonymAttr("IsQuasiorderDigraph", IsPreorderDigraph);
