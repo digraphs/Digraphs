@@ -1,12 +1,26 @@
 # Digraphs package for GAP - CHANGELOG
-Copyright (C) 2014-18 by Jan De Beule, Julius Jonušas, James D. Mitchell,
-Michael Torpey, Wilf A. Wilson et al.
+Copyright (C) 2014-18 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
 
-## Version 0.13.0 (released ??/09/2018)
+## Version 0.13.0 (released 19/09/2018)
 
-Digraphs now requires GAP 4.9.0.
+This release of Digraphs contains some bugfixes, along with the following new features:
+
+* The GraphViz engine used by `Splash` is now configurable, thanks to [Markus Pfeiffer](https://www.morphism.de/~markusp).
+* The properties `IsPartialOrderDigraph`, `IsPreorderDigraph`, and `IsQuasiorderDigraph` were introduced by Chris Russell, along with the following functions for visualising these kinds of digraphs:
+  * `DotPartialOrderDigraph`
+  * `DotPreorderDigraph`
+  * `DotQuasiorderDigraph`
+* The following functions for transformations and permutations were added by [James D. Mitchell](http://goo.gl/ZtViV6):
+  * `IsDigraphHomomorphism`
+  * `IsDigraphEpimorphism`
+  * `IsDigraphMonomorphism`
+  * `IsDigraphEndomorphism`
+  * `IsDigraphEmbedding`
+  * `IsDigraphIsomorphism`
+
+Digraphs now requires version 4.9.0 of GAP, or newer.
 
 ## Version 0.12.2 (released 24/08/2018)
 
@@ -36,7 +50,7 @@ Digraphs now requires version 4.5.1 of the IO package.
 
 ## Version 0.11.0 (released 22/11/2017)
 
-The principal change in Digraphs version 0.11.0 is the addition of 
+The principal change in Digraphs version 0.11.0 is the addition of
 support for computing automorphisms, canonical labellings, and isomorphisms of
 digraphs with [nauty](http://pallini.di.uniroma1.it/). This
 functionality requires the [NautyTracesInterface
@@ -147,7 +161,7 @@ made by [Wilf A. Wilson](http://wilf.me).
     argument;
   * the operations `IsIsomorphicDigraph` and `IsomorphismDigraphs` now accept
     multidigraphs, and they also accept vertex-colourings as optional arguments.
-  
+
 * This release add new functionality related to undirected spanning trees and
   undirected spanning forests:
   * the property `IsUndirectedForest` is introduced;
@@ -183,7 +197,7 @@ Markus Pfeiffer as new authors.
 * The operation `ChromaticNumber` is introduced. [[James D. Mitchell](http://goo.gl/ZtViV6) and [Wilf A. Wilson](http://wilf.me)]
 * The operations `IsDirectedTree` and `IsUndirectedTree` are introduced. [Luke Elliott]
 * The operation `IsEulerianDigraph`is introduced. [Luke Elliott]
-	
+
 ## Version 0.5.2 (released 20/06/2016)
 This is a minor release containing one bugfix and several other minor changes.
 Digraphs now works when it and GAP are compiled in 32 bit mode.
@@ -204,7 +218,7 @@ Namely, "Dealing with digraphs" followed by "Reduction by superposition". From t
 The actual reduction used is as follows: Given a digraph `D=(V=[]1 .. n],E,c)`, create three copies `V1`, `V2`, `V3` of the vertex set `V`. Colour `V1` according to the colouring `c` of `D`, and `V2`, `V3` with two distinct colours that do not occur in `D`. Connect each vertex in `V1` to the corresponding vertices in `V2`, `V3`. For every arc `(x,y)` in `E`, put an edge between the copy of `x` in `V2`, and the copy of `y` in `V3`. Automorphisms of this graph, when restricted to `V`, are precisely the automorphisms of `D`. 
 Because this changes the graph used to calculate automorphisms, the results sometimes nominally differ from the previous version - especially in the case of canonical labelling, where unrecognisably different results may appear. Generators also often appear in different orders. 
 
-The performance improvements are most noticeable on large, quite dense digraphs. On random digraphs with 5000 vertices and 0.5 edge probability, 200-400x speedups were common. When calculating the automorphism group of the complete digraph on 1000 vertices, with vertex `i` having colour `i mod 2 + 1`, we obtain a 66x speedup. When the vertex `i` is assigned colour `i mod 7 + 1`, this becomes a 400x speedup.  
+The performance improvements are most noticeable on large, quite dense digraphs. On random digraphs with 5000 vertices and 0.5 edge probability, 200-400x speedups were common. When calculating the automorphism group of the complete digraph on 1000 vertices, with vertex `i` having colour `i mod 2 + 1`, we obtain a 66x speedup. When the vertex `i` is assigned colour `i mod 7 + 1`, this becomes a 400x speedup.
 
 Minor changes include:
 
