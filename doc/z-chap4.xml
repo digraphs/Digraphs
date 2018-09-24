@@ -66,4 +66,8 @@
     <#Include Label="GeneratorsOfCayleyDigraph">
   </Section>
 
+  <Section><Heading>Associated semigroups</Heading>
+    <#Include Label="AsSemigroup">
+  </Section>
+
 </Chapter>
