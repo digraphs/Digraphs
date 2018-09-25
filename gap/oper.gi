@@ -1833,3 +1833,61 @@ function(gr, edges)
   od;
   return true;
 end);
+
+InstallMethod(AsSemigroup,
+"for a function and a digraph", [IsFunction, IsDigraph],
+function(filt, digraph)
+  local red, top, im, max, n, gens, i;
+
+  if not filt = IsPartialPermSemigroup then
+      ErrorNoReturn("Digraphs: AsSemigroup usage,\n",
+                    "the first argument must be IsPartialPermSemigroup,");
+  elif not IsJoinSemilatticeDigraph(digraph) then
+    if IsMeetSemilatticeDigraph(digraph) then
+      return AsSemigroup(IsPartialPermSemigroup, DigraphReverse(digraph));
+    else
+      ErrorNoReturn("Digraphs: AsSemigroup usage,\n",
+                    "the second argument must be a join semilattice ",
+                    "digraph or a meet semilattice digraph,");
+    fi;
+  fi;
+
+  red := DigraphReflexiveTransitiveReduction(digraph);
+  top := DigraphTopologicalSort(digraph);
+  # im[i] will store the image of the idempotent partial perm corresponding to
+  # vertex i of the arugment <digraph>
+  im         := [];
+  im[top[1]] := [];
+  max        := 1;
+
+  n := DigraphNrVertices(digraph);
+  # For each vertex, the corresponding idempotent has an image
+  # containing all images of idempotents below it.
+  for i in [2 .. n] do
+    im[top[i]] := Union(List(OutNeighboursOfVertex(red, top[i]), j -> im[j]));
+    # When there is only one neighbour, we must add a point to the image to
+    # distinguish the two idempotent partial perms.
+    if Length(OutNeighboursOfVertex(red, top[i])) = 1 then
+      Add(im[top[i]], max);
+      max := max + 1;
+    fi;
+  od;
+
+  # Determine a small generating set
+  gens := Filtered([1 .. n], j -> Size(InNeighboursOfVertex(red, j)) < 2);
+  return Semigroup(List(gens, g -> PartialPerm(im[g], im[g])));
+end);
+
+InstallMethod(AsMonoid,
+"for a function and a digraph", [IsFunction, IsDigraph],
+function(filt, digraph)
+  if not (filt = IsPartialPermMonoid or filt = IsPartialPermSemigroup) then
+      ErrorNoReturn("Digraphs: AsMonoid usage,\n",
+                    "the first argument must be IsPartialPermMonoid or ",
+                    "IsPartialPermSemigroup,");
+  elif not IsLatticeDigraph(digraph) then
+      ErrorNoReturn("Digraphs: AsMonoid usage,\n",
+                    "the second argument must be a lattice digraph,");
+  fi;
+  return AsSemigroup(IsPartialPermSemigroup, digraph);
+end);

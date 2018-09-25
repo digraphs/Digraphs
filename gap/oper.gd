@@ -103,3 +103,6 @@ DeclareOperation("DIGRAPHS_Matching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsPerfectMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximalMatching", [IsDigraph, IsHomogeneousList]);
+
+DeclareOperation("AsSemigroup", [IsFunction, IsDigraph]);
+DeclareOperation("AsMonoid", [IsFunction, IsDigraph]);
