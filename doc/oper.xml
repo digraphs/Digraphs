@@ -1566,3 +1566,45 @@ gap> Size(M);
     </Description>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="AsCliffordSemigroup">
+  <ManSection>
+    <Oper Name="AsSemigroup" Arg="filt, Y, gps, homs"/>
+    <Returns> A Clifford semigroup of partial perms. </Returns>
+    <Description>
+      The operation <C>AsSemigroup</C> requires that <A>filt</A> be equal to
+      <Ref Filt="IsPartialPermSemigroup" BookName="ref"/>.
+      If <A>Y</A> is a <Ref Prop="IsJoinSemilatticeDigraph"/> or
+      <Ref Prop="IsMeetSemilatticeDigraph"/>,
+      <A>gps</A> is a list of groups corresponding to each vertex, and
+      <A>homs</A> is a list containing for each edge <C>(i, j)</C> in
+      the transitive reduction of <A>digraph</A> a triple <C>[i, j, hom]</C>
+      where <C>hom</C> is a group homomorphism from <C>gps[i]</C> to
+      <C>gps[j]</C>, and the diagram of homomorphisms commutes, then
+      <C>AsSemigroup</C> returns a semigroup of partial perms which is
+      isomorphic to the strong semilattice of groups <M>S[Y; gps; homs]</M>.
+      <Example><![CDATA[
+gap> G1 := AlternatingGroup(4);;
+gap> G2 := SymmetricGroup(2);;
+gap> G3 := SymmetricGroup(3);;
+gap> gr := Digraph([[1, 3], [2, 3], [3]]);;
+gap> sgn := function(x)
+> if SignPerm(x) = 1 then
+> return ();
+> fi;
+> return (1, 2);
+> end;;
+gap> hom13 := GroupHomomorphismByFunction(G1, G3, sgn);;
+gap> hom23 := GroupHomomorphismByFunction(G2, G3, sgn);;
+gap> T := AsSemigroup(IsPartialPermSemigroup,
+> gr,
+> [G1, G2, G3], [[1, 3, hom13], [2, 3, hom23]]);;
+gap> Size(T);
+20
+gap> D := GreensDClasses(T);;
+gap> List(D, x -> Size(x));
+[ 6, 12, 2 ]
+]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>

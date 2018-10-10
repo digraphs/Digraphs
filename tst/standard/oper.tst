@@ -1970,6 +1970,162 @@ Error, the 3rd argument <j> must be a vertex of the 1st argument <D>,
 gap> PartialOrderDigraphJoinOfVertices(D, 2, 1);
 Error, the 2nd argument <i> must be a vertex of the 1st argument <D>,
 
+# AsSemigroup (for IsPartialPermSemigroup, a digraph, a list of groups,
+# and homomorphisms)
+gap> G1 := SymmetricGroup(4);;
+gap> G2 := SymmetricGroup(2);;
+gap> G3 := SymmetricGroup(3);;
+gap> G4 := SymmetricGroup(4);;
+gap> gr := Digraph([[1, 3], [2, 3], [3]]);;
+gap> gr2 := Digraph([[1, 3], [2, 3], [3], [1, 2, 3, 4]]);;
+gap> sgn := function(x)
+> if SignPerm(x) = 1 then
+> return ();
+> fi;
+> return (1, 2);
+> end;;
+gap> hom13 := GroupHomomorphismByFunction(G1, G3, sgn);;
+gap> hom23 := GroupHomomorphismByFunction(G2, G3, sgn);;
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr, [G1, G2, G3], [[1, 3, hom13],
+> [2, 3, hom23]]);;
+gap> Size(T);
+32
+gap> D := GreensDClasses(T);;
+gap> List(D, x -> Size(x));
+[ 6, 24, 2 ]
+gap> for i in [1 .. 3] do
+> for j in [1 .. 3] do
+> for x in D[i] do
+> for y in D[j] do
+> if i = j and not x * y in D[i] then
+> Error(D[i], x, y);
+> elif i <> j and not x * y in D[1] then
+> Error(D[i], D[j], x, y, x * y);
+> fi;
+> od;
+> od;
+> od;
+> od;
+gap> Size(GroupHClassOfGreensDClass(D[1])) = Size(D[1]);
+true
+gap> Size(GroupHClassOfGreensDClass(D[2])) = Size(D[2]);
+true
+gap> Size(GroupHClassOfGreensDClass(D[3])) = Size(D[3]);
+true
+gap> hom41 := GroupHomomorphismByFunction(G4, G1, sgn);;
+gap> hom42 := GroupHomomorphismByFunction(G4, G2, sgn);;
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr2, [G1, G2, G3, G4],
+> [[1, 3, hom13], [2, 3, hom23], [4, 1, hom41], [4, 2, hom42]]);;
+gap> Size(T);
+56
+gap> List(GreensDClasses(T), x -> Size(x));
+[ 6, 24, 2, 24 ]
+gap> List(GreensDClasses(T), x -> Size(x) = Size(GroupHClassOfGreensDClass(x)));
+[ true, true, true, true ]
+gap> gr3 := Digraph([[1]]);;
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr3, [G1], []);;
+gap> Size(T);
+24
+gap> Size(GreensHClassOfElement(T, Representative(T)));
+24
+gap> gr4 := Digraph([[1], [1, 2], [1, 3], [1, 4], [1, 2, 3, 5]]);;
+gap> G5 := AlternatingGroup(4);;
+gap> G2 := SymmetricGroup(4);;
+gap> hom21 := GroupHomomorphismByFunction(G2, G1, sgn);;
+gap> hom31 := GroupHomomorphismByFunction(G3, G1, x -> x);;
+gap> hom41 := GroupHomomorphismByFunction(G4, G1, x -> One(G1));;
+gap> hom52 := GroupHomomorphismByFunction(G5, G2, x -> x);;
+gap> hom53 := GroupHomomorphismByFunction(G5, G3, sgn);;
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
+> [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
+gap> Size(T);
+90
+gap> List(GreensDClasses(T), x -> Size(x));
+[ 24, 24, 6, 24, 12 ]
+gap> U := AsSemigroup(IsPartialPermSemigroup,
+> DigraphReverse(gr4),
+> [G1, G2, G3, G4, G5],
+> [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
+gap> U = T;
+true
+gap> gr5 := Digraph([[1], [1, 2], [1, 3], [1, 4], [2, 3, 5]]);;
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr5, [G1, G2, G3, G4, G5],
+> [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom52]]);;
+Error, Digraphs: AsSemigroup usage,
+the second argument must be a join semilattice digraph or a meet semilattice d\
+igraph,
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4],
+> [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom52]]);;
+Error, Digraphs: AsSemigroup usage,
+the third argument must have length equal to the number of vertices in the sec\
+ond argument,
+gap> S := FullTransformationMonoid(4);;
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [S, G2, G3, G4, G5],
+> [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
+Error, Digraphs: AsSemigroup usage,
+the third argument must be a list of groups,
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
+> [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52]]);;
+Error, Digraphs: AsSemigroup usage,
+the third argument must be a list of triples [i, j, hom] of length equal to th\
+e number of edges in the reflexive transitive reduction of the second argument\
+, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
+p homomorphism from group i to group j,
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
+> [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 4, hom53]]);;
+Error, Digraphs: AsSemigroup usage,
+the third argument must be a list of triples [i, j, hom] of length equal to th\
+e number of edges in the reflexive transitive reduction of the second argument\
+, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
+p homomorphism from group i to group j,
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
+> [[2, 1], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
+Error, Digraphs: AsSemigroup usage,
+the third argument must be a list of triples [i, j, hom] of length equal to th\
+e number of edges in the reflexive transitive reduction of the second argument\
+, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
+p homomorphism from group i to group j,
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
+> [[-2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
+Error, Digraphs: AsSemigroup usage,
+the third argument must be a list of triples [i, j, hom] of length equal to th\
+e number of edges in the reflexive transitive reduction of the second argument\
+, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
+p homomorphism from group i to group j,
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
+> [[2, -1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
+Error, Digraphs: AsSemigroup usage,
+the third argument must be a list of triples [i, j, hom] of length equal to th\
+e number of edges in the reflexive transitive reduction of the second argument\
+, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
+p homomorphism from group i to group j,
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
+> [[2, 1, sgn], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
+Error, Digraphs: AsSemigroup usage,
+the third argument must be a list of triples [i, j, hom] of length equal to th\
+e number of edges in the reflexive transitive reduction of the second argument\
+, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
+p homomorphism from group i to group j,
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
+> [[2, 1, sgn], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [4, 1, hom53]]);;
+Error, Digraphs: AsSemigroup usage,
+the third argument must be a list of triples [i, j, hom] of length equal to th\
+e number of edges in the reflexive transitive reduction of the second argument\
+, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
+p homomorphism from group i to group j,
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
+> [[2, 1, sgn], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 2, hom53]]);;
+Error, Digraphs: AsSemigroup usage,
+the third argument must be a list of triples [i, j, hom] of length equal to th\
+e number of edges in the reflexive transitive reduction of the second argument\
+, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
+p homomorphism from group i to group j,
+gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
+> [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 2, hom52]]);;
+Error, Digraphs: AsSemigroup usage,
+the fourth argument must contain a triple [i, j, hom] for each edge [i, j] in \
+the reflexive transitive reduction of the second argument,
+
 # DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);
@@ -1979,12 +2135,18 @@ gap> Unbind(edges);
 gap> Unbind(edges2);
 gap> Unbind(erev);
 gap> Unbind(func);
+gap> Unbind(G1);
+gap> Unbind(G2);
+gap> Unbind(G3);
+gap> Unbind(G4);
+gap> Unbind(G5);
 gap> Unbind(g);
 gap> Unbind(gr);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
 gap> Unbind(gr3);
 gap> Unbind(gr4);
+gap> Unbind(gr5);
 gap> Unbind(gri);
 gap> Unbind(grrt);
 gap> Unbind(grt);
@@ -2017,9 +2179,11 @@ gap> Unbind(rev);
 gap> Unbind(rgr);
 gap> Unbind(rtclosure);
 gap> Unbind(source);
+gap> Unbind(T);
 gap> Unbind(t);
 gap> Unbind(tclosure);
 gap> Unbind(temp);
+gap> Unbind(U);
 gap> Unbind(u1);
 gap> Unbind(u2);
 
