@@ -13,7 +13,7 @@
 ##  <!ENTITY GAPVERS        "4.9.0">
 ##  <!ENTITY GRAPEVERS      "4.5">
 ##  <!ENTITY IOVERS         "4.5.1">
-##  <!ENTITY ORBVERS        "4.7.5">
+##  <!ENTITY ORBVERS        "4.7.6">
 ##  <!ENTITY ARCHIVENAME    "digraphs-0.13.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-18">
 ##  <#/GAPDoc>
@@ -211,7 +211,7 @@ PackageDoc := rec(
 Dependencies := rec(
   GAP := ">=4.9.0",
   NeededOtherPackages := [["io", ">=4.5.1"],
-                          ["orb", ">=4.7.5"]],
+                          ["orb", ">=4.7.6"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"],
                              ["grape", ">=4.5"],
                              ["nautytracesinterface", ">=0.2"]],
