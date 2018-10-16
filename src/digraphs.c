@@ -25,6 +25,13 @@
 static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
 static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 
+#if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
+// compatibility with GAP <= 4.9
+static inline Obj NEW_PLIST_IMM(UInt type, Int plen) {
+    return NEW_PLIST(type | IMMUTABLE, plen);
+}
+#endif
+
 /*************************************************************************/
 
 Int DigraphNrVertices(Obj digraph) {
@@ -109,8 +116,8 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
   n = LEN_PLIST(digraph);
   if (n == 0) {
     out = NEW_PREC(2);
-    AssPRec(out, RNamName("id"), NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
-    AssPRec(out, RNamName("comps"), NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
+    AssPRec(out, RNamName("id"), NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
+    AssPRec(out, RNamName("comps"), NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
     CHANGED_BAG(out);
     return out;
   }
@@ -120,7 +127,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
   // stack1 is a plist so we can use memcopy below
   SET_LEN_PLIST(stack1, n);
 
-  id = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, n);
+  id = NEW_PLIST_IMM(T_PLIST_CYC, n);
   SET_LEN_PLIST(id, n);
 
   // init id
@@ -130,7 +137,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
 
   count = n;
 
-  comps = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, n);
+  comps = NEW_PLIST_IMM(T_PLIST_TAB, n);
   SET_LEN_PLIST(comps, 0);
 
   stack2 = malloc((4 * n + 2) * sizeof(UInt));
@@ -161,7 +168,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
               SET_ELM_PLIST(id, w, INTOBJ_INT(count));
             } while (w != frames[0]);
 
-            comp = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, nr);
+            comp = NEW_PLIST_IMM(T_PLIST_CYC, nr);
             SET_LEN_PLIST(comp, nr);
 
             memcpy(
@@ -240,8 +247,8 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
   out = NEW_PREC(2);
   n   = DigraphNrVertices(digraph);
   if (n == 0) {
-    gid    = NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
-    gcomps = NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    gid    = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
+    gcomps = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   } else {
     id = malloc(n * sizeof(UInt));
     for (i = 0; i < n; i++) {
@@ -268,12 +275,12 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
     free(id);
 
     // Make GAP object from nid
-    gid    = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, n);
-    gcomps = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, nrcomps);
+    gid    = NEW_PLIST_IMM(T_PLIST_CYC, n);
+    gcomps = NEW_PLIST_IMM(T_PLIST_CYC, nrcomps);
     SET_LEN_PLIST(gid, n);
     SET_LEN_PLIST(gcomps, nrcomps);
     for (i = 1; i <= nrcomps; i++) {
-      SET_ELM_PLIST(gcomps, i, NEW_PLIST(T_PLIST_CYC + IMMUTABLE, 0));
+      SET_ELM_PLIST(gcomps, i, NEW_PLIST_IMM(T_PLIST_CYC, 0));
       CHANGED_BAG(gcomps);
       SET_LEN_PLIST(ELM_PLIST(gcomps, i), 0);
     }
@@ -440,7 +447,7 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
 
   // Special case for n = 0
   if (n == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
 
   if (loops == True) {
@@ -450,10 +457,10 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
   }
 
   // Create the GAP out-neighbours strcture of the result
-  out = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, n);
+  out = NEW_PLIST_IMM(T_PLIST_TAB, n);
   SET_LEN_PLIST(out, n);
   for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(out, i, NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
+    SET_ELM_PLIST(out, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
     SET_LEN_PLIST(ELM_PLIST(out, i), 0);
     CHANGED_BAG(out);
   }
@@ -600,12 +607,12 @@ static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) {
       stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
       if (stack[0] == target) {
         // Create output lists
-        path = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, level);
+        path = NEW_PLIST_IMM(T_PLIST_CYC, level);
         SET_LEN_PLIST(path, level);
         SET_ELM_PLIST(path, level--, INTOBJ_INT(stack[0]));
-        edge = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, level);
+        edge = NEW_PLIST_IMM(T_PLIST_CYC, level);
         SET_LEN_PLIST(edge, level);
-        out = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, 2);
+        out = NEW_PLIST_IMM(T_PLIST_CYC, 2);
         SET_LEN_PLIST(out, 2);
 
         // Fill output lists
@@ -773,9 +780,9 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   nr = LEN_PLIST(adj);
 
   if (nr == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
-  out = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, nr);
+  out = NEW_PLIST_IMM(T_PLIST_CYC, nr);
   SET_LEN_PLIST(out, nr);
   if (nr == 1) {
     SET_ELM_PLIST(out, 1, INTOBJ_INT(1));
@@ -866,14 +873,14 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
   nr = LEN_PLIST(adj);
 
   if (nr == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
 
   // init the adjacencies of the spanning forest
-  out = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, nr);
+  out = NEW_PLIST_IMM(T_PLIST_TAB, nr);
   SET_LEN_PLIST(out, nr);
   for (i = 1; i <= nr; i++) {
-    SET_ELM_PLIST(out, i, NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
+    SET_ELM_PLIST(out, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
     SET_LEN_PLIST(ELM_PLIST(out, i), 0);
     CHANGED_BAG(out);
   }
@@ -947,11 +954,11 @@ static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
   adj = OutNeighbours(digraph);
 
   if (m == 0) {
-    source = NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, m);
-    range  = NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, m);
+    source = NEW_PLIST_IMM(T_PLIST_EMPTY, m);
+    range  = NEW_PLIST_IMM(T_PLIST_EMPTY, m);
   } else {
-    source = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, m);
-    range  = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, m);
+    source = NEW_PLIST_IMM(T_PLIST_CYC, m);
+    range  = NEW_PLIST_IMM(T_PLIST_CYC, m);
     k      = 0;
     for (i = 1; i <= n; i++) {
       adji = ELM_PLIST(adj, i);
@@ -988,17 +995,17 @@ FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) {
   }
   n = INT_INTOBJ(nrvertices);
   if (n == 0) {
-    adj = NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    adj = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   } else {
     PLAIN_LIST(source);
     PLAIN_LIST(range);
 
-    adj = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, n);
+    adj = NEW_PLIST_IMM(T_PLIST_TAB, n);
     SET_LEN_PLIST(adj, n);
 
     // fill adj with empty plists
     for (i = 1; i <= n; i++) {
-      SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
+      SET_ELM_PLIST(adj, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
       SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
       CHANGED_BAG(adj);
     }
@@ -1027,14 +1034,14 @@ static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) {
 
   n = LEN_PLIST(adj);
   if (n == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
-  inn = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, n);
+  inn = NEW_PLIST_IMM(T_PLIST_TAB, n);
   SET_LEN_PLIST(inn, n);
 
   // fill adj with empty plists
   for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(inn, i, NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
+    SET_ELM_PLIST(inn, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
     SET_LEN_PLIST(ELM_PLIST(inn, i), 0);
     CHANGED_BAG(inn);
   }
@@ -1063,16 +1070,16 @@ static Obj FuncADJACENCY_MATRIX(Obj self, Obj digraph) {
 
   n = DigraphNrVertices(digraph);
   if (n == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
 
   adj = OutNeighbours(digraph);
-  mat = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, n);
+  mat = NEW_PLIST_IMM(T_PLIST_TAB, n);
   SET_LEN_PLIST(mat, n);
 
   for (i = 1; i <= n; i++) {
     // Set up the i^th row of the adjacency matrix
-    next = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, n);
+    next = NEW_PLIST_IMM(T_PLIST_CYC, n);
     SET_LEN_PLIST(next, n);
     for (j = 1; j <= n; j++) {
       SET_ELM_PLIST(next, j, INTOBJ_INT(0));
@@ -1167,7 +1174,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     if (copy) {
       return True;
     }
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
 
   // Initialise the n x n matrix with val1 and val2
