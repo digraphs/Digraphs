@@ -171,10 +171,8 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
             comp = NEW_PLIST_IMM(T_PLIST_CYC, nr);
             SET_LEN_PLIST(comp, nr);
 
-            memcpy(
-                (void*) ((char*) (ADDR_OBJ(comp)) + sizeof(Obj)),
-                (void*) ((char*) (ADDR_OBJ(stack1)) + (end1 + 1) * sizeof(Obj)),
-                (size_t)(nr * sizeof(Obj)));
+            memcpy(ADDR_OBJ(comp) + 1, CONST_ADDR_OBJ(stack1) + (end1 + 1),
+                nr * sizeof(Obj));
 
             nr = LEN_PLIST(comps) + 1;
             SET_ELM_PLIST(comps, nr, comp);
@@ -345,7 +343,7 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
           level++;
           nbs = ELM_PLIST(adj, j);
           stack += 2;
-          stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          stack[0] = INT_INTOBJ(CONST_ADDR_OBJ(nbs)[k]);
           stack[1] = 1;
         }
       }
@@ -420,7 +418,7 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
       level++;
       nbs = ELM_PLIST(adj, j);
       stack += 2;
-      stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+      stack[0] = INT_INTOBJ(CONST_ADDR_OBJ(nbs)[k]);
       stack[1] = 1;
       prev     = 0;
     }
@@ -548,7 +546,7 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
           backtracking = false;
           level++;
           stack += 2;
-          stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          stack[0] = INT_INTOBJ(CONST_ADDR_OBJ(nbs)[k]);
           stack[1] = 1;
           ptr[j]   = 2;
         }
@@ -604,7 +602,7 @@ static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) {
       level++;
       nbs = ELM_PLIST(adj, j);
       stack += 2;
-      stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+      stack[0] = INT_INTOBJ(CONST_ADDR_OBJ(nbs)[k]);
       if (stack[0] == target) {
         // Create output lists
         path = NEW_PLIST_IMM(T_PLIST_CYC, level);
@@ -677,7 +675,7 @@ static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
         if (ptr[j] == 2) {
           PLAIN_LIST(nbs);
           for (l = 1; l <= LEN_PLIST(nbs); l++) {
-            if (last1 != j && INT_INTOBJ(ADDR_OBJ(nbs)[l]) == last1) {
+            if (last1 != j && INT_INTOBJ(CONST_ADDR_OBJ(nbs)[l]) == last1) {
               free(ptr);
               stack -= (4 * level) - 4;  // put the stack back to the start
               free(stack);
@@ -914,7 +912,7 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
           stack[1]++;
         } else {
           ptr[j] = 1;
-          next   = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          next   = INT_INTOBJ(CONST_ADDR_OBJ(nbs)[k]);
           level++;
           stack += 2;
           stack[0] = next;
