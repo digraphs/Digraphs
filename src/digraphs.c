@@ -25,6 +25,13 @@
 static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
 static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 
+#if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
+// compatibility with GAP <= 4.9
+static inline Obj NEW_PLIST_IMM(UInt type, Int plen) {
+    return NEW_PLIST(type | IMMUTABLE, plen);
+}
+#endif
+
 /*************************************************************************/
 
 Int DigraphNrVertices(Obj digraph) {
@@ -109,9 +116,8 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
   n = LEN_PLIST(digraph);
   if (n == 0) {
     out = NEW_PREC(2);
-    AssPRec(out, RNamName("id"), NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
-    AssPRec(out, RNamName("comps"), NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
-    CHANGED_BAG(out);
+    AssPRec(out, RNamName("id"), NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
+    AssPRec(out, RNamName("comps"), NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
     return out;
   }
 
@@ -120,7 +126,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
   // stack1 is a plist so we can use memcopy below
   SET_LEN_PLIST(stack1, n);
 
-  id = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, n);
+  id = NEW_PLIST_IMM(T_PLIST_CYC, n);
   SET_LEN_PLIST(id, n);
 
   // init id
@@ -130,8 +136,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
 
   count = n;
 
-  comps = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, n);
-  SET_LEN_PLIST(comps, 0);
+  comps = NEW_PLIST_IMM(T_PLIST_TAB, n);
 
   stack2 = malloc((4 * n + 2) * sizeof(UInt));
   frames = stack2 + n + 1;
@@ -161,13 +166,11 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
               SET_ELM_PLIST(id, w, INTOBJ_INT(count));
             } while (w != frames[0]);
 
-            comp = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, nr);
+            comp = NEW_PLIST_IMM(T_PLIST_CYC, nr);
             SET_LEN_PLIST(comp, nr);
 
-            memcpy(
-                (void*) ((char*) (ADDR_OBJ(comp)) + sizeof(Obj)),
-                (void*) ((char*) (ADDR_OBJ(stack1)) + (end1 + 1) * sizeof(Obj)),
-                (size_t)(nr * sizeof(Obj)));
+            memcpy(ADDR_OBJ(comp) + 1, CONST_ADDR_OBJ(stack1) + (end1 + 1),
+                nr * sizeof(Obj));
 
             nr = LEN_PLIST(comps) + 1;
             SET_ELM_PLIST(comps, nr, comp);
@@ -212,7 +215,6 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
   SHRINK_PLIST(comps, LEN_PLIST(comps));
   AssPRec(out, RNamName("id"), id);
   AssPRec(out, RNamName("comps"), comps);
-  CHANGED_BAG(out);
   free(stack2);
   return out;
 }
@@ -240,8 +242,8 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
   out = NEW_PREC(2);
   n   = DigraphNrVertices(digraph);
   if (n == 0) {
-    gid    = NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
-    gcomps = NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    gid    = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
+    gcomps = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   } else {
     id = malloc(n * sizeof(UInt));
     for (i = 0; i < n; i++) {
@@ -268,14 +270,13 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
     free(id);
 
     // Make GAP object from nid
-    gid    = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, n);
-    gcomps = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, nrcomps);
+    gid    = NEW_PLIST_IMM(T_PLIST_CYC, n);
+    gcomps = NEW_PLIST_IMM(T_PLIST_CYC, nrcomps);
     SET_LEN_PLIST(gid, n);
     SET_LEN_PLIST(gcomps, nrcomps);
     for (i = 1; i <= nrcomps; i++) {
-      SET_ELM_PLIST(gcomps, i, NEW_PLIST(T_PLIST_CYC + IMMUTABLE, 0));
+      SET_ELM_PLIST(gcomps, i, NEW_PLIST_IMM(T_PLIST_CYC, 0));
       CHANGED_BAG(gcomps);
-      SET_LEN_PLIST(ELM_PLIST(gcomps, i), 0);
     }
     for (i = 1; i <= n; i++) {
       SET_ELM_PLIST(gid, i, INTOBJ_INT(nid[i - 1]));
@@ -287,7 +288,6 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
   }
   AssPRec(out, RNamName("id"), gid);
   AssPRec(out, RNamName("comps"), gcomps);
-  CHANGED_BAG(out);
   return out;
 }
 
@@ -338,7 +338,7 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
           level++;
           nbs = ELM_PLIST(adj, j);
           stack += 2;
-          stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          stack[0] = INT_INTOBJ(CONST_ADDR_OBJ(nbs)[k]);
           stack[1] = 1;
         }
       }
@@ -413,7 +413,7 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
       level++;
       nbs = ELM_PLIST(adj, j);
       stack += 2;
-      stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+      stack[0] = INT_INTOBJ(CONST_ADDR_OBJ(nbs)[k]);
       stack[1] = 1;
       prev     = 0;
     }
@@ -440,7 +440,7 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
 
   // Special case for n = 0
   if (n == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
 
   if (loops == True) {
@@ -450,11 +450,10 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
   }
 
   // Create the GAP out-neighbours strcture of the result
-  out = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, n);
+  out = NEW_PLIST_IMM(T_PLIST_TAB, n);
   SET_LEN_PLIST(out, n);
   for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(out, i, NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
-    SET_LEN_PLIST(ELM_PLIST(out, i), 0);
+    SET_ELM_PLIST(out, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
     CHANGED_BAG(out);
   }
 
@@ -498,7 +497,6 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
             len  = LEN_PLIST(outj);
             if (len == 0) {
               RetypeBag(outj, T_PLIST_CYC + IMMUTABLE);
-              CHANGED_BAG(out);
             }
             AssPlist(outj, len + 1, INTOBJ_INT(j));
           }
@@ -511,7 +509,6 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
           len  = LEN_PLIST(outj);
           if (len == 0) {
             RetypeBag(outj, T_PLIST_CYC + IMMUTABLE);
-            CHANGED_BAG(out);
           }
           AssPlist(outj, len + 1, INTOBJ_INT(stack[-2]));
         }
@@ -541,7 +538,7 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
           backtracking = false;
           level++;
           stack += 2;
-          stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          stack[0] = INT_INTOBJ(CONST_ADDR_OBJ(nbs)[k]);
           stack[1] = 1;
           ptr[j]   = 2;
         }
@@ -597,15 +594,15 @@ static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) {
       level++;
       nbs = ELM_PLIST(adj, j);
       stack += 2;
-      stack[0] = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+      stack[0] = INT_INTOBJ(CONST_ADDR_OBJ(nbs)[k]);
       if (stack[0] == target) {
         // Create output lists
-        path = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, level);
+        path = NEW_PLIST_IMM(T_PLIST_CYC, level);
         SET_LEN_PLIST(path, level);
         SET_ELM_PLIST(path, level--, INTOBJ_INT(stack[0]));
-        edge = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, level);
+        edge = NEW_PLIST_IMM(T_PLIST_CYC, level);
         SET_LEN_PLIST(edge, level);
-        out = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, 2);
+        out = NEW_PLIST_IMM(T_PLIST_CYC, 2);
         SET_LEN_PLIST(out, 2);
 
         // Fill output lists
@@ -670,7 +667,7 @@ static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
         if (ptr[j] == 2) {
           PLAIN_LIST(nbs);
           for (l = 1; l <= LEN_PLIST(nbs); l++) {
-            if (last1 != j && INT_INTOBJ(ADDR_OBJ(nbs)[l]) == last1) {
+            if (last1 != j && INT_INTOBJ(CONST_ADDR_OBJ(nbs)[l]) == last1) {
               free(ptr);
               stack -= (4 * level) - 4;  // put the stack back to the start
               free(stack);
@@ -773,9 +770,9 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   nr = LEN_PLIST(adj);
 
   if (nr == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
-  out = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, nr);
+  out = NEW_PLIST_IMM(T_PLIST_CYC, nr);
   SET_LEN_PLIST(out, nr);
   if (nr == 1) {
     SET_ELM_PLIST(out, 1, INTOBJ_INT(1));
@@ -866,15 +863,14 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
   nr = LEN_PLIST(adj);
 
   if (nr == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
 
   // init the adjacencies of the spanning forest
-  out = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, nr);
+  out = NEW_PLIST_IMM(T_PLIST_TAB, nr);
   SET_LEN_PLIST(out, nr);
   for (i = 1; i <= nr; i++) {
-    SET_ELM_PLIST(out, i, NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
-    SET_LEN_PLIST(ELM_PLIST(out, i), 0);
+    SET_ELM_PLIST(out, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
     CHANGED_BAG(out);
   }
 
@@ -907,7 +903,7 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
           stack[1]++;
         } else {
           ptr[j] = 1;
-          next   = INT_INTOBJ(ADDR_OBJ(nbs)[k]);
+          next   = INT_INTOBJ(CONST_ADDR_OBJ(nbs)[k]);
           level++;
           stack += 2;
           stack[0] = next;
@@ -919,7 +915,6 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
             len   = LEN_PLIST(out_j);
             if (len == 0) {
               RetypeBag(out_j, T_PLIST_CYC + IMMUTABLE);
-              CHANGED_BAG(out);
             }
             AssPlist(out_j, len + 1, INTOBJ_INT(next));
             // create the edge <next> -> <j>
@@ -927,7 +922,6 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
             new = ELM_PLIST(out, next);
             RetypeBag(new, T_PLIST_CYC + IMMUTABLE);
             AssPlist(new, 1, INTOBJ_INT(j));
-            CHANGED_BAG(out);
           }
         }
       }
@@ -947,11 +941,11 @@ static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
   adj = OutNeighbours(digraph);
 
   if (m == 0) {
-    source = NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, m);
-    range  = NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, m);
+    source = NEW_PLIST_IMM(T_PLIST_EMPTY, m);
+    range  = NEW_PLIST_IMM(T_PLIST_EMPTY, m);
   } else {
-    source = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, m);
-    range  = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, m);
+    source = NEW_PLIST_IMM(T_PLIST_CYC, m);
+    range  = NEW_PLIST_IMM(T_PLIST_CYC, m);
     k      = 0;
     for (i = 1; i <= n; i++) {
       adji = ELM_PLIST(adj, i);
@@ -988,18 +982,17 @@ FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) {
   }
   n = INT_INTOBJ(nrvertices);
   if (n == 0) {
-    adj = NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    adj = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   } else {
     PLAIN_LIST(source);
     PLAIN_LIST(range);
 
-    adj = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, n);
+    adj = NEW_PLIST_IMM(T_PLIST_TAB, n);
     SET_LEN_PLIST(adj, n);
 
     // fill adj with empty plists
     for (i = 1; i <= n; i++) {
-      SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
-      SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
+      SET_ELM_PLIST(adj, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
       CHANGED_BAG(adj);
     }
 
@@ -1010,7 +1003,6 @@ FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) {
       len  = LEN_PLIST(adjj);
       if (len == 0) {
         RetypeBag(adjj, T_PLIST_CYC + IMMUTABLE);
-        CHANGED_BAG(adj);
       }
       AssPlist(adjj, len + 1, ELM_PLIST(range, i));
     }
@@ -1027,15 +1019,14 @@ static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) {
 
   n = LEN_PLIST(adj);
   if (n == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
-  inn = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, n);
+  inn = NEW_PLIST_IMM(T_PLIST_TAB, n);
   SET_LEN_PLIST(inn, n);
 
   // fill adj with empty plists
   for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(inn, i, NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0));
-    SET_LEN_PLIST(ELM_PLIST(inn, i), 0);
+    SET_ELM_PLIST(inn, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
     CHANGED_BAG(inn);
   }
 
@@ -1049,7 +1040,6 @@ static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) {
       len2 = LEN_PLIST(innk);
       if (len2 == 0) {
         RetypeBag(innk, T_PLIST_CYC + IMMUTABLE);
-        CHANGED_BAG(inn);
       }
       AssPlist(innk, len2 + 1, INTOBJ_INT(i));
     }
@@ -1063,16 +1053,16 @@ static Obj FuncADJACENCY_MATRIX(Obj self, Obj digraph) {
 
   n = DigraphNrVertices(digraph);
   if (n == 0) {
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
 
   adj = OutNeighbours(digraph);
-  mat = NEW_PLIST(T_PLIST_TAB + IMMUTABLE, n);
+  mat = NEW_PLIST_IMM(T_PLIST_TAB, n);
   SET_LEN_PLIST(mat, n);
 
   for (i = 1; i <= n; i++) {
     // Set up the i^th row of the adjacency matrix
-    next = NEW_PLIST(T_PLIST_CYC + IMMUTABLE, n);
+    next = NEW_PLIST_IMM(T_PLIST_CYC, n);
     SET_LEN_PLIST(next, n);
     for (j = 1; j <= n; j++) {
       SET_ELM_PLIST(next, j, INTOBJ_INT(0));
@@ -1167,7 +1157,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     if (copy) {
       return True;
     }
-    return NEW_PLIST(T_PLIST_EMPTY + IMMUTABLE, 0);
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
 
   // Initialise the n x n matrix with val1 and val2
@@ -1324,7 +1314,6 @@ static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj limm) {
 
   for (i = 1; i <= n; i++) {
     SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY, 0));
-    SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
     CHANGED_BAG(adj);
   }
 
@@ -1336,7 +1325,6 @@ static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj limm) {
         len  = LEN_PLIST(adji);
         if (len == 0) {
           RetypeBag(adji, T_PLIST_CYC);
-          CHANGED_BAG(adj);
         }
         AssPlist(adji, len + 1, INTOBJ_INT(j));
       }
@@ -1357,7 +1345,6 @@ static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
 
   for (i = 1; i <= n; i++) {
     SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY, 0));
-    SET_LEN_PLIST(ELM_PLIST(adj, i), 0);
     CHANGED_BAG(adj);
   }
 
@@ -1368,7 +1355,6 @@ static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
     len  = LEN_PLIST(adjj);
     if (len == 0) {
       RetypeBag(adjj, T_PLIST_CYC);
-      CHANGED_BAG(adj);
     }
     AssPlist(adjj, len + 1, INTOBJ_INT(k));
   }
@@ -1700,7 +1686,6 @@ void digraph_hook_function(void*               user_param,
 
   gens = ELM_PLIST(user_param, 1);
   AssPlist(gens, LEN_PLIST(gens) + 1, p);
-  CHANGED_BAG(user_param);
 }
 
 static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
@@ -1734,13 +1719,13 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
     ptr[i] = canon[i];
   }
   SET_ELM_PLIST(autos, 2, p);
+  CHANGED_BAG(autos);
 
   bliss_digraphs_release(graph);
   if (LEN_PLIST(ELM_PLIST(autos, 1)) != 0) {
     SortDensePlist(ELM_PLIST(autos, 1));
     RemoveDupsDensePlist(ELM_PLIST(autos, 1));
   }
-  CHANGED_BAG(autos);
 
   return autos;
 }
@@ -1780,7 +1765,6 @@ void multidigraph_hook_function(void*               user_param,
   }
 
   AssPlist(gens, LEN_PLIST(gens) + 1, p);
-  CHANGED_BAG(user_param);
 }
 
 // user_param = [vertex perms, nr vertices, edge perms, nr edges]
@@ -1818,7 +1802,6 @@ void multidigraph_colours_hook_function(void*               user_param,
   }
 
   AssPlist(gens, LEN_PLIST(gens) + 1, p);
-  CHANGED_BAG(user_param);
 }
 
 static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
@@ -1837,10 +1820,9 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   SET_ELM_PLIST(autos, 1, NEW_PLIST(T_PLIST, 0));  // perms of the vertices
   CHANGED_BAG(autos);
   SET_ELM_PLIST(autos, 2, INTOBJ_INT(DigraphNrVertices(digraph)));
-  CHANGED_BAG(autos);
   SET_ELM_PLIST(autos, 3, NEW_PLIST(T_PLIST, 0));  // perms of the edges
-  SET_ELM_PLIST(autos, 4, INTOBJ_INT(DigraphNrEdges(digraph)));
   CHANGED_BAG(autos);
+  SET_ELM_PLIST(autos, 4, INTOBJ_INT(DigraphNrEdges(digraph)));
 
   if (colours == False) {
     canon = bliss_digraphs_find_canonical_labeling(
@@ -1887,7 +1869,6 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
 
   // remove 4th entry of autos (the number of edges) . . .
   SET_LEN_PLIST(autos, 3);
-  CHANGED_BAG(autos);
 
   if (LEN_PLIST(ELM_PLIST(autos, 1)) != 0) {
     SortDensePlist(ELM_PLIST(autos, 1));
@@ -1897,7 +1878,6 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
     SortDensePlist(ELM_PLIST(autos, 3));
     RemoveDupsDensePlist(ELM_PLIST(autos, 3));
   }
-  CHANGED_BAG(autos);
   return autos;
 }
 
@@ -2014,7 +1994,6 @@ void homo_hook_collect(void* user_param, const UIntS nr, const UIntS* map) {
   }
 
   AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
-  CHANGED_BAG(user_param);
 #if DEBUG_HOMOS
   Pr("found %d homomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
 #endif
