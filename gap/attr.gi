@@ -13,8 +13,8 @@
 
 InstallMethod(ArticulationPoints, "for a digraph", [IsDigraph],
 function(digraph)
-  local copy, nbs, counter, visited, num, low, parent, points, v_stack,
-  w_stack, depth, 1st_root_nb, v, w, i;
+  local copy, nbs, counter, visited, num, low, parent, points, points_seen,
+        stack, depth, v, w, i;
 
   if (HasIsConnectedDigraph(digraph) and not IsConnectedDigraph(digraph))
       or DigraphNrVertices(digraph) <= 1 then
@@ -32,51 +32,54 @@ function(digraph)
   low         := [];
   parent      := [1];
   points      := [];
-  v_stack     := [1];
-  w_stack     := [0];
+  points_seen := BlistList([1 .. DigraphNrVertices(copy)], []);
+  stack       := [[1, 0]];
   depth       := 1;
-  1st_root_nb := First(nbs[1], x -> not x = 1);
 
   while depth > 1 or not visited[1] do
-    if visited[v_stack[depth]] then
+    v := stack[depth][1];
+    if visited[v] then
       depth := depth - 1;
-      v     := v_stack[depth];
-      w     := nbs[v][w_stack[depth]];
-      if v = 1 then
-        if w <> 1st_root_nb then
-          Add(points, v);
-        fi;
-      elif low[w] >= num[v] then
+      v     := stack[depth][1];
+      w     := nbs[v][stack[depth][2]];
+      if v <> 1 and low[w] >= num[v] and not points_seen[v] then
+        points_seen[v] := true;
         Add(points, v);
       fi;
       if low[w] < low[v] then
         low[v] := low[w];
       fi;
     else
-      v          := v_stack[depth];
       visited[v] := true;
       counter    := counter + 1;
       num[v]     := counter;
       low[v]     := counter;
     fi;
-    for i in [w_stack[depth] + 1 .. Length(nbs[v])] do
+    i := PositionProperty(nbs[v], w -> w <> v, stack[depth][2]);
+    while i <> fail do
       w := nbs[v][i];
-      if w <> v then
-        if not visited[w] then
-          parent[w]      := v;
-          w_stack[depth] := i;
-          depth          := depth + 1;
-          v_stack[depth] := w;
-          w_stack[depth] := 0;
-          break;
-        elif parent[v] <> w and num[w] < low[v] then
-          low[v] := num[w];
+      if not visited[w] then
+        parent[w]       := v;
+        stack[depth][2] := i;
+        depth           := depth + 1;
+        if not IsBound(stack[depth]) then
+          stack[depth] := [];
         fi;
+        stack[depth][1] := w;
+        stack[depth][2] := 0;
+        break;
+      elif parent[v] <> w and num[w] < low[v] then
+        low[v] := num[w];
       fi;
+      i := PositionProperty(nbs[v], w -> w <> v, i);
     od;
   od;
 
   if counter = DigraphNrVertices(digraph) then
+    i := Position(parent, 1, 1);
+    if i <> fail and Position(parent, 1, i) <> fail then
+      Add(points, 1);
+    fi;
     SetIsConnectedDigraph(digraph, true);
     return points;
   else
