@@ -1508,6 +1508,23 @@ gap> ArticulationPoints(DigraphFromGraph6String("FlCX?"));
 gap> ArticulationPoints(Digraph([[2, 4, 5], [1, 4], [4, 7], [1, 2, 3, 5, 6, 7],
 >                                [1, 4], [4, 7], [3, 4, 6]]));
 [ 4 ]
+gap> gr := DigraphFromSparse6String(
+> ":~?@V`OINBg_McouHAxQD@gyYEW}Q_@_YdgE`?OgZgpEbfYQKDGqiDQEI`wGdjoADGZG\
+> FIJONFQSplq]y@IwvbPKhMh}JGK?OLzW{agKKfRCtarqTGayQGb]rMIurapkxPG?RGcI]\
+> IBtB_`EQKJ@LmxlL_?k^QieOkB|T");
+<digraph with 87 vertices, 214 edges>
+gap> Set(ArticulationPoints(gr));
+[ 1, 3, 8, 11, 12, 15, 17, 18, 19, 21, 23, 27, 30, 36, 37, 41, 42, 46, 51, 
+  52, 59, 60, 61, 63, 66, 68, 69, 73, 75, 76, 79, 84, 87 ]
+gap> IsDuplicateFree(last);
+true
+gap> ForAll(ArticulationPoints(gr),
+> x -> not IsConnectedDigraph(DigraphRemoveVertex(gr, x)));
+true
+gap> Set(ArticulationPoints(gr))
+> = Filtered(DigraphVertices(gr),
+>            x -> not IsConnectedDigraph(DigraphRemoveVertex(gr, x)));
+true
 
 #T# HamiltonianPath
 gap> g := Digraph([]);
