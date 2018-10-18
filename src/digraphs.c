@@ -450,10 +450,10 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
   }
 
   // Create the GAP out-neighbours strcture of the result
-  out = NEW_PLIST_IMM(T_PLIST_TAB, n);
+  out = NEW_PLIST(T_PLIST_TAB, n);
   SET_LEN_PLIST(out, n);
   for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(out, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
+    SET_ELM_PLIST(out, i, NEW_PLIST(T_PLIST_EMPTY, 0));
     CHANGED_BAG(out);
   }
 
@@ -495,10 +495,7 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
             // Store the loop
             outj = ELM_PLIST(out, j);
             len  = LEN_PLIST(outj);
-            if (len == 0) {
-              RetypeBag(outj, T_PLIST_CYC + IMMUTABLE);
-            }
-            AssPlist(outj, len + 1, INTOBJ_INT(j));
+            ASS_LIST(outj, len + 1, INTOBJ_INT(j));
           }
           continue;
         }
@@ -507,10 +504,7 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
         if (!backtracking && j != source && !mat[(stack[-2] - 1) * n + j - 1]) {
           outj = ELM_PLIST(out, j);
           len  = LEN_PLIST(outj);
-          if (len == 0) {
-            RetypeBag(outj, T_PLIST_CYC + IMMUTABLE);
-          }
-          AssPlist(outj, len + 1, INTOBJ_INT(stack[-2]));
+          ASS_LIST(outj, len + 1, INTOBJ_INT(stack[-2]));
         }
 
         nbs = ELM_PLIST(adj, j);
@@ -548,6 +542,7 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
   free(mat);
   free(ptr);
   free(stack);
+  MakeImmutable(out);
   return out;
 }
 
@@ -867,10 +862,10 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
   }
 
   // init the adjacencies of the spanning forest
-  out = NEW_PLIST_IMM(T_PLIST_TAB, nr);
+  out = NEW_PLIST(T_PLIST_TAB, nr);
   SET_LEN_PLIST(out, nr);
   for (i = 1; i <= nr; i++) {
-    SET_ELM_PLIST(out, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
+    SET_ELM_PLIST(out, i, NEW_PLIST(T_PLIST_EMPTY, 0));
     CHANGED_BAG(out);
   }
 
@@ -913,15 +908,11 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
             // create the edge <j> -> <next>
             out_j = ELM_PLIST(out, j);
             len   = LEN_PLIST(out_j);
-            if (len == 0) {
-              RetypeBag(out_j, T_PLIST_CYC + IMMUTABLE);
-            }
-            AssPlist(out_j, len + 1, INTOBJ_INT(next));
+            ASS_LIST(out_j, len + 1, INTOBJ_INT(next));
             // create the edge <next> -> <j>
             // since <next> is new, <out[next]> is still a T_PLIST_EMPTY
             new = ELM_PLIST(out, next);
-            RetypeBag(new, T_PLIST_CYC + IMMUTABLE);
-            AssPlist(new, 1, INTOBJ_INT(j));
+            ASS_LIST(new, 1, INTOBJ_INT(j));
           }
         }
       }
@@ -929,6 +920,7 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
   }
   free(ptr);
   free(stack);
+  MakeImmutable(out);
   return out;
 }
 
@@ -987,12 +979,12 @@ FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) {
     PLAIN_LIST(source);
     PLAIN_LIST(range);
 
-    adj = NEW_PLIST_IMM(T_PLIST_TAB, n);
+    adj = NEW_PLIST(T_PLIST_TAB, n);
     SET_LEN_PLIST(adj, n);
 
     // fill adj with empty plists
     for (i = 1; i <= n; i++) {
-      SET_ELM_PLIST(adj, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
+      SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY, 0));
       CHANGED_BAG(adj);
     }
 
@@ -1001,12 +993,10 @@ FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) {
       j    = INT_INTOBJ(ELM_PLIST(source, i));
       adjj = ELM_PLIST(adj, j);
       len  = LEN_PLIST(adjj);
-      if (len == 0) {
-        RetypeBag(adjj, T_PLIST_CYC + IMMUTABLE);
-      }
-      AssPlist(adjj, len + 1, ELM_PLIST(range, i));
+      ASS_LIST(adjj, len + 1, ELM_PLIST(range, i));
     }
   }
+  MakeImmutable(adj);
 
   // AssPRec(digraph, RNamName("OutNeighbours"), adj);
   return adj;
@@ -1021,12 +1011,12 @@ static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) {
   if (n == 0) {
     return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
-  inn = NEW_PLIST_IMM(T_PLIST_TAB, n);
+  inn = NEW_PLIST(T_PLIST_TAB, n);
   SET_LEN_PLIST(inn, n);
 
   // fill adj with empty plists
   for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(inn, i, NEW_PLIST_IMM(T_PLIST_EMPTY, 0));
+    SET_ELM_PLIST(inn, i, NEW_PLIST(T_PLIST_EMPTY, 0));
     CHANGED_BAG(inn);
   }
 
@@ -1038,12 +1028,10 @@ static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) {
       k    = INT_INTOBJ(ELM_PLIST(adji, j));
       innk = ELM_PLIST(inn, k);
       len2 = LEN_PLIST(innk);
-      if (len2 == 0) {
-        RetypeBag(innk, T_PLIST_CYC + IMMUTABLE);
-      }
-      AssPlist(innk, len2 + 1, INTOBJ_INT(i));
+      ASS_LIST(innk, len2 + 1, INTOBJ_INT(i));
     }
   }
+  MakeImmutable(inn);
   return inn;
 }
 
@@ -1323,10 +1311,7 @@ static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj limm) {
       if (k < lim) {
         adji = ELM_PLIST(adj, i);
         len  = LEN_PLIST(adji);
-        if (len == 0) {
-          RetypeBag(adji, T_PLIST_CYC);
-        }
-        AssPlist(adji, len + 1, INTOBJ_INT(j));
+        ASS_LIST(adji, len + 1, INTOBJ_INT(j));
       }
     }
   }
@@ -1353,10 +1338,7 @@ static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
     k    = (rand() % n) + 1;
     adjj = ELM_PLIST(adj, j);
     len  = LEN_PLIST(adjj);
-    if (len == 0) {
-      RetypeBag(adjj, T_PLIST_CYC);
-    }
-    AssPlist(adjj, len + 1, INTOBJ_INT(k));
+    ASS_LIST(adjj, len + 1, INTOBJ_INT(k));
   }
   return adj;
 }
