@@ -9,7 +9,6 @@ compiler:
 
 env:
   global:
-    - GRAPE=grape4r7
     - DIGRAPHS_LIB=digraphs-lib-0.5
 
 addons:
