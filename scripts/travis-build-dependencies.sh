@@ -69,11 +69,6 @@ for PKG in "${PKGS[@]}"; do
   fi
 
   URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
-  # Hack for the way that old releases of grape are configured in GitHub
-  if [ "$PACKAGES" == "required" ] && [ "$PKG" == "grape" ] ; then
-    URL="https://github.com/gap-packages/grape/archive/v$VERSION.tar.gz"
-  fi
-
   echo -e "Downloading $PKG-$VERSION from: $URL"
   curl -L "$URL" -o $PKG-$VERSION.tar.gz
   tar xf $PKG-$VERSION.tar.gz && rm $PKG-$VERSION.tar.gz
