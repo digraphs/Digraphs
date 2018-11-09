@@ -12,10 +12,10 @@ env:
     - DIGRAPHS_LIB=digraphs-lib-0.5
 
 # Matrix
-#       GAP version: |       master |  stable-4.10 | stable-4.9 |required |
-#--------------------+--------------+--------------+------------+---------+
-# packages:   newest | 64- & 32-bit |       64-bit |          - |       - |
-# packages: required |   (coverage) |       32-bit |     64-bit |  64-bit |
+#       GAP version: |            master |  stable-4.10 | stable-4.9 |required |
+#--------------------+-------------------+--------------+------------+---------+
+# packages:   newest |      64- & 32-bit |       64-bit |          - |       - |
+# packages: required | 64-bit & coverage |       32-bit |     64-bit |  64-bit |
 
 # Plus: linting
 
@@ -38,6 +38,12 @@ matrix:
       addons:
         apt_packages:
           - g++-multilib
+
+    - env:
+      - SUITE=test
+      - ABI=64
+      - GAP=master
+      - PACKAGES=required
 
     - env:
       - SUITE=test
