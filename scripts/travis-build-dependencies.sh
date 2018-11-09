@@ -55,7 +55,10 @@ mv $HOME/digraphs $GAPROOT/pkg/digraphs
 
 ################################################################################
 # Install grape, io, orb, and profiling
-PKGS=( "io" "orb" "profiling" "grape" )
+PKGS=( "io" "orb" "grape" )
+if [ "$SUITE" == "coverage" ]; then
+  PKGS+=( "profiling" )
+fi
 for PKG in "${PKGS[@]}"; do
   cd $GAPROOT/pkg
 
