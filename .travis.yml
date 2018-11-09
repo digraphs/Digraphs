@@ -1,5 +1,5 @@
 dist:
-  trusty
+  xenial
 
 language:
   c
@@ -10,10 +10,6 @@ compiler:
 env:
   global:
     - DIGRAPHS_LIB=digraphs-lib-0.5
-
-addons:
-  apt_packages:
-    - g++-multilib
 
 # Matrix
 #       GAP version: |       master |  stable-4.10 | stable-4.9 |required |
@@ -27,9 +23,6 @@ matrix:
   include:
     - env:
       - SUITE=lint
-      sudo:
-        true
-      addons:
 
     - env:
       - SUITE=test
@@ -44,16 +37,7 @@ matrix:
       - PACKAGES=newest
       addons:
         apt_packages:
-          - libgmp-dev:i386
-          - libreadline-dev:i386
-          - gcc-multilib
           - g++-multilib
-
-    - env:
-      - SUITE=test
-      - ABI=64
-      - GAP=stable-4.10
-      - PACKAGES=newest
 
     - env:
       - SUITE=test
@@ -62,10 +46,13 @@ matrix:
       - PACKAGES=required
       addons:
         apt_packages:
-          - libgmp-dev:i386
-          - libreadline-dev:i386
-          - gcc-multilib
           - g++-multilib
+
+    - env:
+      - SUITE=test
+      - ABI=64
+      - GAP=stable-4.10
+      - PACKAGES=newest
 
     - env:
       - SUITE=test
@@ -86,12 +73,16 @@ matrix:
       - PACKAGES=required
       - THRESHOLD=98
 
+install:
+  # GAP requires special flags for compilation in 32-bit mode
+  - if [ "$ABI" == "32" ]; then
+      export GAP_FLAGS="ABI=32 --host=i686-linux-gnu";
+      export PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 LOPTS=-m32 --host=i686-linux-gnu";
+    fi;
+
 before_script:
   - export GAPROOT="$HOME/gap"
-  - if [ "$ABI" == "32" ]; then export GAP_FLAGS="ABI=32 --host=i686-linux-gnu"; fi
-  - if [ "$ABI" == "32" ]; then export PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 LOPTS=-m32 --host=i686-linux-gnu"; fi
   - scripts/travis-build-dependencies.sh
 
 script:
-  - scripts/travis-build-digraphs.sh
-  - scripts/travis-test.sh
+  - scripts/travis-build-digraphs.sh && scripts/travis-test.sh
