@@ -54,26 +54,30 @@ mkdir pkg
 mv $HOME/digraphs $GAPROOT/pkg/digraphs
 
 ################################################################################
-# Install io, orb, and profiling
-PKGS=( "io" "orb" "profiling" )
+# Install grape, io, orb, and profiling
+PKGS=( "io" "orb" "grape" )
+if [ "$SUITE" == "coverage" ]; then
+  PKGS+=( "profiling" )
+fi
 for PKG in "${PKGS[@]}"; do
   cd $GAPROOT/pkg
+
+  # Get the relevant version number
   if [ "$PACKAGES" == "newest" ] || [ "$PKG" == "profiling" ]; then
     echo -e "\nGetting latest release of $PKG..."
     VERSION=`curl -sL "https://github.com/gap-packages/$PKG/releases/latest" | grep \<title\>Release | awk -F' ' '{print $2}'`
   else
     echo -e "\nGetting required release of $PKG..."
-    VERSION=`grep "\"$PKG\"" $GAPROOT/pkg/digraphs/PackageInfo.g | awk -F'"' '{print $4}' | cut -c3-`
+    VERSION=`grep "\"$PKG\"" digraphs/PackageInfo.g | awk -F'"' '{print $4}' | cut -c3-`
   fi
+
   URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
-  echo -e "Downloading $PKG-$VERSION, from URL:\n$URL"
-  curl -LO "$URL"
-  tar xf $PKG-$VERSION.tar.gz
-  rm $PKG-$VERSION.tar.gz
-  cd $PKG-$VERSION
-  if [ -f configure ]; then
-    ./configure $PKG_FLAGS
-    make
+  echo -e "Downloading $PKG-$VERSION from: $URL"
+  curl -L "$URL" -o $PKG-$VERSION.tar.gz
+  tar xf $PKG-$VERSION.tar.gz && rm $PKG-$VERSION.tar.gz
+
+  if [ -f $PKG-$VERSION/configure ]; then
+    cd $PKG-$VERSION && ./configure $PKG_FLAGS && make
   fi
 done
 
@@ -90,23 +94,6 @@ cd ..
 ./autogen.sh
 ./configure  $PKG_FLAGS
 make
-
-################################################################################
-# Install GRAPE and GAPDoc
-PKGS=( $GRAPE )
-for PKG in "${PKGS[@]}"; do
-  echo -e "\nDownloading $PKG..."
-  cd $GAPROOT/pkg
-  curl -O "https://www.gap-system.org/pub/gap/gap4/tar.gz/packages/$PKG.tar.gz"
-  PKG_DIR=`tar -tf $PKG.tar.gz | head -1 | cut -f1 -d"/"`
-  tar xf $PKG.tar.gz
-  rm $PKG.tar.gz
-  cd $PKG_DIR
-  if [ -f configure ]; then
-    ./configure $PKG_FLAGS
-    make
-  fi
-done
 
 ################################################################################
 # Install required GAP packages

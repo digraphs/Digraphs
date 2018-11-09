@@ -11,9 +11,9 @@
 ##  <#GAPDoc Label="PKGVERSIONDATA">
 ##  <!ENTITY VERSION        "0.13.0">
 ##  <!ENTITY GAPVERS        "4.9.0">
-##  <!ENTITY GRAPEVERS      "4.5">
+##  <!ENTITY GRAPEVERS      "4.8.1">
 ##  <!ENTITY IOVERS         "4.5.1">
-##  <!ENTITY ORBVERS        "4.7.6">
+##  <!ENTITY ORBVERS        "4.8.1">
 ##  <!ENTITY ARCHIVENAME    "digraphs-0.13.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-18">
 ##  <#/GAPDoc>
@@ -211,9 +211,9 @@ PackageDoc := rec(
 Dependencies := rec(
   GAP := ">=4.9.0",
   NeededOtherPackages := [["io", ">=4.5.1"],
-                          ["orb", ">=4.7.6"]],
+                          ["orb", ">=4.8.1"]],
   SuggestedOtherPackages := [["gapdoc", ">=1.5.1"],
-                             ["grape", ">=4.5"],
+                             ["grape", ">=4.8.1"],
                              ["nautytracesinterface", ">=0.2"]],
   ExternalConditions := [],
 ),
