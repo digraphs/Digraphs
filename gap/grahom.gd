@@ -28,8 +28,15 @@ DeclareOperation("EpimorphismsDigraphsRepresentatives", [IsDigraph, IsDigraph]);
 DeclareOperation("DigraphEmbedding", [IsDigraph, IsDigraph]);
 
 DeclareOperation("DigraphColouring", [IsDigraph, IsInt]);
-DeclareAttribute("DigraphColouring", IsDigraph);
-DeclareSynonymAttr("DigraphColoring", DigraphColouring);
+
+DeclareOperation("DigraphGreedyColouring", [IsDigraph, IsHomogeneousList]);
+DeclareOperation("DigraphGreedyColouringNC", [IsDigraph, IsHomogeneousList]);
+DeclareOperation("DigraphGreedyColouring", [IsDigraph, IsFunction]);
+
+DeclareAttribute("DigraphGreedyColouring", IsDigraph);
+DeclareSynonym("DigraphGreedyColoring", DigraphGreedyColouring);
+
+DeclareAttribute("DigraphWelshPowellOrder", IsDigraph);
 
 DeclareGlobalFunction("HomomorphismDigraphsFinder");
 

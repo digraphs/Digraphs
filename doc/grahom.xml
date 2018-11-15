@@ -359,10 +359,6 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
     Label="for a digraph and a number of colours"/>
   <Oper Name="DigraphColoring" Arg="digraph, n"
     Label="for a digraph and a number of colours"/>
-  <Attr Name="DigraphColouring" Arg="digraph"
-    Label="for a digraph"/>
-  <Attr Name="DigraphColoring" Arg="digraph"
-    Label="for a digraph"/>
   <Returns> A transformation, or <K>fail</K>.</Returns>
   <Description>
     A <E>proper colouring</E> of a digraph is a labelling of its vertices in
@@ -381,10 +377,8 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
     from <A>digraph</A> onto the complete digraph with <A>n</A> vertices if one
     exists, else it returns <K>fail</K>. <P/>
 
-    If the optional second argument <A>n</A> is not provided, then
-    <C>DigraphColouring</C> uses a greedy algorithm to obtain some proper
-    colouring of <A>digraph</A>, which may not use the minimal number of
-    colours. <P/>
+    See also <Ref Attr="DigraphGreedyColouring" Label="for a digraph"/> and 
+    <P/>
 
     Note that a digraph with at least two vertices has a 2-colouring if and only
     if it is bipartite, see <Ref Prop="IsBipartiteDigraph"/>.
@@ -399,8 +393,79 @@ gap> t := DigraphColouring(gr, 2);
 Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 gap> ForAll(DigraphEdges(gr), e -> e[1] ^ t <> e[2] ^ t);
 true
-gap> DigraphColouring(gr);
+gap> DigraphGreedyColouring(gr);
+Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphGreedyColouring">
+<ManSection>
+  <Oper Name="DigraphGreedyColouring" 
+        Arg="digraph, order" 
+        Label="for a digraph and vertex order"/>
+  <Oper Name="DigraphGreedyColouring" 
+        Arg="digraph, func" 
+        Label="for a digraph and vertex order function"/>
+  <Attr Name="DigraphGreedyColouring" 
+        Arg="digraph" 
+        Label="for a digraph"/>
+  <Returns> A transformation, or <K>fail</K>.</Returns>
+  <Description>
+    A <E>proper colouring</E> of a digraph is a labelling of its vertices in
+    such a way that adjacent vertices have different labels. Note that a digraph 
+    with loops (<Ref Prop="DigraphHasLoops"/>) does not have any proper 
+    colouring.
+    <P/>
+    
+    If <A>digraph</A> is a digraph and <A>order</A> is a dense list consisting 
+    of all of the vertices of <A>digraph</A> (in any order), then  
+    <C>DigraphGreedyColouring</C>
+    uses a greedy algorithm with the specified order to obtain some proper
+    colouring of <A>digraph</A>, which may not use the minimal number of
+    colours. <P/>
+    
+    If <A>digraph</A> is a digraph and <A>func</A> is a function whose argument 
+    is a digraph, and that returns a dense list <A>order</A>, then 
+    <C>DigraphGreedyColouring(<A>digraph</A>, <A>func</A>)</C> returns
+    <C>DigraphGreedyColouring(<A>digraph</A>, <A>func</A>(<A>digraph</A>))</C>.
+    <P/>
+
+    If the optional second argument (either a list or a function), is not 
+    specified, then <Ref Attr="DigraphWelshPowellOrder"/> is used by default. 
+    <P/>
+    
+    See also
+    <Ref Oper="DigraphColouring" 
+         Label="for a digraph and a number of colours"/>.
+    <P/>
+
+    <Example><![CDATA[
+gap> DigraphGreedyColouring(ChainDigraph(10));
+Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
+gap> DigraphGreedyColouring(ChainDigraph(10), [1 .. 10]);
 Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphWelshPowellOrder">
+<ManSection>
+  <Attr Name="DigraphWelshPowellOrder" Arg="digraph"/>
+  <Returns> A list of the vertices.</Returns>
+  <Description>
+    <C>DigraphWelshPowellOrder</C> returns a list of all of the vertices of 
+    the digraph <A>digraph</A> ordered according to the sum of the number of 
+    out- and in-neighbours, from highest to lowest. 
+    <P/>
+
+    <Example><![CDATA[
+gap> DigraphWelshPowellOrder(Digraph([[4], [9], [9], [], 
+>                                     [4, 6, 9], [1], [], [], 
+>                                     [4, 5], [4, 5]]));
+[ 5, 9, 4, 1, 6, 10, 2, 3, 7, 8 ]
 ]]></Example>
   </Description>
 </ManSection>

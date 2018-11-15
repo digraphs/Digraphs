@@ -671,7 +671,7 @@ true
   vertices of <A>digraph</A> can be partitioned into two non-empty sets such
   that the source and range of any edge of <A>digraph</A> lie in distinct sets.
   Equivalently, a digraph is bipartite if and only if it is 2-colorable; see
-  <Ref Attr="DigraphColouring" Label="for a digraph"/>. <P/>
+  <Ref Attr="DigraphGreedyColouring" Label="for a digraph"/>. <P/>
 
   See also <Ref Attr="DigraphBicomponents"/>.
     <Example><![CDATA[

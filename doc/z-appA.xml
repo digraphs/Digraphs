@@ -1204,13 +1204,13 @@
           <C>VertexColouring</C>
         </Item>
         <Item>
-          <Ref Attr="DigraphColouring" Label="for a digraph"/>
+          <Ref Attr="DigraphGreedyColouring" Label="for a digraph"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>VertexColouring</C> in &Grape; is equivalent to <Ref
-            Attr="DigraphColouring" Label="for a digraph"/> in &Digraphs;,
-            except it return a transformation rather than a list of vertex
+            Attr="DigraphGreedyColouring" Label="for a digraph"/> in &Digraphs;,
+            except it returns a transformation rather than a list of vertex
             colors.
           </Alt>
         </Item>
@@ -1357,6 +1357,4 @@
 
     </Table>
   </Section>
-
-
 </Appendix>

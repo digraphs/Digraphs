@@ -59,6 +59,8 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="EpimorphismsDigraphs">
     <#Include Label="GeneratorsOfEndomorphismMonoid">
     <#Include Label="DigraphColouring">
+    <#Include Label="DigraphGreedyColouring">
+    <#Include Label="DigraphWelshPowellOrder">
     <#Include Label="DigraphEmbedding">
     <#Include Label="ChromaticNumber">
     <#Include Label="IsDigraphHomomorphism">

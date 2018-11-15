@@ -1301,16 +1301,16 @@ gap> gr := DigraphFromDigraph6String(Concatenation(
 <digraph with 45 vertices, 180 edges>
 gap> ChromaticNumber(gr);
 3
-gap> DigraphColoring(gr, 3);
+gap> DigraphColouring(gr, 3);
 Transformation( [ 1, 2, 2, 1, 2, 1, 3, 1, 1, 2, 2, 2, 1, 2, 1, 2, 1, 1, 3, 3,
   3, 2, 3, 3, 2, 2, 1, 3, 1, 3, 3, 3, 2, 1, 3, 1, 3, 1, 1, 2, 2, 3, 3, 3,
   2 ] )
-gap> DigraphColoring(gr, 2);
+gap> DigraphColouring(gr, 2);
 fail
-gap> DigraphColoring(gr);
-Transformation( [ 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 3,
-  3, 2, 3, 3, 3, 2, 1, 4, 4, 3, 3, 3, 3, 1, 3, 1, 3, 4, 4, 2, 2, 5, 3, 3,
-  4 ] )
+gap> DigraphGreedyColoring(gr);
+Transformation( [ 1, 1, 1, 1, 1, 2, 2, 1, 2, 2, 2, 1, 1, 2, 1, 2, 1, 2, 2, 3,
+  3, 2, 3, 3, 3, 2, 1, 4, 4, 2, 3, 3, 3, 3, 3, 1, 3, 4, 4, 3, 2, 1, 4, 3,
+  1 ] )
 gap> gr := Digraph([[2, 3, 4], [3], [], []]);
 <digraph with 4 vertices, 4 edges>
 gap> ChromaticNumber(gr);
@@ -1368,7 +1368,7 @@ gap> ChromaticNumber(gr);
 3
 gap> gr := DigraphSymmetricClosure(ChainDigraph(5));
 <digraph with 5 vertices, 8 edges>
-gap> DigraphColoring(gr);;
+gap> DigraphGreedyColoring(gr);;
 gap> ChromaticNumber(gr);
 2
 gap> gr := DigraphFromGraph6String("KmKk~K??G@_@");
