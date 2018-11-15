@@ -202,6 +202,15 @@ function(digraph, n)
                   "the second argument <n> must be a non-negative integer,");
   fi;
 
+  if HasDigraphGreedyColouring(digraph) then
+    if DigraphGreedyColouring(digraph) = fail then
+      return fail;
+    elif RankOfTransformation(DigraphGreedyColouring(digraph),
+                              DigraphNrVertices(digraph)) = n then
+      return DigraphGreedyColouring(digraph);
+    fi;
+  fi;
+
   # Only the null digraph with 0 vertices can be coloured with 0 colours
   if n = 0 then
     if DigraphNrVertices(digraph) = 0 then
@@ -222,49 +231,78 @@ function(digraph, n)
   return DigraphEpimorphism(digraph, CompleteDigraph(n));
 end);
 
-#
+InstallMethod(DigraphGreedyColouring, "for a digraph", [IsDigraph],
+function(D)
+  return DigraphGreedyColouringNC(D, DigraphWelshPowellOrder(D));
+end);
 
-InstallMethod(DigraphColouring, "for a digraph", [IsDigraph],
-function(digraph)
-  local vertices, maxcolour, out_nbs, in_nbs, colouring, usedcolours,
-        nextcolour, v, u;
+InstallMethod(DigraphGreedyColouring, "for a digraph",
+[IsDigraph, IsHomogeneousList],
+function(D, order)
+  local n;
+  n := DigraphNrVertices(D);
+  if Length(order) <> n or ForAny(order, x -> (not IsPosInt(x)) or x > n) then
+    ErrorNoReturn("the second argument <order> must be a permutation of ",
+                  [1 .. n]);
+  fi;
+  return DigraphGreedyColouringNC(D, order);
+end);
 
-  if DigraphNrVertices(digraph) = 0  then
+InstallMethod(DigraphGreedyColouringNC, "for a digraph and a homogeneous list",
+[IsDigraph, IsHomogeneousList],
+function(digraph, order)
+  local n, colour, colouring, out, inn, empty, all, available, nr_coloured, v;
+
+  n := DigraphNrVertices(digraph);
+
+  if n = 0 then
     return IdentityTransformation;
   elif DigraphHasLoops(digraph) then
     return fail;
   fi;
 
-  vertices  := DigraphVertices(digraph);
-  maxcolour := 0;
-  out_nbs   := OutNeighbours(digraph);
-  in_nbs    := InNeighbours(digraph);
+  colour := 1;
+  colouring := ListWithIdenticalEntries(n, 0);
+  out := OutNeighbours(digraph);
+  inn := InNeighbours(digraph);
+  empty := BlistList([1 .. n], []);
+  all := BlistList([1 .. n], [1 .. n]);
+  available := BlistList([1 .. n], [1 .. n]);
 
-  colouring := [];
+  nr_coloured := 0;
 
-  for v in vertices do
-    usedcolours := BlistList([1 .. maxcolour + 1], []);
-    for u in out_nbs[v] do
-      if IsBound(colouring[u]) then
-        usedcolours[colouring[u]] := true;
+  while nr_coloured < n do
+    for v in order do
+      if colouring[v] = 0 and available[v] then
+        nr_coloured := nr_coloured + 1;
+        colouring[v] := colour;
+        available[v] := false;
+        SubtractBlist(available, BlistList([1 .. n], out[v]));
+        SubtractBlist(available, BlistList([1 .. n], inn[v]));
+        if available = empty then
+          break;
+        fi;
       fi;
     od;
-    for u in in_nbs[v] do
-      if IsBound(colouring[u]) then
-        usedcolours[colouring[u]] := true;
-      fi;
-    od;
-    nextcolour := 1;
-    while usedcolours[nextcolour] do
-      nextcolour := nextcolour + 1;
-    od;
-    colouring[v] := nextcolour;
-    if colouring[v] > maxcolour then
-      maxcolour := colouring[v];
-    fi;
+    UniteBlist(available, all);
+    colour := colour + 1;
   od;
+  return TransformationNC(colouring);
+end);
 
-  return Transformation(colouring);
+InstallMethod(DigraphGreedyColouring, "for a digraph and a function",
+[IsDigraph, IsFunction],
+function(D, func)
+  return DigraphGreedyColouringNC(D, func(D));
+end);
+
+InstallMethod(DigraphWelshPowellOrder, "for a digraph", [IsDigraph],
+function(digraph)
+  local order, deg;
+  order := [1 .. DigraphNrVertices(digraph)];
+  deg   := ShallowCopy(OutDegrees(digraph)) + InDegrees(digraph);
+  SortParallel(deg, order, {x, y} -> x > y);
+  return order;
 end);
 
 ################################################################################

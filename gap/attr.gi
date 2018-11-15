@@ -91,7 +91,7 @@ end);
 InstallMethod(ChromaticNumber, "for a digraph", [IsDigraph],
 function(digraph)
   local nr, comps, upper, chrom, tmp_comps, tmp_upper, n, comp, bound, clique,
-  cmp, c, i;
+  c, i;
 
   nr := DigraphNrVertices(digraph);
 
@@ -128,7 +128,7 @@ function(digraph)
   # do not yet know.
   if IsConnectedDigraph(digraph) then
     comps := [digraph];
-    upper := [RankOfTransformation(DigraphColoring(digraph), nr)];
+    upper := [RankOfTransformation(DigraphGreedyColouring(digraph), nr)];
     chrom := Maximum(CliqueNumber(digraph), chrom);
   else
     tmp_comps := [];
@@ -151,7 +151,7 @@ function(digraph)
           # If comp is bipartite, then its chromatic number is 2, and, since
           # the chromatic number of digraph is >= 3, this component can be
           # ignored.
-          bound := RankOfTransformation(DigraphColoring(comp),
+          bound := RankOfTransformation(DigraphGreedyColouring(comp),
                                         DigraphNrVertices(comp));
           if bound > chrom then
             # If bound <= chrom, then comp can be coloured by at most chrom
@@ -187,16 +187,12 @@ function(digraph)
     od;
 
     # Sort by size, since smaller components are easier to colour
-    # TODO replace by 2-arg lambda
-    cmp := function(x, y)
-      return Size(x) < Size(y);
-    end;
-    SortParallel(comps, upper, cmp);
+    SortParallel(comps, upper, {x, y} -> Size(x) < Size(y));
   fi;
   for i in [1 .. Length(comps)] do
     # <c> is the current best upper bound for the chromatic number of comps[i]
     c := upper[i];
-    while c > chrom and DigraphColoring(comps[i], c - 1) <> fail do
+    while c > chrom and DigraphColouring(comps[i], c - 1) <> fail do
       c := c - 1;
     od;
     if c > chrom then

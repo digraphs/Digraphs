@@ -252,7 +252,7 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 3, 3, 3 ] ) ]
 
-#T# DigraphColouring and DigraphColouring: checking errors and robustness
+#T# DigraphGreedyColouring and DigraphColouring: checking errors and robustness
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphColouring(gr, 1);
@@ -299,49 +299,176 @@ gap> DigraphColouring(NullDigraph(0), 0);
 IdentityTransformation
 gap> DigraphColouring(CompleteDigraph(1), 0);
 fail
-
-#T# DigraphColouring
-gap> DigraphColouring(EmptyDigraph(0));
-IdentityTransformation
-gap> DigraphColouring(Digraph([[]]));
-IdentityTransformation
-gap> DigraphColouring(Digraph([[1]]));
-fail
 gap> DigraphColouring(Digraph([[1]]), 1);
 fail
-gap> DigraphColouring(CycleDigraph(2));
+gap> gr := DigraphFromDigraph6String(Concatenation(
+> "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?",
+> "A?S???OAA???OG???G_A??C?@?cC????_@G???S??C_?C???[??A?A?OA?O?@?A?@A???GGO",
+> "??`?_O??G?@?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W",
+> "?????K???__O[??????O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G",
+> "?O??A@??D??G?C_?A??O?_GA??@@?_?G???E?IW??????_@G?C??"));
+<digraph with 45 vertices, 180 edges>
+gap> DigraphGreedyColouring(gr);
+Transformation( [ 1, 1, 1, 1, 1, 2, 2, 1, 2, 2, 2, 1, 1, 2, 1, 2, 1, 2, 2, 3,
+  3, 2, 3, 3, 3, 2, 1, 4, 4, 2, 3, 3, 3, 3, 3, 1, 3, 4, 4, 3, 2, 1, 4, 3,
+  1 ] )
+gap> DigraphColouring(gr, 4);
+Transformation( [ 1, 1, 1, 1, 1, 2, 2, 1, 2, 2, 2, 1, 1, 2, 1, 2, 1, 2, 2, 3,
+  3, 2, 3, 3, 3, 2, 1, 4, 4, 2, 3, 3, 3, 3, 3, 1, 3, 4, 4, 3, 2, 1, 4, 3,
+  1 ] )
+
+# DigraphGreedyColouring
+gap> DigraphGreedyColouring(EmptyDigraph(0));
 IdentityTransformation
-gap> DigraphColouring(CycleDigraph(3));
+gap> DigraphGreedyColouring(Digraph([[]]));
 IdentityTransformation
-gap> DigraphColouring(CycleDigraph(4));
+gap> DigraphGreedyColouring(Digraph([[1]]));
+fail
+gap> DigraphGreedyColouring(CycleDigraph(2));
+IdentityTransformation
+gap> DigraphGreedyColouring(CycleDigraph(3));
+IdentityTransformation
+gap> DigraphGreedyColouring(CycleDigraph(4));
 Transformation( [ 1, 2, 1, 2 ] )
-gap> DigraphColouring(CycleDigraph(5));
+gap> DigraphGreedyColouring(CycleDigraph(5));
 Transformation( [ 1, 2, 1, 2, 3 ] )
-gap> DigraphColouring(CycleDigraph(6));
+gap> DigraphGreedyColouring(CycleDigraph(6));
 Transformation( [ 1, 2, 1, 2, 1, 2 ] )
-gap> DigraphColouring(CompleteDigraph(10));
+gap> DigraphGreedyColouring(CompleteDigraph(10));
 IdentityTransformation
 gap> gr := CompleteDigraph(4);;
-gap> HasDigraphColoring(gr) or HasDigraphColouring(gr);
+gap> HasDigraphGreedyColouring(gr);
 false
-gap> DigraphColoring(gr);
+gap> DigraphGreedyColouring(gr);
 IdentityTransformation
-gap> HasDigraphColoring(gr) and HasDigraphColouring(gr);
+gap> HasDigraphGreedyColouring(gr);
 true
 gap> gr := CycleDigraph(4);;
-gap> HasDigraphColoring(gr) or HasDigraphColouring(gr);
+gap> HasDigraphGreedyColouring(gr);
 false
-gap> DigraphColouring(gr);
+gap> DigraphGreedyColouring(gr);
 Transformation( [ 1, 2, 1, 2 ] )
-gap> HasDigraphColoring(gr) and HasDigraphColouring(gr);
+gap> HasDigraphGreedyColouring(gr);
 true
-gap> DigraphColoring(ChainDigraph(10));;
-gap> DigraphColoring(CompleteDigraph(10));;
+gap> DigraphGreedyColouring(ChainDigraph(10));;
+gap> DigraphGreedyColouring(CompleteDigraph(10));;
 gap> gr := DigraphFromSparse6String(
 > ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
 <digraph with 30 vertices, 90 edges>
-gap> DigraphColoring(gr);;
-gap> DigraphColoring(EmptyDigraph(0));
+gap> DigraphGreedyColouring(gr);;
+gap> DigraphGreedyColouring(EmptyDigraph(0));
+IdentityTransformation
+gap> DigraphGreedyColouring(gr, [1 .. 10]);
+Error, the second argument <order> must be a permutation of [ 1 .. 30 ]
+gap> DigraphGreedyColouring(gr, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+> 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, -1]);
+Error, the second argument <order> must be a permutation of [ 1 .. 30 ]
+gap> DigraphGreedyColouring(gr, [1 .. 30]);
+Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+  2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
+gap> D := Digraph([[3, 4, 6, 8], [4, 6, 7, 8, 10], [2, 6, 7, 8, 9], [3, 5, 7],
+> [1, 2, 3, 6, 9], [2, 6, 8, 10], [7], [1, 10], [2, 7, 8], [1, 2, 6, 8, 10]]);;
+gap> DigraphHasLoops(D);
+true
+gap> DigraphGreedyColouring(D);
+fail
+gap> DigraphColouring(D, 3);
+fail
+gap> D := Digraph([[3], [], [2]]);;
+gap> DigraphGreedyColouring(D, [1 .. 3]);
+Transformation( [ 1, 1, 2 ] )
+
+# DigraphWelshPowellOrder
+gap> DigraphGreedyColouring(EmptyDigraph(0), DigraphWelshPowellOrder);
+IdentityTransformation
+gap> DigraphGreedyColouring(Digraph([[]]), DigraphWelshPowellOrder);
+IdentityTransformation
+gap> DigraphGreedyColouring(Digraph([[1]]), DigraphWelshPowellOrder);
+fail
+gap> DigraphGreedyColouring(CycleDigraph(2), DigraphWelshPowellOrder);
+IdentityTransformation
+gap> DigraphGreedyColouring(CycleDigraph(3), DigraphWelshPowellOrder);
+IdentityTransformation
+gap> DigraphGreedyColouring(CycleDigraph(4), DigraphWelshPowellOrder);
+Transformation( [ 1, 2, 1, 2 ] )
+gap> DigraphGreedyColouring(CycleDigraph(5), DigraphWelshPowellOrder);
+Transformation( [ 1, 2, 1, 2, 3 ] )
+gap> DigraphGreedyColouring(CycleDigraph(6), DigraphWelshPowellOrder);
+Transformation( [ 1, 2, 1, 2, 1, 2 ] )
+gap> DigraphGreedyColouring(CompleteDigraph(10), DigraphWelshPowellOrder);
+IdentityTransformation
+gap> gr := CompleteDigraph(4);;
+gap> HasDigraphGreedyColouring(gr);
+false
+gap> DigraphGreedyColouring(gr, DigraphWelshPowellOrder);
+IdentityTransformation
+gap> HasDigraphGreedyColouring(gr);
+false
+gap> gr := CycleDigraph(4);;
+gap> HasDigraphGreedyColouring(gr);
+false
+gap> DigraphGreedyColouring(gr, DigraphWelshPowellOrder);
+Transformation( [ 1, 2, 1, 2 ] )
+gap> HasDigraphGreedyColouring(gr);
+false
+gap> DigraphGreedyColouring(ChainDigraph(10), DigraphWelshPowellOrder);
+Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
+gap> DigraphGreedyColouring(CompleteDigraph(10), DigraphWelshPowellOrder);
+IdentityTransformation
+gap> gr := DigraphFromSparse6String(
+> ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
+<digraph with 30 vertices, 90 edges>
+gap> DigraphGreedyColouring(gr, DigraphWelshPowellOrder);
+Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+  2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
+gap> DigraphGreedyColouring(EmptyDigraph(0));
+IdentityTransformation
+
+# DigraphWelshPowellOrder
+gap> order_func := D -> [1 .. DigraphNrVertices(D)];;
+gap> DigraphGreedyColouring(EmptyDigraph(0), order_func);
+IdentityTransformation
+gap> DigraphGreedyColouring(Digraph([[]]), order_func);
+IdentityTransformation
+gap> DigraphGreedyColouring(Digraph([[1]]), order_func);
+fail
+gap> DigraphGreedyColouring(CycleDigraph(2), order_func);
+IdentityTransformation
+gap> DigraphGreedyColouring(CycleDigraph(3), order_func);
+IdentityTransformation
+gap> DigraphGreedyColouring(CycleDigraph(4), order_func);
+Transformation( [ 1, 2, 1, 2 ] )
+gap> DigraphGreedyColouring(CycleDigraph(5), order_func);
+Transformation( [ 1, 2, 1, 2, 3 ] )
+gap> DigraphGreedyColouring(CycleDigraph(6), order_func);
+Transformation( [ 1, 2, 1, 2, 1, 2 ] )
+gap> DigraphGreedyColouring(CompleteDigraph(10), order_func);
+IdentityTransformation
+gap> gr := CompleteDigraph(4);;
+gap> HasDigraphGreedyColouring(gr);
+false
+gap> DigraphGreedyColouring(gr, order_func);
+IdentityTransformation
+gap> HasDigraphGreedyColouring(gr);
+false
+gap> gr := CycleDigraph(4);;
+gap> HasDigraphGreedyColouring(gr);
+false
+gap> DigraphGreedyColouring(gr, order_func);
+Transformation( [ 1, 2, 1, 2 ] )
+gap> HasDigraphGreedyColouring(gr);
+false
+gap> DigraphGreedyColouring(ChainDigraph(10), order_func);
+Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
+gap> DigraphGreedyColouring(CompleteDigraph(10), order_func);
+IdentityTransformation
+gap> gr := DigraphFromSparse6String(
+> ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
+<digraph with 30 vertices, 90 edges>
+gap> DigraphGreedyColouring(gr, order_func);
+Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+  2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
+gap> DigraphGreedyColouring(EmptyDigraph(0));
 IdentityTransformation
 
 #T# HomomorphismDigraphsFinder 1
