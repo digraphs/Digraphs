@@ -549,3 +549,31 @@ function(src, ran, x)
   od;
   return true;
 end);
+
+InstallMethod(IsDigraphColouring, "for a digraph and a list",
+[IsDigraph, IsHomogeneousList],
+function(digraph, colours)
+  local n, out, v, w;
+  n := DigraphNrVertices(digraph);
+  if Length(colours) <> n or ForAny(colours, x -> not IsPosInt(x)) then
+    return false;
+  fi;
+  out := OutNeighbours(digraph);
+  for v in DigraphVertices(digraph) do
+    for w in out[v] do
+      if colours[w] = colours[v] then
+        return false;
+      fi;
+    od;
+  od;
+  return true;
+end);
+
+InstallMethod(IsDigraphColouring, "for a digraph and a transformation",
+[IsDigraph, IsTransformation],
+function(digraph, t)
+  local n;
+  n := DigraphNrVertices(digraph);
+  return IsDigraphColouring(digraph,
+                            ImageListOfTransformation(t, n));
+end);

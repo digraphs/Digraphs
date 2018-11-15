@@ -1086,6 +1086,20 @@ true
 gap> IsDigraphEmbedding(src, ran, ());
 false
 
+# IsDigraphColouring
+gap> D := JohnsonDigraph(5, 3);
+<digraph with 10 vertices, 60 edges>
+gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 4, 5, 6, 7]);
+true
+gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 2, 5, 6, 7]);
+false
+gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 2, 5, 6, -1]);
+false
+gap> IsDigraphColouring(D, [1, 2, 3]);
+false
+gap> IsDigraphColouring(D, IdentityTransformation);
+true
+
 #T# DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
 gap> Unbind(epis);
