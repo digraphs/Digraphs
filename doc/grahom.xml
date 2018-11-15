@@ -541,3 +541,47 @@ false]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsDigraphColouring">
+  <ManSection>
+    <Oper Name="IsDigraphColouring" Arg="digraph, list"/>
+    <Oper Name="IsDigraphColouring" Arg="digraph, t" 
+      Label="for a transformation"/>
+    <Returns> <K>true</K> or <K>false</K>. </Returns>
+    <Description>
+      The operation <C>IsDigraphColouring</C> verifies whether or not 
+      the list <A>list</A> describes a proper colouring of the digraph 
+      <A>digraph</A>. 
+      <P/>
+
+      A list <A>list</A> describes a <E>proper colouring</E> of a digraph
+      <A>digraph</A> if <A>list</A> consists of positive integers, the length of
+      <A>list</A> equals the number of vertices in <A>digraph</A>, and for any
+      vertices <C>u, v</C> of <A>digraph</A> if <C>u</C> and <C>v</C> are adjacent,
+      then <C><A>list</A>[u] &gt;&lt; <A>list</A>[v]</C>.
+      <P/>
+
+      A transformation <A>t</A> describes a proper colouring of a digraph
+      <A>digraph</A>, if <C>ImageListOfTransformation(<A>t</A>,
+      DigraphNrVertices(<A>digraph</A>))</C> is a proper colouring of 
+      <A>digraph</A>. <P/>
+
+      See also <Ref Oper="IsDigraphHomomorphism"/>.
+      
+      <Example><![CDATA[
+gap> D := JohnsonDigraph(5, 3);
+<digraph with 10 vertices, 60 edges>
+gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 4, 5, 6, 7]);
+true
+gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 2, 5, 6, 7]);
+false
+gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 2, 5, 6, -1]);
+false
+gap> IsDigraphColouring(D, [1, 2, 3]);
+false
+gap> IsDigraphColouring(D, IdentityTransformation);
+true
+]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>

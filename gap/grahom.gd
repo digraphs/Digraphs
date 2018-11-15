@@ -54,3 +54,6 @@ DeclareOperation("IsDigraphMonomorphism",
                  [IsDigraph, IsDigraph, IsPerm]);
 DeclareOperation("IsDigraphEmbedding",
                  [IsDigraph, IsDigraph, IsPerm]);
+
+DeclareOperation("IsDigraphColouring", [IsDigraph, IsList]);
+DeclareOperation("IsDigraphColouring", [IsDigraph, IsTransformation]);

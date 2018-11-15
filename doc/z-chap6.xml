@@ -40,6 +40,7 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="IsomorphismDigraphsColours">
     <#Include Label="RepresentativeOutNeighbours">
     <#Include Label="IsDigraphAutomorphism">
+    <#Include Label="IsDigraphColouring">
   </Section>
 
   <Section><Heading>Homomorphisms of digraphs</Heading>
