@@ -14,8 +14,6 @@ gap> LoadPackage("digraphs", false);;
 gap> DIGRAPHS_StartTest();
 
 #T# HomomorphismDigraphsFinder: checking errors and robustness
-gap> HomomorphismDigraphsFinder(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-Error, Function Calls: number of arguments must be 11 (not 10)
 gap> HomomorphismDigraphsFinder(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 1st and 2nd arguments <gr1> and <gr2> must be digraphs,
