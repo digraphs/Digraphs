@@ -1203,6 +1203,38 @@ fail
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphShortestPath">
+<ManSection>
+  <Oper Name="DigraphShortestPath" Arg="digraph, u, v"/>
+  <Returns>A pair of lists, or <K>fail</K>.</Returns>
+  <Description>
+    Returns the shortest directed path in the digraph digraph from the vertex u to the vertex v, if such a path exists. If u = v, then the shortest non-trivial cycle is returned, again, if it exists. Otherwise, this operation returns
+    <K>fail</K>.  See Section <Ref Subsect="Definitions" Style="Text"/> for the
+    definition of a directed path and a directed cycle.
+    <P/>
+
+    See <Ref Oper="DigraphPath"/> for details on the output.
+
+    The method for <C>DigraphShortestPath</C> has worst case complexity of <M>O(m +
+      n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
+    vertices in <A>digraph</A>.
+
+<Example><![CDATA[
+gap> gr := Digraph([[1, 2], [3], [2, 4], [1], [2, 4]]);
+<digraph with 5 vertices, 8 edges>
+gap> DigraphShortestPath(gr, 5, 1);
+[ [ 5, 4, 1 ], [ 2, 1 ] ]
+gap> DigraphShortestPath(gr, 3, 3);
+[ [ 3, 2, 3 ], [ 1, 1 ] ]
+gap> DigraphShortestPath(gr, 5, 5);
+fail
+gap> DigraphShortestPath(gr, 1, 1);
+[ [ 1, 1 ], [ 1 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IteratorOfPaths">
 <ManSection>
   <Oper Name="IteratorOfPaths" Arg="digraph, u, v"/>

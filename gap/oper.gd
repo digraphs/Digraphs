@@ -106,3 +106,4 @@ DeclareOperation("IsMaximalMatching", [IsDigraph, IsHomogeneousList]);
 
 DeclareOperation("AsSemigroup", [IsFunction, IsDigraph]);
 DeclareOperation("AsMonoid", [IsFunction, IsDigraph]);
+DeclareOperation("DigraphShortestPath", [IsDigraph, IsPosInt, IsPosInt]);

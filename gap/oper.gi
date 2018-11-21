@@ -1167,6 +1167,75 @@ function(digraph, u, v)
   return DIGRAPH_PATH(OutNeighbours(digraph), u, v);
 end);
 
+# DigraphShortestPath
+
+InstallMethod(DigraphShortestPath, "for a digraph and two pos ints",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, u, v)
+  local current, next, parent, distance, falselist, verts, nbs, path, edge,
+  n, a, b, i;
+
+  verts := DigraphVertices(digraph);
+  if not (u in verts and v in verts) then
+    ErrorNoReturn("Digraphs: DigraphPath: usage,\n",
+                  "the second and third arguments <u> and <v> must be\n",
+                  "vertices of the first argument <digraph>,");
+  fi;
+
+  if IsDigraphEdge(digraph, [u, v]) then
+    return [[u, v], [Position(OutNeighboursOfVertex(digraph, u), v)]];
+  elif HasIsTransitiveDigraph(digraph) and IsTransitiveDigraph(digraph) then
+    # If it's a known transitive digraph, just check whether the edge exists
+    return fail;
+    # Glean information from WCC if we have it
+  elif HasDigraphConnectedComponents(digraph)
+      and DigraphConnectedComponents(digraph).id[u] <>
+          DigraphConnectedComponents(digraph).id[v] then
+    return fail;
+  fi;
+
+  nbs      := OutNeighbors(digraph);
+  distance := ListWithIdenticalEntries(Length(verts), -1);
+
+  #  Setting up objects useful in the function.
+  parent    := [];
+  current   := [u];
+  edge      := [];
+  next      := BlistList([1 .. Length(verts)], []);
+  falselist := BlistList([1 .. Length(verts)], []);
+
+  n := 0;
+  while current <> [] do
+    n := n + 1;
+    for a in current do
+        for i in [1 .. Length(nbs[a])] do
+          b := nbs[a][i];
+          if distance[b] = -1 then
+            distance[b] := n;
+            next[b]     := true;
+            parent[b]   := a;
+            edge[b]     := i;
+          fi;
+
+          if b = v then
+            path := [[], []];
+            # Finds the path
+            for i in [1 .. n] do
+              Add(path[1], b);
+              Add(path[2], edge[b]);
+              b := parent[b];
+            od;
+            Add(path[1], u);  # Adds the starting vertex to the list of vertices.
+            return [Reversed(path[1]), Reversed(path[2])];
+          fi;
+        od;
+      od;
+      current := ListBlist(verts, next);
+      IntersectBlist(next, falselist);
+    od;
+    return fail;
+end);
+
 # IteratorOfPaths: for a digraph and two pos ints
 
 InstallMethod(IteratorOfPaths, "for a digraph and two pos ints",
