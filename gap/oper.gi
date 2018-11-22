@@ -86,7 +86,7 @@ end);
 
 #
 
-InstallGlobalFunction(DigraphEdgeUnion, "for digraphs or a list of digraphs",
+InstallGlobalFunction(DigraphEdgeUnion,
 function(arg)
   local n, out, nbs, new, gr, i;
 
@@ -1118,7 +1118,6 @@ end);
 #
 
 InstallGlobalFunction(DigraphDisjointUnion,
-"for digraphs or a list of digraphs",
 function(arg)
   local out, offset, n, new, gr;
 
@@ -1151,7 +1150,7 @@ end);
 
 #
 
-InstallGlobalFunction(DigraphJoin, "for digraphs or a list of digraphs",
+InstallGlobalFunction(DigraphJoin,
 function(arg)
   local tot, out, offset, n, nbs, gr, i;
 
