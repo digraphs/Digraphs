@@ -793,8 +793,8 @@ function(s)
         i := i / 2;
       else
         edge := FindCoord(pos + 6 - bpos, 0);
-        out[edge[1]][LEN_LIST(out[edge[1]]) + 1] := edge[2];
-        out[edge[2]][LEN_LIST(out[edge[2]]) + 1] := edge[1];
+        out[edge[1]][Length(out[edge[1]]) + 1] := edge[2];
+        out[edge[2]][Length(out[edge[2]]) + 1] := edge[1];
         nredges := nredges + 1;
         i := (i - 1) / 2;
       fi;
