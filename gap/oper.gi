@@ -653,6 +653,9 @@ function(digraph, verts)
   m := DigraphNrEdges(digraph);
   log := LogInt(len, 2);
   if (2 * m * log) + (len * log) < (2 * m * len) then  # Sort verts if sensible
+    if not IsMutable(verts) then
+      verts := ShallowCopy(verts);
+    fi;
     Sort(verts);
   fi;
   diff := Difference(DigraphVertices(digraph), verts);
