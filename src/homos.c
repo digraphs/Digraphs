@@ -249,25 +249,25 @@ static inline UIntS size_bit_array(BitArray* bit_array) {
   return n;
 }
 
-#ifdef DIGRAPHS_KERNEL_DEBUG
-static inline void print_bit_array(BitArray* bit_array) {
-  printf("<bit array {");
-  for (UIntS i = 0; i < bit_array->nr_bits; i++) {
-    if (get_bit_array(bit_array, i)) {
-      printf(" %d", i);
-    }
-  }
-  printf(" }>");
-}
-
-static inline void print_array(UIntS* array, UIntS len) {
-  printf("<array {");
-  for (UIntS i = 0; i < len; i++) {
-    printf(" %d", array[i]);
-  }
-  printf(" }>");
-}
-#endif
+// #ifdef DIGRAPHS_KERNEL_DEBUG
+// static inline void print_bit_array(BitArray* bit_array) {
+//   printf("<bit array {");
+//   for (UIntS i = 0; i < bit_array->nr_bits; i++) {
+//     if (get_bit_array(bit_array, i)) {
+//       printf(" %d", i);
+//     }
+//   }
+//   printf(" }>");
+// }
+//
+// static inline void print_array(UIntS* array, UIntS len) {
+//   printf("<array {");
+//   for (UIntS i = 0; i < len; i++) {
+//     printf(" %d", array[i]);
+//   }
+//   printf(" }>");
+// }
+// #endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -337,7 +337,7 @@ static Conditions* new_conditions(UIntS nr1, UIntS nr2) {
   conditions->nr1       = nr1;
   conditions->nr2       = nr2;
 
-  for (i = 0; i < nr1 * nr1; i++) {
+  for (i = 0; i < ((UIntL) nr1 * nr1); i++) {
     conditions->bit_array[i] = new_bit_array(nr2);
   }
 
@@ -360,7 +360,7 @@ static void free_conditions(Conditions* conditions) {
   DIGRAPHS_ASSERT(conditions != NULL);
 
   UIntL i;
-  for (i = 0; i < conditions->nr1 * conditions->nr1; i++) {
+  for (i = 0; i < ((UIntL) conditions->nr1 * conditions->nr1); i++) {
     free_bit_array(conditions->bit_array[i]);
   }
   free(conditions->bit_array);
