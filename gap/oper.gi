@@ -86,7 +86,7 @@ end);
 
 #
 
-InstallGlobalFunction(DigraphEdgeUnion, "for digraphs or a list of digraphs",
+InstallGlobalFunction(DigraphEdgeUnion,
 function(arg)
   local n, out, nbs, new, gr, i;
 
@@ -653,6 +653,9 @@ function(digraph, verts)
   m := DigraphNrEdges(digraph);
   log := LogInt(len, 2);
   if (2 * m * log) + (len * log) < (2 * m * len) then  # Sort verts if sensible
+    if not IsMutable(verts) then
+      verts := ShallowCopy(verts);
+    fi;
     Sort(verts);
   fi;
   diff := Difference(DigraphVertices(digraph), verts);
@@ -1118,7 +1121,6 @@ end);
 #
 
 InstallGlobalFunction(DigraphDisjointUnion,
-"for digraphs or a list of digraphs",
 function(arg)
   local out, offset, n, new, gr;
 
@@ -1151,7 +1153,7 @@ end);
 
 #
 
-InstallGlobalFunction(DigraphJoin, "for digraphs or a list of digraphs",
+InstallGlobalFunction(DigraphJoin,
 function(arg)
   local tot, out, offset, n, nbs, gr, i;
 
