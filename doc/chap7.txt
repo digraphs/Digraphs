@@ -988,6 +988,41 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
+  [1X7.2-20 IsDigraphColouring[101X
+  
+  [33X[1;0Y[29X[2XIsDigraphColouring[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsDigraphColouring[102X( [3Xdigraph[103X, [3Xt[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThe  operation  [10XIsDigraphColouring[110X  verifies  whether  or  not the list [3Xlist[103X
+  describes a proper colouring of the digraph [3Xdigraph[103X.[133X
+  
+  [33X[0;0YA  list  [3Xlist[103X  describes  a  [13Xproper  colouring[113X  of a digraph [3Xdigraph[103X if [3Xlist[103X
+  consists  of  positive  integers,  the  length  of [3Xlist[103X equals the number of
+  vertices  in  [3Xdigraph[103X,  and  for any vertices [10Xu, v[110X of [3Xdigraph[103X if [10Xu[110X and [10Xv[110X are
+  adjacent, then [10X[3Xlist[103X[10X[u] >< [3Xlist[103X[10X[v][110X.[133X
+  
+  [33X[0;0YA  transformation  [3Xt[103X  describes  a proper colouring of a digraph [3Xdigraph[103X, if
+  [10XImageListOfTransformation([3Xt[103X[10X,   DigraphNrVertices([3Xdigraph[103X[10X))[110X   is   a   proper
+  colouring of [3Xdigraph[103X.[133X
+  
+  [33X[0;0YSee also [2XIsDigraphHomomorphism[102X ([14X7.3-12[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := JohnsonDigraph(5, 3);[127X[104X
+    [4X[28X<digraph with 10 vertices, 60 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 4, 5, 6, 7]);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 2, 5, 6, 7]);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 2, 5, 6, -1]);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphColouring(D, [1, 2, 3]);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphColouring(D, IdentityTransformation);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
   
   [1X7.3 [33X[0;0YHomomorphisms of digraphs[133X[101X
   

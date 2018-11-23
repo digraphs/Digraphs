@@ -11,6 +11,8 @@
   [2XAsBinaryRelation[102X 3.2-1 
   [2XAsDigraph[102X 3.2-2 
   [2XAsGraph[102X 3.2-4 
+  [2XAsMonoid[102X 5.5-1 
+  [2XAsSemigroup[102X 5.5-1 
   [2XAsTransformation[102X 3.2-5 
   [2XAutomorphismGroup[102X, for a digraph 7.2-2 
       for a digraph and a homogeneous list 7.2-5 
@@ -208,6 +210,8 @@
   [2XIsCycleDigraph[102X 6.3-11 
   [2XIsDigraph[102X 3.1-1 
   [2XIsDigraphAutomorphism[102X 7.2-19 
+  [2XIsDigraphColouring[102X 7.2-20 
+      for a transformation 7.2-20 
   [2XIsDigraphEdge[102X, for digraph and list 5.1-14 
       for digraph and two pos ints 5.1-14 
   [2XIsDigraphEmbedding[102X 7.3-13 

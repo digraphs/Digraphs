@@ -6,7 +6,7 @@
                               [1XMethods for digraphs[101X
   
   
-                                 Version 0.13.0
+                                 Version 0.14.0
   
   
                                   Jan De Beule
@@ -222,6 +222,8 @@
     5.4 [33X[0;0YCayley graphs of groups[133X
       5.4-1 GroupOfCayleyDigraph
       5.4-2 GeneratorsOfCayleyDigraph
+    5.5 [33X[0;0YAssociated semigroups[133X
+      5.5-1 AsSemigroup
   6 [33X[0;0YProperties of digraphs[133X
     6.1 [33X[0;0YEdge properties[133X
       6.1-1 DigraphHasLoops
@@ -280,6 +282,7 @@
       7.2-17 IsomorphismDigraphs
       7.2-18 RepresentativeOutNeighbours
       7.2-19 IsDigraphIsomorphism
+      7.2-20 IsDigraphColouring
     7.3 [33X[0;0YHomomorphisms of digraphs[133X
       7.3-1 HomomorphismDigraphsFinder
       7.3-2 DigraphHomomorphism

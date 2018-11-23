@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <script type="text/javascript"
-  src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 <title>GAP (digraphs) - Chapter 7: Homomorphisms</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -53,6 +53,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7ED93C0F86D9D34F">7.2-17 IsomorphismDigraphs</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E1C806D81DFE15E">7.2-18 RepresentativeOutNeighbours</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X785358E9822DF199">7.2-19 IsDigraphIsomorphism</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7F16B8B3825A627A">7.2-20 IsDigraphColouring</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7_mj.html#X7E1A02FE8384C03C">7.3 <span class="Heading">Homomorphisms of digraphs</span></a>
 </span>
@@ -955,6 +956,38 @@ true
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphIsomorphism(src, Digraph([[3], [1, 3], [2]]), (1, 2, 3));</span>
 false
+</pre></div>
+
+<p><a id="X7F16B8B3825A627A" name="X7F16B8B3825A627A"></a></p>
+
+<h5>7.2-20 IsDigraphColouring</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">t</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>The operation <code class="code">IsDigraphColouring</code> verifies whether or not the list <var class="Arg">list</var> describes a proper colouring of the digraph <var class="Arg">digraph</var>.</p>
+
+<p>A list <var class="Arg">list</var> describes a <em>proper colouring</em> of a digraph <var class="Arg">digraph</var> if <var class="Arg">list</var> consists of positive integers, the length of <var class="Arg">list</var> equals the number of vertices in <var class="Arg">digraph</var>, and for any vertices <code class="code">u, v</code> of <var class="Arg">digraph</var> if <code class="code">u</code> and <code class="code">v</code> are adjacent, then <code class="code"><var class="Arg">list</var>[u] &gt;&lt; <var class="Arg">list</var>[v]</code>.</p>
+
+<p>A transformation <var class="Arg">t</var> describes a proper colouring of a digraph <var class="Arg">digraph</var>, if <code class="code">ImageListOfTransformation(<var class="Arg">t</var>, DigraphNrVertices(<var class="Arg">digraph</var>))</code> is a proper colouring of <var class="Arg">digraph</var>.</p>
+
+<p>See also <code class="func">IsDigraphHomomorphism</code> (<a href="chap7_mj.html#X78C4ADC67F8E2BCA"><span class="RefLink">7.3-12</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := JohnsonDigraph(5, 3);</span>
+&lt;digraph with 10 vertices, 60 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 4, 5, 6, 7]);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 2, 5, 6, 7]);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 2, 5, 6, -1]);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphColouring(D, [1, 2, 3]);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphColouring(D, IdentityTransformation);</span>
+true
 </pre></div>
 
 <p><a id="X7E1A02FE8384C03C" name="X7E1A02FE8384C03C"></a></p>
