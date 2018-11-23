@@ -14,7 +14,6 @@
 
 #include <limits.h>
 #include <setjmp.h>
-#include <x86intrin.h>
 
 #include "bliss-0.73/bliss_C.h"
 #include "src/schreier-sims.h"
