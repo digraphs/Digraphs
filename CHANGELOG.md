@@ -3,6 +3,37 @@ Copyright (C) 2014-18 by Jan De Beule, Julius Jonušas, James D. Mitchell, Micha
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.14.0 (released 23/11/2018)
+
+This release contains bugfixes and a couple of new features.
+
+* The operations `AsSemigroup` and `AsMonoid` for lattice and semilattice
+  digraphs were added by Chris Russell in [PR
+  #136](https://github.com/gap-packages/Digraphs/pull/136).
+* The operation `IsDigraphColouring` was added by [James D.
+  Mitchell](http://goo.gl/ZtViV6) in [PR
+  #145](https://github.com/gap-packages/Digraphs/pull/145).
+* In previous versions of the package, the output of `ArticulationPoints` would
+  sometimes contain repeated vertices (reported by Luke Elliott in [Issue
+  #140](https://github.com/gap-packages/Digraphs/issues/140), and fixed by
+  [James D.  Mitchell](http://goo.gl/ZtViV6) in [PR
+  #142](https://github.com/gap-packages/Digraphs/pull/142)).
+* In previous versions of the package, an unexpected error was sometimes caused
+  when removing an immutable set of vertices from a digraph (reported and fixed
+  by [James D.  Mitchell](http://goo.gl/ZtViV6) in [PR
+  #146](https://github.com/gap-packages/Digraphs/pull/146)).
+* The header file `x86intrin.h` was unnecessarily being included by the kernel
+  module of Digraphs (reported by [Wilf A. Wilson](http://wilf.me) in [Issue
+  #147](https://github.com/gap-packages/Digraphs/issues/147), and fixed by
+  [James D.  Mitchell](http://goo.gl/ZtViV6) in [PR
+  #152](https://github.com/gap-packages/Digraphs/pull/152)).
+
+[Max Horn](https://github.com/fingolfin) also contributed various compatibility
+and correctness changes to the kernel module of the package.
+
+Digraphs now requires version 4.8.1 of the [orb
+package](https://gap-packages.github.io/orb), or newer.
+
 ## Version 0.13.0 (released 19/09/2018)
 
 This release of Digraphs contains some bugfixes, along with the following new features:

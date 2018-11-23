@@ -863,7 +863,7 @@ gap> gr4 := DigraphRemoveVertices(gr, []);
 <digraph with 4 vertices, 16 edges>
 gap> gr = gr4;
 true
-gap> gr := Digraph([[1, 10], [], [], [3], [3, 4, 10], [1, 3, 8], 
+gap> gr := Digraph([[1, 10], [], [], [3], [3, 4, 10], [1, 3, 8],
 > [9], [9], [3], [3, 5, 10]]);
 <digraph with 10 vertices, 15 edges>
 gap> DigraphSinks(gr);

@@ -1507,8 +1507,8 @@ true
 <#GAPDoc Label="AsSemigroup">
   <ManSection>
     <Oper Name="AsSemigroup" Arg="filt, digraph"/>
-    <Oper Name="AsMonoid" Arg="filt, digraph"/>    
-    <Returns> A semilattice of partial perms. </Returns>
+    <Oper Name="AsMonoid" Arg="filt, digraph"/>
+    <Returns>A semilattice of partial perms.</Returns>
     <Description>
       The operation <C>AsSemigroup</C> requires that <A>filt</A> be equal to
       <Ref Filt="IsPartialPermSemigroup" BookName="ref"/>.
@@ -1517,7 +1517,7 @@ true
       then <C>AsSemigroup</C> returns a semigroup of partial perms which is
       isomorphic to the semigroup whose elements are the vertices of
       <A>digraph</A> with the binary operation
-      <Ref Oper="PartialOrderDigraphJoinOfVertices" 
+      <Ref Oper="PartialOrderDigraphJoinOfVertices"
         Label="for a digraph and two vertices"/>. If <A>digraph</A>
       satisfies  <Ref Prop="IsMeetSemilatticeDigraph"/> but not
       <Ref Prop="IsJoinSemilatticeDigraph"/> then
