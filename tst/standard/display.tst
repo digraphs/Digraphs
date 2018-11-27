@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# Display and PrintString and String
+#  Display and PrintString and String
 gap> Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> Digraph([[]]);
@@ -42,7 +42,7 @@ gap> PrintString(gr);
 gap> String(gr);
 "Digraph( [ [ 2 ], [ 3 ], [ ] ] )"
 
-#T# DotDigraph and DotSymmetricDigraph
+#  DotDigraph and DotSymmetricDigraph
 gap> r := rec(vertices := [1 .. 3], source := [1, 1, 1, 1],
 > range := [1, 2, 2, 3]);;
 gap> gr := Digraph(r);
@@ -86,7 +86,7 @@ gap> dot{[1 .. 50]};
 
 # The following tests can't be run because they fail if Semigroups is loaded
 # first
-#T# Splash 
+#  Splash 
 #gap> Splash(1);
 #Error, Digraphs: Splash: usage,
 #<arg>[1] must be a string,
@@ -201,7 +201,7 @@ node [shape=Mrecord, height=0.5, fixedsize=true]ranksep=1;
 2 -> 1
 }
 
-#T# DIGRAPHS_UnbindVariables
+#  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(dot);
 gap> Unbind(gr);
