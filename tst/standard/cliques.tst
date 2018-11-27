@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# IsClique and IsMaximalClique
+#  IsClique and IsMaximalClique
 gap> gr := CompleteDigraph(5);;
 gap> IsClique(gr, [6]);
 Error, Digraphs: IsClique: usage,
@@ -77,7 +77,7 @@ gap> gr := CompleteDigraph(5);;
 gap> IsMaximalClique(gr, [1]);
 false
 
-#T# IsIndependentSet and IsMaximalIndependentSet
+#  IsIndependentSet and IsMaximalIndependentSet
 gap> gr := CycleDigraph(10);;
 gap> IsIndependentSet(gr, []);
 true
@@ -114,7 +114,7 @@ gap> gr := Digraph([[3], [3], [3]]);
 gap> IsMaximalIndependentSet(gr, [1, 2]);
 true
 
-#T# DigraphMaximalIndependentSet and DigraphIndependentSet
+#  DigraphMaximalIndependentSet and DigraphIndependentSet
 gap> gr := Digraph([[3], [3], [3]]);
 <digraph with 3 vertices, 3 edges>
 gap> DigraphMaximalIndependentSet();
@@ -138,7 +138,7 @@ gap> DigraphMaximalIndependentSet(gr, [], [], 2);
 gap> DigraphIndependentSet(gr, [], [], 3);
 fail
 
-#T# DigraphMaximalIndependentSetsReps and DigraphIndependentSetsReps
+#  DigraphMaximalIndependentSetsReps and DigraphIndependentSetsReps
 gap> gr := EmptyDigraph(1);;
 gap> DigraphMaximalIndependentSetsReps();
 Error, Digraphs: DigraphMaximalIndependentSetsReps: usage,
@@ -212,7 +212,7 @@ gap> DigraphMaximalIndependentSetsRepsAttr(gr);
 gap> DigraphMaximalIndependentSetsAttr(gr);
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ] ]
 
-#T# DigraphMaximalIndependentSets and DigraphIndependentSets
+#  DigraphMaximalIndependentSets and DigraphIndependentSets
 gap> gr := ChainDigraph(2);;
 gap> DigraphMaximalIndependentSets(gr);
 [ [ 1 ], [ 2 ] ]
@@ -282,7 +282,7 @@ fail
 gap> DigraphClique(CompleteDigraph(5), [1, 2], []);
 [ 1, 2, 5, 4, 3 ]
 
-#T# DigraphCliquesReps and DigraphMaximalCliquesReps
+#  DigraphCliquesReps and DigraphMaximalCliquesReps
 gap> DigraphCliquesReps();
 Error, Digraphs: DigraphCliquesReps: usage,
 this function requires at least one argument,
@@ -327,7 +327,7 @@ gap> DigraphMaximalCliquesReps(gr);
   [ 4, 16, 17, 22, 23, 24, 25 ], [ 4, 7, 9, 16, 25 ], [ 3, 18, 19, 23, 24 ], 
   [ 5, 16, 18, 22, 24 ], [ 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 ] ]
 
-#T# CliquesFinder: error checking
+#  CliquesFinder: error checking
 gap> CliquesFinder(Group(()), fail, fail, fail, fail, fail, fail, fail, fail);
 Error, Digraphs: CliquesFinder: usage,
 the first argument <gr> must be a digraph,
@@ -411,7 +411,7 @@ gap> CliquesFinder(gr, fail, [], infinity, [1 .. 5], [1 .. 5], false, 1, true);
 gap> CliquesFinder(gr, fail, [], infinity, [1], [1], false, 1, false);
 [  ]
 
-#T# DIGRAPHS_BronKerbosch: easy cases
+#  DIGRAPHS_BronKerbosch: easy cases
 gap> gr := ChainDigraph(5);;
 gap> CliquesFinder(gr, fail, [], infinity, [], [1 .. 4], false, 3, false);
 [  ]
@@ -428,7 +428,7 @@ gap> CliquesFinder(gr, fail, [], infinity, [1], [], false, 1, false);
 gap> CliquesFinder(gr, fail, [], infinity, [], [], false, 1, false);
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
 
-#T# DIGRAPHS_BronKerbosch: getting code coverage
+#  DIGRAPHS_BronKerbosch: getting code coverage
 gap> gr := CompleteDigraph(5);;
 gap> CliquesFinder(gr, fail, [], infinity, [], [], true, 4, true);
 [  ]
@@ -472,7 +472,7 @@ gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
 gap> out := CliquesFinder(gr, fail, [], lim, [], [], true, 3, true);
 [  ]
 
-#T# DigraphMaximalCliques: examples that had been giving duplicate results
+#  DigraphMaximalCliques: examples that had been giving duplicate results
 gap> gr := DigraphFromGraph6String(
 > "X~~~~~~~~~~~~~~~~~}EkpJK_vyRUwvH{fL^FFfzdo~tmB~cU^~");
 <digraph with 25 vertices, 440 edges>
@@ -503,7 +503,7 @@ gap> c := DigraphMaximalCliques(gr);;
 gap> Length(c);
 12815
 
-#T# Issue #23: Digraphs with isolated vertices
+#  Issue #23: Digraphs with isolated vertices
 gap> gr := DigraphFromSparse6String(":~?@c__EC?_F");
 <digraph with 100 vertices, 6 edges>
 gap> DigraphMaximalCliquesReps(gr);
@@ -543,7 +543,7 @@ gap> CliqueNumber(CycleDigraph(8));
 gap> CliqueNumber(DigraphSymmetricClosure(CycleDigraph(8)));
 2
 
-#T# DIGRAPHS_UnbindVariables
+#  DIGRAPHS_UnbindVariables
 gap> Unbind(f);
 gap> Unbind(c);
 gap> Unbind(gr);

@@ -14,7 +14,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# IsChainDigraph
+#  IsChainDigraph
 gap> IsChainDigraph(ChainDigraph(1));
 true
 gap> IsChainDigraph(ChainDigraph(7));
@@ -40,7 +40,7 @@ false
 gap> IsChainDigraph(Digraph([[2], [3], [4], []]));
 true
 
-#T# IsMultiDigraph
+#  IsMultiDigraph
 gap> gr1 := Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> IsMultiDigraph(gr1);
@@ -64,7 +64,7 @@ gap> gr4 := Digraph(r);
 gap> IsMultiDigraph(gr4);
 true
 
-#T# IsAcyclicDigraph
+#  IsAcyclicDigraph
 gap> loop := Digraph([[1]]);
 <digraph with 1 vertex, 1 edge>
 gap> IsMultiDigraph(loop);
@@ -166,7 +166,7 @@ false
 gap> IsAcyclicDigraph(gr);
 false
 
-#T# IsFunctionalDigraph
+#  IsFunctionalDigraph
 gap> IsFunctionalDigraph(multiple);
 false
 gap> IsFunctionalDigraph(grid);
@@ -211,7 +211,7 @@ gap> g5 := Digraph(rec(vertices := [1 .. 3],
 gap> IsFunctionalDigraph(g5);
 false
 
-#T# IsSymmetricDigraph
+#  IsSymmetricDigraph
 gap> IsSymmetricDigraph(g1);
 false
 gap> IsSymmetricDigraph(g2);
@@ -235,7 +235,7 @@ gap> gr := Digraph(rec(nrvertices := 3, source := [1, 1, 2, 2, 2, 2, 3, 3],
 gap> IsSymmetricDigraph(gr);
 true
 
-#T# IsAntisymmetricDigraph
+#  IsAntisymmetricDigraph
 gap> gr := Digraph(rec(nrvertices := 10,
 > source := [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 5, 5, 6,
 >  6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10],
@@ -269,7 +269,7 @@ gap> gr := Digraph([[1, 1, 1, 1, 2], [2, 2, 2, 1]]);
 gap> IsAntisymmetricDigraph(gr);
 false
 
-#T# IsEmptyDigraph
+#  IsEmptyDigraph
 gap> gr1 := Digraph(rec(nrvertices := 5, source := [], range := []));;
 gap> IsEmptyDigraph(gr1);
 true
@@ -292,7 +292,7 @@ gap> gr6 := DigraphByEdges([[3, 5], [1, 1], [2, 3], [5, 4]]);
 gap> IsEmptyDigraph(gr6);
 false
 
-#T# IsTournament
+#  IsTournament
 gap> gr := Digraph(rec(
 > nrvertices := 2, source := [1, 1], range := [2, 2]));
 <multidigraph with 2 vertices, 2 edges>
@@ -330,7 +330,7 @@ gap> gr := Digraph([[2], [1], [1]]);
 gap> IsTournament(gr);
 false
 
-#T# IsStronglyConnectedDigraph
+#  IsStronglyConnectedDigraph
 gap> gr := Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> IsStronglyConnectedDigraph(gr);
@@ -387,7 +387,7 @@ false
 gap> IsStronglyConnectedDigraph(gr);
 false
 
-#T# IsReflexiveDigraph
+#  IsReflexiveDigraph
 gap> r := rec(vertices := [1 .. 5],
 > source := [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5],
 > range  := [1, 2, 3, 1, 2, 5, 1, 3, 5, 2, 3, 4, 1, 2, 2]);;
@@ -447,7 +447,7 @@ gap> gr := DigraphByAdjacencyMatrix(mat);
 gap> IsReflexiveDigraph(gr);
 true
 
-#T# IsCompleteDigraph
+#  IsCompleteDigraph
 gap> gr := Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> IsCompleteDigraph(gr);
@@ -469,7 +469,7 @@ gap> gr := Digraph([[2], [1]]);
 gap> IsCompleteDigraph(gr);
 true
 
-#T# IsConnectedDigraph
+#  IsConnectedDigraph
 gap> gr := Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> IsConnectedDigraph(gr);
@@ -507,7 +507,7 @@ gap> gr := Digraph([[2], [3], [], [3]]);
 gap> IsConnectedDigraph(gr);
 true
 
-#T# DigraphHasLoops
+#  DigraphHasLoops
 gap> gr := Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> DigraphHasLoops(gr);
@@ -580,7 +580,7 @@ gap> AdjacencyMatrix(gr);;
 gap> DigraphHasLoops(gr);
 false
 
-#T# IsAperiodicDigraph
+#  IsAperiodicDigraph
 gap> gr := Digraph([[2], [3], [4], [5], [6], [1], [8], [7]]);
 <digraph with 8 vertices, 8 edges>
 gap> IsAperiodicDigraph(gr);
@@ -598,7 +598,7 @@ gap> gr := Digraph([[2, 2], [3, 3], [4], []]);
 gap> IsAperiodicDigraph(gr);
 false
 
-#T# IsTransitiveDigraph
+#  IsTransitiveDigraph
 gap> gr := Digraph([[2, 3, 4], [3, 4], [4], [4]]);
 <digraph with 4 vertices, 7 edges>
 gap> IsTransitiveDigraph(gr);
@@ -690,7 +690,7 @@ true
 gap> IS_TRANSITIVE_DIGRAPH(gr);
 true
 
-#T# IsBipartiteDigraph
+#  IsBipartiteDigraph
 gap> gr := Digraph([[2, 4], [], [1], [1], [4]]);
 <digraph with 5 vertices, 5 edges>
 gap> IsBipartiteDigraph(gr);
@@ -746,7 +746,7 @@ true
 gap> IsBipartiteDigraph(gr);
 false
 
-#T# IsIn/OutRegularDigraph
+#  IsIn/OutRegularDigraph
 gap> gr := Digraph([[1, 2, 3, 4], [], [], []]);;
 gap> IsInRegularDigraph(gr);
 true
@@ -761,7 +761,7 @@ gap> gr := CompleteDigraph(4);;
 gap> IsRegularDigraph(gr);
 true
 
-#T# IsDistanceRegularDigraph
+#  IsDistanceRegularDigraph
 gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
 gap> IsDistanceRegularDigraph(gr);
 false
@@ -796,7 +796,7 @@ gap> gr := Digraph([[], [3], [2]]);
 gap> IsDistanceRegularDigraph(gr);
 false
 
-#T# IsCompleteBipartiteDigraph
+#  IsCompleteBipartiteDigraph
 gap> gr := CompleteBipartiteDigraph(4, 5);
 <digraph with 9 vertices, 40 edges>
 gap> IsCompleteBipartiteDigraph(gr);
@@ -818,7 +818,7 @@ gap> gr := Digraph([[2], [1]]);
 gap> IsCompleteBipartiteDigraph(gr);
 true
 
-#T# IsDirectedTree
+#  IsDirectedTree
 gap> g := Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> IsDirectedTree(g);
@@ -880,7 +880,7 @@ gap> g := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);
 gap> IsDirectedTree(g);
 false
 
-#T# IsUndirectedTree
+#  IsUndirectedTree
 gap> g := Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> IsUndirectedTree(g);
@@ -942,7 +942,7 @@ gap> g := Digraph([[1], [2]]);
 gap> IsConnectedDigraph(g);
 false
 
-#T# IsUndirectedForest
+#  IsUndirectedForest
 gap> gr := ChainDigraph(10);
 <digraph with 10 vertices, 9 edges>
 gap> IsUndirectedForest(gr);
@@ -984,7 +984,7 @@ gap> gr := DigraphDisjointUnion(CompleteDigraph(2), CycleDigraph(3));
 gap> IsUndirectedForest(gr);
 false
 
-#T# IsEulerianDigraph
+#  IsEulerianDigraph
 gap> g := Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> IsEulerianDigraph(g);
@@ -1133,7 +1133,7 @@ false
 gap> IsLatticeDigraph(gr);
 false
 
-#T# IsCycleDigraph
+#  IsCycleDigraph
 gap> IsCycleDigraph(NullDigraph(10));
 false
 gap> IsCycleDigraph(CycleDigraph(10));
@@ -1145,7 +1145,7 @@ false
 gap> IsCycleDigraph(CycleDigraph(1));
 true
 
-#T# IsBiconnectedDigraph
+#  IsBiconnectedDigraph
 gap> gr := Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> IsBiconnectedDigraph(gr);
@@ -1184,7 +1184,7 @@ gap> IsBiconnectedDigraph(Digraph([[2, 4, 5], [1, 4], [4, 7], [1, 2, 3, 5, 6,
 >                                   7], [1, 4], [4, 7], [3, 4, 6]]));
 false
 
-#T# IsHamiltonianDigraph
+#  IsHamiltonianDigraph
 gap> g := Digraph([]);
 <digraph with 0 vertices, 0 edges>
 gap> IsHamiltonianDigraph(g);
@@ -1342,7 +1342,7 @@ gap> gr := Digraph([[1], [1, 2], [2, 3]]);;
 gap> IsPreorderDigraph(gr) or IsQuasiorderDigraph(gr);
 false
 
-#T# DIGRAPHS_UnbindVariables
+#  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(circuit);
 gap> Unbind(complete100);
