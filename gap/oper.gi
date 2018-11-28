@@ -48,8 +48,6 @@ function(super, sub)
   return true;
 end);
 
-#
-
 InstallMethod(IsUndirectedSpanningForest, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(super, sub)
@@ -75,16 +73,12 @@ function(super, sub)
   return Set(comps1, SortedList) = Set(comps2, SortedList);
 end);
 
-#
-
 InstallMethod(IsUndirectedSpanningTree, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(super, sub)
   return IsConnectedDigraph(MaximalSymmetricSubdigraph(super))
     and IsUndirectedSpanningForest(super, sub);
 end);
-
-#
 
 InstallGlobalFunction(DigraphEdgeUnion,
 function(arg)
@@ -120,8 +114,6 @@ function(arg)
   return new;
 end);
 
-#
-
 InstallMethod(DigraphFloydWarshall, "for a digraph",
 [IsDigraph, IsFunction, IsObject, IsObject],
 function(graph, func, nopath, edge)
@@ -156,8 +148,6 @@ function(graph, func, nopath, edge)
   return mat;
 end);
 
-#
-
 InstallMethod(DigraphReverse, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -172,8 +162,6 @@ function(digraph)
   SetInNeighbours(out, nbs);
   return out;
 end);
-
-#
 
 InstallMethod(DigraphReverseEdges, "for a digraph and a rectangular table",
 [IsDigraph, IsRectangularTable],
@@ -214,8 +202,6 @@ function(digraph, edges)
 
   return DigraphNC(new);
 end);
-
-#
 
 # can we use IsListOf... jj
 InstallMethod(DigraphReverseEdges, "for a digraph and a list",
@@ -283,23 +269,17 @@ function(digraph, edges)
   return DigraphNC(new);
 end);
 
-#
-
 InstallMethod(DigraphReverseEdge, "for a digraph and an edge",
 [IsDigraph, IsList],
 function(digraph, edge)
   return DigraphReverseEdges(digraph, [edge]);
 end);
 
-#
-
 InstallMethod(DigraphReverseEdge, "for a digraph and an edge",
 [IsDigraph, IsPosInt],
 function(digraph, edge)
   return DigraphReverseEdges(digraph, [edge]);
 end);
-
-#
 
 InstallMethod(DigraphRemoveLoops, "for a digraph",
 [IsDigraph],
@@ -333,8 +313,6 @@ function(digraph)
   SetDigraphEdgeLabelsNC(out, new_lbl);
   return out;
 end);
-
-#
 
 InstallMethod(DigraphRemoveEdge, "for a digraph and a list of two pos ints",
 [IsDigraph, IsHomogeneousList],
@@ -466,8 +444,6 @@ function(digraph, edges)
   return gr;
 end);
 
-#
-
 InstallMethod(DigraphAddEdge, "for a digraph and an edge",
 [IsDigraph, IsList],
 function(digraph, edge)
@@ -533,8 +509,6 @@ function(digraph, edges)
   SetDigraphEdgeLabelsNC(gr, new_lbl);
   return gr;
 end);
-#
-
 InstallMethod(DigraphAddVertex, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -546,8 +520,6 @@ InstallMethod(DigraphAddVertex, "for a digraph and an object",
 function(digraph, name)
   return DigraphAddVerticesNC(digraph, 1, [name]);
 end);
-
-#
 
 InstallMethod(DigraphAddVertices, "for a digraph and a pos int",
 [IsDigraph, IsInt],
@@ -576,8 +548,6 @@ function(digraph, m, names)
   return DigraphAddVerticesNC(digraph, m, names);
 end);
 
-#
-
 InstallMethod(DigraphAddVerticesNC, "for a digraph, a pos int and a list",
 [IsDigraph, IsInt, IsList],
 function(digraph, m, names)
@@ -599,8 +569,6 @@ function(digraph, m, names)
   return out;
 end);
 
-#
-
 InstallMethod(DigraphRemoveVertex, "for a digraph and a pos int",
 [IsDigraph, IsPosInt],
 function(digraph, m)
@@ -611,8 +579,6 @@ function(digraph, m)
   fi;
   return DigraphRemoveVerticesNC(digraph, [m]);
 end);
-
-#
 
 InstallMethod(DigraphRemoveVertices, "for a digraph and a list",
 [IsDigraph, IsList],
@@ -631,8 +597,6 @@ function(digraph, verts)
   fi;
   return DigraphRemoveVerticesNC(digraph, verts);
 end);
-
-#
 
 InstallMethod(DigraphRemoveVerticesNC, "for a digraph and a list",
 [IsDigraph, IsList],
@@ -689,8 +653,6 @@ function(digraph, verts)
   return gr;
 end);
 
-#
-
 InstallMethod(OnDigraphs, "for a digraph and a perm",
 [IsDigraph, IsPerm],
 function(graph, perm)
@@ -711,8 +673,6 @@ function(graph, perm)
   return DigraphNC(adj);
 end);
 
-#
-
 InstallMethod(OnDigraphs, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
 function(digraph, trans)
@@ -731,8 +691,6 @@ function(digraph, trans)
   od;
   return DigraphNC(List(new, x -> OnTuples(x, trans)));
 end);
-
-#
 
 InstallMethod(OnMultiDigraphs, "for a digraph, perm and perm",
 [IsDigraph, IsPerm, IsPerm],
@@ -757,8 +715,6 @@ function(graph, perms)
 
   return OnDigraphs(graph, perms[1]);
 end);
-
-#
 
 InstallMethod(InducedSubdigraph,
 "for a digraph and a homogeneous list",
@@ -813,8 +769,6 @@ function(digraph, subverts)
   return gr;
 end);
 
-#
-
 InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
@@ -852,8 +806,6 @@ function(digraph, v)
   return inn;
 end);
 
-#
-
 InstallMethod(OutNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
@@ -870,8 +822,6 @@ InstallMethod(OutNeighboursOfVertexNC, "for a digraph and a vertex",
 function(digraph, v)
   return OutNeighbours(digraph)[v];
 end);
-
-#
 
 InstallMethod(InDegreeOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
@@ -914,8 +864,6 @@ function(digraph, v)
   return count;
 end);
 
-#
-
 InstallMethod(OutDegreeOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
@@ -939,8 +887,6 @@ InstallMethod(OutDegreeOfVertexNC, "for a digraph and a vertex",
 function(digraph, v)
   return Length(OutNeighbours(digraph)[v]);
 end);
-
-#
 
 InstallMethod(QuotientDigraph, "for a digraph and a homogeneous list",
 [IsDigraph, IsHomogeneousList],
@@ -997,8 +943,6 @@ function(digraph, partition)
   # Pass on information about <digraph> which might be relevant to gr?
 end);
 
-#
-
 InstallMethod(DigraphOutEdges, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
@@ -1010,8 +954,6 @@ function(digraph, v)
   return List(OutNeighboursOfVertex(digraph, v), x -> [v, x]);
 end);
 
-#
-
 InstallMethod(DigraphInEdges, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
@@ -1022,8 +964,6 @@ function(digraph, v)
 
   return List(InNeighboursOfVertex(digraph, v), x -> [x, v]);
 end);
-
-#
 
 InstallMethod(DigraphStronglyConnectedComponent, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
@@ -1041,8 +981,6 @@ function(digraph, v)
   return scc.comps[scc.id[v]];
 end);
 
-#
-
 InstallMethod(DigraphConnectedComponent, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
@@ -1056,8 +994,6 @@ function(digraph, v)
   wcc := DigraphConnectedComponents(digraph);
   return wcc.comps[wcc.id[v]];
 end);
-
-#
 
 InstallMethod(IsDigraphEdge, "for a digraph and a list",
 [IsDigraph, IsList],
@@ -1085,8 +1021,6 @@ function(digraph, u, v)
 
   return v in OutNeighboursOfVertex(digraph, u);
 end);
-
-#
 
 InstallMethod(AsBinaryRelation, "for a digraph",
 [IsDigraph],
@@ -1118,8 +1052,6 @@ function(digraph)
   return rel;
 end);
 
-#
-
 InstallGlobalFunction(DigraphDisjointUnion,
 function(arg)
   local out, offset, n, new, gr;
@@ -1150,8 +1082,6 @@ function(arg)
   fi;
   return new;
 end);
-
-#
 
 InstallGlobalFunction(DigraphJoin,
 function(arg)
@@ -1185,8 +1115,6 @@ function(arg)
   return DigraphNC(out);
 end);
 
-#
-
 InstallMethod(IsReachable, "for a digraph and two pos ints",
 [IsDigraph, IsPosInt, IsPosInt],
 function(digraph, u, v)
@@ -1212,8 +1140,6 @@ function(digraph, u, v)
   fi;
   return DigraphPath(digraph, u, v) <> fail;
 end);
-
-#
 
 InstallMethod(DigraphPath, "for a digraph and two pos ints",
 [IsDigraph, IsPosInt, IsPosInt],
@@ -1391,8 +1317,6 @@ function(digraph, u, v)
   return IteratorByFunctions(record);
 end);
 
-#
-
 InstallMethod(DigraphRemoveAllMultipleEdges, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -1507,8 +1431,6 @@ function(gr, loops)
   return OnDigraphs(Digraph(out), p);
 end);
 
-#
-
 InstallMethod(DigraphLayers, "for a digraph, and a vertex",
 [IsDigraph, IsPosInt],
 function(digraph, v)
@@ -1560,15 +1482,11 @@ function(digraph, v)
   return layers[v];
 end);
 
-#
-
 InstallMethod(DIGRAPHS_Layers, "for a digraph",
 [IsDigraph],
 function(digraph)
   return [];
 end);
-#
-
 InstallMethod(DigraphDistanceSet,
 "for a digraph, a vertex, and a non-negative integers",
 [IsDigraph, IsPosInt, IsInt],
@@ -1585,8 +1503,6 @@ function(digraph, vertex, distance)
 
   return DigraphDistanceSet(digraph, vertex, [distance]);
 end);
-
-#
 
 InstallMethod(DigraphDistanceSet,
 "for a digraph, a vertex, and a list of non-negative integers",
@@ -1611,8 +1527,6 @@ function(digraph, vertex, distances)
   return Concatenation(layers{distances});
 end);
 
-#
-
 InstallMethod(DigraphShortestDistance,
 "for a digraph, a vertex, and a vertex",
 [IsDigraph, IsPosInt, IsPosInt],
@@ -1636,8 +1550,6 @@ function(digraph, u, v)
   return dist;
 end);
 
-#
-
 InstallMethod(DigraphShortestDistance,
 "for a digraph, a list, and a list",
 [IsDigraph, IsList, IsList],
@@ -1655,8 +1567,6 @@ function(digraph, list1, list2)
   od;
   return shortest;
 end);
-
-#
 
 InstallMethod(DigraphShortestDistance,
 "for a digraph, and a list",
@@ -1724,8 +1634,6 @@ function(digraph, i, j)
 
   return fail;
 end);
-
-#
 
 InstallMethod(DigraphClosure,
 "for a digraph and an integer",
