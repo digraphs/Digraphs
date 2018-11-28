@@ -111,8 +111,6 @@ function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
                 "vertices,");
 end);
 
-#
-
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid,
 function(arg)
   local digraph, limit, colours, G, gens, limit_arg, out;
@@ -221,8 +219,6 @@ function(digraph, n)
   # General case for n > 2; works for small graphs
   return DigraphEpimorphism(digraph, CompleteDigraph(n));
 end);
-
-#
 
 InstallMethod(DigraphColouring, "for a digraph", [IsDigraph],
 function(digraph)
