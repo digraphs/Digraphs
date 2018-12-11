@@ -64,6 +64,7 @@ DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("BooleanAdjacencyMatrix", IsDigraph);
 DeclareAttribute("ReducedDigraph", IsDigraph);
 DeclareAttribute("MaximalSymmetricSubdigraph", IsDigraph);
+DeclareAttribute("MaximalAntiSymmetricSubdigraph", IsDigraph);
 DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoops", IsDigraph);
 DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
 

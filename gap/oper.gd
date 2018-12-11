@@ -66,7 +66,7 @@ DeclareOperation("OutNeighboursOfVertexNC", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphInEdges", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphOutEdges", [IsDigraph, IsPosInt]);
 DeclareOperation("IsDigraphEdge", [IsDigraph, IsList]);
-DeclareOperation("IsDigraphEdge", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("IsDigraphEdge", [IsDigraph, IsInt, IsInt]);
 
 DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);

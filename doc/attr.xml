@@ -1352,3 +1352,36 @@ gap> HamiltonianPath(g);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="MaximalAntiSymmetricSubdigraph">
+<ManSection>
+  <Attr Name="MaximalAntiSymmetricSubdigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>MaximalAntiSymmetricSubdigraph</C>
+    returns a anti-symmetric subdigraph of <A>digraph</A> which does not have
+    multiple edges, has the same vertex set as <A>digraph</A>, and whose
+    edge list is formed from <A>digraph</A> by ignoring the multiplicity of
+    edges, and by having either an edge from the vertex <C>u</C> to the vertex
+    <C>v</C>, or the edge from <C>v</C> to <C>u</C> (but not both) whenever
+    both edges belong to <A>digraph</A>.
+    <P/>
+
+    See <Ref Prop="IsAntisymmetricDigraph"/> for more information.
+    <Example><![CDATA[
+gap> D := Digraph([[2, 2], [1, 3], [4], [3, 1]]);
+<multidigraph with 4 vertices, 7 edges>
+gap> not IsAntiSymmetricDigraph(D) and IsMultiDigraph(D);
+true
+gap> OutNeighbours(D);
+[ [ 2, 2 ], [ 1, 3 ], [ 4 ], [ 3, 1 ] ]
+gap> D := MaximalAntiSymmetricSubdigraph(D);
+<digraph with 4 vertices, 4 edges>
+gap> IsAntiSymmetricDigraph(D) and not IsMultiDigraph(D);
+true
+gap> OutNeighbours(D);
+[ [ 2 ], [ 3 ], [ 4 ], [ 1 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

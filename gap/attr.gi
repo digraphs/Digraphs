@@ -1483,3 +1483,50 @@ function(gr)
   od;
   return fail;
 end);
+
+InstallMethod(MaximalAntiSymmetricSubdigraph, "for a digraph",
+[IsDigraph],
+function(D)
+  local n, m, out, i, j;
+
+  n := DigraphNrVertices(D);
+  if IsMultiDigraph(D) then
+    return MaximalAntiSymmetricSubdigraph(DigraphRemoveAllMultipleEdges(D));
+  elif n <= 1
+      or (HasIsAntisymmetricDigraph(D) and IsAntisymmetricDigraph(D)) then
+    return D;
+  fi;
+
+  # The average degree
+  m := Float(Sum(OutDegreeSequence(D)) / n);
+
+  if Float(n * (n - 1) / 2) < n * m * Log2(m) then
+    # The approximate complexity of using the adjacency matrix (first method)
+    # is n * (n - 1) / 2, and that of repeatedly calling AddSet (second method)
+    # is n * m * log2(m) where m is the mean degree of any vertex. Some
+    # experimenting showed that the comparison below is a reasonable way to
+    # decide which method to use.
+    out := BooleanAdjacencyMatrixMutableCopy(D);
+    for i in [1 .. n] do
+      for j in [i + 1 .. n] do
+        if out[i][j] then
+          out[j][i] := false;
+        fi;
+      od;
+    od;
+    out := DigraphByAdjacencyMatrixNC(out);
+  else
+    out := OutNeighboursMutableCopy(D);
+    Perform(out, Sort);
+    for i in [1 .. n] do
+      for j in out[i] do
+        if i <> j then
+          RemoveSet(out[j], i);
+        fi;
+      od;
+    od;
+    out := DigraphNC(out);
+  fi;
+  SetIsAntisymmetricDigraph(out, true);
+  return out;
+end);

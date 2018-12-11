@@ -1,5 +1,5 @@
 #
-# graphs: 
+# digraphs
 #
 # This file is part of the build system of a GAP kernel extension.
 # Requires GNU autoconf, GNU automake and GNU libtool.
@@ -14,6 +14,10 @@ AC_CONFIG_SRCDIR([src/digraphs.c])
 AC_CONFIG_HEADER([src/_pkgconfig.h:cnf/pkgconfig.h.in])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([cnf])
+AC_CONFIG_SUBDIRS([src/edge-addition-planarity-suite-Version_3.0.0.5])
+
+PLANARITY_SUITE_DIR=src/edge-addition-planarity-suite-Version_3.0.0.5
+AC_SUBST(PLANARITY_SUITE_DIR)
 
 dnl ##
 dnl ## Get canonical host info
@@ -28,6 +32,8 @@ AM_SILENT_RULES([yes])
 AM_PROG_AR
 
 AX_PREFIX_CONFIG_H([src/digraphs-config.h],[],[src/_pkgconfig.h])
+
+AC_PREFIX_DEFAULT('${abs_top_builddir}/../../bin/')
 
 dnl ##
 dnl ## Set the language

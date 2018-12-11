@@ -1004,14 +1004,14 @@ function(digraph, edge)
   return IsDigraphEdge(digraph, edge[1], edge[2]);
 end);
 
-InstallMethod(IsDigraphEdge, "for a digraph, pos int, pos int",
-[IsDigraph, IsPosInt, IsPosInt],
+InstallMethod(IsDigraphEdge, "for a digraph, int, int",
+[IsDigraph, IsInt, IsInt],
 function(digraph, u, v)
   local n;
 
   n := DigraphNrVertices(digraph);
 
-  if u > n or v > n then
+  if u > n or v > n or u <= 0 or v <= 0 then
     return false;
   elif HasAdjacencyMatrix(digraph) then
     return AdjacencyMatrix(digraph)[u][v] <> 0;

@@ -1,0 +1,318 @@
+#############################################################################
+##
+#W  planar.xml
+#Y  Copyright (C) 2018                                  James D. Mitchell
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
+
+<#GAPDoc Label="IsPlanarDigraph">
+<ManSection>
+  <Prop Name="IsPlanarDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A <E>planar</E> digraph is a digraph that can be embedded in the plane in
+    such a way that its edges do not intersect. A digraph is planar if and only
+    if it does not have a subdigraph that is homeomorphic to either the
+    complete graph on <C>5</C> vertices or the complete bipartite graph with
+    vertex sets of sizes <C>3</C> and <C>3</C>.
+    <P/>
+    
+    <C>IsPlanarDigraph</C> returns <K>true</K> if the digraph <A>digraph</A> is
+    planar and <K>false</K> if it is not. The directions and multiplicities of
+    any edges in <A>digraph</A> are ignored by <C>IsPlanarDigraph</C>.
+    <P/> 
+
+    See also <Ref Prop="IsOuterPlanarDigraph"/>.
+    <P/>
+
+    This method uses the reference implementation in
+    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    in <Cite Key="Boyer2006aa"/>.
+
+    <Example><![CDATA[
+gap> IsPlanarDigraph(CompleteDigraph(4));
+true
+gap> IsPlanarDigraph(CompleteDigraph(5));
+false
+gap> IsPlanarDigraph(CompleteBipartiteDigraph(2, 3));
+true
+gap> IsPlanarDigraph(CompleteBipartiteDigraph(3, 3));
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsOuterPlanarDigraph">
+<ManSection>
+  <Prop Name="IsOuterPlanarDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    An <E>outer planar</E> digraph is a digraph that can be embedded in the
+    plane in such a way that its edges do not intersect, and all vertices
+    belong to the unbounded face of the embedding.  A digraph is outer planar
+    if and only if it does not have a subdigraph that is homeomorphic to either
+    the complete graph on <C>4</C> vertices or the complete bipartite graph
+    with vertex sets of sizes <C>2</C> and <C>3</C>.
+    <P/>
+    
+    <C>IsOuterPlanarDigraph</C> returns <K>true</K> if the digraph
+    <A>digraph</A> is outer planar and <K>false</K> if it is not. The
+    directions and multiplicities of any edges in <A>digraph</A> are ignored by
+    <C>IsPlanarDigraph</C>.  <P/>
+
+    See also <Ref Prop="IsPlanarDigraph"/>.
+
+    This method uses the reference implementation in
+    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    in <Cite Key="Boyer2006aa"/>.
+
+<Example><![CDATA[
+gap> IsOuterPlanarDigraph(CompleteDigraph(4));
+false
+gap> IsOuterPlanarDigraph(CompleteDigraph(5));
+false
+gap> IsOuterPlanarDigraph(CompleteBipartiteDigraph(2, 3));
+false
+gap> IsOuterPlanarDigraph(CompleteBipartiteDigraph(3, 3));
+false
+gap> IsOuterPlanarDigraph(CycleDigraph(10));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="KuratowskiPlanarSubdigraph">
+<ManSection>
+  <Attr Name="KuratowskiPlanarSubdigraph" Arg="digraph"/>
+  <Returns>A list or <K>fail</K>.</Returns>
+  <Description>
+    <C>KuratowskiPlanarSubdigraph</C> returns the list of out-neighbours of a
+    (not necessarily induced) subdigraph of the digraph <A>digraph</A> that
+    witnesses the fact that <A>digraph</A> is not planar, or <K>fail</K> if
+    <A>digraph</A> is planar.  In other words,
+    <C>KuratowskiPlanarSubdigraph</C> returns the out-neighbours of a
+    subdigraph of <A>digraph</A> that is homeomorphic to the complete graph
+    with <C>5</C> vertices, or to the complete bipartite graph with vertex sets
+    of sizes <C>3</C> and <C>3</C>. <P/>
+    
+    The directions and multiplicities of any edges in <A>digraph</A> are
+    ignored when considering whether or not <A>digraph</A> is planar. <P/>
+
+    See also <Ref Prop="IsPlanarDigraph"/>
+    and <Ref Attr="SubdigraphHomeomorphicToK33"/>.
+    <P/>
+    
+    This method uses the reference implementation in
+    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    in <Cite Key="Boyer2006aa"/>.
+
+<Example><![CDATA[
+gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], 
+> [1, 7, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
+<digraph with 11 vertices, 25 edges>
+gap> KuratowskiPlanarSubdigraph(D);
+fail
+gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
+> [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
+> [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
+<digraph with 10 vertices, 50 edges>
+gap> IsPlanarDigraph(D);
+false
+gap> KuratowskiPlanarSubdigraph(D);
+[ [ 2, 9, 7 ], [ 3 ], [ 6 ], [ 5, 9 ], [ 6 ], [  ], [ 4 ], 
+  [ 7, 9, 3 ], [  ], [  ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="KuratowskiOuterPlanarSubdigraph">
+<ManSection>
+  <Attr Name="KuratowskiOuterPlanarSubdigraph" Arg="digraph"/>
+  <Returns>A list or <K>fail</K>.</Returns>
+  <Description>
+    <C>KuratowskiOuterPlanarSubdigraph</C> returns the list of out-neighbours
+    of a (not necessarily induced) subdigraph of the digraph <A>digraph</A>
+    that witnesses the fact that <A>digraph</A> is not outer planar, or
+    <K>fail</K> if <A>digraph</A> is outer planar.  In other words,
+    <C>KuratowskiOuterPlanarSubdigraph</C> returns the out-neighbours of a
+    subdigraph of <A>digraph</A> that is homeomorphic to the complete graph
+    with <C>4</C> vertices, or to the complete bipartite graph with vertex sets
+    of sizes <C>2</C> and <C>3</C>. <P/>
+    
+    The directions and multiplicities of any edges in <A>digraph</A> are
+    ignored when considering whether or not <A>digraph</A> is outer planar. 
+    <P/>
+
+    See also 
+    <Ref Prop="IsOuterPlanarDigraph"/>,
+    <Ref Attr="SubdigraphHomeomorphicToK4"/>, and 
+    <Ref Attr="SubdigraphHomeomorphicToK23"/>.
+    <P/>
+
+    This method uses the reference implementation in
+    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    in <Cite Key="Boyer2006aa"/>.
+
+<Example><![CDATA[
+gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], 
+> [1, 7, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
+<digraph with 11 vertices, 25 edges>
+gap> KuratowskiOuterPlanarSubdigraph(D);
+[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 11 ], [ 7 ], [ 8 ], 
+  [  ], [ 11 ], [  ], [  ] ]
+gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
+> [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
+> [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
+<digraph with 10 vertices, 50 edges>
+gap> IsOuterPlanarDigraph(D);
+false
+gap> KuratowskiOuterPlanarSubdigraph(D);
+[ [  ], [  ], [  ], [ 8, 9 ], [  ], [  ], [ 9, 4 ], [ 7, 9 ], [  ], 
+  [  ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="PlanarEmbedding">
+<ManSection>
+  <Attr Name="PlanarEmbedding" Arg="digraph"/>
+  <Returns>A list or <K>fail</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a planar digraph, then 
+    <C>PlanarEmbedding</C> returns the list of out-neighbours
+    of a subdigraph of <A>digraph</A> such that each vertex's
+    neighbours are given in clockwise order. If <A>digraph</A> is not planar,
+    then <K>fail</K> is returned. <P/>
+    
+    The directions and multiplicities of any edges in <A>digraph</A> are
+    ignored by <C>PlanarEmbedding</C>.
+    <P/>
+
+    See also 
+    <Ref Prop="IsPlanarDigraph"/>.
+    <P/>
+
+    This method uses the reference implementation in
+    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    in <Cite Key="Boyer2006aa"/>.
+
+<Example><![CDATA[
+gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], 
+> [1, 7, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
+<digraph with 11 vertices, 25 edges>
+gap> PlanarEmbedding(D);
+[ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4 ], [ 6 ], [ 11, 7 ], [ 7 ], [ 8 ], 
+  [  ], [ 11 ], [  ], [  ] ]
+gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
+> [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
+> [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
+<digraph with 10 vertices, 50 edges>
+gap> PlanarEmbedding(D);
+fail
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="OuterPlanarEmbedding">
+<ManSection>
+  <Attr Name="OuterPlanarEmbedding" Arg="digraph"/>
+  <Returns>A list or <K>fail</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is an outer planar digraph, then
+    <C>OuterPlanarEmbedding</C> returns the list of out-neighbours of a
+    subdigraph of <A>digraph</A> such that each vertex's neighbours are given
+    in clockwise order. If <A>digraph</A> is not outer planar, then <K>fail</K>
+    is returned. <P/>
+    
+    The directions and multiplicities of any edges in <A>digraph</A> are
+    ignored by <C>OuterPlanarEmbedding</C>.
+    <P/>
+
+    See also <Ref Prop="IsOuterPlanarDigraph"/>.
+    <P/>
+
+    This method uses the reference implementation in
+    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    in <Cite Key="Boyer2006aa"/>.
+
+<Example><![CDATA[
+gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], 
+> [1, 7, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
+<digraph with 11 vertices, 25 edges>
+gap> OuterPlanarEmbedding(D);
+fail
+gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
+> [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
+> [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
+<digraph with 10 vertices, 50 edges>
+gap> OuterPlanarEmbedding(D);
+fail
+gap> OuterPlanarEmbedding(CompleteBipartiteDigraph(2, 2));
+[ [ 3, 4 ], [ 4, 3 ], [  ], [  ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="SubdigraphHomeomorphicToK">
+<ManSection>
+  <Attr Name="SubdigraphHomeomorphicToK23" Arg="digraph"/>
+  <Attr Name="SubdigraphHomeomorphicToK33" Arg="digraph"/>
+  <Attr Name="SubdigraphHomeomorphicToK4" Arg="digraph"/>
+  <Returns>A list or <K>fail</K>.</Returns>
+  <Description>
+    These attributes return the list of out-neighbours of a subdigraph of
+    the digraph <A>digraph</A> which is homeomorphic to one of the following:
+    the complete bipartite graph with vertex sets of sizes <C>2</C> and
+    <C>3</C>; the complete bipartite graph with vertex sets of sizes <C>3</C>
+    and <C>3</C>; or the complete graph with <C>4</C> vertices. If
+    <A>digraph</A> has no such subdigraphs, then <K>fail</K> is returned. 
+    <P/>
+
+    See also <Ref Prop="IsPlanarDigraph"/> and <Ref
+      Prop="IsOuterPlanarDigraph"/> for more details.<P/>
+
+    This method uses the reference implementation in
+    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    in <Cite Key="Boyer2006aa"/>.
+
+<Example><![CDATA[
+gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 7, 11], 
+> [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
+<digraph with 11 vertices, 25 edges>
+gap> SubdigraphHomeomorphicToK4(D);
+[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 7, 11 ], [ 7 ], [ 8 ], 
+  [  ], [ 11 ], [  ], [  ] ]
+gap> SubdigraphHomeomorphicToK23(D);
+[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 11 ], [ 7 ], [ 8 ], 
+  [  ], [ 11 ], [  ], [  ] ]
+gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 11], 
+>  [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
+<digraph with 11 vertices, 24 edges>
+gap> SubdigraphHomeomorphicToK4(D);
+fail
+gap> SubdigraphHomeomorphicToK23(D);
+[ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4 ], [ 6 ], [ 11 ], [ 7 ], [ 8 ], 
+  [  ], [ 11 ], [  ], [  ] ]
+gap> SubdigraphHomeomorphicToK33(D);
+fail
+gap> SubdigraphHomeomorphicToK23(NullDigraph(0));
+fail
+gap> SubdigraphHomeomorphicToK33(CompleteDigraph(5));
+fail
+gap> SubdigraphHomeomorphicToK33(CompleteBipartiteDigraph(3, 3));
+[ [ 4, 6, 5 ], [ 4, 5, 6 ], [ 6, 5, 4 ], [  ], [  ], [  ] ]
+gap> SubdigraphHomeomorphicToK4(CompleteDigraph(3));
+fail
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

@@ -1678,6 +1678,30 @@ gap> gr := DigraphAddEdges(DigraphAddVertex(CycleDigraph(600)),
 gap> HamiltonianPath(gr);
 fail
 
+# MaximalAntiSymmetricSubdigraph
+gap> MaximalAntiSymmetricSubdigraph(NullDigraph(0));
+<digraph with 0 vertices, 0 edges>
+gap> IsAntisymmetricDigraph(DigraphCopy(last));
+true
+gap> MaximalAntiSymmetricSubdigraph(NullDigraph(1));
+<digraph with 1 vertex, 0 edges>
+gap> IsAntisymmetricDigraph(DigraphCopy(last));
+true
+gap> MaximalAntiSymmetricSubdigraph(CompleteDigraph(1));
+<digraph with 1 vertex, 0 edges>
+gap> IsAntisymmetricDigraph(DigraphCopy(last));
+true
+gap> MaximalAntiSymmetricSubdigraph(CompleteBipartiteDigraph(2, 30000));
+<digraph with 30002 vertices, 60000 edges>
+gap> IsAntisymmetricDigraph(DigraphCopy(last));
+true
+gap> MaximalAntiSymmetricSubdigraph(Digraph([[1, 1, 2, 2], []]));
+<digraph with 2 vertices, 2 edges>
+gap> OutNeighbours(last);
+[ [ 1, 2 ], [  ] ]
+gap> MaximalAntiSymmetricSubdigraph(CompleteDigraph(10));
+<digraph with 10 vertices, 45 edges>
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);
