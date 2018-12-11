@@ -85,3 +85,7 @@ manual.lab
 ltmain.sh
 .libs/**/Info.plist
 digraphs-config.h
+compile
+depcomp
+install-sh
+missing
