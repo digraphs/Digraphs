@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# AutomorphismGroup: for a digraph, 1
+#  AutomorphismGroup: for a digraph, 1
 # All graphs of 5 vertices, compare with GRAPE
 gap> graph5 := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                                         "/data/graph5.g6.gz"));
@@ -72,7 +72,7 @@ gap> treeAuts := [
 gap> List(trees, AutomorphismGroup) = treeAuts;
 true
 
-#T# AutomorphismGroup: for a digraph, 2
+#  AutomorphismGroup: for a digraph, 2
 # PJC example, 45 vertices.
 # This example is broken if we use Digraphs rather than Graphs in the bliss
 # code
@@ -97,7 +97,7 @@ gap> G := Group([
 gap> IsomorphismGroups(G, H) <> fail;
 true
 
-#T# AutomorphismGroup: for a digraph, 3
+#  AutomorphismGroup: for a digraph, 3
 # Random examples
 gap> AutomorphismGroup(Digraph([]));
 Group(())
@@ -116,7 +116,7 @@ gap> Size(last);
 gap> AutomorphismGroup(CompleteDigraph(6)) = SymmetricGroup(6);
 true
 
-#T# AutomorphismGroup: for a MultiDigraph, 1
+#  AutomorphismGroup: for a MultiDigraph, 1
 gap> gr := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
 <multidigraph with 3 vertices, 6 edges>
 gap> AutomorphismGroup(gr);
@@ -130,7 +130,7 @@ gap> AutomorphismGroup(gr);
 gap> Size(last);
 56294995342131200
 
-#T# CanonicalLabelling: for a digraph, 1
+#  CanonicalLabelling: for a digraph, 1
 # PJC example, 45 vertices
 gap> gr := DigraphFromDigraph6String(Concatenation(
 > "+l??O?C?A_@???CE????GAAG?C??M?????@_?OO??G??@?IC???_C?G?o??C?AO???c_??A?",
@@ -148,7 +148,7 @@ gap> not DIGRAPHS_NautyAvailable or NautyCanonicalLabelling(gr) =
 > 20, 30, 26)(18, 27);
 true
 
-#T# CanonicalLabelling: for a digraph, 2
+#  CanonicalLabelling: for a digraph, 2
 gap> gr := DigraphFromDiSparse6String(Concatenation(
 > ".~?@caOa??gGEA?e@?oOIb_SIc?MQBhOQCwIV?PY@B@IRDGgL__sYao{ODWCNC@MKBOwUEHG",
 > "TdPmEBwkXFGoV_ogNCGCIBO{ZGGGFD@U?APGUDwW_GWGGFAU??PKUE@eDA`?TFAi?A_{da@G",
@@ -184,7 +184,7 @@ gap> not DIGRAPHS_NautyAvailable or NautyCanonicalLabelling(gr) =
 > 30, 33, 26, 13, 86, 98, 95, 80, 27, 63, 43, 87, 3, 36, 39, 68)(35, 92, 56);
 true
 
-#T# CanonicalLabelling: for a digraph, 3
+#  CanonicalLabelling: for a digraph, 3
 gap> gr := ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/data/test-1.d6"))[1];
 <digraph with 1000 vertices, 100368 edges>
@@ -297,7 +297,7 @@ gap> not DIGRAPHS_NautyAvailable or NautyCanonicalLabelling(gr) =
 >  315, 756, 518, 652, 123, 552, 288, 441)(77, 413, 94, 323, 813, 725, 142,
 >   449, 675)(102, 776, 893, 260, 870, 824, 828);;
 
-#T# CanonicalLabelling: for a MultiDigraph, 1
+#  CanonicalLabelling: for a MultiDigraph, 1
 gap> gr1 := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
 <multidigraph with 3 vertices, 6 edges>
 gap> perms := BlissCanonicalLabelling(gr1);
@@ -311,7 +311,7 @@ true
 gap> gr2 = gr1;
 false
 
-#T# IsIsomorphicDigraph: for digraphs, 1
+#  IsIsomorphicDigraph: for digraphs, 1
 gap> p := Random(SymmetricGroup(1000));;
 gap> gr2 := OnDigraphs(gr, p);
 <digraph with 1000 vertices, 100368 edges>
@@ -324,7 +324,7 @@ true
 gap> ForAny(graph5, x -> Number(graph5, y -> IsIsomorphicDigraph(x, y)) <> 1);
 false
 
-#T# IsIsomorphicDigraph: for MultiDigraphs, 1
+#  IsIsomorphicDigraph: for MultiDigraphs, 1
 gap> gr1 := Digraph([[3, 1, 3], [1, 3], [2, 2, 1]]);
 <multidigraph with 3 vertices, 8 edges>
 gap> gr2 := Digraph([[3, 1, 3], [1, 3], [2, 2]]);
@@ -348,7 +348,7 @@ false
 gap> IsIsomorphicDigraph(gr4, gr4);
 true
 
-#T# IsomorphismDigraphs: for digraphs, 1
+#  IsomorphismDigraphs: for digraphs, 1
 gap> gr1 := CompleteBipartiteDigraph(100, 50);
 <digraph with 150 vertices, 10000 edges>
 gap> gr2 := CompleteBipartiteDigraph(50, 100);
@@ -367,7 +367,7 @@ true
 gap> IsomorphismDigraphs(EmptyDigraph(1), gr1);
 fail
 
-#T# IsomorphismDigraphs: for MultiDigraphs, 1
+#  IsomorphismDigraphs: for MultiDigraphs, 1
 gap> gr1 := Digraph([[3, 1, 3], [1, 3], [2, 2, 1]]);
 <multidigraph with 3 vertices, 8 edges>
 gap> gr4 := Digraph([[2, 3, 3], [2, 1, 1], [1, 2]]);
@@ -385,7 +385,7 @@ gap> iso := IsomorphismDigraphs(gr1, gr1);
 gap> OnMultiDigraphs(gr1, iso) = gr1;
 true
 
-#T# DIGRAPHS_UnbindVariables
+#  DIGRAPHS_UnbindVariables
 gap> Unbind(H);
 gap> Unbind(gr);
 gap> Unbind(gr1);

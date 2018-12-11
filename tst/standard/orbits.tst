@@ -13,14 +13,14 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# DigraphStabilizer, error
+#  DigraphStabilizer, error
 gap> gr := NullDigraph(0);
 <digraph with 0 vertices, 0 edges>
 gap> DigraphStabilizer(gr, 1);
 Error, Digraphs: DigraphStabilizer: usage,
 the second argument must not exceed 0,
 
-#T# DigraphStabilizer,
+#  DigraphStabilizer,
 gap> gr := CompleteDigraph(3);
 <digraph with 3 vertices, 6 edges>
 gap> DigraphStabilizer(gr, 1);
@@ -30,7 +30,7 @@ Group([ (1,3) ])
 gap> DigraphStabilizer(gr, 3);
 Group([ (1,2) ])
 
-#T# DigraphGroup
+#  DigraphGroup
 gap> gr := Digraph([[2, 2], [1]]);
 <multidigraph with 2 vertices, 3 edges>
 gap> DigraphGroup(gr);
@@ -44,13 +44,13 @@ gap> gr := Digraph([[3, 2], [1], [1]]);
 gap> DigraphGroup(gr);
 Group([ (2,3) ])
 
-#T# DigraphOrbits
+#  DigraphOrbits
 gap> gr := CycleDigraph(10);
 <digraph with 10 vertices, 10 edges>
 gap> DigraphOrbits(gr);
 [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ]
 
-#T# RepresentativeOutNeighbours
+#  RepresentativeOutNeighbours
 gap> gr := ChainDigraph(3);
 <digraph with 3 vertices, 2 edges>
 gap> RepresentativeOutNeighbours(gr);

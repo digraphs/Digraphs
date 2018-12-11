@@ -236,8 +236,6 @@ end);
 #   return out;
 # end);
 
-#
-
 InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
 function(digraph)
   local func;
@@ -249,8 +247,6 @@ function(digraph)
   return func;
 end);
 
-#
-
 InstallMethod(AsTransformation, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -259,8 +255,6 @@ function(digraph)
   fi;
   return Transformation(Concatenation(OutNeighbours(digraph)));
 end);
-
-#
 
 InstallMethod(ReducedDigraph, "for a digraph",
 [IsDigraph],
@@ -315,8 +309,6 @@ function(digraph)
   return gr;
 end);
 
-#
-
 InstallMethod(DigraphDual, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -342,11 +334,7 @@ function(digraph)
   return gr;
 end);
 
-#
-
 InstallMethod(DigraphNrEdges, "for a digraph", [IsDigraph], DIGRAPH_NREDGES);
-
-#
 
 InstallMethod(DigraphEdges, "for a digraph",
 [IsDigraph],
@@ -370,8 +358,6 @@ end);
 
 InstallMethod(AsGraph, "for a digraph", [IsDigraph], Graph);
 
-#
-
 InstallMethod(DigraphVertices, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -394,8 +380,6 @@ function(digraph)
   return digraph!.DigraphSource;
 end);
 
-#
-
 InstallMethod(OutNeighbours, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -411,20 +395,14 @@ function(digraph)
   return out;
 end);
 
-#
-
 InstallMethod(InNeighbours, "for a digraph",
 [IsDigraph],
 function(digraph)
   return DIGRAPH_IN_OUT_NBS(OutNeighbours(digraph));
 end);
 
-#
-
 InstallMethod(AdjacencyMatrix, "for a digraph",
 [IsDigraph], ADJACENCY_MATRIX);
-
-#
 
 InstallMethod(BooleanAdjacencyMatrix,
 "for a digraph",
@@ -442,8 +420,6 @@ function(gr)
   od;
   return mat;
 end);
-
-#
 
 InstallMethod(DigraphShortestDistances, "for a digraph",
 [IsDigraph],
@@ -486,8 +462,6 @@ InstallMethod(DigraphTopologicalSort, "for a digraph",
   return DIGRAPH_TOPO_SORT(OutNeighbours(graph));
 end);
 
-#
-
 InstallMethod(DigraphStronglyConnectedComponents, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -506,13 +480,9 @@ function(digraph)
   return GABOW_SCC(OutNeighbours(digraph));
 end);
 
-#
-
 InstallMethod(DigraphConnectedComponents, "for a digraph",
 [IsDigraph],
 DIGRAPH_CONNECTED_COMPONENTS);
-
-#
 
 InstallMethod(OutDegrees, "for a digraph",
 [IsDigraph],
@@ -527,8 +497,6 @@ function(digraph)
   return degs;
 end);
 
-#
-
 InstallMethod(InDegrees, "for a digraph with in neighbours",
 [IsDigraph and HasInNeighbours],
 function(digraph)
@@ -541,8 +509,6 @@ function(digraph)
   od;
   return degs;
 end);
-
-#
 
 InstallMethod(InDegrees, "for a digraph",
 [IsDigraph],
@@ -559,8 +525,6 @@ function(digraph)
   return degs;
 end);
 
-#
-
 InstallMethod(OutDegreeSequence, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -573,8 +537,6 @@ function(digraph)
        end);
   return out;
 end);
-
-#
 
 InstallMethod(OutDegreeSequence, "for a digraph with known digraph group",
 [IsDigraph and HasDigraphGroup],
@@ -594,8 +556,6 @@ function(digraph)
   return out;
 end);
 
-#
-
 InstallMethod(OutDegreeSet, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -604,8 +564,6 @@ function(digraph)
   out := ShallowCopy(OutDegrees(digraph));
   return Set(out);
 end);
-
-#
 
 InstallMethod(InDegreeSequence, "for a digraph",
 [IsDigraph],
@@ -619,8 +577,6 @@ function(digraph)
        end);
   return out;
 end);
-
-#
 
 InstallMethod(InDegreeSequence,
 "for a digraph with known digraph group and in-neighbours",
@@ -641,8 +597,6 @@ function(digraph)
   return out;
 end);
 
-#
-
 InstallMethod(InDegreeSet, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -651,8 +605,6 @@ function(digraph)
   out := ShallowCopy(InDegrees(digraph));
   return Set(out);
 end);
-
-#
 
 InstallMethod(DigraphSources, "for a digraph with in-degrees",
 [IsDigraph and HasInDegrees], 3,
@@ -697,8 +649,6 @@ function(digraph)
   return Filtered(verts, x -> not seen[x]);
 end);
 
-#
-
 InstallMethod(DigraphSinks, "for a digraph with out-degrees",
 [IsDigraph and HasOutDegrees],
 function(digraph)
@@ -724,8 +674,6 @@ function(digraph)
   od;
   return sinks;
 end);
-
-#
 
 InstallMethod(DigraphPeriod, "for a digraph",
 [IsDigraph],
@@ -777,15 +725,11 @@ function(digraph)
   return period;
 end);
 
-#
-
 InstallMethod(DIGRAPHS_ConnectivityData, "for a digraph",
 [IsDigraph],
 function(digraph)
   return [];
 end);
-
-#
 
 BindGlobal("DIGRAPH_ConnectivityDataForVertex",
 function(digraph, v)
@@ -894,8 +838,6 @@ function(digraph, v)
                  layers := layers);
   return data[v];
 end);
-#
-
 BindGlobal("DIGRAPHS_DiameterAndUndirectedGirth",
 function(digraph)
   local outer_reps, diameter, girth, v, record, localGirth,
@@ -953,8 +895,6 @@ function(digraph)
   return rec(diameter := diameter, girth := girth);
 end);
 
-#
-
 InstallMethod(DigraphDiameter, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -968,8 +908,6 @@ function(digraph)
   # Use the C function
   return DIGRAPH_DIAMETER(digraph);
 end);
-
-#
 
 InstallMethod(DigraphUndirectedGirth, "for a digraph",
 [IsDigraph],
@@ -989,8 +927,6 @@ function(digraph)
   # Otherwise digraph is simple
   return DIGRAPHS_DiameterAndUndirectedGirth(digraph).girth;
 end);
-
-#
 
 InstallMethod(DigraphGirth, "for a digraph",
 [IsDigraph],
@@ -1022,8 +958,6 @@ function(digraph)
   return girth;
 end);
 
-#
-
 InstallMethod(DigraphLongestSimpleCircuit, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -1036,8 +970,6 @@ function(digraph)
   max := Maximum(lens);
   return circs[Position(lens, max)];
 end);
-
-#
 
 InstallMethod(DigraphSymmetricClosure, "for a digraph",
 [IsDigraph],
@@ -1111,8 +1043,6 @@ function(digraph)
   return digraph;
 end);
 
-#
-
 InstallMethod(DigraphTransitiveClosure, "for a digraph",
 [IsDigraph],
 function(graph)
@@ -1123,8 +1053,6 @@ function(graph)
   return DigraphTransitiveClosureNC(graph, false);
 end);
 
-#
-
 InstallMethod(DigraphReflexiveTransitiveClosure, "for a digraph",
 [IsDigraph],
 function(graph)
@@ -1134,8 +1062,6 @@ function(graph)
   fi;
   return DigraphTransitiveClosureNC(graph, true);
 end);
-
-#
 
 InstallGlobalFunction(DigraphTransitiveClosureNC,
 function(graph, reflexive)
@@ -1350,8 +1276,6 @@ function(digraph)
   return [true, Transformation(colour)];
 end);
 
-#
-
 InstallMethod(DigraphBicomponents, "for a digraph", [IsDigraph],
 function(digraph)
   local b;
@@ -1365,8 +1289,6 @@ function(digraph)
   return b;
 end);
 
-#
-
 InstallMethod(DigraphLoops, "for a digraph", [IsDigraph],
 function(gr)
   if HasDigraphHasLoops(gr) and not DigraphHasLoops(gr) then
@@ -1374,8 +1296,6 @@ function(gr)
   fi;
   return Filtered(DigraphVertices(gr), x -> x in OutNeighboursOfVertex(gr, x));
 end);
-
-#
 
 InstallMethod(DigraphDegeneracy,
 "for a digraph",
@@ -1448,8 +1368,6 @@ function(gr)
   return [k, out];
 end);
 
-#
-
 InstallMethod(MaximalSymmetricSubdigraphWithoutLoops, "for a digraph",
 [IsDigraph],
 function(gr)
@@ -1465,8 +1383,6 @@ function(gr)
   return DIGRAPHS_MaximalSymmetricSubdigraph(gr, false);
 end);
 
-#
-
 InstallMethod(MaximalSymmetricSubdigraph, "for a digraph",
 [IsDigraph],
 function(gr)
@@ -1478,8 +1394,6 @@ function(gr)
   fi;
   return DIGRAPHS_MaximalSymmetricSubdigraph(gr, true);
 end);
-
-#
 
 InstallMethod(DIGRAPHS_MaximalSymmetricSubdigraph,
 "for a digraph and a bool",
@@ -1508,8 +1422,6 @@ function(gr, loops)
   return new_gr;
 end);
 
-#
-
 InstallMethod(UndirectedSpanningForest,
 "for a digraph",
 [IsDigraph],
@@ -1527,8 +1439,6 @@ function(gr)
   return out;
 end);
 
-#
-
 InstallMethod(UndirectedSpanningTree,
 "for a digraph",
 [IsDigraph],
@@ -1542,8 +1452,6 @@ function(gr)
   SetIsUndirectedTree(out, true);
   return out;
 end);
-
-#
 
 InstallMethod(HamiltonianPath,
 "for a digraph",

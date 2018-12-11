@@ -195,8 +195,6 @@ function(gr)
   return DigraphMaximalIndependentSetsReps(gr);
 end);
 
-#
-
 InstallGlobalFunction(DigraphMaximalIndependentSetsReps,
 function(arg)
   local digraph, out;
@@ -234,8 +232,6 @@ InstallMethod(DigraphMaximalIndependentSetsAttr,
 function(gr)
   return DigraphMaximalIndependentSets(gr);
 end);
-
-#
 
 InstallGlobalFunction(DigraphMaximalIndependentSets,
 function(arg)
@@ -278,8 +274,6 @@ function(arg)
   return CallFuncList(DIGRAPHS_Clique, Concatenation([true], arg));
 end);
 
-#
-
 InstallGlobalFunction(DigraphClique,
 function(arg)
   if IsEmpty(arg) then
@@ -288,8 +282,6 @@ function(arg)
   fi;
   return CallFuncList(DIGRAPHS_Clique, Concatenation([false], arg));
 end);
-
-#
 
 InstallGlobalFunction(DIGRAPHS_Clique,
 function(arg)
@@ -479,8 +471,6 @@ function(gr)
   return DigraphMaximalCliquesReps(gr);
 end);
 
-#
-
 InstallGlobalFunction(DigraphMaximalCliquesReps,
 function(arg)
   local digraph, include, exclude, limit, size, out;
@@ -541,8 +531,6 @@ InstallMethod(DigraphMaximalCliquesAttr,
 function(gr)
   return DigraphMaximalCliques(gr);
 end);
-
-#
 
 InstallGlobalFunction(DigraphMaximalCliques,
 function(arg)

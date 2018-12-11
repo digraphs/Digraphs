@@ -100,8 +100,6 @@ function(digraph)
   return IS_STRONGLY_CONNECTED_DIGRAPH(OutNeighbours(digraph));
 end);
 
-#
-
 InstallMethod(IsCompleteDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -117,8 +115,6 @@ function(digraph)
   fi;
   return not DigraphHasLoops(digraph);
 end);
-
-#
 
 InstallMethod(IsCompleteBipartiteDigraph, "for a digraph",
 [IsDigraph],
@@ -137,8 +133,6 @@ function(digraph)
   return DigraphNrEdges(digraph) = 2 * Length(bicomps[1]) * Length(bicomps[2]);
 end);
 
-#
-
 InstallMethod(IsConnectedDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -154,8 +148,6 @@ function(digraph)
   # Otherwise use DigraphConnectedComponents method
   return (Length(DigraphConnectedComponents(digraph).comps) = 1);
 end);
-
-#
 
 InstallImmediateMethod(IsAcyclicDigraph, "for a reflexive digraph",
 IsReflexiveDigraph, 0,
@@ -174,8 +166,6 @@ function(digraph)
   fi;
   return true;
 end);
-
-#
 
 InstallMethod(IsAcyclicDigraph, "for a digraph",
 [IsDigraph],
@@ -234,8 +224,6 @@ function(graph)
   return ForAll(OutNeighbours(graph), x -> Length(x) = 1);
 end);
 
-#
-
 InstallMethod(IsTournament, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -269,8 +257,6 @@ function(digraph)
 
   return IsAntisymmetricDigraph(digraph);
 end);
-
-#
 
 InstallMethod(IsEmptyDigraph, "for a digraph with known number of edges",
 [IsDigraph and HasDigraphNrEdges],
@@ -328,8 +314,6 @@ function(digraph)
   return ForAll(DigraphVertices(digraph), x -> x in adj[x]);
 end);
 
-#
-
 InstallImmediateMethod(DigraphHasLoops, "for a reflexive digraph",
 IsReflexiveDigraph, 0,
 function(digraph)
@@ -366,15 +350,11 @@ function(digraph)
   return false;
 end);
 
-#
-
 InstallMethod(IsAperiodicDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
   return DigraphPeriod(digraph) = 1;
 end);
-
-#
 
 InstallMethod(IsAntisymmetricDigraph, "for a digraph",
 [IsDigraph],
@@ -383,8 +363,6 @@ function(digraph)
   # this can return false if it has too many edges.
   return IS_ANTISYMMETRIC_DIGRAPH(OutNeighbours(digraph));
 end);
-
-#
 
 InstallMethod(IsTransitiveDigraph, "for a digraph",
 [IsDigraph],
@@ -429,8 +407,6 @@ function(digraph)
   return IS_TRANSITIVE_DIGRAPH(digraph);
 end);
 
-#
-
 InstallMethod(IsBipartiteDigraph, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -440,28 +416,20 @@ function(digraph)
   return DIGRAPHS_Bipartite(digraph)[1];
 end);
 
-#
-
 InstallMethod(IsInRegularDigraph, "for a digraph", [IsDigraph],
 function(digraph)
   return Length(InDegreeSet(digraph)) = 1;
 end);
-
-#
 
 InstallMethod(IsOutRegularDigraph, "for a digraph", [IsDigraph],
 function(digraph)
   return Length(OutDegreeSet(digraph)) = 1;
 end);
 
-#
-
 InstallMethod(IsRegularDigraph, "for a digraph", [IsDigraph],
 function(digraph)
   return IsInRegularDigraph(digraph) and IsOutRegularDigraph(digraph);
 end);
-
-#
 
 InstallMethod(IsUndirectedTree, "for a digraph", [IsDigraph],
 function(gr)
@@ -486,8 +454,6 @@ function(gr)
   od;
   return true;
 end);
-
-#
 
 InstallMethod(IsDistanceRegularDigraph, "for a symmetric digraph",
 [IsDigraph],
@@ -519,8 +485,6 @@ function(graph)
   return true;
 end);
 
-#
-
 InstallMethod(IsDirectedTree, "for a digraph",
 [IsDigraph],
 function(g)
@@ -549,8 +513,6 @@ function(g)
 
   return true;
 end);
-
-#
 
 InstallMethod(IsEulerianDigraph, "for a digraph",
 [IsDigraph],

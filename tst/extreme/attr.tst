@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# ReducedDigraph 1
+#  ReducedDigraph 1
 # For a digraph with lots of edges: digraphs-lib/extreme.d6.gz
 gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                                     "/digraphs-lib/extreme.d6.gz"), 1);
@@ -21,7 +21,7 @@ gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 gap> ReducedDigraph(gr);
 <digraph with 5000 vertices, 4211332 edges>
 
-#T# DigraphSymmetricClosure 1
+#  DigraphSymmetricClosure 1
 # For a digraph with lots of edges: digraphs-lib/extreme.d6.gz
 gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                                     "/digraphs-lib/extreme.d6.gz"), 1);
@@ -36,7 +36,7 @@ gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 gap> DigraphSymmetricClosure(gr);
 <digraph with 46656 vertices, 197930 edges>
 
-#T# DigraphAllSimpleCircuits
+#  DigraphAllSimpleCircuits
 gap> gr := DigraphFromDigraph6String(
 > "+N{MYG?cJOU}MqNJLoVPHC?tDlcxgFACCDWxDMX?");
 <digraph with 15 vertices, 92 edges>
@@ -44,7 +44,7 @@ gap> circs := DigraphAllSimpleCircuits(gr);;
 gap> Length(circs);
 1291792
 
-#T# HamiltonianPath and IsHamiltonianDigraph
+#  HamiltonianPath and IsHamiltonianDigraph
 gap> g := CompleteDigraph(20);
 <digraph with 20 vertices, 380 edges>
 gap> HamiltonianPath(g);
@@ -58,7 +58,7 @@ fail
 gap> IsHamiltonianDigraph(g);
 false
 
-#T# DIGRAPHS_UnbindVariables
+#  DIGRAPHS_UnbindVariables
 gap> Unbind(circs);
 gap> Unbind(gr);
 

@@ -62,8 +62,6 @@ function(digraph)
   return str;
 end);
 
-#
-
 InstallMethod(DotSymmetricDigraph, "for an 'undirected' digraph",
 [IsDigraph],
 function(graph)

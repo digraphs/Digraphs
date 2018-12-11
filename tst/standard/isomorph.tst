@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# AutomorphismGroup: for a digraph without multiple edges
+#  AutomorphismGroup: for a digraph without multiple edges
 
 # Complete digraph on n vertices should have automorphism group S_n
 gap> n := 5;;
@@ -84,7 +84,7 @@ gap> not DIGRAPHS_NautyAvailable or
 > NautyAutomorphismGroup(gr) = SymmetricGroup([1, 3, 4]);
 true
 
-#T# AutomorphismGroup: for a digraph with multiple edges
+#  AutomorphismGroup: for a digraph with multiple edges
 
 # An edge union of complete digraphs
 gap> gr := DigraphEdgeUnion(CompleteDigraph(4), CompleteDigraph(4));
@@ -124,7 +124,7 @@ gap> BlissCanonicalLabelling(gr)
 > = BlissCanonicalLabelling(DigraphCopy(gr));
 true
 
-#T# IsIsomorphicDigraph: for digraphs without multiple edges
+#  IsIsomorphicDigraph: for digraphs without multiple edges
 
 # A small example
 gap> gr := Digraph([[2], [], [2], [2]]);
@@ -191,7 +191,7 @@ false
 gap> IsIsomorphicDigraph(gr, gr2);
 false
 
-#T# IsIsomorphicDigraph: for digraphs with multiple edges
+#  IsIsomorphicDigraph: for digraphs with multiple edges
 
 # Different number of vertices
 gap> gr1 := Digraph([[1, 2, 3, 2], [1, 3], [3]]);
@@ -233,7 +233,7 @@ gap> gr2 := OnDigraphs(gr, (3, 9));;
 gap> IsIsomorphicDigraph(gr, gr2);
 true
 
-#T# IsIsomorphicDigraph: for digraphs with colourings and without multiple edges
+#  IsIsomorphicDigraph: for digraphs with colourings and without multiple edges
 gap> gr1 := Digraph([[2, 2], [1]]);
 <multidigraph with 2 vertices, 3 edges>
 gap> gr2 := CompleteDigraph(2);
@@ -282,7 +282,7 @@ false
 gap> IsIsomorphicDigraph(gr1, gr1, [1, 1, 2, 2], [1, 1, 1, 2]);
 false
 
-#T# IsIsomorphicDigraph: for multidigraphs with colourings
+#  IsIsomorphicDigraph: for multidigraphs with colourings
 gap> gr1 := Digraph([[2, 1, 2], []]);;
 gap> gr2 := Digraph([[], [2, 1, 1]]);;
 gap> IsIsomorphicDigraph(gr1, gr1, [1, 1], [1, 1]);
@@ -294,7 +294,7 @@ true
 gap> IsIsomorphicDigraph(gr1, gr2, [1, 2], [1, 2]);
 false
 
-#T# IsomorphismDigraphs: for digraphs without multiple edges
+#  IsomorphismDigraphs: for digraphs without multiple edges
 
 # Non-isomorphic graphs
 gap> gr1 := EmptyDigraph(3);
@@ -354,7 +354,7 @@ gap> not DIGRAPHS_NautyAvailable or not HasNautyCanonicalLabelling(gr2);
 true
 gap> IsomorphismDigraphs(gr1, gr2);;
 
-#T# IsomorphismDigraphs: for digraphs with multiple edges
+#  IsomorphismDigraphs: for digraphs with multiple edges
 
 # An example used in previous tests
 gap> gr := Digraph([
@@ -396,7 +396,7 @@ true
 gap> iso[1] = p;
 true
 
-#T# IsomorphismDigraphs: for digraphs with colourings and without multiple edges
+#  IsomorphismDigraphs: for digraphs with colourings and without multiple edges
 gap> gr1 := Digraph([[2, 2], [1]]);
 <multidigraph with 2 vertices, 3 edges>
 gap> gr2 := CompleteDigraph(2);
@@ -443,7 +443,7 @@ gap> gr1 := CompleteDigraph(3);;
 gap> IsomorphismDigraphs(gr1, gr1, [1, 2, 2], [[1, 3], [2]]);
 fail
 
-#T# IsomorphismDigraphs: for multidigraphs with colourings
+#  IsomorphismDigraphs: for multidigraphs with colourings
 gap> gr1 := Digraph([[2, 1, 2], []]);;
 gap> gr2 := Digraph([[], [2, 1, 1]]);;
 gap> IsomorphismDigraphs(gr1, gr1, [1, 1], [1, 1]);
@@ -457,7 +457,7 @@ fail
 gap> IsomorphismDigraphs(gr1, gr2, [1, 1], [1, 1]);
 [ (1,2), (1,2) ]
 
-#T# CanonicalLabelling: for a digraph without multiple edges
+#  CanonicalLabelling: for a digraph without multiple edges
 
 # A small example: check that all isomorphic copies have same canonical image
 gap> gr := Digraph([[2], [3, 5, 6], [3], [4, 6], [1, 4], [4]]);
@@ -497,7 +497,7 @@ gap> if canon <> fail then
 >   od;
 > fi;
 
-#T# CanonicalLabelling: for a digraph with multiple edges
+#  CanonicalLabelling: for a digraph with multiple edges
 
 # A small example: check that all isomorphic copies have same canonical image
 gap> gr := Digraph([[2, 2], [1, 1], [2]]);
@@ -525,7 +525,7 @@ false
 gap> NautyCanonicalLabelling(gr);
 fail
 
-#T# CanonicalLabelling: with colours
+#  CanonicalLabelling: with colours
 gap> G := Digraph(10, [1, 1, 3, 4, 4, 5, 8, 8], [6, 3, 3, 9, 10, 9, 4, 10]);;
 gap> BlissCanonicalLabelling(G, [[1 .. 5], [6 .. 10]]);
 (1,4,3,5)(6,8)(7,9,10)
@@ -540,7 +540,7 @@ gap> not DIGRAPHS_NautyAvailable or
 > = (1, 5, 3, 4)(6, 8, 10)(7, 9);
 true
 
-#T# AutomorphismGroup: for a digraph with colored vertices
+#  AutomorphismGroup: for a digraph with colored vertices
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <digraph with 8 vertices, 32 edges>
 gap> AutomorphismGroup(gr) = Group([
@@ -551,7 +551,7 @@ Group([ (7,8), (6,7), (5,6), (3,4), (2,3), (1,2) ])
 gap> AutomorphismGroup(gr, [1 .. 8]);
 Group(())
 
-#T# AutomorphismGroup: for a digraph with incorrect colors
+#  AutomorphismGroup: for a digraph with incorrect colors
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <digraph with 8 vertices, 32 edges>
 gap> AutomorphismGroup(gr, [[1 .. 4], [5 .. 9]]);
@@ -583,7 +583,7 @@ The list <partition> must have one of the following forms:
 In the first form, <partition[i]> is the colour of vertex i; in the second
 form, <partition[i]> is the list of vertices with colour i,
 
-#T# AutomorphismGroup: for a multidigraph
+#  AutomorphismGroup: for a multidigraph
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
 gap> AutomorphismGroup(gr, [1, 2]);
@@ -593,7 +593,7 @@ fail
 gap> NautyAutomorphismGroup(gr, [1, 2]);
 fail
 
-#T# CanonicalLabelling: for a digraph with colored vertices
+#  CanonicalLabelling: for a digraph with colored vertices
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <digraph with 8 vertices, 32 edges>
 gap> BlissCanonicalLabelling(gr);
@@ -612,7 +612,7 @@ gap> not DIGRAPHS_NautyAvailable
 > or NautyCanonicalLabelling(gr, [[1 .. 4], [5 .. 8]]) = ();
 true
 
-#T# CanonicalLabelling: for a digraph with incorrect colors
+#  CanonicalLabelling: for a digraph with incorrect colors
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <digraph with 8 vertices, 32 edges>
 gap> BlissCanonicalLabelling(gr, [[1 .. 4], [5 .. 9]]);
@@ -644,7 +644,7 @@ The list <partition> must have one of the following forms:
 In the first form, <partition[i]> is the colour of vertex i; in the second
 form, <partition[i]> is the list of vertices with colour i,
 
-#T# CanonicalLabelling: for a multidigraph
+#  CanonicalLabelling: for a multidigraph
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
 gap> BlissCanonicalLabelling(gr, [1, 2]);
@@ -652,7 +652,7 @@ gap> BlissCanonicalLabelling(gr, [1, 2]);
 gap> NautyCanonicalLabelling(gr, [1, 2]);
 fail
 
-#T# DIGRAPHS_ValidateVertexColouring, 1, errors
+#  DIGRAPHS_ValidateVertexColouring, 1, errors
 gap> DIGRAPHS_ValidateVertexColouring();
 Error, Function: number of arguments must be 3 (not 0)
 gap> DIGRAPHS_ValidateVertexColouring(fail);
@@ -670,7 +670,7 @@ gap> DIGRAPHS_ValidateVertexColouring(0, [], fail);
 Error, Digraphs: DIGRAPHS_ValidateVertexColouring: usage,
 the third argument <method> must be a string,
 
-#T# DIGRAPHS_ValidateVertexColouring, 2
+#  DIGRAPHS_ValidateVertexColouring, 2
 gap> DIGRAPHS_ValidateVertexColouring(0, [], "TestFunction");
 [  ]
 gap> DIGRAPHS_ValidateVertexColouring(0, [2], "TestFunction");
@@ -744,7 +744,7 @@ use precisely the colours [1 .. m], for some positive integer m <= 4,
 gap> DIGRAPHS_ValidateVertexColouring(4, [1, 1, 3, 2], "TestFunction");
 [ 1, 1, 3, 2 ]
 
-#T# CanonicalDigraph
+#  CanonicalDigraph
 gap> gr1 := Digraph([[1, 2], [1, 2], [2, 3], [1, 2, 3], [5]]);;
 gap> gr2 := Digraph([[1, 3], [2, 3], [2, 3], [1, 2, 3], [5]]);;
 gap> BlissCanonicalDigraph(gr1) = BlissCanonicalDigraph(gr2);
@@ -776,7 +776,7 @@ true
 gap> gr5 = BlissCanonicalDigraph(gr6);
 true
 
-#T# CanonicalDigraph
+#  CanonicalDigraph
 gap> gr1 := Digraph([[1, 2], [1, 2], [2, 3], [1, 2, 3], [5]]);;
 gap> gr2 := Digraph([[1, 3], [2, 3], [2, 3], [1, 2, 3], [5]]);;
 gap> NautyCanonicalDigraph(gr1) = NautyCanonicalDigraph(gr2);
@@ -866,7 +866,7 @@ gap> IsDigraphAutomorphism(Digraph([[1, 1], [1, 1, 2], [1, 2, 2, 3]]),
 Error, Digraphs: IsDigraphIsomorphism: usage,
 the first 2 arguments must not have multiple edges,
 
-#T# DIGRAPHS_UnbindVariables
+#  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(canon);
 gap> Unbind(gr);

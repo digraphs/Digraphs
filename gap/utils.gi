@@ -311,7 +311,7 @@ end);
 
 # Detect which ManSection should be used to document obj. Returns one of
 # "Func", "Oper", "Meth", "Filt", "Prop", "Attr", "Var", "Fam", "InfoClass"
-#
+
 # See PRINT_OPERATION where some of the code below is borrowed
 
 DIGRAPHS_ManSectionType := function(op)

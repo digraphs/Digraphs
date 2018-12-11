@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# DigraphVertexLabels
+#  DigraphVertexLabels
 gap> gr := RandomDigraph(10);;
 gap> DigraphVertexLabels(gr);
 [ 1 .. 10 ]
@@ -73,7 +73,7 @@ gap> x;
 gap> DigraphVertexLabels(gr);
 [ 1, [  ], 3, 4, 5, 6, 7, 8, 9, 10 ]
 
-#T# DigraphEdgeLabels
+#  DigraphEdgeLabels
 gap> gr := Digraph([[2, 3], [3], [1, 5], [], [4]]);
 <digraph with 5 vertices, 6 edges>
 gap> DigraphEdgeLabels(gr);
@@ -124,14 +124,14 @@ gap> SetDigraphEdgeLabel(gr, 1, 2, infinity);
 Error, Digraphs: SetDigraphEdgeLabel: usage,
 edge labels are not supported on digraphs with multiple edges,
 
-#T# Graph
+#  Graph
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
 gap> if DIGRAPHS_IsGrapeLoaded then
 >   Graph(gr);
 > fi;
 
-#T# Digraph (by OutNeighbours)
+#  Digraph (by OutNeighbours)
 gap> Digraph([[0, 1]]);
 Error, Digraphs: Digraph: usage,
 the argument must be a list of lists of positive integers not exceeding the
@@ -148,7 +148,7 @@ Error, Digraphs: Digraph: usage,
 the argument must be a list of lists of positive integers not exceeding the
 length of the argument,
 
-#T# Digraph (by record)
+#  Digraph (by record)
 gap> n := 3;;
 gap> v := [1 .. 3];;
 gap> s := [1, 2, 3];;
@@ -220,7 +220,7 @@ gap> Digraph(rec(
 Error, Digraphs: Digraph: usage,
 the record component 'vertices' must be duplicate-free,
 
-#T# Digraph (by nrvertices, source, and range)
+#  Digraph (by nrvertices, source, and range)
 gap> Digraph(Group(()), [], []);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `Digraph' on 3 arguments
@@ -270,7 +270,7 @@ of positive integers no greater than the first argument <nrvertices>,
 gap> Digraph(4, [3, 1, 2, 3], [4, 1, 2, 4]);
 <multidigraph with 4 vertices, 4 edges>
 
-#T# Digraph (by vertices, source, and range)
+#  Digraph (by vertices, source, and range)
 gap> Digraph(Group(()), [], []);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `Digraph' on 3 arguments
@@ -335,7 +335,7 @@ gap> if DIGRAPHS_IsGrapeLoaded then
 >   fi;
 > fi;
 
-#T# Digraph (by an integer and a function)
+#  Digraph (by an integer and a function)
 gap> divides := function(a, b)
 >   if b mod a = 0 then
 >     return true;
@@ -345,7 +345,7 @@ gap> divides := function(a, b)
 gap> gr := Digraph([1 .. 12], divides);
 <digraph with 12 vertices, 35 edges>
 
-#T# Digraph (by binary relation)
+#  Digraph (by binary relation)
 gap> g := Group((1, 2, 3));
 Group([ (1,2,3) ])
 gap> elms := [
@@ -401,7 +401,7 @@ gap> gr := Digraph(b);
 gap> HasIsAntisymmetricDigraph(gr);
 true
 
-#T# DigraphByEdges
+#  DigraphByEdges
 gap> gr := Digraph([[1, 2, 3, 5], [1, 5], [2, 3, 6], [1, 3, 4],
 > [1, 4, 6], [3, 4]]);
 <digraph with 6 vertices, 17 edges>
@@ -435,7 +435,7 @@ gap> gr := DigraphByEdges([]);
 gap> gr = EmptyDigraph(0);
 true
 
-#T# DigraphByAdjacencyMatrix (by an integer matrix)
+#  DigraphByAdjacencyMatrix (by an integer matrix)
 
 # for a matrix of integers
 gap> mat := [
@@ -506,7 +506,7 @@ true
 gap> DigraphByAdjacencyMatrix([]);
 <digraph with 0 vertices, 0 edges>
 
-#T# DigraphByAdjacencyMatrix (by a boolean matrix)
+#  DigraphByAdjacencyMatrix (by a boolean matrix)
 gap> mat := List([1 .. 5], x -> BlistList([1 .. 5], []));;
 gap> DigraphByAdjacencyMatrix(mat) = EmptyDigraph(5);
 true
@@ -515,7 +515,7 @@ gap> mat := List([1 .. 5], x -> BlistList([1 .. 5],
 gap> DigraphByAdjacencyMatrix(mat) = CompleteDigraph(5);
 true
 
-#T# DigraphByInNeighbours
+#  DigraphByInNeighbours
 gap> gr1 := RandomMultiDigraph(50, 3000);
 <multidigraph with 50 vertices, 3000 edges>
 gap> inn := InNeighbours(gr1);;
@@ -568,7 +568,7 @@ gap> OutNeighbours(gr);
 gap> InNeighbors(gr) = inn;
 true
 
-#T# AsDigraph
+#  AsDigraph
 gap> f := Transformation([]);
 IdentityTransformation
 gap> gr := AsDigraph(f);
@@ -597,7 +597,7 @@ gap> AsDigraph(h);
 gap> AsDigraph(h, 2);
 fail
 
-#T# RandomDigraph
+#  RandomDigraph
 gap> DigraphNrVertices(RandomDigraph(10));
 10
 gap> DigraphNrVertices(RandomDigraph(200, 0.854));
@@ -620,7 +620,7 @@ gap> RandomDigraph(10, -0.01);
 Error, Digraphs: RandomDigraph: usage,
 the second argument <p> must be a float between 0 and 1,
 
-#T# RandomMultiDigraph
+#  RandomMultiDigraph
 gap> DigraphNrVertices(RandomMultiDigraph(100));
 100
 gap> gr := RandomMultiDigraph(100, 1000);;
@@ -638,7 +638,7 @@ gap> RandomMultiDigraph(1, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `RandomMultiDigraph' on 2 arguments
 
-#T# RandomTournament
+#  RandomTournament
 gap> RandomTournament(25);
 <digraph with 25 vertices, 300 edges>
 gap> RandomTournament(0);
@@ -647,7 +647,7 @@ gap> RandomTournament(-1);
 Error, Digraphs: RandomTournament: usage,
 the argument <n> must be a non-negative integer,
 
-#T# CompleteDigraph
+#  CompleteDigraph
 gap> gr := CompleteDigraph(5);
 <digraph with 5 vertices, 20 edges>
 gap> AutomorphismGroup(gr) = SymmetricGroup(5);
@@ -660,7 +660,7 @@ gap> CompleteDigraph(-1);
 Error, Digraphs: CompleteDigraph: usage,
 the argument <n> must be a non-negative integer,
 
-#T# EmptyDigraph
+#  EmptyDigraph
 gap> gr := EmptyDigraph(5);
 <digraph with 5 vertices, 0 edges>
 gap> AutomorphismGroup(gr) = SymmetricGroup(5);
@@ -671,7 +671,7 @@ gap> EmptyDigraph(-1);
 Error, Digraphs: EmptyDigraph: usage,
 the argument <n> must be a non-negative integer,
 
-#T# CycleDigraph
+#  CycleDigraph
 gap> gr := CycleDigraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `CycleDigraph' on 1 arguments
@@ -687,7 +687,7 @@ gap> DigraphEdges(gr);
 gap> gr := CycleDigraph(1000);
 <digraph with 1000 vertices, 1000 edges>
 
-#T# ChainDigraph
+#  ChainDigraph
 gap> gr := ChainDigraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `ChainDigraph' on 1 arguments
@@ -718,7 +718,7 @@ true
 gap> IsAntisymmetricDigraph(grrt);
 true
 
-#T# CompleteBipartiteDigraph
+#  CompleteBipartiteDigraph
 gap> gr := CompleteBipartiteDigraph(2, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `CompleteBipartiteDigraph' on 2 argument\
@@ -742,7 +742,7 @@ gap> AutomorphismGroup(gr) = Group((1, 2, 3, 4), (1, 2), (5, 6, 7, 8), (5, 6),
 >                                  (1, 5)(2, 6)(3, 7)(4, 8));
 true
 
-#T# Equals (\=) for two digraphs
+#  Equals (\=) for two digraphs
 gap> r1 := rec(nrvertices := 2, source := [1, 1, 2], range := [1, 2, 2]);;
 gap> r2 := rec(nrvertices := 2, source := [1, 1, 2], range := [2, 1, 2]);;
 gap> gr1 := Digraph(r1);
@@ -988,7 +988,7 @@ gap> gr2 := Digraph(rec(nrvertices := 10, source := s, range := r2));;
 gap> gr1 = gr2;
 true
 
-#T# Less than (\<) for two digraphs
+#  Less than (\<) for two digraphs
 gap> gr1 := RandomMultiDigraph(10, 20);;
 gap> gr2 := RandomMultiDigraph(11, 21);;
 gap> gr1 < gr2;  # Different NrVertices
@@ -1115,7 +1115,7 @@ false
 gap> gr2 < gr1;
 true
 
-#T# DigraphCopy
+#  DigraphCopy
 
 # Tests for DigraphCopy originally located in digraph.tst
 gap> gr1 := CompleteDigraph(6);
@@ -1208,7 +1208,7 @@ true
 gap> HasOutNeighbours(digraph);
 true
 
-#T# Digraphs with known automorphisms
+#  Digraphs with known automorphisms
 gap> gr := Digraph([[], [], [], [], [1, 2, 3, 4, 5]]);;
 gap> adj := function(x, y)
 > return x = 5;
@@ -1220,7 +1220,7 @@ true
 gap> gr = gr3;
 true
 
-#T# LineDigraph
+#  LineDigraph
 gap> gr := LineUndirectedDigraph(CompleteDigraph(3));
 <digraph with 3 vertices, 6 edges>
 gap> gr = CompleteDigraph(3);
@@ -1270,7 +1270,7 @@ gap> LineUndirectedDigraph(gr);
 Error, Digraphs: LineUndirectedDigraph: usage,
 the argument <digraph> must be a symmetric digraph,
 
-#T# CayleyDigraph
+#  CayleyDigraph
 gap> group := DihedralGroup(8);
 <pc group of size 8 with 3 generators>
 gap> digraph := CayleyDigraph(group);
@@ -1297,7 +1297,7 @@ gap> digraph := CayleyDigraph(group);
 Error, Digraphs: CayleyDigraph: usage,
 the first argument <G> must be a finite group,
 
-#T# BipartiteDoubleDigraph
+#  BipartiteDoubleDigraph
 gap> n := 5;
 5
 gap> adj := function(x, y)
@@ -1313,7 +1313,7 @@ gap> bddigraph := BipartiteDoubleDigraph(digraph);
 gap> bdgroup := DigraphGroup(bddigraph);
 Group([ (1,2,3,4,5)(6,7,8,9,10), (1,6)(2,7)(3,8)(4,9)(5,10) ])
 
-#T# DoubleDigraph
+#  DoubleDigraph
 gap> out := [[2, 3, 4], [], [], []];
 [ [ 2, 3, 4 ], [  ], [  ], [  ] ]
 gap> group := Group([(2, 3), (2, 4)]);
@@ -1330,7 +1330,7 @@ gap> ddigraph := DoubleDigraph(digraph);
 gap> DigraphGroup(ddigraph);
 Group([ (2,3)(6,7), (2,4)(6,8), (1,5)(2,6)(3,7)(4,8) ])
 
-#T# (Bipartite)DoubleDigraph with multidigraph
+#  (Bipartite)DoubleDigraph with multidigraph
 gap> gr := Digraph([[2, 3], [1], []]);;
 gap> gr2 := DoubleDigraph(gr);
 <digraph with 6 vertices, 12 edges>
@@ -1350,7 +1350,7 @@ gap> gr2 := BipartiteDoubleDigraph(gr);
 gap> OutNeighbours(gr2);
 [ [ 5, 5, 6 ], [ 4 ], [  ], [ 2, 2, 3 ], [ 1 ], [  ] ]
 
-#T# DistanceDigraph
+#  DistanceDigraph
 gap> out := [[70, 79, 103], [76, 92, 116], [77, 93, 117],
 > [78, 94, 118], [66, 71, 88], [89, 106, 107], [89, 108, 125],
 > [90, 109, 126], [91, 109, 110], [64, 67, 98], [104, 115, 119],
@@ -1403,7 +1403,7 @@ gap> OutNeighbours(DistanceDigraph(gr, 1));
 gap> OutNeighbours(DistanceDigraph(gr, 2));
 [ [ 3 ], [  ], [  ] ]
 
-#T# DistanceDigraph with known automorphisms
+#  DistanceDigraph with known automorphisms
 gap> gr := Digraph([[1, 2], [], [2, 3]]);;
 gap> DigraphGroup(gr) = Group((1, 3));
 true
@@ -1414,7 +1414,7 @@ gap> OutNeighbours(DistanceDigraph(gr, 1));
 gap> OutNeighbours(DistanceDigraph(gr, 2));
 [ [  ], [  ], [  ] ]
 
-#T# DistanceDigraph on multidigraph with known automorphisms
+#  DistanceDigraph on multidigraph with known automorphisms
 gap> gr := Digraph([[1, 2, 2], [], [2, 2, 3]]);;
 gap> DigraphGroup(gr) = Group((1, 3));
 true
@@ -1425,13 +1425,13 @@ gap> OutNeighbours(DistanceDigraph(gr, 1));
 gap> OutNeighbours(DistanceDigraph(gr, 2));
 [ [  ], [  ], [  ] ]
 
-#T# DistanceDigraph: bad input
+#  DistanceDigraph: bad input
 gap> gr := Digraph([[1, 2], [2, 3], [4], [1]]);;
 gap> DistanceDigraph(gr, -2);
 Error, Digraphs: DistanceDigraph: usage,
 second arg <distance> must be a non-negative integer,
 
-#T# DigraphAddEdgeOrbit
+#  DigraphAddEdgeOrbit
 gap> digraph := NullDigraph(4);
 <digraph with 4 vertices, 0 edges>
 gap> HasDigraphGroup(digraph);
@@ -1450,7 +1450,7 @@ rec( adjacencies := [ [ 2, 4 ] ], group := Group([ (1,3), (1,2)(3,4) ]),
 gap> IsNullDigraph(DigraphRemoveEdgeOrbit(digraph, [4, 3]));
 true
 
-#T# DigraphRemoveEdgeOrbit
+#  DigraphRemoveEdgeOrbit
 gap> digraph := CompleteDigraph(4);
 <digraph with 4 vertices, 12 edges>
 gap> HasDigraphGroup(digraph);
@@ -1469,7 +1469,7 @@ rec( adjacencies := [ [ 2, 4 ] ], group := Group([ (1,3), (1,2)(3,4) ]),
   isGraph := true, names := [ 1 .. 4 ], order := 4, representatives := [ 1 ], 
   schreierVector := [ -1, 2, 1, 2 ] )
 
-#T# Digraph: copying group from Grape
+#  Digraph: copying group from Grape
 gap> if DIGRAPHS_IsGrapeLoaded then
 >   gr := Digraph(JohnsonGraph(5, 3));
 > else
@@ -1508,7 +1508,7 @@ Group(())
 gap> HasDigraphGroup(gr);
 true
 
-#T# EdgeOrbitsDigraph
+#  EdgeOrbitsDigraph
 gap> digraph := EdgeOrbitsDigraph(Group((1, 3), (1, 2)(3, 4)),
 >                                 [[1, 2], [4, 5]], 5);
 <digraph with 5 vertices, 12 edges>
@@ -1544,7 +1544,7 @@ gap> digraph := EdgeOrbitsDigraph(Group((1, 2)), [[1, 2], [3, 6]], -1);
 Error, Digraphs: EdgeOrbitsDigraph: usage,
 the third argument must be a non-negative integer,
 
-#T# DigraphAdd/RemoveEdgeOrbit
+#  DigraphAdd/RemoveEdgeOrbit
 gap> gr1 := CayleyDigraph(DihedralGroup(8));
 <digraph with 8 vertices, 24 edges>
 gap> gr2 := DigraphAddEdgeOrbit(gr1, [1, 8]);
@@ -1597,7 +1597,7 @@ gap> gr2 := DigraphRemoveEdgeOrbit(gr1, [1, 8]);
 gap> gr1 = gr2;
 true
 
-#T# Digraph (by list and function)
+#  Digraph (by list and function)
 gap> f := function(i, j) return i < j; end;
 function( i, j ) ... end
 gap> gr := Digraph([1 .. 4], f);
@@ -1609,7 +1609,7 @@ gap> gr := Digraph([4, 3 .. 1], f);
 gap> IsDigraphEdge(gr, [2, 1]);
 true
 
-#T# DigraphAddAllLoops
+#  DigraphAddAllLoops
 gap> gr := CompleteDigraph(10);
 <digraph with 10 vertices, 90 edges>
 gap> OutNeighbours(gr)[1];
@@ -1633,7 +1633,7 @@ gap> gr2 := DigraphAddAllLoops(gr);
 gap> OutNeighbours(gr2);
 [ [ 1, 2, 3 ], [ 2, 2, 2, 2 ], [ 5, 1, 3 ], [ 1, 2, 3, 4 ], [ 5 ] ]
 
-#T# JohnsonDigraph
+#  JohnsonDigraph
 gap> JohnsonDigraph(0, 4);
 <digraph with 0 vertices, 0 edges>
 gap> JohnsonDigraph(0, 0);
@@ -1660,7 +1660,7 @@ gap> JohnsonDigraph(-1, 2);
 Error, Digraphs: JohnsonDigraph: usage,
 both arguments must be non-negative integers,
 
-#T# CompleteMultipartiteDigraph
+#  CompleteMultipartiteDigraph
 gap> CompleteMultipartiteDigraph([5, 4, 2]);
 <digraph with 11 vertices, 76 edges>
 gap> CompleteMultipartiteDigraph([5, 4, 2, 10, 1000]);
@@ -1727,7 +1727,7 @@ gap> SetDigraphEdgeLabel(gr, 2, 2, "a");
 Error, Digraphs: SetDigraphEdgeLabel:
 [2, 2] is not an edge of <graph>,
 
-#T# DIGRAPHS_UnbindVariables
+#  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
 gap> Unbind(b);

@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# HomomorphismDigraphsFinder: checking errors and robustness
+#  HomomorphismDigraphsFinder: checking errors and robustness
 gap> HomomorphismDigraphsFinder(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 Error, Digraphs: HomomorphismDigraphsFinder: usage,
 the 1st and 2nd arguments <gr1> and <gr2> must be digraphs,
@@ -231,7 +231,7 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [1, 1, 1, 2, 2], 0);
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
 <limit> must be a positive integer or infinity,
 
-#T# GeneratorsOfEndomorphismMonoid: digraphs with loops
+#  GeneratorsOfEndomorphismMonoid: digraphs with loops
 
 # loops1
 gap> gr := Digraph([[], [2]]);
@@ -252,7 +252,7 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 3, 3, 3 ] ) ]
 
-#T# DigraphGreedyColouring and DigraphColouring: checking errors and robustness
+#  DigraphGreedyColouring and DigraphColouring: checking errors and robustness
 gap> gr := Digraph([[2, 2], []]);
 <multidigraph with 2 vertices, 2 edges>
 gap> DigraphColouring(gr, 1);
@@ -317,7 +317,7 @@ Transformation( [ 1, 1, 1, 1, 1, 2, 2, 1, 2, 2, 2, 1, 1, 2, 1, 2, 1, 2, 2, 3,
   3, 2, 3, 3, 3, 2, 1, 4, 4, 2, 3, 3, 3, 3, 3, 1, 3, 4, 4, 3, 2, 1, 4, 3,
   1 ] )
 
-# DigraphGreedyColouring
+#  DigraphGreedyColouring
 gap> DigraphGreedyColouring(EmptyDigraph(0));
 IdentityTransformation
 gap> DigraphGreedyColouring(Digraph([[]]));
@@ -471,7 +471,7 @@ Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
 gap> DigraphGreedyColouring(EmptyDigraph(0));
 IdentityTransformation
 
-#T# HomomorphismDigraphsFinder 1
+#  HomomorphismDigraphsFinder 1
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);;
 gap> gr := DigraphSymmetricClosure(gr);;
 gap> x := [];;
@@ -729,7 +729,7 @@ gap> Length(x);
 gap> x{[1 .. 100]} = x{[101 .. 200]};
 true
 
-#T# HomomorphismDigraphsFinder 1
+#  HomomorphismDigraphsFinder 1
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
 <digraph with 6 vertices, 3 edges>
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, false,
@@ -776,7 +776,7 @@ gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, false,
 gap> Length(last);
 39
 
-#T# HomomorphismDigraphsFinder 2
+#  HomomorphismDigraphsFinder 2
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
 <digraph with 6 vertices, 3 edges>
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, false,
@@ -823,7 +823,7 @@ gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, false,
 gap> Length(last);
 47
 
-#T# HomomorphismDigraphsFinder 3
+#  HomomorphismDigraphsFinder 3
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
 <digraph with 6 vertices, 3 edges>
 gap> gr := DigraphSymmetricClosure(gr);
@@ -914,7 +914,7 @@ gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, false,
 gap> Length(last);
 100
 
-#T# HomomorphismDigraphsFinder: finding monomorphisms
+#  HomomorphismDigraphsFinder: finding monomorphisms
 gap> gr1 := Digraph([[], [1]]);;
 gap> gr1 := DigraphSymmetricClosure(gr1);;
 gap> gr2 := Digraph([[], [1], [1, 3]]);;
@@ -924,7 +924,7 @@ gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], infinity, fail, true,
 [ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
   Transformation( [ 2, 1 ] ), Transformation( [ 3, 1, 3 ] ) ]
 
-#T# DigraphHomomorphism
+#  DigraphHomomorphism
 gap> gr1 := Digraph([[], [3], []]);;
 gap> gr2 := EmptyDigraph(10);;
 gap> DigraphHomomorphism(gr1, gr2);
@@ -933,7 +933,7 @@ gap> gr2 := Digraph([[], [], [], [], [4], []]);;
 gap> DigraphHomomorphism(gr1, gr2);
 Transformation( [ 1, 5, 4, 4, 5 ] )
 
-#T# HomomorphismsDigraphs and HomomorphismsDigraphsRepresentatives
+#  HomomorphismsDigraphs and HomomorphismsDigraphsRepresentatives
 gap> gr1 := Digraph([[], [3], []]);;
 gap> gr2 := Digraph([[], [], [], [], [4], []]);;
 gap> HomomorphismsDigraphsRepresentatives(gr1, gr2);
@@ -960,7 +960,7 @@ gap> mat := AdjacencyMatrix(gr2);;
 gap> ForAll(homos, t -> ForAll(edges, e -> mat[e[1] ^ t][e[2] ^ t] = 1));
 true
 
-#T# DigraphMonomorphism
+#  DigraphMonomorphism
 gap> gr1 := EmptyDigraph(1);;
 gap> DigraphMonomorphism(gr1, gr1);
 IdentityTransformation
@@ -972,7 +972,7 @@ IdentityTransformation
 gap> DigraphMonomorphism(CompleteDigraph(2), Digraph([[2], [1, 3], [2]]));
 IdentityTransformation
 
-#T# MonomorphismsDigraphs and MonomorphismsDigraphsRepresentatives
+#  MonomorphismsDigraphs and MonomorphismsDigraphsRepresentatives
 gap> gr1 := ChainDigraph(2);;
 gap> MonomorphismsDigraphs(gr1, EmptyDigraph(1));
 [  ]
@@ -988,7 +988,7 @@ true
 gap> monos = HomomorphismsDigraphsRepresentatives(gr1, gr2);
 true
 
-#T# DigraphEpimorphism
+#  DigraphEpimorphism
 gap> gr1 := CycleDigraph(6);;
 gap> gr2 := CycleDigraph(3);;
 gap> DigraphEpimorphism(gr1, gr2);
@@ -996,7 +996,7 @@ Transformation( [ 1, 2, 3, 1, 2, 3 ] )
 gap> DigraphEpimorphism(gr2, gr1);
 fail
 
-#T# EpimorphismsDigraphs and EpimorphismsDigraphsRepresentatives
+#  EpimorphismsDigraphs and EpimorphismsDigraphsRepresentatives
 gap> gr1 := CompleteDigraph(2);;
 gap> gr2 := CompleteDigraph(3);;
 gap> EpimorphismsDigraphs(gr1, gr2);
@@ -1013,7 +1013,7 @@ gap> Length(epis);
 gap> ForAll(epis, x -> RankOfTransformation(x, DigraphNrVertices(gr1)) = 3);
 true
 
-#T# DigraphEmbedding
+#  DigraphEmbedding
 gap> gr1 := CycleDigraph(3);;
 gap> gr2 := CompleteBipartiteDigraph(4, 3);;
 gap> DigraphEmbedding(gr1, gr2);
@@ -1225,7 +1225,7 @@ false
 gap> IsDigraphColouring(D, IdentityTransformation);
 true
 
-#T# DIGRAPHS_UnbindVariables
+#  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
 gap> Unbind(epis);
 gap> Unbind(gens);

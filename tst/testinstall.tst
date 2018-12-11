@@ -13,7 +13,7 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#T# Conversion to and from GRAPE graphs
+#  Conversion to and from GRAPE graphs
 gap> gr := Digraph(
 > [[8], [4, 5, 6, 8, 9], [2, 4, 5, 7, 10], [9],
 > [1, 4, 6, 7, 9], [2, 3, 6, 7, 10], [3, 4, 5, 8, 9],
@@ -43,7 +43,7 @@ gap> not DIGRAPHS_IsGrapeLoaded or
 >  Digraph(Graph(Group(()), [1 .. 20], OnPoints, func, true)) = Digraph(adj));
 true
 
-#T# IsAcyclicDigraph
+#  IsAcyclicDigraph
 gap> gr := Digraph([
 >  [1, 2, 4, 10], [3, 15], [3, 15], [1, 3, 7, 8, 9, 11, 12, 13],
 >  [4, 8], [1, 2, 4, 5, 6, 7, 8, 10, 14, 15], [3, 4, 6, 11, 13, 15],
@@ -75,24 +75,24 @@ gap> gr := Digraph([[2, 3], [4, 5], [5, 6], [], [], [], [3]]);
 gap> IsDigraph(gr);
 true
 
-#T# OutNeighbours
+#  OutNeighbours
 # Check that it can handle non-plists in the source and range
 gap> gr := Digraph(rec(nrvertices := 1000,
 >                      source := [1 .. 1000],
 >                      range := Concatenation([2 .. 1000], [1])));;
 gap> OutNeighbours(gr);;
 
-#T# IsMultiDigraph: for an empty digraph
+#  IsMultiDigraph: for an empty digraph
 gap> d := Digraph(rec(vertices := [1 .. 5], range := [], source := []));
 <digraph with 5 vertices, 0 edges>
 gap> IsMultiDigraph(d);
 false
 
-#T# DigraphFromSparse6String
+#  DigraphFromSparse6String
 gap> DigraphFromSparse6String(":Fa@x^");
 <digraph with 7 vertices, 8 edges>
 
-#T# (In/Out)Neighbours and (In/Out)NeighboursOfVertex and (In/Out)DegreeOfVertex
+#  (In/Out)Neighbours and (In/Out)NeighboursOfVertex and (In/Out)DegreeOfVertex
 gap> gr := Digraph([[4], [2, 2], [2, 3, 1, 4], [1]]);
 <multidigraph with 4 vertices, 8 edges>
 gap> InDegreeOfVertex(gr, 2);
@@ -129,7 +129,7 @@ gap> DigraphOutEdges(gr, 2);
 gap> DigraphOutEdges(gr, 4);
 [ [ 4, 2 ], [ 4, 3 ], [ 4, 1 ] ]
 
-#T# DigraphPeriod and IsAperiodicDigraph
+#  DigraphPeriod and IsAperiodicDigraph
 gap> gr := Digraph([[2], [3], [4], [5], [1], [7], [6]]);
 <digraph with 7 vertices, 7 edges>
 gap> DigraphPeriod(gr);
@@ -143,7 +143,7 @@ gap> DigraphPeriod(gr);
 gap> IsAperiodicDigraph(gr);
 false
 
-#T# IsDigraphEdge
+#  IsDigraphEdge
 gap> gr := Digraph(rec(nrvertices := 5, source := [1, 2, 3, 4, 5],
 > range := [2, 3, 4, 5, 1]));
 <digraph with 5 vertices, 5 edges>
@@ -152,7 +152,7 @@ true
 gap> IsDigraphEdge(gr, [2, 2]);
 false
 
-#T# DigraphReverseEdge and DigraphEdges
+#  DigraphReverseEdge and DigraphEdges
 
 #
 gap> gr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
@@ -174,7 +174,7 @@ true
 gap> gr2 := DigraphReverseEdge(gr, 2);
 <digraph with 7 vertices, 12 edges>
 
-#T# DigraphTopologicalSort
+#  DigraphTopologicalSort
 gap> gr := Digraph([[2, 3], [3], [], [5, 6], [6], []]);
 <digraph with 6 vertices, 6 edges>
 gap> topo := DigraphTopologicalSort(gr);
@@ -194,7 +194,7 @@ gap> gr1 := OnDigraphs(gr, p ^ -1);;
 gap> DigraphTopologicalSort(gr1) = DigraphVertices(gr1);
 true
 
-#T# AutomorphismGroup: for a multidigraph
+#  AutomorphismGroup: for a multidigraph
 # CanonicalLabelling was being set incorrectly by AutomorphismGroup for
 # a multidigraph
 gap> gr := Digraph([
@@ -213,7 +213,7 @@ gap> BlissCanonicalLabelling(gr);
 gap> BlissCanonicalLabelling(gr) = BlissCanonicalLabelling(DigraphCopy(gr));
 true
 
-#T# DIGRAPH_IN_OUT_NBS: for a list containing ranges
+#  DIGRAPH_IN_OUT_NBS: for a list containing ranges
 # A segfault was caused by assuming that an element of OutNeighbours was a
 # PLIST. This is solved by using PLAIN_LIST on each entry of OutNeighbours.
 gap> gr := Digraph(List([1 .. 5], x -> [1 .. 5]));;
@@ -227,13 +227,13 @@ gap> out;
 gap> InNeighbours(gr) = out;
 true
 
-#T# Issue 13: DigraphAllSimpleCircuits, reported by JDM
+#  Issue 13: DigraphAllSimpleCircuits, reported by JDM
 gap> gr := Digraph([[3], [4], [5], [1, 5], [1, 2]]);
 <digraph with 5 vertices, 7 edges>
 gap> DigraphAllSimpleCircuits(gr);
 [ [ 1, 3, 5 ], [ 1, 3, 5, 2, 4 ], [ 5, 2, 4 ] ]
 
-#T# DigraphMaximalCliquesReps was returning too few results, since the choice
+#  DigraphMaximalCliquesReps was returning too few results, since the choice
 # of a pivot vertex was not necessarily valid when the stabilizer was
 # non-trivial
 gap> gr := DigraphFromGraph6String("L~~~ySrJ[N{NT^");
@@ -250,7 +250,7 @@ true
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 2, 3, 4, 5, 6 ], [ 1, 2, 5, 9 ], [ 1, 9, 10 ], [ 7, 8, 9, 10 ] ]
 
-#T# DigraphClosure
+#  DigraphClosure
 gap> gr := CompleteDigraph(7);;
 gap> gr2 := DigraphClosure(gr, 7);;
 gap> gr = gr2;
@@ -263,7 +263,7 @@ gap> gr2 := DigraphClosure(gr, 7);;
 gap> DigraphNrEdges(gr2);
 42
 
-#T# Fix seg fault cause by wrong handling of no edges in
+#  Fix seg fault cause by wrong handling of no edges in
 # FuncDIGRAPH_SOURCE_RANGE
 gap> gr := Digraph([[]]);
 <digraph with 1 vertex, 0 edges>
@@ -272,7 +272,7 @@ gap> DigraphSource(gr);
 gap> DigraphRange(gr);
 [  ]
 
-#T# Issue 17: Bug in OnDigraphs for a digraph and a transformation
+#  Issue 17: Bug in OnDigraphs for a digraph and a transformation
 gap> d := Digraph([[2], [3], [1, 1]]);
 <multidigraph with 3 vertices, 4 edges>
 gap> OutNeighbours(OnDigraphs(d, PermList([2, 3, 1])));
@@ -280,7 +280,7 @@ gap> OutNeighbours(OnDigraphs(d, PermList([2, 3, 1])));
 gap> OutNeighbours(OnDigraphs(d, Transformation([2, 3, 1])));
 [ [ 2, 2 ], [ 3 ], [ 1 ] ]
 
-#T# Issue 42: Bug in AsDigraph for a transformation and an integer
+#  Issue 42: Bug in AsDigraph for a transformation and an integer
 gap> f := Transformation([7, 10, 10, 1, 7, 9, 10, 4, 2, 3]);
 Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] )
 gap> AsDigraph(f);
@@ -293,13 +293,13 @@ gap> gr := Digraph([[1], [2], [1 .. 3]]);;
 gap> IsAntisymmetricDigraph(gr);
 true
 
-#T# Issue 55: Bug in FuncDIGRAPH_TOPO_SORT
+#  Issue 55: Bug in FuncDIGRAPH_TOPO_SORT
 gap> gr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);
 <digraph with 4 vertices, 9 edges>
 gap> DigraphTopologicalSort(gr);
 [ 4, 2, 3, 1 ]
 
-#T# Issue 81: Bug in Digraph for a malformed list of out-neighbours
+#  Issue 81: Bug in Digraph for a malformed list of out-neighbours
 gap> gr := Digraph([[1],, [2]]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `Digraph' on 1 arguments
@@ -308,7 +308,7 @@ Error, Digraphs: Digraph: usage,
 the argument must be a list of lists of positive integers not exceeding the
 length of the argument,
 
-#T# Symmetric closure of a digraph with no vertices
+#  Symmetric closure of a digraph with no vertices
 gap> gr := EmptyDigraph(0);;
 gap> DigraphSymmetricClosure(gr);
 <digraph with 0 vertices, 0 edges>
@@ -327,7 +327,7 @@ gap> not DIGRAPHS_NautyAvailable or
 > NautyCanonicalLabelling(NullDigraph(0), []) = ();
 true
 
-#T# DIGRAPHS_UnbindVariables
+#  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);
 gap> Unbind(G);
