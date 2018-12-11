@@ -1,0 +1,92 @@
+.TH planarity 1
+
+.SH NAME
+planarity - The Edge Addition Planarity Suite
+
+.SH SYNOPSIS
+.B planarity
+.B [-q]
+.B [-h|-help]
+.B [-i|-info]
+.B [-r]
+.B [-s]
+.B [-rm]
+.B [-rn]
+
+.SH DESCRIPTION
+Invokes the Edge Addition Planarity Suite commandline tool.
+
+Without argument, the tool presents a menu-driven interactive
+interface.
+
+When used in batch mode, the tool returns 0 for a planar graph, 1 for
+a nonplanar graph and -1 on error.
+
+.SH OPTIONS
+.TP
+.B -q
+Quiet mode
+.TP
+.B -h, -help
+Display some help
+.TP
+.B -i, -info
+Display copyright, license and reference articles information
+
+.SH FEATURES
+Features in batch mode.
+.TP
+.B -r C K N
+Run the C command (see below) on K random graphs with N vertices
+.TP
+.B -s C I O [O2]
+Run the C command (see below) on a specific graph given in the I input
+file, with output in the primary O file and complementary information
+in the secondary O2 file.
+.TP
+.B -rm N O [O2]
+Compute a maximal planar random graph on N vertices with output in the
+primary O file and optionally the chosen graph in the O2 file.
+.TP
+.B -rn N O [O2]
+Compute a nonplanar random graph (maximal planar and an edge) on N
+vertices with output in the primary O file and optionally the chosen
+graph in the O2 file.
+.SH COMMANDS
+Determine which algorithm implementation to run
+.TP
+.B -p
+Planar embedding and Kuratowski subgraph isolation
+.TP
+.B -d
+Planar graph drawing by visibility representation
+.TP
+.B -o
+Outerplanar embedding and obstruction isolation
+.TP
+.B -2
+Search for subgraph homeomorphic to K_{2,3}
+.TP
+.B -3
+Search for subgraph homeomorphic to K_{3,3}
+.TP
+.B -4
+Search for subgraph homeomorphic to K_4
+.TP
+.B -a
+All of the above
+
+.SH EXAMPLES
+.TP
+.B planarity -s -q -p infile.txt embedding.out [obstruction.out]
+Process infile.txt in quiet mode (-q), putting planar embedding in 
+embedding.out or (optionally) a Kuratowski subgraph in Obstruction.out
+Process returns 0=planar, 1=nonplanar, -1=error
+.TP
+.B planarity -s -q -d infile.txt embedding.out [drawing.out]
+If graph in infile.txt is planar, then put embedding in embedding.out 
+and (optionally) an ASCII art drawing in drawing.out
+Process returns 0=planar, 1=nonplanar, -1=error
+
+.SH SEE ALSO
+\fBplanarity -h -menu\fR for more information.
