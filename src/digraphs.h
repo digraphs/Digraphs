@@ -31,4 +31,9 @@ Obj OutNeighbours(Obj digraph);
 Obj DigraphSource(Obj digraph);
 Obj DigraphRange(Obj digraph);
 
+Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj digraph);
+
+extern Obj IsDigraph;
+extern Obj IsDigraphEdge;
+
 #endif  // DIGRAPHS_SRC_DIGRAPHS_H_

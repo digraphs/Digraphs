@@ -69,5 +69,13 @@
   <Section><Heading>Associated semigroups</Heading>
     <#Include Label="AsSemigroup">
   </Section>
+  
+  <Section><Heading>Planarity</Heading>
+    <#Include Label="KuratowskiPlanarSubdigraph">
+    <#Include Label="KuratowskiOuterPlanarSubdigraph">
+    <#Include Label="PlanarEmbedding">
+    <#Include Label="OuterPlanarEmbedding">
+    <#Include Label="SubdigraphHomeomorphicToK">
+  </Section>
 
 </Chapter>

@@ -356,11 +356,8 @@ function(digraph)
   return DigraphPeriod(digraph) = 1;
 end);
 
-InstallMethod(IsAntisymmetricDigraph, "for a digraph",
-[IsDigraph],
+InstallMethod(IsAntisymmetricDigraph, "for a digraph", [IsDigraph],
 function(digraph)
-  # TODO check if the digraph has multiple edges, if not, then
-  # this can return false if it has too many edges.
   return IS_ANTISYMMETRIC_DIGRAPH(OutNeighbours(digraph));
 end);
 

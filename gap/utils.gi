@@ -23,6 +23,7 @@ BindGlobal("DIGRAPHS_DocXMLFiles", ["attr.xml",
                                     "isomorph.xml",
                                     "oper.xml",
                                     "orbits.xml",
+                                    "planar.xml",
                                     "prop.xml",
                                     "utils.xml",
                                     "../PackageInfo.g"]);

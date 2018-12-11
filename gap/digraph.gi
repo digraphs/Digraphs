@@ -1142,6 +1142,7 @@ function(mat)
   if IsInt(mat[1][1]) then
     SetAdjacencyMatrix(out, mat);
   else  # boolean matrix
+    SetBooleanAdjacencyMatrix(out, mat);
     SetIsMultiDigraph(out, false);
   fi;
 

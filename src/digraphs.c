@@ -25,10 +25,13 @@
 static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
 static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 
+Obj IsDigraph;
+Obj IsDigraphEdge;
+
 #if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
 // compatibility with GAP <= 4.9
 static inline Obj NEW_PLIST_IMM(UInt type, Int plen) {
-    return NEW_PLIST(type | IMMUTABLE, plen);
+  return NEW_PLIST(type | IMMUTABLE, plen);
 }
 #endif
 
@@ -169,8 +172,9 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
             comp = NEW_PLIST_IMM(T_PLIST_CYC, nr);
             SET_LEN_PLIST(comp, nr);
 
-            memcpy(ADDR_OBJ(comp) + 1, CONST_ADDR_OBJ(stack1) + (end1 + 1),
-                nr * sizeof(Obj));
+            memcpy(ADDR_OBJ(comp) + 1,
+                   CONST_ADDR_OBJ(stack1) + (end1 + 1),
+                   nr * sizeof(Obj));
 
             nr = LEN_PLIST(comps) + 1;
             SET_ELM_PLIST(comps, nr, comp);
@@ -620,7 +624,7 @@ static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) {
   return Fail;
 }
 
-static Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
+Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
   Int   nr, i, j, k, l, level, last1, last2;
   Obj   nbs;
   UInt *stack, *ptr;
@@ -1035,7 +1039,7 @@ static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) {
   return inn;
 }
 
-static Obj FuncADJACENCY_MATRIX(Obj self, Obj digraph) {
+Obj FuncADJACENCY_MATRIX(Obj self, Obj digraph) {
   Int n, i, j, val, len, outj;
   Obj adj, mat, adji, next;
 
@@ -2205,9 +2209,8 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
   Obj digraph1_gap =
       ELM_PLIST(args, 1);  // find homomorphisms from digraph1 . . .
   Obj digraph2_gap = ELM_PLIST(args, 2);  // . . . to digraph2
-  Obj hook_gap =
-      ELM_PLIST(args, 3);  // apply this function to every homomorphism
-                           // Fail for no function
+  Obj hook_gap     = ELM_PLIST(args, 3);  // apply this function to every
+                                          // homomorphism Fail for no function
   Obj user_param_gap =
       ELM_PLIST(args, 4);  // user_param_gap, which can be used in the hook
   Obj limit_gap = ELM_PLIST(args, 5);  // the maximum number of results
@@ -2378,8 +2381,8 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
 
 /******************************************************************************
-*V  GVarFuncs . . . . . . . . . . . . . . . . . . list of functions to export
-*/
+ *V  GVarFuncs . . . . . . . . . . . . . . . . . . list of functions to export
+ */
 
 static StructGVarFunc GVarFuncs[] = {
 #ifdef DEBUG
@@ -2574,23 +2577,75 @@ static StructGVarFunc GVarFuncs[] = {
      FuncDIGRAPH_HOMOS,
      "src/digraphs.c:FuncDIGRAPH_HOMOS"},
 
+    {"IS_PLANAR", 1, "digraph", FuncIS_PLANAR, "src/planar.c:FuncIS_PLANAR"},
+
+    {"PLANAR_EMBEDDING",
+     1,
+     "digraph",
+     FuncPLANAR_EMBEDDING,
+     "src/planar.c:FuncPLANAR_EMBEDDING"},
+
+    {"KURATOWSKI_PLANAR_SUBGRAPH",
+     1,
+     "digraph",
+     FuncKURATOWSKI_PLANAR_SUBGRAPH,
+     "src/planar.c:FuncKURATOWSKI_PLANAR_SUBGRAPH"},
+
+    {"IS_OUTER_PLANAR",
+     1,
+     "digraph",
+     FuncIS_OUTER_PLANAR,
+     "src/planar.c:FuncIS_OUTER_PLANAR"},
+
+    {"OUTER_PLANAR_EMBEDDING",
+     1,
+     "digraph",
+     FuncOUTER_PLANAR_EMBEDDING,
+     "src/planar.c:FuncOUTER_PLANAR_EMBEDDING"},
+
+    {"KURATOWSKI_OUTER_PLANAR_SUBGRAPH",
+     1,
+     "digraph",
+     FuncKURATOWSKI_OUTER_PLANAR_SUBGRAPH,
+     "src/planar.c:FuncKURATOWSKI_OUTER_PLANAR_SUBGRAPH"},
+
+    {"SUBGRAPH_HOMEOMORPHIC_TO_K23",
+     1,
+     "digraph",
+     FuncSUBGRAPH_HOMEOMORPHIC_TO_K23,
+     "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K23"},
+
+    {"SUBGRAPH_HOMEOMORPHIC_TO_K33",
+     1,
+     "digraph",
+     FuncSUBGRAPH_HOMEOMORPHIC_TO_K33,
+     "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K33"},
+
+    {"SUBGRAPH_HOMEOMORPHIC_TO_K4",
+     1,
+     "digraph",
+     FuncSUBGRAPH_HOMEOMORPHIC_TO_K4,
+     "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K4"},
+
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };
 
 /******************************************************************************
-*F  InitKernel( <module> )  . . . . . . . . initialise kernel data structures
-*/
+ *F  InitKernel( <module> )  . . . . . . . . initialise kernel data structures
+ */
 static Int InitKernel(StructInitInfo* module) {
   /* init filters and functions                                          */
   InitHdlrFuncsFromTable(GVarFuncs);
+  ImportGVarFromLibrary("IsDigraph", &IsDigraph);
+  ImportGVarFromLibrary("IsDigraphEdge", &IsDigraphEdge);
 
   /* return success                                                      */
   return 0;
 }
 
 /******************************************************************************
-*F  InitLibrary( <module> ) . . . . . . .  initialise library data structures
-*/
+ *F  InitLibrary( <module> ) . . . . . . .  initialise library data structures
+ */
 static Int InitLibrary(StructInitInfo* module) {
   /* init filters and functions */
   InitGVarFuncsFromTable(GVarFuncs);
@@ -2600,19 +2655,18 @@ static Int InitLibrary(StructInitInfo* module) {
 }
 
 /******************************************************************************
-*F  InitInfopl()  . . . . . . . . . . . . . . . . . table of init functions
-*/
+ *F  InitInfopl()  . . . . . . . . . . . . . . . . . table of init functions
+ */
 static StructInitInfo module = {
 #ifdef DIGRAPHSSTATIC
     .type = MODULE_STATIC,
 #else
     .type = MODULE_DYNAMIC,
 #endif
-    .name = "digraphs",
-    .initKernel = InitKernel,
+    .name        = "digraphs",
+    .initKernel  = InitKernel,
     .initLibrary = InitLibrary,
-    .postRestore = 0
-};
+    .postRestore = 0};
 
 #ifndef DIGRAPHSSTATIC
 StructInitInfo* Init__Dynamic(void) {

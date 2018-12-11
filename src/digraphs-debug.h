@@ -36,4 +36,3 @@
 #endif
 
 #endif  // DIGRAPHS_SRC_DIGRAPHS_DEBUG_H_
-

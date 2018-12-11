@@ -39,4 +39,9 @@
     <#Include Label="IsCycleDigraph">
   </Section>
   
+  <Section><Heading>Planarity</Heading>
+    <#Include Label="IsPlanarDigraph">
+    <#Include Label="IsOuterPlanarDigraph">
+  </Section>
+  
 </Chapter>
