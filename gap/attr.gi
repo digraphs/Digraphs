@@ -384,14 +384,10 @@ InstallMethod(OutNeighbours, "for a digraph",
 [IsDigraph],
 function(digraph)
   local out;
-  if IsBound(digraph!.adj) then
-    return digraph!.adj;
-  fi;
   out := DIGRAPH_OUT_NBS(DigraphNrVertices(digraph),
                          DigraphSource(digraph),
                          DigraphRange(digraph));
   Perform(out, IsSet);
-  digraph!.adj := out;
   return out;
 end);
 
