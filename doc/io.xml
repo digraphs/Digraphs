@@ -205,20 +205,20 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
     decompressed.
     <P/>
 
-    If the optional argument <A>n</A> is specified, then <C>ReadDigraphs</C>
-    returns the <A>n</A>th digraph encoded in the file <A>filename</A>.
-    <P/>
-
     If the optional argument <A>decoder</A> is specified
     and is a function which decodes a string into a digraph,
     then <C>ReadDigraphs</C> will use <A>decoder</A> to decode the digraphs
-    contained in <A>filename</A>.
+    contained in <A>filename</A>.<P/>
+
+    If the optional argument <A>n</A> is specified, then <C>ReadDigraphs</C>
+    returns the <A>n</A>th digraph encoded in the file <A>filename</A>.
+    <P/>
 
     If the optional argument <A>decoder</A> is not specified, then
     <C>ReadDigraphs</C> will deduce which decoder to use based on the filename
     extension of <A>filename</A> (after removing the compression-related
     filename extensions <C>.gz</C>, <C>.bz2</C>, and <C>.xz</C>).  For example,
-    if the filename extension if <C>.g6</C>, then <C>ReadDigraphs</C> will use
+    if the filename extension is <C>.g6</C>, then <C>ReadDigraphs</C> will use
     the graph6 decoder <Ref Oper="DigraphFromGraph6String"/>.
     <P/>
 
