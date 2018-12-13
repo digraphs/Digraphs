@@ -11,7 +11,15 @@
 **  This file is free software, see the digraphs/LICENSE.
 **
 *******************************************************************************/
-#include "src/perms.h"
+
+#include "perms.h"
+
+// C headers
+#include <stdlib.h>  // for malloc, . . .
+#include <string.h>  // memcpy
+
+// Digraphs package headers
+#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 // variables for debugging memory leaks
 UIntL nr_ss_allocs;

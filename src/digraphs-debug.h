@@ -21,10 +21,11 @@
 #ifndef DIGRAPHS_SRC_DIGRAPHS_DEBUG_H_
 #define DIGRAPHS_SRC_DIGRAPHS_DEBUG_H_
 
-#include <assert.h>
-#include <src/system.h>
+// C headers
+#include <assert.h>  // for assert
 
-#include "digraphs-config.h"
+// Digraphs package headers
+#include "digraphs-config.h"  // for DIGRAPHS_KERNEL_DEBUG
 
 // DIGRAPHS_ASSERT is a version of 'assert' which is enabled by the
 // configure option --enable-debug

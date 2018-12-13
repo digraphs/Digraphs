@@ -12,7 +12,14 @@
 **
 *******************************************************************************/
 
-#include "src/schreier-sims.h"
+#include "schreier-sims.h"
+
+// C headers
+#include "stdlib.h"  // for NULL
+#include "string.h"  // for memset
+
+// Digraphs package headers
+#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 // Schreier-Sims set up
 
