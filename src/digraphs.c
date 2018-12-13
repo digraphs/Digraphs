@@ -12,7 +12,16 @@
 **
 *******************************************************************************/
 
-#include "src/digraphs.h"
+#include "digraphs.h"
+
+#include <stdbool.h>
+#include <stdlib.h>
+
+#include "bliss-0.73/bliss_C.h"
+
+#include "digraphs-debug.h"
+#include "homos.h"
+#include "planar.h"
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT

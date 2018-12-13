@@ -9,8 +9,17 @@
 **
 ********************************************************************************/
 
-#include "src/homos.h"
-#include "src/digraphs-config.h"
+#include "homos.h"
+
+// C headers
+#include <setjmp.h>  // for setjmp
+
+// Bliss headers
+#include "bliss-0.73/bliss_C.h"  // for BlissGraph, . . .
+
+// Digraphs package headers
+#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
+#include "schreier-sims.h"   // for PermColl, . . .
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -108,33 +117,6 @@ static void init_mask(void) {
 // bit arrays
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
-// COUNT_TRUES_BLOCK: this is from gap/src/blister.h, it counts the number of
-// bits in a block which are set to 1.
-////////////////////////////////////////////////////////////////////////////////
-
-static inline UInt COUNT_TRUES_BLOCK(UInt block) {
-#if USE_POPCNT && defined(HAVE___BUILTIN_POPCOUNTL)
-  return __builtin_popcountl(block);
-#else
-#if SIZEOF_VOID_P == 8
-  block = (block & 0x5555555555555555L) + ((block >> 1) & 0x5555555555555555L);
-  block = (block & 0x3333333333333333L) + ((block >> 2) & 0x3333333333333333L);
-  block = (block + (block >> 4)) & 0x0f0f0f0f0f0f0f0fL;
-  block = (block + (block >> 8));
-  block = (block + (block >> 16));
-  block = (block + (block >> 32)) & 0x00000000000000ffL;
-#else
-  block = (block & 0x55555555) + ((block >> 1) & 0x55555555);
-  block = (block & 0x33333333) + ((block >> 2) & 0x33333333);
-  block = (block + (block >> 4)) & 0x0f0f0f0f;
-  block = (block + (block >> 8));
-  block = (block + (block >> 16)) & 0x000000ff;
-#endif
-  return block;
-#endif
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 // new_bit_array: get a pointer to a new BitArray with space for <nr_bits>
@@ -597,8 +579,7 @@ inline static bool is_adjacent_digraph(Digraph* digraph, Vertex i, Vertex j) {
 
 ////////////////////////////////////////////////////////////////////////////////
 // new_bliss_digraphs_graph: get a new bliss (undirected, vertex coloured)
-// digraph from
-// the Digraph pointed to by <digraph>.
+// digraph from the Digraph pointed to by <digraph>.
 ////////////////////////////////////////////////////////////////////////////////
 
 static BlissGraph* new_bliss_digraphs_graph_from_digraph(Digraph* digraph,

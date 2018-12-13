@@ -12,11 +12,11 @@
 #ifndef DIGRAPHS_SRC_HOMOS_H_
 #define DIGRAPHS_SRC_HOMOS_H_
 
-#include <limits.h>
-#include <setjmp.h>
+// GAP headers
+#include "src/compiled.h"
 
-#include "bliss-0.73/bliss_C.h"
-#include "src/schreier-sims.h"
+// Digraphs package headers
+#include "perms.h"  // for UIntS
 
 void          homo_hook_print();
 typedef UIntS Vertex;

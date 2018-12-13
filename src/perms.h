@@ -15,11 +15,7 @@
 #ifndef DIGRAPHS_SRC_PERMS_H_
 #define DIGRAPHS_SRC_PERMS_H_
 
-#include <digraphs-debug.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdbool.h>  // for bool
 
 #define MAXVERTS 512
 #define UNDEFINED MAXVERTS + 1

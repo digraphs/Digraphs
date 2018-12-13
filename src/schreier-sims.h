@@ -15,7 +15,7 @@
 #ifndef DIGRAPHS_SRC_SCHREIER_SIMS_H_
 #define DIGRAPHS_SRC_SCHREIER_SIMS_H_
 
-#include "src/perms.h"
+#include "perms.h"  // for PermColl and UIntS
 
 extern bool point_stabilizer(PermColl* gens, UIntS const pt, PermColl** out);
 

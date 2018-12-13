@@ -15,14 +15,8 @@
 #ifndef DIGRAPHS_SRC_DIGRAPHS_H_
 #define DIGRAPHS_SRC_DIGRAPHS_H_
 
-#include <digraphs-debug.h>
-#include <stdbool.h>
-#include <stdlib.h>
-
-#include "bliss-0.73/bliss_C.h"
-
-#include "src/compiled.h" /* GAP headers                */
-#include "src/homos.h"
+// GAP headers
+#include "src/compiled.h"  // for Obj, Int
 
 Int DigraphNrVertices(Obj digraph);
 Int DigraphNrEdges(Obj digraph);
