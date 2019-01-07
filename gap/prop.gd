@@ -22,7 +22,7 @@ DeclareProperty("IsReflexiveDigraph", IsDigraph);
 DeclareProperty("IsStronglyConnectedDigraph", IsDigraph);
 DeclareProperty("IsSymmetricDigraph", IsDigraph);
 DeclareProperty("IsAntisymmetricDigraph", IsDigraph);
-DeclareSynonym("IsAntiSymmetricDigraph", IsAntisymmetricDigraph);
+DeclareSynonymAttr("IsAntiSymmetricDigraph", IsAntisymmetricDigraph);
 DeclareProperty("IsTournament", IsDigraph);
 DeclareProperty("IsTransitiveDigraph", IsDigraph);
 DeclareProperty("DigraphHasLoops", IsDigraph);
