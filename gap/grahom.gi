@@ -10,107 +10,6 @@
 #############################################################################
 ##
 
-# Wrapper for C function DI/GRAPH_HOMOS
-
-InstallGlobalFunction(HomomorphismDigraphsFinder,
-function(gr1, gr2, hook, user_param, limit, hint, inj, image, map, list1, list2)
-  local colours, list;
-
-  if not (IsDigraph(gr1) and IsDigraph(gr2)) then
-    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                  "the 1st and 2nd arguments <gr1> and <gr2> must be ",
-                  "digraphs,");
-  fi;
-
-  if hook <> fail then
-    if not (IsFunction(hook) and NumberArgumentsFunction(hook) = 2) then
-      ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                    "the 3rd argument <hook> has to be a function with 2 ",
-                    "arguments,");
-    fi;
-  elif not IsList(user_param) then
-    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                  "the 4th argument <user_param> must be a list,");
-  fi;
-
-  if limit = infinity then
-    limit := fail;
-  elif not IsPosInt(limit) then
-    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                  "the 5th argument <limit> has to be a positive integer or ",
-                  "infinity,");
-  fi;
-
-  if hint <> fail and not IsPosInt(hint) then
-    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                  "the 6th argument <hint> has to be a positive integer or ",
-                  "fail,");
-  fi;
-
-  if not (inj in [true, false]) then
-    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                  "the 7th argument <inj> has to be a true or false,");
-  fi;
-
-  if not (IsHomogeneousList(image)
-          and ForAll(image, x -> IsPosInt(x) and x <= DigraphNrVertices(gr2))
-          and IsDuplicateFreeList(image))
-      then
-    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                  "the 8th argument <image> has to be a duplicate-free list of",
-                  " vertices of the\n2nd argument <gr2>,");
-  fi;
-
-  if not (IsList(map) and Length(map) <= DigraphNrVertices(gr1)
-          and ForAll(map, x -> x in image)) then
-    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                  "the 9th argument <map> must be a list of vertices of the 8t",
-                  "h argument <image>\nwhich is no longer than the number of ",
-                  "vertices of the 1st argument <gr1>,");
-                  # TODO improve
-  fi;
-
-  if list1 = fail and list2 = fail then
-    colours := [fail, fail];
-  elif list1 <> fail and list2 <> fail then
-    list    := [list1, list2];
-    colours := [DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(gr1),
-                                                 list[1],
-                                                 "HomomorphismDigraphsFinder"),
-                DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(gr2),
-                                                 list[2],
-                                                 "HomomorphismDigraphsFinder")];
-  else
-    ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: usage,\n",
-                  "the 10th and 11th arguments <list1> and <list2> must both ",
-                  "be fail or neither must be fail,");
-  fi;
-
-  # Cases where we already know the answer
-  if (inj and ((hint <> fail and hint <> DigraphNrVertices(gr1)) or
-            DigraphNrVertices(gr1) > DigraphNrVertices(gr2)))
-        or (IsPosInt(hint) and (hint > DigraphNrVertices(gr1) or hint >
-            DigraphNrVertices(gr2)))
-        or IsEmpty(image)
-        or (IsPosInt(hint) and hint > Length(image)) then
-    return user_param;
-  fi;
-
-  if DigraphNrVertices(gr1) <= 512 and DigraphNrVertices(gr2) <= 512 then
-    if IsSymmetricDigraph(gr1) and IsSymmetricDigraph(gr2) then
-      GRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, inj, image,
-                  fail, map, colours[1], colours[2]);
-    else
-      DIGRAPH_HOMOS(gr1, gr2, hook, user_param, limit, hint, inj, image,
-                    fail, map, colours[1], colours[2]);
-    fi;
-    return user_param;
-  fi;
-  ErrorNoReturn("Digraphs: HomomorphismDigraphsFinder: error,\n",
-                "not yet implemented for digraphs with more than 512 ",
-                "vertices,");
-end);
-
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid,
 function(arg)
   local digraph, limit, colours, G, gens, limit_arg, out;
@@ -173,9 +72,18 @@ function(arg)
     return gens;
   fi;
 
-  out := HomomorphismDigraphsFinder(digraph, digraph, fail, gens, limit, fail,
-                                    false, DigraphVertices(digraph), [],
-                                    colours, colours);
+  out := HomomorphismDigraphsFinder(digraph,                   # gr1
+                                    digraph,                   # gr2
+                                    fail,                      # hook
+                                    gens,                      # user_param
+                                    limit,                     # limit
+                                    fail,                      # hint
+                                    0,                         # injective
+                                    DigraphVertices(digraph),  # image
+                                    [],                        # partial map
+                                    colours,                   # colours1
+                                    colours,                   # colours2
+                                    DigraphWelshPowellOrder(digraph));
 
   if limit = infinity or Length(gens) < limit_arg then
     SetGeneratorsOfEndomorphismMonoidAttr(digraph, out);
@@ -306,16 +214,24 @@ end);
 ################################################################################
 # HOMOMORPHISMS
 
-# Finds a single homomorphism of highest rank from gr1 to gr2
+# Finds a single homomorphism of highest rank from D1 to D2
 
 InstallMethod(DigraphHomomorphism, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
-function(gr1, gr2)
+function(D1, D2)
   local out;
-
-  out := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, fail, false,
-                                    DigraphVertices(gr2), [], fail, fail);
-
+  out := HomomorphismDigraphsFinder(D1,
+                                    D2,
+                                    fail,                 # hook
+                                    [],                   # user_param
+                                    1,                    # limit
+                                    fail,                 # hint
+                                    0,                    # injective
+                                    DigraphVertices(D2),  # image
+                                    [],                   # map
+                                    fail,                 # colours1
+                                    fail,                 # colours2
+                                    DigraphWelshPowellOrder(D1));
   if IsEmpty(out) then
     return fail;
   fi;
@@ -329,10 +245,19 @@ end);
 InstallMethod(HomomorphismsDigraphsRepresentatives,
 "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
-function(gr1, gr2)
-
-  return HomomorphismDigraphsFinder(gr1, gr2, fail, [], infinity, fail, false,
-                                    DigraphVertices(gr2), [], fail, fail);
+function(D1, D2)
+  return HomomorphismDigraphsFinder(D1,
+                                    D2,
+                                    fail,                  # hook
+                                    [],                    # user_param
+                                    infinity,              # limit
+                                    fail,                  # hint
+                                    0,                     # injective
+                                    DigraphVertices(D2),   # image
+                                    [],                    # map
+                                    fail,                  # colours1
+                                    fail,                  # colours2
+                                    DigraphWelshPowellOrder(D1));
 end);
 
 # Finds the set of all homomorphisms from gr1 to gr2
@@ -355,13 +280,20 @@ end);
 
 InstallMethod(DigraphMonomorphism, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
-function(gr1, gr2)
+function(D1, D2)
   local out;
-
-  out := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1,
-                                    DigraphNrVertices(gr1), true,
-                                    DigraphVertices(gr2), [], fail, fail);
-
+  out := HomomorphismDigraphsFinder(D1,
+                                    D2,
+                                    fail,                   # hook
+                                    [],                     # user_param
+                                    1,                      # limit
+                                    DigraphNrVertices(D1),  # hint
+                                    1,                      # injective
+                                    DigraphVertices(D2),    # image
+                                    [],                     # map
+                                    fail,                   # colours1
+                                    fail,                   # colours2
+                                    DigraphWelshPowellOrder(D1));
   if IsEmpty(out) then
     return fail;
   fi;
@@ -373,11 +305,19 @@ end);
 InstallMethod(MonomorphismsDigraphsRepresentatives,
 "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
-function(gr1, gr2)
-
-  return HomomorphismDigraphsFinder(gr1, gr2, fail, [], infinity,
-                                    DigraphNrVertices(gr1), true,
-                                    DigraphVertices(gr2), [], fail, fail);
+function(D1, D2)
+  return HomomorphismDigraphsFinder(D1,
+                                    D2,
+                                    fail,                    # hook
+                                    [],                      # user_param
+                                    infinity,                # limit
+                                    DigraphNrVertices(D1),   # hint
+                                    1,                       # injective
+                                    DigraphVertices(D2),     # image
+                                    [],                      # map
+                                    fail,                    # colours1
+                                    fail,                    # colours2
+                                    DigraphWelshPowellOrder(D1));
 end);
 
 # Finds the set of all monomorphisms from gr1 to gr2
@@ -396,17 +336,24 @@ end);
 ################################################################################
 # SURJECTIVE HOMOMORPHISMS
 
-# Finds a single epimorphism from gr1 onto gr2
+# Finds a single epimorphism from D1 onto D2
 
 InstallMethod(DigraphEpimorphism, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
-function(gr1, gr2)
+function(D1, D2)
   local out;
-
-  out := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1,
-                                    DigraphNrVertices(gr2), false,
-                                    DigraphVertices(gr2), [], fail, fail);
-
+  out := HomomorphismDigraphsFinder(D1,
+                                    D2,
+                                    fail,                   # hook
+                                    [],                     # user_param
+                                    1,                      # limit
+                                    DigraphNrVertices(D2),  # hint
+                                    0,                      # injective
+                                    DigraphVertices(D2),    # image
+                                    [],                     # map
+                                    fail,                   # colours1
+                                    fail,                   # colours2
+                                    DigraphWelshPowellOrder(D1));
   if IsEmpty(out) then
     return fail;
   fi;
@@ -418,11 +365,19 @@ end);
 InstallMethod(EpimorphismsDigraphsRepresentatives,
 "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
-function(gr1, gr2)
-
-  return HomomorphismDigraphsFinder(gr1, gr2, fail, [], infinity,
-                                    DigraphNrVertices(gr2), false,
-                                    DigraphVertices(gr2), [], fail, fail);
+function(D1, D2)
+  return HomomorphismDigraphsFinder(D1,
+                                    D2,
+                                    fail,                   # hook
+                                    [],                     # user_param
+                                    infinity,               # limit
+                                    DigraphNrVertices(D2),  # hint
+                                    0,                      # injective
+                                    DigraphVertices(D2),    # image
+                                    [],                     # map
+                                    fail,                   # colours1
+                                    fail,                   # colours2
+                                    DigraphWelshPowellOrder(D1));
 end);
 
 # Finds the set of all epimorphisms from gr1 to gr2
@@ -431,7 +386,6 @@ InstallMethod(EpimorphismsDigraphs, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(gr1, gr2)
   local hom, aut;
-
   hom := EpimorphismsDigraphsRepresentatives(gr1, gr2);
   aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(gr2)),
               AsTransformation);
@@ -439,33 +393,64 @@ function(gr1, gr2)
 end);
 
 ################################################################################
-# EMBEDDINGS
+# Embeddings
+################################################################################
 
 InstallMethod(DigraphEmbedding, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
-function(gr1, gr2)
-  local iso, monos, dual1, edges1, mat, t;
-
-  if DigraphNrVertices(gr1) = DigraphNrVertices(gr2) then
-    iso := IsomorphismDigraphs(DigraphRemoveAllMultipleEdges(gr1),
-                               DigraphRemoveAllMultipleEdges(gr2));
-    if iso = fail then
-      return fail;
-    fi;
-    return AsTransformation(iso);
+function(D1, D2)
+  local out;
+  out := HomomorphismDigraphsFinder(D1,
+                                    D2,
+                                    fail,                   # hook
+                                    [],                     # user_param
+                                    1,                      # limit
+                                    DigraphNrVertices(D1),  # hint
+                                    2,                      # injective
+                                    DigraphVertices(D2),    # image
+                                    [],                     # map
+                                    fail,                   # colours1
+                                    fail,                   # colours2
+                                    DigraphWelshPowellOrder(D1));
+  if IsEmpty(out) then
+    return fail;
   fi;
-
-  monos := MonomorphismsDigraphsRepresentatives(gr1, gr2);
-  dual1 := DigraphDual(DigraphRemoveAllMultipleEdges(gr1));
-  edges1 := DigraphEdges(dual1);
-  mat := AdjacencyMatrix(gr2);
-  for t in monos do
-    if ForAll(edges1, e -> mat[e[1] ^ t][e[2] ^ t] = 0) then
-      return t;
-    fi;
-  od;
-  return fail;
+  return out[1];
 end);
+
+# Same as HomomorphismsDigraphsRepresentatives, except only embeddings ones
+
+InstallMethod(EmbeddingsDigraphsRepresentatives,
+"for a digraph and a digraph",
+[IsDigraph, IsDigraph],
+function(D1, D2)
+  return HomomorphismDigraphsFinder(D1,
+                                    D2,
+                                    fail,                   # hook
+                                    [],                     # user_param
+                                    infinity,               # limit
+                                    DigraphNrVertices(D1),  # hint
+                                    2,                      # injective
+                                    DigraphVertices(D2),    # image
+                                    [],                     # map
+                                    fail,                   # colours1
+                                    fail,                   # colours2
+                                    DigraphWelshPowellOrder(D1));
+end);
+
+InstallMethod(EmbeddingsDigraphs, "for a digraph and a digraph",
+[IsDigraph, IsDigraph],
+function(gr1, gr2)
+  local hom, aut;
+  hom := EmbeddingsDigraphsRepresentatives(gr1, gr2);
+  aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(gr2)),
+              AsTransformation);
+  return Union(List(aut, x -> hom * x));
+end);
+
+########################################################################
+# IsDigraphHomo/Epi/.../morphism
+########################################################################
 
 InstallMethod(IsDigraphHomomorphism, "for digraph, digraph, and perm",
 [IsDigraph, IsDigraph, IsPerm],

@@ -893,10 +893,10 @@ function(s)
   od;
 
   if legacy then  # source and range are reversed
-    return Digraph(rec(nrvertices := n, range := source, source := range));
+    return DigraphNC(rec(nrvertices := n, range := source, source := range));
   fi;
 
-  return Digraph(rec(nrvertices := n, range := range, source := source));
+  return DigraphNC(rec(nrvertices := n, range := range, source := source));
 end);
 
 InstallMethod(DigraphFromSparse6String, "for a string",

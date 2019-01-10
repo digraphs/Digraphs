@@ -14,14 +14,14 @@
 
 #include "digraphs.h"
 
-#include <stdbool.h>
-#include <stdlib.h>
+#include <stdbool.h>  // for false, true, bool
+#include <stdlib.h>   // for NULL, free
 
-#include "bliss-0.73/bliss_C.h"
+#include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
 
-#include "digraphs-debug.h"
-#include "homos.h"
-#include "planar.h"
+#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
+#include "homos.h"           // for FuncHomomorphismDigraphsFinder
+#include "planar.h"          // for FUNC_IS_PLANAR, . . .
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -34,8 +34,14 @@
 static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
 static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
 
+// GAP level things, imported in InitKernel below
 Obj IsDigraph;
 Obj IsDigraphEdge;
+Obj DIGRAPHS_ValidateVertexColouring;
+Obj Infinity;
+Obj IsSymmetricDigraph;
+Obj GeneratorsOfGroup;
+Obj AutomorphismGroup;
 
 #if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
 // compatibility with GAP <= 4.9
@@ -1671,7 +1677,8 @@ void digraph_hook_function(void*               user_param,
   Obj    p, gens;
   UInt   i, n;
 
-  n   = INT_INTOBJ(ELM_PLIST(user_param, 2));  // the degree
+  n = INT_INTOBJ(ELM_PLIST(user_param, 2));  // the degree
+  DIGRAPHS_ASSERT(n <= N);
   p   = NEW_PERM4(n);
   ptr = ADDR_PERM4(p);
 
@@ -1735,6 +1742,7 @@ void multidigraph_hook_function(void*               user_param,
   bool   stab;
 
   m = INT_INTOBJ(ELM_PLIST(user_param, 2));  // the nr of vertices
+  DIGRAPHS_ASSERT(m <= N);
 
   stab = true;
   for (i = 0; i < m; i++) {
@@ -1746,6 +1754,7 @@ void multidigraph_hook_function(void*               user_param,
     n   = INT_INTOBJ(ELM_PLIST(user_param, 4));  // the nr of edges
     p   = NEW_PERM4(n);
     ptr = ADDR_PERM4(p);
+    DIGRAPHS_ASSERT(2 * (n - 1) + m <= N);
     for (i = 0; i < n; i++) {
       ptr[i] = (aut[2 * i + m] - m) / 2;
     }
@@ -1753,6 +1762,7 @@ void multidigraph_hook_function(void*               user_param,
   } else {  // permutation of the vertices
     p   = NEW_PERM4(m);
     ptr = ADDR_PERM4(p);
+    DIGRAPHS_ASSERT(m <= N);
     for (i = 0; i < m; i++) {
       ptr[i] = aut[i];
     }
@@ -1772,6 +1782,7 @@ void multidigraph_colours_hook_function(void*               user_param,
   bool   stab;
 
   m = INT_INTOBJ(ELM_PLIST(user_param, 2));  // the nr of vertices
+  DIGRAPHS_ASSERT(m <= N);
 
   stab = true;
   for (i = 0; i < m; i++) {
@@ -1783,6 +1794,7 @@ void multidigraph_colours_hook_function(void*               user_param,
     n   = INT_INTOBJ(ELM_PLIST(user_param, 4));  // the nr of edges
     p   = NEW_PERM4(n);
     ptr = ADDR_PERM4(p);
+    DIGRAPHS_ASSERT(2 * (n - 1) + 3 * m <= N);
     for (i = 0; i < n; i++) {
       ptr[i] = (aut[2 * i + 3 * m] - 3 * m) / 2;
     }
@@ -1790,6 +1802,7 @@ void multidigraph_colours_hook_function(void*               user_param,
   } else {  // permutation of the vertices
     p   = NEW_PERM4(m);
     ptr = ADDR_PERM4(p);
+    DIGRAPHS_ASSERT(m < N);
     for (i = 0; i < m; i++) {
       ptr[i] = aut[i];
     }
@@ -1952,441 +1965,6 @@ FuncMULTIDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   return out;
 }
 
-// GAP-level function
-
-static Obj GAP_FUNC;  // variable to hold a GAP level hook function
-
-void homo_hook_gap(void* user_param, const UIntS nr, const UIntS* map) {
-  UInt2* ptr;
-  Obj    t;
-  UInt   i;
-
-  // copy map into new trans2
-  t   = NEW_TRANS2(nr);
-  ptr = ADDR_TRANS2(t);
-
-  for (i = 0; i < nr; i++) {
-    ptr[i] = map[i];
-  }
-  CALL_2ARGS(GAP_FUNC, user_param, t);
-}
-
-void homo_hook_collect(void* user_param, const UIntS nr, const UIntS* map) {
-  UInt2* ptr;
-  Obj    t;
-  UInt   i;
-
-  if (TNUM_OBJ((Obj) user_param) == T_PLIST_EMPTY) {
-    RetypeBag(user_param, T_PLIST);
-  }
-
-  // copy map into new trans2
-  t   = NEW_TRANS2(nr);
-  ptr = ADDR_TRANS2(t);
-
-  for (i = 0; i < nr; i++) {
-    ptr[i] = map[i];
-  }
-
-  AssPlist(user_param, LEN_PLIST(user_param) + 1, t);
-#if DEBUG_HOMOS
-  Pr("found %d homomorphism so far\n", (Int) LEN_PLIST(user_param), 0L);
-#endif
-}
-
-Graph* new_graph_from_gap_digraph(Obj digraph_gap) {
-  unsigned int i, j, k;
-  unsigned int nr    = DigraphNrVertices(digraph_gap);
-  Graph*       graph = new_graph(nr);
-  Obj          out   = OutNeighbours(digraph_gap);
-  Obj          nbs;
-
-  for (i = 0; i < nr; i++) {
-    nbs = ELM_PLIST(out, i + 1);
-    for (j = 0; j < LEN_LIST(nbs); j++) {
-      k = INT_INTOBJ(ELM_LIST(nbs, j + 1)) - 1;
-      add_edge_graph(graph, i, k);
-    }
-  }
-  return graph;
-}
-
-Obj FuncGRAPH_HOMOS(Obj self, Obj args) {
-  unsigned int i, hint_arg, nr1, nr2;
-  UInt8        max_results_arg;
-  Obj          user_param_arg;
-  UIntS *      partial_map, *colours1, *colours2;
-
-  // get the args . . .
-
-  Obj digraph1_gap =
-      ELM_PLIST(args, 1);  // find homomorphisms from digraph1_gap . . .
-  Obj digraph2_gap = ELM_PLIST(args, 2);  // . . . to digraph2_gap
-  Obj hook_gap     = ELM_PLIST(args, 3);  // apply the function hook_gap to
-  // every homomorphism, Fail for no function
-  Obj user_param_gap =
-      ELM_PLIST(args, 4);  // user_param_gap, which can be used in the hook
-  Obj limit_gap = ELM_PLIST(args, 5);  // the maximum number of results
-  Obj hint_gap  = ELM_PLIST(args, 6);  // the rank of a result
-  Obj isinjective_gap =
-      ELM_PLIST(args, 7);              // only consider injective homomorphism
-  Obj image_gap = ELM_PLIST(args, 8);  // only consider homos with image <image>
-  // Obj kernel_gap      = ELM_PLIST(args, 9);  // only consider homos with
-  // kernel <kernel>
-  Obj partial_map_gap =
-      ELM_PLIST(args, 10);  // only look for extensions of <partial_map_gap>
-  Obj colours1_gap =
-      ELM_PLIST(args, 11);  // only look for extensions of <partial_map_gap>
-  Obj colours2_gap =
-      ELM_PLIST(args, 12);  // only look for extensions of <partial_map_gap>
-
-  // get the c graph objects . . .
-  Graph* graph1 = new_graph_from_gap_digraph(digraph1_gap);
-  nr1           = graph1->nr_vertices;
-  Graph* graph2 = new_graph_from_gap_digraph(digraph2_gap);
-  nr2           = graph2->nr_vertices;
-
-  // process the hook and user_param . . .
-  if (user_param_gap == Fail
-      || (hook_gap == Fail && !IS_PLIST(user_param_gap))) {
-    ErrorQuit("Digraphs: GRAPH_HOMOS (C):\n invalid argument 1,", 0L, 0L);
-  } else {
-    user_param_arg = user_param_gap;
-  }
-
-  // process the limit . . .
-  if (limit_gap == Fail || !IS_INTOBJ(limit_gap)) {
-    max_results_arg = SMALLINTLIMIT;
-  } else {
-    max_results_arg = INT_INTOBJ(limit_gap);
-  }
-
-  // process hint . . .
-  if (IS_INTOBJ(hint_gap)) {
-    hint_arg = INT_INTOBJ(hint_gap);
-  } else {
-    hint_arg = UNDEFINED;
-  }
-
-  // process injective . . .
-  bool isinjective = (isinjective_gap == True ? true : false);
-
-  // init the image . . .
-  BitArray* image;
-
-  if (LEN_LIST(image_gap) == nr2) {
-    image = NULL;
-  } else {
-    image = new_bit_array(nr2);
-    for (i = 0; i < LEN_LIST(image_gap); i++) {
-      set_bit_array(image, INT_INTOBJ(ELM_LIST(image_gap, i + 1)) - 1, true);
-    }
-  }
-
-  // TODO(*) process the kernel . . .
-
-  // process the partially defined map . . .
-  if (partial_map_gap == Fail || !IS_LIST(partial_map_gap)) {
-    partial_map = NULL;
-  } else {
-    partial_map = malloc(nr1 * sizeof(UIntS));
-    for (i = 0; i < LEN_LIST(partial_map_gap); i++) {
-      if (ISB_LIST(partial_map_gap, i + 1) == 1) {
-        partial_map[i] = INT_INTOBJ(ELM_LIST(partial_map_gap, i + 1)) - 1;
-      } else {
-        partial_map[i] = UNDEFINED;
-      }
-    }
-    for (i = LEN_LIST(partial_map_gap); i < nr1; i++) {
-      partial_map[i] = UNDEFINED;
-    }
-  }
-
-  // process the vertex colours . . .
-  if (colours1_gap == Fail || colours2_gap == Fail || !IS_LIST(colours1_gap)
-      || !IS_LIST(colours2_gap)) {
-    colours1 = NULL;
-    colours2 = NULL;
-  } else {
-    colours1 = malloc(nr1 * sizeof(UIntS));
-    colours2 = malloc(nr2 * sizeof(UIntS));
-    for (i = 0; i < nr1; i++) {
-      colours1[i] = INT_INTOBJ(ELM_LIST(colours1_gap, i + 1)) - 1;
-    }
-    for (i = 0; i < nr2; i++) {
-      colours2[i] = INT_INTOBJ(ELM_LIST(colours2_gap, i + 1)) - 1;
-    }
-  }
-
-  // go!
-  if (!isinjective) {
-    if (hook_gap == Fail) {
-      GraphHomomorphisms(graph1,
-                         graph2,
-                         homo_hook_collect,
-                         user_param_arg,
-                         max_results_arg,
-                         hint_arg,
-                         image,
-                         partial_map,
-                         colours1,
-                         colours2);
-    } else {
-      GAP_FUNC = hook_gap;
-      GraphHomomorphisms(graph1,
-                         graph2,
-                         homo_hook_gap,
-                         user_param_arg,
-                         max_results_arg,
-                         hint_arg,
-                         image,
-                         partial_map,
-                         colours1,
-                         colours2);
-    }
-  } else {
-    if (hook_gap == Fail) {
-      GraphMonomorphisms(graph1,
-                         graph2,
-                         homo_hook_collect,
-                         user_param_arg,
-                         max_results_arg,
-                         image,
-                         partial_map,
-                         colours1,
-                         colours2);
-    } else {
-      GAP_FUNC = hook_gap;
-      GraphMonomorphisms(graph1,
-                         graph2,
-                         homo_hook_gap,
-                         user_param_arg,
-                         max_results_arg,
-                         image,
-                         partial_map,
-                         colours1,
-                         colours2);
-    }
-  }
-
-  if (IS_PLIST(user_param_arg) && LEN_PLIST(user_param_arg) == 0
-      && TNUM_OBJ(user_param_arg) != T_PLIST_EMPTY) {
-    RetypeBag(user_param_arg, T_PLIST_EMPTY);
-  }
-
-  if (image != NULL) {
-    free_bit_array(image);
-  }
-  if (colours1 != NULL) {
-    free(colours1);
-  }
-  if (colours2 != NULL) {
-    free(colours2);
-  }
-  free(partial_map);
-  free_graph(graph1);
-  free_graph(graph2);
-
-  return user_param_arg;
-}
-
-Digraph* new_digraph_from_gap_digraph(Obj digraph_gap) {
-  unsigned int i, j, k;
-  unsigned int nr      = DigraphNrVertices(digraph_gap);
-  Digraph*     digraph = new_digraph(nr);
-  Obj          out     = OutNeighbours(digraph_gap);
-  Obj          nbs;
-
-  for (i = 0; i < nr; i++) {
-    nbs = ELM_PLIST(out, i + 1);
-    for (j = 0; j < LEN_LIST(nbs); j++) {
-      k = INT_INTOBJ(ELM_LIST(nbs, j + 1)) - 1;
-      add_edge_digraph(digraph, i, k);
-    }
-  }
-  return digraph;
-}
-
-Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
-  unsigned int i, hint_arg, nr1, nr2;
-  UInt8        max_results_arg;
-  Obj          user_param_arg;
-  UIntS *      partial_map, *colours1, *colours2;
-
-  // get the args . . .
-
-  Obj digraph1_gap =
-      ELM_PLIST(args, 1);  // find homomorphisms from digraph1 . . .
-  Obj digraph2_gap = ELM_PLIST(args, 2);  // . . . to digraph2
-  Obj hook_gap     = ELM_PLIST(args, 3);  // apply this function to every
-                                          // homomorphism Fail for no function
-  Obj user_param_gap =
-      ELM_PLIST(args, 4);  // user_param_gap, which can be used in the hook
-  Obj limit_gap = ELM_PLIST(args, 5);  // the maximum number of results
-  Obj hint_gap  = ELM_PLIST(args, 6);  // the rank of a result
-  Obj isinjective_gap =
-      ELM_PLIST(args, 7);              // only consider injective homomorphism
-  Obj image_gap = ELM_PLIST(args, 8);  // only consider homos with image <image>
-  // Obj kernel_gap      = ELM_PLIST(args, 9);  // only consider homos with
-  // kernel <kernel>
-  Obj partial_map_gap =
-      ELM_PLIST(args, 10);  // only look for extensions of <partial_map_gap>
-  Obj colours1_gap =
-      ELM_PLIST(args, 11);  // only look for extensions of <partial_map_gap>
-  Obj colours2_gap =
-      ELM_PLIST(args, 12);  // only look for extensions of <partial_map_gap>
-
-  // get the c digraph objects . . .
-  Digraph* digraph1 = new_digraph_from_gap_digraph(digraph1_gap);
-  nr1               = digraph1->nr_vertices;
-  Digraph* digraph2 = new_digraph_from_gap_digraph(digraph2_gap);
-  nr2               = digraph2->nr_vertices;
-
-  // process the hook and user_param . . .
-  if (user_param_gap == Fail
-      || (hook_gap == Fail && !IS_PLIST(user_param_gap))) {
-    ErrorQuit("Digraphs: DIGRAPH_HOMOS (C):\n invalid argument 1,", 0L, 0L);
-  } else {
-    user_param_arg = user_param_gap;
-  }
-
-  // process the limit . . .
-  if (limit_gap == Fail || !IS_INTOBJ(limit_gap)) {
-    max_results_arg = SMALLINTLIMIT;
-  } else {
-    max_results_arg = INT_INTOBJ(limit_gap);
-  }
-
-  // process hint . . .
-  if (IS_INTOBJ(hint_gap)) {
-    hint_arg = INT_INTOBJ(hint_gap);
-  } else {
-    hint_arg = UNDEFINED;
-  }
-
-  // process injective . . .
-  bool isinjective = (isinjective_gap == True ? true : false);
-
-  // init the image . . .
-  BitArray* image;
-
-  if (LEN_LIST(image_gap) == nr2) {
-    image = NULL;
-  } else {
-    image = new_bit_array(nr2);
-    for (i = 0; i < LEN_LIST(image_gap); i++) {
-      set_bit_array(image, INT_INTOBJ(ELM_LIST(image_gap, i + 1)) - 1, true);
-    }
-  }
-
-  // TODO(*) process the kernel . . .
-
-  // process the partially defined map . . .
-  if (partial_map_gap == Fail || !IS_LIST(partial_map_gap)) {
-    partial_map = NULL;
-  } else {
-    partial_map = malloc(nr1 * sizeof(UIntS));
-    for (i = 0; i < LEN_LIST(partial_map_gap); i++) {
-      if (ISB_LIST(partial_map_gap, i + 1) == 1) {
-        partial_map[i] = INT_INTOBJ(ELM_LIST(partial_map_gap, i + 1)) - 1;
-      } else {
-        partial_map[i] = UNDEFINED;
-      }
-    }
-    for (i = LEN_LIST(partial_map_gap); i < nr1; i++) {
-      partial_map[i] = UNDEFINED;
-    }
-  }
-
-  // process the vertex colours . . .
-  if (colours1_gap == Fail || colours2_gap == Fail || !IS_LIST(colours1_gap)
-      || !IS_LIST(colours2_gap)) {
-    colours1 = NULL;
-    colours2 = NULL;
-  } else {
-    colours1 = malloc(nr1 * sizeof(UIntS));
-    colours2 = malloc(nr2 * sizeof(UIntS));
-    for (i = 0; i < nr1; i++) {
-      colours1[i] = INT_INTOBJ(ELM_LIST(colours1_gap, i + 1)) - 1;
-    }
-    for (i = 0; i < nr2; i++) {
-      colours2[i] = INT_INTOBJ(ELM_LIST(colours2_gap, i + 1)) - 1;
-    }
-  }
-
-  // go!
-  if (!isinjective) {
-    if (hook_gap == Fail) {
-      DigraphHomomorphisms(digraph1,
-                           digraph2,
-                           homo_hook_collect,
-                           user_param_arg,
-                           max_results_arg,
-                           hint_arg,
-                           image,
-                           partial_map,
-                           colours1,
-                           colours2);
-    } else {
-      GAP_FUNC = hook_gap;
-      DigraphHomomorphisms(digraph1,
-                           digraph2,
-                           homo_hook_gap,
-                           user_param_arg,
-                           max_results_arg,
-                           hint_arg,
-                           image,
-                           partial_map,
-                           colours1,
-                           colours2);
-    }
-  } else {
-    if (hook_gap == Fail) {
-      DigraphMonomorphisms(digraph1,
-                           digraph2,
-                           homo_hook_collect,
-                           user_param_arg,
-                           max_results_arg,
-                           image,
-                           partial_map,
-                           colours1,
-                           colours2);
-    } else {
-      GAP_FUNC = hook_gap;
-      DigraphMonomorphisms(digraph1,
-                           digraph2,
-                           homo_hook_gap,
-                           user_param_arg,
-                           max_results_arg,
-                           image,
-                           partial_map,
-                           colours1,
-                           colours2);
-    }
-  }
-
-  if (IS_PLIST(user_param_arg) && LEN_PLIST(user_param_arg) == 0
-      && TNUM_OBJ(user_param_arg) != T_PLIST_EMPTY) {
-    RetypeBag(user_param_arg, T_PLIST_EMPTY);
-  }
-
-  if (image != NULL) {
-    free_bit_array(image);
-  }
-  if (colours1 != NULL) {
-    free(colours1);
-  }
-  if (colours2 != NULL) {
-    free(colours2);
-  }
-
-  free(partial_map);
-  free_digraph(digraph1);
-  free_digraph(digraph2);
-
-  return user_param_arg;
-}
-
 /*F * * * * * * * * * * * * * initialize package * * * * * * * * * * * * * * */
 
 /******************************************************************************
@@ -2394,14 +1972,6 @@ Obj FuncDIGRAPH_HOMOS(Obj self, Obj args) {
  */
 
 static StructGVarFunc GVarFuncs[] = {
-#ifdef DEBUG
-    {"DIGRAPHS_IS_OPTIMIZED",
-     0,
-     "digraph",
-     FuncDIGRAPHS_IS_OPTIMIZED,
-     "src/digraphs.c:DIGRAPHS_IS_OPTIMIZED"},
-#endif
-
     {"DIGRAPH_NREDGES",
      1,
      "digraph",
@@ -2572,19 +2142,12 @@ static StructGVarFunc GVarFuncs[] = {
      FuncMULTIDIGRAPH_CANONICAL_LABELLING,
      "src/digraphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELLING"},
 
-    {"GRAPH_HOMOS",
-     10,
-     "graph1, graph2, hook, user_param, limit, hint, "
-     "isinjective, image, kernel, partial_map",
-     FuncGRAPH_HOMOS,
-     "src/digraphs.c:FuncGRAPH_HOMOS"},
-
-    {"DIGRAPH_HOMOS",
-     10,
-     "digraph1, digraph2, hook, user_param, limit, hint, "
-     "isinjective, image, kernel, partial_map",
-     FuncDIGRAPH_HOMOS,
-     "src/digraphs.c:FuncDIGRAPH_HOMOS"},
+    {"HomomorphismDigraphsFinder",
+     -1,
+     "digraph1, digraph2, hook, user_param, max_results, hint, "
+     "injective, image, partial_map, colors1, colors2",
+     FuncHomomorphismDigraphsFinder,
+     "src/homos.c:FuncHomomorphismDigraphsFinder"},
 
     {"IS_PLANAR", 1, "digraph", FuncIS_PLANAR, "src/planar.c:FuncIS_PLANAR"},
 
@@ -2647,7 +2210,12 @@ static Int InitKernel(StructInitInfo* module) {
   InitHdlrFuncsFromTable(GVarFuncs);
   ImportGVarFromLibrary("IsDigraph", &IsDigraph);
   ImportGVarFromLibrary("IsDigraphEdge", &IsDigraphEdge);
-
+  ImportGVarFromLibrary("DIGRAPHS_ValidateVertexColouring",
+                        &DIGRAPHS_ValidateVertexColouring);
+  ImportGVarFromLibrary("infinity", &Infinity);
+  ImportGVarFromLibrary("IsSymmetricDigraph", &IsSymmetricDigraph);
+  ImportGVarFromLibrary("AutomorphismGroup", &AutomorphismGroup);
+  ImportGVarFromLibrary("GeneratorsOfGroup", &GeneratorsOfGroup);
   /* return success                                                      */
   return 0;
 }

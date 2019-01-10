@@ -14,9 +14,9 @@ AC_CONFIG_SRCDIR([src/digraphs.c])
 AC_CONFIG_HEADER([src/_pkgconfig.h:cnf/pkgconfig.h.in])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([cnf])
-AC_CONFIG_SUBDIRS([src/edge-addition-planarity-suite-Version_3.0.0.5])
+AC_CONFIG_SUBDIRS([extern/edge-addition-planarity-suite-Version_3.0.0.5])
 
-PLANARITY_SUITE_DIR=src/edge-addition-planarity-suite-Version_3.0.0.5
+PLANARITY_SUITE_DIR=extern/edge-addition-planarity-suite-Version_3.0.0.5
 AC_SUBST(PLANARITY_SUITE_DIR)
 
 dnl ##
@@ -84,6 +84,18 @@ AS_IF([test "x$enable_debug" = xyes],
 
 AM_CONDITIONAL([KERNEL_DEBUG], [test "x$enable_debug" = xyes])
 
+AC_ARG_ENABLE([stats],
+    [AS_HELP_STRING([--enable-stats], [enable stats mode])],
+    [AC_DEFINE([ENABLE_STATS], [1], [define if building in stats mode])],
+    [enable_stats=no]
+    )
+AC_MSG_CHECKING([whether to enable stats mode])
+AC_MSG_RESULT([$enable_stats])
+
+AM_CONDITIONAL([ENABLE_STATS], [test "x$enable_stats" = xyes])
+
+AX_CODE_COVERAGE()
+
 dnl compiler builtins
 AC_DEFUN([CHECK_COMPILER_BUILTIN],
 [AC_MSG_CHECKING([for $1])
@@ -102,7 +114,7 @@ AC_DEFUN([CHECK_COMPILER_BUILTIN],
             [Define to 1 if the system has the `]$1[' built-in function])], []
         )])
 
-CHECK_COMPILER_BUILTIN([__builtin_popcountl],[0]);
+CHECK_COMPILER_BUILTIN([__builtin_ctzll],[0]);
 
 dnl ##
 dnl ## Output everything
