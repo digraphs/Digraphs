@@ -611,14 +611,14 @@ gap> RandomDigraph("a");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `RandomDigraph' on 1 arguments
 gap> RandomDigraph(4, 0);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `RandomDigraph' on 2 arguments
+<digraph with 4 vertices, 0 edges>
 gap> RandomDigraph(10, 1.01);
 Error, Digraphs: RandomDigraph: usage,
-the second argument <p> must be a float between 0 and 1,
+the second argument <p> must be between 0 and 1,
 gap> RandomDigraph(10, -0.01);
 Error, Digraphs: RandomDigraph: usage,
-the second argument <p> must be a float between 0 and 1,
+the second argument <p> must be between 0 and 1,
+gap> RandomDigraph(10, 1 / 10);;
 
 #  RandomMultiDigraph
 gap> DigraphNrVertices(RandomMultiDigraph(100));

@@ -601,6 +601,12 @@ function(n)
   return RandomDigraph(n, Float(Random([0 .. 10000])) / 10000);
 end);
 
+InstallMethod(RandomDigraph, "for a pos int and a rational",
+[IsPosInt, IsRat],
+function(n, p)
+  return RandomDigraph(n, Float(p));
+end);
+
 InstallMethod(RandomDigraph, "for a pos int and a float",
 [IsPosInt, IsFloat],
 function(n, p)
@@ -608,7 +614,7 @@ function(n, p)
 
   if p < 0.0 or 1.0 < p then
     ErrorNoReturn("Digraphs: RandomDigraph: usage,\n",
-                  "the second argument <p> must be a float between 0 and 1,");
+                  "the second argument <p> must be between 0 and 1,");
   fi;
   out := DigraphNC(RANDOM_DIGRAPH(n, Int(p * 10000)));
   SetIsMultiDigraph(out, false);

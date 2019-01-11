@@ -69,6 +69,7 @@ DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
 DeclareOperation("DigraphCopy", [IsDigraph]);
 
 DeclareOperation("RandomDigraph", [IsPosInt]);
+DeclareOperation("RandomDigraph", [IsPosInt, IsRat]);
 DeclareOperation("RandomDigraph", [IsPosInt, IsFloat]);
 DeclareOperation("RandomMultiDigraph", [IsPosInt]);
 DeclareOperation("RandomMultiDigraph", [IsPosInt, IsPosInt]);
