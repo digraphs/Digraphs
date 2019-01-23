@@ -327,6 +327,15 @@ gap> not DIGRAPHS_NautyAvailable or
 > NautyCanonicalLabelling(NullDigraph(0), []) = ();
 true
 
+# Issue 158: Digraph6 file format incompatibility (with nauty)
+gap> SortedList(DigraphEdges(DigraphFromDigraph6String("&DI?AO?")) - 1);
+[ [ 0, 2 ], [ 0, 4 ], [ 3, 1 ], [ 3, 4 ] ]
+gap> str := "&O?????C??O?@??C??O?@??C??O?@??C??O?@??C??o??";;
+gap> gr := DigraphFromDigraph6String(str);
+<digraph with 16 vertices, 15 edges>
+gap> str = Digraph6String(gr);
+true
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);

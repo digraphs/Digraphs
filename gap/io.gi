@@ -812,7 +812,12 @@ end);
 InstallMethod(DigraphFromDigraph6String, "for a string",
 [IsString],
 function(s)
-  local list, i, n, start, range, source, pos, len, j, bpos, tabpos;
+  local legacy, list, n, start, i, range, source, pos, len, j, bpos, tabpos;
+  # NOTE: this package originally used a version of digraph6 that reads down
+  # the columns of an adjacency matrix, and appends a '+' to the start.  This
+  # has been replaced by the Nauty standard, which reads across the rows of the
+  # matrix, and appends a '&' to the start.  For backwards compatibility, this
+  # now accepts both formats, sending an info warning if the old format is used.
 
   s := Chomp(s);
   # Check non-emptiness
@@ -821,8 +826,18 @@ function(s)
                   "the input string <s> should be non-empty,");
   fi;
 
-  # Check for the special '+' character
-  if s[1] <> '+' then
+  # Check for the special '&' character (or the deprecated '+')
+  if s[1] = '&' then
+    legacy := false;
+  elif s[1] = '+' then
+    legacy := true;
+    Info(InfoDigraphs, 1, "Digraph6 strings beginning with '+' use an old");
+    Info(InfoDigraphs, 1, "specification of the Digraph6 format that is");
+    Info(InfoDigraphs, 1, "incompatible with the present standard.  They can");
+    Info(InfoDigraphs, 1, "still be read by the Digraphs package, but are");
+    Info(InfoDigraphs, 1, "unlikely to be recognised by other programs.");
+    Info(InfoDigraphs, 1, "Please consider re-encoding with the new format.");
+  else
     ErrorNoReturn("Digraphs: DigraphFromDigraph6String: usage,\n",
                   "the input string <s> is not in valid digraph6 format,");
   fi;
@@ -867,8 +882,8 @@ function(s)
         i := i / 2;
       else
         tabpos := pos + 6 - bpos;
-        source[len] := (tabpos - 1) mod n + 1;
-        range[len] := (tabpos - source[len]) / n + 1;
+        range[len] := (tabpos - 1) mod n + 1;
+        source[len] := (tabpos - range[len]) / n + 1;
         len := len + 1;
         i := (i - 1) / 2;
       fi;
@@ -876,6 +891,10 @@ function(s)
     od;
     pos := pos + 6;
   od;
+
+  if legacy then  # source and range are reversed
+    return Digraph(rec(nrvertices := n, range := source, source := range));
+  fi;
 
   return Digraph(rec(nrvertices := n, range := range, source := source));
 end);
@@ -1539,12 +1558,18 @@ InstallMethod(Digraph6String, "for a digraph",
 [IsDigraph],
 function(digraph)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
+  # NOTE: this package originally used a version of digraph6 that reads down
+  # the columns of an adjacency matrix, and appends a '+' to the start.  This
+  # has been replaced by the Nauty standard, which reads across the rows of the
+  # matrix, and appends a '&' to the start.  The old '+' format can be read by
+  # DigraphFromDigraph6String, but can no longer be written by this function.
+
   list := [];
   adj := OutNeighbours(digraph);
   n := Length(DigraphVertices(digraph));
 
-  # First write the special character '+'
-  Add(list, -20);
+  # First write the special character '&'
+  Add(list, -25);
 
   # Now write the number of vertices
   lenlist := DIGRAPHS_Graph6Length(n);
@@ -1555,12 +1580,12 @@ function(digraph)
   fi;
   Append(list, lenlist);
 
-  # Find adjacencies (non-directed)
+  # Find adjacencies
   tablen := n ^ 2;
   blist := BlistList([1 .. tablen + 6], []);
   for i in DigraphVertices(digraph) do
     for j in adj[i] do
-      blist[i + n * (j - 1)] := true;
+      blist[j + n * (i - 1)] := true;
     od;
   od;
 

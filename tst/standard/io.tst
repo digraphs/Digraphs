@@ -118,7 +118,7 @@ gap> DigraphFromSparse6String(str);
 gap> gr := Digraph([[5], [1, 2, 5], [1], [2], [4]]);
 <digraph with 5 vertices, 7 edges>
 gap> str := Digraph6String(gr);
-"+DWg?[?"
+"&DBeA@?"
 gap> DigraphFromDigraph6String(str);
 <digraph with 5 vertices, 7 edges>
 gap> gr := Digraph(231, [1 .. 100], [1 .. 100] * 0 + 200);
