@@ -193,7 +193,7 @@ true
     old ones, inherit their labels from their parents.
 
     <Example><![CDATA[
-gap> gr := DigraphFromDigraph6String("+D[NGc_");
+gap> gr := DigraphFromDigraph6String("&DHUEe_");
 <digraph with 5 vertices, 11 edges>
 gap> DigraphVertexLabels(gr);
 [ 1 .. 5 ]
@@ -234,7 +234,7 @@ gap> DigraphVertexLabels(gr);
     old ones, inherit their labels from their parents.
 
     <Example><![CDATA[
-gap> gr := DigraphFromDigraph6String("+D[NGc_");
+gap> gr := DigraphFromDigraph6String("&DHUEe_");
 <digraph with 5 vertices, 11 edges>
 gap> DigraphVertexLabel(gr, 3);
 3
@@ -284,7 +284,7 @@ gap> DigraphVertexLabel(gr, 2);
     from old ones, inherit their labels from their parents.
 
     <Example><![CDATA[
-gap> gr := DigraphFromDigraph6String("+D[NGc_");
+gap> gr := DigraphFromDigraph6String("&DHUEe_");
 <digraph with 5 vertices, 11 edges>
 gap> DigraphEdgeLabels(gr);
 [ [ 1 ], [ 1, 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
@@ -322,7 +322,7 @@ gap> OutNeighbours(gr);
     See also <Ref Oper="DigraphEdgeLabels"/>.
 
     <Example><![CDATA[
-gap> gr := DigraphFromDigraph6String("+D[NGc_");
+gap> gr := DigraphFromDigraph6String("&DHUEe_");
 <digraph with 5 vertices, 11 edges>
 gap> DigraphEdgeLabel(gr, 3, 1);
 1
@@ -350,7 +350,7 @@ gap> gr := Digraph(["a", "b", "c"], ["a", "b", "b"], ["b", "c", "a"]);
 <digraph with 3 vertices, 3 edges>
 gap> IsMultiDigraph(gr);
 false
-gap> gr := DigraphFromDigraph6String("+Bug");
+gap> gr := DigraphFromDigraph6String("&Bug");
 <digraph with 3 vertices, 6 edges>
 gap> IsDuplicateFree(DigraphEdges(gr));
 true

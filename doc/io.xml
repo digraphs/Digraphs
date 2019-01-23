@@ -177,11 +177,11 @@ gap> DigraphFromGraph6String("C]");
 <digraph with 4 vertices, 8 edges>
 gap> DigraphFromGraph6String("H?AAEM{");
 <digraph with 9 vertices, 22 edges>
-gap> DigraphFromDigraph6String("+?");
+gap> DigraphFromDigraph6String("&?");
 <digraph with 0 vertices, 0 edges>
-gap> DigraphFromDigraph6String("+CQFG");
+gap> DigraphFromDigraph6String("&CQFG");
 <digraph with 4 vertices, 6 edges>
-gap> DigraphFromDigraph6String("+IM[SrKLc~lhesbU[F_");
+gap> DigraphFromDigraph6String("&IM[SrKLc~lhesbU[F_");
 <digraph with 10 vertices, 51 edges>
 gap> DigraphFromDiSparse6String(".CaWBGA?b");
 <multidigraph with 4 vertices, 9 edges>

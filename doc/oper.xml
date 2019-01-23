@@ -933,7 +933,7 @@ od;
     between the vertices of a digraph is shown below: <P/>
 
     <Example><![CDATA[
-gap> gr := DigraphFromDigraph6String("+ECGOElR");
+gap> gr := DigraphFromDigraph6String("&EAHQeDB");
 <digraph with 6 vertices, 12 edges>
 gap> func := function(mat, i, j, k)
 >   if mat[i][k] <> -1 and mat[k][j] <> -1 then
