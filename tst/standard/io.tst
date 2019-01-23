@@ -119,6 +119,8 @@ gap> gr := Digraph([[5], [1, 2, 5], [1], [2], [4]]);
 <digraph with 5 vertices, 7 edges>
 gap> str := Digraph6String(gr);
 "&DBeA@?"
+gap> gr = DigraphFromDigraph6String("+DWg?[?");  # deprecated format
+true
 gap> DigraphFromDigraph6String(str);
 <digraph with 5 vertices, 7 edges>
 gap> gr := Digraph(231, [1 .. 100], [1 .. 100] * 0 + 200);
@@ -484,7 +486,7 @@ true
 gap> DigraphFromGraph6String("~llk");
 Error, Digraphs: DigraphFromGraph6String: usage,
 the input string <s> is not in valid graph6 format,
-gap> DigraphFromDigraph6String("+~llk");
+gap> DigraphFromDigraph6String("&~llk");
 Error, Digraphs: DigraphFromDigraph6String: usage,
 the input string <s> is not in valid digraph6 format,
 gap> DigraphFromSparse6String(":~~l");
