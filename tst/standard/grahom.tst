@@ -976,7 +976,7 @@ IdentityTransformation
 gap> gr1 := ChainDigraph(2);;
 gap> MonomorphismsDigraphs(gr1, EmptyDigraph(1));
 [  ]
-gap> gr2 := DigraphFromDigraph6String("+DRZ?L?");;
+gap> gr2 := DigraphFromDigraph6String("&DZTAW?");;
 gap> monos := MonomorphismsDigraphs(gr1, gr2);
 [ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
   Transformation( [ 1, 5, 3, 4, 5 ] ), Transformation( [ 2, 1 ] ), 
@@ -1001,7 +1001,7 @@ gap> gr1 := CompleteDigraph(2);;
 gap> gr2 := CompleteDigraph(3);;
 gap> EpimorphismsDigraphs(gr1, gr2);
 [  ]
-gap> gr1 := DigraphFromDigraph6String("+IG????G??I??O?????");;
+gap> gr1 := DigraphFromDigraph6String("&I@??HO???????A????");;
 gap> DigraphEpimorphism(gr1, gr2);
 Transformation( [ 1, 1, 2, 1, 1, 3, 1, 2, 1, 1 ] )
 gap> epis := EpimorphismsDigraphsRepresentatives(gr1, gr2);;

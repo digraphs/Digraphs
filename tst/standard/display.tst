@@ -179,8 +179,8 @@ node [shape=Mrecord, height=0.5, fixedsize=true]ranksep=1;
 7 -> 5
 8 -> 1
 }
-gap> gr := Concatenation("+XqD?OG???FbueZpzRKGC@?}]sr]nYXnNl[saOEGOgA@w|he?A?",
-> "?}NyxnFlKvbueZpzrLGcHa??A?]NYx_?_GC??AJpzrnw~jm{]srO???_");;
+gap> gr := Concatenation("&X_?_A]|^Vr[nHpmVcy~zy[A????_???G??B]nhtmvcwvJq\\^~",
+> "|m??_AEx]Rb[nHo??__vJy[??A??O_aV~^Zb]njo???_???GZdxMLy}n_");;
 gap> gr := DigraphFromDigraph6String(gr);;
 gap> Print(DotPreorderDigraph(gr){[1 .. 94]}, "\n");
 //dot

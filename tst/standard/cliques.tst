@@ -219,7 +219,7 @@ gap> DigraphMaximalIndependentSets(gr);
 gap> gr := CompleteDigraph(2);;
 gap> DigraphMaximalIndependentSets(gr);
 [ [ 1 ], [ 2 ] ]
-gap> gr := DigraphFromDigraph6String("+FWSK?[SK_?");
+gap> gr := DigraphFromDigraph6String("&FWsK?WSKC?");
 <digraph with 7 vertices, 14 edges>
 gap> DigraphMaximalIndependentSetsReps(gr);
 [ [ 1, 4 ], [ 1, 5 ], [ 2, 5, 7 ] ]
@@ -307,7 +307,7 @@ gap> DigraphMaximalCliques(gr);
 gap> gr := EmptyDigraph(1);;
 gap> DigraphMaximalCliques(gr);
 [ [ 1 ] ]
-gap> gr := DigraphFromDigraph6String("+D[]]]?");
+gap> gr := DigraphFromDigraph6String("&DNNNF?");
 <digraph with 5 vertices, 15 edges>
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 3 ] ]

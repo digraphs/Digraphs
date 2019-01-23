@@ -15,7 +15,7 @@ gap> LoadPackage("digraphs", false);;
 gap> DIGRAPHS_StartTest();
 
 #  DigraphReverse
-gap> gr := DigraphFromDigraph6String("+D[NGc_");
+gap> gr := DigraphFromDigraph6String("&DHUEe_");
 <digraph with 5 vertices, 11 edges>
 gap> rgr := DigraphReverse(gr);
 <digraph with 5 vertices, 11 edges>
@@ -50,11 +50,11 @@ gap> gr = DigraphReverse(gr);
 true
 
 #  DigraphRemoveLoops
-gap> gr := DigraphFromDigraph6String("+EhxPC?@");
+gap> gr := DigraphFromDigraph6String("&EhxPC?@");
 <digraph with 6 vertices, 11 edges>
 gap> DigraphRemoveLoops(gr);
 <digraph with 6 vertices, 7 edges>
-gap> gr := DigraphFromDigraph6String("+EhxPC?@");
+gap> gr := DigraphFromDigraph6String("&EhxPC?@");
 <digraph with 6 vertices, 11 edges>
 gap> HasDigraphHasLoops(gr);
 false
@@ -99,11 +99,12 @@ gap> last = gr;
 true
 gap> DigraphRemoveEdges(gr, [[1, 2]]);
 <digraph with 2 vertices, 0 edges>
-gap> gr := DigraphFromDigraph6String("+Dv?f`_");
+gap> gr := DigraphFromDigraph6String("&DtGsw_");
 <digraph with 5 vertices, 12 edges>
-gap> DigraphEdges(gr);
-[ [ 1, 2 ], [ 1, 1 ], [ 1, 4 ], [ 2, 1 ], [ 2, 4 ], [ 3, 4 ], [ 3, 3 ], 
-  [ 4, 1 ], [ 4, 5 ], [ 4, 4 ], [ 5, 1 ], [ 5, 5 ] ]
+gap> Set(DigraphEdges(gr)) = Set(
+> [[1, 2], [1, 1], [1, 4], [2, 1], [2, 4], [3, 4],
+>  [3, 3], [4, 1], [4, 5], [4, 4], [5, 1], [5, 5]]);
+true
 gap> gr1 := DigraphRemoveEdges(gr, [[1, 4], [4, 5], [5, 5]]);
 <digraph with 5 vertices, 9 edges>
 gap> DigraphEdges(gr1);
@@ -793,7 +794,7 @@ gap> DigraphVertexLabels(gr2);
 [ 1, Sym( [ 1 .. 2 ] ) ]
 
 #  DigraphRemoveVertex
-gap> gr := DigraphFromDigraph6String("+MW?Gp?GWe?gS?[L?A?f|C@KOCa_gk?F?r_");
+gap> gr := DigraphFromDigraph6String("&MU?GAa?SDCFStK`???d?@LWOq[{DECO?U?");
 <digraph with 14 vertices, 54 edges>
 gap> DigraphRemoveVertex(gr, "a");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
@@ -1045,7 +1046,7 @@ gap> func := function(mat, i, j, k)
 >   fi;
 > end;
 function( mat, i, j, k ) ... end
-gap> gr := DigraphFromDigraph6String("+I???@?A`?G?GCCS@??");
+gap> gr := DigraphFromDigraph6String("&I???@?A`?G?GCCS@??");
 <digraph with 10 vertices, 11 edges>
 gap> tclosure := DigraphFloydWarshall(gr, func, 0, 1);;
 gap> grt := DigraphByAdjacencyMatrix(tclosure);
@@ -1104,7 +1105,7 @@ gap> gr = ChainDigraph(14);
 true
 
 #  DigraphEdgeUnion
-gap> gr1 := DigraphFromDigraph6String("+I????O?GO_?C??_OGG");
+gap> gr1 := DigraphFromDigraph6String("&I????@A_?AA???@d??");
 <digraph with 10 vertices, 9 edges>
 gap> gr2 := DigraphFromDiSparse6String(".H`OS?aEMC?bneOY`l_?QCJ");
 <multidigraph with 9 vertices, 20 edges>
@@ -1594,7 +1595,7 @@ gap> DigraphLayers(gr, 9);
 [ [ 9 ], [ 10, 11 ] ]
 gap> DigraphLayers(gr, 10);
 [ [ 10 ] ]
-gap> gr := DigraphFromDigraph6String("+GUIQQWWXHHPg");;
+gap> gr := DigraphFromDigraph6String("&GYHPQgWTIIPW");;
 gap> DigraphGroup(gr);
 Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)(4,7) ])
 gap> DigraphOrbitReps(gr);
@@ -1698,7 +1699,7 @@ the second argument must be a vertex of the digraph,
 gap> DigraphDistanceSet(gr, 10, ["string", 1]);
 Error, Digraphs: DigraphDistanceSet: usage,
 the third argument must be a list of non-negative integers,
-gap> gr := DigraphFromDigraph6String("+GUIQQWWXHHPg");;
+gap> gr := DigraphFromDigraph6String("&GYHPQgWTIIPW");;
 gap> DigraphDistanceSet(gr, 1, [3, 7]);
 [  ]
 gap> DigraphDistanceSet(gr, 1, [1]);
@@ -1772,7 +1773,7 @@ gap> IsUndirectedSpanningForest(gr1, gr2);
 false
 gap> IsUndirectedSpanningForest(gr1, DigraphFromSparse6String(":I`ESyTl^F"));
 true
-gap> gr := DigraphFromDigraph6String("+I?PIMAQc@A?W?ADPP?");
+gap> gr := DigraphFromDigraph6String("&I?PIMAQc@A?W?ADPP?");
 <digraph with 10 vertices, 23 edges>
 gap> IsUndirectedSpanningForest(gr, DigraphByEdges([[2, 7], [7, 2]], 10));
 true
@@ -1782,7 +1783,7 @@ gap> IsUndirectedSpanningTree(EmptyDigraph(1), EmptyDigraph(1));
 true
 gap> IsUndirectedSpanningTree(EmptyDigraph(2), EmptyDigraph(2));
 false
-gap> gr := DigraphFromDigraph6String("+I?PIMAQc@A?W?ADPP?");
+gap> gr := DigraphFromDigraph6String("&I?PIMAQc@A?W?ADPP?");
 <digraph with 10 vertices, 23 edges>
 gap> IsUndirectedSpanningTree(gr, EmptyDigraph(10));
 false
@@ -1995,7 +1996,7 @@ gap> di := Digraph([[1], [1, 2], [1, 3], [1, 2, 3, 4]]);;
 gap> S := AsSemigroup(IsPartialPermSemigroup, di);;
 gap> IsInverseSemigroup(S) and ForAll(Elements(S), IsIdempotent);
 true
-gap> temp := "+P~~}~??o??_?@o??_?@_?W}?O_??o??_?@_FGoA?_?Wo?O_Wt_";;
+gap> temp := "&P_?@_?B`?FrCK_GXoXo_B?_A@aCA`GDroG`_?`?@e??c?@w??_";;
 gap> di := DigraphFromDigraph6String(temp);;
 gap> S := AsSemigroup(IsPartialPermSemigroup, di);;
 gap> IsInverseSemigroup(S) and ForAll(Elements(S), IsIdempotent);
