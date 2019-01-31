@@ -2047,7 +2047,33 @@ gap> S := AsMonoid(IsTransformation, di);;
 Error, Digraphs: AsMonoid usage,
 the first argument must be IsPartialPermMonoid or IsPartialPermSemigroup,
 
-#  DIGRAPHS_UnbindVariables
+# DigraphShortestPath
+gap> gr := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);;
+gap> DigraphShortestPath(gr, 1, 6);
+fail
+gap> DigraphShortestPath(gr, 2, 5);
+[ [ 2, 3, 5 ], [ 1, 1 ] ]
+gap> DigraphShortestPath(gr, 3, 3);
+[ [ 3, 5, 4, 3 ], [ 1, 1, 3 ] ]
+gap> DigraphShortestPath(gr, 6, 6);
+fail
+gap> DigraphShortestPath(gr, 5, 5);
+[ [ 5, 5 ], [ 2 ] ]
+gap> gr := Digraph([[]]);;
+gap> DigraphShortestPath(gr, 1, 1);
+fail
+gap> gr := Digraph([[], []]);;
+gap> DigraphShortestPath(gr, 2, 1);
+fail
+gap> gr := Digraph([[2], [1], [3]]);;
+gap> DigraphShortestPath(gr, 1, 2);
+[ [ 1, 2 ], [ 1 ] ]
+gap> gr := CayleyDigraph(SymmetricGroup(7));;
+gap> DigraphShortestPath(gr, 12, 5014);
+[ [ 12, 912, 1919, 3595, 4915, 3433, 4153, 3242, 2522, 2886, 23, 743, 238, 
+      1558, 713, 5014 ], [ 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 1, 2, 1, 2, 2 ] ]
+
+# DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);
 gap> Unbind(b);
