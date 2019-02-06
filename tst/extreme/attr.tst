@@ -58,9 +58,20 @@ fail
 gap> IsHamiltonianDigraph(g);
 false
 
+# ChromaticNumber (from Issue #163)
+gap> str := Concatenation("""khdLA_gc?N_QQchPIS@Q_dH@GKA_W@OW?Fo???~{G??SgSo""",
+>                         """SgSQISIaQcQgD?\@?SASI?gGggC_[`??N_M??APNG?Qc?E?""",
+>                         """DIG?_?IS?B??IS?E??dH?C??H@_B??A_W?o??IB?E???Fo?""",
+>                         """O????F~O??????N~~{""");;
+gap> gr := DigraphFromGraph6String(str);;
+gap> ChromaticNumber(gr);
+6
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(circs);
+gap> Unbind(g);
 gap> Unbind(gr);
+gap> Unbind(str);
 
 #E#
 gap> DIGRAPHS_StopTest();
