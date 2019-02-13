@@ -76,3 +76,6 @@ DeclareAttribute("HamiltonianPath", IsDigraph);
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
 DeclareAttribute("AsTransformation", IsDigraph);
 DeclareAttribute("DIGRAPHS_ConnectivityData", IsDigraph, "mutable");
+
+DeclareAttribute("IsVertexTransitive", IsDigraph);
+DeclareAttribute("IsEdgeTransitive", IsDigraph);

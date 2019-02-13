@@ -1530,3 +1530,15 @@ function(D)
   SetIsAntisymmetricDigraph(out, true);
   return out;
 end);
+
+InstallMethod(IsVertexTransitive, "for a digraph",
+[IsDigraph],
+function(digraph)
+  return IsTransitive(AutomorphismGroup(digraph, DigraphVertices(digraph)));
+end);
+
+InstallMethod(IsEdgeTransitive, "for a digraph",
+[IsDigraph],
+function(digraph)
+  return IsTransitive(AutomorphismGroup(digraph, DigraphEdges(digraph)));
+end);
