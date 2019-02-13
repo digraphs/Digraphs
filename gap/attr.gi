@@ -1540,5 +1540,9 @@ end);
 InstallMethod(IsEdgeTransitive, "for a digraph",
 [IsDigraph],
 function(digraph)
+  if IsMultiDigraph(digraph) then
+    ErrorNoReturn("Digraphs: IsEdgeTransitive: usage,\n",
+                  "the argument <graph> must not have multiple edges,");
+  fi;
   return IsTransitive(AutomorphismGroup(digraph), DigraphEdges(digraph), OnPairs);
 end);

@@ -1712,7 +1712,7 @@ false
 gap> IsVertexTransitive(CompleteDigraph(20));
 true
 
-# IsVertexTransitive
+# IsEdgeTransitive
 gap> IsEdgeTransitive(Digraph([]));
 true
 gap> IsEdgeTransitive(Digraph([[1], [2]]));
@@ -1721,6 +1721,9 @@ gap> IsEdgeTransitive(Digraph([[2], [3], []]));
 false
 gap> IsEdgeTransitive(CompleteDigraph(20));
 true
+gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
+Error, Digraphs: IsEdgeTransitive: usage,
+the argument <graph> must not have multiple edges,
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
