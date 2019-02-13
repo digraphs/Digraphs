@@ -19,6 +19,7 @@
 
   <Section><Heading>Neighbours and degree</Heading>
     <#Include Label="AdjacencyMatrix">
+    <#Include Label="CharacteristicPolynomial">
     <#Include Label="BooleanAdjacencyMatrix">
     <#Include Label="DigraphAdjacencyFunction">
     <#Include Label="RangeSourceDigraph">
@@ -61,7 +62,7 @@
     <#Include Label="DigraphDegeneracyOrdering">
     <#Include Label="HamiltonianPath">
   </Section>
-  
+
   <Section><Heading>Cayley graphs of groups</Heading>
     <#Include Label="GroupOfCayleyDigraph">
     <#Include Label="GeneratorsOfCayleyDigraph">
@@ -70,7 +71,7 @@
   <Section><Heading>Associated semigroups</Heading>
     <#Include Label="AsSemigroup">
   </Section>
-  
+
   <Section><Heading>Planarity</Heading>
     <#Include Label="KuratowskiPlanarSubdigraph">
     <#Include Label="KuratowskiOuterPlanarSubdigraph">

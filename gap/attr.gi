@@ -1531,8 +1531,6 @@ function(D)
   return out;
 end);
 
-#
-
 InstallMethod(CharacteristicPolynomial,
 "for a digraph",
 [IsDigraph],
