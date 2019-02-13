@@ -1534,11 +1534,11 @@ end);
 InstallMethod(IsVertexTransitive, "for a digraph",
 [IsDigraph],
 function(digraph)
-  return IsTransitive(AutomorphismGroup(digraph, DigraphVertices(digraph)));
+  return IsTransitive(AutomorphismGroup(digraph), DigraphVertices(digraph));
 end);
 
 InstallMethod(IsEdgeTransitive, "for a digraph",
 [IsDigraph],
 function(digraph)
-  return IsTransitive(AutomorphismGroup(digraph, DigraphEdges(digraph)));
+  return IsTransitive(AutomorphismGroup(digraph), DigraphEdges(digraph));
 end);
