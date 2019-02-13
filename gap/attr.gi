@@ -1540,5 +1540,5 @@ end);
 InstallMethod(IsEdgeTransitive, "for a digraph",
 [IsDigraph],
 function(digraph)
-  return IsTransitive(AutomorphismGroup(digraph), DigraphEdges(digraph));
+  return IsTransitive(AutomorphismGroup(digraph), DigraphEdges(digraph), OnPairs);
 end);
