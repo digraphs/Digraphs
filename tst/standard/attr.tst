@@ -1702,6 +1702,26 @@ gap> OutNeighbours(last);
 gap> MaximalAntiSymmetricSubdigraph(CompleteDigraph(10));
 <digraph with 10 vertices, 45 edges>
 
+# IsVertexTransitive
+gap> IsVertexTransitive(Digraph([]));
+true
+gap> IsVertexTransitive(Digraph([[1], [2]]));
+true
+gap> IsVertexTransitive(Digraph([[2], [3], []]));
+false
+gap> IsVertexTransitive(CompleteDigraph(20));
+true
+
+# IsVertexTransitive
+gap> IsEdgeTransitive(Digraph([]));
+true
+gap> IsEdgeTransitive(Digraph([[1], [2]]));
+true
+gap> IsEdgeTransitive(Digraph([[2], [3], []]));
+false
+gap> IsEdgeTransitive(CompleteDigraph(20));
+true
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);
