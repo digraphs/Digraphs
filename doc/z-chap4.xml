@@ -42,6 +42,7 @@
     <#Include Label="DigraphLongestDistanceFromVertex">
     <#Include Label="DigraphDistanceSet">
     <#Include Label="DigraphGirth">
+    <#Include Label="DigraphOddGirth">
     <#Include Label="DigraphUndirectedGirth">
     <#Include Label="DigraphConnectedComponents">
     <#Include Label="DigraphConnectedComponent">

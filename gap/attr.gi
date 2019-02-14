@@ -969,7 +969,36 @@ function(D)
   return girth;
 end);
 
-InstallMethod(DigraphLongestSimpleCircuit, "for a digraph", [IsDigraph],
+InstallMethod(DigraphOddGirth, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local A, B, k, N, girth, powerfound;
+  girth := DigraphGirth(digraph);
+  if girth = infinity or IsOddInt(girth) then
+    return girth;
+  fi;
+  N          := DigraphNrVertices(digraph);
+  A          := AdjacencyMatrix(digraph);
+  B          := Immutable(A ^ 2);
+  k          := 1;
+  powerfound := false;
+  while k <= N + 2 do
+    A := A * B;
+    k := k + 2;
+    if Trace(A) <> 0 then
+      # It suffices to find the trace as entries of A are positive.
+      powerfound := true;
+      break;
+    fi;
+  od;
+  if powerfound then
+    return k;
+  fi;
+  return infinity;
+end);
+
+InstallMethod(DigraphLongestSimpleCircuit, "for a digraph",
+[IsDigraph],
 function(D)
   local circs, lens, max;
   IsValidDigraph(D);
