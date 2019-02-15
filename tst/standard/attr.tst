@@ -1723,7 +1723,7 @@ gap> IsEdgeTransitive(CompleteDigraph(20));
 true
 gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
 Error, Digraphs: IsEdgeTransitive: usage,
-the argument <graph> must not have multiple edges,
+the argument <digraph> must not have multiple edges,
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
