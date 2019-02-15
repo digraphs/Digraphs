@@ -1389,12 +1389,13 @@ gap> OutNeighbours(D);
 <#GAPDoc Label="IsVertexTransitive">
 <ManSection>
   <Attr Name="IsVertexTransitive" Arg="digraph"/>
-  <Returns>A bool.</Returns>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, then <C>IsVertexTransitive</C> returns if
-    <A>digraph</A> is vertex transitive. That is, the automorphism group of
-    <A>digraph</A> acts transitively on <A>digraph</A>'s vertices.
-    <P/>
+    If <A>digraph</A> is a digraph, then <C>IsVertexTransitive</C> returns
+    <K>true</K> if <A>digraph</A> is vertex transitive, and <K>false</K>
+    otherwise. A digraph is <E>vertex transitive</E> if its automorphism group
+    acts transitively on its vertices.
+
     <Example><![CDATA[
 gap> IsVertexTransitive(Digraph([[1], [2]]));
 true
@@ -1408,15 +1409,14 @@ false
 <#GAPDoc Label="IsEdgeTransitive">
 <ManSection>
   <Attr Name="IsEdgeTransitive" Arg="digraph"/>
-  <Returns>A bool.</Returns>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, then <C>IsEdgeTransitive</C> returns if
-    <A>digraph</A> is edge transitive. That is, the automorphism group of
-    <A>digraph</A> acts transitively on <A>digraph</A>'s edges, where the
-    action is <Ref Prop="OnPairs"/>.
+    If <A>digraph</A> is a digraph without multiple edges, then
+    <C>IsEdgeTransitive</C> returns <K>true</K> if <A>digraph</A>
+    is edge transitive, and <K>false</K> otherwise. A digraph is
+    <E>edge transitive</E> if its automorphism group acts
+    transitively on its edges (via the action <Ref Prop="OnPairs"/>).
 
-    If <A>digraph</A> has multiple edges then an error is produced.
-    <P/>
     <Example><![CDATA[
 gap> IsEdgeTransitive(Digraph([[1], [2]]));
 true
