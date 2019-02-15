@@ -15,7 +15,11 @@
 #ifndef DIGRAPHS_SRC_PERMS_H_
 #define DIGRAPHS_SRC_PERMS_H_
 
-#include <stdbool.h>  // for bool
+#include <stdbool.h>  // for bool, false, true
+#include <stdint.h>   // for uint16_t, uint64_t
+#include <string.h>   // memcpy, size_t
+
+#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 #define MAXVERTS 512
 #define UNDEFINED MAXVERTS + 1
@@ -26,42 +30,87 @@
 #define SMALLINTLIMIT 268435456
 #endif
 
-typedef unsigned short int UIntS;
-typedef UIntS*             Perm;
-typedef unsigned long int  UIntL;
+typedef uint16_t* Perm;
+
+Perm new_perm(uint16_t const);
+
+static inline void id_perm(Perm x, uint16_t const degree) {
+  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  for (uint16_t i = 0; i < degree; i++) {
+    x[i] = i;
+  }
+}
+
+static inline bool is_one(Perm const x, uint16_t const degree) {
+  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  for (uint16_t i = 0; i < degree; i++) {
+    if (x[i] != i) {
+      return false;
+    }
+  }
+  return true;
+}
+
+static inline bool eq_perms(Perm const x, Perm const y, uint16_t const degree) {
+  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  for (uint16_t i = 0; i < degree; i++) {
+    if (x[i] != y[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+static inline void
+prod_perms(Perm xy, Perm const x, Perm const y, uint16_t const degree) {
+  DIGRAPHS_ASSERT(x != y);
+  DIGRAPHS_ASSERT(xy != y);
+  for (uint16_t i = 0; i < degree; i++) {
+    xy[i] = y[x[i]];
+  }
+}
+
+static inline void invert_perm(Perm x, Perm const y, uint16_t const degree) {
+  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  for (uint16_t i = 0; i < degree; i++) {
+    x[y[i]] = i;
+  }
+}
+
+static inline void copy_perm(Perm x, Perm const y, uint16_t const degree) {
+  memcpy((void*) x, (void*) y, (size_t) degree * sizeof(uint16_t));
+}
 
 struct perm_coll {
-  Perm* gens;
-  UIntS nr_gens;
-  UIntS deg;
-  UIntS alloc_size;
+  Perm*    perms;
+  uint16_t size;
+  uint16_t degree;
+  uint16_t capacity;
 };
 
 typedef struct perm_coll PermColl;
 
-void      set_perms_degree(UIntS deg_arg);
-PermColl* new_perm_coll(UIntS upper_bound);
-void      add_perm_coll(PermColl* coll, Perm gen);
-PermColl* copy_perm_coll(PermColl* coll);
-// void reset_perm_coll(PermColl* coll);
+PermColl* new_perm_coll(uint16_t const, uint16_t const);
+
+static inline void clear_perm_coll(PermColl* coll) {
+  coll->size = 0;
+}
+
+static inline void add_perm_coll(PermColl* coll, Perm const gen) {
+  DIGRAPHS_ASSERT(coll->size < coll->capacity);
+  DIGRAPHS_ASSERT(coll->size < coll->degree);
+  copy_perm(coll->perms[(coll->size)++], gen, coll->degree);
+}
+
+static inline void copy_perm_coll(PermColl* coll1, PermColl const* coll2) {
+  DIGRAPHS_ASSERT(coll1->capacity >= coll2->size);
+  clear_perm_coll(coll1);
+  coll1->degree = coll2->degree;
+  for (uint16_t i = 0; i < coll2->size; i++) {
+    add_perm_coll(coll1, coll2->perms[i]);
+  }
+}
+
 void free_perm_coll(PermColl* coll);
-
-// TODO(WW) remove this
-extern UIntS deg;
-
-Perm new_perm();
-Perm id_perm();
-bool is_one(Perm x);
-bool eq_perms(Perm x, Perm y);
-Perm prod_perms(Perm const x, Perm const y);
-void prod_perms_in_place(Perm x, Perm const y);
-Perm copy_perm(Perm const x);
-Perm invert_perm(Perm const x);
-
-// variables for debugging memory leaks
-extern UIntL nr_ss_allocs;
-extern UIntL nr_ss_frees;
-extern UIntL nr_new_perm_coll;
-extern UIntL nr_free_perm_coll;
 
 #endif  // DIGRAPHS_SRC_PERMS_H_

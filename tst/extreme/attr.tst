@@ -48,7 +48,11 @@ gap> Length(circs);
 gap> g := CompleteDigraph(20);
 <digraph with 20 vertices, 380 edges>
 gap> HamiltonianPath(g);
-[ 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 19, 17, 15, 13, 11, 9, 7, 5, 3 ]
+[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
+gap> IsDigraphMonomorphism(CycleDigraph(20), 
+>                          g,
+>                          Transformation(HamiltonianPath(g)));
+true
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteMultipartiteDigraph([1, 9, 1, 1, 2, 1, 1, 1]);

@@ -1531,6 +1531,13 @@ function(D)
   return out;
 end);
 
+InstallMethod(CharacteristicPolynomial,
+"for a digraph",
+[IsDigraph],
+function(gr)
+    return CharacteristicPolynomial(AdjacencyMatrix(gr));
+end);
+
 InstallMethod(IsVertexTransitive, "for a digraph",
 [IsDigraph],
 gr -> IsTransitive(AutomorphismGroup(gr), DigraphVertices(gr)));

@@ -57,6 +57,7 @@ DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
 DeclareGlobalFunction("DigraphTransitiveClosureNC");
 
 DeclareAttribute("ChromaticNumber", IsDigraph);
+DeclareAttribute("CharacteristicPolynomial", IsDigraph);
 
 DeclareAttribute("DigraphAdjacencyFunction", IsDigraph);
 
