@@ -2,6 +2,10 @@
   
   [1XReferences[101X
   
+  [[20XBM06[120X] [16XBoyer, J. M. and Myrvold, W. J.[116X, [17XOn the Cutting Edge: Simplified O(n)
+  Planarity  by Edge Addition[117X, in Graph Algorithms and Applications 5, {WORLD}
+  {SCIENTIFIC} (2006), 241--273.
+  
   [[20XCK86[120X]  [16XCalderbank,  R. and Kantor, W. M.[116X, [17XThe geometry of two-weight codes[117X,
   [18XBull. London Math. Soc.[118X, [19X18[119X, 2 (1986), 97--122.
   
@@ -15,8 +19,8 @@
   Algorithm  Engineering  and  Experiments and the Fourth Workshop on Analytic
   Algorithms and Combinatorics, SIAM (2007), 135--149.
   
-  [[20XMP14[120X]  [16XMcKay,  B.  D.  and Piperno, A.[116X, [17XPractical graph isomorphism, \II\ [117X,
-  [18XJournal of Symbolic Computation [118X, [19X60[119X, 0 (2014), 94 - 112, (()).
+  [[20XMP14[120X]  [16XMcKay,  B.  D.  and  Piperno, A.[116X, [17XPractical graph isomorphism, \II\[117X,
+  [18XJournal of Symbolic Computation[118X, [19X60[119X, 0 (2014), 94 - 112.
   
   [[20XvLS81[120X]  [16Xvan Lint, J. H. and Schrijver, A.[116X, [17XConstruction of strongly regular
   graphs,   two-weight   codes   and  partial  geometries  by  finite  fields[117X,

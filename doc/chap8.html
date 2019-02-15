@@ -54,7 +54,7 @@
 
 </li>
 </ul>
-<p>See <code class="func">DigraphRemoveLoops</code> (<a href="chap3.html#X79324AF7818C0C02"><span class="RefLink">3.3-22</span></a>) and <code class="func">DigraphRemoveAllMultipleEdges</code> (<a href="chap3.html#X7DCCD0247897A3DE"><span class="RefLink">3.3-23</span></a>) for more information about these attributes. Furthermore, the cliques of this digraph are equal to the cliques of the digraph formed by removing any edge <code class="code">[u,v]</code> for which the corresponding reverse edge <code class="code">[v,u]</code> is not present. Therefore, overall, the cliques of <var class="Arg">digraph</var> are equal to the cliques of the symmetric digraph:</p>
+<p>See <code class="func">DigraphRemoveLoops</code> (<a href="chap3.html#X79324AF7818C0C02"><span class="RefLink">3.3-23</span></a>) and <code class="func">DigraphRemoveAllMultipleEdges</code> (<a href="chap3.html#X7DCCD0247897A3DE"><span class="RefLink">3.3-24</span></a>) for more information about these attributes. Furthermore, the cliques of this digraph are equal to the cliques of the digraph formed by removing any edge <code class="code">[u,v]</code> for which the corresponding reverse edge <code class="code">[v,u]</code> is not present. Therefore, overall, the cliques of <var class="Arg">digraph</var> are equal to the cliques of the symmetric digraph:</p>
 
 
 <ul>
@@ -64,7 +64,7 @@
 </ul>
 <p>See <code class="func">MaximalSymmetricSubdigraphWithoutLoops</code> (<a href="chap3.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-4</span></a>) for more information about this attribute. The <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) of this symmetric digraph contains the automorphism group of <var class="Arg">digraph</var> as a subgroup. By performing the search for maximal cliques with the help of this larger automorphism group to reduce the search space, the computation time may be reduced. The functions and attributes which return representatives of cliques of <var class="Arg">digraph</var> will return orbit representatives of cliques under the action of the automorphism group of the <em>maximal symmetric subdigraph without loops</em> on sets of vertices.</p>
 
-<p>The independent sets of a digraph are equal to the independent sets of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3.html#X874883DD7DD450C4"><span class="RefLink">3.3-9</span></a>). Therefore, overall, the independent sets of <var class="Arg">digraph</var> are equal to the independent sets of the symmetric digraph:</p>
+<p>The independent sets of a digraph are equal to the independent sets of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3.html#X874883DD7DD450C4"><span class="RefLink">3.3-10</span></a>). Therefore, overall, the independent sets of <var class="Arg">digraph</var> are equal to the independent sets of the symmetric digraph:</p>
 
 
 <ul>
@@ -72,7 +72,7 @@
 
 </li>
 </ul>
-<p>Again, the automorphism group of this symmetric digraph contains the automorphism group of <var class="Arg">digraph</var>. Since a search for independent sets is equal to a search for cliques in the <code class="func">DigraphDual</code> (<a href="chap3.html#X7F71D99D852B130F"><span class="RefLink">3.3-8</span></a>), the methods used in <strong class="pkg">Digraphs</strong> usually transform a search for independent sets into a search for cliques, as described above. The functions and attributes which return representatives of independent sets of <var class="Arg">digraph</var> will return orbit representatives of independent sets under the action of the automorphism group of the <em>symmetric closure</em> of the digraph formed by removing loops and multiple edges.</p>
+<p>Again, the automorphism group of this symmetric digraph contains the automorphism group of <var class="Arg">digraph</var>. Since a search for independent sets is equal to a search for cliques in the <code class="func">DigraphDual</code> (<a href="chap3.html#X7F71D99D852B130F"><span class="RefLink">3.3-9</span></a>), the methods used in <strong class="pkg">Digraphs</strong> usually transform a search for independent sets into a search for cliques, as described above. The functions and attributes which return representatives of independent sets of <var class="Arg">digraph</var> will return orbit representatives of independent sets under the action of the automorphism group of the <em>symmetric closure</em> of the digraph formed by removing loops and multiple edges.</p>
 
 <p>Please note that in <strong class="pkg">Digraphs</strong>, cliques and indepedent sets are not required to be maximal. Some authors use the word clique to mean <em>maximal</em> clique, and some authors use the phrase independent set to mean <em>maximal</em> independent set, but please note that <strong class="pkg">Digraphs</strong> does not use this definition.</p>
 
@@ -430,7 +430,7 @@ fail
 
 <p>The functions will return as many suitable independent sets as possible, up to the number <var class="Arg">limit</var>. These functions will find independent sets which contain all of the vertices of <var class="Arg">include</var> and which do not contain any of the vertices of <var class="Arg">exclude</var> The argument <var class="Arg">size</var> restricts the search to those cliques which contain precisely <var class="Arg">size</var> vertices. If the function or attribute has <code class="code">Maximal</code> in its name, then only maximal independent sets will be returned; otherwise non-maximal independent sets may be returned.</p>
 
-<p>Let <code class="code">G</code> denote the <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3.html#X874883DD7DD450C4"><span class="RefLink">3.3-9</span></a>) of the digraph formed from <var class="Arg">digraph</var> by removing loops and ignoring the multiplicity of edges.</p>
+<p>Let <code class="code">G</code> denote the <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) of the <code class="func">DigraphSymmetricClosure</code> (<a href="chap3.html#X874883DD7DD450C4"><span class="RefLink">3.3-10</span></a>) of the digraph formed from <var class="Arg">digraph</var> by removing loops and ignoring the multiplicity of edges.</p>
 
 
 <dl>

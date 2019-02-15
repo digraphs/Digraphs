@@ -1,7 +1,65 @@
 # Digraphs package for GAP - CHANGELOG
-Copyright (C) 2014-18 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael Torpey, Wilf A. Wilson et al.
+Copyright (C) 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the LICENSE file.
+
+## Version 0.15.0 (released 15/02/2019)
+
+This release contains several substantial new features, and some changes to
+previous functionality.
+
+The most significant change in behaviour is related to the Digraph6 format used
+in previous versions of the Digraphs package. This method of encoding directed
+graphs was developed independently from, but concurrently with, the
+[Digraph6 format introduced by
+nauty](https://users.cecs.anu.edu.au/~bdm/data/formats.txt); see
+[Issue #158](https://github.com/gap-packages/Digraphs/issues/158) for more
+information.  The Digraphs package now uses the nauty format, although digraphs
+encoded using the old format can still be read in.  This incompatibility was
+reported by
+[Jukka Kohonen](https://tuhat.helsinki.fi/portal/en/persons/jukka-kohonen(a6f3f037-4918-4bf5-a114-ac417f94beb5).html), and the changes were made by
+[Michael Torpey](http://www-groups.mcs.st-and.ac.uk/~mct25) in
+[PR #162](https://github.com/gap-packages/Digraphs/pull/162).
+
+Other additions and changes are listed below:
+
+* A copy of the [Edge Addition Planarity
+  Suite](https://github.com/graph-algorithms/edge-addition-planarity-suite)
+  is now included in Digraphs, and so it is now possible to test digraphs for
+  planarity, and to perform related computations.  This was added by [James D.
+  Mitchell](http://goo.gl/ZtViV6) in [PR
+  #156](https://github.com/gap-packages/Digraphs/pull/156).  The new
+  functionality can be accessed via:
+  * `Is(Outer)PlanarDigraph`,
+  * `(Outer)PlanarEmbedding`,
+  * `Kuratowski(Outer)PlanarSubdigraph`,
+  * `SubdigraphHomeomorphicToK(23/4/33)`, and
+  * `MaximalAntiSymmetricSubdigraph`.
+* The functionality and performance for computing homomorphisms of digraphs was
+  significantly improved by [James D.  Mitchell](http://goo.gl/ZtViV6) in [PR
+  #160](https://github.com/gap-packages/Digraphs/pull/160). This PR also
+  introduced the operations `EmbeddingsDigraphs` and
+  `EmbeddingsDigraphsRepresentatives`.
+* The one-argument attribute `DigraphColouring` was renamed to
+  `DigraphGreedyColouring`, and its performance was improved; it now uses
+  the Welsh-Powell algorithm, which can be accessed directly via
+  `DigraphWelshPowellOrder`. The behaviour of `DigraphGreedyColouring` can be
+  modified by including an optional second argument; see the
+  documentation for more information. This work was done by [James D.
+  Mitchell](http://goo.gl/ZtViV6) in [PR
+  #144](https://github.com/gap-packages/Digraphs/pull/144).
+* `DigraphShortestPath` was introduced by Murray Whyte in [PR
+  #148](https://github.com/gap-packages/Digraphs/pull/148).
+* `IsAntiSymmetricDigraph` (with a capital S) was added as a synonym for
+  `IsAntisymmetricDigraph`.
+* `RandomDigraph` now allows a float as its second argument; by [James D.
+  Mitchell](http://goo.gl/ZtViV6) in [PR
+  #159](https://github.com/gap-packages/Digraphs/pull/159).
+* The attribute `CharacteristcPolynomial` for a digraph was added by Luke
+  Elliott in [PR #164](https://github.com/gap-packages/Digraphs/pull/164).
+* The properties `IsVertexTransitive` and `IsEdgeTransitive` for digraphs
+  were added by Graham Campbell in
+  [PR #165](https://github.com/gap-packages/Digraphs/pull/165).
 
 ## Version 0.14.0 (released 23/11/2018)
 
@@ -28,8 +86,11 @@ This release contains bugfixes and a couple of new features.
   [James D.  Mitchell](http://goo.gl/ZtViV6) in [PR
   #152](https://github.com/gap-packages/Digraphs/pull/152)).
 
-[Max Horn](https://github.com/fingolfin) also contributed various compatibility
-and correctness changes to the kernel module of the package.
+[Max Horn](https://www.quendi.de/math) also contributed various compatibility
+and correctness changes to the kernel module of the package, including in PRs
+[#149](https://github.com/gap-packages/Digraphs/pull/149),
+[#150](https://github.com/gap-packages/Digraphs/pull/150), and
+[#151](https://github.com/gap-packages/Digraphs/pull/151).
 
 Digraphs now requires version 4.8.1 of the [orb
 package](https://gap-packages.github.io/orb), or newer.

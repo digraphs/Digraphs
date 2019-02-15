@@ -64,6 +64,12 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X79EFEBC37C2D262D">6.3-10 IsHamiltonianDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7E91320B8028F5D8">6.3-11 IsCycleDigraph</a></span>
 </div></div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6.html#X7E2305528492DDC0">6.4 <span class="Heading">Planarity</span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X8606D415858C40AA">6.4-1 IsPlanarDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X8251E8B187E7F059">6.4-2 IsOuterPlanarDigraph</a></span>
+</div></div>
 </div>
 
 <h3>6 <span class="Heading">Properties of digraphs</span></h3>
@@ -131,7 +137,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsBipartiteDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is bipartite, and <code class="keyw">false</code> if it is not. A digraph is bipartite if and only if the vertices of <var class="Arg">digraph</var> can be partitioned into two non-empty sets such that the source and range of any edge of <var class="Arg">digraph</var> lie in distinct sets. Equivalently, a digraph is bipartite if and only if it is 2-colorable; see <code class="func">DigraphColouring</code> (<a href="chap7.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-9</span></a>).</p>
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is bipartite, and <code class="keyw">false</code> if it is not. A digraph is bipartite if and only if the vertices of <var class="Arg">digraph</var> can be partitioned into two non-empty sets such that the source and range of any edge of <var class="Arg">digraph</var> lie in distinct sets. Equivalently, a digraph is bipartite if and only if it is 2-colorable; see <code class="func">DigraphGreedyColouring</code> (<a href="chap7.html#X7AB7200D831013C1"><span class="RefLink">7.3-14</span></a>).</p>
 
 <p>See also <code class="func">DigraphBicomponents</code> (<a href="chap5.html#X7F1B5A2782F598B1"><span class="RefLink">5.3-12</span></a>).</p>
 
@@ -267,7 +273,7 @@ true
 &lt;digraph with 3 vertices, 3 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMultiDigraph(gr);</span>
 false
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphFromDigraph6String("+Bug");</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphFromDigraph6String("&amp;Bug");</span>
 &lt;digraph with 3 vertices, 6 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDuplicateFree(DigraphEdges(gr));</span>
 true
@@ -620,7 +626,7 @@ false</pre></div>
 
 <p><code class="code">IsChainDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is isomorphic to the chain digraph with the same number of vertices as <var class="Arg">digraph</var>, and <code class="keyw">false</code> if it is not; see <code class="func">ChainDigraph</code> (<a href="chap3.html#X870594FC866AC88E"><span class="RefLink">3.5-1</span></a>).</p>
 
-<p>A digraph is a <em>chain</em> if and only if it is a directed tree, in which every vertex has out degree at most one; see <code class="func">IsDirectedTree</code> (<a href="chap6.html#X7B46EA6C7B2DF2FB"><span class="RefLink">6.3-7</span></a>) and <code class="func">OutDegrees</code> (<a href="chap5.html#X7F5ACE807D1BC2E2"><span class="RefLink">5.2-7</span></a>).</p>
+<p>A digraph is a <em>chain</em> if and only if it is a directed tree, in which every vertex has out degree at most one; see <code class="func">IsDirectedTree</code> (<a href="chap6.html#X7B46EA6C7B2DF2FB"><span class="RefLink">6.3-7</span></a>) and <code class="func">OutDegrees</code> (<a href="chap5.html#X7F5ACE807D1BC2E2"><span class="RefLink">5.2-8</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -646,7 +652,7 @@ true</pre></div>
 
 <p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is weakly connected and <code class="keyw">false</code> if it is not. A digraph <var class="Arg">digraph</var> is <em>weakly connected</em> if it is possible to travel from any vertex to any other vertex by traversing edges in either direction (possibly against the orientation of some of them).</p>
 
-<p>The method used in this function has complexity <span class="SimpleMath">O(m)</span> if the digraph's <code class="func">DigraphSource</code> (<a href="chap5.html#X7FDEBF3279759961"><span class="RefLink">5.2-4</span></a>) attribute is set, otherwise it has complexity <span class="SimpleMath">O(m+n)</span> (where <span class="SimpleMath">m</span> is the number of edges and <span class="SimpleMath">n</span> is the number of vertices of the digraph).</p>
+<p>The method used in this function has complexity <span class="SimpleMath">O(m)</span> if the digraph's <code class="func">DigraphSource</code> (<a href="chap5.html#X7FDEBF3279759961"><span class="RefLink">5.2-5</span></a>) attribute is set, otherwise it has complexity <span class="SimpleMath">O(m+n)</span> (where <span class="SimpleMath">m</span> is the number of edges and <span class="SimpleMath">n</span> is the number of vertices of the digraph).</p>
 
 
 <div class="example"><pre>
@@ -771,7 +777,7 @@ true
 
 <p>An <em>undirected tree</em> is a symmetric digraph without loops, in which for any pair of distinct vertices <code class="code">u</code> and <code class="code">v</code>, there is exactly one directed path from <code class="code">u</code> to <code class="code">v</code>. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.1-10</span></a>) and <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>), and see section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of directed path. This definition implies that an undirected tree has no multiple edges.</p>
 
-<p>An <em>undirected forest</em> is a digraph, each of whose connected components is an undirected tree. In other words, an undirected forest is isomorphic to a disjoint union of undirected trees. See <code class="func">DigraphConnectedComponents</code> (<a href="chap5.html#X842FAD6A7B835977"><span class="RefLink">5.3-8</span></a>) and <code class="func">DigraphDisjointUnion</code> (<a href="chap3.html#X814F1DFC83DB273F"><span class="RefLink">3.3-25</span></a>). In particular, every undirected tree is an undirected forest.</p>
+<p>An <em>undirected forest</em> is a digraph, each of whose connected components is an undirected tree. In other words, an undirected forest is isomorphic to a disjoint union of undirected trees. See <code class="func">DigraphConnectedComponents</code> (<a href="chap5.html#X842FAD6A7B835977"><span class="RefLink">5.3-8</span></a>) and <code class="func">DigraphDisjointUnion</code> (<a href="chap3.html#X814F1DFC83DB273F"><span class="RefLink">3.3-26</span></a>). In particular, every undirected tree is an undirected forest.</p>
 
 <p>Please note that the digraph with zero vertices is considered to be neither an undirected tree nor an undirected forest.</p>
 
@@ -889,6 +895,64 @@ true
 false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCycleDigraph(gr);</span>
 true</pre></div>
+
+<p><a id="X7E2305528492DDC0" name="X7E2305528492DDC0"></a></p>
+
+<h4>6.4 <span class="Heading">Planarity</span></h4>
+
+<p><a id="X8606D415858C40AA" name="X8606D415858C40AA"></a></p>
+
+<h5>6.4-1 IsPlanarDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsPlanarDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>A <em>planar</em> digraph is a digraph that can be embedded in the plane in such a way that its edges do not intersect. A digraph is planar if and only if it does not have a subdigraph that is homeomorphic to either the complete graph on <code class="code">5</code> vertices or the complete bipartite graph with vertex sets of sizes <code class="code">3</code> and <code class="code">3</code>.</p>
+
+<p><code class="code">IsPlanarDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is planar and <code class="keyw">false</code> if it is not. The directions and multiplicities of any edges in <var class="Arg">digraph</var> are ignored by <code class="code">IsPlanarDigraph</code>.</p>
+
+<p>See also <code class="func">IsOuterPlanarDigraph</code> (<a href="chap6.html#X8251E8B187E7F059"><span class="RefLink">6.4-2</span></a>).</p>
+
+<p>This method uses the reference implementation in <span class="URL"><a href="https://github.com/graph-algorithms/edge-addition-planarity-suite">edge-addition-planarity-suite</a></span> by John Boyer of the algorithms described in <a href="chapBib.html#biBBoyer2006aa">[BM06]</a>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPlanarDigraph(CompleteDigraph(4));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPlanarDigraph(CompleteDigraph(5));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPlanarDigraph(CompleteBipartiteDigraph(2, 3));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPlanarDigraph(CompleteBipartiteDigraph(3, 3));</span>
+false
+</pre></div>
+
+<p><a id="X8251E8B187E7F059" name="X8251E8B187E7F059"></a></p>
+
+<h5>6.4-2 IsOuterPlanarDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsOuterPlanarDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>An <em>outer planar</em> digraph is a digraph that can be embedded in the plane in such a way that its edges do not intersect, and all vertices belong to the unbounded face of the embedding. A digraph is outer planar if and only if it does not have a subdigraph that is homeomorphic to either the complete graph on <code class="code">4</code> vertices or the complete bipartite graph with vertex sets of sizes <code class="code">2</code> and <code class="code">3</code>.</p>
+
+<p><code class="code">IsOuterPlanarDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is outer planar and <code class="keyw">false</code> if it is not. The directions and multiplicities of any edges in <var class="Arg">digraph</var> are ignored by <code class="code">IsPlanarDigraph</code>.</p>
+
+<p>See also <code class="func">IsPlanarDigraph</code> (<a href="chap6.html#X8606D415858C40AA"><span class="RefLink">6.4-1</span></a>). This method uses the reference implementation in <span class="URL"><a href="https://github.com/graph-algorithms/edge-addition-planarity-suite">edge-addition-planarity-suite</a></span> by John Boyer of the algorithms described in <a href="chapBib.html#biBBoyer2006aa">[BM06]</a>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOuterPlanarDigraph(CompleteDigraph(4));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOuterPlanarDigraph(CompleteDigraph(5));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOuterPlanarDigraph(CompleteBipartiteDigraph(2, 3));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOuterPlanarDigraph(CompleteBipartiteDigraph(3, 3));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOuterPlanarDigraph(CycleDigraph(10));</span>
+true
+</pre></div>
 
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap5.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap7.html">[Next Chapter]</a>&nbsp;  </div>

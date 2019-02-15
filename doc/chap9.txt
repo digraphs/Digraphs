@@ -145,7 +145,7 @@
   
   [33X[0;0YSince  [3Xdigraph[103X  is a partial order, it is both reflexive and transitive. The
   output   of   [10XDotPartialOrderDigraph[110X   is  the  [2XDotDigraph[102X  ([14X9.1-2[114X)  of  the
-  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-11[114X) of [3Xdigraph[103X.[133X
+  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-12[114X) of [3Xdigraph[103X.[133X
   
   [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
   about  this  file  format, and information about how to display or edit this
@@ -174,12 +174,12 @@
   
   [33X[0;0YA  preorder  digraph  is  reflexive  and transitive but in general it is not
   anti-symmetric  and  may  have strongly connected components containing more
-  than  one  vertex.  The  [2XQuotientDigraph[102X  ([14X3.3-6[114X)  [3XQ[103X obtained by forming the
+  than  one  vertex.  The  [2XQuotientDigraph[102X  ([14X3.3-7[114X)  [3XQ[103X obtained by forming the
   quotient  of  [3Xdigraph[103X  by  the  partition  of its vertices into the strongly
   connected  components  satisfies  [2XIsPartialOrderDigraph[102X ([14X6.1-14[114X). Thus every
   vertex  of  [3XQ[103X  corresponds to a strongly connected component of [3Xdigraph[103X. The
   output          of          [10XDotPreorderDigraph[110X          displays         the
-  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-11[114X) of [3XQ[103X with vertices displayed as
+  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-12[114X) of [3XQ[103X with vertices displayed as
   rounded  rectangles  labelled  by  all  of  the  vertices  of [3Xdigraph[103X in the
   corresponding strongly connected component.[133X
   
@@ -258,11 +258,11 @@
     [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromGraph6String("H?AAEM{");[127X[104X
     [4X[28X<digraph with 9 vertices, 22 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphFromDigraph6String("+?");[127X[104X
+    [4X[25Xgap>[125X [27XDigraphFromDigraph6String("&?");[127X[104X
     [4X[28X<digraph with 0 vertices, 0 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphFromDigraph6String("+CQFG");[127X[104X
+    [4X[25Xgap>[125X [27XDigraphFromDigraph6String("&CQFG");[127X[104X
     [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphFromDigraph6String("+IM[SrKLc~lhesbU[F_");[127X[104X
+    [4X[25Xgap>[125X [27XDigraphFromDigraph6String("&IM[SrKLc~lhesbU[F_");[127X[104X
     [4X[28X<digraph with 10 vertices, 51 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromDiSparse6String(".CaWBGA?b");[127X[104X
     [4X[28X<multidigraph with 4 vertices, 9 edges>[128X[104X
@@ -387,17 +387,18 @@
   give  a  filename extension of [10X.gz[110X, [10X.bz2[110X, or [10X.xz[110X, then [10XReadDigraphs[110X can read
   [3Xfilename[103X without it first needing to be decompressed.[133X
   
+  [33X[0;0YIf  the  optional  argument  [3Xdecoder[103X  is  specified  and is a function which
+  decodes  a  string  into  a  digraph,  then [10XReadDigraphs[110X will use [3Xdecoder[103X to
+  decode the digraphs contained in [3Xfilename[103X.[133X
+  
   [33X[0;0YIf  the  optional argument [3Xn[103X is specified, then [10XReadDigraphs[110X returns the [3Xn[103Xth
   digraph encoded in the file [3Xfilename[103X.[133X
   
-  [33X[0;0YIf  the  optional  argument  [3Xdecoder[103X  is  specified  and is a function which
-  decodes  a  string  into  a  digraph,  then [10XReadDigraphs[110X will use [3Xdecoder[103X to
-  decode  the digraphs contained in [3Xfilename[103X. If the optional argument [3Xdecoder[103X
-  is  not  specified, then [10XReadDigraphs[110X will deduce which decoder to use based
-  on    the    filename    extension   of   [3Xfilename[103X   (after   removing   the
-  compression-related filename extensions [10X.gz[110X, [10X.bz2[110X, and [10X.xz[110X). For example, if
-  the filename extension if [10X.g6[110X, then [10XReadDigraphs[110X will use the graph6 decoder
-  [2XDigraphFromGraph6String[102X ([14X9.2-1[114X).[133X
+  [33X[0;0YIf  the  optional  argument [3Xdecoder[103X is not specified, then [10XReadDigraphs[110X will
+  deduce  which  decoder  to  use  based on the filename extension of [3Xfilename[103X
+  (after  removing  the compression-related filename extensions [10X.gz[110X, [10X.bz2[110X, and
+  [10X.xz[110X).  For example, if the filename extension is [10X.g6[110X, then [10XReadDigraphs[110X will
+  use the graph6 decoder [2XDigraphFromGraph6String[102X ([14X9.2-1[114X).[133X
   
   [33X[0;0YThe  currently  supported  file formats, and associated filename extensions,
   are:[133X

@@ -62,12 +62,15 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X84B4BDB984C2A9A8">7.3-5 MonomorphismsDigraphs</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7CB5AD9F861684FD">7.3-6 DigraphEpimorphism</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7DFB1F5D873937B3">7.3-7 EpimorphismsDigraphs</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7E93B268823F6478">7.3-8 GeneratorsOfEndomorphismMonoid</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X86D0A74B83D6B9A7">7.3-9 DigraphColouring</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7AD04CC186E86CCA">7.3-10 DigraphEmbedding</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X807D49358529A37C">7.3-11 ChromaticNumber</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X78C4ADC67F8E2BCA">7.3-12 IsDigraphHomomorphism</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X819021B883E9FCDB">7.3-13 IsDigraphEmbedding</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7AD04CC186E86CCA">7.3-8 DigraphEmbedding</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X82EBDF137EEDC5FD">7.3-9 EmbeddingsDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X78C4ADC67F8E2BCA">7.3-10 IsDigraphHomomorphism</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X819021B883E9FCDB">7.3-11 IsDigraphEmbedding</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7E93B268823F6478">7.3-12 GeneratorsOfEndomorphismMonoid</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X86D0A74B83D6B9A7">7.3-13 DigraphColouring</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7AB7200D831013C1">7.3-14 DigraphGreedyColouring</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7F9CB3B27B9590DB">7.3-15 DigraphWelshPowellOrder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X807D49358529A37C">7.3-16 ChromaticNumber</a></span>
 </div></div>
 </div>
 
@@ -520,7 +523,7 @@ true
 
 <p>If <var class="Arg">digraph</var> was created knowing a subgroup of its automorphism group, then this group is stored in the attribute <code class="code">DigraphGroup</code>. If <var class="Arg">digraph</var> is not created knowing a subgroup of its automorphism group, then <code class="code">DigraphGroup</code> returns the entire automorphism group of <var class="Arg">digraph</var>.</p>
 
-<p>Note that certain other constructor operations such as <code class="func">CayleyDigraph</code> (<a href="chap3.html#X7FCADADC7EC28478"><span class="RefLink">3.1-10</span></a>), <code class="func">BipartiteDoubleDigraph</code> (<a href="chap3.html#X7C6E6CB284982C7A"><span class="RefLink">3.3-31</span></a>), and <code class="func">DoubleDigraph</code> (<a href="chap3.html#X7FB8B48C87C0ED16"><span class="RefLink">3.3-30</span></a>), may not require a group as one of the arguments, but use the standard constructor method using a group, and hence set the <code class="code">DigraphGroup</code> attribute for the resulting digraph.</p>
+<p>Note that certain other constructor operations such as <code class="func">CayleyDigraph</code> (<a href="chap3.html#X7FCADADC7EC28478"><span class="RefLink">3.1-10</span></a>), <code class="func">BipartiteDoubleDigraph</code> (<a href="chap3.html#X7C6E6CB284982C7A"><span class="RefLink">3.3-32</span></a>), and <code class="func">DoubleDigraph</code> (<a href="chap3.html#X7FB8B48C87C0ED16"><span class="RefLink">3.3-31</span></a>), may not require a group as one of the arguments, but use the standard constructor method using a group, and hence set the <code class="code">DigraphGroup</code> attribute for the resulting digraph.</p>
 
 
 <div class="example"><pre>
@@ -602,7 +605,7 @@ Group([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)
 &lt;digraph with 12 vertices, 24 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphOrbitReps(digraph);</span>
 [ 1 ]
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := DigraphFromDigraph6String("+I?OGg????A?Ci_o_@?");</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := DigraphFromDigraph6String("&amp;IGO??S?`?_@?a?CK?O");</span>
 &lt;digraph with 10 vertices, 14 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphOrbitReps(digraph);</span>
 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
@@ -656,7 +659,7 @@ Group([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := DigraphFromDigraph6String("+GUIQQWWXHHPg");</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := DigraphFromDigraph6String("&amp;GYHPQgWTIIPW");</span>
 &lt;digraph with 8 vertices, 24 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphStabilizer(digraph, 8);</span>
 Group(())
@@ -880,7 +883,7 @@ fail
 
 <p>More specifically, if <code class="code">reps</code> is the list of orbit representatives, then a vertex <code class="code">j</code> appears in <code class="code">out[i]</code> each time there exists an edge with source <code class="code">reps[i]</code> and range <code class="code">j</code> in <var class="Arg">digraph</var>.</p>
 
-<p>If <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-9</span></a>) is trivial, then <code class="func">OutNeighbours</code> (<a href="chap5.html#X7E9880767AE68E00"><span class="RefLink">5.2-5</span></a>) is returned.</p>
+<p>If <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-9</span></a>) is trivial, then <code class="func">OutNeighbours</code> (<a href="chap5.html#X7E9880767AE68E00"><span class="RefLink">5.2-6</span></a>) is returned.</p>
 
 
 <div class="example"><pre>
@@ -891,12 +894,12 @@ fail
 Group(())
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RepresentativeOutNeighbours(digraph);</span>
 [ [ 2, 1, 3, 4, 5 ], [ 3, 5 ], [ 2 ], [ 1, 2, 3, 5 ], [ 1, 2, 3, 4 ] ]
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := DigraphFromDigraph6String("+GUIQQWWXHHPg");</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := DigraphFromDigraph6String("&amp;GYHPQgWTIIPW");</span>
 &lt;digraph with 8 vertices, 24 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGroup(digraph);</span>
 Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)
 (4,7) ])
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RepresentativeOutNeighbours(digraph);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Set(RepresentativeOutNeighbours(digraph), Set);</span>
 [ [ 2, 3, 5 ] ]</pre></div>
 
 <p><a id="X785358E9822DF199" name="X785358E9822DF199"></a></p>
@@ -969,7 +972,7 @@ false
 
 <p>A transformation <var class="Arg">t</var> describes a proper colouring of a digraph <var class="Arg">digraph</var>, if <code class="code">ImageListOfTransformation(<var class="Arg">t</var>, DigraphNrVertices(<var class="Arg">digraph</var>))</code> is a proper colouring of <var class="Arg">digraph</var>.</p>
 
-<p>See also <code class="func">IsDigraphHomomorphism</code> (<a href="chap7.html#X78C4ADC67F8E2BCA"><span class="RefLink">7.3-12</span></a>).</p>
+<p>See also <code class="func">IsDigraphHomomorphism</code> (<a href="chap7.html#X78C4ADC67F8E2BCA"><span class="RefLink">7.3-10</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -997,31 +1000,31 @@ true
 
 <h5>7.3-1 HomomorphismDigraphsFinder</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismDigraphsFinder</code>( <var class="Arg">gr1</var>, <var class="Arg">gr2</var>, <var class="Arg">hook</var>, <var class="Arg">user_param</var>, <var class="Arg">limit</var>, <var class="Arg">hint</var>, <var class="Arg">injective</var>, <var class="Arg">image</var>, <var class="Arg">map</var>, <var class="Arg">list1</var>, <var class="Arg">list2</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HomomorphismDigraphsFinder</code>( <var class="Arg">D1</var>, <var class="Arg">D2</var>, <var class="Arg">hook</var>, <var class="Arg">user_param</var>, <var class="Arg">max_results</var>, <var class="Arg">hint</var>, <var class="Arg">injective</var>, <var class="Arg">image</var>, <var class="Arg">partial_map</var>, <var class="Arg">colors1</var>, <var class="Arg">colors2</var>[, <var class="Arg">order</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: The argument <var class="Arg">user_param</var>.</p>
 
-<p>This function finds homomorphisms from the graph <var class="Arg">gr1</var> to the graph <var class="Arg">gr2</var> subject to the conditions imposed by the other arguments as described below.</p>
+<p>This function finds homomorphisms from the digraph <var class="Arg">D1</var> to the digraph <var class="Arg">D2</var> subject to the conditions imposed by the other arguments as described below.</p>
 
-<p>If <code class="code">f</code> and <code class="code">g</code> are homomorphisms found by <code class="code">HomomorphismDigraphsFinder</code>, then <code class="code">f</code> cannot be obtained from <code class="code">g</code> by right multiplying by an automorphism of <var class="Arg">gr2</var>.</p>
+<p>If <code class="code">f</code> and <code class="code">g</code> are homomorphisms found by <code class="code">HomomorphismDigraphsFinder</code>, then <code class="code">f</code> cannot be obtained from <code class="code">g</code> by right multiplying by an automorphism of <var class="Arg">D2</var>.</p>
 
 
 <dl>
 <dt><strong class="Mark"><var class="Arg">hook</var></strong></dt>
 <dd><p>This argument should be a function or <code class="keyw">fail</code>.</p>
 
-<p>If <var class="Arg">hook</var> is a function, then it should have two arguments <var class="Arg">user_param</var> (see below) and a transformation <code class="code">t</code>. The function <code class="code"><var class="Arg">hook</var>(<var class="Arg">user_param</var>, t)</code> is called every time a new homomorphism <code class="code">t</code> is found by <code class="code">HomomorphismDigraphsFinder</code>.</p>
+<p>If <var class="Arg">hook</var> is a function, then it must have two arguments <var class="Arg">user_param</var> (see below) and a transformation <code class="code">t</code>. The function <code class="code"><var class="Arg">hook</var>(<var class="Arg">user_param</var>, t)</code> is called every time a new homomorphism <code class="code">t</code> is found by <code class="code">HomomorphismDigraphsFinder</code>.</p>
 
-<p>If <var class="Arg">hook</var> is <code class="keyw">fail</code>, then a default function is used which simply adds every new homomorphism found by <code class="code">HomomorphismDigraphsFinder</code> to <var class="Arg">user_param</var>, which must be a list in this case.</p>
+<p>If <var class="Arg">hook</var> is <code class="keyw">fail</code>, then a default function is used which simply adds every new homomorphism found by <code class="code">HomomorphismDigraphsFinder</code> to <var class="Arg">user_param</var>, which must be a mutable list in this case.</p>
 
 </dd>
 <dt><strong class="Mark"><var class="Arg">user_param</var></strong></dt>
-<dd><p>If <var class="Arg">hook</var> is a function, then <var class="Arg">user_param</var> can be any <strong class="pkg">GAP</strong> object. The object <var class="Arg">user_param</var> is used as the first argument for the function <var class="Arg">hook</var>. For example, <var class="Arg">user_param</var> might be a transformation semigroup, and <code class="code"><var class="Arg">hook</var>(<var class="Arg">user_param</var>, t)</code> might set <var class="Arg">user_param</var> to be the closure of <var class="Arg">user_param</var> and <code class="code">t</code>.</p>
+<dd><p>If <var class="Arg">hook</var> is a function, then <var class="Arg">user_param</var> can be any <strong class="pkg">GAP</strong> object. The object <var class="Arg">user_param</var> is used as the first argument of the function <var class="Arg">hook</var>. For example, <var class="Arg">user_param</var> might be a transformation semigroup, and <code class="code"><var class="Arg">hook</var>(<var class="Arg">user_param</var>, t)</code> might set <var class="Arg">user_param</var> to be the closure of <var class="Arg">user_param</var> and <code class="code">t</code>.</p>
 
-<p>If the value of <var class="Arg">hook</var> is <code class="keyw">fail</code>, then the value of <var class="Arg">user_param</var> must be a list.</p>
+<p>If the value of <var class="Arg">hook</var> is <code class="keyw">fail</code>, then the value of <var class="Arg">user_param</var> must be a mutable list.</p>
 
 </dd>
-<dt><strong class="Mark"><var class="Arg">limit</var></strong></dt>
-<dd><p>This argument should be a positive integer or <code class="keyw">infinity</code>. <code class="code">HomomorphismDigraphsFinder</code> will return after it has found <var class="Arg">limit</var> homomorphisms or the search is complete.</p>
+<dt><strong class="Mark"><var class="Arg">max_results</var></strong></dt>
+<dd><p>This argument should be a positive integer or <code class="keyw">infinity</code>. <code class="code">HomomorphismDigraphsFinder</code> will return after it has found <var class="Arg">max_results</var> homomorphisms or the search is complete, whichever happens first.</p>
 
 </dd>
 <dt><strong class="Mark"><var class="Arg">hint</var></strong></dt>
@@ -1033,45 +1036,51 @@ true
 
 </dd>
 <dt><strong class="Mark"><var class="Arg">injective</var></strong></dt>
-<dd><p>This argument should be <code class="keyw">true</code> or <code class="keyw">false</code>. If it is <code class="keyw">true</code>, then only injective homomorphisms are found, and if it is <code class="keyw">false</code> there are no restrictions imposed by this argument.</p>
+<dd><p>This argument should be <code class="code">0</code>, <code class="code">1</code>, or <code class="code">2</code>. If it is <code class="code">2</code>, then only embeddings are found, if it is <code class="code">1</code>, then only injective homomorphisms are found, and if it is <code class="code">0</code> there are no restrictions imposed by this argument.</p>
+
+<p>For backwards compatibility, <var class="Arg">injective</var> can also be <code class="keyw">false</code> or <code class="keyw">true</code> which correspond to the values <code class="code">0</code> and <code class="code">1</code> described in the previous paragraph, respectively.</p>
 
 </dd>
 <dt><strong class="Mark"><var class="Arg">image</var></strong></dt>
-<dd><p>This argument should be a subset of the vertices of the graph <var class="Arg">gr2</var>. <code class="code">HomomorphismDigraphsFinder</code> only finds homomorphisms from <var class="Arg">gr1</var> to the subgraph of <var class="Arg">gr2</var> induced by the vertices <var class="Arg">image</var>.</p>
+<dd><p>This argument should be a subset of the vertices of the graph <var class="Arg">D2</var>. <code class="code">HomomorphismDigraphsFinder</code> only finds homomorphisms from <var class="Arg">D1</var> to the subgraph of <var class="Arg">D2</var> induced by the vertices <var class="Arg">image</var>.</p>
 
 </dd>
-<dt><strong class="Mark"><var class="Arg">map</var></strong></dt>
-<dd><p>This argument should be a partial map from <var class="Arg">gr1</var> to <var class="Arg">gr2</var>, that is, a (not necessarily dense) list of vertices of the graph <var class="Arg">gr2</var> of length no greater than the number vertices in the graph <var class="Arg">gr1</var>. <code class="code">HomomorphismDigraphsFinder</code> only finds homomorphisms extending <var class="Arg">map</var> (if any).</p>
+<dt><strong class="Mark"><var class="Arg">partial_map</var></strong></dt>
+<dd><p>This argument should be a partial map from <var class="Arg">D1</var> to <var class="Arg">D2</var>, that is, a (not necessarily dense) list of vertices of the digraph <var class="Arg">D2</var> of length no greater than the number vertices in the digraph <var class="Arg">D1</var>. <code class="code">HomomorphismDigraphsFinder</code> only finds homomorphisms extending <var class="Arg">partial_map</var> (if any).</p>
 
 </dd>
-<dt><strong class="Mark"><var class="Arg">list1</var></strong></dt>
-<dd><p>This should be a list representing possible colours of vertices in the digraph <var class="Arg">gr1</var>; see <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) for details of the permissible values for this argument.</p>
+<dt><strong class="Mark"><var class="Arg">colors1</var></strong></dt>
+<dd><p>This should be a list representing possible colours of vertices in the digraph <var class="Arg">D1</var>; see <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) for details of the permissible values for this argument.</p>
 
 </dd>
-<dt><strong class="Mark"><var class="Arg">list2</var></strong></dt>
-<dd><p>This should be a list representing possible colours of vertices in the digraph <var class="Arg">gr2</var>; see <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) for details of the permissible values for this argument.</p>
+<dt><strong class="Mark"><var class="Arg">colors2</var></strong></dt>
+<dd><p>This should be a list representing possible colours of vertices in the digraph <var class="Arg">D2</var>; see <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) for details of the permissible values for this argument.</p>
+
+</dd>
+<dt><strong class="Mark"><var class="Arg">order</var></strong></dt>
+<dd><p>The optional final argument <var class="Arg">order</var> specifies the order the vertices in <var class="Arg">D1</var> appear in the search for homomorphisms. The value of this parameter can have a large impact on the runtime of the function. It seems in many cases to be a good idea for this to be the <code class="func">DigraphWelshPowellOrder</code> (<a href="chap7.html#X7F9CB3B27B9590DB"><span class="RefLink">7.3-15</span></a>), i.e. vertices ordered from highest to lowest degree.</p>
 
 </dd>
 </dl>
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(10);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := ChainDigraph(10);</span>
 &lt;digraph with 10 vertices, 9 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphSymmetricClosure(gr);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphSymmetricClosure(D);</span>
 &lt;digraph with 10 vertices, 18 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, 2, false,</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(D, D, fail, [], infinity, 2, 0,</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">[3, 4], [], fail, fail);</span>
 [ Transformation( [ 3, 4, 3, 4, 3, 4, 3, 4, 3, 4 ] ), 
   Transformation( [ 4, 3, 4, 3, 4, 3, 4, 3, 4, 3 ] ) ]
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := CompleteDigraph(6);;</span>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(gr, gr2, fail, [], 1, fail, false,</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D2 := CompleteDigraph(6);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(D, D2, fail, [], 1, fail, 0,</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">[1 .. 6], [1, 2, 1], fail, fail);</span>
 [ Transformation( [ 1, 2, 1, 3, 4, 5, 6, 1, 2, 1 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">func := function(user_param, t)</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">Add(user_param, t * user_param[1]);</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">end;;</span>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(gr, gr2, func, [Transformation([2, 2])],</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">3, fail, false, [1 .. 6], [1, 2, 1], fail, fail);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(D, D2, func, [Transformation([2, 2])],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">3, fail, 0, [1 .. 6], [1, 2, 1], fail, fail);</span>
 [ Transformation( [ 2, 2 ] ), 
   Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 2 ] ), 
   Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 3 ] ), 
@@ -1084,7 +1093,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphHomomorphism</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
 
-<p>A homomorphism from <var class="Arg">digraph1</var> to <var class="Arg">digraph2</var> is a mapping from the vertex set of <var class="Arg">digraph1</var> to a subset of the vertices of <var class="Arg">digraph2</var>, such that every pair of vertices <code class="code">[i,j]</code> which has an edge <code class="code">i-&gt;j</code> is mapped to a pair of vertices <code class="code">[a,b]</code> which has an edge <code class="code">a-&gt;b</code>. Note that non adjacent vertices can still be mapped onto adjacent ones.</p>
+<p>A homomorphism from <var class="Arg">digraph1</var> to <var class="Arg">digraph2</var> is a mapping from the vertex set of <var class="Arg">digraph1</var> to a subset of the vertices of <var class="Arg">digraph2</var>, such that every pair of vertices <code class="code">[i,j]</code> which has an edge <code class="code">i-&gt;j</code> is mapped to a pair of vertices <code class="code">[a,b]</code> which has an edge <code class="code">a-&gt;b</code>. Note that non-adjacent vertices can still be mapped to adjacent vertices.</p>
 
 <p><code class="code">DigraphHomomorphism</code> returns a single homomorphism between <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> if it exists, otherwise it returns <code class="keyw">fail</code>.</p>
 
@@ -1095,8 +1104,10 @@ true
 &lt;digraph with 5 vertices, 6 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphHomomorphism(gr1, gr1);</span>
 IdentityTransformation
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphHomomorphism(gr1, gr2);</span>
-Transformation( [ 1, 3, 1 ] )
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">map := DigraphHomomorphism(gr1, gr2);</span>
+Transformation( [ 3, 1, 5, 4, 5 ] )
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(gr1, gr2, map);</span>
+true
 </pre></div>
 
 <p><a id="X8653EDA183E06D05" name="X8653EDA183E06D05"></a></p>
@@ -1122,7 +1133,7 @@ Transformation( [ 1, 3, 1 ] )
   Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 1, 5, 4, 5 ] ), 
   Transformation( [ 3, 3, 1 ] ), Transformation( [ 3, 3, 3 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));</span>
-[ IdentityTransformation, Transformation( [ 1, 2, 1 ] ) ]
+[ Transformation( [ 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
 </pre></div>
 
 <p><a id="X82D0FCD87D47ACA8" name="X82D0FCD87D47ACA8"></a></p>
@@ -1142,7 +1153,7 @@ Transformation( [ 1, 3, 1 ] )
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMonomorphism(gr1, gr1);</span>
 IdentityTransformation
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphMonomorphism(gr1, gr2);</span>
-Transformation( [ 1, 5, 4, 4, 5 ] )
+Transformation( [ 3, 1, 5, 4, 5 ] )
 </pre></div>
 
 <p><a id="X84B4BDB984C2A9A8" name="X84B4BDB984C2A9A8"></a></p>
@@ -1153,7 +1164,7 @@ Transformation( [ 1, 5, 4, 4, 5 ] )
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; MonomorphismsDigraphsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of transformations.</p>
 
-<p>These operations behave the same as <code class="func">HomomorphismsDigraphs</code> (<a href="chap7.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>) and <code class="func">HomomorphismsDigraphsRepresentatives</code> (<a href="chap7.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>), expect they only return <em>injective</em> homomorphisms.</p>
+<p>These operations behave the same as <code class="func">HomomorphismsDigraphs</code> (<a href="chap7.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>) and <code class="func">HomomorphismsDigraphsRepresentatives</code> (<a href="chap7.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>), except they only return <em>injective</em> homomorphisms.</p>
 
 
 <div class="example"><pre>
@@ -1164,7 +1175,7 @@ Transformation( [ 1, 5, 4, 4, 5 ] )
 [ Transformation( [ 1, 5, 4, 4, 5 ] ), 
   Transformation( [ 3, 1, 5, 4, 5 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MonomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));</span>
-[ IdentityTransformation ]
+[ Transformation( [ 2, 1 ] ) ]
 </pre></div>
 
 <p><a id="X7CB5AD9F861684FD" name="X7CB5AD9F861684FD"></a></p>
@@ -1185,7 +1196,7 @@ Transformation( [ 1, 5, 4, 4, 5 ] )
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEpimorphism(gr2, gr1);</span>
 fail
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEpimorphism(gr1, gr2);</span>
-Transformation( [ 1, 2, 3, 1 ] )
+Transformation( [ 3, 1, 2, 3 ] )
 </pre></div>
 
 <p><a id="X7DFB1F5D873937B3" name="X7DFB1F5D873937B3"></a></p>
@@ -1196,7 +1207,7 @@ Transformation( [ 1, 2, 3, 1 ] )
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EpimorphismsDigraphsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of transformations.</p>
 
-<p>These operations behave the same as <code class="func">HomomorphismsDigraphs</code> (<a href="chap7.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>) and <code class="func">HomomorphismsDigraphsRepresentatives</code> (<a href="chap7.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>), expect they only return <em>surjective</em> homomorphisms.</p>
+<p>These operations behave the same as <code class="func">HomomorphismsDigraphs</code> (<a href="chap7.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>) and <code class="func">HomomorphismsDigraphsRepresentatives</code> (<a href="chap7.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>), except they only return <em>surjective</em> homomorphisms.</p>
 
 
 <div class="example"><pre>
@@ -1205,8 +1216,8 @@ Transformation( [ 1, 2, 3, 1 ] )
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := DigraphSymmetricClosure(CycleDigraph(3));</span>
 &lt;digraph with 3 vertices, 6 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EpimorphismsDigraphsRepresentatives(gr1, gr2);</span>
-[ Transformation( [ 1, 2, 3, 1 ] ), Transformation( [ 1, 2, 3, 2 ] ), 
-  Transformation( [ 1, 2, 1, 3 ] ) ]
+[ Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ), 
+  Transformation( [ 2, 1, 2, 3 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EpimorphismsDigraphs(gr1, gr2);</span>
 [ Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 3, 1 ] ), 
   Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 3, 1, 2 ] ), 
@@ -1219,9 +1230,148 @@ Transformation( [ 1, 2, 3, 1 ] )
   Transformation( [ 3, 2, 1, 3 ] ), Transformation( [ 3, 2, 3, 1 ] ) ]
 </pre></div>
 
+<p><a id="X7AD04CC186E86CCA" name="X7AD04CC186E86CCA"></a></p>
+
+<h5>7.3-8 DigraphEmbedding</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEmbedding</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
+
+<p>An embedding of a digraph <var class="Arg">digraph1</var> into another digraph <var class="Arg">digraph2</var> is a <code class="func">DigraphMonomorphism</code> (<a href="chap7.html#X82D0FCD87D47ACA8"><span class="RefLink">7.3-4</span></a>) from <var class="Arg">digraph1</var> to <var class="Arg">digraph2</var> which has the additional property that a pair of vertices <code class="code">[i, j]</code> which have no edge <code class="code">i -&gt; j</code> in <var class="Arg">digraph1</var> are mapped to a pair of vertices <code class="code">[a, b]</code> which have no edge <code class="code">a-&gt;b</code> in <var class="Arg">digraph2</var>.</p>
+
+<p>In other words, an embedding <code class="code">t</code> is an isomorphism from <var class="Arg">digraph1</var> to the <code class="func">InducedSubdigraph</code> (<a href="chap3.html#X83C51DA182CCEA2F"><span class="RefLink">3.3-2</span></a>) of <var class="Arg">digraph2</var> on the image of <code class="code">t</code>.</p>
+
+<p><code class="code">DigraphEmbedding</code> returns a single embedding if one exists, otherwise it returns <code class="keyw">fail</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(3);</span>
+&lt;digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEmbedding(gr, CompleteDigraph(4));</span>
+fail
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEmbedding(gr, Digraph([[3], [1, 4], [1], [3]]));</span>
+Transformation( [ 2, 4, 3, 4 ] )
+</pre></div>
+
+<p><a id="X82EBDF137EEDC5FD" name="X82EBDF137EEDC5FD"></a></p>
+
+<h5>7.3-9 EmbeddingsDigraphs</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EmbeddingsDigraphs</code>( <var class="Arg">D1</var>, <var class="Arg">D2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EmbeddingsDigraphsRepresentatives</code>( <var class="Arg">D1</var>, <var class="Arg">D2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A list of transformations.</p>
+
+<p>These operations behave the same as <code class="func">HomomorphismsDigraphs</code> (<a href="chap7.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>) and <code class="func">HomomorphismsDigraphsRepresentatives</code> (<a href="chap7.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>), except they only return embeddings of <var class="Arg">D1</var> into <var class="Arg">D2</var>.</p>
+
+<p>See also <code class="func">IsDigraphEmbedding</code> (<a href="chap7.html#X819021B883E9FCDB"><span class="RefLink">7.3-11</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D1 := NullDigraph(2);</span>
+&lt;digraph with 2 vertices, 0 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D2 := CycleDigraph(5);</span>
+&lt;digraph with 5 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EmbeddingsDigraphsRepresentatives(D1, D2);</span>
+[ Transformation( [ 1, 3, 3 ] ), Transformation( [ 1, 4, 3, 4 ] ) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EmbeddingsDigraphs(D1, D2);</span>
+[ Transformation( [ 1, 3, 3 ] ), Transformation( [ 1, 4, 3, 4 ] ), 
+  Transformation( [ 2, 4, 4, 5, 1 ] ), 
+  Transformation( [ 2, 5, 4, 5, 1 ] ), 
+  Transformation( [ 3, 1, 5, 1, 2 ] ), 
+  Transformation( [ 3, 5, 5, 1, 2 ] ), 
+  Transformation( [ 4, 1, 1, 2, 3 ] ), 
+  Transformation( [ 4, 2, 1, 2, 3 ] ), 
+  Transformation( [ 5, 2, 2, 3, 4 ] ), 
+  Transformation( [ 5, 3, 2, 3, 4 ] ) ]
+</pre></div>
+
+<p><a id="X78C4ADC67F8E2BCA" name="X78C4ADC67F8E2BCA"></a></p>
+
+<h5>7.3-10 IsDigraphHomomorphism</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphHomomorphism</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEpimorphism</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphMonomorphism</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEndomorphism</code>( <var class="Arg">digraph</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p><code class="code">IsDigraphHomomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is a homomorphism from the digraph <var class="Arg">src</var> to the digraph <var class="Arg">ran</var>.</p>
+
+<p><code class="code">IsDigraphEpimorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is a surjective homomorphism from the digraph <var class="Arg">src</var> to the digraph <var class="Arg">ran</var>.</p>
+
+<p><code class="code">IsDigraphMonomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is an injective homomorphism from the digraph <var class="Arg">src</var> to the digraph <var class="Arg">ran</var>.</p>
+
+<p><code class="code">IsDigraphEndomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is an endomorphism of the digraph <var class="Arg">digraph</var>.</p>
+
+<p>A permutation or transformation <var class="Arg">x</var> is a <em>homomorphism</em> from a digraph <var class="Arg">src</var> to a digraph <var class="Arg">ran</var> if the following hold:</p>
+
+
+<ul>
+<li><p><code class="code">[u ^ <var class="Arg">x</var>, v ^ <var class="Arg">x</var>]</code> is an edge of <var class="Arg">ran</var> whenever <code class="code">[u, v]</code> is an edge of <var class="Arg">src</var>; and</p>
+
+</li>
+<li><p><var class="Arg">x</var> fixes every <code class="code">i</code> which is not a vertex of <var class="Arg">src</var>.</p>
+
+</li>
+</ul>
+<p>See also <code class="func">GeneratorsOfEndomorphismMonoid</code> (<a href="chap7.html#X7E93B268823F6478"><span class="RefLink">7.3-12</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">src := Digraph([[1], [1, 2], [1, 3]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ran := Digraph([[1], [1, 2]]);</span>
+&lt;digraph with 2 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, ran, Transformation([1, 2, 2]));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, ran, Transformation([2, 1, 2]));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, ran, Transformation([3, 3, 3]));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, src, Transformation([3, 3, 3]));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEndomorphism(src, Transformation([3, 3, 3]));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEpimorphism(src, ran, Transformation([3, 3, 3]));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(src, ran, Transformation([1, 2, 2]));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(ran, src, ());</span>
+true</pre></div>
+
+<p><a id="X819021B883E9FCDB" name="X819021B883E9FCDB"></a></p>
+
+<h5>7.3-11 IsDigraphEmbedding</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEmbedding</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p><code class="code">IsDigraphEmbedding</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is a embedding of the digraph <var class="Arg">src</var> into the digraph <var class="Arg">ran</var>.</p>
+
+<p>A permutation or transformation <var class="Arg">x</var> is a <em>embedding</em> of a digraph <var class="Arg">src</var> into a digraph <var class="Arg">ran</var> if <var class="Arg">x</var> is a monomorphism from <var class="Arg">src</var> to <var class="Arg">ran</var> and the inverse of <var class="Arg">x</var> is a monomorphism from the subdigraph of <var class="Arg">ran</var> induced by the image of <var class="Arg">x</var> to <var class="Arg">src</var>. See also <code class="func">IsDigraphHomomorphism</code> (<a href="chap7.html#X78C4ADC67F8E2BCA"><span class="RefLink">7.3-10</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">src := Digraph([[1], [1, 2]]);</span>
+&lt;digraph with 2 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ran := Digraph([[1], [1, 2], [1, 3]]);</span>
+&lt;digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(src, ran, ());</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEmbedding(src, ran, ());</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ran := Digraph([[1, 2], [1, 2], [1, 3]]);</span>
+&lt;digraph with 3 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(src, ran, IdentityTransformation);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEmbedding(src, ran, IdentityTransformation);</span>
+false</pre></div>
+
 <p><a id="X7E93B268823F6478" name="X7E93B268823F6478"></a></p>
 
-<h5>7.3-8 GeneratorsOfEndomorphismMonoid</h5>
+<h5>7.3-12 GeneratorsOfEndomorphismMonoid</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfEndomorphismMonoid</code>( <var class="Arg">digraph</var>[, <var class="Arg">colors</var>][, <var class="Arg">limit</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfEndomorphismMonoidAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
@@ -1265,19 +1415,17 @@ Transformation( [ 1, 2, 3, 1 ] )
 
 <p><a id="X86D0A74B83D6B9A7" name="X86D0A74B83D6B9A7"></a></p>
 
-<h5>7.3-9 DigraphColouring</h5>
+<h5>7.3-13 DigraphColouring</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">n</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColoring</code>( <var class="Arg">digraph</var>, <var class="Arg">n</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColouring</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColoring</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
 
 <p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. A <em>proper <code class="code">n</code>-colouring</em> is a proper colouring that uses exactly <code class="code">n</code> colours. Equivalently, a proper (<code class="code">n</code>-)colouring of a digraph can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from a digraph onto the complete digraph (with <code class="code">n</code> vertices); see <code class="func">CompleteDigraph</code> (<a href="chap3.html#X812417E278198D9C"><span class="RefLink">3.5-2</span></a>). Note that a digraph with loops (<code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>)) does not have a proper <code class="code">n</code>-colouring for any value <code class="code">n</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">n</var> is a non-negative integer, then <code class="code">DigraphColouring(<var class="Arg">digraph</var>, <var class="Arg">n</var>)</code> returns an epimorphism from <var class="Arg">digraph</var> onto the complete digraph with <var class="Arg">n</var> vertices if one exists, else it returns <code class="keyw">fail</code>.</p>
 
-<p>If the optional second argument <var class="Arg">n</var> is not provided, then <code class="code">DigraphColouring</code> uses a greedy algorithm to obtain some proper colouring of <var class="Arg">digraph</var>, which may not use the minimal number of colours.</p>
+<p>See also <code class="func">DigraphGreedyColouring</code> (<a href="chap7.html#X7AB7200D831013C1"><span class="RefLink">7.3-14</span></a>) and</p>
 
 <p>Note that a digraph with at least two vertices has a 2-colouring if and only if it is bipartite, see <code class="func">IsBipartiteDigraph</code> (<a href="chap6.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>).</p>
 
@@ -1292,43 +1440,64 @@ fail
 Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ForAll(DigraphEdges(gr), e -&gt; e[1] ^ t &lt;&gt; e[2] ^ t);</span>
 true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphColouring(gr);</span>
-Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGreedyColouring(gr);</span>
+Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
 </pre></div>
 
-<p><a id="X7AD04CC186E86CCA" name="X7AD04CC186E86CCA"></a></p>
+<p><a id="X7AB7200D831013C1" name="X7AB7200D831013C1"></a></p>
 
-<h5>7.3-10 DigraphEmbedding</h5>
+<h5>7.3-14 DigraphGreedyColouring</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphEmbedding</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGreedyColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">order</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGreedyColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">func</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGreedyColouring</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
 
-<p>An embedding of a digraph <var class="Arg">digraph1</var> into another digraph <var class="Arg">digraph2</var> is a <code class="func">DigraphMonomorphism</code> (<a href="chap7.html#X82D0FCD87D47ACA8"><span class="RefLink">7.3-4</span></a>) from <var class="Arg">digraph1</var> to <var class="Arg">digraph2</var> which has the additional property that a pair of vertices <code class="code">[i, j]</code> which have no edge <code class="code">i -&gt; j</code> in <var class="Arg">digraph1</var> are mapped to a pair of vertices <code class="code">[a, b]</code> which have no edge <code class="code">a-&gt;b</code> in <var class="Arg">digraph2</var>.</p>
+<p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. Note that a digraph with loops (<code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>)) does not have any proper colouring.</p>
 
-<p>In other words, an embedding <code class="code">t</code> is an isomorphism from <var class="Arg">digraph1</var> to the <code class="func">InducedSubdigraph</code> (<a href="chap3.html#X83C51DA182CCEA2F"><span class="RefLink">3.3-2</span></a>) of <var class="Arg">digraph2</var> on the image of <code class="code">t</code>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">order</var> is a dense list consisting of all of the vertices of <var class="Arg">digraph</var> (in any order), then <code class="code">DigraphGreedyColouring</code> uses a greedy algorithm with the specified order to obtain some proper colouring of <var class="Arg">digraph</var>, which may not use the minimal number of colours.</p>
 
-<p><code class="code">DigraphEmbedding</code> returns a single embedding if one exists, otherwise it returns <code class="keyw">fail</code>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">func</var> is a function whose argument is a digraph, and that returns a dense list <var class="Arg">order</var>, then <code class="code">DigraphGreedyColouring(<var class="Arg">digraph</var>, <var class="Arg">func</var>)</code> returns <code class="code">DigraphGreedyColouring(<var class="Arg">digraph</var>, <var class="Arg">func</var>(<var class="Arg">digraph</var>))</code>.</p>
+
+<p>If the optional second argument (either a list or a function), is not specified, then <code class="func">DigraphWelshPowellOrder</code> (<a href="chap7.html#X7F9CB3B27B9590DB"><span class="RefLink">7.3-15</span></a>) is used by default.</p>
+
+<p>See also <code class="func">DigraphColouring</code> (<a href="chap7.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-13</span></a>).</p>
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := ChainDigraph(3);</span>
-&lt;digraph with 3 vertices, 2 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEmbedding(gr, CompleteDigraph(4));</span>
-fail
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEmbedding(gr, Digraph([[3], [1, 4], [1], [3]]));</span>
-Transformation( [ 2, 4, 3, 4 ] )
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGreedyColouring(ChainDigraph(10));</span>
+Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGreedyColouring(ChainDigraph(10), [1 .. 10]);</span>
+Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
+</pre></div>
+
+<p><a id="X7F9CB3B27B9590DB" name="X7F9CB3B27B9590DB"></a></p>
+
+<h5>7.3-15 DigraphWelshPowellOrder</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphWelshPowellOrder</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<p>Returns: A list of the vertices.</p>
+
+<p><code class="code">DigraphWelshPowellOrder</code> returns a list of all of the vertices of the digraph <var class="Arg">digraph</var> ordered according to the sum of the number of out- and in-neighbours, from highest to lowest.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphWelshPowellOrder(Digraph([[4], [9], [9], [], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                                    [4, 6, 9], [1], [], [], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                                    [4, 5], [4, 5]]));</span>
+[ 5, 9, 4, 1, 6, 10, 2, 3, 7, 8 ]
 </pre></div>
 
 <p><a id="X807D49358529A37C" name="X807D49358529A37C"></a></p>
 
-<h5>7.3-11 ChromaticNumber</h5>
+<h5>7.3-16 ChromaticNumber</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ChromaticNumber</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A non-negative integer.</p>
 
 <p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. Equivalently, a proper digraph colouring can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from a digraph onto a complete digraph.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph without loops (see <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>), then <code class="code">ChromaticNumber</code> returns the least non-negative integer <code class="code">n</code> such that there is a proper colouring of <var class="Arg">digraph</var> with <code class="code">n</code> colours. In other words, for a digraph with at least one vertex, <code class="code">ChromaticNumber</code> returns the least number <code class="code">n</code> such that <code class="code">DigraphColouring(<var class="Arg">digraph</var>, n)</code> does not return <code class="keyw">fail</code>. See <code class="func">DigraphColouring</code> (<a href="chap7.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-9</span></a>).</p>
+<p>If <var class="Arg">digraph</var> is a digraph without loops (see <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>), then <code class="code">ChromaticNumber</code> returns the least non-negative integer <code class="code">n</code> such that there is a proper colouring of <var class="Arg">digraph</var> with <code class="code">n</code> colours. In other words, for a digraph with at least one vertex, <code class="code">ChromaticNumber</code> returns the least number <code class="code">n</code> such that <code class="code">DigraphColouring(<var class="Arg">digraph</var>, n)</code> does not return <code class="keyw">fail</code>. See <code class="func">DigraphColouring</code> (<a href="chap7.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-13</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -1342,90 +1511,6 @@ Transformation( [ 2, 4, 3, 4 ] )
 3
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ChromaticNumber(NullDigraph(0));</span>
 0</pre></div>
-
-<p><a id="X78C4ADC67F8E2BCA" name="X78C4ADC67F8E2BCA"></a></p>
-
-<h5>7.3-12 IsDigraphHomomorphism</h5>
-
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphHomomorphism</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEpimorphism</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphMonomorphism</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEndomorphism</code>( <var class="Arg">digraph</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
-
-<p><code class="code">IsDigraphHomomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is a homomorphism from the digraph <var class="Arg">src</var> to the digraph <var class="Arg">ran</var>.</p>
-
-<p><code class="code">IsDigraphEpimorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is a surjective homomorphism from the digraph <var class="Arg">src</var> to the digraph <var class="Arg">ran</var>.</p>
-
-<p><code class="code">IsDigraphMonomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is an injective homomorphism from the digraph <var class="Arg">src</var> to the digraph <var class="Arg">ran</var>.</p>
-
-<p><code class="code">IsDigraphEndomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is an endomorphism of the digraph <var class="Arg">digraph</var>.</p>
-
-<p>A permutation or transformation <var class="Arg">x</var> is a <em>homomorphism</em> from a digraph <var class="Arg">src</var> to a digraph <var class="Arg">ran</var> if the following hold:</p>
-
-
-<ul>
-<li><p><code class="code">[u ^ <var class="Arg">x</var>, v ^ <var class="Arg">x</var>]</code> is an edge of <var class="Arg">ran</var> whenever <code class="code">[u, v]</code> is an edge of <var class="Arg">src</var>; and</p>
-
-</li>
-<li><p><var class="Arg">x</var> fixes every <code class="code">i</code> which is not a vertex of <var class="Arg">src</var>.</p>
-
-</li>
-</ul>
-<p>See also <code class="func">GeneratorsOfEndomorphismMonoid</code> (<a href="chap7.html#X7E93B268823F6478"><span class="RefLink">7.3-8</span></a>).</p>
-
-
-<div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">src := Digraph([[1], [1, 2], [1, 3]]);</span>
-&lt;digraph with 3 vertices, 5 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ran := Digraph([[1], [1, 2]]);</span>
-&lt;digraph with 2 vertices, 3 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, ran, Transformation([1, 2, 2]));</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, ran, Transformation([2, 1, 2]));</span>
-false
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, ran, Transformation([3, 3, 3]));</span>
-false
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphHomomorphism(src, src, Transformation([3, 3, 3]));</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEndomorphism(src, Transformation([3, 3, 3]));</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEpimorphism(src, ran, Transformation([3, 3, 3]));</span>
-false
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(src, ran, Transformation([1, 2, 2]));</span>
-false
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]));</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(ran, src, ());</span>
-true</pre></div>
-
-<p><a id="X819021B883E9FCDB" name="X819021B883E9FCDB"></a></p>
-
-<h5>7.3-13 IsDigraphEmbedding</h5>
-
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDigraphEmbedding</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
-
-<p><code class="code">IsDigraphEmbedding</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">x</var> is a embedding of the digraph <var class="Arg">src</var> into the digraph <var class="Arg">ran</var>.</p>
-
-<p>A permutation or transformation <var class="Arg">x</var> is a <em>embedding</em> of a digraph <var class="Arg">src</var> into a digraph <var class="Arg">ran</var> if <var class="Arg">x</var> is a monomorphism from <var class="Arg">src</var> to <var class="Arg">ran</var> and the inverse of <var class="Arg">x</var> is a monomorphism from the subdigraph of <var class="Arg">ran</var> induced by the image of <var class="Arg">x</var> to <var class="Arg">src</var>. See also <code class="func">IsDigraphHomomorphism</code> (<a href="chap7.html#X78C4ADC67F8E2BCA"><span class="RefLink">7.3-12</span></a>).</p>
-
-
-<div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">src := Digraph([[1], [1, 2]]);</span>
-&lt;digraph with 2 vertices, 3 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ran := Digraph([[1], [1, 2], [1, 3]]);</span>
-&lt;digraph with 3 vertices, 5 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(src, ran, ());</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEmbedding(src, ran, ());</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ran := Digraph([[1, 2], [1, 2], [1, 3]]);</span>
-&lt;digraph with 3 vertices, 6 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphMonomorphism(src, ran, IdentityTransformation);</span>
-true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEmbedding(src, ran, IdentityTransformation);</span>
-false</pre></div>
 
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap6.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap8.html">[Next Chapter]</a>&nbsp;  </div>

@@ -63,7 +63,7 @@
   is not. A digraph is bipartite if and only if the vertices of [3Xdigraph[103X can be
   partitioned  into  two  non-empty sets such that the source and range of any
   edge  of  [3Xdigraph[103X lie in distinct sets. Equivalently, a digraph is bipartite
-  if and only if it is 2-colorable; see [2XDigraphColouring[102X ([14X7.3-9[114X).[133X
+  if and only if it is 2-colorable; see [2XDigraphGreedyColouring[102X ([14X7.3-14[114X).[133X
   
   [33X[0;0YSee also [2XDigraphBicomponents[102X ([14X5.3-12[114X).[133X
   
@@ -195,7 +195,7 @@
     [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsMultiDigraph(gr);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphFromDigraph6String("+Bug");[127X[104X
+    [4X[25Xgap>[125X [27Xgr := DigraphFromDigraph6String("&Bug");[127X[104X
     [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsDuplicateFree(DigraphEdges(gr));[127X[104X
     [4X[28Xtrue[128X[104X
@@ -569,7 +569,7 @@
   
   [33X[0;0YA  digraph  is  a [13Xchain[113X if and only if it is a directed tree, in which every
   vertex has out degree at most one; see [2XIsDirectedTree[102X ([14X6.3-7[114X) and [2XOutDegrees[102X
-  ([14X5.2-7[114X).[133X
+  ([14X5.2-8[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
@@ -597,7 +597,7 @@
   direction (possibly against the orientation of some of them).[133X
   
   [33X[0;0YThe  method  used  in  this  function  has  complexity [22XO(m)[122X if the digraph's
-  [2XDigraphSource[102X  ([14X5.2-4[114X)  attribute is set, otherwise it has complexity [22XO(m+n)[122X
+  [2XDigraphSource[102X  ([14X5.2-5[114X)  attribute is set, otherwise it has complexity [22XO(m+n)[122X
   (where  [22Xm[122X  is  the  number  of  edges and [22Xn[122X is the number of vertices of the
   digraph).[133X
   
@@ -736,7 +736,7 @@
   [33X[0;0YAn  [13Xundirected forest[113X is a digraph, each of whose connected components is an
   undirected  tree.  In  other  words, an undirected forest is isomorphic to a
   disjoint  union  of undirected trees. See [2XDigraphConnectedComponents[102X ([14X5.3-8[114X)
-  and  [2XDigraphDisjointUnion[102X  ([14X3.3-25[114X). In particular, every undirected tree is
+  and  [2XDigraphDisjointUnion[102X  ([14X3.3-26[114X). In particular, every undirected tree is
   an undirected forest.[133X
   
   [33X[0;0YPlease  note that the digraph with zero vertices is considered to be neither
@@ -855,6 +855,74 @@
     [4X[25Xgap>[125X [27Xgr = CycleDigraph(5);[127X[104X
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27XIsCycleDigraph(gr);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X6.4 [33X[0;0YPlanarity[133X[101X
+  
+  [1X6.4-1 IsPlanarDigraph[101X
+  
+  [33X[1;0Y[29X[2XIsPlanarDigraph[102X( [3Xdigraph[103X ) [32X property[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YA  [13Xplanar[113X  digraph  is a digraph that can be embedded in the plane in such a
+  way  that  its edges do not intersect. A digraph is planar if and only if it
+  does not have a subdigraph that is homeomorphic to either the complete graph
+  on  [10X5[110X  vertices  or the complete bipartite graph with vertex sets of sizes [10X3[110X
+  and [10X3[110X.[133X
+  
+  [33X[0;0Y[10XIsPlanarDigraph[110X  returns  [9Xtrue[109X if the digraph [3Xdigraph[103X is planar and [9Xfalse[109X if
+  it  is  not.  The  directions and multiplicities of any edges in [3Xdigraph[103X are
+  ignored by [10XIsPlanarDigraph[110X.[133X
+  
+  [33X[0;0YSee also [2XIsOuterPlanarDigraph[102X ([14X6.4-2[114X).[133X
+  
+  [33X[0;0YThis      method      uses      the      reference     implementation     in
+  [5Xedge-addition-planarity-suite[105X  by  John Boyer of the algorithms described in
+  [BM06].[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XIsPlanarDigraph(CompleteDigraph(4));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsPlanarDigraph(CompleteDigraph(5));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsPlanarDigraph(CompleteBipartiteDigraph(2, 3));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsPlanarDigraph(CompleteBipartiteDigraph(3, 3));[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.4-2 IsOuterPlanarDigraph[101X
+  
+  [33X[1;0Y[29X[2XIsOuterPlanarDigraph[102X( [3Xdigraph[103X ) [32X property[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YAn  [13Xouter  planar[113X  digraph is a digraph that can be embedded in the plane in
+  such  a  way that its edges do not intersect, and all vertices belong to the
+  unbounded face of the embedding. A digraph is outer planar if and only if it
+  does not have a subdigraph that is homeomorphic to either the complete graph
+  on  [10X4[110X  vertices  or the complete bipartite graph with vertex sets of sizes [10X2[110X
+  and [10X3[110X.[133X
+  
+  [33X[0;0Y[10XIsOuterPlanarDigraph[110X returns [9Xtrue[109X if the digraph [3Xdigraph[103X is outer planar and
+  [9Xfalse[109X  if  it  is  not.  The  directions  and multiplicities of any edges in
+  [3Xdigraph[103X are ignored by [10XIsPlanarDigraph[110X.[133X
+  
+  [33X[0;0YSee   also   [2XIsPlanarDigraph[102X   ([14X6.4-1[114X).   This  method  uses  the  reference
+  implementation   in  [5Xedge-addition-planarity-suite[105X  by  John  Boyer  of  the
+  algorithms described in [BM06].[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XIsOuterPlanarDigraph(CompleteDigraph(4));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsOuterPlanarDigraph(CompleteDigraph(5));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsOuterPlanarDigraph(CompleteBipartiteDigraph(2, 3));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsOuterPlanarDigraph(CompleteBipartiteDigraph(3, 3));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsOuterPlanarDigraph(CycleDigraph(10));[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   

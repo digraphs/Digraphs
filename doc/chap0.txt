@@ -3,10 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                              [1XMethods for digraphs[101X
-  
-  
-                                 Version 0.14.0
+                                 Version 0.15.0
   
   
                                   Jan De Beule
@@ -57,7 +54,7 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y©  2014-18  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Michael
+  [33X[0;0Y©  2014-19  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Michael
   Torpey, Wilf A. Wilson et al.[133X
   
   [33X[0;0Y[5XDigraphs[105X  is  free  software; you can redistribute it and/or modify it under
@@ -69,10 +66,9 @@
   
   -------------------------------------------------------
   [1XAcknowledgements[101X
-  [33X[0;0YWe  would  like to thank Christopher Jefferson for his help in including the
-  [5Xbliss[105X  tool  in  the  package.  This package's methods for computing digraph
-  homomorphisms  are  based on work by Max Neunhöffer, and independently Artur
-  Schäfer.[133X
+  [33X[0;0YWe would like to thank Christopher Jefferson for his help in including [5Xbliss[105X
+  in  [5XDigraphs[105X. This package's methods for computing digraph homomorphisms are
+  based on work by Max Neunhöffer, and independently Artur Schäfer.[133X
   
   
   -------------------------------------------------------
@@ -116,36 +112,37 @@
       3.3-2 InducedSubdigraph
       3.3-3 ReducedDigraph
       3.3-4 MaximalSymmetricSubdigraph
-      3.3-5 UndirectedSpanningTree
-      3.3-6 QuotientDigraph
-      3.3-7 DigraphReverse
-      3.3-8 DigraphDual
-      3.3-9 DigraphSymmetricClosure
-      3.3-10 DigraphReflexiveTransitiveClosure
-      3.3-11 DigraphReflexiveTransitiveReduction
-      3.3-12 DigraphAddVertex
-      3.3-13 DigraphAddVertices
-      3.3-14 DigraphAddEdge
-      3.3-15 DigraphAddEdgeOrbit
-      3.3-16 DigraphAddEdges
-      3.3-17 DigraphRemoveVertex
-      3.3-18 DigraphRemoveVertices 
-      3.3-19 DigraphRemoveEdge
-      3.3-20 DigraphRemoveEdgeOrbit
-      3.3-21 DigraphRemoveEdges
-      3.3-22 DigraphRemoveLoops
-      3.3-23 DigraphRemoveAllMultipleEdges
-      3.3-24 DigraphReverseEdges
-      3.3-25 DigraphDisjointUnion
-      3.3-26 DigraphEdgeUnion
-      3.3-27 DigraphJoin
-      3.3-28 LineDigraph
-      3.3-29 LineUndirectedDigraph
-      3.3-30 DoubleDigraph
-      3.3-31 BipartiteDoubleDigraph
-      3.3-32 DigraphAddAllLoops
-      3.3-33 DistanceDigraph
-      3.3-34 DigraphClosure
+      3.3-5 MaximalAntiSymmetricSubdigraph
+      3.3-6 UndirectedSpanningTree
+      3.3-7 QuotientDigraph
+      3.3-8 DigraphReverse
+      3.3-9 DigraphDual
+      3.3-10 DigraphSymmetricClosure
+      3.3-11 DigraphReflexiveTransitiveClosure
+      3.3-12 DigraphReflexiveTransitiveReduction
+      3.3-13 DigraphAddVertex
+      3.3-14 DigraphAddVertices
+      3.3-15 DigraphAddEdge
+      3.3-16 DigraphAddEdgeOrbit
+      3.3-17 DigraphAddEdges
+      3.3-18 DigraphRemoveVertex
+      3.3-19 DigraphRemoveVertices 
+      3.3-20 DigraphRemoveEdge
+      3.3-21 DigraphRemoveEdgeOrbit
+      3.3-22 DigraphRemoveEdges
+      3.3-23 DigraphRemoveLoops
+      3.3-24 DigraphRemoveAllMultipleEdges
+      3.3-25 DigraphReverseEdges
+      3.3-26 DigraphDisjointUnion
+      3.3-27 DigraphEdgeUnion
+      3.3-28 DigraphJoin
+      3.3-29 LineDigraph
+      3.3-30 LineUndirectedDigraph
+      3.3-31 DoubleDigraph
+      3.3-32 BipartiteDoubleDigraph
+      3.3-33 DigraphAddAllLoops
+      3.3-34 DistanceDigraph
+      3.3-35 DigraphClosure
     3.4 [33X[0;0YRandom digraphs[133X
       3.4-1 RandomDigraph
       3.4-2 RandomMultiDigraph
@@ -181,19 +178,20 @@
       5.1-15 IsMatching
     5.2 [33X[0;0YNeighbours and degree[133X
       5.2-1 AdjacencyMatrix
-      5.2-2 BooleanAdjacencyMatrix
-      5.2-3 DigraphAdjacencyFunction
-      5.2-4 DigraphRange
-      5.2-5 OutNeighbours
-      5.2-6 InNeighbours
-      5.2-7 OutDegrees
-      5.2-8 InDegrees
-      5.2-9 OutDegreeOfVertex
-      5.2-10 OutNeighboursOfVertex
-      5.2-11 InDegreeOfVertex
-      5.2-12 InNeighboursOfVertex
-      5.2-13 DigraphLoops
-      5.2-14 PartialOrderDigraphMeetOfVertices
+      5.2-2 CharacteristicPolynomial
+      5.2-3 BooleanAdjacencyMatrix
+      5.2-4 DigraphAdjacencyFunction
+      5.2-5 DigraphRange
+      5.2-6 OutNeighbours
+      5.2-7 InNeighbours
+      5.2-8 OutDegrees
+      5.2-9 InDegrees
+      5.2-10 OutDegreeOfVertex
+      5.2-11 OutNeighboursOfVertex
+      5.2-12 InDegreeOfVertex
+      5.2-13 InNeighboursOfVertex
+      5.2-14 DigraphLoops
+      5.2-15 PartialOrderDigraphMeetOfVertices
     5.3 [33X[0;0YReachability and connectivity[133X
       5.3-1 DigraphDiameter
       5.3-2 DigraphShortestDistance
@@ -212,18 +210,25 @@
       5.3-15 DigraphFloydWarshall
       5.3-16 IsReachable
       5.3-17 DigraphPath
-      5.3-18 IteratorOfPaths
-      5.3-19 DigraphAllSimpleCircuits
-      5.3-20 DigraphLongestSimpleCircuit
-      5.3-21 DigraphLayers
-      5.3-22 DigraphDegeneracy
-      5.3-23 DigraphDegeneracyOrdering
-      5.3-24 HamiltonianPath
+      5.3-18 DigraphShortestPath
+      5.3-19 IteratorOfPaths
+      5.3-20 DigraphAllSimpleCircuits
+      5.3-21 DigraphLongestSimpleCircuit
+      5.3-22 DigraphLayers
+      5.3-23 DigraphDegeneracy
+      5.3-24 DigraphDegeneracyOrdering
+      5.3-25 HamiltonianPath
     5.4 [33X[0;0YCayley graphs of groups[133X
       5.4-1 GroupOfCayleyDigraph
       5.4-2 GeneratorsOfCayleyDigraph
     5.5 [33X[0;0YAssociated semigroups[133X
       5.5-1 AsSemigroup
+    5.6 [33X[0;0YPlanarity[133X
+      5.6-1 KuratowskiPlanarSubdigraph
+      5.6-2 KuratowskiOuterPlanarSubdigraph
+      5.6-3 PlanarEmbedding
+      5.6-4 OuterPlanarEmbedding
+      5.6-5 SubdigraphHomeomorphicToK23
   6 [33X[0;0YProperties of digraphs[133X
     6.1 [33X[0;0YEdge properties[133X
       6.1-1 DigraphHasLoops
@@ -258,6 +263,9 @@
       6.3-9 IsEulerianDigraph
       6.3-10 IsHamiltonianDigraph
       6.3-11 IsCycleDigraph
+    6.4 [33X[0;0YPlanarity[133X
+      6.4-1 IsPlanarDigraph
+      6.4-2 IsOuterPlanarDigraph
   7 [33X[0;0YHomomorphisms[133X
     7.1 [33X[0;0YActing on digraphs[133X
       7.1-1 OnDigraphs
@@ -291,12 +299,15 @@
       7.3-5 MonomorphismsDigraphs
       7.3-6 DigraphEpimorphism
       7.3-7 EpimorphismsDigraphs
-      7.3-8 GeneratorsOfEndomorphismMonoid
-      7.3-9 DigraphColouring
-      7.3-10 DigraphEmbedding
-      7.3-11 ChromaticNumber
-      7.3-12 IsDigraphHomomorphism
-      7.3-13 IsDigraphEmbedding
+      7.3-8 DigraphEmbedding
+      7.3-9 EmbeddingsDigraphs
+      7.3-10 IsDigraphHomomorphism
+      7.3-11 IsDigraphEmbedding
+      7.3-12 GeneratorsOfEndomorphismMonoid
+      7.3-13 DigraphColouring
+      7.3-14 DigraphGreedyColouring
+      7.3-15 DigraphWelshPowellOrder
+      7.3-16 ChromaticNumber
   8 [33X[0;0YFinding cliques and independent sets[133X
     8.1 [33X[0;0YFinding cliques[133X
       8.1-1 IsClique
