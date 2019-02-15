@@ -1721,6 +1721,29 @@ gap> gr := CompleteDigraph(5);
 gap> CharacteristicPolynomial(gr);
 x_1^5-10*x_1^3-20*x_1^2-15*x_1-4
 
+# IsVertexTransitive
+gap> IsVertexTransitive(Digraph([]));
+true
+gap> IsVertexTransitive(Digraph([[1], [2]]));
+true
+gap> IsVertexTransitive(Digraph([[2], [3], []]));
+false
+gap> IsVertexTransitive(CompleteDigraph(20));
+true
+
+# IsEdgeTransitive
+gap> IsEdgeTransitive(Digraph([]));
+true
+gap> IsEdgeTransitive(Digraph([[1], [2]]));
+true
+gap> IsEdgeTransitive(Digraph([[2], [3], []]));
+false
+gap> IsEdgeTransitive(CompleteDigraph(20));
+true
+gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
+Error, Digraphs: IsEdgeTransitive: usage,
+the argument <digraph> must not have multiple edges,
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);

@@ -1537,3 +1537,19 @@ InstallMethod(CharacteristicPolynomial,
 function(gr)
     return CharacteristicPolynomial(AdjacencyMatrix(gr));
 end);
+
+InstallMethod(IsVertexTransitive, "for a digraph",
+[IsDigraph],
+gr -> IsTransitive(AutomorphismGroup(gr), DigraphVertices(gr)));
+
+InstallMethod(IsEdgeTransitive, "for a digraph",
+[IsDigraph],
+function(digraph)
+  if IsMultiDigraph(digraph) then
+    ErrorNoReturn("Digraphs: IsEdgeTransitive: usage,\n",
+                  "the argument <digraph> must not have multiple edges,");
+  fi;
+  return IsTransitive(AutomorphismGroup(digraph),
+                      DigraphEdges(digraph),
+                      OnPairs);
+end);
