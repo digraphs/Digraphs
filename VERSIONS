@@ -1,13 +1,14 @@
 #############################################################################
 ##
 #W  VERSIONS
-#Y  Copyright (C) 2015-18                                James D. Mitchell
+#Y  Copyright (C) 2015-19                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README.md file of this package.
 ##
 #############################################################################
 ##
 
+release 0.15.0 - 15/02/2019
 release 0.14.0 - 23/11/2018
 release 0.13.0 - 19/09/2018
 release 0.12.2 - 24/08/2018

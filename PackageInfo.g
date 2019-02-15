@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  PackageInfo.g
-##  Copyright (C) 2015-18                                James D. Mitchell
+##  Copyright (C) 2015-19                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README.md file of this package.
 ##
@@ -9,20 +9,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.14.0">
+##  <!ENTITY VERSION        "0.15.0">
 ##  <!ENTITY GAPVERS        "4.9.0">
 ##  <!ENTITY GRAPEVERS      "4.8.1">
 ##  <!ENTITY IOVERS         "4.5.1">
 ##  <!ENTITY ORBVERS        "4.8.1">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.14.0">
-##  <!ENTITY COPYRIGHTYEARS "2014-18">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.15.0">
+##  <!ENTITY COPYRIGHTYEARS "2014-19">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "0.14.0",
-Date := "23/11/2018",  # dd/mm/yyyy format
+Version := "0.15.0",
+Date := "15/02/2019",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -75,6 +75,23 @@ Persons := [
                        " Scotland"]),
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Horn",
+    FirstNames    := "Max",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "max.horn@math.uni-giessen.de",
+    WWWHome       := "https://www.quendi.de/math",
+    PostalAddress := Concatenation([
+                       "AG Algebra,",
+                       " Mathematisches Institut,",
+                       " Justus-Liebig-Universität Gießen,",
+                       " Arndtstraße 2,",
+                       " 35392 Gießen,",
+                       " Germany"]),
+    Place         := "Gießen",
+    Institution   := "Justus-Liebig-Universität Gießen"),
 
   rec(
     LastName      := "Jefferson",
@@ -165,6 +182,19 @@ Persons := [
     IsMaintainer  := false,
     Email         := "mct25@st-andrews.ac.uk",
     WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~mct25/",
+    PostalAddress := Concatenation([
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"]),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Whyte",
+    FirstNames    := "Murray",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "mw231@st-andrews.ac.uk",
     PostalAddress := Concatenation([
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
