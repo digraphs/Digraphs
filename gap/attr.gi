@@ -1533,16 +1533,14 @@ end);
 
 InstallMethod(IsVertexTransitive, "for a digraph",
 [IsDigraph],
-function(digraph)
-  return IsTransitive(AutomorphismGroup(digraph), DigraphVertices(digraph));
-end);
+gr -> IsTransitive(AutomorphismGroup(gr), DigraphVertices(gr)));
 
 InstallMethod(IsEdgeTransitive, "for a digraph",
 [IsDigraph],
 function(digraph)
   if IsMultiDigraph(digraph) then
     ErrorNoReturn("Digraphs: IsEdgeTransitive: usage,\n",
-                  "the argument <graph> must not have multiple edges,");
+                  "the argument <digraph> must not have multiple edges,");
   fi;
   return IsTransitive(AutomorphismGroup(digraph),
                       DigraphEdges(digraph),
