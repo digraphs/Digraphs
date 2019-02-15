@@ -10,23 +10,23 @@
 
 <#GAPDoc Label="HomomorphismDigraphsFinder">
 <ManSection>
-  <Func Name="HomomorphismDigraphsFinder" Arg="gr1, gr2, hook, user_param, limit, hint, injective, image, map, list1, list2"/>
+  <Func Name="HomomorphismDigraphsFinder" Arg="D1, D2, hook, user_param, max_results, hint, injective, image, partial_map, colors1, colors2[, order]"/>
   <Returns>The argument <A>user_param</A>.</Returns>
   <Description>
-    This function finds homomorphisms from the graph <A>gr1</A> to the graph
-    <A>gr2</A> subject to the conditions imposed by the other arguments as
+    This function finds homomorphisms from the digraph <A>D1</A> to the digraph
+    <A>D2</A> subject to the conditions imposed by the other arguments as
     described below.<P/>
 
     If <C>f</C> and <C>g</C> are homomorphisms found by
     <C>HomomorphismDigraphsFinder</C>, then <C>f</C> cannot be obtained from
-    <C>g</C> by right multiplying by an automorphism of <A>gr2</A>.
+    <C>g</C> by right multiplying by an automorphism of <A>D2</A>.
 
     <List>
       <Mark><A>hook</A></Mark>
       <Item>
         This argument should be a function or <K>fail</K>.<P/>
 
-        If <A>hook</A> is a function, then it should have two arguments
+        If <A>hook</A> is a function, then it must have two arguments
         <A>user_param</A> (see below) and a transformation <C>t</C>. The
         function <C><A>hook</A>(<A>user_param</A>, t)</C> is called every time
         a new homomorphism <C>t</C> is found by
@@ -35,27 +35,28 @@
         If <A>hook</A> is <K>fail</K>, then a default function is used which
         simply adds every new homomorphism found by
         <C>HomomorphismDigraphsFinder</C> to <A>user_param</A>, which must be a
-        list in this case.
+        mutable list in this case.
       </Item>
 
       <Mark><A>user_param</A></Mark>
       <Item>
         If <A>hook</A> is a function, then <A>user_param</A> can be any &GAP;
-        object. The object <A>user_param</A> is used as the first argument for
+        object. The object <A>user_param</A> is used as the first argument of
         the function <A>hook</A>. For example, <A>user_param</A> might be a
         transformation semigroup, and <C><A>hook</A>(<A>user_param</A>, t)</C>
         might set <A>user_param</A> to be the closure of <A>user_param</A> and
         <C>t</C>. <P/>
 
         If the value of <A>hook</A> is <K>fail</K>, then the value of
-        <A>user_param</A> must be a list.
+        <A>user_param</A> must be a mutable list.
       </Item>
 
-      <Mark><A>limit</A></Mark>
+      <Mark><A>max_results</A></Mark>
       <Item>
         This argument should be a positive integer or <K>infinity</K>.
         <C>HomomorphismDigraphsFinder</C> will return after it has found
-        <A>limit</A> homomorphisms or the search is complete.
+        <A>max_results</A> homomorphisms or the search is complete, whichever
+        happens first.
       </Item>
 
       <Mark><A>hint</A></Mark>
@@ -71,63 +72,80 @@
 
       <Mark><A>injective</A></Mark>
       <Item>
-        This argument should be <K>true</K> or <K>false</K>. If it is
-        <K>true</K>, then only injective homomorphisms are found, and if it is
-        <K>false</K> there are no restrictions imposed by this argument.
+        This argument should be <C>0</C>, <C>1</C>, or <C>2</C>.  If it is
+        <C>2</C>, then only embeddings are found, if it is <C>1</C>, then only
+        injective homomorphisms are found, and if it is <C>0</C> there are no
+        restrictions imposed by this argument.
+        <P/>
+
+        For backwards compatibility, <A>injective</A> can also be <K>false</K>
+        or <K>true</K> which correspond to the values <C>0</C> and <C>1</C>
+        described in the previous paragraph, respectively. 
       </Item>
 
       <Mark><A>image</A></Mark>
       <Item>
-        This argument should be a subset of the vertices of the graph <A>gr2</A>.
+        This argument should be a subset of the vertices of the graph <A>D2</A>.
         <C>HomomorphismDigraphsFinder</C> only finds homomorphisms from
-        <A>gr1</A> to the subgraph of <A>gr2</A> induced by the vertices
+        <A>D1</A> to the subgraph of <A>D2</A> induced by the vertices
         <A>image</A>.
       </Item>
 
-      <Mark><A>map</A></Mark>
+      <Mark><A>partial_map</A></Mark>
       <Item>
-        This argument should be a partial map from <A>gr1</A> to <A>gr2</A>,
-        that is, a (not necessarily dense) list of vertices of the graph
-        <A>gr2</A> of length no greater than the number vertices in the graph
-        <A>gr1</A>. <C>HomomorphismDigraphsFinder</C> only finds homomorphisms
-        extending <A>map</A> (if any).
+        This argument should be a partial map from <A>D1</A> to <A>D2</A>,
+        that is, a (not necessarily dense) list of vertices of the digraph
+        <A>D2</A> of length no greater than the number vertices in the digraph
+        <A>D1</A>. <C>HomomorphismDigraphsFinder</C> only finds homomorphisms
+        extending <A>partial_map</A> (if any).
       </Item>
       
-      <Mark><A>list1</A></Mark>
+      <Mark><A>colors1</A></Mark>
       <Item>
         This should be a list representing possible colours of vertices in the
-        digraph <A>gr1</A>; see 
-        <Ref Oper="AutomorphismGroup" Label="for a digraph and a homogeneous list"/> 
+        digraph <A>D1</A>; see 
+        <Ref Oper="AutomorphismGroup" 
+          Label="for a digraph and a homogeneous list"/> 
         for details of the permissible values for this argument.
       </Item>
       
-      <Mark><A>list2</A></Mark>
+      <Mark><A>colors2</A></Mark>
       <Item>
         This should be a list representing possible colours of vertices in the
-        digraph <A>gr2</A>; see 
-        <Ref Oper="AutomorphismGroup" Label="for a digraph and a homogeneous list"/> 
+        digraph <A>D2</A>; see 
+        <Ref Oper="AutomorphismGroup" 
+          Label="for a digraph and a homogeneous list"/> 
         for details of the permissible values for this argument.
+      </Item>
+      <Mark><A>order</A></Mark>
+      <Item>
+        The optional final argument <A>order</A> specifies the order the
+        vertices in <A>D1</A> appear in the search for homomorphisms. 
+        The value of this parameter can have a large impact
+        on the runtime of the function. It seems in many cases to be a good
+        idea for this to be the <Ref Attr="DigraphWelshPowellOrder"/>, i.e.
+        vertices ordered from highest to lowest degree.
       </Item>
     </List>
 
     <Example><![CDATA[
-gap> gr := ChainDigraph(10);
+gap> D := ChainDigraph(10);
 <digraph with 10 vertices, 9 edges>
-gap> gr := DigraphSymmetricClosure(gr);
+gap> D := DigraphSymmetricClosure(D);
 <digraph with 10 vertices, 18 edges>
-gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, 2, false,
+gap> HomomorphismDigraphsFinder(D, D, fail, [], infinity, 2, 0,
 > [3, 4], [], fail, fail);
 [ Transformation( [ 3, 4, 3, 4, 3, 4, 3, 4, 3, 4 ] ), 
   Transformation( [ 4, 3, 4, 3, 4, 3, 4, 3, 4, 3 ] ) ]
-gap> gr2 := CompleteDigraph(6);;
-gap> HomomorphismDigraphsFinder(gr, gr2, fail, [], 1, fail, false,
+gap> D2 := CompleteDigraph(6);;
+gap> HomomorphismDigraphsFinder(D, D2, fail, [], 1, fail, 0,
 > [1 .. 6], [1, 2, 1], fail, fail);
 [ Transformation( [ 1, 2, 1, 3, 4, 5, 6, 1, 2, 1 ] ) ]
 gap> func := function(user_param, t)
 > Add(user_param, t * user_param[1]);
 > end;;
-gap> HomomorphismDigraphsFinder(gr, gr2, func, [Transformation([2, 2])],
-> 3, fail, false, [1 .. 6], [1, 2, 1], fail, fail);
+gap> HomomorphismDigraphsFinder(D, D2, func, [Transformation([2, 2])],
+> 3, fail, 0, [1 .. 6], [1, 2, 1], fail, fail);
 [ Transformation( [ 2, 2 ] ), 
   Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 2 ] ), 
   Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 3 ] ), 
@@ -145,8 +163,8 @@ gap> HomomorphismDigraphsFinder(gr, gr2, func, [Transformation([2, 2])],
     the vertex set of <A>digraph1</A> to a subset of the vertices of
     <A>digraph2</A>, such that every pair of vertices <C>[i,j]</C> which has
     an edge <C>i->j</C> is mapped to a pair of vertices <C>[a,b]</C> which
-    has an edge <C>a->b</C>.  Note that non adjacent vertices can still be
-    mapped onto adjacent ones. <P/>
+    has an edge <C>a->b</C>.  Note that non-adjacent vertices can still be
+    mapped to adjacent vertices. <P/>
 
     <C>DigraphHomomorphism</C> returns a single homomorphism between
     <A>digraph1</A> and <A>digraph2</A> if it exists, otherwise it returns
@@ -157,8 +175,10 @@ gap> gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);
 <digraph with 5 vertices, 6 edges>
 gap> DigraphHomomorphism(gr1, gr1);
 IdentityTransformation
-gap> DigraphHomomorphism(gr1, gr2);
-Transformation( [ 1, 3, 1 ] )
+gap> map := DigraphHomomorphism(gr1, gr2);
+Transformation( [ 3, 1, 5, 4, 5 ] )
+gap> IsDigraphHomomorphism(gr1, gr2, map);
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -192,7 +212,7 @@ gap> HomomorphismsDigraphs(gr1, gr2);
   Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 1, 5, 4, 5 ] ), 
   Transformation( [ 3, 3, 1 ] ), Transformation( [ 3, 3, 3 ] ) ]
 gap> HomomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));
-[ IdentityTransformation, Transformation( [ 1, 2, 1 ] ) ]
+[ Transformation( [ 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -213,7 +233,7 @@ gap> gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);
 gap> DigraphMonomorphism(gr1, gr1);
 IdentityTransformation
 gap> DigraphMonomorphism(gr1, gr2);
-Transformation( [ 1, 5, 4, 4, 5 ] )
+Transformation( [ 3, 1, 5, 4, 5 ] )
 ]]></Example>
   </Description>
 </ManSection>
@@ -226,7 +246,7 @@ Transformation( [ 1, 5, 4, 4, 5 ] )
   <Returns>A list of transformations.</Returns>
   <Description>
     These operations behave the same as <Ref Oper="HomomorphismsDigraphs"/> and
-    <Ref Oper="HomomorphismsDigraphsRepresentatives"/>, expect they only return
+    <Ref Oper="HomomorphismsDigraphsRepresentatives"/>, except they only return
     <E>injective</E> homomorphisms.
     <Example><![CDATA[
 gap> gr1 := ChainDigraph(3);;
@@ -236,7 +256,7 @@ gap> MonomorphismsDigraphs(gr1, gr2);
 [ Transformation( [ 1, 5, 4, 4, 5 ] ), 
   Transformation( [ 3, 1, 5, 4, 5 ] ) ]
 gap> MonomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));
-[ IdentityTransformation ]
+[ Transformation( [ 2, 1 ] ) ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -258,7 +278,7 @@ gap> gr2 := DigraphRemoveEdge(CompleteDigraph(3), [1, 2]);
 gap> DigraphEpimorphism(gr2, gr1);
 fail
 gap> DigraphEpimorphism(gr1, gr2);
-Transformation( [ 1, 2, 3, 1 ] )
+Transformation( [ 3, 1, 2, 3 ] )
 ]]></Example>
   </Description>
 </ManSection>
@@ -271,7 +291,7 @@ Transformation( [ 1, 2, 3, 1 ] )
   <Returns>A list of transformations.</Returns>
   <Description>
     These operations behave the same as <Ref Oper="HomomorphismsDigraphs"/> and
-    <Ref Oper="HomomorphismsDigraphsRepresentatives"/>, expect they only return
+    <Ref Oper="HomomorphismsDigraphsRepresentatives"/>, except they only return
     <E>surjective</E> homomorphisms.
     <Example><![CDATA[
 gap> gr1 := DigraphReverse(ChainDigraph(4));
@@ -279,8 +299,8 @@ gap> gr1 := DigraphReverse(ChainDigraph(4));
 gap> gr2 := DigraphSymmetricClosure(CycleDigraph(3));
 <digraph with 3 vertices, 6 edges>
 gap> EpimorphismsDigraphsRepresentatives(gr1, gr2);
-[ Transformation( [ 1, 2, 3, 1 ] ), Transformation( [ 1, 2, 3, 2 ] ), 
-  Transformation( [ 1, 2, 1, 3 ] ) ]
+[ Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ), 
+  Transformation( [ 2, 1, 2, 3 ] ) ]
 gap> EpimorphismsDigraphs(gr1, gr2);
 [ Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 3, 1 ] ), 
   Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 3, 1, 2 ] ), 
@@ -497,6 +517,39 @@ gap> DigraphEmbedding(gr, CompleteDigraph(4));
 fail
 gap> DigraphEmbedding(gr, Digraph([[3], [1, 4], [1], [3]]));
 Transformation( [ 2, 4, 3, 4 ] )
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="EmbeddingsDigraphs">
+<ManSection>
+  <Oper Name="EmbeddingsDigraphs" Arg="D1, D2"/>
+  <Oper Name="EmbeddingsDigraphsRepresentatives" Arg="D1, D2"/>
+  <Returns>A list of transformations.</Returns>
+  <Description>
+    These operations behave the same as <Ref Oper="HomomorphismsDigraphs"/> and
+    <Ref Oper="HomomorphismsDigraphsRepresentatives"/>, except they only return
+    embeddings of <A>D1</A> into <A>D2</A>.<P/>
+
+    See also <Ref Oper="IsDigraphEmbedding"/>.
+    <Example><![CDATA[
+gap> D1 := NullDigraph(2);
+<digraph with 2 vertices, 0 edges>
+gap> D2 := CycleDigraph(5);
+<digraph with 5 vertices, 5 edges>
+gap> EmbeddingsDigraphsRepresentatives(D1, D2);
+[ Transformation( [ 1, 3, 3 ] ), Transformation( [ 1, 4, 3, 4 ] ) ]
+gap> EmbeddingsDigraphs(D1, D2);
+[ Transformation( [ 1, 3, 3 ] ), Transformation( [ 1, 4, 3, 4 ] ), 
+  Transformation( [ 2, 4, 4, 5, 1 ] ), 
+  Transformation( [ 2, 5, 4, 5, 1 ] ), 
+  Transformation( [ 3, 1, 5, 1, 2 ] ), 
+  Transformation( [ 3, 5, 5, 1, 2 ] ), 
+  Transformation( [ 4, 1, 1, 2, 3 ] ), 
+  Transformation( [ 4, 2, 1, 2, 3 ] ), 
+  Transformation( [ 5, 2, 2, 3, 4 ] ), 
+  Transformation( [ 5, 3, 2, 3, 4 ] ) ]
 ]]></Example>
   </Description>
 </ManSection>

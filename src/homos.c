@@ -1,1816 +1,2055 @@
-/********************************************************************************
-**
-*A  homos.c               di/graph homomorphisms              Julius Jonusas
-**                                                            J. D. Mitchell
-**
-**  Copyright (C) 2014-15 - Julius Jonusas and J. D. Mitchell
-**
-**  This file is free software, see the digraphs/LICENSE.
-**
-********************************************************************************/
+//
+// homos.c               di/graph homomorphisms              Julius Jonusas
+//                                                           J. D. Mitchell
+//
+// Copyright (C) 2014-19 - Julius Jonusas and J. D. Mitchell
+//
+// This file is free software, see the digraphs/LICENSE.
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// This file is organised as follows:
+//
+// 1. Macros
+// 2. Forward declarations
+// 3. Global variables
+// 4. Hook functions
+// 5. Static helper functions
+// 6. The main recursive functions (and helpers)
+// 7. The GAP-level function (and helpers)
+//
+////////////////////////////////////////////////////////////////////////////////
+
+// TODO(later)
+// 0. remove final arg from push_conditions
+// 1. Try other bit hacks for iterating through set bits
 
 #include "homos.h"
 
 // C headers
-#include <setjmp.h>  // for setjmp
+#include <limits.h>   // for CHAR_BIT
+#include <setjmp.h>   // for longjmp, setjmp, jmp_buf
+#include <stdbool.h>  // for true, false, bool
+#include <stddef.h>   // for NULL
+#include <stdint.h>   // for uint16_t, uint64_t
+#include <stdlib.h>   // for malloc, NULL
+#include <time.h>     // for time
 
-// Bliss headers
-#include "bliss-0.73/bliss_C.h"  // for BlissGraph, . . .
+// GAP headers
+#include "src/compiled.h"
 
 // Digraphs package headers
-#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-#include "schreier-sims.h"   // for PermColl, . . .
+#include "bitarray.h"         // for BitArray
+#include "conditions.h"       // for Conditions
+#include "digraphs-config.h"  // for DIGRAPHS_HAVE___BUILTIN_CTZLL
+#include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
+#include "homos-graphs.h"     // for Digraph, Graph, . . .
+#include "perms.h"            // for MAXVERTS, UNDEFINED, PermColl, Perm
+#include "schreier-sims.h"    // for PermColl, . . .
 
 ////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// Macros
-////////////////////////////////////////////////////////////////////////////////
+// 1. Macros
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// NUMBER_BITS_PER_BLOCK: the number of bits in every Block
-////////////////////////////////////////////////////////////////////////////////
+#define MAX(a, b) (a < b ? b : a)
+#define MIN(a, b) (a < b ? a : b)
 
 #define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// Global variables
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+// The next line can be used instead of the first line of STORE_MIN to
+// randomise which vertex of minimum degree is used next, but I didn't find any
+// cases where this made things faster.
+
+// if (x < current_x || (x == current_x && (rand() & 1))) {
+
+#define STORE_MIN(current_x, current_y, x, y) \
+  if (x < current_x) {                        \
+    current_x = x;                            \
+    current_y = y;                            \
+  }
+
+// See the comment before STORE_MIN
+
+// if (x < current_x || (x == current_x && (rand() & 1))) {
+
+#define STORE_MIN_BREAK(current_x, current_y, x, y) \
+  if (x < current_x) {                              \
+    current_x = x;                                  \
+    current_y = y;                                  \
+    if (current_x == 1) {                           \
+      break;                                        \
+    }                                               \
+  }
+
+#if SIZEOF_VOID_P == 4 && DIGRAPHS_HAVE___BUILTIN_CTZLL
+#undef DIGRAPHS_HAVE___BUILTIN_CTZLL
+#endif
+
+// The following macro is bitmap_decode_ctz_callpack from https://git.io/fho4p
+#ifdef DIGRAPHS_HAVE___BUILTIN_CTZLL
+#define FOR_SET_BITS(__bit_array, __nr_bits, __variable)     \
+  for (size_t k = 0; k < NR_BLOCKS_LOOKUP[__nr_bits]; ++k) { \
+    Block block = __bit_array->blocks[k];                    \
+    while (block != 0) {                                     \
+      uint64_t t = block & -block;                           \
+      int      r = __builtin_ctzll(block);                   \
+      __variable = k * 64 + r;                               \
+      if (__variable >= __nr_bits) {                         \
+        break;                                               \
+      }
+
+#define END_FOR_SET_BITS \
+  block ^= t;            \
+  }                      \
+  }
+
+#else
+#define FOR_SET_BITS(__bit_array, __nr_bits, __variable)       \
+  for (__variable = 0; __variable < __nr_bits; ++__variable) { \
+    if (get_bit_array(__bit_array, __variable)) {
+#define END_FOR_SET_BITS \
+  }                      \
+  }
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// Arguments . . .
+// 2. Forward declarations
 ////////////////////////////////////////////////////////////////////////////////
 
-static UIntS     NR1, NR2;       // the number of vertices in di/graph1/2
-static UIntS     MAX_NR1_NR2;    //
-static UIntS     MAP[MAXVERTS];  // partial image list
-static BitArray* VALS;           // values in MAP already
-static UIntS     HINT;           // wanted nr of distinct values in MAP
-static UIntL     MAX_RESULTS;    // upper bound for the nr of returned homos
-static void*     USER_PARAM;     // a USER_PARAM for the hook
-void (*HOOK)(void*,              // HOOK function applied to every homo found
-             const UIntS,
-             const UIntS*);
-static jmp_buf outofhere;  // so we can jump out of the deepest
-                           // level of recursion
+// Defined in digraphs.h
+Int DigraphNrVertices(Obj);
+Obj OutNeighbours(Obj);
 
-// Values in MAP are restricted to those positions in IMAGE_RESTRICT which are
-// set to true.
-static BitArray* IMAGE_RESTRICT;
+// GAP level things, imported in digraphs.c
+extern Obj IsDigraph;
+extern Obj DIGRAPHS_ValidateVertexColouring;
+extern Obj Infinity;
+extern Obj IsSymmetricDigraph;
+extern Obj GeneratorsOfGroup;
+extern Obj AutomorphismGroup;
 
 ////////////////////////////////////////////////////////////////////////////////
-// For the orbit reps calculation, and stabiliser chain . . .
+// 3. Global variables
 ////////////////////////////////////////////////////////////////////////////////
 
-static PermColl*  STAB_GENS[MAXVERTS];  // stabiliser generators
-static BitArray*  DOMAIN;               // [1 .. NR2]
-static BitArray*  ORB_LOOKUP;           // which point is in which orbit
-static BitArray** REPS;      // orbit representatives organised by depth in
-                             // the search
-static UIntS ORB[MAXVERTS];  // array for containing individual orbits
+static Obj GAP_FUNC;  // Variable to hold a GAP level hook function
 
-////////////////////////////////////////////////////////////////////////////////
-// globals for bitwise operations
-////////////////////////////////////////////////////////////////////////////////
+static void (*HOOK)(void*,  // HOOK function applied to every homo found
+                    const uint16_t,
+                    const uint16_t*);
+static void* USER_PARAM;  // a USER_PARAM for the hook
 
-static bool  IS_MASK_INITIALIZED = false;  // did we call init_mask already?
-static Block MASK[NUMBER_BITS_PER_BLOCK];  // MASK[i] is a Block with a 1 in
-                                           // position i and 0s everywhere
-                                           // else
+// Values in MAP are restricted to those positions in IMAGE_RESTRICT
+static jmp_buf OUTOFHERE;  // so we can jump out of the deepest
 
-////////////////////////////////////////////////////////////////////////////////
-// Statistics - not currently used
-////////////////////////////////////////////////////////////////////////////////
+static bool ORDERED;  // true if the vertices of the domain/source digraph
+                      // should be considered in a different order than they are
+                      // given, false otherwise.
 
-static UIntL count;  // nr of homos found so far
-// static unsigned long long calls1;                   // calls1 is the nr of
-// calls to find_graph_homos
-// static unsigned long long calls2;                   // calls2 is the nr of
-// stabs calculated
-static UIntL last_report = 0;  // the last value of calls1 when we reported
-// static UIntL              report_interval = 999999; // the interval when we
-// report
-// static unsigned long long nr_allocs;
-// static unsigned long long nr_frees;
+static BitArray* BIT_ARRAY_BUFFER[MAXVERTS];  // A buffer
+static BitArray* IMAGE_RESTRICT;              // Values in MAP must be in this
+static BitArray* MAP_UNDEFINED[MAXVERTS];     // Undefined positions in MAP
+static BitArray* ORB_LOOKUP;                  // points in orbit
+static BitArray* VALS;                        // Values in MAP already
 
-////////////////////////////////////////////////////////////////////////////////
-// initial the bit tabs
-////////////////////////////////////////////////////////////////////////////////
+static BitArray** REPS;  // orbit reps organised by depth
 
-static void init_mask(void) {
-  // DIGRAPHS_ASSERT(false);
-  if (!IS_MASK_INITIALIZED) {
-    UIntS i;
-    Block w = 1;
-    for (i = 0; i < NUMBER_BITS_PER_BLOCK; i++) {
-      MASK[i] = w;
-      w <<= 1;
-    }
-    IS_MASK_INITIALIZED = true;
+static Conditions* CONDITIONS;
+
+static Digraph* DIGRAPH1;  // Digraphs to hold incoming GAP digraphs
+static Digraph* DIGRAPH2;
+
+static Graph* GRAPH1;  // Graphs to hold incoming GAP symmetric digraphs
+static Graph* GRAPH2;
+
+static uint16_t MAP[MAXVERTS];            // partial image list
+static uint16_t COLORS2[MAXVERTS];        // colors of range (di)graph
+static uint16_t INVERSE_ORDER[MAXVERTS];  // external -> internal
+static uint16_t MAP_BUFFER[MAXVERTS];     // For converting from internal ->
+                                          // external and back when calling the
+                                          // hook functions.
+static uint16_t ORB[MAXVERTS];    // Array for containing nodes in an orbit.
+static uint16_t ORDER[MAXVERTS];  // internal -> external
+
+static PermColl*     STAB_GENS[MAXVERTS];  // stabiliser generators
+static SchreierSims* SCHREIER_SIMS;
+
+#ifdef DIGRAPHS_ENABLE_STATS
+struct homo_stats_struct {
+  time_t last_print;
+  size_t max_depth;
+  double mean_depth;
+  size_t nr_calls;
+  size_t nr_dead_branches;
+  time_t start_time;
+};
+
+typedef struct homo_stats_struct HomoStats;
+
+static HomoStats* STATS;
+
+static inline void clear_stats(HomoStats* stats) {
+  stats->last_print       = time(0);
+  stats->max_depth        = 0;
+  stats->mean_depth       = 0;
+  stats->nr_calls         = 0;
+  stats->nr_dead_branches = 0;
+  stats->start_time       = time(0);
+}
+
+static void print_stats(HomoStats* stats) {
+  printf("Running for %0.0fs . . .\n", difftime(time(0), stats->start_time));
+  printf("Number of function calls = %*lu\n", 20, stats->nr_calls);
+  printf("Mean depth               = %*.2f\n", 20, stats->mean_depth);
+  printf("Max depth                = %*lu\n", 20, stats->max_depth);
+  printf("Number of dead branches  = %*lu\n\n", 20, stats->nr_dead_branches);
+}
+
+static inline void update_stats(HomoStats* stats, uint64_t depth) {
+  if (depth > stats->max_depth) {
+    stats->max_depth = depth;
+  }
+  stats->nr_calls++;
+  stats->mean_depth += (depth - stats->mean_depth) / stats->nr_calls;
+  if (difftime(time(0), stats->last_print) > 0.9) {
+    print_stats(stats);
+    stats->last_print = time(0);
   }
 }
+#endif  // DIGRAPHS_ENABLE_STATS
 
 ////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// bit arrays
-////////////////////////////////////////////////////////////////////////////////
+// 4. Hook functions
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// new_bit_array: get a pointer to a new BitArray with space for <nr_bits>
-// bits, and with every bit set to false.
-////////////////////////////////////////////////////////////////////////////////
+static void
+homo_hook_gap(void* user_param, uint16_t const nr, uint16_t const* map) {
+  UInt2* ptr;
+  Obj    t;
+  UInt   i;
 
-BitArray* new_bit_array(UIntS nr_bits) {
-  BitArray* bit_array = malloc(sizeof(BitArray));
+  // copy map into new trans2
+  t   = NEW_TRANS2(nr);
+  ptr = ADDR_TRANS2(t);
 
-  bit_array->nr_bits   = nr_bits;
-  bit_array->nr_blocks = (nr_bits / NUMBER_BITS_PER_BLOCK) + 1;
-  bit_array->blocks    = calloc(bit_array->nr_blocks, NUMBER_BITS_PER_BLOCK);
-  return bit_array;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// free_bit_array: free the BitArray pointed to by bit_array.
-////////////////////////////////////////////////////////////////////////////////
-
-void free_bit_array(BitArray* bit_array) {
-  DIGRAPHS_ASSERT(bit_array != NULL);
-
-  free(bit_array->blocks);
-  free(bit_array);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// init_bit_array: set every value in the BitArray pointed to by <bit_array> to
-// the value <val>.
-////////////////////////////////////////////////////////////////////////////////
-
-inline void init_bit_array(BitArray* bit_array, bool val) {
-  DIGRAPHS_ASSERT(bit_array != NULL);
-
-  UIntS i;
-  if (val) {
-    for (i = 0; i < bit_array->nr_blocks; i++) {
-      bit_array->blocks[i] = (Block) -1;
-    }
-  } else {
-    for (i = 0; i < bit_array->nr_blocks; i++) {
-      bit_array->blocks[i] = 0;
-    }
+  for (i = 0; i < nr; i++) {
+    ptr[i] = map[i];
   }
+  CALL_2ARGS(GAP_FUNC, user_param, t);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// set_bit_array: set the <pos>th bit of the BitArray pointed to by <bit_array>
-// to the value <val>.
-////////////////////////////////////////////////////////////////////////////////
+static void
+homo_hook_collect(void* user_param, uint16_t const nr, uint16_t const* map) {
+  UInt2* ptr;
+  Obj    t;
+  UInt   i;
 
-void set_bit_array(BitArray* bit_array, UIntS pos, bool val) {
-  DIGRAPHS_ASSERT(bit_array != NULL);
-  DIGRAPHS_ASSERT(pos < bit_array->nr_bits);
-
-  if (val) {
-    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] |=
-        MASK[pos % NUMBER_BITS_PER_BLOCK];
-  } else {
-    bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK] &=
-        ~MASK[pos % NUMBER_BITS_PER_BLOCK];
+  if (TNUM_OBJ((Obj) user_param) == T_PLIST_EMPTY) {
+    RetypeBag(user_param, T_PLIST);
   }
-}
 
-////////////////////////////////////////////////////////////////////////////////
-// get_bit_array: get the value in position <pos> of the BitArray pointer
-// <bit_array>.
-////////////////////////////////////////////////////////////////////////////////
+  // copy map into new trans2
+  t   = NEW_TRANS2(nr);
+  ptr = ADDR_TRANS2(t);
 
-inline static bool get_bit_array(BitArray* bit_array, UIntS pos) {
-  DIGRAPHS_ASSERT(bit_array != NULL);
-  DIGRAPHS_ASSERT(pos < bit_array->nr_bits);
-
-  return bit_array->blocks[pos / NUMBER_BITS_PER_BLOCK]
-         & MASK[pos % NUMBER_BITS_PER_BLOCK];
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// intersect_bit_arrays: interesect the BitArrays pointed to by <bit_array1>
-// and <bit_array2>. The BitArray pointed to by <bit_array1> is changed in
-// place!!
-////////////////////////////////////////////////////////////////////////////////
-
-static inline BitArray* intersect_bit_arrays(BitArray* bit_array1,
-                                             BitArray* bit_array2) {
-  DIGRAPHS_ASSERT(bit_array1 != NULL && bit_array2 != NULL);
-  DIGRAPHS_ASSERT(bit_array1->nr_bits == bit_array2->nr_bits);
-  DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
-
-  UIntS i;
-  for (i = 0; i < bit_array1->nr_blocks; i++) {
-    bit_array1->blocks[i] &= bit_array2->blocks[i];
+  for (i = 0; i < nr; i++) {
+    ptr[i] = map[i];
   }
-  return bit_array1;
+
+  ASS_LIST(user_param, LEN_LIST(user_param) + 1, t);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// size_bit_array: return the size of a bit array
+// 5. Static helper functions
 ////////////////////////////////////////////////////////////////////////////////
 
-static inline UIntS size_bit_array(BitArray* bit_array) {
-  UIntS  n, i;
-  Block  m;
-  UIntS  nrb    = bit_array->nr_blocks;
-  Block* blocks = bit_array->blocks;
+// print_array is not used, but can be useful for debugging.
 
-  n = 0;
-  for (i = 1; i <= nrb; i++) {
-    m = *blocks++;
-    n += COUNT_TRUES_BLOCK(m);
-  }
-  return n;
-}
-
-// #ifdef DIGRAPHS_KERNEL_DEBUG
-// static inline void print_bit_array(BitArray* bit_array) {
-//   printf("<bit array {");
-//   for (UIntS i = 0; i < bit_array->nr_bits; i++) {
-//     if (get_bit_array(bit_array, i)) {
-//       printf(" %d", i);
-//     }
+// static void print_array(uint16_t const* const array, uint16_t const len) {
+//   if (array == NULL) {
+//     printf("NULL");
+//     return;
 //   }
-//   printf(" }>");
-// }
-//
-// static inline void print_array(UIntS* array, UIntS len) {
 //   printf("<array {");
-//   for (UIntS i = 0; i < len; i++) {
+//   for (uint16_t i = 0; i < len; i++) {
 //     printf(" %d", array[i]);
 //   }
 //   printf(" }>");
 // }
-// #endif
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// conditions: this is a data structure for keeping track of what possible
-// values a vertex can be mapped to by a partially defined homomorphism, given
-// the existing values where the homomorphism is defined.
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
-// Conditions: struct to contain the data. If <nr1> is the number of vertices
-// in the source di/graph and <nr2> is the number of vertices in the range
-// di/graph, then a Conditions object looks like:
-//
-//  ^
-//  |
-//  |
-//
-//  n                +------------+
-//  r                | BitArray*  |
-//  1                | length nr2 |
-//                   +------------+                    +------------+
-//  r                | BitArray*  |                    | BitArray*  |
-//  o                | length nr2 |                    | length nr2 |
-//  w                +------------+------------+       +------------+
-//  s                | BitArray*  | BitArray*  |       | BitArray*  |
-//                   | length nr2 | length nr2 |       | length nr2 |
-//  |   +------------+------------+------------+ - -  -+------------+
-//  |   | BitArray*  | BitArray*  | BitArray*  |       | BitArray*  |
-//  |   | length nr2 | length nr2 | length nr2 |       | length nr2 |
-//  v   +------------+------------+------------+ - -  -+------------+
-//
-//      <----------------------- nr1 columns ----------------------->
-//
-//  The BitArray pointed to in row <i+1> and column <j> row is the intersection
-//  of the BitArray pointed to in row <i> and column <j> with some other
-//  BitArray (the things adjacent to some vertex in di/graph2).
-//
-////////////////////////////////////////////////////////////////////////////////
-
-struct conditions_struct {
-  BitArray** bit_array;  // nr1 * nr1 array of bit arrays of length nr2
-  UIntS*     changed;
-  UIntS*     height;
-  UIntS*     sizes;
-  UIntS      nr1;
-  UIntS      nr2;
-};
-
-typedef struct conditions_struct Conditions;
-
-////////////////////////////////////////////////////////////////////////////////
-// new_conditions: returns a pointer to a Conditions with one complete
-// row where every bit is set to true.
-////////////////////////////////////////////////////////////////////////////////
-
-static Conditions* new_conditions(UIntS nr1, UIntS nr2) {
-  DIGRAPHS_ASSERT(nr1 != 0 && nr2 != 0);
-
-  UIntL       i;
-  Conditions* conditions = malloc(sizeof(Conditions));
-
-  conditions->bit_array = malloc(sizeof(BitArray*) * nr1 * nr1);
-  conditions->changed   = malloc(nr1 * (nr1 + 1) * sizeof(UIntS));
-  conditions->height    = malloc(nr1 * sizeof(UIntS));
-  conditions->sizes     = malloc(nr1 * nr1 * sizeof(UIntS));
-  conditions->nr1       = nr1;
-  conditions->nr2       = nr2;
-
-  for (i = 0; i < ((UIntL) nr1 * nr1); i++) {
-    conditions->bit_array[i] = new_bit_array(nr2);
-  }
-
-  for (i = 0; i < nr1; i++) {
-    init_bit_array(conditions->bit_array[i], true);
-    conditions->changed[i + 1]         = i;
-    conditions->changed[(nr1 + 1) * i] = 0;
-    conditions->height[i]              = 1;
-  }
-  conditions->changed[0] = nr1;
-  return conditions;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// free_conditions: free the entire Conditions object pointed to by
-// <conditions>.
-////////////////////////////////////////////////////////////////////////////////
-
-static void free_conditions(Conditions* conditions) {
-  DIGRAPHS_ASSERT(conditions != NULL);
-
-  UIntL i;
-  for (i = 0; i < ((UIntL) conditions->nr1 * conditions->nr1); i++) {
-    free_bit_array(conditions->bit_array[i]);
-  }
-  free(conditions->bit_array);
-  free(conditions->changed);
-  free(conditions->height);
-  free(conditions->sizes);
-  free(conditions);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// get_conditions: returns the top most BitArray* in column <i>.
-////////////////////////////////////////////////////////////////////////////////
-
-static inline BitArray* get_conditions(Conditions* conditions, Vertex const i) {
-  DIGRAPHS_ASSERT(conditions != NULL);
-  DIGRAPHS_ASSERT(i < conditions->nr1);
-
-  return conditions
-      ->bit_array[conditions->nr1 * (conditions->height[i] - 1) + i];
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// store_size_conditions: store the size of the BitArray pointed to at the top
-// of column <i>.
-////////////////////////////////////////////////////////////////////////////////
-
-static inline void store_size_conditions(Conditions*  conditions,
-                                         Vertex const i) {
-  DIGRAPHS_ASSERT(conditions != NULL);
-  DIGRAPHS_ASSERT(i < conditions->nr1);
-
-  UIntS nr1 = conditions->nr1;
-  conditions->sizes[nr1 * (conditions->height[i] - 1) + i] =
-      size_bit_array(get_conditions(conditions, i));
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// push_conditions: copy the top of the <i>th column of the <conditions> and
-// intersect it with <bit_array> and then push this onto the top of the <i>th
-// column.
-////////////////////////////////////////////////////////////////////////////////
-
-static inline void push_conditions(Conditions*  conditions,
-                                   UIntS const  depth,
-                                   Vertex const i,
-                                   BitArray*    bit_array) {
-  DIGRAPHS_ASSERT(conditions != NULL);
-  DIGRAPHS_ASSERT(i < conditions->nr1);
-  DIGRAPHS_ASSERT(depth < conditions->nr1);
-
-  UIntS nr1 = conditions->nr1;
-
-  memcpy((void*) conditions->bit_array[nr1 * conditions->height[i] + i]->blocks,
-         (void*) conditions->bit_array[nr1 * (conditions->height[i] - 1) + i]
-             ->blocks,
-         (size_t) conditions->bit_array[0]->nr_blocks * sizeof(Block));
-
-  conditions->changed[(nr1 + 1) * depth]++;
-  conditions
-      ->changed[(nr1 + 1) * depth + conditions->changed[(nr1 + 1) * depth]] = i;
-
-  conditions->height[i]++;
-
-  if (bit_array != NULL) {
-    intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-  }
-
-  store_size_conditions(conditions, i);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// pop_conditions: pop the tops off all of the columns which were last push on.
-////////////////////////////////////////////////////////////////////////////////
-
-static inline void pop_conditions(Conditions* conditions, UIntS const depth) {
-  DIGRAPHS_ASSERT(conditions != NULL);
-  DIGRAPHS_ASSERT(depth < conditions->nr1);
-
-  UIntS i;
-  UIntS nr1 = conditions->nr1;
-
-  for (i = 1; i < conditions->changed[(nr1 + 1) * depth] + 1; i++) {
-    conditions->height[conditions->changed[(nr1 + 1) * depth + i]]--;
-  }
-  conditions->changed[(nr1 + 1) * depth] = 0;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// size_conditions: return the size of the BitArray pointed to by the top of
-// the <i>th column.
-////////////////////////////////////////////////////////////////////////////////
-
-static inline UIntS size_conditions(Conditions* conditions, Vertex const i) {
-  DIGRAPHS_ASSERT(conditions != NULL);
-  DIGRAPHS_ASSERT(i < conditions->nr1);
-
-  return conditions->sizes[conditions->nr1 * (conditions->height[i] - 1) + i];
-}
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// orbits_reps: find orbit_reps at <rep_depth>
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-static void orbit_reps(UIntS rep_depth) {
-  UIntS i, j, fst, img, n;
-  Perm  gen;
-
-  init_bit_array(REPS[rep_depth], false);
-  init_bit_array(DOMAIN, false);
-  init_bit_array(ORB_LOOKUP, false);
-
-  // TODO(*) special case in case there are no gens, or just the identity.
-  for (i = 0; i < deg; i++) {
-    if (!get_bit_array(VALS, i)) {
-      set_bit_array(DOMAIN, i, true);
+static void get_automorphism_group_from_gap(Obj digraph_obj, PermColl* out) {
+  DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
+  Obj o = CALL_1ARGS(AutomorphismGroup, digraph_obj);
+  o     = CALL_1ARGS(GeneratorsOfGroup, o);
+  DIGRAPHS_ASSERT(IS_LIST(o));
+  clear_perm_coll(out);
+  out->degree = PERM_DEGREE;
+  DIGRAPHS_ASSERT(out->capacity >= LEN_LIST(o));
+  for (Int i = 1; i <= LEN_LIST(o); ++i) {
+    DIGRAPHS_ASSERT(ISB_LIST(o, i));
+    DIGRAPHS_ASSERT(IS_PERM2(ELM_LIST(o, i)) || IS_PERM4(ELM_LIST(o, i)));
+    Obj p = ELM_LIST(o, i);
+    DIGRAPHS_ASSERT(LargestMovedPointPerm(p) <= PERM_DEGREE);
+    if (LargestMovedPointPerm(p) == 0) {
+      continue;
+    }
+    Perm q = out->perms[i - 1];
+    out->size++;
+    DIGRAPHS_ASSERT(out->size == i);
+    size_t dep;
+    if (IS_PERM2(p)) {
+      UInt2 const* ptp2 = CONST_ADDR_PERM2(p);
+      dep               = MIN((uint16_t) DEG_PERM2(p), PERM_DEGREE);
+      for (uint16_t j = 0; j < dep; ++j) {
+        q[j] = (uint16_t) ptp2[j];
+      }
+    } else {
+      DIGRAPHS_ASSERT(IS_PERM4(p));
+      UInt4 const* ptp4 = CONST_ADDR_PERM4(p);
+      dep               = MIN((uint16_t) DEG_PERM4(p), PERM_DEGREE);
+      for (uint16_t j = 0; j < dep; ++j) {
+        q[j] = (uint16_t) ptp4[j];
+      }
+    }
+    for (uint16_t j = dep; j < PERM_DEGREE; ++j) {
+      q[j] = j;
     }
   }
+}
 
-  fst = 0;
-  if (IMAGE_RESTRICT != NULL) {
-    while (fst < deg
-           && (!get_bit_array(DOMAIN, fst)
-               || !get_bit_array(IMAGE_RESTRICT, fst))) {
-      fst++;
+static void init_digraph_from_digraph_obj(Digraph* const digraph,
+                                          Obj            digraph_obj,
+                                          bool const     reorder) {
+  DIGRAPHS_ASSERT(digraph != NULL);
+  DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
+  UInt const nr  = DigraphNrVertices(digraph_obj);
+  Obj        out = OutNeighbours(digraph_obj);
+  DIGRAPHS_ASSERT(nr < MAXVERTS);
+  DIGRAPHS_ASSERT(IS_PLIST(out));
+  clear_digraph(digraph, nr);
+
+  if (!reorder) {
+    for (uint16_t i = 1; i <= nr; i++) {
+      Obj nbs = ELM_PLIST(out, i);
+      DIGRAPHS_ASSERT(IS_LIST(nbs));
+      for (uint16_t j = 1; j <= LEN_LIST(nbs); j++) {
+        DIGRAPHS_ASSERT(IS_INTOBJ(ELM_LIST(nbs, j)));
+        add_edge_digraph(digraph, i - 1, INT_INTOBJ(ELM_LIST(nbs, j)) - 1);
+      }
     }
   } else {
-    while (fst < deg && !get_bit_array(DOMAIN, fst)) {
-      fst++;
+    DIGRAPHS_ASSERT(ORDERED);
+    for (uint16_t i = 1; i <= nr; i++) {
+      Obj nbs = ELM_PLIST(out, ORDER[i - 1] + 1);
+      DIGRAPHS_ASSERT(IS_LIST(nbs));
+      for (uint16_t j = 1; j <= LEN_LIST(nbs); j++) {
+        DIGRAPHS_ASSERT(IS_INTOBJ(ELM_LIST(nbs, j)));
+        add_edge_digraph(
+            digraph, i - 1, INVERSE_ORDER[INT_INTOBJ(ELM_LIST(nbs, j)) - 1]);
+      }
+    }
+  }
+}
+
+static void init_graph_from_digraph_obj(Graph* const graph,
+                                        Obj          digraph_obj,
+                                        bool const   reorder) {
+  DIGRAPHS_ASSERT(graph != NULL);
+  DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
+  DIGRAPHS_ASSERT(CALL_1ARGS(IsSymmetricDigraph, digraph_obj) == True);
+  UInt const nr  = DigraphNrVertices(digraph_obj);
+  Obj        out = OutNeighbours(digraph_obj);
+  DIGRAPHS_ASSERT(nr < MAXVERTS);
+  DIGRAPHS_ASSERT(IS_PLIST(out));
+  clear_graph(graph, nr);
+
+  if (!reorder) {
+    for (uint16_t i = 1; i <= nr; i++) {
+      Obj nbs = ELM_PLIST(out, i);
+      DIGRAPHS_ASSERT(IS_LIST(nbs));
+      for (uint16_t j = 1; j <= LEN_LIST(nbs); j++) {
+        DIGRAPHS_ASSERT(IS_INTOBJ(ELM_LIST(nbs, j)));
+        add_edge_graph(graph, i - 1, INT_INTOBJ(ELM_LIST(nbs, j)) - 1);
+      }
+    }
+  } else {
+    DIGRAPHS_ASSERT(ORDERED);
+    for (uint16_t i = 1; i <= nr; i++) {  // Nodes in the new graph
+      Obj nbs = ELM_PLIST(out, ORDER[i - 1] + 1);
+      DIGRAPHS_ASSERT(IS_LIST(nbs));
+      for (uint16_t j = 1; j <= LEN_LIST(nbs); j++) {
+        DIGRAPHS_ASSERT(IS_INTOBJ(ELM_LIST(nbs, j)));
+        add_edge_graph(
+            graph, i - 1, INVERSE_ORDER[INT_INTOBJ(ELM_LIST(nbs, j)) - 1]);
+      }
+    }
+  }
+}
+
+// Find orbit representatives of the group generated by STAB_GENS[rep_depth]
+// and store them in REPS[rep_depth], only values in IMAGE_RESTRICT will be
+// chosen as orbit representatives.
+static bool compute_stabs_and_orbit_reps(uint16_t const nr_nodes_1,
+                                         uint16_t const nr_nodes_2,
+                                         uint16_t const rep_depth,
+                                         uint16_t const depth,
+                                         uint16_t const pt) {
+  DIGRAPHS_ASSERT(rep_depth <= depth + 1);
+
+  if (depth == nr_nodes_1 - 1) {
+    return false;  // This doesn't really say anything about the stabiliser
+  } else if (rep_depth > 0) {
+    point_stabilizer(
+        SCHREIER_SIMS, STAB_GENS[rep_depth - 1], STAB_GENS[rep_depth], pt);
+    if (STAB_GENS[rep_depth]->size == 0) {
+      // the stabiliser of pt in STAB_GENS[rep_depth - 1] is trivial
+      copy_bit_array(REPS[rep_depth], IMAGE_RESTRICT, nr_nodes_2);
+      complement_bit_arrays(REPS[rep_depth], VALS, nr_nodes_2);
+      // REPS[rep_depth] is a set of orbit representatives of the stabiliser of
+      // the existing values in MAP, which belong to VALS, and since the
+      // stabiliser is trivial, we take valid choice as the set of
+      // representatives.
+      return true;  // the stabiliser is trivial
     }
   }
 
-  while (fst < deg) {
-    ORB[0] = fst;
-    n      = 1;  // length of ORB
+  init_bit_array(REPS[rep_depth], false, nr_nodes_2);
+  copy_bit_array(ORB_LOOKUP, VALS, nr_nodes_2);
+  uint16_t fst = 0;
+  while (fst < PERM_DEGREE
+         && (get_bit_array(ORB_LOOKUP, fst)
+             || !get_bit_array(IMAGE_RESTRICT, fst))) {
+    fst++;
+  }
+
+  while (fst < PERM_DEGREE) {
+    ORB[0]     = fst;
+    uint16_t n = 1;  // length of ORB
 
     set_bit_array(REPS[rep_depth], fst, true);
     set_bit_array(ORB_LOOKUP, fst, true);
-    set_bit_array(DOMAIN, fst, false);
 
-    for (i = 0; i < n; i++) {
-      for (j = 0; j < STAB_GENS[rep_depth]->nr_gens; j++) {
-        gen = STAB_GENS[rep_depth]->gens[j];
-        img = gen[ORB[i]];
+    for (uint16_t i = 0; i < n; ++i) {
+      for (uint16_t j = 0; j < STAB_GENS[rep_depth]->size; ++j) {
+        Perm           gen = STAB_GENS[rep_depth]->perms[j];
+        uint16_t const img = gen[ORB[i]];
         if (!get_bit_array(ORB_LOOKUP, img)) {
           ORB[n++] = img;
           set_bit_array(ORB_LOOKUP, img, true);
-          set_bit_array(DOMAIN, img, false);
         }
       }
     }
-    if (IMAGE_RESTRICT != NULL) {
-      while (fst < deg
-             && (!get_bit_array(DOMAIN, fst)
-                 || !get_bit_array(IMAGE_RESTRICT, fst))) {
-        fst++;
-      }
-    } else {
-      while (fst < deg && !get_bit_array(DOMAIN, fst)) {
-        fst++;
-      }
+    while (fst < PERM_DEGREE
+           && (get_bit_array(ORB_LOOKUP, fst)
+               || !get_bit_array(IMAGE_RESTRICT, fst))) {
+      fst++;
     }
   }
+  return false;  // the stabiliser is not trivial
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// digraphs
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
-// new_digraph: returns a pointer to a Digraph with <nr_verts> vertices and no
-// edges.
-////////////////////////////////////////////////////////////////////////////////
-
-Digraph* new_digraph(UIntS const nr_verts) {
-  UIntS    i;
-  Digraph* digraph        = malloc(sizeof(Digraph));
-  digraph->in_neighbours  = malloc(nr_verts * sizeof(BitArray));
-  digraph->out_neighbours = malloc(nr_verts * sizeof(BitArray));
-  init_mask();
-  for (i = 0; i < nr_verts; i++) {
-    digraph->in_neighbours[i]  = new_bit_array(nr_verts);
-    digraph->out_neighbours[i] = new_bit_array(nr_verts);
+// Rewrite the global variable MAP so that it contains a homomorphism of the
+// original GAP level (di)graph, and not the possibly distinct (but isomorphic)
+// copy in the homomorphism search.  This should be called before any calls to
+// the hook functions (i.e. after an entire homomorphism is found).
+static void external_order_map_digraph(Digraph* digraph) {
+  if (!ORDERED) {
+    return;
   }
-  digraph->nr_vertices = nr_verts;
-  return digraph;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// free_digraph: free the Digraph pointed to by <digraph>.
-////////////////////////////////////////////////////////////////////////////////
-
-void free_digraph(Digraph* digraph) {
-  DIGRAPHS_ASSERT(digraph != NULL);
-
-  UIntS i, nr = digraph->nr_vertices;
-
-  for (i = 0; i < nr; i++) {
-    free_bit_array(digraph->in_neighbours[i]);
-    free_bit_array(digraph->out_neighbours[i]);
+  for (uint16_t i = 0; i < digraph->nr_vertices; ++i) {
+    MAP_BUFFER[ORDER[i]] = MAP[i];
   }
-  free(digraph->in_neighbours);
-  free(digraph->out_neighbours);
-  free(digraph);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// add_edge_digraph: add an edge from Vertex <i> to Vertex <j> in the Digraph
-// pointed to by <digraph>.
-////////////////////////////////////////////////////////////////////////////////
-
-void add_edge_digraph(Digraph* digraph, Vertex i, Vertex j) {
-  DIGRAPHS_ASSERT(digraph != NULL);
-  DIGRAPHS_ASSERT(i < digraph->nr_vertices && j < digraph->nr_vertices);
-
-  set_bit_array(digraph->out_neighbours[i], j, true);
-  set_bit_array(digraph->in_neighbours[j], i, true);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// is_adjacent_digraph: returns <true> if there is an edge from <i> to <j> in
-// the Digraph pointed to by <digraph> and returns <false> if there is not.
-////////////////////////////////////////////////////////////////////////////////
-
-inline static bool is_adjacent_digraph(Digraph* digraph, Vertex i, Vertex j) {
-  DIGRAPHS_ASSERT(digraph != NULL);
-  DIGRAPHS_ASSERT(i < digraph->nr_vertices && j < digraph->nr_vertices);
-
-  return get_bit_array(digraph->out_neighbours[i], j);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// new_bliss_digraphs_graph: get a new bliss (undirected, vertex coloured)
-// digraph from the Digraph pointed to by <digraph>.
-////////////////////////////////////////////////////////////////////////////////
-
-static BlissGraph* new_bliss_digraphs_graph_from_digraph(Digraph* digraph,
-                                                         UIntS*   colors) {
-  DIGRAPHS_ASSERT(digraph != NULL);
-
-  UIntS       i, j, k, l;
-  BlissGraph* bliss_digraphs_graph;
-  UIntS       n = digraph->nr_vertices;
-
-  if (colors == NULL) {
-    bliss_digraphs_graph = bliss_digraphs_new(n);
-  } else {
-    bliss_digraphs_graph = bliss_digraphs_new(0);
-    for (i = 0; i < n; i++) {
-      bliss_digraphs_add_vertex(bliss_digraphs_graph, colors[i]);
-    }
+  for (uint16_t i = 0; i < digraph->nr_vertices; ++i) {
+    MAP[i] = MAP_BUFFER[i];
   }
+}
 
-  for (i = 0; i < n; i++) {  // loop over vertices
-    for (j = 0; j < n; j++) {
-      if (is_adjacent_digraph(digraph, i, j)) {
-        k = bliss_digraphs_add_vertex(bliss_digraphs_graph, n + 1);
-        l = bliss_digraphs_add_vertex(bliss_digraphs_graph, n + 2);
-        bliss_digraphs_add_edge(bliss_digraphs_graph, i, k);
-        bliss_digraphs_add_edge(bliss_digraphs_graph, k, l);
-        bliss_digraphs_add_edge(bliss_digraphs_graph, l, j);
-      }
-    }
+static void external_order_map_graph(Graph* graph) {
+  if (!ORDERED) {
+    return;
   }
-  return bliss_digraphs_graph;
+  for (uint16_t i = 0; i < graph->nr_vertices; ++i) {
+    MAP_BUFFER[ORDER[i]] = MAP[i];
+  }
+  for (uint16_t i = 0; i < graph->nr_vertices; ++i) {
+    MAP[i] = MAP_BUFFER[i];
+  }
+}
+
+// Rewrite the global variable MAP so that it contains a homomorphism of the
+// internal (di)graph, and not the possibly distinct (but isomorphic) GAP level
+// (di)graph.  This should be called after any calls to the hook functions
+// (i.e. after an entire homomorphism is found).
+static void internal_order_map_digraph(Digraph const* const digraph) {
+  if (!ORDERED) {
+    return;
+  }
+  for (uint16_t i = 0; i < digraph->nr_vertices; ++i) {
+    MAP_BUFFER[INVERSE_ORDER[i]] = MAP[i];
+  }
+  for (uint16_t i = 0; i < digraph->nr_vertices; ++i) {
+    MAP[i] = MAP_BUFFER[i];
+  }
+}
+
+static void internal_order_map_graph(Graph const* const graph) {
+  if (!ORDERED) {
+    return;
+  }
+  for (uint16_t i = 0; i < graph->nr_vertices; ++i) {
+    MAP_BUFFER[INVERSE_ORDER[i]] = MAP[i];
+  }
+  for (uint16_t i = 0; i < graph->nr_vertices; ++i) {
+    MAP[i] = MAP_BUFFER[i];
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// bliss_digraphs_hook_digraph: the hook function for
-// bliss_digraphs_find_automorphisms to
-// collect the generators of the automorphism group in a PermColl
+// 6. The main recursive functions (and helpers)
 ////////////////////////////////////////////////////////////////////////////////
 
-static void bliss_digraphs_hook_digraph(void* user_param_arg,  // perm_coll!
-                                        unsigned int        N,
-                                        const unsigned int* aut) {
-  UIntS i;
-  Perm  p = new_perm();
-
-  UIntS min = (N < deg ? N : deg);
-
-  for (i = 0; i < min; i++) {
-    p[i] = aut[i];
-  }
-  for (; i < deg; i++) {
-    p[i] = i;
-  }
-  add_perm_coll((PermColl*) user_param_arg, p);
+// Helper for the main recursive homomorphism function.
+static ALWAYS_INLINE uint16_t
+                     graph_homo_update_conditions(uint16_t const depth,
+                                                  uint16_t const last_defined,
+                                                  uint16_t const vertex) {
+  push_conditions(
+      CONDITIONS, depth, vertex, GRAPH2->neighbours[MAP[last_defined]]);
+  store_size_conditions(CONDITIONS, vertex);
+  return size_conditions(CONDITIONS, vertex);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// automorphisms_digraph: get a PermColl* to the generators of the Digraph
-// pointed to by <digraph>.
-////////////////////////////////////////////////////////////////////////////////
-
-static PermColl* automorphisms_digraph(Digraph* digraph, UIntS* colors) {
-  DIGRAPHS_ASSERT(digraph != NULL);
-
-  BlissGraph* bliss_digraphs_graph =
-      new_bliss_digraphs_graph_from_digraph(digraph, colors);
-  PermColl* gens = new_perm_coll(digraph->nr_vertices - 1);
-  bliss_digraphs_find_automorphisms(
-      bliss_digraphs_graph, bliss_digraphs_hook_digraph, gens, 0);
-  bliss_digraphs_release(bliss_digraphs_graph);
-  return gens;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// find_digraph_homos: the main recursive function for digraphs
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-// TODO(*) describe the args
-
-static void
-find_digraph_homos(Digraph*    digraph1,
-                   Digraph*    digraph2,
-                   Conditions* conditions,
-                   UIntS       depth,  // the number of filled positions in MAP
-                   UIntS       pos,    // the last position filled
-                   UIntS       rep_depth,
-                   bool        has_trivial_stab,
-                   // current number of distinct values in MAP
-                   UIntS rank) {
-  UIntS i, min, next;
-  bool  is_trivial;
-
-  if (depth == NR1) {  // we've assigned every position in <MAP>
-    if (HINT != UNDEFINED && rank != HINT) {
+// The main recursive function for homomorphisms of graphs.
+//
+// The arguments are:
+//
+// 1. depth             The current depth of the search (i.e. number of
+//                      positions in MAP that are assigned).
+// 2. pos               The last position in MAP that was filled
+// 3. rep_depth         The depth of the stabilisers of points in MAP already.
+//                      This is different than depth because we stop increasing
+//                      the rep_depth when we first encounter a trivial
+//                      stabiliser.
+// 4. has_trivial_stab  true if the stabiliser of the values already in MAP is
+//                      trivial, false otherwise.
+// 5. rank              The current number of distinct values in MAP.
+// 6. max_results       The maximum number of results to find.
+// 7. hint              The desired number of distinct points in a (full)
+//                      homomorphism.
+// 8. count             The number of homomorphisms found so far.
+static void find_graph_homos(uint16_t        depth,
+                             uint16_t        pos,
+                             uint16_t        rep_depth,
+                             bool            has_trivial_stab,
+                             uint16_t        rank,
+                             uint64_t const  max_results,
+                             uint64_t const  hint,
+                             uint64_t* const count) {
+#ifdef DIGRAPHS_ENABLE_STATS
+  update_stats(STATS, depth);
+#endif
+  if (depth == GRAPH1->nr_vertices) {
+    // Every position in MAP is assigned . . .
+    if (hint != UNDEFINED && rank != hint) {
+#ifdef DIGRAPHS_ENABLE_STATS
+      STATS->nr_dead_branches++;
+#endif
       return;
     }
-    HOOK(USER_PARAM, MAX_NR1_NR2, MAP);
-    count++;
-    if (count >= MAX_RESULTS) {
-      longjmp(outofhere, 1);
+    external_order_map_graph(GRAPH1);
+    HOOK(USER_PARAM, MAX(GRAPH1->nr_vertices, GRAPH2->nr_vertices), MAP);
+    internal_order_map_graph(GRAPH1);
+    (*count)++;
+    if (*count >= max_results) {
+      longjmp(OUTOFHERE, 1);
     }
     return;
   }
 
-  next = 0;          // the next position to fill
-  min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
+  uint16_t next = 0;          // the next position to fill
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
+  uint16_t i;
 
-  if (pos != UNDEFINED) {  // this is not the first call of the function
-    for (i = 0; i < NR1; i++) {
-      if (MAP[i] == UNDEFINED) {
-        if (is_adjacent_digraph(digraph1, pos, i)) {
-          push_conditions(
-              conditions, depth, i, digraph2->out_neighbours[MAP[pos]]);
-          if (is_adjacent_digraph(digraph1, i, pos)) {
-            intersect_bit_arrays(get_conditions(conditions, i),
-                                 digraph2->in_neighbours[MAP[pos]]);
-          }
-          if (size_conditions(conditions, i) == 0) {
-            pop_conditions(conditions, depth);
-            return;
-          }
-        } else if (is_adjacent_digraph(digraph1, i, pos)) {
-          push_conditions(
-              conditions, depth, i, digraph2->in_neighbours[MAP[pos]]);
-          if (size_conditions(conditions, i) == 0) {
-            pop_conditions(conditions, depth);
-            return;
-          }
-        }
-        if (size_conditions(conditions, i) < min) {
-          next = i;
-          min  = size_conditions(conditions, i);
-        }
+  BitArray* possible = BIT_ARRAY_BUFFER[depth];
+
+  if (depth > 0) {  // this is not the first call of the function
+    copy_bit_array(
+        MAP_UNDEFINED[depth], MAP_UNDEFINED[depth - 1], GRAPH1->nr_vertices);
+    copy_bit_array(possible, MAP_UNDEFINED[depth], GRAPH1->nr_vertices);
+    intersect_bit_arrays(
+        possible, GRAPH1->neighbours[pos], GRAPH1->nr_vertices);
+    FOR_SET_BITS(possible, GRAPH1->nr_vertices, i) {
+      size_t const n = graph_homo_update_conditions(depth, pos, i);
+      if (n == 0) {
+#ifdef DIGRAPHS_ENABLE_STATS
+        STATS->nr_dead_branches++;
+#endif
+        pop_conditions(CONDITIONS, depth);
+        return;
       }
+      STORE_MIN(min, next, n, i);
+    }
+    END_FOR_SET_BITS
+    if (min > 1) {
+      copy_bit_array(possible, MAP_UNDEFINED[depth], GRAPH1->nr_vertices);
+      complement_bit_arrays(
+          possible, GRAPH1->neighbours[pos], GRAPH1->nr_vertices);
+      FOR_SET_BITS(possible, GRAPH1->nr_vertices, i) {
+        size_t const n = size_conditions(CONDITIONS, i);
+        STORE_MIN_BREAK(min, next, n, i);
+      }
+      END_FOR_SET_BITS
     }
   } else {
-    for (i = 0; i < NR1; i++) {
-      if (size_conditions(conditions, i) < min) {
-        next = i;
-        min  = size_conditions(conditions, i);
-      }
+    for (i = 0; i < GRAPH1->nr_vertices; ++i) {
+      size_t const n = size_conditions(CONDITIONS, i);
+      STORE_MIN_BREAK(min, next, n, i);
     }
   }
+  DIGRAPHS_ASSERT(get_bit_array(MAP_UNDEFINED[depth], next));
 
-  BitArray* possible = get_conditions(conditions, next);
-
-  if (rank < HINT) {
-    for (i = 0; i < NR2; i++) {
-      if (get_bit_array(possible, i) && !get_bit_array(VALS, i)
-          && get_bit_array(REPS[rep_depth], i)) {
-        if (!has_trivial_stab) {
-          // stabiliser of the point i in the stabiliser at current rep_depth
-          is_trivial = point_stabilizer(
-              STAB_GENS[rep_depth], i, &STAB_GENS[rep_depth + 1]);
-        }
-        MAP[next] = i;
-        set_bit_array(VALS, i, true);
-        if (!has_trivial_stab) {
-          if (depth != NR1 - 1) {
-            orbit_reps(rep_depth + 1);
-          }
-          find_digraph_homos(digraph1,
-                             digraph2,
-                             conditions,
-                             depth + 1,
-                             next,
-                             rep_depth + 1,
-                             is_trivial,
-                             rank + 1);
-        } else {
-          find_digraph_homos(digraph1,
-                             digraph2,
-                             conditions,
-                             depth + 1,
-                             next,
-                             rep_depth,
-                             true,
-                             rank + 1);
-        }
-        MAP[next] = UNDEFINED;
-        set_bit_array(VALS, i, false);
-      }
-    }
-  }
-
-  for (i = 0; i < NR2; i++) {
-    if (get_bit_array(possible, i) && get_bit_array(VALS, i)) {
-      MAP[next] = i;
-      find_digraph_homos(digraph1,
-                         digraph2,
-                         conditions,
-                         depth + 1,
-                         next,
-                         rep_depth,
-                         has_trivial_stab,
-                         rank);
-      MAP[next] = UNDEFINED;
-    }
-  }
-  pop_conditions(conditions, depth);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// DigraphHomomorphisms: the function which calls the main recursive function
-// <find_digraph_homos>.
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-void DigraphHomomorphisms(Digraph* digraph1,
-                          Digraph* digraph2,
-                          void (*hook_arg)(void*        user_param,
-                                           const UIntS  nr,
-                                           const UIntS* map),
-                          void*     user_param_arg,
-                          UIntL     max_results_arg,
-                          int       hint_arg,
-                          BitArray* image_arg,
-                          UIntS*    partial_map_arg,
-                          UIntS*    colors1,
-                          UIntS*    colors2) {
-  DIGRAPHS_ASSERT(digraph1 != NULL && digraph2 != NULL);
-
-  UIntS     i, j;
-  BitArray* bit_array;
-
-  NR1         = digraph1->nr_vertices;
-  NR2         = digraph2->nr_vertices;
-  MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
-
-  DIGRAPHS_ASSERT(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
-
-  // initialise the conditions . . .
-  Conditions* conditions = new_conditions(NR1, NR2);
-
-  // image_arg is a pointer to a BitArray of possible image values for the
-  // homomorphisms . . .
-  if (image_arg != NULL) {  // image was specified
-    for (i = 0; i < NR1; i++) {
-      intersect_bit_arrays(get_conditions(conditions, i), image_arg);
-      // intersect everything in the first row of conditions with <image>
-    }
-  }
-  // Used by orbit_reps, so that orbit reps are chosen from among the
-  // restricted values of the image.
-  IMAGE_RESTRICT = image_arg;
-
-  // partial_map_arg is an array of UIntS's partially defining a map from
-  // digraph1 to digraph2.
-  bit_array = new_bit_array(NR2);  // every position is false by default
-
-  if (partial_map_arg != NULL) {  // a partial MAP was defined
-    for (i = 0; i < NR1; i++) {
-      if (partial_map_arg[i] != UNDEFINED) {
-        init_bit_array(bit_array, false);
-        set_bit_array(bit_array, partial_map_arg[i], true);
-        intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-      }
-    }
-  }
-
-  init_bit_array(bit_array, false);
-
-  // find loops in digraph2
-  for (i = 0; i < NR2; i++) {
-    if (is_adjacent_digraph(digraph2, i, i)) {
-      set_bit_array(bit_array, i, true);
-    }
-  }
-
-  // bit_array in digraph1 can only MAP to bit_array in digraph2
-  for (i = 0; i < NR1; i++) {
-    if (is_adjacent_digraph(digraph1, i, i)) {
-      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-    }
-    store_size_conditions(conditions, i);
-  }
-
-  if (colors1 != NULL) {  // colors1 and colors2 specified
-    for (i = 0; i < NR1; i++) {
-      init_bit_array(bit_array, false);
-      for (j = 0; j < NR2; j++) {
-        if (colors1[i] == colors2[j]) {
-          set_bit_array(bit_array, j, true);
-        }
-      }
-      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-      // can only map vertices of color i to vertices of color i
-    }
-  }
-
-  free_bit_array(bit_array);
-
-  // store the values in <MAP>, this is initialised to every bit set to false,
-  // by default.
-  VALS       = new_bit_array(NR2);
-  DOMAIN     = new_bit_array(NR2);
-  ORB_LOOKUP = new_bit_array(NR2);
-  REPS       = malloc(NR1 * sizeof(BitArray*));
-
-  // initialise the <MAP> and store the sizes in the conditions.
-  for (i = 0; i < NR1; i++) {
-    REPS[i] = new_bit_array(NR2);
-    MAP[i]  = UNDEFINED;
-  }
-  for (i = NR1; i < MAX_NR1_NR2; i++) {
-    MAP[i] = i;
-  }
-
-  // get generators of the automorphism group of digraph2, and the orbit reps
-  set_perms_degree(NR2);
-  STAB_GENS[0] = automorphisms_digraph(digraph2, colors2);
-  orbit_reps(0);
-
-  // misc parameters
-  MAX_RESULTS = max_results_arg;
-  USER_PARAM  = user_param_arg;
-  HINT        = hint_arg;
-  HOOK        = hook_arg;
-
-  // statistics . . . FIXME not currently used for anything
-  count       = 0;
-  last_report = 0;
-
-  // go!
-  if (setjmp(outofhere) == 0) {
-    find_digraph_homos(
-        digraph1, digraph2, conditions, 0, UNDEFINED, 0, false, 0);
-  }
-
-  // free the STAB_GENS
-  for (i = 0; i < MAXVERTS; i++) {
-    if (STAB_GENS[i] != NULL) {
-      free_perm_coll(STAB_GENS[i]);
-      STAB_GENS[i] = NULL;
-    }
-  }
-  free_bit_array(VALS);
-  free_bit_array(DOMAIN);
-  free_bit_array(ORB_LOOKUP);
-  for (i = 0; i < NR1; i++) {
-    free_bit_array(REPS[i]);
-  }
-  free(REPS);
-  free_conditions(conditions);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// a version of new main algorithm for injective homomorphisms
-////////////////////////////////////////////////////////////////////////////////
-
-static void
-find_digraph_monos(Digraph*    digraph1,
-                   Digraph*    digraph2,
-                   Conditions* conditions,
-                   UIntS       depth,  // the number of filled positions in map
-                   UIntS       pos,    // the last position filled
-                   UIntS       rep_depth,
-                   bool        has_trivial_stab) {
-  UIntS i, min, next;
-  bool  is_trivial;
-
-  if (depth == NR1) {  // we've assigned every position in <MAP>
-    HOOK(USER_PARAM, MAX_NR1_NR2, MAP);
-    count++;
-    if (count >= MAX_RESULTS) {
-      longjmp(outofhere, 1);
-    }
-    return;
-  }
-
-  next = 0;          // the next position to fill
-  min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
-
-  if (pos != UNDEFINED) {  // this is not the first call of the function
-    for (i = 0; i < NR1; i++) {
-      if (MAP[i] == UNDEFINED) {
-        push_conditions(conditions, depth, i, NULL);
-        set_bit_array(get_conditions(conditions, i), MAP[pos], false);
-        // this could be optimised since MAP[pos] is fixed within the loop
-        if (is_adjacent_digraph(digraph1, pos, i)) {
-          intersect_bit_arrays(get_conditions(conditions, i),
-                               digraph2->out_neighbours[MAP[pos]]);
-        }
-        if (is_adjacent_digraph(digraph1, i, pos)) {
-          intersect_bit_arrays(get_conditions(conditions, i),
-                               digraph2->in_neighbours[MAP[pos]]);
-        }
-        if (size_conditions(conditions, i) == 0) {
-          pop_conditions(conditions, depth);
-          return;
-        }
-        if (size_conditions(conditions, i) < min) {
-          next = i;
-          min  = size_conditions(conditions, i);
-        }
-      }
-    }
-  } else {
-    for (i = 0; i < NR1; i++) {
-      if (size_conditions(conditions, i) < min) {
-        next = i;
-        min  = size_conditions(conditions, i);
-      }
-    }
-  }
-
-  BitArray* possible = get_conditions(conditions, next);
-
-  for (i = 0; i < NR2; i++) {
-    if (get_bit_array(possible, i) && get_bit_array(REPS[rep_depth], i)) {
-      if (!has_trivial_stab) {
-        // stabiliser of the point i in the stabiliser at current rep_depth
-        is_trivial = point_stabilizer(
-            STAB_GENS[rep_depth], i, &STAB_GENS[rep_depth + 1]);
-      }
+  if (rank < hint) {
+    copy_bit_array(
+        possible, get_conditions(CONDITIONS, next), GRAPH2->nr_vertices);
+    complement_bit_arrays(possible, VALS, GRAPH2->nr_vertices);
+    intersect_bit_arrays(possible, REPS[rep_depth], GRAPH2->nr_vertices);
+    FOR_SET_BITS(possible, GRAPH2->nr_vertices, i) {
       MAP[next] = i;
       set_bit_array(VALS, i, true);
+      set_bit_array(MAP_UNDEFINED[depth], next, false);
       if (!has_trivial_stab) {
-        if (depth != NR1 - 1) {
-          orbit_reps(rep_depth + 1);
-        }
-        find_digraph_monos(digraph1,
-                           digraph2,
-                           conditions,
-                           depth + 1,
-                           next,
-                           rep_depth + 1,
-                           is_trivial);
+        find_graph_homos(depth + 1,
+                         next,
+                         rep_depth + 1,
+                         compute_stabs_and_orbit_reps(GRAPH1->nr_vertices,
+                                                      GRAPH2->nr_vertices,
+                                                      rep_depth + 1,
+                                                      depth,
+                                                      i),
+                         rank + 1,
+                         max_results,
+                         hint,
+                         count);
       } else {
-        find_digraph_monos(
-            digraph1, digraph2, conditions, depth + 1, next, rep_depth, true);
+        find_graph_homos(depth + 1,
+                         next,
+                         rep_depth,
+                         true,
+                         rank + 1,
+                         max_results,
+                         hint,
+                         count);
       }
       MAP[next] = UNDEFINED;
       set_bit_array(VALS, i, false);
+      set_bit_array(MAP_UNDEFINED[depth], next, true);
     }
+    END_FOR_SET_BITS
   }
-
-  pop_conditions(conditions, depth);
+  copy_bit_array(
+      possible, get_conditions(CONDITIONS, next), GRAPH2->nr_vertices);
+  intersect_bit_arrays(possible, VALS, GRAPH2->nr_vertices);
+  FOR_SET_BITS(possible, GRAPH2->nr_vertices, i) {
+    MAP[next] = i;
+    set_bit_array(MAP_UNDEFINED[depth], next, false);
+    find_graph_homos(depth + 1,
+                     next,
+                     rep_depth,
+                     has_trivial_stab,
+                     rank,
+                     max_results,
+                     hint,
+                     count);
+    MAP[next] = UNDEFINED;
+    set_bit_array(MAP_UNDEFINED[depth], next, true);
+  }
+  END_FOR_SET_BITS
+  pop_conditions(CONDITIONS, depth);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// DigraphMonomorphisms: the function which calls the main recursive function
-// <find_digraph_monos>.
-////////////////////////////////////////////////////////////////////////////////
-
-void DigraphMonomorphisms(Digraph* digraph1,
-                          Digraph* digraph2,
-                          void (*hook_arg)(void*        user_param,
-                                           const UIntS  nr,
-                                           const UIntS* map),
-                          void*     user_param_arg,
-                          UIntL     max_results_arg,
-                          BitArray* image_arg,
-                          UIntS*    partial_map_arg,
-                          UIntS*    colors1,
-                          UIntS*    colors2) {
-  DIGRAPHS_ASSERT(digraph1 != NULL && digraph2 != NULL);
-
-  UIntS     i, j;
-  BitArray* bit_array;
-
-  NR1         = digraph1->nr_vertices;
-  NR2         = digraph2->nr_vertices;
-  MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
-
-  DIGRAPHS_ASSERT(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
-
-  // initialise the conditions . . .
-  Conditions* conditions = new_conditions(NR1, NR2);
-
-  // image_arg is a pointer to a BitArray of possible image values for the
-  // homomorphisms . . .
-  if (image_arg != NULL) {  // image was specified
-    if (size_bit_array(image_arg) < NR1) {
-      // there isn't enough points in the image_arg
-      return;
-    }
-    for (i = 0; i < NR1; i++) {
-      intersect_bit_arrays(get_conditions(conditions, i), image_arg);
-      // intersect everything in the first row of conditions with <image>
-    }
-  }
-
-  // Used by orbit_reps, so that orbit reps are chosen from among the
-  // restricted values of the image.
-  IMAGE_RESTRICT = image_arg;
-
-  // partial_map_arg is an array of UIntS's partially defining a map from
-  // digraph1 to digraph2.
-  bit_array = new_bit_array(NR2);  // every position is false by default
-
-  if (partial_map_arg != NULL) {  // a partial map was defined
-    BitArray* partial_map_arg_image =
-        new_bit_array(NR2);  // values in the image of partial_map
-    for (i = 0; i < NR1; i++) {
-      if (partial_map_arg[i] != UNDEFINED) {
-        if (get_bit_array(partial_map_arg_image, partial_map_arg[i])) {
-          return;  // partial_map is not injective
-        } else {
-          set_bit_array(partial_map_arg_image, partial_map_arg[i], true);
-        }
-        init_bit_array(bit_array, false);
-        set_bit_array(bit_array, partial_map_arg[i], true);
-        intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-      }
-    }
-    free_bit_array(partial_map_arg_image);
-  }
-
-  init_bit_array(bit_array, false);
-
-  // find loops in digraph2
-  for (i = 0; i < NR2; i++) {
-    if (is_adjacent_digraph(digraph2, i, i)) {
-      set_bit_array(bit_array, i, true);
-    }
-  }
-
-  // loops in digraph1 can only MAP to bit_array in digraph2
-  for (i = 0; i < NR1; i++) {
-    if (is_adjacent_digraph(digraph1, i, i)) {
-      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-    }
-    store_size_conditions(conditions, i);
-  }
-
-  if (colors1 != NULL) {  // colors1 and colors2 specified
-    for (i = 0; i < NR1; i++) {
-      init_bit_array(bit_array, false);
-      for (j = 0; j < NR2; j++) {
-        if (colors1[i] == colors2[j]) {
-          set_bit_array(bit_array, j, true);
-        }
-      }
-      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-      // can only map vertices of color i to vertices of color i
-    }
-  }
-
-  free_bit_array(bit_array);
-
-  // store the values in <map>, this is initialised to every bit set to false,
-  // by default.
-  VALS       = new_bit_array(NR2);
-  DOMAIN     = new_bit_array(NR2);
-  ORB_LOOKUP = new_bit_array(NR2);
-  REPS       = malloc(NR1 * sizeof(BitArray*));
-
-  // initialise the <map> and store the sizes in the conditions.
-  for (i = 0; i < NR1; i++) {
-    REPS[i] = new_bit_array(NR2);
-    MAP[i]  = UNDEFINED;
-  }
-  for (i = NR1; i < MAX_NR1_NR2; i++) {
-    MAP[i] = i;
-  }
-
-  // get generators of the automorphism group of digraph2, and the orbit reps
-  set_perms_degree(NR2);
-  STAB_GENS[0] = automorphisms_digraph(digraph2, colors2);
-  orbit_reps(0);
-
-  // misc parameters
-  MAX_RESULTS = max_results_arg;
-  USER_PARAM  = user_param_arg;
-  HOOK        = hook_arg;
-
-  // statistics . . . FIXME not currently used for anything
-  count       = 0;
-  last_report = 0;
-
-  // go!
-  if (setjmp(outofhere) == 0) {
-    find_digraph_monos(digraph1, digraph2, conditions, 0, UNDEFINED, 0, false);
-  }
-
-  // free the stab_gens
-  for (i = 0; i < MAXVERTS; i++) {
-    if (STAB_GENS[i] != NULL) {
-      free_perm_coll(STAB_GENS[i]);
-      STAB_GENS[i] = NULL;
-    }
-  }
-  free_bit_array(VALS);
-  free_bit_array(DOMAIN);
-  free_bit_array(ORB_LOOKUP);
-  for (i = 0; i < NR1; i++) {
-    free_bit_array(REPS[i]);
-  }
-  free(REPS);
-  free_conditions(conditions);
+// Helper for the main recursive monomorphism function.
+static ALWAYS_INLINE uint16_t
+                     graph_mono_update_conditions(uint16_t const depth,
+                                                  uint16_t const last_defined,
+                                                  uint16_t const vertex) {
+  push_conditions(
+      CONDITIONS, depth, vertex, GRAPH2->neighbours[MAP[last_defined]]);
+  set_bit_array(get_conditions(CONDITIONS, vertex), MAP[last_defined], false);
+  store_size_conditions(CONDITIONS, vertex);
+  return size_conditions(CONDITIONS, vertex);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// Graphs (undirected)
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
-// new_graph: returns a pointer to a Graph with nr_verts vertices and no
-// edges.
-////////////////////////////////////////////////////////////////////////////////
-
-Graph* new_graph(UIntS const nr_verts) {
-  UIntS  i;
-  Graph* graph      = malloc(sizeof(Graph));
-  graph->neighbours = malloc(nr_verts * sizeof(BitArray));
-  init_mask();
-  for (i = 0; i < nr_verts; i++) {
-    graph->neighbours[i] = new_bit_array(nr_verts);
-  }
-  graph->nr_vertices = nr_verts;
-  return graph;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// free_graph: frees the Graph pointed to by <graph>.
-////////////////////////////////////////////////////////////////////////////////
-
-void free_graph(Graph* graph) {
-  DIGRAPHS_ASSERT(graph != NULL);
-
-  UIntS i, nr = graph->nr_vertices;
-
-  for (i = 0; i < nr; i++) {
-    free_bit_array(graph->neighbours[i]);
-  }
-  free(graph->neighbours);
-  free(graph);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// add_edge_graph: add an edge from Vertex <i> to Vertex <j> in the Graph
-// pointed to by <graph>.
-////////////////////////////////////////////////////////////////////////////////
-
-void add_edge_graph(Graph* graph, Vertex i, Vertex j) {
-  DIGRAPHS_ASSERT(graph != NULL);
-  DIGRAPHS_ASSERT(i < graph->nr_vertices && j < graph->nr_vertices);
-
-  set_bit_array(graph->neighbours[i], j, true);
-  set_bit_array(graph->neighbours[j], i, true);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// is_adjacent_graph: returns <true> if there is an edge from <i> to <j> in the
-// Graph pointed to by <graph> and returns <false> if there is not.
-////////////////////////////////////////////////////////////////////////////////
-
-inline static bool is_adjacent_graph(Graph* graph, Vertex i, Vertex j) {
-  DIGRAPHS_ASSERT(graph != NULL);
-  DIGRAPHS_ASSERT(i < graph->nr_vertices && j < graph->nr_vertices);
-
-  return get_bit_array(graph->neighbours[i], j);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// new_bliss_digraphs_graph_from_graph: get a new Bliss graph from the Graph
-// pointed to
-// by <graph>.
-////////////////////////////////////////////////////////////////////////////////
-
-static BlissGraph* new_bliss_digraphs_graph_from_graph(Graph* graph,
-                                                       UIntS* colors) {
-  DIGRAPHS_ASSERT(graph != NULL);
-
-  UIntS       i, j;
-  BlissGraph* bliss_digraphs_graph;
-  UIntS       n = graph->nr_vertices;
-
-  if (colors == NULL) {
-    bliss_digraphs_graph = bliss_digraphs_new(n);
-  } else {
-    bliss_digraphs_graph = bliss_digraphs_new(0);
-    for (i = 0; i < n; i++) {
-      bliss_digraphs_add_vertex(bliss_digraphs_graph, colors[i]);
-    }
-  }
-
-  for (i = 0; i < n; i++) {  // loop over vertices
-    for (j = 0; j < n; j++) {
-      if (is_adjacent_graph(graph, i, j)) {
-        bliss_digraphs_add_edge(bliss_digraphs_graph, i, j);
-      }
-    }
-  }
-  return bliss_digraphs_graph;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// bliss_digraphs_hook_graph: the HOOK for bliss_digraphs_find_automorphism.
-////////////////////////////////////////////////////////////////////////////////
-
-static void bliss_digraphs_hook_graph(void* user_param_arg,  // perm_coll!
-                                      unsigned int        N,
-                                      const unsigned int* aut) {
-  DIGRAPHS_ASSERT(N <= deg);
-
-  UIntS i;
-  Perm  p = new_perm();
-
-  for (i = 0; i < N; i++) {
-    p[i] = aut[i];
-  }
-  for (; i < deg; i++) {
-    p[i] = i;
-  }
-  add_perm_coll((PermColl*) user_param_arg, p);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// automorphisms_graph: get the automorphism group of the Graph pointed to by
-// <graph>.
-////////////////////////////////////////////////////////////////////////////////
-
-static PermColl* automorphisms_graph(Graph* graph, UIntS* colors) {
-  DIGRAPHS_ASSERT(graph != NULL);
-
-  BlissGraph* bliss_digraphs_graph =
-      new_bliss_digraphs_graph_from_graph(graph, colors);
-  PermColl* gens = new_perm_coll(graph->nr_vertices - 1);
-  bliss_digraphs_find_automorphisms(
-      bliss_digraphs_graph, bliss_digraphs_hook_graph, gens, 0);
-  bliss_digraphs_release(bliss_digraphs_graph);
-  return gens;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// main algorithm recursive function for graphs
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-// TODO(*) describe the args
-
-static void
-find_graph_homos(Graph*      graph1,
-                 Graph*      graph2,
-                 Conditions* conditions,
-                 UIntS       depth,  // the number of filled positions in MAP
-                 UIntS       pos,    // the last position filled
-                 UIntS       rep_depth,
-                 bool        has_trivial_stab,
-                 // current number of distinct values in MAP
-                 UIntS rank) {
-  UIntS i, min, next;
-  bool  is_trivial;
-
-  if (depth == NR1) {  // we've assigned every position in <MAP>
-    if (HINT != UNDEFINED && rank != HINT) {
-      return;
-    }
-    HOOK(USER_PARAM, MAX_NR1_NR2, MAP);
-    count++;
-    if (count >= MAX_RESULTS) {
-      longjmp(outofhere, 1);
+// The main recursive function for monomorphisms of graphs.
+//
+// The arguments are:
+//
+// 1. depth             The current depth of the search (i.e. number of
+//                      positions in MAP that are assigned).
+// 2. pos               The last position in MAP that was filled
+// 3. rep_depth         The depth of the stabilisers of points in MAP already.
+//                      This is different than depth because we stop increasing
+//                      the rep_depth when we first encounter a trivial
+//                      stabiliser.
+// 4. has_trivial_stab  true if the stabiliser of the values already in MAP is
+//                      trivial, false otherwise.
+// 5. max_results       The maximum number of results to find.
+// 6. count             The number of embeddings found so far.
+static void find_graph_monos(uint16_t        depth,
+                             uint16_t        pos,
+                             uint16_t        rep_depth,
+                             bool            has_trivial_stab,
+                             uint64_t const  max_results,
+                             uint64_t* const count) {
+#ifdef DIGRAPHS_ENABLE_STATS
+  update_stats(STATS, depth);
+#endif
+  if (depth == GRAPH1->nr_vertices) {
+    // we've assigned every position in <MAP>
+    external_order_map_graph(GRAPH1);
+    HOOK(USER_PARAM, MAX(GRAPH1->nr_vertices, GRAPH2->nr_vertices), MAP);
+    internal_order_map_graph(GRAPH1);
+    (*count)++;
+    if (*count >= max_results) {
+      longjmp(OUTOFHERE, 1);
     }
     return;
   }
 
-  next = 0;          // the next position to fill
-  min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
+  uint16_t next = 0;          // the next position to fill
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
+  uint16_t i;
 
-  if (pos != UNDEFINED) {  // this is not the first call of the function
-    for (i = 0; i < NR1; i++) {
-      if (MAP[i] == UNDEFINED) {
-        if (is_adjacent_graph(graph1, pos, i)) {
-          push_conditions(conditions, depth, i, graph2->neighbours[MAP[pos]]);
-          if (size_conditions(conditions, i) == 0) {
-            pop_conditions(conditions, depth);
-            return;
-          }
-        }
-        if (size_conditions(conditions, i) < min) {
-          next = i;
-          min  = size_conditions(conditions, i);
-        }
+  BitArray* possible = BIT_ARRAY_BUFFER[depth];
+
+  if (depth > 0) {  // this is not the first call of the function
+    copy_bit_array(
+        MAP_UNDEFINED[depth], MAP_UNDEFINED[depth - 1], GRAPH1->nr_vertices);
+    copy_bit_array(possible, MAP_UNDEFINED[depth], GRAPH1->nr_vertices);
+    intersect_bit_arrays(
+        possible, GRAPH1->neighbours[pos], GRAPH1->nr_vertices);
+    FOR_SET_BITS(possible, GRAPH1->nr_vertices, i) {
+      size_t const n = graph_mono_update_conditions(depth, pos, i);
+      if (n == 0) {
+#ifdef DIGRAPHS_ENABLE_STATS
+        STATS->nr_dead_branches++;
+#endif
+        pop_conditions(CONDITIONS, depth);
+        return;
       }
+      STORE_MIN(min, next, n, i);
+    }
+    END_FOR_SET_BITS
+    if (min > 1) {
+      copy_bit_array(possible, MAP_UNDEFINED[depth], GRAPH1->nr_vertices);
+      complement_bit_arrays(
+          possible, GRAPH1->neighbours[pos], GRAPH1->nr_vertices);
+      FOR_SET_BITS(possible, GRAPH1->nr_vertices, i) {
+        size_t const n = size_conditions(CONDITIONS, i);
+        STORE_MIN_BREAK(min, next, n, i);
+      }
+      END_FOR_SET_BITS
     }
   } else {
-    for (i = 0; i < NR1; i++) {
-      if (size_conditions(conditions, i) < min) {
-        next = i;
-        min  = size_conditions(conditions, i);
+    for (i = 0; i < GRAPH1->nr_vertices; ++i) {
+      size_t const n = size_conditions(CONDITIONS, i);
+      STORE_MIN_BREAK(min, next, n, i);
+    }
+  }
+  copy_bit_array(
+      possible, get_conditions(CONDITIONS, next), GRAPH2->nr_vertices);
+  intersect_bit_arrays(possible, REPS[rep_depth], GRAPH2->nr_vertices);
+  FOR_SET_BITS(possible, GRAPH2->nr_vertices, i) {
+    MAP[next] = i;
+    set_bit_array(VALS, i, true);
+    set_bit_array(MAP_UNDEFINED[depth], next, false);
+    if (!has_trivial_stab) {
+      find_graph_monos(depth + 1,
+                       next,
+                       rep_depth + 1,
+                       compute_stabs_and_orbit_reps(GRAPH1->nr_vertices,
+                                                    GRAPH2->nr_vertices,
+                                                    rep_depth + 1,
+                                                    depth,
+                                                    i),
+                       max_results,
+                       count);
+    } else {
+      find_graph_monos(depth + 1, next, rep_depth, true, max_results, count);
+    }
+    MAP[next] = UNDEFINED;
+    set_bit_array(VALS, i, false);
+    set_bit_array(MAP_UNDEFINED[depth], next, true);
+  }
+  END_FOR_SET_BITS
+  pop_conditions(CONDITIONS, depth);
+}
+
+// Helper for the main recursive embedding function.
+static ALWAYS_INLINE uint16_t graph_embed_update_conditions(
+    uint16_t const depth,
+    uint16_t const last_defined,
+    uint16_t const vertex,
+    void (*oper)(BitArray* const, BitArray const* const, uint16_t const)) {
+  push_conditions(CONDITIONS, depth, vertex, NULL);
+  oper(get_conditions(CONDITIONS, vertex),
+       GRAPH2->neighbours[MAP[last_defined]],
+       GRAPH2->nr_vertices);
+  store_size_conditions(CONDITIONS, vertex);
+  return size_conditions(CONDITIONS, vertex);
+}
+
+// The main recursive function for embeddings of graphs.
+//
+// The arguments are:
+//
+// 1. depth             The current depth of the search (i.e. number of
+//                      positions in MAP that are assigned).
+// 2. pos               The last position in MAP that was filled
+// 3. rep_depth         The depth of the stabilisers of points in MAP already.
+//                      This is different than depth because we stop increasing
+//                      the rep_depth when we first encounter a trivial
+//                      stabiliser.
+// 4. has_trivial_stab  true if the stabiliser of the values already in MAP is
+//                      trivial, false otherwise.
+// 5. max_results       The maximum number of results to find.
+// 6. count             The number of embeddings found so far.
+static void find_graph_embeddings(uint16_t        depth,
+                                  uint16_t        pos,
+                                  uint16_t        rep_depth,
+                                  bool            has_trivial_stab,
+                                  uint64_t const  max_results,
+                                  uint64_t* const count) {
+#ifdef DIGRAPHS_ENABLE_STATS
+  update_stats(STATS, depth);
+#endif
+  if (depth == GRAPH1->nr_vertices) {
+    // we've assigned every position in <MAP>
+    external_order_map_graph(GRAPH1);
+    HOOK(USER_PARAM, MAX(GRAPH1->nr_vertices, GRAPH2->nr_vertices), MAP);
+    internal_order_map_graph(GRAPH1);
+    (*count)++;
+    if (*count >= max_results) {
+      longjmp(OUTOFHERE, 1);
+    }
+    return;
+  }
+
+  uint16_t next = 0;          // the next position to fill
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
+  uint16_t i;
+
+  BitArray* possible = BIT_ARRAY_BUFFER[depth];
+
+  if (depth > 0) {  // this is not the first call of the function
+    copy_bit_array(
+        MAP_UNDEFINED[depth], MAP_UNDEFINED[depth - 1], GRAPH1->nr_vertices);
+    copy_bit_array(possible, MAP_UNDEFINED[depth], GRAPH1->nr_vertices);
+    intersect_bit_arrays(
+        possible, GRAPH1->neighbours[pos], GRAPH1->nr_vertices);
+    FOR_SET_BITS(possible, GRAPH1->nr_vertices, i) {
+      size_t const n =
+          graph_embed_update_conditions(depth, pos, i, &intersect_bit_arrays);
+      if (n == 0) {
+#ifdef DIGRAPHS_ENABLE_STATS
+        STATS->nr_dead_branches++;
+#endif
+        pop_conditions(CONDITIONS, depth);
+        return;
       }
+      STORE_MIN(min, next, n, i);
+    }
+    END_FOR_SET_BITS
+    copy_bit_array(possible, MAP_UNDEFINED[depth], GRAPH1->nr_vertices);
+    complement_bit_arrays(
+        possible, GRAPH1->neighbours[pos], GRAPH1->nr_vertices);
+    FOR_SET_BITS(possible, GRAPH1->nr_vertices, i) {
+      size_t const n =
+          graph_embed_update_conditions(depth, pos, i, &complement_bit_arrays);
+      if (n == 0) {
+#ifdef DIGRAPHS_ENABLE_STATS
+        STATS->nr_dead_branches++;
+#endif
+        pop_conditions(CONDITIONS, depth);
+        return;
+      }
+      STORE_MIN(min, next, n, i);
+    }
+    END_FOR_SET_BITS
+  } else {
+    for (i = 0; i < GRAPH1->nr_vertices; ++i) {
+      size_t const n = size_conditions(CONDITIONS, i);
+      STORE_MIN_BREAK(min, next, n, i);
     }
   }
 
-  BitArray* possible = get_conditions(conditions, next);
+  copy_bit_array(
+      possible, get_conditions(CONDITIONS, next), GRAPH2->nr_vertices);
+  intersect_bit_arrays(possible, REPS[rep_depth], GRAPH2->nr_vertices);
 
-  if (rank < HINT) {
-    for (i = 0; i < NR2; i++) {
-      if (get_bit_array(possible, i) && !get_bit_array(VALS, i)
-          && get_bit_array(REPS[rep_depth], i)) {
-        if (!has_trivial_stab) {
-          // stabiliser of the point i in the stabiliser at current rep_depth
-          is_trivial = point_stabilizer(
-              STAB_GENS[rep_depth], i, &STAB_GENS[rep_depth + 1]);
-        }
-        MAP[next] = i;
-        set_bit_array(VALS, i, true);
-        if (!has_trivial_stab) {
-          if (depth != NR1 - 1) {
-            orbit_reps(rep_depth + 1);
+  FOR_SET_BITS(possible, GRAPH2->nr_vertices, i) {
+    MAP[next] = i;
+    set_bit_array(VALS, i, true);
+    set_bit_array(MAP_UNDEFINED[depth], next, false);
+    if (!has_trivial_stab) {
+      find_graph_embeddings(depth + 1,
+                            next,
+                            rep_depth + 1,
+                            compute_stabs_and_orbit_reps(GRAPH1->nr_vertices,
+                                                         GRAPH2->nr_vertices,
+                                                         rep_depth + 1,
+                                                         depth,
+                                                         MAP[next]),
+                            max_results,
+                            count);
+    } else {
+      find_graph_embeddings(
+          depth + 1, next, rep_depth, true, max_results, count);
+    }
+    MAP[next] = UNDEFINED;
+    set_bit_array(VALS, i, false);
+    set_bit_array(MAP_UNDEFINED[depth], next, true);
+  }
+  END_FOR_SET_BITS
+  pop_conditions(CONDITIONS, depth);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// The next function should be called before find_graph_homos.  This function
+// simulates the first steps of the recursion using the information in
+// partial_map_obj (if any) so that the values specified in partial_map_obj are
+// installed in MAP first.
+////////////////////////////////////////////////////////////////////////////////
+
+static void init_partial_map_and_find_graph_homos(Obj partial_map_obj,
+                                                  uint64_t const  max_results,
+                                                  uint64_t const  hint,
+                                                  uint64_t* const count,
+                                                  Obj injective_obj) {
+  uint16_t depth                = 0;
+  uint16_t rep_depth            = 0;
+  uint16_t last_defined         = UNDEFINED;
+  bool     last_stab_is_trivial = (STAB_GENS[0]->size == 0 ? true : false);
+  uint16_t rank                 = 0;
+  uint16_t next                 = UNDEFINED;
+
+  if (partial_map_obj != Fail) {
+    for (next = 0; next < LEN_LIST(partial_map_obj); ++next) {
+      if (ISB_LIST(partial_map_obj, next + 1)) {
+        if (depth > 0) {
+          DIGRAPHS_ASSERT(last_defined != UNDEFINED);
+          copy_bit_array(MAP_UNDEFINED[depth],
+                         MAP_UNDEFINED[depth - 1],
+                         GRAPH1->nr_vertices);
+          BitArray* possible = BIT_ARRAY_BUFFER[0];
+          copy_bit_array(possible, MAP_UNDEFINED[depth], GRAPH1->nr_vertices);
+          intersect_bit_arrays(
+              possible, GRAPH1->neighbours[last_defined], GRAPH1->nr_vertices);
+          if (INT_INTOBJ(injective_obj) == 0) {
+            uint16_t i;  // variable for the next for-loop
+            FOR_SET_BITS(possible, GRAPH1->nr_vertices, i) {
+              uint16_t n = graph_homo_update_conditions(depth, last_defined, i);
+              if (n == 0) {
+                return;
+              }
+            }
+            END_FOR_SET_BITS
+          } else if (INT_INTOBJ(injective_obj) == 1) {
+            uint16_t i;  // variable for the next for-loop
+            FOR_SET_BITS(possible, GRAPH1->nr_vertices, i) {
+              uint16_t n = graph_mono_update_conditions(depth, last_defined, i);
+              if (n == 0) {
+                return;
+              }
+            }
+            END_FOR_SET_BITS
+          } else {
+            DIGRAPHS_ASSERT(INT_INTOBJ(injective_obj) == 2);
+            uint16_t i;  // variable for the next for-loop
+            FOR_SET_BITS(possible, GRAPH1->nr_vertices, i) {
+              uint16_t n = graph_embed_update_conditions(
+                  depth, last_defined, i, &intersect_bit_arrays);
+              if (n == 0) {
+                return;
+              }
+              END_FOR_SET_BITS
+            }
+            copy_bit_array(possible, MAP_UNDEFINED[depth], GRAPH1->nr_vertices);
+            complement_bit_arrays(possible,
+                                  GRAPH1->neighbours[last_defined],
+                                  GRAPH1->nr_vertices);
+            FOR_SET_BITS(possible, GRAPH1->nr_vertices, i) {
+              uint16_t n = graph_embed_update_conditions(
+                  depth, last_defined, i, &complement_bit_arrays);
+              if (n == 0) {
+                return;
+              }
+            }
+            END_FOR_SET_BITS
           }
-          find_graph_homos(graph1,
-                           graph2,
-                           conditions,
-                           depth + 1,
+        }
+        uint16_t val = INT_INTOBJ(ELM_LIST(partial_map_obj, next + 1)) - 1;
+        next         = (ORDERED ? INVERSE_ORDER[next] : next);
+        MAP[next]    = val;
+        if (!get_bit_array(VALS, MAP[next])) {
+          rank++;
+          if (rank > hint) {
+            return;
+          }
+        }
+        set_bit_array(VALS, MAP[next], true);
+        set_bit_array(MAP_UNDEFINED[depth], next, false);
+        if (!last_stab_is_trivial) {
+          last_stab_is_trivial =
+              compute_stabs_and_orbit_reps(GRAPH1->nr_vertices,
+                                           GRAPH2->nr_vertices,
+                                           rep_depth + 1,
+                                           depth,
+                                           MAP[next]);
+          rep_depth++;
+        }
+        depth++;
+        last_defined = next;
+        next         = (ORDERED ? ORDER[next] : next);
+      }
+    }
+  }
+  if (INT_INTOBJ(injective_obj) == 0) {
+    find_graph_homos(depth,
+                     last_defined,
+                     rep_depth,
+                     last_stab_is_trivial,
+                     rank,
+                     max_results,
+                     hint,
+                     count);
+  } else if (INT_INTOBJ(injective_obj) == 1) {
+    find_graph_monos(depth,
+                     last_defined,
+                     rep_depth,
+                     last_stab_is_trivial,
+                     max_results,
+                     count);
+  } else if (INT_INTOBJ(injective_obj) == 2) {
+    find_graph_embeddings(depth,
+                          last_defined,
+                          rep_depth,
+                          last_stab_is_trivial,
+                          max_results,
+                          count);
+  }
+}
+
+// Helper for the main recursive homomorphism of digraphs function.
+static ALWAYS_INLINE uint16_t
+                     digraph_homo_update_conditions(uint16_t const depth,
+                                                    uint16_t const last_defined,
+                                                    uint16_t const vertex) {
+  if (is_adjacent_digraph(DIGRAPH1, last_defined, vertex)) {
+    push_conditions(
+        CONDITIONS, depth, vertex, DIGRAPH2->out_neighbours[MAP[last_defined]]);
+    if (is_adjacent_digraph(DIGRAPH1, vertex, last_defined)) {
+      intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
+                           DIGRAPH2->in_neighbours[MAP[last_defined]],
+                           DIGRAPH2->nr_vertices);
+    }
+    store_size_conditions(CONDITIONS, vertex);
+  } else if (is_adjacent_digraph(DIGRAPH1, vertex, last_defined)) {
+    push_conditions(
+        CONDITIONS, depth, vertex, DIGRAPH2->in_neighbours[MAP[last_defined]]);
+    store_size_conditions(CONDITIONS, vertex);
+  }
+  return size_conditions(CONDITIONS, vertex);
+}
+
+// The main recursive function for homomorphisms of digraphs.
+//
+// The arguments are:
+//
+// 1. depth             The current depth of the search (i.e. number of
+//                      positions in MAP that are assigned).
+// 2. pos               The last position in MAP that was filled
+// 3. rep_depth         The depth of the stabilisers of points in MAP already.
+//                      This is different than depth because we stop increasing
+//                      the rep_depth when we first encounter a trivial
+//                      stabiliser.
+// 4. has_trivial_stab  true if the stabiliser of the values already in MAP is
+//                      trivial, false otherwise.
+// 5. rank              The current number of distinct values in MAP.
+// 6. max_results       The maximum number of results to find.
+// 7. hint              The desired number of distinct points in a (full)
+//                      homomorphism.
+// 8. count             The number of homomorphisms found so far.
+static void find_digraph_homos(uint16_t        depth,
+                               uint16_t        pos,
+                               uint16_t        rep_depth,
+                               bool            has_trivial_stab,
+                               uint16_t        rank,
+                               uint64_t const  max_results,
+                               uint64_t const  hint,
+                               uint64_t* const count) {
+#ifdef DIGRAPHS_ENABLE_STATS
+  update_stats(STATS, depth);
+#endif
+  if (depth == DIGRAPH1->nr_vertices) {
+    // we've assigned every position in <MAP>
+    if (hint != UNDEFINED && rank != hint) {
+#ifdef DIGRAPHS_ENABLE_STATS
+      STATS->nr_dead_branches++;
+#endif
+      return;
+    }
+    external_order_map_digraph(DIGRAPH1);
+    HOOK(USER_PARAM, MAX(DIGRAPH1->nr_vertices, DIGRAPH2->nr_vertices), MAP);
+    internal_order_map_digraph(DIGRAPH1);
+    (*count)++;
+    if (*count >= max_results) {
+      longjmp(OUTOFHERE, 1);
+    }
+    return;
+  }
+
+  uint16_t next = 0;          // the next position to fill
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
+  uint16_t i;
+
+  if (depth > 0) {  // this is not the first call of the function
+    copy_bit_array(
+        MAP_UNDEFINED[depth], MAP_UNDEFINED[depth - 1], DIGRAPH1->nr_vertices);
+    FOR_SET_BITS(MAP_UNDEFINED[depth], DIGRAPH1->nr_vertices, i) {
+      uint16_t const n = digraph_homo_update_conditions(depth, pos, i);
+      if (n == 0) {
+#ifdef DIGRAPHS_ENABLE_STATS
+        STATS->nr_dead_branches++;
+#endif
+        pop_conditions(CONDITIONS, depth);
+        return;
+      }
+      STORE_MIN(min, next, n, i);
+    }
+    END_FOR_SET_BITS
+  } else {  // depth == 0
+    for (i = 0; i < DIGRAPH1->nr_vertices; ++i) {
+      size_t const n = size_conditions(CONDITIONS, i);
+      STORE_MIN_BREAK(min, next, n, i);
+    }
+  }
+
+  BitArray* possible = BIT_ARRAY_BUFFER[depth];
+
+  if (rank < hint) {
+    copy_bit_array(
+        possible, get_conditions(CONDITIONS, next), DIGRAPH2->nr_vertices);
+    complement_bit_arrays(possible, VALS, DIGRAPH2->nr_vertices);
+    intersect_bit_arrays(possible, REPS[rep_depth], DIGRAPH2->nr_vertices);
+    FOR_SET_BITS(possible, DIGRAPH2->nr_vertices, i) {
+      MAP[next] = i;
+      set_bit_array(VALS, i, true);
+      set_bit_array(MAP_UNDEFINED[depth], next, false);
+      if (!has_trivial_stab) {
+        find_digraph_homos(depth + 1,
                            next,
                            rep_depth + 1,
-                           is_trivial,
-                           rank + 1);
-        } else {
-          find_graph_homos(graph1,
-                           graph2,
-                           conditions,
-                           depth + 1,
+                           compute_stabs_and_orbit_reps(DIGRAPH1->nr_vertices,
+                                                        DIGRAPH2->nr_vertices,
+                                                        rep_depth + 1,
+                                                        depth,
+                                                        i),
+                           rank + 1,
+                           max_results,
+                           hint,
+                           count);
+      } else {
+        find_digraph_homos(depth + 1,
                            next,
                            rep_depth,
                            true,
-                           rank + 1);
-        }
-        MAP[next] = UNDEFINED;
-        set_bit_array(VALS, i, false);
+                           rank + 1,
+                           max_results,
+                           hint,
+                           count);
       }
+      MAP[next] = UNDEFINED;
+      set_bit_array(VALS, i, false);
+      set_bit_array(MAP_UNDEFINED[depth], next, true);
     }
+    END_FOR_SET_BITS
   }
-
-  for (i = 0; i < NR2; i++) {
-    if (get_bit_array(possible, i) && get_bit_array(VALS, i)) {
-      MAP[next] = i;
-      find_graph_homos(graph1,
-                       graph2,
-                       conditions,
-                       depth + 1,
+  copy_bit_array(
+      possible, get_conditions(CONDITIONS, next), DIGRAPH2->nr_vertices);
+  intersect_bit_arrays(possible, VALS, DIGRAPH2->nr_vertices);
+  FOR_SET_BITS(possible, DIGRAPH2->nr_vertices, i) {
+    MAP[next] = i;
+    set_bit_array(MAP_UNDEFINED[depth], next, false);
+    find_digraph_homos(depth + 1,
                        next,
                        rep_depth,
                        has_trivial_stab,
-                       rank);
-      MAP[next] = UNDEFINED;
-    }
+                       rank,
+                       max_results,
+                       hint,
+                       count);
+    MAP[next] = UNDEFINED;
+    set_bit_array(MAP_UNDEFINED[depth], next, true);
   }
-  pop_conditions(conditions, depth);
+  END_FOR_SET_BITS
+  pop_conditions(CONDITIONS, depth);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// GraphHomomorphisms: the function which calls the main recursive function
-// <find_graph_homos>.
-////////////////////////////////////////////////////////////////////////////////
-
-void GraphHomomorphisms(Graph* graph1,
-                        Graph* graph2,
-                        void (*hook_arg)(void*        user_param,
-                                         const UIntS  nr,
-                                         const UIntS* map),
-                        void*     user_param_arg,
-                        UIntL     max_results_arg,
-                        int       hint_arg,
-                        BitArray* image_arg,
-                        UIntS*    partial_map_arg,
-                        UIntS*    colors1,
-                        UIntS*    colors2) {
-  DIGRAPHS_ASSERT(graph1 != NULL && graph2 != NULL);
-
-  UIntS     i, j;
-  BitArray* bit_array;
-
-  NR1         = graph1->nr_vertices;
-  NR2         = graph2->nr_vertices;
-  MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
-
-  DIGRAPHS_ASSERT(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
-
-  // initialise the conditions . . .
-  Conditions* conditions = new_conditions(NR1, NR2);
-
-  // image_arg is a pointer to a BitArray of possible image values for the
-  // homomorphisms
-  if (image_arg != NULL) {  // image_arg was specified
-    for (i = 0; i < NR1; i++) {
-      intersect_bit_arrays(get_conditions(conditions, i), image_arg);
-      // intersect everything in the first row of conditions with <image_arg>
-    }
+// Helper for the main recursive monomorphism of digraphs function.
+static ALWAYS_INLINE uint16_t
+                     digraph_mono_update_conditions(uint16_t const depth,
+                                                    uint16_t const last_defined,
+                                                    uint16_t const vertex) {
+  push_conditions(CONDITIONS, depth, vertex, NULL);
+  set_bit_array(get_conditions(CONDITIONS, vertex), MAP[last_defined], false);
+  if (is_adjacent_digraph(DIGRAPH1, last_defined, vertex)) {
+    intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
+                         DIGRAPH2->out_neighbours[MAP[last_defined]],
+                         DIGRAPH2->nr_vertices);
   }
-  // Used by orbit_reps, so that orbit reps are chosen from among the
-  // restricted values of the image.
-  IMAGE_RESTRICT = image_arg;
-
-  // partial_map_arg is an array of UIntS's partially defining a map from graph1
-  // to graph2.
-  bit_array = new_bit_array(NR2);  // every position is false by default
-
-  if (partial_map_arg != NULL) {  // a partial MAP was defined
-    for (i = 0; i < NR1; i++) {
-      if (partial_map_arg[i] != UNDEFINED) {
-        init_bit_array(bit_array, false);
-        set_bit_array(bit_array, partial_map_arg[i], true);
-        intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-      }
-    }
+  if (is_adjacent_digraph(DIGRAPH1, vertex, last_defined)) {
+    intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
+                         DIGRAPH2->in_neighbours[MAP[last_defined]],
+                         DIGRAPH2->nr_vertices);
   }
+  store_size_conditions(CONDITIONS, vertex);
 
-  init_bit_array(bit_array, false);
-
-  // find loops in graph2
-  for (i = 0; i < NR2; i++) {
-    if (is_adjacent_graph(graph2, i, i)) {
-      set_bit_array(bit_array, i, true);
-    }
-  }
-
-  // loops in graph1 can only map to loops in graph2
-  for (i = 0; i < NR1; i++) {
-    if (is_adjacent_graph(graph1, i, i)) {
-      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-    }
-    store_size_conditions(conditions, i);
-  }
-
-  if (colors1 != NULL) {  // colors1 and colors2 specified
-    DIGRAPHS_ASSERT(colors2 != NULL);
-    for (i = 0; i < NR1; i++) {
-      init_bit_array(bit_array, false);
-      for (j = 0; j < NR2; j++) {
-        if (colors1[i] == colors2[j]) {
-          set_bit_array(bit_array, j, true);
-        }
-      }
-      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-      // can only map vertices of color i to vertices of color i
-    }
-  }
-
-  free_bit_array(bit_array);
-
-  // store the values in MAP, this is initialised to every bit set to false,
-  // by default
-  VALS       = new_bit_array(NR2);
-  DOMAIN     = new_bit_array(NR2);
-  ORB_LOOKUP = new_bit_array(NR2);
-  REPS       = malloc(NR1 * sizeof(BitArray*));
-
-  // initialise the <MAP> and store the sizes in the conditions.
-  for (i = 0; i < NR1; i++) {
-    REPS[i] = new_bit_array(NR2);
-    MAP[i]  = UNDEFINED;
-  }
-  for (i = NR1; i < MAX_NR1_NR2; i++) {
-    MAP[i] = i;
-  }
-
-  // get generators of the automorphism group of graph2, and the orbit reps
-  set_perms_degree(NR2);
-  STAB_GENS[0] = automorphisms_graph(graph2, colors2);
-  orbit_reps(0);
-
-  // misc parameters . . .
-  MAX_RESULTS = max_results_arg;
-  USER_PARAM  = user_param_arg;
-  HINT        = hint_arg;
-  HOOK        = hook_arg;
-
-  // statistics . . . FIXME not currently used for anything
-  count       = 0;
-  last_report = 0;
-
-  // go!
-  if (setjmp(outofhere) == 0) {
-    find_graph_homos(graph1, graph2, conditions, 0, UNDEFINED, 0, false, 0);
-  }
-
-  // free everything!
-  for (i = 0; i < MAXVERTS; i++) {
-    if (STAB_GENS[i] != NULL) {
-      free_perm_coll(STAB_GENS[i]);
-      STAB_GENS[i] = NULL;
-    }
-  }
-  free_bit_array(VALS);
-  free_bit_array(DOMAIN);
-  free_bit_array(ORB_LOOKUP);
-  for (i = 0; i < NR1; i++) {
-    free_bit_array(REPS[i]);
-  }
-  free(REPS);
-  free_conditions(conditions);
+  return size_conditions(CONDITIONS, vertex);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// a version of new main algorithm for injective homomorphisms
-////////////////////////////////////////////////////////////////////////////////
-
-static void
-find_graph_monos(Graph*      graph1,
-                 Graph*      graph2,
-                 Conditions* conditions,
-                 UIntS       depth,  // the number of filled positions in map
-                 UIntS       pos,    // the last position filled
-                 UIntS       rep_depth,
-                 bool        has_trivial_stab) {
-  UIntS i, min, next;
-  bool  is_trivial;
-
-  if (depth == NR1) {  // we've assigned every position in <MAP>
-    HOOK(USER_PARAM, MAX_NR1_NR2, MAP);
-    count++;
-    if (count >= MAX_RESULTS) {
-      longjmp(outofhere, 1);
+// The main recursive function for monomorphisms of digraphs.
+//
+// The arguments are:
+//
+// 1. depth             The current depth of the search (i.e. number of
+//                      positions in MAP that are assigned).
+// 2. pos               The last position in MAP that was filled
+// 3. rep_depth         The depth of the stabilisers of points in MAP already.
+//                      This is different than depth because we stop increasing
+//                      the rep_depth when we first encounter a trivial
+//                      stabiliser.
+// 4. has_trivial_stab  true if the stabiliser of the values already in MAP is
+//                      trivial, false otherwise.
+// 5. max_results       The maximum number of results to find.
+// 6. count             The number of embeddings found so far.
+static void find_digraph_monos(uint16_t        depth,
+                               uint16_t        pos,
+                               uint16_t        rep_depth,
+                               bool            has_trivial_stab,
+                               uint64_t const  max_results,
+                               uint64_t* const count) {
+#ifdef DIGRAPHS_ENABLE_STATS
+  update_stats(STATS, depth);
+#endif
+  if (depth == DIGRAPH1->nr_vertices) {
+    // we've assigned every position in <MAP>
+    external_order_map_digraph(DIGRAPH1);
+    HOOK(USER_PARAM, MAX(DIGRAPH1->nr_vertices, DIGRAPH2->nr_vertices), MAP);
+    internal_order_map_digraph(DIGRAPH1);
+    (*count)++;
+    if (*count >= max_results) {
+      longjmp(OUTOFHERE, 1);
     }
     return;
   }
 
-  next = 0;          // the next position to fill
-  min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
+  uint16_t next = 0;          // the next position to fill
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
+  uint16_t i;
 
-  if (pos != UNDEFINED) {  // this is not the first call of the function
-    for (i = 0; i < NR1; i++) {
-      if (MAP[i] == UNDEFINED) {
-        push_conditions(conditions, depth, i, NULL);
-        set_bit_array(get_conditions(conditions, i), MAP[pos], false);
-        // this could be optimised since MAP[pos] is fixed within the loop
-        if (is_adjacent_graph(graph1, pos, i)) {
-          intersect_bit_arrays(get_conditions(conditions, i),
-                               graph2->neighbours[MAP[pos]]);
-        }
-        if (size_conditions(conditions, i) == 0) {
-          pop_conditions(conditions, depth);
-          return;
-        }
-        if (size_conditions(conditions, i) < min) {
-          next = i;
-          min  = size_conditions(conditions, i);
-        }
+  if (depth > 0) {  // this is not the first call of the function
+    copy_bit_array(
+        MAP_UNDEFINED[depth], MAP_UNDEFINED[depth - 1], DIGRAPH1->nr_vertices);
+    FOR_SET_BITS(MAP_UNDEFINED[depth], DIGRAPH1->nr_vertices, i) {
+      size_t const n = digraph_mono_update_conditions(depth, pos, i);
+      if (n == 0) {
+#ifdef DIGRAPHS_ENABLE_STATS
+        STATS->nr_dead_branches++;
+#endif
+        pop_conditions(CONDITIONS, depth);
+        return;
       }
+      STORE_MIN(min, next, n, i);
     }
+    END_FOR_SET_BITS
   } else {
-    for (i = 0; i < NR1; i++) {
-      if (size_conditions(conditions, i) < min) {
-        next = i;
-        min  = size_conditions(conditions, i);
-      }
+    for (i = 0; i < DIGRAPH1->nr_vertices; i++) {
+      size_t const n = size_conditions(CONDITIONS, i);
+      STORE_MIN_BREAK(min, next, n, i);
     }
   }
 
-  BitArray* possible = get_conditions(conditions, next);
-
-  for (i = 0; i < NR2; i++) {
-    if (get_bit_array(possible, i) && get_bit_array(REPS[rep_depth], i)) {
-      if (!has_trivial_stab) {
-        // stabiliser of the point i in the stabiliser at current rep_depth
-        is_trivial = point_stabilizer(
-            STAB_GENS[rep_depth], i, &STAB_GENS[rep_depth + 1]);
-      }
-      MAP[next] = i;
-      set_bit_array(VALS, i, true);
-      if (!has_trivial_stab) {
-        if (depth != NR1 - 1) {
-          orbit_reps(rep_depth + 1);
-        }
-        find_graph_monos(graph1,
-                         graph2,
-                         conditions,
-                         depth + 1,
+  BitArray* possible = BIT_ARRAY_BUFFER[depth];
+  copy_bit_array(
+      possible, get_conditions(CONDITIONS, next), DIGRAPH2->nr_vertices);
+  intersect_bit_arrays(possible, REPS[rep_depth], DIGRAPH2->nr_vertices);
+  FOR_SET_BITS(possible, DIGRAPH2->nr_vertices, i) {
+    MAP[next] = i;
+    set_bit_array(VALS, i, true);
+    set_bit_array(MAP_UNDEFINED[depth], next, false);
+    if (!has_trivial_stab) {
+      find_digraph_monos(depth + 1,
                          next,
                          rep_depth + 1,
-                         is_trivial);
-      } else {
-        find_graph_monos(
-            graph1, graph2, conditions, depth + 1, next, rep_depth, true);
+                         compute_stabs_and_orbit_reps(DIGRAPH1->nr_vertices,
+                                                      DIGRAPH2->nr_vertices,
+                                                      rep_depth + 1,
+                                                      depth,
+                                                      i),
+                         max_results,
+                         count);
+    } else {
+      find_digraph_monos(depth + 1, next, rep_depth, true, max_results, count);
+    }
+    MAP[next] = UNDEFINED;
+    set_bit_array(VALS, i, false);
+    set_bit_array(MAP_UNDEFINED[depth], next, true);
+  }
+  END_FOR_SET_BITS
+  pop_conditions(CONDITIONS, depth);
+}
+
+// Helper for the main recursive embedding digraphs function.
+static ALWAYS_INLINE uint16_t
+digraph_embed_update_conditions(uint16_t const depth,
+                               uint16_t const last_defined,
+                               uint16_t const vertex) {
+  push_conditions(CONDITIONS, depth, vertex, NULL);
+  if (is_adjacent_digraph(DIGRAPH1, last_defined, vertex)) {
+    intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
+                         DIGRAPH2->out_neighbours[MAP[last_defined]],
+                         DIGRAPH2->nr_vertices);
+  } else {
+    complement_bit_arrays(get_conditions(CONDITIONS, vertex),
+                          DIGRAPH2->out_neighbours[MAP[last_defined]],
+                          DIGRAPH2->nr_vertices);
+  }
+  if (is_adjacent_digraph(DIGRAPH1, vertex, last_defined)) {
+    intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
+                         DIGRAPH2->in_neighbours[MAP[last_defined]],
+                         DIGRAPH2->nr_vertices);
+  } else {
+    complement_bit_arrays(get_conditions(CONDITIONS, vertex),
+                          DIGRAPH2->in_neighbours[MAP[last_defined]],
+                          DIGRAPH2->nr_vertices);
+  }
+  store_size_conditions(CONDITIONS, vertex);
+  return size_conditions(CONDITIONS, vertex);
+}
+
+// The main recursive function for embeddings of digraphs.
+//
+// The arguments are:
+//
+// 1. depth             The current depth of the search (i.e. number of
+//                      positions in MAP that are assigned).
+// 2. pos               The last position in MAP that was filled
+// 3. rep_depth         The depth of the stabilisers of points in MAP already.
+//                      This is different than depth because we stop increasing
+//                      the rep_depth when we first encounter a trivial
+//                      stabiliser.
+// 4. has_trivial_stab  true if the stabiliser of the values already in MAP is
+//                      trivial, false otherwise.
+// 5. max_results       The maximum number of results to find.
+// 6. count             The number of embeddings found so far.
+static void find_digraph_embeddings(uint16_t        depth,
+                                    uint16_t        pos,
+                                    uint16_t        rep_depth,
+                                    bool            has_trivial_stab,
+                                    uint64_t const  max_results,
+                                    uint64_t* const count) {
+#ifdef DIGRAPHS_ENABLE_STATS
+  update_stats(STATS, depth);
+#endif
+  if (depth == DIGRAPH1->nr_vertices) {
+    // we've assigned every position in <MAP>
+    external_order_map_digraph(DIGRAPH1);
+    HOOK(USER_PARAM, MAX(DIGRAPH1->nr_vertices, DIGRAPH2->nr_vertices), MAP);
+    internal_order_map_digraph(DIGRAPH1);
+    (*count)++;
+    if (*count >= max_results) {
+      longjmp(OUTOFHERE, 1);
+    }
+    return;
+  }
+
+  uint16_t next = 0;          // the next position to fill
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
+  uint16_t i;
+
+  if (depth > 0) {  // this is not the first call of the function
+    copy_bit_array(
+        MAP_UNDEFINED[depth], MAP_UNDEFINED[depth - 1], DIGRAPH1->nr_vertices);
+    FOR_SET_BITS(MAP_UNDEFINED[depth], DIGRAPH1->nr_vertices, i) {
+      size_t const n = digraph_embed_update_conditions(depth, pos, i);
+      if (n == 0) {
+#ifdef DIGRAPHS_ENABLE_STATS
+        STATS->nr_dead_branches++;
+#endif
+        pop_conditions(CONDITIONS, depth);
+        return;
       }
-      MAP[next] = UNDEFINED;
-      set_bit_array(VALS, i, false);
+      STORE_MIN(min, next, n, i);
+    }
+    END_FOR_SET_BITS
+  } else {
+    for (i = 0; i < DIGRAPH1->nr_vertices; i++) {
+      size_t const n = size_conditions(CONDITIONS, i);
+      STORE_MIN_BREAK(min, next, n, i);
     }
   }
 
-  pop_conditions(conditions, depth);
+  BitArray* possible = get_conditions(CONDITIONS, next);
+  copy_bit_array(
+      possible, get_conditions(CONDITIONS, next), DIGRAPH2->nr_vertices);
+  intersect_bit_arrays(possible, REPS[rep_depth], DIGRAPH2->nr_vertices);
+
+  FOR_SET_BITS(possible, DIGRAPH2->nr_vertices, i) {
+    MAP[next] = i;
+    set_bit_array(VALS, i, true);
+    set_bit_array(MAP_UNDEFINED[depth], next, false);
+    if (!has_trivial_stab) {
+      find_digraph_embeddings(
+          depth + 1,
+          next,
+          rep_depth + 1,
+          compute_stabs_and_orbit_reps(DIGRAPH1->nr_vertices,
+                                       DIGRAPH2->nr_vertices,
+                                       rep_depth + 1,
+                                       depth,
+                                       i),
+          max_results,
+          count);
+    } else {
+      find_digraph_embeddings(
+          depth + 1, next, rep_depth, true, max_results, count);
+    }
+    MAP[next] = UNDEFINED;
+    set_bit_array(VALS, i, false);
+    set_bit_array(MAP_UNDEFINED[depth], next, true);
+  }
+  END_FOR_SET_BITS
+  pop_conditions(CONDITIONS, depth);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// GraphMonomorphisms: the function which calls the main recursive function
-// <find_graph_monos>.
+// The next function should be called before find_digraph_homos.  This function
+// simulates the first steps of the recursion using the information in
+// partial_map_obj (if any) so that the values specified in partial_map_obj are
+// installed in MAP first.
 ////////////////////////////////////////////////////////////////////////////////
 
-void GraphMonomorphisms(Graph* graph1,
-                        Graph* graph2,
-                        void (*hook_arg)(void*        user_param,
-                                         const UIntS  nr,
-                                         const UIntS* map),
-                        void*     user_param_arg,
-                        UIntL     max_results_arg,
-                        BitArray* image_arg,
-                        UIntS*    partial_map_arg,
-                        UIntS*    colors1,
-                        UIntS*    colors2) {
-  DIGRAPHS_ASSERT(graph1 != NULL && graph2 != NULL);
+static void init_partial_map_and_find_digraph_homos(Obj partial_map_obj,
+                                                    uint64_t const  max_results,
+                                                    uint64_t const  hint,
+                                                    uint64_t* const count,
+                                                    Obj injective_obj) {
+  uint16_t depth                = 0;
+  uint16_t rep_depth            = 0;
+  uint16_t last_defined         = UNDEFINED;
+  bool     last_stab_is_trivial = (STAB_GENS[0]->size == 0 ? true : false);
+  uint16_t rank                 = 0;
+  uint16_t next                 = UNDEFINED;
 
-  UIntS     i, j;
-  BitArray* bit_array;
-
-  NR1         = graph1->nr_vertices;
-  NR2         = graph2->nr_vertices;
-  MAX_NR1_NR2 = (NR1 < NR2 ? NR2 : NR1);
-
-  DIGRAPHS_ASSERT(NR1 <= MAXVERTS && NR2 <= MAXVERTS);
-
-  // initialise the conditions . . .
-  Conditions* conditions = new_conditions(NR1, NR2);
-
-  // image_arg is a pointer to a BitArray of possible image values for the
-  // homomorphisms . . .
-  if (image_arg != NULL) {  // image was specified
-    if (size_bit_array(image_arg) < NR1) {
-      // there isn't enough points in the image_arg
-      return;
-    }
-    for (i = 0; i < NR1; i++) {
-      intersect_bit_arrays(get_conditions(conditions, i), image_arg);
-      // intersect everything in the first row of conditions with <image>
+  if (partial_map_obj != Fail) {
+    for (next = 0; next < LEN_LIST(partial_map_obj); ++next) {
+      if (ISB_LIST(partial_map_obj, next + 1)) {
+        if (depth > 0) {
+          DIGRAPHS_ASSERT(last_defined != UNDEFINED);
+          copy_bit_array(MAP_UNDEFINED[depth],
+                         MAP_UNDEFINED[depth - 1],
+                         DIGRAPH1->nr_vertices);
+          uint16_t i;  // variable for the next for-loop
+          FOR_SET_BITS(MAP_UNDEFINED[depth], DIGRAPH1->nr_vertices, i) {
+            uint16_t n;
+            if (INT_INTOBJ(injective_obj) == 0) {
+              n = digraph_homo_update_conditions(depth, last_defined, i);
+            } else if (INT_INTOBJ(injective_obj) == 1) {
+              n = digraph_mono_update_conditions(depth, last_defined, i);
+            } else {
+              DIGRAPHS_ASSERT(INT_INTOBJ(injective_obj) == 2);
+              n = digraph_embed_update_conditions(depth, last_defined, i);
+            }
+            if (n == 0) {
+              return;
+            }
+          }
+          END_FOR_SET_BITS
+        }
+        uint16_t val = INT_INTOBJ(ELM_LIST(partial_map_obj, next + 1)) - 1;
+        next         = (ORDERED ? INVERSE_ORDER[next] : next);
+        MAP[next]    = val;
+        if (!get_bit_array(VALS, MAP[next])) {
+          rank++;
+          if (rank > hint) {
+            return;
+          }
+        }
+        set_bit_array(VALS, MAP[next], true);
+        set_bit_array(MAP_UNDEFINED[depth], next, false);
+        if (!last_stab_is_trivial) {
+          last_stab_is_trivial =
+              compute_stabs_and_orbit_reps(DIGRAPH1->nr_vertices,
+                                           DIGRAPH2->nr_vertices,
+                                           rep_depth + 1,
+                                           depth,
+                                           MAP[next]);
+          rep_depth++;
+        }
+        depth++;
+        last_defined = next;
+        next         = (ORDERED ? ORDER[next] : next);
+      }
     }
   }
-  // Used by orbit_reps, so that orbit reps are chosen from among the
-  // restricted values of the image.
-  IMAGE_RESTRICT = image_arg;
+  if (INT_INTOBJ(injective_obj) == 0) {
+    find_digraph_homos(depth,
+                       last_defined,
+                       rep_depth,
+                       last_stab_is_trivial,
+                       rank,
+                       max_results,
+                       hint,
+                       count);
+  } else if (INT_INTOBJ(injective_obj) == 1) {
+    find_digraph_monos(depth,
+                       last_defined,
+                       rep_depth,
+                       last_stab_is_trivial,
+                       max_results,
+                       count);
+  } else {
+    DIGRAPHS_ASSERT(INT_INTOBJ(injective_obj) == 2);
+    find_digraph_embeddings(depth,
+                            last_defined,
+                            rep_depth,
+                            last_stab_is_trivial,
+                            max_results,
+                            count);
+  }
+  return;
+}
 
-  // partial_map_arg is an array of UIntS's partially defining a map from
-  // graph1 to graph2.
-  bit_array = new_bit_array(NR2);  // every position is false by default
+////////////////////////////////////////////////////////////////////////////////
+// 7. The GAP-level function (and helpers)
+////////////////////////////////////////////////////////////////////////////////
 
-  if (partial_map_arg != NULL) {  // a partial map was defined
-    BitArray* partial_map_arg_image =
-        new_bit_array(NR2);  // values in the image of partial_map
-    for (i = 0; i < NR1; i++) {
-      if (partial_map_arg[i] != UNDEFINED) {
-        if (get_bit_array(partial_map_arg_image, partial_map_arg[i])) {
-          return;  // partial_map is not injective
+// Initialises the data structures required by the recursive functions for
+// finding homomorphisms. If true is returned everything was initialised ok, if
+// false is returned, then the arguments already imply that there can be no
+// homomorphisms.
+static bool init_data_from_args(Obj digraph1_obj,
+                                Obj digraph2_obj,
+                                Obj hook_obj,
+                                Obj user_param_obj,
+                                Obj max_results_obj,
+                                Obj hint_obj,
+                                Obj injective_obj,
+                                Obj image_obj,
+                                Obj partial_map_obj,
+                                Obj colors1_obj,
+                                Obj colors2_obj,
+                                Obj order_obj) {
+  static bool is_initialized = false;  // did we call this method before?
+  if (!is_initialized) {
+    // srand(time(0));
+    is_initialized = true;
+#ifdef DIGRAPHS_ENABLE_STATS
+    STATS = malloc(sizeof(HomoStats));
+#endif
+
+    DIGRAPH1 = new_digraph(MAXVERTS);
+    DIGRAPH2 = new_digraph(MAXVERTS);
+
+    GRAPH1 = new_graph(MAXVERTS);
+    GRAPH2 = new_graph(MAXVERTS);
+
+    IMAGE_RESTRICT = new_bit_array(MAXVERTS);
+    ORB_LOOKUP     = new_bit_array(MAXVERTS);
+    REPS           = malloc(MAXVERTS * sizeof(BitArray*));
+    for (uint16_t i = 0; i < MAXVERTS; i++) {
+      REPS[i]             = new_bit_array(MAXVERTS);
+      BIT_ARRAY_BUFFER[i] = new_bit_array(MAXVERTS);
+      MAP_UNDEFINED[i]    = new_bit_array(MAXVERTS);
+      STAB_GENS[i]        = new_perm_coll(MAXVERTS, MAXVERTS);
+    }
+    VALS          = new_bit_array(MAXVERTS);
+    CONDITIONS    = new_conditions(MAXVERTS, MAXVERTS);
+    SCHREIER_SIMS = new_schreier_sims();
+  }
+#ifdef DIGRAPHS_ENABLE_STATS
+  clear_stats(STATS);
+#endif
+
+  uint16_t nr1 = DigraphNrVertices(digraph1_obj);
+  uint16_t nr2 = DigraphNrVertices(digraph2_obj);
+
+  init_bit_array(MAP_UNDEFINED[0], true, nr1);
+  init_bit_array(VALS, false, nr2);
+
+  if (IS_LIST(order_obj)) {
+    ORDERED = true;
+    for (uint16_t i = 0; i < nr1; i++) {
+      ORDER[i]                = INT_INTOBJ(ELM_LIST(order_obj, i + 1)) - 1;
+      INVERSE_ORDER[ORDER[i]] = i;
+    }
+  } else {
+    ORDERED = false;
+  }
+
+  bool is_undirected;
+  if (CALL_1ARGS(IsSymmetricDigraph, digraph1_obj) == True
+      && CALL_1ARGS(IsSymmetricDigraph, digraph2_obj) == True) {
+    init_graph_from_digraph_obj(GRAPH1, digraph1_obj, ORDERED);
+    init_graph_from_digraph_obj(GRAPH2, digraph2_obj, false);
+    is_undirected = true;
+  } else {
+    init_digraph_from_digraph_obj(DIGRAPH1, digraph1_obj, ORDERED);
+    init_digraph_from_digraph_obj(DIGRAPH2, digraph2_obj, false);
+    is_undirected = false;
+  }
+
+  if (hook_obj != Fail) {
+    GAP_FUNC = hook_obj;
+    HOOK     = homo_hook_gap;
+  } else {
+    HOOK = homo_hook_collect;
+  }
+  USER_PARAM = user_param_obj;
+
+  clear_conditions(CONDITIONS, nr1, nr2);
+
+  // IMAGE_RESTRICT is a pointer to a BitArray of possible image values for the
+  // homomorphisms, it is also used by orbit_reps so that orbit reps are chosen
+  // from among the restricted values of the image . . .
+  set_bit_array_from_gap_list(IMAGE_RESTRICT, image_obj);
+  if (INT_INTOBJ(injective_obj) > 0
+      && size_bit_array(IMAGE_RESTRICT, nr1) < nr1) {
+    // homomorphisms should be injective (by injective_obj) but are not since
+    // the image is too restricted.
+    return false;
+  }
+
+  init_bit_array(BIT_ARRAY_BUFFER[0], false, nr2);
+  if (partial_map_obj != Fail) {
+    for (uint16_t i = 1; i <= LEN_LIST(partial_map_obj); i++) {
+      if (ISB_LIST(partial_map_obj, i)) {
+        Obj o = ELM_LIST(partial_map_obj, i);
+        DIGRAPHS_ASSERT(IS_INTOBJ(o));
+        DIGRAPHS_ASSERT(INT_INTOBJ(o) > 0);
+        DIGRAPHS_ASSERT(INT_INTOBJ(o) <= nr2);
+        if (INT_INTOBJ(injective_obj) > 0) {
+          if (get_bit_array(BIT_ARRAY_BUFFER[0], INT_INTOBJ(o) - 1)) {
+            // partial_map_obj should be injective, but is not
+            return false;
+          }
+          set_bit_array(BIT_ARRAY_BUFFER[0], INT_INTOBJ(o) - 1, true);
+        }
+        // The only value that vertex `i` can have is `o`!
+        if (ORDERED) {
+          init_bit_array(
+              get_conditions(CONDITIONS, INVERSE_ORDER[i - 1]), false, nr2);
+          set_bit_array_from_gap_int(
+              get_conditions(CONDITIONS, INVERSE_ORDER[i - 1]), o);
         } else {
-          set_bit_array(partial_map_arg_image, partial_map_arg[i], true);
-        }
-        init_bit_array(bit_array, false);
-        set_bit_array(bit_array, partial_map_arg[i], true);
-        intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-      }
-    }
-    free_bit_array(partial_map_arg_image);
-  }
-
-  init_bit_array(bit_array, false);
-
-  // find loops in graph2
-  for (i = 0; i < NR2; i++) {
-    if (is_adjacent_graph(graph2, i, i)) {
-      set_bit_array(bit_array, i, true);
-    }
-  }
-
-  // loops in graph1 can only MAP to bit_array in graph2
-  for (i = 0; i < NR1; i++) {
-    if (is_adjacent_graph(graph1, i, i)) {
-      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
-    }
-    store_size_conditions(conditions, i);
-  }
-
-  if (colors1 != NULL) {  // colors1 and colors2 specified
-    for (i = 0; i < NR1; i++) {
-      init_bit_array(bit_array, false);
-      for (j = 0; j < NR2; j++) {
-        if (colors1[i] == colors2[j]) {
-          set_bit_array(bit_array, j, true);
+          init_bit_array(get_conditions(CONDITIONS, i - 1), false, nr2);
+          set_bit_array_from_gap_int(get_conditions(CONDITIONS, i - 1), o);
         }
       }
-      intersect_bit_arrays(get_conditions(conditions, i), bit_array);
+      // Intersect everything in the first row of the conditions with <image>,
+      intersect_bit_arrays(
+          get_conditions(CONDITIONS, i - 1), IMAGE_RESTRICT, nr2);
+    }
+  }
+
+  init_bit_array(BIT_ARRAY_BUFFER[0], false, nr2);
+  if (is_undirected) {
+    for (uint16_t i = 0; i < nr2; i++) {
+      if (is_adjacent_graph(GRAPH2, i, i)) {
+        set_bit_array(BIT_ARRAY_BUFFER[0], i, true);
+      }
+    }
+    // Loops in digraph1 can only MAP to loops in digraph2
+    for (uint16_t i = 0; i < nr1; i++) {
+      if (is_adjacent_graph(GRAPH1, i, i)) {
+        intersect_bit_arrays(
+            get_conditions(CONDITIONS, i), BIT_ARRAY_BUFFER[0], nr2);
+      }
+    }
+  } else {
+    for (uint16_t i = 0; i < nr2; i++) {
+      if (is_adjacent_digraph(DIGRAPH2, i, i)) {
+        set_bit_array(BIT_ARRAY_BUFFER[0], i, true);
+      }
+    }
+    // Loops in digraph1 can only MAP to loops in digraph2
+    for (uint16_t i = 0; i < nr1; i++) {
+      if (is_adjacent_digraph(DIGRAPH1, i, i)) {
+        intersect_bit_arrays(
+            get_conditions(CONDITIONS, i), BIT_ARRAY_BUFFER[0], nr2);
+      }
+    }
+  }
+
+  // Process the vertex colours . . .
+  uint16_t* colors;
+  if (colors1_obj != Fail && colors2_obj != Fail) {
+    DIGRAPHS_ASSERT(IS_LIST(colors1_obj));
+    DIGRAPHS_ASSERT(IS_LIST(colors2_obj));
+    DIGRAPHS_ASSERT(LEN_LIST(colors1_obj) == nr1);
+    DIGRAPHS_ASSERT(LEN_LIST(colors2_obj) == nr2);
+
+    for (uint16_t i = 1; i <= LEN_LIST(colors2_obj); i++) {
+      DIGRAPHS_ASSERT(ISB_LIST(colors2_obj, i));
+      DIGRAPHS_ASSERT(IS_INTOBJ(ELM_LIST(colors2_obj, i)));
+      COLORS2[i - 1] = INT_INTOBJ(ELM_LIST(colors2_obj, i)) - 1;
+    }
+    for (uint16_t i = 1; i <= LEN_LIST(colors1_obj); i++) {
+      init_bit_array(BIT_ARRAY_BUFFER[0], false, nr2);
+      DIGRAPHS_ASSERT(ISB_LIST(colors1_obj, i));
+      DIGRAPHS_ASSERT(IS_INTOBJ(ELM_LIST(colors1_obj, i)));
+      for (uint16_t j = 1; j <= LEN_LIST(colors2_obj); j++) {
+        if (INT_INTOBJ(ELM_LIST(colors1_obj, i))
+            == INT_INTOBJ(ELM_LIST(colors2_obj, j))) {
+          set_bit_array(BIT_ARRAY_BUFFER[0], j - 1, true);
+        }
+      }
+      if (ORDERED) {
+        intersect_bit_arrays(get_conditions(CONDITIONS, INVERSE_ORDER[i - 1]),
+                             BIT_ARRAY_BUFFER[0],
+                             nr2);
+      } else {
+        intersect_bit_arrays(
+            get_conditions(CONDITIONS, i - 1), BIT_ARRAY_BUFFER[0], nr2);
+      }
       // can only map vertices of color i to vertices of color i
     }
+    colors = COLORS2;
+  } else {
+    colors = NULL;
   }
 
-  free_bit_array(bit_array);
+  // Ensure that the sizes of all conditions are known before we start and
+  // define the MAP
 
-  // store the values in <map>, this is initialised to every bit set to false,
-  // by default.
-  VALS       = new_bit_array(NR2);
-  DOMAIN     = new_bit_array(NR2);
-  ORB_LOOKUP = new_bit_array(NR2);
-  REPS       = malloc(NR1 * sizeof(BitArray*));
-
-  // initialise the <map> and store the sizes in the conditions.
-  for (i = 0; i < NR1; i++) {
-    REPS[i] = new_bit_array(NR2);
-    MAP[i]  = UNDEFINED;
+  for (uint16_t i = 0; i < nr1; i++) {
+    store_size_conditions(CONDITIONS, i);
+    MAP[i] = UNDEFINED;
   }
-  for (i = NR1; i < MAX_NR1_NR2; i++) {
+  for (uint16_t i = nr1; i < MAX(nr1, nr2); i++) {
     MAP[i] = i;
   }
 
-  // get generators of the automorphism group of graph2, and the orbit reps
-  set_perms_degree(NR2);
-  STAB_GENS[0] = automorphisms_graph(graph2, colors2);
-  orbit_reps(0);
+  // Get generators of the automorphism group of the second (di)graph, and the
+  // orbit reps
+  PERM_DEGREE = nr2;
+  if (colors == NULL) {
+    get_automorphism_group_from_gap(digraph2_obj, STAB_GENS[0]);
+  } else if (is_undirected) {
+    automorphisms_graph(GRAPH2, colors, STAB_GENS[0]);
+  } else {
+    automorphisms_digraph(DIGRAPH2, colors, STAB_GENS[0]);
+  }
+  compute_stabs_and_orbit_reps(nr1, nr2, 0, 0, UNDEFINED);
+  return true;
+}
 
-  // misc parameters
-  MAX_RESULTS = max_results_arg;
-  USER_PARAM  = user_param_arg;
-  HOOK        = hook_arg;
+// The next function is the main function for accessing the homomorphisms code.
+//
+// The arguments are:
+//
+// 1. digraph1_obj     the source/domain of the homomorphisms sought
+// 2. digraph2_obj     the range/codomain of the homomorphisms sought
+// 3. hook_obj         apply this function to every homomorphism found, or Fail
+//                     for no function.
+// 4. user_param_obj   GAP variable that can be used in the hook_obj, must be a
+//                     plist if hook_obj is Fail.
+// 5. max_results_obj  the maximum number of homomorphisms to find
+// 6. hint_obj         the rank of any homomorphisms found
+// 7. injective_obj    should be 0 for non-injective, 1 for injective, 2 for
+//                     embedding, or (for backwards compatibility, true for
+//                     injective, or false for non-injective).
+// 8. image_obj        a list of vertices in digraph2_obj from which the images
+//                     of any homomorphism will be taken.
+// 9. partial_map_obj  a partial map from digraph1_obj to digraph2_obj, only
+//                     homomorphisms extending this partial map are found (if
+//                     any). Can also be fail to indicate no partial mapping is
+//                     defined.
+// 10. colors1_obj     a coloring of digraph1_obj
+// 11. colors2_obj     a coloring of digraph2_obj, only homomorphisms that
+//                     respect these colorings are found.
+// 12. order_obj       an optional argument that can specify the order the
+//                     vertices in digraph1_obj should be installed in the
+//                     Graph or Digraph used in the recursive search. This does
+//                     not directly specify which order vertices are visited in
+//                     the search, but can have a large impact on the run time
+//                     of the function. It seems in many cases to be a good
+//                     idea for this to be the DigraphWelshPowellOrder, i.e.
+//                     vertices ordered from highest to lowest degree.
 
-  // statistics . . . FIXME not currently used for anything
-  count       = 0;
-  last_report = 0;
-
-  // go!
-  if (setjmp(outofhere) == 0) {
-    find_graph_monos(graph1, graph2, conditions, 0, UNDEFINED, 0, false);
+Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
+  if (LEN_PLIST(args) != 11 && LEN_PLIST(args) != 12) {
+    ErrorQuit(
+        "there must be 11 or 12 arguments, found %d", LEN_PLIST(args), 0L);
+  }
+  Obj digraph1_obj    = ELM_PLIST(args, 1);
+  Obj digraph2_obj    = ELM_PLIST(args, 2);
+  Obj hook_obj        = ELM_PLIST(args, 3);
+  Obj user_param_obj  = ELM_PLIST(args, 4);
+  Obj max_results_obj = ELM_PLIST(args, 5);
+  Obj hint_obj        = ELM_PLIST(args, 6);
+  Obj injective_obj   = ELM_PLIST(args, 7);
+  Obj image_obj       = ELM_PLIST(args, 8);
+  Obj partial_map_obj = ELM_PLIST(args, 9);
+  Obj colors1_obj     = ELM_PLIST(args, 10);
+  Obj colors2_obj     = ELM_PLIST(args, 11);
+  Obj order_obj       = Fail;
+  if (LEN_PLIST(args) == 12) {
+    order_obj = ELM_PLIST(args, 12);
   }
 
-  // free the stab_gens
-  for (i = 0; i < MAXVERTS; i++) {
-    if (STAB_GENS[i] != NULL) {
-      free_perm_coll(STAB_GENS[i]);
-      STAB_GENS[i] = NULL;
+  // Validate the arguments
+  if (CALL_1ARGS(IsDigraph, digraph1_obj) != True) {
+    ErrorQuit("the 1st argument (digraph1) must be a digraph, not %s",
+              (Int) TNAM_OBJ(digraph1_obj),
+              0L);
+  } else if (DigraphNrVertices(digraph1_obj) > MAXVERTS) {
+    ErrorQuit("the 1st argument (digraph1) must have at most 512 vertices, "
+              "found %d",
+              DigraphNrVertices(digraph1_obj),
+              0L);
+  }
+  if (CALL_1ARGS(IsDigraph, digraph2_obj) != True) {
+    ErrorQuit("the 2nd argument (digraph2) must be a digraph, not %s",
+              (Int) TNAM_OBJ(digraph2_obj),
+              0L);
+  } else if (DigraphNrVertices(digraph2_obj) > MAXVERTS) {
+    ErrorQuit("the 2nd argument (digraph2) must have at most 512 vertices, "
+              "found %d",
+              DigraphNrVertices(digraph2_obj),
+              0L);
+  }
+  if (hook_obj == Fail) {
+    if (!IS_LIST(user_param_obj) || !IS_MUTABLE_OBJ(user_param_obj)) {
+      ErrorQuit("the 3rd argument (hook) is fail and so the 4th argument must "
+                "be a mutable list, not %s",
+                (Int) TNAM_OBJ(user_param_obj),
+                0L);
+    }
+  } else if (!IS_FUNC(hook_obj) || NARG_FUNC(hook_obj) != 2) {
+    ErrorQuit(
+        "the 3rd argument (hook) must be a function with 2 arguments", 0L, 0L);
+  }
+  if (!IS_INTOBJ(max_results_obj) && max_results_obj != Infinity) {
+    ErrorQuit("the 5th argument (max_results) must be an integer "
+              "or infinity, not %s",
+              (Int) TNAM_OBJ(max_results_obj),
+              0L);
+  }
+  if (!IS_INTOBJ(hint_obj) && hint_obj != Fail) {
+    ErrorQuit("the 6th argument (hint) must be an integer "
+              "or fail, not %s",
+              (Int) TNAM_OBJ(hint_obj),
+              0L);
+  } else if (IS_INTOBJ(hint_obj) && INT_INTOBJ(hint_obj) <= 0) {
+    ErrorQuit("the 6th argument (hint) must be a positive integer, "
+              "not %d",
+              INT_INTOBJ(hint_obj),
+              0L);
+  }
+
+  if (!IS_INTOBJ(injective_obj) && injective_obj != True
+      && injective_obj != False) {
+    ErrorQuit("the 7th argument (injective) must be an integer "
+              "or true or false, not %s",
+              (Int) TNAM_OBJ(injective_obj),
+              0L);
+  } else if (IS_INTOBJ(injective_obj)) {
+    if (INT_INTOBJ(injective_obj) < 0 || INT_INTOBJ(injective_obj) > 2) {
+      ErrorQuit("the 7th argument (injective) must 0, 1, or 2, not %d",
+                INT_INTOBJ(injective_obj),
+                0L);
+    }
+  } else if (injective_obj == True) {
+    injective_obj = INTOBJ_INT(1);
+  } else {
+    injective_obj = INTOBJ_INT(0);
+  }
+
+  if (!IS_LIST(image_obj) && image_obj != Fail) {
+    ErrorQuit("the 8th argument (image) must be a list or fail, not %s",
+              (Int) TNAM_OBJ(image_obj),
+              0L);
+  } else if (IS_LIST(image_obj)) {
+    for (Int i = 1; i <= LEN_LIST(image_obj); ++i) {
+      if (!ISB_LIST(image_obj, i)) {
+        ErrorQuit("the 8th argument (image) must be a dense list", 0L, 0L);
+      } else if (!IS_POS_INT(ELM_LIST(image_obj, i))) {
+        ErrorQuit("the 8th argument (image) must only contain positive "
+                  "integers, but found %s in position %d",
+                  (Int) TNAM_OBJ(ELM_LIST(image_obj, i)),
+                  i);
+      } else if (INT_INTOBJ(ELM_LIST(image_obj, i))
+                 > DigraphNrVertices(digraph2_obj)) {
+        ErrorQuit("in the 8th argument (image) position %d is out of range, "
+                  "must be in the range [1, %d]",
+                  i,
+                  DigraphNrVertices(digraph2_obj));
+      } else if (INT_INTOBJ(
+                     POS_LIST(image_obj, ELM_LIST(image_obj, i), INTOBJ_INT(0)))
+                 < i) {
+        ErrorQuit(
+            "in the 8th argument (image) position %d is a duplicate", i, 0L);
+      }
     }
   }
-  free_bit_array(VALS);
-  free_bit_array(DOMAIN);
-  free_bit_array(ORB_LOOKUP);
-  for (i = 0; i < NR1; i++) {
-    free_bit_array(REPS[i]);
+  if (!IS_LIST(partial_map_obj) && partial_map_obj != Fail) {
+    ErrorQuit("the 9th argument (partial_map) must be a list or fail, not %s",
+              (Int) TNAM_OBJ(partial_map_obj),
+              0L);
+  } else if (IS_LIST(partial_map_obj)) {
+    if (LEN_LIST(partial_map_obj) > DigraphNrVertices(digraph1_obj)) {
+      ErrorQuit("the 9th argument (partial_map) is too long, must be at most "
+                "%d, found %d",
+                DigraphNrVertices(digraph1_obj),
+                LEN_LIST(partial_map_obj));
+    }
+    for (Int i = 1; i <= LEN_LIST(partial_map_obj); ++i) {
+      if (ISB_LIST(partial_map_obj, i)
+          && POS_LIST(image_obj, ELM_LIST(partial_map_obj, i), INTOBJ_INT(0))
+                 == Fail) {
+        ErrorQuit("in the 9th argument (partial_map) the value %d in position "
+                  "%d does not belong to the 7th argument (image)",
+                  INT_INTOBJ(ELM_LIST(partial_map_obj, i)),
+                  i);
+      }
+    }
   }
-  free(REPS);
-  free_conditions(conditions);
+
+  Obj str;
+  C_NEW_STRING(str, 26, "HomomorphismDigraphsFinder");
+  if (!IS_LIST(colors1_obj) && colors1_obj != Fail) {
+    ErrorQuit("the 10th argument (colors1) must be a list or fail, not %s",
+              (Int) TNAM_OBJ(colors1_obj),
+              0L);
+  } else if (IS_LIST(colors1_obj)) {
+    colors1_obj = CALL_3ARGS(DIGRAPHS_ValidateVertexColouring,
+                             INTOBJ_INT(DigraphNrVertices(digraph1_obj)),
+                             colors1_obj,
+                             str);
+  }
+  if (!IS_LIST(colors2_obj) && colors2_obj != Fail) {
+    ErrorQuit("the 11th argument (colors2) must be a list or fail, not %s",
+              (Int) TNAM_OBJ(colors2_obj),
+              0L);
+  } else if (IS_LIST(colors2_obj)) {
+    colors2_obj = CALL_3ARGS(DIGRAPHS_ValidateVertexColouring,
+                             INTOBJ_INT(DigraphNrVertices(digraph2_obj)),
+                             colors2_obj,
+                             str);
+  }
+  if ((IS_LIST(colors1_obj) && !IS_LIST(colors2_obj))
+      || (colors1_obj == Fail && colors2_obj != Fail)) {
+    ErrorQuit("the 10th and 11th arguments must both be lists or both be fail",
+              0L,
+              0L);
+  }
+  if (!IS_LIST(order_obj) && order_obj != Fail) {
+    ErrorQuit("the 12th argument (order) must be a list or fail, not %s",
+              (Int) TNAM_OBJ(order_obj),
+              0L);
+  } else if (IS_LIST(order_obj)) {
+    if (LEN_LIST(order_obj) != DigraphNrVertices(digraph1_obj)) {
+      ErrorQuit("the 12th argument (order) must be a list of length %d, not %d",
+                DigraphNrVertices(digraph1_obj),
+                LEN_LIST(order_obj));
+    }
+    for (Int i = 1; i <= LEN_LIST(order_obj); ++i) {
+      if (!ISB_LIST(order_obj, i)) {
+        ErrorQuit("the 12th argument (order) must be a dense list, but "
+                  "position %d is not bound",
+                  i,
+                  0L);
+      } else if (!IS_INTOBJ(ELM_LIST(order_obj, i))) {
+        ErrorQuit("the 12th argument (order) must consist of integers, but "
+                  "found %s in position %d",
+                  (Int) TNAM_OBJ(order_obj),
+                  i);
+      } else if (INT_INTOBJ(ELM_LIST(order_obj, i)) <= 0
+                 || INT_INTOBJ(ELM_LIST(order_obj, i))
+                        > DigraphNrVertices(digraph1_obj)) {
+        ErrorQuit("the 12th argument (order) must consist of integers, in the "
+                  "range [1, %d] but found %d",
+                  DigraphNrVertices(digraph1_obj),
+                  INT_INTOBJ(ELM_LIST(order_obj, i)));
+      } else if (INT_INTOBJ(
+                     POS_LIST(order_obj, ELM_LIST(order_obj, i), INTOBJ_INT(0)))
+                 < i) {
+        ErrorQuit("the 12th argument (order) must be duplicate-free, but "
+                  "the value %d in position %d is a duplicate",
+                  INT_INTOBJ(ELM_LIST(order_obj, i)),
+                  i);
+      }
+    }
+  }
+
+  // Some conditions that immediately rule out there being any homomorphisms.
+  if (((INT_INTOBJ(injective_obj) == 1 || INT_INTOBJ(injective_obj) == 2)
+       && ((hint_obj != Fail
+            && INT_INTOBJ(hint_obj) != DigraphNrVertices(digraph1_obj))
+           || DigraphNrVertices(digraph1_obj)
+                  > DigraphNrVertices(digraph2_obj)))
+      || (hint_obj != Fail
+          && (INT_INTOBJ(hint_obj) > DigraphNrVertices(digraph1_obj)
+              || INT_INTOBJ(hint_obj) > DigraphNrVertices(digraph2_obj)))
+      || LEN_LIST(image_obj) == 0
+      || (hint_obj != Fail && INT_INTOBJ(hint_obj) > LEN_LIST(image_obj))) {
+    // Can't print stats here because they are not initialised, also why would
+    // we want to, nothing has actually happened yet!
+    return user_param_obj;
+  }
+
+  // Initialise all of the global variables that are used in the recursion.
+  // Returns false if the arguments somehow rule out there being any
+  // homomorphisms (i.e. if injective_obj indicates that the homomorphisms
+  // should be injective, and image_obj is too small).
+  if (!init_data_from_args(digraph1_obj,
+                           digraph2_obj,
+                           hook_obj,
+                           user_param_obj,
+                           max_results_obj,
+                           hint_obj,
+                           injective_obj,
+                           image_obj,
+                           partial_map_obj,
+                           colors1_obj,
+                           colors2_obj,
+                           order_obj)) {
+#ifdef DIGRAPHS_ENABLE_STATS
+    print_stats(STATS);
+#endif
+    return user_param_obj;
+  }
+
+  uint64_t max_results =
+      (max_results_obj == Infinity ? SMALLINTLIMIT
+                                   : INT_INTOBJ(max_results_obj));
+  uint16_t hint  = (IS_INTOBJ(hint_obj) ? INT_INTOBJ(hint_obj) : UNDEFINED);
+  uint64_t count = 0;
+
+  // go!
+  if (setjmp(OUTOFHERE) == 0) {
+    if (CALL_1ARGS(IsSymmetricDigraph, digraph1_obj) == True
+        && CALL_1ARGS(IsSymmetricDigraph, digraph2_obj) == True) {
+      init_partial_map_and_find_graph_homos(
+          partial_map_obj, max_results, hint, &count, injective_obj);
+    } else {
+      init_partial_map_and_find_digraph_homos(
+          partial_map_obj, max_results, hint, &count, injective_obj);
+    }
+  }
+#ifdef DIGRAPHS_ENABLE_STATS
+  print_stats(STATS);
+#endif
+  return user_param_obj;
 }

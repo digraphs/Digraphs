@@ -26,6 +26,8 @@ DeclareOperation("EpimorphismsDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("EpimorphismsDigraphsRepresentatives", [IsDigraph, IsDigraph]);
 
 DeclareOperation("DigraphEmbedding", [IsDigraph, IsDigraph]);
+DeclareOperation("EmbeddingsDigraphs", [IsDigraph, IsDigraph]);
+DeclareOperation("EmbeddingsDigraphsRepresentatives", [IsDigraph, IsDigraph]);
 
 DeclareOperation("DigraphColouring", [IsDigraph, IsInt]);
 
@@ -37,8 +39,6 @@ DeclareAttribute("DigraphGreedyColouring", IsDigraph);
 DeclareSynonym("DigraphGreedyColoring", DigraphGreedyColouring);
 
 DeclareAttribute("DigraphWelshPowellOrder", IsDigraph);
-
-DeclareGlobalFunction("HomomorphismDigraphsFinder");
 
 DeclareOperation("IsDigraphEndomorphism", [IsDigraph, IsTransformation]);
 DeclareOperation("IsDigraphHomomorphism",

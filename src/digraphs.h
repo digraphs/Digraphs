@@ -27,6 +27,9 @@ Obj DigraphRange(Obj digraph);
 
 Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj digraph);
 
+extern Obj AutomorphismGroup;
+extern Obj DIGRAPHS_ValidateVertexColouring;
+extern Obj GeneratorsOfGroup;
 extern Obj IsDigraph;
 extern Obj IsDigraphEdge;
 

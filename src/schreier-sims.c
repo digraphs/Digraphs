@@ -21,267 +21,230 @@
 // Digraphs package headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
+uint16_t PERM_DEGREE = 0;
+
 // Schreier-Sims set up
 
-static PermColl* strong_gens[MAXVERTS];  // strong generators
-static Perm      transversal[MAXVERTS * MAXVERTS];
-static Perm      transversal_inv[MAXVERTS * MAXVERTS];
-static bool      first_ever_call = true;
-static bool      borbits[MAXVERTS * MAXVERTS];
-static UIntS     orbits[MAXVERTS * MAXVERTS];
-static UIntS     size_orbits[MAXVERTS];
-// static UIntS    lmp;
-static UIntS base[MAXVERTS];
-static UIntS size_base;
-
-static inline void add_strong_gens(UIntS const pos, Perm const value) {
-  if (strong_gens[pos] == NULL) {
-    strong_gens[pos] = new_perm_coll(1);
+SchreierSims* new_schreier_sims() {
+  SchreierSims* ss = malloc(sizeof(SchreierSims));
+  ss->tmp_perm     = new_perm(MAXVERTS);
+  for (uint16_t i = 0; i < MAXVERTS; ++i) {
+    ss->strong_gens[i] = new_perm_coll(MAXVERTS, MAXVERTS);
   }
-  add_perm_coll(strong_gens[pos], value);
+  for (size_t i = 0; i < MAXVERTS * MAXVERTS; ++i) {
+    ss->transversal[i] = new_perm(MAXVERTS);
+    ss->inversal[i]    = new_perm(MAXVERTS);
+  }
+  return ss;
 }
 
-static inline Perm get_strong_gens(UIntS const i, UIntS const j) {
-  return strong_gens[i]->gens[j];
-}
-
-static inline Perm get_transversal(UIntS const i, UIntS const j) {
-  return transversal[i * MAXVERTS + j];
-}
-
-static inline Perm get_transversal_inv(UIntS const i, UIntS const j) {
-  return transversal_inv[i * MAXVERTS + j];
+void init_ss(SchreierSims* ss, uint16_t degree) {
+  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  for (uint16_t i = 0; i < degree; ++i) {
+    clear_perm_coll(ss->strong_gens[i]);
+    ss->strong_gens[i]->degree = degree;
+  }
+  memset((void*) ss->orb_lookup, false, degree * degree * sizeof(bool));
+  memset((void*) ss->size_orbits, 0, degree * sizeof(uint16_t));
+  ss->size_base = 0;
+  ss->degree    = degree;
 }
 
 static inline void
-set_transversal(UIntS const i, UIntS const j, Perm const value) {
-  // free the perm in this position if there is one already
-  if (transversal[i * MAXVERTS + j] != NULL) {
-    free(transversal[i * MAXVERTS + j]);
-    nr_ss_frees++;
-    free(transversal_inv[i * MAXVERTS + j]);
-    nr_ss_frees++;
-  }
-  transversal[i * MAXVERTS + j]     = value;
-  transversal_inv[i * MAXVERTS + j] = invert_perm(value);
+add_strong_gen_ss(SchreierSims* ss, uint16_t const pos, Perm const p) {
+  DIGRAPHS_ASSERT(pos < ss->degree);
+  add_perm_coll(ss->strong_gens[pos], p);
 }
 
-static bool perm_fixes_all_base_points(Perm const x) {
-  UIntS i;
+static inline Perm get_strong_gen_ss(SchreierSims const* const ss,
+                                     uint16_t const            i,
+                                     uint16_t const            j) {
+  DIGRAPHS_ASSERT(i < ss->degree);
+  DIGRAPHS_ASSERT(j < ss->degree);
+  return ss->strong_gens[i]->perms[j];
+}
 
-  for (i = 0; i < size_base; i++) {
-    if (x[base[i]] != base[i]) {
+static inline Perm get_transversal_ss(SchreierSims const* const ss,
+                                      uint16_t const            i,
+                                      uint16_t const            j) {
+  DIGRAPHS_ASSERT(i < ss->degree);
+  DIGRAPHS_ASSERT(j < ss->degree);
+  return ss->transversal[i * MAXVERTS + j];
+}
+
+static inline Perm get_inversal_ss(SchreierSims const* const ss,
+                                   uint16_t const            i,
+                                   uint16_t const            j) {
+  DIGRAPHS_ASSERT(i < ss->degree);
+  DIGRAPHS_ASSERT(j < ss->degree);
+  return ss->inversal[i * MAXVERTS + j];
+}
+
+static inline void add_base_point_ss(SchreierSims* ss, uint16_t const pt) {
+  ss->base[ss->size_base]                         = pt;
+  ss->size_orbits[ss->size_base]                  = 1;
+  ss->orbits[ss->size_base * ss->degree]          = pt;
+  ss->orb_lookup[ss->size_base * ss->degree + pt] = true;
+  id_perm(get_transversal_ss(ss, ss->size_base, pt), ss->degree);
+  id_perm(get_inversal_ss(ss, ss->size_base, pt), ss->degree);
+  ss->size_base++;
+}
+
+static void
+orbit_ss(SchreierSims* ss, uint16_t const depth, uint16_t const init_pt) {
+  DIGRAPHS_ASSERT(depth <= ss->size_base);
+  for (uint16_t i = 0; i < ss->size_orbits[depth]; i++) {
+    uint16_t pt = ss->orbits[depth * ss->degree + i];
+    for (uint16_t j = 0; j < ss->strong_gens[depth]->size; j++) {
+      Perm     x   = ss->strong_gens[depth]->perms[j];
+      uint16_t img = x[pt];
+      if (!ss->orb_lookup[depth * ss->degree + img]) {
+        ss->orbits[depth * ss->degree + ss->size_orbits[depth]] = img;
+        ss->size_orbits[depth]++;
+        ss->orb_lookup[depth * ss->degree + img] = true;
+        prod_perms(get_transversal_ss(ss, depth, img),
+                   get_transversal_ss(ss, depth, pt),
+                   x,
+                   ss->degree);
+        invert_perm(get_inversal_ss(ss, depth, img),
+                    get_transversal_ss(ss, depth, img),
+                    ss->degree);
+      }
+    }
+  }
+}
+
+static void
+add_gen_orbit_ss(SchreierSims* ss, uint16_t const depth, Perm const gen) {
+  DIGRAPHS_ASSERT(depth <= ss->size_base);
+  // apply the new generator to existing points in ss->orbits[depth]
+  uint16_t nr = ss->size_orbits[depth];
+  for (uint16_t i = 0; i < nr; i++) {
+    uint16_t pt  = ss->orbits[depth * ss->degree + i];
+    uint16_t img = gen[pt];
+    if (!ss->orb_lookup[depth * ss->degree + img]) {
+      ss->orbits[depth * ss->degree + ss->size_orbits[depth]] = img;
+      ss->size_orbits[depth]++;
+      ss->orb_lookup[depth * ss->degree + img] = true;
+      prod_perms(get_transversal_ss(ss, depth, img),
+                 get_transversal_ss(ss, depth, pt),
+                 gen,
+                 ss->degree);
+      invert_perm(get_inversal_ss(ss, depth, img),
+                  get_transversal_ss(ss, depth, img),
+                  ss->degree);
+    }
+  }
+
+  for (uint16_t i = nr; i < ss->size_orbits[depth]; i++) {
+    uint16_t pt = ss->orbits[depth * ss->degree + i];
+    for (uint16_t j = 0; j < ss->strong_gens[depth]->size; j++) {
+      Perm     x   = get_strong_gen_ss(ss, depth, j);
+      uint16_t img = x[pt];
+      if (!ss->orb_lookup[depth * ss->degree + img]) {
+        ss->orbits[depth * ss->degree + ss->size_orbits[depth]] = img;
+        ss->size_orbits[depth]++;
+        ss->orb_lookup[depth * ss->degree + img] = true;
+        prod_perms(get_transversal_ss(ss, depth, img),
+                   get_transversal_ss(ss, depth, pt),
+                   x,
+                   ss->degree);
+        invert_perm(get_inversal_ss(ss, depth, img),
+                    get_transversal_ss(ss, depth, img),
+                    ss->degree);
+      }
+    }
+  }
+}
+
+static uint16_t sift_ss(SchreierSims* ss, Perm g) {
+  uint16_t depth;
+  for (depth = 0; depth < ss->size_base; depth++) {
+    uint16_t beta = g[ss->base[depth]];
+    if (!ss->orb_lookup[depth * ss->degree + beta]) {
+      return depth;
+    }
+    prod_perms(g, g, get_inversal_ss(ss, depth, beta), ss->degree);
+  }
+  return depth;
+}
+
+static bool perm_fixes_all_base_points(SchreierSims* ss, Perm const x) {
+  for (uint16_t i = 0; i < ss->size_base; i++) {
+    if (x[ss->base[i]] != ss->base[i]) {
       return false;
     }
   }
   return true;
 }
 
-static inline void add_base_point(UIntS const pt) {
-  base[size_base]               = pt;
-  size_orbits[size_base]        = 1;
-  orbits[size_base * deg]       = pt;
-  borbits[size_base * deg + pt] = true;
-  set_transversal(size_base, pt, id_perm());
-  size_base++;
-}
-
-static inline void first_ever_init() {
-  first_ever_call = false;
-  memset((void*) size_orbits, 0, MAXVERTS * sizeof(UIntS));
-}
-
-static void init_stab_chain() {
-  if (first_ever_call) {
-    first_ever_init();
-  }
-
-  memset((void*) borbits, false, deg * deg * sizeof(bool));
-  size_base = 0;
-}
-
-/*static void init_endos_base_points() {
-  UIntS  i;
-
-  for (i = 0; i < deg - 1; i++) {
-    add_base_point(i);
-  }
-}*/
-
-static void free_stab_chain() {
-  int i, j, k;
-
-  memset((void*) size_orbits, 0, size_base * sizeof(UIntS));
-
-  // free the transversal
-  // free the transversal_inv
-  for (i = 0; i < (int) deg; i++) {
-    for (j = 0; j < (int) deg; j++) {
-      k = i * MAXVERTS + j;
-      if (transversal[k] != NULL) {
-        free(transversal[k]);
-        transversal[k] = NULL;
-        nr_ss_frees++;
-        free(transversal_inv[k]);
-        transversal_inv[k] = NULL;
-        nr_ss_frees++;
-      }
-    }
-  }
-
-  // free the strong_gens
-  for (i = 0; i < (int) size_base; i++) {
-    if (strong_gens[i] != NULL) {
-      free_perm_coll(strong_gens[i]);
-      strong_gens[i] = NULL;
-    }
-  }
-}
-
-static void orbit_stab_chain(UIntS const depth, UIntS const init_pt) {
-  UIntS i, j, pt, img;
-  Perm  x;
-
-  DIGRAPHS_ASSERT(depth <= size_base);  // Should this be strict?
-
-  for (i = 0; i < size_orbits[depth]; i++) {
-    pt = orbits[depth * deg + i];
-    for (j = 0; j < strong_gens[depth]->nr_gens; j++) {
-      x   = get_strong_gens(depth, j);
-      img = x[pt];
-      if (!borbits[depth * deg + img]) {
-        orbits[depth * deg + size_orbits[depth]] = img;
-        size_orbits[depth]++;
-        borbits[depth * deg + img] = true;
-        set_transversal(depth, img, prod_perms(get_transversal(depth, pt), x));
-      }
-    }
-  }
-}
-
-static void add_gen_orbit_stab_chain(UIntS const depth, Perm const gen) {
-  UIntS i, j, pt, img;
-  Perm  x;
-
-  DIGRAPHS_ASSERT(depth <= size_base);
-
-  // apply the new generator to existing points in orbits[depth]
-  UIntS nr = size_orbits[depth];
-  for (i = 0; i < nr; i++) {
-    pt  = orbits[depth * deg + i];
-    img = gen[pt];
-    if (!borbits[depth * deg + img]) {
-      orbits[depth * deg + size_orbits[depth]] = img;
-      size_orbits[depth]++;
-      borbits[depth * deg + img] = true;
-      set_transversal(depth, img, prod_perms(get_transversal(depth, pt), gen));
-    }
-  }
-
-  for (i = nr; i < size_orbits[depth]; i++) {
-    pt = orbits[depth * deg + i];
-    for (j = 0; j < strong_gens[depth]->nr_gens; j++) {
-      x   = get_strong_gens(depth, j);
-      img = x[pt];
-      if (!borbits[depth * deg + img]) {
-        orbits[depth * deg + size_orbits[depth]] = img;
-        size_orbits[depth]++;
-        borbits[depth * deg + img] = true;
-        set_transversal(depth, img, prod_perms(get_transversal(depth, pt), x));
-      }
-    }
-  }
-}
-
-static void sift_stab_chain(Perm* g, UIntS* depth) {
-  UIntS beta;
-
-  DIGRAPHS_ASSERT(*depth == 0);
-
-  for (; *depth < size_base; (*depth)++) {
-    beta = (*g)[base[*depth]];
-    if (!borbits[*depth * deg + beta]) {
-      return;
-    }
-    prod_perms_in_place(*g, get_transversal_inv(*depth, beta));
-  }
-}
-
-static void schreier_sims_stab_chain(UIntS const depth) {
-  Perm  x, h, prod;
-  bool  escape, y;
-  int   i;
-  UIntS j, jj, k, l, m, beta, betax;
-
-  for (i = 0; i <= (int) depth; i++) {
-    for (j = 0; j < strong_gens[i]->nr_gens; j++) {
-      x = get_strong_gens(i, j);
-      if (perm_fixes_all_base_points(x)) {
-        for (k = 0; k < deg; k++) {
-          if (k != x[k]) {
-            add_base_point(k);
-            break;
-          }
+static void run_ss(SchreierSims* ss) {
+  uint16_t depth = 0;
+  for (uint16_t j = 0; j < ss->strong_gens[depth]->size; j++) {
+    Perm x = get_strong_gen_ss(ss, depth, j);
+    if (perm_fixes_all_base_points(ss, x)) {
+      for (uint16_t k = 0; k < ss->degree; k++) {
+        if (k != x[k]) {
+          add_base_point_ss(ss, k);
+          break;
         }
       }
     }
   }
 
-  for (i = depth + 1; i < (int) size_base + 1; i++) {
-    beta = base[i - 1];
+  for (uint16_t i = depth + 1; i < ss->size_base + 1; i++) {
+    uint16_t beta = ss->base[i - 1];
     // set up the strong generators
-    for (j = 0; j < strong_gens[i - 1]->nr_gens; j++) {
-      x = get_strong_gens(i - 1, j);
+    for (uint16_t j = 0; j < ss->strong_gens[i - 1]->size; j++) {
+      Perm x = get_strong_gen_ss(ss, i - 1, j);
       if (beta == x[beta]) {
-        add_strong_gens(i, copy_perm(x));
+        add_strong_gen_ss(ss, i, x);
       }
     }
-
-    // find the orbit of <beta> under strong_gens[i - 1]
-    orbit_stab_chain(i - 1, beta);
+    // find the orbit of <beta> under ss->strong_gens[i - 1]
+    orbit_ss(ss, i - 1, beta);
   }
 
-  i = size_base - 1;
+  int i = ss->size_base - 1;
 
   while (i >= (int) depth) {
-    escape = false;
-    for (j = 0; j < size_orbits[i] && !escape; j++) {
-      beta = orbits[i * deg + j];
-      for (m = 0; m < strong_gens[i]->nr_gens && !escape; m++) {
-        x     = get_strong_gens(i, m);
-        prod  = prod_perms(get_transversal(i, beta), x);
-        betax = x[beta];
-        if (!eq_perms(prod, get_transversal(i, betax))) {
-          y  = true;
-          h  = prod_perms(prod, get_transversal_inv(i, betax));
-          jj = 0;
-          sift_stab_chain(&h, &jj);
-          if (jj < size_base) {
+    bool escape = false;
+    for (uint16_t j = 0; j < ss->size_orbits[i] && !escape; j++) {
+      uint16_t beta = ss->orbits[i * ss->degree + j];
+      for (uint16_t m = 0; m < ss->strong_gens[i]->size && !escape; m++) {
+        Perm x = get_strong_gen_ss(ss, i, m);
+        prod_perms(
+            ss->tmp_perm, get_transversal_ss(ss, i, beta), x, ss->degree);
+        uint16_t betax = x[beta];
+        if (!eq_perms(
+                ss->tmp_perm, get_transversal_ss(ss, i, betax), ss->degree)) {
+          bool y = true;
+          prod_perms(ss->tmp_perm,
+                     ss->tmp_perm,
+                     get_inversal_ss(ss, i, betax),
+                     ss->degree);
+          uint16_t jj = sift_ss(ss, ss->tmp_perm);
+          if (jj < ss->size_base) {
             y = false;
-          } else if (!is_one(h)) {  // better method? IsOne(h)?
+          } else if (!is_one(ss->tmp_perm, ss->degree)) {
             y = false;
-            for (k = 0; k < deg; k++) {
-              if (k != h[k]) {
-                add_base_point(k);
+            for (uint16_t k = 0; k < ss->degree; k++) {
+              if (k != ss->tmp_perm[k]) {
+                add_base_point_ss(ss, k);
                 break;
               }
             }
           }
-
           if (!y) {
-            for (l = i + 1; l <= jj; l++) {
-              add_strong_gens(l, copy_perm(h));
-              add_gen_orbit_stab_chain(l, h);
-              // add generator to <h> to orbit of base[l]
+            for (uint16_t l = i + 1; l <= jj; l++) {
+              add_strong_gen_ss(ss, l, ss->tmp_perm);
+              add_gen_orbit_ss(ss, l, ss->tmp_perm);
+              // add generator to <h> to orbit of ss->base[l]
             }
             i      = jj;
             escape = true;
           }
-          free(h);
-          nr_ss_frees++;
         }
-        free(prod);
-        nr_ss_frees++;
       }
     }
     if (!escape) {
@@ -290,27 +253,13 @@ static void schreier_sims_stab_chain(UIntS const depth) {
   }
 }
 
-extern bool point_stabilizer(PermColl* gens, UIntS const pt, PermColl** out) {
-  init_stab_chain();
-
-  strong_gens[0] = copy_perm_coll(gens);
-  add_base_point(pt);
-  schreier_sims_stab_chain(0);
-
-  // The stabiliser we want is the PermColl pointed to by <strong_gens[1]>
-  // UNLESS <strong_gens[1]> doesn't exists - this means that <strong_gens[0]>
-  // is the stabilizer itself (????)
-  if (*out != NULL) {
-    free_perm_coll(*out);
-  }
-  if (strong_gens[1] == NULL) {
-    // this means that the stabilizer of pt under <gens> is trivial
-    *out = new_perm_coll(1);
-    add_perm_coll(*out, id_perm());
-    free_stab_chain();
-    return true;
-  }
-  *out = copy_perm_coll(strong_gens[1]);
-  free_stab_chain();
-  return false;
+void point_stabilizer(SchreierSims*  ss,
+                      PermColl*      src,
+                      PermColl*      dst,
+                      uint16_t const pt) {
+  init_ss(ss, src->degree);
+  copy_perm_coll(ss->strong_gens[0], src);
+  add_base_point_ss(ss, pt);
+  run_ss(ss);
+  copy_perm_coll(dst, ss->strong_gens[1]);
 }

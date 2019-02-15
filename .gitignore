@@ -30,7 +30,6 @@
 *.swp
 *.synctex.gz
 *.tex
-*.tex
 *.toc
 *.top
 *.tui
@@ -54,13 +53,12 @@ planarity
 src/.deps/*
 src/.libs/*
 src/_pkgconfig.h
-src/edge-addition-planarity-suite-Version_3.0.0.5/.libs
-src/edge-addition-planarity-suite-Version_3.0.0.5/c/.deps
-src/edge-addition-planarity-suite-Version_3.0.0.5/m4
+extern/edge-addition-planarity-suite-Version_3.0.0.5/.libs
+extern/edge-addition-planarity-suite-Version_3.0.0.5/c/.deps
+extern/edge-addition-planarity-suite-Version_3.0.0.5/m4
 src/stamp-h1
 tags
 tst/out/*
-wilf-coverage.py
 data/digraphs-lib-0.5
 gh-pages/
 manual.lab
@@ -71,3 +69,5 @@ compile
 depcomp
 install-sh
 missing
+*.swo
+coverage
