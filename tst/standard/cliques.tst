@@ -44,7 +44,7 @@ gap> gr := Digraph([
 > [1, 2, 4, 7, 12, 13, 14, 15], [1, 3, 5, 8, 11, 13, 14, 15],
 > [2, 3, 6, 9, 11, 12, 14, 15], [4, 5, 6, 10, 11, 12, 13, 15],
 > [7, 8, 9, 10, 11, 12, 13, 14]]);
-<digraph with 15 vertices, 120 edges>
+<immutable digraph with 15 vertices, 120 edges>
 gap> IsClique(gr, [1, 2, 4, 7, 11]);
 true
 gap> IsClique(gr, [1, 2, 3]);
@@ -58,7 +58,7 @@ gap> gr := Digraph([
 > [1, 2, 4, 7, 12, 13, 14, 15], [1, 3, 5, 8, 11, 13, 14, 15],
 > [2, 3, 6, 9, 11, 12, 14, 15], [4, 5, 6, 10, 11, 12, 13, 15],
 > [7, 8, 9, 10, 11, 12, 13, 14]]);
-<digraph with 15 vertices, 120 edges>
+<immutable digraph with 15 vertices, 120 edges>
 gap> IsMaximalClique(gr, [1, 2, 4, 7, 11]);
 true
 gap> IsMaximalClique(gr, [1, 2, 3]);
@@ -100,7 +100,7 @@ false
 gap> IsMaximalIndependentSet(gr, [1, 3]);
 false
 gap> gr := Digraph([[], [], [], [1, 2, 3]]);
-<digraph with 4 vertices, 3 edges>
+<immutable digraph with 4 vertices, 3 edges>
 gap> IsIndependentSet(gr, [1, 2]);
 true
 gap> IsMaximalIndependentSet(gr, [1, 2]);
@@ -110,13 +110,13 @@ true
 gap> IsMaximalIndependentSet(gr, [1, 2, 3]);
 true
 gap> gr := Digraph([[3], [3], [3]]);
-<digraph with 3 vertices, 3 edges>
+<immutable digraph with 3 vertices, 3 edges>
 gap> IsMaximalIndependentSet(gr, [1, 2]);
 true
 
 #  DigraphMaximalIndependentSet and DigraphIndependentSet
 gap> gr := Digraph([[3], [3], [3]]);
-<digraph with 3 vertices, 3 edges>
+<immutable digraph with 3 vertices, 3 edges>
 gap> DigraphMaximalIndependentSet();
 Error, Digraphs: DigraphMaximalIndependentSet: usage,
 this function requires a least one argument,
@@ -220,7 +220,7 @@ gap> gr := CompleteDigraph(2);;
 gap> DigraphMaximalIndependentSets(gr);
 [ [ 1 ], [ 2 ] ]
 gap> gr := DigraphFromDigraph6String("&FWsK?WSKC?");
-<digraph with 7 vertices, 14 edges>
+<immutable digraph with 7 vertices, 14 edges>
 gap> DigraphMaximalIndependentSetsReps(gr);
 [ [ 1, 4 ], [ 1, 5 ], [ 2, 5, 7 ] ]
 gap> Set(DigraphMaximalIndependentSets(gr));
@@ -308,19 +308,19 @@ gap> gr := EmptyDigraph(1);;
 gap> DigraphMaximalCliques(gr);
 [ [ 1 ] ]
 gap> gr := DigraphFromDigraph6String("&DNNNF?");
-<digraph with 5 vertices, 15 edges>
+<immutable digraph with 5 vertices, 15 edges>
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 3 ] ]
 gap> Set(DigraphMaximalCliques(gr));
 [ [ 1, 3 ], [ 1, 4 ], [ 2, 4 ], [ 2, 5 ], [ 3, 5 ] ]
 gap> gr := DigraphFromGraph6String("N~~~~~~~wzmxufyZsvw");
-<digraph with 15 vertices, 170 edges>
+<immutable digraph with 15 vertices, 170 edges>
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], [ 1, 2, 3, 5, 8, 9, 14 ], 
   [ 1, 2, 5, 13, 14 ], [ 1, 13, 14, 15 ], [ 11, 12, 13, 14, 15 ] ]
 gap> gr := DigraphFromGraph6String(
 > "X~~~~~~~~~~~~~~~~~wvaSD{iLzBU{JJ}B]^FQn|gq~~Gb~TjF~");
-<digraph with 25 vertices, 440 edges>
+<immutable digraph with 25 vertices, 440 edges>
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ], 
   [ 1, 2, 3, 4, 5, 8, 12, 24 ], [ 2, 4, 12, 17, 24, 25 ], 
@@ -475,7 +475,7 @@ gap> out := CliquesFinder(gr, fail, [], lim, [], [], true, 3, true);
 #  DigraphMaximalCliques: examples that had been giving duplicate results
 gap> gr := DigraphFromGraph6String(
 > "X~~~~~~~~~~~~~~~~~}EkpJK_vyRUwvH{fL^FFfzdo~tmB~cU^~");
-<digraph with 25 vertices, 440 edges>
+<immutable digraph with 25 vertices, 440 edges>
 gap> AutomorphismGroup(gr);;
 gap> c := DigraphMaximalCliques(gr);;
 gap> Length(c);
@@ -483,7 +483,7 @@ gap> Length(c);
 gap> gr := DigraphFromGraph6String(Concatenation(
 > "b~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bx[^fbY^zbMznyvej^AX~",
 > "v|Zf\\r~jXmr~}|LD~t}iF~ztlNV~_"));
-<digraph with 35 vertices, 1010 edges>
+<immutable digraph with 35 vertices, 1010 edges>
 gap> AutomorphismGroup(gr);;
 gap> c := DigraphMaximalCliques(gr);;
 gap> Length(c);
@@ -497,7 +497,7 @@ gap> gr := DigraphFromGraph6String(Concatenation(
 > "~X}H}jr~~t]~zwvmv\\zzy}n~y~m~Tzjy}M~{Jr^YZ~V|~~~V|uuu|^^Z|^w^emV|n~^}z~j",
 > "uYz\\u~l~zz~~T|nllvb}~Z~~~~it~a}zvD~~j}tY~f~x~qn~~z~Z||{V]Sn~~~~z~jnfzod",
 > "V~}nzn}}}~MFVn~z|F|F~|tNx~~~{"));
-<digraph with 80 vertices, 5840 edges>
+<immutable digraph with 80 vertices, 5840 edges>
 gap> AutomorphismGroup(gr);;
 gap> c := DigraphMaximalCliques(gr);;
 gap> Length(c);
@@ -505,7 +505,7 @@ gap> Length(c);
 
 #  Issue #23: Digraphs with isolated vertices
 gap> gr := DigraphFromSparse6String(":~?@c__EC?_F");
-<digraph with 100 vertices, 6 edges>
+<immutable digraph with 100 vertices, 6 edges>
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1 ], [ 2, 3, 5 ] ]
 gap> DigraphMaximalCliques(gr);

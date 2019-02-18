@@ -26,7 +26,7 @@ DeclareAttribute("DigraphConnectedComponents", IsDigraph);
 DeclareAttribute("DIGRAPHS_Bipartite", IsDigraph);
 DeclareAttribute("DigraphBicomponents", IsDigraph);
 
-DeclareAttribute("OutNeighbours", IsDigraph);
+DeclareOperation("OutNeighbours", [IsDigraph]);
 DeclareSynonymAttr("OutNeighbors", OutNeighbours);
 DeclareAttribute("InNeighbours", IsDigraph);
 DeclareSynonymAttr("InNeighbors", InNeighbours);

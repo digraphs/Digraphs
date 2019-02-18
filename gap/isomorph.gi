@@ -170,9 +170,7 @@ function(digraph, colors)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  return NAUTY_DATA(digraph,
-                    colors,
-                    "NautyCanonicalLabelling")[2];
+  return NAUTY_DATA(digraph, colors, "NautyCanonicalLabelling")[2];
 end);
 
 # Canonical digraphs
@@ -262,9 +260,7 @@ function(digraph, colors)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  return NAUTY_DATA(digraph,
-                    colors,
-                    "AutomorphismGroup")[1];
+  return NAUTY_DATA(digraph, colors, "AutomorphismGroup")[1];
 end);
 
 InstallMethod(AutomorphismGroup, "for a digraph", [IsDigraph],

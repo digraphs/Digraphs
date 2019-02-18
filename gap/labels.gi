@@ -8,8 +8,22 @@
 #############################################################################
 ##
 
-InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
-[IsDigraph and IsComponentObjectRep, IsPosInt, IsObject],
+BindGlobal("DIGRAPHS_InitEdgeLabels",
+function(D)
+  if not IsBound(D!.edgelabels) then
+    D!.edgelabels := List(OutNeighbours(D),
+                          x -> ListWithIdenticalEntries(Length(x), 1));
+  fi;
+end);
+
+BindGlobal("DIGRAPHS_InitVertexLabels",
+function(D)
+    return ShallowCopy(DigraphVertices(D));
+end);
+
+InstallMethod(SetDigraphVertexLabel,
+"for a digraph, pos int, object",
+[IsDigraph, IsPosInt, IsObject],
 function(D, v, name)
   if not IsBound(D!.vertexlabels) then
     D!.vertexlabels := [1 .. DigraphNrVertices(D)];
@@ -22,7 +36,7 @@ function(D, v, name)
 end);
 
 InstallMethod(DigraphVertexLabel, "for a digraph and pos int",
-[IsDigraph and IsComponentObjectRep, IsPosInt],
+[IsDigraph, IsPosInt],
 function(D, v)
   if not IsBound(D!.vertexlabels) then
     D!.vertexlabels := [1 .. DigraphNrVertices(D)];
@@ -34,8 +48,17 @@ function(D, v)
                 " is nameless or not a vertex,");
 end);
 
+InstallMethod(RemoveDigraphVertexLabel, "for a digraph and positive integer",
+[IsDigraph, IsPosInt],
+function(D, v)
+  if not IsBound(D!.vertexlabels) then
+    return;
+  fi;
+  Remove(D!.vertexlabels, v);
+end);
+
 InstallMethod(SetDigraphVertexLabels, "for a digraph and list",
-[IsDigraph and IsComponentObjectRep, IsList],
+[IsDigraph, IsList],
 function(D, names)
   if Length(names) <> DigraphNrVertices(D) then
     ErrorNoReturn("Digraphs: SetDigraphVertexLabels: usage,\n",
@@ -46,7 +69,7 @@ function(D, names)
 end);
 
 InstallMethod(DigraphVertexLabels, "for a digraph and pos int",
-[IsDigraph and IsComponentObjectRep],
+[IsDigraph],
 function(D)
   if not IsBound(D!.vertexlabels) then
     D!.vertexlabels := [1 .. DigraphNrVertices(D)];
@@ -54,19 +77,11 @@ function(D)
   return StructuralCopy(D!.vertexlabels);
 end);
 
-BindGlobal("DIGRAPHS_InitEdgeLabels",
-function(D)
-  if not IsBound(D!.edgelabels) then
-    D!.edgelabels := List(OutNeighbours(D),
-                          x -> ListWithIdenticalEntries(Length(x), 1));
-  fi;
-end);
-
 InstallMethod(SetDigraphEdgeLabel,
 "for a digraph, a pos int, a pos int, and an object",
-[IsDigraph and IsComponentObjectRep, IsPosInt, IsPosInt, IsObject],
+[IsDigraph, IsPosInt, IsPosInt, IsObject],
 function(D, v, w, label)
-  local p;
+  local p, list;
   if IsMultiDigraph(D) then
     ErrorNoReturn("Digraphs: SetDigraphEdgeLabel: usage,\n",
                   "edge labels are not supported on digraphs with ",
@@ -78,11 +93,15 @@ function(D, v, w, label)
                   "[", v, ", ", w, "] is not an edge of <D>,");
   fi;
   DIGRAPHS_InitEdgeLabels(D);
+  if not IsBound(D!.edgelabels[v]) then
+    list := OutNeighboursOfVertex(D, v);
+    D!.edgelabels[v] := ListWithIdenticalEntries(Length(list), 1);
+  fi;
   D!.edgelabels[v][p] := ShallowCopy(label);
 end);
 
 InstallMethod(DigraphEdgeLabel, "for a digraph, a pos int, and a pos int",
-[IsDigraph and IsComponentObjectRep, IsPosInt, IsPosInt],
+[IsDigraph, IsPosInt, IsPosInt],
 function(D, v, w)
   local p;
   if IsMultiDigraph(D) then
@@ -100,14 +119,14 @@ function(D, v, w)
 end);
 
 InstallMethod(DigraphEdgeLabelsNC, "for a digraph",
-[IsDigraph and IsComponentObjectRep],
+[IsDigraph],
 function(D)
   DIGRAPHS_InitEdgeLabels(D);
   return StructuralCopy(D!.edgelabels);
 end);
 
 InstallMethod(DigraphEdgeLabels, "for a digraph",
-[IsDigraph and IsComponentObjectRep],
+[IsDigraph],
 function(D)
   if IsMultiDigraph(D) then
     ErrorNoReturn("Digraphs: DigraphEdgeLabels: usage,\n",
@@ -120,16 +139,16 @@ end);
 # markuspf: this is mainly because we do not support edge labels
 # on multidigraphs and need the SetDigraphEdgeLabels function
 # to fail silently in some places
-InstallMethod(SetDigraphEdgeLabelsNC, "for a digraph, and a list",
-[IsDigraph and IsComponentObjectRep, IsList],
+InstallMethod(SetDigraphEdgeLabelsNC, "for a digraph and a list",
+[IsDigraph, IsList],
 function(D, labels)
   if not IsMultiDigraph(D) then
     D!.edgelabels := List(labels, ShallowCopy);
   fi;
 end);
 
-InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a list",
-[IsDigraph and IsComponentObjectRep, IsList],
+InstallMethod(SetDigraphEdgeLabels, "for a digraph and a list",
+[IsDigraph, IsList],
 function(D, labels)
   if IsMultiDigraph(D) then
     ErrorNoReturn("Digraphs: SetDigraphEdgeLabels: usage,\n",
@@ -149,7 +168,7 @@ function(D, labels)
 end);
 
 InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a function",
-[IsDigraph and IsComponentObjectRep, IsFunction],
+[IsDigraph, IsFunction],
 function(D, wtf)
   local adj, i, j;
   if IsMultiDigraph(D) then

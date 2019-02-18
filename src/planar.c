@@ -95,7 +95,7 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
               (Int) TNAM_OBJ(digraph),
               0L);
   }
-  Obj const out = OutNeighbours(digraph);
+  Obj const out = FuncOutNeighbours(0L, digraph);
   if (FuncIS_ANTISYMMETRIC_DIGRAPH(0L, out) != True) {
     ErrorQuit("Digraphs: boyers_planarity_check (C): the 1st argument must be "
               "an antisymmetric digraph",

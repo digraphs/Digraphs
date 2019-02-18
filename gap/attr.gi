@@ -8,6 +8,13 @@
 #############################################################################
 ##
 
+InstallMethod(DigraphNrVertices, "for a digraph in dense rep",
+[IsDenseDigraphRep], DIGRAPH_NR_VERTICES);
+
+# TODO move to oper.gi
+InstallMethod(OutNeighbours, "for a digraph in dense rep",
+[IsDenseDigraphRep], DIGRAPH_OUT_NEIGHBOURS);
+
 # The next method is (yet another) DFS as described in
 # http://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
 
@@ -358,37 +365,27 @@ end);
 
 InstallMethod(AsGraph, "for a digraph", [IsDigraph], Graph);
 
-InstallMethod(DigraphVertices, "for a digraph",
-[IsDigraph],
-function(digraph)
-  return [1 .. DigraphNrVertices(digraph)];
+InstallMethod(DigraphVertices, "for a digraph", [IsDigraph],
+function(D)
+  return [1 .. DigraphNrVertices(D)];
 end);
 
-InstallMethod(DigraphRange, "for a digraph",
-[IsDigraph],
-function(digraph)
-  DIGRAPH_SOURCE_RANGE(digraph);
-  SetDigraphSource(digraph, digraph!.DigraphSource);
-  return digraph!.DigraphRange;
+InstallMethod(DigraphRange, "for a digraph", [IsDigraph],
+function(D)
+  if not IsBound(D!.DigraphRange) then
+    DIGRAPH_SOURCE_RANGE(D);
+    SetDigraphSource(D, D!.DigraphSource);
+  fi;
+  return D!.DigraphRange;
 end);
 
-InstallMethod(DigraphSource, "for a digraph",
-[IsDigraph],
-function(digraph)
-  DIGRAPH_SOURCE_RANGE(digraph);
-  SetDigraphRange(digraph, digraph!.DigraphRange);
-  return digraph!.DigraphSource;
-end);
-
-InstallMethod(OutNeighbours, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local out;
-  out := DIGRAPH_OUT_NBS(DigraphNrVertices(digraph),
-                         DigraphSource(digraph),
-                         DigraphRange(digraph));
-  Perform(out, IsSet);
-  return out;
+InstallMethod(DigraphSource, "for a digraph", [IsDigraph],
+function(D)
+  if not IsBound(D!.DigraphSource) then
+    DIGRAPH_SOURCE_RANGE(D);
+    SetDigraphRange(D, D!.DigraphRange);
+  fi;
+  return D!.DigraphSource;
 end);
 
 InstallMethod(InNeighbours, "for a digraph",

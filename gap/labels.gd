@@ -11,6 +11,7 @@
 DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphVertexLabels", [IsDigraph]);
 DeclareOperation("SetDigraphVertexLabel", [IsDigraph, IsPosInt, IsObject]);
+DeclareOperation("RemoveDigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("SetDigraphVertexLabels", [IsDigraph, IsList]);
 
 # Edge labels

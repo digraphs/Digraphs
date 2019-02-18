@@ -23,10 +23,6 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "schreier-sims.h"   // for PERM_DEGREE
 
-// Defined in digraphs.h
-Int DigraphNrVertices(Obj);
-Obj OutNeighbours(Obj);
-
 Digraph* new_digraph(uint16_t const nr_verts) {
   DIGRAPHS_ASSERT(nr_verts <= MAXVERTS);
   Digraph* digraph        = malloc(sizeof(Digraph));

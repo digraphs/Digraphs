@@ -17,23 +17,40 @@ gap> DIGRAPHS_StartTest();
 # All graphs of 5 vertices, compare with GRAPE
 gap> graph5 := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                                         "/data/graph5.g6.gz"));
-[ <digraph with 5 vertices, 0 edges>, <digraph with 5 vertices, 2 edges>, 
-  <digraph with 5 vertices, 4 edges>, <digraph with 5 vertices, 6 edges>, 
-  <digraph with 5 vertices, 8 edges>, <digraph with 5 vertices, 4 edges>, 
-  <digraph with 5 vertices, 6 edges>, <digraph with 5 vertices, 6 edges>, 
-  <digraph with 5 vertices, 6 edges>, <digraph with 5 vertices, 8 edges>, 
-  <digraph with 5 vertices, 8 edges>, <digraph with 5 vertices, 10 edges>, 
-  <digraph with 5 vertices, 10 edges>, <digraph with 5 vertices, 8 edges>, 
-  <digraph with 5 vertices, 10 edges>, <digraph with 5 vertices, 10 edges>, 
-  <digraph with 5 vertices, 12 edges>, <digraph with 5 vertices, 12 edges>, 
-  <digraph with 5 vertices, 14 edges>, <digraph with 5 vertices, 8 edges>, 
-  <digraph with 5 vertices, 8 edges>, <digraph with 5 vertices, 10 edges>, 
-  <digraph with 5 vertices, 12 edges>, <digraph with 5 vertices, 12 edges>, 
-  <digraph with 5 vertices, 12 edges>, <digraph with 5 vertices, 14 edges>, 
-  <digraph with 5 vertices, 10 edges>, <digraph with 5 vertices, 12 edges>, 
-  <digraph with 5 vertices, 14 edges>, <digraph with 5 vertices, 16 edges>, 
-  <digraph with 5 vertices, 14 edges>, <digraph with 5 vertices, 16 edges>, 
-  <digraph with 5 vertices, 18 edges>, <digraph with 5 vertices, 20 edges> ]
+[ <immutable digraph with 5 vertices, 0 edges>, 
+  <immutable digraph with 5 vertices, 2 edges>, 
+  <immutable digraph with 5 vertices, 4 edges>, 
+  <immutable digraph with 5 vertices, 6 edges>, 
+  <immutable digraph with 5 vertices, 8 edges>, 
+  <immutable digraph with 5 vertices, 4 edges>, 
+  <immutable digraph with 5 vertices, 6 edges>, 
+  <immutable digraph with 5 vertices, 6 edges>, 
+  <immutable digraph with 5 vertices, 6 edges>, 
+  <immutable digraph with 5 vertices, 8 edges>, 
+  <immutable digraph with 5 vertices, 8 edges>, 
+  <immutable digraph with 5 vertices, 10 edges>, 
+  <immutable digraph with 5 vertices, 10 edges>, 
+  <immutable digraph with 5 vertices, 8 edges>, 
+  <immutable digraph with 5 vertices, 10 edges>, 
+  <immutable digraph with 5 vertices, 10 edges>, 
+  <immutable digraph with 5 vertices, 12 edges>, 
+  <immutable digraph with 5 vertices, 12 edges>, 
+  <immutable digraph with 5 vertices, 14 edges>, 
+  <immutable digraph with 5 vertices, 8 edges>, 
+  <immutable digraph with 5 vertices, 8 edges>, 
+  <immutable digraph with 5 vertices, 10 edges>, 
+  <immutable digraph with 5 vertices, 12 edges>, 
+  <immutable digraph with 5 vertices, 12 edges>, 
+  <immutable digraph with 5 vertices, 12 edges>, 
+  <immutable digraph with 5 vertices, 14 edges>, 
+  <immutable digraph with 5 vertices, 10 edges>, 
+  <immutable digraph with 5 vertices, 12 edges>, 
+  <immutable digraph with 5 vertices, 14 edges>, 
+  <immutable digraph with 5 vertices, 16 edges>, 
+  <immutable digraph with 5 vertices, 14 edges>, 
+  <immutable digraph with 5 vertices, 16 edges>, 
+  <immutable digraph with 5 vertices, 18 edges>, 
+  <immutable digraph with 5 vertices, 20 edges> ]
 gap> group5 := [
 >  Group([(4, 5), (3, 4), (2, 3), (1, 2)]), Group([(1, 5), (3, 4), (2, 3)]),
 >  Group([(1, 2), (3, 4)]), Group([(2, 3), (1, 2)]), Group([(3, 4), (2, 3), (1,
@@ -52,13 +69,20 @@ gap> group5 := [
 gap> List(graph5, AutomorphismGroup) = group5;
 true
 gap> trees := ReadDigraphs(Concatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt"));
-[ <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, <digraph with 9 vertices, 8 edges> ]
+[ <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges> ]
 gap> treeAuts := [
 >  Group([(6, 7), (5, 6), (4, 5), (3, 4)]), Group([(6, 7), (5, 6), (4, 5),
 >  (2, 3)]), Group([(3, 4), (2, 3), (6, 7), (5, 6), (2, 5)(3, 6)(4, 7)(8, 9)]),
@@ -82,7 +106,7 @@ gap> gr := DigraphFromDigraph6String(Concatenation(
 > "??`?_O??G?@?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W",
 > "?????K???__O[??????O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G",
 > "?O??A@??D??G?C_?A??O?_GA??@@?_?G???E?IW??????_@G?C??"));
-<digraph with 45 vertices, 180 edges>
+<immutable digraph with 45 vertices, 180 edges>
 gap> H := AutomorphismGroup(gr);
 <permutation group with 4 generators>
 
@@ -108,7 +132,7 @@ gap> gr := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],
 gap> AutomorphismGroup(gr);
 Group(())
 gap> gr := CycleDigraph(1000);
-<digraph with 1000 vertices, 1000 edges>
+<immutable digraph with 1000 vertices, 1000 edges>
 gap> AutomorphismGroup(gr);
 <permutation group of size 1000 with 1 generators>
 gap> Size(last);
@@ -118,13 +142,13 @@ true
 
 #  AutomorphismGroup: for a MultiDigraph, 1
 gap> gr := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
-<multidigraph with 3 vertices, 6 edges>
+<immutable multidigraph with 3 vertices, 6 edges>
 gap> AutomorphismGroup(gr);
 Group([ (1,2,3), (8,9), (6,7), (4,5) ])
 gap> Size(last);
 24
 gap> gr := DigraphEdgeUnion(CycleDigraph(50), CycleDigraph(50));
-<multidigraph with 50 vertices, 100 edges>
+<immutable multidigraph with 50 vertices, 100 edges>
 gap> AutomorphismGroup(gr);
 <permutation group with 51 generators>
 gap> Size(last);
@@ -138,7 +162,7 @@ gap> gr := DigraphFromDigraph6String(Concatenation(
 > "??`?_O??G?@?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W",
 > "?????K???__O[??????O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G",
 > "?O??A@??D??G?C_?A??O?_GA??@@?_?G???E?IW??????_@G?C??"));
-<digraph with 45 vertices, 180 edges>
+<immutable digraph with 45 vertices, 180 edges>
 gap> BlissCanonicalLabelling(gr);
 (1,45,24,25,39,37,31,15,35,5,12,19,28,44,21,20,7,14,43,41,42,38,32,34,23,4,13,
 11,8,29,22,3,9,40,33,6,10,30)(2,16,27,18)(17,36)
@@ -170,7 +194,7 @@ gap> gr := DigraphFromDiSparse6String(Concatenation(
 > "_okZGagvMSLJ_ocLMCdL`O_OC`gZGa[hPCYHDbCyMseMFAknKBCtMcXISx?QDPg^Jb|APCXI",
 > "RtHUTte@@O[PCp_eIRpSTWK\\FqGgIRGwNDM?CA{xRTHS_OKQIb[}Qd@]WWKGCaWjJQx@Qw?",
 > "AA`[dHrSxU^"));
-<digraph with 100 vertices, 1011 edges>
+<immutable digraph with 100 vertices, 1011 edges>
 gap> BlissCanonicalLabelling(gr);
 (1,33,95,99,73,52,41,75,14,30,22,64,47,83,17,40,100,71,51,97,39,27,65,15,37,
 80,10,8,59,92,49,7,68,28,98,29,38,90,34,31,79,3,72,43,16,96,21,91,44,87,74,4,
@@ -187,7 +211,7 @@ true
 #  CanonicalLabelling: for a digraph, 3
 gap> gr := ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/data/test-1.d6"))[1];
-<digraph with 1000 vertices, 100368 edges>
+<immutable digraph with 1000 vertices, 100368 edges>
 gap> BlissCanonicalLabelling(gr);
 (1,697,942,320,810,418,950,461,926,984,379,840,907,380,819,973,50,991,664,345,
 877,128,896,565,53,637,444,987,967,629,9,362,39,242,353,512,723,431,172,874,
@@ -299,11 +323,11 @@ gap> not DIGRAPHS_NautyAvailable or NautyCanonicalLabelling(gr) =
 
 #  CanonicalLabelling: for a MultiDigraph, 1
 gap> gr1 := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
-<multidigraph with 3 vertices, 6 edges>
+<immutable multidigraph with 3 vertices, 6 edges>
 gap> perms := BlissCanonicalLabelling(gr1);
 [ (1,3), (1,6)(2,3,5) ]
 gap> gr2 := OnMultiDigraphs(gr1, perms);
-<multidigraph with 3 vertices, 6 edges>
+<immutable multidigraph with 3 vertices, 6 edges>
 gap> BlissCanonicalLabelling(gr2);
 [ (1,3,2), (1,6,4)(2,3) ]
 gap> OnMultiDigraphs(gr2, last) = gr2;
@@ -314,7 +338,7 @@ false
 #  IsIsomorphicDigraph: for digraphs, 1
 gap> p := Random(SymmetricGroup(1000));;
 gap> gr2 := OnDigraphs(gr, p);
-<digraph with 1000 vertices, 100368 edges>
+<immutable digraph with 1000 vertices, 100368 edges>
 gap> gr = gr2;
 false
 gap> IsIsomorphicDigraph(gr, gr2);
@@ -326,19 +350,19 @@ false
 
 #  IsIsomorphicDigraph: for MultiDigraphs, 1
 gap> gr1 := Digraph([[3, 1, 3], [1, 3], [2, 2, 1]]);
-<multidigraph with 3 vertices, 8 edges>
+<immutable multidigraph with 3 vertices, 8 edges>
 gap> gr2 := Digraph([[3, 1, 3], [1, 3], [2, 2]]);
-<multidigraph with 3 vertices, 7 edges>
+<immutable multidigraph with 3 vertices, 7 edges>
 gap> IsIsomorphicDigraph(gr1, gr2);
 false
 gap> gr3 := Digraph([[3, 1, 3], [1, 3], [2, 2], []]);
-<multidigraph with 4 vertices, 7 edges>
+<immutable multidigraph with 4 vertices, 7 edges>
 gap> IsIsomorphicDigraph(gr1, gr3);
 false
 gap> IsIsomorphicDigraph(gr2, gr3);
 false
 gap> gr4 := Digraph([[2, 3, 3], [2, 1, 1], [1, 2]]);
-<multidigraph with 3 vertices, 8 edges>
+<immutable multidigraph with 3 vertices, 8 edges>
 gap> IsIsomorphicDigraph(gr1, gr4);
 true
 gap> IsIsomorphicDigraph(gr2, gr4);
@@ -350,9 +374,9 @@ true
 
 #  IsomorphismDigraphs: for digraphs, 1
 gap> gr1 := CompleteBipartiteDigraph(100, 50);
-<digraph with 150 vertices, 10000 edges>
+<immutable digraph with 150 vertices, 10000 edges>
 gap> gr2 := CompleteBipartiteDigraph(50, 100);
-<digraph with 150 vertices, 10000 edges>
+<immutable digraph with 150 vertices, 10000 edges>
 gap> p := IsomorphismDigraphs(gr1, gr2);
 (1,51,101)(2,52,102)(3,53,103)(4,54,104)(5,55,105)(6,56,106)(7,57,107)(8,58,
 108)(9,59,109)(10,60,110)(11,61,111)(12,62,112)(13,63,113)(14,64,114)(15,65,
@@ -369,9 +393,9 @@ fail
 
 #  IsomorphismDigraphs: for MultiDigraphs, 1
 gap> gr1 := Digraph([[3, 1, 3], [1, 3], [2, 2, 1]]);
-<multidigraph with 3 vertices, 8 edges>
+<immutable multidigraph with 3 vertices, 8 edges>
 gap> gr4 := Digraph([[2, 3, 3], [2, 1, 1], [1, 2]]);
-<multidigraph with 3 vertices, 8 edges>
+<immutable multidigraph with 3 vertices, 8 edges>
 gap> iso := IsomorphismDigraphs(gr1, gr4);
 [ (1,2,3), (1,5,7,3,6,2,4,8) ]
 gap> OnMultiDigraphs(gr1, iso) = gr4;

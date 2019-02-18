@@ -26,7 +26,7 @@ gap> gr := CompleteDigraph(4);;
 gap> CliqueNumber(gr);
 4
 gap> gr := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);
-<multidigraph with 4 vertices, 11 edges>
+<immutable multidigraph with 4 vertices, 11 edges>
 gap> CliqueNumber(gr);
 3]]></Example>
 </Description>
@@ -61,7 +61,7 @@ false
 gap> IsMaximalClique(gr, DigraphVertices(gr));
 true
 gap> gr := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);
-<multidigraph with 4 vertices, 11 edges>
+<immutable multidigraph with 4 vertices, 11 edges>
 gap> IsClique(gr, [2, 3, 4]);
 false
 gap> IsMaximalClique(gr, [1, 2, 4]);
@@ -167,7 +167,7 @@ true]]></Example>
 
     <Example><![CDATA[
 gap> gr := Digraph([[2, 3, 4], [1, 3], [1, 2], [1, 5], []]);
-<digraph with 5 vertices, 9 edges>
+<immutable digraph with 5 vertices, 9 edges>
 gap> IsSymmetricDigraph(gr);
 false
 gap> DigraphClique(gr);
@@ -265,7 +265,7 @@ gap> DigraphClique(gr, [], [], 2);
     <Example><![CDATA[
 gap> gr := Digraph([
 > [2, 3], [1, 3], [1, 2, 4], [3, 5, 6], [4, 6], [4, 5]]);
-<digraph with 6 vertices, 14 edges>
+<immutable digraph with 6 vertices, 14 edges>
 gap> IsSymmetricDigraph(gr);
 true
 gap> G := AutomorphismGroup(gr);
@@ -352,7 +352,7 @@ gap> DigraphCliques(gr, [1], [5, 6], infinity, 2);
     </List>
     <Example><![CDATA[
 gap> gr := ChainDigraph(6);
-<digraph with 6 vertices, 5 edges>
+<immutable digraph with 6 vertices, 5 edges>
 gap> DigraphIndependentSet(gr);
 [ 6, 4, 2 ]
 gap> DigraphMaximalIndependentSet(gr);
@@ -450,7 +450,7 @@ gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
 
     <Example><![CDATA[
 gap> gr := CycleDigraph(5);
-<digraph with 5 vertices, 5 edges>
+<immutable digraph with 5 vertices, 5 edges>
 gap> DigraphMaximalIndependentSetsReps(gr);
 [ [ 1, 3 ] ]
 gap> DigraphIndependentSetsReps(gr);
@@ -569,7 +569,7 @@ gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
     This function uses a version of the Bron-Kerbosch algorithm.
     <Example><![CDATA[
 gap> gr := CompleteDigraph(5);
-<digraph with 5 vertices, 20 edges>
+<immutable digraph with 5 vertices, 20 edges>
 gap> user_param := [];;
 gap> f := function(a, b)  # Calculate size of clique
 >   AddSet(user_param, Size(b));

@@ -724,7 +724,7 @@ InstallMethod(DigraphFromGraph6String, "for a string",
 [IsString],
 function(s)
   local FindCoord, list, n, start, maxedges, out, pos, nredges, i, bpos, edge,
-  gr, j;
+        D, j;
 
   s := Chomp(s);
 
@@ -802,11 +802,12 @@ function(s)
     od;
     pos := pos + 6;
   od;
-  gr := DigraphNC(out, 2 * nredges);
-  SetIsSymmetricDigraph(gr, true);
-  SetIsMultiDigraph(gr, false);
-  SetDigraphHasLoops(gr, false);
-  return gr;
+  D := DigraphNC(out);
+  SetDigraphNrEdges(D, 2 * nredges);
+  SetIsSymmetricDigraph(D, true);
+  SetIsMultiDigraph(D, false);
+  SetDigraphHasLoops(D, false);
+  return D;
 end);
 
 InstallMethod(DigraphFromDigraph6String, "for a string",
@@ -893,10 +894,14 @@ function(s)
   od;
 
   if legacy then  # source and range are reversed
-    return DigraphNC(rec(nrvertices := n, range := source, source := range));
+    return DigraphNC(rec(DigraphNrVertices := n,
+                         DigraphSource     := range,
+                         DigraphRange      := source));
   fi;
 
-  return DigraphNC(rec(nrvertices := n, range := range, source := source));
+  return DigraphNC(rec(DigraphNrVertices := n,
+                       DigraphRange      := range,
+                       DigraphSource     := source));
 end);
 
 InstallMethod(DigraphFromSparse6String, "for a string",
@@ -1014,10 +1019,9 @@ function(s)
   # JDM bad!
   range := range + 1;
   source := source + 1;
-  gr := Digraph(rec(nrvertices := n,
-                    nredges := len - 1,
-                    range := range,
-                    source := source));
+  gr := Digraph(rec(DigraphNrVertices := n,
+                    DigraphRange := range,
+                    DigraphSource := source));
   SetIsSymmetricDigraph(gr, true);
   SetIsMultiDigraph(gr, false);
   return gr;
@@ -1185,7 +1189,7 @@ function(name)
   IO_Close(file);
 
   digraph := Digraph(nbs);
-  SetDigraphNrEdges(digraph, nr_edges);
+  SetDigraphNrEdges(digraph, directed_edges);
   SetIsSymmetricDigraph(digraph, true);
   SetDigraphVertexLabels(digraph, vertex_labels);
   return digraph;
@@ -1431,8 +1435,9 @@ function(s)
   # BAD!! JDM
   range := range + 1;
   source := source + 1;
-
-  return Digraph(rec(nrvertices := n, range := range, source := source));
+  return Digraph(rec(DigraphNrVertices := n,
+                     DigraphRange      := range,
+                     DigraphSource     := source));
 end);
 
 InstallMethod(DigraphFromPlainTextString, "for a string",

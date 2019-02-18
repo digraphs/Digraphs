@@ -28,7 +28,7 @@ gap> DIGRAPHS_StartTest();
 
 #T# Temporary
 gap> gr := Digraph([[1]]);
-<digraph with 1 vertex, 1 edge>
+<immutable digraph with 1 vertex, 1 edge>
 
 #############################################################################
 ##  Tests end here

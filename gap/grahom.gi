@@ -211,6 +211,22 @@ function(digraph)
   return order;
 end);
 
+InstallMethod(DigraphSmallestLastOrder, "for a digraph", [IsDigraph],
+function(digraph)
+  local order, n, copy, deg, v;
+  order := [];
+  n := DigraphNrVertices(digraph);
+  copy := digraph;
+  while n > 0 do
+    deg := ShallowCopy(OutDegrees(copy)) + InDegrees(copy);
+    v := PositionMinimum(deg);
+    order[n] := DigraphVertexLabel(copy, v);
+    copy := DigraphRemoveVertex(copy, v);
+    n := n - 1;
+  od;
+  return order;
+end);
+
 ################################################################################
 # HOMOMORPHISMS
 

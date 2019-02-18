@@ -39,6 +39,7 @@ DeclareAttribute("DigraphGreedyColouring", IsDigraph);
 DeclareSynonym("DigraphGreedyColoring", DigraphGreedyColouring);
 
 DeclareAttribute("DigraphWelshPowellOrder", IsDigraph);
+DeclareAttribute("DigraphSmallestLastOrder", IsDigraph);
 
 DeclareOperation("IsDigraphEndomorphism", [IsDigraph, IsTransformation]);
 DeclareOperation("IsDigraphHomomorphism",

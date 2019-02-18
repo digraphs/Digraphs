@@ -8,6 +8,9 @@
 #############################################################################
 ##
 
+# meaning it really has multiple edges!!
+DeclareProperty("IsMultiDigraph", IsDigraph);
+
 DeclareProperty("IsAcyclicDigraph", IsDigraph);
 DeclareProperty("IsBipartiteDigraph", IsDigraph);
 DeclareProperty("IsBiconnectedDigraph", IsDigraph);
