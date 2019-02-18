@@ -153,7 +153,7 @@ Error, Digraphs: HomomorphismDigraphsFinder: usage,
 in order to define a colouring, the argument <partition> must be a homogeneous
 list,
 gap> gr := ChainDigraph(2);
-<digraph with 2 vertices, 1 edge>
+<immutable digraph with 2 vertices, 1 edge>
 gap> GeneratorsOfEndomorphismMonoid();
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
 this function takes at least one argument,
@@ -163,14 +163,14 @@ the 1st argument <digraph> must be a digraph,
 gap> GeneratorsOfEndomorphismMonoid(gr);
 [ IdentityTransformation ]
 gap> gr := DigraphTransitiveClosure(CompleteDigraph(2));
-<digraph with 2 vertices, 4 edges>
+<immutable digraph with 2 vertices, 4 edges>
 gap> DigraphHasLoops(gr);
 true
 gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 1, 1 ] ) ]
 gap> gr := EmptyDigraph(2);
-<digraph with 2 vertices, 0 edges>
+<immutable digraph with 2 vertices, 0 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr, Group(()), Group((1, 2)));
 Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
 <colours> must be a homogenous list,
@@ -214,30 +214,30 @@ Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
 
 # loops1
 gap> gr := Digraph([[], [2]]);
-<digraph with 2 vertices, 1 edge>
+<immutable digraph with 2 vertices, 1 edge>
 gap> GeneratorsOfEndomorphismMonoid(gr);
 [ IdentityTransformation, Transformation( [ 2, 2 ] ) ]
 
 # loops2
 gap> gr := Digraph([[2], [], [3]]);
-<digraph with 3 vertices, 2 edges>
+<immutable digraph with 3 vertices, 2 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr);
 [ IdentityTransformation, Transformation( [ 3, 3, 3 ] ) ]
 
 # loops3
 gap> gr := Digraph([[2], [1], [3]]);
-<digraph with 3 vertices, 3 edges>
+<immutable digraph with 3 vertices, 3 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 3, 3, 3 ] ) ]
 
 #  DigraphGreedyColouring and DigraphColouring: checking errors and robustness
 gap> gr := Digraph([[2, 2], []]);
-<multidigraph with 2 vertices, 2 edges>
+<immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphColouring(gr, 1);
 fail
 gap> gr := EmptyDigraph(3);
-<digraph with 3 vertices, 0 edges>
+<immutable digraph with 3 vertices, 0 edges>
 gap> DigraphColouring(gr, 4);
 fail
 gap> DigraphColouring(gr, 3);
@@ -247,7 +247,7 @@ Transformation( [ 1, 1, 2 ] )
 gap> DigraphColouring(gr, 1);
 Transformation( [ 1, 1, 1 ] )
 gap> gr := CompleteDigraph(3);
-<digraph with 3 vertices, 6 edges>
+<immutable digraph with 3 vertices, 6 edges>
 gap> DigraphColouring(gr, 1);
 fail
 gap> DigraphColouring(gr, 2);
@@ -255,7 +255,7 @@ fail
 gap> DigraphColouring(gr, 3);
 IdentityTransformation
 gap> gr := EmptyDigraph(0);
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 gap> DigraphColouring(gr, 1);
 fail
 gap> DigraphColouring(gr, 2);
@@ -263,7 +263,7 @@ fail
 gap> DigraphColouring(gr, 3);
 fail
 gap> gr := EmptyDigraph(1);
-<digraph with 1 vertex, 0 edges>
+<immutable digraph with 1 vertex, 0 edges>
 gap> DigraphColouring(gr, 1);
 IdentityTransformation
 gap> DigraphColouring(gr, 2);
@@ -286,7 +286,7 @@ gap> gr := DigraphFromDigraph6String(Concatenation(
 > "??`?_O??G?@?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W",
 > "?????K???__O[??????O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G",
 > "?O??A@??D??G?C_?A??O?_GA??@@?_?G???E?IW??????_@G?C??"));
-<digraph with 45 vertices, 180 edges>
+<immutable digraph with 45 vertices, 180 edges>
 gap> DigraphGreedyColouring(gr);
 Transformation( [ 1, 1, 1, 1, 1, 2, 2, 1, 2, 2, 2, 1, 1, 2, 1, 2, 1, 2, 2, 3,
   3, 2, 3, 3, 3, 2, 1, 4, 4, 2, 3, 3, 3, 3, 3, 1, 3, 4, 4, 3, 2, 1, 4, 3,
@@ -333,7 +333,7 @@ gap> DigraphGreedyColouring(ChainDigraph(10));;
 gap> DigraphGreedyColouring(CompleteDigraph(10));;
 gap> gr := DigraphFromSparse6String(
 > ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
-<digraph with 30 vertices, 90 edges>
+<immutable digraph with 30 vertices, 90 edges>
 gap> DigraphGreedyColouring(gr);;
 gap> DigraphGreedyColouring(EmptyDigraph(0));
 IdentityTransformation
@@ -396,7 +396,7 @@ gap> DigraphGreedyColouring(CompleteDigraph(10), DigraphWelshPowellOrder);
 IdentityTransformation
 gap> gr := DigraphFromSparse6String(
 > ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
-<digraph with 30 vertices, 90 edges>
+<immutable digraph with 30 vertices, 90 edges>
 gap> DigraphGreedyColouring(gr, DigraphWelshPowellOrder);
 Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
   2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
@@ -443,7 +443,7 @@ gap> DigraphGreedyColouring(CompleteDigraph(10), order_func);
 IdentityTransformation
 gap> gr := DigraphFromSparse6String(
 > ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
-<digraph with 30 vertices, 90 edges>
+<immutable digraph with 30 vertices, 90 edges>
 gap> DigraphGreedyColouring(gr, order_func);
 Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
   2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
@@ -710,7 +710,7 @@ true
 
 #  HomomorphismDigraphsFinder 1
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
-<digraph with 6 vertices, 3 edges>
+<immutable digraph with 6 vertices, 3 edges>
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, 0,
 > [1 .. 5], [], fail, fail);
 [ Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
@@ -757,7 +757,7 @@ gap> Length(last);
 
 #  HomomorphismDigraphsFinder 2
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
-<digraph with 6 vertices, 3 edges>
+<immutable digraph with 6 vertices, 3 edges>
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, 0,
 > [1 .. 6], [], fail, fail);
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
@@ -804,9 +804,9 @@ gap> Length(last);
 
 #  HomomorphismDigraphsFinder 3
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
-<digraph with 6 vertices, 3 edges>
+<immutable digraph with 6 vertices, 3 edges>
 gap> gr := DigraphSymmetricClosure(gr);
-<digraph with 6 vertices, 6 edges>
+<immutable digraph with 6 vertices, 6 edges>
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, 0,
 > [1 .. 6], [], fail, fail);
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
@@ -1037,7 +1037,7 @@ Transformation( [ 4, 5, 6, 7, 8, 6, 7, 8 ] )
 gap> gr := DigraphFromDigraph6String(Concatenation(
 > "+U^{?A?BrwAHv_CNu@SMwHQm`GpyGbUYLAbfGTO?Enool[WrI",
 > "HBSatQlC[TIC{iSBlo_VrO@u[_Eyk?]YS?"));
-<digraph with 22 vertices, 198 edges>
+<immutable digraph with 22 vertices, 198 edges>
 gap> t := HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, 0, 
 > [2, 6, 7, 11, 12, 13, 14, 15, 19, 20, 21], [], fail, fail)[1];
 Transformation( [ 2, 13, 20, 19, 21, 19, 14, 13, 15, 14, 20, 6, 15, 21, 11,
@@ -1047,7 +1047,7 @@ true
 
 # IsDigraphEndomorphism and IsDigraphHomomorphism
 gap> gr := Digraph([[3, 4], [1, 3], [4], [1, 2, 3, 5], [2]]);
-<digraph with 5 vertices, 10 edges>
+<immutable digraph with 5 vertices, 10 edges>
 gap> ForAll(GeneratorsOfEndomorphismMonoid(gr),
 >           x -> IsDigraphEndomorphism(gr, x));
 true
@@ -1058,7 +1058,7 @@ false
 gap> IsDigraphHomomorphism(gr, gr, (1, 2));
 false
 gap> gr := Digraph([[1, 1]]);
-<multidigraph with 1 vertex, 2 edges>
+<immutable multidigraph with 1 vertex, 2 edges>
 gap> x := Transformation([3, 3, 4, 4]);
 Transformation( [ 3, 3, 4, 4 ] )
 gap> IsDigraphEndomorphism(gr, x);
@@ -1071,7 +1071,7 @@ gap> IsDigraphHomomorphism(gr, gr, ());
 Error, Digraphs: IsDigraphHomomorphism: usage,
 the first 2 arguments must not have multiple edges,
 gap> gr := DigraphTransitiveClosure(CompleteDigraph(2));
-<digraph with 2 vertices, 4 edges>
+<immutable digraph with 2 vertices, 4 edges>
 gap> ForAll(GeneratorsOfEndomorphismMonoid(gr),
 >           x -> IsDigraphEndomorphism(gr, x));
 true
@@ -1096,9 +1096,9 @@ true
 
 # IsDigraphEpimorphism, for transformations
 gap> src := Digraph([[1], [1, 2], [1, 3]]);
-<digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
 gap> ran := Digraph([[1], [1, 2]]);
-<digraph with 2 vertices, 3 edges>
+<immutable digraph with 2 vertices, 3 edges>
 gap> IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]));
 true
 gap> IsDigraphEpimorphism(src, ran, Transformation([1, 2, 3]));
@@ -1112,9 +1112,9 @@ false
 
 # IsDigraphEpimorphism, for perms
 gap> src := Digraph([[1], [1, 2], [1, 3]]);
-<digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
 gap> ran := Digraph([[1], [1, 2]]);
-<digraph with 2 vertices, 3 edges>
+<immutable digraph with 2 vertices, 3 edges>
 gap> IsDigraphEpimorphism(src, ran, ());
 false
 gap> IsDigraphEpimorphism(src, ran, (1, 2));
@@ -1128,9 +1128,9 @@ false
 
 # IsDigraphMonomorphism, for transformations
 gap> src := Digraph([[1], [1, 2], [1, 3]]);
-<digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
 gap> ran := Digraph([[1], [1, 2]]);
-<digraph with 2 vertices, 3 edges>
+<immutable digraph with 2 vertices, 3 edges>
 gap> IsDigraphMonomorphism(src, ran, Transformation([1, 2, 2]));
 false
 gap> IsDigraphMonomorphism(src, ran, Transformation([1, 2, 3]));
@@ -1148,9 +1148,9 @@ true
 
 # IsDigraphMonomorphism, for perms
 gap> src := Digraph([[1], [1, 2], [1, 3]]);
-<digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
 gap> ran := Digraph([[1], [1, 2]]);
-<digraph with 2 vertices, 3 edges>
+<immutable digraph with 2 vertices, 3 edges>
 gap> IsDigraphMonomorphism(src, ran, (1, 2));
 false
 gap> IsDigraphMonomorphism(src, ran, ());
@@ -1164,9 +1164,9 @@ true
 
 # IsDigraphEmbedding, for transformations
 gap> src := Digraph([[1], [1, 2], [1, 3]]);
-<digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
 gap> ran := Digraph([[1], [1, 2]]);
-<digraph with 2 vertices, 3 edges>
+<immutable digraph with 2 vertices, 3 edges>
 gap> IsDigraphEmbedding(src, ran, Transformation([1, 2, 2]));
 false
 gap> IsDigraphEmbedding(src, ran, Transformation([1, 2, 3]));
@@ -1182,9 +1182,9 @@ false
 gap> IsDigraphEmbedding(ran, src, Transformation([1, 2]));
 true
 gap> src := Digraph([[1], [1, 2]]);
-<digraph with 2 vertices, 3 edges>
+<immutable digraph with 2 vertices, 3 edges>
 gap> ran := Digraph([[1, 2], [1, 2], [1, 3]]);
-<digraph with 3 vertices, 6 edges>
+<immutable digraph with 3 vertices, 6 edges>
 gap> IsDigraphMonomorphism(src, ran, Transformation([1, 2]));
 true
 gap> IsDigraphEmbedding(src, ran, Transformation([1, 2]));
@@ -1192,9 +1192,9 @@ false
 
 # IsDigraphEmbedding, for perms
 gap> src := Digraph([[1], [1, 2], [1, 3]]);
-<digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
 gap> ran := Digraph([[1], [1, 2]]);
-<digraph with 2 vertices, 3 edges>
+<immutable digraph with 2 vertices, 3 edges>
 gap> IsDigraphEmbedding(src, ran, (1, 2));
 false
 gap> IsDigraphEmbedding(src, ran, ());
@@ -1206,9 +1206,9 @@ false
 gap> IsDigraphEmbedding(ran, src, ());
 true
 gap> src := Digraph([[1], [1, 2]]);
-<digraph with 2 vertices, 3 edges>
+<immutable digraph with 2 vertices, 3 edges>
 gap> ran := Digraph([[1, 2], [1, 2], [1, 3]]);
-<digraph with 3 vertices, 6 edges>
+<immutable digraph with 3 vertices, 6 edges>
 gap> IsDigraphMonomorphism(src, ran, ());
 true
 gap> IsDigraphEmbedding(src, ran, ());
@@ -1216,7 +1216,7 @@ false
 
 # IsDigraphColouring
 gap> D := JohnsonDigraph(5, 3);
-<digraph with 10 vertices, 60 edges>
+<immutable digraph with 10 vertices, 60 edges>
 gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 4, 5, 6, 7]);
 true
 gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 2, 5, 6, 7]);
@@ -1756,7 +1756,7 @@ gap> HomomorphismDigraphsFinder(D,
 gap> parts := Filtered(PartitionsSet([1 .. 9], 3), 
 >                      x -> ForAll(x, y -> Length(y) = 3));;
 gap> D := Digraph(parts, {x, y} -> ForAll(x, z -> not z in y));
-<digraph with 280 vertices, 70560 edges>
+<immutable digraph with 280 vertices, 70560 edges>
 gap> t := DigraphHomomorphism(CompleteDigraph(25), D);
 <transformation on 273 pts with rank 251>
 gap> tt := HomomorphismDigraphsFinder(CompleteDigraph(26),
@@ -2098,6 +2098,12 @@ gap> HomomorphismDigraphsFinder(D1, D2, fail, [], 1,
 gap> HomomorphismDigraphsFinder(D1, D2, fail, [], 1,
 > fail, 2, [1, 2, 3], fail, fail, fail);
 [  ]
+
+# DigraphSmallestLastOrder
+gap> DigraphSmallestLastOrder(D1);
+[ 3, 2, 1 ]
+gap> DigraphSmallestLastOrder(D2);
+[ 3, 2, 1 ]
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);

@@ -8,6 +8,9 @@
 #############################################################################
 ##
 
+# "multi" means it has at least one multiple edges
+InstallMethod(IsMultiDigraph, "for a digraph", [IsDigraph], IS_MULTI_DIGRAPH);
+
 InstallMethod(IsChainDigraph, "for a digraph", [IsDigraph],
 function(digraph)
   return IsDirectedTree(digraph) and IsSubset([0, 1], OutDegreeSet(digraph));
@@ -327,7 +330,6 @@ InstallMethod(DigraphHasLoops, "for a digraph with adjacency matrix",
 [IsDigraph and HasAdjacencyMatrix],
 function(digraph)
   local mat, i;
-
   mat := AdjacencyMatrix(digraph);
   for i in DigraphVertices(digraph) do
     if mat[i][i] <> 0 then

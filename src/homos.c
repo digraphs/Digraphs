@@ -118,7 +118,7 @@
 
 // Defined in digraphs.h
 Int DigraphNrVertices(Obj);
-Obj OutNeighbours(Obj);
+Obj FuncOutNeighbours(Obj, Obj);
 
 // GAP level things, imported in digraphs.c
 extern Obj IsDigraph;
@@ -323,7 +323,7 @@ static void init_digraph_from_digraph_obj(Digraph* const digraph,
   DIGRAPHS_ASSERT(digraph != NULL);
   DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
   UInt const nr  = DigraphNrVertices(digraph_obj);
-  Obj        out = OutNeighbours(digraph_obj);
+  Obj        out = FuncOutNeighbours(0L, digraph_obj);
   DIGRAPHS_ASSERT(nr < MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(out));
   clear_digraph(digraph, nr);
@@ -358,7 +358,7 @@ static void init_graph_from_digraph_obj(Graph* const graph,
   DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
   DIGRAPHS_ASSERT(CALL_1ARGS(IsSymmetricDigraph, digraph_obj) == True);
   UInt const nr  = DigraphNrVertices(digraph_obj);
-  Obj        out = OutNeighbours(digraph_obj);
+  Obj        out = FuncOutNeighbours(0L, digraph_obj);
   DIGRAPHS_ASSERT(nr < MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(out));
   clear_graph(graph, nr);

@@ -15,29 +15,33 @@ gap> DIGRAPHS_StartTest();
 
 #  DigraphFromGraph6String and Graph6String
 gap> DigraphFromGraph6String("?");
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 gap> DigraphFromGraph6String("E?A?");
-<digraph with 6 vertices, 2 edges>
+<immutable digraph with 6 vertices, 2 edges>
 gap> DigraphFromGraph6String("@");
-<digraph with 1 vertex, 0 edges>
+<immutable digraph with 1 vertex, 0 edges>
 gap> gr := Digraph(300, [1, 2], [2, 1]);
-<digraph with 300 vertices, 2 edges>
+<immutable digraph with 300 vertices, 2 edges>
 gap> str := Graph6String(gr);;
 gap> DigraphFromGraph6String(str) = gr;
 true
 gap> gr := Digraph([[2], [1, 4], [5], [2], [3]]);
-<digraph with 5 vertices, 6 edges>
+<immutable digraph with 5 vertices, 6 edges>
 gap> str := Graph6String(gr);
 "DaG"
 gap> DigraphFromGraph6String(str);
-<digraph with 5 vertices, 6 edges>
+<immutable digraph with 5 vertices, 6 edges>
 gap>  l := ["BW", "C]", "DQw", "ECO_", "FCZUo", "GCZenS", "HCQTndn",
 > "H?qcyxf"];;
 gap> List(l, x -> DigraphFromGraph6String(x));
-[ <digraph with 3 vertices, 4 edges>, <digraph with 4 vertices, 8 edges>, 
-  <digraph with 5 vertices, 10 edges>, <digraph with 6 vertices, 6 edges>, 
-  <digraph with 7 vertices, 20 edges>, <digraph with 8 vertices, 30 edges>, 
-  <digraph with 9 vertices, 38 edges>, <digraph with 9 vertices, 34 edges> ]
+[ <immutable digraph with 3 vertices, 4 edges>, 
+  <immutable digraph with 4 vertices, 8 edges>, 
+  <immutable digraph with 5 vertices, 10 edges>, 
+  <immutable digraph with 6 vertices, 6 edges>, 
+  <immutable digraph with 7 vertices, 20 edges>, 
+  <immutable digraph with 8 vertices, 30 edges>, 
+  <immutable digraph with 9 vertices, 38 edges>, 
+  <immutable digraph with 9 vertices, 34 edges> ]
 gap> DigraphFromGraph6String(ListWithIdenticalEntries(500, '~'));
 Error, Digraphs: DigraphFromGraph6String: usage,
 the input string <s> is not in valid graph6 format,
@@ -51,7 +55,7 @@ gap> list2 := ReadDigraphs(str, DigraphFromGraph6String);;
 gap> list = list2;
 true
 gap> gr := ReadDigraphs(str, 10);
-<digraph with 5 vertices, 8 edges>
+<immutable digraph with 5 vertices, 8 edges>
 gap> list = gr;
 false
 gap> list[10] = gr;
@@ -82,81 +86,81 @@ cannot open file path/to/some/madeupfile.g6.gz,
 
 #  DigraphFromSparse6String and Sparse6String
 gap> DigraphFromSparse6String(":@");
-<digraph with 1 vertex, 0 edges>
+<immutable digraph with 1 vertex, 0 edges>
 gap> DigraphFromSparse6String(Concatenation(":[___dCfEcdFjCIideLhIfJ",
 >                                           "kLgkQge`RSbPTaOTbMNaS`QY"));
-<digraph with 28 vertices, 84 edges>
+<immutable digraph with 28 vertices, 84 edges>
 gap> DigraphFromSparse6String(":I`ACWqHKhhccTF");
-<digraph with 10 vertices, 30 edges>
+<immutable digraph with 10 vertices, 30 edges>
 gap> DigraphFromSparse6String(":U___gFecGdHcEdFcFdE`GHbILaJKbNaM`RS");
-<digraph with 22 vertices, 66 edges>
+<immutable digraph with 22 vertices, 66 edges>
 gap> DigraphFromSparse6String(":U___fEcdcdIeHfGcFdE`GHbILaJKbNaM`RS");
-<digraph with 22 vertices, 66 edges>
+<immutable digraph with 22 vertices, 66 edges>
 gap> DigraphFromSparse6String(":U___fEcdGcdeJfIcFdEbLNaKM`H`GbIRaJQ");
-<digraph with 22 vertices, 66 edges>
+<immutable digraph with 22 vertices, 66 edges>
 gap> gr := Digraph([[2], [1, 4], [5], [2], [3]]);
-<digraph with 5 vertices, 6 edges>
+<immutable digraph with 5 vertices, 6 edges>
 gap> str := Sparse6String(gr);
 ":Dapj"
 gap> DigraphFromSparse6String(str);
-<digraph with 5 vertices, 6 edges>
+<immutable digraph with 5 vertices, 6 edges>
 gap> gr := Digraph(231, [1, 1, 3, 4], [3, 4, 1, 1]);
-<digraph with 231 vertices, 4 edges>
+<immutable digraph with 231 vertices, 4 edges>
 gap> str := Sparse6String(gr);
 ":~?Bf_O?_F"
 gap> DigraphFromSparse6String(str);
-<digraph with 231 vertices, 4 edges>
-gap> gr := Digraph(rec(nrvertices := 2 ^ 17, source := [1, 1, 3, 4, 10, 100],
-> range := [3, 4, 1, 1, 100, 10]));
-<digraph with 131072 vertices, 6 edges>
+<immutable digraph with 231 vertices, 4 edges>
+gap> gr := Digraph(rec(DigraphNrVertices := 2 ^ 17, DigraphSource := [1, 1, 3, 4, 10, 100],
+> DigraphRange := [3, 4, 1, 1, 100, 10]));
+<immutable digraph with 131072 vertices, 6 edges>
 gap> str := Sparse6String(gr);
 ":~_??_?A???_??_@b??H"
 gap> DigraphFromSparse6String(str);
-<digraph with 131072 vertices, 6 edges>
+<immutable digraph with 131072 vertices, 6 edges>
 
 #  DigraphFromDigraph6String and Digraph6String
 gap> gr := Digraph([[5], [1, 2, 5], [1], [2], [4]]);
-<digraph with 5 vertices, 7 edges>
+<immutable digraph with 5 vertices, 7 edges>
 gap> str := Digraph6String(gr);
 "&DBeA@?"
 gap> gr = DigraphFromDigraph6String("+DWg?[?");  # deprecated format
 true
 gap> DigraphFromDigraph6String(str);
-<digraph with 5 vertices, 7 edges>
+<immutable digraph with 5 vertices, 7 edges>
 gap> gr := Digraph(231, [1 .. 100], [1 .. 100] * 0 + 200);
-<digraph with 231 vertices, 100 edges>
+<immutable digraph with 231 vertices, 100 edges>
 gap> str := Digraph6String(gr);;
 gap> DigraphFromDigraph6String(str);
-<digraph with 231 vertices, 100 edges>
+<immutable digraph with 231 vertices, 100 edges>
 
 #  DigraphFromDiSparse6String and DiSparse6String
 gap> gr := Digraph([[1, 4], [2, 3, 4], [2, 4], [2]]);
-<digraph with 4 vertices, 8 edges>
+<immutable digraph with 4 vertices, 8 edges>
 gap> str := DiSparse6String(gr);
 ".CgXoHe@J"
 gap> DigraphFromDiSparse6String(str) = gr;
 true
-gap> gr := Digraph(rec(nrvertices := 1617, source := [1 .. 100],
-> range := Concatenation([1 .. 50], [1 .. 50] * 0 + 51)));
-<digraph with 1617 vertices, 100 edges>
+gap> gr := Digraph(rec(DigraphNrVertices := 1617, DigraphSource := [1 .. 100],
+> DigraphRange := Concatenation([1 .. 50], [1 .. 50] * 0 + 51)));
+<immutable digraph with 1617 vertices, 100 edges>
 gap> str := DiSparse6String(gr);;
 gap> DigraphFromDiSparse6String(str) = gr;
 true
-gap> gr := Digraph(rec(nrvertices := 2 ^ 17, source := [1 .. 100],
-> range := Concatenation([50 .. 98], [-1050 .. -1000] * -1)));
-<digraph with 131072 vertices, 100 edges>
+gap> gr := Digraph(rec(DigraphNrVertices := 2 ^ 17, DigraphSource := [1 .. 100],
+> DigraphRange := Concatenation([50 .. 98], [-1050 .. -1000] * -1)));
+<immutable digraph with 131072 vertices, 100 edges>
 gap> str := DiSparse6String(gr);;
 gap> DigraphFromDiSparse6String(str) = gr;
 true
 gap> gr := Digraph([[1, 1, 4], [2, 3, 4], [2, 4], [2]]);
-<multidigraph with 4 vertices, 9 edges>
+<immutable multidigraph with 4 vertices, 9 edges>
 gap> str := DiSparse6String(gr);
 ".CgXo?eWCn"
 gap> gr = DigraphFromDiSparse6String(str);
 true
-gap> gr := Digraph(rec(nrvertices := 7890, source := [1 .. 100] * 0 + 1000,
-> range := [1 .. 100] * 0 + 2000));
-<multidigraph with 7890 vertices, 100 edges>
+gap> gr := Digraph(rec(DigraphNrVertices := 7890, DigraphSource := [1 .. 100] * 0 + 1000,
+> DigraphRange := [1 .. 100] * 0 + 2000));
+<immutable multidigraph with 7890 vertices, 100 edges>
 gap> str := DiSparse6String(gr);;
 gap> gr = DigraphFromDiSparse6String(str);
 true
@@ -165,23 +169,23 @@ true
 gap> gr := [];;
 gap> gr[1] := Digraph(2 ^ 16, [1, 1, 3, 4, 7, 10, 100],
 > [3, 4, 1, 1, 3, 100, 10]);
-<digraph with 65536 vertices, 7 edges>
+<immutable digraph with 65536 vertices, 7 edges>
 gap> gr[2] := Digraph(1000,
 > [1 .. 1000],
 > Concatenation([2 .. 1000], [1]));
-<digraph with 1000 vertices, 1000 edges>
+<immutable digraph with 1000 vertices, 1000 edges>
 gap> gr[3] := Digraph([[1, 1, 4], [2, 3, 4], [2, 4], [2], [1, 3, 3, 5]]);
-<multidigraph with 5 vertices, 13 edges>
+<immutable multidigraph with 5 vertices, 13 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.ds6");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
 gap> ReadDigraphs(filename);
-[ <digraph with 65536 vertices, 7 edges>, 
-  <digraph with 1000 vertices, 1000 edges>, 
-  <multidigraph with 5 vertices, 13 edges> ]
+[ <immutable digraph with 65536 vertices, 7 edges>, 
+  <immutable digraph with 1000 vertices, 1000 edges>, 
+  <immutable multidigraph with 5 vertices, 13 edges> ]
 gap> gr[1] := Digraph([[5], [1, 2, 5], [1], [2], [4]]);;
-gap> gr[2] := Digraph(rec(nrvertices := 105, source := [1 .. 100],
-> range := [1 .. 100] * 0 + 52));;
+gap> gr[2] := Digraph(rec(DigraphNrVertices := 105, DigraphSource := [1 .. 100],
+> DigraphRange := [1 .. 100] * 0 + 52));;
 gap> gr[3] := EmptyDigraph(0);;
 gap> gr[4] := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],
 > [1, 2, 3, 4, 5, 6, 7, 10], [1, 5, 6, 7, 10], [2, 4, 5, 9, 10],
@@ -190,8 +194,10 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.d6");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
 gap> ReadDigraphs(filename);
-[ <digraph with 5 vertices, 7 edges>, <digraph with 105 vertices, 100 edges>, 
-  <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
+[ <immutable digraph with 5 vertices, 7 edges>, 
+  <immutable digraph with 105 vertices, 100 edges>, 
+  <immutable digraph with 0 vertices, 0 edges>, 
+  <immutable digraph with 10 vertices, 47 edges> ]
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.txt");;
 gap> WriteDigraphs(filename,
 > CompleteDigraph(2),
@@ -200,8 +206,8 @@ IO_OK
 gap> gr[1] := Digraph([[5], [1, 2, 5], [1], [2], [4]]);;
 gap> DigraphGroup(gr[1]);
 Group(())
-gap> gr[2] := Digraph(rec(nrvertices := 105, source := [1 .. 100],
-> range := [1 .. 100] * 0 + 52));;
+gap> gr[2] := Digraph(rec(DigraphNrVertices := 105, DigraphSource := [1 .. 100],
+> DigraphRange := [1 .. 100] * 0 + 52));;
 gap> gr[3] := EmptyDigraph(0);;
 gap> gr[4] := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],
 > [1, 2, 3, 4, 5, 6, 7, 10], [1, 5, 6, 7, 10], [2, 4, 5, 9, 10],
@@ -210,8 +216,10 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
 gap> ReadDigraphs(filename);
-[ <digraph with 5 vertices, 7 edges>, <digraph with 105 vertices, 100 edges>, 
-  <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
+[ <immutable digraph with 5 vertices, 7 edges>, 
+  <immutable digraph with 105 vertices, 100 edges>, 
+  <immutable digraph with 0 vertices, 0 edges>, 
+  <immutable digraph with 10 vertices, 47 edges> ]
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.txt");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -221,8 +229,10 @@ IO_OK
 # involved in an edge). 
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.txt");;
 gap> ReadDigraphs(filename);
-[ <digraph with 5 vertices, 7 edges>, <digraph with 100 vertices, 100 edges>, 
-  <digraph with 0 vertices, 0 edges>, <digraph with 10 vertices, 47 edges> ]
+[ <immutable digraph with 5 vertices, 7 edges>, 
+  <immutable digraph with 100 vertices, 100 edges>, 
+  <immutable digraph with 0 vertices, 0 edges>, 
+  <immutable digraph with 10 vertices, 47 edges> ]
 gap> gr := [CompleteDigraph(30)];;
 gap> DigraphGroup(gr[1]) = SymmetricGroup(30);
 true
@@ -230,14 +240,14 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
 gap> ReadDigraphs(filename);
-[ <digraph with 30 vertices, 870 edges> ]
+[ <immutable digraph with 30 vertices, 870 edges> ]
 gap> gr := [];;
 gap> gr[1] := Digraph(30, [1, 2], [2, 1]);
-<digraph with 30 vertices, 2 edges>
+<immutable digraph with 30 vertices, 2 edges>
 gap> gr[2] := Digraph([[2], [1, 4], [5], [2], [3]]);
-<digraph with 5 vertices, 6 edges>
+<immutable digraph with 5 vertices, 6 edges>
 gap> gr[3] := Digraph([[2], [1]]);
-<digraph with 2 vertices, 2 edges>
+<immutable digraph with 2 vertices, 2 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.g6");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -249,7 +259,7 @@ IO_OK
 gap> gr = ReadDigraphs(filename);
 true
 gap> gr[3] := Digraph([[1, 2], [1, 2]]);
-<digraph with 2 vertices, 4 edges>
+<immutable digraph with 2 vertices, 4 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.s6.bz2");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -276,9 +286,11 @@ gap> WriteDigraphs(f, List([1 .. 5], CompleteDigraph));
 IO_OK
 gap> f := DigraphFile(filename, "r");;
 gap> ReadDigraphs(f);
-[ <digraph with 1 vertex, 0 edges>, <digraph with 2 vertices, 2 edges>, 
-  <digraph with 3 vertices, 6 edges>, <digraph with 4 vertices, 12 edges>, 
-  <digraph with 5 vertices, 20 edges> ]
+[ <immutable digraph with 1 vertex, 0 edges>, 
+  <immutable digraph with 2 vertices, 2 edges>, 
+  <immutable digraph with 3 vertices, 6 edges>, 
+  <immutable digraph with 4 vertices, 12 edges>, 
+  <immutable digraph with 5 vertices, 20 edges> ]
 gap> f := DigraphFile(filename, "a");;
 gap> WriteDigraphs(f, CycleDigraph(5));
 Error, Digraphs: Graph6String: usage,
@@ -287,9 +299,12 @@ gap> WriteDigraphs(f, JohnsonDigraph(6, 3));
 IO_OK
 gap> f := DigraphFile(filename, "r");;
 gap> ReadDigraphs(f);
-[ <digraph with 1 vertex, 0 edges>, <digraph with 2 vertices, 2 edges>, 
-  <digraph with 3 vertices, 6 edges>, <digraph with 4 vertices, 12 edges>, 
-  <digraph with 5 vertices, 20 edges>, <digraph with 20 vertices, 180 edges> ]
+[ <immutable digraph with 1 vertex, 0 edges>, 
+  <immutable digraph with 2 vertices, 2 edges>, 
+  <immutable digraph with 3 vertices, 6 edges>, 
+  <immutable digraph with 4 vertices, 12 edges>, 
+  <immutable digraph with 5 vertices, 20 edges>, 
+  <immutable digraph with 20 vertices, 180 edges> ]
 gap> newfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/hello2.g6");;
 gap> IO_rename(filename, newfilename);
 true
@@ -298,25 +313,25 @@ gap> ReadDigraphs(f);
 gap> it := IteratorFromDigraphFile(newfilename);
 <iterator>
 gap> NextIterator(it);
-<digraph with 1 vertex, 0 edges>
+<immutable digraph with 1 vertex, 0 edges>
 gap> NextIterator(it);
-<digraph with 2 vertices, 2 edges>
+<immutable digraph with 2 vertices, 2 edges>
 gap> it := IteratorFromDigraphFile(newfilename, DigraphFromGraph6String);
 <iterator>
 gap> NextIterator(it);
-<digraph with 1 vertex, 0 edges>
+<immutable digraph with 1 vertex, 0 edges>
 gap> IsDoneIterator(it);
 false
 gap> NextIterator(it);
-<digraph with 2 vertices, 2 edges>
+<immutable digraph with 2 vertices, 2 edges>
 gap> NextIterator(it);
-<digraph with 3 vertices, 6 edges>
+<immutable digraph with 3 vertices, 6 edges>
 gap> NextIterator(it);
-<digraph with 4 vertices, 12 edges>
+<immutable digraph with 4 vertices, 12 edges>
 gap> NextIterator(it);
-<digraph with 5 vertices, 20 edges>
+<immutable digraph with 5 vertices, 20 edges>
 gap> NextIterator(it);
-<digraph with 20 vertices, 180 edges>
+<immutable digraph with 20 vertices, 180 edges>
 gap> NextIterator(it);
 IO_Nothing
 gap> NextIterator(it);
@@ -326,7 +341,7 @@ true
 gap> it := ShallowCopy(it);
 <iterator>
 gap> NextIterator(it);
-<digraph with 1 vertex, 0 edges>
+<immutable digraph with 1 vertex, 0 edges>
 gap> IteratorFromDigraphFile(1, 2, 3);
 Error, Digraphs: IteratorFromDigraphFile: usage,
 there should be 1 or 2 arguments,
@@ -363,7 +378,7 @@ true
 
 #  WritePlainTextDigraph and ReadPlainTextDigraph
 gap> gr := Digraph([[1, 2], [2, 3], []]);
-<digraph with 3 vertices, 4 edges>
+<immutable digraph with 3 vertices, 4 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/plain.txt");;
 gap> WritePlainTextDigraph(1, 2, 3, 4);
 Error, Digraphs: WritePlainTextDigraph: usage,
@@ -377,9 +392,9 @@ gap> ReadPlainTextDigraph(1, 2, 3, 4);
 Error, Digraphs: ReadPlainTextDigraph: usage,
 ReadPlainTextDigraph(filename, delimiter, offset, ignore),
 gap> ReadPlainTextDigraph(filename, ",", 1, ['i', 'd']);
-<digraph with 3 vertices, 4 edges>
+<immutable digraph with 3 vertices, 4 edges>
 gap> ReadPlainTextDigraph(filename, ',', 1, 'i');
-<digraph with 3 vertices, 4 edges>
+<immutable digraph with 3 vertices, 4 edges>
 gap> last = gr;
 true
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/does/not/exist.txt");;
@@ -389,33 +404,33 @@ cannot open file <name>,
 
 #  TournamentLineDecoder
 gap> gr := TournamentLineDecoder("101001");
-<digraph with 4 vertices, 6 edges>
+<immutable digraph with 4 vertices, 6 edges>
 gap> OutNeighbours(gr);
 [ [ 2, 4 ], [  ], [ 1, 2, 4 ], [ 2 ] ]
 gap> gr := TournamentLineDecoder("");
-<digraph with 1 vertex, 0 edges>
+<immutable digraph with 1 vertex, 0 edges>
 
 #  AdjacencyMatrixUpperTriangleLineDecoder
 gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("100101");
-<digraph with 4 vertices, 3 edges>
+<immutable digraph with 4 vertices, 3 edges>
 gap> OutNeighbours(gr);
 [ [ 2 ], [ 3 ], [ 4 ], [  ] ]
 gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("11y111x111");
-<digraph with 5 vertices, 8 edges>
+<immutable digraph with 5 vertices, 8 edges>
 gap> OutNeighbours(gr);
 [ [ 2, 3, 5 ], [ 3, 4 ], [ 4, 5 ], [ 5 ], [  ] ]
 gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("");
-<digraph with 1 vertex, 0 edges>
+<immutable digraph with 1 vertex, 0 edges>
 
 #  TCodeDecoder
 gap> gr := TCodeDecoder("3 2 0 2 2 1");
-<digraph with 3 vertices, 2 edges>
+<immutable digraph with 3 vertices, 2 edges>
 gap> OutNeighbours(gr);
 [ [ 3 ], [  ], [ 2 ] ]
 gap> gr = TCodeDecoderNC("3 2 0 2 2 1");
 true
 gap> gr := TCodeDecoder("12 3 0 10 6 2 8 8");
-<digraph with 12 vertices, 3 edges>
+<immutable digraph with 12 vertices, 3 edges>
 gap> OutNeighbours(gr);
 [ [ 11 ], [  ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [ 9 ], [  ], [  ], [  ] ]
 gap> gr := TCodeDecoder(3);
@@ -436,7 +451,7 @@ Error, Digraphs: TCodeDecoder: usage,
 <str> must contain at least 2e + 2 entries,
 where e is the number of edges (the 2nd entry in <str>),
 gap> gr := TCodeDecoderNC("100 5 0 12 48 49 99 1 54 49 49 49");
-<digraph with 100 vertices, 5 edges>
+<immutable digraph with 100 vertices, 5 edges>
 
 #  Empty strings should not create graphs
 gap> DigraphFromGraph6String("");
@@ -460,25 +475,25 @@ gap> DigraphFromDiSparse6String(".~~");
 Error, Digraphs: DigraphFromDiSparse6String: usage,
 the input string <s> is not in valid disparse6 format,
 gap> DigraphFromDiSparse6String(".~~??@???o??N");
-<digraph with 262144 vertices, 0 edges>
+<immutable digraph with 262144 vertices, 0 edges>
 gap> DigraphFromDiSparse6String(".~??");
 Error, Digraphs: DigraphFromDiSparse6String: usage,
 the input string <s> is not in valid disparse6 format,
 gap> DiSparse6String(CompleteDigraph(1));
 ".@~"
 gap> DigraphFromDiSparse6String(".@~");
-<digraph with 1 vertex, 0 edges>
+<immutable digraph with 1 vertex, 0 edges>
 gap> gr := Digraph([[], [], [1, 2]]);;
 gap> DiSparse6String(gr);
 ".BoN"
 
 #  Plain text encoding  
 gap> gr := CompleteDigraph(3);
-<digraph with 3 vertices, 6 edges>
+<immutable digraph with 3 vertices, 6 edges>
 gap> str := PlainTextString(gr);
 "0 1  0 2  1 0  1 2  2 0  2 1"
 gap> gr2 := DigraphFromPlainTextString(str);
-<digraph with 3 vertices, 6 edges>
+<immutable digraph with 3 vertices, 6 edges>
 gap> gr = gr2;
 true
 
@@ -522,7 +537,7 @@ gap> Sparse6String(gr);
 
 #  DigraphFromSparse6String: an unusual but valid case
 gap> DigraphFromSparse6String(":TdBkJ`Kq?x");
-<digraph with 21 vertices, 10 edges>
+<immutable digraph with 21 vertices, 10 edges>
 gap> Sparse6String(last);
 ":TdBkJ`Kq?"
 
@@ -608,7 +623,7 @@ gap> WriteDigraphs(filename, [gr], "w");
 IO_OK
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/alone.ds6");;
 gap> list2 := ReadDigraphs(filename);
-[ <multidigraph with 2 vertices, 4 edges> ]
+[ <immutable multidigraph with 2 vertices, 4 edges> ]
 gap> list2[1] = gr;
 true
 gap> list := [CompleteDigraph(10), CompleteDigraph(15)];;
@@ -620,7 +635,7 @@ gap> list2 := ReadDigraphs(filename);;
 gap> list = list2;
 true
 gap> gr := [Digraph([[1, 2, 3, 4], [1, 2, 3, 4], [1, 3, 4], [1, 2, 3, 4]])];
-[ <digraph with 4 vertices, 15 edges> ]
+[ <immutable digraph with 4 vertices, 15 edges> ]
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/dense");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -652,7 +667,7 @@ the argument <digraphs> must be a list of digraphs,
 gap> Sparse6String(EmptyDigraph(2 ^ 20));
 ":~~??C???"
 gap> DigraphFromSparse6String(":~~??C???");
-<digraph with 1048576 vertices, 0 edges>
+<immutable digraph with 1048576 vertices, 0 edges>
 
 #  WriteDIMACSFile
 # Error testing
@@ -677,7 +692,7 @@ cannot open the file <name>,
 # Handling loops
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/loops.dimacs");;
 gap> gr := EmptyDigraph(1);
-<digraph with 1 vertex, 0 edges>
+<immutable digraph with 1 vertex, 0 edges>
 gap> DigraphHasLoops(gr);
 false
 gap> HasDigraphHasLoops(gr);
@@ -685,7 +700,7 @@ true
 gap> WriteDIMACSDigraph(filename, gr);
 IO_OK
 gap> gr := Digraph([[1]]);
-<digraph with 1 vertex, 1 edge>
+<immutable digraph with 1 vertex, 1 edge>
 gap> DigraphHasLoops(gr);
 true
 gap> HasDigraphHasLoops(gr);
@@ -694,7 +709,7 @@ gap> WriteDIMACSDigraph(filename, gr);
 IO_OK
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/loops.dimacs.gz");;
 gap> gr := Digraph([[2], [1]]);
-<digraph with 2 vertices, 2 edges>
+<immutable digraph with 2 vertices, 2 edges>
 gap> HasDigraphHasLoops(gr);
 false
 gap> WriteDIMACSDigraph(filename, gr);
@@ -840,48 +855,48 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 1 2");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-<digraph with 2 vertices, 2 edges>
+<immutable digraph with 2 vertices, 2 edges>
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 2");;
 gap> IO_WriteLine(file, "e 1 2");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-<digraph with 2 vertices, 2 edges>
+<immutable digraph with 2 vertices, 2 edges>
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 3");;
 gap> IO_WriteLine(file, "e 1 2");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-<digraph with 2 vertices, 2 edges>
+<immutable digraph with 2 vertices, 2 edges>
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 6");;
 gap> IO_WriteLine(file, "e 1 1");;
 gap> IO_WriteLine(file, "e 1 2");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-<digraph with 2 vertices, 3 edges>
+<immutable digraph with 2 vertices, 3 edges>
 
 # Examples which work
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/good.dimacs");;
 gap> gr := Digraph([[2], [1, 3, 4], [2, 3], [2], [5], []]);
-<digraph with 6 vertices, 8 edges>
+<immutable digraph with 6 vertices, 8 edges>
 gap> SetDigraphVertexLabels(gr, [2, 3, 5, 7, 11, 13]);;
 gap> WriteDIMACSDigraph(filename, gr);
 IO_OK
 gap> read := ReadDIMACSDigraph(filename);
-<digraph with 6 vertices, 8 edges>
+<immutable digraph with 6 vertices, 8 edges>
 gap> gr = read;
 true
 gap> DigraphVertexLabels(read);
 [ 2, 3, 5, 7, 11, 13 ]
 gap> gr := Digraph([[2], [1, 3, 3], [2, 3, 2]]);
-<multidigraph with 3 vertices, 7 edges>
+<immutable multidigraph with 3 vertices, 7 edges>
 gap> DigraphVertexLabels(gr);
 [ 1 .. 3 ]
 gap> WriteDIMACSDigraph(filename, gr);
 IO_OK
 gap> read := ReadDIMACSDigraph(filename);
-<multidigraph with 3 vertices, 7 edges>
+<immutable multidigraph with 3 vertices, 7 edges>
 gap> gr = read;
 true
 gap> DigraphVertexLabels(gr);
@@ -899,13 +914,13 @@ the argument must be a string,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/good.dimacs");;
 gap> file := IO_File(filename, "r");;
 gap> gr := CompleteDigraph(2);
-<digraph with 2 vertices, 2 edges>
+<immutable digraph with 2 vertices, 2 edges>
 gap> DigraphGroup(gr);
 Sym( [ 1 .. 2 ] )
 gap> IO_Pickle(file, gr);
 IO_Error
 gap> gr := Digraph([[2], [3], []]);
-<digraph with 3 vertices, 2 edges>
+<immutable digraph with 3 vertices, 2 edges>
 gap> HasDigraphGroup(gr);
 false
 gap> IO_Pickle(file, gr);

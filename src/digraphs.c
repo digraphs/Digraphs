@@ -31,9 +31,6 @@
 #undef PACKAGE_URL
 #undef PACKAGE_VERSION
 
-static Obj FuncDIGRAPH_OUT_NBS(Obj self, Obj digraph, Obj source, Obj range);
-static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph);
-
 // GAP level things, imported in InitKernel below
 Obj IsDigraph;
 Obj IsDigraphEdge;
@@ -42,6 +39,7 @@ Obj Infinity;
 Obj IsSymmetricDigraph;
 Obj GeneratorsOfGroup;
 Obj AutomorphismGroup;
+Obj IsAttributeStoringRepObj;
 
 #if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
 // compatibility with GAP <= 4.9
@@ -50,59 +48,113 @@ static inline Obj NEW_PLIST_IMM(UInt type, Int plen) {
 }
 #endif
 
-/*************************************************************************/
-
-Int DigraphNrVertices(Obj digraph) {
-  if (IsbPRec(digraph, RNamName("DigraphNrVertices"))) {
-    return INT_INTOBJ(ElmPRec(digraph, RNamName("DigraphNrVertices")));
-  }
-  // The record comp should always be set so this should never be triggered
-  ErrorQuit(
-      "Digraphs: DigraphNrVertices (C):\nrec comp <DigraphNrVertices> is not "
-      "set,",
-      0L,
-      0L);
-  return 0;
+static inline bool IsAttributeStoringRep(Obj o) {
+  return (CALL_1ARGS(IsAttributeStoringRepObj, o) == True ? true : false);
 }
 
-Int DigraphNrEdges(Obj digraph) {
-  Obj adj;
-  Int nr, i, n;
-  if (IsbPRec(digraph, RNamName("DigraphNrEdges"))) {
-    return INT_INTOBJ(ElmPRec(digraph, RNamName("DigraphNrEdges")));
+/*************************************************************************/
+
+Obj FuncDigraphNrVertices(Obj self, Obj D) {
+  return INTOBJ_INT(DigraphNrVertices(D));
+}
+
+Int DigraphNrVertices(Obj D) {
+  return LEN_LIST(FuncOutNeighbours(0L, D));
+}
+
+Obj FuncOutNeighbours(Obj self, Obj D) {
+  if (IsbPRec(D, RNamName("OutNeighbours"))) {
+    return ElmPRec(D, RNamName("OutNeighbours"));
+  } else if (IsbPRec(D, RNamName("DigraphSource"))
+             && IsbPRec(D, RNamName("DigraphRange"))) {
+    Obj src = ElmPRec(D, RNamName("DigraphSource"));
+    Obj ran = ElmPRec(D, RNamName("DigraphRange"));
+    DIGRAPHS_ASSERT(LEN_LIST(src) == LEN_LIST(ran));
+    Int  n   = INT_INTOBJ(ElmPRec(D, RNamName("DigraphNrVertices")));
+    bool mut = IS_MUTABLE_OBJ(D);
+    Obj  ret;
+    if (n == 0) {
+      ret = NEW_PLIST_WITH_MUTABILITY(mut, T_PLIST_EMPTY, 0);
+    } else {
+      ret = NEW_PLIST_WITH_MUTABILITY(mut, T_PLIST_TAB, n);
+      SET_LEN_PLIST(ret, n);
+
+      for (Int i = 1; i <= n; i++) {
+        Obj next = NEW_PLIST(T_PLIST_EMPTY, 0);
+        SET_LEN_PLIST(next, 0);
+        SET_ELM_PLIST(ret, i, next);
+        CHANGED_BAG(ret);
+      }
+
+      for (Int i = 1; i <= LEN_LIST(src); i++) {
+        Obj list = ELM_PLIST(ret, INT_INTOBJ(ELM_LIST(src, i)));
+        ASS_LIST(list, LEN_PLIST(list) + 1, ELM_LIST(ran, i));
+        CHANGED_BAG(ret);
+      }
+      if (!mut) {
+        for (Int i = 1; i <= n; i++) {
+          MakeImmutable(ELM_PLIST(ret, i));
+        }
+      }
+    }
+    // If this function is called from the method for OutNeighbours in GAP then
+    // the next line isn't necessary. We include it anyway because it might be
+    // required if this function is called from the Digraphs kernel module.
+    AssPRec(D, RNamName("OutNeighbours"), ret);
+    return ret;
+  } else {
+    ErrorQuit("not enough record components set, expected `OutNeighbours` or "
+              "`DigraphNrVertices`, `DigraphSource`, and `DigraphRange`,",
+              0L,
+              0L);
   }
-  n   = DigraphNrVertices(digraph);
-  adj = OutNeighbours(digraph);
-  nr  = 0;
-  for (i = 1; i <= n; i++) {
-    nr += LEN_PLIST(ELM_PLIST(adj, i));
+}
+
+Obj FuncOutNeighboursFromSourceRange(Obj self, Obj N, Obj src, Obj ran) {
+  DIGRAPHS_ASSERT(LEN_LIST(src) == LEN_LIST(ran));
+  Int n = INT_INTOBJ(N);
+  if (n == 0) {
+    return NEW_PLIST(T_PLIST_EMPTY, 0);
   }
-  AssPRec(digraph, RNamName("DigraphNrEdges"), INTOBJ_INT(nr));
+  Obj ret = NEW_PLIST(T_PLIST_TAB, n);
+  SET_LEN_PLIST(ret, n);
+
+  for (Int i = 1; i <= n; i++) {
+    Obj next = NEW_PLIST(T_PLIST_EMPTY, 0);
+    SET_LEN_PLIST(next, 0);
+    SET_ELM_PLIST(ret, i, next);
+    CHANGED_BAG(ret);
+  }
+
+  for (Int i = 1; i <= LEN_LIST(src); i++) {
+    Obj list = ELM_PLIST(ret, INT_INTOBJ(ELM_LIST(src, i)));
+    ASS_LIST(list, LEN_PLIST(list) + 1, ELM_LIST(ran, i));
+    CHANGED_BAG(ret);
+  }
+  return ret;
+}
+
+Int DigraphNrEdges(Obj D) {
+  Int nr = 0;
+  if (IsbPRec(D, RNamName("DigraphNrEdges"))) {
+    return INT_INTOBJ(ElmPRec(D, RNamName("DigraphNrEdges")));
+  } else if (IsbPRec(D, RNamName("DigraphSource"))) {
+    nr = LEN_LIST(ElmPRec(D, RNamName("DigraphSource")));
+  } else {
+    Int n    = DigraphNrVertices(D);
+    Obj list = FuncOutNeighbours(0L, D);
+    for (Int i = 1; i <= n; i++) {
+      nr += LEN_PLIST(ELM_PLIST(list, i));
+    }
+  }
+  if (IsAttributeStoringRep(D)) {
+    AssPRec(D, RNamName("DigraphNrEdges"), INTOBJ_INT(nr));
+  }
   return nr;
 }
 
-static Obj FuncDIGRAPH_NREDGES(Obj self, Obj digraph) {
-  return INTOBJ_INT(DigraphNrEdges(digraph));
-}
-
-// Need to decide what we're doing with all this
-Obj OutNeighbours(Obj digraph) {
-  Obj adj;
-
-  if (IsbPRec(digraph, RNamName("OutNeighbours"))) {
-    return ElmPRec(digraph, RNamName("OutNeighbours"));
-  } else if (IsbPRec(digraph, RNamName("DigraphSource"))
-             && IsbPRec(digraph, RNamName("DigraphRange"))) {
-    adj = FuncDIGRAPH_OUT_NBS(NULL,
-                              ElmPRec(digraph, RNamName("DigraphNrVertices")),
-                              ElmPRec(digraph, RNamName("DigraphSource")),
-                              ElmPRec(digraph, RNamName("DigraphRange")));
-    AssPRec(digraph, RNamName("OutNeighbours"), adj);
-    return adj;
-  }
-  ErrorQuit(
-      "Digraphs: OutNeighbours (C): not enough record components set,", 0L, 0L);
-  return False;
+static Obj FuncDIGRAPH_NREDGES(Obj self, Obj D) {
+  return INTOBJ_INT(DigraphNrEdges(D));
 }
 
 /****************************************************************************
@@ -269,7 +321,7 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
       id[i] = i;
     }
 
-    adj = OutNeighbours(digraph);
+    adj = FuncOutNeighbours(self, digraph);
     for (i = 0; i < n; i++) {
       adji = ELM_PLIST(adj, i + 1);
       PLAIN_LIST(adji);
@@ -445,88 +497,83 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
   return INTOBJ_INT(x);
 }
 
+// Forward decl
+static Obj FuncDIGRAPH_IN_OUT_NBS(Obj, Obj);
+
 // Takes in-neighbours (Obj adj) of a topologically sorted non-multi digraph
 // Returns the out-neighbours of its transitive reduction.
 // If (Obj loops) == False, loops are removed (transitive reflexive reduction)
-static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
-  UInt  i, j, k, n, level, len, w, m, source;
-  bool  backtracking, rec_loops;
-  Obj   out, outj, nbs;
-  UInt *ptr, *stack;
-  bool* mat;
+static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj D) {
+  DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, D) == True);
+  if (!IS_MUTABLE_OBJ(D)) {
+    ErrorQuit("the argument (a digraph) must be mutable", 0L, 0L);
+  }
 
-  n = LEN_PLIST(adj);
+  UInt const n = DigraphNrVertices(D);
 
   // Special case for n = 0
   if (n == 0) {
-    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
-  }
-
-  if (loops == True) {
-    rec_loops = true;
-  } else {
-    rec_loops = false;
+    return D;
   }
 
   // Create the GAP out-neighbours strcture of the result
-  out = NEW_PLIST(T_PLIST_TAB, n);
-  SET_LEN_PLIST(out, n);
-  for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(out, i, NEW_PLIST(T_PLIST_EMPTY, 0));
-    CHANGED_BAG(out);
+  Obj ot_list = NEW_PLIST(T_PLIST_TAB, n);
+  SET_LEN_PLIST(ot_list, n);
+  for (UInt i = 1; i <= n; i++) {
+    SET_ELM_PLIST(ot_list, i, NEW_PLIST(T_PLIST_EMPTY, 0));
+    CHANGED_BAG(ot_list);
   }
 
+  Obj const in_list = FuncDIGRAPH_IN_OUT_NBS(self, FuncOutNeighbours(self, D));
+
   // Create data structures needed for computation
-  ptr   = calloc(n + 1, sizeof(UInt));
-  mat   = calloc(n * n, sizeof(bool));
-  stack = malloc((2 * n + 2) * sizeof(UInt));
+  UInt* ptr   = calloc(n + 1, sizeof(UInt));
+  bool* mat   = calloc(n * n, sizeof(bool));
+  UInt* stack = malloc((2 * n + 2) * sizeof(UInt));
 
   // Start a depth-first search from each source of the digraph
-  for (i = 1; i <= n; i++) {
+  for (UInt i = 1; i <= n; i++) {
     if (ptr[i] == 0) {
       // Remember which vertex was the source
-      source = i;
+      UInt source = i;
       // not sure if this next line is necessary
-      backtracking = false;
+      bool backtracking = false;
+      UInt level        = 1;
 
       stack[0] = i;
       stack[1] = 1;
-      level    = 1;
       while (1) {
-        j = stack[0];
-        k = stack[1];
+        UInt j = stack[0];
+        UInt k = stack[1];
 
         // We have found a loop on vertex j
         if (ptr[j] == 2) {
           if (stack[-2] != j) {
-            ErrorQuit("Digraphs: DIGRAPH_TRANS_REDUCTION, usage:\nThis "
-                      "function only accepts acyclic digraphs (with loops "
-                      "allowed),",
-                      0L,
-                      0L);
+            ErrorQuit(
+                "the argument (a digraph) must be acyclic except for loops,",
+                0L,
+                0L);
           }
           backtracking = true;
           level--;
           stack -= 2;
           stack[1]++;
           ptr[j] = 0;
-          if (rec_loops) {
-            // Store the loop
-            outj = ELM_PLIST(out, j);
-            len  = LEN_PLIST(outj);
-            ASS_LIST(outj, len + 1, INTOBJ_INT(j));
-          }
+          // Store the loop
+          Obj list = ELM_PLIST(ot_list, j);
+          ASS_LIST(list, LEN_PLIST(list) + 1, INTOBJ_INT(j));
+          CHANGED_BAG(ot_list);
           continue;
         }
 
         // Calculate if we need to add an edge from j -> (previous vertex)
         if (!backtracking && j != source && !mat[(stack[-2] - 1) * n + j - 1]) {
-          outj = ELM_PLIST(out, j);
-          len  = LEN_PLIST(outj);
-          ASS_LIST(outj, len + 1, INTOBJ_INT(stack[-2]));
+          Obj list = ELM_PLIST(ot_list, j);
+          ASS_LIST(list, LEN_PLIST(list) + 1, INTOBJ_INT(stack[-2]));
+          CHANGED_BAG(ot_list);
         }
 
-        nbs = ELM_PLIST(adj, j);
+        Obj nbs = ELM_PLIST(in_list, j);
 
         // Do we need to backtrack?
         if (ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
@@ -541,9 +588,9 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
           ptr[j] = 1;
 
           // w is the vertex we are backtracking to (-1)
-          w = stack[0] - 1;
+          UInt w = stack[0] - 1;
           // Record which vertices we have discovered 'above' w
-          for (m = 0; m < n; m++) {
+          for (UInt m = 0; m < n; m++) {
             mat[w * n + m] = mat[w * n + m] + mat[(j - 1) * n + m];
           }
           mat[w * n + (j - 1)] = true;
@@ -561,8 +608,8 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj adj, Obj loops) {
   free(mat);
   free(ptr);
   free(stack);
-  MakeImmutable(out);
-  return out;
+  AssPRec(D, RNamName("OutNeighbours"), ot_list);
+  return D;
 }
 
 // TODO(*) use generic DFS, when we have one.
@@ -939,87 +986,46 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
   }
   free(ptr);
   free(stack);
-  MakeImmutable(out);
   return out;
 }
 
-static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj digraph) {
-  Obj source, range, adj, adji;
+static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj D) {
+  Obj src, ran, adj, adji;
   Int i, j, k, m, n, len;
 
-  m   = DigraphNrEdges(digraph);
-  n   = DigraphNrVertices(digraph);
-  adj = OutNeighbours(digraph);
+  m   = DigraphNrEdges(D);
+  n   = DigraphNrVertices(D);
+  adj = FuncOutNeighbours(self, D);
 
   if (m == 0) {
-    source = NEW_PLIST_IMM(T_PLIST_EMPTY, m);
-    range  = NEW_PLIST_IMM(T_PLIST_EMPTY, m);
+    src = NEW_PLIST_IMM(T_PLIST_EMPTY, m);
+    ran = NEW_PLIST_IMM(T_PLIST_EMPTY, m);
   } else {
-    source = NEW_PLIST_IMM(T_PLIST_CYC, m);
-    range  = NEW_PLIST_IMM(T_PLIST_CYC, m);
-    k      = 0;
+    src = NEW_PLIST_IMM(T_PLIST_CYC, m);
+    ran = NEW_PLIST_IMM(T_PLIST_CYC, m);
+    k   = 0;
     for (i = 1; i <= n; i++) {
       adji = ELM_PLIST(adj, i);
       len  = LEN_LIST(adji);
       for (j = 1; j <= len; j++) {
         k++;
-        SET_ELM_PLIST(source, k, INTOBJ_INT(i));
-        SET_ELM_PLIST(range, k, ELM_LIST(adji, j));
+        SET_ELM_PLIST(src, k, INTOBJ_INT(i));
+        SET_ELM_PLIST(ran, k, ELM_LIST(adji, j));
       }
     }
   }
 
-  SET_LEN_PLIST(source, m);
-  SET_LEN_PLIST(range, m);
-  AssPRec(digraph, RNamName("DigraphSource"), source);
-  AssPRec(digraph, RNamName("DigraphRange"), range);
+  SET_LEN_PLIST(src, m);
+  SET_LEN_PLIST(ran, m);
+  if (IsAttributeStoringRep(D)) {
+    AssPRec(D, RNamName("DigraphSource"), src);
+    AssPRec(D, RNamName("DigraphRange"), ran);
+  }
   return True;
 }
 
 // Assume we are passed a GAP Int nrvertices
 // Two GAP lists of PosInts (all <= nrvertices) of equal length
-static Obj
-FuncDIGRAPH_OUT_NBS(Obj self, Obj nrvertices, Obj source, Obj range) {
-  Obj  adj, adjj;
-  UInt n, i, j, len, m1, m2;
-
-  m1 = LEN_LIST(source);
-  m2 = LEN_LIST(range);
-  if (m1 != m2) {
-    ErrorQuit("Digraphs: DIGRAPH_OUT_NBS: usage,\n<source> and <range> must be "
-              "lists of equal length,",
-              0L,
-              0L);
-  }
-  n = INT_INTOBJ(nrvertices);
-  if (n == 0) {
-    adj = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
-  } else {
-    PLAIN_LIST(source);
-    PLAIN_LIST(range);
-
-    adj = NEW_PLIST(T_PLIST_TAB, n);
-    SET_LEN_PLIST(adj, n);
-
-    // fill adj with empty plists
-    for (i = 1; i <= n; i++) {
-      SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY, 0));
-      CHANGED_BAG(adj);
-    }
-
-    n = m1;
-    for (i = 1; i <= n; i++) {
-      j    = INT_INTOBJ(ELM_PLIST(source, i));
-      adjj = ELM_PLIST(adj, j);
-      len  = LEN_PLIST(adjj);
-      ASS_LIST(adjj, len + 1, ELM_PLIST(range, i));
-    }
-  }
-  MakeImmutable(adj);
-
-  // AssPRec(digraph, RNamName("OutNeighbours"), adj);
-  return adj;
-}
 
 // Function to change Out-Neighbours to In-Neighbours, and vice versa
 static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) {
@@ -1050,7 +1056,6 @@ static Obj FuncDIGRAPH_IN_OUT_NBS(Obj self, Obj adj) {
       ASS_LIST(innk, len2 + 1, INTOBJ_INT(i));
     }
   }
-  MakeImmutable(inn);
   return inn;
 }
 
@@ -1063,7 +1068,7 @@ Obj FuncADJACENCY_MATRIX(Obj self, Obj digraph) {
     return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   }
 
-  adj = OutNeighbours(digraph);
+  adj = FuncOutNeighbours(self, digraph);
   mat = NEW_PLIST_IMM(T_PLIST_TAB, n);
   SET_LEN_PLIST(mat, n);
 
@@ -1093,7 +1098,7 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
   Obj  adj, adji;
   UInt n, i, k, j, *seen;
 
-  adj  = OutNeighbours(digraph);
+  adj  = FuncOutNeighbours(self, digraph);
   n    = DigraphNrVertices(digraph);
   seen = calloc(n + 1, sizeof(UInt));
 
@@ -1172,7 +1177,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
   for (i = 0; i < n * n; i++) {
     dist[i] = val1;
   }
-  out = OutNeighbours(digraph);
+  out = FuncOutNeighbours(0L, digraph);
   for (i = 1; i <= n; i++) {
     outi = ELM_PLIST(out, i);
     PLAIN_LIST(outi);
@@ -1415,8 +1420,8 @@ static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
     return False;
   }
 
-  out1 = OutNeighbours(digraph1);
-  out2 = OutNeighbours(digraph2);
+  out1 = FuncOutNeighbours(self, digraph1);
+  out2 = FuncOutNeighbours(self, digraph2);
 
   buf = calloc(n1, sizeof(Int));
 
@@ -1522,8 +1527,8 @@ static Obj FuncDIGRAPH_LT(Obj self, Obj digraph1, Obj digraph2) {
     return False;
   }
 
-  out1 = OutNeighbours(digraph1);
-  out2 = OutNeighbours(digraph2);
+  out1 = FuncOutNeighbours(self, digraph1);
+  out2 = FuncOutNeighbours(self, digraph2);
 
   buf = calloc(n1, sizeof(Int));
 
@@ -1575,7 +1580,7 @@ BlissGraph* buildBlissMultiDigraph(Obj digraph) {
   n     = DigraphNrVertices(digraph);
   graph = bliss_digraphs_new(n);
 
-  adj = OutNeighbours(digraph);
+  adj = FuncOutNeighbours(0L, digraph);
   for (i = 1; i <= n; i++) {
     adji = ELM_PLIST(adj, i);
     nr   = LEN_PLIST(adji);
@@ -1600,7 +1605,7 @@ BlissGraph* buildBlissDigraphWithColours(Obj digraph, Obj colours) {
     DIGRAPHS_ASSERT(n == (UInt) LEN_LIST(colours));
   }
   graph = bliss_digraphs_new(0);
-  adj   = OutNeighbours(digraph);
+  adj   = FuncOutNeighbours(0L, digraph);
 
   if (colours) {
     for (i = 1; i <= n; i++) {
@@ -1640,7 +1645,7 @@ BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
   n = DigraphNrVertices(digraph);
   DIGRAPHS_ASSERT(n == (UInt) LEN_LIST(colours));
   graph = bliss_digraphs_new(0);
-  adj   = OutNeighbours(digraph);
+  adj   = FuncOutNeighbours(0L, digraph);
 
   for (i = 1; i <= n; i++) {
     bliss_digraphs_add_vertex(graph, INT_INTOBJ(ELM_LIST(colours, i)));
@@ -1999,8 +2004,8 @@ static StructGVarFunc GVarFuncs[] = {
      "src/digraphs.c:FuncDIGRAPH_LONGEST_DIST_VERTEX"},
 
     {"DIGRAPH_TRANS_REDUCTION",
-     2,
-     "adj, loops",
+     1,
+     "list",
      FuncDIGRAPH_TRANS_REDUCTION,
      "src/digraphs.c:FuncDIGRAPH_TRANS_REDUCTION"},
 
@@ -2034,11 +2039,23 @@ static StructGVarFunc GVarFuncs[] = {
      FuncDIGRAPH_SOURCE_RANGE,
      "src/digraphs.c:FuncDIGRAPH_SOURCE_RANGE"},
 
-    {"DIGRAPH_OUT_NBS",
+    {"DIGRAPH_OUT_NEIGHBOURS",
+     1,
+     "D",
+     FuncOutNeighbours,
+     "src/digraphs.c:FuncOutNeighbours"},
+
+    {"DIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE",
      3,
-     "nrvertices, source, range",
-     FuncDIGRAPH_OUT_NBS,
-     "src/digraphs.c:FuncDIGRAPH_OUT_NBS"},
+     "N, source, range",
+     FuncOutNeighboursFromSourceRange,
+     "src/digraphs.c:FuncOutNeighboursFromSourceRange"},
+
+    {"DIGRAPH_NR_VERTICES",
+     1,
+     "D",
+     FuncDigraphNrVertices,
+     "src/digraphs.c:FuncDigraphNrVertices"},
 
     {"DIGRAPH_IN_OUT_NBS",
      1,
@@ -2216,6 +2233,7 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("IsSymmetricDigraph", &IsSymmetricDigraph);
   ImportGVarFromLibrary("AutomorphismGroup", &AutomorphismGroup);
   ImportGVarFromLibrary("GeneratorsOfGroup", &GeneratorsOfGroup);
+  ImportGVarFromLibrary("IsAttributeStoringRep", &IsAttributeStoringRepObj);
   /* return success                                                      */
   return 0;
 }

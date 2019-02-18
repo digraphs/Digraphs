@@ -21,7 +21,7 @@ gap> gr := DigraphFromDigraph6String(Concatenation(
 > "`?_O??G?@?A??G?@AH????AA?O@??_??b???Cg??C???_??W?G????d?G?C@A?C???GC?W???",
 > "??K???__O[??????O?W???O@??_G?@?CG??G?@G?C??@G???_Q?O?O?c???OAO?C??C?G?O??",
 > "A@??D??G?C_?A??O?_GA??@@?_?G???E?IW??????_@G?C??"));
-<digraph with 45 vertices, 180 edges>
+<immutable digraph with 45 vertices, 180 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> Length(gens);
 329
@@ -60,7 +60,7 @@ gap> G := Group([
 gap> H := Stabilizer(G, 1);;
 gap> S := Filtered(Orbits(H, [1 .. 45]), x -> (Size(x) = 4))[1];;
 gap> gr := EdgeOrbitsDigraph(G, List(S, x -> [1, x]));
-<digraph with 153 vertices, 612 edges>
+<immutable digraph with 153 vertices, 612 edges>
 gap> t := HomomorphismDigraphsFinder(gr, gr, fail, [], 1, 7, 0, [1 .. 153],
 > [], fail, fail)[1];
 <transformation on 153 pts with rank 7>
@@ -110,12 +110,12 @@ gap> ListTransformation(t);
 #  GeneratorsOfEndomorphismMonoid 3
 # Small example
 gap> gr := Digraph([[2], [1, 3], [2]]);
-<digraph with 3 vertices, 4 edges>
+<immutable digraph with 3 vertices, 4 edges>
 gap> Set(GeneratorsOfEndomorphismMonoid(gr));
 [ Transformation( [ 1, 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 2, 1, 2 ] ), Transformation( [ 3, 2, 1 ] ) ]
 gap> gr := DigraphCopy(gr);
-<digraph with 3 vertices, 4 edges>
+<immutable digraph with 3 vertices, 4 edges>
 gap> Set(GeneratorsOfEndomorphismMonoid(gr));
 [ Transformation( [ 1, 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 2, 1, 2 ] ), Transformation( [ 3, 2, 1 ] ) ]
@@ -147,7 +147,7 @@ false
 
 # CompleteDigraph (with no loops) has no singular endomorphisms
 gap> gr := CompleteDigraph(25);
-<digraph with 25 vertices, 600 edges>
+<immutable digraph with 25 vertices, 600 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
      18, 19, 20, 21, 22, 23, 25, 24 ] ), 
@@ -184,7 +184,7 @@ true
 
 # CompleteDigraph(n) (with loops added) has T_n automorphism group
 gap> gr := Digraph(List([1 .. 5], x -> [1 .. 5]));
-<digraph with 5 vertices, 25 edges>
+<immutable digraph with 5 vertices, 25 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 1, 2, 3, 5, 4 ] ), Transformation( [ 1, 2, 4, 3 ] ), 
   Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
@@ -220,7 +220,7 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 
 # EmptyDigraph(n) has endomorphism monoid T_n
 gap> gr := EmptyDigraph(5);
-<digraph with 5 vertices, 0 edges>
+<immutable digraph with 5 vertices, 0 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> Size(Semigroup(gens)) = 5 ^ 5;
 true
@@ -230,7 +230,7 @@ true
 
 # ChainDigraph (with no loops) has no singular endomorphisms
 gap> gr := ChainDigraph(20);
-<digraph with 20 vertices, 19 edges>
+<immutable digraph with 20 vertices, 19 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 [ IdentityTransformation ]
 
@@ -238,7 +238,7 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 # is equal to, or one more than, the image of the previous point
 gap> n := 12;;
 gap> D := DigraphAddAllLoops(ChainDigraph(n));
-<digraph with 12 vertices, 23 edges>
+<immutable digraph with 12 vertices, 23 edges>
 gap> S := GeneratorsOfEndomorphismMonoid(D);;
 gap> if IsBound(SmallSemigroupGeneratingSet) then 
 > S := SmallSemigroupGeneratingSet(S);;
@@ -253,7 +253,7 @@ true
 # transformations
 gap> n := 6;;
 gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(n));
-<digraph with 6 vertices, 21 edges>
+<immutable digraph with 6 vertices, 21 edges>
 gap> S := GeneratorsOfEndomorphismMonoid(D);;
 gap> if IsBound(SmallSemigroupGeneratingSet) then 
 > S := SmallSemigroupGeneratingSet(S);;
@@ -267,7 +267,7 @@ gap> Size(S);
 
 # CycleDigraph (with no loops) has no singular endomorphisms
 gap> gr := CycleDigraph(20);
-<digraph with 20 vertices, 20 edges>
+<immutable digraph with 20 vertices, 20 edges>
 gap> gens := [];;
 gap> gens := Concatenation(gens, GeneratorsOfEndomorphismMonoid(gr));
 [ Transformation( [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
@@ -277,7 +277,7 @@ true
 
 # CycleDigraph (with loops)
 gap> gr := Digraph(List([1 .. 20], x -> [x, x mod 20 + 1]));
-<digraph with 20 vertices, 40 edges>
+<immutable digraph with 20 vertices, 40 edges>
 
 #  GeneratorsOfEndomorphismMonoid8
 # Check endomorphism monoid of all symmetric digraphs with 5 vertices
@@ -305,7 +305,7 @@ gap> for gr in graph5
 # Check some symmetric digraphs from digraphs-lib
 gap> gr := ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 1);
-<digraph with 26 vertices, 390 edges>
+<immutable digraph with 26 vertices, 390 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> adj := AdjacencyMatrix(gr);;
 gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
@@ -313,7 +313,7 @@ gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
 true
 gap> gr := ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 2);
-<digraph with 35 vertices, 630 edges>
+<immutable digraph with 35 vertices, 630 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> adj := AdjacencyMatrix(gr);;
 gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
@@ -321,7 +321,7 @@ gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
 true
 gap> gr := ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 21);
-<digraph with 7 vertices, 42 edges>
+<immutable digraph with 7 vertices, 42 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> adj := AdjacencyMatrix(gr);;
 gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
@@ -329,15 +329,15 @@ gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
 true
 gap> gr := ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 25);
-<digraph with 12 vertices, 108 edges>
+<immutable digraph with 12 vertices, 108 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr);;
 
 #  HomomorphismDigraphsFinder 1
 # Small example: CompleteDigraph(2) to CompleteDigraph(3)
 gap> gr1 := CompleteDigraph(2);
-<digraph with 2 vertices, 2 edges>
+<immutable digraph with 2 vertices, 2 edges>
 gap> gr2 := CompleteDigraph(3);
-<digraph with 3 vertices, 6 edges>
+<immutable digraph with 3 vertices, 6 edges>
 gap> func := function(user_param, t)
 >      user_param := user_param ^ t;
 > end;;
@@ -375,12 +375,12 @@ gap> gr1 := Digraph([
 >  [4, 18, 9], [3, 12, 1, 4, 16, 18], [1, 4, 7, 15, 13, 17],
 >  [3, 8, 16, 2], [13, 15, 2, 11, 14, 20], [1, 2, 10, 13, 20, 3],
 >  [12, 18, 19]]);
-<digraph with 20 vertices, 94 edges>
+<immutable digraph with 20 vertices, 94 edges>
 gap> gr2 := Digraph([
 >  [2, 6, 8, 11, 9, 12], [3, 7, 1, 8], [12, 2], [7, 11, 12, 5, 9],
 >  [4, 7, 9], [12, 1], [5, 9, 10, 2, 4, 8], [2, 7, 10, 1],
 >  [1, 4, 5, 7], [7, 8], [1, 4], [1, 6, 3, 4]]);
-<digraph with 12 vertices, 44 edges>
+<immutable digraph with 12 vertices, 44 edges>
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, fail, 0, [1 .. 12],
 > [], fail, fail);
 [ Transformation( [ 4, 5, 5, 9, 4, 11, 7, 5, 5, 5, 4, 5, 4, 4, 7, 5, 4, 9, 7,
@@ -417,11 +417,11 @@ gap> HomomorphismDigraphsFinder(gr2, gr1, fail, [], 1, fail, 0, [1 .. 20],
 gap> gr1 := DigraphFromGraph6String(
 > "]b?_?a@I??T_Y?ADcGAACUP@_AOG?C_BoH?Pg?C??gk?AA@?A?CJD?EO?sO`@H?j@S?C?_PG??")
 > ;
-<digraph with 30 vertices, 174 edges>
+<immutable digraph with 30 vertices, 174 edges>
 gap> gr2 := DigraphFromGraph6String(Concatenation(
 > "ghYlce}\\ANfA}}WbK^qUDQqfGwl]UecLg{xSyQ]fHK}]uHFUyn\\]weXQVCRZDlYUvqYpnNNv",
 > "z@v]KDJvDxH}BB\\wwtMdxNFpKu?QX]RA@|MlHRpLK]EFg}WaFWuKcFK}hFs"));
-<digraph with 40 vertices, 812 edges>
+<immutable digraph with 40 vertices, 812 edges>
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, fail, 0, [1 .. 40],
 > [], fail, fail);
 [ Transformation( [ 1, 2, 22, 5, 31, 5, 12, 3, 6, 36, 10, 19, 25, 5, 38, 15,
@@ -469,7 +469,7 @@ gap> HomomorphismDigraphsFinder(gr2, gr1, fail, [], 1, fail, 0, [1 .. 30],
 gap> parts := Filtered(PartitionsSet([1 .. 9], 3), 
 >                      x -> ForAll(x, y -> Length(y) = 3));;
 gap> D := Digraph(parts, {x, y} -> ForAll(x, z -> not z in y));
-<digraph with 280 vertices, 70560 edges>
+<immutable digraph with 280 vertices, 70560 edges>
 gap> t := DigraphHomomorphism(CompleteDigraph(25), D);
 <transformation on 273 pts with rank 251>
 gap> tt := HomomorphismDigraphsFinder(CompleteDigraph(26),
@@ -509,7 +509,7 @@ gap> for i in [1 .. 25] do
 gap> parts := Filtered(PartitionsSet([1 .. 9], 3), 
 >                      x -> ForAll(x, y -> Length(y) = 3));;
 gap> D := Digraph(parts, {x, y} -> ForAll(x, z -> not z in y));
-<digraph with 280 vertices, 70560 edges>
+<immutable digraph with 280 vertices, 70560 edges>
 gap> t := DigraphHomomorphism(CompleteDigraph(25), D);
 <transformation on 273 pts with rank 251>
 gap> tt := HomomorphismDigraphsFinder(CompleteDigraph(26),
@@ -556,7 +556,7 @@ gap> D := DigraphFromGraph6String(
 > "khdLA_gc?N_QQchPIS@Q_dH@GKA_W@OW?Fo???~{G??SgSoSgSQISIaQcQgD?\\@?SASI?gGggC_[\
 > `??N_M??APNG?Qc?E?DIG?_?IS?B??IS?E??dH?C??H@_B??A_W?o??IB?E???Fo?O????F~O?????\
 > ?N~~{");
-<digraph with 44 vertices, 464 edges>
+<immutable digraph with 44 vertices, 464 edges>
 gap> t := DigraphEpimorphism(D, CompleteDigraph(6));
 Transformation( [ 4, 2, 1, 2, 1, 4, 2, 3, 2, 3, 1, 4, 4, 5, 5, 4, 1, 3, 3, 3,
   1, 2, 3, 2, 6, 4, 5, 2, 6, 6, 3, 5, 4, 4, 5, 4, 4, 3, 5, 5, 5, 5, 2, 1 ] )
@@ -569,7 +569,7 @@ fail
 # gap> D := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 # >                                    "/data/boolean_row_spaces.d6.gz"));;
 # gap> D := Digraph(D, {x, y} -> x <> y and DigraphEmbedding(x, y) <> fail);
-# <digraph with 393 vertices, 15253 edges>
+# <immutable digraph with 393 vertices, 15253 edges>
 # DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(H);

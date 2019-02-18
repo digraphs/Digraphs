@@ -138,7 +138,7 @@ gap> for i in [1 .. 10] do
 gap> IO_Close(file);;
 gap> file := DigraphFile(filename, "r");;
 gap> ReadDigraphs(file, 9);
-<digraph with 3 vertices, 5 edges>]]></Example>
+<immutable digraph with 3 vertices, 5 edges>]]></Example>
     </Description>
 </ManSection>
 <#/GAPDoc>
@@ -172,19 +172,19 @@ gap> ReadDigraphs(file, 9);
     the opposite direction is also present.
     <Example><![CDATA[
 gap> DigraphFromGraph6String("?");
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 gap> DigraphFromGraph6String("C]");
-<digraph with 4 vertices, 8 edges>
+<immutable digraph with 4 vertices, 8 edges>
 gap> DigraphFromGraph6String("H?AAEM{");
-<digraph with 9 vertices, 22 edges>
+<immutable digraph with 9 vertices, 22 edges>
 gap> DigraphFromDigraph6String("&?");
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 gap> DigraphFromDigraph6String("&CQFG");
-<digraph with 4 vertices, 6 edges>
+<immutable digraph with 4 vertices, 6 edges>
 gap> DigraphFromDigraph6String("&IM[SrKLc~lhesbU[F_");
-<digraph with 10 vertices, 51 edges>
+<immutable digraph with 10 vertices, 51 edges>
 gap> DigraphFromDiSparse6String(".CaWBGA?b");
-<multidigraph with 4 vertices, 9 edges>
+<immutable multidigraph with 4 vertices, 9 edges>
 ]]></Example>
     </Description>
 </ManSection>
@@ -278,26 +278,26 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
     <Example><![CDATA[
 gap> ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 10);
-<digraph with 5 vertices, 8 edges>
+<immutable digraph with 5 vertices, 8 edges>
 gap> ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 17);
-<digraph with 5 vertices, 12 edges>
+<immutable digraph with 5 vertices, 12 edges>
 gap> ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt"));
-[ <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges>, 
-  <digraph with 9 vertices, 8 edges> ]]]></Example>
+[ <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges>, 
+  <immutable digraph with 9 vertices, 8 edges> ]]]></Example>
     </Description>
 </ManSection>
 <#/GAPDoc>
@@ -377,22 +377,22 @@ gap> ReadDigraphs(
     <Example><![CDATA[
 gap> grs := [];;
 gap> grs[1] := Digraph([]);
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 gap> grs[2] := Digraph([[1, 3], [2], [1, 2]]);
-<digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
 gap> grs[3] := Digraph([
 > [6, 7], [6, 9], [1, 3, 4, 5, 8, 9],
 > [1, 2, 3, 4, 5, 6, 7, 10], [1, 5, 6, 7, 10], [2, 4, 5, 9, 10],
 > [3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 5, 7, 8, 9], [1, 2, 5],
 > [1, 2, 4, 6, 7, 8]]);
-<digraph with 10 vertices, 51 edges>
+<immutable digraph with 10 vertices, 51 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;
 gap> WriteDigraphs(filename, grs, "w");
 IO_OK
 gap> ReadDigraphs(filename);
-[ <digraph with 0 vertices, 0 edges>, 
-  <digraph with 3 vertices, 5 edges>, 
-  <digraph with 10 vertices, 51 edges> ]]]></Example>
+[ <immutable digraph with 0 vertices, 0 edges>, 
+  <immutable digraph with 3 vertices, 5 edges>, 
+  <immutable digraph with 10 vertices, 51 edges> ]]]></Example>
     </Description>
 </ManSection>
 <#/GAPDoc>
@@ -415,7 +415,7 @@ gap> ReadDigraphs(filename);
     See <Ref Func="WriteDigraphs"/>.
     <Example><![CDATA[
 gap> gr := Digraph([[2, 3], [1], [1]]);
-<digraph with 3 vertices, 4 edges>
+<immutable digraph with 3 vertices, 4 edges>
 gap> Sparse6String(gr);
 ":Bc"
 gap> DiSparse6String(gr);
@@ -456,13 +456,13 @@ gap> DiSparse6String(gr);
 
     <Example><![CDATA[
 gap> gr := Digraph([[2, 3], [1], [1]]);
-<digraph with 3 vertices, 4 edges>
+<immutable digraph with 3 vertices, 4 edges>
 gap> enc := DigraphPlainTextLineEncoder("  ", " ", -1);;
 gap> dec := DigraphPlainTextLineDecoder("  ", " ", 1);;
 gap> enc(gr);
 "0 1  0 2  1 0  2 0"
 gap> dec(last);
-<digraph with 3 vertices, 4 edges>
+<immutable digraph with 3 vertices, 4 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -487,11 +487,11 @@ gap> dec(last);
 
     <Example><![CDATA[
 gap> gr := Digraph([[2, 3], [1], [1]]);
-<digraph with 3 vertices, 4 edges>
+<immutable digraph with 3 vertices, 4 edges>
 gap> PlainTextString(gr);
 "0 1  0 2  1 0  2 0"
 gap> DigraphFromPlainTextString(last);
-<digraph with 3 vertices, 4 edges>
+<immutable digraph with 3 vertices, 4 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -518,11 +518,11 @@ gap> DigraphFromPlainTextString(last);
     reading the graph.
     <Example><![CDATA[
 gap> gr := Digraph([[1, 2, 3], [1, 1], [2]]);
-<multidigraph with 3 vertices, 6 edges>
+<immutable multidigraph with 3 vertices, 6 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/plain.txt");;
 gap> WritePlainTextDigraph(filename, gr, ",", -1);
 gap> ReadPlainTextDigraph(filename, ",", 1, ['/', '%']);
-<multidigraph with 3 vertices, 6 edges>
+<immutable multidigraph with 3 vertices, 6 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -595,12 +595,12 @@ gap> ReadPlainTextDigraph(filename, ",", 1, ['/', '%']);
 
     <Example><![CDATA[
 gap> gr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);
-<digraph with 4 vertices, 8 edges>
+<immutable digraph with 4 vertices, 8 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(),
 >                              "/tst/out/dimacs.dimacs");;
 gap> WriteDIMACSDigraph(filename, gr);;
 gap> ReadDIMACSDigraph(filename);
-<digraph with 4 vertices, 8 edges>]]></Example>
+<immutable digraph with 4 vertices, 8 edges>]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -631,7 +631,7 @@ gap> ReadDIMACSDigraph(filename);
 
     <Example><![CDATA[
 gap> gr := TournamentLineDecoder("100001");
-<digraph with 4 vertices, 6 edges>
+<immutable digraph with 4 vertices, 6 edges>
 gap> OutNeighbours(gr);
 [ [ 2 ], [  ], [ 1, 2, 4 ], [ 1, 2 ] ]
 ]]></Example>
@@ -666,11 +666,11 @@ gap> OutNeighbours(gr);
 
     <Example><![CDATA[
 gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("100001");
-<digraph with 4 vertices, 2 edges>
+<immutable digraph with 4 vertices, 2 edges>
 gap> OutNeighbours(gr);
 [ [ 2 ], [  ], [ 4 ], [  ] ]
 gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("111111x111");
-<digraph with 5 vertices, 9 edges>
+<immutable digraph with 5 vertices, 9 edges>
 gap> OutNeighbours(gr);
 [ [ 2, 3, 4, 5 ], [ 3, 4 ], [ 4, 5 ], [ 5 ], [  ] ]
 ]]></Example>
@@ -699,11 +699,11 @@ gap> OutNeighbours(gr);
     <C>[1,7]</C>.
     <Example><![CDATA[
 gap> gr := TCodeDecoder("3 2 0 2 2 1");
-<digraph with 3 vertices, 2 edges>
+<immutable digraph with 3 vertices, 2 edges>
 gap> OutNeighbours(gr);
 [ [ 3 ], [  ], [ 2 ] ]
 gap> gr := TCodeDecoder("12 3 0 10 5 2 8 8");
-<digraph with 12 vertices, 3 edges>
+<immutable digraph with 12 vertices, 3 edges>
 gap> OutNeighbours(gr);
 [ [ 11 ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [  ], [ 9 ], [  ], 
   [  ], [  ] ]

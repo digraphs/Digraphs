@@ -15,29 +15,29 @@ gap> DIGRAPHS_StartTest();
 
 # IsPlanarDigraph
 gap> D := NullDigraph(0);
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 gap> IsPlanarDigraph(D);
 true
 gap> D := CompleteDigraph(4);
-<digraph with 4 vertices, 12 edges>
+<immutable digraph with 4 vertices, 12 edges>
 gap> IsPlanarDigraph(D);
 true
 gap> D := CompleteDigraph(5);
-<digraph with 5 vertices, 20 edges>
+<immutable digraph with 5 vertices, 20 edges>
 gap> IsPlanarDigraph(D);
 false
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
 > [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
 > [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
-<digraph with 10 vertices, 50 edges>
+<immutable digraph with 10 vertices, 50 edges>
 gap> ChromaticNumber(D);
 5
 gap> IsPlanarDigraph(D);
 false
 gap> D := CompleteBipartiteDigraph(3, 3);
-<digraph with 6 vertices, 18 edges>
+<immutable digraph with 6 vertices, 18 edges>
 gap> D := DigraphDisjointUnion(D, D);
-<digraph with 12 vertices, 36 edges>
+<immutable digraph with 12 vertices, 36 edges>
 gap> IsPlanarDigraph(D);
 false
 
@@ -45,7 +45,7 @@ false
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
 > [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
 > [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
-<digraph with 10 vertices, 50 edges>
+<immutable digraph with 10 vertices, 50 edges>
 gap> ChromaticNumber(D);
 5
 gap> IsPlanarDigraph(D);
@@ -53,22 +53,22 @@ false
 gap> IsOuterPlanarDigraph(D);
 false
 gap> D := NullDigraph(0);
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 gap> IsOuterPlanarDigraph(D);
 true
 gap> D := CompleteDigraph(4);
-<digraph with 4 vertices, 12 edges>
+<immutable digraph with 4 vertices, 12 edges>
 gap> IsOuterPlanarDigraph(D);
 false
 gap> D := CompleteDigraph(4);
-<digraph with 4 vertices, 12 edges>
+<immutable digraph with 4 vertices, 12 edges>
 gap> ChromaticNumber(D);
 4
 gap> IsOuterPlanarDigraph(D);
 false
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 7, 11], [4, 7],
 > [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
-<digraph with 11 vertices, 25 edges>
+<immutable digraph with 11 vertices, 25 edges>
 gap> IsOuterPlanarDigraph(D);
 false
 gap> IsPlanarDigraph(D);
@@ -77,20 +77,20 @@ true
 # PlanarEmbedding
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 7, 11], [4, 7],
 > [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
-<digraph with 11 vertices, 25 edges>
+<immutable digraph with 11 vertices, 25 edges>
 gap> PlanarEmbedding(D);
 [ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4 ], [ 6 ], [ 11, 7 ], [ 7 ], [ 8 ], [  ], 
   [ 11 ], [  ], [  ] ]
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
 > [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
 > [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
-<digraph with 10 vertices, 50 edges>
+<immutable digraph with 10 vertices, 50 edges>
 gap> IsPlanarDigraph(D);
 false
 gap> PlanarEmbedding(D);
 fail
 gap> D := NullDigraph(0);
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 gap> PlanarEmbedding(D);
 [  ]
 gap> D := List(["D??", "D?_", "D?o", "D?w", "D?{", "DCO", "DCW", "DCc", "DCo",
@@ -130,30 +130,30 @@ gap> List(D, PlanarEmbedding);
 # OuterPlanarEmbedding
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 7, 11], [4, 7],
 > [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
-<digraph with 11 vertices, 25 edges>
+<immutable digraph with 11 vertices, 25 edges>
 gap> OuterPlanarEmbedding(D);
 fail
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
 > [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
 > [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
-<digraph with 10 vertices, 50 edges>
+<immutable digraph with 10 vertices, 50 edges>
 gap> IsOuterPlanarDigraph(D);
 false
 gap> OuterPlanarEmbedding(D);
 fail
 gap> D := NullDigraph(0);
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 gap> OuterPlanarEmbedding(D);
 [  ]
 gap> D := CompleteDigraph(3);
-<digraph with 3 vertices, 6 edges>
+<immutable digraph with 3 vertices, 6 edges>
 gap> OuterPlanarEmbedding(D);
 [ [ 2, 3 ], [ 3 ], [  ] ]
 
 # SubdigraphHomeomorphicToK23/33/4
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 7, 11], [4, 7],
 > [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
-<digraph with 11 vertices, 25 edges>
+<immutable digraph with 11 vertices, 25 edges>
 gap> SubdigraphHomeomorphicToK4(D);
 [ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 7, 11 ], [ 7 ], [ 8 ], [  ], 
   [ 11 ], [  ], [  ] ]
@@ -162,7 +162,7 @@ gap> SubdigraphHomeomorphicToK23(D);
   [ 11 ], [  ], [  ] ]
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 11], [4, 7],
 > [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
-<digraph with 11 vertices, 24 edges>
+<immutable digraph with 11 vertices, 24 edges>
 gap> SubdigraphHomeomorphicToK4(D);
 fail
 gap> SubdigraphHomeomorphicToK23(D);
@@ -182,44 +182,44 @@ fail
 # KuratowskiPlanarSubdigraph
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 7, 11], [4, 7],
 > [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
-<digraph with 11 vertices, 25 edges>
+<immutable digraph with 11 vertices, 25 edges>
 gap> KuratowskiPlanarSubdigraph(D);
 fail
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
 > [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
 > [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
-<digraph with 10 vertices, 50 edges>
+<immutable digraph with 10 vertices, 50 edges>
 gap> IsPlanarDigraph(D);
 false
 gap> KuratowskiPlanarSubdigraph(D);
 [ [ 2, 9, 7 ], [ 3 ], [ 6 ], [ 5, 9 ], [ 6 ], [  ], [ 4 ], [ 7, 9, 3 ], [  ], 
   [  ] ]
 gap> D := NullDigraph(0);
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 gap> KuratowskiPlanarSubdigraph(D);
 fail
 
 # KuratowskiOuterPlanarSubdigraph
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 7, 11], [4, 7],
 > [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
-<digraph with 11 vertices, 25 edges>
+<immutable digraph with 11 vertices, 25 edges>
 gap> KuratowskiOuterPlanarSubdigraph(D);
 [ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 11 ], [ 7 ], [ 8 ], [  ], 
   [ 11 ], [  ], [  ] ]
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
 > [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
 > [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
-<digraph with 10 vertices, 50 edges>
+<immutable digraph with 10 vertices, 50 edges>
 gap> IsOuterPlanarDigraph(D);
 false
 gap> KuratowskiOuterPlanarSubdigraph(D);
 [ [  ], [  ], [  ], [ 8, 9 ], [  ], [  ], [ 9, 4 ], [ 7, 9 ], [  ], [  ] ]
 gap> D := NullDigraph(0);
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 gap> KuratowskiOuterPlanarSubdigraph(D);
 fail
 gap> D := CompleteDigraph(3);
-<digraph with 3 vertices, 6 edges>
+<immutable digraph with 3 vertices, 6 edges>
 gap> KuratowskiOuterPlanarSubdigraph(D);
 fail
 
