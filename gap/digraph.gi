@@ -13,13 +13,10 @@ BindGlobal("DigraphType", NewType(DigraphFamily,
                                   and IsAttributeStoringRep
                                   and HasDigraphNrVertices));
 
-BindGlobal("DIGRAPHS_InitEdgeLabels",
-function(graph)
-  if not IsBound(graph!.edgelabels) then
-    graph!.edgelabels := StructuralCopy(OutNeighbours(graph));
-    graph!.edgelabels := List(graph!.edgelabels, l -> List(l, n -> 1));
-  fi;
-end);
+BindGlobal("MutableDigraphType", NewType(DigraphFamily,
+
+                                         IsMutableDigraphRep
+                                         and HasDigraphNrVertices));
 
 InstallMethod(Digraph,
 "for a list and function",
@@ -53,29 +50,6 @@ function(obj, adj)
 
   return digraph;
 end);
-
-# for a group and representative out neighbours
-
-# InstallMethod(Digraph, "for a group, list, and list",
-# [IsGroup, IsList, IsList],
-# function(G, vertices, rep)
-#   local digraph;
-#
-#   #TODO add checks!
-#
-#   digraph := Objectify(DigraphType, rec());
-#
-#   SetDigraphGroup(digraph, G);
-#   SetRepresentativeOutNeighbours(digraph, rep);
-#   SetDigraphVertices(digraph, vertices);
-#   SetDigraphNrVertices(digraph, Length(vertices));
-#   #TODO remove this, requires changing the OutNeighbours C function
-#
-#   digraph!.adj := OutNeighbours(digraph);
-#   digraph!.nrvertices := DigraphNrVertices(digraph);
-#
-#   return digraph;
-# end);
 
 # <G> is a group, <obj> a set of points on which <act> acts, and <adj> is a
 # function which for 2 elements u, v of <obj> returns <true> if and only if
@@ -343,184 +317,7 @@ function(digraph, distance)
   return DistanceDigraph(digraph, [distance]);
 end);
 
-InstallMethod(SetDigraphVertexLabel, "for a digraph, pos int, object",
-[IsDigraph, IsPosInt, IsObject],
-function(graph, i, name)
-
-  if not IsBound(graph!.vertexlabels) then
-    graph!.vertexlabels := [1 .. DigraphNrVertices(graph)];
-  fi;
-
-  if i > DigraphNrVertices(graph) then
-    ErrorNoReturn("Digraphs: SetDigraphVertexLabel: usage,\n",
-                  "there are only ", DigraphNrVertices(graph), " vertices,");
-  fi;
-  graph!.vertexlabels[i] := name;
-  return;
-end);
-
-InstallMethod(DigraphVertexLabel, "for a digraph and pos int",
-[IsDigraph, IsPosInt],
-function(graph, i)
-
-  if not IsBound(graph!.vertexlabels) then
-    graph!.vertexlabels := [1 .. DigraphNrVertices(graph)];
-  fi;
-
-  if IsBound(graph!.vertexlabels[i]) then
-    return ShallowCopy(graph!.vertexlabels[i]);
-  fi;
-  # JDM is this a good idea?
-  ErrorNoReturn("Digraphs: DigraphVertexLabel: usage,\n", i,
-                " is nameless or not a vertex,");
-end);
-
-InstallMethod(SetDigraphVertexLabels, "for a digraph and list",
-[IsDigraph, IsList],
-function(graph, names)
-
-  if not Length(names) = DigraphNrVertices(graph) then
-    ErrorNoReturn("Digraphs: SetDigraphVertexLabels: usage,\n",
-                  "the 2nd arument <names> must be a list with length equal ",
-                  "to the number of\nvertices of the digraph,");
-  fi;
-
-  graph!.vertexlabels := names;
-  return;
-end);
-
-InstallMethod(DigraphVertexLabels, "for a digraph and pos int",
-[IsDigraph],
-function(graph)
-
-  if not IsBound(graph!.vertexlabels) then
-    graph!.vertexlabels := [1 .. DigraphNrVertices(graph)];
-  fi;
-  return StructuralCopy(graph!.vertexlabels);
-end);
-
-# edge labels
-InstallMethod(DigraphEdgeLabel, "for a digraph, a pos int, and a pos int",
-[IsDigraph, IsPosInt, IsPosInt],
-function(graph, i, j)
-  local p;
-
-  if IsMultiDigraph(graph) then
-    ErrorNoReturn("Digraphs: DigraphEdgeLabel: usage,\n",
-                  "edge labels are not supported on digraphs with ",
-                  "multiple edges,");
-  fi;
-
-  DIGRAPHS_InitEdgeLabels(graph);
-
-  p := Position(OutNeighboursOfVertex(graph, i), j);
-  if p = fail then
-    ErrorNoReturn("Digraphs: DigraphEdgeLabel:\n",
-                  "[", i, ", ", j, "] is not an edge of <graph>,");
-  fi;
-
-  return ShallowCopy(graph!.edgelabels[i][p]);
-end);
-
-InstallMethod(DigraphEdgeLabelsNC, "for a digraph",
-[IsDigraph],
-function(graph)
-  DIGRAPHS_InitEdgeLabels(graph);
-  return StructuralCopy(graph!.edgelabels);
-end);
-
-InstallMethod(DigraphEdgeLabels, "for a digraph",
-[IsDigraph],
-function(graph)
-  if IsMultiDigraph(graph) then
-    ErrorNoReturn("Digraphs: DigraphEdgeLabels: usage,\n",
-                  "edge labels are not supported on digraphs with ",
-                  "multiple edges,");
-  fi;
-
-  DIGRAPHS_InitEdgeLabels(graph);
-
-  return StructuralCopy(graph!.edgelabels);
-end);
-
-InstallMethod(SetDigraphEdgeLabel,
-              "for a digraph, a pos int, a pos int, and an object",
-[IsDigraph, IsPosInt, IsPosInt, IsObject],
-function(graph, i, j, label)
-  local p;
-
-  if IsMultiDigraph(graph) then
-    ErrorNoReturn("Digraphs: SetDigraphEdgeLabel: usage,\n",
-                  "edge labels are not supported on digraphs with ",
-                  "multiple edges,");
-  fi;
-
-  DIGRAPHS_InitEdgeLabels(graph);
-
-  p := Position(OutNeighboursOfVertex(graph, i), j);
-  if p = fail then
-    ErrorNoReturn("Digraphs: SetDigraphEdgeLabel:\n",
-                  "[", i, ", ", j, "] is not an edge of <graph>,");
-  fi;
-
-  graph!.edgelabels[i][p] := ShallowCopy(label);
-end);
-
-# markuspf: this is mainly because we do not support edge labels
-# on multidigraphs and need the SetDigraphEdgeLabels function
-# to fail silently in some places
-InstallMethod(SetDigraphEdgeLabelsNC, "for a digraph, and a list",
-[IsDigraph, IsList],
-function(graph, labels)
-  if not IsMultiDigraph(graph) then
-    graph!.edgelabels := List(labels, ShallowCopy);
-  fi;
-end);
-
-InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a list",
-[IsDigraph, IsList],
-function(graph, labels)
-  if IsMultiDigraph(graph) then
-    ErrorNoReturn("Digraphs: SetDigraphEdgeLabels: usage,\n",
-                  "edge labels are not supported on digraphs with ",
-                  "multiple edges,");
-  fi;
-
-  if Length(labels) <> DigraphNrVertices(graph) or
-      ForAny(DigraphVertices(graph),
-             i -> Length(labels[i]) <> OutDegreeOfVertex(graph, i)) then
-    ErrorNoReturn("Digraphs: SetDigraphEdgeLabels: usage,\n",
-                  "the list <labels> has the wrong shape, it is required to ",
-                  "have the same shape\nas the return value of ",
-                  "OutNeighbours(<graph>),");
-  fi;
-
-  SetDigraphEdgeLabelsNC(graph, labels);
-end);
-
-InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a function",
-[IsDigraph, IsFunction],
-function(graph, wtf)
-  local adj, i, j;
-
-  if IsMultiDigraph(graph) then
-    ErrorNoReturn("Digraphs: SetDigraphEdgeLabels: usage,\n",
-                  "edge labels are not supported on digraphs with ",
-                  "multiple edges,");
-  fi;
-
-  DIGRAPHS_InitEdgeLabels(graph);
-
-  adj := OutNeighbours(graph);
-  for i in DigraphVertices(graph) do
-    for j in [1 .. Length(adj[i])] do
-      graph!.edgelabels[i][j] := wtf(i, adj[i][j]);
-    od;
-  od;
-end);
-
 # multi means it has at least one multiple edges
-
 InstallMethod(IsMultiDigraph, "for a digraph",
 [IsDigraph], IS_MULTI_DIGRAPH);
 
@@ -836,8 +633,6 @@ function(graph)
                   "the record components ",
                   "'source' and 'range' should have equal length,");
   fi;
-  graph!.nredges := m;
-
   check_source := true;
 
   if IsBound(graph.nrvertices) then
@@ -845,10 +640,9 @@ function(graph)
       ErrorNoReturn("Digraphs: Digraph: usage,\n",
                     "the record component 'nrvertices' ",
                     "should be a non-negative integer,");
-    fi;
-    if IsBound(graph.vertices) and not
-        (IsList(graph.vertices) and
-         Length(graph.vertices) = graph.nrvertices) then
+    elif IsBound(graph.vertices) and not
+          (IsList(graph.vertices) and
+           Length(graph.vertices) = graph.nrvertices) then
       ErrorNoReturn("Digraphs: Digraph: usage,\n",
                     "the record components 'nrvertices' and 'vertices' are ",
                     "inconsistent,");
@@ -865,7 +659,6 @@ function(graph)
       fi;
       check_source := false;
     fi;
-
   elif IsBound(graph.vertices) then
     if not IsList(graph.vertices) then
       ErrorNoReturn("Digraphs: Digraph: usage,\n",
@@ -879,9 +672,7 @@ function(graph)
   if check_source and not ForAll(graph.source, x -> cmp(x, obj)) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
                   "the record component 'source' is invalid,");
-  fi;
-
-  if not ForAll(graph.range, x -> cmp(x, obj)) then
+  elif not ForAll(graph.range, x -> cmp(x, obj)) then
     ErrorNoReturn("Digraphs: Digraph: usage,\n",
                   "the record component 'range' is invalid,");
   fi;
@@ -906,26 +697,26 @@ function(graph)
 
   # make sure that the graph.source is sorted, and range is too
   graph.range := Permuted(graph.range, Sortex(graph.source));
-
-  return DigraphNC(graph);
+  graph := DigraphNC(graph);
+  SetDigraphNrEdges(graph, m);
+  return graph;
 end);
 
 InstallMethod(DigraphNC, "for a record", [IsRecord],
-function(graph)
-  local new;
-
-  new := rec();
-  ObjectifyWithAttributes(new, DigraphType,
-                          DigraphRange, graph.range,
-                          DigraphSource, graph.source,
-                          DigraphNrVertices, graph.nrvertices);
-  if IsBound(graph!.nredges) then
-    SetDigraphNrEdges(new, graph!.nredges);
+function(record)
+  local D;
+  D := rec();
+  ObjectifyWithAttributes(D, DigraphType,
+                          DigraphRange, record.range,
+                          DigraphSource, record.source,
+                          DigraphNrVertices, record.nrvertices);
+  if IsBound(record.vertexlabels) then
+    SetDigraphVertexLabels(D, record.vertexlabels);
   fi;
-  if IsBound(graph!.vertexlabels) then
-    SetDigraphVertexLabels(new, graph!.vertexlabels);
+  if IsBound(record.nredges) then
+    SetDigraphNrEdges(D, record.nredges);
   fi;
-  return new;
+  return D;
 end);
 
 InstallMethod(Digraph, "for a dense list", [IsDenseList],

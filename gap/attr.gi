@@ -685,7 +685,7 @@ function(digraph)
     return 0;
   fi;
 
-  comps := DigraphStronglyConnectedComponents(digraph)!.comps;
+  comps := DigraphStronglyConnectedComponents(digraph).comps;
   out := OutNeighbours(digraph);
   deg := OutDegrees(digraph);
 

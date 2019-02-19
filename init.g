@@ -34,6 +34,7 @@ if not DIGRAPHS_IsGrapeLoaded then
 fi;
 
 ReadPackage("digraphs", "gap/digraph.gd");
+ReadPackage("digraphs", "gap/labels.gd");
 ReadPackage("digraphs", "gap/attr.gd");
 ReadPackage("digraphs", "gap/prop.gd");
 ReadPackage("digraphs", "gap/oper.gd");

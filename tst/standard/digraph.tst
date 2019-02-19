@@ -81,7 +81,7 @@ gap> DigraphEdgeLabels(gr);
 gap> SetDigraphEdgeLabels(gr, [1, 2]);
 Error, Digraphs: SetDigraphEdgeLabels: usage,
 the list <labels> has the wrong shape, it is required to have the same shape
-as the return value of OutNeighbours(<graph>),
+as the return value of OutNeighbours(<D>),
 gap> SetDigraphEdgeLabels(gr, function(x, y) return x + y; end);
 gap> DigraphEdgeLabels(gr);
 [ [ 3, 4 ], [ 5 ], [ 4, 8 ], [  ], [ 9 ] ]
@@ -1722,10 +1722,10 @@ gap> gr := Digraph([[2, 1], []]);
 <digraph with 2 vertices, 2 edges>
 gap> DigraphEdgeLabel(gr, 2, 2);
 Error, Digraphs: DigraphEdgeLabel:
-[2, 2] is not an edge of <graph>,
+[2, 2] is not an edge of <D>,
 gap> SetDigraphEdgeLabel(gr, 2, 2, "a");
 Error, Digraphs: SetDigraphEdgeLabel:
-[2, 2] is not an edge of <graph>,
+[2, 2] is not an edge of <D>,
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
