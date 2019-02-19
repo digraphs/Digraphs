@@ -201,6 +201,34 @@ node [shape=Mrecord, height=0.5, fixedsize=true]ranksep=1;
 2 -> 1
 }
 
+# DotHighlightedDigraph
+gap> gr := Digraph([[2, 3], [2], [1, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> Print(DotHighlightedDigraph(gr, [1, 2], "red", "black"));
+//dot
+digraph hgn{
+subgraph lowverts{
+node [shape=circle, color=black]
+ edge [color=black]
+3
+}
+subgraph highverts{
+node [shape=circle, color=red]
+ edge [color=red]
+1
+2
+}
+subgraph lowverts{
+3 -> 1
+3 -> 3
+}
+subgraph highverts{
+1 -> 2
+1 -> 3 [color=black]
+2 -> 2
+}
+}
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(dot);

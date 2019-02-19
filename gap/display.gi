@@ -271,3 +271,87 @@ function(digraph)
   Append(str, "}");
   return str;
 end);
+
+InstallMethod(DotHighlightedDigraph, "for a digraph and list",
+[IsDigraph, IsList],
+function(digraph, list)
+  return DotHighlightedDigraph(digraph, list, "black", "grey");
+end);
+
+InstallMethod(DotHighlightedDigraph, "for a digraph, list, and two strings",
+[IsDigraph, IsList, IsString, IsString],
+function(graph, highverts, highcolour, lowcolour)
+  local lowverts, out, str, i, j;
+
+  if not IsSubset(DigraphVertices(graph), highverts) then
+    ErrorNoReturn("Digraphs: DotHighlightedDigraph: usage,\n",
+                  "the second argument must be a list of vertices of the ",
+                  "first argument,");
+  fi;
+
+  if IsEmpty(highcolour) then
+    ErrorNoReturn("Digraphs: DotHighlightedDigraph: usage,\n",
+                  "the third argument must be a string containing the name ",
+                  "of a colour,");
+  fi;
+
+  if IsEmpty(lowcolour) then
+    ErrorNoReturn("Digraphs: DotHighlightedDigraph: usage,\n",
+                  "the fourth argument must be a string containing the name ",
+                  "of a colour,");
+  fi;
+
+  lowverts  := Difference(DigraphVertices(graph), highverts);
+  out       := OutNeighbours(graph);
+  str       := "//dot\n";
+
+  Append(str, "digraph hgn{\n");
+
+  Append(str, "subgraph lowverts{\n");
+  Append(str, Concatenation("node [shape=circle, color=",
+                            lowcolour,
+                            "]\n edge [color=",
+                            lowcolour,
+                            "]\n"));
+
+  for i in lowverts do
+    Append(str, Concatenation(String(i), "\n"));
+  od;
+
+  Append(str, "}\n");
+
+  Append(str, "subgraph highverts{\n");
+  Append(str, Concatenation("node [shape=circle, color=",
+                            highcolour,
+                            "]\n edge [color=",
+                            highcolour,
+                            "]\n"));
+
+  for i in highverts do
+    Append(str, Concatenation(String(i), "\n"));
+  od;
+
+  Append(str, "}\n");
+
+  Append(str, "subgraph lowverts{\n");
+  for i in lowverts do
+    for j in out[i] do
+      Append(str, Concatenation(String(i), " -> ", String(j), "\n"));
+    od;
+  od;
+  Append(str, "}\n");
+
+  Append(str, "subgraph highverts{\n");
+  for i in highverts do
+    for j in out[i] do
+      Append(str, Concatenation(String(i), " -> ", String(j)));
+      if j in lowverts then
+        Append(str, Concatenation(" [color=", lowcolour, "]"));
+      fi;
+      Append(str, "\n");
+    od;
+  od;
+  Append(str, "}\n}\n");
+
+  return str;
+end);

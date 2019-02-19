@@ -244,3 +244,31 @@ gap> FileString("dot/preset.dot", DotProrderDigraph(gr));
     </Description>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DotHighlightedDigraph">
+  <ManSection>
+    <Oper Name="DotHighlightedDigraph" Arg="digraph, verts [, colour1, colour2]"/>
+    <Returns>A string.</Returns>
+    <Description>
+      <C>DotHighlightedDigraph</C> produces a graphical represenation of the
+      digraph <A>digraph</A>, where the vertices in the list <A>verts</A>, and
+      edges between them, are drawn with colour <A>colour1</A> and all other
+      vertices and edges in <A>digraph</A> are drawn with colour <A>colour2</A>.
+      If <A>colour1</A> and <A>colour2</A> are not given then
+      <C>DotHighlightedDigraph</C> uses black and grey respectively. <P/>
+
+      Note that <C>DotHighlightedDigraph</C> does not validate the colours
+      <A>colour1</A> and <A>colour2</A> - consult the GraphViz documentation to
+      see what is available.
+
+      See <Ref Attr="DotDigraph"/> for more details on the output.<P/>
+
+      <Log><![CDATA[
+gap> digraph := Digraph([[2, 3], [2], [1, 3]]);
+<digraph with 3 vertices, 5 edges>
+gap> FileString("dot/my_digraph.dot",
+> DotHighlightedDigraph(digraph, [1, 2], "red", "black"));
+264]]></Log>
+    </Description>
+  </ManSection>
+<#/GAPDoc>

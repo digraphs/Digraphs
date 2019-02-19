@@ -14,3 +14,6 @@ DeclareAttribute("DotSymmetricDigraph", IsDigraph);
 DeclareAttribute("DotPartialOrderDigraph", IsDigraph);
 DeclareAttribute("DotPreorderDigraph", IsDigraph);
 DeclareSynonym("DotQuasiorderDigraph", DotPreorderDigraph);
+DeclareOperation("DotHighlightedDigraph", [IsDigraph, IsList]);
+DeclareOperation("DotHighlightedDigraph",
+                 [IsDigraph, IsList, IsString, IsString]);
