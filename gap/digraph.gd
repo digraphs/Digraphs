@@ -87,22 +87,6 @@ DeclareOperation("LineUndirectedDigraph", [IsDigraph]);
 DeclareSynonym("EdgeDigraph", LineDigraph);
 DeclareSynonym("EdgeUndirectedDigraph", LineUndirectedDigraph);
 
-# Vertex labels
-DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
-DeclareOperation("DigraphVertexLabels", [IsDigraph]);
-DeclareOperation("SetDigraphVertexLabel", [IsDigraph, IsPosInt, IsObject]);
-DeclareOperation("SetDigraphVertexLabels", [IsDigraph, IsList]);
-
-# Edge labels
-DeclareOperation("DigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt]);
-DeclareOperation("DigraphEdgeLabelsNC", [IsDigraph]);
-DeclareOperation("DigraphEdgeLabels", [IsDigraph]);
-DeclareOperation("SetDigraphEdgeLabel",
-                 [IsDigraph, IsPosInt, IsPosInt, IsObject]);
-DeclareOperation("SetDigraphEdgeLabelsNC", [IsDigraph, IsList]);
-DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsList]);
-DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsFunction]);
-
 DeclareOperation("DigraphAddAllLoops", [IsDigraph]);
 
 DeclareOperation("JohnsonDigraph", [IsInt, IsInt]);
