@@ -972,29 +972,35 @@ end);
 InstallMethod(DigraphOddGirth, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local A, B, k, N, girth, powerfound;
-  girth := DigraphGirth(digraph);
-  if girth = infinity or IsOddInt(girth) then
-    return girth;
+  local A, B, k, n, NVerts, NEdges, girth, comp;
+  if IsStronglyConnectedDigraph(digraph) then
+    girth := DigraphGirth(digraph);
+    if girth = infinity or IsOddInt(girth) then
+      return girth;
+    fi;
+    NVerts := DigraphNrVertices(digraph);
+    NEdges := DigraphNrEdges(digraph);
+    A      := AdjacencyMatrix(digraph);
+    B      := A ^ 2;
+    k      := girth - 1;
+    while k <= NEdges + 2 and k < NVerts do
+      A := A * B;
+      k := k + 2;
+      if Trace(A) <> 0 then
+        # It suffices to find the trace as entries of A are positive.
+        return k;
+      fi;
+    od;
+    return infinity;
   fi;
-  N          := DigraphNrVertices(digraph);
-  A          := AdjacencyMatrix(digraph);
-  B          := Immutable(A ^ 2);
-  k          := 1;
-  powerfound := false;
-  while k <= N + 2 do
-    A := A * B;
-    k := k + 2;
-    if Trace(A) <> 0 then
-      # It suffices to find the trace as entries of A are positive.
-      powerfound := true;
-      break;
+  n := infinity;
+  for comp in DigraphStronglyConnectedComponents(digraph).comps do
+    k := DigraphOddGirth(InducedSubdigraph(digraph, comp));
+    if k < n then
+      n := k;
     fi;
   od;
-  if powerfound then
-    return k;
-  fi;
-  return infinity;
+  return n;
 end);
 
 InstallMethod(DigraphLongestSimpleCircuit, "for a digraph",
