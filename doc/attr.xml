@@ -961,7 +961,7 @@ gap> DigraphGirth(gr);
 
     See also <Ref Attr="DigraphGirth"/>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[2],[3,1],[1]]);
+gap> gr := Digraph([[2], [3, 1], [1]]);
 <digraph with 3 vertices, 4 edges>
 gap> DigraphOddGirth(gr);
 3
@@ -969,7 +969,7 @@ gap> gr := CycleDigraph(4);
 <digraph with 4 vertices, 4 edges>
 gap> DigraphOddGirth(gr);
 infinity
-gap> gr := Digraph([[2],[3],[],[3],[4]]);
+gap> gr := Digraph([[2], [3], [], [3], [4]]);
 <digraph with 5 vertices, 4 edges>
 gap> DigraphOddGirth(gr);
 infinity
