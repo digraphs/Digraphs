@@ -1168,6 +1168,12 @@ gap> gr := CycleDigraph(4);
 <digraph with 4 vertices, 4 edges>
 gap> DigraphOddGirth(gr);
 infinity
+gap> gr := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(3));;
+gap> for i in [1 .. 1000] do
+> gr := DigraphDisjointUnion(gr, CycleDigraph(3));
+> od;
+gap> DigraphOddGirth(gr);
+3
 
 #  DigraphDegeneracy and DigraphDegeneracyOrdering
 gap> gr := Digraph([[2, 2], [1, 1]]);;
