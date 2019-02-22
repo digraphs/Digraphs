@@ -115,7 +115,6 @@ AC_DEFUN([CHECK_COMPILER_BUILTIN],
         )])
 
 CHECK_COMPILER_BUILTIN([__builtin_ctzll],[0]);
-CHECK_COMPILER_BUILTIN([__builtin_popcountl],[0]);
 
 dnl ##
 dnl ## Output everything
