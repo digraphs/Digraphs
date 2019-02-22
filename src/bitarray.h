@@ -18,12 +18,34 @@
 #include <stdint.h>   // for uint16_t
 
 // GAP headers
-#include "src/compiled.h"  // for COUNT_TRUES_BLOCK, Obj, . . .
+#include "src/compiled.h"  // for Obj, . . .
 
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 typedef UInt Block;
+
+static inline UInt DIGRAPHS_COUNT_TRUES_BLOCK(UInt block) {
+#ifdef DIGRAPHS_HAVE___BUILTIN_POPCOUNTL
+  return __builtin_popcountl(block);
+#else
+#ifdef SYS_IS_64_BIT
+  block = (block & 0x5555555555555555L) + ((block >> 1) & 0x5555555555555555L);
+  block = (block & 0x3333333333333333L) + ((block >> 2) & 0x3333333333333333L);
+  block = (block + (block >> 4)) & 0x0f0f0f0f0f0f0f0fL;
+  block = (block + (block >> 8));
+  block = (block + (block >> 16));
+  block = (block + (block >> 32)) & 0x00000000000000ffL;
+#else
+  block = (block & 0x55555555) + ((block >> 1) & 0x55555555);
+  block = (block & 0x33333333) + ((block >> 2) & 0x33333333);
+  block = (block + (block >> 4)) & 0x0f0f0f0f;
+  block = (block + (block >> 8));
+  block = (block + (block >> 16)) & 0x000000ff;
+#endif
+  return block;
+#endif
+}
 
 #define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)
 
@@ -383,7 +405,7 @@ static inline uint16_t size_bit_array(BitArray const* const bit_array,
   UInt           n         = 0;
   for (uint16_t i = 0; i < nr_blocks; i++) {
     Block const m = *blocks++;
-    n += COUNT_TRUES_BLOCK(m);  // COUNT_TRUES_BLOCK is defined by GAP
+    n += DIGRAPHS_COUNT_TRUES_BLOCK(m);
   }
   return n;
 }
