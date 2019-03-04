@@ -1,8 +1,12 @@
 # If a command fails, exit this script with an error code
 set -e
 
-cd ..
-mv Digraphs $HOME/digraphs
+if ["$SUITE" != "test"] && ["$SUITE" != "coverage"] && ["$SUITE" != "lint"]; then
+  echo -e "\nError, unrecognised Travis suite: $SUITE"
+  exit 1
+fi
+
+mv ../Digraphs $HOME/digraphs
 
 ################################################################################
 # Install software necessary for linting: cpplint and gaplint
@@ -10,16 +14,13 @@ mv Digraphs $HOME/digraphs
 
 if [ "$SUITE" == "lint" ]; then
 
-  # Install cpplint using pip
-  cd $HOME
+  # Install cpplint and gaplint
   sudo pip install cpplint
-
-  # Install gaplint using pip
   sudo pip install gaplint
 
   # Move Digraphs package into a GAP folder structure, so that cpplint is happy
-  mkdir gap gap/.git gap/pkg
-  mv digraphs $HOME/gap/pkg/digraphs
+  mkdir $HOME/gap $HOME/gap/.git $HOME/gap/pkg
+  mv $HOME/digraphs $HOME/gap/pkg/digraphs
 
   exit 0
 fi
@@ -28,23 +29,16 @@ fi
 # Install software necessary for tests and coverage: GAP and packages
 ################################################################################ 
 
-if [ "$SUITE" != "test" ] && [ "$SUITE" != "coverage" ]; then
-  echo -e "\nError, unrecognised Travis suite: $SUITE"
-  exit 1
-fi
-
 ################################################################################
 # Install GAP
 echo -e "\nInstalling GAP..."
 if [ "$GAP" == "required" ]; then
-  cd $HOME/digraphs
-  GAP=v`grep "GAPVERS" PackageInfo.g | awk -F'"' '{print $2}'`
+  GAP=v`grep "GAPVERS" $HOME/digraphs/PackageInfo.g | awk -F'"' '{print $2}'`
 fi
+echo -e "\nInstalling GAP $GAP into $GAPROOT..."
 git clone -b $GAP --depth=1 https://github.com/gap-system/gap.git $GAPROOT
 cd $GAPROOT
-if [ -f autogen.sh ]; then
-  ./autogen.sh
-fi
+./autogen.sh
 ./configure --with-gmp=system $GAP_FLAGS
 make -j4
 mkdir pkg
@@ -59,46 +53,43 @@ PKGS=( "io" "orb" "grape" )
 if [ "$SUITE" == "coverage" ]; then
   PKGS+=( "profiling" )
 fi
+
 for PKG in "${PKGS[@]}"; do
   cd $GAPROOT/pkg
 
   # Get the relevant version number
-  if [ "$PACKAGES" == "newest" ] || [ "$PKG" == "profiling" ]; then
-    echo -e "\nGetting latest release of $PKG..."
+  if [ "$PACKAGES" == "latest" ] || [ "$PKG" == "profiling" ]; then
     VERSION=`curl -sL "https://github.com/gap-packages/$PKG/releases/latest" | grep \<title\>Release | awk -F' ' '{print $2}'`
   else
-    echo -e "\nGetting required release of $PKG..."
-    VERSION=`grep "\"$PKG\"" digraphs/PackageInfo.g | awk -F'"' '{print $4}' | cut -c3-`
+    VERSION=`grep "\"$PKG\"" $GAPROOT/pkg/digraphs/PackageInfo.g | awk -F'"' '{print $4}' | cut -c3-`
   fi
 
   URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
-  echo -e "Downloading $PKG-$VERSION from: $URL"
+  echo -e "\nDownloading $PKG-$VERSION ($PACKAGES version), from URL:\n$URL"
   curl -L "$URL" -o $PKG-$VERSION.tar.gz
   tar xf $PKG-$VERSION.tar.gz && rm $PKG-$VERSION.tar.gz
 
   if [ -f $PKG-$VERSION/configure ]; then
-    cd $PKG-$VERSION && ./configure $PKG_FLAGS && make
+    if [ "$PKG" == "orb" ]; then
+      cd $PKG-$VERSION && ./configure && make # orb doesn't accept package flags
+    else
+      cd $PKG-$VERSION && ./configure $PKG_FLAGS && make
+    fi
   fi
 done
-
-################################################################################
-# Install NautyTracesInterface
-cd $GAPROOT/pkg
-echo -e "\nGetting master version of NautyTracesInterface"
-git clone -b master --depth=1 https://github.com/sebasguts/NautyTracesInterface.git nautytracesinterface
-cd nautytracesinterface
-cd nauty26r7
-./configure $PKG_FLAGS
-make
-cd ..
-./autogen.sh
-./configure  $PKG_FLAGS
-make
 
 ################################################################################
 # Install required GAP packages
 cd $GAPROOT/pkg
 echo -e "\nGetting the required GAP packages (smallgrp, transgrp, primgrp)..."
-curl -LO "http://www.gap-system.org/pub/gap/gap4pkgs/packages-required-master.tar.gz"
+curl -LO "https://www.gap-system.org/pub/gap/gap4pkgs/packages-required-master.tar.gz"
 tar xf packages-required-master.tar.gz
 rm packages-required-master.tar.gz
+
+################################################################################
+# Install NautyTracesInterface
+echo -e "\nGetting master version of NautyTracesInterface"
+git clone -b master --depth=1 https://github.com/sebasguts/NautyTracesInterface.git $GAPROOT/pkg/nautytraces
+cd $GAPROOT/pkg/nautytraces/nauty2*r* && ./configure $PKG_FLAGS && make
+cd $GAPROOT/pkg/nautytraces && ./autogen.sh && ./configure $PKG_FLAGS && make
+
