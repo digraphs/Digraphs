@@ -3,6 +3,12 @@ Copyright (C) 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Micha
 
 Licensing information can be found in the LICENSE file.
 
+## Next version
+
+Digraphs now requires version 4.8.2 of the [orb
+package](https://gap-packages.github.io/orb), or newer.
+
+
 ## Version 0.15.0 (released 15/02/2019)
 
 This release contains several substantial new features, and some changes to
