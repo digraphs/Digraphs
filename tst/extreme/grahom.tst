@@ -79,7 +79,7 @@ true
 gap> if GAPInfo.BytesPerVariable = 8 then
 >      t := HomomorphismDigraphsFinder(gr, gr, fail, [], 1, 9, 0, [1 .. 153],
 >                                      [], fail, fail)[1];
->      else
+>    else
 >      t := Transformation([1, 97, 97, 113, 97, 71, 71, 103, 97, 71, 113, 71,
 >                           71, 113, 27, 71, 73, 1, 27, 71, 71, 97, 71, 103,
 >                           73, 113, 27, 97, 97, 113, 97, 97, 93, 71, 82, 113,

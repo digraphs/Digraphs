@@ -2,13 +2,10 @@
 set -e
 set -o pipefail
 
-# Remember some important locations
-cd $HOME
-touch testlog.txt
-TESTLOG="`pwd`/testlog.txt"
-GAP_DIR="$HOME/gap"
-DIG_DIR="$GAP_DIR/pkg/digraphs"
-GAP="$GAP_DIR/bin/gap.sh"
+touch $GAPROOT/testlog.txt
+TESTLOG="$GAPROOT/testlog.txt"
+GAPSH="$GAPROOT/bin/gap.sh"
+DIG_DIR="$GAPROOT/pkg/digraphs"
 
 if [ "$SUITE" == "lint" ]; then
   
@@ -20,32 +17,29 @@ if [ "$SUITE" == "lint" ]; then
 elif [ "$SUITE" == "coverage" ]; then
 
   echo -e "\nPerforming code coverage tests..."
-  cd $DIG_DIR
-  for TEST in tst/standard/*.tst; do
+  for TEST in $DIG_DIR/tst/standard/*.tst; do
     FILENAME=${TEST##*/}
-    if [ ! `grep -E "$FILENAME" .covignore` ]; then
-      scripts/travis-coverage.py $TEST $THRESHOLD | tee -a $TESTLOG
+    if [ ! `grep -E "$FILENAME" $DIG_DIR/.covignore` ]; then
+      $DIG_DIR/scripts/travis-coverage.py $TEST $THRESHOLD | tee -a $TESTLOG
     else
       echo -e "\033[35mignoring $FILENAME, which is listed in .covignore\033[0m"
     fi
   done
+
 elif [ "$SUITE" == "test" ]; then
 
   cd $DIG_DIR/tst/workspaces
   echo -e "\nRunning SaveWorkspace tests..."
   echo "LoadPackage(\"digraphs\"); DigraphsTestInstall(); Test(\"save-workspace.tst\"); quit; quit; quit;" |
-    $GAP -A -r -m 1g -T 2>&1 | tee -a $TESTLOG
+    $GAPSH -A -r -m 1g -T 2>&1 | tee -a $TESTLOG
+
   echo -e "\nRunning LoadWorkspace tests..."
   echo "Test(\"load-workspace.tst\"); DigraphsTestInstall(); quit; quit; quit;" |
-    $GAP -L test-output.w -A -x 80 -r -m 1g -T 2>&1 | tee -a $TESTLOG
+    $GAPSH -L test-output.w -A -x 80 -r -m 1g -T 2>&1 | tee -a $TESTLOG
 
   echo -e "\nRunning Digraphs package tests and manual examples..."
   echo "LoadPackage(\"digraphs\"); DigraphsTestAll(); DigraphsTestExtreme();" |
-    $GAP -A -x 80 -r -m 1g -T 2>&1 | tee -a $TESTLOG
-
-else
-  echo -e "\nUnrecognised test suite"
-  exit 1
+    $GAPSH -A -x 80 -r -m 1g -T 2>&1 | tee -a $TESTLOG
 fi
 
 ( ! grep -E "Diff|brk>|#E|Error|Errors detected|# WARNING|Syntax warning|Couldn't open saved workspace|insufficient|WARNING in|FAILED|Total errors found:" $TESTLOG )

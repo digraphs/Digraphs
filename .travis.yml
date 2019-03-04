@@ -11,13 +11,10 @@ env:
   global:
     - DIGRAPHS_LIB=digraphs-lib-0.5
 
-# Matrix
-#       GAP version: |            master |  stable-4.10 | stable-4.9 |required |
-#--------------------+-------------------+--------------+------------+---------+
-# packages:   newest |      64- & 32-bit |       64-bit |          - |       - |
-# packages: required | 64-bit & coverage |       32-bit |     64-bit |  64-bit |
-
-# Plus: linting
+#   GAP version: |       master | stable-4.10 | stable-4.9 |     required |
+# ---------------+--------------+-------------+------------+--------------+
+# pkgs:   latest | 64- & 32-bit |      32-bit |          - |            - |
+# pkgs: required |  coverage-64 |      64-bit |     64-bit | 64- & 32-bit |
 
 matrix:
   include:
@@ -28,28 +25,22 @@ matrix:
       - SUITE=test
       - ABI=64
       - GAP=master
-      - PACKAGES=newest
+      - PACKAGES=latest
 
     - env:
       - SUITE=test
       - ABI=32
       - GAP=master
-      - PACKAGES=newest
+      - PACKAGES=latest
       addons:
         apt_packages:
           - g++-multilib
 
     - env:
       - SUITE=test
-      - ABI=64
-      - GAP=master
-      - PACKAGES=required
-
-    - env:
-      - SUITE=test
       - ABI=32
       - GAP=stable-4.10
-      - PACKAGES=required
+      - PACKAGES=latest
       addons:
         apt_packages:
           - g++-multilib
@@ -58,7 +49,7 @@ matrix:
       - SUITE=test
       - ABI=64
       - GAP=stable-4.10
-      - PACKAGES=newest
+      - PACKAGES=required
 
     - env:
       - SUITE=test
@@ -73,6 +64,15 @@ matrix:
       - PACKAGES=required
 
     - env:
+      - SUITE=test
+      - ABI=32
+      - GAP=required
+      - PACKAGES=required
+      addons:
+        apt_packages:
+          - g++-multilib
+
+    - env:
       - SUITE=coverage
       - ABI=64
       - GAP=master
@@ -80,7 +80,7 @@ matrix:
       - THRESHOLD=98
 
 install:
-  # GAP requires special flags for compilation in 32-bit mode
+  # GAP and some packages require special flags for compilation in 32-bit mode
   - if [ "$ABI" == "32" ]; then
       export GAP_FLAGS="ABI=32 --host=i686-linux-gnu";
       export PKG_FLAGS="CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 LOPTS=-m32 --host=i686-linux-gnu";
