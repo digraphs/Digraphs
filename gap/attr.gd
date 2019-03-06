@@ -43,8 +43,6 @@ DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
 DeclareAttribute("DigraphGirth", IsDigraph);
 DeclareAttribute("DigraphOddGirth", IsDigraph);
-DeclareAttribute("DigraphOddGirthB", IsDigraph);
-DeclareAttribute("DigraphOddGirthC", IsDigraph);
 DeclareAttribute("DigraphUndirectedGirth", IsDigraph);
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
 DeclareAttribute("DigraphLongestSimpleCircuit", IsDigraph);
