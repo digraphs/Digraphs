@@ -969,7 +969,7 @@ function(D)
   return girth;
 end);
 
-InstallMethod(DigraphOddGirth, "for a digraph",
+InstallMethod(DigraphOddGirthC, "for a digraph",
 [IsDigraph],
 function(digraph)
   local A, B, k, n, NVerts, NEdges, girth, comp;
@@ -1041,62 +1041,49 @@ function(digraph)
   return n;
 end);
 
-InstallMethod(DigraphOddGirthC, "for a digraph",
+InstallMethod(DigraphOddGirth, "for a digraph",
 [IsDigraph],
 function(digraph)
   local comps, girth, oddgirth, A, B, gr, k, comp;
-  girth := DigraphGirth(digraph);
-  if girth = infinity or IsOddInt(girth) then
-    return girth;
-  elif not IsStronglyConnectedDigraph(digraph) then
-    comps := DigraphStronglyConnectedComponents(digraph).comps;
-  else
-    comps := [1];
-    Print("comps = [1]","\n"); # As this is the case where we do the process to the whole strongly connected digraph
-                  # the only thing that matters is that this list is one element long. Note: Ask James
-                  # for style tips on this.
+  if IsAcyclicDigraph(digraph) then
+    return infinity;
+  elif IsOddInt(DigraphGirth(digraph)) then
+    # No need to check girth isn't infinity, as we have
+    # that digraph is cyclic.
+    return DigraphGirth(digraph);
   fi;
-
+  comps := DigraphStronglyConnectedComponents(digraph).comps;
   oddgirth := infinity;
   for comp in comps do
     if not IsStronglyConnectedDigraph(digraph) then
-      gr := InducedSubdigraph(digraph, comp); # Looping this way, we don't have to induce all the subdigraphs at once.
-                                         # After I've got the function working in this way, I'll add more sensible checks in.
-      girth := DigraphGirth(gr);
+      gr    := InducedSubdigraph(digraph, comp);
     else
-      gr := digraph; # If digraph is strongly connected, we just power the adjacency matrix of digraph.
+      gr := digraph;
+      # If digraph is strongly connected, then we needn't
+      # induce the subdigraph of its strongly connected comp.
     fi;
-    
-    if girth = infinity or IsOddInt(girth) then
-      if girth < oddgirth then
-        oddgirth := girth; # Maybe there is a tider way to do this?
+    if not IsAcyclicDigraph(gr) then
+      girth := DigraphGirth(gr);
+      if IsOddInt(girth) and girth < oddgirth then
+        oddgirth := girth;
+      else
+        k := girth - 1;
+        A := AdjacencyMatrix(gr) ^ k;
+        B := AdjacencyMatrix(gr) ^ 2;
+        while k <= DigraphNrEdges(gr) + 2 and k < DigraphNrVertices(gr) do
+          A := A * B;
+          k := k + 2;
+          if k < oddgirth and Trace(A) <> 0 then
+            # It suffices to find the trace as the entries of A are positive.
+            oddgirth := k;
+          fi;
+        od;
       fi;
-    else
-      k := girth - 1; # this reflects the fact that the odd girth is strictly greater than the girth, if the girth is even. 
-      A := AdjacencyMatrix(gr) ^ k; # we start at the kth power.
-      B := AdjacencyMatrix(gr) ^ 2;
-  
-      while k <= DigraphNrEdges(gr) + 2 and k < DigraphNrVertices(gr) do
-        A := A * B;
-        k := k + 2;
-        Print("Position: ", Position(comps,comp), " in comps.  k = ", k, ". oddgirth = ", oddgirth, ". Trace is ", Trace(A), "\n");
-        Display(A);
-        if k < oddgirth and Trace(A) <> 0 then # It makes sense to check k < oddgirth before calculating Trace(A).
-          # It suffices to find the trace as the entries of A are positive.
-          Print("Writing k to oddgirth. oddgirth =", oddgirth,"\n");
-          oddgirth := k;
-        fi;
-      od;
     fi;
   od;
 
   return oddgirth;
 end);
-    
-  # Loop through strongly connected comps.
-  # Apply matrix powering method to each of the induced subdigraphs.
-  # Can check, say, comparing the number of edges in each induced.
-  # Make it efficient !
 
 InstallMethod(DigraphLongestSimpleCircuit, "for a digraph",
 [IsDigraph],
