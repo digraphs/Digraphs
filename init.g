@@ -26,7 +26,7 @@ if (not IsBound(DIGRAPHS_C)) and
 fi;
 
 BindGlobal("DIGRAPHS_IsGrapeLoaded",
-           IsPackageMarkedForLoading("grape", "4.5"));
+           IsPackageMarkedForLoading("grape", "4.8.1"));
 
 if not DIGRAPHS_IsGrapeLoaded then
   IsGraph := ReturnFalse;
