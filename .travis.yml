@@ -10,6 +10,7 @@ compiler:
 env:
   global:
     - DIGRAPHS_LIB=digraphs-lib-0.5
+    - SETUP=travis
 
 #   GAP version: |       master | stable-4.10 | stable-4.9 |     required |
 # ---------------+--------------+-------------+------------+--------------+
