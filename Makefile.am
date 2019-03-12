@@ -13,7 +13,7 @@ PLANAR_INCLUDE   = -I$(top_srcdir)/@PLANARITY_SUITE_DIR@/
 DIGRAPHS_INCLUDE = -I$(top_srcdir)/extern/
 
 BINARCHDIR = bin/$(GAPARCH)
-GAPINSTALLLIB = $(abs_top_srcdir)/$(BINARCHDIR)/
+GAPINSTALLLIB = $(abs_top_srcdir)/$(BINARCHDIR)
 
 lib_LTLIBRARIES = digraphs.la
 
@@ -80,9 +80,10 @@ all-local: digraphs.la
 	$(mkdir_p) $(top_srcdir)/$(BINARCHDIR) $(top_srcdir)/bin/lib
 	cp -RL @PLANARITY_SUITE_DIR@/.libs/*  $(top_srcdir)/bin/lib/
 if SYS_IS_CYGWIN
-	cp .libs/digraphs.dll $(GAPINSTALLLIB)
+	cp .libs/digraphs.dll $(GAPINSTALLLIB)/digraphs.so
+	cp bin/lib/cygplanarity-0.dll $(GAPROOT)/.libs
 else
-	cp .libs/digraphs.so $(GAPINSTALLLIB)
+	cp .libs/digraphs.so $(GAPINSTALLLIB)/
 endif
 if KERNEL_DEBUG
 	@echo "SUCCESS (debug mode enabled)!"
