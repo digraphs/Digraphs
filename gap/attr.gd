@@ -21,6 +21,7 @@ DeclareAttribute("DigraphTopologicalSort", IsDigraph);
 DeclareAttribute("DigraphDual", IsDigraph);
 DeclareAttribute("DigraphShortestDistances", IsDigraph);
 DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
+DeclareAttribute("DigraphNrStronglyConnectedComponents", IsDigraph);
 DeclareAttribute("DigraphConnectedComponents", IsDigraph);
 DeclareAttribute("DIGRAPHS_Bipartite", IsDigraph);
 DeclareAttribute("DigraphBicomponents", IsDigraph);

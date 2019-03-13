@@ -46,6 +46,7 @@
     <#Include Label="DigraphConnectedComponents">
     <#Include Label="DigraphConnectedComponent">
     <#Include Label="DigraphStronglyConnectedComponents">
+    <#Include Label="DigraphNrStronglyConnectedComponents">
     <#Include Label="DigraphStronglyConnectedComponent">
     <#Include Label="DigraphBicomponents">
     <#Include Label="ArticulationPoints">

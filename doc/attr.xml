@@ -659,7 +659,26 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
 </ManSection>
 <#/GAPDoc>
 
-#
+<#GAPDoc Label="DigraphNrStronglyConnectedComponents">
+<ManSection>
+  <Attr Name="DigraphNrStronglyConnectedComponents" Arg="digraph"/>
+  <Returns>A positive integer.</Returns>
+  <Description>
+    This function returns the number of strongly connected components of
+    <A>digraph</A>.  Note that this is no more efficient than calling <Ref
+    Attr="DigraphStronglyConnectedComponents"/>.
+    
+    For more information, see <Ref Attr="DigraphStronglyConnectedComponents"/>.
+    <Example><![CDATA[
+gap> D := DigraphDisjointUnion(CycleDigraph(4), CycleDigraph(5));
+<digraph with 9 vertices, 9 edges>
+gap> DigraphNrStronglyConnectedComponents(D);
+2
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 
 <#GAPDoc Label="DigraphConnectedComponents">
 <ManSection>
