@@ -18,7 +18,7 @@ InstallMethod(OutNeighbours, "for a digraph in dense rep",
 # The next method is (yet another) DFS as described in
 # http://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
 
-InstallMethod(ArticulationPoints, "for a digraph", [IsDigraph],
+InstallMethod(ArticulationPoints, "for a digraph", [IsDenseDigraphRep],
 function(digraph)
   local copy, nbs, counter, visited, num, low, parent, points, points_seen,
         stack, depth, v, w, i;
@@ -27,7 +27,7 @@ function(digraph)
       or DigraphNrVertices(digraph) <= 1 then
     return [];
   elif not IsSymmetricDigraph(digraph) then
-    copy := DigraphSymmetricClosure(digraph);
+    copy := DigraphSymmetricClosure(DigraphMutableCopy(digraph));
   else
     copy := digraph;
   fi;
@@ -87,15 +87,19 @@ function(digraph)
     if i <> fail and Position(parent, 1, i) <> fail then
       Add(points, 1);
     fi;
-    SetIsConnectedDigraph(digraph, true);
+    if IsAttributeStoringRep(digraph) then
+      SetIsConnectedDigraph(digraph, true);
+    fi;
     return points;
   else
-    SetIsConnectedDigraph(digraph, false);
+    if IsAttributeStoringRep(digraph) then
+      SetIsConnectedDigraph(digraph, false);
+    fi;
     return [];
   fi;
 end);
 
-InstallMethod(ChromaticNumber, "for a digraph", [IsDigraph],
+InstallMethod(ChromaticNumber, "for a digraph", [IsDenseDigraphRep],
 function(digraph)
   local nr, comps, upper, chrom, tmp_comps, tmp_upper, n, comp, bound, clique,
   c, i;
@@ -115,6 +119,7 @@ function(digraph)
   fi;
 
   # The chromatic number of <digraph> is at least 3 and at most nr
+  digraph := DigraphMutableCopy(digraph);
   digraph := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(digraph));
 
   if IsCompleteDigraph(digraph) then
@@ -243,7 +248,7 @@ end);
 #   return out;
 # end);
 
-InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDigraph],
+InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDenseDigraphRep],
 function(digraph)
   local func;
 
@@ -255,7 +260,7 @@ function(digraph)
 end);
 
 InstallMethod(AsTransformation, "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep],
 function(digraph)
   if not IsFunctionalDigraph(digraph) then
     return fail;
@@ -263,10 +268,10 @@ function(digraph)
   return Transformation(Concatenation(OutNeighbours(digraph)));
 end);
 
-InstallMethod(ReducedDigraph, "for a digraph",
-[IsDigraph],
+InstallMethod(ReducedDigraph, "for a mutable digraph",
+[IsDenseDigraphRep and IsMutableDigraph],
 function(digraph)
-  local v, niv, old, vlabels, elabels, old_elabels, i, len, adj, map, gr;
+  local v, niv, old, i;
 
   if IsConnectedDigraph(digraph) then
     return digraph;
@@ -284,42 +289,22 @@ function(digraph)
     fi;
   od;
 
-  # Compress, store map oldvertex -> newvertex, order invariant
-  map := [];
-  len := 1;
-  for i in [1 .. Length(niv)] do
-    if niv[i] then
-      map[i] := len;
-      len := len + 1;
-    fi;
-  od;
-
-  # Vertex labels
-  vlabels := ListBlist(DigraphVertexLabels(digraph), niv);
-  vlabels := StructuralCopy(vlabels);
-
-  # Adjacencies and edge labels
-  old_elabels := DigraphEdgeLabelsNC(digraph);
-  adj := [];
-  elabels := [];
-  for i in [1 .. Length(niv)] do
-    if niv[i] then
-      Add(adj, List(old[i], x -> map[x]));
-      Add(elabels, StructuralCopy(old_elabels[i]));
-    fi;
-  od;
-
-  # Return the reduced graph, with labels preserved
-  gr := DigraphNC(adj);
-  SetDigraphVertexLabels(gr, vlabels);
-  SetDigraphEdgeLabelsNC(gr, elabels);
-  return gr;
+  return InducedSubdigraph(digraph, ListBlist(v, niv));
 end);
 
-InstallMethod(DigraphDual, "for a digraph",
-[IsDigraph],
+InstallMethod(ReducedDigraph, "for an immutable digraph",
+[IsImmutableDigraph],
 function(digraph)
-  local verts, old, new, gr, i;
+  if IsConnectedDigraph(digraph) then
+    return digraph;
+  fi;
+  return MakeImmutable(ReducedDigraph(DigraphMutableCopy(digraph)));
+end);
+
+InstallMethod(DigraphDual, "for a mutable digraph",
+[IsDenseDigraphRep and IsMutableDigraph],
+function(digraph)
+  local verts, outs, i;
 
   if IsMultiDigraph(digraph) then
     ErrorNoReturn("Digraphs: DigraphDual: usage,\n",
@@ -327,24 +312,29 @@ function(digraph)
   fi;
 
   verts := DigraphVertices(digraph);
-  old := OutNeighbours(digraph);
-  new := [];
+  outs := OutNeighbours(digraph);
 
   for i in verts do
-    new[i] := DifferenceLists(verts, old[i]);
+    outs[i] := DifferenceLists(verts, outs[i]);
   od;
-  gr := DigraphNC(new);
-  SetDigraphVertexLabels(gr, DigraphVertexLabels(digraph));
+  return digraph;
+end);
+
+InstallMethod(DigraphDual, "for a digraph",
+[IsDenseDigraphRep],
+function(digraph)
+  local dg;
+  dg := MakeImmutable(DigraphDual(DigraphMutableCopy(digraph)));
   if HasDigraphGroup(digraph) then
-    SetDigraphGroup(gr, DigraphGroup(digraph));
+    SetDigraphGroup(dg, DigraphGroup(digraph));
   fi;
-  return gr;
+  return dg;
 end);
 
 InstallMethod(DigraphNrEdges, "for a digraph", [IsDigraph], DIGRAPH_NREDGES);
 
 InstallMethod(DigraphEdges, "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep],
 function(graph)
   local out, adj, nr, i, j;
 
@@ -399,7 +389,7 @@ InstallMethod(AdjacencyMatrix, "for a digraph",
 
 InstallMethod(BooleanAdjacencyMatrix,
 "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep],
 function(gr)
   local n, nbs, mat, i, j;
 
@@ -451,12 +441,12 @@ end);
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
 InstallMethod(DigraphTopologicalSort, "for a digraph",
-[IsDigraph], function(graph)
+[IsDenseDigraphRep], function(graph)
   return DIGRAPH_TOPO_SORT(OutNeighbours(graph));
 end);
 
 InstallMethod(DigraphStronglyConnectedComponents, "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep],
 function(digraph)
   local verts;
 
@@ -478,7 +468,7 @@ InstallMethod(DigraphConnectedComponents, "for a digraph",
 DIGRAPH_CONNECTED_COMPONENTS);
 
 InstallMethod(OutDegrees, "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep],
 function(digraph)
   local adj, degs, i;
 
@@ -504,7 +494,7 @@ function(digraph)
 end);
 
 InstallMethod(InDegrees, "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep],
 function(digraph)
   local adj, degs, x, i;
 
@@ -532,7 +522,7 @@ function(digraph)
 end);
 
 InstallMethod(OutDegreeSequence, "for a digraph with known digraph group",
-[IsDigraph and HasDigraphGroup],
+[IsDenseDigraphRep and HasDigraphGroup],
 function(digraph)
   local out, adj, orbs, orb;
 
@@ -627,7 +617,7 @@ function(digraph)
 end);
 
 InstallMethod(DigraphSources, "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep],
 function(digraph)
   local verts, out, seen, v, i;
 
@@ -652,7 +642,7 @@ function(digraph)
 end);
 
 InstallMethod(DigraphSinks, "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep],
 function(digraph)
   local out, sinks, count, i;
 
@@ -669,7 +659,7 @@ function(digraph)
 end);
 
 InstallMethod(DigraphPeriod, "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep],
 function(digraph)
   local comps, out, deg, nrvisited, period, stack, len, depth, current,
         olddepth, i;
@@ -922,7 +912,7 @@ function(digraph)
 end);
 
 InstallMethod(DigraphGirth, "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep],
 function(digraph)
   local verts, girth, out, dist, i, j;
   if DigraphHasLoops(digraph) then
@@ -965,7 +955,7 @@ function(digraph)
 end);
 
 InstallMethod(DigraphSymmetricClosure, "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep and IsMutableDigraph],
 function(digraph)
   local n, m, verts, mat, new, x, i, j, k;
   n := DigraphNrVertices(digraph);
