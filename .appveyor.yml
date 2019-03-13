@@ -15,11 +15,11 @@ environment:
   # does not see to work if '--coverage' is used, so we only use that flag in
   # the 64 bit build.
   matrix:
-    - CYG_ARCH: x86
-      ABI: 32
-      CYG_ROOT: C:\cygwin
-      PKGS: "-P python27,python27-pip"
-      PKG_FLAGS: "CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 LOPTS=-m32"
+    #- CYG_ARCH: x86
+    #  ABI: 32
+    #  CYG_ROOT: C:\cygwin
+    #  PKGS: "-P python27,python27-pip"
+    #  PKG_FLAGS: "CFLAGS=-m32 CXXFLAGS=-m32 LDFLAGS=-m32 LOPTS=-m32"
     - CYG_ARCH: x86_64
       ABI: 64
       CYG_ROOT: C:\cygwin64
