@@ -14,9 +14,7 @@
   <Returns>The Petersen Graph</Returns>
   <Description>
 
-    This function returns the Petersen graph.
-
-    From Wikipedia: The Petersen graph is an undirected graph with 10 vertices and 15 edges. It is a small graph that serves as a useful example and counterexample for many problems in graph theory. The Petersen graph is named after Julius Petersen, who in 1898 constructed it to be the smallest bridgeless cubic graph with no three-edge-coloring.
+    From Wikipedia: The Petersen graph is an undirected graph with 10 vertices and 15 edges. It is a small graph that serves as a useful example and counterexample for many problems in graph theory. The Petersen graph is named after Julius Petersen, who in 1898 constructed it to be the smallest bridgeless cubic graph with no three-edge-coloring.<P/>
 
     For more information, see <URL>https://en.wikipedia.org/wiki/Petersen_graph</URL>
 
