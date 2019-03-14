@@ -21,5 +21,6 @@ function()
             [0, 0, 1, 0, 0, 1, 0, 0, 0, 1],
             [0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
             [0, 0, 0, 0, 1, 0, 1, 1, 0, 0]];
+  # the above is an adjacency matrix of the Petersen graph
   return DigraphByAdjacencyMatrix(admat);
 end);
