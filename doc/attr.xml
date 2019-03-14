@@ -666,7 +666,7 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
   <Description>
     This function returns the number of strongly connected components of
     <A>digraph</A>.  Note that this is no more efficient than calling <Ref
-    Attr="DigraphStronglyConnectedComponents"/>.
+    Attr="DigraphStronglyConnectedComponents"/>.<P/>
     
     For more information, see <Ref Attr="DigraphStronglyConnectedComponents"/>.
     <Example><![CDATA[

@@ -478,9 +478,7 @@ end);
 
 InstallMethod(DigraphNrStronglyConnectedComponents, "for a digraph",
 [IsDigraph],
-function(digraph)
-  return Length(DigraphStronglyConnectedComponents(digraph).comps);
-end);
+digraph -> Length(DigraphStronglyConnectedComponents(digraph).comps));
 
 InstallMethod(DigraphConnectedComponents, "for a digraph",
 [IsDigraph],

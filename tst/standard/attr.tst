@@ -318,11 +318,11 @@ rec( comps := [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ],
 
 #  DigraphNrStronglyConnectedComponents
 gap> D := CycleDigraph(10);;
-gap> for i in [1 .. 1000] do
+gap> for i in [1 .. 50] do
 > D := DigraphDisjointUnion(D, CycleDigraph(10));
 > od;
 gap> DigraphNrStronglyConnectedComponents(D);
-1001
+51
 gap> D := CayleyDigraph(SymmetricGroup(6));;
 gap> DigraphNrStronglyConnectedComponents(D);
 1
@@ -332,6 +332,9 @@ gap> DigraphNrStronglyConnectedComponents(D);
 gap>  D := Digraph([[]]);;
 gap> DigraphNrStronglyConnectedComponents(D);
 1
+gap> D := EmptyDigraph(0);;
+gap> DigraphNrStronglyConnectedComponents(D);
+0
 
 #  DigraphConnectedComponents
 gap> gr := Digraph([[1, 2], [1], [2], [5], []]);
