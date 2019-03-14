@@ -476,6 +476,10 @@ function(digraph)
   return GABOW_SCC(OutNeighbours(digraph));
 end);
 
+InstallMethod(DigraphNrStronglyConnectedComponents, "for a digraph",
+[IsDigraph],
+digraph -> Length(DigraphStronglyConnectedComponents(digraph).comps));
+
 InstallMethod(DigraphConnectedComponents, "for a digraph",
 [IsDigraph],
 DIGRAPH_CONNECTED_COMPONENTS);
