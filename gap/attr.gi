@@ -977,14 +977,14 @@ function(digraph)
     return infinity;
   elif IsOddInt(DigraphGirth(digraph)) then
     # No need to check girth isn't infinity, as we have
-    # that digraph is cyclic.
+    # that digraph is not acyclic.
     return DigraphGirth(digraph);
   fi;
   comps := DigraphStronglyConnectedComponents(digraph).comps;
   oddgirth := infinity;
   for comp in comps do
     if not IsStronglyConnectedDigraph(digraph) then
-      gr    := InducedSubdigraph(digraph, comp);
+      gr := InducedSubdigraph(digraph, comp);
     else
       gr := digraph;
       # If digraph is strongly connected, then we needn't
