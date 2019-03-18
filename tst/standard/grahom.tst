@@ -148,11 +148,9 @@ Error, the 2nd argument must be a homogeneous list,
 gap> gr := ChainDigraph(2);
 <immutable digraph with 2 vertices, 1 edge>
 gap> GeneratorsOfEndomorphismMonoid();
-Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
-this function takes at least one argument,
+Error, at least 1 argument expected, found 0,
 gap> GeneratorsOfEndomorphismMonoid(Group(()));
-Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
-the 1st argument <digraph> must be a digraph,
+Error, the 1st argument must be a digraph,
 gap> GeneratorsOfEndomorphismMonoid(gr);
 [ IdentityTransformation ]
 gap> gr := DigraphTransitiveClosure(CompleteDigraph(2));
@@ -165,12 +163,10 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
 gap> gr := EmptyDigraph(2);
 <immutable digraph with 2 vertices, 0 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr, Group(()), Group((1, 2)));
-Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
-<colours> must be a homogenous list,
+Error, the 2nd argument must be a homogenous list,
 gap> gr := EmptyDigraph(2);;
 gap> GeneratorsOfEndomorphismMonoid(gr, Group(()));
-Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
-<colours> must be a homogenous list,
+Error, the 2nd argument must be a homogenous list,
 gap> gr := EmptyDigraph(2);;
 gap> GeneratorsOfEndomorphismMonoid(gr, 1);
 [ Transformation( [ 2, 1 ] ) ]
@@ -200,8 +196,7 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [1, 1, 1, 2, 2], 1);
 [ Transformation( [ 1, 2, 3, 5, 4 ] ), Transformation( [ 1, 3, 2 ] ), 
   Transformation( [ 2, 1 ] ) ]
 gap> GeneratorsOfEndomorphismMonoid(gr, [1, 1, 1, 2, 2], 0);
-Error, Digraphs: GeneratorsOfEndomorphismMonoid: usage,
-<limit> must be a positive integer or infinity,
+Error, the 3rd argument must be a positive integer or infinity,
 
 #  GeneratorsOfEndomorphismMonoid: digraphs with loops
 
@@ -263,8 +258,7 @@ gap> DigraphColouring(gr, 2);
 fail
 gap> gr := Digraph([[1, 2], []]);;
 gap> DigraphColouring(gr, -1);
-Error, Digraphs: DigraphColouring: usage,
-the second argument <n> must be a non-negative integer,
+Error, the 2nd argument must be a non-negative integer,
 gap> DigraphColouring(NullDigraph(0), 1);
 fail
 gap> DigraphColouring(NullDigraph(0), 0);
@@ -331,10 +325,10 @@ gap> DigraphGreedyColouring(gr);;
 gap> DigraphGreedyColouring(EmptyDigraph(0));
 IdentityTransformation
 gap> DigraphGreedyColouring(gr, [1 .. 10]);
-Error, the second argument <order> must be a permutation of [ 1 .. 30 ]
+Error, the 2nd argument must be a permutation of [1 .. 30]
 gap> DigraphGreedyColouring(gr, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
 > 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, -1]);
-Error, the second argument <order> must be a permutation of [ 1 .. 30 ]
+Error, the 2nd argument must be a permutation of [1 .. 30]
 gap> DigraphGreedyColouring(gr, [1 .. 30]);
 Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
   2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
@@ -1055,13 +1049,11 @@ gap> gr := Digraph([[1, 1]]);
 gap> x := Transformation([3, 3, 4, 4]);
 Transformation( [ 3, 3, 4, 4 ] )
 gap> IsDigraphEndomorphism(gr, x);
-Error, Digraphs: IsDigraphHomomorphism: usage,
-the first 2 arguments must not have multiple edges,
+Error, the 1st and 2nd arguments must not have multiple edges,
 gap> IsDigraphEndomorphism(gr, ());
 Error, the 1st and 2nd arguments must not have multiple edges,
 gap> IsDigraphHomomorphism(gr, gr, ());
-Error, Digraphs: IsDigraphHomomorphism: usage,
-the first 2 arguments must not have multiple edges,
+Error, the 1st and 2nd arguments must not have multiple edges,
 gap> gr := DigraphTransitiveClosure(CompleteDigraph(2));
 <immutable digraph with 2 vertices, 4 edges>
 gap> ForAll(GeneratorsOfEndomorphismMonoid(gr),

@@ -88,12 +88,10 @@ function(G, gens)
   local adj, D;
 
   if not IsFinite(G) then
-    ErrorNoReturn(
-                  "the 1st argument <G> must be a finite group,");
+    ErrorNoReturn("the 1st argument must be a finite group,");
   elif not ForAll(gens, x -> x in G) then
-    ErrorNoReturn(
-                  "elements in the 2nd argument <gens> must ",
-                  "all belong to the 1st argument <G>,");
+    ErrorNoReturn("the 2nd argument must consist of elements of the 1st ",
+                  "argument,");
   fi;
 
   adj := function(x, y)
@@ -185,7 +183,8 @@ function(G, edges, n)
   fi;
 
   if not ForAll(edges, e -> Length(e) = 2 and ForAll(e, IsPosInt)) then
-    ErrorNoReturn("the 2nd argument must be a list of pairs of pos ints,");
+    ErrorNoReturn("the 2nd argument must be a list of pairs of positive ",
+                  "integers,");
   fi;
 
   out := List([1 .. n], x -> []);
@@ -217,13 +216,11 @@ function(D, edge)
   local out, G, o, e;
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
-    ErrorNoReturn(
-                  "the 2nd argument must be a pair of pos ints,");
+    ErrorNoReturn("the 2nd argument must be a list of 2 positive integers,");
   elif not (edge[1] in DigraphVertices(D)
             and edge[2] in DigraphVertices(D)) then
-    ErrorNoReturn(
-                  "the 2nd argument must be a ",
-                  "pair of vertices of the 1st argument,");
+    ErrorNoReturn("the 2nd argument must be a list of 2 vertices of ",
+                  "the 1st argument,");
   elif IsDigraphEdge(D, edge) then
     return D;
   fi;
@@ -251,7 +248,7 @@ function(D, edge)
   local out, G, o, pos, e;
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
-    ErrorNoReturn("the 2nd argument must be a pair of pos ints,");
+    ErrorNoReturn("the 2nd argument must be a pair of positive integers,");
   elif not (edge[1] in DigraphVertices(D)
             and edge[2] in DigraphVertices(D)) then
     ErrorNoReturn("the 2nd argument must be a ",

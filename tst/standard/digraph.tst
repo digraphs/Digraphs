@@ -1239,11 +1239,10 @@ true
 gap> GeneratorsOfCayleyDigraph(digraph);
 [ () ]
 gap> digraph := CayleyDigraph(group, [(1, 2, 3, 4), (2, 5)]);
-Error, elements in the 2nd argument <gens> must all belong to the 1st argument\
- <G>,
+Error, the 2nd argument must consist of elements of the 1st argument,
 gap> group := FreeGroup(2);;
 gap> digraph := CayleyDigraph(group);
-Error, the first argument <G> must be a finite group,
+Error, the 1st argument must be a finite group,
 
 #  BipartiteDoubleDigraph
 gap> n := 5;
@@ -1482,11 +1481,11 @@ gap> OutNeighbours(digraph);
 gap> HasDigraphGroup(digraph);
 true
 gap> digraph := EdgeOrbitsDigraph(Group((1, 2)), [[1, 2], [3, 6, 5]]);
-Error, the second argument must be a list of pairs of pos ints,
+Error, the 2nd argument must be a list of pairs of positive integers,
 gap> digraph := EdgeOrbitsDigraph(Group((1, 2)), [[1, 2], [3, -6]]);
-Error, the second argument must be a list of pairs of pos ints,
+Error, the 2nd argument must be a list of pairs of positive integers,
 gap> digraph := EdgeOrbitsDigraph(Group((1, 2)), [[1, 2], [3, 6]], -1);
-Error, the third argument must be a non-negative integer,
+Error, the 3rd argument must be a non-negative integer,
 
 #  DigraphAdd/RemoveEdgeOrbit
 gap> gr1 := CayleyDigraph(DihedralGroup(8));
@@ -1515,21 +1514,21 @@ gap> gr3 := DigraphRemoveEdgeOrbit(gr3, [1, 2]);
 gap> gr3 := DigraphRemoveEdgeOrbit(gr3, [1, 4]);
 <immutable digraph with 8 vertices, 0 edges>
 gap> DigraphAddEdgeOrbit(gr1, [0, 3]);
-Error, the second argument must be a pair of pos ints,
+Error, the 2nd argument must be a list of 2 positive integers,
 gap> DigraphAddEdgeOrbit(gr1, [1, 2, 3]);
-Error, the second argument must be a pair of pos ints,
+Error, the 2nd argument must be a list of 2 positive integers,
 gap> DigraphRemoveEdgeOrbit(gr1, [0, 3]);
-Error, the second argument must be a pair of pos ints,
+Error, the 2nd argument must be a pair of positive integers,
 gap> DigraphRemoveEdgeOrbit(gr1, [1, 2, 3]);
-Error, the second argument must be a pair of pos ints,
+Error, the 2nd argument must be a pair of positive integers,
 gap> gr2 := DigraphAddEdgeOrbit(gr1, [1, 4]);
 <immutable digraph with 8 vertices, 24 edges>
 gap> gr1 = gr2;
 true
 gap> DigraphAddEdgeOrbit(gr1, [3, 9]);
-Error, the second argument must be a pair of vertices of the first argument,
+Error, the 2nd argument must be a list of 2 vertices of the 1st argument,
 gap> DigraphRemoveEdgeOrbit(gr1, [3, 9]);
-Error, the second argument must be a pair of vertices of the first argument,
+Error, the 2nd argument must be a pair of vertices of the 1st argument,
 gap> gr2 := DigraphRemoveEdgeOrbit(gr1, [1, 8]);
 <immutable digraph with 8 vertices, 24 edges>
 gap> gr1 = gr2;
