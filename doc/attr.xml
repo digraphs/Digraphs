@@ -671,7 +671,7 @@ rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
     For more information, see <Ref Attr="DigraphStronglyConnectedComponents"/>.
     <Example><![CDATA[
 gap> D := DigraphDisjointUnion(CycleDigraph(4), CycleDigraph(5));
-<digraph with 9 vertices, 9 edges>
+<immutable digraph with 9 vertices, 9 edges>
 gap> DigraphNrStronglyConnectedComponents(D);
 2
 ]]></Example>
