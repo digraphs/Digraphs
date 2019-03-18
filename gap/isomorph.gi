@@ -60,15 +60,14 @@ end);
 # Returns a list where the first position is the automorphism group, and the
 # second is the canonical labelling.
 BindGlobal("BLISS_DATA",
-function(digraph, colors, calling_function_name)
+function(D, colors)
   local data;
   if colors <> false then
-    colors := DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(digraph),
-                                               colors,
-                                               calling_function_name);
+    colors := DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(D),
+                                               colors);
   fi;
-  if IsMultiDigraph(digraph) then
-    data := MULTIDIGRAPH_AUTOMORPHISMS(digraph, colors);
+  if IsMultiDigraph(D) then
+    data := MULTIDIGRAPH_AUTOMORPHISMS(D, colors);
     if IsEmpty(data[1]) then
       data[1] := [()];
     fi;
@@ -78,7 +77,7 @@ function(digraph, colors, calling_function_name)
     data[1] := DirectProduct(Group(data[1]), Group(data[3]));
     return data;
   else
-    data := DIGRAPH_AUTOMORPHISMS(digraph, colors);
+    data := DIGRAPH_AUTOMORPHISMS(D, colors);
     if IsEmpty(data[1]) then
       data[1] := [()];
     fi;
@@ -89,29 +88,28 @@ function(digraph, colors, calling_function_name)
 end);
 
 BindGlobal("BLISS_DATA_NO_COLORS",
-function(digraph)
-  return BLISS_DATA(digraph, false, "");
+function(D)
+  return BLISS_DATA(D, false);
 end);
 
 if DIGRAPHS_NautyAvailable then
   BindGlobal("NAUTY_DATA",
-  function(digraph, colors, calling_function_name)
+  function(D, colors)
     local data;
     if colors <> false then
-      colors := DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(digraph),
-                                                 colors,
-                                                 calling_function_name);
+      colors := DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(D),
+                                                 colors);
       colors := NautyColorData(colors);
     fi;
-    if DigraphNrVertices(digraph) = 0 then
+    if DigraphNrVertices(D) = 0 then
       # This circumvents Issue #17 in NautyTracesInterface, whereby a graph
       # with 0 vertices causes a seg fault.
       return [Group(()), ()];
     fi;
-    data := NautyDense(DigraphSource(digraph),
-                       DigraphRange(digraph),
-                       DigraphNrVertices(digraph),
-                       not IsSymmetricDigraph(digraph),
+    data := NautyDense(DigraphSource(D),
+                       DigraphRange(D),
+                       DigraphNrVertices(D),
+                       not IsSymmetricDigraph(D),
                        colors);
     if IsEmpty(data[1]) then
       data[1] := [()];
@@ -122,8 +120,8 @@ if DIGRAPHS_NautyAvailable then
   end);
 
   BindGlobal("NAUTY_DATA_NO_COLORS",
-  function(digraph)
-    return NAUTY_DATA(digraph, false, "");
+  function(D)
+    return NAUTY_DATA(D, false, "");
   end);
 else
   BindGlobal("NAUTY_DATA", ReturnFail);
@@ -134,133 +132,129 @@ fi;
 
 InstallMethod(BlissCanonicalLabelling, "for a digraph",
 [IsDigraph],
-function(digraph)
+function(D)
   local data;
-  data := BLISS_DATA_NO_COLORS(digraph);
-  SetBlissAutomorphismGroup(digraph, data[1]);
+  data := BLISS_DATA_NO_COLORS(D);
+  SetBlissAutomorphismGroup(D, data[1]);
   return data[2];
 end);
 
 InstallMethod(BlissCanonicalLabelling, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-function(digraph, colors)
-  return BLISS_DATA(digraph,
-                    colors,
-                    "BlissCanonicalLabelling")[2];
+function(D, colors)
+  return BLISS_DATA(D, colors)[2];
 end);
 
 InstallMethod(NautyCanonicalLabelling, "for a digraph",
 [IsDigraph],
-function(digraph)
+function(D)
   local data;
-  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(digraph) then
+  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(D) then
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  data := NAUTY_DATA_NO_COLORS(digraph);
-  SetNautyAutomorphismGroup(digraph, data[1]);
+  data := NAUTY_DATA_NO_COLORS(D);
+  SetNautyAutomorphismGroup(D, data[1]);
   return data[2];
 end);
 
 InstallMethod(NautyCanonicalLabelling,
 "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-function(digraph, colors)
-  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(digraph) then
+function(D, colors)
+  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(D) then
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  return NAUTY_DATA(digraph, colors, "NautyCanonicalLabelling")[2];
+  return NAUTY_DATA(D, colors, "NautyCanonicalLabelling")[2];
 end);
 
 # Canonical digraphs
 
 InstallMethod(BlissCanonicalDigraph, "for a digraph", [IsDigraph],
-function(digraph)
-  if IsMultiDigraph(digraph) then
-    return OnMultiDigraphs(digraph, BlissCanonicalLabelling(digraph));
+function(D)
+  if IsMultiDigraph(D) then
+    return OnMultiDigraphs(D, BlissCanonicalLabelling(D));
   fi;
-  return OnDigraphs(digraph, BlissCanonicalLabelling(digraph));
+  return OnDigraphs(D, BlissCanonicalLabelling(D));
 end);
 
 InstallMethod(BlissCanonicalDigraph, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-function(digraph, colors)
-  if IsMultiDigraph(digraph) then
-    return OnMultiDigraphs(digraph, BlissCanonicalLabelling(digraph, colors));
+function(D, colors)
+  if IsMultiDigraph(D) then
+    return OnMultiDigraphs(D, BlissCanonicalLabelling(D, colors));
   fi;
-  return OnDigraphs(digraph, BlissCanonicalLabelling(digraph, colors));
+  return OnDigraphs(D, BlissCanonicalLabelling(D, colors));
 end);
 
 InstallMethod(NautyCanonicalDigraph, "for a digraph", [IsDigraph],
-function(digraph)
-  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(digraph) then
+function(D)
+  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(D) then
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  return OnDigraphs(digraph, NautyCanonicalLabelling(digraph));
+  return OnDigraphs(D, NautyCanonicalLabelling(D));
 end);
 
 InstallMethod(NautyCanonicalDigraph, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-function(digraph, colors)
-  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(digraph) then
+function(D, colors)
+  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(D) then
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  return OnDigraphs(digraph, NautyCanonicalLabelling(digraph, colors));
+  return OnDigraphs(D, NautyCanonicalLabelling(D, colors));
 end);
 
 # Automorphism group
 
 InstallMethod(BlissAutomorphismGroup, "for a digraph", [IsDigraph],
-function(digraph)
+function(D)
   local data;
-  data := BLISS_DATA_NO_COLORS(digraph);
-  SetBlissCanonicalLabelling(digraph, data[2]);
-  if not HasDigraphGroup(digraph) then
-    if IsMultiDigraph(digraph) then
-      SetDigraphGroup(digraph, Range(Projection(data[1], 1)));
+  data := BLISS_DATA_NO_COLORS(D);
+  SetBlissCanonicalLabelling(D, data[2]);
+  if not HasDigraphGroup(D) then
+    if IsMultiDigraph(D) then
+      SetDigraphGroup(D, Range(Projection(data[1], 1)));
     else
-      SetDigraphGroup(digraph, data[1]);
+      SetDigraphGroup(D, data[1]);
     fi;
   fi;
   return data[1];
 end);
 
 InstallMethod(NautyAutomorphismGroup, "for a digraph", [IsDigraph],
-function(digraph)
+function(D)
   local data;
-  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(digraph) then
+  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(D) then
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
 
-  data := NAUTY_DATA_NO_COLORS(digraph);
-  SetNautyCanonicalLabelling(digraph, data[2]);
-  if not HasDigraphGroup(digraph) then
+  data := NAUTY_DATA_NO_COLORS(D);
+  SetNautyCanonicalLabelling(D, data[2]);
+  if not HasDigraphGroup(D) then
     # Multidigraphs not allowed
-    SetDigraphGroup(digraph, data[1]);
+    SetDigraphGroup(D, data[1]);
   fi;
   return data[1];
 end);
 
 InstallMethod(BlissAutomorphismGroup, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-function(digraph, colors)
-  return BLISS_DATA(digraph,
-                    colors,
-                    "AutomorphismGroup")[1];
+function(D, colors)
+  return BLISS_DATA(D, colors)[1];
 end);
 
 InstallMethod(NautyAutomorphismGroup, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-function(digraph, colors)
-  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(digraph) then
+function(D, colors)
+  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(D) then
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  return NAUTY_DATA(digraph, colors, "AutomorphismGroup")[1];
+  return NAUTY_DATA(D, colors, "AutomorphismGroup")[1];
 end);
 
 InstallMethod(AutomorphismGroup, "for a digraph", [IsDigraph],
@@ -318,9 +312,9 @@ function(gr1, gr2, c1, c2)
   local m, colour1, n, colour2, max, class_sizes, act, i;
 
   m := DigraphNrVertices(gr1);
-  colour1 := DIGRAPHS_ValidateVertexColouring(m, c1, "IsIsomorphicDigraph");
+  colour1 := DIGRAPHS_ValidateVertexColouring(m, c1);
   n := DigraphNrVertices(gr2);
-  colour2 := DIGRAPHS_ValidateVertexColouring(n, c2, "IsIsomorphicDigraph");
+  colour2 := DIGRAPHS_ValidateVertexColouring(n, c2);
 
   max := Maximum(colour1);
   if max <> Maximum(colour2) then
@@ -399,9 +393,9 @@ function(gr1, gr2, c1, c2)
   local m, colour1, n, colour2, max, class_sizes, label1, label2, i;
 
   m := DigraphNrVertices(gr1);
-  colour1 := DIGRAPHS_ValidateVertexColouring(m, c1, "IsomorphismDigraphs");
+  colour1 := DIGRAPHS_ValidateVertexColouring(m, c1);
   n := DigraphNrVertices(gr2);
-  colour2 := DIGRAPHS_ValidateVertexColouring(n, c2, "IsomorphismDigraphs");
+  colour2 := DIGRAPHS_ValidateVertexColouring(n, c2);
 
   max := Maximum(colour1);
   if max <> Maximum(colour2) then
@@ -463,40 +457,31 @@ end);
 # If <partition> is invalid, then the function returns <fail>.
 
 InstallGlobalFunction(DIGRAPHS_ValidateVertexColouring,
-function(n, partition, method)
+function(n, partition)
   local colours, i, missing, seen, x;
 
   if not IsInt(n) or n < 0 then
-    ErrorNoReturn("Digraphs: DIGRAPHS_ValidateVertexColouring: usage,\n",
-                  "the first argument <n> must be a non-negative integer,");
-  elif not IsString(method) then
-    ErrorNoReturn("Digraphs: DIGRAPHS_ValidateVertexColouring: usage,\n",
-                  "the third argument <method> must be a string,");
+    ErrorNoReturn("the 1st argument must be a non-negative integer,");
   elif not IsHomogeneousList(partition) then
-    ErrorNoReturn("Digraphs: ", method, ": usage,\n",
-                  "in order to define a colouring, the argument <partition> ",
-                  "must be a homogeneous\nlist,");
+    ErrorNoReturn("the 2nd argument must be a homogeneous list,");
   elif n = 0 then
     if IsEmpty(partition) then
       return partition;
     fi;
-    ErrorNoReturn("Digraphs: ", method, ": usage,\n",
-                  "the only valid partition of the vertices of the digraph ",
-                  "with 0 vertices is the\nempty list,");
+    ErrorNoReturn("the only valid partition of the vertices of the digraph ",
+                  "with 0 vertices is the empty list,");
   elif not IsEmpty(partition) then
     if IsPosInt(partition[1]) and Length(partition) = n then
       # <partition> seems to be a list of colours
       colours := [];
       for i in partition do
         if not IsPosInt(i) then
-          ErrorNoReturn("Digraphs: ", method, ": usage,\n",
-                        "the argument <partition> does not define a colouring ",
-                        "of the vertices [1 .. ", n, "],\nsince it contains ",
-                        "the element <i>, which is not a positive integer,");
+          ErrorNoReturn("the 2nd argument does not define a colouring ",
+                        "of the vertices [1 .. ", n, "], since it contains ",
+                        "the element ", i, ", which is not a positive integer,");
         elif i > n then
-          ErrorNoReturn("Digraphs: ", method, ": usage,\n",
-                        "the argument <partition> does not define a colouring ",
-                        "of the vertices [1 .. ", n, "],\nsince it contains ",
+          ErrorNoReturn("the 2nd argument does not define a colouring ",
+                        "of the vertices [1 .. ", n, "], since it contains ",
                         "the integer ", i, ", which is greater than ", n, ",");
         fi;
         AddSet(colours, i);
@@ -504,11 +489,10 @@ function(n, partition, method)
       i := Length(colours);
       missing := Difference([1 .. i], colours);
       if not IsEmpty(missing) then
-        ErrorNoReturn("Digraphs: ", method, ": usage,\n",
-                      "the argument <partition> does not define a colouring ",
-                      "of the vertices [1 .. ", n, "],\nsince it contains the ",
+        ErrorNoReturn("the 2nd argument does not define a colouring ",
+                      "of the vertices [1 .. ", n, "], since it contains the ",
                       "colour ", colours[i], ", but it lacks the colour ",
-                      missing[1], ". A colouring must\nuse precisely the ",
+                      missing[1], ". A colouring must use precisely the ",
                       "colours [1 .. m], for some positive integer m <= ", n,
                       ",");
       fi;
@@ -520,15 +504,14 @@ function(n, partition, method)
         # guaranteed to be non-empty since <partition> is homogeneous
         for x in partition[i] do
           if not IsPosInt(x) or x > n then
-            ErrorNoReturn("Digraphs: ", method, ": usage,\n",
-                          "the argument <partition> does not define a ",
-                          "colouring of the vertices [1 .. ", n, "],\nsince ",
-                          "<partition[i]> contains <x>, which is not an ",
-                          "integer in the range\n[1 .. ", n, "],");
+            ErrorNoReturn("the 2nd argument does not define a ",
+                          "colouring of the vertices [1 .. ", n, "], since ",
+                          "the entry in position ", i, " contains ", x,
+                          " which is not an integer in the range [1 .. ", n,
+                          "],");
           elif seen[x] then
-            ErrorNoReturn("Digraphs: ", method, ": usage,\n",
-                          "the argument <partition> does not define a ",
-                          "colouring of the vertices [1 .. ", n, "],\nsince ",
+            ErrorNoReturn("the 2nd argument does not define a ",
+                          "colouring of the vertices [1 .. ", n, "], since ",
                           "it contains the vertex ", x, " more than once,");
           fi;
           seen[x] := true;
@@ -537,32 +520,27 @@ function(n, partition, method)
       od;
       i := First([1 .. n], x -> not seen[x]);
       if i <> fail then
-        ErrorNoReturn("Digraphs: ", method, ": usage,\n",
-                      "the argument <partition> does not define a ",
-                      "colouring of the vertices [1 .. ", n, "],\nsince ",
+        ErrorNoReturn("the 2nd argument does not define a ",
+                      "colouring of the vertices [1 .. ", n, "], since ",
                       "it does not assign a colour to the vertex ", i, ",");
       fi;
       return colours;
     fi;
   fi;
-  ErrorNoReturn("Digraphs: ", method, ": usage,\n",
-                "the argument <partition> does not define a ",
-                "colouring of the vertices [1 .. ", n, "].\nThe list ",
-                "<partition> must have one of the following forms:\n",
-                "1. <partition> is a list of length ", n, " consisting of ",
-                "every integer in the range\n   [1 .. m], for some m <= ", n,
-                ";\n2. <partition> is a list of non-empty disjoint lists ",
-                "whose union is [1 .. ", n, "].\nIn the first form, ",
-                "<partition[i]> is the colour of vertex i; in the second\n",
-                "form, <partition[i]> is the list of vertices with colour i,");
+  ErrorNoReturn("the 2nd argument does not define a ",
+                "colouring of the vertices [1 .. ", n, "]. The 2nd ",
+                "argument must have one of the following forms: ",
+                "1. a list of length ", n, " consisting of ",
+                "every integer in the range [1 .. m], for some m <= ", n,
+                "; or 2. a list of non-empty disjoint lists ",
+                "whose union is [1 .. ", n, "].");
 end);
 
 InstallMethod(IsDigraphIsomorphism, "for digraph, digraph, and permutation",
 [IsDigraph, IsDigraph, IsPerm],
 function(src, ran, x)
   if IsMultiDigraph(src) or IsMultiDigraph(ran) then
-    ErrorNoReturn("Digraphs: IsDigraphIsomorphism: usage,\n",
-                  "the first 2 arguments must not have multiple edges,");
+    ErrorNoReturn("the 1st and 2nd arguments must not have multiple edges,");
   fi;
   return IsDigraphHomomorphism(src, ran, x)
     and IsDigraphHomomorphism(ran, src, x ^ -1);
@@ -570,8 +548,8 @@ end);
 
 InstallMethod(IsDigraphAutomorphism, "for a digraph and a permutation",
 [IsDigraph, IsPerm],
-function(gr, x)
-  return IsDigraphIsomorphism(gr, gr, x);
+function(D, x)
+  return IsDigraphIsomorphism(D, D, x);
 end);
 
 InstallMethod(IsDigraphIsomorphism, "for digraph, digraph, and transformation",
@@ -587,6 +565,6 @@ end);
 
 InstallMethod(IsDigraphAutomorphism, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
-function(gr, x)
-  return IsDigraphIsomorphism(gr, gr, x);
+function(D, x)
+  return IsDigraphIsomorphism(D, D, x);
 end);

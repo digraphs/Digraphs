@@ -1926,27 +1926,23 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
     }
   }
 
-  Obj str;
-  C_NEW_STRING(str, 26, "HomomorphismDigraphsFinder");
   if (!IS_LIST(colors1_obj) && colors1_obj != Fail) {
     ErrorQuit("the 10th argument (colors1) must be a list or fail, not %s",
               (Int) TNAM_OBJ(colors1_obj),
               0L);
   } else if (IS_LIST(colors1_obj)) {
-    colors1_obj = CALL_3ARGS(DIGRAPHS_ValidateVertexColouring,
+    colors1_obj = CALL_2ARGS(DIGRAPHS_ValidateVertexColouring,
                              INTOBJ_INT(DigraphNrVertices(digraph1_obj)),
-                             colors1_obj,
-                             str);
+                             colors1_obj);
   }
   if (!IS_LIST(colors2_obj) && colors2_obj != Fail) {
     ErrorQuit("the 11th argument (colors2) must be a list or fail, not %s",
               (Int) TNAM_OBJ(colors2_obj),
               0L);
   } else if (IS_LIST(colors2_obj)) {
-    colors2_obj = CALL_3ARGS(DIGRAPHS_ValidateVertexColouring,
+    colors2_obj = CALL_2ARGS(DIGRAPHS_ValidateVertexColouring,
                              INTOBJ_INT(DigraphNrVertices(digraph2_obj)),
-                             colors2_obj,
-                             str);
+                             colors2_obj);
   }
   if ((IS_LIST(colors1_obj) && !IS_LIST(colors2_obj))
       || (colors1_obj == Fail && colors2_obj != Fail)) {

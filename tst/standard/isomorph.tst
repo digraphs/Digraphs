@@ -245,19 +245,17 @@ false
 gap> IsIsomorphicDigraph(gr1, gr1, [1, 1], [1, 1]);
 true
 gap> IsIsomorphicDigraph(gr2, gr2, [], [1, 1]);
-Error, Digraphs: IsIsomorphicDigraph: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2].
-The list <partition> must have one of the following forms:
-1. <partition> is a list of length 2 consisting of every integer in the range
-   [1 .. m], for some m <= 2;
-2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 2].
-In the first form, <partition[i]> is the colour of vertex i; in the second
-form, <partition[i]> is the list of vertices with colour i,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2
+ ]. The 2nd argument must have one of the following forms: 1. a list of length 
+2 consisting of every integer in the range [1 .. m], for some m <= 
+2; or 2. a list of non-empty disjoint lists whose union is [1 .. 2].
 gap> IsIsomorphicDigraph(gr2, gr2, [2, 2], []);
-Error, Digraphs: IsIsomorphicDigraph: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2],
-since it contains the colour 2, but it lacks the colour 1. A colouring must
-use precisely the colours [1 .. m], for some positive integer m <= 2,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2], since it contains the colour 2, but it lacks the colour 
+1
+ . A colouring must use precisely the colours [1 .. m], for some positive integ\
+er m <= 2,
 gap> IsIsomorphicDigraph(EmptyDigraph(1), EmptyDigraph(2), [1], [1, 1]);
 false
 gap> IsIsomorphicDigraph(EmptyDigraph(1), Digraph([[1]]), [1], [1]);
@@ -267,10 +265,11 @@ false
 gap> IsIsomorphicDigraph(EmptyDigraph(2), EmptyDigraph(2), [1, 1], [1, 1]);
 true
 gap> IsIsomorphicDigraph(gr2, gr2, [1, 1], [2, 2]);
-Error, Digraphs: IsIsomorphicDigraph: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2],
-since it contains the colour 2, but it lacks the colour 1. A colouring must
-use precisely the colours [1 .. m], for some positive integer m <= 2,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2], since it contains the colour 2, but it lacks the colour 
+1
+ . A colouring must use precisely the colours [1 .. m], for some positive integ\
+er m <= 2,
 gap> IsIsomorphicDigraph(gr2, gr2, [1, 2], [2, 1]);
 true
 gap> gr1 := CycleDigraph(4);
@@ -408,19 +407,17 @@ fail
 gap> IsomorphismDigraphs(gr1, gr1, [1, 1], [1, 1]);
 [ (), () ]
 gap> IsomorphismDigraphs(gr2, gr2, [], [1, 1]);
-Error, Digraphs: IsomorphismDigraphs: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2].
-The list <partition> must have one of the following forms:
-1. <partition> is a list of length 2 consisting of every integer in the range
-   [1 .. m], for some m <= 2;
-2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 2].
-In the first form, <partition[i]> is the colour of vertex i; in the second
-form, <partition[i]> is the list of vertices with colour i,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2
+ ]. The 2nd argument must have one of the following forms: 1. a list of length 
+2 consisting of every integer in the range [1 .. m], for some m <= 
+2; or 2. a list of non-empty disjoint lists whose union is [1 .. 2].
 gap> IsomorphismDigraphs(gr2, gr2, [2, 2], []);
-Error, Digraphs: IsomorphismDigraphs: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2],
-since it contains the colour 2, but it lacks the colour 1. A colouring must
-use precisely the colours [1 .. m], for some positive integer m <= 2,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2], since it contains the colour 2, but it lacks the colour 
+1
+ . A colouring must use precisely the colours [1 .. m], for some positive integ\
+er m <= 2,
 gap> IsomorphismDigraphs(EmptyDigraph(1), EmptyDigraph(2), [1], [1, 1]);
 fail
 gap> IsomorphismDigraphs(EmptyDigraph(1), Digraph([[1]]), [1], [1]);
@@ -555,33 +552,25 @@ Group(())
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <immutable digraph with 8 vertices, 32 edges>
 gap> AutomorphismGroup(gr, [[1 .. 4], [5 .. 9]]);
-Error, Digraphs: AutomorphismGroup: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 8],
-since <partition[i]> contains <x>, which is not an integer in the range
-[1 .. 8],
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+8], since the entry in position 2 contains 
+9 which is not an integer in the range [1 .. 8],
 gap> AutomorphismGroup(gr, ["a", "b"]);
-Error, Digraphs: AutomorphismGroup: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 8],
-since <partition[i]> contains <x>, which is not an integer in the range
-[1 .. 8],
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+8], since the entry in position 
+1 contains 'a' which is not an integer in the range [1 .. 8],
 gap> AutomorphismGroup(gr, [1 .. 10]);
-Error, Digraphs: AutomorphismGroup: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 8].
-The list <partition> must have one of the following forms:
-1. <partition> is a list of length 8 consisting of every integer in the range
-   [1 .. m], for some m <= 8;
-2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 8].
-In the first form, <partition[i]> is the colour of vertex i; in the second
-form, <partition[i]> is the list of vertices with colour i,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+8
+ ]. The 2nd argument must have one of the following forms: 1. a list of length 
+8 consisting of every integer in the range [1 .. m], for some m <= 
+8; or 2. a list of non-empty disjoint lists whose union is [1 .. 8].
 gap> AutomorphismGroup(gr, [-1 .. -10]);
-Error, Digraphs: AutomorphismGroup: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 8].
-The list <partition> must have one of the following forms:
-1. <partition> is a list of length 8 consisting of every integer in the range
-   [1 .. m], for some m <= 8;
-2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 8].
-In the first form, <partition[i]> is the colour of vertex i; in the second
-form, <partition[i]> is the list of vertices with colour i,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+8
+ ]. The 2nd argument must have one of the following forms: 1. a list of length 
+8 consisting of every integer in the range [1 .. m], for some m <= 
+8; or 2. a list of non-empty disjoint lists whose union is [1 .. 8].
 
 #  AutomorphismGroup: for a multidigraph
 gap> gr := Digraph([[2, 2], []]);
@@ -616,33 +605,25 @@ true
 gap> gr := CompleteBipartiteDigraph(4, 4);
 <immutable digraph with 8 vertices, 32 edges>
 gap> BlissCanonicalLabelling(gr, [[1 .. 4], [5 .. 9]]);
-Error, Digraphs: BlissCanonicalLabelling: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 8],
-since <partition[i]> contains <x>, which is not an integer in the range
-[1 .. 8],
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+8], since the entry in position 2 contains 
+9 which is not an integer in the range [1 .. 8],
 gap> BlissCanonicalLabelling(gr, ["a", "b"]);
-Error, Digraphs: BlissCanonicalLabelling: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 8],
-since <partition[i]> contains <x>, which is not an integer in the range
-[1 .. 8],
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+8], since the entry in position 
+1 contains 'a' which is not an integer in the range [1 .. 8],
 gap> BlissCanonicalLabelling(gr, [1 .. 10]);
-Error, Digraphs: BlissCanonicalLabelling: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 8].
-The list <partition> must have one of the following forms:
-1. <partition> is a list of length 8 consisting of every integer in the range
-   [1 .. m], for some m <= 8;
-2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 8].
-In the first form, <partition[i]> is the colour of vertex i; in the second
-form, <partition[i]> is the list of vertices with colour i,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+8
+ ]. The 2nd argument must have one of the following forms: 1. a list of length 
+8 consisting of every integer in the range [1 .. m], for some m <= 
+8; or 2. a list of non-empty disjoint lists whose union is [1 .. 8].
 gap> BlissCanonicalLabelling(gr, [-1 .. -10]);
-Error, Digraphs: BlissCanonicalLabelling: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 8].
-The list <partition> must have one of the following forms:
-1. <partition> is a list of length 8 consisting of every integer in the range
-   [1 .. m], for some m <= 8;
-2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 8].
-In the first form, <partition[i]> is the colour of vertex i; in the second
-form, <partition[i]> is the list of vertices with colour i,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+8
+ ]. The 2nd argument must have one of the following forms: 1. a list of length 
+8 consisting of every integer in the range [1 .. m], for some m <= 
+8; or 2. a list of non-empty disjoint lists whose union is [1 .. 8].
 
 #  CanonicalLabelling: for a multidigraph
 gap> gr := Digraph([[2, 2], []]);
@@ -654,94 +635,74 @@ fail
 
 #  DIGRAPHS_ValidateVertexColouring, 1, errors
 gap> DIGRAPHS_ValidateVertexColouring();
-Error, Function: number of arguments must be 3 (not 0)
+Error, Function: number of arguments must be 2 (not 0)
 gap> DIGRAPHS_ValidateVertexColouring(fail);
-Error, Function: number of arguments must be 3 (not 1)
+Error, Function: number of arguments must be 2 (not 1)
 gap> DIGRAPHS_ValidateVertexColouring(fail, fail);
-Error, Function: number of arguments must be 3 (not 2)
-gap> DIGRAPHS_ValidateVertexColouring(0, fail, "TestFunction");
-Error, Digraphs: TestFunction: usage,
-in order to define a colouring, the argument <partition> must be a homogeneous
-list,
-gap> DIGRAPHS_ValidateVertexColouring(fail, [], "TestFunction");
-Error, Digraphs: DIGRAPHS_ValidateVertexColouring: usage,
-the first argument <n> must be a non-negative integer,
+Error, the 1st argument must be a non-negative integer,
+gap> DIGRAPHS_ValidateVertexColouring(0, fail);
+Error, the 2nd argument must be a homogeneous list,
+gap> DIGRAPHS_ValidateVertexColouring(fail, []);
+Error, the 1st argument must be a non-negative integer,
 gap> DIGRAPHS_ValidateVertexColouring(0, [], fail);
-Error, Digraphs: DIGRAPHS_ValidateVertexColouring: usage,
-the third argument <method> must be a string,
+Error, Function: number of arguments must be 2 (not 3)
 
 #  DIGRAPHS_ValidateVertexColouring, 2
-gap> DIGRAPHS_ValidateVertexColouring(0, [], "TestFunction");
+gap> DIGRAPHS_ValidateVertexColouring(0, []);
 [  ]
-gap> DIGRAPHS_ValidateVertexColouring(0, [2], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the only valid partition of the vertices of the digraph with 0 vertices is the
-empty list,
-gap> DIGRAPHS_ValidateVertexColouring(1, [], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 1].
-The list <partition> must have one of the following forms:
-1. <partition> is a list of length 1 consisting of every integer in the range
-   [1 .. m], for some m <= 1;
-2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 1].
-In the first form, <partition[i]> is the colour of vertex i; in the second
-form, <partition[i]> is the list of vertices with colour i,
-gap> DIGRAPHS_ValidateVertexColouring(1, [fail], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 1].
-The list <partition> must have one of the following forms:
-1. <partition> is a list of length 1 consisting of every integer in the range
-   [1 .. m], for some m <= 1;
-2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 1].
-In the first form, <partition[i]> is the colour of vertex i; in the second
-form, <partition[i]> is the list of vertices with colour i,
-gap> DIGRAPHS_ValidateVertexColouring(1, [1, 1], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 1].
-The list <partition> must have one of the following forms:
-1. <partition> is a list of length 1 consisting of every integer in the range
-   [1 .. m], for some m <= 1;
-2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 1].
-In the first form, <partition[i]> is the colour of vertex i; in the second
-form, <partition[i]> is the list of vertices with colour i,
-gap> DIGRAPHS_ValidateVertexColouring(2, [1, -1], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2],
-since it contains the element <i>, which is not a positive integer,
-gap> DIGRAPHS_ValidateVertexColouring(2, [2, 3], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2],
-since it contains the integer 3, which is greater than 2,
-gap> DIGRAPHS_ValidateVertexColouring(2, [2, 0], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2],
-since it contains the element <i>, which is not a positive integer,
-gap> DIGRAPHS_ValidateVertexColouring(2, [[]], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2],
-since it does not assign a colour to the vertex 1,
-gap> DIGRAPHS_ValidateVertexColouring(1, [[1, 1]], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 1],
-since it contains the vertex 1 more than once,
-gap> DIGRAPHS_ValidateVertexColouring(1, [[0, 1]], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 1],
-since <partition[i]> contains <x>, which is not an integer in the range
-[1 .. 1],
-gap> DIGRAPHS_ValidateVertexColouring(1, [[2]], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 1],
-since <partition[i]> contains <x>, which is not an integer in the range
-[1 .. 1],
-gap> DIGRAPHS_ValidateVertexColouring(4, [[3], [2, 1], [4]], "TestFunction");
+gap> DIGRAPHS_ValidateVertexColouring(0, [2]);
+Error, the only valid partition of the vertices of the digraph with 0 vertices\
+ is the empty list,
+gap> DIGRAPHS_ValidateVertexColouring(1, []);
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+1
+ ]. The 2nd argument must have one of the following forms: 1. a list of length 
+1 consisting of every integer in the range [1 .. m], for some m <= 
+1; or 2. a list of non-empty disjoint lists whose union is [1 .. 1].
+gap> DIGRAPHS_ValidateVertexColouring(1, [fail]);
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+1
+ ]. The 2nd argument must have one of the following forms: 1. a list of length 
+1 consisting of every integer in the range [1 .. m], for some m <= 
+1; or 2. a list of non-empty disjoint lists whose union is [1 .. 1].
+gap> DIGRAPHS_ValidateVertexColouring(1, [1, 1]);
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+1
+ ]. The 2nd argument must have one of the following forms: 1. a list of length 
+1 consisting of every integer in the range [1 .. m], for some m <= 
+1; or 2. a list of non-empty disjoint lists whose union is [1 .. 1].
+gap> DIGRAPHS_ValidateVertexColouring(2, [1, -1]);
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2], since it contains the element -1, which is not a positive integer,
+gap> DIGRAPHS_ValidateVertexColouring(2, [2, 3]);
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2], since it contains the integer 3, which is greater than 2,
+gap> DIGRAPHS_ValidateVertexColouring(2, [2, 0]);
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2], since it contains the element 0, which is not a positive integer,
+gap> DIGRAPHS_ValidateVertexColouring(2, [[]]);
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2], since it does not assign a colour to the vertex 1,
+gap> DIGRAPHS_ValidateVertexColouring(1, [[1, 1]]);
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+1], since it contains the vertex 1 more than once,
+gap> DIGRAPHS_ValidateVertexColouring(1, [[0, 1]]);
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+1], since the entry in position 1 contains 
+0 which is not an integer in the range [1 .. 1],
+gap> DIGRAPHS_ValidateVertexColouring(1, [[2]]);
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+1], since the entry in position 1 contains 
+2 which is not an integer in the range [1 .. 1],
+gap> DIGRAPHS_ValidateVertexColouring(4, [[3], [2, 1], [4]]);
 [ 2, 2, 1, 3 ]
-gap> DIGRAPHS_ValidateVertexColouring(4, [1, 1, 3, 4], "TestFunction");
-Error, Digraphs: TestFunction: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 4],
-since it contains the colour 4, but it lacks the colour 2. A colouring must
-use precisely the colours [1 .. m], for some positive integer m <= 4,
-gap> DIGRAPHS_ValidateVertexColouring(4, [1, 1, 3, 2], "TestFunction");
+gap> DIGRAPHS_ValidateVertexColouring(4, [1, 1, 3, 4]);
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+4], since it contains the colour 4, but it lacks the colour 
+2
+ . A colouring must use precisely the colours [1 .. m], for some positive integ\
+er m <= 4,
+gap> DIGRAPHS_ValidateVertexColouring(4, [1, 1, 3, 2]);
 [ 1, 1, 3, 2 ]
 
 #  CanonicalDigraph
@@ -839,8 +800,7 @@ false
 gap> IsDigraphAutomorphism(gr2, (2, 3, 6));
 false
 gap> IsDigraphAutomorphism(Digraph([[1, 1], [1, 1, 2], [1, 2, 2, 3]]), ());
-Error, Digraphs: IsDigraphIsomorphism: usage,
-the first 2 arguments must not have multiple edges,
+Error, the 1st and 2nd arguments must not have multiple edges,
 
 # IsDigraphAutomorphism, for digraph and transformation
 gap> gr1 := Digraph([[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1]]);
@@ -863,8 +823,7 @@ gap> IsDigraphAutomorphism(gr2, Transformation([1, 1, 2, 3]));
 false
 gap> IsDigraphAutomorphism(Digraph([[1, 1], [1, 1, 2], [1, 2, 2, 3]]),
 > AsTransformation(()));
-Error, Digraphs: IsDigraphIsomorphism: usage,
-the first 2 arguments must not have multiple edges,
+Error, the 1st and 2nd arguments must not have multiple edges,
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);

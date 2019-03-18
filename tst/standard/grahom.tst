@@ -122,9 +122,8 @@ gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 [ IdentityTransformation ]
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [[1, 2], [2]], [[1, 2]]);
-Error, Digraphs: HomomorphismDigraphsFinder: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2],
-since it contains the vertex 2 more than once,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2], since it contains the vertex 2 more than once,
 gap> gr := CompleteDigraph(513);;
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, 0, [1 .. 513],
 > [], fail, fail);
@@ -134,24 +133,18 @@ gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 [ Transformation( [ 2, 1 ] ) ]
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [1, 2, 3], [2, 1]);
-Error, Digraphs: HomomorphismDigraphsFinder: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2].
-The list <partition> must have one of the following forms:
-1. <partition> is a list of length 2 consisting of every integer in the range
-   [1 .. m], for some m <= 2;
-2. <partition> is a list of non-empty disjoint lists whose union is [1 .. 2].
-In the first form, <partition[i]> is the colour of vertex i; in the second
-form, <partition[i]> is the list of vertices with colour i,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2
+ ]. The 2nd argument must have one of the following forms: 1. a list of length 
+2 consisting of every integer in the range [1 .. m], for some m <= 
+2; or 2. a list of non-empty disjoint lists whose union is [1 .. 2].
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [1, 3], [2, 1]);
-Error, Digraphs: HomomorphismDigraphsFinder: usage,
-the argument <partition> does not define a colouring of the vertices [1 .. 2],
-since it contains the integer 3, which is greater than 2,
+Error, the 2nd argument does not define a colouring of the vertices [1 .. 
+2], since it contains the integer 3, which is greater than 2,
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [1, fail], [2, 1]);
-Error, Digraphs: HomomorphismDigraphsFinder: usage,
-in order to define a colouring, the argument <partition> must be a homogeneous
-list,
+Error, the 2nd argument must be a homogeneous list,
 gap> gr := ChainDigraph(2);
 <immutable digraph with 2 vertices, 1 edge>
 gap> GeneratorsOfEndomorphismMonoid();
@@ -1065,8 +1058,7 @@ gap> IsDigraphEndomorphism(gr, x);
 Error, Digraphs: IsDigraphHomomorphism: usage,
 the first 2 arguments must not have multiple edges,
 gap> IsDigraphEndomorphism(gr, ());
-Error, Digraphs: IsDigraphIsomorphism: usage,
-the first 2 arguments must not have multiple edges,
+Error, the 1st and 2nd arguments must not have multiple edges,
 gap> IsDigraphHomomorphism(gr, gr, ());
 Error, Digraphs: IsDigraphHomomorphism: usage,
 the first 2 arguments must not have multiple edges,
