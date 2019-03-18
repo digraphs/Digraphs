@@ -120,7 +120,8 @@ function(digraph)
 
   # The chromatic number of <digraph> is at least 3 and at most nr
   digraph := DigraphMutableCopy(digraph);
-  digraph := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(digraph));
+  digraph := DigraphRemoveAllMultipleEdges(digraph);
+  digraph := DigraphSymmetricClosure(digraph);
 
   if IsCompleteDigraph(digraph) then
     # chromatic number = nr iff <digraph> has >= 2 verts & this cond.
@@ -298,7 +299,14 @@ function(digraph)
   if IsConnectedDigraph(digraph) then
     return digraph;
   fi;
-  return MakeImmutable(ReducedDigraph(DigraphMutableCopy(digraph)));
+  digraph := ReducedDigraph(DigraphMutableCopy(digraph));
+  return MakeImmutableDigraph(digraph);
+end);
+
+InstallMethod(ReducedDigraphAttr, "for an immutable digraph",
+[IsImmutableDigraph],
+function(digraph)
+  return ReducedDigraph(digraph);
 end);
 
 InstallMethod(DigraphDual, "for a mutable digraph",
@@ -320,15 +328,25 @@ function(digraph)
   return digraph;
 end);
 
-InstallMethod(DigraphDual, "for a digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphDual, "for an immutable digraph",
+[IsImmutableDigraph],
 function(digraph)
   local dg;
-  dg := MakeImmutable(DigraphDual(DigraphMutableCopy(digraph)));
+  if HasDigraphDualAttr(digraph) then
+    return DigraphDualAttr(digraph);
+  fi;
+  dg := DigraphMutableCopy(digraph);
+  dg := MakeImmutableDigraph(DigraphDual(dg));
   if HasDigraphGroup(digraph) then
     SetDigraphGroup(dg, DigraphGroup(digraph));
   fi;
   return dg;
+end);
+
+InstallMethod(DigraphDualAttr, "for an immutable digraph",
+[IsImmutableDigraph],
+function(digraph)
+  return DigraphDual(digraph);
 end);
 
 InstallMethod(DigraphNrEdges, "for a digraph", [IsDigraph], DIGRAPH_NREDGES);
@@ -821,6 +839,7 @@ function(digraph, v)
                  layers := layers);
   return data[v];
 end);
+
 BindGlobal("DIGRAPHS_DiameterAndUndirectedGirth",
 function(digraph)
   local outer_reps, diameter, girth, v, record, localGirth,
@@ -954,10 +973,12 @@ function(digraph)
   return circs[Position(lens, max)];
 end);
 
-InstallMethod(DigraphSymmetricClosure, "for a digraph",
+
+# TODO (FLS): I've just added 1 as the edge label here, is this really desired?
+InstallMethod(DigraphSymmetricClosure, "for a mutable digraph",
 [IsDenseDigraphRep and IsMutableDigraph],
 function(digraph)
-  local n, m, verts, mat, new, x, i, j, k;
+  local n, m, verts, edglbls, mat, out, x, new, i, j, k;
   n := DigraphNrVertices(digraph);
   if n <= 1
       or (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph)) then
@@ -968,11 +989,13 @@ function(digraph)
   m := Float(Sum(OutDegreeSequence(digraph)) / n);
   verts := [1 .. n];  # We don't want DigraphVertices as that's immutable
 
+  edglbls := DigraphEdgeLabelsNC(digraph);
+
   if IsMultiDigraph(digraph) then
     mat := List(verts, x -> verts * 0);
-    new := OutNeighboursMutableCopy(digraph);
+    out := OutNeighbours(digraph);
     for i in verts do
-      for j in new[i] do
+      for j in out[i] do
         if j < i then
           mat[j][i] := mat[j][i] - 1;
         else
@@ -985,11 +1008,13 @@ function(digraph)
         x := mat[i][j];
         if x > 0 then
           for k in [1 .. x] do
-            Add(new[j], i);
+            Add(out[j], i);
+            Add(edglbls[j], 1);
           od;
         elif x < 0 then
           for k in [1 .. -x] do
-            Add(new[i], j);
+            Add(out[i], j);
+            Add(edglbls[i], 1);
           od;
         fi;
       od;
@@ -1012,18 +1037,42 @@ function(digraph)
       od;
     od;
     new := List(mat, row -> ListBlist(verts, row));
+    return MutableDigraphNC(new);
   else
-    new := OutNeighboursMutableCopy(digraph);
-    Perform(new, Sort);
+    out := OutNeighbours(digraph);
+    Perform(out, Sort);
     for i in [1 .. n] do
-      for j in new[i] do
-        AddSet(new[j], i);
+      for j in out[i] do
+        if not i in out[j] then
+          Add(DigraphEdgeLabelsNC(digraph)[j], 1);
+          AddSet(out[j], i);
+        fi;
       od;
     od;
   fi;
-  digraph := DigraphNC(new);
-  SetIsSymmetricDigraph(digraph, true);
   return digraph;
+end);
+
+InstallMethod(DigraphSymmetricClosure, "for a digraph",
+[IsImmutableDigraph],
+function(digraph)
+  local dg;
+  
+  if DigraphNrVertices(digraph) <= 1
+      or (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph)) then
+    return digraph;
+  fi;
+
+  dg := DigraphMutableCopy(digraph);
+  dg := MakeImmutableDigraph(DigraphSymmetricClosure(dg));
+  SetIsSymmetricDigraph(dg, true);
+  return dg;
+end);
+
+InstallMethod(DigraphSymmetricClosureAttr, "for an immutable digraph",
+[IsImmutableDigraph],
+function(digraph)
+  return DigraphSymmetricClosure(digraph);
 end);
 
 InstallMethod(DigraphTransitiveClosure, "for a digraph",

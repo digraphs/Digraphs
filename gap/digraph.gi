@@ -143,6 +143,12 @@ InstallMethod(DigraphCopyIfMutable, "for a mutable digraph",
 InstallMethod(DigraphCopyIfMutable, "for an immutable digraph",
 [IsImmutableDigraph], IdFunc);
 
+InstallMethod(DigraphCopyIfImmutable, "for a mutable digraph",
+[IsMutableDigraph], IdFunc);
+
+InstallMethod(DigraphCopyIfImmutable, "for an immutable digraph",
+[IsImmutableDigraph], DigraphMutableCopy);
+
 ########################################################################
 # 4. MakeImmutableDigraph
 ########################################################################

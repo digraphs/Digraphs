@@ -37,6 +37,7 @@ DeclareOperation("DigraphNC", [IsList]);
 DeclareOperation("DigraphMutableCopy", [IsDigraph]);
 DeclareOperation("DigraphCopy", [IsDigraph]);
 DeclareOperation("DigraphCopyIfMutable", [IsDigraph]);
+DeclareOperation("DigraphCopyIfImmutable", [IsDigraph]);
 
 # Converter
 DeclareOperation("MakeImmutableDigraph", [IsDigraph]);
