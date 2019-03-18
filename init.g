@@ -14,13 +14,12 @@ if not IsBound(UserHomeExpand) then
 fi;
 
 # load kernel function if it is installed:
-if (not IsBound(DIGRAPHS_C)) and ("digraphs" in SHOW_STAT()) then
+if not IsBound(DIGRAPH_OUT_NBS) and "digraphs" in SHOW_STAT() then
   # try static module
   LoadStaticModule("digraphs");
 fi;
-if (not IsBound(DIGRAPHS_C)) and
-    (Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") <> fail)
-    then
+if not IsBound(DIGRAPH_OUT_NBS) and
+    Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") <> fail then
   LoadDynamicModule(Filename(DirectoriesPackagePrograms("digraphs"),
                              "digraphs.so"));
 fi;
