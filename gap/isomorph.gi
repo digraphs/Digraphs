@@ -121,7 +121,7 @@ if DIGRAPHS_NautyAvailable then
 
   BindGlobal("NAUTY_DATA_NO_COLORS",
   function(D)
-    return NAUTY_DATA(D, false, "");
+    return NAUTY_DATA(D, false);
   end);
 else
   BindGlobal("NAUTY_DATA", ReturnFail);
@@ -166,7 +166,7 @@ function(D, colors)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  return NAUTY_DATA(D, colors, "NautyCanonicalLabelling")[2];
+  return NAUTY_DATA(D, colors)[2];
 end);
 
 # Canonical digraphs
@@ -254,7 +254,7 @@ function(D, colors)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  return NAUTY_DATA(D, colors, "AutomorphismGroup")[1];
+  return NAUTY_DATA(D, colors)[1];
 end);
 
 InstallMethod(AutomorphismGroup, "for a digraph", [IsDigraph],
