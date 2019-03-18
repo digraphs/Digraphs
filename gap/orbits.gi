@@ -68,18 +68,18 @@ function(G, domain)
   return rec(orbits := orbs, schreier := sch, lookup := lookup);
 end);
 
-InstallMethod(RepresentativeOutNeighbours, "for a digraph", [IsDigraph],
-function(digraph)
+InstallMethod(RepresentativeOutNeighbours, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
   local reps, out, nbs, i;
 
-  if IsTrivial(DigraphGroup(digraph)) then
-    return OutNeighbours(digraph);
+  if IsTrivial(DigraphGroup(D)) then
+    return OutNeighbours(D);
   fi;
 
-  reps  := DigraphOrbitReps(digraph);
-
-  out := EmptyPlist(Length(reps));
-  nbs := OutNeighbours(digraph);
+  reps := DigraphOrbitReps(D);
+  out  := EmptyPlist(Length(reps));
+  nbs  := OutNeighbours(D);
 
   for i in [1 .. Length(reps)] do
     out[i] := nbs[reps[i]];
@@ -88,87 +88,81 @@ function(digraph)
 end);
 
 InstallImmediateMethod(DigraphGroup, IsDigraph and HasAutomorphismGroup,
-0, function(digraph)
-  if IsMultiDigraph(digraph) then
-    return Range(Projection(AutomorphismGroup(digraph), 1));
+0, function(D)
+  if IsMultiDigraph(D) then
+    return Range(Projection(AutomorphismGroup(D), 1));
   fi;
-  return AutomorphismGroup(digraph);
+  return AutomorphismGroup(D);
 end);
 
 InstallMethod(DigraphGroup, "for a digraph",
 [IsDigraph],
-function(digraph)
-  if IsMultiDigraph(digraph) then
-    return Range(Projection(AutomorphismGroup(digraph), 1));
+function(D)
+  if IsMultiDigraph(D) then
+    return Range(Projection(AutomorphismGroup(D), 1));
   fi;
-  return AutomorphismGroup(digraph);
+  return AutomorphismGroup(D);
 end);
 
 InstallMethod(DigraphOrbits, "for a digraph",
 [IsDigraph],
-function(digraph)
+function(D)
   local record;
-
-  record := DIGRAPHS_Orbits(DigraphGroup(digraph),
-                            DigraphVertices(digraph));
-
-  SetDigraphSchreierVector(digraph, record.schreier);
-
+  record := DIGRAPHS_Orbits(DigraphGroup(D),
+                            DigraphVertices(D));
+  SetDigraphSchreierVector(D, record.schreier);
   return record.orbits;
 end);
 
 InstallMethod(DigraphSchreierVector, "for a digraph",
 [IsDigraph],
-function(digraph)
+function(D)
   local record;
-
-  record := DIGRAPHS_Orbits(DigraphGroup(digraph),
-                            DigraphVertices(digraph));
-
-  SetDigraphOrbits(digraph, record.orbits);
-
+  record := DIGRAPHS_Orbits(DigraphGroup(D),
+                            DigraphVertices(D));
+  SetDigraphOrbits(D, record.orbits);
   return record.schreier;
 end);
 
 InstallMethod(DigraphOrbitReps, "for a digraph",
 [IsDigraph],
-function(digraph)
-  return List(DigraphOrbits(digraph), Representative);
+function(D)
+  return List(DigraphOrbits(D), Representative);
 end);
 
 InstallMethod(DigraphStabilizer, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-function(digraph, v)
+function(D, v)
   local pos, gens, sch, trace, word, stabs;
 
-  if v > DigraphNrVertices(digraph) then
+  if v > DigraphNrVertices(D) then
     ErrorNoReturn("Digraphs: DigraphStabilizer: usage,\n",
                   "the second argument must not exceed ",
-                  DigraphNrVertices(digraph), ",");
+                  DigraphNrVertices(D), ",");
   fi;
 
-  pos := DigraphSchreierVector(digraph)[v];
+  pos := DigraphSchreierVector(D)[v];
   if pos < 0 then  # rep is one of the orbit reps
     word := ();
     pos := pos * -1;
   else
-    gens  := GeneratorsOfGroup(DigraphGroup(digraph));
-    sch   := DigraphSchreierVector(digraph);
+    gens  := GeneratorsOfGroup(DigraphGroup(D));
+    sch   := DigraphSchreierVector(D);
     trace := DIGRAPHS_TraceSchreierVector(gens, sch, v);
     pos   := trace.representative;
     word  := DIGRAPHS_EvaluateWord(gens, trace.word);
   fi;
 
-  stabs := DIGRAPHS_Stabilizers(digraph);
+  stabs := DIGRAPHS_Stabilizers(D);
 
   if not IsBound(stabs[pos]) then
-    stabs[pos] := Stabilizer(DigraphGroup(digraph),
-                             DigraphOrbitReps(digraph)[pos]);
+    stabs[pos] := Stabilizer(DigraphGroup(D),
+                             DigraphOrbitReps(D)[pos]);
   fi;
   return stabs[pos] ^ word;
 end);
 
-InstallMethod(DIGRAPHS_Stabilizers, "for a digraph", [IsDigraph],
-function(digraph);
+InstallMethod(DIGRAPHS_Stabilizers, "for a D", [IsDigraph],
+function(D);
   return [];
 end);
