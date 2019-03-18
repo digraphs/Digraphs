@@ -1342,6 +1342,16 @@ gap> gr := Digraph([[1], [1, 2], [2, 3]]);;
 gap> IsPreorderDigraph(gr) or IsQuasiorderDigraph(gr);
 false
 
+# Code coverage
+gap> D := DigraphCopy(NullDigraph(4));
+<immutable digraph with 4 vertices, 0 edges>
+gap> HasIsEmptyDigraph(D);
+false
+gap> HasDigraphNrEdges(D);
+true
+gap> IsEmptyDigraph(D);
+true
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(circuit);
