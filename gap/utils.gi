@@ -178,12 +178,11 @@ function(arg)
   file := Filename(DirectoriesPackageLibrary("digraphs", "digraphs-lib"),
                    "extreme.d6.gz");
   if file = fail then
-    ErrorNoReturn("Digraphs: DigraphsTestExtreme:\n",
-                  "the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
-                  "required\nfor these tests to run. Please install the ",
-                  "'digraphs-lib'\narchive from:\n\n",
+    ErrorNoReturn("the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
+                  "required for these tests to run. Please install the ",
+                  "'digraphs-lib'archive from: ",
                   "http://gap-packages.github.io/Digraphs/",
-                  "\n\nand try again,");
+                  "and try again,");
   fi;
 
   if Length(arg) = 1 and IsRecord(arg[2]) then
@@ -224,9 +223,9 @@ function(arg)
     elif ForAll(arg, x -> IsPosInt(x) and x <= Length(exlists)) then
       indices := arg;
     else
-      ErrorNoReturn("DigraphsTestManualExamples: the arguments must be ",
-                    "positive integers or a list of positive integers ",
-                    "not greater than ", Length(exlists), ",");
+      ErrorNoReturn("the arguments must be positive integers or a list of ",
+                    "positive integers not greater than ", Length(exlists),
+                    ",");
     fi;
   else
     omit := DIGRAPHS_OmitFromTests;
@@ -447,8 +446,7 @@ DIGRAPHS_CheckManSectionTypes := function(doc, verbose...)
         matches := Filtered(matches, t -> t.attributes.Label =
                                           elt.attributes.Label);
         if Length(matches) > 1 then
-          ErrorNoReturn("Digraphs: DIGRAPHS_CheckManSectionTypes:\n",
-                        "Multiple labels - this should not happen!");
+          ErrorNoReturn("Multiple labels - this should not happen!");
         fi;
         match := matches[1];
       else
@@ -468,8 +466,7 @@ DIGRAPHS_CheckManSectionTypes := function(doc, verbose...)
           referrcount := referrcount + 1;
           continue;
         elif Length(matches2) > 1 then
-          ErrorNoReturn("Digraphs: DIGRAPHS_CheckManSectionTypes:\n",
-                        "Multiple labels - this should not happen!");
+          ErrorNoReturn("Multiple labels - this should not happen!");
         else
           match := matches[1];
         fi;
