@@ -8,22 +8,21 @@
 #############################################################################
 ##
 
+# TODO(later) revise this for mutable digraphs, if it makes sense to do so.
+
 # <G> is a group, <obj> a set of points on which <act> acts, and <adj> is a
 # function which for 2 elements u, v of <obj> returns <true> if and only if
 # u and v should be adjacent in the digraph we are constructing.
 
 InstallImmediateMethod(SemigroupOfCayleyDigraph,
-IsCayleyDigraph and HasGroupOfCayleyDigraph, 0,
-function(digraph)
-  return GroupOfCayleyDigraph(digraph);
-end);
+IsCayleyDigraph and HasGroupOfCayleyDigraph, 0, GroupOfCayleyDigraph);
 
 InstallMethod(Digraph,
 "for a group, list or collection, function, and function",
 [IsGroup, IsListOrCollection, IsFunction, IsFunction],
 function(G, obj, act, adj)
   local hom, dom, sch, orbits, reps, stabs, rep_out, out, gens, trace, word,
-  digraph, adj_func, i, o, w;
+  D, adj_func, i, o, w;
 
   hom    := ActionHomomorphism(G, obj, act, "surjective");
   dom    := [1 .. Size(obj)];
@@ -66,31 +65,31 @@ function(G, obj, act, adj)
     od;
   od;
 
-  digraph := DigraphNC(out);
+  D := DigraphNC(out);
 
   adj_func := function(u, v)
     return adj(obj[u], obj[v]);
   end;
 
-  SetFilterObj(digraph, IsDigraphWithAdjacencyFunction);
-  SetDigraphAdjacencyFunction(digraph, adj_func);
-  SetDigraphGroup(digraph, Range(hom));
-  SetDigraphOrbits(digraph, orbits);
-  SetDIGRAPHS_Stabilizers(digraph, stabs);
-  SetDigraphSchreierVector(digraph, sch);
-  SetRepresentativeOutNeighbours(digraph, rep_out);
+  SetFilterObj(D, IsDigraphWithAdjacencyFunction);
+  SetDigraphAdjacencyFunction(D, adj_func);
+  SetDigraphGroup(D, Range(hom));
+  SetDigraphOrbits(D, orbits);
+  SetDIGRAPHS_Stabilizers(D, stabs);
+  SetDigraphSchreierVector(D, sch);
+  SetRepresentativeOutNeighbours(D, rep_out);
 
-  return digraph;
+  return D;
 end);
 
 InstallMethod(CayleyDigraph, "for a group with generators",
 [IsGroup, IsHomogeneousList],
 function(G, gens)
-  local adj, digraph;
+  local adj, D;
 
   if not IsFinite(G) then
     ErrorNoReturn(
-                  "the first argument <G> must be a finite group,");
+                  "the 1st argument <G> must be a finite group,");
   elif not ForAll(gens, x -> x in G) then
     ErrorNoReturn(
                   "elements in the 2nd argument <gens> must ",
@@ -100,12 +99,12 @@ function(G, gens)
   adj := function(x, y)
     return x ^ -1 * y in gens;
   end;
-  digraph := Digraph(G, AsList(G), OnRight, adj);
-  SetFilterObj(digraph, IsCayleyDigraph);
-  SetGroupOfCayleyDigraph(digraph, G);
-  SetGeneratorsOfCayleyDigraph(digraph, gens);
+  D := Digraph(G, AsList(G), OnRight, adj);
+  SetFilterObj(D, IsCayleyDigraph);
+  SetGroupOfCayleyDigraph(D, G);
+  SetGeneratorsOfCayleyDigraph(D, gens);
 
-  return digraph;
+  return D;
 end);
 
 InstallMethod(CayleyDigraph, "for a group with generators",
@@ -115,10 +114,10 @@ function(G)
 end);
 
 InstallMethod(Graph, "for a digraph", [IsDigraph],
-function(digraph)
+function(D)
   local gamma, i, n;
 
-  if IsMultiDigraph(digraph) then
+  if IsMultiDigraph(D) then
     Info(InfoWarning, 1, "Grape does not support multiple edges, so ",
          "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
@@ -127,14 +126,14 @@ function(digraph)
     Info(InfoWarning, 1, "Grape is not loaded,");
   fi;
 
-  n := DigraphNrVertices(digraph);
-  if HasDigraphGroup(digraph) then
+  n := DigraphNrVertices(D);
+  if HasDigraphGroup(D) then
     gamma := rec(order := n,
-                 group := DigraphGroup(digraph),
+                 group := DigraphGroup(D),
                  isGraph := true,
-                 representatives := DigraphOrbitReps(digraph),
-                 schreierVector := DigraphSchreierVector(digraph));
-    gamma.adjacencies := ShallowCopy(RepresentativeOutNeighbours(digraph));
+                 representatives := DigraphOrbitReps(D),
+                 schreierVector := DigraphSchreierVector(D));
+    gamma.adjacencies := ShallowCopy(RepresentativeOutNeighbours(D));
     Apply(gamma.adjacencies, AsSet);
   else
     gamma := rec(order := n,
@@ -145,11 +144,11 @@ function(digraph)
     gamma.adjacencies := EmptyPlist(n);
 
     for i in [1 .. gamma.order] do
-      gamma.adjacencies[i] := Set(OutNeighbours(digraph)[i]);
+      gamma.adjacencies[i] := Set(OutNeighbours(D)[i]);
     od;
 
   fi;
-  gamma.names := Immutable(DigraphVertexLabels(digraph));
+  gamma.names := Immutable(DigraphVertexLabels(D));
   return gamma;
 end);
 
@@ -173,11 +172,10 @@ end);
 InstallMethod(EdgeOrbitsDigraph, "for a perm group, list, and int",
 [IsPermGroup, IsList, IsInt],
 function(G, edges, n)
-  local out, o, digraph, e, f;
+  local out, o, D, e, f;
 
   if n < 0 then
-    ErrorNoReturn(
-                  "the third argument must be a non-negative integer,");
+    ErrorNoReturn("the 3rd argument must be a non-negative integer,");
   elif n = 0 then
     return EmptyDigraph(0);
   fi;
@@ -187,8 +185,7 @@ function(G, edges, n)
   fi;
 
   if not ForAll(edges, e -> Length(e) = 2 and ForAll(e, IsPosInt)) then
-    ErrorNoReturn(
-                  "the second argument must be a list of pairs of pos ints,");
+    ErrorNoReturn("the 2nd argument must be a list of pairs of pos ints,");
   fi;
 
   out := List([1 .. n], x -> []);
@@ -199,10 +196,10 @@ function(G, edges, n)
     od;
   od;
 
-  digraph := DigraphNC(out);
-  SetDigraphGroup(digraph, G);
+  D := DigraphNC(out);
+  SetDigraphGroup(D, G);
 
-  return digraph;
+  return D;
 end);
 
 InstallMethod(EdgeOrbitsDigraph, "for a group and list",
@@ -216,33 +213,33 @@ end);
 
 InstallMethod(DigraphAddEdgeOrbit, "for a digraph and edge",
 [IsDigraph, IsList],
-function(digraph, edge)
+function(D, edge)
   local out, G, o, e;
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
     ErrorNoReturn(
-                  "the second argument must be a pair of pos ints,");
-  elif not (edge[1] in DigraphVertices(digraph)
-            and edge[2] in DigraphVertices(digraph)) then
+                  "the 2nd argument must be a pair of pos ints,");
+  elif not (edge[1] in DigraphVertices(D)
+            and edge[2] in DigraphVertices(D)) then
     ErrorNoReturn(
-                  "the second argument must be a ",
-                  "pair of vertices of the first argument,");
-  elif IsDigraphEdge(digraph, edge) then
-    return digraph;
+                  "the 2nd argument must be a ",
+                  "pair of vertices of the 1st argument,");
+  elif IsDigraphEdge(D, edge) then
+    return D;
   fi;
 
-  out := OutNeighboursMutableCopy(digraph);
-  G   := DigraphGroup(digraph);
+  out := OutNeighboursMutableCopy(D);
+  G   := DigraphGroup(D);
   o   := Orbit(G, edge, OnTuples);
 
   for e in o do
     Add(out[e[1]], e[2]);
   od;
 
-  digraph := DigraphNC(out);
-  SetDigraphGroup(digraph, G);
+  D := DigraphNC(out);
+  SetDigraphGroup(D, G);
 
-  return digraph;
+  return D;
 end);
 
 # Note: if at some point we don't store all of the out neighbours, then this
@@ -250,21 +247,21 @@ end);
 
 InstallMethod(DigraphRemoveEdgeOrbit, "for a digraph and edge",
 [IsDigraph, IsList],
-function(digraph, edge)
+function(D, edge)
   local out, G, o, pos, e;
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
-    ErrorNoReturn("the second argument must be a pair of pos ints,");
-  elif not (edge[1] in DigraphVertices(digraph)
-            and edge[2] in DigraphVertices(digraph)) then
-    ErrorNoReturn("the second argument must be a ",
-                  "pair of vertices of the first argument,");
-  elif not IsDigraphEdge(digraph, edge) then
-    return digraph;
+    ErrorNoReturn("the 2nd argument must be a pair of pos ints,");
+  elif not (edge[1] in DigraphVertices(D)
+            and edge[2] in DigraphVertices(D)) then
+    ErrorNoReturn("the 2nd argument must be a ",
+                  "pair of vertices of the 1st argument,");
+  elif not IsDigraphEdge(D, edge) then
+    return D;
   fi;
 
-  out := OutNeighboursMutableCopy(digraph);
-  G   := DigraphGroup(digraph);
+  out := OutNeighboursMutableCopy(D);
+  G   := DigraphGroup(D);
   o   := Orbit(G, edge, OnTuples);
 
   for e in o do
@@ -274,8 +271,8 @@ function(digraph, edge)
     fi;
   od;
 
-  digraph := DigraphNC(out);
-  SetDigraphGroup(digraph, G);
+  D := DigraphNC(out);
+  SetDigraphGroup(D, G);
 
-  return digraph;
+  return D;
 end);

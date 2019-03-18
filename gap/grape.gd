@@ -28,4 +28,3 @@ DeclareOperation("EdgeOrbitsDigraph", [IsPermGroup, IsList, IsInt]);
 DeclareOperation("EdgeOrbitsDigraph", [IsPermGroup, IsList]);
 DeclareOperation("DigraphAddEdgeOrbit", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveEdgeOrbit", [IsDigraph, IsList]);
-
