@@ -1,12 +1,16 @@
+#!/usr/bin/env bash
+
 # If a command fails, exit this script with an error code
 set -e
 
-if ["$SUITE" != "test"] && ["$SUITE" != "coverage"] && ["$SUITE" != "lint"]; then
+if [ "$SUITE" != "test" ] && [ "$SUITE" != "coverage" ] && [ "$SUITE" != "lint" ]; then
   echo -e "\nError, unrecognised Travis suite: $SUITE"
   exit 1
 fi
 
-mv ../Digraphs $HOME/digraphs
+if [ "$SETUP" == "travis" ]; then
+  mv ../Digraphs $HOME/digraphs
+fi
 
 ################################################################################
 # Install software necessary for linting: cpplint and gaplint
@@ -35,6 +39,7 @@ echo -e "\nInstalling GAP..."
 if [ "$GAP" == "required" ]; then
   GAP=v`grep "GAPVERS" $HOME/digraphs/PackageInfo.g | awk -F'"' '{print $2}'`
 fi
+GAPROOT="$HOME/gap"
 echo -e "\nInstalling GAP $GAP into $GAPROOT..."
 git clone -b $GAP --depth=1 https://github.com/gap-system/gap.git $GAPROOT
 cd $GAPROOT
@@ -44,8 +49,12 @@ make -j4
 mkdir pkg
 
 ################################################################################
-# Move Digraphs into its proper location
-mv $HOME/digraphs $GAPROOT/pkg/digraphs
+# Copy Digraphs to its proper location
+if [ "$SETUP" == "appveyor" ]; then
+  cp -r /cygdrive/c/projects/digraphs $GAPROOT/pkg/digraphs
+elif [ "$SETUP" == "travis" ]; then
+  mv $HOME/digraphs $GAPROOT/pkg/digraphs
+fi
 
 ################################################################################
 # Install grape, io, orb, and profiling
@@ -70,8 +79,8 @@ for PKG in "${PKGS[@]}"; do
   tar xf $PKG-$VERSION.tar.gz && rm $PKG-$VERSION.tar.gz
 
   if [ -f $PKG-$VERSION/configure ]; then
-    if [ "$PKG" == "orb" ]; then
-      cd $PKG-$VERSION && ./configure && make # orb doesn't accept package flags
+    if [ "$PKG" == "orb" ] || [ "$PKG" == "grape" ]; then
+      cd $PKG-$VERSION && ./configure && make # orb/grape don't accept flags
     else
       cd $PKG-$VERSION && ./configure $PKG_FLAGS && make
     fi
@@ -87,9 +96,10 @@ tar xf packages-required-master.tar.gz
 rm packages-required-master.tar.gz
 
 ################################################################################
-# Install NautyTracesInterface
-echo -e "\nGetting master version of NautyTracesInterface"
-git clone -b master --depth=1 https://github.com/sebasguts/NautyTracesInterface.git $GAPROOT/pkg/nautytraces
-cd $GAPROOT/pkg/nautytraces/nauty2*r* && ./configure $PKG_FLAGS && make
-cd $GAPROOT/pkg/nautytraces && ./autogen.sh && ./configure $PKG_FLAGS && make
-
+## Install NautyTracesInterface in Travis
+if [ "$SETUP" == "travis" ]; then
+  echo -e "\nGetting master version of NautyTracesInterface"
+  git clone -b master --depth=1 https://github.com/sebasguts/NautyTracesInterface.git $GAPROOT/pkg/nautytraces
+  cd $GAPROOT/pkg/nautytraces/nauty2*r* && ./configure $PKG_FLAGS && make
+  cd $GAPROOT/pkg/nautytraces && ./autogen.sh && ./configure $PKG_FLAGS && make
+fi
