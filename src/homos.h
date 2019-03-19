@@ -12,6 +12,9 @@
 #ifndef DIGRAPHS_SRC_HOMOS_H_
 #define DIGRAPHS_SRC_HOMOS_H_
 
+#define MAX(a, b) (a < b ? b : a)
+#define MIN(a, b) (a < b ? a : b)
+
 // GAP headers
 #include "src/compiled.h"
 

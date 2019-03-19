@@ -26,6 +26,7 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="BlissAutomorphismGroup">
     <#Include Label="NautyAutomorphismGroup">
     <#Include Label="AutomorphismGroupDigraphColours">
+    <#Include Label="AutomorphismGroupDigraphEdgeColours">
     <#Include Label="BlissCanonicalLabelling">
     <#Include Label="BlissCanonicalLabellingColours">
     <#Include Label="BlissCanonicalDigraph">

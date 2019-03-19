@@ -31,12 +31,12 @@ gap> DigraphStabilizer(gr, 3);
 Group([ (1,2) ])
 
 #  DigraphGroup
-gap> gr := Digraph([[2, 2], [1]]);
-<immutable multidigraph with 2 vertices, 3 edges>
+gap> gr := Digraph([[2, 3], [1], [2]]);
+<immutable digraph with 3 vertices, 4 edges>
 gap> DigraphGroup(gr);
 Group(())
-gap> gr := Digraph([[2], [3, 2], [1, 3, 2, 3]]);
-<immutable multidigraph with 3 vertices, 7 edges>
+gap> gr := Digraph([[3], [3], [1, 2, 3]]);
+<immutable digraph with 3 vertices, 5 edges>
 gap> Size(AutomorphismGroup(gr));
 2
 gap> gr := Digraph([[3, 2], [1], [1]]);

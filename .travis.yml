@@ -82,8 +82,8 @@ matrix:
       - ABI=64
       - GAP=master
       - PACKAGES=required
-      - THRESHOLD=98
-
+      - THRESHOLD=94
+    
 before_install:
   - if [ ! -z "$EXTRA_PKG_FLAGS" ]; then
       wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;

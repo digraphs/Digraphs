@@ -24,12 +24,12 @@
     You can call these functions at any point in a &GAP; session, as many
     times as you like, it is guaranteed that existing digraphs remain
     valid, and that comparison of existing digraphs and newly created digraphs
-    via 
+    via
     <Ref Oper="IsIsomorphicDigraph" Label="for digraphs"/>,
-    <Ref Oper="IsIsomorphicDigraph" 
-      Label="for digraphs and homogeneous lists"/>, 
+    <Ref Oper="IsIsomorphicDigraph"
+      Label="for digraphs and homogeneous lists"/>,
     <Ref Oper="IsomorphismDigraphs" Label="for digraphs"/>, and
-    <Ref Oper="IsomorphismDigraphs" 
+    <Ref Oper="IsomorphismDigraphs"
       Label="for digraphs and homogeneous lists"/> are also valid.<P/>
 
     It is also possible to compute the automorphism group of a specific digraph
@@ -41,7 +41,7 @@
 
 <#GAPDoc Label="BlissAutomorphismGroup">
 <ManSection>
-  <Attr Name="BlissAutomorphismGroup" Arg="digraph[, colours]"/>
+  <Attr Name="BlissAutomorphismGroup" Arg="digraph[, vertex_colours, edge_colours]"/>
   <Returns>A permutation group.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then this attribute contains the group of
@@ -54,6 +54,9 @@
     the value of either <C>BlissAutomorphismGroup</C> or  <Ref
       Attr="NautyAutomorphismGroup"/>. These groups are, of course, equal but
     their generating sets may differ. <P/>
+    The attribute <Ref Attr="AutomorphismGroup" Label="for a digraph,
+      homogeneous list, and list" /> returns the value of
+    <C>BlissAutomorphismGroup</C> as it is not implemented for &nauty;
 
     See also <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
     <P/>
@@ -77,8 +80,8 @@ gap> Size(G);
   <Returns>A permutation group.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then this attribute contains the group of
-    automorphisms of <A>digraph</A> as calculated using &nauty; by 
-    Brendan Mckay and Adolfo Piperno via &NautyTracesInterface;. 
+    automorphisms of <A>digraph</A> as calculated using &nauty; by
+    Brendan Mckay and Adolfo Piperno via &NautyTracesInterface;.
 
     The attribute <Ref Attr="AutomorphismGroup" Label="for a digraph"/> and
     operation <Ref Oper="AutomorphismGroup" 
@@ -112,39 +115,20 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7),
       Oper="IsomorphismDigraphs" Label="for digraphs" /> for more information
     about isomorphisms of digraphs. <P/>
 
-    The form in which the automorphism group is returned depends on whether
-    <A>digraph</A> has multiple edges; see <Ref Prop="IsMultiDigraph" />. <P/>
+    If <A>digraph</A> is not a multidigraph then the automorphism group is
+    returned as a group of permutations on the set of vertices of
+    <A>digraph</A>. <P/>
 
-    <List>
-      <Mark>for a digraph without multiple edges</Mark>
-      <Item>
-        If <A>digraph</A> has no multiple edges, then the automorphism group is
-        returned as a group of permutations on the vertices of <A>digraph</A>.
-      </Item>
-      <Mark>for a multidigraph</Mark>
-      <Item>
-        If <A>digraph</A> is a multidigraph, then the automorphism group is
-        a group of permutations on the vertices and edges of <A>digraph</A>.
-        <P/>
-
-        For convenience, the group is returned as the direct product <C>G</C> of
-        the group of automorphisms of the vertices of <A>digraph</A> with the
-        stabiliser of the vertices in the automorphism group of the edges. These
-        two groups can be accessed using the operation <Ref Oper="Projection"
-          Label="for a domain and a positive integer" BookName="ref"/>, with the
-        second argument being <C>1</C> or <C>2</C>, respectively. <P/>
-
-        The permutations in the group <C>Projection(G, 1)</C> act on the
-        vertices of <A>digraph</A>, and the permutations in the group
-        <C>Projection(G, 2)</C> act on the indices of
-        <C>DigraphEdges(<A>digraph</A>)</C>.
-      </Item>
-    </List>
+    If <A>digraph</A> is a multidigraph then the automorphism group is returned
+    as the direct product of a group of permutations on the set of vertices of
+    <A>digraph</A> with a group of permutations on the set of edges of
+    <A>digraph</A>. These groups can be accessed using <Ref Attr="Projection"/>
+    on the returned group.<P/>
 
     By default, the automorphism group is found using &bliss; by Tommi Junttila
     and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
-    Brendan Mckay and Adolfo Piperno can be used instead; see 
-    <Ref Attr="BlissAutomorphismGroup"/>, <Ref Attr="NautyAutomorphismGroup"/>, 
+    Brendan Mckay and Adolfo Piperno can be used instead; see
+    <Ref Attr="BlissAutomorphismGroup"/>, <Ref Attr="NautyAutomorphismGroup"/>,
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
     <P/>
 
@@ -161,33 +145,7 @@ gap> cycle := CycleDigraph(9);
 gap> G := AutomorphismGroup(cycle);
 Group([ (1,2,3,4,5,6,7,8,9) ])
 gap> IsCyclic(G) and Size(G) = 9;
-true
-gap> gr := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
-<immutable multidigraph with 3 vertices, 6 edges>
-gap> G := AutomorphismGroup(gr);
-Group([ (1,2,3), (8,9), (6,7), (4,5) ])
-gap> Range(Projection(G, 1));
-Group([ (1,2,3) ])
-gap> Range(Projection(G, 2));
-Group([ (5,6), (3,4), (1,2) ])
-gap> Size(G);
-24
-gap> gr := Digraph([[2], [3, 3], [3], [2]]);
-<immutable multidigraph with 4 vertices, 5 edges>
-gap> G := AutomorphismGroup(gr);
-Group([ (1,2), (3,4) ])
-gap> P1 := Projection(G, 1);
-1st projection of Group([ (1,2), (3,4) ])
-gap> P2 := Projection(G, 2);
-2nd projection of Group([ (1,2), (3,4) ])
-gap> DigraphVertices(gr);
-[ 1 .. 4 ]
-gap> Range(P1);
-Group([ (1,4) ])
-gap> DigraphEdges(gr);
-[ [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 3 ], [ 4, 2 ] ]
-gap> Range(P2);
-Group([ (2,3) ])]]></Example>
+true]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -229,40 +187,20 @@ Group([ (2,3) ])]]></Example>
       Oper="IsomorphismDigraphs" Label="for digraphs and homogeneous lists" />
     for more information about isomorphisms of coloured digraphs. <P/>
 
-    The form in which the automorphism group is returned depends on whether
-    <A>digraph</A> has multiple edges; see <Ref Prop="IsMultiDigraph" />.
+    If <A>digraph</A> is not a multidigraph then the automorphism group is
+    returned as a group of permutations on the set of vertices of
+    <A>digraph</A>. <P/>
 
-    <List>
-      <Mark>for a digraph without multiple edges</Mark>
-      <Item>
-        If <A>digraph</A> has no multiple edges, then the automorphism group
-        is returned as a group of permutations on the vertices of
-        <A>digraph</A>.
-      </Item>
-      <Mark>for a multidigraph</Mark>
-      <Item>
-        If <A>digraph</A> is a multidigraph, then the automorphism group is
-        a group of permutations on the vertices and edges of <A>digraph</A>.
-        <P/>
-
-        For convenience, the group is returned as the direct product <C>G</C> of
-        the group of automorphisms of the vertices of <A>digraph</A> with the
-        stabiliser of the vertices in the automorphism group of the edges. These
-        two groups can be accessed using the operation <Ref Oper="Projection"
-          Label="for a domain and a positive integer" BookName="ref"/>, with the
-        second argument being <C>1</C> or <C>2</C>, respectively. <P/>
-
-        The permutations in the group <C>Projection(G, 1)</C> act on the
-        vertices of <A>digraph</A>, and the permutations in the group
-        <C>Projection(G, 2)</C> act on the indices of
-        <C>DigraphEdges(<A>digraph</A>)</C>.
-      </Item>
-    </List>
+    If <A>digraph</A> is a multidigraph then the automorphism group is returned
+    as the direct product of a group of permutations on the set of vertices of
+    <A>digraph</A> with a group of permutations on the set of edges of
+    <A>digraph</A>. These groups can be accessed using <Ref Attr="Projection"/>
+    on the returned group.<P/>
 
     By default, the automorphism group is found using &bliss; by Tommi Junttila
     and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
-    Brendan Mckay and Adolfo Piperno can be used instead; see 
-    <Ref Attr="BlissAutomorphismGroup"/>, <Ref Attr="NautyAutomorphismGroup"/>, 
+    Brendan Mckay and Adolfo Piperno can be used instead; see
+    <Ref Attr="BlissAutomorphismGroup"/>, <Ref Attr="NautyAutomorphismGroup"/>,
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
   <Example><![CDATA[
@@ -280,23 +218,93 @@ true
 gap> H = SubgroupByProperty(G, p -> OnTuplesSets(colours, p) = colours);
 true
 gap> IsTrivial(AutomorphismGroup(cycle, [1, 1, 2, 2, 2, 2, 2, 2, 2]));
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AutomorphismGroupDigraphEdgeColours">
+<ManSection>
+  <Oper Name="AutomorphismGroup"
+    Label="for a digraph, homogeneous list, and list"
+    Arg="digraph, vert_colours, edge_colours"/>
+  <Returns>A permutation group.</Returns>
+  <Description>
+
+    This operation computes the automorphism group of a vertex- and/or
+    edge-coloured digraph.
+    A coloured digraph can be specified by its underlying digraph
+    <A>digraph</A> and colourings <A>vert_colours</A>, <A>edge_colours</A>.
+    Let <C>n</C> be the number of vertices of <A>digraph</A>. The colourings
+    must have the following forms:
+
+    <List>
+      <Item>
+        <A>vert_colours</A> must be <C>fail</C> or a list of <C>n</C> integers,
+        where <A>vert_colours</A><C>[i]</C> is the colour of vertex <C>i</C>,
+        using the colours <C>[1 .. m]</C> for some <C>m &lt;= n</C>;
+      </Item>
+      <Item>
+        <A>edge_colours</A> must be fail or a list of <C>n</C> lists of integers
+        of the same shape as <C>OutNeighbours(digraph)</C>, where
+        <A>edge_colours</A><C>[i][j]</C> is the colour of the edge
+        <C>OutNeighbours(digraph)[i][j]</C>, using the colours <C>[1 .. k]</C>
+        for some <C>k &lt;= n</C>;
+      </Item>
+    </List>
+
+    Gving <A>vert_colours</A> [<A>edge_colours</A>] as <C>fail</C> is equivalent
+    to setting all vertices [edges] to be the same colour. <P/>
+
+    Unlike <Ref Attr="AutomorphismGroup"/>, it is possible to obtain the
+    automorphism group of an edge-coloured multidigraph (see <Ref
+    Prop="IsMultiDigraph" />) when no two edges share the same source, range,
+    and colour.
+
+    The <E>automorphism group</E> of a vertex/edge-coloured digraph
+    <A>digraph</A> with colouring <A>c</A> is the group consisting of its
+    vertex/edge-colour preserving automorphisms; an
+    <E>automorphism</E> of <A>digraph</A> is an isomorphism of vertex/edge-coloured
+    digraphs from <A>digraph</A> to itself.  This group is equal to the
+    subgroup of <C>AutomorphismGroup(<A>digraph</A>)</C> consisting of those
+    automorphisms that preserve the colouring specified by <A>colours</A>. See
+    <Ref Attr="AutomorphismGroup" Label="for a digraph" />, and see <Ref
+      Oper="IsomorphismDigraphs" Label="for digraphs and homogeneous lists" />
+    for more information about isomorphisms of coloured digraphs. <P/>
+
+    If <A>digraph</A> is not a multidigraph then the automorphism group is
+    returned as a group of permutations on the set of vertices of
+    <A>digraph</A>. <P/>
+
+    If <A>digraph</A> is a multidigraph then the automorphism group is returned
+    as the direct product of a group of permutations on the set of vertices of
+    <A>digraph</A> with a group of permutations on the set of edges of
+    <A>digraph</A>. These groups can be accessed using <Ref Attr="Projection"/>
+    on the returned group.<P/>
+
+    By default, the automorphism group is found using &bliss; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    Brendan Mckay and Adolfo Piperno can be used instead; see
+    <Ref Attr="BlissAutomorphismGroup"/>, <Ref Attr="NautyAutomorphismGroup"/>,
+    <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
+
+  <Example><![CDATA[
+gap> cycle := CycleDigraph(12);
+<immutable cycle digraph with 12 vertices>
+gap> vert_colours := List([1 .. 12], x -> x mod 3 + 1);;
+gap> edge_colours := List([1 .. 12], x -> [x mod 2 + 1]);;
+gap> Size(AutomorphismGroup(cycle));
+12
+gap> Size(AutomorphismGroup(cycle, vert_colours));
+4
+gap> Size(AutomorphismGroup(cycle, fail, edge_colours));
+6
+gap> Size(AutomorphismGroup(cycle, vert_colours, edge_colours));
+2
+gap> IsTrivial(AutomorphismGroup(cycle,
+> vert_colours, List([1 .. 12], x -> [x mod 4 + 1])));
 true
-gap> gr := Digraph([[2], [3, 3], [3], [2], [2]]);
-<immutable multidigraph with 5 vertices, 6 edges>
-gap> G := AutomorphismGroup(gr, [1, 1, 2, 3, 1]);
-Group([ (1,2), (3,4) ])
-gap> P1 := Projection(G, 1);
-1st projection of Group([ (1,2), (3,4) ])
-gap> P2 := Projection(G, 2);
-2nd projection of Group([ (1,2), (3,4) ])
-gap> DigraphVertices(gr);
-[ 1 .. 5 ]
-gap> Range(P1);
-Group([ (1,5) ])
-gap> DigraphEdges(gr);
-[ [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 3 ], [ 4, 2 ], [ 5, 2 ] ]
-gap> Range(P2);
-Group([ (2,3) ])]]></Example>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -333,39 +341,14 @@ Group([ (2,3) ])]]></Example>
     Note that the canonical labellings returned by &bliss; and &nauty; are not
     usually the same (and may depend of the version used).<P/>
 
-    The form of the canonical labelling returned
-    by <C>BlissCanonicalLabelling</C> depends on whether <A>digraph</A> has
-    multiple edges; see <Ref Prop="IsMultiDigraph" />. <P/>
-
-    <List>
-      <Mark>for a digraph without multiple edges</Mark>
-      <Item>
-        If the digraph <A>digraph</A> has no multiple edges, then the canonical
-        labelling of <A>digraph</A> is given as a permutation of its vertices.
-        The canonical representative of <A>digraph</A> can be created from
-        <A>digraph</A> and its canonical labelling <C>p</C> by using the
-        operation <Ref Oper="OnDigraphs" Label="for a digraph and a perm" />:
-        <Log>gap> OnDigraphs(digraph, p);</Log>
-      </Item>
-      <Mark>for a multidigraph</Mark>
-      <Item>
-        The canonical labelling of the multidigraph <A>digraph</A> is given as a
-        pair <C>P</C> of permutations. The first, <C>P[1]</C>, is a permutation
-        of the vertices of <A>digraph</A>. The second, <C>P[2]</C>, is a
-        permutation of the edges of <A>digraph</A>; it acts on the indices of
-        the list <C>DigraphEdges(<A>digraph</A>)</C>.  The canonical
-        representative of <A>digraph</A> can be created from <A>digraph</A> and
-        its canonical labelling <C>P</C> by using the operation <Ref
-          Oper="OnMultiDigraphs" />:
-        <Log>gap> OnMultiDigraphs(digraph, P);</Log>
-      </Item>
-    </List>
+    <C>BlissCanonicalLabelling</C> can only be computed if <A>digraph</A> has
+    no multiple edges; see <Ref Prop="IsMultiDigraph" />. <P/>
 
     <Example><![CDATA[
 gap> digraph1 := DigraphFromDiSparse6String(".ImNS_AiB?qRN");
 <immutable digraph with 10 vertices, 8 edges>
 gap> BlissCanonicalLabelling(digraph1);
-(1,3,4)(2,10,6,7,9,8)
+(1,9,5,7)(3,6,4,10)
 gap> p := (1, 2, 7, 5)(3, 9)(6, 10, 8);;
 gap> digraph2 := OnDigraphs(digraph1, p);
 <immutable digraph with 10 vertices, 8 edges>
@@ -373,15 +356,7 @@ gap> digraph1 = digraph2;
 false
 gap> OnDigraphs(digraph1, BlissCanonicalLabelling(digraph1)) =
 >    OnDigraphs(digraph2, BlissCanonicalLabelling(digraph2));
-true
-gap> gr := DigraphFromDiSparse6String(".ImEk|O@SK?od");
-<immutable multidigraph with 10 vertices, 10 edges>
-gap> BlissCanonicalLabelling(gr);
-[ (1,9,7,5)(2,10,3), (1,6,9)(2,5,10,4,8)(3,7) ]
-gap> gr := Digraph([[2], [3, 3], [3], [2], [2]]);
-<immutable multidigraph with 5 vertices, 6 edges>
-gap> BlissCanonicalLabelling(gr, [1, 2, 2, 1, 3]);
-[ (1,2,4), (1,2,6,4,3,5) ]]]></Example>
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -432,7 +407,7 @@ gap> BlissCanonicalLabelling(gr, [1, 2, 2, 1, 3]);
         <C>i</C>.
       </Item>
     </List>
-  
+
     If <A>digraph</A> and <A>colours</A> together form a coloured digraph,
     <C>BlissCanonicalLabelling</C> returns a canonical labelling of the digraph
     <A>digraph</A> found using &bliss; by Tommi Junttila and Petteri Kaski.
@@ -441,35 +416,15 @@ gap> BlissCanonicalLabelling(gr, [1, 2, 2, 1, 3]);
     Piperno.  Note that the canonical labellings returned by &bliss; and
     &nauty; are not usually the same (and may depend of the version used).<P/>
 
-    The form of the canonical labelling returned
-    by <C>BlissCanonicalLabelling</C> depends on whether <A>digraph</A> has
-    multiple edges; see <Ref Prop="IsMultiDigraph" />. <P/>
+    <C>BlissCanonicalLabelling</C> can only be computed if <A>digraph</A> has
+    no multiple edges; see <Ref Prop="IsMultiDigraph" />. The canonical
+    labelling of <A>digraph</A> is given as a permutation of its vertices.
+    The canonical representative of <A>digraph</A> can be created from
+    <A>digraph</A> and its canonical labelling <C>p</C> by using the
+    operation <Ref Oper="OnDigraphs" Label="for a digraph and a perm" />:
+    <Log>gap> OnDigraphs(digraph, p);</Log>
 
-    <List>
-      <Mark>for a digraph without multiple edges</Mark>
-      <Item>
-        If the digraph <A>digraph</A> has no multiple edges, then the canonical
-        labelling of <A>digraph</A> is given as a permutation of its vertices.
-        The canonical representative of <A>digraph</A> can be created from
-        <A>digraph</A> and its canonical labelling <C>p</C> by using the
-        operation <Ref Oper="OnDigraphs" Label="for a digraph and a perm" />:
-        <Log>gap> OnDigraphs(digraph, p);</Log>
-      </Item>
-      <Mark>for a multidigraph</Mark>
-      <Item>
-        The canonical labelling of the multidigraph <A>digraph</A> is given as a
-        pair <C>P</C> of permutations. The first, <C>P[1]</C>, is a permutation
-        of the vertices of <A>digraph</A>. The second, <C>P[2]</C>, is a
-        permutation of the edges of <A>digraph</A>; it acts on the indices of
-        the list <C>DigraphEdges(<A>digraph</A>)</C>.  The canonical
-        representative of <A>digraph</A> can be created from <A>digraph</A> and
-        its canonical labelling <C>P</C> by using the operation <Ref
-          Oper="OnMultiDigraphs" />:
-        <Log>gap> OnMultiDigraphs(digraph, P);</Log>
-      </Item>
-    </List>
-    
-    In either case, the colouring of the canonical representative can easily be
+    The colouring of the canonical representative can easily be
     constructed. A vertex <C>v</C> (in <A>digraph</A>) has colour <C>i</C> if
     and only if the vertex <C>v ^ p</C> (in the canonical representative) has
     colour <C>i</C>, where <C>p</C> is the permutation of the canonical
@@ -491,14 +446,14 @@ gap> digraph := DigraphFromDiSparse6String(".ImNS_AiB?qRN");
 <immutable digraph with 10 vertices, 8 edges>
 gap> colours := [[1, 2, 8, 9, 10], [3, 4, 5, 6, 7]];;
 gap> p := BlissCanonicalLabelling(digraph, colours);
-(2,3,7,10)(4,6,9,5,8)
+(1,5,8,4,10,3,9)(6,7)
 gap> OnDigraphs(digraph, p);
 <immutable digraph with 10 vertices, 8 edges>
 gap> OnTuplesSets(colours, p);
 [ [ 1, 2, 3, 4, 5 ], [ 6, 7, 8, 9, 10 ] ]
 gap> colours := [1, 1, 1, 1, 2, 3, 1, 3, 2, 1];;
 gap> p := BlissCanonicalLabelling(digraph, colours);
-(2,3,4,6,10,5,8,9,7)
+(1,6,9,7)(3,4,5,8,10)
 gap> OnDigraphs(digraph, p);
 <immutable digraph with 10 vertices, 8 edges>
 gap> List(DigraphVertices(digraph), i -> colours[i / p]);
@@ -520,7 +475,7 @@ gap> List(DigraphVertices(digraph), i -> colours[i / p]);
     By default, an isomorphism is found using the canonical labellings of the
     digraphs obtained from &bliss; by Tommi Junttila
     and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
-    Brendan Mckay and Adolfo Piperno can be used instead; see 
+    Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
     <Example><![CDATA[
@@ -534,12 +489,6 @@ gap> digraph2 := DigraphReverse(digraph1);
 <immutable digraph with 4 vertices, 4 edges>
 gap> IsIsomorphicDigraph(digraph1, digraph2);
 true
-gap> digraph1 := DigraphFromDiSparse6String(".IiGdqrHiogeaF");
-<immutable multidigraph with 10 vertices, 10 edges>
-gap> digraph2 := DigraphFromDiSparse6String(".IiK`K@FFSouF_|^");
-<immutable multidigraph with 10 vertices, 10 edges>
-gap> IsIsomorphicDigraph(digraph1, digraph2);
-false
 gap> digraph1 := Digraph([[3], [], []]);
 <immutable digraph with 3 vertices, 1 edge>
 gap> digraph2 := Digraph([[], [], [2]]);
@@ -586,7 +535,7 @@ true]]></Example>
     By default, an isomorphism is found using the canonical labellings of the
     digraphs obtained from &bliss; by Tommi Junttila
     and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
-    Brendan Mckay and Adolfo Piperno can be used instead; see 
+    Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
     <Example><![CDATA[
@@ -607,12 +556,6 @@ gap> IsIsomorphicDigraph(digraph1, digraph2,
 true
 gap> IsIsomorphicDigraph(digraph1, digraph2,
 >  [1, 1, 2, 2], [1, 1, 2, 2]);
-false
-gap> digraph1 := Digraph([[2, 1, 2], [1, 2, 1]]);
-<immutable multidigraph with 2 vertices, 6 edges>
-gap> IsIsomorphicDigraph(digraph1, digraph1, [2, 1], [1, 2]);
-true
-gap> IsIsomorphicDigraph(digraph1, digraph1, [1, 1], [1, 2]);
 false]]></Example>
   </Description>
 </ManSection>
@@ -627,47 +570,23 @@ false]]></Example>
     and <A>digraph2</A> if one exists, else this operation returns <K>fail</K>.
     <P/>
 
-    <List>
-      <Mark>for digraphs without multiple edges</Mark>
-      <Item>
-        An <E>isomorphism</E> from a digraph <A>digraph1</A> to a digraph
-        <A>digraph2</A> is a bijection <C>p</C> from the vertices of
-        <A>digraph1</A> to the vertices of <A>digraph2</A> with the following
-        property: for all vertices <C>i</C> and <C>j</C> of <A>digraph1</A>,
-        <C>[i, j]</C> is an edge of <A>digraph1</A> if and only if <C>[i ^ p, j
-          ^ p]</C> is an edge of <A>digraph2</A>. <P/>
+    An <E>isomorphism</E> from a digraph <A>digraph1</A> to a digraph
+    <A>digraph2</A> is a bijection <C>p</C> from the vertices of
+    <A>digraph1</A> to the vertices of <A>digraph2</A> with the following
+    property: for all vertices <C>i</C> and <C>j</C> of <A>digraph1</A>,
+    <C>[i, j]</C> is an edge of <A>digraph1</A> if and only if <C>[i ^ p, j
+      ^ p]</C> is an edge of <A>digraph2</A>. <P/>
 
-        If there exists such an isomorphism, then this operation returns one.
-        The form of this isomorphism is a permutation <C>p</C> of the vertices of
-        <A>digraph1</A> such that <P/>
+    If there exists such an isomorphism, then this operation returns one.
+    The form of this isomorphism is a permutation <C>p</C> of the vertices of
+    <A>digraph1</A> such that <P/>
 
-        <C>OnDigraphs(<A>digraph1</A>, p) = digraph2</C>.
-      </Item>
-      <Mark>for multidigraphs</Mark>
-      <Item>
-        An <E>isomorphism</E> from a multidigraph <A>digraph1</A> to a
-        multidigraph <A>digraph2</A> is a bijection <C>P[1]</C> from the
-        vertices of <A>digraph1</A> to the vertices of <A>digraph2</A> and a
-        bijection <C>P[2]</C> from the indices of edges of <A>digraph1</A> to
-        the indices of edges of <A>digraph2</A> with the following property:
-        <C>[i, j]</C> is the <C>k</C>th edge of <A>digraph1</A> if and only if
-        <C>[i ^ P[1], j ^ P[1]]</C> is the <C>(k ^ P[2])</C>th edge of
-        <A>digraph2</A>. <P/>
-
-        If there exists such an isomorphism, then this operation returns one.
-        The form of this isomorphism is a pair of permutations <C>P</C> -– where
-        the first is a permutation of the vertices of <A>digraph1</A> and the
-        second is a permutation of the indices of
-        <C>DigraphEdges(<A>digraph1</A>)</C> –- such that <P/>
-
-        <C>OnMultiDigraphs(<A>digraph1</A>, P) = <A>digraph2</A></C>.
-      </Item>
-    </List>
+    <C>OnDigraphs(<A>digraph1</A>, p) = digraph2</C>.
 
     By default, an isomorphism is found using the canonical labellings of the
     digraphs obtained from &bliss; by Tommi Junttila
     and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
-    Brendan Mckay and Adolfo Piperno can be used instead; see 
+    Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
     <Example><![CDATA[
@@ -685,19 +604,8 @@ gap> p := IsomorphismDigraphs(digraph1, digraph2);
 (1,6,11)(2,7,12)(3,8,13)(4,9,14)(5,10,15)
 gap> OnDigraphs(digraph1, p) = digraph2;
 true
-gap> digraph1 := DigraphFromDiSparse6String(".ImNS_?DSE@ce[~");
-<immutable multidigraph with 10 vertices, 10 edges>
-gap> digraph2 := DigraphFromDiSparse6String(".IkOlQefi_kgOf");
-<immutable multidigraph with 10 vertices, 10 edges>
-gap> IsomorphismDigraphs(digraph1, digraph2);
-[ (1,9,5,3,10,6,4,7,2), (1,8,6,3,7)(2,9,4,10,5) ]
-gap> digraph1 := DigraphByEdges([[7, 10], [7, 10]], 10);
-<immutable multidigraph with 10 vertices, 2 edges>
-gap> digraph2 := DigraphByEdges([[2, 3], [2, 3]], 10);
-<immutable multidigraph with 10 vertices, 2 edges>
-gap> IsomorphismDigraphs(digraph1, digraph2);
-[ (2,4,6,8,9,10,3,5,7), () ]]]></Example>
-</Description>
+]]></Example>
+  </Description>
 </ManSection>
 <#/GAPDoc>
 
@@ -746,7 +654,7 @@ gap> IsomorphismDigraphs(digraph1, digraph2);
     By default, an isomorphism is found using the canonical labellings of the
     digraphs obtained from &bliss; by Tommi Junttila
     and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
-    Brendan Mckay and Adolfo Piperno can be used instead; see 
+    Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
     <Example><![CDATA[
@@ -777,14 +685,8 @@ gap> List(DigraphVertices(digraph1), i -> colours1[i ^ p]) = colours2;
 true
 gap> IsomorphismDigraphs(digraph1, digraph2,
 >  [1, 1, 2, 2], [1, 1, 2, 2]);
-fail
-gap> digraph1 := Digraph([[2, 2], [2], [1]]);
-<immutable multidigraph with 3 vertices, 4 edges>
-gap> digraph2 := Digraph([[1], [1, 1], [2]]);
-<immutable multidigraph with 3 vertices, 4 edges>
-gap> IsomorphismDigraphs(digraph1, digraph2, [1, 2, 2], [2, 1, 2]);
-[ (1,2), (1,2,3) ]]]></Example>
-</Description>
+fail]]></Example>
+  </Description>
 </ManSection>
 <#/GAPDoc>
 
@@ -825,7 +727,7 @@ gap> digraph := Digraph([[1], [2, 3], [3], [1, 2, 3]]);
 gap> canon := BlissCanonicalDigraph(digraph);
 <immutable digraph with 4 vertices, 7 edges>
 gap> OutNeighbours(canon);
-[ [ 1 ], [ 2, 4 ], [ 1, 2, 4 ], [ 4 ] ]
+[ [ 1 ], [ 2 ], [ 3, 2 ], [ 1, 3, 2 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -836,7 +738,7 @@ gap> OutNeighbours(canon);
   <Oper Name="IsDigraphIsomorphism" Arg="src, ran, x"/>
   <Oper Name="IsDigraphAutomorphism" Arg="digraph, x"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description> 
+  <Description>
     <C>IsDigraphIsomorphism</C> returns <K>true</K> if the permutation or
     transformation <A>x</A> is an isomorphism from the digraph <A>src</A> to
     the digraph <A>ran</A>.

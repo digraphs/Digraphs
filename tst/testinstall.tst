@@ -200,25 +200,6 @@ gap> gr1 := OnDigraphs(gr, p ^ -1);;
 gap> DigraphTopologicalSort(gr1) = DigraphVertices(gr1);
 true
 
-#  AutomorphismGroup: for a multidigraph
-# CanonicalLabelling was being set incorrectly by AutomorphismGroup for
-# a multidigraph
-gap> gr := Digraph([
->   [5, 7, 8, 4, 6, 1], [3, 1, 7, 2, 7, 9], [1, 5, 2, 3, 9],
->   [1, 3, 3, 9, 9], [6, 3, 5, 7, 9], [3, 9],
->   [8, 3, 6, 8, 8, 7, 7, 8, 9], [6, 1, 6, 7, 8, 4, 2, 5, 4],
->   [1, 5, 2, 3, 9]]);
-<immutable multidigraph with 9 vertices, 52 edges>
-gap> G := AutomorphismGroup(gr);;
-gap> HasBlissCanonicalLabelling(gr);
-true
-gap> BlissCanonicalLabelling(gr);
-[ (1,5,4,2,3,7,9,6), (1,30,49)(2,34,47,35,45,39,38,51,8,12,18,24,21,28,23,13,
-    4,29,22,27,20,25,14)(3,33,48)(5,31,52,7,19,26,17,9,16,10,11,15,6,32,
-    50)(36,44)(37,46,40,41)(42,43) ]
-gap> BlissCanonicalLabelling(gr) = BlissCanonicalLabelling(DigraphCopy(gr));
-true
-
 #  DIGRAPH_IN_OUT_NBS: for a list containing ranges
 # A segfault was caused by assuming that an element of OutNeighbours was a
 # PLIST. This is solved by using PLAIN_LIST on each entry of OutNeighbours.
