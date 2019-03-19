@@ -30,7 +30,7 @@
 InstallMethod(DigraphAddVertex, "for a mutable dense digraph and an object",
 [IsMutableDigraph and IsDenseDigraphRep, IsObject],
 function(D, label)
-  Add(OutNeighbours(D), []);
+  Add(D!.OutNeighbours, []);
   SetDigraphVertexLabel(D, DigraphNrVertices(D), label);
   return D;
 end);
@@ -96,16 +96,16 @@ function(D, u)
   if u > DigraphNrVertices(D) then
     return D;
   fi;
-  Remove(OutNeighbours(D), u);
+  Remove(D!.OutNeighbours, u);
   RemoveDigraphVertexLabel(D, u);
   for v in DigraphVertices(D) do
     pos := 1;
-    while pos <= Length(OutNeighbours(D)[v]) do
-      w := OutNeighbours(D)[v][pos];
+    while pos <= Length(D!.OutNeighbours[v]) do
+      w := D!.OutNeighbours[v][pos];
       if w = u then
-        Remove(OutNeighbours(D)[v], pos);
+        Remove(D!.OutNeighbours[v], pos);
       elif w > u then
-         OutNeighbours(D)[v][pos] := w - 1;
+         D!.OutNeighbours[v][pos] := w - 1;
          pos := pos + 1;
       else
          pos := pos + 1;
@@ -162,7 +162,7 @@ InstallMethod(DigraphAddAllLoops, "for a mutable dense digraph",
 [IsMutableDigraph and IsDenseDigraphRep],
 function(D)
   local list, v;
-  list := OutNeighbours(D);
+  list := D!.OutNeighbours;
   Assert(1, IsMutable(list));
   for v in DigraphVertices(D) do
     if not v in list[v] then
@@ -185,7 +185,7 @@ InstallMethod(DigraphRemoveLoops, "for a mutable dense digraph",
 [IsMutableDigraph and IsDenseDigraphRep],
 function(D)
   local out, lbl, pos, v;
-  out := OutNeighbours(D);
+  out := D!.OutNeighbours;
   lbl := DigraphEdgeLabelsNC(D);
   for v in DigraphVertices(D) do
     pos := Position(out[v], v);
@@ -222,7 +222,7 @@ function(D, src, ran)
     ErrorNoReturn("the 3rd argument must be a vertex of the ",
                   "1st argument (a digraph), ");
   fi;
-  Add(OutNeighbours(D)[src], ran);
+  Add(D!.OutNeighbours[src], ran);
   if not IsMultiDigraph(D) then
     SetDigraphEdgeLabel(D, src, ran, 1);
   fi;
@@ -282,9 +282,9 @@ function(D, src, ran)
     ErrorNoReturn("the 3rd argument must be a vertex of the ",
                   "1st argument (a digraph),");
   fi;
-  pos := Position(OutNeighbours(D)[src], ran);
+  pos := Position(D!.OutNeighbours[src], ran);
   if pos <> fail then
-    Remove(OutNeighbours(D)[src], pos);
+    Remove(D!.OutNeighbours[src], pos);
     Remove(DigraphEdgeLabels(D)[src], pos);
   fi;
   return D;
@@ -338,7 +338,7 @@ function(D)
   local nodes, list, empty, seen, keep, v, u, pos;
 
   nodes := DigraphVertices(D);
-  list  := OutNeighbours(D);
+  list  := D!.OutNeighbours;
   empty := BlistList(nodes, []);
   seen  := BlistList(nodes, []);
   for u in nodes do
@@ -378,7 +378,7 @@ function(D, k)
                   "loops, and no multiple edges,");
   fi;
 
-  list := OutNeighbours(D);
+  list := D!.OutNeighbours;
   mat  := BooleanAdjacencyMatrixMutableCopy(D);
   deg  := ShallowCopy(InDegrees(D));
   n    := DigraphNrVertices(D);
@@ -424,7 +424,7 @@ function(arg)
   fi;
 
   if IsMutableDigraph(arg[1]) then
-    out := OutNeighbours(arg[1]);
+    out := arg[1]!.OutNeighbours;
     # Note that if arg[1] is mutable, and arg[1] occurs elsewhere in the arg
     # list, then the output of this function is a bit unexpected! Same for
     # DigraphJoin and DigraphEdgeUnion
@@ -461,7 +461,7 @@ function(arg)
   fi;
 
   if IsMutableDigraph(arg[1]) then
-    out := OutNeighbours(arg[1]);
+    out := arg[1]!.OutNeighbours;
   else
     out := OutNeighboursMutableCopy(arg[1]);
   fi;
@@ -507,7 +507,7 @@ function(arg)
   n := Maximum(List(arg, DigraphNrVertices));
   if IsMutableDigraph(arg[1]) then
     DigraphAddVertices(arg[1], n - DigraphNrVertices(arg[1]));
-    out := OutNeighbours(arg[1]);
+    out := arg[1]!.OutNeighbours;
   else
     out := OutNeighboursMutableCopy(arg[1]);
     Append(out, List([1 .. n - DigraphNrVertices(arg[1])], x -> []));
@@ -583,7 +583,7 @@ function(D)
   if IsSymmetricDigraph(D) then
     return D;
   fi;
-  OutNeighbours(D){DigraphVertices(D)} := InNeighboursMutableCopy(D);
+  D!.OutNeighbours{DigraphVertices(D)} := InNeighboursMutableCopy(D);
   return D;
 end);
 
@@ -602,15 +602,15 @@ function(D, u, v)
     ErrorNoReturn("the 1st argument (a digraph) must not have ",
                   "multiple edges,");
   fi;
-  pos := Position(OutNeighboursOfVertex(D, u), v);
+  pos := Position(D!.OutNeighbours[u], v);
   if pos = fail then
     ErrorNoReturn("there is no edge from ", u, " to ", v,
                   " in the 1st argument (a digraph)");
   elif u = v then
     return D;
   fi;
-  Add(OutNeighboursOfVertex(D, v), u);
-  Remove(OutNeighboursOfVertex(D, u), pos);
+  Add(D!.OutNeighbours[v], u);
+  Remove(D!.OutNeighbours[u], pos);
   # TODO(later) edge labels
   return D;
 end);
@@ -666,7 +666,7 @@ function(D, p)
     ErrorNoReturn("the 2nd argument (a perm) must permute the vertices ",
                   "of the 1st argument (a digraph),");
   fi;
-  out := OutNeighbours(D);
+  out := D!.OutNeighbours;
   out{DigraphVertices(D)} := Permuted(out, p);
   Apply(out, x -> OnTuples(x, p));
   return D;
@@ -687,7 +687,7 @@ function(D, t)
                   "vertex of the 1st argument (a digraph) to a vertex of ",
                   "the 1st argument,");
   fi;
-  old := OutNeighbours(D);
+  old := D!.OutNeighbours;
   new := List(DigraphVertices(D), x -> []);
   for v in DigraphVertices(D) do
     Append(new[v ^ t], OnTuples(old[v], t));

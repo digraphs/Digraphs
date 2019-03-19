@@ -65,7 +65,7 @@ function(D)
   topo := DigraphTopologicalSort(D);
   D := DigraphMutableCopy(D);
   D := OnDigraphs(D, PermList(topo) ^ -1);
-  list := OutNeighbours(D);
+  list := D!.OutNeighbours;
   Apply(list, Set);
   return DIGRAPHS_IsMeetJoinSemilatticeDigraph(list);
 end);

@@ -1711,7 +1711,7 @@ gap> OutNeighbours(D);
 [ [ 1, 2 ], [  ] ]
 gap> IsIdenticalObj(DigraphSinks(D), DigraphSinks(D));
 false
-gap> IsIdenticalObj(list, OutNeighbours(D));
+gap> IsIdenticalObj(list, D!.OutNeighbours);
 true
 gap> D := MutableDigraphNC(OutNeighbours(MakeImmutableDigraph(D)));
 <mutable digraph with 2 vertices, 2 edges>

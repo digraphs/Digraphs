@@ -11,7 +11,6 @@
 InstallMethod(DigraphNrVertices, "for a digraph in dense rep",
 [IsDenseDigraphRep], DIGRAPH_NR_VERTICES);
 
-# TODO move to oper.gi
 InstallMethod(OutNeighbours, "for a digraph in dense rep",
 [IsDenseDigraphRep], DIGRAPH_OUT_NEIGHBOURS);
 
