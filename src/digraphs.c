@@ -16,6 +16,7 @@
 #include "digraphs.h"
 
 #include <stdbool.h>  // for false, true, bool
+#include <stdint.h>   // for uint64_t
 #include <stdlib.h>   // for NULL, free
 
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
@@ -1615,45 +1616,114 @@ BlissGraph* buildBlissMultiDigraph(Obj digraph) {
   return graph;
 }
 
-BlissGraph* buildBlissDigraphWithColours(Obj digraph, Obj colours) {
-  UInt        n, i, j, nr;
-  Obj         adji, adj;
+// TODO: document mult (and everything else)
+BlissGraph* buildBlissDigraph(Obj digraph, Obj vert_colours, Obj edge_colours) {
+  uint64_t    colour, mult, num_vc, num_ec, n, i, j, k, nr;
+  Obj         adjj, adj;
   BlissGraph* graph;
 
-  n = DigraphNrVertices(digraph);
-  if (colours) {
-    DIGRAPHS_ASSERT(n == (UInt) LEN_LIST(colours));
+  n      = DigraphNrVertices(digraph);
+  num_vc = 0;
+  num_ec = 0;
+
+  // TODO: make a decision about this
+  // mult = (orientation_double == True) ? 2 : 1;
+
+  mult = 2;
+
+  if (vert_colours != Fail) {
+    DIGRAPHS_ASSERT(n == (uint64_t) LEN_LIST(vert_colours));
+    for (i = 1; i <= n; i++) {
+      num_vc = MAX(num_vc, (uint64_t) INT_INTOBJ(ELM_LIST(vert_colours, i)));
+    }
   }
+
+  adj = FuncOutNeighbours(0L, digraph);
+
+  if (edge_colours != Fail) {
+    DIGRAPHS_ASSERT(n == (uint64_t) LEN_LIST(edge_colours));
+    for (i = 1; i <= n; i++) {
+      Int len = LEN_LIST(ELM_PLIST(edge_colours, i));
+      DIGRAPHS_ASSERT(LEN_LIST(ELM_PLIST(adj, i)) == len);
+      for (Int l = 1; l <= len; l++) {
+        uint64_t x = INT_INTOBJ(ELM_LIST(ELM_LIST(edge_colours, i), l));
+        num_ec     = MAX(num_ec, x);
+      }
+    }
+  } else if (DigraphNrEdges(digraph) > 0) {
+    num_ec = 1;
+  }
+
   graph = bliss_digraphs_new(0);
-  adj   = FuncOutNeighbours(0L, digraph);
 
-  if (colours) {
-    for (i = 1; i <= n; i++) {
-      bliss_digraphs_add_vertex(graph, INT_INTOBJ(ELM_LIST(colours, i)));
-    }
-  } else {
-    for (i = 1; i <= n; i++) {
-      bliss_digraphs_add_vertex(graph, 1);
-    }
-  }
-  for (i = 1; i <= n; i++) {
-    bliss_digraphs_add_vertex(graph, n + 1);
-  }
-  for (i = 1; i <= n; i++) {
-    bliss_digraphs_add_vertex(graph, n + 2);
+  // TODO: make this safe
+  uint64_t num_layers = 64 - __builtin_clzll(num_ec);
+
+  // Take care of the case where there are no edges in the digraph
+  if (DigraphNrEdges(digraph) == 0) {
+    num_layers = 1;
+    mult       = 1;
   }
 
-  for (i = 1; i <= n; i++) {
-    bliss_digraphs_add_edge(graph, i - 1, n + i - 1);
-    bliss_digraphs_add_edge(graph, i - 1, 2 * n + i - 1);
-    adji = ELM_PLIST(adj, i);
-    nr   = LEN_PLIST(adji);
-    for (j = 1; j <= nr; j++) {
+  if (vert_colours == Fail) {
+    num_vc = 1;
+  }
+
+  // TODO: is duplicating the best idea here?
+  for (i = 1; i <= mult * num_layers; i += mult) {
+    for (j = 1; j <= n; j++) {
+      colour = (vert_colours != Fail)
+                   ? (i - 1) * num_vc + INT_INTOBJ(ELM_LIST(vert_colours, j))
+                   : i - 1;
+      bliss_digraphs_add_vertex(graph, colour);
+    }
+    if (mult == 2) {
+      for (j = 1; j <= n; j++) {
+        colour = (vert_colours != Fail)
+                     ? i * num_vc + INT_INTOBJ(ELM_LIST(vert_colours, j))
+                     : i;
+        bliss_digraphs_add_vertex(graph, colour);
+      }
+    }
+  }
+
+  if (mult == 2) {
+    for (i = 0; i < n; i++) {
+      j = bliss_digraphs_add_vertex(graph, num_vc * num_layers * mult + 2);
+      bliss_digraphs_add_edge(graph, j, i);
+      bliss_digraphs_add_edge(graph, j, i + n);
+      for (k = 0; k < num_layers; k++) {
+        bliss_digraphs_add_edge(graph, j, i + k * mult * n);
+        bliss_digraphs_add_edge(graph, j, i + (k * mult + 1) * n);
+      }
+    }
+  }
+
+  for (i = 1; i < num_layers; i++) {
+    for (j = 1; j <= mult * n; j++) {
       bliss_digraphs_add_edge(
-          graph, n + i - 1, 2 * n + INT_INTOBJ(ELM_PLIST(adji, j)) - 1);
+          graph, (i - 1) * mult * n + (j - 1), i * mult * n + (j - 1));
     }
   }
 
+  for (j = 1; j <= n; j++) {
+    adjj = ELM_PLIST(adj, j);
+    nr   = LEN_PLIST(adjj);
+    for (k = 1; k <= nr; k++) {
+      uint64_t w = INT_INTOBJ(ELM_PLIST(adjj, k));
+      for (i = 0; i < num_layers; i++) {
+        uint64_t colour =
+            edge_colours != Fail
+                ? INT_INTOBJ(ELM_LIST(ELM_LIST(edge_colours, j), k))
+                : 1;
+        if ((1 << i) & colour) {
+          bliss_digraphs_add_edge(graph,
+                                  i * mult * n + (j - 1),
+                                  ((i + 1) * mult - 1) * n + (w - 1));
+        }
+      }
+    }
+  }
   return graph;
 }
 
@@ -1715,18 +1785,17 @@ void digraph_hook_function(void*               user_param,
   AssPlist(gens, LEN_PLIST(gens) + 1, p);
 }
 
-static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
+static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self,
+                                     Obj digraph,
+                                     Obj vert_colours,
+                                     Obj edge_colours) {
   Obj                 autos, p, n;
   BlissGraph*         graph;
   UInt4*              ptr;
   const unsigned int* canon;
   Int                 i;
 
-  if (colours == False) {
-    graph = buildBlissDigraphWithColours(digraph, NULL);
-  } else {
-    graph = buildBlissDigraphWithColours(digraph, colours);
-  }
+  graph = buildBlissDigraph(digraph, vert_colours, edge_colours);
 
   autos = NEW_PLIST(T_PLIST, 2);
   n     = INTOBJ_INT(DigraphNrVertices(digraph));
@@ -1922,9 +1991,9 @@ static Obj FuncDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   const unsigned int* canon;
 
   if (colours == Fail) {
-    graph = buildBlissDigraphWithColours(digraph, NULL);
+    graph = buildBlissDigraph(digraph, NULL, NULL);
   } else {
-    graph = buildBlissDigraphWithColours(digraph, colours);
+    graph = buildBlissDigraph(digraph, colours, NULL);
   }
 
   canon = bliss_digraphs_find_canonical_labeling(graph, 0, 0, 0);
@@ -2156,8 +2225,8 @@ static StructGVarFunc GVarFuncs[] = {
      "src/digraphs.c:FuncDIGRAPH_PATH"},
 
     {"DIGRAPH_AUTOMORPHISMS",
-     2,
-     "digraph, colours",
+     3,
+     "digraph, vert_colours, edge_colours",
      FuncDIGRAPH_AUTOMORPHISMS,
      "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS"},
 

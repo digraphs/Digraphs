@@ -45,7 +45,10 @@ function()
     fi;
     Info(InfoWarning,
          1,
-         "Using nauty by default for AutomorphismGroup . . .");
+         "Using NautyTracesInterface by default for AutomorphismGroup");
+    Info(InfoWarning,
+         1,
+         "bliss will for used for edge coloured automorphisms");
   else
     Info(InfoWarning,
          1,
@@ -58,41 +61,67 @@ end);
 
 # Wrappers for the C-level functions
 
-# The argument <colors> should be a coloring of type 1, as described before
-# ValidateVertexColouring in isomorph.gd.
-#
-# Returns a list where the first position is the automorphism group, and the
-# second is the canonical labelling.
-BindGlobal("BLISS_DATA",
-function(D, colors)
-  local data;
-  if colors <> false then
-    colors := DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(D),
-                                               colors);
-  fi;
-  if IsMultiDigraph(D) then
-    data := MULTIDIGRAPH_AUTOMORPHISMS(D, colors);
-    if IsEmpty(data[1]) then
-      data[1] := [()];
-    fi;
-    # Note that data[3] cannot ever be empty since there are multiple edges,
-    # and since they are indistinguishable, they can be swapped by an
-    # automorphism.
-    data[1] := DirectProduct(Group(data[1]), Group(data[3]));
-    return data;
-  else
-    data := DIGRAPH_AUTOMORPHISMS(D, colors);
+BindGlobal("BLISS_DATA_NC",
+function(digraph, vert_colours, edge_colours)
+  local collapsed, mults, data, edge_gp;
+  if IsMultiDigraph(digraph) then
+    collapsed     := DIGRAPHS_CollapseMultiColouredEdges(digraph, edge_colours);
+    digraph       := collapsed[1];
+    edge_colours  := collapsed[2];
+    mults         := collapsed[3];
+
+    data := DIGRAPH_AUTOMORPHISMS(digraph,
+                                  vert_colours,
+                                  edge_colours);
     if IsEmpty(data[1]) then
       data[1] := [()];
     fi;
     data[1] := Group(data[1]);
-  fi;
 
-  return data;
+    if Length(mults) > 0 then
+      edge_gp := Group(Flat(List(mults,
+                                 x -> GeneratorsOfGroup(SymmetricGroup(x)))));
+      data[1] := DirectProduct(data[1], edge_gp);
+    else
+      data[1] := DirectProduct(data[1], Group(()));
+    fi;
+    data[2] := [data[2], ()];
+    return data;
+  else
+    data := DIGRAPH_AUTOMORPHISMS(digraph,
+                                  vert_colours,
+                                  edge_colours);
+    if IsEmpty(data[1]) then
+      data[1] := [()];
+    fi;
+    data[1] := Group(data[1]);
+    return data;
+  fi;
+end);
+
+## The argument <vert_colours> should be a list of colours of the vertices
+## of <digraph>, and the argument <edge_colours> should be a list of
+## lists of the same shape as OutNeighbours(<digraph>).
+## See ValidateVertexColouring and ValidateEdgeColouring.
+##
+## Returns a list where the first position is the automorphism group, and the
+## second is the canonical labelling.
+BindGlobal("BLISS_DATA",
+function(D, vert_colours, edge_colours, calling_function_name)
+  if vert_colours <> fail then
+    vert_colours := DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(D),
+                                                     vert_colours);
+  fi;
+  if edge_colours <> fail then
+    DIGRAPHS_ValidateEdgeColouring(D, edge_colours);
+  fi;
+  return BLISS_DATA_NC(D, vert_colours, edge_colours);
 end);
 
 BindGlobal("BLISS_DATA_NO_COLORS",
-D -> BLISS_DATA(D, false));
+function(D)
+  return BLISS_DATA(D, fail, fail, "");
+end);
 
 if DIGRAPHS_NautyAvailable then
   BindGlobal("NAUTY_DATA",
@@ -142,7 +171,12 @@ end);
 
 InstallMethod(BlissCanonicalLabelling, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-{D, colors} -> BLISS_DATA(D, colors)[2]);
+function(D, colors)
+  return BLISS_DATA(D,
+                    colors,
+                    fail,
+                    "BlissCanonicalLabelling")[2];
+end);
 
 InstallMethod(NautyCanonicalLabelling, "for a digraph",
 [IsDigraph],
@@ -247,7 +281,34 @@ end);
 
 InstallMethod(BlissAutomorphismGroup, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-{D, colors} -> BLISS_DATA(D, colors)[1]);
+function(D, colors)
+  return BLISS_DATA(D,
+                    colors,
+                    fail,
+                    "AutomorphismGroup")[1];
+end);
+
+InstallMethod(BlissAutomorphismGroup,
+"for a digraph, vertex colouring, and edge colouring",
+[IsDigraph, IsHomogeneousList, IsList],
+function(digraph, vert_colours, edge_colours)
+  return BLISS_DATA(digraph,
+                    vert_colours,
+                    edge_colours,
+                    "AutomorphismGroup")[1];
+end);
+
+InstallMethod(BlissAutomorphismGroup, "for a digraph, fail",
+[IsDigraph, IsBool, IsList],
+function(digraph, vert_colours, edge_colours)
+  if not vert_colours = fail then
+    TryNextMethod();
+  fi;
+  return BLISS_DATA(digraph,
+                    vert_colours,
+                    edge_colours,
+                    "AutomorphismGroup")[1];
+end);
 
 InstallMethod(NautyAutomorphismGroup, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
@@ -259,17 +320,38 @@ function(D, colors)
   return NAUTY_DATA(D, colors)[1];
 end);
 
+InstallMethod(NautyAutomorphismGroup, "for a digraph",
+[IsDigraph, IsHomogeneousList, IsList],
+function(digraph, vert_colours, edge_colours)
+  Info(InfoWarning,
+       1,
+       "NautyAutomorphismGroup is not available for edge coloured digraphs");
+  return fail;
+end);
+
+InstallMethod(NautyAutomorphismGroup, "for a digraph",
+[IsDigraph, IsBool, IsList],
+function(digraph, vert_colours, edge_colours)
+  if not vert_colours = fail then
+    TryNextMethod();
+  fi;
+  Info(InfoWarning,
+       1,
+       "NautyAutomorphismGroup is not available for edge coloured digraphs");
+  return fail;
+end);
+
 InstallMethod(AutomorphismGroup, "for a digraph", [IsDigraph],
 BlissAutomorphismGroup);
 
 InstallMethod(AutomorphismGroup, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList], BlissAutomorphismGroup);
 
-InstallMethod(AutomorphismGroup, "for a multidigraph", [IsMultiDigraph],
-BlissAutomorphismGroup);
+InstallMethod(AutomorphismGroup, "for a digraph, vertex and edge coloring",
+[IsDigraph, IsHomogeneousList, IsList], BlissAutomorphismGroup);
 
-InstallMethod(AutomorphismGroup, "for a multidigraph and vertex coloring",
-[IsMultiDigraph, IsHomogeneousList], BlissAutomorphismGroup);
+InstallMethod(AutomorphismGroup, "for a digraph, vertex and edge coloring",
+[IsDigraph, IsBool, IsList], BlissAutomorphismGroup);
 
 # Check if two digraphs are isomorphic
 
@@ -533,6 +615,114 @@ function(n, partition)
                 "every integer in the range [1 .. m], for some m <= ", n,
                 "; or 2. a list of non-empty disjoint lists ",
                 "whose union is [1 .. ", n, "].");
+end);
+
+InstallGlobalFunction(DIGRAPHS_ValidateEdgeColouring,
+function(graph, edge_colouring)
+  local n, colours, m, adj_colours, i;
+
+  if not IsDigraph(graph) then
+    ErrorNoReturn("the 1st argument must be a digraph");
+  fi;
+
+  # Check: shapes and values from [1 .. something]
+  if edge_colouring = fail then
+      return true;
+  fi;
+
+  n := DigraphNrVertices(graph);
+  if not IsList(edge_colouring) or Length(edge_colouring) <> n then
+    ErrorNoReturn("the 2nd argument must be a list of the same shape as ",
+                  "OutNeighbours(graph), where graph is the 1st argument");
+  fi;
+  if ForAny(DigraphVertices(graph), x -> not IsList(edge_colouring[x]) or
+                                         (Length(edge_colouring[x]) <>
+                                          Length(OutNeighbours(graph)[x]))) then
+    ErrorNoReturn("the 2nd argument must be a list of the same shape as ",
+                  "OutNeighbours(graph), where graph is the 1st argument");
+  fi;
+
+  colours := [];
+  for adj_colours in edge_colouring do
+    for i in adj_colours do
+      if not IsPosInt(i) then
+        ErrorNoReturn("the 2nd argument should be a list of lists of ",
+                      "positive integers");
+      fi;
+      AddSet(colours, i);
+    od;
+  od;
+  m := Length(colours);
+  if ForAny([1 .. m], i -> i <> colours[i]) then
+    ErrorNoReturn("the 2nd argument should be a list of lists whose union ",
+                   "is [1 .. number of colours]");
+  fi;
+  return true;
+end);
+
+InstallGlobalFunction(DIGRAPHS_CollapseMultiColouredEdges,
+function(D, edge_colours)
+  local n, mults, out, new_cols, new_cols_set, idx, adjv, indices, colsv,
+  p, run, cur, range, cols, C, v, i;
+  n := DigraphNrVertices(D);
+  mults := [];
+  out := List([1 .. n], x -> []);
+  new_cols := List([1 .. n], x -> []);
+  new_cols_set := [];
+  if edge_colours = fail then
+    edge_colours := List([1 .. n], x -> List(OutNeighbours(D)[x], y -> 1));
+  fi;
+  idx := 1;
+  for v in [1 .. n] do
+    adjv := ShallowCopy(OutNeighbours(D)[v]);
+    if Length(adjv) > 0 then
+      indices := [idx .. idx + Length(adjv) - 1];
+      colsv := ShallowCopy(edge_colours[v]);
+      p := Sortex(adjv);
+      colsv := Permuted(colsv, p);
+      indices := Permuted(indices, p);
+
+      run := 1;
+      cur := 1;
+      while cur < Length(adjv) do
+        if adjv[cur + 1] = adjv[cur] then
+          run := run + 1;
+        else
+          Add(out[v], adjv[cur]);
+          range := [cur - run + 1 .. cur];
+          cols := colsv{range};
+          C := List([1 .. Maximum(cols)], x -> []);
+          for i in range do
+            Add(C[colsv[i]], indices[i]);
+          od;
+          Append(mults, Filtered(C, x -> Length(x) > 1));
+          Sort(cols);
+          AddSet(new_cols_set, cols);
+          Add(new_cols[v], cols);
+          run := 1;
+        fi;
+        cur := cur + 1;
+      od;
+      Add(out[v], adjv[cur]);
+      range := [cur - run + 1 .. cur];
+      cols := colsv{range};
+      C := List([1 .. Maximum(cols)], x -> []);
+      for i in range do
+        Add(C[colsv[i]], indices[i]);
+      od;
+      Append(mults, Filtered(C, x -> Length(x) > 1));
+      Sort(cols);
+      AddSet(new_cols_set, cols);
+      Add(new_cols[v], cols);
+    fi;
+    idx := idx + Length(adjv);
+  od;
+  for cols in new_cols do
+    for i in [1 .. Length(cols)] do
+      cols[i] := Position(new_cols_set, cols[i]);
+    od;
+  od;
+  return [Digraph(out), new_cols, mults];
 end);
 
 InstallMethod(IsDigraphIsomorphism, "for digraph, digraph, and permutation",

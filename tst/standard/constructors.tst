@@ -110,28 +110,9 @@ gap> gr := DistanceDigraph(digraph, 0);
 <immutable digraph with 126 vertices, 126 edges>
 gap> OutNeighbours(gr) = List([1 .. 126], x -> [x]);
 true
-gap> gr := Digraph([[2, 2], [3, 3], []]);
-<immutable multidigraph with 3 vertices, 4 edges>
-gap> OutNeighbours(DistanceDigraph(gr, 0));
-[ [ 1 ], [ 2 ], [ 3 ] ]
-gap> OutNeighbours(DistanceDigraph(gr, 1));
-[ [ 2 ], [ 3 ], [  ] ]
-gap> OutNeighbours(DistanceDigraph(gr, 2));
-[ [ 3 ], [  ], [  ] ]
 
 #  DistanceDigraph with known automorphisms
 gap> gr := Digraph([[1, 2], [], [2, 3]]);;
-gap> DigraphGroup(gr) = Group((1, 3));
-true
-gap> OutNeighbours(DistanceDigraph(gr, 0));
-[ [ 1 ], [ 2 ], [ 3 ] ]
-gap> OutNeighbours(DistanceDigraph(gr, 1));
-[ [ 2 ], [  ], [ 2 ] ]
-gap> OutNeighbours(DistanceDigraph(gr, 2));
-[ [  ], [  ], [  ] ]
-
-#  DistanceDigraph on multidigraph with known automorphisms
-gap> gr := Digraph([[1, 2, 2], [], [2, 2, 3]]);;
 gap> DigraphGroup(gr) = Group((1, 3));
 true
 gap> OutNeighbours(DistanceDigraph(gr, 0));
