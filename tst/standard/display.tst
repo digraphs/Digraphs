@@ -70,8 +70,7 @@ gap> DotDigraph(gr2){[11 .. 75]};
 gap> DotSymmetricDigraph(gr2){[12 .. 70]};
 " hgn{\nnode [shape=circle]\n\n1\n2\n3\n4\n1 -- 2\n2 -- 3\n3 -- 3\n3 -"
 gap> DotSymmetricDigraph(gr1);
-Error, Digraphs: DotSymmetricDigraph: usage,
-the argument <graph> should be symmetric,
+Error, the argument should be a symmetric digraph,
 
 # DotVertexLabelledDigraph
 gap> r := rec(DigraphVertices := [1 .. 3], DigraphSource := [1, 1, 1, 1],
@@ -153,8 +152,7 @@ node [shape=circle]
 }
 gap> gr := Digraph([[1], []]);;
 gap> DotPartialOrderDigraph(gr);
-Error, Digraphs: DotPartialOrderDigraph: usage,
-the argument <digraph> should be a partial order digraph,
+Error, the argument must be a partial order digraph,
 
 # DotPreorderDigraph and DotQuasiorderDigraph
 gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 4], [1 .. 5], [1 .. 6],

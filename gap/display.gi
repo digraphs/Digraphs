@@ -10,23 +10,17 @@
 
 # AN's code, adapted by WW
 
-InstallMethod(DotDigraph, "for a digraph",
-[IsDigraph],
-function(graph)
-  local verts, out, str, i, j;
-
-  verts := DigraphVertices(graph);
-  out   := OutNeighbours(graph);
+InstallMethod(DotDigraph, "for a digraph", [IsDigraph],
+function(D)
+  local str, out, i, j;
   str   := "//dot\n";
-
   Append(str, "digraph hgn{\n");
   Append(str, "node [shape=circle]\n");
-
-  for i in verts do
+  for i in DigraphVertices(D) do
     Append(str, Concatenation(String(i), "\n"));
   od;
-
-  for i in verts do
+  out := OutNeighbours(D);
+  for i in DigraphVertices(D) do
     for j in out[i] do
       Append(str, Concatenation(String(i), " -> ", String(j), "\n"));
     od;
@@ -36,24 +30,22 @@ function(graph)
 end);
 
 InstallMethod(DotVertexLabelledDigraph, "for a digraph", [IsDigraph],
-function(digraph)
-  local verts, out, str, i, j;
-
-  verts := DigraphVertices(digraph);
-  out   := OutNeighbours(digraph);
+function(D)
+  local out, str, i, j;
+  out   := OutNeighbours(D);
   str   := "//dot\n";
 
   Append(str, "digraph hgn{\n");
   Append(str, "node [shape=circle]\n");
 
-  for i in verts do
+  for i in DigraphVertices(D) do
     Append(str, String(i));
     Append(str, " [label=\"");
-    Append(str, String(DigraphVertexLabel(digraph, i)));
+    Append(str, String(DigraphVertexLabel(D, i)));
     Append(str, "\"]\n");
   od;
 
-  for i in verts do
+  for i in DigraphVertices(D) do
     for j in out[i] do
       Append(str, Concatenation(String(i), " -> ", String(j), "\n"));
     od;
@@ -62,28 +54,21 @@ function(digraph)
   return str;
 end);
 
-InstallMethod(DotSymmetricDigraph, "for an 'undirected' digraph",
+InstallMethod(DotSymmetricDigraph, "for a digraph",
 [IsDigraph],
-function(graph)
-  local verts, out, str, i, j;
-
-  if not IsSymmetricDigraph(graph) then
-    ErrorNoReturn("Digraphs: DotSymmetricDigraph: usage,\n",
-                  "the argument <graph> should be symmetric,");
+function(D)
+  local out, str, i, j;
+  if not IsSymmetricDigraph(D) then
+    ErrorNoReturn("the argument should be a symmetric digraph,");
   fi;
-
-  verts := DigraphVertices(graph);
-  out   := OutNeighbours(graph);
+  out   := OutNeighbours(D);
   str   := "//dot\n";
-
   Append(str, "graph hgn{\n");
   Append(str, "node [shape=circle]\n\n");
-
-  for i in verts do
+  for i in DigraphVertices(D) do
     Append(str, Concatenation(String(i), "\n"));
   od;
-
-  for i in verts do
+  for i in DigraphVertices(D) do
     for j in out[i] do
       if j >= i then
         Append(str, Concatenation(String(i), " -- ", String(j), "\n"));
@@ -110,14 +95,12 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
     local opt, path, dir, tdir, file, engine, viewer, type, filetype;
 
     if not IsString(arg[1]) then
-      ErrorNoReturn("Digraphs: Splash: usage,\n",
-                    "<arg>[1] must be a string,");
+      ErrorNoReturn("the 1st argument must be a string,");
     fi;
 
     if IsBound(arg[2]) then
       if not IsRecord(arg[2]) then
-        ErrorNoReturn("Digraphs: Splash: usage,\n",
-                      "<arg>[2] must be a record,");
+        ErrorNoReturn("the 2nd argument must be a record,");
       else
         opt := arg[2];
       fi;
@@ -171,8 +154,8 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
     elif arg[1]{[1 .. 5]} = "//dot" then
       type := "dot";
     else
-      ErrorNoReturn("Digraphs: Splash: usage,\n",
-                    "the option <type> must be \"dot\" or \"latex\",");
+      ErrorNoReturn("the component \"type\" of the 2nd argument (a record) ",
+                    " must be \"dot\" or \"latex\",");
     fi;
 
     # output type
@@ -188,8 +171,8 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
                         "fdp", "sfdp", "patchwork"] then
         engine := opt.engine;
       else
-        ErrorNoReturn("Digraphs: Splash: usage,\n",
-                      "the option <engine> must be \"dot\", \"neato\", ",
+        ErrorNoReturn("the component \"engine\" of the 2nd argument ",
+                      "(a record) must be one of: \"dot\", \"neato\", ",
                       "\"twopi\", \"circo\", \"fdp\", \"sfdp\", ",
                       "or \"patchwork\"");
       fi;
@@ -220,28 +203,26 @@ fi;
 
 InstallMethod(DotPartialOrderDigraph, "for a partial order digraph",
 [IsDigraph],
-function(digraph)
-  if not IsPartialOrderDigraph(digraph) then
-    ErrorNoReturn("Digraphs: DotPartialOrderDigraph: usage,\n",
-                  "the argument <digraph> should be a partial order digraph,");
+function(D)
+  if not IsPartialOrderDigraph(D) then
+    ErrorNoReturn("the argument must be a partial order digraph,");
   fi;
-  return DotDigraph(DigraphReflexiveTransitiveReduction(digraph));
+  return DotDigraph(DigraphReflexiveTransitiveReduction(D));
 end);
 
 InstallMethod(DotPreorderDigraph, "for a preorder digraph",
 [IsDigraph],
-function(digraph)
+function(D)
   local comps, quo, red, str, c, x, e;
 
-  if not IsPreorderDigraph(digraph) then
-    ErrorNoReturn("Digraphs: DotPreorderDigraph: usage,\n",
-                  "the argument <digraph> should be a preorder digraph,");
+  if not IsPreorderDigraph(D) then
+    ErrorNoReturn("the argument must be a preorder digraph,");
   fi;
 
   # Quotient by the strongly connected components to get a partial order
-  # digraph and draw this without loops or edges implied by transitivity.
-  comps  := DigraphStronglyConnectedComponents(digraph).comps;
-  quo    := DigraphRemoveAllMultipleEdges(QuotientDigraph(digraph, comps));
+  # D and draw this without loops or edges implied by transitivity.
+  comps  := DigraphStronglyConnectedComponents(D).comps;
+  quo    := DigraphRemoveAllMultipleEdges(QuotientDigraph(D, comps));
   red    := DigraphReflexiveTransitiveReduction(quo);
 
   str   := "//dot\n";
@@ -249,7 +230,7 @@ function(digraph)
   Append(str, "node [shape=Mrecord, height=0.5, fixedsize=true]");
   Append(str, "ranksep=1;\n");
 
-  # Each vertex of the quotient digraph is labelled by its preimage.
+  # Each vertex of the quotient D is labelled by its preimage.
   for c in [1 .. Length(comps)] do
     Append(str, String(c));
     Append(str, " [label=\"");
@@ -263,7 +244,7 @@ function(digraph)
     Append(str, "]\n");
   od;
 
-  # Add the edges of the quotient digraph.
+  # Add the edges of the quotient D.
   for e in DigraphEdges(red) do
     Append(str, Concatenation(String(e[1]), " -> ", String(e[2]), "\n"));
   od;
@@ -274,35 +255,28 @@ end);
 
 InstallMethod(DotHighlightedDigraph, "for a digraph and list",
 [IsDigraph, IsList],
-function(digraph, list)
-  return DotHighlightedDigraph(digraph, list, "black", "grey");
+function(D, list)
+  return DotHighlightedDigraph(D, list, "black", "grey");
 end);
 
 InstallMethod(DotHighlightedDigraph, "for a digraph, list, and two strings",
 [IsDigraph, IsList, IsString, IsString],
-function(graph, highverts, highcolour, lowcolour)
+function(D, highverts, highcolour, lowcolour)
   local lowverts, out, str, i, j;
 
-  if not IsSubset(DigraphVertices(graph), highverts) then
-    ErrorNoReturn("Digraphs: DotHighlightedDigraph: usage,\n",
-                  "the second argument must be a list of vertices of the ",
-                  "first argument,");
-  fi;
-
-  if IsEmpty(highcolour) then
-    ErrorNoReturn("Digraphs: DotHighlightedDigraph: usage,\n",
-                  "the third argument must be a string containing the name ",
+  if not IsSubset(DigraphVertices(D), highverts) then
+    ErrorNoReturn("the 2nd argument must be a list of vertices of the ",
+                  "1st argument (a digraph),");
+  elif IsEmpty(highcolour) then
+    ErrorNoReturn("the 3rd argument must be a string containing the name ",
+                  "of a colour,");
+  elif IsEmpty(lowcolour) then
+    ErrorNoReturn("the 4th argument must be a string containing the name ",
                   "of a colour,");
   fi;
 
-  if IsEmpty(lowcolour) then
-    ErrorNoReturn("Digraphs: DotHighlightedDigraph: usage,\n",
-                  "the fourth argument must be a string containing the name ",
-                  "of a colour,");
-  fi;
-
-  lowverts  := Difference(DigraphVertices(graph), highverts);
-  out       := OutNeighbours(graph);
+  lowverts  := Difference(DigraphVertices(D), highverts);
+  out       := OutNeighbours(D);
   str       := "//dot\n";
 
   Append(str, "digraph hgn{\n");
