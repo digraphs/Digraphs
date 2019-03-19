@@ -609,7 +609,7 @@ true
 gap> CompleteDigraph(0);
 <immutable digraph with 0 vertices, 0 edges>
 gap> CompleteDigraph(-1);
-Error, the argument <n> must be a non-negative integer,
+Error, the argument must be a non-negative integer,
 
 #  EmptyDigraph
 gap> gr := EmptyDigraph(5);
@@ -1605,9 +1605,9 @@ gap> CompleteMultipartiteDigraph([5]);
 gap> CompleteMultipartiteDigraph([]);
 <immutable digraph with 0 vertices, 0 edges>
 gap> CompleteMultipartiteDigraph([5, 4, 2, 10, -5]);
-Error, the argument <sizes> must be a list of positive integers,
+Error, the argument must be a list of positive integers,
 gap> CompleteMultipartiteDigraph([5, 0, 2]);
-Error, the argument <sizes> must be a list of positive integers,
+Error, the argument must be a list of positive integers,
 gap> DigraphEdges(CompleteMultipartiteDigraph([3, 2]));
 [ [ 1, 4 ], [ 1, 5 ], [ 2, 4 ], [ 2, 5 ], [ 3, 4 ], [ 3, 5 ], [ 4, 1 ], 
   [ 4, 2 ], [ 4, 3 ], [ 5, 1 ], [ 5, 2 ], [ 5, 3 ] ]

@@ -292,33 +292,28 @@ end);
 # the object.
 InstallMethod(Digraph, "for a list and function", [IsList, IsFunction],
 function(list, func)
-  local N, out_nbs, in_nbs, x, wrap, D, i, j;
+  local D;
+  D := MakeImmutableDigraph(MutableDigraph(list, func));
+  SetDigraphAdjacencyFunction(D, {u, v} -> func(list[u], list[v]));
+  SetFilterObj(D, IsDigraphWithAdjacencyFunction);
+  SetDigraphVertexLabels(D, list);
+  return D;
+end);
 
-  N       := Size(list);  # number of vertices
-  out_nbs := List([1 .. N], x -> []);
-  in_nbs  := List([1 .. N], x -> []);
-
+InstallMethod(MutableDigraph, "for a list and function", [IsList, IsFunction],
+function(list, func)
+  local N, out, x, i, j;
+  N    := Size(list);  # number of vertices
+  out := List([1 .. N], x -> []);
   for i in [1 .. N] do
     x := list[i];
     for j in [1 .. N] do
       if func(x, list[j]) then
-        Add(out_nbs[i], j);
-        Add(in_nbs[j], i);
+        Add(out[i], j);
       fi;
     od;
   od;
-
-  # Function that acts on [1 .. N] rather than list
-  wrap := function(u, v)
-    return func(list[u], list[v]);
-  end;
-
-  D := DigraphNC(out_nbs);
-  SetDigraphAdjacencyFunction(D, wrap);
-  SetFilterObj(D, IsDigraphWithAdjacencyFunction);
-  SetInNeighbours(D, in_nbs);
-  SetDigraphVertexLabels(D, list);
-  return D;
+  return ConvertToMutableDigraphNC(out);
 end);
 
 InstallMethod(MutableDigraph, "for a number of vertices, source, and range",
@@ -449,7 +444,7 @@ InstallMethod(MutableDigraphByAdjacencyMatrix, "for an empty list",
 InstallMethod(MutableDigraphByAdjacencyMatrixNC, "for an empty list",
 [IsList and IsEmpty],
 function(dummy)
-  return EmptyMutableDigraph(0);
+  return EmptyDigraph(IsMutableDigraph, 0);
 end);
 
 InstallMethod(MutableDigraphByAdjacencyMatrix, "for a homogeneous list",
@@ -540,7 +535,7 @@ end);
 InstallMethod(MutableDigraphByEdges, "for an empty list",
 [IsList and IsEmpty],
 function(edges)
-  return EmptyMutableDigraph(0);
+  return EmptyDigraph(IsMutableDigraph, 0);
 end);
 
 InstallMethod(DigraphByEdges, "for an empty list, and a pos int",
@@ -552,7 +547,7 @@ end);
 InstallMethod(MutableDigraphByEdges, "for an empty list, and a pos int",
 [IsList and IsEmpty, IsPosInt],
 function(edges, n)
-  return EmptyMutableDigraph(n);
+  return EmptyDigraph(IsMutableDigraph, n);
 end);
 
 InstallMethod(MutableDigraphByEdges, "for a rectangular table",
@@ -884,7 +879,7 @@ function(n)
   if n < 0 then
     ErrorNoReturn("the argument must be a non-negative integer,");
   elif n = 0 then
-    return EmptyMutableDigraph(0);
+    return EmptyDigraph(IsMutableDigraph, 0);
   fi;
   choice := [true, false];
   nodes  := [1 .. n];

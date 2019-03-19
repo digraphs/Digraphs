@@ -50,7 +50,7 @@ DeclareOperation("Digraph", [IsList, IsList, IsList]);
 
 DeclareOperation("MutableDigraph", [IsRecord]);
 DeclareOperation("MutableDigraph", [IsList]);
-
+DeclareOperation("MutableDigraph", [IsList, IsFunction]);
 DeclareOperation("MutableDigraph", [IsInt, IsList, IsList]);
 DeclareOperation("MutableDigraph", [IsList, IsList, IsList]);
 
