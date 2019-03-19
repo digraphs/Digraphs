@@ -140,7 +140,7 @@ IO_Unpicklers.DIGG := function(file)
     od;
   od;
 
-  digraph := DigraphNC(out);
+  digraph := MutableDigraphNC(out);
 
   SetDigraphGroup(digraph, Group(gens));
   SetDigraphSchreierVector(digraph, sch);
@@ -163,7 +163,7 @@ IO_Unpicklers.DIGT := function(file)
   if out = IO_Error then
     return IO_Error;
   fi;
-  return DigraphNC(out);
+  return MutableDigraphNC(out);
 end;
 
 ################################################################################
@@ -394,29 +394,57 @@ function(arg)
     name := arg[1];
     decoder := fail;
     nr := infinity;
+    constructor := DigraphNC;
   elif Length(arg) = 2 then
     name := arg[1];
     if IsFunction(arg[2]) then
       decoder := arg[2];
       nr := infinity;
-    else
+      constructor := DigraphNC;    
+t    elif IsInt(arg[2]) then
       decoder := fail;
       nr := arg[2];
+      constructor := DigraphNC;
+    else
+      decoder := fail;
+      nr := infinity;
+      constructor := DigraphNC;    
     fi;
   elif Length(arg) = 3 then
     name := arg[1];
+    if IsFunction(arg[2]) then
+      decoder := arg[2];
+      if IsInt(arg[3]) then
+        nr := arg[3];
+        constructor := DigraphNC;
+      else
+        nr := infinity;
+        constructor := arg[3];
+      fi;
+    else
+      decoder := fail;
+      nr := arg[2];
+      constructor := arg[3];
+    fi;
+  elif Length(arg) = 4 then
+    name := arg[1];
     decoder := arg[2];
     nr := arg[3];
+    constructor := arg[4];
   else
     ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
-                  "ReadDigraphs( filename [, decoder][, pos] ),");
+                  "ReadDigraphs( filename [, decoder][, pos]",
+                  "[, constructor] ),");
   fi;
 
   if (not (IsString(name) or IsFile(name)))
       or (not (IsFunction(decoder) or decoder = fail))
-      or (not (IsPosInt(nr) or nr = infinity)) then
+      or (not (IsPosInt(nr) or nr = infinity))
+      or (not constructor in [MutableDigraphNC, DigraphNC, MutableDigraph,
+                              Digraph ]) then
     ErrorNoReturn("Digraphs: ReadDigraphs: usage,\n",
-                  "ReadDigraphs( filename [, decoder][, pos] ),");
+                  "ReadDigraphs( filename [, decoder][, pos]",
+                  "[, constructor] ),");
   fi;
 
   if IsString(name) then
@@ -720,11 +748,11 @@ function(str)
   return DigraphNC(out);
 end);
 
-InstallMethod(DigraphFromGraph6String, "for a string",
+InstallMethod(MutableDigraphFromGraph6String, "for a string",
 [IsString],
 function(s)
   local FindCoord, list, n, start, maxedges, out, pos, nredges, i, bpos, edge,
-  gr, j;
+        j;
 
   s := Chomp(s);
 
@@ -802,14 +830,23 @@ function(s)
     od;
     pos := pos + 6;
   od;
-  gr := DigraphNC(out, 2 * nredges);
-  SetIsSymmetricDigraph(gr, true);
-  SetIsMultiDigraph(gr, false);
-  SetDigraphHasLoops(gr, false);
-  return gr;
+  return MutableDigraphNC(out);
 end);
 
-InstallMethod(DigraphFromDigraph6String, "for a string",
+InstallMethod(DigraphFromGraph6String, "for a string",
+[IsString],
+function(s)
+  local D;
+  D := MutableDigraphFromGraph6String(s);
+  MakeImmutable(D);
+  SetDigraphNrEdges(D, 2 * nredges);
+  SetIsSymmetricDigraph(D, true);
+  SetIsMultiDigraph(D, false);
+  SetDigraphHasLoops(D, false);
+  return D;
+end);
+
+InstallMethod(MutableDigraphFromDigraph6String, "for a string",
 [IsString],
 function(s)
   local legacy, list, n, start, i, range, source, pos, len, j, bpos, tabpos;
@@ -893,13 +930,26 @@ function(s)
   od;
 
   if legacy then  # source and range are reversed
-    return DigraphNC(rec(nrvertices := n, range := source, source := range));
+    return MutableDigraphNC(rec(DigraphNrVertices := n,
+                                DigraphSource     := range,
+                                DigraphRange      := source));
   fi;
 
-  return DigraphNC(rec(nrvertices := n, range := range, source := source));
+  return MutableDigraphNC(rec(DigraphNrVertices := n,
+                              DigraphRange      := range,
+                              DigraphSource     := source));
 end);
 
-InstallMethod(DigraphFromSparse6String, "for a string",
+InstallMethod(DigraphFromDigraph6String, "for a string",
+[IsString],
+function(s)
+  local D;
+  D := MutableDigraphFromDigraph6String(s);
+  MakeImmutable(D);
+  return D;
+end);
+
+InstallMethod(MutableDigraphFromSparse6String, "for a string",
 [IsString],
 function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i,
@@ -1014,13 +1064,20 @@ function(s)
   # JDM bad!
   range := range + 1;
   source := source + 1;
-  gr := Digraph(rec(nrvertices := n,
-                    nredges := len - 1,
-                    range := range,
-                    source := source));
-  SetIsSymmetricDigraph(gr, true);
-  SetIsMultiDigraph(gr, false);
-  return gr;
+  return MutableDigraph(rec(DigraphNrVertices := n,
+                            DigraphRange := range,
+                            DigraphSource := source));
+end);
+
+InstallMethod(DigraphFromSparse6String, "for a string",
+[IsString],
+function(s)
+  local D;
+  D := MutableDigraphFromSparse6String(s);
+  MakeImmutable(D);
+  SetIsSymmetricDigraph(D, true);
+  SetIsMultiDigraph(D, false);
+  return D;
 end);
 
 # one graph per line
@@ -1299,7 +1356,7 @@ function(name, delimiter, offset, ignore)
   return DigraphByEdges(edges);
 end);
 
-InstallMethod(DigraphFromDiSparse6String, "for a directed graph",
+InstallMethod(MutableDigraphFromDiSparse6String, "for a string",
 [IsString],
 function(s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i, x,
@@ -1431,16 +1488,35 @@ function(s)
   # BAD!! JDM
   range := range + 1;
   source := source + 1;
-
-  return Digraph(rec(nrvertices := n, range := range, source := source));
+  return MutableDigraph(rec(DigraphNrVertices := n,
+                            DigraphRange      := range,
+                            DigraphSource     := source));
 end);
 
-InstallMethod(DigraphFromPlainTextString, "for a string",
+InstallMethod(DigraphFromDiSparse6String, "for a string",
+[IsString],
+function(s)
+  local D;
+  D := MutableDigraphFromDiSparse6String(s);
+  MakeImmutable(D);
+  return D;
+end);
+
+InstallMethod(MutableDigraphFromPlainTextString, "for a string",
 [IsString],
 function(string)
   local decoder;
   decoder := DigraphPlainTextLineDecoder("  ", " ", 1);
   return decoder(Chomp(string));
+end);
+
+InstallMethod(DigraphFromPlainTextString, "for a string",
+[IsString],
+function(s)
+  local D;
+  D := MutableDigraphFromPlainTextString(s);
+  MakeImmutable(D);
+  return D;
 end);
 
 ################################################################################
