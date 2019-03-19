@@ -45,5 +45,6 @@ ReadPackage("digraphs", "gap/grahom.gd");
 ReadPackage("digraphs", "gap/orbits.gd");
 ReadPackage("digraphs", "gap/cliques.gd");
 ReadPackage("digraphs", "gap/planar.gd");
+ReadPackage("digraphs", "gap/exmpl.gd");
 
 DeclareInfoClass("InfoDigraphs");
