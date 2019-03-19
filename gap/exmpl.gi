@@ -327,18 +327,35 @@ function(n, k)
   return JohnsonDigraphCons(IsImmutableDigraph, n, k);
 end);
 
-InstallMethod(PetersenGraph, [], function()
-  local admat;
-  admat := [[0, 1, 0, 0, 1, 1, 0, 0, 0, 0],
-            [1, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-            [0, 1, 0, 1, 0, 0, 0, 1, 0, 0],
-            [0, 0, 1, 0, 1, 0, 0, 0, 1, 0],
-            [1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 1, 1, 0],
-            [0, 1, 0, 0, 0, 0, 0, 0, 1, 1],
-            [0, 0, 1, 0, 0, 1, 0, 0, 0, 1],
-            [0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 1, 1, 0, 0]];
+InstallMethod(PetersenGraphCons, "for IsMutableDigraph", [IsMutableDigraph],
+function(filt)
+  local mat;
+  mat := [[0, 1, 0, 0, 1, 1, 0, 0, 0, 0],
+          [1, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+          [0, 1, 0, 1, 0, 0, 0, 1, 0, 0],
+          [0, 0, 1, 0, 1, 0, 0, 0, 1, 0],
+          [1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 0, 0, 1, 1, 0],
+          [0, 1, 0, 0, 0, 0, 0, 0, 1, 1],
+          [0, 0, 1, 0, 0, 1, 0, 0, 0, 1],
+          [0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
+          [0, 0, 0, 0, 1, 0, 1, 1, 0, 0]];
   # the above is an adjacency matrix of the Petersen graph
-  return DigraphByAdjacencyMatrix(admat);
+  return MutableDigraphByAdjacencyMatrix(mat);
+end);
+
+InstallMethod(PetersenGraphCons, "for IsImmutableDigraph",
+[IsImmutableDigraph],
+function(filt)
+  return MakeImmutableDigraph(PetersenGraphCons(IsMutableDigraph));
+end);
+
+InstallMethod(PetersenGraph, "for a function", [IsFunction],
+function(func)
+  return PetersenGraphCons(func);
+end);
+
+InstallMethod(PetersenGraph, [],
+function()
+  return PetersenGraphCons(IsImmutableDigraph);
 end);

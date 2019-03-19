@@ -25,7 +25,6 @@ Unbind(_NautyTracesInterfaceVersion);
 ReadPackage("digraphs", "gap/utils.gi");
 ReadPackage("digraphs", "gap/digraph.gi");
 ReadPackage("digraphs", "gap/cnstr.gi");
-ReadPackage("digraphs", "gap/exmpl.gi");
 ReadPackage("digraphs", "gap/grape.gi");
 ReadPackage("digraphs", "gap/labels.gi");
 ReadPackage("digraphs", "gap/attr.gi");
@@ -39,4 +38,3 @@ ReadPackage("digraphs", "gap/orbits.gi");
 ReadPackage("digraphs", "gap/cliques.gi");
 ReadPackage("digraphs", "gap/planar.gi");
 ReadPackage("digraphs", "gap/exmpl.gi");
-
