@@ -11,181 +11,152 @@
 # This file contains constructions of certain types of digraphs, from other
 # digraphs.
 
-InstallMethod(DoubleDigraph, "for a digraph", [IsDigraph],
-function(digraph)
-  local out, vertices, newvertices, allvertices, shiftedout, newout1,
-  newout2, newout, crossedouts, doubleout, shift, double, group,
-  newgens, gens, conj;
-  # Note that this method is also applicable for digraphs with an adjacency
-  # function. however, the resulting double graph will not have an adjacency
-  # function anymore, since the original function may take arbitrary objects as
-  # argument,  while the double graph has simply integers as vertices. So
-  # relying on the original adjacency function is meaningless  unless this
-  # function would also be a function on integers.   if DigraphGroup is set, a
-  # subgroup of the automoraphism group  of the bipartite double is computed and
-  # set.
-  out := OutNeighbours(digraph);
-  vertices := DigraphVertices(digraph);
-  shift := DigraphNrVertices(digraph);
-  newvertices := [shift + 1 .. 2 * DigraphNrVertices(digraph)];
-  allvertices := [1 .. 2 * DigraphNrVertices(digraph)];
-  # "duplicate" of the outs for the new vertices:
-  shiftedout := List(out, x -> List(x, y -> y + shift));
-  newout1 := List(vertices, x -> List(out[x], y -> y + shift));
-  # new out neighbours for vertices
-  newout2 := List(newvertices, x -> out[x - shift]);
-  # out neighbours for new vertices
-  newout := Concatenation(out, shiftedout);
-  # collect out neighbours between vertices and new vertices
-  crossedouts := Concatenation(newout1, newout2);
-  doubleout := List(allvertices, x -> Concatenation(newout[x], crossedouts[x]));
-  # collect all out neighbours.
-  double := DigraphNC(doubleout);
-  if HasDigraphGroup(digraph) then
-    group := DigraphGroup(digraph);
-    gens := GeneratorsOfGroup(group);
-    conj := PermList(Concatenation(List([1 .. shift],
-                     x -> x + shift), [1 .. shift]));
-    newgens := List([1 .. Length(gens)], i -> gens[i] * (gens[i] ^ conj));
-    Add(newgens, conj);
-    SetDigraphGroup(double, Group(newgens));
-  fi;
-  return double;
-
+InstallMethod(BipartiteDoubleDigraph, "for a dense mutable digraph",
+[IsMutableDigraph and IsDenseDigraphRep],
+function(D)
+  local list, N, i, j;
+  list := D!.OutNeighbours;
+  N    := Length(list);
+  Append(list, List([1 .. N], x -> []));
+  for i in [1 .. N] do
+    for j in [1 .. Length(list[i])] do
+      list[i + N][j] := list[i][j];
+      list[i][j]     := list[i][j] + N;
+    od;
+  od;
+  return D;
 end);
 
-InstallMethod(BipartiteDoubleDigraph, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local out, vertices, newvertices, newout1,
-    newout2, crossedouts, shift, double, group, conj, gens,
-    newgens;
-  # Note that this method is also applicable for digraphs with
-  # an adjacency function. However, the resulting double graph
-  # will not have an adjacency function anymore, since the
-  # original function may take arbitrary objects as argument,
-  # while the double graph has simply integers as vertices.
-  # So relying on the original adjacency function is meaningless
-  # unless this function would also be a function on integers.
-  # compared with DoubleDigraph, we only need the "crossed adjacencies".
-  # if DigraphGroup is set, a subgroup of the automoraphism group
-  # of the bipartite double is computed and set.
-  out := OutNeighbours(digraph);
-  vertices := DigraphVertices(digraph);
-  shift := DigraphNrVertices(digraph);
-  newvertices := [shift + 1 .. 2 * DigraphNrVertices(digraph)];
-  newout1 := List(vertices, x -> List(out[x], y -> y + shift));
-  newout2 := List(newvertices, x -> out[x - shift]);
-  crossedouts := Concatenation(newout1, newout2);
-  double := DigraphNC(crossedouts);
-  if HasDigraphGroup(digraph) then
-    group := DigraphGroup(digraph);
-    gens := GeneratorsOfGroup(group);
-    conj := PermList(Concatenation(List([1 .. shift],
-                     x -> x + shift), [1 .. shift]));
-    newgens := List([1 .. Length(gens)], i -> gens[i] * (gens[i] ^ conj));
-    Add(newgens, conj);
-    SetDigraphGroup(double, Group(newgens));
+InstallMethod(BipartiteDoubleDigraph, "for an immutable digraph",
+[IsImmutableDigraph],
+function(D)
+  local C, X, N, p;
+  C := MakeImmutableDigraph(BipartiteDoubleDigraph(DigraphMutableCopy(D)));
+  if HasDigraphGroup(D) then
+    X := GeneratorsOfGroup(DigraphGroup(D));
+    N := DigraphNrVertices(D);
+    p := PermList(Concatenation([1 .. N] + N, [1 .. N]));
+    X := List(X, x -> x * (x ^ p));
+    Add(X, p);
+    SetDigraphGroup(C, Group(X));
   fi;
-  return double;
+  return C;
+end);
+
+InstallMethod(DoubleDigraph, "for a dense mutable digraph",
+[IsMutableDigraph and IsDenseDigraphRep],
+function(D)
+  local list, N, i, j;
+  list := D!.OutNeighbours;
+  N    := Length(list);
+  Append(list, list + N);
+  for i in [1 .. N] do
+    for j in [1 .. Length(list[i])] do
+      Add(list[i + N], list[i][j]);
+      Add(list[i], list[i][j] + N);
+    od;
+  od;
+  return D;
+end);
+
+InstallMethod(DoubleDigraph, "for an immutable digraph",
+[IsImmutableDigraph],
+function(D)
+  local C, X, N, p;
+  C := MakeImmutableDigraph(DoubleDigraph(DigraphMutableCopy(D)));
+  if HasDigraphGroup(D) then
+    X := GeneratorsOfGroup(DigraphGroup(D));
+    N := DigraphNrVertices(D);
+    p := PermList(Concatenation([1 .. N] + N, [1 .. N]));
+    X := List(X, x -> x * (x ^ p));
+    Add(X, p);
+    SetDigraphGroup(C, Group(X));
+  fi;
+  return C;
 end);
 
 InstallMethod(DistanceDigraph,
-"for a digraph and a list of distances",
-[IsDigraph, IsList],
-function(digraph, distances)
-  local n, orbitreps, group, sch, g, rep, rem, gens,
-    record, new, x, out, vertices;
-  n := DigraphNrVertices(digraph);
-  new := EmptyDigraph(n);
-  vertices := [1 .. n];
-  out := [];
-  if HasDigraphGroup(digraph) and not IsTrivial(DigraphGroup(digraph)) then
-    group := DigraphGroup(digraph);
-    orbitreps := DigraphOrbitReps(digraph);
+"for a dense mutable digraph and a list of distances",
+[IsMutableDigraph and IsDenseDigraphRep, IsList],
+function(D, distances)
+  local list, group, orbitreps, rem, sch, gens, record, rep, g, x;
+  list := EmptyPlist(DigraphNrVertices(D));
+  if HasDigraphGroup(D) and not IsTrivial(DigraphGroup(D)) then
+    group := DigraphGroup(D);
+    orbitreps := DigraphOrbitReps(D);
     for x in orbitreps do
-      out[x] := DigraphDistanceSet(digraph, x, distances);
+      list[x] := DigraphDistanceSet(D, x, distances);
     od;
-    rem := Difference(vertices, orbitreps);
-    sch := DigraphSchreierVector(digraph);
-    group := DigraphGroup(digraph);
+    rem := Difference(DigraphVertices(D), orbitreps);
+    sch := DigraphSchreierVector(D);
+    group := DigraphGroup(D);
     gens := GeneratorsOfGroup(group);
     for x in rem do
       record := DIGRAPHS_TraceSchreierVector(gens, sch, x);
       rep := record.representative;
       g := DIGRAPHS_EvaluateWord(gens, record.word);
-      out[x] := List(out[rep], x -> x ^ g);
+      list[x] := List(list[rep], x -> x ^ g);
     od;
-    new := DigraphNC(out);
-    SetDigraphGroup(new, DigraphGroup(digraph));
   else
-    for x in vertices do
-      out[x] := DigraphDistanceSet(digraph, x, distances);
+    for x in DigraphVertices(D) do
+      list[x] := DigraphDistanceSet(D, x, distances);
     od;
-    new := DigraphNC(out);
   fi;
-  return new;
+  D!.OutNeighbours := list;
+  return D;
+end);
+
+InstallMethod(DistanceDigraph,
+"for an immutable digraph and a list of distances",
+[IsImmutableDigraph, IsList],
+function(D, list)
+  local C;
+  C := MakeImmutableDigraph(DistanceDigraph(DigraphMutableCopy(D), list));
+  SetDigraphGroup(C, DigraphGroup(D));
+  return C;
 end);
 
 InstallMethod(DistanceDigraph, "for a digraph and an integer",
 [IsDigraph, IsInt],
-function(digraph, distance)
+function(D, distance)
   if distance < 0 then
-    ErrorNoReturn(
-                  "second arg <distance> must be a non-negative integer,");
+    ErrorNoReturn("the 2nd argument must be a non-negative integer,");
   fi;
-  return DistanceDigraph(digraph, [distance]);
+  return DistanceDigraph(D, [distance]);
 end);
 
-InstallMethod(LineDigraph, "for a symmetric digraph",
-[IsDigraph],
-function(digraph)
-  local edges, G, adj;
+# Warning: unlike the other methods the next two do not change their arguments
+# in place, and always return an immutable digraph. There is currently no
+# method for creating a mutable digraph with 4 arguments, as required by the
+# next two methods.
 
-  edges := DigraphEdges(digraph);
-
-  if HasDigraphGroup(digraph) then
-    G := DigraphGroup(digraph);
+InstallMethod(LineDigraph, "for a digraph", [IsDigraph],
+function(D)
+  local G;
+  if HasDigraphGroup(D) then
+    G := DigraphGroup(D);
   else
     G := Group(());
   fi;
-
-  adj := function(edge1, edge2)
-    if edge1 = edge2 then
-      return false;
-    else
-      return edge1[2] = edge2[1];
-    fi;
-  end;
-
-  return Digraph(G, edges, OnPairs, adj);
+  return Digraph(G,
+                 DigraphEdges(D),
+                 OnPairs,
+                 {x, y} -> x <> y and x[2] = y[1]);
 end);
 
-InstallMethod(LineUndirectedDigraph, "for a symmetric digraph",
-[IsDigraph],
-function(digraph)
-  local edges, G, adj;
-
-  if not IsSymmetricDigraph(digraph) then
-    ErrorNoReturn(
-                  "the argument <digraph> must be a symmetric digraph,");
+InstallMethod(LineUndirectedDigraph, "for a digraph", [IsDigraph],
+function(D)
+  local G;
+  if not IsSymmetricDigraph(D) then
+    ErrorNoReturn("the argument must be a symmetric digraph,");
   fi;
-
-  edges := Set(List(DigraphEdges(digraph), x -> Set(x)));
-
-  if HasDigraphGroup(digraph) then
-    G := DigraphGroup(digraph);
+  if HasDigraphGroup(D) then
+    G := DigraphGroup(D);
   else
     G := Group(());
   fi;
-
-  adj := function(edge1, edge2)
-    if edge1 = edge2 then
-      return false;
-    else
-      return not IsEmpty(Intersection(edge1, edge2));
-    fi;
-  end;
-
-  return Digraph(G, edges, OnSets, adj);
+  return Digraph(G,
+                 Set(DigraphEdges(D), x -> Set(x)),
+                 OnSets,
+                 {x, y} -> x <> y and not IsEmpty(Intersection(x, y)));
 end);

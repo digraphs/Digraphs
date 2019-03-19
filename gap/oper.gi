@@ -1557,14 +1557,11 @@ InstallMethod(DigraphDistanceSet,
 "for a digraph, a vertex, and a non-negative integers",
 [IsDigraph, IsPosInt, IsInt],
 function(D, vertex, distance)
-
   if vertex > DigraphNrVertices(D) then
     ErrorNoReturn("the 2nd argument must be a vertex of the digraph,");
-  fi;
-  if distance < 0 then
+  elif distance < 0 then
     ErrorNoReturn("the 3rd argument must be a non-negative integer,");
   fi;
-
   return DigraphDistanceSet(D, vertex, [distance]);
 end);
 
@@ -1573,16 +1570,12 @@ InstallMethod(DigraphDistanceSet,
 [IsDigraph, IsPosInt, IsList],
 function(D, vertex, distances)
   local layers;
-
   if vertex > DigraphNrVertices(D) then
     ErrorNoReturn("the 2nd argument must be a vertex of the digraph,");
-  fi;
-
-  if not ForAll(distances, x -> IsInt(x) and x >= 0) then
+  elif not ForAll(distances, x -> IsInt(x) and x >= 0) then
     ErrorNoReturn("the 3rd argument must be a list of non-negative ",
                   "integers,");
   fi;
-
   distances := distances + 1;
   layers := DigraphLayers(D, vertex);
   distances := Intersection(distances, [1 .. Length(layers)]);

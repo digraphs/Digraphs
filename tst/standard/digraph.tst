@@ -1217,7 +1217,7 @@ true
 gap> gr := ChainDigraph(4);
 <immutable digraph with 4 vertices, 3 edges>
 gap> LineUndirectedDigraph(gr);
-Error, the argument <digraph> must be a symmetric digraph,
+Error, the argument must be a symmetric digraph,
 
 #  CayleyDigraph
 gap> group := DihedralGroup(8);
@@ -1375,7 +1375,7 @@ gap> OutNeighbours(DistanceDigraph(gr, 2));
 #  DistanceDigraph: bad input
 gap> gr := Digraph([[1, 2], [2, 3], [4], [1]]);;
 gap> DistanceDigraph(gr, -2);
-Error, second arg <distance> must be a non-negative integer,
+Error, the 2nd argument must be a non-negative integer,
 
 #  DigraphAddEdgeOrbit
 gap> digraph := NullDigraph(4);
