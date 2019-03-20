@@ -11,9 +11,7 @@
 ##
 
 InstallMethod(CliqueNumber, "for a digraph", [IsDigraph],
-function(digraph)
-  return Maximum(List(DigraphMaximalCliquesReps(digraph), Length));
-end);
+gr -> Maximum(List(DigraphMaximalCliquesReps(gr), Length)));
 
 # IsIndependentSet: Check that the set is a duplicate-free subset of vertices
 #                   and that no vertex is an out-neighbour of another.
@@ -129,10 +127,12 @@ function(arg)
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSet: usage,\n",
                   "this function requires a least one argument,");
   elif not IsDigraph(arg[1]) then
+    gr := arg[1];
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSet: usage,\n",
-                  "the first argument must be a digraph,");
+                  "the first argument <gr> must be a digraph,");
   fi;
-  gr := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
+  gr := DigraphCopyIfMutable(arg[1]);
+  gr := DigraphDual(DigraphRemoveAllMultipleEdges(gr));
   return CallFuncList(DIGRAPHS_Clique,
                       Concatenation([true], [gr], arg{[2 .. Length(arg)]}));
 end);
@@ -146,10 +146,12 @@ function(arg)
     ErrorNoReturn("Digraphs: DigraphIndependentSet: usage,\n",
                   "this function requires a least one argument,");
   elif not IsDigraph(arg[1]) then
+    gr := arg[1];
     ErrorNoReturn("Digraphs: DigraphIndependentSet: usage,\n",
-                  "the first argument must be a digraph,");
+                  "the first argument <gr> must be a digraph,");
   fi;
-  gr := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
+  gr := DigraphCopyIfMutable(arg[1]);
+  gr := DigraphDual(DigraphRemoveAllMultipleEdges(gr));
   return CallFuncList(DIGRAPHS_Clique,
                       Concatenation([false], [gr], arg{[2 .. Length(arg)]}));
 end);
@@ -158,15 +160,18 @@ end);
 
 InstallGlobalFunction(DigraphIndependentSetsReps,
 function(arg)
+  local gr;
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphIndependentSetsReps: usage,\n",
                   "this function requires at least one argument,");
   elif not IsDigraph(arg[1]) then
+    gr := arg[1];
     ErrorNoReturn("Digraphs: DigraphIndependentSetsReps: usage,\n",
-                  "the first argument <digraph> must be a digraph,");
+                  "the first argument <gr> must be a digraph,");
   fi;
 
-  arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
+  gr := DigraphCopyIfMutable(arg[1]);
+  arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(gr));
   return CallFuncList(DigraphCliquesReps, arg);
 end);
 
@@ -174,90 +179,88 @@ end);
 
 InstallGlobalFunction(DigraphIndependentSets,
 function(arg)
+  local gr;
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphIndependentSets: usage,\n",
                   "this function requires at least one argument,");
   elif not IsDigraph(arg[1]) then
+    gr := arg[1];
     ErrorNoReturn("Digraphs: DigraphIndependentSets: usage,\n",
-                  "the first argument <digraph> must be a digraph,");
+                  "the first argument <gr> must be a digraph,");
   fi;
 
-  arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
+  gr := DigraphCopyIfMutable(arg[1]);
+  arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(gr));
   return CallFuncList(DigraphCliques, arg);
 end);
 
 # Maximal independent sets orbit representatives
 
-InstallMethod(DigraphMaximalIndependentSetsRepsAttr,
-"for a digraph",
+InstallMethod(DigraphMaximalIndependentSetsRepsAttr, "for a digraph",
 [IsDigraph],
-function(gr)
-  return DigraphMaximalIndependentSetsReps(gr);
-end);
+gr -> DigraphMaximalIndependentSetsReps(gr));
 
 InstallGlobalFunction(DigraphMaximalIndependentSetsReps,
 function(arg)
-  local digraph, out;
+  local gr, out;
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSetsReps: usage,\n",
                   "this function requires at least one argument,");
   elif not IsDigraph(arg[1]) then
+    gr := arg[1];
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSetsReps: usage,\n",
-                  "the first argument <digraph> must be a digraph,");
+                  "the first argument <gr> must be a digraph,");
   fi;
 
-  digraph := arg[1];
+  gr := DigraphCopyIfMutable(arg[1]);
 
   if not IsBound(arg[2])
-      and HasDigraphMaximalIndependentSetsRepsAttr(digraph) then
-    return DigraphMaximalIndependentSetsRepsAttr(digraph);
+      and HasDigraphMaximalIndependentSetsRepsAttr(gr) then
+    return DigraphMaximalIndependentSetsRepsAttr(gr);
   fi;
 
-  arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(digraph));
+  arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(gr));
   out := CallFuncList(DigraphMaximalCliquesReps, arg);
 
   # Store the result if appropriate
-  if not IsBound(arg[2]) then
-    SetDigraphMaximalIndependentSetsRepsAttr(digraph, out);
+  if not IsBound(arg[2]) and not IsMutableDigraph(gr) then
+    SetDigraphMaximalIndependentSetsRepsAttr(gr, out);
   fi;
   return out;
 end);
 
 # Maximal cliques
 
-InstallMethod(DigraphMaximalIndependentSetsAttr,
-"for a digraph",
-[IsDigraph],
-function(gr)
-  return DigraphMaximalIndependentSets(gr);
-end);
+InstallMethod(DigraphMaximalIndependentSetsAttr, "for a digraph", [IsDigraph],
+gr -> DigraphMaximalIndependentSets(gr));
 
 InstallGlobalFunction(DigraphMaximalIndependentSets,
 function(arg)
-  local digraph, out;
+  local gr, out;
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSetsReps: usage,\n",
                   "this function requires at least one argument,");
   elif not IsDigraph(arg[1]) then
+    gr := arg[1];
     ErrorNoReturn("Digraphs: DigraphMaximalIndependentSets: usage,\n",
-                  "the first argument <digraph> must be a digraph,");
+                  "the first argument <gr> must be a digraph,");
   fi;
 
-  digraph := arg[1];
+  gr := DigraphCopyIfMutable(arg[1]);
 
   if not IsBound(arg[2])
-      and HasDigraphMaximalIndependentSetsAttr(digraph) then
-    return DigraphMaximalIndependentSetsAttr(digraph);
+      and HasDigraphMaximalIndependentSetsAttr(gr) then
+    return DigraphMaximalIndependentSetsAttr(gr);
   fi;
 
-  arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(digraph));
+  arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(gr));
   out := CallFuncList(DigraphMaximalCliques, arg);
 
   # Store the result if appropriate
-  if not IsBound(arg[2]) then
-    SetDigraphMaximalIndependentSetsAttr(digraph, out);
+  if not IsBound(arg[2]) and not IsMutableDigraph(gr) then
+    SetDigraphMaximalIndependentSetsAttr(gr, out);
   fi;
   return out;
 end);
@@ -362,6 +365,7 @@ function(arg)
 
   # Do a greedy search to find a clique of <gr> containing <include> and
   # excluding <exclude> (which is necessarily maximal if <exclude> is empty)
+  gr := DigraphCopyIfMutable(gr);
   gr := MaximalSymmetricSubdigraph(gr);
   out := OutNeighbours(gr);
   try := Difference(DigraphVertices(gr), Concatenation(include, exclude));
@@ -384,14 +388,14 @@ end);
 
 InstallGlobalFunction(DigraphCliquesReps,
 function(arg)
-  local digraph, include, exclude, limit, size;
+  local gr, include, exclude, limit, size;
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphCliquesReps: usage,\n",
                   "this function requires at least one argument,");
   fi;
 
-  digraph := arg[1];
+  gr := arg[1];
 
   if IsBound(arg[2]) then
     include := arg[2];
@@ -417,7 +421,7 @@ function(arg)
     size := fail;
   fi;
 
-  return CliquesFinder(digraph, fail, [], limit, include, exclude, false, size,
+  return CliquesFinder(gr, fail, [], limit, include, exclude, false, size,
                        true);
 end);
 
@@ -425,14 +429,14 @@ end);
 
 InstallGlobalFunction(DigraphCliques,
 function(arg)
-  local digraph, include, exclude, limit, size;
+  local gr, include, exclude, limit, size;
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphCliques: usage,\n",
                   "this function requires at least one argument,");
   fi;
 
-  digraph := arg[1];
+  gr := arg[1];
 
   if IsBound(arg[2]) then
     include := arg[2];
@@ -458,29 +462,25 @@ function(arg)
     size := fail;
   fi;
 
-  return CliquesFinder(digraph, fail, [], limit, include, exclude, false, size,
+  return CliquesFinder(gr, fail, [], limit, include, exclude, false, size,
                        false);
 end);
 
 # Maximal cliques orbit representatives
 
-InstallMethod(DigraphMaximalCliquesRepsAttr,
-"for a digraph",
-[IsDigraph],
-function(gr)
-  return DigraphMaximalCliquesReps(gr);
-end);
+InstallMethod(DigraphMaximalCliquesRepsAttr, "for a digraph", [IsDigraph],
+gr -> DigraphMaximalCliquesReps(gr));
 
 InstallGlobalFunction(DigraphMaximalCliquesReps,
 function(arg)
-  local digraph, include, exclude, limit, size, out;
+  local gr, include, exclude, limit, size, out;
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphMaximalCliquesReps: usage,\n",
                   "this function requires at least one argument,");
   fi;
 
-  digraph := arg[1];
+  gr := arg[1];
 
   if IsBound(arg[2]) then
     include := arg[2];
@@ -508,40 +508,36 @@ function(arg)
 
   if IsList(include) and IsEmpty(include) and IsList(exclude)
       and IsEmpty(exclude) and limit = infinity and size = fail
-      and HasDigraphMaximalCliquesRepsAttr(digraph) then
-    return DigraphMaximalCliquesRepsAttr(digraph);
+      and HasDigraphMaximalCliquesRepsAttr(gr) then
+    return DigraphMaximalCliquesRepsAttr(gr);
   fi;
 
   out := [];
-  CliquesFinder(digraph, fail, out, limit, include, exclude, true, size, true);
+  CliquesFinder(gr, fail, out, limit, include, exclude, true, size, true);
 
   # Store the result if appropriate
-  if IsEmpty(include) and IsEmpty(exclude) and limit = infinity
-      and size = fail then
-    SetDigraphMaximalCliquesRepsAttr(digraph, out);
+  if not IsMutableDigraph(gr) and IsEmpty(include) and IsEmpty(exclude)
+      and limit = infinity and size = fail then
+    SetDigraphMaximalCliquesRepsAttr(gr, out);
   fi;
   return out;
 end);
 
 # Maximal cliques
 
-InstallMethod(DigraphMaximalCliquesAttr,
-"for a digraph",
-[IsDigraph],
-function(gr)
-  return DigraphMaximalCliques(gr);
-end);
+InstallMethod(DigraphMaximalCliquesAttr, "for a digraph", [IsDigraph],
+gr -> DigraphMaximalCliques(gr));
 
 InstallGlobalFunction(DigraphMaximalCliques,
 function(arg)
-  local digraph, include, exclude, limit, size, cliques, G, orbits, out, orb, c;
+  local gr, include, exclude, limit, size, cliques, sub, G, out, orbits, orb, c;
 
   if IsEmpty(arg) then
     ErrorNoReturn("Digraphs: DigraphMaximalCliques: usage,\n",
                   "this function requires at least one argument,");
   fi;
 
-  digraph := arg[1];
+  gr := arg[1];
 
   if IsBound(arg[2]) then
     include := arg[2];
@@ -569,11 +565,12 @@ function(arg)
 
   if IsList(include) and IsEmpty(include) and IsList(exclude) and
       IsEmpty(exclude) and limit = infinity and size = fail then
-    if HasDigraphMaximalCliquesAttr(digraph) then
-      return DigraphMaximalCliquesAttr(digraph);
+    if HasDigraphMaximalCliquesAttr(gr) then
+      return DigraphMaximalCliquesAttr(gr);
     fi;
-    cliques := DigraphMaximalCliquesReps(digraph);
-    G := AutomorphismGroup(MaximalSymmetricSubdigraphWithoutLoops(digraph));
+    cliques := DigraphMaximalCliquesReps(gr);
+    sub := MaximalSymmetricSubdigraphWithoutLoops(DigraphCopyIfMutable(gr));
+    G := AutomorphismGroup(sub);
     if IsTrivial(G) then
       out := cliques;
     else
@@ -589,12 +586,12 @@ function(arg)
         fi;
       od;
     fi;
-    SetDigraphMaximalCliquesAttr(digraph, out);
+    SetDigraphMaximalCliquesAttr(gr, out);
     return out;
   fi;
 
   out := [];
-  CliquesFinder(digraph, fail, out, limit, include, exclude, true, size, false);
+  CliquesFinder(gr, fail, out, limit, include, exclude, true, size, false);
   return out;
 end);
 
@@ -602,7 +599,7 @@ end);
 
 InstallGlobalFunction(CliquesFinder,
 function(gr, hook, user_param, limit, include, exclude, max, size, reps)
-  local n, group, invariant_include, invariant_exclude, include_variant,
+  local n, sub, group, invariant_include, invariant_exclude, include_variant,
   exclude_variant, x, v, o, i;
 
   if not IsDigraph(gr) then
@@ -660,7 +657,8 @@ function(gr, hook, user_param, limit, include, exclude, max, size, reps)
   fi;
 
   # Investigate whether <include> and <exclude> are invariant under <grp>
-  group := AutomorphismGroup(MaximalSymmetricSubdigraphWithoutLoops(gr));
+  sub := MaximalSymmetricSubdigraphWithoutLoops(DigraphCopyIfMutable(gr));
+  group := AutomorphismGroup(sub);
 
   invariant_include := true;
   invariant_exclude := true;
@@ -750,7 +748,7 @@ function(gr, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     hook := Add;
   fi;
 
-  gr  := MaximalSymmetricSubdigraphWithoutLoops(gr);
+  gr  := MaximalSymmetricSubdigraphWithoutLoops(DigraphCopyIfMutable(gr));
   vtx := DigraphVertices(gr);
 
   invariant_inc := Length(inc_var) = 0;

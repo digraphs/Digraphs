@@ -122,13 +122,13 @@ Error, Digraphs: DigraphMaximalIndependentSet: usage,
 this function requires a least one argument,
 gap> DigraphMaximalIndependentSet(3);
 Error, Digraphs: DigraphMaximalIndependentSet: usage,
-the first argument must be a digraph,
+the first argument <gr> must be a digraph,
 gap> DigraphIndependentSet();
 Error, Digraphs: DigraphIndependentSet: usage,
 this function requires a least one argument,
 gap> DigraphIndependentSet(3);
 Error, Digraphs: DigraphIndependentSet: usage,
-the first argument must be a digraph,
+the first argument <gr> must be a digraph,
 gap> DigraphMaximalIndependentSet(gr);
 [ 3 ]
 gap> DigraphIndependentSet(gr);
@@ -154,16 +154,16 @@ Error, Digraphs: DigraphIndependentSets: usage,
 this function requires at least one argument,
 gap> DigraphMaximalIndependentSetsReps(1);
 Error, Digraphs: DigraphMaximalIndependentSetsReps: usage,
-the first argument <digraph> must be a digraph,
+the first argument <gr> must be a digraph,
 gap> DigraphIndependentSetsReps(1);
 Error, Digraphs: DigraphIndependentSetsReps: usage,
-the first argument <digraph> must be a digraph,
+the first argument <gr> must be a digraph,
 gap> DigraphMaximalIndependentSets(1);
 Error, Digraphs: DigraphMaximalIndependentSets: usage,
-the first argument <digraph> must be a digraph,
+the first argument <gr> must be a digraph,
 gap> DigraphIndependentSets(1);
 Error, Digraphs: DigraphIndependentSets: usage,
-the first argument <digraph> must be a digraph,
+the first argument <gr> must be a digraph,
 gap> DigraphMaximalIndependentSetsReps(gr);
 [ [ 1 ] ]
 gap> DigraphMaximalIndependentSetsReps(gr);
