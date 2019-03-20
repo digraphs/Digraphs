@@ -16,9 +16,8 @@ gap> DIGRAPHS_StartTest();
 #  IsClique and IsMaximalClique
 gap> gr := CompleteDigraph(5);;
 gap> IsClique(gr, [6]);
-Error, Digraphs: IsClique: usage,
-the second argument <clique> must be a duplicate-free list of vertices of the
-digraph <gr>,
+Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
+rgument (a digraph),
 gap> IsClique(gr, []);
 true
 gap> IsClique(gr, [4]);
@@ -32,9 +31,8 @@ true
 gap> IsClique(gr, [1, 5, 3, 4, 2]);
 true
 gap> IsClique(gr, [1, 1]);
-Error, Digraphs: IsClique: usage,
-the second argument <clique> must be a duplicate-free list of vertices of the
-digraph <gr>,
+Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
+rgument (a digraph),
 gap> gr := Digraph([
 > [2, 3, 4, 5, 7, 8, 11, 12], [1, 3, 4, 6, 7, 9, 11, 13],
 > [1, 2, 5, 6, 8, 9, 12, 13], [1, 2, 5, 6, 7, 10, 11, 14],
@@ -64,13 +62,11 @@ true
 gap> IsMaximalClique(gr, [1, 2, 3]);
 true
 gap> IsMaximalClique(gr, [16]);
-Error, Digraphs: IsClique: usage,
-the second argument <clique> must be a duplicate-free list of vertices of the
-digraph <gr>,
+Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
+rgument (a digraph),
 gap> IsMaximalClique(gr, [1, 1]);
-Error, Digraphs: IsClique: usage,
-the second argument <clique> must be a duplicate-free list of vertices of the
-digraph <gr>,
+Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
+rgument (a digraph),
 gap> IsMaximalClique(gr, [1, 2, 4, 7, 11, 13]);
 false
 gap> gr := CompleteDigraph(5);;
@@ -82,13 +78,11 @@ gap> gr := CycleDigraph(10);;
 gap> IsIndependentSet(gr, []);
 true
 gap> IsIndependentSet(gr, [1, 1]);
-Error, Digraphs: IsIndependentSet: usage,
-the second argument <set> must be a duplicate-free list of vertices of the
-digraph <gr>,
+Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
+rgument (a digraph),
 gap> IsIndependentSet(gr, [11]);
-Error, Digraphs: IsIndependentSet: usage,
-the second argument <set> must be a duplicate-free list of vertices of the
-digraph <gr>,
+Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
+rgument (a digraph),
 gap> IsIndependentSet(gr, [1, 2]);
 false
 gap> IsIndependentSet(gr, [1, 3]);
@@ -118,17 +112,13 @@ true
 gap> gr := Digraph([[3], [3], [3]]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphMaximalIndependentSet();
-Error, Digraphs: DigraphMaximalIndependentSet: usage,
-this function requires a least one argument,
+Error, at least 1 argument is required,
 gap> DigraphMaximalIndependentSet(3);
-Error, Digraphs: DigraphMaximalIndependentSet: usage,
-the first argument <gr> must be a digraph,
+Error, the 1st argument must be a digraph,
 gap> DigraphIndependentSet();
-Error, Digraphs: DigraphIndependentSet: usage,
-this function requires a least one argument,
+Error, at least 1 argument is required,
 gap> DigraphIndependentSet(3);
-Error, Digraphs: DigraphIndependentSet: usage,
-the first argument <gr> must be a digraph,
+Error, the 1st argument must be a digraph,
 gap> DigraphMaximalIndependentSet(gr);
 [ 3 ]
 gap> DigraphIndependentSet(gr);
@@ -141,29 +131,21 @@ fail
 #  DigraphMaximalIndependentSetsReps and DigraphIndependentSetsReps
 gap> gr := EmptyDigraph(1);;
 gap> DigraphMaximalIndependentSetsReps();
-Error, Digraphs: DigraphMaximalIndependentSetsReps: usage,
-this function requires at least one argument,
+Error, at least 1 argument is required,
 gap> DigraphIndependentSetsReps();
-Error, Digraphs: DigraphIndependentSetsReps: usage,
-this function requires at least one argument,
+Error, at least 1 argument is required,
 gap> DigraphMaximalIndependentSets();
-Error, Digraphs: DigraphMaximalIndependentSetsReps: usage,
-this function requires at least one argument,
+Error, at least 1 argument is required,
 gap> DigraphIndependentSets();
-Error, Digraphs: DigraphIndependentSets: usage,
-this function requires at least one argument,
+Error, at least 1 argument is required,
 gap> DigraphMaximalIndependentSetsReps(1);
-Error, Digraphs: DigraphMaximalIndependentSetsReps: usage,
-the first argument <gr> must be a digraph,
+Error, the 1st argument must be a digraph,
 gap> DigraphIndependentSetsReps(1);
-Error, Digraphs: DigraphIndependentSetsReps: usage,
-the first argument <gr> must be a digraph,
+Error, the 1st argument must be a digraph,
 gap> DigraphMaximalIndependentSets(1);
-Error, Digraphs: DigraphMaximalIndependentSets: usage,
-the first argument <gr> must be a digraph,
+Error, the 1st argument must be a digraph,
 gap> DigraphIndependentSets(1);
-Error, Digraphs: DigraphIndependentSets: usage,
-the first argument <gr> must be a digraph,
+Error, the 1st argument must be a digraph,
 gap> DigraphMaximalIndependentSetsReps(gr);
 [ [ 1 ] ]
 gap> DigraphMaximalIndependentSetsReps(gr);
@@ -240,32 +222,25 @@ gap> Set(DigraphIndependentSets(gr));
 # DigraphMaximalClique and DigraphClique
 gap> gr := CompleteDigraph(5);;
 gap> DigraphMaximalClique();
-Error, Digraphs: DigraphMaximalClique: usage,
-this function requires at least one argument,
+Error, at least 1 argument is required,
 gap> DigraphClique();
-Error, Digraphs: DigraphClique: usage,
-this function requires at least one argument,
+Error, at least 1 argument is required,
 gap> DigraphMaximalClique(1);
-Error, Digraphs: DIGRAPHS_Clique: usage,
-the first argument <gr> must be a digraph,
+Error, the 1st argument must be a digraph,
 gap> DigraphClique(1);
-Error, Digraphs: DIGRAPHS_Clique: usage,
-the first argument <gr> must be a digraph,
+Error, the 1st argument must be a digraph,
 gap> DigraphMaximalClique(gr);
 [ 5, 4, 3, 2, 1 ]
 gap> DigraphClique(gr);
 [ 5, 4, 3, 2, 1 ]
 gap> DigraphMaximalClique(gr, [1, 1]);
-Error, Digraphs: DIGRAPHS_Clique: usage,
-the optional second argument <include> must be a duplicate-free list of
-vertices of <gr>,
+Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
+rgument (digraph),
 gap> DigraphMaximalClique(gr, [1], [1, 1]);
-Error, Digraphs: DIGRAPHS_Clique: usage,
-the optional third argument <exclude> must be a duplicate-free list of
-vertices of <gr>,
+Error, the optional 3rd argument (exclude) must be a duplicate-free list of ve\
+rtices of the first argument (digraph),
 gap> DigraphMaximalClique(gr, [1], [1], 0);
-Error, Digraphs: DIGRAPHS_Clique: usage,
-the optional fourth argument <size> must be a positive integer,
+Error, the optional 4th argument (size) must be a positive integer,
 gap> gr := EmptyDigraph(5);;
 gap> DigraphMaximalClique(gr, [1, 2], [3]);
 fail
@@ -284,24 +259,20 @@ gap> DigraphClique(CompleteDigraph(5), [1, 2], []);
 
 #  DigraphCliquesReps and DigraphMaximalCliquesReps
 gap> DigraphCliquesReps();
-Error, Digraphs: DigraphCliquesReps: usage,
-this function requires at least one argument,
+Error, there must be at least 1 argument,
 gap> DigraphCliques();
-Error, Digraphs: DigraphCliques: usage,
-this function requires at least one argument,
+Error, there must be at least 1 argument,
 gap> gr := EmptyDigraph(5);;
 gap> DigraphMaximalCliquesRepsAttr(gr);
 [ [ 1 ] ]
 gap> DigraphMaximalCliquesReps();
-Error, Digraphs: DigraphMaximalCliquesReps: usage,
-this function requires at least one argument,
+Error, there must be at least 1 argument,
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1 ] ]
 gap> DigraphMaximalCliquesAttr(gr);
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
 gap> DigraphMaximalCliques();
-Error, Digraphs: DigraphMaximalCliques: usage,
-this function requires at least one argument,
+Error, there must be at least 1 argument,
 gap> DigraphMaximalCliques(gr);
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
 gap> gr := EmptyDigraph(1);;
@@ -329,83 +300,57 @@ gap> DigraphMaximalCliquesReps(gr);
 
 #  CliquesFinder: error checking
 gap> CliquesFinder(Group(()), fail, fail, fail, fail, fail, fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the first argument <gr> must be a digraph,
+Error, the 1st argument (digraph) must be a digraph,
 gap> gr := CompleteDigraph(5);;
 gap> CliquesFinder(gr, [], fail, fail, fail, fail, fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the second argument <hook> has to be either fail, or a function with two
-arguments,
+Error, the 2nd argument (hook) must be fail, or a function with 2 arguments,
 gap> f := function(a) return; end;;
 gap> CliquesFinder(gr, f, fail, fail, fail, fail, fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the second argument <hook> has to be either fail, or a function with two
-arguments,
+Error, the 2nd argument (hook) must be fail, or a function with 2 arguments,
 gap> CliquesFinder(gr, fail, fail, fail, fail, fail, fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-when the second argument <hook> is fail, the third argument <user_param> has
-to be a list,
+Error, when the 2nd argument (hook) is fail, the 3rd argument (user_param) mus\
+t be a list,
 gap> f := function(a, b) return; end;;
 gap> CliquesFinder(gr, f, fail, fail, fail, fail, fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the fourth argument <limit> has to be either infinity, or a positive integer,
+Error, the 4th argument (limit) must be infinity, or a positive integer,
 gap> CliquesFinder(gr, fail, [], infinity, fail, fail, fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the fifth argument <include> and the sixth argument <exclude> have to be
-(possibly empty) duplicate-free lists of vertices of the digraph in the first
-argument <gr>,
+Error, the 5th argument (include) and the 6th argument (exclude) must be (poss\
+ibly empty) duplicate-free lists of vertices of the 1st argument (digraph)
 gap> CliquesFinder(gr, fail, [], infinity, [0, 'a'], fail, fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the fifth argument <include> and the sixth argument <exclude> have to be
-(possibly empty) duplicate-free lists of vertices of the digraph in the first
-argument <gr>,
+Error, the 5th argument (include) and the 6th argument (exclude) must be (poss\
+ibly empty) duplicate-free lists of vertices of the 1st argument (digraph)
 gap> CliquesFinder(gr, fail, [], infinity, [0], fail, fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the fifth argument <include> and the sixth argument <exclude> have to be
-(possibly empty) duplicate-free lists of vertices of the digraph in the first
-argument <gr>,
+Error, the 5th argument (include) and the 6th argument (exclude) must be (poss\
+ibly empty) duplicate-free lists of vertices of the 1st argument (digraph)
 gap> CliquesFinder(gr, fail, [], infinity, [1, 1], fail, fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the fifth argument <include> and the sixth argument <exclude> have to be
-(possibly empty) duplicate-free lists of vertices of the digraph in the first
-argument <gr>,
+Error, the 5th argument (include) and the 6th argument (exclude) must be (poss\
+ibly empty) duplicate-free lists of vertices of the 1st argument (digraph)
 gap> CliquesFinder(gr, fail, [], infinity, [1], fail, fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the fifth argument <include> and the sixth argument <exclude> have to be
-(possibly empty) duplicate-free lists of vertices of the digraph in the first
-argument <gr>,
+Error, the 5th argument (include) and the 6th argument (exclude) must be (poss\
+ibly empty) duplicate-free lists of vertices of the 1st argument (digraph)
 gap> CliquesFinder(gr, fail, [], infinity, [1], [0, 'a'], fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the fifth argument <include> and the sixth argument <exclude> have to be
-(possibly empty) duplicate-free lists of vertices of the digraph in the first
-argument <gr>,
+Error, the 5th argument (include) and the 6th argument (exclude) must be (poss\
+ibly empty) duplicate-free lists of vertices of the 1st argument (digraph)
 gap> CliquesFinder(gr, fail, [], infinity, [1], [0], fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the fifth argument <include> and the sixth argument <exclude> have to be
-(possibly empty) duplicate-free lists of vertices of the digraph in the first
-argument <gr>,
+Error, the 5th argument (include) and the 6th argument (exclude) must be (poss\
+ibly empty) duplicate-free lists of vertices of the 1st argument (digraph)
 gap> CliquesFinder(gr, fail, [], infinity, [1], [1, 1], fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the fifth argument <include> and the sixth argument <exclude> have to be
-(possibly empty) duplicate-free lists of vertices of the digraph in the first
-argument <gr>,
+Error, the 5th argument (include) and the 6th argument (exclude) must be (poss\
+ibly empty) duplicate-free lists of vertices of the 1st argument (digraph)
 gap> CliquesFinder(gr, fail, [], infinity, [1], [1], fail, fail, fail);
-Error, Digraphs: CliquesFinder: usage,
-the seventh argument <max> must be either true or false,
+Error, the 7th argument (max) must be true or false,
 gap> CliquesFinder(gr, fail, [], infinity, [1], [1], false, 0, fail);
-Error, Digraphs: CliquesFinder: usage,
-the eighth argument <size> has to be either fail, or a positive integer,
+Error, the 8th argument (size) must be fail, or a positive integer,
 gap> CliquesFinder(gr, fail, [], infinity, [1], [1], false, 1, fail);
-Error, Digraphs: CliquesFinder: usage,
-the ninth argument <reps> must be either true or false,
+Error, the 9th argument (reps) must be true or false,
 gap> CliquesFinder(gr, fail, [], infinity, [1], [], false, 1, true);
-Error, Digraphs: CliquesFinder: usage,
-if the ninth argument <reps> is true then the fourth and fifth arguments
-<include> and <exclude> must be invariant under the action of <group>,
+Error, if the 9th argument (reps) is true, then the 4th and 5th arguments (inc\
+lude and exclude) must be invariant under the action of the automorphism group\
+ of the maximal symmetric subdigraph without loops,
 gap> CliquesFinder(gr, fail, [], infinity, [], [1], false, 1, true);
-Error, Digraphs: CliquesFinder: usage,
-if the ninth argument <reps> is true then the fourth and fifth arguments
-<include> and <exclude> must be invariant under the action of <group>,
+Error, if the 9th argument (reps) is true, then the 4th and 5th arguments (inc\
+lude and exclude) must be invariant under the action of the automorphism group\
+ of the maximal symmetric subdigraph without loops,
 gap> CliquesFinder(gr, fail, [], infinity, [1 .. 5], [1 .. 5], false, 1, true);
 [  ]
 gap> CliquesFinder(gr, fail, [], infinity, [1], [1], false, 1, false);
