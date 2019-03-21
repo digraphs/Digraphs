@@ -58,8 +58,8 @@ function(D, set)
   return not ForAny(try, x -> IsEmpty(Intersection(set, nbs[x])));
 end);
 
-InstallMethod(IsClique, "for a digraph and a homogeneous list",
-[IsDigraph, IsHomogeneousList],
+InstallMethod(IsClique, "for a dense digraph and a homogeneous list",
+[IsDenseDigraphRep, IsHomogeneousList],
 function(D, clique)
   local nbs, v;
   if not IsDuplicateFreeList(clique)
@@ -76,8 +76,8 @@ function(D, clique)
   return true;
 end);
 
-InstallMethod(IsMaximalClique, "for a digraph and a homogeneous list",
-[IsDigraph, IsHomogeneousList],
+InstallMethod(IsMaximalClique, "for a dense digraph and a homogeneous list",
+[IsDenseDigraphRep, IsHomogeneousList],
 function(D, clique)
   local nbs, try, n, i;
 
@@ -249,8 +249,8 @@ function(arg)
 
   # Validate arg[2]
   D := arg[2];
-  if not IsDigraph(D) then
-    ErrorNoReturn("the 1st argument must be a digraph,");
+  if not IsDenseDigraphRep(D) then
+    ErrorNoReturn("the 1st argument must be a dense digraph,");
   fi;
 
   # Validate arg[3]

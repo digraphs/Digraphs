@@ -43,8 +43,7 @@ gap> List(l, x -> DigraphFromGraph6String(x));
   <immutable digraph with 9 vertices, 38 edges>, 
   <immutable digraph with 9 vertices, 34 edges> ]
 gap> DigraphFromGraph6String(ListWithIdenticalEntries(500, '~'));
-Error, Digraphs: DigraphFromGraph6String: usage,
-the input string <s> is not in valid graph6 format,
+Error, the argument (a string) is not valid graph6,
 
 # ReadDigraphs
 gap> str := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;
@@ -54,21 +53,18 @@ gap> Size(list);
 gap> list2 := ReadDigraphs(str, DigraphFromGraph6String);;
 gap> list = list2;
 true
-gap> gr := ReadDigraphs(str, 10);
+gap> gr := ReadDigraphs(str, fail, 10);
 <immutable digraph with 5 vertices, 8 edges>
 gap> list = gr;
 false
 gap> list[10] = gr;
 true
 gap> ReadDigraphs(34, DigraphFromGraph6String, 5);
-Error, Digraphs: ReadDigraphs: usage,
-ReadDigraphs( filename [, decoder][, pos] ),
+Error, the 1st argument (filenname) must be a string or IO file object,
 gap> ReadDigraphs(str, (1, 6, 5), 5);
-Error, Digraphs: ReadDigraphs: usage,
-ReadDigraphs( filename [, decoder][, pos] ),
+Error, the argument (decoder) must be a function or fail,
 gap> ReadDigraphs(str, DigraphFromGraph6String, 0);
-Error, Digraphs: ReadDigraphs: usage,
-ReadDigraphs( filename [, decoder][, pos] ),
+Error, the argument (nr) must be a positive integer or infinity
 gap> str := Concatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt");;
 gap> list := ReadDigraphs(str);;
 gap> list2 := ReadDigraphs(str,
@@ -77,12 +73,10 @@ gap> list2 := ReadDigraphs(str,
 gap> list = list2;
 true
 gap> ReadDigraphs(str, 2, true, "elephant");
-Error, Digraphs: ReadDigraphs: usage,
-ReadDigraphs( filename [, decoder][, pos] ),
+Error, there must be 1, 2, or 3 arguments,
 gap> badfilename := "path/to/some/madeupfile.g6.gz";;
 gap> ReadDigraphs(badfilename, 3);
-Error, Digraphs: DigraphFile:
-cannot open file path/to/some/madeupfile.g6.gz,
+Error, cannot open file given as the 1st argument,
 
 #  DigraphFromSparse6String and Sparse6String
 gap> DigraphFromSparse6String(":@");
@@ -216,10 +210,10 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
 gap> ReadDigraphs(filename);
-[ <immutable digraph with 5 vertices, 7 edges>, 
-  <immutable digraph with 105 vertices, 100 edges>, 
-  <immutable digraph with 0 vertices, 0 edges>, 
-  <immutable digraph with 10 vertices, 47 edges> ]
+[ <mutable digraph with 5 vertices, 7 edges>, 
+  <mutable digraph with 105 vertices, 100 edges>, 
+  <mutable digraph with 0 vertices, 0 edges>, 
+  <mutable digraph with 10 vertices, 47 edges> ]
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.txt");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -240,7 +234,7 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
 gap> ReadDigraphs(filename);
-[ <immutable digraph with 30 vertices, 870 edges> ]
+[ <mutable digraph with 30 vertices, 870 edges> ]
 gap> gr := [];;
 gap> gr[1] := Digraph(30, [1, 2], [2, 1]);
 <immutable digraph with 30 vertices, 2 edges>
@@ -270,14 +264,12 @@ gap> newfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.bz2");;
 gap> IO_rename(filename, newfilename);
 true
 gap> rdgr := ReadDigraphs(newfilename);
-Error, Digraphs: DigraphFile:
-cannot determine the file format,
+Error, cannot determine the file format,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.h6.bz2");;
 gap> IO_rename(newfilename, filename);
 true
 gap> rdgr := ReadDigraphs(filename);
-Error, Digraphs: DigraphFile:
-cannot determine the file format,
+Error, cannot determine the file format,
 
 #  DigraphFile
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/helloworld.g6");;
@@ -293,8 +285,8 @@ gap> ReadDigraphs(f);
   <immutable digraph with 5 vertices, 20 edges> ]
 gap> f := DigraphFile(filename, "a");;
 gap> WriteDigraphs(f, CycleDigraph(5));
-Error, Digraphs: Graph6String: usage,
-<graph> must be symmetric and have no loops or multiple edges,
+Error, the argument must be a symmetric digraph with no loops or multiple edge\
+s,
 gap> WriteDigraphs(f, JohnsonDigraph(6, 3));
 IO_OK
 gap> f := DigraphFile(filename, "r");;
@@ -343,14 +335,11 @@ gap> it := ShallowCopy(it);
 gap> NextIterator(it);
 <immutable digraph with 1 vertex, 0 edges>
 gap> IteratorFromDigraphFile(1, 2, 3);
-Error, Digraphs: IteratorFromDigraphFile: usage,
-there should be 1 or 2 arguments,
+Error, there must be 1 or 2 arguments,
 gap> IteratorFromDigraphFile(1, 2);
-Error, Digraphs: IteratorFromDigraphFile: usage,
-the first argument must be a string,
+Error, the 1st argument must be a string,
 gap> IteratorFromDigraphFile("happy", "happy");
-Error, Digraphs: IteratorFromDigraphFile: usage,
-the second argument must be a function,
+Error, the 2nd argument must be a function or fail,
 gap> f := DigraphFile(Concatenation(DIGRAPHS_Dir(), "/data/test-1.d6"));;
 gap> IO_Close(f);
 true
@@ -359,20 +348,16 @@ gap> f := DigraphFile(Concatenation(DIGRAPHS_Dir(), "/data/test-1.d6"),
 gap> IO_Close(f);
 true
 gap> f := DigraphFile(1, 2, 3, 4);
-Error, Digraphs: DigraphFile: usage,
-DigraphFile( filename [, coder][, mode] ),
+Error, there must be 1, 2, or 3 arguments,
 gap> DigraphFile(Concatenation(DIGRAPHS_Dir(), "/data/test-1.d6"),
 >                Digraph6String, "wtf");;
-Error, Digraphs: DigraphFile: usage,
-DigraphFile( filename [, coder][, mode] ),
+Error, the 3rd argument (mode) must be one of "a", "w", or "r"
 gap> ReadDigraphs(f);
-Error, Digraphs: ReadDigraphs: usage,
-the file is closed,
+Error, the 1st argument is a closed file,
 gap> f := DigraphFile(Concatenation(DIGRAPHS_Dir(), "/tst/out/test.d6"),
 >                     Digraph6String, "w");;
 gap> ReadDigraphs(f);
-Error, Digraphs: ReadDigraphs: usage,
-the mode of the file must be "r",
+Error, the mode of the 1st argument (a file) must be "r",
 gap> IO_Close(f);
 true
 
@@ -381,26 +366,21 @@ gap> gr := Digraph([[1, 2], [2, 3], []]);
 <immutable digraph with 3 vertices, 4 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/plain.txt");;
 gap> WritePlainTextDigraph(1, 2, 3, 4);
-Error, Digraphs: WritePlainTextDigraph: usage,
-WritePlainTextDigraph(filename, digraph, delimiter, offset),
+Error, the 1st argument must be a string,
 gap> WritePlainTextDigraph(".", gr, ",", -2);
-Error, Digraphs: WritePlainTextDigraph:
-cannot open file .,
-gap> WritePlainTextDigraph(filename, gr, ',', -3);
+Error, cannot open file given as the 1st argument,
+gap> WritePlainTextDigraph(filename, gr, ",", -3);
 gap> WritePlainTextDigraph(filename, gr, ",", -1);
 gap> ReadPlainTextDigraph(1, 2, 3, 4);
-Error, Digraphs: ReadPlainTextDigraph: usage,
-ReadPlainTextDigraph(filename, delimiter, offset, ignore),
-gap> ReadPlainTextDigraph(filename, ",", 1, ['i', 'd']);
-<immutable digraph with 3 vertices, 4 edges>
-gap> ReadPlainTextDigraph(filename, ',', 1, 'i');
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `ReadPlainTextDigraph' on 4 arguments
+gap> ReadPlainTextDigraph(filename, ",", 1, "i");
 <immutable digraph with 3 vertices, 4 edges>
 gap> last = gr;
 true
-gap> filename := Concatenation(DIGRAPHS_Dir(), "/does/not/exist.txt");;
-gap> ReadPlainTextDigraph(filename, ',', 1, 'i');
-Error, Digraphs: ReadPlainTextDigraph:
-cannot open file <name>,
+gap> filename := "/does/not/exist.txt";;
+gap> ReadPlainTextDigraph(filename, ",", 1, "i");
+Error, cannot open file the file given as the 2nd argument,
 
 #  TournamentLineDecoder
 gap> gr := TournamentLineDecoder("101001");
@@ -434,51 +414,38 @@ gap> gr := TCodeDecoder("12 3 0 10 6 2 8 8");
 gap> OutNeighbours(gr);
 [ [ 11 ], [  ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [ 9 ], [  ], [  ], [  ] ]
 gap> gr := TCodeDecoder(3);
-Error, Digraphs: TCodeDecoder: usage,
-first argument <str> must be a string,
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `TCodeDecoder' on 1 arguments
 gap> gr := TCodeDecoder("gr 5");
-Error, Digraphs: TCodeDecoder: usage,
-1st argument <str> must be a string of space-separated non-negative integers,
+Error, the argument must be a string of space-separated non-negative integers,
 gap> gr := TCodeDecoder("10");
-Error, Digraphs: TCodeDecoder: usage,
-first argument <str> must be a string of at least two integers,
+Error, the argument must be a string of at least two integers,
 gap> gr := TCodeDecoder("2 2 0 4 1 2");
-Error, Digraphs: TCodeDecoder: usage,
-vertex numbers must be in the range [0 .. n - 1], where
-n = 2 is the first entry in <str>,
+Error, vertex numbers must be in the range [0 .. 2],
 gap> gr := TCodeDecoder("3 2 0 2");
-Error, Digraphs: TCodeDecoder: usage,
-<str> must contain at least 2e + 2 entries,
-where e is the number of edges (the 2nd entry in <str>),
+Error, the argument must contain at least 6 entries,
 gap> gr := TCodeDecoderNC("100 5 0 12 48 49 99 1 54 49 49 49");
 <immutable digraph with 100 vertices, 5 edges>
 
 #  Empty strings should not create graphs
 gap> DigraphFromGraph6String("");
-Error, Digraphs: DigraphFromGraph6String: usage,
-the input string <s> should be non-empty,
+Error, the argument must be a non-empty string,
 gap> DigraphFromDigraph6String("");
-Error, Digraphs: DigraphFromDigraph6String: usage,
-the input string <s> should be non-empty,
+Error, the argument must be a non-empty string,
 gap> DigraphFromSparse6String("");
-Error, Digraphs: DigraphFromSparse6String: usage,
-the input string <s> should be non-empty,
+Error, the argument must be a non-empty string,
 gap> DigraphFromDiSparse6String("");
-Error, Digraphs: DigraphFromDiSparse6String: usage,
-the input string <s> should be non-empty,
+Error, the argument must be a non-empty string,
 
 #  DiSparse6 
 gap> DigraphFromDiSparse6String("I'm a string");
-Error, Digraphs: DigraphFromDiSparse6String: usage,
-the input string <s> is not in valid disparse6 format,
+Error, the argument (a string) is not valid disparse6,
 gap> DigraphFromDiSparse6String(".~~");
-Error, Digraphs: DigraphFromDiSparse6String: usage,
-the input string <s> is not in valid disparse6 format,
+Error, the argument (a string) is not valid disparse6,
 gap> DigraphFromDiSparse6String(".~~??@???o??N");
 <immutable digraph with 262144 vertices, 0 edges>
 gap> DigraphFromDiSparse6String(".~??");
-Error, Digraphs: DigraphFromDiSparse6String: usage,
-the input string <s> is not in valid disparse6 format,
+Error, the argument (a string) is not valid disparse6,
 gap> DiSparse6String(CompleteDigraph(1));
 ".@~"
 gap> DigraphFromDiSparse6String(".@~");
@@ -499,36 +466,27 @@ true
 
 #  Invalid sizes
 gap> DigraphFromGraph6String("~llk");
-Error, Digraphs: DigraphFromGraph6String: usage,
-the input string <s> is not in valid graph6 format,
+Error, the argument (a string) is not valid graph6,
 gap> DigraphFromDigraph6String("&~llk");
-Error, Digraphs: DigraphFromDigraph6String: usage,
-the input string <s> is not in valid digraph6 format,
+Error, the argument (a string) is not valid digraph6,
 gap> DigraphFromSparse6String(":~~l");
-Error, Digraphs: DigraphFromSparse6String: usage,
-the input string <s> is not in valid sparse6 format,
+Error, the argument (a string) is not valid sparse6,
 gap> DigraphFromSparse6String(":~hl");
-Error, Digraphs: DigraphFromSparse6String: usage,
-the input string <s> is not in valid sparse6 format,
+Error, the argument (a string) is not valid sparse6,
 gap> DigraphFromDiSparse6String(".~~l");
-Error, Digraphs: DigraphFromDiSparse6String: usage,
-the input string <s> is not in valid disparse6 format,
+Error, the argument (a string) is not valid disparse6,
 
 #  Special format characters
 gap> DigraphFromDigraph6String("x");
-Error, Digraphs: DigraphFromDigraph6String: usage,
-the input string <s> is not in valid digraph6 format,
+Error, the argument (a string) is not valid digraph6,
 gap> DigraphFromSparse6String("y");
-Error, Digraphs: DigraphFromSparse6String: usage,
-the input string <s> is not in valid sparse6 format,
+Error, the argument (a string) is not valid sparse6,
 gap> DigraphFromDiSparse6String("z");
-Error, Digraphs: DigraphFromDiSparse6String: usage,
-the input string <s> is not in valid disparse6 format,
+Error, the argument (a string) is not valid disparse6,
 
 #  Special format characters
 gap> Sparse6String(ChainDigraph(3));
-Error, Digraphs: Sparse6String: usage,
-the argument <graph> must be a symmetric digraph,
+Error, the argument must be a symmetric digraph,
 gap> Sparse6String(CompleteDigraph(1));
 ":@"
 gap> gr := Digraph([[1], []]);;
@@ -543,47 +501,39 @@ gap> Sparse6String(last);
 
 #  DigraphPlainTextLineDecoder: bad input
 gap> DigraphPlainTextLineDecoder(" ", "  ", 1, ".");
-Error, Digraphs: DigraphPlainTextLineDecoder: usage,
-DigraphPlainTextLineDecoder(delimiter, [,delimiter], offset),
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `DigraphPlainTextLineDecoder' on 4 argum\
+ents
 
 #  WriteDigraphs: bad input
 gap> list := [CompleteDigraph(4), CycleDigraph(8), "hello world"];;
 gap> WriteDigraphs(72, list, "w");
-Error, Digraphs: WriteDigraphs: usage,
-the argument <name> must be a string or a file,
+Error, the 1st argument (filename) must be a string or a file,
 gap> WriteDigraphs("mylist", list, "w");
-Error, Digraphs: WriteDigraphs: usage,
-the argument <digraphs> must be a list of digraphs,
+Error, the 2nd argument (digraphs) must be a digraph or list of digraphs,
 gap> WriteDigraphs(1, 2, 3, 4, 5);
-Error, Digraphs: WriteDigraphs: usage,
-there must be 2, 3, or 4 arguments,
+Error, there must be 2, 3, or 4 arguments,
 gap> WriteDigraphs(filename, CompleteDigraph(2), 3, "w");
-Error, Digraphs: WriteDigraphs: usage,
-the argument <encoder> must be a function,
+Error, the argument (encoder) must be a function or fail,
 gap> WriteDigraphs(filename, CompleteDigraph(2), Graph6String, "r");
-Error, Digraphs: WriteDigraphs: usage,
-the argument <mode> must be "a" or "w",
+Error, the argument (mode) must be "a" or "w",
 gap> filename := DigraphFile(Concatenation(DIGRAPHS_Dir(),
 >                            "/tst/out/test.g6"));;
 gap> gr := CompleteDigraph(1);;
 gap> WriteDigraphs(filename, gr, "w");
-Error, Digraphs: WriteDigraphs: usage,
-the mode is specified by the file in the first argument and cannot be given as
-an argument,
+Error, the 1st argument (filename) is a file, and so there must only be 2 argu\
+ments,
 gap> WriteDigraphs(filename, gr, fail, "w");
-Error, Digraphs: WriteDigraphs: usage,
-the mode is specified by the file in the first argument and cannot be given as
-an argument,
+Error, the 1st argument (filename) is a file, and so there must only be 2 argu\
+ments,
 gap> IO_Close(filename);
 true
 gap> WriteDigraphs(filename, gr);
-Error, Digraphs: WriteDigraphs: usage,
-the argument <file> is closed,
+Error, the 1st argument (a file) is closed,
 gap> f := DigraphFile(Concatenation(DIGRAPHS_Dir(), "/tst/out/test.d6"),
 >                     Digraph6String, "r");;
 gap> WriteDigraphs(f, EmptyDigraph(4));
-Error, Digraphs: WriteDigraphs: usage,
-the mode of the argument <file> must be "w" or "a",
+Error, the mode of the 1st argument (a file) must be "w" or "a",
 gap> IO_Close(f);
 true
 
@@ -645,13 +595,12 @@ gap> gr = list2;
 true
 gap> filename := "does/not/exist.gz";;
 gap> WriteDigraphs(filename, gr, "w");
-Error, Digraphs: DigraphFile:
-cannot open file does/not/exist.d6.gz,
+Error, cannot open file given as the 1st argument,
 
 #  DigraphPlainTextLineDecoder: bad input
 gap> Graph6String(ChainDigraph(4));
-Error, Digraphs: Graph6String: usage,
-<graph> must be symmetric and have no loops or multiple edges,
+Error, the argument must be a symmetric digraph with no loops or multiple edge\
+s,
 gap> DIGRAPHS_Graph6Length(-1);
 fail
 gap> DIGRAPHS_Graph6Length(68719476737);
@@ -659,11 +608,9 @@ fail
 gap> DIGRAPHS_Graph6Length(258748);
 [ 63, 63, 0, 0, 0, 63, 10, 60 ]
 gap> WriteDigraphs(1, 1, "w");
-Error, Digraphs: WriteDigraphs: usage,
-the argument <name> must be a string or a file,
+Error, the 1st argument (filename) must be a string or a file,
 gap> WriteDigraphs("string", [1], "w");
-Error, Digraphs: WriteDigraphs: usage,
-the argument <digraphs> must be a list of digraphs,
+Error, the 2nd argument (digraphs) must be a digraph or list of digraphs,
 gap> Sparse6String(EmptyDigraph(2 ^ 20));
 ":~~??C???"
 gap> DigraphFromSparse6String(":~~??C???");
@@ -683,11 +630,9 @@ gap> WriteDIMACSDigraph(gr, filename);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `WriteDIMACSDigraph' on 2 arguments
 gap> WriteDIMACSDigraph("file", ChainDigraph(2));
-Error, Digraphs: WriteDIMACSDigraph: usage,
-the digraph <digraph> must be symmetric,
+Error, the 2nd argument must be a symmetric digraph,
 gap> WriteDIMACSDigraph(filename, gr);
-Error, Digraphs: WriteDIMACSDigraph:
-cannot open the file <name>,
+Error, cannot open the file given as the 1st argument,
 
 # Handling loops
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/loops.dimacs");;
@@ -724,8 +669,7 @@ IO_OK
 
 #  ReadDIMACSDigraph
 gap> ReadDIMACSDigraph("does/not/exist.gz");
-Error, Digraphs: ReadDIMACSDigraph:
-cannot open the file <name>,
+Error, cannot open the file given as the 2nd argument,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/bad.dimacs");;
 
 # Bad line type
@@ -733,8 +677,8 @@ gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "file for testing purposes");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 
 # Bad vertices and edges definition
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -742,47 +686,47 @@ gap> IO_WriteLine(file, "c file for testing purposes");;
 gap> IO_WriteLine(file, "p edge 'a' 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 -1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p fail 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "c empty file");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 
 # Vertices and edges undefined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "e 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 
 # Bad node label
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -790,22 +734,22 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 
 # Bad edge
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -813,29 +757,29 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 
 # Unsupported types
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -846,8 +790,8 @@ gap> IO_WriteLine(file, "x");;
 gap> IO_WriteLine(file, "j");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, Digraphs: ReadDIMACSDigraph:
-the format of the file <name> cannot be understood,
+Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
+annot be determined,
 
 # Bad number of edges
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -904,11 +848,9 @@ gap> DigraphVertexLabels(gr);
 
 #  Test DIGRAPHS_ChooseFileDecoder
 gap> DIGRAPHS_ChooseFileDecoder(1);
-Error, Digraphs: DIGRAPHS_ChooseFileDecoder: usage,
-the argument must be a string,
+Error, the argument must be a string,
 gap> DIGRAPHS_ChooseFileEncoder(1);
-Error, Digraphs: DIGRAPHS_ChooseFileEncoder: usage,
-the argument must be a string,
+Error, the argument must be a string,
 
 #  IO_Pickle
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/good.dimacs");;
