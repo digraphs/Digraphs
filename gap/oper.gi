@@ -267,6 +267,31 @@ function(D, edges)
   return MakeImmutableDigraph(DigraphAddEdges(DigraphMutableCopy(D), edges));
 end);
 
+InstallMethod(DigraphRemoveEdgeByIndex,
+"for a mutable dense digraph and a positive integer",
+[IsMutableDigraph and IsDenseDigraphRep, IsPosInt, IsPosInt],
+function(D, src, idx)
+    if not src in DigraphVertices(D) then
+      ErrorNoReturn("the 2nd argument must be a vertex of the first ",
+                    "argument,");
+    fi;
+    if idx > Length(OutNeighbours(D)[src]) then
+      ErrorNoReturn("the 3rd argument must be an index of an edge with ",
+                    " in OutNeighbours(1st argument, 2nd argument),");
+    fi;
+    Remove(OutNeighbours(D)[src], idx);
+    Remove(DigraphEdgeLabels(D)[src], idx);
+    return D;
+end);
+
+InstallMethod(DigraphRemoveEdgeByIndex,
+"for an immutable dense digraph and a positive integer",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(D, src, idx)
+  D := DigraphMutableCopy(D);
+  return MakeImmutableDigraph(DigraphRemoveEdgeByIndex(D, src, idx));
+end);
+
 InstallMethod(DigraphRemoveEdge,
 "for a mutable dense digraph, a positive integer, and a positive integer",
 [IsMutableDigraph and IsDenseDigraphRep, IsPosInt, IsPosInt],
@@ -284,8 +309,7 @@ function(D, src, ran)
   fi;
   pos := Position(OutNeighbours(D)[src], ran);
   if pos <> fail then
-    Remove(OutNeighbours(D)[src], pos);
-    Remove(DigraphEdgeLabels(D)[src], pos);
+    DigraphRemoveEdgeByIndex(D, src, pos);
   fi;
   return D;
 end);

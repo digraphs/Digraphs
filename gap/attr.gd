@@ -54,8 +54,10 @@ DeclareSynonymAttr("CutVertices", ArticulationPoints);
 
 DeclareOperation("DigraphSymmetricClosure", [IsDigraph]);
 DeclareAttribute("DigraphSymmetricClosureAttr", IsImmutableDigraph);
-DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
-DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
+DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
+DeclareAttribute("DigraphReflexiveTransitiveClosureAttr", IsDigraph);
+DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
+DeclareAttribute("DigraphTransitiveClosureAttr", IsDigraph);
 DeclareGlobalFunction("DigraphTransitiveClosureNC");
 
 DeclareAttribute("ChromaticNumber", IsDigraph);
@@ -67,9 +69,12 @@ DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("BooleanAdjacencyMatrix", IsDigraph);
 DeclareOperation("ReducedDigraph", [IsDigraph]);
 DeclareAttribute("ReducedDigraphAttr", IsImmutableDigraph);
-DeclareAttribute("MaximalSymmetricSubdigraph", IsDigraph);
-DeclareAttribute("MaximalAntiSymmetricSubdigraph", IsDigraph);
-DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoops", IsDigraph);
+DeclareOperation("MaximalSymmetricSubdigraph", [IsDigraph]);
+DeclareAttribute("MaximalSymmetricSubdigraphAttr", IsDigraph);
+DeclareOperation("MaximalAntiSymmetricSubdigraph", [IsDigraph]);
+DeclareAttribute("MaximalAntiSymmetricSubdigraphAttr", IsDigraph);
+DeclareOperation("MaximalSymmetricSubdigraphWithoutLoops", [IsDigraph]);
+DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoopsAttr", IsDigraph);
 DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
 
 DeclareAttribute("UndirectedSpanningTree", IsDigraph);

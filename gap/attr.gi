@@ -18,7 +18,7 @@ InstallMethod(OutNeighbours, "for a digraph in dense rep",
 # The next method is (yet another) DFS as described in
 # http://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
 
-InstallMethod(ArticulationPoints, "for a digraph", [IsDenseDigraphRep],
+InstallMethod(ArticulationPoints, "for a dense digraph", [IsDenseDigraphRep],
 function(digraph)
   local copy, nbs, counter, visited, num, low, parent, points, points_seen,
         stack, depth, v, w, i;
@@ -99,7 +99,7 @@ function(digraph)
   fi;
 end);
 
-InstallMethod(ChromaticNumber, "for a digraph", [IsDenseDigraphRep],
+InstallMethod(ChromaticNumber, "for a dense digraph", [IsDenseDigraphRep],
 function(digraph)
   local nr, comps, upper, chrom, tmp_comps, tmp_upper, n, comp, bound, clique,
   c, i;
@@ -249,7 +249,8 @@ end);
 #   return out;
 # end);
 
-InstallMethod(DigraphAdjacencyFunction, "for a digraph", [IsDenseDigraphRep],
+InstallMethod(DigraphAdjacencyFunction, "for a dense digraph",
+[IsDenseDigraphRep],
 function(digraph)
   local func;
 
@@ -260,7 +261,7 @@ function(digraph)
   return func;
 end);
 
-InstallMethod(AsTransformation, "for a digraph",
+InstallMethod(AsTransformation, "for a dense digraph",
 [IsDenseDigraphRep],
 function(digraph)
   if not IsFunctionalDigraph(digraph) then
@@ -269,7 +270,7 @@ function(digraph)
   return Transformation(Concatenation(OutNeighbours(digraph)));
 end);
 
-InstallMethod(ReducedDigraph, "for a mutable digraph",
+InstallMethod(ReducedDigraph, "for a dense mutable digraph",
 [IsDenseDigraphRep and IsMutableDigraph],
 function(digraph)
   local v, niv, old, i;
@@ -309,7 +310,7 @@ function(digraph)
   return ReducedDigraph(digraph);
 end);
 
-InstallMethod(DigraphDual, "for a mutable digraph",
+InstallMethod(DigraphDual, "for a dense mutable digraph",
 [IsDenseDigraphRep and IsMutableDigraph],
 function(digraph)
   local verts, outs, i;
@@ -351,7 +352,7 @@ end);
 
 InstallMethod(DigraphNrEdges, "for a digraph", [IsDigraph], DIGRAPH_NREDGES);
 
-InstallMethod(DigraphEdges, "for a digraph",
+InstallMethod(DigraphEdges, "for a dense digraph",
 [IsDenseDigraphRep],
 function(graph)
   local out, adj, nr, i, j;
@@ -406,7 +407,7 @@ InstallMethod(AdjacencyMatrix, "for a digraph",
 [IsDigraph], ADJACENCY_MATRIX);
 
 InstallMethod(BooleanAdjacencyMatrix,
-"for a digraph",
+"for a dense digraph",
 [IsDenseDigraphRep],
 function(gr)
   local n, nbs, mat, i, j;
@@ -458,12 +459,12 @@ end);
 # returns the vertices (i.e. numbers) of <digraph> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
-InstallMethod(DigraphTopologicalSort, "for a digraph",
+InstallMethod(DigraphTopologicalSort, "for a dense digraph",
 [IsDenseDigraphRep], function(graph)
   return DIGRAPH_TOPO_SORT(OutNeighbours(graph));
 end);
 
-InstallMethod(DigraphStronglyConnectedComponents, "for a digraph",
+InstallMethod(DigraphStronglyConnectedComponents, "for a dense digraph",
 [IsDenseDigraphRep],
 function(digraph)
   local verts;
@@ -485,7 +486,7 @@ InstallMethod(DigraphConnectedComponents, "for a digraph",
 [IsDigraph],
 DIGRAPH_CONNECTED_COMPONENTS);
 
-InstallMethod(OutDegrees, "for a digraph",
+InstallMethod(OutDegrees, "for a dense digraph",
 [IsDenseDigraphRep],
 function(digraph)
   local adj, degs, i;
@@ -511,7 +512,7 @@ function(digraph)
   return degs;
 end);
 
-InstallMethod(InDegrees, "for a digraph",
+InstallMethod(InDegrees, "for a dense digraph",
 [IsDenseDigraphRep],
 function(digraph)
   local adj, degs, x, i;
@@ -539,7 +540,7 @@ function(digraph)
   return out;
 end);
 
-InstallMethod(OutDegreeSequence, "for a digraph with known digraph group",
+InstallMethod(OutDegreeSequence, "for a dense digraph with known digraph group",
 [IsDenseDigraphRep and HasDigraphGroup],
 function(digraph)
   local out, adj, orbs, orb;
@@ -634,7 +635,7 @@ function(digraph)
   return sources;
 end);
 
-InstallMethod(DigraphSources, "for a digraph",
+InstallMethod(DigraphSources, "for a dense digraph",
 [IsDenseDigraphRep],
 function(digraph)
   local verts, out, seen, v, i;
@@ -659,7 +660,7 @@ function(digraph)
   return Filtered(DigraphVertices(digraph), x -> degs[x] = 0);
 end);
 
-InstallMethod(DigraphSinks, "for a digraph",
+InstallMethod(DigraphSinks, "for a dense digraph",
 [IsDenseDigraphRep],
 function(digraph)
   local out, sinks, count, i;
@@ -930,7 +931,7 @@ function(digraph)
   return DIGRAPHS_DiameterAndUndirectedGirth(digraph).girth;
 end);
 
-InstallMethod(DigraphGirth, "for a digraph",
+InstallMethod(DigraphGirth, "for a dense digraph",
 [IsDenseDigraphRep],
 function(digraph)
   local verts, girth, out, dist, i, j;
@@ -975,7 +976,7 @@ end);
 
 
 # TODO (FLS): I've just added 1 as the edge label here, is this really desired?
-InstallMethod(DigraphSymmetricClosure, "for a mutable digraph",
+InstallMethod(DigraphSymmetricClosure, "for a dense mutable digraph",
 [IsDenseDigraphRep and IsMutableDigraph],
 function(digraph)
   local n, m, verts, edglbls, mat, out, x, new, i, j, k;
@@ -1053,11 +1054,14 @@ function(digraph)
   return digraph;
 end);
 
-InstallMethod(DigraphSymmetricClosure, "for a digraph",
+InstallMethod(DigraphSymmetricClosure, "for an immutable digraph",
 [IsImmutableDigraph],
 function(digraph)
   local dg;
-  
+  if HasDigraphSymmetricClosureAttr(digraph) then
+    return DigraphSymmetricClosureAttr(digraph);
+  fi;
+
   if DigraphNrVertices(digraph) <= 1
       or (HasIsSymmetricDigraph(digraph) and IsSymmetricDigraph(digraph)) then
     return digraph;
@@ -1066,6 +1070,7 @@ function(digraph)
   dg := DigraphMutableCopy(digraph);
   dg := MakeImmutableDigraph(DigraphSymmetricClosure(dg));
   SetIsSymmetricDigraph(dg, true);
+  SetDigraphSymmetricClosureAttr(digraph, dg);
   return dg;
 end);
 
@@ -1075,8 +1080,8 @@ function(digraph)
   return DigraphSymmetricClosure(digraph);
 end);
 
-InstallMethod(DigraphTransitiveClosure, "for a digraph",
-[IsDigraph],
+InstallMethod(DigraphTransitiveClosure, "for a mutable digraph",
+[IsMutableDigraph],
 function(graph)
   if IsMultiDigraph(graph) then
     ErrorNoReturn("Digraphs: DigraphTransitiveClosure: usage,\n",
@@ -1085,8 +1090,8 @@ function(graph)
   return DigraphTransitiveClosureNC(graph, false);
 end);
 
-InstallMethod(DigraphReflexiveTransitiveClosure, "for a digraph",
-[IsDigraph],
+InstallMethod(DigraphReflexiveTransitiveClosure, "for a mutable digraph",
+[IsMutableDigraph],
 function(graph)
   if IsMultiDigraph(graph) then
     ErrorNoReturn("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
@@ -1095,12 +1100,74 @@ function(graph)
   return DigraphTransitiveClosureNC(graph, true);
 end);
 
+InstallMethod(DigraphTransitiveClosure, "for an immutable digraph",
+[IsImmutableDigraph],
+function(graph)
+  local D;
+  if HasDigraphTransitiveClosureAttr(graph) then
+    return DigraphTransitiveClosureAttr(graph);
+  fi;
+  if IsMultiDigraph(graph) then
+    ErrorNoReturn("Digraphs: DigraphTransitiveClosure: usage,\n",
+                  "the argument <graph> cannot have multiple edges,");
+  fi;
+  D := DigraphTransitiveClosure(DigraphMutableCopy(graph));
+  D := MakeImmutableDigraph(D);
+  SetDigraphTransitiveClosureAttr(graph, D);
+  return D; 
+end);
+
+InstallMethod(DigraphReflexiveTransitiveClosure,
+"for an immutable digraph",
+[IsImmutableDigraph],
+function(graph)
+  local D;
+  if HasDigraphReflexiveTransitiveClosureAttr(graph) then
+    return DigraphReflexiveTransitiveClosureAttr(graph);
+  fi;
+  if IsMultiDigraph(graph) then
+    ErrorNoReturn("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
+                  "the argument <graph> cannot have multiple edges,");
+  fi;
+  D := DigraphReflexiveTransitiveClosure(DigraphMutableCopy(graph));
+  D := MakeImmutableDigraph(D);
+  SetDigraphReflexiveTransitiveClosureAttr(graph, D);
+  return D; 
+end);
+
+InstallMethod(DigraphTransitiveClosureAttr,
+"for an immutable digraph",
+[IsImmutableDigraph],
+function(graph)
+  if IsMultiDigraph(graph) then
+    ErrorNoReturn("Digraphs: DigraphTransitiveClosure: usage,\n",
+                  "the argument <graph> cannot have multiple edges,");
+  fi;
+  return DigraphTransitiveClosure(graph);
+end);
+
+InstallMethod(DigraphReflexiveTransitiveClosureAttr,
+"for an immutable digraph",
+[IsImmutableDigraph],
+function(graph)
+  if IsMultiDigraph(graph) then
+    ErrorNoReturn("Digraphs: DigraphReflexiveTransitiveClosure: usage,\n",
+                  "the argument <graph> cannot have multiple edges,");
+  fi;
+  return DigraphReflexiveTransitiveClosure(graph);
+end);
+
 InstallGlobalFunction(DigraphTransitiveClosureNC,
 function(graph, reflexive)
-  local adj, m, n, verts, sorted, out, trans, reflex, mat, v, u;
+  local adj, m, n, verts, sorted, trans, reflex, gr, mat, v, u;
 
   # <graph> is a digraph without multiple edges
   # <reflexive> is a boolean: true if we want the reflexive transitive closure
+
+  if not IsDenseDigraphRep(graph) then
+    ErrorNoReturn("this method is only implemented for digraphs in the ", 
+                  "representation IsDenseDigraphRep");
+  fi;
 
   adj   := OutNeighbours(graph);
   m     := DigraphNrEdges(graph);
@@ -1111,7 +1178,6 @@ function(graph, reflexive)
   if m + n + (m * n) < (n * n * n) then
     sorted := DigraphTopologicalSort(graph);
     if sorted <> fail then  # Method for big acyclic digraphs (loops allowed)
-      out   := EmptyPlist(n);
       trans := EmptyPlist(n);
       for v in sorted do
         trans[v] := BlistList(verts, [v]);
@@ -1125,31 +1191,31 @@ function(graph, reflexive)
         if (not reflexive) and (not reflex) then
           trans[v][v] := false;
         fi;
-        out[v] := ListBlist(verts, trans[v]);
+        Append(adj[v], 
+               ListBlist(verts, DifferenceBlist(trans[v],
+                                                BlistList(verts,
+                                                          adj[v]))));
+        gr := graph;
         trans[v][v] := true;
       od;
-      out := DigraphNC(out);
     fi;
   fi;
-
-  # Method for small or non-acyclic digraphs
-  if not IsBound(out) then
+  if not IsBound(gr) then 
+    # Method for small or non-acyclic digraphs
     if reflexive then
       mat := DIGRAPH_REFLEX_TRANS_CLOSURE(graph);
     else
       mat := DIGRAPH_TRANS_CLOSURE(graph);
     fi;
-    out := DigraphByAdjacencyMatrixNC(mat);
+    gr := MutableDigraphByAdjacencyMatrixNC(mat);
   fi;
-
-  SetIsMultiDigraph(out, false);
-  SetIsTransitiveDigraph(out, true);
-  return out;
+  SetIsTransitiveDigraph(gr, true);
+  return gr;
 end);
 
 InstallMethod(DigraphAllSimpleCircuits,
-"for a digraph",
-[IsDigraph],
+"for a dense digraph",
+[IsDenseDigraphRep],
 function(digraph)
   local UNBLOCK, CIRCUIT, out, stack, endofstack, gr, scc, n, blocked, B,
   gr_comp, comp, s, loops, i;
@@ -1211,7 +1277,7 @@ function(digraph)
 
   # TODO should we also remove multiple edges, as they create extra work?
   # Reduce the digraph, remove loops, and store the correct vertex labels
-  gr := DigraphRemoveLoops(ReducedDigraph(digraph));
+  gr := DigraphRemoveLoops(ReducedDigraph(DigraphMutableCopy(digraph)));
   if DigraphVertexLabels(digraph) <> DigraphVertices(digraph) then
     SetDigraphVertexLabels(gr, Filtered(DigraphVertices(digraph),
                                         x -> OutDegrees(digraph) <> 0));
@@ -1275,6 +1341,7 @@ function(digraph)
     t := Concatenation(ListWithIdenticalEntries(n - 1, 1), [2]);
     return [true, Transformation(t)];
   fi;
+  digraph := DigraphMutableCopy(digraph);
   digraph := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(digraph));
   colour := ListWithIdenticalEntries(n, 0);
 
@@ -1321,7 +1388,7 @@ function(digraph)
   return b;
 end);
 
-InstallMethod(DigraphLoops, "for a digraph", [IsDigraph],
+InstallMethod(DigraphLoops, "for a dense digraph", [IsDenseDigraphRep],
 function(gr)
   if HasDigraphHasLoops(gr) and not DigraphHasLoops(gr) then
     return [];
@@ -1356,8 +1423,8 @@ end);
 # Returns [ degeneracy, degeneracy ordering ]
 
 InstallMethod(DIGRAPHS_Degeneracy,
-"for a digraph",
-[IsDigraph],
+"for a dense digraph",
+[IsDenseDigraphRep],
 function(gr)
   local nbs, n, out, deg_vert, m, verts_deg, k, i, v, d, w;
 
@@ -1400,8 +1467,8 @@ function(gr)
   return [k, out];
 end);
 
-InstallMethod(MaximalSymmetricSubdigraphWithoutLoops, "for a digraph",
-[IsDigraph],
+InstallMethod(MaximalSymmetricSubdigraphWithoutLoops, "for a mutable digraph",
+[IsMutableDigraph],
 function(gr)
   if not DigraphHasLoops(gr) then
     return MaximalSymmetricSubdigraph(gr);
@@ -1415,8 +1482,26 @@ function(gr)
   return DIGRAPHS_MaximalSymmetricSubdigraph(gr, false);
 end);
 
-InstallMethod(MaximalSymmetricSubdigraph, "for a digraph",
-[IsDigraph],
+InstallMethod(MaximalSymmetricSubdigraphWithoutLoops,
+"for an immutable digraph",
+[IsImmutableDigraph],
+function(gr)
+  if HasMaximalSymmetricSubdigraphWithoutLoopsAttr(gr) then
+    return MaximalSymmetricSubdigraphWithoutLoops(gr);
+  fi;
+  gr := DigraphMutableCopy(gr);
+  return MakeImmutableDigraph(MaximalSymmetricSubdigraphWithoutLoops(gr));
+end);
+
+InstallMethod(MaximalSymmetricSubdigraphWithoutLoopsAttr,
+"for an immutable digraph",
+[IsImmutableDigraph],
+function(gr)
+  return MaximalSymmetricSubdigraphWithoutLoops(gr);
+end);
+
+InstallMethod(MaximalSymmetricSubdigraph, "for a mutable digraph",
+[IsMutableDigraph],
 function(gr)
   if HasIsSymmetricDigraph(gr) and IsSymmetricDigraph(gr) then
     if IsMultiDigraph(gr) then
@@ -1427,16 +1512,35 @@ function(gr)
   return DIGRAPHS_MaximalSymmetricSubdigraph(gr, true);
 end);
 
+InstallMethod(MaximalSymmetricSubdigraph, "for an immutable digraph",
+[IsImmutableDigraph],
+function(gr)
+  local out;
+  if HasMaximalSymmetricSubdigraphAttr(gr) then
+    return MaximalSymmetricSubdigraph(gr);
+  fi;
+  out := DigraphMutableCopy(gr);
+  out := MakeImmutableDigraph(MaximalSymmetricSubdigraph(out));
+  SetDigraphVertexLabels(out, DigraphVertexLabels(gr));
+  return out;
+end);
+
+InstallMethod(MaximalSymmetricSubdigraphAttr, "for an immutable digraph",
+[IsImmutableDigraph],
+function(gr)
+  return MaximalSymmetricSubdigraph(gr);
+end);
+
 InstallMethod(DIGRAPHS_MaximalSymmetricSubdigraph,
-"for a digraph and a bool",
-[IsDigraph, IsBool],
+"for a dense digraph and a bool",
+[IsDenseDigraphRep, IsBool],
 function(gr, loops)
   local out_nbs, in_nbs, new_out, new_in, new_gr, i, j;
 
-  out_nbs := OutNeighbours(gr);
-  in_nbs  := InNeighbours(gr);
-  new_out := List(DigraphVertices(gr), x -> []);
-  new_in  := List(DigraphVertices(gr), x -> []);
+  out_nbs := OutNeighbours(gr);;
+  in_nbs  := InNeighbours(gr);;
+  new_out := List(DigraphVertices(gr), x -> []);;
+  new_in  := List(DigraphVertices(gr), x -> []);;
 
   for i in DigraphVertices(gr) do
     for j in Intersection(out_nbs[i], in_nbs[i]) do
@@ -1447,24 +1551,27 @@ function(gr, loops)
     od;
   od;
 
-  new_gr := DigraphNC(new_out);
-  SetInNeighbors(new_gr, new_in);
-  SetIsSymmetricDigraph(new_gr, true);
-  SetDigraphVertexLabels(new_gr, DigraphVertexLabels(gr));
+  new_gr := MutableDigraphNC(new_out);
   return new_gr;
 end);
 
 InstallMethod(UndirectedSpanningForest,
-"for a digraph",
-[IsDigraph],
+"for a dense digraph",
+[IsDenseDigraphRep],
 function(gr)
-  local out;
+  local ConstructDigraph, out;
   if DigraphNrVertices(gr) = 0 then
     return fail;
   fi;
+  
+  if IsMutableDigraph(gr) then
+    ConstructDigraph := ConvertToMutableDigraphNC;
+  else
+    ConstructDigraph := ConvertToImmutableDigraphNC;
+  fi;
 
   gr := MaximalSymmetricSubdigraph(gr);
-  out := Digraph(DIGRAPH_SYMMETRIC_SPANNING_FOREST(OutNeighbours(gr)));
+  out := ConstructDigraph(DIGRAPH_SYMMETRIC_SPANNING_FOREST(OutNeighbours(gr)));
   SetIsUndirectedForest(out, true);
   SetIsMultiDigraph(out, false);
   SetDigraphHasLoops(out, false);
@@ -1520,8 +1627,20 @@ function(gr)
   return fail;
 end);
 
-InstallMethod(MaximalAntiSymmetricSubdigraph, "for a digraph",
-[IsDigraph],
+InstallMethod(MaximalAntiSymmetricSubdigraph, "for an immutable digraph",
+[IsImmutableDigraph],
+function(gr)
+  if HasMaximalAntiSymmetricSubdigraphAttr(gr) then
+    return MaximalAntiSymmetricSubdigraph(gr);
+  fi;
+  gr := DigraphMutableCopy(gr);
+  gr := MakeImmutableDigraph(MaximalAntiSymmetricSubdigraph(gr));
+  SetIsAntisymmetricDigraph(gr, true);
+  return gr;
+end);
+
+InstallMethod(MaximalAntiSymmetricSubdigraph, "for a dense mutable digraph",
+[IsMutableDigraph and IsDenseDigraphRep],
 function(D)
   local n, m, out, i, j;
 
@@ -1550,7 +1669,7 @@ function(D)
         fi;
       od;
     od;
-    out := DigraphByAdjacencyMatrixNC(out);
+    out := MutableDigraphByAdjacencyMatrixNC(out);
   else
     out := OutNeighboursMutableCopy(D);
     Perform(out, Sort);
@@ -1561,9 +1680,8 @@ function(D)
         fi;
       od;
     od;
-    out := DigraphNC(out);
+    out := MutableDigraphNC(out);
   fi;
-  SetIsAntisymmetricDigraph(out, true);
   return out;
 end);
 
