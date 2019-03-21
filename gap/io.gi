@@ -372,7 +372,7 @@ function(arg)
   file := IO_CompressedFile(UserHomeExpand(name), mode);
 
   if file = fail then
-    ErrorNoReturn("cannot open file given as the 1st argument,");
+    ErrorNoReturn("cannot open the file given as the 1st argument,");
   fi;
   file!.coder := coder;
   return file;
@@ -380,7 +380,8 @@ end);
 
 InstallGlobalFunction(ReadDigraphs,
 function(arg)
-  local name, decoder, nr, file, read, i, next, out;
+  local nr, decoder, name, file, i, next, out;
+
   # defaults
   nr      := infinity;
   decoder := fail;
@@ -426,16 +427,11 @@ function(arg)
   decoder := file!.coder;
 
   if nr < infinity then
-    if decoder = IO_Unpickle then
-      read := IO_Unpickle;
-    else
-      read := IO_ReadLine;
-    fi;
     i := 0;
     next := fail;
     while i < nr - 1 and next <> IO_Nothing do
       i := i + 1;
-      next := read(file);
+      next := IO_ReadLine(file);
     od;
     if next <> IO_Nothing then
       out := decoder(file);
@@ -1074,7 +1070,8 @@ function(func, name)
   # Helper function for when an error is found in the file's formatting
   malformed_file := function()
     IO_Close(file);
-    ErrorNoReturn("the format of the file ", name, " cannot be determined,");
+    ErrorNoReturn("the format of the file given as the 2nd argument (name) ",
+                  "cannot be determined,");
   end;
 
   # Helper function to read a string into a non-negative integer
@@ -1253,7 +1250,7 @@ function(func, name, delimiter, offset, ignore)
 
   file := IO_CompressedFile(UserHomeExpand(name), "r");
   if file = fail then
-    ErrorNoReturn("cannot open file the file given as the 2nd argument,");
+    ErrorNoReturn("cannot open the file given as the 2nd argument,");
   fi;
 
   lines := IO_ReadLines(file);
@@ -1447,22 +1444,18 @@ InstallGlobalFunction(WritePlainTextDigraph,
 function(name, digraph, delimiter, offset)
   local file, edge;
 
-  if IsChar(delimiter) then
-    delimiter := [delimiter];
-  fi;
-
   if not IsString(name) then
     ErrorNoReturn("the 1st argument must be a string,");
   elif not IsString(delimiter) then
-    ErrorNoReturn("the 2nd argument must be a string,");
+    ErrorNoReturn("the 3rd argument must be a string,");
   elif not IsInt(offset) then
-    ErrorNoReturn("the 3rd argument must be an integer,");
+    ErrorNoReturn("the 4th argument must be an integer,");
   fi;
 
   file := IO_CompressedFile(UserHomeExpand(name), "w");
 
   if file = fail then
-    ErrorNoReturn("cannot open file given as the 1st argument,");
+    ErrorNoReturn("cannot open the file given as the 1st argument,");
   fi;
 
   for edge in DigraphEdges(digraph) do

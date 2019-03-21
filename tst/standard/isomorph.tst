@@ -293,8 +293,7 @@ true
 gap> IsIsomorphicDigraph(gr1, gr2, [1, 2], [1, 2]);
 false
 
-#  IsomorphismDigraphs: for digraphs without multiple edges
-
+# IsomorphismDigraphs: for digraphs without multiple edges
 # Non-isomorphic graphs
 gap> gr1 := EmptyDigraph(3);
 <immutable digraph with 3 vertices, 0 edges>

@@ -33,7 +33,7 @@ function(G, obj, act, adj)
   reps   := List(orbits, Representative);
   stabs  := List(reps, i -> Stabilizer(Range(hom), i));
 
-  rep_out     := EmptyPlist(Length(reps));
+  rep_out := EmptyPlist(Length(reps));
 
   for i in [1 .. Length(reps)] do
     if IsTrivial(stabs[i]) then

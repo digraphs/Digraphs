@@ -76,7 +76,7 @@ gap> ReadDigraphs(str, 2, true, "elephant");
 Error, there must be 1, 2, or 3 arguments,
 gap> badfilename := "path/to/some/madeupfile.g6.gz";;
 gap> ReadDigraphs(badfilename, 3);
-Error, cannot open file given as the 1st argument,
+Error, cannot open the file given as the 1st argument,
 
 #  DigraphFromSparse6String and Sparse6String
 gap> DigraphFromSparse6String(":@");
@@ -368,7 +368,7 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/plain.txt");;
 gap> WritePlainTextDigraph(1, 2, 3, 4);
 Error, the 1st argument must be a string,
 gap> WritePlainTextDigraph(".", gr, ",", -2);
-Error, cannot open file given as the 1st argument,
+Error, cannot open the file given as the 1st argument,
 gap> WritePlainTextDigraph(filename, gr, ",", -3);
 gap> WritePlainTextDigraph(filename, gr, ",", -1);
 gap> ReadPlainTextDigraph(1, 2, 3, 4);
@@ -380,7 +380,13 @@ gap> last = gr;
 true
 gap> filename := "/does/not/exist.txt";;
 gap> ReadPlainTextDigraph(filename, ",", 1, "i");
-Error, cannot open file the file given as the 2nd argument,
+Error, cannot open the file given as the 2nd argument,
+gap> WritePlainTextDigraph(filename, gr, ',', -1);
+Error, the 3rd argument must be a string,
+gap> WritePlainTextDigraph(1, gr, ',', -1);
+Error, the 1st argument must be a string,
+gap> WritePlainTextDigraph(1, gr, ",", "a");
+Error, the 1st argument must be a string,
 
 #  TournamentLineDecoder
 gap> gr := TournamentLineDecoder("101001");
@@ -595,7 +601,7 @@ gap> gr = list2;
 true
 gap> filename := "does/not/exist.gz";;
 gap> WriteDigraphs(filename, gr, "w");
-Error, cannot open file given as the 1st argument,
+Error, cannot open the file given as the 1st argument,
 
 #  DigraphPlainTextLineDecoder: bad input
 gap> Graph6String(ChainDigraph(4));
@@ -633,6 +639,13 @@ gap> WriteDIMACSDigraph("file", ChainDigraph(2));
 Error, the 2nd argument must be a symmetric digraph,
 gap> WriteDIMACSDigraph(filename, gr);
 Error, cannot open the file given as the 1st argument,
+gap> filename := "tmp.gz";;
+gap> D := CompleteDigraph(3);
+<immutable digraph with 3 vertices, 6 edges>
+gap> SetDigraphVertexLabels(D, ["a", "b", "c"]);
+gap> WriteDIMACSDigraph(filename, CompleteDigraph(3));
+IO_OK
+gap> Exec("rm -f tmp.gz");
 
 # Handling loops
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/loops.dimacs");;
@@ -677,8 +690,8 @@ gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "file for testing purposes");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 
 # Bad vertices and edges definition
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -686,47 +699,47 @@ gap> IO_WriteLine(file, "c file for testing purposes");;
 gap> IO_WriteLine(file, "p edge 'a' 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 -1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p fail 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "c empty file");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 
 # Vertices and edges undefined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "e 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 
 # Bad node label
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -734,22 +747,22 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 
 # Bad edge
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -757,29 +770,29 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 
 # Unsupported types
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -790,8 +803,8 @@ gap> IO_WriteLine(file, "x");;
 gap> IO_WriteLine(file, "j");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file /Users/jdm/gap/pkg/digraphs/tst/out/bad.dimacs c\
-annot be determined,
+Error, the format of the file given as the 2nd argument (name) cannot be deter\
+mined,
 
 # Bad number of edges
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -869,6 +882,15 @@ gap> IO_Pickle(file, gr);
 IO_Error
 gap> IO_Close(file);
 true
+
+# DigraphFile
+gap> DigraphFile(10);
+Error, the 1st argument (name) must be a string,
+gap> DigraphFile("tmp", false);
+Error, the 2nd argument (coder) must be a function or fail,
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
+gap> ReadDigraphs(filename, IO_Unpickle);
+[ <mutable digraph with 30 vertices, 870 edges> ]
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(badfilename);

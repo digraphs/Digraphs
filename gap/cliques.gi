@@ -170,8 +170,7 @@ InstallMethod(DigraphMaximalIndependentSetsRepsAttr, "for a digraph",
 
 InstallGlobalFunction(DigraphMaximalIndependentSetsReps,
 function(arg)
-  local out;
-
+  local out, D;
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
@@ -180,14 +179,13 @@ function(arg)
       and HasDigraphMaximalIndependentSetsRepsAttr(arg[1]) then
     return DigraphMaximalIndependentSetsRepsAttr(arg[1]);
   fi;
-
+  D      := arg[1];
   arg[1] := DigraphCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
-  out := CallFuncList(DigraphMaximalCliquesReps, arg);
-
+  out    := CallFuncList(DigraphMaximalCliquesReps, arg);
   # Store the result if appropriate
   if not IsBound(arg[2]) then
-    SetDigraphMaximalIndependentSetsRepsAttr(arg[1], out);
+    SetDigraphMaximalIndependentSetsRepsAttr(D, out);
   fi;
   return out;
 end);
@@ -200,7 +198,6 @@ DigraphMaximalIndependentSets);
 InstallGlobalFunction(DigraphMaximalIndependentSets,
 function(arg)
   local D, out;
-
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
@@ -209,15 +206,13 @@ function(arg)
       and HasDigraphMaximalIndependentSetsAttr(arg[1]) then
     return DigraphMaximalIndependentSetsAttr(arg[1]);
   fi;
-
-  D := DigraphCopyIfMutable(arg[1]);
-
-  arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(D));
+  D      := arg[1];
+  arg[1] := DigraphCopyIfMutable(arg[1]);
+  arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   out := CallFuncList(DigraphMaximalCliques, arg);
-
   # Store the result if appropriate
   if not IsBound(arg[2]) then
-    SetDigraphMaximalIndependentSetsAttr(arg[1], out);
+    SetDigraphMaximalIndependentSetsAttr(D, out);
   fi;
   return out;
 end);

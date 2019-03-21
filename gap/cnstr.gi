@@ -79,29 +79,13 @@ InstallMethod(DistanceDigraph,
 "for a dense mutable digraph and a list of distances",
 [IsMutableDigraph and IsDenseDigraphRep, IsList],
 function(D, distances)
-  local list, group, orbitreps, rem, sch, gens, record, rep, g, x;
+  local list, x;
+  # Can't chance D!.OutNeighbours in-place, since it is used by
+  # DigraphDistanceSet
   list := EmptyPlist(DigraphNrVertices(D));
-  if HasDigraphGroup(D) and not IsTrivial(DigraphGroup(D)) then
-    group := DigraphGroup(D);
-    orbitreps := DigraphOrbitReps(D);
-    for x in orbitreps do
-      list[x] := DigraphDistanceSet(D, x, distances);
-    od;
-    rem := Difference(DigraphVertices(D), orbitreps);
-    sch := DigraphSchreierVector(D);
-    group := DigraphGroup(D);
-    gens := GeneratorsOfGroup(group);
-    for x in rem do
-      record := DIGRAPHS_TraceSchreierVector(gens, sch, x);
-      rep := record.representative;
-      g := DIGRAPHS_EvaluateWord(gens, record.word);
-      list[x] := List(list[rep], x -> x ^ g);
-    od;
-  else
-    for x in DigraphVertices(D) do
-      list[x] := DigraphDistanceSet(D, x, distances);
-    od;
-  fi;
+  for x in DigraphVertices(D) do
+    list[x] := DigraphDistanceSet(D, x, distances);
+  od;
   D!.OutNeighbours := list;
   return D;
 end);
@@ -109,9 +93,29 @@ end);
 InstallMethod(DistanceDigraph,
 "for an immutable digraph and a list of distances",
 [IsImmutableDigraph, IsList],
-function(D, list)
-  local C;
-  C := MakeImmutableDigraph(DistanceDigraph(DigraphMutableCopy(D), list));
+function(D, distances)
+  local list, G, o, rem, sch, gen, record, rep, g, C, x;
+  if HasDigraphGroup(D) and not IsTrivial(DigraphGroup(D)) then
+    list := EmptyPlist(DigraphNrVertices(D));
+    G := DigraphGroup(D);
+    o := DigraphOrbitReps(D);
+    for x in o do
+      list[x] := DigraphDistanceSet(D, x, distances);
+    od;
+    rem := Difference(DigraphVertices(D), o);
+    sch := DigraphSchreierVector(D);
+    gen := GeneratorsOfGroup(G);
+    for x in rem do
+      record  := DIGRAPHS_TraceSchreierVector(gen, sch, x);
+      rep     := o[record.representative];
+      g       := DIGRAPHS_EvaluateWord(gen, record.word);
+      list[x] := List(list[rep], x -> x ^ g);
+    od;
+    C := DigraphNC(list);
+  else
+    C := MakeImmutableDigraph(DistanceDigraph(DigraphMutableCopy(D),
+                                              distances));
+  fi;
   SetDigraphGroup(C, DigraphGroup(D));
   return C;
 end);

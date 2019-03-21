@@ -283,12 +283,6 @@ function(func, n)
   return CycleDigraphCons(func, n);
 end);
 
-InstallMethod(CycleDigraph, "for a function and a positive integer",
-[IsFunction, IsPosInt],
-function(func, n)
-  return CycleDigraphCons(func, n);
-end);
-
 InstallMethod(CycleDigraph, "for a positive integer", [IsPosInt],
 function(n)
   return CycleDigraphCons(IsImmutableDigraph, n);
