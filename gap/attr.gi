@@ -974,7 +974,6 @@ function(digraph)
   return circs[Position(lens, max)];
 end);
 
-
 # TODO (FLS): I've just added 1 as the edge label here, is this really desired?
 InstallMethod(DigraphSymmetricClosure, "for a dense mutable digraph",
 [IsDenseDigraphRep and IsMutableDigraph],
@@ -1113,8 +1112,10 @@ function(graph)
   fi;
   D := DigraphTransitiveClosure(DigraphMutableCopy(graph));
   D := MakeImmutableDigraph(D);
+  SetIsTransitiveDigraph(D, true);
+  SetDigraphVertexLabels(D, DigraphVertexLabels(graph));
   SetDigraphTransitiveClosureAttr(graph, D);
-  return D; 
+  return D;
 end);
 
 InstallMethod(DigraphReflexiveTransitiveClosure,
@@ -1131,8 +1132,11 @@ function(graph)
   fi;
   D := DigraphReflexiveTransitiveClosure(DigraphMutableCopy(graph));
   D := MakeImmutableDigraph(D);
+  SetIsTransitiveDigraph(D, true);
+  SetIsReflexiveDigraph(D, true);
+  SetDigraphVertexLabels(D, DigraphVertexLabels(graph));
   SetDigraphReflexiveTransitiveClosureAttr(graph, D);
-  return D; 
+  return D;
 end);
 
 InstallMethod(DigraphTransitiveClosureAttr,
@@ -1165,7 +1169,7 @@ function(graph, reflexive)
   # <reflexive> is a boolean: true if we want the reflexive transitive closure
 
   if not IsDenseDigraphRep(graph) then
-    ErrorNoReturn("this method is only implemented for digraphs in the ", 
+    ErrorNoReturn("this method is only implemented for digraphs in the ",
                   "representation IsDenseDigraphRep");
   fi;
 
@@ -1191,7 +1195,7 @@ function(graph, reflexive)
         if (not reflexive) and (not reflex) then
           trans[v][v] := false;
         fi;
-        Append(adj[v], 
+        Append(adj[v],
                ListBlist(verts, DifferenceBlist(trans[v],
                                                 BlistList(verts,
                                                           adj[v]))));
@@ -1200,7 +1204,7 @@ function(graph, reflexive)
       od;
     fi;
   fi;
-  if not IsBound(gr) then 
+  if not IsBound(gr) then
     # Method for small or non-acyclic digraphs
     if reflexive then
       mat := DIGRAPH_REFLEX_TRANS_CLOSURE(graph);
@@ -1209,7 +1213,6 @@ function(graph, reflexive)
     fi;
     gr := MutableDigraphByAdjacencyMatrixNC(mat);
   fi;
-  SetIsTransitiveDigraph(gr, true);
   return gr;
 end);
 
@@ -1535,12 +1538,12 @@ InstallMethod(DIGRAPHS_MaximalSymmetricSubdigraph,
 "for a dense digraph and a bool",
 [IsDenseDigraphRep, IsBool],
 function(gr, loops)
-  local out_nbs, in_nbs, new_out, new_in, new_gr, i, j;
+  local out_nbs, in_nbs, new_out, new_in, i, j;
 
-  out_nbs := OutNeighbours(gr);;
-  in_nbs  := InNeighbours(gr);;
-  new_out := List(DigraphVertices(gr), x -> []);;
-  new_in  := List(DigraphVertices(gr), x -> []);;
+  out_nbs := OutNeighbours(gr);
+  in_nbs  := InNeighbours(gr);
+  new_out := List(DigraphVertices(gr), x -> []);
+  new_in  := List(DigraphVertices(gr), x -> []);
 
   for i in DigraphVertices(gr) do
     for j in Intersection(out_nbs[i], in_nbs[i]) do
@@ -1551,8 +1554,7 @@ function(gr, loops)
     od;
   od;
 
-  new_gr := MutableDigraphNC(new_out);
-  return new_gr;
+  return MutableDigraphNC(new_out);
 end);
 
 InstallMethod(UndirectedSpanningForest,
@@ -1563,7 +1565,7 @@ function(gr)
   if DigraphNrVertices(gr) = 0 then
     return fail;
   fi;
-  
+
   if IsMutableDigraph(gr) then
     ConstructDigraph := ConvertToMutableDigraphNC;
   else
