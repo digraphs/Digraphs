@@ -995,24 +995,6 @@ gap> gr2 := DigraphAddAllLoops(gr);
 gap> OutNeighbours(gr2);
 [ [ 1, 2, 3 ], [ 2, 2, 2, 2 ], [ 5, 1, 3 ], [ 1, 2, 3, 4 ], [ 5 ] ]
 
-# Test errors in DigraphEdgeLabel
-gap> gr := Digraph([[2, 2], []]);
-<immutable multidigraph with 2 vertices, 2 edges>
-gap> DigraphEdgeLabel(gr, 1, 2);
-Error, Digraphs: DigraphEdgeLabel: usage,
-edge labels are not supported on digraphs with multiple edges,
-gap> SetDigraphEdgeLabels(gr, ReturnFalse);
-Error, Digraphs: SetDigraphEdgeLabels: usage,
-edge labels are not supported on digraphs with multiple edges,
-gap> gr := Digraph([[2, 1], []]);
-<immutable digraph with 2 vertices, 2 edges>
-gap> DigraphEdgeLabel(gr, 2, 2);
-Error, Digraphs: DigraphEdgeLabel:
-[2, 2] is not an edge of <D>,
-gap> SetDigraphEdgeLabel(gr, 2, 2, "a");
-Error, Digraphs: SetDigraphEdgeLabel:
-[2, 2] is not an edge of <D>,
-
 # ConvertToImmutableDigraphNC
 gap> record := rec(OutNeighbours := [[1, 2], []]);
 rec( OutNeighbours := [ [ 1, 2 ], [  ] ] )

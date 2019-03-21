@@ -369,7 +369,8 @@ function(D)
   return [1 .. DigraphNrVertices(D)];
 end);
 
-InstallMethod(DigraphRange, "for a digraph", [IsDigraph],
+InstallMethod(DigraphRange, "for a dense digraph attribute storing digraph",
+[IsDenseDigraphRep and IsAttributeStoringRep],
 function(D)
   if not IsBound(D!.DigraphRange) then
     DIGRAPH_SOURCE_RANGE(D);
@@ -378,13 +379,26 @@ function(D)
   return D!.DigraphRange;
 end);
 
-InstallMethod(DigraphSource, "for a digraph", [IsDigraph],
+InstallMethod(DigraphRange, "for a dense digraph attribute storing digraph",
+[IsDenseDigraphRep and IsMutableDigraph],
+function(D)
+  return DIGRAPH_SOURCE_RANGE(D).DigraphRange;
+end);
+
+InstallMethod(DigraphSource, "for a dense digraph attribute storing digraph",
+[IsDenseDigraphRep and IsAttributeStoringRep],
 function(D)
   if not IsBound(D!.DigraphSource) then
     DIGRAPH_SOURCE_RANGE(D);
     SetDigraphRange(D, D!.DigraphRange);
   fi;
   return D!.DigraphSource;
+end);
+
+InstallMethod(DigraphSource, "for a dense digraph attribute storing digraph",
+[IsDenseDigraphRep and IsMutableDigraph],
+function(D)
+  return DIGRAPH_SOURCE_RANGE(D).DigraphSource;
 end);
 
 InstallMethod(InNeighbours, "for a digraph",

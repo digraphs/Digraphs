@@ -101,6 +101,10 @@ Obj FuncOutNeighbours(Obj self, Obj D) {
     // the next line isn't necessary. We include it anyway because it might be
     // required if this function is called from the Digraphs kernel module.
     AssPRec(D, RNamName("OutNeighbours"), ret);
+    if (!IsAttributeStoringRep(D)) {
+      UnbPRec(D, RNamName("DigraphSource"));
+      UnbPRec(D, RNamName("DigraphRange"));
+    }
     return ret;
   } else {
     ErrorQuit("not enough record components set, expected `OutNeighbours` or "
@@ -1020,8 +1024,14 @@ static Obj FuncDIGRAPH_SOURCE_RANGE(Obj self, Obj D) {
   if (IsAttributeStoringRep(D)) {
     AssPRec(D, RNamName("DigraphSource"), src);
     AssPRec(D, RNamName("DigraphRange"), ran);
+    return D;
+  } else {
+    Obj tmp = NEW_PREC(2);
+    SET_LEN_PREC(tmp, 2);
+    AssPRec(tmp, RNamName("DigraphSource"), src);
+    AssPRec(tmp, RNamName("DigraphRange"), ran);
+    return tmp;
   }
-  return True;
 }
 
 // Assume we are passed a GAP Int nrvertices

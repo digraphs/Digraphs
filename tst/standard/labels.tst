@@ -157,6 +157,23 @@ gap> DigraphEdgeLabel(D, 1, 5);
 Error, there is no edge from the 2nd argument <v> = 
 1 to the 3rd argument <w> = 5 in the 1st argument <D> (a digraph),
 
+# Test errors in DigraphEdgeLabel
+gap> gr := Digraph([[2, 2], []]);
+<immutable multidigraph with 2 vertices, 2 edges>
+gap> DigraphEdgeLabel(gr, 1, 2);
+Error, edge labels are not supported on digraphs with multiple edges,
+gap> SetDigraphEdgeLabels(gr, ReturnFalse);
+Error, the 1st argument <D> must not be a digraph with multiple edges, edge la\
+bels are not supported on digraphs with multiple edges,
+gap> gr := Digraph([[2, 1], []]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> DigraphEdgeLabel(gr, 2, 2);
+Error, there is no edge from the 2nd argument <v> = 
+2 to the 3rd argument <w> = 2 in the 1st argument <D> (a digraph),
+gap> SetDigraphEdgeLabel(gr, 2, 2, "a");
+Error, there is no edge from <v> = 2 (the 2nd argument) to <w> = 
+2 (the 3rd argument) in the 1st argument <D> (a digraph),
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/grape.tst", 0);
