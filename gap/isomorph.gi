@@ -461,9 +461,9 @@ function(n, partition)
   local colours, i, missing, seen, x;
 
   if not IsInt(n) or n < 0 then
-    ErrorNoReturn("the 1st argument must be a non-negative integer,");
+    ErrorNoReturn("the 1st argument (n) must be a non-negative integer,");
   elif not IsHomogeneousList(partition) then
-    ErrorNoReturn("the 2nd argument must be a homogeneous list,");
+    ErrorNoReturn("the 2nd argument (partition) must be a homogeneous list,");
   elif n = 0 then
     if IsEmpty(partition) then
       return partition;
@@ -476,20 +476,23 @@ function(n, partition)
       colours := [];
       for i in partition do
         if not IsPosInt(i) then
-          ErrorNoReturn("the 2nd argument does not define a colouring ",
-                        "of the vertices [1 .. ", n, "], since it contains ",
-                        "the element ", i, ", which is not a positive integer,");
+          ErrorNoReturn("the 2nd argument (partition) does not define a ",
+                        "colouring of the vertices [1 .. ", n, "], since it ",
+                        "contains the element ", i, ", which is not a ",
+                        "positive integer,");
         elif i > n then
-          ErrorNoReturn("the 2nd argument does not define a colouring ",
-                        "of the vertices [1 .. ", n, "], since it contains ",
-                        "the integer ", i, ", which is greater than ", n, ",");
+          ErrorNoReturn("the 2nd argument (partition) does not define ",
+                        "a colouring of the vertices [1 .. ", n, "], since ",
+                        "it contains the integer ", i,
+                        ", which is greater than ", n, ",");
         fi;
         AddSet(colours, i);
       od;
       i := Length(colours);
       missing := Difference([1 .. i], colours);
       if not IsEmpty(missing) then
-        ErrorNoReturn("the 2nd argument does not define a colouring ",
+        ErrorNoReturn("the 2nd argument (partition) does not define a ",
+                      "colouring ",
                       "of the vertices [1 .. ", n, "], since it contains the ",
                       "colour ", colours[i], ", but it lacks the colour ",
                       missing[1], ". A colouring must use precisely the ",
@@ -504,13 +507,13 @@ function(n, partition)
         # guaranteed to be non-empty since <partition> is homogeneous
         for x in partition[i] do
           if not IsPosInt(x) or x > n then
-            ErrorNoReturn("the 2nd argument does not define a ",
+            ErrorNoReturn("the 2nd argument (partition) does not define a ",
                           "colouring of the vertices [1 .. ", n, "], since ",
                           "the entry in position ", i, " contains ", x,
                           " which is not an integer in the range [1 .. ", n,
                           "],");
           elif seen[x] then
-            ErrorNoReturn("the 2nd argument does not define a ",
+            ErrorNoReturn("the 2nd argument (partition) does not define a ",
                           "colouring of the vertices [1 .. ", n, "], since ",
                           "it contains the vertex ", x, " more than once,");
           fi;
@@ -520,14 +523,14 @@ function(n, partition)
       od;
       i := First([1 .. n], x -> not seen[x]);
       if i <> fail then
-        ErrorNoReturn("the 2nd argument does not define a ",
+        ErrorNoReturn("the 2nd argument (partition) does not define a ",
                       "colouring of the vertices [1 .. ", n, "], since ",
                       "it does not assign a colour to the vertex ", i, ",");
       fi;
       return colours;
     fi;
   fi;
-  ErrorNoReturn("the 2nd argument does not define a ",
+  ErrorNoReturn("the 2nd argument (partition) does not define a ",
                 "colouring of the vertices [1 .. ", n, "]. The 2nd ",
                 "argument must have one of the following forms: ",
                 "1. a list of length ", n, " consisting of ",
@@ -540,7 +543,8 @@ InstallMethod(IsDigraphIsomorphism, "for digraph, digraph, and permutation",
 [IsDigraph, IsDigraph, IsPerm],
 function(src, ran, x)
   if IsMultiDigraph(src) or IsMultiDigraph(ran) then
-    ErrorNoReturn("the 1st and 2nd arguments must not have multiple edges,");
+    ErrorNoReturn("the 1st and 2nd arguments (src and ran) must not have ",
+                  "multiple edges,");
   fi;
   return IsDigraphHomomorphism(src, ran, x)
     and IsDigraphHomomorphism(ran, src, x ^ -1);

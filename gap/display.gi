@@ -59,7 +59,7 @@ InstallMethod(DotSymmetricDigraph, "for a digraph",
 function(D)
   local out, str, i, j;
   if not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the argument should be a symmetric digraph,");
+    ErrorNoReturn("the argument (D) must be a symmetric digraph,");
   fi;
   out   := OutNeighbours(D);
   str   := "//dot\n";
@@ -205,7 +205,7 @@ InstallMethod(DotPartialOrderDigraph, "for a partial order digraph",
 [IsDigraph],
 function(D)
   if not IsPartialOrderDigraph(D) then
-    ErrorNoReturn("the argument must be a partial order digraph,");
+    ErrorNoReturn("the argument (D) must be a partial order digraph,");
   fi;
   return DotDigraph(DigraphReflexiveTransitiveReduction(D));
 end);
@@ -216,7 +216,7 @@ function(D)
   local comps, quo, red, str, c, x, e;
 
   if not IsPreorderDigraph(D) then
-    ErrorNoReturn("the argument must be a preorder digraph,");
+    ErrorNoReturn("the argument (D) must be a preorder digraph,");
   fi;
 
   # Quotient by the strongly connected components to get a partial order
@@ -265,14 +265,14 @@ function(D, highverts, highcolour, lowcolour)
   local lowverts, out, str, i, j;
 
   if not IsSubset(DigraphVertices(D), highverts) then
-    ErrorNoReturn("the 2nd argument must be a list of vertices of the ",
-                  "1st argument (a digraph),");
+    ErrorNoReturn("the 2nd argument (highverts) must be a list of vertices ",
+                  "of the 1st argument (D),");
   elif IsEmpty(highcolour) then
-    ErrorNoReturn("the 3rd argument must be a string containing the name ",
-                  "of a colour,");
+    ErrorNoReturn("the 3rd argument (highcolour) must be a string ",
+                  "containing the name of a colour,");
   elif IsEmpty(lowcolour) then
-    ErrorNoReturn("the 4th argument must be a string containing the name ",
-                  "of a colour,");
+    ErrorNoReturn("the 4th argument (lowcolour) must be a string ",
+                  "containing the name of a colour,");
   fi;
 
   lowverts  := Difference(DigraphVertices(D), highverts);

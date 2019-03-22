@@ -350,13 +350,11 @@ function(list, func)
   return D;
 end);
 
-
 InstallMethod(Digraph, "for a number of vertices, source, and range",
 [IsInt, IsList, IsList],
 function(N, src, ran)
   return MakeImmutableDigraph(MutableDigraph(N, src, ran));
 end);
-
 
 InstallMethod(Digraph, "for a list of vertices, source, and ran",
 [IsList, IsList, IsList],
@@ -612,7 +610,7 @@ function(edges, n)
   fi;
   for edge in edges do
     if edge[1] > n or edge[2] > n then
-      ErrorNoReturn("the 1st argument (edges) must not contain values ", 
+      ErrorNoReturn("the 1st argument (edges) must not contain values ",
                     "greater than ", n, ", the 2nd argument (n),");
     fi;
   od;

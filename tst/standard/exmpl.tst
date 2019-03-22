@@ -31,7 +31,7 @@ true
 gap> CompleteDigraph(0);
 <immutable digraph with 0 vertices, 0 edges>
 gap> CompleteDigraph(-1);
-Error, the argument must be a non-negative integer,
+Error, the argument (n) must be a non-negative integer,
 gap> CompleteDigraph(IsMutableDigraph, 10);
 <mutable digraph with 10 vertices, 90 edges>
 
@@ -43,9 +43,9 @@ true
 gap> EmptyDigraph(0);
 <immutable digraph with 0 vertices, 0 edges>
 gap> EmptyDigraph(-1);
-Error, the argument must be a non-negative integer,
+Error, the argument (n) must be a non-negative integer,
 gap> EmptyDigraph(IsMutableDigraph, -1);
-Error, the argument must be a non-negative integer,
+Error, the argument (n) must be a non-negative integer,
 
 #  CycleDigraph
 gap> gr := CycleDigraph(0);
@@ -132,9 +132,9 @@ gap> CompleteMultipartiteDigraph([5]);
 gap> CompleteMultipartiteDigraph([]);
 <immutable digraph with 0 vertices, 0 edges>
 gap> CompleteMultipartiteDigraph([5, 4, 2, 10, -5]);
-Error, the argument must be a list of positive integers,
+Error, the argument (list) must be a list of positive integers,
 gap> CompleteMultipartiteDigraph([5, 0, 2]);
-Error, the argument must be a list of positive integers,
+Error, the argument (list) must be a list of positive integers,
 gap> DigraphEdges(CompleteMultipartiteDigraph([3, 2]));
 [ [ 1, 4 ], [ 1, 5 ], [ 2, 4 ], [ 2, 5 ], [ 3, 4 ], [ 3, 5 ], [ 4, 1 ], 
   [ 4, 2 ], [ 4, 3 ], [ 5, 1 ], [ 5, 2 ], [ 5, 3 ] ]
@@ -190,9 +190,9 @@ gap> OutNeighbours(gr);
 gap> JohnsonDigraph(5, 1) = CompleteDigraph(5);
 true
 gap> JohnsonDigraph(3, -2);
-Error, both arguments must be non-negative integers,
+Error, the arguments (n and k) must be non-negative integers,
 gap> JohnsonDigraph(-1, 2);
-Error, both arguments must be non-negative integers,
+Error, the arguments (n and k) must be non-negative integers,
 gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 <mutable digraph with 6 vertices, 24 edges>
 

@@ -90,19 +90,17 @@ gap> DigraphEdges(gr1);
 gap> gr := Digraph([[2, 2], []]);
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphRemoveEdges(gr, [[1, 2]]);
-Error, the 1st argument (a digraph) must not have multiple edges when the 2nd \
-argument is a list,
+Error, the 1st argument (D) must be a digraph with no multiple edges,
 
 #  DigraphRemoveEdge: for an edge
 gap> gr := Digraph([[1, 1]]);
 <immutable multidigraph with 1 vertex, 2 edges>
 gap> DigraphRemoveEdge(gr, [1, 1]);
-Error, the 1st argument (a digraph) must not have multiple edges when the 2nd \
-argument is a list,
+Error, the 1st argument (D) must be a digraph with no multiple edges,
 gap> gr := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphRemoveEdge(gr, [1, 1, 1]);
-Error, the 2nd argument must be a list of length 2,
+Error, the 2nd argument (edge) must be a list of length 2,
 gap> DigraphRemoveEdge(gr, [Group(()), Group(())]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphRemoveEdge' on 3 arguments
@@ -110,9 +108,11 @@ gap> DigraphRemoveEdge(gr, [1, Group(())]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphRemoveEdge' on 3 arguments
 gap> DigraphRemoveEdge(gr, [3, 1]);
-Error, the 2nd argument must be a vertex of the 1st argument (a digraph),
+Error, the 2nd argument (src) must be a vertex of the digraph (D) that is the \
+1st argument,
 gap> DigraphRemoveEdge(gr, [1, 3]);
-Error, the 3rd argument must be a vertex of the 1st argument (a digraph),
+Error, the 3rd argument (ran) must be a vertex of the digraph (D) that is the \
+1st argument,
 gap> gr := DigraphRemoveEdge(gr, [2, 1]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphEdges(gr);
@@ -132,8 +132,8 @@ gap> DigraphEdges(last);
 gap> h := (1, 2, 3, 4);
 (1,2,3,4)
 gap> OnDigraphs(gr, h);
-Error, the 2nd argument (a perm) must permute the vertices of the 1st argument\
- (a digraph),
+Error, the 2nd argument (p) must be a permutation that permutes of the digraph\
+ (D) that is the 1st argument,
 gap> gr := Digraph([[1, 1, 1, 3, 5], [], [3, 2, 4, 5], [2, 5], [1, 2, 1]]);
 <immutable multidigraph with 5 vertices, 14 edges>
 gap> DigraphEdges(gr);
@@ -142,8 +142,8 @@ gap> DigraphEdges(gr);
 gap> p1 := (2, 4)(3, 6, 5);
 (2,4)(3,6,5)
 gap> OnDigraphs(gr, p1);
-Error, the 2nd argument (a perm) must permute the vertices of the 1st argument\
- (a digraph),
+Error, the 2nd argument (p) must be a permutation that permutes of the digraph\
+ (D) that is the 1st argument,
 gap> p2 := (1, 3, 4, 2);
 (1,3,4,2)
 gap> OnDigraphs(gr, p2);
@@ -159,8 +159,8 @@ gap> DigraphEdges(gr);
 gap> p1 := (1, 5, 4, 2, 3);
 (1,5,4,2,3)
 gap> OnDigraphs(gr, p1);
-Error, the 2nd argument (a perm) must permute the vertices of the 1st argument\
- (a digraph),
+Error, the 2nd argument (p) must be a permutation that permutes of the digraph\
+ (D) that is the 1st argument,
 gap> p2 := (1, 4)(2, 3);
 (1,4)(2,3)
 gap> OnDigraphs(gr, p2);
@@ -176,8 +176,8 @@ gap> OutNeighbours(gr);
 [ [ 2 ], [ 1, 3 ], [  ] ]
 gap> t := Transformation([4, 2, 3, 4]);;
 gap> OnDigraphs(gr, t);
-Error, the 2nd argument (a transformation) must map every vertex of the 1st ar\
-gument (a digraph) to a vertex of the 1st argument,
+Error, the 2nd argument (t) must be a transformation that maps every vertex of\
+ the digraph (D) that is the 1st argument, to another vertex.
 gap> t := Transformation([1, 2, 1]);;
 gap> gr := OnDigraphs(gr, t);
 <immutable multidigraph with 3 vertices, 3 edges>
@@ -192,9 +192,10 @@ gap> DigraphEdges(gr1);
 gap> gr2 := OnMultiDigraphs(gr1, (1, 3), (3, 6));;
 gap> DigraphEdges(gr1);;
 gap> OnMultiDigraphs(gr1, [(1, 3)]);
-Error, the 2nd argument must be a pair of permutations,
+Error, the 2nd argument (perms) must be a pair of permutations,
 gap> OnMultiDigraphs(gr1, [(1, 3), (1, 7)]);
-Error, the <perms[2]> must permute the edges of the 1st argument <D>,
+Error, the 2nd entry of the 2nd argument must permute the edges of the digraph\
+ (D) that is the 1st argument,
 
 #  InNeighboursOfVertex and InDegreeOfVertex
 gap> gr := DigraphFromDiSparse6String(".IgBGLQ?Apkc");
@@ -265,11 +266,11 @@ gap> r := rec(DigraphNrVertices := 8,
 gap> gr := Digraph(r);
 <immutable multidigraph with 8 vertices, 17 edges>
 gap> InducedSubdigraph(gr, [-1]);
-Error, the 2nd argument (a list) must be a duplicate-free subset of the vertic\
-es of the 1st argument (a digraph),
+Error, the 2nd argument (list) must be a duplicate-free subset of the vertices\
+ of the digraph (D) that is the 1st argument,
 gap> InducedSubdigraph(gr, [1 .. 9]);
-Error, the 2nd argument (a list) must be a duplicate-free subset of the vertic\
-es of the 1st argument (a digraph),
+Error, the 2nd argument (list) must be a duplicate-free subset of the vertices\
+ of the digraph (D) that is the 1st argument,
 gap> InducedSubdigraph(gr, []);
 <immutable digraph with 0 vertices, 0 edges>
 gap> InducedSubdigraph(gr, [2 .. 6]);
@@ -281,21 +282,21 @@ gap> i1 := InducedSubdigraph(gr, [1, 4, 3]);
 gap> OutNeighbours(i1);
 [ [ 1, 1, 3, 3, 2 ], [  ], [ 2 ] ]
 gap> i2 := InducedSubdigraph(gr, [3, 4, 3, 1]);
-Error, the 2nd argument (a list) must be a duplicate-free subset of the vertic\
-es of the 1st argument (a digraph),
+Error, the 2nd argument (list) must be a duplicate-free subset of the vertices\
+ of the digraph (D) that is the 1st argument,
 gap> adj := [[2, 3, 4, 5, 6, 6, 7], [1, 1, 1, 3, 4, 5], [4], [3, 5],
 > [1, 2, 2, 3, 4, 4, 6, 5, 6, 7], [], [1], []];;
 gap> gr := Digraph(adj);
 <immutable multidigraph with 8 vertices, 27 edges>
 gap> InducedSubdigraph(gr, ["a"]);
-Error, the 2nd argument (a list) must be a duplicate-free subset of the vertic\
-es of the 1st argument (a digraph),
+Error, the 2nd argument (list) must be a duplicate-free subset of the vertices\
+ of the digraph (D) that is the 1st argument,
 gap> InducedSubdigraph(gr, [0]);
-Error, the 2nd argument (a list) must be a duplicate-free subset of the vertic\
-es of the 1st argument (a digraph),
+Error, the 2nd argument (list) must be a duplicate-free subset of the vertices\
+ of the digraph (D) that is the 1st argument,
 gap> InducedSubdigraph(gr, [2 .. 9]);
-Error, the 2nd argument (a list) must be a duplicate-free subset of the vertic\
-es of the 1st argument (a digraph),
+Error, the 2nd argument (list) must be a duplicate-free subset of the vertices\
+ of the digraph (D) that is the 1st argument,
 gap> InducedSubdigraph(gr, []);
 <immutable digraph with 0 vertices, 0 edges>
 gap> i1 := InducedSubdigraph(gr, [1, 3, 5, 7]);
@@ -527,18 +528,20 @@ gap> DigraphAddEdges(gr, [12]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphAddEdge' on 2 arguments
 gap> DigraphAddEdges(gr, [[12]]);
-Error, the 2nd argument must be a list of length 2,
+Error, the 2nd argument (edge) must be a list of length 2,
 gap> DigraphAddEdges(gr, [[12, 13, 14], [11, 10]]);
-Error, the 2nd argument must be a list of length 2,
+Error, the 2nd argument (edge) must be a list of length 2,
 gap> DigraphAddEdges(gr, [[-2, 3], ["a"]]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphAddEdge' on 3 arguments
 gap> DigraphAddEdges(gr, [[11, 10], [12, 13, 14]]);
-Error, the 2nd argument must be a list of length 2,
+Error, the 2nd argument (edge) must be a list of length 2,
 gap> DigraphAddEdges(gr, [[4, 5], [1, 120], [1, 1]]);
-Error, the 3rd argument must be a vertex of the 1st argument (a digraph), 
+Error, the 2nd argument (ran) must be a vertex of the digraph (D) that is the \
+1st argument,
 gap> DigraphAddEdges(gr, [[4, 5], [120, 1], [1, 1]]);
-Error, the 2nd argument must be a vertex of the 1st argument (a digraph), 
+Error, the 2nd argument (src) must be a vertex of the digraph (D) that is the \
+1st argument,
 gap> gr := Digraph([[2, 2], [1, 3, 2], [2, 1], [1]]);
 <immutable multidigraph with 4 vertices, 8 edges>
 gap> DigraphEdges(gr);
@@ -567,7 +570,7 @@ gap> DigraphAddEdges(gr, [3]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphAddEdge' on 2 arguments
 gap> DigraphAddEdges(gr, [[3]]);
-Error, the 2nd argument must be a list of length 2,
+Error, the 2nd argument (edge) must be a list of length 2,
 gap> DigraphAddEdges(gr, ["ab"]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphAddEdge' on 3 arguments
@@ -575,11 +578,13 @@ gap> DigraphAddEdges(gr, [[-1, -2]]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphAddEdge' on 3 arguments
 gap> DigraphAddEdges(gr, [[1, 2], [1, 2, 3]]);
-Error, the 2nd argument must be a list of length 2,
+Error, the 2nd argument (edge) must be a list of length 2,
 gap> DigraphAddEdges(gr, [[4, 2]]);
-Error, the 2nd argument must be a vertex of the 1st argument (a digraph), 
+Error, the 2nd argument (src) must be a vertex of the digraph (D) that is the \
+1st argument,
 gap> DigraphAddEdges(gr, [[2, 4]]);
-Error, the 3rd argument must be a vertex of the 1st argument (a digraph), 
+Error, the 2nd argument (ran) must be a vertex of the digraph (D) that is the \
+1st argument,
 gap> DigraphAddEdges(gr, [[2, 3], [2, 3]]);
 <immutable multidigraph with 3 vertices, 5 edges>
 gap> DigraphEdges(last);
@@ -590,7 +595,7 @@ gap> DigraphEdges(gr);
 #  DigraphAddEdge
 gap> gr := RandomDigraph(10);;
 gap> DigraphAddEdge(gr, [1, 2, 3]);
-Error, the 2nd argument must be a list of length 2,
+Error, the 2nd argument (edge) must be a list of length 2,
 gap> DigraphAddEdge(gr, ["a", "a"]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphAddEdge' on 3 arguments
@@ -598,9 +603,11 @@ gap> DigraphAddEdge(gr, [1, "a"]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphAddEdge' on 3 arguments
 gap> DigraphAddEdge(gr, [11, 1]);
-Error, the 2nd argument must be a vertex of the 1st argument (a digraph), 
+Error, the 2nd argument (src) must be a vertex of the digraph (D) that is the \
+1st argument,
 gap> DigraphAddEdge(gr, [1, 11]);
-Error, the 3rd argument must be a vertex of the 1st argument (a digraph), 
+Error, the 2nd argument (ran) must be a vertex of the digraph (D) that is the \
+1st argument,
 gap> gr := EmptyDigraph(2);
 <immutable digraph with 2 vertices, 0 edges>
 gap> DigraphAddEdge(gr, [1, 2]);
@@ -653,7 +660,7 @@ gap> gr2 := DigraphAddVertices(gr, [SymmetricGroup(2), Group(())]);
 gap> DigraphVertexLabels(gr2);
 [ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
 gap> DigraphAddVertices(gr2, -1);
-Error, the 2nd argument (the number of vertices to add) must be non-negative,
+Error, the 2nd argument (m) must be a non-negative integer,
 gap> gr3 := DigraphAddVertices(gr2, 0);
 <immutable digraph with 3 vertices, 1 edge>
 gap> IsIdenticalObj(gr2, gr3);
@@ -725,16 +732,13 @@ gap> gr2 := DigraphRemoveVertices(gr, []);
 gap> gr = gr2;
 true
 gap> gr2 := DigraphRemoveVertices(gr, [0]);
-Error, the 2nd argument (list of vertices to remove) must consist of positive \
-integers,
+Error, the 2nd argument (list) must be a list consisting of positive integers,
 gap> gr2 := DigraphRemoveVertices(gr, [1, "a"]);
-Error, the 2nd argument (list of vertices to remove) must consist of positive \
-integers,
+Error, the 2nd argument (list) must be a list consisting of positive integers,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 1]);
-Error, the 2nd argument (list of vertices to remove) must be duplicate-free,
+Error, the 2nd argument (list) must be a duplicate-free list,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 0]);
-Error, the 2nd argument (list of vertices to remove) must consist of positive \
-integers,
+Error, the 2nd argument (list) must be a list consisting of positive integers,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 5]);
 <immutable digraph with 3 vertices, 6 edges>
 gap> gr2 := DigraphRemoveVertices(gr, [1, 3]);
@@ -774,7 +778,7 @@ gap> DigraphRemoveVertices(gr, DigraphSinks(gr));
 gap> gr := Digraph([[1, 1]]);
 <immutable multidigraph with 1 vertex, 2 edges>
 gap> DigraphReverseEdges(gr, [[2, 2]]);
-Error, the 1st argument (a digraph) must not have multiple edges,
+Error, the 1st argument (D) must be a digraph with no multiple edges,
 gap> DigraphReverseEdges(gr, [2]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
@@ -790,12 +794,12 @@ gap> DigraphReverseEdges(gr, [0, 0]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
 gap> DigraphReverseEdges(gr, [[0]]);
-Error, the 2nd argument must be a list of length 2,
+Error, the 2nd argument (e) must be a list of length 2,
 gap> DigraphReverseEdges(gr, [[1], [1]]);
-Error, the 2nd argument must be a list of length 2,
+Error, the 2nd argument (e) must be a list of length 2,
 gap> edges := ShallowCopy(DigraphEdges(gr));;
 gap> gr = DigraphReverseEdges(gr, edges);
-Error, the 1st argument (a digraph) must not have multiple edges,
+Error, the 1st argument (D) must be a digraph with no multiple edges,
 gap> gr = DigraphReverseEdges(gr, [1 .. DigraphNrEdges(gr)]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
@@ -1340,9 +1344,9 @@ Error, the 2nd argument must be a vertex of the 1st argument (a digraph),
 gap> gr := Digraph([[2, 2], []]);
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphTransitiveReduction(gr);
-Error, the argument (a digraph) must not have multiple edges,
+Error, the argument (D) must be a digraph with no multiple edges,
 gap> DigraphReflexiveTransitiveReduction(gr);
-Error, the argument (a digraph) must not have multiple edges,
+Error, the argument (D) must be a digraph with no multiple edges,
 gap> gr := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphTransitiveReduction(gr);
@@ -1641,7 +1645,7 @@ gap> PartialOrderDigraphMeetOfVertices(gr, 3, 9);
 gap> gr := Digraph([[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
 <immutable digraph with 3 vertices, 9 edges>
 gap> PartialOrderDigraphMeetOfVertices(gr, 2, 3);
-Error, the 1st argument (a digraph) must satisfy IsPartialOrderDigraph,
+Error, the 1st argument (D) must satisfy IsPartialOrderDigraph,
 gap> PartialOrderDigraphJoinOfVertices(gr, 2, 3);
 Error, the 1st argument (a digraph) must satisfy IsPartialOrderDigraph,
 gap> gr1 := Digraph([[1], [2], [1, 2, 3], [1, 2, 4]]);
@@ -1675,12 +1679,12 @@ gap> DigraphNrEdges(DigraphClosure(gr, 11));
 42
 gap> gr := Digraph([[1], [2], [3]]);;
 gap> DigraphClosure(gr, 2);
-Error, the 1st argument (a digraph) must by symmetric, without loops, and no m\
-ultiple edges,
+Error, the 1st argument (D) must be a symmetric digraph with no loops, and no \
+multiple edges,
 gap> gr := Digraph([[2], [3], [1]]);;
 gap> DigraphClosure(gr, 2);
-Error, the 1st argument (a digraph) must by symmetric, without loops, and no m\
-ultiple edges,
+Error, the 1st argument (D) must be a symmetric digraph with no loops, and no \
+multiple edges,
 
 #  IsMatching
 gap>  gr := Digraph([[2], [3], [4], []]);;
@@ -1841,8 +1845,7 @@ gap> D := DigraphAddEdge(D, 1, 3);
 gap> D := DigraphAddEdge(D, 1, 3);
 <immutable multidigraph with 6 vertices, 13 edges>
 gap> D := DigraphRemoveEdge(D, 1, 3);
-Error, the 1st argument (a digraph) must not have multiple edges when the 2nd \
-argument is a list,
+Error, the 1st argument (D) must be a digraph with no multiple edges,
 gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
 <immutable digraph with 6 vertices, 11 edges>
 gap> D := DigraphAddEdge(D, 1, 3);
@@ -1901,11 +1904,11 @@ true
 gap> DigraphReverseEdge(D, 1, 2);
 <mutable multidigraph with 3 vertices, 6 edges>
 gap> DigraphReverseEdge(D, 1, 1);
-Error, the 1st argument (a digraph) must not have multiple edges,
+Error, the 1st argument (D) must be a digraph with no multiple edges,
 gap> DigraphAddEdge(D, 1, 1);
 <mutable multidigraph with 3 vertices, 7 edges>
 gap> DigraphReverseEdge(D, 1, 1);
-Error, the 1st argument (a digraph) must not have multiple edges,
+Error, the 1st argument (D) must be a digraph with no multiple edges,
 gap> D := MutableDigraph([[2, 3], [1, 3], [1, 2]]);
 <mutable digraph with 3 vertices, 6 edges>
 gap> DigraphAddEdge(D, 1, 1);
@@ -1913,7 +1916,8 @@ gap> DigraphAddEdge(D, 1, 1);
 gap> DigraphReverseEdge(D, 1, 1);
 <mutable digraph with 3 vertices, 7 edges>
 gap> DigraphReverseEdge(D, 1, 4);
-Error, there is no edge from 1 to 4 in the 1st argument (a digraph)
+Error, there is no edge from 1 to 
+4 in the digraph (D) that is the 1st argument,
 gap> D := MakeImmutableDigraph(D);
 <immutable digraph with 3 vertices, 7 edges>
 gap> D := DigraphReverseEdge(D, 1, 2);
@@ -1969,9 +1973,9 @@ fail
 gap> D := Digraph([[1]]);
 <immutable digraph with 1 vertex, 1 edge>
 gap> PartialOrderDigraphMeetOfVertices(D, 1, 2);
-Error, the 3rd argument must be a vertex of the 1st argument (a digraph), 
+Error, the 3rd argument (j) must be a vertex of the 1st argument (a digraph), 
 gap> PartialOrderDigraphMeetOfVertices(D, 2, 1);
-Error, the 2nd argument must be a vertex of the 1st argument (a digraph), 
+Error, the 2nd argument (i) must be a vertex of the 1st argument (a digraph), 
 gap> PartialOrderDigraphJoinOfVertices(D, 1, 2);
 Error, the 3rd argument must be a vertex of the 1st argument (a digraph), 
 gap> PartialOrderDigraphJoinOfVertices(D, 2, 1);

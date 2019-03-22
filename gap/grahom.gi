@@ -95,7 +95,7 @@ InstallMethod(DigraphColouring, "for a digraph and an integer",
 [IsDigraph, IsInt],
 function(D, n)
   if n < 0 then
-    ErrorNoReturn("the 2nd argument must be a non-negative integer,");
+    ErrorNoReturn("the 2nd argument (n) must be a non-negative integer,");
   elif HasDigraphGreedyColouring(D) then
     if DigraphGreedyColouring(D) = fail then
       return fail;
@@ -136,7 +136,8 @@ function(D, order)
   local n;
   n := DigraphNrVertices(D);
   if Length(order) <> n or ForAny(order, x -> (not IsPosInt(x)) or x > n) then
-    ErrorNoReturn("the 2nd argument must be a permutation of [1 .. ", n, "]");
+    ErrorNoReturn("the 2nd argument (order) must be a permutation of ",
+                  "[1 .. ", n, "]");
   fi;
   return DigraphGreedyColouringNC(D, order);
 end);
@@ -457,7 +458,8 @@ InstallMethod(IsDigraphHomomorphism, "for a dense digraph, digraph, and perm",
 function(src, ran, x)
   local i, j;
   if IsMultiDigraph(src) or IsMultiDigraph(ran) then
-    ErrorNoReturn("the 1st and 2nd arguments must not have multiple edges,");
+    ErrorNoReturn("the 1st and 2nd arguments (src and ran) must be digraphs",
+                  " with no multiple edges,");
   elif LargestMovedPoint(x) > DigraphNrVertices(src) then
     return false;
   fi;
@@ -480,7 +482,8 @@ InstallMethod(IsDigraphHomomorphism,
 function(src, ran, x)
   local i, j;
   if IsMultiDigraph(src) or IsMultiDigraph(ran) then
-    ErrorNoReturn("the 1st and 2nd arguments must not have multiple edges,");
+    ErrorNoReturn("the 1st and 2nd arguments (src and ran) must be digraphs",
+                  " with no multiple edges,");
   elif LargestMovedPoint(x) > DigraphNrVertices(src) then
     return false;
   fi;

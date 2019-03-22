@@ -18,8 +18,8 @@ gap> gr := RandomDigraph(10);;
 gap> DigraphVertexLabels(gr);
 [ 1 .. 10 ]
 gap> SetDigraphVertexLabels(gr, ["a", "b", 10]);
-Error, the 2nd arument <names> must be a list with length equal to the number \
-of vertices of the 1st argument <D> (a digraph),
+Error, the 2nd arument (names) must be a list with length equal to the number \
+of vertices of the digraph (D) that is the 1st argument,
 gap> gr := RandomDigraph(3);;
 gap> SetDigraphVertexLabels(gr, ["a", "b", 10]);
 gap> DigraphVertexLabels(gr);
@@ -29,8 +29,8 @@ gap> DigraphVertexLabel(gr, 1);
 gap> DigraphVertexLabel(gr, 2);
 "b"
 gap> DigraphVertexLabel(gr, 10);
-Error, the 2nd argument <v> (a positive integer) has no label or is not a vert\
-ex of the 1st argument <D> (a digraph),
+Error, the 2nd argument (v) has no label or is not a vertex of the digraph (D)\
+ that is the 1st argument
 gap> DigraphVertexLabel(gr, 3);
 10
 gap> SetDigraphVertexLabel(gr, 3, 3);
@@ -38,8 +38,8 @@ gap> DigraphVertexLabel(gr, 3);
 3
 gap> gr := RandomDigraph(5);;
 gap> SetDigraphVertexLabel(gr, 6, (1, 3, 2, 5, 4));
-Error, the 2nd argument <v> (a positive integer) is not a vertex of the 1st ar\
-gument <D> (a digraph),
+Error, the 2nd argument (v) is not a vertex of the digraph (D) that is the 1st\
+ argument,
 gap> SetDigraphVertexLabel(gr, 2, (1, 3, 2, 5, 4));
 gap> DigraphVertexLabel(gr, 2);
 (1,3,2,5,4)
@@ -83,12 +83,11 @@ gap> gr := Digraph([[2, 3], [3], [1, 5], [], [4]]);
 gap> DigraphEdgeLabels(gr);
 [ [ 1, 1 ], [ 1 ], [ 1, 1 ], [  ], [ 1 ] ]
 gap> SetDigraphEdgeLabels(gr, [1, 2]);
-Error, the 2nd argument <labels> (a list) has the wrong shape, it is required \
-to have the same shape as the out-neighbours of the 1st argument <D> (a digrap\
-h),
+Error, the 2nd argument (labels) must be a list with the same shape as the out\
+-neighbours of the digraph (D) that is the 1st argument,
 gap> SetDigraphEdgeLabel(gr, 2, 4, "banana");
-Error, there is no edge from <v> = 2 (the 2nd argument) to <w> = 
-4 (the 3rd argument) in the 1st argument <D> (a digraph),
+Error, there is no edge from 2 to 
+4 in the digraph (D) that is the 1st argument,
 gap> SetDigraphEdgeLabels(gr, function(x, y) return x + y; end);
 gap> DigraphEdgeLabels(gr);
 [ [ 3, 4 ], [ 5 ], [ 4, 8 ], [  ], [ 9 ] ]
@@ -122,13 +121,13 @@ gap> DigraphEdgeLabels(gr);
 [ [ 1 ], [ "Hello, banana", 1, 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ] ]
 gap> gr := Digraph([[2, 2], []]);;
 gap> SetDigraphEdgeLabels(gr, [[5, infinity], []]);
-Error, the 1st argument <D> must not be a digraph with multiple edges, edge la\
-bels are not supported on digraphs with multiple edges,
+Error, the argument (D) must be a digraph with no multiple edges, edge labels \
+are not supported on digraphs with multiple edges,
 gap> DigraphEdgeLabels(gr);
-Error, the argument <D> must not be a digraph with multiple edges, edge labels\
- are not supported on digraphs with multiple edges,
+Error, the argument (D) must be a digraph with no multiple edges, edge labels \
+are not supported on digraphs with multiple edges,
 gap> SetDigraphEdgeLabel(gr, 1, 2, infinity);
-Error, the 1st argument <D> must not be a digraph with multipleedges, edge lab\
+Error, the 1st argument (D) must be a digraph with no multiple edges, edge lab\
 els are not supported on digraphs with multiple edges,
 gap> gr := Digraph([[2, 3], [3], [1, 5], [], [4]]);
 <immutable digraph with 5 vertices, 6 edges>
@@ -147,32 +146,34 @@ gap> DigraphEdgeLabels(D);
 gap> DigraphAddEdge(D, 6, 1);
 <mutable multidigraph with 6 vertices, 8 edges>
 gap> DigraphEdgeLabel(D, 6, 1);
-Error, edge labels are not supported on digraphs with multiple edges,
+Error, the 1st argument (D) must be a digraph with no multiple edges, edge lab\
+els are not supported on digraphs with multiple edges,
 gap> SetDigraphEdgeLabels(D, ReturnFail);
-Error, the 1st argument <D> must not be a digraph with multiple edges, edge la\
-bels are not supported on digraphs with multiple edges,
+Error, the argument (D) must be a digraph with no multiple edges, edge labels \
+are not supported on digraphs with multiple edges,
 gap> D := MutableDigraph([[2, 3], [3], [1, 5], [], [4]]);
 <mutable digraph with 5 vertices, 6 edges>
 gap> DigraphEdgeLabel(D, 1, 5);
-Error, there is no edge from the 2nd argument <v> = 
-1 to the 3rd argument <w> = 5 in the 1st argument <D> (a digraph),
+Error, there is no edge from 1 to 
+5 in the digraph (D) that is the 1st argument,
 
 # Test errors in DigraphEdgeLabel
 gap> gr := Digraph([[2, 2], []]);
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphEdgeLabel(gr, 1, 2);
-Error, edge labels are not supported on digraphs with multiple edges,
+Error, the 1st argument (D) must be a digraph with no multiple edges, edge lab\
+els are not supported on digraphs with multiple edges,
 gap> SetDigraphEdgeLabels(gr, ReturnFalse);
-Error, the 1st argument <D> must not be a digraph with multiple edges, edge la\
-bels are not supported on digraphs with multiple edges,
+Error, the argument (D) must be a digraph with no multiple edges, edge labels \
+are not supported on digraphs with multiple edges,
 gap> gr := Digraph([[2, 1], []]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphEdgeLabel(gr, 2, 2);
-Error, there is no edge from the 2nd argument <v> = 
-2 to the 3rd argument <w> = 2 in the 1st argument <D> (a digraph),
+Error, there is no edge from 2 to 
+2 in the digraph (D) that is the 1st argument,
 gap> SetDigraphEdgeLabel(gr, 2, 2, "a");
-Error, there is no edge from <v> = 2 (the 2nd argument) to <w> = 
-2 (the 3rd argument) in the 1st argument <D> (a digraph),
+Error, there is no edge from 2 to 
+2 in the digraph (D) that is the 1st argument,
 
 #
 gap> DIGRAPHS_StopTest();
