@@ -1856,7 +1856,7 @@ gap> D := DigraphRemoveEdge(D, 1, 3);
 gap> D := DigraphMutableCopy(CycleDigraph(3));
 <mutable digraph with 3 vertices, 3 edges>
 gap> DigraphDisjointUnion(D, D, D, D, D, D, D, D, D, D);
-<mutable digraph with 1536 vertices, 1536 edges>
+<mutable digraph with 30 vertices, 30 edges>
 gap> D := DigraphMutableCopy(CycleDigraph(3));
 <mutable digraph with 3 vertices, 3 edges>
 gap> DigraphDisjointUnion(D, CycleDigraph(3), CycleDigraph(3),
@@ -1864,11 +1864,21 @@ gap> DigraphDisjointUnion(D, CycleDigraph(3), CycleDigraph(3),
 <mutable digraph with 12 vertices, 12 edges>
 gap> D := DigraphMutableCopy(CycleDigraph(3));
 <mutable digraph with 3 vertices, 3 edges>
+gap> DigraphJoin(D, D, D);
+<mutable digraph with 9 vertices, 63 edges>
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphEdgeUnion(D, D, D);
+<mutable multidigraph with 3 vertices, 9 edges>
+gap> D := DigraphMutableCopy(CycleDigraph(3));
+<mutable digraph with 3 vertices, 3 edges>
 gap> DigraphJoin(D, CycleDigraph(3), CycleDigraph(3),
 > CycleDigraph(3));
 <mutable digraph with 12 vertices, 120 edges>
 gap> D := CycleDigraph(3);
 <immutable digraph with 3 vertices, 3 edges>
+gap> DigraphJoin(D, D, D);
+<immutable digraph with 9 vertices, 63 edges>
 gap> DigraphJoin(D, CycleDigraph(3), CycleDigraph(3),
 > CycleDigraph(3));
 <immutable digraph with 12 vertices, 120 edges>

@@ -411,7 +411,7 @@ end);
 
 InstallGlobalFunction(DigraphDisjointUnion,
 function(arg)
-  local out, offset, n, i;
+  local D, copy, offset, n, i;
 
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
@@ -423,33 +423,45 @@ function(arg)
                   "list of dense digraphs,");
   fi;
 
+  D := arg[1];
   if IsMutableDigraph(arg[1]) then
-    out := arg[1]!.OutNeighbours;
-    # Note that if arg[1] is mutable, and arg[1] occurs elsewhere in the arg
-    # list, then the output of this function is a bit unexpected! Same for
-    # DigraphJoin and DigraphEdgeUnion
+    arg[1] := arg[1]!.OutNeighbours;
+    for i in [2 .. Length(arg)] do
+      if IsIdenticalObj(arg[1], arg[i]) then
+        if not IsBound(copy) then
+          copy := OutNeighboursMutableCopy(arg[1]);
+        fi;
+        arg[i] := copy;
+      else
+        arg[i] := OutNeighbours(arg[i]);
+      fi;
+    od;
   else
-    out := OutNeighboursMutableCopy(arg[1]);
+    arg[1] := OutNeighboursMutableCopy(arg[1]);
+    for i in [2 .. Length(arg)] do
+      arg[i] := OutNeighbours(arg[i]);
+    od;
   fi;
 
-  offset := DigraphNrVertices(arg[1]);
+  offset := Length(arg[1]);
 
   for i in [2 .. Length(arg)] do
-    n := DigraphNrVertices(arg[i]);
-    out{[offset + 1 .. offset + n]} := OutNeighbours(arg[i]) + offset;
+    n := Length(arg[i]);
+    arg[1]{[offset + 1 .. offset + n]} := arg[i] + offset;
     offset := offset + n;
   od;
 
-  if IsMutableDigraph(arg[1]) then
-    return arg[1];
+  if IsMutableDigraph(D) then
+    return D;
   else
-    return DigraphNC(out);
+    return DigraphNC(arg[1]);
   fi;
+
 end);
 
 InstallGlobalFunction(DigraphJoin,
 function(arg)
-  local out, tot, offset, n, nbs, i, v;
+  local D, copy, tot, offset, n, i, list, v;
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
     arg := arg[1];
@@ -460,39 +472,53 @@ function(arg)
                   "list of dense digraphs,");
   fi;
 
+  D := arg[1];
   if IsMutableDigraph(arg[1]) then
-    out := arg[1]!.OutNeighbours;
+    arg[1] := arg[1]!.OutNeighbours;
+    for i in [2 .. Length(arg)] do
+      if IsIdenticalObj(arg[1], arg[i]) then
+        if not IsBound(copy) then
+          copy := OutNeighboursMutableCopy(arg[1]);
+        fi;
+        arg[i] := copy;
+      else
+        arg[i] := OutNeighbours(arg[i]);
+      fi;
+    od;
   else
-    out := OutNeighboursMutableCopy(arg[1]);
+    arg[1] := OutNeighboursMutableCopy(arg[1]);
+    for i in [2 .. Length(arg)] do
+      arg[i] := OutNeighbours(arg[i]);
+    od;
   fi;
 
-  tot    := Sum(arg, DigraphNrVertices);
-  offset := DigraphNrVertices(arg[1]);
+  tot    := Sum(arg, Length);
+  offset := Length(arg[1]);
 
-  for nbs in out do
-    Append(nbs, [offset + 1 .. tot]);
+  for list in arg[1] do
+    Append(list, [offset + 1 .. tot]);
   od;
 
   for i in [2 .. Length(arg)] do
-    n   := DigraphNrVertices(arg[i]);
-    nbs := OutNeighbours(arg[i]);
-    for v in DigraphVertices(arg[i]) do
-      out[v + offset] := Concatenation([1 .. offset], nbs[v] + offset,
-                                       [offset + n + 1 .. tot]);
+    n := Length(arg[i]);
+    for v in [1 .. n] do
+      arg[1][v + offset] := Concatenation([1 .. offset],
+                                          arg[i][v] + offset,
+                                          [offset + n + 1 .. tot]);
     od;
     offset := offset + n;
   od;
 
-  if IsMutableDigraph(arg[1]) then
-    return arg[1];
+  if IsMutableDigraph(D) then
+    return D;
   else
-    return DigraphNC(out);
+    return DigraphNC(arg[1]);
   fi;
 end);
 
 InstallGlobalFunction(DigraphEdgeUnion,
 function(arg)
-  local n, out, nbs, i, v;
+  local D, n, copy, i, v;
 
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
@@ -504,27 +530,40 @@ function(arg)
                   "list of dense digraphs,");
   fi;
 
+  D := arg[1];
   n := Maximum(List(arg, DigraphNrVertices));
   if IsMutableDigraph(arg[1]) then
     DigraphAddVertices(arg[1], n - DigraphNrVertices(arg[1]));
-    out := arg[1]!.OutNeighbours;
+    arg[1] := arg[1]!.OutNeighbours;
+    for i in [2 .. Length(arg)] do
+      if IsIdenticalObj(arg[1], arg[i]) then
+        if not IsBound(copy) then
+          copy := OutNeighboursMutableCopy(arg[1]);
+        fi;
+        arg[i] := copy;
+      else
+        arg[i] := OutNeighbours(arg[i]);
+      fi;
+    od;
   else
-    out := OutNeighboursMutableCopy(arg[1]);
-    Append(out, List([1 .. n - DigraphNrVertices(arg[1])], x -> []));
+    arg[1] := OutNeighboursMutableCopy(arg[1]);
+    Append(arg[1], List([1 .. n - Length(arg[1])], x -> []));
+    for i in [2 .. Length(arg)] do
+      arg[i] := OutNeighbours(arg[i]);
+    od;
   fi;
 
   for i in [2 .. Length(arg)] do
-    nbs := OutNeighbours(arg[i]);
-    for v in DigraphVertices(arg[i]) do
-      if not IsEmpty(nbs[v]) then
-        Append(out[v], nbs[v]);
+    for v in [1 .. Length(arg[i])] do
+      if not IsEmpty(arg[i][v]) then
+        Append(arg[1][v], arg[i][v]);
       fi;
     od;
   od;
-  if IsMutableDigraph(arg[1]) then
-    return arg[1];
+  if IsMutableDigraph(D) then
+    return D;
   else
-    return DigraphNC(out);
+    return DigraphNC(arg[1]);
   fi;
 end);
 
