@@ -18,7 +18,7 @@ function()
   if DIGRAPHS_NautyAvailable then
     Info(InfoWarning,
          1,
-         "Using bliss by default for AutomorphismGroup");
+         "Using bliss by default for AutomorphismGroup . . .");
     if not DIGRAPHS_UsingBliss then
       InstallMethod(AutomorphismGroup, "for a digraph", [IsDigraph],
       BlissAutomorphismGroup);
@@ -41,14 +41,14 @@ function()
     fi;
     Info(InfoWarning,
          1,
-         "Using NautyTracesInterface by default for AutomorphismGroup");
+         "Using nauty by default for AutomorphismGroup . . .");
   else
     Info(InfoWarning,
          1,
-         "NautyTracesInterface is not available");
+         "NautyTracesInterface is not available!");
     Info(InfoWarning,
          1,
-         "Using bliss by default for AutomorphismGroup");
+         "Using bliss by default for AutomorphismGroup . . .");
   fi;
 end);
 

@@ -65,14 +65,18 @@ function(func)
   nauty := not DIGRAPHS_UsingBliss;
 
   reset := function()
+    local old_level;
+    old_level := InfoLevel(InfoWarning);
+    SetInfoLevel(InfoWarning, 0);
     if nauty then
       DigraphsUseNauty();
     else
       DigraphsUseBliss();
     fi;
+    SetInfoLevel(InfoWarning, old_level);
   end;
 
-  Print("\033[40;38;5;82m");
+  Print("\033[1m");
   DigraphsUseBliss();
   Print("\033[0m");
   if not func() then
@@ -81,7 +85,7 @@ function(func)
   fi;
 
   if DIGRAPHS_NautyAvailable then
-    Print("\033[40;38;5;82m");
+    Print("\033[1m");
     DigraphsUseNauty();
     Print("\033[0m");
     if not func() then
@@ -89,11 +93,12 @@ function(func)
       return false;
     fi;
 
-    Print("\033[40;38;5;82m");
+    Print("\033[1m");
     DigraphsUseBliss();
     Info(InfoWarning,
          1,
-         "Running tests as if NautyTracesInterface is not available");
+         ". . . and pretending that NautyTracesInterface is not ",
+         "available . .  .");
     Print("\033[0m");
     MakeReadWriteGlobal("DIGRAPHS_NautyAvailable");
     DIGRAPHS_NautyAvailable := false;
