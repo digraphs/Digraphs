@@ -27,7 +27,7 @@ DeclareAttribute("DigraphConnectedComponents", IsDigraph);
 DeclareAttribute("DIGRAPHS_Bipartite", IsDigraph);
 DeclareAttribute("DigraphBicomponents", IsDigraph);
 
-DeclareOperation("OutNeighbours", [IsDigraph]);
+DeclareAttribute("OutNeighbours", IsDigraph);
 DeclareSynonymAttr("OutNeighbors", OutNeighbours);
 DeclareAttribute("InNeighbours", IsDigraph);
 DeclareSynonymAttr("InNeighbors", InNeighbours);
@@ -59,7 +59,6 @@ DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
 DeclareAttribute("DigraphReflexiveTransitiveClosureAttr", IsDigraph);
 DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
 DeclareAttribute("DigraphTransitiveClosureAttr", IsDigraph);
-DeclareGlobalFunction("DigraphTransitiveClosureNC");
 
 DeclareAttribute("ChromaticNumber", IsDigraph);
 DeclareAttribute("CharacteristicPolynomial", IsDigraph);

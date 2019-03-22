@@ -15,12 +15,15 @@ DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
 DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);
 DeclareCategory("IsImmutableDigraph", IsDigraph);
 
+DeclareGlobalFunction("IsValidDigraph");
+
 # Family
 BindGlobal("DigraphFamily", NewFamily("DigraphFamily", IsDigraph));
 
 # Representations
 DeclareRepresentation("IsDenseDigraphRep",
-                      IsDigraph and IsComponentObjectRep, ["OutNeighbours"]);
+                      IsDigraph and IsComponentObjectRep,
+                      ["OutNeighbours"]);
 
 # No check constructors
 DeclareOperation("ConvertToMutableDigraphNC", [IsRecord]);

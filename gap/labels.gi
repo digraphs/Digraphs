@@ -114,12 +114,10 @@ function(D, v, w)
   return ShallowCopy(D!.edgelabels[v][p]);
 end);
 
-InstallMethod(DigraphEdgeLabelsNC, "for a digraph",
-[IsDigraph],
+InstallMethod(DigraphEdgeLabelsNC, "for a digraph", [IsDigraph],
 function(D)
   DIGRAPHS_InitEdgeLabels(D);
-  return StructuralCopy(D!.edgelabels);
-#FIXME use or lose this:  return D!.edgelabels;
+  return D!.edgelabels;
 end);
 
 InstallMethod(DigraphEdgeLabels, "for a digraph",
@@ -128,6 +126,7 @@ function(D)
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must not be a digraph with multiple",
                   " edges, edge labels are not supported on digraphs with ",
+                  "multiple edges,");
   fi;
   return DigraphEdgeLabelsNC(D);
 end);

@@ -425,7 +425,6 @@ function(arg)
 
   D := arg[1];
   if IsMutableDigraph(arg[1]) then
-    arg[1] := arg[1]!.OutNeighbours;
     for i in [2 .. Length(arg)] do
       if IsIdenticalObj(arg[1], arg[i]) then
         if not IsBound(copy) then
@@ -436,6 +435,7 @@ function(arg)
         arg[i] := OutNeighbours(arg[i]);
       fi;
     od;
+    arg[1] := arg[1]!.OutNeighbours;
   else
     arg[1] := OutNeighboursMutableCopy(arg[1]);
     for i in [2 .. Length(arg)] do
@@ -473,7 +473,6 @@ function(arg)
 
   D := arg[1];
   if IsMutableDigraph(arg[1]) then
-    arg[1] := arg[1]!.OutNeighbours;
     for i in [2 .. Length(arg)] do
       if IsIdenticalObj(arg[1], arg[i]) then
         if not IsBound(copy) then
@@ -484,6 +483,7 @@ function(arg)
         arg[i] := OutNeighbours(arg[i]);
       fi;
     od;
+    arg[1] := arg[1]!.OutNeighbours;
   else
     arg[1] := OutNeighboursMutableCopy(arg[1]);
     for i in [2 .. Length(arg)] do
@@ -533,7 +533,6 @@ function(arg)
   n := Maximum(List(arg, DigraphNrVertices));
   if IsMutableDigraph(arg[1]) then
     DigraphAddVertices(arg[1], n - DigraphNrVertices(arg[1]));
-    arg[1] := arg[1]!.OutNeighbours;
     for i in [2 .. Length(arg)] do
       if IsIdenticalObj(arg[1], arg[i]) then
         if not IsBound(copy) then
@@ -544,6 +543,7 @@ function(arg)
         arg[i] := OutNeighbours(arg[i]);
       fi;
     od;
+    arg[1] := arg[1]!.OutNeighbours;
   else
     arg[1] := OutNeighboursMutableCopy(arg[1]);
     Append(arg[1], List([1 .. n - Length(arg[1])], x -> []));
@@ -582,8 +582,7 @@ function(D)
   return DigraphTransitiveReduction(DigraphRemoveLoops(D));
 end);
 
-InstallMethod(DigraphReflexiveTransitiveReduction,
-"for an immutable digraph",
+InstallMethod(DigraphReflexiveTransitiveReduction, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
   D := DigraphReflexiveTransitiveReduction(DigraphMutableCopy(D));

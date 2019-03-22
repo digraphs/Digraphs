@@ -11,6 +11,7 @@
 ########################################################################
 # This file is organised as follows:
 #
+# 0.  IsValidDigraph
 # 1.  Types
 # 2.  Digraph no-check constructors
 # 3.  Digraph copies
@@ -23,6 +24,19 @@
 # 10. Random digraphs
 #
 ########################################################################
+
+########################################################################
+# 0. IsValidDigraph
+########################################################################
+
+InstallGlobalFunction(IsValidDigraph,
+function(D)
+  if not (IsMutableDigraph(D) or IsImmutableDigraph(D)) then
+    ErrorNoReturn("digraph in an invalid state! Did you return a ",
+                  "mutable digraph from a method for an attribute, ",
+                  "or MakeImmutable(a mutable digraph)??");
+  fi;
+end);
 
 ########################################################################
 # 1. Digraph types
@@ -153,7 +167,6 @@ function(D)
   MakeImmutable(D);
   SetFilterObj(D, IsAttributeStoringRep);
   SetFilterObj(D, IsImmutableDigraph);
-  MakeImmutable(OutNeighbours(D));
   return D;
 end);
 
@@ -539,11 +552,11 @@ end);
 InstallMethod(ViewString, "for a digraph", [IsDigraph],
 function(D)
   local str, n, m;
-
+  IsValidDigraph(D);
   str := "<";
-  if IsMutable(D) then
+  if IsMutableDigraph(D) then
     Append(str, "mutable ");
-  else
+  elif IsImmutableDigraph(D) then
     Append(str, "immutable ");
   fi;
 
@@ -835,7 +848,7 @@ function(list)
 end);
 
 ########################################################################
-# 9. Converters from other types -> digraph . . .
+# 9. Converters to/from other types -> digraph . . .
 ########################################################################
 
 InstallMethod(AsMutableDigraph, "for a binary relation",

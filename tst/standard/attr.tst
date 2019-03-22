@@ -83,8 +83,7 @@ gap> gr := Digraph(rec(DigraphVertices := ["a", "b"],
 > DigraphSource := ["b", "b"], DigraphRange := ["a", "a"]));
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphDual(gr);
-Error, Digraphs: DigraphDual: usage,
-the argument <graph> must not have multiple edges,
+Error, the argument (D) must not have multiple edges,
 gap> gr := Digraph([]);
 <immutable digraph with 0 vertices, 0 edges>
 gap> DigraphDual(gr);
@@ -100,8 +99,7 @@ gap> DigraphDual(gr);
 gap> gr := Digraph([[2, 2], []]);
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphDual(gr);
-Error, Digraphs: DigraphDual: usage,
-the argument <graph> must not have multiple edges,
+Error, the argument (D) must not have multiple edges,
 gap> r := rec(DigraphNrVertices := 6,
 > DigraphSource := [2, 2, 2, 2, 2, 2, 4, 4, 4],
 > DigraphRange := [1, 2, 3, 4, 5, 6, 3, 4, 5]);;
@@ -766,11 +764,9 @@ gap> gr := Digraph(rec(DigraphNrVertices := 2,
 >                      DigraphRange := [2, 2]));
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphReflexiveTransitiveClosure(gr);
-Error, Digraphs: DigraphReflexiveTransitiveClosure: usage,
-the argument <graph> cannot have multiple edges,
+Error, the argument (a digraph) must not have multiple edges,
 gap> DigraphTransitiveClosure(gr);
-Error, Digraphs: DigraphTransitiveClosure: usage,
-the argument <graph> cannot have multiple edges,
+Error, the argument (a digraph) must not have multiple edges,
 gap> r := rec(DigraphVertices := [1 .. 4], DigraphSource := [1, 1, 2, 3, 4],
 > DigraphRange := [1, 2, 3, 4, 1]);;
 gap> gr := Digraph(r);
@@ -1111,8 +1107,7 @@ true
 #  DigraphUndirectedGirth: easy cases
 gap> gr := Digraph([[2], [3], []]);;
 gap> DigraphUndirectedGirth(gr);
-Error, Digraphs: DigraphUndirectedGirth: usage,
-<digraph> must be a symmetric digraph,
+Error, the argument (D) must be a symmetric digraph,
 gap> gr := Digraph([[2], [1, 3], [2, 3]]);;
 gap> DigraphUndirectedGirth(gr);
 1
@@ -1148,29 +1143,26 @@ gap> gr := Digraph([[2], [1], [4], [5, 6], [], []]);;
 gap> DigraphGirth(gr);
 2
 gap> DigraphUndirectedGirth(gr);
-Error, Digraphs: DigraphUndirectedGirth: usage,
-<digraph> must be a symmetric digraph,
+Error, the argument (D) must be a symmetric digraph,
 
 #  DigraphDegeneracy and DigraphDegeneracyOrdering
 gap> gr := Digraph([[2, 2], [1, 1]]);;
 gap> IsMultiDigraph(gr) and IsSymmetricDigraph(gr);
 true
 gap> DigraphDegeneracy(gr);
-Error, Digraphs: DigraphDegeneracy: usage,
-the argument <gr> must be a symmetric digraph without multiple edges,
+Error, the argument (a digraph) must be a symmetric digraph without multiple e\
+dges,
 gap> DigraphDegeneracyOrdering(gr);
-Error, Digraphs: DigraphDegeneracyOrdering: usage,
-the argument <gr> must be a symmetric digraph without multiple edges,
+Error, the argument (D) must be a symmetric digraph without multiple edges,
 gap> gr := Digraph([[2], []]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> not IsMultiDigraph(gr) and not IsSymmetricDigraph(gr);
 true
 gap> DigraphDegeneracy(gr);
-Error, Digraphs: DigraphDegeneracy: usage,
-the argument <gr> must be a symmetric digraph without multiple edges,
+Error, the argument (a digraph) must be a symmetric digraph without multiple e\
+dges,
 gap> DigraphDegeneracyOrdering(gr);
-Error, Digraphs: DigraphDegeneracyOrdering: usage,
-the argument <gr> must be a symmetric digraph without multiple edges,
+Error, the argument (D) must be a symmetric digraph without multiple edges,
 gap> gr := CompleteDigraph(5);;
 gap> DigraphDegeneracy(gr);
 4
@@ -1286,8 +1278,7 @@ false
 
 #  Test ChromaticNumber
 gap> ChromaticNumber(Digraph([[1]]));
-Error, Digraphs: ChromaticNumber: usage,
-the digraph (1st argument) must not have loops,
+Error, the 1st argument (D) must not have loops,
 gap> ChromaticNumber(NullDigraph(10));
 1
 gap> ChromaticNumber(CompleteDigraph(10));
@@ -1763,8 +1754,7 @@ false
 gap> IsEdgeTransitive(CompleteDigraph(20));
 true
 gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
-Error, Digraphs: IsEdgeTransitive: usage,
-the argument <digraph> must not have multiple edges,
+Error, the argument (a digraph) must not have multiple edges,
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);

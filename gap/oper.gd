@@ -27,7 +27,6 @@ DeclareOperation("DigraphAddEdge", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphAddEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphAddEdges", [IsDigraph, IsList]);
 
-DeclareOperation("DigraphRemoveEdgeByIndex", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphRemoveEdge", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphRemoveEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
