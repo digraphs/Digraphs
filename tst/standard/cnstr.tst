@@ -144,7 +144,7 @@ gap> OutNeighbours(DistanceDigraph(gr, 2));
 #  DistanceDigraph: bad input
 gap> gr := Digraph([[1, 2], [2, 3], [4], [1]]);;
 gap> DistanceDigraph(gr, -2);
-Error, the 2nd argument must be a non-negative integer,
+Error, the 2nd argument (distance) must be a non-negative integer,
 
 #  LineDigraph
 gap> gr := LineUndirectedDigraph(CompleteDigraph(3));
@@ -193,9 +193,8 @@ true
 gap> gr := ChainDigraph(4);
 <immutable digraph with 4 vertices, 3 edges>
 gap> LineUndirectedDigraph(gr);
-Error, the argument must be a symmetric digraph,
+Error, the argument (D) must be a symmetric digraph,
 
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/cnstr.tst", 0);
-

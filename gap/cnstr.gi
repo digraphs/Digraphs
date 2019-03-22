@@ -124,7 +124,8 @@ InstallMethod(DistanceDigraph, "for a digraph and an integer",
 [IsDigraph, IsInt],
 function(D, distance)
   if distance < 0 then
-    ErrorNoReturn("the 2nd argument must be a non-negative integer,");
+    ErrorNoReturn("the 2nd argument (distance) must be a non-negative ",
+                  "integer,");
   fi;
   return DistanceDigraph(D, [distance]);
 end);
@@ -152,7 +153,7 @@ InstallMethod(LineUndirectedDigraph, "for a digraph", [IsDigraph],
 function(D)
   local G;
   if not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the argument must be a symmetric digraph,");
+    ErrorNoReturn("the argument (D) must be a symmetric digraph,");
   fi;
   if HasDigraphGroup(D) then
     G := DigraphGroup(D);

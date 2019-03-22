@@ -27,18 +27,19 @@ DeclareRepresentation("IsDenseDigraphRep",
 
 # No check constructors
 DeclareOperation("ConvertToMutableDigraphNC", [IsRecord]);
-DeclareOperation("ConvertToMutableDigraphNC", [IsList]);
+DeclareOperation("ConvertToMutableDigraphNC", [IsDenseList]);
 DeclareOperation("MutableDigraphNC", [IsRecord]);
-DeclareOperation("MutableDigraphNC", [IsList]);
+DeclareOperation("MutableDigraphNC", [IsDenseList]);
 
-DeclareOperation("ConvertToImmutableDigraphNC", [IsList]);
 DeclareOperation("ConvertToImmutableDigraphNC", [IsRecord]);
+DeclareOperation("ConvertToImmutableDigraphNC", [IsList]);
 DeclareOperation("DigraphNC", [IsRecord]);
-DeclareOperation("DigraphNC", [IsList]);
+DeclareOperation("DigraphNC", [IsDenseList]);
 
 # Copies
 DeclareOperation("DigraphMutableCopy", [IsDigraph]);
 DeclareOperation("DigraphCopy", [IsDigraph]);
+DeclareSynonym("DigraphImmutableCopy", DigraphCopy);
 DeclareOperation("DigraphCopyIfMutable", [IsDigraph]);
 DeclareOperation("DigraphCopyIfImmutable", [IsDigraph]);
 
@@ -46,17 +47,17 @@ DeclareOperation("DigraphCopyIfImmutable", [IsDigraph]);
 DeclareOperation("MakeImmutableDigraph", [IsDigraph]);
 
 # Constructors
+DeclareOperation("MutableDigraph", [IsRecord]);
+DeclareOperation("MutableDigraph", [IsDenseList]);
+DeclareOperation("MutableDigraph", [IsList, IsFunction]);
+DeclareOperation("MutableDigraph", [IsInt, IsList, IsList]);
+DeclareOperation("MutableDigraph", [IsList, IsList, IsList]);
+
 DeclareOperation("Digraph", [IsRecord]);
 DeclareOperation("Digraph", [IsList]);
 DeclareOperation("Digraph", [IsList, IsFunction]);
 DeclareOperation("Digraph", [IsInt, IsList, IsList]);
 DeclareOperation("Digraph", [IsList, IsList, IsList]);
-
-DeclareOperation("MutableDigraph", [IsRecord]);
-DeclareOperation("MutableDigraph", [IsList]);
-DeclareOperation("MutableDigraph", [IsList, IsFunction]);
-DeclareOperation("MutableDigraph", [IsInt, IsList, IsList]);
-DeclareOperation("MutableDigraph", [IsList, IsList, IsList]);
 
 # Constructors "by" something . . .
 DeclareOperation("MutableDigraphByAdjacencyMatrix", [IsHomogeneousList]);

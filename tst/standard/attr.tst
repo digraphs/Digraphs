@@ -83,7 +83,7 @@ gap> gr := Digraph(rec(DigraphVertices := ["a", "b"],
 > DigraphSource := ["b", "b"], DigraphRange := ["a", "a"]));
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphDual(gr);
-Error, the argument (D) must not have multiple edges,
+Error, the argument (D) must be a digraph with no multiple edges,
 gap> gr := Digraph([]);
 <immutable digraph with 0 vertices, 0 edges>
 gap> DigraphDual(gr);
@@ -99,7 +99,7 @@ gap> DigraphDual(gr);
 gap> gr := Digraph([[2, 2], []]);
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphDual(gr);
-Error, the argument (D) must not have multiple edges,
+Error, the argument (D) must be a digraph with no multiple edges,
 gap> r := rec(DigraphNrVertices := 6,
 > DigraphSource := [2, 2, 2, 2, 2, 2, 4, 4, 4],
 > DigraphRange := [1, 2, 3, 4, 5, 6, 3, 4, 5]);;
@@ -764,9 +764,9 @@ gap> gr := Digraph(rec(DigraphNrVertices := 2,
 >                      DigraphRange := [2, 2]));
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphReflexiveTransitiveClosure(gr);
-Error, the argument (a digraph) must not have multiple edges,
+Error, the argument (D) must be a digraph with no multiple edges,
 gap> DigraphTransitiveClosure(gr);
-Error, the argument (a digraph) must not have multiple edges,
+Error, the argument (D) must be a digraph with no multiple edges,
 gap> r := rec(DigraphVertices := [1 .. 4], DigraphSource := [1, 1, 2, 3, 4],
 > DigraphRange := [1, 2, 3, 4, 1]);;
 gap> gr := Digraph(r);
@@ -1150,19 +1150,17 @@ gap> gr := Digraph([[2, 2], [1, 1]]);;
 gap> IsMultiDigraph(gr) and IsSymmetricDigraph(gr);
 true
 gap> DigraphDegeneracy(gr);
-Error, the argument (a digraph) must be a symmetric digraph without multiple e\
-dges,
+Error, the argument (D) must be a symmetric digraph with no multiple edges,
 gap> DigraphDegeneracyOrdering(gr);
-Error, the argument (D) must be a symmetric digraph without multiple edges,
+Error, the argument (D) must be a symmetric digraph with no multiple edges,
 gap> gr := Digraph([[2], []]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> not IsMultiDigraph(gr) and not IsSymmetricDigraph(gr);
 true
 gap> DigraphDegeneracy(gr);
-Error, the argument (a digraph) must be a symmetric digraph without multiple e\
-dges,
+Error, the argument (D) must be a symmetric digraph with no multiple edges,
 gap> DigraphDegeneracyOrdering(gr);
-Error, the argument (D) must be a symmetric digraph without multiple edges,
+Error, the argument (D) must be a symmetric digraph with no multiple edges,
 gap> gr := CompleteDigraph(5);;
 gap> DigraphDegeneracy(gr);
 4
@@ -1278,7 +1276,7 @@ false
 
 #  Test ChromaticNumber
 gap> ChromaticNumber(Digraph([[1]]));
-Error, the 1st argument (D) must not have loops,
+Error, the argument (D) must be a digraph with no loops,
 gap> ChromaticNumber(NullDigraph(10));
 1
 gap> ChromaticNumber(CompleteDigraph(10));
@@ -1754,7 +1752,7 @@ false
 gap> IsEdgeTransitive(CompleteDigraph(20));
 true
 gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
-Error, the argument (a digraph) must not have multiple edges,
+Error, the argument (D) must be a digraph with no multiple edges,
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);

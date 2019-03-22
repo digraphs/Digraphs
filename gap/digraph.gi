@@ -68,6 +68,36 @@ function(list)
   return ConvertToMutableDigraphNC(record);
 end);
 
+InstallMethod(MutableDigraphNC, "for a record", [IsRecord],
+function(record)
+  local out;
+  Assert(1, IsBound(record.DigraphNrVertices));
+  Assert(1, IsBound(record.DigraphRange));
+  Assert(1, IsBound(record.DigraphSource));
+  out := DIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE(record.DigraphNrVertices,
+                                                  record.DigraphSource,
+                                                  record.DigraphRange);
+  return ConvertToMutableDigraphNC(out);
+end);
+
+InstallMethod(MutableDigraphNC, "for a dense mutable list of out-neighbours",
+[IsDenseList and IsMutable],
+function(list)
+  return ConvertToMutableDigraphNC(StructuralCopy(list));
+end);
+
+InstallMethod(MutableDigraphNC, "for a dense list of out-neighbours",
+[IsDenseList],
+function(list)
+  Assert(1, not IsMutable(list));
+  return ConvertToMutableDigraphNC(List(list, ShallowCopy));
+end);
+
+InstallMethod(ConvertToImmutableDigraphNC, "for a record", [IsRecord],
+function(record)
+  return MakeImmutableDigraph(ConvertToMutableDigraphNC(record));
+end);
+
 InstallMethod(ConvertToImmutableDigraphNC,
 "for a dense list of out-neighbours",
 [IsDenseList],
@@ -75,38 +105,6 @@ function(list)
   return MakeImmutableDigraph(ConvertToMutableDigraphNC(list));
 end);
 
-InstallMethod(ConvertToImmutableDigraphNC,
-"for a dense list of out-neighbours",
-[IsRecord],
-function(record)
-  return MakeImmutableDigraph(ConvertToMutableDigraphNC(record));
-end);
-
-InstallMethod(MutableDigraphNC, "for a dense mutable list of out-neighbours",
-[IsDenseList and IsMutable],
-function(list)
-  return ConvertToMutableDigraphNC(StructuralCopy(list));
-end);
-
-InstallMethod(MutableDigraphNC, "for a dense list of out-neighbours",
-[IsDenseList],
-function(list)
-  Assert(1, not IsMutable(list));
-  return ConvertToMutableDigraphNC(List(list, ShallowCopy));
-end);
-
-InstallMethod(MutableDigraphNC, "for a record", [IsRecord],
-function(record)
-  local out;
-  Assert(1, IsBound(record.DigraphNrVertices));
-  Assert(1, IsBound(record.DigraphRange));
-  Assert(1, IsBound(record.DigraphSource));
-  out := DIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE(record.DigraphNrVertices,
-                                                  record.DigraphSource,
-                                                  record.DigraphRange);
-  return ConvertToMutableDigraphNC(out);
-end);
-
 InstallMethod(DigraphNC, "for a record", [IsRecord],
 function(record)
   local D, nm;
@@ -133,15 +131,6 @@ end);
 # 3. Digraph copies
 ########################################################################
 
-InstallMethod(DigraphCopy, "for a dense digraph", [IsDenseDigraphRep],
-function(D)
-  local copy;
-  copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
-  SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
-  SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
-  return copy;
-end);
-
 InstallMethod(DigraphMutableCopy, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local copy;
@@ -151,182 +140,10 @@ function(D)
   return copy;
 end);
 
-InstallMethod(DigraphCopyIfMutable, "for a mutable digraph",
-[IsMutableDigraph], DigraphMutableCopy);
-
-InstallMethod(DigraphCopyIfMutable, "for an immutable digraph",
-[IsImmutableDigraph], IdFunc);
-
-########################################################################
-# 4. MakeImmutableDigraph
-########################################################################
-
-InstallMethod(MakeImmutableDigraph, "for a mutable dense digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
-function(D)
-  MakeImmutable(D);
-  SetFilterObj(D, IsAttributeStoringRep);
-  SetFilterObj(D, IsImmutableDigraph);
-  return D;
-end);
-
-########################################################################
-# 5. Digraph constructors
-########################################################################
-
-InstallMethod(MutableDigraph, "for a record", [IsRecord],
-function(record)
-  local D, cmp, labels, i;
-
-  if IsGraph(record) then
-    # IsGraph is a function not a filter, so we cannot have a separate method
-    D := MutableDigraphNC(List(Vertices(record), x -> Adjacency(record, x)));
-    if IsBound(record.names) then
-      SetDigraphVertexLabels(D, StructuralCopy(record.names));
-    fi;
-    return D;
-  fi;
-
-  if not (IsBound(record.DigraphSource)
-          and IsBound(record.DigraphRange)
-          and (IsBound(record.DigraphVertices) or
-               IsBound(record.DigraphNrVertices))) then
-    ErrorNoReturn("the argument <record> must be a record with components ",
-                  "'DigraphSource', 'DigraphRange', and either ",
-                  "'DigraphVertices' or 'DigraphNrVertices' (but not both),");
-  elif not IsList(record.DigraphSource)
-      or not IsList(record.DigraphRange) then
-    ErrorNoReturn("the record components 'DigraphSource' and 'DigraphRange' ",
-                  "must be lists,");
-  elif Length(record.DigraphSource) <> Length(record.DigraphRange) then
-    ErrorNoReturn("the record components 'DigraphSource' and 'DigraphRange' ",
-                  "must have equal length,");
-  elif IsBound(record.DigraphVertices)
-      and IsBound(record.DigraphNrVertices) then
-    ErrorNoReturn("the record must only have one of the components ",
-                  "'DigraphVertices' and 'DigraphNrVertices', not both,");
-  fi;
-
-  if IsBound(record.DigraphNrVertices) then
-    if (not IsInt(record.DigraphNrVertices))
-        or record.DigraphNrVertices < 0 then
-      ErrorNoReturn("the record component 'DigraphNrVertices' ",
-                    "must be a non-negative integer,");
-    fi;
-    cmp := x -> x < record.DigraphNrVertices + 1 and x > 0;
-  else
-    Assert(1, IsBound(record.DigraphVertices));
-    if not IsList(record.DigraphVertices) then
-      ErrorNoReturn("the record component 'DigraphVertices' must be a list,");
-    elif not IsDuplicateFreeList(record.DigraphVertices) then
-      ErrorNoReturn("the record component 'DigraphVertices' must be ",
-                    "duplicate-free,");
-    fi;
-    cmp := x -> x in record.DigraphVertices;
-    record.DigraphNrVertices := Length(record.DigraphVertices);
-  fi;
-
-  if not ForAll(record.DigraphSource, x -> cmp(x)) then
-    ErrorNoReturn("the record component 'DigraphSource' is invalid,");
-  elif not ForAll(record.DigraphRange, x -> cmp(x)) then
-    ErrorNoReturn("the record component 'DigraphRange' is invalid,");
-  fi;
-
-  record := StructuralCopy(record);
-
-  # Rewrite the vertices to numbers
-  if IsBound(record.DigraphVertices) then
-    if record.DigraphVertices <> [1 .. record.DigraphNrVertices] then
-      for i in [1 .. Length(record.DigraphSource)] do
-        record.DigraphRange[i]  := Position(record.DigraphVertices,
-                                            record.DigraphRange[i]);
-        record.DigraphSource[i] := Position(record.DigraphVertices,
-                                            record.DigraphSource[i]);
-      od;
-      labels := record.DigraphVertices;
-      Unbind(record.DigraphVertices);
-    fi;
-  fi;
-
-  record.DigraphRange := Permuted(record.DigraphRange,
-                                  Sortex(record.DigraphSource));
-  D := MutableDigraphNC(record);
-  if IsBound(labels) then
-    SetDigraphVertexLabels(D, labels);
-  fi;
-end);
-
-InstallMethod(ConvertToImmutableDigraphNC,
-"for a dense list of out-neighbours",
-[IsRecord],
-function(record)
-  return MakeImmutableDigraph(ConvertToMutableDigraphNC(record));
-end);
-
-InstallMethod(MutableDigraphNC, "for a dense mutable list of out-neighbours",
-[IsDenseList and IsMutable],
-function(list)
-  return ConvertToMutableDigraphNC(StructuralCopy(list));
-end);
-
-InstallMethod(MutableDigraphNC, "for a dense list of out-neighbours",
-[IsDenseList],
-function(list)
-  Assert(1, not IsMutable(list));
-  return ConvertToMutableDigraphNC(List(list, ShallowCopy));
-end);
-
-InstallMethod(MutableDigraphNC, "for a record", [IsRecord],
-function(record)
-  local out;
-  Assert(1, IsBound(record.DigraphNrVertices));
-  Assert(1, IsBound(record.DigraphRange));
-  Assert(1, IsBound(record.DigraphSource));
-  out := DIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE(record.DigraphNrVertices,
-                                                  record.DigraphSource,
-                                                  record.DigraphRange);
-  return ConvertToMutableDigraphNC(out);
-end);
-
-InstallMethod(DigraphNC, "for a record", [IsRecord],
-function(record)
-  local D, nm;
-  Assert(1, IsBound(record.DigraphNrVertices));
-  Assert(1, IsBound(record.DigraphRange));
-  Assert(1, IsBound(record.DigraphSource));
-  for nm in RecNames(record) do
-    if not nm in ["DigraphRange", "DigraphSource", "DigraphNrVertices"] then
-      Info(InfoWarning, 1, "ignoring record component \"", nm, "\"!");
-    fi;
-  od;
-  D := MakeImmutableDigraph(MutableDigraphNC(record));
-  SetDigraphSource(D, StructuralCopy(record.DigraphSource));
-  SetDigraphRange(D, StructuralCopy(record.DigraphRange));
-  return D;
-end);
-
-InstallMethod(DigraphNC, "for a dense list of adjacencies", [IsDenseList],
-function(list)
-  return MakeImmutableDigraph(MutableDigraphNC(list));
-end);
-
-########################################################################
-# 3. Digraph copies
-########################################################################
-
 InstallMethod(DigraphCopy, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local copy;
   copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
-  SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
-  SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
-  return copy;
-end);
-
-InstallMethod(DigraphMutableCopy, "for a dense digraph", [IsDenseDigraphRep],
-function(D)
-  local copy;
-  copy := ConvertToMutableDigraphNC(OutNeighboursMutableCopy(D));
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
   SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
   return copy;
@@ -342,7 +159,7 @@ InstallMethod(DigraphCopyIfImmutable, "for a mutable digraph",
 [IsMutableDigraph], IdFunc);
 
 InstallMethod(DigraphCopyIfImmutable, "for an immutable digraph",
-[IsImmutableDigraph], DigraphMutableCopy);
+[IsImmutableDigraph], DigraphCopy);
 
 ########################################################################
 # 4. MakeImmutableDigraph
@@ -354,7 +171,7 @@ function(D)
   MakeImmutable(D);
   SetFilterObj(D, IsAttributeStoringRep);
   SetFilterObj(D, IsImmutableDigraph);
-  MakeImmutable(OutNeighbours(D));
+  MakeImmutable(D!.OutNeighbours);
   return D;
 end);
 
@@ -379,7 +196,7 @@ function(record)
           and IsBound(record.DigraphRange)
           and (IsBound(record.DigraphVertices) or
                IsBound(record.DigraphNrVertices))) then
-    ErrorNoReturn("the argument <record> must be a record with components ",
+    ErrorNoReturn("the argument (record) must be a record with components ",
                   "'DigraphSource', 'DigraphRange', and either ",
                   "'DigraphVertices' or 'DigraphNrVertices' (but not both),");
   elif not IsList(record.DigraphSource)
@@ -401,7 +218,7 @@ function(record)
       ErrorNoReturn("the record component 'DigraphNrVertices' ",
                     "must be a non-negative integer,");
     fi;
-    cmp := x -> x < record.DigraphNrVertices + 1 and x > 0;
+    cmp := x -> IsPosInt(x) and x < record.DigraphNrVertices + 1;
   else
     Assert(1, IsBound(record.DigraphVertices));
     if not IsList(record.DigraphVertices) then
@@ -441,25 +258,6 @@ function(record)
   D := MutableDigraphNC(record);
   if IsBound(labels) then
     SetDigraphVertexLabels(D, labels);
-  fi;
-  return D;
-end);
-
-InstallMethod(Digraph, "for a record", [IsRecord],
-function(record)
-  local D;
-  D := MakeImmutableDigraph(MutableDigraph(record));
-  if IsGraph(record) then
-    # IsGraph is a function not a filter, so we cannot have a separate method
-    # for this.
-    if not IsTrivial(record.group) then
-      Assert(1, IsPermGroup(record.group));
-      SetDigraphGroup(D, record.group);
-      SetDigraphSchreierVector(D, record.schreierVector);
-      SetRepresentativeOutNeighbours(D, record.adjacencies);
-    fi;
-  else
-    SetDigraphNrEdges(D, Length(record.DigraphSource));
   fi;
   return D;
 end);
@@ -483,21 +281,6 @@ function(list)
   return MutableDigraphNC(list);
 end);
 
-InstallMethod(Digraph, "for a dense list of out-neighbours", [IsDenseList],
-function(list)
-  return MakeImmutableDigraph(MutableDigraph(list));
-end);
-
-InstallMethod(Digraph, "for a list and function", [IsList, IsFunction],
-function(list, func)
-  local D;
-  D := MakeImmutableDigraph(MutableDigraph(list, func));
-  SetDigraphAdjacencyFunction(D, {u, v} -> func(list[u], list[v]));
-  SetFilterObj(D, IsDigraphWithAdjacencyFunction);
-  SetDigraphVertexLabels(D, list);
-  return D;
-end);
-
 InstallMethod(MutableDigraph, "for a list and function", [IsList, IsFunction],
 function(list, func)
   local N, out, x, i, j;
@@ -515,21 +298,15 @@ function(list, func)
 end);
 
 InstallMethod(MutableDigraph, "for a number of vertices, source, and range",
-[IsInt, IsHomogeneousList, IsHomogeneousList],
+[IsInt, IsList, IsList],
 function(N, src, ran)
   return MutableDigraph(rec(DigraphNrVertices := N,
                             DigraphSource     := src,
                             DigraphRange      := ran));
 end);
 
-InstallMethod(Digraph, "for a number of vertices, source, and range",
-[IsInt, IsHomogeneousList, IsHomogeneousList],
-function(N, src, ran)
-  return MakeImmutableDigraph(MutableDigraph(N, src, ran));
-end);
-
 InstallMethod(MutableDigraph, "for a list of vertices, source, and range",
-[IsDenseList, IsDenseList, IsDenseList],
+[IsList, IsList, IsList],
 function(domain, src, ran)
   local D;
   D := MutableDigraph(rec(DigraphVertices := domain,
@@ -539,8 +316,50 @@ function(domain, src, ran)
   return D;
 end);
 
+InstallMethod(Digraph, "for a record", [IsRecord],
+function(record)
+  local D;
+  D := MakeImmutableDigraph(MutableDigraph(record));
+  if IsGraph(record) then
+    # IsGraph is a function not a filter, so we cannot have a separate method
+    # for this.
+    if not IsTrivial(record.group) then
+      Assert(1, IsPermGroup(record.group));
+      SetDigraphGroup(D, record.group);
+      SetDigraphSchreierVector(D, record.schreierVector);
+      SetRepresentativeOutNeighbours(D, record.adjacencies);
+    fi;
+  else
+    SetDigraphNrEdges(D, Length(record.DigraphSource));
+  fi;
+  return D;
+end);
+
+InstallMethod(Digraph, "for a dense list of out-neighbours", [IsDenseList],
+function(list)
+  return MakeImmutableDigraph(MutableDigraph(list));
+end);
+
+InstallMethod(Digraph, "for a list and function", [IsList, IsFunction],
+function(list, func)
+  local D;
+  D := MakeImmutableDigraph(MutableDigraph(list, func));
+  SetDigraphAdjacencyFunction(D, {u, v} -> func(list[u], list[v]));
+  SetFilterObj(D, IsDigraphWithAdjacencyFunction);
+  SetDigraphVertexLabels(D, list);
+  return D;
+end);
+
+
+InstallMethod(Digraph, "for a number of vertices, source, and range",
+[IsInt, IsList, IsList],
+function(N, src, ran)
+  return MakeImmutableDigraph(MutableDigraph(N, src, ran));
+end);
+
+
 InstallMethod(Digraph, "for a list of vertices, source, and ran",
-[IsDenseList, IsDenseList, IsDenseList],
+[IsList, IsList, IsList],
 function(domain, src, ran)
   return MakeImmutableDigraph(MutableDigraph(domain, src, ran));
 end);
@@ -651,12 +470,12 @@ function(mat)
   local n, i, j;
   n := Length(mat);
   if not IsRectangularTable(mat) or Length(mat[1]) <> n then
-    ErrorNoReturn("the argument must be a square matrix,");
+    ErrorNoReturn("the argument (mat) must be a square matrix,");
   elif not IsBool(mat[1][1]) then
     for i in [1 .. n] do
       for j in [1 .. n] do
         if not (IsInt(mat[i][j]) and mat[i][j] >= 0) then
-          ErrorNoReturn("the argument must be a matrix of ",
+          ErrorNoReturn("the argument (mat) must be a matrix of ",
                         "non-negative integers,");
         fi;
       od;
@@ -753,9 +572,9 @@ InstallMethod(MutableDigraphByEdges, "for a rectangular table",
 function(edges)
   local n, edge;
   if not Length(edges[1]) = 2 then
-    ErrorNoReturn("the argument must be a list of pairs,");
+    ErrorNoReturn("the argument (edges) must be a list of pairs,");
   elif not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then
-    ErrorNoReturn("the argument must be a list of pairs of ",
+    ErrorNoReturn("the argument (edges) must be a list of pairs of ",
                   "positive integers,");
   fi;
   n := 0;
@@ -786,14 +605,15 @@ InstallMethod(MutableDigraphByEdges,
 function(edges, n)
   local list, edge;
   if not Length(edges[1]) = 2 then
-    ErrorNoReturn("the 1st argument must be a list of pairs,");
+    ErrorNoReturn("the 1st argument (edges) must be a list of pairs,");
   elif not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then
-    ErrorNoReturn("the 1st argument must be a list of pairs of pos ints,");
+    ErrorNoReturn("the 1st argument (edges) must be a list of pairs of ",
+                  "pos ints,");
   fi;
   for edge in edges do
     if edge[1] > n or edge[2] > n then
-      ErrorNoReturn("the 1st argument must not contain values greater than ",
-                    n, ",");
+      ErrorNoReturn("the 1st argument (edges) must not contain values ", 
+                    "greater than ", n, ", the 2nd argument (n),");
     fi;
   od;
   list := List([1 .. n], x -> []);
@@ -819,7 +639,7 @@ function(list)
   n := Length(list);  # number of vertices
   for x in list do
     if not ForAll(x, i -> IsPosInt(i) and i <= n) then
-      ErrorNoReturn("the argument must be a list of lists of positive ",
+      ErrorNoReturn("the argument (list) must be a list of lists of positive ",
                     "integers not exceeding the length of the argument,");
     fi;
   od;
@@ -857,7 +677,7 @@ function(rel)
   local dom, list, i;
   dom := GeneratorsOfDomain(UnderlyingDomainOfBinaryRelation(rel));
   if not IsRange(dom) or dom[1] <> 1 then
-    ErrorNoReturn("the argument must be a binary relation ",
+    ErrorNoReturn("the argument (rel) must be a binary relation ",
                   "on the domain [1 .. n] for some positive integer n,");
   fi;
   list := EmptyPlist(Length(dom));
@@ -905,7 +725,7 @@ InstallMethod(AsMutableDigraph, "for a transformation and an integer",
 function(f, n)
   local list, x, i;
   if n < 0 then
-    ErrorNoReturn("the 2nd argument should be a non-negative integer,");
+    ErrorNoReturn("the 2nd argument (n) should be a non-negative integer,");
   fi;
 
   list := EmptyPlist(n);
@@ -937,9 +757,10 @@ InstallMethod(AsBinaryRelation, "for a digraph", [IsDenseDigraphRep],
 function(D)
   local rel;
   if DigraphNrVertices(D) = 0 then
-    ErrorNoReturn("the argument (a digraph) must have at least one vertex,");
+    ErrorNoReturn("the argument (D) must be a digraph with at least 1 ",
+                  "vertex,");
   elif IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (a digraph) must not have multiple edges");
+    ErrorNoReturn("the argument (D) must be a digraph with no multiple edges");
   fi;
   # Can translate known attributes of <D> to the relation, e.g. symmetry
   rel := BinaryRelationOnPointsNC(OutNeighbours(D));
@@ -970,8 +791,8 @@ function(filt, D)
       return AsSemigroup(IsPartialPermSemigroup,
                          DigraphReverse(DigraphCopyIfMutable(D)));
     fi;
-    ErrorNoReturn("the 2nd argument (a digraph) must be a join or ",
-                  " meet semilattice,");
+    ErrorNoReturn("the 2nd argument (D) must be digraph that is a join or ",
+                  "meet semilattice,");
   fi;
 
   D   := DigraphCopyIfMutable(D);
@@ -1005,10 +826,10 @@ InstallMethod(AsMonoid, "for a function and a digraph",
 [IsFunction, IsDigraph],
 function(filt, D)
   if not (filt = IsPartialPermMonoid or filt = IsPartialPermSemigroup) then
-      ErrorNoReturn("the 1st argument must be IsPartialPermMonoid or ",
-                    "IsPartialPermSemigroup,");
+    ErrorNoReturn("the 1st argument (filt) must be IsPartialPermMonoid or ",
+                  "IsPartialPermSemigroup,");
   elif not IsLatticeDigraph(D) then
-      ErrorNoReturn("the 2nd argument must be a lattice digraph,");
+    ErrorNoReturn("the 2nd argument (D) must be a lattice digraph,");
   fi;
   return AsSemigroup(IsPartialPermSemigroup, D);
 end);
@@ -1032,7 +853,7 @@ InstallMethod(RandomMutableDigraph, "for a positive integer and a float",
 [IsPosInt, IsFloat],
 function(n, p)
   if p < 0.0 or 1.0 < p then
-    ErrorNoReturn("the 2nd argument must be between 0 and 1,");
+    ErrorNoReturn("the 2nd argument (p) must be between 0 and 1,");
   fi;
   return MutableDigraphNC(RANDOM_DIGRAPH(n, Int(p * 10000)));
 end);
@@ -1073,13 +894,13 @@ InstallMethod(RandomMutableTournament, "for an integer", [IsInt],
 function(n)
   local choice, nodes, list, v, w;
   if n < 0 then
-    ErrorNoReturn("the argument must be a non-negative integer,");
+    ErrorNoReturn("the argument (n) must be a non-negative integer,");
   elif n = 0 then
     return EmptyDigraph(IsMutableDigraph, 0);
   fi;
   choice := [true, false];
   nodes  := [1 .. n];
-  list    := List(nodes, x -> []);
+  list   := List(nodes, x -> []);
   for v in nodes do
     for w in [(v + 1) .. n] do
       if Random(choice) then

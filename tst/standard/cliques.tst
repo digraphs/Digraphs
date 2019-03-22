@@ -16,8 +16,8 @@ gap> DIGRAPHS_StartTest();
 #  IsClique and IsMaximalClique
 gap> gr := CompleteDigraph(5);;
 gap> IsClique(gr, [6]);
-Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
-rgument (a digraph),
+Error, the 2nd argument (clique) must be a duplicate-free list of vertices of \
+the digraph (D) that is the 1st argument,
 gap> IsClique(gr, []);
 true
 gap> IsClique(gr, [4]);
@@ -31,8 +31,8 @@ true
 gap> IsClique(gr, [1, 5, 3, 4, 2]);
 true
 gap> IsClique(gr, [1, 1]);
-Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
-rgument (a digraph),
+Error, the 2nd argument (clique) must be a duplicate-free list of vertices of \
+the digraph (D) that is the 1st argument,
 gap> gr := Digraph([
 > [2, 3, 4, 5, 7, 8, 11, 12], [1, 3, 4, 6, 7, 9, 11, 13],
 > [1, 2, 5, 6, 8, 9, 12, 13], [1, 2, 5, 6, 7, 10, 11, 14],
@@ -62,11 +62,11 @@ true
 gap> IsMaximalClique(gr, [1, 2, 3]);
 true
 gap> IsMaximalClique(gr, [16]);
-Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
-rgument (a digraph),
+Error, the 2nd argument (clique) must be a duplicate-free list of vertices of \
+the digraph (D) that is the 1st argument,
 gap> IsMaximalClique(gr, [1, 1]);
-Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
-rgument (a digraph),
+Error, the 2nd argument (clique) must be a duplicate-free list of vertices of \
+the digraph (D) that is the 1st argument,
 gap> IsMaximalClique(gr, [1, 2, 4, 7, 11, 13]);
 false
 gap> gr := CompleteDigraph(5);;
@@ -78,11 +78,11 @@ gap> gr := CycleDigraph(10);;
 gap> IsIndependentSet(gr, []);
 true
 gap> IsIndependentSet(gr, [1, 1]);
-Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
-rgument (a digraph),
+Error, the 2nd argument (list) must be a duplicate-free list of vertices of th\
+e digraph (D) that is the 1st argument,
 gap> IsIndependentSet(gr, [11]);
-Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
-rgument (a digraph),
+Error, the 2nd argument (list) must be a duplicate-free list of vertices of th\
+e digraph (D) that is the 1st argument,
 gap> IsIndependentSet(gr, [1, 2]);
 false
 gap> IsIndependentSet(gr, [1, 3]);
@@ -226,19 +226,19 @@ Error, at least 1 argument is required,
 gap> DigraphClique();
 Error, at least 1 argument is required,
 gap> DigraphMaximalClique(1);
-Error, the 1st argument must be a dense digraph,
+Error, the 1st argument (D) must be a dense digraph,
 gap> DigraphClique(1);
-Error, the 1st argument must be a dense digraph,
+Error, the 1st argument (D) must be a dense digraph,
 gap> DigraphMaximalClique(gr);
 [ 5, 4, 3, 2, 1 ]
 gap> DigraphClique(gr);
 [ 5, 4, 3, 2, 1 ]
 gap> DigraphMaximalClique(gr, [1, 1]);
-Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
-rgument (digraph),
+Error, the optional 2nd argument (include) must be a duplicate-free list of ve\
+rtices of the digraph (D) that is the 1st argument,
 gap> DigraphMaximalClique(gr, [1], [1, 1]);
 Error, the optional 3rd argument (exclude) must be a duplicate-free list of ve\
-rtices of the 1st argument (digraph),
+rtices of the digraph (D) that is the 1st argument,
 gap> DigraphMaximalClique(gr, [1], [1], 0);
 Error, the optional 4th argument (size) must be a positive integer,
 gap> gr := EmptyDigraph(5);;

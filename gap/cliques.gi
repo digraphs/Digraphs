@@ -21,8 +21,8 @@ function(D, list)
   local x;
   if not IsDuplicateFreeList(list)
       or not ForAll(list, x -> x in DigraphVertices(D)) then
-    ErrorNoReturn("the 2nd argument must be a duplicate-free list of ",
-                  "vertices of the 1st argument (a digraph),");
+    ErrorNoReturn("the 2nd argument (list) must be a duplicate-free list of ",
+                  "vertices of the digraph (D) that is the 1st argument,");
   fi;
   for x in list do
     if not IsSubset([x], Intersection(OutNeighboursOfVertex(D, x), list)) then
@@ -64,8 +64,8 @@ function(D, clique)
   local nbs, v;
   if not IsDuplicateFreeList(clique)
       or not ForAll(clique, x -> x in DigraphVertices(D)) then
-    ErrorNoReturn("the 2nd argument must be a duplicate-free list of ",
-                  "vertices of the 1st argument (a digraph),");
+    ErrorNoReturn("the 2nd argument (clique) must be a duplicate-free list ",
+                  "of vertices of the digraph (D) that is the 1st argument,");
   fi;
   nbs := OutNeighbours(D);
   for v in clique do
@@ -245,7 +245,7 @@ function(arg)
   # Validate arg[2]
   D := arg[2];
   if not IsDenseDigraphRep(D) then
-    ErrorNoReturn("the 1st argument must be a dense digraph,");
+    ErrorNoReturn("the 1st argument (D) must be a dense digraph,");
   fi;
 
   # Validate arg[3]
@@ -253,8 +253,9 @@ function(arg)
     include := arg[3];
     if not IsHomogeneousList(include) or not IsDuplicateFreeList(include)
         or not IsSubset(DigraphVertices(D), include) then
-      ErrorNoReturn("the 2nd argument must be a duplicate-free list of ",
-                    "vertices of the 1st argument (D),");
+      ErrorNoReturn("the optional 2nd argument (include) must be a ",
+                    "duplicate-free list of vertices of the digraph (D) ",
+                    "that is the 1st argument,");
     fi;
   else
     include := [];
@@ -266,8 +267,8 @@ function(arg)
     if not IsHomogeneousList(exclude) or not IsDuplicateFreeList(exclude)
         or not IsSubset(DigraphVertices(D), exclude) then
       ErrorNoReturn("the optional 3rd argument (exclude) must be a ",
-                    "duplicate-free list of vertices of the 1st argument ",
-                    "(D),");
+                    "duplicate-free list of vertices of the digraph (D) ",
+                    "that is the 1st argument,");
     fi;
   else
     exclude := [];
