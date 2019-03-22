@@ -1788,6 +1788,6 @@ gap> Unbind(trans2);
 gap> Unbind(tree);
 gap> Unbind(wcc);
 
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/attr.tst", 0);

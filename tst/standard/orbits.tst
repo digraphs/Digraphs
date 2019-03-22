@@ -60,6 +60,6 @@ gap> gr := CycleDigraph(12);
 gap> RepresentativeOutNeighbours(gr);
 [ [ 2 ] ]
 
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/orbits.tst", 0);

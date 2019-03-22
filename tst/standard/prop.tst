@@ -1382,6 +1382,6 @@ gap> Unbind(range);
 gap> Unbind(source);
 gap> Unbind(trans);
 
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/prop.tst", 0);

@@ -1242,6 +1242,6 @@ gap> Unbind(s);
 gap> Unbind(v);
 gap> Unbind(x);
 
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/digraph.tst", 0);

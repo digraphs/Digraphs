@@ -840,6 +840,6 @@ gap> Unbind(m);
 gap> Unbind(n);
 gap> Unbind(p);
 
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/isomorph.tst", 0);

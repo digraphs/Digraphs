@@ -909,6 +909,6 @@ gap> Unbind(rdgr);
 gap> Unbind(str);
 gap> Unbind(file);
 
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/io.tst", 0);

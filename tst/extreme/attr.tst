@@ -77,6 +77,6 @@ gap> Unbind(g);
 gap> Unbind(gr);
 gap> Unbind(str);
 
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: extreme/attr.tst", 0);

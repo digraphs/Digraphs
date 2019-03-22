@@ -2030,6 +2030,6 @@ gap> Unbind(temp);
 gap> Unbind(u1);
 gap> Unbind(u2);
 
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/oper.tst", 0);

@@ -184,6 +184,6 @@ gap> Unbind(layers2);
 gap> Unbind(list);
 gap> Unbind(out);
 
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: extreme/oper.tst", 0);
