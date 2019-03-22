@@ -605,7 +605,7 @@ InstallMethod(DigraphFromGraph6String, "for a function and string",
 [IsFunction, IsString],
 function(func, s)
   local FindCoord, list, n, start, maxedges, out, pos, nredges, i, bpos, edge,
-        j;
+        D, j;
 
   s := Chomp(s);
 
@@ -897,6 +897,9 @@ function(func, s)
   return func(rec(DigraphNrVertices := n,
                   DigraphRange := range,
                   DigraphSource := source));
+  SetIsSymmetricDigraph(gr, true);
+  SetIsMultiDigraph(gr, false);
+  return gr;
 end);
 
 InstallMethod(DigraphFromSparse6String, "for a string", [IsString],

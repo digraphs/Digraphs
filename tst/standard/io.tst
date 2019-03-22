@@ -53,7 +53,7 @@ gap> Size(list);
 gap> list2 := ReadDigraphs(str, DigraphFromGraph6String);;
 gap> list = list2;
 true
-gap> gr := ReadDigraphs(str, fail, 10);
+gap> gr := ReadDigraphs(str, 10);
 <immutable digraph with 5 vertices, 8 edges>
 gap> list = gr;
 false

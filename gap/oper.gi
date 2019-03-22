@@ -456,7 +456,6 @@ function(arg)
   else
     return DigraphNC(arg[1]);
   fi;
-
 end);
 
 InstallGlobalFunction(DigraphJoin,

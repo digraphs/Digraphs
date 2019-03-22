@@ -97,6 +97,7 @@ function(G, gens)
   adj := function(x, y)
     return x ^ -1 * y in gens;
   end;
+
   D := Digraph(G, AsList(G), OnRight, adj);
   SetFilterObj(D, IsCayleyDigraph);
   SetGroupOfCayleyDigraph(D, G);
@@ -197,7 +198,6 @@ function(G, edges, n)
 
   D := DigraphNC(out);
   SetDigraphGroup(D, G);
-
   return D;
 end);
 

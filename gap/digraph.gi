@@ -241,6 +241,194 @@ function(record)
   if IsBound(labels) then
     SetDigraphVertexLabels(D, labels);
   fi;
+end);
+
+InstallMethod(ConvertToImmutableDigraphNC,
+"for a dense list of out-neighbours",
+[IsRecord],
+function(record)
+  return MakeImmutableDigraph(ConvertToMutableDigraphNC(record));
+end);
+
+InstallMethod(MutableDigraphNC, "for a dense mutable list of out-neighbours",
+[IsDenseList and IsMutable],
+function(list)
+  return ConvertToMutableDigraphNC(StructuralCopy(list));
+end);
+
+InstallMethod(MutableDigraphNC, "for a dense list of out-neighbours",
+[IsDenseList],
+function(list)
+  Assert(1, not IsMutable(list));
+  return ConvertToMutableDigraphNC(List(list, ShallowCopy));
+end);
+
+InstallMethod(MutableDigraphNC, "for a record", [IsRecord],
+function(record)
+  local out;
+  Assert(1, IsBound(record.DigraphNrVertices));
+  Assert(1, IsBound(record.DigraphRange));
+  Assert(1, IsBound(record.DigraphSource));
+  out := DIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE(record.DigraphNrVertices,
+                                                  record.DigraphSource,
+                                                  record.DigraphRange);
+  return ConvertToMutableDigraphNC(out);
+end);
+
+InstallMethod(DigraphNC, "for a record", [IsRecord],
+function(record)
+  local D, nm;
+  Assert(1, IsBound(record.DigraphNrVertices));
+  Assert(1, IsBound(record.DigraphRange));
+  Assert(1, IsBound(record.DigraphSource));
+  for nm in RecNames(record) do
+    if not nm in ["DigraphRange", "DigraphSource", "DigraphNrVertices"] then
+      Info(InfoWarning, 1, "ignoring record component \"", nm, "\"!");
+    fi;
+  od;
+  D := MakeImmutableDigraph(MutableDigraphNC(record));
+  SetDigraphSource(D, StructuralCopy(record.DigraphSource));
+  SetDigraphRange(D, StructuralCopy(record.DigraphRange));
+  return D;
+end);
+
+InstallMethod(DigraphNC, "for a dense list of adjacencies", [IsDenseList],
+function(list)
+  return MakeImmutableDigraph(MutableDigraphNC(list));
+end);
+
+########################################################################
+# 3. Digraph copies
+########################################################################
+
+InstallMethod(DigraphCopy, "for a dense digraph", [IsDenseDigraphRep],
+function(D)
+  local copy;
+  copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
+  SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
+  SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
+  return copy;
+end);
+
+InstallMethod(DigraphMutableCopy, "for a dense digraph", [IsDenseDigraphRep],
+function(D)
+  local copy;
+  copy := ConvertToMutableDigraphNC(OutNeighboursMutableCopy(D));
+  SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
+  SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
+  return copy;
+end);
+
+InstallMethod(DigraphCopyIfMutable, "for a mutable digraph",
+[IsMutableDigraph], DigraphMutableCopy);
+
+InstallMethod(DigraphCopyIfMutable, "for an immutable digraph",
+[IsImmutableDigraph], IdFunc);
+
+InstallMethod(DigraphCopyIfImmutable, "for a mutable digraph",
+[IsMutableDigraph], IdFunc);
+
+InstallMethod(DigraphCopyIfImmutable, "for an immutable digraph",
+[IsImmutableDigraph], DigraphMutableCopy);
+
+########################################################################
+# 4. MakeImmutableDigraph
+########################################################################
+
+InstallMethod(MakeImmutableDigraph, "for a mutable dense digraph",
+[IsMutableDigraph and IsDenseDigraphRep],
+function(D)
+  MakeImmutable(D);
+  SetFilterObj(D, IsAttributeStoringRep);
+  SetFilterObj(D, IsImmutableDigraph);
+  MakeImmutable(OutNeighbours(D));
+  return D;
+end);
+
+########################################################################
+# 5. Digraph constructors
+########################################################################
+
+InstallMethod(MutableDigraph, "for a record", [IsRecord],
+function(record)
+  local D, cmp, labels, i;
+
+  if IsGraph(record) then
+    # IsGraph is a function not a filter, so we cannot have a separate method
+    D := MutableDigraphNC(List(Vertices(record), x -> Adjacency(record, x)));
+    if IsBound(record.names) then
+      SetDigraphVertexLabels(D, StructuralCopy(record.names));
+    fi;
+    return D;
+  fi;
+
+  if not (IsBound(record.DigraphSource)
+          and IsBound(record.DigraphRange)
+          and (IsBound(record.DigraphVertices) or
+               IsBound(record.DigraphNrVertices))) then
+    ErrorNoReturn("the argument <record> must be a record with components ",
+                  "'DigraphSource', 'DigraphRange', and either ",
+                  "'DigraphVertices' or 'DigraphNrVertices' (but not both),");
+  elif not IsList(record.DigraphSource)
+      or not IsList(record.DigraphRange) then
+    ErrorNoReturn("the record components 'DigraphSource' and 'DigraphRange' ",
+                  "must be lists,");
+  elif Length(record.DigraphSource) <> Length(record.DigraphRange) then
+    ErrorNoReturn("the record components 'DigraphSource' and 'DigraphRange' ",
+                  "must have equal length,");
+  elif IsBound(record.DigraphVertices)
+      and IsBound(record.DigraphNrVertices) then
+    ErrorNoReturn("the record must only have one of the components ",
+                  "'DigraphVertices' and 'DigraphNrVertices', not both,");
+  fi;
+
+  if IsBound(record.DigraphNrVertices) then
+    if (not IsInt(record.DigraphNrVertices))
+        or record.DigraphNrVertices < 0 then
+      ErrorNoReturn("the record component 'DigraphNrVertices' ",
+                    "must be a non-negative integer,");
+    fi;
+    cmp := x -> x < record.DigraphNrVertices + 1 and x > 0;
+  else
+    Assert(1, IsBound(record.DigraphVertices));
+    if not IsList(record.DigraphVertices) then
+      ErrorNoReturn("the record component 'DigraphVertices' must be a list,");
+    elif not IsDuplicateFreeList(record.DigraphVertices) then
+      ErrorNoReturn("the record component 'DigraphVertices' must be ",
+                    "duplicate-free,");
+    fi;
+    cmp := x -> x in record.DigraphVertices;
+    record.DigraphNrVertices := Length(record.DigraphVertices);
+  fi;
+
+  if not ForAll(record.DigraphSource, x -> cmp(x)) then
+    ErrorNoReturn("the record component 'DigraphSource' is invalid,");
+  elif not ForAll(record.DigraphRange, x -> cmp(x)) then
+    ErrorNoReturn("the record component 'DigraphRange' is invalid,");
+  fi;
+
+  record := StructuralCopy(record);
+
+  # Rewrite the vertices to numbers
+  if IsBound(record.DigraphVertices) then
+    if record.DigraphVertices <> [1 .. record.DigraphNrVertices] then
+      for i in [1 .. Length(record.DigraphSource)] do
+        record.DigraphRange[i]  := Position(record.DigraphVertices,
+                                            record.DigraphRange[i]);
+        record.DigraphSource[i] := Position(record.DigraphVertices,
+                                            record.DigraphSource[i]);
+      od;
+      labels := record.DigraphVertices;
+      Unbind(record.DigraphVertices);
+    fi;
+  fi;
+
+  record.DigraphRange := Permuted(record.DigraphRange,
+                                  Sortex(record.DigraphSource));
+  D := MutableDigraphNC(record);
+  if IsBound(labels) then
+    SetDigraphVertexLabels(D, labels);
+  fi;
   return D;
 end);
 
@@ -287,9 +475,6 @@ function(list)
   return MakeImmutableDigraph(MutableDigraph(list));
 end);
 
-# There are no mutable digraphs with an adjacency function, since deleting
-# vertices, or edges or whatever, would render the function incompatible with
-# the object.
 InstallMethod(Digraph, "for a list and function", [IsList, IsFunction],
 function(list, func)
   local D;

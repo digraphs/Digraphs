@@ -18,7 +18,8 @@ DeclareAttribute("DigraphNrEdges", IsDigraph);
 DeclareAttribute("DigraphRange", IsDigraph);
 DeclareAttribute("DigraphSource", IsDigraph);
 DeclareAttribute("DigraphTopologicalSort", IsDigraph);
-DeclareAttribute("DigraphDual", IsDigraph);
+DeclareOperation("DigraphDual", [IsDigraph]);
+DeclareAttribute("DigraphDualAttr", IsImmutableDigraph);
 DeclareAttribute("DigraphShortestDistances", IsDigraph);
 DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
 DeclareAttribute("DigraphNrStronglyConnectedComponents", IsDigraph);
@@ -26,7 +27,7 @@ DeclareAttribute("DigraphConnectedComponents", IsDigraph);
 DeclareAttribute("DIGRAPHS_Bipartite", IsDigraph);
 DeclareAttribute("DigraphBicomponents", IsDigraph);
 
-DeclareAttribute("OutNeighbours", IsDigraph);
+DeclareOperation("OutNeighbours", [IsDigraph]);
 DeclareSynonymAttr("OutNeighbors", OutNeighbours);
 DeclareAttribute("InNeighbours", IsDigraph);
 DeclareSynonymAttr("InNeighbors", InNeighbours);
@@ -52,9 +53,12 @@ DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
 DeclareAttribute("ArticulationPoints", IsDigraph);
 DeclareSynonymAttr("CutVertices", ArticulationPoints);
 
-DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
-DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
-DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
+DeclareOperation("DigraphSymmetricClosure", [IsDigraph]);
+DeclareAttribute("DigraphSymmetricClosureAttr", IsImmutableDigraph);
+DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
+DeclareAttribute("DigraphReflexiveTransitiveClosureAttr", IsDigraph);
+DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
+DeclareAttribute("DigraphTransitiveClosureAttr", IsDigraph);
 DeclareGlobalFunction("DigraphTransitiveClosureNC");
 
 DeclareAttribute("ChromaticNumber", IsDigraph);
@@ -64,10 +68,14 @@ DeclareAttribute("DigraphAdjacencyFunction", IsDigraph);
 
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("BooleanAdjacencyMatrix", IsDigraph);
-DeclareAttribute("ReducedDigraph", IsDigraph);
-DeclareAttribute("MaximalSymmetricSubdigraph", IsDigraph);
-DeclareAttribute("MaximalAntiSymmetricSubdigraph", IsDigraph);
-DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoops", IsDigraph);
+DeclareOperation("ReducedDigraph", [IsDigraph]);
+DeclareAttribute("ReducedDigraphAttr", IsImmutableDigraph);
+DeclareOperation("MaximalSymmetricSubdigraph", [IsDigraph]);
+DeclareAttribute("MaximalSymmetricSubdigraphAttr", IsDigraph);
+DeclareOperation("MaximalAntiSymmetricSubdigraph", [IsDigraph]);
+DeclareAttribute("MaximalAntiSymmetricSubdigraphAttr", IsDigraph);
+DeclareOperation("MaximalSymmetricSubdigraphWithoutLoops", [IsDigraph]);
+DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoopsAttr", IsDigraph);
 DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
 
 DeclareAttribute("UndirectedSpanningTree", IsDigraph);
