@@ -3,6 +3,8 @@
 
 ## README
 
+TESTING APPVEYOR
+
 ### Digraphs package for GAP
 
 #### Copyright (C) 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael Torpey, Wilf A. Wilson et al.
