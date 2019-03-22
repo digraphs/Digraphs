@@ -1427,8 +1427,8 @@ gap> DigraphLayers(gr, 3);
 gap> DigraphLayers(gr, 4);
 [ [ 4 ], [ 3, 1, 8 ], [ 2, 7, 5, 6 ] ]
 gap> DigraphLayers(gr, 10);
-Error, the 2nd argument (a vertex) must be a vertex of the first argument (a d\
-igraph),
+Error, the 2nd argument (a vertex) must be a vertex of the 1st argument (a dig\
+raph),
 gap> DigraphShortestDistance(gr, [2, 5, 6], [3, 7]);
 1
 gap> DigraphShortestDistance(gr, [2], DigraphLayers(gr, 2)[3]);

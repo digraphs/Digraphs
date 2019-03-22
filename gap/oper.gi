@@ -1541,7 +1541,7 @@ function(D, v)
 
   # TODO: make use of known distances matrix
   if v > DigraphNrVertices(D) then
-    ErrorNoReturn("the 2nd argument (a vertex) must be a vertex of the first ",
+    ErrorNoReturn("the 2nd argument (a vertex) must be a vertex of the 1st ",
                   "argument (a digraph),");
   fi;
 

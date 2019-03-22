@@ -136,9 +136,9 @@ function(D, v)
   local pos, gens, sch, trace, word, stabs;
 
   if v > DigraphNrVertices(D) then
-    ErrorNoReturn("Digraphs: DigraphStabilizer: usage,\n",
-                  "the second argument must not exceed ",
-                  DigraphNrVertices(D), ",");
+    ErrorNoReturn("the 2nd argument (v) must not exceed ",
+                  DigraphNrVertices(D), ", the number of vertices of the ",
+                  "digraph in the 1st argument (D),");
   fi;
 
   pos := DigraphSchreierVector(D)[v];

@@ -261,9 +261,9 @@ Error, the argument must be a list of pairs of positive integers,
 gap> DigraphByEdges([["nonsense"]]);
 Error, the argument must be a list of pairs,
 gap> DigraphByEdges([["a", "b"]], 2);
-Error, the first argument must be a list of pairs of pos ints,
+Error, the 1st argument must be a list of pairs of pos ints,
 gap> DigraphByEdges([[1, 2, 3]], 3);
-Error, the first argument must be a list of pairs,
+Error, the 1st argument must be a list of pairs,
 gap> gr := DigraphByEdges(DigraphEdges(gr), 10);
 <immutable digraph with 10 vertices, 17 edges>
 gap> gr := DigraphByEdges([[1, 2]]);
@@ -271,7 +271,7 @@ gap> gr := DigraphByEdges([[1, 2]]);
 gap> gr := DigraphByEdges([[2, 1]]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> gr := DigraphByEdges([[1, 2]], 1);
-Error, the first argument must not contain values greater than 1,
+Error, the 1st argument must not contain values greater than 1,
 gap> gr := DigraphByEdges([], 3);
 <immutable digraph with 3 vertices, 0 edges>
 gap> gr := DigraphByEdges([]);
@@ -420,7 +420,7 @@ Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] )
 gap> AsDigraph(g);
 <immutable digraph with 8 vertices, 8 edges>
 gap> AsDigraph(g, -1);
-Error, the second argument should be a non-negative integer,
+Error, the 2nd argument should be a non-negative integer,
 gap> AsDigraph(g, 10);
 <immutable digraph with 10 vertices, 10 edges>
 gap> AsDigraph(g, 6);
@@ -450,9 +450,9 @@ Error, no 1st choice method found for `RandomDigraph' on 1 arguments
 gap> RandomDigraph(4, 0);
 <immutable digraph with 4 vertices, 0 edges>
 gap> RandomDigraph(10, 1.01);
-Error, the second argument must be between 0 and 1,
+Error, the 2nd argument must be between 0 and 1,
 gap> RandomDigraph(10, -0.01);
-Error, the second argument must be between 0 and 1,
+Error, the 2nd argument must be between 0 and 1,
 gap> RandomDigraph(10, 1 / 10);;
 
 #  RandomMultiDigraph
@@ -1190,16 +1190,14 @@ true
 gap> di := Digraph([[1], [2]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> S := AsSemigroup(IsPartialPermSemigroup, di);;
-Error, the second argument (a digraph) must be a join or  meet semilattice,
+Error, the 2nd argument (a digraph) must be a join or  meet semilattice,
 gap> S := AsMonoid(IsPartialPermMonoid, di);;
-Error, Digraphs: AsMonoid usage,
-the second argument must be a lattice digraph,
+Error, the 2nd argument must be a lattice digraph,
 gap> S := AsSemigroup(IsTransformation, di);;
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 2nd choice method found for `AsSemigroup' on 2 arguments
 gap> S := AsMonoid(IsTransformation, di);;
-Error, Digraphs: AsMonoid usage,
-the first argument must be IsPartialPermMonoid or IsPartialPermSemigroup,
+Error, the 1st argument must be IsPartialPermMonoid or IsPartialPermSemigroup,
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);

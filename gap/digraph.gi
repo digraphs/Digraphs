@@ -786,13 +786,13 @@ InstallMethod(MutableDigraphByEdges,
 function(edges, n)
   local list, edge;
   if not Length(edges[1]) = 2 then
-    ErrorNoReturn("the first argument must be a list of pairs,");
+    ErrorNoReturn("the 1st argument must be a list of pairs,");
   elif not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then
-    ErrorNoReturn("the first argument must be a list of pairs of pos ints,");
+    ErrorNoReturn("the 1st argument must be a list of pairs of pos ints,");
   fi;
   for edge in edges do
     if edge[1] > n or edge[2] > n then
-      ErrorNoReturn("the first argument must not contain values greater than ",
+      ErrorNoReturn("the 1st argument must not contain values greater than ",
                     n, ",");
     fi;
   od;
@@ -905,7 +905,7 @@ InstallMethod(AsMutableDigraph, "for a transformation and an integer",
 function(f, n)
   local list, x, i;
   if n < 0 then
-    ErrorNoReturn("the second argument should be a non-negative integer,");
+    ErrorNoReturn("the 2nd argument should be a non-negative integer,");
   fi;
 
   list := EmptyPlist(n);
@@ -970,7 +970,7 @@ function(filt, D)
       return AsSemigroup(IsPartialPermSemigroup,
                          DigraphReverse(DigraphCopyIfMutable(D)));
     fi;
-    ErrorNoReturn("the second argument (a digraph) must be a join or ",
+    ErrorNoReturn("the 2nd argument (a digraph) must be a join or ",
                   " meet semilattice,");
   fi;
 
@@ -1001,16 +1001,14 @@ function(filt, D)
   return Semigroup(List(gens, g -> PartialPerm(im[g], im[g])));
 end);
 
-InstallMethod(AsMonoid,
-"for a function and a digraph", [IsFunction, IsDigraph],
+InstallMethod(AsMonoid, "for a function and a digraph",
+[IsFunction, IsDigraph],
 function(filt, digraph)
   if not (filt = IsPartialPermMonoid or filt = IsPartialPermSemigroup) then
-      ErrorNoReturn("Digraphs: AsMonoid usage,\n",
-                    "the first argument must be IsPartialPermMonoid or ",
+      ErrorNoReturn("the 1st argument must be IsPartialPermMonoid or ",
                     "IsPartialPermSemigroup,");
   elif not IsLatticeDigraph(digraph) then
-      ErrorNoReturn("Digraphs: AsMonoid usage,\n",
-                    "the second argument must be a lattice digraph,");
+      ErrorNoReturn("the 2nd argument must be a lattice digraph,");
   fi;
   return AsSemigroup(IsPartialPermSemigroup, digraph);
 end);
@@ -1034,7 +1032,7 @@ InstallMethod(RandomMutableDigraph, "for a positive integer and a float",
 [IsPosInt, IsFloat],
 function(n, p)
   if p < 0.0 or 1.0 < p then
-    ErrorNoReturn("the second argument must be between 0 and 1,");
+    ErrorNoReturn("the 2nd argument must be between 0 and 1,");
   fi;
   return MutableDigraphNC(RANDOM_DIGRAPH(n, Int(p * 10000)));
 end);

@@ -238,7 +238,7 @@ Error, the 2nd argument must be a duplicate-free list of vertices of the 1st a\
 rgument (digraph),
 gap> DigraphMaximalClique(gr, [1], [1, 1]);
 Error, the optional 3rd argument (exclude) must be a duplicate-free list of ve\
-rtices of the first argument (digraph),
+rtices of the 1st argument (digraph),
 gap> DigraphMaximalClique(gr, [1], [1], 0);
 Error, the optional 4th argument (size) must be a positive integer,
 gap> gr := EmptyDigraph(5);;
