@@ -99,9 +99,9 @@ end);
 
 InstallMethod(IO_Pickle, "for a digraph with known digraph group",
 [IsFile, IsDigraph and HasDigraphGroup],
-function(file, gr)
+function(file, D)
   local g, out;
-  g := DigraphGroup(gr);
+  g := DigraphGroup(D);
   if IsTrivial(g) then
     TryNextMethod();
   fi;
@@ -109,13 +109,13 @@ function(file, gr)
     return IO_Error;
   fi;
   out := [GeneratorsOfGroup(g),
-          RepresentativeOutNeighbours(gr),
-          DigraphSchreierVector(gr)];
+          RepresentativeOutNeighbours(D),
+          DigraphSchreierVector(D)];
   return IO_Pickle(file, out);
 end);
 
 IO_Unpicklers.DIGG := function(file)
-  local list, gens, rep_out, sch, out, trace, word, digraph, i, w;
+  local list, gens, rep_out, sch, out, trace, word, D, i, w;
 
   list := IO_Unpickle(file);
   if list = IO_Error then
@@ -140,21 +140,20 @@ IO_Unpicklers.DIGG := function(file)
     od;
   od;
 
-  digraph := MutableDigraphNC(out);
-
-  SetDigraphGroup(digraph, Group(gens));
-  SetDigraphSchreierVector(digraph, sch);
-  SetRepresentativeOutNeighbours(digraph, rep_out);
-  return digraph;
+  D := MutableDigraphNC(out);
+  SetDigraphGroup(D, Group(gens));
+  SetDigraphSchreierVector(D, sch);
+  SetRepresentativeOutNeighbours(D, rep_out);
+  return D;
 end;
 
 InstallMethod(IO_Pickle, "for a digraph",
 [IsFile, IsDigraph],
-function(file, gr)
+function(file, D)
   if IO_Write(file, "DIGT") = fail then
     return IO_Error;
   fi;
-  return IO_Pickle(file, OutNeighbours(gr));
+  return IO_Pickle(file, OutNeighbours(D));
 end);
 
 IO_Unpicklers.DIGT := function(file)
@@ -230,8 +229,8 @@ function(encoder)
     return IO_Pickle;
   fi;
   return
-    function(file, digraph)
-      return IO_WriteLine(file, encoder(digraph));
+    function(file, D)
+      return IO_WriteLine(file, encoder(D));
     end;
 end);
 
@@ -462,7 +461,7 @@ end);
 InstallGlobalFunction(WriteDigraphs,
 function(arg)
   local name, digraphs, encoder, mode, splitname, compext, g6sum, s6sum, v, e,
-  dg6sum, ds6sum, file, digraph, i;
+        dg6sum, ds6sum, file, D, i;
 
   # defaults
   encoder := fail;
@@ -529,9 +528,9 @@ function(arg)
           # Find the sum of length estimates using Graph6 and Sparse6
           g6sum := 0;
           s6sum := 0;
-          for digraph in digraphs do
-            v := DigraphNrVertices(digraph);
-            e := DigraphNrEdges(digraph);
+          for D in digraphs do
+            v := DigraphNrVertices(D);
+            e := DigraphNrEdges(D);
             g6sum := g6sum + (v * (v - 1) / 2);
             s6sum := s6sum + (e / 2 * (Log2Int(v - 1) + 2) * 3 / 2);
           od;
@@ -551,9 +550,9 @@ function(arg)
           # Find the sum of length estimates using Digraph6 and DiSparse6
           dg6sum := 0;
           ds6sum := 0;
-          for digraph in digraphs do
-            v := DigraphNrVertices(digraph);
-            e := DigraphNrEdges(digraph);
+          for D in digraphs do
+            v := DigraphNrVertices(D);
+            e := DigraphNrEdges(D);
             dg6sum := dg6sum + v ^ 2;
             ds6sum := ds6sum + (e * (Log2Int(v) + 2) * 3 / 2);
           od;
@@ -1355,11 +1354,11 @@ end);
 # 4. Encoders
 ################################################################################
 
-InstallMethod(WriteDIMACSDigraph, "for a digraph", [IsString, IsDigraph],
-function(name, digraph)
+InstallMethod(WriteDIMACSDigraph, "for a D", [IsString, IsDigraph],
+function(name, D)
   local file, n, verts, nbs, nr_loops, m, labels, i, j;
 
-  if not IsSymmetricDigraph(digraph) then
+  if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the 2nd argument must be a symmetric digraph,");
   fi;
 
@@ -1368,12 +1367,12 @@ function(name, digraph)
     ErrorNoReturn("cannot open the file given as the 1st argument,");
   fi;
 
-  n := DigraphNrVertices(digraph);
-  verts := DigraphVertices(digraph);
-  nbs := OutNeighbours(digraph);
+  n := DigraphNrVertices(D);
+  verts := DigraphVertices(D);
+  nbs := OutNeighbours(D);
 
   nr_loops := 0;
-  if not HasDigraphHasLoops(digraph) or DigraphHasLoops(digraph) then
+  if not HasDigraphHasLoops(D) or DigraphHasLoops(D) then
     for i in verts do
       for j in nbs[i] do
         if i = j then
@@ -1381,9 +1380,9 @@ function(name, digraph)
         fi;
       od;
     od;
-    SetDigraphHasLoops(digraph, not nr_loops = 0);
+    SetDigraphHasLoops(D, not nr_loops = 0);
   fi;
-  m := ((DigraphNrEdges(digraph) - nr_loops) / 2) + nr_loops;
+  m := ((DigraphNrEdges(D) - nr_loops) / 2) + nr_loops;
 
   # Problem definition
   IO_WriteLine(file, Concatenation("p edge ", String(n), " ", String(m)));
@@ -1400,7 +1399,7 @@ function(name, digraph)
 
   # Vertex labels
   if n > 0 then
-    labels := DigraphVertexLabels(digraph);
+    labels := DigraphVertexLabels(D);
     if not (IsHomogeneousList(labels) and IsInt(labels[1])) then
       Info(InfoDigraphs, 1,
            "Only integer vertex labels are supported by the DIMACS format.");
@@ -1421,9 +1420,9 @@ end);
 
 InstallGlobalFunction(DigraphPlainTextLineEncoder,
 function(delimiter1, delimiter2, offset)
-  return function(digraph)
+  return function(D)
     local str, i, edges;
-    edges := DigraphEdges(digraph);
+    edges := DigraphEdges(D);
 
     if Length(edges) = 0 then
       return "";
@@ -1441,7 +1440,7 @@ function(delimiter1, delimiter2, offset)
 end);
 
 InstallGlobalFunction(WritePlainTextDigraph,
-function(name, digraph, delimiter, offset)
+function(name, D, delimiter, offset)
   local file, edge;
 
   if not IsString(name) then
@@ -1458,7 +1457,7 @@ function(name, digraph, delimiter, offset)
     ErrorNoReturn("cannot open the file given as the 1st argument,");
   fi;
 
-  for edge in DigraphEdges(digraph) do
+  for edge in DigraphEdges(D) do
     IO_WriteLine(file, Concatenation(String(edge[1] + offset),
                                      delimiter,
                                      String(edge[2] + offset)));
@@ -1468,18 +1467,18 @@ end);
 
 InstallMethod(Graph6String, "for a digraph",
 [IsDigraph],
-function(graph)
+function(D)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
-  if (IsMultiDigraph(graph)
-      or not IsSymmetricDigraph(graph)
-      or DigraphHasLoops(graph)) then
+  if (IsMultiDigraph(D)
+      or not IsSymmetricDigraph(D)
+      or DigraphHasLoops(D)) then
     ErrorNoReturn("the argument must be a symmetric digraph with no loops or ",
                   "multiple edges,");
   fi;
 
   list := [];
-  adj := OutNeighbours(graph);
-  n := Length(DigraphVertices(graph));
+  adj := OutNeighbours(D);
+  n := Length(DigraphVertices(D));
 
   # First write the number of vertices
   lenlist := DIGRAPHS_Graph6Length(n);
@@ -1492,7 +1491,7 @@ function(graph)
   # Find adjacencies (non-directed)
   tablen := n * (n - 1) / 2;
   blist := BlistList([1 .. tablen + 6], []);
-  for i in DigraphVertices(graph) do
+  for i in DigraphVertices(D) do
     for j in adj[i] do
       # Loops not allowed
       if j > i then
@@ -1522,7 +1521,7 @@ end);
 
 InstallMethod(Digraph6String, "for a digraph",
 [IsDigraph],
-function(digraph)
+function(D)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   # NOTE: this package originally used a version of digraph6 that reads down
   # the columns of an adjacency matrix, and appends a '+' to the start.  This
@@ -1531,8 +1530,8 @@ function(digraph)
   # DigraphFromDigraph6String, but can no longer be written by this function.
 
   list := [];
-  adj := OutNeighbours(digraph);
-  n := Length(DigraphVertices(digraph));
+  adj := OutNeighbours(D);
+  n := Length(DigraphVertices(D));
 
   # First write the special character '&'
   Add(list, -25);
@@ -1540,7 +1539,7 @@ function(digraph)
   # Now write the number of vertices
   lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorNoReturn("the argument must be a digraph with between 0 and ",
+    ErrorNoReturn("the argument must be a D with between 0 and ",
                   "68719476736 vertices,");
   fi;
   Append(list, lenlist);
@@ -1548,7 +1547,7 @@ function(digraph)
   # Find adjacencies
   tablen := n ^ 2;
   blist := BlistList([1 .. tablen + 6], []);
-  for i in DigraphVertices(digraph) do
+  for i in DigraphVertices(D) do
     for j in adj[i] do
       blist[j + n * (i - 1)] := true;
     od;
@@ -1573,15 +1572,15 @@ end);
 
 InstallMethod(Sparse6String, "for a digraph",
 [IsDigraph],
-function(graph)
+function(D)
   local list, n, lenlist, adj, nredges, k, blist, v, nextbit, AddBinary, i, j,
         bitstopad, pos, block;
-  if not IsSymmetricDigraph(graph) then
+  if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the argument must be a symmetric digraph,");
   fi;
 
   list := [];
-  n := Length(DigraphVertices(graph));
+  n := Length(DigraphVertices(D));
 
   # First write the special character ':'
   Add(list, -5);
@@ -1595,8 +1594,8 @@ function(graph)
   Append(list, lenlist);
 
   # Get the out-neighbours - half these edges will be discarded
-  adj := OutNeighbours(graph);
-  nredges := DigraphNrEdges(graph);
+  adj := OutNeighbours(D);
+  nredges := DigraphNrEdges(D);
 
   # k is the number of bits in a vertex label
   if n > 1 then
@@ -1678,15 +1677,14 @@ function(graph)
   return List(list, i -> CharInt(i + 63));
 end);
 
-InstallMethod(DiSparse6String, "for a digraph",
-[IsDigraph],
-function(graph)
+InstallMethod(DiSparse6String, "for a digraph", [IsDigraph],
+function(D)
   local list, n, lenlist, adj, source_i, range_i, source_d, range_d, len1,
   len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad,
   pos, block, i, j;
 
   list := [];
-  n := Length(DigraphVertices(graph));
+  n := Length(DigraphVertices(D));
 
   # First write the special character '.'
   list[1] := -17;
@@ -1700,14 +1698,14 @@ function(graph)
   Append(list, lenlist);
 
   # Separate edges into increasing and decreasing
-  adj := OutNeighbours(graph);
+  adj := OutNeighbours(D);
   source_i := [];
   range_i := [];
   source_d := [];
   range_d := [];
   len1 := 1;
   len2 := 1;
-  for i in DigraphVertices(graph) do
+  for i in DigraphVertices(D) do
     for j in adj[i] do
       if i <= j then
         source_i[len1] := i - 1;
@@ -1836,10 +1834,7 @@ function(graph)
   return List(list, i -> CharInt(i + 63));
 end);
 
-InstallMethod(PlainTextString, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local encoder;
-  encoder := DigraphPlainTextLineEncoder("  ", " ", -1);
-  return encoder(digraph);
+InstallMethod(PlainTextString, "for a digraph", [IsDigraph],
+function(D)
+  return DigraphPlainTextLineEncoder("  ", " ", -1)(D);
 end);

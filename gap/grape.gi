@@ -154,11 +154,11 @@ end);
 # InstallMethod(PrintString,
 # "for a digraph with group and representative out neighbours",
 # [IsDigraph and HasDigraphGroup and HasRepresentativeOutNeighbours],
-# function(digraph)
-#   return Concatenation("Digraph( ",
-#                        PrintString(DigraphGroup(digraph)), ", ",
-#                        PrintString(DigraphVertices(digraph)), ", ",
-#                        PrintString(RepresentativeOutNeighbours(digraph)), ")");
+# function(D)
+#   return Concatenation("D( ",
+#                        PrintString(DigraphGroup(D)), ", ",
+#                        PrintString(DigraphVertices(D)), ", ",
+#                        PrintString(RepresentativeOutNeighbours(D)), ")");
 # end);
 
 # Returns the digraph with vertex - set {1, .. ., n} and edge-set

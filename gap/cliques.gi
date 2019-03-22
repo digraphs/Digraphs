@@ -254,7 +254,7 @@ function(arg)
     if not IsHomogeneousList(include) or not IsDuplicateFreeList(include)
         or not IsSubset(DigraphVertices(D), include) then
       ErrorNoReturn("the 2nd argument must be a duplicate-free list of ",
-                    "vertices of the 1st argument (digraph),");
+                    "vertices of the 1st argument (D),");
     fi;
   else
     include := [];
@@ -267,7 +267,7 @@ function(arg)
         or not IsSubset(DigraphVertices(D), exclude) then
       ErrorNoReturn("the optional 3rd argument (exclude) must be a ",
                     "duplicate-free list of vertices of the 1st argument ",
-                    "(digraph),");
+                    "(D),");
     fi;
   else
     exclude := [];

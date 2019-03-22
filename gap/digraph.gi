@@ -1003,14 +1003,14 @@ end);
 
 InstallMethod(AsMonoid, "for a function and a digraph",
 [IsFunction, IsDigraph],
-function(filt, digraph)
+function(filt, D)
   if not (filt = IsPartialPermMonoid or filt = IsPartialPermSemigroup) then
       ErrorNoReturn("the 1st argument must be IsPartialPermMonoid or ",
                     "IsPartialPermSemigroup,");
-  elif not IsLatticeDigraph(digraph) then
+  elif not IsLatticeDigraph(D) then
       ErrorNoReturn("the 2nd argument must be a lattice digraph,");
   fi;
-  return AsSemigroup(IsPartialPermSemigroup, digraph);
+  return AsSemigroup(IsPartialPermSemigroup, D);
 end);
 
 ########################################################################

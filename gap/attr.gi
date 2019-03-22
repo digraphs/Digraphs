@@ -106,7 +106,7 @@ function(D)
   nr := DigraphNrVertices(D);
 
   if DigraphHasLoops(D) then
-    ErrorNoReturn("the 1st argument (D) must not have loops,");
+    ErrorNoReturn("the 1st argument (D) must be a digraph with no loops,");
   elif nr = 0 then
     return 0;  # chromatic number = 0 iff <D> has 0 verts
   elif IsNullDigraph(D) then
@@ -304,7 +304,8 @@ function(D)
   local verts, outs, i;
 
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must not have multiple edges,");
+    ErrorNoReturn("the argument (D) must be a digraph without multiple ",
+                  "edges,");
   fi;
 
   verts := DigraphVertices(D);
@@ -403,13 +404,13 @@ InstallMethod(AdjacencyMatrix, "for a digraph", [IsDigraph], ADJACENCY_MATRIX);
 
 InstallMethod(BooleanAdjacencyMatrix, "for a dense digraph",
 [IsDenseDigraphRep],
-function(gr)
+function(D)
   local n, nbs, mat, i, j;
 
-  n := DigraphNrVertices(gr);
-  nbs := OutNeighbours(gr);
-  mat := List(DigraphVertices(gr), x -> BlistList([1 .. n], []));
-  for i in DigraphVertices(gr) do
+  n := DigraphNrVertices(D);
+  nbs := OutNeighbours(D);
+  mat := List(DigraphVertices(D), x -> BlistList([1 .. n], []));
+  for i in DigraphVertices(D) do
     for j in nbs[i] do
       mat[i][j] := true;
     od;
