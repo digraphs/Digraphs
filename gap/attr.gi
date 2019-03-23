@@ -8,6 +8,9 @@
 #############################################################################
 ##
 
+# TODO double-check that all methods in this file that return a digraph, don't
+# return a copy if the argument is a mutable digraph.
+
 InstallMethod(DigraphNrVertices, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   IsValidDigraph(D);
@@ -333,6 +336,7 @@ function(D)
   if HasDigraphGroup(D) then
     SetDigraphGroup(C, DigraphGroup(D));
   fi;
+  SetDigraphDualAttr(D, C);
   return C;
 end);
 
@@ -526,6 +530,7 @@ end);
 
 InstallMethod(InDegrees, "for a digraph with in neighbours",
 [IsDigraph and HasInNeighbours],
+2,  # to beat the method for IsDenseDigraphRep
 function(D)
   local inn, degs, i;
   IsValidDigraph(D);
@@ -618,6 +623,7 @@ end);
 
 InstallMethod(DigraphSources, "for a digraph with in-neighbours",
 [IsDigraph and HasInNeighbours],
+2,  # to beat the method for IsDenseDigraphRep
 function(D)
   local inn, sources, count, i;
   IsValidDigraph(D);
@@ -654,6 +660,7 @@ end);
 
 InstallMethod(DigraphSinks, "for a digraph with out-degrees",
 [IsDigraph and HasOutDegrees],
+2,  # to beat the method for IsDenseDigraphRep
 function(D)
   local degs;
   IsValidDigraph(D);
@@ -1123,6 +1130,7 @@ end);
 InstallMethod(DigraphTransitiveClosure, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
+  local C;
   if HasDigraphTransitiveClosureAttr(D) then
     return DigraphTransitiveClosureAttr(D);
   fi;
@@ -1130,17 +1138,18 @@ function(D)
     ErrorNoReturn("the argument (D) must be a digraph with no multiple ",
                   "edges,");
   fi;
-  D := DigraphTransitiveClosure(DigraphMutableCopy(D));
-  D := MakeImmutableDigraph(D);
-  SetIsTransitiveDigraph(D, true);
-  SetDigraphVertexLabels(D, DigraphVertexLabels(D));
-  SetDigraphTransitiveClosureAttr(D, D);
-  return D;
+  C := DigraphTransitiveClosure(DigraphMutableCopy(D));
+  C := MakeImmutableDigraph(C);
+  SetIsTransitiveDigraph(C, true);
+  SetDigraphVertexLabels(C, DigraphVertexLabels(D));
+  SetDigraphTransitiveClosureAttr(D, C);
+  return C;
 end);
 
 InstallMethod(DigraphReflexiveTransitiveClosure, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
+  local C;
   if HasDigraphReflexiveTransitiveClosureAttr(D) then
     return DigraphReflexiveTransitiveClosureAttr(D);
   fi;
@@ -1148,13 +1157,13 @@ function(D)
     ErrorNoReturn("the argument (D) must be a digraph with no multiple ",
                   "edges,");
   fi;
-  D := DigraphReflexiveTransitiveClosure(DigraphMutableCopy(D));
-  D := MakeImmutableDigraph(D);
-  SetIsTransitiveDigraph(D, true);
-  SetIsReflexiveDigraph(D, true);
-  SetDigraphVertexLabels(D, DigraphVertexLabels(D));
-  SetDigraphReflexiveTransitiveClosureAttr(D, D);
-  return D;
+  C := DigraphReflexiveTransitiveClosure(DigraphMutableCopy(D));
+  C := MakeImmutableDigraph(C);
+  SetIsTransitiveDigraph(C, true);
+  SetIsReflexiveDigraph(C, true);
+  SetDigraphVertexLabels(C, DigraphVertexLabels(D));
+  SetDigraphReflexiveTransitiveClosureAttr(D, C);
+  return C;
 end);
 
 InstallMethod(DigraphTransitiveClosureAttr, "for an immutable digraph",
@@ -1411,27 +1420,21 @@ end);
 InstallMethod(MaximalSymmetricSubdigraphWithoutLoops, "for a mutable digraph",
 [IsMutableDigraph],
 function(D)
-  if not DigraphHasLoops(D) then
-    return MaximalSymmetricSubdigraph(D);
-  fi;
-  if HasIsSymmetricDigraph(D) and IsSymmetricDigraph(D) then
-    if IsMultiDigraph(D) then
-      return DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(D));
-    fi;
-    return DigraphRemoveLoops(D);
-  fi;
-  return DIGRAPHS_MaximalSymmetricSubdigraph(D, false);
+  return DigraphRemoveLoops(MaximalSymmetricSubdigraph(D));
 end);
 
 InstallMethod(MaximalSymmetricSubdigraphWithoutLoops,
 "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
+  local C;
   if HasMaximalSymmetricSubdigraphWithoutLoopsAttr(D) then
-    return MaximalSymmetricSubdigraphWithoutLoops(D);
+    return MaximalSymmetricSubdigraphWithoutLoopsAttr(D);
   fi;
-  D := DigraphMutableCopy(D);
-  return MakeImmutableDigraph(MaximalSymmetricSubdigraphWithoutLoops(D));
+  C := DigraphMutableCopy(D);
+  C := MakeImmutableDigraph(MaximalSymmetricSubdigraphWithoutLoops(C));
+  SetMaximalSymmetricSubdigraphWithoutLoopsAttr(D, C);
+  return C;
 end);
 
 InstallMethod(MaximalSymmetricSubdigraphWithoutLoopsAttr,
@@ -1441,88 +1444,102 @@ InstallMethod(MaximalSymmetricSubdigraphWithoutLoopsAttr,
 InstallMethod(MaximalSymmetricSubdigraph, "for a mutable digraph",
 [IsMutableDigraph],
 function(D)
-  if HasIsSymmetricDigraph(D) and IsSymmetricDigraph(D) then
-    if IsMultiDigraph(D) then
-      return DigraphRemoveAllMultipleEdges(D);
-    fi;
+  local out, inn, i;
+  DigraphRemoveAllMultipleEdges(D);
+  if IsSymmetricDigraph(D) then
     return D;
   fi;
-  return DIGRAPHS_MaximalSymmetricSubdigraph(D, true);
+  out := D!.OutNeighbours;
+  inn := InNeighbours(D);
+  for i in DigraphVertices(D) do
+    Sort(out[i]);
+    IntersectSet(out[i], inn[i]);
+  od;
+  return D;
 end);
 
 InstallMethod(MaximalSymmetricSubdigraph, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
-  local out;
+  local C;
   if HasMaximalSymmetricSubdigraphAttr(D) then
-    return MaximalSymmetricSubdigraph(D);
+    return MaximalSymmetricSubdigraphAttr(D);
   fi;
-  out := DigraphMutableCopy(D);
-  out := MakeImmutableDigraph(MaximalSymmetricSubdigraph(out));
-  SetDigraphVertexLabels(out, DigraphVertexLabels(D));
-  return out;
+  C := DigraphMutableCopy(D);
+  C := MakeImmutableDigraph(MaximalSymmetricSubdigraph(C));
+  SetDigraphVertexLabels(C, DigraphVertexLabels(D));
+  SetMaximalSymmetricSubdigraphAttr(D, C);
+  return C;
 end);
 
 InstallMethod(MaximalSymmetricSubdigraphAttr, "for an immutable digraph",
 [IsImmutableDigraph], MaximalSymmetricSubdigraph);
 
-InstallMethod(DIGRAPHS_MaximalSymmetricSubdigraph,
-"for a dense digraph and a bool",
-[IsDenseDigraphRep, IsBool],
-function(D, loops)
-  local out_nbs, in_nbs, new_out, new_in, i, j;
+InstallMethod(UndirectedSpanningForestAttr, [IsImmutableDigraph],
+UndirectedSpanningForest);
 
-  out_nbs := OutNeighbours(D);
-  in_nbs  := InNeighbours(D);
-  new_out := List(DigraphVertices(D), x -> []);
-  new_in  := List(DigraphVertices(D), x -> []);
-
-  for i in DigraphVertices(D) do
-    for j in Intersection(out_nbs[i], in_nbs[i]) do
-      if loops or i <> j then
-        Add(new_out[i], j);
-        Add(new_in[j], i);
-      fi;
-    od;
-  od;
-
-  return MutableDigraphNC(new_out);
-end);
-
-InstallMethod(UndirectedSpanningForest, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(UndirectedSpanningForest, "for a dense mutable digraph",
+[IsMutableDigraph and IsDenseDigraphRep],
 function(D)
-  local ConstructDigraph, out;
-  IsValidDigraph(D);
   if DigraphNrVertices(D) = 0 then
     return fail;
   fi;
-
-  if IsMutableDigraph(D) then
-    ConstructDigraph := ConvertToMutableDigraphNC;
-  else
-    ConstructDigraph := ConvertToImmutableDigraphNC;
-  fi;
-
-  D := MaximalSymmetricSubdigraph(D);
-  out := ConstructDigraph(DIGRAPH_SYMMETRIC_SPANNING_FOREST(OutNeighbours(D)));
-  SetIsUndirectedForest(out, true);
-  SetIsMultiDigraph(out, false);
-  SetDigraphHasLoops(out, false);
-  return out;
+  MaximalSymmetricSubdigraph(D);
+  D!.OutNeighbours := DIGRAPH_SYMMETRIC_SPANNING_FOREST(D!.OutNeighbours);
+  return D;
 end);
 
-InstallMethod(UndirectedSpanningTree, "for a digraph", [IsDigraph],
+InstallMethod(UndirectedSpanningForest, "for an immutable digraph",
+[IsImmutableDigraph],
 function(D)
-  local out;
-  IsValidDigraph(D);
-  if DigraphNrVertices(D) = 0
-      or not IsStronglyConnectedDigraph(MaximalSymmetricSubdigraph(D)) then
+  local C;
+  if HasUndirectedSpanningForestAttr(D) then
+    return UndirectedSpanningForestAttr(D);
+  fi;
+  if DigraphNrVertices(D) = 0 then
+    SetUndirectedSpanningForestAttr(D, fail);
     return fail;
   fi;
-  out := UndirectedSpanningForest(D);
-  SetIsUndirectedTree(out, true);
-  return out;
+  C := UndirectedSpanningForest(DigraphMutableCopy(D));
+  C := MakeImmutableDigraph(C);
+  SetIsUndirectedForest(C, true);
+  SetIsMultiDigraph(C, false);
+  SetDigraphHasLoops(C, false);
+  SetUndirectedSpanningForestAttr(D, C);
+  return C;
+end);
+
+InstallMethod(UndirectedSpanningTreeAttr, [IsImmutableDigraph],
+UndirectedSpanningTree);
+
+InstallMethod(UndirectedSpanningTree, "for a dense mutable digraph",
+[IsMutableDigraph and IsDenseDigraphRep],
+function(D)
+  local C;
+  if not IsStronglyConnectedDigraph(D) then
+    return fail;
+  fi;
+  C := MaximalSymmetricSubdigraph(DigraphMutableCopy(D));
+  if not IsStronglyConnectedDigraph(C) then
+    return fail;
+  fi;
+  return UndirectedSpanningForest(D);
+end);
+
+InstallMethod(UndirectedSpanningTree, "for an immutable digraph",
+[IsImmutableDigraph],
+function(D)
+  local C;
+  if HasUndirectedSpanningTreeAttr(D) then
+    return UndirectedSpanningTreeAttr(D);
+  fi;
+  C := UndirectedSpanningTree(DigraphMutableCopy(D));
+  SetUndirectedSpanningTreeAttr(D, C);
+  if C = fail then
+    return C;
+  fi;
+  SetIsUndirectedTree(C, true);
+  return MakeImmutableDigraph(C);
 end);
 
 InstallMethod(HamiltonianPath, "for a digraph", [IsDigraph],
@@ -1559,16 +1576,21 @@ function(D)
   return fail;
 end);
 
+InstallMethod(MaximalAntiSymmetricSubdigraphAttr, "for an immutable digraph",
+[IsImmutableDigraph], MaximalAntiSymmetricSubdigraph);
+
 InstallMethod(MaximalAntiSymmetricSubdigraph, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
+  local C;
   if HasMaximalAntiSymmetricSubdigraphAttr(D) then
-    return MaximalAntiSymmetricSubdigraph(D);
+    return MaximalAntiSymmetricSubdigraphAttr(D);
   fi;
-  D := DigraphMutableCopy(D);
-  D := MakeImmutableDigraph(MaximalAntiSymmetricSubdigraph(D));
-  SetIsAntisymmetricDigraph(D, true);
-  return D;
+  C := DigraphMutableCopy(D);
+  C := MakeImmutableDigraph(MaximalAntiSymmetricSubdigraph(C));
+  SetIsAntisymmetricDigraph(C, true);
+  SetMaximalAntiSymmetricSubdigraphAttr(D, C);
+  return C;
 end);
 
 InstallMethod(MaximalAntiSymmetricSubdigraph, "for a dense mutable digraph",
@@ -1579,8 +1601,7 @@ function(D)
   n := DigraphNrVertices(D);
   if IsMultiDigraph(D) then
     return MaximalAntiSymmetricSubdigraph(DigraphRemoveAllMultipleEdges(D));
-  elif n <= 1
-      or (HasIsAntisymmetricDigraph(D) and IsAntisymmetricDigraph(D)) then
+  elif n <= 1 or IsAntisymmetricDigraph(D) then
     return D;
   fi;
 
@@ -1601,9 +1622,9 @@ function(D)
         fi;
       od;
     od;
-    out := MutableDigraphByAdjacencyMatrixNC(out);
+    D!.OutNeighbours := OutNeighbours(MutableDigraphByAdjacencyMatrixNC(out));
   else
-    out := OutNeighboursMutableCopy(D);
+    out := D!.OutNeighbours;
     Perform(out, Sort);
     for i in [1 .. n] do
       for j in out[i] do
@@ -1612,9 +1633,8 @@ function(D)
         fi;
       od;
     od;
-    out := MutableDigraphNC(out);
   fi;
-  return out;
+  return D;
 end);
 
 InstallMethod(CharacteristicPolynomial, "for a digraph", [IsDigraph],

@@ -88,6 +88,8 @@ gap> gr := Digraph([]);
 <immutable digraph with 0 vertices, 0 edges>
 gap> DigraphDual(gr);
 <immutable digraph with 0 vertices, 0 edges>
+gap> DigraphDual(gr);
+<immutable digraph with 0 vertices, 0 edges>
 gap> gr := Digraph([[], []]);
 <immutable digraph with 2 vertices, 0 edges>
 gap> DigraphDual(gr);
@@ -1442,6 +1444,10 @@ gap> IsStronglyConnectedDigraph(gr);
 true
 gap> UndirectedSpanningTree(gr);
 fail
+gap> UndirectedSpanningTree(gr);
+fail
+gap> DigraphEdges(UndirectedSpanningForest(gr));
+[ [ 2, 7 ], [ 7, 2 ] ]
 gap> DigraphEdges(UndirectedSpanningForest(gr));
 [ [ 2, 7 ], [ 7, 2 ] ]
 gap> IsUndirectedSpanningForest(gr, UndirectedSpanningForest(gr));
@@ -1716,6 +1722,12 @@ gap> OutNeighbours(last);
 [ [ 1, 2 ], [  ] ]
 gap> MaximalAntiSymmetricSubdigraph(CompleteDigraph(10));
 <immutable digraph with 10 vertices, 45 edges>
+gap> D := CompleteDigraph(10);
+<immutable digraph with 10 vertices, 90 edges>
+gap> MaximalAntiSymmetricSubdigraph(D);
+<immutable digraph with 10 vertices, 45 edges>
+gap> MaximalAntiSymmetricSubdigraph(D);
+<immutable digraph with 10 vertices, 45 edges>
 
 # CharacteristicPolynomial
 gap> gr := Digraph([
@@ -1753,6 +1765,62 @@ gap> IsEdgeTransitive(CompleteDigraph(20));
 true
 gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
 Error, the argument (D) must be a digraph with no multiple edges,
+
+# AsGraph
+gap> D := NullDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 0 edges>
+gap> AsGraph(D);
+rec( adjacencies := [ [  ], [  ], [  ] ], group := Group(()), isGraph := true,
+  names := [ 1 .. 3 ], order := 3, representatives := [ 1, 2, 3 ], 
+  schreierVector := [ -1, -2, -3 ] )
+
+# DigraphSource
+gap> D := NullDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 0 edges>
+gap> DigraphSource(D);
+[  ]
+gap> DigraphRange(D);
+[  ]
+gap> DigraphSymmetricClosure(NullDigraph(IsMutableDigraph, 1));
+<mutable digraph with 1 vertex, 0 edges>
+gap> D := Digraph([[2], []]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphSymmetricClosure(D);
+<immutable digraph with 2 vertices, 2 edges>
+gap> DigraphSymmetricClosure(D);
+<immutable digraph with 2 vertices, 2 edges>
+gap> D := MutableDigraph([[2, 2], []]);
+<mutable multidigraph with 2 vertices, 2 edges>
+gap> DigraphTransitiveClosure(D);
+Error, the argument (D) must be a digraph with no multiple edges,
+gap> DigraphReflexiveTransitiveClosure(D);
+Error, the argument (D) must be a digraph with no multiple edges,
+gap> MakeImmutableDigraph(D);
+<immutable multidigraph with 2 vertices, 2 edges>
+gap> DigraphTransitiveClosure(D);
+Error, the argument (D) must be a digraph with no multiple edges,
+gap> D := Digraph([[2], []]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphTransitiveClosure(D);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphTransitiveClosure(D);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphReflexiveTransitiveClosure(D);
+<immutable digraph with 2 vertices, 3 edges>
+gap> DigraphReflexiveTransitiveClosure(D);
+<immutable digraph with 2 vertices, 3 edges>
+gap> D := DigraphMutableCopy(DigraphSymmetricClosure(D));
+<mutable digraph with 2 vertices, 2 edges>
+gap> MaximalSymmetricSubdigraphWithoutLoops(D);
+<mutable digraph with 2 vertices, 2 edges>
+gap> MaximalSymmetricSubdigraphWithoutLoops(MakeImmutableDigraph(D));
+<immutable digraph with 2 vertices, 2 edges>
+gap> MaximalSymmetricSubdigraphWithoutLoops(D);
+<immutable digraph with 2 vertices, 2 edges>
+gap> D := CycleDigraph(IsMutableDigraph, 10);
+<mutable digraph with 10 vertices, 10 edges>
+gap> UndirectedSpanningForest(D);
+<mutable digraph with 10 vertices, 0 edges>
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
