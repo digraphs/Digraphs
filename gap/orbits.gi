@@ -72,6 +72,7 @@ InstallMethod(RepresentativeOutNeighbours, "for a dense digraph",
 [IsDenseDigraphRep],
 function(D)
   local reps, out, nbs, i;
+  IsValidDigraph(D);
 
   if IsTrivial(DigraphGroup(D)) then
     return OutNeighbours(D);
@@ -98,6 +99,7 @@ end);
 InstallMethod(DigraphGroup, "for a digraph",
 [IsDigraph],
 function(D)
+  IsValidDigraph(D);
   if IsMultiDigraph(D) then
     return Range(Projection(AutomorphismGroup(D), 1));
   fi;
@@ -108,6 +110,7 @@ InstallMethod(DigraphOrbits, "for a digraph",
 [IsDigraph],
 function(D)
   local record;
+  IsValidDigraph(D);
   record := DIGRAPHS_Orbits(DigraphGroup(D),
                             DigraphVertices(D));
   SetDigraphSchreierVector(D, record.schreier);
@@ -118,15 +121,16 @@ InstallMethod(DigraphSchreierVector, "for a digraph",
 [IsDigraph],
 function(D)
   local record;
+  IsValidDigraph(D);
   record := DIGRAPHS_Orbits(DigraphGroup(D),
                             DigraphVertices(D));
   SetDigraphOrbits(D, record.orbits);
   return record.schreier;
 end);
 
-InstallMethod(DigraphOrbitReps, "for a digraph",
-[IsDigraph],
+InstallMethod(DigraphOrbitReps, "for a digraph", [IsDigraph],
 function(D)
+  IsValidDigraph(D);
   return List(DigraphOrbits(D), Representative);
 end);
 
@@ -134,6 +138,7 @@ InstallMethod(DigraphStabilizer, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, v)
   local pos, gens, sch, trace, word, stabs;
+  IsValidDigraph(D);
 
   if v > DigraphNrVertices(D) then
     ErrorNoReturn("the 2nd argument (v) must not exceed ",
@@ -162,7 +167,7 @@ function(D, v)
   return stabs[pos] ^ word;
 end);
 
-InstallMethod(DIGRAPHS_Stabilizers, "for a D", [IsDigraph],
+InstallMethod(DIGRAPHS_Stabilizers, "for a digraph", [IsDigraph],
 function(D);
   return [];
 end);

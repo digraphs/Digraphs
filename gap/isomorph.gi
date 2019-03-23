@@ -134,6 +134,7 @@ InstallMethod(BlissCanonicalLabelling, "for a digraph",
 [IsDigraph],
 function(D)
   local data;
+  IsValidDigraph(D);
   data := BLISS_DATA_NO_COLORS(D);
   SetBlissAutomorphismGroup(D, data[1]);
   return data[2];
@@ -142,6 +143,7 @@ end);
 InstallMethod(BlissCanonicalLabelling, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
 function(D, colors)
+  IsValidDigraph(D);
   return BLISS_DATA(D, colors)[2];
 end);
 
@@ -153,6 +155,7 @@ function(D)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
+  IsValidDigraph(D);
   data := NAUTY_DATA_NO_COLORS(D);
   SetNautyAutomorphismGroup(D, data[1]);
   return data[2];
@@ -166,6 +169,7 @@ function(D, colors)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
+  IsValidDigraph(D);
   return NAUTY_DATA(D, colors)[2];
 end);
 
@@ -194,6 +198,7 @@ function(D)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
+  IsValidDigraph(D);
   return OnDigraphs(D, NautyCanonicalLabelling(D));
 end);
 
@@ -204,6 +209,7 @@ function(D, colors)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
+  IsValidDigraph(D);
   return OnDigraphs(D, NautyCanonicalLabelling(D, colors));
 end);
 
@@ -212,6 +218,7 @@ end);
 InstallMethod(BlissAutomorphismGroup, "for a digraph", [IsDigraph],
 function(D)
   local data;
+  IsValidDigraph(D);
   data := BLISS_DATA_NO_COLORS(D);
   SetBlissCanonicalLabelling(D, data[2]);
   if not HasDigraphGroup(D) then
@@ -231,6 +238,7 @@ function(D)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
+  IsValidDigraph(D);
 
   data := NAUTY_DATA_NO_COLORS(D);
   SetNautyCanonicalLabelling(D, data[2]);
@@ -254,6 +262,7 @@ function(D, colors)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
+  IsValidDigraph(D);
   return NAUTY_DATA(D, colors)[1];
 end);
 
@@ -271,49 +280,49 @@ InstallMethod(AutomorphismGroup, "for a multidigraph and vertex coloring",
 
 # Check if two digraphs are isomorphic
 
-InstallMethod(IsIsomorphicDigraph, "for digraphs",
-[IsDigraph, IsDigraph],
-function(gr1, gr2)
+InstallMethod(IsIsomorphicDigraph, "for digraphs", [IsDigraph, IsDigraph],
+function(C, D)
   local act;
 
-  if gr1 = gr2 then
+  IsValidDigraph(C, D);
+  if C = D then
     return true;
-  elif DigraphNrVertices(gr1) <> DigraphNrVertices(gr2)
-      or DigraphNrEdges(gr1) <> DigraphNrEdges(gr2)
-      or IsMultiDigraph(gr1) <> IsMultiDigraph(gr2) then
+  elif DigraphNrVertices(C) <> DigraphNrVertices(D)
+      or DigraphNrEdges(C) <> DigraphNrEdges(D)
+      or IsMultiDigraph(C) <> IsMultiDigraph(D) then
     return false;
   fi;  # JDM more!
 
-  if IsMultiDigraph(gr1) then
+  if IsMultiDigraph(C) then
     act := OnMultiDigraphs;
   else
     act := OnDigraphs;
   fi;
 
-  if HasBlissCanonicalLabelling(gr1) and HasBlissCanonicalLabelling(gr2)
-      or not ((HasNautyCanonicalLabelling(gr1)
-               and NautyCanonicalLabelling(gr1) <> fail)
-              or (HasNautyCanonicalLabelling(gr2)
-                  and NautyCanonicalLabelling(gr2) <> fail)) then
+  if HasBlissCanonicalLabelling(C) and HasBlissCanonicalLabelling(D)
+      or not ((HasNautyCanonicalLabelling(C)
+               and NautyCanonicalLabelling(C) <> fail)
+              or (HasNautyCanonicalLabelling(D)
+                  and NautyCanonicalLabelling(D) <> fail)) then
     # Both digraphs either know their bliss canonical labelling or
     # neither know their Nauty canonical labelling.
-    return act(gr1, BlissCanonicalLabelling(gr1))
-           = act(gr2, BlissCanonicalLabelling(gr2));
+    return act(C, BlissCanonicalLabelling(C))
+           = act(D, BlissCanonicalLabelling(D));
   else
-    return act(gr1, NautyCanonicalLabelling(gr1))
-           = act(gr2, NautyCanonicalLabelling(gr2));
+    return act(C, NautyCanonicalLabelling(C))
+           = act(D, NautyCanonicalLabelling(D));
   fi;
 
 end);
 
 InstallMethod(IsIsomorphicDigraph, "for digraphs and homogeneous lists",
 [IsDigraph, IsDigraph, IsHomogeneousList, IsHomogeneousList],
-function(gr1, gr2, c1, c2)
+function(C, D, c1, c2)
   local m, colour1, n, colour2, max, class_sizes, act, i;
-
-  m := DigraphNrVertices(gr1);
+  IsValidDigraph(C, D);
+  m := DigraphNrVertices(C);
   colour1 := DIGRAPHS_ValidateVertexColouring(m, c1);
-  n := DigraphNrVertices(gr2);
+  n := DigraphNrVertices(D);
   colour2 := DIGRAPHS_ValidateVertexColouring(n, c2);
 
   max := Maximum(colour1);
@@ -323,78 +332,79 @@ function(gr1, gr2, c1, c2)
 
   # check some invariants
   if m <> n
-      or DigraphNrEdges(gr1) <> DigraphNrEdges(gr2)
-      or IsMultiDigraph(gr1) <> IsMultiDigraph(gr2) then
+      or DigraphNrEdges(C) <> DigraphNrEdges(D)
+      or IsMultiDigraph(C) <> IsMultiDigraph(D) then
     return false;
   fi;  # JDM more!
 
   class_sizes := ListWithIdenticalEntries(max, 0);
-  for i in DigraphVertices(gr1) do
+  for i in DigraphVertices(C) do
     class_sizes[colour1[i]] := class_sizes[colour1[i]] + 1;
     class_sizes[colour2[i]] := class_sizes[colour2[i]] - 1;
   od;
   if not ForAll(class_sizes, x -> x = 0) then
     return false;
-  elif gr1 = gr2 and colour1 = colour2 then
+  elif C = D and colour1 = colour2 then
     return true;
   fi;
 
-  if IsMultiDigraph(gr1) then
+  if IsMultiDigraph(C) then
     act := OnMultiDigraphs;
   else
     act := OnDigraphs;
   fi;
 
-  if DIGRAPHS_UsingBliss or IsMultiDigraph(gr1) then
-    return act(gr1, BlissCanonicalLabelling(gr1, colour1))
-           = act(gr2, BlissCanonicalLabelling(gr2, colour2));
+  if DIGRAPHS_UsingBliss or IsMultiDigraph(C) then
+    return act(C, BlissCanonicalLabelling(C, colour1))
+           = act(D, BlissCanonicalLabelling(D, colour2));
   else
-    return act(gr1, NautyCanonicalLabelling(gr1, colour1))
-           = act(gr2, NautyCanonicalLabelling(gr2, colour2));
+    return act(C, NautyCanonicalLabelling(C, colour1))
+           = act(D, NautyCanonicalLabelling(D, colour2));
   fi;
 end);
 
 # Isomorphisms between digraphs
 
-InstallMethod(IsomorphismDigraphs, "for digraphs",
-[IsDigraph, IsDigraph],
-function(gr1, gr2)
+InstallMethod(IsomorphismDigraphs, "for digraphs", [IsDigraph, IsDigraph],
+function(C, D)
   local label1, label2;
+  IsValidDigraph(C, D);
 
-  if not IsIsomorphicDigraph(gr1, gr2) then
+  if not IsIsomorphicDigraph(C, D) then
     return fail;
-  elif IsMultiDigraph(gr1) then
-    if gr1 = gr2 then
+  elif IsMultiDigraph(C) then
+    if C = D then
       return [(), ()];
     fi;
-    label1 := BlissCanonicalLabelling(gr1);
-    label2 := BlissCanonicalLabelling(gr2);
+    label1 := BlissCanonicalLabelling(C);
+    label2 := BlissCanonicalLabelling(D);
     return [label1[1] / label2[1], label1[2] / label2[2]];
-  elif gr1 = gr2 then
+  elif C = D then
     return ();
   fi;
 
-  if HasBlissCanonicalLabelling(gr1) and HasBlissCanonicalLabelling(gr2)
-      or not ((HasNautyCanonicalLabelling(gr1)
-               and NautyCanonicalLabelling(gr1) <> fail)
-              or (HasNautyCanonicalLabelling(gr2)
-                  and NautyCanonicalLabelling(gr2) <> fail)) then
+  if HasBlissCanonicalLabelling(C) and HasBlissCanonicalLabelling(D)
+      or not ((HasNautyCanonicalLabelling(C)
+               and NautyCanonicalLabelling(C) <> fail)
+              or (HasNautyCanonicalLabelling(D)
+                  and NautyCanonicalLabelling(D) <> fail)) then
     # Both digraphs either know their bliss canonical labelling or
     # neither know their Nauty canonical labelling.
-    return BlissCanonicalLabelling(gr1) / BlissCanonicalLabelling(gr2);
+    return BlissCanonicalLabelling(C) / BlissCanonicalLabelling(D);
   else
-    return NautyCanonicalLabelling(gr1) / NautyCanonicalLabelling(gr2);
+    return NautyCanonicalLabelling(C) / NautyCanonicalLabelling(D);
   fi;
 end);
 
 InstallMethod(IsomorphismDigraphs, "for digraphs and homogeneous lists",
 [IsDigraph, IsDigraph, IsHomogeneousList, IsHomogeneousList],
-function(gr1, gr2, c1, c2)
+function(C, D, c1, c2)
   local m, colour1, n, colour2, max, class_sizes, label1, label2, i;
+  IsValidDigraph(C, D);
 
-  m := DigraphNrVertices(gr1);
+  m := DigraphNrVertices(C);
   colour1 := DIGRAPHS_ValidateVertexColouring(m, c1);
-  n := DigraphNrVertices(gr2);
+  n := DigraphNrVertices(D);
   colour2 := DIGRAPHS_ValidateVertexColouring(n, c2);
 
   max := Maximum(colour1);
@@ -404,41 +414,41 @@ function(gr1, gr2, c1, c2)
 
   # check some invariants
   if m <> n
-      or DigraphNrEdges(gr1) <> DigraphNrEdges(gr2)
-      or IsMultiDigraph(gr1) <> IsMultiDigraph(gr2) then
+      or DigraphNrEdges(C) <> DigraphNrEdges(D)
+      or IsMultiDigraph(C) <> IsMultiDigraph(D) then
     return fail;
   fi;
 
   class_sizes := ListWithIdenticalEntries(max, 0);
-  for i in DigraphVertices(gr1) do
+  for i in DigraphVertices(C) do
     class_sizes[colour1[i]] := class_sizes[colour1[i]] + 1;
     class_sizes[colour2[i]] := class_sizes[colour2[i]] - 1;
   od;
   if not ForAll(class_sizes, x -> x = 0) then
     return fail;
-  elif gr1 = gr2 and colour1 = colour2 then
-    if IsMultiDigraph(gr1) then
+  elif C = D and colour1 = colour2 then
+    if IsMultiDigraph(C) then
       return [(), ()];
     fi;
     return ();
   fi;
 
-  if DIGRAPHS_UsingBliss or IsMultiDigraph(gr1) then
-    label1 := BlissCanonicalLabelling(gr1, colour1);
-    label2 := BlissCanonicalLabelling(gr2, colour2);
+  if DIGRAPHS_UsingBliss or IsMultiDigraph(C) then
+    label1 := BlissCanonicalLabelling(C, colour1);
+    label2 := BlissCanonicalLabelling(D, colour2);
   else
-    label1 := NautyCanonicalLabelling(gr1, colour1);
-    label2 := NautyCanonicalLabelling(gr2, colour2);
+    label1 := NautyCanonicalLabelling(C, colour1);
+    label2 := NautyCanonicalLabelling(D, colour2);
   fi;
 
-  if IsMultiDigraph(gr1) then
-    if OnMultiDigraphs(gr1, label1) <> OnMultiDigraphs(gr2, label2) then
+  if IsMultiDigraph(C) then
+    if OnMultiDigraphs(C, label1) <> OnMultiDigraphs(D, label2) then
       return fail;
     fi;
     return [label1[1] / label2[1], label1[2] / label2[2]];
   fi;
 
-  if OnDigraphs(gr1, label1) <> OnDigraphs(gr2, label2) then
+  if OnDigraphs(C, label1) <> OnDigraphs(D, label2) then
     return fail;
   fi;
   return label1 / label2;
@@ -546,6 +556,7 @@ function(src, ran, x)
     ErrorNoReturn("the 1st and 2nd arguments (src and ran) must not have ",
                   "multiple edges,");
   fi;
+  IsValidDigraph(src, ran);
   return IsDigraphHomomorphism(src, ran, x)
     and IsDigraphHomomorphism(ran, src, x ^ -1);
 end);
@@ -553,6 +564,7 @@ end);
 InstallMethod(IsDigraphAutomorphism, "for a digraph and a permutation",
 [IsDigraph, IsPerm],
 function(D, x)
+  IsValidDigraph(D);
   return IsDigraphIsomorphism(D, D, x);
 end);
 
@@ -560,6 +572,7 @@ InstallMethod(IsDigraphIsomorphism, "for digraph, digraph, and transformation",
 [IsDigraph, IsDigraph, IsTransformation],
 function(src, ran, x)
   local y;
+  IsValidDigraph(src, ran);
   y := AsPermutation(RestrictedTransformation(x, DigraphVertices(src)));
   if y = fail then
     return false;
@@ -570,5 +583,6 @@ end);
 InstallMethod(IsDigraphAutomorphism, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
 function(D, x)
+  IsValidDigraph(D);
   return IsDigraphIsomorphism(D, D, x);
 end);

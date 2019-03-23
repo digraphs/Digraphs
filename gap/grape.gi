@@ -115,6 +115,7 @@ end);
 InstallMethod(Graph, "for a digraph", [IsDigraph],
 function(D)
   local gamma, i, n;
+  IsValidDigraph(D);
 
   if IsMultiDigraph(D) then
     Info(InfoWarning, 1, "Grape does not support multiple edges, so ",
@@ -214,6 +215,7 @@ InstallMethod(DigraphAddEdgeOrbit, "for a digraph and edge",
 [IsDigraph, IsList],
 function(D, edge)
   local out, G, o, e;
+  IsValidDigraph(D);
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
     ErrorNoReturn("the 2nd argument (edge) must be a list of 2 ",
@@ -247,6 +249,7 @@ InstallMethod(DigraphRemoveEdgeOrbit, "for a digraph and edge",
 [IsDigraph, IsList],
 function(D, edge)
   local out, G, o, pos, e;
+  IsValidDigraph(D);
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
     ErrorNoReturn("the 2nd argument (edge) must be a pair of ",

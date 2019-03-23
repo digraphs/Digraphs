@@ -20,6 +20,7 @@ function(arg)
   if not IsDigraph(D) then
     ErrorNoReturn("the 1st argument must be a digraph,");
   fi;
+  IsValidDigraph(D);
   D := DigraphCopyIfMutable(D);
   if IsBound(arg[2]) then
     if IsHomogeneousList(arg[2]) then
@@ -96,7 +97,9 @@ InstallMethod(DigraphColouring, "for a digraph and an integer",
 function(D, n)
   if n < 0 then
     ErrorNoReturn("the 2nd argument (n) must be a non-negative integer,");
-  elif HasDigraphGreedyColouring(D) then
+  fi;
+  IsValidDigraph(D);
+  if HasDigraphGreedyColouring(D) then
     if DigraphGreedyColouring(D) = fail then
       return fail;
     elif RankOfTransformation(DigraphGreedyColouring(D),
@@ -147,6 +150,7 @@ InstallMethod(DigraphGreedyColouringNC,
 [IsDenseDigraphRep, IsHomogeneousList],
 function(D, order)
   local n, colour, colouring, out, inn, empty, all, available, nr_coloured, v;
+  IsValidDigraph(D);
   n := DigraphNrVertices(D);
   if n = 0 then
     return IdentityTransformation;
@@ -189,6 +193,7 @@ end);
 InstallMethod(DigraphWelshPowellOrder, "for a digraph", [IsDigraph],
 function(D)
   local order, deg;
+  IsValidDigraph(D);
   order := [1 .. DigraphNrVertices(D)];
   deg   := ShallowCopy(OutDegrees(D)) + InDegrees(D);
   SortParallel(deg, order, {x, y} -> x > y);
@@ -198,6 +203,7 @@ end);
 InstallMethod(DigraphSmallestLastOrder, "for a digraph", [IsDigraph],
 function(D)
   local order, n, copy, deg, v;
+  IsValidDigraph(D);
   order := [];
   n := DigraphNrVertices(D);
   copy := DigraphCopyIfMutable(D);
@@ -220,6 +226,7 @@ InstallMethod(DigraphHomomorphism, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
   local out;
+  IsValidDigraph(D1, D2);
   out := HomomorphismDigraphsFinder(D1,
                                     D2,
                                     fail,                 # hook
@@ -246,6 +253,7 @@ InstallMethod(HomomorphismsDigraphsRepresentatives,
 "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
+  IsValidDigraph(D1, D2);
   return HomomorphismDigraphsFinder(D1,
                                     D2,
                                     fail,                  # hook
@@ -266,6 +274,7 @@ InstallMethod(HomomorphismsDigraphs, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
   local hom, aut;
+  IsValidDigraph(D1, D2);
   hom := HomomorphismsDigraphsRepresentatives(D1, D2);
   D2 := DigraphCopyIfMutable(D2);
   aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(D2)),
@@ -282,6 +291,7 @@ InstallMethod(DigraphMonomorphism, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
   local out;
+  IsValidDigraph(D1, D2);
   out := HomomorphismDigraphsFinder(D1,
                                     D2,
                                     fail,                   # hook
@@ -306,6 +316,7 @@ InstallMethod(MonomorphismsDigraphsRepresentatives,
 "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
+  IsValidDigraph(D1, D2);
   return HomomorphismDigraphsFinder(D1,
                                     D2,
                                     fail,                    # hook
@@ -326,6 +337,7 @@ InstallMethod(MonomorphismsDigraphs, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
   local hom, aut;
+  IsValidDigraph(D1, D2);
   hom := MonomorphismsDigraphsRepresentatives(D1, D2);
   D2 := DigraphCopyIfMutable(D2);
   aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(D2)),
@@ -342,6 +354,7 @@ InstallMethod(DigraphEpimorphism, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
   local out;
+  IsValidDigraph(D1, D2);
   out := HomomorphismDigraphsFinder(D1,
                                     D2,
                                     fail,                   # hook
@@ -366,6 +379,7 @@ InstallMethod(EpimorphismsDigraphsRepresentatives,
 "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
+  IsValidDigraph(D1, D2);
   return HomomorphismDigraphsFinder(D1,
                                     D2,
                                     fail,                   # hook
@@ -386,6 +400,7 @@ InstallMethod(EpimorphismsDigraphs, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
   local hom, aut;
+  IsValidDigraph(D1, D2);
   hom := EpimorphismsDigraphsRepresentatives(D1, D2);
   aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(D2)),
               AsTransformation);
@@ -400,6 +415,7 @@ InstallMethod(DigraphEmbedding, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
   local out;
+  IsValidDigraph(D1, D2);
   out := HomomorphismDigraphsFinder(D1,
                                     D2,
                                     fail,                   # hook
@@ -424,6 +440,7 @@ InstallMethod(EmbeddingsDigraphsRepresentatives,
 "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
+  IsValidDigraph(D1, D2);
   return HomomorphismDigraphsFinder(D1,
                                     D2,
                                     fail,                   # hook
@@ -442,6 +459,7 @@ InstallMethod(EmbeddingsDigraphs, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
   local hom, aut;
+  IsValidDigraph(D1, D2);
   hom := EmbeddingsDigraphsRepresentatives(D1, D2);
   D2 := DigraphCopyIfMutable(D2);
   aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(D2)),
@@ -457,6 +475,7 @@ InstallMethod(IsDigraphHomomorphism, "for a dense digraph, digraph, and perm",
 [IsDenseDigraphRep, IsDigraph, IsPerm],
 function(src, ran, x)
   local i, j;
+  IsValidDigraph(src, ran);
   if IsMultiDigraph(src) or IsMultiDigraph(ran) then
     ErrorNoReturn("the 1st and 2nd arguments (src and ran) must be digraphs",
                   " with no multiple edges,");
@@ -481,6 +500,7 @@ InstallMethod(IsDigraphHomomorphism,
 [IsDenseDigraphRep, IsDigraph, IsTransformation],
 function(src, ran, x)
   local i, j;
+  IsValidDigraph(src, ran);
   if IsMultiDigraph(src) or IsMultiDigraph(ran) then
     ErrorNoReturn("the 1st and 2nd arguments (src and ran) must be digraphs",
                   " with no multiple edges,");
@@ -500,12 +520,14 @@ end);
 InstallMethod(IsDigraphEndomorphism, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
 function(D, x)
+  IsValidDigraph(D);
   return IsDigraphHomomorphism(D, D, x);
 end);
 
 InstallMethod(IsDigraphEpimorphism, "for digraph, digraph, and transformation",
 [IsDigraph, IsDigraph, IsTransformation],
 function(src, ran, x)
+  IsValidDigraph(src, ran);
   return IsDigraphHomomorphism(src, ran, x)
     and OnSets(DigraphVertices(src), x) = DigraphVertices(ran);
 end);
@@ -513,6 +535,7 @@ end);
 InstallMethod(IsDigraphEpimorphism, "for digraph, digraph, and perm",
 [IsDigraph, IsDigraph, IsPerm],
 function(src, ran, x)
+  IsValidDigraph(src, ran);
   return IsDigraphHomomorphism(src, ran, x)
     and OnSets(DigraphVertices(src), x) = DigraphVertices(ran);
 end);
@@ -521,6 +544,7 @@ InstallMethod(IsDigraphMonomorphism,
 "for digraph, digraph, and transformation",
 [IsDigraph, IsDigraph, IsTransformation],
 function(src, ran, x)
+  IsValidDigraph(src, ran);
   return IsDigraphHomomorphism(src, ran, x)
     and IsInjectiveListTrans(DigraphVertices(src), x);
 end);
@@ -533,6 +557,7 @@ InstallMethod(IsDigraphEmbedding,
 [IsDigraph, IsDenseDigraphRep, IsTransformation],
 function(src, ran, x)
   local y, induced, i, j;
+  IsValidDigraph(src, ran);
   if not IsDigraphMonomorphism(src, ran, x) then
     return false;
   fi;
@@ -555,6 +580,7 @@ InstallMethod(IsDigraphEmbedding, "for digraph, dense digraph, and perm",
 [IsDigraph, IsDenseDigraphRep, IsPerm],
 function(src, ran, x)
   local y, induced, i, j;
+  IsValidDigraph(src, ran);
   if not IsDigraphHomomorphism(src, ran, x) then
     return false;
   fi;
@@ -576,6 +602,7 @@ InstallMethod(IsDigraphColouring, "for a dense digraph and a list",
 [IsDenseDigraphRep, IsHomogeneousList],
 function(D, colours)
   local n, out, v, w;
+  IsValidDigraph(D);
   n := DigraphNrVertices(D);
   if Length(colours) <> n or ForAny(colours, x -> not IsPosInt(x)) then
     return false;
@@ -595,6 +622,7 @@ InstallMethod(IsDigraphColouring, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
 function(D, t)
   local n;
+  IsValidDigraph(D);
   n := DigraphNrVertices(D);
   return IsDigraphColouring(D, ImageListOfTransformation(t, n));
 end);

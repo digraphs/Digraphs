@@ -30,12 +30,15 @@
 ########################################################################
 
 InstallGlobalFunction(IsValidDigraph,
-function(D)
-  if not (IsMutableDigraph(D) or IsImmutableDigraph(D)) then
-    ErrorNoReturn("digraph in an invalid state! Did you return a ",
-                  "mutable digraph from a method for an attribute, ",
-                  "or MakeImmutable(a mutable digraph)??");
-  fi;
+function(arg)
+  local D;
+  for D in arg do
+    if not (IsMutableDigraph(D) or IsImmutableDigraph(D)) then
+      ErrorNoReturn("digraph in an invalid state! Did you return a ",
+                    "mutable digraph from a method for an attribute, ",
+                    "or MakeImmutable(a mutable digraph)??");
+    fi;
+  od;
 end);
 
 ########################################################################
@@ -134,6 +137,7 @@ end);
 InstallMethod(DigraphMutableCopy, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local copy;
+  IsValidDigraph(D);
   copy := ConvertToMutableDigraphNC(OutNeighboursMutableCopy(D));
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
   SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
@@ -143,6 +147,7 @@ end);
 InstallMethod(DigraphCopy, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local copy;
+  IsValidDigraph(D);
   copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
   SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
@@ -436,9 +441,19 @@ end);
 # 7. Operators
 ########################################################################
 
-InstallMethod(\=, "for two digraphs", [IsDigraph, IsDigraph], DIGRAPH_EQUALS);
+InstallMethod(\=, "for two digraphs", [IsDigraph, IsDigraph],
+function(C, D)
+  IsValidDigraph(C);
+  IsValidDigraph(D);
+  return DIGRAPH_EQUALS(C, D);
+end);
 
-InstallMethod(\<, "for two digraphs", [IsDigraph, IsDigraph], DIGRAPH_LT);
+InstallMethod(\<, "for two digraphs", [IsDigraph, IsDigraph],
+function(C, D)
+  IsValidDigraph(C);
+  IsValidDigraph(D);
+  return DIGRAPH_LT(C, D);
+end);
 
 ########################################################################
 # 8. Digraph by-something constructors
@@ -541,14 +556,12 @@ function(mat)
   return D;
 end);
 
-InstallMethod(DigraphByEdges, "for an empty list",
-[IsList and IsEmpty],
+InstallMethod(DigraphByEdges, "for an empty list", [IsList and IsEmpty],
 function(edges)
   return EmptyDigraph(0);
 end);
 
-InstallMethod(MutableDigraphByEdges, "for an empty list",
-[IsList and IsEmpty],
+InstallMethod(MutableDigraphByEdges, "for an empty list", [IsList and IsEmpty],
 function(edges)
   return EmptyDigraph(IsMutableDigraph, 0);
 end);
@@ -706,14 +719,12 @@ function(rel)
   return D;
 end);
 
-InstallMethod(AsDigraph, "for a transformation",
-[IsTransformation],
+InstallMethod(AsDigraph, "for a transformation", [IsTransformation],
 function(trans)
   return AsDigraph(trans, DegreeOfTransformation(trans));
 end);
 
-InstallMethod(AsMutableDigraph, "for a transformation",
-[IsTransformation],
+InstallMethod(AsMutableDigraph, "for a transformation", [IsTransformation],
 function(trans)
   return AsMutableDigraph(trans, DegreeOfTransformation(trans));
 end);

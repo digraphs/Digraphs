@@ -32,6 +32,7 @@
 
 InstallMethod(PlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
+  IsValidDigraph(D);
   if DigraphNrEdges(D) = 0 or DigraphNrVertices(D) < 3 then
     return [];
   elif HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
@@ -44,6 +45,7 @@ end);
 
 InstallMethod(OuterPlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
+  IsValidDigraph(D);
   if DigraphNrEdges(D) = 0 or DigraphNrVertices(D) < 3 then
     return [];
   elif HasIsOuterPlanarDigraph(D) and not IsOuterPlanarDigraph(D) then
@@ -56,6 +58,7 @@ end);
 
 InstallMethod(KuratowskiPlanarSubdigraph, "for a digraph", [IsDigraph],
 function(D)
+  IsValidDigraph(D);
   if IsPlanarDigraph(D) then
     return fail;
   fi;
@@ -66,6 +69,7 @@ end);
 
 InstallMethod(KuratowskiOuterPlanarSubdigraph, "for a digraph", [IsDigraph],
 function(D)
+  IsValidDigraph(D);
   if IsOuterPlanarDigraph(D) then
     return fail;
   fi;
@@ -76,6 +80,7 @@ end);
 
 InstallMethod(SubdigraphHomeomorphicToK23, "for a digraph", [IsDigraph],
 function(D)
+  IsValidDigraph(D);
   if IsOuterPlanarDigraph(D) then
     return fail;
   fi;
@@ -86,6 +91,7 @@ end);
 
 InstallMethod(SubdigraphHomeomorphicToK4, "for a digraph", [IsDigraph],
 function(D)
+  IsValidDigraph(D);
   if IsOuterPlanarDigraph(D) then
     return fail;
   fi;
@@ -96,6 +102,7 @@ end);
 
 InstallMethod(SubdigraphHomeomorphicToK33, "for a digraph", [IsDigraph],
 function(D)
+  IsValidDigraph(D);
   if IsPlanarDigraph(D) then
     return fail;
   fi;
@@ -111,6 +118,7 @@ end);
 InstallMethod(IsPlanarDigraph, "for a digraph", [IsDigraph],
 function(D)
   local C, v, e;
+  IsValidDigraph(D);
   C := DigraphCopyIfMutable(D);
   C := DigraphRemoveAllMultipleEdges(C);
   C := MaximalAntiSymmetricSubdigraph(C);
@@ -128,6 +136,7 @@ end);
 InstallMethod(IsOuterPlanarDigraph, "for a digraph", [IsDigraph],
 function(D)
   local C, v, e;
+  IsValidDigraph(D);
   if HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
     return false;
   fi;

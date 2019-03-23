@@ -101,6 +101,7 @@ InstallMethod(IO_Pickle, "for a digraph with known digraph group",
 [IsFile, IsDigraph and HasDigraphGroup],
 function(file, D)
   local g, out;
+  IsValidDigraph(D);
   g := DigraphGroup(D);
   if IsTrivial(g) then
     TryNextMethod();
@@ -150,6 +151,7 @@ end;
 InstallMethod(IO_Pickle, "for a digraph",
 [IsFile, IsDigraph],
 function(file, D)
+  IsValidDigraph(D);
   if IO_Write(file, "DIGT") = fail then
     return IO_Error;
   fi;
@@ -503,6 +505,7 @@ function(arg)
   elif not mode in ["a", "w"] then
     ErrorNoReturn("the argument (mode) must be \"a\" or \"w\",");
   fi;
+  CallFuncList(IsValidDigraph, digraphs);
 
   if IsString(name) and not IsExistingFile(name) then
     mode := "w";
@@ -1355,13 +1358,14 @@ end);
 # 4. Encoders
 ################################################################################
 
-InstallMethod(WriteDIMACSDigraph, "for a D", [IsString, IsDigraph],
+InstallMethod(WriteDIMACSDigraph, "for a digraph", [IsString, IsDigraph],
 function(name, D)
   local file, n, verts, nbs, nr_loops, m, labels, i, j;
 
   if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the 2nd argument (D) must be a symmetric digraph,");
   fi;
+  IsValidDigraph(D);
 
   file := IO_CompressedFile(UserHomeExpand(name), "w");
   if file = fail then
@@ -1474,6 +1478,7 @@ function(D)
     ErrorNoReturn("the argument (D) must be a symmetric digraph ",
                   "with no loops or multiple edges,");
   fi;
+  IsValidDigraph(D);
 
   list := [];
   adj := OutNeighbours(D);
@@ -1528,6 +1533,7 @@ function(D)
   # matrix, and appends a '&' to the start.  The old '+' format can be read by
   # DigraphFromDigraph6String, but can no longer be written by this function.
 
+  IsValidDigraph(D);
   list := [];
   adj := OutNeighbours(D);
   n := Length(DigraphVertices(D));
@@ -1577,6 +1583,7 @@ function(D)
   if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the argument (D) must be a symmetric digraph,");
   fi;
+  IsValidDigraph(D);
 
   list := [];
   n := Length(DigraphVertices(D));
@@ -1681,6 +1688,7 @@ function(D)
   local list, n, lenlist, adj, source_i, range_i, source_d, range_d, len1,
   len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad,
   pos, block, i, j;
+  IsValidDigraph(D);
 
   list := [];
   n := Length(DigraphVertices(D));
@@ -1835,5 +1843,6 @@ end);
 
 InstallMethod(PlainTextString, "for a digraph", [IsDigraph],
 function(D)
+  IsValidDigraph(D);
   return DigraphPlainTextLineEncoder("  ", " ", -1)(D);
 end);
