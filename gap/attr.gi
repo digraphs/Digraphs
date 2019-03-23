@@ -1273,17 +1273,15 @@ function(D)
   return Concatenation(loops, out);
 end);
 
-# The following method 'DIGRAPHS_Bipartite' was written by Isabella Scott
+# The following method 'DIGRAPHS_Bipartite' was originally written by Isabella
+# Scott and then modified by FLS.
 # It is the backend to IsBipartiteDigraph, Bicomponents, and DigraphColouring
 # for a 2-colouring
 
-# Can this be improved with a simple depth 1st search to remove need for
-# symmetric closure, etc?
-
-InstallMethod(DIGRAPHS_Bipartite, "for a digraph", [IsDigraph],
+InstallMethod(DIGRAPHS_Bipartite, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
-  local n, colour, queue, i, node, node_neighbours, root, t;
-
+  local n, t, colours, in_nbrs, stack, pop, v, pos, nbrs, w, i;
+  IsValidDigraph(D);
   n := DigraphNrVertices(D);
   if n < 2 then
     return [false, fail];
@@ -1291,38 +1289,37 @@ function(D)
     t := Concatenation(ListWithIdenticalEntries(n - 1, 1), [2]);
     return [true, Transformation(t)];
   fi;
-  D := DigraphMutableCopy(D);
-  D := DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(D));
-  colour := ListWithIdenticalEntries(n, 0);
-
-  # This means there is a vertex we haven't visited yet
-  while 0 in colour do
-    root := Position(colour, 0);
-    colour[root] := 1;
-    queue := [root];
-    Append(queue, OutNeighboursOfVertex(D, root));
-    while queue <> [] do
-      # Explore the first element of queue
-      node := queue[1];
-      node_neighbours := OutNeighboursOfVertex(D, node);
-      for i in node_neighbours do
-        # If node and its neighbour have the same colour, D is not
-        # bipartite
-        if colour[node] = colour[i] then
-          return [false, fail, fail];
-        elif colour[i] = 0 then  # Give i opposite colour to node
-          if colour[node] = 1 then
-            colour[i] := 2;
-          else
-            colour[i] := 1;
+  colours := ListWithIdenticalEntries(n, 0);
+  in_nbrs := InNeighbours(D);
+  # TODO maybe use stack from DataStructures?
+  stack := [];
+  for v in [1 .. n] do
+    if colours[v] <> 0 then
+      continue;
+    fi;
+    stack := [[v, 1]];
+    while Length(stack) > 0 do
+      pop := stack[Length(stack)];
+      Remove(stack, Length(stack));
+      v := pop[1];
+      pos := pop[2];
+      nbrs := Concatenation(OutNeighboursOfVertex(D, v),
+                            in_nbrs[v]);
+      for i in [pos .. Length(nbrs)] do
+        w := nbrs[i];
+        if colours[w] <> 0 then
+          if colours[w] = colours[v] then
+            return [false, fail];
           fi;
-          Add(queue, i);
+        else
+          colours[w] := colours[v] mod 2 + 1;
+          Append(stack, [[v, i + 1], [w, 1]]);
+          continue;
         fi;
       od;
-      Remove(queue, 1);
     od;
   od;
-  return [true, Transformation(colour)];
+  return [true, Transformation(colours)];
 end);
 
 InstallMethod(DigraphBicomponents, "for a digraph", [IsDigraph],
