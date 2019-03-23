@@ -98,17 +98,20 @@ DeclareOperation("AsBinaryRelation", [IsDigraph]);
 DeclareOperation("AsSemigroup", [IsFunction, IsDigraph]);
 DeclareOperation("AsMonoid", [IsFunction, IsDigraph]);
 
-# Random digraphs . . .
-DeclareOperation("RandomMutableDigraph", [IsPosInt]);
-DeclareOperation("RandomMutableDigraph", [IsPosInt, IsRat]);
-DeclareOperation("RandomMutableDigraph", [IsPosInt, IsFloat]);
+DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt]);
+DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt, IsRat]);
+DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt, IsFloat]);
 
-DeclareOperation("RandomDigraph", [IsPosInt]);
-DeclareOperation("RandomDigraph", [IsPosInt, IsRat]);
-DeclareOperation("RandomDigraph", [IsPosInt, IsFloat]);
+DeclareOperation("RandomDigraph", [IsInt]);
+DeclareOperation("RandomDigraph", [IsInt, IsRat]);
+DeclareOperation("RandomDigraph", [IsInt, IsFloat]);
+DeclareOperation("RandomDigraph", [IsFunction, IsInt]);
+DeclareOperation("RandomDigraph", [IsFunction, IsInt, IsRat]);
+DeclareOperation("RandomDigraph", [IsFunction, IsInt, IsFloat]);
 
-DeclareOperation("RandomMutableTournament", [IsInt]);
+DeclareConstructor("RandomTournamentCons", [IsDigraph, IsInt]);
 DeclareOperation("RandomTournament", [IsInt]);
+DeclareOperation("RandomTournament", [IsFunction, IsInt]);
 
 # No mutable analogues of the following because we will withdraw multidigraphs
 # the not too distant future!

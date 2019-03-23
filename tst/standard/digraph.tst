@@ -434,6 +434,8 @@ gap> AsDigraph(h, 2);
 fail
 
 #  RandomDigraph
+gap> IsImmutableDigraph(RandomDigraph(100, 0.2));
+true
 gap> DigraphNrVertices(RandomDigraph(10));
 10
 gap> DigraphNrVertices(RandomDigraph(200, 0.854));
@@ -453,6 +455,52 @@ Error, the 2nd argument (p) must be between 0 and 1,
 gap> RandomDigraph(10, -0.01);
 Error, the 2nd argument (p) must be between 0 and 1,
 gap> RandomDigraph(10, 1 / 10);;
+
+# RandomDigraph(IsImmutableDigraph, ...)
+gap> IsImmutableDigraph(RandomDigraph(IsImmutableDigraph, 100, 0.2));
+true
+gap> DigraphNrVertices(RandomDigraph(IsImmutableDigraph, 10));
+10
+gap> DigraphNrVertices(RandomDigraph(IsImmutableDigraph, 200, 0.854));
+200
+gap> IsMultiDigraph(RandomDigraph(IsImmutableDigraph, 1000));
+false
+gap> RandomDigraph(IsImmutableDigraph, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomDigraph' on 2 arguments
+gap> RandomDigraph(IsImmutableDigraph, "a");
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomDigraph' on 2 arguments
+gap> RandomDigraph(IsImmutableDigraph, 4, 0);
+<immutable digraph with 4 vertices, 0 edges>
+gap> RandomDigraph(IsImmutableDigraph, 10, 1.01);
+Error, the 2nd argument (p) must be between 0 and 1,
+gap> RandomDigraph(IsImmutableDigraph, 10, -0.01);
+Error, the 2nd argument (p) must be between 0 and 1,
+gap> RandomDigraph(IsImmutableDigraph, 10, 1 / 10);;
+
+# RandomDigraph(IsMutableDigraph, ...)
+gap> IsMutableDigraph(RandomDigraph(IsMutableDigraph, 100, 0.2));
+true
+gap> DigraphNrVertices(RandomDigraph(IsMutableDigraph, 10));
+10
+gap> DigraphNrVertices(RandomDigraph(IsMutableDigraph, 200, 0.854));
+200
+gap> IsMultiDigraph(RandomDigraph(IsMutableDigraph, 1000));
+false
+gap> RandomDigraph(IsMutableDigraph, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomDigraph' on 2 arguments
+gap> RandomDigraph(IsMutableDigraph, "a");
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `RandomDigraph' on 2 arguments
+gap> RandomDigraph(IsMutableDigraph, 4, 0);
+<mutable digraph with 4 vertices, 0 edges>
+gap> RandomDigraph(IsMutableDigraph, 10, 1.01);
+Error, the 2nd argument (p) must be between 0 and 1,
+gap> RandomDigraph(IsMutableDigraph, 10, -0.01);
+Error, the 2nd argument (p) must be between 0 and 1,
+gap> RandomDigraph(IsMutableDigraph, 10, 1 / 10);;
 
 #  RandomMultiDigraph
 gap> DigraphNrVertices(RandomMultiDigraph(100));

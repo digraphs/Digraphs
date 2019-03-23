@@ -836,44 +836,84 @@ end);
 # 10. Random digraphs
 ########################################################################
 
-InstallMethod(RandomMutableDigraph, "for a positive integer", [IsPosInt],
-function(n)
-  return RandomMutableDigraph(n, Float(Random([0 .. n])) / n);
+InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsInt],
+function(filt, n)
+  return RandomDigraphCons(IsMutableDigraph, n, Float(Random([0 .. n])) / n);
 end);
 
-InstallMethod(RandomMutableDigraph, "for a positive integer and a rational",
-[IsPosInt, IsRat],
-function(n, p)
-  return RandomMutableDigraph(n, Float(p));
+InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
+[IsImmutableDigraph, IsInt],
+function(filt, n)
+  return RandomDigraphCons(IsImmutableDigraph, n, Float(Random([0 .. n])) / n);
 end);
 
-InstallMethod(RandomMutableDigraph, "for a positive integer and a float",
-[IsPosInt, IsFloat],
-function(n, p)
+InstallMethod(RandomDigraphCons,
+"for IsMutableDigraph, an integer, and a rational",
+[IsMutableDigraph, IsInt, IsRat],
+function(filt, n, p)
+  return RandomDigraphCons(IsMutableDigraph, n, Float(p));
+end);
+
+InstallMethod(RandomDigraphCons,
+"for IsImmutableDigraph, an integer, and a rational",
+[IsImmutableDigraph, IsInt, IsRat],
+function(filt, n, p)
+  return RandomDigraphCons(IsImmutableDigraph, n, Float(p));
+end);
+
+InstallMethod(RandomDigraphCons,
+"for IsMutableDigraph, a positive integer, and a float",
+[IsMutableDigraph, IsPosInt, IsFloat],
+function(filt, n, p)
   if p < 0.0 or 1.0 < p then
     ErrorNoReturn("the 2nd argument (p) must be between 0 and 1,");
   fi;
   return MutableDigraphNC(RANDOM_DIGRAPH(n, Int(p * 10000)));
 end);
 
+InstallMethod(RandomDigraphCons,
+"for IsImmutableDigraph, a positive integer, and a float",
+[IsImmutableDigraph, IsPosInt, IsFloat],
+function(filt, n, p)
+  local D;
+  D := MakeImmutableDigraph(RandomDigraphCons(IsMutableDigraph, n, p));
+  SetIsMultiDigraph(D, false);
+  return D;
+end);
+
 InstallMethod(RandomDigraph, "for a pos int", [IsPosInt],
 function(n)
-  return MakeImmutableDigraph(RandomMutableDigraph(n));
+  return RandomDigraphCons(IsImmutableDigraph, n);
 end);
 
 InstallMethod(RandomDigraph, "for a pos int and a rational",
 [IsPosInt, IsRat],
 function(n, p)
-  return MakeImmutableDigraph(RandomMutableDigraph(n, p));
+  return RandomDigraphCons(IsImmutableDigraph, n, p);
 end);
 
 InstallMethod(RandomDigraph, "for a pos int and a float",
 [IsPosInt, IsFloat],
 function(n, p)
-  local D;
-  D := MakeImmutableDigraph(RandomMutableDigraph(n, p));
-  SetIsMultiDigraph(D, false);
-  return D;
+  return RandomDigraphCons(IsImmutableDigraph, n, p);
+end);
+
+InstallMethod(RandomDigraph, "for a func and a pos int", [IsFunction, IsPosInt],
+function(func, n)
+  return RandomDigraphCons(func, n); 
+end);
+
+InstallMethod(RandomDigraph, "for a func, a pos int, and a rational",
+[IsFunction, IsPosInt, IsRat],
+function(func, n, p)
+  return RandomDigraphCons(func, n, p); 
+end);
+
+InstallMethod(RandomDigraph, "for a func, a pos int, and a float",
+[IsFunction, IsPosInt, IsFloat],
+function(func, n, p)
+  return RandomDigraphCons(func, n, p); 
 end);
 
 InstallMethod(RandomMultiDigraph, "for a pos int",
@@ -888,8 +928,9 @@ function(n, m)
   return DigraphNC(RANDOM_MULTI_DIGRAPH(n, m));
 end);
 
-InstallMethod(RandomMutableTournament, "for an integer", [IsInt],
-function(n)
+InstallMethod(RandomTournamentCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsInt],
+function(filt, n)
   local choice, nodes, list, v, w;
   if n < 0 then
     ErrorNoReturn("the argument (n) must be a non-negative integer,");
@@ -911,7 +952,19 @@ function(n)
   return MutableDigraphNC(list);
 end);
 
+InstallMethod(RandomTournamentCons, "for IsImmutableDigraph and an integer",
+[IsImmutableDigraph, IsInt],
+function(filt, n)
+  return MakeImmutableDigraph(RandomTournamentCons(IsMutableDigraph, n));
+end);
+
 InstallMethod(RandomTournament, "for an integer", [IsInt],
 function(n)
-  return MakeImmutableDigraph(RandomMutableTournament(n));
+  return RandomTournamentCons(IsImmutableDigraph, n);
+end);
+
+InstallMethod(RandomTournament, "for a func and an integer",
+[IsFunction, IsInt],
+function(func, n)
+  return RandomTournamentCons(func, n);
 end);
