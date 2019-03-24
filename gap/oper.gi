@@ -601,7 +601,6 @@ function(D)
                   "digraphs,");
   fi;
   topo := DigraphTopologicalSort(D);
-  # p := MappingPermListList(DigraphVertices(D), topo);
   p    := Permutation(Transformation(topo), topo);
   OnDigraphs(D, p ^ -1);       # changes D in-place
   DIGRAPH_TRANS_REDUCTION(D);  # changes D in-place
@@ -824,21 +823,16 @@ function(D, list)
   return MakeImmutableDigraph(InducedSubdigraph(DigraphMutableCopy(D), list));
 end);
 
-# TODO(now): update QuotientDigraph to change its arg in-place if mutable.
-
-InstallMethod(QuotientDigraph, "for a dense digraph and a homogeneous list",
-[IsDenseDigraphRep, IsHomogeneousList],
+InstallMethod(QuotientDigraph,
+"for a dense mutable digraph and a homogeneous list",
+[IsDenseDigraphRep and IsMutableDigraph, IsHomogeneousList],
 function(D, partition)
-  local ConstructDigraph, N, M, check, lookup, out, new, x, i, u, v;
-  if IsMutableDigraph(D) then
-    ConstructDigraph := ConvertToMutableDigraphNC;
-  else
-    ConstructDigraph := ConvertToImmutableDigraphNC;
-  fi;
+  local N, M, check, lookup, new, new_vl, new_el, old, old_vl, old_el, x, i, u,
+  v;
   N := DigraphNrVertices(D);
   if N = 0 then
     if IsEmpty(partition) then
-      return ConstructDigraph([]);
+      return D;
     else
       ErrorNoReturn("the 2nd argument (a homogeneous list) is not a valid ",
                     "partition of the vertices of 1st argument (a null ",
@@ -871,14 +865,31 @@ function(D, partition)
                     "partition of the vertices [1 .. ", N, "] of the 1st ",
                     "argument (a digraph),");
   fi;
-  out := OutNeighbours(D);
-  new := List([1 .. M], x -> []);
+  new    := List([1 .. M], x -> []);
+  new_vl := List([1 .. M], x -> []);
+  new_el := List([1 .. M], x -> []);
+  old    := D!.OutNeighbours;
+  old_vl := DigraphVertexLabels(D);
+  old_el := DigraphEdgeLabelsNC(D);
   for u in DigraphVertices(D) do
-    for v in out[u] do
+    Add(new_vl[lookup[u]], old_vl[u]);
+    for v in old[u] do
       Add(new[lookup[u]], lookup[v]);
+      Add(new_el[lookup[u]], old_el[v]);
     od;
   od;
-  return ConstructDigraph(new);
+  D!.OutNeighbours := new;
+  SetDigraphVertexLabels(D, new_vl);
+  SetDigraphEdgeLabelsNC(D, new_el);
+  return D;
+end);
+
+InstallMethod(QuotientDigraph,
+"for an immutable digraph and a homogeneous list",
+[IsImmutableDigraph, IsHomogeneousList],
+function(D, partition)
+  return MakeImmutableDigraph(QuotientDigraph(DigraphMutableCopy(D),
+                                              partition));
 end);
 
 #############################################################################
