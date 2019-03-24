@@ -259,7 +259,7 @@ function(filename)
   local splitname, extension;
 
   if not IsString(filename) then
-    ErrorNoReturn("the argument (filename) must be a string,");
+    ErrorNoReturn("the argument <filename> must be a string,");
   fi;
 
   splitname := SplitString(filename, ".");
@@ -293,7 +293,7 @@ function(filename)
   local splitname, extension;
 
   if not IsString(filename) then
-    ErrorNoReturn("the argument (filename) must be a string,");
+    ErrorNoReturn("the argument <filename> must be a string,");
   fi;
 
   splitname := SplitString(filename, ".");
@@ -346,11 +346,11 @@ function(arg)
   # TODO check that the mode and the coder are compatible
 
   if not IsString(name) then
-    ErrorNoReturn("the 1st argument (name) must be a string,");
+    ErrorNoReturn("the 1st argument <name> must be a string,");
   elif not (IsFunction(coder) or coder = fail) then
-    ErrorNoReturn("the 2nd argument (coder) must be a function or fail,");
+    ErrorNoReturn("the 2nd argument <coder> must be a function or fail,");
   elif not mode in ["a", "w", "r"] then
-    ErrorNoReturn("the 3rd argument (mode) must be one of \"a\", ",
+    ErrorNoReturn("the 3rd argument <mode> must be one of \"a\", ",
                   "\"w\", or \"r\"");
   fi;
 
@@ -373,7 +373,7 @@ function(arg)
   file := IO_CompressedFile(UserHomeExpand(name), mode);
 
   if file = fail then
-    ErrorNoReturn("cannot open the file given as the 1st argument (name),");
+    ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
   fi;
   file!.coder := coder;
   return file;
@@ -405,12 +405,12 @@ function(arg)
   fi;
 
   if not (IsString(name) or IsFile(name)) then
-    ErrorNoReturn("the 1st argument (filenname) must be a string or IO ",
+    ErrorNoReturn("the 1st argument <filenname> must be a string or IO ",
                   "file object,");
   elif not (IsFunction(decoder) or decoder = fail) then
-    ErrorNoReturn("the argument (decoder) must be a function or fail,");
+    ErrorNoReturn("the argument <decoder> must be a function or fail,");
   elif not (IsPosInt(nr) or IsInfinity(nr)) then
-    ErrorNoReturn("the argument (nr) must be a positive integer or ",
+    ErrorNoReturn("the argument <nr> must be a positive integer or ",
                   "infinity");
   fi;
 
@@ -419,9 +419,9 @@ function(arg)
   else
     file := name;
     if file!.closed then
-      ErrorNoReturn("the 1st argument (filename) is a closed file,");
+      ErrorNoReturn("the 1st argument <filename> is a closed file,");
     elif file!.rbufsize = false then
-      ErrorNoReturn("the mode of the 1st argument (filename) must be \"r\",");
+      ErrorNoReturn("the mode of the 1st argument <filename> must be \"r\",");
     fi;
   fi;
 
@@ -472,7 +472,7 @@ function(arg)
     name     := arg[1];
     digraphs := arg[2];
   elif IsFile(arg[1]) then
-    ErrorNoReturn("the 1st argument (filename) is a file, and so there must ",
+    ErrorNoReturn("the 1st argument <filename> is a file, and so there must ",
                   "only be 2 arguments,");
   elif Length(arg) = 3 then
     name     := arg[1];
@@ -496,14 +496,14 @@ function(arg)
   fi;
 
   if not (IsString(name) or IsFile(name)) then
-    ErrorNoReturn("the 1st argument (filename) must be a string or a file,");
+    ErrorNoReturn("the 1st argument <filename> must be a string or a file,");
   elif not ForAll(digraphs, IsDigraph) then
-    ErrorNoReturn("the 2nd argument (digraphs) must be a digraph or list of ",
+    ErrorNoReturn("the 2nd argument <digraphs> must be a digraph or list of ",
                   "digraphs,");
   elif not (IsFunction(encoder) or encoder = fail) then
-    ErrorNoReturn("the argument (encoder) must be a function or fail,");
+    ErrorNoReturn("the argument <encoder> must be a function or fail,");
   elif not mode in ["a", "w"] then
-    ErrorNoReturn("the argument (mode) must be \"a\" or \"w\",");
+    ErrorNoReturn("the argument <mode> must be \"a\" or \"w\",");
   fi;
   CallFuncList(IsValidDigraph, digraphs);
 
@@ -579,9 +579,9 @@ function(arg)
   else
     file := name;
     if file!.closed then
-      ErrorNoReturn("the 1st argument (filename) is closed,");
+      ErrorNoReturn("the 1st argument <filename> is closed,");
     elif file!.wbufsize = false then
-      ErrorNoReturn("the mode of the 1st argument (filename) must be ",
+      ErrorNoReturn("the mode of the 1st argument <filename> must be ",
                     "\"w\" or \"a\",");
     fi;
   fi;
@@ -625,7 +625,7 @@ function(func, s)
   end;
 
   if Length(s) = 0 then
-    ErrorNoReturn("the 2nd argument (s) must be a non-empty string,");
+    ErrorNoReturn("the 2nd argument <s> must be a non-empty string,");
   fi;
 
   # Convert ASCII chars to integers
@@ -650,14 +650,14 @@ function(func, s)
       start := 5;
     fi;
   else
-    ErrorNoReturn("the 2nd argument (s) is not a valid graph6 string,");
+    ErrorNoReturn("the 2nd argument <s> is not a valid graph6 string,");
   fi;
 
   maxedges := n * (n - 1) / 2;
   if list <> [0] and list <> [1] and
       not (Int((maxedges - 1) / 6) + start = Length(list) and
            list[Length(list)] mod 2 ^ ((0 - maxedges) mod 6) = 0) then
-    ErrorNoReturn("the 2nd argument (s) is not a valid graph6 string,");
+    ErrorNoReturn("the 2nd argument <s> is not a valid graph6 string,");
   fi;
 
   out := List([1 .. n], x -> []);
@@ -703,7 +703,7 @@ function(func, s)
   s := Chomp(s);
   # Check non-emptiness
   if Length(s) = 0 then
-    ErrorNoReturn("the 2nd argument (s) must be a non-empty string,");
+    ErrorNoReturn("the 2nd argument <s> must be a non-empty string,");
   fi;
 
   # Check for the special '&' character (or the deprecated '+')
@@ -718,7 +718,7 @@ function(func, s)
     Info(InfoDigraphs, 1, "unlikely to be recognised by other programs.");
     Info(InfoDigraphs, 1, "Please consider re-encoding with the new format.");
   else
-    ErrorNoReturn("the 2nd argument (s) is not a valid digraph6 string,");
+    ErrorNoReturn("the 2nd argument <s> is not a valid digraph6 string,");
   fi;
 
   # Convert ASCII chars to integers
@@ -743,7 +743,7 @@ function(func, s)
       start := 6;
     fi;
   else
-    ErrorNoReturn("the 2nd argument (s) is not a valid digraph6 string,");
+    ErrorNoReturn("the 2nd argument <s> is not a valid digraph6 string,");
   fi;
 
   range := [];
@@ -795,12 +795,12 @@ function(func, s)
   s := Chomp(s);
   # Check non-emptiness
   if Length(s) = 0 then
-    ErrorNoReturn("the 2nd argument (s) must be a non-empty string,");
+    ErrorNoReturn("the 2nd argument <s> must be a non-empty string,");
   fi;
 
   # Check for the special ':' character
   if s[1] <> ':' then
-    ErrorNoReturn("the 2nd argument (s) is not a valid sparse6 string,");
+    ErrorNoReturn("the 2nd argument <s> is not a valid sparse6 string,");
   fi;
 
   # Convert ASCII chars to integers
@@ -815,7 +815,7 @@ function(func, s)
     start := 3;
   elif list[3] = 63 then
     if Length(list) <= 8 then
-      ErrorNoReturn("the 2nd argument (s) is not a valid sparse6 string,");
+      ErrorNoReturn("the 2nd argument <s> is not a valid sparse6 string,");
     fi;
     n := 0;
     for i in [0 .. 5] do
@@ -829,7 +829,7 @@ function(func, s)
       od;
       start := 6;
   else
-    ErrorNoReturn("the 2nd argument (s) is not a valid sparse6 string,");
+    ErrorNoReturn("the 2nd argument <s> is not a valid sparse6 string,");
   fi;
 
   # convert list into a list of bits;
@@ -916,12 +916,12 @@ function(func, s)
 
   # Check non-emptiness
   if Length(s) = 0 then
-    ErrorNoReturn("the 2nd argument (s) must be a non-empty string,");
+    ErrorNoReturn("the 2nd argument <s> must be a non-empty string,");
   fi;
 
   # Check for the special ':' character
   if s[1] <> '.' then
-    ErrorNoReturn("the 2nd argument (s) is not a valid disparse6 string,");
+    ErrorNoReturn("the 2nd argument <s> is not a valid disparse6 string,");
   fi;
 
   # Convert ASCII chars to integers
@@ -936,7 +936,7 @@ function(func, s)
     start := 3;
   elif list[3] = 63 then
     if Length(list) <= 8 then
-      ErrorNoReturn("the 2nd argument (s) is not a valid disparse6 string,");
+      ErrorNoReturn("the 2nd argument <s> is not a valid disparse6 string,");
     fi;
     n := 0;
     for i in [0 .. 5] do
@@ -950,7 +950,7 @@ function(func, s)
       od;
       start := 6;
   else
-    ErrorNoReturn("the 2nd argument (s) is not a valid disparse6 string,");
+    ErrorNoReturn("the 2nd argument <s> is not a valid disparse6 string,");
   fi;
 
   # convert list into a list of bits;
@@ -1066,13 +1066,13 @@ function(func, name)
 
   file := IO_CompressedFile(UserHomeExpand(name), "r");
   if file = fail then
-    ErrorNoReturn("cannot open the file given as the 2nd argument (name),");
+    ErrorNoReturn("cannot open the file given as the 2nd argument <name>,");
   fi;
 
   # Helper function for when an error is found in the file's formatting
   malformed_file := function()
     IO_Close(file);
-    ErrorNoReturn("the format of the file given as the 2nd argument (name) ",
+    ErrorNoReturn("the format of the file given as the 2nd argument <name> ",
                   "cannot be determined,");
   end;
 
@@ -1252,7 +1252,7 @@ function(func, name, delimiter, offset, ignore)
 
   file := IO_CompressedFile(UserHomeExpand(name), "r");
   if file = fail then
-    ErrorNoReturn("cannot open the file given as the 2nd argument (name),");
+    ErrorNoReturn("cannot open the file given as the 2nd argument <name>,");
   fi;
 
   lines := IO_ReadLines(file);
@@ -1317,16 +1317,16 @@ function(func, s)
   Apply(s, EvalString);
 
   if not ForAll(s, x -> IsInt(x) and x >= 0) then
-    ErrorNoReturn("the 2nd argument (s) must be a string of ",
+    ErrorNoReturn("the 2nd argument <s> must be a string of ",
                   "space-separated non-negative integers,");
   elif not Length(s) >= 2 then
-    ErrorNoReturn("the 2nd argument (s) must be a string of ",
+    ErrorNoReturn("the 2nd argument <s> must be a string of ",
                   "at least two integers,");
   elif not ForAll([3 .. Length(s)], i -> s[i] < s[1]) then
-    ErrorNoReturn("the 2nd argument (s) must be a string consisting of ",
+    ErrorNoReturn("the 2nd argument <s> must be a string consisting of ",
                   "integers in the range [0 .. ", s[1], "],");
   elif Length(s) < 2 * s[2] + 2 then
-    ErrorNoReturn("the 2nd argument (s) must be a string of length ",
+    ErrorNoReturn("the 2nd argument <s> must be a string of length ",
                   "at least ", 2 * s[2] + 2);
   fi;
   out := List([1 .. s[1]], x -> []);
@@ -1363,13 +1363,13 @@ function(name, D)
   local file, n, verts, nbs, nr_loops, m, labels, i, j;
 
   if not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the 2nd argument (D) must be a symmetric digraph,");
+    ErrorNoReturn("the 2nd argument <D> must be a symmetric digraph,");
   fi;
   IsValidDigraph(D);
 
   file := IO_CompressedFile(UserHomeExpand(name), "w");
   if file = fail then
-    ErrorNoReturn("cannot open the file given as the 1st argument (name),");
+    ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
   fi;
 
   n := DigraphNrVertices(D);
@@ -1409,7 +1409,7 @@ function(name, D)
       Info(InfoDigraphs, 1,
            "Only integer vertex labels are supported by the DIMACS format.");
       Info(InfoDigraphs, 1,
-           "The vertex labels of the 2nd argument (a digraph) will not be",
+           "The vertex labels of the 2nd argument <a digraph> will not be",
            " saved.");
     else
       for i in verts do
@@ -1449,16 +1449,16 @@ function(name, D, delimiter, offset)
   local file, edge;
 
   if not IsString(name) then
-    ErrorNoReturn("the 1st argument (name) must be a string,");
+    ErrorNoReturn("the 1st argument <name> must be a string,");
   elif not IsString(delimiter) then
-    ErrorNoReturn("the 3rd argument (delimiter) must be a string,");
+    ErrorNoReturn("the 3rd argument <delimiter> must be a string,");
   elif not IsInt(offset) then
-    ErrorNoReturn("the 4th argument (offset) must be an integer,");
+    ErrorNoReturn("the 4th argument <offset> must be an integer,");
   fi;
   file := IO_CompressedFile(UserHomeExpand(name), "w");
 
   if file = fail then
-    ErrorNoReturn("cannot open the file given as the 1st argument (name),");
+    ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
   fi;
 
   for edge in DigraphEdges(D) do
@@ -1475,7 +1475,7 @@ function(D)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   if (IsMultiDigraph(D) or not IsSymmetricDigraph(D)
       or DigraphHasLoops(D)) then
-    ErrorNoReturn("the argument (D) must be a symmetric digraph ",
+    ErrorNoReturn("the argument <D> must be a symmetric digraph ",
                   "with no loops or multiple edges,");
   fi;
   IsValidDigraph(D);
@@ -1487,7 +1487,7 @@ function(D)
   # First write the number of vertices
   lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorNoReturn("the argument (D) must be a digraph with between 0 and ",
+    ErrorNoReturn("the argument <D> must be a digraph with between 0 and ",
                   "68719476736 vertices,");
   fi;
   Append(list, lenlist);
@@ -1544,7 +1544,7 @@ function(D)
   # Now write the number of vertices
   lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorNoReturn("the argument (D) must be a digraph with between 0 and ",
+    ErrorNoReturn("the argument <D> must be a digraph with between 0 and ",
                   "68719476736 vertices,");
   fi;
   Append(list, lenlist);
@@ -1581,7 +1581,7 @@ function(D)
   local list, n, lenlist, adj, nredges, k, blist, v, nextbit, AddBinary, i, j,
         bitstopad, pos, block;
   if not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a symmetric digraph,");
+    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
   fi;
   IsValidDigraph(D);
 
@@ -1594,7 +1594,7 @@ function(D)
   # Now write the number of vertices
   lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorNoReturn("the argument (D) must be a digraph with between 0 and ",
+    ErrorNoReturn("the argument <D> must be a digraph with between 0 and ",
                   "68719476736 vertices,");
   fi;
   Append(list, lenlist);
@@ -1699,7 +1699,7 @@ function(D)
   # Now write the number of vertices
   lenlist := DIGRAPHS_Graph6Length(n);
   if lenlist = fail then
-    ErrorNoReturn("the argument (D) must be a digraph with between 0 and ",
+    ErrorNoReturn("the argument <D> must be a digraph with between 0 and ",
                   "68719476736 vertices,");
   fi;
   Append(list, lenlist);

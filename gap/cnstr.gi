@@ -125,7 +125,7 @@ InstallMethod(DistanceDigraph, "for a digraph and an integer",
 function(D, distance)
   IsValidDigraph(D);
   if distance < 0 then
-    ErrorNoReturn("the 2nd argument (distance) must be a non-negative ",
+    ErrorNoReturn("the 2nd argument <distance> must be a non-negative ",
                   "integer,");
   fi;
   return DistanceDigraph(D, [distance]);
@@ -156,7 +156,7 @@ function(D)
   local G;
   IsValidDigraph(D);
   if not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a symmetric digraph,");
+    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
   fi;
   if HasDigraphGroup(D) then
     G := DigraphGroup(D);

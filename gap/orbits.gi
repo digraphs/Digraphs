@@ -141,9 +141,9 @@ function(D, v)
   IsValidDigraph(D);
 
   if v > DigraphNrVertices(D) then
-    ErrorNoReturn("the 2nd argument (v) must not exceed ",
+    ErrorNoReturn("the 2nd argument <v> must not exceed ",
                   DigraphNrVertices(D), ", the number of vertices of the ",
-                  "digraph in the 1st argument (D),");
+                  "digraph in the 1st argument <D>,");
   fi;
 
   pos := DigraphSchreierVector(D)[v];

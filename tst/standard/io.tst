@@ -43,7 +43,7 @@ gap> List(l, x -> DigraphFromGraph6String(x));
   <immutable digraph with 9 vertices, 38 edges>, 
   <immutable digraph with 9 vertices, 34 edges> ]
 gap> DigraphFromGraph6String(ListWithIdenticalEntries(500, '~'));
-Error, the 2nd argument (s) is not a valid graph6 string,
+Error, the 2nd argument <s> is not a valid graph6 string,
 
 # ReadDigraphs
 gap> str := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;
@@ -60,11 +60,11 @@ false
 gap> list[10] = gr;
 true
 gap> ReadDigraphs(34, DigraphFromGraph6String, 5);
-Error, the 1st argument (filenname) must be a string or IO file object,
+Error, the 1st argument <filenname> must be a string or IO file object,
 gap> ReadDigraphs(str, (1, 6, 5), 5);
-Error, the argument (decoder) must be a function or fail,
+Error, the argument <decoder> must be a function or fail,
 gap> ReadDigraphs(str, DigraphFromGraph6String, 0);
-Error, the argument (nr) must be a positive integer or infinity
+Error, the argument <nr> must be a positive integer or infinity
 gap> str := Concatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt");;
 gap> list := ReadDigraphs(str);;
 gap> list2 := ReadDigraphs(str,
@@ -76,7 +76,7 @@ gap> ReadDigraphs(str, 2, true, "elephant");
 Error, there must be 1, 2, or 3 arguments,
 gap> badfilename := "path/to/some/madeupfile.g6.gz";;
 gap> ReadDigraphs(badfilename, 3);
-Error, cannot open the file given as the 1st argument (name),
+Error, cannot open the file given as the 1st argument <name>,
 
 #  DigraphFromSparse6String and Sparse6String
 gap> DigraphFromSparse6String(":@");
@@ -285,7 +285,7 @@ gap> ReadDigraphs(f);
   <immutable digraph with 5 vertices, 20 edges> ]
 gap> f := DigraphFile(filename, "a");;
 gap> WriteDigraphs(f, CycleDigraph(5));
-Error, the argument (D) must be a symmetric digraph with no loops or multiple \
+Error, the argument <D> must be a symmetric digraph with no loops or multiple \
 edges,
 gap> WriteDigraphs(f, JohnsonDigraph(6, 3));
 IO_OK
@@ -351,13 +351,13 @@ gap> f := DigraphFile(1, 2, 3, 4);
 Error, there must be 1, 2, or 3 arguments,
 gap> DigraphFile(Concatenation(DIGRAPHS_Dir(), "/data/test-1.d6"),
 >                Digraph6String, "wtf");;
-Error, the 3rd argument (mode) must be one of "a", "w", or "r"
+Error, the 3rd argument <mode> must be one of "a", "w", or "r"
 gap> ReadDigraphs(f);
-Error, the 1st argument (filename) is a closed file,
+Error, the 1st argument <filename> is a closed file,
 gap> f := DigraphFile(Concatenation(DIGRAPHS_Dir(), "/tst/out/test.d6"),
 >                     Digraph6String, "w");;
 gap> ReadDigraphs(f);
-Error, the mode of the 1st argument (filename) must be "r",
+Error, the mode of the 1st argument <filename> must be "r",
 gap> IO_Close(f);
 true
 
@@ -366,9 +366,9 @@ gap> gr := Digraph([[1, 2], [2, 3], []]);
 <immutable digraph with 3 vertices, 4 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/plain.txt");;
 gap> WritePlainTextDigraph(1, 2, 3, 4);
-Error, the 1st argument (name) must be a string,
+Error, the 1st argument <name> must be a string,
 gap> WritePlainTextDigraph(".", gr, ",", -2);
-Error, cannot open the file given as the 1st argument (name),
+Error, cannot open the file given as the 1st argument <name>,
 gap> WritePlainTextDigraph(filename, gr, ",", -3);
 gap> WritePlainTextDigraph(filename, gr, ",", -1);
 gap> ReadPlainTextDigraph(1, 2, 3, 4);
@@ -380,13 +380,13 @@ gap> last = gr;
 true
 gap> filename := "/does/not/exist.txt";;
 gap> ReadPlainTextDigraph(filename, ",", 1, "i");
-Error, cannot open the file given as the 2nd argument (name),
+Error, cannot open the file given as the 2nd argument <name>,
 gap> WritePlainTextDigraph(filename, gr, ',', -1);
-Error, the 3rd argument (delimiter) must be a string,
+Error, the 3rd argument <delimiter> must be a string,
 gap> WritePlainTextDigraph(1, gr, ',', -1);
-Error, the 1st argument (name) must be a string,
+Error, the 1st argument <name> must be a string,
 gap> WritePlainTextDigraph(1, gr, ",", "a");
-Error, the 1st argument (name) must be a string,
+Error, the 1st argument <name> must be a string,
 
 #  TournamentLineDecoder
 gap> gr := TournamentLineDecoder("101001");
@@ -423,37 +423,37 @@ gap> gr := TCodeDecoder(3);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `TCodeDecoder' on 1 arguments
 gap> gr := TCodeDecoder("gr 5");
-Error, the 2nd argument (s) must be a string of space-separated non-negative i\
+Error, the 2nd argument <s> must be a string of space-separated non-negative i\
 ntegers,
 gap> gr := TCodeDecoder("10");
-Error, the 2nd argument (s) must be a string of at least two integers,
+Error, the 2nd argument <s> must be a string of at least two integers,
 gap> gr := TCodeDecoder("2 2 0 4 1 2");
-Error, the 2nd argument (s) must be a string consisting of integers in the ran\
+Error, the 2nd argument <s> must be a string consisting of integers in the ran\
 ge [0 .. 2],
 gap> gr := TCodeDecoder("3 2 0 2");
-Error, the 2nd argument (s) must be a string of length at least 6
+Error, the 2nd argument <s> must be a string of length at least 6
 gap> gr := TCodeDecoderNC("100 5 0 12 48 49 99 1 54 49 49 49");
 <immutable digraph with 100 vertices, 5 edges>
 
 #  Empty strings should not create graphs
 gap> DigraphFromGraph6String("");
-Error, the 2nd argument (s) must be a non-empty string,
+Error, the 2nd argument <s> must be a non-empty string,
 gap> DigraphFromDigraph6String("");
-Error, the 2nd argument (s) must be a non-empty string,
+Error, the 2nd argument <s> must be a non-empty string,
 gap> DigraphFromSparse6String("");
-Error, the 2nd argument (s) must be a non-empty string,
+Error, the 2nd argument <s> must be a non-empty string,
 gap> DigraphFromDiSparse6String("");
-Error, the 2nd argument (s) must be a non-empty string,
+Error, the 2nd argument <s> must be a non-empty string,
 
 #  DiSparse6 
 gap> DigraphFromDiSparse6String("I'm a string");
-Error, the 2nd argument (s) is not a valid disparse6 string,
+Error, the 2nd argument <s> is not a valid disparse6 string,
 gap> DigraphFromDiSparse6String(".~~");
-Error, the 2nd argument (s) is not a valid disparse6 string,
+Error, the 2nd argument <s> is not a valid disparse6 string,
 gap> DigraphFromDiSparse6String(".~~??@???o??N");
 <immutable digraph with 262144 vertices, 0 edges>
 gap> DigraphFromDiSparse6String(".~??");
-Error, the 2nd argument (s) is not a valid disparse6 string,
+Error, the 2nd argument <s> is not a valid disparse6 string,
 gap> DiSparse6String(CompleteDigraph(1));
 ".@~"
 gap> DigraphFromDiSparse6String(".@~");
@@ -474,27 +474,27 @@ true
 
 #  Invalid sizes
 gap> DigraphFromGraph6String("~llk");
-Error, the 2nd argument (s) is not a valid graph6 string,
+Error, the 2nd argument <s> is not a valid graph6 string,
 gap> DigraphFromDigraph6String("&~llk");
-Error, the 2nd argument (s) is not a valid digraph6 string,
+Error, the 2nd argument <s> is not a valid digraph6 string,
 gap> DigraphFromSparse6String(":~~l");
-Error, the 2nd argument (s) is not a valid sparse6 string,
+Error, the 2nd argument <s> is not a valid sparse6 string,
 gap> DigraphFromSparse6String(":~hl");
-Error, the 2nd argument (s) is not a valid sparse6 string,
+Error, the 2nd argument <s> is not a valid sparse6 string,
 gap> DigraphFromDiSparse6String(".~~l");
-Error, the 2nd argument (s) is not a valid disparse6 string,
+Error, the 2nd argument <s> is not a valid disparse6 string,
 
 #  Special format characters
 gap> DigraphFromDigraph6String("x");
-Error, the 2nd argument (s) is not a valid digraph6 string,
+Error, the 2nd argument <s> is not a valid digraph6 string,
 gap> DigraphFromSparse6String("y");
-Error, the 2nd argument (s) is not a valid sparse6 string,
+Error, the 2nd argument <s> is not a valid sparse6 string,
 gap> DigraphFromDiSparse6String("z");
-Error, the 2nd argument (s) is not a valid disparse6 string,
+Error, the 2nd argument <s> is not a valid disparse6 string,
 
 #  Special format characters
 gap> Sparse6String(ChainDigraph(3));
-Error, the argument (D) must be a symmetric digraph,
+Error, the argument <D> must be a symmetric digraph,
 gap> Sparse6String(CompleteDigraph(1));
 ":@"
 gap> gr := Digraph([[1], []]);;
@@ -516,32 +516,32 @@ ents
 #  WriteDigraphs: bad input
 gap> list := [CompleteDigraph(4), CycleDigraph(8), "hello world"];;
 gap> WriteDigraphs(72, list, "w");
-Error, the 1st argument (filename) must be a string or a file,
+Error, the 1st argument <filename> must be a string or a file,
 gap> WriteDigraphs("mylist", list, "w");
-Error, the 2nd argument (digraphs) must be a digraph or list of digraphs,
+Error, the 2nd argument <digraphs> must be a digraph or list of digraphs,
 gap> WriteDigraphs(1, 2, 3, 4, 5);
 Error, there must be 2, 3, or 4 arguments,
 gap> WriteDigraphs(filename, CompleteDigraph(2), 3, "w");
-Error, the argument (encoder) must be a function or fail,
+Error, the argument <encoder> must be a function or fail,
 gap> WriteDigraphs(filename, CompleteDigraph(2), Graph6String, "r");
-Error, the argument (mode) must be "a" or "w",
+Error, the argument <mode> must be "a" or "w",
 gap> filename := DigraphFile(Concatenation(DIGRAPHS_Dir(),
 >                            "/tst/out/test.g6"));;
 gap> gr := CompleteDigraph(1);;
 gap> WriteDigraphs(filename, gr, "w");
-Error, the 1st argument (filename) is a file, and so there must only be 2 argu\
+Error, the 1st argument <filename> is a file, and so there must only be 2 argu\
 ments,
 gap> WriteDigraphs(filename, gr, fail, "w");
-Error, the 1st argument (filename) is a file, and so there must only be 2 argu\
+Error, the 1st argument <filename> is a file, and so there must only be 2 argu\
 ments,
 gap> IO_Close(filename);
 true
 gap> WriteDigraphs(filename, gr);
-Error, the 1st argument (filename) is closed,
+Error, the 1st argument <filename> is closed,
 gap> f := DigraphFile(Concatenation(DIGRAPHS_Dir(), "/tst/out/test.d6"),
 >                     Digraph6String, "r");;
 gap> WriteDigraphs(f, EmptyDigraph(4));
-Error, the mode of the 1st argument (filename) must be "w" or "a",
+Error, the mode of the 1st argument <filename> must be "w" or "a",
 gap> IO_Close(f);
 true
 
@@ -603,11 +603,11 @@ gap> gr = list2;
 true
 gap> filename := "does/not/exist.gz";;
 gap> WriteDigraphs(filename, gr, "w");
-Error, cannot open the file given as the 1st argument (name),
+Error, cannot open the file given as the 1st argument <name>,
 
 #  DigraphPlainTextLineDecoder: bad input
 gap> Graph6String(ChainDigraph(4));
-Error, the argument (D) must be a symmetric digraph with no loops or multiple \
+Error, the argument <D> must be a symmetric digraph with no loops or multiple \
 edges,
 gap> DIGRAPHS_Graph6Length(-1);
 fail
@@ -616,9 +616,9 @@ fail
 gap> DIGRAPHS_Graph6Length(258748);
 [ 63, 63, 0, 0, 0, 63, 10, 60 ]
 gap> WriteDigraphs(1, 1, "w");
-Error, the 1st argument (filename) must be a string or a file,
+Error, the 1st argument <filename> must be a string or a file,
 gap> WriteDigraphs("string", [1], "w");
-Error, the 2nd argument (digraphs) must be a digraph or list of digraphs,
+Error, the 2nd argument <digraphs> must be a digraph or list of digraphs,
 gap> Sparse6String(EmptyDigraph(2 ^ 20));
 ":~~??C???"
 gap> DigraphFromSparse6String(":~~??C???");
@@ -638,9 +638,9 @@ gap> WriteDIMACSDigraph(gr, filename);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `WriteDIMACSDigraph' on 2 arguments
 gap> WriteDIMACSDigraph("file", ChainDigraph(2));
-Error, the 2nd argument (D) must be a symmetric digraph,
+Error, the 2nd argument <D> must be a symmetric digraph,
 gap> WriteDIMACSDigraph(filename, gr);
-Error, cannot open the file given as the 1st argument (name),
+Error, cannot open the file given as the 1st argument <name>,
 gap> filename := "tmp.gz";;
 gap> D := CompleteDigraph(3);
 <immutable digraph with 3 vertices, 6 edges>
@@ -684,7 +684,7 @@ IO_OK
 
 #  ReadDIMACSDigraph
 gap> ReadDIMACSDigraph("does/not/exist.gz");
-Error, cannot open the file given as the 2nd argument (name),
+Error, cannot open the file given as the 2nd argument <name>,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/bad.dimacs");;
 
 # Bad line type
@@ -692,7 +692,7 @@ gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "file for testing purposes");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 
 # Bad vertices and edges definition
@@ -701,38 +701,38 @@ gap> IO_WriteLine(file, "c file for testing purposes");;
 gap> IO_WriteLine(file, "p edge 'a' 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 -1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p fail 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "c empty file");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 
 # Vertices and edges undefined
@@ -740,7 +740,7 @@ gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "e 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 
 # Bad node label
@@ -749,21 +749,21 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 
 # Bad edge
@@ -772,28 +772,28 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 
 # Unsupported types
@@ -805,7 +805,7 @@ gap> IO_WriteLine(file, "x");;
 gap> IO_WriteLine(file, "j");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument (name) cannot be deter\
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
 
 # Bad number of edges
@@ -863,9 +863,9 @@ gap> DigraphVertexLabels(gr);
 
 #  Test DIGRAPHS_ChooseFileDecoder
 gap> DIGRAPHS_ChooseFileDecoder(1);
-Error, the argument (filename) must be a string,
+Error, the argument <filename> must be a string,
 gap> DIGRAPHS_ChooseFileEncoder(1);
-Error, the argument (filename) must be a string,
+Error, the argument <filename> must be a string,
 
 #  IO_Pickle
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/good.dimacs");;
@@ -887,9 +887,9 @@ true
 
 # DigraphFile
 gap> DigraphFile(10);
-Error, the 1st argument (name) must be a string,
+Error, the 1st argument <name> must be a string,
 gap> DigraphFile("tmp", false);
-Error, the 2nd argument (coder) must be a function or fail,
+Error, the 2nd argument <coder> must be a function or fail,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> ReadDigraphs(filename, IO_Unpickle);
 [ <mutable digraph with 30 vertices, 870 edges> ]

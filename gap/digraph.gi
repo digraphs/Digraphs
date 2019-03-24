@@ -201,7 +201,7 @@ function(record)
           and IsBound(record.DigraphRange)
           and (IsBound(record.DigraphVertices) or
                IsBound(record.DigraphNrVertices))) then
-    ErrorNoReturn("the argument (record) must be a record with components ",
+    ErrorNoReturn("the argument <record> must be a record with components ",
                   "'DigraphSource', 'DigraphRange', and either ",
                   "'DigraphVertices' or 'DigraphNrVertices' (but not both),");
   elif not IsList(record.DigraphSource)
@@ -483,12 +483,12 @@ function(mat)
   local n, i, j;
   n := Length(mat);
   if not IsRectangularTable(mat) or Length(mat[1]) <> n then
-    ErrorNoReturn("the argument (mat) must be a square matrix,");
+    ErrorNoReturn("the argument <mat> must be a square matrix,");
   elif not IsBool(mat[1][1]) then
     for i in [1 .. n] do
       for j in [1 .. n] do
         if not (IsInt(mat[i][j]) and mat[i][j] >= 0) then
-          ErrorNoReturn("the argument (mat) must be a matrix of ",
+          ErrorNoReturn("the argument <mat> must be a matrix of ",
                         "non-negative integers,");
         fi;
       od;
@@ -583,9 +583,9 @@ InstallMethod(MutableDigraphByEdges, "for a rectangular table",
 function(edges)
   local n, edge;
   if not Length(edges[1]) = 2 then
-    ErrorNoReturn("the argument (edges) must be a list of pairs,");
+    ErrorNoReturn("the argument <edges> must be a list of pairs,");
   elif not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then
-    ErrorNoReturn("the argument (edges) must be a list of pairs of ",
+    ErrorNoReturn("the argument <edges> must be a list of pairs of ",
                   "positive integers,");
   fi;
   n := 0;
@@ -616,15 +616,15 @@ InstallMethod(MutableDigraphByEdges,
 function(edges, n)
   local list, edge;
   if not Length(edges[1]) = 2 then
-    ErrorNoReturn("the 1st argument (edges) must be a list of pairs,");
+    ErrorNoReturn("the 1st argument <edges> must be a list of pairs,");
   elif not (IsPosInt(edges[1][1]) and IsPosInt(edges[1][2])) then
-    ErrorNoReturn("the 1st argument (edges) must be a list of pairs of ",
+    ErrorNoReturn("the 1st argument <edges> must be a list of pairs of ",
                   "pos ints,");
   fi;
   for edge in edges do
     if edge[1] > n or edge[2] > n then
-      ErrorNoReturn("the 1st argument (edges) must not contain values ",
-                    "greater than ", n, ", the 2nd argument (n),");
+      ErrorNoReturn("the 1st argument <edges> must not contain values ",
+                    "greater than ", n, ", the 2nd argument <n>,");
     fi;
   od;
   list := List([1 .. n], x -> []);
@@ -650,7 +650,7 @@ function(list)
   n := Length(list);  # number of vertices
   for x in list do
     if not ForAll(x, i -> IsPosInt(i) and i <= n) then
-      ErrorNoReturn("the argument (list) must be a list of lists of positive ",
+      ErrorNoReturn("the argument <list> must be a list of lists of positive ",
                     "integers not exceeding the length of the argument,");
     fi;
   od;
@@ -688,7 +688,7 @@ function(rel)
   local dom, list, i;
   dom := GeneratorsOfDomain(UnderlyingDomainOfBinaryRelation(rel));
   if not IsRange(dom) or dom[1] <> 1 then
-    ErrorNoReturn("the argument (rel) must be a binary relation ",
+    ErrorNoReturn("the argument <rel> must be a binary relation ",
                   "on the domain [1 .. n] for some positive integer n,");
   fi;
   list := EmptyPlist(Length(dom));
@@ -734,7 +734,7 @@ InstallMethod(AsMutableDigraph, "for a transformation and an integer",
 function(f, n)
   local list, x, i;
   if n < 0 then
-    ErrorNoReturn("the 2nd argument (n) should be a non-negative integer,");
+    ErrorNoReturn("the 2nd argument <n> should be a non-negative integer,");
   fi;
 
   list := EmptyPlist(n);
@@ -766,10 +766,10 @@ InstallMethod(AsBinaryRelation, "for a digraph", [IsDenseDigraphRep],
 function(D)
   local rel;
   if DigraphNrVertices(D) = 0 then
-    ErrorNoReturn("the argument (D) must be a digraph with at least 1 ",
+    ErrorNoReturn("the argument <D> must be a digraph with at least 1 ",
                   "vertex,");
   elif IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a digraph with no multiple edges");
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple edges");
   fi;
   # Can translate known attributes of <D> to the relation, e.g. symmetry
   rel := BinaryRelationOnPointsNC(OutNeighbours(D));
@@ -800,7 +800,7 @@ function(filt, D)
       return AsSemigroup(IsPartialPermSemigroup,
                          DigraphReverse(DigraphCopyIfMutable(D)));
     fi;
-    ErrorNoReturn("the 2nd argument (D) must be digraph that is a join or ",
+    ErrorNoReturn("the 2nd argument <D> must be digraph that is a join or ",
                   "meet semilattice,");
   fi;
 
@@ -835,10 +835,10 @@ InstallMethod(AsMonoid, "for a function and a digraph",
 [IsFunction, IsDigraph],
 function(filt, D)
   if not (filt = IsPartialPermMonoid or filt = IsPartialPermSemigroup) then
-    ErrorNoReturn("the 1st argument (filt) must be IsPartialPermMonoid or ",
+    ErrorNoReturn("the 1st argument <filt> must be IsPartialPermMonoid or ",
                   "IsPartialPermSemigroup,");
   elif not IsLatticeDigraph(D) then
-    ErrorNoReturn("the 2nd argument (D) must be a lattice digraph,");
+    ErrorNoReturn("the 2nd argument <D> must be a lattice digraph,");
   fi;
   return AsSemigroup(IsPartialPermSemigroup, D);
 end);
@@ -878,7 +878,7 @@ InstallMethod(RandomDigraphCons,
 [IsMutableDigraph, IsPosInt, IsFloat],
 function(filt, n, p)
   if p < 0.0 or 1.0 < p then
-    ErrorNoReturn("the 2nd argument (p) must be between 0 and 1,");
+    ErrorNoReturn("the 2nd argument <p> must be between 0 and 1,");
   fi;
   return MutableDigraphNC(RANDOM_DIGRAPH(n, Int(p * 10000)));
 end);
@@ -912,19 +912,19 @@ end);
 
 InstallMethod(RandomDigraph, "for a func and a pos int", [IsFunction, IsPosInt],
 function(func, n)
-  return RandomDigraphCons(func, n); 
+  return RandomDigraphCons(func, n);
 end);
 
 InstallMethod(RandomDigraph, "for a func, a pos int, and a rational",
 [IsFunction, IsPosInt, IsRat],
 function(func, n, p)
-  return RandomDigraphCons(func, n, p); 
+  return RandomDigraphCons(func, n, p);
 end);
 
 InstallMethod(RandomDigraph, "for a func, a pos int, and a float",
 [IsFunction, IsPosInt, IsFloat],
 function(func, n, p)
-  return RandomDigraphCons(func, n, p); 
+  return RandomDigraphCons(func, n, p);
 end);
 
 InstallMethod(RandomMultiDigraph, "for a pos int",
@@ -944,7 +944,7 @@ InstallMethod(RandomTournamentCons, "for IsMutableDigraph and an integer",
 function(filt, n)
   local choice, nodes, list, v, w;
   if n < 0 then
-    ErrorNoReturn("the argument (n) must be a non-negative integer,");
+    ErrorNoReturn("the argument <n> must be a non-negative integer,");
   elif n = 0 then
     return EmptyDigraph(IsMutableDigraph, 0);
   fi;

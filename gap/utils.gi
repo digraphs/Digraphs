@@ -151,8 +151,7 @@ end);
 InstallGlobalFunction(DigraphsTestInstall,
 function()
   return DIGRAPHS_RunTest(function()
-    return Test(Filename(DirectoriesPackageLibrary("digraphs",
-                                                   "tst"),
+    return Test(Filename(DirectoriesPackageLibrary("digraphs", "tst"),
                          "testinstall.tst"));
   end);
 end);
@@ -459,13 +458,13 @@ DIGRAPHS_CheckManSectionTypes := function(doc, verbose...)
         if Length(matches2) = 0 then
           pos := OriginalPositionDocument(doc[2], elt.start);
           Print(pos[1], ":", pos[2],
-                " : no match (wrong type or missing label?) for ", type, " := ",
+                " : no match <wrong type or missing label?> for ", type, " := ",
                 elt.attributes.(type), "\n");
           Print("  Suggestions: \n");
           matches := Filtered(matches, t -> IsBound(t.attributes.Label));
           for t in matches do
             Print("Use ", t.name, " with Label := \"", t.attributes.Label,
-                  "\" (for Arg := \"", t.attributes.Arg, "\")\n");
+                  "\" <for Arg := \"", t.attributes.Arg, "\">\n");
           od;
 
           referrcount := referrcount + 1;
@@ -500,10 +499,10 @@ DIGRAPHS_CheckManSectionTypes := function(doc, verbose...)
         " warnings in Ref elements \n");
 
   if display_warnings then
-    Print("To suppress warnings, use DIGRAPHS_CheckManSectionTypes(doc,false) ",
+    Print("To suppress warnings, use DIGRAPHS_CheckManSectionTypes<doc,false> ",
           "or with one argument\n");
   else
-    Print("To show warnings, use DIGRAPHS_CheckManSectionTypes(doc,true); \n");
+    Print("To show warnings, use DIGRAPHS_CheckManSectionTypes<doc,true); \n");
   fi;
   Print("****************************************************************\n");
   return errcount = 0;

@@ -33,23 +33,23 @@ gap> v := [1 .. 3];;
 gap> s := [1, 2, 3];;
 gap> r := [3, 1, 2];;
 gap> Digraph(rec(DigraphNrVertices := n, DigraphSource := s));
-Error, the argument (record) must be a record with components 'DigraphSource',\
+Error, the argument <record> must be a record with components 'DigraphSource',\
  'DigraphRange', and either 'DigraphVertices' or 'DigraphNrVertices' (but not \
 both),
 gap> Digraph(rec(DigraphNrVertices := n, DigraphRange := r));
-Error, the argument (record) must be a record with components 'DigraphSource',\
+Error, the argument <record> must be a record with components 'DigraphSource',\
  'DigraphRange', and either 'DigraphVertices' or 'DigraphNrVertices' (but not \
 both),
 gap> Digraph(rec(DigraphNrVertices := n, DigraphSource := s, DigraphVertices := v));
-Error, the argument (record) must be a record with components 'DigraphSource',\
+Error, the argument <record> must be a record with components 'DigraphSource',\
  'DigraphRange', and either 'DigraphVertices' or 'DigraphNrVertices' (but not \
 both),
 gap> Digraph(rec(DigraphNrVertices := n, DigraphRange := r, DigraphVertices := v));
-Error, the argument (record) must be a record with components 'DigraphSource',\
+Error, the argument <record> must be a record with components 'DigraphSource',\
  'DigraphRange', and either 'DigraphVertices' or 'DigraphNrVertices' (but not \
 both),
 gap> Digraph(rec(DigraphSource := s, DigraphRange := r));
-Error, the argument (record) must be a record with components 'DigraphSource',\
+Error, the argument <record> must be a record with components 'DigraphSource',\
  'DigraphRange', and either 'DigraphVertices' or 'DigraphNrVertices' (but not \
 both),
 gap> Digraph(rec(DigraphNrVertices := n, DigraphSource := s, DigraphRange := 4));
@@ -204,7 +204,7 @@ gap> elms := [
 gap> bin := BinaryRelationByElements(g, elms);
 <general mapping: Group( [ (1,2,3) ] ) -> Group( [ (1,2,3) ] ) >
 gap> AsDigraph(bin);
-Error, the argument (rel) must be a binary relation on the domain [1 .. n] for\
+Error, the argument <rel> must be a binary relation on the domain [1 .. n] for\
  some positive integer n,
 gap> d := Domain([2 .. 10]);;
 gap> bin := BinaryRelationByElements(d, [
@@ -213,7 +213,7 @@ gap> bin := BinaryRelationByElements(d, [
 >  DirectProductElement([4, 5])]);
 <general mapping: <object> -> <object> >
 gap> gr := AsDigraph(bin);
-Error, the argument (rel) must be a binary relation on the domain [1 .. n] for\
+Error, the argument <rel> must be a binary relation on the domain [1 .. n] for\
  some positive integer n,
 gap> d := Domain([1 .. 10]);;
 gap> bin := BinaryRelationByElements(d, [
@@ -255,13 +255,13 @@ gap> gr := Digraph([[1, 2, 3, 5], [1, 5], [2, 3, 6], [1, 3, 4],
 gap> gr = DigraphByEdges(DigraphEdges(gr));
 true
 gap> DigraphByEdges([["nonsense", "more"]]);
-Error, the argument (edges) must be a list of pairs of positive integers,
+Error, the argument <edges> must be a list of pairs of positive integers,
 gap> DigraphByEdges([["nonsense"]]);
-Error, the argument (edges) must be a list of pairs,
+Error, the argument <edges> must be a list of pairs,
 gap> DigraphByEdges([["a", "b"]], 2);
-Error, the 1st argument (edges) must be a list of pairs of pos ints,
+Error, the 1st argument <edges> must be a list of pairs of pos ints,
 gap> DigraphByEdges([[1, 2, 3]], 3);
-Error, the 1st argument (edges) must be a list of pairs,
+Error, the 1st argument <edges> must be a list of pairs,
 gap> gr := DigraphByEdges(DigraphEdges(gr), 10);
 <immutable digraph with 10 vertices, 17 edges>
 gap> gr := DigraphByEdges([[1, 2]]);
@@ -269,8 +269,8 @@ gap> gr := DigraphByEdges([[1, 2]]);
 gap> gr := DigraphByEdges([[2, 1]]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> gr := DigraphByEdges([[1, 2]], 1);
-Error, the 1st argument (edges) must not contain values greater than 
-1, the 2nd argument (n),
+Error, the 1st argument <edges> must not contain values greater than 
+1, the 2nd argument <n>,
 gap> gr := DigraphByEdges([], 3);
 <immutable digraph with 3 vertices, 0 edges>
 gap> gr := DigraphByEdges([]);
@@ -285,16 +285,16 @@ gap> mat := [
 > [1, 2, 3],
 > [1, 2, 3]];;
 gap> DigraphByAdjacencyMatrix(mat);
-Error, the argument (mat) must be a square matrix,
+Error, the argument <mat> must be a square matrix,
 gap> mat := [
 > [11, 2, 3],
 > [11, 2, 3],
 > [-1, 2, 2]];;
 gap> DigraphByAdjacencyMatrix(mat);
-Error, the argument (mat) must be a matrix of non-negative integers,
+Error, the argument <mat> must be a matrix of non-negative integers,
 gap> mat := [["a"]];;
 gap> DigraphByAdjacencyMatrix(mat);
-Error, the argument (mat) must be a matrix of non-negative integers,
+Error, the argument <mat> must be a matrix of non-negative integers,
 gap> mat := [
 > [0, 2, 0, 0, 1],
 > [0, 2, 1, 0, 1],
@@ -384,7 +384,7 @@ gap> InNeighbours(gr3) = inn;
 true
 gap> inn := [[3, 1, 2], [1]];;
 gap> DigraphByInNeighbours(inn);
-Error, the argument (list) must be a list of lists of positive integers not ex\
+Error, the argument <list> must be a list of lists of positive integers not ex\
 ceeding the length of the argument,
 gap> inn := [
 > [], [3], [7], [], [], [], [], [], [], [], [], [6],
@@ -419,7 +419,7 @@ Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] )
 gap> AsDigraph(g);
 <immutable digraph with 8 vertices, 8 edges>
 gap> AsDigraph(g, -1);
-Error, the 2nd argument (n) should be a non-negative integer,
+Error, the 2nd argument <n> should be a non-negative integer,
 gap> AsDigraph(g, 10);
 <immutable digraph with 10 vertices, 10 edges>
 gap> AsDigraph(g, 6);
@@ -451,9 +451,9 @@ Error, no 1st choice method found for `RandomDigraph' on 1 arguments
 gap> RandomDigraph(4, 0);
 <immutable digraph with 4 vertices, 0 edges>
 gap> RandomDigraph(10, 1.01);
-Error, the 2nd argument (p) must be between 0 and 1,
+Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(10, -0.01);
-Error, the 2nd argument (p) must be between 0 and 1,
+Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(10, 1 / 10);;
 
 # RandomDigraph(IsImmutableDigraph, ...)
@@ -474,9 +474,9 @@ Error, no 1st choice method found for `RandomDigraph' on 2 arguments
 gap> RandomDigraph(IsImmutableDigraph, 4, 0);
 <immutable digraph with 4 vertices, 0 edges>
 gap> RandomDigraph(IsImmutableDigraph, 10, 1.01);
-Error, the 2nd argument (p) must be between 0 and 1,
+Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(IsImmutableDigraph, 10, -0.01);
-Error, the 2nd argument (p) must be between 0 and 1,
+Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(IsImmutableDigraph, 10, 1 / 10);;
 
 # RandomDigraph(IsMutableDigraph, ...)
@@ -497,9 +497,9 @@ Error, no 1st choice method found for `RandomDigraph' on 2 arguments
 gap> RandomDigraph(IsMutableDigraph, 4, 0);
 <mutable digraph with 4 vertices, 0 edges>
 gap> RandomDigraph(IsMutableDigraph, 10, 1.01);
-Error, the 2nd argument (p) must be between 0 and 1,
+Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(IsMutableDigraph, 10, -0.01);
-Error, the 2nd argument (p) must be between 0 and 1,
+Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(IsMutableDigraph, 10, 1 / 10);;
 
 #  RandomMultiDigraph
@@ -526,7 +526,7 @@ gap> RandomTournament(25);
 gap> RandomTournament(0);
 <immutable digraph with 0 vertices, 0 edges>
 gap> RandomTournament(-1);
-Error, the argument (n) must be a non-negative integer,
+Error, the argument <n> must be a non-negative integer,
 
 #  Equals (\=) for two digraphs
 gap> r1 := rec(DigraphNrVertices := 2, DigraphSource := [1, 1, 2], DigraphRange := [1, 2, 2]);;
@@ -1129,11 +1129,11 @@ true
 gap> gr := EmptyDigraph(0);
 <immutable digraph with 0 vertices, 0 edges>
 gap> AsBinaryRelation(gr);
-Error, the argument (D) must be a digraph with at least 1 vertex,
+Error, the argument <D> must be a digraph with at least 1 vertex,
 gap> gr := Digraph([[1, 1]]);
 <immutable multidigraph with 1 vertex, 2 edges>
 gap> AsBinaryRelation(gr);
-Error, the argument (D) must be a digraph with no multiple edges
+Error, the argument <D> must be a digraph with no multiple edges
 gap> gr := Digraph(
 > [[1, 2, 3], [1, 2, 3], [1, 2, 3], [4, 5], [4, 5]]);
 <immutable digraph with 5 vertices, 13 edges>
@@ -1237,15 +1237,15 @@ true
 gap> di := Digraph([[1], [2]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> S := AsSemigroup(IsPartialPermSemigroup, di);;
-Error, the 2nd argument (D) must be digraph that is a join or meet semilattice\
+Error, the 2nd argument <D> must be digraph that is a join or meet semilattice\
 ,
 gap> S := AsMonoid(IsPartialPermMonoid, di);;
-Error, the 2nd argument (D) must be a lattice digraph,
+Error, the 2nd argument <D> must be a lattice digraph,
 gap> S := AsSemigroup(IsTransformation, di);;
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 2nd choice method found for `AsSemigroup' on 2 arguments
 gap> S := AsMonoid(IsTransformation, di);;
-Error, the 1st argument (filt) must be IsPartialPermMonoid or IsPartialPermSem\
+Error, the 1st argument <filt> must be IsPartialPermMonoid or IsPartialPermSem\
 igroup,
 
 #  DIGRAPHS_UnbindVariables

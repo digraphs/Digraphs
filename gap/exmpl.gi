@@ -13,7 +13,7 @@ InstallMethod(EmptyDigraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
 function(filt, n)
   if n < 0 then
-    ErrorNoReturn("the argument (n) must be a non-negative integer,");
+    ErrorNoReturn("the argument <n> must be a non-negative integer,");
   fi;
   return MutableDigraphNC(List([1 .. n], x -> []));
 end);
@@ -23,7 +23,7 @@ InstallMethod(EmptyDigraphCons, "for IsImmutableDigraph and an integer",
 function(filt, n)
   local D;
   if n < 0 then
-    ErrorNoReturn("the argument (n) must be a non-negative integer,");
+    ErrorNoReturn("the argument <n> must be a non-negative integer,");
   fi;
   D := MakeImmutableDigraph(EmptyDigraph(IsMutableDigraph, n));
   SetIsEmptyDigraph(D, true);
@@ -108,7 +108,7 @@ InstallMethod(CompleteMultipartiteDigraphCons,
 function(filt, list)
   local M, N, out, start, next, i, v;
   if not ForAll(list, IsPosInt) then
-    ErrorNoReturn("the argument (list) must be a list of positive ",
+    ErrorNoReturn("the argument <list> must be a list of positive ",
                   "integers,");
   fi;
 
@@ -203,7 +203,7 @@ InstallMethod(CompleteDigraphCons, "for IsMutableDigraph and an integer",
 function(filt, n)
   local verts, out, i;
   if n < 0 then
-    ErrorNoReturn("the argument (n) must be a non-negative integer,");
+    ErrorNoReturn("the argument <n> must be a non-negative integer,");
   elif n = 0 then
     return EmptyDigraph(IsMutableDigraph, 0);
   fi;
@@ -294,7 +294,7 @@ InstallMethod(JohnsonDigraphCons,
 [IsMutableDigraph, IsInt, IsInt],
 function(filt, n, k)
   if n < 0 or k < 0 then
-    ErrorNoReturn("the arguments (n and k) must be ",
+    ErrorNoReturn("the arguments <n> and <k> must be ",
                   "non-negative integers,");
   fi;
   return MutableDigraph(Combinations([1 .. n], k),

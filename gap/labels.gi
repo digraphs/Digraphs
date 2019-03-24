@@ -25,8 +25,8 @@ function(D, v, name)
     D!.vertexlabels := [1 .. DigraphNrVertices(D)];
   fi;
   if v > DigraphNrVertices(D) then
-    ErrorNoReturn("the 2nd argument (v) is not a vertex",
-                  " of the digraph (D) that is the 1st argument,");
+    ErrorNoReturn("the 2nd argument <v> is not a vertex",
+                  " of the digraph <D> that is the 1st argument,");
   fi;
   D!.vertexlabels[v] := name;
 end);
@@ -41,8 +41,8 @@ function(D, v)
   if IsBound(D!.vertexlabels[v]) then
     return ShallowCopy(D!.vertexlabels[v]);
   fi;
-  ErrorNoReturn("the 2nd argument (v) has no label or ",
-                "is not a vertex of the digraph (D) that is the 1st argument");
+  ErrorNoReturn("the 2nd argument <v> has no label or ",
+                "is not a vertex of the digraph <D> that is the 1st argument");
 end);
 
 InstallMethod(RemoveDigraphVertexLabel, "for a digraph and positive integer",
@@ -60,8 +60,8 @@ InstallMethod(SetDigraphVertexLabels, "for a digraph and list",
 function(D, names)
   IsValidDigraph(D);
   if Length(names) <> DigraphNrVertices(D) then
-    ErrorNoReturn("the 2nd arument (names) must be a list with length equal ",
-                  "to the number of vertices of the digraph (D) that is the ",
+    ErrorNoReturn("the 2nd arument <names> must be a list with length equal ",
+                  "to the number of vertices of the digraph <D> that is the ",
                   "1st argument,");
   fi;
   D!.vertexlabels := names;
@@ -83,14 +83,14 @@ function(D, v, w, label)
   local p, list;
   IsValidDigraph(D);
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the 1st argument (D) must be a digraph with no multiple ",
+    ErrorNoReturn("the 1st argument <D> must be a digraph with no multiple ",
                   "edges, edge labels are not supported on digraphs with ",
                   "multiple edges,");
   fi;
   p := Position(OutNeighboursOfVertex(D, v), w);
   if p = fail then
     ErrorNoReturn("there is no edge from ", v, " to ", w,
-                  " in the digraph (D) that is the 1st argument,");
+                  " in the digraph <D> that is the 1st argument,");
   fi;
   DIGRAPHS_InitEdgeLabels(D);
   if not IsBound(D!.edgelabels[v]) then
@@ -106,14 +106,14 @@ function(D, v, w)
   local p;
   IsValidDigraph(D);
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the 1st argument (D) must be a digraph with no multiple ",
+    ErrorNoReturn("the 1st argument <D> must be a digraph with no multiple ",
                   "edges, edge labels are not supported on digraphs with ",
                   "multiple edges,");
   fi;
   p := Position(OutNeighboursOfVertex(D, v), w);
   if p = fail then
     ErrorNoReturn("there is no edge from ", v, " to ", w,
-                  " in the digraph (D) that is the 1st argument,");
+                  " in the digraph <D> that is the 1st argument,");
   fi;
   DIGRAPHS_InitEdgeLabels(D);
   return ShallowCopy(D!.edgelabels[v][p]);
@@ -131,7 +131,7 @@ InstallMethod(DigraphEdgeLabels, "for a digraph",
 function(D)
   IsValidDigraph(D);
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a digraph with no multiple ",
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges, edge labels are not supported on digraphs with ",
                   "multiple edges,");
   fi;
@@ -155,7 +155,7 @@ InstallMethod(SetDigraphEdgeLabels, "for a digraph and a list",
 function(D, labels)
   IsValidDigraph(D);
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a digraph with no multiple ",
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges, edge labels are not supported on digraphs with ",
                   "multiple edges,");
   fi;
@@ -163,9 +163,9 @@ function(D, labels)
   if Length(labels) <> DigraphNrVertices(D) or
       ForAny(DigraphVertices(D),
              i -> Length(labels[i]) <> OutDegreeOfVertex(D, i)) then
-    ErrorNoReturn("the 2nd argument (labels) must be a list with ",
+    ErrorNoReturn("the 2nd argument <labels> must be a list with ",
                   "the same shape as the out-neighbours of ",
-                  "the digraph (D) that is the 1st argument,");
+                  "the digraph <D> that is the 1st argument,");
   fi;
   SetDigraphEdgeLabelsNC(D, labels);
 end);
@@ -176,7 +176,7 @@ function(D, wtf)
   local adj, i, j;
   IsValidDigraph(D);
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a digraph with no multiple ",
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges, edge labels are not supported on digraphs with ",
                   "multiple edges,");
   fi;

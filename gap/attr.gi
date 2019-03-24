@@ -112,7 +112,7 @@ function(D)
   nr := DigraphNrVertices(D);
 
   if DigraphHasLoops(D) then
-    ErrorNoReturn("the argument (D) must be a digraph with no loops,");
+    ErrorNoReturn("the argument <D> must be a digraph with no loops,");
   elif nr = 0 then
     return 0;  # chromatic number = 0 iff <D> has 0 verts
   elif IsNullDigraph(D) then
@@ -307,7 +307,7 @@ InstallMethod(DigraphDual, "for a dense mutable digraph",
 function(D)
   local verts, outs, i;
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a digraph with no multiple ",
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges,");
   fi;
 
@@ -920,7 +920,7 @@ function(D)
   IsValidDigraph(D);
   # This is only defined on undirected graphs (i.e. symmetric digraphs)
   if not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a symmetric digraph,");
+    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
   fi;
   if DigraphHasLoops(D) then
     # A loop is a cycle of length 1
@@ -1086,7 +1086,7 @@ function(D)
   local list, m, n, nodes, sorted, trans, tmp, mat, v, u, i;
 
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a digraph with no multiple ",
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges,");
   fi;
 
@@ -1124,7 +1124,7 @@ InstallMethod(DigraphReflexiveTransitiveClosure, "for a mutable digraph",
 [IsMutableDigraph],
 function(D)
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a digraph with no multiple ",
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges,");
   fi;
   return DigraphAddAllLoops(DigraphTransitiveClosure(D));
@@ -1138,7 +1138,7 @@ function(D)
     return DigraphTransitiveClosureAttr(D);
   fi;
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a digraph with no multiple ",
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges,");
   fi;
   C := DigraphTransitiveClosure(DigraphMutableCopy(D));
@@ -1157,7 +1157,7 @@ function(D)
     return DigraphReflexiveTransitiveClosureAttr(D);
   fi;
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a digraph with no multiple ",
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges,");
   fi;
   C := DigraphReflexiveTransitiveClosure(DigraphMutableCopy(D));
@@ -1361,7 +1361,7 @@ InstallMethod(DigraphDegeneracy, "for a digraph", [IsDigraph],
 function(D)
   IsValidDigraph(D);
   if not IsSymmetricDigraph(D) or IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a symmetric digraph ",
+    ErrorNoReturn("the argument <D> must be a symmetric digraph ",
                   "with no multiple edges,");
   fi;
   return DIGRAPHS_Degeneracy(DigraphRemoveLoops(D))[1];
@@ -1371,7 +1371,7 @@ InstallMethod(DigraphDegeneracyOrdering, "for a digraph", [IsDigraph],
 function(D)
   IsValidDigraph(D);
   if not IsSymmetricDigraph(D) or IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a symmetric digraph ",
+    ErrorNoReturn("the argument <D> must be a symmetric digraph ",
                   "with no multiple edges,");
   fi;
   return DIGRAPHS_Degeneracy(DigraphRemoveLoops(D))[2];
@@ -1656,7 +1656,7 @@ InstallMethod(IsEdgeTransitive, "for a digraph", [IsDigraph],
 function(D)
   IsValidDigraph(D);
   if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a digraph with no multiple",
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple",
                   " edges,");
   fi;
   return IsTransitive(AutomorphismGroup(D),

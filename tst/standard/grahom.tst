@@ -122,7 +122,7 @@ gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 [ IdentityTransformation ]
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [[1, 2], [2]], [[1, 2]]);
-Error, the 2nd argument (partition) does not define a colouring of the vertice\
+Error, the 2nd argument <partition> does not define a colouring of the vertice\
 s [1 .. 2], since it contains the vertex 2 more than once,
 gap> gr := CompleteDigraph(513);;
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, 0, [1 .. 513],
@@ -133,7 +133,7 @@ gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 [ Transformation( [ 2, 1 ] ) ]
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [1, 2, 3], [2, 1]);
-Error, the 2nd argument (partition) does not define a colouring of the vertice\
+Error, the 2nd argument <partition> does not define a colouring of the vertice\
 s [1 .. 
 2
  ]. The 2nd argument must have one of the following forms: 1. a list of length 
@@ -141,11 +141,11 @@ s [1 ..
 2; or 2. a list of non-empty disjoint lists whose union is [1 .. 2].
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [1, 3], [2, 1]);
-Error, the 2nd argument (partition) does not define a colouring of the vertice\
+Error, the 2nd argument <partition> does not define a colouring of the vertice\
 s [1 .. 2], since it contains the integer 3, which is greater than 2,
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [1, fail], [2, 1]);
-Error, the 2nd argument (partition) must be a homogeneous list,
+Error, the 2nd argument <partition> must be a homogeneous list,
 gap> gr := ChainDigraph(2);
 <immutable digraph with 2 vertices, 1 edge>
 gap> GeneratorsOfEndomorphismMonoid();
@@ -259,7 +259,7 @@ gap> DigraphColouring(gr, 2);
 fail
 gap> gr := Digraph([[1, 2], []]);;
 gap> DigraphColouring(gr, -1);
-Error, the 2nd argument (n) must be a non-negative integer,
+Error, the 2nd argument <n> must be a non-negative integer,
 gap> DigraphColouring(NullDigraph(0), 1);
 fail
 gap> DigraphColouring(NullDigraph(0), 0);
@@ -326,10 +326,10 @@ gap> DigraphGreedyColouring(gr);;
 gap> DigraphGreedyColouring(EmptyDigraph(0));
 IdentityTransformation
 gap> DigraphGreedyColouring(gr, [1 .. 10]);
-Error, the 2nd argument (order) must be a permutation of [1 .. 30]
+Error, the 2nd argument <order> must be a permutation of [1 .. 30]
 gap> DigraphGreedyColouring(gr, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
 > 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, -1]);
-Error, the 2nd argument (order) must be a permutation of [1 .. 30]
+Error, the 2nd argument <order> must be a permutation of [1 .. 30]
 gap> DigraphGreedyColouring(gr, [1 .. 30]);
 Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
   2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
@@ -1050,13 +1050,13 @@ gap> gr := Digraph([[1, 1]]);
 gap> x := Transformation([3, 3, 4, 4]);
 Transformation( [ 3, 3, 4, 4 ] )
 gap> IsDigraphEndomorphism(gr, x);
-Error, the 1st and 2nd arguments (src and ran) must be digraphs with no multip\
-le edges,
+Error, the 1st and 2nd arguments <src> and <ran> must be digraphs with no mult\
+iple edges,
 gap> IsDigraphEndomorphism(gr, ());
-Error, the 1st and 2nd arguments (src and ran) must not have multiple edges,
+Error, the 1st and 2nd arguments <src> and <ran> must not have multiple edges,
 gap> IsDigraphHomomorphism(gr, gr, ());
-Error, the 1st and 2nd arguments (src and ran) must be digraphs with no multip\
-le edges,
+Error, the 1st and 2nd arguments <src> and <ran> must be digraphs with no mult\
+iple edges,
 gap> gr := DigraphTransitiveClosure(CompleteDigraph(2));
 <immutable digraph with 2 vertices, 4 edges>
 gap> ForAll(GeneratorsOfEndomorphismMonoid(gr),

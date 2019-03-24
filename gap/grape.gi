@@ -88,9 +88,9 @@ function(G, gens)
   local adj, D;
 
   if not IsFinite(G) then
-    ErrorNoReturn("the 1st argument (G) must be a finite group,");
+    ErrorNoReturn("the 1st argument <G> must be a finite group,");
   elif not ForAll(gens, x -> x in G) then
-    ErrorNoReturn("the 2nd argument (gens) must consist of elements of the ",
+    ErrorNoReturn("the 2nd argument <gens> must consist of elements of the ",
                   "1st argument,");
   fi;
 
@@ -156,10 +156,10 @@ end);
 # "for a digraph with group and representative out neighbours",
 # [IsDigraph and HasDigraphGroup and HasRepresentativeOutNeighbours],
 # function(D)
-#   return Concatenation("D( ",
+#   return Concatenation("D< ",
 #                        PrintString(DigraphGroup(D)), ", ",
 #                        PrintString(DigraphVertices(D)), ", ",
-#                        PrintString(RepresentativeOutNeighbours(D)), ")");
+#                        PrintString(RepresentativeOutNeighbours(D)), ">");
 # end);
 
 # Returns the digraph with vertex - set {1, .. ., n} and edge-set
@@ -175,7 +175,7 @@ function(G, edges, n)
   local out, o, D, e, f;
 
   if n < 0 then
-    ErrorNoReturn("the 3rd argument (n) must be a non-negative integer,");
+    ErrorNoReturn("the 3rd argument <n> must be a non-negative integer,");
   elif n = 0 then
     return EmptyDigraph(0);
   fi;
@@ -185,7 +185,7 @@ function(G, edges, n)
   fi;
 
   if not ForAll(edges, e -> Length(e) = 2 and ForAll(e, IsPosInt)) then
-    ErrorNoReturn("the 2nd argument (edges) must be a list of pairs of ",
+    ErrorNoReturn("the 2nd argument <edges> must be a list of pairs of ",
                   "positive integers,");
   fi;
 
@@ -218,12 +218,12 @@ function(D, edge)
   IsValidDigraph(D);
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
-    ErrorNoReturn("the 2nd argument (edge) must be a list of 2 ",
+    ErrorNoReturn("the 2nd argument <edge> must be a list of 2 ",
                   "positive integers,");
   elif not (edge[1] in DigraphVertices(D)
             and edge[2] in DigraphVertices(D)) then
-    ErrorNoReturn("the 2nd argument (edge) must be a list of 2 vertices of ",
-                  "the 1st argument (D),");
+    ErrorNoReturn("the 2nd argument <edge> must be a list of 2 vertices of ",
+                  "the 1st argument <D>,");
   elif IsDigraphEdge(D, edge) then
     return D;
   fi;
@@ -252,12 +252,12 @@ function(D, edge)
   IsValidDigraph(D);
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
-    ErrorNoReturn("the 2nd argument (edge) must be a pair of ",
+    ErrorNoReturn("the 2nd argument <edge> must be a pair of ",
                   "positive integers,");
   elif not (edge[1] in DigraphVertices(D)
             and edge[2] in DigraphVertices(D)) then
-    ErrorNoReturn("the 2nd argument (edge) must be a ",
-                  "pair of vertices of the 1st argument (D),");
+    ErrorNoReturn("the 2nd argument <edge> must be a ",
+                  "pair of vertices of the 1st argument <D>,");
   elif not IsDigraphEdge(D, edge) then
     return D;
   fi;

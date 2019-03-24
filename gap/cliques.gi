@@ -23,8 +23,8 @@ function(D, list)
   IsValidDigraph(D);
   if not IsDuplicateFreeList(list)
       or not ForAll(list, x -> x in DigraphVertices(D)) then
-    ErrorNoReturn("the 2nd argument (list) must be a duplicate-free list of ",
-                  "vertices of the digraph (D) that is the 1st argument,");
+    ErrorNoReturn("the 2nd argument <list> must be a duplicate-free list of ",
+                  "vertices of the digraph <D> that is the 1st argument,");
   fi;
   for x in list do
     if not IsSubset([x], Intersection(OutNeighboursOfVertex(D, x), list)) then
@@ -68,8 +68,8 @@ function(D, clique)
   IsValidDigraph(D);
   if not IsDuplicateFreeList(clique)
       or not ForAll(clique, x -> x in DigraphVertices(D)) then
-    ErrorNoReturn("the 2nd argument (clique) must be a duplicate-free list ",
-                  "of vertices of the digraph (D) that is the 1st argument,");
+    ErrorNoReturn("the 2nd argument <clique> must be a duplicate-free list ",
+                  "of vertices of the digraph <D> that is the 1st argument,");
   fi;
   nbs := OutNeighbours(D);
   for v in clique do
@@ -256,7 +256,7 @@ function(arg)
   # Validate arg[2]
   D := arg[2];
   if not IsDenseDigraphRep(D) then
-    ErrorNoReturn("the 1st argument (D) must be a dense digraph,");
+    ErrorNoReturn("the 1st argument <D> must be a dense digraph,");
   fi;
   IsValidDigraph(D);
 
@@ -265,8 +265,8 @@ function(arg)
     include := arg[3];
     if not IsHomogeneousList(include) or not IsDuplicateFreeList(include)
         or not IsSubset(DigraphVertices(D), include) then
-      ErrorNoReturn("the optional 2nd argument (include) must be a ",
-                    "duplicate-free list of vertices of the digraph (D) ",
+      ErrorNoReturn("the optional 2nd argument <include> must be a ",
+                    "duplicate-free list of vertices of the digraph <D> ",
                     "that is the 1st argument,");
     fi;
   else
@@ -278,8 +278,8 @@ function(arg)
     exclude := arg[4];
     if not IsHomogeneousList(exclude) or not IsDuplicateFreeList(exclude)
         or not IsSubset(DigraphVertices(D), exclude) then
-      ErrorNoReturn("the optional 3rd argument (exclude) must be a ",
-                    "duplicate-free list of vertices of the digraph (D) ",
+      ErrorNoReturn("the optional 3rd argument <exclude> must be a ",
+                    "duplicate-free list of vertices of the digraph <D> ",
                     "that is the 1st argument,");
     fi;
   else
@@ -290,7 +290,7 @@ function(arg)
   if IsBound(arg[5]) then
     size := arg[5];
     if not IsPosInt(size) then
-      ErrorNoReturn("the optional 4th argument (size) must be a positive ",
+      ErrorNoReturn("the optional 4th argument <size> must be a positive ",
                     "integer,");
     fi;
   fi;
@@ -560,22 +560,22 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
   exclude_variant, x, v, o, i;
 
   if not IsDigraph(digraph) then
-    ErrorNoReturn("the 1st argument (digraph) must be a digraph,");
+    ErrorNoReturn("the 1st argument <digraph> must be a digraph,");
   fi;
   IsValidDigraph(digraph);
 
   if hook <> fail then
     if not (IsFunction(hook) and NumberArgumentsFunction(hook) = 2) then
-      ErrorNoReturn("the 2nd argument (hook) must be fail, or a ",
+      ErrorNoReturn("the 2nd argument <hook> must be fail, or a ",
                     "function with 2 arguments,");
     fi;
   elif not IsList(user_param) then
-    ErrorNoReturn("when the 2nd argument (hook) is fail, the 3rd ",
-                  "argument (user_param) must be a list,");
+    ErrorNoReturn("when the 2nd argument <hook> is fail, the 3rd ",
+                  "argument <user_param> must be a list,");
   fi;
 
   if limit <> infinity and not IsPosInt(limit) then
-    ErrorNoReturn("the 4th argument (limit) must be infinity, or ",
+    ErrorNoReturn("the 4th argument <limit> must be infinity, or ",
                   "a positive integer,");
   fi;
 
@@ -587,22 +587,22 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
               and ForAll(exclude, x -> IsPosInt(x) and x <= n)
               and IsDuplicateFreeList(exclude))
       then
-    ErrorNoReturn("the 5th argument (include) and the 6th argument ",
-                  "(exclude) must be (possibly empty) duplicate-free ",
-                  "lists of vertices of the 1st argument (digraph)");
+    ErrorNoReturn("the 5th argument <include> and the 6th argument ",
+                  "<exclude> must be (possibly empty) duplicate-free ",
+                  "lists of vertices of the 1st argument <digraph>");
   fi;
 
   if not max in [true, false] then
-    ErrorNoReturn("the 7th argument (max) must be true or false,");
+    ErrorNoReturn("the 7th argument <max> must be true or false,");
   fi;
 
   if size <> fail and not IsPosInt(size) then
-    ErrorNoReturn("the 8th argument (size) must be fail, or a ",
+    ErrorNoReturn("the 8th argument <size> must be fail, or a ",
                   "positive integer,");
   fi;
 
   if not reps in [true, false] then
-    ErrorNoReturn("the 9th argument (reps) must be true or false,");
+    ErrorNoReturn("the 9th argument <reps> must be true or false,");
   fi;
 
   # Investigate whether <include> and <exclude> are invariant under <grp>
@@ -650,8 +650,8 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
     fi;
 
     if reps and not (invariant_include and invariant_exclude) then
-      ErrorNoReturn("if the 9th argument (reps) is true, then the 4th and ",
-                    "5th arguments (include and exclude) must be ",
+      ErrorNoReturn("if the 9th argument <reps> is true, then the 4th and ",
+                    "5th arguments <include> and <exclude> must be ",
                     "invariant under the action of the automorphism group of ",
                     "the maximal symmetric subdigraph without loops,");
     fi;

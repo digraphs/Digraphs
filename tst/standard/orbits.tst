@@ -17,8 +17,8 @@ gap> DIGRAPHS_StartTest();
 gap> gr := NullDigraph(0);
 <immutable digraph with 0 vertices, 0 edges>
 gap> DigraphStabilizer(gr, 1);
-Error, the 2nd argument (v) must not exceed 
-0, the number of vertices of the digraph in the 1st argument (D),
+Error, the 2nd argument <v> must not exceed 
+0, the number of vertices of the digraph in the 1st argument <D>,
 
 #  DigraphStabilizer,
 gap> gr := CompleteDigraph(3);

@@ -62,7 +62,7 @@ function(D)
   local out, str, i, j;
   IsValidDigraph(D);
   if not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a symmetric digraph,");
+    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
   fi;
   out   := OutNeighbours(D);
   str   := "//dot\n";
@@ -157,7 +157,7 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
     elif arg[1]{[1 .. 5]} = "//dot" then
       type := "dot";
     else
-      ErrorNoReturn("the component \"type\" of the 2nd argument (a record) ",
+      ErrorNoReturn("the component \"type\" of the 2nd argument <a record> ",
                     " must be \"dot\" or \"latex\",");
     fi;
 
@@ -175,7 +175,7 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
         engine := opt.engine;
       else
         ErrorNoReturn("the component \"engine\" of the 2nd argument ",
-                      "(a record) must be one of: \"dot\", \"neato\", ",
+                      "<a record> must be one of: \"dot\", \"neato\", ",
                       "\"twopi\", \"circo\", \"fdp\", \"sfdp\", ",
                       "or \"patchwork\"");
       fi;
@@ -209,7 +209,7 @@ InstallMethod(DotPartialOrderDigraph, "for a partial order digraph",
 function(D)
   IsValidDigraph(D);
   if not IsPartialOrderDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a partial order digraph,");
+    ErrorNoReturn("the argument <D> must be a partial order digraph,");
   fi;
   return DotDigraph(DigraphReflexiveTransitiveReduction(D));
 end);
@@ -220,7 +220,7 @@ function(D)
   local comps, quo, red, str, c, x, e;
   IsValidDigraph(D);
   if not IsPreorderDigraph(D) then
-    ErrorNoReturn("the argument (D) must be a preorder digraph,");
+    ErrorNoReturn("the argument <D> must be a preorder digraph,");
   fi;
 
   # Quotient by the strongly connected components to get a partial order
@@ -271,13 +271,13 @@ function(D, highverts, highcolour, lowcolour)
   IsValidDigraph(D);
 
   if not IsSubset(DigraphVertices(D), highverts) then
-    ErrorNoReturn("the 2nd argument (highverts) must be a list of vertices ",
-                  "of the 1st argument (D),");
+    ErrorNoReturn("the 2nd argument <highverts> must be a list of vertices ",
+                  "of the 1st argument <D>,");
   elif IsEmpty(highcolour) then
-    ErrorNoReturn("the 3rd argument (highcolour) must be a string ",
+    ErrorNoReturn("the 3rd argument <highcolour> must be a string ",
                   "containing the name of a colour,");
   elif IsEmpty(lowcolour) then
-    ErrorNoReturn("the 4th argument (lowcolour) must be a string ",
+    ErrorNoReturn("the 4th argument <lowcolour> must be a string ",
                   "containing the name of a colour,");
   fi;
 
