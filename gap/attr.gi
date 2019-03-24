@@ -980,7 +980,7 @@ end);
 InstallMethod(DigraphSymmetricClosure, "for a dense mutable digraph",
 [IsDenseDigraphRep and IsMutableDigraph],
 function(D)
-  local n, m, verts, edglbls, mat, out, x, i, j, k;
+  local n, m, verts, edglbls, mat, out, x, new_el, i, j, k;
   n := DigraphNrVertices(D);
   if n <= 1 or (HasIsSymmetricDigraph(D) and IsSymmetricDigraph(D)) then
     return D;
@@ -1043,14 +1043,16 @@ function(D)
   else
     out := D!.OutNeighbours;
     Perform(out, Sort);
+    new_el := DigraphEdgeLabelsNC(D);
     for i in [1 .. n] do
       for j in out[i] do
         if not i in out[j] then
-          Add(DigraphEdgeLabelsNC(D)[j], 1);
+          Add(new_el[j], 1);
           AddSet(out[j], i);
         fi;
       od;
     od;
+    SetDigraphEdgeLabelsNC(D, new_el);
   fi;
   return D;
 end);

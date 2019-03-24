@@ -123,7 +123,7 @@ InstallMethod(DigraphEdgeLabelsNC, "for a digraph", [IsDigraph],
 function(D)
   IsValidDigraph(D);
   DIGRAPHS_InitEdgeLabels(D);
-  return D!.edgelabels;
+  return StructuralCopy(D!.edgelabels);
 end);
 
 InstallMethod(DigraphEdgeLabels, "for a digraph",
