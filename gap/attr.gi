@@ -8,9 +8,6 @@
 #############################################################################
 ##
 
-# TODO double-check that all methods in this file that return a digraph, don't
-# return a copy if the argument is a mutable digraph.
-
 InstallMethod(DigraphNrVertices, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   IsValidDigraph(D);
@@ -162,7 +159,7 @@ function(D)
 
         # Note that n > chrom >= 3 and so comp is not null, so no need to check
         # for that.
-        comp := InducedSubdigraph(D, comp);
+        comp := InducedSubdigraph(DigraphMutableCopy(D), comp);
         if IsCompleteDigraph(comp) then
           # Since n > chrom, this is an improved lower bound for the overall
           # chromatic number.
@@ -290,7 +287,6 @@ function(D)
       UniteBlistList(v, niv, old[i]);
     fi;
   od;
-
   return InducedSubdigraph(D, ListBlist(v, niv));
 end);
 
@@ -984,7 +980,7 @@ end);
 InstallMethod(DigraphSymmetricClosure, "for a dense mutable digraph",
 [IsDenseDigraphRep and IsMutableDigraph],
 function(D)
-  local n, m, verts, edglbls, mat, out, x, new, i, j, k;
+  local n, m, verts, edglbls, mat, out, x, i, j, k;
   n := DigraphNrVertices(D);
   if n <= 1 or (HasIsSymmetricDigraph(D) and IsSymmetricDigraph(D)) then
     return D;
@@ -1042,8 +1038,8 @@ function(D)
         fi;
       od;
     od;
-    new := List(mat, row -> ListBlist(verts, row));
-    return MutableDigraphNC(new);
+    D!.OutNeighbours := List(mat, row -> ListBlist(verts, row));
+    # FIXME Edge labels are not copied here
   else
     out := D!.OutNeighbours;
     Perform(out, Sort);
@@ -1085,7 +1081,8 @@ InstallMethod(DigraphSymmetricClosureAttr, "for an immutable digraph",
 InstallMethod(DigraphTransitiveClosure, "for a mutable dense digraph",
 [IsMutableDigraph and IsDenseDigraphRep],
 function(D)
-  local list, m, n, verts, sorted, trans, tmp, v, u;
+  local list, m, n, nodes, sorted, trans, tmp, mat, v, u, i;
+
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument (D) must be a digraph with no multiple ",
                   "edges,");
@@ -1094,7 +1091,7 @@ function(D)
   list  := D!.OutNeighbours;
   m     := DigraphNrEdges(D);
   n     := DigraphNrVertices(D);
-  verts := DigraphVertices(D);
+  nodes := DigraphVertices(D);
 
   # Try correct method vis-a-vis complexity
   if m + n + (m * n) < n ^ 3 then
@@ -1102,19 +1099,23 @@ function(D)
     if sorted <> fail then  # Method for big acyclic digraphs (loops allowed)
       trans := EmptyPlist(n);
       for v in sorted do
-        trans[v] := BlistList(verts, [v]);
+        trans[v] := BlistList(nodes, [v]);
         for u in list[v] do
           trans[v] := UnionBlist(trans[v], trans[u]);
         od;
-        tmp := DifferenceBlist(trans[v], BlistList(verts, list[v]));
+        tmp := DifferenceBlist(trans[v], BlistList(nodes, list[v]));
         tmp[v] := false;
-        Append(list[v], ListBlist(verts, tmp));
+        Append(list[v], ListBlist(nodes, tmp));
       od;
       return D;
     fi;
   fi;
   # Method for small or non-acyclic digraphs
-  return MutableDigraphByAdjacencyMatrixNC(DIGRAPH_TRANS_CLOSURE(D));
+  mat := DIGRAPH_TRANS_CLOSURE(D);
+  for i in [1 .. Length(list)] do
+    list[i] := nodes{PositionsProperty(mat[i], x -> x > 0)};
+  od;
+  return D;
 end);
 
 InstallMethod(DigraphReflexiveTransitiveClosure, "for a mutable digraph",
@@ -1256,12 +1257,12 @@ function(D)
     if n = 1 then
       continue;
     fi;
-    c_comp := InducedSubdigraph(C, c_comp);
+    c_comp := InducedSubdigraph(DigraphMutableCopy(C), c_comp);
     comp := c_comp;
     s := 1;
     while s < n do
       if s <> 1 then
-        comp := InducedSubdigraph(c_comp, [s .. n]);
+        comp := InducedSubdigraph(DigraphMutableCopy(c_comp), [s .. n]);
         comp := InducedSubdigraph(comp,
                                   DigraphStronglyConnectedComponent(comp, 1));
       fi;
@@ -1622,7 +1623,7 @@ function(D)
         fi;
       od;
     od;
-    D!.OutNeighbours := OutNeighbours(MutableDigraphByAdjacencyMatrixNC(out));
+    D!.OutNeighbours := List([1 .. n], v -> ListBlist([1 .. n], out[v]));
   else
     out := D!.OutNeighbours;
     Perform(out, Sort);

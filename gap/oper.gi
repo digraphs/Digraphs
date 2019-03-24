@@ -771,21 +771,15 @@ end);
 # 5. Substructures and quotients
 #############################################################################
 
-InstallMethod(InducedSubdigraph, "for a dense digraph and a homogeneous list",
-[IsDenseDigraphRep, IsHomogeneousList],
+InstallMethod(InducedSubdigraph,
+"for a dense mutable digraph and a homogeneous list",
+[IsDenseDigraphRep and IsMutableDigraph, IsHomogeneousList],
 function(D, list)
-  local ConstructDigraph, N, M, new, new_edl, old, old_edl, lookup, v_old,
-        w_old, E, v_new, i;
-
-  if IsMutableDigraph(D) then
-    ConstructDigraph := ConvertToMutableDigraphNC;
-  else
-    ConstructDigraph := ConvertToImmutableDigraphNC;
-  fi;
-
+  local M, N, old, old_edl, new_edl, lookup, next, vv, w, v, i;
   M := Length(list);
   if M = 0 then
-    return ConstructDigraph([]);
+    D!.OutNeighbours := [];
+    return D;
   fi;
   N := DigraphNrVertices(D);
   if (IsRange(list) and not
@@ -798,30 +792,39 @@ function(D, list)
                   "the 1st argument,");
   fi;
 
-  old     := OutNeighbours(D);
-  new     := List([1 .. M], x -> []);
+  old := D!.OutNeighbours;
   old_edl := DigraphEdgeLabelsNC(D);
   new_edl := List([1 .. M], x -> []);
 
   lookup := ListWithIdenticalEntries(N, 0);
   lookup{list} := [1 .. M];
 
-  for v_new in [1 .. M] do
-    v_old := list[v_new];
-    for i in [1 .. Length(old[v_old])] do
-      w_old := old[v_old][i];
-      if lookup[w_old] <> 0 then
-        Add(new[v_new], lookup[w_old]);
-        Add(new_edl[v_new], old_edl[v_old][i]);
+  for v in [1 .. M] do
+    next := [];
+    vv := list[v];  # old vertex corresponding to vertex v in new subdigraph
+    for i in [1 .. Length(old[vv])] do
+      w := old[vv][i];
+      if lookup[w] <> 0 then
+        Add(next, lookup[w]);
+        Add(new_edl[v], old_edl[vv][i]);
       fi;
     od;
+    old[vv] := next;
   od;
-
-  E := ConstructDigraph(new);
-  SetDigraphVertexLabels(E, DigraphVertexLabels(D){list});
-  SetDigraphEdgeLabelsNC(E, new_edl);
-  return E;
+  D!.OutNeighbours := old{list};
+  SetDigraphVertexLabels(D, DigraphVertexLabels(D){list});
+  SetDigraphEdgeLabelsNC(D, new_edl);
+  return D;
 end);
+
+InstallMethod(InducedSubdigraph,
+"for an immutable digraph and a homogeneous list",
+[IsImmutableDigraph, IsHomogeneousList],
+function(D, list)
+  return MakeImmutableDigraph(InducedSubdigraph(DigraphMutableCopy(D), list));
+end);
+
+# TODO(now): update QuotientDigraph to change its arg in-place if mutable.
 
 InstallMethod(QuotientDigraph, "for a dense digraph and a homogeneous list",
 [IsDenseDigraphRep, IsHomogeneousList],

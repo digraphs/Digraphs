@@ -408,12 +408,12 @@ gap> DigraphColouring(CompleteDigraph(5), 4);
 fail
 gap> DigraphColouring(ChainDigraph(10), 1);
 fail
-gap> gr := ChainDigraph(10);;
-gap> t := DigraphColouring(gr, 2);
-Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
-gap> ForAll(DigraphEdges(gr), e -> e[1] ^ t <> e[2] ^ t);
+gap> D := ChainDigraph(10);;
+gap> t := DigraphColouring(D, 2);
+Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
+gap> IsDigraphColouring(D, t); 
 true
-gap> DigraphGreedyColouring(gr);
+gap> DigraphGreedyColouring(D);
 Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
 ]]></Example>
   </Description>
