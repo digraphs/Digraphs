@@ -1,6 +1,6 @@
 name: Digraphs
-version: 0.15.0
-date: 2019-02-15
+version: 0.15.1
+date: 2019-03-26
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -45,7 +45,7 @@ needed-pkgs:
       version: ">=4.5.1"
       url: "https://gap-packages.github.io/io"
     - name: "orb"
-      version: ">=4.8.1"
+      version: ">=4.8.2"
       url: "https://gap-packages.github.io/orb"
 
 suggested-pkgs:
@@ -65,7 +65,7 @@ packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/Digraphs/releases/download/v0.15.0/digraphs-0.15.0.tar.gz
+      url: https://github.com/gap-packages/Digraphs/releases/download/v0.15.1/digraphs-0.15.1.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
