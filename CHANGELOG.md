@@ -3,7 +3,14 @@ Copyright (C) 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Micha
 
 Licensing information can be found in the LICENSE file.
 
-## Next version
+## Version 0.15.1 (released 26/03/2019)
+
+This is a minor release of the Digraphs package, which improves the
+compatibility of Digraphs with cygwin. In particular, in the Windows installer
+of the next release of GAP, Digraphs should be included in a pre-compiled and
+working state. See
+[Issue #177](https://github.com/gap-packages/Digraphs/issues/177) and
+[PR #178](https://github.com/gap-packages/Digraphs/pull/178) for more details.
 
 Digraphs now requires version 4.8.2 of the [orb
 package](https://gap-packages.github.io/orb), or newer.
