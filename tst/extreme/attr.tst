@@ -23,9 +23,6 @@ gap> ReducedDigraph(gr);
 
 #  DigraphSymmetricClosure 1
 # For a digraph with lots of edges: digraphs-lib/extreme.d6.gz
-gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
->                                     "/digraphs-lib/extreme.d6.gz"), 1);
-<immutable digraph with 5000 vertices, 4211332 edges>
 gap> DigraphSymmetricClosure(gr);
 <immutable digraph with 5000 vertices, 7713076 edges>
 gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
