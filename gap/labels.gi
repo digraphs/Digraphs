@@ -76,6 +76,11 @@ function(D)
   return StructuralCopy(D!.vertexlabels);
 end);
 
+InstallMethod(ClearDigraphVertexLabels, "for a digraph", [IsDigraph],
+function(D)
+  Unbind(D!.vertexlabels);
+end);
+
 InstallMethod(SetDigraphEdgeLabel,
 "for a digraph, a pos int, a pos int, and an object",
 [IsDigraph, IsPosInt, IsPosInt, IsObject],
@@ -187,4 +192,26 @@ function(D, wtf)
       D!.edgelabels[i][j] := wtf(i, adj[i][j]);
     od;
   od;
+end);
+
+InstallMethod(ClearDigraphEdgeLabels, "for a digraph", [IsDigraph],
+function(D)
+  Unbind(D!.edgelabels);
+end);
+
+InstallMethod(DigraphEdgeLabelAddVertex, "for a digraph", [IsDigraph],
+function(D)
+  if not IsMultiDigraph(D) then
+    DIGRAPHS_InitEdgeLabels(D);
+    Add(D!.edgelabels, []);
+  fi;
+end);
+
+InstallMethod(RemoveDigraphEdgeLabel,
+"for a digraph, positive integer, and positive integer",
+[IsDigraph, IsPosInt, IsPosInt],
+function(D, v, pos)
+  if IsBound(D!.edgelabels) and IsBound(D!.edgelabels[v]) then
+    Remove(D!.edgelabels[v], pos);
+  fi;
 end);

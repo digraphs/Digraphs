@@ -305,23 +305,23 @@ InstallMethod(ReducedDigraphAttr, "for an immutable digraph",
 InstallMethod(DigraphDual, "for a dense mutable digraph",
 [IsDenseDigraphRep and IsMutableDigraph],
 function(D)
-  local verts, outs, i;
+  local nodes, list, i;
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges,");
   fi;
 
-  verts := DigraphVertices(D);
-  outs := D!.OutNeighbours;
+  nodes := DigraphVertices(D);
+  list := D!.OutNeighbours;
 
-  for i in verts do
-    outs[i] := DifferenceLists(verts, outs[i]);
+  for i in nodes do
+    list[i] := DifferenceLists(nodes, list[i]);
   od;
+  ClearDigraphEdgeLabels(D);
   return D;
 end);
 
-InstallMethod(DigraphDual, "for an immutable digraph",
-[IsImmutableDigraph],
+InstallMethod(DigraphDual, "for an immutable digraph", [IsImmutableDigraph],
 function(D)
   local C;
   if HasDigraphDualAttr(D) then
@@ -555,7 +555,10 @@ end);
 InstallMethod(OutDegreeSequence, "for a digraph", [IsDigraph],
 function(D)
   IsValidDigraph(D);
-  return SortedList(OutDegrees(D), {a, b} -> b < a);
+  D := ShallowCopy(OutDegrees(D));
+  Sort(D, {a, b} -> b < a);
+  return D;
+  # return SortedList(OutDegrees(D), {a, b} -> b < a);
 end);
 
 InstallMethod(OutDegreeSequence,
@@ -583,7 +586,10 @@ end);
 InstallMethod(InDegreeSequence, "for a digraph", [IsDigraph],
 function(D)
   IsValidDigraph(D);
-  return SortedList(InDegrees(D), {a, b} -> b < a);
+  D := ShallowCopy(InDegrees(D));
+  Sort(D, {a, b} -> b < a);
+  return D;
+  # return SortedList(OutDegrees(D), {a, b} -> b < a);
 end);
 
 InstallMethod(InDegreeSequence,
@@ -980,7 +986,7 @@ end);
 InstallMethod(DigraphSymmetricClosure, "for a dense mutable digraph",
 [IsDenseDigraphRep and IsMutableDigraph],
 function(D)
-  local n, m, verts, edglbls, mat, out, x, new_el, i, j, k;
+  local n, m, verts, mat, out, x, i, j, k;
   n := DigraphNrVertices(D);
   if n <= 1 or (HasIsSymmetricDigraph(D) and IsSymmetricDigraph(D)) then
     return D;
@@ -989,8 +995,6 @@ function(D)
   # The average degree
   m := Float(Sum(OutDegreeSequence(D)) / n);
   verts := [1 .. n];  # We don't want DigraphVertices as that's immutable
-
-  edglbls := DigraphEdgeLabelsNC(D);
 
   if IsMultiDigraph(D) then
     mat := List(verts, x -> verts * 0);
@@ -1011,12 +1015,10 @@ function(D)
         if x > 0 then
           for k in [1 .. x] do
             Add(out[j], i);
-            Add(edglbls[j], 1);
           od;
         elif x < 0 then
           for k in [1 .. -x] do
             Add(out[i], j);
-            Add(edglbls[i], 1);
           od;
         fi;
       od;
@@ -1039,21 +1041,18 @@ function(D)
       od;
     od;
     D!.OutNeighbours := List(mat, row -> ListBlist(verts, row));
-    # FIXME Edge labels are not copied here
   else
     out := D!.OutNeighbours;
     Perform(out, Sort);
-    new_el := DigraphEdgeLabelsNC(D);
     for i in [1 .. n] do
       for j in out[i] do
         if not i in out[j] then
-          Add(new_el[j], 1);
           AddSet(out[j], i);
         fi;
       od;
     od;
-    SetDigraphEdgeLabelsNC(D, new_el);
   fi;
+  ClearDigraphEdgeLabels(D);
   return D;
 end);
 
@@ -1095,6 +1094,7 @@ function(D)
   n     := DigraphNrVertices(D);
   nodes := DigraphVertices(D);
 
+  ClearDigraphEdgeLabels(D);
   # Try correct method vis-a-vis complexity
   if m + n + (m * n) < n ^ 3 then
     sorted := DigraphTopologicalSort(D);
@@ -1105,6 +1105,7 @@ function(D)
         for u in list[v] do
           trans[v] := UnionBlist(trans[v], trans[u]);
         od;
+        # TODO use FlipBlist
         tmp := DifferenceBlist(trans[v], BlistList(nodes, list[v]));
         tmp[v] := false;
         Append(list[v], ListBlist(nodes, tmp));
@@ -1458,6 +1459,7 @@ function(D)
     Sort(out[i]);
     IntersectSet(out[i], inn[i]);
   od;
+  ClearDigraphEdgeLabels(D);
   return D;
 end);
 
@@ -1489,6 +1491,7 @@ function(D)
   fi;
   MaximalSymmetricSubdigraph(D);
   D!.OutNeighbours := DIGRAPH_SYMMETRIC_SPANNING_FOREST(D!.OutNeighbours);
+  ClearDigraphEdgeLabels(D);
   return D;
 end);
 
@@ -1637,6 +1640,7 @@ function(D)
       od;
     od;
   fi;
+  ClearDigraphEdgeLabels(D);
   return D;
 end);
 

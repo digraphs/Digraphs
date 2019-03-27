@@ -32,6 +32,7 @@ InstallMethod(DigraphAddVertex, "for a mutable dense digraph and an object",
 function(D, label)
   Add(D!.OutNeighbours, []);
   SetDigraphVertexLabel(D, DigraphNrVertices(D), label);
+  DigraphEdgeLabelAddVertex(D);
   return D;
 end);
 
@@ -103,6 +104,7 @@ function(D, u)
       w := D!.OutNeighbours[v][pos];
       if w = u then
         Remove(D!.OutNeighbours[v], pos);
+        RemoveDigraphEdgeLabel(D, v, pos);
       elif w > u then
          D!.OutNeighbours[v][pos] := w - 1;
          pos := pos + 1;
@@ -166,6 +168,9 @@ function(D)
   for v in DigraphVertices(D) do
     if not v in list[v] then
       Add(list[v], v);
+      if not IsMultiDigraph(D) then
+        SetDigraphEdgeLabel(D, v, v, 1);
+      fi;
     fi;
   od;
   return D;
@@ -398,6 +403,7 @@ function(D, k)
       od;
     od;
   until stop;
+  ClearDigraphEdgeLabels(D);
   return D;
 end);
 
@@ -451,6 +457,7 @@ function(arg)
   od;
 
   if IsMutableDigraph(D) then
+    ClearDigraphEdgeLabels(D);
     return D;
   else
     return DigraphNC(arg[1]);
@@ -508,6 +515,7 @@ function(arg)
   od;
 
   if IsMutableDigraph(D) then
+    ClearDigraphEdgeLabels(D);
     return D;
   else
     return DigraphNC(arg[1]);
@@ -559,6 +567,7 @@ function(arg)
     od;
   od;
   if IsMutableDigraph(D) then
+    ClearDigraphEdgeLabels(D);
     return D;
   else
     return DigraphNC(arg[1]);
@@ -604,6 +613,7 @@ function(D)
   p    := Permutation(Transformation(topo), topo);
   OnDigraphs(D, p ^ -1);       # changes D in-place
   DIGRAPH_TRANS_REDUCTION(D);  # changes D in-place
+  ClearDigraphEdgeLabels(D);
   return OnDigraphs(D, p);
 end);
 
@@ -621,6 +631,7 @@ function(D)
     return D;
   fi;
   D!.OutNeighbours{DigraphVertices(D)} := InNeighboursMutableCopy(D);
+  ClearDigraphEdgeLabels(D);
   return D;
 end);
 
@@ -648,7 +659,7 @@ function(D, u, v)
   fi;
   Add(D!.OutNeighbours[v], u);
   Remove(D!.OutNeighbours[u], pos);
-  # TODO(later) edge labels
+  ClearDigraphEdgeLabels(D);
   return D;
 end);
 
@@ -668,8 +679,7 @@ function(D, e)
   return DigraphReverseEdge(D, e[1], e[2]);
 end);
 
-InstallMethod(DigraphReverseEdge,
-"for an immutable digraph and a list",
+InstallMethod(DigraphReverseEdge, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
 function(D, e)
   return MakeImmutableDigraph(DigraphReverseEdge(DigraphMutableCopy(D), e));
@@ -706,6 +716,7 @@ function(D, p)
   out := D!.OutNeighbours;
   out{DigraphVertices(D)} := Permuted(out, p);
   Apply(out, x -> OnTuples(x, p));
+  ClearDigraphEdgeLabels(D);
   return D;
 end);
 
@@ -730,6 +741,7 @@ function(D, t)
     Append(new[v ^ t], OnTuples(old[v], t));
   od;
   old{DigraphVertices(D)} := new;
+  ClearDigraphEdgeLabels(D);
   return D;
 end);
 
