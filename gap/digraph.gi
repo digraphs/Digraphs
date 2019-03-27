@@ -273,13 +273,14 @@ function(list)
   local sublist, v;
   for sublist in list do
     if not IsHomogeneousList(sublist) then
-      ErrorNoReturn("the argument must be a list of lists of positive ",
+      ErrorNoReturn("the argument <list> must be a list of lists of positive ",
                     "integers not exceeding the length of the argument,");
     fi;
     for v in sublist do
       if not IsPosInt(v) or v > Length(list) then
-        ErrorNoReturn("the argument must be a list of lists of positive ",
-                      "integers not exceeding the length of the argument,");
+        ErrorNoReturn("the argument <list> must be a list of lists of ",
+                      "positive integers not exceeding the length of ",
+                      "the argument,");
       fi;
     od;
   od;

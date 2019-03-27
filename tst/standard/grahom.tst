@@ -15,66 +15,66 @@ gap> DIGRAPHS_StartTest();
 
 #  HomomorphismDigraphsFinder: checking errors and robustness
 gap> HomomorphismDigraphsFinder(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-Error, the 1st argument (digraph1) must be a digraph, not integer
+Error, the 1st argument <digraph1> must be a digraph, not integer,
 gap> gr1 := ChainDigraph(2);;
 gap> gr2 := CompleteDigraph(3);;
 gap> HomomorphismDigraphsFinder(0, gr2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-Error, the 1st argument (digraph1) must be a digraph, not integer
+Error, the 1st argument <digraph1> must be a digraph, not integer,
 gap> HomomorphismDigraphsFinder(gr1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-Error, the 2nd argument (digraph2) must be a digraph, not integer
+Error, the 2nd argument <digraph2> must be a digraph, not integer,
 gap> HomomorphismDigraphsFinder(gr1, gr2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-Error, the 3rd argument (hook) must be a function with 2 arguments
+Error, the 3rd argument <hook> must be a function with 2 arguments,
 gap> HomomorphismDigraphsFinder(gr2, gr1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-Error, the 3rd argument (hook) must be a function with 2 arguments
+Error, the 3rd argument <hook> must be a function with 2 arguments,
 gap> gr1 := CompleteDigraph(2);;
 gap> HomomorphismDigraphsFinder(gr1, gr2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-Error, the 3rd argument (hook) must be a function with 2 arguments
+Error, the 3rd argument <hook> must be a function with 2 arguments,
 gap> HomomorphismDigraphsFinder(gr1, gr2, IsTournament, 0, 0, 0, 0, 0, 0, 0, 0);
-Error, the 3rd argument (hook) must be a function with 2 arguments
+Error, the 3rd argument <hook> must be a function with 2 arguments,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, 0, 0, 0, 0, 0, 0, 0, 0);
-Error, the 3rd argument (hook) is fail and so the 4th argument must be a mutab\
-le list, not integer
+Error, the 3rd argument <hook> is fail and so the 4th argument must be a mutab\
+le list, not integer,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", "a", 0, 0, 0, 0, 0, 0);
-Error, the 5th argument (max_results) must be an integer or infinity, not list\
- (string)
+Error, the 5th argument <max_results> must be an integer or infinity, not list\
+ (string),
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", 1, 0, 0, 0, 0, 0, 0);
-Error, the 6th argument (hint) must be a positive integer, not 0
+Error, the 6th argument <hint> must be a positive integer, not 0,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", 5, 1, "b", 0, 0, 0, 0);
-Error, the 7th argument (injective) must be an integer or true or false, not l\
-ist (string)
+Error, the 7th argument <injective> must be an integer or true or false, not l\
+ist (string),
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", infinity, fail, -1, 0, 0,
 > 0, 0);
-Error, the 7th argument (injective) must 0, 1, or 2, not -1
+Error, the 7th argument <injective> must 0, 1, or 2, not -1,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", infinity, 2, 1, 0, 0,
 > 0, 0);
-Error, the 8th argument (image) must be a list or fail, not integer
+Error, the 8th argument <image> must be a list or fail, not integer,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [1, []], 0,
 > 0, 0);
-Error, the 8th argument (image) must only contain positive integers, but found\
- list (plain,empty) in position 2
+Error, the 8th argument <image> must only contain positive integers, but found\
+ list (plain,empty) in position 2,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [[], []], 0,
 > 0, 0);
-Error, the 8th argument (image) must only contain positive integers, but found\
- list (plain,empty) in position 1
+Error, the 8th argument <image> must only contain positive integers, but found\
+ list (plain,empty) in position 1,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [0, 1], 0, 0,
 > 0);
-Error, the 8th argument (image) must only contain positive integers, but found\
- integer in position 1
+Error, the 8th argument <image> must only contain positive integers, but found\
+ integer in position 1,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [4, 4], 0, 0,
 > 0);
-Error, in the 8th argument (image) position 1 is out of range, must be in the \
-range [1, 3]
+Error, in the 8th argument <image> position 1 is out of range, must be in the \
+range [1, 3],
 gap> HomomorphismDigraphsFinder(gr2, gr1, fail, [], 1, 1, 1, [3], 0, 0, 0);
-Error, in the 8th argument (image) position 1 is out of range, must be in the \
-range [1, 2]
+Error, in the 8th argument <image> position 1 is out of range, must be in the \
+range [1, 2],
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [3], 0, 0, 0);
-Error, the 9th argument (partial_map) must be a list or fail, not integer
+Error, the 9th argument <partial_map> must be a list or fail, not integer,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [3], [1 .. 4],
 > 0, 0);
-Error, the 9th argument (partial_map) is too long, must be at most 2, found 4
+Error, the 9th argument <partial_map> is too long, must be at most 2, found 4,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [],
 > [1, 2, 3, 2], 0, 0);
-Error, the 9th argument (partial_map) is too long, must be at most 2, found 4
+Error, the 9th argument <partial_map> is too long, must be at most 2, found 4,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [1], [1],
 > fail, fail);
 [  ]
@@ -113,10 +113,12 @@ gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2], [],
 [ IdentityTransformation ]
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [[1, 2]], fail);
-Error, the 10th and 11th arguments must both be lists or both be fail
+Error, the 10th and 11th arguments <colors1> and <colors2> must both be lists \
+or both be fail,
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], fail, [[1, 2]]);
-Error, the 10th and 11th arguments must both be lists or both be fail
+Error, the 10th and 11th arguments <colors1> and <colors2> must both be lists \
+or both be fail,
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [[1, 2]], [[1, 2]]);
 [ IdentityTransformation ]
@@ -127,7 +129,7 @@ s [1 .. 2], since it contains the vertex 2 more than once,
 gap> gr := CompleteDigraph(513);;
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, 0, [1 .. 513],
 > [], fail, fail);
-Error, the 1st argument (digraph1) must have at most 512 vertices, found 513
+Error, the 1st argument <digraph1> must have at most 512 vertices, found 513,
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [1, 2], [2, 1]);
 [ Transformation( [ 2, 1 ] ) ]
@@ -1827,7 +1829,7 @@ gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
 >                                    ListTransformation(t, 6),         
 >                                    fail,       
 >                                    fail);
-Error, the 9th argument (partial_map) is too long, must be at most 5, found 6
+Error, the 9th argument <partial_map> is too long, must be at most 5, found 6,
 gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
 >                                    D,
 >                                    fail,       # hook
@@ -1932,7 +1934,7 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               ListTransformation(t, 6),         
 >                               fail,       
 >                               fail);
-Error, the 9th argument (partial_map) is too long, must be at most 5, found 6
+Error, the 9th argument <partial_map> is too long, must be at most 5, found 6,
 gap> D := DigraphDisjointUnion(CycleDigraph(3), CycleDigraph(5));;
 gap> t := DigraphEmbedding(CycleDigraph(5), D);
 Transformation( [ 4, 5, 6, 7, 8, 6, 7, 8 ] )
@@ -1947,7 +1949,7 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               ListTransformation(t, 6),         
 >                               fail,       
 >                               fail);
-Error, the 9th argument (partial_map) is too long, must be at most 5, found 6
+Error, the 9th argument <partial_map> is too long, must be at most 5, found 6,
 gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               D,
 >                               fail,       # hook
@@ -2025,56 +2027,59 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 
 # More arg/error checks
 gap> HomomorphismDigraphsFinder(0);
-Error, there must be 11 or 12 arguments, found 1
+Error, there must be 11 or 12 arguments, found 1,
 gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(513));
-Error, the 2nd argument (digraph2) must have at most 512 vertices, found 513
+Error, the 2nd argument <digraph2> must have at most 512 vertices, found 513,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > false, 0, 0, 0, 0, 0);
-Error, the 6th argument (hint) must be an integer or fail, not boolean or fail
+Error, the 6th argument <hint> must be an integer or fail, not boolean or fail\
+,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > fail, true, 0, 0, 0, 0);
-Error, the 8th argument (image) must be a list or fail, not integer
+Error, the 8th argument <image> must be a list or fail, not integer,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > fail, false, 0, 0, 0, 0);
-Error, the 8th argument (image) must be a list or fail, not integer
+Error, the 8th argument <image> must be a list or fail, not integer,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > fail, true, [1,, 3], 0, 0, 0);
-Error, the 8th argument (image) must be a dense list
+Error, the 8th argument <image> must be a dense list,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 1, 3], 0, 0, 0);
-Error, in the 8th argument (image) position 2 is a duplicate
+Error, in the 8th argument <image> position 2 is a duplicate,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [5], 0, 0);
-Error, in the 9th argument (partial_map) the value 5 in position 1 does not be\
-long to the 7th argument (image)
+Error, in the 9th argument <partial_map> the value 5 in position 1 does not be\
+long to the 7th argument <image>,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], true, 0);
-Error, the 10th argument (colors1) must be a list or fail, not boolean or fail
+Error, the 10th argument <colors1> must be a list or fail, not boolean or fail\
+,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, false);
-Error, the 11th argument (colors2) must be a list or fail, not boolean or fail
+Error, the 11th argument <colors2> must be a list or fail, not boolean or fail\
+,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail, true);
-Error, the 12th argument (order) must be a list or fail, not boolean or fail
+Error, the 12th argument <order> must be a list or fail, not boolean or fail,
 gap> HomomorphismDigraphsFinder(NullDigraph(10), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail, [1]);
-Error, the 12th argument (order) must be a list of length 10, not 1
+Error, the 12th argument <order> must be a list of length 10, not 1,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail, "1");
-Error, the 12th argument (order) must consist of integers, but found list (str\
-ing) in position 1
+Error, the 12th argument <order> must consist of integers, but found list (str\
+ing) in position 1,
 gap> HomomorphismDigraphsFinder(NullDigraph(2), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail, [, 1]);
-Error, the 12th argument (order) must be a dense list, but position 1 is not b\
-ound
+Error, the 12th argument <order> must be a dense list, but position 1 is not b\
+ound,
 gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail, [1, 3, 5]);
-Error, the 12th argument (order) must consist of integers, in the range [1, 3]\
- but found 5
+Error, the 12th argument <order> must consist of integers, in the range [1, 3]\
+ but found 5,
 gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail, [1, 1, 3]);
-Error, the 12th argument (order) must be duplicate-free, but the value 1 in po\
-sition 2 is a duplicate
+Error, the 12th argument <order> must be duplicate-free, but the value 1 in po\
+sition 2 is a duplicate,
 
 #
 gap> D1 := DigraphSymmetricClosure(Digraph([[2], [3], []]));;

@@ -310,8 +310,8 @@ gap> gr := Digraph([[1],, [2]]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `Digraph' on 1 arguments
 gap> gr := Digraph([[1], 2, [2]]);
-Error, the argument must be a list of lists of positive integers not exceeding\
- the length of the argument,
+Error, the argument <list> must be a list of lists of positive integers not ex\
+ceeding the length of the argument,
 
 #  Symmetric closure of a digraph with no vertices
 gap> gr := EmptyDigraph(0);;

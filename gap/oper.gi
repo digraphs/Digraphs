@@ -771,8 +771,9 @@ function(D, perms)
 
   if ForAny([1 .. DigraphNrEdges(D)],
             i -> i ^ perms[2] > DigraphNrEdges(D)) then
-    ErrorNoReturn("the 2nd entry of the 2nd argument must permute the edges ",
-                  "of the digraph <D> that is the 1st argument,");
+    ErrorNoReturn("the 2nd entry of the 2nd argument <perms> must ",
+                  "permute the edges of the digraph <D> that is the 1st ",
+                  "argument,");
   fi;
 
   return OnDigraphs(D, perms[1]);
@@ -846,36 +847,36 @@ function(D, partition)
     if IsEmpty(partition) then
       return D;
     else
-      ErrorNoReturn("the 2nd argument <a homogeneous list> is not a valid ",
-                    "partition of the vertices of 1st argument <a null ",
-                    "digraph>. The only valid partition of a null digraph is ",
+      ErrorNoReturn("the 2nd argument <partition> is not a valid ",
+                    "partition of the vertices of 1st argument <D>.",
+                    "The only valid partition of a null digraph is ",
                     "the empty list,");
     fi;
   fi;
   M := Length(partition);
   if M = 0 or M = 0 or not IsList(partition[1])
       or IsEmpty(partition[1]) or not IsPosInt(partition[1][1]) then
-    ErrorNoReturn("the 2nd argument <a homogeneous list> is not a valid ",
+    ErrorNoReturn("the 2nd argument <partition> is not a valid ",
                   "partition of the vertices [1 .. ", N, "] of the 1st ",
-                  "argument <a digraph>,");
+                  "argument <D>,");
   fi;
   check := BlistList(DigraphVertices(D), []);
   lookup := EmptyPlist(N);
   for x in [1 .. Length(partition)] do
     for i in partition[x] do
       if i < 1 or i > N or check[i] then
-        ErrorNoReturn("the 2nd argument <a homogeneous list> is not a valid ",
+        ErrorNoReturn("the 2nd argument <partition> is not a valid ",
                       "partition of the vertices [1 .. ", N, "] of the 1st ",
-                      "argument <a digraph>,");
+                      "argument <D>,");
       fi;
       check[i] := true;
       lookup[i] := x;
     od;
   od;
   if ForAny(check, x -> not x) then
-      ErrorNoReturn("the 2nd argument <a homogeneous list> is not a valid ",
+      ErrorNoReturn("the 2nd argument <partition> is not a valid ",
                     "partition of the vertices [1 .. ", N, "] of the 1st ",
-                    "argument <a digraph>,");
+                    "argument <D>,");
   fi;
   new    := List([1 .. M], x -> []);
   new_vl := List([1 .. M], x -> []);
@@ -913,8 +914,8 @@ InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
 function(D, v)
   IsValidDigraph(D);
   if not v in DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument <a positive int> is not a vertex of the ",
-                  "1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
+                  "1st argument <D>,");
   fi;
   return InNeighboursOfVertexNC(D, v);
 end);
@@ -952,8 +953,8 @@ InstallMethod(OutNeighboursOfVertex, "for a dense digraph and a vertex",
 function(D, v)
   IsValidDigraph(D);
   if not v in DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument <a positive int> is not a vertex of the ",
-                  "1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
+                  "1st argument <D>,");
   fi;
   return OutNeighboursOfVertexNC(D, v);
 end);
@@ -969,8 +970,8 @@ InstallMethod(InDegreeOfVertex, "for a digraph and a vertex",
 function(D, v)
   IsValidDigraph(D);
   if not v in DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument <a positive int> is not a vertex of the ",
-                  "1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
+                  "1st argument <D>,");
   fi;
   return InDegreeOfVertexNC(D, v);
 end);
@@ -1010,8 +1011,8 @@ InstallMethod(OutDegreeOfVertex, "for a digraph and a vertex",
 function(D, v)
   IsValidDigraph(D);
   if not v in DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument <a positive int> is not a vertex of the ",
-                  "1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
+                  "1st argument <D>,");
   fi;
    return OutDegreeOfVertexNC(D, v);
 end);
@@ -1036,8 +1037,8 @@ InstallMethod(DigraphOutEdges, "for a dense digraph and a vertex",
 function(D, v)
   IsValidDigraph(D);
   if not v in DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument <a positive int> is not a vertex of the ",
-                  "1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
+                  "1st argument <D>,");
   fi;
   return List(OutNeighboursOfVertex(D, v), x -> [v, x]);
 end);
@@ -1047,8 +1048,8 @@ InstallMethod(DigraphInEdges, "for a digraph and a vertex",
 function(D, v)
   IsValidDigraph(D);
   if not v in DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument <a positive int> is not a vertex of the ",
-                  "1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
+                  "1st argument <D>,");
   fi;
   return List(InNeighboursOfVertex(D, v), x -> [x, v]);
 end);
@@ -1304,8 +1305,8 @@ function(D, v)
   local scc;
   IsValidDigraph(D);
   if not v in DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument <a positive int> is not a vertex of the ",
-                  "1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
+                  "1st argument <D>,");
   fi;
 
   # TODO check if strongly connected components are known and use them if they
@@ -1320,8 +1321,8 @@ function(D, v)
   local wcc;
   IsValidDigraph(D);
   if not v in DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument <a positive int> is not a vertex of the ",
-                  "1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
+                  "1st argument <D>,");
   fi;
   wcc := DigraphConnectedComponents(D);
   return wcc.comps[wcc.id[v]];
@@ -1335,8 +1336,8 @@ function(D, u, v)
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
-    ErrorNoReturn("the 2nd and 3rd arguments must be ",
-                  "vertices of the 1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
+                  "vertices of the 1st argument <D>,");
   elif IsDigraphEdge(D, u, v) then
     return true;
   elif HasDigraphStronglyConnectedComponents(D) then
@@ -1361,8 +1362,8 @@ function(D, u, v)
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
-    ErrorNoReturn("the 2nd and 3rd arguments must be",
-                  "vertices of the 1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
+                  "vertices of the 1st argument <D>,");
   elif IsDigraphEdge(D, u, v) then
     return [[u, v], [Position(OutNeighboursOfVertex(D, u), v)]];
   elif HasIsTransitiveDigraph(D) and IsTransitiveDigraph(D) then
@@ -1386,8 +1387,8 @@ function(D, u, v)
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
-    ErrorNoReturn("the 2nd and 3rd arguments must be ",
-                  "vertices of the 1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
+                  "vertices of the 1st argument <D>,");
   fi;
 
   if IsDigraphEdge(D, u, v) then
@@ -1449,8 +1450,8 @@ InstallMethod(IteratorOfPaths, "for a dense digraph and two pos ints",
 function(D, u, v)
   IsValidDigraph(D);
   if not (u in DigraphVertices(D) and v in DigraphVertices(D)) then
-    ErrorNoReturn("the 2nd and 3rd arguments must be ",
-                  "vertices of the 1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
+                  "vertices of the 1st argument <D>,");
   fi;
   return IteratorOfPathsNC(OutNeighbours(D), u, v);
 end);
@@ -1463,11 +1464,11 @@ function(out, u, v)
   n := Length(out);
   if not ForAll(out, x -> IsHomogeneousList(x)
       and ForAll(x, y -> IsPosInt(y) and y <= n)) then
-    ErrorNoReturn("the 1st argument <a list> must be a list of out-neighbours",
+    ErrorNoReturn("the 1st argument <out> must be a list of out-neighbours",
                   " of a digraph,");
   elif not (u <= n and v <= n) then
-    ErrorNoReturn("the 2nd and 3rd arguments must be vertices of the digraph ",
-                  "defined by the 1st argument <a list of out-neighbours>,");
+    ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be vertices ",
+                  "of the digraph defined by the 1st argument <out>,");
   fi;
   return IteratorOfPathsNC(out, u, v);
 end);
@@ -1590,8 +1591,8 @@ function(D, v)
   IsValidDigraph(D);
 
   if not v in DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument must be a vertex of the 1st ",
-                  "argument <a digraph>,");
+    ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
+                  "argument <D>,");
   fi;
   dist := DIGRAPH_LONGEST_DIST_VERTEX(OutNeighbours(D), v);
   if dist = -2 then
@@ -1609,8 +1610,8 @@ function(D, v)
 
   # TODO: make use of known distances matrix
   if v > DigraphNrVertices(D) then
-    ErrorNoReturn("the 2nd argument <a vertex> must be a vertex of the 1st ",
-                  "argument <a digraph>,");
+    ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
+                  "argument <D>,");
   fi;
 
   layers := DIGRAPHS_Layers(D);
@@ -1663,9 +1664,11 @@ InstallMethod(DigraphDistanceSet,
 function(D, vertex, distance)
   IsValidDigraph(D);
   if vertex > DigraphNrVertices(D) then
-    ErrorNoReturn("the 2nd argument must be a vertex of the digraph,");
+    ErrorNoReturn("the 2nd argument <vertex> must be a vertex of the ",
+                  "digraph,");
   elif distance < 0 then
-    ErrorNoReturn("the 3rd argument must be a non-negative integer,");
+    ErrorNoReturn("the 3rd argument <distance> must be a non-negative ",
+                  "integer,");
   fi;
   return DigraphDistanceSet(D, vertex, [distance]);
 end);
@@ -1677,10 +1680,11 @@ function(D, vertex, distances)
   local layers;
   IsValidDigraph(D);
   if vertex > DigraphNrVertices(D) then
-    ErrorNoReturn("the 2nd argument must be a vertex of the digraph,");
+    ErrorNoReturn("the 2nd argument <vertex> must be a vertex of ",
+                  "the digraph,");
   elif not ForAll(distances, x -> IsInt(x) and x >= 0) then
-    ErrorNoReturn("the 3rd argument must be a list of non-negative ",
-                  "integers,");
+    ErrorNoReturn("the 3rd argument <distances> must be a list of ",
+                  "non-negative integers,");
   fi;
   distances := distances + 1;
   layers := DigraphLayers(D, vertex);
@@ -1696,8 +1700,8 @@ function(D, u, v)
   IsValidDigraph(D);
 
   if u > DigraphNrVertices(D) or v > DigraphNrVertices(D) then
-    ErrorNoReturn("the 2nd and 3rd arguments must be ",
-                  "vertices of the 1st argument <a digraph>,");
+    ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
+                  "vertices of the 1st argument <D>,");
   fi;
 
   if HasDigraphShortestDistances(D) then
@@ -1735,12 +1739,13 @@ function(D, list)
   IsValidDigraph(D);
 
   if Length(list) <> 2 then
-    ErrorNoReturn("the 2nd argument must be of length 2,");
+    ErrorNoReturn("the 2nd argument <list> must be a list of length 2,");
   fi;
 
   if list[1] > DigraphNrVertices(D) or
       list[2] > DigraphNrVertices(D) then
-    ErrorNoReturn("elements of the list must be vertices of the digraph,");
+      ErrorNoReturn("the 2nd argument <list> must consist of vertices of ",
+                    "the 1st argument <D>,");
   fi;
 
   return DigraphShortestDistance(D, list[1], list[2]);
@@ -1758,14 +1763,14 @@ function(D, i, j)
 
   IsValidDigraph(D);
   if not IsPartialOrderDigraph(D) then
-    ErrorNoReturn("the 1st argument <a digraph> must satisfy ",
+    ErrorNoReturn("the 1st argument <D> must satisfy ",
                   "IsPartialOrderDigraph,");
   elif not i in DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument must be a vertex of the ",
-                  "1st argument <a digraph>, ");
+    ErrorNoReturn("the 2nd argument <i> must be a vertex of the ",
+                  "1st argument <D>,");
   elif not j in DigraphVertices(D) then
-    ErrorNoReturn("the 3rd argument must be a vertex of the ",
-                  "1st argument <a digraph>, ");
+    ErrorNoReturn("the 3rd argument <j> must be a vertex of the ",
+                  "1st argument <D>,");
   fi;
 
   nbs := OutNeighbours(D);
@@ -1791,10 +1796,10 @@ function(D, i, j)
                   "IsPartialOrderDigraph,");
   elif not i in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <i> must be a vertex of the ",
-                  "1st argument <a digraph>, ");
+                  "1st argument <D>,");
   elif not j in DigraphVertices(D) then
     ErrorNoReturn("the 3rd argument <j> must be a vertex of the ",
-                  "1st argument <a digraph>, ");
+                  "1st argument <D>,");
   fi;
 
   nbs := InNeighbours(D);
