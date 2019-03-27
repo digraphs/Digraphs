@@ -1957,9 +1957,10 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
               0L);
   } else if (IS_LIST(order_obj)) {
     if (LEN_LIST(order_obj) != DigraphNrVertices(digraph1_obj)) {
-      ErrorQuit("the 12th argument <order> must be a list of length %d, not %d,",
-                DigraphNrVertices(digraph1_obj),
-                LEN_LIST(order_obj));
+      ErrorQuit(
+          "the 12th argument <order> must be a list of length %d, not %d,",
+          DigraphNrVertices(digraph1_obj),
+          LEN_LIST(order_obj));
     }
     for (Int i = 1; i <= LEN_LIST(order_obj); ++i) {
       if (!ISB_LIST(order_obj, i)) {

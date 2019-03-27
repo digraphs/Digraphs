@@ -1815,7 +1815,7 @@ gap> DigraphShortestPath(gr, 12, 5014);
       1558, 713, 5014 ], [ 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 1, 2, 1, 2, 2 ] ]
 
 # DigraphAddAllLoops - mutable
-gap> D := MutableDigraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
+gap> D := Digraph(IsMutableDigraph, [[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
 <mutable digraph with 6 vertices, 11 edges>
 gap> DigraphAddAllLoops(D);
 <mutable digraph with 6 vertices, 14 edges>
@@ -1886,9 +1886,9 @@ gap> DD := DigraphEdgeUnion(D, CycleDigraph(3), CycleDigraph(3),
 <mutable multidigraph with 3 vertices, 21 edges>
 gap> D = DD;
 true
-gap> D := MutableDigraph([[2, 3], [1, 3], [1, 2]]);
+gap> D := Digraph(IsMutableDigraph, [[2, 3], [1, 3], [1, 2]]);
 <mutable digraph with 3 vertices, 6 edges>
-gap> DigraphReverse(D) = MutableDigraph([[2, 3], [1, 3], [1, 2]]);
+gap> DigraphReverse(D) = Digraph(IsMutableDigraph, [[2, 3], [1, 3], [1, 2]]);
 true
 gap> DigraphReverseEdge(D, 1, 2);
 <mutable multidigraph with 3 vertices, 6 edges>
@@ -1898,7 +1898,7 @@ gap> DigraphAddEdge(D, 1, 1);
 <mutable multidigraph with 3 vertices, 7 edges>
 gap> DigraphReverseEdge(D, 1, 1);
 Error, the 1st argument <D> must be a digraph with no multiple edges,
-gap> D := MutableDigraph([[2, 3], [1, 3], [1, 2]]);
+gap> D := Digraph(IsMutableDigraph, [[2, 3], [1, 3], [1, 2]]);
 <mutable digraph with 3 vertices, 6 edges>
 gap> DigraphAddEdge(D, 1, 1);
 <mutable digraph with 3 vertices, 7 edges>

@@ -15,7 +15,7 @@ function(filt, n)
   if n < 0 then
     ErrorNoReturn("the argument <n> must be a non-negative integer,");
   fi;
-  return MutableDigraphNC(List([1 .. n], x -> []));
+  return DigraphNC(IsMutableDigraph, List([1 .. n], x -> []));
 end);
 
 InstallMethod(EmptyDigraphCons, "for IsImmutableDigraph and an integer",
@@ -61,7 +61,7 @@ function(filt, m, n)
       ran[k] := i;
     od;
   od;
-  return MutableDigraphNC(rec(DigraphNrVertices := m + n,
+  return DigraphNC(IsMutableDigraph, rec(DigraphNrVertices := m + n,
                               DigraphSource     := src,
                               DigraphRange      := ran));
 end);
@@ -128,7 +128,7 @@ function(filt, list)
     od;
     start := start + list[i];
   od;
-  return MutableDigraphNC(out);
+  return DigraphNC(IsMutableDigraph, out);
 end);
 
 InstallMethod(CompleteMultipartiteDigraphCons,
@@ -162,7 +162,7 @@ function(filt, n)
     list[i] := [i + 1];
   od;
   list[n] := [];
-  return MutableDigraphNC(list);
+  return DigraphNC(IsMutableDigraph, list);
 end);
 
 InstallMethod(ChainDigraphCons,
@@ -212,7 +212,7 @@ function(filt, n)
   for i in verts do
     out[i] := Concatenation([1 .. (i - 1)], [(i + 1) .. n]);
   od;
-  return MutableDigraphNC(out);
+  return DigraphNC(IsMutableDigraph, out);
 end);
 
 InstallMethod(CompleteDigraphCons, "for IsImmutableDigraph and an integer",
@@ -252,7 +252,7 @@ function(filt, n)
     list[i] := [i + 1];
   od;
   list[n] := [1];
-  return MutableDigraphNC(list);
+  return DigraphNC(IsMutableDigraph, list);
 end);
 
 InstallMethod(CycleDigraphCons,
@@ -297,8 +297,9 @@ function(filt, n, k)
     ErrorNoReturn("the arguments <n> and <k> must be ",
                   "non-negative integers,");
   fi;
-  return MutableDigraph(Combinations([1 .. n], k),
-                        {u, v} -> Length(Intersection(u, v)) = k - 1);
+  return Digraph(IsMutableDigraph,
+                 Combinations([1 .. n], k),
+                 {u, v} -> Length(Intersection(u, v)) = k - 1);
 end);
 
 InstallMethod(JohnsonDigraphCons,
@@ -337,7 +338,7 @@ function(filt)
           [0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
           [0, 0, 0, 0, 1, 0, 1, 1, 0, 0]];
   # the above is an adjacency matrix of the Petersen graph
-  return MutableDigraphByAdjacencyMatrix(mat);
+  return DigraphByAdjacencyMatrix(IsMutableDigraph, mat);
 end);
 
 InstallMethod(PetersenGraphCons, "for IsImmutableDigraph",

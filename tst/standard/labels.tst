@@ -132,7 +132,7 @@ els are not supported on digraphs with multiple edges,
 gap> gr := Digraph([[2, 3], [3], [1, 5], [], [4]]);
 <immutable digraph with 5 vertices, 6 edges>
 gap> SetDigraphEdgeLabel(gr, 2, 3, "banana");
-gap> D := MutableDigraph([[2, 3], [3], [1, 5], [], [4]]);
+gap> D := Digraph(IsMutableDigraph, [[2, 3], [3], [1, 5], [], [4]]);
 <mutable digraph with 5 vertices, 6 edges>
 gap> DigraphEdgeLabels(D);
 [ [ 1, 1 ], [ 1 ], [ 1, 1 ], [  ], [ 1 ] ]
@@ -151,7 +151,7 @@ els are not supported on digraphs with multiple edges,
 gap> SetDigraphEdgeLabels(D, ReturnFail);
 Error, the argument <D> must be a digraph with no multiple edges, edge labels \
 are not supported on digraphs with multiple edges,
-gap> D := MutableDigraph([[2, 3], [3], [1, 5], [], [4]]);
+gap> D := Digraph(IsMutableDigraph, [[2, 3], [3], [1, 5], [], [4]]);
 <mutable digraph with 5 vertices, 6 edges>
 gap> DigraphEdgeLabel(D, 1, 5);
 Error, there is no edge from 1 to 

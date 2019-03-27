@@ -308,7 +308,7 @@ gap> DigraphTopologicalSort(gr);
 #  Issue 81: Bug in Digraph for a malformed list of out-neighbours
 gap> gr := Digraph([[1],, [2]]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `Digraph' on 1 arguments
+Error, no 1st choice method found for `DigraphCons' on 2 arguments
 gap> gr := Digraph([[1], 2, [2]]);
 Error, the argument <list> must be a list of lists of positive integers not ex\
 ceeding the length of the argument,

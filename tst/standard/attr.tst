@@ -1789,7 +1789,7 @@ gap> DigraphSymmetricClosure(D);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphSymmetricClosure(D);
 <immutable digraph with 2 vertices, 2 edges>
-gap> D := MutableDigraph([[2, 2], []]);
+gap> D := Digraph(IsMutableDigraph, [[2, 2], []]);
 <mutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphTransitiveClosure(D);
 Error, the argument <D> must be a digraph with no multiple edges,

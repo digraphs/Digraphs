@@ -141,7 +141,7 @@ IO_Unpicklers.DIGG := function(file)
     od;
   od;
 
-  D := MutableDigraphNC(out);
+  D := DigraphNC(IsMutableDigraph, out);
   SetDigraphGroup(D, Group(gens));
   SetDigraphSchreierVector(D, sch);
   SetRepresentativeOutNeighbours(D, rep_out);
@@ -164,7 +164,7 @@ IO_Unpicklers.DIGT := function(file)
   if out = IO_Error then
     return IO_Error;
   fi;
-  return MutableDigraphNC(out);
+  return DigraphNC(IsMutableDigraph, out);
 end;
 
 ################################################################################

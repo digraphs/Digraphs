@@ -22,7 +22,7 @@ Error, the argument <list> must be a list of lists of positive integers not ex\
 ceeding the length of the argument,
 gap> Digraph([[1],, [2]]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `Digraph' on 1 arguments
+Error, no 1st choice method found for `DigraphCons' on 2 arguments
 gap> Digraph([[1], 2, [3]]);
 Error, the argument <list> must be a list of lists of positive integers not ex\
 ceeding the length of the argument,
@@ -255,11 +255,14 @@ gap> gr := Digraph([[1, 2, 3, 5], [1, 5], [2, 3, 6], [1, 3, 4],
 gap> gr = DigraphByEdges(DigraphEdges(gr));
 true
 gap> DigraphByEdges([["nonsense", "more"]]);
-Error, the argument <edges> must be a list of pairs of positive integers,
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `DigraphByEdgesCons' on 3 arguments
 gap> DigraphByEdges([["nonsense"]]);
-Error, the argument <edges> must be a list of pairs,
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `DigraphByEdgesCons' on 3 arguments
 gap> DigraphByEdges([["a", "b"]], 2);
-Error, the 1st argument <edges> must be a list of pairs of pos ints,
+Error, the 1st argument <edges> must not contain values greater than 
+2, the 2nd argument <n>,
 gap> DigraphByEdges([[1, 2, 3]], 3);
 Error, the 1st argument <edges> must be a list of pairs,
 gap> gr := DigraphByEdges(DigraphEdges(gr), 10);
@@ -303,7 +306,7 @@ gap> mat := [
 > [0, 0, 3, 0, 0]];;
 gap> gr := DigraphByAdjacencyMatrix(mat);
 <immutable multidigraph with 5 vertices, 14 edges>
-gap> grnc := DigraphByAdjacencyMatrixNC(mat);
+gap> grnc := DigraphByAdjacencyMatrix(mat);
 <immutable multidigraph with 5 vertices, 14 edges>
 gap> gr = grnc;
 true
@@ -362,7 +365,7 @@ gap> inn := InNeighbours(gr1);;
 gap> gr2 := DigraphByInNeighbours(inn);
 <immutable multidigraph with 50 vertices, 3000 edges>
 gap> gr3 := DigraphByInNeighbors(inn);;
-gap> gr4 := DigraphByInNeighboursNC(inn);
+gap> gr4 := DigraphByInNeighbours(inn);
 <immutable multidigraph with 50 vertices, 3000 edges>
 gap> DigraphNrEdges(gr3);
 3000
@@ -924,9 +927,9 @@ gap> gr1 := EmptyDigraph(0);;
 gap> gr2 := DigraphCopy(gr1);
 <immutable digraph with 0 vertices, 0 edges>
 gap> String(gr2);
-"Digraph( [ ] )"
+"Digraph( IsImmutableDigraph, [ ] )"
 gap> PrintString(gr2);
-"Digraph( [ ] )"
+"Digraph( IsImmutableDigraph, [ ] )"
 
 # Tests for DigraphCopy originally located in oper.tst
 gap> gr := Digraph([[6, 1, 2, 3], [6], [2, 2, 3], [1, 1], [6, 5],
@@ -1069,7 +1072,7 @@ true
 # MutableDigraphs
 gap> list := [[1, 2], []];
 [ [ 1, 2 ], [  ] ]
-gap> D := MutableDigraphNC(list);
+gap> D := DigraphNC(IsMutableDigraph, list);
 <mutable digraph with 2 vertices, 2 edges>
 gap> IsMutableDigraph(D);
 true
@@ -1095,7 +1098,7 @@ gap> IsIdenticalObj(DigraphSinks(D), DigraphSinks(D));
 false
 gap> IsIdenticalObj(list, D!.OutNeighbours);
 true
-gap> D := MutableDigraphNC(OutNeighbours(MakeImmutableDigraph(D)));
+gap> D := DigraphNC(IsMutableDigraph, OutNeighbours(MakeImmutableDigraph(D)));
 <mutable digraph with 2 vertices, 2 edges>
 gap> D := DigraphNC(rec(xxx := 1, DigraphRange := [], DigraphSource := [],
 >  DigraphNrVertices := 1000));
@@ -1104,23 +1107,23 @@ gap> IsBound(D!.xxx);
 false
 gap> list := [[1, 2], []];
 [ [ 1, 2 ], [  ] ]
-gap> D := MutableDigraphNC(list);
+gap> D := DigraphNC(IsMutableDigraph, list);
 <mutable digraph with 2 vertices, 2 edges>
 gap> PrintString(D);
-"MutableDigraph( [ [ 1, 2 ], [ ] ] )"
+"Digraph( IsMutableDigraph, [ [ 1, 2 ], [ ] ] )"
 gap> EvalString(String(D)) = D;
 true
-gap> MutableDigraphByAdjacencyMatrixNC([]);
+gap> DigraphByAdjacencyMatrix(IsMutableDigraph, []);
 <mutable digraph with 0 vertices, 0 edges>
-gap> MutableDigraphByAdjacencyMatrixNC([[true]]);
+gap> DigraphByAdjacencyMatrix(IsMutableDigraph, [[true]]);
 <mutable digraph with 1 vertex, 1 edge>
-gap> DigraphByAdjacencyMatrixNC([[true]]);
+gap> DigraphByAdjacencyMatrix([[true]]);
 <immutable digraph with 1 vertex, 1 edge>
-gap> MutableDigraphByEdges([]);
+gap> DigraphByEdges(IsMutableDigraph, []);
 <mutable digraph with 0 vertices, 0 edges>
-gap> MutableDigraphByEdges([], 10);
+gap> DigraphByEdges(IsMutableDigraph, [], 10);
 <mutable digraph with 10 vertices, 0 edges>
-gap> D := AsMutableDigraph(Transformation([1, 1, 2]));
+gap> D := AsDigraph(IsMutableDigraph, Transformation([1, 1, 2]));
 <mutable digraph with 3 vertices, 3 edges>
 gap> IsFunctionalDigraph(D);
 true

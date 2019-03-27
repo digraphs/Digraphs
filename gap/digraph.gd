@@ -28,11 +28,16 @@ DeclareRepresentation("IsDenseDigraphRep",
 # No check constructors
 DeclareOperation("ConvertToMutableDigraphNC", [IsRecord]);
 DeclareOperation("ConvertToMutableDigraphNC", [IsDenseList]);
-DeclareOperation("MutableDigraphNC", [IsRecord]);
-DeclareOperation("MutableDigraphNC", [IsDenseList]);
 
 DeclareOperation("ConvertToImmutableDigraphNC", [IsRecord]);
 DeclareOperation("ConvertToImmutableDigraphNC", [IsList]);
+
+DeclareConstructor("DigraphConsNC", [IsDigraph, IsRecord]);
+DeclareConstructor("DigraphConsNC", [IsDigraph, IsDenseList]);
+
+DeclareOperation("DigraphNC", [IsFunction, IsRecord]);
+DeclareOperation("DigraphNC", [IsFunction, IsDenseList]);
+
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsDenseList]);
 
@@ -47,11 +52,17 @@ DeclareOperation("DigraphCopyIfImmutable", [IsDigraph]);
 DeclareOperation("MakeImmutableDigraph", [IsDigraph]);
 
 # Constructors
-DeclareOperation("MutableDigraph", [IsRecord]);
-DeclareOperation("MutableDigraph", [IsDenseList]);
-DeclareOperation("MutableDigraph", [IsList, IsFunction]);
-DeclareOperation("MutableDigraph", [IsInt, IsList, IsList]);
-DeclareOperation("MutableDigraph", [IsList, IsList, IsList]);
+DeclareConstructor("DigraphCons", [IsDigraph, IsRecord]);
+DeclareConstructor("DigraphCons", [IsDigraph, IsDenseList]);
+DeclareConstructor("DigraphCons", [IsDigraph, IsList, IsFunction]);
+DeclareConstructor("DigraphCons", [IsDigraph, IsInt, IsList, IsList]);
+DeclareConstructor("DigraphCons", [IsDigraph, IsList, IsList, IsList]);
+
+DeclareOperation("Digraph", [IsFunction, IsRecord]);
+DeclareOperation("Digraph", [IsFunction, IsList]);
+DeclareOperation("Digraph", [IsFunction, IsList, IsFunction]);
+DeclareOperation("Digraph", [IsFunction, IsInt, IsList, IsList]);
+DeclareOperation("Digraph", [IsFunction, IsList, IsList, IsList]);
 
 DeclareOperation("Digraph", [IsRecord]);
 DeclareOperation("Digraph", [IsList]);
@@ -60,35 +71,43 @@ DeclareOperation("Digraph", [IsInt, IsList, IsList]);
 DeclareOperation("Digraph", [IsList, IsList, IsList]);
 
 # Constructors "by" something . . .
-DeclareOperation("MutableDigraphByAdjacencyMatrix", [IsHomogeneousList]);
-DeclareOperation("MutableDigraphByAdjacencyMatrixNC", [IsHomogeneousList]);
+DeclareConstructor("DigraphByAdjacencyMatrixCons",
+                  [IsDigraph, IsHomogeneousList]);
+DeclareConstructor("DigraphByAdjacencyMatrixConsNC",
+                   [IsDigraph, IsHomogeneousList]);
+
+DeclareOperation("DigraphByAdjacencyMatrix", [IsFunction, IsHomogeneousList]);
+DeclareOperation("DigraphByAdjacencyMatrixNC", [IsFunction, IsHomogeneousList]);
 
 DeclareOperation("DigraphByAdjacencyMatrix", [IsHomogeneousList]);
 DeclareOperation("DigraphByAdjacencyMatrixNC", [IsHomogeneousList]);
 
-DeclareOperation("MutableDigraphByEdges", [IsRectangularTable]);
-DeclareOperation("MutableDigraphByEdges", [IsRectangularTable, IsPosInt]);
-DeclareOperation("MutableDigraphByEdges", [IsList and IsEmpty]);
-DeclareOperation("MutableDigraphByEdges", [IsList and IsEmpty, IsPosInt]);
+DeclareConstructor("DigraphByEdgesCons",
+                   [IsDigraph, IsList]);
+DeclareConstructor("DigraphByEdgesCons",
+                   [IsDigraph, IsList, IsInt]);
 
-DeclareOperation("DigraphByEdges", [IsRectangularTable]);
-DeclareOperation("DigraphByEdges", [IsRectangularTable, IsPosInt]);
-DeclareOperation("DigraphByEdges", [IsList and IsEmpty]);
-DeclareOperation("DigraphByEdges", [IsList and IsEmpty, IsPosInt]);
+DeclareOperation("DigraphByEdges", [IsFunction, IsList]);
+DeclareOperation("DigraphByEdges", [IsFunction, IsList, IsInt]);
+DeclareOperation("DigraphByEdges", [IsList]);
+DeclareOperation("DigraphByEdges", [IsList, IsInt]);
 
-DeclareOperation("MutableDigraphByInNeighbours", [IsList]);
-DeclareOperation("MutableDigraphByInNeighboursNC", [IsList]);
+DeclareConstructor("DigraphByInNeighboursCons", [IsDigraph, IsList]);
+DeclareConstructor("DigraphByInNeighboursConsNC", [IsDigraph, IsList]);
 
+DeclareOperation("DigraphByInNeighbours", [IsFunction, IsList]);
 DeclareOperation("DigraphByInNeighbours", [IsList]);
-DeclareOperation("DigraphByInNeighboursNC", [IsList]);
 
-DeclareSynonym("MutableDigraphByInNeighbors", MutableDigraphByInNeighbours);
 DeclareSynonym("DigraphByInNeighbors", DigraphByInNeighbours);
 
 # Converters to and from other types . . .
-DeclareOperation("AsMutableDigraph", [IsBinaryRelation]);
-DeclareOperation("AsMutableDigraph", [IsTransformation]);
-DeclareOperation("AsMutableDigraph", [IsTransformation, IsInt]);
+DeclareConstructor("AsDigraphCons", [IsDigraph, IsBinaryRelation]);
+DeclareConstructor("AsDigraphCons", [IsDigraph, IsTransformation]);
+DeclareConstructor("AsDigraphCons", [IsDigraph, IsTransformation, IsInt]);
+
+DeclareOperation("AsDigraph", [IsFunction, IsBinaryRelation]);
+DeclareOperation("AsDigraph", [IsFunction, IsTransformation]);
+DeclareOperation("AsDigraph", [IsFunction, IsTransformation, IsInt]);
 
 DeclareOperation("AsDigraph", [IsBinaryRelation]);
 DeclareOperation("AsDigraph", [IsTransformation]);
