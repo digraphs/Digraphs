@@ -133,18 +133,15 @@ end);
 
 InstallGlobalFunction(DigraphsTestAll,
 function()
-
   DigraphsMakeDoc();
   Print("\n");
-
   if not DigraphsTestInstall() then
     Print("Abort: DigraphsTestInstall failed . . . \n");
     return false;
   elif not DigraphsTestStandard() then
-    Print("Abort: DigraphsTestAll failed . . . \n");
+    Print("Abort: DigraphsTestStandard failed . . . \n");
     return false;
   fi;
-
   return DIGRAPHS_RunTest(DigraphsTestManualExamples);
 end);
 
