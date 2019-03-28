@@ -17,36 +17,33 @@ gap> DIGRAPHS_StartTest();
 # For a digraph with lots of edges: digraphs-lib/extreme.d6.gz
 gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                                     "/digraphs-lib/extreme.d6.gz"), 1);
-<digraph with 5000 vertices, 4211332 edges>
+<immutable digraph with 5000 vertices, 4211332 edges>
 gap> ReducedDigraph(gr);
-<digraph with 5000 vertices, 4211332 edges>
+<immutable digraph with 5000 vertices, 4211332 edges>
 
 #  DigraphSymmetricClosure 1
 # For a digraph with lots of edges: digraphs-lib/extreme.d6.gz
-gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
->                                     "/digraphs-lib/extreme.d6.gz"), 1);
-<digraph with 5000 vertices, 4211332 edges>
 gap> DigraphSymmetricClosure(gr);
-<digraph with 5000 vertices, 7713076 edges>
+<immutable digraph with 5000 vertices, 7713076 edges>
 gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                                     "/data/symmetric-closure.ds6.gz"),
 >                       DigraphFromDiSparse6String,
 >                       1);
-<digraph with 46656 vertices, 120245 edges>
+<immutable digraph with 46656 vertices, 120245 edges>
 gap> DigraphSymmetricClosure(gr);
-<digraph with 46656 vertices, 197930 edges>
+<immutable digraph with 46656 vertices, 197930 edges>
 
 #  DigraphAllSimpleCircuits
 gap> gr := DigraphFromDigraph6String(
 > "+N{MYG?cJOU}MqNJLoVPHC?tDlcxgFACCDWxDMX?");
-<digraph with 15 vertices, 92 edges>
+<immutable digraph with 15 vertices, 92 edges>
 gap> circs := DigraphAllSimpleCircuits(gr);;
 gap> Length(circs);
 1291792
 
 #  HamiltonianPath and IsHamiltonianDigraph
 gap> g := CompleteDigraph(20);
-<digraph with 20 vertices, 380 edges>
+<immutable digraph with 20 vertices, 380 edges>
 gap> HamiltonianPath(g);
 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
 gap> IsDigraphMonomorphism(CycleDigraph(20), 
@@ -56,7 +53,7 @@ true
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteMultipartiteDigraph([1, 9, 1, 1, 2, 1, 1, 1]);
-<digraph with 17 vertices, 198 edges>
+<immutable digraph with 17 vertices, 198 edges>
 gap> HamiltonianPath(g);
 fail
 gap> IsHamiltonianDigraph(g);
@@ -77,6 +74,6 @@ gap> Unbind(g);
 gap> Unbind(gr);
 gap> Unbind(str);
 
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: extreme/attr.tst", 0);

@@ -18,7 +18,7 @@ gap> gr := Digraph(
 > [[8], [4, 5, 6, 8, 9], [2, 4, 5, 7, 10], [9],
 > [1, 4, 6, 7, 9], [2, 3, 6, 7, 10], [3, 4, 5, 8, 9],
 > [3, 4, 9, 10], [1, 2, 3, 5, 6, 9, 10], [2, 4, 5, 6, 9]]);
-<digraph with 10 vertices, 43 edges>
+<immutable digraph with 10 vertices, 43 edges>
 gap> OutNeighbours(gr);
 [ [ 8 ], [ 4, 5, 6, 8, 9 ], [ 2, 4, 5, 7, 10 ], [ 9 ], [ 1, 4, 6, 7, 9 ], 
   [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], [ 3, 4, 9, 10 ], 
@@ -51,59 +51,64 @@ gap> gr := Digraph([
 >  [2, 3, 10, 11, 14], [3, 5, 14, 15], [7, 9, 10, 14, 15],
 >  [1, 4, 7, 8, 10, 14, 15], [1, 2, 4, 7, 13, 14, 15],
 >  [1, 2, 3, 9, 10, 11, 12, 13, 14, 15]]);
-<digraph with 15 vertices, 89 edges>
+<immutable digraph with 15 vertices, 89 edges>
 gap> IsMultiDigraph(gr);
 false
 gap> IsAcyclicDigraph(gr);
 false
-gap> r := rec(vertices := [1 .. 10000], source := [], range := []);;
+gap> r := rec(DigraphVertices := [1 .. 10000], 
+>             DigraphSource := [],
+>             DigraphRange := []);;
 gap> for i in [1 .. 9999] do
->    Add(r.source, i);
->    Add(r.range, i + 1);
+>    Add(r.DigraphSource, i);
+>    Add(r.DigraphRange, i + 1);
 >  od;
-gap> Add(r.source, 10000);; Add(r.range, 1);;
+gap> Add(r.DigraphSource, 10000);; Add(r.DigraphRange, 1);;
 gap> gr := Digraph(r);
-<digraph with 10000 vertices, 10000 edges>
+<immutable digraph with 10000 vertices, 10000 edges>
 gap> IsAcyclicDigraph(gr);
 false
-gap> gr := DigraphRemoveEdges(gr, [10000]);
-<digraph with 10000 vertices, 9999 edges>
+gap> gr := DigraphRemoveEdge(gr, 10000, 1);
+<immutable digraph with 10000 vertices, 9999 edges>
 gap> IsAcyclicDigraph(gr);
 true
 gap> gr := Digraph([[2, 3], [4, 5], [5, 6], [], [], [], [3]]);
-<digraph with 7 vertices, 7 edges>
+<immutable digraph with 7 vertices, 7 edges>
 gap> IsDigraph(gr);
 true
 
 #  OutNeighbours
 # Check that it can handle non-plists in the source and range
-gap> gr := Digraph(rec(nrvertices := 1000,
->                      source := [1 .. 1000],
->                      range := Concatenation([2 .. 1000], [1])));;
+gap> gr := Digraph(rec(DigraphNrVertices := 1000,
+>                      DigraphSource := [1 .. 1000],
+>                      DigraphRange := Concatenation([2 .. 1000], [1])));;
 gap> OutNeighbours(gr);;
 
 #  IsMultiDigraph: for an empty digraph
-gap> d := Digraph(rec(vertices := [1 .. 5], range := [], source := []));
-<digraph with 5 vertices, 0 edges>
+gap> d := Digraph(rec(DigraphVertices := [1 .. 5], 
+>                     DigraphRange := [], 
+>                     DigraphSource := []));
+<immutable digraph with 5 vertices, 0 edges>
 gap> IsMultiDigraph(d);
 false
 
 #  DigraphFromSparse6String
 gap> DigraphFromSparse6String(":Fa@x^");
-<digraph with 7 vertices, 8 edges>
+<immutable digraph with 7 vertices, 8 edges>
 
 #  (In/Out)Neighbours and (In/Out)NeighboursOfVertex and (In/Out)DegreeOfVertex
 gap> gr := Digraph([[4], [2, 2], [2, 3, 1, 4], [1]]);
-<multidigraph with 4 vertices, 8 edges>
+<immutable multidigraph with 4 vertices, 8 edges>
 gap> InDegreeOfVertex(gr, 2);
 3
 gap> InNeighboursOfVertex(gr, 2);
 [ 2, 2, 3 ]
 gap> InNeighbours(gr);
 [ [ 3, 4 ], [ 2, 2, 3 ], [ 3 ], [ 1, 3 ] ]
-gap> gr := Digraph(rec(nrvertices := 10, source := [1, 1, 2, 3, 3, 3],
-> range := [3, 1, 1, 4, 4, 1]));
-<multidigraph with 10 vertices, 6 edges>
+gap> gr := Digraph(rec(DigraphNrVertices := 10, 
+>                      DigraphSource := [1, 1, 2, 3, 3, 3],
+>                      DigraphRange := [3, 1, 1, 4, 4, 1]));
+<immutable multidigraph with 10 vertices, 6 edges>
 gap> InNeighboursOfVertex(gr, 5);
 [  ]
 gap> InDegreeOfVertex(gr, 5);
@@ -121,7 +126,7 @@ gap> OutNeighbours(gr);
 
 # DigraphInEdges and DigraphOutEdges for a vertex
 gap> gr := Digraph([[5, 5, 1, 5], [], [], [2, 3, 1], [4]]);
-<multidigraph with 5 vertices, 8 edges>
+<immutable multidigraph with 5 vertices, 8 edges>
 gap> DigraphInEdges(gr, 5);
 [ [ 1, 5 ], [ 1, 5 ], [ 1, 5 ] ]
 gap> DigraphOutEdges(gr, 2);
@@ -131,22 +136,23 @@ gap> DigraphOutEdges(gr, 4);
 
 #  DigraphPeriod and IsAperiodicDigraph
 gap> gr := Digraph([[2], [3], [4], [5], [1], [7], [6]]);
-<digraph with 7 vertices, 7 edges>
+<immutable digraph with 7 vertices, 7 edges>
 gap> DigraphPeriod(gr);
 1
 gap> IsAperiodicDigraph(gr);
 true
 gap> gr := Digraph([[2], [3], [4], [5], [6], [1]]);
-<digraph with 6 vertices, 6 edges>
+<immutable digraph with 6 vertices, 6 edges>
 gap> DigraphPeriod(gr);
 6
 gap> IsAperiodicDigraph(gr);
 false
 
 #  IsDigraphEdge
-gap> gr := Digraph(rec(nrvertices := 5, source := [1, 2, 3, 4, 5],
-> range := [2, 3, 4, 5, 1]));
-<digraph with 5 vertices, 5 edges>
+gap> gr := Digraph(rec(DigraphNrVertices := 5, 
+>                      DigraphSource := [1, 2, 3, 4, 5],
+>                      DigraphRange := [2, 3, 4, 5, 1]));
+<immutable digraph with 5 vertices, 5 edges>
 gap> IsDigraphEdge(gr, [1, 2]);
 true
 gap> IsDigraphEdge(gr, [2, 2]);
@@ -156,27 +162,27 @@ false
 
 #
 gap> gr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
-<digraph with 5 vertices, 7 edges>
+<immutable digraph with 5 vertices, 7 edges>
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 2, 3 ], [ 2, 5 ], [ 3, 4 ], [ 4, 5 ], [ 5, 1 ], [ 5, 2 ] ]
 gap> gr2 := DigraphReverseEdge(gr, [2, 3]);
-<digraph with 5 vertices, 7 edges>
+<immutable digraph with 5 vertices, 7 edges>
 gap> DigraphEdges(gr2);
 [ [ 1, 2 ], [ 2, 5 ], [ 3, 4 ], [ 3, 2 ], [ 4, 5 ], [ 5, 1 ], [ 5, 2 ] ]
 
 #
 gap> gr := Digraph([[1, 2, 3], [3, 5], [4], [5], [1, 2], [5, 7], [6]]);
-<digraph with 7 vertices, 12 edges>
+<immutable digraph with 7 vertices, 12 edges>
 gap> gr2 := DigraphReverseEdge(gr, [1, 1]);
-<digraph with 7 vertices, 12 edges>
+<immutable digraph with 7 vertices, 12 edges>
 gap> gr = gr2;
 true
-gap> gr2 := DigraphReverseEdge(gr, 2);
-<digraph with 7 vertices, 12 edges>
+gap> gr2 := DigraphReverseEdge(gr, 1, 2);
+<immutable digraph with 7 vertices, 12 edges>
 
 #  DigraphTopologicalSort
 gap> gr := Digraph([[2, 3], [3], [], [5, 6], [6], []]);
-<digraph with 6 vertices, 6 edges>
+<immutable digraph with 6 vertices, 6 edges>
 gap> topo := DigraphTopologicalSort(gr);
 [ 3, 2, 1, 6, 5, 4 ]
 gap> p := Permutation(Transformation(topo), topo);
@@ -185,7 +191,7 @@ gap> gr1 := OnDigraphs(gr, p);;
 gap> DigraphTopologicalSort(gr1) = DigraphVertices(gr1);
 true
 gap> gr := Digraph([[], [3], [], [5], [], [2, 3, 7, 1], [1], [2, 3, 4, 5]]);
-<digraph with 8 vertices, 11 edges>
+<immutable digraph with 8 vertices, 11 edges>
 gap> topo := DigraphTopologicalSort(gr);
 [ 1, 3, 2, 5, 4, 7, 6, 8 ]
 gap> p := Permutation(Transformation(topo), topo);
@@ -202,7 +208,7 @@ gap> gr := Digraph([
 >   [1, 3, 3, 9, 9], [6, 3, 5, 7, 9], [3, 9],
 >   [8, 3, 6, 8, 8, 7, 7, 8, 9], [6, 1, 6, 7, 8, 4, 2, 5, 4],
 >   [1, 5, 2, 3, 9]]);
-<multidigraph with 9 vertices, 52 edges>
+<immutable multidigraph with 9 vertices, 52 edges>
 gap> G := AutomorphismGroup(gr);;
 gap> HasBlissCanonicalLabelling(gr);
 true
@@ -229,7 +235,7 @@ true
 
 #  Issue 13: DigraphAllSimpleCircuits, reported by JDM
 gap> gr := Digraph([[3], [4], [5], [1, 5], [1, 2]]);
-<digraph with 5 vertices, 7 edges>
+<immutable digraph with 5 vertices, 7 edges>
 gap> DigraphAllSimpleCircuits(gr);
 [ [ 1, 3, 5 ], [ 1, 3, 5, 2, 4 ], [ 5, 2, 4 ] ]
 
@@ -237,14 +243,14 @@ gap> DigraphAllSimpleCircuits(gr);
 # of a pivot vertex was not necessarily valid when the stabilizer was
 # non-trivial
 gap> gr := DigraphFromGraph6String("L~~~ySrJ[N{NT^");
-<digraph with 13 vertices, 108 edges>
+<immutable digraph with 13 vertices, 108 edges>
 gap> gr = MaximalSymmetricSubdigraphWithoutLoops(gr);
 true
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 2, 3, 4, 5, 6, 7 ], [ 1, 2, 3, 12 ], [ 2, 8, 12, 13 ], [ 4, 9, 13 ], 
   [ 8, 9, 10, 11, 12, 13 ] ]
 gap> gr := DigraphFromGraph6String("I~~wzfJhw");
-<digraph with 10 vertices, 66 edges>
+<immutable digraph with 10 vertices, 66 edges>
 gap> gr = MaximalSymmetricSubdigraphWithoutLoops(gr);
 true
 gap> DigraphMaximalCliquesReps(gr);
@@ -266,7 +272,7 @@ gap> DigraphNrEdges(gr2);
 #  Fix seg fault cause by wrong handling of no edges in
 # FuncDIGRAPH_SOURCE_RANGE
 gap> gr := Digraph([[]]);
-<digraph with 1 vertex, 0 edges>
+<immutable digraph with 1 vertex, 0 edges>
 gap> DigraphSource(gr);
 [  ]
 gap> DigraphRange(gr);
@@ -274,7 +280,7 @@ gap> DigraphRange(gr);
 
 #  Issue 17: Bug in OnDigraphs for a digraph and a transformation
 gap> d := Digraph([[2], [3], [1, 1]]);
-<multidigraph with 3 vertices, 4 edges>
+<immutable multidigraph with 3 vertices, 4 edges>
 gap> OutNeighbours(OnDigraphs(d, PermList([2, 3, 1])));
 [ [ 2, 2 ], [ 3 ], [ 1 ] ]
 gap> OutNeighbours(OnDigraphs(d, Transformation([2, 3, 1])));
@@ -284,7 +290,7 @@ gap> OutNeighbours(OnDigraphs(d, Transformation([2, 3, 1])));
 gap> f := Transformation([7, 10, 10, 1, 7, 9, 10, 4, 2, 3]);
 Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] )
 gap> AsDigraph(f);
-<digraph with 10 vertices, 10 edges>
+<immutable digraph with 10 vertices, 10 edges>
 gap> AsDigraph(f, 4);
 fail
 
@@ -295,23 +301,22 @@ true
 
 #  Issue 55: Bug in FuncDIGRAPH_TOPO_SORT
 gap> gr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);
-<digraph with 4 vertices, 9 edges>
+<immutable digraph with 4 vertices, 9 edges>
 gap> DigraphTopologicalSort(gr);
 [ 4, 2, 3, 1 ]
 
 #  Issue 81: Bug in Digraph for a malformed list of out-neighbours
 gap> gr := Digraph([[1],, [2]]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `Digraph' on 1 arguments
+Error, no 1st choice method found for `DigraphCons' on 2 arguments
 gap> gr := Digraph([[1], 2, [2]]);
-Error, Digraphs: Digraph: usage,
-the argument must be a list of lists of positive integers not exceeding the
-length of the argument,
+Error, the argument <list> must be a list of lists of positive integers not ex\
+ceeding the length of the argument,
 
 #  Symmetric closure of a digraph with no vertices
 gap> gr := EmptyDigraph(0);;
 gap> DigraphSymmetricClosure(gr);
-<digraph with 0 vertices, 0 edges>
+<immutable digraph with 0 vertices, 0 edges>
 
 # Issue 114: Bug in NautyTracesInterface for graphs with 0 vertices
 gap> not DIGRAPHS_NautyAvailable or 
@@ -332,9 +337,16 @@ gap> SortedList(DigraphEdges(DigraphFromDigraph6String("&DI?AO?")) - 1);
 [ [ 0, 2 ], [ 0, 4 ], [ 3, 1 ], [ 3, 4 ] ]
 gap> str := "&O?????C??O?@??C??O?@??C??O?@??C??O?@??C??o??";;
 gap> gr := DigraphFromDigraph6String(str);
-<digraph with 16 vertices, 15 edges>
+<immutable digraph with 16 vertices, 15 edges>
 gap> str = Digraph6String(gr);
 true
+
+# IsDigraphValid
+gap> D := NullDigraph(IsMutableDigraph, 10);
+<mutable digraph with 10 vertices, 0 edges>
+gap> MakeImmutable(D);
+Error, digraph in an invalid state! Did you return a mutable digraph from a me\
+thod for an attribute, or MakeImmutable(a mutable digraph)??
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);

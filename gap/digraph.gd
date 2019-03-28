@@ -8,101 +8,131 @@
 #############################################################################
 ##
 
-# category, family, type, representations . . .
-
+# Categories
 DeclareCategory("IsDigraph", IsObject);
 DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
-DeclareCategory("IsCayleyDigraph", IsDigraph);
 
-DeclareAttribute("GroupOfCayleyDigraph", IsCayleyDigraph);
-DeclareAttribute("SemigroupOfCayleyDigraph", IsCayleyDigraph);
-DeclareAttribute("GeneratorsOfCayleyDigraph", IsCayleyDigraph);
+DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);
+DeclareCategory("IsImmutableDigraph", IsDigraph);
 
-# meaning it really has multiple edges!!
-DeclareProperty("IsMultiDigraph", IsDigraph);
+DeclareGlobalFunction("IsValidDigraph");
 
+# Family
 BindGlobal("DigraphFamily", NewFamily("DigraphFamily", IsDigraph));
 
-# constructors . . .
+# Representations
+DeclareRepresentation("IsDenseDigraphRep",
+                      IsDigraph and IsComponentObjectRep,
+                      ["OutNeighbours"]);
+
+# No check constructors
+DeclareOperation("ConvertToMutableDigraphNC", [IsRecord]);
+DeclareOperation("ConvertToMutableDigraphNC", [IsDenseList]);
+
+DeclareOperation("ConvertToImmutableDigraphNC", [IsRecord]);
+DeclareOperation("ConvertToImmutableDigraphNC", [IsList]);
+
+DeclareConstructor("DigraphConsNC", [IsDigraph, IsRecord]);
+DeclareConstructor("DigraphConsNC", [IsDigraph, IsDenseList]);
+
+DeclareOperation("DigraphNC", [IsFunction, IsRecord]);
+DeclareOperation("DigraphNC", [IsFunction, IsDenseList]);
+
+DeclareOperation("DigraphNC", [IsRecord]);
+DeclareOperation("DigraphNC", [IsDenseList]);
+
+# Copies
+DeclareOperation("DigraphMutableCopy", [IsDigraph]);
+DeclareOperation("DigraphCopy", [IsDigraph]);
+DeclareSynonym("DigraphImmutableCopy", DigraphCopy);
+DeclareOperation("DigraphCopyIfMutable", [IsDigraph]);
+DeclareOperation("DigraphCopyIfImmutable", [IsDigraph]);
+
+# Converter
+DeclareOperation("MakeImmutableDigraph", [IsDigraph]);
+
+# Constructors
+DeclareConstructor("DigraphCons", [IsDigraph, IsRecord]);
+DeclareConstructor("DigraphCons", [IsDigraph, IsDenseList]);
+DeclareConstructor("DigraphCons", [IsDigraph, IsList, IsFunction]);
+DeclareConstructor("DigraphCons", [IsDigraph, IsInt, IsList, IsList]);
+DeclareConstructor("DigraphCons", [IsDigraph, IsList, IsList, IsList]);
+
+DeclareOperation("Digraph", [IsFunction, IsRecord]);
+DeclareOperation("Digraph", [IsFunction, IsList]);
+DeclareOperation("Digraph", [IsFunction, IsList, IsFunction]);
+DeclareOperation("Digraph", [IsFunction, IsInt, IsList, IsList]);
+DeclareOperation("Digraph", [IsFunction, IsList, IsList, IsList]);
 
 DeclareOperation("Digraph", [IsRecord]);
 DeclareOperation("Digraph", [IsList]);
 DeclareOperation("Digraph", [IsList, IsFunction]);
 DeclareOperation("Digraph", [IsInt, IsList, IsList]);
 DeclareOperation("Digraph", [IsList, IsList, IsList]);
-DeclareOperation("Digraph", [IsBinaryRelation]);
-DeclareOperation("Digraph", [IsGroup,
-                             IsListOrCollection,
-                             IsFunction,
-                             IsFunction]);
-DeclareOperation("CayleyDigraph", [IsGroup]);
-DeclareOperation("CayleyDigraph", [IsGroup, IsList]);
 
-DeclareOperation("DoubleDigraph", [IsDigraph]);
+# Constructors "by" something . . .
+DeclareConstructor("DigraphByAdjacencyMatrixCons",
+                  [IsDigraph, IsHomogeneousList]);
+DeclareConstructor("DigraphByAdjacencyMatrixConsNC",
+                   [IsDigraph, IsHomogeneousList]);
 
-DeclareOperation("DistanceDigraph", [IsDigraph, IsInt]);
-DeclareOperation("DistanceDigraph", [IsDigraph, IsList]);
+DeclareOperation("DigraphByAdjacencyMatrix", [IsFunction, IsHomogeneousList]);
+DeclareOperation("DigraphByAdjacencyMatrixNC", [IsFunction, IsHomogeneousList]);
 
-DeclareOperation("BipartiteDoubleDigraph", [IsDigraph]);
-
-DeclareOperation("DigraphNC", [IsRecord]);
-DeclareOperation("DigraphNC", [IsList]);
-DeclareOperation("DigraphNC", [IsList, IsInt]);
 DeclareOperation("DigraphByAdjacencyMatrix", [IsHomogeneousList]);
 DeclareOperation("DigraphByAdjacencyMatrixNC", [IsHomogeneousList]);
-DeclareOperation("DigraphByEdges", [IsRectangularTable]);
-DeclareOperation("DigraphByEdges", [IsRectangularTable, IsPosInt]);
-DeclareOperation("DigraphByEdges", [IsList and IsEmpty]);
-DeclareOperation("DigraphByEdges", [IsList and IsEmpty, IsPosInt]);
-DeclareOperation("DigraphByInNeighbours", [IsList]);
-DeclareOperation("DigraphByInNeighbors", [IsList]);
-DeclareOperation("DigraphByInNeighboursNC", [IsList]);
-DeclareOperation("DigraphByInNeighboursNC", [IsList, IsInt]);
-DeclareOperation("EdgeOrbitsDigraph", [IsPermGroup, IsList, IsInt]);
-DeclareOperation("EdgeOrbitsDigraph", [IsPermGroup, IsList]);
-DeclareOperation("DigraphAddEdgeOrbit", [IsDigraph, IsList]);
-DeclareOperation("DigraphRemoveEdgeOrbit", [IsDigraph, IsList]);
 
-DeclareOperation("Graph", [IsDigraph]);
+DeclareConstructor("DigraphByEdgesCons",
+                   [IsDigraph, IsList]);
+DeclareConstructor("DigraphByEdgesCons",
+                   [IsDigraph, IsList, IsInt]);
+
+DeclareOperation("DigraphByEdges", [IsFunction, IsList]);
+DeclareOperation("DigraphByEdges", [IsFunction, IsList, IsInt]);
+DeclareOperation("DigraphByEdges", [IsList]);
+DeclareOperation("DigraphByEdges", [IsList, IsInt]);
+
+DeclareConstructor("DigraphByInNeighboursCons", [IsDigraph, IsList]);
+DeclareConstructor("DigraphByInNeighboursConsNC", [IsDigraph, IsList]);
+
+DeclareOperation("DigraphByInNeighbours", [IsFunction, IsList]);
+DeclareOperation("DigraphByInNeighbours", [IsList]);
+
+DeclareSynonym("DigraphByInNeighbors", DigraphByInNeighbours);
+
+# Converters to and from other types . . .
+DeclareConstructor("AsDigraphCons", [IsDigraph, IsBinaryRelation]);
+DeclareConstructor("AsDigraphCons", [IsDigraph, IsTransformation]);
+DeclareConstructor("AsDigraphCons", [IsDigraph, IsTransformation, IsInt]);
+
+DeclareOperation("AsDigraph", [IsFunction, IsBinaryRelation]);
+DeclareOperation("AsDigraph", [IsFunction, IsTransformation]);
+DeclareOperation("AsDigraph", [IsFunction, IsTransformation, IsInt]);
+
+DeclareOperation("AsDigraph", [IsBinaryRelation]);
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
-DeclareOperation("DigraphCopy", [IsDigraph]);
 
-DeclareOperation("RandomDigraph", [IsPosInt]);
-DeclareOperation("RandomDigraph", [IsPosInt, IsRat]);
-DeclareOperation("RandomDigraph", [IsPosInt, IsFloat]);
+DeclareOperation("AsBinaryRelation", [IsDigraph]);
+DeclareOperation("AsSemigroup", [IsFunction, IsDigraph]);
+DeclareOperation("AsMonoid", [IsFunction, IsDigraph]);
+
+DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt]);
+DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt, IsRat]);
+DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt, IsFloat]);
+
+DeclareOperation("RandomDigraph", [IsInt]);
+DeclareOperation("RandomDigraph", [IsInt, IsRat]);
+DeclareOperation("RandomDigraph", [IsInt, IsFloat]);
+DeclareOperation("RandomDigraph", [IsFunction, IsInt]);
+DeclareOperation("RandomDigraph", [IsFunction, IsInt, IsRat]);
+DeclareOperation("RandomDigraph", [IsFunction, IsInt, IsFloat]);
+
+DeclareConstructor("RandomTournamentCons", [IsDigraph, IsInt]);
+DeclareOperation("RandomTournament", [IsInt]);
+DeclareOperation("RandomTournament", [IsFunction, IsInt]);
+
+# No mutable analogues of the following because we will withdraw multidigraphs
+# the not too distant future!
 DeclareOperation("RandomMultiDigraph", [IsPosInt]);
 DeclareOperation("RandomMultiDigraph", [IsPosInt, IsPosInt]);
-DeclareOperation("RandomTournament", [IsInt]);
-
-DeclareOperation("CompleteBipartiteDigraph", [IsPosInt, IsPosInt]);
-DeclareOperation("CompleteMultipartiteDigraph", [IsList]);
-DeclareOperation("CompleteDigraph", [IsInt]);
-DeclareOperation("EmptyDigraph", [IsInt]);
-DeclareSynonym("NullDigraph", EmptyDigraph);
-DeclareOperation("CycleDigraph", [IsPosInt]);
-DeclareOperation("ChainDigraph", [IsPosInt]);
-DeclareOperation("LineDigraph", [IsDigraph]);
-DeclareOperation("LineUndirectedDigraph", [IsDigraph]);
-DeclareSynonym("EdgeDigraph", LineDigraph);
-DeclareSynonym("EdgeUndirectedDigraph", LineUndirectedDigraph);
-
-# Vertex labels
-DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
-DeclareOperation("DigraphVertexLabels", [IsDigraph]);
-DeclareOperation("SetDigraphVertexLabel", [IsDigraph, IsPosInt, IsObject]);
-DeclareOperation("SetDigraphVertexLabels", [IsDigraph, IsList]);
-
-# Edge labels
-DeclareOperation("DigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt]);
-DeclareOperation("DigraphEdgeLabelsNC", [IsDigraph]);
-DeclareOperation("DigraphEdgeLabels", [IsDigraph]);
-DeclareOperation("SetDigraphEdgeLabel",
-                 [IsDigraph, IsPosInt, IsPosInt, IsObject]);
-DeclareOperation("SetDigraphEdgeLabelsNC", [IsDigraph, IsList]);
-DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsList]);
-DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsFunction]);
-
-DeclareOperation("DigraphAddAllLoops", [IsDigraph]);
-
-DeclareOperation("JohnsonDigraph", [IsInt, IsInt]);

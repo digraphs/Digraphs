@@ -18,7 +18,8 @@ DeclareAttribute("DigraphNrEdges", IsDigraph);
 DeclareAttribute("DigraphRange", IsDigraph);
 DeclareAttribute("DigraphSource", IsDigraph);
 DeclareAttribute("DigraphTopologicalSort", IsDigraph);
-DeclareAttribute("DigraphDual", IsDigraph);
+DeclareOperation("DigraphDual", [IsDigraph]);
+DeclareAttribute("DigraphDualAttr", IsImmutableDigraph);
 DeclareAttribute("DigraphShortestDistances", IsDigraph);
 DeclareAttribute("DigraphStronglyConnectedComponents", IsDigraph);
 DeclareAttribute("DigraphNrStronglyConnectedComponents", IsDigraph);
@@ -52,10 +53,12 @@ DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
 DeclareAttribute("ArticulationPoints", IsDigraph);
 DeclareSynonymAttr("CutVertices", ArticulationPoints);
 
-DeclareAttribute("DigraphSymmetricClosure", IsDigraph);
-DeclareAttribute("DigraphReflexiveTransitiveClosure", IsDigraph);
-DeclareAttribute("DigraphTransitiveClosure", IsDigraph);
-DeclareGlobalFunction("DigraphTransitiveClosureNC");
+DeclareOperation("DigraphSymmetricClosure", [IsDigraph]);
+DeclareAttribute("DigraphSymmetricClosureAttr", IsImmutableDigraph);
+DeclareOperation("DigraphReflexiveTransitiveClosure", [IsDigraph]);
+DeclareAttribute("DigraphReflexiveTransitiveClosureAttr", IsDigraph);
+DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
+DeclareAttribute("DigraphTransitiveClosureAttr", IsDigraph);
 
 DeclareAttribute("ChromaticNumber", IsDigraph);
 DeclareAttribute("CharacteristicPolynomial", IsDigraph);
@@ -64,14 +67,21 @@ DeclareAttribute("DigraphAdjacencyFunction", IsDigraph);
 
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("BooleanAdjacencyMatrix", IsDigraph);
-DeclareAttribute("ReducedDigraph", IsDigraph);
-DeclareAttribute("MaximalSymmetricSubdigraph", IsDigraph);
-DeclareAttribute("MaximalAntiSymmetricSubdigraph", IsDigraph);
-DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoops", IsDigraph);
+DeclareOperation("ReducedDigraph", [IsDigraph]);
+DeclareAttribute("ReducedDigraphAttr", IsImmutableDigraph);
+DeclareOperation("MaximalSymmetricSubdigraph", [IsDigraph]);
+DeclareAttribute("MaximalSymmetricSubdigraphAttr", IsDigraph);
+DeclareOperation("MaximalAntiSymmetricSubdigraph", [IsDigraph]);
+DeclareAttribute("MaximalAntiSymmetricSubdigraphAttr", IsDigraph);
+DeclareOperation("MaximalSymmetricSubdigraphWithoutLoops", [IsDigraph]);
+DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoopsAttr", IsDigraph);
 DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
 
-DeclareAttribute("UndirectedSpanningTree", IsDigraph);
-DeclareAttribute("UndirectedSpanningForest", IsDigraph);
+DeclareOperation("UndirectedSpanningTree", [IsDigraph]);
+DeclareAttribute("UndirectedSpanningTreeAttr", IsDigraph);
+DeclareOperation("UndirectedSpanningForest", [IsDigraph]);
+DeclareAttribute("UndirectedSpanningForestAttr", IsDigraph);
+
 DeclareAttribute("HamiltonianPath", IsDigraph);
 
 # AsGraph must be mutable for grape to function properly

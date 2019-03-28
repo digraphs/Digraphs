@@ -65,14 +65,18 @@ function(func)
   nauty := not DIGRAPHS_UsingBliss;
 
   reset := function()
+    local old_level;
+    old_level := InfoLevel(InfoWarning);
+    SetInfoLevel(InfoWarning, 0);
     if nauty then
       DigraphsUseNauty();
     else
       DigraphsUseBliss();
     fi;
+    SetInfoLevel(InfoWarning, old_level);
   end;
 
-  Print("\033[40;38;5;82m");
+  Print("\033[1m");
   DigraphsUseBliss();
   Print("\033[0m");
   if not func() then
@@ -81,7 +85,7 @@ function(func)
   fi;
 
   if DIGRAPHS_NautyAvailable then
-    Print("\033[40;38;5;82m");
+    Print("\033[1m");
     DigraphsUseNauty();
     Print("\033[0m");
     if not func() then
@@ -89,11 +93,12 @@ function(func)
       return false;
     fi;
 
-    Print("\033[40;38;5;82m");
+    Print("\033[1m");
     DigraphsUseBliss();
     Info(InfoWarning,
          1,
-         "Running tests as if NautyTracesInterface is not available");
+         ". . . and pretending that NautyTracesInterface is not ",
+         "available . .  .");
     Print("\033[0m");
     MakeReadWriteGlobal("DIGRAPHS_NautyAvailable");
     DIGRAPHS_NautyAvailable := false;
@@ -128,26 +133,22 @@ end);
 
 InstallGlobalFunction(DigraphsTestAll,
 function()
-
   DigraphsMakeDoc();
   Print("\n");
-
   if not DigraphsTestInstall() then
     Print("Abort: DigraphsTestInstall failed . . . \n");
     return false;
   elif not DigraphsTestStandard() then
-    Print("Abort: DigraphsTestAll failed . . . \n");
+    Print("Abort: DigraphsTestStandard failed . . . \n");
     return false;
   fi;
-
   return DIGRAPHS_RunTest(DigraphsTestManualExamples);
 end);
 
 InstallGlobalFunction(DigraphsTestInstall,
 function()
   return DIGRAPHS_RunTest(function()
-    return Test(Filename(DirectoriesPackageLibrary("digraphs",
-                                                   "tst"),
+    return Test(Filename(DirectoriesPackageLibrary("digraphs", "tst"),
                          "testinstall.tst"));
   end);
 end);
@@ -178,12 +179,11 @@ function(arg)
   file := Filename(DirectoriesPackageLibrary("digraphs", "digraphs-lib"),
                    "extreme.d6.gz");
   if file = fail then
-    ErrorNoReturn("Digraphs: DigraphsTestExtreme:\n",
-                  "the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
-                  "required\nfor these tests to run. Please install the ",
-                  "'digraphs-lib'\narchive from:\n\n",
+    ErrorNoReturn("the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
+                  "required for these tests to run. Please install the ",
+                  "'digraphs-lib'archive from: ",
                   "http://gap-packages.github.io/Digraphs/",
-                  "\n\nand try again,");
+                  "and try again,");
   fi;
 
   if Length(arg) = 1 and IsRecord(arg[2]) then
@@ -224,9 +224,9 @@ function(arg)
     elif ForAll(arg, x -> IsPosInt(x) and x <= Length(exlists)) then
       indices := arg;
     else
-      ErrorNoReturn("DigraphsTestManualExamples: the arguments must be ",
-                    "positive integers or a list of positive integers ",
-                    "not greater than ", Length(exlists), ",");
+      ErrorNoReturn("the arguments must be positive integers or a list of ",
+                    "positive integers not greater than ", Length(exlists),
+                    ",");
     fi;
   else
     omit := DIGRAPHS_OmitFromTests;
@@ -447,8 +447,7 @@ DIGRAPHS_CheckManSectionTypes := function(doc, verbose...)
         matches := Filtered(matches, t -> t.attributes.Label =
                                           elt.attributes.Label);
         if Length(matches) > 1 then
-          ErrorNoReturn("Digraphs: DIGRAPHS_CheckManSectionTypes:\n",
-                        "Multiple labels - this should not happen!");
+          ErrorNoReturn("Multiple labels - this should not happen!");
         fi;
         match := matches[1];
       else
@@ -456,20 +455,19 @@ DIGRAPHS_CheckManSectionTypes := function(doc, verbose...)
         if Length(matches2) = 0 then
           pos := OriginalPositionDocument(doc[2], elt.start);
           Print(pos[1], ":", pos[2],
-                " : no match (wrong type or missing label?) for ", type, " := ",
+                " : no match <wrong type or missing label?> for ", type, " := ",
                 elt.attributes.(type), "\n");
           Print("  Suggestions: \n");
           matches := Filtered(matches, t -> IsBound(t.attributes.Label));
           for t in matches do
             Print("Use ", t.name, " with Label := \"", t.attributes.Label,
-                  "\" (for Arg := \"", t.attributes.Arg, "\")\n");
+                  "\" <for Arg := \"", t.attributes.Arg, "\">\n");
           od;
 
           referrcount := referrcount + 1;
           continue;
         elif Length(matches2) > 1 then
-          ErrorNoReturn("Digraphs: DIGRAPHS_CheckManSectionTypes:\n",
-                        "Multiple labels - this should not happen!");
+          ErrorNoReturn("Multiple labels - this should not happen!");
         else
           match := matches[1];
         fi;
@@ -498,10 +496,10 @@ DIGRAPHS_CheckManSectionTypes := function(doc, verbose...)
         " warnings in Ref elements \n");
 
   if display_warnings then
-    Print("To suppress warnings, use DIGRAPHS_CheckManSectionTypes(doc,false) ",
+    Print("To suppress warnings, use DIGRAPHS_CheckManSectionTypes<doc,false> ",
           "or with one argument\n");
   else
-    Print("To show warnings, use DIGRAPHS_CheckManSectionTypes(doc,true); \n");
+    Print("To show warnings, use DIGRAPHS_CheckManSectionTypes<doc,true); \n");
   fi;
   Print("****************************************************************\n");
   return errcount = 0;

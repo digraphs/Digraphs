@@ -138,17 +138,17 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7), (1,2)(6,8)(7,9) ])]]
 
     <Example><![CDATA[
 gap> johnson := DigraphFromGraph6String("E}lw");
-<digraph with 6 vertices, 24 edges>
+<immutable digraph with 6 vertices, 24 edges>
 gap> G := AutomorphismGroup(johnson);
 Group([ (3,4), (2,3)(4,5), (1,2)(5,6) ])
 gap> cycle := CycleDigraph(9);
-<digraph with 9 vertices, 9 edges>
+<immutable digraph with 9 vertices, 9 edges>
 gap> G := AutomorphismGroup(cycle);
 Group([ (1,2,3,4,5,6,7,8,9) ])
 gap> IsCyclic(G) and Size(G) = 9;
 true
 gap> gr := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
-<multidigraph with 3 vertices, 6 edges>
+<immutable multidigraph with 3 vertices, 6 edges>
 gap> G := AutomorphismGroup(gr);
 Group([ (1,2,3), (8,9), (6,7), (4,5) ])
 gap> Range(Projection(G, 1));
@@ -158,7 +158,7 @@ Group([ (5,6), (3,4), (1,2) ])
 gap> Size(G);
 24
 gap> gr := Digraph([[2], [3, 3], [3], [2]]);
-<multidigraph with 4 vertices, 5 edges>
+<immutable multidigraph with 4 vertices, 5 edges>
 gap> G := AutomorphismGroup(gr);
 Group([ (1,2), (3,4) ])
 gap> P1 := Projection(G, 1);
@@ -252,7 +252,7 @@ Group([ (2,3) ])]]></Example>
 
   <Example><![CDATA[
 gap> cycle := CycleDigraph(9);
-<digraph with 9 vertices, 9 edges>
+<immutable digraph with 9 vertices, 9 edges>
 gap> G := AutomorphismGroup(cycle);;
 gap> IsCyclic(G) and Size(G) = 9;
 true
@@ -267,7 +267,7 @@ true
 gap> IsTrivial(AutomorphismGroup(cycle, [1, 1, 2, 2, 2, 2, 2, 2, 2]));
 true
 gap> gr := Digraph([[2], [3, 3], [3], [2], [2]]);
-<multidigraph with 5 vertices, 6 edges>
+<immutable multidigraph with 5 vertices, 6 edges>
 gap> G := AutomorphismGroup(gr, [1, 1, 2, 3, 1]);
 Group([ (1,2), (3,4) ])
 gap> P1 := Projection(G, 1);
@@ -348,23 +348,23 @@ Group([ (2,3) ])]]></Example>
 
     <Example><![CDATA[
 gap> digraph1 := DigraphFromDiSparse6String(".ImNS_AiB?qRN");
-<digraph with 10 vertices, 8 edges>
+<immutable digraph with 10 vertices, 8 edges>
 gap> BlissCanonicalLabelling(digraph1);
 (1,3,4)(2,10,6,7,9,8)
 gap> p := (1, 2, 7, 5)(3, 9)(6, 10, 8);;
 gap> digraph2 := OnDigraphs(digraph1, p);
-<digraph with 10 vertices, 8 edges>
+<immutable digraph with 10 vertices, 8 edges>
 gap> digraph1 = digraph2;
 false
 gap> OnDigraphs(digraph1, BlissCanonicalLabelling(digraph1)) =
 >    OnDigraphs(digraph2, BlissCanonicalLabelling(digraph2));
 true
 gap> gr := DigraphFromDiSparse6String(".ImEk|O@SK?od");
-<multidigraph with 10 vertices, 10 edges>
+<immutable multidigraph with 10 vertices, 10 edges>
 gap> BlissCanonicalLabelling(gr);
 [ (1,9,7,5)(2,10,3), (1,6,9)(2,5,10,4,8)(3,7) ]
 gap> gr := Digraph([[2], [3, 3], [3], [2], [2]]);
-<multidigraph with 5 vertices, 6 edges>
+<immutable multidigraph with 5 vertices, 6 edges>
 gap> BlissCanonicalLabelling(gr, [1, 2, 2, 1, 3]);
 [ (1,2,4), (1,2,6,4,3,5) ]]]></Example>
   </Description>
@@ -473,19 +473,19 @@ gap> BlissCanonicalLabelling(gr, [1, 2, 2, 1, 3]);
 
     <Example><![CDATA[
 gap> digraph := DigraphFromDiSparse6String(".ImNS_AiB?qRN");
-<digraph with 10 vertices, 8 edges>
+<immutable digraph with 10 vertices, 8 edges>
 gap> colours := [[1, 2, 8, 9, 10], [3, 4, 5, 6, 7]];;
 gap> p := BlissCanonicalLabelling(digraph, colours);
 (2,3,7,10)(4,6,9,5,8)
 gap> OnDigraphs(digraph, p);
-<digraph with 10 vertices, 8 edges>
+<immutable digraph with 10 vertices, 8 edges>
 gap> OnTuplesSets(colours, p);
 [ [ 1, 2, 3, 4, 5 ], [ 6, 7, 8, 9, 10 ] ]
 gap> colours := [1, 1, 1, 1, 2, 3, 1, 3, 2, 1];;
 gap> p := BlissCanonicalLabelling(digraph, colours);
 (2,3,4,6,10,5,8,9,7)
 gap> OnDigraphs(digraph, p);
-<digraph with 10 vertices, 8 edges>
+<immutable digraph with 10 vertices, 8 edges>
 gap> List(DigraphVertices(digraph), i -> colours[i / p]);
 [ 1, 1, 1, 1, 1, 1, 2, 2, 3, 3 ]]]></Example>
   </Description>
@@ -510,25 +510,25 @@ gap> List(DigraphVertices(digraph), i -> colours[i / p]);
 
     <Example><![CDATA[
 gap> digraph1 := CycleDigraph(4);
-<digraph with 4 vertices, 4 edges>
+<immutable digraph with 4 vertices, 4 edges>
 gap> digraph2 := CycleDigraph(5);
-<digraph with 5 vertices, 5 edges>
+<immutable digraph with 5 vertices, 5 edges>
 gap> IsIsomorphicDigraph(digraph1, digraph2);
 false
 gap> digraph2 := DigraphReverse(digraph1);
-<digraph with 4 vertices, 4 edges>
+<immutable digraph with 4 vertices, 4 edges>
 gap> IsIsomorphicDigraph(digraph1, digraph2);
 true
 gap> digraph1 := DigraphFromDiSparse6String(".IiGdqrHiogeaF");
-<multidigraph with 10 vertices, 10 edges>
+<immutable multidigraph with 10 vertices, 10 edges>
 gap> digraph2 := DigraphFromDiSparse6String(".IiK`K@FFSouF_|^");
-<multidigraph with 10 vertices, 10 edges>
+<immutable multidigraph with 10 vertices, 10 edges>
 gap> IsIsomorphicDigraph(digraph1, digraph2);
 false
 gap> digraph1 := Digraph([[3], [], []]);
-<digraph with 3 vertices, 1 edge>
+<immutable digraph with 3 vertices, 1 edge>
 gap> digraph2 := Digraph([[], [], [2]]);
-<digraph with 3 vertices, 1 edge>
+<immutable digraph with 3 vertices, 1 edge>
 gap> IsIsomorphicDigraph(digraph1, digraph2);
 true]]></Example>
   </Description>
@@ -576,14 +576,14 @@ true]]></Example>
 
     <Example><![CDATA[
 gap> digraph1 := ChainDigraph(4);
-<digraph with 4 vertices, 3 edges>
+<immutable digraph with 4 vertices, 3 edges>
 gap> digraph2 := ChainDigraph(3);
-<digraph with 3 vertices, 2 edges>
+<immutable digraph with 3 vertices, 2 edges>
 gap> IsIsomorphicDigraph(digraph1, digraph2,
 >  [[1, 4], [2, 3]], [[1, 2], [3]]);
 false
 gap> digraph2 := DigraphReverse(digraph1);
-<digraph with 4 vertices, 3 edges>
+<immutable digraph with 4 vertices, 3 edges>
 gap> IsIsomorphicDigraph(digraph1, digraph2,
 >  [1, 1, 1, 1], [1, 1, 1, 1]);
 true
@@ -594,7 +594,7 @@ gap> IsIsomorphicDigraph(digraph1, digraph2,
 >  [1, 1, 2, 2], [1, 1, 2, 2]);
 false
 gap> digraph1 := Digraph([[2, 1, 2], [1, 2, 1]]);
-<multidigraph with 2 vertices, 6 edges>
+<immutable multidigraph with 2 vertices, 6 edges>
 gap> IsIsomorphicDigraph(digraph1, digraph1, [2, 1], [1, 2]);
 true
 gap> IsIsomorphicDigraph(digraph1, digraph1, [1, 1], [1, 2]);
@@ -657,29 +657,29 @@ false]]></Example>
 
     <Example><![CDATA[
 gap> digraph1 := CycleDigraph(4);
-<digraph with 4 vertices, 4 edges>
+<immutable digraph with 4 vertices, 4 edges>
 gap> digraph2 := CycleDigraph(5);
-<digraph with 5 vertices, 5 edges>
+<immutable digraph with 5 vertices, 5 edges>
 gap> IsomorphismDigraphs(digraph1, digraph2);
 fail
 gap> digraph1 := CompleteBipartiteDigraph(10, 5);
-<digraph with 15 vertices, 100 edges>
+<immutable digraph with 15 vertices, 100 edges>
 gap> digraph2 := CompleteBipartiteDigraph(5, 10);
-<digraph with 15 vertices, 100 edges>
+<immutable digraph with 15 vertices, 100 edges>
 gap> p := IsomorphismDigraphs(digraph1, digraph2);
 (1,6,11)(2,7,12)(3,8,13)(4,9,14)(5,10,15)
 gap> OnDigraphs(digraph1, p) = digraph2;
 true
 gap> digraph1 := DigraphFromDiSparse6String(".ImNS_?DSE@ce[~");
-<multidigraph with 10 vertices, 10 edges>
+<immutable multidigraph with 10 vertices, 10 edges>
 gap> digraph2 := DigraphFromDiSparse6String(".IkOlQefi_kgOf");
-<multidigraph with 10 vertices, 10 edges>
+<immutable multidigraph with 10 vertices, 10 edges>
 gap> IsomorphismDigraphs(digraph1, digraph2);
 [ (1,9,5,3,10,6,4,7,2), (1,8,6,3,7)(2,9,4,10,5) ]
 gap> digraph1 := DigraphByEdges([[7, 10], [7, 10]], 10);
-<multidigraph with 10 vertices, 2 edges>
+<immutable multidigraph with 10 vertices, 2 edges>
 gap> digraph2 := DigraphByEdges([[2, 3], [2, 3]], 10);
-<multidigraph with 10 vertices, 2 edges>
+<immutable multidigraph with 10 vertices, 2 edges>
 gap> IsomorphismDigraphs(digraph1, digraph2);
 [ (2,4,6,8,9,10,3,5,7), () ]]]></Example>
 </Description>
@@ -736,14 +736,14 @@ gap> IsomorphismDigraphs(digraph1, digraph2);
 
     <Example><![CDATA[
 gap> digraph1 := ChainDigraph(4);
-<digraph with 4 vertices, 3 edges>
+<immutable digraph with 4 vertices, 3 edges>
 gap> digraph2 := ChainDigraph(3);
-<digraph with 3 vertices, 2 edges>
+<immutable digraph with 3 vertices, 2 edges>
 gap> IsomorphismDigraphs(digraph1, digraph2,
 >  [[1, 4], [2, 3]], [[1, 2], [3]]);
 fail
 gap> digraph2 := DigraphReverse(digraph1);
-<digraph with 4 vertices, 3 edges>
+<immutable digraph with 4 vertices, 3 edges>
 gap> colours1 := [1, 1, 1, 1];;
 gap> colours2 := [1, 1, 1, 1];;
 gap> p := IsomorphismDigraphs(digraph1, digraph2, colours1, colours2);
@@ -764,9 +764,9 @@ gap> IsomorphismDigraphs(digraph1, digraph2,
 >  [1, 1, 2, 2], [1, 1, 2, 2]);
 fail
 gap> digraph1 := Digraph([[2, 2], [2], [1]]);
-<multidigraph with 3 vertices, 4 edges>
+<immutable multidigraph with 3 vertices, 4 edges>
 gap> digraph2 := Digraph([[1], [1, 1], [2]]);
-<multidigraph with 3 vertices, 4 edges>
+<immutable multidigraph with 3 vertices, 4 edges>
 gap> IsomorphismDigraphs(digraph1, digraph2, [1, 2, 2], [2, 1, 2]);
 [ (1,2), (1,2,3) ]]]></Example>
 </Description>
@@ -802,9 +802,9 @@ gap> IsomorphismDigraphs(digraph1, digraph2, [1, 2, 2], [2, 1, 2]);
 
     <Example><![CDATA[
 gap> digraph := Digraph([[1], [2, 3], [3], [1, 2, 3]]);
-<digraph with 4 vertices, 7 edges>
+<immutable digraph with 4 vertices, 7 edges>
 gap> canon := BlissCanonicalDigraph(digraph);
-<digraph with 4 vertices, 7 edges>
+<immutable digraph with 4 vertices, 7 edges>
 gap> OutNeighbours(canon);
 [ [ 1 ], [ 2, 4 ], [ 1, 2, 4 ], [ 4 ] ]
 ]]></Example>
@@ -851,7 +851,7 @@ gap> OutNeighbours(canon);
 
     <Example><![CDATA[
 gap> src := Digraph([[1], [1, 2], [1, 3]]);
-<digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
 gap> IsDigraphAutomorphism(src, (1, 2, 3));
 false
 gap> IsDigraphAutomorphism(src, (2, 3));
@@ -863,7 +863,7 @@ false
 gap> IsDigraphAutomorphism(src, ());
 true
 gap> ran := Digraph([[2, 1], [2], [2, 3]]);
-<digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
 gap> IsDigraphIsomorphism(src, ran, (1, 2));
 true
 gap> IsDigraphIsomorphism(ran, src, (1, 2));

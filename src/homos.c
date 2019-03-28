@@ -118,7 +118,7 @@
 
 // Defined in digraphs.h
 Int DigraphNrVertices(Obj);
-Obj OutNeighbours(Obj);
+Obj FuncOutNeighbours(Obj, Obj);
 
 // GAP level things, imported in digraphs.c
 extern Obj IsDigraph;
@@ -323,7 +323,7 @@ static void init_digraph_from_digraph_obj(Digraph* const digraph,
   DIGRAPHS_ASSERT(digraph != NULL);
   DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
   UInt const nr  = DigraphNrVertices(digraph_obj);
-  Obj        out = OutNeighbours(digraph_obj);
+  Obj        out = FuncOutNeighbours(0L, digraph_obj);
   DIGRAPHS_ASSERT(nr < MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(out));
   clear_digraph(digraph, nr);
@@ -358,7 +358,7 @@ static void init_graph_from_digraph_obj(Graph* const graph,
   DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
   DIGRAPHS_ASSERT(CALL_1ARGS(IsSymmetricDigraph, digraph_obj) == True);
   UInt const nr  = DigraphNrVertices(digraph_obj);
-  Obj        out = OutNeighbours(digraph_obj);
+  Obj        out = FuncOutNeighbours(0L, digraph_obj);
   DIGRAPHS_ASSERT(nr < MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(out));
   clear_graph(graph, nr);
@@ -1790,7 +1790,7 @@ static bool init_data_from_args(Obj digraph1_obj,
 Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
   if (LEN_PLIST(args) != 11 && LEN_PLIST(args) != 12) {
     ErrorQuit(
-        "there must be 11 or 12 arguments, found %d", LEN_PLIST(args), 0L);
+        "there must be 11 or 12 arguments, found %d,", LEN_PLIST(args), 0L);
   }
   Obj digraph1_obj    = ELM_PLIST(args, 1);
   Obj digraph2_obj    = ELM_PLIST(args, 2);
@@ -1810,63 +1810,63 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
 
   // Validate the arguments
   if (CALL_1ARGS(IsDigraph, digraph1_obj) != True) {
-    ErrorQuit("the 1st argument (digraph1) must be a digraph, not %s",
+    ErrorQuit("the 1st argument <digraph1> must be a digraph, not %s,",
               (Int) TNAM_OBJ(digraph1_obj),
               0L);
   } else if (DigraphNrVertices(digraph1_obj) > MAXVERTS) {
-    ErrorQuit("the 1st argument (digraph1) must have at most 512 vertices, "
-              "found %d",
+    ErrorQuit("the 1st argument <digraph1> must have at most 512 vertices, "
+              "found %d,",
               DigraphNrVertices(digraph1_obj),
               0L);
   }
   if (CALL_1ARGS(IsDigraph, digraph2_obj) != True) {
-    ErrorQuit("the 2nd argument (digraph2) must be a digraph, not %s",
+    ErrorQuit("the 2nd argument <digraph2> must be a digraph, not %s,",
               (Int) TNAM_OBJ(digraph2_obj),
               0L);
   } else if (DigraphNrVertices(digraph2_obj) > MAXVERTS) {
-    ErrorQuit("the 2nd argument (digraph2) must have at most 512 vertices, "
-              "found %d",
+    ErrorQuit("the 2nd argument <digraph2> must have at most 512 vertices, "
+              "found %d,",
               DigraphNrVertices(digraph2_obj),
               0L);
   }
   if (hook_obj == Fail) {
     if (!IS_LIST(user_param_obj) || !IS_MUTABLE_OBJ(user_param_obj)) {
-      ErrorQuit("the 3rd argument (hook) is fail and so the 4th argument must "
-                "be a mutable list, not %s",
+      ErrorQuit("the 3rd argument <hook> is fail and so the 4th argument must "
+                "be a mutable list, not %s,",
                 (Int) TNAM_OBJ(user_param_obj),
                 0L);
     }
   } else if (!IS_FUNC(hook_obj) || NARG_FUNC(hook_obj) != 2) {
     ErrorQuit(
-        "the 3rd argument (hook) must be a function with 2 arguments", 0L, 0L);
+        "the 3rd argument <hook> must be a function with 2 arguments,", 0L, 0L);
   }
   if (!IS_INTOBJ(max_results_obj) && max_results_obj != Infinity) {
-    ErrorQuit("the 5th argument (max_results) must be an integer "
-              "or infinity, not %s",
+    ErrorQuit("the 5th argument <max_results> must be an integer "
+              "or infinity, not %s,",
               (Int) TNAM_OBJ(max_results_obj),
               0L);
   }
   if (!IS_INTOBJ(hint_obj) && hint_obj != Fail) {
-    ErrorQuit("the 6th argument (hint) must be an integer "
-              "or fail, not %s",
+    ErrorQuit("the 6th argument <hint> must be an integer "
+              "or fail, not %s,",
               (Int) TNAM_OBJ(hint_obj),
               0L);
   } else if (IS_INTOBJ(hint_obj) && INT_INTOBJ(hint_obj) <= 0) {
-    ErrorQuit("the 6th argument (hint) must be a positive integer, "
-              "not %d",
+    ErrorQuit("the 6th argument <hint> must be a positive integer, "
+              "not %d,",
               INT_INTOBJ(hint_obj),
               0L);
   }
 
   if (!IS_INTOBJ(injective_obj) && injective_obj != True
       && injective_obj != False) {
-    ErrorQuit("the 7th argument (injective) must be an integer "
-              "or true or false, not %s",
+    ErrorQuit("the 7th argument <injective> must be an integer "
+              "or true or false, not %s,",
               (Int) TNAM_OBJ(injective_obj),
               0L);
   } else if (IS_INTOBJ(injective_obj)) {
     if (INT_INTOBJ(injective_obj) < 0 || INT_INTOBJ(injective_obj) > 2) {
-      ErrorQuit("the 7th argument (injective) must 0, 1, or 2, not %d",
+      ErrorQuit("the 7th argument <injective> must 0, 1, or 2, not %d,",
                 INT_INTOBJ(injective_obj),
                 0L);
     }
@@ -1877,40 +1877,40 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
   }
 
   if (!IS_LIST(image_obj) && image_obj != Fail) {
-    ErrorQuit("the 8th argument (image) must be a list or fail, not %s",
+    ErrorQuit("the 8th argument <image> must be a list or fail, not %s,",
               (Int) TNAM_OBJ(image_obj),
               0L);
   } else if (IS_LIST(image_obj)) {
     for (Int i = 1; i <= LEN_LIST(image_obj); ++i) {
       if (!ISB_LIST(image_obj, i)) {
-        ErrorQuit("the 8th argument (image) must be a dense list", 0L, 0L);
+        ErrorQuit("the 8th argument <image> must be a dense list,", 0L, 0L);
       } else if (!IS_POS_INT(ELM_LIST(image_obj, i))) {
-        ErrorQuit("the 8th argument (image) must only contain positive "
-                  "integers, but found %s in position %d",
+        ErrorQuit("the 8th argument <image> must only contain positive "
+                  "integers, but found %s in position %d,",
                   (Int) TNAM_OBJ(ELM_LIST(image_obj, i)),
                   i);
       } else if (INT_INTOBJ(ELM_LIST(image_obj, i))
                  > DigraphNrVertices(digraph2_obj)) {
-        ErrorQuit("in the 8th argument (image) position %d is out of range, "
-                  "must be in the range [1, %d]",
+        ErrorQuit("in the 8th argument <image> position %d is out of range, "
+                  "must be in the range [1, %d],",
                   i,
                   DigraphNrVertices(digraph2_obj));
       } else if (INT_INTOBJ(
                      POS_LIST(image_obj, ELM_LIST(image_obj, i), INTOBJ_INT(0)))
                  < i) {
         ErrorQuit(
-            "in the 8th argument (image) position %d is a duplicate", i, 0L);
+            "in the 8th argument <image> position %d is a duplicate,", i, 0L);
       }
     }
   }
   if (!IS_LIST(partial_map_obj) && partial_map_obj != Fail) {
-    ErrorQuit("the 9th argument (partial_map) must be a list or fail, not %s",
+    ErrorQuit("the 9th argument <partial_map> must be a list or fail, not %s,",
               (Int) TNAM_OBJ(partial_map_obj),
               0L);
   } else if (IS_LIST(partial_map_obj)) {
     if (LEN_LIST(partial_map_obj) > DigraphNrVertices(digraph1_obj)) {
-      ErrorQuit("the 9th argument (partial_map) is too long, must be at most "
-                "%d, found %d",
+      ErrorQuit("the 9th argument <partial_map> is too long, must be at most "
+                "%d, found %d,",
                 DigraphNrVertices(digraph1_obj),
                 LEN_LIST(partial_map_obj));
     }
@@ -1918,75 +1918,73 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
       if (ISB_LIST(partial_map_obj, i)
           && POS_LIST(image_obj, ELM_LIST(partial_map_obj, i), INTOBJ_INT(0))
                  == Fail) {
-        ErrorQuit("in the 9th argument (partial_map) the value %d in position "
-                  "%d does not belong to the 7th argument (image)",
+        ErrorQuit("in the 9th argument <partial_map> the value %d in position "
+                  "%d does not belong to the 7th argument <image>,",
                   INT_INTOBJ(ELM_LIST(partial_map_obj, i)),
                   i);
       }
     }
   }
 
-  Obj str;
-  C_NEW_STRING(str, 26, "HomomorphismDigraphsFinder");
   if (!IS_LIST(colors1_obj) && colors1_obj != Fail) {
-    ErrorQuit("the 10th argument (colors1) must be a list or fail, not %s",
+    ErrorQuit("the 10th argument <colors1> must be a list or fail, not %s,",
               (Int) TNAM_OBJ(colors1_obj),
               0L);
   } else if (IS_LIST(colors1_obj)) {
-    colors1_obj = CALL_3ARGS(DIGRAPHS_ValidateVertexColouring,
+    colors1_obj = CALL_2ARGS(DIGRAPHS_ValidateVertexColouring,
                              INTOBJ_INT(DigraphNrVertices(digraph1_obj)),
-                             colors1_obj,
-                             str);
+                             colors1_obj);
   }
   if (!IS_LIST(colors2_obj) && colors2_obj != Fail) {
-    ErrorQuit("the 11th argument (colors2) must be a list or fail, not %s",
+    ErrorQuit("the 11th argument <colors2> must be a list or fail, not %s,",
               (Int) TNAM_OBJ(colors2_obj),
               0L);
   } else if (IS_LIST(colors2_obj)) {
-    colors2_obj = CALL_3ARGS(DIGRAPHS_ValidateVertexColouring,
+    colors2_obj = CALL_2ARGS(DIGRAPHS_ValidateVertexColouring,
                              INTOBJ_INT(DigraphNrVertices(digraph2_obj)),
-                             colors2_obj,
-                             str);
+                             colors2_obj);
   }
   if ((IS_LIST(colors1_obj) && !IS_LIST(colors2_obj))
       || (colors1_obj == Fail && colors2_obj != Fail)) {
-    ErrorQuit("the 10th and 11th arguments must both be lists or both be fail",
+    ErrorQuit("the 10th and 11th arguments <colors1> and <colors2> must both "
+              "be lists or both be fail,",
               0L,
               0L);
   }
   if (!IS_LIST(order_obj) && order_obj != Fail) {
-    ErrorQuit("the 12th argument (order) must be a list or fail, not %s",
+    ErrorQuit("the 12th argument <order> must be a list or fail, not %s,",
               (Int) TNAM_OBJ(order_obj),
               0L);
   } else if (IS_LIST(order_obj)) {
     if (LEN_LIST(order_obj) != DigraphNrVertices(digraph1_obj)) {
-      ErrorQuit("the 12th argument (order) must be a list of length %d, not %d",
-                DigraphNrVertices(digraph1_obj),
-                LEN_LIST(order_obj));
+      ErrorQuit(
+          "the 12th argument <order> must be a list of length %d, not %d,",
+          DigraphNrVertices(digraph1_obj),
+          LEN_LIST(order_obj));
     }
     for (Int i = 1; i <= LEN_LIST(order_obj); ++i) {
       if (!ISB_LIST(order_obj, i)) {
-        ErrorQuit("the 12th argument (order) must be a dense list, but "
-                  "position %d is not bound",
+        ErrorQuit("the 12th argument <order> must be a dense list, but "
+                  "position %d is not bound,",
                   i,
                   0L);
       } else if (!IS_INTOBJ(ELM_LIST(order_obj, i))) {
-        ErrorQuit("the 12th argument (order) must consist of integers, but "
-                  "found %s in position %d",
+        ErrorQuit("the 12th argument <order> must consist of integers, but "
+                  "found %s in position %d,",
                   (Int) TNAM_OBJ(order_obj),
                   i);
       } else if (INT_INTOBJ(ELM_LIST(order_obj, i)) <= 0
                  || INT_INTOBJ(ELM_LIST(order_obj, i))
                         > DigraphNrVertices(digraph1_obj)) {
-        ErrorQuit("the 12th argument (order) must consist of integers, in the "
-                  "range [1, %d] but found %d",
+        ErrorQuit("the 12th argument <order> must consist of integers, in the "
+                  "range [1, %d] but found %d,",
                   DigraphNrVertices(digraph1_obj),
                   INT_INTOBJ(ELM_LIST(order_obj, i)));
       } else if (INT_INTOBJ(
                      POS_LIST(order_obj, ELM_LIST(order_obj, i), INTOBJ_INT(0)))
                  < i) {
-        ErrorQuit("the 12th argument (order) must be duplicate-free, but "
-                  "the value %d in position %d is a duplicate",
+        ErrorQuit("the 12th argument <order> must be duplicate-free, but "
+                  "the value %d in position %d is a duplicate,",
                   INT_INTOBJ(ELM_LIST(order_obj, i)),
                   i);
       }

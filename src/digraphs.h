@@ -18,14 +18,13 @@
 // GAP headers
 #include "src/compiled.h"  // for Obj, Int
 
-Int DigraphNrVertices(Obj digraph);
-Int DigraphNrEdges(Obj digraph);
+Int DigraphNrVertices(Obj D);
+Obj FuncOutNeighbours(Obj self, Obj D);
+Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj D);
 
-Obj OutNeighbours(Obj digraph);
+Int DigraphNrEdges(Obj digraph);
 Obj DigraphSource(Obj digraph);
 Obj DigraphRange(Obj digraph);
-
-Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj digraph);
 
 extern Obj AutomorphismGroup;
 extern Obj DIGRAPHS_ValidateVertexColouring;
