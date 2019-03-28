@@ -36,6 +36,9 @@ gap> DigraphVertexLabel(gr, 3);
 gap> SetDigraphVertexLabel(gr, 3, 3);
 gap> DigraphVertexLabel(gr, 3);
 3
+gap> ClearDigraphVertexLabels(gr);
+gap> DigraphVertexLabels(gr);
+[ 1 .. 3 ]
 gap> gr := RandomDigraph(5);;
 gap> SetDigraphVertexLabel(gr, 6, (1, 3, 2, 5, 4));
 Error, the 2nd argument <v> is not a vertex of the digraph <D> that is the 1st\
@@ -156,6 +159,18 @@ gap> D := Digraph(IsMutableDigraph, [[2, 3], [3], [1, 5], [], [4]]);
 gap> DigraphEdgeLabel(D, 1, 5);
 Error, there is no edge from 1 to 
 5 in the digraph <D> that is the 1st argument,
+gap> gr := Digraph(IsMutableDigraph, [[2, 3], [3], [1, 5], [], [4]]);
+<mutable digraph with 5 vertices, 6 edges>
+gap> SetDigraphEdgeLabel(gr, 1, 2, "bab");
+gap> DigraphAddVertex(gr);
+<mutable digraph with 6 vertices, 6 edges>
+gap> DigraphAddEdge(gr, 6, 1);
+<mutable digraph with 6 vertices, 7 edges>
+gap> SetDigraphEdgeLabel(gr, 6, 1, "bab");
+gap> RemoveDigraphEdgeLabel(gr, 6, 1);
+gap> ClearDigraphEdgeLabels(gr);
+gap> DigraphEdgeLabel(gr, 6, 1);
+1
 
 # Test errors in DigraphEdgeLabel
 gap> gr := Digraph([[2, 2], []]);

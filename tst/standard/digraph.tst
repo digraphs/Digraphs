@@ -122,6 +122,8 @@ gap> Digraph(2, [1, 1], [2, 0]);
 Error, the record component 'DigraphRange' is invalid,
 gap> Digraph(4, [3, 1, 2, 3], [4, 1, 2, 4]);
 <immutable multidigraph with 4 vertices, 4 edges>
+gap> Digraph(IsMutableDigraph, 4, [3, 1, 2, 3], [4, 1, 2, 4]);
+<mutable multidigraph with 4 vertices, 4 edges>
 
 #  Digraph (by vertices, source, and range)
 gap> Digraph(Group(()), [], []);
@@ -183,6 +185,8 @@ gap> if DIGRAPHS_IsGrapeLoaded then
 >     Print("fail");
 >   fi;
 > fi;
+gap> gr := Digraph(IsMutableDigraph, [1 .. 3], [3, 2, 1], [2, 3, 2]);
+<mutable digraph with 3 vertices, 3 edges>
 
 #  Digraph (by an integer and a function)
 gap> divides := function(a, b)
@@ -407,6 +411,10 @@ gap> OutNeighbours(gr);
   [ 11 ], [  ], [ 1 ], [  ], [  ], [  ], [  ], [ 5 ], [ 2 ] ]
 gap> InNeighbors(gr) = inn;
 true
+gap> gr2 := DigraphByInNeighboursConsNC(IsImmutableDigraph, inn);
+<immutable multidigraph with 20 vertices, 8 edges>
+gap> gr2 := DigraphByInNeighbours(IsImmutableDigraph, inn);
+<immutable multidigraph with 20 vertices, 8 edges>
 
 #  AsDigraph
 gap> f := Transformation([]);
@@ -530,6 +538,8 @@ gap> RandomTournament(0);
 <immutable digraph with 0 vertices, 0 edges>
 gap> RandomTournament(-1);
 Error, the argument <n> must be a non-negative integer,
+gap> RandomTournament(IsMutableDigraph, 10);
+<mutable digraph with 10 vertices, 45 edges>
 
 #  Equals (\=) for two digraphs
 gap> r1 := rec(DigraphNrVertices := 2, DigraphSource := [1, 1, 2], DigraphRange := [1, 2, 2]);;
@@ -987,6 +997,8 @@ gap> IsDenseDigraphRep(digraph);
 true
 gap> digraph := Digraph("abcd", function(i, j) return i < j; end);
 <immutable digraph with 4 vertices, 6 edges>
+gap> digraph := Digraph(IsMutableDigraph, "abcd", {i, j} -> i < j);
+<mutable digraph with 4 vertices, 6 edges>
 gap> digraph := Digraph([1 .. 10], function(i, j) return i = j + 1; end);
 <immutable digraph with 10 vertices, 9 edges>
 gap> digraph := Digraph(["hello", "world", 13, true, (1, 4, 3)],
@@ -1250,6 +1262,26 @@ Error, no 2nd choice method found for `AsSemigroup' on 2 arguments
 gap> S := AsMonoid(IsTransformation, di);;
 Error, the 1st argument <filt> must be IsPartialPermMonoid or IsPartialPermSem\
 igroup,
+
+#
+gap> D := NullDigraph(IsMutableDigraph, 10);
+<mutable digraph with 10 vertices, 0 edges>
+gap> MakeImmutable(D);;
+gap> IsValidDigraph(D);
+Error, digraph in an invalid state! Did you return a mutable digraph from a me\
+thod for an attribute, or MakeImmutable(a mutable digraph)??
+
+# 
+gap> D := NullDigraph(10);
+<immutable digraph with 10 vertices, 0 edges>
+gap> D := Graph(D);
+rec( adjacencies := [ [  ] ], group := Sym( [ 1 .. 10 ] ), isGraph := true, 
+  names := [ 1 .. 10 ], order := 10, representatives := [ 1 ], 
+  schreierVector := [ -1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ] )
+gap> DigraphCons(IsImmutableDigraph, D);
+<immutable digraph with 10 vertices, 0 edges>
+gap> Digraph(IsImmutableDigraph, D);
+<immutable digraph with 10 vertices, 0 edges>
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
