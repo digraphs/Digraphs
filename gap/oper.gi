@@ -365,10 +365,14 @@ end);
 InstallMethod(DigraphRemoveAllMultipleEdges, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
-  D := DigraphMutableCopy(D);
-  D := MakeImmutableDigraph(DigraphRemoveAllMultipleEdges(D));
-  SetIsMultiDigraph(D, false);
-  return D;
+  local C;
+  C := DigraphMutableCopy(D);
+  C := MakeImmutableDigraph(DigraphRemoveAllMultipleEdges(C));
+  SetIsMultiDigraph(C, false);
+  if IsVertexColoredDigraph(D) then
+    MakeVertexColoredDigraph(C, DigraphVertexColors(D));
+  fi;
+  return C;
 end);
 
 InstallMethod(DigraphClosure,

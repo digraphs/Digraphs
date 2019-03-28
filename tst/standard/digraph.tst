@@ -92,7 +92,7 @@ Error, the record component 'DigraphVertices' must be duplicate-free,
 #  Digraph (by nrvertices, source, and range)
 gap> Digraph(Group(()), [], []);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `Digraph' on 3 arguments
+Error, no 1st choice method found for `DigraphCons' on 4 arguments
 gap> Digraph(2, [1, "a"], [2, 1]);
 Error, the record component 'DigraphSource' is invalid,
 gap> Digraph(2, [1, 1], [1, Group(())]);
@@ -128,13 +128,13 @@ gap> Digraph(IsMutableDigraph, 4, [3, 1, 2, 3], [4, 1, 2, 4]);
 #  Digraph (by vertices, source, and range)
 gap> Digraph(Group(()), [], []);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `Digraph' on 3 arguments
+Error, no 1st choice method found for `DigraphCons' on 4 arguments
 gap> Digraph([], Group(()), []);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `Digraph' on 3 arguments
+Error, no 1st choice method found for `DigraphCons' on 4 arguments
 gap> Digraph([], [], Group(()));
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `Digraph' on 3 arguments
+Error, no 1st choice method found for `DigraphCons' on 4 arguments
 gap> Digraph([1], [2], [3, 4]);
 Error, the record components 'DigraphSource' and 'DigraphRange' must have equa\
 l length,
@@ -974,7 +974,7 @@ gap> G := DihedralGroup(8);
 <pc group of size 8 with 3 generators>
 gap> digraph := Digraph(G, ReturnTrue);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `Digraph' on 2 arguments
+Error, no 1st choice method found for `DigraphCons' on 3 arguments
 gap> digraph := Digraph(AsSet(G), ReturnTrue);
 <immutable digraph with 8 vertices, 64 edges>
 gap> HasDigraphAdjacencyFunction(digraph);

@@ -16,10 +16,11 @@ DeclareAttribute("GroupOfCayleyDigraph", IsCayleyDigraph);
 DeclareAttribute("SemigroupOfCayleyDigraph", IsCayleyDigraph);
 DeclareAttribute("GeneratorsOfCayleyDigraph", IsCayleyDigraph);
 
-DeclareOperation("Digraph", [IsGroup,
-                             IsListOrCollection,
-                             IsFunction,
-                             IsFunction]);
+DeclareConstructor("DigraphCons", [IsImmutableDigraph,
+                                   IsGroup,
+                                   IsListOrCollection,
+                                   IsFunction,
+                                   IsFunction]);
 
 DeclareOperation("CayleyDigraph", [IsGroup]);
 DeclareOperation("CayleyDigraph", [IsGroup, IsList]);
