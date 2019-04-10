@@ -574,7 +574,7 @@ function(gr)
     indegs := InDegrees(gr);
     outdegs := OutDegrees(gr);
     fulldegs := indegs + outdegs;
-    adjmatrix := BooleanAdjacencyMatrix(gr);
+    adjmatrix := BooleanAdjacencyMatrixMutableCopy(gr);
     # checks if Meyniel's theorem, Theorem 4.1 or Theorem 4.2 are applicable.
     checkMT := true;
     check41 := true;
