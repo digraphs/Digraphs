@@ -72,6 +72,7 @@
 
   <Section><Heading>Associated semigroups</Heading>
     <#Include Label="AsSemigroup">
+    <#Include Label="AsCliffordSemigroup">
   </Section>
 
   <Section><Heading>Planarity</Heading>
