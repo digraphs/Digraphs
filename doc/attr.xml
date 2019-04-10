@@ -1257,7 +1257,7 @@ gap> ChromaticNumber(D);
 2
 gap> D := DigraphMycielskian(D);
 <immutable digraph with 5 vertices, 10 edges>
-gap> ChromaticNumbmvimer(D);
+gap> ChromaticNumber(D);
 3
 gap> D := DigraphMycielskian(D);
 <immutable digraph with 11 vertices, 40 edges>
