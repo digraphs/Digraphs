@@ -1241,6 +1241,32 @@ gap> DigraphLoops(gr);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphMycielskian">
+<ManSection>
+  <Attr Name="DigraphMycielskian" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a symmetric digraph, then <C>DigraphMycielskian</C> returns the Mycielskian of <A>digraph</A>. If <A>digraph</A> is not symmetric, then an error message is returned.<P/>
+    
+   The Mycielskian of a symmetric digraph is a larger symmetric digraph constructed from it, which has a larger chromatic number. For further information, see <URL> https://en.wikipedia.org/wiki/Mycielskian </URL>. <P/>
+
+    <Example><![CDATA[
+gap> D := Digraph([[2], [1]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> ChromaticNumber(D);
+2
+gap> D := DigraphMycielskian(D);
+<immutable digraph with 5 vertices, 10 edges>
+gap> ChromaticNumbmvimer(D);
+3
+gap> D := DigraphMycielskian(D);
+<immutable digraph with 11 vertices, 40 edges>
+gap> ChromaticNumber(D);
+4]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphDegeneracy">
 <ManSection>
   <Attr Name="DigraphDegeneracy" Arg="digraph"/>

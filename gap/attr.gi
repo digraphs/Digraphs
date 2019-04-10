@@ -1336,6 +1336,42 @@ end);
 # It is the backend to IsBipartiteDigraph, Bicomponents, and DigraphColouring
 # for a 2-colouring
 
+InstallMethod(DigraphMycielskian, "for a symmetric digraph",
+[IsDigraph],
+function(D)
+  local n, i, j;
+  if not IsSymmetricDigraph(D) or IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a symmetric digraph ",
+                  "with no multiple edges,");
+  fi;
+
+  # Based on the construction given at https://en.wikipedia.org/wiki/Mycielskian
+  # on 2019-04-10, v_k = vertex k, u_k = vertex n + k and w = vertex 2n + 1
+
+  n := DigraphNrVertices(D);
+
+  for i in [1 .. n + 1] do
+    D := DigraphAddVertex(D);
+  od;
+
+  for i in [n + 1 .. 2 * n] do
+    D := DigraphAddEdge(D, [i, 2 * n + 1]);
+    D := DigraphAddEdge(D, [2 * n + 1, i]);
+  od;
+
+  for i in [1 .. n] do
+    for j in [i .. n] do
+      if IsDigraphEdge(D, i, j) then
+        D := DigraphAddEdge(D, [i + n, j]);
+        D := DigraphAddEdge(D, [j, i + n]);
+        D := DigraphAddEdge(D, [i, j + n]);
+        D := DigraphAddEdge(D, [j + n, i]);
+      fi;
+    od;
+  od;
+  return D;
+end);
+
 InstallMethod(DIGRAPHS_Bipartite, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local n, t, colours, in_nbrs, stack, pop, v, pos, nbrs, w, i;

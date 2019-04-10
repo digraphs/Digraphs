@@ -59,6 +59,7 @@
     <#Include Label="DigraphAddAllLoops">
     <#Include Label="DistanceDigraph">
     <#Include Label="DigraphClosure">
+    <#Include Label="DigraphMycielskian">
   </Section>
 
   <Section><Heading>Random digraphs</Heading>

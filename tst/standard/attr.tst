@@ -1175,6 +1175,28 @@ gap> for i in [1 .. 50] do
 gap> DigraphOddGirth(gr);
 3
 
+# DigraphMycielskian
+gap> D1 := DigraphSymmetricClosure(CycleDigraph(2));
+<immutable digraph with 2 vertices, 2 edges>
+gap> D2 := DigraphSymmetricClosure(CycleDigraph(5));
+<immutable digraph with 5 vertices, 10 edges>
+gap> IsIsomorphicDigraph(DigraphMycielskian(D1), D2);
+true
+gap> D := DigraphSymmetricClosure(CayleyDigraph(DihedralGroup(8)));
+<immutable digraph with 8 vertices, 32 edges>
+gap> ChromaticNumber(D);
+4
+gap> D := DigraphMycielskian(D);
+<immutable digraph with 17 vertices, 112 edges>
+gap> ChromaticNumber(D);
+5
+gap> D1 := Digraph([[], [3], [2]]);
+<immutable digraph with 3 vertices, 2 edges>
+gap> D2 := Digraph([[], [3, 4], [2, 5], [2, 6], [3, 6], [4, 5, 7], [6]]);
+<immutable digraph with 7 vertices, 12 edges>
+gap> IsIsomorphicDigraph(DigraphMycielskian(D1), D2);
+true
+
 #  DigraphDegeneracy and DigraphDegeneracyOrdering
 gap> gr := Digraph([[2, 2], [1, 1]]);;
 gap> IsMultiDigraph(gr) and IsSymmetricDigraph(gr);

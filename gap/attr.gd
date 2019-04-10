@@ -61,6 +61,8 @@ DeclareAttribute("DigraphReflexiveTransitiveClosureAttr", IsDigraph);
 DeclareOperation("DigraphTransitiveClosure", [IsDigraph]);
 DeclareAttribute("DigraphTransitiveClosureAttr", IsDigraph);
 
+DeclareAttribute("DigraphMycielskian", IsDigraph);
+
 DeclareAttribute("ChromaticNumber", IsDigraph);
 DeclareAttribute("CharacteristicPolynomial", IsDigraph);
 
