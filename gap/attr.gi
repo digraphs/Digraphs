@@ -969,7 +969,52 @@ function(D)
   return girth;
 end);
 
-InstallMethod(DigraphLongestSimpleCircuit, "for a digraph", [IsDigraph],
+InstallMethod(DigraphOddGirth, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local comps, girth, oddgirth, A, B, gr, k, comp;
+  if IsAcyclicDigraph(digraph) then
+    return infinity;
+  elif IsOddInt(DigraphGirth(digraph)) then
+    # No need to check girth isn't infinity, as we have
+    # that digraph is not acyclic.
+    return DigraphGirth(digraph);
+  fi;
+  comps := DigraphStronglyConnectedComponents(digraph).comps;
+  oddgirth := infinity;
+  for comp in comps do
+    if not IsStronglyConnectedDigraph(digraph) then
+      gr := InducedSubdigraph(digraph, comp);
+    else
+      gr := digraph;
+      # If digraph is strongly connected, then we needn't
+      # induce the subdigraph of its strongly connected comp.
+    fi;
+    if not IsAcyclicDigraph(gr) then
+      girth := DigraphGirth(gr);
+      if IsOddInt(girth) and girth < oddgirth then
+        oddgirth := girth;
+      else
+        k := girth - 1;
+        A := AdjacencyMatrix(gr) ^ k;
+        B := AdjacencyMatrix(gr) ^ 2;
+        while k <= DigraphNrEdges(gr) + 2 and k < DigraphNrVertices(gr) do
+          A := A * B;
+          k := k + 2;
+          if k < oddgirth and Trace(A) <> 0 then
+            # It suffices to find the trace as the entries of A are positive.
+            oddgirth := k;
+          fi;
+        od;
+      fi;
+    fi;
+  od;
+
+  return oddgirth;
+end);
+
+InstallMethod(DigraphLongestSimpleCircuit, "for a digraph",
+[IsDigraph],
 function(D)
   local circs, lens, max;
   IsValidDigraph(D);

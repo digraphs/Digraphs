@@ -1147,6 +1147,34 @@ gap> DigraphGirth(gr);
 gap> DigraphUndirectedGirth(gr);
 Error, the argument <D> must be a symmetric digraph,
 
+# DigraphOddGirth
+gap> gr := Digraph([[2, 3], [3], [1]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> DigraphOddGirth(gr);
+3
+gap> gr := Digraph([[2], [3], [], [3], [4]]);
+<immutable digraph with 5 vertices, 4 edges>
+gap> DigraphOddGirth(gr);
+infinity
+gap> gr := Digraph([[1]]);
+<immutable digraph with 1 vertex, 1 edge>
+gap> DigraphOddGirth(gr);
+1
+gap> gr := Digraph([[2], []]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphOddGirth(gr);
+infinity
+gap> gr := CycleDigraph(4);
+<immutable digraph with 4 vertices, 4 edges>
+gap> DigraphOddGirth(gr);
+infinity
+gap> gr := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(3));;
+gap> for i in [1 .. 50] do
+> gr := DigraphDisjointUnion(gr, CycleDigraph(3));
+> od;
+gap> DigraphOddGirth(gr);
+3
+
 #  DigraphDegeneracy and DigraphDegeneracyOrdering
 gap> gr := Digraph([[2, 2], [1, 1]]);;
 gap> IsMultiDigraph(gr) and IsSymmetricDigraph(gr);

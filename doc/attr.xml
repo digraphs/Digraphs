@@ -943,6 +943,42 @@ gap> DigraphGirth(gr);
 </ManSection>
 <#/GAPDoc>
 
+
+<#GAPDoc Label="DigraphOddGirth">
+<ManSection>
+  <Attr Name="DigraphOddGirth" Arg="digraph"/>
+  <Returns>An integer, or <K>infinity</K>.</Returns>
+  <Description>
+    This attribute returns the <E>odd girth</E> of the digraph <A>digraph</A>.
+    The <E>odd girth</E> of a digraph is the length of its shortest simple circuit of odd length.
+    See Section <Ref Subsect="Definitions" Style="Number" /> for the definitions
+    of simple circuit, directed cycle, and loop.
+    <P/>
+
+    If <A>digraph</A> has no directed cycles of odd length, then this function will return
+    <K>infinity</K>, even if <A>digraph</A> has a directed cycle of even length.  If <A>digraph</A> contains a loop, then this function will return <C>1</C>.
+    <P/>
+
+    See also <Ref Attr="DigraphGirth"/>. <P/>
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [3, 1], [1]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> DigraphOddGirth(gr);
+3
+gap> gr := CycleDigraph(4);
+<immutable digraph with 4 vertices, 4 edges>
+gap> DigraphOddGirth(gr);
+infinity
+gap> gr := Digraph([[2], [3], [], [3], [4]]);
+<immutable digraph with 5 vertices, 4 edges>
+gap> DigraphOddGirth(gr);
+infinity
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="ReducedDigraph">
 <ManSection>
   <Attr Name="ReducedDigraph" Arg="digraph"/>
