@@ -48,14 +48,16 @@ Error, the 7th argument (injective) must 0, 1, or 2, not -1
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", infinity, 2, 1, 0, 0,
 > 0, 0);
 Error, the 8th argument (image) must be a list or fail, not integer
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [1, []], 0,
-> 0, 0);
-Error, the 8th argument (image) must only contain positive integers, but found\
- list (plain,empty) in position 2
-gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [[], []], 0,
-> 0, 0);
-Error, the 8th argument (image) must only contain positive integers, but found\
- list (plain,empty) in position 1
+
+# Commented out due to difference in the rmessage for GAP 4.10 vs GAP 4.11
+#gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [1, []], 0,
+#> 0, 0);
+#Error, the 8th argument (image) must only contain positive integers, but found\
+# list (plain,empty) in position 2
+#gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [[], []], 0,
+#> 0, 0);
+#Error, the 8th argument (image) must only contain positive integers, but found\
+# list (plain,empty) in position 1
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [0, 1], 0, 0,
 > 0);
 Error, the 8th argument (image) must only contain positive integers, but found\
