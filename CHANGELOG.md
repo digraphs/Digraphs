@@ -3,6 +3,14 @@ Copyright (C) 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Micha
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.15.2 (released 17/04/2019)
+
+This is a minor release that updates Digraphs for compatibility with the
+upcoming GAP 4.11, and resolves a bug in `IsHamiltonianDigraph` that could have
+lead to the boolean adjacency matrix of a digraph being accidentally modified;
+see [Issue #191](https://github.com/gap-packages/Digraphs/issues/191) and
+[PR #192](https://github.com/gap-packages/Digraphs/pull/192).
+
 ## Version 0.15.1 (released 26/03/2019)
 
 This is a minor release of the Digraphs package, which improves the
