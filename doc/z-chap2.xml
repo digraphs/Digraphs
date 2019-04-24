@@ -65,6 +65,7 @@
     <#Include Label="RandomDigraph">
     <#Include Label="RandomMultiDigraph">
     <#Include Label="RandomTournament">
+    <#Include Label="RandomLattice">
   </Section>
 
   <Section><Heading>Standard examples</Heading>

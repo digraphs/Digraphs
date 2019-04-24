@@ -773,6 +773,18 @@ gap> RandomTournament(10);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="RandomLattice">
+<ManSection>
+  <Oper Name="RandomLattice" Arg="n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer, this function return a random lattice
+    with <A>m</A> vertices, where it is guaranteed that <A>m</A> is between
+    <A>n</A> and <C>2 * <A>n</A></C>. See <Ref Prop="IsLatticeDigraph"/>. <P/>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="ChainDigraph">
 <ManSection>
   <Oper Name="ChainDigraph" Arg="n"/>

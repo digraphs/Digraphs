@@ -1104,3 +1104,18 @@ InstallMethod(RandomTournament, "for a func and an integer",
 function(func, n)
   return RandomTournamentCons(func, n);
 end);
+
+InstallMethod(RandomLattice, "for a pos int",
+[IsPosInt],
+function(n)
+  local fam, rand_blist;
+
+  fam := [BlistList([1 .. n], [])];
+
+  while Length(fam) < n do
+    rand_blist := List([1 .. n], x -> Random([true, false]));
+    UniteSet(fam, List(fam, x -> UnionBlist(x, rand_blist)));
+  od;
+
+  return Digraph(fam, IsSubsetBlist);
+end);
