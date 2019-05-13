@@ -67,9 +67,8 @@ gap> digraph := CayleyDigraph(group);
 <immutable digraph with 8 vertices, 24 edges>
 gap> HasDigraphGroup(digraph);
 true
-gap> DigraphGroup(digraph);
-Group([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)
-(5,8) ])
+gap> GeneratorsOfGroup(DigraphGroup(digraph));
+[ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)(5,8) ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -217,9 +216,9 @@ gap> RepresentativeOutNeighbours(digraph);
 [ [ 2, 1, 3, 4, 5 ], [ 3, 5 ], [ 2 ], [ 1, 2, 3, 5 ], [ 1, 2, 3, 4 ] ]
 gap> digraph := DigraphFromDigraph6String("&GYHPQgWTIIPW");
 <immutable digraph with 8 vertices, 24 edges>
-gap> DigraphGroup(digraph);
-Group([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)
-(4,7) ])
+gap> G := DigraphGroup(digraph);;
+gap> GeneratorsOfGroup(G);
+[ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)(4,7) ]
 gap> Set(RepresentativeOutNeighbours(digraph), Set);
 [ [ 2, 3, 5 ] ]]]></Example>
   </Description>

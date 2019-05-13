@@ -58,9 +58,11 @@
     See also <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
     <Example><![CDATA[
-gap> BlissAutomorphismGroup(JohnsonDigraph(5, 2));
-Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7), (1,2)(6,8)
-(7,9) ])]]></Example>
+gap> G := BlissAutomorphismGroup(JohnsonDigraph(5, 2));;
+gap> IsSymmetricGroup(G);
+true
+gap> Size(G);
+120]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
