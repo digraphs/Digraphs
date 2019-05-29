@@ -362,8 +362,7 @@ gap> d := Domain([2 .. 10]);;
 gap> bin := BinaryRelationByElements(d, [
 >  DirectProductElement([2, 5]),
 >  DirectProductElement([6, 3]),
->  DirectProductElement([4, 5])]);
-<general mapping: <object> -> <object> >
+>  DirectProductElement([4, 5])]);;
 gap> gr := Digraph(bin);
 Error, Digraphs: Digraph: usage,
 the argument <rel> must be a binary relation
@@ -372,8 +371,7 @@ gap> d := Domain([1 .. 10]);;
 gap> bin := BinaryRelationByElements(d, [
 >  DirectProductElement([2, 5]),
 >  DirectProductElement([6, 3]),
->  DirectProductElement([4, 5])]);
-<general mapping: <object> -> <object> >
+>  DirectProductElement([4, 5])]);;
 gap> gr := Digraph(bin);
 <digraph with 10 vertices, 3 edges>
 gap> DigraphEdges(gr);

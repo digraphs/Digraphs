@@ -928,8 +928,7 @@ gap> HasIsTransitiveBinaryRelation(rel2);
 false
 gap> HasIsAntisymmetricBinaryRelation(rel2);
 true
-gap> rel3 := AsBinaryRelation(Digraph(rel1));
-<equivalence relation on <object> >
+gap> rel3 := AsBinaryRelation(Digraph(rel1));;
 gap> HasIsReflexiveBinaryRelation(rel3);
 true
 gap> HasIsSymmetricBinaryRelation(rel3);
