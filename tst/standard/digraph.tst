@@ -214,8 +214,7 @@ gap> d := Domain([2 .. 10]);;
 gap> bin := BinaryRelationByElements(d, [
 >  DirectProductElement([2, 5]),
 >  DirectProductElement([6, 3]),
->  DirectProductElement([4, 5])]);
-<general mapping: <object> -> <object> >
+>  DirectProductElement([4, 5])]);;
 gap> gr := AsDigraph(bin);
 Error, the argument <rel> must be a binary relation on the domain [1 .. n] for\
  some positive integer n,
@@ -223,8 +222,7 @@ gap> d := Domain([1 .. 10]);;
 gap> bin := BinaryRelationByElements(d, [
 >  DirectProductElement([2, 5]),
 >  DirectProductElement([6, 3]),
->  DirectProductElement([4, 5])]);
-<general mapping: <object> -> <object> >
+>  DirectProductElement([4, 5])]);;
 gap> gr := AsDigraph(bin);
 <immutable digraph with 10 vertices, 3 edges>
 gap> DigraphEdges(gr);
@@ -1194,8 +1192,7 @@ gap> HasIsTransitiveBinaryRelation(rel2);
 false
 gap> HasIsAntisymmetricBinaryRelation(rel2);
 true
-gap> rel3 := AsBinaryRelation(AsDigraph(rel1));
-<equivalence relation on <object> >
+gap> rel3 := AsBinaryRelation(AsDigraph(rel1));;
 gap> HasIsReflexiveBinaryRelation(rel3);
 true
 gap> HasIsSymmetricBinaryRelation(rel3);
