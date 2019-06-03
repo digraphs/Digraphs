@@ -1246,12 +1246,12 @@ gap> DigraphLoops(gr);
   <Attr Name="DigraphMycielskian" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a symmetric digraph, then <C>DigraphMycielskian</C> returns the Mycielskian of <A>digraph</A>. If <A>digraph</A> is not symmetric, then an error message is returned.<P/>
+    If <A>digraph</A> is a symmetric digraph, then <C>DigraphMycielskian</C> returns the Mycielskian of <A>digraph</A>.<P/>
     
-   The Mycielskian of a symmetric digraph is a larger symmetric digraph constructed from it, which has a larger chromatic number. For further information, see <URL> https://en.wikipedia.org/wiki/Mycielskian </URL>. <P/>
+   The Mycielskian of a symmetric digraph is a larger symmetric digraph constructed from it, which has a larger chromatic number. For further information, see <URL>https://en.wikipedia.org/wiki/Mycielskian</URL>. <P/>
 
     <Example><![CDATA[
-gap> D := Digraph([[2], [1]]);
+gap> D := CycleDigraph(2);
 <immutable digraph with 2 vertices, 2 edges>
 gap> ChromaticNumber(D);
 2
