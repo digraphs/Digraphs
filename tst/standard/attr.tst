@@ -1196,6 +1196,18 @@ gap> D2 := Digraph([[], [3, 4], [2, 5], [2, 6], [3, 6], [4, 5, 7], [6]]);
 <immutable digraph with 7 vertices, 12 edges>
 gap> IsIsomorphicDigraph(DigraphMycielskian(D1), D2);
 true
+gap> D := DigraphSymmetricClosure(CycleDigraph(5));
+<immutable digraph with 5 vertices, 10 edges>
+gap> D := DigraphMutableCopy(D);
+<mutable digraph with 5 vertices, 10 edges>
+gap> DigraphMycielskian(D);
+<mutable digraph with 11 vertices, 40 edges>
+gap> D := DigraphSymmetricClosure(Digraph([[1, 2], [1]]));
+<immutable digraph with 2 vertices, 3 edges>
+gap> D := DigraphMutableCopy(D);
+<mutable digraph with 2 vertices, 3 edges>
+gap> DigraphMycielskian(D);
+<mutable digraph with 5 vertices, 13 edges>
 
 #  DigraphDegeneracy and DigraphDegeneracyOrdering
 gap> gr := Digraph([[2, 2], [1, 1]]);;
