@@ -1364,8 +1364,10 @@ function(D)
       if IsDigraphEdge(D, i, j) then
         D := DigraphAddEdge(D, [i + n, j]);
         D := DigraphAddEdge(D, [j, i + n]);
-        D := DigraphAddEdge(D, [i, j + n]);
-        D := DigraphAddEdge(D, [j + n, i]);
+        if i <> j then  # Stops duplicate edges being constructed if D has loops
+          D := DigraphAddEdge(D, [i, j + n]);
+          D := DigraphAddEdge(D, [j + n, i]);
+        fi;
       fi;
     od;
   od;
