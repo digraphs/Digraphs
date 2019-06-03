@@ -1336,8 +1336,8 @@ end);
 # It is the backend to IsBipartiteDigraph, Bicomponents, and DigraphColouring
 # for a 2-colouring
 
-InstallMethod(DigraphMycielskian, "for a symmetric digraph",
-[IsDigraph],
+InstallMethod(DigraphMycielskian, "for a mutable, symmetric digraph",
+[IsMutableDigraph],
 function(D)
   local n, i, j;
   if not IsSymmetricDigraph(D) or IsMultiDigraph(D) then
@@ -1373,6 +1373,23 @@ function(D)
   od;
   return D;
 end);
+
+InstallMethod(DigraphMycielskian, "for an immutable, symmetric digraph",
+[IsImmutableDigraph],
+function(D)
+  local C;
+  if HasDigraphMycielskianAttr(D) then
+    return DigraphMycielskianAttr(D);
+  fi;
+
+  C := DigraphMutableCopy(D);
+  C := MakeImmutableDigraph(DigraphMycielskian(C));
+  SetDigraphMycielskianAttr(D, C);
+  return C;
+end);
+
+InstallMethod(DigraphMycielskianAttr, "for an immutable, symmetric digraph",
+[IsImmutableDigraph], DigraphMycielskian);
 
 InstallMethod(DIGRAPHS_Bipartite, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
