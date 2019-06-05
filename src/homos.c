@@ -1926,8 +1926,7 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
     }
   }
 
-  Obj str;
-  C_NEW_STRING(str, 26, "HomomorphismDigraphsFinder");
+  Obj str = MakeString("HomomorphismDigraphsFinder");
   if (!IS_LIST(colors1_obj) && colors1_obj != Fail) {
     ErrorQuit("the 10th argument (colors1) must be a list or fail, not %s",
               (Int) TNAM_OBJ(colors1_obj),
