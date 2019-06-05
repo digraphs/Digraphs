@@ -745,6 +745,10 @@ gap> DigraphHasLoops(gr);
 true
 gap> IsBipartiteDigraph(gr);
 false
+gap> D := Digraph([[4, 6, 8], [], [], [], [7], [2], [], [], [8], []]);
+<immutable digraph with 10 vertices, 6 edges>
+gap> IsBipartiteDigraph(D);
+true
 
 #  IsIn/OutRegularDigraph
 gap> gr := Digraph([[1, 2, 3, 4], [], [], []]);;
