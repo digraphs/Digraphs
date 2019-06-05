@@ -410,7 +410,7 @@ gap> DigraphColouring(ChainDigraph(10), 1);
 fail
 gap> D := ChainDigraph(10);;
 gap> t := DigraphColouring(D, 2);
-Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
+Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 gap> IsDigraphColouring(D, t); 
 true
 gap> DigraphGreedyColouring(D);

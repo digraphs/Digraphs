@@ -287,6 +287,12 @@ gap> DigraphColouring(gr, 4);
 Transformation( [ 1, 1, 1, 1, 1, 2, 2, 1, 2, 2, 2, 1, 1, 2, 1, 2, 1, 2, 2, 3,
   3, 2, 3, 3, 3, 2, 1, 4, 4, 2, 3, 3, 3, 3, 3, 1, 3, 4, 4, 3, 2, 1, 4, 3,
   1 ] )
+gap> D := Digraph([[4, 6, 8], [], [], [], [7], [2], [], [], [8], []]);
+<immutable digraph with 10 vertices, 6 edges>
+gap> DigraphColouring(D, 2);
+Transformation( [ 1, 1, 1, 2, 1, 2, 2, 2, 1, 1 ] )
+gap> DigraphColouring(Digraph([[1], []]), 2);
+fail
 
 #  DigraphGreedyColouring
 gap> DigraphGreedyColouring(EmptyDigraph(0));

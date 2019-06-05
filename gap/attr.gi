@@ -1331,11 +1331,6 @@ function(D)
   return Concatenation(loops, out);
 end);
 
-# The following method 'DIGRAPHS_Bipartite' was originally written by Isabella
-# Scott and then modified by FLS.
-# It is the backend to IsBipartiteDigraph, Bicomponents, and DigraphColouring
-# for a 2-colouring
-
 InstallMethod(DigraphMycielskian, "for a mutable, symmetric digraph",
 [IsMutableDigraph],
 function(D)
@@ -1391,6 +1386,11 @@ end);
 InstallMethod(DigraphMycielskianAttr, "for an immutable, symmetric digraph",
 [IsImmutableDigraph], DigraphMycielskian);
 
+# The following method 'DIGRAPHS_Bipartite' was originally written by Isabella
+# Scott and then modified by FLS.
+# It is the backend to IsBipartiteDigraph, Bicomponents, and DigraphColouring
+# for a 2-colouring
+
 InstallMethod(DIGRAPHS_Bipartite, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local n, t, colours, in_nbrs, stack, pop, v, pos, nbrs, w, i;
@@ -1410,14 +1410,13 @@ function(D)
     if colours[v] <> 0 then
       continue;
     fi;
+    colours[v] := 1;
     stack := [[v, 1]];
     while Length(stack) > 0 do
-      pop := stack[Length(stack)];
-      Remove(stack, Length(stack));
+      pop := Remove(stack);
       v := pop[1];
       pos := pop[2];
-      nbrs := Concatenation(OutNeighboursOfVertex(D, v),
-                            in_nbrs[v]);
+      nbrs := Concatenation(OutNeighboursOfVertex(D, v), in_nbrs[v]);
       for i in [pos .. Length(nbrs)] do
         w := nbrs[i];
         if colours[w] <> 0 then
