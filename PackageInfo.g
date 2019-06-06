@@ -111,14 +111,14 @@ Persons := [
     FirstNames    := "Julius",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "jj252@st-andrews.ac.uk",
-    WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~julius/",
+    Email         := "julius.jonusas@tuwien.ac.at",
+    WWWHome       := "http://julius.jonusas.work/",
     PostalAddress := Concatenation([
-                       "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
-                       " Scotland"]),
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+                       "Institut für Diskrete Mathematik und Geometrie,",
+                       " Wiedner Hauptstrasse 8-10,",
+                       " 1040 Wien, Austria,"]),
+    Place         := "Wien, Austria",
+    Institution   := "TU Wien"),
 
   rec(
     LastName      := "Mitchell",
