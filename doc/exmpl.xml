@@ -26,3 +26,32 @@ gap> ChromaticNumber(PetersenGraph());
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="JohnsonDigraph">
+<ManSection>
+  <Oper Name="JohnsonDigraph" Arg="n, k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> and <A>k</A> are non-negative integers, then this operation
+    returns a symmetric digraph which corresponds to the undirected <E>Johnson
+    graph</E> <M>J(n, k)</M>. <P/>
+
+    The <E>Johnson graph</E> <M>J(n, k)</M> has vertices given by all the
+    <A>k</A>-subsets of the range <C>[1 .. <A>n</A>]</C>, and two vertices are
+    connected by an edge iff their intersection has size <M><A>k</A> - 1</M>.
+
+    <Example><![CDATA[
+gap> gr := JohnsonDigraph(3, 1);
+<immutable digraph with 3 vertices, 6 edges>
+gap> OutNeighbours(gr);
+[ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ]
+gap> gr := JohnsonDigraph(4, 2);
+<immutable digraph with 6 vertices, 24 edges>
+gap> OutNeighbours(gr);
+[ [ 2, 3, 4, 5 ], [ 1, 3, 4, 6 ], [ 1, 2, 5, 6 ], [ 1, 2, 5, 6 ], 
+  [ 1, 3, 4, 6 ], [ 2, 3, 4, 5 ] ]
+gap> JohnsonDigraph(1, 0);
+<immutable digraph with 1 vertex, 0 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
