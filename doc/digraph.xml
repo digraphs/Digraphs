@@ -1137,7 +1137,7 @@ gap> OutNeighbours(gr);
     graph</E> <M>J(n, k)</M>. <P/>
 
     The <E>Johnson graph</E> <M>J(n, k)</M> has vertices given by all the
-    <A>k</A>-subsets of the range <C>[1 .. <A>k</A>]</C>, and two vertices are
+    <A>k</A>-subsets of the range <C>[1 .. <A>n</A>]</C>, and two vertices are
     connected by an edge iff their intersection has size <M><A>k</A> - 1</M>.
 
     <Example><![CDATA[
