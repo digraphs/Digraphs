@@ -201,9 +201,11 @@
   [33X[0;0YSee also [2XDigraphsUseBliss[102X ([14X7.2-1[114X), and [2XDigraphsUseNauty[102X ([14X7.2-1[114X).[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27XBlissAutomorphismGroup(JohnsonDigraph(5, 2));[127X[104X
-    [4X[28XGroup([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7), (1,2)(6,8)[128X[104X
-    [4X[28X(7,9) ])[128X[104X
+    [4X[25Xgap>[125X [27XG := BlissAutomorphismGroup(JohnsonDigraph(5, 2));;[127X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricGroup(G);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XSize(G);[127X[104X
+    [4X[28X120[128X[104X
   [4X[32X[104X
   
   [1X7.2-4 NautyAutomorphismGroup[101X
@@ -571,9 +573,8 @@
     [4X[28X<digraph with 8 vertices, 24 edges>[128X[104X
     [4X[25Xgap>[125X [27XHasDigraphGroup(digraph);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XDigraphGroup(digraph);[127X[104X
-    [4X[28XGroup([ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)[128X[104X
-    [4X[28X(5,8) ])[128X[104X
+    [4X[25Xgap>[125X [27XGeneratorsOfGroup(DigraphGroup(digraph));[127X[104X
+    [4X[28X[ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)(5,8) ][128X[104X
   [4X[32X[104X
   
   [1X7.2-10 DigraphOrbits[101X
@@ -929,9 +930,9 @@
     [4X[28X[ [ 2, 1, 3, 4, 5 ], [ 3, 5 ], [ 2 ], [ 1, 2, 3, 5 ], [ 1, 2, 3, 4 ] ][128X[104X
     [4X[25Xgap>[125X [27Xdigraph := DigraphFromDigraph6String("&GYHPQgWTIIPW");[127X[104X
     [4X[28X<digraph with 8 vertices, 24 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphGroup(digraph);[127X[104X
-    [4X[28XGroup([ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)[128X[104X
-    [4X[28X(4,7) ])[128X[104X
+    [4X[25Xgap>[125X [27XG := DigraphGroup(digraph);;[127X[104X
+    [4X[25Xgap>[125X [27XGeneratorsOfGroup(G);[127X[104X
+    [4X[28X[ (1,2)(3,4)(5,6)(7,8), (1,3,2,4)(5,7,6,8), (1,5)(2,6)(3,8)(4,7) ][128X[104X
     [4X[25Xgap>[125X [27XSet(RepresentativeOutNeighbours(digraph), Set);[127X[104X
     [4X[28X[ [ 2, 3, 5 ] ][128X[104X
   [4X[32X[104X

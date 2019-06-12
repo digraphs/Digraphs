@@ -366,22 +366,23 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XPetersen := Graph(SymmetricGroup(5), [[1, 2]], OnSets,[127X[104X
-    [4X[25X>[125X [27Xfunction(x, y) return Intersection(x, y) = []; end);[127X[104X
-    [4X[28Xrec( adjacencies := [ [ 3, 5, 8 ] ], group := Group([ (1,2,3,5,7)[128X[104X
-    [4X[28X  (4,6,8,9,10), (2,4)(6,9)(7,10) ]), isGraph := true, [128X[104X
+    [4X[25X>[125X [27Xfunction(x, y) return Intersection(x, y) = []; end);;[127X[104X
+    [4X[25Xgap>[125X [27XDisplay(Petersen);[127X[104X
+    [4X[28Xrec([128X[104X
+    [4X[28X  adjacencies := [ [ 3, 5, 8 ] ],[128X[104X
+    [4X[28X  group := [128X[104X
+    [4X[28X   Group( [ ( 1, 2, 3, 5, 7)( 4, 6, 8, 9,10), ( 2, 4)( 6, 9)( 7,10) [128X[104X
+    [4X[28X     ] ),[128X[104X
+    [4X[28X  isGraph := true,[128X[104X
     [4X[28X  names := [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 1, 3 ], [ 4, 5 ], [128X[104X
-    [4X[28X      [ 2, 4 ], [ 1, 5 ], [ 3, 5 ], [ 1, 4 ], [ 2, 5 ] ], [128X[104X
-    [4X[28X  order := 10, representatives := [ 1 ], [128X[104X
+    [4X[28X      [ 2, 4 ], [ 1, 5 ], [ 3, 5 ], [ 1, 4 ], [ 2, 5 ] ],[128X[104X
+    [4X[28X  order := 10,[128X[104X
+    [4X[28X  representatives := [ 1 ],[128X[104X
     [4X[28X  schreierVector := [ -1, 1, 1, 2, 1, 1, 1, 1, 2, 2 ] )[128X[104X
     [4X[25Xgap>[125X [27XDigraph(Petersen);[127X[104X
     [4X[28X<digraph with 10 vertices, 30 edges>[128X[104X
-    [4X[25Xgap>[125X [27XGraph(last);[127X[104X
-    [4X[28Xrec( adjacencies := [ [ 3, 5, 8 ] ], group := Group([ (1,2,3,5,7)[128X[104X
-    [4X[28X  (4,6,8,9,10), (2,4)(6,9)(7,10) ]), isGraph := true, [128X[104X
-    [4X[28X  names := [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 1, 3 ], [ 4, 5 ], [128X[104X
-    [4X[28X      [ 2, 4 ], [ 1, 5 ], [ 3, 5 ], [ 1, 4 ], [ 2, 5 ] ], [128X[104X
-    [4X[28X  order := 10, representatives := [ 1 ], [128X[104X
-    [4X[28X  schreierVector := [ -1, 1, 1, 2, 1, 1, 1, 1, 2, 2 ] )[128X[104X
+    [4X[25Xgap>[125X [27XGraph(last) = Petersen;[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
   [1X3.2-4 AsGraph[101X
@@ -1587,7 +1588,7 @@
   symmetric digraph which corresponds to the undirected [13XJohnson graph[113X [22XJ(n, k)[122X.[133X
   
   [33X[0;0YThe  [13XJohnson  graph[113X  [22XJ(n,  k)[122X has vertices given by all the [3Xk[103X-subsets of the
-  range  [10X[1  ..  [3Xk[103X[10X][110X,  and  two  vertices  are  connected  by an edge iff their
+  range  [10X[1  ..  [3Xn[103X[10X][110X,  and  two  vertices  are  connected  by an edge iff their
   intersection has size [22X[3Xk[103X - 1[122X.[133X
   
   [4X[32X  Example  [32X[104X

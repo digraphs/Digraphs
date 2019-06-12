@@ -1,6 +1,6 @@
 name: Digraphs
-version: 0.15.2
-date: 2019-04-17
+version: 0.15.3
+date: 2019-06-12
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -8,7 +8,7 @@ authors:
     - name: Jan De Beule
       url: http://homepages.vub.ac.be/~jdbeule/
     - name: Julius Jonusas
-      url: http://www-groups.mcs.st-andrews.ac.uk/~julius/
+      url: http://julius.jonusas.work/
     - name: James Mitchell
       url: http://goo.gl/ZtViV6
     - name: Michael Torpey
@@ -65,7 +65,7 @@ packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/Digraphs/releases/download/v0.15.2/digraphs-0.15.2.tar.gz
+      url: https://github.com/gap-packages/Digraphs/releases/download/v0.15.3/digraphs-0.15.3.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.

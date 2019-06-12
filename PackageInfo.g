@@ -9,20 +9,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.15.2">
+##  <!ENTITY VERSION        "0.15.3">
 ##  <!ENTITY GAPVERS        "4.9.0">
 ##  <!ENTITY GRAPEVERS      "4.8.1">
 ##  <!ENTITY IOVERS         "4.5.1">
 ##  <!ENTITY ORBVERS        "4.8.2">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.15.2">
+##  <!ENTITY ARCHIVENAME    "digraphs-0.15.3">
 ##  <!ENTITY COPYRIGHTYEARS "2014-19">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "0.15.2",
-Date := "17/04/2019",  # dd/mm/yyyy format
+Version := "0.15.3",
+Date := "12/06/2019",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -81,17 +81,16 @@ Persons := [
     FirstNames    := "Max",
     IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "max.horn@math.uni-giessen.de",
+    Email         := "max.horn@uni-siegen.de",
     WWWHome       := "https://www.quendi.de/math",
     PostalAddress := Concatenation([
-                       "AG Algebra,",
-                       " Mathematisches Institut,",
-                       " Justus-Liebig-Universität Gießen,",
-                       " Arndtstraße 2,",
-                       " 35392 Gießen,",
+                       "Department Mathematik,",
+                       " Universität Siegen,",
+                       " Walter-Flex-Straße 3,",
+                       " 57072 Siegen,",
                        " Germany"]),
-    Place         := "Gießen",
-    Institution   := "Justus-Liebig-Universität Gießen"),
+    Place         := "Siegen",
+    Institution   := "Universität Siegen"),
 
   rec(
     LastName      := "Jefferson",
@@ -112,14 +111,14 @@ Persons := [
     FirstNames    := "Julius",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "jj252@st-andrews.ac.uk",
-    WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~julius/",
+    Email         := "julius.jonusas@tuwien.ac.at",
+    WWWHome       := "http://julius.jonusas.work/",
     PostalAddress := Concatenation([
-                       "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
-                       " Scotland"]),
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+                       "Institut für Diskrete Mathematik und Geometrie,",
+                       " Wiedner Hauptstrasse 8-10,",
+                       " 1040 Wien, Austria,"]),
+    Place         := "Wien, Austria",
+    Institution   := "TU Wien"),
 
   rec(
     LastName      := "Mitchell",

@@ -433,22 +433,23 @@ fail
 
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Petersen := Graph(SymmetricGroup(5), [[1, 2]], OnSets,</span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">function(x, y) return Intersection(x, y) = []; end);</span>
-rec( adjacencies := [ [ 3, 5, 8 ] ], group := Group([ (1,2,3,5,7)
-  (4,6,8,9,10), (2,4)(6,9)(7,10) ]), isGraph := true, 
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">function(x, y) return Intersection(x, y) = []; end);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Display(Petersen);</span>
+rec(
+  adjacencies := [ [ 3, 5, 8 ] ],
+  group := 
+   Group( [ ( 1, 2, 3, 5, 7)( 4, 6, 8, 9,10), ( 2, 4)( 6, 9)( 7,10) 
+     ] ),
+  isGraph := true,
   names := [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 1, 3 ], [ 4, 5 ], 
-      [ 2, 4 ], [ 1, 5 ], [ 3, 5 ], [ 1, 4 ], [ 2, 5 ] ], 
-  order := 10, representatives := [ 1 ], 
+      [ 2, 4 ], [ 1, 5 ], [ 3, 5 ], [ 1, 4 ], [ 2, 5 ] ],
+  order := 10,
+  representatives := [ 1 ],
   schreierVector := [ -1, 1, 1, 2, 1, 1, 1, 1, 2, 2 ] )
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Digraph(Petersen);</span>
 &lt;digraph with 10 vertices, 30 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Graph(last);</span>
-rec( adjacencies := [ [ 3, 5, 8 ] ], group := Group([ (1,2,3,5,7)
-  (4,6,8,9,10), (2,4)(6,9)(7,10) ]), isGraph := true, 
-  names := [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 1, 3 ], [ 4, 5 ], 
-      [ 2, 4 ], [ 1, 5 ], [ 3, 5 ], [ 1, 4 ], [ 2, 5 ] ], 
-  order := 10, representatives := [ 1 ], 
-  schreierVector := [ -1, 1, 1, 2, 1, 1, 1, 1, 2, 2 ] )</pre></div>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Graph(last) = Petersen;</span>
+true</pre></div>
 
 <p><a id="X7C4F13E080EC16B0" name="X7C4F13E080EC16B0"></a></p>
 
@@ -1612,7 +1613,7 @@ true
 
 <p>If <var class="Arg">n</var> and <var class="Arg">k</var> are non-negative integers, then this operation returns a symmetric digraph which corresponds to the undirected <em>Johnson graph</em> <span class="SimpleMath">\(J(n, k)\)</span>.</p>
 
-<p>The <em>Johnson graph</em> <span class="SimpleMath">\(J(n, k)\)</span> has vertices given by all the <var class="Arg">k</var>-subsets of the range <code class="code">[1 .. <var class="Arg">k</var>]</code>, and two vertices are connected by an edge iff their intersection has size <span class="SimpleMath">\(\textit{k} - 1\)</span>.</p>
+<p>The <em>Johnson graph</em> <span class="SimpleMath">\(J(n, k)\)</span> has vertices given by all the <var class="Arg">k</var>-subsets of the range <code class="code">[1 .. <var class="Arg">n</var>]</code>, and two vertices are connected by an edge iff their intersection has size <span class="SimpleMath">\(\textit{k} - 1\)</span>.</p>
 
 
 <div class="example"><pre>
