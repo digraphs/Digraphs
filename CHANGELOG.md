@@ -3,6 +3,12 @@ Copyright (C) 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Micha
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.15.3 (released 12/06/2019)
+
+This is a minor release that fixes a typo in the documentation of
+`JohnsonDigraph`, and contains some minor tweaks for compatibility with
+future versions of GAP.
+
 ## Version 0.15.2 (released 17/04/2019)
 
 This is a minor release that updates Digraphs for compatibility with the
