@@ -26,6 +26,33 @@ gap> ChromaticNumber(PetersenGraph());
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="GeneralisedPetersenGraph">
+<ManSection>
+  <Attr Name="GeneralisedPetersenGraph" Arg="n, k"/>
+  <Returns>A digaph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer and <A>k</A> is a non-negative integer less than <A>n / 2</A>, then this operation returns the <E>Generalised Petersen Graph</E> <M>GPG(n, k)</M>. <P/>
+
+    From Wikipedia: The generalized Petersen graphs are a family of cubic graphs formed by connecting the vertices of a regular polygon to the corresponding vertices of a star polygon. They include the Petersen graph and generalize one of the ways of constructing the Petersen graph. The generalized Petersen graph family was introduced in 1950 by H. S. M. Coxeter and was given its name in 1969 by Mark Watkins.<P/>
+
+    For more information, see <URL>https://en.wikipedia.org/wiki/Generalized_Petersen_graph</URL><P/>
+
+     See also <Ref Func="DigraphsTestInstall"/>.
+
+<Example><![CDATA[
+gap> GeneralisedPetersenGraph(7, 2);
+<immutable digraph with 14 vertices, 42 edges>
+gap> GeneralisedPetersenGraph(40, 1);
+<immutable digraph with 80 vertices, 240 edges>
+gap> D := GeneralisedPetersenGraph(5, 2);
+<immutable digraph with 10 vertices, 30 edges>
+gap> IsIsomorphicDigraph(D, PetersenGraph());
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="JohnsonDigraph">
 <ManSection>
   <Oper Name="JohnsonDigraph" Arg="n, k"/>
