@@ -370,9 +370,8 @@ function(filt, n, k)
     ErrorNoReturn("the argument <k> must be less than <n> / 2,");
   fi;
   D := Digraph(filt, []);
-  for i in [1 .. n] do
+  for i in [1 .. 2 * n] do
     DigraphAddVertex(D, i);
-    DigraphAddVertex(D, n + 1 + i);
   od;
   for i in [1 .. n] do
     if i <> n then
