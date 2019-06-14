@@ -16,7 +16,9 @@
 
     From Wikipedia: The Petersen graph is an undirected graph with 10 vertices and 15 edges. It is a small graph that serves as a useful example and counterexample for many problems in graph theory. The Petersen graph is named after Julius Petersen, who in 1898 constructed it to be the smallest bridgeless cubic graph with no three-edge-coloring.<P/>
 
-    For more information, see <URL>https://en.wikipedia.org/wiki/Petersen_graph</URL>
+    For more information, see <URL>https://en.wikipedia.org/wiki/Petersen_graph</URL><P/>
+
+    See also <Ref Func="GeneralisedPetersenGraph"/>.
 
 <Example><![CDATA[
 gap> ChromaticNumber(PetersenGraph());
@@ -29,7 +31,7 @@ gap> ChromaticNumber(PetersenGraph());
 <#GAPDoc Label="GeneralisedPetersenGraph">
 <ManSection>
   <Attr Name="GeneralisedPetersenGraph" Arg="n, k"/>
-  <Returns>A digaph.</Returns>
+  <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> is a positive integer and <A>k</A> is a non-negative integer less than <A>n / 2</A>, then this operation returns the <E>Generalised Petersen Graph</E> <M>GPG(n, k)</M>. <P/>
 
@@ -37,7 +39,7 @@ gap> ChromaticNumber(PetersenGraph());
 
     For more information, see <URL>https://en.wikipedia.org/wiki/Generalized_Petersen_graph</URL><P/>
 
-     See also <Ref Func="DigraphsTestInstall"/>.
+    See also <Ref Func="PetersenGraph"/>.
 
 <Example><![CDATA[
 gap> GeneralisedPetersenGraph(7, 2);
@@ -48,6 +50,8 @@ gap> D := GeneralisedPetersenGraph(5, 2);
 <immutable digraph with 10 vertices, 30 edges>
 gap> IsIsomorphicDigraph(D, PetersenGraph());
 true
+gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
+<mutable digraph with 18 vertices, 54 edges>
 ]]></Example>
   </Description>
 </ManSection>

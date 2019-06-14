@@ -383,7 +383,7 @@ function(filt, n, k)
     if n + i + k <= 2 * n then
       DigraphAddEdge(D, [n + i, n + i + k]);
     else
-      DigraphAddEdge(D, [n + i, (n + i + k) mod n + n]);
+      DigraphAddEdge(D, [n + i, ((n + i + k) mod n) + n]);
     fi;
     od;
     DigraphSymmetricClosure(D);
