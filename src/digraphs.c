@@ -75,7 +75,7 @@ Int DigraphNrEdges(Obj digraph) {
   adj = OutNeighbours(digraph);
   nr  = 0;
   for (i = 1; i <= n; i++) {
-    nr += LEN_PLIST(ELM_PLIST(adj, i));
+    nr += LEN_LIST(ELM_PLIST(adj, i));
   }
   AssPRec(digraph, RNamName("DigraphNrEdges"), INTOBJ_INT(nr));
   return nr;
