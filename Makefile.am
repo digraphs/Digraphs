@@ -7,9 +7,11 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = @PLANARITY_SUITE_DIR@
+if WITH_INCLUDED_PLANARITY 
+  SUBDIRS = @PLANARITY_SUITE_DIR@
+  PLANAR_INCLUDE = -I$(top_srcdir)/@PLANARITY_SUITE_DIR@/
+endif
 
-PLANAR_INCLUDE   = -I$(top_srcdir)/@PLANARITY_SUITE_DIR@/
 DIGRAPHS_INCLUDE = -I$(top_srcdir)/extern/
 
 BINARCHDIR = bin/$(GAPARCH)
@@ -72,7 +74,9 @@ digraphs_la_CFLAGS += $(WARNING_CFLAGS)
 
 digraphs_la_LDFLAGS  =  $(GAP_LDFLAGS) -module -avoid-version
 
+if WITH_INCLUDED_PLANARITY
 digraphs_la_LIBADD = @PLANARITY_SUITE_DIR@/libplanarity.la
+endif
 
 if SYS_IS_CYGWIN
 digraphs_la_LDFLAGS += -no-undefined -version-info 0:0:0 -Wl,$(GAPROOT)/bin/$(GAPARCH)/gap.dll
@@ -80,10 +84,14 @@ endif
 
 all-local: digraphs.la
 	$(mkdir_p) $(top_srcdir)/$(BINARCHDIR) $(top_srcdir)/bin/lib
+if WITH_INCLUDED_PLANARITY
 	cp -RL @PLANARITY_SUITE_DIR@/.libs/*  $(top_srcdir)/bin/lib/
+endif
 if SYS_IS_CYGWIN
 	cp .libs/digraphs.dll $(GAPINSTALLLIB)/digraphs.so
+if WITH_INCLUDED_PLANARITY
 	cp bin/lib/cygplanarity-0.dll $(GAPROOT)/.libs
+endif
 else
 	cp .libs/digraphs.so $(GAPINSTALLLIB)/
 endif
