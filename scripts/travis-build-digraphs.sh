@@ -9,7 +9,7 @@ if [ "$SUITE" != "lint" ]; then
   echo -e "\nCompiling the Digraphs package..."
   cd $HOME/gap/pkg/digraphs
   ./autogen.sh
-  ./configure $PKG_FLAGS
+  ./configure $PKG_FLAGS $EXTRA_PKG_FLAGS
   make
   echo -e "\nDownloading $DIGRAPHS_LIB..."
   curl --retry 5 -L -O https://gap-packages.github.io/Digraphs/$DIGRAPHS_LIB.tar.gz
