@@ -148,7 +148,7 @@ Int DigraphNrEdges(Obj D) {
     Int n    = DigraphNrVertices(D);
     Obj list = FuncOutNeighbours(0L, D);
     for (Int i = 1; i <= n; i++) {
-      nr += LEN_PLIST(ELM_PLIST(list, i));
+      nr += LEN_LIST(ELM_PLIST(list, i));
     }
   }
   if (IsAttributeStoringRep(D)) {
