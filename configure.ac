@@ -14,6 +14,7 @@ AC_CONFIG_SRCDIR([src/digraphs.c])
 AC_CONFIG_HEADER([src/_pkgconfig.h:cnf/pkgconfig.h.in])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([cnf])
+
 AC_CONFIG_SUBDIRS([extern/edge-addition-planarity-suite-Version_3.0.0.5])
 
 PLANARITY_SUITE_DIR=extern/edge-addition-planarity-suite-Version_3.0.0.5
@@ -75,13 +76,6 @@ AC_ARG_ENABLE([debug],
 AC_MSG_CHECKING([whether to enable debug mode])
 AC_MSG_RESULT([$enable_debug])
 
-## TODO check that the compiler supports these flags
-AS_IF([test "x$enable_debug" = xyes],
-    [AC_SUBST(CXXFLAGS, '-g3 -O0 -Wall -Wextra -Wpedantic -Wno-unused-parameter -Wtype-limits -Wformat-security -Wpointer-arith -Wno-div-by-zero -Wreturn-type -Wswitch -Wsizeof-array-argument -Wunused-label -fno-omit-frame-pointer -Wno-c++11-extensions -Wshadow -Wint-conversion')])
-
-AS_IF([test "x$enable_debug" = xyes],
-    [AC_SUBST(CFLAGS, '-g3 -O0 -Wall -Wextra -Wpedantic -Wno-unused-parameter -Wtype-limits -Wformat-security -Wpointer-arith -Wno-div-by-zero -Wreturn-type -Wswitch -Wsizeof-array-argument -Wunused-label -fno-omit-frame-pointer -Wshadow -Wint-conversion')])
-
 AM_CONDITIONAL([KERNEL_DEBUG], [test "x$enable_debug" = xyes])
 
 AC_ARG_ENABLE([stats],
@@ -95,6 +89,27 @@ AC_MSG_RESULT([$enable_stats])
 AM_CONDITIONAL([ENABLE_STATS], [test "x$enable_stats" = xyes])
 
 AX_CODE_COVERAGE()
+
+AC_ARG_ENABLE([compile-warnings],
+    [AS_HELP_STRING([--enable-compile-warnings], [enable compiler warnings])],
+    [enable_compile_warnings=yes],
+    [enable_compile_warnings=no])
+AC_MSG_CHECKING([whether enable compiler warnings])
+AC_MSG_RESULT([$enable_compile_warnings])
+
+AS_IF([test "x$enable_compile_warnings" != "xno"],
+  [ax_enable_compile_warnings=yes
+   AX_COMPILER_FLAGS_CXXFLAGS([WARNING_CXXFLAGS], [], [ dnl
+       -pedantic dnl
+       -Wold-style-cast])
+   AC_SUBST([WARNING_CXXFLAGS])])
+
+AS_IF([test "x$enable_compile_warnings" != "xno"],
+  [ax_enable_compile_warnings=yes
+   AX_COMPILER_FLAGS_CFLAGS([WARNING_CFLAGS], [], [ dnl
+       -pedantic dnl
+       -Wold-style-cast])
+   AC_SUBST([WARNING_CFLAGS])])
 
 dnl compiler builtins
 AC_DEFUN([CHECK_COMPILER_BUILTIN],
