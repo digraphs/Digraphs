@@ -79,6 +79,28 @@ matrix:
       - GAP=master
       - PACKAGES=required
       - THRESHOLD=98
+    
+    - env:
+      - SUITE=external-planarity
+      - ABI=64
+      - GAP=stable-4.10
+      - PACKAGES=required
+      - EXTRA_PKG_FLAGS="--with-external-planarity"
+      - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/miniconda2/lib
+      - CFLAGS="$CFLAGS -I$HOME/miniconda2/include -O2 -g"
+      - LDFLAGS="$LDFLAGS -L$HOME/miniconda2/lib"
+
+before_install:
+  - if [ "$SUITE" == "external-planarity" ]; then
+      wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
+      chmod +x miniconda.sh;
+      ./miniconda.sh -b;
+      export PATH=/home/travis/miniconda2/bin:$PATH;
+      conda update --yes conda;
+      conda config --add channels conda-forge;
+      conda install --yes planarity;
+      conda install --yes readline;
+    fi;
 
 install:
   # GAP and some packages require special flags for compilation in 32-bit mode

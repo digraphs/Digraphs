@@ -29,7 +29,7 @@ elif [ "$SUITE" == "coverage" ]; then
     fi
   done
 
-elif [ "$SUITE" == "test" ]; then
+elif [ "$SUITE" == "test" ] || [ "$SUITE" == "external-planarity" ]; then
 
   # Temporary workaround because of GAP being weird with memory
   if [ "$ABI" == "32" ]; then

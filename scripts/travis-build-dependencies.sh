@@ -3,7 +3,7 @@
 # If a command fails, exit this script with an error code
 set -e
 
-if [ "$SUITE" != "test" ] && [ "$SUITE" != "coverage" ] && [ "$SUITE" != "lint" ]; then
+if [ "$SUITE" != "test" ] && [ "$SUITE" != "coverage" ] && [ "$SUITE" != "lint" ] && [ "$SUITE" != "external-planarity" ]; then
   echo -e "\nError, unrecognised Travis suite: $SUITE"
   exit 1
 fi
