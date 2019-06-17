@@ -15,11 +15,6 @@ AC_CONFIG_HEADER([src/_pkgconfig.h:cnf/pkgconfig.h.in])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([cnf])
 
-AC_CONFIG_SUBDIRS([extern/edge-addition-planarity-suite-Version_3.0.0.5])
-
-PLANARITY_SUITE_DIR=extern/edge-addition-planarity-suite-Version_3.0.0.5
-AC_SUBST(PLANARITY_SUITE_DIR)
-
 dnl ##
 dnl ## Get canonical host info
 dnl ##
@@ -90,6 +85,8 @@ AM_CONDITIONAL([ENABLE_STATS], [test "x$enable_stats" = xyes])
 
 AX_CODE_COVERAGE()
 
+# Enable compiler warnings 
+
 AC_ARG_ENABLE([compile-warnings],
     [AS_HELP_STRING([--enable-compile-warnings], [enable compiler warnings])],
     [enable_compile_warnings=yes],
@@ -110,6 +107,16 @@ AS_IF([test "x$enable_compile_warnings" != "xno"],
        -pedantic dnl
        -Wold-style-cast])
    AC_SUBST([WARNING_CFLAGS])])
+
+# Check for system planarity suite
+
+AX_CHECK_PLANARITY()
+
+if test "x$with_external_planarity" = xno ; then
+  AC_CONFIG_SUBDIRS([extern/edge-addition-planarity-suite-Version_3.0.0.5])
+  PLANARITY_SUITE_DIR=extern/edge-addition-planarity-suite-Version_3.0.0.5
+  AC_SUBST(PLANARITY_SUITE_DIR)
+fi
 
 dnl compiler builtins
 AC_DEFUN([CHECK_COMPILER_BUILTIN],
