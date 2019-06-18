@@ -998,10 +998,11 @@ function(digraph)
         k := girth - 1;
         A := AdjacencyMatrix(gr) ^ k;
         B := AdjacencyMatrix(gr) ^ 2;
-        while k <= DigraphNrEdges(gr) + 2 and k < DigraphNrVertices(gr) do
+        while k <= DigraphNrEdges(gr) + 2 and k < DigraphNrVertices(gr)
+            and k < oddgirth - 2 do
           A := A * B;
           k := k + 2;
-          if k < oddgirth and Trace(A) <> 0 then
+          if Trace(A) <> 0 then
             # It suffices to find the trace as the entries of A are positive.
             oddgirth := k;
           fi;
