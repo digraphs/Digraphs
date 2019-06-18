@@ -50,7 +50,7 @@ InstallMethod(RemoveDigraphVertexLabel, "for a digraph and positive integer",
 function(D, v)
   IsValidDigraph(D);
   if not IsBound(D!.vertexlabels) then
-    return;
+    D!.vertexlabels := [1 .. DigraphNrVertices(D)];
   fi;
   Remove(D!.vertexlabels, v);
 end);
@@ -67,7 +67,7 @@ function(D, names)
   D!.vertexlabels := names;
 end);
 
-InstallMethod(DigraphVertexLabels, "for a digraph and pos int", [IsDigraph],
+InstallMethod(DigraphVertexLabels, "for a digraph", [IsDigraph],
 function(D)
   IsValidDigraph(D);
   if not IsBound(D!.vertexlabels) then
