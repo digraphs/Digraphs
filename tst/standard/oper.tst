@@ -715,6 +715,12 @@ gap> DigraphNrVertices(gr2);
 gap> DigraphNrEdges(gr2) =
 > DigraphNrEdges(gr) - OutDegreeOfVertex(gr, 10) - InDegreeOfVertex(gr, 10);
 true
+gap> D := CycleDigraph(IsMutableDigraph, 5);
+<mutable digraph with 5 vertices, 5 edges>
+gap> DigraphRemoveVertex(D, 1);
+<mutable digraph with 4 vertices, 3 edges>
+gap> DigraphVertexLabels(D);
+[ 2, 3, 4, 5 ]
 
 #  DigraphRemoveVertices
 gap> gr := CompleteDigraph(4);
