@@ -96,8 +96,8 @@ function(D, u)
   if u > DigraphNrVertices(D) then
     return D;
   fi;
-  Remove(D!.OutNeighbours, u);
   RemoveDigraphVertexLabel(D, u);
+  Remove(D!.OutNeighbours, u);
   for v in DigraphVertices(D) do
     pos := 1;
     while pos <= Length(D!.OutNeighbours[v]) do
