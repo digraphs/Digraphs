@@ -1781,6 +1781,17 @@ true
 gap> found;
 100
 
+# GAP hook function with no trivial return value
+gap> found := 0;;
+gap> hook := function(fnd, t) found := found + 1; 
+>  if found = 12 then return true; fi; end;;
+gap> D := DigraphSymmetricClosure(Digraph([[2, 3], [], [], [5], [], []]));;
+gap> HomomorphismDigraphsFinder(D, D, hook, true, infinity, fail, 0,
+> [1 .. 6], [], fail, fail);
+true
+gap> found;
+12
+
 # Partial map completely specifies homomorphism for symmetric digraphs
 gap> D := DigraphDisjointUnion(CycleDigraph(3), CycleDigraph(5));;
 gap> D := DigraphSymmetricClosure(D);;

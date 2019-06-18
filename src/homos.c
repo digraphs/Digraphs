@@ -134,9 +134,9 @@ extern Obj AutomorphismGroup;
 
 static Obj GAP_FUNC;  // Variable to hold a GAP level hook function
 
-static void (*HOOK)(void*,  // HOOK function applied to every homo found
-                    const uint16_t,
-                    const uint16_t*);
+static Obj (*HOOK)(void*,  // HOOK function applied to every homo found
+                   const uint16_t,
+                   const uint16_t*);
 static void* USER_PARAM;  // a USER_PARAM for the hook
 
 // Values in MAP are restricted to those positions in IMAGE_RESTRICT
@@ -222,7 +222,7 @@ static inline void update_stats(HomoStats* stats, uint64_t depth) {
 // 4. Hook functions
 ////////////////////////////////////////////////////////////////////////////////
 
-static void
+static Obj
 homo_hook_gap(void* user_param, uint16_t const nr, uint16_t const* map) {
   UInt2* ptr;
   Obj    t;
@@ -235,10 +235,10 @@ homo_hook_gap(void* user_param, uint16_t const nr, uint16_t const* map) {
   for (i = 0; i < nr; i++) {
     ptr[i] = map[i];
   }
-  CALL_2ARGS(GAP_FUNC, user_param, t);
+  return CALL_2ARGS(GAP_FUNC, user_param, t);
 }
 
-static void
+static Obj
 homo_hook_collect(void* user_param, uint16_t const nr, uint16_t const* map) {
   UInt2* ptr;
   Obj    t;
@@ -257,6 +257,7 @@ homo_hook_collect(void* user_param, uint16_t const nr, uint16_t const* map) {
   }
 
   ASS_LIST(user_param, LEN_LIST(user_param) + 1, t);
+  return False;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -557,10 +558,11 @@ static void find_graph_homos(uint16_t        depth,
       return;
     }
     external_order_map_graph(GRAPH1);
-    HOOK(USER_PARAM, MAX(GRAPH1->nr_vertices, GRAPH2->nr_vertices), MAP);
+    Obj ret =
+        HOOK(USER_PARAM, MAX(GRAPH1->nr_vertices, GRAPH2->nr_vertices), MAP);
     internal_order_map_graph(GRAPH1);
     (*count)++;
-    if (*count >= max_results) {
+    if (*count >= max_results || ret == True) {
       longjmp(OUTOFHERE, 1);
     }
     return;
@@ -706,10 +708,11 @@ static void find_graph_monos(uint16_t        depth,
   if (depth == GRAPH1->nr_vertices) {
     // we've assigned every position in <MAP>
     external_order_map_graph(GRAPH1);
-    HOOK(USER_PARAM, MAX(GRAPH1->nr_vertices, GRAPH2->nr_vertices), MAP);
+    Obj ret =
+        HOOK(USER_PARAM, MAX(GRAPH1->nr_vertices, GRAPH2->nr_vertices), MAP);
     internal_order_map_graph(GRAPH1);
     (*count)++;
-    if (*count >= max_results) {
+    if (*count >= max_results || ret == True) {
       longjmp(OUTOFHERE, 1);
     }
     return;
@@ -825,10 +828,11 @@ static void find_graph_embeddings(uint16_t        depth,
   if (depth == GRAPH1->nr_vertices) {
     // we've assigned every position in <MAP>
     external_order_map_graph(GRAPH1);
-    HOOK(USER_PARAM, MAX(GRAPH1->nr_vertices, GRAPH2->nr_vertices), MAP);
+    Obj ret =
+        HOOK(USER_PARAM, MAX(GRAPH1->nr_vertices, GRAPH2->nr_vertices), MAP);
     internal_order_map_graph(GRAPH1);
     (*count)++;
-    if (*count >= max_results) {
+    if (*count >= max_results || ret == True) {
       longjmp(OUTOFHERE, 1);
     }
     return;
@@ -1099,10 +1103,11 @@ static void find_digraph_homos(uint16_t        depth,
       return;
     }
     external_order_map_digraph(DIGRAPH1);
-    HOOK(USER_PARAM, MAX(DIGRAPH1->nr_vertices, DIGRAPH2->nr_vertices), MAP);
+    Obj ret = HOOK(
+        USER_PARAM, MAX(DIGRAPH1->nr_vertices, DIGRAPH2->nr_vertices), MAP);
     internal_order_map_digraph(DIGRAPH1);
     (*count)++;
-    if (*count >= max_results) {
+    if (*count >= max_results || ret == True) {
       longjmp(OUTOFHERE, 1);
     }
     return;
@@ -1244,10 +1249,11 @@ static void find_digraph_monos(uint16_t        depth,
   if (depth == DIGRAPH1->nr_vertices) {
     // we've assigned every position in <MAP>
     external_order_map_digraph(DIGRAPH1);
-    HOOK(USER_PARAM, MAX(DIGRAPH1->nr_vertices, DIGRAPH2->nr_vertices), MAP);
+    Obj ret = HOOK(
+        USER_PARAM, MAX(DIGRAPH1->nr_vertices, DIGRAPH2->nr_vertices), MAP);
     internal_order_map_digraph(DIGRAPH1);
     (*count)++;
-    if (*count >= max_results) {
+    if (*count >= max_results || ret == True) {
       longjmp(OUTOFHERE, 1);
     }
     return;
@@ -1311,26 +1317,26 @@ static void find_digraph_monos(uint16_t        depth,
 
 // Helper for the main recursive embedding digraphs function.
 static ALWAYS_INLINE uint16_t
-digraph_embed_update_conditions(uint16_t const depth,
-                               uint16_t const last_defined,
-                               uint16_t const vertex) {
+                     digraph_embed_update_conditions(uint16_t const depth,
+                                                     uint16_t const last_def,
+                                                     uint16_t const vertex) {
   push_conditions(CONDITIONS, depth, vertex, NULL);
-  if (is_adjacent_digraph(DIGRAPH1, last_defined, vertex)) {
+  if (is_adjacent_digraph(DIGRAPH1, last_def, vertex)) {
     intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
-                         DIGRAPH2->out_neighbours[MAP[last_defined]],
+                         DIGRAPH2->out_neighbours[MAP[last_def]],
                          DIGRAPH2->nr_vertices);
   } else {
     complement_bit_arrays(get_conditions(CONDITIONS, vertex),
-                          DIGRAPH2->out_neighbours[MAP[last_defined]],
+                          DIGRAPH2->out_neighbours[MAP[last_def]],
                           DIGRAPH2->nr_vertices);
   }
-  if (is_adjacent_digraph(DIGRAPH1, vertex, last_defined)) {
+  if (is_adjacent_digraph(DIGRAPH1, vertex, last_def)) {
     intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
-                         DIGRAPH2->in_neighbours[MAP[last_defined]],
+                         DIGRAPH2->in_neighbours[MAP[last_def]],
                          DIGRAPH2->nr_vertices);
   } else {
     complement_bit_arrays(get_conditions(CONDITIONS, vertex),
-                          DIGRAPH2->in_neighbours[MAP[last_defined]],
+                          DIGRAPH2->in_neighbours[MAP[last_def]],
                           DIGRAPH2->nr_vertices);
   }
   store_size_conditions(CONDITIONS, vertex);
@@ -1364,10 +1370,11 @@ static void find_digraph_embeddings(uint16_t        depth,
   if (depth == DIGRAPH1->nr_vertices) {
     // we've assigned every position in <MAP>
     external_order_map_digraph(DIGRAPH1);
-    HOOK(USER_PARAM, MAX(DIGRAPH1->nr_vertices, DIGRAPH2->nr_vertices), MAP);
+    Obj ret = HOOK(
+        USER_PARAM, MAX(DIGRAPH1->nr_vertices, DIGRAPH2->nr_vertices), MAP);
     internal_order_map_digraph(DIGRAPH1);
     (*count)++;
-    if (*count >= max_results) {
+    if (*count >= max_results || ret == True) {
       longjmp(OUTOFHERE, 1);
     }
     return;
