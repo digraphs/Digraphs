@@ -30,7 +30,13 @@
         <A>user_param</A> (see below) and a transformation <C>t</C>. The
         function <C><A>hook</A>(<A>user_param</A>, t)</C> is called every time
         a new homomorphism <C>t</C> is found by
-        <C>HomomorphismDigraphsFinder</C>.<P/>
+        <C>HomomorphismDigraphsFinder</C>. If the function returns <K>true</K>,
+        then <C>HomomorphismDigraphsFinder</C> stops and does not find any
+        further homomorphisms. This feature might be useful if you are
+        searching for a homomorphism that satisfies some condition that you
+        cannot specify via the other arguments to
+        <C>HomomorphismDigraphsFinder</C>.
+        <P/>
 
         If <A>hook</A> is <K>fail</K>, then a default function is used which
         simply adds every new homomorphism found by
