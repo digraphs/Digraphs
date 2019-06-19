@@ -24,7 +24,7 @@ _COMMANDS += 'x := ReadLineByLineProfile(\\"' + _DIR + '/profile.gz\\");;\n'
 _COMMANDS += 'OutputAnnotatedCodeCoverageFiles(x, filesdir, outdir);"'
 
 pro1 = subprocess.Popen(_COMMANDS, stdout=subprocess.PIPE, shell=True)
-_RUN_GAP = '../../bin/gap.sh -A -q -r -m 512m -o 1g -s 1g -T --cover ' + _DIR + '/profile.gz'
+_RUN_GAP = '../../bin/gap.sh -A -q -r -m 1g -o 2g -T --cover ' + _DIR + '/profile.gz'
 
 try:
     pro2 = subprocess.Popen(_RUN_GAP,
