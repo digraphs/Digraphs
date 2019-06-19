@@ -1174,14 +1174,14 @@ gap> for i in [1 .. 50] do
 > od;
 gap> DigraphOddGirth(gr);
 3
-gap> G := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+gap> G := Digraph(IsMutableDigraph, [[]]);
+<mutable digraph with 1 vertex, 0 edges>
 gap> for i in [2 .. 200] do
->   G := DigraphAddVertex(G, i);
->   G := DigraphAddEdges(G, [[1, i], [i, 1]]);
+>   DigraphAddVertex(G, i);
+>   DigraphAddEdges(G, [[1, i], [i, 1]]);
 > od;
-gap> D := CycleDigraph(7);
-<immutable digraph with 7 vertices, 7 edges>
+gap> D := CycleDigraph(IsMutableDigraph, 7);
+<mutable digraph with 7 vertices, 7 edges>
 gap> for i in [1 .. 20] do
 >   D := DigraphDisjointUnion(D, G);
 > od;
