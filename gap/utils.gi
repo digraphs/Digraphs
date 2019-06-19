@@ -124,7 +124,7 @@ end);
 
 InstallGlobalFunction(DIGRAPHS_Dir,
 function()
-  return PackageInfo("digraphs")[1]!.InstallationPath;
+  return GAPInfo.PackagesLoaded.digraphs[1];
 end);
 
 #############################################################################
