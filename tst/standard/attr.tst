@@ -1183,7 +1183,7 @@ gap> for i in [2 .. 200] do
 gap> D := CycleDigraph(IsMutableDigraph, 7);
 <mutable digraph with 7 vertices, 7 edges>
 gap> for i in [1 .. 20] do
->   D := DigraphDisjointUnion(D, G);
+>   DigraphDisjointUnion(D, G);
 > od;
 gap> DigraphOddGirth(D);
 7
