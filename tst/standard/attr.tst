@@ -1174,6 +1174,19 @@ gap> for i in [1 .. 50] do
 > od;
 gap> DigraphOddGirth(gr);
 3
+gap> G := Digraph(IsMutableDigraph, [[]]);
+<mutable digraph with 1 vertex, 0 edges>
+gap> for i in [2 .. 200] do
+>   DigraphAddVertex(G, i);
+>   DigraphAddEdges(G, [[1, i], [i, 1]]);
+> od;
+gap> D := CycleDigraph(IsMutableDigraph, 7);
+<mutable digraph with 7 vertices, 7 edges>
+gap> for i in [1 .. 20] do
+>   DigraphDisjointUnion(D, G);
+> od;
+gap> DigraphOddGirth(D);
+7
 
 # DigraphMycielskian
 gap> D1 := DigraphSymmetricClosure(CycleDigraph(2));

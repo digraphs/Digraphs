@@ -973,6 +973,7 @@ InstallMethod(DigraphOddGirth, "for a digraph",
 [IsDigraph],
 function(digraph)
   local comps, girth, oddgirth, A, B, gr, k, comp;
+
   if IsAcyclicDigraph(digraph) then
     return infinity;
   elif IsOddInt(DigraphGirth(digraph)) then
@@ -981,9 +982,13 @@ function(digraph)
     return DigraphGirth(digraph);
   fi;
   comps := DigraphStronglyConnectedComponents(digraph).comps;
+  if Length(comps) > 1 and IsMutableDigraph(digraph) then
+    # Necessary because InducedSubdigraph alters mutable args
+    digraph := DigraphImmutableCopy(digraph);
+  fi;
   oddgirth := infinity;
   for comp in comps do
-    if not IsStronglyConnectedDigraph(digraph) then
+    if comps > 1 then
       gr := InducedSubdigraph(digraph, comp);
     else
       gr := digraph;
@@ -998,10 +1003,11 @@ function(digraph)
         k := girth - 1;
         A := AdjacencyMatrix(gr) ^ k;
         B := AdjacencyMatrix(gr) ^ 2;
-        while k <= DigraphNrEdges(gr) + 2 and k < DigraphNrVertices(gr) do
+        while k <= DigraphNrEdges(gr) + 2 and k < DigraphNrVertices(gr)
+            and k < oddgirth - 2 do
           A := A * B;
           k := k + 2;
-          if k < oddgirth and Trace(A) <> 0 then
+          if Trace(A) <> 0 then
             # It suffices to find the trace as the entries of A are positive.
             oddgirth := k;
           fi;
