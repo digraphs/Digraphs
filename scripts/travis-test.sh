@@ -31,18 +31,25 @@ elif [ "$SUITE" == "coverage" ]; then
 
 elif [ "$SUITE" == "test" ]; then
 
+  # Temporary workaround because of GAP being weird with memory
+  if [ "$ABI" == "32" ]; then
+    MEM=1g
+  elif [ "$ABI" == "64" ]; then
+    MEM=2g
+  fi
+
   cd $DIG_DIR/tst/workspaces
   echo -e "\nRunning SaveWorkspace tests..."
   echo "LoadPackage(\"digraphs\"); DigraphsTestInstall(); Test(\"save-workspace.tst\"); quit; quit; quit;" |
-    $GAPSH -A -r -m 512m -o 1g -s 1g -T 2>&1 | tee -a $TESTLOG
+    $GAPSH -A -r -m 768m -o $MEM -T 2>&1 | tee -a $TESTLOG
 
   echo -e "\nRunning LoadWorkspace tests..."
   echo "Test(\"load-workspace.tst\"); DigraphsTestInstall(); quit; quit; quit;" |
-    $GAPSH -L test-output.w -A -x 80 -r -m 512m -o 1g -s 1g -T 2>&1 | tee -a $TESTLOG
+    $GAPSH -L test-output.w -A -x 80 -r -m 768m -o $MEM -T 2>&1 | tee -a $TESTLOG
 
   echo -e "\nRunning Digraphs package tests and manual examples..."
   echo "LoadPackage(\"digraphs\"); DigraphsTestAll(); DigraphsTestExtreme();" |
-    $GAPSH -A -x 80 -r -m 512m -o 1g -s 1g -T 2>&1 | tee -a $TESTLOG
+    $GAPSH -A -x 80 -r -m 768m -o $MEM -T 2>&1 | tee -a $TESTLOG
 fi
 
 echo -e "\nSuite complete." # AppVeyor needs some extra command here (like this)
