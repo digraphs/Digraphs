@@ -15,10 +15,11 @@ if not (exists(f) and isfile(f)):
 threshold = int(sys.argv[2])
 
 _DIR = tempfile.mkdtemp()
-_COMMANDS = 'echo "Test(\\"' + f + '\\");;\n'
+_COMMANDS = 'echo "LoadPackage(\\"digraphs\\", false);;\n'
+_COMMANDS += 'Test(\\"' + f + '\\");;\n'
 _COMMANDS += '''UncoverageLineByLine();;
 LoadPackage(\\"profiling\\", false);;
-filesdir := \\"''' + os.getcwd() + '''/gap/\\";;\n'''
+filesdir := Concatenation(DIGRAPHS_Dir(), \\"/gap/\\");;'''
 _COMMANDS += 'outdir := \\"' + _DIR + '\\";;\n'
 _COMMANDS += 'x := ReadLineByLineProfile(\\"' + _DIR + '/profile.gz\\");;\n'
 _COMMANDS += 'OutputAnnotatedCodeCoverageFiles(x, filesdir, outdir);"'
@@ -42,7 +43,8 @@ except (subprocess.CalledProcessError, IOError, OSError):
 
 filename = _DIR + '/index.html'
 if not (exists(filename) and isfile(filename)):
-    sys.exit('\n' + _ERR_PREFIX + 'Failed to find file://' + filename + '\033[0m')
+    print _ERR_PREFIX + 'Failed to find file://' + filename + '\033[0m'
+    sys.exit(1)
 
 gi_file = ntpath.basename(f).split('.')[0] + '.gi'
 for line in open(filename):
