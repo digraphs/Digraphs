@@ -973,10 +973,7 @@ InstallMethod(DigraphOddGirth, "for a digraph",
 [IsDigraph],
 function(digraph)
   local comps, girth, oddgirth, A, B, gr, k, comp;
-  if IsMutableDigraph(digraph) then
-    digraph := DigraphImmutableCopy(digraph);
-  fi;  # this is necessary because InducedSubdigraph
-       # alters mutable digraphs.
+
   if IsAcyclicDigraph(digraph) then
     return infinity;
   elif IsOddInt(DigraphGirth(digraph)) then
@@ -985,9 +982,13 @@ function(digraph)
     return DigraphGirth(digraph);
   fi;
   comps := DigraphStronglyConnectedComponents(digraph).comps;
+  if Length(comps) > 1 and IsMutableDigraph(digraph) then
+    # Necessary because InducedSubdigraph alters mutable args
+    digraph := DigraphImmutableCopy(digraph);
+  fi;
   oddgirth := infinity;
   for comp in comps do
-    if not IsStronglyConnectedDigraph(digraph) then
+    if comps > 1 then
       gr := InducedSubdigraph(digraph, comp);
     else
       gr := digraph;
