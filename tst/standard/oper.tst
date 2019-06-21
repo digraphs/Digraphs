@@ -2142,6 +2142,17 @@ gap> InducedSubdigraph(D, [4, 5]);
 gap> DigraphVertexLabels(D);
 [ 4, 5 ]
 
+# Issue 215
+gap> D := Digraph([[6, 7, 8], [8], [8], [8], [8], [1, 7, 8], [1, 6, 8],
+>                  [3, 2, 1, 7, 6, 5, 4]]);;
+gap> C := DigraphRemoveVertex(DigraphMutableCopy(D), 5);;
+gap> DigraphEdgeLabels(C);
+[ [ 1, 1, 1 ], [ 1 ], [ 1 ], [ 1 ], [ 1, 1, 1 ], [ 1, 1, 1 ], 
+  [ 1, 1, 1, 1, 1, 1 ] ]
+gap> OutNeighbours(C);
+[ [ 5, 6, 7 ], [ 7 ], [ 7 ], [ 7 ], [ 1, 6, 7 ], [ 1, 5, 7 ], 
+  [ 3, 2, 1, 6, 5, 4 ] ]
+
 # DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);

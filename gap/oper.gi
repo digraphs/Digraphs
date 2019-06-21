@@ -97,6 +97,7 @@ function(D, u)
     return D;
   fi;
   RemoveDigraphVertexLabel(D, u);
+  DigraphEdgeLabelRemoveVertex(D, u);
   Remove(D!.OutNeighbours, u);
   for v in DigraphVertices(D) do
     pos := 1;

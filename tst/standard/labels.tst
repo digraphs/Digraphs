@@ -190,6 +190,15 @@ gap> SetDigraphEdgeLabel(gr, 2, 2, "a");
 Error, there is no edge from 2 to 
 2 in the digraph <D> that is the 1st argument,
 
+# Test DigraphEdgeLabelRemoveVertex
+gap> D := Digraph([[2], []]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphEdgeLabels(D);
+[ [ 1 ], [  ] ]
+gap> DigraphEdgeLabelRemoveVertex(D, 1);
+gap> DigraphEdgeLabels(D);
+[ [  ] ]
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/grape.tst", 0);
