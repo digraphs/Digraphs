@@ -954,3 +954,32 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsDigraphCore">
+<ManSection>
+  <Prop Name="IsDigraphCore" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property returns <K>true</K> if <A>digraph</A> is a core,
+    and <K>false</K> if it is not.<P/>
+
+    A digraph <C>D</C> is a <E>core</E> if and only if it has no proper subdigraphs <C>A</C>
+    such that there exists a homomorphism from <C>D</C>  to <C>A</C>. In other words,
+    a digraph <C>D</C> is a core if and only if every endomorphism on <C>D</C> is an
+    automorphism on <C>D</C>.
+
+    <Example><![CDATA[
+gap> D := CompleteDigraph(6);
+<immutable digraph with 6 vertices, 30 edges>
+gap> IsDigraphCore(D);
+true
+gap> D := DigraphSymmetricClosure(CycleDigraph(6));
+<immutable digraph with 6 vertices, 12 edges>
+gap> DigraphHomomorphism(D, CompleteDigraph(2));
+Transformation( [ 1, 2, 1, 2, 1, 2 ] )
+gap> IsDigraphCore(D);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

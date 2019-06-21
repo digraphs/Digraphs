@@ -43,5 +43,10 @@
     <#Include Label="IsPlanarDigraph">
     <#Include Label="IsOuterPlanarDigraph">
   </Section>
+
+  <Section><Heading>Homomorphisms and transformations</Heading>
+    <#Include Label="IsDigraphCore">
+  </Section>
+
   
 </Chapter>

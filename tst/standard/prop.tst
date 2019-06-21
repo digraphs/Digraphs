@@ -1323,6 +1323,30 @@ gap> gr := Digraph([[2, 2], [1, 1]]);;
 gap> IsMultiDigraph(gr) and IsHamiltonianDigraph(gr);
 true
 
+# IsDigraphCore
+gap> D := CompleteDigraph(10);
+<immutable digraph with 10 vertices, 90 edges>
+gap> IsDigraphCore(D);
+true
+gap> D := JohnsonDigraph(8, 3);
+<immutable digraph with 56 vertices, 840 edges>
+gap> IsDigraphCore(D);
+true
+gap> D := CompleteBipartiteDigraph(500, 500);
+<immutable digraph with 1000 vertices, 500000 edges>
+gap> IsDigraphCore(D);
+false
+gap> D := PetersenGraph();
+<immutable digraph with 10 vertices, 30 edges>
+gap> IsDigraphCore(D);
+true
+gap> D := DigraphSymmetricClosure(CycleDigraph(IsMutableDigraph, 40));
+<mutable digraph with 40 vertices, 80 edges>
+gap> IsDigraphCore(D);
+false
+gap> D;
+<mutable digraph with 40 vertices, 80 edges>
+
 # IsPreorderDigraph and IsQuasiorderDigraph
 gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 4], [1 .. 5], [1 .. 6],
 > [1, 2, 3, 4, 5, 7], [1, 8]]);;
