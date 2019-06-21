@@ -27,5 +27,7 @@ DeclareOperation("SetDigraphEdgeLabelsNC", [IsDigraph, IsList]);
 DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsList]);
 DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsFunction]);
 DeclareOperation("ClearDigraphEdgeLabels", [IsDigraph]);
-DeclareOperation("DigraphEdgeLabelAddVertex", [IsDigraph]);
 DeclareOperation("RemoveDigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt]);
+
+DeclareOperation("DigraphEdgeLabelAddVertex", [IsDigraph]);
+DeclareOperation("DigraphEdgeLabelRemoveVertex", [IsDigraph, IsPosInt]);

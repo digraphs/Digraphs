@@ -207,6 +207,15 @@ function(D)
   fi;
 end);
 
+# Remove the list of labels of edges leaving vertex v.
+InstallMethod(DigraphEdgeLabelRemoveVertex, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(D, v)
+  if IsBound(D!.edgelabels) then
+    Remove(D!.edgelabels, v);
+  fi;
+end);
+
 InstallMethod(RemoveDigraphEdgeLabel,
 "for a digraph, positive integer, and positive integer",
 [IsDigraph, IsPosInt, IsPosInt],
