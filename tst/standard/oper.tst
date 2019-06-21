@@ -2132,6 +2132,16 @@ Error, Digraphs: AsSemigroup usage,
 the fourth argument must contain a triple [i, j, hom] for each edge [i, j] in \
 the reflexive transitive reduction of the second argument,
 
+# Issue 213
+gap> D := Digraph(IsMutableDigraph, [[3, 4, 6, 8], [1, 3, 4, 6, 7, 8, 10], 
+> [1, 2, 6, 7, 8, 9], [3, 5, 7], [1, 2, 3, 6, 8, 9], [2, 6, 8, 10], 
+> [2, 7, 10], [1, 5, 8, 10], [1, 2, 6, 7, 8, 10], [1, 2, 6, 8, 9, 10]]);
+<mutable digraph with 10 vertices, 49 edges>
+gap> InducedSubdigraph(D, [4, 5]);
+<mutable digraph with 2 vertices, 1 edge>
+gap> DigraphVertexLabels(D);
+[ 4, 5 ]
+
 # DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);

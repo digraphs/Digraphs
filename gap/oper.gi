@@ -787,7 +787,8 @@ InstallMethod(InducedSubdigraph,
 "for a dense mutable digraph and a homogeneous list",
 [IsDenseDigraphRep and IsMutableDigraph, IsHomogeneousList],
 function(D, list)
-  local M, N, old, old_edl, new_edl, lookup, next, vv, w, v, i;
+  local M, N, old, old_edl, new_edl, lookup, next, vv, w, old_labels, v, i;
+
   M := Length(list);
   if M = 0 then
     D!.OutNeighbours := [];
@@ -823,9 +824,10 @@ function(D, list)
     od;
     old[vv] := next;
   od;
+  old_labels := DigraphVertexLabels(D);
   D!.OutNeighbours := old{list};
-  SetDigraphVertexLabels(D, DigraphVertexLabels(D){list});
   SetDigraphEdgeLabelsNC(D, new_edl);
+  SetDigraphVertexLabels(D, old_labels{list});
   return D;
 end);
 
