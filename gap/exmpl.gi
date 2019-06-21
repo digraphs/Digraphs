@@ -356,3 +356,59 @@ InstallMethod(PetersenGraph, [],
 function()
   return PetersenGraphCons(IsImmutableDigraph);
 end);
+
+InstallMethod(GeneralisedPetersenGraphCons,
+"for IsMutableDigraph, integer, integer",
+[IsMutableDigraph, IsInt, IsInt],
+function(filt, n, k)
+  local D, i;
+  if n < 1 then
+    ErrorNoReturn("the argument <n> must be a positive integer,");
+  elif k < 0 then
+    ErrorNoReturn("the argument <k> must be a non-negative integer,");
+  elif k > n / 2 then
+    ErrorNoReturn("the argument <k> must be less than <n> / 2,");
+  fi;
+  D := Digraph(filt, []);
+  for i in [1 .. 2 * n] do
+    DigraphAddVertex(D, i);
+  od;
+  for i in [1 .. n] do
+    if i <> n then
+      DigraphAddEdge(D, [i, i + 1]);
+    else
+      DigraphAddEdge(D, [n, 1]);
+    fi;
+    DigraphAddEdge(D, [i, n + i]);
+    if n + i + k <= 2 * n then
+      DigraphAddEdge(D, [n + i, n + i + k]);
+    else
+      DigraphAddEdge(D, [n + i, ((n + i + k) mod n) + n]);
+    fi;
+    od;
+    DigraphSymmetricClosure(D);
+  return D;
+end);
+
+InstallMethod(GeneralisedPetersenGraphCons,
+"for IsImmutableDigraph, integer, int",
+[IsImmutableDigraph, IsInt, IsInt],
+function(filt, n, k)
+  local D;
+  D := MakeImmutableDigraph(GeneralisedPetersenGraphCons(
+       IsMutableDigraph, n, k));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(GeneralisedPetersenGraph, "for a function, integer, integer",
+[IsFunction, IsInt, IsInt],
+function(func, n, k)
+  return GeneralisedPetersenGraphCons(func, n, k);
+end);
+
+InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
+function(n, k)
+  return GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k);
+end);

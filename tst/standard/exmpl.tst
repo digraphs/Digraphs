@@ -21,6 +21,34 @@ gap> DigraphGirth(PetersenGraph());
 gap> PetersenGraph(IsMutableDigraph);
 <mutable digraph with 10 vertices, 30 edges>
 
+# GeneralisedPetersenGraph
+gap> D := GeneralisedPetersenGraph(8, 3);
+<immutable digraph with 16 vertices, 48 edges>
+gap> IsBipartiteDigraph(D);
+true
+gap> D := GeneralisedPetersenGraph(15, 7);
+<immutable digraph with 30 vertices, 90 edges>
+gap> IsBipartiteDigraph(D);
+false
+gap> D := GeneralisedPetersenGraph(10, 2);
+<immutable digraph with 20 vertices, 60 edges>
+gap> IsVertexTransitive(D);
+true
+gap> D := GeneralisedPetersenGraph(11, 2);
+<immutable digraph with 22 vertices, 66 edges>
+gap> IsVertexTransitive(D);
+false
+gap> D := GeneralisedPetersenGraph(5, 2);
+<immutable digraph with 10 vertices, 30 edges>
+gap> IsIsomorphicDigraph(D, PetersenGraph());
+true
+gap> G8_3 := DigraphFromGraph6String("OCQa`Q?OH?a@A@@?_OGB@");
+<immutable digraph with 16 vertices, 48 edges>
+gap> D := GeneralisedPetersenGraph(8, 3);
+<immutable digraph with 16 vertices, 48 edges>
+gap> IsIsomorphicDigraph(D, G8_3);
+true
+
 #  CompleteDigraph
 gap> gr := CompleteDigraph(5);
 <immutable digraph with 5 vertices, 20 edges>

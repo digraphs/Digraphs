@@ -77,6 +77,7 @@
     <#Include Label="EmptyDigraph">
     <#Include Label="JohnsonDigraph">
     <#Include Label="PetersenGraph">
+    <#Include Label="GeneralisedPetersenGraph">
   </Section>
 
 </Chapter>
