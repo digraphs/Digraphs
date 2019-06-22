@@ -596,15 +596,16 @@ function(D)
   local hook, proper_endo_found, N;
 
   N := DigraphNrVertices(D);
-  if DigraphHasLoops(D) and N > 1 then
+  if (DigraphHasLoops(D) or IsEmptyDigraph(D)) and N > 1 then
     return false;
   elif IsCompleteDigraph(D) then
     return true;
-  elif IsBipartiteDigraph(D) and N > 2 then
+  elif IsSymmetricDigraph(D) and IsBipartiteDigraph(D) and N > 2 then
     return false;
   fi;
-  # The core of a digraph with loops is a vertex with a loop, and the core of a
-  # bipartite digraph is the complete digraph on 2 vertices.
+  # The core of a digraph with loops is a vertex with a loop, of an empty
+  # digraph is a vertex, and of a non-empty, symmetric bipartite digraph is the
+  # complete digraph on 2 vertices.
 
   proper_endo_found := false;
   hook := function(unneded_argument, T)
@@ -628,9 +629,5 @@ function(D)
                              [],                        # partial_map
                              fail,                      # colors1
                              fail);                     # colors2
-  if not proper_endo_found then
-    return true;
-  else
-    return false;
-  fi;
+  return not proper_endo_found;
 end);

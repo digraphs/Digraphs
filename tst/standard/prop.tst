@@ -1346,6 +1346,14 @@ gap> IsDigraphCore(D);
 false
 gap> D;
 <mutable digraph with 40 vertices, 80 edges>
+gap> D := EmptyDigraph(100000);
+<immutable digraph with 100000 vertices, 0 edges>
+gap> IsDigraphCore(D);
+false
+gap> D := EmptyDigraph(0);
+<immutable digraph with 0 vertices, 0 edges>
+gap> IsDigraphCore(D);
+true
 
 # IsPreorderDigraph and IsQuasiorderDigraph
 gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 4], [1 .. 5], [1 .. 6],
