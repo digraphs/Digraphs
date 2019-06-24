@@ -589,3 +589,45 @@ end);
 
 InstallMethod(IsHamiltonianDigraph, "for a digraph with hamiltonian path",
 [IsDigraph and HasHamiltonianPath], x -> HamiltonianPath(x) <> fail);
+
+InstallMethod(IsDigraphCore, "for a digraph",
+[IsDigraph],
+function(D)
+  local hook, proper_endo_found, N;
+
+  N := DigraphNrVertices(D);
+  if (DigraphHasLoops(D) or IsEmptyDigraph(D)) and N > 1 then
+    return false;
+  elif IsCompleteDigraph(D) then
+    return true;
+  elif IsBipartiteDigraph(D) and IsSymmetricDigraph(D) and N > 2 then
+    return false;
+  fi;
+  # The core of a digraph with loops is a vertex with a loop, of an empty
+  # digraph is a vertex, and of a non-empty, symmetric bipartite digraph is the
+  # complete digraph on 2 vertices.
+
+  proper_endo_found := false;
+  hook := function(unneded_argument, T)
+    # the hook is required by HomomorphismDigraphsFinder to have two arguments,
+    # the 1st of which is user_param, which this method doesn't need.
+    if RankOfTransformation(T, [1 .. N]) < N then
+      proper_endo_found := true;
+      return true;
+    fi;
+    return false;
+  end;
+
+  HomomorphismDigraphsFinder(D,                         # D1
+                             D,                         # D2
+                             hook,                      # hook
+                             fail,                      # user_param
+                             infinity,                  # max results
+                             fail,                      # hint
+                             false,                     # injective
+                             DigraphVertices(D),        # image
+                             [],                        # partial_map
+                             fail,                      # colors1
+                             fail);                     # colors2
+  return not proper_endo_found;
+end);
