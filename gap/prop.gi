@@ -600,7 +600,7 @@ function(D)
     return false;
   elif IsCompleteDigraph(D) then
     return true;
-  elif IsSymmetricDigraph(D) and IsBipartiteDigraph(D) and N > 2 then
+  elif IsBipartiteDigraph(D) and IsSymmetricDigraph(D) and N > 2 then
     return false;
   fi;
   # The core of a digraph with loops is a vertex with a loop, of an empty
