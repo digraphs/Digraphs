@@ -97,13 +97,8 @@ end);
 # AN's code
 
 if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
-  if ARCH_IS_MAC_OS_X() then
-    BindGlobal("VizViewers", ["xpdf", "open", "evince", "okular", "gv"]);
-  elif ARCH_IS_UNIX() then
-    BindGlobal("VizViewers", ["xpdf", "xdg-open", "evince", "okular", "gv"]);
-  elif ARCH_IS_WINDOWS() then
-    BindGlobal("VizViewers", ["xpdf", "evince", "okular", "gv"]);
-  fi;
+  BindGlobal("VizViewers",
+             ["xpdf", "xdg-open", "open", "evince", "okular", "gv"]);
 
   BindGlobal("Splash",
   function(arg)
