@@ -153,9 +153,21 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
     # viewer
     if IsBound(opt.viewer) then
       viewer := opt.viewer;
+      if not IsString(viewer) then
+        ErrorNoReturn("the option `viewer` must be a string, not an ",
+                      TNAM_OBJ(viewer), ",");
+      elif Filename(DirectoriesSystemPrograms(), viewer) = fail then
+        ErrorNoReturn("the viewer \"", viewer, "\" specified in the option ",
+                      "`viewer` is not available,");
+      fi;
     else
       viewer := First(VizViewers, x ->
                       Filename(DirectoriesSystemPrograms(), x) <> fail);
+      if viewer = fail then
+        ErrorNoReturn("none of the default viewers ", VizViewers,
+                      " is available, please specify an available viewer",
+                      " in the options record component `viewer`,");
+      fi;
     fi;
 
     # type
