@@ -1687,6 +1687,138 @@ function(D)
   return fail;
 end);
 
+InstallMethod(DigraphCore, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local N, lo, topdown, bottomup, hom, lo_var, image,
+  comps, comp, cores, G, vert_labels, D, in_core, n, m, L;
+  if not IsImmutableDigraph(digraph) then
+    digraph := DigraphImmutableCopy(digraph);
+  fi;
+  N := DigraphNrVertices(digraph);
+  if IsEmptyDigraph(digraph) then
+    if N >= 1 then
+      return [1];
+    else
+      return [];
+    fi;
+  fi;
+  digraph := ReducedDigraph(digraph);  # isolated verts are not in core
+  if DigraphHasLoops(digraph) then
+    return DigraphLoops(digraph){[1]};
+  elif not IsConnectedDigraph(digraph) then
+    comps := DigraphConnectedComponents(digraph).comps;
+    DigraphVertexLabels(digraph);
+    cores := [];
+    for comp in comps do
+      D := InducedSubdigraph(digraph, comp);
+      D := InducedSubdigraph(D,
+           Positions(BlistList(DigraphVertexLabels(D), DigraphCore(D)), true));
+      Add(cores, D);
+    od;
+    L := Length(cores);
+    in_core := List([1 .. L], x -> true);
+    n := 1;
+    while n <= L do
+      if n <> L then
+        m := n + 1;
+      else
+        m := 1;
+      fi;
+      while m <> n and in_core[n] do
+        if in_core[m] and DigraphHomomorphism(cores[m], cores[n]) <> fail then
+          in_core[m] := false;
+        fi;
+        if m < L then
+          m := m + 1;
+        else
+          m := 1;
+        fi;
+      od;
+      n := n + 1;
+    od;
+    cores := ListBlist(cores, in_core);
+    vert_labels := [];
+    for G in cores do
+      vert_labels := Concatenation(vert_labels, DigraphVertexLabels(G));
+    od;
+    return vert_labels;
+  elif IsCompleteDigraph(digraph) then
+    return [1 .. N];
+  elif IsSymmetricDigraph(digraph) and IsBipartiteDigraph(digraph) then
+    return DigraphEdges(digraph)[1];
+  fi;
+
+  if IsDigraphCore(digraph) then
+    return DigraphVertexLabels(digraph);
+  fi;
+
+  lo := function(D)  # lower bound on core size
+    local oddgirth;
+    oddgirth := DigraphOddGirth(D);
+    if oddgirth <> infinity then
+      return oddgirth;
+    fi;
+    return 3;
+  end;
+
+  hom      := [];
+  lo_var := lo(digraph);
+  bottomup := lo_var;
+  N := DigraphNrVertices(digraph);
+  topdown  := N;
+
+  while topdown >= bottomup do
+    HomomorphismDigraphsFinder(digraph,                   # domain copy
+                               digraph,                   # range copy
+                               fail,                      # hook
+                               hom,                       # user_param
+                               1,                         # max_results
+                               bottomup,                  # hint (i.e. rank)
+                               false,                     # injective
+                               DigraphVertices(digraph),  # image
+                               [],                        # partial_map
+                               fail,                      # colors1
+                               fail);                     # colors2
+
+    if Length(hom) = 1 then
+      image    := ImageSetOfTransformation(hom[1], N);
+      return DigraphVertexLabels(digraph){image};
+    fi;
+
+    HomomorphismDigraphsFinder(digraph,                   # domain copy
+                               digraph,                   # range copy
+                               fail,                      # hook
+                               hom,                       # user_param
+                               1,                         # max_results
+                               topdown,                   # hint (i.e. rank)
+                               false,                     # injective
+                               DigraphVertices(digraph),  # image
+                               [],                        # partial_map
+                               fail,                      # colors1
+                               fail);                     # colors2
+    if Length(hom) = 1 then
+      image    := ImageSetOfTransformation(hom[1], N);
+      digraph  := InducedSubdigraph(digraph, image);
+      N        := DigraphNrVertices(digraph);
+      Unbind(hom[1]);
+      lo_var := lo(digraph);
+    fi;
+
+    if topdown - 1 < N then
+      topdown := topdown - 1;
+    else
+      topdown := N;
+    fi;
+    if bottomup + 1 > lo_var then
+      bottomup := bottomup + 1;
+    else
+      bottomup := lo_var;
+    fi;
+  od;
+  return DigraphVertexLabels(digraph);
+end);
+
 InstallMethod(MaximalAntiSymmetricSubdigraphAttr, "for an immutable digraph",
 [IsImmutableDigraph], MaximalAntiSymmetricSubdigraph);
 

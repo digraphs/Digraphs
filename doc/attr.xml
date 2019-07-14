@@ -1461,6 +1461,35 @@ gap> HamiltonianPath(g);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphCore">
+  <ManSection>
+    <Oper Name = "DigraphCore" Arg = "D"/>
+    <Returns>A list of positive integers.</Returns>
+    <Description>
+      If <A>D</A> is a digraph, then <C>DigraphCore</C> returns a list of vertices
+      corresponding to the <C>core</C> of <A>D</A>. In particular, the subdigraph of <A>D</A>
+      induced by this list is isomorphic to the core of <A>D</A>.<P/>
+
+    The <E>core</E> of a digraph <C>D</C> is the minimal subdigraph <E>C</E> of <C>D</C> which
+    is a homomorphic image of <C>D</C>. The core of a digraph <C>D</C> is unique up to
+    isomorphism.
+      <Example><![CDATA[
+gap> D := DigraphSymmetricClosure(CycleDigraph(8));
+<immutable digraph with 8 vertices, 16 edges>
+gap> DigraphCore(D);
+[ 1, 2 ]
+gap> D := PetersenGraph();
+<immutable digraph with 10 vertices, 30 edges>
+gap> DigraphCore(D);
+[ 1 .. 10 ]
+gap> D := Digraph([[3], [3], [4], [5], [2]]);
+<immutable digraph with 5 vertices, 5 edges>
+gap> DigraphCore(D);
+[ 2, 3, 4, 5 ]]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="MaximalAntiSymmetricSubdigraph">
 <ManSection>
   <Attr Name="MaximalAntiSymmetricSubdigraph" Arg="digraph"/>
