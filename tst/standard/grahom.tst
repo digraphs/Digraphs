@@ -2116,6 +2116,14 @@ gap> DigraphSmallestLastOrder(D1);
 gap> DigraphSmallestLastOrder(D2);
 [ 3, 2, 1 ]
 
+# Issue 222
+gap> D1 := DigraphFromGraph6String("E}hO");
+<digraph with 6 vertices, 18 edges>
+gap> D2 := DigraphFromGraph6String("E}h_");
+<digraph with 6 vertices, 18 edges>
+gap> mono := MonomorphismsDigraphs(D1, D2);
+[  ]
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
 gap> Unbind(epis);
