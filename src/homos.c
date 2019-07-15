@@ -674,7 +674,6 @@ static ALWAYS_INLINE uint16_t
                                                   uint16_t const vertex) {
   push_conditions(
       CONDITIONS, depth, vertex, GRAPH2->neighbours[MAP[last_defined]]);
-  set_bit_array(get_conditions(CONDITIONS, vertex), MAP[last_defined], false);
   store_size_conditions(CONDITIONS, vertex);
   return size_conditions(CONDITIONS, vertex);
 }
@@ -758,6 +757,7 @@ static void find_graph_monos(uint16_t        depth,
   copy_bit_array(
       possible, get_conditions(CONDITIONS, next), GRAPH2->nr_vertices);
   intersect_bit_arrays(possible, REPS[rep_depth], GRAPH2->nr_vertices);
+  complement_bit_arrays(possible, VALS, GRAPH2->nr_vertices);
   FOR_SET_BITS(possible, GRAPH2->nr_vertices, i) {
     MAP[next] = i;
     set_bit_array(VALS, i, true);
@@ -1201,7 +1201,6 @@ static ALWAYS_INLINE uint16_t
                                                     uint16_t const last_defined,
                                                     uint16_t const vertex) {
   push_conditions(CONDITIONS, depth, vertex, NULL);
-  set_bit_array(get_conditions(CONDITIONS, vertex), MAP[last_defined], false);
   if (is_adjacent_digraph(DIGRAPH1, last_defined, vertex)) {
     intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
                          DIGRAPH2->out_neighbours[MAP[last_defined]],
@@ -1283,6 +1282,7 @@ static void find_digraph_monos(uint16_t        depth,
   copy_bit_array(
       possible, get_conditions(CONDITIONS, next), DIGRAPH2->nr_vertices);
   intersect_bit_arrays(possible, REPS[rep_depth], DIGRAPH2->nr_vertices);
+  complement_bit_arrays(possible, VALS, DIGRAPH2->nr_vertices);
   FOR_SET_BITS(possible, DIGRAPH2->nr_vertices, i) {
     MAP[next] = i;
     set_bit_array(VALS, i, true);
