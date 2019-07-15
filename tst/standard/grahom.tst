@@ -2101,6 +2101,14 @@ gap> HomomorphismDigraphsFinder(D1, D2, fail, [], 1,
 > fail, 2, [1, 2, 3], fail, fail, fail);
 [  ]
 
+# Issue 222
+gap> D1 := DigraphFromGraph6String("E}hO");
+<digraph with 6 vertices, 18 edges>
+gap> D2 := DigraphFromGraph6String("E}h_");
+<digraph with 6 vertices, 18 edges>
+gap> mono := MonomorphismsDigraphs(D1, D2);
+[  ]
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
 gap> Unbind(epis);
