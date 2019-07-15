@@ -81,6 +81,10 @@ DeclareOperation("MaximalSymmetricSubdigraphWithoutLoops", [IsDigraph]);
 DeclareAttribute("MaximalSymmetricSubdigraphWithoutLoopsAttr", IsDigraph);
 DeclareOperation("DIGRAPHS_MaximalSymmetricSubdigraph", [IsDigraph, IsBool]);
 
+DeclareAttribute("DegreeMatrix", IsDigraph);
+DeclareAttribute("LaplacianMatrix", IsDigraph);
+DeclareAttribute("NrSpanningTrees", IsDigraph);
+
 DeclareOperation("UndirectedSpanningTree", [IsDigraph]);
 DeclareAttribute("UndirectedSpanningTreeAttr", IsDigraph);
 DeclareOperation("UndirectedSpanningForest", [IsDigraph]);

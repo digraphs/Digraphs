@@ -1585,6 +1585,38 @@ end);
 InstallMethod(MaximalSymmetricSubdigraphAttr, "for an immutable digraph",
 [IsImmutableDigraph], MaximalSymmetricSubdigraph);
 
+InstallMethod(DegreeMatrix, "for a digraph", [IsDigraph],
+function(D)
+  if DigraphNrVertices(D) = 0 then
+    return [];
+  fi;
+  return DiagonalMat(OutDegrees(D));
+end);
+
+InstallMethod(LaplacianMatrix, "for a digraph", [IsDigraph],
+function(D)
+  return DegreeMatrix(D) - AdjacencyMatrix(D);
+end);
+
+InstallMethod(NrSpanningTrees, "for a digraph", [IsDigraph],
+function(D)
+  local mat, n;
+  if not IsSymmetricDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
+  fi;
+
+  n := DigraphNrVertices(D);
+  if n = 0 then
+    return 0;
+  elif n = 1 then
+    return 1;
+  fi;
+
+  mat := LaplacianMatrix(D);
+  mat := mat{[1 .. n - 1]}{[1 .. n - 1]};
+  return Determinant(mat);
+end);
+
 InstallMethod(UndirectedSpanningForestAttr, [IsImmutableDigraph],
 UndirectedSpanningForest);
 
