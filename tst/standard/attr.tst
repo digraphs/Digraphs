@@ -1482,6 +1482,48 @@ gap> ChromaticNumber(a);
 gap> ChromaticNumber(b);
 49
 
+#  DegreeMatrix
+gap> gr := Digraph([[2, 3, 4], [2, 5], [1, 5, 4], [1], [1, 1, 2, 4]]);;
+gap> DegreeMatrix(gr);
+[ [ 3, 0, 0, 0, 0 ], [ 0, 2, 0, 0, 0 ], [ 0, 0, 3, 0, 0 ], [ 0, 0, 0, 1, 0 ], 
+  [ 0, 0, 0, 0, 4 ] ]
+gap> DegreeMatrix(Digraph([]));
+[  ]
+gap> DegreeMatrix(Digraph([[]]));
+[ [ 0 ] ]
+gap> DegreeMatrix(Digraph([[1]]));
+[ [ 1 ] ]
+
+#  LaplacianMatrix
+gap> gr := Digraph([[2, 3, 4], [2, 5], [1, 5, 4], [1], [1, 1, 2, 4]]);;
+gap> LaplacianMatrix(gr);
+[ [ 3, -1, -1, -1, 0 ], [ 0, 1, 0, 0, -1 ], [ -1, 0, 3, -1, -1 ], 
+  [ -1, 0, 0, 1, 0 ], [ -2, -1, 0, -1, 4 ] ]
+gap> LaplacianMatrix(Digraph([]));
+[  ]
+gap> LaplacianMatrix(Digraph([[1]]));
+[ [ 0 ] ]
+gap> LaplacianMatrix(CycleDigraph(5));
+[ [ 1, -1, 0, 0, 0 ], [ 0, 1, -1, 0, 0 ], [ 0, 0, 1, -1, 0 ], 
+  [ 0, 0, 0, 1, -1 ], [ -1, 0, 0, 0, 1 ] ]
+gap> LaplacianMatrix(CompleteDigraph(5));
+[ [ 4, -1, -1, -1, -1 ], [ -1, 4, -1, -1, -1 ], [ -1, -1, 4, -1, -1 ], 
+  [ -1, -1, -1, 4, -1 ], [ -1, -1, -1, -1, 4 ] ]
+
+#  NrSpanningTrees
+gap> NrSpanningTrees(CompleteDigraph(5));
+125
+gap> NrSpanningTrees(CycleDigraph(5));
+Error, the argument <D> must be a symmetric digraph,
+gap> NrSpanningTrees(DigraphSymmetricClosure(CycleDigraph(5)));
+5
+gap> NrSpanningTrees(Digraph([]));
+0
+gap> NrSpanningTrees(Digraph([[1]]));
+1
+gap> NrSpanningTrees(Digraph([[2, 3, 4], [1, 5], [1, 5], [1, 5], [2, 3, 4]]));
+12
+
 #  UndirectedSpanningTree and UndirectedSpanningForest
 gap> gr := EmptyDigraph(0);
 <immutable digraph with 0 vertices, 0 edges>
