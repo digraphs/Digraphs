@@ -1381,7 +1381,7 @@ gap> OutNeighbours(sym);
     See <Ref Attr="OutDegrees"/> for more information.
     <Example><![CDATA[
 gap> gr := Digraph([[1, 2, 3], [4], [1, 3, 4], []]);
-<immutable digraph with 4 vertices, 6 edges>
+<immutable digraph with 4 vertices, 7 edges>
 gap> PrintArray(DegreeMatrix(gr));
 [ [  3,  0,  0,  0 ],
   [  0,  1,  0,  0 ],
