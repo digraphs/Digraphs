@@ -12,7 +12,9 @@ if WITH_INCLUDED_PLANARITY
   PLANAR_INCLUDE = -I$(top_srcdir)/@PLANARITY_SUITE_DIR@/
 endif
 
-DIGRAPHS_INCLUDE = -I$(top_srcdir)/extern/
+if WITH_INCLUDED_BLISS
+  DIGRAPHS_INCLUDE = -I$(top_srcdir)/extern/
+endif
 
 BINARCHDIR = bin/$(GAPARCH)
 GAPINSTALLLIB = $(abs_top_srcdir)/$(BINARCHDIR)
@@ -28,18 +30,21 @@ pkginclude_HEADERS += src/homos.h
 pkginclude_HEADERS += src/perms.h
 pkginclude_HEADERS += src/planar.h
 pkginclude_HEADERS += src/schreier-sims.h
-pkginclude_HEADERS += extern/bliss-0.73/bignum.hh
-pkginclude_HEADERS += extern/bliss-0.73/bliss_C.h
-pkginclude_HEADERS += extern/bliss-0.73/defs.hh
-pkginclude_HEADERS += extern/bliss-0.73/graph.hh
-pkginclude_HEADERS += extern/bliss-0.73/heap.hh
-pkginclude_HEADERS += extern/bliss-0.73/kqueue.hh
-pkginclude_HEADERS += extern/bliss-0.73/kstack.hh
-pkginclude_HEADERS += extern/bliss-0.73/orbit.hh
-pkginclude_HEADERS += extern/bliss-0.73/partition.hh
-pkginclude_HEADERS += extern/bliss-0.73/timer.hh
-pkginclude_HEADERS += extern/bliss-0.73/uintseqhash.hh
-pkginclude_HEADERS += extern/bliss-0.73/utils.hh
+
+if WITH_INCLUDED_BLISS
+  pkginclude_HEADERS += extern/bliss-0.73/bignum.hh
+  pkginclude_HEADERS += extern/bliss-0.73/bliss_C.h
+  pkginclude_HEADERS += extern/bliss-0.73/defs.hh
+  pkginclude_HEADERS += extern/bliss-0.73/graph.hh
+  pkginclude_HEADERS += extern/bliss-0.73/heap.hh
+  pkginclude_HEADERS += extern/bliss-0.73/kqueue.hh
+  pkginclude_HEADERS += extern/bliss-0.73/kstack.hh
+  pkginclude_HEADERS += extern/bliss-0.73/orbit.hh
+  pkginclude_HEADERS += extern/bliss-0.73/partition.hh
+  pkginclude_HEADERS += extern/bliss-0.73/timer.hh
+  pkginclude_HEADERS += extern/bliss-0.73/uintseqhash.hh
+  pkginclude_HEADERS += extern/bliss-0.73/utils.hh
+endif
 
 digraphs_la_SOURCES =  src/digraphs.c
 digraphs_la_SOURCES += src/bitarray.c
@@ -49,15 +54,18 @@ digraphs_la_SOURCES += src/homos-graphs.c
 digraphs_la_SOURCES += src/perms.c
 digraphs_la_SOURCES += src/planar.c
 digraphs_la_SOURCES += src/schreier-sims.c
-digraphs_la_SOURCES += extern/bliss-0.73/defs.cc
-digraphs_la_SOURCES += extern/bliss-0.73/graph.cc
-digraphs_la_SOURCES += extern/bliss-0.73/partition.cc
-digraphs_la_SOURCES += extern/bliss-0.73/orbit.cc
-digraphs_la_SOURCES += extern/bliss-0.73/uintseqhash.cc
-digraphs_la_SOURCES += extern/bliss-0.73/heap.cc
-digraphs_la_SOURCES += extern/bliss-0.73/timer.cc
-digraphs_la_SOURCES += extern/bliss-0.73/utils.cc
-digraphs_la_SOURCES += extern/bliss-0.73/bliss_C.cc
+
+if WITH_INCLUDED_BLISS
+  digraphs_la_SOURCES += extern/bliss-0.73/defs.cc
+  digraphs_la_SOURCES += extern/bliss-0.73/graph.cc
+  digraphs_la_SOURCES += extern/bliss-0.73/partition.cc
+  digraphs_la_SOURCES += extern/bliss-0.73/orbit.cc
+  digraphs_la_SOURCES += extern/bliss-0.73/uintseqhash.cc
+  digraphs_la_SOURCES += extern/bliss-0.73/heap.cc
+  digraphs_la_SOURCES += extern/bliss-0.73/timer.cc
+  digraphs_la_SOURCES += extern/bliss-0.73/utils.cc
+  digraphs_la_SOURCES += extern/bliss-0.73/bliss_C.cc
+endif
 
 digraphs_la_CPPFLAGS =  $(GAP_CPPFLAGS)
 digraphs_la_CPPFLAGS += $(CODE_COVERAGE_CPPFLAGS)

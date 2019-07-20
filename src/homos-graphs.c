@@ -14,7 +14,17 @@
 #include <stdlib.h>  // for free, malloc, NULL
 
 // Bliss headers
-#include "bliss-0.73/bliss_C.h"  // for BlissGraph, . . .
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+#include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
+#else
+#include "bliss/bliss_C.h"
+#define bliss_digraphs_add_edge                 bliss_add_edge
+#define bliss_digraphs_new                      bliss_new
+#define bliss_digraphs_add_vertex               bliss_add_vertex
+#define bliss_digraphs_find_canonical_labeling  bliss_find_canonical_labeling
+#define bliss_digraphs_release                  bliss_release
+#define bliss_digraphs_find_automorphisms       bliss_find_automorphisms
+#endif
 
 // GAP headers
 #include "src/compiled.h"  // for Obj, Int
