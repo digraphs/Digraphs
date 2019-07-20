@@ -12,6 +12,7 @@
 **
 *******************************************************************************/
 
+#include "digraphs-config.h"
 #include "digraphs.h"
 
 #include <stdbool.h>  // for false, true, bool

@@ -8,6 +8,7 @@
 **
 ********************************************************************************/
 
+#include "digraphs-config.h"
 #include "homos-graphs.h"
 
 // C headers
