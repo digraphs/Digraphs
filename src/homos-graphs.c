@@ -8,11 +8,18 @@
 **
 ********************************************************************************/
 
-#include "digraphs-config.h"
 #include "homos-graphs.h"
 
 // C headers
 #include <stdlib.h>  // for free, malloc, NULL
+
+// GAP headers
+#include "src/compiled.h"  // for Obj, Int
+
+// Digraphs headers
+#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
+#include "schreier-sims.h"   // for PERM_DEGREE
+#include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_BLISS
 
 // Bliss headers
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
@@ -26,13 +33,6 @@
 #define bliss_digraphs_release                  bliss_release
 #define bliss_digraphs_find_automorphisms       bliss_find_automorphisms
 #endif
-
-// GAP headers
-#include "src/compiled.h"  // for Obj, Int
-
-// Digraphs headers
-#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-#include "schreier-sims.h"   // for PERM_DEGREE
 
 Digraph* new_digraph(uint16_t const nr_verts) {
   DIGRAPHS_ASSERT(nr_verts <= MAXVERTS);

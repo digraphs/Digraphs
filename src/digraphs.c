@@ -18,6 +18,10 @@
 #include <stdbool.h>  // for false, true, bool
 #include <stdlib.h>   // for NULL, free
 
+#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
+#include "homos.h"           // for FuncHomomorphismDigraphsFinder
+#include "planar.h"          // for FUNC_IS_PLANAR, . . .
+
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
 #include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
 #else
@@ -28,10 +32,6 @@
 #define bliss_digraphs_find_canonical_labeling  bliss_find_canonical_labeling
 #define bliss_digraphs_release                  bliss_release
 #endif
-
-#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-#include "homos.h"           // for FuncHomomorphismDigraphsFinder
-#include "planar.h"          // for FUNC_IS_PLANAR, . . .
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
