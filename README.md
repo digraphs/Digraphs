@@ -84,6 +84,10 @@ and `CFLAGS`) need to be chosen to match the setup of the original
 [GAP](http://www.gap-system.org) compilation. For example you have to specify
 32-bit or 64-bit mode correctly!
 
+Digraphs vendors `bliss` and `planarity` libraries in `extern` directory. If you
+wish to use your system copy of `bliss` and `planarity`, use the configure options
+`--with-external-bliss` and `--with-external-planarity`.
+
 If you wish to install a [development version of the Digraphs package](https://www.github.com/gap-packages/Digraphs), then you must first run the command `./autogen.sh` before compilation. However, development versions of the package may be unstable, and we recommend using the most recently released version of the package when possible.
 
 Enjoy!
