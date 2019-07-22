@@ -98,7 +98,7 @@ before_install:
       export PATH=/home/travis/miniconda3/bin:$PATH;
       conda update --yes conda;
       conda config --add channels conda-forge;
-      conda install --yes ${SUITE:9} readline;
+      conda install --yes planarity bliss readline;
     fi;
 
 install:
