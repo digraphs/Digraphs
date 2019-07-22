@@ -1120,7 +1120,7 @@ function(filt, n)
   return Digraph(IsMutableDigraph, fam, IsSubsetBlist);
 end);
 
-InstallMethod(RandomLatticeCons, "for IsMutableDigraph and a pos int",
+InstallMethod(RandomLatticeCons, "for IsImmutableDigraph and a pos int",
 [IsImmutableDigraph, IsPosInt],
 function(filt, n)
   return MakeImmutableDigraph(RandomLatticeCons(IsMutableDigraph, n));

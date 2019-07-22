@@ -779,7 +779,7 @@ gap> RandomTournament(10);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> is a positive integer, this function return a random lattice
-    with <A>m</A> vertices, where it is guaranteed that <A>m</A> is between
+    with <C>m</C> vertices, where it is guaranteed that <C>m</C> is between
     <A>n</A> and <C>2 * <A>n</A></C>. See <Ref Prop="IsLatticeDigraph"/>. <P/>
   </Description>
 </ManSection>
