@@ -118,6 +118,10 @@ if test "x$with_external_planarity" = xno ; then
   AC_SUBST(PLANARITY_SUITE_DIR)
 fi
 
+# Check for system bliss suite
+
+AX_CHECK_BLISS()
+
 dnl compiler builtins
 AC_DEFUN([CHECK_COMPILER_BUILTIN],
 [AC_MSG_CHECKING([for $1])

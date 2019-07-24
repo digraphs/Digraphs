@@ -12,16 +12,26 @@
 **
 *******************************************************************************/
 
+#include "digraphs-config.h"
 #include "digraphs.h"
 
 #include <stdbool.h>  // for false, true, bool
 #include <stdlib.h>   // for NULL, free
 
-#include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
-
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos.h"           // for FuncHomomorphismDigraphsFinder
 #include "planar.h"          // for FUNC_IS_PLANAR, . . .
+
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+#include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
+#else
+#include "bliss/bliss_C.h"
+#define bliss_digraphs_add_edge                 bliss_add_edge
+#define bliss_digraphs_new                      bliss_new
+#define bliss_digraphs_add_vertex               bliss_add_vertex
+#define bliss_digraphs_find_canonical_labeling  bliss_find_canonical_labeling
+#define bliss_digraphs_release                  bliss_release
+#endif
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
