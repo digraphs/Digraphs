@@ -1367,6 +1367,91 @@ gap> OutNeighbours(sym);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DegreeMatrix">
+<ManSection>
+  <Attr Name="DegreeMatrix" Arg="digraph"/>
+  <Returns>A square matrix of non-negative integers.</Returns>
+  <Description>
+    This function returns the outdegree matrix <C>mat</C> of the digraph
+    <A>digraph</A>. The value of the <C>i</C>th diagonal matrix entry is the
+    outdegree of the vertex <C>i</C> in <A>digraph</A>. All off-diagonal entries 
+    are <C>0</C>.
+    If <A>digraph</A> has no vertices, then the empty list is returned. <P/>
+
+    See <Ref Attr="OutDegrees"/> for more information.
+    <Example><![CDATA[
+gap> gr := Digraph([[1, 2, 3], [4], [1, 3, 4], []]);
+<immutable digraph with 4 vertices, 7 edges>
+gap> PrintArray(DegreeMatrix(gr));
+[ [  3,  0,  0,  0 ],
+  [  0,  1,  0,  0 ],
+  [  0,  0,  3,  0 ],
+  [  0,  0,  0,  0 ] ]
+gap> gr := CycleDigraph(5);;
+gap> PrintArray(DegreeMatrix(gr));
+[ [  1,  0,  0,  0,  0 ],
+  [  0,  1,  0,  0,  0 ],
+  [  0,  0,  1,  0,  0 ],
+  [  0,  0,  0,  1,  0 ],
+  [  0,  0,  0,  0,  1 ] ]
+gap> DegreeMatrix(EmptyDigraph(0));
+[  ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="LaplacianMatrix">
+<ManSection>
+  <Attr Name="LaplacianMatrix" Arg="digraph"/>
+  <Returns>A square matrix of integers.</Returns>
+  <Description>
+    This function returns the outdegree Laplacian matrix <C>mat</C> of the digraph
+    <A>digraph</A>. The outdegree Laplacian matrix is defined as <C>DegreeMatrix(digraph) - AdjacencyMatrix(digraph)</C>.
+    If <A>digraph</A> has no vertices, then the empty list is returned. <P/>
+
+    See <Ref Attr="DegreeMatrix"/> and <Ref Attr="AdjacencyMatrix"/> for more information.
+    <Example><![CDATA[
+gap> gr := Digraph([[1, 2, 3], [4], [1, 3, 4], []]);
+<immutable digraph with 4 vertices, 7 edges>
+gap> PrintArray(LaplacianMatrix(gr));
+[ [   2,  -1,  -1,   0 ],
+  [   0,   1,   0,  -1 ],
+  [  -1,   0,   2,  -1 ],
+  [   0,   0,   0,   0 ] ]
+gap> LaplacianMatrix(EmptyDigraph(0));
+[  ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="NrSpanningTrees">
+<ManSection>
+  <Attr Name="NrSpanningTrees" Arg="digraph"/>
+  <Returns>An integer.</Returns>
+  <Description>
+    Returns the number of spanning trees of the symmetric digraph <A>digraph</A>.
+    <C>NrSpanningTrees</C> will return an error if <A>digraph</A> is not a
+    symmetric digraph. <P/> 
+
+    See <Ref Prop="IsSymmetricDigraph"/> and <Ref Oper="IsUndirectedSpanningTree" /> 
+    for more information. 
+    <Example><![CDATA[
+gap> gr := CompleteDigraph(5);
+<immutable digraph with 5 vertices, 20 edges>
+gap> NrSpanningTrees(gr);
+125
+gap> gr := DigraphSymmetricClosure(CycleDigraph(24));;
+gap> NrSpanningTrees(gr);
+24
+gap> NrSpanningTrees(EmptyDigraph(0));
+0
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="UndirectedSpanningTree">
 <ManSection>
   <Attr Name="UndirectedSpanningTree" Arg="digraph"/>

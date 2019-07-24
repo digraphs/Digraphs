@@ -33,6 +33,8 @@
     <#Include Label="InNeighboursOfVertex">
     <#Include Label="DigraphLoops">
     <#Include Label="PartialOrderDigraphMeetOfVertices">
+    <#Include Label="DegreeMatrix">
+    <#Include Label="LaplacianMatrix">
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>
@@ -63,6 +65,7 @@
     <#Include Label="DigraphDegeneracy">
     <#Include Label="DigraphDegeneracyOrdering">
     <#Include Label="HamiltonianPath">
+    <#Include Label="NrSpanningTrees">
   </Section>
 
   <Section><Heading>Cayley graphs of groups</Heading>
