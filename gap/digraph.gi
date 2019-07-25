@@ -136,26 +136,26 @@ function(filt, list)
   return MakeImmutableDigraph(DigraphConsNC(IsMutableDigraph, list));
 end);
 
-InstallMethod(DigraphNC, "for a function and a dense list",
-[IsFunction, IsDenseList],
-function(func, list)
-  return DigraphConsNC(func, list);
+InstallMethod(DigraphConsNC,
+"for IsVertexColoredDigraph, object, and dense list of colours",
+[IsVertexColoredDigraph, IsObject, IsDenseList],
+function(filt, obj, colors)
+  local D;
+  D := DigraphConsNC(IsImmutableDigraph, obj);
+  SetFilterObj(D, IsVertexColoredDigraph);
+  SetDigraphVertexColors(D, colors);
+  return D;
 end);
 
-InstallMethod(DigraphNC, "for a dense list", [IsDenseList],
-function(list)
-  return DigraphConsNC(IsImmutableDigraph, list);
-end);
-
-InstallMethod(DigraphNC, "for a function and a record",
-[IsFunction, IsRecord],
-function(func, record)
-  return DigraphConsNC(func, record);
-end);
-
-InstallMethod(DigraphNC, "for a record", [IsRecord],
-function(record)
-  return DigraphConsNC(IsImmutableDigraph, record);
+InstallGlobalFunction(DigraphNC,
+function(arg)
+  if Length(arg) = 0 then
+    ErrorNoReturn("there must be at least 1 argument,");
+  elif not IsFilter(arg[1]) then
+    CopyListEntries(arg, 1, 1, arg, 2, 1, Length(arg));
+    arg[1] := IsImmutableDigraph;
+  fi;
+  return CallFuncList(DigraphConsNC, arg);
 end);
 
 ########################################################################
@@ -182,6 +182,19 @@ function(D)
   return copy;
 end);
 
+InstallMethod(DigraphCopy, "for a dense vertex-colored digraph",
+[IsDenseDigraphRep and IsVertexColoredDigraph],
+function(D)
+  local copy;
+  IsValidDigraph(D);
+  copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
+  SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
+  SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
+  SetFilterObj(copy, IsVertexColoredDigraph);
+  SetDigraphVertexColors(copy, DigraphVertexColors(D));
+  return copy;
+end);
+
 InstallMethod(DigraphCopyIfMutable, "for a mutable digraph",
 [IsMutableDigraph], DigraphMutableCopy);
 
@@ -205,6 +218,16 @@ function(D)
   SetFilterObj(D, IsAttributeStoringRep);
   SetFilterObj(D, IsImmutableDigraph);
   MakeImmutable(D!.OutNeighbours);
+  return D;
+end);
+
+InstallMethod(MakeVertexColoredDigraph,
+"for an immutable digraph and a dense list",
+[IsImmutableDigraph, IsDenseList],
+function(D, colors)
+  colors := DIGRAPHS_ValidateVertexColouring(colors);
+  SetDigraphVertexColors(D, colors);
+  SetFilterObj(D, IsVertexColoredDigraph);
   return D;
 end);
 
@@ -369,6 +392,9 @@ function(filt, record)
       SetDigraphGroup(D, record.group);
       SetDigraphSchreierVector(D, record.schreierVector);
       SetRepresentativeOutNeighbours(D, record.adjacencies);
+      if IsBound(record.colourClasses) then
+        MakeVertexColoredDigraph(D, record.colourClasses);
+      fi;
     fi;
   else
     SetDigraphNrEdges(D, Length(record.DigraphSource));
@@ -408,58 +434,50 @@ function(filt, domain, src, ran)
   return MakeImmutableDigraph(DigraphCons(IsMutableDigraph, domain, src, ran));
 end);
 
-InstallMethod(Digraph, "for a filter and a record", [IsFunction, IsRecord],
-function(filt, record)
-  return DigraphCons(filt, record);
+InstallMethod(DigraphCons,
+"for IsVertexColoredDigraph, an object, and a dense list",
+[IsVertexColoredDigraph, IsObject, IsDenseList],
+function(filt, obj, colors)
+  return MakeVertexColoredDigraph(DigraphCons(IsImmutableDigraph, obj),
+                                  colors);
 end);
 
-InstallMethod(Digraph, "for a record", [IsRecord],
-function(record)
-  return DigraphCons(IsImmutableDigraph, record);
+InstallMethod(DigraphCons,
+"for IsVertexColoredDigraph, a list, a function, and a dense list",
+[IsVertexColoredDigraph, IsList, IsFunction, IsDenseList],
+function(filt, list, func, colors)
+  return MakeVertexColoredDigraph(DigraphCons(IsImmutableDigraph, list, func),
+                                  colors);
 end);
 
-InstallMethod(Digraph, "for a filter and a list", [IsFunction, IsList],
-function(func, list)
-  return DigraphCons(func, list);
+InstallMethod(DigraphCons,
+"for IsVertexColoredDigraph, an integer, a list, a list, and a dense list",
+[IsVertexColoredDigraph, IsInt, IsList, IsList, IsDenseList],
+function(filt, n, src, ran, colors)
+  return MakeVertexColoredDigraph(DigraphCons(IsImmutableDigraph, n, src, ran),
+                                  colors);
 end);
 
-InstallMethod(Digraph, "for a list", [IsList],
-function(list)
-  return DigraphCons(IsImmutableDigraph, list);
+InstallMethod(DigraphCons,
+"for IsVertexColoredDigraph, a list, a list, a list, and a dense list",
+[IsVertexColoredDigraph, IsInt, IsList, IsList, IsDenseList],
+function(filt, dom, src, ran, colors)
+  return MakeVertexColoredDigraph(DigraphCons(IsImmutableDigraph,
+                                              dom,
+                                              src,
+                                              ran),
+                                  colors);
 end);
 
-InstallMethod(Digraph, "for a filter, a list, and a function",
-[IsFunction, IsList, IsFunction],
-function(filt, list, func)
-  return DigraphCons(filt, list, func);
-end);
-
-InstallMethod(Digraph, "for a list and a function", [IsList, IsFunction],
-function(list, func)
-  return DigraphCons(IsImmutableDigraph, list, func);
-end);
-
-InstallMethod(Digraph, "for a filter, integer, list, and list",
-[IsFunction, IsInt, IsList, IsList],
-function(filt, n, src, ran)
-  return DigraphCons(filt, n, src, ran);
-end);
-
-InstallMethod(Digraph, "for an integer, list, and list",
-[IsInt, IsList, IsList],
-function(n, src, ran)
-  return DigraphCons(IsImmutableDigraph, n, src, ran);
-end);
-
-InstallMethod(Digraph, "for a filter, list, list, and list",
-[IsFunction, IsList, IsList, IsList],
-function(filt, dom, src, ran)
-  return DigraphCons(filt, dom, src, ran);
-end);
-
-InstallMethod(Digraph, "for a list, list, and list", [IsList, IsList, IsList],
-function(dom, src, ran)
-  return DigraphCons(IsImmutableDigraph, dom, src, ran);
+InstallGlobalFunction(Digraph,
+function(arg)
+  if Length(arg) = 0 then
+    ErrorNoReturn("there must be at least 1 argument,");
+  elif not IsFilter(arg[1]) then
+    CopyListEntries(arg, 1, 1, arg, 2, 1, Length(arg));
+    arg[1] := IsImmutableDigraph;
+  fi;
+  return CallFuncList(DigraphCons, arg);
 end);
 
 ########################################################################
@@ -476,7 +494,9 @@ function(D)
   elif IsImmutableDigraph(D) then
     Append(str, "immutable ");
   fi;
-
+  if IsVertexColoredDigraph(D) then
+    Append(str, "vertex colored ");
+  fi;
   if IsMultiDigraph(D) then
     Append(str, "multi");
   fi;
@@ -516,7 +536,18 @@ function(D)
                        " )");
 end);
 
+InstallMethod(PrintString, "for a vertex colored dense digraph",
+[IsVertexColoredDigraph and IsDenseDigraphRep],
+function(D)
+  return Concatenation("Digraph( IsVertexColoredDigraph,",
+                       PrintString(OutNeighbours(D)),
+                       ", ",
+                       PrintString(DigraphVertexColors(D)),
+                       " )");
+end);
+
 InstallMethod(String, "for a dense immutable digraph",
+
 [IsImmutableDigraph and IsDenseDigraphRep],
 function(D)
   return Concatenation("Digraph( IsImmutableDigraph, ",
@@ -529,6 +560,16 @@ InstallMethod(String, "for a dense mutable digraph",
 function(D)
   return Concatenation("Digraph( IsMutableDigraph, ",
                        String(OutNeighbours(D)),
+                       " )");
+end);
+
+InstallMethod(String, "for a vertex colored dense digraph",
+[IsVertexColoredDigraph and IsDenseDigraphRep],
+function(D)
+  return Concatenation("Digraph( IsVertexColoredDigraph, ",
+                       String(OutNeighbours(D)),
+                       ", ",
+                       String(DigraphVertexColors(D)),
                        " )");
 end);
 
@@ -548,6 +589,33 @@ function(C, D)
   IsValidDigraph(C);
   IsValidDigraph(D);
   return DIGRAPH_LT(C, D);
+end);
+
+InstallMethod(\=, "for a digraph and vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnFalse);
+
+InstallMethod(\=, "for vertex colored digraph and digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFalse);
+
+InstallMethod(\=, "for vertex colored digraphs",
+[IsVertexColoredDigraph, IsVertexColoredDigraph],
+function(C, D)
+  return DIGRAPH_EQUALS(C, D)
+    and DigraphVertexColors(C) = DigraphVertexColors(D);
+end);
+
+InstallMethod(\<, "for a digraph and vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnTrue);
+
+InstallMethod(\<, "for a vertex colored digraph and digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFalse);
+
+InstallMethod(\<, "for vertex colored digraphs",
+[IsVertexColoredDigraph, IsVertexColoredDigraph],
+function(C, D)
+  return DIGRAPH_LT(C, D) or (DIGRAPH_EQUALS(C, D)
+                              and DigraphVertexColors(C) <
+                                  DigraphVertexColors(D));
 end);
 
 ########################################################################

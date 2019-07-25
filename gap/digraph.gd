@@ -15,6 +15,9 @@ DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
 DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);
 DeclareCategory("IsImmutableDigraph", IsDigraph);
 
+DeclareCategory("IsVertexColoredDigraph", IsImmutableDigraph);
+DeclareAttribute("DigraphVertexColors", IsVertexColoredDigraph);
+
 DeclareGlobalFunction("IsValidDigraph");
 
 # Family
@@ -34,12 +37,10 @@ DeclareOperation("ConvertToImmutableDigraphNC", [IsList]);
 
 DeclareConstructor("DigraphConsNC", [IsDigraph, IsRecord]);
 DeclareConstructor("DigraphConsNC", [IsDigraph, IsDenseList]);
+DeclareConstructor("DigraphConsNC",
+                   [IsVertexColoredDigraph, IsObject, IsDenseList]);
 
-DeclareOperation("DigraphNC", [IsFunction, IsRecord]);
-DeclareOperation("DigraphNC", [IsFunction, IsDenseList]);
-
-DeclareOperation("DigraphNC", [IsRecord]);
-DeclareOperation("DigraphNC", [IsDenseList]);
+DeclareGlobalFunction("DigraphNC");
 
 # Copies
 DeclareOperation("DigraphMutableCopy", [IsDigraph]);
@@ -50,6 +51,7 @@ DeclareOperation("DigraphCopyIfImmutable", [IsDigraph]);
 
 # Converter
 DeclareOperation("MakeImmutableDigraph", [IsDigraph]);
+DeclareOperation("MakeVertexColoredDigraph", [IsImmutableDigraph, IsDenseList]);
 
 # Constructors
 DeclareConstructor("DigraphCons", [IsDigraph, IsRecord]);
@@ -57,18 +59,18 @@ DeclareConstructor("DigraphCons", [IsDigraph, IsDenseList]);
 DeclareConstructor("DigraphCons", [IsDigraph, IsList, IsFunction]);
 DeclareConstructor("DigraphCons", [IsDigraph, IsInt, IsList, IsList]);
 DeclareConstructor("DigraphCons", [IsDigraph, IsList, IsList, IsList]);
+DeclareConstructor("DigraphCons",
+                   [IsVertexColoredDigraph, IsObject, IsDenseList]);
+DeclareConstructor("DigraphCons",
+                   [IsVertexColoredDigraph, IsList, IsFunction, IsDenseList]);
+DeclareConstructor("DigraphCons",
+                   [IsVertexColoredDigraph, IsInt, IsList, IsList,
+                    IsDenseList]);
+DeclareConstructor("DigraphCons",
+                   [IsVertexColoredDigraph, IsList, IsList, IsList,
+                    IsDenseList]);
 
-DeclareOperation("Digraph", [IsFunction, IsRecord]);
-DeclareOperation("Digraph", [IsFunction, IsList]);
-DeclareOperation("Digraph", [IsFunction, IsList, IsFunction]);
-DeclareOperation("Digraph", [IsFunction, IsInt, IsList, IsList]);
-DeclareOperation("Digraph", [IsFunction, IsList, IsList, IsList]);
-
-DeclareOperation("Digraph", [IsRecord]);
-DeclareOperation("Digraph", [IsList]);
-DeclareOperation("Digraph", [IsList, IsFunction]);
-DeclareOperation("Digraph", [IsInt, IsList, IsList]);
-DeclareOperation("Digraph", [IsList, IsList, IsList]);
+DeclareGlobalFunction("Digraph");
 
 # Constructors "by" something . . .
 DeclareConstructor("DigraphByAdjacencyMatrixCons",

@@ -292,11 +292,16 @@ end);
 
 InstallMethod(ReducedDigraph, "for an immutable digraph", [IsImmutableDigraph],
 function(D)
+  local C;
   if IsConnectedDigraph(D) then
     return D;
   fi;
-  D := ReducedDigraph(DigraphMutableCopy(D));
-  return MakeImmutableDigraph(D);
+  C := MakeImmutableDigraph(ReducedDigraph(DigraphMutableCopy(D)));
+  if IsVertexColoredDigraph(D) then
+    MakeVertexColoredDigraph(C,
+                             DigraphVertexColors(D){DigraphVertexLabels(C)});
+  fi;
+  return C;
 end);
 
 InstallMethod(ReducedDigraphAttr, "for an immutable digraph",
@@ -331,6 +336,9 @@ function(D)
   C := MakeImmutableDigraph(DigraphDual(C));
   if HasDigraphGroup(D) then
     SetDigraphGroup(C, DigraphGroup(D));
+  fi;
+  if IsVertexColoredDigraph(D) then
+    MakeVertexColoredDigraph(C, DigraphVertexColors(D));
   fi;
   SetDigraphDualAttr(D, C);
   return C;
@@ -1577,6 +1585,9 @@ function(D)
   fi;
   C := DigraphMutableCopy(D);
   C := MakeImmutableDigraph(MaximalSymmetricSubdigraph(C));
+  if IsVertexColoredDigraph(D) then
+    MakeVertexColoredDigraph(C, DigraphVertexColors(D));
+  fi;
   SetDigraphVertexLabels(C, DigraphVertexLabels(D));
   SetMaximalSymmetricSubdigraphAttr(D, C);
   return C;

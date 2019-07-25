@@ -29,7 +29,11 @@ function(arg)
     elif not IsBound(arg[3]) and (IsPosInt(arg[2]) or arg[2] = infinity) then
       # arg[2] is <limit>
       arg[3] := arg[2];
-      colours := fail;
+      if IsVertexColoredDigraph(D) then
+        colours := DigraphVertexColors(D);
+      else
+        colours := fail;
+      fi;
       G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(D));
     else
       ErrorNoReturn("the 2nd argument must be a homogenous list,");
@@ -38,7 +42,11 @@ function(arg)
     if HasGeneratorsOfEndomorphismMonoidAttr(D) then
       return GeneratorsOfEndomorphismMonoidAttr(D);
     fi;
-    colours := fail;
+    if IsVertexColoredDigraph(D) then
+      colours := DigraphVertexColors(D);
+    else
+      colours := fail;
+    fi;
     G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(D));
   fi;
 
@@ -282,6 +290,73 @@ function(D1, D2)
   return Union(List(aut, x -> hom * x));
 end);
 
+InstallMethod(DigraphHomomorphism,
+"for a vertex colored digraph and a vertex colored digraph",
+[IsVertexColoredDigraph, IsVertexColoredDigraph],
+function(C, D)
+  local out;
+  out := HomomorphismDigraphsFinder(C,
+                                    D,
+                                    fail,
+                                    [],
+                                    1,
+                                    fail,
+                                    false,
+                                    DigraphVertices(D),
+                                    [],
+                                    DigraphVertexColors(C),
+                                    DigraphVertexColors(D),
+                                    DigraphWelshPowellOrder(C));
+  if IsEmpty(out) then
+    return fail;
+  fi;
+  return out[1];
+end);
+
+InstallMethod(DigraphHomomorphism,
+"for a vertex colored digraph and a digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFail);
+
+InstallMethod(DigraphHomomorphism,
+"for a digraph and a vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnFail);
+
+InstallMethod(HomomorphismsDigraphsRepresentatives,
+"for a vertex colored digraph and a vertex colored digraph",
+[IsVertexColoredDigraph, IsVertexColoredDigraph],
+function(C, D)
+  if IsIsomorphicDigraph(C, D) then
+    return AsTransformation(IsomorphismDigraphs(C, D));
+  fi;
+  return HomomorphismDigraphsFinder(C,
+                                    D,
+                                    fail,
+                                    [],
+                                    infinity,
+                                    fail,
+                                    false,
+                                    DigraphVertices(D),
+                                    [],
+                                    DigraphVertexColors(C),
+                                    DigraphVertexColors(D));
+end);
+
+InstallMethod(HomomorphismsDigraphsRepresentatives,
+"for a vertex colored digraph and a digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFail);
+
+InstallMethod(HomomorphismsDigraphsRepresentatives,
+"for a digraph and a vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnFail);
+
+InstallMethod(HomomorphismsDigraphs,
+"for a vertex colored digraph and a digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFail);
+
+InstallMethod(HomomorphismsDigraphs,
+"for a digraph and a vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnFail);
+
 ################################################################################
 # INJECTIVE HOMOMORPHISMS
 
@@ -345,6 +420,69 @@ function(D1, D2)
   return Union(List(aut, x -> hom * x));
 end);
 
+InstallMethod(DigraphMonomorphism,
+"for a vertex colored digraph and a vertex colored digraph",
+[IsVertexColoredDigraph, IsVertexColoredDigraph],
+function(gr1, gr2)
+  local out;
+  if IsIsomorphicDigraph(gr1, gr2) then
+    return AsTransformation(IsomorphismDigraphs(gr1, gr2));
+  fi;
+  out := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1,
+                                    DigraphNrVertices(gr1), true,
+                                    DigraphVertices(gr2), [],
+                                    DigraphVertexColors(gr1),
+                                    DigraphVertexColors(gr2));
+  if IsEmpty(out) then
+    return fail;
+  fi;
+  return out[1];
+end);
+
+InstallMethod(DigraphMonomorphism,
+"for a vertex colored digraph and a digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFail);
+
+InstallMethod(DigraphMonomorphism,
+"for a digraph and a vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnFail);
+
+InstallMethod(MonomorphismsDigraphsRepresentatives,
+"for a vertex colored digraph and a vertex colored digraph",
+[IsVertexColoredDigraph, IsVertexColoredDigraph],
+function(C, D)
+  if IsIsomorphicDigraph(C, D) then
+    return AsTransformation(IsomorphismDigraphs(C, D));
+  fi;
+  return HomomorphismDigraphsFinder(C,
+                                    D,
+                                    fail,
+                                    [],
+                                    infinity,
+                                    DigraphNrVertices(C),
+                                    true,
+                                    DigraphVertices(D),
+                                    [],
+                                    DigraphVertexColors(C),
+                                    DigraphVertexColors(D));
+end);
+
+InstallMethod(MonomorphismsDigraphsRepresentatives,
+"for a vertex colored digraph and a digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFail);
+
+InstallMethod(MonomorphismsDigraphsRepresentatives,
+"for a digraph and a vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnFail);
+
+InstallMethod(MonomorphismsDigraphs,
+"for a vertex colored digraph and a digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFail);
+
+InstallMethod(MonomorphismsDigraphs,
+"for a digraph and a vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnFail);
+
 ################################################################################
 # SURJECTIVE HOMOMORPHISMS
 
@@ -407,6 +545,76 @@ function(D1, D2)
   return Union(List(aut, x -> hom * x));
 end);
 
+InstallMethod(DigraphEpimorphism,
+"for a vertex colored digraph and a vertex colored digraph",
+[IsVertexColoredDigraph, IsVertexColoredDigraph],
+function(C, D)
+  local out;
+  if IsIsomorphicDigraph(C, D) then
+    return AsTransformation(IsomorphismDigraphs(C, D));
+  fi;
+  out := HomomorphismDigraphsFinder(C,
+                                    D,
+                                    fail,
+                                    [],
+                                    1,
+                                    DigraphNrVertices(D),
+                                    false,
+                                    DigraphVertices(D),
+                                    [],
+                                    DigraphVertexColors(C),
+                                    DigraphVertexColors(D));
+
+  if IsEmpty(out) then
+    return fail;
+  fi;
+  return out[1];
+end);
+
+InstallMethod(DigraphEpimorphism,
+"for a vertex colored digraph and a digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFail);
+
+InstallMethod(DigraphEpimorphism,
+"for a digraph and a vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnFail);
+
+InstallMethod(EpimorphismsDigraphsRepresentatives,
+"for a vertex colored digraph and a vertex colored digraph",
+[IsVertexColoredDigraph, IsVertexColoredDigraph],
+function(C, D)
+  if IsIsomorphicDigraph(C, D) then
+    return AsTransformation(IsomorphismDigraphs(C, D));
+  fi;
+  return HomomorphismDigraphsFinder(C,
+                                    D,
+                                    fail,
+                                    [],
+                                    infinity,
+                                    DigraphNrVertices(D),
+                                    false,
+                                    DigraphVertices(D),
+                                    [],
+                                    DigraphVertexColors(C),
+                                    DigraphVertexColors(D));
+end);
+
+InstallMethod(EpimorphismsDigraphsRepresentatives,
+"for a vertex colored digraph and a digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFail);
+
+InstallMethod(EpimorphismsDigraphsRepresentatives,
+"for a digraph and a vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnFail);
+
+InstallMethod(EpimorphismsDigraphs,
+"for a vertex colored digraph and a digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFail);
+
+InstallMethod(EpimorphismsDigraphs,
+"for a digraph and a vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnFail);
+
 ################################################################################
 # Embeddings
 ################################################################################
@@ -466,6 +674,14 @@ function(D1, D2)
               AsTransformation);
   return Union(List(aut, x -> hom * x));
 end);
+
+InstallMethod(DigraphEmbedding,
+"for a vertex colored digraph and a digraph",
+[IsVertexColoredDigraph, IsDigraph], ReturnFail);
+
+InstallMethod(DigraphEmbedding,
+"for a digraph and a vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph], ReturnFail);
 
 ########################################################################
 # IsDigraphHomo/Epi/.../morphism

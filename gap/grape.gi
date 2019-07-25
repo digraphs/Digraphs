@@ -17,10 +17,10 @@
 InstallImmediateMethod(SemigroupOfCayleyDigraph,
 IsCayleyDigraph and HasGroupOfCayleyDigraph, 0, GroupOfCayleyDigraph);
 
-InstallMethod(Digraph,
-"for a group, list or collection, function, and function",
-[IsGroup, IsListOrCollection, IsFunction, IsFunction],
-function(G, obj, act, adj)
+InstallMethod(DigraphCons,
+"for IsImmutableDigraph, a group, list or collection, function, and function",
+[IsImmutableDigraph, IsGroup, IsListOrCollection, IsFunction, IsFunction],
+function(filt, G, obj, act, adj)
   local hom, dom, sch, orbits, reps, stabs, rep_out, out, gens, trace, word,
   D, adj_func, i, o, w;
 
@@ -114,7 +114,7 @@ end);
 
 InstallMethod(Graph, "for a digraph", [IsDigraph],
 function(D)
-  local gamma, i, n;
+  local n, gamma, c, i;
   IsValidDigraph(D);
 
   if IsMultiDigraph(D) then
@@ -149,6 +149,16 @@ function(D)
 
   fi;
   gamma.names := Immutable(DigraphVertexLabels(D));
+  if IsVertexColoredDigraph(D) then
+    gamma.colourClasses := [];
+    for i in DigraphVertices(D) do
+      c := DigraphVertexColors(D)[i];
+      if not IsBound(gamma.colourClasses[c]) then
+        gamma.colourClasses[c] := [];
+      fi;
+      Add(gamma.colourClasses[c], i);
+    od;
+  fi;
   return gamma;
 end);
 

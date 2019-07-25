@@ -147,6 +147,15 @@ function(D, colors)
   return BLISS_DATA(D, colors)[2];
 end);
 
+InstallMethod(BlissCanonicalLabelling, "for a vertex colored digraph",
+[IsVertexColoredDigraph],
+function(D)
+  local data;
+  data := BLISS_DATA(D, DigraphVertexColors(D));
+  SetBlissAutomorphismGroup(D, data[1]);
+  return data[2];
+end);
+
 InstallMethod(NautyCanonicalLabelling, "for a digraph",
 [IsDigraph],
 function(D)
@@ -171,6 +180,19 @@ function(D, colors)
   fi;
   IsValidDigraph(D);
   return NAUTY_DATA(D, colors)[2];
+end);
+
+InstallMethod(NautyCanonicalLabelling, "for a vertex colored digraph",
+[IsVertexColoredDigraph],
+function(D)
+  local data;
+  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(D) then
+    Info(InfoWarning, 1, "NautyTracesInterface is not available");
+    return fail;
+  fi;
+  data := NAUTY_DATA(D, DigraphVertexColors(D));
+  SetNautyAutomorphismGroup(D, data[1]);
+  return data[2];
 end);
 
 # Canonical digraphs
@@ -231,6 +253,22 @@ function(D)
   return data[1];
 end);
 
+InstallMethod(BlissAutomorphismGroup, "for a vertex colored digraph",
+[IsVertexColoredDigraph],
+function(D)
+  local data;
+  data := BLISS_DATA(D, DigraphVertexColors(D));
+  SetBlissCanonicalLabelling(D, data[2]);
+  if not HasDigraphGroup(D) then
+    if IsMultiDigraph(D) then
+      SetDigraphGroup(D, Range(Projection(data[1], 1)));
+    else
+      SetDigraphGroup(D, data[1]);
+    fi;
+  fi;
+  return data[1];
+end);
+
 InstallMethod(NautyAutomorphismGroup, "for a digraph", [IsDigraph],
 function(D)
   local data;
@@ -241,6 +279,23 @@ function(D)
   IsValidDigraph(D);
 
   data := NAUTY_DATA_NO_COLORS(D);
+  SetNautyCanonicalLabelling(D, data[2]);
+  if not HasDigraphGroup(D) then
+    # Multidigraphs not allowed
+    SetDigraphGroup(D, data[1]);
+  fi;
+  return data[1];
+end);
+
+InstallMethod(NautyAutomorphismGroup, "for a vertex colored digraph",
+[IsVertexColoredDigraph],
+function(D)
+  local data;
+  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(D) then
+    Info(InfoWarning, 1, "NautyTracesInterface is not available");
+    return fail;
+  fi;
+  data := NAUTY_DATA(D, DigraphVertexColors(D));
   SetNautyCanonicalLabelling(D, data[2]);
   if not HasDigraphGroup(D) then
     # Multidigraphs not allowed
@@ -363,6 +418,31 @@ function(C, D, c1, c2)
   fi;
 end);
 
+InstallMethod(IsIsomorphicDigraph, "for vertex colored digraphs",
+[IsVertexColoredDigraph, IsVertexColoredDigraph],
+function(C, D)
+  return IsIsomorphicDigraph(C,
+                             D,
+                             DigraphVertexColors(C),
+                             DigraphVertexColors(D));
+end);
+
+InstallMethod(IsIsomorphicDigraph, "for a vertex colored digraph and digraph",
+[IsVertexColoredDigraph, IsDigraph],
+function(C, D)
+  return IsIsomorphicDigraph(C,
+                             D,
+                             DigraphVertexColors(C),
+                             ListWithIdenticalEntries(DigraphNrVertices(D),
+                                                      1));
+end);
+
+InstallMethod(IsIsomorphicDigraph, "for a digraph and vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph],
+function(C, D)
+  return IsomorphismDigraphs(D, C);
+end);
+
 # Isomorphisms between digraphs
 
 InstallMethod(IsomorphismDigraphs, "for digraphs", [IsDigraph, IsDigraph],
@@ -454,6 +534,30 @@ function(C, D, c1, c2)
   return label1 / label2;
 end);
 
+InstallMethod(IsomorphismDigraphs, "for vertex colored digraphs",
+[IsVertexColoredDigraph, IsVertexColoredDigraph],
+function(C, D)
+  return IsomorphismDigraphs(C,
+                             D,
+                             DigraphVertexColors(C),
+                             DigraphVertexColors(D));
+end);
+
+InstallMethod(IsomorphismDigraphs, "for a vertex colored digraph and digraph",
+[IsVertexColoredDigraph, IsDigraph],
+function(C, D)
+  return IsomorphismDigraphs(C,
+                             D,
+                             DigraphVertexColors(C),
+                             ListWithIdenticalEntries(DigraphNrVertices(D),
+                                                      1));
+end);
+
+InstallMethod(IsomorphismDigraphs, "for digraph and a vertex colored digraph",
+[IsDigraph, IsVertexColoredDigraph],
+function(C, D)
+  return IsomorphismDigraphs(D, C);
+end);
 # Given a non-negative integer <n> and a homogeneous list <partition>,
 # this global function tests whether <partition> is a valid partition
 # of the list [1 .. n]. A valid partition of [1 .. n] is either:
