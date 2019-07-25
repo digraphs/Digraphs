@@ -132,6 +132,10 @@ DeclareConstructor("RandomTournamentCons", [IsDigraph, IsInt]);
 DeclareOperation("RandomTournament", [IsInt]);
 DeclareOperation("RandomTournament", [IsFunction, IsInt]);
 
+DeclareConstructor("RandomLatticeCons", [IsDigraph, IsPosInt]);
+DeclareOperation("RandomLattice", [IsPosInt]);
+DeclareOperation("RandomLattice", [IsFunction, IsPosInt]);
+
 # No mutable analogues of the following because we will withdraw multidigraphs
 # the not too distant future!
 DeclareOperation("RandomMultiDigraph", [IsPosInt]);

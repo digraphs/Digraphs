@@ -1104,3 +1104,36 @@ InstallMethod(RandomTournament, "for a func and an integer",
 function(func, n)
   return RandomTournamentCons(func, n);
 end);
+
+InstallMethod(RandomLatticeCons, "for IsMutableDigraph and a pos int",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local fam, rand_blist;
+
+  fam := [BlistList([1 .. n], [])];
+
+  while Length(fam) < n do
+    rand_blist := List([1 .. n], x -> Random([true, false]));
+    UniteSet(fam, List(fam, x -> UnionBlist(x, rand_blist)));
+  od;
+
+  return Digraph(IsMutableDigraph, fam, IsSubsetBlist);
+end);
+
+InstallMethod(RandomLatticeCons, "for IsImmutableDigraph and a pos int",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  return MakeImmutableDigraph(RandomLatticeCons(IsMutableDigraph, n));
+end);
+
+InstallMethod(RandomLattice, "for a pos int",
+[IsPosInt],
+function(n)
+  return RandomLatticeCons(IsImmutableDigraph, n);
+end);
+
+InstallMethod(RandomLattice, "for a func and a pos int",
+[IsFunction, IsPosInt],
+function(func, n)
+  return RandomLatticeCons(func, n);
+end);
