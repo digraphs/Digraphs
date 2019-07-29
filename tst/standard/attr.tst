@@ -1796,7 +1796,7 @@ gap> DigraphCore(D);
 gap> D := Digraph([[2], [1], [4, 5], [5], [4]]);
 <immutable digraph with 5 vertices, 6 edges>
 gap> DigraphCore(D);
-[ 3, 4, 5 ]
+[ 3 .. 5 ]
 gap> D := EmptyDigraph(0);
 <immutable digraph with 0 vertices, 0 edges>
 gap> DigraphCore(D);
@@ -1829,8 +1829,7 @@ true
 gap> D := DigraphDisjointUnion(D1, D2, M1);
 <immutable digraph with 29 vertices, 134 edges>
 gap> DigraphCore(D);
-[ 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 
-  27, 28, 29 ]
+[ 8 .. 29 ]
 gap> IsDigraphCore(InducedSubdigraph(D, DigraphCore(D)));
 true
 gap> str := ".qb`hOAW@fAiG]g??aGD[TXAbjgWl^?fkG{~cA@p`e~EIRlHSxBFHx\\RJ@ERCYhVSoIDvIE?c?x_\
@@ -1843,7 +1842,19 @@ gap> DigraphCore(D);
 gap> D := Digraph([[2, 8], [3], [1], [5], [6], [7], [4], []]);
 <immutable digraph with 8 vertices, 8 edges>
 gap> DigraphCore(D);
-[ 1, 2, 3, 4, 5, 6, 7 ]
+[ 1 .. 7 ]
+gap> D := Digraph([[], [2]]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphCore(D);
+[ 2 ]
+gap> D := DigraphDisjointUnion(EmptyDigraph(1), CompleteBipartiteDigraph(3, 3));
+<immutable digraph with 7 vertices, 18 edges>
+gap> DigraphCore(D);
+[ 2, 5 ]
+gap> D := DigraphFromDigraph6String("&IO?_@?A?CG??O?_G??");
+<immutable digraph with 10 vertices, 9 edges>
+gap> DigraphCore(D);
+[ 7 .. 9 ]
 
 # MaximalAntiSymmetricSubdigraph
 gap> MaximalAntiSymmetricSubdigraph(NullDigraph(0));

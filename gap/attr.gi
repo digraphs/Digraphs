@@ -1691,10 +1691,9 @@ InstallMethod(DigraphCore, "for a digraph",
 [IsDigraph],
 function(digraph)
   local N, lo, topdown, bottomup, hom, lo_var, image,
-  comps, comp, cores, G, vert_labels, D, in_core, n, m, L;
-  if not IsImmutableDigraph(digraph) then
-    digraph := DigraphImmutableCopy(digraph);
-  fi;
+  comps, comp, cores, D, in_core, n, m, L;
+  digraph := DigraphImmutableCopy(digraph);
+  # copy is necessary so can change vertex labels in function
   N := DigraphNrVertices(digraph);
   if IsEmptyDigraph(digraph) then
     if N >= 1 then
@@ -1703,17 +1702,18 @@ function(digraph)
       return [];
     fi;
   fi;
+  SetDigraphVertexLabels(digraph, [1 .. N]);
   digraph := ReducedDigraph(digraph);  # isolated verts are not in core
+  N       := DigraphNrVertices(digraph);
   if DigraphHasLoops(digraph) then
-    return DigraphLoops(digraph){[1]};
+    return [DigraphVertexLabels(digraph)[DigraphLoops(digraph)[1]]];
   elif not IsConnectedDigraph(digraph) then
-    comps := DigraphConnectedComponents(digraph).comps;
-    DigraphVertexLabels(digraph);
-    cores := [];
+    comps  := DigraphConnectedComponents(digraph).comps;
+    cores  := [];
     for comp in comps do
       D := InducedSubdigraph(digraph, comp);
-      D := InducedSubdigraph(D,
-           Positions(BlistList(DigraphVertexLabels(D), DigraphCore(D)), true));
+      N := DigraphNrVertices(D);
+      D := InducedSubdigraph(D, DigraphCore(D));
       Add(cores, D);
     od;
     L := Length(cores);
@@ -1738,15 +1738,11 @@ function(digraph)
       n := n + 1;
     od;
     cores := ListBlist(cores, in_core);
-    vert_labels := [];
-    for G in cores do
-      vert_labels := Concatenation(vert_labels, DigraphVertexLabels(G));
-    od;
-    return vert_labels;
+    return Union(List(cores, DigraphVertexLabels));
   elif IsCompleteDigraph(digraph) then
-    return [1 .. N];
+    return DigraphVertexLabels(digraph);
   elif IsSymmetricDigraph(digraph) and IsBipartiteDigraph(digraph) then
-    return DigraphEdges(digraph)[1];
+    return DigraphVertexLabels(digraph){DigraphEdges(digraph)[1]};
   fi;
 
   if IsDigraphCore(digraph) then
