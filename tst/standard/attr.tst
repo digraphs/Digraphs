@@ -1855,6 +1855,13 @@ gap> D := DigraphFromDigraph6String("&IO?_@?A?CG??O?_G??");
 <immutable digraph with 10 vertices, 9 edges>
 gap> DigraphCore(D);
 [ 7 .. 9 ]
+gap> D := CycleDigraph(IsMutableDigraph, 2);
+<mutable digraph with 2 vertices, 2 edges>
+gap> for i in [1 .. 9] do
+>      DigraphDisjointUnion(D, D);
+>    od;
+gap> DigraphCore(D);
+[ 1, 2 ]
 
 # MaximalAntiSymmetricSubdigraph
 gap> MaximalAntiSymmetricSubdigraph(NullDigraph(0));
