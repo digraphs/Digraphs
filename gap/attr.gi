@@ -1719,13 +1719,12 @@ function(digraph)
     cores  := [];
     for comp in comps do
       D := InducedSubdigraph(digraph, comp);
-      N := DigraphNrVertices(D);
       D := InducedSubdigraph(D, DigraphCore(D));
       Add(cores, D);
     od;
-    L := Length(cores);
-    in_core := List([1 .. L], x -> true);
-    n := 1;
+    L       := Length(cores);
+    in_core := ListWithIdenticalEntries(L, true);
+    n       := 1;
     while n <= L do
       if n <> L then
         m := n + 1;
@@ -1746,9 +1745,7 @@ function(digraph)
     od;
     cores := ListBlist(cores, in_core);
     return Union(List(cores, DigraphVertexLabels));
-  fi;
-
-  if IsDigraphCore(digraph) then
+  elif IsDigraphCore(digraph) then
     return DigraphVertexLabels(digraph);
   fi;
 
@@ -1762,9 +1759,9 @@ function(digraph)
   end;
 
   hom      := [];
-  lo_var := lo(digraph);
+  lo_var   := lo(digraph);
   bottomup := lo_var;
-  N := DigraphNrVertices(digraph);
+  N        := DigraphNrVertices(digraph);
   topdown  := N;
 
   while topdown >= bottomup do
@@ -1781,8 +1778,7 @@ function(digraph)
                                fail);                     # colors2
 
     if Length(hom) = 1 then
-      image    := ImageSetOfTransformation(hom[1], N);
-      return DigraphVertexLabels(digraph){image};
+      return DigraphVertexLabels(digraph){ImageSetOfTransformation(hom[1], N)};
     fi;
 
     HomomorphismDigraphsFinder(digraph,                   # domain copy
@@ -1796,24 +1792,18 @@ function(digraph)
                                [],                        # partial_map
                                fail,                      # colors1
                                fail);                     # colors2
+
     if Length(hom) = 1 then
       image    := ImageSetOfTransformation(hom[1], N);
       digraph  := InducedSubdigraph(digraph, image);
       N        := DigraphNrVertices(digraph);
+      lo_var   := lo(digraph);
       Unbind(hom[1]);
-      lo_var := lo(digraph);
     fi;
 
-    if topdown - 1 < N then
-      topdown := topdown - 1;
-    else
-      topdown := N;
-    fi;
-    if bottomup + 1 > lo_var then
-      bottomup := bottomup + 1;
-    else
-      bottomup := lo_var;
-    fi;
+    topdown  := Minimum(topdown - 1, N);
+    bottomup := Maximum(bottomup + 1, lo_var);
+
   od;
   return DigraphVertexLabels(digraph);
 end);
