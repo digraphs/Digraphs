@@ -3,7 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                                 Version 0.15.3
+                                 Version 0.15.4
   
   
                                   Jan De Beule

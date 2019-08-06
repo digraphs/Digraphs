@@ -3,6 +3,21 @@ Copyright (C) 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Micha
 
 Licensing information can be found in the LICENSE file.
 
+## Version 0.15.4 (released 06/08/2019)
+
+This is a minor release that fixes a few bugs.
+
+In previous versions, the homomorphism-finding tools sometimes returned
+purported ‘monomoprhisms’ that were not injective.  This problem was reported by
+Gordon Royle, see
+[Issue #222](https://github.com/gap-packages/Digraphs/issues/222),
+and fixed by [James D. Mitchell](http://goo.gl/ZtViV6) in
+[PR #223](https://github.com/gap-packages/Digraphs/pull/223).
+In addition, [Wilf A. Wilson](http://wilf.me)
+[fixed a bug](https://github.com/gap-packages/Digraphs/commit/458a10298b08881bf7ee9207534ce431378d2c4e)
+in `DigraphNrEdges`. This function could previously lead to a crash when given a
+digraph whose `OutNeighbours` contained entries not in `IsPlistRep`.
+
 ## Version 0.15.3 (released 12/06/2019)
 
 This is a minor release that fixes a typo in the documentation of
