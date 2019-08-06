@@ -91,7 +91,8 @@ done
 # Install required GAP packages
 cd $GAPROOT/pkg
 echo -e "\nGetting the required GAP packages (smallgrp, transgrp, primgrp)..."
-curl -LO "https://www.gap-system.org/pub/gap/gap4pkgs/packages-required-master.tar.gz"
+CURL="curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 40 -LO"
+$CURL "https://www.gap-system.org/pub/gap/gap4pkgs/packages-required-master.tar.gz"
 tar xf packages-required-master.tar.gz
 rm packages-required-master.tar.gz
 
