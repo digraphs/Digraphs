@@ -1706,8 +1706,9 @@ function(digraph)
   digraph := ReducedDigraph(digraph);  # isolated verts are not in core
   N       := DigraphNrVertices(digraph);
   if DigraphHasLoops(digraph) then
-    i := First(DigraphVertices(digraph), i -> i in OutNeighbours(digraph)[i]);
-    return [DigraphVertexLabels(digraph)[i]];
+    i := First(DigraphVertices(digraph),
+         i -> i in OutNeighboursOfVertex(digraph, i));
+    return [DigraphVertexLabel(digraph, i)];
   elif IsCompleteDigraph(digraph) then
     return DigraphVertexLabels(digraph);
   elif IsSymmetricDigraph(digraph) and IsBipartiteDigraph(digraph) then
