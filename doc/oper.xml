@@ -962,6 +962,96 @@ gap> DigraphJoin(gr, gr2);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphCartesianProduct">
+<ManSection>
+  <Func Name="DigraphCartesianProduct" Arg="gr1, gr2, ..." Label="for an arbitrary 
+   number of digraphs"/>
+  <Func Name="DigraphCartesianProduct" Arg="list" Label="for a list of digraphs"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
+    <C>DigraphCartesianProduct</C> returns their Cartesian product.
+
+    In the second form, if <A>list</A> is a non-empty list of digraphs,
+    then <C>DigraphCartesianProduct</C> returns the Cartesian product of 
+    the digraphs contained in the list. <P/>
+
+    The Cartesian product of two digraphs <C>G</C>, <C>H</C> is a digraph with 
+    vertex set <C>Cartesian(DigraphVertices(G), DigraphVertices(H))</C> and there
+    is an edge connecting <C>[u, u']</C> with <C>[v, v']</C> iff <C> u = v </C> 
+    and <C>u'</C> is connected to <C>v'</C> in <C>H</C> or <C> u' = v'</C> and 
+    <C>u</C> is connected to <C>v</C> in <C>G</C>.
+ 
+    As the Cartesian product is associative, the Cartesian product of a collection 
+    of digraphs <A>gr1</A>, <A>gr2</A>, <C>...</C> is computed in the obvious 
+    fashion. 
+
+    <P/>
+
+    Note that previously set <Ref Oper="DigraphVertexLabels"/> will be lost.
+
+<Example><![CDATA[
+gap> gr := ChainDigraph(4);
+<immutable digraph with 4 vertices, 3 edges>
+gap> gr2 := CycleDigraph(3);
+<immutable digraph with 3 vertices, 3 edges>
+gap> gr3 := DigraphCartesianProduct(gr, gr2);
+<immutable digraph with 12 vertices, 21 edges>
+gap> IsIsomorphicDigraph(gr3, 
+> Digraph([[2, 5], [3, 6], [4, 7], [8], 
+>          [6, 9], [7, 10], [8, 11], [12],
+>          [10, 1], [11, 2], [12, 3], [4]]));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphDirectProduct">
+<ManSection>
+  <Func Name="DigraphDirectProduct" Arg="gr1, gr2, ..." Label="for an arbitrary 
+   number of digraphs"/>
+  <Func Name="DigraphDirectProduct" Arg="list" Label="for a list of digraphs"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
+    <C>DigraphDirectProduct</C> returns their direct product.
+
+    In the second form, if <A>list</A> is a non-empty list of digraphs,
+    then <C>DigraphDirectProduct</C> returns the direct product of 
+    the digraphs contained in the list. <P/>
+
+    The direct product of two digraphs <C>G</C>, <C>H</C> is a digraph with 
+    vertex set <C>Cartesian(DigraphVertices(G), DigraphVertices(H))</C> and there
+    is an edge connecting <C>[u, u']</C> with <C>[v, v']</C> iff <C>u</C> is
+    connected to <C>v</C> in <C>G</C> and <C>u'</C> is connected to <C>v'</C> 
+    in <C>H</C>.
+ 
+    As the direct product is associative, the direct product of a collection 
+    of digraphs <A>gr1</A>, <A>gr2</A>, <C>...</C> is computed in the obvious 
+    fashion. 
+
+    <P/>
+
+    Note that previously set <Ref Oper="DigraphVertexLabels"/> will be lost.
+
+<Example><![CDATA[
+gap> gr := ChainDigraph(4);
+<immutable digraph with 4 vertices, 3 edges>
+gap> gr2 := CycleDigraph(3);
+<immutable digraph with 3 vertices, 3 edges>
+gap> gr3 := DigraphDirectProduct(gr, gr2);
+<immutable digraph with 12 vertices, 9 edges>
+gap> IsIsomorphicDigraph(gr3, 
+> Digraph([[6], [7], [8], [], 
+>          [10], [11], [12], [],
+>          [2], [3], [4], []]));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsReachable">
 <ManSection>
   <Oper Name="IsReachable" Arg="digraph, u, v"/>
