@@ -495,6 +495,113 @@ function(arg)
   return ConvertToImmutableDigraphNC(arg[1]);
 end);
 
+InstallGlobalFunction(DigraphCartesianProduct,
+function(arg)
+  local D, copy, n, i, j;
+
+  # Allow the possibility of supplying arguments in a list.
+  if Length(arg) = 1 and IsList(arg[1]) then
+    arg := arg[1];
+  fi;
+
+  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDenseDigraphRep) then
+    ErrorNoReturn("the arguments must be dense digraphs, or a single ",
+                  "list of dense digraphs,");
+  fi;
+
+  D := arg[1];
+  if IsMutableDigraph(arg[1]) then
+    for i in [2 .. Length(arg)] do
+      if IsIdenticalObj(arg[1], arg[i]) then
+        if not IsBound(copy) then
+          copy := OutNeighboursMutableCopy(arg[1]);
+        fi;
+        arg[i] := copy;
+      else
+        arg[i] := OutNeighbours(arg[i]);
+      fi;
+    od;
+    arg[1] := arg[1]!.OutNeighbours;
+  else
+    arg[1] := OutNeighboursMutableCopy(arg[1]);
+    for i in [2 .. Length(arg)] do
+      arg[i] := OutNeighbours(arg[i]);
+    od;
+  fi;
+
+  for i in [2 .. Length(arg)] do
+    n := Length(arg[1]);
+    for j in [2 .. Length(arg[i])] do
+      arg[1]{[1 + n * (j - 1) .. n * j]} := List([1 .. n],
+        x -> Concatenation(arg[1][x] + n * (j - 1),
+                            x + n * (arg[i][j] - 1)));
+    od;
+    for j in [1 .. n] do
+      Append(arg[1][j], j + n * (arg[i][1] - 1));
+    od;
+  od;
+
+  if IsMutableDigraph(D) then
+    ClearDigraphEdgeLabels(D);
+    return D;
+  else
+    return DigraphNC(arg[1]);
+  fi;
+end);
+
+InstallGlobalFunction(DigraphDirectProduct,
+function(arg)
+  local D, copy, n, i, j;
+
+  # Allow the possibility of supplying arguments in a list.
+  if Length(arg) = 1 and IsList(arg[1]) then
+    arg := arg[1];
+  fi;
+
+  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDenseDigraphRep) then
+    ErrorNoReturn("the arguments must be dense digraphs, or a single ",
+                  "list of dense digraphs,");
+  fi;
+
+  D := arg[1];
+  if IsMutableDigraph(arg[1]) then
+    for i in [2 .. Length(arg)] do
+      if IsIdenticalObj(arg[1], arg[i]) then
+        if not IsBound(copy) then
+          copy := OutNeighboursMutableCopy(arg[1]);
+        fi;
+        arg[i] := copy;
+      else
+        arg[i] := OutNeighbours(arg[i]);
+      fi;
+    od;
+    arg[1] := arg[1]!.OutNeighbours;
+  else
+    arg[1] := OutNeighboursMutableCopy(arg[1]);
+    for i in [2 .. Length(arg)] do
+      arg[i] := OutNeighbours(arg[i]);
+    od;
+  fi;
+
+  for i in [2 .. Length(arg)] do
+    n := Length(arg[1]);
+    for j in [2 .. Length(arg[i])] do
+      arg[1]{[1 + n * (j - 1) .. n * j]} := List([1 .. n],
+        x -> arg[1][x] + n * (arg[i][j] - 1));
+    od;
+    for j in [1 .. n] do
+      Append(arg[1][j], j + n * (arg[i][1] - 1));
+    od;
+  od;
+
+  if IsMutableDigraph(D) then
+    ClearDigraphEdgeLabels(D);
+    return D;
+  else
+    return DigraphNC(arg[1]);
+  fi;
+end);
+
 ###############################################################################
 # 4. Actions
 ###############################################################################

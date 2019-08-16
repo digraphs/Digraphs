@@ -1896,6 +1896,33 @@ Error, the 3rd argument <j> must be a vertex of the 1st argument <D>,
 gap> PartialOrderDigraphJoinOfVertices(D, 2, 1);
 Error, the 2nd argument <i> must be a vertex of the 1st argument <D>,
 
+# DigraphCartesianProduct
+gap> D := DigraphMutableCopy(CycleDigraph(3));
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphCartesianProduct(D, D, D);
+<mutable digraph with 27 vertices, 81 edges>
+gap> D := DigraphMutableCopy(CycleDigraph(3));
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphCartesianProduct(D, CycleDigraph(3), CycleDigraph(3), CycleDigraph(3));
+<mutable digraph with 81 vertices, 324 edges>
+gap> D := DigraphCartesianProduct(ChainDigraph(3), CycleDigraph(3));
+<immutable digraph with 9 vertices, 15 edges>
+gap> IsIsomorphicDigraph(D,
+> Digraph([[2, 4], [3, 5], [6], [5, 7], [6, 8], [9], [8, 1], [9, 2], [3]]));
+true
+gap> D := DigraphCartesianProduct(ChainDigraph(3), CycleDigraph(3),
+> Digraph([[2], [2]]));
+<immutable digraph with 18 vertices, 48 edges>
+gap> G := DigraphFromDigraph6String(
+> "&QSC?IA?@@?A__@OO?GG_OCOGAG?@?E_?BO?@G??s??Y??H?CE?AB?@@");;
+gap> IsIsomorphicDigraph(D, G);
+true
+gap> D := RandomDigraph(100);; IsIsomorphicDigraph(D, 
+> DigraphCartesianProduct(D, Digraph([[]])));
+true
+gap> DigraphCartesianProduct(Digraph([[1]]), Digraph([[1]]));
+<immutable multidigraph with 1 vertex, 2 edges>
+
 # Issue 213
 gap> D := Digraph(IsMutableDigraph, [[3, 4, 6, 8], [1, 3, 4, 6, 7, 8, 10], 
 > [1, 2, 6, 7, 8, 9], [3, 5, 7], [1, 2, 3, 6, 8, 9], [2, 6, 8, 10], 
