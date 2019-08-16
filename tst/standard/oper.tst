@@ -1923,6 +1923,31 @@ true
 gap> DigraphCartesianProduct(Digraph([[1]]), Digraph([[1]]));
 <immutable multidigraph with 1 vertex, 2 edges>
 
+# DigraphDirectProduct
+gap> D := DigraphMutableCopy(CycleDigraph(3));
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphDirectProduct(D, D, D);
+<mutable digraph with 27 vertices, 27 edges>
+gap> D := DigraphMutableCopy(CycleDigraph(3));
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphDirectProduct(D, CycleDigraph(3), CycleDigraph(3), CycleDigraph(3));
+<mutable digraph with 81 vertices, 81 edges>
+gap> D := DigraphDirectProduct(ChainDigraph(3), CycleDigraph(3));
+<immutable digraph with 9 vertices, 6 edges>
+gap> IsIsomorphicDigraph(D,
+> Digraph([[5], [6], [], [8], [9], [], [2], [3], []]));
+true
+gap> D := DigraphDirectProduct(ChainDigraph(3), CycleDigraph(3),
+> Digraph([[2], [2]]));
+<immutable digraph with 18 vertices, 12 edges>
+gap> G := DigraphFromDigraph6String(
+> "&Q??O??G?????A??@????A??@??????O??G?????A??@????A??@????");;
+gap> IsIsomorphicDigraph(D, G);
+true
+gap> D := RandomDigraph(100);; IsIsomorphicDigraph(D,
+> DigraphDirectProduct(D, Digraph([[1]])));
+true
+
 # Issue 213
 gap> D := Digraph(IsMutableDigraph, [[3, 4, 6, 8], [1, 3, 4, 6, 7, 8, 10], 
 > [1, 2, 6, 7, 8, 9], [3, 5, 7], [1, 2, 3, 6, 8, 9], [2, 6, 8, 10], 

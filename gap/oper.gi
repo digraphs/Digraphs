@@ -587,10 +587,10 @@ function(arg)
     n := Length(arg[1]);
     for j in [2 .. Length(arg[i])] do
       arg[1]{[1 + n * (j - 1) .. n * j]} := List([1 .. n],
-        x -> arg[1][x] + n * (arg[i][j] - 1));
+        x -> List(Cartesian(arg[1][x], n * (arg[i][j] - 1)), Sum));
     od;
     for j in [1 .. n] do
-      Append(arg[1][j], j + n * (arg[i][1] - 1));
+      arg[1][j] := List(Cartesian(arg[1][j], n * (arg[i][1] - 1)), Sum);
     od;
   od;
 
