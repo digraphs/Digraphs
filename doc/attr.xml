@@ -1848,7 +1848,9 @@ gap> IsIdempotent(proj[2]);
 true
 gap> RankOfTransformation(proj[3]);
 2
-gap> P := DigraphRemoveAllMultipleEdges(ReducedDigraph(OnDigraphs(D, proj[2])));; gap> IsIsomorphicDigraph(CycleDigraph(4), P);
+gap> P := DigraphRemoveAllMultipleEdges(
+> ReducedDigraph(OnDigraphs(D, proj[2])));; 
+gap> IsIsomorphicDigraph(CycleDigraph(4), P);
 true
 ]]></Example>
   </Description>
