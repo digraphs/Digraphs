@@ -1913,6 +1913,10 @@ true
 gap> D := DigraphCartesianProduct(ChainDigraph(3), CycleDigraph(3),
 > Digraph([[2], [2]]));
 <immutable digraph with 18 vertices, 48 edges>
+gap> HasDigraphCartesianProductProjections(D);
+true
+gap> Length(DigraphCartesianProductProjections(D));
+3
 gap> G := DigraphFromDigraph6String(
 > "&QSC?IA?@@?A__@OO?GG_OCOGAG?@?E_?BO?@G??s??Y??H?CE?AB?@@");;
 gap> IsIsomorphicDigraph(D, G);
@@ -1940,6 +1944,10 @@ true
 gap> D := DigraphDirectProduct(ChainDigraph(3), CycleDigraph(3),
 > Digraph([[2], [2]]));
 <immutable digraph with 18 vertices, 12 edges>
+gap> HasDigraphDirectProductProjections(D);
+true
+gap> Length(DigraphDirectProductProjections(D));
+3
 gap> G := DigraphFromDigraph6String(
 > "&Q??O??G?????A??@????A??@??????O??G?????A??@????A??@????");;
 gap> IsIsomorphicDigraph(D, G);
