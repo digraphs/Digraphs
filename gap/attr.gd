@@ -69,6 +69,8 @@ DeclareAttribute("CharacteristicPolynomial", IsDigraph);
 
 DeclareAttribute("DigraphAdjacencyFunction", IsDigraph);
 
+DeclareAttribute("DigraphCore", IsDigraph);
+
 DeclareAttribute("AdjacencyMatrix", IsDigraph);
 DeclareAttribute("BooleanAdjacencyMatrix", IsDigraph);
 DeclareOperation("ReducedDigraph", [IsDigraph]);

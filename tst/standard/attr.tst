@@ -1816,6 +1816,95 @@ gap> gr := DigraphAddEdges(DigraphAddVertex(CycleDigraph(600)),
 gap> HamiltonianPath(gr);
 fail
 
+# DigraphCore
+gap> D := Digraph([[3, 6], [1], [4], [5, 7], [1], [2, 7], [4, 1]]);
+<immutable digraph with 7 vertices, 11 edges>
+gap> DigraphCore(D);
+[ 1, 3, 4, 6, 7 ]
+gap> D := Digraph([[2, 3], [1, 3], [1, 2, 4], [1]]);
+<immutable digraph with 4 vertices, 8 edges>
+gap> DigraphCore(D);
+[ 1, 2, 3 ]
+gap> DigraphHomomorphism(D, InducedSubdigraph(D, DigraphCore(D)));
+Transformation( [ 1, 3, 2, 3 ] )
+gap> D := CompleteDigraph(10);
+<immutable digraph with 10 vertices, 90 edges>
+gap> DigraphCore(D);
+[ 1 .. 10 ]
+gap> D := Digraph([[2], [3], [4], [5], [6], [2]]);
+<immutable digraph with 6 vertices, 6 edges>
+gap> DigraphCore(D);
+[ 2, 3, 4, 5, 6 ]
+gap> D := Digraph([[2], [1], [4, 5], [5], [4]]);
+<immutable digraph with 5 vertices, 6 edges>
+gap> DigraphCore(D);
+[ 3 .. 5 ]
+gap> D := EmptyDigraph(0);
+<immutable digraph with 0 vertices, 0 edges>
+gap> DigraphCore(D);
+[  ]
+gap> D := EmptyDigraph(1000);
+<immutable digraph with 1000 vertices, 0 edges>
+gap> DigraphCore(D);
+[ 1 ]
+gap> D := EmptyDigraph(IsMutableDigraph, 0);
+<mutable digraph with 0 vertices, 0 edges>
+gap> for i in [2 .. 15] do
+> DigraphDisjointUnion(D, CycleDigraph(i));
+> od;
+gap> DigraphCore(D);
+[ 1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 21, 22, 23, 24, 25, 26, 27, 55, 56, 57, 
+  58, 59, 60, 61, 62, 63, 64, 65, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 
+  89, 90 ]
+gap> D1 := DigraphFromDigraph6String("&FJBWqNbXV?");
+<immutable digraph with 7 vertices, 24 edges>
+gap> IsDigraphCore(D1);
+true
+gap> D2 := DigraphFromDigraph6String("&FJbWqNbWu?");
+<immutable digraph with 7 vertices, 24 edges>
+gap> IsDigraphCore(D2);
+true
+gap> M1 := DigraphMycielskian(D1);
+<immutable digraph with 15 vertices, 86 edges>
+gap> IsDigraphCore(M1);
+true
+gap> D := DigraphDisjointUnion(D1, D2, M1);
+<immutable digraph with 29 vertices, 134 edges>
+gap> DigraphCore(D);
+[ 8 .. 29 ]
+gap> IsDigraphCore(InducedSubdigraph(D, DigraphCore(D)));
+true
+gap> str := ".qb`hOAW@fAiG]g??aGD[TXAbjgWl^?fkG{~cA@p`e~EIRlHSxBFHx\\RJ@ERCYhVSoIDvIE?c?x_\
+> YBJg?IWmoN_djWMyKnckGkdMqBsQMBWsBaK?\\BBFWOvY[vcHp]N";;
+gap> D := DigraphFromDiSparse6String(str);
+<immutable digraph with 50 vertices, 79 edges>
+gap> DigraphCore(D);
+[ 1, 2, 4, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25, 26, 
+  29, 30, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 46, 47, 48, 49, 50 ]
+gap> D := Digraph([[2, 8], [3], [1], [5], [6], [7], [4], []]);
+<immutable digraph with 8 vertices, 8 edges>
+gap> DigraphCore(D);
+[ 1 .. 7 ]
+gap> D := Digraph([[], [2]]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphCore(D);
+[ 2 ]
+gap> D := DigraphDisjointUnion(EmptyDigraph(1), CompleteBipartiteDigraph(3, 3));
+<immutable digraph with 7 vertices, 18 edges>
+gap> DigraphCore(D);
+[ 2, 5 ]
+gap> D := DigraphFromDigraph6String("&IO?_@?A?CG??O?_G??");
+<immutable digraph with 10 vertices, 9 edges>
+gap> DigraphCore(D);
+[ 7 .. 9 ]
+gap> D := CycleDigraph(IsMutableDigraph, 2);
+<mutable digraph with 2 vertices, 2 edges>
+gap> for i in [1 .. 9] do
+>      DigraphDisjointUnion(D, D);
+>    od;
+gap> DigraphCore(D);
+[ 1, 2 ]
+
 # MaximalAntiSymmetricSubdigraph
 gap> MaximalAntiSymmetricSubdigraph(NullDigraph(0));
 <immutable digraph with 0 vertices, 0 edges>
