@@ -15,7 +15,7 @@
 # 1.  Types
 # 2.  Digraph no-check constructors
 # 3.  Digraph copies
-# 4.  MakeImmutableDigraph
+# 4.  PostMakeImmutable
 # 5.  Digraph constructors
 # 6.  Printing, viewing, strings
 # 7.  Operators
@@ -73,14 +73,14 @@ end);
 
 InstallMethod(ConvertToImmutableDigraphNC, "for a record", [IsRecord],
 function(record)
-  return MakeImmutableDigraph(ConvertToMutableDigraphNC(record));
+  return MakeImmutable(ConvertToMutableDigraphNC(record));
 end);
 
 InstallMethod(ConvertToImmutableDigraphNC,
 "for a dense list of out-neighbours",
 [IsDenseList],
 function(list)
-  return MakeImmutableDigraph(ConvertToMutableDigraphNC(list));
+  return MakeImmutable(ConvertToMutableDigraphNC(list));
 end);
 
 InstallMethod(DigraphConsNC, "for IsMutableDigraph and a record",
@@ -123,7 +123,7 @@ function(filt, record)
       Info(InfoWarning, 1, "ignoring record component \"", nm, "\"!");
     fi;
   od;
-  D := MakeImmutableDigraph(DigraphConsNC(IsMutableDigraph, record));
+  D := MakeImmutable(DigraphConsNC(IsMutableDigraph, record));
   SetDigraphSource(D, StructuralCopy(record.DigraphSource));
   SetDigraphRange(D, StructuralCopy(record.DigraphRange));
   return D;
@@ -133,7 +133,7 @@ InstallMethod(DigraphConsNC,
 "for IsImmutableDigraph and a dense list of adjacencies",
 [IsImmutableDigraph, IsDenseList],
 function(filt, list)
-  return MakeImmutableDigraph(DigraphConsNC(IsMutableDigraph, list));
+  return MakeImmutable(DigraphConsNC(IsMutableDigraph, list));
 end);
 
 InstallMethod(DigraphNC, "for a function and a dense list",
@@ -195,17 +195,15 @@ InstallMethod(DigraphCopyIfImmutable, "for an immutable digraph",
 [IsImmutableDigraph], DigraphCopy);
 
 ########################################################################
-# 4. MakeImmutableDigraph
+# 4. PostMakeImmutable
 ########################################################################
 
-InstallMethod(MakeImmutableDigraph, "for a mutable dense digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
+InstallMethod(PostMakeImmutable, "for a digraph",
+[IsDigraph and IsDenseDigraphRep],
 function(D)
-  MakeImmutable(D);
-  SetFilterObj(D, IsAttributeStoringRep);
-  SetFilterObj(D, IsImmutableDigraph);
   MakeImmutable(D!.OutNeighbours);
-  return D;
+  SetFilterObj(D, IsImmutableDigraph);
+  SetFilterObj(D, IsAttributeStoringRep);
 end);
 
 ########################################################################
@@ -360,7 +358,7 @@ InstallMethod(DigraphCons, "for IsImmutableDigraph and a record",
 [IsImmutableDigraph, IsRecord],
 function(filt, record)
   local D;
-  D := MakeImmutableDigraph(DigraphCons(IsMutableDigraph, record));
+  D := MakeImmutable(DigraphCons(IsMutableDigraph, record));
   if IsGraph(record) then
     # IsGraph is a function not a filter, so we cannot have a separate method
     # for this.
@@ -380,14 +378,14 @@ InstallMethod(DigraphCons,
 "for IsImmutableDigraph and a dense list of out-neighbours",
 [IsImmutableDigraph, IsDenseList],
 function(filt, list)
-  return MakeImmutableDigraph(DigraphCons(IsMutableDigraph, list));
+  return MakeImmutable(DigraphCons(IsMutableDigraph, list));
 end);
 
 InstallMethod(DigraphCons, "for IsImmutableDigraph, a list, and function",
 [IsImmutableDigraph, IsList, IsFunction],
 function(filt, list, func)
   local D;
-  D := MakeImmutableDigraph(DigraphCons(IsMutableDigraph, list, func));
+  D := MakeImmutable(DigraphCons(IsMutableDigraph, list, func));
   SetDigraphAdjacencyFunction(D, {u, v} -> func(list[u], list[v]));
   SetFilterObj(D, IsDigraphWithAdjacencyFunction);
   SetDigraphVertexLabels(D, list);
@@ -398,14 +396,14 @@ InstallMethod(DigraphCons,
 "for IsImmutableDigraph, a number of vertices, source, and range",
 [IsImmutableDigraph, IsInt, IsList, IsList],
 function(filt, N, src, ran)
-  return MakeImmutableDigraph(DigraphCons(IsMutableDigraph, N, src, ran));
+  return MakeImmutable(DigraphCons(IsMutableDigraph, N, src, ran));
 end);
 
 InstallMethod(DigraphCons,
 "for IsImmutableDigraph, a list of vertices, source, and range",
 [IsImmutableDigraph, IsList, IsList, IsList],
 function(filt, domain, src, ran)
-  return MakeImmutableDigraph(DigraphCons(IsMutableDigraph, domain, src, ran));
+  return MakeImmutable(DigraphCons(IsMutableDigraph, domain, src, ran));
 end);
 
 InstallMethod(Digraph, "for a filter and a record", [IsFunction, IsRecord],
@@ -623,8 +621,7 @@ InstallMethod(DigraphByAdjacencyMatrixCons,
 [IsImmutableDigraph, IsHomogeneousList],
 function(filt, mat)
   local D;
-  D := MakeImmutableDigraph(
-         DigraphByAdjacencyMatrixCons(IsMutableDigraph, mat));
+  D := MakeImmutable(DigraphByAdjacencyMatrixCons(IsMutableDigraph, mat));
   if IsEmpty(mat) or IsInt(mat[1][1]) then
     SetAdjacencyMatrix(D, mat);
   else
@@ -686,7 +683,7 @@ InstallMethod(DigraphByEdgesCons, "for an ImmutableDigraph and a list",
 [IsImmutableDigraph, IsList],
 function(filt, edges)
   local D;
-  D := MakeImmutableDigraph(DigraphByEdges(IsMutableDigraph, edges));
+  D := MakeImmutable(DigraphByEdges(IsMutableDigraph, edges));
   SetDigraphEdges(D, edges);
   SetDigraphNrEdges(D, Length(edges));
   return D;
@@ -697,7 +694,7 @@ InstallMethod(DigraphByEdgesCons,
 [IsImmutableDigraph, IsList, IsInt],
 function(filt, edges, n)
   local D;
-  D := MakeImmutableDigraph(DigraphByEdges(IsMutableDigraph, edges, n));
+  D := MakeImmutable(DigraphByEdges(IsMutableDigraph, edges, n));
   SetDigraphEdges(D, edges);
   SetDigraphNrEdges(D, Length(edges));
   return D;
@@ -744,7 +741,7 @@ InstallMethod(DigraphByInNeighboursCons, "for IsImmutableDigraph and a list",
 [IsImmutableDigraph, IsList],
 function(filt, list)
   local D;
-  D := MakeImmutableDigraph(DigraphByInNeighboursCons(IsMutableDigraph, list));
+  D := MakeImmutable(DigraphByInNeighboursCons(IsMutableDigraph, list));
   SetInNeighbours(D, list);
   return D;
 end);
@@ -759,8 +756,7 @@ InstallMethod(DigraphByInNeighboursConsNC, "for IsImmutableDigraph and a list",
 [IsImmutableDigraph, IsList],
 function(filt, list)
   local D;
-  D := MakeImmutableDigraph(DigraphByInNeighboursConsNC(IsMutableDigraph,
-                                                        list));
+  D := MakeImmutable(DigraphByInNeighboursConsNC(IsMutableDigraph, list));
   SetInNeighbours(D, list);
   return D;
 end);
@@ -800,7 +796,7 @@ InstallMethod(AsDigraphCons, "for IsImmutableDigraph and a binary relation",
 [IsImmutableDigraph, IsBinaryRelation],
 function(filt, rel)
   local D;
-  D := MakeImmutableDigraph(AsDigraph(IsMutableDigraph, rel));
+  D := MakeImmutable(AsDigraph(IsMutableDigraph, rel));
   SetIsMultiDigraph(D, false);
   if HasIsReflexiveBinaryRelation(rel) then
     SetIsReflexiveDigraph(D, IsReflexiveBinaryRelation(rel));
@@ -855,7 +851,7 @@ function(filt, f, n)
   local D;
   D := AsDigraph(IsMutableDigraph, f, n);
   if D <> fail then
-    D := MakeImmutableDigraph(D);
+    D := MakeImmutable(D);
     SetDigraphNrEdges(D, n);
     SetIsMultiDigraph(D, false);
     SetIsFunctionalDigraph(D, true);
@@ -1013,7 +1009,7 @@ InstallMethod(RandomDigraphCons,
 [IsImmutableDigraph, IsPosInt, IsFloat],
 function(filt, n, p)
   local D;
-  D := MakeImmutableDigraph(RandomDigraphCons(IsMutableDigraph, n, p));
+  D := MakeImmutable(RandomDigraphCons(IsMutableDigraph, n, p));
   SetIsMultiDigraph(D, false);
   return D;
 end);
@@ -1091,7 +1087,7 @@ end);
 InstallMethod(RandomTournamentCons, "for IsImmutableDigraph and an integer",
 [IsImmutableDigraph, IsInt],
 function(filt, n)
-  return MakeImmutableDigraph(RandomTournamentCons(IsMutableDigraph, n));
+  return MakeImmutable(RandomTournamentCons(IsMutableDigraph, n));
 end);
 
 InstallMethod(RandomTournament, "for an integer", [IsInt],
@@ -1123,7 +1119,7 @@ end);
 InstallMethod(RandomLatticeCons, "for IsImmutableDigraph and a pos int",
 [IsImmutableDigraph, IsPosInt],
 function(filt, n)
-  return MakeImmutableDigraph(RandomLatticeCons(IsMutableDigraph, n));
+  return MakeImmutable(RandomLatticeCons(IsMutableDigraph, n));
 end);
 
 InstallMethod(RandomLattice, "for a pos int",

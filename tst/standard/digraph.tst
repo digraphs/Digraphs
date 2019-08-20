@@ -1201,7 +1201,7 @@ gap> IsIdenticalObj(DigraphSinks(D), DigraphSinks(D));
 false
 gap> IsIdenticalObj(list, D!.OutNeighbours);
 true
-gap> D := DigraphNC(IsMutableDigraph, OutNeighbours(MakeImmutableDigraph(D)));
+gap> D := DigraphNC(IsMutableDigraph, OutNeighbours(MakeImmutable(D)));
 <mutable digraph with 2 vertices, 2 edges>
 gap> D := DigraphNC(rec(xxx := 1, DigraphRange := [], DigraphSource := [],
 >  DigraphNrVertices := 1000));
@@ -1358,8 +1358,6 @@ gap> D := NullDigraph(IsMutableDigraph, 10);
 <mutable digraph with 10 vertices, 0 edges>
 gap> MakeImmutable(D);;
 gap> IsValidDigraph(D);
-Error, digraph in an invalid state! Did you return a mutable digraph from a me\
-thod for an attribute, or MakeImmutable(a mutable digraph)??
 
 # 
 gap> D := NullDigraph(10);

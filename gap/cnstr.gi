@@ -31,7 +31,7 @@ InstallMethod(BipartiteDoubleDigraph, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
   local C, X, N, p;
-  C := MakeImmutableDigraph(BipartiteDoubleDigraph(DigraphMutableCopy(D)));
+  C := MakeImmutable(BipartiteDoubleDigraph(DigraphMutableCopy(D)));
   if HasDigraphGroup(D) then
     X := GeneratorsOfGroup(DigraphGroup(D));
     N := DigraphNrVertices(D);
@@ -63,7 +63,7 @@ InstallMethod(DoubleDigraph, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
   local C, X, N, p;
-  C := MakeImmutableDigraph(DoubleDigraph(DigraphMutableCopy(D)));
+  C := MakeImmutable(DoubleDigraph(DigraphMutableCopy(D)));
   if HasDigraphGroup(D) then
     X := GeneratorsOfGroup(DigraphGroup(D));
     N := DigraphNrVertices(D);
@@ -113,8 +113,7 @@ function(D, distances)
     od;
     C := DigraphNC(list);
   else
-    C := MakeImmutableDigraph(DistanceDigraph(DigraphMutableCopy(D),
-                                              distances));
+    C := MakeImmutable(DistanceDigraph(DigraphMutableCopy(D), distances));
   fi;
   SetDigraphGroup(C, DigraphGroup(D));
   return C;

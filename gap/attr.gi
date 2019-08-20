@@ -296,7 +296,7 @@ function(D)
     return D;
   fi;
   D := ReducedDigraph(DigraphMutableCopy(D));
-  return MakeImmutableDigraph(D);
+  return MakeImmutable(D);
 end);
 
 InstallMethod(ReducedDigraphAttr, "for an immutable digraph",
@@ -328,7 +328,7 @@ function(D)
     return DigraphDualAttr(D);
   fi;
   C := DigraphMutableCopy(D);
-  C := MakeImmutableDigraph(DigraphDual(C));
+  C := MakeImmutable(DigraphDual(C));
   if HasDigraphGroup(D) then
     SetDigraphGroup(C, DigraphGroup(D));
   fi;
@@ -1121,7 +1121,7 @@ function(D)
   fi;
 
   C := DigraphMutableCopy(D);
-  C := MakeImmutableDigraph(DigraphSymmetricClosure(C));
+  C := MakeImmutable(DigraphSymmetricClosure(C));
   SetIsSymmetricDigraph(C, true);
   SetDigraphSymmetricClosureAttr(D, C);
   return C;
@@ -1194,7 +1194,7 @@ function(D)
                   "edges,");
   fi;
   C := DigraphTransitiveClosure(DigraphMutableCopy(D));
-  C := MakeImmutableDigraph(C);
+  C := MakeImmutable(C);
   SetIsTransitiveDigraph(C, true);
   SetDigraphVertexLabels(C, DigraphVertexLabels(D));
   SetDigraphTransitiveClosureAttr(D, C);
@@ -1213,7 +1213,7 @@ function(D)
                   "edges,");
   fi;
   C := DigraphReflexiveTransitiveClosure(DigraphMutableCopy(D));
-  C := MakeImmutableDigraph(C);
+  C := MakeImmutable(C);
   SetIsTransitiveDigraph(C, true);
   SetIsReflexiveDigraph(C, true);
   SetDigraphVertexLabels(C, DigraphVertexLabels(D));
@@ -1384,7 +1384,7 @@ function(D)
   fi;
 
   C := DigraphMutableCopy(D);
-  C := MakeImmutableDigraph(DigraphMycielskian(C));
+  C := MakeImmutable(DigraphMycielskian(C));
   SetDigraphMycielskianAttr(D, C);
   return C;
 end);
@@ -1541,7 +1541,7 @@ function(D)
     return MaximalSymmetricSubdigraphWithoutLoopsAttr(D);
   fi;
   C := DigraphMutableCopy(D);
-  C := MakeImmutableDigraph(MaximalSymmetricSubdigraphWithoutLoops(C));
+  C := MakeImmutable(MaximalSymmetricSubdigraphWithoutLoops(C));
   SetMaximalSymmetricSubdigraphWithoutLoopsAttr(D, C);
   return C;
 end);
@@ -1576,7 +1576,7 @@ function(D)
     return MaximalSymmetricSubdigraphAttr(D);
   fi;
   C := DigraphMutableCopy(D);
-  C := MakeImmutableDigraph(MaximalSymmetricSubdigraph(C));
+  C := MakeImmutable(MaximalSymmetricSubdigraph(C));
   SetDigraphVertexLabels(C, DigraphVertexLabels(D));
   SetMaximalSymmetricSubdigraphAttr(D, C);
   return C;
@@ -1644,7 +1644,7 @@ function(D)
     return fail;
   fi;
   C := UndirectedSpanningForest(DigraphMutableCopy(D));
-  C := MakeImmutableDigraph(C);
+  C := MakeImmutable(C);
   SetIsUndirectedForest(C, true);
   SetIsMultiDigraph(C, false);
   SetDigraphHasLoops(C, false);
@@ -1682,7 +1682,7 @@ function(D)
     return C;
   fi;
   SetIsUndirectedTree(C, true);
-  return MakeImmutableDigraph(C);
+  return MakeImmutable(C);
 end);
 
 InstallMethod(HamiltonianPath, "for a digraph", [IsDigraph],
@@ -1852,7 +1852,7 @@ function(D)
     return MaximalAntiSymmetricSubdigraphAttr(D);
   fi;
   C := DigraphMutableCopy(D);
-  C := MakeImmutableDigraph(MaximalAntiSymmetricSubdigraph(C));
+  C := MakeImmutable(MaximalAntiSymmetricSubdigraph(C));
   SetIsAntisymmetricDigraph(C, true);
   SetMaximalAntiSymmetricSubdigraphAttr(D, C);
   return C;

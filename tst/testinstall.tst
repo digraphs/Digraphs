@@ -341,12 +341,11 @@ gap> gr := DigraphFromDigraph6String(str);
 gap> str = Digraph6String(gr);
 true
 
-# IsDigraphValid
+# IsValidDigraph
 gap> D := NullDigraph(IsMutableDigraph, 10);
 <mutable digraph with 10 vertices, 0 edges>
 gap> MakeImmutable(D);
-Error, digraph in an invalid state! Did you return a mutable digraph from a me\
-thod for an attribute, or MakeImmutable(a mutable digraph)??
+<immutable digraph with 10 vertices, 0 edges>
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);

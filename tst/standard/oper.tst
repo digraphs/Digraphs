@@ -1913,7 +1913,7 @@ gap> DigraphReverseEdge(D, 1, 1);
 gap> DigraphReverseEdge(D, 1, 4);
 Error, there is no edge from 1 to 
 4 in the digraph <D> that is the 1st argument,
-gap> D := MakeImmutableDigraph(D);
+gap> D := MakeImmutable(D);
 <immutable digraph with 3 vertices, 7 edges>
 gap> D := DigraphReverseEdge(D, 1, 2);
 <immutable multidigraph with 3 vertices, 7 edges>
@@ -1934,7 +1934,7 @@ gap> DD := QuotientDigraph(D, [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]]);
 gap> InNeighboursOfVertexNC(DD, 1);
 [ 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 
   4, 4 ]
-gap> MakeImmutableDigraph(DD);
+gap> MakeImmutable(DD);
 <immutable multidigraph with 4 vertices, 90 edges>
 gap> InNeighbours(DD);;
 gap> InNeighboursOfVertexNC(DD, 1);
