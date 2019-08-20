@@ -51,6 +51,10 @@ matrix:
       - ABI=64
       - GAP=stable-4.10
       - PACKAGES=required
+      - EXTRA_PKG_FLAGS="--with-external-planarity --with-external-bliss"
+      - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/miniconda3/lib
+      - CFLAGS="$CFLAGS -I$HOME/miniconda3/include -O2 -g"
+      - LDFLAGS="$LDFLAGS -L$HOME/miniconda3/lib"
 
     - env:
       - SUITE=test
@@ -79,19 +83,9 @@ matrix:
       - GAP=master
       - PACKAGES=required
       - THRESHOLD=98
-    
-    - env:
-      - SUITE=external
-      - ABI=64
-      - GAP=stable-4.10
-      - PACKAGES=required
-      - EXTRA_PKG_FLAGS="--with-external-planarity --with-external-bliss"
-      - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/miniconda3/lib
-      - CFLAGS="$CFLAGS -I$HOME/miniconda3/include -O2 -g"
-      - LDFLAGS="$LDFLAGS -L$HOME/miniconda3/lib"
 
 before_install:
-  - if [ "$SUITE" == "external" ]; then
+  - if [ ! -z "$EXTRA_PKG_FLAGS" ]; then
       wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
       chmod +x miniconda.sh;
       ./miniconda.sh -b;
