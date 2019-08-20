@@ -15,8 +15,6 @@ DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
 DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);
 DeclareCategory("IsImmutableDigraph", IsDigraph);
 
-DeclareGlobalFunction("IsValidDigraph");
-
 # Family
 BindGlobal("DigraphFamily", NewFamily("DigraphFamily", IsDigraph));
 

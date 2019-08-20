@@ -11,7 +11,6 @@
 ########################################################################
 # This file is organised as follows:
 #
-# 0.  IsValidDigraph
 # 1.  Types
 # 2.  Digraph no-check constructors
 # 3.  Digraph copies
@@ -24,22 +23,6 @@
 # 10. Random digraphs
 #
 ########################################################################
-
-########################################################################
-# 0. IsValidDigraph
-########################################################################
-
-InstallGlobalFunction(IsValidDigraph,
-function(arg)
-  local D;
-  for D in arg do
-    if not (IsMutableDigraph(D) or IsImmutableDigraph(D)) then
-      ErrorNoReturn("digraph in an invalid state! Did you return a ",
-                    "mutable digraph from a method for an attribute, ",
-                    "or MakeImmutable(a mutable digraph)??");
-    fi;
-  od;
-end);
 
 ########################################################################
 # 1. Digraph types
@@ -165,7 +148,6 @@ end);
 InstallMethod(DigraphMutableCopy, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local copy;
-  IsValidDigraph(D);
   copy := ConvertToMutableDigraphNC(OutNeighboursMutableCopy(D));
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
   SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
@@ -175,7 +157,6 @@ end);
 InstallMethod(DigraphCopy, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local copy;
-  IsValidDigraph(D);
   copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
   SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
@@ -467,7 +448,6 @@ end);
 InstallMethod(ViewString, "for a digraph", [IsDigraph],
 function(D)
   local str, n, m;
-  IsValidDigraph(D);
   str := "<";
   if IsMutableDigraph(D) then
     Append(str, "mutable ");
@@ -536,15 +516,11 @@ end);
 
 InstallMethod(\=, "for two digraphs", [IsDigraph, IsDigraph],
 function(C, D)
-  IsValidDigraph(C);
-  IsValidDigraph(D);
   return DIGRAPH_EQUALS(C, D);
 end);
 
 InstallMethod(\<, "for two digraphs", [IsDigraph, IsDigraph],
 function(C, D)
-  IsValidDigraph(C);
-  IsValidDigraph(D);
   return DIGRAPH_LT(C, D);
 end);
 

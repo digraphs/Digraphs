@@ -10,13 +10,11 @@
 
 InstallMethod(DigraphNrVertices, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
-  IsValidDigraph(D);
   return DIGRAPH_NR_VERTICES(D);
 end);
 
 InstallMethod(OutNeighbours, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
-  IsValidDigraph(D);
   return DIGRAPH_OUT_NEIGHBOURS(D);
 end);
 
@@ -27,7 +25,6 @@ InstallMethod(ArticulationPoints, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local copy, nbs, counter, visited, num, low, parent, points, points_seen,
         stack, depth, v, w, i;
-  IsValidDigraph(D);
   if (HasIsConnectedDigraph(D) and not IsConnectedDigraph(D))
       or DigraphNrVertices(D) <= 1 then
     return [];
@@ -108,7 +105,6 @@ InstallMethod(ChromaticNumber, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local nr, comps, upper, chrom, tmp_comps, tmp_upper, n, comp, bound, clique,
   c, i;
-  IsValidDigraph(D);
   nr := DigraphNrVertices(D);
 
   if DigraphHasLoops(D) then
@@ -255,13 +251,11 @@ end);
 
 InstallMethod(DigraphAdjacencyFunction, "for a dense digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return {u, v} -> IsDigraphEdge(D, u, v);
 end);
 
 InstallMethod(AsTransformation, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
-  IsValidDigraph(D);
   if not IsFunctionalDigraph(D) then
     return fail;
   fi;
@@ -341,14 +335,12 @@ InstallMethod(DigraphDualAttr, "for an immutable digraph",
 
 InstallMethod(DigraphNrEdges, "for a digraph", [IsDenseDigraphRep],
 function(D)
-  IsValidDigraph(D);
   return DIGRAPH_NREDGES(D);
 end);
 
 InstallMethod(DigraphEdges, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local out, adj, nr, i, j;
-  IsValidDigraph(D);
   out := EmptyPlist(DigraphNrEdges(D));
   adj := OutNeighbours(D);
   nr := 0;
@@ -366,20 +358,17 @@ end);
 
 InstallMethod(AsGraph, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return Graph(D);
 end);
 
 InstallMethod(DigraphVertices, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return [1 .. DigraphNrVertices(D)];
 end);
 
 InstallMethod(DigraphRange, "for a dense digraph attribute storing digraph",
 [IsDenseDigraphRep and IsAttributeStoringRep],
 function(D)
-  IsValidDigraph(D);
   if not IsBound(D!.DigraphRange) then
     DIGRAPH_SOURCE_RANGE(D);
     SetDigraphSource(D, D!.DigraphSource);
@@ -396,7 +385,6 @@ end);
 InstallMethod(DigraphSource, "for a dense digraph attribute storing digraph",
 [IsDenseDigraphRep and IsAttributeStoringRep],
 function(D)
-  IsValidDigraph(D);
   if not IsBound(D!.DigraphSource) then
     DIGRAPH_SOURCE_RANGE(D);
     SetDigraphRange(D, D!.DigraphRange);
@@ -412,13 +400,11 @@ end);
 
 InstallMethod(InNeighbours, "for a digraph", [IsDenseDigraphRep],
 function(D)
-  IsValidDigraph(D);
   return DIGRAPH_IN_OUT_NBS(OutNeighbours(D));
 end);
 
 InstallMethod(AdjacencyMatrix, "for a digraph", [IsDenseDigraphRep],
 function(D)
-  IsValidDigraph(D);
   return ADJACENCY_MATRIX(D);
 end);
 
@@ -426,7 +412,6 @@ InstallMethod(BooleanAdjacencyMatrix, "for a dense digraph",
 [IsDenseDigraphRep],
 function(D)
   local n, nbs, mat, i, j;
-  IsValidDigraph(D);
   n := DigraphNrVertices(D);
   nbs := OutNeighbours(D);
   mat := List(DigraphVertices(D), x -> BlistList([1 .. n], []));
@@ -442,7 +427,6 @@ InstallMethod(DigraphShortestDistances, "for a dense digraph",
 [IsDenseDigraphRep],
 function(D)
   local vertices, data, sum, distances, v, u;
-  IsValidDigraph(D);
   if HasDIGRAPHS_ConnectivityData(D) then
     vertices := DigraphVertices(D);
     data := DIGRAPHS_ConnectivityData(D);
@@ -475,7 +459,6 @@ end);
 InstallMethod(DigraphTopologicalSort, "for a dense digraph",
 [IsDenseDigraphRep],
 function(D)
-  IsValidDigraph(D);
   return DIGRAPH_TOPO_SORT(OutNeighbours(D));
 end);
 
@@ -483,7 +466,6 @@ InstallMethod(DigraphStronglyConnectedComponents, "for a dense digraph",
 [IsDenseDigraphRep],
 function(D)
   local verts;
-  IsValidDigraph(D);
 
   if HasIsAcyclicDigraph(D) and IsAcyclicDigraph(D) then
     verts := DigraphVertices(D);
@@ -501,21 +483,18 @@ end);
 InstallMethod(DigraphNrStronglyConnectedComponents, "for a digraph",
 [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return Length(DigraphStronglyConnectedComponents(D).comps);
 end);
 
 InstallMethod(DigraphConnectedComponents, "for a dense digraph",
 [IsDenseDigraphRep],
 function(D)
-  IsValidDigraph(D);
   return DIGRAPH_CONNECTED_COMPONENTS(D);
 end);
 
 InstallMethod(OutDegrees, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local adj, degs, i;
-  IsValidDigraph(D);
   adj := OutNeighbours(D);
   degs := EmptyPlist(DigraphNrVertices(D));
   for i in DigraphVertices(D) do
@@ -529,7 +508,6 @@ InstallMethod(InDegrees, "for a digraph with in neighbours",
 2,  # to beat the method for IsDenseDigraphRep
 function(D)
   local inn, degs, i;
-  IsValidDigraph(D);
   inn := InNeighbours(D);
   degs := EmptyPlist(DigraphNrVertices(D));
   for i in DigraphVertices(D) do
@@ -541,7 +519,6 @@ end);
 InstallMethod(InDegrees, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local adj, degs, x, i;
-  IsValidDigraph(D);
   adj := OutNeighbours(D);
   degs := [1 .. DigraphNrVertices(D)] * 0;
   for x in adj do
@@ -554,7 +531,6 @@ end);
 
 InstallMethod(OutDegreeSequence, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   D := ShallowCopy(OutDegrees(D));
   Sort(D, {a, b} -> b < a);
   return D;
@@ -566,7 +542,6 @@ InstallMethod(OutDegreeSequence,
 [IsDenseDigraphRep and HasDigraphGroup],
 function(D)
   local out, adj, orbs, orb;
-  IsValidDigraph(D);
   out := [];
   adj := OutNeighbours(D);
   orbs := DigraphOrbits(D);
@@ -579,13 +554,11 @@ end);
 
 InstallMethod(OutDegreeSet, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return Set(ShallowCopy(OutDegrees(D)));
 end);
 
 InstallMethod(InDegreeSequence, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   D := ShallowCopy(InDegrees(D));
   Sort(D, {a, b} -> b < a);
   return D;
@@ -597,7 +570,6 @@ InstallMethod(InDegreeSequence,
 [IsDigraph and HasDigraphGroup and HasInNeighbours],
 function(D)
   local out, adj, orbs, orb;
-  IsValidDigraph(D);
   out := [];
   adj := InNeighbours(D);
   orbs := DigraphOrbits(D);
@@ -610,7 +582,6 @@ end);
 
 InstallMethod(InDegreeSet, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return Set(ShallowCopy(InDegrees(D)));
 end);
 
@@ -618,7 +589,6 @@ InstallMethod(DigraphSources, "for a digraph with in-degrees",
 [IsDigraph and HasInDegrees], 3,
 function(D)
   local degs;
-  IsValidDigraph(D);
   degs := InDegrees(D);
   return Filtered(DigraphVertices(D), x -> degs[x] = 0);
 end);
@@ -628,7 +598,6 @@ InstallMethod(DigraphSources, "for a digraph with in-neighbours",
 2,  # to beat the method for IsDenseDigraphRep
 function(D)
   local inn, sources, count, i;
-  IsValidDigraph(D);
 
   inn := InNeighbours(D);
   sources := EmptyPlist(DigraphNrVertices(D));
@@ -646,7 +615,6 @@ end);
 InstallMethod(DigraphSources, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local out, seen, tmp, next, v;
-  IsValidDigraph(D);
   out  := OutNeighbours(D);
   seen := BlistList(DigraphVertices(D), []);
   for next in out do
@@ -665,7 +633,6 @@ InstallMethod(DigraphSinks, "for a digraph with out-degrees",
 2,  # to beat the method for IsDenseDigraphRep
 function(D)
   local degs;
-  IsValidDigraph(D);
   degs := OutDegrees(D);
   return Filtered(DigraphVertices(D), x -> degs[x] = 0);
 end);
@@ -673,7 +640,6 @@ end);
 InstallMethod(DigraphSinks, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local out, sinks, count, i;
-  IsValidDigraph(D);
 
   out   := OutNeighbours(D);
   sinks := [];
@@ -692,7 +658,6 @@ function(D)
   local comps, out, deg, nrvisited, period, stack, len, depth, current,
         olddepth, i;
 
-  IsValidDigraph(D);
   if HasIsAcyclicDigraph(D) and IsAcyclicDigraph(D) then
     return 0;
   fi;
@@ -739,7 +704,6 @@ end);
 
 InstallMethod(DIGRAPHS_ConnectivityData, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return [];
 end);
 
@@ -909,7 +873,6 @@ end);
 
 InstallMethod(DigraphDiameter, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   if not IsStronglyConnectedDigraph(D) then
     # Diameter undefined
     return fail;
@@ -923,7 +886,6 @@ end);
 
 InstallMethod(DigraphUndirectedGirth, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   # This is only defined on undirected graphs (i.e. symmetric digraphs)
   if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the argument <D> must be a symmetric digraph,");
@@ -942,7 +904,6 @@ end);
 InstallMethod(DigraphGirth, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local verts, girth, out, dist, i, j;
-  IsValidDigraph(D);
   if DigraphHasLoops(D) then
     return 1;
   fi;
@@ -1023,7 +984,6 @@ InstallMethod(DigraphLongestSimpleCircuit, "for a digraph",
 [IsDigraph],
 function(D)
   local circs, lens, max;
-  IsValidDigraph(D);
   if IsAcyclicDigraph(D) then
     return fail;
   fi;
@@ -1233,7 +1193,6 @@ InstallMethod(DigraphAllSimpleCircuits, "for a dense digraph",
 function(D)
   local UNBLOCK, CIRCUIT, out, stack, endofstack, C, scc, n, blocked, B,
   c_comp, comp, s, loops, i;
-  IsValidDigraph(D);
 
   if DigraphNrVertices(D) = 0 or DigraphNrEdges(D) = 0 then
     return [];
@@ -1400,7 +1359,6 @@ InstallMethod(DigraphMycielskianAttr, "for an immutable, symmetric digraph",
 InstallMethod(DIGRAPHS_Bipartite, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local n, t, colours, in_nbrs, stack, pop, v, pos, nbrs, w, i;
-  IsValidDigraph(D);
   n := DigraphNrVertices(D);
   if n < 2 then
     return [false, fail];
@@ -1443,7 +1401,6 @@ end);
 InstallMethod(DigraphBicomponents, "for a digraph", [IsDigraph],
 function(D)
   local b;
-  IsValidDigraph(D);
 
   # Attribute only applies to bipartite digraphs
   if not IsBipartiteDigraph(D) then
@@ -1456,7 +1413,6 @@ end);
 
 InstallMethod(DigraphLoops, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
-  IsValidDigraph(D);
   if HasDigraphHasLoops(D) and not DigraphHasLoops(D) then
     return [];
   fi;
@@ -1465,7 +1421,6 @@ end);
 
 InstallMethod(DigraphDegeneracy, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   if not IsSymmetricDigraph(D) or IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a symmetric digraph ",
                   "with no multiple edges,");
@@ -1475,7 +1430,6 @@ end);
 
 InstallMethod(DigraphDegeneracyOrdering, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   if not IsSymmetricDigraph(D) or IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a symmetric digraph ",
                   "with no multiple edges,");
@@ -1688,7 +1642,6 @@ end);
 InstallMethod(HamiltonianPath, "for a digraph", [IsDigraph],
 function(D)
   local path, iter, n;
-  IsValidDigraph(D);
 
   if DigraphNrVertices(D) <= 1 and IsEmptyDigraph(D) then
     if DigraphNrVertices(D) = 0 then
@@ -1905,19 +1858,16 @@ end);
 
 InstallMethod(CharacteristicPolynomial, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return CharacteristicPolynomial(AdjacencyMatrix(D));
 end);
 
 InstallMethod(IsVertexTransitive, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return IsTransitive(AutomorphismGroup(D), DigraphVertices(D));
 end);
 
 InstallMethod(IsEdgeTransitive, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple",
                   " edges,");

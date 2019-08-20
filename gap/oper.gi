@@ -756,14 +756,12 @@ end);
 InstallMethod(OnMultiDigraphs, "for a digraph, perm and perm",
 [IsDigraph, IsPerm, IsPerm],
 function(D, perm1, perm2)
-  IsValidDigraph(D);
   return OnMultiDigraphs(D, [perm1, perm2]);
 end);
 
 InstallMethod(OnMultiDigraphs, "for a digraph and perm coll",
 [IsDigraph, IsPermCollection],
 function(D, perms)
-  IsValidDigraph(D);
   if Length(perms) <> 2 then
     ErrorNoReturn("the 2nd argument <perms> must be a pair of permutations,");
   fi;
@@ -912,7 +910,6 @@ end);
 InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, v)
-  IsValidDigraph(D);
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
                   "1st argument <D>,");
@@ -925,7 +922,6 @@ InstallMethod(InNeighboursOfVertexNC,
 [IsDigraph and HasInNeighbours, IsPosInt],
 2,  # to beat the next method for IsDenseDigraphRep
 function(D, v)
-  IsValidDigraph(D);
   return InNeighbours(D)[v];
 end);
 
@@ -951,7 +947,6 @@ end);
 InstallMethod(OutNeighboursOfVertex, "for a dense digraph and a vertex",
 [IsDenseDigraphRep, IsPosInt],
 function(D, v)
-  IsValidDigraph(D);
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
                   "1st argument <D>,");
@@ -968,7 +963,6 @@ end);
 InstallMethod(InDegreeOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, v)
-  IsValidDigraph(D);
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
                   "1st argument <D>,");
@@ -1009,7 +1003,6 @@ end);
 InstallMethod(OutDegreeOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, v)
-  IsValidDigraph(D);
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
                   "1st argument <D>,");
@@ -1028,14 +1021,12 @@ end);
 InstallMethod(OutDegreeOfVertexNC, "for a dense digraph and a vertex",
 [IsDenseDigraphRep, IsPosInt],
 function(D, v)
-  IsValidDigraph(D);
   return Length(OutNeighbours(D)[v]);
 end);
 
 InstallMethod(DigraphOutEdges, "for a dense digraph and a vertex",
 [IsDenseDigraphRep, IsPosInt],
 function(D, v)
-  IsValidDigraph(D);
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
                   "1st argument <D>,");
@@ -1046,7 +1037,6 @@ end);
 InstallMethod(DigraphInEdges, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, v)
-  IsValidDigraph(D);
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
                   "1st argument <D>,");
@@ -1061,25 +1051,21 @@ end);
 InstallMethod(OutNeighboursMutableCopy, "for a dense digraph",
 [IsDenseDigraphRep],
 function(D)
-  IsValidDigraph(D);
   return List(OutNeighbours(D), ShallowCopy);
 end);
 
 InstallMethod(InNeighboursMutableCopy, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return List(InNeighbours(D), ShallowCopy);
 end);
 
 InstallMethod(AdjacencyMatrixMutableCopy, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return List(AdjacencyMatrix(D), ShallowCopy);
 end);
 
 InstallMethod(BooleanAdjacencyMatrixMutableCopy, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return List(BooleanAdjacencyMatrix(D), ShallowCopy);
 end);
 
@@ -1090,7 +1076,6 @@ end);
 InstallMethod(IsDigraphEdge, "for a digraph and a list",
 [IsDigraph, IsList],
 function(D, edge)
-  IsValidDigraph(D);
   if Length(edge) <> 2 or not IsPosInt(edge[1]) or not IsPosInt(edge[2]) then
     return false;
   fi;
@@ -1101,7 +1086,6 @@ InstallMethod(IsDigraphEdge, "for a dense digraph, int, int",
 [IsDenseDigraphRep, IsInt, IsInt],
 function(D, u, v)
   local n;
-  IsValidDigraph(D);
 
   n := DigraphNrVertices(D);
 
@@ -1119,7 +1103,6 @@ InstallMethod(IsSubdigraph, "for a dense digraph and dense digraph",
 [IsDenseDigraphRep, IsDenseDigraphRep],
 function(super, sub)
   local n, x, y, i, j;
-  IsValidDigraph(super, sub);
 
   n := DigraphNrVertices(super);
   if n <> DigraphNrVertices(sub)
@@ -1158,7 +1141,6 @@ InstallMethod(IsUndirectedSpanningForest, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(super, sub)
   local sym, comps1, comps2;
-  IsValidDigraph(super, sub);
 
   if not IsUndirectedForest(sub) then
     return false;
@@ -1183,7 +1165,6 @@ end);
 InstallMethod(IsUndirectedSpanningTree, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(super, sub)
-  IsValidDigraph(super, sub);
   super := DigraphCopyIfMutable(super);
   return IsConnectedDigraph(MaximalSymmetricSubdigraph(super))
     and IsUndirectedSpanningForest(super, sub);
@@ -1219,7 +1200,6 @@ end);
 InstallMethod(IsMatching, "for a digraph and a list",
 [IsDigraph, IsHomogeneousList],
 function(D, edges)
-  IsValidDigraph(D);
   return DIGRAPHS_Matching(D, edges) <> false;
 end);
 
@@ -1227,7 +1207,6 @@ InstallMethod(IsPerfectMatching, "for a digraph and a list",
 [IsDigraph, IsHomogeneousList],
 function(D, edges)
   local seen;
-  IsValidDigraph(D);
 
   seen := DIGRAPHS_Matching(D, edges);
   if seen = false then
@@ -1240,7 +1219,6 @@ InstallMethod(IsMaximalMatching, "for a digraph and a list",
 [IsDenseDigraphRep, IsHomogeneousList],
 function(D, edges)
   local seen, nbs, i, j;
-  IsValidDigraph(D);
 
   seen := DIGRAPHS_Matching(D, edges);
   if seen = false then
@@ -1268,7 +1246,6 @@ InstallMethod(DigraphFloydWarshall,
 [IsDenseDigraphRep, IsFunction, IsObject, IsObject],
 function(D, func, nopath, edge)
   local vertices, n, mat, out, i, j, k;
-  IsValidDigraph(D);
 
   vertices := DigraphVertices(D);
   n := DigraphNrVertices(D);
@@ -1303,7 +1280,6 @@ InstallMethod(DigraphStronglyConnectedComponent, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, v)
   local scc;
-  IsValidDigraph(D);
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
                   "1st argument <D>,");
@@ -1319,7 +1295,6 @@ InstallMethod(DigraphConnectedComponent, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, v)
   local wcc;
-  IsValidDigraph(D);
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
                   "1st argument <D>,");
@@ -1332,7 +1307,6 @@ InstallMethod(IsReachable, "for a digraph and two pos ints",
 [IsDigraph, IsPosInt, IsPosInt],
 function(D, u, v)
   local verts, scc;
-  IsValidDigraph(D);
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
@@ -1358,7 +1332,6 @@ InstallMethod(DigraphPath, "for a dense digraph and two pos ints",
 [IsDenseDigraphRep, IsPosInt, IsPosInt],
 function(D, u, v)
   local verts;
-  IsValidDigraph(D);
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
@@ -1383,7 +1356,6 @@ InstallMethod(DigraphShortestPath, "for a dense digraph and two pos ints",
 function(D, u, v)
   local current, next, parent, distance, falselist, verts, nbs, path, edge,
   n, a, b, i;
-  IsValidDigraph(D);
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
@@ -1448,7 +1420,6 @@ end);
 InstallMethod(IteratorOfPaths, "for a dense digraph and two pos ints",
 [IsDenseDigraphRep, IsPosInt, IsPosInt],
 function(D, u, v)
-  IsValidDigraph(D);
   if not (u in DigraphVertices(D) and v in DigraphVertices(D)) then
     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
                   "vertices of the 1st argument <D>,");
@@ -1588,7 +1559,6 @@ InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDenseDigraphRep, IsPosInt],
 function(D, v)
   local dist;
-  IsValidDigraph(D);
 
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
@@ -1606,7 +1576,6 @@ InstallMethod(DigraphLayers, "for a digraph, and a vertex",
 function(D, v)
   local layers, gens, sch, trace, rep, word, orbs, layers_with_orbnums,
         layers_of_v, i, x;
-  IsValidDigraph(D);
 
   # TODO: make use of known distances matrix
   if v > DigraphNrVertices(D) then
@@ -1662,7 +1631,6 @@ InstallMethod(DigraphDistanceSet,
 "for a digraph, a vertex, and a non-negative integers",
 [IsDigraph, IsPosInt, IsInt],
 function(D, vertex, distance)
-  IsValidDigraph(D);
   if vertex > DigraphNrVertices(D) then
     ErrorNoReturn("the 2nd argument <vertex> must be a vertex of the ",
                   "digraph,");
@@ -1678,7 +1646,6 @@ InstallMethod(DigraphDistanceSet,
 [IsDigraph, IsPosInt, IsList],
 function(D, vertex, distances)
   local layers;
-  IsValidDigraph(D);
   if vertex > DigraphNrVertices(D) then
     ErrorNoReturn("the 2nd argument <vertex> must be a vertex of ",
                   "the digraph,");
@@ -1697,7 +1664,6 @@ InstallMethod(DigraphShortestDistance,
 [IsDigraph, IsPosInt, IsPosInt],
 function(D, u, v)
   local dist;
-  IsValidDigraph(D);
 
   if u > DigraphNrVertices(D) or v > DigraphNrVertices(D) then
     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
@@ -1719,7 +1685,6 @@ InstallMethod(DigraphShortestDistance, "for a digraph, a list, and a list",
 [IsDigraph, IsList, IsList],
 function(D, list1, list2)
   local shortest, u, v;
-  IsValidDigraph(D);
 
   # TODO: can this be improved?
   shortest := infinity;
@@ -1736,7 +1701,6 @@ end);
 InstallMethod(DigraphShortestDistance, "for a digraph, and a list",
 [IsDigraph, IsList],
 function(D, list)
-  IsValidDigraph(D);
 
   if Length(list) <> 2 then
     ErrorNoReturn("the 2nd argument <list> must be a list of length 2,");
@@ -1761,7 +1725,6 @@ InstallMethod(PartialOrderDigraphJoinOfVertices,
 function(D, i, j)
   local x, nbs, intr;
 
-  IsValidDigraph(D);
   if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
                   "IsPartialOrderDigraph,");
@@ -1789,7 +1752,6 @@ InstallMethod(PartialOrderDigraphMeetOfVertices,
 [IsDigraph, IsPosInt, IsPosInt],
 function(D, i, j)
   local x, nbs, intr;
-  IsValidDigraph(D);
 
   if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",

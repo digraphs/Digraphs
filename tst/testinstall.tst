@@ -341,7 +341,7 @@ gap> gr := DigraphFromDigraph6String(str);
 gap> str = Digraph6String(gr);
 true
 
-# IsValidDigraph
+# MakeImmutable
 gap> D := NullDigraph(IsMutableDigraph, 10);
 <mutable digraph with 10 vertices, 0 edges>
 gap> MakeImmutable(D);
