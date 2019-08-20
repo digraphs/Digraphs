@@ -136,13 +136,19 @@ end);
 
 InstallMethod(LineDigraph, "for a digraph", [IsDigraph],
 function(D)
-  local G;
+  local G, opt;
   if HasDigraphGroup(D) then
     G := DigraphGroup(D);
   else
     G := Group(());
   fi;
-  return Digraph(G,
+  if IsMutableDigraph(D) then
+    opt := IsMutableDigraph;
+  else
+    opt := IsImmutableDigraph;
+  fi;
+  return Digraph(opt,
+                 G,
                  DigraphEdges(D),
                  OnPairs,
                  {x, y} -> x <> y and x[2] = y[1]);
@@ -150,7 +156,7 @@ end);
 
 InstallMethod(LineUndirectedDigraph, "for a digraph", [IsDigraph],
 function(D)
-  local G;
+  local G, opt;
   if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the argument <D> must be a symmetric digraph,");
   fi;
@@ -159,8 +165,14 @@ function(D)
   else
     G := Group(());
   fi;
-  return Digraph(G,
-                 Set(DigraphEdges(D), x -> Set(x)),
+  if IsMutableDigraph(D) then
+    opt := IsMutableDigraph;
+  else
+    opt := IsImmutableDigraph;
+  fi;
+  return Digraph(opt,
+                 G,
+                 Set(DigraphEdges(D), Set),
                  OnSets,
                  {x, y} -> x <> y and not IsEmpty(Intersection(x, y)));
 end);
