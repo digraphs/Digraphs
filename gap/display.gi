@@ -10,7 +10,7 @@
 
 # AN's code, adapted by WW
 
-InstallMethod(DotDigraph, "for a digraph", [IsDigraph],
+InstallMethod(DotDigraph, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local str, out, i, j;
   str   := "//dot\n";
@@ -29,7 +29,8 @@ function(D)
   return str;
 end);
 
-InstallMethod(DotVertexLabelledDigraph, "for a digraph", [IsDigraph],
+InstallMethod(DotVertexLabelledDigraph, "for a dense digraph",
+[IsDenseDigraphRep],
 function(D)
   local out, str, i, j;
   out   := OutNeighbours(D);
@@ -54,8 +55,8 @@ function(D)
   return str;
 end);
 
-InstallMethod(DotSymmetricDigraph, "for a digraph",
-[IsDigraph],
+InstallMethod(DotSymmetricDigraph, "for a dense digraph",
+[IsDenseDigraphRep],
 function(D)
   local out, str, i, j;
   if not IsSymmetricDigraph(D) then
@@ -220,6 +221,7 @@ function(D)
 
   # Quotient by the strongly connected components to get a partial order
   # D and draw this without loops or edges implied by transitivity.
+  D      := DigraphCopyIfMutable(D);
   comps  := DigraphStronglyConnectedComponents(D).comps;
   quo    := DigraphRemoveAllMultipleEdges(QuotientDigraph(D, comps));
   red    := DigraphReflexiveTransitiveReduction(quo);
@@ -256,8 +258,9 @@ InstallMethod(DotHighlightedDigraph, "for a digraph and list",
 [IsDigraph, IsList],
 {D, list} -> DotHighlightedDigraph(D, list, "black", "grey"));
 
-InstallMethod(DotHighlightedDigraph, "for a digraph, list, and two strings",
-[IsDigraph, IsList, IsString, IsString],
+InstallMethod(DotHighlightedDigraph,
+"for a dense digraph, list, and two strings",
+[IsDenseDigraphRep, IsList, IsString, IsString],
 function(D, highverts, highcolour, lowcolour)
   local lowverts, out, str, i, j;
 
