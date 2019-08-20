@@ -111,6 +111,8 @@ DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
 DeclareOperation("AsBinaryRelation", [IsDigraph]);
 DeclareOperation("AsSemigroup", [IsFunction, IsDigraph]);
 DeclareOperation("AsMonoid", [IsFunction, IsDigraph]);
+DeclareOperation("AsSemigroup",
+                 [IsFunction, IsDigraph, IsDenseList, IsDenseList]);
 
 DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt]);
 DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt, IsRat]);
