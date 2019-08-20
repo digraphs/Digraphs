@@ -118,7 +118,7 @@ gap> for x in iter do od;
         one edge must be separated by a single space, and pairs of vertices must
         be separated by two spaces. <P/>
 
-        See <Ref Func="ReadPlainTextDigraph"/> for a more flexible way to store
+        See <Ref Oper="ReadPlainTextDigraph"/> for a more flexible way to store
         digraphs in a plain text file. <P/>
       </Item>
 
@@ -259,7 +259,7 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
         one edge must be separated by a single space, and pairs of vertices must
         be separated by two spaces. <P/>
 
-        See <Ref Func="ReadPlainTextDigraph"/> for a more flexible way to store
+        See <Ref Oper="ReadPlainTextDigraph"/> for a more flexible way to store
         digraphs in a plain text file. <P/>
 <!--
         Just so I remember:
@@ -360,7 +360,7 @@ gap> ReadDigraphs(
         one edge must be separated by a single space, and pairs of vertices must
         be separated by two spaces. <P/>
 
-        See <Ref Func="ReadPlainTextDigraph"/> for a more flexible way to store
+        See <Ref Oper="ReadPlainTextDigraph"/> for a more flexible way to store
         digraphs in a plain text file. <P/>
 <!--
         Just so I remember:
@@ -428,7 +428,7 @@ gap> DiSparse6String(gr);
 <#GAPDoc Label="DigraphPlainTextLineEncoder">
 <ManSection>
   <Func Name="DigraphPlainTextLineEncoder" Arg="delimiter1, [delimiter2,] offset"/>
-  <Func Name="DigraphPlainTextLineDecoder" Arg="delimiter1, [delimiter2,] offset"/>
+  <Oper Name="DigraphPlainTextLineDecoder" Arg="delimiter1, [delimiter2,] offset"/>
   <Returns>A string.</Returns>
   <Description>
     These two functions return a function which encodes or decodes a digraph in
@@ -500,7 +500,7 @@ gap> DigraphFromPlainTextString(last);
 <#GAPDoc Label="WritePlainTextDigraph">
 <ManSection>
   <Func Name="WritePlainTextDigraph" Arg="filename, digraph, delimiter, offset"/>
-  <Func Name="ReadPlainTextDigraph" Arg="filename, delimiter, offset, ignore"/>
+  <Oper Name="ReadPlainTextDigraph" Arg="filename, delimiter, offset, ignore"/>
   <Description>
     These functions write and read a single digraph in a human-readable plain
     text format as follows: each line contains a single edge, and each edge is
@@ -607,7 +607,7 @@ gap> ReadDIMACSDigraph(filename);
 
 <#GAPDoc Label="TournamentLineDecoder">
 <ManSection>
-  <Func Name="TournamentLineDecoder" Arg="str"/>
+  <Oper Name="TournamentLineDecoder" Arg="str"/>
   <Returns>A digraph.</Returns>
   <Description>
     This function takes a string <A>str</A>, decodes it, and then returns the
@@ -641,7 +641,7 @@ gap> OutNeighbours(gr);
 
 <#GAPDoc Label="AdjacencyMatrixUpperTriangleLineDecoder">
 <ManSection>
-  <Func Name="AdjacencyMatrixUpperTriangleLineDecoder" Arg="str"/>
+  <Oper Name="AdjacencyMatrixUpperTriangleLineDecoder" Arg="str"/>
   <Returns>A digraph.</Returns>
   <Description>
     This function takes a string <A>str</A>, decodes it, and then returns the
@@ -680,7 +680,7 @@ gap> OutNeighbours(gr);
 
 <#GAPDoc Label="TCodeDecoder">
 <ManSection>
-  <Func Name="TCodeDecoder" Arg="str"/>
+  <Oper Name="TCodeDecoder" Arg="str"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>str</A> is a string consisting of at least two non-negative integers

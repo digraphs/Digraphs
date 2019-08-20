@@ -987,11 +987,11 @@
           <C>ComplementGraph</C>
         </Item>
         <Item>
-          <Ref Attr="DigraphDual"/>
+          <Ref Oper="DigraphDual"/>
         </Item>
         <Item>
           <Alt Only="HTML">
-            <Ref Attr="DigraphDual"/> in &Digraphs; is equivalent to
+            <Ref Oper="DigraphDual"/> in &Digraphs; is equivalent to
             <C>ComplementGraph</C> in &Grape; with the optional argument
             <A>comploops</A> set to <K>true</K> (loops/nonloops are
             complemented).
@@ -1053,12 +1053,12 @@
           <C>UnderlyingGraph</C>
         </Item>
         <Item>
-          <Ref Attr="DigraphSymmetricClosure"/>
+          <Ref Oper="DigraphSymmetricClosure"/>
         </Item>
         <Item>
           <Alt Only="HTML">
             <C>UnderlyingGraph</C> in &Grape; is equivalent to
-            <Ref Attr="DigraphSymmetricClosure"/> in &Digraphs;.
+            <Ref Oper="DigraphSymmetricClosure"/> in &Digraphs;.
           </Alt>
         </Item>
       </Row>

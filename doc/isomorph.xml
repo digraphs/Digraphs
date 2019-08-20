@@ -49,7 +49,7 @@
     and Petteri Kaski. <P/>
 
     The attribute <Ref Attr="AutomorphismGroup" Label="for a digraph"/> and
-    operation <Ref Attr="AutomorphismGroup" 
+    operation <Ref Oper="AutomorphismGroup" 
       Label="for a digraph and a homogeneous list"/> returns
     the value of either <C>BlissAutomorphismGroup</C> or  <Ref
       Attr="NautyAutomorphismGroup"/>. These groups are, of course, equal but
@@ -77,7 +77,7 @@ gap> Size(G);
     Brendan Mckay and Adolfo Piperno via &NautyTracesInterface;. 
 
     The attribute <Ref Attr="AutomorphismGroup" Label="for a digraph"/> and
-    operation <Ref Attr="AutomorphismGroup" 
+    operation <Ref Oper="AutomorphismGroup" 
       Label="for a digraph and a homogeneous list"/> returns
     the value of either <C>NautyAutomorphismGroup</C> or  <Ref
       Attr="BlissAutomorphismGroup"/>. These groups are, of course, equal but

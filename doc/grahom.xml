@@ -383,8 +383,6 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
 <ManSection>
   <Oper Name="DigraphColouring" Arg="digraph, n"
     Label="for a digraph and a number of colours"/>
-  <Oper Name="DigraphColoring" Arg="digraph, n"
-    Label="for a digraph and a number of colours"/>
   <Returns> A transformation, or <K>fail</K>.</Returns>
   <Description>
     A <E>proper colouring</E> of a digraph is a labelling of its vertices in
@@ -600,7 +598,7 @@ gap> EmbeddingsDigraphs(D1, D2);
         <A>x</A> fixes every <C>i</C> which is not a vertex of <A>src</A>.
       </Item>
     </List>
-    See also <Ref Attr="GeneratorsOfEndomorphismMonoid"/>.<P/>
+    See also <Ref Func="GeneratorsOfEndomorphismMonoid"/>.<P/>
 
     <Example><![CDATA[
 gap> src := Digraph([[1], [1, 2], [1, 3]]);

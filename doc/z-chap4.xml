@@ -74,7 +74,7 @@
   </Section>
 
   <Section><Heading>Associated semigroups</Heading>
-    <#Include Label="AsSemigroup">
+    <#Include Label="AsSemigroupDigraph">
     <#Include Label="AsCliffordSemigroup">
   </Section>
 

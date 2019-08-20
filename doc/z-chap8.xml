@@ -51,8 +51,8 @@
       </Item>
     </List>
 
-    See <Ref Attr="MaximalSymmetricSubdigraphWithoutLoops"/> for more
-    information about this attribute. The <Ref Attr="AutomorphismGroup"
+    See <Ref Oper="MaximalSymmetricSubdigraphWithoutLoops"/> for more
+    information about this. The <Ref Attr="AutomorphismGroup"
       Label="for a digraph" /> of this symmetric digraph contains the
     automorphism group of <A>digraph</A> as a subgroup.  By performing the
     search for maximal cliques with the help of this larger automorphism group
@@ -63,7 +63,7 @@
       without loops</E> on sets of vertices.<P/>
 
     The independent sets of a digraph are equal to the independent sets of the
-    <Ref Attr="DigraphSymmetricClosure"/>.  Therefore, overall, the independent
+    <Ref Oper="DigraphSymmetricClosure"/>.  Therefore, overall, the independent
     sets of <A>digraph</A> are equal to the independent sets of the symmetric
     digraph:
 
@@ -76,7 +76,7 @@
 
     Again, the automorphism group of this symmetric digraph contains the
     automorphism group of <A>digraph</A>. Since a search for independent sets
-    is equal to a search for cliques in the <Ref Attr="DigraphDual"/>, the
+    is equal to a search for cliques in the <Ref Oper="DigraphDual"/>, the
     methods used in &Digraphs; usually transform a search for independent sets
     into a search for cliques, as described above.  The functions and
     attributes which return representatives of independent sets of

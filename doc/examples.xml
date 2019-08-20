@@ -10,7 +10,7 @@
 
 <#GAPDoc Label="PetersenGraph">
 <ManSection>
-  <Attr Name="PetersenGraph" Arg=""/>
+  <Oper Name="PetersenGraph" Arg=""/>
   <Returns>A digraph.</Returns>
   <Description>
 
@@ -22,7 +22,7 @@
     Petersen, who in 1898 constructed it to be the smallest bridgeless cubic
     graph with no three-edge-coloring.</Q><P/>
 
-    See also <Ref Func="GeneralisedPetersenGraph"/>.
+    See also <Ref Oper="GeneralisedPetersenGraph"/>.
 
 <Example><![CDATA[
 gap> ChromaticNumber(PetersenGraph());
@@ -34,7 +34,7 @@ gap> ChromaticNumber(PetersenGraph());
 
 <#GAPDoc Label="GeneralisedPetersenGraph">
 <ManSection>
-  <Attr Name="GeneralisedPetersenGraph" Arg="n, k"/>
+  <Oper Name="GeneralisedPetersenGraph" Arg="n, k"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> is a positive integer and <A>k</A> is a non-negative
@@ -53,7 +53,7 @@ gap> ChromaticNumber(PetersenGraph());
     Coxeter and was given its name in 1969 by Mark Watkins.</Q>
     <P/>
 
-    See also <Ref Func="PetersenGraph"/>.
+    See also <Ref Oper="PetersenGraph"/>.
 
 <Example><![CDATA[
 gap> GeneralisedPetersenGraph(7, 2);
