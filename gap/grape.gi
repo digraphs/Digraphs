@@ -8,7 +8,7 @@
 #############################################################################
 ##
 
-# TODO(later) revise this for mutable digraphs, if it makes sense to do so.
+# TODO (later) revise this for mutable digraphs, if it makes sense to do so.
 
 # <G> is a group, <obj> a set of points on which <act> acts, and <adj> is a
 # function which for 2 elements u, v of <obj> returns <true> if and only if
@@ -20,9 +20,18 @@ IsCayleyDigraph and HasGroupOfCayleyDigraph, 0, GroupOfCayleyDigraph);
 InstallMethod(Digraph,
 "for a group, list or collection, function, and function",
 [IsGroup, IsListOrCollection, IsFunction, IsFunction],
-function(G, obj, act, adj)
+{G, obj, act, adj} -> Digraph(IsImmutableDigraph, G, obj, act, adj));
+
+InstallMethod(Digraph,
+"for a group, list or collection, function, and function",
+[IsFunction, IsGroup, IsListOrCollection, IsFunction, IsFunction],
+function(imm, G, obj, act, adj)
   local hom, dom, sch, orbits, reps, stabs, rep_out, out, gens, trace, word,
   D, adj_func, i, o, w;
+
+  if not (imm = IsMutableDigraph or imm = IsImmutableDigraph) then
+    ErrorNoReturn("<imm> must be IsMutableDigraph or IsImmutableDigraph");
+  fi;
 
   hom    := ActionHomomorphism(G, obj, act, "surjective");
   dom    := [1 .. Size(obj)];
@@ -65,20 +74,20 @@ function(G, obj, act, adj)
     od;
   od;
 
-  D := DigraphNC(out);
+  D := DigraphNC(imm, out);
 
-  adj_func := function(u, v)
-    return adj(obj[u], obj[v]);
-  end;
-
-  SetFilterObj(D, IsDigraphWithAdjacencyFunction);
-  SetDigraphAdjacencyFunction(D, adj_func);
-  SetDigraphGroup(D, Range(hom));
-  SetDigraphOrbits(D, orbits);
-  SetDIGRAPHS_Stabilizers(D, stabs);
-  SetDigraphSchreierVector(D, sch);
-  SetRepresentativeOutNeighbours(D, rep_out);
-
+  if IsImmutableDigraph(D) then
+    adj_func := function(u, v)
+      return adj(obj[u], obj[v]);
+    end;
+    SetFilterObj(D, IsDigraphWithAdjacencyFunction);
+    SetDigraphAdjacencyFunction(D, adj_func);
+    SetDigraphGroup(D, Range(hom));
+    SetDigraphOrbits(D, orbits);
+    SetDIGRAPHS_Stabilizers(D, stabs);
+    SetDigraphSchreierVector(D, sch);
+    SetRepresentativeOutNeighbours(D, rep_out);
+  fi;
   return D;
 end);
 
@@ -201,17 +210,15 @@ end);
 
 InstallMethod(EdgeOrbitsDigraph, "for a group and list",
 [IsPermGroup, IsList],
-function(G, E)
-  return EdgeOrbitsDigraph(G, E, LargestMovedPoint(G));
-end);
+{G, E} -> EdgeOrbitsDigraph(G, E, LargestMovedPoint(G)));
 
 # Note: if at some point we don't store all of the out neighbours, then this
 # can be improved. JDM
 
-InstallMethod(DigraphAddEdgeOrbit, "for a digraph and edge",
+InstallMethod(DigraphAddEdgeOrbit, "for a digraph and list",
 [IsDigraph, IsList],
 function(D, edge)
-  local out, G, o, e;
+  local G, o, imm, e;
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
     ErrorNoReturn("the 2nd argument <edge> must be a list of 2 ",
@@ -224,16 +231,22 @@ function(D, edge)
     return D;
   fi;
 
-  out := OutNeighboursMutableCopy(D);
-  G   := DigraphGroup(D);
-  o   := Orbit(G, edge, OnTuples);
+  G := DigraphGroup(D);
+  o := Orbit(G, edge, OnTuples);
+
+  if IsImmutableDigraph(D) then
+    imm := true;
+    D := DigraphMutableCopy(D);
+  fi;
 
   for e in o do
-    Add(out[e[1]], e[2]);
+    DigraphAddEdge(D, e);
   od;
 
-  D := DigraphNC(out);
-  SetDigraphGroup(D, G);
+  if imm then
+    MakeImmutable(D);
+    SetDigraphGroup(D, G);
+  fi;
 
   return D;
 end);
@@ -241,10 +254,10 @@ end);
 # Note: if at some point we don't store all of the out neighbours, then this
 # can be improved. JDM
 
-InstallMethod(DigraphRemoveEdgeOrbit, "for a digraph and edge",
+InstallMethod(DigraphRemoveEdgeOrbit, "for a digraph and list",
 [IsDigraph, IsList],
 function(D, edge)
-  local out, G, o, pos, e;
+  local G, o, imm, e;
 
   if not (Length(edge) = 2 and ForAll(edge, IsPosInt)) then
     ErrorNoReturn("the 2nd argument <edge> must be a pair of ",
@@ -257,19 +270,22 @@ function(D, edge)
     return D;
   fi;
 
-  out := OutNeighboursMutableCopy(D);
-  G   := DigraphGroup(D);
-  o   := Orbit(G, edge, OnTuples);
+  G := DigraphGroup(D);
+  o := Orbit(G, edge, OnTuples);
+
+  if IsImmutableDigraph(D) then
+    imm := true;
+    D := DigraphMutableCopy(D);
+  fi;
 
   for e in o do
-    pos := Position(out[e[1]], e[2]);
-    if pos <> fail then
-      Remove(out[e[1]], pos);
-    fi;
+    DigraphRemoveEdge(D, e);
   od;
 
-  D := DigraphNC(out);
-  SetDigraphGroup(D, G);
+  if imm then
+    MakeImmutable(D);
+    SetDigraphGroup(D, G);
+  fi;
 
   return D;
 end);
