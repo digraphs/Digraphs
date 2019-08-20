@@ -37,4 +37,4 @@ ReadPackage("digraphs", "gap/grahom.gi");
 ReadPackage("digraphs", "gap/orbits.gi");
 ReadPackage("digraphs", "gap/cliques.gi");
 ReadPackage("digraphs", "gap/planar.gi");
-ReadPackage("digraphs", "gap/exmpl.gi");
+ReadPackage("digraphs", "gap/examples.gi");

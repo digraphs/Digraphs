@@ -1,13 +1,13 @@
 #############################################################################
 ##
-#W  standard/exmpl.tst
+#W  standard/examples.tst
 #Y  Copyright (C) 2019                                   Murray T. Whyte
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: standard/exmpl.tst");
+gap> START_TEST("Digraphs package: standard/examples.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -226,4 +226,4 @@ gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 
 #
 gap> DIGRAPHS_StopTest();
-gap> STOP_TEST("Digraphs package: standard/exmpl.tst", 0);
+gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
