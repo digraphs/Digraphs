@@ -38,21 +38,15 @@ end);
 
 InstallMethod(DigraphAddVertex, "for a immutable digraph and an object",
 [IsImmutableDigraph, IsObject],
-function(D, label)
-  return MakeImmutable(DigraphAddVertex(DigraphMutableCopy(D), label));
-end);
+{D, label} -> MakeImmutable(DigraphAddVertex(DigraphMutableCopy(D), label)));
 
 InstallMethod(DigraphAddVertex, "for a mutable digraph",
 [IsMutableDigraph],
-function(D)
-  return DigraphAddVertex(D, DigraphNrVertices(D) + 1);
-end);
+D -> DigraphAddVertex(D, DigraphNrVertices(D) + 1));
 
 InstallMethod(DigraphAddVertex, "for an immutable digraph",
 [IsImmutableDigraph],
-function(D)
-  return MakeImmutable(DigraphAddVertex(DigraphMutableCopy(D)));
-end);
+D -> MakeImmutable(DigraphAddVertex(DigraphMutableCopy(D))));
 
 InstallMethod(DigraphAddVertices, "for a mutable digraph and list",
 [IsMutableDigraph, IsList],
@@ -66,9 +60,7 @@ end);
 
 InstallMethod(DigraphAddVertices, "for an immutable digraph and list",
 [IsImmutableDigraph, IsList],
-function(D, labels)
-  return MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), labels));
-end);
+{D, labels} -> MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), labels)));
 
 InstallMethod(DigraphAddVertices, "for a mutable digraph and an integer",
 [IsMutableDigraph, IsInt],
@@ -83,9 +75,7 @@ end);
 
 InstallMethod(DigraphAddVertices, "for an immutable digraph and an integer",
 [IsImmutableDigraph, IsInt],
-function(D, m)
-  return MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), m));
-end);
+{D, m} -> MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), m)));
 
 InstallMethod(DigraphRemoveVertex,
 "for a mutable dense digraph and positive integer",
@@ -119,9 +109,7 @@ end);
 InstallMethod(DigraphRemoveVertex,
 "for an immutable digraph and positive integer",
 [IsImmutableDigraph, IsPosInt],
-function(D, m)
-  return MakeImmutable(DigraphRemoveVertex(DigraphMutableCopy(D), m));
-end);
+{D, m} -> MakeImmutable(DigraphRemoveVertex(DigraphMutableCopy(D), m)));
 
 InstallMethod(DigraphRemoveVertices, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -236,9 +224,7 @@ end);
 InstallMethod(DigraphAddEdge,
 "for an immutable digraph, a positive integer, and a positive integer",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(D, src, ran)
-  return MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran));
-end);
+{D, src, ran} -> MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran)));
 
 InstallMethod(DigraphAddEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -251,9 +237,7 @@ end);
 
 InstallMethod(DigraphAddEdge, "for a mutable digraph and a list",
 [IsImmutableDigraph, IsList],
-function(D, edge)
-  return MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), edge));
-end);
+{D, edge} -> MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), edge)));
 
 InstallMethod(DigraphAddEdges, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -267,9 +251,7 @@ end);
 
 InstallMethod(DigraphAddEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
-function(D, edges)
-  return MakeImmutable(DigraphAddEdges(DigraphMutableCopy(D), edges));
-end);
+{D, edges} -> MakeImmutable(DigraphAddEdges(DigraphMutableCopy(D), edges)));
 
 InstallMethod(DigraphRemoveEdge,
 "for a mutable dense digraph, a positive integer, and a positive integer",
@@ -331,9 +313,7 @@ end);
 
 InstallMethod(DigraphRemoveEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
-function(D, edges)
-  return MakeImmutable(DigraphRemoveEdges(DigraphMutableCopy(D), edges));
-end);
+{D, edges} -> MakeImmutable(DigraphRemoveEdges(DigraphMutableCopy(D), edges)));
 
 InstallMethod(DigraphRemoveAllMultipleEdges, "for a mutable dense digraph",
 [IsMutableDigraph and IsDenseDigraphRep],
@@ -409,9 +389,7 @@ end);
 InstallMethod(DigraphClosure,
 "for an immutable dense digraph and a positive integer",
 [IsImmutableDigraph, IsPosInt],
-function(D, k)
-  return MakeImmutable(DigraphClosure(DigraphMutableCopy(D), k));
-end);
+{D, k} -> MakeImmutable(DigraphClosure(DigraphMutableCopy(D), k)));
 
 InstallGlobalFunction(DigraphDisjointUnion,
 function(arg)
@@ -636,9 +614,7 @@ end);
 
 InstallMethod(DigraphReverse, "for a immutable digraph",
 [IsImmutableDigraph],
-function(D)
-  return MakeImmutable(DigraphReverse(DigraphMutableCopy(D)));
-end);
+D -> MakeImmutable(DigraphReverse(DigraphMutableCopy(D))));
 
 InstallMethod(DigraphReverseEdge,
 "for a mutable dense digraph, positive integer, and positive integer",
@@ -665,9 +641,7 @@ end);
 InstallMethod(DigraphReverseEdge,
 "for an immutable digraph, positive integer, and positive integer",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(D, u, v)
-  return MakeImmutable(DigraphReverseEdge(DigraphMutableCopy(D), u, v));
-end);
+{D, u, v} -> MakeImmutable(DigraphReverseEdge(DigraphMutableCopy(D), u, v)));
 
 InstallMethod(DigraphReverseEdge, "for a mutable digraph and list",
 [IsMutableDigraph, IsList],
@@ -680,9 +654,7 @@ end);
 
 InstallMethod(DigraphReverseEdge, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
-function(D, e)
-  return MakeImmutable(DigraphReverseEdge(DigraphMutableCopy(D), e));
-end);
+{D, e} -> MakeImmutable(DigraphReverseEdge(DigraphMutableCopy(D), e)));
 
 InstallMethod(DigraphReverseEdges, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -696,9 +668,7 @@ end);
 
 InstallMethod(DigraphReverseEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
-function(D, E)
-  return MakeImmutable(DigraphReverseEdges(DigraphMutableCopy(D), E));
-end);
+{D, E} -> MakeImmutable(DigraphReverseEdges(DigraphMutableCopy(D), E)));
 
 ###############################################################################
 # 4. Actions
@@ -721,9 +691,7 @@ end);
 
 InstallMethod(OnDigraphs, "for a immutable digraph and a perm",
 [IsImmutableDigraph, IsPerm],
-function(D, p)
-  return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), p));
-end);
+{D, p} -> MakeImmutable(OnDigraphs(DigraphMutableCopy(D), p)));
 
 InstallMethod(OnDigraphs, "for a mutable dense digraph and a transformation",
 [IsMutableDigraph and IsDenseDigraphRep, IsTransformation],
@@ -746,18 +714,14 @@ end);
 
 InstallMethod(OnDigraphs, "for a immutable digraph and a transformation",
 [IsImmutableDigraph, IsTransformation],
-function(D, t)
-  return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), t));
-end);
+{D, t} -> MakeImmutable(OnDigraphs(DigraphMutableCopy(D), t)));
 
 # Not revising the following because multi-digraphs are being withdrawn in the
 # near future.
 
 InstallMethod(OnMultiDigraphs, "for a digraph, perm and perm",
 [IsDigraph, IsPerm, IsPerm],
-function(D, perm1, perm2)
-  return OnMultiDigraphs(D, [perm1, perm2]);
-end);
+{D, perm1, perm2} -> OnMultiDigraphs(D, [perm1, perm2]));
 
 InstallMethod(OnMultiDigraphs, "for a digraph and perm coll",
 [IsDigraph, IsPermCollection],
@@ -831,9 +795,7 @@ end);
 InstallMethod(InducedSubdigraph,
 "for an immutable digraph and a homogeneous list",
 [IsImmutableDigraph, IsHomogeneousList],
-function(D, list)
-  return MakeImmutable(InducedSubdigraph(DigraphMutableCopy(D), list));
-end);
+{D, list} -> MakeImmutable(InducedSubdigraph(DigraphMutableCopy(D), list)));
 
 InstallMethod(QuotientDigraph,
 "for a dense mutable digraph and a homogeneous list",
@@ -921,9 +883,7 @@ InstallMethod(InNeighboursOfVertexNC,
 "for a digraph with in-neighbours and a vertex",
 [IsDigraph and HasInNeighbours, IsPosInt],
 2,  # to beat the next method for IsDenseDigraphRep
-function(D, v)
-  return InNeighbours(D)[v];
-end);
+{D, v} -> InNeighbours(D)[v]);
 
 InstallMethod(InNeighboursOfVertexNC, "for a dense digraph and a vertex",
 [IsDenseDigraphRep, IsPosInt],
@@ -956,9 +916,7 @@ end);
 
 InstallMethod(OutNeighboursOfVertexNC, "for a dense digraph and a vertex",
 [IsDenseDigraphRep, IsPosInt],
-function(D, v)
-  return OutNeighbours(D)[v];
-end);
+{D, v} -> OutNeighbours(D)[v]);
 
 InstallMethod(InDegreeOfVertex, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
@@ -972,17 +930,13 @@ end);
 
 InstallMethod(InDegreeOfVertexNC, "for a digraph with in-degrees and a vertex",
 [IsDigraph and HasInDegrees, IsPosInt], 4,
-function(D, v)
-  return InDegrees(D)[v];
-end);
+{D, v} -> InDegrees(D)[v]);
 
 InstallMethod(InDegreeOfVertexNC,
 "for a digraph with in-neighbours and a vertex",
 [IsDigraph and HasInNeighbours, IsPosInt],
 2,  # to beat the next method for IsDenseDigraphRep
-function(D, v)
-  return Length(InNeighbours(D)[v]);
-end);
+{D, v} -> Length(InNeighbours(D)[v]));
 
 InstallMethod(InDegreeOfVertexNC, "for a digraph and a vertex",
 [IsDenseDigraphRep, IsPosInt],
@@ -1014,15 +968,11 @@ InstallMethod(OutDegreeOfVertexNC,
 "for a digraph with out-degrees and a vertex",
 [IsDigraph and HasOutDegrees, IsPosInt],
 2,  # to beat the next method for IsDenseDigraphRep
-function(D, v)
-  return OutDegrees(D)[v];
-end);
+{D, v} -> OutDegrees(D)[v]);
 
 InstallMethod(OutDegreeOfVertexNC, "for a dense digraph and a vertex",
 [IsDenseDigraphRep, IsPosInt],
-function(D, v)
-  return Length(OutNeighbours(D)[v]);
-end);
+{D, v} -> Length(OutNeighbours(D)[v]));
 
 InstallMethod(DigraphOutEdges, "for a dense digraph and a vertex",
 [IsDenseDigraphRep, IsPosInt],
@@ -1050,24 +1000,16 @@ end);
 
 InstallMethod(OutNeighboursMutableCopy, "for a dense digraph",
 [IsDenseDigraphRep],
-function(D)
-  return List(OutNeighbours(D), ShallowCopy);
-end);
+D -> List(OutNeighbours(D), ShallowCopy));
 
 InstallMethod(InNeighboursMutableCopy, "for a digraph", [IsDigraph],
-function(D)
-  return List(InNeighbours(D), ShallowCopy);
-end);
+D -> List(InNeighbours(D), ShallowCopy));
 
 InstallMethod(AdjacencyMatrixMutableCopy, "for a digraph", [IsDigraph],
-function(D)
-  return List(AdjacencyMatrix(D), ShallowCopy);
-end);
+D -> List(AdjacencyMatrix(D), ShallowCopy));
 
 InstallMethod(BooleanAdjacencyMatrixMutableCopy, "for a digraph", [IsDigraph],
-function(D)
-  return List(BooleanAdjacencyMatrix(D), ShallowCopy);
-end);
+D -> List(BooleanAdjacencyMatrix(D), ShallowCopy));
 
 #############################################################################
 # 8.  IsSomething
@@ -1199,9 +1141,7 @@ end);
 
 InstallMethod(IsMatching, "for a digraph and a list",
 [IsDigraph, IsHomogeneousList],
-function(D, edges)
-  return DIGRAPHS_Matching(D, edges) <> false;
-end);
+{D, edges} -> DIGRAPHS_Matching(D, edges) <> false);
 
 InstallMethod(IsPerfectMatching, "for a digraph and a list",
 [IsDigraph, IsHomogeneousList],
@@ -1623,9 +1563,7 @@ function(D, v)
 end);
 
 InstallMethod(DIGRAPHS_Layers, "for a digraph", [IsDigraph],
-function(D)
-  return [];
-end);
+D -> EmptyPlist(0));
 
 InstallMethod(DigraphDistanceSet,
 "for a digraph, a vertex, and a non-negative integers",

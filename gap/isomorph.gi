@@ -88,9 +88,7 @@ function(D, colors)
 end);
 
 BindGlobal("BLISS_DATA_NO_COLORS",
-function(D)
-  return BLISS_DATA(D, false);
-end);
+D -> BLISS_DATA(D, false));
 
 if DIGRAPHS_NautyAvailable then
   BindGlobal("NAUTY_DATA",
@@ -141,9 +139,7 @@ end);
 
 InstallMethod(BlissCanonicalLabelling, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-function(D, colors)
-  return BLISS_DATA(D, colors)[2];
-end);
+{D, colors} -> BLISS_DATA(D, colors)[2]);
 
 InstallMethod(NautyCanonicalLabelling, "for a digraph",
 [IsDigraph],
@@ -243,9 +239,7 @@ end);
 
 InstallMethod(BlissAutomorphismGroup, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-function(D, colors)
-  return BLISS_DATA(D, colors)[1];
-end);
+{D, colors} -> BLISS_DATA(D, colors)[1]);
 
 InstallMethod(NautyAutomorphismGroup, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
@@ -549,9 +543,7 @@ end);
 
 InstallMethod(IsDigraphAutomorphism, "for a digraph and a permutation",
 [IsDigraph, IsPerm],
-function(D, x)
-  return IsDigraphIsomorphism(D, D, x);
-end);
+{D, x} -> IsDigraphIsomorphism(D, D, x));
 
 InstallMethod(IsDigraphIsomorphism, "for digraph, digraph, and transformation",
 [IsDigraph, IsDigraph, IsTransformation],
@@ -566,6 +558,4 @@ end);
 
 InstallMethod(IsDigraphAutomorphism, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
-function(D, x)
-  return IsDigraphIsomorphism(D, D, x);
-end);
+{D, x} -> IsDigraphIsomorphism(D, D, x));

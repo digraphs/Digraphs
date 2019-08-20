@@ -125,9 +125,7 @@ function(D)
 end);
 
 InstallMethod(DigraphOrbitReps, "for a digraph", [IsDigraph],
-function(D)
-  return List(DigraphOrbits(D), Representative);
-end);
+D -> List(DigraphOrbits(D), Representative));
 
 InstallMethod(DigraphStabilizer, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],

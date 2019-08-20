@@ -683,9 +683,7 @@ function(func, s)
 end);
 
 InstallMethod(DigraphFromGraph6String, "for a string", [IsString],
-function(s)
-  return DigraphFromGraph6String(DigraphNC, s);
-end);
+s -> DigraphFromGraph6String(DigraphNC, s));
 
 InstallMethod(DigraphFromDigraph6String, "for a function and string",
 [IsFunction, IsString],
@@ -779,9 +777,7 @@ end);
 
 InstallMethod(DigraphFromDigraph6String, "for a string",
 [IsString],
-function(s)
-  return DigraphFromDigraph6String(DigraphNC, s);
-end);
+s -> DigraphFromDigraph6String(DigraphNC, s));
 
 InstallMethod(DigraphFromSparse6String, "for a function and a string",
 [IsFunction, IsString],
@@ -899,9 +895,7 @@ function(func, s)
 end);
 
 InstallMethod(DigraphFromSparse6String, "for a string", [IsString],
-function(s)
-  return DigraphFromSparse6String(DigraphNC, s);
-end);
+s -> DigraphFromSparse6String(DigraphNC, s));
 
 InstallMethod(DigraphFromDiSparse6String, "for a function and a string",
 [IsFunction, IsString],
@@ -1036,20 +1030,14 @@ function(func, s)
 end);
 
 InstallMethod(DigraphFromDiSparse6String, "for a string", [IsString],
-function(s)
-  return DigraphFromDiSparse6String(DigraphNC, s);
-end);
+s -> DigraphFromDiSparse6String(DigraphNC, s));
 
 InstallMethod(DigraphFromPlainTextString, "for a function and a string",
 [IsFunction, IsString],
-function(func, s)
-  return DigraphPlainTextLineDecoder(func, "  ", " ", 1)(Chomp(s));
-end);
+{func, s} -> DigraphPlainTextLineDecoder(func, "  ", " ", 1)(Chomp(s)));
 
 InstallMethod(DigraphFromPlainTextString, "for a string", [IsString],
-function(s)
-  return DigraphFromPlainTextString(DigraphByEdges, s);
-end);
+s -> DigraphFromPlainTextString(DigraphByEdges, s));
 
 # DIMACS format: for symmetric digraphs, one per file, can have loops and
 # multiple edges.
@@ -1180,9 +1168,7 @@ function(func, name)
 end);
 
 InstallMethod(ReadDIMACSDigraph, "for a string", [IsString],
-function(s)
-  return ReadDIMACSDigraph(DigraphNC, s);
-end);
+s -> ReadDIMACSDigraph(DigraphNC, s));
 
 InstallMethod(TournamentLineDecoder, "for a function and string",
 [IsFunction, IsString],
@@ -1205,9 +1191,7 @@ function(func, s)
 end);
 
 InstallMethod(TournamentLineDecoder, "for a string", [IsString],
-function(s)
-  return TournamentLineDecoder(DigraphNC, s);
-end);
+s -> TournamentLineDecoder(DigraphNC, s));
 
 # one graph per line
 InstallMethod(DigraphPlainTextLineDecoder,
@@ -1301,9 +1285,7 @@ end);
 
 InstallMethod(AdjacencyMatrixUpperTriangleLineDecoder, "for a string",
 [IsString],
-function(s)
-  return AdjacencyMatrixUpperTriangleLineDecoder(DigraphNC, s);
-end);
+s -> AdjacencyMatrixUpperTriangleLineDecoder(DigraphNC, s));
 
 InstallMethod(TCodeDecoder, "for a function and string",
 [IsFunction, IsString],
@@ -1335,9 +1317,7 @@ function(func, s)
 end);
 
 InstallMethod(TCodeDecoder, "for a string", [IsString],
-function(s)
-  return TCodeDecoder(DigraphNC, s);
-end);
+s -> TCodeDecoder(DigraphNC, s));
 
 InstallGlobalFunction(TCodeDecoderNC,
 function(str)
@@ -1834,6 +1814,4 @@ function(D)
 end);
 
 InstallMethod(PlainTextString, "for a digraph", [IsDigraph],
-function(D)
-  return DigraphPlainTextLineEncoder("  ", " ", -1)(D);
-end);
+D -> DigraphPlainTextLineEncoder("  ", " ", -1)(D));

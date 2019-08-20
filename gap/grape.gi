@@ -108,9 +108,7 @@ end);
 
 InstallMethod(CayleyDigraph, "for a group with generators",
 [IsGroup and HasGeneratorsOfGroup],
-function(G)
-  return CayleyDigraph(G, GeneratorsOfGroup(G));
-end);
+G -> CayleyDigraph(G, GeneratorsOfGroup(G)));
 
 InstallMethod(Graph, "for a digraph", [IsDigraph],
 function(D)

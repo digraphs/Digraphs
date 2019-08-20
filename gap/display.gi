@@ -254,9 +254,7 @@ end);
 
 InstallMethod(DotHighlightedDigraph, "for a digraph and list",
 [IsDigraph, IsList],
-function(D, list)
-  return DotHighlightedDigraph(D, list, "black", "grey");
-end);
+{D, list} -> DotHighlightedDigraph(D, list, "black", "grey"));
 
 InstallMethod(DotHighlightedDigraph, "for a digraph, list, and two strings",
 [IsDigraph, IsList, IsString, IsString],
