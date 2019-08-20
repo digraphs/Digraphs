@@ -77,10 +77,8 @@ DeclareOperation("DigraphByAdjacencyMatrixNC", [IsFunction, IsHomogeneousList]);
 DeclareOperation("DigraphByAdjacencyMatrix", [IsHomogeneousList]);
 DeclareOperation("DigraphByAdjacencyMatrixNC", [IsHomogeneousList]);
 
-DeclareConstructor("DigraphByEdgesCons",
-                   [IsDigraph, IsList]);
-DeclareConstructor("DigraphByEdgesCons",
-                   [IsDigraph, IsList, IsInt]);
+DeclareConstructor("DigraphByEdgesCons", [IsDigraph, IsList]);
+DeclareConstructor("DigraphByEdgesCons", [IsDigraph, IsList, IsInt]);
 
 DeclareOperation("DigraphByEdges", [IsFunction, IsList]);
 DeclareOperation("DigraphByEdges", [IsFunction, IsList, IsInt]);
@@ -134,6 +132,6 @@ DeclareOperation("RandomLattice", [IsPosInt]);
 DeclareOperation("RandomLattice", [IsFunction, IsPosInt]);
 
 # No mutable analogues of the following because we will withdraw multidigraphs
-# the not too distant future!
+# in the not-too-distant future!
 DeclareOperation("RandomMultiDigraph", [IsPosInt]);
 DeclareOperation("RandomMultiDigraph", [IsPosInt, IsPosInt]);

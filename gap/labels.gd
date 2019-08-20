@@ -8,26 +8,38 @@
 #############################################################################
 ##
 
+##  Vertex labels
+
+#  Get vertex labels
 DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphVertexLabels", [IsDigraph]);
+
+#  Set vertex labels
 DeclareOperation("SetDigraphVertexLabel", [IsDigraph, IsPosInt, IsObject]);
-DeclareOperation("RemoveDigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("SetDigraphVertexLabels", [IsDigraph, IsList]);
+
+#  Unset vertex labels
+DeclareOperation("RemoveDigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("ClearDigraphVertexLabels", [IsDigraph]);
 
-# Edge labels
-DeclareOperation("DigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt]);
+##  Edge labels
 
-DeclareOperation("DigraphEdgeLabelsNC", [IsDigraph]);
+#  Get edge labels
+DeclareOperation("DigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphEdgeLabels", [IsDigraph]);
+DeclareOperation("DigraphEdgeLabelsNC", [IsDigraph]);
+
+#  Set edge labels
 DeclareOperation("SetDigraphEdgeLabel",
                  [IsDigraph, IsPosInt, IsPosInt, IsObject]);
-
-DeclareOperation("SetDigraphEdgeLabelsNC", [IsDigraph, IsList]);
-DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsList]);
 DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsFunction]);
-DeclareOperation("ClearDigraphEdgeLabels", [IsDigraph]);
-DeclareOperation("RemoveDigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsList]);
+DeclareOperation("SetDigraphEdgeLabelsNC", [IsDigraph, IsList]);
 
+#  Unset edge labels
+DeclareOperation("RemoveDigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("ClearDigraphEdgeLabels", [IsDigraph]);
+
+# TODO WW: What is this?
 DeclareOperation("DigraphEdgeLabelAddVertex", [IsDigraph]);
 DeclareOperation("DigraphEdgeLabelRemoveVertex", [IsDigraph, IsPosInt]);
