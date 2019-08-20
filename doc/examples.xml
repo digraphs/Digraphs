@@ -11,12 +11,16 @@
 <#GAPDoc Label="PetersenGraph">
 <ManSection>
   <Attr Name="PetersenGraph" Arg=""/>
-  <Returns>The Petersen Graph</Returns>
+  <Returns>A digraph.</Returns>
   <Description>
 
-    From Wikipedia: The Petersen graph is an undirected graph with 10 vertices and 15 edges. It is a small graph that serves as a useful example and counterexample for many problems in graph theory. The Petersen graph is named after Julius Petersen, who in 1898 constructed it to be the smallest bridgeless cubic graph with no three-edge-coloring.<P/>
+    From <URL>https://en.wikipedia.org/wiki/Petersen_graph</URL>:<P/>
 
-    For more information, see <URL>https://en.wikipedia.org/wiki/Petersen_graph</URL><P/>
+    <Q>The Petersen graph is an undirected graph with 10 vertices and 15 edges.
+    It is a small graph that serves as a useful example and counterexample for
+    many problems in graph theory. The Petersen graph is named after Julius
+    Petersen, who in 1898 constructed it to be the smallest bridgeless cubic
+    graph with no three-edge-coloring.</Q><P/>
 
     See also <Ref Func="GeneralisedPetersenGraph"/>.
 
@@ -33,11 +37,21 @@ gap> ChromaticNumber(PetersenGraph());
   <Attr Name="GeneralisedPetersenGraph" Arg="n, k"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>n</A> is a positive integer and <A>k</A> is a non-negative integer less than <A>n / 2</A>, then this operation returns the <E>Generalised Petersen Graph</E> <M>GPG(n, k)</M>. <P/>
+    If <A>n</A> is a positive integer and <A>k</A> is a non-negative
+    integer less than <C><A>n</A> / 2</C>, then this operation returns
+    the <E>generalised Petersen graph</E> <M>GPG(<A>n</A>, k)</M>. <P/>
 
-    From Wikipedia: The generalized Petersen graphs are a family of cubic graphs formed by connecting the vertices of a regular polygon to the corresponding vertices of a star polygon. They include the Petersen graph and generalize one of the ways of constructing the Petersen graph. The generalized Petersen graph family was introduced in 1950 by H. S. M. Coxeter and was given its name in 1969 by Mark Watkins.<P/>
+    From
+    <URL>https://en.wikipedia.org/wiki/Generalized_Petersen_graph</URL>:
+    <P/>
 
-    For more information, see <URL>https://en.wikipedia.org/wiki/Generalized_Petersen_graph</URL><P/>
+    <Q>The generalized Petersen graphs are a family of cubic
+    graphs formed by connecting the vertices of a regular polygon to the
+    corresponding vertices of a star polygon. They include the Petersen graph
+    and generalize one of the ways of constructing the Petersen graph. The
+    generalized Petersen graph family was introduced in 1950 by H. S. M.
+    Coxeter and was given its name in 1969 by Mark Watkins.</Q>
+    <P/>
 
     See also <Ref Func="PetersenGraph"/>.
 
