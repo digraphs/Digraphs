@@ -12,11 +12,11 @@
 # This file is organised as follows:
 #
 # 1.  Adding and removing vertices
-# 2.  Adding and removing loops
-# 3.  Adding and removing edges
+# 2.  Adding, removing, and reversing edges
+# 3.  Adding and removing vertices
 # 4.  Actions
 # 5.  Substructures and quotients
-# 6.  In and out degrees and edges of vertices
+# 6.  In and out degrees, neighbours, and edges of vertices
 # 7.  Copies of out/in-neighbours
 # 8.  IsSomething
 # 9.  Connectivity
@@ -144,63 +144,7 @@ function(D, list)
 end);
 
 #############################################################################
-# 2. Adding and removing loops
-#############################################################################
-
-InstallMethod(DigraphAddAllLoops, "for a mutable dense digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
-function(D)
-  local list, v;
-  list := D!.OutNeighbours;
-  Assert(1, IsMutable(list));
-  for v in DigraphVertices(D) do
-    if not v in list[v] then
-      Add(list[v], v);
-      if not IsMultiDigraph(D) then
-        SetDigraphEdgeLabel(D, v, v, 1);
-      fi;
-    fi;
-  od;
-  return D;
-end);
-
-InstallMethod(DigraphAddAllLoops, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  local E;
-  E := MakeImmutable(DigraphAddAllLoops(DigraphMutableCopy(D)));
-  SetDigraphHasLoops(E, DigraphNrVertices(E) > 1);
-  return E;
-end);
-
-InstallMethod(DigraphRemoveLoops, "for a mutable dense digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
-function(D)
-  local out, lbl, pos, v;
-  out := D!.OutNeighbours;
-  lbl := DigraphEdgeLabelsNC(D);
-  for v in DigraphVertices(D) do
-    pos := Position(out[v], v);
-    while pos <> fail do
-      Remove(out[v], pos);
-      Remove(lbl[v], pos);
-      pos := Position(out[v], v);
-    od;
-  od;
-  return D;
-end);
-
-InstallMethod(DigraphRemoveLoops, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  local E;
-  E := MakeImmutable(DigraphRemoveLoops(DigraphMutableCopy(D)));
-  SetDigraphHasLoops(E, false);
-  return E;
-end);
-
-#############################################################################
-# 3. Adding and removing edges
+# 2. Adding and removing edges
 #############################################################################
 
 InstallMethod(DigraphAddEdge,
@@ -315,40 +259,59 @@ InstallMethod(DigraphRemoveEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
 {D, edges} -> MakeImmutable(DigraphRemoveEdges(DigraphMutableCopy(D), edges)));
 
-InstallMethod(DigraphRemoveAllMultipleEdges, "for a mutable dense digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
-function(D)
-  local nodes, list, empty, seen, keep, v, u, pos;
+InstallMethod(DigraphReverseEdge,
+"for a mutable dense digraph, positive integer, and positive integer",
+[IsMutableDigraph and IsDenseDigraphRep, IsPosInt, IsPosInt],
+function(D, u, v)
+  local pos;
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the 1st argument <D> must be a digraph with no ",
+                  "multiple edges,");
+  fi;
+  pos := Position(D!.OutNeighbours[u], v);
+  if pos = fail then
+    ErrorNoReturn("there is no edge from ", u, " to ", v,
+                  " in the digraph <D> that is the 1st argument,");
+  elif u = v then
+    return D;
+  fi;
+  Add(D!.OutNeighbours[v], u);
+  Remove(D!.OutNeighbours[u], pos);
+  ClearDigraphEdgeLabels(D);
+  return D;
+end);
 
-  nodes := DigraphVertices(D);
-  list  := D!.OutNeighbours;
-  empty := BlistList(nodes, []);
-  seen  := BlistList(nodes, []);
-  for u in nodes do
-    keep := [];
-    for pos in [1 .. Length(list[u])] do
-      v := list[u][pos];
-      if not seen[v] then
-        seen[v] := true;
-        Add(keep, pos);
-      fi;
-    od;
-    list[u] := list[u]{keep};
-    IntersectBlist(seen, empty);
+InstallMethod(DigraphReverseEdge,
+"for an immutable digraph, positive integer, and positive integer",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+{D, u, v} -> MakeImmutable(DigraphReverseEdge(DigraphMutableCopy(D), u, v)));
+
+InstallMethod(DigraphReverseEdge, "for a mutable digraph and list",
+[IsMutableDigraph, IsList],
+function(D, e)
+  if Length(e) <> 2 then
+    ErrorNoReturn("the 2nd argument <e> must be a list of length 2,");
+  fi;
+  return DigraphReverseEdge(D, e[1], e[2]);
+end);
+
+InstallMethod(DigraphReverseEdge, "for an immutable digraph and a list",
+[IsImmutableDigraph, IsList],
+{D, e} -> MakeImmutable(DigraphReverseEdge(DigraphMutableCopy(D), e)));
+
+InstallMethod(DigraphReverseEdges, "for a mutable digraph and a list",
+[IsMutableDigraph, IsList],
+function(D, E)
+  local e;
+  for e in E do
+    DigraphReverseEdge(D, e);
   od;
-  # Multidigraphs did not have edge labels
-  SetDigraphVertexLabels(D, DigraphVertexLabels(D));
   return D;
 end);
 
-InstallMethod(DigraphRemoveAllMultipleEdges, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  D := DigraphMutableCopy(D);
-  D := MakeImmutable(DigraphRemoveAllMultipleEdges(D));
-  SetIsMultiDigraph(D, false);
-  return D;
-end);
+InstallMethod(DigraphReverseEdges, "for an immutable digraph and a list",
+[IsImmutableDigraph, IsList],
+{D, E} -> MakeImmutable(DigraphReverseEdges(DigraphMutableCopy(D), E)));
 
 InstallMethod(DigraphClosure,
 "for a mutable dense digraph and a positive integer",
@@ -390,6 +353,10 @@ InstallMethod(DigraphClosure,
 "for an immutable dense digraph and a positive integer",
 [IsImmutableDigraph, IsPosInt],
 {D, k} -> MakeImmutable(DigraphClosure(DigraphMutableCopy(D), k)));
+
+#############################################################################
+# 3. Ways of combining digraphs
+#############################################################################
 
 InstallGlobalFunction(DigraphDisjointUnion,
 function(arg)
@@ -550,125 +517,6 @@ function(arg)
     return DigraphNC(arg[1]);
   fi;
 end);
-
-# For a topologically sortable digraph G, this returns the least subgraph G'
-# of G such that the (reflexive) transitive closures of G and G' are equal.
-InstallMethod(DigraphReflexiveTransitiveReduction, "for a mutable digraph",
-[IsMutableDigraph],
-function(D)
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a digraph with no ",
-                  "multiple edges,");
-  elif DigraphTopologicalSort(D) = fail then
-    ErrorNoReturn("not yet implemented for non-topologically sortable ",
-                  "digraphs,");
-  elif IsNullDigraph(D) then
-    return D;
-  fi;
-  return DigraphTransitiveReduction(DigraphRemoveLoops(D));
-end);
-
-InstallMethod(DigraphReflexiveTransitiveReduction, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  D := DigraphReflexiveTransitiveReduction(DigraphMutableCopy(D));
-  return MakeImmutable(D);
-end);
-
-InstallMethod(DigraphTransitiveReduction, "for a dense mutable digraph",
-[IsDenseDigraphRep and IsMutableDigraph],
-function(D)
-  local topo, p;
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a digraph with no ",
-                  "multiple edges,");
-  elif DigraphTopologicalSort(D) = fail then
-    ErrorNoReturn("not yet implemented for non-topologically sortable ",
-                  "digraphs,");
-  fi;
-  topo := DigraphTopologicalSort(D);
-  p    := Permutation(Transformation(topo), topo);
-  OnDigraphs(D, p ^ -1);       # changes D in-place
-  DIGRAPH_TRANS_REDUCTION(D);  # changes D in-place
-  ClearDigraphEdgeLabels(D);
-  return OnDigraphs(D, p);
-end);
-
-InstallMethod(DigraphTransitiveReduction, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  D := DigraphTransitiveReduction(DigraphMutableCopy(D));
-  return MakeImmutable(D);
-end);
-
-InstallMethod(DigraphReverse, "for a mutable dense digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
-function(D)
-  if IsSymmetricDigraph(D) then
-    return D;
-  fi;
-  D!.OutNeighbours{DigraphVertices(D)} := InNeighboursMutableCopy(D);
-  ClearDigraphEdgeLabels(D);
-  return D;
-end);
-
-InstallMethod(DigraphReverse, "for a immutable digraph",
-[IsImmutableDigraph],
-D -> MakeImmutable(DigraphReverse(DigraphMutableCopy(D))));
-
-InstallMethod(DigraphReverseEdge,
-"for a mutable dense digraph, positive integer, and positive integer",
-[IsMutableDigraph and IsDenseDigraphRep, IsPosInt, IsPosInt],
-function(D, u, v)
-  local pos;
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the 1st argument <D> must be a digraph with no ",
-                  "multiple edges,");
-  fi;
-  pos := Position(D!.OutNeighbours[u], v);
-  if pos = fail then
-    ErrorNoReturn("there is no edge from ", u, " to ", v,
-                  " in the digraph <D> that is the 1st argument,");
-  elif u = v then
-    return D;
-  fi;
-  Add(D!.OutNeighbours[v], u);
-  Remove(D!.OutNeighbours[u], pos);
-  ClearDigraphEdgeLabels(D);
-  return D;
-end);
-
-InstallMethod(DigraphReverseEdge,
-"for an immutable digraph, positive integer, and positive integer",
-[IsImmutableDigraph, IsPosInt, IsPosInt],
-{D, u, v} -> MakeImmutable(DigraphReverseEdge(DigraphMutableCopy(D), u, v)));
-
-InstallMethod(DigraphReverseEdge, "for a mutable digraph and list",
-[IsMutableDigraph, IsList],
-function(D, e)
-  if Length(e) <> 2 then
-    ErrorNoReturn("the 2nd argument <e> must be a list of length 2,");
-  fi;
-  return DigraphReverseEdge(D, e[1], e[2]);
-end);
-
-InstallMethod(DigraphReverseEdge, "for an immutable digraph and a list",
-[IsImmutableDigraph, IsList],
-{D, e} -> MakeImmutable(DigraphReverseEdge(DigraphMutableCopy(D), e)));
-
-InstallMethod(DigraphReverseEdges, "for a mutable digraph and a list",
-[IsMutableDigraph, IsList],
-function(D, E)
-  local e;
-  for e in E do
-    DigraphReverseEdge(D, e);
-  od;
-  return D;
-end);
-
-InstallMethod(DigraphReverseEdges, "for an immutable digraph and a list",
-[IsImmutableDigraph, IsList],
-{D, E} -> MakeImmutable(DigraphReverseEdges(DigraphMutableCopy(D), E)));
 
 ###############################################################################
 # 4. Actions
@@ -866,7 +714,7 @@ function(D, partition)
 end);
 
 #############################################################################
-# 6. In and out degrees and edges of vertices
+# 6. In and out degrees, neighbours, and edges of vertices
 #############################################################################
 
 InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",

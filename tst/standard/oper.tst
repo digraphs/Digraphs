@@ -14,41 +14,6 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
-#  DigraphReverse
-gap> gr := DigraphFromDigraph6String("&DHUEe_");
-<immutable digraph with 5 vertices, 11 edges>
-gap> rgr := DigraphReverse(gr);
-<immutable digraph with 5 vertices, 11 edges>
-gap> OutNeighbours(rgr);
-[ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ]
-gap> gr = DigraphReverse(rgr);
-true
-gap> gr := Digraph(rec(DigraphNrVertices := 5,
-> DigraphSource := [1, 1, 2, 2, 2, 2, 2, 3, 4, 4, 4, 5, 5, 5],
-> DigraphRange := [1, 3, 1, 2, 2, 4, 5, 4, 1, 3, 5, 1, 1, 3]));
-<immutable multidigraph with 5 vertices, 14 edges>
-gap> e := DigraphEdges(gr);
-[ [ 1, 1 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 2 ], [ 2, 4 ], [ 2, 5 ], 
-  [ 3, 4 ], [ 4, 1 ], [ 4, 3 ], [ 4, 5 ], [ 5, 1 ], [ 5, 1 ], [ 5, 3 ] ]
-gap> rev := DigraphReverse(gr);
-<immutable multidigraph with 5 vertices, 14 edges>
-gap> erev := DigraphEdges(rev);;
-gap> temp := List(erev, x -> [x[2], x[1]]);;
-gap> Sort(temp);
-gap> e = temp;
-true
-gap> gr := Digraph([[2], [1]]);
-<immutable digraph with 2 vertices, 2 edges>
-gap> IsSymmetricDigraph(gr);
-true
-gap> DigraphReverse(gr) = gr;
-true
-gap> gr := Digraph([[2], [1]]);
-<immutable digraph with 2 vertices, 2 edges>
-gap> SetIsSymmetricDigraph(gr, true);
-gap> gr = DigraphReverse(gr);
-true
-
 #  DigraphRemoveLoops
 gap> gr := DigraphFromDigraph6String("&EhxPC?@");
 <immutable digraph with 6 vertices, 11 edges>
@@ -1332,52 +1297,6 @@ gap> DigraphLongestDistanceFromVertex(gr, 15);
 infinity
 gap> DigraphLongestDistanceFromVertex(gr, 16);
 Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
-
-#  Digraph(Reflexive)TransitiveReduction
-
-# Check errors
-gap> gr := Digraph([[2, 2], []]);
-<immutable multidigraph with 2 vertices, 2 edges>
-gap> DigraphTransitiveReduction(gr);
-Error, the argument <D> must be a digraph with no multiple edges,
-gap> DigraphReflexiveTransitiveReduction(gr);
-Error, the argument <D> must be a digraph with no multiple edges,
-gap> gr := Digraph([[2], [1]]);
-<immutable digraph with 2 vertices, 2 edges>
-gap> DigraphTransitiveReduction(gr);
-Error, not yet implemented for non-topologically sortable digraphs,
-gap> DigraphReflexiveTransitiveReduction(gr);
-Error, not yet implemented for non-topologically sortable digraphs,
-
-# Working examples
-gap> gr1 := ChainDigraph(6);
-<immutable digraph with 6 vertices, 5 edges>
-gap> gr2 := DigraphReflexiveTransitiveClosure(gr1);
-<immutable digraph with 6 vertices, 21 edges>
-gap> DigraphTransitiveReduction(gr2) = gr1;  # trans reduction contains loops
-false
-gap> DigraphReflexiveTransitiveReduction(gr2) = gr1;  # ref trans reduct doesnt
-true
-gap> gr3 := DigraphAddEdge(gr1, [3, 3]);
-<immutable digraph with 6 vertices, 6 edges>
-gap> DigraphHasLoops(gr3);
-true
-gap> gr4 := DigraphTransitiveClosure(gr3);
-<immutable digraph with 6 vertices, 16 edges>
-gap> gr2 = gr4;
-false
-gap> DigraphReflexiveTransitiveReduction(gr4) = gr1;
-true
-gap> DigraphReflexiveTransitiveReduction(gr4) = gr3;
-false
-gap> DigraphTransitiveReduction(gr4) = gr3;
-true
-
-# Special cases
-gap> DigraphTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
-true
-gap> DigraphReflexiveTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
-true
 
 #  DigraphLayers
 gap> gr := CompleteDigraph(4);

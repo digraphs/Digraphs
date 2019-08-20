@@ -84,6 +84,8 @@ gap> gr := Digraph(rec(DigraphVertices := ["a", "b"],
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphDual(gr);
 Error, the argument <D> must be a digraph with no multiple edges,
+gap> DigraphDual(DigraphMutableCopy(gr));
+Error, the argument <D> must be a digraph with no multiple edges,
 gap> gr := Digraph([]);
 <immutable digraph with 0 vertices, 0 edges>
 gap> DigraphDual(gr);
@@ -783,6 +785,8 @@ gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
 <immutable digraph with 4 vertices, 16 edges>
 gap> gr1 = gr2;
 true
+gap> gr1 = DigraphReflexiveTransitiveClosure(DigraphMutableCopy(gr));
+true
 gap> adj := [[2, 6], [3], [7], [3], [], [2, 7], [5]];;
 gap> gr := Digraph(adj);
 <immutable digraph with 7 vertices, 8 edges>
@@ -790,7 +794,7 @@ gap> IsAcyclicDigraph(gr);
 true
 gap> gr1 := DigraphTransitiveClosure(gr);
 <immutable digraph with 7 vertices, 18 edges>
-gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
+gap> gr2 := DigraphReflexiveTransitiveClosure(DigraphImmutableCopy(gr));
 <immutable digraph with 7 vertices, 25 edges>
 gap> gr := Digraph([[2], [3], [4], [3]]);
 <immutable digraph with 4 vertices, 4 edges>
@@ -844,6 +848,8 @@ true
 gap> gr := EmptyDigraph(0);;
 gap> ReducedDigraph(gr) = gr;
 true
+gap> DigraphEdges(ReducedDigraph(Digraph(IsMutableDigraph, [[2], []])));
+[ [ 1, 2 ] ]
 gap> gr := Digraph([[2, 4, 2, 6, 1], [], [], [2, 1, 4], [],
 > [1, 7, 7, 7], [4, 6]]);
 <immutable multidigraph with 7 vertices, 14 edges>
@@ -1221,6 +1227,18 @@ gap> D := DigraphMutableCopy(D);
 <mutable digraph with 2 vertices, 3 edges>
 gap> DigraphMycielskian(D);
 <mutable digraph with 5 vertices, 13 edges>
+gap> D := DigraphEdgeUnion(CycleDigraph(3), CycleDigraph(3));
+<immutable multidigraph with 3 vertices, 6 edges>
+gap> DigraphMycielskian(D);
+Error, the argument <D> must be a symmetric digraph with no multiple edges,
+gap> DigraphMycielskian(DigraphMutableCopy(D));
+Error, the argument <D> must be a symmetric digraph with no multiple edges,
+gap> D := DigraphEdgeUnion(CompleteDigraph(3), CompleteDigraph(3));
+<immutable multidigraph with 3 vertices, 12 edges>
+gap> DigraphMycielskian(D);
+Error, the argument <D> must be a symmetric digraph with no multiple edges,
+gap> DigraphMycielskian(DigraphMutableCopy(D));
+Error, the argument <D> must be a symmetric digraph with no multiple edges,
 
 #  DigraphDegeneracy and DigraphDegeneracyOrdering
 gap> gr := Digraph([[2, 2], [1, 1]]);;
@@ -1531,6 +1549,8 @@ gap> tree := UndirectedSpanningTree(gr);
 fail
 gap> forest := UndirectedSpanningForest(gr);
 fail
+gap> UndirectedSpanningForest(EmptyDigraph(IsMutableDigraph, 0));
+fail
 gap> gr := EmptyDigraph(1);
 <immutable digraph with 1 vertex, 0 edges>
 gap> tree := UndirectedSpanningTree(gr);
@@ -1568,6 +1588,16 @@ gap> DigraphEdges(UndirectedSpanningForest(gr));
 gap> DigraphEdges(UndirectedSpanningForest(gr));
 [ [ 2, 7 ], [ 7, 2 ] ]
 gap> IsUndirectedSpanningForest(gr, UndirectedSpanningForest(gr));
+true
+gap> D := DigraphFromDigraph6String("&I~~~~^Znn~|~~x^|v{");
+<immutable digraph with 10 vertices, 89 edges>
+gap> tree := UndirectedSpanningTree(D);
+<immutable digraph with 10 vertices, 18 edges>
+gap> IsUndirectedSpanningTree(D, tree);
+true
+gap> tree := UndirectedSpanningTree(DigraphMutableCopy(D));
+<mutable digraph with 10 vertices, 18 edges>
+gap> IsUndirectedSpanningTree(D, tree);
 true
 
 # ArticulationPoints
@@ -1906,6 +1936,14 @@ gap> DigraphCore(D);
 [ 1, 2 ]
 
 # MaximalAntiSymmetricSubdigraph
+gap> MaximalAntiSymmetricSubdigraph(Digraph([[2, 2], [1]]));
+<immutable digraph with 2 vertices, 1 edge>
+gap> MaximalAntiSymmetricSubdigraph(Digraph(IsMutableDigraph, [[2, 2], [1]]));
+<mutable digraph with 2 vertices, 1 edge>
+gap> D := Digraph(IsMutableDigraph, [[1]]);
+<mutable digraph with 1 vertex, 1 edge>
+gap> MaximalAntiSymmetricSubdigraph(D) = D;
+true
 gap> MaximalAntiSymmetricSubdigraph(NullDigraph(0));
 <immutable digraph with 0 vertices, 0 edges>
 gap> IsAntisymmetricDigraph(DigraphCopy(last));
@@ -2027,6 +2065,89 @@ gap> D := CycleDigraph(IsMutableDigraph, 10);
 <mutable digraph with 10 vertices, 10 edges>
 gap> UndirectedSpanningForest(D);
 <mutable digraph with 10 vertices, 0 edges>
+
+#  Digraph(Reflexive)TransitiveReduction
+
+# Check errors
+gap> gr := Digraph([[2, 2], []]);
+<immutable multidigraph with 2 vertices, 2 edges>
+gap> DigraphTransitiveReduction(gr);
+Error, the argument <D> must be a digraph with no multiple edges,
+gap> DigraphReflexiveTransitiveReduction(gr);
+Error, the argument <D> must be a digraph with no multiple edges,
+gap> gr := Digraph([[2], [1]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> DigraphTransitiveReduction(gr);
+Error, not yet implemented for non-topologically sortable digraphs,
+gap> DigraphReflexiveTransitiveReduction(gr);
+Error, not yet implemented for non-topologically sortable digraphs,
+
+# Working examples
+gap> gr1 := ChainDigraph(6);
+<immutable digraph with 6 vertices, 5 edges>
+gap> gr2 := DigraphReflexiveTransitiveClosure(gr1);
+<immutable digraph with 6 vertices, 21 edges>
+gap> DigraphTransitiveReduction(gr2) = gr1;  # trans reduction contains loops
+false
+gap> DigraphReflexiveTransitiveReduction(gr2) = gr1;  # ref trans reduct doesnt
+true
+gap> gr3 := DigraphAddEdge(gr1, [3, 3]);
+<immutable digraph with 6 vertices, 6 edges>
+gap> DigraphHasLoops(gr3);
+true
+gap> gr4 := DigraphTransitiveClosure(gr3);
+<immutable digraph with 6 vertices, 16 edges>
+gap> gr2 = gr4;
+false
+gap> DigraphReflexiveTransitiveReduction(gr4) = gr1;
+true
+gap> DigraphReflexiveTransitiveReduction(gr4) = gr3;
+false
+gap> DigraphTransitiveReduction(gr4) = gr3;
+true
+
+# Special cases
+gap> DigraphTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
+true
+gap> DigraphReflexiveTransitiveReduction(EmptyDigraph(0)) = EmptyDigraph(0);
+true
+
+#  DigraphReverse
+gap> gr := DigraphFromDigraph6String("&DHUEe_");
+<immutable digraph with 5 vertices, 11 edges>
+gap> rgr := DigraphReverse(gr);
+<immutable digraph with 5 vertices, 11 edges>
+gap> OutNeighbours(rgr);
+[ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ]
+gap> gr = DigraphReverse(rgr);
+true
+gap> gr := Digraph(rec(DigraphNrVertices := 5,
+> DigraphSource := [1, 1, 2, 2, 2, 2, 2, 3, 4, 4, 4, 5, 5, 5],
+> DigraphRange := [1, 3, 1, 2, 2, 4, 5, 4, 1, 3, 5, 1, 1, 3]));
+<immutable multidigraph with 5 vertices, 14 edges>
+gap> e := DigraphEdges(gr);
+[ [ 1, 1 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 2 ], [ 2, 4 ], [ 2, 5 ], 
+  [ 3, 4 ], [ 4, 1 ], [ 4, 3 ], [ 4, 5 ], [ 5, 1 ], [ 5, 1 ], [ 5, 3 ] ]
+gap> rev := DigraphReverse(gr);
+<immutable multidigraph with 5 vertices, 14 edges>
+gap> erev := DigraphEdges(rev);;
+gap> temp := List(erev, x -> [x[2], x[1]]);;
+gap> Sort(temp);
+gap> e = temp;
+true
+gap> gr := Digraph([[2], [1]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> IsSymmetricDigraph(gr);
+true
+gap> DigraphReverse(gr) = gr;
+true
+gap> gr := Digraph([[2], [1]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> SetIsSymmetricDigraph(gr, true);
+gap> gr = DigraphReverse(gr);
+true
+gap> DigraphReverse(Digraph(IsMutableDigraph, [[2], [1]])) = CompleteDigraph(2);
+true
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);

@@ -25,7 +25,7 @@ function(D)
       or DigraphNrVertices(D) <= 1 then
     return [];
   elif not IsSymmetricDigraph(D) then
-    copy := DigraphSymmetricClosure(DigraphMutableCopy(D));
+    copy := DigraphSymmetricClosure(DigraphCopyIfMutable(D));
   else
     copy := D;
   fi;
@@ -255,77 +255,6 @@ function(D)
   fi;
   return Transformation(Concatenation(OutNeighbours(D)));
 end);
-
-InstallMethod(ReducedDigraph, "for a dense mutable digraph",
-[IsDenseDigraphRep and IsMutableDigraph],
-function(D)
-  local v, niv, old, i;
-  if IsConnectedDigraph(D) then
-    return D;
-  fi;
-
-  v := DigraphVertices(D);
-  niv := BlistList(v, []);
-  old := OutNeighbours(D);
-
-  # First find the non-isolated vertices
-  for i in [1 .. Length(old)] do
-    if not IsEmpty(old[i]) then
-      niv[i] := true;
-      UniteBlistList(v, niv, old[i]);
-    fi;
-  od;
-  return InducedSubdigraph(D, ListBlist(v, niv));
-end);
-
-InstallMethod(ReducedDigraph, "for an immutable digraph", [IsImmutableDigraph],
-function(D)
-  if IsConnectedDigraph(D) then
-    return D;
-  fi;
-  D := ReducedDigraph(DigraphMutableCopy(D));
-  return MakeImmutable(D);
-end);
-
-InstallMethod(ReducedDigraphAttr, "for an immutable digraph",
-[IsImmutableDigraph], ReducedDigraph);
-
-InstallMethod(DigraphDual, "for a dense mutable digraph",
-[IsDenseDigraphRep and IsMutableDigraph],
-function(D)
-  local nodes, list, i;
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
-                  "edges,");
-  fi;
-
-  nodes := DigraphVertices(D);
-  list := D!.OutNeighbours;
-
-  for i in nodes do
-    list[i] := DifferenceLists(nodes, list[i]);
-  od;
-  ClearDigraphEdgeLabels(D);
-  return D;
-end);
-
-InstallMethod(DigraphDual, "for an immutable digraph", [IsImmutableDigraph],
-function(D)
-  local C;
-  if HasDigraphDualAttr(D) then
-    return DigraphDualAttr(D);
-  fi;
-  C := DigraphMutableCopy(D);
-  C := MakeImmutable(DigraphDual(C));
-  if HasDigraphGroup(D) then
-    SetDigraphGroup(C, DigraphGroup(D));
-  fi;
-  SetDigraphDualAttr(D, C);
-  return C;
-end);
-
-InstallMethod(DigraphDualAttr, "for an immutable digraph",
-[IsImmutableDigraph], DigraphDual);
 
 InstallMethod(DigraphNrEdges, "for a digraph", [IsDenseDigraphRep],
 DIGRAPH_NREDGES);
@@ -786,13 +715,11 @@ function(D)
   local outer_reps, diameter, girth, v, record, localGirth,
         localDiameter, i;
 
-  #
   # This function attempts to find the diameter and undirected girth of a given
   # D, using its DigraphGroup.  For some digraphs, the main algorithm will
   # not produce a sensible answer, so there are checks at the start and end to
   # alter the answer for the diameter/girth if necessary.  This function is
   # called, if appropriate, by DigraphDiameter and DigraphUndirectedGirth.
-  #
 
   if DigraphNrVertices(D) = 0 and IsImmutableDigraph(D) then
     SetDigraphDiameter(D, fail);
@@ -858,8 +785,7 @@ function(D)
   # This is only defined on undirected graphs (i.e. symmetric digraphs)
   if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the argument <D> must be a symmetric digraph,");
-  fi;
-  if DigraphHasLoops(D) then
+  elif DigraphHasLoops(D) then
     # A loop is a cycle of length 1
     return 1;
   elif IsMultiDigraph(D) then
@@ -962,201 +888,6 @@ function(D)
   return circs[Position(lens, max)];
 end);
 
-# TODO (FLS): I've just added 1 as the edge label here, is this really desired?
-InstallMethod(DigraphSymmetricClosure, "for a dense mutable digraph",
-[IsDenseDigraphRep and IsMutableDigraph],
-function(D)
-  local n, m, verts, mat, out, x, i, j, k;
-  n := DigraphNrVertices(D);
-  if n <= 1 or (HasIsSymmetricDigraph(D) and IsSymmetricDigraph(D)) then
-    return D;
-  fi;
-
-  # The average degree
-  m := Float(Sum(OutDegreeSequence(D)) / n);
-  verts := [1 .. n];  # We don't want DigraphVertices as that's immutable
-
-  if IsMultiDigraph(D) then
-    mat := List(verts, x -> verts * 0);
-    out := D!.OutNeighbours;
-
-    for i in verts do
-      for j in out[i] do
-        if j < i then
-          mat[j][i] := mat[j][i] - 1;
-        else
-          mat[i][j] := mat[i][j] + 1;
-        fi;
-      od;
-    od;
-    for i in verts do
-      for j in [i + 1 .. n] do
-        x := mat[i][j];
-        if x > 0 then
-          for k in [1 .. x] do
-            Add(out[j], i);
-          od;
-        elif x < 0 then
-          for k in [1 .. -x] do
-            Add(out[i], j);
-          od;
-        fi;
-      od;
-    od;
-    # The approximate complexity of using the adjacency matrix (first method)
-    # is n * (n - 1) / 2, and that of repeatedly calling AddSet (second method)
-    # is n * m * log2(m) where m is the mean degree of any vertex. Some
-    # experimenting showed that the comparison below is a reasonable way to
-    # decide which method to use.
-  elif Float(n * (n - 1) / 2) < n * m * Log2(m) then
-    # If we have no multiple edges, then we use a Boolean matrix because it
-    # uses less space.
-    mat := BooleanAdjacencyMatrixMutableCopy(D);
-    for i in verts do
-      for j in [i + 1 .. n] do
-        if mat[i][j] <> mat[j][i] then
-          mat[i][j] := true;
-          mat[j][i] := true;
-        fi;
-      od;
-    od;
-    D!.OutNeighbours := List(mat, row -> ListBlist(verts, row));
-  else
-    out := D!.OutNeighbours;
-    Perform(out, Sort);
-    for i in [1 .. n] do
-      for j in out[i] do
-        if not i in out[j] then
-          AddSet(out[j], i);
-        fi;
-      od;
-    od;
-  fi;
-  ClearDigraphEdgeLabels(D);
-  return D;
-end);
-
-InstallMethod(DigraphSymmetricClosure, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  local C;
-  if HasDigraphSymmetricClosureAttr(D) then
-    return DigraphSymmetricClosureAttr(D);
-  fi;
-
-  if DigraphNrVertices(D) <= 1
-      or (HasIsSymmetricDigraph(D) and IsSymmetricDigraph(D)) then
-    return D;
-  fi;
-
-  C := DigraphMutableCopy(D);
-  C := MakeImmutable(DigraphSymmetricClosure(C));
-  SetIsSymmetricDigraph(C, true);
-  SetDigraphSymmetricClosureAttr(D, C);
-  return C;
-end);
-
-InstallMethod(DigraphSymmetricClosureAttr, "for an immutable digraph",
-[IsImmutableDigraph], DigraphSymmetricClosure);
-
-InstallMethod(DigraphTransitiveClosure, "for a mutable dense digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
-function(D)
-  local list, m, n, nodes, sorted, trans, tmp, mat, v, u, i;
-
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
-                  "edges,");
-  fi;
-
-  list  := D!.OutNeighbours;
-  m     := DigraphNrEdges(D);
-  n     := DigraphNrVertices(D);
-  nodes := DigraphVertices(D);
-
-  ClearDigraphEdgeLabels(D);
-  # Try correct method vis-a-vis complexity
-  if m + n + (m * n) < n ^ 3 then
-    sorted := DigraphTopologicalSort(D);
-    if sorted <> fail then  # Method for big acyclic digraphs (loops allowed)
-      trans := EmptyPlist(n);
-      for v in sorted do
-        trans[v] := BlistList(nodes, [v]);
-        for u in list[v] do
-          trans[v] := UnionBlist(trans[v], trans[u]);
-        od;
-        # TODO use FlipBlist
-        tmp := DifferenceBlist(trans[v], BlistList(nodes, list[v]));
-        tmp[v] := false;
-        Append(list[v], ListBlist(nodes, tmp));
-      od;
-      return D;
-    fi;
-  fi;
-  # Method for small or non-acyclic digraphs
-  mat := DIGRAPH_TRANS_CLOSURE(D);
-  for i in [1 .. Length(list)] do
-    list[i] := nodes{PositionsProperty(mat[i], x -> x > 0)};
-  od;
-  return D;
-end);
-
-InstallMethod(DigraphReflexiveTransitiveClosure, "for a mutable digraph",
-[IsMutableDigraph],
-function(D)
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
-                  "edges,");
-  fi;
-  return DigraphAddAllLoops(DigraphTransitiveClosure(D));
-end);
-
-InstallMethod(DigraphTransitiveClosure, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  local C;
-  if HasDigraphTransitiveClosureAttr(D) then
-    return DigraphTransitiveClosureAttr(D);
-  fi;
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
-                  "edges,");
-  fi;
-  C := DigraphTransitiveClosure(DigraphMutableCopy(D));
-  C := MakeImmutable(C);
-  SetIsTransitiveDigraph(C, true);
-  SetDigraphVertexLabels(C, DigraphVertexLabels(D));
-  SetDigraphTransitiveClosureAttr(D, C);
-  return C;
-end);
-
-InstallMethod(DigraphReflexiveTransitiveClosure, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  local C;
-  if HasDigraphReflexiveTransitiveClosureAttr(D) then
-    return DigraphReflexiveTransitiveClosureAttr(D);
-  fi;
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
-                  "edges,");
-  fi;
-  C := DigraphReflexiveTransitiveClosure(DigraphMutableCopy(D));
-  C := MakeImmutable(C);
-  SetIsTransitiveDigraph(C, true);
-  SetIsReflexiveDigraph(C, true);
-  SetDigraphVertexLabels(C, DigraphVertexLabels(D));
-  SetDigraphReflexiveTransitiveClosureAttr(D, C);
-  return C;
-end);
-
-InstallMethod(DigraphTransitiveClosureAttr, "for an immutable digraph",
-[IsImmutableDigraph], DigraphTransitiveClosure);
-
-InstallMethod(DigraphReflexiveTransitiveClosureAttr,
-"for an immutable digraph",
-[IsImmutableDigraph], DigraphReflexiveTransitiveClosure);
-
 InstallMethod(DigraphAllSimpleCircuits, "for a dense digraph",
 [IsDenseDigraphRep],
 function(D)
@@ -1219,7 +950,7 @@ function(D)
   endofstack := 0;
 
   # Reduce the D, remove loops, and store the correct vertex labels
-  C := DigraphRemoveLoops(ReducedDigraph(DigraphMutableCopy(D)));
+  C := DigraphRemoveLoops(ReducedDigraph(DigraphCopyIfMutable(D)));
   if DigraphVertexLabels(D) <> DigraphVertices(D) then
     SetDigraphVertexLabels(C, Filtered(DigraphVertices(D),
                                        x -> OutDegrees(D) <> 0));
@@ -1239,12 +970,12 @@ function(D)
     if n = 1 then
       continue;
     fi;
-    c_comp := InducedSubdigraph(DigraphMutableCopy(C), c_comp);
+    c_comp := InducedSubdigraph(DigraphCopyIfMutable(C), c_comp);
     comp := c_comp;
     s := 1;
     while s < n do
       if s <> 1 then
-        comp := InducedSubdigraph(DigraphMutableCopy(c_comp), [s .. n]);
+        comp := InducedSubdigraph(DigraphCopyIfMutable(c_comp), [s .. n]);
         comp := InducedSubdigraph(comp,
                                   DigraphStronglyConnectedComponent(comp, 1));
       fi;
@@ -1264,61 +995,6 @@ function(D)
   loops := List(DigraphLoops(D), x -> [x]);
   return Concatenation(loops, out);
 end);
-
-InstallMethod(DigraphMycielskian, "for a mutable, symmetric digraph",
-[IsMutableDigraph],
-function(D)
-  local n, i, j;
-  if not IsSymmetricDigraph(D) or IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a symmetric digraph ",
-                  "with no multiple edges,");
-  fi;
-
-  # Based on the construction given at https://en.wikipedia.org/wiki/Mycielskian
-  # on 2019-04-10, v_k = vertex k, u_k = vertex n + k and w = vertex 2n + 1
-
-  n := DigraphNrVertices(D);
-
-  for i in [1 .. n + 1] do
-    D := DigraphAddVertex(D);
-  od;
-
-  for i in [n + 1 .. 2 * n] do
-    D := DigraphAddEdge(D, [i, 2 * n + 1]);
-    D := DigraphAddEdge(D, [2 * n + 1, i]);
-  od;
-
-  for i in [1 .. n] do
-    for j in [i .. n] do
-      if IsDigraphEdge(D, i, j) then
-        D := DigraphAddEdge(D, [i + n, j]);
-        D := DigraphAddEdge(D, [j, i + n]);
-        if i <> j then  # Stops duplicate edges being constructed if D has loops
-          D := DigraphAddEdge(D, [i, j + n]);
-          D := DigraphAddEdge(D, [j + n, i]);
-        fi;
-      fi;
-    od;
-  od;
-  return D;
-end);
-
-InstallMethod(DigraphMycielskian, "for an immutable, symmetric digraph",
-[IsImmutableDigraph],
-function(D)
-  local C;
-  if HasDigraphMycielskianAttr(D) then
-    return DigraphMycielskianAttr(D);
-  fi;
-
-  C := DigraphMutableCopy(D);
-  C := MakeImmutable(DigraphMycielskian(C));
-  SetDigraphMycielskianAttr(D, C);
-  return C;
-end);
-
-InstallMethod(DigraphMycielskianAttr, "for an immutable, symmetric digraph",
-[IsImmutableDigraph], DigraphMycielskian);
 
 # The following method 'DIGRAPHS_Bipartite' was originally written by Isabella
 # Scott and then modified by FLS.
@@ -1449,63 +1125,6 @@ function(D)
   return [k, out];
 end);
 
-InstallMethod(MaximalSymmetricSubdigraphWithoutLoops, "for a mutable digraph",
-[IsMutableDigraph],
-D -> DigraphRemoveLoops(MaximalSymmetricSubdigraph(D)));
-
-InstallMethod(MaximalSymmetricSubdigraphWithoutLoops,
-"for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  local C;
-  if HasMaximalSymmetricSubdigraphWithoutLoopsAttr(D) then
-    return MaximalSymmetricSubdigraphWithoutLoopsAttr(D);
-  fi;
-  C := DigraphMutableCopy(D);
-  C := MakeImmutable(MaximalSymmetricSubdigraphWithoutLoops(C));
-  SetMaximalSymmetricSubdigraphWithoutLoopsAttr(D, C);
-  return C;
-end);
-
-InstallMethod(MaximalSymmetricSubdigraphWithoutLoopsAttr,
-"for an immutable digraph",
-[IsImmutableDigraph], MaximalSymmetricSubdigraphWithoutLoops);
-
-InstallMethod(MaximalSymmetricSubdigraph, "for a mutable digraph",
-[IsMutableDigraph],
-function(D)
-  local out, inn, i;
-  DigraphRemoveAllMultipleEdges(D);
-  if IsSymmetricDigraph(D) then
-    return D;
-  fi;
-  out := D!.OutNeighbours;
-  inn := InNeighbours(D);
-  for i in DigraphVertices(D) do
-    Sort(out[i]);
-    IntersectSet(out[i], inn[i]);
-  od;
-  ClearDigraphEdgeLabels(D);
-  return D;
-end);
-
-InstallMethod(MaximalSymmetricSubdigraph, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  local C;
-  if HasMaximalSymmetricSubdigraphAttr(D) then
-    return MaximalSymmetricSubdigraphAttr(D);
-  fi;
-  C := DigraphMutableCopy(D);
-  C := MakeImmutable(MaximalSymmetricSubdigraph(C));
-  SetDigraphVertexLabels(C, DigraphVertexLabels(D));
-  SetMaximalSymmetricSubdigraphAttr(D, C);
-  return C;
-end);
-
-InstallMethod(MaximalSymmetricSubdigraphAttr, "for an immutable digraph",
-[IsImmutableDigraph], MaximalSymmetricSubdigraph);
-
 InstallMethod(DegreeMatrix, "for a digraph", [IsDigraph],
 function(D)
   if DigraphNrVertices(D) = 0 then
@@ -1534,74 +1153,6 @@ function(D)
   mat := LaplacianMatrix(D);
   mat := mat{[1 .. n - 1]}{[1 .. n - 1]};
   return Determinant(mat);
-end);
-
-InstallMethod(UndirectedSpanningForestAttr, [IsImmutableDigraph],
-UndirectedSpanningForest);
-
-InstallMethod(UndirectedSpanningForest, "for a dense mutable digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
-function(D)
-  if DigraphNrVertices(D) = 0 then
-    return fail;
-  fi;
-  MaximalSymmetricSubdigraph(D);
-  D!.OutNeighbours := DIGRAPH_SYMMETRIC_SPANNING_FOREST(D!.OutNeighbours);
-  ClearDigraphEdgeLabels(D);
-  return D;
-end);
-
-InstallMethod(UndirectedSpanningForest, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  local C;
-  if HasUndirectedSpanningForestAttr(D) then
-    return UndirectedSpanningForestAttr(D);
-  fi;
-  if DigraphNrVertices(D) = 0 then
-    SetUndirectedSpanningForestAttr(D, fail);
-    return fail;
-  fi;
-  C := UndirectedSpanningForest(DigraphMutableCopy(D));
-  C := MakeImmutable(C);
-  SetIsUndirectedForest(C, true);
-  SetIsMultiDigraph(C, false);
-  SetDigraphHasLoops(C, false);
-  SetUndirectedSpanningForestAttr(D, C);
-  return C;
-end);
-
-InstallMethod(UndirectedSpanningTreeAttr, [IsImmutableDigraph],
-UndirectedSpanningTree);
-
-InstallMethod(UndirectedSpanningTree, "for a dense mutable digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
-function(D)
-  local C;
-  if not IsStronglyConnectedDigraph(D) then
-    return fail;
-  fi;
-  C := MaximalSymmetricSubdigraph(DigraphMutableCopy(D));
-  if not IsStronglyConnectedDigraph(C) then
-    return fail;
-  fi;
-  return UndirectedSpanningForest(D);
-end);
-
-InstallMethod(UndirectedSpanningTree, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  local C;
-  if HasUndirectedSpanningTreeAttr(D) then
-    return UndirectedSpanningTreeAttr(D);
-  fi;
-  C := UndirectedSpanningTree(DigraphMutableCopy(D));
-  SetUndirectedSpanningTreeAttr(D, C);
-  if C = fail then
-    return C;
-  fi;
-  SetIsUndirectedTree(C, true);
-  return MakeImmutable(C);
 end);
 
 InstallMethod(HamiltonianPath, "for a digraph", [IsDigraph],
@@ -1759,68 +1310,6 @@ function(digraph)
   return DigraphVertexLabels(digraph);
 end);
 
-InstallMethod(MaximalAntiSymmetricSubdigraphAttr, "for an immutable digraph",
-[IsImmutableDigraph], MaximalAntiSymmetricSubdigraph);
-
-InstallMethod(MaximalAntiSymmetricSubdigraph, "for an immutable digraph",
-[IsImmutableDigraph],
-function(D)
-  local C;
-  if HasMaximalAntiSymmetricSubdigraphAttr(D) then
-    return MaximalAntiSymmetricSubdigraphAttr(D);
-  fi;
-  C := DigraphMutableCopy(D);
-  C := MakeImmutable(MaximalAntiSymmetricSubdigraph(C));
-  SetIsAntisymmetricDigraph(C, true);
-  SetMaximalAntiSymmetricSubdigraphAttr(D, C);
-  return C;
-end);
-
-InstallMethod(MaximalAntiSymmetricSubdigraph, "for a dense mutable digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
-function(D)
-  local n, m, out, i, j;
-
-  n := DigraphNrVertices(D);
-  if IsMultiDigraph(D) then
-    return MaximalAntiSymmetricSubdigraph(DigraphRemoveAllMultipleEdges(D));
-  elif n <= 1 or IsAntisymmetricDigraph(D) then
-    return D;
-  fi;
-
-  # The average degree
-  m := Float(Sum(OutDegreeSequence(D)) / n);
-
-  if Float(n * (n - 1) / 2) < n * m * Log2(m) then
-    # The approximate complexity of using the adjacency matrix (first method)
-    # is n * (n - 1) / 2, and that of repeatedly calling AddSet (second method)
-    # is n * m * log2(m) where m is the mean degree of any vertex. Some
-    # experimenting showed that the comparison below is a reasonable way to
-    # decide which method to use.
-    out := BooleanAdjacencyMatrixMutableCopy(D);
-    for i in [1 .. n] do
-      for j in [i + 1 .. n] do
-        if out[i][j] then
-          out[j][i] := false;
-        fi;
-      od;
-    od;
-    D!.OutNeighbours := List([1 .. n], v -> ListBlist([1 .. n], out[v]));
-  else
-    out := D!.OutNeighbours;
-    Perform(out, Sort);
-    for i in [1 .. n] do
-      for j in out[i] do
-        if i <> j then
-          RemoveSet(out[j], i);
-        fi;
-      od;
-    od;
-  fi;
-  ClearDigraphEdgeLabels(D);
-  return D;
-end);
-
 InstallMethod(CharacteristicPolynomial, "for a digraph", [IsDigraph],
 D -> CharacteristicPolynomial(AdjacencyMatrix(D)));
 
@@ -1833,7 +1322,707 @@ function(D)
     ErrorNoReturn("the argument <D> must be a digraph with no multiple",
                   " edges,");
   fi;
-  return IsTransitive(AutomorphismGroup(D),
-                      DigraphEdges(D),
-                      OnPairs);
+  return IsTransitive(AutomorphismGroup(D), DigraphEdges(D), OnPairs);
 end);
+
+# Things that are attributes for immutable digraphs, but operations for mutable.
+
+InstallMethod(DigraphReverse, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
+  local inn, C;
+  if IsSymmetricDigraph(D) then
+    return D;
+  fi;
+  inn := InNeighboursMutableCopy(D);
+  if IsImmutableDigraph(D) then
+    C := ConvertToImmutableDigraphNC(inn);
+    SetDigraphVertexLabels(C, StructuralCopy(DigraphVertexLabels(D)));
+    SetInNeighbours(C, OutNeighbours(D));
+    SetDigraphReverseAttr(D, C);
+    return C;
+  fi;
+  D!.OutNeighbours := inn;
+  ClearDigraphEdgeLabels(D);
+  return D;
+end);
+
+InstallMethod(DigraphReverse, "for a digraph with known digraph reverse",
+[IsDigraph and HasDigraphReverseAttr], SUM_FLAGS, DigraphReverseAttr);
+
+InstallMethod(DigraphReverseAttr, "for an immutable digraph",
+[IsImmutableDigraph], DigraphReverse);
+
+InstallMethod(DigraphDual, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
+  local nodes, C, list, i;
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
+                  "edges,");
+  fi;
+
+  nodes := DigraphVertices(D);
+
+  C := DigraphMutableCopyIfImmutable(D);
+  list := C!.OutNeighbours;
+  for i in nodes do
+    list[i] := DifferenceLists(nodes, list[i]);
+  od;
+  ClearDigraphEdgeLabels(C);
+  if IsImmutableDigraph(D) then
+    MakeImmutable(C);
+    if HasDigraphGroup(D) then
+      SetDigraphGroup(C, DigraphGroup(D));
+    fi;
+    # TODO WW: Could preserve some further properties/attributes too
+  fi;
+  return C;
+end);
+
+InstallMethod(DigraphDual, "for a digraph with known dual",
+[IsDigraph and HasDigraphDualAttr], SUM_FLAGS, DigraphDualAttr);
+
+InstallMethod(DigraphDualAttr, "for an immutable digraph", [IsImmutableDigraph],
+DigraphDual);
+
+InstallMethod(ReducedDigraph, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
+  local v, niv, old, C, i;
+  if IsConnectedDigraph(D) then
+    return D;
+  fi;
+
+  v := DigraphVertices(D);
+  niv := BlistList(v, []);
+  old := OutNeighbours(D);
+
+  # First find the non-isolated vertices
+  for i in [1 .. Length(old)] do
+    if not IsEmpty(old[i]) then
+      niv[i] := true;
+      UniteBlistList(v, niv, old[i]);
+    fi;
+  od;
+  C := InducedSubdigraph(D, ListBlist(v, niv));
+  # Store result if input (and hence output) immutable
+  if IsImmutableDigraph(D) then
+    SetReducedDigraphAttr(D, C);
+  fi;
+  return C;
+end);
+
+InstallMethod(ReducedDigraph, "for a digraph with known reduced digraph",
+[IsDigraph and HasReducedDigraphAttr], SUM_FLAGS, ReducedDigraphAttr);
+
+InstallMethod(ReducedDigraphAttr, "for an immutable digraph",
+[IsImmutableDigraph], ReducedDigraph);
+
+InstallMethod(DigraphRemoveAllMultipleEdges, "for a mutable dense digraph",
+[IsMutableDigraph and IsDenseDigraphRep],
+function(D)
+  local nodes, list, empty, seen, keep, v, u, pos;
+
+  nodes := DigraphVertices(D);
+  list  := D!.OutNeighbours;
+  empty := BlistList(nodes, []);
+  seen  := BlistList(nodes, []);
+  for u in nodes do
+    keep := [];
+    for pos in [1 .. Length(list[u])] do
+      v := list[u][pos];
+      if not seen[v] then
+        seen[v] := true;
+        Add(keep, pos);
+      fi;
+    od;
+    list[u] := list[u]{keep};
+    IntersectBlist(seen, empty);
+  od;
+  # Multidigraphs did not have edge labels
+  SetDigraphVertexLabels(D, DigraphVertexLabels(D));
+  return D;
+end);
+
+InstallMethod(DigraphRemoveAllMultipleEdges, "for an immutable digraph",
+[IsImmutableDigraph], DigraphRemoveAllMultipleEdgesAttr);
+
+InstallMethod(DigraphRemoveAllMultipleEdgesAttr, "for an immutable digraph",
+[IsImmutableDigraph],
+function(D)
+  D := MakeImmutable(DigraphRemoveAllMultipleEdges(DigraphMutableCopy(D)));
+  SetIsMultiDigraph(D, false);
+  return D;
+end);
+
+InstallMethod(DigraphAddAllLoops, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
+  local ismulti, C, list, v;
+  if HasIsReflexiveDigraph(D) and IsReflexiveDigraph(D) then
+    return D;
+  fi;
+  ismulti := IsMultiDigraph(D);
+  C := DigraphMutableCopyIfImmutable(D);
+  list := C!.OutNeighbours;
+  Assert(1, IsMutable(list));
+  for v in DigraphVertices(C) do
+    if not v in list[v] then
+      Add(list[v], v);
+      if not ismulti then
+        SetDigraphEdgeLabel(C, v, v, 1);
+      fi;
+    fi;
+  od;
+  if IsImmutableDigraph(D) then
+    MakeImmutable(C);
+    SetDigraphAddAllLoopsAttr(D, C);
+    SetIsReflexiveDigraph(C, true);
+    SetIsMultiDigraph(C, ismulti);
+    SetDigraphHasLoops(C, DigraphNrVertices(C) > 0);
+  fi;
+  return C;
+end);
+
+InstallMethod(DigraphAddAllLoops, "for a digraph with known add-all-loops",
+[IsDigraph and HasDigraphAddAllLoopsAttr], SUM_FLAGS, DigraphAddAllLoopsAttr);
+
+InstallMethod(DigraphAddAllLoopsAttr, "for an immutable digraph",
+[IsImmutableDigraph], DigraphAddAllLoops);
+
+InstallMethod(DigraphRemoveLoops, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
+  local C, out, lbl, pos, v;
+  C := DigraphMutableCopyIfImmutable(D);
+  out := C!.OutNeighbours;
+  lbl := DigraphEdgeLabelsNC(C);
+  for v in DigraphVertices(C) do
+    pos := Position(out[v], v);
+    while pos <> fail do
+      Remove(out[v], pos);
+      Remove(lbl[v], pos);
+      pos := Position(out[v], v);
+    od;
+  od;
+  if IsImmutableDigraph(D) then
+    MakeImmutable(C);
+    SetDigraphRemoveLoopsAttr(D, C);
+    SetDigraphHasLoops(C, false);
+  fi;
+  return C;
+end);
+
+InstallMethod(DigraphRemoveLoops, "for a digraph with stored result",
+[IsDigraph and HasDigraphRemoveLoopsAttr], SUM_FLAGS, DigraphRemoveLoopsAttr);
+
+InstallMethod(DigraphRemoveLoopsAttr, "for an immutable digraph",
+[IsImmutableDigraph], DigraphRemoveLoops);
+
+# TODO (FLS): I've just added 1 as the edge label here, is this really desired?
+InstallMethod(DigraphSymmetricClosure, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
+  local n, m, verts, C, mat, out, x, i, j, k;
+
+  n := DigraphNrVertices(D);
+  if n <= 1 or IsSymmetricDigraph(D) then
+    return D;
+  fi;
+
+  # The average degree
+  m := Float(Sum(OutDegreeSequence(D)) / n);
+  verts := [1 .. n];  # We don't want DigraphVertices as that's immutable
+
+  if IsMultiDigraph(D) then
+    C := DigraphMutableCopyIfImmutable(D);
+    mat := List(verts, x -> verts * 0);
+    out := C!.OutNeighbours;
+
+    for i in verts do
+      for j in out[i] do
+        if j < i then
+          mat[j][i] := mat[j][i] - 1;
+        else
+          mat[i][j] := mat[i][j] + 1;
+        fi;
+      od;
+    od;
+    for i in verts do
+      for j in [i + 1 .. n] do
+        x := mat[i][j];
+        if x > 0 then
+          for k in [1 .. x] do
+            Add(out[j], i);
+          od;
+        elif x < 0 then
+          for k in [1 .. -x] do
+            Add(out[i], j);
+          od;
+        fi;
+      od;
+    od;
+    # The approximate complexity of using the adjacency matrix (first method)
+    # is n * (n - 1) / 2, and that of repeatedly calling AddSet (second method)
+    # is n * m * log2(m) where m is the mean degree of any vertex. Some
+    # experimenting showed that the comparison below is a reasonable way to
+    # decide which method to use.
+  elif Float(n * (n - 1) / 2) < n * m * Log2(m) then
+    # If we have no multiple edges, then we use a Boolean matrix because it
+    # uses less space.
+    mat := BooleanAdjacencyMatrixMutableCopy(D);
+    for i in verts do
+      for j in [i + 1 .. n] do
+        if mat[i][j] <> mat[j][i] then
+          mat[i][j] := true;
+          mat[j][i] := true;
+        fi;
+      od;
+    od;
+    out := List(mat, row -> ListBlist(verts, row));
+    if IsImmutableDigraph(D) then
+      C := ConvertToImmutableDigraphNC(out);
+    else
+      C := D;
+      C!.OutNeighbours := out;
+    fi;
+  else
+    C := DigraphMutableCopyIfImmutable(D);
+    out := C!.OutNeighbours;
+    Perform(out, Sort);
+    for i in [1 .. n] do
+      for j in out[i] do
+        if not i in out[j] then
+          AddSet(out[j], i);
+        fi;
+      od;
+    od;
+  fi;
+  ClearDigraphEdgeLabels(C);
+  if IsImmutableDigraph(D) then
+    MakeImmutable(C);
+    SetDigraphSymmetricClosureAttr(D, C);
+    SetIsSymmetricDigraph(C, true);
+  fi;
+  return C;
+end);
+
+InstallMethod(DigraphSymmetricClosure,
+"for a digraph with known symmetric closure",
+[IsDigraph and HasDigraphSymmetricClosureAttr], SUM_FLAGS,
+DigraphSymmetricClosureAttr);
+
+InstallMethod(DigraphSymmetricClosureAttr, "for an immutable digraph",
+[IsImmutableDigraph], DigraphSymmetricClosure);
+
+InstallMethod(MaximalSymmetricSubdigraph, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
+  local C, inn, out, i;
+
+  # Remove multiple edges if present
+  if IsMultiDigraph(D) then
+    if HasDigraphRemoveAllMultipleEdgesAttr(D) then
+      C := DigraphMutableCopy(DigraphRemoveAllMultipleEdges(D));
+    else
+      C := DigraphRemoveAllMultipleEdges(DigraphMutableCopyIfImmutable(D));
+    fi;
+  else
+    C := D;
+  fi;
+
+  if not IsSymmetricDigraph(C) then
+    # C is still immutable here if <D> is immutable and not a multidigraph
+    inn := InNeighbours(C);
+    C   := DigraphMutableCopyIfImmutable(C);
+    out := C!.OutNeighbours;
+    for i in DigraphVertices(C) do
+      Sort(out[i]);
+      IntersectSet(out[i], inn[i]);
+    od;
+  fi;
+
+  ClearDigraphEdgeLabels(C);
+  if IsImmutableDigraph(D) then
+    MakeImmutable(C);
+    SetMaximalSymmetricSubdigraphAttr(D, C);
+    SetIsSymmetricDigraph(C, true);
+    SetIsMultiDigraph(C, false);
+  fi;
+  return C;
+end);
+
+InstallMethod(MaximalSymmetricSubdigraph,
+"for a digraph with known maximal symmetric subdigraph",
+[IsDigraph and HasMaximalSymmetricSubdigraphAttr], SUM_FLAGS,
+MaximalSymmetricSubdigraphAttr);
+
+InstallMethod(MaximalSymmetricSubdigraphAttr, "for an immutable digraph",
+[IsImmutableDigraph], MaximalSymmetricSubdigraph);
+
+InstallMethod(MaximalSymmetricSubdigraphWithoutLoops, "for a mutable digraph",
+[IsMutableDigraph],
+D -> DigraphRemoveLoops(MaximalSymmetricSubdigraph(D)));
+
+InstallMethod(MaximalSymmetricSubdigraphWithoutLoops,
+"for an immutable digraph",
+[IsImmutableDigraph], MaximalSymmetricSubdigraphWithoutLoopsAttr);
+
+InstallMethod(MaximalSymmetricSubdigraphWithoutLoopsAttr,
+"for an immutable digraph",
+[IsImmutableDigraph],
+function(D)
+  if HasMaximalSymmetricSubdigraphAttr(D) then
+    D := DigraphRemoveLoops(MaximalSymmetricSubdigraph(D));
+  else
+    D := DigraphMutableCopy(D);
+    D := MakeImmutable(MaximalSymmetricSubdigraphWithoutLoops(D));
+  fi;
+  SetDigraphHasLoops(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsMultiDigraph(D, false);
+  return D;
+end);
+
+InstallMethod(MaximalAntiSymmetricSubdigraph, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
+  local n, C, m, out, i, j;
+
+  n := DigraphNrVertices(D);
+  if not IsMultiDigraph(D) and (n <= 1 or IsAntisymmetricDigraph(D)) then
+    return D;
+  elif IsMultiDigraph(D) then
+    if HasDigraphRemoveAllMultipleEdgesAttr(D) then
+      C := DigraphMutableCopy(DigraphRemoveAllMultipleEdges(D));
+    else
+      C := DigraphRemoveAllMultipleEdges(DigraphMutableCopyIfImmutable(D));
+    fi;
+  else
+    C := DigraphMutableCopyIfImmutable(D);
+  fi;
+
+  # The average degree
+  m := Float(Sum(OutDegreeSequence(C)) / n);
+
+  if Float(n * (n - 1) / 2) < n * m * Log2(m) then
+    # The approximate complexity of using the adjacency matrix (first method)
+    # is n * (n - 1) / 2, and that of repeatedly calling AddSet (second method)
+    # is n * m * log2(m) where m is the mean degree of any vertex. Some
+    # experimenting showed that the comparison below is a reasonable way to
+    # decide which method to use.
+    out := BooleanAdjacencyMatrixMutableCopy(C);
+    for i in [1 .. n] do
+      for j in [i + 1 .. n] do
+        if out[i][j] then
+          out[j][i] := false;
+        fi;
+      od;
+    od;
+    C!.OutNeighbours := List([1 .. n], v -> ListBlist([1 .. n], out[v]));
+  else
+    out := C!.OutNeighbours;
+    Perform(out, Sort);
+    for i in [1 .. n] do
+      for j in out[i] do
+        if i <> j then
+          RemoveSet(out[j], i);
+        fi;
+      od;
+    od;
+  fi;
+  ClearDigraphEdgeLabels(C);
+  if IsMutableDigraph(D) then
+    return C;
+  fi;
+  MakeImmutable(C);
+  SetIsAntisymmetricDigraph(C, true);
+  SetIsMultiDigraph(C, false);
+  SetMaximalAntiSymmetricSubdigraphAttr(D, C);
+  return C;
+end);
+
+InstallMethod(MaximalAntiSymmetricSubdigraph,
+"for a digraph with known maximal antisymmetric subdigraph",
+[IsDigraph and HasMaximalAntiSymmetricSubdigraphAttr], SUM_FLAGS,
+MaximalAntiSymmetricSubdigraphAttr);
+
+InstallMethod(MaximalAntiSymmetricSubdigraphAttr, "for an immutable digraph",
+[IsImmutableDigraph], MaximalAntiSymmetricSubdigraph);
+
+InstallMethod(DigraphTransitiveClosure, "for a mutable dense digraph",
+[IsMutableDigraph and IsDenseDigraphRep],
+function(D)
+  local list, m, n, nodes, sorted, trans, tmp, mat, v, u, i;
+
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
+                  "edges,");
+  fi;
+
+  list  := D!.OutNeighbours;
+  m     := DigraphNrEdges(D);
+  n     := DigraphNrVertices(D);
+  nodes := DigraphVertices(D);
+
+  ClearDigraphEdgeLabels(D);
+  # Try correct method vis-a-vis complexity
+  if m + n + (m * n) < n ^ 3 then
+    sorted := DigraphTopologicalSort(D);
+    if sorted <> fail then  # Method for big acyclic digraphs (loops allowed)
+      trans := EmptyPlist(n);
+      for v in sorted do
+        trans[v] := BlistList(nodes, [v]);
+        for u in list[v] do
+          trans[v] := UnionBlist(trans[v], trans[u]);
+        od;
+        # TODO use FlipBlist
+        tmp := DifferenceBlist(trans[v], BlistList(nodes, list[v]));
+        tmp[v] := false;
+        Append(list[v], ListBlist(nodes, tmp));
+      od;
+      return D;
+    fi;
+  fi;
+  # Method for small or non-acyclic digraphs
+  mat := DIGRAPH_TRANS_CLOSURE(D);
+  for i in [1 .. Length(list)] do
+    list[i] := nodes{PositionsProperty(mat[i], x -> x > 0)};
+  od;
+  return D;
+end);
+
+InstallMethod(DigraphTransitiveClosure, "for an immutable digraph",
+[IsImmutableDigraph], DigraphTransitiveClosureAttr);
+
+InstallMethod(DigraphTransitiveClosureAttr, "for an immutable digraph",
+[IsImmutableDigraph],
+function(D)
+  local C;
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
+                  "edges,");
+  fi;
+  C := MakeImmutable(DigraphTransitiveClosure(DigraphMutableCopy(D)));
+  SetIsTransitiveDigraph(C, true);
+  SetIsMultiDigraph(C, false);
+  return C;
+end);
+
+InstallMethod(DigraphReflexiveTransitiveClosure, "for a digraph",
+[IsDigraph],
+function(D)
+  local C;
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
+                  "edges,");
+  elif HasDigraphTransitiveClosureAttr(D) then
+    C := DigraphAddAllLoops(DigraphTransitiveClosure(D));
+  else
+    C := DigraphMutableCopyIfImmutable(D);
+    DigraphAddAllLoops(DigraphTransitiveClosure(C));
+  fi;
+
+  if IsMutableDigraph(D) then
+    return C;
+  fi;
+  MakeImmutable(C);
+  SetDigraphReflexiveTransitiveClosureAttr(D, C);
+  SetIsTransitiveDigraph(C, true);
+  SetIsReflexiveDigraph(C, true);
+  SetIsMultiDigraph(C, false);
+  return C;
+end);
+
+InstallMethod(DigraphReflexiveTransitiveClosure,
+"for a digraph with known reflexive transitive closure",
+[IsDigraph and HasDigraphReflexiveTransitiveClosureAttr], SUM_FLAGS,
+DigraphReflexiveTransitiveClosureAttr);
+
+InstallMethod(DigraphReflexiveTransitiveClosureAttr, "for an immutable digraph",
+[IsImmutableDigraph], DigraphReflexiveTransitiveClosure);
+
+InstallMethod(DigraphTransitiveReduction, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
+  local topo, p, C;
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a digraph with no ",
+                  "multiple edges,");
+  elif DigraphTopologicalSort(D) = fail then
+    ErrorNoReturn("not yet implemented for non-topologically sortable ",
+                  "digraphs,");
+  fi;
+  topo := DigraphTopologicalSort(D);
+  p    := Permutation(Transformation(topo), topo);
+
+  C := DigraphMutableCopyIfImmutable(D);
+  OnDigraphs(C, p ^ -1);       # changes C in-place
+  DIGRAPH_TRANS_REDUCTION(C);  # changes C in-place
+  ClearDigraphEdgeLabels(C);
+  OnDigraphs(C, p);            # changes C in-place
+  if IsImmutableDigraph(D) then
+    MakeImmutable(C);
+    SetDigraphTransitiveReductionAttr(D, C);
+    SetIsMultiDigraph(C, false);
+  fi;
+  return C;
+end);
+
+InstallMethod(DigraphTransitiveReduction,
+"for a digraph with known transitive reduction",
+[IsDigraph and HasDigraphTransitiveReductionAttr], SUM_FLAGS,
+DigraphTransitiveReductionAttr);
+
+InstallMethod(DigraphTransitiveReductionAttr, "for an immutable digraph",
+[IsImmutableDigraph], DigraphTransitiveReduction);
+
+# For a topologically sortable digraph G, this returns the least subgraph G'
+# of G such that the (reflexive) transitive closures of G and G' are equal.
+InstallMethod(DigraphReflexiveTransitiveReduction, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
+  local C;
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a digraph with no ",
+                  "multiple edges,");
+  elif DigraphTopologicalSort(D) = fail then
+    ErrorNoReturn("not yet implemented for non-topologically sortable ",
+                  "digraphs,");
+  elif IsNullDigraph(D) then
+    return D;
+  elif HasDigraphRemoveLoopsAttr(D) then
+    C := DigraphMutableCopy(DigraphRemoveLoops(D));
+  else
+    C := DigraphRemoveLoops(DigraphMutableCopyIfImmutable(D));
+  fi;
+  DigraphTransitiveReduction(C);
+  if IsImmutableDigraph(D) then
+    MakeImmutable(C);
+    SetDigraphReflexiveTransitiveReductionAttr(D, C);
+    SetIsReflexiveDigraph(C, false);
+    SetDigraphHasLoops(C, false);
+    SetIsMultiDigraph(C, false);
+  fi;
+  return C;
+end);
+
+InstallMethod(DigraphReflexiveTransitiveReduction,
+"for a digraph with known reflexive transitive reduction",
+[IsDigraph and HasDigraphReflexiveTransitiveReductionAttr], SUM_FLAGS,
+DigraphReflexiveTransitiveReductionAttr);
+
+InstallMethod(DigraphReflexiveTransitiveReductionAttr,
+"for an immutable digraph",
+[IsImmutableDigraph], DigraphReflexiveTransitiveReduction);
+
+InstallMethod(UndirectedSpanningForest, "for a dense digraph",
+[IsDenseDigraphRep],
+function(D)
+  local C;
+  if DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  C := MaximalSymmetricSubdigraph(D)!.OutNeighbours;
+  C := DIGRAPH_SYMMETRIC_SPANNING_FOREST(C);
+  if IsMutableDigraph(D) then
+    D!.OutNeighbours := C;
+    ClearDigraphEdgeLabels(D);
+    return D;
+  fi;
+  C := ConvertToImmutableDigraphNC(C);
+  SetUndirectedSpanningForestAttr(D, C);
+  SetIsUndirectedForest(C, true);
+  SetIsMultiDigraph(C, false);
+  SetDigraphHasLoops(C, false);
+  return C;
+end);
+
+InstallMethod(UndirectedSpanningForest,
+"for a digraph with known undirected spanning forest",
+[IsDigraph and HasUndirectedSpanningForestAttr], SUM_FLAGS,
+UndirectedSpanningForestAttr);
+
+InstallMethod(UndirectedSpanningForestAttr, "for an immutable digraph",
+[IsImmutableDigraph], UndirectedSpanningForest);
+
+InstallMethod(UndirectedSpanningTree, "for a mutable digraph",
+[IsMutableDigraph],
+function(D)
+  if DigraphNrVertices(D) = 0
+      or not IsStronglyConnectedDigraph(D)
+      or not IsConnectedDigraph(UndirectedSpanningForest(DigraphMutableCopy(D)))
+      then
+    return fail;
+  fi;
+  return UndirectedSpanningForest(D);
+end);
+
+InstallMethod(UndirectedSpanningTree, "for an immutable digraph",
+[IsImmutableDigraph], UndirectedSpanningTreeAttr);
+
+InstallMethod(UndirectedSpanningTreeAttr, "for an immutable digraph",
+[IsImmutableDigraph],
+function(D)
+  if DigraphNrVertices(D) = 0
+      or not IsStronglyConnectedDigraph(D)
+      or (HasMaximalSymmetricSubdigraphAttr(D)
+          and not IsStronglyConnectedDigraph(MaximalSymmetricSubdigraph(D)))
+      or (DigraphNrEdges(UndirectedSpanningForest(D))
+          <> 2 * (DigraphNrVertices(D) - 1)) then
+    return fail;
+  fi;
+  return UndirectedSpanningForest(D);
+end);
+
+InstallMethod(DigraphMycielskian, "for a digraph",
+[IsDigraph],
+function(D)
+  local n, C, i, j;
+  if not IsSymmetricDigraph(D) or IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a symmetric digraph ",
+                  "with no multiple edges,");
+  fi;
+
+  # Based on the construction given at https://en.wikipedia.org/wiki/Mycielskian
+  # on 2019-04-10, v_k = vertex k, u_k = vertex n + k and w = vertex 2n + 1
+
+  n := DigraphNrVertices(D);
+  C := DigraphMutableCopyIfImmutable(D);
+
+  for i in [1 .. n + 1] do
+    DigraphAddVertex(C);
+  od;
+
+  for i in [n + 1 .. 2 * n] do
+    DigraphAddEdge(C, [i, 2 * n + 1]);
+    DigraphAddEdge(C, [2 * n + 1, i]);
+  od;
+
+  for i in [1 .. n] do
+    for j in [i .. n] do
+      if IsDigraphEdge(C, i, j) then
+        DigraphAddEdge(C, [i + n, j]);
+        DigraphAddEdge(C, [j, i + n]);
+        if i <> j then  # Stops duplicate edges being constructed if C has loops
+          DigraphAddEdge(C, [i, j + n]);
+          DigraphAddEdge(C, [j + n, i]);
+        fi;
+      fi;
+    od;
+  od;
+
+  if IsImmutableDigraph(D) then
+    MakeImmutable(C);
+    SetDigraphMycielskianAttr(D, C);
+  fi;
+  return C;
+end);
+
+InstallMethod(DigraphMycielskian,
+"for a digraph with known Mycielskian",
+[IsDigraph and HasDigraphMycielskianAttr], SUM_FLAGS, DigraphMycielskianAttr);
+
+InstallMethod(DigraphMycielskianAttr, "for an immutable digraph",
+[IsImmutableDigraph], DigraphMycielskian);
