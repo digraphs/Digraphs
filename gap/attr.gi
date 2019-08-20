@@ -9,14 +9,10 @@
 ##
 
 InstallMethod(DigraphNrVertices, "for a dense digraph", [IsDenseDigraphRep],
-function(D)
-  return DIGRAPH_NR_VERTICES(D);
-end);
+D -> DIGRAPH_NR_VERTICES(D));
 
 InstallMethod(OutNeighbours, "for a dense digraph", [IsDenseDigraphRep],
-function(D)
-  return DIGRAPH_OUT_NEIGHBOURS(D);
-end);
+D -> DIGRAPH_OUT_NEIGHBOURS(D));
 
 # The next method is (yet another) DFS as described in
 # http://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
@@ -250,9 +246,7 @@ end);
 # end);
 
 InstallMethod(DigraphAdjacencyFunction, "for a dense digraph", [IsDigraph],
-function(D)
-  return {u, v} -> IsDigraphEdge(D, u, v);
-end);
+D -> {u, v} -> IsDigraphEdge(D, u, v));
 
 InstallMethod(AsTransformation, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
@@ -334,9 +328,7 @@ InstallMethod(DigraphDualAttr, "for an immutable digraph",
 [IsImmutableDigraph], DigraphDual);
 
 InstallMethod(DigraphNrEdges, "for a digraph", [IsDenseDigraphRep],
-function(D)
-  return DIGRAPH_NREDGES(D);
-end);
+DIGRAPH_NREDGES);
 
 InstallMethod(DigraphEdges, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
@@ -357,14 +349,10 @@ end);
 # attributes for digraphs . . .
 
 InstallMethod(AsGraph, "for a digraph", [IsDigraph],
-function(D)
-  return Graph(D);
-end);
+D -> Graph(D));
 
 InstallMethod(DigraphVertices, "for a digraph", [IsDigraph],
-function(D)
-  return [1 .. DigraphNrVertices(D)];
-end);
+D -> [1 .. DigraphNrVertices(D)]);
 
 InstallMethod(DigraphRange, "for a dense digraph attribute storing digraph",
 [IsDenseDigraphRep and IsAttributeStoringRep],
@@ -378,9 +366,7 @@ end);
 
 InstallMethod(DigraphRange, "for a dense digraph attribute storing digraph",
 [IsDenseDigraphRep and IsMutableDigraph],
-function(D)
-  return DIGRAPH_SOURCE_RANGE(D).DigraphRange;
-end);
+D -> DIGRAPH_SOURCE_RANGE(D).DigraphRange);
 
 InstallMethod(DigraphSource, "for a dense digraph attribute storing digraph",
 [IsDenseDigraphRep and IsAttributeStoringRep],
@@ -394,19 +380,13 @@ end);
 
 InstallMethod(DigraphSource, "for a dense digraph attribute storing digraph",
 [IsDenseDigraphRep and IsMutableDigraph],
-function(D)
-  return DIGRAPH_SOURCE_RANGE(D).DigraphSource;
-end);
+D -> DIGRAPH_SOURCE_RANGE(D).DigraphSource);
 
 InstallMethod(InNeighbours, "for a digraph", [IsDenseDigraphRep],
-function(D)
-  return DIGRAPH_IN_OUT_NBS(OutNeighbours(D));
-end);
+D -> DIGRAPH_IN_OUT_NBS(OutNeighbours(D)));
 
 InstallMethod(AdjacencyMatrix, "for a digraph", [IsDenseDigraphRep],
-function(D)
-  return ADJACENCY_MATRIX(D);
-end);
+D -> ADJACENCY_MATRIX(D));
 
 InstallMethod(BooleanAdjacencyMatrix, "for a dense digraph",
 [IsDenseDigraphRep],
@@ -458,9 +438,7 @@ end);
 
 InstallMethod(DigraphTopologicalSort, "for a dense digraph",
 [IsDenseDigraphRep],
-function(D)
-  return DIGRAPH_TOPO_SORT(OutNeighbours(D));
-end);
+D -> DIGRAPH_TOPO_SORT(OutNeighbours(D)));
 
 InstallMethod(DigraphStronglyConnectedComponents, "for a dense digraph",
 [IsDenseDigraphRep],
@@ -482,15 +460,11 @@ end);
 
 InstallMethod(DigraphNrStronglyConnectedComponents, "for a digraph",
 [IsDigraph],
-function(D)
-  return Length(DigraphStronglyConnectedComponents(D).comps);
-end);
+D -> Length(DigraphStronglyConnectedComponents(D).comps));
 
 InstallMethod(DigraphConnectedComponents, "for a dense digraph",
 [IsDenseDigraphRep],
-function(D)
-  return DIGRAPH_CONNECTED_COMPONENTS(D);
-end);
+D -> DIGRAPH_CONNECTED_COMPONENTS(D));
 
 InstallMethod(OutDegrees, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
@@ -553,9 +527,7 @@ function(D)
 end);
 
 InstallMethod(OutDegreeSet, "for a digraph", [IsDigraph],
-function(D)
-  return Set(ShallowCopy(OutDegrees(D)));
-end);
+D -> Set(ShallowCopy(OutDegrees(D))));
 
 InstallMethod(InDegreeSequence, "for a digraph", [IsDigraph],
 function(D)
@@ -581,9 +553,7 @@ function(D)
 end);
 
 InstallMethod(InDegreeSet, "for a digraph", [IsDigraph],
-function(D)
-  return Set(ShallowCopy(InDegrees(D)));
-end);
+D -> Set(ShallowCopy(InDegrees(D))));
 
 InstallMethod(DigraphSources, "for a digraph with in-degrees",
 [IsDigraph and HasInDegrees], 3,
@@ -703,9 +673,7 @@ function(D)
 end);
 
 InstallMethod(DIGRAPHS_ConnectivityData, "for a digraph", [IsDigraph],
-function(D)
-  return [];
-end);
+D -> EmptyPlist(0));
 
 BindGlobal("DIGRAPH_ConnectivityDataForVertex",
 function(D, v)
@@ -1482,9 +1450,7 @@ end);
 
 InstallMethod(MaximalSymmetricSubdigraphWithoutLoops, "for a mutable digraph",
 [IsMutableDigraph],
-function(D)
-  return DigraphRemoveLoops(MaximalSymmetricSubdigraph(D));
-end);
+D -> DigraphRemoveLoops(MaximalSymmetricSubdigraph(D)));
 
 InstallMethod(MaximalSymmetricSubdigraphWithoutLoops,
 "for an immutable digraph",
@@ -1548,9 +1514,7 @@ function(D)
 end);
 
 InstallMethod(LaplacianMatrix, "for a digraph", [IsDigraph],
-function(D)
-  return DegreeMatrix(D) - AdjacencyMatrix(D);
-end);
+D -> DegreeMatrix(D) - AdjacencyMatrix(D));
 
 InstallMethod(NrSpanningTrees, "for a digraph", [IsDigraph],
 function(D)
@@ -1857,14 +1821,10 @@ function(D)
 end);
 
 InstallMethod(CharacteristicPolynomial, "for a digraph", [IsDigraph],
-function(D)
-  return CharacteristicPolynomial(AdjacencyMatrix(D));
-end);
+D -> CharacteristicPolynomial(AdjacencyMatrix(D)));
 
 InstallMethod(IsVertexTransitive, "for a digraph", [IsDigraph],
-function(D)
-  return IsTransitive(AutomorphismGroup(D), DigraphVertices(D));
-end);
+D -> IsTransitive(AutomorphismGroup(D), DigraphVertices(D)));
 
 InstallMethod(IsEdgeTransitive, "for a digraph", [IsDigraph],
 function(D)

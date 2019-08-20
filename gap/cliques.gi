@@ -11,9 +11,7 @@
 ##
 
 InstallMethod(CliqueNumber, "for a digraph", [IsDigraph],
-function(D)
-  return Maximum(List(DigraphMaximalCliquesReps(D), Length));
-end);
+D -> Maximum(List(DigraphMaximalCliquesReps(D), Length)));
 
 InstallMethod(IsIndependentSet, "for a dense digraph and a homogeneous list",
 [IsDenseDigraphRep, IsHomogeneousList],

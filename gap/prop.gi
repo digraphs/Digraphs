@@ -13,9 +13,7 @@ InstallMethod(IsMultiDigraph, "for a dense digraph", [IsDenseDigraphRep],
 IS_MULTI_DIGRAPH);
 
 InstallMethod(IsChainDigraph, "for a digraph", [IsDigraph],
-function(D)
-  return IsDirectedTree(D) and IsSubset([0, 1], OutDegreeSet(D));
-end);
+D -> IsDirectedTree(D) and IsSubset([0, 1], OutDegreeSet(D)));
 
 InstallMethod(IsCycleDigraph, "for a digraph", [IsDigraph],
 function(D)
@@ -24,9 +22,7 @@ function(D)
 end);
 
 InstallMethod(IsBiconnectedDigraph, "for a digraph", [IsDigraph],
-function(D)
-  return IsEmpty(ArticulationPoints(D)) and IsConnectedDigraph(D);
-end);
+D -> IsEmpty(ArticulationPoints(D)) and IsConnectedDigraph(D));
 
 InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph,
 "for a homogeneous list and a positive integer",
@@ -86,9 +82,7 @@ end);
 
 InstallMethod(IsStronglyConnectedDigraph, "for a dense digraph",
 [IsDenseDigraphRep],
-function(D)
-  return IS_STRONGLY_CONNECTED_DIGRAPH(OutNeighbours(D));
-end);
+D -> IS_STRONGLY_CONNECTED_DIGRAPH(OutNeighbours(D)));
 
 InstallMethod(IsCompleteDigraph, "for a digraph",
 [IsDigraph],
@@ -206,9 +200,7 @@ end);
 
 InstallMethod(IsFunctionalDigraph, "for a dense digraph",
 [IsDenseDigraphRep],
-function(D)
-  return ForAll(OutNeighbours(D), x -> Length(x) = 1);
-end);
+D -> ForAll(OutNeighbours(D), x -> Length(x) = 1));
 
 InstallMethod(IsTournament, "for a digraph", [IsDigraph],
 function(D)
@@ -238,15 +230,11 @@ end);
 InstallMethod(IsEmptyDigraph, "for a digraph with known number of edges",
 [IsDigraph and HasDigraphNrEdges],
 2,  # to beat the method for IsDenseDigraphRep
-function(D)
-  return DigraphNrEdges(D) = 0;
-end);
+D -> DigraphNrEdges(D) = 0);
 
 InstallMethod(IsEmptyDigraph, "for a dense digraph",
 [IsDenseDigraphRep],
-function(D)
-  return ForAll(OutNeighbours(D), IsEmpty);
-end);
+D -> ForAll(OutNeighbours(D), IsEmpty));
 
 InstallMethod(IsReflexiveDigraph, "for a digraph with adjacency matrix",
 [IsDigraph and HasAdjacencyMatrix],
@@ -306,15 +294,11 @@ function(D)
 end);
 
 InstallMethod(IsAperiodicDigraph, "for a digraph", [IsDigraph],
-function(D)
-  return DigraphPeriod(D) = 1;
-end);
+D -> DigraphPeriod(D) = 1);
 
 InstallMethod(IsAntisymmetricDigraph, "for a dense digraph",
 [IsDenseDigraphRep],
-function(D)
-  return IS_ANTISYMMETRIC_DIGRAPH(OutNeighbours(D));
-end);
+D -> IS_ANTISYMMETRIC_DIGRAPH(OutNeighbours(D)));
 
 InstallMethod(IsTransitiveDigraph, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
@@ -367,19 +351,13 @@ function(D)
 end);
 
 InstallMethod(IsInRegularDigraph, "for a digraph", [IsDigraph],
-function(D)
-  return Length(InDegreeSet(D)) = 1;
-end);
+D -> Length(InDegreeSet(D)) = 1);
 
 InstallMethod(IsOutRegularDigraph, "for a digraph", [IsDigraph],
-function(D)
-  return Length(OutDegreeSet(D)) = 1;
-end);
+D -> Length(OutDegreeSet(D)) = 1);
 
 InstallMethod(IsRegularDigraph, "for a digraph", [IsDigraph],
-function(D)
-  return IsInRegularDigraph(D) and IsOutRegularDigraph(D);
-end);
+D -> IsInRegularDigraph(D) and IsOutRegularDigraph(D));
 
 InstallMethod(IsUndirectedTree, "for a digraph", [IsDigraph],
 function(D)

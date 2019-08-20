@@ -127,9 +127,7 @@ function(D, n)
 end);
 
 InstallMethod(DigraphGreedyColouring, "for a digraph", [IsDigraph],
-function(D)
-  return DigraphGreedyColouringNC(D, DigraphWelshPowellOrder(D));
-end);
+D -> DigraphGreedyColouringNC(D, DigraphWelshPowellOrder(D)));
 
 InstallMethod(DigraphGreedyColouring, "for a digraph",
 [IsDigraph, IsHomogeneousList],
@@ -183,9 +181,7 @@ end);
 
 InstallMethod(DigraphGreedyColouring, "for a digraph and a function",
 [IsDigraph, IsFunction],
-function(D, func)
-  return DigraphGreedyColouringNC(D, func(D));
-end);
+{D, func} -> DigraphGreedyColouringNC(D, func(D)));
 
 InstallMethod(DigraphWelshPowellOrder, "for a digraph", [IsDigraph],
 function(D)
@@ -500,9 +496,7 @@ end);
 
 InstallMethod(IsDigraphEndomorphism, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
-function(D, x)
-  return IsDigraphHomomorphism(D, D, x);
-end);
+{D, x} -> IsDigraphHomomorphism(D, D, x));
 
 InstallMethod(IsDigraphEpimorphism, "for digraph, digraph, and transformation",
 [IsDigraph, IsDigraph, IsTransformation],
