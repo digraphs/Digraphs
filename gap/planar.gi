@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  planar.gi
-##  Copyright (C) 2018                                   James D. Mitchell
+##  Copyright (C) 2018-19                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
