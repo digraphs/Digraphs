@@ -9,10 +9,10 @@
 ##
 
 InstallMethod(DigraphNrVertices, "for a dense digraph", [IsDenseDigraphRep],
-D -> DIGRAPH_NR_VERTICES(D));
+DIGRAPH_NR_VERTICES);
 
 InstallMethod(OutNeighbours, "for a dense digraph", [IsDenseDigraphRep],
-D -> DIGRAPH_OUT_NEIGHBOURS(D));
+DIGRAPH_OUT_NEIGHBOURS);
 
 # The next method is (yet another) DFS as described in
 # http://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
@@ -348,8 +348,7 @@ end);
 
 # attributes for digraphs . . .
 
-InstallMethod(AsGraph, "for a digraph", [IsDigraph],
-D -> Graph(D));
+InstallMethod(AsGraph, "for a digraph", [IsDigraph], Graph);
 
 InstallMethod(DigraphVertices, "for a digraph", [IsDigraph],
 D -> [1 .. DigraphNrVertices(D)]);
@@ -386,7 +385,7 @@ InstallMethod(InNeighbours, "for a digraph", [IsDenseDigraphRep],
 D -> DIGRAPH_IN_OUT_NBS(OutNeighbours(D)));
 
 InstallMethod(AdjacencyMatrix, "for a digraph", [IsDenseDigraphRep],
-D -> ADJACENCY_MATRIX(D));
+ADJACENCY_MATRIX);
 
 InstallMethod(BooleanAdjacencyMatrix, "for a dense digraph",
 [IsDenseDigraphRep],
@@ -464,7 +463,7 @@ D -> Length(DigraphStronglyConnectedComponents(D).comps));
 
 InstallMethod(DigraphConnectedComponents, "for a dense digraph",
 [IsDenseDigraphRep],
-D -> DIGRAPH_CONNECTED_COMPONENTS(D));
+DIGRAPH_CONNECTED_COMPONENTS);
 
 InstallMethod(OutDegrees, "for a dense digraph", [IsDenseDigraphRep],
 function(D)

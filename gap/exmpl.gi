@@ -37,7 +37,7 @@ n -> EmptyDigraphCons(IsImmutableDigraph, n));
 
 InstallMethod(EmptyDigraph, "for a function and an integer",
 [IsFunction, IsInt],
-{func, n} -> EmptyDigraphCons(func, n));
+EmptyDigraphCons);
 
 InstallMethod(CompleteBipartiteDigraphCons,
 "for IsMutableDigraph and two positive integers",
@@ -87,7 +87,7 @@ InstallMethod(CompleteBipartiteDigraph, "for two positive integers",
 InstallMethod(CompleteBipartiteDigraph,
 "for a functions and two positive integers",
 [IsFunction, IsPosInt, IsPosInt],
-{filt, m, n} -> CompleteBipartiteDigraphCons(filt, m, n));
+CompleteBipartiteDigraphCons);
 
 # For input list <sizes> of length nr_parts, CompleteMultipartiteDigraph
 # returns the complete multipartite digraph containing parts 1, 2, ..., n
@@ -139,7 +139,7 @@ InstallMethod(CompleteMultipartiteDigraph, "for a list", [IsList],
 list -> CompleteMultipartiteDigraphCons(IsImmutableDigraph, list));
 
 InstallMethod(CompleteMultipartiteDigraph, "for a list", [IsFunction, IsList],
-{filt, list} -> CompleteMultipartiteDigraphCons(filt, list));
+CompleteMultipartiteDigraphCons);
 
 InstallMethod(ChainDigraphCons, "for IsMutableDigraph and a positive integer",
 [IsMutableDigraph, IsPosInt],
@@ -177,7 +177,7 @@ end);
 
 InstallMethod(ChainDigraph, "for a function and a positive integer",
 [IsFunction, IsPosInt],
-{func, n} -> ChainDigraphCons(func, n));
+ChainDigraphCons);
 
 InstallMethod(ChainDigraph, "for a positive integer", [IsPosInt],
 n -> ChainDigraphCons(IsImmutableDigraph, n));
@@ -217,7 +217,7 @@ end);
 
 InstallMethod(CompleteDigraph, "for a function and an integer",
 [IsFunction, IsInt],
-{func, n} -> CompleteDigraphCons(func, n));
+CompleteDigraphCons);
 
 InstallMethod(CompleteDigraph, "for an integer",
 [IsInt],
@@ -260,7 +260,7 @@ end);
 
 InstallMethod(CycleDigraph, "for a function and a positive integer",
 [IsFunction, IsPosInt],
-{func, n} -> CycleDigraphCons(func, n));
+CycleDigraphCons);
 
 InstallMethod(CycleDigraph, "for a positive integer", [IsPosInt],
 n -> CycleDigraphCons(IsImmutableDigraph, n));
@@ -291,7 +291,7 @@ end);
 
 InstallMethod(JohnsonDigraph, "for a function, integer, integer",
 [IsFunction, IsInt, IsInt],
-{func, n, k} -> JohnsonDigraphCons(func, n, k));
+JohnsonDigraphCons);
 
 InstallMethod(JohnsonDigraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> JohnsonDigraphCons(IsImmutableDigraph, n, k));
@@ -369,7 +369,7 @@ end);
 
 InstallMethod(GeneralisedPetersenGraph, "for a function, integer, integer",
 [IsFunction, IsInt, IsInt],
-{func, n, k} -> GeneralisedPetersenGraphCons(func, n, k));
+GeneralisedPetersenGraphCons);
 
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));

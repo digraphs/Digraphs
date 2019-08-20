@@ -113,14 +113,14 @@ InstallMethod(DigraphConsNC,
 
 InstallMethod(DigraphNC, "for a function and a dense list",
 [IsFunction, IsDenseList],
-{func, list} -> DigraphConsNC(func, list));
+DigraphConsNC);
 
 InstallMethod(DigraphNC, "for a dense list", [IsDenseList],
 list -> DigraphConsNC(IsImmutableDigraph, list));
 
 InstallMethod(DigraphNC, "for a function and a record",
 [IsFunction, IsRecord],
-{func, record} -> DigraphConsNC(func, record));
+DigraphConsNC);
 
 InstallMethod(DigraphNC, "for a record", [IsRecord],
 record -> DigraphConsNC(IsImmutableDigraph, record));
@@ -370,27 +370,27 @@ function(filt, domain, src, ran)
 end);
 
 InstallMethod(Digraph, "for a filter and a record", [IsFunction, IsRecord],
-{filt, record} -> DigraphCons(filt, record));
+DigraphCons);
 
 InstallMethod(Digraph, "for a record", [IsRecord],
 record -> DigraphCons(IsImmutableDigraph, record));
 
 InstallMethod(Digraph, "for a filter and a list", [IsFunction, IsList],
-{func, list} -> DigraphCons(func, list));
+DigraphCons);
 
 InstallMethod(Digraph, "for a list", [IsList],
 list -> DigraphCons(IsImmutableDigraph, list));
 
 InstallMethod(Digraph, "for a filter, a list, and a function",
 [IsFunction, IsList, IsFunction],
-{filt, list, func} -> DigraphCons(filt, list, func));
+DigraphCons);
 
 InstallMethod(Digraph, "for a list and a function", [IsList, IsFunction],
 {list, func} -> DigraphCons(IsImmutableDigraph, list, func));
 
 InstallMethod(Digraph, "for a filter, integer, list, and list",
 [IsFunction, IsInt, IsList, IsList],
-{filt, n, src, ran} -> DigraphCons(filt, n, src, ran));
+DigraphCons);
 
 InstallMethod(Digraph, "for an integer, list, and list",
 [IsInt, IsList, IsList],
@@ -398,7 +398,7 @@ InstallMethod(Digraph, "for an integer, list, and list",
 
 InstallMethod(Digraph, "for a filter, list, list, and list",
 [IsFunction, IsList, IsList, IsList],
-{filt, dom, src, ran} -> DigraphCons(filt, dom, src, ran));
+DigraphCons);
 
 InstallMethod(Digraph, "for a list, list, and list", [IsList, IsList, IsList],
 {dom, src, ran} -> DigraphCons(IsImmutableDigraph, dom, src, ran));
@@ -476,11 +476,9 @@ end);
 # 7. Operators
 ########################################################################
 
-InstallMethod(\=, "for two digraphs", [IsDigraph, IsDigraph],
-{C, D} -> DIGRAPH_EQUALS(C, D));
+InstallMethod(\=, "for two digraphs", [IsDigraph, IsDigraph], DIGRAPH_EQUALS);
 
-InstallMethod(\<, "for two digraphs", [IsDigraph, IsDigraph],
-{C, D} -> DIGRAPH_LT(C, D));
+InstallMethod(\<, "for two digraphs", [IsDigraph, IsDigraph], DIGRAPH_LT);
 
 ########################################################################
 # 8. Digraph by-something constructors
@@ -563,10 +561,9 @@ function(filt, mat)
   return D;
 end);
 
-InstallMethod(DigraphByAdjacencyMatrix,
-"for a function and a homogeneous list",
+InstallMethod(DigraphByAdjacencyMatrix, "for a function and a homogeneous list",
 [IsFunction, IsHomogeneousList],
-{func, mat} -> DigraphByAdjacencyMatrixCons(func, mat));
+DigraphByAdjacencyMatrixCons);
 
 InstallMethod(DigraphByAdjacencyMatrix, "for a homogeneous list",
 [IsHomogeneousList],
@@ -637,11 +634,11 @@ edges -> DigraphByEdgesCons(IsImmutableDigraph, edges));
 
 InstallMethod(DigraphByEdges, "for a function, a list, and an integer",
 [IsFunction, IsList, IsInt],
-{func, edges, n} -> DigraphByEdgesCons(func, edges, n));
+DigraphByEdgesCons);
 
 InstallMethod(DigraphByEdges, "for a function and a list",
 [IsFunction, IsList],
-{func, edges} -> DigraphByEdgesCons(func, edges));
+DigraphByEdgesCons);
 
 InstallMethod(DigraphByInNeighboursCons, "for IsMutableDigraph, and a list",
 [IsMutableDigraph, IsList],
@@ -684,7 +681,7 @@ list -> DigraphByInNeighboursCons(IsImmutableDigraph, list));
 
 InstallMethod(DigraphByInNeighbours, "for a function and a list",
 [IsFunction, IsList],
-{func, list} -> DigraphByInNeighboursCons(func, list));
+DigraphByInNeighboursCons);
 
 ########################################################################
 # 9. Converters to/from other types -> digraph . . .
@@ -732,7 +729,7 @@ rel -> AsDigraphCons(IsImmutableDigraph, rel));
 
 InstallMethod(AsDigraph, "for a function and a binary relation",
 [IsFunction, IsBinaryRelation],
-{func, rel} -> AsDigraphCons(func, rel));
+AsDigraphCons);
 
 InstallMethod(AsDigraphCons,
 "for IsMutableDigraph, a transformation, and an integer",
@@ -772,7 +769,7 @@ end);
 InstallMethod(AsDigraph,
 "for a function, a transformation, and an integer",
 [IsFunction, IsTransformation, IsInt],
-{func, t, n} -> AsDigraphCons(func, t, n));
+AsDigraphCons);
 
 InstallMethod(AsDigraph, "for a transformation and an integer",
 [IsTransformation, IsInt],
@@ -924,15 +921,15 @@ InstallMethod(RandomDigraph, "for a pos int and a float",
 {n, p} -> RandomDigraphCons(IsImmutableDigraph, n, p));
 
 InstallMethod(RandomDigraph, "for a func and a pos int", [IsFunction, IsPosInt],
-{func, n} -> RandomDigraphCons(func, n));
+RandomDigraphCons);
 
 InstallMethod(RandomDigraph, "for a func, a pos int, and a rational",
 [IsFunction, IsPosInt, IsRat],
-{func, n, p} -> RandomDigraphCons(func, n, p));
+RandomDigraphCons);
 
 InstallMethod(RandomDigraph, "for a func, a pos int, and a float",
 [IsFunction, IsPosInt, IsFloat],
-{func, n, p} -> RandomDigraphCons(func, n, p));
+RandomDigraphCons);
 
 InstallMethod(RandomMultiDigraph, "for a pos int",
 [IsPosInt],
@@ -1002,4 +999,4 @@ n -> RandomLatticeCons(IsImmutableDigraph, n));
 
 InstallMethod(RandomLattice, "for a func and a pos int",
 [IsFunction, IsPosInt],
-{func, n} -> RandomLatticeCons(func, n));
+RandomLatticeCons);
