@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  grahom.gi
-##  Copyright (C) 2014-18                                  Julius Jonusas
+##  Copyright (C) 2014-19                                  Julius Jonusas
 ##                                                         James Mitchell
 ##                                                         Wilf A. Wilson
 ##
