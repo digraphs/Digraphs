@@ -1,6 +1,6 @@
 #############################################################################
 ##
-##  cnstr.gi
+##  constructors.gi
 ##  Copyright (C) 2019                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
@@ -80,7 +80,7 @@ InstallMethod(DistanceDigraph,
 [IsMutableDigraph and IsDenseDigraphRep, IsList],
 function(D, distances)
   local list, x;
-  # Can't chance D!.OutNeighbours in-place, since it is used by
+  # Can't change D!.OutNeighbours in-place, since it is used by
   # DigraphDistanceSet
   list := EmptyPlist(DigraphNrVertices(D));
   for x in DigraphVertices(D) do

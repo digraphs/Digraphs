@@ -1,6 +1,6 @@
 #############################################################################
 ##
-##  cnstr.gd
+##  constructors.gd
 ##  Copyright (C) 2019                                   James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.

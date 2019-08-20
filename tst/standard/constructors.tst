@@ -1,13 +1,13 @@
 #############################################################################
 ##
-#W  standard/cnstr.tst
+#W  standard/constructors.tst
 #Y  Copyright (C) 2019                                  James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
-gap> START_TEST("Digraphs package: standard/cnstr.tst");
+gap> START_TEST("Digraphs package: standard/constructors.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
@@ -197,4 +197,4 @@ Error, the argument <D> must be a symmetric digraph,
 
 #
 gap> DIGRAPHS_StopTest();
-gap> STOP_TEST("Digraphs package: standard/cnstr.tst", 0);
+gap> STOP_TEST("Digraphs package: standard/constructors.tst", 0);
