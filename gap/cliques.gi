@@ -183,7 +183,7 @@ function(arg)
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   out    := CallFuncList(DigraphMaximalCliquesReps, arg);
   # Store the result if appropriate
-  if not IsBound(arg[2]) then
+  if not IsBound(arg[2]) and IsImmutableDigraph(D) then
     SetDigraphMaximalIndependentSetsRepsAttr(D, out);
   fi;
   return out;
@@ -211,7 +211,7 @@ function(arg)
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   out := CallFuncList(DigraphMaximalCliques, arg);
   # Store the result if appropriate
-  if not IsBound(arg[2]) then
+  if not IsBound(arg[2]) and IsImmutableDigraph(D) then
     SetDigraphMaximalIndependentSetsAttr(D, out);
   fi;
   return out;
@@ -460,8 +460,8 @@ function(arg)
   out := [];
   CliquesFinder(D, fail, out, limit, include, exclude, true, size, true);
   # Store the result if appropriate
-  if IsEmpty(include) and IsEmpty(exclude)
-      and limit = infinity and size = fail then
+  if IsEmpty(include) and IsEmpty(exclude) and limit = infinity and size = fail
+      and IsImmutableDigraph(D) then
     SetDigraphMaximalCliquesRepsAttr(D, out);
   fi;
   return out;
@@ -529,7 +529,9 @@ function(arg)
         fi;
       od;
     fi;
-    SetDigraphMaximalCliquesAttr(D, out);
+    if IsImmutableDigraph(D) then
+      SetDigraphMaximalCliquesAttr(D, out);
+    fi;
     return out;
   fi;
 

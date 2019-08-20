@@ -85,12 +85,12 @@ function(D)
     if i <> fail and Position(parent, 1, i) <> fail then
       Add(points, 1);
     fi;
-    if IsAttributeStoringRep(D) then
+    if IsImmutableDigraph(D) then
       SetIsConnectedDigraph(D, true);
     fi;
     return points;
   else
-    if IsAttributeStoringRep(D) then
+    if IsImmutableDigraph(D) then
       SetIsConnectedDigraph(D, false);
     fi;
     return [];
@@ -354,7 +354,7 @@ InstallMethod(DigraphVertices, "for a digraph", [IsDigraph],
 D -> [1 .. DigraphNrVertices(D)]);
 
 InstallMethod(DigraphRange, "for a dense digraph attribute storing digraph",
-[IsDenseDigraphRep and IsAttributeStoringRep],
+[IsDenseDigraphRep and IsImmutableDigraph],
 function(D)
   if not IsBound(D!.DigraphRange) then
     DIGRAPH_SOURCE_RANGE(D);
@@ -368,7 +368,7 @@ InstallMethod(DigraphRange, "for a dense digraph attribute storing digraph",
 D -> DIGRAPH_SOURCE_RANGE(D).DigraphRange);
 
 InstallMethod(DigraphSource, "for a dense digraph attribute storing digraph",
-[IsDenseDigraphRep and IsAttributeStoringRep],
+[IsDenseDigraphRep and IsImmutableDigraph],
 function(D)
   if not IsBound(D!.DigraphSource) then
     DIGRAPH_SOURCE_RANGE(D);
@@ -664,7 +664,7 @@ function(D)
     od;
   od;
 
-  if period = 0 then
+  if period = 0 and IsImmutableDigraph(D) then
     SetIsAcyclicDigraph(D, true);
   fi;
 
@@ -794,7 +794,7 @@ function(D)
   # called, if appropriate, by DigraphDiameter and DigraphUndirectedGirth.
   #
 
-  if DigraphNrVertices(D) = 0 then
+  if DigraphNrVertices(D) = 0 and IsImmutableDigraph(D) then
     SetDigraphDiameter(D, fail);
     SetDigraphUndirectedGirth(D, infinity);
     return rec(diameter := fail, girth := infinity);
@@ -833,8 +833,10 @@ function(D)
     girth := 2;
   fi;
 
-  SetDigraphDiameter(D, diameter);
-  SetDigraphUndirectedGirth(D, girth);
+  if IsImmutableDigraph(D) then
+    SetDigraphDiameter(D, diameter);
+    SetDigraphUndirectedGirth(D, girth);
+  fi;
   return rec(diameter := diameter, girth := girth);
 end);
 
