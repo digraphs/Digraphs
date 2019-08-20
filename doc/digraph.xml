@@ -50,7 +50,7 @@ gap> RepresentativeOutNeighbours(digraph);
     <A>digraph</A> and with additional edges consisting of the orbit of the
     edge <A>edge</A> under the action of the <Ref Attr="DigraphGroup"/> of
     <A>digraph</A>.  If <A>edge</A> is already an edge in <A>digraph</A>, then
-    <A>digraph</A> is returns unchanged.
+    <A>digraph</A> is returned unchanged.
     <P/>
 
     An edge is simply a pair of vertices of <A>digraph</A>.
