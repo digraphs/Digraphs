@@ -1,6 +1,6 @@
 #############################################################################
 ##
-##  exmpl.gi
+##  examples.gi
 ##  Copyright (C) 2019                                     Murray T. Whyte
 ##                                                       James D. Mitchell
 ##
