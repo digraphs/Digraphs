@@ -20,7 +20,6 @@ InstallMethod(SetDigraphVertexLabel,
 "for a digraph, pos int, object",
 [IsDigraph, IsPosInt, IsObject],
 function(D, v, name)
-  IsValidDigraph(D);
   if not IsBound(D!.vertexlabels) then
     D!.vertexlabels := [1 .. DigraphNrVertices(D)];
   fi;
@@ -34,7 +33,6 @@ end);
 InstallMethod(DigraphVertexLabel, "for a digraph and pos int",
 [IsDigraph, IsPosInt],
 function(D, v)
-  IsValidDigraph(D);
   if not IsBound(D!.vertexlabels) then
     D!.vertexlabels := [1 .. DigraphNrVertices(D)];
   fi;
@@ -48,7 +46,6 @@ end);
 InstallMethod(RemoveDigraphVertexLabel, "for a digraph and positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)
-  IsValidDigraph(D);
   if not IsBound(D!.vertexlabels) then
     DigraphVertexLabels(D);
   fi;
@@ -58,7 +55,6 @@ end);
 InstallMethod(SetDigraphVertexLabels, "for a digraph and list",
 [IsDigraph, IsList],
 function(D, names)
-  IsValidDigraph(D);
   if Length(names) <> DigraphNrVertices(D) then
     ErrorNoReturn("the 2nd arument <names> must be a list with length equal ",
                   "to the number of vertices of the digraph <D> that is the ",
@@ -69,7 +65,6 @@ end);
 
 InstallMethod(DigraphVertexLabels, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   if not IsBound(D!.vertexlabels) then
     D!.vertexlabels := [1 .. DigraphNrVertices(D)];
   fi;
@@ -86,7 +81,6 @@ InstallMethod(SetDigraphEdgeLabel,
 [IsDigraph, IsPosInt, IsPosInt, IsObject],
 function(D, v, w, label)
   local p, list;
-  IsValidDigraph(D);
   if IsMultiDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must be a digraph with no multiple ",
                   "edges, edge labels are not supported on digraphs with ",
@@ -109,7 +103,6 @@ InstallMethod(DigraphEdgeLabel, "for a digraph, a pos int, and a pos int",
 [IsDigraph, IsPosInt, IsPosInt],
 function(D, v, w)
   local p;
-  IsValidDigraph(D);
   if IsMultiDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must be a digraph with no multiple ",
                   "edges, edge labels are not supported on digraphs with ",
@@ -126,7 +119,6 @@ end);
 
 InstallMethod(DigraphEdgeLabelsNC, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   DIGRAPHS_InitEdgeLabels(D);
   return StructuralCopy(D!.edgelabels);
 end);
@@ -134,7 +126,6 @@ end);
 InstallMethod(DigraphEdgeLabels, "for a digraph",
 [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges, edge labels are not supported on digraphs with ",
@@ -149,7 +140,6 @@ end);
 InstallMethod(SetDigraphEdgeLabelsNC, "for a digraph and a list",
 [IsDigraph, IsList],
 function(D, labels)
-  IsValidDigraph(D);
   if not IsMultiDigraph(D) then
     D!.edgelabels := List(labels, ShallowCopy);
   fi;
@@ -158,7 +148,6 @@ end);
 InstallMethod(SetDigraphEdgeLabels, "for a digraph and a list",
 [IsDigraph, IsList],
 function(D, labels)
-  IsValidDigraph(D);
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges, edge labels are not supported on digraphs with ",
@@ -179,7 +168,6 @@ InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a function",
 [IsDigraph, IsFunction],
 function(D, wtf)
   local adj, i, j;
-  IsValidDigraph(D);
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
                   "edges, edge labels are not supported on digraphs with ",

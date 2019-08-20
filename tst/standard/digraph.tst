@@ -1353,11 +1353,11 @@ gap> S := AsMonoid(IsTransformation, di);;
 Error, the 1st argument <filt> must be IsPartialPermMonoid or IsPartialPermSem\
 igroup,
 
-#
+# MakeImmutable
 gap> D := NullDigraph(IsMutableDigraph, 10);
 <mutable digraph with 10 vertices, 0 edges>
-gap> MakeImmutable(D);;
-gap> IsValidDigraph(D);
+gap> MakeImmutable(D);
+<immutable digraph with 10 vertices, 0 edges>
 
 # 
 gap> D := NullDigraph(10);

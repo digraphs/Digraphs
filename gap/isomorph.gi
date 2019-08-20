@@ -134,7 +134,6 @@ InstallMethod(BlissCanonicalLabelling, "for a digraph",
 [IsDigraph],
 function(D)
   local data;
-  IsValidDigraph(D);
   data := BLISS_DATA_NO_COLORS(D);
   SetBlissAutomorphismGroup(D, data[1]);
   return data[2];
@@ -143,7 +142,6 @@ end);
 InstallMethod(BlissCanonicalLabelling, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
 function(D, colors)
-  IsValidDigraph(D);
   return BLISS_DATA(D, colors)[2];
 end);
 
@@ -155,7 +153,6 @@ function(D)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  IsValidDigraph(D);
   data := NAUTY_DATA_NO_COLORS(D);
   SetNautyAutomorphismGroup(D, data[1]);
   return data[2];
@@ -169,7 +166,6 @@ function(D, colors)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  IsValidDigraph(D);
   return NAUTY_DATA(D, colors)[2];
 end);
 
@@ -198,7 +194,6 @@ function(D)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  IsValidDigraph(D);
   return OnDigraphs(D, NautyCanonicalLabelling(D));
 end);
 
@@ -209,7 +204,6 @@ function(D, colors)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  IsValidDigraph(D);
   return OnDigraphs(D, NautyCanonicalLabelling(D, colors));
 end);
 
@@ -218,7 +212,6 @@ end);
 InstallMethod(BlissAutomorphismGroup, "for a digraph", [IsDigraph],
 function(D)
   local data;
-  IsValidDigraph(D);
   data := BLISS_DATA_NO_COLORS(D);
   SetBlissCanonicalLabelling(D, data[2]);
   if not HasDigraphGroup(D) then
@@ -238,7 +231,6 @@ function(D)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  IsValidDigraph(D);
 
   data := NAUTY_DATA_NO_COLORS(D);
   SetNautyCanonicalLabelling(D, data[2]);
@@ -262,7 +254,6 @@ function(D, colors)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  IsValidDigraph(D);
   return NAUTY_DATA(D, colors)[1];
 end);
 
@@ -284,7 +275,6 @@ InstallMethod(IsIsomorphicDigraph, "for digraphs", [IsDigraph, IsDigraph],
 function(C, D)
   local act;
 
-  IsValidDigraph(C, D);
   if C = D then
     return true;
   elif DigraphNrVertices(C) <> DigraphNrVertices(D)
@@ -319,7 +309,6 @@ InstallMethod(IsIsomorphicDigraph, "for digraphs and homogeneous lists",
 [IsDigraph, IsDigraph, IsHomogeneousList, IsHomogeneousList],
 function(C, D, c1, c2)
   local m, colour1, n, colour2, max, class_sizes, act, i;
-  IsValidDigraph(C, D);
   m := DigraphNrVertices(C);
   colour1 := DIGRAPHS_ValidateVertexColouring(m, c1);
   n := DigraphNrVertices(D);
@@ -368,7 +357,6 @@ end);
 InstallMethod(IsomorphismDigraphs, "for digraphs", [IsDigraph, IsDigraph],
 function(C, D)
   local label1, label2;
-  IsValidDigraph(C, D);
 
   if not IsIsomorphicDigraph(C, D) then
     return fail;
@@ -400,7 +388,6 @@ InstallMethod(IsomorphismDigraphs, "for digraphs and homogeneous lists",
 [IsDigraph, IsDigraph, IsHomogeneousList, IsHomogeneousList],
 function(C, D, c1, c2)
   local m, colour1, n, colour2, max, class_sizes, label1, label2, i;
-  IsValidDigraph(C, D);
 
   m := DigraphNrVertices(C);
   colour1 := DIGRAPHS_ValidateVertexColouring(m, c1);
@@ -556,7 +543,6 @@ function(src, ran, x)
     ErrorNoReturn("the 1st and 2nd arguments <src> and <ran> must not have ",
                   "multiple edges,");
   fi;
-  IsValidDigraph(src, ran);
   return IsDigraphHomomorphism(src, ran, x)
     and IsDigraphHomomorphism(ran, src, x ^ -1);
 end);
@@ -564,7 +550,6 @@ end);
 InstallMethod(IsDigraphAutomorphism, "for a digraph and a permutation",
 [IsDigraph, IsPerm],
 function(D, x)
-  IsValidDigraph(D);
   return IsDigraphIsomorphism(D, D, x);
 end);
 
@@ -572,7 +557,6 @@ InstallMethod(IsDigraphIsomorphism, "for digraph, digraph, and transformation",
 [IsDigraph, IsDigraph, IsTransformation],
 function(src, ran, x)
   local y;
-  IsValidDigraph(src, ran);
   y := AsPermutation(RestrictedTransformation(x, DigraphVertices(src)));
   if y = fail then
     return false;
@@ -583,6 +567,5 @@ end);
 InstallMethod(IsDigraphAutomorphism, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
 function(D, x)
-  IsValidDigraph(D);
   return IsDigraphIsomorphism(D, D, x);
 end);

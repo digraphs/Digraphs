@@ -13,7 +13,6 @@
 InstallMethod(DotDigraph, "for a digraph", [IsDigraph],
 function(D)
   local str, out, i, j;
-  IsValidDigraph(D);
   str   := "//dot\n";
   Append(str, "digraph hgn{\n");
   Append(str, "node [shape=circle]\n");
@@ -33,7 +32,6 @@ end);
 InstallMethod(DotVertexLabelledDigraph, "for a digraph", [IsDigraph],
 function(D)
   local out, str, i, j;
-  IsValidDigraph(D);
   out   := OutNeighbours(D);
   str   := "//dot\n";
 
@@ -60,7 +58,6 @@ InstallMethod(DotSymmetricDigraph, "for a digraph",
 [IsDigraph],
 function(D)
   local out, str, i, j;
-  IsValidDigraph(D);
   if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the argument <D> must be a symmetric digraph,");
   fi;
@@ -207,7 +204,6 @@ fi;
 InstallMethod(DotPartialOrderDigraph, "for a partial order digraph",
 [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the argument <D> must be a partial order digraph,");
   fi;
@@ -218,7 +214,6 @@ InstallMethod(DotPreorderDigraph, "for a preorder digraph",
 [IsDigraph],
 function(D)
   local comps, quo, red, str, c, x, e;
-  IsValidDigraph(D);
   if not IsPreorderDigraph(D) then
     ErrorNoReturn("the argument <D> must be a preorder digraph,");
   fi;
@@ -260,7 +255,6 @@ end);
 InstallMethod(DotHighlightedDigraph, "for a digraph and list",
 [IsDigraph, IsList],
 function(D, list)
-  IsValidDigraph(D);
   return DotHighlightedDigraph(D, list, "black", "grey");
 end);
 
@@ -268,7 +262,6 @@ InstallMethod(DotHighlightedDigraph, "for a digraph, list, and two strings",
 [IsDigraph, IsList, IsString, IsString],
 function(D, highverts, highcolour, lowcolour)
   local lowverts, out, str, i, j;
-  IsValidDigraph(D);
 
   if not IsSubset(DigraphVertices(D), highverts) then
     ErrorNoReturn("the 2nd argument <highverts> must be a list of vertices ",

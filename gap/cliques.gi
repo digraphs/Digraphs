@@ -12,7 +12,6 @@
 
 InstallMethod(CliqueNumber, "for a digraph", [IsDigraph],
 function(D)
-  IsValidDigraph(D);
   return Maximum(List(DigraphMaximalCliquesReps(D), Length));
 end);
 
@@ -20,7 +19,6 @@ InstallMethod(IsIndependentSet, "for a dense digraph and a homogeneous list",
 [IsDenseDigraphRep, IsHomogeneousList],
 function(D, list)
   local x;
-  IsValidDigraph(D);
   if not IsDuplicateFreeList(list)
       or not ForAll(list, x -> x in DigraphVertices(D)) then
     ErrorNoReturn("the 2nd argument <list> must be a duplicate-free list of ",
@@ -39,7 +37,6 @@ InstallMethod(IsMaximalIndependentSet,
 [IsDenseDigraphRep, IsHomogeneousList],
 function(D, set)
   local nbs, vtx, try, i;
-  IsValidDigraph(D);
 
   if not IsIndependentSet(D, set) then
     return false;
@@ -65,7 +62,6 @@ InstallMethod(IsClique, "for a dense digraph and a homogeneous list",
 [IsDenseDigraphRep, IsHomogeneousList],
 function(D, clique)
   local nbs, v;
-  IsValidDigraph(D);
   if not IsDuplicateFreeList(clique)
       or not ForAll(clique, x -> x in DigraphVertices(D)) then
     ErrorNoReturn("the 2nd argument <clique> must be a duplicate-free list ",
@@ -84,7 +80,6 @@ InstallMethod(IsMaximalClique, "for a dense digraph and a homogeneous list",
 [IsDenseDigraphRep, IsHomogeneousList],
 function(D, clique)
   local nbs, try, n, i;
-  IsValidDigraph(D);
 
   if not IsClique(D, clique) then
     return false;
@@ -149,7 +144,6 @@ function(arg)
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
   fi;
-  IsValidDigraph(arg[1]);
   arg[1] := DigraphCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   return CallFuncList(DigraphCliquesReps, arg);
@@ -164,7 +158,6 @@ function(arg)
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
   fi;
-  IsValidDigraph(arg[1]);
   arg[1] := DigraphCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   return CallFuncList(DigraphCliques, arg);
@@ -183,7 +176,6 @@ function(arg)
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
   fi;
-  IsValidDigraph(arg[1]);
   if not IsBound(arg[2])
       and HasDigraphMaximalIndependentSetsRepsAttr(arg[1]) then
     return DigraphMaximalIndependentSetsRepsAttr(arg[1]);
@@ -212,7 +204,6 @@ function(arg)
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
   fi;
-  IsValidDigraph(arg[1]);
   if not IsBound(arg[2])
       and HasDigraphMaximalIndependentSetsAttr(arg[1]) then
     return DigraphMaximalIndependentSetsAttr(arg[1]);
@@ -258,7 +249,6 @@ function(arg)
   if not IsDenseDigraphRep(D) then
     ErrorNoReturn("the 1st argument <D> must be a dense digraph,");
   fi;
-  IsValidDigraph(D);
 
   # Validate arg[3]
   if IsBound(arg[3]) then
@@ -353,7 +343,6 @@ function(arg)
   if IsEmpty(arg) then
     ErrorNoReturn("there must be at least 1 argument,");
   fi;
-  IsValidDigraph(arg[1]);
 
   D := arg[1];
 
@@ -394,7 +383,6 @@ function(arg)
   if IsEmpty(arg) then
     ErrorNoReturn("there must be at least 1 argument,");
   fi;
-  IsValidDigraph(arg[1]);
 
   D := arg[1];
 
@@ -438,7 +426,6 @@ function(arg)
   if IsEmpty(arg) then
     ErrorNoReturn("there must be at least 1 argument,");
   fi;
-  IsValidDigraph(arg[1]);
 
   D := arg[1];
 
@@ -494,7 +481,6 @@ function(arg)
   if IsEmpty(arg) then
     ErrorNoReturn("there must be at least 1 argument,");
   fi;
-  IsValidDigraph(arg[1]);
 
   D := arg[1];
 
@@ -562,7 +548,6 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
   if not IsDigraph(digraph) then
     ErrorNoReturn("the 1st argument <digraph> must be a digraph,");
   fi;
-  IsValidDigraph(digraph);
 
   if hook <> fail then
     if not (IsFunction(hook) and NumberArgumentsFunction(hook) = 2) then
