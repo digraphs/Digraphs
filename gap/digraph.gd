@@ -48,9 +48,6 @@ DeclareSynonym("DigraphImmutableCopy", DigraphCopy);
 DeclareOperation("DigraphCopyIfMutable", [IsDigraph]);
 DeclareOperation("DigraphCopyIfImmutable", [IsDigraph]);
 
-# Converter
-DeclareOperation("MakeImmutableDigraph", [IsDigraph]);
-
 # Constructors
 DeclareConstructor("DigraphCons", [IsDigraph, IsRecord]);
 DeclareConstructor("DigraphCons", [IsDigraph, IsDenseList]);

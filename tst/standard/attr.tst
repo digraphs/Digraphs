@@ -2001,7 +2001,7 @@ gap> DigraphTransitiveClosure(D);
 Error, the argument <D> must be a digraph with no multiple edges,
 gap> DigraphReflexiveTransitiveClosure(D);
 Error, the argument <D> must be a digraph with no multiple edges,
-gap> MakeImmutableDigraph(D);
+gap> MakeImmutable(D);
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphTransitiveClosure(D);
 Error, the argument <D> must be a digraph with no multiple edges,
@@ -2019,7 +2019,7 @@ gap> D := DigraphMutableCopy(DigraphSymmetricClosure(D));
 <mutable digraph with 2 vertices, 2 edges>
 gap> MaximalSymmetricSubdigraphWithoutLoops(D);
 <mutable digraph with 2 vertices, 2 edges>
-gap> MaximalSymmetricSubdigraphWithoutLoops(MakeImmutableDigraph(D));
+gap> MaximalSymmetricSubdigraphWithoutLoops(MakeImmutable(D));
 <immutable digraph with 2 vertices, 2 edges>
 gap> MaximalSymmetricSubdigraphWithoutLoops(D);
 <immutable digraph with 2 vertices, 2 edges>

@@ -25,7 +25,7 @@ function(filt, n)
   if n < 0 then
     ErrorNoReturn("the argument <n> must be a non-negative integer,");
   fi;
-  D := MakeImmutableDigraph(EmptyDigraph(IsMutableDigraph, n));
+  D := MakeImmutable(EmptyDigraph(IsMutableDigraph, n));
   SetIsEmptyDigraph(D, true);
   SetIsMultiDigraph(D, false);
   SetAutomorphismGroup(D, SymmetricGroup(n));
@@ -71,7 +71,7 @@ InstallMethod(CompleteBipartiteDigraphCons,
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
   local D, aut;
-  D := MakeImmutableDigraph(CompleteBipartiteDigraph(IsMutableDigraph, m, n));
+  D := MakeImmutable(CompleteBipartiteDigraph(IsMutableDigraph, m, n));
   SetIsSymmetricDigraph(D, true);
   SetDigraphNrEdges(D, 2 * m * n);
   SetIsCompleteBipartiteDigraph(D, true);
@@ -137,7 +137,7 @@ InstallMethod(CompleteMultipartiteDigraphCons,
 function(filt, list)
   local D;
   D := CompleteMultipartiteDigraph(IsMutableDigraph, list);
-  D := MakeImmutableDigraph(D);
+  D := MakeImmutable(D);
   SetIsSymmetricDigraph(D, true);
   SetIsBipartiteDigraph(D, Length(list) = 2);
   return D;
@@ -170,7 +170,7 @@ InstallMethod(ChainDigraphCons,
 [IsImmutableDigraph, IsPosInt],
 function(filt, n)
   local D;
-  D := MakeImmutableDigraph(ChainDigraphCons(IsMutableDigraph, n));
+  D := MakeImmutable(ChainDigraphCons(IsMutableDigraph, n));
   if n = 2 then
     SetIsTransitiveDigraph(D, true);
   else
@@ -219,7 +219,7 @@ InstallMethod(CompleteDigraphCons, "for IsImmutableDigraph and an integer",
 [IsImmutableDigraph, IsInt],
 function(filt, n)
   local D;
-  D := MakeImmutableDigraph(CompleteDigraphCons(IsMutableDigraph, n));
+  D := MakeImmutable(CompleteDigraphCons(IsMutableDigraph, n));
   SetIsEmptyDigraph(D, false);
   SetIsAcyclicDigraph(D, false);
   if n > 1 then
@@ -260,7 +260,7 @@ InstallMethod(CycleDigraphCons,
 [IsImmutableDigraph, IsPosInt],
 function(filt, n)
   local D;
-  D := MakeImmutableDigraph(CycleDigraphCons(IsMutableDigraph, n));
+  D := MakeImmutable(CycleDigraphCons(IsMutableDigraph, n));
   if n = 1 then
     SetIsTransitiveDigraph(D, true);
     SetDigraphHasLoops(D, true);
@@ -307,7 +307,7 @@ InstallMethod(JohnsonDigraphCons,
 [IsImmutableDigraph, IsInt, IsInt],
 function(filt, n, k)
   local D;
-  D := MakeImmutableDigraph(JohnsonDigraphCons(IsMutableDigraph, n, k));
+  D := MakeImmutable(JohnsonDigraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
   return D;
@@ -344,7 +344,7 @@ end);
 InstallMethod(PetersenGraphCons, "for IsImmutableDigraph",
 [IsImmutableDigraph],
 function(filt)
-  return MakeImmutableDigraph(PetersenGraphCons(IsMutableDigraph));
+  return MakeImmutable(PetersenGraphCons(IsMutableDigraph));
 end);
 
 InstallMethod(PetersenGraph, "for a function", [IsFunction],
@@ -395,8 +395,7 @@ InstallMethod(GeneralisedPetersenGraphCons,
 [IsImmutableDigraph, IsInt, IsInt],
 function(filt, n, k)
   local D;
-  D := MakeImmutableDigraph(GeneralisedPetersenGraphCons(
-       IsMutableDigraph, n, k));
+  D := MakeImmutable(GeneralisedPetersenGraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
   return D;
