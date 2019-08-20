@@ -177,7 +177,8 @@ fail]]></Example>
 
 <#GAPDoc Label="DigraphDual">
 <ManSection>
-  <Attr Name="DigraphDual" Arg="digraph"/>
+  <Oper Name="DigraphDual" Arg="digraph"/>
+  <Attr Name="DigraphDualAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph without multiple edges, then this
@@ -692,7 +693,7 @@ gap> DigraphNrStronglyConnectedComponents(D);
     between them.  More formally, two vertices are in the same weakly connected
     component of <A>digraph</A> if and only if they are in the same strongly
     connected component (see <Ref Attr="DigraphStronglyConnectedComponents"/>)
-    of the <Ref Attr="DigraphSymmetricClosure"/> of <A>digraph</A>.  <P/>
+    of the <Ref Oper="DigraphSymmetricClosure"/> of <A>digraph</A>.  <P/>
 
     The set of weakly connected components is a partition of
     the vertex set of <A>digraph</A>. <P/>
@@ -724,8 +725,6 @@ rec( comps := [  ], id := [  ] )
   </Description>
 </ManSection>
 <#/GAPDoc>
-
-#
 
 <#GAPDoc Label="DigraphShortestDistances">
 <ManSection>
@@ -981,7 +980,8 @@ infinity
 
 <#GAPDoc Label="ReducedDigraph">
 <ManSection>
-  <Attr Name="ReducedDigraph" Arg="digraph"/>
+  <Oper Name="ReducedDigraph" Arg="digraph"/>
+  <Attr Name="ReducedDigraphAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
     This function returns a digraph isomorphic to the subdigraph of
@@ -1017,7 +1017,8 @@ gap> DigraphVertexLabel(r, 2);
 
 <#GAPDoc Label="DigraphSymmetricClosure">
 <ManSection>
-  <Attr Name="DigraphSymmetricClosure" Arg="digraph"/>
+  <Oper Name="DigraphSymmetricClosure" Arg="digraph"/>
+  <Attr Name="DigraphSymmetricClosureAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then this attribute gives the minimal
@@ -1052,8 +1053,10 @@ gap> OutNeighbours(gr1);
 
 <#GAPDoc Label="DigraphReflexiveTransitiveClosure">
 <ManSection>
-  <Attr Name="DigraphReflexiveTransitiveClosure" Arg="digraph"/>
-  <Attr Name="DigraphTransitiveClosure" Arg="digraph"/>
+  <Oper Name="DigraphReflexiveTransitiveClosure" Arg="digraph"/>
+  <Attr Name="DigraphReflexiveTransitiveClosureAttr" Arg="digraph"/>
+  <Oper Name="DigraphTransitiveClosure" Arg="digraph"/>
+  <Attr Name="DigraphTransitiveClosureAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph with no multiple edges, then these
@@ -1243,12 +1246,18 @@ gap> DigraphLoops(gr);
 
 <#GAPDoc Label="DigraphMycielskian">
 <ManSection>
-  <Attr Name="DigraphMycielskian" Arg="digraph"/>
+  <Oper Name="DigraphMycielskian" Arg="digraph"/>
+  <Attr Name="DigraphMycielskianAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a symmetric digraph, then <C>DigraphMycielskian</C> returns the Mycielskian of <A>digraph</A>.<P/>
+    If <A>digraph</A> is a symmetric digraph, then
+    <C>DigraphMycielskian</C> returns the Mycielskian of <A>digraph</A>.
+    <P/>
     
-   The Mycielskian of a symmetric digraph is a larger symmetric digraph constructed from it, which has a larger chromatic number. For further information, see <URL>https://en.wikipedia.org/wiki/Mycielskian</URL>. <P/>
+    The Mycielskian of a symmetric digraph is a larger symmetric digraph
+    constructed from it, which has a larger chromatic number. For further
+    information, see <URL>https://en.wikipedia.org/wiki/Mycielskian</URL>.
+    <P/>
 
     <Example><![CDATA[
 gap> D := CycleDigraph(2);
@@ -1333,8 +1342,10 @@ gap> DigraphDegeneracyOrdering(gr);
 
 <#GAPDoc Label="MaximalSymmetricSubdigraph">
 <ManSection>
-  <Attr Name="MaximalSymmetricSubdigraph" Arg="digraph"/>
-  <Attr Name="MaximalSymmetricSubdigraphWithoutLoops" Arg="digraph"/>
+  <Oper Name="MaximalSymmetricSubdigraph" Arg="digraph"/>
+  <Attr Name="MaximalSymmetricSubdigraphAttr" Arg="digraph"/>
+  <Oper Name="MaximalSymmetricSubdigraphWithoutLoops" Arg="digraph"/>
+  <Attr Name="MaximalSymmetricSubdigraphWithoutLoopsAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then <C>MaximalSymmetricSubdigraph</C>
@@ -1454,8 +1465,10 @@ gap> NrSpanningTrees(EmptyDigraph(0));
 
 <#GAPDoc Label="UndirectedSpanningTree">
 <ManSection>
-  <Attr Name="UndirectedSpanningTree" Arg="digraph"/>
-  <Attr Name="UndirectedSpanningForest" Arg="digraph"/>
+  <Oper Name="UndirectedSpanningTree" Arg="digraph"/>
+  <Attr Name="UndirectedSpanningTreeAttr" Arg="digraph"/>
+  <Oper Name="UndirectedSpanningForest" Arg="digraph"/>
+  <Attr Name="UndirectedSpanningForestAttr" Arg="digraph"/>
   <Returns>A digraph, or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph with at least one vertex, then
@@ -1465,7 +1478,7 @@ gap> NrSpanningTrees(EmptyDigraph(0));
     spanning forest. <P/>
 
     If <A>digraph</A> is a digraph with at least one vertex and whose <Ref
-      Attr="MaximalSymmetricSubdigraph"/> is connected (see <Ref
+      Oper="MaximalSymmetricSubdigraph"/> is connected (see <Ref
       Prop="IsConnectedDigraph" />), then <C>UndirectedSpanningTree</C> returns
     an undirected spanning tree of <A>digraph</A>, otherwise this attribute
     returns <K>fail</K>.  See <Ref Oper="IsUndirectedSpanningTree" /> for the
@@ -1548,7 +1561,7 @@ gap> HamiltonianPath(g);
 
 <#GAPDoc Label="DigraphCore">
   <ManSection>
-    <Oper Name = "DigraphCore" Arg = "D"/>
+    <Attr Name = "DigraphCore" Arg = "D"/>
     <Returns>A list of positive integers.</Returns>
     <Description>
       If <A>D</A> is a digraph, then <C>DigraphCore</C> returns a list of vertices
@@ -1577,7 +1590,8 @@ gap> DigraphCore(D);
 
 <#GAPDoc Label="MaximalAntiSymmetricSubdigraph">
 <ManSection>
-  <Attr Name="MaximalAntiSymmetricSubdigraph" Arg="digraph"/>
+  <Oper Name="MaximalAntiSymmetricSubdigraph" Arg="digraph"/>
+  <Attr Name="MaximalAntiSymmetricSubdigraphAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then <C>MaximalAntiSymmetricSubdigraph</C>

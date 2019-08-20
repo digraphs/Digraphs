@@ -229,7 +229,7 @@ gap> DigraphClique(gr, [], [], 2);
     Let <C>G</C> denote the automorphism group of maximal symmetric subdigraph
     of <A>digraph</A> without loops (see <Ref Attr="AutomorphismGroup"
       Label="for a digraph"/> and <Ref
-      Attr="MaximalSymmetricSubdigraphWithoutLoops"/>).
+      Oper="MaximalSymmetricSubdigraphWithoutLoops"/>).
 
     <List>
       <Mark>Distinct cliques</Mark>
@@ -413,7 +413,7 @@ gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
     <P/>
 
     Let <C>G</C> denote the <Ref Attr="AutomorphismGroup" Label="for a digraph"/>
-    of the <Ref Attr="DigraphSymmetricClosure"/> of the digraph formed from
+    of the <Ref Oper="DigraphSymmetricClosure"/> of the digraph formed from
     <A>digraph</A> by removing loops and ignoring the multiplicity of edges.
 
     <List>
@@ -481,7 +481,7 @@ gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
     Let <C>G</C> denote the automorphism group of the maximal symmetric
     subdigraph of <A>digraph</A> without loops (see <Ref
       Attr="AutomorphismGroup" Label="for a digraph"/> and <Ref
-      Attr="MaximalSymmetricSubdigraphWithoutLoops"/>).
+      Oper="MaximalSymmetricSubdigraphWithoutLoops"/>).
 
     <List>
       <Mark><A>hook</A></Mark>

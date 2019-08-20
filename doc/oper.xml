@@ -68,7 +68,7 @@ false]]></Example>
     An <E>undirected spanning tree</E> of a digraph <A>super</A> is a subdigraph
     of <A>super</A> that is an undirected tree (see <Ref Oper="IsSubdigraph" />
     and <Ref Prop="IsUndirectedTree" />). Note that a digraph whose <Ref
-      Attr="MaximalSymmetricSubdigraph"/> is not connected has no undirected
+      Oper="MaximalSymmetricSubdigraph"/> is not connected has no undirected
     spanning trees (see <Ref Prop="IsConnectedDigraph"/>). <P/>
 
     An <E>undirected spanning forest</E> of a digraph <A>super</A> is a
@@ -77,7 +77,7 @@ false]]></Example>
     contained in any larger such subdigraph of <A>super</A>.  Equivalently, an
     undirected spanning forest is a subdigraph of <A>super</A> whose connected
     components coincide with those of the <Ref
-      Attr="MaximalSymmetricSubdigraph"/> of <A>super</A> (see <Ref
+      Oper="MaximalSymmetricSubdigraph"/> of <A>super</A> (see <Ref
       Attr="DigraphConnectedComponents"/>). <P/>
 
     Note that an undirected spanning tree is an undirected spanning forest that
@@ -281,6 +281,7 @@ gap> DigraphRemoveLoops(gr);
 <#GAPDoc Label="DigraphRemoveAllMultipleEdges">
 <ManSection>
   <Oper Name="DigraphRemoveAllMultipleEdges" Arg="digraph"/>
+  <Attr Name="DigraphRemoveAllMultipleEdgesAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then this operation returns a new
@@ -546,7 +547,7 @@ gap> gr := DigraphRemoveEdge(gr, [250000, 1]);
     The (reflexive) transitive reduction of such a digraph is the unique
     least subgraph such that the (reflexive) transitive closure of the
     subgraph is equal to the (reflexive) transitive closure of <A>digraph</A>
-    [see <Ref Attr="DigraphReflexiveTransitiveClosure"/>].
+    [see <Ref Oper="DigraphReflexiveTransitiveClosure"/>].
     In order words, it is the least subgraph of <A>digraph</A> which
     retains the same reachability as <A>digraph</A>. <P/>
 
@@ -1519,9 +1520,10 @@ true
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="AsSemigroup">
+<#GAPDoc Label="AsSemigroupDigraph">
   <ManSection>
-    <Oper Name="AsSemigroup" Arg="filt, digraph"/>
+    <Oper Name="AsSemigroup" Arg="filt, digraph"
+      Label="for a filter and a digraph"/>
     <Oper Name="AsMonoid" Arg="filt, digraph"/>
     <Returns>A semilattice of partial perms.</Returns>
     <Description>

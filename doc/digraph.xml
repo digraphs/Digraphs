@@ -159,12 +159,12 @@ true
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphType">
+<#GAPDoc Label="DenseDigraphType">
 <ManSection>
-  <Var Name="DigraphType"/>
+  <Var Name="DenseDigraphType"/>
   <Fam Name="DigraphFamily"/>
   <Description>
-    The type of all digraphs is <C>DigraphType</C>.
+    The type of all digraphs is <C>DenseDigraphType</C>.
     The family of all digraphs is <C>DigraphFamily</C>.
   </Description>
 </ManSection>
@@ -797,7 +797,7 @@ gap> RandomTournament(10);
     for each vertex <C>i</C> (with <C>i</C> &lt; <C>n</C>), there is a directed
     edge with source <C>i</C> and range <C>i + 1</C>. <P/>
 
-    The <Ref Attr="DigraphReflexiveTransitiveClosure"/> of a chain represents a
+    The <Ref Oper="DigraphReflexiveTransitiveClosure"/> of a chain represents a
     total order.<P/>
     <Example><![CDATA[
 gap> ChainDigraph(42);
