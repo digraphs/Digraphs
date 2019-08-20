@@ -121,6 +121,3 @@ DeclareOperation("PartialOrderDigraphJoinOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("PartialOrderDigraphMeetOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
-
-DeclareOperation("AsSemigroup",
-                 [IsFunction, IsDigraph, IsDenseList, IsDenseList]);

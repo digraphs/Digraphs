@@ -863,6 +863,147 @@ function(filt, D)
   return AsSemigroup(IsPartialPermSemigroup, D);
 end);
 
+InstallMethod(AsSemigroup,
+"for a function, a digraph, and a dense list",
+[IsFunction, IsDigraph, IsDenseList, IsDenseList],
+function(filt, digraph, gps, homs)
+  local red, n, hom_table, reps, rep, top, doms, starts, degs, max, gens, img,
+  start, deg, x, queue, j, k, g, y, hom, edge, i, gen;
+
+  if not filt = IsPartialPermSemigroup then
+    TryNextMethod();
+  elif not IsJoinSemilatticeDigraph(digraph) then
+    if IsMeetSemilatticeDigraph(digraph) then
+      return AsSemigroup(IsPartialPermSemigroup,
+                         DigraphReverse(digraph),
+                         gps,
+                         homs);
+    else
+      ErrorNoReturn("Digraphs: AsSemigroup usage,\n",
+                    "the second argument must be a join semilattice ",
+                    "digraph or a meet semilattice digraph,");
+    fi;
+  elif not ForAll(gps, x -> IsGroup(x)) then
+    ErrorNoReturn("Digraphs: AsSemigroup usage,\n",
+                  "the third argument must be a list of groups,");
+  elif not Length(gps) = DigraphNrVertices(digraph) then
+    ErrorNoReturn("Digraphs: AsSemigroup usage,\n",
+                  "the third argument must have length equal to the number ",
+                  "of vertices in the second argument,");
+  fi;
+
+  red := DigraphReflexiveTransitiveReduction(digraph);
+  if not Length(homs) = DigraphNrEdges(red) or
+       not ForAll(homs, x -> Length(x) = 3 and
+                             IsPosInt(x[1]) and
+                             IsPosInt(x[2]) and
+                             IsDigraphEdge(red, [x[1], x[2]]) and
+                             IsGroupHomomorphism(x[3]) and
+                             Source(x[3]) = gps[x[1]] and
+                             Range(x[3]) = gps[x[2]]) then
+    ErrorNoReturn("Digraphs: AsSemigroup usage,\n",
+                  "the third argument must be a list of triples [i, j, hom] ",
+                  "of length equal to the number of edges in the reflexive ",
+                  "transitive reduction of the second argument, where [i, j] ",
+                  "is an edge in the reflex transitive reduction and hom is ",
+                  "a group homomorphism from group i to group j,");
+  fi;
+
+  n := DigraphNrVertices(digraph);
+
+  hom_table := List([1 .. n], x -> []);
+  for hom in homs do
+    hom_table[hom[1]][hom[2]] := hom[3];
+  od;
+
+  for edge in DigraphEdges(red) do
+    if not IsBound(hom_table[edge[1]][edge[2]]) then
+      ErrorNoReturn("Digraphs: AsSemigroup usage,\n",
+                    "the fourth argument must contain a triple [i, j, hom] ",
+                    "for each edge [i, j] in the reflexive transitive ",
+                    "reduction of the second argument,");
+    fi;
+  od;
+
+  reps := [];
+  for i in [1 .. n] do
+    rep := IsomorphismPermGroup(gps[i]);
+    rep := rep * SmallerDegreePermutationRepresentation(Image(rep));
+    Add(reps, rep);
+  od;
+
+  top     := DigraphTopologicalSort(digraph);
+  doms    := [];
+  starts  := [];
+  degs    := List([1 .. n], i -> NrMovedPoints(Image(reps[i])));
+  for i in [1 .. n] do
+    if degs[i] = 0 then
+      degs[i] := 1;
+    fi;
+  od;
+  max             := degs[top[1]] + 1;
+  doms[top[1]]    := [1 .. max - 1];
+  starts[top[1]]  := 1;
+
+  for i in [2 .. n] do
+    doms[top[i]] := Union(List(OutNeighboursOfVertex(red, top[i]),
+                               j -> doms[j]));
+    Append(doms[top[i]], [max .. max + degs[top[i]] - 1]);
+    starts[top[i]] := max;
+    max := max + degs[top[i]];
+  od;
+
+  gens := [];
+  for i in [1 .. n] do
+    for gen in GeneratorsOfGroup(gps[top[i]]) do
+      img := [];
+      start := starts[top[i]];
+      deg := degs[top[i]];
+      x := ListPerm(gen ^ reps[top[i]]);
+
+      # make sure the partial permutation is defined on the whole domain
+      img{[start .. start + deg - 1]} := [1 .. deg] + start - 1;
+      # now the actual representation
+      img{[start .. start + Length(x) - 1]} := x + start - 1;
+
+      # travel up all the paths from top[i], applying the homomorphisms
+      # and storing the results as permutations on the appropriate set
+      # of points
+      queue := List(OutNeighboursOfVertex(red, top[i]), y -> [top[i], y, gen]);
+      while Length(queue) > 0 do
+        j     := queue[1][1];
+        k     := queue[1][2];
+        g     := queue[1][3];
+        start := starts[k];
+        deg   := degs[k];
+        Remove(queue, 1);
+        x := g ^ hom_table[j][k];
+        Append(queue, List(OutNeighboursOfVertex(red, k), y -> [k, y, x]));
+        x := x ^ reps[k];
+
+        # Check that compositions of homomorphisms commute.
+        # If img[start] is bound then we have already found some composition of
+        # homomorphisms which takes us into gps[k], so we must ensure that this
+        # agrees with the composition we are currently considering.
+        if IsBound(img[start]) then
+          y := PermList(img{[start .. start + deg - 1]} - start + 1);
+          if not x = y then
+            ErrorNoReturn("Digraphs: AsSemigroup usage,\n",
+                          "the homomorphisms given must form a commutative",
+                          " diagram,");
+          fi;
+        fi;
+        x := ListPerm(x);
+        img{[start .. start + deg - 1]} := [1 .. deg] + start - 1;
+        img{[start .. start + Length(x) - 1]} := x + start - 1;
+      od;
+      img := Compacted(img);
+      Add(gens, PartialPerm(doms[top[i]], img));
+    od;
+  od;
+  return Semigroup(gens);
+end);
+
 ########################################################################
 # 10. Random digraphs
 ########################################################################
