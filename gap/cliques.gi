@@ -313,8 +313,7 @@ function(arg)
 
   # Do a greedy search to find a clique of <D> containing <include> and
   # excluding <exclude> (which is necessarily maximal if <exclude> is empty)
-  D := DigraphCopyIfMutable(D);
-  D := MaximalSymmetricSubdigraph(D);
+  D := MaximalSymmetricSubdigraph(DigraphCopyIfMutable(D));
   out := OutNeighbours(D);
   try := Difference(DigraphVertices(D), Concatenation(include, exclude));
   include_copy := ShallowCopy(include);
