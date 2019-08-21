@@ -889,10 +889,10 @@ false]]></Example>
     This property returns true if the digraph <A>digraph</A> is Eulerian.
     <P/>
 
-    A digraph is called <E>Eulerian</E> if there exists a directed circuit on
-    the digraph which includes every edge exactly once.  See section <Ref
-      Subsect="Definitions" Style="Number" /> for the definition of a directed
-    circuit.
+    A connected digraph is called <E>Eulerian</E> if there exists a directed
+    circuit on the digraph which includes every edge exactly once.  See
+    section <Ref Subsect="Definitions" Style="Number" /> for the definition of
+    a directed circuit. <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph([[]]);
