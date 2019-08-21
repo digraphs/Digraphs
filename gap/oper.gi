@@ -530,7 +530,9 @@ InstallMethod(OnDigraphs, "for a mutable dense digraph and a perm",
 [IsMutableDigraph and IsDenseDigraphRep, IsPerm],
 function(D, p)
   local out;
-  if ForAny(DigraphVertices(D), i -> i ^ p > DigraphNrVertices(D)) then
+  if ForAll(DigraphVertices(D), i -> i ^ p = i) then
+    return D;
+  elif ForAny(DigraphVertices(D), i -> i ^ p > DigraphNrVertices(D)) then
     ErrorNoReturn("the 2nd argument <p> must be a permutation that permutes ",
                   "of the digraph <D> that is the 1st argument,");
   fi;
@@ -543,13 +545,20 @@ end);
 
 InstallMethod(OnDigraphs, "for a immutable digraph and a perm",
 [IsImmutableDigraph, IsPerm],
-{D, p} -> MakeImmutable(OnDigraphs(DigraphMutableCopy(D), p)));
+function(D, p)
+  if ForAll(DigraphVertices(D), i -> i ^ p = i) then
+    return D;
+  fi;
+  return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), p));
+end);
 
 InstallMethod(OnDigraphs, "for a mutable dense digraph and a transformation",
 [IsMutableDigraph and IsDenseDigraphRep, IsTransformation],
 function(D, t)
   local old, new, v;
-  if ForAny(DigraphVertices(D), i -> i ^ t > DigraphNrVertices(D)) then
+  if ForAll(DigraphVertices(D), i -> i ^ t = i) then
+    return D;
+  elif ForAny(DigraphVertices(D), i -> i ^ t > DigraphNrVertices(D)) then
     ErrorNoReturn("the 2nd argument <t> must be a transformation that ",
                   "maps every vertex of the digraph <D> that is the 1st ",
                   "argument, to another vertex.");
@@ -566,7 +575,12 @@ end);
 
 InstallMethod(OnDigraphs, "for a immutable digraph and a transformation",
 [IsImmutableDigraph, IsTransformation],
-{D, t} -> MakeImmutable(OnDigraphs(DigraphMutableCopy(D), t)));
+function(D, t)
+  if ForAll(DigraphVertices(D), i -> i ^ t = i) then
+    return D;
+  fi;
+  return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), t));
+end);
 
 # Not revising the following because multi-digraphs are being withdrawn in the
 # near future.

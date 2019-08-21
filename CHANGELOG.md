@@ -7,6 +7,7 @@ Licensing information can be found in the LICENSE file.
 
 Version 1.0.0!
 DigraphColoring (american spelling) was removed.
+Changed IsEulerian
 
 ## Version 0.15.4 (released 06/08/2019)
 

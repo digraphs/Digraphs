@@ -17,19 +17,20 @@ D -> IsDirectedTree(D) and IsSubset([0, 1], OutDegreeSet(D)));
 
 InstallMethod(IsCycleDigraph, "for a digraph", [IsDigraph],
 function(D)
-  return DigraphNrVertices(D) > 0 and IsStronglyConnectedDigraph(D)
-         and DigraphNrEdges(D) = DigraphNrVertices(D);
+  return DigraphNrVertices(D) > 0
+     and IsStronglyConnectedDigraph(D)
+     and DigraphNrEdges(D) = DigraphNrVertices(D);
 end);
 
 InstallMethod(IsBiconnectedDigraph, "for a digraph", [IsDigraph],
-D -> IsEmpty(ArticulationPoints(D)) and IsConnectedDigraph(D));
+D -> IsConnectedDigraph(D) and IsEmpty(ArticulationPoints(D)));
 
-InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph,
-"for a homogeneous list and a positive integer",
+InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph, "for a homogeneous list",
 [IsHomogeneousList],
 function(nbs)
   local i, j, k, n, x, len;
 
+  # The IsHomogenousList assumes the list <nbs> contains no or only empty lists
   n := Length(nbs);
   for i in [1 .. n] do
     for j in [i + 1 .. n] do
@@ -47,27 +48,25 @@ function(nbs)
       fi;
     od;
   od;
-
   return true;
 end);
 
 InstallMethod(IsJoinSemilatticeDigraph, "for a dense digraph",
 [IsDenseDigraphRep],
 function(D)
-  local topo, list;
+  local topo;
   if not IsPartialOrderDigraph(D) then
     return false;
   fi;
   topo := DigraphTopologicalSort(D);
   D := DigraphMutableCopy(D);
   D := OnDigraphs(D, PermList(topo) ^ -1);
-  list := D!.OutNeighbours;
-  Apply(list, Set);
-  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(list);
+  Apply(D!.OutNeighbours, Set);
+  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(D!.OutNeighbours);
 end);
 
 InstallMethod(IsMeetSemilatticeDigraph, "for a digraph",
-[IsDigraph],
+[IsDenseDigraphRep],
 function(D)
   local topo, list;
   if not IsPartialOrderDigraph(D) then
@@ -91,28 +90,25 @@ function(D)
   n := DigraphNrVertices(D);
   if n = 0 then
     return true;
-  elif IsMultiDigraph(D) then
-    return false;
   elif DigraphNrEdges(D) <> (n * (n - 1)) then
     return false;
+  elif DigraphHasLoops(D) then
+    return false;
   fi;
-  return not DigraphHasLoops(D);
+  return not IsMultiDigraph(D);
 end);
 
 InstallMethod(IsCompleteBipartiteDigraph, "for a digraph",
 [IsDigraph],
 function(D)
   local bicomps;
-
   if IsMultiDigraph(D) then
     return false;
   fi;
-
   bicomps := DigraphBicomponents(D);
   if bicomps = fail then
     return false;
   fi;
-
   return DigraphNrEdges(D) = 2 * Length(bicomps[1]) * Length(bicomps[2]);
 end);
 
@@ -128,31 +124,21 @@ function(D)
     return false;
   fi;
   # Otherwise use DigraphConnectedComponents method
-  return (Length(DigraphConnectedComponents(D).comps) = 1);
+  return DigraphNrConnectedComponents(D) = 1;
 end);
 
 InstallImmediateMethod(IsAcyclicDigraph, "for a reflexive digraph",
 IsReflexiveDigraph, 0,
-function(D)
-  if DigraphNrVertices(D) = 0 then
-    return true;
-  fi;
-  return false;
-end);
+D -> DigraphNrVertices(D) = 0);
 
 InstallImmediateMethod(IsAcyclicDigraph, "for a strongly connected digraph",
 IsStronglyConnectedDigraph, 0,
-function(D)
-  if DigraphNrVertices(D) > 1 then
-    return false;
-  fi;
-  return true;
-end);
+D -> DigraphNrVertices(D) <= 2);
 
 InstallMethod(IsAcyclicDigraph, "for a dense digraph",
 [IsDenseDigraphRep],
 function(D)
-  local n, scc;
+  local n;
   n := DigraphNrVertices(D);
   if n = 0 then
     return true;
@@ -162,14 +148,10 @@ function(D)
   elif HasDigraphHasLoops(D) and DigraphHasLoops(D) then
     return false;
   elif HasDigraphStronglyConnectedComponents(D) then
-    scc := DigraphStronglyConnectedComponents(D);
-    if not Length(scc.comps) = n then
-      SetIsStronglyConnectedDigraph(D, false);
-      return false;
-    else
-      SetIsStronglyConnectedDigraph(D, false);
+    if DigraphNrStronglyConnectedComponents(D) = n then
       return not DigraphHasLoops(D);
     fi;
+    return false;
   fi;
   return IS_ACYCLIC_DIGRAPH(OutNeighbours(D));
 end);
@@ -184,15 +166,13 @@ function(D)
 
   out := OutNeighbours(D);
   inn := InNeighbours(D);
-
   if not ForAll(out, IsSortedList) then
     new := EmptyPlist(Length(out));
     for i in DigraphVertices(D) do
       new[i] := AsSortedList(ShallowCopy(out[i]));
     od;
-    return inn = new;
+    out := new;
   fi;
-
   return inn = out;
 end);
 
@@ -223,22 +203,19 @@ function(D)
   elif HasIsAcyclicDigraph(D) and IsAcyclicDigraph(D) then
     return true;
   fi;
-
   return IsAntisymmetricDigraph(D);
 end);
 
 InstallMethod(IsEmptyDigraph, "for a digraph with known number of edges",
 [IsDigraph and HasDigraphNrEdges],
-2,  # to beat the method for IsDenseDigraphRep
 D -> DigraphNrEdges(D) = 0);
 
-InstallMethod(IsEmptyDigraph, "for a dense digraph",
-[IsDenseDigraphRep],
-D -> ForAll(OutNeighbours(D), IsEmpty));
+InstallMethod(IsEmptyDigraph, "for a digraph",
+[IsDigraph],
+D -> ForAll(DigraphVertices(D), x -> OutDegreeOfVertex(D, x) = 0));
 
 InstallMethod(IsReflexiveDigraph, "for a digraph with adjacency matrix",
 [IsDigraph and HasAdjacencyMatrix],
-2,  # to beat the method for IsDenseDigraphRep
 function(D)
   local mat, i;
   mat := AdjacencyMatrix(D);
@@ -250,48 +227,23 @@ function(D)
   return true;
 end);
 
-InstallMethod(IsReflexiveDigraph, "for a dense digraph",
-[IsDenseDigraphRep],
-function(D)
-  local list;
-  list := OutNeighbours(D);
-  return ForAll(DigraphVertices(D), x -> x in list[x]);
-end);
+InstallMethod(IsReflexiveDigraph, "for a digraph", [IsDigraph],
+D -> ForAll(DigraphVertices(D), x -> IsDigraphEdge(D, x, x)));
 
 InstallImmediateMethod(DigraphHasLoops, "for a reflexive digraph",
 IsReflexiveDigraph, 0,
-function(D)
-  if DigraphNrVertices(D) = 0 then
-    return false;
-  fi;
-  return true;
-end);
+D -> DigraphNrVertices(D) > 0);
 
 InstallMethod(DigraphHasLoops, "for a digraph with adjacency matrix",
 [IsDigraph and HasAdjacencyMatrix],
-2,  # to beat the method for IsDenseDigraphRep
 function(D)
-  local mat, i;
+  local mat;
   mat := AdjacencyMatrix(D);
-  for i in DigraphVertices(D) do
-    if mat[i][i] <> 0 then
-      return true;
-    fi;
-  od;
-  return false;
+  return ForAny(DigraphVertices(D), i -> mat[i][i] <> 0);
 end);
 
-InstallMethod(DigraphHasLoops, "for a dense digraph", [IsDenseDigraphRep],
-function(D)
-  local list, i;
-  list := OutNeighbours(D);
-  for i in DigraphVertices(D) do
-    if i in list[i] then
-      return true;
-    fi;
-  od;
-  return false;
-end);
+InstallMethod(DigraphHasLoops, "for a digraph", [IsDigraph],
+D -> ForAny(DigraphVertices(D), x -> IsDigraphEdge(D, x, x)));
 
 InstallMethod(IsAperiodicDigraph, "for a digraph", [IsDigraph],
 D -> DigraphPeriod(D) = 1);
@@ -360,26 +312,17 @@ InstallMethod(IsRegularDigraph, "for a digraph", [IsDigraph],
 D -> IsInRegularDigraph(D) and IsOutRegularDigraph(D));
 
 InstallMethod(IsUndirectedTree, "for a digraph", [IsDigraph],
-function(D)
-  return DigraphNrEdges(D) = 2 * (DigraphNrVertices(D) - 1)
-           and IsSymmetricDigraph(D) and IsConnectedDigraph(D);
-end);
+D -> DigraphNrEdges(D) = 2 * (DigraphNrVertices(D) - 1)
+     and IsSymmetricDigraph(D) and IsConnectedDigraph(D));
 
 InstallMethod(IsUndirectedForest, "for a digraph", [IsDigraph],
 function(D)
-  local comps, comp;
   if not IsSymmetricDigraph(D) or DigraphNrVertices(D) = 0
       or IsMultiDigraph(D) then
     return false;
   fi;
-  comps := DigraphConnectedComponents(D).comps;
-  for comp in comps do
-    comp := InducedSubdigraph(D, comp);
-    if DigraphNrEdges(comp) <> 2 * (DigraphNrVertices(comp) - 1) then
-      return false;
-    fi;
-  od;
-  return true;
+  return ForAll(DigraphConnectedComponents(D).comps,
+                c -> Sum(c, i -> OutDegreeOfVertex(D, i)) = 2 * Length(c) - 2);
 end);
 
 InstallMethod(IsDistanceRegularDigraph, "for a digraph", [IsDigraph],
@@ -397,11 +340,11 @@ function(D)
   localDiameter   := record.localDiameter;
 
   for i in [2 .. Length(reps)] do
-     record := DIGRAPH_ConnectivityDataForVertex(D, reps[2]);
-     if record.localDiameter <> localDiameter
-          or record.localParameters <> localParameters then
-        return false;
-     fi;
+    record := DIGRAPH_ConnectivityDataForVertex(D, reps[2]);
+    if record.localDiameter <> localDiameter
+        or record.localParameters <> localParameters then
+      return false;
+    fi;
   od;
   return true;
 end);
@@ -410,18 +353,16 @@ InstallMethod(IsDirectedTree, "for a digraph", [IsDigraph],
 function(D)
   if IsNullDigraph(D) then
     return DigraphNrVertices(D) = 1;
-  else
-    return IsConnectedDigraph(D) and InDegreeSet(D) = [0, 1];
   fi;
+  return IsConnectedDigraph(D) and InDegreeSet(D) = [0, 1];
 end);
 
 InstallMethod(IsEulerianDigraph, "for a digraph", [IsDigraph],
 function(D)
   local i;
-  if not IsStronglyConnectedDigraph(ReducedDigraph(D)) then
+  if not IsStronglyConnectedDigraph(D) then
      return false;
   fi;
-
   for i in DigraphVertices(D) do
     if not OutDegreeOfVertex(D, i) = InDegreeOfVertex(D, i) then
       return false;

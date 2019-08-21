@@ -987,6 +987,10 @@ gap> gr := DigraphDisjointUnion(CompleteDigraph(2), CycleDigraph(3));
 <immutable digraph with 5 vertices, 5 edges>
 gap> IsUndirectedForest(gr);
 false
+gap> gr := Digraph(IsMutableDigraph, [[2], [1, 3], [2], [5], [4, 6], [5]]);
+<mutable digraph with 6 vertices, 8 edges>
+gap> IsUndirectedForest(gr);
+true
 
 #  IsEulerianDigraph
 gap> g := Digraph([]);
@@ -1000,7 +1004,7 @@ true
 gap> g := Digraph([[], []]);
 <immutable digraph with 2 vertices, 0 edges>
 gap> IsEulerianDigraph(g);
-true
+false
 gap> g := Digraph([[1]]);
 <immutable digraph with 1 vertex, 1 edge>
 gap> IsEulerianDigraph(g);
@@ -1032,7 +1036,7 @@ true
 gap> g := Digraph([[2], [3], [1], []]);
 <immutable digraph with 4 vertices, 3 edges>
 gap> IsEulerianDigraph(g);
-true
+false
 gap> g := Digraph([[2], [3], [1, 4], []]);
 <immutable digraph with 4 vertices, 4 edges>
 gap> IsEulerianDigraph(g);
@@ -1044,7 +1048,7 @@ true
 gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4], []]);
 <immutable digraph with 7 vertices, 9 edges>
 gap> IsEulerianDigraph(g);
-true
+false
 gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], []]);
 <immutable digraph with 7 vertices, 10 edges>
 gap> IsEulerianDigraph(g);
@@ -1057,6 +1061,12 @@ gap> g := Digraph([[2, 3], [3], [1]]);
 <immutable digraph with 3 vertices, 4 edges>
 gap> IsEulerianDigraph(g);
 false
+gap> g := EmptyDigraph(IsMutableDigraph, 10);
+<mutable digraph with 10 vertices, 0 edges>
+gap> IsEulerianDigraph(g);
+false
+gap> g;
+<mutable digraph with 10 vertices, 0 edges>
 
 # IsJoinSemilatticeDigraph, IsMeetSemilatticeDigraph, and IsLatticeDigraph
 gap> gr := Digraph([[1, 2], [2]]);
