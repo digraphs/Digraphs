@@ -11,7 +11,7 @@
 ########################################################################
 # This file is organised as follows:
 #
-# 1.  Types
+# 1.  Digraph types
 # 2.  Digraph no-check constructors
 # 3.  Digraph copies
 # 4.  PostMakeImmutable
