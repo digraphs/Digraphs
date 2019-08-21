@@ -394,6 +394,10 @@ InstallMethod(DigraphConnectedComponents, "for a dense digraph",
 [IsDenseDigraphRep],
 DIGRAPH_CONNECTED_COMPONENTS);
 
+InstallMethod(DigraphNrConnectedComponents, "for a digraph",
+[IsDigraph],
+D -> Length(DigraphConnectedComponents(D).comps));
+
 InstallMethod(OutDegrees, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local adj, degs, i;
