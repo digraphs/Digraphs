@@ -648,31 +648,25 @@ gap> DigraphNrVertices(RandomDigraph(100));
     The method used in this function is a non-recursive version of Gabow's
     Algorithm <Cite Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
-    <M>n</M> is the number of vertices in the digraph.
+    <M>n</M> is the number of vertices in the digraph. <P/>
+
+    <C>DigraphNrStronglyConnectedComponents(<A>digraph</A>)</C> is simply a
+    shortcut for
+    <C>Length(DigraphStronglyConnectedComponents(<A>digraph</A>).comps)</C>,
+    and is no more efficient.
 
     <Example><![CDATA[
 gap> gr := Digraph([[2], [3, 1], []]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphStronglyConnectedComponents(gr);
 rec( comps := [ [ 3 ], [ 1, 2 ] ], id := [ 2, 2, 1 ] )
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphNrStronglyConnectedComponents">
-<ManSection>
-  <Attr Name="DigraphNrStronglyConnectedComponents" Arg="digraph"/>
-  <Returns>A non-negative integer.</Returns>
-  <Description>
-    This function returns the number of strongly connected components of
-    <A>digraph</A>.  Note that this is no more efficient than calling <Ref
-    Attr="DigraphStronglyConnectedComponents"/>.<P/>
-    
-    For more information, see <Ref Attr="DigraphStronglyConnectedComponents"/>.
-    <Example><![CDATA[
+gap> DigraphNrStronglyConnectedComponents(gr);
+2
 gap> D := DigraphDisjointUnion(CycleDigraph(4), CycleDigraph(5));
 <immutable digraph with 9 vertices, 9 edges>
+gap> DigraphStronglyConnectedComponents(D);
+rec( comps := [ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8, 9 ] ], 
+  id := [ 1, 1, 1, 1, 2, 2, 2, 2, 2 ] )
 gap> DigraphNrStronglyConnectedComponents(D);
 2
 ]]></Example>
@@ -680,10 +674,10 @@ gap> DigraphNrStronglyConnectedComponents(D);
 </ManSection>
 <#/GAPDoc>
 
-
 <#GAPDoc Label="DigraphConnectedComponents">
 <ManSection>
   <Attr Name="DigraphConnectedComponents" Arg="digraph"/>
+  <Attr Name="DigraphNrConnectedComponents" Arg="digraph"/>
   <Returns>A record.</Returns>
   <Description>
     This function returns the record <C>wcc</C> corresponding to the weakly
@@ -706,7 +700,11 @@ gap> DigraphNrStronglyConnectedComponents(D);
 
     The method used in this function has complexity  <M>O(m+n)</M>, where
     <M>m</M> is the number of edges and
-    <M>n</M> is the number of vertices in the digraph.
+    <M>n</M> is the number of vertices in the digraph. <P/>
+
+    <C>DigraphNrConnectedComponents(<A>digraph</A>)</C> is simply a shortcut
+    for <C>Length(DigraphConnectedComponents(<A>digraph</A>).comps)</C>,
+    and is no more efficient.
 
     <Example><![CDATA[
 gap> gr := Digraph([[2], [3, 1], []]);
@@ -717,6 +715,8 @@ gap> gr := Digraph([[1], [1, 2], []]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphConnectedComponents(gr);
 rec( comps := [ [ 1, 2 ], [ 3 ] ], id := [ 1, 1, 2 ] )
+gap> DigraphNrConnectedComponents(gr);
+2
 gap> gr := EmptyDigraph(0);
 <immutable digraph with 0 vertices, 0 edges>
 gap> DigraphConnectedComponents(gr);
