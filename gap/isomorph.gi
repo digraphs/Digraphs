@@ -121,10 +121,7 @@ if DIGRAPHS_NautyAvailable then
     return data;
   end);
 
-  BindGlobal("NAUTY_DATA_NO_COLORS",
-  function(D)
-    return NAUTY_DATA(D, false);
-  end);
+  BindGlobal("NAUTY_DATA_NO_COLORS", D -> NAUTY_DATA(D, false));
 else
   BindGlobal("NAUTY_DATA", ReturnFail);
   BindGlobal("NAUTY_DATA_NO_COLORS", ReturnFail);
@@ -137,7 +134,9 @@ InstallMethod(BlissCanonicalLabelling, "for a digraph",
 function(D)
   local data;
   data := BLISS_DATA_NO_COLORS(D);
-  SetBlissAutomorphismGroup(D, data[1]);
+  if IsImmutableDigraph(D) then
+    SetBlissAutomorphismGroup(D, data[1]);
+  fi;
   return data[2];
 end);
 
@@ -154,7 +153,9 @@ function(D)
     return fail;
   fi;
   data := NAUTY_DATA_NO_COLORS(D);
-  SetNautyAutomorphismGroup(D, data[1]);
+  if IsImmutableDigraph(D) then
+    SetNautyAutomorphismGroup(D, data[1]);
+  fi;
   return data[2];
 end);
 
@@ -213,12 +214,14 @@ InstallMethod(BlissAutomorphismGroup, "for a digraph", [IsDigraph],
 function(D)
   local data;
   data := BLISS_DATA_NO_COLORS(D);
-  SetBlissCanonicalLabelling(D, data[2]);
-  if not HasDigraphGroup(D) then
-    if IsMultiDigraph(D) then
-      SetDigraphGroup(D, Range(Projection(data[1], 1)));
-    else
-      SetDigraphGroup(D, data[1]);
+  if IsImmutableDigraph(D) then
+    SetBlissCanonicalLabelling(D, data[2]);
+    if not HasDigraphGroup(D) then
+      if IsMultiDigraph(D) then
+        SetDigraphGroup(D, Range(Projection(data[1], 1)));
+      else
+        SetDigraphGroup(D, data[1]);
+      fi;
     fi;
   fi;
   return data[1];
@@ -231,12 +234,13 @@ function(D)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-
   data := NAUTY_DATA_NO_COLORS(D);
-  SetNautyCanonicalLabelling(D, data[2]);
-  if not HasDigraphGroup(D) then
-    # Multidigraphs not allowed
-    SetDigraphGroup(D, data[1]);
+  if IsImmutableDigraph(D) then
+    SetNautyCanonicalLabelling(D, data[2]);
+    if not HasDigraphGroup(D) then
+      # Multidigraphs not allowed
+      SetDigraphGroup(D, data[1]);
+    fi;
   fi;
   return data[1];
 end);
@@ -296,11 +300,9 @@ function(C, D)
     # neither know their Nauty canonical labelling.
     return act(C, BlissCanonicalLabelling(C))
            = act(D, BlissCanonicalLabelling(D));
-  else
-    return act(C, NautyCanonicalLabelling(C))
-           = act(D, NautyCanonicalLabelling(D));
   fi;
-
+  return act(C, NautyCanonicalLabelling(C))
+           = act(D, NautyCanonicalLabelling(D));
 end);
 
 InstallMethod(IsIsomorphicDigraph, "for digraphs and homogeneous lists",
@@ -308,8 +310,8 @@ InstallMethod(IsIsomorphicDigraph, "for digraphs and homogeneous lists",
 function(C, D, c1, c2)
   local m, colour1, n, colour2, max, class_sizes, act, i;
   m := DigraphNrVertices(C);
-  colour1 := DIGRAPHS_ValidateVertexColouring(m, c1);
   n := DigraphNrVertices(D);
+  colour1 := DIGRAPHS_ValidateVertexColouring(m, c1);
   colour2 := DIGRAPHS_ValidateVertexColouring(n, c2);
 
   max := Maximum(colour1);
@@ -321,8 +323,11 @@ function(C, D, c1, c2)
   if m <> n
       or DigraphNrEdges(C) <> DigraphNrEdges(D)
       or IsMultiDigraph(C) <> IsMultiDigraph(D) then
+    # JDM more!
     return false;
-  fi;  # JDM more!
+  elif C = D and colour1 = colour2 then
+    return true;
+  fi;
 
   class_sizes := ListWithIdenticalEntries(max, 0);
   for i in DigraphVertices(C) do
@@ -331,8 +336,6 @@ function(C, D, c1, c2)
   od;
   if not ForAll(class_sizes, x -> x = 0) then
     return false;
-  elif C = D and colour1 = colour2 then
-    return true;
   fi;
 
   if IsMultiDigraph(C) then
@@ -343,11 +346,10 @@ function(C, D, c1, c2)
 
   if DIGRAPHS_UsingBliss or IsMultiDigraph(C) then
     return act(C, BlissCanonicalLabelling(C, colour1))
-           = act(D, BlissCanonicalLabelling(D, colour2));
-  else
-    return act(C, NautyCanonicalLabelling(C, colour1))
-           = act(D, NautyCanonicalLabelling(D, colour2));
+         = act(D, BlissCanonicalLabelling(D, colour2));
   fi;
+  return act(C, NautyCanonicalLabelling(C, colour1))
+       = act(D, NautyCanonicalLabelling(D, colour2));
 end);
 
 # Isomorphisms between digraphs
@@ -377,9 +379,8 @@ function(C, D)
     # Both digraphs either know their bliss canonical labelling or
     # neither know their Nauty canonical labelling.
     return BlissCanonicalLabelling(C) / BlissCanonicalLabelling(D);
-  else
-    return NautyCanonicalLabelling(C) / NautyCanonicalLabelling(D);
   fi;
+  return NautyCanonicalLabelling(C) / NautyCanonicalLabelling(D);
 end);
 
 InstallMethod(IsomorphismDigraphs, "for digraphs and homogeneous lists",
@@ -402,6 +403,11 @@ function(C, D, c1, c2)
       or DigraphNrEdges(C) <> DigraphNrEdges(D)
       or IsMultiDigraph(C) <> IsMultiDigraph(D) then
     return fail;
+  elif C = D and colour1 = colour2 then
+    if IsMultiDigraph(C) then
+      return [(), ()];
+    fi;
+    return ();
   fi;
 
   class_sizes := ListWithIdenticalEntries(max, 0);
@@ -411,11 +417,6 @@ function(C, D, c1, c2)
   od;
   if not ForAll(class_sizes, x -> x = 0) then
     return fail;
-  elif C = D and colour1 = colour2 then
-    if IsMultiDigraph(C) then
-      return [(), ()];
-    fi;
-    return ();
   fi;
 
   if DIGRAPHS_UsingBliss or IsMultiDigraph(C) then
@@ -542,7 +543,7 @@ function(src, ran, x)
                   "multiple edges,");
   fi;
   return IsDigraphHomomorphism(src, ran, x)
-    and IsDigraphHomomorphism(ran, src, x ^ -1);
+     and IsDigraphHomomorphism(ran, src, x ^ -1);
 end);
 
 InstallMethod(IsDigraphAutomorphism, "for a digraph and a permutation",
