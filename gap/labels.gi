@@ -16,13 +16,18 @@ function(D)
   fi;
 end);
 
+BindGlobal("DIGRAPHS_InitVertexLabels",
+function(D)
+  if not IsBound(D!.vertexlabels) then
+    D!.vertexlabels := [1 .. DigraphNrVertices(D)];
+  fi;
+end);
+
 InstallMethod(SetDigraphVertexLabel,
 "for a digraph, pos int, object",
 [IsDigraph, IsPosInt, IsObject],
 function(D, v, name)
-  if not IsBound(D!.vertexlabels) then
-    D!.vertexlabels := [1 .. DigraphNrVertices(D)];
-  fi;
+  DIGRAPHS_InitVertexLabels(D);
   if v > DigraphNrVertices(D) then
     ErrorNoReturn("the 2nd argument <v> is not a vertex",
                   " of the digraph <D> that is the 1st argument,");
@@ -33,9 +38,7 @@ end);
 InstallMethod(DigraphVertexLabel, "for a digraph and pos int",
 [IsDigraph, IsPosInt],
 function(D, v)
-  if not IsBound(D!.vertexlabels) then
-    D!.vertexlabels := [1 .. DigraphNrVertices(D)];
-  fi;
+  DIGRAPHS_InitVertexLabels(D);
   if IsBound(D!.vertexlabels[v]) then
     return ShallowCopy(D!.vertexlabels[v]);
   fi;
@@ -46,9 +49,7 @@ end);
 InstallMethod(RemoveDigraphVertexLabel, "for a digraph and positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)
-  if not IsBound(D!.vertexlabels) then
-    DigraphVertexLabels(D);
-  fi;
+  DIGRAPHS_InitVertexLabels(D);
   Remove(D!.vertexlabels, v);
 end);
 
@@ -65,9 +66,7 @@ end);
 
 InstallMethod(DigraphVertexLabels, "for a digraph", [IsDigraph],
 function(D)
-  if not IsBound(D!.vertexlabels) then
-    D!.vertexlabels := [1 .. DigraphNrVertices(D)];
-  fi;
+  DIGRAPHS_InitVertexLabels(D);
   return StructuralCopy(D!.vertexlabels);
 end);
 
@@ -166,7 +165,7 @@ end);
 
 InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a function",
 [IsDigraph, IsFunction],
-function(D, wtf)
+function(D, f)
   local adj, i, j;
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple ",
@@ -177,7 +176,7 @@ function(D, wtf)
   adj := OutNeighbours(D);
   for i in DigraphVertices(D) do
     for j in [1 .. Length(adj[i])] do
-      D!.edgelabels[i][j] := wtf(i, adj[i][j]);
+      D!.edgelabels[i][j] := f(i, adj[i][j]);
     od;
   od;
 end);
@@ -185,23 +184,6 @@ end);
 InstallMethod(ClearDigraphEdgeLabels, "for a digraph", [IsDigraph],
 function(D)
   Unbind(D!.edgelabels);
-end);
-
-InstallMethod(DigraphEdgeLabelAddVertex, "for a digraph", [IsDigraph],
-function(D)
-  if not IsMultiDigraph(D) then
-    DIGRAPHS_InitEdgeLabels(D);
-    Add(D!.edgelabels, []);
-  fi;
-end);
-
-# Remove the list of labels of edges leaving vertex v.
-InstallMethod(DigraphEdgeLabelRemoveVertex, "for a digraph and a vertex",
-[IsDigraph, IsPosInt],
-function(D, v)
-  if IsBound(D!.edgelabels) then
-    Remove(D!.edgelabels, v);
-  fi;
 end);
 
 InstallMethod(RemoveDigraphEdgeLabel,

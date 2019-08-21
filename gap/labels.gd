@@ -39,7 +39,3 @@ DeclareOperation("SetDigraphEdgeLabelsNC", [IsDigraph, IsList]);
 #  Unset edge labels
 DeclareOperation("RemoveDigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("ClearDigraphEdgeLabels", [IsDigraph]);
-
-# TODO WW: What is this?
-DeclareOperation("DigraphEdgeLabelAddVertex", [IsDigraph]);
-DeclareOperation("DigraphEdgeLabelRemoveVertex", [IsDigraph, IsPosInt]);
