@@ -210,10 +210,10 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
 gap> ReadDigraphs(filename);
-[ <mutable digraph with 5 vertices, 7 edges>, 
-  <mutable digraph with 105 vertices, 100 edges>, 
-  <mutable digraph with 0 vertices, 0 edges>, 
-  <mutable digraph with 10 vertices, 47 edges> ]
+[ <immutable digraph with 5 vertices, 7 edges>, 
+  <immutable digraph with 105 vertices, 100 edges>, 
+  <immutable digraph with 0 vertices, 0 edges>, 
+  <immutable digraph with 10 vertices, 47 edges> ]
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.txt");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -234,7 +234,7 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
 gap> ReadDigraphs(filename);
-[ <mutable digraph with 30 vertices, 870 edges> ]
+[ <immutable digraph with 30 vertices, 870 edges> ]
 gap> gr := [];;
 gap> gr[1] := Digraph(30, [1, 2], [2, 1]);
 <immutable digraph with 30 vertices, 2 edges>
@@ -892,7 +892,7 @@ gap> DigraphFile("tmp", false);
 Error, the 2nd argument <coder> must be a function or fail,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> ReadDigraphs(filename, IO_Unpickle);
-[ <mutable digraph with 30 vertices, 870 edges> ]
+[ <immutable digraph with 30 vertices, 870 edges> ]
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(badfilename);

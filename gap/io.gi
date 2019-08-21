@@ -140,7 +140,7 @@ IO_Unpicklers.DIGG := function(file)
     od;
   od;
 
-  D := DigraphNC(IsMutableDigraph, out);
+  D := ConvertToImmutableDigraphNC(out);
   SetDigraphGroup(D, Group(gens));
   SetDigraphSchreierVector(D, sch);
   SetRepresentativeOutNeighbours(D, rep_out);
@@ -162,7 +162,7 @@ IO_Unpicklers.DIGT := function(file)
   if out = IO_Error then
     return IO_Error;
   fi;
-  return DigraphNC(IsMutableDigraph, out);
+  return ConvertToImmutableDigraphNC(out);
 end;
 
 ################################################################################
@@ -228,10 +228,7 @@ function(encoder)
   if encoder = IO_Pickle then
     return IO_Pickle;
   fi;
-  return
-    function(file, D)
-      return IO_WriteLine(file, encoder(D));
-    end;
+  return {file, D} -> IO_WriteLine(file, encoder(D));
 end);
 
 BindGlobal("DIGRAPHS_DecoderWrapper",
@@ -683,7 +680,7 @@ function(func, s)
 end);
 
 InstallMethod(DigraphFromGraph6String, "for a string", [IsString],
-s -> DigraphFromGraph6String(DigraphNC, s));
+s -> DigraphFromGraph6String(ConvertToImmutableDigraphNC, s));
 
 InstallMethod(DigraphFromDigraph6String, "for a function and string",
 [IsFunction, IsString],
@@ -1163,12 +1160,14 @@ function(func, name)
 
   IO_Close(file);
   D := func(nbs);
-  SetDigraphVertexLabels(D, vertex_labels);
+  if IsImmutableDigraph(D) then
+    SetDigraphVertexLabels(D, vertex_labels);
+  fi;
   return D;
 end);
 
 InstallMethod(ReadDIMACSDigraph, "for a string", [IsString],
-s -> ReadDIMACSDigraph(DigraphNC, s));
+s -> ReadDIMACSDigraph(ConvertToImmutableDigraphNC, s));
 
 InstallMethod(TournamentLineDecoder, "for a function and string",
 [IsFunction, IsString],
@@ -1191,7 +1190,7 @@ function(func, s)
 end);
 
 InstallMethod(TournamentLineDecoder, "for a string", [IsString],
-s -> TournamentLineDecoder(DigraphNC, s));
+s -> TournamentLineDecoder(ConvertToImmutableDigraphNC, s));
 
 # one graph per line
 InstallMethod(DigraphPlainTextLineDecoder,
@@ -1285,7 +1284,7 @@ end);
 
 InstallMethod(AdjacencyMatrixUpperTriangleLineDecoder, "for a string",
 [IsString],
-s -> AdjacencyMatrixUpperTriangleLineDecoder(DigraphNC, s));
+s -> AdjacencyMatrixUpperTriangleLineDecoder(ConvertToImmutableDigraphNC, s));
 
 InstallMethod(TCodeDecoder, "for a function and string",
 [IsFunction, IsString],
@@ -1317,7 +1316,7 @@ function(func, s)
 end);
 
 InstallMethod(TCodeDecoder, "for a string", [IsString],
-s -> TCodeDecoder(DigraphNC, s));
+s -> TCodeDecoder(ConvertToImmutableDigraphNC, s));
 
 InstallGlobalFunction(TCodeDecoderNC,
 function(str)
@@ -1328,7 +1327,7 @@ function(str)
   for i in [1 .. str[2]] do
     Add(out[str[2 * i + 1] + 1], str[2 * i + 2] + 1);
   od;
-  return DigraphNC(out);
+  return ConvertToImmutableDigraphNC(out);
 end);
 
 ################################################################################
@@ -1361,7 +1360,9 @@ function(name, D)
         fi;
       od;
     od;
-    SetDigraphHasLoops(D, not nr_loops = 0);
+    if IsImmutableDigraph(D) then
+      SetDigraphHasLoops(D, nr_loops <> 0);
+    fi;
   fi;
   m := ((DigraphNrEdges(D) - nr_loops) / 2) + nr_loops;
 
@@ -1400,24 +1401,23 @@ function(name, D)
 end);
 
 InstallGlobalFunction(DigraphPlainTextLineEncoder,
-function(delimiter1, delimiter2, offset)
-  return function(D)
-    local str, i, edges;
-    edges := DigraphEdges(D);
+{delimiter1, delimiter2, offset} ->
+function(D)
+  local str, i, edges;
+  edges := DigraphEdges(D);
 
-    if Length(edges) = 0 then
-      return "";
-    fi;
+  if Length(edges) = 0 then
+    return "";
+  fi;
 
-    str := Concatenation(String(edges[1][1] + offset), delimiter2,
-                         String(edges[1][2] + offset));
+  str := Concatenation(String(edges[1][1] + offset), delimiter2,
+                       String(edges[1][2] + offset));
 
-    for i in [2 .. Length(edges)] do
-      Append(str, Concatenation(delimiter1, String(edges[i][1] + offset),
-                                delimiter2, String(edges[i][2] + offset)));
-    od;
-    return str;
-  end;
+  for i in [2 .. Length(edges)] do
+    Append(str, Concatenation(delimiter1, String(edges[i][1] + offset),
+                              delimiter2, String(edges[i][2] + offset)));
+  od;
+  return str;
 end);
 
 InstallGlobalFunction(WritePlainTextDigraph,
@@ -1445,8 +1445,7 @@ function(name, D, delimiter, offset)
   IO_Close(file);
 end);
 
-InstallMethod(Graph6String, "for a digraph",
-[IsDigraph],
+InstallMethod(Graph6String, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   if (IsMultiDigraph(D) or not IsSymmetricDigraph(D)
@@ -1498,8 +1497,7 @@ function(D)
   return List(list, i -> CharInt(i + 63));
 end);
 
-InstallMethod(Digraph6String, "for a digraph",
-[IsDigraph],
+InstallMethod(Digraph6String, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   # NOTE: this package originally used a version of digraph6 that reads down
@@ -1549,8 +1547,7 @@ function(D)
   return List(list, i -> CharInt(i + 63));
 end);
 
-InstallMethod(Sparse6String, "for a digraph",
-[IsDigraph],
+InstallMethod(Sparse6String, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local list, n, lenlist, adj, nredges, k, blist, v, nextbit, AddBinary, i, j,
         bitstopad, pos, block;
@@ -1656,7 +1653,7 @@ function(D)
   return List(list, i -> CharInt(i + 63));
 end);
 
-InstallMethod(DiSparse6String, "for a digraph", [IsDigraph],
+InstallMethod(DiSparse6String, "for a dense digraph", [IsDenseDigraphRep],
 function(D)
   local list, n, lenlist, adj, source_i, range_i, source_d, range_d, len1,
   len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad,
