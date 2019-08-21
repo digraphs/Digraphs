@@ -22,6 +22,8 @@ function()
     if not DIGRAPHS_UsingBliss then
       InstallMethod(AutomorphismGroup, "for a digraph", [IsDigraph],
       BlissAutomorphismGroup);
+      InstallMethod(AutomorphismGroup, "for a digraph and vertex coloring",
+      [IsDigraph, IsHomogeneousList], BlissAutomorphismGroup);
       MakeReadWriteGlobal("DIGRAPHS_UsingBliss");
       DIGRAPHS_UsingBliss := true;
       MakeReadOnlyGlobal("DIGRAPHS_UsingBliss");
@@ -35,6 +37,8 @@ function()
     if DIGRAPHS_UsingBliss then
       InstallMethod(AutomorphismGroup, "for a digraph", [IsDigraph],
       NautyAutomorphismGroup);
+      InstallMethod(AutomorphismGroup, "for a digraph and vertex coloring",
+      [IsDigraph, IsHomogeneousList], NautyAutomorphismGroup);
       MakeReadWriteGlobal("DIGRAPHS_UsingBliss");
       DIGRAPHS_UsingBliss := false;
       MakeReadOnlyGlobal("DIGRAPHS_UsingBliss");
