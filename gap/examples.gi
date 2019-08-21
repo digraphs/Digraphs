@@ -9,16 +9,16 @@
 #############################################################################
 ##
 
-InstallMethod(EmptyDigraphCons, "for IsMutableDigraph and an integer",
+InstallMethod(EmptyDigraphCons, "for a mutable digraph and an integer",
 [IsMutableDigraph, IsInt],
 function(filt, n)
   if n < 0 then
     ErrorNoReturn("the argument <n> must be a non-negative integer,");
   fi;
-  return DigraphNC(IsMutableDigraph, List([1 .. n], x -> []));
+  return ConvertToMutableDigraphNC(List([1 .. n], x -> []));
 end);
 
-InstallMethod(EmptyDigraphCons, "for IsImmutableDigraph and an integer",
+InstallMethod(EmptyDigraphCons, "for an immutable digraph and an integer",
 [IsImmutableDigraph, IsInt],
 function(filt, n)
   local D;
@@ -36,11 +36,10 @@ InstallMethod(EmptyDigraph, "for an integer", [IsInt],
 n -> EmptyDigraphCons(IsImmutableDigraph, n));
 
 InstallMethod(EmptyDigraph, "for a function and an integer",
-[IsFunction, IsInt],
-EmptyDigraphCons);
+[IsFunction, IsInt], EmptyDigraphCons);
 
 InstallMethod(CompleteBipartiteDigraphCons,
-"for IsMutableDigraph and two positive integers",
+"for a mutable digraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
   local src, ran, count, k, i, j;
@@ -58,12 +57,12 @@ function(filt, m, n)
     od;
   od;
   return DigraphNC(IsMutableDigraph, rec(DigraphNrVertices := m + n,
-                              DigraphSource     := src,
-                              DigraphRange      := ran));
+                                         DigraphSource     := src,
+                                         DigraphRange      := ran));
 end);
 
 InstallMethod(CompleteBipartiteDigraphCons,
-"for IsImmutableDigraph and two positive integers",
+"for an immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
   local D, aut;
@@ -85,7 +84,7 @@ InstallMethod(CompleteBipartiteDigraph, "for two positive integers",
 {m, n} -> CompleteBipartiteDigraph(IsImmutableDigraph, m, n));
 
 InstallMethod(CompleteBipartiteDigraph,
-"for a functions and two positive integers",
+"for a function and two positive integers",
 [IsFunction, IsPosInt, IsPosInt],
 CompleteBipartiteDigraphCons);
 
@@ -95,7 +94,7 @@ CompleteBipartiteDigraphCons);
 # to every other not contained in the same part.
 
 InstallMethod(CompleteMultipartiteDigraphCons,
-"for IsMutableDigraph and a list",
+"for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
 function(filt, list)
   local M, N, out, start, next, i, v;
@@ -120,16 +119,15 @@ function(filt, list)
     od;
     start := start + list[i];
   od;
-  return DigraphNC(IsMutableDigraph, out);
+  return ConvertToMutableDigraphNC(out);
 end);
 
 InstallMethod(CompleteMultipartiteDigraphCons,
-"for IsImmutableDigraph and a list",
+"for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
 function(filt, list)
   local D;
-  D := CompleteMultipartiteDigraph(IsMutableDigraph, list);
-  D := MakeImmutable(D);
+  D := MakeImmutable(CompleteMultipartiteDigraph(IsMutableDigraph, list));
   SetIsSymmetricDigraph(D, true);
   SetIsBipartiteDigraph(D, Length(list) = 2);
   return D;
@@ -138,10 +136,10 @@ end);
 InstallMethod(CompleteMultipartiteDigraph, "for a list", [IsList],
 list -> CompleteMultipartiteDigraphCons(IsImmutableDigraph, list));
 
-InstallMethod(CompleteMultipartiteDigraph, "for a list", [IsFunction, IsList],
-CompleteMultipartiteDigraphCons);
+InstallMethod(CompleteMultipartiteDigraph, "for a function and a list",
+[IsFunction, IsList], CompleteMultipartiteDigraphCons);
 
-InstallMethod(ChainDigraphCons, "for IsMutableDigraph and a positive integer",
+InstallMethod(ChainDigraphCons, "for a mutable digraph and a positive integer",
 [IsMutableDigraph, IsPosInt],
 function(filt, n)
   local list, i;
@@ -150,20 +148,16 @@ function(filt, n)
     list[i] := [i + 1];
   od;
   list[n] := [];
-  return DigraphNC(IsMutableDigraph, list);
+  return ConvertToMutableDigraphNC(list);
 end);
 
 InstallMethod(ChainDigraphCons,
-"for IsImmutableDigraph and a positive integer",
+"for an immutable digraph and a positive integer",
 [IsImmutableDigraph, IsPosInt],
 function(filt, n)
   local D;
   D := MakeImmutable(ChainDigraphCons(IsMutableDigraph, n));
-  if n = 2 then
-    SetIsTransitiveDigraph(D, true);
-  else
-    SetIsTransitiveDigraph(D, false);
-  fi;
+  SetIsTransitiveDigraph(D, n = 2);
   SetDigraphHasLoops(D, false);
   SetIsAcyclicDigraph(D, true);
   SetIsMultiDigraph(D, false);
@@ -182,7 +176,7 @@ ChainDigraphCons);
 InstallMethod(ChainDigraph, "for a positive integer", [IsPosInt],
 n -> ChainDigraphCons(IsImmutableDigraph, n));
 
-InstallMethod(CompleteDigraphCons, "for IsMutableDigraph and an integer",
+InstallMethod(CompleteDigraphCons, "for a mutable digraph and an integer",
 [IsMutableDigraph, IsInt],
 function(filt, n)
   local verts, out, i;
@@ -196,10 +190,10 @@ function(filt, n)
   for i in verts do
     out[i] := Concatenation([1 .. (i - 1)], [(i + 1) .. n]);
   od;
-  return DigraphNC(IsMutableDigraph, out);
+  return ConvertToMutableDigraphNC(out);
 end);
 
-InstallMethod(CompleteDigraphCons, "for IsImmutableDigraph and an integer",
+InstallMethod(CompleteDigraphCons, "for an immutable digraph and an integer",
 [IsImmutableDigraph, IsInt],
 function(filt, n)
   local D;
@@ -216,14 +210,12 @@ function(filt, n)
 end);
 
 InstallMethod(CompleteDigraph, "for a function and an integer",
-[IsFunction, IsInt],
-CompleteDigraphCons);
+[IsFunction, IsInt], CompleteDigraphCons);
 
-InstallMethod(CompleteDigraph, "for an integer",
-[IsInt],
+InstallMethod(CompleteDigraph, "for an integer", [IsInt],
 n -> CompleteDigraphCons(IsImmutableDigraph, n));
 
-InstallMethod(CycleDigraphCons, "for IsMutableDigraph and a positive integer",
+InstallMethod(CycleDigraphCons, "for a mutable digraph and a positive integer",
 [IsMutableDigraph, IsPosInt],
 function(filt, n)
   local list, i;
@@ -232,11 +224,11 @@ function(filt, n)
     list[i] := [i + 1];
   od;
   list[n] := [1];
-  return DigraphNC(IsMutableDigraph, list);
+  return ConvertToMutableDigraphNC(list);
 end);
 
 InstallMethod(CycleDigraphCons,
-"for IsImmutableDigraph and a positive integer",
+"for an immutable digraph and a positive integer",
 [IsImmutableDigraph, IsPosInt],
 function(filt, n)
   local D;
@@ -259,14 +251,13 @@ function(filt, n)
 end);
 
 InstallMethod(CycleDigraph, "for a function and a positive integer",
-[IsFunction, IsPosInt],
-CycleDigraphCons);
+[IsFunction, IsPosInt], CycleDigraphCons);
 
 InstallMethod(CycleDigraph, "for a positive integer", [IsPosInt],
 n -> CycleDigraphCons(IsImmutableDigraph, n));
 
 InstallMethod(JohnsonDigraphCons,
-"for IsMutableDigraph, integer, integer",
+"for a mutable digraph, integer, integer",
 [IsMutableDigraph, IsInt, IsInt],
 function(filt, n, k)
   if n < 0 or k < 0 then
@@ -279,7 +270,7 @@ function(filt, n, k)
 end);
 
 InstallMethod(JohnsonDigraphCons,
-"for IsImmutableDigraph, integer, integer",
+"for an immutable digraph, integer, integer",
 [IsImmutableDigraph, IsInt, IsInt],
 function(filt, n, k)
   local D;
@@ -296,7 +287,7 @@ JohnsonDigraphCons);
 InstallMethod(JohnsonDigraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> JohnsonDigraphCons(IsImmutableDigraph, n, k));
 
-InstallMethod(PetersenGraphCons, "for IsMutableDigraph", [IsMutableDigraph],
+InstallMethod(PetersenGraphCons, "for a mutable digraph", [IsMutableDigraph],
 function(filt)
   local mat;
   mat := [[0, 1, 0, 0, 1, 1, 0, 0, 0, 0],
@@ -313,18 +304,17 @@ function(filt)
   return DigraphByAdjacencyMatrix(IsMutableDigraph, mat);
 end);
 
-InstallMethod(PetersenGraphCons, "for IsImmutableDigraph",
+InstallMethod(PetersenGraphCons, "for an immutable digraph",
 [IsImmutableDigraph],
 filt -> MakeImmutable(PetersenGraphCons(IsMutableDigraph)));
 
 InstallMethod(PetersenGraph, "for a function", [IsFunction],
 PetersenGraphCons);
 
-InstallMethod(PetersenGraph, [],
-{} -> PetersenGraphCons(IsImmutableDigraph));
+InstallMethod(PetersenGraph, [], {} -> PetersenGraphCons(IsImmutableDigraph));
 
 InstallMethod(GeneralisedPetersenGraphCons,
-"for IsMutableDigraph, integer, integer",
+"for a mutable digraph, integer, integer",
 [IsMutableDigraph, IsInt, IsInt],
 function(filt, n, k)
   local D, i;
@@ -335,10 +325,7 @@ function(filt, n, k)
   elif k > n / 2 then
     ErrorNoReturn("the argument <k> must be less than <n> / 2,");
   fi;
-  D := Digraph(filt, []);
-  for i in [1 .. 2 * n] do
-    DigraphAddVertex(D, i);
-  od;
+  D := EmptyDigraph(filt, 2 * n);
   for i in [1 .. n] do
     if i <> n then
       DigraphAddEdge(D, [i, i + 1]);
@@ -351,13 +338,12 @@ function(filt, n, k)
     else
       DigraphAddEdge(D, [n + i, ((n + i + k) mod n) + n]);
     fi;
-    od;
-    DigraphSymmetricClosure(D);
-  return D;
+  od;
+  return DigraphSymmetricClosure(D);
 end);
 
 InstallMethod(GeneralisedPetersenGraphCons,
-"for IsImmutableDigraph, integer, int",
+"for an immutable digraph, integer, int",
 [IsImmutableDigraph, IsInt, IsInt],
 function(filt, n, k)
   local D;
