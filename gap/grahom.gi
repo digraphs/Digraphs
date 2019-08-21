@@ -195,15 +195,15 @@ end);
 
 InstallMethod(DigraphSmallestLastOrder, "for a digraph", [IsDigraph],
 function(D)
-  local order, n, copy, deg, v;
+  local order, n, deg, v;
   order := [];
   n := DigraphNrVertices(D);
-  copy := DigraphCopyIfMutable(D);
+  D := DigraphCopyIfMutable(D);
   while n > 0 do
-    deg := ShallowCopy(OutDegrees(copy)) + InDegrees(copy);
+    deg := ShallowCopy(OutDegrees(D)) + InDegrees(D);
     v := PositionMinimum(deg);
-    order[n] := DigraphVertexLabel(copy, v);
-    copy := DigraphRemoveVertex(copy, v);
+    order[n] := DigraphVertexLabel(D, v);
+    D := DigraphRemoveVertex(D, v);
     n := n - 1;
   od;
   return order;
@@ -448,7 +448,7 @@ function(D1, D2)
 end);
 
 ########################################################################
-# IsDigraphHomo/Epi/.../morphism
+# IsDigraph{Homo/Epi/...}morphism
 ########################################################################
 
 InstallMethod(IsDigraphHomomorphism, "for a dense digraph, digraph, and perm",
