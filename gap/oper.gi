@@ -32,7 +32,9 @@ InstallMethod(DigraphAddVertex, "for a mutable dense digraph and an object",
 function(D, label)
   Add(D!.OutNeighbours, []);
   SetDigraphVertexLabel(D, DigraphNrVertices(D), label);
-  DigraphEdgeLabelAddVertex(D);
+  if IsBound(D!.edgelabels) then
+    Add(D!.edgelabels, []);
+  fi;
   return D;
 end);
 
@@ -86,7 +88,9 @@ function(D, u)
     return D;
   fi;
   RemoveDigraphVertexLabel(D, u);
-  DigraphEdgeLabelRemoveVertex(D, u);
+  if IsBound(D!.edgelabels) then
+    Remove(D!.edgelabels, u);
+  fi;
   Remove(D!.OutNeighbours, u);
   for v in DigraphVertices(D) do
     pos := 1;
