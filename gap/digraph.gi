@@ -159,6 +159,12 @@ InstallMethod(DigraphCopyIfImmutable, "for a mutable digraph",
 InstallMethod(DigraphCopyIfImmutable, "for an immutable digraph",
 [IsImmutableDigraph], DigraphCopy);
 
+InstallMethod(DigraphMutableCopyIfImmutable, "for a mutable digraph",
+[IsMutableDigraph], IdFunc);
+
+InstallMethod(DigraphMutableCopyIfImmutable, "for an immutable digraph",
+[IsImmutableDigraph], DigraphMutableCopy);
+
 ########################################################################
 # 4. PostMakeImmutable
 ########################################################################
