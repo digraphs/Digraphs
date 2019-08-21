@@ -1388,6 +1388,28 @@ true
 gap> IsEmptyDigraph(D);
 true
 
+# IsVertexTransitive
+gap> IsVertexTransitive(Digraph([]));
+true
+gap> IsVertexTransitive(Digraph([[1], [2]]));
+true
+gap> IsVertexTransitive(Digraph([[2], [3], []]));
+false
+gap> IsVertexTransitive(CompleteDigraph(20));
+true
+
+# IsEdgeTransitive
+gap> IsEdgeTransitive(Digraph([]));
+true
+gap> IsEdgeTransitive(Digraph([[1], [2]]));
+true
+gap> IsEdgeTransitive(Digraph([[2], [3], []]));
+false
+gap> IsEdgeTransitive(CompleteDigraph(20));
+true
+gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
+Error, the argument <D> must be a digraph with no multiple edges,
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(circuit);

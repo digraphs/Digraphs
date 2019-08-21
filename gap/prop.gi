@@ -576,3 +576,15 @@ function(D)
                              fail);                     # colors2
   return not proper_endo_found;
 end);
+
+InstallMethod(IsVertexTransitive, "for a digraph", [IsDigraph],
+D -> IsTransitive(AutomorphismGroup(D), DigraphVertices(D)));
+
+InstallMethod(IsEdgeTransitive, "for a digraph", [IsDigraph],
+function(D)
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a digraph with no multiple",
+                  " edges,");
+  fi;
+  return IsTransitive(AutomorphismGroup(D), DigraphEdges(D), OnPairs);
+end);

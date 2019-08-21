@@ -43,6 +43,8 @@ DeclareProperty("IsMeetSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsJoinSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsCycleDigraph", IsDigraph);
 DeclareProperty("IsDigraphCore", IsDigraph);
+DeclareAttribute("IsVertexTransitive", IsDigraph);
+DeclareAttribute("IsEdgeTransitive", IsDigraph);
 
 DeclareOperation("DIGRAPHS_IsMeetJoinSemilatticeDigraph",
                  [IsHomogeneousList]);
