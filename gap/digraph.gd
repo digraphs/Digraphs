@@ -40,6 +40,7 @@ DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsDenseList]);
 
 # Copies
+DeclareOperation("DigraphMutableCopyIfImmutable", [IsDigraph]);
 DeclareOperation("DigraphMutableCopy", [IsDigraph]);
 DeclareOperation("DigraphCopy", [IsDigraph]);
 DeclareSynonym("DigraphImmutableCopy", DigraphCopy);
