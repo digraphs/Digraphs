@@ -87,8 +87,8 @@ function(D)
   return out;
 end);
 
-InstallImmediateMethod(DigraphGroup, IsDigraph and HasAutomorphismGroup,
-0, function(D)
+InstallImmediateMethod(DigraphGroup, IsDigraph and HasAutomorphismGroup, 0,
+function(D)
   if IsMultiDigraph(D) then
     return Range(Projection(AutomorphismGroup(D), 1));
   fi;
@@ -110,7 +110,9 @@ function(D)
   local record;
   record := DIGRAPHS_Orbits(DigraphGroup(D),
                             DigraphVertices(D));
-  SetDigraphSchreierVector(D, record.schreier);
+  if IsImmutableDigraph(D) then
+    SetDigraphSchreierVector(D, record.schreier);
+  fi;
   return record.orbits;
 end);
 
@@ -120,7 +122,9 @@ function(D)
   local record;
   record := DIGRAPHS_Orbits(DigraphGroup(D),
                             DigraphVertices(D));
-  SetDigraphOrbits(D, record.orbits);
+  if IsImmutableDigraph(D) then
+    SetDigraphOrbits(D, record.orbits);
+  fi;
   return record.schreier;
 end);
 
@@ -153,13 +157,9 @@ function(D, v)
   stabs := DIGRAPHS_Stabilizers(D);
 
   if not IsBound(stabs[pos]) then
-    stabs[pos] := Stabilizer(DigraphGroup(D),
-                             DigraphOrbitReps(D)[pos]);
+    stabs[pos] := Stabilizer(DigraphGroup(D), DigraphOrbitReps(D)[pos]);
   fi;
   return stabs[pos] ^ word;
 end);
 
-InstallMethod(DIGRAPHS_Stabilizers, "for a digraph", [IsDigraph],
-function(D);
-  return [];
-end);
+InstallMethod(DIGRAPHS_Stabilizers, "for a digraph", [IsDigraph], D -> []);
