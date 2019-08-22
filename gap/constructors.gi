@@ -11,8 +11,8 @@
 # This file contains constructions of certain types of digraphs, from other
 # digraphs.
 
-InstallMethod(BipartiteDoubleDigraph, "for a dense mutable digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
+InstallMethod(BipartiteDoubleDigraph, "for a mutable digraph by out-neighbours",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep],
 function(D)
   local list, N, i, j;
   list := D!.OutNeighbours;
@@ -43,8 +43,8 @@ function(D)
   return C;
 end);
 
-InstallMethod(DoubleDigraph, "for a dense mutable digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
+InstallMethod(DoubleDigraph, "for a mutable digraph by out-neighbours",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep],
 function(D)
   local list, N, i, j;
   list := D!.OutNeighbours;
@@ -76,8 +76,8 @@ function(D)
 end);
 
 InstallMethod(DistanceDigraph,
-"for a dense mutable digraph and a list of distances",
-[IsMutableDigraph and IsDenseDigraphRep, IsList],
+"for a mutable digraph by out-neighbours and a list of distances",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsList],
 function(D, distances)
   local list, x;
   # Can't change D!.OutNeighbours in-place, since it is used by

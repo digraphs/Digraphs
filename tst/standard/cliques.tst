@@ -226,9 +226,9 @@ Error, at least 1 argument is required,
 gap> DigraphClique();
 Error, at least 1 argument is required,
 gap> DigraphMaximalClique(1);
-Error, the 1st argument <D> must be a dense digraph,
+Error, the 1st argument <D> must be a digraph by out-neighbours,
 gap> DigraphClique(1);
-Error, the 1st argument <D> must be a dense digraph,
+Error, the 1st argument <D> must be a digraph by out-neighbours,
 gap> DigraphMaximalClique(gr);
 [ 5, 4, 3, 2, 1 ]
 gap> DigraphClique(gr);

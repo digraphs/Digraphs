@@ -9,7 +9,8 @@
 ##
 
 # "multi" means it has at least one multiple edges
-InstallMethod(IsMultiDigraph, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(IsMultiDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 IS_MULTI_DIGRAPH);
 
 InstallMethod(IsChainDigraph, "for a digraph", [IsDigraph],
@@ -51,8 +52,8 @@ function(nbs)
   return true;
 end);
 
-InstallMethod(IsJoinSemilatticeDigraph, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(IsJoinSemilatticeDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local topo;
   if not IsPartialOrderDigraph(D) then
@@ -66,7 +67,7 @@ function(D)
 end);
 
 InstallMethod(IsMeetSemilatticeDigraph, "for a digraph",
-[IsDenseDigraphRep],
+[IsDigraphByOutNeighboursRep],
 function(D)
   local topo, list;
   if not IsPartialOrderDigraph(D) then
@@ -79,8 +80,8 @@ function(D)
   return DIGRAPHS_IsMeetJoinSemilatticeDigraph(list);
 end);
 
-InstallMethod(IsStronglyConnectedDigraph, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(IsStronglyConnectedDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 D -> IS_STRONGLY_CONNECTED_DIGRAPH(OutNeighbours(D)));
 
 InstallMethod(IsCompleteDigraph, "for a digraph",
@@ -135,8 +136,8 @@ InstallImmediateMethod(IsAcyclicDigraph, "for a strongly connected digraph",
 IsStronglyConnectedDigraph, 0,
 D -> DigraphNrVertices(D) <= 1 and IsEmptyDigraph(D));
 
-InstallMethod(IsAcyclicDigraph, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(IsAcyclicDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local n;
   n := DigraphNrVertices(D);
@@ -159,8 +160,8 @@ end);
 # Complexity O(number of edges)
 # this could probably be improved further ! JDM
 
-InstallMethod(IsSymmetricDigraph, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(IsSymmetricDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local out, inn, new, i;
 
@@ -178,8 +179,8 @@ end);
 
 # Functional: for every vertex v there is exactly one edge with source v
 
-InstallMethod(IsFunctionalDigraph, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(IsFunctionalDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 D -> ForAll(OutNeighbours(D), x -> Length(x) = 1));
 
 InstallMethod(IsTournament, "for a digraph", [IsDigraph],
@@ -248,11 +249,12 @@ D -> ForAny(DigraphVertices(D), x -> IsDigraphEdge(D, x, x)));
 InstallMethod(IsAperiodicDigraph, "for a digraph", [IsDigraph],
 D -> DigraphPeriod(D) = 1);
 
-InstallMethod(IsAntisymmetricDigraph, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(IsAntisymmetricDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 D -> IS_ANTISYMMETRIC_DIGRAPH(OutNeighbours(D)));
 
-InstallMethod(IsTransitiveDigraph, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(IsTransitiveDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local n, m, sorted, verts, out, trans, reflex, v, u;
 

@@ -8,16 +8,17 @@
 #############################################################################
 ##
 
-InstallMethod(DigraphNrVertices, "for a dense digraph", [IsDenseDigraphRep],
-DIGRAPH_NR_VERTICES);
+InstallMethod(DigraphNrVertices, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep], DIGRAPH_NR_VERTICES);
 
-InstallMethod(OutNeighbours, "for a dense digraph", [IsDenseDigraphRep],
-DIGRAPH_OUT_NEIGHBOURS);
+InstallMethod(OutNeighbours, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep], DIGRAPH_OUT_NEIGHBOURS);
 
 # The next method is (yet another) DFS as described in
 # http://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
 
-InstallMethod(ArticulationPoints, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(ArticulationPoints, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local copy, nbs, counter, visited, num, low, parent, points, points_seen,
         stack, depth, v, w, i;
@@ -97,7 +98,8 @@ function(D)
   fi;
 end);
 
-InstallMethod(ChromaticNumber, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(ChromaticNumber, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local nr, comps, upper, chrom, tmp_comps, tmp_upper, n, comp, bound, clique,
   c, i;
@@ -245,10 +247,11 @@ end);
 #   return out;
 # end);
 
-InstallMethod(DigraphAdjacencyFunction, "for a dense digraph", [IsDigraph],
-D -> {u, v} -> IsDigraphEdge(D, u, v));
+InstallMethod(DigraphAdjacencyFunction, "for a digraph by out-neighbours",
+[IsDigraph], D -> {u, v} -> IsDigraphEdge(D, u, v));
 
-InstallMethod(AsTransformation, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(AsTransformation, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   if not IsFunctionalDigraph(D) then
     return fail;
@@ -256,10 +259,11 @@ function(D)
   return Transformation(Concatenation(OutNeighbours(D)));
 end);
 
-InstallMethod(DigraphNrEdges, "for a digraph", [IsDenseDigraphRep],
+InstallMethod(DigraphNrEdges, "for a digraph", [IsDigraphByOutNeighboursRep],
 DIGRAPH_NREDGES);
 
-InstallMethod(DigraphEdges, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(DigraphEdges, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local out, adj, nr, i, j;
   out := EmptyPlist(DigraphNrEdges(D));
@@ -282,8 +286,9 @@ InstallMethod(AsGraph, "for a digraph", [IsDigraph], Graph);
 InstallMethod(DigraphVertices, "for a digraph", [IsDigraph],
 D -> [1 .. DigraphNrVertices(D)]);
 
-InstallMethod(DigraphRange, "for a dense digraph attribute storing digraph",
-[IsDenseDigraphRep and IsImmutableDigraph],
+InstallMethod(DigraphRange,
+"for an immutable digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep and IsImmutableDigraph],
 function(D)
   if not IsBound(D!.DigraphRange) then
     DIGRAPH_SOURCE_RANGE(D);
@@ -292,12 +297,14 @@ function(D)
   return D!.DigraphRange;
 end);
 
-InstallMethod(DigraphRange, "for a dense digraph attribute storing digraph",
-[IsDenseDigraphRep and IsMutableDigraph],
+InstallMethod(DigraphRange,
+"for a mutable digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep and IsMutableDigraph],
 D -> DIGRAPH_SOURCE_RANGE(D).DigraphRange);
 
-InstallMethod(DigraphSource, "for a dense digraph attribute storing digraph",
-[IsDenseDigraphRep and IsImmutableDigraph],
+InstallMethod(DigraphSource,
+"for an immutable digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep and IsImmutableDigraph],
 function(D)
   if not IsBound(D!.DigraphSource) then
     DIGRAPH_SOURCE_RANGE(D);
@@ -306,18 +313,19 @@ function(D)
   return D!.DigraphSource;
 end);
 
-InstallMethod(DigraphSource, "for a dense digraph attribute storing digraph",
-[IsDenseDigraphRep and IsMutableDigraph],
+InstallMethod(DigraphSource,
+"for a mutable digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep and IsMutableDigraph],
 D -> DIGRAPH_SOURCE_RANGE(D).DigraphSource);
 
-InstallMethod(InNeighbours, "for a digraph", [IsDenseDigraphRep],
+InstallMethod(InNeighbours, "for a digraph", [IsDigraphByOutNeighboursRep],
 D -> DIGRAPH_IN_OUT_NBS(OutNeighbours(D)));
 
-InstallMethod(AdjacencyMatrix, "for a digraph", [IsDenseDigraphRep],
+InstallMethod(AdjacencyMatrix, "for a digraph", [IsDigraphByOutNeighboursRep],
 ADJACENCY_MATRIX);
 
-InstallMethod(BooleanAdjacencyMatrix, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(BooleanAdjacencyMatrix, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local n, nbs, mat, i, j;
   n := DigraphNrVertices(D);
@@ -331,8 +339,8 @@ function(D)
   return mat;
 end);
 
-InstallMethod(DigraphShortestDistances, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphShortestDistances, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local vertices, data, sum, distances, v, u;
   if HasDIGRAPHS_ConnectivityData(D) then
@@ -364,12 +372,13 @@ end);
 # returns the vertices (i.e. numbers) of <D> ordered so that there are no
 # edges from <out[j]> to <out[i]> for all <i> greater than <j>.
 
-InstallMethod(DigraphTopologicalSort, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphTopologicalSort, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 D -> DIGRAPH_TOPO_SORT(OutNeighbours(D)));
 
-InstallMethod(DigraphStronglyConnectedComponents, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphStronglyConnectedComponents,
+"for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local verts;
 
@@ -390,15 +399,16 @@ InstallMethod(DigraphNrStronglyConnectedComponents, "for a digraph",
 [IsDigraph],
 D -> Length(DigraphStronglyConnectedComponents(D).comps));
 
-InstallMethod(DigraphConnectedComponents, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphConnectedComponents, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 DIGRAPH_CONNECTED_COMPONENTS);
 
 InstallMethod(DigraphNrConnectedComponents, "for a digraph",
 [IsDigraph],
 D -> Length(DigraphConnectedComponents(D).comps));
 
-InstallMethod(OutDegrees, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(OutDegrees, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local adj, degs, i;
   adj := OutNeighbours(D);
@@ -411,7 +421,7 @@ end);
 
 InstallMethod(InDegrees, "for a digraph with in neighbours",
 [IsDigraph and HasInNeighbours],
-2,  # to beat the method for IsDenseDigraphRep
+2,  # to beat the method for IsDigraphByOutNeighboursRep
 function(D)
   local inn, degs, i;
   inn := InNeighbours(D);
@@ -422,7 +432,8 @@ function(D)
   return degs;
 end);
 
-InstallMethod(InDegrees, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(InDegrees, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local adj, degs, x, i;
   adj := OutNeighbours(D);
@@ -444,8 +455,8 @@ function(D)
 end);
 
 InstallMethod(OutDegreeSequence,
-"for a dense digraph with known digraph group",
-[IsDenseDigraphRep and HasDigraphGroup],
+"for a digraph by out-neighbours with known digraph group",
+[IsDigraphByOutNeighboursRep and HasDigraphGroup],
 function(D)
   local out, adj, orbs, orb;
   out := [];
@@ -497,7 +508,7 @@ end);
 
 InstallMethod(DigraphSources, "for a digraph with in-neighbours",
 [IsDigraph and HasInNeighbours],
-2,  # to beat the method for IsDenseDigraphRep
+2,  # to beat the method for IsDigraphByOutNeighboursRep
 function(D)
   local inn, sources, count, i;
 
@@ -514,7 +525,8 @@ function(D)
   return sources;
 end);
 
-InstallMethod(DigraphSources, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(DigraphSources, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local out, seen, tmp, next, v;
   out  := OutNeighbours(D);
@@ -532,14 +544,15 @@ end);
 
 InstallMethod(DigraphSinks, "for a digraph with out-degrees",
 [IsDigraph and HasOutDegrees],
-2,  # to beat the method for IsDenseDigraphRep
+2,  # to beat the method for IsDigraphByOutNeighboursRep
 function(D)
   local degs;
   degs := OutDegrees(D);
   return Filtered(DigraphVertices(D), x -> degs[x] = 0);
 end);
 
-InstallMethod(DigraphSinks, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(DigraphSinks, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local out, sinks, count, i;
 
@@ -555,7 +568,7 @@ function(D)
   return sinks;
 end);
 
-InstallMethod(DigraphPeriod, "for a digraph", [IsDenseDigraphRep],
+InstallMethod(DigraphPeriod, "for a digraph", [IsDigraphByOutNeighboursRep],
 function(D)
   local comps, out, deg, nrvisited, period, stack, len, depth, current,
         olddepth, i;
@@ -800,7 +813,8 @@ function(D)
   return DIGRAPHS_DiameterAndUndirectedGirth(D).girth;
 end);
 
-InstallMethod(DigraphGirth, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(DigraphGirth, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local verts, girth, out, dist, i, j;
   if DigraphHasLoops(D) then
@@ -892,8 +906,8 @@ function(D)
   return circs[Position(lens, max)];
 end);
 
-InstallMethod(DigraphAllSimpleCircuits, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphAllSimpleCircuits, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local UNBLOCK, CIRCUIT, out, stack, endofstack, C, scc, n, blocked, B,
   c_comp, comp, s, loops, i;
@@ -1006,7 +1020,8 @@ end);
 # It is the backend to IsBipartiteDigraph, Bicomponents, and DigraphColouring
 # for a 2-colouring
 
-InstallMethod(DIGRAPHS_Bipartite, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(DIGRAPHS_Bipartite, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local n, t, colours, in_nbrs, stack, pop, v, pos, nbrs, w, i;
   n := DigraphNrVertices(D);
@@ -1061,7 +1076,8 @@ function(D)
   return b;
 end);
 
-InstallMethod(DigraphLoops, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(DigraphLoops, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   if HasDigraphHasLoops(D) and not DigraphHasLoops(D) then
     return [];
@@ -1087,7 +1103,8 @@ function(D)
   return DIGRAPHS_Degeneracy(DigraphRemoveLoops(D))[2];
 end);
 
-InstallMethod(DIGRAPHS_Degeneracy, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(DIGRAPHS_Degeneracy, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local nbs, n, out, deg_vert, m, verts_deg, k, i, v, d, w;
 
@@ -1217,7 +1234,8 @@ function(digraph)
   elif IsCompleteDigraph(digraph) then
     return DigraphVertexLabels(digraph);
   elif IsSymmetricDigraph(digraph) and IsBipartiteDigraph(digraph) then
-    i := First(DigraphVertices(digraph), i -> OutDegreeOfVertex(digraph, i) > 0);
+    i := First(DigraphVertices(digraph),
+               i -> OutDegreeOfVertex(digraph, i) > 0);
     return DigraphVertexLabels(digraph){
     [i, OutNeighboursOfVertex(digraph, i)[1]]};
   elif not IsConnectedDigraph(digraph) then
@@ -1331,8 +1349,8 @@ end);
 
 # Things that are attributes for immutable digraphs, but operations for mutable.
 
-InstallMethod(DigraphReverse, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphReverse, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local inn, C;
   if IsSymmetricDigraph(D) then
@@ -1357,8 +1375,8 @@ InstallMethod(DigraphReverse, "for a digraph with known digraph reverse",
 InstallMethod(DigraphReverseAttr, "for an immutable digraph",
 [IsImmutableDigraph], DigraphReverse);
 
-InstallMethod(DigraphDual, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphDual, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local nodes, C, list, i;
   if IsMultiDigraph(D) then
@@ -1390,8 +1408,8 @@ InstallMethod(DigraphDual, "for a digraph with known dual",
 InstallMethod(DigraphDualAttr, "for an immutable digraph", [IsImmutableDigraph],
 DigraphDual);
 
-InstallMethod(ReducedDigraph, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(ReducedDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local v, niv, old, C, i;
   if IsConnectedDigraph(D) then
@@ -1423,8 +1441,9 @@ InstallMethod(ReducedDigraph, "for a digraph with known reduced digraph",
 InstallMethod(ReducedDigraphAttr, "for an immutable digraph",
 [IsImmutableDigraph], ReducedDigraph);
 
-InstallMethod(DigraphRemoveAllMultipleEdges, "for a mutable dense digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
+InstallMethod(DigraphRemoveAllMultipleEdges,
+"for a mutable digraph by out-neighbours",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep],
 function(D)
   local nodes, list, empty, seen, keep, v, u, pos;
 
@@ -1462,8 +1481,8 @@ function(D)
   return D;
 end);
 
-InstallMethod(DigraphAddAllLoops, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphAddAllLoops, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local ismulti, C, list, v;
   if HasIsReflexiveDigraph(D) and IsReflexiveDigraph(D) then
@@ -1497,8 +1516,8 @@ InstallMethod(DigraphAddAllLoops, "for a digraph with known add-all-loops",
 InstallMethod(DigraphAddAllLoopsAttr, "for an immutable digraph",
 [IsImmutableDigraph], DigraphAddAllLoops);
 
-InstallMethod(DigraphRemoveLoops, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphRemoveLoops, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local C, out, lbl, pos, v;
   C := DigraphMutableCopyIfImmutable(D);
@@ -1527,8 +1546,8 @@ InstallMethod(DigraphRemoveLoopsAttr, "for an immutable digraph",
 [IsImmutableDigraph], DigraphRemoveLoops);
 
 # TODO (FLS): I've just added 1 as the edge label here, is this really desired?
-InstallMethod(DigraphSymmetricClosure, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphSymmetricClosure, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local n, m, verts, C, mat, out, x, i, j, k;
 
@@ -1622,8 +1641,8 @@ DigraphSymmetricClosureAttr);
 InstallMethod(DigraphSymmetricClosureAttr, "for an immutable digraph",
 [IsImmutableDigraph], DigraphSymmetricClosure);
 
-InstallMethod(MaximalSymmetricSubdigraph, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(MaximalSymmetricSubdigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local C, inn, out, i;
 
@@ -1691,8 +1710,8 @@ function(D)
   return D;
 end);
 
-InstallMethod(MaximalAntiSymmetricSubdigraph, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(MaximalAntiSymmetricSubdigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local n, C, m, out, i, j;
 
@@ -1757,8 +1776,9 @@ MaximalAntiSymmetricSubdigraphAttr);
 InstallMethod(MaximalAntiSymmetricSubdigraphAttr, "for an immutable digraph",
 [IsImmutableDigraph], MaximalAntiSymmetricSubdigraph);
 
-InstallMethod(DigraphTransitiveClosure, "for a mutable dense digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
+InstallMethod(DigraphTransitiveClosure,
+"for a mutable digraph by out-neighbours",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep],
 function(D)
   local list, m, n, nodes, sorted, trans, tmp, mat, v, u, i;
 
@@ -1849,8 +1869,8 @@ DigraphReflexiveTransitiveClosureAttr);
 InstallMethod(DigraphReflexiveTransitiveClosureAttr, "for an immutable digraph",
 [IsImmutableDigraph], DigraphReflexiveTransitiveClosure);
 
-InstallMethod(DigraphTransitiveReduction, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphTransitiveReduction, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local topo, p, C;
   if IsMultiDigraph(D) then
@@ -1886,8 +1906,9 @@ InstallMethod(DigraphTransitiveReductionAttr, "for an immutable digraph",
 
 # For a topologically sortable digraph G, this returns the least subgraph G'
 # of G such that the (reflexive) transitive closures of G and G' are equal.
-InstallMethod(DigraphReflexiveTransitiveReduction, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphReflexiveTransitiveReduction,
+"for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local C;
   if IsMultiDigraph(D) then
@@ -1923,8 +1944,8 @@ InstallMethod(DigraphReflexiveTransitiveReductionAttr,
 "for an immutable digraph",
 [IsImmutableDigraph], DigraphReflexiveTransitiveReduction);
 
-InstallMethod(UndirectedSpanningForest, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(UndirectedSpanningForest, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local C;
   if DigraphNrVertices(D) = 0 then
