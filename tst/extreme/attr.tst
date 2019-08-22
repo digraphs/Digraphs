@@ -19,19 +19,19 @@ gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                                     "/digraphs-lib/extreme.d6.gz"), 1);
 <immutable digraph with 5000 vertices, 4211332 edges>
 gap> ReducedDigraph(gr);
-<immutable digraph with 5000 vertices, 4211332 edges>
+<immutable connected digraph with 5000 vertices, 4211332 edges>
 
 #  DigraphSymmetricClosure 1
 # For a digraph with lots of edges: digraphs-lib/extreme.d6.gz
 gap> DigraphSymmetricClosure(gr);
-<immutable digraph with 5000 vertices, 7713076 edges>
+<immutable symmetric digraph with 5000 vertices, 7713076 edges>
 gap> gr := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                                     "/data/symmetric-closure.ds6.gz"),
 >                       DigraphFromDiSparse6String,
 >                       1);
 <immutable digraph with 46656 vertices, 120245 edges>
 gap> DigraphSymmetricClosure(gr);
-<immutable digraph with 46656 vertices, 197930 edges>
+<immutable symmetric digraph with 46656 vertices, 197930 edges>
 
 #  DigraphAllSimpleCircuits
 gap> gr := DigraphFromDigraph6String(
@@ -43,7 +43,7 @@ gap> Length(circs);
 
 #  HamiltonianPath and IsHamiltonianDigraph
 gap> g := CompleteDigraph(20);
-<immutable digraph with 20 vertices, 380 edges>
+<immutable complete digraph with 20 vertices>
 gap> HamiltonianPath(g);
 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
 gap> IsDigraphMonomorphism(CycleDigraph(20), 
@@ -53,7 +53,7 @@ true
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteMultipartiteDigraph([1, 9, 1, 1, 2, 1, 1, 1]);
-<immutable digraph with 17 vertices, 198 edges>
+<immutable multipartite symmetric digraph with 17 vertices, 198 edges>
 gap> HamiltonianPath(g);
 fail
 gap> IsHamiltonianDigraph(g);

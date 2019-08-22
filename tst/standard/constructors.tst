@@ -181,7 +181,7 @@ gap> gr3 := LineUndirectedDigraph(gr);
 gap> gr2 = gr3;
 true
 gap> gr := CycleDigraph(8);
-<immutable digraph with 8 vertices, 8 edges>
+<immutable cycle digraph with 8 vertices>
 gap> gr2 := LineDigraph(gr);
 <immutable digraph with 8 vertices, 8 edges>
 gap> DigraphGroup(gr);
@@ -191,7 +191,7 @@ gap> gr3 := LineDigraph(gr);
 gap> gr2 = gr3;
 true
 gap> gr := ChainDigraph(4);
-<immutable digraph with 4 vertices, 3 edges>
+<immutable chain digraph with 4 vertices>
 gap> LineUndirectedDigraph(gr);
 Error, the argument <D> must be a symmetric digraph,
 

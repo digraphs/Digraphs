@@ -87,17 +87,17 @@ Error, the argument <D> must be a digraph with no multiple edges,
 gap> DigraphDual(DigraphMutableCopy(gr));
 Error, the argument <D> must be a digraph with no multiple edges,
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphDual(gr);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphDual(gr);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> gr := Digraph([[], []]);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> DigraphDual(gr);
 <immutable digraph with 2 vertices, 4 edges>
 gap> gr := Digraph(rec(DigraphNrVertices := 2, DigraphSource := [], DigraphRange := []));
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> DigraphDual(gr);
 <immutable digraph with 2 vertices, 4 edges>
 gap> gr := Digraph([[2, 2], []]);
@@ -113,7 +113,7 @@ gap> DigraphDual(gr);
 <immutable digraph with 6 vertices, 27 edges>
 gap> r := rec(DigraphNrVertices := 4, DigraphSource := [], DigraphRange := []);;
 gap> gr := Digraph(r);
-<immutable digraph with 4 vertices, 0 edges>
+<immutable empty digraph with 4 vertices>
 gap> DigraphDual(gr);
 <immutable digraph with 4 vertices, 16 edges>
 gap> gr := Digraph(r);;
@@ -219,11 +219,11 @@ gap> multiple := Digraph(r);;
 gap> DigraphTopologicalSort(multiple);
 [ 2, 1 ]
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphTopologicalSort(gr);
 [  ]
 gap> gr := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> DigraphTopologicalSort(gr);
 [ 1 ]
 gap> gr := Digraph([[1]]);
@@ -284,7 +284,7 @@ gap> scc := DigraphStronglyConnectedComponents(gr);
 rec( comps := [ [ 1, 3, 2, 4, 9, 8, 5, 6, 7, 10, 11 ] ], 
   id := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ] )
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphStronglyConnectedComponents(gr);
 rec( comps := [  ], id := [  ] )
 gap> r := rec(DigraphNrVertices := 9,
@@ -304,7 +304,7 @@ gap> Length(scc.comps);
 gap> Length(scc.comps) = DigraphNrVertices(circuit);
 true
 gap> gr := CycleDigraph(10);
-<immutable digraph with 10 vertices, 10 edges>
+<immutable cycle digraph with 10 vertices>
 gap> gr2 := DigraphRemoveEdge(gr, 10, 1);
 <immutable digraph with 10 vertices, 9 edges>
 gap> IsStronglyConnectedDigraph(gr);
@@ -344,11 +344,11 @@ gap> gr := Digraph([[1, 2], [1], [2], [5], []]);
 gap> wcc := DigraphConnectedComponents(gr);
 rec( comps := [ [ 1, 2, 3 ], [ 4, 5 ] ], id := [ 1, 1, 1, 2, 2 ] )
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphConnectedComponents(gr);
 rec( comps := [  ], id := [  ] )
 gap> gr := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> DigraphConnectedComponents(gr);
 rec( comps := [ [ 1 ] ], id := [ 1 ] )
 gap> gr := Digraph([[1], [2], [3], [4]]);
@@ -479,7 +479,7 @@ gap> OutNeighbours(gr);
 #  OutDegree and OutDegreeSequence and InDegrees and InDegreeSequence
 gap> r := rec(DigraphNrVertices := 0, DigraphSource := [], DigraphRange := []);;
 gap> gr1 := Digraph(r);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> OutDegrees(gr1);
 [  ]
 gap> OutDegreeSequence(gr1);
@@ -489,7 +489,7 @@ gap> InDegrees(gr1);
 gap> InDegreeSequence(gr1);
 [  ]
 gap> gr2 := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> OutDegrees(gr2);
 [  ]
 gap> OutDegreeSequence(gr2);
@@ -499,7 +499,7 @@ gap> InDegrees(gr2);
 gap> InDegreeSequence(gr2);
 [  ]
 gap> gr3 := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> InNeighbours(gr3);
 [  ]
 gap> OutDegrees(gr3);
@@ -617,11 +617,11 @@ gap> DigraphSources(gr);
 
 #  DigraphPeriod
 gap> gr := EmptyDigraph(100);
-<immutable digraph with 100 vertices, 0 edges>
+<immutable empty digraph with 100 vertices>
 gap> DigraphPeriod(gr);
 0
 gap> gr := CompleteDigraph(100);
-<immutable digraph with 100 vertices, 9900 edges>
+<immutable complete digraph with 100 vertices>
 gap> DigraphPeriod(gr);
 1
 gap> gr := Digraph([[2, 2], [3], [4], [1]]);
@@ -722,7 +722,7 @@ gap> gr1 := Digraph([[2], [1]]);
 gap> IsSymmetricDigraph(gr1);
 true
 gap> gr2 := DigraphSymmetricClosure(gr1);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable symmetric digraph with 2 vertices, 2 edges>
 gap> IsIdenticalObj(gr1, gr2);
 true
 gap> gr1 = gr2;
@@ -742,7 +742,7 @@ gap> gr1 := Digraph(
 gap> IsSymmetricDigraph(gr1);
 false
 gap> gr2 := DigraphSymmetricClosure(gr1);
-<immutable digraph with 12 vertices, 38 edges>
+<immutable symmetric digraph with 12 vertices, 38 edges>
 gap> HasIsSymmetricDigraph(gr2);
 true
 gap> IsSymmetricDigraph(gr2);
@@ -754,7 +754,7 @@ gap> gr3 := Digraph(
 gap> gr2 = gr3;
 true
 gap> gr := DigraphSymmetricClosure(ChainDigraph(10000));
-<immutable digraph with 10000 vertices, 19998 edges>
+<immutable symmetric digraph with 10000 vertices, 19998 edges>
 gap> IsSymmetricDigraph(gr);
 true
 gap> gr := DigraphCopy(gr);
@@ -780,9 +780,9 @@ false
 gap> DigraphTopologicalSort(gr);
 fail
 gap> gr1 := DigraphTransitiveClosure(gr);
-<immutable digraph with 4 vertices, 16 edges>
+<immutable transitive digraph with 4 vertices, 16 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
-<immutable digraph with 4 vertices, 16 edges>
+<immutable preorder digraph with 4 vertices, 16 edges>
 gap> gr1 = gr2;
 true
 gap> gr1 = DigraphReflexiveTransitiveClosure(DigraphMutableCopy(gr));
@@ -793,21 +793,21 @@ gap> gr := Digraph(adj);
 gap> IsAcyclicDigraph(gr);
 true
 gap> gr1 := DigraphTransitiveClosure(gr);
-<immutable digraph with 7 vertices, 18 edges>
+<immutable transitive digraph with 7 vertices, 18 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(DigraphImmutableCopy(gr));
-<immutable digraph with 7 vertices, 25 edges>
+<immutable preorder digraph with 7 vertices, 25 edges>
 gap> gr := Digraph([[2], [3], [4], [3]]);
 <immutable digraph with 4 vertices, 4 edges>
 gap> gr1 := DigraphTransitiveClosure(gr);
-<immutable digraph with 4 vertices, 9 edges>
+<immutable transitive digraph with 4 vertices, 9 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
-<immutable digraph with 4 vertices, 11 edges>
+<immutable preorder digraph with 4 vertices, 11 edges>
 gap> gr := Digraph([[2], [3], [4, 5], [], [5]]);
 <immutable digraph with 5 vertices, 5 edges>
 gap> gr1 := DigraphTransitiveClosure(gr);
-<immutable digraph with 5 vertices, 10 edges>
+<immutable transitive digraph with 5 vertices, 10 edges>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr);
-<immutable digraph with 5 vertices, 14 edges>
+<immutable preorder digraph with 5 vertices, 14 edges>
 gap> gr := Digraph(
 > [[1, 4, 5, 6, 7, 8], [5, 7, 8, 9, 10, 13], [2, 4, 6, 10],
 >  [7, 9, 10, 11], [7, 9, 10, 12, 13, 15], [7, 8, 10, 13], [10, 11],
@@ -815,7 +815,7 @@ gap> gr := Digraph(
 >  [7, 13, 14], [10, 11], [7, 10, 11], [7, 13, 16], [7, 10, 11]]);
 <immutable digraph with 16 vertices, 60 edges>
 gap> trans1 := DigraphTransitiveClosure(gr);
-<immutable digraph with 16 vertices, 98 edges>
+<immutable transitive digraph with 16 vertices, 98 edges>
 gap> trans2 := DigraphByAdjacencyMatrix(DIGRAPH_TRANS_CLOSURE(gr));
 <immutable digraph with 16 vertices, 98 edges>
 gap> trans1 = trans2;
@@ -829,7 +829,7 @@ true
 gap> IS_TRANSITIVE_DIGRAPH(trans);
 true
 gap> reflextrans1 := DigraphReflexiveTransitiveClosure(gr);
-<immutable digraph with 16 vertices, 112 edges>
+<immutable preorder digraph with 16 vertices, 112 edges>
 gap> reflextrans2 :=
 > DigraphByAdjacencyMatrix(DIGRAPH_REFLEX_TRANS_CLOSURE(gr));
 <immutable digraph with 16 vertices, 112 edges>
@@ -858,9 +858,9 @@ gap> rd := ReducedDigraph(gr);
 gap> DigraphVertexLabels(rd);
 [ 1, 2, 4, 6, 7 ]
 gap> gr := CompleteDigraph(10);
-<immutable digraph with 10 vertices, 90 edges>
+<immutable complete digraph with 10 vertices>
 gap> rd := ReducedDigraph(gr);
-<immutable digraph with 10 vertices, 90 edges>
+<immutable complete digraph with 10 vertices>
 gap> rd = gr;
 true
 gap> DigraphVertexLabels(gr) = DigraphVertexLabels(rd);
@@ -952,7 +952,7 @@ gap> gr := Digraph([[2], [1, 3], [4], [3]]);;
 gap> AsTransformation(gr);
 fail
 gap> gr := AsDigraph(Transformation([1, 1, 1]), 5);
-<immutable digraph with 5 vertices, 5 edges>
+<immutable functional digraph with 5 vertices>
 gap> DigraphEdges(gr);
 [ [ 1, 1 ], [ 2, 1 ], [ 3, 1 ], [ 4, 4 ], [ 5, 5 ] ]
 gap> AsTransformation(gr);
@@ -1171,7 +1171,7 @@ gap> gr := Digraph([[2], []]);
 gap> DigraphOddGirth(gr);
 infinity
 gap> gr := CycleDigraph(4);
-<immutable digraph with 4 vertices, 4 edges>
+<immutable cycle digraph with 4 vertices>
 gap> DigraphOddGirth(gr);
 infinity
 gap> gr := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(3));;
@@ -1181,7 +1181,7 @@ gap> for i in [1 .. 50] do
 gap> DigraphOddGirth(gr);
 3
 gap> G := Digraph(IsMutableDigraph, [[]]);
-<mutable digraph with 1 vertex, 0 edges>
+<mutable empty digraph with 1 vertex>
 gap> for i in [2 .. 200] do
 >   DigraphAddVertex(G, i);
 >   DigraphAddEdges(G, [[1, i], [i, 1]]);
@@ -1196,13 +1196,13 @@ gap> DigraphOddGirth(D);
 
 # DigraphMycielskian
 gap> D1 := DigraphSymmetricClosure(CycleDigraph(2));
-<immutable digraph with 2 vertices, 2 edges>
+<immutable cycle digraph with 2 vertices>
 gap> D2 := DigraphSymmetricClosure(CycleDigraph(5));
-<immutable digraph with 5 vertices, 10 edges>
+<immutable symmetric digraph with 5 vertices, 10 edges>
 gap> IsIsomorphicDigraph(DigraphMycielskian(D1), D2);
 true
 gap> D := DigraphSymmetricClosure(CayleyDigraph(DihedralGroup(8)));
-<immutable digraph with 8 vertices, 32 edges>
+<immutable symmetric digraph with 8 vertices, 32 edges>
 gap> ChromaticNumber(D);
 4
 gap> D := DigraphMycielskian(D);
@@ -1216,13 +1216,13 @@ gap> D2 := Digraph([[], [3, 4], [2, 5], [2, 6], [3, 6], [4, 5, 7], [6]]);
 gap> IsIsomorphicDigraph(DigraphMycielskian(D1), D2);
 true
 gap> D := DigraphSymmetricClosure(CycleDigraph(5));
-<immutable digraph with 5 vertices, 10 edges>
+<immutable symmetric digraph with 5 vertices, 10 edges>
 gap> D := DigraphMutableCopy(D);
 <mutable digraph with 5 vertices, 10 edges>
 gap> DigraphMycielskian(D);
 <mutable digraph with 11 vertices, 40 edges>
 gap> D := DigraphSymmetricClosure(Digraph([[1, 2], [1]]));
-<immutable digraph with 2 vertices, 3 edges>
+<immutable symmetric digraph with 2 vertices, 3 edges>
 gap> D := DigraphMutableCopy(D);
 <mutable digraph with 2 vertices, 3 edges>
 gap> DigraphMycielskian(D);
@@ -1262,7 +1262,7 @@ gap> DigraphDegeneracy(gr);
 gap> DigraphDegeneracyOrdering(gr);
 [ 5, 4, 3, 2, 1 ]
 gap> gr := DigraphSymmetricClosure(ChainDigraph(4));
-<immutable digraph with 4 vertices, 6 edges>
+<immutable symmetric digraph with 4 vertices, 6 edges>
 gap> DigraphDegeneracy(gr);
 1
 gap> DigraphDegeneracyOrdering(gr);
@@ -1273,7 +1273,7 @@ gap> DigraphDegeneracy(gr);
 1
 gap> gr := DigraphSymmetricClosure(Digraph(
 > [[2, 5], [3, 5], [4], [5, 6], [], []]));
-<immutable digraph with 6 vertices, 14 edges>
+<immutable symmetric digraph with 6 vertices, 14 edges>
 gap> DigraphDegeneracy(gr);
 2
 gap> DigraphDegeneracyOrdering(gr);
@@ -1315,17 +1315,17 @@ gap> gr := Digraph([[2, 3], [1, 3], [4], [4]]);
 gap> IsSymmetricDigraph(gr);
 false
 gap> gr2 := MaximalSymmetricSubdigraph(gr);
-<immutable digraph with 4 vertices, 3 edges>
+<immutable symmetric digraph with 4 vertices, 3 edges>
 gap> OutNeighbours(gr2);
 [ [ 2 ], [ 1 ], [  ], [ 4 ] ]
 gap> gr2 := MaximalSymmetricSubdigraphWithoutLoops(gr);
-<immutable digraph with 4 vertices, 2 edges>
+<immutable symmetric digraph with 4 vertices, 2 edges>
 gap> OutNeighbours(gr2);
 [ [ 2 ], [ 1 ], [  ], [  ] ]
 gap> gr := Digraph([[2, 2], [1, 1]]);
 <immutable multidigraph with 2 vertices, 4 edges>
 gap> gr2 := MaximalSymmetricSubdigraphWithoutLoops(gr);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable symmetric digraph with 2 vertices, 2 edges>
 gap> OutNeighbours(gr2);
 [ [ 2 ], [ 1 ] ]
 gap> gr := Digraph([[1, 2, 2], [1, 1]]);
@@ -1333,7 +1333,7 @@ gap> gr := Digraph([[1, 2, 2], [1, 1]]);
 gap> IsSymmetricDigraph(gr);
 true
 gap> gr3 := MaximalSymmetricSubdigraphWithoutLoops(gr);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable symmetric digraph with 2 vertices, 2 edges>
 gap> gr2 = gr3;
 true
 gap> gr := Digraph([[2, 3], [1], [1, 3]]);
@@ -1341,13 +1341,13 @@ gap> gr := Digraph([[2, 3], [1], [1, 3]]);
 gap> IsSymmetricDigraph(gr);
 true
 gap> gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
-<immutable digraph with 3 vertices, 4 edges>
+<immutable symmetric digraph with 3 vertices, 4 edges>
 gap> OutNeighbours(gr);
 [ [ 2, 3 ], [ 1 ], [ 1 ] ]
 
 #  RepresentativeOutNeighbours
 gap> gr := CycleDigraph(5);
-<immutable digraph with 5 vertices, 5 edges>
+<immutable cycle digraph with 5 vertices>
 gap> RepresentativeOutNeighbours(gr);
 [ [ 2 ] ]
 gap> DigraphOrbitReps(gr);
@@ -1473,7 +1473,7 @@ gap> gr := Digraph([[2, 4, 7, 3], [3, 5, 8, 1], [1, 6, 9, 2],
 gap> ChromaticNumber(gr);
 3
 gap> gr := DigraphSymmetricClosure(ChainDigraph(5));
-<immutable digraph with 5 vertices, 8 edges>
+<immutable symmetric digraph with 5 vertices, 8 edges>
 gap> DigraphGreedyColoring(gr);;
 gap> ChromaticNumber(gr);
 2
@@ -1482,15 +1482,15 @@ gap> gr := DigraphFromGraph6String("KmKk~K??G@_@");
 gap> ChromaticNumber(gr);
 4
 gap> gr := CycleDigraph(7);
-<immutable digraph with 7 vertices, 7 edges>
+<immutable cycle digraph with 7 vertices>
 gap> ChromaticNumber(gr);
 3
 gap> gr := CycleDigraph(71);
-<immutable digraph with 71 vertices, 71 edges>
+<immutable cycle digraph with 71 vertices>
 gap> ChromaticNumber(gr);
 3
 gap> gr := CycleDigraph(1001);
-<immutable digraph with 1001 vertices, 1001 edges>
+<immutable cycle digraph with 1001 vertices>
 gap> ChromaticNumber(gr);
 3
 gap> a := DigraphRemoveEdges(CompleteDigraph(50), [[1, 2], [2, 1]]);;
@@ -1544,7 +1544,7 @@ gap> NrSpanningTrees(Digraph([[2, 3, 4], [1, 5], [1, 5], [1, 5], [2, 3, 4]]));
 
 #  UndirectedSpanningTree and UndirectedSpanningForest
 gap> gr := EmptyDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> tree := UndirectedSpanningTree(gr);
 fail
 gap> forest := UndirectedSpanningForest(gr);
@@ -1552,11 +1552,11 @@ fail
 gap> UndirectedSpanningForest(EmptyDigraph(IsMutableDigraph, 0));
 fail
 gap> gr := EmptyDigraph(1);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> tree := UndirectedSpanningTree(gr);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> forest := UndirectedSpanningForest(gr);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsUndirectedSpanningTree(gr, gr);
 true
 gap> IsUndirectedSpanningTree(gr, forest);
@@ -1564,11 +1564,11 @@ true
 gap> gr = forest;
 true
 gap> gr := EmptyDigraph(2);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> tree := UndirectedSpanningTree(gr);
 fail
 gap> forest := UndirectedSpanningForest(gr);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> IsUndirectedTree(forest);
 false
 gap> IsUndirectedSpanningForest(gr, forest);
@@ -1592,7 +1592,7 @@ true
 gap> D := DigraphFromDigraph6String("&I~~~~^Znn~|~~x^|v{");
 <immutable digraph with 10 vertices, 89 edges>
 gap> tree := UndirectedSpanningTree(D);
-<immutable digraph with 10 vertices, 18 edges>
+<immutable symmetric digraph with 10 vertices, 18 edges>
 gap> IsUndirectedSpanningTree(D, tree);
 true
 gap> tree := UndirectedSpanningTree(DigraphMutableCopy(D));
@@ -1692,15 +1692,15 @@ true
 
 #  HamiltonianPath
 gap> g := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> HamiltonianPath(g);
 [  ]
 gap> g := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> HamiltonianPath(g);
 [ 1 ]
 gap> g := Digraph([[], []]);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> HamiltonianPath(g);
 fail
 gap> g := Digraph([[1]]);
@@ -1775,7 +1775,7 @@ gap> IsDigraphMonomorphism(CycleDigraph(10),
 >                          Transformation(HamiltonianPath(g)));
 true
 gap> g := CompleteMultipartiteDigraph([1, 30]);
-<immutable digraph with 31 vertices, 60 edges>
+<immutable complete bipartite digraph with bicomponent sizes 1 and 30>
 gap> HamiltonianPath(g);
 fail
 gap> g := Digraph([[2, 5, 6], [3, 1, 7], [4, 2, 8], [5, 3, 9], [1, 4, 10],
@@ -1784,15 +1784,15 @@ gap> g := Digraph([[2, 5, 6], [3, 1, 7], [4, 2, 8], [5, 3, 9], [1, 4, 10],
 gap> HamiltonianPath(g);
 fail
 gap> g := CompleteMultipartiteDigraph([16, 15]);
-<immutable digraph with 31 vertices, 480 edges>
+<immutable complete bipartite digraph with bicomponent sizes 16 and 15>
 gap> HamiltonianPath(g);
 fail
 gap> g := CompleteMultipartiteDigraph([1, 15, 1, 1, 1, 1, 1, 1]);
-<immutable digraph with 22 vertices, 252 edges>
+<immutable multipartite symmetric digraph with 22 vertices, 252 edges>
 gap> HamiltonianPath(g);
 fail
 gap> g := CycleDigraph(100);
-<immutable digraph with 100 vertices, 100 edges>
+<immutable cycle digraph with 100 vertices>
 gap> HamiltonianPath(g);
 [ 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 
   96, 97, 98, 99, 100, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 
@@ -1801,7 +1801,7 @@ gap> HamiltonianPath(g);
   55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 
   74, 75, 76 ]
 gap> g := CycleDigraph(513);
-<immutable digraph with 513 vertices, 513 edges>
+<immutable cycle digraph with 513 vertices>
 gap> g := DigraphAddEdges(g, [[6, 8], [8, 7], [7, 9]]);
 <immutable digraph with 513 vertices, 516 edges>
 gap> g := DigraphRemoveEdge(g, [6, 7]);
@@ -1858,7 +1858,7 @@ gap> DigraphCore(D);
 gap> DigraphHomomorphism(D, InducedSubdigraph(D, DigraphCore(D)));
 Transformation( [ 1, 3, 2, 3 ] )
 gap> D := CompleteDigraph(10);
-<immutable digraph with 10 vertices, 90 edges>
+<immutable complete digraph with 10 vertices>
 gap> DigraphCore(D);
 [ 1 .. 10 ]
 gap> D := Digraph([[2], [3], [4], [5], [6], [2]]);
@@ -1870,15 +1870,15 @@ gap> D := Digraph([[2], [1], [4, 5], [5], [4]]);
 gap> DigraphCore(D);
 [ 3, 4, 5 ]
 gap> D := EmptyDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphCore(D);
 [  ]
 gap> D := EmptyDigraph(1000);
-<immutable digraph with 1000 vertices, 0 edges>
+<immutable empty digraph with 1000 vertices>
 gap> DigraphCore(D);
 [ 1 ]
 gap> D := EmptyDigraph(IsMutableDigraph, 0);
-<mutable digraph with 0 vertices, 0 edges>
+<mutable empty digraph with 0 vertices>
 gap> for i in [2 .. 15] do
 > DigraphDisjointUnion(D, CycleDigraph(i));
 > od;
@@ -1937,7 +1937,7 @@ gap> DigraphCore(D);
 
 # MaximalAntiSymmetricSubdigraph
 gap> MaximalAntiSymmetricSubdigraph(Digraph([[2, 2], [1]]));
-<immutable digraph with 2 vertices, 1 edge>
+<immutable antisymmetric digraph with 2 vertices, 1 edge>
 gap> MaximalAntiSymmetricSubdigraph(Digraph(IsMutableDigraph, [[2, 2], [1]]));
 <mutable digraph with 2 vertices, 1 edge>
 gap> D := Digraph(IsMutableDigraph, [[1]]);
@@ -1945,33 +1945,33 @@ gap> D := Digraph(IsMutableDigraph, [[1]]);
 gap> MaximalAntiSymmetricSubdigraph(D) = D;
 true
 gap> MaximalAntiSymmetricSubdigraph(NullDigraph(0));
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsAntisymmetricDigraph(DigraphCopy(last));
 true
 gap> MaximalAntiSymmetricSubdigraph(NullDigraph(1));
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsAntisymmetricDigraph(DigraphCopy(last));
 true
 gap> MaximalAntiSymmetricSubdigraph(CompleteDigraph(1));
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsAntisymmetricDigraph(DigraphCopy(last));
 true
 gap> MaximalAntiSymmetricSubdigraph(CompleteBipartiteDigraph(2, 30000));
-<immutable digraph with 30002 vertices, 60000 edges>
+<immutable antisymmetric digraph with 30002 vertices, 60000 edges>
 gap> IsAntisymmetricDigraph(DigraphCopy(last));
 true
 gap> MaximalAntiSymmetricSubdigraph(Digraph([[1, 1, 2, 2], []]));
-<immutable digraph with 2 vertices, 2 edges>
+<immutable antisymmetric digraph with 2 vertices, 2 edges>
 gap> OutNeighbours(last);
 [ [ 1, 2 ], [  ] ]
 gap> MaximalAntiSymmetricSubdigraph(CompleteDigraph(10));
-<immutable digraph with 10 vertices, 45 edges>
+<immutable antisymmetric digraph with 10 vertices, 45 edges>
 gap> D := CompleteDigraph(10);
-<immutable digraph with 10 vertices, 90 edges>
+<immutable complete digraph with 10 vertices>
 gap> MaximalAntiSymmetricSubdigraph(D);
-<immutable digraph with 10 vertices, 45 edges>
+<immutable antisymmetric digraph with 10 vertices, 45 edges>
 gap> MaximalAntiSymmetricSubdigraph(D);
-<immutable digraph with 10 vertices, 45 edges>
+<immutable antisymmetric digraph with 10 vertices, 45 edges>
 
 # CharacteristicPolynomial
 gap> gr := Digraph([
@@ -1984,7 +1984,7 @@ gap> CharacteristicPolynomial(gr);
 x_1^10-3*x_1^9-7*x_1^8-x_1^7+14*x_1^6+x_1^5-26*x_1^4+51*x_1^3-10*x_1^2+18*x_1-\
 30
 gap> gr := CompleteDigraph(5);
-<immutable digraph with 5 vertices, 20 edges>
+<immutable complete digraph with 5 vertices>
 gap> CharacteristicPolynomial(gr);
 x_1^5-10*x_1^3-20*x_1^2-15*x_1-4
 
@@ -2012,7 +2012,7 @@ Error, the argument <D> must be a digraph with no multiple edges,
 
 # AsGraph
 gap> D := NullDigraph(IsMutableDigraph, 3);
-<mutable digraph with 3 vertices, 0 edges>
+<mutable empty digraph with 3 vertices>
 gap> AsGraph(D);
 rec( adjacencies := [ [  ], [  ], [  ] ], group := Group(()), isGraph := true,
   names := [ 1 .. 3 ], order := 3, representatives := [ 1, 2, 3 ], 
@@ -2020,19 +2020,19 @@ rec( adjacencies := [ [  ], [  ], [  ] ], group := Group(()), isGraph := true,
 
 # DigraphSource
 gap> D := NullDigraph(IsMutableDigraph, 3);
-<mutable digraph with 3 vertices, 0 edges>
+<mutable empty digraph with 3 vertices>
 gap> DigraphSource(D);
 [  ]
 gap> DigraphRange(D);
 [  ]
 gap> DigraphSymmetricClosure(NullDigraph(IsMutableDigraph, 1));
-<mutable digraph with 1 vertex, 0 edges>
+<mutable empty digraph with 1 vertex>
 gap> D := Digraph([[2], []]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphSymmetricClosure(D);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable symmetric digraph with 2 vertices, 2 edges>
 gap> DigraphSymmetricClosure(D);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable symmetric digraph with 2 vertices, 2 edges>
 gap> D := Digraph(IsMutableDigraph, [[2, 2], []]);
 <mutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphTransitiveClosure(D);
@@ -2046,25 +2046,25 @@ Error, the argument <D> must be a digraph with no multiple edges,
 gap> D := Digraph([[2], []]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphTransitiveClosure(D);
-<immutable digraph with 2 vertices, 1 edge>
+<immutable transitive digraph with 2 vertices, 1 edge>
 gap> DigraphTransitiveClosure(D);
-<immutable digraph with 2 vertices, 1 edge>
+<immutable transitive digraph with 2 vertices, 1 edge>
 gap> DigraphReflexiveTransitiveClosure(D);
-<immutable digraph with 2 vertices, 3 edges>
+<immutable preorder digraph with 2 vertices, 3 edges>
 gap> DigraphReflexiveTransitiveClosure(D);
-<immutable digraph with 2 vertices, 3 edges>
+<immutable preorder digraph with 2 vertices, 3 edges>
 gap> D := DigraphMutableCopy(DigraphSymmetricClosure(D));
 <mutable digraph with 2 vertices, 2 edges>
 gap> MaximalSymmetricSubdigraphWithoutLoops(D);
 <mutable digraph with 2 vertices, 2 edges>
 gap> MaximalSymmetricSubdigraphWithoutLoops(MakeImmutable(D));
-<immutable digraph with 2 vertices, 2 edges>
+<immutable symmetric digraph with 2 vertices, 2 edges>
 gap> MaximalSymmetricSubdigraphWithoutLoops(D);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable symmetric digraph with 2 vertices, 2 edges>
 gap> D := CycleDigraph(IsMutableDigraph, 10);
 <mutable digraph with 10 vertices, 10 edges>
 gap> UndirectedSpanningForest(D);
-<mutable digraph with 10 vertices, 0 edges>
+<mutable empty digraph with 10 vertices>
 
 #  Digraph(Reflexive)TransitiveReduction
 
@@ -2084,9 +2084,9 @@ Error, not yet implemented for non-topologically sortable digraphs,
 
 # Working examples
 gap> gr1 := ChainDigraph(6);
-<immutable digraph with 6 vertices, 5 edges>
+<immutable chain digraph with 6 vertices>
 gap> gr2 := DigraphReflexiveTransitiveClosure(gr1);
-<immutable digraph with 6 vertices, 21 edges>
+<immutable preorder digraph with 6 vertices, 21 edges>
 gap> DigraphTransitiveReduction(gr2) = gr1;  # trans reduction contains loops
 false
 gap> DigraphReflexiveTransitiveReduction(gr2) = gr1;  # ref trans reduct doesnt
@@ -2096,7 +2096,7 @@ gap> gr3 := DigraphAddEdge(gr1, [3, 3]);
 gap> DigraphHasLoops(gr3);
 true
 gap> gr4 := DigraphTransitiveClosure(gr3);
-<immutable digraph with 6 vertices, 16 edges>
+<immutable transitive digraph with 6 vertices, 16 edges>
 gap> gr2 = gr4;
 false
 gap> DigraphReflexiveTransitiveReduction(gr4) = gr1;

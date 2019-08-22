@@ -15,9 +15,9 @@ gap> DIGRAPHS_StartTest();
 
 #  Display and PrintString and String
 gap> Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> Digraph([[1]]);
 <immutable digraph with 1 vertex, 1 edge>
 gap> Digraph([[2], []]);

@@ -151,7 +151,7 @@ gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [1, fail], [2, 1]);
 Error, the 2nd argument <partition> must be a homogeneous list,
 gap> gr := ChainDigraph(2);
-<immutable digraph with 2 vertices, 1 edge>
+<immutable chain digraph with 2 vertices>
 gap> GeneratorsOfEndomorphismMonoid();
 Error, at least 1 argument expected, found 0,
 gap> GeneratorsOfEndomorphismMonoid(Group(()));
@@ -159,14 +159,14 @@ Error, the 1st argument must be a digraph,
 gap> GeneratorsOfEndomorphismMonoid(gr);
 [ IdentityTransformation ]
 gap> gr := DigraphTransitiveClosure(CompleteDigraph(2));
-<immutable digraph with 2 vertices, 4 edges>
+<immutable transitive digraph with 2 vertices, 4 edges>
 gap> DigraphHasLoops(gr);
 true
 gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 1, 1 ] ) ]
 gap> gr := EmptyDigraph(2);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> GeneratorsOfEndomorphismMonoid(gr, Group(()), Group((1, 2)));
 Error, the 2nd argument must be a homogenous list,
 gap> gr := EmptyDigraph(2);;
@@ -230,7 +230,7 @@ gap> gr := Digraph([[2, 2], []]);
 gap> DigraphColouring(gr, 1);
 fail
 gap> gr := EmptyDigraph(3);
-<immutable digraph with 3 vertices, 0 edges>
+<immutable empty digraph with 3 vertices>
 gap> DigraphColouring(gr, 4);
 fail
 gap> DigraphColouring(gr, 3);
@@ -240,7 +240,7 @@ Transformation( [ 1, 1, 2 ] )
 gap> DigraphColouring(gr, 1);
 Transformation( [ 1, 1, 1 ] )
 gap> gr := CompleteDigraph(3);
-<immutable digraph with 3 vertices, 6 edges>
+<immutable complete digraph with 3 vertices>
 gap> DigraphColouring(gr, 1);
 fail
 gap> DigraphColouring(gr, 2);
@@ -248,7 +248,7 @@ fail
 gap> DigraphColouring(gr, 3);
 IdentityTransformation
 gap> gr := EmptyDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphColouring(gr, 1);
 fail
 gap> DigraphColouring(gr, 2);
@@ -256,7 +256,7 @@ fail
 gap> DigraphColouring(gr, 3);
 fail
 gap> gr := EmptyDigraph(1);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> DigraphColouring(gr, 1);
 IdentityTransformation
 gap> DigraphColouring(gr, 2);
@@ -804,7 +804,7 @@ gap> Length(last);
 gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
 <immutable digraph with 6 vertices, 3 edges>
 gap> gr := DigraphSymmetricClosure(gr);
-<immutable digraph with 6 vertices, 6 edges>
+<immutable symmetric digraph with 6 vertices, 6 edges>
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, 0,
 > [1 .. 6], [], fail, fail);
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
@@ -1068,7 +1068,7 @@ gap> IsDigraphHomomorphism(gr, gr, ());
 Error, the 1st and 2nd arguments <src> and <ran> must be digraphs with no mult\
 iple edges,
 gap> gr := DigraphTransitiveClosure(CompleteDigraph(2));
-<immutable digraph with 2 vertices, 4 edges>
+<immutable transitive digraph with 2 vertices, 4 edges>
 gap> ForAll(GeneratorsOfEndomorphismMonoid(gr),
 >           x -> IsDigraphEndomorphism(gr, x));
 true
@@ -1213,7 +1213,7 @@ false
 
 # IsDigraphColouring
 gap> D := JohnsonDigraph(5, 3);
-<immutable digraph with 10 vertices, 60 edges>
+<immutable symmetric digraph with 10 vertices, 60 edges>
 gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 4, 5, 6, 7]);
 true
 gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 2, 5, 6, 7]);

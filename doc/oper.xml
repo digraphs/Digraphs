@@ -85,7 +85,7 @@ false]]></Example>
 
     <Example><![CDATA[
 gap> gr := CompleteDigraph(4);
-<immutable digraph with 4 vertices, 12 edges>
+<immutable complete digraph with 4 vertices>
 gap> tree := Digraph([[3], [4], [1, 4], [2, 3]]);
 <immutable digraph with 4 vertices, 6 edges>
 gap> IsSubdigraph(gr, tree) and IsUndirectedTree(tree);
@@ -93,7 +93,7 @@ true
 gap> IsUndirectedSpanningTree(gr, tree);
 true
 gap> forest := EmptyDigraph(4);
-<immutable digraph with 4 vertices, 0 edges>
+<immutable empty digraph with 4 vertices>
 gap> IsSubdigraph(gr, forest) and IsUndirectedForest(forest);
 true
 gap> IsUndirectedSpanningForest(gr, forest);
@@ -314,7 +314,7 @@ gap> OutNeighbours(gr2);
     <P/>
     <Example><![CDATA[
 gap> gr := CompleteDigraph(3);
-<immutable digraph with 3 vertices, 6 edges>
+<immutable complete digraph with 3 vertices>
 gap> new := DigraphAddVertex(gr);
 <immutable digraph with 4 vertices, 6 edges>
 gap> DigraphVertices(new);
@@ -341,7 +341,7 @@ gap> DigraphVertexLabels(new);
     labelled according to this list. <P/>
     <Example><![CDATA[
 gap> gr := CompleteDigraph(3);
-<immutable digraph with 3 vertices, 6 edges>
+<immutable complete digraph with 3 vertices>
 gap> new := DigraphAddVertices(gr, 3);
 <immutable digraph with 6 vertices, 6 edges>
 gap> DigraphVertices(new);
@@ -503,7 +503,7 @@ gap> gr := DigraphAddEdges(gr,
 
     <Example><![CDATA[
 gap> gr := CycleDigraph(250000);
-<immutable digraph with 250000 vertices, 250000 edges>
+<immutable cycle digraph with 250000 vertices>
 gap> gr := DigraphRemoveEdges(gr, [[250000, 1]]);
 <immutable digraph with 250000 vertices, 249999 edges>]]></Example>
   </Description>
@@ -525,7 +525,7 @@ gap> gr := DigraphRemoveEdges(gr, [[250000, 1]]);
 
     <Example><![CDATA[
 gap> gr := CycleDigraph(250000);
-<immutable digraph with 250000 vertices, 250000 edges>
+<immutable cycle digraph with 250000 vertices>
 gap> gr := DigraphRemoveEdge(gr, [250000, 1]);
 <immutable digraph with 250000 vertices, 249999 edges>]]></Example>
   </Description>
@@ -835,7 +835,7 @@ gap> DigraphVertices(qr);
 gap> DigraphEdges(qr);
 [ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 3, 1 ] ]
 gap> QuotientDigraph(EmptyDigraph(0), []);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 ]]></Example>
   </Description>
 </ManSection>
@@ -982,7 +982,7 @@ Binary Relation on 4 points
 
 <Example><![CDATA[
 gap> gr := CycleDigraph(10);
-<immutable digraph with 10 vertices, 10 edges>
+<immutable cycle digraph with 10 vertices>
 gap> DigraphEdgeUnion(gr, gr);
 <immutable multidigraph with 10 vertices, 20 edges>
 gap> gr1 := Digraph([[2], [1]]);
@@ -1037,11 +1037,11 @@ true
 
 <Example><![CDATA[
 gap> gr1 := CycleDigraph(3);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable cycle digraph with 3 vertices>
 gap> OutNeighbours(gr1);
 [ [ 2 ], [ 3 ], [ 1 ] ]
 gap> gr2 := CompleteDigraph(3);
-<immutable digraph with 3 vertices, 6 edges>
+<immutable complete digraph with 3 vertices>
 gap> OutNeighbours(gr2);
 [ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ]
 gap> union := DigraphDisjointUnion(gr1, gr2);
@@ -1087,11 +1087,11 @@ gap> OutNeighbours(union);
 
 <Example><![CDATA[
 gap> gr := CompleteDigraph(3);
-<immutable digraph with 3 vertices, 6 edges>
+<immutable complete digraph with 3 vertices>
 gap> IsCompleteDigraph(DigraphJoin(gr, gr));
 true
 gap> gr2 := CycleDigraph(3);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable cycle digraph with 3 vertices>
 gap> DigraphJoin(gr, gr2);
 <immutable digraph with 6 vertices, 27 edges>
 ]]></Example>
@@ -1461,7 +1461,7 @@ fail
     <A>digraph</A>.
     <Example><![CDATA[
 gap> D := CompleteDigraph(6);
-<immutable digraph with 6 vertices, 30 edges>
+<immutable complete digraph with 6 vertices>
 gap> D := DigraphRemoveEdges(D, [[1, 2], [2, 1]]);
 <immutable digraph with 6 vertices, 28 edges>
 gap> closure := DigraphClosure(D, 6);

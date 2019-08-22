@@ -129,7 +129,11 @@ function(filt, list)
   local D;
   D := MakeImmutable(CompleteMultipartiteDigraph(IsMutableDigraph, list));
   SetIsSymmetricDigraph(D, true);
-  SetIsBipartiteDigraph(D, Length(list) = 2);
+  SetIsCompleteBipartiteDigraph(D, Length(list) = 2);
+  if Length(list) = 2 then
+    SetDigraphBicomponents(D, [[1 .. list[1]], [list[1] + 1 .. Sum(list)]]);
+  fi;
+  SetIsMultipartiteDigraph(D, Length(list) > 2);
   return D;
 end);
 
@@ -157,6 +161,7 @@ InstallMethod(ChainDigraphCons,
 function(filt, n)
   local D;
   D := MakeImmutable(ChainDigraphCons(IsMutableDigraph, n));
+  SetIsChainDigraph(D, true);
   SetIsTransitiveDigraph(D, n = 2);
   SetDigraphHasLoops(D, false);
   SetIsAcyclicDigraph(D, true);
@@ -241,6 +246,7 @@ function(filt, n)
     SetDigraphHasLoops(D, false);
   fi;
   SetIsAcyclicDigraph(D, false);
+  SetIsCycleDigraph(D, true);
   SetIsEmptyDigraph(D, false);
   SetIsMultiDigraph(D, false);
   SetDigraphNrEdges(D, n);

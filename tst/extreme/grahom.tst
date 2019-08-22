@@ -147,7 +147,7 @@ false
 
 # CompleteDigraph (with no loops) has no singular endomorphisms
 gap> gr := CompleteDigraph(25);
-<immutable digraph with 25 vertices, 600 edges>
+<immutable complete digraph with 25 vertices>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
       18, 19, 20, 21, 22, 23, 24, 25, 1 ] ), Transformation( [ 2, 1 ] ), 
@@ -196,7 +196,7 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 
 # EmptyDigraph(n) has endomorphism monoid T_n
 gap> gr := EmptyDigraph(5);
-<immutable digraph with 5 vertices, 0 edges>
+<immutable empty digraph with 5 vertices>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> Size(Semigroup(gens)) = 5 ^ 5;
 true
@@ -206,7 +206,7 @@ true
 
 # ChainDigraph (with no loops) has no singular endomorphisms
 gap> gr := ChainDigraph(20);
-<immutable digraph with 20 vertices, 19 edges>
+<immutable chain digraph with 20 vertices>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 [ IdentityTransformation ]
 
@@ -214,7 +214,7 @@ gap> gens := GeneratorsOfEndomorphismMonoid(gr);
 # is equal to, or one more than, the image of the previous point
 gap> n := 12;;
 gap> D := DigraphAddAllLoops(ChainDigraph(n));
-<immutable digraph with 12 vertices, 23 edges>
+<immutable reflexive digraph with 12 vertices, 23 edges>
 gap> S := GeneratorsOfEndomorphismMonoid(D);;
 gap> if IsBound(SmallSemigroupGeneratingSet) then 
 > S := SmallSemigroupGeneratingSet(S);;
@@ -229,7 +229,7 @@ true
 # transformations
 gap> n := 6;;
 gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(n));
-<immutable digraph with 6 vertices, 21 edges>
+<immutable preorder digraph with 6 vertices, 21 edges>
 gap> S := GeneratorsOfEndomorphismMonoid(D);;
 gap> if IsBound(SmallSemigroupGeneratingSet) then 
 > S := SmallSemigroupGeneratingSet(S);;
@@ -243,7 +243,7 @@ gap> Size(S);
 
 # CycleDigraph (with no loops) has no singular endomorphisms
 gap> gr := CycleDigraph(20);
-<immutable digraph with 20 vertices, 20 edges>
+<immutable cycle digraph with 20 vertices>
 gap> gens := [];;
 gap> gens := Concatenation(gens, GeneratorsOfEndomorphismMonoid(gr));
 [ Transformation( [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
@@ -311,9 +311,9 @@ gap> GeneratorsOfEndomorphismMonoid(gr);;
 #  HomomorphismDigraphsFinder 1
 # Small example: CompleteDigraph(2) to CompleteDigraph(3)
 gap> gr1 := CompleteDigraph(2);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable complete digraph with 2 vertices>
 gap> gr2 := CompleteDigraph(3);
-<immutable digraph with 3 vertices, 6 edges>
+<immutable complete digraph with 3 vertices>
 gap> func := function(user_param, t)
 >      user_param := user_param ^ t;
 > end;;

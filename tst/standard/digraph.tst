@@ -107,7 +107,7 @@ gap> Digraph(2, [1], [2, 2]);
 Error, the record components 'DigraphSource' and 'DigraphRange' must have equa\
 l length,
 gap> Digraph(5, [], []);
-<immutable digraph with 5 vertices, 0 edges>
+<immutable empty digraph with 5 vertices>
 gap> Digraph(2, "ab", [0, 1]);
 Error, the record component 'DigraphSource' is invalid,
 gap> Digraph(2, [0, 1], "ab");
@@ -239,14 +239,14 @@ Binary Relation on 5 points
 gap> IsEquivalenceRelation(b);
 true
 gap> gr2 := AsDigraph(b);
-<immutable digraph with 5 vertices, 9 edges>
+<immutable equivalence digraph with 5 vertices, 9 edges>
 gap> gr := Digraph([[1, 2], [3], []]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> b := AsBinaryRelation(gr);;
 gap> IsAntisymmetricBinaryRelation(b);
 true
 gap> gr := AsDigraph(b);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable antisymmetric digraph with 3 vertices, 3 edges>
 gap> HasIsAntisymmetricDigraph(gr);
 true
 
@@ -277,9 +277,9 @@ gap> gr := DigraphByEdges([[1, 2]], 1);
 Error, the 1st argument <edges> must not contain values greater than 
 1, the 2nd argument <n>,
 gap> gr := DigraphByEdges([], 3);
-<immutable digraph with 3 vertices, 0 edges>
+<immutable empty digraph with 3 vertices>
 gap> gr := DigraphByEdges([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> gr = EmptyDigraph(0);
 true
 
@@ -349,7 +349,7 @@ false
 gap> AdjacencyMatrix(gr2) = mat;
 true
 gap> DigraphByAdjacencyMatrix([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 
 #  DigraphByAdjacencyMatrix (by a boolean matrix)
 gap> mat := List([1 .. 5], x -> BlistList([1 .. 5], []));;
@@ -418,27 +418,27 @@ gap> gr2 := DigraphByInNeighbours(IsImmutableDigraph, inn);
 gap> f := Transformation([]);
 IdentityTransformation
 gap> gr := AsDigraph(f);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> gr = Digraph([]);
 true
 gap> AsDigraph(f, 10);
-<immutable digraph with 10 vertices, 10 edges>
+<immutable functional digraph with 10 vertices>
 gap> g := Transformation([2, 6, 7, 2, 6, 1, 1, 5]);
 Transformation( [ 2, 6, 7, 2, 6, 1, 1, 5 ] )
 gap> AsDigraph(g);
-<immutable digraph with 8 vertices, 8 edges>
+<immutable functional digraph with 8 vertices>
 gap> AsDigraph(g, -1);
 Error, the 2nd argument <n> should be a non-negative integer,
 gap> AsDigraph(g, 10);
-<immutable digraph with 10 vertices, 10 edges>
+<immutable functional digraph with 10 vertices>
 gap> AsDigraph(g, 6);
 fail
 gap> AsDigraph(g, 7);
-<immutable digraph with 7 vertices, 7 edges>
+<immutable functional digraph with 7 vertices>
 gap> h := Transformation([2, 4, 1, 3, 5]);
 Transformation( [ 2, 4, 1, 3 ] )
 gap> AsDigraph(h);
-<immutable digraph with 4 vertices, 4 edges>
+<immutable functional digraph with 4 vertices>
 gap> AsDigraph(h, 2);
 fail
 
@@ -458,7 +458,7 @@ gap> RandomDigraph("a");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `RandomDigraph' on 1 arguments
 gap> RandomDigraph(4, 0);
-<immutable digraph with 4 vertices, 0 edges>
+<immutable empty digraph with 4 vertices>
 gap> RandomDigraph(10, 1.01);
 Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(10, -0.01);
@@ -481,7 +481,7 @@ gap> RandomDigraph(IsImmutableDigraph, "a");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `RandomDigraph' on 2 arguments
 gap> RandomDigraph(IsImmutableDigraph, 4, 0);
-<immutable digraph with 4 vertices, 0 edges>
+<immutable empty digraph with 4 vertices>
 gap> RandomDigraph(IsImmutableDigraph, 10, 1.01);
 Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(IsImmutableDigraph, 10, -0.01);
@@ -504,7 +504,7 @@ gap> RandomDigraph(IsMutableDigraph, "a");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `RandomDigraph' on 2 arguments
 gap> RandomDigraph(IsMutableDigraph, 4, 0);
-<mutable digraph with 4 vertices, 0 edges>
+<mutable empty digraph with 4 vertices>
 gap> RandomDigraph(IsMutableDigraph, 10, 1.01);
 Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(IsMutableDigraph, 10, -0.01);
@@ -531,9 +531,9 @@ Error, no 1st choice method found for `RandomMultiDigraph' on 2 arguments
 
 #  RandomTournament
 gap> RandomTournament(25);
-<immutable digraph with 25 vertices, 300 edges>
+<immutable tournament with 25 vertices>
 gap> RandomTournament(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> RandomTournament(-1);
 Error, the argument <n> must be a non-negative integer,
 gap> RandomTournament(IsMutableDigraph, 10);
@@ -658,9 +658,9 @@ gap> gr2 := Digraph([[1], [2]]);
 gap> gr1 = gr2;
 false
 gap> gr1 := Digraph([[], [], []]);
-<immutable digraph with 3 vertices, 0 edges>
+<immutable empty digraph with 3 vertices>
 gap> gr2 := Digraph(rec(DigraphNrVertices := 3, DigraphSource := [], DigraphRange := []));
-<immutable digraph with 3 vertices, 0 edges>
+<immutable empty digraph with 3 vertices>
 gap> gr1 = gr2;
 true
 gap> gr1 := Digraph([[1], []]);
@@ -1009,7 +1009,7 @@ true
 
 # Tests for DigraphCopy originally located in digraph.tst
 gap> gr1 := CompleteDigraph(6);
-<immutable digraph with 6 vertices, 30 edges>
+<immutable complete digraph with 6 vertices>
 gap> SetDigraphVertexLabels(gr1, Elements(SymmetricGroup(3)));
 gap> DigraphVertexLabels(gr1);
 [ (), (2,3), (1,2), (1,2,3), (1,3,2), (1,3) ]
@@ -1026,7 +1026,7 @@ gap> HasAdjacencyMatrix(gr2);
 false
 gap> gr1 := EmptyDigraph(0);;
 gap> gr2 := DigraphCopy(gr1);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> String(gr2);
 "Digraph( IsImmutableDigraph, [ ] )"
 gap> PrintString(gr2);
@@ -1039,11 +1039,11 @@ gap> gr := Digraph([[6, 1, 2, 3], [6], [2, 2, 3], [1, 1], [6, 5],
 gap> gr = DigraphCopy(gr);
 true
 gap> gr := CompleteDigraph(100);
-<immutable digraph with 100 vertices, 9900 edges>
+<immutable complete digraph with 100 vertices>
 gap> gr = DigraphCopy(gr);
 true
 gap> gr := CycleDigraph(10000);
-<immutable digraph with 10000 vertices, 10000 edges>
+<immutable cycle digraph with 10000 vertices>
 gap> gr = DigraphCopy(gr);
 true
 gap> SetDigraphVertexLabel(gr, 1, "w");
@@ -1126,25 +1126,25 @@ true
 
 #  DigraphAddAllLoops
 gap> gr := CompleteDigraph(10);
-<immutable digraph with 10 vertices, 90 edges>
+<immutable complete digraph with 10 vertices>
 gap> OutNeighbours(gr)[1];
 [ 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
 gap> gr2 := DigraphAddAllLoops(gr);
-<immutable digraph with 10 vertices, 100 edges>
+<immutable reflexive digraph with 10 vertices, 100 edges>
 gap> OutNeighbours(gr2)[1];
 [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 1 ]
 gap> gr3 := DigraphAddAllLoops(gr);
-<immutable digraph with 10 vertices, 100 edges>
+<immutable reflexive digraph with 10 vertices, 100 edges>
 gap> OutNeighbours(gr3)[1];
 [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 1 ]
 gap> gr := EmptyDigraph(100);
-<immutable digraph with 100 vertices, 0 edges>
+<immutable empty digraph with 100 vertices>
 gap> DigraphAddAllLoops(gr);
-<immutable digraph with 100 vertices, 100 edges>
+<immutable reflexive digraph with 100 vertices, 100 edges>
 gap> gr := Digraph([[1, 2, 3], [2, 2, 2, 2], [5, 1], [1, 2, 3, 4], [5]]);
 <immutable multidigraph with 5 vertices, 14 edges>
 gap> gr2 := DigraphAddAllLoops(gr);
-<immutable multidigraph with 5 vertices, 15 edges>
+<immutable reflexive multidigraph with 5 vertices, 15 edges>
 gap> OutNeighbours(gr2);
 [ [ 1, 2, 3 ], [ 2, 2, 2, 2 ], [ 5, 1, 3 ], [ 1, 2, 3, 4 ], [ 5 ] ]
 
@@ -1205,7 +1205,7 @@ gap> D := DigraphNC(IsMutableDigraph, OutNeighbours(MakeImmutable(D)));
 <mutable digraph with 2 vertices, 2 edges>
 gap> D := DigraphNC(rec(xxx := 1, DigraphRange := [], DigraphSource := [],
 >  DigraphNrVertices := 1000));
-<immutable digraph with 1000 vertices, 0 edges>
+<immutable empty digraph with 1000 vertices>
 gap> IsBound(D!.xxx);
 false
 gap> list := [[1, 2], []];
@@ -1217,15 +1217,15 @@ gap> PrintString(D);
 gap> EvalString(String(D)) = D;
 true
 gap> DigraphByAdjacencyMatrix(IsMutableDigraph, []);
-<mutable digraph with 0 vertices, 0 edges>
+<mutable empty digraph with 0 vertices>
 gap> DigraphByAdjacencyMatrix(IsMutableDigraph, [[true]]);
 <mutable digraph with 1 vertex, 1 edge>
 gap> DigraphByAdjacencyMatrix([[true]]);
 <immutable digraph with 1 vertex, 1 edge>
 gap> DigraphByEdges(IsMutableDigraph, []);
-<mutable digraph with 0 vertices, 0 edges>
+<mutable empty digraph with 0 vertices>
 gap> DigraphByEdges(IsMutableDigraph, [], 10);
-<mutable digraph with 10 vertices, 0 edges>
+<mutable empty digraph with 10 vertices>
 gap> D := AsDigraph(IsMutableDigraph, Transformation([1, 1, 2]));
 <mutable digraph with 3 vertices, 3 edges>
 gap> IsFunctionalDigraph(D);
@@ -1233,7 +1233,7 @@ true
 
 #  AsBinaryRelation
 gap> gr := EmptyDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> AsBinaryRelation(gr);
 Error, the argument <D> must be a digraph with at least 1 vertex,
 gap> gr := Digraph([[1, 1]]);
@@ -1296,9 +1296,19 @@ gap> HasIsAntisymmetricBinaryRelation(rel3);
 true
 
 # AsSemigroup, AsMonoid (for IsPartialPermX and a digraph)
-gap> di := Digraph([[1], [1, 2], [1, 2, 3], [1, 2, 3, 4]]);;
+gap> di := Digraph(IsMutableDigraph, [[1], [1, 2], [1, 2, 3], [1, 2, 3, 4]]);
+<mutable digraph with 4 vertices, 10 edges>
 gap> S := AsSemigroup(IsPartialPermSemigroup, di);;
 gap> IsInverseSemigroup(S) and ForAll(Elements(S), IsIdempotent);
+true
+gap> di;
+<mutable digraph with 4 vertices, 10 edges>
+gap> di := DigraphMutableCopy(DigraphFromDigraph6String("&H_E?gF_~GH~n~?G"));
+<mutable digraph with 9 vertices, 36 edges>
+gap> S := AsSemigroup(IsPartialPermSemigroup, di);;
+gap> IsInverseSemigroup(S) and ForAll(Elements(S), IsIdempotent);
+true
+gap> di = DigraphFromDigraph6String("&H_E?gF_~GH~n~?G");
 true
 gap> di := Digraph([[1], [1, 2], [1, 3], [1, 2, 3, 4]]);;
 gap> S := AsSemigroup(IsPartialPermSemigroup, di);;
@@ -1359,8 +1369,10 @@ gap> G1 := SymmetricGroup(4);;
 gap> G2 := SymmetricGroup(2);;
 gap> G3 := SymmetricGroup(3);;
 gap> G4 := SymmetricGroup(4);;
-gap> gr := Digraph([[1, 3], [2, 3], [3]]);;
-gap> gr2 := Digraph([[1, 3], [2, 3], [3], [1, 2, 3, 4]]);;
+gap> gr := Digraph(IsMutableDigraph, [[1, 3], [2, 3], [3]]);
+<mutable digraph with 3 vertices, 5 edges>
+gap> gr2 := Digraph([[1, 3], [2, 3], [3], [1, 2, 3, 4]]);
+<immutable digraph with 4 vertices, 9 edges>
 gap> sgn := function(x)
 > if SignPerm(x) = 1 then
 > return ();
@@ -1371,6 +1383,8 @@ gap> hom13 := GroupHomomorphismByFunction(G1, G3, sgn);;
 gap> hom23 := GroupHomomorphismByFunction(G2, G3, sgn);;
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr, [G1, G2, G3], [[1, 3, hom13],
 > [2, 3, hom23]]);;
+gap> gr;
+<mutable digraph with 3 vertices, 5 edges>
 gap> Size(T);
 32
 gap> D := GreensDClasses(T);;
@@ -1511,21 +1525,114 @@ the reflexive transitive reduction of the second argument,
 
 # MakeImmutable
 gap> D := NullDigraph(IsMutableDigraph, 10);
-<mutable digraph with 10 vertices, 0 edges>
+<mutable empty digraph with 10 vertices>
 gap> MakeImmutable(D);
-<immutable digraph with 10 vertices, 0 edges>
+<immutable empty digraph with 10 vertices>
 
 # 
 gap> D := NullDigraph(10);
-<immutable digraph with 10 vertices, 0 edges>
+<immutable empty digraph with 10 vertices>
 gap> D := Graph(D);
 rec( adjacencies := [ [  ] ], group := Sym( [ 1 .. 10 ] ), isGraph := true, 
   names := [ 1 .. 10 ], order := 10, representatives := [ 1 ], 
   schreierVector := [ -1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ] )
 gap> DigraphCons(IsImmutableDigraph, D);
-<immutable digraph with 10 vertices, 0 edges>
+<immutable empty digraph with 10 vertices>
 gap> Digraph(IsImmutableDigraph, D);
-<immutable digraph with 10 vertices, 0 edges>
+<immutable empty digraph with 10 vertices>
+
+# ViewString
+gap> CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> ChainDigraph(3);
+<immutable chain digraph with 3 vertices>
+gap> CompleteDigraph(3);
+<immutable complete digraph with 3 vertices>
+gap> CompleteBipartiteDigraph(3, 2);
+<immutable complete bipartite digraph with bicomponent sizes 3 and 2>
+gap> D := Digraph([[1, 2], [2]]);;
+gap> IsLatticeDigraph(D);;
+gap> D;
+<immutable lattice digraph with 2 vertices, 3 edges>
+gap> D := Digraph([[1, 2], [2]]);;
+gap> IsMeetSemilatticeDigraph(D);;
+gap> D;
+<immutable meet semilattice digraph with 2 vertices, 3 edges>
+gap> D := Digraph([[1, 2], [2]]);;
+gap> IsJoinSemilatticeDigraph(D);;
+gap> D;
+<immutable join semilattice digraph with 2 vertices, 3 edges>
+gap> D := Digraph([[2], [3], [1]]);;
+gap> IsStronglyConnectedDigraph(D);;
+gap> D;
+<immutable strongly connected digraph with 3 vertices, 3 edges>
+gap> D := Digraph([[2, 3], [4], [4], []]);;
+gap> IsBiconnectedDigraph(D);;
+gap> D;
+<immutable biconnected digraph with 4 vertices, 4 edges>
+gap> D := Digraph([[2], [3], []]);;
+gap> IsConnectedDigraph(D);;
+gap> D;
+<immutable connected digraph with 3 vertices, 2 edges>
+gap> CompleteMultipartiteDigraph([3, 4, 5]);
+<immutable multipartite symmetric digraph with 12 vertices, 94 edges>
+gap> D := Digraph([[2], [3], []]);;
+gap> IsBipartiteDigraph(D);;
+gap> D;
+<immutable bipartite digraph with bicomponent sizes 2 and 1>
+gap> D := Digraph([[2], [3], [1]]);;
+gap> IsVertexTransitive(D);;
+gap> D;
+<immutable vertex-transitive digraph with 3 vertices, 3 edges>
+gap> IsEdgeTransitive(D);;
+gap> D;
+<immutable edge- and vertex-transitive digraph with 3 vertices, 3 edges>
+gap> D := Digraph([[2], [3], [1]]);;
+gap> IsEdgeTransitive(D);;
+gap> D;
+<immutable edge-transitive digraph with 3 vertices, 3 edges>
+gap> D := Digraph([[2, 3], [1, 3], [1, 2]]);;
+gap> IsOutRegularDigraph(D);;
+gap> D;
+<immutable out-regular digraph with 3 vertices, 6 edges>
+gap> IsInRegularDigraph(D);;
+gap> D;
+<immutable regular digraph with 3 vertices, 6 edges>
+gap> D := Digraph([[2, 3], [1, 3], [1, 2]]);;
+gap> IsInRegularDigraph(D);;
+gap> D;
+<immutable in-regular digraph with 3 vertices, 6 edges>
+gap> D := Digraph([[2], [3], []]);;
+gap> IsAcyclicDigraph(D);;
+gap> D;
+<immutable acyclic digraph with 3 vertices, 2 edges>
+gap> D := Digraph([[1, 2], [2]]);;
+gap> IsPartialOrderDigraph(D);;
+gap> D;
+<immutable partial order digraph with 2 vertices, 3 edges>
+gap> D := Digraph([[1, 2], [2]]);;
+gap> IsPreorderDigraph(D);;
+gap> D;
+<immutable preorder digraph with 2 vertices, 3 edges>
+gap> D := Digraph([[2], [1]]);;
+gap> IsSymmetricDigraph(D);;
+gap> D;
+<immutable symmetric digraph with 2 vertices, 2 edges>
+gap> D := Digraph([[1, 2], [2]]);;
+gap> IsTransitiveDigraph(D);;
+gap> D;
+<immutable transitive digraph with 2 vertices, 3 edges>
+gap> D := Digraph([[2], [1]]);;
+gap> IsEulerianDigraph(D);;
+gap> D;
+<immutable Eulerian digraph with 2 vertices, 2 edges>
+gap> IsHamiltonianDigraph(D);;
+gap> D;
+<immutable Eulerian and Hamiltonian digraph with 2 vertices, 2 edges>
+gap> D := Digraph([[2], [1]]);;
+gap> IsHamiltonianDigraph(D);;
+gap> D;
+<immutable Hamiltonian digraph with 2 vertices, 2 edges>
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
