@@ -921,7 +921,7 @@ function(super, sub)
     return false;
   fi;
 
-  sym := MaximalSymmetricSubdigraph(DigraphImmutableCopyIfMutable(super));
+  sym := MaximalSymmetricSubdigraph(DigraphMutableCopyIfMutable(super));
 
   if not IsSubdigraph(sym, sub) then
     return false;
@@ -940,7 +940,7 @@ end);
 InstallMethod(IsUndirectedSpanningTree, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(super, sub)
-  super := DigraphImmutableCopyIfMutable(super);
+  super := DigraphMutableCopyIfMutable(super);
   return IsConnectedDigraph(MaximalSymmetricSubdigraph(super))
     and IsUndirectedSpanningForest(super, sub);
 end);

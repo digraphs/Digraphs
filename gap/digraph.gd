@@ -40,9 +40,11 @@ DeclareOperation("DigraphNC", [IsDenseList]);
 
 # 3.  Digraph copies . . .
 DeclareOperation("DigraphMutableCopyIfImmutable", [IsDigraph]);
+DeclareOperation("DigraphMutableCopyIfMutable", [IsDigraph]);
 DeclareOperation("DigraphMutableCopy", [IsDigraph]);
 DeclareOperation("DigraphImmutableCopy", [IsDigraph]);
 DeclareOperation("DigraphImmutableCopyIfMutable", [IsDigraph]);
+DeclareOperation("DigraphImmutableCopyIfImmutable", [IsDigraph]);
 DeclareOperation("DigraphCopySameMutability", [IsDigraph]);
 DeclareSynonym("DigraphCopy", DigraphCopySameMutability);
 

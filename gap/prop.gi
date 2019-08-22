@@ -73,7 +73,7 @@ function(D)
     return false;
   fi;
   topo := Reversed(DigraphTopologicalSort(D));
-  D := OnDigraphs(DigraphImmutableCopyIfMutable(D), PermList(topo) ^ -1);
+  D := OnDigraphs(DigraphMutableCopyIfMutable(D), PermList(topo) ^ -1);
   list := InNeighboursMutableCopy(D);
   Apply(list, Set);
   return DIGRAPHS_IsMeetJoinSemilatticeDigraph(list);
@@ -400,7 +400,7 @@ function(D)
     return false;
   fi;
 
-  D := DigraphImmutableCopyIfMutable(D);
+  D := DigraphMutableCopyIfMutable(D);
 
   if IsMultiDigraph(D) then
     D := DigraphRemoveAllMultipleEdges(D);

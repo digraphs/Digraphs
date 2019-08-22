@@ -110,7 +110,7 @@ function(arg)
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
   fi;
-  arg[1] := DigraphImmutableCopyIfMutable(arg[1]);
+  arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   return CallFuncList(DIGRAPHS_Clique,
                       Concatenation([true],
@@ -125,7 +125,7 @@ function(arg)
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
   fi;
-  arg[1] := DigraphImmutableCopyIfMutable(arg[1]);
+  arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   return CallFuncList(DIGRAPHS_Clique,
                       Concatenation([false],
@@ -142,7 +142,7 @@ function(arg)
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
   fi;
-  arg[1] := DigraphImmutableCopyIfMutable(arg[1]);
+  arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   return CallFuncList(DigraphCliquesReps, arg);
 end);
@@ -156,7 +156,7 @@ function(arg)
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
   fi;
-  arg[1] := DigraphImmutableCopyIfMutable(arg[1]);
+  arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   return CallFuncList(DigraphCliques, arg);
 end);
@@ -179,7 +179,7 @@ function(arg)
     return DigraphMaximalIndependentSetsRepsAttr(arg[1]);
   fi;
   D      := arg[1];
-  arg[1] := DigraphImmutableCopyIfMutable(arg[1]);
+  arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   out    := CallFuncList(DigraphMaximalCliquesReps, arg);
   # Store the result if appropriate
@@ -207,7 +207,7 @@ function(arg)
     return DigraphMaximalIndependentSetsAttr(arg[1]);
   fi;
   D      := arg[1];
-  arg[1] := DigraphImmutableCopyIfMutable(arg[1]);
+  arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
   out := CallFuncList(DigraphMaximalCliques, arg);
   # Store the result if appropriate
@@ -313,7 +313,7 @@ function(arg)
 
   # Do a greedy search to find a clique of <D> containing <include> and
   # excluding <exclude> (which is necessarily maximal if <exclude> is empty)
-  D := MaximalSymmetricSubdigraph(DigraphImmutableCopyIfMutable(D));
+  D := MaximalSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
   out := OutNeighbours(D);
   try := Difference(DigraphVertices(D), Concatenation(include, exclude));
   include_copy := ShallowCopy(include);
@@ -511,7 +511,7 @@ function(arg)
       return DigraphMaximalCliquesAttr(D);
     fi;
     cliques := DigraphMaximalCliquesReps(D);
-    sub := DigraphImmutableCopyIfMutable(D);
+    sub := DigraphMutableCopyIfMutable(D);
     sub := MaximalSymmetricSubdigraphWithoutLoops(sub);
     G := AutomorphismGroup(sub);
     if IsTrivial(G) then
@@ -591,7 +591,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
   fi;
 
   # Investigate whether <include> and <exclude> are invariant under <grp>
-  sub := DigraphImmutableCopyIfMutable(digraph);
+  sub := DigraphMutableCopyIfMutable(digraph);
   sub := MaximalSymmetricSubdigraphWithoutLoops(sub);
   group := AutomorphismGroup(sub);
 
@@ -691,7 +691,8 @@ function(D, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     hook := Add;
   fi;
 
-  D := MaximalSymmetricSubdigraphWithoutLoops(DigraphImmutableCopyIfMutable(D));
+  D := MaximalSymmetricSubdigraphWithoutLoops(DigraphMutableCopyIfMutable(D));
+  MakeImmutable(D);
   vtx := DigraphVertices(D);
 
   invariant_inc := Length(inc_var) = 0;

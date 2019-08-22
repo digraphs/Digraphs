@@ -221,7 +221,7 @@ function(D)
 
   # Quotient by the strongly connected components to get a partial order
   # D and draw this without loops or edges implied by transitivity.
-  D      := DigraphImmutableCopyIfMutable(D);
+  D      := DigraphMutableCopyIfMutable(D);
   comps  := DigraphStronglyConnectedComponents(D).comps;
   quo    := DigraphRemoveAllMultipleEdges(QuotientDigraph(D, comps));
   red    := DigraphReflexiveTransitiveReduction(quo);
