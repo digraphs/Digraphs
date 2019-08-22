@@ -62,7 +62,8 @@ end);
 
 InstallMethod(DigraphAddVertices, "for an immutable digraph and list",
 [IsImmutableDigraph, IsList],
-{D, labels} -> MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), labels)));
+{D, labels} -> MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D),
+                                                labels)));
 
 InstallMethod(DigraphAddVertices, "for a mutable digraph and an integer",
 [IsMutableDigraph, IsInt],
@@ -113,21 +114,21 @@ end);
 InstallMethod(DigraphRemoveVertex,
 "for an immutable digraph and positive integer",
 [IsImmutableDigraph, IsPosInt],
-{D, m} -> MakeImmutable(DigraphRemoveVertex(DigraphMutableCopy(D), m)));
+function(D, u)
+  if u > DigraphNrVertices(D) then
+    return D;
+  fi;
+  return MakeImmutable(DigraphRemoveVertex(DigraphMutableCopy(D), u));
+end);
 
 InstallMethod(DigraphRemoveVertices, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
 function(D, list)
   local v;
-  if not IsDuplicateFreeList(list) then
+  if not IsDuplicateFreeList(list) or not ForAll(list, IsPosInt) then
     ErrorNoReturn("the 2nd argument <list> must be a ",
-                  "duplicate-free list,");
-  elif not ForAll(list, IsPosInt) then
-    ErrorNoReturn("the 2nd argument <list> must be a list ",
-                  "consisting of positive integers,");
-  fi;
-
-  if not IsMutable(list) then
+                  "duplicate-free list of positive integers,");
+  elif not IsMutable(list) then
     list := ShallowCopy(list);
   fi;
   # The next line is essential since otherwise removing the 1st node,
@@ -142,10 +143,7 @@ end);
 
 InstallMethod(DigraphRemoveVertices, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
-function(D, list)
-  D := DigraphRemoveVertices(DigraphMutableCopy(D), list);
-  return MakeImmutable(D);
-end);
+{D, list} -> MakeImmutable(DigraphRemoveVertices(DigraphMutableCopy(D), list)));
 
 #############################################################################
 # 2. Adding and removing edges
@@ -172,7 +170,9 @@ end);
 InstallMethod(DigraphAddEdge,
 "for an immutable digraph, a positive integer, and a positive integer",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-{D, src, ran} -> MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran)));
+function(D, src, ran)
+  return MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran));
+end);
 
 InstallMethod(DigraphAddEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -228,8 +228,7 @@ InstallMethod(DigraphRemoveEdge,
 "for a immutable digraph, a positive integer, and a positive integer",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(D, src, ran)
-  D := DigraphRemoveEdge(DigraphMutableCopy(D), src, ran);
-  return MakeImmutable(D);
+  return MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran));
 end);
 
 InstallMethod(DigraphRemoveEdge, "for a mutable digraph and a list",
@@ -244,18 +243,12 @@ end);
 InstallMethod(DigraphRemoveEdge,
 "for a immutable digraph and a list",
 [IsImmutableDigraph, IsList],
-function(D, edge)
-  D := DigraphRemoveEdge(DigraphMutableCopy(D), edge);
-  return MakeImmutable(D);
-end);
+{D, edge} -> MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), edge)));
 
 InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
 [IsMutableDigraph, IsList],
 function(D, edges)
-  local edge;
-  for edge in edges do
-    DigraphRemoveEdge(D, edge);
-  od;
+  Perform(edges, edge -> DigraphRemoveEdge(D, edge));
   return D;
 end);
 
@@ -279,9 +272,17 @@ function(D, u, v)
   elif u = v then
     return D;
   fi;
-  Add(D!.OutNeighbours[v], u);
   Remove(D!.OutNeighbours[u], pos);
-  ClearDigraphEdgeLabels(D);
+  Add(D!.OutNeighbours[v], u);
+  if Length(Positions(D!.OutNeighbours[v], u)) > 1 then
+    # output is a multidigraph
+    ClearDigraphEdgeLabels(D);
+  elif IsBound(D!.edgelabels)
+      and IsBound(D!.edgelabels[u])
+      and IsBound(D!.edgelabels[u][pos]) then
+    SetDigraphEdgeLabel(D, v, u, D!.edgelabels[u][pos]);
+    RemoveDigraphEdgeLabel(D, u, pos);
+  fi;
   return D;
 end);
 
@@ -306,10 +307,7 @@ InstallMethod(DigraphReverseEdge, "for an immutable digraph and a list",
 InstallMethod(DigraphReverseEdges, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
 function(D, E)
-  local e;
-  for e in E do
-    DigraphReverseEdge(D, e);
-  od;
+  Perform(E, e -> DigraphReverseEdge(D, e));
   return D;
 end);
 
@@ -362,21 +360,10 @@ InstallMethod(DigraphClosure,
 # 3. Ways of combining digraphs
 #############################################################################
 
-InstallGlobalFunction(DigraphDisjointUnion,
+InstallGlobalFunction(DIGRAPHS_CombinationOperProcessArgs,
 function(arg)
-  local D, copy, offset, n, i;
-
-  # Allow the possibility of supplying arguments in a list.
-  if Length(arg) = 1 and IsList(arg[1]) then
-    arg := arg[1];
-  fi;
-
-  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDenseDigraphRep) then
-    ErrorNoReturn("the arguments must be dense digraphs, or a single ",
-                  "list of dense digraphs,");
-  fi;
-
-  D := arg[1];
+  local copy, i;
+  arg := arg[1];
   if IsMutableDigraph(arg[1]) then
     for i in [2 .. Length(arg)] do
       if IsIdenticalObj(arg[1], arg[i]) then
@@ -395,9 +382,25 @@ function(arg)
       arg[i] := OutNeighbours(arg[i]);
     od;
   fi;
+end);
 
-  offset := Length(arg[1]);
+InstallGlobalFunction(DigraphDisjointUnion,
+function(arg)
+  local D, offset, n, i;
 
+  # Allow the possibility of supplying arguments in a list.
+  if Length(arg) = 1 and IsList(arg[1]) then
+    arg := arg[1];
+  fi;
+
+  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDenseDigraphRep) then
+    ErrorNoReturn("the arguments must be dense digraphs, or a single ",
+                  "list of dense digraphs,");
+  fi;
+
+  D := arg[1];
+  DIGRAPHS_CombinationOperProcessArgs(arg);
+  offset := DigraphNrVertices(D);
   for i in [2 .. Length(arg)] do
     n := Length(arg[i]);
     arg[1]{[offset + 1 .. offset + n]} := arg[i] + offset;
@@ -407,14 +410,13 @@ function(arg)
   if IsMutableDigraph(D) then
     ClearDigraphEdgeLabels(D);
     return D;
-  else
-    return DigraphNC(arg[1]);
   fi;
+  return ConvertToImmutableDigraphNC(arg[1]);
 end);
 
 InstallGlobalFunction(DigraphJoin,
 function(arg)
-  local D, copy, tot, offset, n, i, list, v;
+  local D, tot, offset, n, list, i, v;
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
     arg := arg[1];
@@ -425,28 +427,10 @@ function(arg)
                   "list of dense digraphs,");
   fi;
 
-  D := arg[1];
-  if IsMutableDigraph(arg[1]) then
-    for i in [2 .. Length(arg)] do
-      if IsIdenticalObj(arg[1], arg[i]) then
-        if not IsBound(copy) then
-          copy := OutNeighboursMutableCopy(arg[1]);
-        fi;
-        arg[i] := copy;
-      else
-        arg[i] := OutNeighbours(arg[i]);
-      fi;
-    od;
-    arg[1] := arg[1]!.OutNeighbours;
-  else
-    arg[1] := OutNeighboursMutableCopy(arg[1]);
-    for i in [2 .. Length(arg)] do
-      arg[i] := OutNeighbours(arg[i]);
-    od;
-  fi;
-
-  tot    := Sum(arg, Length);
-  offset := Length(arg[1]);
+  D      := arg[1];
+  tot    := Sum(arg, DigraphNrVertices);
+  offset := DigraphNrVertices(D);
+  DIGRAPHS_CombinationOperProcessArgs(arg);
 
   for list in arg[1] do
     Append(list, [offset + 1 .. tot]);
@@ -465,14 +449,13 @@ function(arg)
   if IsMutableDigraph(D) then
     ClearDigraphEdgeLabels(D);
     return D;
-  else
-    return DigraphNC(arg[1]);
   fi;
+  return ConvertToImmutableDigraphNC(arg[1]);
 end);
 
 InstallGlobalFunction(DigraphEdgeUnion,
 function(arg)
-  local D, n, copy, i, v;
+  local D, n, i, v;
 
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
@@ -486,25 +469,12 @@ function(arg)
 
   D := arg[1];
   n := Maximum(List(arg, DigraphNrVertices));
-  if IsMutableDigraph(arg[1]) then
-    DigraphAddVertices(arg[1], n - DigraphNrVertices(arg[1]));
-    for i in [2 .. Length(arg)] do
-      if IsIdenticalObj(arg[1], arg[i]) then
-        if not IsBound(copy) then
-          copy := OutNeighboursMutableCopy(arg[1]);
-        fi;
-        arg[i] := copy;
-      else
-        arg[i] := OutNeighbours(arg[i]);
-      fi;
-    od;
-    arg[1] := arg[1]!.OutNeighbours;
+  DIGRAPHS_CombinationOperProcessArgs(arg);
+
+  if IsMutableDigraph(D) then
+    DigraphAddVertices(D, n - DigraphNrVertices(D));
   else
-    arg[1] := OutNeighboursMutableCopy(arg[1]);
     Append(arg[1], List([1 .. n - Length(arg[1])], x -> []));
-    for i in [2 .. Length(arg)] do
-      arg[i] := OutNeighbours(arg[i]);
-    od;
   fi;
 
   for i in [2 .. Length(arg)] do
@@ -517,9 +487,8 @@ function(arg)
   if IsMutableDigraph(D) then
     ClearDigraphEdgeLabels(D);
     return D;
-  else
-    return DigraphNC(arg[1]);
   fi;
+  return ConvertToImmutableDigraphNC(arg[1]);
 end);
 
 ###############################################################################
@@ -617,16 +586,14 @@ function(D, list)
   local M, N, old, old_edl, new_edl, lookup, next, vv, w, old_labels, v, i;
 
   M := Length(list);
+  N := DigraphNrVertices(D);
   if M = 0 then
     D!.OutNeighbours := [];
     return D;
-  fi;
-  N := DigraphNrVertices(D);
-  if (IsRange(list) and not
-      (IsPosInt(list[1]) and list[1] <= N and
-       list[Length(list)] <= N))
-      or not IsDuplicateFree(list)
-      or not ForAll(list, x -> IsPosInt(x) and x <= N) then
+  elif M = DigraphVertices(D) then
+    return D;
+  elif not IsDuplicateFree(list)
+      or ForAny(list, x -> not IsPosInt(x) or x > N) then
     ErrorNoReturn("the 2nd argument <list> must be a duplicate-free ",
                   "subset of the vertices of the digraph <D> that is ",
                   "the 1st argument,");
@@ -653,6 +620,7 @@ function(D, list)
   od;
   old_labels := DigraphVertexLabels(D);
   D!.OutNeighbours := old{list};
+  # Note that the following line means multidigraphs have wrong edge labels set.
   SetDigraphEdgeLabelsNC(D, new_edl);
   SetDigraphVertexLabels(D, old_labels{list});
   return D;
@@ -661,33 +629,37 @@ end);
 InstallMethod(InducedSubdigraph,
 "for an immutable digraph and a homogeneous list",
 [IsImmutableDigraph, IsHomogeneousList],
-{D, list} -> MakeImmutable(InducedSubdigraph(DigraphMutableCopy(D), list)));
+function(D, list)
+  if Length(list) = 0 then
+    return EmptyDigraph(0);
+  elif list = DigraphVertices(D) then
+    return D;
+  fi;
+  return MakeImmutable(InducedSubdigraph(DigraphMutableCopy(D), list));
+end);
 
 InstallMethod(QuotientDigraph,
 "for a dense mutable digraph and a homogeneous list",
 [IsDenseDigraphRep and IsMutableDigraph, IsHomogeneousList],
 function(D, partition)
-  local N, M, check, lookup, new, new_vl, new_el, old, old_vl, old_el, x, i, u,
-  v;
+  local N, M, check, lookup, new, new_vl, old, old_vl, x, i, u, v;
+
   N := DigraphNrVertices(D);
+  M := Length(partition);
   if N = 0 then
     if IsEmpty(partition) then
       return D;
-    else
-      ErrorNoReturn("the 2nd argument <partition> is not a valid ",
-                    "partition of the vertices of 1st argument <D>.",
-                    "The only valid partition of a null digraph is ",
-                    "the empty list,");
     fi;
-  fi;
-  M := Length(partition);
-  if M = 0 or M = 0 or not IsList(partition[1])
+    ErrorNoReturn("the 2nd argument <partition> should be an empty list, which",
+                  " is the only valid partition of the vertices of 1st",
+                  " argument <D> because it has no vertices,");
+  elif M = 0 or not IsList(partition[1])
       or IsEmpty(partition[1]) or not IsPosInt(partition[1][1]) then
     ErrorNoReturn("the 2nd argument <partition> is not a valid ",
                   "partition of the vertices [1 .. ", N, "] of the 1st ",
                   "argument <D>,");
   fi;
-  check := BlistList(DigraphVertices(D), []);
+  check := ListWithIdenticalEntries(DigraphNrVertices(D), false);
   lookup := EmptyPlist(N);
   for x in [1 .. Length(partition)] do
     for i in partition[x] do
@@ -700,27 +672,24 @@ function(D, partition)
       lookup[i] := x;
     od;
   od;
-  if ForAny(check, x -> not x) then
-      ErrorNoReturn("the 2nd argument <partition> is not a valid ",
-                    "partition of the vertices [1 .. ", N, "] of the 1st ",
-                    "argument <D>,");
+  if not ForAll(check, IdFunc) then
+    ErrorNoReturn("the 2nd argument <partition> is not a valid ",
+                  "partition of the vertices [1 .. ", N, "] of the 1st ",
+                  "argument <D>,");
   fi;
   new    := List([1 .. M], x -> []);
   new_vl := List([1 .. M], x -> []);
-  new_el := List([1 .. M], x -> []);
   old    := D!.OutNeighbours;
   old_vl := DigraphVertexLabels(D);
-  old_el := DigraphEdgeLabelsNC(D);
   for u in DigraphVertices(D) do
     Add(new_vl[lookup[u]], old_vl[u]);
     for v in old[u] do
-      Add(new[lookup[u]], lookup[v]);
-      Add(new_el[lookup[u]], old_el[v]);
+      AddSet(new[lookup[u]], lookup[v]);
     od;
   od;
   D!.OutNeighbours := new;
   SetDigraphVertexLabels(D, new_vl);
-  SetDigraphEdgeLabelsNC(D, new_el);
+  ClearDigraphEdgeLabels(D);
   return D;
 end);
 
@@ -754,16 +723,14 @@ InstallMethod(InNeighboursOfVertexNC,
 InstallMethod(InNeighboursOfVertexNC, "for a dense digraph and a vertex",
 [IsDenseDigraphRep, IsPosInt],
 function(D, v)
-  local inn, pos, out, i, j;
+  local inn, out, i, j;
 
   inn := [];
-  pos := 1;
   out := OutNeighbours(D);
   for i in [1 .. Length(out)] do
     for j in [1 .. Length(out[i])] do
       if out[i][j] = v then
-        inn[pos] := i;
-        pos := pos + 1;
+        Add(inn, i);
       fi;
     od;
   od;
@@ -827,7 +794,7 @@ function(D, v)
     ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
                   "1st argument <D>,");
   fi;
-   return OutDegreeOfVertexNC(D, v);
+  return OutDegreeOfVertexNC(D, v);
 end);
 
 InstallMethod(OutDegreeOfVertexNC,
@@ -1123,13 +1090,8 @@ function(D, u, v)
   elif HasDigraphStronglyConnectedComponents(D) then
     # Glean information from SCC if we have it
     scc := DigraphStronglyConnectedComponents(D);
-    if u <> v then
-      if scc.id[u] = scc.id[v] then
-        return true;
-      fi;
-    else
-      return Length(scc.comps[scc.id[u]]) > 1;
-    fi;
+    return (u <> v and scc.id[u] = scc.id[v])
+        or (u = v and Length(scc.comps[scc.id[u]]) > 1);
   fi;
   return DigraphPath(D, u, v) <> fail;
 end);
@@ -1256,7 +1218,8 @@ function(D, u, v)
   local n, record;
 
   n := Length(D);
-  # can assume that n >= 1 since u and v are extant vertices of digraph
+  # can assume that n > 0 since u and v are extant vertices of digraph
+  Assert(1, n > 0);
 
   record := rec(adj := D,
                 start := u,
@@ -1476,6 +1439,8 @@ function(D, u, v)
 
   if HasDigraphShortestDistances(D) then
     return DigraphShortestDistances(D)[u][v];
+  elif u = v then
+    return 0;
   fi;
 
   dist := DIGRAPH_ConnectivityDataForVertex(D, u).layerNumbers[v] - 1;
@@ -1492,10 +1457,16 @@ function(D, list1, list2)
 
   # TODO: can this be improved?
   shortest := infinity;
+  if not IsEmpty(Intersection(list1, list2)) then
+    return 0;
+  fi;
   for u in list1 do
     for v in list2 do
       if shortest > DigraphShortestDistance(D, u, v) then
         shortest := DigraphShortestDistance(D, u, v);
+        if shortest = 1 then
+          return 1;
+        fi;
       fi;
     od;
   od;

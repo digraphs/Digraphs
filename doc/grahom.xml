@@ -368,7 +368,7 @@ gap> GeneratorsOfEndomorphismMonoid(gr, 3);
   IdentityTransformation ]
 gap> gr := CompleteDigraph(3);;
 gap> GeneratorsOfEndomorphismMonoid(gr);
-[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
+[ Transformation( [ 2, 3, 1 ] ), Transformation( [ 2, 1 ] ), 
   IdentityTransformation ]
 gap> GeneratorsOfEndomorphismMonoid(gr, [1, 2, 2]);
 [ Transformation( [ 1, 3, 2 ] ), IdentityTransformation ]

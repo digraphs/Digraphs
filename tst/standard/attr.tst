@@ -1868,7 +1868,7 @@ gap> DigraphCore(D);
 gap> D := Digraph([[2], [1], [4, 5], [5], [4]]);
 <immutable digraph with 5 vertices, 6 edges>
 gap> DigraphCore(D);
-[ 3 .. 5 ]
+[ 3, 4, 5 ]
 gap> D := EmptyDigraph(0);
 <immutable digraph with 0 vertices, 0 edges>
 gap> DigraphCore(D);
@@ -1926,7 +1926,7 @@ gap> DigraphCore(D);
 gap> D := DigraphFromDigraph6String("&IO?_@?A?CG??O?_G??");
 <immutable digraph with 10 vertices, 9 edges>
 gap> DigraphCore(D);
-[ 7 .. 9 ]
+[ 7, 8, 9 ]
 gap> D := CycleDigraph(IsMutableDigraph, 2);
 <mutable digraph with 2 vertices, 2 edges>
 gap> for i in [1 .. 9] do

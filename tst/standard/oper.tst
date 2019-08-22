@@ -291,25 +291,24 @@ gap> gr := CompleteDigraph(2);
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 2, 1 ] ]
 gap> qr := QuotientDigraph(gr, [[1, 2]]);
-<immutable multidigraph with 1 vertex, 2 edges>
+<immutable digraph with 1 vertex, 1 edge>
 gap> DigraphEdges(qr);
-[ [ 1, 1 ], [ 1, 1 ] ]
+[ [ 1, 1 ] ]
 gap> QuotientDigraph(EmptyDigraph(0), []);
 <immutable digraph with 0 vertices, 0 edges>
 gap> QuotientDigraph(EmptyDigraph(0), [[1]]);
-Error, the 2nd argument <partition> is not a valid partition of the vertices o\
-f 1st argument <D>.The only valid partition of a null digraph is the empty lis\
-t,
+Error, the 2nd argument <partition> should be an empty list, which is the only\
+ valid partition of the vertices of 1st argument <D> because it has no vertice\
+s,
 gap> gr := Digraph([[1, 2, 3, 2], [1, 3, 2], [1, 2]]);
 <immutable multidigraph with 3 vertices, 9 edges>
 gap> DigraphEdges(gr);
 [ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], 
   [ 3, 1 ], [ 3, 2 ] ]
 gap> qr := QuotientDigraph(gr, [[1, 3], [2]]);
-<immutable multidigraph with 2 vertices, 9 edges>
+<immutable digraph with 2 vertices, 4 edges>
 gap> DigraphEdges(qr);
-[ [ 1, 1 ], [ 1, 2 ], [ 1, 1 ], [ 1, 2 ], [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], 
-  [ 2, 1 ], [ 2, 2 ] ]
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ] ]
 gap> QuotientDigraph(gr, [3]);
 Error, the 2nd argument <partition> is not a valid partition of the vertices [\
 1 .. 3] of the 1st argument <D>,
@@ -340,9 +339,9 @@ gap> gr := Digraph(rec(
 > DigraphRange := [6, 7, 1, 6, 5, 1, 4, 8, 1, 3, 4, 6, 7, 7, 1, 4, 5, 6, 7, 5, 6]));
 <immutable digraph with 8 vertices, 21 edges>
 gap> qr := QuotientDigraph(gr, [[1], [2, 3, 5, 7], [4, 6, 8]]);
-<immutable multidigraph with 3 vertices, 21 edges>
+<immutable digraph with 3 vertices, 8 edges>
 gap> OutNeighbours(qr);
-[ [ 3, 2 ], [ 1, 3, 2, 1, 2, 3, 3, 2, 1, 3, 2, 3, 2 ], [ 1, 3, 3, 2, 2, 3 ] ]
+[ [ 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3 ] ]
 
 #  DigraphInEdges and DigraphOutEdges: for a vertex
 gap> gr := Digraph([[2, 2, 2, 2, 2], [1, 1, 1, 1], [1], [3, 2]]);
@@ -695,13 +694,17 @@ gap> gr2 := DigraphRemoveVertices(gr, []);
 gap> gr = gr2;
 true
 gap> gr2 := DigraphRemoveVertices(gr, [0]);
-Error, the 2nd argument <list> must be a list consisting of positive integers,
+Error, the 2nd argument <list> must be a duplicate-free list of positive integ\
+ers,
 gap> gr2 := DigraphRemoveVertices(gr, [1, "a"]);
-Error, the 2nd argument <list> must be a list consisting of positive integers,
+Error, the 2nd argument <list> must be a duplicate-free list of positive integ\
+ers,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 1]);
-Error, the 2nd argument <list> must be a duplicate-free list,
+Error, the 2nd argument <list> must be a duplicate-free list of positive integ\
+ers,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 0]);
-Error, the 2nd argument <list> must be a list consisting of positive integers,
+Error, the 2nd argument <list> must be a duplicate-free list of positive integ\
+ers,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 5]);
 <immutable digraph with 3 vertices, 6 edges>
 gap> gr2 := DigraphRemoveVertices(gr, [1, 3]);
@@ -1849,18 +1852,16 @@ gap> D;
 gap> D := DigraphMutableCopy(CompleteDigraph(10));
 <mutable digraph with 10 vertices, 90 edges>
 gap> DD := QuotientDigraph(D, [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]]);
-<mutable multidigraph with 4 vertices, 90 edges>
+<mutable digraph with 4 vertices, 15 edges>
 gap> InNeighboursOfVertexNC(DD, 1);
-[ 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 
-  4, 4 ]
+[ 1, 2, 3, 4 ]
 gap> MakeImmutable(DD);
-<immutable multidigraph with 4 vertices, 90 edges>
+<immutable digraph with 4 vertices, 15 edges>
 gap> InNeighbours(DD);;
 gap> InNeighboursOfVertexNC(DD, 1);
-[ 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 
-  4, 4 ]
+[ 1, 2, 3, 4 ]
 gap> InDegreeOfVertexNC(DD, 1);
-27
+4
 gap> DigraphShortestPath(DD, 1, 5);
 Error, the 2nd and 3rd arguments <u> and <v> must be vertices of the 1st argum\
 ent <D>,

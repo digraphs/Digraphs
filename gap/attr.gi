@@ -1203,9 +1203,8 @@ function(digraph)
   if IsEmptyDigraph(digraph) then
     if N >= 1 then
       return [1];
-    else
-      return [];
     fi;
+    return [];
   fi;
   SetDigraphVertexLabels(digraph, [1 .. N]);
   digraph := ReducedDigraph(digraph);  # isolated verts are not in core
@@ -1455,8 +1454,10 @@ InstallMethod(DigraphRemoveAllMultipleEdges, "for an immutable digraph",
 InstallMethod(DigraphRemoveAllMultipleEdgesAttr, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
-  D := MakeImmutable(DigraphRemoveAllMultipleEdges(DigraphMutableCopy(D)));
-  SetIsMultiDigraph(D, false);
+  if IsMultiDigraph(D) then
+    D := MakeImmutable(DigraphRemoveAllMultipleEdges(DigraphMutableCopy(D)));
+    SetIsMultiDigraph(D, false);
+  fi;
   return D;
 end);
 
