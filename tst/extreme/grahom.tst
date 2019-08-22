@@ -149,34 +149,10 @@ false
 gap> gr := CompleteDigraph(25);
 <immutable digraph with 25 vertices, 600 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);
-[ Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-     18, 19, 20, 21, 22, 23, 25, 24 ] ), 
-  Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-     18, 19, 20, 21, 22, 24, 23 ] ), 
-  Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-     18, 19, 20, 21, 23, 22 ] ), 
-  Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-     18, 19, 20, 22, 21 ] ), Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-      11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 20 ] ), 
-  Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-     18, 20, 19 ] ), Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-      13, 14, 15, 16, 17, 19, 18 ] ), 
-  Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18,
-     17 ] ), Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-      15, 17, 16 ] ), Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-     13, 14, 16, 15 ] ), Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-      12, 13, 15, 14 ] ), Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-     12, 14, 13 ] ), Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13,
-      12 ] ), Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 11 ] ), 
-  Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 10 ] ), 
-  Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8, 10, 9 ] ), 
-  Transformation( [ 1, 2, 3, 4, 5, 6, 7, 9, 8 ] ), 
-  Transformation( [ 1, 2, 3, 4, 5, 6, 8, 7 ] ), 
-  Transformation( [ 1, 2, 3, 4, 5, 7, 6 ] ), 
-  Transformation( [ 1, 2, 3, 4, 6, 5 ] ), Transformation( [ 1, 2, 3, 5, 4 ] ),
-  Transformation( [ 1, 2, 4, 3 ] ), Transformation( [ 1, 3, 2 ] ), 
-  Transformation( [ 2, 1 ] ), Transformation( [ 7, 2, 3, 4, 5, 6, 1, 8, 9, 10,
-     11, 12, 13, 14, 15, 16, 17, 24, 19, 20, 21, 22, 23, 18 ] ) ]
+[ Transformation( [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+      18, 19, 20, 21, 22, 23, 24, 25, 1 ] ), Transformation( [ 2, 1 ] ), 
+  Transformation( [ 7, 2, 3, 4, 5, 6, 1, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+     24, 19, 20, 21, 22, 23, 18 ] ) ]
 gap> ForAll(gens, x -> IsDigraphAutomorphism(gr, x)); 
 true
 gap> GeneratorsOfEndomorphismMonoid(gr) = gens;

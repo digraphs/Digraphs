@@ -829,12 +829,11 @@ gap> DigraphEdges(gr);
 gap> p := [[1], [2, 4], [3]];
 [ [ 1 ], [ 2, 4 ], [ 3 ] ]
 gap> qr := QuotientDigraph(gr, p);
-<immutable multidigraph with 3 vertices, 7 edges>
+<immutable digraph with 3 vertices, 6 edges>
 gap> DigraphVertices(qr);
 [ 1 .. 3 ]
 gap> DigraphEdges(qr);
-[ [ 1, 2 ], [ 1, 1 ], [ 2, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], 
-  [ 3, 1 ] ]
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 3, 1 ] ]
 gap> QuotientDigraph(EmptyDigraph(0), []);
 <immutable digraph with 0 vertices, 0 edges>
 ]]></Example>
