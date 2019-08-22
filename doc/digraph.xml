@@ -159,12 +159,12 @@ true
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DenseDigraphType">
+<#GAPDoc Label="DigraphByOutNeighboursType">
 <ManSection>
-  <Var Name="DenseDigraphType"/>
+  <Var Name="DigraphByOutNeighboursType"/>
   <Fam Name="DigraphFamily"/>
   <Description>
-    The type of all digraphs is <C>DenseDigraphType</C>.
+    The type of all digraphs is <C>DigraphByOutNeighboursType</C>.
     The family of all digraphs is <C>DigraphFamily</C>.
   </Description>
 </ManSection>

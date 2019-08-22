@@ -68,8 +68,8 @@ function(G, domain)
   return rec(orbits := orbs, schreier := sch, lookup := lookup);
 end);
 
-InstallMethod(RepresentativeOutNeighbours, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(RepresentativeOutNeighbours, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local reps, out, nbs, i;
 

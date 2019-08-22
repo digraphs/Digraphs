@@ -27,8 +27,9 @@
 # 1. Adding and removing vertices
 #############################################################################
 
-InstallMethod(DigraphAddVertex, "for a mutable dense digraph and an object",
-[IsMutableDigraph and IsDenseDigraphRep, IsObject],
+InstallMethod(DigraphAddVertex,
+"for a mutable digraph by out-neighbours and an object",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsObject],
 function(D, label)
   Add(D!.OutNeighbours, []);
   SetDigraphVertexLabel(D, DigraphNrVertices(D), label);
@@ -81,8 +82,8 @@ InstallMethod(DigraphAddVertices, "for an immutable digraph and an integer",
 {D, m} -> MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), m)));
 
 InstallMethod(DigraphRemoveVertex,
-"for a mutable dense digraph and positive integer",
-[IsMutableDigraph and IsDenseDigraphRep, IsPosInt],
+"for a mutable digraph by out-neighbours and positive integer",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, u)
   local pos, w, v;
   if u > DigraphNrVertices(D) then
@@ -150,8 +151,8 @@ InstallMethod(DigraphRemoveVertices, "for an immutable digraph and a list",
 #############################################################################
 
 InstallMethod(DigraphAddEdge,
-"for a mutable dense digraph, a positive integer, and a positive integer",
-[IsMutableDigraph and IsDenseDigraphRep, IsPosInt, IsPosInt],
+"for a mutable digraph by out-neighbours, a two positive integers",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, src, ran)
   if not src in DigraphVertices(D)then
     ErrorNoReturn("the 2nd argument <src> must be a vertex of the ",
@@ -168,7 +169,7 @@ function(D, src, ran)
 end);
 
 InstallMethod(DigraphAddEdge,
-"for an immutable digraph, a positive integer, and a positive integer",
+"for an immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(D, src, ran)
   return MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran));
@@ -202,8 +203,8 @@ InstallMethod(DigraphAddEdges, "for an immutable digraph and a list",
 {D, edges} -> MakeImmutable(DigraphAddEdges(DigraphMutableCopy(D), edges)));
 
 InstallMethod(DigraphRemoveEdge,
-"for a mutable dense digraph, a positive integer, and a positive integer",
-[IsMutableDigraph and IsDenseDigraphRep, IsPosInt, IsPosInt],
+"for a mutable digraph by out-neighbours and two positive integers",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, src, ran)
   local pos;
   if IsMultiDigraph(D) then
@@ -225,7 +226,7 @@ function(D, src, ran)
 end);
 
 InstallMethod(DigraphRemoveEdge,
-"for a immutable digraph, a positive integer, and a positive integer",
+"for a immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(D, src, ran)
   return MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran));
@@ -257,8 +258,8 @@ InstallMethod(DigraphRemoveEdges, "for an immutable digraph and a list",
 {D, edges} -> MakeImmutable(DigraphRemoveEdges(DigraphMutableCopy(D), edges)));
 
 InstallMethod(DigraphReverseEdge,
-"for a mutable dense digraph, positive integer, and positive integer",
-[IsMutableDigraph and IsDenseDigraphRep, IsPosInt, IsPosInt],
+"for a mutable digraph by out-neighbours and two positive integers",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
   local pos;
   if IsMultiDigraph(D) then
@@ -316,8 +317,8 @@ InstallMethod(DigraphReverseEdges, "for an immutable digraph and a list",
 {D, E} -> MakeImmutable(DigraphReverseEdges(DigraphMutableCopy(D), E)));
 
 InstallMethod(DigraphClosure,
-"for a mutable dense digraph and a positive integer",
-[IsMutableDigraph and IsDenseDigraphRep, IsPosInt],
+"for a mutable digraph by out-neighbours and a positive integer",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, k)
   local list, mat, deg, n, stop, i, j;
 
@@ -352,7 +353,7 @@ function(D, k)
 end);
 
 InstallMethod(DigraphClosure,
-"for an immutable dense digraph and a positive integer",
+"for an immutable digraph by out-neighbours and a positive integer",
 [IsImmutableDigraph, IsPosInt],
 {D, k} -> MakeImmutable(DigraphClosure(DigraphMutableCopy(D), k)));
 
@@ -393,9 +394,10 @@ function(arg)
     arg := arg[1];
   fi;
 
-  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDenseDigraphRep) then
-    ErrorNoReturn("the arguments must be dense digraphs, or a single ",
-                  "list of dense digraphs,");
+  if not IsList(arg) or IsEmpty(arg)
+      or not ForAll(arg, IsDigraphByOutNeighboursRep) then
+    ErrorNoReturn("the arguments must be digraphs by out-neighbours, or a ",
+                  "single list of digraphs by out-neighbours,");
   fi;
 
   D := arg[1];
@@ -422,9 +424,10 @@ function(arg)
     arg := arg[1];
   fi;
 
-  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDenseDigraphRep) then
-    ErrorNoReturn("the arguments must be dense digraphs, or a single ",
-                  "list of dense digraphs,");
+  if not IsList(arg) or IsEmpty(arg)
+      or not ForAll(arg, IsDigraphByOutNeighboursRep) then
+    ErrorNoReturn("the arguments must be digraphs by out-neighbours, or a ",
+                  "single list of digraphs by out-neighbours,");
   fi;
 
   D      := arg[1];
@@ -462,9 +465,10 @@ function(arg)
     arg := arg[1];
   fi;
 
-  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDenseDigraphRep) then
-    ErrorNoReturn("the arguments must be dense digraphs, or a single ",
-                  "list of dense digraphs,");
+  if not IsList(arg) or IsEmpty(arg)
+      or not ForAll(arg, IsDigraphByOutNeighboursRep) then
+    ErrorNoReturn("the arguments must be digraphs by out-neighbours, or a ",
+                  "single list of digraphs by out-neighbours,");
   fi;
 
   D := arg[1];
@@ -495,8 +499,8 @@ end);
 # 4. Actions
 ###############################################################################
 
-InstallMethod(OnDigraphs, "for a mutable dense digraph and a perm",
-[IsMutableDigraph and IsDenseDigraphRep, IsPerm],
+InstallMethod(OnDigraphs, "for a mutable digraph by out-neighbours and a perm",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPerm],
 function(D, p)
   local out;
   if ForAll(DigraphVertices(D), i -> i ^ p = i) then
@@ -521,8 +525,9 @@ function(D, p)
   return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), p));
 end);
 
-InstallMethod(OnDigraphs, "for a mutable dense digraph and a transformation",
-[IsMutableDigraph and IsDenseDigraphRep, IsTransformation],
+InstallMethod(OnDigraphs,
+"for a mutable digraph by out-neighbours and a transformation",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsTransformation],
 function(D, t)
   local old, new, v;
   if ForAll(DigraphVertices(D), i -> i ^ t = i) then
@@ -580,8 +585,8 @@ end);
 #############################################################################
 
 InstallMethod(InducedSubdigraph,
-"for a dense mutable digraph and a homogeneous list",
-[IsDenseDigraphRep and IsMutableDigraph, IsHomogeneousList],
+"for a mutable digraph by out-neighbours and a homogeneous list",
+[IsDigraphByOutNeighboursRep and IsMutableDigraph, IsHomogeneousList],
 function(D, list)
   local M, N, old, old_edl, new_edl, lookup, next, vv, w, old_labels, v, i;
 
@@ -639,8 +644,8 @@ function(D, list)
 end);
 
 InstallMethod(QuotientDigraph,
-"for a dense mutable digraph and a homogeneous list",
-[IsDenseDigraphRep and IsMutableDigraph, IsHomogeneousList],
+"for a mutable digraph by out-neighbours and a homogeneous list",
+[IsDigraphByOutNeighboursRep and IsMutableDigraph, IsHomogeneousList],
 function(D, partition)
   local N, M, check, lookup, new, new_vl, old, old_vl, x, i, u, v;
 
@@ -704,7 +709,7 @@ end);
 # 6. In and out degrees, neighbours, and edges of vertices
 #############################################################################
 
-InstallMethod(InNeighboursOfVertex, "for a digraph and a vertex",
+InstallMethod(InNeighboursOfVertex, "for a digraph and a positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)
   if not v in DigraphVertices(D) then
@@ -715,13 +720,14 @@ function(D, v)
 end);
 
 InstallMethod(InNeighboursOfVertexNC,
-"for a digraph with in-neighbours and a vertex",
+"for a digraph with in-neighbours and a positive integer",
 [IsDigraph and HasInNeighbours, IsPosInt],
-2,  # to beat the next method for IsDenseDigraphRep
+2,  # to beat the next method for IsDigraphByOutNeighboursRep
 {D, v} -> InNeighbours(D)[v]);
 
-InstallMethod(InNeighboursOfVertexNC, "for a dense digraph and a vertex",
-[IsDenseDigraphRep, IsPosInt],
+InstallMethod(InNeighboursOfVertexNC,
+"for a digraph by out-neighbours and a positive integer",
+[IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
   local inn, out, i, j;
 
@@ -737,8 +743,9 @@ function(D, v)
   return inn;
 end);
 
-InstallMethod(OutNeighboursOfVertex, "for a dense digraph and a vertex",
-[IsDenseDigraphRep, IsPosInt],
+InstallMethod(OutNeighboursOfVertex,
+"for a digraph by out-neighbours and a positive integer",
+[IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
@@ -747,11 +754,12 @@ function(D, v)
   return OutNeighboursOfVertexNC(D, v);
 end);
 
-InstallMethod(OutNeighboursOfVertexNC, "for a dense digraph and a vertex",
-[IsDenseDigraphRep, IsPosInt],
+InstallMethod(OutNeighboursOfVertexNC,
+"for a digraph by out-neighbours and a positive integer",
+[IsDigraphByOutNeighboursRep, IsPosInt],
 {D, v} -> OutNeighbours(D)[v]);
 
-InstallMethod(InDegreeOfVertex, "for a digraph and a vertex",
+InstallMethod(InDegreeOfVertex, "for a digraph and a positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)
   if not v in DigraphVertices(D) then
@@ -761,18 +769,19 @@ function(D, v)
   return InDegreeOfVertexNC(D, v);
 end);
 
-InstallMethod(InDegreeOfVertexNC, "for a digraph with in-degrees and a vertex",
+InstallMethod(InDegreeOfVertexNC,
+"for a digraph with in-degrees and a positive integer",
 [IsDigraph and HasInDegrees, IsPosInt], 4,
 {D, v} -> InDegrees(D)[v]);
 
 InstallMethod(InDegreeOfVertexNC,
-"for a digraph with in-neighbours and a vertex",
+"for a digraph with in-neighbours and a positive integer",
 [IsDigraph and HasInNeighbours, IsPosInt],
-2,  # to beat the next method for IsDenseDigraphRep
+2,  # to beat the next method for IsDigraphByOutNeighboursRep
 {D, v} -> Length(InNeighbours(D)[v]));
 
-InstallMethod(InDegreeOfVertexNC, "for a digraph and a vertex",
-[IsDenseDigraphRep, IsPosInt],
+InstallMethod(InDegreeOfVertexNC, "for a digraph and a positive integer",
+[IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
   local count, out, x, i;
   count := 0;
@@ -787,7 +796,7 @@ function(D, v)
   return count;
 end);
 
-InstallMethod(OutDegreeOfVertex, "for a digraph and a vertex",
+InstallMethod(OutDegreeOfVertex, "for a digraph and a positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)
   if not v in DigraphVertices(D) then
@@ -798,17 +807,19 @@ function(D, v)
 end);
 
 InstallMethod(OutDegreeOfVertexNC,
-"for a digraph with out-degrees and a vertex",
+"for a digraph with out-degrees and a positive integer",
 [IsDigraph and HasOutDegrees, IsPosInt],
-2,  # to beat the next method for IsDenseDigraphRep
+2,  # to beat the next method for IsDigraphByOutNeighboursRep
 {D, v} -> OutDegrees(D)[v]);
 
-InstallMethod(OutDegreeOfVertexNC, "for a dense digraph and a vertex",
-[IsDenseDigraphRep, IsPosInt],
+InstallMethod(OutDegreeOfVertexNC,
+"for a digraph by out-neighbours and a positive integer",
+[IsDigraphByOutNeighboursRep, IsPosInt],
 {D, v} -> Length(OutNeighbours(D)[v]));
 
-InstallMethod(DigraphOutEdges, "for a dense digraph and a vertex",
-[IsDenseDigraphRep, IsPosInt],
+InstallMethod(DigraphOutEdges,
+"for a digraph by out-neighbours and a positive integer",
+[IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
@@ -817,7 +828,7 @@ function(D, v)
   return List(OutNeighboursOfVertex(D, v), x -> [v, x]);
 end);
 
-InstallMethod(DigraphInEdges, "for a digraph and a vertex",
+InstallMethod(DigraphInEdges, "for a digraph and a positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)
   if not v in DigraphVertices(D) then
@@ -831,8 +842,8 @@ end);
 # 7. Copies of out/in-neighbours
 #############################################################################
 
-InstallMethod(OutNeighboursMutableCopy, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(OutNeighboursMutableCopy, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 D -> List(OutNeighbours(D), ShallowCopy));
 
 InstallMethod(InNeighboursMutableCopy, "for a digraph", [IsDigraph],
@@ -857,8 +868,8 @@ function(D, edge)
   return IsDigraphEdge(D, edge[1], edge[2]);
 end);
 
-InstallMethod(IsDigraphEdge, "for a dense digraph, int, int",
-[IsDenseDigraphRep, IsInt, IsInt],
+InstallMethod(IsDigraphEdge, "for a digraph by out-neighbours, int, int",
+[IsDigraphByOutNeighboursRep, IsInt, IsInt],
 function(D, u, v)
   local n;
 
@@ -874,8 +885,9 @@ function(D, u, v)
   return v in OutNeighboursOfVertex(D, u);
 end);
 
-InstallMethod(IsSubdigraph, "for a dense digraph and dense digraph",
-[IsDenseDigraphRep, IsDenseDigraphRep],
+InstallMethod(IsSubdigraph,
+"for two digraphs by out-neighbours",
+[IsDigraphByOutNeighboursRep, IsDigraphByOutNeighboursRep],
 function(super, sub)
   local n, x, y, i, j;
 
@@ -912,7 +924,7 @@ function(super, sub)
   return true;
 end);
 
-InstallMethod(IsUndirectedSpanningForest, "for a digraph and a digraph",
+InstallMethod(IsUndirectedSpanningForest, "for two digraphs",
 [IsDigraph, IsDigraph],
 function(super, sub)
   local sym, comps1, comps2;
@@ -989,7 +1001,7 @@ function(D, edges)
 end);
 
 InstallMethod(IsMaximalMatching, "for a digraph and a list",
-[IsDenseDigraphRep, IsHomogeneousList],
+[IsDigraphByOutNeighboursRep, IsHomogeneousList],
 function(D, edges)
   local seen, nbs, i, j;
 
@@ -1015,8 +1027,8 @@ end);
 #############################################################################
 
 InstallMethod(DigraphFloydWarshall,
-"for a dense digraph, function, object, and object",
-[IsDenseDigraphRep, IsFunction, IsObject, IsObject],
+"for a digraph by out-neighbours, function, object, and object",
+[IsDigraphByOutNeighboursRep, IsFunction, IsObject, IsObject],
 function(D, func, nopath, edge)
   local vertices, n, mat, out, i, j, k;
 
@@ -1049,7 +1061,8 @@ function(D, func, nopath, edge)
   return mat;
 end);
 
-InstallMethod(DigraphStronglyConnectedComponent, "for a digraph and a vertex",
+InstallMethod(DigraphStronglyConnectedComponent,
+"for a digraph and a positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)
   local scc;
@@ -1064,7 +1077,7 @@ function(D, v)
   return scc.comps[scc.id[v]];
 end);
 
-InstallMethod(DigraphConnectedComponent, "for a digraph and a vertex",
+InstallMethod(DigraphConnectedComponent, "for a digraph and a positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)
   local wcc;
@@ -1096,8 +1109,8 @@ function(D, u, v)
   return DigraphPath(D, u, v) <> fail;
 end);
 
-InstallMethod(DigraphPath, "for a dense digraph and two pos ints",
-[IsDenseDigraphRep, IsPosInt, IsPosInt],
+InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
+[IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
   local verts;
 
@@ -1119,8 +1132,9 @@ function(D, u, v)
   return DIGRAPH_PATH(OutNeighbours(D), u, v);
 end);
 
-InstallMethod(DigraphShortestPath, "for a dense digraph and two pos ints",
-[IsDenseDigraphRep, IsPosInt, IsPosInt],
+InstallMethod(DigraphShortestPath,
+"for a digraph by out-neighbours and two pos ints",
+[IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
   local current, next, parent, distance, falselist, verts, nbs, path, edge,
   n, a, b, i;
@@ -1174,7 +1188,7 @@ function(D, u, v)
               Add(path[2], edge[b]);
               b := parent[b];
             od;
-            Add(path[1], u);  # Adds the starting vertex to the list of vertices.
+            Add(path[1], u);  # Adds the starting vertex to the list of vertices
             return [Reversed(path[1]), Reversed(path[2])];
           fi;
         od;
@@ -1185,8 +1199,9 @@ function(D, u, v)
     return fail;
 end);
 
-InstallMethod(IteratorOfPaths, "for a dense digraph and two pos ints",
-[IsDenseDigraphRep, IsPosInt, IsPosInt],
+InstallMethod(IteratorOfPaths,
+"for a digraph by out-neighbours and two pos ints",
+[IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
   if not (u in DigraphVertices(D) and v in DigraphVertices(D)) then
     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
@@ -1325,7 +1340,7 @@ function(D, u, v)
 end);
 
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
-[IsDenseDigraphRep, IsPosInt],
+[IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
   local dist;
 
@@ -1340,7 +1355,7 @@ function(D, v)
   return dist;
 end);
 
-InstallMethod(DigraphLayers, "for a digraph, and a vertex",
+InstallMethod(DigraphLayers, "for a digraph, and a positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)
   local layers, gens, sch, trace, rep, word, orbs, layers_with_orbnums,
@@ -1427,7 +1442,7 @@ function(D, vertex, distances)
 end);
 
 InstallMethod(DigraphShortestDistance,
-"for a digraph, a vertex, and a vertex",
+"for a digraph, a vertex, and a positive integer",
 [IsDigraph, IsPosInt, IsPosInt],
 function(D, u, v)
   local dist;
@@ -1495,8 +1510,8 @@ end);
 #############################################################################
 
 InstallMethod(PartialOrderDigraphJoinOfVertices,
-"for a dense digraph and two positive integers",
-[IsDenseDigraphRep, IsPosInt, IsPosInt],
+"for a digraph by out-neighbours and two positive integers",
+[IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, i, j)
   local x, nbs, intr;
 

@@ -864,14 +864,14 @@ gap> gr2 := CompleteDigraph(100);
 gap> DigraphDisjointUnion(gr) = gr;
 true
 gap> DigraphDisjointUnion([[]]);
-Error, the arguments must be dense digraphs, or a single list of dense digraph\
-s,
+Error, the arguments must be digraphs by out-neighbours, or a single list of d\
+igraphs by out-neighbours,
 gap> DigraphDisjointUnion([gr], [gr]);
-Error, the arguments must be dense digraphs, or a single list of dense digraph\
-s,
+Error, the arguments must be digraphs by out-neighbours, or a single list of d\
+igraphs by out-neighbours,
 gap> DigraphDisjointUnion(gr, Group(()));
-Error, the arguments must be dense digraphs, or a single list of dense digraph\
-s,
+Error, the arguments must be digraphs by out-neighbours, or a single list of d\
+igraphs by out-neighbours,
 gap> DigraphDisjointUnion(gr, gr);
 <immutable digraph with 2000 vertices, 2000 edges>
 gap> DigraphDisjointUnion([gr2, gr2]);
@@ -914,14 +914,14 @@ gap> gr2 := DigraphFromDiSparse6String(".H`OS?aEMC?bneOY`l_?QCJ");
 gap> DigraphEdgeUnion(gr1) = gr1;
 true
 gap> DigraphEdgeUnion([[]]);
-Error, the arguments must be dense digraphs, or a single list of dense digraph\
-s,
+Error, the arguments must be digraphs by out-neighbours, or a single list of d\
+igraphs by out-neighbours,
 gap> DigraphEdgeUnion([gr1], [gr1]);
-Error, the arguments must be dense digraphs, or a single list of dense digraph\
-s,
+Error, the arguments must be digraphs by out-neighbours, or a single list of d\
+igraphs by out-neighbours,
 gap> DigraphEdgeUnion(gr1, Group(()));
-Error, the arguments must be dense digraphs, or a single list of dense digraph\
-s,
+Error, the arguments must be digraphs by out-neighbours, or a single list of d\
+igraphs by out-neighbours,
 gap> m1 := DigraphEdgeUnion(gr1, gr2);
 <immutable multidigraph with 10 vertices, 29 edges>
 gap> m2 := DigraphEdgeUnion(gr2, gr1);
@@ -961,14 +961,14 @@ gap> gr2 := EmptyDigraph(10);
 gap> DigraphJoin(gr) = gr;
 true
 gap> DigraphJoin([[]]);
-Error, the arguments must be dense digraphs, or a single list of dense digraph\
-s,
+Error, the arguments must be digraphs by out-neighbours, or a single list of d\
+igraphs by out-neighbours,
 gap> DigraphJoin([gr], [gr]);
-Error, the arguments must be dense digraphs, or a single list of dense digraph\
-s,
+Error, the arguments must be digraphs by out-neighbours, or a single list of d\
+igraphs by out-neighbours,
 gap> DigraphJoin([gr, Group(())]);
-Error, the arguments must be dense digraphs, or a single list of dense digraph\
-s,
+Error, the arguments must be digraphs by out-neighbours, or a single list of d\
+igraphs by out-neighbours,
 gap> DigraphJoin(gr, gr2);
 <immutable digraph with 30 vertices, 780 edges>
 gap> DigraphJoin(gr, EmptyDigraph(0));

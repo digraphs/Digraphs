@@ -28,8 +28,8 @@
 # 1. Digraph types
 ########################################################################
 
-BindGlobal("DenseDigraphType", NewType(DigraphFamily,
-                                       IsDenseDigraphRep));
+BindGlobal("DigraphByOutNeighboursType", NewType(DigraphFamily,
+                                         IsDigraphByOutNeighboursRep));
 
 ########################################################################
 # 2. Digraph no-check constructors
@@ -40,7 +40,7 @@ function(record)
   local D;
   Assert(1, IsBound(record.OutNeighbours));
   Assert(1, Length(NamesOfComponents(record)) = 1);
-  D := Objectify(DenseDigraphType, record);
+  D := Objectify(DigraphByOutNeighboursType, record);
   SetFilterObj(D, IsMutable);
   return D;
 end);
@@ -122,7 +122,8 @@ record -> DigraphConsNC(IsImmutableDigraph, record));
 # 3. Digraph copies
 ########################################################################
 
-InstallMethod(DigraphMutableCopy, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(DigraphMutableCopy, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local copy;
   copy := ConvertToMutableDigraphNC(OutNeighboursMutableCopy(D));
@@ -131,8 +132,8 @@ function(D)
   return copy;
 end);
 
-InstallMethod(DigraphImmutableCopy, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DigraphImmutableCopy, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local copy;
   copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
@@ -176,7 +177,7 @@ InstallMethod(DigraphMutableCopyIfMutable, "for an immutable digraph",
 ########################################################################
 
 InstallMethod(PostMakeImmutable, "for a digraph",
-[IsDigraph and IsDenseDigraphRep],
+[IsDigraph and IsDigraphByOutNeighboursRep],
 function(D)
   MakeImmutable(D!.OutNeighbours);
   SetFilterObj(D, IsImmutableDigraph);
@@ -570,32 +571,32 @@ function(D)
   return str;
 end);
 
-InstallMethod(PrintString, "for a dense immutable digraph",
-[IsImmutableDigraph and IsDenseDigraphRep],
+InstallMethod(PrintString, "for an immutable digraph by out-neighbours",
+[IsImmutableDigraph and IsDigraphByOutNeighboursRep],
 function(D)
   return Concatenation("Digraph( IsImmutableDigraph, ",
                        PrintString(OutNeighbours(D)),
                        " )");
 end);
 
-InstallMethod(PrintString, "for a dense mutable digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
+InstallMethod(PrintString, "for a mutable digraph by out-neighbours",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep],
 function(D)
   return Concatenation("Digraph( IsMutableDigraph, ",
                        PrintString(OutNeighbours(D)),
                        " )");
 end);
 
-InstallMethod(String, "for a dense immutable digraph",
-[IsImmutableDigraph and IsDenseDigraphRep],
+InstallMethod(String, "for an immutable digraph by out-neighbours",
+[IsImmutableDigraph and IsDigraphByOutNeighboursRep],
 function(D)
   return Concatenation("Digraph( IsImmutableDigraph, ",
                        String(OutNeighbours(D)),
                        " )");
 end);
 
-InstallMethod(String, "for a dense mutable digraph",
-[IsMutableDigraph and IsDenseDigraphRep],
+InstallMethod(String, "for a mutable digraph by out-neighbours",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep],
 function(D)
   return Concatenation("Digraph( IsMutableDigraph, ",
                        String(OutNeighbours(D)),
@@ -907,7 +908,7 @@ InstallMethod(AsDigraph, "for a function and a transformation",
 InstallMethod(AsDigraph, "for a transformation", [IsTransformation],
 t -> AsDigraphCons(IsImmutableDigraph, t, DegreeOfTransformation(t)));
 
-InstallMethod(AsBinaryRelation, "for a digraph", [IsDenseDigraphRep],
+InstallMethod(AsBinaryRelation, "for a digraph", [IsDigraphByOutNeighboursRep],
 function(D)
   local rel;
   if DigraphNrVertices(D) = 0 then

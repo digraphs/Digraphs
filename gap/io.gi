@@ -1445,7 +1445,8 @@ function(name, D, delimiter, offset)
   IO_Close(file);
 end);
 
-InstallMethod(Graph6String, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(Graph6String, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   if (IsMultiDigraph(D) or not IsSymmetricDigraph(D)
@@ -1497,7 +1498,8 @@ function(D)
   return List(list, i -> CharInt(i + 63));
 end);
 
-InstallMethod(Digraph6String, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(Digraph6String, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
   # NOTE: this package originally used a version of digraph6 that reads down
@@ -1547,7 +1549,8 @@ function(D)
   return List(list, i -> CharInt(i + 63));
 end);
 
-InstallMethod(Sparse6String, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(Sparse6String, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local list, n, lenlist, adj, nredges, k, blist, v, nextbit, AddBinary, i, j,
         bitstopad, pos, block;
@@ -1653,7 +1656,8 @@ function(D)
   return List(list, i -> CharInt(i + 63));
 end);
 
-InstallMethod(DiSparse6String, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(DiSparse6String, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local list, n, lenlist, adj, source_i, range_i, source_d, range_d, len1,
   len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad,

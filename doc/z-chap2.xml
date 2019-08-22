@@ -6,7 +6,7 @@
     <#Include Label="IsDigraph">
     <#Include Label="IsCayleyDigraph">
     <#Include Label="IsDigraphWithAdjacencyFunction">
-    <#Include Label="DenseDigraphType">
+    <#Include Label="DigraphByOutNeighboursType">
     <#Include Label="Digraph">
     <#Include Label="DigraphByAdjacencyMatrix">
     <#Include Label="DigraphByEdges">

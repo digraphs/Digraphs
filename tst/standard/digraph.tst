@@ -1084,7 +1084,7 @@ gap> G := DihedralGroup(8);
 <pc group of size 8 with 3 generators>
 gap> digraph := Digraph(AsSet(G), ReturnTrue);
 <immutable digraph with 8 vertices, 64 edges>
-gap> IsDenseDigraphRep(digraph);
+gap> IsDigraphByOutNeighboursRep(digraph);
 true
 gap> digraph := Digraph("abcd", function(i, j) return i < j; end);
 <immutable digraph with 4 vertices, 6 edges>
@@ -1097,7 +1097,7 @@ gap> digraph := Digraph(["hello", "world", 13, true, (1, 4, 3)],
 <immutable digraph with 5 vertices, 5 edges>
 gap> HasDigraphAdjacencyFunction(digraph);
 true
-gap> IsDenseDigraphRep(digraph);
+gap> IsDigraphByOutNeighboursRep(digraph);
 true
 
 #  Digraphs with known automorphisms

@@ -10,7 +10,8 @@
 
 # AN's code, adapted by WW
 
-InstallMethod(DotDigraph, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(DotDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local str, out, i, j;
   str   := "//dot\n";
@@ -29,8 +30,8 @@ function(D)
   return str;
 end);
 
-InstallMethod(DotVertexLabelledDigraph, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DotVertexLabelledDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local out, str, i, j;
   out   := OutNeighbours(D);
@@ -55,8 +56,8 @@ function(D)
   return str;
 end);
 
-InstallMethod(DotSymmetricDigraph, "for a dense digraph",
-[IsDenseDigraphRep],
+InstallMethod(DotSymmetricDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
   local out, str, i, j;
   if not IsSymmetricDigraph(D) then
@@ -259,8 +260,8 @@ InstallMethod(DotHighlightedDigraph, "for a digraph and list",
 {D, list} -> DotHighlightedDigraph(D, list, "black", "grey"));
 
 InstallMethod(DotHighlightedDigraph,
-"for a dense digraph, list, and two strings",
-[IsDenseDigraphRep, IsList, IsString, IsString],
+"for a digraph by out-neighbours, list, and two strings",
+[IsDigraphByOutNeighboursRep, IsList, IsString, IsString],
 function(D, highverts, highcolour, lowcolour)
   local lowverts, out, str, i, j;
 

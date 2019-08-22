@@ -13,8 +13,9 @@
 InstallMethod(CliqueNumber, "for a digraph", [IsDigraph],
 D -> Maximum(List(DigraphMaximalCliquesReps(D), Length)));
 
-InstallMethod(IsIndependentSet, "for a dense digraph and a homogeneous list",
-[IsDenseDigraphRep, IsHomogeneousList],
+InstallMethod(IsIndependentSet,
+"for a digraph by out-neighbours and a homogeneous list",
+[IsDigraphByOutNeighboursRep, IsHomogeneousList],
 function(D, list)
   local x;
   if not IsDuplicateFreeList(list)
@@ -31,8 +32,8 @@ function(D, list)
 end);
 
 InstallMethod(IsMaximalIndependentSet,
-"for a dense digraph and a homogeneous list",
-[IsDenseDigraphRep, IsHomogeneousList],
+"for a digraph by out-neighbours and a homogeneous list",
+[IsDigraphByOutNeighboursRep, IsHomogeneousList],
 function(D, set)
   local nbs, vtx, try, i;
 
@@ -56,8 +57,8 @@ function(D, set)
   return not ForAny(try, x -> IsEmpty(Intersection(set, nbs[x])));
 end);
 
-InstallMethod(IsClique, "for a dense digraph and a homogeneous list",
-[IsDenseDigraphRep, IsHomogeneousList],
+InstallMethod(IsClique, "for a digraph by out-neighbours and a homogeneous list",
+[IsDigraphByOutNeighboursRep, IsHomogeneousList],
 function(D, clique)
   local nbs, v;
   if not IsDuplicateFreeList(clique)
@@ -74,8 +75,9 @@ function(D, clique)
   return true;
 end);
 
-InstallMethod(IsMaximalClique, "for a dense digraph and a homogeneous list",
-[IsDenseDigraphRep, IsHomogeneousList],
+InstallMethod(IsMaximalClique,
+"for a digraph by out-neighbours and a homogeneous list",
+[IsDigraphByOutNeighboursRep, IsHomogeneousList],
 function(D, clique)
   local nbs, try, n, i;
 
@@ -244,8 +246,8 @@ function(arg)
 
   # Validate arg[2]
   D := arg[2];
-  if not IsDenseDigraphRep(D) then
-    ErrorNoReturn("the 1st argument <D> must be a dense digraph,");
+  if not IsDigraphByOutNeighboursRep(D) then
+    ErrorNoReturn("the 1st argument <D> must be a digraph by out-neighbours,");
   fi;
 
   # Validate arg[3]

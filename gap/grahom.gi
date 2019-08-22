@@ -143,8 +143,8 @@ function(D, order)
 end);
 
 InstallMethod(DigraphGreedyColouringNC,
-"for a dense digraph and a homogeneous list",
-[IsDenseDigraphRep, IsHomogeneousList],
+"for a digraph by out-neighbours and a homogeneous list",
+[IsDigraphByOutNeighboursRep, IsHomogeneousList],
 function(D, order)
   local n, colour, colouring, out, inn, empty, all, available, nr_coloured, v;
   n := DigraphNrVertices(D);
@@ -451,8 +451,9 @@ end);
 # IsDigraph{Homo/Epi/...}morphism
 ########################################################################
 
-InstallMethod(IsDigraphHomomorphism, "for a dense digraph, digraph, and perm",
-[IsDenseDigraphRep, IsDigraph, IsPerm],
+InstallMethod(IsDigraphHomomorphism,
+"for a digraph by out-neighbours, a digraph, and a perm",
+[IsDigraphByOutNeighboursRep, IsDigraph, IsPerm],
 function(src, ran, x)
   local i, j;
   if IsMultiDigraph(src) or IsMultiDigraph(ran) then
@@ -475,8 +476,8 @@ InstallMethod(IsDigraphEndomorphism, "for a digraph and a perm",
 [IsDigraph, IsPerm], IsDigraphAutomorphism);
 
 InstallMethod(IsDigraphHomomorphism,
-"for a dense digraph, digraph, and transformation",
-[IsDenseDigraphRep, IsDigraph, IsTransformation],
+"for a digraph by out-neighbours, digraph, and transformation",
+[IsDigraphByOutNeighboursRep, IsDigraph, IsTransformation],
 function(src, ran, x)
   local i, j;
   if IsMultiDigraph(src) or IsMultiDigraph(ran) then
@@ -525,8 +526,8 @@ InstallMethod(IsDigraphMonomorphism, "for digraph, digraph, and perm",
 [IsDigraph, IsDigraph, IsPerm], IsDigraphHomomorphism);
 
 InstallMethod(IsDigraphEmbedding,
-"for digraph, dense digraph, and transformation",
-[IsDigraph, IsDenseDigraphRep, IsTransformation],
+"for digraph, digraph by out-neighbours, and transformation",
+[IsDigraph, IsDigraphByOutNeighboursRep, IsTransformation],
 function(src, ran, x)
   local y, induced, i, j;
   if not IsDigraphMonomorphism(src, ran, x) then
@@ -547,8 +548,9 @@ function(src, ran, x)
   return true;
 end);
 
-InstallMethod(IsDigraphEmbedding, "for digraph, dense digraph, and perm",
-[IsDigraph, IsDenseDigraphRep, IsPerm],
+InstallMethod(IsDigraphEmbedding,
+"for a digraph, a digraph by out-neighbours, and a perm",
+[IsDigraph, IsDigraphByOutNeighboursRep, IsPerm],
 function(src, ran, x)
   local y, induced, i, j;
   if not IsDigraphHomomorphism(src, ran, x) then
@@ -568,8 +570,8 @@ function(src, ran, x)
   return true;
 end);
 
-InstallMethod(IsDigraphColouring, "for a dense digraph and a list",
-[IsDenseDigraphRep, IsHomogeneousList],
+InstallMethod(IsDigraphColouring, "for a digraph by out-neighbours and a list",
+[IsDigraphByOutNeighboursRep, IsHomogeneousList],
 function(D, colours)
   local n, out, v, w;
   n := DigraphNrVertices(D);

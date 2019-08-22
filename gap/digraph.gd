@@ -19,7 +19,8 @@ DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);
 BindGlobal("DigraphFamily", NewFamily("DigraphFamily", IsDigraph));
 
 # Representations
-DeclareRepresentation("IsDenseDigraphRep", IsDigraph and IsComponentObjectRep,
+DeclareRepresentation("IsDigraphByOutNeighboursRep",
+                      IsDigraph and IsComponentObjectRep,
                       ["OutNeighbours"]);
 
 # 2.  Digraph no-check constructors . . .
