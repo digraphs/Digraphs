@@ -25,7 +25,7 @@ function(D)
       or DigraphNrVertices(D) <= 1 then
     return [];
   elif not IsSymmetricDigraph(D) then
-    copy := DigraphSymmetricClosure(DigraphImmutableCopyIfMutable(D));
+    copy := DigraphSymmetricClosure(DigraphMutableCopyIfMutable(D));
   else
     copy := D;
   fi;
@@ -954,7 +954,8 @@ function(D)
   endofstack := 0;
 
   # Reduce the D, remove loops, and store the correct vertex labels
-  C := DigraphRemoveLoops(ReducedDigraph(DigraphImmutableCopyIfMutable(D)));
+  C := DigraphRemoveLoops(ReducedDigraph(DigraphMutableCopyIfMutable(D)));
+  MakeImmutable(C);
   if DigraphVertexLabels(D) <> DigraphVertices(D) then
     SetDigraphVertexLabels(C, Filtered(DigraphVertices(D),
                                        x -> OutDegrees(D) <> 0));
@@ -974,13 +975,12 @@ function(D)
     if n = 1 then
       continue;
     fi;
-    c_comp := InducedSubdigraph(DigraphImmutableCopyIfMutable(C), c_comp);
+    c_comp := InducedSubdigraph(C, c_comp);  # C is definitely immutable
     comp := c_comp;
     s := 1;
     while s < n do
       if s <> 1 then
-        comp := InducedSubdigraph(DigraphImmutableCopyIfMutable(c_comp),
-                                  [s .. n]);
+        comp := InducedSubdigraph(c_comp, [s .. n]);
         comp := InducedSubdigraph(comp,
                                   DigraphStronglyConnectedComponent(comp, 1));
       fi;

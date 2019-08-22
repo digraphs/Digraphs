@@ -198,7 +198,7 @@ function(D)
   local order, n, deg, v;
   order := [];
   n := DigraphNrVertices(D);
-  D := DigraphImmutableCopyIfMutable(D);
+  D := DigraphMutableCopyIfMutable(D);
   while n > 0 do
     deg := ShallowCopy(OutDegrees(D)) + InDegrees(D);
     v := PositionMinimum(deg);
@@ -265,7 +265,7 @@ InstallMethod(HomomorphismsDigraphs, "for a digraph and a digraph",
 function(D1, D2)
   local hom, aut;
   hom := HomomorphismsDigraphsRepresentatives(D1, D2);
-  D2 := DigraphImmutableCopyIfMutable(D2);
+  D2 := DigraphMutableCopyIfMutable(D2);
   aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(D2)),
               AsTransformation);
   return Union(List(aut, x -> hom * x));
@@ -325,7 +325,7 @@ InstallMethod(MonomorphismsDigraphs, "for a digraph and a digraph",
 function(D1, D2)
   local hom, aut;
   hom := MonomorphismsDigraphsRepresentatives(D1, D2);
-  D2 := DigraphImmutableCopyIfMutable(D2);
+  D2 := DigraphMutableCopyIfMutable(D2);
   aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(D2)),
               AsTransformation);
   return Union(List(aut, x -> hom * x));
@@ -441,7 +441,7 @@ InstallMethod(EmbeddingsDigraphs, "for a digraph and a digraph",
 function(D1, D2)
   local hom, aut;
   hom := EmbeddingsDigraphsRepresentatives(D1, D2);
-  D2 := DigraphImmutableCopyIfMutable(D2);
+  D2 := DigraphMutableCopyIfMutable(D2);
   aut := List(AutomorphismGroup(DigraphRemoveAllMultipleEdges(D2)),
               AsTransformation);
   return Union(List(aut, x -> hom * x));

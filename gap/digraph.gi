@@ -153,11 +153,23 @@ InstallMethod(DigraphImmutableCopyIfMutable, "for a mutable digraph",
 InstallMethod(DigraphImmutableCopyIfMutable, "for an immutable digraph",
 [IsImmutableDigraph], IdFunc);
 
+InstallMethod(DigraphImmutableCopyIfImmutable, "for a mutable digraph",
+[IsMutableDigraph], IdFunc);
+
+InstallMethod(DigraphImmutableCopyIfImmutable, "for an immutable digraph",
+[IsImmutableDigraph], DigraphImmutableCopy);
+
 InstallMethod(DigraphMutableCopyIfImmutable, "for a mutable digraph",
 [IsMutableDigraph], IdFunc);
 
 InstallMethod(DigraphMutableCopyIfImmutable, "for an immutable digraph",
 [IsImmutableDigraph], DigraphMutableCopy);
+
+InstallMethod(DigraphMutableCopyIfMutable, "for a mutable digraph",
+[IsMutableDigraph], DigraphMutableCopy);
+
+InstallMethod(DigraphMutableCopyIfMutable, "for an immutable digraph",
+[IsImmutableDigraph], IdFunc);
 
 ########################################################################
 # 4. PostMakeImmutable
@@ -931,13 +943,13 @@ function(filt, D)
   elif not IsJoinSemilatticeDigraph(D) then
     if IsMeetSemilatticeDigraph(D) then
       return AsSemigroup(IsPartialPermSemigroup,
-                         DigraphReverse(DigraphImmutableCopyIfMutable(D)));
+                         DigraphReverse(DigraphMutableCopyIfMutable(D)));
     fi;
     ErrorNoReturn("the 2nd argument <D> must be digraph that is a join or ",
                   "meet semilattice,");
   fi;
 
-  D   := DigraphImmutableCopyIfMutable(D);
+  D   := DigraphMutableCopyIfMutable(D);
   red := DigraphReflexiveTransitiveReduction(D);
   top := DigraphTopologicalSort(D);
   # im[i] will store the image of the idempotent partial perm corresponding to
@@ -988,7 +1000,7 @@ function(filt, digraph, gps, homs)
   elif not IsJoinSemilatticeDigraph(digraph) then
     if IsMeetSemilatticeDigraph(digraph) then
       return AsSemigroup(IsPartialPermSemigroup,
-                         DigraphReverse(DigraphImmutableCopyIfMutable(digraph)),
+                         DigraphReverse(DigraphMutableCopyIfMutable(digraph)),
                          gps,
                          homs);
     else
@@ -1005,8 +1017,9 @@ function(filt, digraph, gps, homs)
                   "of vertices in the second argument,");
   fi;
 
-  digraph := DigraphImmutableCopyIfMutable(digraph);
+  digraph := DigraphMutableCopyIfMutable(digraph);
   red := DigraphReflexiveTransitiveReduction(digraph);
+  MakeImmutable(digraph);
   if not Length(homs) = DigraphNrEdges(red) or
        not ForAll(homs, x -> Length(x) = 3 and
                              IsPosInt(x[1]) and
