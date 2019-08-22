@@ -42,11 +42,11 @@ true
 
 #  IsMultiDigraph
 gap> gr1 := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsMultiDigraph(gr1);
 false
 gap> gr2 := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsMultiDigraph(gr2);
 false
 gap> source := [1 .. 10000];;
@@ -65,6 +65,10 @@ gap> IsMultiDigraph(gr4);
 true
 
 #  IsAcyclicDigraph
+gap> D := Digraph([[2], [1]]);;
+gap> IsStronglyConnectedDigraph(D);;
+gap> IsAcyclicDigraph(D);
+false
 gap> loop := Digraph([[1]]);
 <immutable digraph with 1 vertex, 1 edge>
 gap> IsMultiDigraph(loop);
@@ -176,7 +180,7 @@ false
 gap> IsFunctionalDigraph(loop);
 true
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsFunctionalDigraph(gr);
 true
 gap> r := rec(DigraphVertices := [1 .. 10],
@@ -284,7 +288,7 @@ gap> gr4 := DigraphNC([[], [3], [1]]);;
 gap> IsEmptyDigraph(gr4);
 false
 gap> gr5 := DigraphByAdjacencyMatrix([[0, 0], [0, 0]]);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> IsEmptyDigraph(gr5);
 true
 gap> gr6 := DigraphByEdges([[3, 5], [1, 1], [2, 3], [5, 4]]);
@@ -316,7 +320,7 @@ gap> gr := Digraph([[1], []]);
 gap> IsTournament(gr);
 false
 gap> gr := EmptyDigraph(1);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> HasIsTournament(gr);
 false
 gap> IsTournament(gr);
@@ -332,7 +336,7 @@ false
 
 #  IsStronglyConnectedDigraph
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsStronglyConnectedDigraph(gr);
 true
 gap> adj := [[3, 4, 5, 7, 10], [4, 5, 10], [1, 2, 4, 7], [2, 9],
@@ -410,11 +414,11 @@ gap> gr := Digraph(r);
 gap> IsReflexiveDigraph(gr);
 true
 gap> gr := EmptyDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsReflexiveDigraph(gr);
 true
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> HasIsAcyclicDigraph(gr);
 false
 gap> IsReflexiveDigraph(gr);
@@ -449,7 +453,7 @@ true
 
 #  IsCompleteDigraph
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsCompleteDigraph(gr);
 true
 gap> gr := Digraph([[2, 2], []]);
@@ -471,11 +475,11 @@ true
 
 #  IsConnectedDigraph
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsConnectedDigraph(gr);
 true
 gap> gr := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsConnectedDigraph(gr);
 true
 gap> gr := Digraph([[1]]);
@@ -509,11 +513,11 @@ true
 
 #  DigraphHasLoops
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphHasLoops(gr);
 false
 gap> gr := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> DigraphHasLoops(gr);
 false
 gap> gr := Digraph([[1]]);
@@ -535,11 +539,11 @@ gap> gr := Digraph([[6, 7], [6, 9], [1, 2, 4, 5, 8, 9],
 gap> DigraphHasLoops(gr);
 false
 gap> gr := Digraph(rec(DigraphNrVertices := 0, DigraphSource := [], DigraphRange := []));
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphHasLoops(gr);
 false
 gap> gr := Digraph(rec(DigraphNrVertices := 1, DigraphSource := [], DigraphRange := []));
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> DigraphHasLoops(gr);
 false
 gap> gr := Digraph(rec(DigraphNrVertices := 1, DigraphSource := [1], DigraphRange := [1]));
@@ -696,19 +700,19 @@ gap> gr := Digraph([[2, 4], [], [1], [1], [4]]);
 gap> IsBipartiteDigraph(gr);
 true
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsBipartiteDigraph(gr);
 false
 gap> gr := CycleDigraph(89);
-<immutable digraph with 89 vertices, 89 edges>
+<immutable cycle digraph with 89 vertices>
 gap> IsBipartiteDigraph(gr);
 false
 gap> gr := CycleDigraph(314);
-<immutable digraph with 314 vertices, 314 edges>
+<immutable cycle digraph with 314 vertices>
 gap> IsBipartiteDigraph(gr);
 true
 gap> gr := CompleteDigraph(4);
-<immutable digraph with 4 vertices, 12 edges>
+<immutable complete digraph with 4 vertices>
 gap> IsBipartiteDigraph(gr);
 false
 gap> gr := Digraph([[2, 4], [], [1], [1], [4], [7], []]);
@@ -792,7 +796,7 @@ gap> gr := Digraph([[2], [1, 3], [2, 4], [3, 5, 6], [4, 6], [4, 5]]);
 gap> IsDistanceRegularDigraph(gr);
 false
 gap> gr := CompleteBipartiteDigraph(3, 4);
-<immutable digraph with 7 vertices, 24 edges>
+<immutable complete bipartite digraph with bicomponent sizes 3 and 4>
 gap> IsDistanceRegularDigraph(gr);
 false
 gap> gr := Digraph([[], [3], [2]]);
@@ -802,7 +806,7 @@ false
 
 #  IsCompleteBipartiteDigraph
 gap> gr := CompleteBipartiteDigraph(4, 5);
-<immutable digraph with 9 vertices, 40 edges>
+<immutable complete bipartite digraph with bicomponent sizes 4 and 5>
 gap> IsCompleteBipartiteDigraph(gr);
 true
 gap> gr := Digraph([[2, 2], []]);
@@ -810,11 +814,11 @@ gap> gr := Digraph([[2, 2], []]);
 gap> IsCompleteBipartiteDigraph(gr);
 false
 gap> gr := CycleDigraph(3);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable cycle digraph with 3 vertices>
 gap> IsCompleteBipartiteDigraph(gr);
 false
 gap> gr := CycleDigraph(4);
-<immutable digraph with 4 vertices, 4 edges>
+<immutable cycle digraph with 4 vertices>
 gap> IsCompleteBipartiteDigraph(gr);
 false
 gap> gr := Digraph([[2], [1]]);
@@ -824,15 +828,15 @@ true
 
 #  IsDirectedTree
 gap> g := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsDirectedTree(g);
 false
 gap> g := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsDirectedTree(g);
 true
 gap> g := Digraph([[], []]);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> IsDirectedTree(g);
 false
 gap> g := Digraph([[1]]);
@@ -886,15 +890,15 @@ false
 
 #  IsUndirectedTree
 gap> g := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsUndirectedTree(g);
 false
 gap> g := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsUndirectedTree(g);
 true
 gap> g := Digraph([[], []]);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> IsUndirectedTree(g);
 false
 gap> g := Digraph([[1]]);
@@ -948,15 +952,15 @@ false
 
 #  IsUndirectedForest
 gap> gr := ChainDigraph(10);
-<immutable digraph with 10 vertices, 9 edges>
+<immutable chain digraph with 10 vertices>
 gap> IsUndirectedForest(gr);
 false
 gap> gr := EmptyDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsUndirectedForest(gr);
 false
 gap> gr := EmptyDigraph(1);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsUndirectedForest(gr);
 true
 gap> gr := Digraph([[1, 1]]);
@@ -968,7 +972,7 @@ gap> gr := Digraph([[1]]);
 gap> IsUndirectedForest(gr);
 false
 gap> gr := DigraphSymmetricClosure(ChainDigraph(4));
-<immutable digraph with 4 vertices, 6 edges>
+<immutable symmetric digraph with 4 vertices, 6 edges>
 gap> HasIsUndirectedTree(gr) or HasIsUndirectedForest(gr);
 false
 gap> IsUndirectedTree(gr);
@@ -994,15 +998,15 @@ true
 
 #  IsEulerianDigraph
 gap> g := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsEulerianDigraph(g);
 true
 gap> g := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsEulerianDigraph(g);
 true
 gap> g := Digraph([[], []]);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> IsEulerianDigraph(g);
 false
 gap> g := Digraph([[1]]);
@@ -1062,11 +1066,11 @@ gap> g := Digraph([[2, 3], [3], [1]]);
 gap> IsEulerianDigraph(g);
 false
 gap> g := EmptyDigraph(IsMutableDigraph, 10);
-<mutable digraph with 10 vertices, 0 edges>
+<mutable empty digraph with 10 vertices>
 gap> IsEulerianDigraph(g);
 false
 gap> g;
-<mutable digraph with 10 vertices, 0 edges>
+<mutable empty digraph with 10 vertices>
 
 # IsJoinSemilatticeDigraph, IsMeetSemilatticeDigraph, and IsLatticeDigraph
 gap> gr := Digraph([[1, 2], [2]]);
@@ -1078,7 +1082,7 @@ true
 gap> IsLatticeDigraph(gr);
 true
 gap> gr := CycleDigraph(5);
-<immutable digraph with 5 vertices, 5 edges>
+<immutable cycle digraph with 5 vertices>
 gap> IsMeetSemilatticeDigraph(gr);
 false
 gap> IsJoinSemilatticeDigraph(gr);
@@ -1104,7 +1108,7 @@ false
 
 # IsPartialOrderDigraph
 gap> gr := NullDigraph(5);
-<immutable digraph with 5 vertices, 0 edges>
+<immutable empty digraph with 5 vertices>
 gap> IsPartialOrderDigraph(gr);
 false
 gap> gr := Digraph([[1], [2], [3]]);
@@ -1137,7 +1141,7 @@ gap> gr := DigraphFromDiSparse6String(Concatenation(
 > "BkQqZIkmrJLkytZUl]uJXmkyjrNI}Rv"));
 <immutable digraph with 266 vertices, 919 edges>
 gap> gr := DigraphReflexiveTransitiveClosure(gr);
-<immutable digraph with 266 vertices, 10772 edges>
+<immutable preorder digraph with 266 vertices, 10772 edges>
 gap> IsPartialOrderDigraph(gr);
 true
 gap> IsMeetSemilatticeDigraph(gr);
@@ -1161,11 +1165,11 @@ true
 
 #  IsBiconnectedDigraph
 gap> gr := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsBiconnectedDigraph(gr);
 true
 gap> gr := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsBiconnectedDigraph(gr);
 true
 gap> gr := Digraph([[1]]);
@@ -1200,15 +1204,15 @@ false
 
 #  IsHamiltonianDigraph
 gap> g := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := Digraph([[], []]);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> IsHamiltonianDigraph(g);
 false
 gap> g := Digraph([[1]]);
@@ -1279,43 +1283,43 @@ gap> g := Digraph([[2, 4, 6, 10], [1, 3, 4, 5, 6, 7, 9, 10], [1, 5, 7, 8],
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteMultipartiteDigraph([1, 30]);
-<immutable digraph with 31 vertices, 60 edges>
+<immutable complete bipartite digraph with bicomponent sizes 1 and 30>
 gap> IsHamiltonianDigraph(g);
 false
 gap> g := CompleteMultipartiteDigraph([16, 15]);
-<immutable digraph with 31 vertices, 480 edges>
+<immutable complete bipartite digraph with bicomponent sizes 16 and 15>
 gap> IsHamiltonianDigraph(g);
 false
 gap> g := CompleteMultipartiteDigraph([1, 1, 2, 3, 5, 8, 13, 21]);
-<immutable digraph with 54 vertices, 2202 edges>
+<immutable multipartite symmetric digraph with 54 vertices, 2202 edges>
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteMultipartiteDigraph([1, 1, 2, 3, 5, 8, 13, 21, 34]);
-<immutable digraph with 88 vertices, 5874 edges>
+<immutable multipartite symmetric digraph with 88 vertices, 5874 edges>
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteBipartiteDigraph(50, 50);
-<immutable digraph with 100 vertices, 5000 edges>
+<immutable complete bipartite digraph with bicomponent sizes 50 and 50>
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteMultipartiteDigraph([1, 15, 1, 1, 1, 1, 1, 1]);
-<immutable digraph with 22 vertices, 252 edges>
+<immutable multipartite symmetric digraph with 22 vertices, 252 edges>
 gap> IsHamiltonianDigraph(g);
 false
 gap> g := CompleteDigraph(50);
-<immutable digraph with 50 vertices, 2450 edges>
+<immutable complete digraph with 50 vertices>
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CycleDigraph(1000000);
-<immutable digraph with 1000000 vertices, 1000000 edges>
+<immutable cycle digraph with 1000000 vertices>
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteDigraph(100);
-<immutable digraph with 100 vertices, 9900 edges>
+<immutable complete digraph with 100 vertices>
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CycleDigraph(513);
-<immutable digraph with 513 vertices, 513 edges>
+<immutable cycle digraph with 513 vertices>
 gap> g := DigraphAddEdges(g, [[6, 8], [8, 7], [7, 9]]);
 <immutable digraph with 513 vertices, 516 edges>
 gap> g := DigraphRemoveEdge(g, [6, 7]);
@@ -1335,15 +1339,15 @@ true
 
 # IsDigraphCore
 gap> D := CompleteDigraph(10);
-<immutable digraph with 10 vertices, 90 edges>
+<immutable complete digraph with 10 vertices>
 gap> IsDigraphCore(D);
 true
 gap> D := JohnsonDigraph(8, 3);
-<immutable digraph with 56 vertices, 840 edges>
+<immutable symmetric digraph with 56 vertices, 840 edges>
 gap> IsDigraphCore(D);
 true
 gap> D := CompleteBipartiteDigraph(500, 500);
-<immutable digraph with 1000 vertices, 500000 edges>
+<immutable complete bipartite digraph with bicomponent sizes 500 and 500>
 gap> IsDigraphCore(D);
 false
 gap> D := PetersenGraph();
@@ -1357,11 +1361,11 @@ false
 gap> D;
 <mutable digraph with 40 vertices, 80 edges>
 gap> D := EmptyDigraph(100000);
-<immutable digraph with 100000 vertices, 0 edges>
+<immutable empty digraph with 100000 vertices>
 gap> IsDigraphCore(D);
 false
 gap> D := EmptyDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsDigraphCore(D);
 true
 
@@ -1390,7 +1394,7 @@ false
 
 # Code coverage
 gap> D := DigraphCopy(NullDigraph(4));
-<immutable digraph with 4 vertices, 0 edges>
+<immutable empty digraph with 4 vertices>
 gap> HasIsEmptyDigraph(D);
 false
 gap> HasDigraphNrEdges(D);

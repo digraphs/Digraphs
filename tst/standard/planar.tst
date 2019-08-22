@@ -15,15 +15,15 @@ gap> DIGRAPHS_StartTest();
 
 # IsPlanarDigraph
 gap> D := NullDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsPlanarDigraph(D);
 true
 gap> D := CompleteDigraph(4);
-<immutable digraph with 4 vertices, 12 edges>
+<immutable complete digraph with 4 vertices>
 gap> IsPlanarDigraph(D);
 true
 gap> D := CompleteDigraph(5);
-<immutable digraph with 5 vertices, 20 edges>
+<immutable complete digraph with 5 vertices>
 gap> IsPlanarDigraph(D);
 false
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
@@ -35,7 +35,7 @@ gap> ChromaticNumber(D);
 gap> IsPlanarDigraph(D);
 false
 gap> D := CompleteBipartiteDigraph(3, 3);
-<immutable digraph with 6 vertices, 18 edges>
+<immutable complete bipartite digraph with bicomponent sizes 3 and 3>
 gap> D := DigraphDisjointUnion(D, D);
 <immutable digraph with 12 vertices, 36 edges>
 gap> IsPlanarDigraph(D);
@@ -53,15 +53,15 @@ false
 gap> IsOuterPlanarDigraph(D);
 false
 gap> D := NullDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> IsOuterPlanarDigraph(D);
 true
 gap> D := CompleteDigraph(4);
-<immutable digraph with 4 vertices, 12 edges>
+<immutable complete digraph with 4 vertices>
 gap> IsOuterPlanarDigraph(D);
 false
 gap> D := CompleteDigraph(4);
-<immutable digraph with 4 vertices, 12 edges>
+<immutable complete digraph with 4 vertices>
 gap> ChromaticNumber(D);
 4
 gap> IsOuterPlanarDigraph(D);
@@ -90,7 +90,7 @@ false
 gap> PlanarEmbedding(D);
 fail
 gap> D := NullDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> PlanarEmbedding(D);
 [  ]
 gap> D := List(["D??", "D?_", "D?o", "D?w", "D?{", "DCO", "DCW", "DCc", "DCo",
@@ -142,11 +142,11 @@ false
 gap> OuterPlanarEmbedding(D);
 fail
 gap> D := NullDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> OuterPlanarEmbedding(D);
 [  ]
 gap> D := CompleteDigraph(3);
-<immutable digraph with 3 vertices, 6 edges>
+<immutable complete digraph with 3 vertices>
 gap> OuterPlanarEmbedding(D);
 [ [ 2, 3 ], [ 3 ], [  ] ]
 
@@ -195,7 +195,7 @@ gap> KuratowskiPlanarSubdigraph(D);
 [ [ 2, 9, 7 ], [ 3 ], [ 6 ], [ 5, 9 ], [ 6 ], [  ], [ 4 ], [ 7, 9, 3 ], [  ], 
   [  ] ]
 gap> D := NullDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> KuratowskiPlanarSubdigraph(D);
 fail
 
@@ -215,11 +215,11 @@ false
 gap> KuratowskiOuterPlanarSubdigraph(D);
 [ [  ], [  ], [  ], [ 8, 9 ], [  ], [  ], [ 9, 4 ], [ 7, 9 ], [  ], [  ] ]
 gap> D := NullDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> KuratowskiOuterPlanarSubdigraph(D);
 fail
 gap> D := CompleteDigraph(3);
-<immutable digraph with 3 vertices, 6 edges>
+<immutable complete digraph with 3 vertices>
 gap> KuratowskiOuterPlanarSubdigraph(D);
 fail
 

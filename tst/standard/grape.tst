@@ -40,11 +40,11 @@ Error, the 1st argument <G> must be a finite group,
 
 #  DigraphAddEdgeOrbit
 gap> digraph := NullDigraph(4);
-<immutable digraph with 4 vertices, 0 edges>
+<immutable empty digraph with 4 vertices>
 gap> HasDigraphGroup(digraph);
 true
 gap> digraph := DigraphCopy(digraph);
-<immutable digraph with 4 vertices, 0 edges>
+<immutable empty digraph with 4 vertices>
 gap> HasDigraphGroup(digraph);
 false
 gap> SetDigraphGroup(digraph, Group((1, 3), (1, 2)(3, 4)));
@@ -59,7 +59,7 @@ true
 
 #  DigraphRemoveEdgeOrbit
 gap> digraph := CompleteDigraph(4);
-<immutable digraph with 4 vertices, 12 edges>
+<immutable complete digraph with 4 vertices>
 gap> HasDigraphGroup(digraph);
 true
 gap> digraph := DigraphCopy(digraph);
@@ -136,7 +136,7 @@ true
 gap> HasDigraphGroup(DigraphCopy(digraph));
 false
 gap> digraph := EdgeOrbitsDigraph(Group(()), [3, 2]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> OutNeighbours(digraph);
 [  ]
 gap> HasDigraphGroup(digraph);
@@ -173,7 +173,7 @@ gap> gr3 := DigraphRemoveEdgeOrbit(gr1, [1, 3]);
 gap> gr3 := DigraphRemoveEdgeOrbit(gr3, [1, 2]);
 <immutable digraph with 8 vertices, 8 edges>
 gap> gr3 := DigraphRemoveEdgeOrbit(gr3, [1, 4]);
-<immutable digraph with 8 vertices, 0 edges>
+<immutable empty digraph with 8 vertices>
 gap> DigraphAddEdgeOrbit(gr1, [0, 3]);
 Error, the 2nd argument <edge> must be a list of 2 positive integers,
 gap> DigraphAddEdgeOrbit(gr1, [1, 2, 3]);

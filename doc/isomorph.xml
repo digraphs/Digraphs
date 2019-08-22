@@ -144,7 +144,7 @@ gap> johnson := DigraphFromGraph6String("E}lw");
 gap> G := AutomorphismGroup(johnson);
 Group([ (3,4), (2,3)(4,5), (1,2)(5,6) ])
 gap> cycle := CycleDigraph(9);
-<immutable digraph with 9 vertices, 9 edges>
+<immutable cycle digraph with 9 vertices>
 gap> G := AutomorphismGroup(cycle);
 Group([ (1,2,3,4,5,6,7,8,9) ])
 gap> IsCyclic(G) and Size(G) = 9;
@@ -254,7 +254,7 @@ Group([ (2,3) ])]]></Example>
 
   <Example><![CDATA[
 gap> cycle := CycleDigraph(9);
-<immutable digraph with 9 vertices, 9 edges>
+<immutable cycle digraph with 9 vertices>
 gap> G := AutomorphismGroup(cycle);;
 gap> IsCyclic(G) and Size(G) = 9;
 true
@@ -512,9 +512,9 @@ gap> List(DigraphVertices(digraph), i -> colours[i / p]);
 
     <Example><![CDATA[
 gap> digraph1 := CycleDigraph(4);
-<immutable digraph with 4 vertices, 4 edges>
+<immutable cycle digraph with 4 vertices>
 gap> digraph2 := CycleDigraph(5);
-<immutable digraph with 5 vertices, 5 edges>
+<immutable cycle digraph with 5 vertices>
 gap> IsIsomorphicDigraph(digraph1, digraph2);
 false
 gap> digraph2 := DigraphReverse(digraph1);
@@ -578,9 +578,9 @@ true]]></Example>
 
     <Example><![CDATA[
 gap> digraph1 := ChainDigraph(4);
-<immutable digraph with 4 vertices, 3 edges>
+<immutable chain digraph with 4 vertices>
 gap> digraph2 := ChainDigraph(3);
-<immutable digraph with 3 vertices, 2 edges>
+<immutable chain digraph with 3 vertices>
 gap> IsIsomorphicDigraph(digraph1, digraph2,
 >  [[1, 4], [2, 3]], [[1, 2], [3]]);
 false
@@ -659,15 +659,15 @@ false]]></Example>
 
     <Example><![CDATA[
 gap> digraph1 := CycleDigraph(4);
-<immutable digraph with 4 vertices, 4 edges>
+<immutable cycle digraph with 4 vertices>
 gap> digraph2 := CycleDigraph(5);
-<immutable digraph with 5 vertices, 5 edges>
+<immutable cycle digraph with 5 vertices>
 gap> IsomorphismDigraphs(digraph1, digraph2);
 fail
 gap> digraph1 := CompleteBipartiteDigraph(10, 5);
-<immutable digraph with 15 vertices, 100 edges>
+<immutable complete bipartite digraph with bicomponent sizes 10 and 5>
 gap> digraph2 := CompleteBipartiteDigraph(5, 10);
-<immutable digraph with 15 vertices, 100 edges>
+<immutable complete bipartite digraph with bicomponent sizes 5 and 10>
 gap> p := IsomorphismDigraphs(digraph1, digraph2);
 (1,6,11)(2,7,12)(3,8,13)(4,9,14)(5,10,15)
 gap> OnDigraphs(digraph1, p) = digraph2;
@@ -738,9 +738,9 @@ gap> IsomorphismDigraphs(digraph1, digraph2);
 
     <Example><![CDATA[
 gap> digraph1 := ChainDigraph(4);
-<immutable digraph with 4 vertices, 3 edges>
+<immutable chain digraph with 4 vertices>
 gap> digraph2 := ChainDigraph(3);
-<immutable digraph with 3 vertices, 2 edges>
+<immutable chain digraph with 3 vertices>
 gap> IsomorphismDigraphs(digraph1, digraph2,
 >  [[1, 4], [2, 3]], [[1, 2], [3]]);
 fail

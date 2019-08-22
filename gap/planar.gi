@@ -37,7 +37,7 @@ function(D)
   elif HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphCopyIfMutable(D));
+  D := MaximalAntiSymmetricSubdigraph(DigraphImmutableCopyIfMutable(D));
   return PLANAR_EMBEDDING(D);
 end);
 
@@ -48,7 +48,7 @@ function(D)
   elif HasIsOuterPlanarDigraph(D) and not IsOuterPlanarDigraph(D) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphCopyIfMutable(D));
+  D := MaximalAntiSymmetricSubdigraph(DigraphImmutableCopyIfMutable(D));
   return OUTER_PLANAR_EMBEDDING(D);
 end);
 
@@ -57,7 +57,7 @@ function(D)
   if IsPlanarDigraph(D) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphCopyIfMutable(D));
+  D := MaximalAntiSymmetricSubdigraph(DigraphImmutableCopyIfMutable(D));
   return KURATOWSKI_PLANAR_SUBGRAPH(D);
 end);
 
@@ -66,7 +66,7 @@ function(D)
   if IsOuterPlanarDigraph(D) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphCopyIfMutable(D));
+  D := MaximalAntiSymmetricSubdigraph(DigraphImmutableCopyIfMutable(D));
   return KURATOWSKI_OUTER_PLANAR_SUBGRAPH(D);
 end);
 
@@ -75,7 +75,7 @@ function(D)
   if IsOuterPlanarDigraph(D) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphCopyIfMutable(D));
+  D := MaximalAntiSymmetricSubdigraph(DigraphImmutableCopyIfMutable(D));
   return SUBGRAPH_HOMEOMORPHIC_TO_K23(D);
 end);
 
@@ -84,7 +84,7 @@ function(D)
   if IsOuterPlanarDigraph(D) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphCopyIfMutable(D));
+  D := MaximalAntiSymmetricSubdigraph(DigraphImmutableCopyIfMutable(D));
   return SUBGRAPH_HOMEOMORPHIC_TO_K4(D);
 end);
 
@@ -93,7 +93,7 @@ function(D)
   if IsPlanarDigraph(D) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphCopyIfMutable(D));
+  D := MaximalAntiSymmetricSubdigraph(DigraphImmutableCopyIfMutable(D));
   return SUBGRAPH_HOMEOMORPHIC_TO_K33(D);
 end);
 
@@ -104,7 +104,7 @@ end);
 InstallMethod(IsPlanarDigraph, "for a digraph", [IsDigraph],
 function(D)
   local C, v, e;
-  C := DigraphCopyIfMutable(D);
+  C := DigraphImmutableCopyIfMutable(D);
   C := MaximalAntiSymmetricSubdigraph(C);
   v := DigraphNrVertices(D);
   e := DigraphNrEdges(C);
@@ -131,6 +131,6 @@ function(D)
     # Outer planar graphs are 3-colourable
     return false;
   fi;
-  C := DigraphCopyIfMutable(D);
+  C := DigraphImmutableCopyIfMutable(D);
   return IS_OUTER_PLANAR(MaximalAntiSymmetricSubdigraph(C));
 end);

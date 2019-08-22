@@ -23,41 +23,41 @@ gap> PetersenGraph(IsMutableDigraph);
 
 # GeneralisedPetersenGraph
 gap> D := GeneralisedPetersenGraph(8, 3);
-<immutable digraph with 16 vertices, 48 edges>
+<immutable symmetric digraph with 16 vertices, 48 edges>
 gap> IsBipartiteDigraph(D);
 true
 gap> D := GeneralisedPetersenGraph(15, 7);
-<immutable digraph with 30 vertices, 90 edges>
+<immutable symmetric digraph with 30 vertices, 90 edges>
 gap> IsBipartiteDigraph(D);
 false
 gap> D := GeneralisedPetersenGraph(10, 2);
-<immutable digraph with 20 vertices, 60 edges>
+<immutable symmetric digraph with 20 vertices, 60 edges>
 gap> IsVertexTransitive(D);
 true
 gap> D := GeneralisedPetersenGraph(11, 2);
-<immutable digraph with 22 vertices, 66 edges>
+<immutable symmetric digraph with 22 vertices, 66 edges>
 gap> IsVertexTransitive(D);
 false
 gap> D := GeneralisedPetersenGraph(5, 2);
-<immutable digraph with 10 vertices, 30 edges>
+<immutable symmetric digraph with 10 vertices, 30 edges>
 gap> IsIsomorphicDigraph(D, PetersenGraph());
 true
 gap> G8_3 := DigraphFromGraph6String("OCQa`Q?OH?a@A@@?_OGB@");
 <immutable digraph with 16 vertices, 48 edges>
 gap> D := GeneralisedPetersenGraph(8, 3);
-<immutable digraph with 16 vertices, 48 edges>
+<immutable symmetric digraph with 16 vertices, 48 edges>
 gap> IsIsomorphicDigraph(D, G8_3);
 true
 
 #  CompleteDigraph
 gap> gr := CompleteDigraph(5);
-<immutable digraph with 5 vertices, 20 edges>
+<immutable complete digraph with 5 vertices>
 gap> AutomorphismGroup(gr) = SymmetricGroup(5);
 true
 gap> CompleteDigraph(1) = EmptyDigraph(1);
 true
 gap> CompleteDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> CompleteDigraph(-1);
 Error, the argument <n> must be a non-negative integer,
 gap> CompleteDigraph(IsMutableDigraph, 10);
@@ -65,11 +65,11 @@ gap> CompleteDigraph(IsMutableDigraph, 10);
 
 #  EmptyDigraph
 gap> gr := EmptyDigraph(5);
-<immutable digraph with 5 vertices, 0 edges>
+<immutable empty digraph with 5 vertices>
 gap> AutomorphismGroup(gr) = SymmetricGroup(5);
 true
 gap> EmptyDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> EmptyDigraph(-1);
 Error, the argument <n> must be a non-negative integer,
 gap> EmptyDigraph(IsMutableDigraph, -1);
@@ -89,7 +89,7 @@ true
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 4, 5 ], [ 5, 6 ], [ 6, 1 ] ]
 gap> gr := CycleDigraph(1000);
-<immutable digraph with 1000 vertices, 1000 edges>
+<immutable cycle digraph with 1000 vertices>
 gap> gr := CycleDigraph(IsMutableDigraph, 6);
 <mutable digraph with 6 vertices, 6 edges>
 
@@ -98,13 +98,13 @@ gap> gr := ChainDigraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `ChainDigraph' on 1 arguments
 gap> gr := ChainDigraph(1);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> IsEmptyDigraph(gr);
 true
 gap> gr = EmptyDigraph(1);
 true
 gap> gr := ChainDigraph(2);
-<immutable digraph with 2 vertices, 1 edge>
+<immutable chain digraph with 2 vertices>
 gap> AutomorphismGroup(gr) = Group(());
 true
 gap> HasIsTransitiveDigraph(gr);
@@ -112,17 +112,19 @@ true
 gap> IsTransitiveDigraph(gr);
 true
 gap> gr := ChainDigraph(10);
-<immutable digraph with 10 vertices, 9 edges>
+<immutable chain digraph with 10 vertices>
 gap> OutNeighbours(gr);
 [ [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], [  ] ]
 gap> AutomorphismGroup(gr) = Group(());
 true
 gap> grrt := DigraphReflexiveTransitiveClosure(gr);
-<immutable digraph with 10 vertices, 55 edges>
+<immutable preorder digraph with 10 vertices, 55 edges>
 gap> IsPartialOrderBinaryRelation(AsBinaryRelation(grrt));
 true
 gap> IsAntisymmetricDigraph(grrt);
 true
+gap> grrt;
+<immutable partial order digraph with 10 vertices, 55 edges>
 gap> ChainDigraph(IsMutableDigraph, 10);
 <mutable digraph with 10 vertices, 9 edges>
 
@@ -136,7 +138,7 @@ Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `CompleteBipartiteDigraph' on 2 argument\
 s
 gap> gr := CompleteBipartiteDigraph(4, 3);
-<immutable digraph with 7 vertices, 24 edges>
+<immutable complete bipartite digraph with bicomponent sizes 4 and 3>
 gap> AutomorphismGroup(gr) = Group((1, 2, 3, 4), (1, 2), (5, 6, 7), (5, 6));
 true
 gap> DigraphEdges(gr);
@@ -145,20 +147,20 @@ gap> DigraphEdges(gr);
   [ 5, 3 ], [ 5, 4 ], [ 6, 1 ], [ 6, 2 ], [ 6, 3 ], [ 6, 4 ], [ 7, 1 ], 
   [ 7, 2 ], [ 7, 3 ], [ 7, 4 ] ]
 gap> gr := CompleteBipartiteDigraph(4, 4);
-<immutable digraph with 8 vertices, 32 edges>
+<immutable complete bipartite digraph with bicomponent sizes 4 and 4>
 gap> AutomorphismGroup(gr) = Group((1, 2, 3, 4), (1, 2), (5, 6, 7, 8), (5, 6),
 >                                  (1, 5)(2, 6)(3, 7)(4, 8));
 true
 
 #  CompleteMultipartiteDigraph
 gap> CompleteMultipartiteDigraph([5, 4, 2]);
-<immutable digraph with 11 vertices, 76 edges>
+<immutable multipartite symmetric digraph with 11 vertices, 76 edges>
 gap> CompleteMultipartiteDigraph([5, 4, 2, 10, 1000]);
-<immutable digraph with 1021 vertices, 42296 edges>
+<immutable multipartite symmetric digraph with 1021 vertices, 42296 edges>
 gap> CompleteMultipartiteDigraph([5]);
-<immutable digraph with 5 vertices, 0 edges>
+<immutable empty digraph with 5 vertices>
 gap> CompleteMultipartiteDigraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> CompleteMultipartiteDigraph([5, 4, 2, 10, -5]);
 Error, the argument <list> must be a list of positive integers,
 gap> CompleteMultipartiteDigraph([5, 0, 2]);
@@ -199,19 +201,19 @@ gap> DigraphEdges(CompleteMultipartiteDigraph([7, 8, 2]));
 
 #  JohnsonDigraph
 gap> JohnsonDigraph(0, 4);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> JohnsonDigraph(0, 0);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> JohnsonDigraph(3, 0);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> JohnsonDigraph(1, 0);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> gr := JohnsonDigraph(3, 1);
-<immutable digraph with 3 vertices, 6 edges>
+<immutable symmetric digraph with 3 vertices, 6 edges>
 gap> OutNeighbours(gr);
 [ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ]
 gap> gr := JohnsonDigraph(4, 2);
-<immutable digraph with 6 vertices, 24 edges>
+<immutable symmetric digraph with 6 vertices, 24 edges>
 gap> OutNeighbours(gr);
 [ [ 2, 3, 4, 5 ], [ 1, 3, 4, 6 ], [ 1, 2, 5, 6 ], [ 1, 2, 5, 6 ], 
   [ 1, 3, 4, 6 ], [ 2, 3, 4, 5 ] ]

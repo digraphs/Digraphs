@@ -11,19 +11,18 @@
 # Categories
 DeclareCategory("IsDigraph", IsObject);
 DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
+DeclareCategory("IsImmutableDigraph", IsDigraph);
 
 DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);
-DeclareCategory("IsImmutableDigraph", IsDigraph);
 
 # Family
 BindGlobal("DigraphFamily", NewFamily("DigraphFamily", IsDigraph));
 
 # Representations
-DeclareRepresentation("IsDenseDigraphRep",
-                      IsDigraph and IsComponentObjectRep,
+DeclareRepresentation("IsDenseDigraphRep", IsDigraph and IsComponentObjectRep,
                       ["OutNeighbours"]);
 
-# No check constructors
+# 2.  Digraph no-check constructors . . .
 DeclareOperation("ConvertToMutableDigraphNC", [IsRecord]);
 DeclareOperation("ConvertToMutableDigraphNC", [IsDenseList]);
 
@@ -39,15 +38,15 @@ DeclareOperation("DigraphNC", [IsFunction, IsDenseList]);
 DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsDenseList]);
 
-# Copies
+# 3.  Digraph copies . . .
 DeclareOperation("DigraphMutableCopyIfImmutable", [IsDigraph]);
 DeclareOperation("DigraphMutableCopy", [IsDigraph]);
-DeclareOperation("DigraphCopy", [IsDigraph]);
-DeclareSynonym("DigraphImmutableCopy", DigraphCopy);
-DeclareOperation("DigraphCopyIfMutable", [IsDigraph]);
-DeclareOperation("DigraphCopyIfImmutable", [IsDigraph]);
+DeclareOperation("DigraphImmutableCopy", [IsDigraph]);
+DeclareOperation("DigraphImmutableCopyIfMutable", [IsDigraph]);
+DeclareOperation("DigraphCopySameMutability", [IsDigraph]);
+DeclareSynonym("DigraphCopy", DigraphCopySameMutability);
 
-# Constructors
+# 5.  Digraph constructors . . .
 DeclareConstructor("DigraphCons", [IsDigraph, IsRecord]);
 DeclareConstructor("DigraphCons", [IsDigraph, IsDenseList]);
 DeclareConstructor("DigraphCons", [IsDigraph, IsList, IsFunction]);
@@ -66,7 +65,7 @@ DeclareOperation("Digraph", [IsList, IsFunction]);
 DeclareOperation("Digraph", [IsInt, IsList, IsList]);
 DeclareOperation("Digraph", [IsList, IsList, IsList]);
 
-# Constructors "by" something . . .
+# 8.  Digraph by-something constructors . . .
 DeclareConstructor("DigraphByAdjacencyMatrixCons",
                   [IsDigraph, IsHomogeneousList]);
 DeclareConstructor("DigraphByAdjacencyMatrixConsNC",
@@ -94,7 +93,7 @@ DeclareOperation("DigraphByInNeighbours", [IsList]);
 
 DeclareSynonym("DigraphByInNeighbors", DigraphByInNeighbours);
 
-# Converters to and from other types . . .
+# 9.  Converters to/from other types -> digraph . . .
 DeclareConstructor("AsDigraphCons", [IsDigraph, IsBinaryRelation]);
 DeclareConstructor("AsDigraphCons", [IsDigraph, IsTransformation]);
 DeclareConstructor("AsDigraphCons", [IsDigraph, IsTransformation, IsInt]);
@@ -113,6 +112,7 @@ DeclareOperation("AsMonoid", [IsFunction, IsDigraph]);
 DeclareOperation("AsSemigroup",
                  [IsFunction, IsDigraph, IsDenseList, IsDenseList]);
 
+# 10. Random digraphs . . .
 DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt]);
 DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt, IsRat]);
 DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt, IsFloat]);

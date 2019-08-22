@@ -136,9 +136,9 @@
 
     <Example><![CDATA[
 gap> D := ChainDigraph(10);
-<immutable digraph with 10 vertices, 9 edges>
+<immutable chain digraph with 10 vertices>
 gap> D := DigraphSymmetricClosure(D);
-<immutable digraph with 10 vertices, 18 edges>
+<immutable symmetric digraph with 10 vertices, 18 edges>
 gap> HomomorphismDigraphsFinder(D, D, fail, [], infinity, 2, 0,
 > [3, 4], [], fail, fail);
 [ Transformation( [ 3, 4, 3, 4, 3, 4, 3, 4, 3, 4 ] ), 
@@ -303,7 +303,7 @@ Transformation( [ 3, 1, 2, 3 ] )
 gap> gr1 := DigraphReverse(ChainDigraph(4));
 <immutable digraph with 4 vertices, 3 edges>
 gap> gr2 := DigraphSymmetricClosure(CycleDigraph(3));
-<immutable digraph with 3 vertices, 6 edges>
+<immutable symmetric digraph with 3 vertices, 6 edges>
 gap> EpimorphismsDigraphsRepresentatives(gr1, gr2);
 [ Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ), 
   Transformation( [ 2, 1, 2, 3 ] ) ]
@@ -516,7 +516,7 @@ gap> DigraphWelshPowellOrder(Digraph([[4], [9], [9], [],
     it returns <K>fail</K>.
     <Example><![CDATA[
 gap> gr := ChainDigraph(3);
-<immutable digraph with 3 vertices, 2 edges>
+<immutable chain digraph with 3 vertices>
 gap> DigraphEmbedding(gr, CompleteDigraph(4));
 fail
 gap> DigraphEmbedding(gr, Digraph([[3], [1, 4], [1], [3]]));
@@ -539,9 +539,9 @@ Transformation( [ 2, 4, 3, 4 ] )
     See also <Ref Oper="IsDigraphEmbedding"/>.
     <Example><![CDATA[
 gap> D1 := NullDigraph(2);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> D2 := CycleDigraph(5);
-<immutable digraph with 5 vertices, 5 edges>
+<immutable cycle digraph with 5 vertices>
 gap> EmbeddingsDigraphsRepresentatives(D1, D2);
 [ Transformation( [ 1, 3, 3 ] ), Transformation( [ 1, 4, 3, 4 ] ) ]
 gap> EmbeddingsDigraphs(D1, D2);
@@ -692,7 +692,7 @@ false]]></Example>
       
       <Example><![CDATA[
 gap> D := JohnsonDigraph(5, 3);
-<immutable digraph with 10 vertices, 60 edges>
+<immutable symmetric digraph with 10 vertices, 60 edges>
 gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 4, 5, 6, 7]);
 true
 gap> IsDigraphColouring(D, [1, 2, 3, 3, 2, 1, 2, 5, 6, 7]);

@@ -17,7 +17,7 @@ gap> DIGRAPHS_StartTest();
 # All graphs of 5 vertices, compare with GRAPE
 gap> graph5 := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 >                                         "/data/graph5.g6.gz"));
-[ <immutable digraph with 5 vertices, 0 edges>, 
+[ <immutable empty digraph with 5 vertices>, 
   <immutable digraph with 5 vertices, 2 edges>, 
   <immutable digraph with 5 vertices, 4 edges>, 
   <immutable digraph with 5 vertices, 6 edges>, 
@@ -132,7 +132,7 @@ gap> gr := Digraph([[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],
 gap> AutomorphismGroup(gr);
 Group(())
 gap> gr := CycleDigraph(1000);
-<immutable digraph with 1000 vertices, 1000 edges>
+<immutable cycle digraph with 1000 vertices>
 gap> AutomorphismGroup(gr);
 <permutation group of size 1000 with 1 generators>
 gap> Size(last);
@@ -374,9 +374,9 @@ true
 
 #  IsomorphismDigraphs: for digraphs, 1
 gap> gr1 := CompleteBipartiteDigraph(100, 50);
-<immutable digraph with 150 vertices, 10000 edges>
+<immutable complete bipartite digraph with bicomponent sizes 100 and 50>
 gap> gr2 := CompleteBipartiteDigraph(50, 100);
-<immutable digraph with 150 vertices, 10000 edges>
+<immutable complete bipartite digraph with bicomponent sizes 50 and 100>
 gap> p := IsomorphismDigraphs(gr1, gr2);
 (1,51,101)(2,52,102)(3,53,103)(4,54,104)(5,55,105)(6,56,106)(7,57,107)(8,58,
 108)(9,59,109)(10,60,110)(11,61,111)(12,62,112)(13,63,113)(14,64,114)(15,65,

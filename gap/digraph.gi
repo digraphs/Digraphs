@@ -65,10 +65,14 @@ list -> MakeImmutable(ConvertToMutableDigraphNC(list)));
 InstallMethod(DigraphConsNC, "for IsMutableDigraph and a record",
 [IsMutableDigraph, IsRecord],
 function(filt, record)
-  local out;
-  Assert(1, IsBound(record.DigraphNrVertices));
-  Assert(1, IsBound(record.DigraphRange));
-  Assert(1, IsBound(record.DigraphSource));
+  local required, out, name;
+  required := ["DigraphRange", "DigraphSource", "DigraphNrVertices"];
+  for name in required do
+    Assert(1, IsBound(record.(name)));
+  od;
+  for name in Difference(RecNames(record), required) do
+    Info(InfoWarning, 1, "ignoring record component \"", name, "\"!");
+  od;
   out := DIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE(record.DigraphNrVertices,
                                                   record.DigraphSource,
                                                   record.DigraphRange);
@@ -91,36 +95,25 @@ InstallMethod(DigraphConsNC,
 InstallMethod(DigraphConsNC, "for IsImmutableDigraph and a record",
 [IsImmutableDigraph, IsRecord],
 function(filt, record)
-  local D, nm;
-  Assert(1, IsBound(record.DigraphNrVertices));
-  Assert(1, IsBound(record.DigraphRange));
-  Assert(1, IsBound(record.DigraphSource));
-  for nm in RecNames(record) do
-    if not nm in ["DigraphRange", "DigraphSource", "DigraphNrVertices"] then
-      Info(InfoWarning, 1, "ignoring record component \"", nm, "\"!");
-    fi;
-  od;
+  local D;
   D := MakeImmutable(DigraphConsNC(IsMutableDigraph, record));
   SetDigraphSource(D, StructuralCopy(record.DigraphSource));
   SetDigraphRange(D, StructuralCopy(record.DigraphRange));
   return D;
 end);
 
-InstallMethod(DigraphConsNC,
-"for IsImmutableDigraph and a dense list of adjacencies",
+InstallMethod(DigraphConsNC, "for IsImmutableDigraph and a dense list",
 [IsImmutableDigraph, IsDenseList],
 {filt, list} -> MakeImmutable(DigraphConsNC(IsMutableDigraph, list)));
 
 InstallMethod(DigraphNC, "for a function and a dense list",
-[IsFunction, IsDenseList],
-DigraphConsNC);
+[IsFunction, IsDenseList], DigraphConsNC);
 
 InstallMethod(DigraphNC, "for a dense list", [IsDenseList],
 list -> DigraphConsNC(IsImmutableDigraph, list));
 
 InstallMethod(DigraphNC, "for a function and a record",
-[IsFunction, IsRecord],
-DigraphConsNC);
+[IsFunction, IsRecord], DigraphConsNC);
 
 InstallMethod(DigraphNC, "for a record", [IsRecord],
 record -> DigraphConsNC(IsImmutableDigraph, record));
@@ -138,7 +131,8 @@ function(D)
   return copy;
 end);
 
-InstallMethod(DigraphCopy, "for a dense digraph", [IsDenseDigraphRep],
+InstallMethod(DigraphImmutableCopy, "for a dense digraph",
+[IsDenseDigraphRep],
 function(D)
   local copy;
   copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
@@ -147,17 +141,17 @@ function(D)
   return copy;
 end);
 
-InstallMethod(DigraphCopyIfMutable, "for a mutable digraph",
+InstallMethod(DigraphCopySameMutability, "for a mutable digraph",
 [IsMutableDigraph], DigraphMutableCopy);
 
-InstallMethod(DigraphCopyIfMutable, "for an immutable digraph",
+InstallMethod(DigraphCopySameMutability, "for an immutable digraph",
+[IsImmutableDigraph], DigraphImmutableCopy);
+
+InstallMethod(DigraphImmutableCopyIfMutable, "for a mutable digraph",
+[IsMutableDigraph], DigraphImmutableCopy);
+
+InstallMethod(DigraphImmutableCopyIfMutable, "for an immutable digraph",
 [IsImmutableDigraph], IdFunc);
-
-InstallMethod(DigraphCopyIfImmutable, "for a mutable digraph",
-[IsMutableDigraph], IdFunc);
-
-InstallMethod(DigraphCopyIfImmutable, "for an immutable digraph",
-[IsImmutableDigraph], DigraphCopy);
 
 InstallMethod(DigraphMutableCopyIfImmutable, "for a mutable digraph",
 [IsMutableDigraph], IdFunc);
@@ -415,7 +409,13 @@ InstallMethod(Digraph, "for a list, list, and list", [IsList, IsList, IsList],
 
 InstallMethod(ViewString, "for a digraph", [IsDigraph],
 function(D)
-  local str, n, m;
+  local n, m, display_nredges, displayed_bipartite, str, x;
+
+  n := DigraphNrVertices(D);
+  m := DigraphNrEdges(D);
+  display_nredges := true;
+  displayed_bipartite := false;
+
   str := "<";
   if IsMutableDigraph(D) then
     Append(str, "mutable ");
@@ -423,26 +423,138 @@ function(D)
     Append(str, "immutable ");
   fi;
 
+  Assert(1, IsMutableDigraph(D) or IsImmutableDigraph(D));
+
+  if m = 0 then
+    Append(str, "empty ");
+    display_nredges := false;
+  elif n > 1 then
+    if HasIsCycleDigraph(D) and IsCycleDigraph(D) then
+      Append(str, "cycle ");
+      display_nredges := false;
+    elif HasIsChainDigraph(D) and IsChainDigraph(D) then
+      Append(str, "chain ");
+      display_nredges := false;
+    elif HasIsCompleteDigraph(D) and IsDigraph(D) then
+      Append(str, "complete ");
+      display_nredges := false;
+    elif HasIsCompleteBipartiteDigraph(D) and IsCompleteBipartiteDigraph(D) then
+      Append(str, "complete bipartite ");
+      displayed_bipartite := true;
+    elif HasIsLatticeDigraph(D) and IsLatticeDigraph(D) then
+      Append(str, "lattice ");
+    elif HasIsJoinSemilatticeDigraph(D) and IsJoinSemilatticeDigraph(D) then
+      Append(str, "join semilattice ");
+    elif HasIsMeetSemilatticeDigraph(D) and IsMeetSemilatticeDigraph(D) then
+      Append(str, "meet semilattice ");
+    else
+      if HasIsEulerianDigraph(D) and IsEulerianDigraph(D) then
+        Append(str, "Eulerian ");
+        if HasIsHamiltonianDigraph(D) and IsHamiltonianDigraph(D) then
+          Append(str, "and ");
+        fi;
+      fi;
+      if HasIsHamiltonianDigraph(D) and IsHamiltonianDigraph(D) then
+        Append(str, "Hamiltonian ");
+      fi;
+      if HasIsStronglyConnectedDigraph(D) and IsStronglyConnectedDigraph(D)
+          and not (HasIsEulerianDigraph(D) and IsEulerianDigraph(D))
+          and not (HasIsHamiltonianDigraph(D) and IsHamiltonianDigraph(D)) then
+        Append(str, "strongly connected ");
+      fi;
+      if HasIsBiconnectedDigraph(D) and IsBiconnectedDigraph(D) then
+        Append(str, "biconnected ");
+      elif not (HasIsStronglyConnectedDigraph(D) and
+                IsStronglyConnectedDigraph(D))
+          and HasIsConnectedDigraph(D) and IsConnectedDigraph(D) then
+        Append(str, "connected ");
+      fi;
+      if HasIsMultipartiteDigraph(D) and IsMultipartiteDigraph(D) then
+        Append(str, "multipartite ");
+      elif HasIsBipartiteDigraph(D) and IsBipartiteDigraph(D) then
+        Append(str, "bipartite ");
+        displayed_bipartite := true;
+      fi;
+      if HasIsEdgeTransitive(D) and IsEdgeTransitive(D) and
+          HasIsVertexTransitive(D) and IsVertexTransitive(D) then
+        Append(str, "edge- and vertex-transitive ");
+      elif HasIsEdgeTransitive(D) and IsEdgeTransitive(D) then
+        Append(str, "edge-transitive ");
+      elif HasIsVertexTransitive(D) and IsVertexTransitive(D) then
+        Append(str, "vertex-transitive ");
+      elif HasIsRegularDigraph(D) and IsRegularDigraph(D) then
+        Append(str, "regular ");
+      elif HasIsOutRegularDigraph(D) and IsOutRegularDigraph(D) then
+        Append(str, "out-regular ");
+      elif HasIsInRegularDigraph(D) and IsInRegularDigraph(D) then
+        Append(str, "in-regular ");
+      fi;
+      if HasIsAcyclicDigraph(D) and IsAcyclicDigraph(D) then
+        Append(str, "acyclic ");
+      elif HasIsPartialOrderDigraph(D) and IsPartialOrderDigraph(D) then
+        Append(str, "partial order ");
+      elif HasIsEquivalenceDigraph(D) and IsEquivalenceDigraph(D) then
+        Append(str, "equivalence ");
+      elif HasIsFunctionalDigraph(D) and IsFunctionalDigraph(D) then
+        Append(str, "functional ");
+        display_nredges := false;
+      elif HasIsPreorderDigraph(D) and IsPreorderDigraph(D) then
+        Append(str, "preorder ");
+      else
+        if HasIsReflexiveDigraph(D) and IsReflexiveDigraph(D) then
+          Append(str, "reflexive ");
+        fi;
+        if HasIsSymmetricDigraph(D) and IsSymmetricDigraph(D) then
+          Append(str, "symmetric ");
+        elif HasIsAntisymmetricDigraph(D) and IsAntisymmetricDigraph(D)
+            and not (HasIsTournament(D) and IsTournament(D)) then
+          Append(str, "antisymmetric ");
+        fi;
+        if HasIsTransitiveDigraph(D) and IsTransitiveDigraph(D) then
+          Append(str, "transitive ");
+        fi;
+      fi;
+    fi;
+  fi;
+
   if IsMultiDigraph(D) then
     Append(str, "multi");
   fi;
 
-  n := DigraphNrVertices(D);
-  m := DigraphNrEdges(D);
+  if HasIsTournament(D) and IsTournament(D) and n > 1 then
+    Append(str, "tournament ");
+    display_nredges := false;
+  else
+    Append(str, "digraph ");
+  fi;
+  Append(str, "with ");
 
-  Append(str, "digraph with ");
+  if displayed_bipartite then
+    x := List(DigraphBicomponents(D), Length);
+    Append(str, "bicomponent sizes ");
+    Append(str, String(x[1]));
+    Append(str, " and ");
+    Append(str, String(x[2]));
+    Append(str, ">");
+    return str;
+  fi;
+
   Append(str, String(n));
   if n = 1 then
-    Append(str, " vertex, ");
+    Append(str, " vertex");
   else
-    Append(str, " vertices, ");
+    Append(str, " vertices");
   fi;
-  Append(str, String(m));
-  if m = 1 then
-    Append(str, " edge>");
-  else
-    Append(str, " edges>");
+  if display_nredges then
+    Append(str, ", ");
+    Append(str, String(m));
+    if m = 1 then
+      Append(str, " edge");
+    else
+      Append(str, " edges");
+    fi;
   fi;
+  Append(str, ">");
   return str;
 end);
 
@@ -511,7 +623,7 @@ function(filt, mat)
     end;
   fi;
 
-  n    := Length(mat);
+  n := Length(mat);
   list := EmptyPlist(n);
   for i in [1 .. n] do
     list[i] := [];
@@ -639,12 +751,10 @@ InstallMethod(DigraphByEdges, "for a list", [IsList],
 edges -> DigraphByEdgesCons(IsImmutableDigraph, edges));
 
 InstallMethod(DigraphByEdges, "for a function, a list, and an integer",
-[IsFunction, IsList, IsInt],
-DigraphByEdgesCons);
+[IsFunction, IsList, IsInt], DigraphByEdgesCons);
 
 InstallMethod(DigraphByEdges, "for a function and a list",
-[IsFunction, IsList],
-DigraphByEdgesCons);
+[IsFunction, IsList], DigraphByEdgesCons);
 
 InstallMethod(DigraphByInNeighboursCons, "for IsMutableDigraph, and a list",
 [IsMutableDigraph, IsList],
@@ -734,8 +844,7 @@ InstallMethod(AsDigraph, "for a binary relation", [IsBinaryRelation],
 rel -> AsDigraphCons(IsImmutableDigraph, rel));
 
 InstallMethod(AsDigraph, "for a function and a binary relation",
-[IsFunction, IsBinaryRelation],
-AsDigraphCons);
+[IsFunction, IsBinaryRelation], AsDigraphCons);
 
 InstallMethod(AsDigraphCons,
 "for IsMutableDigraph, a transformation, and an integer",
@@ -772,10 +881,8 @@ function(filt, f, n)
   return D;
 end);
 
-InstallMethod(AsDigraph,
-"for a function, a transformation, and an integer",
-[IsFunction, IsTransformation, IsInt],
-AsDigraphCons);
+InstallMethod(AsDigraph, "for a function, a transformation, and an integer",
+[IsFunction, IsTransformation, IsInt], AsDigraphCons);
 
 InstallMethod(AsDigraph, "for a transformation and an integer",
 [IsTransformation, IsInt],
@@ -824,13 +931,13 @@ function(filt, D)
   elif not IsJoinSemilatticeDigraph(D) then
     if IsMeetSemilatticeDigraph(D) then
       return AsSemigroup(IsPartialPermSemigroup,
-                         DigraphReverse(DigraphCopyIfMutable(D)));
+                         DigraphReverse(DigraphImmutableCopyIfMutable(D)));
     fi;
     ErrorNoReturn("the 2nd argument <D> must be digraph that is a join or ",
                   "meet semilattice,");
   fi;
 
-  D   := DigraphCopyIfMutable(D);
+  D   := DigraphImmutableCopyIfMutable(D);
   red := DigraphReflexiveTransitiveReduction(D);
   top := DigraphTopologicalSort(D);
   # im[i] will store the image of the idempotent partial perm corresponding to
@@ -881,7 +988,7 @@ function(filt, digraph, gps, homs)
   elif not IsJoinSemilatticeDigraph(digraph) then
     if IsMeetSemilatticeDigraph(digraph) then
       return AsSemigroup(IsPartialPermSemigroup,
-                         DigraphReverse(digraph),
+                         DigraphReverse(DigraphImmutableCopyIfMutable(digraph)),
                          gps,
                          homs);
     else
@@ -898,6 +1005,7 @@ function(filt, digraph, gps, homs)
                   "of vertices in the second argument,");
   fi;
 
+  digraph := DigraphImmutableCopyIfMutable(digraph);
   red := DigraphReflexiveTransitiveReduction(digraph);
   if not Length(homs) = DigraphNrEdges(red) or
        not ForAll(homs, x -> Length(x) = 3 and
@@ -1059,31 +1167,25 @@ end);
 InstallMethod(RandomDigraph, "for a pos int", [IsPosInt],
 n -> RandomDigraphCons(IsImmutableDigraph, n));
 
-InstallMethod(RandomDigraph, "for a pos int and a rational",
-[IsPosInt, IsRat],
+InstallMethod(RandomDigraph, "for a pos int and a rational", [IsPosInt, IsRat],
 {n, p} -> RandomDigraphCons(IsImmutableDigraph, n, p));
 
-InstallMethod(RandomDigraph, "for a pos int and a float",
-[IsPosInt, IsFloat],
+InstallMethod(RandomDigraph, "for a pos int and a float", [IsPosInt, IsFloat],
 {n, p} -> RandomDigraphCons(IsImmutableDigraph, n, p));
 
 InstallMethod(RandomDigraph, "for a func and a pos int", [IsFunction, IsPosInt],
 RandomDigraphCons);
 
 InstallMethod(RandomDigraph, "for a func, a pos int, and a rational",
-[IsFunction, IsPosInt, IsRat],
-RandomDigraphCons);
+[IsFunction, IsPosInt, IsRat], RandomDigraphCons);
 
 InstallMethod(RandomDigraph, "for a func, a pos int, and a float",
-[IsFunction, IsPosInt, IsFloat],
-RandomDigraphCons);
+[IsFunction, IsPosInt, IsFloat], RandomDigraphCons);
 
-InstallMethod(RandomMultiDigraph, "for a pos int",
-[IsPosInt],
+InstallMethod(RandomMultiDigraph, "for a pos int", [IsPosInt],
 n -> RandomMultiDigraph(n, Random([1 .. (n * (n - 1)) / 2])));
 
-InstallMethod(RandomMultiDigraph, "for two pos ints",
-[IsPosInt, IsPosInt],
+InstallMethod(RandomMultiDigraph, "for two pos ints", [IsPosInt, IsPosInt],
 {n, m} -> DigraphNC(RANDOM_MULTI_DIGRAPH(n, m)));
 
 InstallMethod(RandomTournamentCons, "for IsMutableDigraph and an integer",
@@ -1112,14 +1214,23 @@ end);
 
 InstallMethod(RandomTournamentCons, "for IsImmutableDigraph and an integer",
 [IsImmutableDigraph, IsInt],
-{filt, n} -> MakeImmutable(RandomTournamentCons(IsMutableDigraph, n)));
+function(filt, n)
+  local D;
+  D := MakeImmutable(RandomTournamentCons(IsMutableDigraph, n));
+  SetIsTournament(D, true);
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, n <= 1);
+  SetIsEmptyDigraph(D, n <= 1);
+  SetDigraphHasLoops(D, false);
+  SetDigraphNrEdges(D, Binomial(n, 2));
+  return D;
+end);
 
 InstallMethod(RandomTournament, "for an integer", [IsInt],
 n -> RandomTournamentCons(IsImmutableDigraph, n));
 
 InstallMethod(RandomTournament, "for a func and an integer",
-[IsFunction, IsInt],
-{func, n} -> RandomTournamentCons(func, n));
+[IsFunction, IsInt], {func, n} -> RandomTournamentCons(func, n));
 
 InstallMethod(RandomLatticeCons, "for IsMutableDigraph and a pos int",
 [IsMutableDigraph, IsPosInt],
@@ -1140,10 +1251,8 @@ InstallMethod(RandomLatticeCons, "for IsImmutableDigraph and a pos int",
 [IsImmutableDigraph, IsPosInt],
 {filt, n} -> MakeImmutable(RandomLatticeCons(IsMutableDigraph, n)));
 
-InstallMethod(RandomLattice, "for a pos int",
-[IsPosInt],
+InstallMethod(RandomLattice, "for a pos int", [IsPosInt],
 n -> RandomLatticeCons(IsImmutableDigraph, n));
 
-InstallMethod(RandomLattice, "for a func and a pos int",
-[IsFunction, IsPosInt],
+InstallMethod(RandomLattice, "for a func and a pos int", [IsFunction, IsPosInt],
 RandomLatticeCons);

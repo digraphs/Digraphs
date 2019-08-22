@@ -18,7 +18,7 @@ gap> DIGRAPHS_StartTest();
 # Complete digraph on n vertices should have automorphism group S_n
 gap> n := 5;;
 gap> gr := CompleteDigraph(n);
-<immutable digraph with 5 vertices, 20 edges>
+<immutable complete digraph with 5 vertices>
 gap> AutomorphismGroup(gr) = SymmetricGroup(n);
 true
 gap> not DIGRAPHS_NautyAvailable or
@@ -28,7 +28,7 @@ true
 # Empty digraph on n vertices should have automorphism group S_n
 gap> n := 10;;
 gap> gr := EmptyDigraph(n);
-<immutable digraph with 10 vertices, 0 edges>
+<immutable empty digraph with 10 vertices>
 gap> AutomorphismGroup(gr) = SymmetricGroup(n);
 true
 gap> not DIGRAPHS_NautyAvailable or
@@ -38,7 +38,7 @@ true
 # Chain digraph on n vertices should have trivial automorphism group
 gap> n := 5;;
 gap> gr := ChainDigraph(n);
-<immutable digraph with 5 vertices, 4 edges>
+<immutable chain digraph with 5 vertices>
 gap> IsTrivial(AutomorphismGroup(gr));
 true
 gap> not DIGRAPHS_NautyAvailable or IsTrivial(NautyAutomorphismGroup(gr));
@@ -53,7 +53,7 @@ true
 # Cycle digraph on n vertices should have cyclic automorphism group C_n
 gap> n := 5;;
 gap> gr := CycleDigraph(n);
-<immutable digraph with 5 vertices, 5 edges>
+<immutable cycle digraph with 5 vertices>
 gap> IsCyclic(AutomorphismGroup(gr));
 true
 gap> Size(AutomorphismGroup(gr)) = n;
@@ -66,7 +66,7 @@ true
 # shoud have automorphism group S_m x S_n
 gap> m := 5;; n := 4;;
 gap> gr := CompleteBipartiteDigraph(m, n);
-<immutable digraph with 9 vertices, 40 edges>
+<immutable complete bipartite digraph with bicomponent sizes 5 and 4>
 gap> G := AutomorphismGroup(gr);;
 gap> G = DirectProduct(SymmetricGroup(m), SymmetricGroup(n));
 true
@@ -237,7 +237,7 @@ true
 gap> gr1 := Digraph([[2, 2], [1]]);
 <immutable multidigraph with 2 vertices, 3 edges>
 gap> gr2 := CompleteDigraph(2);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable complete digraph with 2 vertices>
 gap> IsIsomorphicDigraph(gr1, gr2, [1, 1], [1, 1]);
 false
 gap> IsIsomorphicDigraph(gr2, gr1, [1, 1], [1, 1]);
@@ -274,7 +274,7 @@ er m <= 2,
 gap> IsIsomorphicDigraph(gr2, gr2, [1, 2], [2, 1]);
 true
 gap> gr1 := CycleDigraph(4);
-<immutable digraph with 4 vertices, 4 edges>
+<immutable cycle digraph with 4 vertices>
 gap> gr2 := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(2));
 <immutable digraph with 4 vertices, 4 edges>
 gap> IsIsomorphicDigraph(gr1, gr2, [1, 1, 1, 1], [1, 1, 1, 1]);
@@ -297,9 +297,9 @@ false
 # IsomorphismDigraphs: for digraphs without multiple edges
 # Non-isomorphic graphs
 gap> gr1 := EmptyDigraph(3);
-<immutable digraph with 3 vertices, 0 edges>
+<immutable empty digraph with 3 vertices>
 gap> gr2 := ChainDigraph(3);
-<immutable digraph with 3 vertices, 2 edges>
+<immutable chain digraph with 3 vertices>
 gap> IsomorphismDigraphs(gr1, gr2);
 fail
 gap> IsomorphismDigraphs(gr2, gr1);
@@ -399,7 +399,7 @@ true
 gap> gr1 := Digraph([[2, 2], [1]]);
 <immutable multidigraph with 2 vertices, 3 edges>
 gap> gr2 := CompleteDigraph(2);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable complete digraph with 2 vertices>
 gap> IsomorphismDigraphs(gr1, gr2, [1, 1], [1, 1]);
 fail
 gap> IsomorphismDigraphs(gr2, gr1, [1, 1], [1, 1]);
@@ -432,7 +432,7 @@ gap> IsomorphismDigraphs(gr2, gr2, [1, 1], [[1, 2]]);
 gap> IsomorphismDigraphs(gr2, gr2, [1, 2], [2, 1]);
 (1,2)
 gap> gr1 := CycleDigraph(4);
-<immutable digraph with 4 vertices, 4 edges>
+<immutable cycle digraph with 4 vertices>
 gap> gr2 := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(2));
 <immutable digraph with 4 vertices, 4 edges>
 gap> IsomorphismDigraphs(gr1, gr2, [1, 1, 1, 1], [1, 1, 1, 1]);
@@ -540,7 +540,7 @@ true
 
 #  AutomorphismGroup: for a digraph with colored vertices
 gap> gr := CompleteBipartiteDigraph(4, 4);
-<immutable digraph with 8 vertices, 32 edges>
+<immutable complete bipartite digraph with bicomponent sizes 4 and 4>
 gap> AutomorphismGroup(gr) = Group([
 > (7, 8), (6, 7), (5, 6), (3, 4), (2, 3), (1, 2), (1, 5)(2, 6)(3, 7)(4, 8)]);
 true
@@ -551,7 +551,7 @@ Group(())
 
 #  AutomorphismGroup: for a digraph with incorrect colors
 gap> gr := CompleteBipartiteDigraph(4, 4);
-<immutable digraph with 8 vertices, 32 edges>
+<immutable complete bipartite digraph with bicomponent sizes 4 and 4>
 gap> AutomorphismGroup(gr, [[1 .. 4], [5 .. 9]]);
 Error, the 2nd argument <partition> does not define a colouring of the vertice\
 s [1 .. 8], since the entry in position 2 contains 
@@ -587,7 +587,7 @@ fail
 
 #  CanonicalLabelling: for a digraph with colored vertices
 gap> gr := CompleteBipartiteDigraph(4, 4);
-<immutable digraph with 8 vertices, 32 edges>
+<immutable complete bipartite digraph with bicomponent sizes 4 and 4>
 gap> BlissCanonicalLabelling(gr);
 (1,8)(2,7)(3,6)(4,5)
 gap> not DIGRAPHS_NautyAvailable
@@ -606,7 +606,7 @@ true
 
 #  CanonicalLabelling: for a digraph with incorrect colors
 gap> gr := CompleteBipartiteDigraph(4, 4);
-<immutable digraph with 8 vertices, 32 edges>
+<immutable complete bipartite digraph with bicomponent sizes 4 and 4>
 gap> BlissCanonicalLabelling(gr, [[1 .. 4], [5 .. 9]]);
 Error, the 2nd argument <partition> does not define a colouring of the vertice\
 s [1 .. 8], since the entry in position 2 contains 

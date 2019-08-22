@@ -13,6 +13,7 @@ DeclareProperty("IsMultiDigraph", IsDigraph);
 
 DeclareProperty("IsAcyclicDigraph", IsDigraph);
 DeclareProperty("IsBipartiteDigraph", IsDigraph);
+DeclareProperty("IsMultipartiteDigraph", IsDigraph);
 DeclareProperty("IsBiconnectedDigraph", IsDigraph);
 DeclareProperty("IsChainDigraph", IsDigraph);
 DeclareProperty("IsCompleteDigraph", IsDigraph);
@@ -59,11 +60,22 @@ InstallTrueMethod(IsAcyclicDigraph, IsEmptyDigraph);
 InstallTrueMethod(IsRegularDigraph, IsInRegularDigraph and IsOutRegularDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph,
                   IsConnectedDigraph and IsSymmetricDigraph);
+InstallTrueMethod(IsStronglyConnectedDigraph, IsEulerianDigraph);
+InstallTrueMethod(IsStronglyConnectedDigraph, IsHamiltonianDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph, IsUndirectedTree);
+InstallTrueMethod(IsConnectedDigraph, IsStronglyConnectedDigraph);
 InstallTrueMethod(IsUndirectedForest, IsUndirectedTree);
+InstallTrueMethod(IsBipartiteDigraph, IsCompleteBipartiteDigraph);
+InstallTrueMethod(IsConnectedDigraph, IsBiconnectedDigraph);
+InstallTrueMethod(IsRegularDigraph, IsVertexTransitive);
+InstallTrueMethod(IsOutRegularDigraph, IsRegularDigraph);
+InstallTrueMethod(IsInRegularDigraph, IsRegularDigraph);
 
 DeclareSynonymAttr("IsPartialOrderDigraph",
                    IsReflexiveDigraph and IsAntisymmetricDigraph
+                   and IsTransitiveDigraph);
+DeclareSynonymAttr("IsEquivalenceDigraph",
+                   IsReflexiveDigraph and IsSymmetricDigraph
                    and IsTransitiveDigraph);
 DeclareSynonymAttr("IsLatticeDigraph",
                     IsMeetSemilatticeDigraph and IsJoinSemilatticeDigraph);

@@ -56,7 +56,7 @@ gap> IsMultiDigraph(gr);
 false
 gap> IsAcyclicDigraph(gr);
 false
-gap> r := rec(DigraphVertices := [1 .. 10000], 
+gap> r := rec(DigraphNrVertices := 10000,
 >             DigraphSource := [],
 >             DigraphRange := []);;
 gap> for i in [1 .. 9999] do
@@ -88,7 +88,7 @@ gap> OutNeighbours(gr);;
 gap> d := Digraph(rec(DigraphVertices := [1 .. 5], 
 >                     DigraphRange := [], 
 >                     DigraphSource := []));
-<immutable digraph with 5 vertices, 0 edges>
+<immutable empty digraph with 5 vertices>
 gap> IsMultiDigraph(d);
 false
 
@@ -272,7 +272,7 @@ gap> DigraphNrEdges(gr2);
 #  Fix seg fault cause by wrong handling of no edges in
 # FuncDIGRAPH_SOURCE_RANGE
 gap> gr := Digraph([[]]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> DigraphSource(gr);
 [  ]
 gap> DigraphRange(gr);
@@ -290,7 +290,7 @@ gap> OutNeighbours(OnDigraphs(d, Transformation([2, 3, 1])));
 gap> f := Transformation([7, 10, 10, 1, 7, 9, 10, 4, 2, 3]);
 Transformation( [ 7, 10, 10, 1, 7, 9, 10, 4, 2, 3 ] )
 gap> AsDigraph(f);
-<immutable digraph with 10 vertices, 10 edges>
+<immutable functional digraph with 10 vertices>
 gap> AsDigraph(f, 4);
 fail
 
@@ -316,7 +316,7 @@ ceeding the length of the argument,
 #  Symmetric closure of a digraph with no vertices
 gap> gr := EmptyDigraph(0);;
 gap> DigraphSymmetricClosure(gr);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 
 # Issue 114: Bug in NautyTracesInterface for graphs with 0 vertices
 gap> not DIGRAPHS_NautyAvailable or 
@@ -343,9 +343,9 @@ true
 
 # MakeImmutable
 gap> D := NullDigraph(IsMutableDigraph, 10);
-<mutable digraph with 10 vertices, 0 edges>
+<mutable empty digraph with 10 vertices>
 gap> MakeImmutable(D);
-<immutable digraph with 10 vertices, 0 edges>
+<immutable empty digraph with 10 vertices>
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);

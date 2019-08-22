@@ -73,7 +73,7 @@ function(D)
     return false;
   fi;
   topo := Reversed(DigraphTopologicalSort(D));
-  D := OnDigraphs(DigraphCopyIfMutable(D), PermList(topo) ^ -1);
+  D := OnDigraphs(DigraphImmutableCopyIfMutable(D), PermList(topo) ^ -1);
   list := InNeighboursMutableCopy(D);
   Apply(list, Set);
   return DIGRAPHS_IsMeetJoinSemilatticeDigraph(list);
@@ -133,7 +133,7 @@ D -> DigraphNrVertices(D) = 0);
 
 InstallImmediateMethod(IsAcyclicDigraph, "for a strongly connected digraph",
 IsStronglyConnectedDigraph, 0,
-D -> DigraphNrVertices(D) <= 2);
+D -> DigraphNrVertices(D) <= 1 and IsEmptyDigraph(D));
 
 InstallMethod(IsAcyclicDigraph, "for a dense digraph",
 [IsDenseDigraphRep],
@@ -400,7 +400,7 @@ function(D)
     return false;
   fi;
 
-  D := DigraphCopyIfMutable(D);
+  D := DigraphImmutableCopyIfMutable(D);
 
   if IsMultiDigraph(D) then
     D := DigraphRemoveAllMultipleEdges(D);

@@ -15,14 +15,14 @@ gap> DIGRAPHS_StartTest();
 
 #  DigraphStabilizer, error
 gap> gr := NullDigraph(0);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphStabilizer(gr, 1);
 Error, the 2nd argument <v> must not exceed 
 0, the number of vertices of the digraph in the 1st argument <D>,
 
 #  DigraphStabilizer,
 gap> gr := CompleteDigraph(3);
-<immutable digraph with 3 vertices, 6 edges>
+<immutable complete digraph with 3 vertices>
 gap> DigraphStabilizer(gr, 1);
 Group([ (2,3) ])
 gap> DigraphStabilizer(gr, 2);
@@ -46,17 +46,17 @@ Group([ (2,3) ])
 
 #  DigraphOrbits
 gap> gr := CycleDigraph(10);
-<immutable digraph with 10 vertices, 10 edges>
+<immutable cycle digraph with 10 vertices>
 gap> DigraphOrbits(gr);
 [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ]
 
 #  RepresentativeOutNeighbours
 gap> gr := ChainDigraph(3);
-<immutable digraph with 3 vertices, 2 edges>
+<immutable chain digraph with 3 vertices>
 gap> RepresentativeOutNeighbours(gr);
 [ [ 2 ], [ 3 ], [  ] ]
 gap> gr := CycleDigraph(12);
-<immutable digraph with 12 vertices, 12 edges>
+<immutable cycle digraph with 12 vertices>
 gap> RepresentativeOutNeighbours(gr);
 [ [ 2 ] ]
 

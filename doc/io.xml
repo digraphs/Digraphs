@@ -172,13 +172,13 @@ gap> ReadDigraphs(file, 9);
     the opposite direction is also present.
     <Example><![CDATA[
 gap> DigraphFromGraph6String("?");
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphFromGraph6String("C]");
 <immutable digraph with 4 vertices, 8 edges>
 gap> DigraphFromGraph6String("H?AAEM{");
 <immutable digraph with 9 vertices, 22 edges>
 gap> DigraphFromDigraph6String("&?");
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphFromDigraph6String("&CQFG");
 <immutable digraph with 4 vertices, 6 edges>
 gap> DigraphFromDigraph6String("&IM[SrKLc~lhesbU[F_");
@@ -377,7 +377,7 @@ gap> ReadDigraphs(
     <Example><![CDATA[
 gap> grs := [];;
 gap> grs[1] := Digraph([]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> grs[2] := Digraph([[1, 3], [2], [1, 2]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> grs[3] := Digraph([
@@ -390,7 +390,7 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;
 gap> WriteDigraphs(filename, grs, "w");
 IO_OK
 gap> ReadDigraphs(filename);
-[ <immutable digraph with 0 vertices, 0 edges>, 
+[ <immutable empty digraph with 0 vertices>, 
   <immutable digraph with 3 vertices, 5 edges>, 
   <immutable digraph with 10 vertices, 51 edges> ]]]></Example>
     </Description>

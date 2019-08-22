@@ -40,7 +40,7 @@ gap> DigraphRemoveEdges(gr, [[2, 1]]);
 gap> last = gr;
 true
 gap> DigraphRemoveEdges(gr, [[1, 2]]);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> gr := DigraphFromDigraph6String("&DtGsw_");
 <immutable digraph with 5 vertices, 12 edges>
 gap> Set(DigraphEdges(gr)) = Set(
@@ -151,7 +151,7 @@ gap> OutNeighbours(gr);
 
 #  OnMultiDigraphs: for a pair of permutations
 gap> gr1 := CompleteDigraph(3);
-<immutable digraph with 3 vertices, 6 edges>
+<immutable complete digraph with 3 vertices>
 gap> DigraphEdges(gr1);
 [ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 3 ], [ 3, 1 ], [ 3, 2 ] ]
 gap> gr2 := OnMultiDigraphs(gr1, (1, 3), (3, 6));;
@@ -233,11 +233,11 @@ gap> InducedSubdigraph(gr, [1 .. 9]);
 Error, the 2nd argument <list> must be a duplicate-free subset of the vertices\
  of the digraph <D> that is the 1st argument,
 gap> InducedSubdigraph(gr, []);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> InducedSubdigraph(gr, [2 .. 6]);
 <immutable multidigraph with 5 vertices, 7 edges>
 gap> InducedSubdigraph(gr, [8]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> i1 := InducedSubdigraph(gr, [1, 4, 3]);
 <immutable multidigraph with 3 vertices, 6 edges>
 gap> OutNeighbours(i1);
@@ -259,7 +259,7 @@ gap> InducedSubdigraph(gr, [2 .. 9]);
 Error, the 2nd argument <list> must be a duplicate-free subset of the vertices\
  of the digraph <D> that is the 1st argument,
 gap> InducedSubdigraph(gr, []);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> i1 := InducedSubdigraph(gr, [1, 3, 5, 7]);
 <immutable digraph with 4 vertices, 8 edges>
 gap> OutNeighbours(i1);
@@ -273,9 +273,9 @@ true
 gap> InducedSubdigraph(gr, [2 .. 8]);
 <immutable multidigraph with 7 vertices, 15 edges>
 gap> InducedSubdigraph(gr, [8]);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> InducedSubdigraph(gr, [7, 8]);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> gr := Digraph([[2, 4], [4, 5], [2, 5, 5], [5, 5], [3]]);
 <immutable multidigraph with 5 vertices, 10 edges>
 gap> gri := InducedSubdigraph(gr, [4, 2, 5]);
@@ -287,7 +287,7 @@ gap> OutNeighbours(gri);
 
 #  QuotientDigraph
 gap> gr := CompleteDigraph(2);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable complete digraph with 2 vertices>
 gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 2, 1 ] ]
 gap> qr := QuotientDigraph(gr, [[1, 2]]);
@@ -295,7 +295,7 @@ gap> qr := QuotientDigraph(gr, [[1, 2]]);
 gap> DigraphEdges(qr);
 [ [ 1, 1 ] ]
 gap> QuotientDigraph(EmptyDigraph(0), []);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> QuotientDigraph(EmptyDigraph(0), [[1]]);
 Error, the 2nd argument <partition> should be an empty list, which is the only\
  valid partition of the vertices of 1st argument <D> because it has no vertice\
@@ -388,7 +388,7 @@ Error, the 2nd argument <v> is not a vertex of the 1st argument <D>,
 
 # CycleDigraph with source/range
 gap> gr := CycleDigraph(1000);
-<immutable digraph with 1000 vertices, 1000 edges>
+<immutable cycle digraph with 1000 vertices>
 gap> IsDigraphEdge(gr, [1]);
 false
 gap> IsDigraphEdge(gr, ["a", 2]);
@@ -436,7 +436,7 @@ false
 
 # A bigger digraph with OutNeighbours
 gap> gr := CompleteDigraph(500);
-<immutable digraph with 500 vertices, 249500 edges>
+<immutable complete digraph with 500 vertices>
 gap> IsDigraphEdge(gr, [200, 199]);
 true
 gap> IsDigraphEdge(gr, [499, 499]);
@@ -444,11 +444,11 @@ false
 gap> IsDigraphEdge(gr, [249, 251]);
 true
 gap> gr := EmptyDigraph(1000000);
-<immutable digraph with 1000000 vertices, 0 edges>
+<immutable empty digraph with 1000000 vertices>
 gap> IsDigraphEdge(gr, [9999, 9999]);
 false
 gap> gr := CompleteDigraph(10);
-<immutable digraph with 10 vertices, 90 edges>
+<immutable complete digraph with 10 vertices>
 gap> mat := AdjacencyMatrix(gr);;
 gap> IsDigraphEdge(gr, [5, 5]);
 false
@@ -565,7 +565,7 @@ gap> DigraphAddEdge(gr, [1, 11]);
 Error, the 2nd argument <ran> must be a vertex of the digraph <D> that is the \
 1st argument,
 gap> gr := EmptyDigraph(2);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> DigraphAddEdge(gr, [1, 2]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphEdges(last);
@@ -632,11 +632,11 @@ true
 
 #  DigraphAddVertex
 gap> gr := CompleteDigraph(1);
-<immutable digraph with 1 vertex, 0 edges>
+<immutable empty digraph with 1 vertex>
 gap> DigraphVertices(gr);
 [ 1 ]
 gap> gr2 := DigraphAddVertex(gr);
-<immutable digraph with 2 vertices, 0 edges>
+<immutable empty digraph with 2 vertices>
 gap> DigraphVertices(gr2);
 [ 1, 2 ]
 gap> DigraphEdges(gr) = DigraphEdges(gr2);
@@ -688,7 +688,7 @@ gap> DigraphVertexLabels(D);
 
 #  DigraphRemoveVertices
 gap> gr := CompleteDigraph(4);
-<immutable digraph with 4 vertices, 12 edges>
+<immutable complete digraph with 4 vertices>
 gap> gr2 := DigraphRemoveVertices(gr, []);
 <immutable digraph with 4 vertices, 12 edges>
 gap> gr = gr2;
@@ -714,7 +714,7 @@ true
 gap> DigraphVertexLabels(gr2);
 [ 2, 4 ]
 gap> gr3 := DigraphRemoveVertices(gr, [1 .. 4]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> gr := Digraph(rec(DigraphNrVertices := 4,
 > DigraphSource := [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4],
 > DigraphRange := [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]));
@@ -723,7 +723,7 @@ gap> IsCompleteDigraph(gr);
 false
 gap> SetDigraphVertexLabels(gr, [(), (1, 2), (1, 2, 3), (1, 2, 3, 4)]);
 gap> gr2 := DigraphRemoveVertices(gr, [1 .. 4]);
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> gr3 := DigraphRemoveVertices(gr, [2, 3]);
 <immutable digraph with 2 vertices, 4 edges>
 gap> DigraphVertexLabels(gr3);
@@ -749,7 +749,7 @@ gap> DigraphReverseEdges(gr, [2]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
 gap> gr := CompleteDigraph(100);
-<immutable digraph with 100 vertices, 9900 edges>
+<immutable complete digraph with 100 vertices>
 gap> DigraphReverseEdges(gr, "a");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
@@ -775,7 +775,7 @@ Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
 gap> gr = DigraphReverseEdges(gr, []);
 true
 gap> gr := CycleDigraph(100);
-<immutable digraph with 100 vertices, 100 edges>
+<immutable cycle digraph with 100 vertices>
 gap> edges := ShallowCopy(DigraphEdges(gr));;
 gap>  gr = DigraphReverseEdges(gr, edges);
 false
@@ -858,9 +858,9 @@ true
 
 #  DigraphDisjointUnion
 gap> gr := CycleDigraph(1000);
-<immutable digraph with 1000 vertices, 1000 edges>
+<immutable cycle digraph with 1000 vertices>
 gap> gr2 := CompleteDigraph(100);
-<immutable digraph with 100 vertices, 9900 edges>
+<immutable complete digraph with 100 vertices>
 gap> DigraphDisjointUnion(gr) = gr;
 true
 gap> DigraphDisjointUnion([[]]);
@@ -955,9 +955,9 @@ gap> OutNeighbours(gr);
 
 #  DigraphJoin
 gap> gr := CompleteDigraph(20);
-<immutable digraph with 20 vertices, 380 edges>
+<immutable complete digraph with 20 vertices>
 gap> gr2 := EmptyDigraph(10);
-<immutable digraph with 10 vertices, 0 edges>
+<immutable empty digraph with 10 vertices>
 gap> DigraphJoin(gr) = gr;
 true
 gap> DigraphJoin([[]]);
@@ -976,7 +976,7 @@ gap> DigraphJoin(gr, EmptyDigraph(0));
 gap> DigraphJoin(EmptyDigraph(0), CycleDigraph(1000));
 <immutable digraph with 1000 vertices, 1000 edges>
 gap> DigraphJoin(EmptyDigraph(0), EmptyDigraph(0));
-<immutable digraph with 0 vertices, 0 edges>
+<immutable empty digraph with 0 vertices>
 gap> DigraphJoin(EmptyDigraph(5), EmptyDigraph(5));
 <immutable digraph with 10 vertices, 50 edges>
 gap> gr1 := Digraph([[2, 2, 3], [3], [2]]);
@@ -1125,7 +1125,7 @@ gap> DigraphConnectedComponents(gr1);;
 gap> IsReachable(gr1, 100, 1);
 false
 gap> gr1 := CycleDigraph(100);
-<immutable digraph with 100 vertices, 100 edges>
+<immutable cycle digraph with 100 vertices>
 gap> IsReachable(gr1, 1, 50);
 true
 gap> IsReachable(gr1, 1, 1);
@@ -1178,7 +1178,7 @@ true
 
 #  DigraphPath
 gap> gr := ChainDigraph(10);
-<immutable digraph with 10 vertices, 9 edges>
+<immutable chain digraph with 10 vertices>
 gap> DigraphPath(gr, 1, 2);
 [ [ 1, 2 ], [ 1 ] ]
 gap> DigraphPath(gr, 1, 1);
@@ -1303,7 +1303,7 @@ Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
 
 #  DigraphLayers
 gap> gr := CompleteDigraph(4);
-<immutable digraph with 4 vertices, 12 edges>
+<immutable complete digraph with 4 vertices>
 gap> DigraphLayers(gr, 1);
 [ [ 1 ], [ 2, 3, 4 ] ]
 gap> DigraphLayers(gr, 2);
@@ -1356,7 +1356,7 @@ gap> DigraphShortestDistance(gr, [2], DigraphLayers(gr, 2)[3]);
 gap> DigraphShortestDistance(gr, [2, 3], [3, 4]);
 0
 gap> gr := CompleteDigraph(64);
-<immutable digraph with 64 vertices, 4032 edges>
+<immutable complete digraph with 64 vertices>
 gap> DigraphShortestDistance(gr, [1 .. 10], [20 .. 23]);
 1
 gap> DigraphShortestDistance(gr, [1, 13], [20 .. 23]);
@@ -1364,7 +1364,7 @@ gap> DigraphShortestDistance(gr, [1, 13], [20 .. 23]);
 gap> DigraphShortestDistance(gr, [1, 13], [38, 41]);
 1
 gap> gr := ChainDigraph(72);
-<immutable digraph with 72 vertices, 71 edges>
+<immutable chain digraph with 72 vertices>
 gap> DigraphShortestDistance(gr, [1 .. 10], [20 .. 23]);
 10
 gap> DigraphShortestDistance(gr, [1, 13], [20 .. 23]);
@@ -1418,11 +1418,11 @@ Error, the 2nd argument <list> must be a list of length 2,
 
 #  DigraphDistancesSet
 gap> gr := ChainDigraph(10);
-<immutable digraph with 10 vertices, 9 edges>
+<immutable chain digraph with 10 vertices>
 gap> DigraphDistanceSet(gr, 5, 2);
 [ 7 ]
 gap> gr := DigraphSymmetricClosure(ChainDigraph(10));
-<immutable digraph with 10 vertices, 18 edges>
+<immutable symmetric digraph with 10 vertices, 18 edges>
 gap> DigraphDistanceSet(gr, 5, 2);
 [ 3, 7 ]
 gap> gr := ChainDigraph(10);;
@@ -1490,9 +1490,9 @@ false
 
 #  IsUndirectedSpanningForest
 gap> gr1 := CompleteDigraph(10);
-<immutable digraph with 10 vertices, 90 edges>
+<immutable complete digraph with 10 vertices>
 gap> gr2 := EmptyDigraph(9);
-<immutable digraph with 9 vertices, 0 edges>
+<immutable empty digraph with 9 vertices>
 gap> IsUndirectedSpanningForest(gr1, gr2);
 false
 gap> gr2 := DigraphAddEdge(EmptyDigraph(10), [1, 2]);
@@ -1534,7 +1534,7 @@ true
 
 #  PartialOrderDigraphMeetOfVertices
 gap> gr := CycleDigraph(5);
-<immutable digraph with 5 vertices, 5 edges>
+<immutable cycle digraph with 5 vertices>
 gap> PartialOrderDigraphJoinOfVertices(gr, 1, 4);
 Error, the 1st argument <D> must satisfy IsPartialOrderDigraph,
 
@@ -1660,7 +1660,7 @@ true
 gap> IsPerfectMatching(gr, edges);
 false
 gap> gr := CompleteDigraph(500);
-<immutable digraph with 500 vertices, 249500 edges>
+<immutable complete digraph with 500 vertices>
 gap> edges := [];;
 gap> for i in [0 .. 249] do
 >   Append(edges, [[2 * i + 1, 2 * i + 2]]);
@@ -1752,7 +1752,7 @@ true
 gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
 <immutable digraph with 6 vertices, 11 edges>
 gap> DigraphAddAllLoops(D);
-<immutable digraph with 6 vertices, 14 edges>
+<immutable reflexive digraph with 6 vertices, 14 edges>
 gap> IsIdenticalObj(last, D);
 false
 gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
@@ -1796,7 +1796,7 @@ gap> DigraphJoin(D, CycleDigraph(3), CycleDigraph(3),
 > CycleDigraph(3));
 <mutable digraph with 12 vertices, 120 edges>
 gap> D := CycleDigraph(3);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable cycle digraph with 3 vertices>
 gap> DigraphJoin(D, D, D);
 <immutable digraph with 9 vertices, 63 edges>
 gap> DigraphJoin(D, CycleDigraph(3), CycleDigraph(3),
@@ -1808,7 +1808,7 @@ gap> DigraphEdgeUnion(D, CycleDigraph(3), CycleDigraph(3),
 > CycleDigraph(3));
 <mutable multidigraph with 3 vertices, 12 edges>
 gap> DD := CycleDigraph(3);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable cycle digraph with 3 vertices>
 gap> DD := DigraphEdgeUnion(D, CycleDigraph(3), CycleDigraph(3),
 > CycleDigraph(3));
 <mutable multidigraph with 3 vertices, 21 edges>
@@ -1840,7 +1840,7 @@ gap> D := MakeImmutable(D);
 gap> D := DigraphReverseEdge(D, 1, 2);
 <immutable multidigraph with 3 vertices, 7 edges>
 gap> D := CycleDigraph(3);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable cycle digraph with 3 vertices>
 gap> DigraphReverseEdge(D, [1, 2]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> D := DigraphMutableCopy(CompleteDigraph(10));
@@ -1868,15 +1868,15 @@ ent <D>,
 gap> IsTransitiveDigraph(DD);
 false
 gap> DD := DigraphTransitiveClosure(DigraphRemoveAllMultipleEdges(DD));
-<immutable digraph with 4 vertices, 16 edges>
+<immutable transitive digraph with 4 vertices, 16 edges>
 gap> IsTransitiveDigraph(DD);
 true
 gap> DigraphShortestPath(DD, 1, 2);
 [ [ 1, 2 ], [ 2 ] ]
 gap> D := ChainDigraph(4);
-<immutable digraph with 4 vertices, 3 edges>
+<immutable chain digraph with 4 vertices>
 gap> D := DigraphTransitiveClosure(D);
-<immutable digraph with 4 vertices, 6 edges>
+<immutable transitive digraph with 4 vertices, 6 edges>
 gap> DigraphShortestPath(D, 2, 1);
 fail
 gap> D := DigraphDisjointUnion(CycleDigraph(3), CycleDigraph(3));
