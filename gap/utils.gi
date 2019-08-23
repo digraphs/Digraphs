@@ -15,6 +15,7 @@
 
 BindGlobal("DIGRAPHS_DocXMLFiles", ["attr.xml",
                                     "cliques.xml",
+                                    "constructors.xml",
                                     "digraph.xml",
                                     "display.xml",
                                     "grahom.xml",

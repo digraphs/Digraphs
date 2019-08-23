@@ -8,6 +8,9 @@
 #############################################################################
 ##
 
+#  TODO Document the optional (e.g.) `IsMutableDigraph` first argument for
+#       many of these operations.
+
 # Read/WriteDigraphs (the main functions) . . .
 DeclareGlobalFunction("ReadDigraphs");
 DeclareGlobalFunction("WriteDigraphs");
@@ -59,5 +62,4 @@ DeclareOperation("DiSparse6String", [IsDigraph]);
 DeclareOperation("PlainTextString", [IsDigraph]);
 DeclareOperation("WriteDIMACSDigraph", [IsString, IsDigraph]);
 DeclareGlobalFunction("WritePlainTextDigraph");
-
 DeclareGlobalFunction("DigraphPlainTextLineEncoder");
