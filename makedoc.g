@@ -12,7 +12,7 @@ LoadPackage("GAPDoc");
 
 _DocXMLFiles := ["attr.xml",
                  "cliques.xml",
-                 "constructors",
+                 "constructors.xml",
                  "digraph.xml",
                  "display.xml",
                  "examples.xml",

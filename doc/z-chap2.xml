@@ -27,6 +27,7 @@
 
   <Section><Heading>New digraphs from old</Heading>
     <#Include Label="DigraphXCopy">
+    <#Include Label="DigraphXCopyIfY">
     <#Include Label="InducedSubdigraph">
     <#Include Label="ReducedDigraph">
     <#Include Label="MaximalSymmetricSubdigraph">

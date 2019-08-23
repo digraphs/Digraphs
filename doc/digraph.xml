@@ -389,11 +389,32 @@ gap> gr := AsDigraph(b);
   <Oper Name="DigraphCopy" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    This operation returns a new copy of <A>digraph</A>, of the appropriate
-    mutability, retaining none of the attributes or properties of
-    <A>digraph</A>. <P/>
+    Each of these operations returns a new copy of <A>digraph</A>,
+    of the appropriate mutability, retaining none of the attributes or
+    properties of <A>digraph</A>. <P/>
 
     <C>DigraphCopy</C> is a synonym for <C>DigraphCopySameMutability</C>.
+<Example><![CDATA[
+gap> gr := CycleDigraph(10);
+<immutable cycle digraph with 10 vertices>
+gap> DigraphCopy(gr) = gr;
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphXCopyIfY">
+<ManSection>
+  <Oper Name="DigraphImmutableCopyIfImmutable" Arg="digraph"/>
+  <Oper Name="DigraphImmutableCopyIfMutable" Arg="digraph"/>
+  <Oper Name="DigraphMutableCopyIfMutable" Arg="digraph"/>
+  <Oper Name="DigraphMutableCopyIfImmutable" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Each of these operations returns either the original argument
+    <A>digraph</A>, or a new copy of <A>digraph</A> of the appropriate
+      mutability, according to the mutability of <A>digraph</A>. <P/>
 <Example><![CDATA[
 gap> gr := CycleDigraph(10);
 <immutable cycle digraph with 10 vertices>
