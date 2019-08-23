@@ -29,13 +29,13 @@ DeclareConstructor("CompleteDigraphCons", [IsDigraph, IsInt]);
 DeclareOperation("CompleteDigraph", [IsInt]);
 DeclareOperation("CompleteDigraph", [IsFunction, IsInt]);
 
-DeclareConstructor("CycleDigraphCons", [IsDigraph, IsPosInt]);
-DeclareOperation("CycleDigraph", [IsPosInt]);
-DeclareOperation("CycleDigraph", [IsFunction, IsPosInt]);
-
 DeclareConstructor("ChainDigraphCons", [IsDigraph, IsPosInt]);
 DeclareOperation("ChainDigraph", [IsPosInt]);
 DeclareOperation("ChainDigraph", [IsFunction, IsPosInt]);
+
+DeclareConstructor("CycleDigraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("CycleDigraph", [IsPosInt]);
+DeclareOperation("CycleDigraph", [IsFunction, IsPosInt]);
 
 DeclareConstructor("JohnsonDigraphCons", [IsDigraph, IsInt, IsInt]);
 DeclareOperation("JohnsonDigraph", [IsInt, IsInt]);

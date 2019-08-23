@@ -9,6 +9,8 @@
 #############################################################################
 ##
 
+# This file contains constructions of certain types of digraphs from parameters
+
 InstallMethod(EmptyDigraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
 function(filt, n)
