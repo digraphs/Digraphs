@@ -1413,7 +1413,7 @@ Transformation( [ 1, 2, 1, 2, 3, 2, 1, 1, 1, 2, 2, 1, 2, 3, 3, 1, 1, 1, 2, 1,
   3 ] )
 gap> DigraphColouring(gr, 2);
 fail
-gap> DigraphGreedyColoring(gr);
+gap> DigraphGreedyColouring(gr);
 Transformation( [ 1, 1, 1, 1, 1, 2, 2, 1, 2, 2, 2, 1, 1, 2, 1, 2, 1, 2, 2, 3,
   3, 2, 3, 3, 3, 2, 1, 4, 4, 2, 3, 3, 3, 3, 3, 1, 3, 4, 4, 3, 2, 1, 4, 3,
   1 ] )
@@ -1474,7 +1474,7 @@ gap> ChromaticNumber(gr);
 3
 gap> gr := DigraphSymmetricClosure(ChainDigraph(5));
 <immutable symmetric digraph with 5 vertices, 8 edges>
-gap> DigraphGreedyColoring(gr);;
+gap> DigraphGreedyColouring(gr);;
 gap> ChromaticNumber(gr);
 2
 gap> gr := DigraphFromGraph6String("KmKk~K??G@_@");

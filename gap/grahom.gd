@@ -31,15 +31,13 @@ DeclareOperation("EmbeddingsDigraphsRepresentatives", [IsDigraph, IsDigraph]);
 
 DeclareOperation("DigraphColouring", [IsDigraph, IsInt]);
 
+DeclareAttribute("DigraphGreedyColouring", IsDigraph);
+DeclareOperation("DigraphGreedyColouring", [IsDigraph, IsFunction]);
 DeclareOperation("DigraphGreedyColouring", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("DigraphGreedyColouringNC", [IsDigraph, IsHomogeneousList]);
-DeclareOperation("DigraphGreedyColouring", [IsDigraph, IsFunction]);
-
-DeclareAttribute("DigraphGreedyColouring", IsDigraph);
-DeclareSynonym("DigraphGreedyColoring", DigraphGreedyColouring);
 
 DeclareAttribute("DigraphWelshPowellOrder", IsDigraph);
-DeclareAttribute("DigraphSmallestLastOrder", IsDigraph);
+DeclareAttribute("DigraphSmallestLastOrder", IsDigraph);  # TODO: document
 
 DeclareOperation("IsDigraphEndomorphism", [IsDigraph, IsTransformation]);
 DeclareOperation("IsDigraphHomomorphism",
