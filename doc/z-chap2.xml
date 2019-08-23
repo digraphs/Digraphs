@@ -4,6 +4,8 @@
 
   <Section><Heading>Creating digraphs</Heading>
     <#Include Label="IsDigraph">
+    <#Include Label="IsMutableDigraph">
+    <#Include Label="IsImmutableDigraph">
     <#Include Label="IsCayleyDigraph">
     <#Include Label="IsDigraphWithAdjacencyFunction">
     <#Include Label="DigraphByOutNeighboursType">
@@ -24,7 +26,7 @@
   </Section>
 
   <Section><Heading>New digraphs from old</Heading>
-    <#Include Label="DigraphCopy">
+    <#Include Label="DigraphXCopy">
     <#Include Label="InducedSubdigraph">
     <#Include Label="ReducedDigraph">
     <#Include Label="MaximalSymmetricSubdigraph">
