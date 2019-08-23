@@ -152,9 +152,6 @@ function(D)
   # Check for easy answers
   if DigraphNrVertices(D) < 2 then
     return true;
-  elif HasIsStronglyConnectedDigraph(D)
-      and IsStronglyConnectedDigraph(D) then
-    return true;
   elif DigraphNrEdges(D) < DigraphNrVertices(D) - 1 then
     return false;
   fi;
