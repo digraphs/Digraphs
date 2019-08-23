@@ -110,31 +110,6 @@ true]]></Example>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphReverse">
-<ManSection>
-  <Oper Name="DigraphReverse" Arg="digraph"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    If <A>digraph</A> is a digraph, then this operation returns a digraph
-    constructed from <A>digraph</A> by reversing the orientation of every edge.
-    <Example><![CDATA[
-gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
-<immutable digraph with 5 vertices, 11 edges>
-gap> DigraphReverse(gr);
-<immutable digraph with 5 vertices, 11 edges>
-gap> OutNeighbours(last);
-[ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ]
-gap> gr := Digraph([[2, 4], [1], [4], [3, 4]]);
-<immutable digraph with 4 vertices, 6 edges>
-gap> DigraphEdges(gr);
-[ [ 1, 2 ], [ 1, 4 ], [ 2, 1 ], [ 3, 4 ], [ 4, 3 ], [ 4, 4 ] ]
-gap> DigraphEdges(DigraphReverse(gr));
-[ [ 1, 2 ], [ 2, 1 ], [ 3, 4 ], [ 4, 1 ], [ 4, 3 ], [ 4, 4 ] ]
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
 <#GAPDoc Label="DigraphReverseEdges">
 <ManSection>
   <Oper Name="DigraphReverseEdges" Arg="digraph, edges"/>
@@ -256,47 +231,6 @@ gap> gr2 := OnMultiDigraphs(gr1, p);
 gap> OutNeighbours(gr2);
 [ [  ], [  ], [ 5 ], [  ], [  ], [  ], [ 5, 6 ], [ 6, 7, 6 ], 
   [ 10, 4, 10 ], [ 10 ] ]]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphRemoveLoops">
-<ManSection>
-  <Oper Name="DigraphRemoveLoops" Arg="digraph"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    If <A>digraph</A> is a digraph, then this operation returns a new
-    digraph  constructed from <A>digraph</A> by removing every loop. A loop
-    is an edge with equal source and range.
-    <Example><![CDATA[
-gap> gr := Digraph([[1, 2, 4], [1, 4], [3, 4], [1, 4, 5], [1, 5]]);
-<immutable digraph with 5 vertices, 12 edges>
-gap> DigraphRemoveLoops(gr);
-<immutable digraph with 5 vertices, 8 edges>
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphRemoveAllMultipleEdges">
-<ManSection>
-  <Oper Name="DigraphRemoveAllMultipleEdges" Arg="digraph"/>
-  <Attr Name="DigraphRemoveAllMultipleEdgesAttr" Arg="digraph"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    If <A>digraph</A> is a digraph, then this operation returns a new
-    digraph  constructed from <A>digraph</A> by removing all multiple edges.
-    The result is the largest subdigraph of <A>digraph</A> which does not
-    contain multiple edges. <P/>
-
-    <Example><![CDATA[
-gap> gr1 := Digraph([[1, 2, 3, 2], [1, 1, 3], [2, 2, 2]]);
-<immutable multidigraph with 3 vertices, 10 edges>
-gap> gr2 := DigraphRemoveAllMultipleEdges(gr1);
-<immutable digraph with 3 vertices, 6 edges>
-gap> OutNeighbours(gr2);
-[ [ 1, 2, 3 ], [ 1, 3 ], [ 2 ] ]
-]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -528,57 +462,6 @@ gap> gr := CycleDigraph(250000);
 <immutable cycle digraph with 250000 vertices>
 gap> gr := DigraphRemoveEdge(gr, [250000, 1]);
 <immutable digraph with 250000 vertices, 249999 edges>]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphReflexiveTransitiveReduction">
-<ManSection>
-  <Oper Name="DigraphReflexiveTransitiveReduction" Arg="digraph"/>
-  <Oper Name="DigraphTransitiveReduction" Arg="digraph"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    If <A>digraph</A> is a topologically sortable digraph
-    [see <Ref Attr="DigraphTopologicalSort"/>]
-    with no multiple edges, then these  operations return the
-    (reflexive) transitive reduction of <A>digraph</A>.
-    <P/>
-
-    The (reflexive) transitive reduction of such a digraph is the unique
-    least subgraph such that the (reflexive) transitive closure of the
-    subgraph is equal to the (reflexive) transitive closure of <A>digraph</A>
-    [see <Ref Oper="DigraphReflexiveTransitiveClosure"/>].
-    In order words, it is the least subgraph of <A>digraph</A> which
-    retains the same reachability as <A>digraph</A>. <P/>
-
-    Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
-        <M>m</M> be the number of edges.
-    Then these operations
-    use methods with complexity <M>O(m + n + m \cdot n)</M>.
-    <P/>
-    <Example><![CDATA[
-gap> gr := Digraph([[1, 2, 3], [3], [3]]);;
-gap> DigraphHasLoops(gr);
-true
-gap> gr1 := DigraphReflexiveTransitiveReduction(gr);
-<immutable digraph with 3 vertices, 2 edges>
-gap> DigraphHasLoops(gr1);
-false
-gap> OutNeighbours(gr1);
-[ [ 2 ], [ 3 ], [  ] ]
-gap> gr2 := DigraphTransitiveReduction(gr);
-<immutable digraph with 3 vertices, 4 edges>
-gap> DigraphHasLoops(gr2);
-true
-gap> OutNeighbours(gr2);
-[ [ 2, 1 ], [ 3 ], [ 3 ] ]
-gap> DigraphReflexiveTransitiveClosure(gr)
->  = DigraphReflexiveTransitiveClosure(gr1);
-true
-gap> DigraphTransitiveClosure(gr)
->  = DigraphTransitiveClosure(gr2);
-true
-]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
