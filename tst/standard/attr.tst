@@ -1788,7 +1788,7 @@ gap> g := CompleteMultipartiteDigraph([16, 15]);
 gap> HamiltonianPath(g);
 fail
 gap> g := CompleteMultipartiteDigraph([1, 15, 1, 1, 1, 1, 1, 1]);
-<immutable multipartite symmetric digraph with 22 vertices, 252 edges>
+<immutable complete multipartite digraph with 22 vertices, 252 edges>
 gap> HamiltonianPath(g);
 fail
 gap> g := CycleDigraph(100);

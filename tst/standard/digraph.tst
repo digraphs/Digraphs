@@ -1575,7 +1575,7 @@ gap> IsConnectedDigraph(D);;
 gap> D;
 <immutable connected digraph with 3 vertices, 2 edges>
 gap> CompleteMultipartiteDigraph([3, 4, 5]);
-<immutable multipartite symmetric digraph with 12 vertices, 94 edges>
+<immutable complete multipartite digraph with 12 vertices, 94 edges>
 gap> D := Digraph([[2], [3], []]);;
 gap> IsBipartiteDigraph(D);;
 gap> D;

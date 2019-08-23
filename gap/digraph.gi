@@ -439,6 +439,7 @@ function(D)
   Assert(1, IsMutableDigraph(D) or IsImmutableDigraph(D));
 
   if m = 0 then
+    SetIsEmptyDigraph(D, true);
     Append(str, "empty ");
     display_nredges := false;
   elif n > 1 then
@@ -454,6 +455,9 @@ function(D)
     elif HasIsCompleteBipartiteDigraph(D) and IsCompleteBipartiteDigraph(D) then
       Append(str, "complete bipartite ");
       displayed_bipartite := true;
+    elif HasIsCompleteMultipartiteDigraph(D)
+        and IsCompleteMultipartiteDigraph(D) then
+      Append(str, "complete multipartite ");
     elif HasIsLatticeDigraph(D) and IsLatticeDigraph(D) then
       Append(str, "lattice ");
     elif HasIsJoinSemilatticeDigraph(D) and IsJoinSemilatticeDigraph(D) then
@@ -482,9 +486,7 @@ function(D)
           and HasIsConnectedDigraph(D) and IsConnectedDigraph(D) then
         Append(str, "connected ");
       fi;
-      if HasIsMultipartiteDigraph(D) and IsMultipartiteDigraph(D) then
-        Append(str, "multipartite ");
-      elif HasIsBipartiteDigraph(D) and IsBipartiteDigraph(D) then
+      if HasIsBipartiteDigraph(D) and IsBipartiteDigraph(D) then
         Append(str, "bipartite ");
         displayed_bipartite := true;
       fi;

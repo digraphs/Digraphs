@@ -260,7 +260,14 @@ function(D)
 end);
 
 InstallMethod(DigraphNrEdges, "for a digraph", [IsDigraphByOutNeighboursRep],
-DIGRAPH_NREDGES);
+function(D)
+  local m;
+  m := DIGRAPH_NREDGES(D);
+  if IsImmutableDigraph(D) then
+    SetIsEmptyDigraph(D, m = 0);
+  fi;
+  return m;
+end);
 
 InstallMethod(DigraphEdges, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
