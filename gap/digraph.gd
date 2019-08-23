@@ -11,16 +11,15 @@
 # Categories
 DeclareCategory("IsDigraph", IsObject);
 DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
-DeclareCategory("IsImmutableDigraph", IsDigraph);
 DeclareCategory("IsCayleyDigraph", IsDigraph);
-
-DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);
+DeclareCategory("IsImmutableDigraph", IsDigraph);
+DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);  # TODO document
 
 # Family
 BindGlobal("DigraphFamily", NewFamily("DigraphFamily", IsDigraph));
 
 # Representations
-DeclareRepresentation("IsDigraphByOutNeighboursRep",
+DeclareRepresentation("IsDigraphByOutNeighboursRep",  # TODO document
                       IsDigraph and IsComponentObjectRep,
                       ["OutNeighbours"]);
 
@@ -41,14 +40,15 @@ DeclareOperation("DigraphNC", [IsRecord]);
 DeclareOperation("DigraphNC", [IsDenseList]);
 
 # 3.  Digraph copies . . .
-DeclareOperation("DigraphMutableCopyIfImmutable", [IsDigraph]);
-DeclareOperation("DigraphMutableCopyIfMutable", [IsDigraph]);
 DeclareOperation("DigraphMutableCopy", [IsDigraph]);
 DeclareOperation("DigraphImmutableCopy", [IsDigraph]);
-DeclareOperation("DigraphImmutableCopyIfMutable", [IsDigraph]);
-DeclareOperation("DigraphImmutableCopyIfImmutable", [IsDigraph]);
 DeclareOperation("DigraphCopySameMutability", [IsDigraph]);
 DeclareSynonym("DigraphCopy", DigraphCopySameMutability);
+# TODO document the next four things
+DeclareOperation("DigraphImmutableCopyIfMutable", [IsDigraph]);
+DeclareOperation("DigraphImmutableCopyIfImmutable", [IsDigraph]);
+DeclareOperation("DigraphMutableCopyIfImmutable", [IsDigraph]);
+DeclareOperation("DigraphMutableCopyIfMutable", [IsDigraph]);
 
 # 5.  Digraph constructors . . .
 DeclareConstructor("DigraphCons", [IsDigraph, IsRecord]);

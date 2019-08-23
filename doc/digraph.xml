@@ -1,4 +1,5 @@
 #############################################################################
+##
 #W  digraph.xml
 #Y  Copyright (C) 2014-19                               James D. Mitchell
 ##
@@ -20,6 +21,17 @@
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsDigraphWithAdjacencyFunction">
+<ManSection>
+  <Filt Name="IsDigraphWithAdjacencyFunction" Type='Category'/>
+  <Description>
+    <C>IsDigraphWithAdjacencyFunction</C> is a subcategory of <C>IsDigraph</C>.
+    Digraphs that are <E>created</E> using an adjacency function are constructed
+    in this category.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsCayleyDigraph">
 <ManSection>
   <Filt Name="IsCayleyDigraph" Type='Category'/>
@@ -31,13 +43,39 @@
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsDigraphWithAdjacencyFunction">
+<#GAPDoc Label="IsMutableDigraph">
 <ManSection>
-  <Filt Name="IsDigraphWithAdjacencyFunction" Type='Category'/>
+  <Filt Name="IsMutableDigraph" Type='Category'/>
   <Description>
-    <C>IsDigraphWithAdjacencyFunction</C> is a subcategory of <C>IsDigraph</C>.
-    Digraphs that are <E>created</E> using an adjacency function are constructed
-    in this category.
+    <C>IsMutableDigraph</C> is a synonym for <Ref Filt="IsDigraph" /> and <Ref
+    Filt="IsMutable" BookName="ref" />.  A mutable digraph may be changed
+    in-place by methods in the &Digraphs; package, and is not attribute-storing
+    – see <Ref Filt="IsAttributeStoringRep" BookName="ref" />.
+    <P/>
+
+    A mutable digraph may be converted into an immutable attribute-storing
+    digraph by calling <Ref Func="MakeImmutable" BookName="ref"/> on the
+    digraph.
+    </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsImmutableDigraph">
+<ManSection>
+  <Filt Name="IsImmutableDigraph" Type='Category'/>
+  <Description>
+    <C>IsImmutableDigraph</C> is a subcategory of <Ref Filt="IsDigraph" />.
+    Digraphs that lie in <C>IsImmutableDigraph</C> are immutable and
+    attribute-storing. In particular, they lie in
+    <Ref Filt="IsAttributeStoringRep" BookName="ref" />. <P/>
+
+    A mutable digraph may be converted to an immutable
+    digraph that lies in the category <C>IsImmutableDigraph</C> by calling
+    <Ref Func="MakeImmutable" BookName="ref"/> on the digraph.
+    <!-- TODO uncomment once DigraphMutableCopy is documented
+    The operation <Ref Oper="DigraphMutableCopy"/> may be used, in particular,
+    to construct a mutable copy of an immutable digraph.
+    -->
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -57,7 +95,8 @@
 <ManSection>
   <Oper Name = "Digraph" Arg = "obj[, source, range]"/>
   <Oper Name = "Digraph" Arg = "list, func" Label = "for a list and function"/>
-  <Oper Name = "Digraph" Arg = "G, list, act, adj" Label = "for a group, list, function, and function"/>
+  <Oper Name = "Digraph" Arg = "G, list, act, adj"
+    Label = "for a group, list, function, and function"/>
   <Returns>A digraph.</Returns>
   <Description>
     <List>
@@ -342,13 +381,19 @@ gap> gr := AsDigraph(b);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphCopy">
+<#GAPDoc Label="DigraphXCopy">
 <ManSection>
+  <Oper Name="DigraphImmutableCopy" Arg="digraph"/>
+  <Oper Name="DigraphMutableCopy" Arg="digraph"/>
+  <Oper Name="DigraphCopySameMutability" Arg="digraph"/>
   <Oper Name="DigraphCopy" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    This function returns a new copy of <A>digraph</A>, retaining none of the
-    attributes or properties of <A>digraph</A>.
+    This operation returns a new copy of <A>digraph</A>, of the appropriate
+    mutability, retaining none of the attributes or properties of
+    <A>digraph</A>. <P/>
+
+    <C>DigraphCopy</C> is a synonym for <C>DigraphCopySameMutability</C>.
 <Example><![CDATA[
 gap> gr := CycleDigraph(10);
 <immutable cycle digraph with 10 vertices>
@@ -357,6 +402,179 @@ true
 ]]></Example>
   </Description>
 </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AsBinaryRelation">
+<ManSection>
+  <Oper Name="AsBinaryRelation" Arg="digraph"/>
+  <Returns>A binary relation.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph with a positive number of vertices
+    <M>n</M>, and no multiple edges, then this operation returns a binary
+    relation on the points <C>[1..n]</C>.
+    The pair <C>[i,j]</C> is in the binary relation if and only if
+    <C>[i,j]</C> is an edge in <A>digraph</A>.
+    <P/>
+<Example><![CDATA[
+gap> gr := Digraph([[3, 2], [1, 2], [2], [3, 4]]);
+<immutable digraph with 4 vertices, 7 edges>
+gap> AsBinaryRelation(gr);
+Binary Relation on 4 points
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AsSemigroup">
+  <ManSection>
+    <Oper Name="AsSemigroup" Arg="filt, digraph"
+      Label="for a filter and a digraph"/>
+    <Oper Name="AsMonoid" Arg="filt, digraph"/>
+    <Returns>A semilattice of partial perms.</Returns>
+    <Description>
+      The operation <C>AsSemigroup</C> requires that <A>filt</A> be equal to
+      <Ref Filt="IsPartialPermSemigroup" BookName="ref"/>.
+      If <A>digraph</A> is a
+      <Ref Prop="IsJoinSemilatticeDigraph"/> or <Ref Prop="IsLatticeDigraph"/>
+      then <C>AsSemigroup</C> returns a semigroup of partial perms which is
+      isomorphic to the semigroup whose elements are the vertices of
+      <A>digraph</A> with the binary operation
+      <Ref Oper="PartialOrderDigraphJoinOfVertices"
+        Label="for a digraph and two vertices"/>. If <A>digraph</A>
+      satisfies  <Ref Prop="IsMeetSemilatticeDigraph"/> but not
+      <Ref Prop="IsJoinSemilatticeDigraph"/> then
+      <C>AsSemigroup</C> returns a semigroup of partial perms which is
+      isomorphic to the semigroup whose elements are the vertices of
+      <A>digraph</A> with the binary operation
+      <Ref Oper="PartialOrderDigraphMeetOfVertices"
+        Label="for a digraph and two vertices"/>. <P/>
+
+      The operation <C>AsMonoid</C> behaves similarly to <C>AsSemigroup</C>
+      except that <A>filt</A> may also be equal to
+      <Ref Filt="IsPartialPermMonoid" BookName="ref"/>,
+      <A>digraph</A> must satisfy <Ref Prop="IsLatticeDigraph"/>, and the
+      output satisfies <Ref Filt="IsMonoid" BookName="ref"/>. <P/>
+
+      The output of both of these operations is guaranteed to be of minimal
+      degree (see <Ref Attr="DegreeOfPartialPermSemigroup" BookName="ref"/>).
+      Furthermore the <Ref Attr="GeneratorsOfSemigroup" BookName="ref"/> of
+      the output is guaranteed to be the unique generating set of minimal size.
+      <Example><![CDATA[
+gap> di := Digraph([[1], [1, 2], [1, 3], [1, 4], [1, 2, 3, 5]]);
+<immutable digraph with 5 vertices, 11 edges>
+gap> S := AsSemigroup(IsPartialPermSemigroup, di);
+<partial perm semigroup of rank 3 with 4 generators>
+gap> ForAll(Elements(S), IsIdempotent);
+true
+gap> IsInverseSemigroup(S);
+true
+gap> Size(S);
+5
+gap> di := Digraph([[1], [1, 2], [1, 2, 3]]);
+<immutable digraph with 3 vertices, 6 edges>
+gap> M := AsMonoid(IsPartialPermMonoid, di);
+<partial perm monoid of rank 2 with 3 generators>
+gap> Size(M);
+3]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AsSemigroupDigraph">
+  <ManSection>
+    <Oper Name="AsSemigroup" Arg="filt, digraph"
+      Label="for a filter and a digraph"/>
+    <Oper Name="AsMonoid" Arg="filt, digraph"/>
+    <Returns>A semilattice of partial perms.</Returns>
+    <Description>
+      The operation <C>AsSemigroup</C> requires that <A>filt</A> be equal to
+      <Ref Filt="IsPartialPermSemigroup" BookName="ref"/>.
+      If <A>digraph</A> is a
+      <Ref Prop="IsJoinSemilatticeDigraph"/> or <Ref Prop="IsLatticeDigraph"/>
+      then <C>AsSemigroup</C> returns a semigroup of partial perms which is
+      isomorphic to the semigroup whose elements are the vertices of
+      <A>digraph</A> with the binary operation
+      <Ref Oper="PartialOrderDigraphJoinOfVertices"
+        Label="for a digraph and two vertices"/>. If <A>digraph</A>
+      satisfies  <Ref Prop="IsMeetSemilatticeDigraph"/> but not
+      <Ref Prop="IsJoinSemilatticeDigraph"/> then
+      <C>AsSemigroup</C> returns a semigroup of partial perms which is
+      isomorphic to the semigroup whose elements are the vertices of
+      <A>digraph</A> with the binary operation
+      <Ref Oper="PartialOrderDigraphMeetOfVertices"
+        Label="for a digraph and two vertices"/>. <P/>
+
+      The operation <C>AsMonoid</C> behaves similarly to <C>AsSemigroup</C>
+      except that <A>filt</A> may also be equal to
+      <Ref Filt="IsPartialPermMonoid" BookName="ref"/>,
+      <A>digraph</A> must satisfy <Ref Prop="IsLatticeDigraph"/>, and the
+      output satisfies <Ref Filt="IsMonoid" BookName="ref"/>. <P/>
+
+      The output of both of these operations is guaranteed to be of minimal
+      degree (see <Ref Attr="DegreeOfPartialPermSemigroup" BookName="ref"/>).
+      Furthermore the <Ref Attr="GeneratorsOfSemigroup" BookName="ref"/> of
+      the output is guaranteed to be the unique generating set of minimal size.
+      <Example><![CDATA[
+gap> di := Digraph([[1], [1, 2], [1, 3], [1, 4], [1, 2, 3, 5]]);
+<immutable digraph with 5 vertices, 11 edges>
+gap> S := AsSemigroup(IsPartialPermSemigroup, di);
+<partial perm semigroup of rank 3 with 4 generators>
+gap> ForAll(Elements(S), IsIdempotent);
+true
+gap> IsInverseSemigroup(S);
+true
+gap> Size(S);
+5
+gap> di := Digraph([[1], [1, 2], [1, 2, 3]]);
+<immutable digraph with 3 vertices, 6 edges>
+gap> M := AsMonoid(IsPartialPermMonoid, di);
+<partial perm monoid of rank 2 with 3 generators>
+gap> Size(M);
+3]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AsCliffordSemigroup">
+  <ManSection>
+    <Oper Name="AsSemigroup" Arg="filt, Y, gps, homs"/>
+    <Returns> A Clifford semigroup of partial perms. </Returns>
+    <Description>
+      The operation <C>AsSemigroup</C> requires that <A>filt</A> be equal to
+      <Ref Filt="IsPartialPermSemigroup" BookName="ref"/>.
+      If <A>Y</A> is a <Ref Prop="IsJoinSemilatticeDigraph"/> or
+      <Ref Prop="IsMeetSemilatticeDigraph"/>,
+      <A>gps</A> is a list of groups corresponding to each vertex, and
+      <A>homs</A> is a list containing for each edge <C>(i, j)</C> in
+      the transitive reduction of <A>digraph</A> a triple <C>[i, j, hom]</C>
+      where <C>hom</C> is a group homomorphism from <C>gps[i]</C> to
+      <C>gps[j]</C>, and the diagram of homomorphisms commutes, then
+      <C>AsSemigroup</C> returns a semigroup of partial perms which is
+      isomorphic to the strong semilattice of groups <M>S[Y; gps; homs]</M>.
+      <Example><![CDATA[
+gap> G1 := AlternatingGroup(4);;
+gap> G2 := SymmetricGroup(2);;
+gap> G3 := SymmetricGroup(3);;
+gap> gr := Digraph([[1, 3], [2, 3], [3]]);;
+gap> sgn := function(x)
+> if SignPerm(x) = 1 then
+> return ();
+> fi;
+> return (1, 2);
+> end;;
+gap> hom13 := GroupHomomorphismByFunction(G1, G3, sgn);;
+gap> hom23 := GroupHomomorphismByFunction(G2, G3, sgn);;
+gap> T := AsSemigroup(IsPartialPermSemigroup,
+> gr,
+> [G1, G2, G3], [[1, 3, hom13], [2, 3, hom23]]);;
+gap> Size(T);
+20
+gap> D := GreensDClasses(T);;
+gap> List(D, x -> Size(x));
+[ 6, 12, 2 ]
+]]></Example>
+    </Description>
+  </ManSection>
 <#/GAPDoc>
 
 <#GAPDoc Label="RandomDigraph">
@@ -378,33 +596,6 @@ gap> RandomDigraph(1000);
 <immutable digraph with 1000 vertices, 364444 edges>
 gap> RandomDigraph(10000, 0.023);
 <immutable digraph with 10000 vertices, 2300438 edges>
-]]></Log>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="RandomMultiDigraph">
-<ManSection>
-  <Oper Name="RandomMultiDigraph" Arg="n[, m]"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    If <A>n</A> is a positive integer, then this function returns a random
-    digraph with <A>n</A> vertices. If the optional second argument
-    <A>m</A> is a positive integer, then the digraph will have <A>m</A>
-    edges. If <A>m</A> is not specified, then the number of edges will be
-    chosen randomly (with uniform probability) from the range
-    <C>[1 .. </C><M>{n \choose 2}</M><C>]</C>.
-    <P/>
-
-    The method used by this function chooses each edge from the set of
-    all possible edges with uniform probability. No effort is made to avoid
-    creating multiple edges, so it is possible (but not guaranteed) that the
-    result will have multiple edges. The result may or may not have loops.<P/>
-    <Log><![CDATA[
-gap> RandomMultiDigraph(1000);
-<immutable multidigraph with 1000 vertices, 216659 edges>
-gap> RandomMultiDigraph(1000, 950);
-<immutable multidigraph with 1000 vertices, 950 edges>
 ]]></Log>
   </Description>
 </ManSection>
@@ -433,6 +624,33 @@ gap> RandomTournament(10);
     If <A>n</A> is a positive integer, this function return a random lattice
     with <C>m</C> vertices, where it is guaranteed that <C>m</C> is between
     <A>n</A> and <C>2 * <A>n</A></C>. See <Ref Prop="IsLatticeDigraph"/>. <P/>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="RandomMultiDigraph">
+<ManSection>
+  <Oper Name="RandomMultiDigraph" Arg="n[, m]"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer, then this function returns a random
+    digraph with <A>n</A> vertices. If the optional second argument
+    <A>m</A> is a positive integer, then the digraph will have <A>m</A>
+    edges. If <A>m</A> is not specified, then the number of edges will be
+    chosen randomly (with uniform probability) from the range
+    <C>[1 .. </C><M>{n \choose 2}</M><C>]</C>.
+    <P/>
+
+    The method used by this function chooses each edge from the set of
+    all possible edges with uniform probability. No effort is made to avoid
+    creating multiple edges, so it is possible (but not guaranteed) that the
+    result will have multiple edges. The result may or may not have loops.<P/>
+    <Log><![CDATA[
+gap> RandomMultiDigraph(1000);
+<immutable multidigraph with 1000 vertices, 216659 edges>
+gap> RandomMultiDigraph(1000, 950);
+<immutable multidigraph with 1000 vertices, 950 edges>
+]]></Log>
   </Description>
 </ManSection>
 <#/GAPDoc>
