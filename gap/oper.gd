@@ -83,8 +83,8 @@ DeclareOperation("IsUndirectedSpanningTree", [IsDigraph, IsDigraph]);
 DeclareOperation("IsUndirectedSpanningForest", [IsDigraph, IsDigraph]);
 
 DeclareOperation("IsMatching", [IsDigraph, IsHomogeneousList]);
-DeclareOperation("IsPerfectMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximalMatching", [IsDigraph, IsHomogeneousList]);
+DeclareOperation("IsPerfectMatching", [IsDigraph, IsHomogeneousList]);
 
 # 9. Connectivity . . .
 DeclareOperation("DigraphFloydWarshall",
