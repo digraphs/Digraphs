@@ -6,6 +6,7 @@
     <#Include Label="IsBipartiteDigraph">
     <#Include Label="IsCompleteBipartiteDigraph">
     <#Include Label="IsCompleteDigraph">
+    <#Include Label="IsCompleteMultipartiteDigraph">
     <#Include Label="IsEmptyDigraph">
     <#Include Label="IsFunctionalDigraph">
     <#Include Label="IsMultiDigraph">

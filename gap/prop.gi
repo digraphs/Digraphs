@@ -113,6 +113,40 @@ function(D)
   return DigraphNrEdges(D) = 2 * Length(bicomps[1]) * Length(bicomps[2]);
 end);
 
+InstallMethod(IsCompleteMultipartiteDigraph, "for a digraph",
+[IsDigraph],
+function(D)
+  local n, size, seen, max;
+  n := DigraphNrVertices(D);
+
+  if IsEmptyDigraph(D) or IsMultiDigraph(D) or DigraphHasLoops(D)
+      or not IsSymmetricDigraph(D) then
+    return false;
+  elif HasIsCompleteDigraph(D) and IsCompleteDigraph(D) then
+    return n > 1;
+  fi;
+
+  size := [];
+  seen := [];
+  while Length(seen) < n do
+    max := DigraphMaximalIndependentSet(D, [], seen);
+    if max = fail then
+      return false;
+    fi;
+    Add(size, Length(max));
+    Append(seen, max);
+  od;
+  # <size> has at least two maximal independent sets because <D> is not empty.
+  if DigraphNrEdges(D) <> Sum(size, k -> k * (n - k)) then
+    return false;
+  fi;
+  # <size> describes the type of the multipartite-ness.
+  if IsImmutableDigraph(D) then
+    SetIsCompleteBipartiteDigraph(D, Length(size) = 2);
+  fi;
+  return true;
+end);
+
 InstallMethod(IsConnectedDigraph, "for a digraph", [IsDigraph],
 function(D)
   # Check for easy answers

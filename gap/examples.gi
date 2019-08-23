@@ -211,6 +211,8 @@ function(filt, n)
   fi;
   SetIsMultiDigraph(D, false);
   SetIsCompleteDigraph(D, true);
+  SetIsCompleteBipartiteDigraph(D, n = 2);
+  SetIsCompleteMultipartiteDigraph(D, n > 1);
   SetAutomorphismGroup(D, SymmetricGroup(n));
   return D;
 end);
