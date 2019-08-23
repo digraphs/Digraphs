@@ -10,8 +10,9 @@
 
 DeclareOperation("Graph", [IsDigraph]);
 
-DeclareCategory("IsCayleyDigraph", IsDigraph);
-
+#  Cayley digraphs
+DeclareOperation("CayleyDigraph", [IsGroup]);
+DeclareOperation("CayleyDigraph", [IsGroup, IsList]);
 DeclareAttribute("GroupOfCayleyDigraph", IsCayleyDigraph);
 DeclareAttribute("SemigroupOfCayleyDigraph", IsCayleyDigraph);
 DeclareAttribute("GeneratorsOfCayleyDigraph", IsCayleyDigraph);
@@ -25,9 +26,6 @@ DeclareOperation("Digraph", [IsGroup,
                              IsListOrCollection,
                              IsFunction,
                              IsFunction]);
-
-DeclareOperation("CayleyDigraph", [IsGroup]);
-DeclareOperation("CayleyDigraph", [IsGroup, IsList]);
 
 DeclareOperation("EdgeOrbitsDigraph", [IsPermGroup, IsList, IsInt]);
 DeclareOperation("EdgeOrbitsDigraph", [IsPermGroup, IsList]);

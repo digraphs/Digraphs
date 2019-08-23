@@ -12,6 +12,7 @@
 DeclareCategory("IsDigraph", IsObject);
 DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
 DeclareCategory("IsImmutableDigraph", IsDigraph);
+DeclareCategory("IsCayleyDigraph", IsDigraph);
 
 DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);
 
