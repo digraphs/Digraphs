@@ -27,6 +27,8 @@ DeclareOperation("NautyCanonicalLabelling", [IsDigraph, IsHomogeneousList]);
 DeclareAttribute("BlissCanonicalDigraph", IsDigraph);
 DeclareOperation("BlissCanonicalDigraph", [IsDigraph, IsHomogeneousList]);
 
+#  TODO document 2-arg BlissCanonicalDigraph and NautyCanonicalDigraph
+
 DeclareAttribute("NautyCanonicalDigraph", IsDigraph);
 DeclareOperation("NautyCanonicalDigraph", [IsDigraph, IsHomogeneousList]);
 
