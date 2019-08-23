@@ -826,6 +826,60 @@ gap> gr := Digraph([[2], [1]]);
 gap> IsCompleteBipartiteDigraph(gr);
 true
 
+# IsCompleteMultipartiteDigraph
+gap> D := CompleteMultipartiteDigraph([5, 3, 3, 2, 7]);
+<immutable complete multipartite digraph with 20 vertices, 304 edges>
+gap> IsCompleteMultipartiteDigraph(D);
+true
+gap> D := Digraph(OutNeighbours(D));
+<immutable digraph with 20 vertices, 304 edges>
+gap> IsCompleteMultipartiteDigraph(D);
+true
+gap> IsCompleteMultipartiteDigraph(EmptyDigraph(5));  # empty
+false
+gap> D := Digraph([[2, 2], [1]]);  # multidigraph
+<immutable multidigraph with 2 vertices, 3 edges>
+gap> IsCompleteMultipartiteDigraph(D);
+false
+gap> D := Digraph([[1, 2], [1]]);  # has loops
+<immutable digraph with 2 vertices, 3 edges>
+gap> IsCompleteMultipartiteDigraph(D);
+false
+gap> D := Digraph([[2], []]);  # not symmetric
+<immutable digraph with 2 vertices, 1 edge>
+gap> IsCompleteMultipartiteDigraph(D);
+false
+gap> D := Digraph(IsImmutableDigraph, [[2], [1]]);  # complete bipartite digraph
+<immutable digraph with 2 vertices, 2 edges>
+gap> IsCompleteMultipartiteDigraph(D);
+true
+gap> HasIsCompleteBipartiteDigraph(D) and IsCompleteBipartiteDigraph(D);
+true
+gap> D := CompleteDigraph(5);  # complete digraph
+<immutable complete digraph with 5 vertices>
+gap> IsCompleteMultipartiteDigraph(D);
+true
+gap> D := Digraph(OutNeighbours(D));;  # complete digraph created differently
+gap> IsCompleteDigraph(D);
+true
+gap> IsCompleteMultipartiteDigraph(D);
+true
+gap> D := DigraphEdgeUnion(CycleDigraph(IsMutableDigraph, 4),
+>                          DigraphReverse(CycleDigraph(IsMutableDigraph, 4)));
+<mutable digraph with 4 vertices, 8 edges>
+gap> IsCompleteMultipartiteDigraph(D);
+true
+gap> IsCompleteBipartiteDigraph(D);
+true
+gap> DigraphRemoveEdges(D, [[1, 2], [2, 1]]);
+<mutable digraph with 4 vertices, 6 edges>
+gap> IsCompleteMultipartiteDigraph(D);
+false
+gap> D := Digraph(IsImmutableDigraph, [[2], [1, 3], [2, 4], [3]]);
+<immutable digraph with 4 vertices, 6 edges>
+gap> IsCompleteMultipartiteDigraph(D);
+false
+
 #  IsDirectedTree
 gap> g := Digraph([]);
 <immutable empty digraph with 0 vertices>
