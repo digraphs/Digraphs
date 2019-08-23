@@ -128,12 +128,13 @@ InstallMethod(CompleteMultipartiteDigraphCons,
 function(filt, list)
   local D;
   D := MakeImmutable(CompleteMultipartiteDigraph(IsMutableDigraph, list));
+  SetIsEmptyDigraph(D, Length(list) <= 1);
   SetIsSymmetricDigraph(D, true);
   SetIsCompleteBipartiteDigraph(D, Length(list) = 2);
+  SetIsCompleteMultipartiteDigraph(D, Length(list) > 1);
   if Length(list) = 2 then
     SetDigraphBicomponents(D, [[1 .. list[1]], [list[1] + 1 .. Sum(list)]]);
   fi;
-  SetIsMultipartiteDigraph(D, Length(list) > 2);
   return D;
 end);
 
@@ -203,8 +204,8 @@ InstallMethod(CompleteDigraphCons, "for IsImmutableDigraph and an integer",
 function(filt, n)
   local D;
   D := MakeImmutable(CompleteDigraphCons(IsMutableDigraph, n));
-  SetIsEmptyDigraph(D, false);
-  SetIsAcyclicDigraph(D, false);
+  SetIsEmptyDigraph(D, n <= 1);
+  SetIsAcyclicDigraph(D, n <= 1);
   if n > 1 then
     SetIsAntisymmetricDigraph(D, false);
   fi;

@@ -419,8 +419,8 @@ gap> IsReflexiveDigraph(gr);
 true
 gap> gr := Digraph([]);
 <immutable empty digraph with 0 vertices>
-gap> HasIsAcyclicDigraph(gr);
-false
+gap> HasIsAcyclicDigraph(gr) and IsAcyclicDigraph(gr);
+true
 gap> IsReflexiveDigraph(gr);
 true
 gap> HasIsAcyclicDigraph(gr);
@@ -1291,11 +1291,11 @@ gap> g := CompleteMultipartiteDigraph([16, 15]);
 gap> IsHamiltonianDigraph(g);
 false
 gap> g := CompleteMultipartiteDigraph([1, 1, 2, 3, 5, 8, 13, 21]);
-<immutable multipartite symmetric digraph with 54 vertices, 2202 edges>
+<immutable complete multipartite digraph with 54 vertices, 2202 edges>
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteMultipartiteDigraph([1, 1, 2, 3, 5, 8, 13, 21, 34]);
-<immutable multipartite symmetric digraph with 88 vertices, 5874 edges>
+<immutable complete multipartite digraph with 88 vertices, 5874 edges>
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteBipartiteDigraph(50, 50);
@@ -1303,7 +1303,7 @@ gap> g := CompleteBipartiteDigraph(50, 50);
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteMultipartiteDigraph([1, 15, 1, 1, 1, 1, 1, 1]);
-<immutable multipartite symmetric digraph with 22 vertices, 252 edges>
+<immutable complete multipartite digraph with 22 vertices, 252 edges>
 gap> IsHamiltonianDigraph(g);
 false
 gap> g := CompleteDigraph(50);
@@ -1395,8 +1395,10 @@ false
 # Code coverage
 gap> D := DigraphCopy(NullDigraph(4));
 <immutable empty digraph with 4 vertices>
-gap> HasIsEmptyDigraph(D);
-false
+gap> HasIsNullDigraph(D) and IsNullDigraph(D);
+true
+gap> HasIsEmptyDigraph(D) and IsEmptyDigraph(D);
+true
 gap> HasDigraphNrEdges(D);
 true
 gap> IsEmptyDigraph(D);

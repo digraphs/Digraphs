@@ -1,229 +1,38 @@
 #############################################################################
 ##
 #W  prop.xml
-#Y  Copyright (C) 2014-17                               James D. Mitchell
+#Y  Copyright (C) 2014-19                               James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
 
-<#GAPDoc Label="IsChainDigraph">
+<#GAPDoc Label="IsMultiDigraph">
 <ManSection>
-  <Prop Name="IsChainDigraph" Arg="digraph"/>
+  <Prop Name="IsMultiDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    <C>IsChainDigraph</C> returns <K>true</K> if the digraph <A>digraph</A> is
-    isomorphic to the chain digraph with the same number of vertices as
-    <A>digraph</A>, and <K>false</K> if it is not; see <Ref
-      Oper="ChainDigraph"/>.<P/>
-
-    A digraph is a <E>chain</E> if and only if it is a directed tree, in which
-    every vertex has out degree at most one; see <Ref Prop="IsDirectedTree"/>
-    and <Ref Attr="OutDegrees"/>.
-
-<Example><![CDATA[
-gap> gr := Digraph([[1, 3], [2, 3], [3]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> IsChainDigraph(gr);
-false
-gap> gr := ChainDigraph(5);
-<immutable chain digraph with 5 vertices>
-gap> IsChainDigraph(gr);
-true
-gap> gr := DigraphReverse(gr);
-<immutable digraph with 5 vertices, 4 edges>
-gap> IsChainDigraph(gr);
-true]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsCycleDigraph">
-<ManSection>
-  <Prop Name="IsCycleDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    <C>IsCycleDigraph</C> returns <K>true</K> if the digraph <A>digraph</A> is
-    isomorphic to the cycle digraph with the same number of vertices as
-    <A>digraph</A>, and <K>false</K> if it is not; see <Ref
-      Oper="CycleDigraph"/>.<P/>
-
-    A digraph is a <E>cycle</E> if and only if it is strongly connected and has
-    the same number of edges as vertices. 
-
-<Example><![CDATA[
-gap> gr := Digraph([[1, 3], [2, 3], [3]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> IsCycleDigraph(gr);
-false
-gap> gr := CycleDigraph(5);
-<immutable cycle digraph with 5 vertices>
-gap> IsCycleDigraph(gr);
-true
-gap> gr := OnDigraphs(gr, (1, 2, 3));
-<immutable digraph with 5 vertices, 5 edges>
-gap> gr = CycleDigraph(5);
-false
-gap> IsCycleDigraph(gr);
-true]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsBiconnectedDigraph">
-<ManSection>
-  <Prop Name="IsBiconnectedDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    A connected digraph is <E>biconnected</E> if it is still connected (in the
-    sense of <Ref Prop="IsConnectedDigraph"/>) when any vertex is removed. 
-    <C>IsBiconnectedDigraph</C> returns <K>true</K> if the digraph
-    <A>digraph</A> is biconnected, and <K>false</K> if it is not. In
-    particular, <C>IsBiconnectedDigraph</C> returns <K>false</K> if
-    <A>digraph</A> is not connected. <P/>
-
-    Multiple edges and loops are ignored by this method. <P/>
-
-    The method used in this operation has complexity <M>O(m+n)</M> where
-    <M>m</M> is the number of edges (counting multiple edges as one, and not
-    counting loops) and <M>n</M> is the number of vertices in the digraph.
-
-    See also <Ref Attr="ArticulationPoints"/>.
-<Example><![CDATA[
-gap> IsBiconnectedDigraph(Digraph([[1, 3], [2, 3], [3]]));
-false
-gap> IsBiconnectedDigraph(CycleDigraph(5));
-true
-gap> digraph := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);;
-gap> IsBiconnectedDigraph(digraph);
-false]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsPartialOrderDigraph">
-<ManSection>
-  <Prop Name="IsPartialOrderDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    A digraph is a partial order digraph if and only if the digraph satisifies
-    all of <Ref Prop="IsReflexiveDigraph"/>,
-    <Ref Prop="IsAntisymmetricDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
-    A partial order <A>digraph</A> corresponds
-    to the partial order relation <M>\leq</M> defined by <M>x \leq y</M> if and
-    only if <C>[x, y]</C> is an edge of <A>digraph</A>.
-
-<Example><![CDATA[
-gap> gr := Digraph([[1, 3], [2, 3], [3]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> IsPartialOrderDigraph(gr);
-true
-gap> gr := CycleDigraph(5);
-<immutable cycle digraph with 5 vertices>
-gap> IsPartialOrderDigraph(gr);
-false
-gap> gr := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);
-<immutable multidigraph with 4 vertices, 10 edges>
-gap> IsPartialOrderDigraph(gr);
-true
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsPreorderDigraph">
-<ManSection>
-  <Prop Name="IsPreorderDigraph" Arg="digraph"/>
-  <Prop Name="IsQuasiorderDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    A digraph is a preorder digraph if and only if the digraph satisifies both
-    <Ref Prop="IsReflexiveDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
-    A preorder digraph (or quasiorder digraph) <A>digraph</A> corresponds to
-    the preorder relation <M>\leq</M> defined by <M>x \leq y</M> if and only
-    if <C>[x, y]</C> is an edge of <A>digraph</A>.
-
-<Example><![CDATA[
-gap> gr := Digraph([[1], [2, 3], [2, 3]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> IsPreorderDigraph(gr);
-true
-gap> gr := Digraph([[1 .. 4], [1 .. 4], [1 .. 4], [1 .. 4]]);
-<immutable digraph with 4 vertices, 16 edges>
-gap> IsPreorderDigraph(gr);
-true
-gap> gr := Digraph([[2], [3], [4], [5], [1]]);
-<immutable digraph with 5 vertices, 5 edges>
-gap> IsPreorderDigraph(gr);
-false
-gap> gr := Digraph([[1], [1, 2], [2, 3]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> IsPreorderDigraph(gr);
-false
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsMeetSemilatticeDigraph">
-<ManSection>
-  <Prop Name="IsMeetSemilatticeDigraph" Arg="digraph"/>
-  <Prop Name="IsJoinSemilatticeDigraph" Arg="digraph"/>
-  <Prop Name="IsLatticeDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    
-    <C>IsMeetSemilatticeDigraph</C> returns <K>true</K> if the digraph
-    <A>digraph</A> is a meet semilattice; <C>IsJoinSemilatticeDigraph</C>
-    returns <K>true</K> if the digraph <A>digraph</A> is a join semilattice;
-    and  <C>IsLatticeDigraph</C> returns <K>true</K> if the digraph
-    <A>digraph</A> is both a meet and a join semilattice.
-    <P/>
-    For a partial order digraph <Ref Prop="IsPartialOrderDigraph"/> the
-    corresponding partial order is the relation <M>\leq</M>, defined by
-    <M>x \leq y</M> if and only if <C>[x, y]</C> is an edge.
-    A digraph is a <E>meet semilattice</E> if it is a partial order and every
-    pair of vertices has a greatest lower bound (meet) with respect to the
-    aforementioned relation. A <E>join semilattice</E> is a partial order where
-    every pair of vertices has a least upper bound (join) with respect to
-    the relation.
+    A <E>multidigraph</E> is one that has at least two
+    edges with equal source and range.
 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 3], [2, 3], [3]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> IsMeetSemilatticeDigraph(gr);
+gap> gr := Digraph(["a", "b", "c"], ["a", "b", "b"], ["b", "c", "a"]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> IsMultiDigraph(gr);
 false
-gap> IsJoinSemilatticeDigraph(gr);
+gap> gr := DigraphFromDigraph6String("&Bug");
+<immutable digraph with 3 vertices, 6 edges>
+gap> IsDuplicateFree(DigraphEdges(gr));
 true
-gap> IsLatticeDigraph(gr);
+gap> IsMultiDigraph(gr);
 false
-gap> gr := Digraph([[1], [2], [1 .. 3]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> IsJoinSemilatticeDigraph(gr);
+gap> gr := Digraph([[1, 2, 3, 2], [2, 1], [3]]);
+<immutable multidigraph with 3 vertices, 7 edges>
+gap> IsDuplicateFree(DigraphEdges(gr));
 false
-gap> IsMeetSemilatticeDigraph(gr);
-true
-gap> IsLatticeDigraph(gr);
-false
-gap> gr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);
-<immutable digraph with 4 vertices, 9 edges>
-gap> IsMeetSemilatticeDigraph(gr);
-true
-gap> IsJoinSemilatticeDigraph(gr);
-true
-gap> IsLatticeDigraph(gr);
-true
-gap> gr := Digraph([[1, 1, 1], [1, 1, 2, 2],
->                   [1, 3, 3], [1, 2, 3, 3, 4]]);
-<immutable multidigraph with 4 vertices, 15 edges>
-gap> IsMeetSemilatticeDigraph(gr);
-true
-gap> IsJoinSemilatticeDigraph(gr);
-true
-gap> IsLatticeDigraph(gr);
-true
-]]></Example>
+gap> IsMultiDigraph(gr);
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -291,31 +100,141 @@ false]]></Example>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsCompleteDigraph">
+<#GAPDoc Label="IsAperiodicDigraph">
 <ManSection>
-  <Prop Name="IsCompleteDigraph" Arg="digraph"/>
+  <Prop Name="IsAperiodicDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns <K>true</K> if the digraph <A>digraph</A> is complete, and
-    <K>false</K> if it is not. <P/>
+    This property is <K>true</K> if the digraph <A>digraph</A>
+    is aperiodic, i.e. if its <Ref Attr = "DigraphPeriod"/> is equal to 1.
+    Otherwise, the property is <K>false</K>.
+    <Example><![CDATA[
+gap> gr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);
+<immutable multidigraph with 6 vertices, 7 edges>
+gap> IsAperiodicDigraph(gr);
+false
+gap> gr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
+<immutable digraph with 5 vertices, 7 edges>
+gap> IsAperiodicDigraph(gr);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
 
-    A digraph is <E>complete</E> if it has no loops, and for all
-    <E>distinct</E> vertices <C>i</C> and <C>j</C>,
-    there is exactly one edge with source <C>i</C> and range <C>j</C>.
+<#GAPDoc Label="IsStronglyConnectedDigraph">
+<ManSection>
+  <Prop Name="IsStronglyConnectedDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if the digraph <A>digraph</A> is strongly
+    connected and <K>false</K> if it is not. <P/>
 
-    Equivalently, a digraph with <M>n</M> vertices is complete precisely when
-    it has <M>n(n - 1)</M> edges, no loops, and no multiple edges.
+    A digraph <A>digraph</A> is <E>strongly connected</E> if there is a directed
+    path from every vertex to every other vertex.  See section <Ref
+      Subsect="Definitions" Style="Number" /> for the definition of a directed
+    path.    <P/>
+
+    The method used in this operation is based on Gabow's Algorithm <Cite
+      Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M>, where <M>m</M> is
+    the number of edges (counting multiple edges as one) and <M>n</M> is the
+    number of vertices in the digraph.
 
     <Example><![CDATA[
-gap> gr := Digraph([[2, 3], [1, 3], [1, 2]]);
-<immutable digraph with 3 vertices, 6 edges>
-gap> IsCompleteDigraph(gr);
+gap> gr := CycleDigraph(250000);
+<immutable cycle digraph with 250000 vertices>
+gap> IsStronglyConnectedDigraph(gr);
 true
-gap> gr := Digraph([[2, 2], [1]]);
-<immutable multidigraph with 2 vertices, 3 edges>
-gap> IsCompleteDigraph(gr);
+gap> gr := DigraphRemoveEdges(gr, [[250000, 1]]);
+<immutable digraph with 250000 vertices, 249999 edges>
+gap> IsStronglyConnectedDigraph(gr);
 false
 ]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsConnectedDigraph">
+<ManSection>
+  <Prop Name="IsConnectedDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if the digraph <A>digraph</A>
+    is weakly connected and <K>false</K> if it is not.  A digraph
+    <A>digraph</A> is <E>weakly connected</E> if it is possible to travel
+    from any vertex to any other vertex by traversing edges in either
+    direction (possibly against the orientation of some of them). <P/>
+
+    The method used in this function has complexity <M>O(m)</M> if the
+    digraph's <Ref Attr="DigraphSource"/> attribute is set, otherwise it has
+    complexity <M>O(m+n)</M> (where
+    <M>m</M> is the number of edges and
+    <M>n</M> is the number of vertices of the digraph).
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [3], []]);;
+gap> IsConnectedDigraph(gr);
+true
+gap> gr := Digraph([[1, 3], [4], [3], []]);;
+gap> IsConnectedDigraph(gr);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsBiconnectedDigraph">
+<ManSection>
+  <Prop Name="IsBiconnectedDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A connected digraph is <E>biconnected</E> if it is still connected (in the
+    sense of <Ref Prop="IsConnectedDigraph"/>) when any vertex is removed. 
+    <C>IsBiconnectedDigraph</C> returns <K>true</K> if the digraph
+    <A>digraph</A> is biconnected, and <K>false</K> if it is not. In
+    particular, <C>IsBiconnectedDigraph</C> returns <K>false</K> if
+    <A>digraph</A> is not connected. <P/>
+
+    Multiple edges and loops are ignored by this method. <P/>
+
+    The method used in this operation has complexity <M>O(m+n)</M> where
+    <M>m</M> is the number of edges (counting multiple edges as one, and not
+    counting loops) and <M>n</M> is the number of vertices in the digraph.
+
+    See also <Ref Attr="ArticulationPoints"/>.
+<Example><![CDATA[
+gap> IsBiconnectedDigraph(Digraph([[1, 3], [2, 3], [3]]));
+false
+gap> IsBiconnectedDigraph(CycleDigraph(5));
+true
+gap> digraph := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);;
+gap> IsBiconnectedDigraph(digraph);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsBipartiteDigraph">
+<ManSection>
+  <Prop Name="IsBipartiteDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+  This property is <K>true</K> if the digraph <A>digraph</A> is bipartite, and
+  <K>false</K> if it is not.  A digraph is bipartite if and only if the
+  vertices of <A>digraph</A> can be partitioned into two non-empty sets such
+  that the source and range of any edge of <A>digraph</A> lie in distinct sets.
+  Equivalently, a digraph is bipartite if and only if it is 2-colorable; see
+  <Ref Attr="DigraphGreedyColouring" Label="for a digraph"/>. <P/>
+
+  See also <Ref Attr="DigraphBicomponents"/>.
+    <Example><![CDATA[
+gap> gr := ChainDigraph(4);
+<immutable chain digraph with 4 vertices>
+gap> IsBipartiteDigraph(gr);
+true
+gap> gr := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> IsBipartiteDigraph(gr);
+false]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -356,258 +275,53 @@ false
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsEmptyDigraph">
+<#GAPDoc Label="IsCompleteMultipartiteDigraph">
 <ManSection>
-  <Prop Name="IsEmptyDigraph" Arg="digraph"/>
-  <Prop Name="IsNullDigraph" Arg="digraph"/>
+  <Prop Name="IsCompleteMultipartiteDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns <K>true</K> if the digraph <A>digraph</A> is empty, and
-    <K>false</K> if it is not. A digraph is <E>empty</E> if it has no
-    edges.<P/>
+    This property returns <K>true</K> if <A>digraph</A> is a complete
+    multipartite digraph, and <K>false</K> if not. <P/>
 
-    <C>IsNullDigraph</C> is a synonym for <C>IsEmptyDigraph</C>.
+    A digraph is a <E>complete multipartite digraph</E> if and only if
+    its vertices can be partitioned into at least two maximal independent sets,
+    where every possible edge between these independent sets occurs in the
+    digraph exactly once. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([[], []]);
-<immutable empty digraph with 2 vertices>
-gap> IsEmptyDigraph(gr);
-true
-gap> IsNullDigraph(gr);
-true
-gap> gr := Digraph([[], [1]]);
-<immutable digraph with 2 vertices, 1 edge>
-gap> IsEmptyDigraph(gr);
-false
-gap> IsNullDigraph(gr);
-false]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsFunctionalDigraph">
-<ManSection>
-  <Prop Name="IsFunctionalDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A> is
-    functional. <P/>
-
-    A digraph is <E>functional</E> if every vertex is the source of a
-    unique edge.
-    <Example><![CDATA[
-gap> gr1 := Digraph([[3], [2], [2], [1], [6], [5]]);
-<immutable digraph with 6 vertices, 6 edges>
-gap> IsFunctionalDigraph(gr1);
-true
-gap> gr2 := Digraph([[1, 2], [1]]);
-<immutable digraph with 2 vertices, 3 edges>
-gap> IsFunctionalDigraph(gr2);
-false
-gap> gr3 := Digraph(3, [1, 2, 3], [2, 3, 1]);
-<immutable digraph with 3 vertices, 3 edges>
-gap> IsFunctionalDigraph(gr3);
+gap> gr := CompleteMultipartiteDigraph([2, 4, 6]);
+<immutable complete multipartite digraph with 12 vertices, 88 edges>
+gap> IsCompleteMultipartiteDigraph(gr);
 true
 ]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-
-<#GAPDoc Label="IsReflexiveDigraph">
+<#GAPDoc Label="IsCompleteDigraph">
 <ManSection>
-  <Prop Name="IsReflexiveDigraph" Arg="digraph"/>
+  <Prop Name="IsCompleteDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A> is
-    reflexive, and <K>false</K> if it is not.
-    A digraph is <E>reflexive</E> if it has a loop at every vertex. <P/>
-    <Example><![CDATA[
-gap> gr := Digraph([[1, 2], [2]]);
-<immutable digraph with 2 vertices, 3 edges>
-gap> IsReflexiveDigraph(gr);
-true
-gap> gr := Digraph([[3, 1], [4, 2], [3], [2, 1]]);
-<immutable digraph with 4 vertices, 7 edges>
-gap> IsReflexiveDigraph(gr);
-false
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
+    Returns <K>true</K> if the digraph <A>digraph</A> is complete, and
+    <K>false</K> if it is not. <P/>
 
-<#GAPDoc Label="IsConnectedDigraph">
-<ManSection>
-  <Prop Name="IsConnectedDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A>
-    is weakly connected and <K>false</K> if it is not.  A digraph
-    <A>digraph</A> is <E>weakly connected</E> if it is possible to travel
-    from any vertex to any other vertex by traversing edges in either
-    direction (possibly against the orientation of some of them). <P/>
+    A digraph is <E>complete</E> if it has no loops, and for all
+    <E>distinct</E> vertices <C>i</C> and <C>j</C>,
+    there is exactly one edge with source <C>i</C> and range <C>j</C>.
 
-    The method used in this function has complexity <M>O(m)</M> if the
-    digraph's <Ref Attr="DigraphSource"/> attribute is set, otherwise it has
-    complexity <M>O(m+n)</M> (where
-    <M>m</M> is the number of edges and
-    <M>n</M> is the number of vertices of the digraph).
+    Equivalently, a digraph with <M>n</M> vertices is complete precisely when
+    it has <M>n(n - 1)</M> edges, no loops, and no multiple edges.
 
     <Example><![CDATA[
-gap> gr := Digraph([[2], [3], []]);;
-gap> IsConnectedDigraph(gr);
-true
-gap> gr := Digraph([[1, 3], [4], [3], []]);;
-gap> IsConnectedDigraph(gr);
-false]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsStronglyConnectedDigraph">
-<ManSection>
-  <Prop Name="IsStronglyConnectedDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A> is strongly
-    connected and <K>false</K> if it is not. <P/>
-
-    A digraph <A>digraph</A> is <E>strongly connected</E> if there is a directed
-    path from every vertex to every other vertex.  See section <Ref
-      Subsect="Definitions" Style="Number" /> for the definition of a directed
-    path.    <P/>
-
-    The method used in this operation is based on Gabow's Algorithm <Cite
-      Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M>, where <M>m</M> is
-    the number of edges (counting multiple edges as one) and <M>n</M> is the
-    number of vertices in the digraph.
-
-    <Example><![CDATA[
-gap> gr := CycleDigraph(250000);
-<immutable cycle digraph with 250000 vertices>
-gap> IsStronglyConnectedDigraph(gr);
-true
-gap> gr := DigraphRemoveEdges(gr, [[250000, 1]]);
-<immutable digraph with 250000 vertices, 249999 edges>
-gap> IsStronglyConnectedDigraph(gr);
-false
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsSymmetricDigraph">
-<ManSection>
-  <Prop Name="IsSymmetricDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A>
-    is symmetric, and <K>false</K> if it is not.<P/>
-
-    A <E>symmetric digraph</E> is one where for each non-loop edge, having
-    source <C>u</C> and range <C>v</C>, there is a corresponding edge with
-    source <C>v</C> and range <C>u</C>.  If there are <C>n</C> edges with
-    source <C>u</C> and range <C>v</C>, then there must be precisely <C>n</C>
-    edges with source <C>v</C> and range <C>u</C>.  In other words, a symmetric
-    digraph has a symmetric adjacency matrix <Ref Attr="AdjacencyMatrix"/>.
-    <Example><![CDATA[
-gap> gr1 := Digraph([[2], [1, 3], [2, 3]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> IsSymmetricDigraph(gr1);
-true
-gap> adj1 := AdjacencyMatrix(gr1);;
-gap> Display(adj1);
-[ [  0,  1,  0 ],
-  [  1,  0,  1 ],
-  [  0,  1,  1 ] ]
-gap> adj1 = TransposedMat(adj1);
-true
-gap> gr1 = DigraphReverse(gr1);
-true
-gap> gr2 := Digraph([[2, 3], [1, 3], [2, 3]]);
+gap> gr := Digraph([[2, 3], [1, 3], [1, 2]]);
 <immutable digraph with 3 vertices, 6 edges>
-gap> IsSymmetricDigraph(gr2);
-false
-gap> adj2 := AdjacencyMatrix(gr2);;
-gap> Display(adj2);
-[ [  0,  1,  1 ],
-  [  1,  0,  1 ],
-  [  0,  1,  1 ] ]
-gap> adj2 = TransposedMat(adj2);
-false
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsAntisymmetricDigraph">
-<ManSection>
-  <Prop Name="IsAntisymmetricDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A>
-    is antisymmetric, and <K>false</K> if it is not.
-    <P/>
-
-    A digraph is <E>antisymmetric</E> if whenever there is an edge with source
-    <C>u</C> and range <C>v</C>, and an edge with source <C>v</C> and range
-    <C>u</C>, then the vertices <C>u</C> and <C>v</C> are equal.
-    <P/>
-
-    <Example><![CDATA[
-gap> gr1 := Digraph([[2], [1, 3], [2, 3]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> IsAntisymmetricDigraph(gr1);
-false
-gap> DigraphEdges(gr1){[1, 2]};
-[ [ 1, 2 ], [ 2, 1 ] ]
-gap> gr2 := Digraph([[1, 2], [3, 3], [1]]);
-<immutable multidigraph with 3 vertices, 5 edges>
-gap> IsAntisymmetricDigraph(gr2);
+gap> IsCompleteDigraph(gr);
 true
-gap> DigraphEdges(gr2);
-[ [ 1, 1 ], [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 1 ] ]
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsTransitiveDigraph">
-<ManSection>
-  <Prop Name="IsTransitiveDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A>
-    is transitive, and <K>false</K> if it is not.
-
-    A digraph is <E>transitive</E> if whenever <C>[ i, j ]</C> and
-    <C>[ j, k ]</C> are edges of the digraph, then <C>[ i, k ]</C> is also an
-    edge of the digraph. <P/>
-
-    Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
-        <M>m</M> be the number of edges.
-    For general digraphs, the methods used for this property use a version
-    of the Floyd-Warshall algorithm, and have complexity <M>O(n^3)</M>.
-
-    However for digraphs which are topologically sortable
-    [<Ref Attr="DigraphTopologicalSort"/>], then methods with
-    complexity <M>O(m + n + m \cdot n)</M> will be used when appropriate.
-    <P/>
-    <Example><![CDATA[
-gap> gr := Digraph([[1, 2], [3], [3]]);
-<immutable digraph with 3 vertices, 4 edges>
-gap> IsTransitiveDigraph(gr);
+gap> gr := Digraph([[2, 2], [1]]);
+<immutable multidigraph with 2 vertices, 3 edges>
+gap> IsCompleteDigraph(gr);
 false
-gap> gr2 := Digraph([[1, 2, 3], [3], [3]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> IsTransitiveDigraph(gr2);
-true
-gap> gr2 = DigraphTransitiveClosure(gr);
-true
-gap> gr3 := Digraph([[1, 2, 2, 3], [3, 3], [3]]);
-<immutable multidigraph with 3 vertices, 7 edges>
-gap> IsTransitiveDigraph(gr3);
-true
 ]]></Example>
   </Description>
 </ManSection>
@@ -639,151 +353,93 @@ false
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsAperiodicDigraph">
+<#GAPDoc Label="IsChainDigraph">
 <ManSection>
-  <Prop Name="IsAperiodicDigraph" Arg="digraph"/>
+  <Prop Name="IsChainDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This property is <K>true</K> if the digraph <A>digraph</A>
-    is aperiodic, i.e. if its <Ref Attr = "DigraphPeriod"/> is equal to 1.
-    Otherwise, the property is <K>false</K>.
-    <Example><![CDATA[
-gap> gr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);
-<immutable multidigraph with 6 vertices, 7 edges>
-gap> IsAperiodicDigraph(gr);
+    <C>IsChainDigraph</C> returns <K>true</K> if the digraph <A>digraph</A> is
+    isomorphic to the chain digraph with the same number of vertices as
+    <A>digraph</A>, and <K>false</K> if it is not; see <Ref
+      Oper="ChainDigraph"/>.<P/>
+
+    A digraph is a <E>chain</E> if and only if it is a directed tree, in which
+    every vertex has out degree at most one; see <Ref Prop="IsDirectedTree"/>
+    and <Ref Attr="OutDegrees"/>.
+
+<Example><![CDATA[
+gap> gr := Digraph([[1, 3], [2, 3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsChainDigraph(gr);
 false
-gap> gr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
-<immutable digraph with 5 vertices, 7 edges>
-gap> IsAperiodicDigraph(gr);
+gap> gr := ChainDigraph(5);
+<immutable chain digraph with 5 vertices>
+gap> IsChainDigraph(gr);
 true
-]]></Example>
+gap> gr := DigraphReverse(gr);
+<immutable digraph with 5 vertices, 4 edges>
+gap> IsChainDigraph(gr);
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsBipartiteDigraph">
+<#GAPDoc Label="IsCycleDigraph">
 <ManSection>
-  <Prop Name="IsBipartiteDigraph" Arg="digraph"/>
+  <Prop Name="IsCycleDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-  This property is <K>true</K> if the digraph <A>digraph</A> is bipartite, and
-  <K>false</K> if it is not.  A digraph is bipartite if and only if the
-  vertices of <A>digraph</A> can be partitioned into two non-empty sets such
-  that the source and range of any edge of <A>digraph</A> lie in distinct sets.
-  Equivalently, a digraph is bipartite if and only if it is 2-colorable; see
-  <Ref Attr="DigraphGreedyColouring" Label="for a digraph"/>. <P/>
+    <C>IsCycleDigraph</C> returns <K>true</K> if the digraph <A>digraph</A> is
+    isomorphic to the cycle digraph with the same number of vertices as
+    <A>digraph</A>, and <K>false</K> if it is not; see <Ref
+      Oper="CycleDigraph"/>.<P/>
 
-  See also <Ref Attr="DigraphBicomponents"/>.
-    <Example><![CDATA[
-gap> gr := ChainDigraph(4);
-<immutable chain digraph with 4 vertices>
-gap> IsBipartiteDigraph(gr);
+    A digraph is a <E>cycle</E> if and only if it is strongly connected and has
+    the same number of edges as vertices. 
+
+<Example><![CDATA[
+gap> gr := Digraph([[1, 3], [2, 3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsCycleDigraph(gr);
+false
+gap> gr := CycleDigraph(5);
+<immutable cycle digraph with 5 vertices>
+gap> IsCycleDigraph(gr);
 true
-gap> gr := CycleDigraph(3);
-<immutable cycle digraph with 3 vertices>
-gap> IsBipartiteDigraph(gr);
-false]]></Example>
+gap> gr := OnDigraphs(gr, (1, 2, 3));
+<immutable digraph with 5 vertices, 5 edges>
+gap> gr = CycleDigraph(5);
+false
+gap> IsCycleDigraph(gr);
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsInRegularDigraph">
+<#GAPDoc Label="IsDigraphCore">
 <ManSection>
-  <Prop Name="IsInRegularDigraph" Arg="digraph"/>
+  <Prop Name="IsDigraphCore" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This property is <K>true</K> if there is an integer <C>n</C> such that
-    for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
-    <C>n</C> edges terminating in <C>v</C>.
+    This property returns <K>true</K> if <A>digraph</A> is a core,
+    and <K>false</K> if it is not.<P/>
 
-    See also <Ref Prop="IsOutRegularDigraph"/> and
-    <Ref Prop="IsRegularDigraph"/>.
-    <Example><![CDATA[
-gap> IsInRegularDigraph(CompleteDigraph(4));
-true
-gap> IsInRegularDigraph(ChainDigraph(4));
-false
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsOutRegularDigraph">
-<ManSection>
-  <Prop Name="IsOutRegularDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    This property is <K>true</K> if there is an integer <C>n</C> such that
-    for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
-    <C>n</C> edges starting at <C>v</C>.
-
-    See also <Ref Prop="IsInRegularDigraph"/> and
-    <Ref Prop="IsRegularDigraph"/>.
-    <Example><![CDATA[
-gap> IsOutRegularDigraph(CompleteDigraph(4));
-true
-gap> IsOutRegularDigraph(ChainDigraph(4));
-false
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsRegularDigraph">
-<ManSection>
-  <Prop Name="IsRegularDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    This property is <K>true</K> if there is an integer <C>n</C> such that
-    for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
-    <C>n</C> edges starting and terminating at <C>v</C>. In other words,
-    the property is <K>true</K> if <A>digraph</A> is both in-regular and
-    and out-regular.
-
-    See also <Ref Prop="IsInRegularDigraph"/> and
-    <Ref Prop="IsOutRegularDigraph"/>.
-    <Example><![CDATA[
-gap> IsRegularDigraph(CompleteDigraph(4));
-true
-gap> IsRegularDigraph(ChainDigraph(4));
-false
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsDistanceRegularDigraph">
-<ManSection>
-  <Prop Name="IsDistanceRegularDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    If <A>digraph</A> is a connected symmetric graph, this property returns
-    <K>true</K> if for any two vertices <C>u</C> and <C>v</C> of <A>digraph</A>
-    and any two integers <C>i</C> and <C>j</C> between <C>0</C> and the
-    diameter of <A>digraph</A>, the number of vertices at distance <C>i</C>
-    from <C>u</C> and distance <C>j</C> from <C>v</C> depends only on
-    <C>i</C>, <C>j</C>, and the distance between vertices <C>u</C> and
-    <C>v</C>.<P/>
-
-    Alternatively, a distance regular graph is a graph for which there exist
-    integers <C>b_i</C>, <C>c_i</C>, and <C>i</C> such that for any two
-    vertices <C>u</C>, <C>v</C> in <A>digraph</A> which are distance <C>i</C>
-    apart, there are exactly <C>b_i</C> neighbors of <C>v</C> which are at
-    distance <C>i - 1</C> away from <C>u</C>, and <C>c_i</C> neighbors of
-    <C>v</C> which are at distance <C>i + 1</C> away from <C>u</C>. This
-    definition is used to check whether <A>digraph</A> is distance regular.<P/>
-
-    In the case where <A>digraph</A> is not symmetric or not connected, the
-    property is <K>false</K>.
+    A digraph <C>D</C> is a <E>core</E> if and only if it has no proper
+    subdigraphs <C>A</C> such that there exists a homomorphism from <C>D</C>
+    to <C>A</C>. In other words, a digraph <C>D</C> is a core if and only if
+    every endomorphism on <C>D</C> is an automorphism on <C>D</C>.
 
     <Example><![CDATA[
-gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
-gap> IsDistanceRegularDigraph(gr);
-false
-gap> gr := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);
-<immutable digraph with 4 vertices, 12 edges>
-gap> IsDistanceRegularDigraph(gr);
+gap> D := CompleteDigraph(6);
+<immutable complete digraph with 6 vertices>
+gap> IsDigraphCore(D);
 true
+gap> D := DigraphSymmetricClosure(CycleDigraph(6));
+<immutable symmetric digraph with 6 vertices, 12 edges>
+gap> DigraphHomomorphism(D, CompleteDigraph(2));
+Transformation( [ 1, 2, 1, 2, 1, 2 ] )
+gap> IsDigraphCore(D);
+false
 ]]></Example>
   </Description>
 </ManSection>
@@ -880,6 +536,78 @@ false]]></Example>
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsEdgeTransitive">
+<ManSection>
+  <Prop Name="IsEdgeTransitive" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph without multiple edges, then
+    <C>IsEdgeTransitive</C> returns <K>true</K> if <A>digraph</A>
+    is edge transitive, and <K>false</K> otherwise. A digraph is
+    <E>edge transitive</E> if its automorphism group acts
+    transitively on its edges (via the action <Ref Prop="OnPairs"/>).
+
+    <Example><![CDATA[
+gap> IsEdgeTransitive(Digraph([[1], [2]]));
+true
+gap> IsEdgeTransitive(Digraph([[2], [3], []]));
+false
+gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
+Error, Digraphs: IsEdgeTransitive: usage,
+the argument <graph> must not have multiple edges,
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsVertexTransitive">
+<ManSection>
+  <Prop Name="IsVertexTransitive" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>IsVertexTransitive</C> returns
+    <K>true</K> if <A>digraph</A> is vertex transitive, and <K>false</K>
+    otherwise. A digraph is <E>vertex transitive</E> if its automorphism group
+    acts transitively on its vertices.
+
+    <Example><![CDATA[
+gap> IsVertexTransitive(Digraph([[1], [2]]));
+true
+gap> IsVertexTransitive(Digraph([[2], [3], []]));
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsEmptyDigraph">
+<ManSection>
+  <Prop Name="IsEmptyDigraph" Arg="digraph"/>
+  <Prop Name="IsNullDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    Returns <K>true</K> if the digraph <A>digraph</A> is empty, and
+    <K>false</K> if it is not. A digraph is <E>empty</E> if it has no
+    edges.<P/>
+
+    <C>IsNullDigraph</C> is a synonym for <C>IsEmptyDigraph</C>.
+
+    <Example><![CDATA[
+gap> gr := Digraph([[], []]);
+<immutable empty digraph with 2 vertices>
+gap> IsEmptyDigraph(gr);
+true
+gap> IsNullDigraph(gr);
+true
+gap> gr := Digraph([[], [1]]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> IsEmptyDigraph(gr);
+false
+gap> IsNullDigraph(gr);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
 
 <#GAPDoc Label="IsEulerianDigraph">
 <ManSection>
@@ -910,6 +638,34 @@ false
 gap> gr := Digraph([[2], [3], [1]]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> IsEulerianDigraph(gr);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsFunctionalDigraph">
+<ManSection>
+  <Prop Name="IsFunctionalDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if the digraph <A>digraph</A> is
+    functional. <P/>
+
+    A digraph is <E>functional</E> if every vertex is the source of a
+    unique edge.
+    <Example><![CDATA[
+gap> gr1 := Digraph([[3], [2], [2], [1], [6], [5]]);
+<immutable digraph with 6 vertices, 6 edges>
+gap> IsFunctionalDigraph(gr1);
+true
+gap> gr2 := Digraph([[1, 2], [1]]);
+<immutable digraph with 2 vertices, 3 edges>
+gap> IsFunctionalDigraph(gr2);
+false
+gap> gr3 := Digraph(3, [1, 2, 3], [2, 3, 1]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> IsFunctionalDigraph(gr3);
 true
 ]]></Example>
   </Description>
@@ -955,74 +711,389 @@ true
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsDigraphCore">
+<#GAPDoc Label="IsRegularDigraph">
 <ManSection>
-  <Prop Name="IsDigraphCore" Arg="digraph"/>
+  <Prop Name="IsRegularDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This property returns <K>true</K> if <A>digraph</A> is a core,
-    and <K>false</K> if it is not.<P/>
+    This property is <K>true</K> if there is an integer <C>n</C> such that
+    for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
+    <C>n</C> edges starting and terminating at <C>v</C>. In other words,
+    the property is <K>true</K> if <A>digraph</A> is both in-regular and
+    and out-regular.
 
-    A digraph <C>D</C> is a <E>core</E> if and only if it has no proper subdigraphs <C>A</C>
-    such that there exists a homomorphism from <C>D</C>  to <C>A</C>. In other words,
-    a digraph <C>D</C> is a core if and only if every endomorphism on <C>D</C> is an
-    automorphism on <C>D</C>.
-
+    See also <Ref Prop="IsInRegularDigraph"/> and
+    <Ref Prop="IsOutRegularDigraph"/>.
     <Example><![CDATA[
-gap> D := CompleteDigraph(6);
-<immutable complete digraph with 6 vertices>
-gap> IsDigraphCore(D);
+gap> IsRegularDigraph(CompleteDigraph(4));
 true
-gap> D := DigraphSymmetricClosure(CycleDigraph(6));
-<immutable symmetric digraph with 6 vertices, 12 edges>
-gap> DigraphHomomorphism(D, CompleteDigraph(2));
-Transformation( [ 1, 2, 1, 2, 1, 2 ] )
-gap> IsDigraphCore(D);
+gap> IsRegularDigraph(ChainDigraph(4));
 false
 ]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsVertexTransitive">
+<#GAPDoc Label="IsInRegularDigraph">
 <ManSection>
-  <Prop Name="IsVertexTransitive" Arg="digraph"/>
+  <Prop Name="IsInRegularDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, then <C>IsVertexTransitive</C> returns
-    <K>true</K> if <A>digraph</A> is vertex transitive, and <K>false</K>
-    otherwise. A digraph is <E>vertex transitive</E> if its automorphism group
-    acts transitively on its vertices.
+    This property is <K>true</K> if there is an integer <C>n</C> such that
+    for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
+    <C>n</C> edges terminating in <C>v</C>.
 
+    See also <Ref Prop="IsOutRegularDigraph"/> and
+    <Ref Prop="IsRegularDigraph"/>.
     <Example><![CDATA[
-gap> IsVertexTransitive(Digraph([[1], [2]]));
+gap> IsInRegularDigraph(CompleteDigraph(4));
 true
-gap> IsVertexTransitive(Digraph([[2], [3], []]));
+gap> IsInRegularDigraph(ChainDigraph(4));
 false
 ]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsEdgeTransitive">
+<#GAPDoc Label="IsOutRegularDigraph">
 <ManSection>
-  <Prop Name="IsEdgeTransitive" Arg="digraph"/>
+  <Prop Name="IsOutRegularDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph without multiple edges, then
-    <C>IsEdgeTransitive</C> returns <K>true</K> if <A>digraph</A>
-    is edge transitive, and <K>false</K> otherwise. A digraph is
-    <E>edge transitive</E> if its automorphism group acts
-    transitively on its edges (via the action <Ref Prop="OnPairs"/>).
+    This property is <K>true</K> if there is an integer <C>n</C> such that
+    for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
+    <C>n</C> edges starting at <C>v</C>.
+
+    See also <Ref Prop="IsInRegularDigraph"/> and
+    <Ref Prop="IsRegularDigraph"/>.
+    <Example><![CDATA[
+gap> IsOutRegularDigraph(CompleteDigraph(4));
+true
+gap> IsOutRegularDigraph(ChainDigraph(4));
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsDistanceRegularDigraph">
+<ManSection>
+  <Prop Name="IsDistanceRegularDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a connected symmetric graph, this property returns
+    <K>true</K> if for any two vertices <C>u</C> and <C>v</C> of <A>digraph</A>
+    and any two integers <C>i</C> and <C>j</C> between <C>0</C> and the
+    diameter of <A>digraph</A>, the number of vertices at distance <C>i</C>
+    from <C>u</C> and distance <C>j</C> from <C>v</C> depends only on
+    <C>i</C>, <C>j</C>, and the distance between vertices <C>u</C> and
+    <C>v</C>.<P/>
+
+    Alternatively, a distance regular graph is a graph for which there exist
+    integers <C>b_i</C>, <C>c_i</C>, and <C>i</C> such that for any two
+    vertices <C>u</C>, <C>v</C> in <A>digraph</A> which are distance <C>i</C>
+    apart, there are exactly <C>b_i</C> neighbors of <C>v</C> which are at
+    distance <C>i - 1</C> away from <C>u</C>, and <C>c_i</C> neighbors of
+    <C>v</C> which are at distance <C>i + 1</C> away from <C>u</C>. This
+    definition is used to check whether <A>digraph</A> is distance regular.<P/>
+
+    In the case where <A>digraph</A> is not symmetric or not connected, the
+    property is <K>false</K>.
 
     <Example><![CDATA[
-gap> IsEdgeTransitive(Digraph([[1], [2]]));
-true
-gap> IsEdgeTransitive(Digraph([[2], [3], []]));
+gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
+gap> IsDistanceRegularDigraph(gr);
 false
-gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
-Error, Digraphs: IsEdgeTransitive: usage,
-the argument <graph> must not have multiple edges,
+gap> gr := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);
+<immutable digraph with 4 vertices, 12 edges>
+gap> IsDistanceRegularDigraph(gr);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsReflexiveDigraph">
+<ManSection>
+  <Prop Name="IsReflexiveDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if the digraph <A>digraph</A> is
+    reflexive, and <K>false</K> if it is not.
+    A digraph is <E>reflexive</E> if it has a loop at every vertex. <P/>
+    <Example><![CDATA[
+gap> gr := Digraph([[1, 2], [2]]);
+<immutable digraph with 2 vertices, 3 edges>
+gap> IsReflexiveDigraph(gr);
+true
+gap> gr := Digraph([[3, 1], [4, 2], [3], [2, 1]]);
+<immutable digraph with 4 vertices, 7 edges>
+gap> IsReflexiveDigraph(gr);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsSymmetricDigraph">
+<ManSection>
+  <Prop Name="IsSymmetricDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if the digraph <A>digraph</A>
+    is symmetric, and <K>false</K> if it is not.<P/>
+
+    A <E>symmetric digraph</E> is one where for each non-loop edge, having
+    source <C>u</C> and range <C>v</C>, there is a corresponding edge with
+    source <C>v</C> and range <C>u</C>.  If there are <C>n</C> edges with
+    source <C>u</C> and range <C>v</C>, then there must be precisely <C>n</C>
+    edges with source <C>v</C> and range <C>u</C>.  In other words, a symmetric
+    digraph has a symmetric adjacency matrix <Ref Attr="AdjacencyMatrix"/>.
+    <Example><![CDATA[
+gap> gr1 := Digraph([[2], [1, 3], [2, 3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsSymmetricDigraph(gr1);
+true
+gap> adj1 := AdjacencyMatrix(gr1);;
+gap> Display(adj1);
+[ [  0,  1,  0 ],
+  [  1,  0,  1 ],
+  [  0,  1,  1 ] ]
+gap> adj1 = TransposedMat(adj1);
+true
+gap> gr1 = DigraphReverse(gr1);
+true
+gap> gr2 := Digraph([[2, 3], [1, 3], [2, 3]]);
+<immutable digraph with 3 vertices, 6 edges>
+gap> IsSymmetricDigraph(gr2);
+false
+gap> adj2 := AdjacencyMatrix(gr2);;
+gap> Display(adj2);
+[ [  0,  1,  1 ],
+  [  1,  0,  1 ],
+  [  0,  1,  1 ] ]
+gap> adj2 = TransposedMat(adj2);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsAntisymmetricDigraph">
+<ManSection>
+  <Prop Name="IsAntiSymmetricDigraph" Arg="digraph"/>
+  <Prop Name="IsAntisymmetricDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if the digraph <A>digraph</A>
+    is antisymmetric, and <K>false</K> if it is not.
+    <P/>
+
+    A digraph is <E>antisymmetric</E> if whenever there is an edge with source
+    <C>u</C> and range <C>v</C>, and an edge with source <C>v</C> and range
+    <C>u</C>, then the vertices <C>u</C> and <C>v</C> are equal.
+    <P/>
+
+    <Example><![CDATA[
+gap> gr1 := Digraph([[2], [1, 3], [2, 3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsAntisymmetricDigraph(gr1);
+false
+gap> DigraphEdges(gr1){[1, 2]};
+[ [ 1, 2 ], [ 2, 1 ] ]
+gap> gr2 := Digraph([[1, 2], [3, 3], [1]]);
+<immutable multidigraph with 3 vertices, 5 edges>
+gap> IsAntisymmetricDigraph(gr2);
+true
+gap> DigraphEdges(gr2);
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 1 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsTransitiveDigraph">
+<ManSection>
+  <Prop Name="IsTransitiveDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if the digraph <A>digraph</A>
+    is transitive, and <K>false</K> if it is not.
+
+    A digraph is <E>transitive</E> if whenever <C>[ i, j ]</C> and
+    <C>[ j, k ]</C> are edges of the digraph, then <C>[ i, k ]</C> is also an
+    edge of the digraph. <P/>
+
+    Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
+        <M>m</M> be the number of edges.
+    For general digraphs, the methods used for this property use a version
+    of the Floyd-Warshall algorithm, and have complexity <M>O(n^3)</M>.
+
+    However for digraphs which are topologically sortable
+    [<Ref Attr="DigraphTopologicalSort"/>], then methods with
+    complexity <M>O(m + n + m \cdot n)</M> will be used when appropriate.
+    <P/>
+    <Example><![CDATA[
+gap> gr := Digraph([[1, 2], [3], [3]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> IsTransitiveDigraph(gr);
+false
+gap> gr2 := Digraph([[1, 2, 3], [3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsTransitiveDigraph(gr2);
+true
+gap> gr2 = DigraphTransitiveClosure(gr);
+true
+gap> gr3 := Digraph([[1, 2, 2, 3], [3, 3], [3]]);
+<immutable multidigraph with 3 vertices, 7 edges>
+gap> IsTransitiveDigraph(gr3);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsMeetSemilatticeDigraph">
+<ManSection>
+  <Prop Name="IsMeetSemilatticeDigraph" Arg="digraph"/>
+  <Prop Name="IsJoinSemilatticeDigraph" Arg="digraph"/>
+  <Prop Name="IsLatticeDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    
+    <C>IsMeetSemilatticeDigraph</C> returns <K>true</K> if the digraph
+    <A>digraph</A> is a meet semilattice; <C>IsJoinSemilatticeDigraph</C>
+    returns <K>true</K> if the digraph <A>digraph</A> is a join semilattice;
+    and  <C>IsLatticeDigraph</C> returns <K>true</K> if the digraph
+    <A>digraph</A> is both a meet and a join semilattice.
+    <P/>
+    For a partial order digraph <Ref Prop="IsPartialOrderDigraph"/> the
+    corresponding partial order is the relation <M>\leq</M>, defined by
+    <M>x \leq y</M> if and only if <C>[x, y]</C> is an edge.
+    A digraph is a <E>meet semilattice</E> if it is a partial order and every
+    pair of vertices has a greatest lower bound (meet) with respect to the
+    aforementioned relation. A <E>join semilattice</E> is a partial order where
+    every pair of vertices has a least upper bound (join) with respect to
+    the relation.
+
+    <Example><![CDATA[
+gap> gr := Digraph([[1, 3], [2, 3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsMeetSemilatticeDigraph(gr);
+false
+gap> IsJoinSemilatticeDigraph(gr);
+true
+gap> IsLatticeDigraph(gr);
+false
+gap> gr := Digraph([[1], [2], [1 .. 3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsJoinSemilatticeDigraph(gr);
+false
+gap> IsMeetSemilatticeDigraph(gr);
+true
+gap> IsLatticeDigraph(gr);
+false
+gap> gr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);
+<immutable digraph with 4 vertices, 9 edges>
+gap> IsMeetSemilatticeDigraph(gr);
+true
+gap> IsJoinSemilatticeDigraph(gr);
+true
+gap> IsLatticeDigraph(gr);
+true
+gap> gr := Digraph([[1, 1, 1], [1, 1, 2, 2],
+>                   [1, 3, 3], [1, 2, 3, 3, 4]]);
+<immutable multidigraph with 4 vertices, 15 edges>
+gap> IsMeetSemilatticeDigraph(gr);
+true
+gap> IsJoinSemilatticeDigraph(gr);
+true
+gap> IsLatticeDigraph(gr);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsPreorderDigraph">
+<ManSection>
+  <Prop Name="IsPreorderDigraph" Arg="digraph"/>
+  <Prop Name="IsQuasiorderDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A digraph is a preorder digraph if and only if the digraph satisifies both
+    <Ref Prop="IsReflexiveDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
+    A preorder digraph (or quasiorder digraph) <A>digraph</A> corresponds to
+    the preorder relation <M>\leq</M> defined by <M>x \leq y</M> if and only
+    if <C>[x, y]</C> is an edge of <A>digraph</A>.
+
+<Example><![CDATA[
+gap> gr := Digraph([[1], [2, 3], [2, 3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsPreorderDigraph(gr);
+true
+gap> gr := Digraph([[1 .. 4], [1 .. 4], [1 .. 4], [1 .. 4]]);
+<immutable digraph with 4 vertices, 16 edges>
+gap> IsPreorderDigraph(gr);
+true
+gap> gr := Digraph([[2], [3], [4], [5], [1]]);
+<immutable digraph with 5 vertices, 5 edges>
+gap> IsPreorderDigraph(gr);
+false
+gap> gr := Digraph([[1], [1, 2], [2, 3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsQuasiorderDigraph(gr);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsPartialOrderDigraph">
+<ManSection>
+  <Prop Name="IsPartialOrderDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A digraph is a partial order digraph if and only if the digraph satisifies
+    all of <Ref Prop="IsReflexiveDigraph"/>,
+    <Ref Prop="IsAntisymmetricDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
+    A partial order <A>digraph</A> corresponds
+    to the partial order relation <M>\leq</M> defined by <M>x \leq y</M> if and
+    only if <C>[x, y]</C> is an edge of <A>digraph</A>.
+
+<Example><![CDATA[
+gap> gr := Digraph([[1, 3], [2, 3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsPartialOrderDigraph(gr);
+true
+gap> gr := CycleDigraph(5);
+<immutable cycle digraph with 5 vertices>
+gap> IsPartialOrderDigraph(gr);
+false
+gap> gr := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);
+<immutable multidigraph with 4 vertices, 10 edges>
+gap> IsPartialOrderDigraph(gr);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsEquivalenceDigraph">
+<ManSection>
+  <Prop Name="IsEquivalenceDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A digraph is an equivalence digraph if and only if the digraph satisifies
+    all of <Ref Prop="IsReflexiveDigraph"/>,
+    <Ref Prop="IsSymmetricDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
+    A partial order <A>digraph</A> corresponds to an equivalence relation.
+
+<Example><![CDATA[
+gap> gr := Digraph([[1, 3], [2], [1, 3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsEquivalenceDigraph(gr);
+true
 ]]></Example>
   </Description>
 </ManSection>

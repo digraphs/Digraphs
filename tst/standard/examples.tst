@@ -154,9 +154,9 @@ true
 
 #  CompleteMultipartiteDigraph
 gap> CompleteMultipartiteDigraph([5, 4, 2]);
-<immutable multipartite symmetric digraph with 11 vertices, 76 edges>
+<immutable complete multipartite digraph with 11 vertices, 76 edges>
 gap> CompleteMultipartiteDigraph([5, 4, 2, 10, 1000]);
-<immutable multipartite symmetric digraph with 1021 vertices, 42296 edges>
+<immutable complete multipartite digraph with 1021 vertices, 42296 edges>
 gap> CompleteMultipartiteDigraph([5]);
 <immutable empty digraph with 5 vertices>
 gap> CompleteMultipartiteDigraph([]);

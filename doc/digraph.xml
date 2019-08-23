@@ -123,7 +123,6 @@ true
 </ManSection>
 <#/GAPDoc>
 
-
 <#GAPDoc Label="IsDigraph">
 <ManSection>
   <Filt Name="IsDigraph" Type='Category'/>
@@ -333,35 +332,6 @@ gap> gr := InducedSubdigraph(gr, [2, 5]);
 <immutable digraph with 2 vertices, 3 edges>
 gap> DigraphEdgeLabel(gr, 1, 2);
 [ 42 ]]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="IsMultiDigraph">
-<ManSection>
-  <Prop Name="IsMultiDigraph" Arg="digraph"/>
-  <Returns><K>true</K> or <K>false</K>.</Returns>
-  <Description>
-    A <E>multidigraph</E> is one that has at least two
-    edges with equal source and range.
-
-    <Example><![CDATA[
-gap> gr := Digraph(["a", "b", "c"], ["a", "b", "b"], ["b", "c", "a"]);
-<immutable digraph with 3 vertices, 3 edges>
-gap> IsMultiDigraph(gr);
-false
-gap> gr := DigraphFromDigraph6String("&Bug");
-<immutable digraph with 3 vertices, 6 edges>
-gap> IsDuplicateFree(DigraphEdges(gr));
-true
-gap> IsMultiDigraph(gr);
-false
-gap> gr := Digraph([[1, 2, 3, 2], [2, 1], [3]]);
-<immutable multidigraph with 3 vertices, 7 edges>
-gap> IsDuplicateFree(DigraphEdges(gr));
-false
-gap> IsMultiDigraph(gr);
-true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -856,7 +826,7 @@ gap> CompleteBipartiteDigraph(2, 3);
         same independent set.
       <Example><![CDATA[
 gap> CompleteMultipartiteDigraph([5, 4, 2]);
-<immutable multipartite symmetric digraph with 11 vertices, 76 edges>
+<immutable complete multipartite digraph with 11 vertices, 76 edges>
 ]]></Example>
   </Description>
 </ManSection>

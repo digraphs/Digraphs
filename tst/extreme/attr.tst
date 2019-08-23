@@ -53,7 +53,7 @@ true
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteMultipartiteDigraph([1, 9, 1, 1, 2, 1, 1, 1]);
-<immutable multipartite symmetric digraph with 17 vertices, 198 edges>
+<immutable complete multipartite digraph with 17 vertices, 198 edges>
 gap> HamiltonianPath(g);
 fail
 gap> IsHamiltonianDigraph(g);
