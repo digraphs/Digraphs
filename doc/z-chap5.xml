@@ -8,6 +8,7 @@
     <#Include Label="IsCompleteDigraph">
     <#Include Label="IsCompleteMultipartiteDigraph">
     <#Include Label="IsEmptyDigraph">
+    <#Include Label="IsEquivalenceDigraph">
     <#Include Label="IsFunctionalDigraph">
     <#Include Label="IsMultiDigraph">
     <#Include Label="IsReflexiveDigraph">
