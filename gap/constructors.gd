@@ -11,13 +11,13 @@
 # This file contains constructions of certain types of digraphs, from other
 # digraphs.
 
-DeclareOperation("LineDigraph", [IsDigraph]);
-DeclareSynonym("EdgeDigraph", LineDigraph);
-
-DeclareOperation("LineUndirectedDigraph", [IsDigraph]);
-DeclareSynonym("EdgeUndirectedDigraph", LineUndirectedDigraph);
-
+DeclareOperation("BipartiteDoubleDigraph", [IsDigraph]);
 DeclareOperation("DoubleDigraph", [IsDigraph]);
+
 DeclareOperation("DistanceDigraph", [IsDigraph, IsInt]);
 DeclareOperation("DistanceDigraph", [IsDigraph, IsList]);
-DeclareOperation("BipartiteDoubleDigraph", [IsDigraph]);
+
+DeclareOperation("LineDigraph", [IsDigraph]);
+DeclareSynonym("EdgeDigraph", LineDigraph);
+DeclareOperation("LineUndirectedDigraph", [IsDigraph]);
+DeclareSynonym("EdgeUndirectedDigraph", LineUndirectedDigraph);
