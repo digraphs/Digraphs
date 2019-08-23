@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  oper.xml
-#Y  Copyright (C) 2014-17                               James D. Mitchell
+#Y  Copyright (C) 2014-19                               James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -202,14 +202,15 @@ true
 <#GAPDoc Label="OnMultiDigraphs">
 <ManSection>
   <Oper Name="OnMultiDigraphs" Arg="digraph, pair"/>
-  <Oper Name="OnMultiDigraphs" Arg="digraph, perm1, perm2" Label="for a digraph, perm, and perm"/>
+  <Oper Name="OnMultiDigraphs" Arg="digraph, perm1, perm2"
+    Label="for a digraph, perm, and perm"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, and <A>pair</A> is a pair consisting of a
     permutation of the vertices and a permutation of the edges of
     <A>digraph</A>, then this operation returns a digraph
-    constructed by relabelling the vertices and edges of <A>digraph</A> according to
-    <A>perm[1]</A> and <A>perm[2]</A>, respectively. <P/>
+    constructed by relabelling the vertices and edges of <A>digraph</A>
+    according to <A>perm[1]</A> and <A>perm[2]</A>, respectively. <P/>
 
     In its second form, <C>OnMultiDigraphs</C> returns a digraph with vertices
     and edges permuted by <A>perm1</A> and <A>perm2</A>, respectively. <P/>
@@ -1285,19 +1286,22 @@ gap> DigraphShortestDistance(gr, [1, 3], [3, 5]);
 
 <#GAPDoc Label="PartialOrderDigraphMeetOfVertices">
 <ManSection>
-  <Oper Name="PartialOrderDigraphMeetOfVertices" Label="for a digraph and two vertices"
-        Arg="digraph, u, v"/>
-  <Oper Name="PartialOrderDigraphJoinOfVertices" Label="for a digraph and two vertices"
-        Arg="digraph, u, v"/>
+  <Oper Name="PartialOrderDigraphMeetOfVertices"
+    Label="for a digraph and two vertices"
+    Arg="digraph, u, v"/>
+  <Oper Name="PartialOrderDigraphJoinOfVertices"
+    Label="for a digraph and two vertices"
+    Arg="digraph, u, v"/>
   <Returns>A positive integer or <K>fail</K></Returns>
     <Description>
-    If the first argument is a partial order digraph <Ref Prop="IsPartialOrderDigraph"/>
-    then these operations return the meet, or the join, of the two input vertices. If
-    the meet (or join) is does not exist then <K>fail</K> is returned. The meet (or
-    join) is guaranteed to exist when the first argument satisfies 
-    <Ref Prop="IsMeetSemilatticeDigraph"/>  (or <Ref Prop="IsJoinSemilatticeDigraph"/>)
-    - see the documentation for these properties for the definition of the meet (or
-    the join).
+    If the first argument is a partial order digraph <Ref
+    Prop="IsPartialOrderDigraph"/> then these operations return the meet, or
+    the join, of the two input vertices. If the meet (or join) is does not
+    exist then <K>fail</K> is returned. The meet (or join) is guaranteed to
+    exist when the first argument satisfies
+    <Ref Prop="IsMeetSemilatticeDigraph"/>  (or
+    <Ref Prop="IsJoinSemilatticeDigraph"/>) - see the documentation for these
+    properties for the definition of the meet (or the join).
 
     <Example><![CDATA[
 gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 2, 3, 4]]);
