@@ -19,6 +19,7 @@ DeclareOperation("SetDigraphVertexLabel", [IsDigraph, IsPosInt, IsObject]);
 DeclareOperation("SetDigraphVertexLabels", [IsDigraph, IsList]);
 
 #  Unset vertex labels
+#  TODO document these two operations
 DeclareOperation("RemoveDigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("ClearDigraphVertexLabels", [IsDigraph]);
 
@@ -37,5 +38,6 @@ DeclareOperation("SetDigraphEdgeLabels", [IsDigraph, IsList]);
 DeclareOperation("SetDigraphEdgeLabelsNC", [IsDigraph, IsList]);
 
 #  Unset edge labels
+#  TODO document these two operations
 DeclareOperation("RemoveDigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("ClearDigraphEdgeLabels", [IsDigraph]);
