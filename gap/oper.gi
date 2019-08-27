@@ -504,9 +504,10 @@ function(arg)
     arg := arg[1];
   fi;
 
-  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDenseDigraphRep) then
-    ErrorNoReturn("the arguments must be dense digraphs, or a single ",
-                  "list of dense digraphs,");
+  if not IsList(arg) or IsEmpty(arg)
+      or not ForAll(arg, IsDigraphByOutNeighboursRep) then
+    ErrorNoReturn("the arguments must be digraphs by out-neighbours, or a ",
+                  "single list of digraphs by out-neighbours,");
   fi;
 
   D := arg[1];
@@ -546,9 +547,10 @@ function(arg)
     arg := arg[1];
   fi;
 
-  if not IsList(arg) or IsEmpty(arg) or not ForAll(arg, IsDenseDigraphRep) then
-    ErrorNoReturn("the arguments must be dense digraphs, or a single ",
-                  "list of dense digraphs,");
+  if not IsList(arg) or IsEmpty(arg)
+      or not ForAll(arg, IsDigraphByOutNeighboursRep) then
+    ErrorNoReturn("the arguments must be digraphs by out-neighbours, or a ",
+                  "single list of digraphs by out-neighbours,");
   fi;
 
   D := arg[1];
