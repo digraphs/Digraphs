@@ -497,7 +497,7 @@ end);
 
 InstallGlobalFunction(DigraphCartesianProduct,
 function(arg)
-  local D, copy, n, i, j, proj, m;
+  local D, n, i, j, proj, m;
 
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
@@ -510,24 +510,7 @@ function(arg)
   fi;
 
   D := arg[1];
-  if IsMutableDigraph(arg[1]) then
-    for i in [2 .. Length(arg)] do
-      if IsIdenticalObj(arg[1], arg[i]) then
-        if not IsBound(copy) then
-          copy := OutNeighboursMutableCopy(arg[1]);
-        fi;
-        arg[i] := copy;
-      else
-        arg[i] := OutNeighbours(arg[i]);
-      fi;
-    od;
-    arg[1] := arg[1]!.OutNeighbours;
-  else
-    arg[1] := OutNeighboursMutableCopy(arg[1]);
-    for i in [2 .. Length(arg)] do
-      arg[i] := OutNeighbours(arg[i]);
-    od;
-  fi;
+  DIGRAPHS_CombinationOperProcessArgs(arg);
 
   m := Product(List(arg, Length));
   proj := [Transformation([1 .. m], x -> RemInt(x - 1, Length(arg[1])) + 1)];
@@ -556,7 +539,7 @@ end);
 
 InstallGlobalFunction(DigraphDirectProduct,
 function(arg)
-  local D, copy, n, i, j, proj, m;
+  local D, n, i, j, proj, m;
 
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
@@ -569,24 +552,7 @@ function(arg)
   fi;
 
   D := arg[1];
-  if IsMutableDigraph(arg[1]) then
-    for i in [2 .. Length(arg)] do
-      if IsIdenticalObj(arg[1], arg[i]) then
-        if not IsBound(copy) then
-          copy := OutNeighboursMutableCopy(arg[1]);
-        fi;
-        arg[i] := copy;
-      else
-        arg[i] := OutNeighbours(arg[i]);
-      fi;
-    od;
-    arg[1] := arg[1]!.OutNeighbours;
-  else
-    arg[1] := OutNeighboursMutableCopy(arg[1]);
-    for i in [2 .. Length(arg)] do
-      arg[i] := OutNeighbours(arg[i]);
-    od;
-  fi;
+  DIGRAPHS_CombinationOperProcessArgs(arg);
 
   m := Product(List(arg, Length));
   proj := [Transformation([1 .. m], x -> RemInt(x - 1, Length(arg[1])) + 1)];
