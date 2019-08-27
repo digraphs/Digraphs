@@ -992,9 +992,9 @@ gap> DigraphJoin(gr, gr2);
 
 <Example><![CDATA[
 gap> gr := ChainDigraph(4);
-<immutable digraph with 4 vertices, 3 edges>
+<immutable chain digraph with 4 vertices>
 gap> gr2 := CycleDigraph(3);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable cycle digraph with 3 vertices>
 gap> gr3 := DigraphCartesianProduct(gr, gr2);
 <immutable digraph with 12 vertices, 21 edges>
 gap> IsIsomorphicDigraph(gr3, 
@@ -1037,9 +1037,9 @@ true
 
 <Example><![CDATA[
 gap> gr := ChainDigraph(4);
-<immutable digraph with 4 vertices, 3 edges>
+<immutable chain digraph with 4 vertices>
 gap> gr2 := CycleDigraph(3);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable cycle digraph with 3 vertices>
 gap> gr3 := DigraphDirectProduct(gr, gr2);
 <immutable digraph with 12 vertices, 9 edges>
 gap> IsIsomorphicDigraph(gr3, 
