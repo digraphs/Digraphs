@@ -205,7 +205,8 @@ node [shape=Mrecord, height=0.5, fixedsize=true]ranksep=1;
 gap> Splash(DotDigraph(RandomDigraph(10)), rec(viewer := 1));
 Error, the option `viewer` must be a string, not an integer,
 gap> Splash(DotDigraph(RandomDigraph(10)), rec(viewer := "asdfasfa"));
-Error, the viewer "asdfasfa" specified in the option `viewer` is not available,
+Error, the viewer "asdfasfa" specified in the option `viewer` is not available\
+,
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
