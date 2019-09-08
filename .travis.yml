@@ -12,10 +12,10 @@ env:
     - DIGRAPHS_LIB=digraphs-lib-0.5
     - SETUP=travis
 
-#   GAP version: |       master | stable-4.10 | stable-4.9 |     required |
-# ---------------+--------------+-------------+------------+--------------+
-# pkgs:   latest | 64- & 32-bit |      32-bit |          - |            - |
-# pkgs: required |  coverage-64 |      64-bit |     64-bit | 64- & 32-bit |
+#   GAP version: |       master | stb-4.11 | stb-4.10 | stb-4.9 | required |
+# ---------------+--------------+----------+----------+---------+----------+
+# pkgs:   latest | 64- & 32-bit |   32-bit |        - |       - |        - |
+# pkgs: required |  coverage-64 |   64-bit |   64-bit |  32-bit |  64--bit |
 
 matrix:
   include:
@@ -40,7 +40,7 @@ matrix:
     - env:
       - SUITE=test
       - ABI=32
-      - GAP=stable-4.10
+      - GAP=stable-4.11
       - PACKAGES=latest
       addons:
         apt_packages:
@@ -49,7 +49,7 @@ matrix:
     - env:
       - SUITE=test
       - ABI=64
-      - GAP=stable-4.10
+      - GAP=stable-4.11
       - PACKAGES=required
       - EXTRA_PKG_FLAGS="--with-external-planarity --with-external-bliss"
       - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/miniconda3/lib
@@ -59,23 +59,23 @@ matrix:
     - env:
       - SUITE=test
       - ABI=64
+      - GAP=stable-4.10
+      - PACKAGES=required
+
+    - env:
+      - SUITE=test
+      - ABI=32
       - GAP=stable-4.9
       - PACKAGES=required
+      addons:
+        apt_packages:
+          - g++-multilib
 
     - env:
       - SUITE=test
       - ABI=64
       - GAP=required
       - PACKAGES=required
-
-    - env:
-      - SUITE=test
-      - ABI=32
-      - GAP=required
-      - PACKAGES=required
-      addons:
-        apt_packages:
-          - g++-multilib
 
     - env:
       - SUITE=coverage
