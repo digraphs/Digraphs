@@ -15,7 +15,7 @@ env:
 #   GAP version: |       master | stb-4.11 | stb-4.10 | stb-4.9 | required |
 # ---------------+--------------+----------+----------+---------+----------+
 # pkgs:   latest | 64- & 32-bit |   32-bit |        - |       - |        - |
-# pkgs: required |  coverage-64 |   64-bit |   64-bit |  32-bit |  64--bit |
+# pkgs: required |  coverage-64 | 64-conda |   64-bit |  32-bit |  64--bit |
 
 matrix:
   include:
