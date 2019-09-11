@@ -14,24 +14,31 @@
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     A <E>multidigraph</E> is one that has at least two
-    edges with equal source and range.
+    edges with equal source and range.<P/>
+
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := Digraph(["a", "b", "c"], ["a", "b", "b"], ["b", "c", "a"]);
+gap> D := Digraph(["a", "b", "c"], ["a", "b", "b"], ["b", "c", "a"]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> IsMultiDigraph(gr);
+gap> IsMultiDigraph(D);
 false
-gap> gr := DigraphFromDigraph6String("&Bug");
+gap> D := DigraphFromDigraph6String("&Bug");
 <immutable digraph with 3 vertices, 6 edges>
-gap> IsDuplicateFree(DigraphEdges(gr));
+gap> IsDuplicateFree(DigraphEdges(D));
 true
-gap> IsMultiDigraph(gr);
+gap> IsMultiDigraph(D);
 false
-gap> gr := Digraph([[1, 2, 3, 2], [2, 1], [3]]);
+gap> D := Digraph([[1, 2, 3, 2], [2, 1], [3]]);
 <immutable multidigraph with 3 vertices, 7 edges>
-gap> IsDuplicateFree(DigraphEdges(gr));
+gap> IsDuplicateFree(DigraphEdges(D));
 false
-gap> IsMultiDigraph(gr);
+gap> IsMultiDigraph(D);
+true
+gap> D := DigraphMutableCopy(D); 
+<mutable multidigraph with 3 vertices, 7 edges>
+gap> IsMultiDigraph(D);
 true]]></Example>
   </Description>
 </ManSection>
@@ -44,21 +51,28 @@ true]]></Example>
   <Description>
     Returns <K>true</K> if the digraph <A>digraph</A> has loops, and
     <K>false</K> if it does not. A loop is an edge with equal source and range.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
-    <Example><![CDATA[
-gap> gr := Digraph([[1, 2], [2]]);
+<Example><![CDATA[
+gap> D := Digraph([[1, 2], [2]]);
 <immutable digraph with 2 vertices, 3 edges>
-gap> DigraphEdges(gr);
+gap> DigraphEdges(D);
 [ [ 1, 1 ], [ 1, 2 ], [ 2, 2 ] ]
-gap> DigraphHasLoops(gr);
+gap> DigraphHasLoops(D);
 true
-gap> gr := Digraph([[2, 3], [1], [2]]);
+gap> D := Digraph([[2, 3], [1], [2]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> DigraphEdges(gr);
+gap> DigraphEdges(D);
 [ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 3, 2 ] ]
-gap> DigraphHasLoops(gr);
+gap> DigraphHasLoops(D);
 false
-]]></Example>
+gap> D := CompleteDigraph(IsMutableDigraph, 4);
+<mutable digraph with 4 vertices, 12 edges>
+gap> DigraphHasLoops(D);
+false]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -76,24 +90,31 @@ false
 
     The method used in this operation has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
-    <M>n</M> is the number of vertices in the digraph.
+    <M>n</M> is the number of vertices in the digraph. <P/>
+
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
 gap> Petersen := Graph(SymmetricGroup(5), [[1, 2]], OnSets,
 > function(x, y)
 >   return IsEmpty(Intersection(x, y));
 > end);;
-gap> gr := Digraph(Petersen);
+gap> D := Digraph(Petersen);
 <immutable digraph with 10 vertices, 30 edges>
-gap> IsAcyclicDigraph(gr);
+gap> IsAcyclicDigraph(D);
 false
-gap> gr := DigraphFromDiSparse6String(
+gap> D := DigraphFromDiSparse6String(
 > ".b_OGCIDBaPGkULEbQHCeRIdrHcuZMfRyDAbPhTi|zF");
 <immutable digraph with 35 vertices, 34 edges>
-gap> IsAcyclicDigraph(gr);
+gap> IsAcyclicDigraph(D);
 true
 gap> IsAcyclicDigraph(ChainDigraph(10));
 true
+gap> D := CompleteDigraph(IsMutableDigraph, 4);
+<mutable digraph with 4 vertices, 12 edges>
+gap> IsAcyclicDigraph(D);
+false
 gap> IsAcyclicDigraph(CycleDigraph(10));
 false]]></Example>
   </Description>
@@ -108,16 +129,23 @@ false]]></Example>
     This property is <K>true</K> if the digraph <A>digraph</A>
     is aperiodic, i.e. if its <Ref Attr = "DigraphPeriod"/> is equal to 1.
     Otherwise, the property is <K>false</K>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
     <Example><![CDATA[
-gap> gr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);
+gap> D := Digraph([[6], [1], [2], [3], [4, 4], [5]]);
 <immutable multidigraph with 6 vertices, 7 edges>
-gap> IsAperiodicDigraph(gr);
+gap> IsAperiodicDigraph(D);
 false
-gap> gr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
+gap> D := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
 <immutable digraph with 5 vertices, 7 edges>
-gap> IsAperiodicDigraph(gr);
+gap> IsAperiodicDigraph(D);
 true
-]]></Example>
+gap> D := Digraph(IsMutableDigraph, [[2], [3, 5], [4], [5], [1, 2]]);
+<mutable digraph with 5 vertices, 7 edges>
+gap> IsAperiodicDigraph(D);
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -139,15 +167,27 @@ true
       Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M>, where <M>m</M> is
     the number of edges (counting multiple edges as one) and <M>n</M> is the
     number of vertices in the digraph.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := CycleDigraph(250000);
+gap> D := CycleDigraph(250000);
 <immutable cycle digraph with 250000 vertices>
-gap> IsStronglyConnectedDigraph(gr);
+gap> IsStronglyConnectedDigraph(D);
 true
-gap> gr := DigraphRemoveEdges(gr, [[250000, 1]]);
+gap> D := DigraphRemoveEdges(D, [[250000, 1]]);
 <immutable digraph with 250000 vertices, 249999 edges>
-gap> IsStronglyConnectedDigraph(gr);
+gap> IsStronglyConnectedDigraph(D);
+false
+gap> D := CycleDigraph(IsMutableDigraph, 250000);
+<mutable digraph with 250000 vertices, 250000 edges>
+gap> IsStronglyConnectedDigraph(D);
+true
+gap> DigraphRemoveEdge(D, [250000, 1]);
+<mutable digraph with 250000 vertices, 249999 edges>
+gap> IsStronglyConnectedDigraph(D);
 false
 ]]></Example>
   </Description>
@@ -170,13 +210,23 @@ false
     complexity <M>O(m+n)</M> (where
     <M>m</M> is the number of edges and
     <M>n</M> is the number of vertices of the digraph).
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := Digraph([[2], [3], []]);;
-gap> IsConnectedDigraph(gr);
+gap> D := Digraph([[2], [3], []]);;
+gap> IsConnectedDigraph(D);
 true
-gap> gr := Digraph([[1, 3], [4], [3], []]);;
-gap> IsConnectedDigraph(gr);
+gap> D := Digraph([[1, 3], [4], [3], []]);;
+gap> IsConnectedDigraph(D);
+false
+gap> D := Digraph(IsMutableDigraph, [[2], [3], []]);;
+gap> IsConnectedDigraph(D);
+true
+gap> D := Digraph(IsMutableDigraph, [[1, 3], [4], [3], []]);;
+gap> IsConnectedDigraph(D);
 false]]></Example>
   </Description>
 </ManSection>
@@ -199,16 +249,25 @@ false]]></Example>
     The method used in this operation has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one, and not
     counting loops) and <M>n</M> is the number of vertices in the digraph.
+    <P/>
 
     See also <Ref Attr="ArticulationPoints"/>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 <Example><![CDATA[
 gap> IsBiconnectedDigraph(Digraph([[1, 3], [2, 3], [3]]));
 false
 gap> IsBiconnectedDigraph(CycleDigraph(5));
 true
-gap> digraph := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);;
-gap> IsBiconnectedDigraph(digraph);
-false]]></Example>
+gap> D := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);;
+gap> IsBiconnectedDigraph(D);
+false
+gap> D := CompleteBipartiteDigraph(IsMutableDigraph, 5, 4);
+<mutable digraph with 9 vertices, 40 edges>
+gap> IsBiconnectedDigraph(D);
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -226,15 +285,23 @@ false]]></Example>
   <Ref Attr="DigraphGreedyColouring" Label="for a digraph"/>. <P/>
 
   See also <Ref Attr="DigraphBicomponents"/>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
     <Example><![CDATA[
-gap> gr := ChainDigraph(4);
+gap> D := ChainDigraph(4);
 <immutable chain digraph with 4 vertices>
-gap> IsBipartiteDigraph(gr);
+gap> IsBipartiteDigraph(D);
 true
-gap> gr := CycleDigraph(3);
+gap> D := CycleDigraph(3);
 <immutable cycle digraph with 3 vertices>
-gap> IsBipartiteDigraph(gr);
-false]]></Example>
+gap> IsBipartiteDigraph(D);
+false
+gap> D := CompleteBipartiteDigraph(IsMutableDigraph, 5, 4);
+<mutable digraph with 9 vertices, 40 edges>
+gap> IsBipartiteDigraph(D);
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -258,19 +325,26 @@ false]]></Example>
     are multiple edges. <P/>
 
     See also <Ref Oper="CompleteBipartiteDigraph"/>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := CycleDigraph(2);
+gap> D := CycleDigraph(2);
 <immutable cycle digraph with 2 vertices>
-gap> IsCompleteBipartiteDigraph(gr);
+gap> IsCompleteBipartiteDigraph(D);
 true
-gap> gr := CycleDigraph(4);
+gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>
-gap> IsBipartiteDigraph(gr);
+gap> IsBipartiteDigraph(D);
 true
-gap> IsCompleteBipartiteDigraph(gr);
+gap> IsCompleteBipartiteDigraph(D);
 false
-]]></Example>
+gap> D := CompleteBipartiteDigraph(IsMutableDigraph, 5, 4);
+<mutable digraph with 9 vertices, 40 edges>
+gap> IsCompleteBipartiteDigraph(D);
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -286,14 +360,21 @@ false
     A digraph is a <E>complete multipartite digraph</E> if and only if
     its vertices can be partitioned into at least two maximal independent sets,
     where every possible edge between these independent sets occurs in the
-    digraph exactly once. <P/>
+    digraph exactly once.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := CompleteMultipartiteDigraph([2, 4, 6]);
+gap> D := CompleteMultipartiteDigraph([2, 4, 6]);
 <immutable complete multipartite digraph with 12 vertices, 88 edges>
-gap> IsCompleteMultipartiteDigraph(gr);
+gap> IsCompleteMultipartiteDigraph(D);
 true
-]]></Example>
+gap> D := CompleteBipartiteDigraph(IsMutableDigraph, 5, 4);
+<mutable digraph with 9 vertices, 40 edges>
+gap> IsCompleteMultipartiteDigraph(D);
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -312,17 +393,24 @@ true
 
     Equivalently, a digraph with <M>n</M> vertices is complete precisely when
     it has <M>n(n - 1)</M> edges, no loops, and no multiple edges.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := Digraph([[2, 3], [1, 3], [1, 2]]);
+gap> D := Digraph([[2, 3], [1, 3], [1, 2]]);
 <immutable digraph with 3 vertices, 6 edges>
-gap> IsCompleteDigraph(gr);
+gap> IsCompleteDigraph(D);
 true
-gap> gr := Digraph([[2, 2], [1]]);
+gap> D := Digraph([[2, 2], [1]]);
 <immutable multidigraph with 2 vertices, 3 edges>
-gap> IsCompleteDigraph(gr);
+gap> IsCompleteDigraph(D);
 false
-]]></Example>
+gap> D := CompleteBipartiteDigraph(IsMutableDigraph, 5, 4);
+<mutable digraph with 9 vertices, 40 edges>
+gap> IsCompleteDigraph(D);
+false]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -339,14 +427,25 @@ false
     Specifically, a tournament is a digraph which has a unique directed edge
     (of some orientation) between any pair of distinct vertices, and no loops.
     <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
     <Example><![CDATA[
-gap> gr := Digraph([[2, 3, 4], [3, 4], [4], []]);
+gap> D := Digraph([[2, 3, 4], [3, 4], [4], []]);
 <immutable digraph with 4 vertices, 6 edges>
-gap> IsTournament(gr);
+gap> IsTournament(D);
 true
-gap> gr := Digraph([[2], [1], [3]]);
+gap> D := Digraph([[2], [1], [3]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> IsTournament(gr);
+gap> IsTournament(D);
+false
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> IsTournament(D);
+true
+gap> DigraphRemoveEdge(D, 1, 2);
+<mutable digraph with 3 vertices, 2 edges>
+gap> IsTournament(D);
 false
 ]]></Example>
   </Description>
@@ -366,19 +465,31 @@ false
     A digraph is a <E>chain</E> if and only if it is a directed tree, in which
     every vertex has out degree at most one; see <Ref Prop="IsDirectedTree"/>
     and <Ref Attr="OutDegrees"/>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
 <Example><![CDATA[
-gap> gr := Digraph([[1, 3], [2, 3], [3]]);
+gap> D := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> IsChainDigraph(gr);
+gap> IsChainDigraph(D);
 false
-gap> gr := ChainDigraph(5);
+gap> D := ChainDigraph(5);
 <immutable chain digraph with 5 vertices>
-gap> IsChainDigraph(gr);
+gap> IsChainDigraph(D);
 true
-gap> gr := DigraphReverse(gr);
+gap> D := DigraphReverse(D);
 <immutable digraph with 5 vertices, 4 edges>
-gap> IsChainDigraph(gr);
+gap> IsChainDigraph(D);
+true
+gap> D := ChainDigraph(IsMutableDigraph, 5);
+<mutable digraph with 5 vertices, 4 edges>
+gap> IsChainDigraph(D);
+true
+gap> DigraphReverse(D);
+<mutable digraph with 5 vertices, 4 edges>
+gap> IsChainDigraph(D);
 true]]></Example>
   </Description>
 </ManSection>
@@ -396,21 +507,25 @@ true]]></Example>
 
     A digraph is a <E>cycle</E> if and only if it is strongly connected and has
     the same number of edges as vertices. 
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
 <Example><![CDATA[
-gap> gr := Digraph([[1, 3], [2, 3], [3]]);
+gap> D := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> IsCycleDigraph(gr);
+gap> IsCycleDigraph(D);
 false
-gap> gr := CycleDigraph(5);
+gap> D := CycleDigraph(5);
 <immutable cycle digraph with 5 vertices>
-gap> IsCycleDigraph(gr);
+gap> IsCycleDigraph(D);
 true
-gap> gr := OnDigraphs(gr, (1, 2, 3));
+gap> D := OnDigraphs(D, (1, 2, 3));
 <immutable digraph with 5 vertices, 5 edges>
-gap> gr = CycleDigraph(5);
+gap> D = CycleDigraph(5);
 false
-gap> IsCycleDigraph(gr);
+gap> IsCycleDigraph(D);
 true]]></Example>
   </Description>
 </ManSection>
@@ -428,6 +543,10 @@ true]]></Example>
     subdigraphs <C>A</C> such that there exists a homomorphism from <C>D</C>
     to <C>A</C>. In other words, a digraph <C>D</C> is a core if and only if
     every endomorphism on <C>D</C> is an automorphism on <C>D</C>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
 gap> D := CompleteDigraph(6);
@@ -459,23 +578,27 @@ false
     tree as it has no source. <P/>
 
     See also <Ref Attr="DigraphSources"/>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := Digraph([[], [2]]);
+gap> D := Digraph([[], [2]]);
 <immutable digraph with 2 vertices, 1 edge>
-gap> IsDirectedTree(gr);
+gap> IsDirectedTree(D);
 false
-gap> gr := Digraph([[3], [3], []]);
+gap> D := Digraph([[3], [3], []]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> IsDirectedTree(gr);
+gap> IsDirectedTree(D);
 false
-gap> gr := Digraph([[2], [3], []]);
+gap> D := Digraph([[2], [3], []]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> IsDirectedTree(gr);
+gap> IsDirectedTree(D);
 true
-gap> gr := Digraph([[2, 3], [6], [4, 5], [], [], []]);
+gap> D := Digraph([[2, 3], [6], [4, 5], [], [], []]);
 <immutable digraph with 6 vertices, 5 edges>
-gap> IsDirectedTree(gr);
+gap> IsDirectedTree(D);
 true
 ]]></Example>
   </Description>
@@ -510,27 +633,31 @@ true
 
     Please note that the digraph with zero vertices is considered to be neither
     an undirected tree nor an undirected forest.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := Digraph([[3], [3], [1, 2]]);
+gap> D := Digraph([[3], [3], [1, 2]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> IsUndirectedTree(gr);
+gap> IsUndirectedTree(D);
 true
-gap> IsSymmetricDigraph(gr) and not DigraphHasLoops(gr);
+gap> IsSymmetricDigraph(D) and not DigraphHasLoops(D);
 true
-gap> gr := Digraph([[3], [5], [1, 4], [3], [2]]);
+gap> D := Digraph([[3], [5], [1, 4], [3], [2]]);
 <immutable digraph with 5 vertices, 6 edges>
-gap> IsConnectedDigraph(gr);
+gap> IsConnectedDigraph(D);
 false
-gap> IsUndirectedTree(gr);
+gap> IsUndirectedTree(D);
 false
-gap> IsUndirectedForest(gr);
+gap> IsUndirectedForest(D);
 true
-gap> gr := Digraph([[1, 2], [1], [2]]);
+gap> D := Digraph([[1, 2], [1], [2]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> IsUndirectedTree(gr) or IsUndirectedForest(gr);
+gap> IsUndirectedTree(D) or IsUndirectedForest(D);
 false
-gap> IsSymmetricDigraph(gr) or not DigraphHasLoops(gr);
+gap> IsSymmetricDigraph(D) or not DigraphHasLoops(D);
 false]]></Example>
   </Description>
 </ManSection>
@@ -546,6 +673,10 @@ false]]></Example>
     is edge transitive, and <K>false</K> otherwise. A digraph is
     <E>edge transitive</E> if its automorphism group acts
     transitively on its edges (via the action <Ref Prop="OnPairs"/>).
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
 gap> IsEdgeTransitive(Digraph([[1], [2]]));
@@ -569,6 +700,10 @@ the argument <graph> must not have multiple edges,
     <K>true</K> if <A>digraph</A> is vertex transitive, and <K>false</K>
     otherwise. A digraph is <E>vertex transitive</E> if its automorphism group
     acts transitively on its vertices.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
 gap> IsVertexTransitive(Digraph([[1], [2]]));
@@ -591,19 +726,23 @@ false
     edges.<P/>
 
     <C>IsNullDigraph</C> is a synonym for <C>IsEmptyDigraph</C>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := Digraph([[], []]);
+gap> D := Digraph([[], []]);
 <immutable empty digraph with 2 vertices>
-gap> IsEmptyDigraph(gr);
+gap> IsEmptyDigraph(D);
 true
-gap> IsNullDigraph(gr);
+gap> IsNullDigraph(D);
 true
-gap> gr := Digraph([[], [1]]);
+gap> D := Digraph([[], [1]]);
 <immutable digraph with 2 vertices, 1 edge>
-gap> IsEmptyDigraph(gr);
+gap> IsEmptyDigraph(D);
 false
-gap> IsNullDigraph(gr);
+gap> IsNullDigraph(D);
 false]]></Example>
   </Description>
 </ManSection>
@@ -620,24 +759,28 @@ false]]></Example>
     A connected digraph is called <E>Eulerian</E> if there exists a directed
     circuit on the digraph which includes every edge exactly once.  See
     section <Ref Subsect="Definitions" Style="Number" /> for the definition of
-    a directed circuit. <P/>
+    a directed circuit.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := Digraph([[]]);
+gap> D := Digraph([[]]);
 <immutable empty digraph with 1 vertex>
-gap> IsEulerianDigraph(gr);
+gap> IsEulerianDigraph(D);
 true
-gap> gr := Digraph([[2], []]);
+gap> D := Digraph([[2], []]);
 <immutable digraph with 2 vertices, 1 edge>
-gap> IsEulerianDigraph(gr);
+gap> IsEulerianDigraph(D);
 false
-gap> gr := Digraph([[3], [], [2]]);
+gap> D := Digraph([[3], [], [2]]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> IsEulerianDigraph(gr);
+gap> IsEulerianDigraph(D);
 false
-gap> gr := Digraph([[2], [3], [1]]);
+gap> D := Digraph([[2], [3], [1]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> IsEulerianDigraph(gr);
+gap> IsEulerianDigraph(D);
 true
 ]]></Example>
   </Description>
@@ -654,6 +797,10 @@ true
 
     A digraph is <E>functional</E> if every vertex is the source of a
     unique edge.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
     <Example><![CDATA[
 gap> gr1 := Digraph([[3], [2], [2], [1], [6], [5]]);
 <immutable digraph with 6 vertices, 6 edges>
@@ -688,6 +835,10 @@ true
 
     The method used in this operation has the worst case complexity as
     <Ref Oper="DigraphMonomorphism"/>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
 gap> g := Digraph([[]]);
@@ -724,6 +875,10 @@ true
 
     See also <Ref Prop="IsInRegularDigraph"/> and
     <Ref Prop="IsOutRegularDigraph"/>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
     <Example><![CDATA[
 gap> IsRegularDigraph(CompleteDigraph(4));
 true
@@ -745,6 +900,10 @@ false
 
     See also <Ref Prop="IsOutRegularDigraph"/> and
     <Ref Prop="IsRegularDigraph"/>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
     <Example><![CDATA[
 gap> IsInRegularDigraph(CompleteDigraph(4));
 true
@@ -763,9 +922,14 @@ false
     This property is <K>true</K> if there is an integer <C>n</C> such that
     for every vertex <C>v</C> of digraph <A>digraph</A> there are exactly
     <C>n</C> edges starting at <C>v</C>.
+    <P/>
 
     See also <Ref Prop="IsInRegularDigraph"/> and
     <Ref Prop="IsRegularDigraph"/>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
     <Example><![CDATA[
 gap> IsOutRegularDigraph(CompleteDigraph(4));
 true
@@ -799,14 +963,18 @@ false
 
     In the case where <A>digraph</A> is not symmetric or not connected, the
     property is <K>false</K>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
-gap> IsDistanceRegularDigraph(gr);
+gap> D := DigraphSymmetricClosure(ChainDigraph(5));;
+gap> IsDistanceRegularDigraph(D);
 false
-gap> gr := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);
+gap> D := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);
 <immutable digraph with 4 vertices, 12 edges>
-gap> IsDistanceRegularDigraph(gr);
+gap> IsDistanceRegularDigraph(D);
 true
 ]]></Example>
   </Description>
@@ -821,14 +989,18 @@ true
     This property is <K>true</K> if the digraph <A>digraph</A> is
     reflexive, and <K>false</K> if it is not.
     A digraph is <E>reflexive</E> if it has a loop at every vertex. <P/>
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 2], [2]]);
+gap> D := Digraph([[1, 2], [2]]);
 <immutable digraph with 2 vertices, 3 edges>
-gap> IsReflexiveDigraph(gr);
+gap> IsReflexiveDigraph(D);
 true
-gap> gr := Digraph([[3, 1], [4, 2], [3], [2, 1]]);
+gap> D := Digraph([[3, 1], [4, 2], [3], [2, 1]]);
 <immutable digraph with 4 vertices, 7 edges>
-gap> IsReflexiveDigraph(gr);
+gap> IsReflexiveDigraph(D);
 false
 ]]></Example>
   </Description>
@@ -849,6 +1021,10 @@ false
     source <C>u</C> and range <C>v</C>, then there must be precisely <C>n</C>
     edges with source <C>v</C> and range <C>u</C>.  In other words, a symmetric
     digraph has a symmetric adjacency matrix <Ref Attr="AdjacencyMatrix"/>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
     <Example><![CDATA[
 gap> gr1 := Digraph([[2], [1, 3], [2, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
@@ -893,6 +1069,9 @@ false
     <C>u</C> and range <C>v</C>, and an edge with source <C>v</C> and range
     <C>u</C>, then the vertices <C>u</C> and <C>v</C> are equal.
     <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
 gap> gr1 := Digraph([[2], [1, 3], [2, 3]]);
@@ -933,16 +1112,20 @@ gap> DigraphEdges(gr2);
     [<Ref Attr="DigraphTopologicalSort"/>], then methods with
     complexity <M>O(m + n + m \cdot n)</M> will be used when appropriate.
     <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
+    <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[1, 2], [3], [3]]);
+gap> D := Digraph([[1, 2], [3], [3]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> IsTransitiveDigraph(gr);
+gap> IsTransitiveDigraph(D);
 false
 gap> gr2 := Digraph([[1, 2, 3], [3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> IsTransitiveDigraph(gr2);
 true
-gap> gr2 = DigraphTransitiveClosure(gr);
+gap> gr2 = DigraphTransitiveClosure(D);
 true
 gap> gr3 := Digraph([[1, 2, 2, 3], [3, 3], [3]]);
 <immutable multidigraph with 3 vertices, 7 edges>
@@ -960,13 +1143,13 @@ true
   <Prop Name="IsLatticeDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    
     <C>IsMeetSemilatticeDigraph</C> returns <K>true</K> if the digraph
     <A>digraph</A> is a meet semilattice; <C>IsJoinSemilatticeDigraph</C>
     returns <K>true</K> if the digraph <A>digraph</A> is a join semilattice;
     and  <C>IsLatticeDigraph</C> returns <K>true</K> if the digraph
     <A>digraph</A> is both a meet and a join semilattice.
     <P/>
+
     For a partial order digraph <Ref Prop="IsPartialOrderDigraph"/> the
     corresponding partial order is the relation <M>\leq</M>, defined by
     <M>x \leq y</M> if and only if <C>[x, y]</C> is an edge.
@@ -975,40 +1158,44 @@ true
     aforementioned relation. A <E>join semilattice</E> is a partial order where
     every pair of vertices has a least upper bound (join) with respect to
     the relation.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 3], [2, 3], [3]]);
+gap> D := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> IsMeetSemilatticeDigraph(gr);
+gap> IsMeetSemilatticeDigraph(D);
 false
-gap> IsJoinSemilatticeDigraph(gr);
+gap> IsJoinSemilatticeDigraph(D);
 true
-gap> IsLatticeDigraph(gr);
+gap> IsLatticeDigraph(D);
 false
-gap> gr := Digraph([[1], [2], [1 .. 3]]);
+gap> D := Digraph([[1], [2], [1 .. 3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> IsJoinSemilatticeDigraph(gr);
+gap> IsJoinSemilatticeDigraph(D);
 false
-gap> IsMeetSemilatticeDigraph(gr);
+gap> IsMeetSemilatticeDigraph(D);
 true
-gap> IsLatticeDigraph(gr);
+gap> IsLatticeDigraph(D);
 false
-gap> gr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);
+gap> D := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);
 <immutable digraph with 4 vertices, 9 edges>
-gap> IsMeetSemilatticeDigraph(gr);
+gap> IsMeetSemilatticeDigraph(D);
 true
-gap> IsJoinSemilatticeDigraph(gr);
+gap> IsJoinSemilatticeDigraph(D);
 true
-gap> IsLatticeDigraph(gr);
+gap> IsLatticeDigraph(D);
 true
-gap> gr := Digraph([[1, 1, 1], [1, 1, 2, 2],
+gap> D := Digraph([[1, 1, 1], [1, 1, 2, 2],
 >                   [1, 3, 3], [1, 2, 3, 3, 4]]);
 <immutable multidigraph with 4 vertices, 15 edges>
-gap> IsMeetSemilatticeDigraph(gr);
+gap> IsMeetSemilatticeDigraph(D);
 true
-gap> IsJoinSemilatticeDigraph(gr);
+gap> IsJoinSemilatticeDigraph(D);
 true
-gap> IsLatticeDigraph(gr);
+gap> IsLatticeDigraph(D);
 true
 ]]></Example>
   </Description>
@@ -1026,23 +1213,27 @@ true
     A preorder digraph (or quasiorder digraph) <A>digraph</A> corresponds to
     the preorder relation <M>\leq</M> defined by <M>x \leq y</M> if and only
     if <C>[x, y]</C> is an edge of <A>digraph</A>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
 <Example><![CDATA[
-gap> gr := Digraph([[1], [2, 3], [2, 3]]);
+gap> D := Digraph([[1], [2, 3], [2, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> IsPreorderDigraph(gr);
+gap> IsPreorderDigraph(D);
 true
-gap> gr := Digraph([[1 .. 4], [1 .. 4], [1 .. 4], [1 .. 4]]);
+gap> D := Digraph([[1 .. 4], [1 .. 4], [1 .. 4], [1 .. 4]]);
 <immutable digraph with 4 vertices, 16 edges>
-gap> IsPreorderDigraph(gr);
+gap> IsPreorderDigraph(D);
 true
-gap> gr := Digraph([[2], [3], [4], [5], [1]]);
+gap> D := Digraph([[2], [3], [4], [5], [1]]);
 <immutable digraph with 5 vertices, 5 edges>
-gap> IsPreorderDigraph(gr);
+gap> IsPreorderDigraph(D);
 false
-gap> gr := Digraph([[1], [1, 2], [2, 3]]);
+gap> D := Digraph([[1], [1, 2], [2, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> IsQuasiorderDigraph(gr);
+gap> IsQuasiorderDigraph(D);
 false
 ]]></Example>
   </Description>
@@ -1060,19 +1251,23 @@ false
     A partial order <A>digraph</A> corresponds
     to the partial order relation <M>\leq</M> defined by <M>x \leq y</M> if and
     only if <C>[x, y]</C> is an edge of <A>digraph</A>.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
 <Example><![CDATA[
-gap> gr := Digraph([[1, 3], [2, 3], [3]]);
+gap> D := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> IsPartialOrderDigraph(gr);
+gap> IsPartialOrderDigraph(D);
 true
-gap> gr := CycleDigraph(5);
+gap> D := CycleDigraph(5);
 <immutable cycle digraph with 5 vertices>
-gap> IsPartialOrderDigraph(gr);
+gap> IsPartialOrderDigraph(D);
 false
-gap> gr := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);
+gap> D := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);
 <immutable multidigraph with 4 vertices, 10 edges>
-gap> IsPartialOrderDigraph(gr);
+gap> IsPartialOrderDigraph(D);
 true
 ]]></Example>
   </Description>
@@ -1088,11 +1283,15 @@ true
     all of <Ref Prop="IsReflexiveDigraph"/>,
     <Ref Prop="IsSymmetricDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
     A partial order <A>digraph</A> corresponds to an equivalence relation.
+    <P/>
+      
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this property is recomputed every time it is called. 
 
 <Example><![CDATA[
-gap> gr := Digraph([[1, 3], [2], [1, 3]]);
+gap> D := Digraph([[1, 3], [2], [1, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> IsEquivalenceDigraph(gr);
+gap> IsEquivalenceDigraph(D);
 true
 ]]></Example>
   </Description>
