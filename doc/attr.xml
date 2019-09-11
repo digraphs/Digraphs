@@ -644,6 +644,14 @@ rec( comps := [ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8, 9 ] ],
   id := [ 1, 1, 1, 1, 2, 2, 2, 2, 2 ] )
 gap> DigraphNrStronglyConnectedComponents(D);
 2
+gap> D := CycleDigraph(IsMutableDigraph, 2);
+<mutable digraph with 2 vertices, 2 edges>
+gap> G := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> DigraphDisjointUnion(D, G);
+<mutable digraph with 5 vertices, 5 edges>
+gap> DigraphStronglyConnectedComponents(D);
+rec( comps := [ [ 1, 2 ], [ 3, 4, 5 ] ], id := [ 1, 1, 2, 2, 2 ] )
 ]]></Example>
   </Description>
 </ManSection>
@@ -696,6 +704,14 @@ gap> gr := EmptyDigraph(0);
 <immutable empty digraph with 0 vertices>
 gap> DigraphConnectedComponents(gr);
 rec( comps := [  ], id := [  ] )
+gap> D := CycleDigraph(IsMutableDigraph, 2);
+<mutable digraph with 2 vertices, 2 edges>
+gap> G := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> DigraphDisjointUnion(D, G);
+<mutable digraph with 5 vertices, 5 edges>
+gap> DigraphConnectedComponents(D);
+rec( comps := [ [ 1, 2 ], [ 3, 4, 5 ] ], id := [ 1, 1, 2, 2, 2 ] )
 ]]></Example>
   </Description>
 </ManSection>
@@ -722,11 +738,15 @@ rec( comps := [  ], id := [  ] )
     <M>m</M> is the number of edges (counting multiple edges as one) and
     <M>n</M> is the number of vertices in the digraph. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([
+gap> D := Digraph([
 > [2, 3], [], [4, 6], [5], [], [7, 8, 9], [], [], []]);
 <immutable digraph with 9 vertices, 8 edges>
-gap> DigraphTopologicalSort(gr);
+gap> DigraphTopologicalSort(D);
 [ 2, 5, 4, 7, 8, 9, 6, 3, 1 ]
+gap> D := Digraph(IsMutable, [[2, 3], [3], [4], []]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphTopologicalSort(D);
+[ 4, 3, 2, 1 ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -749,16 +769,21 @@ gap> DigraphTopologicalSort(gr);
     If <A>digraph</A> is not symmetric or has multiple edges then this
     attribute returns <K>fail</K>.
     <Example><![CDATA[
-gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
-gap> DigraphDegeneracy(gr);
+gap> D := DigraphSymmetricClosure(ChainDigraph(5));;
+gap> DigraphDegeneracy(D);
 1
-gap> gr := CompleteDigraph(5);;
-gap> DigraphDegeneracy(gr);
+gap> D := CompleteDigraph(5);;
+gap> DigraphDegeneracy(D);
 4
-gap> gr := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);
+gap> D := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);
 <immutable digraph with 6 vertices, 10 edges>
-gap> DigraphDegeneracy(gr);
-1]]></Example>
+gap> DigraphDegeneracy(D);
+1
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 10, 3);
+<mutable digraph with 20 vertices, 60 edges>
+gap> DigraphDegeneracy(D);
+3
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -782,16 +807,21 @@ gap> DigraphDegeneracy(gr);
     If <C>DigraphDegeneracy(</C><A>digraph</A><C>)</C> returns <K>fail</K>,
     then this attribute returns <K>fail</K>.
     <Example><![CDATA[
-gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
-gap> DigraphDegeneracyOrdering(gr);
+gap> D := DigraphSymmetricClosure(ChainDigraph(5));;
+gap> DigraphDegeneracyOrdering(D);
 [ 5, 4, 3, 2, 1 ]
-gap> gr := CompleteDigraph(5);;
-gap> DigraphDegeneracyOrdering(gr);
+gap> D := CompleteDigraph(5);;
+gap> DigraphDegeneracyOrdering(D);
 [ 5, 4, 3, 2, 1 ]
-gap> gr := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);
+gap> D := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);
 <immutable digraph with 6 vertices, 10 edges>
-gap> DigraphDegeneracyOrdering(gr);
-[ 1, 6, 5, 2, 4, 3 ]]]></Example>
+gap> DigraphDegeneracyOrdering(D);
+[ 1, 6, 5, 2, 4, 3 ]
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 3, 1);
+<mutable digraph with 6 vertices, 18 edges>
+gap> DigraphDegeneracyOrdering(D);
+[ 6, 5, 4, 1, 3, 2 ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -817,14 +847,18 @@ gap> DigraphDegeneracyOrdering(gr);
     algorithm, and has complexity <M>O(n^3)</M>.
 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 2], [3], [1, 2], [4]]);
+gap> D := Digraph([[1, 2], [3], [1, 2], [4]]);
 <immutable digraph with 4 vertices, 6 edges>
-gap> mat := DigraphShortestDistances(gr);;
+gap> mat := DigraphShortestDistances(D);;
 gap> PrintArray(mat);
 [ [     0,     1,     2,  fail ],
   [     2,     0,     1,  fail ],
   [     1,     1,     0,  fail ],
   [  fail,  fail,  fail,     0 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphShortestDistances(D);
+[ [ 0, 1, 2 ], [ 2, 0, 1 ], [ 1, 2, 0 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -846,16 +880,20 @@ gap> PrintArray(mat);
 
     See <Ref Attr="DigraphShortestDistances"/>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[2], [3], [4, 5], [5], [1, 2, 3, 4, 5]]);
+gap> D := Digraph([[2], [3], [4, 5], [5], [1, 2, 3, 4, 5]]);
 <immutable digraph with 5 vertices, 10 edges>
-gap> DigraphDiameter(gr);
+gap> DigraphDiameter(D);
 3
-gap> gr := ChainDigraph(2);
+gap> D := ChainDigraph(2);
 <immutable chain digraph with 2 vertices>
-gap> DigraphDiameter(gr);
+gap> DigraphDiameter(D);
 fail
-gap> IsStronglyConnectedDigraph(gr);
+gap> IsStronglyConnectedDigraph(D);
 false
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 6, 2);
+<mutable digraph with 12 vertices, 36 edges>
+gap> DigraphDiameter(D);
+4
 ]]></Example>
   </Description>
 </ManSection>
@@ -886,18 +924,22 @@ false
 
     For symmetric digraphs, see also <Ref Attr="DigraphUndirectedGirth"/>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[1], [1]]);
+gap> D := Digraph([[1], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
-gap> DigraphGirth(gr);
+gap> DigraphGirth(D);
 1
-gap> gr := Digraph([[2, 3], [3], [4], []]);
+gap> D := Digraph([[2, 3], [3], [4], []]);
 <immutable digraph with 4 vertices, 4 edges>
-gap> DigraphGirth(gr);
+gap> DigraphGirth(D);
 infinity
-gap> gr := Digraph([[2, 3], [3], [4], [1]]);
+gap> D := Digraph([[2, 3], [3], [4], [1]]);
 <immutable digraph with 4 vertices, 5 edges>
-gap> DigraphGirth(gr);
+gap> DigraphGirth(D);
 3
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 6, 2);
+<mutable digraph with 12 vertices, 36 edges>
+gap> DigraphGirth(D);
+2
 ]]></Example>
   </Description>
 </ManSection>
@@ -923,18 +965,24 @@ gap> DigraphGirth(gr);
 
     See also <Ref Attr="DigraphGirth"/>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[2], [3, 1], [1]]);
+gap> D := Digraph([[2], [3, 1], [1]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> DigraphOddGirth(gr);
+gap> DigraphOddGirth(D);
 3
-gap> gr := CycleDigraph(4);
+gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>
-gap> DigraphOddGirth(gr);
+gap> DigraphOddGirth(D);
 infinity
-gap> gr := Digraph([[2], [3], [], [3], [4]]);
+gap> D := Digraph([[2], [3], [], [3], [4]]);
 <immutable digraph with 5 vertices, 4 edges>
-gap> DigraphOddGirth(gr);
+gap> DigraphOddGirth(D);
 infinity
+gap> D := CycleDigraph(IsMutableDigraph, 4);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphDisjointUnion(D, CycleDigraph(5));
+<mutable digraph with 9 vertices, 9 edges>
+gap> DigraphOddGirth(D);
+5
 ]]></Example>
   </Description>
 </ManSection>
@@ -957,18 +1005,22 @@ infinity
     If <A>digraph</A> has no cycles, then this function will return
     <K>infinity</K>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[2, 4], [1, 3], [2, 4], [1, 3]]);
+gap> D := Digraph([[2, 4], [1, 3], [2, 4], [1, 3]]);
 <immutable digraph with 4 vertices, 8 edges>
-gap> DigraphUndirectedGirth(gr);
+gap> DigraphUndirectedGirth(D);
 4
-gap> gr := Digraph([[2], [1, 3], [2]]);
+gap> D := Digraph([[2], [1, 3], [2]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> DigraphUndirectedGirth(gr);
+gap> DigraphUndirectedGirth(D);
 infinity
-gap> gr := Digraph([[1], [], [4], [3]]);
+gap> D := Digraph([[1], [], [4], [3]]);
 <immutable digraph with 4 vertices, 3 edges>
-gap> DigraphUndirectedGirth(gr);
+gap> DigraphUndirectedGirth(D);
 1
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 9, 2);
+<mutable digraph with 18 vertices, 54 edges>
+gap> DigraphUndirectedGirth(D);
+5
 ]]></Example>
   </Description>
 </ManSection>
@@ -1000,13 +1052,18 @@ gap> DigraphUndirectedGirth(gr);
 <Example><![CDATA[
 gap> ArticulationPoints(CycleDigraph(5));
 [  ]
-gap> digraph := Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]);;
-gap> ArticulationPoints(digraph);
+gap> D := Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]);;
+gap> ArticulationPoints(D);
 [ 2, 1 ]
 gap> ArticulationPoints(ChainDigraph(5));
 [ 4, 3, 2 ]
 gap> ArticulationPoints(NullDigraph(5));
-[  ]]]></Example>
+[  ]
+gap> D := ChainDigraph(IsMutable, 4);
+<mutable digraph with 4 vertices, 3 edges>
+gap> ArticulationPoints(D);
+[ 3, 2 ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1041,21 +1098,26 @@ gap> ArticulationPoints(NullDigraph(5));
     list to represent the circuit.  <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);
+gap> D := Digraph([[], [3], [2, 4], [5, 4], [4]]);
 <immutable digraph with 5 vertices, 6 edges>
-gap> DigraphAllSimpleCircuits(gr);
+gap> DigraphAllSimpleCircuits(D);
 [ [ 4 ], [ 4, 5 ], [ 2, 3 ] ]
-gap> gr := ChainDigraph(10);;
-gap> DigraphAllSimpleCircuits(gr);
+gap> D := ChainDigraph(10);;
+gap> DigraphAllSimpleCircuits(D);
 [  ]
-gap> gr := Digraph([[3], [1], [1]]);
+gap> D := Digraph([[3], [1], [1]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> DigraphAllSimpleCircuits(gr);
+gap> DigraphAllSimpleCircuits(D);
 [ [ 1, 3 ] ]
-gap> gr := Digraph([[1, 1]]);
+gap> D := Digraph([[1, 1]]);
 <immutable multidigraph with 1 vertex, 2 edges>
-gap> DigraphAllSimpleCircuits(gr);
-[ [ 1 ] ]]]></Example>
+gap> DigraphAllSimpleCircuits(D);
+[ [ 1 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphAllSimpleCircuits(D);
+[ [ 1, 2, 3 ] ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1081,15 +1143,20 @@ gap> DigraphAllSimpleCircuits(gr);
     length, then this attribute returns one of them.<P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);;
-gap> DigraphLongestSimpleCircuit(gr);
+gap> D := Digraph([[], [3], [2, 4], [5, 4], [4]]);;
+gap> DigraphLongestSimpleCircuit(D);
 [ 4, 5 ]
-gap> gr := ChainDigraph(10);;
-gap> DigraphLongestSimpleCircuit(gr);
+gap> D := ChainDigraph(10);;
+gap> DigraphLongestSimpleCircuit(D);
 fail
-gap> gr := Digraph([[3], [1], [1, 4], [1, 1]]);;
-gap> DigraphLongestSimpleCircuit(gr);
-[ 1, 3, 4 ]]]></Example>
+gap> D := Digraph([[3], [1], [1, 4], [1, 1]]);;
+gap> DigraphLongestSimpleCircuit(D);
+[ 1, 3, 4 ]
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 4, 1);
+<mutable digraph with 8 vertices, 24 edges>
+gap> DigraphLongestSimpleCircuit(D);
+[ 1, 2, 3, 4, 8, 7, 6, 5 ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1112,22 +1179,26 @@ gap> DigraphLongestSimpleCircuit(gr);
     <Ref Oper="DigraphMonomorphism"/>.
 
     <Example><![CDATA[
-gap> g := Digraph([[]]);
+gap> D := Digraph([[]]);
 <immutable empty digraph with 1 vertex>
-gap> HamiltonianPath(g);
+gap> HamiltonianPath(D);
 [ 1 ]
-gap> g := Digraph([[2], [1]]);
+gap> D := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianPath(D);
 [ 1, 2 ]
-gap> g := Digraph([[3], [], [2]]);
+gap> D := Digraph([[3], [], [2]]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianPath(D);
 fail
-gap> g := Digraph([[2], [3], [1]]);
+gap> D := Digraph([[2], [3], [1]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianPath(D);
 [ 1, 2, 3 ]
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 5, 2);
+<mutable digraph with 10 vertices, 30 edges>
+gap> HamiltonianPath(D);
+fail
 ]]></Example>
   </Description>
 </ManSection>
@@ -1149,20 +1220,24 @@ gap> HamiltonianPath(g);
     A digraph with a period of <M>1</M> is said to be <E>aperiodic</E>.  See
     <Ref Prop="IsAperiodicDigraph"/>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);
+gap> D := Digraph([[6], [1], [2], [3], [4, 4], [5]]);
 <immutable multidigraph with 6 vertices, 7 edges>
-gap> DigraphPeriod(gr);
+gap> DigraphPeriod(D);
 6
-gap> gr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
+gap> D := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
 <immutable digraph with 5 vertices, 7 edges>
-gap> DigraphPeriod(gr);
+gap> DigraphPeriod(D);
 1
-gap> gr := ChainDigraph(2);
+gap> D := ChainDigraph(2);
 <immutable chain digraph with 2 vertices>
-gap> DigraphPeriod(gr);
+gap> DigraphPeriod(D);
 0
-gap> IsAcyclicDigraph(gr);
+gap> IsAcyclicDigraph(D);
 true
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 5, 2);
+<mutable digraph with 10 vertices, 30 edges>
+gap> DigraphPeriod(D);
+1
 ]]></Example>
   </Description>
 </ManSection>
