@@ -393,7 +393,14 @@ gap> PrintArray(BooleanAdjacencyMatrix(gr));
   [  false,  false,  false,   true ],
   [   true,  false,  false,  false ] ]
 gap> BooleanAdjacencyMatrix(EmptyDigraph(0));
-[  ]]]></Example>
+[  ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> PrintArray(BooleanAdjacencyMatrix(D));
+[ [  false,   true,  false ],
+  [  false,  false,   true ],
+  [   true,  false,  false ] ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -411,15 +418,15 @@ gap> BooleanAdjacencyMatrix(EmptyDigraph(0));
 
     See <Ref Attr="OutDegrees"/> for more information.
     <Example><![CDATA[
-gap> gr := Digraph([[1, 2, 3], [4], [1, 3, 4], []]);
+gap> D := Digraph([[1, 2, 3], [4], [1, 3, 4], []]);
 <immutable digraph with 4 vertices, 7 edges>
-gap> PrintArray(DegreeMatrix(gr));
+gap> PrintArray(DegreeMatrix(D));
 [ [  3,  0,  0,  0 ],
   [  0,  1,  0,  0 ],
   [  0,  0,  3,  0 ],
   [  0,  0,  0,  0 ] ]
-gap> gr := CycleDigraph(5);;
-gap> PrintArray(DegreeMatrix(gr));
+gap> D := CycleDigraph(5);;
+gap> PrintArray(DegreeMatrix(D));
 [ [  1,  0,  0,  0,  0 ],
   [  0,  1,  0,  0,  0 ],
   [  0,  0,  1,  0,  0 ],
@@ -427,6 +434,12 @@ gap> PrintArray(DegreeMatrix(gr));
   [  0,  0,  0,  0,  1 ] ]
 gap> DegreeMatrix(EmptyDigraph(0));
 [  ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> Display(DegreeMatrix(D));
+[ [  1,  0,  0 ],
+  [  0,  1,  0 ],
+  [  0,  0,  1 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -454,6 +467,12 @@ gap> PrintArray(LaplacianMatrix(gr));
   [   0,   0,   0,   0 ] ]
 gap> LaplacianMatrix(EmptyDigraph(0));
 [  ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> Display(LaplacianMatrix(D));
+[ [   1,  -1,   0 ],
+  [   0,   1,  -1 ],
+  [  -1,   0,   1 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -468,7 +487,7 @@ gap> LaplacianMatrix(EmptyDigraph(0));
   <Description>
 
     Given a digraph <A>digraph</A> with <M>n</M> vertices, the function
-    <C>OutDegrees</C> returns a list <C>out</C> of length <M>n</M>, such that
+    <C>OutDegrees</C> returns an immutable list <C>out</C> of length <M>n</M>, such that
     for a vertex <C>i</C> in <A>digraph</A>, the value of <C>out[i]</C> is the
     out-degree of vertex <C>i</C>.
     See <Ref Oper="OutDegreeOfVertex"/>. <P/>
@@ -480,14 +499,18 @@ gap> LaplacianMatrix(EmptyDigraph(0));
     increasing order with duplicate entries removed. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 3, 2, 2], [], [2, 1], []]);
+gap> D := Digraph([[1, 3, 2, 2], [], [2, 1], []]);
 <immutable multidigraph with 4 vertices, 6 edges>
-gap> OutDegrees(gr);
+gap> OutDegrees(D);
 [ 4, 0, 2, 0 ]
-gap> OutDegreeSequence(gr);
+gap> OutDegreeSequence(D);
 [ 4, 2, 0, 0 ]
-gap> OutDegreeSet(gr);
+gap> OutDegreeSet(D);
 [ 0, 2, 4 ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> OutDegrees(D);
+[ 1, 1, 1 ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -502,7 +525,7 @@ gap> OutDegreeSet(gr);
   <Description>
 
     Given a digraph <A>digraph</A> with <M>n</M> vertices, the function
-    <C>InDegrees</C> returns a list <C>inn</C> of length <M>n</M>, such that
+    <C>InDegrees</C> returns an immutable list <C>inn</C> of length <M>n</M>, such that
     for a vertex <C>i</C> in <A>digraph</A>, the value of <C>inn[i]</C> is
     the in-degree of vertex <C>i</C>.
     See <Ref Oper="InDegreeOfVertex"/>. <P/>
@@ -514,14 +537,18 @@ gap> OutDegreeSet(gr);
     increasing order with duplicate entries removed. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 3, 2, 2, 4], [], [2, 1, 4], []]);
+gap> D := Digraph([[1, 3, 2, 2, 4], [], [2, 1, 4], []]);
 <immutable multidigraph with 4 vertices, 8 edges>
-gap> InDegrees(gr);
+gap> InDegrees(D);
 [ 2, 3, 1, 2 ]
-gap> InDegreeSequence(gr);
+gap> InDegreeSequence(D);
 [ 3, 2, 2, 1 ]
-gap> InDegreeSet(gr);
+gap> InDegreeSet(D);
 [ 1, 2, 3 ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> InDegrees(D);
+[ 1, 1, 1 ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -532,7 +559,7 @@ gap> InDegreeSet(gr);
   <Attr Name="DigraphSources" Arg="digraph"/>
   <Returns>A list of vertices.</Returns>
   <Description>
-    This function returns a list of the sources of the digraph
+    This function returns an immutable list of the sources of the digraph
     <A>digraph</A>.
     A source of a digraph is a vertex with in-degree zero.
     See <Ref Oper="InDegreeOfVertex"/>.
@@ -541,6 +568,10 @@ gap> gr := Digraph([[3, 5, 2, 2], [3], [], [5, 2, 5, 3], []]);
 <immutable multidigraph with 5 vertices, 9 edges>
 gap> DigraphSources(gr);
 [ 1, 4 ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphSources(D);
+[  ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -560,6 +591,10 @@ gap> gr := Digraph([[3, 5, 2, 2], [3], [], [5, 2, 5, 3], []]);
 <immutable multidigraph with 5 vertices, 9 edges>
 gap> DigraphSinks(gr);
 [ 3, 5 ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphSinks(D);
+[  ]
 ]]></Example>
   </Description>
 </ManSection>
