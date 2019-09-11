@@ -13,13 +13,13 @@ DeclareCategory("IsDigraph", IsObject);
 DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
 DeclareCategory("IsCayleyDigraph", IsDigraph);
 DeclareCategory("IsImmutableDigraph", IsDigraph);
-DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);  # TODO document
+DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);
 
 # Family
 BindGlobal("DigraphFamily", NewFamily("DigraphFamily", IsDigraph));
 
 # Representations
-DeclareRepresentation("IsDigraphByOutNeighboursRep",  # TODO document
+DeclareRepresentation("IsDigraphByOutNeighboursRep",
                       IsDigraph and IsComponentObjectRep,
                       ["OutNeighbours"]);
 
@@ -44,7 +44,6 @@ DeclareOperation("DigraphMutableCopy", [IsDigraph]);
 DeclareOperation("DigraphImmutableCopy", [IsDigraph]);
 DeclareOperation("DigraphCopySameMutability", [IsDigraph]);
 DeclareSynonym("DigraphCopy", DigraphCopySameMutability);
-# TODO document the next four things
 DeclareOperation("DigraphImmutableCopyIfMutable", [IsDigraph]);
 DeclareOperation("DigraphImmutableCopyIfImmutable", [IsDigraph]);
 DeclareOperation("DigraphMutableCopyIfImmutable", [IsDigraph]);

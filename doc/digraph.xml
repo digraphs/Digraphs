@@ -43,6 +43,26 @@
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsImmutableDigraph">
+<ManSection>
+  <Filt Name="IsImmutableDigraph" Type='Category'/>
+  <Description>
+    <C>IsImmutableDigraph</C> is a subcategory of <Ref Filt="IsDigraph" />.
+    Digraphs that lie in <C>IsImmutableDigraph</C> are immutable and
+    attribute-storing. In particular, they lie in
+    <Ref Filt="IsAttributeStoringRep" BookName="ref" />. <P/>
+
+    A mutable digraph may be converted to an immutable
+    digraph that lies in the category <C>IsImmutableDigraph</C> by calling
+    <Ref Func="MakeImmutable" BookName="ref"/> on the digraph.<P/>
+
+    The operation <Ref Oper="DigraphMutableCopy"/> can be used
+    to construct a mutable copy of an immutable digraph. It is however not
+    possible to convert an immutable digraph into a mutable digraph in-place.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsMutableDigraph">
 <ManSection>
   <Filt Name="IsMutableDigraph" Type='Category'/>
@@ -60,26 +80,6 @@
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsImmutableDigraph">
-<ManSection>
-  <Filt Name="IsImmutableDigraph" Type='Category'/>
-  <Description>
-    <C>IsImmutableDigraph</C> is a subcategory of <Ref Filt="IsDigraph" />.
-    Digraphs that lie in <C>IsImmutableDigraph</C> are immutable and
-    attribute-storing. In particular, they lie in
-    <Ref Filt="IsAttributeStoringRep" BookName="ref" />. <P/>
-
-    A mutable digraph may be converted to an immutable
-    digraph that lies in the category <C>IsImmutableDigraph</C> by calling
-    <Ref Func="MakeImmutable" BookName="ref"/> on the digraph.
-    <!-- TODO uncomment once DigraphMutableCopy is documented
-    The operation <Ref Oper="DigraphMutableCopy"/> may be used, in particular,
-    to construct a mutable copy of an immutable digraph.
-    -->
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
 <#GAPDoc Label="DigraphByOutNeighboursType">
 <ManSection>
   <Var Name="DigraphByOutNeighboursType"/>
@@ -91,14 +91,36 @@
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsDigraphByOutNeighboursRep">
+<ManSection>
+  <Filt Name="IsDigraphByOutNeighboursRep" Type="Representation"/>
+  <Description>
+    This is the representation for digraphs that are defined by their list of
+    out-neighbours. Currently, every digraph in the package belongs to this
+    representation, but more representations might be added in the future. 
+    <P/>
+
+    See also <Ref Attr="OutNeighbours"/>.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="Digraph">
 <ManSection>
-  <Oper Name = "Digraph" Arg = "obj[, source, range]"/>
-  <Oper Name = "Digraph" Arg = "list, func" Label = "for a list and function"/>
-  <Oper Name = "Digraph" Arg = "G, list, act, adj"
+  <Oper Name = "Digraph" Arg = "[filt,] obj[, source, range]"/>
+  <Oper Name = "Digraph" Arg = "[filt,] list, func" 
+    Label = "for a list and function"/>
+  <Oper Name = "Digraph" Arg = "[filt,] G, list, act, adj"
     Label = "for a group, list, function, and function"/>
   <Returns>A digraph.</Returns>
   <Description>
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+    Filt="IsImmutableDigraph"/> is used by default.
     <List>
       <Mark>for a list (i.e. an adjacency list)</Mark>
       <Item>
@@ -246,17 +268,25 @@ gap> digraph := Digraph(group, List(f), act, adj);
 
 <#GAPDoc Label="DigraphByAdjacencyMatrix">
 <ManSection>
-  <Oper Name="DigraphByAdjacencyMatrix" Arg="adj"/>
+  <Oper Name="DigraphByAdjacencyMatrix" Arg="[filt, ]list"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>adj</A> is the adjacency matrix of a digraph in the sense of
-    <Ref Attr="AdjacencyMatrix"/>, then this operation returns the digraph
-    which is defined by <A>adj</A>. <P/>
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+    Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-    Alternatively, if <A>adj</A> is a square boolean matrix, then this
-    operation returns the digraph with <C>Length(</C><A>adj</A><C>)</C>
+    If <A>list</A> is the adjacency matrix of a digraph in the sense of
+    <Ref Attr="AdjacencyMatrix"/>, then this operation returns the digraph
+    which is defined by <A>list</A>. <P/>
+
+    Alternatively, if <A>list</A> is a square boolean matrix, then this
+    operation returns the digraph with <C>Length(</C><A>list</A><C>)</C>
     vertices which has the edge <C>[i,j]</C> if and only if
-    <A>adj</A><C>[i][j]</C> is <K>true</K>. <P/>
+    <A>list</A><C>[i][j]</C> is <K>true</K>. <P/>
 
     <Example><![CDATA[
 gap> DigraphByAdjacencyMatrix([
@@ -266,13 +296,18 @@ gap> DigraphByAdjacencyMatrix([
 > [0, 0, 1, 0, 1],
 > [2, 0, 0, 0, 0]]);
 <immutable multidigraph with 5 vertices, 18 edges>
-gap> gr := DigraphByAdjacencyMatrix([
+gap> D := DigraphByAdjacencyMatrix([
 > [true, false, true],
 > [false, false, true],
 > [false, true, false]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> OutNeighbours(gr);
+gap> OutNeighbours(D);
 [ [ 1, 3 ], [ 3 ], [ 2 ] ]
+gap> D := DigraphByAdjacencyMatrix(IsMutableDigraph, 
+> [[true, false, true],
+>  [false, false, true],
+>  [false, true, false]]);
+<mutable digraph with 3 vertices, 4 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -280,17 +315,25 @@ gap> OutNeighbours(gr);
 
 <#GAPDoc Label="DigraphByEdges">
 <ManSection>
-  <Oper Name="DigraphByEdges" Arg="edges[, n]"/>
+  <Oper Name="DigraphByEdges" Arg="[filt, ]list[, n]"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>edges</A> is list of pairs of positive integers, then this function
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+    Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+    If <A>list</A> is list of pairs of positive integers, then this function
     returns the digraph with the minimum number of vertices <C>m</C> such that
-    its edges equal <A>edges</A>.<P/>
+    its list equal <A>list</A>.<P/>
 
     If the optional second argument <A>n</A> is a positive integer with
     <C><A>n</A> >= m</C> (with <C>m</C> defined as above),
-    then this function returns the digraph with <A>n</A> vertices and edges
-    <A>edges</A>. <P/>
+    then this function returns the digraph with <A>n</A> vertices and list
+    <A>list</A>. <P/>
 
     See <Ref Attr="DigraphEdges"/>.
 
@@ -303,6 +346,10 @@ gap> DigraphByEdges(
 > [[1, 3], [2, 1], [2, 3], [2, 5], [3, 6],
 >  [4, 6], [5, 2], [5, 4], [5, 6], [6, 6]], 12);
 <immutable digraph with 12 vertices, 10 edges>
+gap> DigraphByEdges(IsMutableDigraph, 
+> [[1, 3], [2, 1], [2, 3], [2, 5], [3, 6],
+>  [4, 6], [5, 2], [5, 4], [5, 6], [6, 6]], 12);
+<mutable digraph with 12 vertices, 10 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -310,40 +357,59 @@ gap> DigraphByEdges(
 
 <#GAPDoc Label="DigraphByInNeighbours">
 <ManSection>
-  <Oper Name="DigraphByInNeighbours" Arg="in"/>
-  <Oper Name="DigraphByInNeighbors" Arg="in"/>
+  <Oper Name="DigraphByInNeighbours" Arg="[filt, ]list"/>
+  <Oper Name="DigraphByInNeighbors" Arg="[filt, ]list"/>
   <Returns>A digraph.</Returns>
   <Description>
+  If the optional first argument <A>filt</A> is present, then this should
+  specify the category or representation the digraph being created will
+  belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+  then the digraph being created will be mutable, if <A>filt</A> is <Ref
+  Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+  If the optional first argument <A>filt</A> is not present, then <Ref
+  Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-  If <A>in</A> is a list of lists of positive integers in the range
-  <C>[1 .. Length(<A>in</A>)]</C>, then this function returns the
-  digraph with vertices <M>E^0=</M><C>[1 .. Length(<A>in</A>)]</C>, and
-  edges corresponding to the entries of <A>in</A>. More precisely, there is an
-  edge with source vertex <C>i</C> and range vertex <C>j</C> if <C>i</C> is in
-  <C><A>in</A>[j]</C>. <P/>
+  If <A>list</A> is a list of lists of positive integers list the range
+  <C>[1 .. Length(<A>list</A>)]</C>, then this function returns the
+  digraph with vertices <M>E^0=</M><C>[1 .. Length(<A>list</A>)]</C>, and
+  edges corresponding to the entries of <A>list</A>. More precisely, there is an
+  edge with source vertex <C>i</C> and range vertex <C>j</C> if <C>i</C> is list
+  <C><A>list</A>[j]</C>. <P/>
 
-  If <C>i</C> occurs in <C><A>in</A>[j]</C> with multiplicity <C>k</C>,
+  If <C>i</C> occurs list <C><A>list</A>[j]</C> with multiplicity <C>k</C>,
   then there are <C>k</C> multiple edges from <C>i</C> to <C>j</C>. <P/>
 
   See <Ref Attr="InNeighbours"/>.
 
     <Example><![CDATA[
-gap> gr := DigraphByInNeighbours([
+gap> D := DigraphByInNeighbours([
 > [2, 5, 8, 10], [2, 3, 4, 5, 6, 8, 9, 10],
 > [1], [3, 5, 7, 8, 10], [2, 5, 7], [3, 6, 7, 9, 10], [1, 4],
 > [1, 5, 9], [1, 2, 7, 8], [3, 5]]);
 <immutable digraph with 10 vertices, 37 edges>
-gap> gr := DigraphByInNeighbours([[2, 3, 2], [1], [1, 2, 3]]);
-<immutable multidigraph with 3 vertices, 7 edges>]]></Example>
+gap> D := DigraphByInNeighbours([[2, 3, 2], [1], [1, 2, 3]]);
+<immutable multidigraph with 3 vertices, 7 edges>
+gap> D := DigraphByInNeighbours(IsMutableDigraph, 
+>                               [[2, 3, 2], [1], [1, 2, 3]]);
+<mutable multidigraph with 3 vertices, 7 edges>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
 <#GAPDoc Label="AsDigraph">
 <ManSection>
-  <Oper Name="AsDigraph" Arg="trans[, n]"/>
+  <Oper Name="AsDigraph" Arg="[filt, ]trans[, n]"/>
   <Returns>A digraph, or <K>fail</K>.</Returns>
   <Description>
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+    Filt="IsImmutableDigraph"/> is used by default.<P/>
+
     If <A>trans</A> is a transformation, and <A>n</A> is a non-negative integer
     such that the restriction of <A>trans</A> to <C>[1 .. <A>n</A>]</C> defines
     a transformation of <C>[1 .. <A>n</A>]</C>, then <C>AsDigraph</C>
@@ -374,7 +440,7 @@ fail
 gap> b := BinaryRelationOnPoints(
 > [[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
 Binary Relation on 5 points
-gap> gr := AsDigraph(b);
+gap> D := AsDigraph(b);
 <immutable digraph with 5 vertices, 11 edges>
 ]]></Example>
   </Description>
@@ -395,9 +461,9 @@ gap> gr := AsDigraph(b);
 
     <C>DigraphCopy</C> is a synonym for <C>DigraphCopySameMutability</C>.
 <Example><![CDATA[
-gap> gr := CycleDigraph(10);
+gap> D := CycleDigraph(10);
 <immutable cycle digraph with 10 vertices>
-gap> DigraphCopy(gr) = gr;
+gap> DigraphCopy(D) = D;
 true
 ]]></Example>
   </Description>
@@ -414,13 +480,54 @@ true
   <Description>
     Each of these operations returns either the original argument
     <A>digraph</A>, or a new copy of <A>digraph</A> of the appropriate
-      mutability, according to the mutability of <A>digraph</A>. <P/>
+    mutability, according to the mutability of <A>digraph</A>.
 <Example><![CDATA[
-gap> gr := CycleDigraph(10);
+gap> C := CycleDigraph(10);
 <immutable cycle digraph with 10 vertices>
-gap> DigraphCopy(gr) = gr;
+gap> D := DigraphImmutableCopyIfImmutable(C);
+<immutable digraph with 10 vertices, 10 edges>
+gap> IsIdenticalObj(C, D);
+false
+gap> C = D;
 true
-]]></Example>
+gap> D := DigraphImmutableCopyIfMutable(C);
+<immutable cycle digraph with 10 vertices>
+gap> IsIdenticalObj(C, D);
+true
+gap> C = D;
+true
+gap> D := DigraphMutableCopyIfMutable(C);
+<immutable cycle digraph with 10 vertices>
+gap> IsMutableDigraph(D);
+false
+gap> D := DigraphMutableCopyIfImmutable(C);
+<mutable digraph with 10 vertices, 10 edges>
+gap> IsMutableDigraph(D);
+true
+gap> C := CycleDigraph(IsMutableDigraph, 10);
+<mutable digraph with 10 vertices, 10 edges>
+gap> D := DigraphImmutableCopyIfImmutable(C);
+<mutable digraph with 10 vertices, 10 edges>
+gap> IsIdenticalObj(C, D);
+true
+gap> C = D;
+true
+gap> D := DigraphImmutableCopyIfMutable(C);
+<immutable digraph with 10 vertices, 10 edges>
+gap> IsIdenticalObj(C, D);
+false
+gap> C = D;
+true
+gap> D := DigraphMutableCopyIfMutable(C);
+<mutable digraph with 10 vertices, 10 edges>
+gap> IsMutableDigraph(D);
+true
+gap> D := DigraphMutableCopyIfImmutable(C);
+<mutable digraph with 10 vertices, 10 edges>
+gap> IsIdenticalObj(C, D);
+true
+gap> IsMutableDigraph(D);
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -437,9 +544,9 @@ true
     <C>[i,j]</C> is an edge in <A>digraph</A>.
     <P/>
 <Example><![CDATA[
-gap> gr := Digraph([[3, 2], [1, 2], [2], [3, 4]]);
+gap> D := Digraph([[3, 2], [1, 2], [2], [3, 4]]);
 <immutable digraph with 4 vertices, 7 edges>
-gap> AsBinaryRelation(gr);
+gap> AsBinaryRelation(D);
 Binary Relation on 4 points
 ]]></Example>
   </Description>
@@ -600,9 +707,17 @@ gap> List(D, x -> Size(x));
 
 <#GAPDoc Label="RandomDigraph">
 <ManSection>
-  <Oper Name="RandomDigraph" Arg="n[, p]"/>
+  <Oper Name="RandomDigraph" Arg="[filt, ]n[, p]"/>
   <Returns>A digraph.</Returns>
   <Description>
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
     If <A>n</A> is a positive integer, then this function returns a random
     digraph with <A>n</A> vertices and without multiple edges. The result
     may or may not have loops.<P/>
@@ -617,6 +732,8 @@ gap> RandomDigraph(1000);
 <immutable digraph with 1000 vertices, 364444 edges>
 gap> RandomDigraph(10000, 0.023);
 <immutable digraph with 10000 vertices, 2300438 edges>
+gap> RandomDigraph(IsMutableDigraph, 1000, 1 / 2);
+<mutable digraph with 1000 vertices, 499739 edges>
 ]]></Log>
   </Description>
 </ManSection>
@@ -624,15 +741,25 @@ gap> RandomDigraph(10000, 0.023);
 
 <#GAPDoc Label="RandomTournament">
 <ManSection>
-  <Oper Name="RandomTournament" Arg="n"/>
+  <Oper Name="RandomTournament" Arg="[filt, ]n"/>
   <Returns>A digraph.</Returns>
   <Description>
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
     If <A>n</A> is a non-negative integer, this function returns a random
     tournament with <A>n</A> vertices. See <Ref Prop="IsTournament"/>. <P/>
-    <Example><![CDATA[
+    <Log><![CDATA[
 gap> RandomTournament(10);
 <immutable tournament with 10 vertices>
-]]></Example>
+gap> RandomTournament(IsMutableDigraph, 10);
+<mutable digraph with 1000 vertices, 500601 edges>
+]]></Log>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -642,9 +769,23 @@ gap> RandomTournament(10);
   <Oper Name="RandomLattice" Arg="n"/>
   <Returns>A digraph.</Returns>
   <Description>
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
     If <A>n</A> is a positive integer, this function return a random lattice
     with <C>m</C> vertices, where it is guaranteed that <C>m</C> is between
     <A>n</A> and <C>2 * <A>n</A></C>. See <Ref Prop="IsLatticeDigraph"/>. <P/>
+    <Log><![CDATA[
+gap> RandomLattice(10);
+<immutable digraph with 10 vertices, 39 edges>
+gap> RandomLattice(IsMutableDigraph, 10);
+<mutable digraph with 12 vertices, 52 edges>
+]]></Log>
   </Description>
 </ManSection>
 <#/GAPDoc>
