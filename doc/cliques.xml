@@ -22,13 +22,16 @@
     digraph. Loops and multiple edges are ignored for the purpose of
     determining the clique number of a digraph. 
     <Example><![CDATA[
-gap> gr := CompleteDigraph(4);;
-gap> CliqueNumber(gr);
+gap> D := CompleteDigraph(4);;
+gap> CliqueNumber(D);
 4
-gap> gr := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);
+gap> D := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);
 <immutable multidigraph with 4 vertices, 11 edges>
-gap> CliqueNumber(gr);
-3]]></Example>
+gap> CliqueNumber(D);
+3
+gap> D := CompleteDigraph(IsMutableDigraph, 4);;
+gap> CliqueNumber(D);
+4]]></Example>
 </Description>
 </ManSection>
 <#/GAPDoc>
@@ -53,18 +56,21 @@ gap> CliqueNumber(gr);
     contained in another clique. A clique is permitted, but not required, to
     contain vertices at which there is a loop.
     <Example><![CDATA[
-gap> gr := CompleteDigraph(4);;
-gap> IsClique(gr, [1, 3, 2]);
+gap> D := CompleteDigraph(4);;
+gap> IsClique(D, [1, 3, 2]);
 true
-gap> IsMaximalClique(gr, [1, 3, 2]);
+gap> IsMaximalClique(D, [1, 3, 2]);
 false
-gap> IsMaximalClique(gr, DigraphVertices(gr));
+gap> IsMaximalClique(D, DigraphVertices(D));
 true
-gap> gr := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);
+gap> D := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);
 <immutable multidigraph with 4 vertices, 11 edges>
-gap> IsClique(gr, [2, 3, 4]);
+gap> IsClique(D, [2, 3, 4]);
 false
-gap> IsMaximalClique(gr, [1, 2, 4]);
+gap> IsMaximalClique(D, [1, 2, 4]);
+true
+gap> D := CompleteDigraph(IsMutableDigraph, 4);;
+gap> IsClique(D, [1, 3, 2]);
 true]]></Example>
   </Description>
 </ManSection>
@@ -91,16 +97,19 @@ true]]></Example>
     independent set is permitted, but not required, to contain vertices at
     which there is a loop.
     <Example><![CDATA[
-gap> gr := CycleDigraph(4);;
-gap> IsIndependentSet(gr, [1]);
+gap> D := CycleDigraph(4);;
+gap> IsIndependentSet(D, [1]);
 true
-gap> IsMaximalIndependentSet(gr, [1]);
+gap> IsMaximalIndependentSet(D, [1]);
 false
-gap> IsIndependentSet(gr, [1, 4, 3]);
+gap> IsIndependentSet(D, [1, 4, 3]);
 false
-gap> IsIndependentSet(gr, [2, 4]);
+gap> IsIndependentSet(D, [2, 4]);
 true
-gap> IsMaximalIndependentSet(gr, [2, 4]);
+gap> IsMaximalIndependentSet(D, [2, 4]);
+true
+gap> D := CycleDigraph(IsMutableDigraph, 4);;
+gap> IsIndependentSet(D, [1]);
 true]]></Example>
   </Description>
 </ManSection>
@@ -111,7 +120,7 @@ true]]></Example>
   <Func Name="DigraphClique" Arg="digraph[, include[, exclude[, size]]]"/>
   <Func Name="DigraphMaximalClique" Arg="digraph[, include[, exclude[,
     size]]]"/>
-  <Returns>A list of positive integers, or <K>fail</K>.</Returns>
+  <Returns>A mutable list of positive integers, or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then these functions returns a clique
     of <A>digraph</A> if one exists that satisfies the arguments, else it
@@ -166,26 +175,33 @@ true]]></Example>
     </List>
 
     <Example><![CDATA[
-gap> gr := Digraph([[2, 3, 4], [1, 3], [1, 2], [1, 5], []]);
+gap> D := Digraph([[2, 3, 4], [1, 3], [1, 2], [1, 5], []]);
 <immutable digraph with 5 vertices, 9 edges>
-gap> IsSymmetricDigraph(gr);
+gap> IsSymmetricDigraph(D);
 false
-gap> DigraphClique(gr);
+gap> DigraphClique(D);
 [ 5 ]
-gap> DigraphMaximalClique(gr);
+gap> DigraphMaximalClique(D);
 [ 5 ]
-gap> DigraphClique(gr, [1, 2]);
+gap> DigraphClique(D, [1, 2]);
 [ 1, 2, 3 ]
-gap> DigraphMaximalClique(gr, [1, 3]);
+gap> DigraphMaximalClique(D, [1, 3]);
 [ 1, 3, 2 ]
-gap> DigraphClique(gr, [1], [2]);
+gap> DigraphClique(D, [1], [2]);
 [ 1, 4 ]
-gap> DigraphMaximalClique(gr, [1], [3, 4]);
+gap> DigraphMaximalClique(D, [1], [3, 4]);
 fail
-gap> DigraphClique(gr, [1, 5]);
+gap> DigraphClique(D, [1, 5]);
 fail
-gap> DigraphClique(gr, [], [], 2);
-[ 1, 2 ]]]></Example>
+gap> DigraphClique(D, [], [], 2);
+[ 1, 2 ]
+gap> D := Digraph(IsMutableDigraph,
+>                 [[2, 3, 4], [1, 3], [1, 2], [1, 5], []]);
+<mutable digraph with 5 vertices, 9 edges>
+gap> IsSymmetricDigraph(D);
+false
+gap> DigraphClique(D);
+[ 5 ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -209,6 +225,10 @@ gap> DigraphClique(gr, [], [], 2);
       Func="CliquesFinder"/> to return cliques of <A>digraph</A>. A
     clique is defined by the set of vertices that it contains; see <Ref
       Oper="IsClique"/> and <Ref Oper="IsMaximalClique"/>.<P/>
+
+    The returned list will be mutable if and only if the argument
+    <A>digraph</A> is a mutable digraph. The lists contained in the output
+    list are always immutable.
 
     The optional arguments <A>include</A> and <A>exclude</A> must each be a
     (possibly empty) list of vertices of <A>digraph</A>, the optional argument
@@ -262,27 +282,36 @@ gap> DigraphClique(gr, [], [], 2);
     </List>
 
     <Example><![CDATA[
-gap> gr := Digraph([
+gap> D := Digraph([
 > [2, 3], [1, 3], [1, 2, 4], [3, 5, 6], [4, 6], [4, 5]]);
 <immutable digraph with 6 vertices, 14 edges>
-gap> IsSymmetricDigraph(gr);
+gap> IsSymmetricDigraph(D);
 true
-gap> G := AutomorphismGroup(gr);
+gap> G := AutomorphismGroup(D);
 Group([ (5,6), (1,2), (1,5)(2,6)(3,4) ])
-gap> DigraphMaximalCliques(gr);
+gap> DigraphMaximalCliques(D);
 [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ]
-gap> DigraphMaximalCliquesReps(gr);
+gap> DigraphMaximalCliquesReps(D);
 [ [ 1, 2, 3 ], [ 3, 4 ] ]
 gap> Orbit(G, [1, 2, 3], OnSets);
 [ [ 1, 2, 3 ], [ 4, 5, 6 ] ]
 gap> Orbit(G, [3, 4], OnSets);
 [ [ 3, 4 ] ]
-gap> DigraphMaximalCliquesReps(gr, [3, 4], [], 1);
+gap> DigraphMaximalCliquesReps(D, [3, 4], [], 1);
 [ [ 3, 4 ] ]
-gap> DigraphMaximalCliques(gr, [1, 2], [5, 6], 1, 2);
+gap> DigraphMaximalCliques(D, [1, 2], [5, 6], 1, 2);
 [  ]
-gap> DigraphCliques(gr, [1], [5, 6], infinity, 2);
-[ [ 1, 2 ], [ 1, 3 ] ]]]></Example>
+gap> DigraphCliques(D, [1], [5, 6], infinity, 2);
+[ [ 1, 2 ], [ 1, 3 ] ]
+gap> D := Digraph(IsMutableDigraph, [
+> [2, 3], [1, 3], [1, 2, 4], [3, 5, 6], [4, 6], [4, 5]]);
+<mutable digraph with 6 vertices, 14 edges>
+gap> IsSymmetricDigraph(D);
+true
+gap> G := AutomorphismGroup(D);
+Group([ (5,6), (1,2), (1,5)(2,6)(3,4) ])
+gap> DigraphMaximalCliques(D);
+[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -294,7 +323,7 @@ gap> DigraphCliques(gr, [1], [5, 6], infinity, 2);
   <Func Name="DigraphMaximalIndependentSet"
     Arg="digraph[, include[, exclude[,
     size]]]"/>
-  <Returns>A lists of positive integers, or <K>fail</K>.</Returns>
+  <Returns>A mutable list of positive integers, or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then these functions returns an independent
     set of <A>digraph</A> if one exists that satisfies the arguments, else it
@@ -352,25 +381,45 @@ gap> DigraphCliques(gr, [1], [5, 6], infinity, 2);
       </Item>
     </List>
     <Example><![CDATA[
-gap> gr := ChainDigraph(6);
+gap> D := ChainDigraph(6);
 <immutable chain digraph with 6 vertices>
-gap> DigraphIndependentSet(gr);
+gap> DigraphIndependentSet(D);
 [ 6, 4, 2 ]
-gap> DigraphMaximalIndependentSet(gr);
+gap> DigraphMaximalIndependentSet(D);
 [ 6, 4, 2 ]
-gap> DigraphIndependentSet(gr, [2, 4]);
+gap> DigraphIndependentSet(D, [2, 4]);
 [ 2, 4, 6 ]
-gap> DigraphMaximalIndependentSet(gr, [1, 3]);
+gap> DigraphMaximalIndependentSet(D, [1, 3]);
 [ 1, 3, 6 ]
-gap> DigraphIndependentSet(gr, [2, 4], [6]);
+gap> DigraphIndependentSet(D, [2, 4], [6]);
 [ 2, 4 ]
-gap> DigraphMaximalIndependentSet(gr, [2, 4], [6]);
+gap> DigraphMaximalIndependentSet(D, [2, 4], [6]);
 fail
-gap> DigraphIndependentSet(gr, [1], [], 2);
+gap> DigraphIndependentSet(D, [1], [], 2);
 [ 1, 3 ]
-gap> DigraphMaximalIndependentSet(gr, [1], [], 2);
+gap> DigraphMaximalIndependentSet(D, [1], [], 2);
 fail
-gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
+gap> DigraphMaximalIndependentSet(D, [1], [], 3);
+[ 1, 3, 5 ]
+gap> D := ChainDigraph(IsMutableDigraph, 6);
+<mutable digraph with 6 vertices, 5 edges>
+gap> DigraphIndependentSet(D);
+[ 6, 4, 2 ]
+gap> DigraphMaximalIndependentSet(D);
+[ 6, 4, 2 ]
+gap> DigraphIndependentSet(D, [2, 4]);
+[ 2, 4, 6 ]
+gap> DigraphMaximalIndependentSet(D, [1, 3]);
+[ 1, 3, 6 ]
+gap> DigraphIndependentSet(D, [2, 4], [6]);
+[ 2, 4 ]
+gap> DigraphMaximalIndependentSet(D, [2, 4], [6]);
+fail
+gap> DigraphIndependentSet(D, [1], [], 2);
+[ 1, 3 ]
+gap> DigraphMaximalIndependentSet(D, [1], [], 2);
+fail
+gap> DigraphMaximalIndependentSet(D, [1], [], 3);
 [ 1, 3, 5 ]]]></Example>
   </Description>
 </ManSection>
@@ -395,6 +444,10 @@ gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
     independent set is defined by the set of vertices that it contains; see
     <Ref Oper="IsMaximalIndependentSet"/> and <Ref
       Oper="IsIndependentSet"/>.<P/>
+
+    The returned list will be mutable if and only if the argument
+    <A>digraph</A> is a mutable digraph. The lists contained in the output
+    list are always immutable.
 
     The optional arguments <A>include</A> and <A>exclude</A> must each be a
     (possibly empty) list of vertices of <A>digraph</A>, the optional argument
@@ -450,19 +503,33 @@ gap> DigraphMaximalIndependentSet(gr, [1], [], 3);
     </List>
 
     <Example><![CDATA[
-gap> gr := CycleDigraph(5);
+gap> D := CycleDigraph(5);
 <immutable cycle digraph with 5 vertices>
-gap> DigraphMaximalIndependentSetsReps(gr);
+gap> DigraphMaximalIndependentSetsReps(D);
 [ [ 1, 3 ] ]
-gap> DigraphIndependentSetsReps(gr);
+gap> DigraphIndependentSetsReps(D);
 [ [ 1 ], [ 1, 3 ] ]
-gap> Set(DigraphMaximalIndependentSets(gr));
+gap> Set(DigraphMaximalIndependentSets(D));
 [ [ 1, 3 ], [ 1, 4 ], [ 2, 4 ], [ 2, 5 ], [ 3, 5 ] ]
-gap> DigraphMaximalIndependentSets(gr, [1]);
+gap> DigraphMaximalIndependentSets(D, [1]);
 [ [ 1, 3 ], [ 1, 4 ] ]
-gap> DigraphIndependentSets(gr, [], [4, 5]);
+gap> DigraphIndependentSets(D, [], [4, 5]);
 [ [ 1 ], [ 2 ], [ 3 ], [ 1, 3 ] ]
-gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
+gap> DigraphIndependentSets(D, [], [4, 5], 1, 2);
+[ [ 1, 3 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 5);
+<mutable digraph with 5 vertices, 5 edges>
+gap> DigraphMaximalIndependentSetsReps(D);
+[ [ 1, 3 ] ]
+gap> DigraphIndependentSetsReps(D);
+[ [ 1 ], [ 1, 3 ] ]
+gap> Set(DigraphMaximalIndependentSets(D));
+[ [ 1, 3 ], [ 1, 4 ], [ 2, 4 ], [ 2, 5 ], [ 3, 5 ] ]
+gap> DigraphMaximalIndependentSets(D, [1]);
+[ [ 1, 3 ], [ 1, 4 ] ]
+gap> DigraphIndependentSets(D, [], [4, 5]);
+[ [ 1 ], [ 2 ], [ 3 ], [ 1, 3 ] ]
+gap> DigraphIndependentSets(D, [], [4, 5], 1, 2);
 [ [ 1, 3 ] ]]]></Example>
   </Description>
 </ManSection>
@@ -476,7 +543,8 @@ gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
   <Description>
     This function finds cliques of the digraph <A>digraph</A> subject to the
     conditions imposed by the other arguments as described below. Note
-    that a clique is represented by a list of the vertices that it contains.
+    that a clique is represented by the immutable list of the vertices that
+    it contains.
     <P/>
 
     Let <C>G</C> denote the automorphism group of the maximal symmetric
@@ -569,24 +637,43 @@ gap> DigraphIndependentSets(gr, [], [4, 5], 1, 2);
 
     This function uses a version of the Bron-Kerbosch algorithm.
     <Example><![CDATA[
-gap> gr := CompleteDigraph(5);
+gap> D := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>
 gap> user_param := [];;
 gap> f := function(a, b)  # Calculate size of clique
 >   AddSet(user_param, Size(b));
 > end;;
-gap> CliquesFinder(gr, f, user_param, infinity, [], [], false, fail,
+gap> CliquesFinder(D, f, user_param, infinity, [], [], false, fail,
 >                  true);
 [ 1, 2, 3, 4, 5 ]
-gap> CliquesFinder(gr, fail, [], 5, [2, 4], [3], false, fail, false);
+gap> CliquesFinder(D, fail, [], 5, [2, 4], [3], false, fail, false);
 [ [ 2, 4 ], [ 1, 2, 4 ], [ 2, 4, 5 ], [ 1, 2, 4, 5 ] ]
-gap> CliquesFinder(gr, fail, [], 2, [2, 4], [3], false, fail, false);
+gap> CliquesFinder(D, fail, [], 2, [2, 4], [3], false, fail, false);
 [ [ 2, 4 ], [ 1, 2, 4 ] ]
-gap> CliquesFinder(gr, fail, [], infinity, [], [], true, 5, false);
+gap> CliquesFinder(D, fail, [], infinity, [], [], true, 5, false);
 [ [ 1, 2, 3, 4, 5 ] ]
-gap> CliquesFinder(gr, fail, [], infinity, [1, 3], [], false, 3, false);
+gap> CliquesFinder(D, fail, [], infinity, [1, 3], [], false, 3, false);
 [ [ 1, 2, 3 ], [ 1, 3, 4 ], [ 1, 3, 5 ] ]
-gap> CliquesFinder(gr, fail, [], infinity, [1, 3], [], true, 3, false);
+gap> CliquesFinder(D, fail, [], infinity, [1, 3], [], true, 3, false);
+[  ]
+gap> D := CompleteDigraph(IsMutableDigraph, 5);
+<mutable digraph with 5 vertices, 20 edges>
+gap> user_param := [];;
+gap> f := function(a, b)  # Calculate size of clique
+>   AddSet(user_param, Size(b));
+> end;;
+gap> CliquesFinder(D, f, user_param, infinity, [], [], false, fail,
+>                  true);
+[ 1, 2, 3, 4, 5 ]
+gap> CliquesFinder(D, fail, [], 5, [2, 4], [3], false, fail, false);
+[ [ 2, 4 ], [ 1, 2, 4 ], [ 2, 4, 5 ], [ 1, 2, 4, 5 ] ]
+gap> CliquesFinder(D, fail, [], 2, [2, 4], [3], false, fail, false);
+[ [ 2, 4 ], [ 1, 2, 4 ] ]
+gap> CliquesFinder(D, fail, [], infinity, [], [], true, 5, false);
+[ [ 1, 2, 3, 4, 5 ] ]
+gap> CliquesFinder(D, fail, [], infinity, [1, 3], [], false, 3, false);
+[ [ 1, 2, 3 ], [ 1, 3, 4 ], [ 1, 3, 5 ] ]
+gap> CliquesFinder(D, fail, [], infinity, [1, 3], [], true, 3, false);
 [  ]]]></Example>
   </Description>
 </ManSection>
