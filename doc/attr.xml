@@ -1779,22 +1779,31 @@ gap> D;
 
     The digraph returned by <C>MaximalSymmetricSubdigraphWithoutLoops</C> is
     the same, except that loops are removed.<P/>
+    
+    If <A>digraph</A> is immutable, then a new digraph is created, and if
+    <A>digraph</A> is mutable, then it is changed in-place.<P/>
 
     See <Ref Prop="IsSymmetricDigraph"/>, <Ref Prop="IsMultiDigraph"/>, and
     <Ref Prop="DigraphHasLoops"/> for more information.
     <Example><![CDATA[
-gap> gr := Digraph([[2, 2], [1, 3], [4], [3, 1]]);
+gap> D := Digraph([[2, 2], [1, 3], [4], [3, 1]]);
 <immutable multidigraph with 4 vertices, 7 edges>
-gap> not IsSymmetricDigraph(gr) and IsMultiDigraph(gr);
+gap> not IsSymmetricDigraph(D) and IsMultiDigraph(D);
 true
-gap> OutNeighbours(gr);
+gap> OutNeighbours(D);
 [ [ 2, 2 ], [ 1, 3 ], [ 4 ], [ 3, 1 ] ]
-gap> sym := MaximalSymmetricSubdigraph(gr);
+gap> S := MaximalSymmetricSubdigraph(D);
 <immutable symmetric digraph with 4 vertices, 4 edges>
-gap> IsSymmetricDigraph(sym) and not IsMultiDigraph(sym);
+gap> IsSymmetricDigraph(S) and not IsMultiDigraph(S);
 true
-gap> OutNeighbours(sym);
+gap> OutNeighbours(S);
 [ [ 2 ], [ 1 ], [ 4 ], [ 3 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> MaximalSymmetricSubdigraph(D);
+<mutable empty digraph with 3 vertices>
+gap> D;
+<mutable empty digraph with 3 vertices>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1812,8 +1821,10 @@ gap> OutNeighbours(sym);
     edge list is formed from <A>digraph</A> by ignoring the multiplicity of
     edges, and by having either an edge from the vertex <C>u</C> to the vertex
     <C>v</C>, or the edge from <C>v</C> to <C>u</C> (but not both) whenever
-    both edges belong to <A>digraph</A>.
-    <P/>
+    both edges belong to <A>digraph</A>.<P/>
+
+    If <A>digraph</A> is immutable, then a new digraph is created, and if
+    <A>digraph</A> is mutable, then it is changed in-place.<P/>
 
     See <Ref Prop="IsAntisymmetricDigraph"/> for more information.
     <Example><![CDATA[
@@ -1829,6 +1840,12 @@ gap> IsAntiSymmetricDigraph(D) and not IsMultiDigraph(D);
 true
 gap> OutNeighbours(D);
 [ [ 2 ], [ 3 ], [ 4 ], [ 1 ] ]
+gap> D := Digraph(IsMutableDigraph, [[2], [1]]);
+<mutable digraph with 2 vertices, 2 edges>
+gap> MaximalAntiSymmetricSubdigraph(D);
+<mutable digraph with 2 vertices, 1 edge>
+gap> D;
+<mutable digraph with 2 vertices, 1 edge>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1843,14 +1860,16 @@ gap> OutNeighbours(D);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph with no multiple edges, then these
-    attributes return the (reflexive) transitive closure of <A>digraph</A>.
-    <P/>
+    attributes return the (reflexive) transitive closure of <A>digraph</A>.<P/>
+
+    If <A>digraph</A> is immutable, then a new digraph is created, and if
+    <A>digraph</A> is mutable, then it is changed in-place.<P/>
 
     A digraph is <E>reflexive</E> if it has a loop at every vertex, and it is
     <E>transitive</E> if whenever <C>[i,j]</C> and <C>[j,k]</C> are edges of
     <A>digraph</A>, <C>[i,k]</C> is also an edge.  The <E>(reflexive)
       transitive closure</E> of a digraph <A>digraph</A> is the least
-    (reflexive and) transitive digraph containing <A>digraph</A>. <P/>
+    (reflexive and) transitive digraph containing <A>digraph</A>.<P/>
 
     Let <M>n</M> be the number of vertices of <A>digraph</A>, and let
     <M>m</M> be the number of edges.  For an arbitrary digraph, these
@@ -1859,26 +1878,32 @@ gap> OutNeighbours(D);
 
     However, for a topologically sortable digraph [see <Ref
       Attr="DigraphTopologicalSort"/>], these attributes will use methods
-    with complexity <M>O(m + n + m \cdot n)</M> when this is faster.  <P/>
+    with complexity <M>O(m + n + m \cdot n)</M> when this is faster.<P/>
 
     <Example><![CDATA[
-gap> gr := DigraphFromDiSparse6String(".H`eOWR`Ul^");
+gap> D := DigraphFromDiSparse6String(".H`eOWR`Ul^");
 <immutable digraph with 9 vertices, 8 edges>
-gap> IsReflexiveDigraph(gr) or IsTransitiveDigraph(gr);
+gap> IsReflexiveDigraph(D) or IsTransitiveDigraph(D);
 false
-gap> OutNeighbours(gr);
+gap> OutNeighbours(D);
 [ [ 4, 6 ], [ 1, 3 ], [  ], [ 5 ], [  ], [ 7, 8, 9 ], [  ], [  ], 
   [  ] ]
-gap> trans := DigraphTransitiveClosure(gr);
+gap> T := DigraphTransitiveClosure(D);
 <immutable transitive digraph with 9 vertices, 18 edges>
-gap> OutNeighbours(trans);
+gap> OutNeighbours(T);
 [ [ 4, 6, 5, 7, 8, 9 ], [ 1, 3, 4, 5, 6, 7, 8, 9 ], [  ], [ 5 ], 
   [  ], [ 7, 8, 9 ], [  ], [  ], [  ] ]
-gap> reflextrans := DigraphReflexiveTransitiveClosure(gr);
+gap> RT := DigraphReflexiveTransitiveClosure(D);
 <immutable preorder digraph with 9 vertices, 27 edges>
-gap> OutNeighbours(reflextrans);
+gap> OutNeighbours(RT);
 [ [ 4, 6, 5, 7, 8, 9, 1 ], [ 1, 3, 4, 5, 6, 7, 8, 9, 2 ], [ 3 ], 
   [ 5, 4 ], [ 5 ], [ 7, 8, 9, 6 ], [ 7 ], [ 8 ], [ 9 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphReflexiveTransitiveClosure(D);
+<mutable digraph with 3 vertices, 9 edges>
+gap> D;
+<mutable digraph with 3 vertices, 9 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1895,15 +1920,17 @@ gap> OutNeighbours(reflextrans);
     If <A>digraph</A> is a topologically sortable digraph
     [see <Ref Attr="DigraphTopologicalSort"/>]
     with no multiple edges, then these  operations return the
-    (reflexive) transitive reduction of <A>digraph</A>.
-    <P/>
+    (reflexive) transitive reduction of <A>digraph</A>.<P/>
+    
+    If <A>digraph</A> is immutable, then a new digraph is created, and if
+    <A>digraph</A> is mutable, then it is changed in-place.<P/>
 
     The (reflexive) transitive reduction of such a digraph is the unique
     least subgraph such that the (reflexive) transitive closure of the
     subgraph is equal to the (reflexive) transitive closure of <A>digraph</A>
     [see <Ref Oper="DigraphReflexiveTransitiveClosure"/>].
     In order words, it is the least subgraph of <A>digraph</A> which
-    retains the same reachability as <A>digraph</A>. <P/>
+    retains the same reachability as <A>digraph</A>.<P/>
 
     Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
         <M>m</M> be the number of edges.
@@ -1911,27 +1938,33 @@ gap> OutNeighbours(reflextrans);
     use methods with complexity <M>O(m + n + m \cdot n)</M>.
     <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[1, 2, 3], [3], [3]]);;
-gap> DigraphHasLoops(gr);
+gap> D := Digraph([[1, 2, 3], [3], [3]]);;
+gap> DigraphHasLoops(D);
 true
-gap> gr1 := DigraphReflexiveTransitiveReduction(gr);
+gap> D1 := DigraphReflexiveTransitiveReduction(D);
 <immutable digraph with 3 vertices, 2 edges>
-gap> DigraphHasLoops(gr1);
+gap> DigraphHasLoops(D1);
 false
-gap> OutNeighbours(gr1);
+gap> OutNeighbours(D1);
 [ [ 2 ], [ 3 ], [  ] ]
-gap> gr2 := DigraphTransitiveReduction(gr);
+gap> D2 := DigraphTransitiveReduction(D);
 <immutable digraph with 3 vertices, 4 edges>
-gap> DigraphHasLoops(gr2);
+gap> DigraphHasLoops(D2);
 true
-gap> OutNeighbours(gr2);
+gap> OutNeighbours(D2);
 [ [ 2, 1 ], [ 3 ], [ 3 ] ]
-gap> DigraphReflexiveTransitiveClosure(gr)
->  = DigraphReflexiveTransitiveClosure(gr1);
+gap> DigraphReflexiveTransitiveClosure(D)
+>  = DigraphReflexiveTransitiveClosure(D1);
 true
-gap> DigraphTransitiveClosure(gr)
->  = DigraphTransitiveClosure(gr2);
+gap> DigraphTransitiveClosure(D)
+>  = DigraphTransitiveClosure(D2);
 true
+gap> D := Digraph(IsMutableDigraph, [[1], [1], [1, 2, 3]]);
+<mutable digraph with 3 vertices, 5 edges>
+gap> DigraphReflexiveTransitiveReduction(D);
+<mutable digraph with 3 vertices, 2 edges>
+gap> D;
+<mutable digraph with 3 vertices, 2 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1949,7 +1982,10 @@ true
     <C>UndirectedSpanningForest</C> returns an undirected spanning forest of
     <A>digraph</A>, otherwise this attribute returns <K>fail</K>. See <Ref
       Oper="IsUndirectedSpanningForest" /> for the definition of an undirected
-    spanning forest. <P/>
+    spanning forest.<P/>
+
+    If <A>digraph</A> is immutable, then a new digraph is created, and if
+    <A>digraph</A> is mutable, then it is changed in-place.<P/>
 
     If <A>digraph</A> is a digraph with at least one vertex and whose <Ref
       Oper="MaximalSymmetricSubdigraph"/> is connected (see <Ref
@@ -1963,33 +1999,40 @@ true
     <C>UndirectedSpanningForest</C>.
 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 2, 1, 3], [1], [4], [3, 4, 3]]);
+gap> D := Digraph([[1, 2, 1, 3], [1], [4], [3, 4, 3]]);
 <immutable multidigraph with 4 vertices, 9 edges>
-gap> UndirectedSpanningTree(gr);
+gap> UndirectedSpanningTree(D);
 fail
-gap> forest := UndirectedSpanningForest(gr);
+gap> forest := UndirectedSpanningForest(D);
 <immutable symmetric digraph with 4 vertices, 4 edges>
 gap> OutNeighbours(forest);
 [ [ 2 ], [ 1 ], [ 4 ], [ 3 ] ]
-gap> IsUndirectedSpanningForest(gr, forest);
+gap> IsUndirectedSpanningForest(D, forest);
 true
 gap> DigraphConnectedComponents(forest).comps;
 [ [ 1, 2 ], [ 3, 4 ] ]
-gap> DigraphConnectedComponents(MaximalSymmetricSubdigraph(gr)).comps;
+gap> DigraphConnectedComponents(MaximalSymmetricSubdigraph(D)).comps;
 [ [ 1, 2 ], [ 3, 4 ] ]
-gap> UndirectedSpanningForest(MaximalSymmetricSubdigraph(gr))
+gap> UndirectedSpanningForest(MaximalSymmetricSubdigraph(D))
 > = forest;
 true
-gap> gr := CompleteDigraph(4);
+gap> D := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
-gap> tree := UndirectedSpanningTree(gr);
+gap> tree := UndirectedSpanningTree(D);
 <immutable symmetric digraph with 4 vertices, 6 edges>
-gap> IsUndirectedSpanningTree(gr, tree);
+gap> IsUndirectedSpanningTree(D, tree);
 true
-gap> tree = UndirectedSpanningForest(gr);
+gap> tree = UndirectedSpanningForest(D);
 true
 gap> UndirectedSpanningForest(EmptyDigraph(0));
-fail]]></Example>
+fail
+gap> D := PetersenGraph(IsMutableDigraph);
+<mutable digraph with 10 vertices, 30 edges>
+gap> UndirectedSpanningTree(D);
+<mutable digraph with 10 vertices, 18 edges>
+gap> D;
+<mutable digraph with 10 vertices, 18 edges>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -2001,13 +2044,14 @@ fail]]></Example>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a symmetric digraph, then
-    <C>DigraphMycielskian</C> returns the Mycielskian of <A>digraph</A>.
-    <P/>
+    <C>DigraphMycielskian</C> returns the Mycielskian of <A>digraph</A>.<P/>
+
+    If <A>digraph</A> is immutable, then a new digraph is created, and if
+    <A>digraph</A> is mutable, then it is changed in-place.<P/>
     
     The Mycielskian of a symmetric digraph is a larger symmetric digraph
     constructed from it, which has a larger chromatic number. For further
-    information, see <URL>https://en.wikipedia.org/wiki/Mycielskian</URL>.
-    <P/>
+    information, see <URL>https://en.wikipedia.org/wiki/Mycielskian</URL>.<P/>
 
     <Example><![CDATA[
 gap> D := CycleDigraph(2);
@@ -2021,7 +2065,14 @@ gap> ChromaticNumber(D);
 gap> D := DigraphMycielskian(D);
 <immutable digraph with 11 vertices, 40 edges>
 gap> ChromaticNumber(D);
-4]]></Example>
+4
+gap> D := CompleteBipartiteDigraph(IsMutable, 2, 3);
+<mutable digraph with 5 vertices, 12 edges>
+gap> DigraphMycielskian(D);
+<mutable digraph with 11 vertices, 46 edges>
+gap> D;
+<mutable digraph with 11 vertices, 46 edges>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
