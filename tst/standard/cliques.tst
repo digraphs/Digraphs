@@ -300,7 +300,7 @@ gap> DigraphMaximalCliquesReps(gr);
 
 #  CliquesFinder: error checking
 gap> CliquesFinder(Group(()), fail, fail, fail, fail, fail, fail, fail, fail);
-Error, the 1st argument <digraph> must be a digraph,
+Error, the 1st argument <D> must be a digraph,
 gap> gr := CompleteDigraph(5);;
 gap> CliquesFinder(gr, [], fail, fail, fail, fail, fail, fail, fail);
 Error, the 2nd argument <hook> must be fail, or a function with 2 arguments,
@@ -315,28 +315,28 @@ gap> CliquesFinder(gr, f, fail, fail, fail, fail, fail, fail, fail);
 Error, the 4th argument <limit> must be infinity, or a positive integer,
 gap> CliquesFinder(gr, fail, [], infinity, fail, fail, fail, fail, fail);
 Error, the 5th argument <include> and the 6th argument <exclude> must be (poss\
-ibly empty) duplicate-free lists of vertices of the 1st argument <digraph>
+ibly empty) duplicate-free lists of vertices of the 1st argument <D>
 gap> CliquesFinder(gr, fail, [], infinity, [0, 'a'], fail, fail, fail, fail);
 Error, the 5th argument <include> and the 6th argument <exclude> must be (poss\
-ibly empty) duplicate-free lists of vertices of the 1st argument <digraph>
+ibly empty) duplicate-free lists of vertices of the 1st argument <D>
 gap> CliquesFinder(gr, fail, [], infinity, [0], fail, fail, fail, fail);
 Error, the 5th argument <include> and the 6th argument <exclude> must be (poss\
-ibly empty) duplicate-free lists of vertices of the 1st argument <digraph>
+ibly empty) duplicate-free lists of vertices of the 1st argument <D>
 gap> CliquesFinder(gr, fail, [], infinity, [1, 1], fail, fail, fail, fail);
 Error, the 5th argument <include> and the 6th argument <exclude> must be (poss\
-ibly empty) duplicate-free lists of vertices of the 1st argument <digraph>
+ibly empty) duplicate-free lists of vertices of the 1st argument <D>
 gap> CliquesFinder(gr, fail, [], infinity, [1], fail, fail, fail, fail);
 Error, the 5th argument <include> and the 6th argument <exclude> must be (poss\
-ibly empty) duplicate-free lists of vertices of the 1st argument <digraph>
+ibly empty) duplicate-free lists of vertices of the 1st argument <D>
 gap> CliquesFinder(gr, fail, [], infinity, [1], [0, 'a'], fail, fail, fail);
 Error, the 5th argument <include> and the 6th argument <exclude> must be (poss\
-ibly empty) duplicate-free lists of vertices of the 1st argument <digraph>
+ibly empty) duplicate-free lists of vertices of the 1st argument <D>
 gap> CliquesFinder(gr, fail, [], infinity, [1], [0], fail, fail, fail);
 Error, the 5th argument <include> and the 6th argument <exclude> must be (poss\
-ibly empty) duplicate-free lists of vertices of the 1st argument <digraph>
+ibly empty) duplicate-free lists of vertices of the 1st argument <D>
 gap> CliquesFinder(gr, fail, [], infinity, [1], [1, 1], fail, fail, fail);
 Error, the 5th argument <include> and the 6th argument <exclude> must be (poss\
-ibly empty) duplicate-free lists of vertices of the 1st argument <digraph>
+ibly empty) duplicate-free lists of vertices of the 1st argument <D>
 gap> CliquesFinder(gr, fail, [], infinity, [1], [1], fail, fail, fail);
 Error, the 7th argument <max> must be true or false,
 gap> CliquesFinder(gr, fail, [], infinity, [1], [1], false, 0, fail);
@@ -489,6 +489,22 @@ gap> CliqueNumber(CycleDigraph(8));
 1
 gap> CliqueNumber(DigraphSymmetricClosure(CycleDigraph(8)));
 2
+
+# Test mutability of cliques for mutable digraphs
+gap> D := Digraph(IsMutableDigraph,
+> [[2, 3], [1, 3], [1, 2, 4], [3, 5, 6], [4, 6], [4, 5]]);;
+gap> cliques := DigraphMaximalCliquesReps(D);
+[ [ 1, 2, 3 ], [ 3, 4 ] ]
+gap> IsMutable(cliques) or ForAny(cliques, IsMutable);
+false
+gap> cliques := DigraphMaximalCliques(D);
+[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ]
+gap> IsMutable(cliques) or ForAny(cliques, IsMutable);
+false
+gap> cliques := DigraphMaximalCliques(D, [1]);
+[ [ 1, 2, 3 ] ]
+gap> IsMutable(cliques) or ForAny(cliques, IsMutable);
+false
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(f);
