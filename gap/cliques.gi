@@ -114,10 +114,10 @@ function(arg)
   fi;
   arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
-  return CallFuncList(DIGRAPHS_Clique,
-                      Concatenation([true],
-                                    [arg[1]],
-                                    arg{[2 .. Length(arg)]}));
+  return MakeImmutable(CallFuncList(DIGRAPHS_Clique,
+                                    Concatenation([true],
+                                                  [arg[1]],
+                                                  arg{[2 .. Length(arg)]})));
 end);
 
 InstallGlobalFunction(DigraphIndependentSet,
@@ -129,10 +129,10 @@ function(arg)
   fi;
   arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
-  return CallFuncList(DIGRAPHS_Clique,
-                      Concatenation([false],
-                                    [arg[1]],
-                                    arg{[2 .. Length(arg)]}));
+  return MakeImmutable(CallFuncList(DIGRAPHS_Clique,
+                                    Concatenation([false],
+                                                  [arg[1]],
+                                                  arg{[2 .. Length(arg)]})));
 end);
 
 # Independent sets orbit representatives
@@ -227,7 +227,8 @@ function(arg)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   fi;
-  return CallFuncList(DIGRAPHS_Clique, Concatenation([true], arg));
+  return MakeImmutable(CallFuncList(DIGRAPHS_Clique,
+                                    Concatenation([true], arg)));
 end);
 
 InstallGlobalFunction(DigraphClique,
@@ -235,7 +236,8 @@ function(arg)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   fi;
-  return CallFuncList(DIGRAPHS_Clique, Concatenation([false], arg));
+  return MakeImmutable(CallFuncList(DIGRAPHS_Clique,
+                                    Concatenation([false], arg)));
 end);
 
 InstallGlobalFunction(DIGRAPHS_Clique,
@@ -458,8 +460,7 @@ function(arg)
     return DigraphMaximalCliquesRepsAttr(D);
   fi;
 
-  out := [];
-  CliquesFinder(D, fail, out, limit, include, exclude, true, size, true);
+  out := CliquesFinder(D, fail, [], limit, include, exclude, true, size, true);
   # Store the result if appropriate
   if IsEmpty(include) and IsEmpty(exclude) and limit = infinity and size = fail
       and IsImmutableDigraph(D) then
@@ -527,28 +528,26 @@ function(arg)
           orb := Orb(G, c, OnSets);
           Enumerate(orb);
           Add(orbits, orb);
-          out := Concatenation(out, orb);
+          Append(out, orb);
         fi;
       od;
     fi;
     if IsImmutableDigraph(D) then
       SetDigraphMaximalCliquesAttr(D, out);
     fi;
-    return out;
+    return MakeImmutable(out);
   fi;
 
-  out := [];
-  CliquesFinder(D, fail, out, limit, include, exclude, true, size, false);
-  return out;
+  return CliquesFinder(D, fail, [], limit, include, exclude, true, size, false);
 end);
 
 InstallGlobalFunction(CliquesFinder,
-function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
+function(D, hook, user_param, limit, include, exclude, max, size, reps)
   local n, sub, group, invariant_include, invariant_exclude, include_variant,
-  exclude_variant, x, v, o, i;
+  exclude_variant, x, v, o, i, out;
 
-  if not IsDigraph(digraph) then
-    ErrorNoReturn("the 1st argument <digraph> must be a digraph,");
+  if not IsDigraph(D) then
+    ErrorNoReturn("the 1st argument <D> must be a digraph,");
   fi;
 
   if hook <> fail then
@@ -566,7 +565,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
                   "a positive integer,");
   fi;
 
-  n := DigraphNrVertices(digraph);
+  n := DigraphNrVertices(D);
   if not (IsHomogeneousList(include)
           and ForAll(include, x -> IsPosInt(x) and x <= n)
           and IsDuplicateFreeList(include))
@@ -576,7 +575,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
       then
     ErrorNoReturn("the 5th argument <include> and the 6th argument ",
                   "<exclude> must be (possibly empty) duplicate-free ",
-                  "lists of vertices of the 1st argument <digraph>");
+                  "lists of vertices of the 1st argument <D>");
   fi;
 
   if not max in [true, false] then
@@ -593,7 +592,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
   fi;
 
   # Investigate whether <include> and <exclude> are invariant under <grp>
-  sub := DigraphMutableCopyIfMutable(digraph);
+  sub := DigraphMutableCopyIfMutable(D);
   sub := MaximalSymmetricSubdigraphWithoutLoops(sub);
   group := AutomorphismGroup(sub);
 
@@ -645,7 +644,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
     fi;
   fi;
 
-  return DIGRAPHS_BronKerbosch(digraph,
+  out := DIGRAPHS_BronKerbosch(D,
                                hook,
                                user_param,
                                limit,
@@ -656,6 +655,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
                                reps,
                                include_variant,
                                exclude_variant);
+  return MakeImmutable(out);
 end);
 
 InstallGlobalFunction(DIGRAPHS_BronKerbosch,
