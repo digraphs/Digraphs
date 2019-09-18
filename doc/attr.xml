@@ -32,6 +32,10 @@ gap> DigraphVertices(gr);
 [ 1 .. 6 ]
 gap> DigraphVertices(RandomDigraph(100));
 [ 1 .. 100 ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphVertices(D);
+[ 1 .. 3 ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -58,7 +62,12 @@ gap> gr := Digraph([1, 2, 3, 4, 5, 7],
 gap> DigraphNrVertices(gr);
 6
 gap> DigraphNrVertices(RandomDigraph(100));
-100]]></Example>
+100
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphNrVertices(D);
+3
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -88,7 +97,12 @@ gap> edges := ShallowCopy(DigraphEdges(gr));; Sort(edges);
 gap> edges;
 [ [ 1, 1 ], [ 1, 3 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 2, 1 ], 
   [ 2, 2 ], [ 2, 3 ], [ 2, 5 ], [ 3, 2 ], [ 3, 4 ], [ 3, 5 ], 
-  [ 4, 2 ], [ 4, 4 ], [ 4, 5 ], [ 5, 1 ] ]]]></Example>
+  [ 4, 2 ], [ 4, 4 ], [ 4, 5 ], [ 5, 1 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 1 ] ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -109,7 +123,12 @@ gap> gr := Digraph(["a", "b", "c"],
 >                  ["b", "a", "a"]);
 <immutable multidigraph with 3 vertices, 3 edges>
 gap> DigraphNrEdges(gr);
-3]]></Example>
+3
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphNrEdges(D);
+3
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -137,6 +156,12 @@ gap> DigraphEdges(gr);
 [ [ 1, 2 ], [ 1, 1 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], 
   [ 2, 4 ], [ 3, 2 ], [ 3, 3 ], [ 4, 2 ], [ 5, 1 ], [ 5, 2 ], 
   [ 5, 3 ], [ 5, 4 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphRange(D);
+[ 2, 3, 1 ]
+gap> DigraphSource(D);
+[ 1, 2, 3 ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -180,6 +205,10 @@ gap> OutNeighbours(gr);
 [ [ 1, 2, 2, 3 ], [ 1, 2 ], [ 3 ] ]
 gap> OutNeighboursMutableCopy(gr);
 [ [ 1, 2, 2, 3 ], [ 1, 2 ], [ 3 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> OutNeighbours(D);
+[ [ 2 ], [ 3 ], [ 1 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -225,6 +254,10 @@ gap> InNeighbours(gr);
 [ [ 1, 2 ], [ 1, 1, 2 ], [ 1, 3 ] ]
 gap> InNeighboursMutableCopy(gr);
 [ [ 1, 2 ], [ 1, 1, 2 ], [ 1, 3 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> InNeighbours(D);
+[ [ 3 ], [ 1 ], [ 2 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -264,7 +297,16 @@ true
 gap> foo(3, 2);
 false
 gap> foo(3, 1);
-false]]></Example>
+false
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> foo := DigraphAdjacencyFunction(D);
+function( u, v ) ... end
+gap> foo(1, 2);
+true
+gap> foo(2, 1);
+false
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -303,7 +345,14 @@ gap> Display(mat);
   [  1,  1,  0,  0,  0,  0,  1,  0,  0,  0 ],
   [  1,  1,  1,  0,  1,  1,  0,  0,  0,  2 ],
   [  1,  0,  1,  1,  1,  0,  0,  1,  0,  1 ],
-  [  0,  1,  1,  1,  0,  1,  1,  0,  0,  1 ] ]]]></Example>
+  [  0,  1,  1,  1,  0,  1,  1,  0,  0,  1 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> Display(AdjacencyMatrix(D));
+[ [  0,  1,  0 ],
+  [  0,  0,  1 ],
+  [  1,  0,  0 ] ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -344,7 +393,14 @@ gap> PrintArray(BooleanAdjacencyMatrix(gr));
   [  false,  false,  false,   true ],
   [   true,  false,  false,  false ] ]
 gap> BooleanAdjacencyMatrix(EmptyDigraph(0));
-[  ]]]></Example>
+[  ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> PrintArray(BooleanAdjacencyMatrix(D));
+[ [  false,   true,  false ],
+  [  false,  false,   true ],
+  [   true,  false,  false ] ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -362,15 +418,15 @@ gap> BooleanAdjacencyMatrix(EmptyDigraph(0));
 
     See <Ref Attr="OutDegrees"/> for more information.
     <Example><![CDATA[
-gap> gr := Digraph([[1, 2, 3], [4], [1, 3, 4], []]);
+gap> D := Digraph([[1, 2, 3], [4], [1, 3, 4], []]);
 <immutable digraph with 4 vertices, 7 edges>
-gap> PrintArray(DegreeMatrix(gr));
+gap> PrintArray(DegreeMatrix(D));
 [ [  3,  0,  0,  0 ],
   [  0,  1,  0,  0 ],
   [  0,  0,  3,  0 ],
   [  0,  0,  0,  0 ] ]
-gap> gr := CycleDigraph(5);;
-gap> PrintArray(DegreeMatrix(gr));
+gap> D := CycleDigraph(5);;
+gap> PrintArray(DegreeMatrix(D));
 [ [  1,  0,  0,  0,  0 ],
   [  0,  1,  0,  0,  0 ],
   [  0,  0,  1,  0,  0 ],
@@ -378,6 +434,12 @@ gap> PrintArray(DegreeMatrix(gr));
   [  0,  0,  0,  0,  1 ] ]
 gap> DegreeMatrix(EmptyDigraph(0));
 [  ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> Display(DegreeMatrix(D));
+[ [  1,  0,  0 ],
+  [  0,  1,  0 ],
+  [  0,  0,  1 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -405,6 +467,12 @@ gap> PrintArray(LaplacianMatrix(gr));
   [   0,   0,   0,   0 ] ]
 gap> LaplacianMatrix(EmptyDigraph(0));
 [  ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> Display(LaplacianMatrix(D));
+[ [   1,  -1,   0 ],
+  [   0,   1,  -1 ],
+  [  -1,   0,   1 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -419,7 +487,7 @@ gap> LaplacianMatrix(EmptyDigraph(0));
   <Description>
 
     Given a digraph <A>digraph</A> with <M>n</M> vertices, the function
-    <C>OutDegrees</C> returns a list <C>out</C> of length <M>n</M>, such that
+    <C>OutDegrees</C> returns an immutable list <C>out</C> of length <M>n</M>, such that
     for a vertex <C>i</C> in <A>digraph</A>, the value of <C>out[i]</C> is the
     out-degree of vertex <C>i</C>.
     See <Ref Oper="OutDegreeOfVertex"/>. <P/>
@@ -431,14 +499,18 @@ gap> LaplacianMatrix(EmptyDigraph(0));
     increasing order with duplicate entries removed. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 3, 2, 2], [], [2, 1], []]);
+gap> D := Digraph([[1, 3, 2, 2], [], [2, 1], []]);
 <immutable multidigraph with 4 vertices, 6 edges>
-gap> OutDegrees(gr);
+gap> OutDegrees(D);
 [ 4, 0, 2, 0 ]
-gap> OutDegreeSequence(gr);
+gap> OutDegreeSequence(D);
 [ 4, 2, 0, 0 ]
-gap> OutDegreeSet(gr);
+gap> OutDegreeSet(D);
 [ 0, 2, 4 ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> OutDegrees(D);
+[ 1, 1, 1 ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -453,7 +525,7 @@ gap> OutDegreeSet(gr);
   <Description>
 
     Given a digraph <A>digraph</A> with <M>n</M> vertices, the function
-    <C>InDegrees</C> returns a list <C>inn</C> of length <M>n</M>, such that
+    <C>InDegrees</C> returns an immutable list <C>inn</C> of length <M>n</M>, such that
     for a vertex <C>i</C> in <A>digraph</A>, the value of <C>inn[i]</C> is
     the in-degree of vertex <C>i</C>.
     See <Ref Oper="InDegreeOfVertex"/>. <P/>
@@ -465,14 +537,18 @@ gap> OutDegreeSet(gr);
     increasing order with duplicate entries removed. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 3, 2, 2, 4], [], [2, 1, 4], []]);
+gap> D := Digraph([[1, 3, 2, 2, 4], [], [2, 1, 4], []]);
 <immutable multidigraph with 4 vertices, 8 edges>
-gap> InDegrees(gr);
+gap> InDegrees(D);
 [ 2, 3, 1, 2 ]
-gap> InDegreeSequence(gr);
+gap> InDegreeSequence(D);
 [ 3, 2, 2, 1 ]
-gap> InDegreeSet(gr);
+gap> InDegreeSet(D);
 [ 1, 2, 3 ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> InDegrees(D);
+[ 1, 1, 1 ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -483,7 +559,7 @@ gap> InDegreeSet(gr);
   <Attr Name="DigraphSources" Arg="digraph"/>
   <Returns>A list of vertices.</Returns>
   <Description>
-    This function returns a list of the sources of the digraph
+    This function returns an immutable list of the sources of the digraph
     <A>digraph</A>.
     A source of a digraph is a vertex with in-degree zero.
     See <Ref Oper="InDegreeOfVertex"/>.
@@ -492,6 +568,10 @@ gap> gr := Digraph([[3, 5, 2, 2], [3], [], [5, 2, 5, 3], []]);
 <immutable multidigraph with 5 vertices, 9 edges>
 gap> DigraphSources(gr);
 [ 1, 4 ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphSources(D);
+[  ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -511,6 +591,10 @@ gap> gr := Digraph([[3, 5, 2, 2], [3], [], [5, 2, 5, 3], []]);
 <immutable multidigraph with 5 vertices, 9 edges>
 gap> DigraphSinks(gr);
 [ 3, 5 ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphSinks(D);
+[  ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -560,6 +644,14 @@ rec( comps := [ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8, 9 ] ],
   id := [ 1, 1, 1, 1, 2, 2, 2, 2, 2 ] )
 gap> DigraphNrStronglyConnectedComponents(D);
 2
+gap> D := CycleDigraph(IsMutableDigraph, 2);
+<mutable digraph with 2 vertices, 2 edges>
+gap> G := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> DigraphDisjointUnion(D, G);
+<mutable digraph with 5 vertices, 5 edges>
+gap> DigraphStronglyConnectedComponents(D);
+rec( comps := [ [ 1, 2 ], [ 3, 4, 5 ] ], id := [ 1, 1, 2, 2, 2 ] )
 ]]></Example>
   </Description>
 </ManSection>
@@ -612,6 +704,14 @@ gap> gr := EmptyDigraph(0);
 <immutable empty digraph with 0 vertices>
 gap> DigraphConnectedComponents(gr);
 rec( comps := [  ], id := [  ] )
+gap> D := CycleDigraph(IsMutableDigraph, 2);
+<mutable digraph with 2 vertices, 2 edges>
+gap> G := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> DigraphDisjointUnion(D, G);
+<mutable digraph with 5 vertices, 5 edges>
+gap> DigraphConnectedComponents(D);
+rec( comps := [ [ 1, 2 ], [ 3, 4, 5 ] ], id := [ 1, 1, 2, 2, 2 ] )
 ]]></Example>
   </Description>
 </ManSection>
@@ -638,11 +738,15 @@ rec( comps := [  ], id := [  ] )
     <M>m</M> is the number of edges (counting multiple edges as one) and
     <M>n</M> is the number of vertices in the digraph. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([
+gap> D := Digraph([
 > [2, 3], [], [4, 6], [5], [], [7, 8, 9], [], [], []]);
 <immutable digraph with 9 vertices, 8 edges>
-gap> DigraphTopologicalSort(gr);
+gap> DigraphTopologicalSort(D);
 [ 2, 5, 4, 7, 8, 9, 6, 3, 1 ]
+gap> D := Digraph(IsMutableDigraph, [[2, 3], [3], [4], []]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphTopologicalSort(D);
+[ 4, 3, 2, 1 ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -665,16 +769,21 @@ gap> DigraphTopologicalSort(gr);
     If <A>digraph</A> is not symmetric or has multiple edges then this
     attribute returns <K>fail</K>.
     <Example><![CDATA[
-gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
-gap> DigraphDegeneracy(gr);
+gap> D := DigraphSymmetricClosure(ChainDigraph(5));;
+gap> DigraphDegeneracy(D);
 1
-gap> gr := CompleteDigraph(5);;
-gap> DigraphDegeneracy(gr);
+gap> D := CompleteDigraph(5);;
+gap> DigraphDegeneracy(D);
 4
-gap> gr := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);
+gap> D := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);
 <immutable digraph with 6 vertices, 10 edges>
-gap> DigraphDegeneracy(gr);
-1]]></Example>
+gap> DigraphDegeneracy(D);
+1
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 10, 3);
+<mutable digraph with 20 vertices, 60 edges>
+gap> DigraphDegeneracy(D);
+3
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -698,16 +807,21 @@ gap> DigraphDegeneracy(gr);
     If <C>DigraphDegeneracy(</C><A>digraph</A><C>)</C> returns <K>fail</K>,
     then this attribute returns <K>fail</K>.
     <Example><![CDATA[
-gap> gr := DigraphSymmetricClosure(ChainDigraph(5));;
-gap> DigraphDegeneracyOrdering(gr);
+gap> D := DigraphSymmetricClosure(ChainDigraph(5));;
+gap> DigraphDegeneracyOrdering(D);
 [ 5, 4, 3, 2, 1 ]
-gap> gr := CompleteDigraph(5);;
-gap> DigraphDegeneracyOrdering(gr);
+gap> D := CompleteDigraph(5);;
+gap> DigraphDegeneracyOrdering(D);
 [ 5, 4, 3, 2, 1 ]
-gap> gr := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);
+gap> D := Digraph([[1], [2, 4, 5], [3, 4], [2, 3, 4], [2], []]);
 <immutable digraph with 6 vertices, 10 edges>
-gap> DigraphDegeneracyOrdering(gr);
-[ 1, 6, 5, 2, 4, 3 ]]]></Example>
+gap> DigraphDegeneracyOrdering(D);
+[ 1, 6, 5, 2, 4, 3 ]
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 3, 1);
+<mutable digraph with 6 vertices, 18 edges>
+gap> DigraphDegeneracyOrdering(D);
+[ 6, 5, 4, 1, 3, 2 ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -733,14 +847,18 @@ gap> DigraphDegeneracyOrdering(gr);
     algorithm, and has complexity <M>O(n^3)</M>.
 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 2], [3], [1, 2], [4]]);
+gap> D := Digraph([[1, 2], [3], [1, 2], [4]]);
 <immutable digraph with 4 vertices, 6 edges>
-gap> mat := DigraphShortestDistances(gr);;
+gap> mat := DigraphShortestDistances(D);;
 gap> PrintArray(mat);
 [ [     0,     1,     2,  fail ],
   [     2,     0,     1,  fail ],
   [     1,     1,     0,  fail ],
   [  fail,  fail,  fail,     0 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphShortestDistances(D);
+[ [ 0, 1, 2 ], [ 2, 0, 1 ], [ 1, 2, 0 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -762,16 +880,20 @@ gap> PrintArray(mat);
 
     See <Ref Attr="DigraphShortestDistances"/>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[2], [3], [4, 5], [5], [1, 2, 3, 4, 5]]);
+gap> D := Digraph([[2], [3], [4, 5], [5], [1, 2, 3, 4, 5]]);
 <immutable digraph with 5 vertices, 10 edges>
-gap> DigraphDiameter(gr);
+gap> DigraphDiameter(D);
 3
-gap> gr := ChainDigraph(2);
+gap> D := ChainDigraph(2);
 <immutable chain digraph with 2 vertices>
-gap> DigraphDiameter(gr);
+gap> DigraphDiameter(D);
 fail
-gap> IsStronglyConnectedDigraph(gr);
+gap> IsStronglyConnectedDigraph(D);
 false
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 6, 2);
+<mutable digraph with 12 vertices, 36 edges>
+gap> DigraphDiameter(D);
+4
 ]]></Example>
   </Description>
 </ManSection>
@@ -802,18 +924,22 @@ false
 
     For symmetric digraphs, see also <Ref Attr="DigraphUndirectedGirth"/>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[1], [1]]);
+gap> D := Digraph([[1], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
-gap> DigraphGirth(gr);
+gap> DigraphGirth(D);
 1
-gap> gr := Digraph([[2, 3], [3], [4], []]);
+gap> D := Digraph([[2, 3], [3], [4], []]);
 <immutable digraph with 4 vertices, 4 edges>
-gap> DigraphGirth(gr);
+gap> DigraphGirth(D);
 infinity
-gap> gr := Digraph([[2, 3], [3], [4], [1]]);
+gap> D := Digraph([[2, 3], [3], [4], [1]]);
 <immutable digraph with 4 vertices, 5 edges>
-gap> DigraphGirth(gr);
+gap> DigraphGirth(D);
 3
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 6, 2);
+<mutable digraph with 12 vertices, 36 edges>
+gap> DigraphGirth(D);
+2
 ]]></Example>
   </Description>
 </ManSection>
@@ -839,18 +965,24 @@ gap> DigraphGirth(gr);
 
     See also <Ref Attr="DigraphGirth"/>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[2], [3, 1], [1]]);
+gap> D := Digraph([[2], [3, 1], [1]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> DigraphOddGirth(gr);
+gap> DigraphOddGirth(D);
 3
-gap> gr := CycleDigraph(4);
+gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>
-gap> DigraphOddGirth(gr);
+gap> DigraphOddGirth(D);
 infinity
-gap> gr := Digraph([[2], [3], [], [3], [4]]);
+gap> D := Digraph([[2], [3], [], [3], [4]]);
 <immutable digraph with 5 vertices, 4 edges>
-gap> DigraphOddGirth(gr);
+gap> DigraphOddGirth(D);
 infinity
+gap> D := CycleDigraph(IsMutableDigraph, 4);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphDisjointUnion(D, CycleDigraph(5));
+<mutable digraph with 9 vertices, 9 edges>
+gap> DigraphOddGirth(D);
+5
 ]]></Example>
   </Description>
 </ManSection>
@@ -873,18 +1005,22 @@ infinity
     If <A>digraph</A> has no cycles, then this function will return
     <K>infinity</K>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[2, 4], [1, 3], [2, 4], [1, 3]]);
+gap> D := Digraph([[2, 4], [1, 3], [2, 4], [1, 3]]);
 <immutable digraph with 4 vertices, 8 edges>
-gap> DigraphUndirectedGirth(gr);
+gap> DigraphUndirectedGirth(D);
 4
-gap> gr := Digraph([[2], [1, 3], [2]]);
+gap> D := Digraph([[2], [1, 3], [2]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> DigraphUndirectedGirth(gr);
+gap> DigraphUndirectedGirth(D);
 infinity
-gap> gr := Digraph([[1], [], [4], [3]]);
+gap> D := Digraph([[1], [], [4], [3]]);
 <immutable digraph with 4 vertices, 3 edges>
-gap> DigraphUndirectedGirth(gr);
+gap> DigraphUndirectedGirth(D);
 1
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 9, 2);
+<mutable digraph with 18 vertices, 54 edges>
+gap> DigraphUndirectedGirth(D);
+5
 ]]></Example>
   </Description>
 </ManSection>
@@ -916,13 +1052,18 @@ gap> DigraphUndirectedGirth(gr);
 <Example><![CDATA[
 gap> ArticulationPoints(CycleDigraph(5));
 [  ]
-gap> digraph := Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]);;
-gap> ArticulationPoints(digraph);
+gap> D := Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]);;
+gap> ArticulationPoints(D);
 [ 2, 1 ]
 gap> ArticulationPoints(ChainDigraph(5));
 [ 4, 3, 2 ]
 gap> ArticulationPoints(NullDigraph(5));
-[  ]]]></Example>
+[  ]
+gap> D := ChainDigraph(IsMutableDigraph, 4);
+<mutable digraph with 4 vertices, 3 edges>
+gap> ArticulationPoints(D);
+[ 3, 2 ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -957,21 +1098,26 @@ gap> ArticulationPoints(NullDigraph(5));
     list to represent the circuit.  <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);
+gap> D := Digraph([[], [3], [2, 4], [5, 4], [4]]);
 <immutable digraph with 5 vertices, 6 edges>
-gap> DigraphAllSimpleCircuits(gr);
+gap> DigraphAllSimpleCircuits(D);
 [ [ 4 ], [ 4, 5 ], [ 2, 3 ] ]
-gap> gr := ChainDigraph(10);;
-gap> DigraphAllSimpleCircuits(gr);
+gap> D := ChainDigraph(10);;
+gap> DigraphAllSimpleCircuits(D);
 [  ]
-gap> gr := Digraph([[3], [1], [1]]);
+gap> D := Digraph([[3], [1], [1]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> DigraphAllSimpleCircuits(gr);
+gap> DigraphAllSimpleCircuits(D);
 [ [ 1, 3 ] ]
-gap> gr := Digraph([[1, 1]]);
+gap> D := Digraph([[1, 1]]);
 <immutable multidigraph with 1 vertex, 2 edges>
-gap> DigraphAllSimpleCircuits(gr);
-[ [ 1 ] ]]]></Example>
+gap> DigraphAllSimpleCircuits(D);
+[ [ 1 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphAllSimpleCircuits(D);
+[ [ 1, 2, 3 ] ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -997,15 +1143,20 @@ gap> DigraphAllSimpleCircuits(gr);
     length, then this attribute returns one of them.<P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);;
-gap> DigraphLongestSimpleCircuit(gr);
+gap> D := Digraph([[], [3], [2, 4], [5, 4], [4]]);;
+gap> DigraphLongestSimpleCircuit(D);
 [ 4, 5 ]
-gap> gr := ChainDigraph(10);;
-gap> DigraphLongestSimpleCircuit(gr);
+gap> D := ChainDigraph(10);;
+gap> DigraphLongestSimpleCircuit(D);
 fail
-gap> gr := Digraph([[3], [1], [1, 4], [1, 1]]);;
-gap> DigraphLongestSimpleCircuit(gr);
-[ 1, 3, 4 ]]]></Example>
+gap> D := Digraph([[3], [1], [1, 4], [1, 1]]);;
+gap> DigraphLongestSimpleCircuit(D);
+[ 1, 3, 4 ]
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 4, 1);
+<mutable digraph with 8 vertices, 24 edges>
+gap> DigraphLongestSimpleCircuit(D);
+[ 1, 2, 3, 4, 8, 7, 6, 5 ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1028,22 +1179,26 @@ gap> DigraphLongestSimpleCircuit(gr);
     <Ref Oper="DigraphMonomorphism"/>.
 
     <Example><![CDATA[
-gap> g := Digraph([[]]);
+gap> D := Digraph([[]]);
 <immutable empty digraph with 1 vertex>
-gap> HamiltonianPath(g);
+gap> HamiltonianPath(D);
 [ 1 ]
-gap> g := Digraph([[2], [1]]);
+gap> D := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianPath(D);
 [ 1, 2 ]
-gap> g := Digraph([[3], [], [2]]);
+gap> D := Digraph([[3], [], [2]]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianPath(D);
 fail
-gap> g := Digraph([[2], [3], [1]]);
+gap> D := Digraph([[2], [3], [1]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianPath(D);
 [ 1, 2, 3 ]
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 5, 2);
+<mutable digraph with 10 vertices, 30 edges>
+gap> HamiltonianPath(D);
+fail
 ]]></Example>
   </Description>
 </ManSection>
@@ -1065,20 +1220,24 @@ gap> HamiltonianPath(g);
     A digraph with a period of <M>1</M> is said to be <E>aperiodic</E>.  See
     <Ref Prop="IsAperiodicDigraph"/>. <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);
+gap> D := Digraph([[6], [1], [2], [3], [4, 4], [5]]);
 <immutable multidigraph with 6 vertices, 7 edges>
-gap> DigraphPeriod(gr);
+gap> DigraphPeriod(D);
 6
-gap> gr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
+gap> D := Digraph([[2], [3, 5], [4], [5], [1, 2]]);
 <immutable digraph with 5 vertices, 7 edges>
-gap> DigraphPeriod(gr);
+gap> DigraphPeriod(D);
 1
-gap> gr := ChainDigraph(2);
+gap> D := ChainDigraph(2);
 <immutable chain digraph with 2 vertices>
-gap> DigraphPeriod(gr);
+gap> DigraphPeriod(D);
 0
-gap> IsAcyclicDigraph(gr);
+gap> IsAcyclicDigraph(D);
 true
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 5, 2);
+<mutable digraph with 10 vertices, 30 edges>
+gap> DigraphPeriod(D);
+1
 ]]></Example>
   </Description>
 </ManSection>
@@ -1094,16 +1253,21 @@ true
     at which there is a loop. See <Ref Prop="DigraphHasLoops"/>. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([[2], [3], []]);
+gap> D := Digraph([[2], [3], []]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> DigraphHasLoops(gr);
+gap> DigraphHasLoops(D);
 false
-gap> DigraphLoops(gr);
+gap> DigraphLoops(D);
 [  ]
-gap> gr := Digraph([[3, 5], [1], [2, 4, 3], [4], [2, 1]]);
+gap> D := Digraph([[3, 5], [1], [2, 4, 3], [4], [2, 1]]);
 <immutable digraph with 5 vertices, 9 edges>
-gap> DigraphLoops(gr);
-[ 3, 4 ]]]></Example>
+gap> DigraphLoops(D);
+[ 3, 4 ]
+gap> D := Digraph(IsMutableDigraph, [[1], [1]]);
+<mutable digraph with 2 vertices, 2 edges>
+gap> DigraphLoops(D);
+[ 1 ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1137,7 +1301,12 @@ gap> ChromaticNumber(CompleteBipartiteDigraph(5, 5));
 gap> ChromaticNumber(Digraph([[], [3], [5], [2, 3], [4]]));
 3
 gap> ChromaticNumber(NullDigraph(0));
-0]]></Example>
+0
+gap> D := PetersenGraph(IsMutableDigraph);
+<mutable digraph with 10 vertices, 30 edges>
+gap> ChromaticNumber(D);
+3
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1162,18 +1331,23 @@ gap> ChromaticNumber(NullDigraph(0));
     bicomponents of bipartite if and only if the digraph is connected. See <Ref
       Prop="IsConnectedDigraph"/> for more information.
     <Example><![CDATA[
-gap> gr := CycleDigraph(3);
+gap> D := CycleDigraph(3);
 <immutable cycle digraph with 3 vertices>
-gap> DigraphBicomponents(gr);
+gap> DigraphBicomponents(D);
 fail
-gap> gr := ChainDigraph(5);
+gap> D := ChainDigraph(5);
 <immutable chain digraph with 5 vertices>
-gap> DigraphBicomponents(gr);
+gap> DigraphBicomponents(D);
 [ [ 1, 3, 5 ], [ 2, 4 ] ]
-gap> gr := Digraph([[5], [1, 4], [5], [5], []]);
+gap> D := Digraph([[5], [1, 4], [5], [5], []]);
 <immutable digraph with 5 vertices, 5 edges>
-gap> DigraphBicomponents(gr);
-[ [ 1, 3, 4 ], [ 2, 5 ] ]]]></Example>
+gap> DigraphBicomponents(D);
+[ [ 1, 3, 4 ], [ 2, 5 ] ]
+gap> D := CompleteBipartiteDigraph(IsMutableDigraph, 2, 3);
+<mutable digraph with 5 vertices, 12 edges>
+gap> DigraphBicomponents(D);
+[ [ 1, 2 ], [ 3, 4, 5 ] ]
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1199,10 +1373,11 @@ gap> D := PetersenGraph();
 <immutable digraph with 10 vertices, 30 edges>
 gap> DigraphCore(D);
 [ 1 .. 10 ]
-gap> D := Digraph([[3], [3], [4], [5], [2]]);
-<immutable digraph with 5 vertices, 5 edges>
+gap> D := Digraph(IsMutableDigraph, [[3], [3], [4], [5], [2]]);
+<mutable digraph with 5 vertices, 5 edges>
 gap> DigraphCore(D);
-[ 2, 3, 4, 5 ]]]></Example>
+[ 2, 3, 4, 5 ]
+]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -1216,19 +1391,23 @@ gap> DigraphCore(D);
      <A>digraph</A>. That is it returns the characteristic polynomial
       of the adjacency matrix of the digraph <A>digraph</A>
     <Example><![CDATA[
-gap> gr := Digraph([
+gap> D := Digraph([
 > [2, 2, 2], [1, 3, 6, 8, 9, 10], [4, 6, 8],
 > [1, 2, 3, 9], [3, 3], [3, 5, 6, 10], [1, 2, 7],
 > [1, 2, 3, 10, 5, 6, 10], [1, 3, 4, 5, 8, 10],
 > [2, 3, 4, 6, 7, 10]]);
 <immutable multidigraph with 10 vertices, 44 edges>
-gap> CharacteristicPolynomial(gr);
+gap> CharacteristicPolynomial(D);
 x_1^10-3*x_1^9-7*x_1^8-x_1^7+14*x_1^6+x_1^5-26*x_1^4+51*x_1^3-10*x_1^2\
 +18*x_1-30
-gap> gr := CompleteDigraph(5);
+gap> D := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>
-gap> CharacteristicPolynomial(gr);
+gap> CharacteristicPolynomial(D);
 x_1^5-10*x_1^3-20*x_1^2-15*x_1-4
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> CharacteristicPolynomial(D);
+x_1^3-1
 ]]></Example>
   </Description>
 </ManSection>
@@ -1248,15 +1427,19 @@ x_1^5-10*x_1^3-20*x_1^2-15*x_1-4
     <Ref Oper="IsUndirectedSpanningTree" /> for more information. 
 
     <Example><![CDATA[
-gap> gr := CompleteDigraph(5);
+gap> D := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>
-gap> NrSpanningTrees(gr);
+gap> NrSpanningTrees(D);
 125
-gap> gr := DigraphSymmetricClosure(CycleDigraph(24));;
-gap> NrSpanningTrees(gr);
+gap> D := DigraphSymmetricClosure(CycleDigraph(24));;
+gap> NrSpanningTrees(D);
 24
 gap> NrSpanningTrees(EmptyDigraph(0));
 0
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 9, 2);
+<mutable digraph with 18 vertices, 54 edges>
+gap> NrSpanningTrees(D);
+1134225
 ]]></Example>
   </Description>
 </ManSection>
@@ -1275,9 +1458,9 @@ gap> NrSpanningTrees(EmptyDigraph(0));
     then the same &GAP; object will be returned as before.
 
     <Example><![CDATA[
-gap> d := Digraph([[1, 2], [3], []]);
+gap> D := Digraph([[1, 2], [3], []]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> g := AsGraph(d);
+gap> G := AsGraph(D);
 rec( adjacencies := [ [ 1, 2 ], [ 3 ], [  ] ], group := Group(()), 
   isGraph := true, names := [ 1 .. 3 ], order := 3, 
   representatives := [ 1, 2, 3 ], schreierVector := [ -1, -2, -3 ] )
@@ -1303,17 +1486,19 @@ rec( adjacencies := [ [ 1, 2 ], [ 3 ], [  ] ], group := Group(()),
     vertex <C>i</C> in <A>digraph</A>.
 
     <Example><![CDATA[
-gap> gr := Digraph([[1], [3], [2]]);
+gap> D := Digraph([[1], [3], [2]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> gr := CycleDigraph(3);
-<immutable cycle digraph with 3 vertices>
-gap> AsTransformation(gr);
+gap> AsTransformation(D);
+Transformation( [ 1, 3, 2 ] )
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> AsTransformation(D);
 Transformation( [ 2, 3, 1 ] )
 gap> AsPermutation(last);
 (1,2,3)
-gap> gr := Digraph([[2, 3], [], []]);
+gap> D := Digraph([[2, 3], [], []]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> AsTransformation(gr);
+gap> AsTransformation(D);
 fail]]></Example>
   </Description>
 </ManSection>
@@ -1325,21 +1510,34 @@ fail]]></Example>
   <Attr Name="DigraphReverseAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, then this operation returns a digraph
-    constructed from <A>digraph</A> by reversing the orientation of every edge.
+    The reverse of a digraph is the digraph formed by reversing the orientation
+    of each of its edges, i.e. for every edge <C>[i, j]</C> of a digraph, the
+    reverse contains the corresponding edge <C>[j, i]</C>.<P/>
+
+    <C>DigraphReverse</C> returns the reverse of the digraph <A>digraph</A>. If
+    <A>digraph</A> is immutable, then a new immutable digraph is returned. Otherwise,
+    the mutable digraph <A>digraph</A> is changed in-place into its reverse.
     <Example><![CDATA[
-gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
+gap> D := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
 <immutable digraph with 5 vertices, 11 edges>
-gap> DigraphReverse(gr);
+gap> DigraphReverse(D);
 <immutable digraph with 5 vertices, 11 edges>
 gap> OutNeighbours(last);
 [ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ]
-gap> gr := Digraph([[2, 4], [1], [4], [3, 4]]);
+gap> D := Digraph([[2, 4], [1], [4], [3, 4]]);
 <immutable digraph with 4 vertices, 6 edges>
-gap> DigraphEdges(gr);
+gap> DigraphEdges(D);
 [ [ 1, 2 ], [ 1, 4 ], [ 2, 1 ], [ 3, 4 ], [ 4, 3 ], [ 4, 4 ] ]
-gap> DigraphEdges(DigraphReverse(gr));
+gap> DigraphEdges(DigraphReverse(D));
 [ [ 1, 2 ], [ 2, 1 ], [ 3, 4 ], [ 4, 1 ], [ 4, 3 ], [ 4, 4 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> OutNeighbours(D);
+[ [ 2 ], [ 3 ], [ 1 ] ]
+gap> DigraphReverse(D);
+<mutable digraph with 3 vertices, 3 edges>
+gap> OutNeighbours(D);
+[ [ 3 ], [ 1 ], [ 2 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -1351,19 +1549,28 @@ gap> DigraphEdges(DigraphReverse(gr));
   <Attr Name="DigraphDualAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph without multiple edges, then this
-    returns the <E>dual</E> of <A>digraph</A>. The <E>dual</E> is sometimes
-    called the <E>complement</E>.<P/>
-
     The <E>dual</E> of <A>digraph</A> has the same vertices as <A>digraph</A>,
     and there is an edge in the dual from <C>i</C> to <C>j</C>
     whenever there is no edge from <C>i</C> to <C>j</C> in <A>digraph</A>.
+    The <E>dual</E> is sometimes called the <E>complement</E>.<P/>
+
+    <C>DigraphDual</C> returns the dual of the digraph <A>digraph</A>. If
+    <A>digraph</A> is an immutable digraph, then a new immutable digraph is
+    returned. Otherwise, the mutable digraph <A>digraph</A> is changed in-place
+    into its dual.
     <Example><![CDATA[
-gap> gr := Digraph([[2, 3], [], [4, 6], [5], [],
+gap> D := Digraph([[2, 3], [], [4, 6], [5], [],
 > [7, 8, 9], [], [], []]);
 <immutable digraph with 9 vertices, 8 edges>
-gap> DigraphDual(gr);
-<immutable digraph with 9 vertices, 73 edges>]]></Example>
+gap> DigraphDual(D);
+<immutable digraph with 9 vertices, 73 edges>
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphDual(D);
+<mutable digraph with 3 vertices, 6 edges>
+gap> D;
+<mutable digraph with 3 vertices, 6 edges>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1385,22 +1592,33 @@ gap> DigraphDual(gr);
     digraph can be matched to the corresponding vertex in <A>digraph</A> by
     using the label.<P/>
 
-    The ordering of the vertices is preserved.
+    The ordering of the vertices is preserved.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the isolated vertices of the mutable digraph <A>digraph</A> are
+    removed in-place.
     <Example><![CDATA[
-gap> d := Digraph([[1, 2], [], [], [1, 4], []]);
+gap> D := Digraph([[1, 2], [], [], [1, 4], []]);
 <immutable digraph with 5 vertices, 4 edges>
-gap> r := ReducedDigraph(d);
+gap> R := ReducedDigraph(D);
 <immutable digraph with 3 vertices, 4 edges>
-gap> OutNeighbours(r);
+gap> OutNeighbours(R);
 [ [ 1, 2 ], [  ], [ 1, 3 ] ]
-gap> DigraphEdges(d);
+gap> DigraphEdges(D);
 [ [ 1, 1 ], [ 1, 2 ], [ 4, 1 ], [ 4, 4 ] ]
-gap> DigraphEdges(r);
+gap> DigraphEdges(R);
 [ [ 1, 1 ], [ 1, 2 ], [ 3, 1 ], [ 3, 3 ] ]
-gap> DigraphVertexLabel(r, 3);
+gap> DigraphVertexLabel(R, 3);
 4
-gap> DigraphVertexLabel(r, 2);
-2]]></Example>
+gap> DigraphVertexLabel(R, 2);
+2
+gap> D := Digraph(IsMutableDigraph, [[], [3], [2]]);
+<mutable digraph with 3 vertices, 2 edges>
+gap> ReducedDigraph(D);
+<mutable digraph with 2 vertices, 2 edges>
+gap> D;
+<mutable digraph with 2 vertices, 2 edges>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1411,18 +1629,27 @@ gap> DigraphVertexLabel(r, 2);
   <Attr Name="DigraphRemoveAllMultipleEdgesAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, then this operation returns a new
+    If <A>digraph</A> is a digraph, then this operation returns a
     digraph  constructed from <A>digraph</A> by removing all multiple edges.
     The result is the largest subdigraph of <A>digraph</A> which does not
-    contain multiple edges. <P/>
+    contain multiple edges.<P/>
 
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the multiple edges of the mutable digraph <A>digraph</A> are
+    removed in-place.
     <Example><![CDATA[
-gap> gr1 := Digraph([[1, 2, 3, 2], [1, 1, 3], [2, 2, 2]]);
+gap> D1 := Digraph([[1, 2, 3, 2], [1, 1, 3], [2, 2, 2]]);
 <immutable multidigraph with 3 vertices, 10 edges>
-gap> gr2 := DigraphRemoveAllMultipleEdges(gr1);
+gap> D2 := DigraphRemoveAllMultipleEdges(D1);
 <immutable digraph with 3 vertices, 6 edges>
-gap> OutNeighbours(gr2);
+gap> OutNeighbours(D2);
 [ [ 1, 2, 3 ], [ 1, 3 ], [ 2 ] ]
+gap> D := Digraph(IsMutableDigraph, [[2, 2], [1]]);
+<mutable multidigraph with 2 vertices, 3 edges>
+gap> DigraphRemoveAllMultipleEdges(D);
+<mutable digraph with 2 vertices, 2 edges>
+gap> D;
+<mutable digraph with 2 vertices, 2 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1434,23 +1661,33 @@ gap> OutNeighbours(gr2);
   <Attr Name="DigraphAddAllLoopsAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    For a digraph <A>digraph</A> this operation return a copy of <A>digraph</A>
-    such that a loop is added for every vertex which did not have a loop in
-    <A>digraph</A>.
+    For a digraph <A>digraph</A> this operation returns a new digraph constructed
+    from <A>digraph</A>, such that a loop is added for every vertex which did not
+    have a loop in <A>digraph</A>.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the loops are added to the loopless vertices of the mutable digraph
+    <A>digraph</A> in-place.
     <Example><![CDATA[
-gap> gr := EmptyDigraph(13);
+gap> D := EmptyDigraph(13);
 <immutable empty digraph with 13 vertices>
-gap> gr := DigraphAddAllLoops(gr);
+gap> D := DigraphAddAllLoops(D);
 <immutable reflexive digraph with 13 vertices, 13 edges>
-gap> OutNeighbours(gr);
+gap> OutNeighbours(D);
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], 
   [ 10 ], [ 11 ], [ 12 ], [ 13 ] ]
-gap> gr := Digraph([[1, 2, 3], [1, 3], [1]]);
+gap> D := Digraph([[1, 2, 3], [1, 3], [1]]);
 <immutable digraph with 3 vertices, 6 edges>
-gap> gr := DigraphAddAllLoops(gr);
+gap> D := DigraphAddAllLoops(D);
 <immutable reflexive digraph with 3 vertices, 8 edges>
-gap> OutNeighbours(gr);
+gap> OutNeighbours(D);
 [ [ 1, 2, 3 ], [ 1, 3, 2 ], [ 1, 3 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphAddAllLoops(D);
+<mutable digraph with 3 vertices, 6 edges>
+gap> D;
+<mutable digraph with 3 vertices, 6 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1462,14 +1699,24 @@ gap> OutNeighbours(gr);
   <Attr Name="DigraphRemoveLoopsAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph, then this operation returns a new
+    If <A>digraph</A> is a digraph, then this operation returns a
     digraph  constructed from <A>digraph</A> by removing every loop. A loop
-    is an edge with equal source and range.
+    is an edge with equal source and range.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the loops are removed from the mutable digraph <A>digraph</A>
+    in-place.
     <Example><![CDATA[
-gap> gr := Digraph([[1, 2, 4], [1, 4], [3, 4], [1, 4, 5], [1, 5]]);
+gap> D := Digraph([[1, 2, 4], [1, 4], [3, 4], [1, 4, 5], [1, 5]]);
 <immutable digraph with 5 vertices, 12 edges>
-gap> DigraphRemoveLoops(gr);
+gap> DigraphRemoveLoops(D);
 <immutable digraph with 5 vertices, 8 edges>
+gap> D := Digraph(IsMutableDigraph, [[1, 2], [1]]);
+<mutable digraph with 2 vertices, 3 edges>
+gap> DigraphRemoveLoops(D);
+<mutable digraph with 2 vertices, 2 edges>
+gap> D;
+<mutable digraph with 2 vertices, 2 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1489,23 +1736,32 @@ gap> DigraphRemoveLoops(gr);
     <Ref Attr="AdjacencyMatrix"/> is symmetric. For a digraph with multiple
     edges this means that there are the same number of edges from a vertex
     <C>u</C> to a vertex <C>v</C> as there are from <C>v</C> to <C>u</C>; 
-    see <Ref Prop="IsSymmetricDigraph"/>.
+    see <Ref Prop="IsSymmetricDigraph"/>.<P/>
 
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into its
+    symmetric closure.
 <Example><![CDATA[
-gap> gr := Digraph([[1, 2, 3], [2, 4], [1], [3, 4]]);
+gap> D := Digraph([[1, 2, 3], [2, 4], [1], [3, 4]]);
 <immutable digraph with 4 vertices, 8 edges>
-gap> gr1 := DigraphSymmetricClosure(gr);
+gap> D := DigraphSymmetricClosure(D);
 <immutable symmetric digraph with 4 vertices, 11 edges>
-gap> IsSymmetricDigraph(gr1);
+gap> IsSymmetricDigraph(D);
 true
-gap> List(OutNeighbours(gr1), AsSet);
+gap> List(OutNeighbours(D), AsSet);
 [ [ 1, 2, 3 ], [ 1, 2, 4 ], [ 1, 4 ], [ 2, 3, 4 ] ]
-gap> gr := Digraph([[2, 2], [1]]);
+gap> D := Digraph([[2, 2], [1]]);
 <immutable multidigraph with 2 vertices, 3 edges>
-gap> gr1 := DigraphSymmetricClosure(gr);
+gap> D := DigraphSymmetricClosure(D);
 <immutable symmetric multidigraph with 2 vertices, 4 edges>
-gap> OutNeighbours(gr1);
+gap> OutNeighbours(D);
 [ [ 2, 2 ], [ 1, 1 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphSymmetricClosure(D);
+<mutable digraph with 3 vertices, 6 edges>
+gap> D;
+<mutable digraph with 3 vertices, 6 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1528,22 +1784,32 @@ gap> OutNeighbours(gr1);
 
     The digraph returned by <C>MaximalSymmetricSubdigraphWithoutLoops</C> is
     the same, except that loops are removed.<P/>
+    
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into such
+    a digraph described above.<P/>
 
     See <Ref Prop="IsSymmetricDigraph"/>, <Ref Prop="IsMultiDigraph"/>, and
     <Ref Prop="DigraphHasLoops"/> for more information.
     <Example><![CDATA[
-gap> gr := Digraph([[2, 2], [1, 3], [4], [3, 1]]);
+gap> D := Digraph([[2, 2], [1, 3], [4], [3, 1]]);
 <immutable multidigraph with 4 vertices, 7 edges>
-gap> not IsSymmetricDigraph(gr) and IsMultiDigraph(gr);
+gap> not IsSymmetricDigraph(D) and IsMultiDigraph(D);
 true
-gap> OutNeighbours(gr);
+gap> OutNeighbours(D);
 [ [ 2, 2 ], [ 1, 3 ], [ 4 ], [ 3, 1 ] ]
-gap> sym := MaximalSymmetricSubdigraph(gr);
+gap> S := MaximalSymmetricSubdigraph(D);
 <immutable symmetric digraph with 4 vertices, 4 edges>
-gap> IsSymmetricDigraph(sym) and not IsMultiDigraph(sym);
+gap> IsSymmetricDigraph(S) and not IsMultiDigraph(S);
 true
-gap> OutNeighbours(sym);
+gap> OutNeighbours(S);
 [ [ 2 ], [ 1 ], [ 4 ], [ 3 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> MaximalSymmetricSubdigraph(D);
+<mutable empty digraph with 3 vertices>
+gap> D;
+<mutable empty digraph with 3 vertices>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1561,8 +1827,11 @@ gap> OutNeighbours(sym);
     edge list is formed from <A>digraph</A> by ignoring the multiplicity of
     edges, and by having either an edge from the vertex <C>u</C> to the vertex
     <C>v</C>, or the edge from <C>v</C> to <C>u</C> (but not both) whenever
-    both edges belong to <A>digraph</A>.
-    <P/>
+    both edges belong to <A>digraph</A>.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into
+    such a digraph described above.<P/>
 
     See <Ref Prop="IsAntisymmetricDigraph"/> for more information.
     <Example><![CDATA[
@@ -1578,6 +1847,12 @@ gap> IsAntiSymmetricDigraph(D) and not IsMultiDigraph(D);
 true
 gap> OutNeighbours(D);
 [ [ 2 ], [ 3 ], [ 4 ], [ 1 ] ]
+gap> D := Digraph(IsMutableDigraph, [[2], [1]]);
+<mutable digraph with 2 vertices, 2 edges>
+gap> MaximalAntiSymmetricSubdigraph(D);
+<mutable digraph with 2 vertices, 1 edge>
+gap> D;
+<mutable digraph with 2 vertices, 1 edge>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1592,14 +1867,17 @@ gap> OutNeighbours(D);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph with no multiple edges, then these
-    attributes return the (reflexive) transitive closure of <A>digraph</A>.
-    <P/>
+    attributes return the (reflexive) transitive closure of <A>digraph</A>.<P/>
 
     A digraph is <E>reflexive</E> if it has a loop at every vertex, and it is
     <E>transitive</E> if whenever <C>[i,j]</C> and <C>[j,k]</C> are edges of
     <A>digraph</A>, <C>[i,k]</C> is also an edge.  The <E>(reflexive)
       transitive closure</E> of a digraph <A>digraph</A> is the least
-    (reflexive and) transitive digraph containing <A>digraph</A>. <P/>
+    (reflexive and) transitive digraph containing <A>digraph</A>.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into its
+    (reflexive) transitive closure.<P/>
 
     Let <M>n</M> be the number of vertices of <A>digraph</A>, and let
     <M>m</M> be the number of edges.  For an arbitrary digraph, these
@@ -1608,26 +1886,32 @@ gap> OutNeighbours(D);
 
     However, for a topologically sortable digraph [see <Ref
       Attr="DigraphTopologicalSort"/>], these attributes will use methods
-    with complexity <M>O(m + n + m \cdot n)</M> when this is faster.  <P/>
+    with complexity <M>O(m + n + m \cdot n)</M> when this is faster.<P/>
 
     <Example><![CDATA[
-gap> gr := DigraphFromDiSparse6String(".H`eOWR`Ul^");
+gap> D := DigraphFromDiSparse6String(".H`eOWR`Ul^");
 <immutable digraph with 9 vertices, 8 edges>
-gap> IsReflexiveDigraph(gr) or IsTransitiveDigraph(gr);
+gap> IsReflexiveDigraph(D) or IsTransitiveDigraph(D);
 false
-gap> OutNeighbours(gr);
+gap> OutNeighbours(D);
 [ [ 4, 6 ], [ 1, 3 ], [  ], [ 5 ], [  ], [ 7, 8, 9 ], [  ], [  ], 
   [  ] ]
-gap> trans := DigraphTransitiveClosure(gr);
+gap> T := DigraphTransitiveClosure(D);
 <immutable transitive digraph with 9 vertices, 18 edges>
-gap> OutNeighbours(trans);
+gap> OutNeighbours(T);
 [ [ 4, 6, 5, 7, 8, 9 ], [ 1, 3, 4, 5, 6, 7, 8, 9 ], [  ], [ 5 ], 
   [  ], [ 7, 8, 9 ], [  ], [  ], [  ] ]
-gap> reflextrans := DigraphReflexiveTransitiveClosure(gr);
+gap> RT := DigraphReflexiveTransitiveClosure(D);
 <immutable preorder digraph with 9 vertices, 27 edges>
-gap> OutNeighbours(reflextrans);
+gap> OutNeighbours(RT);
 [ [ 4, 6, 5, 7, 8, 9, 1 ], [ 1, 3, 4, 5, 6, 7, 8, 9, 2 ], [ 3 ], 
   [ 5, 4 ], [ 5 ], [ 7, 8, 9, 6 ], [ 7 ], [ 8 ], [ 9 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphReflexiveTransitiveClosure(D);
+<mutable digraph with 3 vertices, 9 edges>
+gap> D;
+<mutable digraph with 3 vertices, 9 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1644,15 +1928,18 @@ gap> OutNeighbours(reflextrans);
     If <A>digraph</A> is a topologically sortable digraph
     [see <Ref Attr="DigraphTopologicalSort"/>]
     with no multiple edges, then these  operations return the
-    (reflexive) transitive reduction of <A>digraph</A>.
-    <P/>
+    (reflexive) transitive reduction of <A>digraph</A>.<P/>
 
     The (reflexive) transitive reduction of such a digraph is the unique
     least subgraph such that the (reflexive) transitive closure of the
     subgraph is equal to the (reflexive) transitive closure of <A>digraph</A>
     [see <Ref Oper="DigraphReflexiveTransitiveClosure"/>].
     In order words, it is the least subgraph of <A>digraph</A> which
-    retains the same reachability as <A>digraph</A>. <P/>
+    retains the same reachability as <A>digraph</A>.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into its
+    (reflexive) transitive reduction.<P/>
 
     Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
         <M>m</M> be the number of edges.
@@ -1660,27 +1947,33 @@ gap> OutNeighbours(reflextrans);
     use methods with complexity <M>O(m + n + m \cdot n)</M>.
     <P/>
     <Example><![CDATA[
-gap> gr := Digraph([[1, 2, 3], [3], [3]]);;
-gap> DigraphHasLoops(gr);
+gap> D := Digraph([[1, 2, 3], [3], [3]]);;
+gap> DigraphHasLoops(D);
 true
-gap> gr1 := DigraphReflexiveTransitiveReduction(gr);
+gap> D1 := DigraphReflexiveTransitiveReduction(D);
 <immutable digraph with 3 vertices, 2 edges>
-gap> DigraphHasLoops(gr1);
+gap> DigraphHasLoops(D1);
 false
-gap> OutNeighbours(gr1);
+gap> OutNeighbours(D1);
 [ [ 2 ], [ 3 ], [  ] ]
-gap> gr2 := DigraphTransitiveReduction(gr);
+gap> D2 := DigraphTransitiveReduction(D);
 <immutable digraph with 3 vertices, 4 edges>
-gap> DigraphHasLoops(gr2);
+gap> DigraphHasLoops(D2);
 true
-gap> OutNeighbours(gr2);
+gap> OutNeighbours(D2);
 [ [ 2, 1 ], [ 3 ], [ 3 ] ]
-gap> DigraphReflexiveTransitiveClosure(gr)
->  = DigraphReflexiveTransitiveClosure(gr1);
+gap> DigraphReflexiveTransitiveClosure(D)
+>  = DigraphReflexiveTransitiveClosure(D1);
 true
-gap> DigraphTransitiveClosure(gr)
->  = DigraphTransitiveClosure(gr2);
+gap> DigraphTransitiveClosure(D)
+>  = DigraphTransitiveClosure(D2);
 true
+gap> D := Digraph(IsMutableDigraph, [[1], [1], [1, 2, 3]]);
+<mutable digraph with 3 vertices, 5 edges>
+gap> DigraphReflexiveTransitiveReduction(D);
+<mutable digraph with 3 vertices, 2 edges>
+gap> D;
+<mutable digraph with 3 vertices, 2 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -1698,47 +1991,58 @@ true
     <C>UndirectedSpanningForest</C> returns an undirected spanning forest of
     <A>digraph</A>, otherwise this attribute returns <K>fail</K>. See <Ref
       Oper="IsUndirectedSpanningForest" /> for the definition of an undirected
-    spanning forest. <P/>
+    spanning forest.<P/>
 
     If <A>digraph</A> is a digraph with at least one vertex and whose <Ref
       Oper="MaximalSymmetricSubdigraph"/> is connected (see <Ref
       Prop="IsConnectedDigraph" />), then <C>UndirectedSpanningTree</C> returns
     an undirected spanning tree of <A>digraph</A>, otherwise this attribute
     returns <K>fail</K>.  See <Ref Oper="IsUndirectedSpanningTree" /> for the
-    definition of an undirected spanning tree. <P/>
+    definition of an undirected spanning tree.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into an
+    undirected spanning tree of <A>digraph</A>.<P/>
 
     Note that for a digraph that has an undirected spanning tree, the attribute
     <C>UndirectedSpanningTree</C> returns the same digraph as the attribute
     <C>UndirectedSpanningForest</C>.
 
     <Example><![CDATA[
-gap> gr := Digraph([[1, 2, 1, 3], [1], [4], [3, 4, 3]]);
+gap> D := Digraph([[1, 2, 1, 3], [1], [4], [3, 4, 3]]);
 <immutable multidigraph with 4 vertices, 9 edges>
-gap> UndirectedSpanningTree(gr);
+gap> UndirectedSpanningTree(D);
 fail
-gap> forest := UndirectedSpanningForest(gr);
+gap> forest := UndirectedSpanningForest(D);
 <immutable symmetric digraph with 4 vertices, 4 edges>
 gap> OutNeighbours(forest);
 [ [ 2 ], [ 1 ], [ 4 ], [ 3 ] ]
-gap> IsUndirectedSpanningForest(gr, forest);
+gap> IsUndirectedSpanningForest(D, forest);
 true
 gap> DigraphConnectedComponents(forest).comps;
 [ [ 1, 2 ], [ 3, 4 ] ]
-gap> DigraphConnectedComponents(MaximalSymmetricSubdigraph(gr)).comps;
+gap> DigraphConnectedComponents(MaximalSymmetricSubdigraph(D)).comps;
 [ [ 1, 2 ], [ 3, 4 ] ]
-gap> UndirectedSpanningForest(MaximalSymmetricSubdigraph(gr))
+gap> UndirectedSpanningForest(MaximalSymmetricSubdigraph(D))
 > = forest;
 true
-gap> gr := CompleteDigraph(4);
+gap> D := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
-gap> tree := UndirectedSpanningTree(gr);
+gap> tree := UndirectedSpanningTree(D);
 <immutable symmetric digraph with 4 vertices, 6 edges>
-gap> IsUndirectedSpanningTree(gr, tree);
+gap> IsUndirectedSpanningTree(D, tree);
 true
-gap> tree = UndirectedSpanningForest(gr);
+gap> tree = UndirectedSpanningForest(D);
 true
 gap> UndirectedSpanningForest(EmptyDigraph(0));
-fail]]></Example>
+fail
+gap> D := PetersenGraph(IsMutableDigraph);
+<mutable digraph with 10 vertices, 30 edges>
+gap> UndirectedSpanningTree(D);
+<mutable digraph with 10 vertices, 18 edges>
+gap> D;
+<mutable digraph with 10 vertices, 18 edges>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -1750,13 +2054,15 @@ fail]]></Example>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a symmetric digraph, then
-    <C>DigraphMycielskian</C> returns the Mycielskian of <A>digraph</A>.
-    <P/>
+    <C>DigraphMycielskian</C> returns the Mycielskian of <A>digraph</A>.<P/>
     
     The Mycielskian of a symmetric digraph is a larger symmetric digraph
     constructed from it, which has a larger chromatic number. For further
-    information, see <URL>https://en.wikipedia.org/wiki/Mycielskian</URL>.
-    <P/>
+    information, see <URL>https://en.wikipedia.org/wiki/Mycielskian</URL>.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into
+    its Mycielskian.<P/>
 
     <Example><![CDATA[
 gap> D := CycleDigraph(2);
@@ -1770,7 +2076,14 @@ gap> ChromaticNumber(D);
 gap> D := DigraphMycielskian(D);
 <immutable digraph with 11 vertices, 40 edges>
 gap> ChromaticNumber(D);
-4]]></Example>
+4
+gap> D := CompleteBipartiteDigraph(IsMutable, 2, 3);
+<mutable digraph with 5 vertices, 12 edges>
+gap> DigraphMycielskian(D);
+<mutable digraph with 11 vertices, 46 edges>
+gap> D;
+<mutable digraph with 11 vertices, 46 edges>
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
