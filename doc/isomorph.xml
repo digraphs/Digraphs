@@ -56,6 +56,10 @@
     their generating sets may differ. <P/>
 
     See also <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
+    <P/>
+
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this attribute is recomputed every time it is called. 
 
     <Example><![CDATA[
 gap> G := BlissAutomorphismGroup(JohnsonDigraph(5, 2));;
@@ -84,6 +88,10 @@ gap> Size(G);
     their generating sets may differ. <P/>
 
     See also <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
+    <P/>
+
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this attribute is recomputed every time it is called. 
 
     <Log><![CDATA[
 gap> NautyAutomorphismGroup(JohnsonDigraph(5, 2));
@@ -138,6 +146,10 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7),
     Brendan Mckay and Adolfo Piperno can be used instead; see 
     <Ref Attr="BlissAutomorphismGroup"/>, <Ref Attr="NautyAutomorphismGroup"/>, 
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
+    <P/>
+
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this attribute is recomputed every time it is called. 
 
     <Example><![CDATA[
 gap> johnson := DigraphFromGraph6String("E}lw");
@@ -802,6 +814,10 @@ gap> IsomorphismDigraphs(digraph1, digraph2, [1, 2, 2], [2, 1, 2]);
     Analogously, the attribute <C>NautyCanonicalLabelling</C> returns the
     canonical representative found by applying <Ref
       Attr="NautyCanonicalLabelling" Label="for a digraph"/>.
+    <P/>
+
+    If the argument <A>digraph</A> is mutable, then the return value of
+    this attribute is recomputed every time it is called. 
 
     <Example><![CDATA[
 gap> digraph := Digraph([[1], [2, 3], [3], [1, 2, 3]]);
