@@ -84,27 +84,27 @@ false]]></Example>
     is connected.
 
     <Example><![CDATA[
-gap> gr := CompleteDigraph(4);
+gap> D := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
 gap> tree := Digraph([[3], [4], [1, 4], [2, 3]]);
 <immutable digraph with 4 vertices, 6 edges>
-gap> IsSubdigraph(gr, tree) and IsUndirectedTree(tree);
+gap> IsSubdigraph(D, tree) and IsUndirectedTree(tree);
 true
-gap> IsUndirectedSpanningTree(gr, tree);
+gap> IsUndirectedSpanningTree(D, tree);
 true
 gap> forest := EmptyDigraph(4);
 <immutable empty digraph with 4 vertices>
-gap> IsSubdigraph(gr, forest) and IsUndirectedForest(forest);
+gap> IsSubdigraph(D, forest) and IsUndirectedForest(forest);
 true
-gap> IsUndirectedSpanningForest(gr, forest);
+gap> IsUndirectedSpanningForest(D, forest);
 false
 gap> IsSubdigraph(tree, forest);
 true
-gap> gr := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(2));
+gap> D := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(2));
 <immutable digraph with 4 vertices, 4 edges>
-gap> IsUndirectedTree(gr);
+gap> IsUndirectedTree(D);
 false
-gap> IsUndirectedForest(gr) and IsUndirectedSpanningForest(gr, gr);
+gap> IsUndirectedForest(D) and IsUndirectedSpanningForest(D, D);
 true]]></Example>
   </Description>
 </ManSection>
@@ -116,33 +116,40 @@ true]]></Example>
   <Oper Name="DigraphReverseEdge" Arg="digraph, edge"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph without multiple edges,
-    and <A>edges</A> is either:
-
-    <List>
-      <Item>
-        a list of pairs of vertices of <A>digraph</A>
-        (the entries of each pair corresponding to
-        the source and the range of an edge, respectively),
-      </Item>
-    </List>
-
-    then <C>DigraphReverseEdges</C> returns a new digraph constructed from
+    If <A>digraph</A> is a digraph without multiple edges, and <A>edges</A> is a
+    list of pairs of vertices of <A>digraph</A> (the entries of each pair
+    corresponding to the source and the range of an edge, respectively),
+    then <C>DigraphReverseEdges</C> returns a digraph constructed from
     <A>digraph</A> by reversing the orientation of every edge specified by
-    <A>edges</A>.  If only one edge is to be reversed, then
-    <C>DigraphReverseEdge</C> can be used instead.  In this case, the second
-    argument should just be a single vertex-pair or a single position. <P/>
+    <A>edges</A>. If only one edge is to be reversed, then
+    <C>DigraphReverseEdge</C> can be used instead  In this case, the second
+    argument should just be a single vertex-pair or a single position of an
+    edge with respect to <Ref Attr="DigraphEdges"/>. <P/>
 
     Note that even though <A>digraph</A> cannot have multiple edges, the
     output may have multiple edges. <P/>
+
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the edges
+    are reversed in <A>digraph</A>. If <A>digraph</A> belongs to <Ref
+      Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A> with the
+    specified edges reversed is returned.<P/>
     <Example><![CDATA[
-gap> gr := DigraphFromDiSparse6String(".Tg?i@s?t_e?_qEsC");
+gap> D := DigraphFromDiSparse6String(".Tg?i@s?t_e?_qEsC");
 <immutable digraph with 21 vertices, 8 edges>
-gap> DigraphEdges(gr);
+gap> DigraphEdges(D);
 [ [ 1, 2 ], [ 1, 7 ], [ 1, 8 ], [ 5, 21 ], [ 7, 19 ], [ 9, 1 ], 
   [ 11, 2 ], [ 21, 1 ] ]
-gap> DigraphReverseEdge(gr, [7, 19]);
+gap> new := DigraphReverseEdge(D, [7, 19]);
 <immutable digraph with 21 vertices, 8 edges>
+gap> DigraphEdges(new);
+[ [ 1, 2 ], [ 1, 7 ], [ 1, 8 ], [ 5, 21 ], [ 9, 1 ], [ 11, 2 ], 
+  [ 19, 7 ], [ 21, 1 ] ]
+gap> D2 := DigraphMutableCopy(new);;
+gap> new := DigraphReverseEdges(D2, [[19, 7]]);;
+gap> D2 = new;
+true
+gap> D = new;
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -177,21 +184,26 @@ gap> DigraphReverseEdge(gr, [7, 19]);
     The <Ref Oper="DigraphVertexLabels"/> of <A>digraph</A> will not be retained
     in the returned digraph. <P/>
 
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then relabeling
+    of the vertices is performed directly on <A>digraph</A>. If <A>digraph</A>
+    belongs to <Ref Filt="IsImmutableDigraph"/>, an immutable copy of
+    <A>digraph</A> with the vertices relabelled is returned.<P/>
+
     <Example><![CDATA[
-gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
+gap> D := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
 <immutable digraph with 5 vertices, 11 edges>
-gap> new := OnDigraphs(gr, (1, 2));
+gap> new := OnDigraphs(D, (1, 2));
 <immutable digraph with 5 vertices, 11 edges>
 gap> OutNeighbours(new);
 [ [ 2, 3, 5 ], [ 3 ], [ 2 ], [ 2, 1, 4 ], [ 1, 3, 5 ] ]
-gap> gr := Digraph([[2], [], [2]]);
+gap> D := Digraph([[2], [], [2]]);
 <immutable digraph with 3 vertices, 2 edges>
 gap> t := Transformation([1, 2, 1]);;
-gap> new := OnDigraphs(gr, t);
+gap> new := OnDigraphs(D, t);
 <immutable multidigraph with 3 vertices, 2 edges>
 gap> OutNeighbours(new);
 [ [ 2, 2 ], [  ], [  ] ]
-gap> ForAll(DigraphEdges(gr),
+gap> ForAll(DigraphEdges(D),
 >  e -> IsDigraphEdge(new, [e[1] ^ t, e[2] ^ t]));
 true
 ]]></Example>
@@ -221,17 +233,22 @@ true
     in the action of a permutation on the vertices of a digraph, then you can
     use <C>OnDigraphs</C> instead of <C>OnMultiDigraphs</C>.
 
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then relabeling
+    of the vertices is performed directly on <A>digraph</A>. If <A>digraph</A>
+    belongs to <Ref Filt="IsImmutableDigraph"/>, an immutable copy of
+    <A>digraph</A> with the vertices relabelled is returned.<P/>
+
     <Example><![CDATA[
-gap> gr1 := Digraph([
+gap> D1 := Digraph([
 > [3, 6, 3], [], [3], [9, 10], [9], [],  [], [10, 4, 10], [], []]);
 <immutable multidigraph with 10 vertices, 10 edges>
-gap> p := [(1, 9, 5, 3, 10, 6, 4, 7),
-> (1, 7, 9, 5, 2, 8, 4, 10, 3, 6)];;
-gap> gr2 := OnMultiDigraphs(gr1, p);
+gap> p := BlissCanonicalLabelling(D1);
+[ (1,7)(3,6)(4,10)(5,9), () ]
+gap> D2 := OnMultiDigraphs(D1, p);
 <immutable multidigraph with 10 vertices, 10 edges>
-gap> OutNeighbours(gr2);
-[ [  ], [  ], [ 5 ], [  ], [  ], [  ], [ 5, 6 ], [ 6, 7, 6 ], 
-  [ 10, 4, 10 ], [ 10 ] ]]]></Example>
+gap> OutNeighbours(D2);
+[ [  ], [  ], [  ], [  ], [  ], [ 6 ], [ 6, 3, 6 ], [ 4, 10, 4 ], 
+  [ 5 ], [ 5, 4 ] ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -241,23 +258,37 @@ gap> OutNeighbours(gr2);
   <Oper Name="DigraphAddVertex" Arg="digraph[, label ]"/>
   <Returns>A digraph.</Returns>
   <Description>
-    The operation returns a new digraph constructed from <A>digraph</A> by
-    adding a single new vertex. <P/>
+    The operation returns a digraph constructed from <A>digraph</A> by adding a
+    single new vertex, and no new edges. <P/>
 
     If the optional second argument <A>label</A> is a &GAP; object,
     then the new vertex will be labelled <A>label</A>.
     <P/>
+
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the
+    vertex is added directly to <A>digraph</A>. If <A>digraph</A> belongs to
+    <Ref Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A> with
+    the additional vertex is returned.<P/>
+
     <Example><![CDATA[
-gap> gr := CompleteDigraph(3);
+gap> D := CompleteDigraph(3);
 <immutable complete digraph with 3 vertices>
-gap> new := DigraphAddVertex(gr);
+gap> new := DigraphAddVertex(D);
 <immutable digraph with 4 vertices, 6 edges>
+gap> D = new;
+false
 gap> DigraphVertices(new);
 [ 1 .. 4 ]
-gap> new := DigraphAddVertex(gr, Group([(1, 2)]));
+gap> new := DigraphAddVertex(D, Group([(1, 2)]));
 <immutable digraph with 4 vertices, 6 edges>
 gap> DigraphVertexLabels(new);
 [ 1, 2, 3, Group([ (1,2) ]) ]
+gap> D := CompleteBipartiteDigraph(IsMutableDigraph, 2, 3);
+<mutable digraph with 5 vertices, 12 edges>
+gap> new := DigraphAddVertex(D);
+<mutable digraph with 6 vertices, 12 edges>
+gap> D = new;
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -268,24 +299,40 @@ gap> DigraphVertexLabels(new);
   <Oper Name="DigraphAddVertices" Arg="digraph, m[, labels ]"/>
   <Returns>A digraph.</Returns>
   <Description>
-    For a non-negative integer <A>m</A>, this operation returns a new digraph
-    constructed from <A>digraph</A> by adding <A>m</A> new vertices. <P/>
+    For a non-negative integer <A>m</A>, this operation returns a digraph
+    constructed from <A>digraph</A> by adding <A>m</A> new vertices. If
+    <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the vertices
+    are added directly to <A>digraph</A>. If <A>digraph</A>
+    belongs to <Ref Filt="IsImmutableDigraph"/>, the vertices are added to a
+    copy of <A>digraph</A> and this new digraph is returned.<P/>
 
     If the optional third argument <A>labels</A> is a list of length <A>m</A>
     consisting of &GAP; objects, then the new vertices will be
     labelled according to this list. <P/>
+
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the
+    vertices are added directly to <A>digraph</A>. If <A>digraph</A> belongs to
+    <Ref Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A> with
+    the additional vertices is returned.<P/>
+
     <Example><![CDATA[
-gap> gr := CompleteDigraph(3);
+gap> D := CompleteDigraph(3);
 <immutable complete digraph with 3 vertices>
-gap> new := DigraphAddVertices(gr, 3);
+gap> new := DigraphAddVertices(D, 3);
 <immutable digraph with 6 vertices, 6 edges>
 gap> DigraphVertices(new);
 [ 1 .. 6 ]
-gap> new := DigraphAddVertices(gr, [Group([(1, 2)]), "d"]);
+gap> new := DigraphAddVertices(D, [Group([(1, 2)]), "d"]);
 <immutable digraph with 5 vertices, 6 edges>
 gap> DigraphVertexLabels(new);
 [ 1, 2, 3, Group([ (1,2) ]), "d" ]
-gap> DigraphAddVertices(gr, 0) = gr;
+gap> DigraphAddVertices(D, 0) = D;
+true
+gap> D := CompleteBipartiteDigraph(IsMutableDigraph, 2, 3);
+<mutable digraph with 5 vertices, 12 edges>
+gap> new := DigraphAddVertices(D, 4);
+<mutable digraph with 9 vertices, 12 edges>
+gap> D = new;
 true
 ]]></Example>
   </Description>
@@ -298,32 +345,39 @@ true
   <Returns>A digraph.</Returns>
   <Description>
     If <A>v</A> is a vertex of <A>digraph</A>, then this operation returns a
-    new digraph constructed from <A>digraph</A> by removing vertex <A>v</A>,
-    along with any edge whose source or range vertex is <A>v</A>. <P/>
+    digraph constructed from <A>digraph</A> by removing vertex <A>v</A>,
+    along with any edge whose source or range vertex is <A>v</A>.<P/>
 
-    If <A>digraph</A> has <C>n</C> vertices, then the vertices of the new
+    If <A>digraph</A> has <C>n</C> vertices, then the vertices of the returned
     digraph are <C>[1..n-1]</C>, but the original labels can be
     accessed via <Ref Oper="DigraphVertexLabels"/>. <P/>
 
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the
+    vertex is removed directly from <A>digraph</A>. If <A>digraph</A> belongs
+    to <Ref Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A>
+    without the vertex is returned.<P/>
+
     <Example><![CDATA[
-gap> gr := Digraph(["a", "b", "c"],
+gap> D := Digraph(["a", "b", "c"],
 >                  ["a", "a", "b", "c", "c"],
 >                  ["b", "c", "a", "a", "c"]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> DigraphVertexLabels(gr);
+gap> DigraphVertexLabels(D);
 [ "a", "b", "c" ]
-gap> DigraphEdges(gr);
+gap> DigraphEdges(D);
 [ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 3, 1 ], [ 3, 3 ] ]
-gap> new := DigraphRemoveVertex(gr, 2);
+gap> new := DigraphRemoveVertex(D, 2);
 <immutable digraph with 2 vertices, 3 edges>
 gap> DigraphVertexLabels(new);
 [ "a", "c" ]
 gap> D := CycleDigraph(IsMutableDigraph, 5);
 <mutable digraph with 5 vertices, 5 edges>
-gap> DigraphRemoveVertex(D, 1);
+gap> new := DigraphRemoveVertex(D, 1);
 <mutable digraph with 4 vertices, 3 edges>
 gap> DigraphVertexLabels(D);
 [ 2, 3, 4, 5 ]
+gap> D = new;
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -335,22 +389,35 @@ gap> DigraphVertexLabels(D);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>verts</A> is a (possibly empty) duplicate-free list of vertices of
-    <A>digraph</A>, then this operation returns a new digraph constructed from
+    <A>digraph</A>, then this operation returns a digraph constructed from
     <A>digraph</A> by removing every vertex in <A>verts</A>, along with any edge
-    whose source or range vertex is in <A>verts</A>. <P/>
+    whose source or range vertex is in <A>verts</A>.<P/>
 
     If <A>digraph</A> has <C>n</C> vertices, then the vertices of the new
     digraph are <C>[1 .. n-Length(<A>verts</A>)]</C>, but the
     original labels can be accessed via <Ref Oper="DigraphVertexLabels"/>. <P/>
 
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the
+    vertices are removed directly from <A>digraph</A>. If <A>digraph</A> belongs
+    to <Ref Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A>
+    without the vertices is returned.<P/>
+
     <Example><![CDATA[
-gap> gr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
+gap> D := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
 <immutable digraph with 5 vertices, 11 edges>
-gap> SetDigraphVertexLabels(gr, ["a", "b", "c", "d", "e"]);
-gap> new := DigraphRemoveVertices(gr, [2, 4]);
+gap> SetDigraphVertexLabels(D, ["a", "b", "c", "d", "e"]);
+gap> new := DigraphRemoveVertices(D, [2, 4]);
 <immutable digraph with 3 vertices, 4 edges>
 gap> DigraphVertexLabels(new);
 [ "a", "c", "e" ]
+gap> D := CycleDigraph(IsMutableDigraph, 5);
+<mutable digraph with 5 vertices, 5 edges>
+gap> new := DigraphRemoveVertices(D, [1, 3]);
+<mutable digraph with 3 vertices, 1 edge>
+gap> DigraphVertexLabels(D);
+[ 2, 4, 5 ]
+gap> D = new;
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -359,26 +426,45 @@ gap> DigraphVertexLabels(new);
 <#GAPDoc Label="DigraphAddEdge">
 <ManSection>
   <Oper Name="DigraphAddEdge" Arg="digraph, edge"/>
+  <Oper Name="DigraphAddEdge" Arg="digraph, src, ran"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>edge</A> is a pairs of vertices of <A>digraph</A>,
-    then this operation returns a new digraph constructed from <A>digraph</A>
-    by adding a new edge with source <A>edge</A><C>[1]</C> and range
-    <A>edge</A><C>[2]</C>. <P/>
+    If <A>edge</A> is a pair of vertices of <A>digraph</A>, or <A>src</A> and
+    <A>ran</A> are vertices of <A>digraph</A>,
+    then this operation returns a digraph constructed from <A>digraph</A>
+    by adding a new edge with source <A>edge</A><C>[1]</C> [<A>src</A>] and range
+    <A>edge</A><C>[2]</C> [<A>ran</A>]. If <A>digraph</A> belongs
+    to <Ref Filt="IsMutableDigraph"/>, then the edge is added directly to
+    <A>digraph</A>. If <A>digraph</A> belongs to <Ref
+    Filt="IsImmutableDigraph"/>, the edge is added to a copy of
+    <A>digraph</A> and this new digraph is returned. <P/>
+
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the edge
+    is added directly to <A>digraph</A>. If <A>digraph</A> belongs to <Ref
+      Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A> with the
+    additional edge is returned.  <P/>
 
     <Example><![CDATA[
-gap> gr1 := Digraph([[2], [3], []]);
+gap> D1 := Digraph([[2], [3], []]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> DigraphEdges(gr1);
+gap> DigraphEdges(D1);
 [ [ 1, 2 ], [ 2, 3 ] ]
-gap> gr2 := DigraphAddEdge(gr1, [3, 1]);
+gap> D2 := DigraphAddEdge(D1, [3, 1]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> DigraphEdges(gr2);
+gap> DigraphEdges(D2);
 [ [ 1, 2 ], [ 2, 3 ], [ 3, 1 ] ]
-gap> gr3 := DigraphAddEdge(gr2, [2, 3]);
+gap> D3 := DigraphAddEdge(D2, [2, 3]);
 <immutable multidigraph with 3 vertices, 4 edges>
-gap> DigraphEdges(gr3);
+gap> DigraphEdges(D3);
 [ [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 1 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 4);
+<mutable digraph with 4 vertices, 4 edges>
+gap> new := DigraphAddEdge(D, [1, 3]);
+<mutable digraph with 4 vertices, 5 edges>
+gap> DigraphEdges(new);
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 3 ], [ 3, 4 ], [ 4, 1 ] ]
+gap> D = new;
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -390,7 +476,7 @@ gap> DigraphEdges(gr3);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>edges</A> is a (possibly empty) list of pairs of vertices of
-    <A>digraph</A>, then this operation returns a new digraph constructed from
+    <A>digraph</A>, then this operation returns a digraph constructed from
     <A>digraph</A> by adding the edges specified by <A>edges</A>.  More
     precisely, for every <C>edge</C> in <A>edges</A>, a new edge
     will be added with source <C>edge[1]</C> and range <C>edges[2]</C>.
@@ -398,6 +484,11 @@ gap> DigraphEdges(gr3);
 
     If an edge is included in <A>edges</A> with multiplicity <C>k</C>,
     then it will be added <C>k</C> times.
+
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the edges
+    are added directly to <A>digraph</A>. If <A>digraph</A> belongs to <Ref
+      Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A> with the
+    additional edges is returned.  <P/>
 
     <Example><![CDATA[
 gap> func := function(n)
@@ -410,11 +501,64 @@ gap> func := function(n)
 >  od;
 >  return Digraph(n, source, range);
 > end;;
-gap> gr := func(1024);
+gap> D := func(1024);
 <immutable digraph with 1024 vertices, 1022 edges>
-gap> gr := DigraphAddEdges(gr,
+gap> new := DigraphAddEdges(D,
 > [[1023, 1024], [1, 1024], [1023, 1024], [1024, 1]]);
-<immutable multidigraph with 1024 vertices, 1026 edges>]]></Example>
+<immutable multidigraph with 1024 vertices, 1026 edges>
+gap> D = new;
+false
+gap> D2 := DigraphMutableCopy(func(1024));
+<mutable digraph with 1024 vertices, 1022 edges>
+gap> new := DigraphAddEdges(D2,
+> [[1023, 1024], [1, 1024], [1023, 1024], [1024, 1]]);
+<mutable multidigraph with 1024 vertices, 1026 edges>
+gap> D2 = new;
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphRemoveEdge">
+<ManSection>
+  <Oper Name="DigraphRemoveEdge" Arg="digraph, edge"/>
+  <Oper Name="DigraphRemoveEdge" Arg="digraph, src, ran"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph with no multiple edges and <A>edge</A> is a
+    pair of vertices of <A>digraph</A>, or <A>src</A> and <A>ran</A> are
+    vertices of <A>digraph</A>, then this operation returns a digraph
+    constructed from <A>digraph</A> by removing the edge specified by
+    <A>edge</A> or <A>[src, ran]</A>. <P/>  
+
+
+    If <A>digraph</A> belongs to <Ref
+      Filt="IsMutableDigraph"/>, then the edge is removed directly from
+    <A>digraph</A>. If <A>digraph</A> belongs to <Ref
+      Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A> without
+    the edge is returned.
+    <P/>
+
+    Note that if <A>digraph</A> belongs to <Ref Filt="IsImmutableDigraph"/>,
+    then a new copy of <A>digraph</A> will be returned even if <A>edge</A> or 
+    <A>[src, ran]</A> does not define an edge of <A>digraph</A>.<P/>
+
+    <Example><![CDATA[
+gap> D := CycleDigraph(250000);
+<immutable cycle digraph with 250000 vertices>
+gap> D := DigraphRemoveEdge(D, [250000, 1]);
+<immutable digraph with 250000 vertices, 249999 edges>
+gap> new := DigraphRemoveEdge(D, [25000, 2]);;
+gap> new = D;
+true
+gap> IsIdenticalObj(new, D);
+false
+gap> D := DigraphMutableCopy(D);;
+gap> new := DigraphRemoveEdge(D, 2500, 2);;
+gap> IsIdenticalObj(new, D);
+true]]>
+</Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -430,39 +574,35 @@ gap> gr := DigraphAddEdges(gr,
         <A>digraph</A> is a digraph with no multiple edges, and
         <A>edges</A> is a list of pairs of vertices of <A>digraph</A>, or
       </Item>
+      <Item> <A>digraph</A> is a digraph and <A>edges</A> is an empty list </Item>
     </List>
 
-    then this operation returns a new digraph constructed from <A>digraph</A>
+    then this operation returns a digraph constructed from <A>digraph</A>
     by removing all of the edges specified by <A>edges</A>
-    [see <Ref Oper="DigraphRemoveEdge"/>]. <P/>
+    (see <Ref Oper="DigraphRemoveEdge"/>). <P/>
+
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the edge
+    is removed directly from <A>digraph</A>. If <A>digraph</A> belongs to <Ref
+      Filt="IsImmutableDigraph"/>, the edge is removed from an immutable copy of
+    <A>digraph</A> and this new digraph is returned.<P/>
+
+    Note that if <A>edges</A> is empty, then <Ref Oper="DigraphRemoveEdge"/>
+    will always return <A>digraph</A> rather than a copy. Also, if any element
+    of <A>edges</A> is invalid (i.e. does not define an edge of <A>digraph</A>)
+    then that element will simply be ignored.
 
     <Example><![CDATA[
-gap> gr := CycleDigraph(250000);
+gap> D := CycleDigraph(250000);
 <immutable cycle digraph with 250000 vertices>
-gap> gr := DigraphRemoveEdges(gr, [[250000, 1]]);
-<immutable digraph with 250000 vertices, 249999 edges>]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DigraphRemoveEdge">
-<ManSection>
-  <Oper Name="DigraphRemoveEdge" Arg="digraph, edge"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    If <A>digraph</A> is a digraph with no multiple edges, and <A>edge</A> is a
-    pair of vertices of <A>digraph</A>,
-    then this operation returns a new digraph constructed from <A>digraph</A>
-    by removing the edge specified by <A>edge</A>. <P/>
-
-    If the pair of vertices <A>edge</A> does not specify an edge of
-    <A>digraph</A>, then a new copy of <A>digraph</A> will be returned.<P/>
-
-    <Example><![CDATA[
-gap> gr := CycleDigraph(250000);
-<immutable cycle digraph with 250000 vertices>
-gap> gr := DigraphRemoveEdge(gr, [250000, 1]);
-<immutable digraph with 250000 vertices, 249999 edges>]]></Example>
+gap> D := DigraphRemoveEdges(D, [[250000, 1]]);
+<immutable digraph with 250000 vertices, 249999 edges>
+gap> D := DigraphMutableCopy(D);
+<mutable digraph with 250000 vertices, 249999 edges>
+gap> new := DigraphRemoveEdges(D, [[1, 2], [2, 3], [3, 100]]);
+<mutable digraph with 250000 vertices, 249997 edges>
+gap> new = D;
+true
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -482,13 +622,24 @@ gap> gr := DigraphRemoveEdge(gr, [250000, 1]);
     <C>[1..Length(verts)]</C> but the original vertex labels can be
     accessed via <Ref Oper="DigraphVertexLabels"/>. <P/>
 
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then
+    <A>digraph</A> is modified in place. If <A>digraph</A> belongs to <Ref
+      Filt="IsImmutableDigraph"/>, a new immutable digraph containing the correct
+    vertices and edges is returned.<P/>
+
     <Example><![CDATA[
-gap> gr := Digraph([[1, 1, 2, 3, 4, 4], [1, 3, 4], [3, 1], [1, 1]]);
+gap> D := Digraph([[1, 1, 2, 3, 4, 4], [1, 3, 4], [3, 1], [1, 1]]);
 <immutable multidigraph with 4 vertices, 13 edges>
-gap> InducedSubdigraph(gr, [1, 3, 4]);
+gap> InducedSubdigraph(D, [1, 3, 4]);
 <immutable multidigraph with 3 vertices, 9 edges>
 gap> DigraphVertices(last);
 [ 1 .. 3 ]
+gap> D := DigraphMutableCopy(D);
+<mutable multidigraph with 4 vertices, 13 edges>
+gap> new := InducedSubdigraph(D, [1, 3, 4]);
+<mutable multidigraph with 3 vertices, 9 edges>
+gap> D = new;
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -505,16 +656,16 @@ gap> DigraphVertices(last);
     whose source is <A>vertex</A>.
     <P/>
     <Example><![CDATA[
-gap> gr := Digraph([
+gap> D := Digraph([
 > [2, 2, 1], [1, 4], [2, 2, 4, 2], [1, 1, 2, 2, 1, 2, 2]]);
 <immutable multidigraph with 4 vertices, 16 edges>
-gap> OutDegreeOfVertex(gr, 1);
+gap> OutDegreeOfVertex(D, 1);
 3
-gap> OutDegreeOfVertex(gr, 2);
+gap> OutDegreeOfVertex(D, 2);
 2
-gap> OutDegreeOfVertex(gr, 3);
+gap> OutDegreeOfVertex(D, 3);
 4
-gap> OutDegreeOfVertex(gr, 4);
+gap> OutDegreeOfVertex(D, 4);
 7
 ]]></Example>
   </Description>
@@ -534,12 +685,12 @@ gap> OutDegreeOfVertex(gr, 4);
     edge  with source <A>vertex</A> and range <C>i</C> in <A>digraph</A>; in
     particular, this means that <C>out</C> may contain duplicates.<P/>
     <Example><![CDATA[
-gap> gr := Digraph([
+gap> D := Digraph([
 > [2, 2, 3], [1, 3, 4], [2, 2, 3], [1, 1, 2, 2, 1, 2, 2]]);
 <immutable multidigraph with 4 vertices, 16 edges>
-gap> OutNeighboursOfVertex(gr, 1);
+gap> OutNeighboursOfVertex(D, 1);
 [ 2, 2, 3 ]
-gap> OutNeighboursOfVertex(gr, 3);
+gap> OutNeighboursOfVertex(D, 3);
 [ 2, 2, 3 ]
 ]]></Example>
   </Description>
@@ -556,16 +707,16 @@ gap> OutNeighboursOfVertex(gr, 3);
     The in-degree of <A>vertex</A> is the number of edges in <A>digraph</A>
     whose range is <A>vertex</A>.
     <Example><![CDATA[
-gap> gr := Digraph([
+gap> D := Digraph([
 > [2, 2, 1], [1, 4], [2, 2, 4, 2], [1, 1, 2, 2, 1, 2, 2]]);
 <immutable multidigraph with 4 vertices, 16 edges>
-gap> InDegreeOfVertex(gr, 1);
+gap> InDegreeOfVertex(D, 1);
 5
-gap> InDegreeOfVertex(gr, 2);
+gap> InDegreeOfVertex(D, 2);
 9
-gap> InDegreeOfVertex(gr, 3);
+gap> InDegreeOfVertex(D, 3);
 0
-gap> InDegreeOfVertex(gr, 4);
+gap> InDegreeOfVertex(D, 4);
 2
 ]]></Example>
   </Description>
@@ -586,12 +737,12 @@ gap> InDegreeOfVertex(gr, 4);
     particular, this means that <C>inn</C> may contain duplicates. <P/>
 
     <Example><![CDATA[
-gap> gr := Digraph([
+gap> D := Digraph([
 > [2, 2, 3], [1, 3, 4], [2, 2, 3], [1, 1, 2, 2, 1, 2, 2]]);
 <immutable multidigraph with 4 vertices, 16 edges>
-gap> InNeighboursOfVertex(gr, 1);
+gap> InNeighboursOfVertex(D, 1);
 [ 2, 4, 4, 4 ]
-gap> InNeighboursOfVertex(gr, 2);
+gap> InNeighboursOfVertex(D, 2);
 [ 1, 1, 3, 3, 4, 4, 4, 4 ]
 ]]></Example>
   </Description>
@@ -606,9 +757,9 @@ gap> InNeighboursOfVertex(gr, 2);
     <C>DigraphInEdges</C> returns the list of all edges of <A>digraph</A>
     which have <A>vertex</A> as their range.
     <Example><![CDATA[
-gap> gr := Digraph([[2, 2], [3, 3], [4, 4], [1, 1]]);
+gap> D := Digraph([[2, 2], [3, 3], [4, 4], [1, 1]]);
 <immutable multidigraph with 4 vertices, 8 edges>
-gap> DigraphInEdges(gr, 2);
+gap> DigraphInEdges(D, 2);
 [ [ 1, 2 ], [ 1, 2 ] ]
 ]]></Example>
   </Description>
@@ -623,9 +774,9 @@ gap> DigraphInEdges(gr, 2);
     <C>DigraphOutEdges</C> returns the list of all edges of <A>digraph</A>
     which have <A>vertex</A> as their source.
     <Example><![CDATA[
-gap> gr := Digraph([[2, 2], [3, 3], [4, 4], [1, 1]]);
+gap> D := Digraph([[2, 2], [3, 3], [4, 4], [1, 1]]);
 <immutable multidigraph with 4 vertices, 8 edges>
-gap> DigraphOutEdges(gr, 2);
+gap> DigraphOutEdges(D, 2);
 [ [ 2, 3 ], [ 2, 3 ] ]
 ]]></Example>
   </Description>
@@ -642,13 +793,13 @@ gap> DigraphOutEdges(gr, 2);
     in <A>digraph</A>.
     See <Ref Attr="DigraphStronglyConnectedComponents"/> for more information.
     <Example><![CDATA[
-gap> gr := Digraph([[3], [2], [1, 2], [3]]);
+gap> D := Digraph([[3], [2], [1, 2], [3]]);
 <immutable digraph with 4 vertices, 5 edges>
-gap> DigraphStronglyConnectedComponent(gr, 3);
+gap> DigraphStronglyConnectedComponent(D, 3);
 [ 1, 3 ]
-gap> DigraphStronglyConnectedComponent(gr, 2);
+gap> DigraphStronglyConnectedComponent(D, 2);
 [ 2 ]
-gap> DigraphStronglyConnectedComponent(gr, 4);
+gap> DigraphStronglyConnectedComponent(D, 4);
 [ 4 ]
 ]]></Example>
   </Description>
@@ -665,13 +816,13 @@ gap> DigraphStronglyConnectedComponent(gr, 4);
     in <A>digraph</A>.
     See <Ref Attr="DigraphConnectedComponents"/> for more information.
     <Example><![CDATA[
-gap> gr := Digraph([[3], [2], [1, 2], [4]]);
+gap> D := Digraph([[3], [2], [1, 2], [4]]);
 <immutable digraph with 4 vertices, 5 edges>
-gap> DigraphConnectedComponent(gr, 3);
+gap> DigraphConnectedComponent(D, 3);
 [ 1, 2, 3 ]
-gap> DigraphConnectedComponent(gr, 2);
+gap> DigraphConnectedComponent(D, 2);
 [ 1, 2, 3 ]
-gap> DigraphConnectedComponent(gr, 4);
+gap> DigraphConnectedComponent(D, 4);
 [ 4 ]
 ]]></Example>
   </Description>
@@ -684,7 +835,7 @@ gap> DigraphConnectedComponent(gr, 4);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, and <A>p</A> is a partition of the vertices
-    of <A>digraph</A>, then this operation returns a new digraph constructed by
+    of <A>digraph</A>, then this operation returns a digraph constructed by
     amalgamating all vertices of <A>digraph</A> which lie in the same part of
     <A>p</A>.
     <P/>
@@ -702,21 +853,26 @@ gap> DigraphConnectedComponent(gr, 4);
     the quotient of a digraph without multiple edges can have multiple edges.
     <P/>
 
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then
+    <A>digraph</A> is modified in place. If <A>digraph</A> belongs to <Ref
+      Filt="IsImmutableDigraph"/>, a new immutable digraph with the above
+    properties is returned.<P/>
+
     <Example><![CDATA[
-gap> gr := Digraph([[2, 1], [4], [1], [1, 3, 4]]);
+gap> D := Digraph([[2, 1], [4], [1], [1, 3, 4]]);
 <immutable digraph with 4 vertices, 7 edges>
-gap> DigraphVertices(gr);
+gap> DigraphVertices(D);
 [ 1 .. 4 ]
-gap> DigraphEdges(gr);
+gap> DigraphEdges(D);
 [ [ 1, 2 ], [ 1, 1 ], [ 2, 4 ], [ 3, 1 ], [ 4, 1 ], [ 4, 3 ], 
   [ 4, 4 ] ]
 gap> p := [[1], [2, 4], [3]];
 [ [ 1 ], [ 2, 4 ], [ 3 ] ]
-gap> qr := QuotientDigraph(gr, p);
+gap> quo := QuotientDigraph(D, p);
 <immutable digraph with 3 vertices, 6 edges>
-gap> DigraphVertices(qr);
+gap> DigraphVertices(quo);
 [ 1 .. 3 ]
-gap> DigraphEdges(qr);
+gap> DigraphEdges(quo);
 [ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 3, 1 ] ]
 gap> QuotientDigraph(EmptyDigraph(0), []);
 <immutable empty digraph with 0 vertices>
@@ -743,13 +899,13 @@ gap> QuotientDigraph(EmptyDigraph(0), []);
     an edge in <A>digraph</A>, and <K>false</K> otherwise.
 
 <Example><![CDATA[
-gap> gr := Digraph([[2, 2], [6], [], [3], [], [1]]);
+gap> D := Digraph([[2, 2], [6], [], [3], [], [1]]);
 <immutable multidigraph with 6 vertices, 5 edges>
-gap> IsDigraphEdge(gr, [1, 1]);
+gap> IsDigraphEdge(D, [1, 1]);
 false
-gap> IsDigraphEdge(gr, [1, 2]);
+gap> IsDigraphEdge(D, [1, 2]);
 true
-gap> IsDigraphEdge(gr, [1, 8]);
+gap> IsDigraphEdge(D, [1, 8]);
 false
 ]]></Example>
   </Description>
@@ -797,7 +953,7 @@ od;
     between the vertices of a digraph is shown below: <P/>
 
     <Example><![CDATA[
-gap> gr := DigraphFromDigraph6String("&EAHQeDB");
+gap> D := DigraphFromDigraph6String("&EAHQeDB");
 <immutable digraph with 6 vertices, 12 edges>
 gap> func := function(mat, i, j, k)
 >   if mat[i][k] <> -1 and mat[k][j] <> -1 then
@@ -807,7 +963,7 @@ gap> func := function(mat, i, j, k)
 >   fi;
 > end;
 function( mat, i, j, k ) ... end
-gap> shortest_distances := DigraphFloydWarshall(gr, func, -1, 1);;
+gap> shortest_distances := DigraphFloydWarshall(D, func, -1, 1);;
 gap> Display(shortest_distances);
 [ [   3,  -1,  -1,   2,   1,   2 ],
   [   4,   2,   1,   3,   2,   1 ],
@@ -822,12 +978,12 @@ gap> Display(shortest_distances);
 
 <#GAPDoc Label="DigraphEdgeUnion">
 <ManSection>
-  <Func Name="DigraphEdgeUnion" Arg="gr1, gr2, ..." Label="for an arbitrary
+  <Func Name="DigraphEdgeUnion" Arg="D1, D2, ..." Label="for an arbitrary
     number of digraphs"/>
   <Func Name="DigraphEdgeUnion" Arg="list" Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
   <Description>
-    In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
+    In the first form, if <A>D1</A>, <A>D2</A>, etc. are digraphs, then
     <C>DigraphEdgeUnion</C> returns their edge union.
 
     In the second form, if <A>list</A> is a non-empty list of digraphs, then
@@ -842,22 +998,28 @@ gap> Display(shortest_distances);
     <E>sum</E> of the number of edges of each digraph. <P/>
 
     Note that previously set <Ref Oper="DigraphVertexLabels"/> will be lost.
+    <P/>
 
+    If the first digraph <A>D1</A> [<A>list[1]</A>] belongs to <Ref
+    Filt="IsMutableDigraph"/>, then <A>D1</A> [<A>list[1]</A>] is modified in
+    place to contain the correct vertices and edges. If <A>digraph</A> belongs
+    to <Ref Filt="IsImmutableDigraph"/>, a new immutable digraph containing the
+    correct vertices and edges is returned.
 <Example><![CDATA[
-gap> gr := CycleDigraph(10);
+gap> D := CycleDigraph(10);
 <immutable cycle digraph with 10 vertices>
-gap> DigraphEdgeUnion(gr, gr);
+gap> DigraphEdgeUnion(D, D);
 <immutable multidigraph with 10 vertices, 20 edges>
-gap> gr1 := Digraph([[2], [1]]);
+gap> D1 := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
-gap> gr2 := Digraph([[2, 3], [2], [1]]);
+gap> D2 := Digraph([[2, 3], [2], [1]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> union := DigraphEdgeUnion(gr1, gr2);
+gap> union := DigraphEdgeUnion(D1, D2);
 <immutable multidigraph with 3 vertices, 6 edges>
 gap> OutNeighbours(union);
 [ [ 2, 2, 3 ], [ 1, 2 ], [ 1 ] ]
 gap> union = DigraphByEdges(
-> Concatenation(DigraphEdges(gr1), DigraphEdges(gr2)));
+> Concatenation(DigraphEdges(D1), DigraphEdges(D2)));
 true
 ]]></Example>
   </Description>
@@ -866,12 +1028,12 @@ true
 
 <#GAPDoc Label="DigraphDisjointUnion">
 <ManSection>
-  <Func Name="DigraphDisjointUnion" Arg="gr1, gr2, ..." Label="for an
+  <Func Name="DigraphDisjointUnion" Arg="D1, D2, ..." Label="for an
     arbitrary number of digraphs"/>
   <Func Name="DigraphDisjointUnion" Arg="list" Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
   <Description>
-    In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
+    In the first form, if <A>D1</A>, <A>D2</A>, etc. are digraphs, then
     <C>DigraphDisjointUnion</C> returns their disjoint union.
 
     In the second form, if <A>list</A> is a non-empty list of digraphs, then
@@ -882,32 +1044,37 @@ true
     the vertex sets, and the edge list is the disjoint union of the edge lists.
     <P/>
 
-    More specifically, for a collection of digraphs <A>gr1</A>, <A>gr2</A>,
+    More specifically, for a collection of digraphs <A>D1</A>, <A>D2</A>,
     <C>...</C>, the disjoint union with have
-    <C>DigraphNrVertices(</C><A>gr1</A><C>)</C> <C>+</C>
-    <C>DigraphNrVertices(</C><A>gr2</A><C>)</C> <C>+</C> <C>...</C> vertices.
-    The edges of <A>gr1</A> will remain unchanged, whilst the edges of the
-    <C>i</C>th digraph, <A>gr</A><C>[i]</C>, will be changed so that they
+    <C>DigraphNrVertices(</C><A>D1</A><C>)</C> <C>+</C>
+    <C>DigraphNrVertices(</C><A>D2</A><C>)</C> <C>+</C> <C>...</C> vertices.
+    The edges of <A>D1</A> will remain unchanged, whilst the edges of the
+    <C>i</C>th digraph, <A>D</A><C>[i]</C>, will be changed so that they
     belong to the vertices of the disjoint union corresponding to
-    <A>gr</A><C>[i]</C>.  In particular, the edges of <A>gr</A><C>[i]</C> will
+    <A>D</A><C>[i]</C>.  In particular, the edges of <A>D</A><C>[i]</C> will
     have their source and range increased by
-    <C>DigraphNrVertices(</C><A>gr1</A><C>)</C> <C>+</C> <C>...</C> <C>+</C>
-    <C>DigraphNrVertices(</C><A>gr</A><C>[i-1])</C>.
+    <C>DigraphNrVertices(</C><A>D1</A><C>)</C> <C>+</C> <C>...</C> <C>+</C>
+    <C>DigraphNrVertices(</C><A>D</A><C>[i-1])</C>.
 
     <P/>
 
-    Note that previously set <Ref Oper="DigraphVertexLabels"/> will be lost.
+    Note that previously set <Ref Oper="DigraphVertexLabels"/> will be lost.<P/>
 
+    If the first digraph <A>D1</A> [<A>list[1]</A>] belongs to <Ref
+    Filt="IsMutableDigraph"/>, then <A>D1</A> [<A>list[1]</A>] is modified in
+    place to contain the correct vertices and edges. If <A>digraph</A> belongs
+    to <Ref Filt="IsImmutableDigraph"/>, a new immutable digraph containing the
+    correct vertices and edges is returned.
 <Example><![CDATA[
-gap> gr1 := CycleDigraph(3);
+gap> D1 := CycleDigraph(3);
 <immutable cycle digraph with 3 vertices>
-gap> OutNeighbours(gr1);
+gap> OutNeighbours(D1);
 [ [ 2 ], [ 3 ], [ 1 ] ]
-gap> gr2 := CompleteDigraph(3);
+gap> D2 := CompleteDigraph(3);
 <immutable complete digraph with 3 vertices>
-gap> OutNeighbours(gr2);
+gap> OutNeighbours(D2);
 [ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ]
-gap> union := DigraphDisjointUnion(gr1, gr2);
+gap> union := DigraphDisjointUnion(D1, D2);
 <immutable digraph with 6 vertices, 9 edges>
 gap> OutNeighbours(union);
 [ [ 2 ], [ 3 ], [ 1 ], [ 5, 6 ], [ 4, 6 ], [ 4, 5 ] ]
@@ -918,44 +1085,46 @@ gap> OutNeighbours(union);
 
 <#GAPDoc Label="DigraphJoin">
 <ManSection>
-  <Func Name="DigraphJoin" Arg="gr1, gr2, ..." Label="for an arbitrary number
+  <Func Name="DigraphJoin" Arg="D1, D2, ..." Label="for an arbitrary number
     of digraphs"/>
   <Func Name="DigraphJoin" Arg="list" Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
   <Description>
-    In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
+    In the first form, if <A>D1</A>, <A>D2</A>, etc. are digraphs, then
     <C>DigraphJoin</C> returns their join.
 
     In the second form, if <A>list</A> is a non-empty list of digraphs,
     then <C>DigraphJoin</C> returns the join of the digraphs contained in the
     list. <P/>
 
-    The join of a collection of digraphs <A>gr1</A>, <A>gr2</A>, <C>...</C> is
+    The join of a collection of digraphs <A>D1</A>, <A>D2</A>, <C>...</C> is
     formed by first taking the <Ref Func="DigraphDisjointUnion"
       Label="for a list of digraphs"/> of the collection.
 
     In the disjoint union, if <M>i \neq j</M> then there are no edges between
-    vertices corresponding to digraphs <A>gr</A><C>[i]</C> and
-    <A>gr</A><C>[j]</C> in the collection; the join is created by including
-    all such edges.
-
-    <P/>
+    vertices corresponding to digraphs <A>D</A><C>[i]</C> and
+    <A>D</A><C>[j]</C> in the collection; the join is created by including
+    all such edges.<P/>
 
     For example, the join of two empty digraphs is a complete bipartite
-    digraph.
-
-    <P/>
+    digraph.<P/>
 
     Note that previously set <Ref Oper="DigraphVertexLabels"/> will be lost.
+    <P/>
 
+    If the first digraph <A>D1</A> [<A>list[1]</A>] belongs to <Ref
+    Filt="IsMutableDigraph"/>, then <A>D1</A> [<A>list[1]</A>] is modified in
+    place to contain the correct vertices and edges. If <A>digraph</A> belongs
+    to <Ref Filt="IsImmutableDigraph"/>, a new immutable digraph containing the
+    correct vertices and edges is returned.
 <Example><![CDATA[
-gap> gr := CompleteDigraph(3);
+gap> D := CompleteDigraph(3);
 <immutable complete digraph with 3 vertices>
-gap> IsCompleteDigraph(DigraphJoin(gr, gr));
+gap> IsCompleteDigraph(DigraphJoin(D, D));
 true
-gap> gr2 := CycleDigraph(3);
+gap> D2 := CycleDigraph(3);
 <immutable cycle digraph with 3 vertices>
-gap> DigraphJoin(gr, gr2);
+gap> DigraphJoin(D, D2);
 <immutable digraph with 6 vertices, 27 edges>
 ]]></Example>
   </Description>
@@ -979,15 +1148,15 @@ gap> DigraphJoin(gr, gr2);
     vertices in <A>digraph</A>.
 
 <Example><![CDATA[
-gap> gr := Digraph([[2], [3], [2, 3]]);
+gap> D := Digraph([[2], [3], [2, 3]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> IsReachable(gr, 1, 3);
+gap> IsReachable(D, 1, 3);
 true
-gap> IsReachable(gr, 2, 1);
+gap> IsReachable(D, 2, 1);
 false
-gap> IsReachable(gr, 3, 3);
+gap> IsReachable(D, 3, 3);
 true
-gap> IsReachable(gr, 1, 1);
+gap> IsReachable(D, 1, 1);
 false
 ]]></Example>
   </Description>
@@ -1031,15 +1200,15 @@ false
     vertices in <A>digraph</A>.
 
 <Example><![CDATA[
-gap> gr := Digraph([[2], [3], [2, 3]]);
+gap> D := Digraph([[2], [3], [2, 3]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> DigraphPath(gr, 1, 3);
+gap> DigraphPath(D, 1, 3);
 [ [ 1, 2, 3 ], [ 1, 1 ] ]
-gap> DigraphPath(gr, 2, 1);
+gap> DigraphPath(D, 2, 1);
 fail
-gap> DigraphPath(gr, 3, 3);
+gap> DigraphPath(D, 3, 3);
 [ [ 3, 3 ], [ 2 ] ]
-gap> DigraphPath(gr, 1, 1);
+gap> DigraphPath(D, 1, 1);
 fail
 ]]></Example>
   </Description>
@@ -1063,15 +1232,15 @@ fail
     vertices in <A>digraph</A>.
 
 <Example><![CDATA[
-gap> gr := Digraph([[1, 2], [3], [2, 4], [1], [2, 4]]);
+gap> D := Digraph([[1, 2], [3], [2, 4], [1], [2, 4]]);
 <immutable digraph with 5 vertices, 8 edges>
-gap> DigraphShortestPath(gr, 5, 1);
+gap> DigraphShortestPath(D, 5, 1);
 [ [ 5, 4, 1 ], [ 2, 1 ] ]
-gap> DigraphShortestPath(gr, 3, 3);
+gap> DigraphShortestPath(D, 3, 3);
 [ [ 3, 2, 3 ], [ 1, 1 ] ]
-gap> DigraphShortestPath(gr, 5, 5);
+gap> DigraphShortestPath(D, 5, 5);
 fail
-gap> DigraphShortestPath(gr, 1, 1);
+gap> DigraphShortestPath(D, 1, 1);
 [ [ 1, 1 ], [ 1 ] ]
 ]]></Example>
   </Description>
@@ -1098,9 +1267,9 @@ gap> DigraphShortestPath(gr, 1, 1);
     <P/>
 
 <Example><![CDATA[
-gap> gr := Digraph([[1, 4, 4, 2], [3, 5], [2, 3], [1, 2], [4]]);
+gap> D := Digraph([[1, 4, 4, 2], [3, 5], [2, 3], [1, 2], [4]]);
 <immutable multidigraph with 5 vertices, 11 edges>
-gap> iter := IteratorOfPaths(gr, 1, 4);
+gap> iter := IteratorOfPaths(D, 1, 4);
 <iterator>
 gap> NextIterator(iter);
 [ [ 1, 4 ], [ 2 ] ]
@@ -1110,7 +1279,7 @@ gap> NextIterator(iter);
 [ [ 1, 2, 5, 4 ], [ 4, 2, 1 ] ]
 gap> IsDoneIterator(iter);
 true
-gap> iter := IteratorOfPaths(gr, 4, 3);
+gap> iter := IteratorOfPaths(D, 4, 3);
 <iterator>
 gap> NextIterator(iter);
 [ [ 4, 1, 2, 3 ], [ 1, 4, 1 ] ]
@@ -1155,15 +1324,15 @@ gap> NextIterator(iter);
     <A>digraph</A>.  See <Ref Attr="DigraphSinks"/>.
 
 <Example><![CDATA[
-gap> gr := Digraph([[2], [3, 4], [], [5], [], [6]]);
+gap> D := Digraph([[2], [3, 4], [], [5], [], [6]]);
 <immutable digraph with 6 vertices, 5 edges>
-gap> DigraphLongestDistanceFromVertex(gr, 1);
+gap> DigraphLongestDistanceFromVertex(D, 1);
 3
-gap> DigraphLongestDistanceFromVertex(gr, 3);
+gap> DigraphLongestDistanceFromVertex(D, 3);
 0
-gap> 3 in DigraphSinks(gr);
+gap> 3 in DigraphSinks(D);
 true
-gap> DigraphLongestDistanceFromVertex(gr, 6);
+gap> DigraphLongestDistanceFromVertex(D, 6);
 infinity
 ]]></Example>
   </Description>
@@ -1180,8 +1349,8 @@ infinity
     <A>digraph</A> is <K>i - 1</K>. Vertex <A>vertex</A> is
     assumed to be at distance <K>0</K> from itself.
     <Example><![CDATA[
-gap> gr := CompleteDigraph(4);;
-gap> DigraphLayers(gr, 1);
+gap> D := CompleteDigraph(4);;
+gap> DigraphLayers(D, 1);
 [ [ 1 ], [ 2, 3, 4 ] ]
 ]]></Example>
   </Description>
@@ -1203,13 +1372,13 @@ gap> DigraphLayers(gr, 1);
     <A>distances</A> should be a list of non-negative integers.
 
     <Example><![CDATA[
-gap> gr := Digraph([[2], [3], [1, 4], [1, 3]]);
+gap> D := Digraph([[2], [3], [1, 4], [1, 3]]);
 <immutable digraph with 4 vertices, 6 edges>
-gap> DigraphDistanceSet(gr, 2, [1, 2]);
+gap> DigraphDistanceSet(D, 2, [1, 2]);
 [ 3, 1, 4 ]
-gap> DigraphDistanceSet(gr, 3, 1);
+gap> DigraphDistanceSet(D, 3, 1);
 [ 1, 4 ]
-gap> DigraphDistanceSet(gr, 2, 0);
+gap> DigraphDistanceSet(D, 2, 0);
 [ 2 ]
 ]]></Example>
   </Description>
@@ -1246,17 +1415,17 @@ gap> DigraphDistanceSet(gr, 2, 0);
     such directed path exists. If <A>list1</A> and <A>list2</A> have non-empty
     intersection, the operation returns <C>0</C>.<P/>
     <Example><![CDATA[
-gap> gr := Digraph([[2], [3], [1, 4], [1, 3], [5]]);
+gap> D := Digraph([[2], [3], [1, 4], [1, 3], [5]]);
 <immutable digraph with 5 vertices, 7 edges>
-gap> DigraphShortestDistance(gr, 1, 3);
+gap> DigraphShortestDistance(D, 1, 3);
 2
-gap> DigraphShortestDistance(gr, [3, 3]);
+gap> DigraphShortestDistance(D, [3, 3]);
 0
-gap> DigraphShortestDistance(gr, 5, 2);
+gap> DigraphShortestDistance(D, 5, 2);
 fail
-gap> DigraphShortestDistance(gr, [1, 2], [4, 5]);
+gap> DigraphShortestDistance(D, [1, 2], [4, 5]);
 2
-gap> DigraphShortestDistance(gr, [1, 3], [3, 5]);
+gap> DigraphShortestDistance(D, [1, 3], [3, 5]);
 0
 ]]></Example>
   </Description>
@@ -1283,25 +1452,25 @@ gap> DigraphShortestDistance(gr, [1, 3], [3, 5]);
     properties for the definition of the meet (or the join).
 
     <Example><![CDATA[
-gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 2, 3, 4]]);
+gap> D := Digraph([[1], [1, 2], [1, 3], [1, 2, 3, 4]]);
 <immutable digraph with 4 vertices, 9 edges>
-gap> PartialOrderDigraphMeetOfVertices(gr, 2, 3);
+gap> PartialOrderDigraphMeetOfVertices(D, 2, 3);
 4
-gap> PartialOrderDigraphJoinOfVertices(gr, 2, 3);
+gap> PartialOrderDigraphJoinOfVertices(D, 2, 3);
 1
-gap> PartialOrderDigraphMeetOfVertices(gr, 1, 2);
+gap> PartialOrderDigraphMeetOfVertices(D, 1, 2);
 2
-gap> PartialOrderDigraphJoinOfVertices(gr, 3, 4);
+gap> PartialOrderDigraphJoinOfVertices(D, 3, 4);
 3
-gap> gr := Digraph([[1], [2], [1, 2, 3], [1, 2, 4]]);
+gap> D := Digraph([[1], [2], [1, 2, 3], [1, 2, 4]]);
 <immutable digraph with 4 vertices, 8 edges>
-gap> PartialOrderDigraphMeetOfVertices(gr, 3, 4);
+gap> PartialOrderDigraphMeetOfVertices(D, 3, 4);
 fail
-gap> PartialOrderDigraphJoinOfVertices(gr, 3, 4);
+gap> PartialOrderDigraphJoinOfVertices(D, 3, 4);
 fail
-gap> PartialOrderDigraphMeetOfVertices(gr, 1, 2);
+gap> PartialOrderDigraphMeetOfVertices(D, 1, 2);
 fail
-gap> PartialOrderDigraphJoinOfVertices(gr, 1, 2);
+gap> PartialOrderDigraphJoinOfVertices(D, 1, 2);
 fail
 ]]></Example>
   </Description>
@@ -1363,22 +1532,22 @@ true
     the matching.  Every perfect matching is maximal.
 
     <Example><![CDATA[
-gap> gr := Digraph([[2], [1], [2, 3, 4], [3, 5], [1]]);
+gap> D := Digraph([[2], [1], [2, 3, 4], [3, 5], [1]]);
 <immutable digraph with 5 vertices, 8 edges>
-gap> IsMatching(gr, [[2, 1], [3, 2]]);
+gap> IsMatching(D, [[2, 1], [3, 2]]);
 false
 gap> edges := [[3, 2]];;
-gap> IsMatching(gr, edges);
+gap> IsMatching(D, edges);
 true
-gap> IsMaximalMatching(gr, edges);
+gap> IsMaximalMatching(D, edges);
 false
 gap> edges := [[5, 1], [3, 3]];;
-gap> IsMaximalMatching(gr, edges);
+gap> IsMaximalMatching(D, edges);
 true
-gap> IsPerfectMatching(gr, edges);
+gap> IsPerfectMatching(D, edges);
 false
 gap> edges := [[1, 2], [3, 3], [4, 5]];;
-gap> IsPerfectMatching(gr, edges);
+gap> IsPerfectMatching(D, edges);
 true
 ]]></Example>
   </Description>
