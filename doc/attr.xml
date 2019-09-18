@@ -1510,10 +1510,13 @@ fail]]></Example>
   <Attr Name="DigraphReverseAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is an immutable digraph, then this operation returns a new digraph
-    constructed from <A>digraph</A> by reversing the orientation of every edge.
+    The reverse of a digraph is the digraph formed by reversing the orientation
+    of each of its edges, i.e. for every edge <C>[i, j]</C> of a digraph, the
+    reverse contains the corresponding edge <C>[j, i]</C>.<P/>
 
-    If <A>digraph</A> is a mutable digraph, then this operation changes it in-place.
+    <C>DigraphReverse</C> returns the reverse of the digraph <A>digraph</A>. If
+    <A>digraph</A> is immutable, then a new immutable digraph is returned. Otherwise,
+    the mutable digraph <A>digraph</A> is changed in-place into its reverse.
     <Example><![CDATA[
 gap> D := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
 <immutable digraph with 5 vertices, 11 edges>
@@ -1546,17 +1549,15 @@ gap> OutNeighbours(D);
   <Attr Name="DigraphDualAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph without multiple edges, then this
-    returns the <E>dual</E> of <A>digraph</A>. The <E>dual</E> is sometimes
-    called the <E>complement</E>.<P/>
-
     The <E>dual</E> of <A>digraph</A> has the same vertices as <A>digraph</A>,
     and there is an edge in the dual from <C>i</C> to <C>j</C>
-    whenever there is no edge from <C>i</C> to <C>j</C> in <A>digraph</A>.<P/>
+    whenever there is no edge from <C>i</C> to <C>j</C> in <A>digraph</A>.
+    The <E>dual</E> is sometimes called the <E>complement</E>.<P/>
 
-    If <A>digraph</A> is an immutable digraph, then a new digraph is returned, and
-    if <A>digraph</A> is an immutable digraph, then <A>digraph</A> is changed
-    in-place.
+    <C>DigraphDual</C> returns the dual of the digraph <A>digraph</A>. If
+    <A>digraph</A> is an immutable digraph, then a new immutable digraph is
+    returned. Otherwise, the mutable digraph <A>digraph</A> is changed in-place
+    into its dual.
     <Example><![CDATA[
 gap> D := Digraph([[2, 3], [], [4, 6], [5], [],
 > [7, 8, 9], [], [], []]);
@@ -1593,8 +1594,9 @@ gap> D;
 
     The ordering of the vertices is preserved.<P/>
 
-    If <A>digraph</A> is immutable, then a new digraph is returned, and if
-    <A>digraph</A> is mutable, then it is changed in-place.
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the isolated vertices of the mutable digraph <A>digraph</A> are
+    removed in-place.
     <Example><![CDATA[
 gap> D := Digraph([[1, 2], [], [], [1, 4], []]);
 <immutable digraph with 5 vertices, 4 edges>
@@ -1632,9 +1634,9 @@ gap> D;
     The result is the largest subdigraph of <A>digraph</A> which does not
     contain multiple edges.<P/>
 
-    If <A>digraph</A> is immutable, then a new digraph is created. If
-    <A>digraph</A> is mutable, then it is changed in-place.<P/>
-
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the multiple edges of the mutable digraph <A>digraph</A> are
+    removed in-place.
     <Example><![CDATA[
 gap> D1 := Digraph([[1, 2, 3, 2], [1, 1, 3], [2, 2, 2]]);
 <immutable multidigraph with 3 vertices, 10 edges>
@@ -1659,12 +1661,13 @@ gap> D;
   <Attr Name="DigraphAddAllLoopsAttr" Arg="digraph"/>
   <Returns>A digraph.</Returns>
   <Description>
-    For a digraph <A>digraph</A> this operation return a copy of <A>digraph</A>
-    such that a loop is added for every vertex which did not have a loop in
-    <A>digraph</A>.<P/>
+    For a digraph <A>digraph</A> this operation returns a new digraph constructed
+    from <A>digraph</A>, such that a loop is added for every vertex which did not
+    have a loop in <A>digraph</A>.<P/>
 
-    If <A>digraph</A> is immutable, then a new digraph is created, and if
-    <A>digraph</A> is mutable, then it is changed in-place.
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the loops are added to the loopless vertices of the mutable digraph
+    <A>digraph</A> in-place.
     <Example><![CDATA[
 gap> D := EmptyDigraph(13);
 <immutable empty digraph with 13 vertices>
@@ -1700,8 +1703,9 @@ gap> D;
     digraph  constructed from <A>digraph</A> by removing every loop. A loop
     is an edge with equal source and range.<P/>
 
-    If <A>digraph</A> is immutable, then a new digraph is created, and if
-    <A>digraph</A> is mutable, then it is changed in-place.
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the loops are removed from the mutable digraph <A>digraph</A>
+    in-place.
     <Example><![CDATA[
 gap> D := Digraph([[1, 2, 4], [1, 4], [3, 4], [1, 4, 5], [1, 5]]);
 <immutable digraph with 5 vertices, 12 edges>
@@ -1734,8 +1738,9 @@ gap> D;
     <C>u</C> to a vertex <C>v</C> as there are from <C>v</C> to <C>u</C>; 
     see <Ref Prop="IsSymmetricDigraph"/>.<P/>
 
-    If <A>digraph</A> is immutable, then a new digraph is created, and if
-    <A>digraph</A> is mutable, then it is changed in-place.
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into its
+    symmetric closure.
 <Example><![CDATA[
 gap> D := Digraph([[1, 2, 3], [2, 4], [1], [3, 4]]);
 <immutable digraph with 4 vertices, 8 edges>
@@ -1780,8 +1785,9 @@ gap> D;
     The digraph returned by <C>MaximalSymmetricSubdigraphWithoutLoops</C> is
     the same, except that loops are removed.<P/>
     
-    If <A>digraph</A> is immutable, then a new digraph is created, and if
-    <A>digraph</A> is mutable, then it is changed in-place.<P/>
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into such
+    a digraph described above.<P/>
 
     See <Ref Prop="IsSymmetricDigraph"/>, <Ref Prop="IsMultiDigraph"/>, and
     <Ref Prop="DigraphHasLoops"/> for more information.
@@ -1823,8 +1829,9 @@ gap> D;
     <C>v</C>, or the edge from <C>v</C> to <C>u</C> (but not both) whenever
     both edges belong to <A>digraph</A>.<P/>
 
-    If <A>digraph</A> is immutable, then a new digraph is created, and if
-    <A>digraph</A> is mutable, then it is changed in-place.<P/>
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into
+    such a digraph described above.<P/>
 
     See <Ref Prop="IsAntisymmetricDigraph"/> for more information.
     <Example><![CDATA[
@@ -1862,14 +1869,15 @@ gap> D;
     If <A>digraph</A> is a digraph with no multiple edges, then these
     attributes return the (reflexive) transitive closure of <A>digraph</A>.<P/>
 
-    If <A>digraph</A> is immutable, then a new digraph is created, and if
-    <A>digraph</A> is mutable, then it is changed in-place.<P/>
-
     A digraph is <E>reflexive</E> if it has a loop at every vertex, and it is
     <E>transitive</E> if whenever <C>[i,j]</C> and <C>[j,k]</C> are edges of
     <A>digraph</A>, <C>[i,k]</C> is also an edge.  The <E>(reflexive)
       transitive closure</E> of a digraph <A>digraph</A> is the least
     (reflexive and) transitive digraph containing <A>digraph</A>.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into its
+    (reflexive) transitive closure.<P/>
 
     Let <M>n</M> be the number of vertices of <A>digraph</A>, and let
     <M>m</M> be the number of edges.  For an arbitrary digraph, these
@@ -1921,9 +1929,6 @@ gap> D;
     [see <Ref Attr="DigraphTopologicalSort"/>]
     with no multiple edges, then these  operations return the
     (reflexive) transitive reduction of <A>digraph</A>.<P/>
-    
-    If <A>digraph</A> is immutable, then a new digraph is created, and if
-    <A>digraph</A> is mutable, then it is changed in-place.<P/>
 
     The (reflexive) transitive reduction of such a digraph is the unique
     least subgraph such that the (reflexive) transitive closure of the
@@ -1931,6 +1936,10 @@ gap> D;
     [see <Ref Oper="DigraphReflexiveTransitiveClosure"/>].
     In order words, it is the least subgraph of <A>digraph</A> which
     retains the same reachability as <A>digraph</A>.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into its
+    (reflexive) transitive reduction.<P/>
 
     Let <M>n</M> be the number of vertices of an arbitrary digraph, and let
         <M>m</M> be the number of edges.
@@ -1984,15 +1993,16 @@ gap> D;
       Oper="IsUndirectedSpanningForest" /> for the definition of an undirected
     spanning forest.<P/>
 
-    If <A>digraph</A> is immutable, then a new digraph is created, and if
-    <A>digraph</A> is mutable, then it is changed in-place.<P/>
-
     If <A>digraph</A> is a digraph with at least one vertex and whose <Ref
       Oper="MaximalSymmetricSubdigraph"/> is connected (see <Ref
       Prop="IsConnectedDigraph" />), then <C>UndirectedSpanningTree</C> returns
     an undirected spanning tree of <A>digraph</A>, otherwise this attribute
     returns <K>fail</K>.  See <Ref Oper="IsUndirectedSpanningTree" /> for the
-    definition of an undirected spanning tree. <P/>
+    definition of an undirected spanning tree.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into an
+    undirected spanning tree of <A>digraph</A>.<P/>
 
     Note that for a digraph that has an undirected spanning tree, the attribute
     <C>UndirectedSpanningTree</C> returns the same digraph as the attribute
@@ -2045,13 +2055,14 @@ gap> D;
   <Description>
     If <A>digraph</A> is a symmetric digraph, then
     <C>DigraphMycielskian</C> returns the Mycielskian of <A>digraph</A>.<P/>
-
-    If <A>digraph</A> is immutable, then a new digraph is created, and if
-    <A>digraph</A> is mutable, then it is changed in-place.<P/>
     
     The Mycielskian of a symmetric digraph is a larger symmetric digraph
     constructed from it, which has a larger chromatic number. For further
     information, see <URL>https://en.wikipedia.org/wiki/Mycielskian</URL>.<P/>
+
+    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into
+    its Mycielskian.<P/>
 
     <Example><![CDATA[
 gap> D := CycleDigraph(2);
