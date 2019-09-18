@@ -24,12 +24,12 @@ DeclareOperation("BlissCanonicalLabelling", [IsDigraph, IsHomogeneousList]);
 DeclareAttribute("NautyCanonicalLabelling", IsDigraph);
 DeclareOperation("NautyCanonicalLabelling", [IsDigraph, IsHomogeneousList]);
 
-DeclareAttribute("BlissCanonicalDigraph", IsDigraph);
+DeclareAttributeReturnsDigraph("BlissCanonicalDigraph", IsDigraph);
 DeclareOperation("BlissCanonicalDigraph", [IsDigraph, IsHomogeneousList]);
 
 #  TODO document 2-arg BlissCanonicalDigraph and NautyCanonicalDigraph
 
-DeclareAttribute("NautyCanonicalDigraph", IsDigraph);
+DeclareAttributeReturnsDigraph("NautyCanonicalDigraph", IsDigraph);
 DeclareOperation("NautyCanonicalDigraph", [IsDigraph, IsHomogeneousList]);
 
 DeclareOperation("IsIsomorphicDigraph", [IsDigraph, IsDigraph]);
