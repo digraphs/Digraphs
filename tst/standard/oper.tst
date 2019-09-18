@@ -905,6 +905,14 @@ gap> gr := DigraphAddEdges(gr, [[2, 3], [5, 6], [9, 10]]);
 <immutable digraph with 14 vertices, 13 edges>
 gap> gr = ChainDigraph(14);
 true
+gap> D := CycleDigraph(IsMutableDigraph, 2);
+<mutable digraph with 2 vertices, 2 edges>
+gap> DigraphVertexLabels(D);
+[ 1, 2 ]
+gap> DigraphDisjointUnion(D, D);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphVertexLabels(D);
+[ 1 .. 4 ]
 
 #  DigraphEdgeUnion
 gap> gr1 := DigraphFromDigraph6String("&I????@A_?AA???@d??");

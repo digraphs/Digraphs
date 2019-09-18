@@ -410,6 +410,8 @@ function(arg)
   od;
 
   if IsMutableDigraph(D) then
+    SetDigraphVertexLabels(D, DigraphVertices(D));
+    # This above stops D keeping its old vertex labels after being changed
     ClearDigraphEdgeLabels(D);
     return D;
   fi;
