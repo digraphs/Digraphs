@@ -18,7 +18,7 @@
     and independent sets is a version of the Bron-Kerbosch algorithm.
     Calculating the cliques and independent sets of a digraph is a well-known
     and hard problem, and searching for cliques or independent sets in a
-    digraph can be very length, even for a digraph with a small number of
+    digraph can be very lengthy, even for a digraph with a small number of
     vertices.  &Digraphs; uses several strategies to increase the performance
     of these calculations.
     <P/>
@@ -84,7 +84,7 @@
     the action of the automorphism group of the <E>symmetric closure</E> of the
     digraph formed by removing loops and multiple edges.<P/>
 
-    Please note that in &Digraphs;, cliques and indepedent sets are not
+    Please note that in &Digraphs;, cliques and independent sets are not
     required to be maximal. Some authors use the word clique to mean
     <E>maximal</E> clique, and some authors use the phrase independent set to
     mean <E>maximal</E> independent set, but please note that &Digraphs; does
