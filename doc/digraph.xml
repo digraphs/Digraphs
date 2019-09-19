@@ -782,7 +782,7 @@ gap> RandomTournament(IsMutableDigraph, 10);
     <A>n</A> and <C>2 * <A>n</A></C>. See <Ref Prop="IsLatticeDigraph"/>. <P/>
     <Log><![CDATA[
 gap> RandomLattice(10);
-<immutable digraph with 10 vertices, 39 edges>
+<immutable lattice digraph with 10 vertices, 39 edges>
 gap> RandomLattice(IsMutableDigraph, 10);
 <mutable digraph with 12 vertices, 52 edges>
 ]]></Log>

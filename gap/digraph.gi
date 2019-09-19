@@ -1265,7 +1265,12 @@ end);
 
 InstallMethod(RandomLatticeCons, "for IsImmutableDigraph and a pos int",
 [IsImmutableDigraph, IsPosInt],
-{filt, n} -> MakeImmutable(RandomLatticeCons(IsMutableDigraph, n)));
+function(filt, n)
+  local D;
+  D := MakeImmutable(RandomLatticeCons(IsMutableDigraph, n));
+  SetIsLatticeDigraph(D, true);
+  return D;
+end);
 
 InstallMethod(RandomLattice, "for a pos int", [IsPosInt],
 n -> RandomLatticeCons(IsImmutableDigraph, n));
