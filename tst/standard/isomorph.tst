@@ -568,6 +568,8 @@ Error, the 2nd argument should be a list of lists of positive integers,
 gap> DIGRAPHS_ValidateEdgeColouring(D, [[3], [2], []]); 
 Error, the 2nd argument should be a list of lists whose union is [1 .. number \
 of colours],
+gap> DIGRAPHS_ValidateEdgeColouring(D, fail);
+true
 
 #  CanonicalDigraph
 gap> gr1 := Digraph([[1, 2], [1, 2], [2, 3], [1, 2, 3], [5]]);;
@@ -935,6 +937,18 @@ gap> OutNeighbours(DistanceDigraph(gr, 1));
 [ [ 2 ], [  ], [ 2 ] ]
 gap> OutNeighbours(DistanceDigraph(gr, 2));
 [ [  ], [  ], [  ] ]
+
+# BlissAutomorphismGroup, error handling
+gap> gr := Digraph([[2], [1, 3], [2]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> BlissAutomorphismGroup(gr, false, []);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 2nd choice method found for `BlissAutomorphismGroup' on 3 arguments
+gap> BlissAutomorphismGroup(gr, fail, []);
+Error, the 2nd argument must be a list of the same shape as OutNeighbours(grap\
+h), where graph is the 1st argument,
+gap> BlissAutomorphismGroup(gr, fail, [[1], [1, 1], [1]]) = Group([(1, 3)]);
+true
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(canon);
