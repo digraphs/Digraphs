@@ -298,7 +298,8 @@ function(digraph, vert_colours, edge_colours)
                     "AutomorphismGroup")[1];
 end);
 
-InstallMethod(BlissAutomorphismGroup, "for a digraph, fail",
+InstallMethod(BlissAutomorphismGroup,
+"for a digraph, fail, and edge colouring",
 [IsDigraph, IsBool, IsList],
 function(digraph, vert_colours, edge_colours)
   if not vert_colours = fail then
@@ -318,27 +319,6 @@ function(D, colors)
     return fail;
   fi;
   return NAUTY_DATA(D, colors)[1];
-end);
-
-InstallMethod(NautyAutomorphismGroup, "for a digraph",
-[IsDigraph, IsHomogeneousList, IsList],
-function(digraph, vert_colours, edge_colours)
-  Info(InfoWarning,
-       1,
-       "NautyAutomorphismGroup is not available for edge coloured digraphs");
-  return fail;
-end);
-
-InstallMethod(NautyAutomorphismGroup, "for a digraph",
-[IsDigraph, IsBool, IsList],
-function(digraph, vert_colours, edge_colours)
-  if not vert_colours = fail then
-    TryNextMethod();
-  fi;
-  Info(InfoWarning,
-       1,
-       "NautyAutomorphismGroup is not available for edge coloured digraphs");
-  return fail;
 end);
 
 InstallMethod(AutomorphismGroup, "for a digraph", [IsDigraph],
@@ -622,7 +602,7 @@ function(graph, edge_colouring)
   local n, colours, m, adj_colours, i;
 
   if not IsDigraph(graph) then
-    ErrorNoReturn("the 1st argument must be a digraph");
+    ErrorNoReturn("the 1st argument must be a digraph,");
   fi;
 
   # Check: shapes and values from [1 .. something]
@@ -633,13 +613,13 @@ function(graph, edge_colouring)
   n := DigraphNrVertices(graph);
   if not IsList(edge_colouring) or Length(edge_colouring) <> n then
     ErrorNoReturn("the 2nd argument must be a list of the same shape as ",
-                  "OutNeighbours(graph), where graph is the 1st argument");
+                  "OutNeighbours(graph), where graph is the 1st argument,");
   fi;
   if ForAny(DigraphVertices(graph), x -> not IsList(edge_colouring[x]) or
                                          (Length(edge_colouring[x]) <>
                                           Length(OutNeighbours(graph)[x]))) then
     ErrorNoReturn("the 2nd argument must be a list of the same shape as ",
-                  "OutNeighbours(graph), where graph is the 1st argument");
+                  "OutNeighbours(graph), where graph is the 1st argument,");
   fi;
 
   colours := [];
@@ -647,7 +627,7 @@ function(graph, edge_colouring)
     for i in adj_colours do
       if not IsPosInt(i) then
         ErrorNoReturn("the 2nd argument should be a list of lists of ",
-                      "positive integers");
+                      "positive integers,");
       fi;
       AddSet(colours, i);
     od;
@@ -655,7 +635,7 @@ function(graph, edge_colouring)
   m := Length(colours);
   if ForAny([1 .. m], i -> i <> colours[i]) then
     ErrorNoReturn("the 2nd argument should be a list of lists whose union ",
-                   "is [1 .. number of colours]");
+                   "is [1 .. number of colours],");
   fi;
   return true;
 end);
