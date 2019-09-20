@@ -550,6 +550,25 @@ er m <= 4,
 gap> DIGRAPHS_ValidateVertexColouring(4, [1, 1, 3, 2]);
 [ 1, 1, 3, 2 ]
 
+# DIGRAPHS_ValidateEdgeColouring
+gap> D := ChainDigraph(3);;
+gap> DIGRAPHS_ValidateEdgeColouring(3, 3);
+Error, the 1st argument must be a digraph,
+gap> DIGRAPHS_ValidateEdgeColouring(D, 3); 
+Error, the 2nd argument must be a list of the same shape as OutNeighbours(grap\
+h), where graph is the 1st argument,
+gap> DIGRAPHS_ValidateEdgeColouring(D, [3]);
+Error, the 2nd argument must be a list of the same shape as OutNeighbours(grap\
+h), where graph is the 1st argument,
+gap> DIGRAPHS_ValidateEdgeColouring(D, [[1], [], [2]]);
+Error, the 2nd argument must be a list of the same shape as OutNeighbours(grap\
+h), where graph is the 1st argument,
+gap> DIGRAPHS_ValidateEdgeColouring(D, [[-1], [2], []]);
+Error, the 2nd argument should be a list of lists of positive integers,
+gap> DIGRAPHS_ValidateEdgeColouring(D, [[3], [2], []]); 
+Error, the 2nd argument should be a list of lists whose union is [1 .. number \
+of colours],
+
 #  CanonicalDigraph
 gap> gr1 := Digraph([[1, 2], [1, 2], [2, 3], [1, 2, 3], [5]]);;
 gap> gr2 := Digraph([[1, 3], [2, 3], [2, 3], [1, 2, 3], [5]]);;

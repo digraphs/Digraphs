@@ -82,7 +82,7 @@ matrix:
       - ABI=64
       - GAP=master
       - PACKAGES=required
-      - THRESHOLD=94
+      - THRESHOLD=98
     
 before_install:
   - if [ ! -z "$EXTRA_PKG_FLAGS" ]; then
