@@ -179,6 +179,8 @@ gap> DigraphFromGraph6String("H?AAEM{");
 <immutable digraph with 9 vertices, 22 edges>
 gap> DigraphFromDigraph6String("&?");
 <immutable empty digraph with 0 vertices>
+gap> DigraphFromDigraph6String(IsMutableDigraph, "&DOOOW?");
+<mutable digraph with 5 vertices, 5 edges>
 gap> DigraphFromDigraph6String("&CQFG");
 <immutable digraph with 4 vertices, 6 edges>
 gap> DigraphFromDigraph6String("&IM[SrKLc~lhesbU[F_");
