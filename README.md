@@ -1,5 +1,5 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.198140.svg)](https://doi.org/10.5281/zenodo.198140)
-[![Build Status](https://travis-ci.org/gap-packages/Digraphs.svg?branch=stable-0.6)](https://travis-ci.org/gap-packages/Digraphs)
+[![Build Status](https://travis-ci.org/gap-packages/Digraphs.svg?branch=master)](https://travis-ci.org/gap-packages/Digraphs)
 
 ## README
 
@@ -9,14 +9,13 @@
 ## Getting Digraphs
 
 To get the latest version of the package, download the archive file
-`digraphs-x.x.x.tar.gz` from the
-[Digraphs][] webpage, and inside
-the `pkg` subdirectory of your GAP installation unpack `digraphs-x.x.x.tar.gz`
-using, for example:
+`digraphs-x.x.x.tar.gz` from the [Digraphs webpage][]. Then, inside the `pkg`
+subdirectory of your GAP installation, unpack the archive
+`digraphs-x.x.x.tar.gz`, using
 
     gunzip digraphs-x.x.x.tar.gz; tar xvf digraphs-x.x.x.tar
 
-This will create a subdirectory `digraphs-x.x.x`.
+for example.  This will create a subdirectory `digraphs-x.x.x`.
 
 ## Issues
 
@@ -25,40 +24,44 @@ For questions, remarks, suggestions, and issues please use the
 
 ## Installation
 
-It is assumed that you have a working copy of [GAP][]
-with version number 4.9.0 or higher.  The most up-to-date version of
-[GAP][] and instructions on how to install it can be
-obtained from the [main GAP webpage](https://www.gap-system.org).
+It is assumed that you have a working copy of [GAP][] with version number 4.9.0
+or higher.  The most up-to-date version of GAP, and instructions on how to
+install it, can be obtained from the
+[main GAP webpage](https://www.gap-system.org).
 
 The following is a summary of the steps that should lead to a successful
-installation of [Digraphs][]:
+installation of Digraphs:
 
-* get the [IO](https://gap-packages.github.io/io) package version 4.5.1 or higher.
+* get the [IO](https://gap-packages.github.io/io) package version 4.5.1 or
+  higher.
 * get the [orb](https://gap-packages.github.io/orb) package version 4.8.2 or
   higher.
-* **this step is optional:** certain methods in [Digraphs][] require the [Grape](https://gap-packages.github.io/grape/) package to be available; a full list of these functions can be found in the first chapter of the manual.  To use these functions make sure that the [Grape](http://www.maths.qmul.ac.uk/~leonard/grape/) package version 4.8.1 or higher is available.
+* **this step is optional:** certain methods in Digraphs require the
+  [Grape](https://gap-packages.github.io/grape/) package to be available; a
+  full list of these functions can be found in the first chapter of the manual.
+  To use these functions make sure that the Grape package version 4.8.1 or
+  higher is available.
 * download the package archive `digraphs-x.x.x.tar.gz` from the
-  [Digraphs][] webpage.
+  [Digraphs webpage][].
 * unzip and untar the file `digraphs-x.x.x.tar.gz` using, for example,
   ```
     gunzip digraphs-x.x.x.tar.gz; tar xvf digraphs-x.x.x.tar
   ```
   which should create a directory called `digraphs-x.x.x`.
 * locate the `pkg` directory of your GAP directory, which contains the
-  directories `lib`, `doc` and so on. Move the directory `digraphs-x.x.x` into the
-  `pkg` directory (if it is not there already).
-* compile the kernel module; more details below.
-* start [GAP][] in the usual way.
+  directories `lib`, `doc` and so on. Move the directory `digraphs-x.x.x` into
+  the `pkg` directory (if it is not there already).
+* compile the kernel module; more details are given below.
+* start GAP in the usual way.
 * type `LoadPackage("digraphs");`
 
 ## Compiling the kernel module
 
-The [Digraphs][]
-package has a [GAP][] kernel component written in
-C which has to be compiled for the package to work.  This component contains
-certain low-level functions required by [Digraphs][].
+The Digraphs package has a GAP kernel component written in C, which has to be
+compiled in order for the package to work.  This component contains certain
+low-level functions that the package requires.
 
-It is not possible to use the [Digraphs][] package without compiling it.
+It is not possible to use the Digraphs package without compiling it.
 
 To compile the kernel component inside the `digraphs-x.x.x` directory, type
 
@@ -66,35 +69,32 @@ To compile the kernel component inside the `digraphs-x.x.x` directory, type
     make
 
 If you installed the package in a `pkg` directory other than the standard `pkg`
-directory in your [GAP][] installation, then you have
-to do two things. Firstly during compilation you have to use the option
-`--with-gaproot=PATH` of the `configure` script where `PATH` is a path to the
-main [GAP][] root directory (if not given, the default
-`../..` is assumed).
+directory in your GAP installation, then you have to do two things. Firstly,
+during compilation you have to use the option `--with-gaproot=PATH` of the
+`configure` script where `PATH` is a path to the main GAP root directory (if
+not given, the default `../..` is assumed).
 
-If you installed [GAP][] on several architectures, you
-must execute the configure/make step for each of the architectures. You can
-either do this immediately after configuring and compiling
-[GAP][] itself on this architecture, or alternatively
-(when using version 4.5 of [GAP][] or newer) set the
-environment variable `CONFIGNAME` to the name of the configuration you used
-when compiling [GAP][] before running `./configure`.
-Note however that your compiler choice and flags (environment variables `CC`
-and `CFLAGS`) need to be chosen to match the setup of the original
-[GAP][] compilation. For example you have to specify
-32-bit or 64-bit mode correctly!
+If you installed GAP on several architectures, then you must execute the
+configure/make step for each of the architectures. You can either do this
+immediately after configuring and compiling GAP itself on this architecture, or
+alternatively set the environment variable `CONFIGNAME` to the name of the
+configuration you used when compiling GAPbefore running `./configure`.  Note
+however that your compiler choice and flags (environment variables `CC` and
+`CFLAGS`) need to be chosen to match the setup of the original GAP compilation.
+For example, you have to specify 32-bit or 64-bit mode correctly!
 
-Digraphs vendors `bliss` and `planarity` libraries in `extern` directory. If you
-wish to use your system copy of `bliss` and `planarity`, use the configure options
-`--with-external-bliss` and `--with-external-planarity`.
+Digraphs vendors `bliss` and `planarity` libraries in the `extern` directory.
+If you wish to use your system copy of `bliss` or `planarity`, please use the
+configure options `--with-external-bliss` or `--with-external-planarity`, as
+appropriate.
 
-If you wish to install a [development version of the Digraphs
-package](https://github.com/gap-packages/Digraphs), then you must first run
-the command `./autogen.sh` before compilation. However, development versions
-of the package may be unstable, and we recommend using the most recently
-released version of the package when possible.
+If you wish to install a
+[development version of the Digraphs package](https://github.com/gap-packages/Digraphs),
+then you must first run the command `./autogen.sh` before compilation. However,
+development versions of the package may be unstable, and we recommend using the
+most recently released version of the package when possible.
 
 Enjoy!
 
-[Digraphs]: https://gap-packages.github.io/Digraphs
+[Digraphs webpage]: https://gap-packages.github.io/Digraphs
 [GAP]: https://www.gap-system.org
