@@ -114,6 +114,7 @@ true]]></Example>
 <ManSection>
   <Oper Name="DigraphReverseEdges" Arg="digraph, edges"/>
   <Oper Name="DigraphReverseEdge" Arg="digraph, edge"/>
+  <Oper Name="DigraphReverseEdge" Arg="digraph, src, ran"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph without multiple edges, and <A>edges</A> is a
@@ -122,9 +123,9 @@ true]]></Example>
     then <C>DigraphReverseEdges</C> returns a digraph constructed from
     <A>digraph</A> by reversing the orientation of every edge specified by
     <A>edges</A>. If only one edge is to be reversed, then
-    <C>DigraphReverseEdge</C> can be used instead  In this case, the second
-    argument should just be a single vertex-pair or a single position of an
-    edge with respect to <Ref Attr="DigraphEdges"/>. <P/>
+    <C>DigraphReverseEdge</C> can be used instead. In this case, the second
+    argument should just be a single vertex-pair, or the second and third
+    arguments should be the source and range of an edge respectively. <P/>
 
     Note that even though <A>digraph</A> cannot have multiple edges, the
     output may have multiple edges. <P/>
@@ -184,10 +185,10 @@ true
     The <Ref Oper="DigraphVertexLabels"/> of <A>digraph</A> will not be retained
     in the returned digraph. <P/>
 
-    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then relabeling
-    of the vertices is performed directly on <A>digraph</A>. If <A>digraph</A>
-    belongs to <Ref Filt="IsImmutableDigraph"/>, an immutable copy of
-    <A>digraph</A> with the vertices relabelled is returned.<P/>
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then
+    relabelling of the vertices is performed directly on <A>digraph</A>.
+    If <A>digraph</A> belongs to <Ref Filt="IsImmutableDigraph"/>, an immutable
+    copy of <A>digraph</A> with the vertices relabelled is returned.<P/>
 
     <Example><![CDATA[
 gap> D := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
@@ -233,10 +234,10 @@ true
     in the action of a permutation on the vertices of a digraph, then you can
     use <C>OnDigraphs</C> instead of <C>OnMultiDigraphs</C>.
 
-    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then relabeling
-    of the vertices is performed directly on <A>digraph</A>. If <A>digraph</A>
-    belongs to <Ref Filt="IsImmutableDigraph"/>, an immutable copy of
-    <A>digraph</A> with the vertices relabelled is returned.<P/>
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then
+    relabelling of the vertices is performed directly on <A>digraph</A>.
+    If <A>digraph</A> belongs to <Ref Filt="IsImmutableDigraph"/>, an immutable
+    copy of <A>digraph</A> with the vertices relabelled is returned.<P/>
 
     <Example><![CDATA[
 gap> D1 := Digraph([
@@ -531,7 +532,6 @@ true
     vertices of <A>digraph</A>, then this operation returns a digraph
     constructed from <A>digraph</A> by removing the edge specified by
     <A>edge</A> or <A>[src, ran]</A>. <P/>  
-
 
     If <A>digraph</A> belongs to <Ref
       Filt="IsMutableDigraph"/>, then the edge is removed directly from
