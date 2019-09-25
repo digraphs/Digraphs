@@ -19,7 +19,10 @@
     obtained by associating a vertex with each edge of <A>digraph</A>, and
     creating an edge from a vertex <K>v</K> to a vertex <K>u</K> if and only
     if the terminal vertex of the edge associated with <K>v</K> is the start
-    vertex of the edge associated with <K>u</K>.
+    vertex of the edge associated with <K>u</K>.<P/>
+
+    Note that the returned digraph is always a new immutable digraph, and the
+    argument <A>digraph</A> is never modified.
     <Example><![CDATA[
 gap> LineDigraph(CompleteDigraph(3));
 <immutable digraph with 6 vertices, 12 edges>
@@ -40,7 +43,10 @@ gap> LineDigraph(ChainDigraph(3));
     symmetric digraph obtained by associating a vertex with each edge of
     <A>digraph</A>, ignoring directions and multiplicites, and adding an edge
     between two vertices if and only if the corresponding edges have a vertex in
-    common.
+    common.<P/>
+
+    Note that the returned digraph is always a new immutable digraph, and the
+    argument <A>digraph</A> is never modified.
     <Example><![CDATA[
 gap> LineUndirectedDigraph(CompleteDigraph(3));
 <immutable digraph with 3 vertices, 6 edges>
@@ -58,10 +64,14 @@ gap> LineUndirectedDigraph(DigraphSymmetricClosure(ChainDigraph(3)));
   <Description>
     Let <A>digraph</A> be a digraph with vertex set <C>V</C>. This function
     returns the bipartite double digraph of <A>digraph</A>. The vertex set of
-    the double digraph is the orginal vertex set together with a duplicate. The
+    the double digraph is the original vertex set together with a duplicate. The
     edges are <C>[u_1, v_2]</C> and <C>[u_2, v_1]</C> if and only if <C>[u,
       v]</C> is an edge in <A>digraph</A>. The resulting graph is bipartite,
-    since the orignal edges are not included in the resulting digraph.
+    since the orignal edges are not included in the resulting digraph.<P/>
+
+    If <A>digraph</A> is mutable, then <A>digraph</A> is modified in-place. If
+    <A>digraph</A> is immutable, then a new immutable digraph constructed as
+    described above is returned.
     <Example><![CDATA[
 gap> gamma := Digraph([[2], [3], [1]]);
 <immutable digraph with 3 vertices, 3 edges>
@@ -82,7 +92,11 @@ gap> BipartiteDoubleDigraph(gamma);
     digraph is the orginal vertex set together with a duplicate. The edges are
     <C>[u_1, v_2]</C> and <C>[u_2, v_1]</C> if and only if <C>[u, v]</C> is an
     edge in <A>digraph</A>, together with the original edges and their
-    duplicates.
+    duplicates.<P/>
+
+    If <A>digraph</A> is mutable, then <A>digraph</A> is modified in-place. If
+    <A>digraph</A> is immutable, then a new immutable digraph constructed as
+    described above is returned.
     <Example><![CDATA[
 gap> gamma := Digraph([[2], [3], [1]]);
 <immutable digraph with 3 vertices, 3 edges>
@@ -108,6 +122,9 @@ gap> DoubleDigraph(gamma);
     or is a number in <A>list</A>.  See <Ref Oper="DigraphShortestDistance"
     Label="for a digraph and two vertices"/>. <P/>
 
+    If <A>digraph</A> is mutable, then <A>digraph</A> is modified in-place. If
+    <A>digraph</A> is immutable, then a new immutable digraph constructed as
+    described above is returned.
     <Example><![CDATA[
 gap> digraph := DigraphFromSparse6String(
 > ":]n?AL`BC_DEbEF`GIaGHdIJeGKcKL_@McDHfILaBJfHMjKM");
