@@ -48,7 +48,7 @@ function()
          "Using NautyTracesInterface by default for AutomorphismGroup");
     Info(InfoWarning,
          1,
-         "bliss will for used for edge coloured automorphisms");
+         "bliss will be used for edge coloured automorphisms");
   else
     Info(InfoWarning,
          1,
