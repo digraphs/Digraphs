@@ -1785,15 +1785,18 @@ gap> ChromaticNumber(D);
     <C>DigraphCartesianProductProjections</C> returns a list <C>proj</C>
     such that <C>proj[i]</C> is the projection onto the <C>i</C>-th
     coordinate of the product.
+    <P/>
 
     A projection is an idempotent endomorphism of <A>digraph</A>. If
     <C>gr1, gr2, ...</C> are all loopless digraphs, then the restriction
     of <A>digraph</A> onto the image of <C>proj[i]</C> is isomorphic to
     <C>gr_i</C>.
+    <P/>
 
-    Currently this attribute is only set upon creating a graph via
+    Currently this attribute is only set upon creating a digraph via
     <C>DigraphCartesianProduct</C> and there is no way of calculating
-    it for general graphs.
+    it for other digraphs.
+    <P/>
 
     For more information see <Ref Oper="DigraphCartesianProduct"/> 
 
@@ -1826,14 +1829,17 @@ true
     <C>DigraphDirectProductProjections</C> returns a list <C>proj</C>
     such that <C>proj[i]</C> is the projection onto the <C>i</C>-th
     coordinate of the product.
+    <P/>
 
     A projection is an idempotent endomorphism of <A>digraph</A>. If
     <C>gr1, gr2, ...</C> are all loopless digraphs, then the projection 
     of <A>digraph</A> via <C>proj[i]</C> is isomorphic to <C>gr_i</C>.
+    <P/>
 
-    Currently this attribute is only set upon creating a graph via
+    Currently this attribute is only set upon creating a digraph via
     <C>DigraphDirectProduct</C> and there is no way of calculating
-    it for general graphs.
+    it for other digraphs.
+    <P/>
 
     For more information see <Ref Oper="DigraphDirectProduct"/> 
 

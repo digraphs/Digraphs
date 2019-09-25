@@ -497,7 +497,7 @@ end);
 
 InstallGlobalFunction(DigraphCartesianProduct,
 function(arg)
-  local D, n, i, j, proj, m;
+  local D, n, i, j, proj, m, labs;
 
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
@@ -509,6 +509,8 @@ function(arg)
     ErrorNoReturn("the arguments must be digraphs by out-neighbours, or a ",
                   "single list of digraphs by out-neighbours,");
   fi;
+
+  labs := List(Cartesian(Reversed(List(arg, DigraphVertexLabels))), Reversed);
 
   D := arg[1];
   DIGRAPHS_CombinationOperProcessArgs(arg);
@@ -535,12 +537,13 @@ function(arg)
     D := DigraphNC(arg[1]);
   fi;
   SetDigraphCartesianProductProjections(D, proj);
+  SetDigraphVertexLabels(D, labs);
   return D;
 end);
 
 InstallGlobalFunction(DigraphDirectProduct,
 function(arg)
-  local D, n, i, j, proj, m;
+  local D, n, i, j, proj, m, labs;
 
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
@@ -552,6 +555,8 @@ function(arg)
     ErrorNoReturn("the arguments must be digraphs by out-neighbours, or a ",
                   "single list of digraphs by out-neighbours,");
   fi;
+
+  labs := List(Cartesian(Reversed(List(arg, DigraphVertexLabels))), Reversed);
 
   D := arg[1];
   DIGRAPHS_CombinationOperProcessArgs(arg);
@@ -577,6 +582,7 @@ function(arg)
     D := DigraphNC(arg[1]);
   fi;
   SetDigraphDirectProductProjections(D, proj);
+  SetDigraphVertexLabels(D, labs);
   return D;
 end);
 
