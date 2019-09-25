@@ -39,14 +39,7 @@ rec(
 gap> Digraph(Petersen);
 <immutable digraph with 10 vertices, 30 edges>
 gap> Graph(last) = Petersen;
-true
-gap> D := CycleDigraph(IsMutableDigraph, 2);
-<mutable digraph with 2 vertices, 2 edges>
-gap> Graph(D);
-rec( adjacencies := [ [ 2 ], [ 1 ] ], group := Group(()), isGraph := true,
-  names := [ 1, 2 ], order := 2, representatives := [ 1, 2 ],
-  schreierVector := [ -1, -2 ] )
-  ]]></Example>
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -68,7 +61,7 @@ rec( adjacencies := [ [ 2 ], [ 1 ] ], group := Group(()), isGraph := true,
     The digraph created by this operation belongs to the category <Ref
       Filt="IsCayleyDigraph"/>, the group <A>G</A> can be recovered from the
     digraph using <Ref Attr="GroupOfCayleyDigraph"/>, and the generators
-    <A>gens</A> can be obtained using <Ref Attr="GeneratorsOfCayleyDigraph"/>.<P>
+    <A>gens</A> can be obtained using <Ref Attr="GeneratorsOfCayleyDigraph"/>.<P/>
 
     Note that this function can only return an immutable digraph.
 
