@@ -49,20 +49,21 @@
   <Ref Sect="Isomorphisms and canonical labellings"/> for more details.  
   <P/>
 
-  From Version 1.0.0 of &Digraphs; digraphs can be mutable or immutable.
+  From Version 1.0.0 of this package, digraphs can be either mutable or immutable.
   Mutable digraphs can be changed in-place by many of the methods in the
-  package, this avoids unnecessary copying. Immutable digraphs cannot be
-  changed in-place, but have the advantage that the value of an attribute of
+  package, which avoids unnecessary copying. Immutable digraphs cannot be
+  changed in-place, but their advantage is that the value of an attribute of
   an immutable digraph is only ever computed once. Mutable digraphs can be
   converted into immutable digraphs in-place using <Ref Func="MakeImmutable"
   BookName = "ref"/>.  One of the motivations for introducing mutable
   digraphs in Version 1.0.0 was that in practice the authors often wanted
   to create a digraph and immediately modify it (removing certain edges,
-  loops, and so on). Before Version 1.0.0 this involved copying the digraph
-  several times, with the each copy being discarded almost immediately.
+  loops, and so on). Before Version 1.0.0, this involved copying the digraph
+  several times, with each copy being discarded almost immediately.
   From Version 1.0.0, this unnecessary copying can be eliminated by
-  creating a mutable digraph, changing it in-place, and if desirable
-  convert the mutable digraph to an immutable one in-place.
+  first creating a mutable digraph, then changing it in-place, and  finally
+  converting the mutable digraph to an immutable one in-place
+  (if desirable).
 
   <Subsection Label="Definitions"><Heading>Definitions</Heading>
 
