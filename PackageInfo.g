@@ -64,6 +64,19 @@ Persons := [
     Institution   := "University of St Andrews"),
 
   rec(
+    LastName      := "Cirpons",
+    FirstNames    := "Reinis",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "rc234@st-andrews.ac.uk",
+    PostalAddress := Concatenation([
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"]),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
     LastName      := "Elliott",
     FirstNames    := "Luke",
     IsAuthor      := false,
