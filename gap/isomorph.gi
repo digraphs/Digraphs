@@ -206,7 +206,8 @@ end);
 
 # Canonical digraphs
 
-InstallMethod(BlissCanonicalDigraph, "for a digraph", [IsDigraph],
+InstallMethodThatReturnsDigraph(BlissCanonicalDigraph, "for a digraph",
+[IsDigraph],
 function(D)
   if IsMultiDigraph(D) then
     return OnMultiDigraphs(D, BlissCanonicalLabelling(D));
@@ -223,7 +224,8 @@ function(D, colors)
   return OnDigraphs(D, BlissCanonicalLabelling(D, colors));
 end);
 
-InstallMethod(NautyCanonicalDigraph, "for a digraph", [IsDigraph],
+InstallMethodThatReturnsDigraph(NautyCanonicalDigraph, "for a digraph",
+[IsDigraph],
 function(D)
   if not DIGRAPHS_NautyAvailable or IsMultiDigraph(D) then
     Info(InfoWarning, 1, "NautyTracesInterface is not available");

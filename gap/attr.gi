@@ -1356,6 +1356,7 @@ end);
 
 # Things that are attributes for immutable digraphs, but operations for mutable.
 
+# Don't use InstallMethodThatReturnsDigraph since we can do better in this case.
 InstallMethod(DigraphReverse, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
@@ -1376,13 +1377,7 @@ function(D)
   return D;
 end);
 
-InstallMethod(DigraphReverse, "for a digraph with known digraph reverse",
-[IsDigraph and HasDigraphReverseAttr], SUM_FLAGS, DigraphReverseAttr);
-
-InstallMethod(DigraphReverseAttr, "for an immutable digraph",
-[IsImmutableDigraph], DigraphReverse);
-
-InstallMethod(DigraphDual, "for a digraph by out-neighbours",
+InstallMethodThatReturnsDigraph(DigraphDual, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local nodes, C, list, i;
@@ -1409,13 +1404,8 @@ function(D)
   return C;
 end);
 
-InstallMethod(DigraphDual, "for a digraph with known dual",
-[IsDigraph and HasDigraphDualAttr], SUM_FLAGS, DigraphDualAttr);
-
-InstallMethod(DigraphDualAttr, "for an immutable digraph", [IsImmutableDigraph],
-DigraphDual);
-
-InstallMethod(ReducedDigraph, "for a digraph by out-neighbours",
+InstallMethodThatReturnsDigraph(ReducedDigraph,
+"for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local v, niv, old, C, i;
@@ -1435,18 +1425,8 @@ function(D)
     fi;
   od;
   C := InducedSubdigraph(D, ListBlist(v, niv));
-  # Store result if input (and hence output) immutable
-  if IsImmutableDigraph(D) then
-    SetReducedDigraphAttr(D, C);
-  fi;
   return C;
 end);
-
-InstallMethod(ReducedDigraph, "for a digraph with known reduced digraph",
-[IsDigraph and HasReducedDigraphAttr], SUM_FLAGS, ReducedDigraphAttr);
-
-InstallMethod(ReducedDigraphAttr, "for an immutable digraph",
-[IsImmutableDigraph], ReducedDigraph);
 
 InstallMethod(DigraphRemoveAllMultipleEdges,
 "for a mutable digraph by out-neighbours",
@@ -1475,10 +1455,8 @@ function(D)
   return D;
 end);
 
-InstallMethod(DigraphRemoveAllMultipleEdges, "for an immutable digraph",
-[IsImmutableDigraph], DigraphRemoveAllMultipleEdgesAttr);
-
-InstallMethod(DigraphRemoveAllMultipleEdgesAttr, "for an immutable digraph",
+InstallMethodThatReturnsDigraph(DigraphRemoveAllMultipleEdges,
+"for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
   if IsMultiDigraph(D) then

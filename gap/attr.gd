@@ -73,15 +73,14 @@ DeclareAttribute("DIGRAPHS_ConnectivityData", IsDigraph, "mutable");
 
 # Things that are attributes for immutable digraphs, but operations for mutable.
 
-DeclareOperation("DigraphReverse", [IsDigraph]);
-DeclareAttribute("DigraphReverseAttr", IsDigraph);
-DeclareOperation("DigraphDual", [IsDigraph]);
-DeclareAttribute("DigraphDualAttr", IsDigraph);
-DeclareOperation("ReducedDigraph", [IsDigraph]);
-DeclareAttribute("ReducedDigraphAttr", IsDigraph);
+DeclareAttributeThatReturnsDigraph("DigraphReverse", IsDigraph);
+DeclareAttributeThatReturnsDigraph("DigraphDual", IsDigraph);
+DeclareAttributeThatReturnsDigraph("ReducedDigraph", IsDigraph);
+DeclareAttributeThatReturnsDigraph("DigraphRemoveAllMultipleEdges", IsDigraph);
 
-DeclareOperation("DigraphRemoveAllMultipleEdges", [IsDigraph]);
-DeclareAttribute("DigraphRemoveAllMultipleEdgesAttr", IsDigraph);
+# TODO replace all DeclareOperations below to DeclareAttributeThatReturnsDigraph,
+# and remove the *Attr versions.
+
 DeclareOperation("DigraphAddAllLoops", [IsDigraph]);
 DeclareAttribute("DigraphAddAllLoopsAttr", IsDigraph);
 DeclareOperation("DigraphRemoveLoops", [IsDigraph]);
