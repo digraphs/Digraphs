@@ -617,17 +617,9 @@ gap> DigraphVertexLabels(gr2);
 [ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
 gap> DigraphAddVertices(gr2, -1);
 Error, the 2nd argument <m> must be a non-negative integer,
-gap> gr3 := DigraphAddVertices(gr2, 0);
-<immutable digraph with 3 vertices, 1 edge>
-gap> IsIdenticalObj(gr2, gr3);
-false
-gap> gr2 = gr3;
+gap> IsIdenticalObj(gr2, DigraphAddVertices(gr2, 0));
 true
-gap> gr3 := DigraphAddVertices(gr2, []);
-<immutable digraph with 3 vertices, 1 edge>
-gap> IsIdenticalObj(gr2, gr3);
-false
-gap> gr2 = gr3;
+gap> IsIdenticalObj(gr2, DigraphAddVertices(gr2, []));
 true
 
 #  DigraphAddVertices (redundant three-argument version)
