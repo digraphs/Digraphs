@@ -681,8 +681,9 @@ end);
 InstallMethod(DigraphFromGraph6String, "for a string", [IsString],
 s -> DIGRAPHS_FromGraph6String(ConvertToImmutableDigraphNC, s));
 
-BindGlobal("DIGRAPHS_FromDigraph6String",
-function(func, s)
+InstallMethod(DigraphFromDigraph6StringCons, "for IsMutableDigraph and a string",
+[IsMutableDigraph, IsString],
+function(s)
   local legacy, list, n, start, i, range, source, pos, len, j, bpos, tabpos;
   # NOTE: this package originally used a version of digraph6 that reads down
   # the columns of an adjacency matrix, and appends a '+' to the start.  This
@@ -761,17 +762,28 @@ function(func, s)
   od;
 
   if legacy then  # source and range are reversed
-    return func(rec(DigraphNrVertices := n,
+    return ConvertToMutableDigraphNC(
+                rec(DigraphNrVertices := n,
                     DigraphSource     := range,
                     DigraphRange      := source));
   fi;
-  return func(rec(DigraphNrVertices := n,
+  return ConvertToMutableDigraphNC(
+              rec(DigraphNrVertices := n,
                   DigraphRange      := range,
                   DigraphSource     := source));
 end);
 
+InstallMethod(DigraphFromDigraph6StringCons,
+"for IsImmutableDigraph and a string",
+[IsImmutableDigraph, IsString],
+{filt, s} -> MakeImmutable(DigraphFromDigraph6StringCons(IsMutableDigraph, s)));
+
+InstallMethod(DigraphFromDigraph6String, "for a function and a string",
+[IsFunction, IsString],
+{func, s} -> DigraphFromDigraph6StringCons(func, s));
+
 InstallMethod(DigraphFromDigraph6String, "for a string",
-[IsString], s -> DIGRAPHS_FromDigraph6String(DigraphNC, s));
+[IsString], s -> DigraphFromDigraph6StringCons(IsImmutableDigraph, s));
 
 BindGlobal("DIGRAPHS_FromSparse6String",
 function(func, s)
