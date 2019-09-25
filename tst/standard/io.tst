@@ -126,6 +126,8 @@ gap> gr := Digraph(231, [1 .. 100], [1 .. 100] * 0 + 200);
 gap> str := Digraph6String(gr);;
 gap> DigraphFromDigraph6String(str);
 <immutable digraph with 231 vertices, 100 edges>
+gap> D := DigraphFromDigraph6String(IsMutableDigraph, "&DOOOW?");
+<mutable digraph with 5 vertices, 5 edges>
 
 #  DigraphFromDiSparse6String and DiSparse6String
 gap> gr := Digraph([[1, 4], [2, 3, 4], [2, 4], [2]]);
