@@ -17,7 +17,9 @@
     its automorphism group, then this group is stored in the attribute
     <C>DigraphGroup</C>. If <A>digraph</A> is mutable, or was not created
     knowing a subgroup of its automorphism group, then <C>DigraphGroup</C>
-    returns the entire automorphism group of <A>digraph</A>.
+    returns the entire automorphism group of <A>digraph</A>.    
+    Note that if <A>digraph</A> is mutable, then the automorphism group is
+    recomputed every time this function is called.
     <P/>
 
     Note that certain other constructor operations such as  <Ref
@@ -198,7 +200,7 @@ Group(())
 <ManSection>
   <Attr Name="DigraphOrbits" Arg="digraph"/>
   <Returns>
-    An immutable list of immutable lists of integers.
+    An immutable list of lists of integers.
   </Returns>
   <Description>
     <C>DigraphOrbits</C> returns the orbits of the action of the
