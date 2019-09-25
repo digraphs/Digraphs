@@ -16,19 +16,22 @@
     <Item>Wilf A. Wilson.</Item>
   </List>
   Additional contributions were made by:
-  <!-- TODO update this list -->
   <List>
     <Item>Stuart Burrell,</Item>
+    <Item>Reinis Cirpons,</Item>
     <Item>Luke Elliott,</Item>
+    <Item>Max Horn,</Item>
     <Item>Christopher Jefferson,</Item>
     <Item>Markus Pfeiffer,</Item>
-    <Item>Chris Russell, and</Item>
-    <Item>Finn Smith.</Item>
+    <Item>Chris Russell,</Item>
+    <Item>Finn Smith, and</Item>
+    <Item>Murray Whyte.</Item>
   </List>
 
   The &Digraphs; package contains a variety of methods for efficiently creating
-  and storing digraphs and computing information about them.  Full explanations
-  of all the functions contained in the package are provided below. <P/>
+  and storing mutable and immutable digraphs and computing information about
+    them.  Full explanations of all the functions contained in the package are
+    provided below. <P/>
 
   If the &Grape; package is available, it will be loaded automatically.
   Digraphs created with the &Digraphs; package can be converted to &Grape;
@@ -45,6 +48,22 @@
   in &Digraphs;. See Section 
   <Ref Sect="Isomorphisms and canonical labellings"/> for more details.  
   <P/>
+
+  From Version 1.0.0 of this package, digraphs can be either mutable or immutable.
+  Mutable digraphs can be changed in-place by many of the methods in the
+  package, which avoids unnecessary copying. Immutable digraphs cannot be
+  changed in-place, but their advantage is that the value of an attribute of
+  an immutable digraph is only ever computed once. Mutable digraphs can be
+  converted into immutable digraphs in-place using <Ref Func="MakeImmutable"
+  BookName = "ref"/>.  One of the motivations for introducing mutable
+  digraphs in Version 1.0.0 was that in practice the authors often wanted
+  to create a digraph and immediately modify it (removing certain edges,
+  loops, and so on). Before Version 1.0.0, this involved copying the digraph
+  several times, with each copy being discarded almost immediately.
+  From Version 1.0.0, this unnecessary copying can be eliminated by
+  first creating a mutable digraph, then changing it in-place, and  finally
+  converting the mutable digraph to an immutable one in-place
+  (if desirable).
 
   <Subsection Label="Definitions"><Heading>Definitions</Heading>
 
