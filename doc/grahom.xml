@@ -333,7 +333,10 @@ gap> EpimorphismsDigraphs(gr1, gr2);
 
     <C>GeneratorsOfEndomorphismMonoid</C>, called with a single argument,
     returns a generating set for the monoid of all endomorphisms of
-    <A>digraph</A>. <P/>
+    <A>digraph</A>. If <A>digraph</A>  belongs to <Ref
+      Filt="IsImmutableDigraph"/>, then the value of
+    <C>GeneratorsOfEndomorphismMonoid</C> will not be recomputed on future
+    calls.<P/>
 
     If the <A>colors</A> argument is specified, then
     <C>GeneratorsOfEndomorphismMonoid</C> will return a generating
