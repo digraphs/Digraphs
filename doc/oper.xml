@@ -297,24 +297,25 @@ true
 
 <#GAPDoc Label="DigraphAddVertices">
 <ManSection>
-  <Oper Name="DigraphAddVertices" Arg="digraph, m[, labels ]"/>
+  <Oper Name="DigraphAddVertices" Arg="digraph, m"/>
+  <Oper Name="DigraphAddVertices" Arg="digraph, labels"/>
   <Returns>A digraph.</Returns>
   <Description>
     For a non-negative integer <A>m</A>, this operation returns a digraph
-    constructed from <A>digraph</A> by adding <A>m</A> new vertices. If
-    <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the vertices
-    are added directly to <A>digraph</A>. If <A>digraph</A>
-    belongs to <Ref Filt="IsImmutableDigraph"/>, the vertices are added to a
-    copy of <A>digraph</A> and this new digraph is returned.<P/>
+    constructed from <A>digraph</A> by adding <A>m</A> new vertices.
+    <P/>
 
-    If the optional third argument <A>labels</A> is a list of length <A>m</A>
-    consisting of &GAP; objects, then the new vertices will be
-    labelled according to this list. <P/>
+    Otherwise, if <A>labels</A> is a list
+    consisting of <C>k</C> &GAP; objects, then this operation returns a
+    digraph constructed from <A>digraph</A> by adding <C>k</C> new vertices,
+    which are labelled according to this list.
+    <P/>
 
     If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the
-    vertices are added directly to <A>digraph</A>. If <A>digraph</A> belongs to
-    <Ref Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A> with
-    the additional vertices is returned.<P/>
+    vertices are added directly to <A>digraph</A>, which is changed in-place.
+    If <A>digraph</A> belongs to <Ref Filt="IsImmutableDigraph"/>, then the
+    result is returned as an immutable digraph.
+    <P/>
 
     <Example><![CDATA[
 gap> D := CompleteDigraph(3);
@@ -434,15 +435,12 @@ true
     <A>ran</A> are vertices of <A>digraph</A>,
     then this operation returns a digraph constructed from <A>digraph</A>
     by adding a new edge with source <A>edge</A><C>[1]</C> [<A>src</A>] and range
-    <A>edge</A><C>[2]</C> [<A>ran</A>]. If <A>digraph</A> belongs
-    to <Ref Filt="IsMutableDigraph"/>, then the edge is added directly to
-    <A>digraph</A>. If <A>digraph</A> belongs to <Ref
-    Filt="IsImmutableDigraph"/>, the edge is added to a copy of
-    <A>digraph</A> and this new digraph is returned. <P/>
-
+    <A>edge</A><C>[2]</C> [<A>ran</A>].
+    <P/>
+    
     If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the edge
     is added directly to <A>digraph</A>. If <A>digraph</A> belongs to <Ref
-      Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A> with the
+      Filt="IsImmutableDigraph"/>, then an immutable copy of <A>digraph</A> with the
     additional edge is returned.  <P/>
 
     <Example><![CDATA[
@@ -488,8 +486,9 @@ true
 
     If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the edges
     are added directly to <A>digraph</A>. If <A>digraph</A> belongs to <Ref
-      Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A> with the
-    additional edges is returned.  <P/>
+      Filt="IsImmutableDigraph"/>, then the result is returned as an immutable
+    digraph.
+    <P/>
 
     <Example><![CDATA[
 gap> func := function(n)
@@ -624,7 +623,8 @@ true
 
     If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then
     <A>digraph</A> is modified in place. If <A>digraph</A> belongs to <Ref
-      Filt="IsImmutableDigraph"/>, a new immutable digraph containing the correct
+      Filt="IsImmutableDigraph"/>, a new immutable digraph containing the
+    appropriate
     vertices and edges is returned.<P/>
 
     <Example><![CDATA[
@@ -1002,9 +1002,9 @@ gap> Display(shortest_distances);
 
     If the first digraph <A>D1</A> [<A>list[1]</A>] belongs to <Ref
     Filt="IsMutableDigraph"/>, then <A>D1</A> [<A>list[1]</A>] is modified in
-    place to contain the correct vertices and edges. If <A>digraph</A> belongs
+    place to contain the appropriate vertices and edges. If <A>digraph</A> belongs
     to <Ref Filt="IsImmutableDigraph"/>, a new immutable digraph containing the
-    correct vertices and edges is returned.
+    appropriate vertices and edges is returned.
 <Example><![CDATA[
 gap> D := CycleDigraph(10);
 <immutable cycle digraph with 10 vertices>
@@ -1062,9 +1062,9 @@ true
 
     If the first digraph <A>D1</A> [<A>list[1]</A>] belongs to <Ref
     Filt="IsMutableDigraph"/>, then <A>D1</A> [<A>list[1]</A>] is modified in
-    place to contain the correct vertices and edges. If <A>digraph</A> belongs
+    place to contain the appropriate vertices and edges. If <A>digraph</A> belongs
     to <Ref Filt="IsImmutableDigraph"/>, a new immutable digraph containing the
-    correct vertices and edges is returned.
+    appropriate vertices and edges is returned.
 <Example><![CDATA[
 gap> D1 := CycleDigraph(3);
 <immutable cycle digraph with 3 vertices>
@@ -1114,9 +1114,9 @@ gap> OutNeighbours(union);
 
     If the first digraph <A>D1</A> [<A>list[1]</A>] belongs to <Ref
     Filt="IsMutableDigraph"/>, then <A>D1</A> [<A>list[1]</A>] is modified in
-    place to contain the correct vertices and edges. If <A>digraph</A> belongs
+    place to contain the appropriate vertices and edges. If <A>digraph</A> belongs
     to <Ref Filt="IsImmutableDigraph"/>, a new immutable digraph containing the
-    correct vertices and edges is returned.
+    appropriate vertices and edges is returned.
 <Example><![CDATA[
 gap> D := CompleteDigraph(3);
 <immutable complete digraph with 3 vertices>
