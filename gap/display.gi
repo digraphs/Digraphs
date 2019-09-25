@@ -216,6 +216,7 @@ function(D)
   if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the argument <D> must be a partial order digraph,");
   fi;
+  D := DigraphMutableCopyIfMutable(D);
   return DotDigraph(DigraphReflexiveTransitiveReduction(D));
 end);
 
