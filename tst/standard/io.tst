@@ -44,6 +44,8 @@ gap> List(l, x -> DigraphFromGraph6String(x));
   <immutable digraph with 9 vertices, 34 edges> ]
 gap> DigraphFromGraph6String(ListWithIdenticalEntries(500, '~'));
 Error, the 2nd argument <s> is not a valid graph6 string,
+gap> D := DigraphFromGraph6String(IsMutableDigraph, "Dhc");
+<mutable digraph with 5 vertices, 10 edges>
 
 # ReadDigraphs
 gap> str := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;
@@ -111,6 +113,8 @@ gap> str := Sparse6String(gr);
 ":~_??_?A???_??_@b??H"
 gap> DigraphFromSparse6String(str);
 <immutable digraph with 131072 vertices, 6 edges>
+gap> DigraphFromSparse6String(IsMutableDigraph, ":Sa?dBDf?aiH`El@AjK_@gqBIp");
+<mutable digraph with 20 vertices, 35 edges>
 
 #  DigraphFromDigraph6String and Digraph6String
 gap> gr := Digraph([[5], [1, 2, 5], [1], [2], [4]]);

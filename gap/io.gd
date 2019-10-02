@@ -25,6 +25,8 @@ DeclareOperation("DigraphFromGraph6String", [IsString]);
 DeclareConstructor("DigraphFromDigraph6StringCons", [IsDigraph, IsString]);
 DeclareOperation("DigraphFromDigraph6String", [IsFunction, IsString]);
 DeclareOperation("DigraphFromDigraph6String", [IsString]);
+DeclareConstructor("DigraphFromSparse6StringCons", [IsDigraph, IsString]);
+DeclareOperation("DigraphFromSparse6String", [IsFunction, IsString]);
 DeclareOperation("DigraphFromSparse6String", [IsString]);
 DeclareOperation("DigraphFromDiSparse6String", [IsString]);
 DeclareOperation("DigraphFromPlainTextString", [IsString]);
