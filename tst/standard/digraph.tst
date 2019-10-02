@@ -1532,14 +1532,23 @@ gap> MakeImmutable(D);
 # 
 gap> D := NullDigraph(10);
 <immutable empty digraph with 10 vertices>
-gap> D := Graph(D);
-rec( adjacencies := [ [  ] ], group := Sym( [ 1 .. 10 ] ), isGraph := true, 
-  names := [ 1 .. 10 ], order := 10, representatives := [ 1 ], 
-  schreierVector := [ -1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ] )
-gap> DigraphCons(IsImmutableDigraph, D);
-<immutable empty digraph with 10 vertices>
-gap> Digraph(IsImmutableDigraph, D);
-<immutable empty digraph with 10 vertices>
+gap> if DIGRAPHS_IsGrapeLoaded then
+>   D := Graph(D);
+>   if D <> rec(
+>       adjacencies := [[]],
+>       group := SymmetricGroup([1 .. 10]),
+>       isGraph := true,
+>       names := [1 .. 10],
+>       order := 10,
+>       representatives := [1],
+>       schreierVector := [-1, 1, 1, 1, 1, 1, 1, 1, 1, 1]) then
+>     Error();
+>   fi;
+>   DigraphCons(IsImmutableDigraph, D);
+>   if Digraph(IsImmutableDigraph, D) <> NullDigraph(10) then
+>     Error();
+>   fi;
+> fi;
 
 # ViewString
 gap> CycleDigraph(3);
