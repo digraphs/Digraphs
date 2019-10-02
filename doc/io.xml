@@ -171,8 +171,8 @@ gap> ReadDigraphs(file, 9);
     edges, this will be a digraph such that for every edge, the edge going in
     the opposite direction is also present.<P/>
 
-    Each of these functions takes an optional first argument <C>IsMutableDigraph</C>
-    or <C>IsImmutableDigraph</C>, which specify whether the output digraph shall
+    Each of these functions takes an optional first argument <Ref Filt="IsMutableDigraph"/>
+    or <Ref Filt="IsImmutableDigraph"/>, which specify whether the output digraph shall
     be mutable or immutable. If no first argument is provided, then an immutable
     digraph is returned by default.
     <Example><![CDATA[
@@ -493,9 +493,9 @@ gap> dec(last);
     which are not connected to any edge may be lost.<P/>
 
     
-    The function <A>DigraphFromPlainTextString</A>
-    takes an optional first argument <C>IsMutableDigraph</C>
-    or <C>IsImmutableDigraph</C>, which specify whether the output digraph shall
+    The operation <C>DigraphFromPlainTextString</C>
+    takes an optional first argument <Ref Filt="IsMutableDigraph"/>
+    or <Ref Filt="IsImmutableDigraph"/>, which specifies whether the output digraph shall
     be mutable or immutable. If no first argument is provided, then an immutable
     digraph is returned by default.
 
