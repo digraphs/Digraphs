@@ -172,7 +172,7 @@ gap> ReadDigraphs(file, 9);
     the opposite direction is also present.<P/>
 
     Each of these functions takes an optional first argument <Ref Filt="IsMutableDigraph"/>
-    or <Ref Filt="IsImmutableDigraph"/>, which specify whether the output digraph shall
+    or <Ref Filt="IsImmutableDigraph"/>, which specifies whether the output digraph shall
     be mutable or immutable. If no first argument is provided, then an immutable
     digraph is returned by default.
     <Example><![CDATA[
