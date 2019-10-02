@@ -597,7 +597,8 @@ end);
 # 3. Decoders
 ################################################################################
 
-BindGlobal("DIGRAPHS_FromGraph6String",
+InstallMethod(DigraphFromGraph6StringCons, "for IsMutableDigraph and a string",
+[IsMutableDigraph, IsString],
 function(func, s)
   local FindCoord, list, n, start, maxedges, out, pos, nredges, i, bpos, edge,
   j;
@@ -675,11 +676,20 @@ function(func, s)
     od;
     pos := pos + 6;
   od;
-  return func(out);
+  return DigraphNC(IsMutableDigraph, out);
 end);
 
+InstallMethod(DigraphFromGraph6StringCons,
+"for IsImmutableDigraph and a string",
+[IsImmutableDigraph, IsString],
+{filt, s} -> MakeImmutable(DigraphFromGraph6StringCons(IsMutableDigraph, s)));
+
+InstallMethod(DigraphFromGraph6String, "for a function and a string",
+[IsFunction, IsString],
+{func, s} -> DigraphFromGraph6StringCons(func, s));
+
 InstallMethod(DigraphFromGraph6String, "for a string", [IsString],
-s -> DIGRAPHS_FromGraph6String(ConvertToImmutableDigraphNC, s));
+s -> DigraphFromGraph6String(IsImmutableDigraph, s));
 
 InstallMethod(DigraphFromDigraph6StringCons, "for IsMutableDigraph and a string",
 [IsMutableDigraph, IsString],

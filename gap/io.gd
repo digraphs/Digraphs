@@ -19,6 +19,8 @@ DeclareGlobalFunction("DigraphFile");
 DeclareGlobalFunction("IteratorFromDigraphFile");
 
 # Decoders . . .
+DeclareConstructor("DigraphFromGraph6StringCons", [IsDigraph, IsString]);
+DeclareOperation("DigraphFromGraph6String", [IsFunction, IsString]);
 DeclareOperation("DigraphFromGraph6String", [IsString]);
 DeclareConstructor("DigraphFromDigraph6StringCons", [IsDigraph, IsString]);
 DeclareOperation("DigraphFromDigraph6String", [IsFunction, IsString]);
