@@ -686,7 +686,7 @@ InstallMethod(DigraphFromGraph6StringCons,
 
 InstallMethod(DigraphFromGraph6String, "for a function and a string",
 [IsFunction, IsString],
-{func, s} -> DigraphFromGraph6StringCons(func, s));
+DigraphFromGraph6StringCons);
 
 InstallMethod(DigraphFromGraph6String, "for a string", [IsString],
 s -> DigraphFromGraph6String(IsImmutableDigraph, s));
@@ -790,7 +790,7 @@ InstallMethod(DigraphFromDigraph6StringCons,
 
 InstallMethod(DigraphFromDigraph6String, "for a function and a string",
 [IsFunction, IsString],
-{func, s} -> DigraphFromDigraph6StringCons(func, s));
+DigraphFromDigraph6StringCons);
 
 InstallMethod(DigraphFromDigraph6String, "for a string",
 [IsString], s -> DigraphFromDigraph6String(IsImmutableDigraph, s));
@@ -917,7 +917,7 @@ InstallMethod(DigraphFromSparse6StringCons,
 
 InstallMethod(DigraphFromSparse6String, "for a function and a string",
 [IsFunction, IsString],
-{func, s} -> DigraphFromSparse6StringCons(func, s));
+DigraphFromSparse6StringCons);
 
 InstallMethod(DigraphFromSparse6String, "for a string",
 [IsString],
@@ -1064,7 +1064,7 @@ InstallMethod(DigraphFromDiSparse6StringCons,
 InstallMethod(DigraphFromDiSparse6String,
 "for a function and a string",
 [IsFunction, IsString],
-{func, s} -> DigraphFromDiSparse6StringCons(func, s));
+DigraphFromDiSparse6StringCons);
 
 InstallMethod(DigraphFromDiSparse6String,
 "for a string",
@@ -1104,7 +1104,7 @@ InstallMethod(DigraphFromPlainTextStringCons,
 
 InstallMethod(DigraphFromPlainTextString, "for a function and a string",
 [IsFunction, IsString],
-{func, s} -> DigraphFromPlainTextStringCons(func, s));
+DigraphFromPlainTextStringCons);
 
 InstallMethod(DigraphFromPlainTextString, "for a string",
 [IsString],
