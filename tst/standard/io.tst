@@ -479,6 +479,9 @@ gap> gr2 := DigraphFromPlainTextString(str);
 <immutable digraph with 3 vertices, 6 edges>
 gap> gr = gr2;
 true
+gap> D := DigraphFromPlainTextString(IsMutableDigraph,
+> "0 1  1 2  2 3  3 4  4 0");
+<mutable digraph with 5 vertices, 5 edges>
 
 #  Invalid sizes
 gap> DigraphFromGraph6String("~llk");

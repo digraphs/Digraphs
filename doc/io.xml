@@ -490,7 +490,14 @@ gap> dec(last);
     starting at 0.<P/>
 
     Note that the number of vertices of a digraph is not stored, and so vertices
-    which are not connected to any edge may be lost.
+    which are not connected to any edge may be lost.<P/>
+
+    
+    The function <A>DigraphFromPlainTextString</A>
+    takes an optional first argument <C>IsMutableDigraph</C>
+    or <C>IsImmutableDigraph</C>, which specify whether the output digraph shall
+    be mutable or immutable. If no first argument is provided, then an immutable
+    digraph is returned by default.
 
     <Example><![CDATA[
 gap> gr := Digraph([[2, 3], [1], [1]]);

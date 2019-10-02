@@ -31,6 +31,8 @@ DeclareOperation("DigraphFromSparse6String", [IsString]);
 DeclareConstructor("DigraphFromDiSparse6StringCons", [IsDigraph, IsString]);
 DeclareOperation("DigraphFromDiSparse6String", [IsFunction, IsString]);
 DeclareOperation("DigraphFromDiSparse6String", [IsString]);
+DeclareConstructor("DigraphFromPlainTextStringCons", [IsDigraph, IsString]);
+DeclareOperation("DigraphFromPlainTextString", [IsFunction, IsString]);
 DeclareOperation("DigraphFromPlainTextString", [IsString]);
 DeclareOperation("ReadDIMACSDigraph", [IsString]);
 DeclareOperation("TournamentLineDecoder", [IsString]);

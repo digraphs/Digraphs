@@ -1090,11 +1090,25 @@ function(func, delimiter1, delimiter2, offset)
   return retval;
 end);
 
-BindGlobal("DIGRAPHS_FromPlainTextString",
-{func, s} -> DIGRAPHS_PlainTextLineDecoder(func, "  ", " ", 1)(Chomp(s)));
+InstallMethod(DigraphFromPlainTextStringCons,
+"for IsMutableDigraph and a string", [IsMutableDigraph, IsString],
+function(filt, s)
+  local f;
+  f := x -> DigraphByEdges(IsMutableDigraph, x);
+  return DIGRAPHS_PlainTextLineDecoder(f, "  ", " ", 1)(Chomp(s));
+end);
 
-InstallMethod(DigraphFromPlainTextString, "for a string", [IsString],
-s -> DIGRAPHS_FromPlainTextString(DigraphByEdges, s));
+InstallMethod(DigraphFromPlainTextStringCons,
+"for IsImmutableDigraph and a string", [IsImmutableDigraph, IsString],
+{filt, s} -> MakeImmutable(DigraphFromPlainTextStringCons(IsMutableDigraph, s)));
+
+InstallMethod(DigraphFromPlainTextString, "for a function and a string",
+[IsFunction, IsString],
+{func, s} -> DigraphFromPlainTextStringCons(func, s));
+
+InstallMethod(DigraphFromPlainTextString, "for a string",
+[IsString],
+s -> DigraphFromPlainTextString(IsImmutableDigraph, s));
 
 # DIMACS format: for symmetric digraphs, one per file, can have loops and
 # multiple edges.
