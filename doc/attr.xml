@@ -2111,7 +2111,8 @@ gap> D;
     of calculating it for other digraphs.
     <P/>
 
-    For more information see <Ref Oper="DigraphCartesianProduct"/> 
+    For more information see
+    <Ref Func="DigraphCartesianProduct" Label="for a list of digraphs"/> 
 
     <Example><![CDATA[
 gap> D := DigraphCartesianProduct(ChainDigraph(3), CycleDigraph(4),
@@ -2154,7 +2155,8 @@ true
     calculating it for other digraphs.
     <P/>
 
-    For more information see <Ref Oper="DigraphDirectProduct"/> 
+    For more information, see
+    <Ref Func="DigraphDirectProduct" Label="for a list of digraphs"/> 
 
     <Example><![CDATA[
 gap> D := DigraphDirectProduct(ChainDigraph(3), CycleDigraph(4),
