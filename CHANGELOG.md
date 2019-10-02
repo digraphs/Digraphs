@@ -3,7 +3,7 @@ Copyright (C) 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Micha
 
 Licensing information can be found in the LICENSE file.
 
-## Version 1.0.0 (released 31/12/2019)
+## Version 1.0.0 (released 02/10/2019)
 
 Version 1.0.0!
 DigraphColoring (american spelling) was removed.
