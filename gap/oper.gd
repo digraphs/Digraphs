@@ -37,6 +37,8 @@ DeclareOperation("DigraphClosure", [IsDigraph, IsPosInt]);
 DeclareGlobalFunction("DigraphDisjointUnion");
 DeclareGlobalFunction("DigraphJoin");
 DeclareGlobalFunction("DigraphEdgeUnion");
+DeclareGlobalFunction("DigraphCartesianProduct");
+DeclareGlobalFunction("DigraphDirectProduct");
 DeclareGlobalFunction("DIGRAPHS_CombinationOperProcessArgs");
 
 # 4. Actions . . .

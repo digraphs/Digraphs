@@ -55,6 +55,10 @@
     <#Include Label="DigraphDisjointUnion">
     <#Include Label="DigraphEdgeUnion">
     <#Include Label="DigraphJoin">
+    <#Include Label="DigraphCartesianProduct">
+    <#Include Label="DigraphDirectProduct">
+    <#Include Label="DigraphCartesianProductProjections">
+    <#Include Label="DigraphDirectProductProjections">
     <#Include Label="LineDigraph">
     <#Include Label="LineUndirectedDigraph">
     <#Include Label="DoubleDigraph">

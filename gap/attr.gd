@@ -111,3 +111,6 @@ DeclareAttribute("UndirectedSpanningTreeAttr", IsDigraph);
 
 DeclareOperation("DigraphMycielskian", [IsDigraph]);
 DeclareAttribute("DigraphMycielskianAttr", IsDigraph);
+
+DeclareAttribute("DigraphCartesianProductProjections", IsDigraph);
+DeclareAttribute("DigraphDirectProductProjections", IsDigraph);

@@ -2158,6 +2158,58 @@ true
 gap> DigraphReverse(Digraph(IsMutableDigraph, [[2], [1]])) = CompleteDigraph(2);
 true
 
+# DigraphCartesianProductProjections
+gap> D := DigraphCartesianProduct(ChainDigraph(3), CycleDigraph(4),
+> Digraph([[2], [2]]));;
+gap> HasDigraphCartesianProductProjections(D);
+true
+gap> proj := DigraphCartesianProductProjections(D);; Length(proj);
+3
+gap> IsIdempotent(proj[2]);
+true
+gap> RankOfTransformation(proj[3]);
+2
+gap> S := ImageSetOfTransformation(proj[2]);;
+gap> IsIsomorphicDigraph(CycleDigraph(4), InducedSubdigraph(D, S));
+true
+gap> G := DigraphRemoveLoops(RandomDigraph(12));; 
+gap> H := DigraphRemoveLoops(RandomDigraph(50));;
+gap> D := DigraphCartesianProduct(G, H);;
+gap> proj := DigraphCartesianProductProjections(D);;
+gap> IsIdempotent(proj[1]);
+true
+gap> RankOfTransformation(proj[2]);
+50
+gap> S := ImageSetOfTransformation(proj[2]);;
+gap> IsIsomorphicDigraph(H, InducedSubdigraph(D, S));
+true
+
+# DigraphDirectProductProjections
+gap> D := DigraphDirectProduct(ChainDigraph(3), CycleDigraph(4),
+> Digraph([[2], [2]]));;
+gap> HasDigraphDirectProductProjections(D);
+true
+gap> proj := DigraphDirectProductProjections(D);; Length(proj);
+3
+gap> IsIdempotent(proj[2]);
+true
+gap> RankOfTransformation(proj[3]);
+2
+gap> P := DigraphRemoveAllMultipleEdges(ReducedDigraph(OnDigraphs(D, proj[2])));;
+gap> IsIsomorphicDigraph(CycleDigraph(4), P);
+true
+gap> G := RandomDigraph(12);; 
+gap> H := RandomDigraph(50);;
+gap> D := DigraphDirectProduct(G, H);;
+gap> proj := DigraphDirectProductProjections(D);;
+gap> IsIdempotent(proj[1]);
+true
+gap> RankOfTransformation(proj[2]);
+50
+gap> P := DigraphRemoveAllMultipleEdges(ReducedDigraph(OnDigraphs(D, proj[2])));;
+gap> IsIsomorphicDigraph(H, P);
+true
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);

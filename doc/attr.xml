@@ -2087,3 +2087,91 @@ gap> D;
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphCartesianProductProjections">
+<ManSection>
+  <Attr Name="DigraphCartesianProductProjections" Arg="digraph"/>
+  <Returns>A list of transformations.</Returns>
+  <Description>
+    If <A>digraph</A> is a Cartesian product digraph, 
+    <C>digraph = DigraphCartesianProduct(gr_1, gr_2, ... )</C>, then
+    <C>DigraphCartesianProductProjections</C> returns a list <C>proj</C>
+    such that <C>proj[i]</C> is the projection onto the <C>i</C>-th
+    coordinate of the product.
+    <P/>
+
+    A projection is an idempotent endomorphism of <A>digraph</A>. If
+    <C>gr1, gr2, ...</C> are all loopless digraphs, then the induced 
+    subdigraph of <A>digraph</A> on the image of <C>proj[i]</C> is 
+    isomorphic to <C>gr_i</C>.
+    <P/>
+
+    Currently this attribute is only set upon creating an immutable 
+    digraph via <C>DigraphCartesianProduct</C> and there is no way 
+    of calculating it for other digraphs.
+    <P/>
+
+    For more information see <Ref Oper="DigraphCartesianProduct"/> 
+
+    <Example><![CDATA[
+gap> D := DigraphCartesianProduct(ChainDigraph(3), CycleDigraph(4),
+> Digraph([[2], [2]]));;
+gap> HasDigraphCartesianProductProjections(D);
+true
+gap> proj := DigraphCartesianProductProjections(D);; Length(proj);
+3
+gap> IsIdempotent(proj[2]);
+true
+gap> RankOfTransformation(proj[3]);
+2
+gap> S := ImageSetOfTransformation(proj[2]);;
+gap> IsIsomorphicDigraph(CycleDigraph(4), InducedSubdigraph(D, S));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphDirectProductProjections">
+<ManSection>
+  <Attr Name="DigraphDirectProductProjections" Arg="digraph"/>
+  <Returns>A list of transformations.</Returns>
+  <Description>
+    If <A>digraph</A> is a direct product digraph, 
+    <C>digraph = DigraphDirectProduct(gr_1, gr_2, ... )</C>, then
+    <C>DigraphDirectProductProjections</C> returns a list <C>proj</C>
+    such that <C>proj[i]</C> is the projection onto the <C>i</C>-th
+    coordinate of the product.
+    <P/>
+
+    A projection is an idempotent endomorphism of <A>digraph</A>. If
+    <C>gr1, gr2, ...</C> are all loopless digraphs, then the image 
+    of <A>digraph</A> under <C>proj[i]</C> is isomorphic to <C>gr_i</C>.
+    <P/>
+
+    Currently this attribute is only set upon creating an immutable
+    digraph via <C>DigraphDirectProduct</C> and there is no way of 
+    calculating it for other digraphs.
+    <P/>
+
+    For more information see <Ref Oper="DigraphDirectProduct"/> 
+
+    <Example><![CDATA[
+gap> D := DigraphDirectProduct(ChainDigraph(3), CycleDigraph(4),
+> Digraph([[2], [2]]));;
+gap> HasDigraphDirectProductProjections(D);
+true
+gap> proj := DigraphDirectProductProjections(D);; Length(proj);
+3
+gap> IsIdempotent(proj[2]);
+true
+gap> RankOfTransformation(proj[3]);
+2
+gap> P := DigraphRemoveAllMultipleEdges(
+> ReducedDigraph(OnDigraphs(D, proj[2])));; 
+gap> IsIsomorphicDigraph(CycleDigraph(4), P);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

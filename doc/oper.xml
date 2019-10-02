@@ -1131,6 +1131,115 @@ gap> DigraphJoin(D, D2);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphCartesianProduct">
+<ManSection>
+  <Func Name="DigraphCartesianProduct" Arg="gr1, gr2, ..." Label="for an arbitrary 
+   non-zero number of digraphs"/>
+  <Func Name="DigraphCartesianProduct" Arg="list" Label="for a list of digraphs"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
+    <C>DigraphCartesianProduct</C> returns a digraph isomorphic to their Cartesian product.
+    <P/>
+
+    In the second form, if <A>list</A> is a non-empty list of digraphs,
+    then <C>DigraphCartesianProduct</C> returns a digraph isomorphic to the 
+    Cartesian product of the digraphs contained in the list.
+    <P/>
+ 
+    Mathematically, the Cartesian product of two digraphs <C>G</C>, <C>H</C> is a 
+    digraph with vertex set <C>Cartesian(DigraphVertices(G), DigraphVertices(H))</C> 
+    such that there is an edge from <C>[u, u']</C> to <C>[v, v']</C> iff <C> u = v </C> 
+    and there is an edge from <C>u'</C> to <C>v'</C> in <C>H</C> or 
+    <C> u' = v'</C> and there is an edge from <C>u</C> to <C>v</C> in <C>G</C>.
+    <P/>
+
+    Due to technical reasons, the digraph <C>D</C> returned by <C>DigraphCartesianProduct</C> has 
+    vertex set <C>[1 .. DigraphNrVertices(G)*DigraphNrVertices(H)]</C> instead, and the 
+    exact method of encoding pairs of vertices into integers is implementation specific.
+    The original vertex pair can be somewhat regained by using 
+    <Ref Attr="DigraphCartesianProductProjections"/>. In addition <Ref Oper="DigraphVertexLabels"/>
+    are preserved - if vertex pair <C>[u,u']</C> was encoded as <C>i</C> then the vertex label of 
+    <C>i</C> will be the pair of vertex labels of <C>u</C> and <C>u'</C> i.e. 
+    <C>DigraphVertexLabel(D,i) = [DigraphVertexLabel(G,u), DigraphVertexLabel(H,u')]</C>.
+    <P/>
+
+    As the Cartesian product is associative, the Cartesian product of a collection 
+    of digraphs <A>gr1</A>, <A>gr2</A>, <C>...</C> is computed in the obvious 
+    fashion. 
+    <P/>
+
+<Example><![CDATA[
+gap> gr := ChainDigraph(4);
+<immutable chain digraph with 4 vertices>
+gap> gr2 := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> gr3 := DigraphCartesianProduct(gr, gr2);
+<immutable digraph with 12 vertices, 21 edges>
+gap> IsIsomorphicDigraph(gr3, 
+> Digraph([[2, 5], [3, 6], [4, 7], [8], 
+>          [6, 9], [7, 10], [8, 11], [12],
+>          [10, 1], [11, 2], [12, 3], [4]]));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphDirectProduct">
+<ManSection>
+  <Func Name="DigraphDirectProduct" Arg="gr1, gr2, ..." Label="for an arbitrary 
+   non-zero number of digraphs"/>
+  <Func Name="DigraphDirectProduct" Arg="list" Label="for a list of digraphs"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    In the first form, if <A>gr1</A>, <A>gr2</A>, etc. are digraphs, then
+    <C>DigraphDirectProduct</C> returns a digraph isomorphic to their direct product.
+    <P/>
+
+    In the second form, if <A>list</A> is a non-empty list of digraphs,
+    then <C>DigraphDirectProduct</C> returns a digraph isomorphic to the direct product of 
+    the digraphs contained in the list.
+    <P/>
+
+    Mathematically, the direct product of two digraphs <C>G</C>, <C>H</C> is a 
+    digraph with vertex set <C>Cartesian(DigraphVertices(G), DigraphVertices(H))</C> 
+    such that there is an edge from <C>[u, u']</C> to <C>[v, v']</C> iff there is an edge from
+    <C>u</C> to <C>v</C> in <C>G</C> and an edge from <C>u'</C> to <C>v'</C> in <C>H</C>. 
+    <P/> 
+
+    Due to technical reasons, the digraph <C>D</C> returned by <C>DigraphCartesianProduct</C> has 
+    vertex set <C>[1 .. DigraphNrVertices(G)*DigraphNrVertices(H)]</C> instead, and the 
+    exact method of encoding pairs of vertices into integers is implementation specific.
+    The original vertex pair can be somewhat regained by using 
+    <Ref Attr="DigraphDirectProductProjections"/>. In addition <Ref Oper="DigraphVertexLabels"/>
+    are preserved - if vertex pair <C>[u,u']</C> was encoded as <C>i</C> then the vertex label of 
+    <C>i</C> will be the pair of vertex labels of <C>u</C> and <C>u'</C> i.e. 
+    <C>DigraphVertexLabel(D,i) = [DigraphVertexLabel(G,u), DigraphVertexLabel(H,u')]</C>.
+    <P/>
+
+    As the direct product is associative, the direct product of a collection 
+    of digraphs <A>gr1</A>, <A>gr2</A>, <C>...</C> is computed in the obvious 
+    fashion. 
+    <P/>
+
+<Example><![CDATA[
+gap> gr := ChainDigraph(4);
+<immutable chain digraph with 4 vertices>
+gap> gr2 := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> gr3 := DigraphDirectProduct(gr, gr2);
+<immutable digraph with 12 vertices, 9 edges>
+gap> IsIsomorphicDigraph(gr3, 
+> Digraph([[6], [7], [8], [], 
+>          [10], [11], [12], [],
+>          [2], [3], [4], []]));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsReachable">
 <ManSection>
   <Oper Name="IsReachable" Arg="digraph, u, v"/>

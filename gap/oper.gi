@@ -497,6 +497,97 @@ function(arg)
   return ConvertToImmutableDigraphNC(arg[1]);
 end);
 
+InstallGlobalFunction(DigraphCartesianProduct,
+function(arg)
+  local D, n, i, j, proj, m, labs;
+
+  # Allow the possibility of supplying arguments in a list.
+  if Length(arg) = 1 and IsList(arg[1]) then
+    arg := arg[1];
+  fi;
+
+  if not IsList(arg) or IsEmpty(arg)
+      or not ForAll(arg, IsDigraphByOutNeighboursRep) then
+    ErrorNoReturn("the arguments must be digraphs by out-neighbours, or a ",
+                  "single list of digraphs by out-neighbours,");
+  fi;
+
+  labs := List(Cartesian(Reversed(List(arg, DigraphVertexLabels))), Reversed);
+
+  D := arg[1];
+  DIGRAPHS_CombinationOperProcessArgs(arg);
+
+  m := Product(List(arg, Length));
+  proj := [Transformation([1 .. m], x -> RemInt(x - 1, Length(arg[1])) + 1)];
+  for i in [2 .. Length(arg)] do
+    n := Length(arg[1]);
+    Add(proj, Transformation([1 .. m],
+              x -> RemInt(QuoInt(x - 1, n), Length(arg[i])) * n + 1));
+    for j in [2 .. Length(arg[i])] do
+      arg[1]{[1 + n * (j - 1) .. n * j]} := List([1 .. n],
+        x -> Concatenation(arg[1][x] + n * (j - 1),
+                            x + n * (arg[i][j] - 1)));
+    od;
+    for j in [1 .. n] do
+      Append(arg[1][j], j + n * (arg[i][1] - 1));
+    od;
+  od;
+
+  if IsMutableDigraph(D) then
+    ClearDigraphEdgeLabels(D);
+  else
+    D := DigraphNC(arg[1]);
+  fi;
+  SetDigraphCartesianProductProjections(D, proj);
+  SetDigraphVertexLabels(D, labs);
+  return D;
+end);
+
+InstallGlobalFunction(DigraphDirectProduct,
+function(arg)
+  local D, n, i, j, proj, m, labs;
+
+  # Allow the possibility of supplying arguments in a list.
+  if Length(arg) = 1 and IsList(arg[1]) then
+    arg := arg[1];
+  fi;
+
+  if not IsList(arg) or IsEmpty(arg)
+      or not ForAll(arg, IsDigraphByOutNeighboursRep) then
+    ErrorNoReturn("the arguments must be digraphs by out-neighbours, or a ",
+                  "single list of digraphs by out-neighbours,");
+  fi;
+
+  labs := List(Cartesian(Reversed(List(arg, DigraphVertexLabels))), Reversed);
+
+  D := arg[1];
+  DIGRAPHS_CombinationOperProcessArgs(arg);
+
+  m := Product(List(arg, Length));
+  proj := [Transformation([1 .. m], x -> RemInt(x - 1, Length(arg[1])) + 1)];
+  for i in [2 .. Length(arg)] do
+    n := Length(arg[1]);
+    Add(proj, Transformation([1 .. m],
+              x -> RemInt(QuoInt(x - 1, n), Length(arg[i])) * n + 1));
+    for j in [2 .. Length(arg[i])] do
+      arg[1]{[1 + n * (j - 1) .. n * j]} := List([1 .. n],
+        x -> List(Cartesian(arg[1][x], n * (arg[i][j] - 1)), Sum));
+    od;
+    for j in [1 .. n] do
+      arg[1][j] := List(Cartesian(arg[1][j], n * (arg[i][1] - 1)), Sum);
+    od;
+  od;
+
+  if IsMutableDigraph(D) then
+    ClearDigraphEdgeLabels(D);
+  else
+    D := DigraphNC(arg[1]);
+  fi;
+  SetDigraphDirectProductProjections(D, proj);
+  SetDigraphVertexLabels(D, labs);
+  return D;
+end);
+
 ###############################################################################
 # 4. Actions
 ###############################################################################
