@@ -923,7 +923,9 @@ InstallMethod(DigraphFromSparse6String, "for a string",
 [IsString],
 s -> DigraphFromSparse6String(IsImmutableDigraph, s));
 
-BindGlobal("DIGRAPHS_FromDiSparse6String",
+InstallMethod(DigraphFromDiSparse6StringCons,
+"for IsMutableDigraph and a string",
+[IsMutableDigraph, IsString],
 function(func, s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i, x,
   finish, j;
@@ -1049,13 +1051,25 @@ function(func, s)
   od;
   range := range + 1;
   source := source + 1;
-  return func(rec(DigraphNrVertices := n,
-                  DigraphRange      := range,
-                  DigraphSource     := source));
+  return DigraphNC(IsMutableDigraph, (rec(DigraphNrVertices := n,
+                                      DigraphRange      := range,
+                                      DigraphSource     := source)));
 end);
 
-InstallMethod(DigraphFromDiSparse6String, "for a string", [IsString],
-s -> DIGRAPHS_FromDiSparse6String(DigraphNC, s));
+InstallMethod(DigraphFromDiSparse6StringCons,
+"for IsImmutableDigraph and a string",
+[IsImmutableDigraph, IsString],
+{filt, s} -> MakeImmutable(DigraphFromDiSparse6String(IsMutableDigraph, s)));
+
+InstallMethod(DigraphFromDiSparse6String,
+"for a function and a string",
+[IsFunction, IsString],
+{func, s} -> DigraphFromDiSparse6StringCons(func, s));
+
+InstallMethod(DigraphFromDiSparse6String,
+"for a string",
+[IsString],
+s -> DigraphFromDiSparse6String(IsImmutableDigraph, s));
 
 # one graph per line
 BindGlobal("DIGRAPHS_PlainTextLineDecoder",

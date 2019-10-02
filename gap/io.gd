@@ -28,6 +28,8 @@ DeclareOperation("DigraphFromDigraph6String", [IsString]);
 DeclareConstructor("DigraphFromSparse6StringCons", [IsDigraph, IsString]);
 DeclareOperation("DigraphFromSparse6String", [IsFunction, IsString]);
 DeclareOperation("DigraphFromSparse6String", [IsString]);
+DeclareConstructor("DigraphFromDiSparse6StringCons", [IsDigraph, IsString]);
+DeclareOperation("DigraphFromDiSparse6String", [IsFunction, IsString]);
 DeclareOperation("DigraphFromDiSparse6String", [IsString]);
 DeclareOperation("DigraphFromPlainTextString", [IsString]);
 DeclareOperation("ReadDIMACSDigraph", [IsString]);

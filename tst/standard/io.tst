@@ -164,6 +164,8 @@ gap> gr := Digraph(rec(DigraphNrVertices := 7890, DigraphSource := [1 .. 100] * 
 gap> str := DiSparse6String(gr);;
 gap> gr = DigraphFromDiSparse6String(str);
 true
+gap> DigraphFromDiSparse6String(IsMutableDigraph, ".IoCuh?oR");
+<mutable digraph with 10 vertices, 4 edges>
 
 #  WriteDigraphs and ReadDigraphs
 gap> gr := [];;
