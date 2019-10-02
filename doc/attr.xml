@@ -1788,14 +1788,14 @@ gap> ChromaticNumber(D);
     <P/>
 
     A projection is an idempotent endomorphism of <A>digraph</A>. If
-    <C>gr1, gr2, ...</C> are all loopless digraphs, then the restriction
-    of <A>digraph</A> onto the image of <C>proj[i]</C> is isomorphic to
-    <C>gr_i</C>.
+    <C>gr1, gr2, ...</C> are all loopless digraphs, then the induced 
+    subdigraph of <A>digraph</A> on the image of <C>proj[i]</C> is 
+    isomorphic to <C>gr_i</C>.
     <P/>
 
-    Currently this attribute is only set upon creating a digraph via
-    <C>DigraphCartesianProduct</C> and there is no way of calculating
-    it for other digraphs.
+    Currently this attribute is only set upon creating an immutable 
+    digraph via <C>DigraphCartesianProduct</C> and there is no way 
+    of calculating it for other digraphs.
     <P/>
 
     For more information see <Ref Oper="DigraphCartesianProduct"/> 
@@ -1832,13 +1832,13 @@ true
     <P/>
 
     A projection is an idempotent endomorphism of <A>digraph</A>. If
-    <C>gr1, gr2, ...</C> are all loopless digraphs, then the projection 
-    of <A>digraph</A> via <C>proj[i]</C> is isomorphic to <C>gr_i</C>.
+    <C>gr1, gr2, ...</C> are all loopless digraphs, then the image 
+    of <A>digraph</A> under <C>proj[i]</C> is isomorphic to <C>gr_i</C>.
     <P/>
 
-    Currently this attribute is only set upon creating a digraph via
-    <C>DigraphDirectProduct</C> and there is no way of calculating
-    it for other digraphs.
+    Currently this attribute is only set upon creating an immutable
+    digraph via <C>DigraphDirectProduct</C> and there is no way of 
+    calculating it for other digraphs.
     <P/>
 
     For more information see <Ref Oper="DigraphDirectProduct"/> 
