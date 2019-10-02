@@ -597,7 +597,8 @@ end);
 # 3. Decoders
 ################################################################################
 
-BindGlobal("DIGRAPHS_FromGraph6String",
+InstallMethod(DigraphFromGraph6StringCons, "for IsMutableDigraph and a string",
+[IsMutableDigraph, IsString],
 function(func, s)
   local FindCoord, list, n, start, maxedges, out, pos, nredges, i, bpos, edge,
   j;
@@ -675,13 +676,23 @@ function(func, s)
     od;
     pos := pos + 6;
   od;
-  return func(out);
+  return DigraphNC(IsMutableDigraph, out);
 end);
 
-InstallMethod(DigraphFromGraph6String, "for a string", [IsString],
-s -> DIGRAPHS_FromGraph6String(ConvertToImmutableDigraphNC, s));
+InstallMethod(DigraphFromGraph6StringCons,
+"for IsImmutableDigraph and a string",
+[IsImmutableDigraph, IsString],
+{filt, s} -> MakeImmutable(DigraphFromGraph6StringCons(IsMutableDigraph, s)));
 
-BindGlobal("DIGRAPHS_FromDigraph6String",
+InstallMethod(DigraphFromGraph6String, "for a function and a string",
+[IsFunction, IsString],
+DigraphFromGraph6StringCons);
+
+InstallMethod(DigraphFromGraph6String, "for a string", [IsString],
+s -> DigraphFromGraph6String(IsImmutableDigraph, s));
+
+InstallMethod(DigraphFromDigraph6StringCons, "for IsMutableDigraph and a string",
+[IsMutableDigraph, IsString],
 function(func, s)
   local legacy, list, n, start, i, range, source, pos, len, j, bpos, tabpos;
   # NOTE: this package originally used a version of digraph6 that reads down
@@ -761,19 +772,31 @@ function(func, s)
   od;
 
   if legacy then  # source and range are reversed
-    return func(rec(DigraphNrVertices := n,
-                    DigraphSource     := range,
-                    DigraphRange      := source));
+    return DigraphNC(IsMutableDigraph,
+                 rec(DigraphNrVertices := n,
+                     DigraphSource     := range,
+                     DigraphRange      := source));
   fi;
-  return func(rec(DigraphNrVertices := n,
-                  DigraphRange      := range,
-                  DigraphSource     := source));
+  return DigraphNC(IsMutableDigraph,
+               rec(DigraphNrVertices := n,
+                   DigraphRange      := range,
+                   DigraphSource     := source));
 end);
 
-InstallMethod(DigraphFromDigraph6String, "for a string",
-[IsString], s -> DIGRAPHS_FromDigraph6String(DigraphNC, s));
+InstallMethod(DigraphFromDigraph6StringCons,
+"for IsImmutableDigraph and a string",
+[IsImmutableDigraph, IsString],
+{filt, s} -> MakeImmutable(DigraphFromDigraph6StringCons(IsMutableDigraph, s)));
 
-BindGlobal("DIGRAPHS_FromSparse6String",
+InstallMethod(DigraphFromDigraph6String, "for a function and a string",
+[IsFunction, IsString],
+DigraphFromDigraph6StringCons);
+
+InstallMethod(DigraphFromDigraph6String, "for a string",
+[IsString], s -> DigraphFromDigraph6String(IsImmutableDigraph, s));
+
+InstallMethod(DigraphFromSparse6StringCons, "for IsMutableDigraph and a string",
+[IsMutableDigraph, IsString],
 function(func, s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i,
   finish, x, j;
@@ -882,15 +905,27 @@ function(func, s)
 
   range := range + 1;
   source := source + 1;
-  return func(rec(DigraphNrVertices := n,
-                  DigraphRange := range,
-                  DigraphSource := source));
+  return DigraphNC(IsMutableDigraph, (rec(DigraphNrVertices := n,
+                                      DigraphRange := range,
+                                      DigraphSource := source)));
 end);
 
-InstallMethod(DigraphFromSparse6String, "for a string", [IsString],
-s -> DIGRAPHS_FromSparse6String(DigraphNC, s));
+InstallMethod(DigraphFromSparse6StringCons,
+"for IsImmutableDigraph and a string",
+[IsImmutableDigraph, IsString],
+{filt, s} -> MakeImmutable(DigraphFromSparse6String(IsMutableDigraph, s)));
 
-BindGlobal("DIGRAPHS_FromDiSparse6String",
+InstallMethod(DigraphFromSparse6String, "for a function and a string",
+[IsFunction, IsString],
+DigraphFromSparse6StringCons);
+
+InstallMethod(DigraphFromSparse6String, "for a string",
+[IsString],
+s -> DigraphFromSparse6String(IsImmutableDigraph, s));
+
+InstallMethod(DigraphFromDiSparse6StringCons,
+"for IsMutableDigraph and a string",
+[IsMutableDigraph, IsString],
 function(func, s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i, x,
   finish, j;
@@ -1016,13 +1051,25 @@ function(func, s)
   od;
   range := range + 1;
   source := source + 1;
-  return func(rec(DigraphNrVertices := n,
-                  DigraphRange      := range,
-                  DigraphSource     := source));
+  return DigraphNC(IsMutableDigraph, (rec(DigraphNrVertices := n,
+                                      DigraphRange      := range,
+                                      DigraphSource     := source)));
 end);
 
-InstallMethod(DigraphFromDiSparse6String, "for a string", [IsString],
-s -> DIGRAPHS_FromDiSparse6String(DigraphNC, s));
+InstallMethod(DigraphFromDiSparse6StringCons,
+"for IsImmutableDigraph and a string",
+[IsImmutableDigraph, IsString],
+{filt, s} -> MakeImmutable(DigraphFromDiSparse6String(IsMutableDigraph, s)));
+
+InstallMethod(DigraphFromDiSparse6String,
+"for a function and a string",
+[IsFunction, IsString],
+DigraphFromDiSparse6StringCons);
+
+InstallMethod(DigraphFromDiSparse6String,
+"for a string",
+[IsString],
+s -> DigraphFromDiSparse6String(IsImmutableDigraph, s));
 
 # one graph per line
 BindGlobal("DIGRAPHS_PlainTextLineDecoder",
@@ -1043,11 +1090,25 @@ function(func, delimiter1, delimiter2, offset)
   return retval;
 end);
 
-BindGlobal("DIGRAPHS_FromPlainTextString",
-{func, s} -> DIGRAPHS_PlainTextLineDecoder(func, "  ", " ", 1)(Chomp(s)));
+InstallMethod(DigraphFromPlainTextStringCons,
+"for IsMutableDigraph and a string", [IsMutableDigraph, IsString],
+function(filt, s)
+  local f;
+  f := x -> DigraphByEdges(IsMutableDigraph, x);
+  return DIGRAPHS_PlainTextLineDecoder(f, "  ", " ", 1)(Chomp(s));
+end);
 
-InstallMethod(DigraphFromPlainTextString, "for a string", [IsString],
-s -> DIGRAPHS_FromPlainTextString(DigraphByEdges, s));
+InstallMethod(DigraphFromPlainTextStringCons,
+"for IsImmutableDigraph and a string", [IsImmutableDigraph, IsString],
+{filt, s} -> MakeImmutable(DigraphFromPlainTextStringCons(IsMutableDigraph, s)));
+
+InstallMethod(DigraphFromPlainTextString, "for a function and a string",
+[IsFunction, IsString],
+DigraphFromPlainTextStringCons);
+
+InstallMethod(DigraphFromPlainTextString, "for a string",
+[IsString],
+s -> DigraphFromPlainTextString(IsImmutableDigraph, s));
 
 # DIMACS format: for symmetric digraphs, one per file, can have loops and
 # multiple edges.

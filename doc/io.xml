@@ -169,7 +169,12 @@ gap> ReadDigraphs(file, 9);
     DiSparse6 format, then the corresponding function returns a digraph. In the
     case of either Graph6 or Sparse6, formats which do not support directed
     edges, this will be a digraph such that for every edge, the edge going in
-    the opposite direction is also present.
+    the opposite direction is also present.<P/>
+
+    Each of these functions takes an optional first argument <Ref Filt="IsMutableDigraph"/>
+    or <Ref Filt="IsImmutableDigraph"/>, which specifies whether the output digraph shall
+    be mutable or immutable. If no first argument is provided, then an immutable
+    digraph is returned by default.
     <Example><![CDATA[
 gap> DigraphFromGraph6String("?");
 <immutable empty digraph with 0 vertices>
@@ -179,6 +184,8 @@ gap> DigraphFromGraph6String("H?AAEM{");
 <immutable digraph with 9 vertices, 22 edges>
 gap> DigraphFromDigraph6String("&?");
 <immutable empty digraph with 0 vertices>
+gap> DigraphFromDigraph6String(IsMutableDigraph, "&DOOOW?");
+<mutable digraph with 5 vertices, 5 edges>
 gap> DigraphFromDigraph6String("&CQFG");
 <immutable digraph with 4 vertices, 6 edges>
 gap> DigraphFromDigraph6String("&IM[SrKLc~lhesbU[F_");
@@ -483,7 +490,14 @@ gap> dec(last);
     starting at 0.<P/>
 
     Note that the number of vertices of a digraph is not stored, and so vertices
-    which are not connected to any edge may be lost.
+    which are not connected to any edge may be lost.<P/>
+
+    
+    The operation <C>DigraphFromPlainTextString</C>
+    takes an optional first argument <Ref Filt="IsMutableDigraph"/>
+    or <Ref Filt="IsImmutableDigraph"/>, which specifies whether the output digraph shall
+    be mutable or immutable. If no first argument is provided, then an immutable
+    digraph is returned by default.
 
     <Example><![CDATA[
 gap> gr := Digraph([[2, 3], [1], [1]]);

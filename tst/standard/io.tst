@@ -44,6 +44,8 @@ gap> List(l, x -> DigraphFromGraph6String(x));
   <immutable digraph with 9 vertices, 34 edges> ]
 gap> DigraphFromGraph6String(ListWithIdenticalEntries(500, '~'));
 Error, the 2nd argument <s> is not a valid graph6 string,
+gap> D := DigraphFromGraph6String(IsMutableDigraph, "Dhc");
+<mutable digraph with 5 vertices, 10 edges>
 
 # ReadDigraphs
 gap> str := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;
@@ -111,6 +113,8 @@ gap> str := Sparse6String(gr);
 ":~_??_?A???_??_@b??H"
 gap> DigraphFromSparse6String(str);
 <immutable digraph with 131072 vertices, 6 edges>
+gap> DigraphFromSparse6String(IsMutableDigraph, ":Sa?dBDf?aiH`El@AjK_@gqBIp");
+<mutable digraph with 20 vertices, 35 edges>
 
 #  DigraphFromDigraph6String and Digraph6String
 gap> gr := Digraph([[5], [1, 2, 5], [1], [2], [4]]);
@@ -126,6 +130,8 @@ gap> gr := Digraph(231, [1 .. 100], [1 .. 100] * 0 + 200);
 gap> str := Digraph6String(gr);;
 gap> DigraphFromDigraph6String(str);
 <immutable digraph with 231 vertices, 100 edges>
+gap> D := DigraphFromDigraph6String(IsMutableDigraph, "&DOOOW?");
+<mutable digraph with 5 vertices, 5 edges>
 
 #  DigraphFromDiSparse6String and DiSparse6String
 gap> gr := Digraph([[1, 4], [2, 3, 4], [2, 4], [2]]);
@@ -158,6 +164,8 @@ gap> gr := Digraph(rec(DigraphNrVertices := 7890, DigraphSource := [1 .. 100] * 
 gap> str := DiSparse6String(gr);;
 gap> gr = DigraphFromDiSparse6String(str);
 true
+gap> DigraphFromDiSparse6String(IsMutableDigraph, ".IoCuh?oR");
+<mutable digraph with 10 vertices, 4 edges>
 
 #  WriteDigraphs and ReadDigraphs
 gap> gr := [];;
@@ -471,6 +479,9 @@ gap> gr2 := DigraphFromPlainTextString(str);
 <immutable digraph with 3 vertices, 6 edges>
 gap> gr = gr2;
 true
+gap> D := DigraphFromPlainTextString(IsMutableDigraph,
+> "0 1  1 2  2 3  3 4  4 0");
+<mutable digraph with 5 vertices, 5 edges>
 
 #  Invalid sizes
 gap> DigraphFromGraph6String("~llk");
