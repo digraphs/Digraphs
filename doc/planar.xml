@@ -30,7 +30,7 @@
 
     This method uses the reference implementation in
     &edge-addition-planarity-suite; by John Boyer of the algorithms described
-    in <Cite Key="Boyer2006aa"/>.
+    in <Cite Key="BM06"/>.
 
     <Example><![CDATA[
 gap> IsPlanarDigraph(CompleteDigraph(4));
@@ -76,7 +76,7 @@ false
 
     This method uses the reference implementation in
     &edge-addition-planarity-suite; by John Boyer of the algorithms described
-    in <Cite Key="Boyer2006aa"/>.
+    in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
 gap> IsOuterPlanarDigraph(CompleteDigraph(4));
@@ -112,7 +112,7 @@ true
   <Attr Name="KuratowskiPlanarSubdigraph" Arg="digraph"/>
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
-    <C>KuratowskiPlanarSubdigraph</C> returns the immutable list of immutable
+    <C>KuratowskiPlanarSubdigraph</C> returns the immutable list of
     lists of out-neighbours of a (not necessarily induced) subdigraph of the
     digraph <A>digraph</A> that witnesses the fact that <A>digraph</A> is not
     planar, or <K>fail</K> if <A>digraph</A> is planar.  In other words,
@@ -130,7 +130,7 @@ true
     
     This method uses the reference implementation in
     &edge-addition-planarity-suite; by John Boyer of the algorithms described
-    in <Cite Key="Boyer2006aa"/>.
+    in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], 
@@ -194,7 +194,7 @@ gap> KuratowskiPlanarSubdigraph(D);
 
     This method uses the reference implementation in
     &edge-addition-planarity-suite; by John Boyer of the algorithms described
-    in <Cite Key="Boyer2006aa"/>.
+    in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], 
@@ -238,7 +238,7 @@ gap> KuratowskiOuterPlanarSubdigraph(D);
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is a planar digraph, then 
-    <C>PlanarEmbedding</C> returns the immutable list of immutable lists of
+    <C>PlanarEmbedding</C> returns the immutable list of lists of
     out-neighbours of a subdigraph of <A>digraph</A> such that each vertex's
     neighbours are given in clockwise order. If <A>digraph</A> is not planar,
     then <K>fail</K> is returned. <P/>
@@ -253,7 +253,7 @@ gap> KuratowskiOuterPlanarSubdigraph(D);
 
     This method uses the reference implementation in
     &edge-addition-planarity-suite; by John Boyer of the algorithms described
-    in <Cite Key="Boyer2006aa"/>.
+    in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], 
@@ -292,7 +292,7 @@ fail
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is an outer planar digraph, then
-    <C>OuterPlanarEmbedding</C> returns the immutable list of immutable lists
+    <C>OuterPlanarEmbedding</C> returns the immutable list of lists
     of out-neighbours of a subdigraph of <A>digraph</A> such that each
     vertex's neighbours are given in clockwise order. If <A>digraph</A> is not
     outer planar, then <K>fail</K> is returned. <P/>
@@ -306,7 +306,7 @@ fail
 
     This method uses the reference implementation in
     &edge-addition-planarity-suite; by John Boyer of the algorithms described
-    in <Cite Key="Boyer2006aa"/>.
+    in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], 
@@ -348,7 +348,7 @@ gap> OuterPlanarEmbedding(CompleteBipartiteDigraph(2, 2));
   <Attr Name="SubdigraphHomeomorphicToK4" Arg="digraph"/>
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
-    These attributes return the immutable list of immutable lists of
+    These attributes return the immutable list of lists of
     out-neighbours of a subdigraph of the digraph <A>digraph</A> which is
     homeomorphic to one of the following:
     the complete bipartite graph with vertex sets of sizes <C>2</C> and
@@ -362,7 +362,7 @@ gap> OuterPlanarEmbedding(CompleteBipartiteDigraph(2, 2));
 
     This method uses the reference implementation in
     &edge-addition-planarity-suite; by John Boyer of the algorithms described
-    in <Cite Key="Boyer2006aa"/>.
+    in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 7, 11], 

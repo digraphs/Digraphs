@@ -219,7 +219,7 @@ gap> DigraphClique(D);
     exclude[, limit[, size]]]]"/>
   <Attr Name="DigraphMaximalCliquesAttr" Arg="digraph"/>
   <Attr Name="DigraphMaximalCliquesRepsAttr" Arg="digraph"/>
-  <Returns>An immutable list of immutable lists of positive integers.</Returns>
+  <Returns>An immutable list of lists of positive integers.</Returns>
   <Description>
     If <A>digraph</A> is digraph, then these functions and attributes use <Ref
       Func="CliquesFinder"/> to return cliques of <A>digraph</A>. A
@@ -433,7 +433,7 @@ gap> DigraphMaximalIndependentSet(D, [1], [], 3);
     exclude[, limit[, size]]]]"/>
   <Attr Name="DigraphMaximalIndependentSetsAttr" Arg="digraph"/>
   <Attr Name="DigraphMaximalIndependentSetsRepsAttr" Arg="digraph"/>
-  <Returns>An immutable list of immutable lists of positive integers.</Returns>
+  <Returns>An immutable list of lists of positive integers.</Returns>
   <Description>
     If <A>digraph</A> is digraph, then these functions and attributes use <Ref
       Func="CliquesFinder"/> to return independent sets of <A>digraph</A>. An

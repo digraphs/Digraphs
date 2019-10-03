@@ -40,12 +40,13 @@
   <Func Name="DigraphsTestStandard" Arg=""/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function should be called to test all the methods included in
-    &Digraphs;.  These tests should take only a few seconds to complete. <P/>
+    This function can be called without arguments to test all of the methods
+    included in &Digraphs;.
+    These tests should take less than a minute to complete. <P/>
 
     To quickly test that &Digraphs; is installed correctly use <Ref
     Func="DigraphsTestInstall"/>.  For a more thorough test, use <Ref
-    Func="DigraphsTestStandard"/>.
+    Func="DigraphsTestExtreme"/>.
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -55,14 +56,15 @@
   <Func Name="DigraphsTestExtreme" Arg=""/>
   <Returns>Nothing.</Returns>
   <Description>
-    This function should be called with no arguments to execute a series of
-    particularly demanding tests, which measure the performance of a variety of
-    functions on large examples.  These tests could take a long time to
-    complete, probably at least several minutes. <P/>
+    This function should be called with no argument. It executes a series of
+    very demanding tests, which measure the performance of a variety of
+    functions on large examples.  These tests take a long time to
+    complete, at least several minutes. <P/>
 
     For these tests to complete, the digraphs library <C>digraphs-lib</C> must
-    be downloaded and placed in the <C>digraphs</C> directory.  This library can
-    be found on the &Digraphs; website.
+    be downloaded and placed in the <C>digraphs</C> directory in a subfolder
+    named <F>digraphs-lib</F>.
+    This library can be found on the &Digraphs; website.
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -72,9 +74,9 @@
   <Func Name="DigraphsTestInstall" Arg=""/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function should be called with no argument to test your installation of
+    This function can be called without arguments to test your installation of
     &Digraphs; is working correctly. These tests should take no more than a
-    fraction of a second to complete.  To test more comprehensively that
+    few seconds to complete.  To test more comprehensively that
     &Digraphs; is working correctly, use <Ref Func="DigraphsTestStandard"/>.
   </Description>
 </ManSection>
@@ -85,7 +87,7 @@
   <Func Name="DigraphsTestManualExamples" Arg=""/>
   <Returns>Nothing.</Returns>
   <Description>
-    This function should be called with no argument to test the examples in the
+    This function can be called without arguments to test the examples in the
     &Digraphs; manual. These tests should take no more than a few minutes to
     complete.  To more comprehensively test that &Digraphs; is installed
     correctly use <Ref Func="DigraphsTestStandard"/>. See also <Ref

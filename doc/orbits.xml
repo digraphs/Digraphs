@@ -224,7 +224,7 @@ gap> DigraphOrbits(D);
 <#GAPDoc Label="RepresentativeOutNeighbours">
 <ManSection>
   <Attr Name="RepresentativeOutNeighbours" Arg="digraph"/>
-  <Returns>An immutable list of immutable lists.</Returns>
+  <Returns>An immutable list of lists.</Returns>
   <Description>
     This function returns the list <C>out</C> of <E>out-neighbours</E> of each
     representative of the orbits of the action of <Ref Attr="DigraphGroup"/> on

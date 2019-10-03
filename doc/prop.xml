@@ -164,7 +164,7 @@ true]]></Example>
     path.    <P/>
 
     The method used in this operation is based on Gabow's Algorithm <Cite
-      Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M>, where <M>m</M> is
+      Key="Gab00"/> and has complexity <M>O(m+n)</M>, where <M>m</M> is
     the number of edges (counting multiple edges as one) and <M>n</M> is the
     number of vertices in the digraph.
     <P/>
@@ -759,7 +759,8 @@ false]]></Example>
     A connected digraph is called <E>Eulerian</E> if there exists a directed
     circuit on the digraph which includes every edge exactly once.  See
     section <Ref Subsect="Definitions" Style="Number" /> for the definition of
-    a directed circuit.
+    a directed circuit. Note that the empty digraph with at most one vertex is
+    considered to be Eulerian.
     <P/>
       
     If the argument <A>digraph</A> is mutable, then the return value of

@@ -6,8 +6,8 @@
 
 <Section><Heading>Introduction</Heading>
 
-  This is the manual for the &Digraphs; package version &VERSION;.  This package
-  was developed at the University of St Andrews by:
+  This is the manual for version &VERSION; of the &Digraphs; package.
+  This package was developed at the University of St Andrews by:
   <List>
     <Item>Jan De Beule,</Item>
     <Item>Julius Jonu&#353;as,</Item>
@@ -39,28 +39,28 @@
   converted to &Digraphs; objects with <Ref Oper="Digraph"/>.  &Grape; is not
   required for &Digraphs; to run. <P/>
 
-  The &bliss; tool <Cite Key="JunttilaKaski"/> is included in this package.  It
+  The &bliss; tool <Cite Key="JK07"/> is included in this package.  It
   is an open-source tool for computing automorphism groups and canonical forms
   of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods
   in the &Digraphs; package rely on &bliss;. If the &NautyTracesInterface;
   package for GAP is available then it is also possible to use &nauty; <Cite
-    Key="McKay201494"/> for computing automorphism groups and canonical forms
+    Key="MP14"/> for computing automorphism groups and canonical forms
   in &Digraphs;. See Section 
   <Ref Sect="Isomorphisms and canonical labellings"/> for more details.  
   <P/>
 
-  From Version 1.0.0 of this package, digraphs can be either mutable or immutable.
+  From version 1.0.0 of this package, digraphs can be either mutable or immutable.
   Mutable digraphs can be changed in-place by many of the methods in the
   package, which avoids unnecessary copying. Immutable digraphs cannot be
   changed in-place, but their advantage is that the value of an attribute of
   an immutable digraph is only ever computed once. Mutable digraphs can be
   converted into immutable digraphs in-place using <Ref Func="MakeImmutable"
   BookName = "ref"/>.  One of the motivations for introducing mutable
-  digraphs in Version 1.0.0 was that in practice the authors often wanted
+  digraphs in version 1.0.0 was that in practice the authors often wanted
   to create a digraph and immediately modify it (removing certain edges,
-  loops, and so on). Before Version 1.0.0, this involved copying the digraph
+  loops, and so on). Before version 1.0.0, this involved copying the digraph
   several times, with each copy being discarded almost immediately.
-  From Version 1.0.0, this unnecessary copying can be eliminated by
+  From version 1.0.0, this unnecessary copying can be eliminated by
   first creating a mutable digraph, then changing it in-place, and  finally
   converting the mutable digraph to an immutable one in-place
   (if desirable).

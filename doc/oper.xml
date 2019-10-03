@@ -392,7 +392,7 @@ true
 
 <#GAPDoc Label="DigraphRemoveVertices">
 <ManSection>
-  <Oper Name="DigraphRemoveVertices " Arg="digraph, verts"/>
+  <Oper Name="DigraphRemoveVertices" Arg="digraph, verts"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>verts</A> is a (possibly empty) duplicate-free list of vertices of
@@ -852,15 +852,16 @@ gap> DigraphConnectedComponent(D, 4);
 
     A partition of the vertices of <A>digraph</A> is a list of non-empty
     disjoint lists, such that the union of all the sub-lists is equal
-    to the vertex set of <A>digraph</A>. In particular, each vertex must appear
+    to vertex set of <A>digraph</A>. In particular, each vertex must appear
     in precisely one sub-list.
     <P/>
 
     The vertices of <A>digraph</A> in part <C>i</C> of <A>p</A> will become
-    vertex <C>i</C> in the quotient, and every edge of <A>digraph</A>
-    with source in part <C>i</C> and range in part <C>j</C> becomes an edge
-    from <C>i</C> to <C>j</C> in the quotient. In particular, this means that
-    the quotient of a digraph without multiple edges can have multiple edges.
+    vertex <C>i</C> in the quotient, and there exists some edge in <A>digraph</A>
+    with source in part <C>i</C> and range in part <C>j</C> if and only if there
+    is an edge from <C>i</C> to <C>j</C> in the quotient.
+    In particular, this means that the quotient of a digraph has no multiple edges.
+    which was a change introduced in version 1.0.0 of the &Digraphs; package.
     <P/>
 
     If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then
@@ -988,8 +989,8 @@ gap> Display(shortest_distances);
 
 <#GAPDoc Label="DigraphEdgeUnion">
 <ManSection>
-  <Func Name="DigraphEdgeUnion" Arg="D1, D2, ..." Label="for an arbitrary
-    number of digraphs"/>
+  <Func Name="DigraphEdgeUnion" Arg="D1, D2, ..."
+    Label="for a positive number of digraphs"/>
   <Func Name="DigraphEdgeUnion" Arg="list" Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
   <Description>
@@ -1095,8 +1096,8 @@ gap> OutNeighbours(union);
 
 <#GAPDoc Label="DigraphJoin">
 <ManSection>
-  <Func Name="DigraphJoin" Arg="D1, D2, ..." Label="for an arbitrary number
-    of digraphs"/>
+  <Func Name="DigraphJoin" Arg="D1, D2, ..."
+    Label="for a positive number of digraphs"/>
   <Func Name="DigraphJoin" Arg="list" Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
   <Description>
@@ -1144,7 +1145,7 @@ gap> DigraphJoin(D, D2);
 <#GAPDoc Label="DigraphCartesianProduct">
 <ManSection>
   <Func Name="DigraphCartesianProduct" Arg="gr1, gr2, ..."
-    Label="for an arbitrary non-zero number of digraphs"/>
+    Label="for a positive number of digraphs"/>
   <Func Name="DigraphCartesianProduct" Arg="list"
     Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
@@ -1206,7 +1207,7 @@ true
 <#GAPDoc Label="DigraphDirectProduct">
 <ManSection>
   <Func Name="DigraphDirectProduct" Arg="gr1, gr2, ..."
-    Label="for an arbitrary non-zero number of digraphs"/>
+    Label="for a positive number of digraphs"/>
   <Func Name="DigraphDirectProduct" Arg="list"
     Label="for a list of digraphs"/>
   <Returns>A digraph.</Returns>
@@ -1570,10 +1571,8 @@ gap> DigraphShortestDistance(D, [1, 3], [3, 5]);
 <#GAPDoc Label="PartialOrderDigraphMeetOfVertices">
 <ManSection>
   <Oper Name="PartialOrderDigraphMeetOfVertices"
-    Label="for a digraph and two vertices"
     Arg="digraph, u, v"/>
   <Oper Name="PartialOrderDigraphJoinOfVertices"
-    Label="for a digraph and two vertices"
     Arg="digraph, u, v"/>
   <Returns>A positive integer or <K>fail</K></Returns>
     <Description>
@@ -1614,8 +1613,7 @@ fail
 
 <#GAPDoc Label="DigraphClosure">
 <ManSection>
-  <Oper Name="DigraphClosure" Label="for a digraph and positive integer"
-        Arg="digraph, k"/>
+  <Oper Name="DigraphClosure" Arg="digraph, k"/>
   <Returns>A digraph.</Returns>
   <Description>
     Given a symmetric loopless digraph with no multiple edges <A>digraph</A>,

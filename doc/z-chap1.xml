@@ -139,7 +139,7 @@ make]]></Listing>
     If you installed &GAP; on several architectures, you must execute the
     configure/make step for each of the architectures. You can either do this
     immediately after configuring and compiling GAP itself on this architecture, or
-    alternatively (when using version 4.5 of GAP or newer) set the environment
+    alternatively set the environment
     variable 'CONFIGNAME' to the name of the configuration you used when compiling
     GAP before running './configure'.  Note however that your compiler choice and
     flags (environment variables 'CC' and 'CFLAGS') need to be chosen to match the
@@ -154,8 +154,8 @@ make]]></Listing>
     <Heading>Rebuilding the documentation</Heading>
     The &Digraphs; package comes complete with pdf, html, and text versions of
     the documentation. However, you might find it necessary, at some point, to
-    rebuild the documentation. To rebuild the documentation use the <Ref
-      Func="DigraphsMakeDoc"/>.
+    rebuild the documentation. To rebuild the documentation, please use the
+    function <Ref Func="DigraphsMakeDoc"/>.
 
     <#Include Label="DigraphsMakeDoc">
   </Section>
@@ -179,6 +179,7 @@ make]]></Listing>
 
     <#Include Label="DigraphsTestInstall">
     <#Include Label="DigraphsTestStandard">
+    <#Include Label="DigraphsTestExtreme">
 
   </Section>
 

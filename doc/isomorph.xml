@@ -83,12 +83,14 @@ gap> Size(G);
 
 <#GAPDoc Label="NautyAutomorphismGroup">
 <ManSection>
-  <Attr Name="NautyAutomorphismGroup" Arg="digraph[, colours]"/>
+  <Attr Name="NautyAutomorphismGroup" Arg="digraph[, vert_colours]"/>
   <Returns>A permutation group.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then this attribute contains the group of
     automorphisms of <A>digraph</A> as calculated using &nauty; by
     Brendan Mckay and Adolfo Piperno via &NautyTracesInterface;.
+
+    <!-- FIXME be more explicit about what the second arg is -->
 
     The attribute <Ref Attr="AutomorphismGroup" Label="for a digraph"/> and
     operation <Ref Oper="AutomorphismGroup" 
@@ -162,36 +164,36 @@ true]]></Example>
 <#GAPDoc Label="AutomorphismGroupDigraphColours">
 <ManSection>
   <Oper Name="AutomorphismGroup" Label="for a digraph and a homogeneous list"
-    Arg="digraph, colours"/>
+    Arg="digraph, vert_colours"/>
   <Returns>A permutation group.</Returns>
   <Description>
 
-    This operation computes the automorphism group of a coloured digraph.
-    A coloured digraph can be specified by its underlying digraph
-    <A>digraph</A> and its colouring <A>colours</A>. Let <C>n</C> be the
-    number of vertices of <A>digraph</A>. The colouring <A>colours</A> may
+    This operation computes the automorphism group of a vertex-coloured digraph.
+    A vertex-coloured digraph can be specified by its underlying digraph
+    <A>digraph</A> and its colouring <A>vert_colours</A>. Let <C>n</C> be the
+    number of vertices of <A>digraph</A>. The colouring <A>vert_colours</A> may
     have one of the following two forms:
 
     <List>
       <Item>
-        a list of <C>n</C> integers, where <A>colours</A><C>[i]</C> is the
+        a list of <C>n</C> integers, where <A>vert_colours</A><C>[i]</C> is the
         colour of vertex <C>i</C>, using the colours <C>[1 .. m]</C> for some
         <C>m &lt;= n</C>; or
       </Item>
       <Item>
         a list of non-empty disjoint lists whose union is
         <C>DigraphVertices(<A>digraph</A>)</C>, such that
-        <A>colours</A><C>[i]</C> is the list of all vertices with colour
+        <A>vert_colours</A><C>[i]</C> is the list of all vertices with colour
         <C>i</C>.
       </Item>
     </List>
 
     The <E>automorphism group</E> of a coloured digraph <A>digraph</A> with
-    colouring <A>colours</A> is the group consisting of its automorphisms; an
+    colouring <A>vert_colours</A> is the group consisting of its automorphisms; an
     <E>automorphism</E> of <A>digraph</A> is an isomorphism of coloured
     digraphs from <A>digraph</A> to itself.  This group is equal to the
     subgroup of <C>AutomorphismGroup(<A>digraph</A>)</C> consisting of those
-    automorphisms that preserve the colouring specified by <A>colours</A>. See
+    automorphisms that preserve the colouring specified by <A>vert_colours</A>. See
     <Ref Attr="AutomorphismGroup" Label="for a digraph" />, and see <Ref
       Oper="IsomorphismDigraphs" Label="for digraphs and homogeneous lists" />
     for more information about isomorphisms of coloured digraphs. <P/>

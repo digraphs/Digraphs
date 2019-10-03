@@ -13,10 +13,9 @@
   <Filt Name="IsDigraph" Type='Category'/>
   <Description>
     Every  digraph in  &Digraphs;  belongs  to  the  category
-    <C>IsDigraph</C>.  Basic attributes and operations for digraphs
-    are: <Ref Attr="DigraphVertices"/>, <Ref Attr="DigraphRange"/>, <Ref
-      Attr="DigraphSource"/>, <Ref Attr="OutNeighbours"/>, and <Ref
-      Attr="DigraphEdges"/>.
+    <C>IsDigraph</C>.  Some basic attributes and operations for digraphs
+    are <Ref Attr="DigraphVertices"/>, <Ref Attr="DigraphEdges"/>, and
+    <Ref Attr="OutNeighbours"/>.
     </Description>
 </ManSection>
 <#/GAPDoc>
@@ -38,7 +37,8 @@
   <Description>
     <C>IsCayleyDigraph</C> is a subcategory of <C>IsDigraph</C>. Digraphs that
     are Cayley digraphs of a group and that are constructed by the operation
-    <Ref Oper="CayleyDigraph"/> are constructed in this category.
+    <Ref Oper="CayleyDigraph"/> are constructed in this category, and are
+    always immutable.
     </Description>
 </ManSection>
 <#/GAPDoc>
@@ -233,9 +233,9 @@ gap> gr := Digraph([1 .. 10], ReturnTrue);
       The next example illustrates the uses of the fourth and fifth variants of
       this constructor. The resulting digraph is a strongly regular graph, and
       it is actually the point graph of the van Lint-Schrijver partial
-      geometry, <Cite Key="vanLintSchrijver1981"/>.  The algebraic description
+      geometry, <Cite Key="vLS81"/>.  The algebraic description
       is taken from the seminal paper of Calderbank and Kantor <Cite
-        Key="CalderbankKantor1986"/>.
+        Key="CK86"/>.
 <Example><![CDATA[
 gap> f := GF(3 ^ 4);
 GF(3^4)
@@ -465,6 +465,10 @@ gap> D := CycleDigraph(10);
 <immutable cycle digraph with 10 vertices>
 gap> DigraphCopy(D) = D;
 true
+gap> IsIdenticalObj(DigraphCopy(D), D);
+false
+gap> DigraphMutableCopy(D);
+<mutable digraph with 10 vertices, 10 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -574,8 +578,8 @@ Binary Relation on 4 points
       <C>AsSemigroup</C> returns a semigroup of partial perms which is
       isomorphic to the semigroup whose elements are the vertices of
       <A>digraph</A> with the binary operation
-      <Ref Oper="PartialOrderDigraphMeetOfVertices"
-        Label="for a digraph and two vertices"/>. <P/>
+      <Ref Oper="PartialOrderDigraphMeetOfVertices"/>.
+      <P/>
 
       The operation <C>AsMonoid</C> behaves similarly to <C>AsSemigroup</C>
       except that <A>filt</A> may also be equal to
@@ -622,15 +626,15 @@ gap> Size(M);
       then <C>AsSemigroup</C> returns a semigroup of partial perms which is
       isomorphic to the semigroup whose elements are the vertices of
       <A>digraph</A> with the binary operation
-      <Ref Oper="PartialOrderDigraphJoinOfVertices"
-        Label="for a digraph and two vertices"/>. If <A>digraph</A>
+      <Ref Oper="PartialOrderDigraphJoinOfVertices"/>.
+      If <A>digraph</A>
       satisfies  <Ref Prop="IsMeetSemilatticeDigraph"/> but not
       <Ref Prop="IsJoinSemilatticeDigraph"/> then
       <C>AsSemigroup</C> returns a semigroup of partial perms which is
       isomorphic to the semigroup whose elements are the vertices of
       <A>digraph</A> with the binary operation
-      <Ref Oper="PartialOrderDigraphMeetOfVertices"
-        Label="for a digraph and two vertices"/>. <P/>
+      <Ref Oper="PartialOrderDigraphMeetOfVertices"/>.
+      <P/>
 
       The operation <C>AsMonoid</C> behaves similarly to <C>AsSemigroup</C>
       except that <A>filt</A> may also be equal to
@@ -665,7 +669,8 @@ gap> Size(M);
 
 <#GAPDoc Label="AsCliffordSemigroup">
   <ManSection>
-    <Oper Name="AsSemigroup" Arg="filt, Y, gps, homs"/>
+    <Oper Name="AsSemigroup" Arg="filt, Y, gps, homs"
+      Label="for a filter, semilattice digraph, and two lists"/>
     <Returns> A Clifford semigroup of partial perms. </Returns>
     <Description>
       The operation <C>AsSemigroup</C> requires that <A>filt</A> be equal to

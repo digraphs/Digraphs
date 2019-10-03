@@ -159,10 +159,10 @@ gap> ReadDigraphs(file, 9);
 
 <#GAPDoc Label="DigraphFromGraph6String">
 <ManSection>
-  <Oper Name="DigraphFromGraph6String" Arg="str"/>
-  <Oper Name="DigraphFromDigraph6String" Arg="str"/>
-  <Oper Name="DigraphFromSparse6String" Arg="str"/>
-  <Oper Name="DigraphFromDiSparse6String" Arg="str"/>
+  <Oper Name="DigraphFromGraph6String"    Arg="[filt, ]str"/>
+  <Oper Name="DigraphFromDigraph6String"  Arg="[filt, ]str"/>
+  <Oper Name="DigraphFromSparse6String"   Arg="[filt, ]str"/>
+  <Oper Name="DigraphFromDiSparse6String" Arg="[filt, ]str"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>str</A> is a string encoding a graph in Graph6, Digraph6, Sparse6 or
@@ -171,9 +171,12 @@ gap> ReadDigraphs(file, 9);
     edges, this will be a digraph such that for every edge, the edge going in
     the opposite direction is also present.<P/>
 
-    Each of these functions takes an optional first argument <Ref Filt="IsMutableDigraph"/>
-    or <Ref Filt="IsImmutableDigraph"/>, which specifies whether the output digraph shall
-    be mutable or immutable. If no first argument is provided, then an immutable
+    Each of these functions takes an optional first argument <A>filt</A>,
+    which should be either <Ref Filt="IsMutableDigraph"/>
+    or <Ref Filt="IsImmutableDigraph"/>,
+    and which specifies whether the output digraph shall
+    be mutable or immutable.
+    If no first argument is provided, then an immutable
     digraph is returned by default.
     <Example><![CDATA[
 gap> DigraphFromGraph6String("?");

@@ -181,7 +181,7 @@ gap> DigraphSource(D);
     there exists an edge with source <C>i</C> and range <C>j</C> in
     <A>digraph</A>. <P/>
 
-    The function <C>OutNeighbours</C> returns an immutable list of immutable
+    The function <C>OutNeighbours</C> returns an immutable list of
     lists, whereas the function <C>OutNeighboursMutableCopy</C> returns a copy
     of <C>OutNeighbours</C> which is a mutable list of mutable lists. <P/>
 
@@ -228,7 +228,7 @@ gap> OutNeighbours(D);
     there exists an edge with source <C>j</C> and range <C>i</C> in
     <A>digraph</A>. <P/>
 
-    The function <C>InNeighbours</C> returns an immutable list of immutable
+    The function <C>InNeighbours</C> returns an immutable list of
     lists, whereas the function <C>InNeighboursMutableCopy</C> returns a copy
     of <C>InNeighbours</C> which is a mutable list of mutable lists. <P/>
 
@@ -323,7 +323,7 @@ false
     in <A>digraph</A> with source <C>i</C> and range <C>j</C>. If <A>digraph</A>
     has no vertices, then the empty list is returned. <P/>
 
-    The function <C>AdjacencyMatrix</C> returns an immutable list of immutable
+    The function <C>AdjacencyMatrix</C> returns an immutable list of
     lists, whereas the function <C>AdjacencyMatrixMutableCopy</C> returns a copy
     of <C>AdjacencyMatrix</C> that is a mutable list of mutable lists. <P/>
 
@@ -621,7 +621,7 @@ gap> DigraphSinks(D);
     element of the strongly connected component <C>comps[id[i]]</C>. <P/>
 
     The method used in this function is a non-recursive version of Gabow's
-    Algorithm <Cite Key="Gabow2000aa"/> and has complexity <M>O(m+n)</M> where
+    Algorithm <Cite Key="Gab00"/> and has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges (counting multiple edges as one) and
     <M>n</M> is the number of vertices in the digraph. <P/>
 
@@ -1451,11 +1451,10 @@ gap> NrSpanningTrees(D);
   <Returns>A &Grape; package graph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then this method returns the same as
-    <Ref Oper="Graph"/>, except that the result will be stored as a mutable
-    attribute of <A>digraph</A>. <P/>
-
-    If <C>AsGraph(</C><A>digraph</A><C>)</C> is called subsequently,
-    then the same &GAP; object will be returned as before.
+    <Ref Oper="Graph"/>, except that if <A>digraph</A> is immutable, then the
+    result will be stored as a mutable attribute of <A>digraph</A>.
+    In this latter case, when <C>AsGraph(</C><A>digraph</A><C>)</C> is called
+    subsequently, the same &GAP; object will be returned as before.
 
     <Example><![CDATA[
 gap> D := Digraph([[1, 2], [3], []]);
@@ -1588,11 +1587,12 @@ gap> D;
     See <Ref Oper="InducedSubdigraph"/>.
     <P/>
 
-    The vertex and edge labels of the graph are preserved. A vertex in the new
-    digraph can be matched to the corresponding vertex in <A>digraph</A> by
-    using the label.<P/>
-
-    The ordering of the vertices is preserved.<P/>
+    The ordering of the remaining vertices of <A>digraph</A> is preserved, as are
+    the labels of the remaining vertices and edges;
+    see <Ref Oper="DigraphVertexLabels"/> and <Ref Oper="DigraphEdgeLabels"/>.
+    This can allow one to match a vertex in the reduced digraph to the
+    corresponding vertex in <A>digraph</A>.
+    <P/>
 
     If <A>digraph</A> is immutable, then a new immutable digraph is returned.
     Otherwise, the isolated vertices of the mutable digraph <A>digraph</A> are
@@ -1822,16 +1822,18 @@ gap> D;
   <Returns>A digraph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then <C>MaximalAntiSymmetricSubdigraph</C>
-    returns a anti-symmetric subdigraph of <A>digraph</A> which does not have
-    multiple edges, has the same vertex set as <A>digraph</A>, and whose
-    edge list is formed from <A>digraph</A> by ignoring the multiplicity of
-    edges, and by having either an edge from the vertex <C>u</C> to the vertex
-    <C>v</C>, or the edge from <C>v</C> to <C>u</C> (but not both) whenever
-    both edges belong to <A>digraph</A>.<P/>
+    returns an anti-symmetric subdigraph of <A>digraph</A> formed by
+    retaining the vertices of <A>digraph</A>, discarding any duplicate edges,
+    and discarding any edge <C>[i,j]</C> of <A>digraph</A> where <C>i > j</C>
+    and the reverse edge <C>[j,i]</C> is an edge of <A>digraph</A>.
+    In other words, for every
+    symmetric pair of edges <C>[i,j]</C> and <C>[j,i]</C> in <A>digraph</A>, where 
+    <C>i</C> and <C>j</C> are distinct, it discards the the edge
+    <M>[\max(i,j),\min(i,j)]</M>.
+    <P/>
 
     If <A>digraph</A> is immutable, then a new immutable digraph is returned.
-    Otherwise, the mutable digraph <A>digraph</A> is changed in-place into
-    such a digraph described above.<P/>
+    Otherwise, the mutable digraph <A>digraph</A> is changed in-place. <P/>
 
     See <Ref Prop="IsAntisymmetricDigraph"/> for more information.
     <Example><![CDATA[
@@ -2000,13 +2002,13 @@ gap> D;
     returns <K>fail</K>.  See <Ref Oper="IsUndirectedSpanningTree" /> for the
     definition of an undirected spanning tree.<P/>
 
-    If <A>digraph</A> is immutable, then a new immutable digraph is returned.
+    If <A>digraph</A> is immutable, then an immutable digraph is returned.
     Otherwise, the mutable digraph <A>digraph</A> is changed in-place into an
     undirected spanning tree of <A>digraph</A>.<P/>
 
-    Note that for a digraph that has an undirected spanning tree, the attribute
-    <C>UndirectedSpanningTree</C> returns the same digraph as the attribute
-    <C>UndirectedSpanningForest</C>.
+    Note that for an immutable digraph that has known undirected spanning tree,
+    the attribute <C>UndirectedSpanningTree</C> returns the same digraph as
+    the attribute <C>UndirectedSpanningForest</C>.
 
     <Example><![CDATA[
 gap> D := Digraph([[1, 2, 1, 3], [1], [4], [3, 4, 3]]);
