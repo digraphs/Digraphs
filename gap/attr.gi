@@ -1698,10 +1698,10 @@ end);
 InstallMethod(MaximalAntiSymmetricSubdigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local n, C, m, out, i, j;
+  local n, C, m, out, pos, j, i, k;
 
   n := DigraphNrVertices(D);
-  if not IsMultiDigraph(D) and (n <= 1 or IsAntisymmetricDigraph(D)) then
+  if not IsMultiDigraph(D) and IsAntisymmetricDigraph(D) then
     return D;
   elif IsMultiDigraph(D) then
     if HasDigraphRemoveAllMultipleEdgesAttr(D) then
@@ -1735,10 +1735,16 @@ function(D)
     out := C!.OutNeighbours;
     Perform(out, Sort);
     for i in [1 .. n] do
-      for j in out[i] do
-        if i <> j then
-          RemoveSet(out[j], i);
-        fi;
+      # For all edges i -> j with i < j, (try to) remove the edge j -> i.
+      pos := PositionSorted(out[i], i);
+      if pos > Length(out[i]) then
+        continue;
+      elif out[i][pos] = i then
+        pos := pos + 1;
+      fi;
+      for k in [pos .. Length(out[i])] do
+        j := out[i][k];
+        RemoveSet(out[j], i);
       od;
     od;
   fi;
