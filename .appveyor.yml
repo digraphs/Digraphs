@@ -6,7 +6,7 @@ environment:
   PACKAGES: "latest"
   SUITE: "test"
   GAP: "master"
-  DIGRAPHS_LIB: "digraphs-lib-0.5"
+  DIGRAPHS_LIB: "digraphs-lib-0.6"
   SETUP: "appveyor"
 
   # To test building GAP both using the bundled libraries (zlib and GMP), as
