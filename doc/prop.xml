@@ -672,20 +672,20 @@ false]]></Example>
     <C>IsEdgeTransitive</C> returns <K>true</K> if <A>digraph</A>
     is edge transitive, and <K>false</K> otherwise. A digraph is
     <E>edge transitive</E> if its automorphism group acts
-    transitively on its edges (via the action <Ref Prop="OnPairs"/>).
+    transitively on its edges (via the action
+    <Ref Func="OnPairs" BookName="ref"/>).
     <P/>
       
     If the argument <A>digraph</A> is mutable, then the return value of
     this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> IsEdgeTransitive(Digraph([[1], [2]]));
+gap> IsEdgeTransitive(CompleteDigraph(2));
 true
-gap> IsEdgeTransitive(Digraph([[2], [3], []]));
+gap> IsEdgeTransitive(ChainDigraph(3));
 false
 gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
-Error, Digraphs: IsEdgeTransitive: usage,
-the argument <graph> must not have multiple edges,
+Error, the argument <D> must be a digraph with no multiple edges,
 ]]></Example>
   </Description>
 </ManSection>
@@ -706,9 +706,9 @@ the argument <graph> must not have multiple edges,
     this property is recomputed every time it is called. 
 
     <Example><![CDATA[
-gap> IsVertexTransitive(Digraph([[1], [2]]));
+gap> IsVertexTransitive(CompleteDigraph(2));
 true
-gap> IsVertexTransitive(Digraph([[2], [3], []]));
+gap> IsVertexTransitive(ChainDigraph(3));
 false
 ]]></Example>
   </Description>

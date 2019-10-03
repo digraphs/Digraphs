@@ -48,6 +48,8 @@
 
   <Section><Heading>Homomorphisms and transformations</Heading>
     <#Include Label="IsDigraphCore">
+    <#Include Label="IsEdgeTransitive">
+    <#Include Label="IsVertexTransitive">
   </Section>
 
   
