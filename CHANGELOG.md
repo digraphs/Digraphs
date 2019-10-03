@@ -70,6 +70,10 @@ calling `Foo` calls `FooAttr` and returns an immutable digraph, which it
 stores, and so the effect is as before.  For an mutable digraph, calling `Foo`
 modifies the digraph in-place, which remains mutable.
 
+The majority of the changes in Digraphs relating to mutable and immutable
+digraphs were made by [James D. Mitchell](http://goo.gl/ZtViV6), Finn Smith, and
+[Wilf A. Wilson](http://wilf.me), with some further contributions by Reinis
+Cirpons, Luke Elliott, and Murray Whyte.
 
 ###  New and extended functions
 
