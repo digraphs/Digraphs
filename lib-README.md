@@ -103,54 +103,52 @@ Brendan McKay and Adolfo Piperno:
   * `sts-sw.g6.gz` - Steiner triple system graphs with switched edges
   * `triang.g6.gz` - Triangular graphs
 
-There are also some additional files containing graphs coming from finite
-geometry, which were added by Jan De Beule:
+There are also some additional files, added by Jan De Beule, which containing
+graphs that come from finite geometry, which were
 
-  * `fining.p.gz` contains some graphs comining from finite geometries:
-    1. Vertices are the generators of the hermitian polar space H(5,4), two
+  * `fining.p.gz` contains some graphs coming from finite geometries:
+    1. The vertices are the generators of the hermitian polar space `H(5,4)`,
+       two vertices are adjacent iff they are skew.
+    2. The vertices are the generators of the hermitian quadrangle `H(4,4)`, two
        vertices are adjacent iff they are skew.
-    2. Vertices are the generators of the hermitian quadrangle H(4,4), two
-       vertices are adjacent iff they are skew.
-    3. Vertices areh the points and lines of the classical generalized
-       quadrangle Q(4,8), two vertics are adjacent iff they are incident (and no
-       loops!). This is a bipartite graph with diameter 4 and undirected girth
-       8.
-    4. The bipartite graph (see (3)) of an elation generalized quadrangle.  This
+    3. The vertices are the points and lines of the classical generalised
+       quadrangle `Q(4,8)`, two vertices are adjacent iff they are distinct and
+       incident (no loops!). This is a bipartite graph with diameter 4 and
+       undirected girth 8.
+    4. The bipartite graph (see (3)) of an elation generalised quadrangle.  This
        one was constructed as a coset geometry.
-    5. The bipartite graph of the split Cayley hexagon of order 4, diameter is 6
-       and girth is 12.
-    6. The bipartite graph of the Ree-Tits generalized octagon. This has
+    5. The bipartite graph of the split Cayley hexagon of order 4, the diameter
+       is 6 and the girth is 12.
+    6. The bipartite graph of the Ree-Tits generalised octagon. This has
        diameter 8 and girth 16!
   
   * `polar_graphs.p.gz` A polar graph is by definition the point graph of a
     finite classical polar space. Note that such a geometry is a partial linear
     space, so not every pair of points is a pair of collinear points. Two points
-    are adjacent iff they differe and they are collinear. The diamter of these
+    are adjacent iff they are distinct and collinear. The diameter of these
     graphs is 2, their undirected girth 3, the latter since these spaces contain
-    lines.  Reading in this file requires around 4 Gb.
+    lines.  Reading in this file requires around 4 Gb of memory.
 
-  * `dual_polar_graphs.p.gz` We consider again finite classical polar
-    spaces. Such geometries contain points, lines, etc., up to maximal
-    subspaces, which all have the same projective dimension. The vertices of a
-    dual polar graph are these maximal subspaces, of dimension d say, and they
-    are adjacent iff they differ and meet in a d-1 dimensional projective
-    subspace. Reading in this file requres around 5Gb.
+  * `dual_polar_graphs.p.gz` We consider again finite classical polar spaces.
+    Such geometries contain points, lines, etc., up to maximal subspaces, which
+    all have the same projective dimension. The vertices of a dual polar graph
+    are these maximal subspaces, of dimension, say, `d`, and they are adjacent
+    iff they are distinct and meet in a `d-1` dimensional projective subspace.
+    Reading in this file requires around 5 Gb of memory.
      
-  * `generators_graphs.p.gz` (parts 1, 2 and 3). We consider again finite
-    classical polar spaces. The vertices are the maximal subspaces and they
-    are adjacent iff they differ and are skew. Reading part 2 requires almost
-    6Gb, reading part 3 requires again 6Gb. Reading part 1 requires much less
-    (around 1.5Gb).
+  * `generators_graphs.p.gz` (Parts 1, 2, and 3). We again consider finite
+    classical polar spaces. The vertices are the maximal subspaces and they are
+    adjacent iff they are distinct and skew. Reading part 2 requires almost 6 Gb
+    of memory, and reading part 3 requires another 6 Gb. Reading part 1 requires
+    much less memory, around 1.5 Gb.
       
-  * `incidence_graphs.p.gz` a generalized polygon of gonality n is a point line
-    geometry, such that if one considers the incidence graph, i.e. the
-    vertices are the points and the lines, adjacency is incidence (withouth
-    loops), then it has diameter n and girth 2n. All graphs in this repository
-    are incidence graphs of generalized polygons. Note that by a famous
-    theorem, thick GPs (i.e. at least three points on a line and dually, at
-    least three lines on a point), have gonality 3,4,6 or 8. The repository
-    contains the incidence graph of the smallest generalized octogon, some
-    generalized hexagons, and a lot of generalized quadrangles, and some
-    projective planes.  To read it completely, around 1.5Gb is requiered.
-    
-
+  * `incidence_graphs.p.gz` A generalised polygon of gonality n is a point line
+    geometry, such that if one considers the incidence graph, i.e. the vertices
+    are the points and adjacency is incidence (without loops), then it has
+    diameter n and girth 2n. All graphs in this file are incidence graphs of
+    generalised polygons. Note that by a famous theorem, thick GPs (i.e. at
+    least three points on a line and dually, at least three lines on a point),
+    have gonality 3, 4, 6, or 8. This file contains the incidence graph of the
+    smallest generalised octogon, some generalised hexagons, and a lot of
+    generalised quadrangles, and some projective planes.  To read it completely,
+    around 1.5 Gb of memory is required.
