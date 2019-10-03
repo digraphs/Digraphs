@@ -44,9 +44,9 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xg := Digraph([[2, 3], [1], [2, 3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27Xh := Digraph([[2, 3], [], [2]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsSubdigraph(g, h);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XIsSubdigraph(h, g);[127X[104X
@@ -56,9 +56,9 @@
     [4X[25Xgap>[125X [27XIsSubdigraph(CycleDigraph(4), ChainDigraph(4));[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27Xg := Digraph([[2, 2], [1]]);[127X[104X
-    [4X[28X<multidigraph with 2 vertices, 3 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 2 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27Xh := Digraph([[2], [1]]);[127X[104X
-    [4X[28X<digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[28X<immutable digraph with 2 vertices, 2 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsSubdigraph(g, h);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XIsSubdigraph(h, g);[127X[104X
@@ -78,7 +78,7 @@
   
   [33X[0;0YAn [13Xundirected spanning tree[113X of a digraph [3Xsuper[103X is a subdigraph of [3Xsuper[103X that
   is  an  undirected  tree  (see  [2XIsSubdigraph[102X  ([14X4.1-1[114X)  and  [2XIsUndirectedTree[102X
-  ([14X6.3-8[114X)).  Note  that  a digraph whose [2XMaximalSymmetricSubdigraph[102X ([14X3.3-4[114X) is
+  ([14X6.3-8[114X)).  Note  that  a digraph whose [2XMaximalSymmetricSubdigraph[102X ([14X3.3-5[114X) is
   not  connected  has  no  undirected  spanning  trees (see [2XIsConnectedDigraph[102X
   ([14X6.3-3[114X)).[133X
   
@@ -87,34 +87,34 @@
   [2XIsUndirectedForest[102X  ([14X6.3-8[114X)),  and  is  not  contained  in  any  larger such
   subdigraph  of  [3Xsuper[103X.  Equivalently,  an  undirected  spanning  forest is a
   subdigraph  of  [3Xsuper[103X  whose connected components coincide with those of the
-  [2XMaximalSymmetricSubdigraph[102X  ([14X3.3-4[114X) of [3Xsuper[103X (see [2XDigraphConnectedComponents[102X
-  ([14X5.3-8[114X)).[133X
+  [2XMaximalSymmetricSubdigraph[102X  ([14X3.3-5[114X) of [3Xsuper[103X (see [2XDigraphConnectedComponents[102X
+  ([14X5.3-9[114X)).[133X
   
   [33X[0;0YNote  that an undirected spanning tree is an undirected spanning forest that
   is connected.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(4);[127X[104X
-    [4X[28X<digraph with 4 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(4);[127X[104X
+    [4X[28X<immutable complete digraph with 4 vertices>[128X[104X
     [4X[25Xgap>[125X [27Xtree := Digraph([[3], [4], [1, 4], [2, 3]]);[127X[104X
-    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsSubdigraph(gr, tree) and IsUndirectedTree(tree);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSubdigraph(D, tree) and IsUndirectedTree(tree);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedSpanningTree(gr, tree);[127X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedSpanningTree(D, tree);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27Xforest := EmptyDigraph(4);[127X[104X
-    [4X[28X<digraph with 4 vertices, 0 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsSubdigraph(gr, forest) and IsUndirectedForest(forest);[127X[104X
+    [4X[28X<immutable empty digraph with 4 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsSubdigraph(D, forest) and IsUndirectedForest(forest);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedSpanningForest(gr, forest);[127X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedSpanningForest(D, forest);[127X[104X
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27XIsSubdigraph(tree, forest);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(2));[127X[104X
-    [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedTree(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := DigraphDisjointUnion(CycleDigraph(2), CycleDigraph(2));[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedTree(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedForest(gr) and IsUndirectedSpanningForest(gr, gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedForest(D) and IsUndirectedSpanningForest(D, D);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   

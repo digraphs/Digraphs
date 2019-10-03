@@ -29,18 +29,18 @@
         used  as  normal  with  the  exception  that  the  functions listed in
         Subsection [14X2.2-1[114X will not work.[133X
   
-  [30X    [33X[0;6Ydownload  the  package archive [11Xdigraphs-0.15.4.tar.gz[111X from the Digraph
+  [30X    [33X[0;6Ydownload  the  package  archive [11Xdigraphs-1.0.0.tar.gz[111X from the Digraph
         package webpage ([7Xhttp://gap-packages.github.io/Digraphs/[107X).[133X
   
   [30X    [33X[0;6Yunzip  and  untar  the  file,  this  should  create a directory called
-        [11Xdigraphs-0.15.4[111X.[133X
+        [11Xdigraphs-1.0.0[111X.[133X
   
   [30X    [33X[0;6Ylocate  the  [11Xpkg[111X  directory  of your [5XGAP[105X directory, which contains the
-        directories  [11Xlib[111X,  [11Xdoc[111X  and  so on. Move the directory [11Xdigraphs-0.15.4[111X
-        into the [11Xpkg[111X directory.[133X
+        directories [11Xlib[111X, [11Xdoc[111X and so on. Move the directory [11Xdigraphs-1.0.0[111X into
+        the [11Xpkg[111X directory.[133X
   
   [30X    [33X[0;6Yit   is   necessary  to  compile  the  [5XDigraphs[105X  package.  Inside  the
-        [11Xpkg/digraphs-0.15.4[111X directory, type[133X
+        [11Xpkg/digraphs-1.0.0[111X directory, type[133X
   
   [4X      [32X[104X
           [4X./configure[104X
@@ -73,7 +73,7 @@
   
   [30X    [33X[0;6Y[2XAsGraph[102X ([14X3.2-4[114X) with a digraph argument[133X
   
-  [30X    [33X[0;6Y[2XDigraph[102X ([14X3.1-5[114X) with a [5XGrape[105X graph argument[133X
+  [30X    [33X[0;6Y[2XDigraph[102X ([14X3.1-7[114X) with a [5XGrape[105X graph argument[133X
   
   [33X[0;0YIf  [5XGrape[105X  is  not  available,  then [5XDigraphs[105X can be used as normal with the
   exception that the functions above will not work.[133X
@@ -87,7 +87,7 @@
   
   [33X[0;0YIt is not possible to use the [5XDigraphs[105X package without compiling it.[133X
   
-  [33X[0;0YTo  compile  the  kernel component inside the [11Xpkg/digraphs-0.15.4[111X directory,
+  [33X[0;0YTo  compile  the  kernel  component inside the [11Xpkg/digraphs-1.0.0[111X directory,
   type[133X
   
   [4X[32X[104X
@@ -105,20 +105,20 @@
   [33X[0;0YIf  you  installed  [5XGAP[105X  on  several  architectures,  you  must  execute the
   configure/make  step  for  each of the architectures. You can either do this
   immediately after configuring and compiling GAP itself on this architecture,
-  or  alternatively  (when  using  version  4.5  of  GAP  or  newer)  set  the
-  environment  variable 'CONFIGNAME' to the name of the configuration you used
-  when  compiling  GAP  before  running  './configure'. Note however that your
-  compiler  choice and flags (environment variables 'CC' and 'CFLAGS') need to
-  be  chosen  to  match the setup of the original GAP compilation. For example
-  you have to specify 32-bit or 64-bit mode correctly![133X
+  or  alternatively  set  the environment variable 'CONFIGNAME' to the name of
+  the  configuration you used when compiling GAP before running './configure'.
+  Note however that your compiler choice and flags (environment variables 'CC'
+  and  'CFLAGS')  need  to  be  chosen  to match the setup of the original GAP
+  compilation.  For  example  you  have  to  specify  32-bit  or  64-bit  mode
+  correctly![133X
   
   
   [1X2.4 [33X[0;0YRebuilding the documentation[133X[101X
   
   [33X[0;0YThe [5XDigraphs[105X package comes complete with pdf, html, and text versions of the
   documentation.  However,  you  might  find  it  necessary, at some point, to
-  rebuild   the   documentation.   To   rebuild   the  documentation  use  the
-  [2XDigraphsMakeDoc[102X ([14X2.4-1[114X).[133X
+  rebuild  the  documentation.  To  rebuild  the documentation, please use the
+  function [2XDigraphsMakeDoc[102X ([14X2.4-1[114X).[133X
   
   [1X2.4-1 DigraphsMakeDoc[101X
   
@@ -147,19 +147,34 @@
   [33X[1;0Y[29X[2XDigraphsTestInstall[102X(  ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
-  [33X[0;0YThis function should be called with no argument to test your installation of
-  [5XDigraphs[105X  is  working  correctly.  These  tests  should  take no more than a
-  fraction of a second to complete. To test more comprehensively that [5XDigraphs[105X
-  is working correctly, use [2XDigraphsTestStandard[102X ([14X2.5-2[114X).[133X
+  [33X[0;0YThis  function  can be called without arguments to test your installation of
+  [5XDigraphs[105X  is  working  correctly. These tests should take no more than a few
+  seconds  to  complete. To test more comprehensively that [5XDigraphs[105X is working
+  correctly, use [2XDigraphsTestStandard[102X ([14X2.5-2[114X).[133X
   
   [1X2.5-2 DigraphsTestStandard[101X
   
   [33X[1;0Y[29X[2XDigraphsTestStandard[102X(  ) [32X function[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
-  [33X[0;0YThis function should be called to test all the methods included in [5XDigraphs[105X.
-  These tests should take only a few seconds to complete.[133X
+  [33X[0;0YThis  function  can  be  called without arguments to test all of the methods
+  included  in  [5XDigraphs[105X.  These  tests  should  take  less  than  a minute to
+  complete.[133X
   
   [33X[0;0YTo quickly test that [5XDigraphs[105X is installed correctly use [2XDigraphsTestInstall[102X
-  ([14X2.5-1[114X). For a more thorough test, use [2XDigraphsTestStandard[102X.[133X
+  ([14X2.5-1[114X). For a more thorough test, use [2XDigraphsTestExtreme[102X ([14X2.5-3[114X).[133X
+  
+  [1X2.5-3 DigraphsTestExtreme[101X
+  
+  [33X[1;0Y[29X[2XDigraphsTestExtreme[102X(  ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10YNothing.[133X
+  
+  [33X[0;0YThis  function  should  be  called with no argument. It executes a series of
+  very  demanding  tests,  which  measure  the  performance  of  a  variety of
+  functions  on  large  examples. These tests take a long time to complete, at
+  least several minutes.[133X
+  
+  [33X[0;0YFor  these  tests  to  complete,  the  digraphs library [10Xdigraphs-lib[110X must be
+  downloaded  and  placed  in  the  [10Xdigraphs[110X  directory  in  a subfolder named
+  [11Xdigraphs-lib[111X. This library can be found on the [5XDigraphs[105X website.[133X
   

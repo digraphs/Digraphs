@@ -1,6 +1,6 @@
 name: Digraphs
-version: 0.15.4
-date: 2019-08-06
+version: 1.0.0
+date: 2019-10-03
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -25,6 +25,8 @@ maintainers:
 contributors:
     - name: Stuart Burrell
       url: mailto:sb235@st-andrews.ac.uk
+    - name: Reinis Cirpons
+      url: mailto:rc234@st-andrews.ac.uk
     - name: Luke Elliott
       url: mailto:le27@st-andrews.ac.uk
     - name: Max Horn
@@ -67,7 +69,7 @@ packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/Digraphs/releases/download/v0.15.4/digraphs-0.15.4.tar.gz
+      url: https://github.com/gap-packages/Digraphs/releases/download/v1.0.0/digraphs-1.0.0.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.

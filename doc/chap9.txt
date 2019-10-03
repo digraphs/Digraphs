@@ -98,7 +98,7 @@
     [4X[25Xgap>[125X [27Xadj[1][3] := 0;[127X[104X
     [4X[28X0[128X[104X
     [4X[25Xgap>[125X [27Xgr := DigraphByAdjacencyMatrix(adj);[127X[104X
-    [4X[28X<digraph with 4 vertices, 15 edges>[128X[104X
+    [4X[28X<immutable digraph with 4 vertices, 15 edges>[128X[104X
     [4X[25Xgap>[125X [27XFileString("dot/k4.dot", DotDigraph(gr));[127X[104X
     [4X[28X154[128X[104X
   [4X[32X[104X
@@ -110,7 +110,7 @@
   
   [33X[0;0YThis  function  produces a graphical representation of the symmetric digraph
   [3Xdigraph[103X.  [10XDotSymmetricDigraph[110X  will  return  an  error  if  [3Xdigraph[103X is not a
-  symmetric digraph. See [2XIsSymmetricDigraph[102X ([14X6.1-10[114X).[133X
+  symmetric digraph. See [2XIsSymmetricDigraph[102X ([14X6.1-12[114X).[133X
   
   [33X[0;0YVertices are displayed as circles, numbered consistently with [3Xdigraph[103X. Since
   [3Xdigraph[103X  is symmetric, for every non-loop edge there is a complementary edge
@@ -127,7 +127,7 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xstar := Digraph([[2, 2, 3, 4], [1, 1], [1], [1, 4]]);[127X[104X
-    [4X[28X<multidigraph with 4 vertices, 9 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 4 vertices, 9 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsSymmetricDigraph(star);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XFileString("dot/star.dot", DotSymmetricDigraph(gr));[127X[104X
@@ -141,11 +141,11 @@
   
   [33X[0;0YThis function produces a graphical representation of a partial order digraph
   [3Xdigraph[103X.  [10XDotPartialOrderDigraph[110X  will  return  an error if [3Xdigraph[103X is not a
-  partial order digraph. See [2XIsPartialOrderDigraph[102X ([14X6.1-14[114X).[133X
+  partial order digraph. See [2XIsPartialOrderDigraph[102X ([14X6.1-16[114X).[133X
   
   [33X[0;0YSince  [3Xdigraph[103X  is a partial order, it is both reflexive and transitive. The
   output   of   [10XDotPartialOrderDigraph[110X   is  the  [2XDotDigraph[102X  ([14X9.1-2[114X)  of  the
-  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-12[114X) of [3Xdigraph[103X.[133X
+  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-13[114X) of [3Xdigraph[103X.[133X
   
   [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
   about  this  file  format, and information about how to display or edit this
@@ -170,16 +170,16 @@
   
   [33X[0;0YThis  function  produces  a  graphical  representation of a preorder digraph
   [3Xdigraph[103X.  [10XDotPreorderDigraph[110X  will  return  an  error  if  [3Xdigraph[103X  is not a
-  preorder digraph. See [2XIsPreorderDigraph[102X ([14X6.1-13[114X).[133X
+  preorder digraph. See [2XIsPreorderDigraph[102X ([14X6.1-15[114X).[133X
   
   [33X[0;0YA  preorder  digraph  is  reflexive  and transitive but in general it is not
   anti-symmetric  and  may  have strongly connected components containing more
-  than  one  vertex.  The  [2XQuotientDigraph[102X  ([14X3.3-7[114X)  [3XQ[103X obtained by forming the
+  than  one  vertex.  The  [2XQuotientDigraph[102X  ([14X3.3-8[114X)  [3XQ[103X obtained by forming the
   quotient  of  [3Xdigraph[103X  by  the  partition  of its vertices into the strongly
-  connected  components  satisfies  [2XIsPartialOrderDigraph[102X ([14X6.1-14[114X). Thus every
+  connected  components  satisfies  [2XIsPartialOrderDigraph[102X ([14X6.1-16[114X). Thus every
   vertex  of  [3XQ[103X  corresponds to a strongly connected component of [3Xdigraph[103X. The
   output          of          [10XDotPreorderDigraph[110X          displays         the
-  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-12[114X) of [3XQ[103X with vertices displayed as
+  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-13[114X) of [3XQ[103X with vertices displayed as
   rounded  rectangles  labelled  by  all  of  the  vertices  of [3Xdigraph[103X in the
   corresponding strongly connected component.[133X
   
@@ -198,8 +198,31 @@
     [4X[28X83[128X[104X
   [4X[32X[104X
   
+  [1X9.1-6 DotHighlightedDigraph[101X
   
-  [1X9.2 [33X[0;0YReading and writing graphs to a file[133X[101X
+  [33X[1;0Y[29X[2XDotHighlightedDigraph[102X( [3Xdigraph[103X, [3Xverts[103X[, [3Xcolour1[103X, [3Xcolour2[103X] ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA string.[133X
+  
+  [33X[0;0Y[10XDotHighlightedDigraph[110X  produces  a  graphical  represenation  of the digraph
+  [3Xdigraph[103X,  where  the vertices in the list [3Xverts[103X, and edges between them, are
+  drawn  with  colour  [3Xcolour1[103X and all other vertices and edges in [3Xdigraph[103X are
+  drawn  with  colour  [3Xcolour2[103X.  If  [3Xcolour1[103X  and  [3Xcolour2[103X  are not given then
+  [10XDotHighlightedDigraph[110X uses black and grey respectively.[133X
+  
+  [33X[0;0YNote  that  [10XDotHighlightedDigraph[110X  does not validate the colours [3Xcolour1[103X and
+  [3Xcolour2[103X  -  consult the GraphViz documentation to see what is available. See
+  [2XDotDigraph[102X ([14X9.1-2[114X) for more details on the output.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xdigraph := Digraph([[2, 3], [2], [1, 3]]);[127X[104X
+    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XFileString("dot/my_digraph.dot",[127X[104X
+    [4X[25X>[125X [27XDotHighlightedDigraph(digraph, [1, 2], "red", "black"));[127X[104X
+    [4X[28X264[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X9.2 [33X[0;0YReading and writing digraphs to a file[133X[101X
   
   [33X[0;0YThis  section  describes different ways to store and read graphs from a file
   in the [5XDigraphs[105X package.[133X
@@ -239,10 +262,10 @@
   
   [1X9.2-1 DigraphFromGraph6String[101X
   
-  [33X[1;0Y[29X[2XDigraphFromGraph6String[102X( [3Xstr[103X ) [32X operation[133X
-  [33X[1;0Y[29X[2XDigraphFromDigraph6String[102X( [3Xstr[103X ) [32X operation[133X
-  [33X[1;0Y[29X[2XDigraphFromSparse6String[102X( [3Xstr[103X ) [32X operation[133X
-  [33X[1;0Y[29X[2XDigraphFromDiSparse6String[102X( [3Xstr[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphFromGraph6String[102X( [[3Xfilt[103X, ][3Xstr[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphFromDigraph6String[102X( [[3Xfilt[103X, ][3Xstr[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphFromSparse6String[102X( [[3Xfilt[103X, ][3Xstr[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphFromDiSparse6String[102X( [[3Xfilt[103X, ][3Xstr[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xstr[103X  is  a  string  encoding  a  graph  in  Graph6, Digraph6, Sparse6 or
@@ -251,21 +274,29 @@
   edges,  this  will  be a digraph such that for every edge, the edge going in
   the opposite direction is also present.[133X
   
+  [33X[0;0YEach  of these functions takes an optional first argument [3Xfilt[103X, which should
+  be  either [2XIsMutableDigraph[102X ([14X3.1-2[114X) or [2XIsImmutableDigraph[102X ([14X3.1-3[114X), and which
+  specifies  whether  the  output digraph shall be mutable or immutable. If no
+  first  argument  is  provided,  then  an  immutable  digraph  is returned by
+  default.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XDigraphFromGraph6String("?");[127X[104X
-    [4X[28X<digraph with 0 vertices, 0 edges>[128X[104X
+    [4X[28X<immutable empty digraph with 0 vertices>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromGraph6String("C]");[127X[104X
-    [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X
+    [4X[28X<immutable digraph with 4 vertices, 8 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromGraph6String("H?AAEM{");[127X[104X
-    [4X[28X<digraph with 9 vertices, 22 edges>[128X[104X
+    [4X[28X<immutable digraph with 9 vertices, 22 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromDigraph6String("&?");[127X[104X
-    [4X[28X<digraph with 0 vertices, 0 edges>[128X[104X
+    [4X[28X<immutable empty digraph with 0 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphFromDigraph6String(IsMutableDigraph, "&DOOOW?");[127X[104X
+    [4X[28X<mutable digraph with 5 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromDigraph6String("&CQFG");[127X[104X
-    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[28X<immutable digraph with 4 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromDigraph6String("&IM[SrKLc~lhesbU[F_");[127X[104X
-    [4X[28X<digraph with 10 vertices, 51 edges>[128X[104X
+    [4X[28X<immutable digraph with 10 vertices, 51 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromDiSparse6String(".CaWBGA?b");[127X[104X
-    [4X[28X<multidigraph with 4 vertices, 9 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 4 vertices, 9 edges>[128X[104X
   [4X[32X[104X
   
   [1X9.2-2 Graph6String[101X
@@ -287,7 +318,7 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [1], [1]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
     [4X[25Xgap>[125X [27XSparse6String(gr);[127X[104X
     [4X[28X":Bc"[128X[104X
     [4X[25Xgap>[125X [27XDiSparse6String(gr);[127X[104X
@@ -361,7 +392,7 @@
   
   [8Xpickled ([11X.p[111X or [11X.pickle[111X)[108X
         [33X[0;6YDigraphs  are  pickled using the [5XIO[105X package. This is particularly good
-        when the [2XDigraphGroup[102X ([14X7.2-9[114X) is non-trivial.[133X
+        when the [2XDigraphGroup[102X ([14X7.2-10[114X) is non-trivial.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;[127X[104X
@@ -372,7 +403,7 @@
     [4X[25Xgap>[125X [27XIO_Close(file);;[127X[104X
     [4X[25Xgap>[125X [27Xfile := DigraphFile(filename, "r");;[127X[104X
     [4X[25Xgap>[125X [27XReadDigraphs(file, 9);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
   [4X[32X[104X
   
   [1X9.2-4 ReadDigraphs[101X
@@ -437,31 +468,31 @@
   
   [8Xpickled ([11X.p[111X or [11X.pickle[111X)[108X
         [33X[0;6YDigraphs  are  pickled using the [5XIO[105X package. This is particularly good
-        when the [2XDigraphGroup[102X ([14X7.2-9[114X) is non-trivial.[133X
+        when the [2XDigraphGroup[102X ([14X7.2-10[114X) is non-trivial.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XReadDigraphs([127X[104X
     [4X[25X>[125X [27XConcatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 10);[127X[104X
-    [4X[28X<digraph with 5 vertices, 8 edges>[128X[104X
+    [4X[28X<immutable digraph with 5 vertices, 8 edges>[128X[104X
     [4X[25Xgap>[125X [27XReadDigraphs([127X[104X
     [4X[25X>[125X [27XConcatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 17);[127X[104X
-    [4X[28X<digraph with 5 vertices, 12 edges>[128X[104X
+    [4X[28X<immutable digraph with 5 vertices, 12 edges>[128X[104X
     [4X[25Xgap>[125X [27XReadDigraphs([127X[104X
     [4X[25X>[125X [27XConcatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt"));[127X[104X
-    [4X[28X[ <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges>, [128X[104X
-    [4X[28X  <digraph with 9 vertices, 8 edges> ][128X[104X
+    [4X[28X[ <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 9 vertices, 8 edges> ][128X[104X
   [4X[32X[104X
   
   [1X9.2-5 WriteDigraphs[101X
@@ -517,27 +548,27 @@
   
   [8Xpickled ([11X.p[111X or [11X.pickle[111X)[108X
         [33X[0;6YDigraphs  are  pickled using the [5XIO[105X package. This is particularly good
-        when the [2XDigraphGroup[102X ([14X7.2-9[114X) is non-trivial.[133X
+        when the [2XDigraphGroup[102X ([14X7.2-10[114X) is non-trivial.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgrs := [];;[127X[104X
     [4X[25Xgap>[125X [27Xgrs[1] := Digraph([]);[127X[104X
-    [4X[28X<digraph with 0 vertices, 0 edges>[128X[104X
+    [4X[28X<immutable empty digraph with 0 vertices>[128X[104X
     [4X[25Xgap>[125X [27Xgrs[2] := Digraph([[1, 3], [2], [1, 2]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27Xgrs[3] := Digraph([[127X[104X
     [4X[25X>[125X [27X[6, 7], [6, 9], [1, 3, 4, 5, 8, 9],[127X[104X
     [4X[25X>[125X [27X[1, 2, 3, 4, 5, 6, 7, 10], [1, 5, 6, 7, 10], [2, 4, 5, 9, 10],[127X[104X
     [4X[25X>[125X [27X[3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 5, 7, 8, 9], [1, 2, 5],[127X[104X
     [4X[25X>[125X [27X[1, 2, 4, 6, 7, 8]]);[127X[104X
-    [4X[28X<digraph with 10 vertices, 51 edges>[128X[104X
+    [4X[28X<immutable digraph with 10 vertices, 51 edges>[128X[104X
     [4X[25Xgap>[125X [27Xfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;[127X[104X
     [4X[25Xgap>[125X [27XWriteDigraphs(filename, grs, "w");[127X[104X
     [4X[28XIO_OK[128X[104X
     [4X[25Xgap>[125X [27XReadDigraphs(filename);[127X[104X
-    [4X[28X[ <digraph with 0 vertices, 0 edges>, [128X[104X
-    [4X[28X  <digraph with 3 vertices, 5 edges>, [128X[104X
-    [4X[28X  <digraph with 10 vertices, 51 edges> ][128X[104X
+    [4X[28X[ <immutable empty digraph with 0 vertices>, [128X[104X
+    [4X[28X  <immutable digraph with 3 vertices, 5 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 10 vertices, 51 edges> ][128X[104X
   [4X[32X[104X
   
   [1X9.2-6 IteratorFromDigraphFile[101X
@@ -575,7 +606,7 @@
   [1X9.2-7 DigraphPlainTextLineEncoder[101X
   
   [33X[1;0Y[29X[2XDigraphPlainTextLineEncoder[102X( [3Xdelimiter1[103X[, [3Xdelimiter2[103X], [3Xoffset[103X ) [32X function[133X
-  [33X[1;0Y[29X[2XDigraphPlainTextLineDecoder[102X( [3Xdelimiter1[103X[, [3Xdelimiter2[103X], [3Xoffset[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XDigraphPlainTextLineDecoder[102X( [3Xdelimiter1[103X[, [3Xdelimiter2[103X], [3Xoffset[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
   [33X[0;0YThese  two functions return a function which encodes or decodes a digraph in
@@ -601,22 +632,22 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [1], [1]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
     [4X[25Xgap>[125X [27Xenc := DigraphPlainTextLineEncoder("  ", " ", -1);;[127X[104X
     [4X[25Xgap>[125X [27Xdec := DigraphPlainTextLineDecoder("  ", " ", 1);;[127X[104X
     [4X[25Xgap>[125X [27Xenc(gr);[127X[104X
     [4X[28X"0 1  0 2  1 0  2 0"[128X[104X
     [4X[25Xgap>[125X [27Xdec(last);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
   [4X[32X[104X
   
   [1X9.2-8 TournamentLineDecoder[101X
   
-  [33X[1;0Y[29X[2XTournamentLineDecoder[102X( [3Xstr[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XTournamentLineDecoder[102X( [3Xstr[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThis  function  takes  a  string  [3Xstr[103X,  decodes  it,  and  then  returns the
-  tournament  [see  [2XIsTournament[102X  ([14X6.1-11[114X)] which it defines, according to the
+  tournament  [see  [2XIsTournament[102X  ([14X6.1-13[114X)] which it defines, according to the
   following rules.[133X
   
   [33X[0;0YThe characters of the string [3Xstr[103X represent the entries in the upper triangle
@@ -635,14 +666,14 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := TournamentLineDecoder("100001");[127X[104X
-    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[28X<immutable digraph with 4 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
     [4X[28X[ [ 2 ], [  ], [ 1, 2, 4 ], [ 1, 2 ] ][128X[104X
   [4X[32X[104X
   
   [1X9.2-9 AdjacencyMatrixUpperTriangleLineDecoder[101X
   
-  [33X[1;0Y[29X[2XAdjacencyMatrixUpperTriangleLineDecoder[102X( [3Xstr[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XAdjacencyMatrixUpperTriangleLineDecoder[102X( [3Xstr[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThis  function  takes  a  string  [3Xstr[103X,  decodes  it,  and  then  returns the
@@ -665,18 +696,18 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := AdjacencyMatrixUpperTriangleLineDecoder("100001");[127X[104X
-    [4X[28X<digraph with 4 vertices, 2 edges>[128X[104X
+    [4X[28X<immutable digraph with 4 vertices, 2 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
     [4X[28X[ [ 2 ], [  ], [ 4 ], [  ] ][128X[104X
     [4X[25Xgap>[125X [27Xgr := AdjacencyMatrixUpperTriangleLineDecoder("111111x111");[127X[104X
-    [4X[28X<digraph with 5 vertices, 9 edges>[128X[104X
+    [4X[28X<immutable digraph with 5 vertices, 9 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
     [4X[28X[ [ 2, 3, 4, 5 ], [ 3, 4 ], [ 4, 5 ], [ 5 ], [  ] ][128X[104X
   [4X[32X[104X
   
   [1X9.2-10 TCodeDecoder[101X
   
-  [33X[1;0Y[29X[2XTCodeDecoder[102X( [3Xstr[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XTCodeDecoder[102X( [3Xstr[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xstr[103X  is  a  string  consisting  of  at  least  two non-negative integers
@@ -694,11 +725,11 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := TCodeDecoder("3 2 0 2 2 1");[127X[104X
-    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 2 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
     [4X[28X[ [ 3 ], [  ], [ 2 ] ][128X[104X
     [4X[25Xgap>[125X [27Xgr := TCodeDecoder("12 3 0 10 5 2 8 8");[127X[104X
-    [4X[28X<digraph with 12 vertices, 3 edges>[128X[104X
+    [4X[28X<immutable digraph with 12 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
     [4X[28X[ [ 11 ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [  ], [ 9 ], [  ], [128X[104X
     [4X[28X  [  ], [  ] ][128X[104X
@@ -720,19 +751,24 @@
   [33X[0;0YNote that the number of vertices of a digraph is not stored, and so vertices
   which are not connected to any edge may be lost.[133X
   
+  [33X[0;0YThe  operation  [10XDigraphFromPlainTextString[110X  takes an optional first argument
+  [2XIsMutableDigraph[102X  ([14X3.1-2[114X)  or  [2XIsImmutableDigraph[102X  ([14X3.1-3[114X),  which specifies
+  whether  the  output  digraph  shall  be  mutable  or immutable. If no first
+  argument is provided, then an immutable digraph is returned by default.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [1], [1]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
     [4X[25Xgap>[125X [27XPlainTextString(gr);[127X[104X
     [4X[28X"0 1  0 2  1 0  2 0"[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromPlainTextString(last);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
   [4X[32X[104X
   
   [1X9.2-12 WritePlainTextDigraph[101X
   
   [33X[1;0Y[29X[2XWritePlainTextDigraph[102X( [3Xfilename[103X, [3Xdigraph[103X, [3Xdelimiter[103X, [3Xoffset[103X ) [32X function[133X
-  [33X[1;0Y[29X[2XReadPlainTextDigraph[102X( [3Xfilename[103X, [3Xdelimiter[103X, [3Xoffset[103X, [3Xignore[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XReadPlainTextDigraph[102X( [3Xfilename[103X, [3Xdelimiter[103X, [3Xoffset[103X, [3Xignore[103X ) [32X operation[133X
   
   [33X[0;0YThese  functions  write  and read a single digraph in a human-readable plain
   text  format  as follows: each line contains a single edge, and each edge is
@@ -750,11 +786,11 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 3], [1, 1], [2]]);[127X[104X
-    [4X[28X<multidigraph with 3 vertices, 6 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 3 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27Xfilename := Concatenation(DIGRAPHS_Dir(), "/tst/out/plain.txt");;[127X[104X
     [4X[25Xgap>[125X [27XWritePlainTextDigraph(filename, gr, ",", -1);[127X[104X
     [4X[25Xgap>[125X [27XReadPlainTextDigraph(filename, ",", 1, ['/', '%']);[127X[104X
-    [4X[28X<multidigraph with 3 vertices, 6 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 3 vertices, 6 edges>[128X[104X
   [4X[32X[104X
   
   [1X9.2-13 WriteDIMACSDigraph[101X
@@ -766,7 +802,7 @@
   from   a   file   in   DIMACS   format,   as   appropriate.   The  operation
   [10XWriteDIMACSDigraph[110X  records  the  vertices  and edges of [3Xdigraph[103X. The vertex
   labels  of  [3Xdigraph[103X  will  be  recorded  only  if  they  are  integers.  See
-  [2XIsSymmetricDigraph[102X ([14X6.1-10[114X) and [2XDigraphVertexLabels[102X ([14X5.1-9[114X).[133X
+  [2XIsSymmetricDigraph[102X ([14X6.1-12[114X) and [2XDigraphVertexLabels[102X ([14X5.1-9[114X).[133X
   
   [33X[0;0YThe  first  argument  [3Xfilename[103X  should be the name of the file which will be
   written  to or read from. A file can contain one symmetric digraph in DIMACS
@@ -808,11 +844,11 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);[127X[104X
-    [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X
+    [4X[28X<immutable digraph with 4 vertices, 8 edges>[128X[104X
     [4X[25Xgap>[125X [27Xfilename := Concatenation(DIGRAPHS_Dir(),[127X[104X
     [4X[25X>[125X [27X                             "/tst/out/dimacs.dimacs");;[127X[104X
     [4X[25Xgap>[125X [27XWriteDIMACSDigraph(filename, gr);;[127X[104X
     [4X[25Xgap>[125X [27XReadDIMACSDigraph(filename);[127X[104X
-    [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X
+    [4X[28X<immutable digraph with 4 vertices, 8 edges>[128X[104X
   [4X[32X[104X
   

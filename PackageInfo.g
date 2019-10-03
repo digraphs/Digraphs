@@ -9,20 +9,20 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "0.15.4">
+##  <!ENTITY VERSION        "1.0.0">
 ##  <!ENTITY GAPVERS        "4.9.0">
 ##  <!ENTITY GRAPEVERS      "4.8.1">
 ##  <!ENTITY IOVERS         "4.5.1">
 ##  <!ENTITY ORBVERS        "4.8.2">
-##  <!ENTITY ARCHIVENAME    "digraphs-0.15.4">
+##  <!ENTITY ARCHIVENAME    "digraphs-1.0.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-19">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "0.15.4",
-Date := "06/08/2019",  # dd/mm/yyyy format
+Version := "1.0.0",
+Date := "03/10/2019",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -60,6 +60,19 @@ Persons := [
                        "CREEM,", " The Observatory,",
                        " Buchanan Gardens,", " St Andrews,", " Fife,",
                        " KY16 9LZ,", " Scotland"]),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Cirpons",
+    FirstNames    := "Reinis",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "rc234@st-andrews.ac.uk",
+    PostalAddress := Concatenation([
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
+                       " Scotland"]),
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
 
