@@ -20,31 +20,10 @@ env:
 matrix:
   include:
     - env:
-      - SUITE=lint
-
-    - env:
       - SUITE=test
       - ABI=64
       - GAP=master
       - PACKAGES=latest
-
-    - env:
-      - SUITE=test
-      - ABI=32
-      - GAP=master
-      - PACKAGES=latest
-      addons:
-        apt_packages:
-          - g++-multilib
-
-    - env:
-      - SUITE=test
-      - ABI=32
-      - GAP=stable-4.11
-      - PACKAGES=latest
-      addons:
-        apt_packages:
-          - g++-multilib
 
     - env:
       - SUITE=test
@@ -59,14 +38,33 @@ matrix:
     - env:
       - SUITE=test
       - ABI=64
-      - GAP=stable-4.10
+      - GAP=required
       - PACKAGES=required
+
+    - env:
+      - SUITE=test
+      - ABI=32
+      - GAP=master
+      - PACKAGES=latest
+      addons:
+        apt_packages:
+          - g++-multilib
+
+    - env:
+      - SUITE=test
+      - ABI=32
+      - GAP=stable-4.11
+      - PACKAGES=latest
+      addons:
+        apt_packages:
+          - g++-multilib
 
     - env:
       - SUITE=test
       - ABI=32
       - GAP=stable-4.9
       - PACKAGES=required
+      - GRAPE=no
       addons:
         apt_packages:
           - g++-multilib
@@ -74,8 +72,9 @@ matrix:
     - env:
       - SUITE=test
       - ABI=64
-      - GAP=required
+      - GAP=stable-4.10
       - PACKAGES=required
+      - NAUTY=no
 
     - env:
       - SUITE=coverage
@@ -83,7 +82,10 @@ matrix:
       - GAP=master
       - PACKAGES=required
       - THRESHOLD=98
-    
+
+    - env:
+      - SUITE=lint
+
 before_install:
   - if [ ! -z "$EXTRA_PKG_FLAGS" ]; then
       wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;

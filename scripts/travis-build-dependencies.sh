@@ -61,7 +61,10 @@ CURL="curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-m
 
 ################################################################################
 # Install grape, io, orb, and profiling
-PKGS=( "io" "orb" "grape" )
+PKGS=( "io" "orb" )
+if [ "$GRAPE" != "no" ]; then
+  PKGS+=( "grape" )
+fi
 if [ "$SUITE" == "coverage" ]; then
   PKGS+=( "profiling" )
 fi
@@ -70,14 +73,14 @@ for PKG in "${PKGS[@]}"; do
   cd $GAPROOT/pkg
 
   # Get the relevant version number
-  if [ "$PACKAGES" == "latest" ] || [ "$PKG" == "profiling" ]; then
+  if [ "${PACKAGES[0]}" == "latest" ] || [ "$PKG" == "profiling" ]; then
     VERSION=`$CURL -s "https://github.com/gap-packages/$PKG/releases/latest" | grep \<title\>Release | awk -F' ' '{print $2}'`
   else
     VERSION=`grep "\"$PKG\"" $GAPROOT/pkg/digraphs/PackageInfo.g | awk -F'"' '{print $4}' | cut -c3-`
   fi
 
   URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
-  echo -e "\nDownloading $PKG-$VERSION ($PACKAGES version), from URL:\n$URL"
+  echo -e "\nDownloading $PKG-$VERSION (${PACKAGES[0]} version), from URL:\n$URL"
   $CURL "$URL" -o $PKG-$VERSION.tar.gz
   tar xf $PKG-$VERSION.tar.gz && rm $PKG-$VERSION.tar.gz
 
@@ -100,7 +103,7 @@ rm packages-required-master.tar.gz
 
 ################################################################################
 ## Install NautyTracesInterface in Travis
-if [ "$SETUP" == "travis" ]; then
+if [ "$SETUP" == "travis" ] && [ "$NAUTY" != "no" ]; then
   echo -e "\nGetting master version of NautyTracesInterface"
   git clone -b master --depth=1 https://github.com/sebasguts/NautyTracesInterface.git $GAPROOT/pkg/nautytraces
   cd $GAPROOT/pkg/nautytraces/nauty2*r* && ./configure $PKG_FLAGS && make
