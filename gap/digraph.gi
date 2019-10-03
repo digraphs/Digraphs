@@ -483,6 +483,7 @@ function(D)
         Append(str, "biconnected ");
       elif not (HasIsStronglyConnectedDigraph(D) and
                 IsStronglyConnectedDigraph(D))
+          and not (HasIsTournament(D) and IsTournament(D))
           and HasIsConnectedDigraph(D) and IsConnectedDigraph(D) then
         Append(str, "connected ");
       fi;
