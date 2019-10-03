@@ -9,7 +9,7 @@ compiler:
 
 env:
   global:
-    - DIGRAPHS_LIB=digraphs-lib-0.5
+    - DIGRAPHS_LIB=digraphs-lib-0.6
     - SETUP=travis
 
 #   GAP version: |       master | stb-4.11 | stb-4.10 | stb-4.9 | required |
