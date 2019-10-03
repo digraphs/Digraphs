@@ -1,14 +1,134 @@
-# Digraphs package for GAP - CHANGELOG
-Copyright (C) 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael Torpey, Wilf A. Wilson et al.
+# CHANGELOG – Digraphs package for GAP
+Copyright © 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael
+Torpey, Wilf A. Wilson et al.
 
-Licensing information can be found in the LICENSE file.
+Licensing information can be found in the `LICENSE` file.
 
 ## Version 1.0.0 (released 03/10/2019)
 
-Version 1.0.0!
-DigraphColoring (american spelling) was removed.
-Changed IsEulerian.
-QuotientDigraph is changed.
+This is a major release of the Digraphs package that introduces significant new
+functionality, some changes in behaviour, general improvements, and several
+small bugfixes.  With this version, we welcome Reinis Cirpons as a contributor
+to the package.
+
+###  Changed functionality or names
+
+* Perhaps the most immediately visible change is that the `ViewString` for
+  immutable digraphs attempts to show more of the known information about the
+  digraph. This will break tests that relied on the previous behaviour, that
+  contained only the numbers of vertices and edges.
+* The behaviour of `QuotientDigraph` has been changed so that it no longer
+  returns digraphs with multiple edges.
+* `IsEulerianDigraph` would previously return `true` for digraphs
+  that are Eulerian when their isolated vertices were removed, which
+  contradicted the documentation. `IsEulerianDigraph` now returns `false` for
+  _all_ digraphs that are not strongly connected.
+* The type of all digraphs has been renamed from `DigraphType` to
+  `DigraphByOutNeighboursType`.
+* The synonym `DigraphColoring` (American-style spelling) for `DigraphColouring`
+  was removed.
+
+###  Immutable and mutable digraphs
+
+Previously, every digraph in the Digraphs package was an immutable,
+attribute-storing digraph.  It is now possible to create mutable digraphs.
+Mutable digraphs are not attribute-storing, but they can be altered in place -
+by adding or removing vertices and edges - which, unlike with
+immutable digraphs, does not require a new copy of the digraph to be made.
+This can save time and memory.
+
+This is particularly useful when one wants to create a digraph, alter the
+digraph in some way, and then perform some computations. One can now typically
+do this with fewer resources by creating a mutable digraph, modifying it in
+place, and then converting it into an immutable digraph (which can store
+attributes and properties), before finally performing the computations.
+
+Every digraph now belongs to precisely one of the categories `IsMutableDigraph`
+or `IsImmutableDigraph`, according to its mutability. A mutable digraph can be
+converted in-place into an immutable digraph with `MakeImmutable`.  The are
+various new and updated functions for creating mutable and immutable digraphs,
+and for making mutable or immutable copies.
+
+Most digraph-creation functions in the package now accept an optional first
+argument, that can be either `IsMutableDigraph` or `IsImmutableDigraph`.  Given
+one of these filters, the function will according create the digraph to be of
+the appropriate mutability.  When this is option available, the default is
+always to create an immutable digraph.
+
+On the whole, for a function in the package that takes a digraph as its argument
+and again returns a digraph, the function now returns a digraph of the same
+mutability as its result, and moreover, given a mutable argument, it converts
+the mutable digraph in-place into the result. However, please consult the
+document to learn the exact behaviour of any specific function.
+
+Old attributes `Foo` in the package that take and return a single digraph have
+been converted into the operation `Foo`, with a corresponding new attribute,
+`FooAttr`. This means that the getter and setter functions, `HasFoo` and
+`SetFoo`, are renamed to `HasFooAttr` and `SetFooAttr`.  See `DigraphReverse`
+for an example. For an immutable (and therefore attribute-storing) digraph,
+calling `Foo` calls `FooAttr` and returns an immutable digraph, which it
+stores, and so the effect is as before.  For an mutable digraph, calling `Foo`
+modifies the digraph in-place, which remains mutable.
+
+
+###  New and extended functions
+
+The package now includes the following new functions:
+
+* `AsSemigroup` can produce strong semilattices of groups (i.e. Clifford)
+  from semilattice digraphs, groups, and homomorphisms. This functionality was
+  added by Finn Smith in
+  [PR #161](https://github.com/gap-packages/Digraphs/pull/161).
+* `AutomorphismGroup` and `BlissAutomorphismGroup` can now take an optional third
+  argument that specifies an edge colouring for the digraph. In this case, the
+  functions return only automorphisms of the digraph that preserve the edge
+  colouring (and the vertex colouring, if one is given). This brilliant new
+  functionality was added by Finn Smith in
+  [PR #186](https://github.com/gap-packages/Digraphs/pull/186).
+* `DegreeMatrix`, `LaplacianMatrix`, and `NrSpanningTrees` were introduced by
+  Reinis Cirpons in
+  [PR #224](https://github.com/gap-packages/Digraphs/pull/224).
+* `DigraphCartesianProduct` and `DigraphDirectProduct`, along with the
+  companion functions `DigraphCartesianProductProjections` and
+  `DigraphDirectProductProjections`, were introduced by Reinis Cirpons in
+  [PR #228](https://github.com/gap-packages/Digraphs/pull/228).
+* `DigraphMycielskian` was added by Murray Whyte in
+  [PR #194](https://github.com/gap-packages/Digraphs/pull/194).
+* `DigraphNrStronglyConnectedComponents` was added by Murray Whyte in
+  [PR #180](https://github.com/gap-packages/Digraphs/pull/180).
+* `DigraphOddGirth` was added by Murray Whyte in
+  [PR #166](https://github.com/gap-packages/Digraphs/pull/166)
+* `DigraphCore` and `IsDigraphCore` were added by Murray Whyte in PRs
+  [#221](https://github.com/gap-packages/Digraphs/pull/221) and
+  [#217](https://github.com/gap-packages/Digraphs/pull/217), respectively.
+* `DotHighlightedDigraph` was added by Finn Smith in
+  [PR #169](https://github.com/gap-packages/Digraphs/pull/169).
+* `IsCompleteMultipartiteDigraph` was added by [Wilf A. Wilson](http://wilf.me)
+  in [PR #236](https://github.com/gap-packages/Digraphs/pull/236).
+* `IsEquivalenceDigraph` was added by [Wilf A. Wilson](http://wilf.me) in
+  [PR #234](https://github.com/gap-packages/Digraphs/pull/234) as a synonym for
+  `IsReflexiveDigraph and IsSymmetricDigraph and IsTransitiveDigraph`.
+* `IsVertexTransitive` and `IsEdgeTransitive` were added by Graham Campbell
+  in [PR #165](https://github.com/gap-packages/Digraphs/pull/165).
+* `PetersenGraph` and `GeneralisedPetersenGraph`
+  were added by Murray Whyte in PRs
+  [#181](https://github.com/gap-packages/Digraphs/pull/181) and
+  [#204](https://github.com/gap-packages/Digraphs/pull/204),
+  respectively.
+* `RandomLattice` was added by Reinis Cirpons in
+  [PR #175](https://github.com/gap-packages/Digraphs/pull/175).
+
+###  New technical functionality
+
+* The ability to compile (with the flag `--with-external-bliss`) and use the
+  Digraphs package with the system version of `bliss` was added
+  by Isuru Fernando in
+  [PR #225](https://github.com/gap-packages/Digraphs/pull/225).
+* The ability to compile (with the flag `--with-external-planarity`) and use
+  the Digraphs package with the system version of the Edge Addition Planarity
+  Suite was added by [James D. Mitchell](http://goo.gl/ZtViV6) in
+  [PR #207](https://github.com/gap-packages/Digraphs/pull/207).
+
 
 ## Version 0.15.4 (released 06/08/2019)
 
