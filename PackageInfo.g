@@ -20,8 +20,8 @@
 
 _STANDREWSMATHS := Concatenation(["Mathematical Institute, North Haugh, ",
                                   "St Andrews, Fife, KY16 9SS, Scotland"]);
-_STANDREWSCS :=    Concatenation(["Jack Cole Building, North Haugh, ",
-                                  "St Andrews, Fife, KY16 9SX, Scotland"]);
+_STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
+                               "St Andrews, Fife, KY16 9SX, Scotland"]);
 
 SetPackageInfo(rec(
 PackageName := "Digraphs",
