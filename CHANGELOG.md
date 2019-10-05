@@ -4,6 +4,29 @@ Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.0.1 (released 05/10/2019)
+
+This is a minor release of the Digraphs package.  The main change in this
+release is the reintroduction of the three-argument version of
+`DigraphAddVertices`, which accepts a digraph, a number of vertices to add, and
+a list of labels for the new vertices.  The removal inadvertantly broke
+backwards compatbility with some third-party pre-existing code that relied on
+this functionality in the Digraphs package (see
+[Issue #264](https://github.com/gap-packages/Digraphs/issues/264)).
+
+The second argument of the three-argument version was redundant, and so a new
+two-argument version of `DigraphAddVertices`, which accepts a digraph and a list
+of new vertex labels, was introduced in v1.0.0. Unfortunately, the concurrent
+removal of the three-argument version of `DigraphAddVertices` was not advertised
+in the `CHANGELOG`.  Although the three-argument version has been reintroduced,
+it will remain undocumented, since there is no good reason for any new code to
+use the three-argument version.
+
+The author contact data on the title page of the manual was also updated.
+
+The changes in this version were made by [Wilf A. Wilson][].
+
+
 ## Version 1.0.0 (released 03/10/2019)
 
 This is a major release of the Digraphs package that introduces significant new
@@ -70,6 +93,10 @@ calling `Foo` calls `FooAttr` and returns an immutable digraph, which it
 stores, and so the effect is as before.  For an mutable digraph, calling `Foo`
 modifies the digraph in-place, which remains mutable.
 
+The majority of the changes in Digraphs relating to mutable and immutable
+digraphs were made by [James D. Mitchell][], Finn Smith, and
+[Wilf A. Wilson][], with some further contributions by Reinis
+Cirpons, Luke Elliott, and Murray Whyte.
 
 ###  New and extended functions
 
@@ -103,9 +130,9 @@ The package now includes the following new functions:
   [#217](https://github.com/gap-packages/Digraphs/pull/217), respectively.
 * `DotHighlightedDigraph` was added by Finn Smith in
   [PR #169](https://github.com/gap-packages/Digraphs/pull/169).
-* `IsCompleteMultipartiteDigraph` was added by [Wilf A. Wilson](http://wilf.me)
+* `IsCompleteMultipartiteDigraph` was added by [Wilf A. Wilson][]
   in [PR #236](https://github.com/gap-packages/Digraphs/pull/236).
-* `IsEquivalenceDigraph` was added by [Wilf A. Wilson](http://wilf.me) in
+* `IsEquivalenceDigraph` was added by [Wilf A. Wilson][] in
   [PR #234](https://github.com/gap-packages/Digraphs/pull/234) as a synonym for
   `IsReflexiveDigraph and IsSymmetricDigraph and IsTransitiveDigraph`.
 * `IsVertexTransitive` and `IsEdgeTransitive` were added by Graham Campbell
@@ -126,7 +153,7 @@ The package now includes the following new functions:
   [PR #225](https://github.com/gap-packages/Digraphs/pull/225).
 * The ability to compile (with the flag `--with-external-planarity`) and use
   the Digraphs package with the system version of the Edge Addition Planarity
-  Suite was added by [James D. Mitchell](http://goo.gl/ZtViV6) in
+  Suite was added by [James D. Mitchell][] in
   [PR #207](https://github.com/gap-packages/Digraphs/pull/207).
 
 
@@ -138,9 +165,9 @@ In previous versions, the homomorphism-finding tools sometimes returned
 purported ‘monomoprhisms’ that were not injective.  This problem was reported by
 Gordon Royle, see
 [Issue #222](https://github.com/gap-packages/Digraphs/issues/222),
-and fixed by [James D. Mitchell](http://goo.gl/ZtViV6) in
+and fixed by [James D. Mitchell][] in
 [PR #223](https://github.com/gap-packages/Digraphs/pull/223).
-In addition, [Wilf A. Wilson](http://wilf.me)
+In addition, [Wilf A. Wilson][]
 [fixed a bug](https://github.com/gap-packages/Digraphs/commit/458a10298b08881bf7ee9207534ce431378d2c4e)
 in `DigraphNrEdges`. This function could previously lead to a crash when given a
 digraph whose `OutNeighbours` contained entries not in `IsPlistRep`.
@@ -187,7 +214,7 @@ information.  The Digraphs package now uses the nauty format, although digraphs
 encoded using the old format can still be read in.  This incompatibility was
 reported by
 [Jukka Kohonen](https://tuhat.helsinki.fi/portal/en/persons/jukka-kohonen(a6f3f037-4918-4bf5-a114-ac417f94beb5).html), and the changes were made by
-[Michael Torpey](http://www-groups.mcs.st-and.ac.uk/~mct25) in
+[Michael Torpey][] in
 [PR #162](https://github.com/gap-packages/Digraphs/pull/162).
 
 Other additions and changes are listed below:
@@ -205,7 +232,7 @@ Other additions and changes are listed below:
   * `SubdigraphHomeomorphicToK(23/4/33)`, and
   * `MaximalAntiSymmetricSubdigraph`.
 * The functionality and performance for computing homomorphisms of digraphs was
-  significantly improved by [James D.  Mitchell](http://goo.gl/ZtViV6) in [PR
+  significantly improved by [James D. Mitchell][] in [PR
   #160](https://github.com/gap-packages/Digraphs/pull/160). This PR also
   introduced the operations `EmbeddingsDigraphs` and
   `EmbeddingsDigraphsRepresentatives`.
@@ -243,16 +270,16 @@ This release contains bugfixes and a couple of new features.
 * In previous versions of the package, the output of `ArticulationPoints` would
   sometimes contain repeated vertices (reported by Luke Elliott in [Issue
   #140](https://github.com/gap-packages/Digraphs/issues/140), and fixed by
-  [James D.  Mitchell](http://goo.gl/ZtViV6) in [PR
+  [James D. Mitchell][] in [PR
   #142](https://github.com/gap-packages/Digraphs/pull/142)).
 * In previous versions of the package, an unexpected error was sometimes caused
   when removing an immutable set of vertices from a digraph (reported and fixed
-  by [James D.  Mitchell](http://goo.gl/ZtViV6) in [PR
+  by [James D. Mitchell][] in [PR
   #146](https://github.com/gap-packages/Digraphs/pull/146)).
 * The header file `x86intrin.h` was unnecessarily being included by the kernel
-  module of Digraphs (reported by [Wilf A. Wilson](http://wilf.me) in [Issue
+  module of Digraphs (reported by [Wilf A. Wilson][] in [Issue
   #147](https://github.com/gap-packages/Digraphs/issues/147), and fixed by
-  [James D.  Mitchell](http://goo.gl/ZtViV6) in [PR
+  [James D. Mitchell][] in [PR
   #152](https://github.com/gap-packages/Digraphs/pull/152)).
 
 [Max Horn](https://www.quendi.de/math) also contributed various compatibility
@@ -273,7 +300,7 @@ This release of Digraphs contains some bugfixes, along with the following new fe
   * `DotPartialOrderDigraph`
   * `DotPreorderDigraph`
   * `DotQuasiorderDigraph`
-* The following functions for transformations and permutations were added by [James D. Mitchell](http://goo.gl/ZtViV6):
+* The following functions for transformations and permutations were added by [James D. Mitchell][]:
   * `IsDigraphHomomorphism`
   * `IsDigraphEpimorphism`
   * `IsDigraphMonomorphism`
@@ -291,7 +318,7 @@ system of the package.
 ## Version 0.12.1 (released 26/04/2018)
 
 This is a minor release, which contains several bugfixes. The following problems
-were resolved by [James D. Mitchell](http://goo.gl/ZtViV6):
+were resolved by [James D. Mitchell][]:
 
 * `HomomorphismDigraphFinder` sometimes failed to find a homomorphism when one existsed [[Issue #111](https://github.com/gap-packages/Digraphs/issues/111), reported by Gordon Royle];
 * the documentation for `HomomorphismDigraphFinder` was
@@ -303,7 +330,7 @@ were resolved by [James D. Mitchell](http://goo.gl/ZtViV6):
 
 This release contains bugfixes and new features. In particular, it:
 
-* fixes [a bug in `ArticulationPoints` and `IsBiconnectedDigraph`](https://github.com/gap-packages/Digraphs/issues/102) [[Wilf A. Wilson](http://wilf.me)];
+* fixes [a bug in `ArticulationPoints` and `IsBiconnectedDigraph`](https://github.com/gap-packages/Digraphs/issues/102) [[Wilf A. Wilson][]];
 * adds the property `IsChainDigraph` [Ashley Clayton]; and
 * adds the operation `IsDigraphAutomorphism` [Chris Russell].
 
@@ -319,7 +346,7 @@ package](https://github.com/sebasguts/NautyTracesInterface) for GAP, version 0.2
 or newer. However, this is not a required package, and the default engine
 remains [bliss](http://www.tcs.hut.fi/Software/bliss/). It is possible to
 specify the engine that is used by Digraphs. These changes to Digraphs were made
-by [James D. Mitchell](http://goo.gl/ZtViV6)].
+by [James D. Mitchell][]].
 
 In particular, version 0.11.0 includes the following changes:
 
@@ -327,7 +354,7 @@ In particular, version 0.11.0 includes the following changes:
 * `DigraphCanonicalLabelling` is replaced by `BlissCanonicalLabelling` and
   `NautyCanonicalLabelling`.
 * `BlissCanonicalDigraph` and `NautyCanonicalDigraph` are introduced [Chris
-  Russell and [James D. Mitchell](http://goo.gl/ZtViV6)].
+  Russell and [James D. Mitchell][]].
 * `DigraphsUseNauty` and `DigraphsUseBliss` are introduced.
 
 The property `IsHamiltonianDigraph` and the attribute `HamiltonianPath` were
@@ -344,10 +371,10 @@ bug in `Digraph` that could cause a segmentation fault.
 This release contains new features, bugfixes, and minor improvements to the
 documentation.  There is a new method for `ChromaticNumber`, which has better
 performance than the previous method
-[[Julius Jonusas](http://www-groups.mcs.st-and.ac.uk/~julius)
-and [James D.  Mitchell](http://goo.gl/ZtViV6)].
+[[Julius Jonusas][]
+and [James D. Mitchell][]].
 A bug in the code for calculating homomorphisms of digraphs, which could cause
-a crash, was resolved [[James D.  Mitchell](http://goo.gl/ZtViV6)].
+a crash, was resolved [[James D. Mitchell][]].
 
 ### New Features in Version 0.10.0
 
@@ -359,21 +386,21 @@ labels, by using the new operation `DotVertexLabelledDigraph`.
     * `SemigroupOfCayleyDigraph`
     * `GeneratorsOfCayleyDigraph`
 
-All of the new features were added by [James D. Mitchell](http://goo.gl/ZtViV6).
+All of the new features were added by [James D. Mitchell][].
 
 ## Version 0.9.0 (released 12/07/2017)
 This release introduces several new features.
 
 ### New Features in Version 0.9.0
 The following attributes and properties were added by
-[James D. Mitchell](http://goo.gl/ZtViV6):
+[James D. Mitchell][]:
 
 * `ArticulationPoints` (and its synonym `CutVertices`)
 * `IsBiconnectedDigraph`
 * `IsCycleDigraph`
 
 The following operations related to matchings were added by Isabella Scott and
-[Wilf A. Wilson](http://wilf.me):
+[Wilf A. Wilson][]:
 
 * `IsMatching`
 * `IsPerfectMatching`
@@ -390,9 +417,9 @@ improvements to the documentation of the package.
 ### New Features in Version 0.8.0
 
 This release introduces the new operations `DigraphClosure`
-[[Julius Jonusas](http://www-groups.mcs.st-and.ac.uk/~julius)]
+[[Julius Jonusas][]]
 and `BooleanAdjacencyMatrixMutableCopy`
-[[Wilf A. Wilson](http://wilf.me)],
+[[Wilf A. Wilson][]],
 along with the following properties and operations related to semilattices
 [Chris Russell]:
 
@@ -410,7 +437,7 @@ This is a minor release, which fixes bugs in `DigraphTopologicalSort` and
 ## Version 0.7.0 (released 14/03/2017)
 This release introduces several new features, changes some existing
 functionality, and improves the documentation. The changes in this release were
-made by [Wilf A. Wilson](http://wilf.me).
+made by [Wilf A. Wilson][].
 
 ### New Features in Version 0.7.0
 * This release contains a new technique for encoding a vertex-coloured
@@ -451,11 +478,11 @@ package's documentation.  In this version, we welcome Luke Elliott and
 Markus Pfeiffer as new authors.
 
 ### New Features in Version 0.6.0
-* The ability to label the edges of digraphs is introduced. [[Markus Pfeiffer](https://www.morphism.de/~markusp)]
-* The operation `CompleteMultipartiteDigraph` is introduced. [Stuart Burrell and [Wilf A. Wilson](http://wilf.me)]
+* The ability to label the edges of digraphs is introduced. [[Markus Pfeiffer][]]
+* The operation `CompleteMultipartiteDigraph` is introduced. [Stuart Burrell and [Wilf A. Wilson][]]
 * The operations `ReadDIMACSDigraph` and `WriteDIMACSDigraph` are introduced.
-  [[Wilf A. Wilson](http://wilf.me)]
-* The operation `ChromaticNumber` is introduced. [[James D. Mitchell](http://goo.gl/ZtViV6) and [Wilf A. Wilson](http://wilf.me)]
+  [[Wilf A. Wilson][]]
+* The operation `ChromaticNumber` is introduced. [[James D. Mitchell][] and [Wilf A. Wilson][]]
 * The operations `IsDirectedTree` and `IsUndirectedTree` are introduced. [Luke Elliott]
 * The operation `IsEulerianDigraph`is introduced. [Luke Elliott]
 
@@ -483,32 +510,31 @@ The performance improvements are most noticeable on large, quite dense digraphs.
 
 Minor changes include:
 
-* a better method for `DigraphReverse` [[Wilf A. Wilson](http://wilf.me)]
+* a better method for `DigraphReverse` [[Wilf A. Wilson][]]
 * automorphism groups of complete, empty, cycle, chain, and complete bipartite
-digraphs are set at creation [[Michael Torpey](http://www-groups.mcs.st-and.ac.uk/~mct25)]
-* a minor improvement in performance in the `DigraphMaximalCliques` [[Wilf A. Wilson](http://wilf.me)]
-* a new operation `AdjacencyMatrixMutableCopy` [[James D. Mitchell](http://goo.gl/ZtViV6)]
+digraphs are set at creation [[Michael Torpey][]]
+* a minor improvement in performance in the `DigraphMaximalCliques` [[Wilf A. Wilson][]]
+* a new operation `AdjacencyMatrixMutableCopy` [[James D. Mitchell][]]
 
 ## Version 0.5.0 (released 03/03/2016)
 This release contains some bugfixes, as well as new and changed functionality.
-Digraphs now requires the [Orb package](http://gap-packages.github.io/orb/),
+Digraphs now requires the [Orb package](http://gap-packages.github.io/orb),
 version 4.7.5 or higher.
 
 ### New Features in Version 0.5.0
-* `DigraphFile` and `IteratorFromDigraphFile` are introduced. [[James D. Mitchell](http://goo.gl/ZtViV6)]
-* `WriteDigraphs` and `ReadDigraphs` can now take a file as a first argument. [[James D. Mitchell](http://goo.gl/ZtViV6)]
+* `DigraphFile` and `IteratorFromDigraphFile` are introduced. [[James D. Mitchell][]]
+* `WriteDigraphs` and `ReadDigraphs` can now take a file as a first argument. [[James D. Mitchell][]]
 * The operation `DigraphPath` is introduced to find a path between two vertices
-  in a digraph. [[Wilf A. Wilson](http://wilf.me)]
+  in a digraph. [[Wilf A. Wilson][]]
 * The operation `IteratorOfPaths` is introduced to iterate over the paths
-  between two vertices in a digraph. [[Wilf A. Wilson](http://wilf.me)]
-* The property `IsCompleteBipartiteDigraph` is introduced. [[Wilf A. Wilson](http://wilf.me)]
+  between two vertices in a digraph. [[Wilf A. Wilson][]]
+* The property `IsCompleteBipartiteDigraph` is introduced. [[Wilf A. Wilson][]]
 
 ### Issues Resolved in Version 0.5.0
-Several bugs related to clique finding have been resolved. [[Wilf A.
-Wilson](http://wilf.me)]
+Several bugs related to clique finding have been resolved. [[Wilf A. Wilson][]]
 
 * Files with extension `bz2` were previously not (un)compressed when used with
-  `ReadDigraphs` and `WriteDigraphs`. [[James D. Mitchell](http://goo.gl/ZtViV6)]
+  `ReadDigraphs` and `WriteDigraphs`. [[James D. Mitchell][]]
 * The documentation in Chapter 8 "Finding cliques and independent sets" has been
   corrected to accurately reflect the functionality of the package.
 * A bug which led to too few cliques and independent sets being found for some
@@ -580,10 +606,8 @@ version, we welcomed Jan De Beule to the development team.
   - `OutDegreeSet`
   - `RepresentativeOutNeighbours`
 
-[[Jan De Beule](http://homepages.vub.ac.be/~jdbeule/), [Julius Jonusas](http://www-groups.mcs.st-and.ac.uk/~julius),
-[James D. Mitchell](http://goo.gl/ZtViV6),
-[Michael Torpey](http://www-groups.mcs.st-and.ac.uk/~mct25),
-[Wilf A. Wilson](http://wilf.me)]
+[[Jan De Beule][], [Julius Jonusas][], [James D. Mitchell][],
+ [Michael Torpey][], [Wilf A. Wilson][]]
 
 ## Version 0.3.2 (released 14/01/2016)
 This is another minor release due to some missing build files in the Version
@@ -597,20 +621,27 @@ This release contains a number of bugfixes and performance improvements.
 
 ### New Features in Version 0.3.0
 * The attribute `DigraphAllSimpleCircuits` based
-on the algorithm in [this paper](http://epubs.siam.org/doi/abs/10.1137/0204007?journalCode=smjcat) by Donald B. Johnson. [Stuart Burrell and [Wilf A. Wilson](http://wilf.me)]
-* Improve efficiency of the algorithm for coloring a graph with 2 colours, a method for `IsBipartiteDigraph` and `DigraphBicomponents`. [Isabella Scott and [Wilf A. Wilson](http://wilf.me)]
-* `AutomorphismGroup` and `DigraphCanonicalLabelling` can now be used with color classes that are preserved by the permutations acting on a digraph. [[James D. Mitchell](http://goo.gl/ZtViV6)]
-* The `TCodeDecoder` was made more efficient. [[James D. Mitchell](http://goo.gl/ZtViV6)]
-* `AsTransformation` is introduced for digraphs in `IsFunctionalDigraph`. [[James D. Mitchell](http://goo.gl/ZtViV6)]
+on the algorithm in [this paper](http://epubs.siam.org/doi/abs/10.1137/0204007?journalCode=smjcat) by Donald B. Johnson. [Stuart Burrell and [Wilf A. Wilson][]]
+* Improve efficiency of the algorithm for coloring a graph with 2 colours, a method for `IsBipartiteDigraph` and `DigraphBicomponents`. [Isabella Scott and [Wilf A. Wilson][]]
+* `AutomorphismGroup` and `DigraphCanonicalLabelling` can now be used with color classes that are preserved by the permutations acting on a digraph. [[James D. Mitchell][]]
+* The `TCodeDecoder` was made more efficient. [[James D. Mitchell][]]
+* `AsTransformation` is introduced for digraphs in `IsFunctionalDigraph`. [[James D. Mitchell][]]
 * The tests and their code coverage were improved.
 
 ### Issues Resolved in Version 0.3.0
-* There was a memory leak in bliss-0.73, which is fixed in the copy of bliss included with Digraphs, but not in the official release of bliss. [[James D. Mitchell](http://goo.gl/ZtViV6)]
-* Some bits of code that caused compiler warnings were improved. [[James D. Mitchell](http://goo.gl/ZtViV6)]
-* Some memory leaks were resolved in the Digraphs kernel module. [[Michael Torpey](http://www-groups.mcs.st-and.ac.uk/~mct25)]
+* There was a memory leak in bliss-0.73, which is fixed in the copy of bliss included with Digraphs, but not in the official release of bliss. [[James D. Mitchell][]]
+* Some bits of code that caused compiler warnings were improved. [[James D. Mitchell][]]
+* Some memory leaks were resolved in the Digraphs kernel module. [[Michael Torpey][]]
 
 ## Version 0.2.0 (released 04/09/2015)
 The first release.
 
 ## Version 0.1.0
 Pre-release version that was not made publicly available.
+
+[James D. Mitchell]: http://goo.gl/ZtViV6
+[Wilf A. Wilson]: http://wilf.me
+[Michael Torpey]: https://mtorpey.github.io
+[Julius Jonusas]: http://julius.jonusas.work
+[Jan De Beule]: http://homepages.vub.ac.be/~jdbeule
+[Markus Pfeiffer]: https://www.morphism.de/~markusp

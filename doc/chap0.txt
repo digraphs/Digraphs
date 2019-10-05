@@ -3,7 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                                 Version 1.0.0
+                                 Version 1.0.1
   
   
                                   Jan De Beule
@@ -40,14 +40,14 @@
       Email:    [7Xmailto:jdebeule@cage.ugent.be[107X
       Homepage: [7Xhttp://homepages.vub.ac.be/~jdbeule[107X
   Julius Jonušas
-      Email:    [7Xmailto:jj252@st-andrews.ac.uk[107X
-      Homepage: [7Xhttp://www-circa.mcs.st-andrews.ac.uk/~julius[107X
+      Email:    [7Xmailto:julius.jonusas@tuwien.ac.at[107X
+      Homepage: [7Xhttp://julius.jonusas.work[107X
   James D. Mitchell
-      Email:    [7Xmailto:jdm3@st-andrews.ac.uk[107X
-      Homepage: [7Xhttp://goo.gl/ZtViV6[107X
+      Email:    [7Xmailto:jdm3@st-and.ac.uk[107X
+      Homepage: [7Xhttp://www-groups.mcs.st-andrews.ac.uk/~jamesm[107X
   Michael Torpey
       Email:    [7Xmailto:mct25@st-andrews.ac.uk[107X
-      Homepage: [7Xhttp://www-circa.mcs.st-andrews.ac.uk/~mct25[107X
+      Homepage: [7Xhttps://mtorpey.github.io[107X
   Wilf A. Wilson
       Email:    [7Xmailto:gap@wilf-wilson.net[107X
       Homepage: [7Xhttp://wilf.me[107X
