@@ -13,6 +13,8 @@ DeclareOperation("DigraphAddVertex", [IsDigraph]);
 DeclareOperation("DigraphAddVertex", [IsDigraph, IsObject]);
 DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt]);
 DeclareOperation("DigraphAddVertices", [IsDigraph, IsList]);
+# 3-arg version of DigraphAddVertices is included for backwards compatibility.
+DeclareOperation("DigraphAddVertices", [IsDigraph, IsInt, IsList]);
 
 DeclareOperation("DigraphRemoveVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphRemoveVertices", [IsDigraph, IsList]);

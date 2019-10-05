@@ -304,6 +304,8 @@ true
     Label="for a digraph and an integer"/>
   <Oper Name="DigraphAddVertices" Arg="digraph, labels"
     Label="for a digraph and a list of labels"/>
+  <!-- The 3-argument version is deliberately undocumented. It is redundant,
+       but it is included for backwards compatibility. -->
   <Returns>A digraph.</Returns>
   <Description>
     For a non-negative integer <A>m</A>, this operation returns a digraph

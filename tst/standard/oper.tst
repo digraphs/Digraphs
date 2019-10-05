@@ -630,6 +630,18 @@ false
 gap> gr2 = gr3;
 true
 
+#  DigraphAddVertices (redundant three-argument version)
+gap> D := Digraph([[1]]);
+<immutable digraph with 1 vertex, 1 edge>
+gap> DigraphVertexLabels(D);
+[ 1 ]
+gap> DigraphAddVertices(D, 2, [fail]);
+Error, the list <labels> (3rd argument) must have length <m> (2nd argument),
+gap> D := DigraphAddVertices(D, 2, [fail, true]);
+<immutable digraph with 3 vertices, 1 edge>
+gap> DigraphVertexLabels(D);
+[ 1, fail, true ]
+
 #  DigraphAddVertex
 gap> gr := CompleteDigraph(1);
 <immutable empty digraph with 1 vertex>
