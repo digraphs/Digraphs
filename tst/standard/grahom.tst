@@ -193,7 +193,8 @@ gap> gr := CompleteDigraph(5);;
 gap> GeneratorsOfEndomorphismMonoid(gr, [1, 2, 3, 4, 5]);
 [ IdentityTransformation ]
 gap> GeneratorsOfEndomorphismMonoid(gr);
-[ IdentityTransformation ]
+[ Transformation( [ 2, 3, 4, 5, 1 ] ), Transformation( [ 2, 1 ] ), 
+  IdentityTransformation ]
 gap> GeneratorsOfEndomorphismMonoid(gr, [1, 1, 1, 2, 2]);
 [ Transformation( [ 1, 2, 3, 5, 4 ] ), Transformation( [ 1, 3, 2 ] ), 
   Transformation( [ 2, 1 ] ), IdentityTransformation ]
@@ -2123,6 +2124,21 @@ gap> D2 := DigraphFromGraph6String("E}h_");
 <immutable digraph with 6 vertices, 18 edges>
 gap> mono := MonomorphismsDigraphs(D1, D2);
 [  ]
+
+# Issue 251
+gap> gr := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> GeneratorsOfEndomorphismMonoid(gr);
+[ Transformation( [ 2, 3, 4, 5, 1 ] ), Transformation( [ 2, 1 ] ), 
+  IdentityTransformation ]
+gap> gr := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> GeneratorsOfEndomorphismMonoid(gr, [1, 1, 1, 2, 3]);
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
+  IdentityTransformation ]
+gap> GeneratorsOfEndomorphismMonoid(gr);
+[ Transformation( [ 2, 3, 4, 5, 1 ] ), Transformation( [ 2, 1 ] ), 
+  IdentityTransformation ]
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
