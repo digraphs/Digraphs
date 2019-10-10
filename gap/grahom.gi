@@ -80,7 +80,7 @@ function(arg)
                                     DigraphWelshPowellOrder(D));
 
   if (limit = infinity or Length(gens) < limit_arg) and IsImmutableDigraph(D)
-      then
+      and colours = fail then
     SetGeneratorsOfEndomorphismMonoidAttr(D, out);
   fi;
   return out;
