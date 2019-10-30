@@ -592,21 +592,18 @@ function(D)
                        " )");
 end);
 
-InstallMethod(String, "for a mutable digraph by out-neighbours",
-[IsMutableDigraph and IsDigraphByOutNeighboursRep],
-function(D)
-  return Concatenation("Digraph( IsMutableDigraph, ",
-                       String(OutNeighbours(D)),
-                       " )");
-end);
-
 InstallMethod(String, "for an immutable digraph by out-neighbours",
-[IsImmutableDigraph],
+[IsDigraph],
 function(D)
-  local n, streps, lengths, creators_streps, outnbs;
+  local n, mut, streps, lengths, creators_streps, outnbs;
+  if IsImmutableDigraph(D) then
+    mut := "IsImmutableDigraph";
+  else
+    mut := "IsMutableDigraph";
+  fi;
   outnbs := OutNeighbours(D);
   if Length(String(outnbs)) <= 60 then
-    return Concatenation("Digraph(", String(outnbs), ")");
+    return Concatenation("Digraph(", mut, ", ", String(outnbs), ")");
   elif IsSymmetricDigraph(D) then
     streps := [Graph6String, Sparse6String];
     creators_streps := ["DigraphFromGraph6String", "DigraphFromSparse6String"];
@@ -618,8 +615,9 @@ function(D)
   streps  := List(streps, f -> f(D));
   lengths := List(streps, s -> Length(s));
   n   := Position(lengths, Minimum(lengths));
-  return Concatenation(String(creators_streps[n]), "(\"",
-                       streps[n], "\");");
+  return Concatenation(creators_streps[n], "(", mut, ", ", "\"",
+                       ReplacedString(streps[n], "\\", "\\\\"),
+                       "\"", ");");
 end);
 
 ########################################################################
