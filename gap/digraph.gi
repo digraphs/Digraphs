@@ -595,26 +595,31 @@ end);
 InstallMethod(String, "for an immutable digraph by out-neighbours",
 [IsDigraph],
 function(D)
-  local n, mut, streps, lengths, creators_streps;
-  if IsImmutableDigraph(D) then
-    mut := "IsImmutableDigraph";
+  local n, mut, streps, outnbs_rep, lengths, strings, creators_streps;
+  if IsMutableDigraph(D) then
+    mut := Concatenation("IsImmutableDigraph", ", ");
   else
-    mut := "IsMutableDigraph";
+    mut := "";
   fi;
   if IsSymmetricDigraph(D) and (not DigraphHasLoops(D)) then
     streps := [Graph6String, Sparse6String];
-    creators_streps := ["DigraphFromGraph6String", "DigraphFromSparse6String"];
+    creators_streps := ["DigraphFromGraph6String",
+                        "DigraphFromSparse6String"];
   else
     streps := [Digraph6String, DiSparse6String];
     creators_streps := ["DigraphFromDigraph6String",
                         "DigraphFromDiSparse6String"];
   fi;
   streps  := List(streps, f -> f(D));
-  lengths := List(streps, s -> Length(s));
-  n   := Position(lengths, Minimum(lengths));
-  return Concatenation(creators_streps[n], "(", mut, ", ", "\"",
-                       ReplacedString(streps[n], "\\", "\\\\"),
-                       "\"", ");");
+  strings := [];
+  for n in [1 .. Length(streps)] do
+    Add(strings, Concatenation(creators_streps[n], "(", mut, ", ", "\"",
+                 ReplacedString(streps[n], "\\", "\\\\"), "\"", ");"));
+  od;
+  outnbs_rep := Concatenation("Digraph(", mut, String(OutNeighbours(D)), ");");
+  Add(strings, String(outnbs_rep));
+  lengths := List(strings, x -> Length(x));
+  return strings[Position(lengths, Minimum(lengths))];
 end);
 
 ########################################################################
