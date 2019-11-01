@@ -27,13 +27,13 @@ gap> gr := Digraph([[1, 2], [2], []]);
 gap> PrintString(gr);
 "Digraph( IsImmutableDigraph, [ [ 1, 2 ], [ 2 ], [ ] ] )"
 gap> String(gr);
-"Digraph( IsImmutableDigraph, [ [ 1, 2 ], [ 2 ], [ ] ] )"
+"DigraphFromDigraph6String(\"&Bq?\");"
 gap> gr := Digraph([[2], [1], [], [3]]);
 <immutable digraph with 4 vertices, 3 edges>
 gap> PrintString(gr);
 "Digraph( IsImmutableDigraph, [ [ 2 ], [ 1 ], [ ], [ 3 ] ] )"
 gap> String(gr);
-"Digraph( IsImmutableDigraph, [ [ 2 ], [ 1 ], [ ], [ 3 ] ] )"
+"DigraphFromDigraph6String(\"&CQ?G\");"
 gap> r := rec(DigraphVertices := [1, 2, 3], 
 >             DigraphSource := [1, 2], 
 >             DigraphRange := [2, 3]);;
@@ -42,7 +42,7 @@ gap> gr := Digraph(r);
 gap> PrintString(gr);
 "Digraph( IsImmutableDigraph, [ [ 2 ], [ 3 ], [ ] ] )"
 gap> String(gr);
-"Digraph( IsImmutableDigraph, [ [ 2 ], [ 3 ], [ ] ] )"
+"Digraph([ [ 2 ], [ 3 ], [ ] ]);"
 
 #  DotDigraph and DotSymmetricDigraph
 gap> r := rec(DigraphVertices := [1 .. 3], DigraphSource := [1, 1, 1, 1],
