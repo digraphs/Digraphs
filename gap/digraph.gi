@@ -597,7 +597,7 @@ InstallMethod(String, "for an immutable digraph by out-neighbours",
 function(D)
   local n, mut, streps, outnbs_rep, lengths, strings, creators_streps;
   if IsMutableDigraph(D) then
-    mut := Concatenation("IsImmutableDigraph", ", ");
+    mut := Concatenation("IsMutableDigraph", ", ");
   else
     mut := "";
   fi;
@@ -613,7 +613,7 @@ function(D)
   streps  := List(streps, f -> f(D));
   strings := [];
   for n in [1 .. Length(streps)] do
-    Add(strings, Concatenation(creators_streps[n], "(", mut, ", ", "\"",
+    Add(strings, Concatenation(creators_streps[n], "(", mut, "\"",
                  ReplacedString(streps[n], "\\", "\\\\"), "\"", ");"));
   od;
   outnbs_rep := Concatenation("Digraph(", mut, String(OutNeighbours(D)), ");");
