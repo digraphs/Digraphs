@@ -595,16 +595,13 @@ end);
 InstallMethod(String, "for an immutable digraph by out-neighbours",
 [IsDigraph],
 function(D)
-  local n, mut, streps, lengths, creators_streps, outnbs;
+  local n, mut, streps, lengths, creators_streps;
   if IsImmutableDigraph(D) then
     mut := "IsImmutableDigraph";
   else
     mut := "IsMutableDigraph";
   fi;
-  outnbs := OutNeighbours(D);
-  if Length(String(outnbs)) <= 60 then
-    return Concatenation("Digraph(", mut, ", ", String(outnbs), ")");
-  elif IsSymmetricDigraph(D) then
+  if IsSymmetricDigraph(D) and (not DigraphHasLoops(D)) then
     streps := [Graph6String, Sparse6String];
     creators_streps := ["DigraphFromGraph6String", "DigraphFromSparse6String"];
   else
