@@ -1643,6 +1643,36 @@ gap> IsHamiltonianDigraph(D);;
 gap> D;
 <immutable Hamiltonian digraph with 2 vertices, 2 edges>
 
+# String
+gap> D := GeneralisedPetersenGraph(8, 2);
+<immutable symmetric digraph with 16 vertices, 48 edges>
+gap> String(D);
+"DigraphFromGraph6String(\"OhCGKE?O@@AAAA@@?SOAa\");"
+gap> Print(last);
+DigraphFromGraph6String("OhCGKE?O@@AAAA@@?SOAa");
+gap> G := DigraphFromGraph6String("OhCGKE?O@@AAAA@@?SOAa");
+<immutable digraph with 16 vertices, 48 edges>
+gap> IsIsomorphicDigraph(D, G);
+true
+gap> D := CycleDigraph(IsMutableDigraph, 20);
+<mutable digraph with 20 vertices, 20 edges>
+gap> String(D);
+"DigraphFromDiSparse6String(IsMutableDigraph, \".Sr?s_`abcdefghijklmnopq\");"
+gap> Print(last);
+DigraphFromDiSparse6String(IsMutableDigraph, ".Sr?s_`abcdefghijklmnopq");
+gap> G := DigraphFromDiSparse6String(IsMutableDigraph, ".Sr?s_`abcdefghijklmnopq");
+<mutable digraph with 20 vertices, 20 edges>
+gap> IsIsomorphicDigraph(D, G);
+true
+gap> D := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> String(D);
+"Digraph([ [ 2 ], [ 3 ], [ 1 ] ]);"
+gap> D := EmptyDigraph(0);
+<immutable empty digraph with 0 vertices>
+gap> String(D);
+"Digraph([ ]);"
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
