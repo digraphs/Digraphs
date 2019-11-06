@@ -71,3 +71,4 @@ install-sh
 missing
 *.swo
 coverage
+.ipynb_checkpoints
