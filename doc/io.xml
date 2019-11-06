@@ -162,15 +162,10 @@ gap> ReadDigraphs(file, 9);
   <Oper Name="String" Arg="digraph"/>
   <Returns>A string.</Returns>
   <Description>
-    Returns a string <C>string</C> containing a function and a
-    representation of <A>digraph</A> related to that function,
-    such that when the output of <C>Print(string)</C> is run,
-    <A>digraph</A> is returned.<P/>
-
-    If it is shorter than 60 characters, the <C>OutNeighbours</C>
-    representation of <A>digraph</A> is used. Otherwise, the shortest
-    of the <C>Digraph6String</C>, <C>Graph6String</C>,
-    <C>DiSparse6String</C> and <C>Sparse6String</C> are used.<P/>
+    Returns a string of minimal character length <C>string</C>
+    containing a function and a representation of <A>digraph</A>
+    related to that function, such that when the output of
+    <C>Print(string)</C> is run, <A>digraph</A> is returned.<P/>
 
     Note that it is necessary to <C>Print</C> the output of this
     function to be able to copy, paste and run the output to create
