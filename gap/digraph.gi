@@ -449,7 +449,7 @@ function(D)
     elif HasIsChainDigraph(D) and IsChainDigraph(D) then
       Append(str, "chain ");
       display_nredges := false;
-    elif HasIsCompleteDigraph(D) and IsDigraph(D) then
+    elif HasIsCompleteDigraph(D) and IsCompleteDigraph(D) then
       Append(str, "complete ");
       display_nredges := false;
     elif HasIsCompleteBipartiteDigraph(D) and IsCompleteBipartiteDigraph(D) then
