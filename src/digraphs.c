@@ -12,8 +12,8 @@
 **
 *******************************************************************************/
 
-#include "digraphs-config.h"
 #include "digraphs.h"
+#include "digraphs-config.h"
 
 #include <stdbool.h>  // for false, true, bool
 #include <stdint.h>   // for uint64_t
@@ -27,11 +27,11 @@
 #include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
 #else
 #include "bliss/bliss_C.h"
-#define bliss_digraphs_add_edge                 bliss_add_edge
-#define bliss_digraphs_new                      bliss_new
-#define bliss_digraphs_add_vertex               bliss_add_vertex
-#define bliss_digraphs_find_canonical_labeling  bliss_find_canonical_labeling
-#define bliss_digraphs_release                  bliss_release
+#define bliss_digraphs_add_edge bliss_add_edge
+#define bliss_digraphs_new bliss_new
+#define bliss_digraphs_add_vertex bliss_add_vertex
+#define bliss_digraphs_find_canonical_labeling bliss_find_canonical_labeling
+#define bliss_digraphs_release bliss_release
 #endif
 
 #undef PACKAGE
@@ -76,52 +76,9 @@ Int DigraphNrVertices(Obj D) {
 Obj FuncOutNeighbours(Obj self, Obj D) {
   if (IsbPRec(D, RNamName("OutNeighbours"))) {
     return ElmPRec(D, RNamName("OutNeighbours"));
-  } else if (IsbPRec(D, RNamName("DigraphSource"))
-             && IsbPRec(D, RNamName("DigraphRange"))) {
-    Obj src = ElmPRec(D, RNamName("DigraphSource"));
-    Obj ran = ElmPRec(D, RNamName("DigraphRange"));
-    DIGRAPHS_ASSERT(LEN_LIST(src) == LEN_LIST(ran));
-    Int  n   = INT_INTOBJ(ElmPRec(D, RNamName("DigraphNrVertices")));
-    bool mut = IS_MUTABLE_OBJ(D);
-    Obj  ret;
-    if (n == 0) {
-      ret = NEW_PLIST_WITH_MUTABILITY(mut, T_PLIST_EMPTY, 0);
-    } else {
-      ret = NEW_PLIST_WITH_MUTABILITY(mut, T_PLIST_TAB, n);
-      SET_LEN_PLIST(ret, n);
-
-      for (Int i = 1; i <= n; i++) {
-        Obj next = NEW_PLIST(T_PLIST_EMPTY, 0);
-        SET_LEN_PLIST(next, 0);
-        SET_ELM_PLIST(ret, i, next);
-        CHANGED_BAG(ret);
-      }
-
-      for (Int i = 1; i <= LEN_LIST(src); i++) {
-        Obj list = ELM_PLIST(ret, INT_INTOBJ(ELM_LIST(src, i)));
-        ASS_LIST(list, LEN_PLIST(list) + 1, ELM_LIST(ran, i));
-        CHANGED_BAG(ret);
-      }
-      if (!mut) {
-        for (Int i = 1; i <= n; i++) {
-          MakeImmutable(ELM_PLIST(ret, i));
-        }
-      }
-    }
-    // If this function is called from the method for OutNeighbours in GAP then
-    // the next line isn't necessary. We include it anyway because it might be
-    // required if this function is called from the Digraphs kernel module.
-    AssPRec(D, RNamName("OutNeighbours"), ret);
-    if (!IsAttributeStoringRep(D)) {
-      UnbPRec(D, RNamName("DigraphSource"));
-      UnbPRec(D, RNamName("DigraphRange"));
-    }
-    return ret;
   } else {
-    ErrorQuit("not enough record components set, expected `OutNeighbours` or "
-              "`DigraphNrVertices`, `DigraphSource`, and `DigraphRange`,",
-              0L,
-              0L);
+    ErrorQuit(
+        "the `OutNeighbours` component is not set for this digraph,", 0L, 0L);
   }
 }
 
