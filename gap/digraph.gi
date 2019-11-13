@@ -576,21 +576,9 @@ function(D)
   return str;
 end);
 
-InstallMethod(PrintString, "for an immutable digraph by out-neighbours",
-[IsImmutableDigraph and IsDigraphByOutNeighboursRep],
-function(D)
-  return Concatenation("Digraph( IsImmutableDigraph, ",
-                       PrintString(OutNeighbours(D)),
-                       " )");
-end);
-
-InstallMethod(PrintString, "for a mutable digraph by out-neighbours",
-[IsMutableDigraph and IsDigraphByOutNeighboursRep],
-function(D)
-  return Concatenation("Digraph( IsMutableDigraph, ",
-                       PrintString(OutNeighbours(D)),
-                       " )");
-end);
+InstallMethod(PrintString, "for a digraph",
+[IsDigraph],
+D -> String(D));
 
 InstallMethod(String, "for a digraph",
 [IsDigraph],
