@@ -583,7 +583,8 @@ D -> String(D));
 InstallMethod(String, "for a digraph",
 [IsDigraph],
 function(D)
-  local n, mut, streps, outnbs_rep, lengths, strings, creators_streps;
+  local n, N, i, mut, streps, outnbs_rep, lengths, strings, creators_streps,
+        creators_props, props;
   if IsMutableDigraph(D) then
     mut := Concatenation("IsMutableDigraph", ", ");
   else
@@ -604,8 +605,21 @@ function(D)
     Add(strings, Concatenation(creators_streps[n], "(", mut, "\"",
                  ReplacedString(streps[n], "\\", "\\\\"), "\"", ");"));
   od;
+
   outnbs_rep := Concatenation("Digraph(", mut, String(OutNeighbours(D)), ");");
   Add(strings, String(outnbs_rep));
+
+  N              := DigraphNrVertices(D);
+  props          := [IsCycleDigraph, IsCompleteDigraph, IsChainDigraph,
+                     IsEmptyDigraph];
+  creators_props := ["CycleDigraph", "CompleteDigraph", "ChainDigraph",
+                     "EmptyDigraph"];
+  for i in [1 .. Length(props)] do
+    if props[i](D) then
+      Add(strings, Concatenation(creators_props[i], "(", mut, String(N), ");"));
+    fi;
+  od;
+
   lengths := List(strings, x -> Length(x));
   return strings[Position(lengths, Minimum(lengths))];
 end);

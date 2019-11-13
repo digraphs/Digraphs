@@ -170,15 +170,13 @@ gap> ReadDigraphs(file, 9);
     Note that it is necessary to <C>Print</C> the output of this
     function to be able to copy, paste and run the output to create
     <A>digraph</A>, due to character escaping in the strings involved.
+    One can also run <C>Print</C> directly on <A>digraph</A> to achieve
+    this.
     <Log><![CDATA[
 gap> D := CycleDigraph(3);
 <immutable cycle digraph with 3 vertices>
-gap> String(D);
-"Digraph([ [ 2 ], [ 3 ], [ 1 ] ]);"
-gap> Print(last);
-Digraph([ [ 2 ], [ 3 ], [ 1 ] ]);
-gap> Digraph([ [ 2 ], [ 3 ], [ 1 ] ]);
-<immutable digraph with 3 vertices, 3 edges>
+gap> Print(D);
+CycleDigraph(3);
 gap> G := PetersenGraph(IsMutableDigraph);
 <mutable digraph with 10 vertices, 30 edges>
 gap> String(G);
