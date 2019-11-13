@@ -592,7 +592,7 @@ function(D)
                        " )");
 end);
 
-InstallMethod(String, "for an immutable digraph by out-neighbours",
+InstallMethod(String, "for a digraph",
 [IsDigraph],
 function(D)
   local n, mut, streps, outnbs_rep, lengths, strings, creators_streps;
