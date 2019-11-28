@@ -4,6 +4,28 @@ Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.0.2 (released 28/11/2019)
+
+This is a minor release that fixes several bugs:
+
+* `GeneratorsOfEndomorphismMonoid` sometimes incorrectly stored its result.
+  This was reported by [Chris Jefferson][] in
+  [Issue #251](https://github.com/gap-packages/Digraphs/issues/251)
+  and fixed by [James D. Mitchell][] in
+  [PR #265](https://github.com/gap-packages/Digraphs/pull/265).
+* Some warnings that occurred when compiling against GAP 4.9 were removed.
+  The warnings were reported by [James D. Mitchell][] in
+  [Issue #266](https://github.com/gap-packages/Digraphs/issues/266)
+  and fixed by [Wilf A. Wilson][] in
+  [PR #274](https://github.com/gap-packages/Digraphs/pull/274).
+* There was a bug with the `ViewString` of known non-complete digraphs,
+  where such digraphs were described as being complete.
+  This was reported by Murray Whyte in
+  [Issue #272](https://github.com/gap-packages/Digraphs/issues/272)
+  and fixed by [Wilf A. Wilson][] in
+  [PR #273](https://github.com/gap-packages/Digraphs/pull/273).
+
+
 ## Version 1.0.1 (released 05/10/2019)
 
 This is a minor release of the Digraphs package.  The main change in this
@@ -320,7 +342,7 @@ system of the package.
 This is a minor release, which contains several bugfixes. The following problems
 were resolved by [James D. Mitchell][]:
 
-* `HomomorphismDigraphFinder` sometimes failed to find a homomorphism when one existsed [[Issue #111](https://github.com/gap-packages/Digraphs/issues/111), reported by Gordon Royle];
+* `HomomorphismDigraphFinder` sometimes failed to find a homomorphism when one existed [[Issue #111](https://github.com/gap-packages/Digraphs/issues/111), reported by Gordon Royle];
 * the documentation for `HomomorphismDigraphFinder` was
   incomplete [[Issue #112](https://github.com/gap-packages/Digraphs/issues/112)]; and
 * a segmentation fault could be caused when using Digraphs with
@@ -645,3 +667,4 @@ Pre-release version that was not made publicly available.
 [Julius Jonusas]: http://julius.jonusas.work
 [Jan De Beule]: http://homepages.vub.ac.be/~jdbeule
 [Markus Pfeiffer]: https://www.morphism.de/~markusp
+[Chris Jefferson]: https://caj.host.cs.st-andrews.ac.uk
