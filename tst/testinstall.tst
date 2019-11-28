@@ -328,6 +328,13 @@ gap> D := NullDigraph(IsMutableDigraph, 10);
 gap> MakeImmutable(D);
 <immutable empty digraph with 10 vertices>
 
+# Issue 272: ViewString for known non-complete digraphs
+gap> D := Digraph([[2], []]);;
+gap> IsCompleteDigraph(D);
+false
+gap> D;
+<immutable digraph with 2 vertices, 1 edge>
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);
