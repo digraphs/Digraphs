@@ -6,7 +6,7 @@ Licensing information can be found in the `LICENSE` file.
 
 ## Version 1.0.2 (released 28/11/2019)
 
-This is a minor release that fixes several bugs:
+This is a minor release that fixes several bugs.
 
 * `GeneratorsOfEndomorphismMonoid` sometimes incorrectly stored its result.
   This was reported by [Chris Jefferson][] in
