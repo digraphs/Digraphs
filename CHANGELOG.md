@@ -4,6 +4,15 @@ Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.0.3 (released 29/11/2019)
+
+This is a minor release that fixes some bugs related to mutability in
+`DigraphDisjointUnion` and `ViewString`.
+
+These problems were reported and fixed by [Wilf A.  Wilson][] in
+[Issue #276](https://github.com/gap-packages/Digraphs/issues/276) and
+[PR #277](https://github.com/gap-packages/Digraphs/pull/277), respectively.
+
 ## Version 1.0.2 (released 28/11/2019)
 
 This is a minor release that fixes several bugs:
