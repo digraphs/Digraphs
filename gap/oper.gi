@@ -410,7 +410,7 @@ function(arg)
   if not IsList(arg) or IsEmpty(arg)
       or not ForAll(arg, IsDigraphByOutNeighboursRep) then
     ErrorNoReturn("the arguments must be digraphs by out-neighbours, or a ",
-                  "single list of digraphs by out-neighbours,");
+                  "single non-empty list of digraphs by out-neighbours,");
   fi;
 
   D := arg[1];

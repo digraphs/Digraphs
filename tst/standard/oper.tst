@@ -876,14 +876,14 @@ gap> gr2 := CompleteDigraph(100);
 gap> DigraphDisjointUnion(gr) = gr;
 true
 gap> DigraphDisjointUnion([[]]);
-Error, the arguments must be digraphs by out-neighbours, or a single list of d\
-igraphs by out-neighbours,
+Error, the arguments must be digraphs by out-neighbours, or a single non-empty\
+ list of digraphs by out-neighbours,
 gap> DigraphDisjointUnion([gr], [gr]);
-Error, the arguments must be digraphs by out-neighbours, or a single list of d\
-igraphs by out-neighbours,
+Error, the arguments must be digraphs by out-neighbours, or a single non-empty\
+ list of digraphs by out-neighbours,
 gap> DigraphDisjointUnion(gr, Group(()));
-Error, the arguments must be digraphs by out-neighbours, or a single list of d\
-igraphs by out-neighbours,
+Error, the arguments must be digraphs by out-neighbours, or a single non-empty\
+ list of digraphs by out-neighbours,
 gap> DigraphDisjointUnion(gr, gr);
 <immutable digraph with 2000 vertices, 2000 edges>
 gap> DigraphDisjointUnion([gr2, gr2]);
