@@ -439,7 +439,9 @@ function(D)
   Assert(1, IsMutableDigraph(D) or IsImmutableDigraph(D));
 
   if m = 0 then
-    SetIsEmptyDigraph(D, true);
+    if IsImmutableDigraph(D) then
+      SetIsEmptyDigraph(D, true);
+    fi;
     Append(str, "empty ");
     display_nredges := false;
   elif n > 1 then
