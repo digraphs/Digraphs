@@ -335,6 +335,24 @@ false
 gap> D;
 <immutable digraph with 2 vertices, 1 edge>
 
+# Issue 276: ViewString for mutable empty digraphs
+gap> D := EmptyDigraph(IsMutableDigraph, 3);
+<mutable empty digraph with 3 vertices>
+gap> IsAcyclicDigraph(D);
+true
+gap> DigraphDisjointUnion(D, CycleDigraph(IsMutableDigraph, 3));
+<mutable digraph with 6 vertices, 3 edges>
+gap> IsAcyclicDigraph(D);
+false
+gap> D := EmptyDigraph(IsMutableDigraph, 3);
+<mutable empty digraph with 3 vertices>
+gap> IsAcyclicDigraph(D);
+true
+gap> DigraphDisjointUnion(D, CycleDigraph(IsImmutableDigraph, 3));
+<mutable digraph with 6 vertices, 3 edges>
+gap> IsAcyclicDigraph(D);
+false
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);
