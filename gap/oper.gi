@@ -400,7 +400,7 @@ end);
 
 InstallGlobalFunction(DigraphDisjointUnion,
 function(arg)
-  local D, offset, n, i;
+  local D, offset, n, i, j;
 
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
@@ -418,7 +418,9 @@ function(arg)
   offset := DigraphNrVertices(D);
   for i in [2 .. Length(arg)] do
     n := Length(arg[i]);
-    arg[1]{[offset + 1 .. offset + n]} := arg[i] + offset;
+    for j in [1 .. n] do
+      arg[1][offset + j] := ShallowCopy(arg[i][j]) + offset;
+    od;
     offset := offset + n;
   od;
 

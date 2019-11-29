@@ -353,6 +353,16 @@ gap> DigraphDisjointUnion(D, CycleDigraph(IsImmutableDigraph, 3));
 gap> IsAcyclicDigraph(D);
 false
 
+# Issue 276: Correct mutability for DigraphDisjointUnion
+gap> D := EmptyDigraph(IsMutableDigraph, 3);
+<mutable empty digraph with 3 vertices>
+gap> DigraphDisjointUnion(D, CycleDigraph(3));
+<mutable digraph with 6 vertices, 3 edges>
+gap> IsMutable(D!.OutNeighbours);
+true
+gap> ForAll(D!.OutNeighbours, IsMutable);
+true
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);
