@@ -1744,12 +1744,11 @@ void digraph_hook_function(void*               user_param,
 
 // Take a list of C integers, and multiply them together into a GAP int
 static Obj MultiplyList(int* vals, int length) {
-    Obj res = INTOBJ_INT(1);
-    for(int i = 0; i < length; ++i)
-    {
-        res = ProdInt(res, INTOBJ_INT(vals[i]));
-    }
-    return res;
+  Obj res = INTOBJ_INT(1);
+  for (int i = 0; i < length; ++i) {
+    res = ProdInt(res, INTOBJ_INT(vals[i]));
+  }
+  return res;
 }
 
 static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self,
@@ -1792,19 +1791,16 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self,
     RemoveDupsDensePlist(ELM_PLIST(autos, 1));
   }
 
-  #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
   Obj size = MultiplyList(stats.group_size, stats.group_size_len);
   bliss_digraphs_free_blissstats(&stats);
 
   SET_LEN_PLIST(autos, 3);
   SET_ELM_PLIST(autos, 3, size);
-  #endif
+#endif
 
   return autos;
 }
-
-
-
 
 // user_param = [vertex perms, nr vertices, edge perms, nr edges]
 void multidigraph_hook_function(void*               user_param,
@@ -1886,7 +1882,6 @@ void multidigraph_colours_hook_function(void*               user_param,
   AssPlist(gens, LEN_PLIST(gens) + 1, p);
 }
 
-
 static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   Obj                 autos, p, q, out;
   BlissGraph*         graph;
@@ -1906,7 +1901,6 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   SET_ELM_PLIST(autos, 3, NEW_PLIST(T_PLIST, 0));  // perms of the edges
   CHANGED_BAG(autos);
   SET_ELM_PLIST(autos, 4, INTOBJ_INT(DigraphNrEdges(digraph)));
-
 
   BlissStats stats;
 
@@ -1965,13 +1959,13 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
     RemoveDupsDensePlist(ELM_PLIST(autos, 3));
   }
 
-  #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
   Obj size = MultiplyList(stats.group_size, stats.group_size_len);
   bliss_digraphs_free_blissstats(&stats);
 
   SET_LEN_PLIST(autos, 4);
   SET_ELM_PLIST(autos, 4, size);
-  #endif
+#endif
 
   return autos;
 }
