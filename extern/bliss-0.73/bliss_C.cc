@@ -171,7 +171,7 @@ bliss_digraphs_find_canonical_labeling(BlissGraph *graph,
   assert(graph);
   assert(graph->g);
 
-  canonical_labeling = graph->g->canonical_form(s, hook, hook_user_param);
+  canonical_labeling = &(*graph->g->canonical_form(s, hook, hook_user_param));
 
   if(stats)
     {

@@ -40,6 +40,8 @@ namespace bliss_digraphs {
 #include "uintseqhash.hh"
 
 namespace bliss_digraphs {
+  typedef std::vector<unsigned int>::iterator labeling_type;
+  typedef std::vector<unsigned int>::const_iterator const_labeling_type;
 
 /**
  * \brief Statistics returned by the bliss search algorithm.
@@ -233,7 +235,7 @@ public:
    * of bliss as well as on some other options (for instance, the splitting
    * heuristic selected with bliss::Graph::set_splitting_heuristic()).
    */
-  const unsigned int* canonical_form(Stats& stats,
+  labeling_type canonical_form(Stats& stats,
 				     void (*hook)(void* user_param,
 						  unsigned int n,
 						  const unsigned int* aut),
@@ -416,19 +418,23 @@ protected:
    */
   virtual bool is_equitable() const = 0;
 
-  unsigned int *first_path_labeling;
-  unsigned int *first_path_labeling_inv;
-  Orbit         first_path_orbits;
-  unsigned int *first_path_automorphism;
+  std::vector<unsigned int> first_path_labeling_vec;
+  labeling_type             first_path_labeling;
+  std::vector<unsigned int> first_path_labeling_inv_vec;
+  labeling_type             first_path_labeling_inv;
+  Orbit                     first_path_orbits;
+  unsigned int*             first_path_automorphism;
 
-  unsigned int *best_path_labeling;
-  unsigned int *best_path_labeling_inv;
+  std::vector<unsigned int> best_path_labeling_vec;
+  labeling_type             best_path_labeling;
+  std::vector<unsigned int> best_path_labeling_inv_vec;
+  labeling_type             best_path_labeling_inv;
   Orbit         best_path_orbits;
   unsigned int *best_path_automorphism;
 
-  void update_labeling(unsigned int * const lab);
-  void update_labeling_and_its_inverse(unsigned int * const lab,
-				       unsigned int * const lab_inv);
+  void update_labeling(labeling_type  const lab);
+  void update_labeling_and_its_inverse(labeling_type  const lab,
+				       labeling_type  const lab_inv);
   void update_orbit_information(Orbit &o, const unsigned int *perm);
 
   void reset_permutation(unsigned int *perm);
@@ -513,10 +519,6 @@ protected:
    * The number of vertices in the component \a cr_component
    */
   unsigned int cr_component_elements;
-
-
-
-
 };
 
 

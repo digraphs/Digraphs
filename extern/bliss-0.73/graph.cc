@@ -46,10 +46,6 @@ namespace bliss_digraphs {
 AbstractGraph::AbstractGraph()
 {
   /* Initialize stuff */
-  first_path_labeling = 0;
-  first_path_labeling_inv = 0;
-  best_path_labeling = 0;
-  best_path_labeling_inv = 0;
   first_path_automorphism = 0;
   best_path_automorphism = 0;
   in_search = false;
@@ -72,14 +68,6 @@ AbstractGraph::AbstractGraph()
 
 AbstractGraph::~AbstractGraph()
 {
-  if(first_path_labeling) {
-    free(first_path_labeling); first_path_labeling = 0; }
-  if(first_path_labeling_inv) {
-    free(first_path_labeling_inv); first_path_labeling_inv = 0; }
-  if(best_path_labeling) {
-    free(best_path_labeling); best_path_labeling = 0; }
-  if(best_path_labeling_inv) {
-    free(best_path_labeling_inv); best_path_labeling_inv = 0; }
   if(first_path_automorphism) {
     free(first_path_automorphism); first_path_automorphism = 0; }
   if(best_path_automorphism) {
@@ -242,7 +230,7 @@ AbstractGraph::do_refine_to_equitable()
  * then \a labeling will map 0 to 1, 1 to 2, and 2 to 0.
  */
 void
-AbstractGraph::update_labeling(unsigned int* const labeling)
+AbstractGraph::update_labeling(labeling_type labeling)
 {
   const unsigned int N = get_nof_vertices();
   unsigned int* ep = p.elements;
@@ -255,12 +243,12 @@ AbstractGraph::update_labeling(unsigned int* const labeling)
  * is also produced and assigned to \a labeling_inv.
  */
 void
-AbstractGraph::update_labeling_and_its_inverse(unsigned int* const labeling,
-                                               unsigned int* const labeling_inv)
+AbstractGraph::update_labeling_and_its_inverse(labeling_type const labeling,
+                                               labeling_type const labeling_inv)
 {
   const unsigned int N = get_nof_vertices();
   unsigned int* ep = p.elements;
-  unsigned int* clip = labeling_inv;
+  labeling_type clip = labeling_inv;
 
   for(unsigned int i = 0; i < N; ) {
     labeling[*ep] = i;
@@ -654,20 +642,20 @@ AbstractGraph::search(const bool canonical, Stats& stats)
   stats.nof_leaf_nodes = 1;
 
   /* Free old first path data structures */
-  if(first_path_labeling) {
-    free(first_path_labeling); first_path_labeling = 0; }
-  if(first_path_labeling_inv) {
-    free(first_path_labeling_inv); first_path_labeling_inv = 0; }
-  if(first_path_automorphism) {
-    free(first_path_automorphism); first_path_automorphism = 0; }
+  first_path_labeling_vec.clear();
+  first_path_labeling_inv_vec.clear();
+  if (first_path_automorphism) {
+    free(first_path_automorphism);
+    first_path_automorphism = 0;
+  }
 
   /* Free old best path data structures */
-  if(best_path_labeling) {
-    free(best_path_labeling); best_path_labeling = 0; }
-  if(best_path_labeling_inv) {
-    free(best_path_labeling_inv); best_path_labeling_inv = 0; }
-  if(best_path_automorphism) {
-    free(best_path_automorphism); best_path_automorphism = 0; }
+  best_path_labeling_vec.clear();
+  best_path_labeling_inv_vec.clear();
+  if (best_path_automorphism) {
+    free(best_path_automorphism);
+    best_path_automorphism = 0;
+  }
 
   if(N == 0)
     {
@@ -708,12 +696,13 @@ AbstractGraph::search(const bool canonical, Stats& stats)
   /*
    * Allocate space for the "first path" and "best path" labelings
    */
-  if(first_path_labeling) free(first_path_labeling);
-  first_path_labeling = (unsigned int*)calloc(N, sizeof(unsigned int));
-  if(!first_path_labeling) _OUT_OF_MEMORY();
-  if(best_path_labeling) free(best_path_labeling);
-  best_path_labeling = (unsigned int*)calloc(N, sizeof(unsigned int));
-  if(!best_path_labeling) _OUT_OF_MEMORY();
+  first_path_labeling_vec.clear();
+  first_path_labeling_vec.resize(N, 0);
+  first_path_labeling = first_path_labeling_vec.begin();
+
+  best_path_labeling_vec.clear();
+  best_path_labeling_vec.resize(N, 0);
+  best_path_labeling = best_path_labeling_vec.begin();
 
   /*
    * Is the initial partition discrete?
@@ -730,12 +719,13 @@ AbstractGraph::search(const bool canonical, Stats& stats)
   /*
    * Allocate the inverses of the "first path" and "best path" labelings
    */
-  if(first_path_labeling_inv) free(first_path_labeling_inv);
-  first_path_labeling_inv = (unsigned int*)calloc(N, sizeof(unsigned int));
-  if(!first_path_labeling_inv) _OUT_OF_MEMORY();
-  if(best_path_labeling_inv) free(best_path_labeling_inv);
-  best_path_labeling_inv = (unsigned int*)calloc(N, sizeof(unsigned int));
-  if(!best_path_labeling_inv) _OUT_OF_MEMORY();
+  first_path_labeling_inv_vec.clear();
+  first_path_labeling_inv_vec.resize(N, 0);
+  first_path_labeling_inv = first_path_labeling_inv_vec.begin();
+
+  best_path_labeling_inv_vec.clear();
+  best_path_labeling_inv_vec.resize(N, 0);
+  best_path_labeling_inv = best_path_labeling_inv_vec.begin();
 
   /*
    * Allocate space for the automorphisms
@@ -1775,18 +1765,11 @@ AbstractGraph::find_automorphisms(Stats& stats, void (*hook)(void *user_param, u
 
   search(false, stats);
 
-  if(first_path_labeling) {
-    free(first_path_labeling);
-    first_path_labeling = 0;
-  }
-  if(best_path_labeling) {
-    free(best_path_labeling);
-    best_path_labeling = 0;
-  }
+  first_path_labeling_vec.clear();
+  best_path_labeling_vec.clear();
 }
 
-
-const unsigned int *
+labeling_type
 AbstractGraph::canonical_form(Stats& stats, void (*hook)(void *user_param, unsigned int n, const unsigned int *aut), void *user_param) {
   report_hook = hook;
   report_user_param = user_param;
