@@ -9,9 +9,9 @@ extern "C" {
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -170,7 +170,7 @@ bliss_digraphs_find_canonical_labeling(BlissGraph *graph,
   const unsigned int *canonical_labeling = 0;
   assert(graph);
   assert(graph->g);
-  
+
   canonical_labeling = graph->g->canonical_form(s, hook, hook_user_param);
 
   if(stats)

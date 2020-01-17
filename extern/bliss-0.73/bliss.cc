@@ -10,9 +10,9 @@
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -52,11 +52,11 @@ static void
 usage(FILE* const fp, const char* argv0)
 {
   const char* program_name;
-  
+
   program_name = rindex(argv0, '/');
-  
+
   if(program_name) program_name++;
-  else program_name = argv0;  
+  else program_name = argv0;
   if(!program_name or *program_name == 0) program_name = "bliss";
 
   fprintf(fp, "bliss version %s (compiled "__DATE__")\n", bliss_digraphs::version);
@@ -187,7 +187,7 @@ main(const int argc, const char** argv)
   bliss_digraphs::AbstractGraph* g = 0;
 
   parse_options(argc, argv);
-  
+
   /* Parse splitting heuristics */
   bliss_digraphs::Digraph::SplittingHeuristic shs_directed = bliss_digraphs::Digraph::shs_fsm;
   bliss_digraphs::Graph::SplittingHeuristic shs_undirected = bliss_digraphs::Graph::shs_fsm;
@@ -246,13 +246,13 @@ main(const int argc, const char** argv)
       /* Read undirected graph in the DIMACS format */
       g = bliss_digraphs::Graph::read_dimacs(infile);
     }
-  
+
   if(infile != stdin)
     fclose(infile);
 
   if(!g)
     _fatal("Failed to read the graph, aborting");
-  
+
   if(verbose_level >= 2)
     {
       fprintf(verbstr, "Graph read in %.2f seconds\n", timer.get_duration());

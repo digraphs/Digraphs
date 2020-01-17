@@ -7,9 +7,9 @@
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -169,14 +169,14 @@ Partition::goto_backtrack_point(BacktrackPoint p)
     cr_goto_backtrack_point(info.cr_backtrack_point);
 
   const unsigned int dest_refinement_stack_size = info.refinement_stack_size;
-  
+
   assert(refinement_stack.size() >= dest_refinement_stack_size);
   while(refinement_stack.size() > dest_refinement_stack_size)
     {
       RefInfo i = refinement_stack.pop();
       const unsigned int first = i.split_cell_first;
       Cell* cell = get_cell(elements[first]);
-      
+
       if(cell->first != first)
 	{
 	  assert(cell->first < first);
@@ -260,12 +260,12 @@ Partition::individualize(Partition::Cell * const cell,
   in_pos[*pos] = pos;
   elements[last] = element;
   in_pos[element] = elements + last;
-  
+
   Partition::Cell * const new_cell = aux_split_in_two(cell, cell->length-1);
   element_to_cell_map[element] = new_cell;
 
   return new_cell;
-} 
+}
 
 
 
@@ -336,7 +336,7 @@ Partition::aux_split_in_two(Partition::Cell* const cell,
     }
 
   return new_cell;
-} 
+}
 
 
 
@@ -394,7 +394,7 @@ Partition::splitting_queue_add(Cell* const cell)
   if(cell->length <= smallish_cell_threshold)
     splitting_queue.push_front(cell);
   else
-    splitting_queue.push_back(cell);    
+    splitting_queue.push_back(cell);
 }
 
 
@@ -627,7 +627,7 @@ Partition::sort_and_split_cell1(Partition::Cell* const cell)
  * dcs_start[0] = 0 and dcs_start[i+1] = dcs_start[i] + dcs_count[i].
  */
 void
-Partition::dcs_cumulate_count(const unsigned int max) 
+Partition::dcs_cumulate_count(const unsigned int max)
 {
   unsigned int* count_p = dcs_count;
   unsigned int* start_p = dcs_start;
@@ -656,7 +656,7 @@ Partition::sort_and_split_cell255(Partition::Cell* const cell,
       invariant_values[elements[cell->first]] = 0;
       return cell;
     }
-  
+
 #ifdef BLISS_CONSISTENCY_CHECKS
   for(unsigned int i = 0; i < 256; i++)
     assert(dcs_count[i] == 0);
@@ -808,7 +808,7 @@ Partition::split_cell(Partition::Cell* const original_cell)
     original_cell->in_splitting_queue;
   Cell* largest_new_cell = 0;
 
-  while(true) 
+  while(true)
     {
       unsigned int* ep = elements + cell->first;
       const unsigned int* const lp = ep + cell->length;
@@ -829,17 +829,17 @@ Partition::split_cell(Partition::Cell* const original_cell)
 	}
       if(ep == lp)
 	break;
-      
+
       Cell* const new_cell = aux_split_in_two(cell,
 					      (ep - elements) - cell->first);
-      
+
       if(graph and graph->compute_eqref_hash)
 	{
 	  graph->eqref_hash.update(new_cell->first);
 	  graph->eqref_hash.update(new_cell->length);
 	  graph->eqref_hash.update(ival);
 	}
-      
+
       /* Add cells in splitting_queue */
       assert(!new_cell->is_in_splitting_queue());
       if(original_cell_was_in_splitting_queue)
@@ -868,7 +868,7 @@ Partition::split_cell(Partition::Cell* const original_cell)
       cell = new_cell;
     }
 
-  
+
   if(original_cell == cell) {
     /* All the elements in cell had the same invariant value */
     return cell;
