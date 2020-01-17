@@ -46,8 +46,6 @@ namespace bliss_digraphs {
 AbstractGraph::AbstractGraph()
 {
   /* Initialize stuff */
-  first_path_automorphism = 0;
-  best_path_automorphism = 0;
   in_search = false;
 
   /* Default value for using "long prune" */
@@ -68,10 +66,6 @@ AbstractGraph::AbstractGraph()
 
 AbstractGraph::~AbstractGraph()
 {
-  if(first_path_automorphism) {
-    free(first_path_automorphism); first_path_automorphism = 0; }
-  if(best_path_automorphism) {
-    free(best_path_automorphism); best_path_automorphism = 0; }
   for (size_t i = 0; i != long_prune_fixed.size(); i++) {
     std::vector<bool> * ptr = long_prune_fixed[i];
     if (ptr != NULL) {
@@ -169,13 +163,13 @@ AbstractGraph::do_refine_to_equitable()
         {
           if(in_search) {
             const unsigned int index = cell->first;
-            if(first_path_automorphism)
+            if(!first_path_automorphism_vec.empty())
               {
                 /* Build the (potential) automorphism on-the-fly */
                 first_path_automorphism[first_path_labeling_inv[index]] =
                   p.elements[index];
               }
-            if(best_path_automorphism)
+            if(!best_path_automorphism_vec.empty())
               {
                 /* Build the (potential) automorphism on-the-fly */
                 best_path_automorphism[best_path_labeling_inv[index]] =
@@ -274,7 +268,7 @@ AbstractGraph::update_labeling_and_its_inverse(labeling_type const labeling,
  * Reset the permutation \a perm to the identity permutation.
  */
 void
-AbstractGraph::reset_permutation(unsigned int* perm)
+AbstractGraph::reset_permutation(labeling_type perm)
 {
   const unsigned int N = get_nof_vertices();
   for(unsigned int i = 0; i < N; i++, perm++)
@@ -282,7 +276,7 @@ AbstractGraph::reset_permutation(unsigned int* perm)
 }
 
 bool
-AbstractGraph::is_automorphism(unsigned int* const perm)
+AbstractGraph::is_automorphism(labeling_type perm)
 {
   _INTERNAL_ERROR();
   return false;
@@ -495,7 +489,7 @@ AbstractGraph::long_prune_get_mcrs(const unsigned int index)
 }
 
 void
-AbstractGraph::long_prune_add_automorphism(const unsigned int* aut)
+AbstractGraph::long_prune_add_automorphism(labeling_type aut)
 {
   if(long_prune_max_stored_autss == 0)
     return;
@@ -546,7 +540,7 @@ AbstractGraph::long_prune_add_automorphism(const unsigned int* aut)
  *-------------------------------------------------------------------------*/
 
 void
-AbstractGraph::update_orbit_information(Orbit& o, const unsigned int* perm)
+AbstractGraph::update_orbit_information(Orbit& o, labeling_type perm)
 {
   const unsigned int N = get_nof_vertices();
   for(unsigned int i = 0; i < N; i++)
@@ -644,18 +638,12 @@ AbstractGraph::search(const bool canonical, Stats& stats)
   /* Free old first path data structures */
   first_path_labeling_vec.clear();
   first_path_labeling_inv_vec.clear();
-  if (first_path_automorphism) {
-    free(first_path_automorphism);
-    first_path_automorphism = 0;
-  }
+  first_path_automorphism_vec.clear();
 
   /* Free old best path data structures */
   best_path_labeling_vec.clear();
   best_path_labeling_inv_vec.clear();
-  if (best_path_automorphism) {
-    free(best_path_automorphism);
-    best_path_automorphism = 0;
-  }
+  best_path_automorphism_vec.clear();
 
   if(N == 0)
     {
@@ -730,12 +718,13 @@ AbstractGraph::search(const bool canonical, Stats& stats)
   /*
    * Allocate space for the automorphisms
    */
-  if(first_path_automorphism) free(first_path_automorphism);
-  first_path_automorphism = (unsigned int*)malloc(N * sizeof(unsigned int));
-  if(!first_path_automorphism) _OUT_OF_MEMORY();
-  if(best_path_automorphism) free(best_path_automorphism);
-  best_path_automorphism = (unsigned int*)malloc(N * sizeof(unsigned int));
-  if(!best_path_automorphism) _OUT_OF_MEMORY();
+  first_path_automorphism_vec.clear();
+  first_path_automorphism_vec.resize(N);
+  first_path_automorphism = first_path_automorphism_vec.begin();
+
+  best_path_automorphism_vec.clear();
+  best_path_automorphism_vec.resize(N);
+  best_path_automorphism = best_path_automorphism_vec.begin();
 
   /*
    * Initialize orbit information so that all vertices are in their own orbits
@@ -1645,7 +1634,7 @@ AbstractGraph::search(const bool canonical, Stats& stats)
             if(report_hook)
               (*report_hook)(report_user_param,
                              get_nof_vertices(),
-                             best_path_automorphism);
+                             &(*best_path_automorphism));
             /* Update statistics */
             stats.nof_generators++;
           }
@@ -1735,7 +1724,7 @@ AbstractGraph::search(const bool canonical, Stats& stats)
       if(report_hook)
         (*report_hook)(report_user_param,
                        get_nof_vertices(),
-                       first_path_automorphism);
+                       &(*first_path_automorphism));
 
       /* Update statistics */
       stats.nof_generators++;

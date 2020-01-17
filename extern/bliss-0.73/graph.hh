@@ -376,7 +376,7 @@ protected:
    * Release the memory allocated for "long prune" data structures.
    */
   void long_prune_deallocate();
-  void long_prune_add_automorphism(const unsigned int *aut);
+  void long_prune_add_automorphism(labeling_type aut);
   std::vector<bool>& long_prune_get_fixed(const unsigned int index);
   std::vector<bool>& long_prune_allocget_fixed(const unsigned int index);
   std::vector<bool>& long_prune_get_mcrs(const unsigned int index);
@@ -423,24 +423,28 @@ protected:
   std::vector<unsigned int> first_path_labeling_inv_vec;
   labeling_type             first_path_labeling_inv;
   Orbit                     first_path_orbits;
-  unsigned int*             first_path_automorphism;
+
+  std::vector<unsigned int> first_path_automorphism_vec;
+  labeling_type             first_path_automorphism;
 
   std::vector<unsigned int> best_path_labeling_vec;
   labeling_type             best_path_labeling;
   std::vector<unsigned int> best_path_labeling_inv_vec;
   labeling_type             best_path_labeling_inv;
   Orbit         best_path_orbits;
-  unsigned int *best_path_automorphism;
+
+  std::vector<unsigned int> best_path_automorphism_vec;
+  labeling_type             best_path_automorphism;
 
   void update_labeling(labeling_type  const lab);
   void update_labeling_and_its_inverse(labeling_type  const lab,
 				       labeling_type  const lab_inv);
-  void update_orbit_information(Orbit &o, const unsigned int *perm);
+  void update_orbit_information(Orbit &o, labeling_type perm);
 
-  void reset_permutation(unsigned int *perm);
+  void reset_permutation(labeling_type perm);
 
   /* Mainly for debugging purposes */
-  virtual bool is_automorphism(unsigned int* const perm);
+  virtual bool is_automorphism(labeling_type perm);
 
   std::vector<unsigned int> certificate_current_path;
   std::vector<unsigned int> certificate_first_path;
