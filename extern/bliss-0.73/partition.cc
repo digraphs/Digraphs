@@ -29,7 +29,6 @@ Partition::Partition()
 {
   N = 0;
   free_cells = 0;
-  element_to_cell_map = 0;
   graph = 0;
   discrete_cell_count = 0;
   /* Initialize a distribution count sorting array. */
@@ -45,7 +44,6 @@ Partition::Partition()
 
 Partition::~Partition()
 {
-  if(element_to_cell_map) {free(element_to_cell_map); element_to_cell_map = 0; }
   N = 0;
 }
 
@@ -119,11 +117,11 @@ void Partition::init(const unsigned int M)
   else
     free_cells = 0;
 
-  if(element_to_cell_map)
-    free(element_to_cell_map);
-  element_to_cell_map = (Cell **)malloc(N * sizeof(Cell *));
+  element_to_cell_map_vec.clear();
+  element_to_cell_map_vec.resize(N);
   for(unsigned int i = 0; i < N; i++)
-    element_to_cell_map[i] = first_cell;
+    element_to_cell_map_vec[i] = first_cell;
+  element_to_cell_map = element_to_cell_map_vec.begin();
 
   splitting_queue.init(N);
   refinement_stack.init(N);

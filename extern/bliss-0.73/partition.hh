@@ -149,8 +149,8 @@ public:
 private:
   unsigned int N;
   std::vector<Cell> cells_vec;
-  typedef std::vector<Cell>::iterator cells_type;
-  cells_type cells;
+  typedef std::vector<Cell>::iterator cell_pointer_substitute;
+  cell_pointer_substitute cells;
   Cell* free_cells;
   unsigned int discrete_cell_count;
 public:
@@ -165,10 +165,15 @@ public:
   std::vector<unsigned int> invariant_values_vec;
   uint_ptr_type invariant_values;
   /* element_to_cell_map[e] gives the cell of the element e */
-  Cell **element_to_cell_map;
+
+  typedef std::vector<Cell*>::iterator
+      cell_pointer_pointer_substitute;
+
+  std::vector<Cell*> element_to_cell_map_vec;
+  cell_pointer_pointer_substitute element_to_cell_map;
   /** Get the cell of the element \a e */
   Cell* get_cell(const unsigned int e) const {
-    return element_to_cell_map[e];
+    return element_to_cell_map_vec[e];
   }
   /* in_pos[e] points to the elements array s.t. *in_pos[e] = e  */
   std::vector<uint_ptr_type> in_pos_vec;
