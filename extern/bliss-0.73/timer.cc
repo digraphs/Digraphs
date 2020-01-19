@@ -34,7 +34,7 @@ void Timer::reset()
 {
   struct tms clkticks;
 
-  times(&clkticks);
+//  times(&clkticks);
   start_time =
     ((double) clkticks.tms_utime + (double) clkticks.tms_stime) /
     numTicksPerSec;
@@ -45,7 +45,7 @@ double Timer::get_duration()
 {
   struct tms clkticks;
 
-  times(&clkticks);
+//  times(&clkticks);
   double intermediate =
     ((double) clkticks.tms_utime + (double) clkticks.tms_stime) /
     numTicksPerSec;
