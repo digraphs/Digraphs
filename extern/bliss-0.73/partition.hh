@@ -160,7 +160,8 @@ public:
   std::vector<unsigned int> elements_vec;
   uint_ptr_type elements;
   /* invariant_values[e] gives the invariant value of the element e */
-  unsigned int *invariant_values;
+  std::vector<unsigned int> invariant_values_vec;
+  uint_ptr_type invariant_values;
   /* element_to_cell_map[e] gives the cell of the element e */
   Cell **element_to_cell_map;
   /** Get the cell of the element \a e */

@@ -28,7 +28,6 @@ namespace bliss_digraphs {
 Partition::Partition()
 {
   N = 0;
-  invariant_values = 0;
   cells = 0;
   free_cells = 0;
   element_to_cell_map = 0;
@@ -49,7 +48,6 @@ Partition::~Partition()
 {
   if(cells)               {free(cells); cells = 0; }
   if(element_to_cell_map) {free(element_to_cell_map); element_to_cell_map = 0; }
-  if(invariant_values)    {free(invariant_values); invariant_values = 0; }
   N = 0;
 }
 
@@ -72,11 +70,11 @@ void Partition::init(const unsigned int M)
     in_pos_vec[i] = elements + i;
   in_pos = in_pos_vec.begin();
 
-  if(invariant_values)
-    free(invariant_values);
-  invariant_values = (unsigned int*)malloc(N * sizeof(unsigned int));
+  invariant_values_vec.clear();
+  invariant_values_vec.resize(N);
   for(unsigned int i = 0; i < N; i++)
-    invariant_values[i] = 0;
+    invariant_values_vec[i] = 0;
+  invariant_values = invariant_values_vec.begin();
 
   if(cells)
     free(cells);
