@@ -73,8 +73,7 @@ Int DigraphNrVertices(Obj D) {
   return LEN_LIST(FuncOutNeighbours(0L, D));
 }
 
-static Int RNamOutNeighbours        = 0;
-
+static Int RNamOutNeighbours = 0;
 
 Obj FuncOutNeighbours(Obj self, Obj D) {
   if (!RNamOutNeighbours) {

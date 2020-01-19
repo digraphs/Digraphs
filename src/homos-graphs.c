@@ -17,21 +17,21 @@
 #include "src/compiled.h"  // for Obj, Int
 
 // Digraphs headers
-#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-#include "schreier-sims.h"   // for PERM_DEGREE
 #include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_BLISS
+#include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
+#include "schreier-sims.h"    // for PERM_DEGREE
 
 // Bliss headers
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
 #include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
 #else
 #include "bliss/bliss_C.h"
-#define bliss_digraphs_add_edge                 bliss_add_edge
-#define bliss_digraphs_new                      bliss_new
-#define bliss_digraphs_add_vertex               bliss_add_vertex
-#define bliss_digraphs_find_canonical_labeling  bliss_find_canonical_labeling
-#define bliss_digraphs_release                  bliss_release
-#define bliss_digraphs_find_automorphisms       bliss_find_automorphisms
+#define bliss_digraphs_add_edge bliss_add_edge
+#define bliss_digraphs_new bliss_new
+#define bliss_digraphs_add_vertex bliss_add_vertex
+#define bliss_digraphs_find_canonical_labeling bliss_find_canonical_labeling
+#define bliss_digraphs_release bliss_release
+#define bliss_digraphs_find_automorphisms bliss_find_automorphisms
 #endif
 
 Digraph* new_digraph(uint16_t const nr_verts) {
@@ -169,7 +169,7 @@ static BlissGraph* new_bliss_graph_from_graph(Graph const* const    graph,
 
 static void bliss_graph_from_graph(Graph const* const    graph,
                                    uint16_t const* const colors,
-                                   BlissGraph* bg) {
+                                   BlissGraph*           bg) {
   // Pr("Here!!\n", 0L, 0L);
   DIGRAPHS_ASSERT(graph != NULL);
   DIGRAPHS_ASSERT(colors != NULL);
@@ -218,11 +218,11 @@ void automorphisms_digraph(Digraph const* const  digraph,
 void automorphisms_graph(Graph const* const    graph,
                          uint16_t const* const colors,
                          PermColl*             out,
-                         BlissGraph* bg) {
+                         BlissGraph*           bg) {
   DIGRAPHS_ASSERT(graph != NULL);
   DIGRAPHS_ASSERT(out != NULL);
   clear_perm_coll(out);
-  out->degree    = PERM_DEGREE;
+  out->degree = PERM_DEGREE;
   bliss_graph_from_graph(graph, colors, bg);
   bliss_digraphs_find_automorphisms(bg, bliss_hook, out, 0);
 }

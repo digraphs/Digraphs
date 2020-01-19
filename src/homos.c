@@ -515,9 +515,9 @@ static void internal_order_map_graph(Graph const* const graph) {
 
 // Helper for the main recursive homomorphism function.
 static ALWAYS_INLINE uint16_t
-                     graph_homo_update_conditions(uint16_t const depth,
-                                                  uint16_t const last_defined,
-                                                  uint16_t const vertex) {
+graph_homo_update_conditions(uint16_t const depth,
+                             uint16_t const last_defined,
+                             uint16_t const vertex) {
   push_conditions(
       CONDITIONS, depth, vertex, GRAPH2->neighbours[MAP[last_defined]]);
   store_size_conditions(CONDITIONS, vertex);
@@ -675,9 +675,9 @@ static void find_graph_homos(uint16_t        depth,
 
 // Helper for the main recursive monomorphism function.
 static ALWAYS_INLINE uint16_t
-                     graph_mono_update_conditions(uint16_t const depth,
-                                                  uint16_t const last_defined,
-                                                  uint16_t const vertex) {
+graph_mono_update_conditions(uint16_t const depth,
+                             uint16_t const last_defined,
+                             uint16_t const vertex) {
   push_conditions(
       CONDITIONS, depth, vertex, GRAPH2->neighbours[MAP[last_defined]]);
   store_size_conditions(CONDITIONS, vertex);
@@ -1049,9 +1049,9 @@ static void init_partial_map_and_find_graph_homos(Obj partial_map_obj,
 
 // Helper for the main recursive homomorphism of digraphs function.
 static ALWAYS_INLINE uint16_t
-                     digraph_homo_update_conditions(uint16_t const depth,
-                                                    uint16_t const last_defined,
-                                                    uint16_t const vertex) {
+digraph_homo_update_conditions(uint16_t const depth,
+                               uint16_t const last_defined,
+                               uint16_t const vertex) {
   if (is_adjacent_digraph(DIGRAPH1, last_defined, vertex)) {
     push_conditions(
         CONDITIONS, depth, vertex, DIGRAPH2->out_neighbours[MAP[last_defined]]);
@@ -1206,9 +1206,9 @@ static void find_digraph_homos(uint16_t        depth,
 
 // Helper for the main recursive monomorphism of digraphs function.
 static ALWAYS_INLINE uint16_t
-                     digraph_mono_update_conditions(uint16_t const depth,
-                                                    uint16_t const last_defined,
-                                                    uint16_t const vertex) {
+digraph_mono_update_conditions(uint16_t const depth,
+                               uint16_t const last_defined,
+                               uint16_t const vertex) {
   push_conditions(CONDITIONS, depth, vertex, NULL);
   if (is_adjacent_digraph(DIGRAPH1, last_defined, vertex)) {
     intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
@@ -1321,9 +1321,9 @@ static void find_digraph_monos(uint16_t        depth,
 
 // Helper for the main recursive embedding digraphs function.
 static ALWAYS_INLINE uint16_t
-                     digraph_embed_update_conditions(uint16_t const depth,
-                                                     uint16_t const last_def,
-                                                     uint16_t const vertex) {
+digraph_embed_update_conditions(uint16_t const depth,
+                                uint16_t const last_def,
+                                uint16_t const vertex) {
   push_conditions(CONDITIONS, depth, vertex, NULL);
   if (is_adjacent_digraph(DIGRAPH1, last_def, vertex)) {
     intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
@@ -1574,7 +1574,6 @@ static bool init_data_from_args(Obj digraph1_obj,
 
     GRAPH1 = new_graph(MAXVERTS);
     GRAPH2 = new_graph(MAXVERTS);
-
 
     IMAGE_RESTRICT = new_bit_array(MAXVERTS);
     ORB_LOOKUP     = new_bit_array(MAXVERTS);
