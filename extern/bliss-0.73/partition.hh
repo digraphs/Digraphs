@@ -154,7 +154,11 @@ private:
 public:
   Cell* first_cell;
   Cell* first_nonsingleton_cell;
-  unsigned int *elements;
+
+  typedef std::vector<unsigned int>::iterator uint_ptr_type;
+  typedef std::vector<unsigned int>::const_iterator const_uint_ptr_type;
+  std::vector<unsigned int> elements_vec;
+  uint_ptr_type elements;
   /* invariant_values[e] gives the invariant value of the element e */
   unsigned int *invariant_values;
   /* element_to_cell_map[e] gives the cell of the element e */
@@ -164,7 +168,8 @@ public:
     return element_to_cell_map[e];
   }
   /* in_pos[e] points to the elements array s.t. *in_pos[e] = e  */
-  unsigned int **in_pos;
+  std::vector<uint_ptr_type> in_pos_vec;
+  std::vector<uint_ptr_type>::iterator in_pos;
 
   Partition();
   ~Partition();

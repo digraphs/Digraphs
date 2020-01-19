@@ -227,7 +227,7 @@ void
 AbstractGraph::update_labeling(labeling_type labeling)
 {
   const unsigned int N = get_nof_vertices();
-  unsigned int* ep = p.elements;
+  Partition::uint_ptr_type ep = p.elements;
   for(unsigned int i = 0; i < N; i++, ep++)
     labeling[*ep] = i;
 }
@@ -241,7 +241,7 @@ AbstractGraph::update_labeling_and_its_inverse(labeling_type const labeling,
                                                labeling_type const labeling_inv)
 {
   const unsigned int N = get_nof_vertices();
-  unsigned int* ep = p.elements;
+  Partition::uint_ptr_type  ep = p.elements;
   labeling_type clip = labeling_inv;
 
   for(unsigned int i = 0; i < N; ) {
@@ -951,7 +951,7 @@ AbstractGraph::search(const bool canonical, Stats& stats)
                       continue;
                     }
                   const std::vector<bool>& mcrs = long_prune_get_mcrs(i);
-                  unsigned int* ep = p.elements + cell->first;
+                  Partition::uint_ptr_type ep = p.elements + cell->first;
                   for(unsigned int j = cell->length; j > 0; j--, ep++) {
                     if(mcrs[*ep] == false)
                       current_node.long_prune_redundant.insert(*ep);
@@ -967,8 +967,8 @@ AbstractGraph::search(const bool canonical, Stats& stats)
        */
       {
         unsigned int  next_split_element = UINT_MAX;
-        unsigned int* next_split_element_pos = 0;
-        unsigned int* ep = p.elements + cell->first;
+        Partition::uint_ptr_type next_split_element_pos;
+        Partition::uint_ptr_type ep = p.elements + cell->first;
         if(current_node.fp_on)
           {
             /* Find the next larger splitting element that is
@@ -2429,7 +2429,7 @@ Digraph::refine_according_to_invariant(unsigned int (*inv)(const Digraph* const 
     {
 
       Partition::Cell* const next_cell = cell->next_nonsingleton;
-      const unsigned int* ep = p.elements + cell->first;
+      Partition::const_uint_ptr_type ep = p.elements + cell->first;
       for(unsigned int i = cell->length; i > 0; i--, ep++)
         {
           unsigned int ival = inv(this, *ep);
@@ -2473,7 +2473,7 @@ Digraph::split_neighbourhood_of_cell(Partition::Cell* const cell)
       eqref_hash.update(cell->length);
     }
 
-  const unsigned int* ep = p.elements + cell->first;
+  Partition::const_uint_ptr_type ep = p.elements + cell->first;
   for(unsigned int i = cell->length; i > 0; i--)
     {
       const Vertex& v = vertices[*ep++];
@@ -2693,7 +2693,7 @@ Digraph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
         }
       neighbour_cell->max_ival_count++;
 
-      unsigned int* const swap_position =
+      Partition::uint_ptr_type const swap_position =
         p.elements + neighbour_cell->first + neighbour_cell->length -
         neighbour_cell->max_ival_count;
       *p.in_pos[dest_vertex] = *swap_position;
@@ -2732,8 +2732,8 @@ Digraph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
             p.aux_split_in_two(neighbour_cell,
                                neighbour_cell->length -
                                neighbour_cell->max_ival_count);
-          unsigned int* ep = p.elements + new_cell->first;
-          unsigned int* const lp = p.elements+new_cell->first+new_cell->length;
+          Partition::uint_ptr_type ep = p.elements + new_cell->first;
+          Partition::uint_ptr_type const lp = p.elements+new_cell->first+new_cell->length;
           while(ep < lp)
             {
               p.element_to_cell_map[*ep] = new_cell;
@@ -2825,7 +2825,7 @@ Digraph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
         }
       neighbour_cell->max_ival_count++;
 
-      unsigned int* const swap_position =
+      Partition::uint_ptr_type const swap_position =
         p.elements + neighbour_cell->first + neighbour_cell->length -
         neighbour_cell->max_ival_count;
       *p.in_pos[dest_vertex] = *swap_position;
@@ -2863,8 +2863,8 @@ Digraph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
             p.aux_split_in_two(neighbour_cell,
                                neighbour_cell->length -
                                neighbour_cell->max_ival_count);
-          unsigned int* ep = p.elements + new_cell->first;
-          unsigned int* const lp = p.elements+new_cell->first+new_cell->length;
+          Partition::uint_ptr_type ep = p.elements + new_cell->first;
+          Partition::uint_ptr_type const lp = p.elements+new_cell->first+new_cell->length;
           while(ep < lp) {
             p.element_to_cell_map[*ep] = new_cell;
             ep++;
@@ -2991,7 +2991,7 @@ Digraph::is_equitable() const
       if(cell->is_unit())
         continue;
 
-      unsigned int* ep = p.elements + cell->first;
+      Partition::uint_ptr_type ep = p.elements + cell->first;
       const Vertex& first_vertex = vertices[*ep++];
 
       /* Count outgoing edges of the first vertex for cells */
@@ -3040,7 +3040,7 @@ Digraph::is_equitable() const
       if(cell->is_unit())
         continue;
 
-      unsigned int* ep = p.elements + cell->first;
+      Partition::uint_ptr_type ep = p.elements + cell->first;
       const Vertex& first_vertex = vertices[*ep++];
 
       /* Count incoming edges of the first vertex for cells */
@@ -4516,7 +4516,7 @@ Graph::refine_according_to_invariant(unsigned int (*inv)(const Graph* const g,
 
       Partition::Cell* const next_cell = cell->next_nonsingleton;
 
-      const unsigned int* ep = p.elements + cell->first;
+      Partition::const_uint_ptr_type ep = p.elements + cell->first;
       for(unsigned int i = cell->length; i > 0; i--, ep++)
         {
           const unsigned int ival = inv(this, *ep);
@@ -4569,7 +4569,7 @@ Graph::split_neighbourhood_of_cell(Partition::Cell* const cell)
       eqref_hash.update(cell->length);
     }
 
-  const unsigned int* ep = p.elements + cell->first;
+  Partition::const_uint_ptr_type ep = p.elements + cell->first;
   for(unsigned int i = cell->length; i > 0; i--)
     {
       const Vertex& v = vertices[*ep++];
@@ -4714,7 +4714,7 @@ Graph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
         }
       neighbour_cell->max_ival_count++;
 
-      unsigned int * const swap_position =
+      Partition::uint_ptr_type const swap_position =
         p.elements + neighbour_cell->first + neighbour_cell->length -
         neighbour_cell->max_ival_count;
       *p.in_pos[dest_vertex] = *swap_position;
@@ -4748,8 +4748,8 @@ Graph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
             p.aux_split_in_two(neighbour_cell,
                                neighbour_cell->length -
                                neighbour_cell->max_ival_count);
-          unsigned int *ep = p.elements + new_cell->first;
-          unsigned int * const lp = p.elements+new_cell->first+new_cell->length;
+          Partition::uint_ptr_type ep = p.elements + new_cell->first;
+          Partition::uint_ptr_type const lp = p.elements+new_cell->first+new_cell->length;
           while(ep < lp)
             {
               p.element_to_cell_map[*ep] = new_cell;
@@ -4880,7 +4880,7 @@ bool Graph::is_equitable() const
       if(cell->is_unit())
         continue;
 
-      unsigned int *ep = p.elements + cell->first;
+      Partition::uint_ptr_type ep = p.elements + cell->first;
       const Vertex &first_vertex = vertices[*ep++];
 
       /* Count how many edges lead from the first vertex to
