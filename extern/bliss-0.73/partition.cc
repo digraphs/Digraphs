@@ -28,7 +28,6 @@ namespace bliss_digraphs {
 Partition::Partition()
 {
   N = 0;
-  cells = 0;
   free_cells = 0;
   element_to_cell_map = 0;
   graph = 0;
@@ -46,7 +45,6 @@ Partition::Partition()
 
 Partition::~Partition()
 {
-  if(cells)               {free(cells); cells = 0; }
   if(element_to_cell_map) {free(element_to_cell_map); element_to_cell_map = 0; }
   N = 0;
 }
@@ -76,22 +74,21 @@ void Partition::init(const unsigned int M)
     invariant_values_vec[i] = 0;
   invariant_values = invariant_values_vec.begin();
 
-  if(cells)
-    free(cells);
-  cells = (Cell*)malloc(N * sizeof(Cell));
+  cells_vec.clear();
+  cells_vec.resize(N);
 
-  cells[0].first = 0;
-  cells[0].length = N;
-  cells[0].max_ival = 0;
-  cells[0].max_ival_count = 0;
-  cells[0].in_splitting_queue = false;
-  cells[0].in_neighbour_heap = false;
-  cells[0].prev = 0;
-  cells[0].next = 0;
-  cells[0].next_nonsingleton = 0;
-  cells[0].prev_nonsingleton = 0;
-  cells[0].split_level = 0;
-  first_cell = &cells[0];
+  cells_vec[0].first = 0;
+  cells_vec[0].length = N;
+  cells_vec[0].max_ival = 0;
+  cells_vec[0].max_ival_count = 0;
+  cells_vec[0].in_splitting_queue = false;
+  cells_vec[0].in_neighbour_heap = false;
+  cells_vec[0].prev = 0;
+  cells_vec[0].next = 0;
+  cells_vec[0].next_nonsingleton = 0;
+  cells_vec[0].prev_nonsingleton = 0;
+  cells_vec[0].split_level = 0;
+  first_cell = &cells_vec[0];
   if(N == 1)
     {
       first_nonsingleton_cell = 0;
@@ -99,25 +96,26 @@ void Partition::init(const unsigned int M)
     }
   else
     {
-      first_nonsingleton_cell = &cells[0];
+      first_nonsingleton_cell = &cells_vec[0];
       discrete_cell_count = 0;
     }
 
   for(unsigned int i = 1; i < N; i++)
     {
-      cells[i].first = 0;
-      cells[i].length = 0;
-      cells[i].max_ival = 0;
-      cells[i].max_ival_count = 0;
-      cells[i].in_splitting_queue = false;
-      cells[i].in_neighbour_heap = false;
-      cells[i].prev = 0;
-      cells[i].next = (i < N-1)?&cells[i+1]:0;
-      cells[i].next_nonsingleton = 0;
-      cells[i].prev_nonsingleton = 0;
+      cells_vec[i].first = 0;
+      cells_vec[i].length = 0;
+      cells_vec[i].max_ival = 0;
+      cells_vec[i].max_ival_count = 0;
+      cells_vec[i].in_splitting_queue = false;
+      cells_vec[i].in_neighbour_heap = false;
+      cells_vec[i].prev = 0;
+      cells_vec[i].next = (i < N-1)?&cells_vec[i+1]:0;
+      cells_vec[i].next_nonsingleton = 0;
+      cells_vec[i].prev_nonsingleton = 0;
     }
+  cells = cells_vec.begin();
   if(N > 1)
-    free_cells = &cells[1];
+    free_cells = &cells_vec[1];
   else
     free_cells = 0;
 

@@ -148,7 +148,9 @@ public:
 
 private:
   unsigned int N;
-  Cell* cells;
+  std::vector<Cell> cells_vec;
+  typedef std::vector<Cell>::iterator cells_type;
+  cells_type cells;
   Cell* free_cells;
   unsigned int discrete_cell_count;
 public:
