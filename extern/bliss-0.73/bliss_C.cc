@@ -60,6 +60,23 @@ void bliss_digraphs_write_dimacs(BlissGraph *graph, FILE *fp)
 }
 
 extern "C"
+void bliss_digraphs_clear(BlissGraph *graph)
+{
+  assert(graph);
+  assert(graph->g);
+  graph->g->clear();
+}
+
+  extern "C"
+void bliss_digraphs_change_color(BlissGraph* graph, const unsigned int vertex, const unsigned int color)
+{
+  assert(graph);
+  assert(graph->g);
+  graph->g->change_color(vertex, color);
+}
+
+
+extern "C"
 void bliss_digraphs_release(BlissGraph *graph)
 {
   assert(graph);

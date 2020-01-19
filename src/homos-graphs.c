@@ -167,6 +167,27 @@ static BlissGraph* new_bliss_graph_from_graph(Graph const* const    graph,
   return bg;
 }
 
+static void bliss_graph_from_graph(Graph const* const    graph,
+                                   uint16_t const* const colors,
+                                   BlissGraph* bg) {
+  // Pr("Here!!\n", 0L, 0L);
+  DIGRAPHS_ASSERT(graph != NULL);
+  DIGRAPHS_ASSERT(colors != NULL);
+  uint16_t const n = graph->nr_vertices;
+  for (uint16_t i = 0; i < n; i++) {
+    bliss_digraphs_change_color(bg, i, colors[i]);
+  }
+
+  bliss_digraphs_clear(bg);
+  for (uint16_t i = 0; i < n; i++) {
+    for (uint16_t j = 0; j < n; j++) {
+      if (is_adjacent_graph(graph, i, j)) {
+        bliss_digraphs_add_edge(bg, i, j);
+      }
+    }
+  }
+}
+
 static void bliss_hook(void*               user_param_arg,  // perm_coll!
                        unsigned int        N,
                        const unsigned int* aut) {
@@ -185,6 +206,7 @@ void automorphisms_digraph(Digraph const* const  digraph,
                            uint16_t const* const colors,
                            PermColl*             out) {
   DIGRAPHS_ASSERT(digraph != NULL);
+  // Pr("Here!!\n", 0L, 0L);
   DIGRAPHS_ASSERT(out != NULL);
   clear_perm_coll(out);
   out->degree    = PERM_DEGREE;
@@ -195,12 +217,12 @@ void automorphisms_digraph(Digraph const* const  digraph,
 
 void automorphisms_graph(Graph const* const    graph,
                          uint16_t const* const colors,
-                         PermColl*             out) {
+                         PermColl*             out,
+                         BlissGraph* bg) {
   DIGRAPHS_ASSERT(graph != NULL);
   DIGRAPHS_ASSERT(out != NULL);
   clear_perm_coll(out);
   out->degree    = PERM_DEGREE;
-  BlissGraph* bg = new_bliss_graph_from_graph(graph, colors);
+  bliss_graph_from_graph(graph, colors, bg);
   bliss_digraphs_find_automorphisms(bg, bliss_hook, out, 0);
-  bliss_digraphs_release(bg);
 }

@@ -20,6 +20,8 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "perms.h"           // for PermColl
 
+#include "bliss-0.73/bliss_C.h"
+
 ////////////////////////////////////////////////////////////////////////
 // Directed graphs (digraphs)
 ////////////////////////////////////////////////////////////////////////
@@ -77,6 +79,9 @@ static inline bool is_adjacent_graph(Graph const* const graph,
   return get_bit_array(graph->neighbours[i], j);
 }
 
-void automorphisms_graph(Graph const* const, uint16_t const* const, PermColl*);
+void automorphisms_graph(Graph const* const,
+                         uint16_t const* const,
+                         PermColl*,
+                         BlissGraph*);
 
 #endif  // DIGRAPHS_SRC_HOMOS_GRAPHS_H_

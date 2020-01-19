@@ -579,12 +579,23 @@ protected:
 
     unsigned int color;
     std::vector<unsigned int> edges;
+    void clear() {
+      edges.clear();
+    }
     unsigned int nof_edges() const {return edges.size(); }
   };
   std::vector<Vertex> vertices;
   void sort_edges();
   void remove_duplicate_edges();
-
+public:
+  void clear() {
+    for (std::vector<Vertex>::iterator it = vertices.begin();
+         it < vertices.end();
+         ++it) {
+      it->clear();
+    }
+  }
+protected:
   /** \internal
    * Partition independent invariant.
    * Returns the color of the vertex.
@@ -811,8 +822,21 @@ protected:
     std::vector<unsigned int> edges_in;
     unsigned int nof_edges_in() const {return edges_in.size(); }
     unsigned int nof_edges_out() const {return edges_out.size(); }
+    void clear() {
+      edges_out.clear();
+      edges_in.clear();
+    }
   };
   std::vector<Vertex> vertices;
+
+  void clear() {
+    for (std::vector<Vertex>::iterator it = vertices.begin();
+         it < vertices.end();
+         ++it) {
+      it->clear();
+    }
+  }
+
   void remove_duplicate_edges();
 
   /** \internal

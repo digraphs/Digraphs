@@ -47,6 +47,8 @@
 #include "perms.h"            // for MAXVERTS, UNDEFINED, PermColl, Perm
 #include "schreier-sims.h"    // for PermColl, . . .
 
+#include "bliss-0.73/bliss_C.h"
+
 ////////////////////////////////////////////////////////////////////////////////
 // 1. Macros
 ////////////////////////////////////////////////////////////////////////////////
@@ -161,6 +163,8 @@ static Digraph* DIGRAPH2;
 
 static Graph* GRAPH1;  // Graphs to hold incoming GAP symmetric digraphs
 static Graph* GRAPH2;
+
+static BlissGraph* BLISS_GRAPH[MAXVERTS];
 
 static uint16_t MAP[MAXVERTS];            // partial image list
 static uint16_t COLORS2[MAXVERTS];        // colors of range (di)graph
@@ -1571,10 +1575,12 @@ static bool init_data_from_args(Obj digraph1_obj,
     GRAPH1 = new_graph(MAXVERTS);
     GRAPH2 = new_graph(MAXVERTS);
 
+
     IMAGE_RESTRICT = new_bit_array(MAXVERTS);
     ORB_LOOKUP     = new_bit_array(MAXVERTS);
     REPS           = malloc(MAXVERTS * sizeof(BitArray*));
     for (uint16_t i = 0; i < MAXVERTS; i++) {
+      BLISS_GRAPH[i]      = bliss_digraphs_new(i);
       REPS[i]             = new_bit_array(MAXVERTS);
       BIT_ARRAY_BUFFER[i] = new_bit_array(MAXVERTS);
       MAP_UNDEFINED[i]    = new_bit_array(MAXVERTS);
@@ -1753,7 +1759,7 @@ static bool init_data_from_args(Obj digraph1_obj,
   if (colors == NULL) {
     get_automorphism_group_from_gap(digraph2_obj, STAB_GENS[0]);
   } else if (is_undirected) {
-    automorphisms_graph(GRAPH2, colors, STAB_GENS[0]);
+    automorphisms_graph(GRAPH2, colors, STAB_GENS[0], BLISS_GRAPH[PERM_DEGREE]);
   } else {
     automorphisms_digraph(DIGRAPH2, colors, STAB_GENS[0]);
   }
