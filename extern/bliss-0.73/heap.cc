@@ -27,13 +27,6 @@ namespace bliss_digraphs {
 
 Heap::~Heap()
 {
-  if(array)
-    {
-      free(array);
-      array = 0;
-      n = 0;
-      N = 0;
-    }
 }
 
 void Heap::upheap(unsigned int index)
@@ -69,9 +62,8 @@ void Heap::init(const unsigned int size)
 {
   if(size > N)
     {
-      if(array)
-	free(array);
-      array = (unsigned int*)malloc((size + 1) * sizeof(unsigned int));
+      array_vec.resize(size + 1);
+      array = array_vec.begin();
       N = size;
     }
   n = 0;
