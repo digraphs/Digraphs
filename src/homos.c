@@ -127,6 +127,9 @@ extern Obj Infinity;
 extern Obj IsSymmetricDigraph;
 extern Obj GeneratorsOfGroup;
 extern Obj AutomorphismGroup;
+extern Obj IsPermGroup;
+extern Obj IsDigraphAutomorphism;
+extern Obj LargestMovedPointPerms;
 
 ////////////////////////////////////////////////////////////////////////////////
 // 3. Global variables
@@ -502,6 +505,21 @@ static void internal_order_map_graph(Graph const* const graph) {
   }
   for (uint16_t i = 0; i < graph->nr_vertices; ++i) {
     MAP[i] = MAP_BUFFER[i];
+  }
+}
+
+static void set_automorphisms(Obj aut_grp_obj, PermColl* out) {
+  DIGRAPHS_ASSERT(out != NULL);
+  clear_perm_coll(out);
+  out->degree = PERM_DEGREE;
+  Obj gens    = CALL_1ARGS(GeneratorsOfGroup, aut_grp_obj);
+  DIGRAPHS_ASSERT(IS_LIST(gens));
+  DIGRAPHS_ASSERT(LEN_LIST(gens) > 0);
+  for (UInt i = 1; i <= LEN_LIST(gens); ++i) {
+    Obj gen_obj = ELM_LIST(gens, i);
+    if (LargestMovedPointPerm(gen_obj) > 0) {
+      add_perm_coll(out, new_perm_from_gap(gen_obj, PERM_DEGREE));
+    }
   }
 }
 
@@ -889,6 +907,7 @@ static void find_graph_embeddings(uint16_t        depth,
   copy_bit_array(
       possible, get_conditions(CONDITIONS, next), GRAPH2->nr_vertices);
   intersect_bit_arrays(possible, REPS[rep_depth], GRAPH2->nr_vertices);
+  complement_bit_arrays(possible, VALS, GRAPH2->nr_vertices);
 
   FOR_SET_BITS(possible, GRAPH2->nr_vertices, i) {
     MAP[next] = i;
@@ -1410,6 +1429,7 @@ static void find_digraph_embeddings(uint16_t        depth,
   copy_bit_array(
       possible, get_conditions(CONDITIONS, next), DIGRAPH2->nr_vertices);
   intersect_bit_arrays(possible, REPS[rep_depth], DIGRAPH2->nr_vertices);
+  complement_bit_arrays(possible, VALS, DIGRAPH2->nr_vertices);
 
   FOR_SET_BITS(possible, DIGRAPH2->nr_vertices, i) {
     MAP[next] = i;
@@ -1556,7 +1576,8 @@ static bool init_data_from_args(Obj digraph1_obj,
                                 Obj partial_map_obj,
                                 Obj colors1_obj,
                                 Obj colors2_obj,
-                                Obj order_obj) {
+                                Obj order_obj,
+                                Obj aut_grp_obj) {
   static bool is_initialized = false;  // did we call this method before?
   if (!is_initialized) {
     // srand(time(0));
@@ -1750,13 +1771,18 @@ static bool init_data_from_args(Obj digraph1_obj,
   // Get generators of the automorphism group of the second (di)graph, and the
   // orbit reps
   PERM_DEGREE = nr2;
-  if (colors == NULL) {
-    get_automorphism_group_from_gap(digraph2_obj, STAB_GENS[0]);
-  } else if (is_undirected) {
-    automorphisms_graph(GRAPH2, colors, STAB_GENS[0]);
+  if (aut_grp_obj == Fail) {
+    if (colors == NULL) {
+      get_automorphism_group_from_gap(digraph2_obj, STAB_GENS[0]);
+    } else if (is_undirected) {
+      automorphisms_graph(GRAPH2, colors, STAB_GENS[0]);
+    } else {
+      automorphisms_digraph(DIGRAPH2, colors, STAB_GENS[0]);
+    }
   } else {
-    automorphisms_digraph(DIGRAPH2, colors, STAB_GENS[0]);
+    set_automorphisms(aut_grp_obj, STAB_GENS[0]);
   }
+
   compute_stabs_and_orbit_reps(nr1, nr2, 0, 0, UNDEFINED);
   return true;
 }
@@ -1765,37 +1791,41 @@ static bool init_data_from_args(Obj digraph1_obj,
 //
 // The arguments are:
 //
-// 1. digraph1_obj     the source/domain of the homomorphisms sought
-// 2. digraph2_obj     the range/codomain of the homomorphisms sought
-// 3. hook_obj         apply this function to every homomorphism found, or Fail
-//                     for no function.
-// 4. user_param_obj   GAP variable that can be used in the hook_obj, must be a
-//                     plist if hook_obj is Fail.
-// 5. max_results_obj  the maximum number of homomorphisms to find
-// 6. hint_obj         the rank of any homomorphisms found
-// 7. injective_obj    should be 0 for non-injective, 1 for injective, 2 for
-//                     embedding, or (for backwards compatibility, true for
-//                     injective, or false for non-injective).
-// 8. image_obj        a list of vertices in digraph2_obj from which the images
-//                     of any homomorphism will be taken.
-// 9. partial_map_obj  a partial map from digraph1_obj to digraph2_obj, only
-//                     homomorphisms extending this partial map are found (if
-//                     any). Can also be fail to indicate no partial mapping is
-//                     defined.
-// 10. colors1_obj     a coloring of digraph1_obj
-// 11. colors2_obj     a coloring of digraph2_obj, only homomorphisms that
-//                     respect these colorings are found.
-// 12. order_obj       an optional argument that can specify the order the
-//                     vertices in digraph1_obj should be installed in the
-//                     Graph or Digraph used in the recursive search. This does
-//                     not directly specify which order vertices are visited in
-//                     the search, but can have a large impact on the run time
-//                     of the function. It seems in many cases to be a good
-//                     idea for this to be the DigraphWelshPowellOrder, i.e.
-//                     vertices ordered from highest to lowest degree.
+// 1. digraph1_obj      the source/domain of the homomorphisms sought
+// 2. digraph2_obj      the range/codomain of the homomorphisms sought
+// 3. hook_obj          apply this function to every homomorphism found, or Fail
+//                      for no function.
+// 4. user_param_obj    GAP variable that can be used in the hook_obj, must be a
+//                      plist if hook_obj is Fail.
+// 5. max_results_obj   the maximum number of homomorphisms to find
+// 6. hint_obj          the rank of any homomorphisms found
+// 7. injective_obj     should be 0 for non-injective, 1 for injective, 2 for
+//                      embedding, or (for backwards compatibility, true for
+//                      injective, or false for non-injective).
+// 8. image_obj         a list of vertices in digraph2_obj from which the images
+//                      of any homomorphism will be taken.
+// 9. partial_map_obj   a partial map from digraph1_obj to digraph2_obj, only
+//                      homomorphisms extending this partial map are found (if
+//                      any). Can also be fail to indicate no partial mapping is
+//                      defined.
+// 10. colors1_obj      a coloring of digraph1_obj
+// 11. colors2_obj      a coloring of digraph2_obj, only homomorphisms that
+//                      respect these colorings are found.
+// 12. order_obj        an optional argument that can specify the order the
+//                      vertices in digraph1_obj should be installed in the
+//                      Graph or Digraph used in the recursive search. This does
+//                      not directly specify which order vertices are visited in
+//                      the search, but can have a large impact on the run time
+//                      of the function. It seems in many cases to be a good
+//                      idea for this to be the DigraphWelshPowellOrder, i.e.
+//                      vertices ordered from highest to lowest degree.
+// 13. aut_grp_obj      an optional argument that can specifiy the
+//                      automorphisms of the graph that will be used in the
+//                      recursive search. If not given, the full automorphism
+//                      group will be used.
 
 Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
-  if (LEN_PLIST(args) != 11 && LEN_PLIST(args) != 12) {
+  if (LEN_PLIST(args) != 11 && LEN_PLIST(args) != 12 && LEN_PLIST(args) != 13) {
     ErrorQuit(
         "there must be 11 or 12 arguments, found %d,", LEN_PLIST(args), 0L);
   }
@@ -1811,8 +1841,18 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
   Obj colors1_obj     = ELM_PLIST(args, 10);
   Obj colors2_obj     = ELM_PLIST(args, 11);
   Obj order_obj       = Fail;
+  Obj aut_grp_obj     = Fail;
   if (LEN_PLIST(args) == 12) {
-    order_obj = ELM_PLIST(args, 12);
+    if (IS_LIST(ELM_PLIST(args, 12))) {
+      order_obj = ELM_PLIST(args, 12);
+    } else {
+      aut_grp_obj = ELM_PLIST(args, 12);
+    }
+  }
+
+  if (LEN_PLIST(args) == 13) {
+    order_obj   = ELM_PLIST(args, 12);
+    aut_grp_obj = ELM_PLIST(args, 13);
   }
 
   // Validate the arguments
@@ -1997,6 +2037,47 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
       }
     }
   }
+  if (aut_grp_obj != Fail) {
+    if (CALL_1ARGS(IsPermGroup, aut_grp_obj) != True) {
+      ErrorQuit(
+          "the 12th or 13th argument <aut_grp> must be a permutation group "
+          "or fail, not %s,",
+          (Int) TNAM_OBJ(aut_grp_obj),
+          0L);
+    }
+    Obj gens = CALL_1ARGS(GeneratorsOfGroup, aut_grp_obj);
+    DIGRAPHS_ASSERT(IS_LIST(gens));
+    DIGRAPHS_ASSERT(LEN_LIST(gens) > 0);
+    UInt lmp = INT_INTOBJ(CALL_1ARGS(LargestMovedPointPerms, gens));
+    if (lmp > 0 && LEN_LIST(gens) >= lmp) {
+      ErrorQuit("expected at most %d generators in the 12th or 13th argument "
+                "but got %d,",
+                lmp - 1,
+                LEN_LIST(gens));
+    }
+    for (UInt i = 1; i <= LEN_LIST(gens); ++i) {
+      if (colors2_obj != Fail) {
+        if (CALL_3ARGS(IsDigraphAutomorphism,
+                       digraph2_obj,
+                       ELM_LIST(gens, i),
+                       colors2_obj)
+            != True) {
+          ErrorQuit("expected group of automorphisms, but found a "
+                    "non-automorphism in position %d of the group generators,",
+                    i,
+                    0L);
+        }
+      } else {
+        if (CALL_2ARGS(IsDigraphAutomorphism, digraph2_obj, ELM_LIST(gens, i))
+            != True) {
+          ErrorQuit("expected group of automorphisms, but found a "
+                    "non-automorphism in position %d of the group generators,",
+                    i,
+                    0L);
+        }
+      }
+    }
+  }
 
   // Some conditions that immediately rule out there being any homomorphisms.
   if (((INT_INTOBJ(injective_obj) == 1 || INT_INTOBJ(injective_obj) == 2)
@@ -2029,7 +2110,8 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
                            partial_map_obj,
                            colors1_obj,
                            colors2_obj,
-                           order_obj)) {
+                           order_obj,
+                           aut_grp_obj)) {
 #ifdef DIGRAPHS_ENABLE_STATS
     print_stats(STATS);
 #endif

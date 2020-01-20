@@ -21,6 +21,10 @@
 
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
+// GAP headers
+#include "src/compiled.h"  // for Obj, Int
+#include "src/permutat.h"  // for ADDR_PERM, IS_PERM 
+
 #define MAXVERTS 512
 #define UNDEFINED MAXVERTS + 1
 
@@ -33,6 +37,8 @@
 typedef uint16_t* Perm;
 
 Perm new_perm(uint16_t const);
+
+Perm new_perm_from_gap(Obj, uint16_t const);
 
 static inline void id_perm(Perm x, uint16_t const degree) {
   DIGRAPHS_ASSERT(degree <= MAXVERTS);

@@ -51,6 +51,9 @@ Obj IsSymmetricDigraph;
 Obj GeneratorsOfGroup;
 Obj AutomorphismGroup;
 Obj IsAttributeStoringRepObj;
+Obj IsPermGroup;
+Obj IsDigraphAutomorphism;
+Obj LargestMovedPointPerms;
 
 #if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
 // compatibility with GAP <= 4.9
@@ -2280,6 +2283,9 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("AutomorphismGroup", &AutomorphismGroup);
   ImportGVarFromLibrary("GeneratorsOfGroup", &GeneratorsOfGroup);
   ImportGVarFromLibrary("IsAttributeStoringRep", &IsAttributeStoringRepObj);
+  ImportGVarFromLibrary("IsPermGroup", &IsPermGroup);
+  ImportGVarFromLibrary("IsDigraphAutomorphism", &IsDigraphAutomorphism);
+  ImportGVarFromLibrary("LargestMovedPointPerms", &LargestMovedPointPerms);
   /* return success                                                      */
   return 0;
 }
