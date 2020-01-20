@@ -36,8 +36,6 @@ Partition::Partition()
     dcs_count[i] = 0;
 
   cr_enabled = false;
-  cr_cells = 0;
-  cr_levels = 0;
 }
 
 
@@ -991,21 +989,11 @@ Partition::cr_init()
 
   cr_enabled = true;
 
-  if (cr_cells) {
-    free(cr_cells);
-  }
-  cr_cells = (CRCell*)malloc(N * sizeof(CRCell));
-  if (!cr_cells) {
-    assert(false && "Mem out");
-  }
+  cr_cells_vec.resize(N);
+  cr_cells = cr_cells_vec.begin();
 
-  if (cr_levels) {
-    free(cr_levels);
-  }
-  cr_levels = (CRCell**)malloc(N * sizeof(CRCell*));
-  if (!cr_levels) {
-    assert(false && "Mem out");
-  }
+  cr_levels_vec.resize(N);
+  cr_levels = cr_levels_vec.begin();
 
   for(unsigned int i = 0; i < N; i++) {
     cr_levels[i] = 0;
@@ -1024,9 +1012,6 @@ Partition::cr_init()
 void
 Partition::cr_free()
 {
-  if(cr_cells) {free(cr_cells); cr_cells = 0; }
-  if(cr_levels) {free(cr_levels); cr_levels = 0; }
-
   cr_created_trail.clear();
   cr_splitted_level_trail.clear();
   cr_bt_info.clear();
@@ -1093,7 +1078,7 @@ Partition::cr_goto_backtrack_point(const unsigned int btpoint)
       while(cr_levels[cr_max_level]) {
 	CRCell *cr_cell = cr_levels[cr_max_level];
 	cr_cell->detach();
-	cr_create_at_level(cr_cell - cr_cells, dest_level);
+	cr_create_at_level(cr_cell - &(*cr_cells), dest_level);
       }
       cr_max_level--;
     }

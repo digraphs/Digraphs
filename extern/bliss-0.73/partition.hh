@@ -255,8 +255,14 @@ private:
       prev_next_ptr = 0;
     }
   };
-  CRCell* cr_cells;
-  CRCell** cr_levels;
+  typedef std::vector<CRCell>::iterator crcell_pointer_substitute;
+  std::vector<CRCell> cr_cells_vec;
+  crcell_pointer_substitute cr_cells;
+
+  typedef std::vector<CRCell*>::iterator crcell_pointer_pointer_substitute;
+  std::vector<CRCell*> cr_levels_vec;
+  crcell_pointer_pointer_substitute cr_levels;
+
   class CR_BTInfo {
   public:
     unsigned int created_trail_index;
