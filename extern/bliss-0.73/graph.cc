@@ -224,7 +224,7 @@ AbstractGraph::do_refine_to_equitable()
  * then \a labeling will map 0 to 1, 1 to 2, and 2 to 0.
  */
 void
-AbstractGraph::update_labeling(uint_pointer_substitute labeling)
+AbstractGraph::update_labeling(uint_pointer_substitute const labeling)
 {
   const unsigned int N = get_nof_vertices();
   uint_pointer_substitute ep = p.elements;
@@ -276,7 +276,7 @@ AbstractGraph::reset_permutation(uint_pointer_substitute perm)
 }
 
 bool
-AbstractGraph::is_automorphism(uint_pointer_substitute perm)
+AbstractGraph::is_automorphism(uint_pointer_substitute const perm)
 {
   _INTERNAL_ERROR();
   return false;
@@ -489,7 +489,7 @@ AbstractGraph::long_prune_get_mcrs(const unsigned int index)
 }
 
 void
-AbstractGraph::long_prune_add_automorphism(uint_pointer_substitute aut)
+AbstractGraph::long_prune_add_automorphism(uint_pointer_to_const_substitute aut)
 {
   if(long_prune_max_stored_autss == 0)
     return;
@@ -1758,7 +1758,7 @@ AbstractGraph::find_automorphisms(Stats& stats, void (*hook)(void *user_param, u
   best_path_labeling_vec.clear();
 }
 
-uint_pointer_substitute
+uint_pointer_to_const_substitute
 AbstractGraph::canonical_form(Stats& stats, void (*hook)(void *user_param, unsigned int n, const unsigned int *aut), void *user_param) {
   report_hook = hook;
   report_user_param = user_param;

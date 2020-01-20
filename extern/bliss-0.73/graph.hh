@@ -235,7 +235,7 @@ public:
    * of bliss as well as on some other options (for instance, the splitting
    * heuristic selected with bliss::Graph::set_splitting_heuristic()).
    */
-  uint_pointer_substitute canonical_form(Stats& stats,
+  uint_pointer_to_const_substitute canonical_form(Stats& stats,
 				     void (*hook)(void* user_param,
 						  unsigned int n,
 						  const unsigned int* aut),
@@ -376,7 +376,7 @@ protected:
    * Release the memory allocated for "long prune" data structures.
    */
   void long_prune_deallocate();
-  void long_prune_add_automorphism(uint_pointer_substitute aut);
+  void long_prune_add_automorphism(uint_pointer_to_const_substitute aut);
   std::vector<bool>& long_prune_get_fixed(const unsigned int index);
   std::vector<bool>& long_prune_allocget_fixed(const unsigned int index);
   std::vector<bool>& long_prune_get_mcrs(const unsigned int index);
@@ -444,7 +444,7 @@ protected:
   void reset_permutation(uint_pointer_substitute perm);
 
   /* Mainly for debugging purposes */
-  virtual bool is_automorphism(uint_pointer_substitute perm);
+  virtual bool is_automorphism(uint_pointer_substitute const perm);
 
   std::vector<unsigned int> certificate_current_path;
   std::vector<unsigned int> certificate_first_path;
