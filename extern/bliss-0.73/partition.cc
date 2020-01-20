@@ -188,8 +188,8 @@ Partition::goto_backtrack_point(BacktrackPoint p)
 	  if(next_cell->length == 1)
 	    discrete_cell_count--;
 	  /* Update element_to_cell_map values of elements added in cell */
-	  uint_ptr_type ep = elements + next_cell->first;
-	  uint_ptr_type const lp = ep + next_cell->length;
+	  uint_pointer_substitute ep = elements + next_cell->first;
+	  uint_pointer_substitute const lp = ep + next_cell->length;
 	  for( ; ep < lp; ep++)
 	    element_to_cell_map[*ep] = cell;
 	  /* Update cell parameters */
@@ -241,7 +241,7 @@ Partition::individualize(Partition::Cell * const cell,
 			 const unsigned int element)
 {
 
-  uint_ptr_type const pos = in_pos[element];
+  uint_pointer_substitute const pos = in_pos[element];
 
   const unsigned int last = cell->first + cell->length - 1;
   *pos = elements[last];
@@ -431,12 +431,12 @@ Partition::sort_and_split_cell1(Partition::Cell* const cell)
 
 #define NEW_SORT1
 #ifdef NEW_SORT1
-      uint_ptr_type ep0 = elements + cell->first;
-      uint_ptr_type ep1 = ep0 + cell->length - cell->max_ival_count;
+      uint_pointer_substitute ep0 = elements + cell->first;
+      uint_pointer_substitute ep1 = ep0 + cell->length - cell->max_ival_count;
       if(cell->max_ival_count > cell->length / 2)
 	{
 	  /* There are more ones than zeros, only move zeros */
-	  uint_ptr_type const end = ep0 + cell->length;
+	  uint_pointer_substitute const end = ep0 + cell->length;
 	  while(ep1 < end)
 	    {
 	      while(invariant_values[*ep1] == 0)
@@ -456,7 +456,7 @@ Partition::sort_and_split_cell1(Partition::Cell* const cell)
       else
 	{
 	  /* There are more zeros than ones, only move ones */
-	  uint_ptr_type  const end = ep1;
+	  uint_pointer_substitute  const end = ep1;
 	  while(ep0 < end)
 	    {
 	      while(invariant_values[*ep0] != 0)
@@ -654,7 +654,7 @@ Partition::sort_and_split_cell255(Partition::Cell* const cell,
    * Compute the distribution of invariant values to the count array
    */
   {
-    Partition::const_uint_ptr_type ep = elements + cell->first;
+    uint_pointer_to_const_substitute ep = elements + cell->first;
     const unsigned int ival = invariant_values[*ep];
     dcs_count[ival]++;
     ep++;
@@ -690,7 +690,7 @@ Partition::sort_and_split_cell255(Partition::Cell* const cell,
   /* Do the sorting */
   for(unsigned int i = 0; i <= max_ival; i++)
     {
-      uint_ptr_type ep = elements + cell->first + dcs_start[i];
+      uint_pointer_substitute ep = elements + cell->first + dcs_start[i];
       for(unsigned int j = dcs_count[i]; j > 0; j--)
 	{
 	  while(true)
@@ -730,7 +730,7 @@ bool
 Partition::shellsort_cell(Partition::Cell* const cell)
 {
   unsigned int h;
-  uint_ptr_type  ep;
+  uint_pointer_substitute  ep;
 
 
   if(cell->is_unit())
@@ -778,7 +778,7 @@ Partition::shellsort_cell(Partition::Cell* const cell)
 void
 Partition::clear_ivs(Cell* const cell)
 {
-  uint_ptr_type  ep = elements + cell->first;
+  uint_pointer_substitute  ep = elements + cell->first;
   for(unsigned int i = cell->length; i > 0; i--, ep++)
     invariant_values[*ep] = 0;
 }
@@ -798,8 +798,8 @@ Partition::split_cell(Partition::Cell* const original_cell)
 
   while(true)
     {
-      uint_ptr_type  ep = elements + cell->first;
-      Partition::const_uint_ptr_type  const lp = ep + cell->length;
+      uint_pointer_substitute  ep = elements + cell->first;
+      uint_pointer_to_const_substitute  const lp = ep + cell->length;
       const unsigned int ival = invariant_values[*ep];
       invariant_values[*ep] = 0;
       element_to_cell_map[*ep] = cell;
@@ -899,7 +899,7 @@ Partition::zplit_cell(Partition::Cell* const cell,
       /* Compute max_ival info */
       assert(cell->max_ival == 0);
       assert(cell->max_ival_count == 0);
-      uint_ptr_type ep = elements + cell->first;
+      uint_pointer_substitute ep = elements + cell->first;
       for(unsigned int i = cell->length; i > 0; i--, ep++)
 	{
 	  const unsigned int ival = invariant_values[*ep];

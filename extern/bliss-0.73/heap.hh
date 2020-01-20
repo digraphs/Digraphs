@@ -34,8 +34,8 @@ class Heap
   unsigned int n;
   std::vector<unsigned int> array_vec;
 
-  typedef std::vector<unsigned int>::iterator unsigned_int_pointer_substitute;
-  unsigned_int_pointer_substitute array;
+  typedef std::vector<unsigned int>::iterator uint_pointer_substitute;
+  uint_pointer_substitute array;
   void upheap(unsigned int k);
   void downheap(unsigned int k);
 public:

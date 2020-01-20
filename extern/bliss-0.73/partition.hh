@@ -157,13 +157,14 @@ public:
   Cell* first_cell;
   Cell* first_nonsingleton_cell;
 
-  typedef std::vector<unsigned int>::iterator uint_ptr_type;
-  typedef std::vector<unsigned int>::const_iterator const_uint_ptr_type;
+  typedef std::vector<unsigned int>::iterator uint_pointer_substitute;
+  typedef std::vector<unsigned int>::const_iterator
+                            uint_pointer_to_const_substitute;
   std::vector<unsigned int> elements_vec;
-  uint_ptr_type elements;
+  uint_pointer_substitute elements;
   /* invariant_values[e] gives the invariant value of the element e */
   std::vector<unsigned int> invariant_values_vec;
-  uint_ptr_type invariant_values;
+  uint_pointer_substitute invariant_values;
   /* element_to_cell_map[e] gives the cell of the element e */
 
   typedef std::vector<Cell*>::iterator
@@ -176,8 +177,8 @@ public:
     return element_to_cell_map_vec[e];
   }
   /* in_pos[e] points to the elements array s.t. *in_pos[e] = e  */
-  std::vector<uint_ptr_type> in_pos_vec;
-  std::vector<uint_ptr_type>::iterator in_pos;
+  std::vector<uint_pointer_substitute> in_pos_vec;
+  std::vector<uint_pointer_substitute>::iterator in_pos;
 
   Partition();
   ~Partition();

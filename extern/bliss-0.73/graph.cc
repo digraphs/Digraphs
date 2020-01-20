@@ -224,10 +224,10 @@ AbstractGraph::do_refine_to_equitable()
  * then \a labeling will map 0 to 1, 1 to 2, and 2 to 0.
  */
 void
-AbstractGraph::update_labeling(labeling_type labeling)
+AbstractGraph::update_labeling(uint_pointer_substitute labeling)
 {
   const unsigned int N = get_nof_vertices();
-  Partition::uint_ptr_type ep = p.elements;
+  uint_pointer_substitute ep = p.elements;
   for(unsigned int i = 0; i < N; i++, ep++)
     labeling[*ep] = i;
 }
@@ -237,12 +237,12 @@ AbstractGraph::update_labeling(labeling_type labeling)
  * is also produced and assigned to \a labeling_inv.
  */
 void
-AbstractGraph::update_labeling_and_its_inverse(labeling_type const labeling,
-                                               labeling_type const labeling_inv)
+AbstractGraph::update_labeling_and_its_inverse(uint_pointer_substitute const labeling,
+                                               uint_pointer_substitute const labeling_inv)
 {
   const unsigned int N = get_nof_vertices();
-  Partition::uint_ptr_type  ep = p.elements;
-  labeling_type clip = labeling_inv;
+  uint_pointer_substitute  ep = p.elements;
+  uint_pointer_substitute clip = labeling_inv;
 
   for(unsigned int i = 0; i < N; ) {
     labeling[*ep] = i;
@@ -268,7 +268,7 @@ AbstractGraph::update_labeling_and_its_inverse(labeling_type const labeling,
  * Reset the permutation \a perm to the identity permutation.
  */
 void
-AbstractGraph::reset_permutation(labeling_type perm)
+AbstractGraph::reset_permutation(uint_pointer_substitute perm)
 {
   const unsigned int N = get_nof_vertices();
   for(unsigned int i = 0; i < N; i++, perm++)
@@ -276,7 +276,7 @@ AbstractGraph::reset_permutation(labeling_type perm)
 }
 
 bool
-AbstractGraph::is_automorphism(labeling_type perm)
+AbstractGraph::is_automorphism(uint_pointer_substitute perm)
 {
   _INTERNAL_ERROR();
   return false;
@@ -489,7 +489,7 @@ AbstractGraph::long_prune_get_mcrs(const unsigned int index)
 }
 
 void
-AbstractGraph::long_prune_add_automorphism(labeling_type aut)
+AbstractGraph::long_prune_add_automorphism(uint_pointer_substitute aut)
 {
   if(long_prune_max_stored_autss == 0)
     return;
@@ -540,7 +540,7 @@ AbstractGraph::long_prune_add_automorphism(labeling_type aut)
  *-------------------------------------------------------------------------*/
 
 void
-AbstractGraph::update_orbit_information(Orbit& o, labeling_type perm)
+AbstractGraph::update_orbit_information(Orbit& o, uint_pointer_substitute perm)
 {
   const unsigned int N = get_nof_vertices();
   for(unsigned int i = 0; i < N; i++)
@@ -951,7 +951,7 @@ AbstractGraph::search(const bool canonical, Stats& stats)
                       continue;
                     }
                   const std::vector<bool>& mcrs = long_prune_get_mcrs(i);
-                  Partition::uint_ptr_type ep = p.elements + cell->first;
+                  uint_pointer_substitute ep = p.elements + cell->first;
                   for(unsigned int j = cell->length; j > 0; j--, ep++) {
                     if(mcrs[*ep] == false)
                       current_node.long_prune_redundant.insert(*ep);
@@ -967,8 +967,8 @@ AbstractGraph::search(const bool canonical, Stats& stats)
        */
       {
         unsigned int  next_split_element = UINT_MAX;
-        Partition::uint_ptr_type next_split_element_pos;
-        Partition::uint_ptr_type ep = p.elements + cell->first;
+        uint_pointer_substitute next_split_element_pos;
+        uint_pointer_substitute ep = p.elements + cell->first;
         if(current_node.fp_on)
           {
             /* Find the next larger splitting element that is
@@ -1758,7 +1758,7 @@ AbstractGraph::find_automorphisms(Stats& stats, void (*hook)(void *user_param, u
   best_path_labeling_vec.clear();
 }
 
-labeling_type
+uint_pointer_substitute
 AbstractGraph::canonical_form(Stats& stats, void (*hook)(void *user_param, unsigned int n, const unsigned int *aut), void *user_param) {
   report_hook = hook;
   report_user_param = user_param;
@@ -2429,7 +2429,7 @@ Digraph::refine_according_to_invariant(unsigned int (*inv)(const Digraph* const 
     {
 
       Partition::Cell* const next_cell = cell->next_nonsingleton;
-      Partition::const_uint_ptr_type ep = p.elements + cell->first;
+      uint_pointer_to_const_substitute ep = p.elements + cell->first;
       for(unsigned int i = cell->length; i > 0; i--, ep++)
         {
           unsigned int ival = inv(this, *ep);
@@ -2473,7 +2473,7 @@ Digraph::split_neighbourhood_of_cell(Partition::Cell* const cell)
       eqref_hash.update(cell->length);
     }
 
-  Partition::const_uint_ptr_type ep = p.elements + cell->first;
+  uint_pointer_to_const_substitute ep = p.elements + cell->first;
   for(unsigned int i = cell->length; i > 0; i--)
     {
       const Vertex& v = vertices[*ep++];
@@ -2693,7 +2693,7 @@ Digraph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
         }
       neighbour_cell->max_ival_count++;
 
-      Partition::uint_ptr_type const swap_position =
+      uint_pointer_substitute const swap_position =
         p.elements + neighbour_cell->first + neighbour_cell->length -
         neighbour_cell->max_ival_count;
       *p.in_pos[dest_vertex] = *swap_position;
@@ -2732,8 +2732,8 @@ Digraph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
             p.aux_split_in_two(neighbour_cell,
                                neighbour_cell->length -
                                neighbour_cell->max_ival_count);
-          Partition::uint_ptr_type ep = p.elements + new_cell->first;
-          Partition::uint_ptr_type const lp = p.elements+new_cell->first+new_cell->length;
+          uint_pointer_substitute ep = p.elements + new_cell->first;
+          uint_pointer_substitute const lp = p.elements+new_cell->first+new_cell->length;
           while(ep < lp)
             {
               p.element_to_cell_map[*ep] = new_cell;
@@ -2825,7 +2825,7 @@ Digraph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
         }
       neighbour_cell->max_ival_count++;
 
-      Partition::uint_ptr_type const swap_position =
+      uint_pointer_substitute const swap_position =
         p.elements + neighbour_cell->first + neighbour_cell->length -
         neighbour_cell->max_ival_count;
       *p.in_pos[dest_vertex] = *swap_position;
@@ -2863,8 +2863,8 @@ Digraph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
             p.aux_split_in_two(neighbour_cell,
                                neighbour_cell->length -
                                neighbour_cell->max_ival_count);
-          Partition::uint_ptr_type ep = p.elements + new_cell->first;
-          Partition::uint_ptr_type const lp = p.elements+new_cell->first+new_cell->length;
+          uint_pointer_substitute ep = p.elements + new_cell->first;
+          uint_pointer_substitute const lp = p.elements+new_cell->first+new_cell->length;
           while(ep < lp) {
             p.element_to_cell_map[*ep] = new_cell;
             ep++;
@@ -2991,7 +2991,7 @@ Digraph::is_equitable() const
       if(cell->is_unit())
         continue;
 
-      Partition::uint_ptr_type ep = p.elements + cell->first;
+      uint_pointer_substitute ep = p.elements + cell->first;
       const Vertex& first_vertex = vertices[*ep++];
 
       /* Count outgoing edges of the first vertex for cells */
@@ -3040,7 +3040,7 @@ Digraph::is_equitable() const
       if(cell->is_unit())
         continue;
 
-      Partition::uint_ptr_type ep = p.elements + cell->first;
+      uint_pointer_substitute ep = p.elements + cell->first;
       const Vertex& first_vertex = vertices[*ep++];
 
       /* Count incoming edges of the first vertex for cells */
@@ -4516,7 +4516,7 @@ Graph::refine_according_to_invariant(unsigned int (*inv)(const Graph* const g,
 
       Partition::Cell* const next_cell = cell->next_nonsingleton;
 
-      Partition::const_uint_ptr_type ep = p.elements + cell->first;
+      uint_pointer_to_const_substitute ep = p.elements + cell->first;
       for(unsigned int i = cell->length; i > 0; i--, ep++)
         {
           const unsigned int ival = inv(this, *ep);
@@ -4569,7 +4569,7 @@ Graph::split_neighbourhood_of_cell(Partition::Cell* const cell)
       eqref_hash.update(cell->length);
     }
 
-  Partition::const_uint_ptr_type ep = p.elements + cell->first;
+  uint_pointer_to_const_substitute ep = p.elements + cell->first;
   for(unsigned int i = cell->length; i > 0; i--)
     {
       const Vertex& v = vertices[*ep++];
@@ -4714,7 +4714,7 @@ Graph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
         }
       neighbour_cell->max_ival_count++;
 
-      Partition::uint_ptr_type const swap_position =
+      uint_pointer_substitute const swap_position =
         p.elements + neighbour_cell->first + neighbour_cell->length -
         neighbour_cell->max_ival_count;
       *p.in_pos[dest_vertex] = *swap_position;
@@ -4748,8 +4748,8 @@ Graph::split_neighbourhood_of_unit_cell(Partition::Cell* const unit_cell)
             p.aux_split_in_two(neighbour_cell,
                                neighbour_cell->length -
                                neighbour_cell->max_ival_count);
-          Partition::uint_ptr_type ep = p.elements + new_cell->first;
-          Partition::uint_ptr_type const lp = p.elements+new_cell->first+new_cell->length;
+          uint_pointer_substitute ep = p.elements + new_cell->first;
+          uint_pointer_substitute const lp = p.elements+new_cell->first+new_cell->length;
           while(ep < lp)
             {
               p.element_to_cell_map[*ep] = new_cell;
@@ -4880,7 +4880,7 @@ bool Graph::is_equitable() const
       if(cell->is_unit())
         continue;
 
-      Partition::uint_ptr_type ep = p.elements + cell->first;
+      uint_pointer_substitute ep = p.elements + cell->first;
       const Vertex &first_vertex = vertices[*ep++];
 
       /* Count how many edges lead from the first vertex to

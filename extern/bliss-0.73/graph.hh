@@ -40,8 +40,8 @@ namespace bliss_digraphs {
 #include "uintseqhash.hh"
 
 namespace bliss_digraphs {
-  typedef std::vector<unsigned int>::iterator labeling_type;
-  typedef std::vector<unsigned int>::const_iterator const_labeling_type;
+  typedef std::vector<unsigned int>::iterator uint_pointer_substitute;
+  typedef std::vector<unsigned int>::const_iterator uint_pointer_to_const_substitute;
 
 /**
  * \brief Statistics returned by the bliss search algorithm.
@@ -235,7 +235,7 @@ public:
    * of bliss as well as on some other options (for instance, the splitting
    * heuristic selected with bliss::Graph::set_splitting_heuristic()).
    */
-  labeling_type canonical_form(Stats& stats,
+  uint_pointer_substitute canonical_form(Stats& stats,
 				     void (*hook)(void* user_param,
 						  unsigned int n,
 						  const unsigned int* aut),
@@ -376,7 +376,7 @@ protected:
    * Release the memory allocated for "long prune" data structures.
    */
   void long_prune_deallocate();
-  void long_prune_add_automorphism(labeling_type aut);
+  void long_prune_add_automorphism(uint_pointer_substitute aut);
   std::vector<bool>& long_prune_get_fixed(const unsigned int index);
   std::vector<bool>& long_prune_allocget_fixed(const unsigned int index);
   std::vector<bool>& long_prune_get_mcrs(const unsigned int index);
@@ -419,32 +419,32 @@ protected:
   virtual bool is_equitable() const = 0;
 
   std::vector<unsigned int> first_path_labeling_vec;
-  labeling_type             first_path_labeling;
+  uint_pointer_substitute             first_path_labeling;
   std::vector<unsigned int> first_path_labeling_inv_vec;
-  labeling_type             first_path_labeling_inv;
+  uint_pointer_substitute             first_path_labeling_inv;
   Orbit                     first_path_orbits;
 
   std::vector<unsigned int> first_path_automorphism_vec;
-  labeling_type             first_path_automorphism;
+  uint_pointer_substitute             first_path_automorphism;
 
   std::vector<unsigned int> best_path_labeling_vec;
-  labeling_type             best_path_labeling;
+  uint_pointer_substitute             best_path_labeling;
   std::vector<unsigned int> best_path_labeling_inv_vec;
-  labeling_type             best_path_labeling_inv;
+  uint_pointer_substitute             best_path_labeling_inv;
   Orbit         best_path_orbits;
 
   std::vector<unsigned int> best_path_automorphism_vec;
-  labeling_type             best_path_automorphism;
+  uint_pointer_substitute             best_path_automorphism;
 
-  void update_labeling(labeling_type  const lab);
-  void update_labeling_and_its_inverse(labeling_type  const lab,
-				       labeling_type  const lab_inv);
-  void update_orbit_information(Orbit &o, labeling_type perm);
+  void update_labeling(uint_pointer_substitute  const lab);
+  void update_labeling_and_its_inverse(uint_pointer_substitute  const lab,
+				       uint_pointer_substitute  const lab_inv);
+  void update_orbit_information(Orbit &o, uint_pointer_substitute perm);
 
-  void reset_permutation(labeling_type perm);
+  void reset_permutation(uint_pointer_substitute perm);
 
   /* Mainly for debugging purposes */
-  virtual bool is_automorphism(labeling_type perm);
+  virtual bool is_automorphism(uint_pointer_substitute perm);
 
   std::vector<unsigned int> certificate_current_path;
   std::vector<unsigned int> certificate_first_path;
