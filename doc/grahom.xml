@@ -565,9 +565,13 @@ gap> EmbeddingsDigraphs(D1, D2);
 <#GAPDoc Label="IsDigraphHomomorphism">
 <ManSection>
   <Oper Name="IsDigraphHomomorphism" Arg="src, ran, x"/>
+  <Oper Name="IsDigraphHomomorphism" Arg="src, ran, x, col1, col2"/>
   <Oper Name="IsDigraphEpimorphism" Arg="src, ran, x"/>
+  <Oper Name="IsDigraphEpimorphism" Arg="src, ran, x, col1, col2"/>
   <Oper Name="IsDigraphMonomorphism" Arg="src, ran, x"/>
+  <Oper Name="IsDigraphMonomorphism" Arg="src, ran, x, col1, col2"/>
   <Oper Name="IsDigraphEndomorphism" Arg="digraph, x"/>
+  <Oper Name="IsDigraphEndomorphism" Arg="digraph, x, col"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     <C>IsDigraphHomomorphism</C> returns <K>true</K> if the permutation
@@ -603,6 +607,20 @@ gap> EmbeddingsDigraphs(D1, D2);
     </List>
     See also <Ref Func="GeneratorsOfEndomorphismMonoid"/>.<P/>
 
+    If <A>col1</A> and <A>col2</A>, or <A>col</A>, are given then they must
+    represent vertex colourings; see <Ref Oper="AutomorphismGroup" Label="for a
+    digraph and a homogeneous list"/> for details of the permissible values for
+    these argument. The homomorphism must then also have the property:
+  
+    <List>
+      <Item>
+        <C>col[i] = col[i ^ x]</C> for all vertices <C>i</C> of <A>digraph</A>,
+        in the case of <C>IsDigraphEndomorphism</C>.</Item>
+      <Item>
+        <C>col1[i] = col2[i ^ x]</C> for all vertices <C>i</C> of <A>src</A>,
+        in the cases of the other operations.</Item>
+    </List>
+
     <Example><![CDATA[
 gap> src := Digraph([[1], [1, 2], [1, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
@@ -616,8 +634,18 @@ gap> IsDigraphHomomorphism(src, ran, Transformation([3, 3, 3]));
 false
 gap> IsDigraphHomomorphism(src, src, Transformation([3, 3, 3]));
 true
+gap> IsDigraphHomomorphism(src, ran, Transformation([1, 2, 2]),
+>                          [1, 2, 2], [1, 2]);
+true
+gap> IsDigraphHomomorphism(src, ran, Transformation([1, 2, 2]),
+>                          [2, 1, 1], [1, 2]);
+false
 gap> IsDigraphEndomorphism(src, Transformation([3, 3, 3]));
 true
+gap> IsDigraphEndomorphism(src, Transformation([3, 3, 3]), [1, 1, 1]);
+true
+gap> IsDigraphEndomorphism(src, Transformation([3, 3, 3]), [1, 1, 2]);
+false
 gap> IsDigraphEpimorphism(src, ran, Transformation([3, 3, 3]));
 false
 gap> IsDigraphMonomorphism(src, ran, Transformation([1, 2, 2]));
@@ -633,11 +661,13 @@ true]]></Example>
 <#GAPDoc Label="IsDigraphEmbedding">
 <ManSection>
   <Oper Name="IsDigraphEmbedding" Arg="src, ran, x"/>
+  <Oper Name="IsDigraphEmbedding" Arg="src, ran, x, col1, col2"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     <C>IsDigraphEmbedding</C> returns <K>true</K> if the permutation
     or transformation <A>x</A> is a embedding of the digraph
-    <A>src</A> into the digraph <A>ran</A>.
+    <A>src</A> into the digraph <A>ran</A>, while respecting the colourings
+    <A>col1</A> and <A>col2</A> if given.
     <P/>
 
     A permutation or transformation <A>x</A> is a <E>embedding</E> of a digraph
@@ -657,6 +687,10 @@ gap> IsDigraphMonomorphism(src, ran, ());
 true
 gap> IsDigraphEmbedding(src, ran, ());
 true
+gap> IsDigraphEmbedding(src, ran, (), [2, 1], [2, 1, 1]);
+true
+gap> IsDigraphEmbedding(src, ran, (), [2, 1], [1, 2, 1]);
+false
 gap> ran := Digraph([[1, 2], [1, 2], [1, 3]]);
 <immutable digraph with 3 vertices, 6 edges>
 gap> IsDigraphMonomorphism(src, ran, IdentityTransformation);

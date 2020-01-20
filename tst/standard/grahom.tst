@@ -2140,6 +2140,197 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
 [ Transformation( [ 2, 3, 4, 5, 1 ] ), Transformation( [ 2, 1 ] ), 
   IdentityTransformation ]
 
+# IsHomomorphism etc. for vertex-coloured digraphs
+gap> gr1 := Digraph([[], []]);
+<immutable empty digraph with 2 vertices>
+gap> gr2 := Digraph([[], [1]]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> IsDigraphAutomorphism(gr1, Transformation([1, 2]));
+true
+gap> IsDigraphAutomorphism(gr1, Transformation([1, 2]), [1, 2]);
+true
+gap> IsDigraphAutomorphism(gr2, Transformation([1, 2]), [1, 1]);
+true
+gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2]));
+true
+gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2]), [1, 2], [1, 1]);
+false
+gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2]), [1, 1], [1, 1]);
+true
+gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2]), [1, 1], [1, 2]);
+false
+gap> gr1 := Digraph([[], []]);
+<immutable empty digraph with 2 vertices>
+gap> gr1 := ChainDigraph(3);   
+<immutable chain digraph with 3 vertices>
+gap> gr2 := ChainDigraph(6);
+<immutable chain digraph with 6 vertices>
+gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]), [1 .. 3], [1 .. 6]);
+true
+gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]), [1 .. 3], [1, 1, 2, 3, 4, 5]);   
+false
+gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]),
+> [2, 2, 1], [2, 2, 1, 3, 4, 5]);
+true
+gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]),
+> [2, 2, 1], [1, 1, 2, 3, 4, 5]);
+false
+gap> IsDigraphAutomorphism(gr1, Transformation([3, 2, 1]), [1, 2, 3]);
+false
+gap> gr1 := CycleDigraph(6);
+<immutable cycle digraph with 6 vertices>
+gap> x := (1, 2, 3, 4, 5, 6);                                                
+(1,2,3,4,5,6)
+gap> t := AsTransformation(x);
+Transformation( [ 2, 3, 4, 5, 6, 1 ] )
+gap> IsDigraphAutomorphism(gr1, x, [1 .. 6]);
+false
+gap> IsDigraphAutomorphism(gr1, x, [1, 1, 2, 2, 3, 3]); 
+false
+gap> IsDigraphAutomorphism(gr1, x, [1, 1, 1, 1, 1, 1]);
+true
+gap> IsDigraphAutomorphism(gr1, x, [1, 1, 2, 2, 3, 3]); 
+false
+gap> IsDigraphAutomorphism(gr1, x^2, [1, 1, 2, 2, 3, 3]);
+false
+gap> IsDigraphAutomorphism(gr1, x^2, [1, 2, 2, 3, 4, 4]);
+false
+gap> IsDigraphAutomorphism(gr1, x^2, [1, 1, 1, 1, 1, 1]);
+true
+gap> IsDigraphAutomorphism(gr1, x^3, [1, 2, 2, 3, 4, 4]);
+false
+gap> IsDigraphAutomorphism(gr1, x^3, [1, 1, 1, 1, 1, 1]);
+true
+gap> IsDigraphAutomorphism(gr1, t, [1 .. 6]);            
+false
+gap> IsDigraphAutomorphism(gr1, t, [1, 1, 2, 2, 3, 3]);
+false
+gap> IsDigraphAutomorphism(gr1, t^2, [1, 1, 2, 2, 3, 3]);
+false
+gap> IsDigraphAutomorphism(gr1, t^2, [1, 2, 2, 3, 4, 4]);
+false
+gap> IsDigraphAutomorphism(gr1, t^3, [1, 2, 2, 3, 4, 4]);
+false
+gap> gr1 := DigraphFromDigraph6String("&D~~~~_");
+<immutable digraph with 5 vertices, 25 edges>
+gap> ForAll(AutomorphismGroup(gr1),
+>           x -> x = () or not IsDigraphAutomorphism(gr1, x, [1 .. 5]));
+true
+gap> ForAll(AutomorphismGroup(gr1),
+>           x -> IsDigraphAutomorphism(gr1, x, [1, 1, 1, 1, 1]));
+true
+
+# IsDigraphEndomorphism, for vertex-coloured digraphs 
+gap> gr1 := DigraphTransitiveClosure(CompleteDigraph(2));   
+<immutable transitive digraph with 2 vertices, 4 edges>
+gap> IsDigraphEndomorphism(gr1, (1, 2), [1, 2]);
+false
+gap> IsDigraphEndomorphism(gr1, (1, 2), [1, 1]);
+true
+gap> IsDigraphEndomorphism(gr1, Transformation([1, 1]), [1, 2]);
+false
+gap> IsDigraphEndomorphism(gr1, Transformation([1, 1]), [1, 1]);
+true
+gap> ForAll(GeneratorsOfEndomorphismMonoid(gr1),           
+>           x -> IsDigraphEndomorphism(gr1, x, [1, 1]));
+true
+gap> gr2 := Digraph([[3, 4], [1, 3], [4], [1, 2, 3, 5], [2]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> ForAll(GeneratorsOfEndomorphismMonoid(gr2),             
+>           x -> IsDigraphEndomorphism(gr2, x, [1, 1, 1, 1, 1]));
+true
+gap> gr1 := DigraphFromDigraph6String("&D~~~~_");
+<immutable digraph with 5 vertices, 25 edges>
+gap> ForAll(GeneratorsOfEndomorphismMonoid(gr1),
+>           x -> IsDigraphEndomorphism(gr1, x, [1, 1, 1, 1, 1]));
+true
+gap> ForAll(AutomorphismGroup(gr1),
+>           x -> IsDigraphEndomorphism(gr1, x, [1, 1, 1, 1, 1]));
+true
+
+# IsDigraphEpimorphism, for vertex-coloured digraphs
+gap> src := Digraph([[1], [1, 2], [1, 3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> ran := Digraph([[1], [1, 2]]);
+<immutable digraph with 2 vertices, 3 edges>
+gap> IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]), [1, 2, 2], [1, 2]);
+true
+gap> IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]), [1, 2, 3], [1, 2]);
+false
+gap> IsDigraphEpimorphism(src, src, Transformation([1, 2, 3]),
+>                         [1, 1, 2], [1, 1,2]);
+true
+gap> IsDigraphEpimorphism(src, src, Transformation([1, 2, 3]),
+>                         [1, 2, 3], [1, 1,2]);
+false
+gap> IsDigraphEpimorphism(src, src, (), [1, 2, 2], [1, 2, 2]);
+true
+gap> IsDigraphEpimorphism(src, src, (2, 3), [1, 2, 3], [2, 3, 1]);
+false
+gap> IsDigraphEpimorphism(src, src, (2, 3), [2, 1, 3], [2, 3, 1]);
+true
+
+# IsDigraphMonomorphism, for vertex-coloured digraphs
+gap> src := Digraph([[1], [1, 2], [1, 3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> ran := Digraph([[1], [1, 2]]);
+<immutable digraph with 2 vertices, 3 edges>
+gap> IsDigraphMonomorphism(src, src, Transformation([1, 3, 2]),
+>                          [2, 3, 1], [2, 1, 3]);
+true
+gap> IsDigraphMonomorphism(src, src, Transformation([1, 3, 2]),
+>                          [2, 3, 1], [2, 3, 1]);
+false
+gap> IsDigraphMonomorphism(src, src, Transformation([1, 2, 3]),
+>                          [2, 1, 1], [1, 2, 2]);
+false
+gap> IsDigraphMonomorphism(src, src, Transformation([1, 2, 3]),
+>                          [1, 2, 2], [1, 2, 2]);
+true
+gap> IsDigraphMonomorphism(ran, src, Transformation([1, 2]),
+>                          [2, 1], [1, 2, 1]);
+false
+gap> IsDigraphMonomorphism(ran, src, Transformation([1, 2]),
+>                          [2, 1], [1, 1, 1]);
+false
+gap> IsDigraphMonomorphism(ran, src, Transformation([1, 2]),
+>                          [1, 1], [1, 1, 2]);
+true
+gap> IsDigraphMonomorphism(src, src, (), [1, 2, 2], [1, 2, 2]);
+true
+gap> IsDigraphMonomorphism(src, src, (), [1, 1, 2], [1, 2, 2]);
+false
+gap> IsDigraphMonomorphism(ran, src, (), [1, 1], [1, 1, 2]);
+true
+gap> IsDigraphMonomorphism(ran, src, (), [1, 1], [2, 2, 1]);
+false
+gap> IsDigraphMonomorphism(ran, src, (), [1, 2], [1, 2, 1]);
+true
+
+# IsDigraphEmbedding, for vertex-coloured digraphs
+gap> src := Digraph([[1], [1, 2], [1, 3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> ran := Digraph([[1], [1, 2]]);
+<immutable digraph with 2 vertices, 3 edges>
+gap> IsDigraphEmbedding(src, src, Transformation([1, 2, 3]),
+>                       [1, 1, 1], [1, 1, 1]);
+true
+gap> IsDigraphEmbedding(src, src, Transformation([1, 2, 3]),
+>                       [1, 1, 2], [1, 1, 2]);
+true
+gap> IsDigraphEmbedding(ran, src, Transformation([1, 2]));
+true
+gap> IsDigraphEmbedding(src, src, (), [1, 1, 1], [1, 1, 1]);
+true
+gap> IsDigraphEmbedding(src, src, (), [2, 1, 1], [1, 1, 1]);
+false
+gap> IsDigraphEmbedding(ran, src, (), [1, 1], [1, 1, 2]);
+true
+gap> IsDigraphEmbedding(ran, src, (), [2, 1], [1, 2, 2]);
+false
+gap> IsDigraphEmbedding(ran, src, (), [2, 1], [1, 1, 2]);
+false
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
 gap> Unbind(epis);

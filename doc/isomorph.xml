@@ -753,7 +753,9 @@ gap> OutNeighbours(canon);
 <#GAPDoc Label="IsDigraphAutomorphism">
 <ManSection>
   <Oper Name="IsDigraphIsomorphism" Arg="src, ran, x"/>
+  <Oper Name="IsDigraphIsomorphism" Arg="src, ran, x, col1, col2"/>
   <Oper Name="IsDigraphAutomorphism" Arg="digraph, x"/>
+  <Oper Name="IsDigraphAutomorphism" Arg="digraph, x, col"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     <C>IsDigraphIsomorphism</C> returns <K>true</K> if the permutation or
@@ -783,6 +785,21 @@ gap> OutNeighbours(canon);
     </List>
     See also <Ref Attr="AutomorphismGroup" Label="for a digraph"
       />.<P/>
+    
+    
+    If <A>col1</A> and <A>col2</A>, or <A>col</A>, are given then they must
+    represent vertex colourings; see <Ref Oper="AutomorphismGroup" Label="for a
+    digraph and a homogeneous list"/> for details of the permissible values for
+    these argument. The homomorphism must then also have the property:
+  
+    <List>
+      <Item>
+        <C>col1[i] = col2[i ^ x]</C> for all vertices <C>i</C> of <A>src</A>,
+        for <C>IsDigraphIsomorphism</C>. </Item>
+      <Item>
+        <C>col[i] = col[i ^ x]</C> for all vertices <C>i</C> of <A>digraph</A>,
+        for <C>IsDigraphAutomorphism</C>. </Item>
+    </List>
 
     For some digraphs, it can be faster to use <C>IsDigraphAutomorphism</C>
     than to test membership in the automorphism group of <A>digraph</A>.
@@ -794,6 +811,10 @@ gap> IsDigraphAutomorphism(src, (1, 2, 3));
 false
 gap> IsDigraphAutomorphism(src, (2, 3));
 true
+gap> IsDigraphAutomorphism(src, (2, 3), [2, 1, 1]);
+true
+gap> IsDigraphAutomorphism(src, (2, 3), [2, 2, 1]);
+false
 gap> IsDigraphAutomorphism(src, (2, 3)(4, 5));
 false
 gap> IsDigraphAutomorphism(src, (1, 4));
@@ -809,6 +830,10 @@ true
 gap> IsDigraphIsomorphism(ran, src, (1, 2));
 true
 gap> IsDigraphIsomorphism(src, Digraph([[3], [1, 3], [2]]), (1, 2, 3));
+false
+gap> IsDigraphIsomorphism(src, ran, (1, 2), [1, 2, 3], [2, 1, 3]);
+true
+gap> IsDigraphIsomorphism(src, ran, (1, 2), [1, 2, 2], [2, 1, 3]);
 false
 ]]></Example>
   </Description>
