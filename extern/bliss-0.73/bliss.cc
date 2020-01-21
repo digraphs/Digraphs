@@ -59,7 +59,7 @@ usage(FILE* const fp, const char* argv0)
   else program_name = argv0;
   if(!program_name or *program_name == 0) program_name = "bliss";
 
-  fprintf(fp, "bliss version %s (compiled "__DATE__")\n", bliss_digraphs::version);
+//  fprintf(fp, "bliss version %s (compiled "__DATE__")\n", bliss_digraphs::version);
   fprintf(fp, "Copyright 2003-2015 Tommi Junttila\n");
   fprintf(fp,
 "\n"
@@ -281,15 +281,16 @@ main(const int argc, const char** argv)
   else
     {
       /* Canonical labeling and automorphism group */
-      const unsigned int* cl = g->canonical_form(stats, &report_aut, stdout);
+      bliss_digraphs::uint_pointer_to_const_substitute cl
+          = g->canonical_form(stats, &report_aut, stdout);
 
       fprintf(stdout, "Canonical labeling: ");
-      bliss_digraphs::print_permutation(stdout, g->get_nof_vertices(), cl, 1);
+      bliss_digraphs::print_permutation(stdout, g->get_nof_vertices(), &(*cl), 1);
       fprintf(stdout, "\n");
 
       if(opt_output_can_file)
 	{
-	  bliss_digraphs::AbstractGraph* cf = g->permute(cl);
+	  bliss_digraphs::AbstractGraph* cf = g->permute(&(*cl));
 	  FILE* const fp = fopen(opt_output_can_file, "w");
 	  if(!fp)
 	    _fatal("Cannot open '%s' for outputting the canonical form, aborting", opt_output_can_file);

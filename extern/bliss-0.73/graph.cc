@@ -264,14 +264,14 @@ AbstractGraph::reset_permutation(uint_pointer_substitute perm)
 }
 
 bool
-AbstractGraph::is_automorphism(uint_pointer_substitute const perm)
+AbstractGraph::is_automorphism(uint_pointer_substitute const)
 {
   _INTERNAL_ERROR();
   return false;
 }
 
 bool
-AbstractGraph::is_automorphism(const std::vector<unsigned int>& perm) const
+AbstractGraph::is_automorphism(const std::vector<unsigned int>&) const
 {
   _INTERNAL_ERROR();
   return false;
@@ -3108,7 +3108,7 @@ Digraph::make_initial_equitable_partition()
  *-------------------------------------------------------------------------*/
 
 Partition::Cell*
-Digraph::find_next_cell_to_be_splitted(Partition::Cell* cell)
+Digraph::find_next_cell_to_be_splitted(Partition::Cell* )
 {
   switch(sh) {
   case shs_f:   return sh_first();
@@ -3437,7 +3437,7 @@ Digraph::initialize_certificate()
  * Slow, mainly for debugging and validation purposes.
  */
 bool
-Digraph::is_automorphism(unsigned int* const perm)
+Digraph::is_automorphism(uint_pointer_substitute const perm)
 {
   std::set<unsigned int, std::less<unsigned int> > edges1;
   std::set<unsigned int, std::less<unsigned int> > edges2;
@@ -4948,7 +4948,7 @@ void Graph::make_initial_equitable_partition()
 
 
 Partition::Cell*
-Graph::find_next_cell_to_be_splitted(Partition::Cell* cell)
+Graph::find_next_cell_to_be_splitted(Partition::Cell*)
 {
   switch(sh) {
   case shs_f:   return sh_first();
@@ -5230,7 +5230,7 @@ Graph::initialize_certificate()
  *-------------------------------------------------------------------------*/
 
 bool
-Graph::is_automorphism(unsigned int* const perm)
+Graph::is_automorphism(uint_pointer_substitute const perm)
 {
   std::set<unsigned int, std::less<unsigned int> > edges1;
   std::set<unsigned int, std::less<unsigned int> > edges2;

@@ -649,7 +649,7 @@ protected:
 
   void initialize_certificate();
 
-  bool is_automorphism(unsigned int* const perm);
+  bool is_automorphism(uint_pointer_substitute const perm);
 
 
   bool nucr_find_first_component(const unsigned int level);
@@ -829,6 +829,7 @@ protected:
   };
   std::vector<Vertex> vertices;
 
+public:
   void clear() {
     for (std::vector<Vertex>::iterator it = vertices.begin();
          it < vertices.end();
@@ -836,7 +837,7 @@ protected:
       it->clear();
     }
   }
-
+protected:
   void remove_duplicate_edges();
 
   /** \internal
@@ -903,7 +904,7 @@ protected:
 
   void initialize_certificate();
 
-  bool is_automorphism(unsigned int* const perm);
+  bool is_automorphism(uint_pointer_substitute const perm);
 
   void sort_edges();
 

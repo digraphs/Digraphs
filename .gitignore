@@ -72,3 +72,5 @@ missing
 *.swo
 coverage
 .ipynb_checkpoints
+bliss
+*.a
