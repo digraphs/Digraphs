@@ -66,12 +66,6 @@ AbstractGraph::AbstractGraph()
 
 AbstractGraph::~AbstractGraph()
 {
-  for (size_t i = 0; i != long_prune_fixed.size(); i++) {
-    std::vector<bool> * ptr = long_prune_fixed[i];
-    if (ptr != NULL) {
-      delete ptr;
-    }
-  }
   for (size_t i = 0; i != long_prune_mcrs.size(); i++) {
     std::vector<bool> * ptr = long_prune_mcrs[i];
     if (ptr != NULL) {
@@ -424,7 +418,7 @@ AbstractGraph::long_prune_init()
     long_prune_max_stored_autss = nof_fitting_in_max_mem;
 
   long_prune_deallocate();
-  long_prune_fixed.resize(N, 0);
+  long_prune_fixed.resize(N);
   long_prune_mcrs.resize(N, 0);
   long_prune_begin = 0;
   long_prune_end = 0;
@@ -433,44 +427,40 @@ AbstractGraph::long_prune_init()
 void
 AbstractGraph::long_prune_deallocate()
 {
-  while(!long_prune_fixed.empty())
-    {
-      delete long_prune_fixed.back();
-      long_prune_fixed.pop_back();
-    }
+  for (std::vector<std::vector<bool> >::iterator it = long_prune_fixed.begin();
+       it < long_prune_fixed.end();
+       ++it) {
+    it->clear();
+  }
   while(!long_prune_mcrs.empty())
     {
       delete long_prune_mcrs.back();
       long_prune_mcrs.pop_back();
     }
-}
+  }
 
 void
 AbstractGraph::long_prune_swap(const unsigned int i, const unsigned int j)
 {
   const unsigned int real_i = i % long_prune_max_stored_autss;
   const unsigned int real_j = j % long_prune_max_stored_autss;
-  std::vector<bool>* tmp = long_prune_fixed[real_i];
-  long_prune_fixed[real_i] = long_prune_fixed[real_j];
-  long_prune_fixed[real_j] = tmp;
-  tmp = long_prune_mcrs[real_i];
-  long_prune_mcrs[real_i] = long_prune_mcrs[real_j];
-  long_prune_mcrs[real_j] = tmp;
+  std::swap(long_prune_fixed[real_i], long_prune_fixed[real_j]);
+  std::swap(long_prune_mcrs[real_i], long_prune_mcrs[real_j]);
 }
 
 std::vector<bool>&
 AbstractGraph::long_prune_allocget_fixed(const unsigned int index)
 {
   const unsigned int i = index % long_prune_max_stored_autss;
-  if(!long_prune_fixed[i])
-    long_prune_fixed[i] = new std::vector<bool>(get_nof_vertices());
-  return *long_prune_fixed[i];
+  if(long_prune_fixed[i].size() < get_nof_vertices())
+    long_prune_fixed[i].resize(get_nof_vertices());
+  return long_prune_fixed[i];
 }
 
 std::vector<bool>&
 AbstractGraph::long_prune_get_fixed(const unsigned int index)
 {
-  return *long_prune_fixed[index % long_prune_max_stored_autss];
+  return long_prune_fixed[index % long_prune_max_stored_autss];
 }
 
 std::vector<bool>&
