@@ -2191,25 +2191,25 @@ gap> IsDigraphAutomorphism(gr1, x, [1, 1, 1, 1, 1, 1]);
 true
 gap> IsDigraphAutomorphism(gr1, x, [1, 1, 2, 2, 3, 3]); 
 false
-gap> IsDigraphAutomorphism(gr1, x^2, [1, 1, 2, 2, 3, 3]);
+gap> IsDigraphAutomorphism(gr1, x ^ 2, [1, 1, 2, 2, 3, 3]);
 false
-gap> IsDigraphAutomorphism(gr1, x^2, [1, 2, 2, 3, 4, 4]);
+gap> IsDigraphAutomorphism(gr1, x ^ 2, [1, 2, 2, 3, 4, 4]);
 false
-gap> IsDigraphAutomorphism(gr1, x^2, [1, 1, 1, 1, 1, 1]);
+gap> IsDigraphAutomorphism(gr1, x ^ 2, [1, 1, 1, 1, 1, 1]);
 true
-gap> IsDigraphAutomorphism(gr1, x^3, [1, 2, 2, 3, 4, 4]);
+gap> IsDigraphAutomorphism(gr1, x ^ 3, [1, 2, 2, 3, 4, 4]);
 false
-gap> IsDigraphAutomorphism(gr1, x^3, [1, 1, 1, 1, 1, 1]);
+gap> IsDigraphAutomorphism(gr1, x ^ 3, [1, 1, 1, 1, 1, 1]);
 true
 gap> IsDigraphAutomorphism(gr1, t, [1 .. 6]);            
 false
 gap> IsDigraphAutomorphism(gr1, t, [1, 1, 2, 2, 3, 3]);
 false
-gap> IsDigraphAutomorphism(gr1, t^2, [1, 1, 2, 2, 3, 3]);
+gap> IsDigraphAutomorphism(gr1, t ^ 2, [1, 1, 2, 2, 3, 3]);
 false
-gap> IsDigraphAutomorphism(gr1, t^2, [1, 2, 2, 3, 4, 4]);
+gap> IsDigraphAutomorphism(gr1, t ^ 2, [1, 2, 2, 3, 4, 4]);
 false
-gap> IsDigraphAutomorphism(gr1, t^3, [1, 2, 2, 3, 4, 4]);
+gap> IsDigraphAutomorphism(gr1, t ^ 3, [1, 2, 2, 3, 4, 4]);
 false
 gap> gr1 := DigraphFromDigraph6String("&D~~~~_");
 <immutable digraph with 5 vertices, 25 edges>
@@ -2258,10 +2258,10 @@ true
 gap> IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]), [1, 2, 3], [1, 2]);
 false
 gap> IsDigraphEpimorphism(src, src, Transformation([1, 2, 3]),
->                         [1, 1, 2], [1, 1,2]);
+>                         [1, 1, 2], [1, 1, 2]);
 true
 gap> IsDigraphEpimorphism(src, src, Transformation([1, 2, 3]),
->                         [1, 2, 3], [1, 1,2]);
+>                         [1, 2, 3], [1, 1, 2]);
 false
 gap> IsDigraphEpimorphism(src, src, (), [1, 2, 2], [1, 2, 2]);
 true

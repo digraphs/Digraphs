@@ -950,6 +950,53 @@ h), where graph is the 1st argument,
 gap> BlissAutomorphismGroup(gr, fail, [[1], [1, 1], [1]]) = Group([(1, 3)]);
 true
 
+# IsDigraphIsomorphism
+gap> gr1 := Digraph([[2, 3, 4], [1, 3, 4], [1, 2], [1, 2]]);
+<immutable digraph with 4 vertices, 10 edges>
+gap> IsDigraphIsomorphism(gr1, gr1, (1, 2));
+true
+gap> IsDigraphIsomorphism(gr1, gr1, (1, 2)(3, 4));
+true
+gap> gr2 := Digraph([[2, 3, 4, 4], [1, 3, 4], [1, 2], [1, 2]]);
+<immutable multidigraph with 4 vertices, 11 edges>
+gap> IsDigraphIsomorphism(gr1, gr2, (1, 2));
+Error, the 1st and 2nd arguments <src> and <ran> must not have multiple edges,
+gap> IsDigraphIsomorphism(gr2, gr1, (1, 2));
+Error, the 1st and 2nd arguments <src> and <ran> must not have multiple edges,
+gap> IsDigraphIsomorphism(gr1, gr1, Transformation([2, 1, 4, 3, 6, 5]));
+true
+gap> IsDigraphIsomorphism(gr1, gr1, Transformation([2, 1, 3, 5, 4, 6]));
+false
+gap> gr := NullDigraph(5);; 
+gap> ForAll(AutomorphismGroup(gr),        
+>           x -> IsDigraphAutomorphism(gr, x, [1, 1, 1, 1, 1]));
+true
+gap> Number(AutomorphismGroup(gr),                              
+>           x -> IsDigraphAutomorphism(gr, x, [1, 2, 3, 4, 5]));
+1
+gap> gr2 := CycleDigraph(6);
+<immutable cycle digraph with 6 vertices>
+gap> t := Transformation([2, 3, 4, 5, 6, 1, 8, 7]);
+Transformation( [ 2, 3, 4, 5, 6, 1, 8, 7 ] )
+gap> ForAll([1 .. 6],
+>            i -> IsDigraphAutomorphism(gr2,
+>                                       t ^ i,  
+>                                       [1, 1, 1, 1, 1, 1]));
+true
+gap> ForAll([2, 4, 6],
+>            i -> IsDigraphAutomorphism(gr2,
+>                                       t ^ i,
+>                                       [1, 2, 1, 2, 1, 2]));
+true
+gap> IsDigraphAutomorphism(gr2, t ^ 3, [1, 2, 3, 1, 2, 3]);
+true
+gap> gr3 := CycleDigraph(5);;
+gap> Number(FullTransformationMonoid(5),
+>           t -> IsDigraphAutomorphism(gr3,
+>                                      t,
+>                                      [1, 1, 1, 1, 1]));   
+5
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(canon);
 gap> Unbind(D);
