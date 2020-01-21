@@ -95,15 +95,13 @@ static inline bool is_adjacent_graph(Graph const* const graph,
   return get_bit_array(graph->neighbours[i], j);
 }
 
-
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
 void automorphisms_graph(Graph const* const,
                          uint16_t const* const,
                          PermColl*,
                          BlissGraph*);
 #else
-void
-automorphisms_graph(Graph const* const, uint16_t const* const, PermColl*);
+void automorphisms_graph(Graph const* const, uint16_t const* const, PermColl*);
 #endif
 
 #endif  // DIGRAPHS_SRC_HOMOS_GRAPHS_H_

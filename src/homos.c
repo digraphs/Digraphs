@@ -1774,7 +1774,8 @@ static bool init_data_from_args(Obj digraph1_obj,
 #endif
   } else {
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
-    automorphisms_digraph(DIGRAPH2, colors, STAB_GENS[0], BLISS_GRAPH[3 * PERM_DEGREE]);
+    automorphisms_digraph(
+        DIGRAPH2, colors, STAB_GENS[0], BLISS_GRAPH[3 * PERM_DEGREE]);
 #else
     automorphisms_digraph(DIGRAPH2, colors, STAB_GENS[0]);
 #endif
