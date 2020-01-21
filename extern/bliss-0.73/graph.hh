@@ -364,7 +364,7 @@ protected:
 
   unsigned int long_prune_max_stored_autss;
   std::vector<std::vector<bool> >  long_prune_fixed;
-  std::vector<std::vector<bool> *> long_prune_mcrs;
+  std::vector<std::vector<bool> > long_prune_mcrs;
   std::vector<bool> long_prune_temp;
   unsigned int long_prune_begin;
   unsigned int long_prune_end;

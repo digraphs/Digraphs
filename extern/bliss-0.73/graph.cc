@@ -66,12 +66,6 @@ AbstractGraph::AbstractGraph()
 
 AbstractGraph::~AbstractGraph()
 {
-  for (size_t i = 0; i != long_prune_mcrs.size(); i++) {
-    std::vector<bool> * ptr = long_prune_mcrs[i];
-    if (ptr != NULL) {
-      delete ptr;
-    }
-  }
   if (p.cr_enabled) {
     p.cr_free();
   }
@@ -419,25 +413,23 @@ AbstractGraph::long_prune_init()
 
   long_prune_deallocate();
   long_prune_fixed.resize(N);
-  long_prune_mcrs.resize(N, 0);
+  long_prune_mcrs.resize(N);
   long_prune_begin = 0;
   long_prune_end = 0;
 }
 
-void
-AbstractGraph::long_prune_deallocate()
-{
+void AbstractGraph::long_prune_deallocate() {
   for (std::vector<std::vector<bool> >::iterator it = long_prune_fixed.begin();
        it < long_prune_fixed.end();
        ++it) {
     it->clear();
   }
-  while(!long_prune_mcrs.empty())
-    {
-      delete long_prune_mcrs.back();
-      long_prune_mcrs.pop_back();
-    }
+  for (std::vector<std::vector<bool> >::iterator it = long_prune_mcrs.begin();
+       it < long_prune_mcrs.end();
+       ++it) {
+    it->clear();
   }
+}
 
 void
 AbstractGraph::long_prune_swap(const unsigned int i, const unsigned int j)
@@ -467,15 +459,15 @@ std::vector<bool>&
 AbstractGraph::long_prune_allocget_mcrs(const unsigned int index)
 {
   const unsigned int i = index % long_prune_max_stored_autss;
-  if(!long_prune_mcrs[i])
-    long_prune_mcrs[i] = new std::vector<bool>(get_nof_vertices());
-  return *long_prune_mcrs[i];
+  if(long_prune_mcrs[i].size() < get_nof_vertices())
+    long_prune_mcrs[i].resize(get_nof_vertices());
+  return long_prune_mcrs[i];
 }
 
 std::vector<bool>&
 AbstractGraph::long_prune_get_mcrs(const unsigned int index)
 {
-  return *long_prune_mcrs[index % long_prune_max_stored_autss];
+  return long_prune_mcrs[index % long_prune_max_stored_autss];
 }
 
 void
