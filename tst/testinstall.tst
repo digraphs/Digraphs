@@ -363,6 +363,20 @@ true
 gap> ForAll(D!.OutNeighbours, IsMutable);
 true
 
+# Issue 284: HomomorphismDigraphsFinder not finding any homomorphisms
+gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(100), fail, [], infinity,
+> fail, 2, [1 .. 100], [], fail, fail);
+[ IdentityTransformation ]
+gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(100), fail, [], infinity,
+> fail, 2, [1 .. 100], [], fail, fail);
+[ IdentityTransformation ]
+gap> HomomorphismDigraphsFinder(NullDigraph(2), NullDigraph(2), fail, [], infinity,  
+> fail, 2, [1, 2], [], fail, fail); 
+[ IdentityTransformation ]
+gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(100), fail, [], infinity,
+> fail, 2, [1 .. 100], [], fail, fail);
+[ IdentityTransformation ]
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);
