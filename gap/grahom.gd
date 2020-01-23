@@ -87,3 +87,8 @@ DeclareOperation("IsDigraphEmbedding",
 
 DeclareOperation("IsDigraphColouring", [IsDigraph, IsList]);
 DeclareOperation("IsDigraphColouring", [IsDigraph, IsTransformation]);
+
+DeclareOperation("DigraphsRespectsColouring",
+                 [IsDigraph, IsDigraph, IsTransformation, IsList, IsList]);
+DeclareOperation("DigraphsRespectsColouring",
+                 [IsDigraph, IsDigraph, IsPerm, IsList, IsList]);
