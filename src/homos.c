@@ -394,10 +394,13 @@ static bool compute_stabs_and_orbit_reps(uint16_t const nr_nodes_1,
                                          uint16_t const nr_nodes_2,
                                          uint16_t const rep_depth,
                                          uint16_t const depth,
-                                         uint16_t const pt) {
+                                         uint16_t const pt,
+                                         bool const first_call) {
   DIGRAPHS_ASSERT(rep_depth <= depth + 1);
-
-  if (depth == nr_nodes_1 - 1) {
+  if (depth == nr_nodes_1 - 1 && !first_call) {
+    // first_call is required in the case that nr_nodes_1 is 1, since without
+    // first_call this function returns false (in the next line) and REPS is
+    // not initialised.
     return false;  // This doesn't really say anything about the stabiliser
   } else if (rep_depth > 0) {
     point_stabilizer(
@@ -413,7 +416,6 @@ static bool compute_stabs_and_orbit_reps(uint16_t const nr_nodes_1,
       return true;  // the stabiliser is trivial
     }
   }
-
   init_bit_array(REPS[rep_depth], false, nr_nodes_2);
   copy_bit_array(ORB_LOOKUP, VALS, nr_nodes_2);
   uint16_t fst = 0;
@@ -627,7 +629,8 @@ static void find_graph_homos(uint16_t        depth,
                                                       GRAPH2->nr_vertices,
                                                       rep_depth + 1,
                                                       depth,
-                                                      i),
+                                                      i,
+                                                      false),
                          rank + 1,
                          max_results,
                          hint,
@@ -773,7 +776,8 @@ static void find_graph_monos(uint16_t        depth,
                                                     GRAPH2->nr_vertices,
                                                     rep_depth + 1,
                                                     depth,
-                                                    i),
+                                                    i,
+                                                    false),
                        max_results,
                        count);
     } else {
@@ -902,7 +906,8 @@ static void find_graph_embeddings(uint16_t        depth,
                                                          GRAPH2->nr_vertices,
                                                          rep_depth + 1,
                                                          depth,
-                                                         MAP[next]),
+                                                         MAP[next],
+                                                         false),
                             max_results,
                             count);
     } else {
@@ -1008,7 +1013,8 @@ static void init_partial_map_and_find_graph_homos(Obj partial_map_obj,
                                            GRAPH2->nr_vertices,
                                            rep_depth + 1,
                                            depth,
-                                           MAP[next]);
+                                           MAP[next],
+                                           false);
           rep_depth++;
         }
         depth++;
@@ -1158,7 +1164,8 @@ static void find_digraph_homos(uint16_t        depth,
                                                         DIGRAPH2->nr_vertices,
                                                         rep_depth + 1,
                                                         depth,
-                                                        i),
+                                                        i,
+                                                        false),
                            rank + 1,
                            max_results,
                            hint,
@@ -1301,7 +1308,8 @@ static void find_digraph_monos(uint16_t        depth,
                                                       DIGRAPH2->nr_vertices,
                                                       rep_depth + 1,
                                                       depth,
-                                                      i),
+                                                      i,
+                                                      false),
                          max_results,
                          count);
     } else {
@@ -1424,7 +1432,8 @@ static void find_digraph_embeddings(uint16_t        depth,
                                        DIGRAPH2->nr_vertices,
                                        rep_depth + 1,
                                        depth,
-                                       i),
+                                       i,
+                                       false),
           max_results,
           count);
     } else {
@@ -1500,7 +1509,8 @@ static void init_partial_map_and_find_digraph_homos(Obj partial_map_obj,
                                            DIGRAPH2->nr_vertices,
                                            rep_depth + 1,
                                            depth,
-                                           MAP[next]);
+                                           MAP[next],
+                                           false);
           rep_depth++;
         }
         depth++;
@@ -1757,7 +1767,7 @@ static bool init_data_from_args(Obj digraph1_obj,
   } else {
     automorphisms_digraph(DIGRAPH2, colors, STAB_GENS[0]);
   }
-  compute_stabs_and_orbit_reps(nr1, nr2, 0, 0, UNDEFINED);
+  compute_stabs_and_orbit_reps(nr1, nr2, 0, 0, UNDEFINED, true);
   return true;
 }
 
