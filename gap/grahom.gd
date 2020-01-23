@@ -43,10 +43,20 @@ DeclareOperation("IsDigraphEndomorphism", [IsDigraph, IsTransformation]);
 DeclareOperation("IsDigraphHomomorphism",
                  [IsDigraph, IsDigraph, IsTransformation]);
 
+DeclareOperation("IsDigraphEndomorphism",
+                 [IsDigraph, IsTransformation, IsList]);
+DeclareOperation("IsDigraphHomomorphism",
+                 [IsDigraph, IsDigraph, IsTransformation, IsList, IsList]);
+
 DeclareOperation("IsDigraphEndomorphism", [IsDigraph, IsPerm]);
 DeclareOperation("IsDigraphHomomorphism",
                  [IsDigraph, IsDigraph, IsPerm]);
 
+DeclareOperation("IsDigraphEndomorphism",
+                 [IsDigraph, IsPerm, IsList]);
+DeclareOperation("IsDigraphHomomorphism",
+                 [IsDigraph, IsDigraph, IsPerm, IsList, IsList]);
+
 DeclareOperation("IsDigraphEpimorphism",
                  [IsDigraph, IsDigraph, IsTransformation]);
 DeclareOperation("IsDigraphMonomorphism",
@@ -55,11 +65,25 @@ DeclareOperation("IsDigraphEmbedding",
                  [IsDigraph, IsDigraph, IsTransformation]);
 
 DeclareOperation("IsDigraphEpimorphism",
+                 [IsDigraph, IsDigraph, IsTransformation, IsList, IsList]);
+DeclareOperation("IsDigraphMonomorphism",
+                 [IsDigraph, IsDigraph, IsTransformation, IsList, IsList]);
+DeclareOperation("IsDigraphEmbedding",
+                 [IsDigraph, IsDigraph, IsTransformation, IsList, IsList]);
+
+DeclareOperation("IsDigraphEpimorphism",
                  [IsDigraph, IsDigraph, IsPerm]);
 DeclareOperation("IsDigraphMonomorphism",
                  [IsDigraph, IsDigraph, IsPerm]);
 DeclareOperation("IsDigraphEmbedding",
                  [IsDigraph, IsDigraph, IsPerm]);
+
+DeclareOperation("IsDigraphEpimorphism",
+                 [IsDigraph, IsDigraph, IsPerm, IsList, IsList]);
+DeclareOperation("IsDigraphMonomorphism",
+                 [IsDigraph, IsDigraph, IsPerm, IsList, IsList]);
+DeclareOperation("IsDigraphEmbedding",
+                 [IsDigraph, IsDigraph, IsPerm, IsList, IsList]);
 
 DeclareOperation("IsDigraphColouring", [IsDigraph, IsList]);
 DeclareOperation("IsDigraphColouring", [IsDigraph, IsTransformation]);
