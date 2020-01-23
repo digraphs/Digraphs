@@ -1408,8 +1408,11 @@ gap> DigraphShortestDistance(gr, [1, 6], DigraphLayers(gr, 1)[3]);
 gap> gr := DigraphFromSparse6String(
 > ":]n?AL`CB_EDbFE`IGaGHdJIeKGcLK_@MhDCiFLaBJmHFmKJ");
 <immutable digraph with 30 vertices, 90 edges>
-gap> DigraphGroup(gr);
-<permutation group with 5 generators>
+gap> G1 := DigraphGroup(gr);;
+gap> IsPermGroup(G1) and Length(GeneratorsOfGroup(G1)) = 5;
+true
+gap> Size(G1);
+1440
 gap> DigraphShortestDistance(gr, 1, 16);
 1
 

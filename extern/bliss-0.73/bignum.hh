@@ -39,7 +39,47 @@ namespace bliss_digraphs {
  * approximate big integers.
  */
 
-#if defined(BLISS_USE_GMP)
+/// Addition by Chris Jefferson, 16 Jan 2020, for use in GAP.
+/// Store the size of the group as a list of integers, to be
+/// multiplied together later.
+#define BLISS_IN_GAP
+
+#ifdef BLISS_IN_GAP
+class BigNum
+{
+  std::vector<int> v;
+public:
+  /**
+   * Create a new big number and set it to zero.
+   */
+  BigNum() { }
+
+  /**
+   * Destroy the number.
+   */
+  ~BigNum() { }
+
+  /**
+   * Set the number to \a n.
+   */
+  void assign(const int n) { v.clear(); v.push_back(n); }
+
+  /**
+   * Multiply the number with \a n.
+   */
+  void multiply(const int n) { v.push_back(n); }
+
+  /**
+   * Print the number in the file stream \a fp.
+   */
+  size_t print(FILE* const fp) const {return fprintf(fp, "<big number>"); }
+
+  std::vector<int> get_mults() const {
+      return v;
+  }
+};
+
+#elif defined(BLISS_USE_GMP)
 
 class BigNum
 {

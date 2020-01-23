@@ -46,6 +46,13 @@ typedef struct bliss_digraphs_graph_struct BlissGraph;
  */
 typedef struct bliss_digraphs_stats_struct
 {
+
+  /* The true size of the group */
+  /* This is a list of integers of length group_size_len */
+  /* This is only used when BLISS_IN_GAP is defined */
+  int* group_size;
+  int group_size_len;
+
   /**
    * An approximation (due to possible rounding errors) of
    * the size of the automorphism group.
@@ -202,5 +209,9 @@ bliss_digraphs_find_canonical_labeling(BlissGraph *graph,
 					   const unsigned int *aut),
 			      void *hook_user_param,
 			      BlissStats *stats);
+
+
+// Clean up memory allocated by a used BlissStats
+void bliss_digraphs_free_blissstats(BlissStats *stats);
 
 #endif
