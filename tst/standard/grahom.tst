@@ -2193,13 +2193,13 @@ gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
 Error, the 12th argument <order> must be duplicate-free, but the value 1 in po\
 sition 2 is a duplicate,
 gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
-> fail, true, [1, 2, 3], [1], fail, fail, FreeGroup(3));
+> fail, true, [1, 2, 3], [1], fail, fail, 12);
 Error, the 12th or 13th argument <aut_grp> must be a permutation group or fail\
-, not object (component),
+, not integer,
 gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
-> fail, true, [1, 2, 3], [1], fail, fail, Semigroup(Transformation([1, 1])));
+> fail, true, [1, 2, 3], [1], fail, fail, true);
 Error, the 12th or 13th argument <aut_grp> must be a permutation group or fail\
-, not object (component),
+, not boolean or fail,
 gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail, Group(CycleFromList([1 .. 1000])));
 Error, expected group of automorphisms, but found a non-automorphism in positi\
