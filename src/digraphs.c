@@ -73,9 +73,15 @@ Int DigraphNrVertices(Obj D) {
   return LEN_LIST(FuncOutNeighbours(0L, D));
 }
 
+static Int RNamOutNeighbours        = 0;
+
+
 Obj FuncOutNeighbours(Obj self, Obj D) {
-  if (IsbPRec(D, RNamName("OutNeighbours"))) {
-    return ElmPRec(D, RNamName("OutNeighbours"));
+  if (!RNamOutNeighbours) {
+    RNamOutNeighbours = RNamName("OutNeighbours");
+  }
+  if (IsbPRec(D, RNamOutNeighbours)) {
+    return ElmPRec(D, RNamOutNeighbours);
   } else {
     ErrorQuit(
         "the `OutNeighbours` component is not set for this digraph,", 0L, 0L);
