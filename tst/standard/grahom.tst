@@ -2201,12 +2201,13 @@ gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
 Error, the 12th or 13th argument <aut_grp> must be a permutation group or fail\
 , not boolean or fail,
 gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
-> fail, true, [1, 2, 3], [1], fail, fail, Group(CycleFromList([1 .. 1000])));
+> fail, true, [1, 2, 3], [1], fail, fail,
+> Group(MappingPermListList([1 .. 1000], [5 .. 1004])));
 Error, expected group of automorphisms, but found a non-automorphism in positi\
 on 1 of the group generators,
 gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail, 
-> Group((1, 2), CycleFromList([1 .. 1000])));
+> Group((1, 2), MappingPermListList([1 .. 1000], [5 .. 1004])));
 Error, expected group of automorphisms, but found a non-automorphism in positi\
 on 2 of the group generators,
 gap> HomomorphismDigraphsFinder(NullDigraph(3), ChainDigraph(3), fail, [], 1,

@@ -23,7 +23,7 @@
 
 // GAP headers
 #include "src/compiled.h"  // for Obj, Int
-#include "src/permutat.h"  // for ADDR_PERM, IS_PERM 
+#include "src/permutat.h"  // for ADDR_PERM, IS_PERM
 
 #define MAXVERTS 512
 #define UNDEFINED MAXVERTS + 1
