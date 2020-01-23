@@ -92,6 +92,8 @@ public:
     fflush(fp);
     return r;
   }
+  BigNum get_group_size() const { return group_size; }
+  
   /** An approximation (due to possible overflows/rounding errors) of
    * the size of the automorphism group. */
   long double get_group_size_approx() const {return group_size_approx;}
