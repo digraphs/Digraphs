@@ -755,7 +755,7 @@ true
       The operation <C>DigraphsRespectsColouring</C> verifies whether or not 
       the permutation or transformation <A>x</A> respects the vertex colourings
       <A>col1</A> and <A>col2</A> of the digraphs <A>src</A> and <A>range</A>.
-      That is, <C>DigraphsRespectsColouring</C> returns true if and only if for
+      That is, <C>DigraphsRespectsColouring</C> returns <K>true</K> if and only if for
       all vertices <C>i</C> of <A>src</A>, <C>col1[i] = col2[i ^ x]</C>.
       <P/>
 
